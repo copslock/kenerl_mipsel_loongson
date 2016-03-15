@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2016 00:33:37 +0100 (CET)
-Received: from youngberry.canonical.com ([91.189.89.112]:41785 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2016 00:33:52 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:41800 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006686AbcCOXdfyb5ow (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Mar 2016 00:33:35 +0100
+        by eddie.linux-mips.org with ESMTP id S27013954AbcCOXdipFLaw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Mar 2016 00:33:38 +0100
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1afyT0-0001c0-P0; Tue, 15 Mar 2016 23:33:34 +0000
+        id 1afyT3-0001cK-Vf; Tue, 15 Mar 2016 23:33:38 +0000
 Received: from kamal by fourier with local (Exim 4.86)
         (envelope-from <kamal@whence.com>)
-        id 1afySy-0006A5-34; Tue, 15 Mar 2016 16:33:32 -0700
+        id 1afyT1-0006AK-9C; Tue, 15 Mar 2016 16:33:35 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+Cc:     James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 83/98] MIPS: Fix build error when SMP is used without GIC
-Date:   Tue, 15 Mar 2016 16:31:17 -0700
-Message-Id: <1458084692-23100-84-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 86/98] MIPS: smp.c: Fix uninitialised temp_foreign_map
+Date:   Tue, 15 Mar 2016 16:31:20 -0700
+Message-Id: <1458084692-23100-87-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1458084692-23100-1-git-send-email-kamal@canonical.com>
 References: <1458084692-23100-1-git-send-email-kamal@canonical.com>
@@ -29,7 +29,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52601
+X-archive-position: 52602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,69 +50,42 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: Hauke Mehrtens <hauke@hauke-m.de>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 7a50e4688dabb8005df39b2b992d76629b8af8aa upstream.
+commit d825c06bfe8b885b797f917ad47365d0e9c21fbb upstream.
 
-The MIPS_GIC_IPI should only be selected when MIPS_GIC is also
-selected, otherwise it results in a compile error. smp-gic.c uses some
-functions from include/linux/irqchip/mips-gic.h like
-plat_ipi_call_int_xlate() which are only added to the header file when
-MIPS_GIC is set. The Lantiq SoC does not use the GIC, but supports SMP.
-The calls top the functions from smp-gic.c are already protected by
-some #ifdefs
+When calculate_cpu_foreign_map() recalculates the cpu_foreign_map
+cpumask it uses the local variable temp_foreign_map without initialising
+it to zero. Since the calculation only ever sets bits in this cpumask
+any existing bits at that memory location will remain set and find their
+way into cpu_foreign_map too. This could potentially lead to cache
+operations suboptimally doing smp calls to multiple VPEs in the same
+core, even though the VPEs share primary caches.
 
-The first part of this was introduced in commit 72e20142b2bf ("MIPS:
-Move GIC IPI functions out of smp-cmp.c")
+Therefore initialise temp_foreign_map using cpumask_clear() before use.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Fixes: cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12774/
+Patchwork: https://patchwork.linux-mips.org/patch/12759/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/Kconfig | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/kernel/smp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 199a835..dbf9fa3 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2117,7 +2117,7 @@ config MIPS_MT_SMP
- 	select CPU_MIPSR2_IRQ_VI
- 	select CPU_MIPSR2_IRQ_EI
- 	select SYNC_R4K
--	select MIPS_GIC_IPI
-+	select MIPS_GIC_IPI if MIPS_GIC
- 	select MIPS_MT
- 	select SMP
- 	select SMP_UP
-@@ -2215,7 +2215,7 @@ config MIPS_VPE_APSP_API_MT
- config MIPS_CMP
- 	bool "MIPS CMP framework support (DEPRECATED)"
- 	depends on SYS_SUPPORTS_MIPS_CMP
--	select MIPS_GIC_IPI
-+	select MIPS_GIC_IPI if MIPS_GIC
- 	select SMP
- 	select SYNC_R4K
- 	select SYS_SUPPORTS_SMP
-@@ -2235,7 +2235,7 @@ config MIPS_CPS
- 	select MIPS_CM
- 	select MIPS_CPC
- 	select MIPS_CPS_PM if HOTPLUG_CPU
--	select MIPS_GIC_IPI
-+	select MIPS_GIC_IPI if MIPS_GIC
- 	select SMP
- 	select SYNC_R4K if (CEVT_R4K || CSRC_R4K)
- 	select SYS_SUPPORTS_HOTPLUG_CPU
-@@ -2254,6 +2254,7 @@ config MIPS_CPS_PM
- 	bool
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index a31896c..df62553 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -120,6 +120,7 @@ static inline void calculate_cpu_foreign_map(void)
+ 	cpumask_t temp_foreign_map;
  
- config MIPS_GIC_IPI
-+	depends on MIPS_GIC
- 	bool
- 
- config MIPS_CM
+ 	/* Re-calculate the mask */
++	cpumask_clear(&temp_foreign_map);
+ 	for_each_online_cpu(i) {
+ 		core_present = 0;
+ 		for_each_cpu(k, &temp_foreign_map)
 -- 
 2.7.0

@@ -1,44 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2016 00:13:28 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:43172 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27013450AbcCOXN0cfiZJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Mar 2016 00:13:26 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 0835D60352;
-        Tue, 15 Mar 2016 23:13:25 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id EDC64611BF; Tue, 15 Mar 2016 23:13:24 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7F6A260352;
-        Tue, 15 Mar 2016 23:13:23 +0000 (UTC)
-Date:   Tue, 15 Mar 2016 16:13:22 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] drivers/firmware/broadcom/bcm47xx_nvram.c: fix
- incorrect __ioread32_copy
-Message-ID: <20160315231322.GL25972@codeaurora.org>
-References: <1458083178-8207-1-git-send-email-aaro.koskinen@iki.fi>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1458083178-8207-1-git-send-email-aaro.koskinen@iki.fi>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2016 00:25:33 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:41072 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013450AbcCOXZcU3phl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Mar 2016 00:25:32 +0100
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1afyLB-00018X-Hs; Tue, 15 Mar 2016 23:25:29 +0000
+Received: from kamal by fourier with local (Exim 4.86)
+        (envelope-from <kamal@whence.com>)
+        id 1afyL8-00058V-S4; Tue, 15 Mar 2016 16:25:26 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [4.2.y-ckt stable] Patch "MIPS: kvm: Fix ioctl error handling." has been added to the 4.2.y-ckt tree
+Date:   Tue, 15 Mar 2016 16:25:25 -0700
+Message-Id: <1458084325-19708-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 2.7.0
+X-Extended-Stable: 4.2
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52596
+X-archive-position: 52597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,22 +45,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/16, Aaro Koskinen wrote:
-> Commit 1f330c327900 ("drivers/firmware/broadcom/bcm47xx_nvram.c: use
-> __ioread32_copy() instead of open-coding") switched to use a generic copy
-> function, but failed to notice that the header pointer is updated between
-> the two copies, resulting in bogus data being copied in the latter one.
-> Fix by keeping the old header pointer.
-> 
-> The patch fixes totally broken networking on WRT54GL router (both LAN
-> and WLAN interfaces fail to probe).
-> 
-> Fixes: 1f330c327900 ("drivers/firmware/broadcom/bcm47xx_nvram.c: use __ioread32_copy() instead of open-coding")
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> ---
+This is a note to let you know that I have just added a patch titled
 
-Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
+    MIPS: kvm: Fix ioctl error handling.
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
+which can be found at:
+
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-4.2.y-queue
+
+This patch is scheduled to be released in version 4.2.8-ckt6.
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 4.2.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+---8<------------------------------------------------------------

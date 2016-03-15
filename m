@@ -1,60 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Mar 2016 01:57:23 +0100 (CET)
-Received: from mail-pf0-f179.google.com ([209.85.192.179]:35905 "EHLO
-        mail-pf0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013821AbcCOA5Tgg5nv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Mar 2016 01:57:19 +0100
-Received: by mail-pf0-f179.google.com with SMTP id u190so3492190pfb.3
-        for <linux-mips@linux-mips.org>; Mon, 14 Mar 2016 17:57:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=IUxIZO1JS0JsAwvhhaNuf7Z6SMeX34oQLW6Rvj7qTqI=;
-        b=Ta+TfHHTL+sNVc9Z0LRQSzg5Sd69p0L2ZFCJctac1BebJXrM540CaSyMSRy4lrbuNB
-         MNdsUKva7bUdz8wQCOUTmIIG8AeaNyDG77ZCFR9zqT5SnuAy5uqnQ6/frobtfl1i+IiQ
-         VeqXxQv3tW+5BccSv6nlgcZeW0xm/NsQZfRsklfKH10Ulzkhr2bzSEGDPvR3QpRitle5
-         oCi1kIeKDWK0sW9jpduqTXxmQaOc9Z4R4uhxOM6xn/8IteuE+eqdcMA9qkb1IECtZGEK
-         DUNNZqGd/ZWdyyGnOuwi8sPFAierhL6mVb/MpUtZdTZ3Uh+k73SsrO4AmP6kd9UjMnrx
-         5p/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=IUxIZO1JS0JsAwvhhaNuf7Z6SMeX34oQLW6Rvj7qTqI=;
-        b=Mp5n6gtdjgg4zS+LVsPbK+zgdYaQPB9DVzU3lxkP/J7cgNrHxOMe3mb/F4SVJs3F+N
-         jNTm1avNFkCrI8bLaDkJRgHT0RxPf6b0dak/gQbB8eVHSOypIMA7baW+5of2vNOL3L4I
-         YMsrEfgREjlO6IxoREXABubXQwzxL0MgzEognX12bdr+2C64wslRXZJqtDYVTLJG+Xvw
-         GQRlJAZJ3KCe84T8f/fMZnV3tFdZi181W9YKSG3apF7Mxcrqgh49PrpCfoZ4IyiGqq9O
-         V6QOKpgKFvNMByQ9MzNRLf6b0DlmmFrftjSD/bmf+zn5QaIYBN+NF6Kip8hgiI9aJS6L
-         GHEA==
-X-Gm-Message-State: AD7BkJKtcbmd2CM4kGxLJoYwSv9A7i+OQOQCroQg1OJ1XAK28cizyA7qfsoCTwbASrp9fw==
-X-Received: by 10.66.190.168 with SMTP id gr8mr42342112pac.23.1458003433395;
-        Mon, 14 Mar 2016 17:57:13 -0700 (PDT)
-Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.gmail.com with ESMTPSA id ey7sm34844110pab.47.2016.03.14.17.57.11
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 14 Mar 2016 17:57:11 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u2F0vAJ6027665;
-        Mon, 14 Mar 2016 17:57:10 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u2F0v9aP027664;
-        Mon, 14 Mar 2016 17:57:09 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH] netdev: Move octeon/octeon_mgmt driver to cavium directory.
-Date:   Mon, 14 Mar 2016 17:57:08 -0700
-Message-Id: <1458003428-27632-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Mar 2016 06:27:04 +0100 (CET)
+Received: from forward.webhostbox.net ([5.100.155.124]:48462 "EHLO
+        forward.webhostbox.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006622AbcCOF1BbbK0z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Mar 2016 06:27:01 +0100
+Received: from bh-25.webhostbox.net (bh-25.webhostbox.net [208.91.199.152])
+        by forward.webhostbox.net (Postfix) with ESMTP id 62F4755C09EF;
+        Tue, 15 Mar 2016 05:26:59 +0000 (GMT)
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:34698 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1afhVU-0027Qr-4m; Tue, 15 Mar 2016 05:27:00 +0000
+Date:   Mon, 14 Mar 2016 22:26:59 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: linux-next: Tree for Mar 14 (mips qemu failure bisected)
+Message-ID: <20160315052659.GA9320@roeck-us.net>
+References: <20160314174037.0097df55@canb.auug.org.au>
+ <20160314143729.GA31845@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160314143729.GA31845@roeck-us.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.1 cv=NfdGrz34 c=1 sm=1 tr=0
+        a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
+        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=kj9zAlcOel0A:10
+        a=7OsogOcEt9IA:10 a=r8N4ijXKTd2s8t9S8RsA:9 a=CjuIK1q_8ugA:10
+Return-Path: <SRS0+9QRA=PL=roeck-us.net=linux@forward.webhostbox.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52588
+X-archive-position: 52589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,105 +53,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On Mon, Mar 14, 2016 at 07:37:29AM -0700, Guenter Roeck wrote:
+> On Mon, Mar 14, 2016 at 05:40:37PM +1100, Stephen Rothwell wrote:
+> > Hi all,
+> > 
+> > Changes since 20160311:
+> > 
+> > The vfs tree gained a conflict against Linus' tree. I also applied a
+> > patch for a known runtime bug.
+> > 
+> > The tip tree gained a conflict against the mips tree.
+> > 
+> > The aio tree still had a build failure so I removed several commits
+> > from it.  It also gained a conflict against the vfs tree.
+> > 
+> > Non-merge commits (relative to Linus' tree): 11202
+> >  8646 files changed, 426680 insertions(+), 211740 deletions(-)
+> > 
+> 
+> To give people an idea what to expect in the merge window, here are my current
+> build and runtime test results. Some of the runtime failures are due to the
+> newly introduced i2c bug, but many (including the arm64 boot failures) have
+> been around for a while.
+> 
+[ ... ]
 
-No code changes.  Since OCTEON is a Cavium product, move the driver to
-the vendor directory to unclutter things a bit.
+> Qemu test results:
+> 	total: 96 pass: 69 fail: 27
+> Failed tests:
+[ ... ]
+> 	mips:mips_malta_smp_defconfig
 
-Signed-off-by: David Daney <david.daney@cavium.com>
+I bisected this failure to commit bb11cff327e54 ("MIPS: Make smp CMP, CPS and MT
+use the new generic IPI functions". Bisect log is attached.
+
+> 	mips64:smp:mips_malta64_defconfig
+> 	mips:mipsel_malta_smp_defconfig
+> 	mips:mipsel_malta64_smp_defconfig
+
+If necessary I can repeat the bisect for those. Please let me know.
+
+Thanks,
+Guenter
+
 ---
- drivers/net/ethernet/Kconfig                           |  1 -
- drivers/net/ethernet/Makefile                          |  1 -
- drivers/net/ethernet/cavium/Kconfig                    | 11 +++++++++++
- drivers/net/ethernet/cavium/Makefile                   |  1 +
- drivers/net/ethernet/{ => cavium}/octeon/Makefile      |  0
- drivers/net/ethernet/{ => cavium}/octeon/octeon_mgmt.c |  0
- drivers/net/ethernet/octeon/Kconfig                    | 14 --------------
- 7 files changed, 12 insertions(+), 16 deletions(-)
- rename drivers/net/ethernet/{ => cavium}/octeon/Makefile (100%)
- rename drivers/net/ethernet/{ => cavium}/octeon/octeon_mgmt.c (100%)
- delete mode 100644 drivers/net/ethernet/octeon/Kconfig
+Bisect log:
 
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index be67a19..2ffd634 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -139,7 +139,6 @@ config NET_NETX
- source "drivers/net/ethernet/nuvoton/Kconfig"
- source "drivers/net/ethernet/nvidia/Kconfig"
- source "drivers/net/ethernet/nxp/Kconfig"
--source "drivers/net/ethernet/octeon/Kconfig"
- source "drivers/net/ethernet/oki-semi/Kconfig"
- 
- config ETHOC
-diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
-index 6ffcc80..1d349e9 100644
---- a/drivers/net/ethernet/Makefile
-+++ b/drivers/net/ethernet/Makefile
-@@ -59,7 +59,6 @@ obj-$(CONFIG_NET_NETX) += netx-eth.o
- obj-$(CONFIG_NET_VENDOR_NUVOTON) += nuvoton/
- obj-$(CONFIG_NET_VENDOR_NVIDIA) += nvidia/
- obj-$(CONFIG_LPC_ENET) += nxp/
--obj-$(CONFIG_OCTEON_MGMT_ETHERNET) += octeon/
- obj-$(CONFIG_NET_VENDOR_OKI) += oki-semi/
- obj-$(CONFIG_ETHOC) += ethoc.o
- obj-$(CONFIG_NET_PACKET_ENGINE) += packetengines/
-diff --git a/drivers/net/ethernet/cavium/Kconfig b/drivers/net/ethernet/cavium/Kconfig
-index 953aa40..0ef232d 100644
---- a/drivers/net/ethernet/cavium/Kconfig
-+++ b/drivers/net/ethernet/cavium/Kconfig
-@@ -53,4 +53,15 @@ config LIQUIDIO
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called liquidio.  This is recommended.
- 
-+config OCTEON_MGMT_ETHERNET
-+	tristate "Octeon Management port ethernet driver (CN5XXX, CN6XXX)"
-+	depends on CAVIUM_OCTEON_SOC
-+	select PHYLIB
-+	select MDIO_OCTEON
-+	default y
-+	help
-+	  Enable the ethernet driver for the management
-+	  port on Cavium Networks' Octeon CN57XX, CN56XX, CN55XX,
-+	  CN54XX, CN52XX, and CN6XXX chips.
-+
- endif # NET_VENDOR_CAVIUM
-diff --git a/drivers/net/ethernet/cavium/Makefile b/drivers/net/ethernet/cavium/Makefile
-index d22f886a..872da9f 100644
---- a/drivers/net/ethernet/cavium/Makefile
-+++ b/drivers/net/ethernet/cavium/Makefile
-@@ -3,3 +3,4 @@
- #
- obj-$(CONFIG_NET_VENDOR_CAVIUM) += thunder/
- obj-$(CONFIG_NET_VENDOR_CAVIUM) += liquidio/
-+obj-$(CONFIG_NET_VENDOR_CAVIUM) += octeon/
-diff --git a/drivers/net/ethernet/octeon/Makefile b/drivers/net/ethernet/cavium/octeon/Makefile
-similarity index 100%
-rename from drivers/net/ethernet/octeon/Makefile
-rename to drivers/net/ethernet/cavium/octeon/Makefile
-diff --git a/drivers/net/ethernet/octeon/octeon_mgmt.c b/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
-similarity index 100%
-rename from drivers/net/ethernet/octeon/octeon_mgmt.c
-rename to drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
-diff --git a/drivers/net/ethernet/octeon/Kconfig b/drivers/net/ethernet/octeon/Kconfig
-deleted file mode 100644
-index a7aa280..0000000
---- a/drivers/net/ethernet/octeon/Kconfig
-+++ /dev/null
-@@ -1,14 +0,0 @@
--#
--# Cavium network device configuration
--#
--
--config OCTEON_MGMT_ETHERNET
--	tristate "Octeon Management port ethernet driver (CN5XXX, CN6XXX)"
--	depends on CAVIUM_OCTEON_SOC
--	select PHYLIB
--	select MDIO_OCTEON
--	default y
--	---help---
--	  This option enables the ethernet driver for the management
--	  port on Cavium Networks' Octeon CN57XX, CN56XX, CN55XX,
--	  CN54XX, CN52XX, and CN6XXX chips.
--- 
-1.7.11.7
+# bad: [4342eec3c5a2402ca5de3d6e56f541fe1c5171e2] Add linux-next specific files for 20160314
+# good: [f6cede5b49e822ebc41a099fe41ab4989f64e2cb] Linux 4.5-rc7
+git bisect start 'HEAD' 'v4.5-rc7'
+# good: [0525c3e26ec2c43cd509433be3be25210a0154ef] Merge remote-tracking branch 'drm-tegra/drm/tegra/for-next'
+git bisect good 0525c3e26ec2c43cd509433be3be25210a0154ef
+# bad: [385128a1b49762c1b9515c9f6294aeebbc55b956] Merge remote-tracking branch 'usb-chipidea-next/ci-for-usb-next'
+git bisect bad 385128a1b49762c1b9515c9f6294aeebbc55b956
+# good: [dfdb27baab4fc45c9399a991270413d0fb1c694a] Merge remote-tracking branch 'spi/for-next'
+git bisect good dfdb27baab4fc45c9399a991270413d0fb1c694a
+# bad: [e368d7d2a0dce6d6795ead1fc8a09bcca8a4a565] Merge branch 'timers/nohz'
+git bisect bad e368d7d2a0dce6d6795ead1fc8a09bcca8a4a565
+# good: [ced30bc9129777d715057d06fc8dbdfd3b81e94d] Merge tag 'perf-core-for-mingo-20160310' of git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux into perf/core
+git bisect good ced30bc9129777d715057d06fc8dbdfd3b81e94d
+# bad: [656a61d4d9cbb8dfc2d007281190b2eccebad522] manual merge of mm/pkeys
+git bisect bad 656a61d4d9cbb8dfc2d007281190b2eccebad522
+# good: [16f7379f2da43f29d9faa2f474745e2705a3f510] Merge branch 'efi/core'
+git bisect good 16f7379f2da43f29d9faa2f474745e2705a3f510
+# bad: [a7fb9a8169be9a55e0cfb98346aece1b51c016fa] Merge branch 'locking/core'
+git bisect bad a7fb9a8169be9a55e0cfb98346aece1b51c016fa
+# good: [2a07870511829977d02609dac6450017b0419ea9] irqchip/mips-gic: Use gic_vpes instead of NR_CPUS
+git bisect good 2a07870511829977d02609dac6450017b0419ea9
+# good: [eaff0e7003cca6c2748b67ead2d4b1a8ad858fc7] locking/pvqspinlock: Move lock stealing count tracking code into pv_queued_spin_steal_lock()
+git bisect good eaff0e7003cca6c2748b67ead2d4b1a8ad858fc7
+# good: [013e379a3094ff2898f8d33cfbff1573d471ee14] tools/lib/lockdep: Fix link creation warning
+git bisect good 013e379a3094ff2898f8d33cfbff1573d471ee14
+# bad: [7eb8c99db26cc6499bfb1eba72dffc4730570752] MIPS: Delete smp-gic.c
+git bisect bad 7eb8c99db26cc6499bfb1eba72dffc4730570752
+# good: [fbde2d7d8290d8c642d591a471356abda2446874] MIPS: Add generic SMP IPI support
+git bisect good fbde2d7d8290d8c642d591a471356abda2446874
+# bad: [bb11cff327e54179c13446c4022ed4ed7d4871c7] MIPS: Make smp CMP, CPS and MT use the new generic IPI functions
+git bisect bad bb11cff327e54179c13446c4022ed4ed7d4871c7
+# first bad commit: [bb11cff327e54179c13446c4022ed4ed7d4871c7] MIPS: Make smp CMP, CPS and MT use the new generic IPI functions

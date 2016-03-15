@@ -1,42 +1,107 @@
-From: James Hogan <james.hogan@imgtec.com>
-Date: Fri, 4 Mar 2016 10:10:51 +0000
-Subject: MIPS: smp.c: Fix uninitialised temp_foreign_map
-Message-ID: <20160304101051.SSTEtbCQVX9VLBKj4eoj4LmAzz6b0JoioNpIAgBhdoY@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2016 00:32:41 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:41562 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006686AbcCOXckY3Sww (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Mar 2016 00:32:40 +0100
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1afyS4-0001WH-R0; Tue, 15 Mar 2016 23:32:37 +0000
+Received: from kamal by fourier with local (Exim 4.86)
+        (envelope-from <kamal@whence.com>)
+        id 1afyS2-000664-5U; Tue, 15 Mar 2016 16:32:34 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        kernel-team@lists.ubuntu.com
+Cc:     "Michael S . Tsirkin" <mst@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 38/98] MIPS: kvm: Fix ioctl error handling.
+Date:   Tue, 15 Mar 2016 16:30:32 -0700
+Message-Id: <1458084692-23100-39-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1458084692-23100-1-git-send-email-kamal@canonical.com>
+References: <1458084692-23100-1-git-send-email-kamal@canonical.com>
+X-Extended-Stable: 4.2
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 52600
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit d825c06bfe8b885b797f917ad47365d0e9c21fbb upstream.
+4.2.8-ckt6 -stable review patch.  If anyone has any objections, please let me know.
 
-When calculate_cpu_foreign_map() recalculates the cpu_foreign_map
-cpumask it uses the local variable temp_foreign_map without initialising
-it to zero. Since the calculation only ever sets bits in this cpumask
-any existing bits at that memory location will remain set and find their
-way into cpu_foreign_map too. This could potentially lead to cache
-operations suboptimally doing smp calls to multiple VPEs in the same
-core, even though the VPEs share primary caches.
+---8<------------------------------------------------------------
 
-Therefore initialise temp_foreign_map using cpumask_clear() before use.
+From: "Michael S. Tsirkin" <mst@redhat.com>
 
-Fixes: cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
+commit 887349f69f37e71e2a8bfbd743831625a0b2ff51 upstream.
+
+Calling return copy_to_user(...) or return copy_from_user in an ioctl
+will not do the right thing if there's a pagefault:
+copy_to_user/copy_from_user return the number of bytes not copied in
+this case.
+
+Fix up kvm on mips to do
+	return copy_to_user(...)) ?  -EFAULT : 0;
+and
+	return copy_from_user(...)) ?  -EFAULT : 0;
+
+everywhere.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: linux-kernel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12759/
+Cc: kvm@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12709/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/smp.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/kvm/mips.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index a31896c..df62553 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -120,6 +120,7 @@ static inline void calculate_cpu_foreign_map(void)
- 	cpumask_t temp_foreign_map;
-
- 	/* Re-calculate the mask */
-+	cpumask_clear(&temp_foreign_map);
- 	for_each_online_cpu(i) {
- 		core_present = 0;
- 		for_each_cpu(k, &temp_foreign_map)
---
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index bafb32b..216dba8 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -701,7 +701,7 @@ static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
+ 	} else if ((reg->id & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U128) {
+ 		void __user *uaddr = (void __user *)(long)reg->addr;
+ 
+-		return copy_to_user(uaddr, vs, 16);
++		return copy_to_user(uaddr, vs, 16) ? -EFAULT : 0;
+ 	} else {
+ 		return -EINVAL;
+ 	}
+@@ -731,7 +731,7 @@ static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
+ 	} else if ((reg->id & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U128) {
+ 		void __user *uaddr = (void __user *)(long)reg->addr;
+ 
+-		return copy_from_user(vs, uaddr, 16);
++		return copy_from_user(vs, uaddr, 16) ? -EFAULT : 0;
+ 	} else {
+ 		return -EINVAL;
+ 	}
+-- 
 2.7.0

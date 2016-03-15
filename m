@@ -1,56 +1,66 @@
-From: "Michael S. Tsirkin" <mst@redhat.com>
-Date: Sun, 28 Feb 2016 17:35:59 +0200
-Subject: MIPS: kvm: Fix ioctl error handling.
-Message-ID: <20160228153559.KWKFA48vSswzV_J8GDBwW3AlREhhFut7Igx_RxiVPIw@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2016 00:26:43 +0100 (CET)
+Received: from youngberry.canonical.com ([91.189.89.112]:41275 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27013450AbcCOX0m1UZgw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Mar 2016 00:26:42 +0100
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1afyMJ-0001FV-Dm; Tue, 15 Mar 2016 23:26:39 +0000
+Received: from kamal by fourier with local (Exim 4.86)
+        (envelope-from <kamal@whence.com>)
+        id 1afyMG-0005g6-Mq; Tue, 15 Mar 2016 16:26:36 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [4.2.y-ckt stable] Patch "MIPS: Fix build error when SMP is used without GIC" has been added to the 4.2.y-ckt tree
+Date:   Tue, 15 Mar 2016 16:26:35 -0700
+Message-Id: <1458084395-21791-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 2.7.0
+X-Extended-Stable: 4.2
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 52598
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit 887349f69f37e71e2a8bfbd743831625a0b2ff51 upstream.
+This is a note to let you know that I have just added a patch titled
 
-Calling return copy_to_user(...) or return copy_from_user in an ioctl
-will not do the right thing if there's a pagefault:
-copy_to_user/copy_from_user return the number of bytes not copied in
-this case.
+    MIPS: Fix build error when SMP is used without GIC
 
-Fix up kvm on mips to do
-	return copy_to_user(...)) ?  -EFAULT : 0;
-and
-	return copy_from_user(...)) ?  -EFAULT : 0;
+to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
+which can be found at:
 
-everywhere.
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-4.2.y-queue
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12709/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kvm/mips.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This patch is scheduled to be released in version 4.2.8-ckt6.
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index bafb32b..216dba8 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -701,7 +701,7 @@ static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
- 	} else if ((reg->id & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U128) {
- 		void __user *uaddr = (void __user *)(long)reg->addr;
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
--		return copy_to_user(uaddr, vs, 16);
-+		return copy_to_user(uaddr, vs, 16) ? -EFAULT : 0;
- 	} else {
- 		return -EINVAL;
- 	}
-@@ -731,7 +731,7 @@ static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
- 	} else if ((reg->id & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U128) {
- 		void __user *uaddr = (void __user *)(long)reg->addr;
+For more information about the 4.2.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
--		return copy_from_user(vs, uaddr, 16);
-+		return copy_from_user(vs, uaddr, 16) ? -EFAULT : 0;
- 	} else {
- 		return -EINVAL;
- 	}
---
-2.7.0
+Thanks.
+-Kamal
+
+---8<------------------------------------------------------------

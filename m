@@ -1,47 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 14:56:52 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:55641 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014226AbcCQN4uPNM3e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 14:56:50 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id B00C417C8; Thu, 17 Mar 2016 14:56:42 +0100 (CET)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 6BE451D7;
-        Thu, 17 Mar 2016 14:56:32 +0100 (CET)
-Date:   Thu, 17 Mar 2016 14:56:32 +0100
-From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To:     Harvey Hunt <harvey.hunt@imgtec.com>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Paul Burton <paul.burton@imgtec.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, rtc-linux@googlegroups.com
-Subject: Re: [PATCH 3/5] rtc: rtc-jz4740: Add support for devicetree
-Message-ID: <20160317135632.GG3362@piout.net>
-References: <1457217531-26064-1-git-send-email-paul@crapouillou.net>
- <1457217531-26064-3-git-send-email-paul@crapouillou.net>
- <20160317120804.GD3362@piout.net>
- <56EAB210.70900@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <56EAB210.70900@imgtec.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <alexandre.belloni@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 20:35:38 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:48414 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014218AbcCQTfgHQEmS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 20:35:36 +0100
+Received: from akpm3.mtv.corp.google.com (unknown [104.132.1.65])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 72AECD0F;
+        Thu, 17 Mar 2016 19:35:28 +0000 (UTC)
+Date:   Thu, 17 Mar 2016 12:35:27 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Jiri Kosina <jikos@kernel.org>, kbuild test robot <lkp@intel.com>,
+        kbuild-all@01.org, Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        linux-am33-list@redhat.com
+Subject: Re: [PATCH v2 1/5] printk/nmi: Generic solution for safe printk in
+ NMI
+Message-Id: <20160317123527.6346bce3284509849d061eaa@linux-foundation.org>
+In-Reply-To: <20151204165744.GD20935@pathway.suse.cz>
+References: <1448622572-16900-2-git-send-email-pmladek@suse.com>
+        <201511271919.aEZuZKNe%fengguang.wu@intel.com>
+        <20151127153804.GC2648@pathway.suse.cz>
+        <alpine.LNX.2.00.1512020022460.32500@pobox.suse.cz>
+        <20151204165744.GD20935@pathway.suse.cz>
+X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52648
+X-archive-position: 52649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@free-electrons.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,47 +59,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17/03/2016 at 13:33:04 +0000, Harvey Hunt wrote :
-> On 17/03/16 12:08, Alexandre Belloni wrote:
-> >On 05/03/2016 at 23:38:49 +0100, Paul Cercueil wrote :
-> >>Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> >>---
-> >>  drivers/rtc/rtc-jz4740.c | 16 +++++++++++++++-
-> >>  1 file changed, 15 insertions(+), 1 deletion(-)
-> >>
-> >>diff --git a/drivers/rtc/rtc-jz4740.c b/drivers/rtc/rtc-jz4740.c
-> >>index 47617bd..3914b1c 100644
-> >>--- a/drivers/rtc/rtc-jz4740.c
-> >>+++ b/drivers/rtc/rtc-jz4740.c
-> >>@@ -17,6 +17,7 @@
-> >>  #include <linux/io.h>
-> >>  #include <linux/kernel.h>
-> >>  #include <linux/module.h>
-> >>+#include <linux/of_device.h>
-> >>  #include <linux/platform_device.h>
-> >>  #include <linux/rtc.h>
-> >>  #include <linux/slab.h>
-> >>@@ -245,6 +246,13 @@ void jz4740_rtc_poweroff(struct device *dev)
-> >>  }
-> >>  EXPORT_SYMBOL_GPL(jz4740_rtc_poweroff);
-> >>
-> >>+static const struct of_device_id jz4740_rtc_of_match[] = {
-> >>+	{ .compatible = "ingenic,jz4740-rtc", .data = (void *) ID_JZ4740 },
-> >>+	{ .compatible = "ingenic,jz4780-rtc", .data = (void *) ID_JZ4780 },
-> >
-> >ingenic is not in Documentation/devicetree/bindings/vendor-prefixes.txt,
-> >you have to add it there before using it.
+On Fri, 4 Dec 2015 17:57:44 +0100 Petr Mladek <pmladek@suse.com> wrote:
+
+> On Wed 2015-12-02 00:24:49, Jiri Kosina wrote:
+> > On Fri, 27 Nov 2015, Petr Mladek wrote:
+> > 
+> > > MN10300 has its own implementation for entering and exiting NMI 
+> > > handlers. It does not call nmi_enter() and nmi_exit(). Please, find 
+> > > below an updated patch that adds printk_nmi_enter() and 
+> > > printk_nmi_exit() to the custom entry points. Then we could add HAVE_NMI 
+> > > to arch/mn10300/Kconfig and avoid the above warning.
+> > 
+> > Hmm, so what exactly would go wrong if MN10300 (whatever that architecture 
+> > is) would call nmi_enter() and nmi_exit() at the places where it's 
+> > starting and finishing NMI handler?
+> > 
+> > >From a cursory look, it seems like most (if not all) of the things called 
+> > from nmi_{enter,exit}() would be nops there anyway.
 > 
-> Ingenic is in vendor-prefixes.txt - it was added by Commit f289cc7
-> ("devicetree/bindings: add Ingenic Semiconductor vendor prefix").
+> Good point. Max mentioned in the other main that the NMI handler
+> should follow the NMI ruler. I do not why it could not work.
+> In fact, it might improve things, e.g. nmi_enter() blocks
+> recursive NMIs.
+> 
+> I think that it will move it into a separate patch, thought.
 > 
 
-Indeed, I was looking at an old v4.1 based branch instead of master.
+I've sort of lost the plot on this patchset.
 
-You can forget that comment :)
+I know Daniel had concerns (resolved?).  Sergey lost the ability to
+perform backtraces and has a proposed fix ("printk/nmi: restore
+printk_func in nmi_panic") but that wasn't fully resolved and I didn't
+merge anything.  I'm not sure what Jan's thinking is on it all.
 
+So... I'll retain 
 
--- 
-Alexandre Belloni, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
+printk-nmi-generic-solution-for-safe-printk-in-nmi.patch
+printk-nmi-use-irq-work-only-when-ready.patch
+printk-nmi-warn-when-some-message-has-been-lost-in-nmi-context.patch
+printk-nmi-increase-the-size-of-nmi-buffer-and-make-it-configurable.patch
+
+in -mm for now.  Perhaps I should drop them all and we start again
+after -rc1?

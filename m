@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:38:04 +0100 (CET)
-Received: from smtpproxy19.qq.com ([184.105.206.84]:36123 "EHLO
-        smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014102AbcCQMh7I56ZI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 13:37:59 +0100
-X-QQ-mid: bizesmtp14t1458218179t907t28
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:41:15 +0100 (CET)
+Received: from smtpbgau1.qq.com ([54.206.16.166]:41034 "EHLO smtpbgau1.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27014102AbcCQMlKm3hgI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Mar 2016 13:41:10 +0100
+X-QQ-mid: bizesmtp7t1458218414t478t143
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 17 Mar 2016 20:36:13 +0800 (CST)
+        id ; Thu, 17 Mar 2016 20:40:09 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FK60B00A0000000
-X-QQ-FEAT: YUXsMzPpo1HUNaoDfmv0+BgsmDg8Fyzu5Cb/NuXmTUBys7Hx/1XV8pmKuxKyh
-        2vAnY7QjAQznHWk6cgP7lZDzLYahKy33VisI3vcF+fs651zmvYcQccu4TWnf3xFMshhK64O
-        NMF8S3nzMkrYy+9yhEzN+bftENxMNlAwtTMsKBi3M8YcaBP8Nad/fGYmx8OzfxbeW470J3H
-        r+thGYXGMbomWv++L2atzdXSu7kmgMqJfy0quipeQirciS4Pu7wqfVkBpJFOZHrMMmsId+U
-        U6+WENf29ZWnbM
+X-QQ-FEAT: cbPjiZhc9zmrV5wCSbUvFJ77NhgCb8tLZOP9+QIhsk03uDdD6gZBXx4pSdWUT
+        zM9zigTF7Dm8qfqyvZjYp8EJsrB8xnj1cmxEOhHSaYh/qr3uVyqSVlCOoZbPuT/O+oqhpPI
+        nFQqsMTBZ36BV8HlVQn1JZf8eBuqLH+RaQPpsnDETKsu1Yv+ywWSx7rTJlRJ65kQkdIsZNy
+        fxmwf79nAcwNbUypfmUK7dpSXVqAGXt2VJ4As6dar4U8KZlXbuHMhmzjT4OutxtM9GYXNfS
+        XGYAM+LWgA/GQ/2/aXjuZ5uOk=
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,9 +21,9 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
-Subject: [PATCH V3 1/4] MIPS: Reserve nosave data for hibernation
-Date:   Thu, 17 Mar 2016 20:37:10 +0800
-Message-Id: <1458218233-12129-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V3 2/4] MIPS: Loongson-3: Reserve 32MB for RS780E integrated GPU
+Date:   Thu, 17 Mar 2016 20:41:05 +0800
+Message-Id: <1458218467-12210-1-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
@@ -31,7 +31,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52641
+X-archive-position: 52642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,31 +48,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
-in the memblock region"), the MIPS hibernation is broken. Because pages
-in nosave data section should be "reserved", but currently they aren't
-set to "reserved" at initialization. This patch makes hibernation work
-again.
+Due to datasheet, reserving 0xff800000~0xffffffff (8MB below 4GB) is
+not enough for RS780E integrated GPU's TOM (top of memory) registers
+and MSI/MSI-x memory region, so we reserve 0xfe000000~0xffffffff (32MB
+below 4GB).
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/kernel/setup.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/loongson64/loongson-3/numa.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 4f60734..d20caac 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -706,6 +706,9 @@ static void __init arch_mem_init(char **cmdline_p)
- 	for_each_memblock(reserved, reg)
- 		if (reg->size != 0)
- 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
-+
-+	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
-+			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
- }
+diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
+index 6f9e010..282c5a8 100644
+--- a/arch/mips/loongson64/loongson-3/numa.c
++++ b/arch/mips/loongson64/loongson-3/numa.c
+@@ -213,10 +213,10 @@ static void __init node_mem_init(unsigned int node)
+ 		BOOTMEM_DEFAULT);
  
- static void __init resource_init(void)
+ 	if (node == 0 && node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT)) {
+-		/* Reserve 0xff800000~0xffffffff for RS780E integrated GPU */
++		/* Reserve 0xfe000000~0xffffffff for RS780E integrated GPU */
+ 		reserve_bootmem_node(NODE_DATA(node),
+-				(node_addrspace_offset | 0xff800000),
+-				8 << 20, BOOTMEM_DEFAULT);
++				(node_addrspace_offset | 0xfe000000),
++				32 << 20, BOOTMEM_DEFAULT);
+ 	}
+ 
+ 	sparse_memory_present_with_active_regions(node);
 -- 
 2.7.0

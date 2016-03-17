@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:41:15 +0100 (CET)
-Received: from smtpbgau1.qq.com ([54.206.16.166]:41034 "EHLO smtpbgau1.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:42:33 +0100 (CET)
+Received: from smtpbg202.qq.com ([184.105.206.29]:54969 "EHLO smtpbg202.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014102AbcCQMlKm3hgI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Mar 2016 13:41:10 +0100
-X-QQ-mid: bizesmtp7t1458218414t478t143
+        id S27014102AbcCQMmaX7NxI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Mar 2016 13:42:30 +0100
+X-QQ-mid: bizesmtp7t1458218487t738t241
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 17 Mar 2016 20:40:09 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FK60B00A0000000
-X-QQ-FEAT: cbPjiZhc9zmrV5wCSbUvFJ77NhgCb8tLZOP9+QIhsk03uDdD6gZBXx4pSdWUT
-        zM9zigTF7Dm8qfqyvZjYp8EJsrB8xnj1cmxEOhHSaYh/qr3uVyqSVlCOoZbPuT/O+oqhpPI
-        nFQqsMTBZ36BV8HlVQn1JZf8eBuqLH+RaQPpsnDETKsu1Yv+ywWSx7rTJlRJ65kQkdIsZNy
-        fxmwf79nAcwNbUypfmUK7dpSXVqAGXt2VJ4As6dar4U8KZlXbuHMhmzjT4OutxtM9GYXNfS
-        XGYAM+LWgA/GQ/2/aXjuZ5uOk=
+        id ; Thu, 17 Mar 2016 20:40:16 +0800 (CST)
+X-QQ-SSF: 01100000000000F0FK60
+X-QQ-FEAT: zvFLlFX1T3djtsKEsP+MX0Jdo7OopxXLZetQxCtpWKJuC3vg+CW7stVhj9BAH
+        FgZQf6dHcDykpSRHoVGRmbcZkAMYWxdSbhzb16Vv3voZ8LWil0maCj0LIkiPqsHpiLBII6i
+        cxTuBYmoHzKENTgAy6dcosM0B5lxBG5yL4uYMTiy+y17eKIUUiZNZyLcTK9VWpM0mIXEpWr
+        9pdJKfbfiai5j9XQtbzdDYOeHSfnqtjskhfNq17bTtxxfRF/OxE2H6YSe+TbEdZ35YmIqoy
+        6pXbXc+ZkI0fGKZtd5e+f4FXY=
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,17 +21,19 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
-Subject: [PATCH V3 2/4] MIPS: Loongson-3: Reserve 32MB for RS780E integrated GPU
-Date:   Thu, 17 Mar 2016 20:41:05 +0800
-Message-Id: <1458218467-12210-1-git-send-email-chenhc@lemote.com>
+Subject: [PATCH V3 3/4] MIPS: Loongson-3: Fix build error after ld-version.sh modification
+Date:   Thu, 17 Mar 2016 20:41:06 +0800
+Message-Id: <1458218467-12210-2-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1458218467-12210-1-git-send-email-chenhc@lemote.com>
+References: <1458218467-12210-1-git-send-email-chenhc@lemote.com>
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
 Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52642
+X-archive-position: 52643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,34 +50,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Due to datasheet, reserving 0xff800000~0xffffffff (8MB below 4GB) is
-not enough for RS780E integrated GPU's TOM (top of memory) registers
-and MSI/MSI-x memory region, so we reserve 0xfe000000~0xffffffff (32MB
-below 4GB).
+Commit d5ece1cb074b2c ("Fix ld-version.sh to handle large 3rd version
+part") modifies the ld version description. This causes a build error
+on Loongson-3, so fix it.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/loongson64/loongson-3/numa.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/loongson64/Platform | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/loongson64/loongson-3/numa.c b/arch/mips/loongson64/loongson-3/numa.c
-index 6f9e010..282c5a8 100644
---- a/arch/mips/loongson64/loongson-3/numa.c
-+++ b/arch/mips/loongson64/loongson-3/numa.c
-@@ -213,10 +213,10 @@ static void __init node_mem_init(unsigned int node)
- 		BOOTMEM_DEFAULT);
- 
- 	if (node == 0 && node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT)) {
--		/* Reserve 0xff800000~0xffffffff for RS780E integrated GPU */
-+		/* Reserve 0xfe000000~0xffffffff for RS780E integrated GPU */
- 		reserve_bootmem_node(NODE_DATA(node),
--				(node_addrspace_offset | 0xff800000),
--				8 << 20, BOOTMEM_DEFAULT);
-+				(node_addrspace_offset | 0xfe000000),
-+				32 << 20, BOOTMEM_DEFAULT);
- 	}
- 
- 	sparse_memory_present_with_active_regions(node);
+diff --git a/arch/mips/loongson64/Platform b/arch/mips/loongson64/Platform
+index 85d8089..0fce460 100644
+--- a/arch/mips/loongson64/Platform
++++ b/arch/mips/loongson64/Platform
+@@ -31,7 +31,7 @@ cflags-$(CONFIG_CPU_LOONGSON3)	+= -Wa,--trap
+ # can't easily be used safely within the kbuild framework.
+ #
+ ifeq ($(call cc-ifversion, -ge, 0409, y), y)
+-  ifeq ($(call ld-ifversion, -ge, 22500000, y), y)
++  ifeq ($(call ld-ifversion, -ge, 225000000, y), y)
+     cflags-$(CONFIG_CPU_LOONGSON3)  += \
+       $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
+   else
 -- 
 2.7.0

@@ -1,48 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 04:37:45 +0100 (CET)
-Received: from mail-lf0-f65.google.com ([209.85.215.65]:36402 "EHLO
-        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007122AbcCQDexKcp0p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 04:34:53 +0100
-Received: by mail-lf0-f65.google.com with SMTP id h198so2226412lfh.3
-        for <linux-mips@linux-mips.org>; Wed, 16 Mar 2016 20:34:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 04:38:00 +0100 (CET)
+Received: from mail-lf0-f67.google.com ([209.85.215.67]:36405 "EHLO
+        mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007140AbcCQDey2oMTp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 04:34:54 +0100
+Received: by mail-lf0-f67.google.com with SMTP id h198so2226423lfh.3
+        for <linux-mips@linux-mips.org>; Wed, 16 Mar 2016 20:34:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=nN1l/7USReyV9WX0stmissXP63rzGCc7lHaUzJCbRr0=;
-        b=BoC+TyVd1Ip/FSp3V/eL1A7HqZQ01hJ2plh8dMkiZLN0lFQb1NVnmCcIJvIfKxQ8tP
-         VTrI2hVO0x9TanZ1Zqm08ws+JEeDTgI8jj/LQcWUbZzioQ10T3a6nvvfTu2iYTXWDade
-         apPn4J1zR88AK4g2enSgqBuj7LCXRenRTQkWB9Xd48l6HyC6LoBSeHsAXgISybuDFayr
-         lDna1zIg1syzG9vsDlu417r2vm+HDNI6E8PUJQQ8mZyLTVFICSF3VqpMYcPUwkQDN3pG
-         oWxiCn5gus12Mcy1ATHxXrfBjbLOaMEPQtVeFCFJsZAuarArJwySOIgAWSuyoGRnmVd5
-         Z8fw==
+        bh=5MGCYxm2faudCqKQSQ/Dyt0h5nBndfKZ3xYZEfpXpms=;
+        b=gD+dU2Gxxpi5rTJndtQ334mnAQWk9MLKkV4nnPx+ksRNU7CD4P2lY9iEQ7VXuclmn3
+         31qb4n1OAPMzbo+GmH5n0VPC7yfxH7NsMHq1aoqj2myk05N//tpR8LCRsXJYlGLQ8I5Y
+         A7d8mH2D50OoH2Kh+BKQKGvt5EjTyeTYbhWsxiOiZQC1JNhI7YrdhVu+CKX32vUxLe1r
+         TmQj83CCNn/xj6P2qDqE2HughzvNZfoI0HgoC/8lOiIaho+Xvst5xwDBLI60hs7a6CFF
+         sxgBFzktLUjByNqTKPjiPXji6d5sQ52jXr91WdB4PmLqdTNicO8gtP7952ArVOMIZwoM
+         ro3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=nN1l/7USReyV9WX0stmissXP63rzGCc7lHaUzJCbRr0=;
-        b=NVaxOArlmCh+asg2WBoCy5/yOcLp17JFGHhRrcp/NNY00fUcktD1vfFskweFqxeSIY
-         Yt2Gvfun/iD+F9eSa/bfdvSErleiLAZGhb7515AVOV8lLahs81w+3iCrcWP89gmazl3w
-         CgyBQw8sSbgYLQ3A13hemq312zD2wjy48dH1zTL0xfexhSAgOd7aKJUrbEKeCeAJhVHw
-         uOAfqq3Nk0rj5yasbtaEO1H+3qejjAst7KLakRbsTGsDcNZRHZKp0Ca1+fDSr+AtXh6Q
-         sVXvE0D40/VaswhLvIMBgeEcwab30znf90bhf5l72WcYnZQmW0VoGNatf8kuIs1CbUUY
-         xM9Q==
-X-Gm-Message-State: AD7BkJJXbyxp21S0mQoniLIBTkkaY6La0/jZkhd8zecSAcz0qklN0pnvRAdCf4PeX3ieoQ==
-X-Received: by 10.25.218.196 with SMTP id r187mr2790422lfg.6.1458185687906;
-        Wed, 16 Mar 2016 20:34:47 -0700 (PDT)
+        bh=5MGCYxm2faudCqKQSQ/Dyt0h5nBndfKZ3xYZEfpXpms=;
+        b=C3AwitTpCi/PgDYNm9Is+cDF2DeE1QMnaDl7TdRrlbI3W4JR+GBycW30xcN1vH5Kzd
+         plo/tPLj/tUAi1xTPVlkt79vx3SEueU+xDu37YvmAcbtGBbrxODqj0EH7OHaDIc3vq/D
+         m2ipnC/aqsk4M6Vi7DYlxS2L3ht/RXnnqmJKG1FW2V9cfzNy01u2I9X8nrpHbNFhMr9u
+         D/AbcTdETQoqYMhJT+8g7KG9PcHnJHd9WdSzv4QgAXVTEM7a6LaNpRlq6K25E0oFWuUK
+         TtYUNrTFPMAc6648IxYISUA3G0r2+kb3TYsH5ZPFVwdx4kSHGeKKm9xnFz1Ag5Y/KcDr
+         qZfg==
+X-Gm-Message-State: AD7BkJJzqOnY31W3zS3/tv8eikTgrPoer2lYVlZum6UjPKl13/6MvHWn8rNw2DT2uWRfBg==
+X-Received: by 10.25.161.205 with SMTP id k196mr2215619lfe.61.1458185689138;
+        Wed, 16 Mar 2016 20:34:49 -0700 (PDT)
 Received: from localhost.localdomain (ppp109-252-26-173.pppoe.spdop.ru. [109.252.26.173])
-        by smtp.gmail.com with ESMTPSA id gp6sm1026698lbc.44.2016.03.16.20.34.46
+        by smtp.gmail.com with ESMTPSA id gp6sm1026698lbc.44.2016.03.16.20.34.47
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 16 Mar 2016 20:34:46 -0700 (PDT)
+        Wed, 16 Mar 2016 20:34:48 -0700 (PDT)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     Gabor Juhos <juhosg@openwrt.org>, Alban Bedel <albeu@free.fr>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-clk@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH v2 11/18] MIPS: ath79: update devicetree clock support for AR9331
-Date:   Thu, 17 Mar 2016 06:34:18 +0300
-Message-Id: <1458185665-4521-12-git-send-email-antonynpavlov@gmail.com>
+Subject: [PATCH v2 12/18] MIPS: ath79: add initial support for TP-LINK MR3020
+Date:   Thu, 17 Mar 2016 06:34:19 +0300
+Message-Id: <1458185665-4521-13-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1458185665-4521-1-git-send-email-antonynpavlov@gmail.com>
 References: <1458185665-4521-1-git-send-email-antonynpavlov@gmail.com>
@@ -50,7 +47,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52625
+X-archive-position: 52626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,180 +64,163 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The following features are supported:
+
+  * UART;
+  * SPI-flash;
+  * USB host;
+  * GPIO keys and LEDs.
+
+Links:
+
+  * http://www.tp-link.com/en/products/details/?model=TL-MR3020
+  * http://wiki.openwrt.org/toh/tp-link/tl-mr3020
+  * https://wikidevi.com/wiki/TP-LINK_TL-MR3020
+
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Gabor Juhos <juhosg@openwrt.org>
 Cc: Alban Bedel <albeu@free.fr>
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Stephen Boyd <sboyd@codeaurora.org>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: linux-clk@vger.kernel.org
 Cc: linux-mips@linux-mips.org
 Cc: devicetree@vger.kernel.org
 ---
- arch/mips/ath79/clock.c | 120 +++++++++++++++++++++++++++++-------------------
- 1 file changed, 74 insertions(+), 46 deletions(-)
+ arch/mips/boot/dts/qca/Makefile             |   1 +
+ arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts | 118 ++++++++++++++++++++++++++++
+ 2 files changed, 119 insertions(+)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index 79fb8b4..3cfc5ec 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -137,15 +137,68 @@ static void __init ar724x_clocks_init(void)
- 	clk_add_alias("uart", NULL, "ahb", NULL);
- }
+diff --git a/arch/mips/boot/dts/qca/Makefile b/arch/mips/boot/dts/qca/Makefile
+index 14bd225..5e2c20d 100644
+--- a/arch/mips/boot/dts/qca/Makefile
++++ b/arch/mips/boot/dts/qca/Makefile
+@@ -1,5 +1,6 @@
+ # All DTBs
+ dtb-$(CONFIG_ATH79)			+= ar9132_tl_wr1043nd_v1.dtb
++dtb-$(CONFIG_ATH79)			+= ar9331_tl_mr3020.dtb
  
-+static void __init ar9330_clk_init(struct clk *ref_clk, void __iomem *pll_base)
-+{
-+	u32 clock_ctrl;
-+	u32 ref_div;
-+	u32 ninit_mul;
-+	u32 out_div;
+ # Force kbuild to make empty built-in.o if necessary
+ obj-				+= dummy.o
+diff --git a/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts b/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
+new file mode 100644
+index 0000000..919cf3b
+--- /dev/null
++++ b/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
+@@ -0,0 +1,118 @@
++/dts-v1/;
 +
-+	u32 cpu_div;
-+	u32 ddr_div;
-+	u32 ahb_div;
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
 +
-+	clock_ctrl = __raw_readl(pll_base + AR933X_PLL_CLOCK_CTRL_REG);
-+	if (clock_ctrl & AR933X_PLL_CLOCK_CTRL_BYPASS) {
-+		ref_div = 1;
-+		ninit_mul = 1;
-+		out_div = 1;
++#include "ar9331.dtsi"
 +
-+		cpu_div = 1;
-+		ddr_div = 1;
-+		ahb_div = 1;
-+	} else {
-+		u32 cpu_config;
-+		u32 t;
++/ {
++	model = "TP-Link TL-MR3020";
++	compatible = "tplink,tl-mr3020";
 +
-+		cpu_config = __raw_readl(pll_base + AR933X_PLL_CPU_CONFIG_REG);
++	aliases {
++		serial0 = &uart;
++	};
 +
-+		t = (cpu_config >> AR933X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
-+		    AR933X_PLL_CPU_CONFIG_REFDIV_MASK;
-+		ref_div = t;
++	memory@0 {
++		device_type = "memory";
++		reg = <0x0 0x2000000>;
++	};
 +
-+		ninit_mul = (cpu_config >> AR933X_PLL_CPU_CONFIG_NINT_SHIFT) &
-+		    AR933X_PLL_CPU_CONFIG_NINT_MASK;
++	leds {
++		compatible = "gpio-leds";
 +
-+		t = (cpu_config >> AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
-+		    AR933X_PLL_CPU_CONFIG_OUTDIV_MASK;
-+		if (t == 0)
-+			t = 1;
++		wlan {
++			label = "tp-link:green:wlan";
++			gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++		};
 +
-+		out_div = (1 << t);
++		lan {
++			label = "tp-link:green:lan";
++			gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
++			default-state = "off";
++		};
 +
-+		cpu_div = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT) &
-+		     AR933X_PLL_CLOCK_CTRL_CPU_DIV_MASK) + 1;
++		wps {
++			label = "tp-link:green:wps";
++			gpios = <&gpio 26 GPIO_ACTIVE_LOW>;
++			default-state = "off";
++		};
 +
-+		ddr_div = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_DDR_DIV_SHIFT) &
-+		      AR933X_PLL_CLOCK_CTRL_DDR_DIV_MASK) + 1;
++		led3g {
++			label = "tp-link:green:3g";
++			gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
++			default-state = "off";
++		};
++	};
 +
-+		ahb_div = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_AHB_DIV_SHIFT) &
-+		     AR933X_PLL_CLOCK_CTRL_AHB_DIV_MASK) + 1;
-+	}
++	gpio-keys-polled {
++		compatible = "gpio-keys-polled";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		poll-interval = <100>;
 +
-+	clks[ATH79_CLK_CPU] = ath79_reg_ffclk("cpu", "ref",
-+					ninit_mul, ref_div * out_div * cpu_div);
-+	clks[ATH79_CLK_DDR] = ath79_reg_ffclk("ddr", "ref",
-+					ninit_mul, ref_div * out_div * ddr_div);
-+	clks[ATH79_CLK_AHB] = ath79_reg_ffclk("ahb", "ref",
-+					ninit_mul, ref_div * out_div * ahb_div);
-+}
++		button@0 {
++			label = "wps";
++			linux,code = <KEY_WPS_BUTTON>;
++			gpios = <&gpio 11 GPIO_ACTIVE_HIGH>;
++		};
 +
- static void __init ar933x_clocks_init(void)
- {
-+	struct clk *ref_clk;
- 	unsigned long ref_rate;
--	unsigned long cpu_rate;
--	unsigned long ddr_rate;
--	unsigned long ahb_rate;
--	u32 clock_ctrl;
--	u32 cpu_config;
--	u32 freq;
- 	u32 t;
- 
- 	t = ath79_reset_rr(AR933X_RESET_REG_BOOTSTRAP);
-@@ -154,46 +207,14 @@ static void __init ar933x_clocks_init(void)
- 	else
- 		ref_rate = (25 * 1000 * 1000);
- 
--	clock_ctrl = ath79_pll_rr(AR933X_PLL_CLOCK_CTRL_REG);
--	if (clock_ctrl & AR933X_PLL_CLOCK_CTRL_BYPASS) {
--		cpu_rate = ref_rate;
--		ahb_rate = ref_rate;
--		ddr_rate = ref_rate;
--	} else {
--		cpu_config = ath79_pll_rr(AR933X_PLL_CPU_CONFIG_REG);
-+	ref_clk = ath79_add_sys_clkdev("ref", ref_rate);
- 
--		t = (cpu_config >> AR933X_PLL_CPU_CONFIG_REFDIV_SHIFT) &
--		    AR933X_PLL_CPU_CONFIG_REFDIV_MASK;
--		freq = ref_rate / t;
-+	ar9330_clk_init(ref_clk, ath79_pll_base);
- 
--		t = (cpu_config >> AR933X_PLL_CPU_CONFIG_NINT_SHIFT) &
--		    AR933X_PLL_CPU_CONFIG_NINT_MASK;
--		freq *= t;
--
--		t = (cpu_config >> AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT) &
--		    AR933X_PLL_CPU_CONFIG_OUTDIV_MASK;
--		if (t == 0)
--			t = 1;
--
--		freq >>= t;
--
--		t = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT) &
--		     AR933X_PLL_CLOCK_CTRL_CPU_DIV_MASK) + 1;
--		cpu_rate = freq / t;
--
--		t = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_DDR_DIV_SHIFT) &
--		      AR933X_PLL_CLOCK_CTRL_DDR_DIV_MASK) + 1;
--		ddr_rate = freq / t;
--
--		t = ((clock_ctrl >> AR933X_PLL_CLOCK_CTRL_AHB_DIV_SHIFT) &
--		     AR933X_PLL_CLOCK_CTRL_AHB_DIV_MASK) + 1;
--		ahb_rate = freq / t;
--	}
--
--	ath79_add_sys_clkdev("ref", ref_rate);
--	clks[ATH79_CLK_CPU] = ath79_add_sys_clkdev("cpu", cpu_rate);
--	clks[ATH79_CLK_DDR] = ath79_add_sys_clkdev("ddr", ddr_rate);
--	clks[ATH79_CLK_AHB] = ath79_add_sys_clkdev("ahb", ahb_rate);
-+	/* just make happy plat_time_init() from arch/mips/ath79/setup.c */
-+	clk_register_clkdev(clks[ATH79_CLK_CPU], "cpu", NULL);
-+	clk_register_clkdev(clks[ATH79_CLK_DDR], "ddr", NULL);
-+	clk_register_clkdev(clks[ATH79_CLK_AHB], "ahb", NULL);
- 
- 	clk_add_alias("wdt", NULL, "ahb", NULL);
- 	clk_add_alias("uart", NULL, "ref", NULL);
-@@ -460,7 +481,6 @@ static void __init ath79_clocks_init_dt(struct device_node *np)
- 
- CLK_OF_DECLARE(ar7100, "qca,ar7100-pll", ath79_clocks_init_dt);
- CLK_OF_DECLARE(ar7240, "qca,ar7240-pll", ath79_clocks_init_dt);
--CLK_OF_DECLARE(ar9330, "qca,ar9330-pll", ath79_clocks_init_dt);
- CLK_OF_DECLARE(ar9340, "qca,ar9340-pll", ath79_clocks_init_dt);
- CLK_OF_DECLARE(ar9550, "qca,qca9550-pll", ath79_clocks_init_dt);
- 
-@@ -482,7 +502,14 @@ static void __init ath79_clocks_init_dt_ng(struct device_node *np)
- 		goto err_clk;
- 	}
- 
--	ar724x_clk_init(ref_clk, pll_base);
-+	if (of_device_is_compatible(np, "qca,ar9130-pll"))
-+		ar724x_clk_init(ref_clk, pll_base);
-+	else if (of_device_is_compatible(np, "qca,ar9330-pll"))
-+		ar9330_clk_init(ref_clk, pll_base);
-+	else {
-+		pr_err("%s: could not find any appropriate clk_init()\n", dnfn);
-+		goto err_clk;
-+	}
- 
- 	if (of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data)) {
- 		pr_err("%s: could not register clk provider\n", dnfn);
-@@ -498,4 +525,5 @@ err:
- 	return;
- }
- CLK_OF_DECLARE(ar9130_clk, "qca,ar9130-pll", ath79_clocks_init_dt_ng);
-+CLK_OF_DECLARE(ar9330_clk, "qca,ar9330-pll", ath79_clocks_init_dt_ng);
- #endif
++		button@1 {
++			label = "sw1";
++			linux,code = <BTN_0>;
++			gpios = <&gpio 18 GPIO_ACTIVE_HIGH>;
++		};
++
++		button@2 {
++			label = "sw2";
++			linux,code = <BTN_1>;
++			gpios = <&gpio 20 GPIO_ACTIVE_HIGH>;
++		};
++	};
++
++	reg_usb_vbus: reg_usb_vbus {
++		compatible = "regulator-fixed";
++		regulator-name = "usb_vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio 8 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++};
++
++&ref {
++	clock-frequency = <25000000>;
++};
++
++&uart {
++	status = "okay";
++};
++
++&gpio {
++	status = "okay";
++};
++
++&usb {
++	dr_mode = "host";
++	vbus-supply = <&reg_usb_vbus>;
++	status = "okay";
++};
++
++&usb_phy {
++	status = "okay";
++};
++
++&spi {
++	num-chipselects = <1>;
++	status = "okay";
++
++	/* Spansion S25FL032PIF SPI flash */
++	spiflash: s25sl032p@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "spansion,s25sl032p", "jedec,spi-nor";
++		spi-max-frequency = <104000000>;
++		reg = <0>;
++	};
++};
 -- 
 2.7.0

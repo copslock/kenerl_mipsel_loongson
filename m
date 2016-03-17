@@ -1,46 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:22:34 +0100 (CET)
-Received: from down.free-electrons.com ([37.187.137.238]:53496 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27014217AbcCQMWc60tvr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 13:22:32 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 7924F17D8; Thu, 17 Mar 2016 13:22:25 +0100 (CET)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 45829AA9;
-        Thu, 17 Mar 2016 13:22:25 +0100 (CET)
-Date:   Thu, 17 Mar 2016 13:22:25 +0100
-From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:38:04 +0100 (CET)
+Received: from smtpproxy19.qq.com ([184.105.206.84]:36123 "EHLO
+        smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27014102AbcCQMh7I56ZI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 13:37:59 +0100
+X-QQ-mid: bizesmtp14t1458218179t907t28
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Thu, 17 Mar 2016 20:36:13 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK60B00A0000000
+X-QQ-FEAT: YUXsMzPpo1HUNaoDfmv0+BgsmDg8Fyzu5Cb/NuXmTUBys7Hx/1XV8pmKuxKyh
+        2vAnY7QjAQznHWk6cgP7lZDzLYahKy33VisI3vcF+fs651zmvYcQccu4TWnf3xFMshhK64O
+        NMF8S3nzMkrYy+9yhEzN+bftENxMNlAwtTMsKBi3M8YcaBP8Nad/fGYmx8OzfxbeW470J3H
+        r+thGYXGMbomWv++L2atzdXSu7kmgMqJfy0quipeQirciS4Pu7wqfVkBpJFOZHrMMmsId+U
+        U6+WENf29ZWnbM
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Paul Burton <paul.burton@imgtec.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, rtc-linux@googlegroups.com
-Subject: Re: [PATCH 5/5] MIPS: jz4740: Use the jz4740-rtc driver as the power
- controller
-Message-ID: <20160317122225.GF3362@piout.net>
-References: <1457217531-26064-1-git-send-email-paul@crapouillou.net>
- <1457217531-26064-5-git-send-email-paul@crapouillou.net>
- <20160314015353.GB29020@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160314015353.GB29020@linux-mips.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <alexandre.belloni@free-electrons.com>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
+Subject: [PATCH V3 1/4] MIPS: Reserve nosave data for hibernation
+Date:   Thu, 17 Mar 2016 20:37:10 +0800
+Message-Id: <1458218233-12129-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52640
+X-archive-position: 52641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@free-electrons.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,26 +48,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
+in the memblock region"), the MIPS hibernation is broken. Because pages
+in nosave data section should be "reserved", but currently they aren't
+set to "reserved" at initialization. This patch makes hibernation work
+again.
 
-On 14/03/2016 at 02:53:53 +0100, Ralf Baechle wrote :
-> On Sat, Mar 05, 2016 at 11:38:51PM +0100, Paul Cercueil wrote:
-> 
-> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> > ---
-> >  arch/mips/boot/dts/ingenic/jz4740.dtsi |  2 ++
-> >  arch/mips/jz4740/reset.c               | 64 ----------------------------------
-> 
-> Acked-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> Feel free to funnel this patch upstream through the RTC tree.  Or I can
-> carry the whole series, just lemme know.
-> 
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/kernel/setup.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-I made a few minor comments. I'll take the series once it has been
-resent.
-
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 4f60734..d20caac 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -706,6 +706,9 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	for_each_memblock(reserved, reg)
+ 		if (reg->size != 0)
+ 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
++
++	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
++			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+ }
+ 
+ static void __init resource_init(void)
 -- 
-Alexandre Belloni, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
+2.7.0

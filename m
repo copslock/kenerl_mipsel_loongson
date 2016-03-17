@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 04:36:06 +0100 (CET)
-Received: from mail-lf0-f66.google.com ([209.85.215.66]:36390 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 04:36:23 +0100 (CET)
+Received: from mail-lf0-f66.google.com ([209.85.215.66]:36392 "EHLO
         mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006999AbcCQDepCZ6Sp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 04:34:45 +0100
-Received: by mail-lf0-f66.google.com with SMTP id h198so2226343lfh.3;
-        Wed, 16 Mar 2016 20:34:45 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S27007002AbcCQDeqF0uqp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 04:34:46 +0100
+Received: by mail-lf0-f66.google.com with SMTP id h198so2226356lfh.3;
+        Wed, 16 Mar 2016 20:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=xcyy47SnSPEPq7E03HHfSoaJ5DfVFZuBvoSFqLJ6dXo=;
-        b=xMhncBoW99bZvQKGI+eVUrWZeB1zeofMrFpzQ5Cg8xoR2Whn7/3oftanUmdfr9rqFe
-         ASUuJJ3ZJmpO9QIeLUaK2oP4lJr+nRDmfdpKYNMH3k10YoqoxiVJI7dyBLoSZxHNOqmA
-         MGthOkY2GRy7CqdxX0iTGyV3IdmRVPBscMDCxoaFVBg9tGKlSNKvuw7zrqCrzR18N/0H
-         Uvurbg3/i4y1+mOtqcdedZMXCKfH7STMXNZfiBcBUhLFvKs3F+weQ7+OcrR+5eDP8pAu
-         DnFQHjVNtEUR1RmxSOpaQpLnbvY68m45w5HSI/6npaxv1rjegeIaF0FEwYnJxmnemmZI
-         L/TA==
+        bh=NVr/+sXz22NoUw9a1qXsrdFbG9yrk1WBB7hlwCaAt4M=;
+        b=Q0MRT7kcyJLaL5RujD5HVfM/5W07KkB/LoG+EAUPZ+cGysBgRiJOGWr47WhN1MIjtA
+         iAF2Unv6wMzn/xJXo1tS/OyIPA6s6nhATmddzGeRvgxDO0d4m++zS647Z66fgloivLjQ
+         lyYPyp3NleioWMnDHM/7c7277XAGCgFEmV3XHXydVSbvIn4YeYub0TN7mHM79bbqlNw6
+         WeEgdhK0wFnd0tisEMgAz4lJXCxNvaUUsmeGQIFsYSMQQn305rYhOu20OvhhQkgtdwSF
+         WZZEmftwfvEhTRk0j35CiCAd0QY9zAnAkUGnittTQgGm6SdFwo4vEU/L7s/0QCZiABE7
+         oAVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=xcyy47SnSPEPq7E03HHfSoaJ5DfVFZuBvoSFqLJ6dXo=;
-        b=UGmGMEBeio2m+2fGxrv0TnU396V/qp146Wb4DOUwypQagYqs7+yWHAhk8ynXI/hjz6
-         zd1iPj9WJV10ATTU0PvhZwDH7SrBOOALbNahH16Mw8yaUop6IPm8cLYlVfk3/JwAlivh
-         rsxwhLmNT3MzriR5Y2V152vv36WtGqbzv2kMowM7uP1XuYb6iynyqRHNIRT9+iiUiaI6
-         LmCEYi8+Ks5Tyz/rAK20ohJysi8oTSexsxyZVGO0zsCpqWXFV02ONKpjI1P3cfnj1Hmf
-         itdXLUbcigdf4lzy4cSRJfuI4DVw7IV6aB1RNJjq4fCnQTYjz8TYfl8A+UfXG+dbrDk4
-         sYdw==
-X-Gm-Message-State: AD7BkJKHkC+jB7jILLht6cS61XVUm7Sl+pHPQcWzHXkJIRB9xH9x4+cN5nxppChtGBh/+A==
-X-Received: by 10.25.207.76 with SMTP id f73mr2853249lfg.11.1458185679770;
-        Wed, 16 Mar 2016 20:34:39 -0700 (PDT)
+        bh=NVr/+sXz22NoUw9a1qXsrdFbG9yrk1WBB7hlwCaAt4M=;
+        b=HjsyWxI/Gtx/aLgwxSqEjpTuOfxKZjU6brIEK6m8HhXVA+s9QqPOAaUQPJA80YbQA0
+         xhnwceL0wtHbzyqsgmy3UwaEVCoAuzVztoLOa8EDeoQB2F67rfYKafGkpPNh5BJIOBOG
+         dWAZRBrCNK2XPWgdThVbYI6gbdpYYJBWM2l/z3+d9mBINzrtE5HkHFCNVfyWdN7F3IbI
+         JbhJnphFYQEeD87R87K6+qOLxGohynSpKveLyMiJEGcZicMqkowOpfwDBhKrJBdUhlFL
+         SswyC9xWj3zQq5nBu0AO+uiruJSbbbfYeL4T1ZMgai8zKabwqcDqX7sXHJB7Q+gx0JOM
+         WNfw==
+X-Gm-Message-State: AD7BkJI3gFzA2p7+M0euOBrdwZSVJGqHV0mT6/1Tc8yKUgDuxUzrpzbJ+h3HHqKZg8GEZA==
+X-Received: by 10.25.87.149 with SMTP id l143mr2679658lfb.145.1458185680844;
+        Wed, 16 Mar 2016 20:34:40 -0700 (PDT)
 Received: from localhost.localdomain (ppp109-252-26-173.pppoe.spdop.ru. [109.252.26.173])
-        by smtp.gmail.com with ESMTPSA id gp6sm1026698lbc.44.2016.03.16.20.34.38
+        by smtp.gmail.com with ESMTPSA id gp6sm1026698lbc.44.2016.03.16.20.34.39
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 16 Mar 2016 20:34:39 -0700 (PDT)
+        Wed, 16 Mar 2016 20:34:40 -0700 (PDT)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
-Cc:     Alban Bedel <albeu@free.fr>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org
-Subject: [PATCH v2 05/18] MIPS: dts: qca: ar9132: use short references for dt nodes
-Date:   Thu, 17 Mar 2016 06:34:12 +0300
-Message-Id: <1458185665-4521-6-git-send-email-antonynpavlov@gmail.com>
+Cc:     Alban Bedel <albeu@free.fr>,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-clk@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: [PATCH v2 06/18] MIPS: dts: qca: ar9132_tl_wr1043nd_v1.dts: use "ref" for reference clock name
+Date:   Thu, 17 Mar 2016 06:34:13 +0300
+Message-Id: <1458185665-4521-7-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1458185665-4521-1-git-send-email-antonynpavlov@gmail.com>
 References: <1458185665-4521-1-git-send-email-antonynpavlov@gmail.com>
@@ -50,7 +49,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52619
+X-archive-position: 52620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,181 +66,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Here are some Sascha Hauer's arguments for using aliases in the dts
-files:
+Current ath79 clock.c code does not read reference clock and
+pll setup from devicetree. The ar724x_clocks_init() function
+recreates the clocks from scratch so devicetree clock
+information is dropped. After adding the code which picked up
+reference clock from devicetree I have found
+that kernel does not boot anymore. The SPI and UART drivers
+can't get clk; here are the bootlog error messages:
 
- - using aliases reduces the number of indentations in dts files;
+    of_serial: probe of 18020000.uart failed with error -22
+    ath79-spi: probe of 1f000000.spi failed with error -22
 
- - dts files become independent of the layout of the dtsi files
-   (it becomes possible to introduce another bus {} hierarchy between
-   a toplevel bus and the devices when you have to);
+The problem is that clock code assumes that reference clock
+name is "ref" but current dts-file uses another name: "oscillator".
 
- - less chances for typos. if &i2c2 does not exist you get an error.
-   If instead you duplicate the whole path in the dts file a typo
-   in the path will just create another node.
+This patch fixes the problem by changing external oscillator
+dt node name to "ref".
+
+Please note that there is an alternative solution for the problem:
+
+    > --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+    > +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+    > @@ -16,6 +16,7 @@
+    >
+    >         extosc: oscillator {
+    >                 compatible = "fixed-clock";
+    > +               clock-output-names = "ref";
+    >                 #clock-cells = <0>;
+    >                 clock-frequency = <40000000>;
+    >         };
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Alban Bedel <albeu@free.fr>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: Grant Likely <grant.likely@linaro.org>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: linux-clk@vger.kernel.org
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
+Cc: Rob Herring <robh+dt@kernel.org>
 Cc: devicetree@vger.kernel.org
 ---
- arch/mips/boot/dts/qca/ar9132.dtsi               |  8 +-
- arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 94 ++++++++++++------------
- 2 files changed, 49 insertions(+), 53 deletions(-)
+ arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
-index 3c2ed9e..3bff63b 100644
---- a/arch/mips/boot/dts/qca/ar9132.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-@@ -52,7 +52,7 @@
- 				#qca,ddr-wb-channel-cells = <1>;
- 			};
- 
--			uart@18020000 {
-+			uart: uart@18020000 {
- 				compatible = "ns8250";
- 				reg = <0x18020000 0x20>;
- 				interrupts = <3>;
-@@ -94,7 +94,7 @@
- 				clock-output-names = "cpu", "ddr", "ahb";
- 			};
- 
--			wdt@18060008 {
-+			wdt: wdt@18060008 {
- 				compatible = "qca,ar7130-wdt";
- 				reg = <0x18060008 0x8>;
- 
-@@ -125,7 +125,7 @@
- 			};
- 		};
- 
--		usb@1b000100 {
-+		usb: usb@1b000100 {
- 			compatible = "qca,ar7100-ehci", "generic-ehci";
- 			reg = <0x1b000100 0x100>;
- 
-@@ -140,7 +140,7 @@
- 			status = "disabled";
- 		};
- 
--		spi@1f000000 {
-+		spi: spi@1f000000 {
- 			compatible = "qca,ar9132-spi", "qca,ar7100-spi";
- 			reg = <0x1f000000 0x10>;
- 
 diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-index c3069c3..eb632a2 100644
+index eb632a2..3c3b7ce 100644
 --- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
 +++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-@@ -20,55 +20,6 @@
- 		clock-frequency = <40000000>;
+@@ -14,7 +14,7 @@
+ 		reg = <0x0 0x2000000>;
  	};
  
--	ahb {
--		apb {
--			uart@18020000 {
--				status = "okay";
--			};
--
--			pll-controller@18050000 {
--				clocks = <&extosc>;
--			};
--		};
--
--		usb@1b000100 {
--			status = "okay";
--		};
--
--		spi@1f000000 {
--			status = "okay";
--			num-cs = <1>;
--
--			flash@0 {
--				#address-cells = <1>;
--				#size-cells = <1>;
--				compatible = "s25sl064a";
--				reg = <0>;
--				spi-max-frequency = <25000000>;
--
--				partition@0 {
--					label = "u-boot";
--					reg = <0x000000 0x020000>;
--				};
--
--				partition@1 {
--					label = "firmware";
--					reg = <0x020000 0x7D0000>;
--				};
--
--				partition@2 {
--					label = "art";
--					reg = <0x7F0000 0x010000>;
--					read-only;
--				};
--			};
--		};
--	};
--
--	usb-phy {
--		status = "okay";
--	};
--
- 	gpio-keys {
- 		compatible = "gpio-keys-polled";
- 		#address-cells = <1>;
-@@ -114,3 +65,48 @@
- 		};
- 	};
- };
-+
-+&uart {
-+	status = "okay";
-+};
-+
-+&pll {
-+	clocks = <&extosc>;
-+};
-+
-+&usb {
-+	status = "okay";
-+};
-+
-+&usb_phy {
-+	status = "okay";
-+};
-+
-+&spi {
-+	status = "okay";
-+	num-cs = <1>;
-+
-+	flash@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "s25sl064a";
-+		reg = <0>;
-+		spi-max-frequency = <25000000>;
-+
-+		partition@0 {
-+			label = "u-boot";
-+			reg = <0x000000 0x020000>;
-+		};
-+
-+		partition@1 {
-+			label = "firmware";
-+			reg = <0x020000 0x7D0000>;
-+		};
-+
-+		partition@2 {
-+			label = "art";
-+			reg = <0x7F0000 0x010000>;
-+			read-only;
-+		};
-+	};
-+};
+-	extosc: oscillator {
++	extosc: ref {
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <40000000>;
 -- 
 2.7.0

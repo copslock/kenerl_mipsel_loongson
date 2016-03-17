@@ -1,52 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:43:54 +0100 (CET)
-Received: from forward.webhostbox.net ([162.251.85.138]:50754 "EHLO
-        forward.webhostbox.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014102AbcCQMnwv8H7I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 13:43:52 +0100
-Received: from bh-25.webhostbox.net (unknown [172.16.210.69])
-        by forward.webhostbox.net (Postfix) with ESMTP id 86D662608311;
-        Thu, 17 Mar 2016 12:43:51 +0000 (GMT)
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:42448 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1agXHL-002Hjw-AJ; Thu, 17 Mar 2016 12:43:51 +0000
-Subject: Re: linux-next: Tree for Mar 14 (mips qemu failure bisected)
-To:     Qais Yousef <qsyousef@gmail.com>
-References: <20160314174037.0097df55@canb.auug.org.au>
- <20160314143729.GA31845@roeck-us.net> <20160315052659.GA9320@roeck-us.net>
- <56E884BA.5050103@gmail.com> <20160316001713.GA4412@roeck-us.net>
- <20160316132210.GA21918@roeck-us.net> <56E9C1CA.7050208@gmail.com>
- <56E9DB85.9090405@gmail.com> <56EA1839.8010807@roeck-us.net>
- <CA+mqd+5AUfGSh1WvLa5bOt-HQM=eA+BmLeb7_xZo+-tswLcqiQ@mail.gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-next@vger.kernel.org,
-        linux-mips@linux-mips.org, Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-kernel@vger.kernel.org
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <56EAA686.5010300@roeck-us.net>
-Date:   Thu, 17 Mar 2016 05:43:50 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 14:05:11 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:40299 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27013685AbcCQNFJfAr-I (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Mar 2016 14:05:09 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 7D51E2034A;
+        Thu, 17 Mar 2016 13:05:06 +0000 (UTC)
+Received: from mail-yw0-f169.google.com (mail-yw0-f169.google.com [209.85.161.169])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8A21D20364;
+        Thu, 17 Mar 2016 13:05:03 +0000 (UTC)
+Received: by mail-yw0-f169.google.com with SMTP id g3so98852241ywa.3;
+        Thu, 17 Mar 2016 06:05:03 -0700 (PDT)
+X-Gm-Message-State: AD7BkJL2s8574Pr+HU3Itb/hxtscWPLi7MqBnNwX+Krg5yT5y8ee3stQPm3M+p4jR4Aq1t7S6q0h2We6POLzhA==
+X-Received: by 10.129.157.2 with SMTP id u2mr3813016ywg.198.1458219902885;
+ Thu, 17 Mar 2016 06:05:02 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CA+mqd+5AUfGSh1WvLa5bOt-HQM=eA+BmLeb7_xZo+-tswLcqiQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.1 cv=MpLykzue c=1 sm=1 tr=0
-        a=9TTQYYGGY7a1eFc7Vblcuw==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
-        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=IkcTkHD0fZMA:10
-        a=7OsogOcEt9IA:10 a=iPttUr02qUeVUSLfdeEA:9 a=QEXdDO2ut3YA:10
-Return-Path: <SRS0+9h8u=PN=roeck-us.net=linux@forward.webhostbox.net>
+Received: by 10.13.229.68 with HTTP; Thu, 17 Mar 2016 06:04:43 -0700 (PDT)
+In-Reply-To: <20160317060223.e14ebbdf05224845279843c3@gmail.com>
+References: <20160317060223.e14ebbdf05224845279843c3@gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Thu, 17 Mar 2016 08:04:43 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLGKW1beZET0brr7DDXbrz1ufi8i=OT-+drUu5cPkYLCw@mail.gmail.com>
+Message-ID: <CAL_JsqLGKW1beZET0brr7DDXbrz1ufi8i=OT-+drUu5cPkYLCw@mail.gmail.com>
+Subject: Re: WARNING: DT compatible string vendor "mips" appears un-documented
+To:     Antony Pavlov <antonynpavlov@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52645
+X-archive-position: 52646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,24 +54,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/16/2016 10:25 PM, Qais Yousef wrote:
-[ ... ]
+On Wed, Mar 16, 2016 at 10:02 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> Hi all,
 >
-> Yeah it is assumed that a Malta should always have a GIC and no one got around to fix this in qemu yet.
+> checkpatch.pl notes that DT compatible string vendor "mips" appears un-documented.
 >
-> I can only improve on the patch to do
+> On the one hand there are several users of this vendor string:
 >
->    if (!ipidomain && nr_cpu_ids == 1)
->            return 0;
+>     linux$ git grep \"mips,
+>     Documentation/devicetree/bindings/mips/img/xilfpga.txt: - compatible: Must be "mips,m14Kc".
+>     Documentation/devicetree/bindings/mips/img/xilfpga.txt:                 compatible = "mips,m14Kc";
+>     arch/mips/boot/dts/lantiq/danube.dtsi:                  compatible = "mips,mips24Kc";
+>     arch/mips/boot/dts/qca/ar9132.dtsi:                     compatible = "mips,mips24Kc";
+>     arch/mips/boot/dts/ralink/mt7620a.dtsi:                 compatible = "mips,mips24KEc";
+>     arch/mips/boot/dts/ralink/rt2880.dtsi:                  compatible = "mips,mips4KEc";
+>     arch/mips/boot/dts/ralink/rt3050.dtsi:                  compatible = "mips,mips24KEc";
+>     arch/mips/boot/dts/ralink/rt3883.dtsi:                  compatible = "mips,mips74Kc";
+>     arch/mips/boot/dts/xilfpga/microAptiv.dtsi:                     compatible = "mips,m14Kc";
 >
-> Which is more generic way to do it. I think a WARN_ON () would still be useful as SMP without ipis will not work really.
+> On the other hand we already have the "mti" vendor string:
 >
-> I can send a proper patch if Ralf is OK with that.
+>     linux$ grep MIPS Documentation/devicetree/bindings/vendor-prefixes.txt
+>     mti    Imagination Technologies Ltd. (formerly MIPS Technologies Inc.)
 >
-> I got the console output from qemu by the way. I didn't use your script though.
->
+> Can we add an another one vendor string for MIPS?
 
-What command line did you use ?
+No.
 
-Thanks,
-Guenter
+It is called checkpatch.pl, not checkfile.pl (yes, I know it can check
+files too). There are many warnings if you look at the tree as a
+whole. The main point of the checks (at least for DT) is to not
+introduce new warnings.
+
+So mips is deprecated and shouldn't be used for new bindings (perhaps
+mti is too as img? should be used now). Continuing to use the existing
+strings is fine.
+
+Rob

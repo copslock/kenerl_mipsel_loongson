@@ -1,51 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 03:36:45 +0100 (CET)
-Received: from forward.webhostbox.net ([204.11.59.73]:48384 "EHLO
-        forward.webhostbox.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013674AbcCQCgoEVBB4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 03:36:44 +0100
-Received: from bh-25.webhostbox.net (unknown [172.16.210.69])
-        by forward.webhostbox.net (Postfix) with ESMTP id 9142B19D4D;
-        Thu, 17 Mar 2016 02:36:42 +0000 (GMT)
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:36446 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1agNnm-004NLp-8K; Thu, 17 Mar 2016 02:36:42 +0000
-Subject: Re: linux-next: Tree for Mar 14 (mips qemu failure bisected)
-To:     Qais Yousef <qsyousef@gmail.com>
-References: <20160314174037.0097df55@canb.auug.org.au>
- <20160314143729.GA31845@roeck-us.net> <20160315052659.GA9320@roeck-us.net>
- <56E884BA.5050103@gmail.com> <20160316001713.GA4412@roeck-us.net>
- <20160316132210.GA21918@roeck-us.net> <56E9C1CA.7050208@gmail.com>
- <56E9DB85.9090405@gmail.com>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <56EA1839.8010807@roeck-us.net>
-Date:   Wed, 16 Mar 2016 19:36:41 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
-MIME-Version: 1.0
-In-Reply-To: <56E9DB85.9090405@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.1 cv=MpLykzue c=1 sm=1 tr=0
-        a=9TTQYYGGY7a1eFc7Vblcuw==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
-        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=IkcTkHD0fZMA:10
-        a=7OsogOcEt9IA:10 a=eGuZYyiZVCMyFN132DIA:9 a=QEXdDO2ut3YA:10
-Return-Path: <SRS0+9h8u=PN=roeck-us.net=linux@forward.webhostbox.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 04:03:03 +0100 (CET)
+Received: from mail-lf0-f46.google.com ([209.85.215.46]:33243 "EHLO
+        mail-lf0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27024807AbcCQDDCYeMo4 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Mar 2016 04:03:02 +0100
+Received: by mail-lf0-f46.google.com with SMTP id h198so32797744lfh.0;
+        Wed, 16 Mar 2016 20:03:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oa6wHG+IcfCwzHiW9qEuVXSv3UzeblRDWAb4Hacz0Zs=;
+        b=pLefl859q6jWXehGuJKggRkVZZBQiNe444Lc5rWXV17tvfnGMPxpjl6g+mvOB/HhfC
+         MRClzc8ask90J12zJcS1vknmlnLAifJ8mgxWU4zHmEqlEq4+oQHgSfN/pX7qJL2BQV42
+         u7D0JlRmzg+Yk/cgDZipYi1zeDWL3FuTev51Px7n/XIpLmcEYrOR5iKJTAlqSBbH9S1Y
+         Nm1+I4bylI8YXyRVx+DczM+8CBaO7KJGVE8lHnvX0VIvouBOnctsw3mm6lJ1NNi0nvX1
+         se8dLZGDmrpiFmdfr77Hw9xBQ7h/TAblqVOgRj+h1RhfYz1QGUowurVUiM+spsPPA7dk
+         AqeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oa6wHG+IcfCwzHiW9qEuVXSv3UzeblRDWAb4Hacz0Zs=;
+        b=Mos5F70DvaOyjTf03+8knii9BXugvWVFz1J/PdX1kkZt3v7uJI1Ehzq1X4oQIY+GhI
+         TFO3J8OqcFV7iCTGMYC44GTheCFffS2JXqqDkQ7hYxhopNsHduUznjiPgPO0GK/ClLUH
+         eaoezuDrQ1Ga1ZbHjoFnLYXiYRFkJwb4yOxgJN5xsvDgzgYnrE3Vdw1B+FjTwBMywg1f
+         qrYwT3gx/PWw4PCFkFO/8keGB4Tp0tX21NXOvOiQfkhegnKSdvBAIxGvXkp2DMJh13ZJ
+         J1kxyfrF4aMno8q6DSGB5yZJ1Od5bOH+CsTFEQz8XSQhmbgjArXDGv16Nu8qclrVIzM9
+         MBuA==
+X-Gm-Message-State: AD7BkJIO7cGoqujbJQ1YPYVKRiMQAGBf1zOEgguaGxRDJAh6bCXjZ5GJtfd64My+bAMgdA==
+X-Received: by 10.25.82.213 with SMTP id g204mr2708028lfb.142.1458183776968;
+        Wed, 16 Mar 2016 20:02:56 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id e6sm1012428lbk.32.2016.03.16.20.02.55
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 16 Mar 2016 20:02:55 -0700 (PDT)
+Date:   Thu, 17 Mar 2016 06:02:23 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     "Ralf Baechle" <ralf@linux-mips.org>,
+        "Rob Herring" <robh@kernel.org>
+Cc:     "Zubair Lutfullah Kakakhel" <Zubair.Kakakhel@imgtec.com>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: WARNING: DT compatible string vendor "mips" appears un-documented
+Message-Id: <20160317060223.e14ebbdf05224845279843c3@gmail.com>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52612
+X-archive-position: 52613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,51 +69,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/16/2016 03:17 PM, Qais Yousef wrote:
-> On 16/03/2016 20:27, Qais Yousef wrote:
->>
->>
->> On 16/03/2016 13:22, Guenter Roeck wrote:
->>> On Tue, Mar 15, 2016 at 05:17:13PM -0700, Guenter Roeck wrote:
->>>> On Tue, Mar 15, 2016 at 09:55:06PM +0000, Qais Yousef wrote:
->>>>> Hi Guenter,
->>>>>
->>> [ ... ]
->>>>>>> Qemu test results:
->>>>>>>     total: 96 pass: 69 fail: 27
->>>>>>> Failed tests:
->>>>>> [ ... ]
->>>>>>>     mips:mips_malta_smp_defconfig
->>>>>> I bisected this failure to commit bb11cff327e54 ("MIPS: Make smp CMP, CPS and MT
->>>>>> use the new generic IPI functions". Bisect log is attached.
->>>>> Thanks for bisecting this. I tested this on a real Malta system but not
->>>>> qemu. I'll try to reproduce.
->>>>>
->>>> I run the tests with only a single CPU core enabled. Maybe that causes
->>>> problems with your code ?
->>>>
->>> I ran another qemu test (this time on mainline) with "-smp 2", but the only
->>> difference is that the image now gets stuck even earlier.
->>>
->>> Also, I ran another set of bisects, this time with both mips and mips64
->>> on mainline (after your patch landed), with the same results.
->>>
->>> Guenter
->>>
->>
->> OK thanks for the info. The offending commit just enables using quite a few of the newly added code before that. So the problem could be in any of the newly added code.
->>
->> Unfortunately I can only look at this during my limited time in the evening and I have to setup my system to compile and run this, so I won't be able to get to the bottom of this as fast as I'd like to.
->>
->> Qais
->
-> OK I was up and running faster than I thought I would be. Can you confirm that you're hitting a BUG_ON() in mips_smp_ipi_init()?
->
-> What I see is that BUG_ON() is hit because we couldn't find an ipidomain to allocate the ipis from. The reason of whih is that the qemu malta machine doesn't have a GIC though the config is compiled with GIC on. Also if I remember correctly qemu malta doesn't really support SMP. I think that was the reason I never ran this on qemu.
+Hi all,
 
-Turns out MIPS_GIC is auto-selected by MIPS_MALTA, so I can not just unconfigure it.
-Too bad. That means if your patch isn't accepted, I'll have to drop the mips
-SMP build runtime tests, unless you have a better idea.
+checkpatch.pl notes that DT compatible string vendor "mips" appears un-documented.
 
-Thanks,
-Guenter
+On the one hand there are several users of this vendor string:
+
+    linux$ git grep \"mips,
+    Documentation/devicetree/bindings/mips/img/xilfpga.txt: - compatible: Must be "mips,m14Kc".
+    Documentation/devicetree/bindings/mips/img/xilfpga.txt:                 compatible = "mips,m14Kc";
+    arch/mips/boot/dts/lantiq/danube.dtsi:                  compatible = "mips,mips24Kc";
+    arch/mips/boot/dts/qca/ar9132.dtsi:                     compatible = "mips,mips24Kc";
+    arch/mips/boot/dts/ralink/mt7620a.dtsi:                 compatible = "mips,mips24KEc";
+    arch/mips/boot/dts/ralink/rt2880.dtsi:                  compatible = "mips,mips4KEc";
+    arch/mips/boot/dts/ralink/rt3050.dtsi:                  compatible = "mips,mips24KEc";
+    arch/mips/boot/dts/ralink/rt3883.dtsi:                  compatible = "mips,mips74Kc";
+    arch/mips/boot/dts/xilfpga/microAptiv.dtsi:                     compatible = "mips,m14Kc";
+
+On the other hand we already have the "mti" vendor string:
+
+    linux$ grep MIPS Documentation/devicetree/bindings/vendor-prefixes.txt
+    mti    Imagination Technologies Ltd. (formerly MIPS Technologies Inc.)
+
+Can we add an another one vendor string for MIPS?
+
+Any advice and suggestions will be greatly appreciated!
+
+-- 
+Best regards,
+  Antony Pavlov

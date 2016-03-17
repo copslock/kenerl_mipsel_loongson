@@ -1,43 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:43:00 +0100 (CET)
-Received: from smtpbguseast2.qq.com ([54.204.34.130]:54634 "EHLO
-        smtpbguseast2.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014102AbcCQMm7PCw4I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 13:42:59 +0100
-X-QQ-mid: bizesmtp7t1458218529t676t156
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 17 Mar 2016 20:41:29 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FK60B00A0000000
-X-QQ-FEAT: QomKxL1UMBIjFufH19Qc8u0X1fJxraKSTimQEsyUvcRlj5/EXWmCwQyWPHzPp
-        nq7h6ZB7Nv2k2/UO0QokeLt+5L5Lh4XSzCCuSBwrjFaPS9c19mg7owqGnSHuTuNa2bAqVe0
-        Bx+LEs3l6r2VD1OoEvsDuzql6tl5UNC873OsWbMyuPVs0cRUw/nLVWhi1pEcxA+4+IFk6lh
-        4PR4lsAklIfTsJdk6UFl9NCaWiwlpSiiC2RXtgjSxnrshYBK/+8e01EpIDH0TjhopF8xsiO
-        pBDoaD0XrZGBzJAITxNi9u/pY=
-X-QQ-GoodBg: 0
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V3 4/4] MIPS: Loongson-3: Adjust irq dispatch to speedup processing
-Date:   Thu, 17 Mar 2016 20:41:07 +0800
-Message-Id: <1458218467-12210-3-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1458218467-12210-1-git-send-email-chenhc@lemote.com>
-References: <1458218467-12210-1-git-send-email-chenhc@lemote.com>
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 13:43:54 +0100 (CET)
+Received: from forward.webhostbox.net ([162.251.85.138]:50754 "EHLO
+        forward.webhostbox.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014102AbcCQMnwv8H7I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 13:43:52 +0100
+Received: from bh-25.webhostbox.net (unknown [172.16.210.69])
+        by forward.webhostbox.net (Postfix) with ESMTP id 86D662608311;
+        Thu, 17 Mar 2016 12:43:51 +0000 (GMT)
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:42448 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
+        (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1agXHL-002Hjw-AJ; Thu, 17 Mar 2016 12:43:51 +0000
+Subject: Re: linux-next: Tree for Mar 14 (mips qemu failure bisected)
+To:     Qais Yousef <qsyousef@gmail.com>
+References: <20160314174037.0097df55@canb.auug.org.au>
+ <20160314143729.GA31845@roeck-us.net> <20160315052659.GA9320@roeck-us.net>
+ <56E884BA.5050103@gmail.com> <20160316001713.GA4412@roeck-us.net>
+ <20160316132210.GA21918@roeck-us.net> <56E9C1CA.7050208@gmail.com>
+ <56E9DB85.9090405@gmail.com> <56EA1839.8010807@roeck-us.net>
+ <CA+mqd+5AUfGSh1WvLa5bOt-HQM=eA+BmLeb7_xZo+-tswLcqiQ@mail.gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-next@vger.kernel.org,
+        linux-mips@linux-mips.org, Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-kernel@vger.kernel.org
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <56EAA686.5010300@roeck-us.net>
+Date:   Thu, 17 Mar 2016 05:43:50 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <CA+mqd+5AUfGSh1WvLa5bOt-HQM=eA+BmLeb7_xZo+-tswLcqiQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.1 cv=MpLykzue c=1 sm=1 tr=0
+        a=9TTQYYGGY7a1eFc7Vblcuw==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
+        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=IkcTkHD0fZMA:10
+        a=7OsogOcEt9IA:10 a=iPttUr02qUeVUSLfdeEA:9 a=QEXdDO2ut3YA:10
+Return-Path: <SRS0+9h8u=PN=roeck-us.net=linux@forward.webhostbox.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52644
+X-archive-position: 52645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,43 +59,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch adjust the logic in mach_irq_dispatch(), allow multiple IPs
-handled in the same dispatching. This can speedup interrupt processing.
+On 03/16/2016 10:25 PM, Qais Yousef wrote:
+[ ... ]
+>
+> Yeah it is assumed that a Malta should always have a GIC and no one got around to fix this in qemu yet.
+>
+> I can only improve on the patch to do
+>
+>    if (!ipidomain && nr_cpu_ids == 1)
+>            return 0;
+>
+> Which is more generic way to do it. I think a WARN_ON () would still be useful as SMP without ipis will not work really.
+>
+> I can send a proper patch if Ralf is OK with that.
+>
+> I got the console output from qemu by the way. I didn't use your script though.
+>
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/loongson64/loongson-3/irq.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+What command line did you use ?
 
-diff --git a/arch/mips/loongson64/loongson-3/irq.c b/arch/mips/loongson64/loongson-3/irq.c
-index 0f75b6b..8e76490 100644
---- a/arch/mips/loongson64/loongson-3/irq.c
-+++ b/arch/mips/loongson64/loongson-3/irq.c
-@@ -24,19 +24,21 @@ static void ht_irqdispatch(void)
- 	}
- }
- 
-+#define UNUSED_IPS (CAUSEF_IP5 | CAUSEF_IP4 | CAUSEF_IP1 | CAUSEF_IP0)
-+
- void mach_irq_dispatch(unsigned int pending)
- {
- 	if (pending & CAUSEF_IP7)
- 		do_IRQ(LOONGSON_TIMER_IRQ);
- #if defined(CONFIG_SMP)
--	else if (pending & CAUSEF_IP6)
-+	if (pending & CAUSEF_IP6)
- 		loongson3_ipi_interrupt(NULL);
- #endif
--	else if (pending & CAUSEF_IP3)
-+	if (pending & CAUSEF_IP3)
- 		ht_irqdispatch();
--	else if (pending & CAUSEF_IP2)
-+	if (pending & CAUSEF_IP2)
- 		do_IRQ(LOONGSON_UART_IRQ);
--	else {
-+	if (pending & UNUSED_IPS) {
- 		pr_err("%s : spurious interrupt\n", __func__);
- 		spurious_interrupt();
- 	}
--- 
-2.7.0
+Thanks,
+Guenter

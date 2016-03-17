@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 04:35:31 +0100 (CET)
-Received: from mail-lf0-f68.google.com ([209.85.215.68]:35608 "EHLO
-        mail-lf0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006933AbcCQDemP3VFp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 04:34:42 +0100
-Received: by mail-lf0-f68.google.com with SMTP id e138so2230900lfe.2;
-        Wed, 16 Mar 2016 20:34:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 04:35:50 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:35612 "EHLO
+        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006966AbcCQDeoz7cgp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 04:34:44 +0100
+Received: by mail-lf0-f65.google.com with SMTP id e138so2230918lfe.2;
+        Wed, 16 Mar 2016 20:34:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0frF0qEC14VycxeRq1php3rMz7JF8qkgZFTfmw2ipr4=;
-        b=J5AVQELPnU7O1QQfdZHwLER4j9y6bhu53SracjGwfV+NiPUQddgbzk/sLBOHGtksLL
-         ROuJOd9zvYCdruHBmNLDCf45qsCLFuX3zIGg5DB8hcE/NYqwOZ+rWr0i7tmvakZgqYEq
-         lvPNAI6oEfuOfvgHcjktnv2PTy29bbVv5wOSFWoFkxtn7+93HDAcHsPub3ncGiqX96ec
-         K0uSKqYPcb0ofd2J4Z5Alc0gMoPTmv3FZpFT+acdhj+eKeO6dgUwaxou1VU+MMqXlkZ0
-         pHHDXmIELjBIVdVhqPUcBcaZVCbSFKNiqJuZVnvKYhqQzj3J6btG+Yu4l4f+Bm2ru2oJ
-         INPQ==
+        bh=MgYZ4e80lNfbfynDIY88dxkazaW7Dh8/ckcLSZ7DOJ8=;
+        b=pNXRv7sZKChpYdYsDLLaDYMA0og6i2D+XwFVuEmal4dPhhu/BfgRtwLkJEtkNY6GNP
+         VEFOaAmpqQxuequ39SHy/wLhXDT0FttUvZ8HhTnGG2LjTKg/lxpMlmu9kYUkE04gSMWN
+         HYSqrjsxzTgc0QPVLJQANB4fS26VVthR6h4OPAJXxW9YHNwYlHdoAHDUoDqdA/Qx5Lj/
+         sjq2AouZoiGdGxtsK9eSjEDuLae+2qTjS66FVncT3DHEVAgNAprtpdQiLtHdt+tqyjNn
+         v9Cm2B6op1yY345ioggmr1H6ORJ3qf5wdrrdPkBUbaBSA6KOAZYygfHavqYJO9xy7oJy
+         73VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=0frF0qEC14VycxeRq1php3rMz7JF8qkgZFTfmw2ipr4=;
-        b=TyX99p4hkNjBlp+xW/Ns3dtbZM3z6kPa9jHpfqqrOXIc3uPZrO7iW7d2tUbGt8kJXS
-         MhZe3O8IjWQhV54fxPk500N8WjKMs3EZORhjSvaiJfjwwRcuT6QW7FkFRV36KpCXgLAO
-         qYcopfHWYo8xBiPP/Czk2jICaWyYZS6EJN8CGHhIR+SUl/g1IvJKK4pYsUF+HWKP1ivM
-         dBdJyWDS2AP/zVndI0ucAEgdUrfQaRX8rZ37DGwn+f0LcMMh8yfPk514n5uWHNMwlP+Z
-         wvv6X26fFQGo+qhUeJ0xLKvIiizb9KKBzB7rdnR6P/9YSZXkYdwhc/Xk0BbzW20riC5o
-         bh2w==
-X-Gm-Message-State: AD7BkJJ6sPBCi8a2cK3prb/T6V68y8I0L1EO5GsqREQf0MoUcfCvsWrISBLhBzgpuTzRiA==
-X-Received: by 10.25.5.10 with SMTP id 10mr2233558lff.123.1458185677023;
-        Wed, 16 Mar 2016 20:34:37 -0700 (PDT)
+        bh=MgYZ4e80lNfbfynDIY88dxkazaW7Dh8/ckcLSZ7DOJ8=;
+        b=bXOGZSpfymGt/KteGGWVtqGF5MPbqaUTW4IElB933a2AuSwvRuoC1S9m05enLAhsC+
+         Er+IYDi5hMueORwIj3NuhSiEB45rLKVMtU07ZbKKohBwsXO4lAyxMaMSpBA5K85UMBLO
+         zC7WkDHfeStwJbTipgpF1D4G/thhEj6VF417Z2HRBhkVBCvWafzXJqY/z+baLnpmX04d
+         Bs/QS1k6FWjHOlQLmbEyOcq2YrieVsnWNBnKUgwhBBIVA1zo231+45nGIj7akGQ2iN1Z
+         E2oKbrvEhFlUgHVKyOw5Gg/kQTDncXe8m4IH40EKYqHsBMzk/8HjnYk2sJuu5oMT0oh3
+         KswA==
+X-Gm-Message-State: AD7BkJIeD9qoYKfEJlMqY58HQCb66Yr0YUjUNTfIkVAedNOka/0P/NlkHpY4YQAWvpmo3w==
+X-Received: by 10.25.163.76 with SMTP id m73mr2171090lfe.39.1458185678717;
+        Wed, 16 Mar 2016 20:34:38 -0700 (PDT)
 Received: from localhost.localdomain (ppp109-252-26-173.pppoe.spdop.ru. [109.252.26.173])
-        by smtp.gmail.com with ESMTPSA id gp6sm1026698lbc.44.2016.03.16.20.34.36
+        by smtp.gmail.com with ESMTPSA id gp6sm1026698lbc.44.2016.03.16.20.34.37
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 16 Mar 2016 20:34:36 -0700 (PDT)
+        Wed, 16 Mar 2016 20:34:37 -0700 (PDT)
 From:   Antony Pavlov <antonynpavlov@gmail.com>
 To:     linux-mips@linux-mips.org
-Cc:     Alban Bedel <albeu@free.fr>, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2 03/18] MIPS: ath79: Fix the ar913x reference clock rate
-Date:   Thu, 17 Mar 2016 06:34:10 +0300
-Message-Id: <1458185665-4521-4-git-send-email-antonynpavlov@gmail.com>
+Cc:     Alban Bedel <albeu@free.fr>, Ralf Baechle <ralf@linux-mips.org>,
+        devicetree@vger.kernel.org
+Subject: [PATCH v2 04/18] MIPS: dts: qca: ar9132_tl_wr1043nd_v1.dts: drop unused alias node
+Date:   Thu, 17 Mar 2016 06:34:11 +0300
+Message-Id: <1458185665-4521-5-git-send-email-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1458185665-4521-1-git-send-email-antonynpavlov@gmail.com>
 References: <1458185665-4521-1-git-send-email-antonynpavlov@gmail.com>
@@ -46,7 +47,7 @@ Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52617
+X-archive-position: 52618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,85 +64,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Alban Bedel <albeu@free.fr>
+The TP-LINK TL-WR1043ND board has only one serial port,
+so replacing the default of 0 with 0 does nothing useful.
 
-The reference clock on ar913x is at 40MHz and not 5MHz. The current
-implementation use the wrong reference rate because it doesn't take
-the PLL divider in account. But if we fix the code to use the divider
-it becomes identical with the implementation for ar724x, so just drop
-the broken ar913x implementation.
+Moreover, the correct name for aliases node is "aliases" not "alias".
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
-Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
+An overview of the "aliases" node usage can be found
+on the device tree usage page at devicetree.org [1].
+
+Also please see chapter 3.3 ("Aliases node") of the ePAPR 1.1 [2].
+
+[1] http://devicetree.org/Device_Tree_Usage#aliases_Node
+[2] https://www.power.org/documentation/epapr-version-1-1/
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Acked-by: Alban Bedel <albeu@free.fr>
+Cc: Alban Bedel <albeu@free.fr>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
+Cc: devicetree@vger.kernel.org
 ---
- arch/mips/ath79/clock.c | 38 +-------------------------------------
- 1 file changed, 1 insertion(+), 37 deletions(-)
+ arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index ed28465..618dfd7 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -27,7 +27,6 @@
+diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+index e535ee3..c3069c3 100644
+--- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
++++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+@@ -9,10 +9,6 @@
+ 	compatible = "tplink,tl-wr1043nd-v1", "qca,ar9132";
+ 	model = "TP-Link TL-WR1043ND Version 1";
  
- #define AR71XX_BASE_FREQ	40000000
- #define AR724X_BASE_FREQ	40000000
--#define AR913X_BASE_FREQ	5000000
- 
- static struct clk *clks[3];
- static struct clk_onecell_data clk_data = {
-@@ -123,39 +122,6 @@ static void __init ar724x_clocks_init(void)
- 	clk_add_alias("uart", NULL, "ahb", NULL);
- }
- 
--static void __init ar913x_clocks_init(void)
--{
--	unsigned long ref_rate;
--	unsigned long cpu_rate;
--	unsigned long ddr_rate;
--	unsigned long ahb_rate;
--	u32 pll;
--	u32 freq;
--	u32 div;
+-	alias {
+-		serial0 = "/ahb/apb/uart@18020000";
+-	};
 -
--	ref_rate = AR913X_BASE_FREQ;
--	pll = ath79_pll_rr(AR913X_PLL_REG_CPU_CONFIG);
--
--	div = ((pll >> AR913X_PLL_FB_SHIFT) & AR913X_PLL_FB_MASK);
--	freq = div * ref_rate;
--
--	cpu_rate = freq;
--
--	div = ((pll >> AR913X_DDR_DIV_SHIFT) & AR913X_DDR_DIV_MASK) + 1;
--	ddr_rate = freq / div;
--
--	div = (((pll >> AR913X_AHB_DIV_SHIFT) & AR913X_AHB_DIV_MASK) + 1) * 2;
--	ahb_rate = cpu_rate / div;
--
--	ath79_add_sys_clkdev("ref", ref_rate);
--	clks[0] = ath79_add_sys_clkdev("cpu", cpu_rate);
--	clks[1] = ath79_add_sys_clkdev("ddr", ddr_rate);
--	clks[2] = ath79_add_sys_clkdev("ahb", ahb_rate);
--
--	clk_add_alias("wdt", NULL, "ahb", NULL);
--	clk_add_alias("uart", NULL, "ahb", NULL);
--}
--
- static void __init ar933x_clocks_init(void)
- {
- 	unsigned long ref_rate;
-@@ -443,10 +409,8 @@ void __init ath79_clocks_init(void)
- {
- 	if (soc_is_ar71xx())
- 		ar71xx_clocks_init();
--	else if (soc_is_ar724x())
-+	else if (soc_is_ar724x() || soc_is_ar913x())
- 		ar724x_clocks_init();
--	else if (soc_is_ar913x())
--		ar913x_clocks_init();
- 	else if (soc_is_ar933x())
- 		ar933x_clocks_init();
- 	else if (soc_is_ar934x())
+ 	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x2000000>;
 -- 
 2.7.0

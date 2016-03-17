@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 03:10:08 +0100 (CET)
-Received: from forward.webhostbox.net ([5.100.155.97]:60436 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2016 03:36:45 +0100 (CET)
+Received: from forward.webhostbox.net ([204.11.59.73]:48384 "EHLO
         forward.webhostbox.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013913AbcCQCKHAmZEx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 03:10:07 +0100
-Received: from bh-25.webhostbox.net (bh-25.webhostbox.net [208.91.199.152])
-        by forward.webhostbox.net (Postfix) with ESMTP id B079A55C0C95;
-        Thu, 17 Mar 2016 02:10:04 +0000 (GMT)
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:36286 helo=server.roeck-us.net)
+        by eddie.linux-mips.org with ESMTP id S27013674AbcCQCgoEVBB4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Mar 2016 03:36:44 +0100
+Received: from bh-25.webhostbox.net (unknown [172.16.210.69])
+        by forward.webhostbox.net (Postfix) with ESMTP id 9142B19D4D;
+        Thu, 17 Mar 2016 02:36:42 +0000 (GMT)
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:36446 helo=server.roeck-us.net)
         by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
         (Exim 4.86_1)
         (envelope-from <linux@roeck-us.net>)
-        id 1agNO1-000a91-JG; Thu, 17 Mar 2016 02:10:06 +0000
+        id 1agNnm-004NLp-8K; Thu, 17 Mar 2016 02:36:42 +0000
 Subject: Re: linux-next: Tree for Mar 14 (mips qemu failure bisected)
 To:     Qais Yousef <qsyousef@gmail.com>
 References: <20160314174037.0097df55@canb.auug.org.au>
@@ -22,8 +22,8 @@ Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
         linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <56EA11FC.9000304@roeck-us.net>
-Date:   Wed, 16 Mar 2016 19:10:04 -0700
+Message-ID: <56EA1839.8010807@roeck-us.net>
+Date:   Wed, 16 Mar 2016 19:36:41 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.6.0
 MIME-Version: 1.0
@@ -33,15 +33,15 @@ Content-Transfer-Encoding: 7bit
 X-Authenticated_sender: linux@roeck-us.net
 X-OutGoing-Spam-Status: No, score=-1.0
 X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.1 cv=NfdGrz34 c=1 sm=1 tr=0
-        a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
+X-CMAE-Analysis: v=2.1 cv=MpLykzue c=1 sm=1 tr=0
+        a=9TTQYYGGY7a1eFc7Vblcuw==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
         a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=IkcTkHD0fZMA:10
-        a=7OsogOcEt9IA:10 a=l6tbvJ-aNi5sKVHcVUAA:9 a=QEXdDO2ut3YA:10
+        a=7OsogOcEt9IA:10 a=eGuZYyiZVCMyFN132DIA:9 a=QEXdDO2ut3YA:10
 Return-Path: <SRS0+9h8u=PN=roeck-us.net=linux@forward.webhostbox.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52611
+X-archive-position: 52612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -98,30 +98,11 @@ On 03/16/2016 03:17 PM, Qais Yousef wrote:
 >
 > OK I was up and running faster than I thought I would be. Can you confirm that you're hitting a BUG_ON() in mips_smp_ipi_init()?
 >
-
-Most likely, but mips is one of the qemu emulations which simply hang if there is a crash,
-without a log message, and I have not been able to figure out a command line that gives me
-the actual crash log.
-
 > What I see is that BUG_ON() is hit because we couldn't find an ipidomain to allocate the ipis from. The reason of whih is that the qemu malta machine doesn't have a GIC though the config is compiled with GIC on. Also if I remember correctly qemu malta doesn't really support SMP. I think that was the reason I never ran this on qemu.
->
-Idea is to run the SMP build, not really a multi-core machine.
 
-> I'm not sure what's the best way forward here. I can add a check to verify gic_present inside this function and return early. Patch attached.
->
+Turns out MIPS_GIC is auto-selected by MIPS_MALTA, so I can not just unconfigure it.
+Too bad. That means if your patch isn't accepted, I'll have to drop the mips
+SMP build runtime tests, unless you have a better idea.
 
-With your patch I get
-
-WARNING: CPU: 0 PID: 1 at arch/mips/kernel/smp.c:251 mips_smp_ipi_init+0x3c/0x1b0()
-
-and the boot continues.
-
-If Ralf accepts it, feel free to add
-
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-
-though I'll probably adjust my configuration to drop GIC from it (if that is possible).
-
-Thanks a lot for looking into this!
-
+Thanks,
 Guenter

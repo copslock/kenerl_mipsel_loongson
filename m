@@ -1,71 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2016 13:12:40 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:35903 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27024929AbcCRMMZh040Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Mar 2016 13:12:25 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F31149;
-        Fri, 18 Mar 2016 05:11:16 -0700 (PDT)
-Received: from [10.1.205.146] (e104324-lin.cambridge.arm.com [10.1.205.146])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 38E333F21A;
-        Fri, 18 Mar 2016 05:12:12 -0700 (PDT)
-Subject: Re: [PATCH 2/3] swiotlb: prefix dma_to_phys and phys_to_dma functions
-To:     Sinan Kaya <okaya@codeaurora.org>,
-        linux-arm-kernel@lists.infradead.org, timur@codeaurora.org,
-        cov@codeaurora.org, nwatters@codeaurora.org
-References: <1458252137-24497-1-git-send-email-okaya@codeaurora.org>
- <1458252137-24497-2-git-send-email-okaya@codeaurora.org>
-Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Huacai Chen <chenhc@lemote.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Jisheng Zhang <jszhang@marvell.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Michael Ellerman <mpe@ellerman.id.au>, x86@kernel.org,
-        Ingo Molnar <mingo@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Denys Vlasenko <dvlasenk@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Valentin Rothberg <valentinrothberg@gmail.com>,
-        Chris Zankel <chris@zankel.net>,
-        Tony Luck <tony.luck@intel.com>, linux-pci@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Dean Nelson <dnelson@redhat.com>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        "Suthikulpanit, Suravee" <Suravee.Suthikulpanit@amd.com>,
-        Joe Perches <joe@perches.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <56EBF09A.1060503@arm.com>
-Date:   Fri, 18 Mar 2016 12:12:10 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
-MIME-Version: 1.0
-In-Reply-To: <1458252137-24497-2-git-send-email-okaya@codeaurora.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2016 14:05:28 +0100 (CET)
+Received: from mail-pf0-f169.google.com ([209.85.192.169]:33882 "EHLO
+        mail-pf0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007490AbcCRNF1F6UKG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Mar 2016 14:05:27 +0100
+Received: by mail-pf0-f169.google.com with SMTP id x3so167499757pfb.1
+        for <linux-mips@linux-mips.org>; Fri, 18 Mar 2016 06:05:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ingics-com.20150623.gappssmtp.com; s=20150623;
+        h=message-id:subject:from:to:cc:date:mime-version
+         :content-transfer-encoding;
+        bh=e2C3WNHVaQlgqTzkFVcjgu06SA57XXJfyGK3YU6hxw8=;
+        b=L+1OMIsM7bh5QTooAWZM2cEKkm+hMiKnaYbDXcZyCNDtafDtdHtpJ9cT9wYY2BU+gL
+         MUJ7fO7qWQ4UugAfDXOJeBCE8aES35olBJYHsMmjhe2Bks+juqLX3MHVSv5ZJsCGUvNp
+         +ZMQmPUzT7E/P3eqpFlzXa/e7QpVKU7LB5UGOdbJkj2h3/qhAD1b9O1zdRroGINxjkam
+         JL8uP6kbMctr1Us91y2ihFncY/rltmt8iKucCHF+jne+9VuaYaO+/hs3Hrj4Vz0DIi8V
+         MmR4icw5JqixkiOhqVdfcGnMNjolinUHAqG8g8XoiTnFSNliWZKp0MqT3oIZSDMYzsSt
+         +n3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:mime-version
+         :content-transfer-encoding;
+        bh=e2C3WNHVaQlgqTzkFVcjgu06SA57XXJfyGK3YU6hxw8=;
+        b=GppN6Gb5y0Qbq2f5KuSlNefruOIrmaqgcioNEzoh4rQMPUTQXJ1sd4XI7KxXXM2LKl
+         WmLbcZgUxbTWJtJ+ckLrY7gB0DNbOBPsS2Io2lVh23DGRaX/3ynijge65L9Kb3mChhwZ
+         4Lf2HeFZOVs0suR3TVuc+oH27ZeoR73AKYT+Lyq2bzXzKArHFfPcc5tyXjrySjt0jOgR
+         FMSGeh3S/NTJhxR/1BUbXOvw7tdbBSNAtDBitr4/gYKbhx1kvm3B9Y0no/E/A1ATsce4
+         FRJFkAnZcrRj2aKqjN17kNchuJGV0woAA16+R+cnYxOc20Qz5OdsxAmYz0wgQbuQwPn6
+         W59w==
+X-Gm-Message-State: AD7BkJJ/ujWLgG1kq5e5HD1mKAZSP6Vn1g64AxD6hMKIONO76IygAjEUkRhmkogem6Cw0w==
+X-Received: by 10.98.73.88 with SMTP id w85mr23812611pfa.82.1458306321094;
+        Fri, 18 Mar 2016 06:05:21 -0700 (PDT)
+Received: from phoenix (218-164-100-194.dynamic.hinet.net. [218.164.100.194])
+        by smtp.gmail.com with ESMTPSA id n11sm21010220pfb.74.2016.03.18.06.05.18
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 18 Mar 2016 06:05:20 -0700 (PDT)
+Message-ID: <1458306316.17098.0.camel@ingics.com>
+Subject: [PATCH 1/2] gpio: octeon: Convert to use devm_ioremap_resource
+From:   Axel Lin <axel.lin@ingics.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     David Daney <david.daney@cavium.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        linux-gpio@vger.kernel.org, linux-mips@linux-mips.org
+Date:   Fri, 18 Mar 2016 21:05:16 +0800
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.11-0ubuntu3 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-Path: <robin.murphy@arm.com>
+Return-Path: <axel.lin@ingics.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52657
+X-archive-position: 52658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robin.murphy@arm.com
+X-original-sender: axel.lin@ingics.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,210 +67,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17/03/16 22:02, Sinan Kaya wrote:
-> Prefixing dma_to_phys and phys_to_dma API with swiotlb so that
-> they are no longer part of the DMA API. These APIs do not exist
-> on all architectures and breaks compatibility.
->
-> In preparation for the clean up, also make the ARCH implementation
-> known by defining swiotlb_phys_do_dma and swiotlb_dma_to_phys.
->
-> Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
-> ---
->   arch/arm/include/asm/dma-mapping.h                 |  8 ++-
->   arch/arm64/include/asm/dma-mapping.h               |  9 ++-
->   arch/arm64/mm/dma-mapping.c                        | 75 ++++++++++++++--------
+Signed-off-by: Axel Lin <axel.lin@ingics.com>
+---
+ drivers/gpio/gpio-octeon.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-[...]
-
-> diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
-> index a6e757c..ada00c3 100644
-> --- a/arch/arm64/mm/dma-mapping.c
-> +++ b/arch/arm64/mm/dma-mapping.c
-> @@ -107,7 +107,7 @@ static void *__dma_alloc_coherent(struct device *dev, size_t size,
->   		if (!page)
->   			return NULL;
->
-> -		*dma_handle = phys_to_dma(dev, page_to_phys(page));
-> +		*dma_handle = swiotlb_phys_to_dma(dev, page_to_phys(page));
->   		addr = page_address(page);
->   		memset(addr, 0, size);
->   		return addr;
-> @@ -121,7 +121,7 @@ static void __dma_free_coherent(struct device *dev, size_t size,
->   				struct dma_attrs *attrs)
->   {
->   	bool freed;
-> -	phys_addr_t paddr = dma_to_phys(dev, dma_handle);
-> +	phys_addr_t paddr = swiotlb_dma_to_phys(dev, dma_handle);
->
->   	if (dev == NULL) {
->   		WARN_ONCE(1, "Use an actual device structure for DMA allocation\n");
-> @@ -151,7 +151,8 @@ static void *__dma_alloc(struct device *dev, size_t size,
->   		void *addr = __alloc_from_pool(size, &page, flags);
->
->   		if (addr)
-> -			*dma_handle = phys_to_dma(dev, page_to_phys(page));
-> +			*dma_handle = swiotlb_phys_to_dma(dev,
-> +							  page_to_phys(page));
->
->   		return addr;
->   	}
-> @@ -187,7 +188,7 @@ static void __dma_free(struct device *dev, size_t size,
->   		       void *vaddr, dma_addr_t dma_handle,
->   		       struct dma_attrs *attrs)
->   {
-> -	void *swiotlb_addr = phys_to_virt(dma_to_phys(dev, dma_handle));
-> +	void *swiotlb_addr = phys_to_virt(swiotlb_dma_to_phys(dev, dma_handle));
->
->   	size = PAGE_ALIGN(size);
->
-> @@ -208,7 +209,8 @@ static dma_addr_t __swiotlb_map_page(struct device *dev, struct page *page,
->
->   	dev_addr = swiotlb_map_page(dev, page, offset, size, dir, attrs);
->   	if (!is_device_dma_coherent(dev))
-> -		__dma_map_area(phys_to_virt(dma_to_phys(dev, dev_addr)), size, dir);
-> +		__dma_map_area(phys_to_virt(swiotlb_dma_to_phys(dev, dev_addr)),
-> +			       size, dir);
->
->   	return dev_addr;
->   }
-> @@ -218,8 +220,11 @@ static void __swiotlb_unmap_page(struct device *dev, dma_addr_t dev_addr,
->   				 size_t size, enum dma_data_direction dir,
->   				 struct dma_attrs *attrs)
->   {
-> -	if (!is_device_dma_coherent(dev))
-> -		__dma_unmap_area(phys_to_virt(dma_to_phys(dev, dev_addr)), size, dir);
-> +	if (!is_device_dma_coherent(dev)) {
-> +		phys_addr_t phys = swiotlb_dma_to_phys(dev, dev_addr);
-> +
-> +		__dma_unmap_area(phys_to_virt(phys), size, dir);
-> +	}
->   	swiotlb_unmap_page(dev, dev_addr, size, dir, attrs);
->   }
->
-> @@ -232,9 +237,12 @@ static int __swiotlb_map_sg_attrs(struct device *dev, struct scatterlist *sgl,
->
->   	ret = swiotlb_map_sg_attrs(dev, sgl, nelems, dir, attrs);
->   	if (!is_device_dma_coherent(dev))
-> -		for_each_sg(sgl, sg, ret, i)
-> -			__dma_map_area(phys_to_virt(dma_to_phys(dev, sg->dma_address)),
-> -				       sg->length, dir);
-> +		for_each_sg(sgl, sg, ret, i) {
-> +			dma_addr_t dma = sg->dma_address;
-> +			phys_addr_t phys = swiotlb_dma_to_phys(dev, dma);
-> +
-> +			__dma_map_area(phys_to_virt(phys), sg->length, dir);
-> +		}
->
->   	return ret;
->   }
-> @@ -248,9 +256,12 @@ static void __swiotlb_unmap_sg_attrs(struct device *dev,
->   	int i;
->
->   	if (!is_device_dma_coherent(dev))
-> -		for_each_sg(sgl, sg, nelems, i)
-> -			__dma_unmap_area(phys_to_virt(dma_to_phys(dev, sg->dma_address)),
-> -					 sg->length, dir);
-> +		for_each_sg(sgl, sg, nelems, i) {
-> +			dma_addr_t dma = sg->dma_address;
-> +			phys_addr_t phys = swiotlb_dma_to_phys(dev, dma);
-> +
-> +			__dma_unmap_area(phys_to_virt(phys), sg->length, dir);
-> +		}
->   	swiotlb_unmap_sg_attrs(dev, sgl, nelems, dir, attrs);
->   }
->
-> @@ -258,8 +269,11 @@ static void __swiotlb_sync_single_for_cpu(struct device *dev,
->   					  dma_addr_t dev_addr, size_t size,
->   					  enum dma_data_direction dir)
->   {
-> -	if (!is_device_dma_coherent(dev))
-> -		__dma_unmap_area(phys_to_virt(dma_to_phys(dev, dev_addr)), size, dir);
-> +	if (!is_device_dma_coherent(dev)) {
-> +		phys_addr_t phys = swiotlb_dma_to_phys(dev, dev_addr);
-> +
-> +		__dma_unmap_area(phys_to_virt(phys), size, dir);
-> +	}
->   	swiotlb_sync_single_for_cpu(dev, dev_addr, size, dir);
->   }
->
-> @@ -269,7 +283,8 @@ static void __swiotlb_sync_single_for_device(struct device *dev,
->   {
->   	swiotlb_sync_single_for_device(dev, dev_addr, size, dir);
->   	if (!is_device_dma_coherent(dev))
-> -		__dma_map_area(phys_to_virt(dma_to_phys(dev, dev_addr)), size, dir);
-> +		__dma_map_area(phys_to_virt(swiotlb_dma_to_phys(dev, dev_addr)),
-> +			       size, dir);
->   }
->
->   static void __swiotlb_sync_sg_for_cpu(struct device *dev,
-> @@ -280,9 +295,12 @@ static void __swiotlb_sync_sg_for_cpu(struct device *dev,
->   	int i;
->
->   	if (!is_device_dma_coherent(dev))
-> -		for_each_sg(sgl, sg, nelems, i)
-> -			__dma_unmap_area(phys_to_virt(dma_to_phys(dev, sg->dma_address)),
-> -					 sg->length, dir);
-> +		for_each_sg(sgl, sg, nelems, i) {
-> +			dma_addr_t dma = sg->dma_address;
-> +			phys_addr_t phys = swiotlb_dma_to_phys(dev, dma);
-> +
-> +			__dma_unmap_area(phys_to_virt(phys), sg->length, dir);
-> +		}
->   	swiotlb_sync_sg_for_cpu(dev, sgl, nelems, dir);
->   }
->
-> @@ -295,9 +313,12 @@ static void __swiotlb_sync_sg_for_device(struct device *dev,
->
->   	swiotlb_sync_sg_for_device(dev, sgl, nelems, dir);
->   	if (!is_device_dma_coherent(dev))
-> -		for_each_sg(sgl, sg, nelems, i)
-> -			__dma_map_area(phys_to_virt(dma_to_phys(dev, sg->dma_address)),
-> -				       sg->length, dir);
-> +		for_each_sg(sgl, sg, nelems, i) {
-> +			dma_addr_t dma = sg->dma_address;
-> +			phys_addr_t phys = swiotlb_dma_to_phys(dev, dma);
-> +
-> +			__dma_map_area(phys_to_virt(phys), sg->length, dir);
-> +		}
->   }
->
->   static int __swiotlb_mmap(struct device *dev,
-> @@ -309,7 +330,7 @@ static int __swiotlb_mmap(struct device *dev,
->   	unsigned long nr_vma_pages = (vma->vm_end - vma->vm_start) >>
->   					PAGE_SHIFT;
->   	unsigned long nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
-> -	unsigned long pfn = dma_to_phys(dev, dma_addr) >> PAGE_SHIFT;
-> +	unsigned long pfn = swiotlb_dma_to_phys(dev, dma_addr) >> PAGE_SHIFT;
->   	unsigned long off = vma->vm_pgoff;
->
->   	vma->vm_page_prot = __get_dma_pgprot(attrs, vma->vm_page_prot,
-> @@ -334,9 +355,11 @@ static int __swiotlb_get_sgtable(struct device *dev, struct sg_table *sgt,
->   {
->   	int ret = sg_alloc_table(sgt, 1, GFP_KERNEL);
->
-> -	if (!ret)
-> -		sg_set_page(sgt->sgl, phys_to_page(dma_to_phys(dev, handle)),
-> -			    PAGE_ALIGN(size), 0);
-> +	if (!ret) {
-> +		phys_addr_t phys = swiotlb_dma_to_phys(dev, handle);
-> +
-> +		sg_set_page(sgt->sgl, phys_to_page(phys), PAGE_ALIGN(size), 0);
-> +	}
->
->   	return ret;
->   }
-
-Since we know for sure that swiotlb_to_phys is a no-op on arm64, it 
-might be cleaner to simply not reference it at all. I suppose we could 
-have some private local wrappers, e.g.:
-
-#define swiotlb_to_virt(addr) phys_to_virt((phys_addr_t)(addr))
-
-to keep the intent of the code clear (and just in case anyone ever 
-builds a system mad enough to warrant switching out that definition, but 
-I'd hope that never happens).
-
-Otherwise, looks good - thanks for doing this!
-
-Robin.
+diff --git a/drivers/gpio/gpio-octeon.c b/drivers/gpio/gpio-octeon.c
+index 47aead1..9373d4e 100644
+--- a/drivers/gpio/gpio-octeon.c
++++ b/drivers/gpio/gpio-octeon.c
+@@ -83,6 +83,7 @@ static int octeon_gpio_probe(struct platform_device *pdev)
+ 	struct octeon_gpio *gpio;
+ 	struct gpio_chip *chip;
+ 	struct resource *res_mem;
++	void __iomem *reg_base;
+ 	int err = 0;
+ 
+ 	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
+@@ -91,21 +92,11 @@ static int octeon_gpio_probe(struct platform_device *pdev)
+ 	chip = &gpio->chip;
+ 
+ 	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (res_mem == NULL) {
+-		dev_err(&pdev->dev, "found no memory resource\n");
+-		err = -ENXIO;
+-		goto out;
+-	}
+-	if (!devm_request_mem_region(&pdev->dev, res_mem->start,
+-					resource_size(res_mem),
+-				     res_mem->name)) {
+-		dev_err(&pdev->dev, "request_mem_region failed\n");
+-		err = -ENXIO;
+-		goto out;
+-	}
+-	gpio->register_base = (u64)devm_ioremap(&pdev->dev, res_mem->start,
+-						resource_size(res_mem));
++	reg_base = devm_ioremap_resource(&pdev->dev, res_mem);
++	if (IS_ERR(reg_base))
++		return PTR_ERR(reg_base);
+ 
++	gpio->register_base = (u64)reg_base;
+ 	pdev->dev.platform_data = chip;
+ 	chip->label = "octeon-gpio";
+ 	chip->parent = &pdev->dev;
+@@ -119,11 +110,10 @@ static int octeon_gpio_probe(struct platform_device *pdev)
+ 	chip->set = octeon_gpio_set;
+ 	err = devm_gpiochip_add_data(&pdev->dev, chip, gpio);
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	dev_info(&pdev->dev, "OCTEON GPIO driver probed.\n");
+-out:
+-	return err;
++	return 0;
+ }
+ 
+ static struct of_device_id octeon_gpio_match[] = {
+-- 
+2.1.4

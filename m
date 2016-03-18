@@ -1,55 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2016 02:17:36 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:43644 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008716AbcCRBReZUb8Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Mar 2016 02:17:34 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date;
-        bh=cic4/4tRW7b8cJt1qv/igmgFHyPB42vSHDMFJPlfRe8=; b=Io+Opd81oLbkjrJcgRvHt7ydyS
-        GgpcxEd2KGJ4ae50iAsurR8ZuPjwEGF3enKtEvrKhSx1znV3fuusUTHl+PMYj/BKmEEPCiDDdhjej
-        mZ2YD35W1Wydt0SSdIJKPKUI9aHDuvSOuUgeoWM57Br8fP4h/SFvRI2Er+CFjZs6iUL4BX4Tefmu6
-        HzfQZ8IjukX7KN6xcBs8jnhXS5ehV+cghhHMa9IhM6E4zSu5dlY7rVO6umh2pIXO1DuXH1yfnfwrj
-        emoeN3D4VR1TAwdSUAZ9p1ZCqaKETj/G9F6zsBSaaclZDlK8vAMWQ3D5e7A2dyOx/pDRB+rKAWlJa
-        l+yhYFwQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:41562 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1agj2a-00413i-Ii; Fri, 18 Mar 2016 01:17:27 +0000
-Date:   Thu, 17 Mar 2016 18:17:24 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Qais Yousef <qsyousef@gmail.com>
-Cc:     ralf@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Fix broken malta qemu
-Message-ID: <20160318011724.GA9717@roeck-us.net>
-References: <1458248889-24663-1-git-send-email-qsyousef@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2016 11:03:14 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:41600 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007002AbcCRKDMkf0dJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Mar 2016 11:03:12 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id EA5A6AB09;
+        Fri, 18 Mar 2016 10:03:07 +0000 (UTC)
+Date:   Fri, 18 Mar 2016 11:03:06 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Jiri Kosina <jikos@kernel.org>, kbuild test robot <lkp@intel.com>,
+        kbuild-all@01.org, Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        linux-am33-list@redhat.com
+Subject: Re: [PATCH v2 1/5] printk/nmi: Generic solution for safe printk in
+ NMI
+Message-ID: <20160318100306.GB19401@pathway.suse.cz>
+References: <1448622572-16900-2-git-send-email-pmladek@suse.com>
+ <201511271919.aEZuZKNe%fengguang.wu@intel.com>
+ <20151127153804.GC2648@pathway.suse.cz>
+ <alpine.LNX.2.00.1512020022460.32500@pobox.suse.cz>
+ <20151204165744.GD20935@pathway.suse.cz>
+ <20160317123527.6346bce3284509849d061eaa@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1458248889-24663-1-git-send-email-qsyousef@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+In-Reply-To: <20160317123527.6346bce3284509849d061eaa@linux-foundation.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52653
+X-archive-position: 52654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,52 +61,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 17, 2016 at 09:08:09PM +0000, Qais Yousef wrote:
-> Malta defconfig compiles with GIC on. Hence when compiling for SMP it causes the
-> new IPI code to be activated. But on qemu malta there's no GIC causing a
-> BUG_ON(!ipidomain) to be hit in mips_smp_ipi_init().
+On Thu 2016-03-17 12:35:27, Andrew Morton wrote:
+> On Fri, 4 Dec 2015 17:57:44 +0100 Petr Mladek <pmladek@suse.com> wrote:
 > 
-> Since in that configuration one can only run a single core SMP (!), skip IPI
-> initialisation if we detect that this is the case. It is a sensible behaviour
-> to introduce and should keep such possible configuration to run rather than die
-> hard unnecessarily.
+> > On Wed 2015-12-02 00:24:49, Jiri Kosina wrote:
+> > > On Fri, 27 Nov 2015, Petr Mladek wrote:
+> > > 
+> > > > MN10300 has its own implementation for entering and exiting NMI 
+> > > > handlers. It does not call nmi_enter() and nmi_exit(). Please, find 
+> > > > below an updated patch that adds printk_nmi_enter() and 
+> > > > printk_nmi_exit() to the custom entry points. Then we could add HAVE_NMI 
+> > > > to arch/mn10300/Kconfig and avoid the above warning.
+> > > 
+> > > Hmm, so what exactly would go wrong if MN10300 (whatever that architecture 
+> > > is) would call nmi_enter() and nmi_exit() at the places where it's 
+> > > starting and finishing NMI handler?
+> > > 
+> > > >From a cursory look, it seems like most (if not all) of the things called 
+> > > from nmi_{enter,exit}() would be nops there anyway.
+> > 
+> > Good point. Max mentioned in the other main that the NMI handler
+> > should follow the NMI ruler. I do not why it could not work.
+> > In fact, it might improve things, e.g. nmi_enter() blocks
+> > recursive NMIs.
+> > 
+> > I think that it will move it into a separate patch, thought.
+> > 
 > 
-> Signed-off-by: Qais Yousef <qsyousef@gmail.com>
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> I've sort of lost the plot on this patchset.
+> 
+> I know Daniel had concerns (resolved?).  Sergey lost the ability to
+> perform backtraces and has a proposed fix ("printk/nmi: restore
+> printk_func in nmi_panic") but that wasn't fully resolved and I didn't
+> merge anything.  I'm not sure what Jan's thinking is on it all.
+> 
+> So... I'll retain 
+> 
+> printk-nmi-generic-solution-for-safe-printk-in-nmi.patch
+> printk-nmi-use-irq-work-only-when-ready.patch
+> printk-nmi-warn-when-some-message-has-been-lost-in-nmi-context.patch
+> printk-nmi-increase-the-size-of-nmi-buffer-and-make-it-configurable.patch
+> 
+> in -mm for now.  Perhaps I should drop them all and we start again
+> after -rc1?
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Please, drop it for now. I'll send an updated version that will better
+handle Daniel's concerns after rc1.
 
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  arch/mips/kernel/smp.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-> index 37708d9..27cb638 100644
-> --- a/arch/mips/kernel/smp.c
-> +++ b/arch/mips/kernel/smp.c
-> @@ -243,6 +243,18 @@ static int __init mips_smp_ipi_init(void)
->  	struct irq_domain *ipidomain;
->  	struct device_node *node;
->  
-> +	/*
-> +	 * In some cases like qemu-malta, it is desired to try SMP with
-> +	 * a single core. Qemu-malta has no GIC, so an attempt to set any IPIs
-> +	 * would cause a BUG_ON() to be triggered since there's no ipidomain.
-> +	 *
-> +	 * Since for a single core system IPIs aren't required really, skip the
-> +	 * initialisation which should generally keep any such configurations
-> +	 * happy and only fail hard when trying to truely run SMP.
-> +	 */
-> +	if (cpumask_weight(cpu_possible_mask) == 1)
-> +		return 0;
-> +
->  	node = of_irq_find_parent(of_root);
->  	ipidomain = irq_find_matching_host(node, DOMAIN_BUS_IPI);
->  
-> -- 
-> 2.7.3
-> 
+I thought that it had already been decided. You wanted to remove the patchset
+in favour of "improvements to the nmi_backtrace code" by Chris Metcalf, see
+http://thread.gmane.org/gmane.linux.ports.arm.kernel/482845/focus=483002
+
+Best Regards,
+Petr

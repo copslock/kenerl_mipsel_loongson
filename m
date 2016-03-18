@@ -1,54 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2016 11:03:14 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:41600 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2016 12:31:59 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:35687 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007002AbcCRKDMkf0dJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Mar 2016 11:03:12 +0100
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id EA5A6AB09;
-        Fri, 18 Mar 2016 10:03:07 +0000 (UTC)
-Date:   Fri, 18 Mar 2016 11:03:06 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Jiri Kosina <jikos@kernel.org>, kbuild test robot <lkp@intel.com>,
-        kbuild-all@01.org, Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
+        id S27008186AbcCRLb5KFjKZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Mar 2016 12:31:57 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C94B49;
+        Fri, 18 Mar 2016 04:30:48 -0700 (PDT)
+Received: from [10.1.205.146] (e104324-lin.cambridge.arm.com [10.1.205.146])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2E5623F21A;
+        Fri, 18 Mar 2016 04:31:45 -0700 (PDT)
+Subject: Re: [PATCH 3/3] dma-mapping: move swiotlb dma-phys functions to
+ common header
+To:     Sinan Kaya <okaya@codeaurora.org>,
+        linux-arm-kernel@lists.infradead.org, timur@codeaurora.org,
+        cov@codeaurora.org, nwatters@codeaurora.org
+References: <1458252137-24497-1-git-send-email-okaya@codeaurora.org>
+ <1458252137-24497-3-git-send-email-okaya@codeaurora.org>
+Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Florian Fainelli <f.fainelli@gmail.com>, x86@kernel.org,
         Ingo Molnar <mingo@redhat.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Denys Vlasenko <dvlasenk@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Geliang Tang <geliangtang@163.com>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        linux-am33-list@redhat.com
-Subject: Re: [PATCH v2 1/5] printk/nmi: Generic solution for safe printk in
- NMI
-Message-ID: <20160318100306.GB19401@pathway.suse.cz>
-References: <1448622572-16900-2-git-send-email-pmladek@suse.com>
- <201511271919.aEZuZKNe%fengguang.wu@intel.com>
- <20151127153804.GC2648@pathway.suse.cz>
- <alpine.LNX.2.00.1512020022460.32500@pobox.suse.cz>
- <20151204165744.GD20935@pathway.suse.cz>
- <20160317123527.6346bce3284509849d061eaa@linux-foundation.org>
+        Valentin Rothberg <valentinrothberg@gmail.com>,
+        Chris Zankel <chris@zankel.net>,
+        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Suthikulpanit, Suravee" <Suravee.Suthikulpanit@amd.com>,
+        Joe Perches <joe@perches.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <56EBE71F.2080203@arm.com>
+Date:   Fri, 18 Mar 2016 11:31:43 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160317123527.6346bce3284509849d061eaa@linux-foundation.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <pmladek@suse.com>
+In-Reply-To: <1458252137-24497-3-git-send-email-okaya@codeaurora.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <robin.murphy@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52654
+X-archive-position: 52655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pmladek@suse.com
+X-original-sender: robin.murphy@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,56 +71,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu 2016-03-17 12:35:27, Andrew Morton wrote:
-> On Fri, 4 Dec 2015 17:57:44 +0100 Petr Mladek <pmladek@suse.com> wrote:
-> 
-> > On Wed 2015-12-02 00:24:49, Jiri Kosina wrote:
-> > > On Fri, 27 Nov 2015, Petr Mladek wrote:
-> > > 
-> > > > MN10300 has its own implementation for entering and exiting NMI 
-> > > > handlers. It does not call nmi_enter() and nmi_exit(). Please, find 
-> > > > below an updated patch that adds printk_nmi_enter() and 
-> > > > printk_nmi_exit() to the custom entry points. Then we could add HAVE_NMI 
-> > > > to arch/mn10300/Kconfig and avoid the above warning.
-> > > 
-> > > Hmm, so what exactly would go wrong if MN10300 (whatever that architecture 
-> > > is) would call nmi_enter() and nmi_exit() at the places where it's 
-> > > starting and finishing NMI handler?
-> > > 
-> > > >From a cursory look, it seems like most (if not all) of the things called 
-> > > from nmi_{enter,exit}() would be nops there anyway.
-> > 
-> > Good point. Max mentioned in the other main that the NMI handler
-> > should follow the NMI ruler. I do not why it could not work.
-> > In fact, it might improve things, e.g. nmi_enter() blocks
-> > recursive NMIs.
-> > 
-> > I think that it will move it into a separate patch, thought.
-> > 
-> 
-> I've sort of lost the plot on this patchset.
-> 
-> I know Daniel had concerns (resolved?).  Sergey lost the ability to
-> perform backtraces and has a proposed fix ("printk/nmi: restore
-> printk_func in nmi_panic") but that wasn't fully resolved and I didn't
-> merge anything.  I'm not sure what Jan's thinking is on it all.
-> 
-> So... I'll retain 
-> 
-> printk-nmi-generic-solution-for-safe-printk-in-nmi.patch
-> printk-nmi-use-irq-work-only-when-ready.patch
-> printk-nmi-warn-when-some-message-has-been-lost-in-nmi-context.patch
-> printk-nmi-increase-the-size-of-nmi-buffer-and-make-it-configurable.patch
-> 
-> in -mm for now.  Perhaps I should drop them all and we start again
-> after -rc1?
+On 17/03/16 22:02, Sinan Kaya wrote:
+> Moving the default implementation of swiotlb_dma_to_phys and
+> swiotlb_phys_to_dma functions to dma-mapping.h so that we can get
+> rid of the duplicate code in multiple ARCH.
+>
+> Signed-off-by: Sinan Kaya <okaya@codeaurora.org>
+> ---
+>   arch/arm64/include/asm/dma-mapping.h               | 14 --------------
+>   arch/ia64/include/asm/dma-mapping.h                | 14 --------------
+>   arch/mips/include/asm/mach-generic/dma-coherence.h | 16 ----------------
+>   arch/tile/include/asm/dma-mapping.h                | 14 --------------
+>   arch/unicore32/include/asm/dma-mapping.h           | 14 --------------
+>   arch/x86/include/asm/dma-mapping.h                 | 13 -------------
+>   arch/xtensa/include/asm/dma-mapping.h              | 14 --------------
+>   include/linux/dma-mapping.h                        | 14 ++++++++++++++
+>   8 files changed, 14 insertions(+), 99 deletions(-)
 
-Please, drop it for now. I'll send an updated version that will better
-handle Daniel's concerns after rc1.
+[...]
 
-I thought that it had already been decided. You wanted to remove the patchset
-in favour of "improvements to the nmi_backtrace code" by Chris Metcalf, see
-http://thread.gmane.org/gmane.linux.ports.arm.kernel/482845/focus=483002
+> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+> index 728ef07..871d620 100644
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -683,4 +683,18 @@ static inline int dma_mmap_writecombine(struct device *dev,
+>   #define dma_unmap_len_set(PTR, LEN_NAME, VAL)    do { } while (0)
+>   #endif
+>
+> +#ifndef swiotlb_phys_to_dma
+> +static inline dma_addr_t swiotlb_phys_to_dma(struct device *dev, phys_addr_t paddr)
+> +{
+> +         return paddr;
+> +}
+> +#endif
+> +
+> +#ifndef swiotlb_dma_to_phys
+> +static inline phys_addr_t swiotlb_dma_to_phys(struct device *dev, dma_addr_t daddr)
+> +{
+> +        return daddr;
+> +}
+> +#endif
+> +
+>   #endif
+>
 
-Best Regards,
-Petr
+Could the default definition not be pushed all the way down into 
+swiotlb.c (or at least swiotlb.h)?
+
+Robin.

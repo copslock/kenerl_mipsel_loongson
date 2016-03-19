@@ -1,23 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Mar 2016 18:29:05 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:38974 "EHLO hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Mar 2016 18:29:21 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:38976 "EHLO hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27007246AbcCSR3DoJ4PK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S27013419AbcCSR3D6OJ1K (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sat, 19 Mar 2016 18:29:03 +0100
 Received: from hauke-desktop.fritz.box (p20030062465D04006DFE28B1EAF19207.dip0.t-ipconnect.de [IPv6:2003:62:465d:400:6dfe:28b1:eaf1:9207])
-        by hauke-m.de (Postfix) with ESMTPSA id 1160B1001AC;
+        by hauke-m.de (Postfix) with ESMTPSA id 883771001AE;
         Sat, 19 Mar 2016 18:29:03 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 1/2] MIPS: lantiq: add support for device tree file from boot loader
-Date:   Sat, 19 Mar 2016 18:28:51 +0100
-Message-Id: <1458408532-9259-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 2/2] MIPS: lantiq: make it possible to build in no device tree
+Date:   Sat, 19 Mar 2016 18:28:52 +0100
+Message-Id: <1458408532-9259-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1458408532-9259-1-git-send-email-hauke@hauke-m.de>
+References: <1458408532-9259-1-git-send-email-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52663
+X-archive-position: 52664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,50 +36,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This fetches the device tree file like it is specified in the MIPS UHI
-interface if one was found. This is also used when the device tree file
-was appended to the kernel image with cat.
-This code is copied from arch/mips/bmips/setup.c.
+Now it is possible to build in no device tree at all and depend on the
+boot loader providing one or someone concatenating a device tree to the
+end of the image.
+
+This was copied from arch/mips/bmips/Kconfig
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 Acked-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/prom.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/mips/lantiq/Kconfig | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index 297bcaa..a5c7fec 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -65,6 +65,8 @@ static void __init prom_init_cmdline(void)
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index e10d333..177769d 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -25,7 +25,17 @@ config SOC_FALCON
+ endchoice
  
- void __init plat_mem_setup(void)
- {
-+	void *dtb;
+ choice
+-	prompt "Devicetree"
++	prompt "Built-in device tree"
++	help
++	  Legacy bootloaders do not pass a DTB pointer to the kernel, so
++	  if a "wrapper" is not being used, the kernel will need to include
++	  a device tree that matches the target board.
 +
- 	ioport_resource.start = IOPORT_RESOURCE_START;
- 	ioport_resource.end = IOPORT_RESOURCE_END;
- 	iomem_resource.start = IOMEM_RESOURCE_START;
-@@ -72,11 +74,18 @@ void __init plat_mem_setup(void)
- 
- 	set_io_port_base((unsigned long) KSEG1);
- 
-+	if (fw_arg0 == -2) /* UHI interface */
-+		dtb = (void *)fw_arg1;
-+	else if (__dtb_start != __dtb_end)
-+		dtb = (void *)__dtb_start;
-+	else
-+		panic("no dtb found");
++	  The builtin DTB will only be used if the firmware does not supply
++	  a valid DTB.
 +
- 	/*
--	 * Load the builtin devicetree. This causes the chosen node to be
-+	 * Load the devicetree. This causes the chosen node to be
- 	 * parsed resulting in our memory appearing
- 	 */
--	__dt_setup_arch(__dtb_start);
-+	__dt_setup_arch(dtb);
- }
++config LANTIQ_DT_NONE
++	bool "None"
  
- void __init device_tree_init(void)
+ config DT_EASY50712
+ 	bool "Easy50712"
 -- 
 2.7.0

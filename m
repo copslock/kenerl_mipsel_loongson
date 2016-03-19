@@ -1,36 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2016 23:26:02 +0100 (CET)
-Received: from shards.monkeyblade.net ([149.20.54.216]:58669 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27008212AbcCRWZ5kdNsU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Mar 2016 23:25:57 +0100
-Received: from localhost (unknown [216.58.112.169])
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 69D0D5B1436;
-        Fri, 18 Mar 2016 15:25:54 -0700 (PDT)
-Date:   Fri, 18 Mar 2016 18:25:50 -0400 (EDT)
-Message-Id: <20160318.182550.1326216108383007578.davem@davemloft.net>
-To:     ddaney.cavm@gmail.com
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, david.daney@cavium.com
-Subject: Re: [PATCH] netdev: Move octeon/octeon_mgmt driver to cavium
- directory.
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1458003428-27632-1-git-send-email-ddaney.cavm@gmail.com>
-References: <1458003428-27632-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 18 Mar 2016 15:25:54 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Mar 2016 18:29:05 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:38974 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007246AbcCSR3DoJ4PK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 19 Mar 2016 18:29:03 +0100
+Received: from hauke-desktop.fritz.box (p20030062465D04006DFE28B1EAF19207.dip0.t-ipconnect.de [IPv6:2003:62:465d:400:6dfe:28b1:eaf1:9207])
+        by hauke-m.de (Postfix) with ESMTPSA id 1160B1001AC;
+        Sat, 19 Mar 2016 18:29:03 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 1/2] MIPS: lantiq: add support for device tree file from boot loader
+Date:   Sat, 19 Mar 2016 18:28:51 +0100
+Message-Id: <1458408532-9259-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 2.7.0
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52662
+X-archive-position: 52663
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,14 +34,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <ddaney.cavm@gmail.com>
-Date: Mon, 14 Mar 2016 17:57:08 -0700
+This fetches the device tree file like it is specified in the MIPS UHI
+interface if one was found. This is also used when the device tree file
+was appended to the kernel image with cat.
+This code is copied from arch/mips/bmips/setup.c.
 
-> From: David Daney <david.daney@cavium.com>
-> 
-> No code changes.  Since OCTEON is a Cavium product, move the driver to
-> the vendor directory to unclutter things a bit.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Acked-by: John Crispin <blogic@openwrt.org>
+---
+ arch/mips/lantiq/prom.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-Applied, thanks.
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 297bcaa..a5c7fec 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -65,6 +65,8 @@ static void __init prom_init_cmdline(void)
+ 
+ void __init plat_mem_setup(void)
+ {
++	void *dtb;
++
+ 	ioport_resource.start = IOPORT_RESOURCE_START;
+ 	ioport_resource.end = IOPORT_RESOURCE_END;
+ 	iomem_resource.start = IOMEM_RESOURCE_START;
+@@ -72,11 +74,18 @@ void __init plat_mem_setup(void)
+ 
+ 	set_io_port_base((unsigned long) KSEG1);
+ 
++	if (fw_arg0 == -2) /* UHI interface */
++		dtb = (void *)fw_arg1;
++	else if (__dtb_start != __dtb_end)
++		dtb = (void *)__dtb_start;
++	else
++		panic("no dtb found");
++
+ 	/*
+-	 * Load the builtin devicetree. This causes the chosen node to be
++	 * Load the devicetree. This causes the chosen node to be
+ 	 * parsed resulting in our memory appearing
+ 	 */
+-	__dt_setup_arch(__dtb_start);
++	__dt_setup_arch(dtb);
+ }
+ 
+ void __init device_tree_init(void)
+-- 
+2.7.0

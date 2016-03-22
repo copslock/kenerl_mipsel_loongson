@@ -1,81 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2016 19:37:51 +0100 (CET)
-Received: from mail-bn1on0082.outbound.protection.outlook.com ([157.56.110.82]:51857
-        "EHLO na01-bn1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006641AbcCVShtPp4Ch (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 Mar 2016 19:37:49 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-caviumnetworks-com;
- h=From:To:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=A9uQPUYYWkPEqqu96dysbhBAO4QsUJDf+K34psNN1Q8=;
- b=24ihI+/vH5c+UD2WWZYTdR1dbQWrAl0yljLy1ieWwqv+uNqOcNm0xtP6b3PpYFlC3R3tQFusFg0BblR/lqqWKtr3uOSll2ltAWanUoQYgP42vHu7WjcC/Qq2pKk1pOAl0XsqhtotPCEThnQOhcWA5T2G96hXV5izQqLr6ty67nI=
-Authentication-Results: linux-mips.org; dkim=none (message not signed)
- header.d=none;linux-mips.org; dmarc=none action=none
- header.from=caviumnetworks.com;
-Received: from dl.caveonetworks.com (64.2.3.194) by
- CY1PR07MB2136.namprd07.prod.outlook.com (10.164.112.14) with Microsoft SMTP
- Server (TLS) id 15.1.434.16; Tue, 22 Mar 2016 18:37:41 +0000
-Message-ID: <56F190F2.9090300@caviumnetworks.com>
-Date:   Tue, 22 Mar 2016 11:37:38 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>
-CC:     <linux-mips@linux-mips.org>, <rt@linutronix.de>
-Subject: Re: FROZEN transitions in hotplug notifier
-References: <alpine.DEB.2.11.1603221822560.30089@hypnos> <20160322183350.GC1670@linux-mips.org>
-In-Reply-To: <20160322183350.GC1670@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2016 21:52:03 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38279 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014290AbcCVUwA5-3MZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Mar 2016 21:52:00 +0100
+Received: from akpm3.mtv.corp.google.com (unknown [104.132.1.65])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 817E074;
+        Tue, 22 Mar 2016 20:51:53 +0000 (UTC)
+Date:   Tue, 22 Mar 2016 13:51:52 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        X86 ML <x86@kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        David Miller <davem@davemloft.net>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        linux-parisc@vger.kernel.org,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 14/16] input: Redefine INPUT_COMPAT_TEST as
+ in_compat_syscall()
+Message-Id: <20160322135152.78d21ee6d56b702f06c5e01f@linux-foundation.org>
+In-Reply-To: <20160127210610.GB28687@dtor-ws>
+References: <cover.1453759363.git.luto@kernel.org>
+        <64480084bc652d5fa91bf5cd4be979e2f1e4cf11.1453759363.git.luto@kernel.org>
+        <CAKdAkRQm6ADz5aCYAFxXcoGZ2zNFwTUXjMzZdNj-D2-YrYQtrg@mail.gmail.com>
+        <CALCETrUUNM1Qoqna1e7qmEqNUwo99PJe9fSuXG4fzPdSBLfPuA@mail.gmail.com>
+        <20160127210610.GB28687@dtor-ws>
+X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [64.2.3.194]
-X-ClientProxiedBy: SN1PR07CA0006.namprd07.prod.outlook.com (25.162.170.144) To
- CY1PR07MB2136.namprd07.prod.outlook.com (25.164.112.14)
-X-MS-Office365-Filtering-Correlation-Id: 89e64b00-503e-4dc2-dd17-08d352810d81
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2136;2:J4Y6J1ghFLXamSeNgU11njXkv2PscdUuEq2+3QpChDo2Qhia5ScWYpMH3JxS2Gmsd339pVjWYxqnVPIo825PtIIGR7BF/ONIXtGKj+0NRCuVBGwRUitu2362Rj7BnTBQtkmPnhh85gdtG8PN7CQ4RFoWJ2BOuqQCRoptR8B1q151bvTgChydEMliQP+FUVAD;3:jCtc1Dh/GCMrhMEpMNDVml/kff5M7Yi3Pw3MrNHiw6qIZcXzwUrOJW/KCxfVriFWtYc0pVGXYHO6DyVER5/qaigoy5Kg1bBTNQa52oO+tVdUxsoku7L3OZdDgLeiumhi;25:ExW4Y8BthuEVwvT4D/CuL93oi/eV6KTlJHPJj8E5tPlVw60XB5STB22ap0w75OOWy4Hqsv7LJK2LG9FNgKZ6jZyYMz9lf4f/5JhRu8pM/7UJcntuSjC/UOJlJvUS6P++TMiB0m2H0OHCG61WuDEHSf+CRl/UfVVttC0YSg5gm6ez5mB2CdmaMjNc6gV8KTOml1ELnA0yzrAlyuzbGQyvt/8SLOHGIo7RGB1LKNNxLLuBjy4a6PX6J9enI/DDBTW7ADlZxkrrECVpy7ofDFRan3qihsw+SdOOgjjEWL8xsi2jpgY2Y+63wlcNmPzNXth1v+hSFt3fwZdH97VUf92KpcdDwyvytIBKbGVWSDSigD/uu+hh4QZ2HQpgm8sfubI6QABHbiGq9UwDS76HdSuxK6jz084K7gJlTz10ss9Q5pdzCZHjeq1jclbLRZwFweB4xtLkGE9gEpbvUW6a8YR0HjYfE80j2ks8Bn+PtSB2t86XIKbgpDtPFXbwxS+dXZnIDisc+2vAZHQwASCj37C44rnkSpfN/V2STK2VthRxFFRbvmdk9/YEV90dVDSZDcK7NBsKtrdu8xxkTiU6+ALdzw8wslkZNqyKlCBT6h1Hc6U=
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:CY1PR07MB2136;
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2136;20:JZkSJfo1N3Tm6H1xApEutS5+WrQ1ytNlSiHCKHneaP2F44klYEV78SOBZh+Drz/h1HQnzipe/YQleuf6uZJYdY5jdBHjccIavxWGGrxeQEE3P0oSzEGTrhuHjtsGeF9s3SSzgZz5Qsdv2JMZXgtR4WUswglBLEM6Pp2duoH2Qt5kmhVL/ZAzymGl939wDEE1CyMI3+G3XJou4lTB5/wG1WT+owgRJboN73YO0NZaFqOq/a+WTC2islynXgSccCzikObFn4UaklSnI1UPCfFwba7+f3lDhvioB0GGYg5XPh+a1Z/ZFeYP4OqpKwTv94g8N1kLzcYuocC61iimpkxwmroaFFtGztQf8tn4k+GHjzjtkjr9kOMSdWJ4wDnDNeJYKYadvROuznUHDlQRmBCAecuqbJ1DN+mDv0WymcuniRQVxgueTILYdumsJDHygcwtPmQA9Ds2+DFHlCTKjjRPqgcmHzvFu7MEX+ZqNi/8Q2JX0yoRBez8oek9h81bfuU+FlyJVKZE6ANHmDite3JKekpeeYyPFOtCk90MeoYMYEItmb7HP4V0TlQp88OBUpIkgAnW0JqeQRhyKMk8uhU1IeLECMaBRysBXWYy3nDVi2c=
-X-Microsoft-Antispam-PRVS: <CY1PR07MB21361EEDA3A190BB02FB99FF9A800@CY1PR07MB2136.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(601004)(2401047)(5005006)(8121501046)(10201501046)(3002001);SRVR:CY1PR07MB2136;BCL:0;PCL:0;RULEID:;SRVR:CY1PR07MB2136;
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2136;4:788hIs+gTajorRDrsvU0orHS9FKOPslHKEkcrMXdP1JiJcn/n//l4cikogv/WfeETh4oADli1H9NeSGBn9nO/FSn18ElmQsfrKN1Lyxme+cjmbU98K17vv4rvqnY9zmcWTtJ3BRlC2XFVi/LVsNzEtrT8C9I0nePKEKIWWJIz5vz29U6A2vuk05TSBIc5NehxOz2zaaKO5cl38q25VAocQmrOulSyt+LpgyD21YJYBonixoK0JWsAysKkcej9Eq81LYbjt8LFwsOMiJFQzXrf0LA/5GkPAdH92lnshBiKhlp7ElAcHsyhu+LzTUXBT3Trj7UFam6fd0a2AzbRT+rN5JQ92q5kqlsk5o/mJo02lBwP/zWA8CKu/XHxnH7fLkD
-X-Forefront-PRVS: 08897B549D
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(24454002)(377454003)(5001770100001)(4001350100001)(47776003)(65806001)(189998001)(65956001)(66066001)(50466002)(33656002)(23756003)(64126003)(65816999)(76176999)(50986999)(54356999)(36756003)(92566002)(5004730100002)(87266999)(42186005)(53416004)(4326007)(5008740100001)(1096002)(6116002)(3846002)(81166005)(80316001)(230700001)(2906002)(77096005)(586003)(2950100001)(83506001);DIR:OUT;SFP:1101;SCL:1;SRVR:CY1PR07MB2136;H:dl.caveonetworks.com;FPR:;SPF:None;MLV:sfv;LANG:en;
-X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;CY1PR07MB2136;23:+cDONhNa5wbYDI6zU4dO4N2KRSsCtEtSzjWTEYT?=
- =?iso-8859-1?Q?JkAWAWE480GuCEj3D8tm8uQkScL9UryB3dk0bJ46VxLgOX1CVSGSByRjaf?=
- =?iso-8859-1?Q?9OTSekQ5wnyY8SvHK3UoYc+d3V9m/jRxKWPih6FOwtdRBvCQTgzrrzHoBm?=
- =?iso-8859-1?Q?87HFWwxd7Ecyf1sGvnf783zrHpPXiRKP32ns+UqPIxx76MPYpajqbY8pDQ?=
- =?iso-8859-1?Q?nY9Q/FP3tJMmremtssJ1wq3MBMVDQ5BwArkItqhDxSVrG8bL1G8Rb0Avax?=
- =?iso-8859-1?Q?xHvzAEi/D96Ng/ngQYAgaSE5rPp2PCGReNTytwOrDqMttyhZGqxQZTZI83?=
- =?iso-8859-1?Q?uiL7vBUsyny7Sa1F3VWOaBzz3GKOHNoOJKMaHOqoUC5X/y5bbuSuN8K9by?=
- =?iso-8859-1?Q?KgbvQrNmqMULjroMCskiP09p3VWi5qIFkNwq7DdYXuTnDtSGTZZV2Mt8/b?=
- =?iso-8859-1?Q?MW/ZA1bEsKKfjAGWaJQX8rdv6kd+6LzTj0UR55WpIpytaeglmbkkZZh8Xo?=
- =?iso-8859-1?Q?mK8YEcDNS3WeUOCCPczw2gBnxjvvEKA9iPbDtiOFiIE5g1kYF+XC5z76fm?=
- =?iso-8859-1?Q?pr3djl6IMugUSYu+aVGxHtA/SbNRn84UiHw5hZ/lwGAH0sx9Ku3VWDCV2C?=
- =?iso-8859-1?Q?EvSRVh2BS3/zClBxmHkGN6vPNurSmj0H8mlQ6SX5xRhyLL1YZHiFdM6B+N?=
- =?iso-8859-1?Q?/KQbmidSVNEN+zJb7Hr3KmlS5ffVlF3gNMxPBG/9b84v1/VKpCyf1HtEnW?=
- =?iso-8859-1?Q?wIgnBoGOOOFkHZ0G5h9bEOJT4obZWLarVTCUJE3lSBWz9fqi47SnQRQDzz?=
- =?iso-8859-1?Q?ukQLSgWGB6W9yne9vavInty3CMeESiYweZhbWb1ir6xJG9M0LpAz1LcpqY?=
- =?iso-8859-1?Q?B+TjjoDm+/RiFJ8LO6K7xJct+bXGbvtHt0DhwIb9Fah3x5NLE/7yq0SHKB?=
- =?iso-8859-1?Q?rR2nyovZ187VieZ04ojh7hgSguwxHQBi/PXmwdraG3xfJ1uELq0pKy/tSL?=
- =?iso-8859-1?Q?vUBRurVBmecFhnpgFoby/eRbkMvakh7TIej5Zvm3iL4McYHMb8+tKloTAV?=
- =?iso-8859-1?Q?0rCXmKNPKWPCaAGvUpo7g=3D=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2136;5:u119QL0YCtwUUMai6nKnycUhMpfAXzauVROBoLsCAiJ49nsRTYCVL+LMM9NefXkyfWXb6PyIUuNKGZa7SoaYdh+IDtyZMMuHLcLpN+D6ATP5Qm95JRihFJFMRLegc1sS3a07iW/JQA+eY/1ctTcarw==;24:tI50wZnDhpcF0611rUey8TZi+lJdz5PFm1VvVYE9ulcTAkA5zkteTKhB0FkEhp7AuSdwFcsuFQT7Q5LJGs8lKsaJDTQ4EEPi7avEStwMm3I=
-SpamDiagnosticOutput: 1:23
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2016 18:37:41.5870 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR07MB2136
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52680
+X-archive-position: 52681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,21 +55,160 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/22/2016 11:33 AM, Ralf Baechle wrote:
-> Hello Anna-Maria :)
->
-> On Tue, Mar 22, 2016 at 06:24:20PM +0100, Anna-Maria Gleixner wrote:
->
->> the hotplug notifier in arch/mips/cavium-octeon/smp.c doesn't handle
->> the corresponding FROZEN transitions. Is there a reason for it?
->
-> My guess would be bitrot.
->
-> David?
+On Wed, 27 Jan 2016 13:06:10 -0800 Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
 
-That is correct.
+> On Wed, Jan 27, 2016 at 12:29:14PM -0800, Andy Lutomirski wrote:
+> > On Wed, Jan 27, 2016 at 11:17 AM, Dmitry Torokhov
+> > <dmitry.torokhov@gmail.com> wrote:
+> > > Hi Andy,
+> > >
+> > > On Mon, Jan 25, 2016 at 2:24 PM, Andy Lutomirski <luto@kernel.org> wrote:
+> > >> The input compat code should work like all other compat code: for
+> > >> 32-bit syscalls, use the 32-bit ABI and for 64-bit syscalls, use the
+> > >> 64-bit ABI.  We have a helper for that (in_compat_syscall()): just
+> > >> use it.
+> > >>
+> > >> Signed-off-by: Andy Lutomirski <luto@kernel.org>
+> > >> ---
+> > >>  drivers/input/input-compat.h | 12 +-----------
+> > >>  1 file changed, 1 insertion(+), 11 deletions(-)
+> > >>
+> > >> diff --git a/drivers/input/input-compat.h b/drivers/input/input-compat.h
+> > >> index 148f66fe3205..0f25878d5fa2 100644
+> > >> --- a/drivers/input/input-compat.h
+> > >> +++ b/drivers/input/input-compat.h
+> > >> @@ -17,17 +17,7 @@
+> > >>
+> > >>  #ifdef CONFIG_COMPAT
+> > >>
+> > >> -/* Note to the author of this code: did it ever occur to
+> > >> -   you why the ifdefs are needed? Think about it again. -AK */
+> > >> -#if defined(CONFIG_X86_64) || defined(CONFIG_TILE)
+> > >> -#  define INPUT_COMPAT_TEST is_compat_task()
+> > >> -#elif defined(CONFIG_S390)
+> > >> -#  define INPUT_COMPAT_TEST test_thread_flag(TIF_31BIT)
+> > >> -#elif defined(CONFIG_MIPS)
+> > >> -#  define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT_ADDR)
+> > >> -#else
+> > >> -#  define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT)
+> > >> -#endif
+> > >> +#define INPUT_COMPAT_TEST in_compat_syscall()
+> > >>
+> > >
+> > >
+> > > If we now have function that works on all arches I'd prefer if we used
+> > > it directly instead of continuing using INPUT_COMPAT_TEST.
+> > 
+> > I'll write a followup patch for that if you don't beat me to it.
+> 
+> I promise I wont ;)
 
-We have some updates to the CPU hotplug code that may improve things, 
-but its current state is definitely bitrotten.
+Well someone needs beating!
 
-David.
+I'm prepping this patch for Linus now.  I shall queue up the below for
+later.
+
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: drivers/input: eliminate INPUT_COMPAT_TEST macro
+
+INPUT_COMPAT_TEST became much simpler after "input: redefine
+INPUT_COMPAT_TEST as in_compat_syscall()" so we can cleanly eliminate it
+altogether.
+
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Andy Lutomirski <luto@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ drivers/input/input-compat.c |    6 +++---
+ drivers/input/input-compat.h |    4 +---
+ drivers/input/input.c        |    2 +-
+ drivers/input/misc/uinput.c  |    4 ++--
+ 4 files changed, 7 insertions(+), 9 deletions(-)
+
+diff -puN drivers/input/input-compat.h~a drivers/input/input-compat.h
+--- a/drivers/input/input-compat.h~a
++++ a/drivers/input/input-compat.h
+@@ -17,8 +17,6 @@
+ 
+ #ifdef CONFIG_COMPAT
+ 
+-#define INPUT_COMPAT_TEST in_compat_syscall()
+-
+ struct input_event_compat {
+ 	struct compat_timeval time;
+ 	__u16 type;
+@@ -57,7 +55,7 @@ struct ff_effect_compat {
+ 
+ static inline size_t input_event_size(void)
+ {
+-	return (INPUT_COMPAT_TEST && !COMPAT_USE_64BIT_TIME) ?
++	return (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) ?
+ 		sizeof(struct input_event_compat) : sizeof(struct input_event);
+ }
+ 
+diff -puN drivers/input/misc/uinput.c~a drivers/input/misc/uinput.c
+--- a/drivers/input/misc/uinput.c~a
++++ a/drivers/input/misc/uinput.c
+@@ -664,7 +664,7 @@ struct uinput_ff_upload_compat {
+ static int uinput_ff_upload_to_user(char __user *buffer,
+ 				    const struct uinput_ff_upload *ff_up)
+ {
+-	if (INPUT_COMPAT_TEST) {
++	if (in_compat_syscall()) {
+ 		struct uinput_ff_upload_compat ff_up_compat;
+ 
+ 		ff_up_compat.request_id = ff_up->request_id;
+@@ -695,7 +695,7 @@ static int uinput_ff_upload_to_user(char
+ static int uinput_ff_upload_from_user(const char __user *buffer,
+ 				      struct uinput_ff_upload *ff_up)
+ {
+-	if (INPUT_COMPAT_TEST) {
++	if (in_compat_syscall()) {
+ 		struct uinput_ff_upload_compat ff_up_compat;
+ 
+ 		if (copy_from_user(&ff_up_compat, buffer,
+diff -puN drivers/input/input-compat.c~a drivers/input/input-compat.c
+--- a/drivers/input/input-compat.c~a
++++ a/drivers/input/input-compat.c
+@@ -17,7 +17,7 @@
+ int input_event_from_user(const char __user *buffer,
+ 			  struct input_event *event)
+ {
+-	if (INPUT_COMPAT_TEST && !COMPAT_USE_64BIT_TIME) {
++	if (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) {
+ 		struct input_event_compat compat_event;
+ 
+ 		if (copy_from_user(&compat_event, buffer,
+@@ -41,7 +41,7 @@ int input_event_from_user(const char __u
+ int input_event_to_user(char __user *buffer,
+ 			const struct input_event *event)
+ {
+-	if (INPUT_COMPAT_TEST && !COMPAT_USE_64BIT_TIME) {
++	if (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) {
+ 		struct input_event_compat compat_event;
+ 
+ 		compat_event.time.tv_sec = event->time.tv_sec;
+@@ -65,7 +65,7 @@ int input_event_to_user(char __user *buf
+ int input_ff_effect_from_user(const char __user *buffer, size_t size,
+ 			      struct ff_effect *effect)
+ {
+-	if (INPUT_COMPAT_TEST) {
++	if (in_compat_syscall()) {
+ 		struct ff_effect_compat *compat_effect;
+ 
+ 		if (size != sizeof(struct ff_effect_compat))
+diff -puN drivers/input/input.c~a drivers/input/input.c
+--- a/drivers/input/input.c~a
++++ a/drivers/input/input.c
+@@ -1015,7 +1015,7 @@ static int input_bits_to_string(char *bu
+ {
+ 	int len = 0;
+ 
+-	if (INPUT_COMPAT_TEST) {
++	if (in_compat_syscall()) {
+ 		u32 dword = bits >> 32;
+ 		if (dword || !skip_empty)
+ 			len += snprintf(buf, buf_size, "%x ", dword);
+_

@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Mar 2016 21:52:03 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38279 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014290AbcCVUwA5-3MZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Mar 2016 21:52:00 +0100
-Received: from akpm3.mtv.corp.google.com (unknown [104.132.1.65])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 817E074;
-        Tue, 22 Mar 2016 20:51:53 +0000 (UTC)
-Date:   Tue, 22 Mar 2016 13:51:52 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        X86 ML <x86@kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        linux-parisc@vger.kernel.org,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 14/16] input: Redefine INPUT_COMPAT_TEST as
- in_compat_syscall()
-Message-Id: <20160322135152.78d21ee6d56b702f06c5e01f@linux-foundation.org>
-In-Reply-To: <20160127210610.GB28687@dtor-ws>
-References: <cover.1453759363.git.luto@kernel.org>
-        <64480084bc652d5fa91bf5cd4be979e2f1e4cf11.1453759363.git.luto@kernel.org>
-        <CAKdAkRQm6ADz5aCYAFxXcoGZ2zNFwTUXjMzZdNj-D2-YrYQtrg@mail.gmail.com>
-        <CALCETrUUNM1Qoqna1e7qmEqNUwo99PJe9fSuXG4fzPdSBLfPuA@mail.gmail.com>
-        <20160127210610.GB28687@dtor-ws>
-X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2016 12:08:54 +0100 (CET)
+Received: from exsmtp03.microchip.com ([198.175.253.49]:51874 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27008157AbcCWLIxEUlEX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2016 12:08:53 +0100
+Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch03.mchp-main.com
+ (10.10.76.49) with Microsoft SMTP Server id 14.3.181.6; Wed, 23 Mar 2016
+ 04:08:43 -0700
+Received: by mx.microchip.com (sSMTP sendmail emulation); Wed, 23 Mar 2016
+ 16:37:06 +0530
+From:   Purna Chandra Mandal <purna.mandal@microchip.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <linux-mips@linux-mips.org>,
+        Joshua Henderson <digitalpeer@digitalpeer.com>,
+        Purna Chandra Mandal <purna.mandal@microchip.com>,
+        <devicetree@vger.kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        <linux-clk@vger.kernel.org>, Kumar Gala <galak@codeaurora.org>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Joshua Henderson <joshua.henderson@microchip.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Sandeep Sheriker <sandeepsheriker.mallikarjun@microchip.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH v10 0/3] PIC32MZDA Clock Driver
+Date:   Wed, 23 Mar 2016 16:36:45 +0530
+Message-ID: <1458731208-25333-1-git-send-email-purna.mandal@microchip.com>
+X-Mailer: git-send-email 1.8.3.1
+MIME-Version: 1.0
+Content-Type: text/plain
+Return-Path: <Purna.Mandal@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52681
+X-archive-position: 52682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: purna.mandal@microchip.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,160 +51,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 27 Jan 2016 13:06:10 -0800 Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
+Clock bindings got acked and then essentially unacked, while the clock
+driver never made it upstream. In the meantime, the initial DTS file
+made it upstream. This latest patch series includes a patch to go back
+and correct the DTS files to reflect the new clock bindings in this
+patch series.
 
-> On Wed, Jan 27, 2016 at 12:29:14PM -0800, Andy Lutomirski wrote:
-> > On Wed, Jan 27, 2016 at 11:17 AM, Dmitry Torokhov
-> > <dmitry.torokhov@gmail.com> wrote:
-> > > Hi Andy,
-> > >
-> > > On Mon, Jan 25, 2016 at 2:24 PM, Andy Lutomirski <luto@kernel.org> wrote:
-> > >> The input compat code should work like all other compat code: for
-> > >> 32-bit syscalls, use the 32-bit ABI and for 64-bit syscalls, use the
-> > >> 64-bit ABI.  We have a helper for that (in_compat_syscall()): just
-> > >> use it.
-> > >>
-> > >> Signed-off-by: Andy Lutomirski <luto@kernel.org>
-> > >> ---
-> > >>  drivers/input/input-compat.h | 12 +-----------
-> > >>  1 file changed, 1 insertion(+), 11 deletions(-)
-> > >>
-> > >> diff --git a/drivers/input/input-compat.h b/drivers/input/input-compat.h
-> > >> index 148f66fe3205..0f25878d5fa2 100644
-> > >> --- a/drivers/input/input-compat.h
-> > >> +++ b/drivers/input/input-compat.h
-> > >> @@ -17,17 +17,7 @@
-> > >>
-> > >>  #ifdef CONFIG_COMPAT
-> > >>
-> > >> -/* Note to the author of this code: did it ever occur to
-> > >> -   you why the ifdefs are needed? Think about it again. -AK */
-> > >> -#if defined(CONFIG_X86_64) || defined(CONFIG_TILE)
-> > >> -#  define INPUT_COMPAT_TEST is_compat_task()
-> > >> -#elif defined(CONFIG_S390)
-> > >> -#  define INPUT_COMPAT_TEST test_thread_flag(TIF_31BIT)
-> > >> -#elif defined(CONFIG_MIPS)
-> > >> -#  define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT_ADDR)
-> > >> -#else
-> > >> -#  define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT)
-> > >> -#endif
-> > >> +#define INPUT_COMPAT_TEST in_compat_syscall()
-> > >>
-> > >
-> > >
-> > > If we now have function that works on all arches I'd prefer if we used
-> > > it directly instead of continuing using INPUT_COMPAT_TEST.
-> > 
-> > I'll write a followup patch for that if you don't beat me to it.
-> 
-> I promise I wont ;)
+Purna Chandra Mandal (3):
+  dt/bindings: Add PIC32 clock binding documentation
+  clk: microchip: Add PIC32 clock driver
+  MIPS: dts: pic32: Update dts to reflect new PIC32MZDA clk binding
 
-Well someone needs beating!
+ .../devicetree/bindings/clock/microchip,pic32.txt  |  39 +
+ arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi        | 236 -----
+ arch/mips/boot/dts/pic32/pic32mzda.dtsi            |  63 +-
+ arch/mips/boot/dts/pic32/pic32mzda_sk.dts          |   5 +-
+ drivers/clk/Kconfig                                |   3 +
+ drivers/clk/Makefile                               |   1 +
+ drivers/clk/microchip/Makefile                     |   2 +
+ drivers/clk/microchip/clk-core.c                   | 954 +++++++++++++++++++++
+ drivers/clk/microchip/clk-core.h                   |  78 ++
+ drivers/clk/microchip/clk-pic32mzda.c              | 240 ++++++
+ include/dt-bindings/clock/microchip,pic32-clock.h  |  42 +
+ 11 files changed, 1404 insertions(+), 259 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/microchip,pic32.txt
+ delete mode 100644 arch/mips/boot/dts/pic32/pic32mzda-clk.dtsi
+ create mode 100644 drivers/clk/microchip/Makefile
+ create mode 100644 drivers/clk/microchip/clk-core.c
+ create mode 100644 drivers/clk/microchip/clk-core.h
+ create mode 100644 drivers/clk/microchip/clk-pic32mzda.c
+ create mode 100644 include/dt-bindings/clock/microchip,pic32-clock.h
 
-I'm prepping this patch for Linus now.  I shall queue up the below for
-later.
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: drivers/input: eliminate INPUT_COMPAT_TEST macro
-
-INPUT_COMPAT_TEST became much simpler after "input: redefine
-INPUT_COMPAT_TEST as in_compat_syscall()" so we can cleanly eliminate it
-altogether.
-
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Andy Lutomirski <luto@amacapital.net>
-Cc: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- drivers/input/input-compat.c |    6 +++---
- drivers/input/input-compat.h |    4 +---
- drivers/input/input.c        |    2 +-
- drivers/input/misc/uinput.c  |    4 ++--
- 4 files changed, 7 insertions(+), 9 deletions(-)
-
-diff -puN drivers/input/input-compat.h~a drivers/input/input-compat.h
---- a/drivers/input/input-compat.h~a
-+++ a/drivers/input/input-compat.h
-@@ -17,8 +17,6 @@
- 
- #ifdef CONFIG_COMPAT
- 
--#define INPUT_COMPAT_TEST in_compat_syscall()
--
- struct input_event_compat {
- 	struct compat_timeval time;
- 	__u16 type;
-@@ -57,7 +55,7 @@ struct ff_effect_compat {
- 
- static inline size_t input_event_size(void)
- {
--	return (INPUT_COMPAT_TEST && !COMPAT_USE_64BIT_TIME) ?
-+	return (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) ?
- 		sizeof(struct input_event_compat) : sizeof(struct input_event);
- }
- 
-diff -puN drivers/input/misc/uinput.c~a drivers/input/misc/uinput.c
---- a/drivers/input/misc/uinput.c~a
-+++ a/drivers/input/misc/uinput.c
-@@ -664,7 +664,7 @@ struct uinput_ff_upload_compat {
- static int uinput_ff_upload_to_user(char __user *buffer,
- 				    const struct uinput_ff_upload *ff_up)
- {
--	if (INPUT_COMPAT_TEST) {
-+	if (in_compat_syscall()) {
- 		struct uinput_ff_upload_compat ff_up_compat;
- 
- 		ff_up_compat.request_id = ff_up->request_id;
-@@ -695,7 +695,7 @@ static int uinput_ff_upload_to_user(char
- static int uinput_ff_upload_from_user(const char __user *buffer,
- 				      struct uinput_ff_upload *ff_up)
- {
--	if (INPUT_COMPAT_TEST) {
-+	if (in_compat_syscall()) {
- 		struct uinput_ff_upload_compat ff_up_compat;
- 
- 		if (copy_from_user(&ff_up_compat, buffer,
-diff -puN drivers/input/input-compat.c~a drivers/input/input-compat.c
---- a/drivers/input/input-compat.c~a
-+++ a/drivers/input/input-compat.c
-@@ -17,7 +17,7 @@
- int input_event_from_user(const char __user *buffer,
- 			  struct input_event *event)
- {
--	if (INPUT_COMPAT_TEST && !COMPAT_USE_64BIT_TIME) {
-+	if (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) {
- 		struct input_event_compat compat_event;
- 
- 		if (copy_from_user(&compat_event, buffer,
-@@ -41,7 +41,7 @@ int input_event_from_user(const char __u
- int input_event_to_user(char __user *buffer,
- 			const struct input_event *event)
- {
--	if (INPUT_COMPAT_TEST && !COMPAT_USE_64BIT_TIME) {
-+	if (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) {
- 		struct input_event_compat compat_event;
- 
- 		compat_event.time.tv_sec = event->time.tv_sec;
-@@ -65,7 +65,7 @@ int input_event_to_user(char __user *buf
- int input_ff_effect_from_user(const char __user *buffer, size_t size,
- 			      struct ff_effect *effect)
- {
--	if (INPUT_COMPAT_TEST) {
-+	if (in_compat_syscall()) {
- 		struct ff_effect_compat *compat_effect;
- 
- 		if (size != sizeof(struct ff_effect_compat))
-diff -puN drivers/input/input.c~a drivers/input/input.c
---- a/drivers/input/input.c~a
-+++ a/drivers/input/input.c
-@@ -1015,7 +1015,7 @@ static int input_bits_to_string(char *bu
- {
- 	int len = 0;
- 
--	if (INPUT_COMPAT_TEST) {
-+	if (in_compat_syscall()) {
- 		u32 dword = bits >> 32;
- 		if (dword || !skip_empty)
- 			len += snprintf(buf, buf_size, "%x ", dword);
-_
+-- 
+1.8.3.1

@@ -1,16 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Mar 2016 14:03:46 +0100 (CET)
-Received: from casper.infradead.org ([85.118.1.10]:48259 "EHLO
-        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27024882AbcCXNDokRSjQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Mar 2016 14:03:44 +0100
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=twins)
-        by casper.infradead.org with esmtpsa (Exim 4.85 #2 (Red Hat Linux))
-        id 1aj4um-0006fV-HQ; Thu, 24 Mar 2016 13:03:04 +0000
-Received: by twins (Postfix, from userid 1000)
-        id 1DF171257A0D9; Thu, 24 Mar 2016 14:03:03 +0100 (CET)
-Date:   Thu, 24 Mar 2016 14:03:03 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Jiri Slaby <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Mar 2016 14:05:14 +0100 (CET)
+Received: from mail-wm0-f68.google.com ([74.125.82.68]:33457 "EHLO
+        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008135AbcCXNFNl4S0Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Mar 2016 14:05:13 +0100
+Received: by mail-wm0-f68.google.com with SMTP id u125so12069799wmg.0;
+        Thu, 24 Mar 2016 06:05:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=w0gDGECLY4N91SQmlmzxK8ngAWehyw5/nDp8z02mnP4=;
+        b=iCiLOrFSV8S1L9Zkm8sS7gDqAIy5d03RrK459cjMkELR/LZ/xslvc1LL2rAM0AF75T
+         1dIOBuKiQWxxM3WRWC0h1WqW5QwG0G97AbhAAPegRT72s4HwCcZFL2Xi58GQZg4xuW1C
+         FxHfkdx/2gH3TVrrVYKAtAH/xCCGe0xLIJbSfZwGdz0cP5au+vhkShmSdmiXxbirsO4V
+         6MMQwxGFoEpRb5vxHXGrtGmVuju59gq460YsWXr+PKWmky8X3Azpm3BjzWJ0lfjSffxV
+         r+YlB7sfP12g+JoGKKa2Af9HgX84nzh5Hpl89715ks/v9XgveNTMsc/7ci0mCma1K/rv
+         kcxA==
+X-Gm-Message-State: AD7BkJJOkt85OQBH1bbG3Mf9MbFD7bJiqo7QPlZFpMXcWnu+SOFlCO1qFG4wtpKG/86YZQ==
+X-Received: by 10.28.150.4 with SMTP id y4mr10010374wmd.43.1458824708430;
+        Thu, 24 Mar 2016 06:05:08 -0700 (PDT)
+Received: from ?IPv6:2a01:4240:2e27:ad85:aaaa::19f? (f.9.1.0.0.0.0.0.0.0.0.0.a.a.a.a.5.8.d.a.7.2.e.2.0.4.2.4.1.0.a.2.v6.cust.nbox.cz. [2a01:4240:2e27:ad85:aaaa::19f])
+        by smtp.gmail.com with ESMTPSA id e25sm26947397wmi.21.2016.03.24.06.05.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 24 Mar 2016 06:05:07 -0700 (PDT)
+Subject: Re: [PATCH 3/4] exit_thread: accept a task parameter to be exited
+To:     Peter Zijlstra <peterz@infradead.org>
+References: <1458824294-29733-1-git-send-email-jslaby@suse.cz>
+ <20160324130303.GS6356@twins.programming.kicks-ass.net>
 Cc:     akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -71,23 +87,24 @@ Cc:     akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
         user-mode-linux-devel@lists.sourceforge.net,
         user-mode-linux-user@lists.sourceforge.net,
         linux-xtensa@linux-xtensa.org
-Subject: Re: [PATCH 3/4] exit_thread: accept a task parameter to be exited
-Message-ID: <20160324130303.GS6356@twins.programming.kicks-ass.net>
-References: <1458824294-29733-1-git-send-email-jslaby@suse.cz>
+From:   Jiri Slaby <jslaby@suse.cz>
+Message-ID: <56F3E5FF.9030105@suse.cz>
+Date:   Thu, 24 Mar 2016 14:05:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1458824294-29733-1-git-send-email-jslaby@suse.cz>
-User-Agent: Mutt/1.5.21 (2012-12-30)
-Return-Path: <peterz@infradead.org>
+In-Reply-To: <20160324130303.GS6356@twins.programming.kicks-ass.net>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <jirislaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52695
+X-archive-position: 52696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -100,13 +117,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 24, 2016 at 01:58:13PM +0100, Jiri Slaby wrote:
->  void
-> -exit_thread(void)
-> +exit_thread(struct task_struct *me)
->  {
->  }
+On 03/24/2016, 02:03 PM, Peter Zijlstra wrote:
+> On Thu, Mar 24, 2016 at 01:58:13PM +0100, Jiri Slaby wrote:
+>>  void
+>> -exit_thread(void)
+>> +exit_thread(struct task_struct *me)
+>>  {
+>>  }
+> 
+> task_struct arguments are called: tsk, task, p
+> 'me' seems very wrong, as that could only mean 'current', and its
+> clearly not that.
 
-task_struct arguments are called: tsk, task, p
-'me' seems very wrong, as that could only mean 'current', and its
-clearly not that.
+Ah, OK. I will wait for more feedback and will fix this.
+
+thanks,
+-- 
+js
+suse labs

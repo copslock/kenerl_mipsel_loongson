@@ -1,46 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2016 23:00:18 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:48876 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008998AbcCWWAPu3YvA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2016 23:00:15 +0100
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 05CF7615D4;
-        Wed, 23 Mar 2016 22:00:14 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E62C0615BC; Wed, 23 Mar 2016 22:00:13 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 239876022C;
-        Wed, 23 Mar 2016 22:00:12 +0000 (UTC)
-Date:   Wed, 23 Mar 2016 15:00:12 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] drivers/firmware/broadcom/bcm47xx_nvram.c: fix
- incorrect __ioread32_copy
-Message-ID: <20160323220012.GB18567@codeaurora.org>
-References: <1458083178-8207-1-git-send-email-aaro.koskinen@iki.fi>
- <56F30E1F.5020108@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Mar 2016 01:44:35 +0100 (CET)
+Received: from mail-pa0-f54.google.com ([209.85.220.54]:33473 "EHLO
+        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008164AbcCXAodw7Zku (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Mar 2016 01:44:33 +0100
+Received: by mail-pa0-f54.google.com with SMTP id fl4so8105553pad.0
+        for <linux-mips@linux-mips.org>; Wed, 23 Mar 2016 17:44:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hurleysoftware-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=xpiX2dI4QrKoywGqyPS6SFfsSAV0DJNZaNY5P7b5NM4=;
+        b=D5jpExQ6TqVc2klxluz1LZZdqkb7zx1DyiK3ma7y5DxsHM7XfamvdV6dhM99/kfM7N
+         q1Bb5Jb0aO8cXGsIBa8ZJnk+2sajA29eZDLxRIj9OufyYj69lD5mMj9Xc6E52OIC+Imc
+         SKF9aNTGMfuxXLcbpMGiSKv/+bo057fwex+j+Q3tvEoymBD/lYxT2vUpe6G+ht4Xv0pT
+         oo1GTbG6QI7zs8wqPXKkDXY+bCXHVMKoKtIqlM1ghmfZxfDapnlAY6jhrfNu7B7xrHvX
+         bssuw1dGiOBX7ByZmHuHoKjMCQyxHwFcsMTFVFprAtVfLxPLemJiivleyaGDIaUMtcTN
+         vxjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=xpiX2dI4QrKoywGqyPS6SFfsSAV0DJNZaNY5P7b5NM4=;
+        b=Vi8pSc3667yOKD5dlqeMHfgarvSojWQZp3pWcgL/D/w9wE9SKx2DlGMm6F1Pb4xXm7
+         0C+eu6fnqW1Wp0blQmbTv+y0vLSMeRNZsadaJi7gurQHsEnCqcM5k46qbVG/f2+XPQ6J
+         BRMzciYXoHkHNZ28RwkMAyhtlI9i2GgJYnxa+i7VKsQq1VGDV7qYv/g9bLJOhm+Kd4No
+         kLJrIec3bsFczhjX8rkC0imaM6hqVKujZpGTYuwqXVj1dls02Fngi52aIyc1qNKzeltc
+         87F6GF+M0dL5QX/JPtYAPywnGSSgGVfffu7fxl37zw8lxupNoA3ozVUGpIDQkYceNLih
+         2S1A==
+X-Gm-Message-State: AD7BkJKapHUXZrZ29miHflfr7Uv0C4v/WKEP22smAViVjLPXhfjPUxzZcqTNJGcl6icgRg==
+X-Received: by 10.66.102.37 with SMTP id fl5mr8491541pab.32.1458780268064;
+        Wed, 23 Mar 2016 17:44:28 -0700 (PDT)
+Received: from [192.168.1.20] (50-0-163-49.dsl.dynamic.fusionbroadband.com. [50.0.163.49])
+        by smtp.gmail.com with ESMTPSA id 62sm6728974pfk.83.2016.03.23.17.44.26
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 23 Mar 2016 17:44:27 -0700 (PDT)
+Subject: Re: Nonterministic hang during bootconsole/console handover on ath79
+To:     Matthias Schiffer <mschiffer@universe-factory.net>
+References: <56F07DA1.8080404@universe-factory.net>
+ <56F0B189.2080206@hurleysoftware.com> <56F143A8.6020601@universe-factory.net>
+ <56F16708.4020109@hurleysoftware.com> <56F2D523.6000405@universe-factory.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, gregkh@linuxfoundation.org,
+        jslaby@suse.com, linux-mips@linux-mips.org,
+        linux-serial@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+From:   Peter Hurley <peter@hurleysoftware.com>
+Message-ID: <56F3386A.5040100@hurleysoftware.com>
+Date:   Wed, 23 Mar 2016 17:44:26 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <56F30E1F.5020108@hauke-m.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+In-Reply-To: <56F2D523.6000405@universe-factory.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <peter@hurleysoftware.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52690
+X-archive-position: 52691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: peter@hurleysoftware.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,60 +73,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/23, Hauke Mehrtens wrote:
-> On 03/16/2016 12:06 AM, Aaro Koskinen wrote:
-> > Commit 1f330c327900 ("drivers/firmware/broadcom/bcm47xx_nvram.c: use
-> > __ioread32_copy() instead of open-coding") switched to use a generic copy
-> > function, but failed to notice that the header pointer is updated between
-> > the two copies, resulting in bogus data being copied in the latter one.
-> > Fix by keeping the old header pointer.
-> > 
-> > The patch fixes totally broken networking on WRT54GL router (both LAN
-> > and WLAN interfaces fail to probe).
-> > 
-> > Fixes: 1f330c327900 ("drivers/firmware/broadcom/bcm47xx_nvram.c: use __ioread32_copy() instead of open-coding")
-> > Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> > ---
-> > 
-> > 	v2: Avoid using the device memory after the first copy when
-> > 	    checking the nvram length, suggested by Stephen Boyd.
-> > 
-> > 	v1: http://marc.info/?t=145807850800003&r=1&w=2
-> > 
-> >  drivers/firmware/broadcom/bcm47xx_nvram.c | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/firmware/broadcom/bcm47xx_nvram.c b/drivers/firmware/broadcom/bcm47xx_nvram.c
-> > index 0c2f0a6..0b631e5 100644
-> > --- a/drivers/firmware/broadcom/bcm47xx_nvram.c
-> > +++ b/drivers/firmware/broadcom/bcm47xx_nvram.c
-> > @@ -94,15 +94,14 @@ static int nvram_find_and_copy(void __iomem *iobase, u32 lim)
-> >  
-> >  found:
-> >  	__ioread32_copy(nvram_buf, header, sizeof(*header) / 4);
-> > -	header = (struct nvram_header *)nvram_buf;
-> > -	nvram_len = header->len;
-> > +	nvram_len = ((struct nvram_header *)(nvram_buf))->len;
-> 
-> I do not understand why this change is needed? Doesn't the old code do
-> exactly the same as the new one?
-> 
-> The old code updated the header pointer and then accesses a member, the
-> new one directly accesses this member without updating this pointer.
-> 
-> I assume, I am missing something. ;-)
+Hi Matthias,
 
-The goal is to access 'nvram_buf' which is a copy of 'header'.
-This is to avoid any problems with accessing device memory, i.e.
-'header', without using the appropriate I/O accessors (readl,
-readw, readb).
+On 03/23/2016 10:40 AM, Matthias Schiffer wrote:
+> On 03/22/2016 04:38 PM, Peter Hurley wrote:
+>> On 03/22/2016 06:07 AM, Matthias Schiffer wrote:
+>>> I've tried your patch and I can't reproduce the issue anymore with it; I
+>>> have no idea if this actually has to do something with the issue, or the
+>>> change of the code path just hid the bug again.
+>>>
+>>> Regarding your other mail: with "small change", I was not talking about
+>>> adding an additional printk; as mentioned, even changing the numbers in
+>>> UTS_VERSION can hide the issue. I diffed a working and a broken kernel
+>>> image, and the UTS_VERSION is really the only difference. I have no idea
+>>> how to explain this.
+>>
+>> If _any_ change may hide the problem, that will make it impossible
+>> to determine if any attempted fix actually works, regardless of what
+>> debugging method you use.
+>>
+>> FWIW, you could still use the boot console to debug the problem by
+>> disabling the regular command-line console.
+>>
+>> Regards,
+>> Peter Hurley
+> 
+> Hi,
+> it seems Peter was on the right track. With some help from Ralf, I was able
+> to narrow down the issue a bit, and I'm fairly sure the hang happens
+> somewhere in autoconfig().
+> 
+> autoconfig_16550a() is doing all kinds of weird checks to detect different
+> hardware by writing a lot of register values which are documented as
+> reserved in the AR7242 datasheet (there's a leaked version going around
+> that can be easily googled...), no idea if any of those are problematic.
+> Just setting UPF_FIXED_TYPE as suggested by Peter would avoid that code
+> altogether.
 
-The bug that's being fixed though is to make sure 'header'
-doesn't get overwritten with the pointer to the in-memory copy
-that we just made. Further down in this function we copy the
-second 'header' that lives in device memory, and repointing
-'header' to the in-memory copy breaks that.
+That's just a debugging patch and not appropriate for permanent use,
+the reason being that this uart is _not_ 16550 compatible (or even 16450
+compatible).
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+The three options for 8250 driver support for this part are:
+1. Similar to the debugging patch, set UPF_FIXED_TYPE but set port type
+   to PORT_8250 instead. This will lose FIFO support so 115K won't be
+   possible and likely neither will 38400.
+
+2. Set UPF_FIXED_TYPE but define a new PORT_* value and add support for
+   this PORT_* value to uart_config array, uapi headers, and anywhere
+   the scratch register is used.
+
+3. As with 2. above but don't set UPF_FIXED_TYPE and add a probe function
+   that detects ports of this type to autoconfig(). I don't recommend this
+   method.
+
+This requirement is independent of fixing prom_putchar_ar71xx().
+
+
+> That being said, I found another minimal change that seems to fix the
+> issue: prom_putchar_ar71xx() in arch/mips/ath79/early_printk.c only waits
+> for UART_LSR_THRE, while serial_putc() in
+> drivers/tty/serial/8250/8250_early.c waits for (UART_LSR_TEMT |
+> UART_LSR_THRE). Adjusting arch/mips/ath79/early_printk.c in the same way
+> makes the hangs go away.
+
+Go ahead and do this as well.
+
+
+> Maybe the AR7242 doesn't like its serial config
+> registers being poked while there's still something in the FIFO? Waiting
+> for UART_LSR_TEMT seems like a good idea anyways to ensure that all
+> characters have been printed before autoconfig() starts taking things
+> apart.
+
+I agree.
+
+
+> (Why do these two versions of essentially the same code exist anyways?)
+
+earlyprintk command-line parameter is arch-specific and predates
+the arch-independent earlycon support.
+
+earlycon requires the arch to either supply a fixmap for the uart i/o address
+or ioremap() must work by parse_early_param(); note how the mmio in
+arch/mips/ath79/early_printk.c accesses the mmio space @ KSEG1ADDR(uart base addr)?
+
+Can't do that in arch-independent earlycon code.
+
+Regards,
+Peter Hurley

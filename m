@@ -1,44 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Mar 2016 17:10:32 +0200 (CEST)
-Received: from mail1.windriver.com ([147.11.146.13]:39317 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014253AbcC1PKbQ0Tz9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Mar 2016 17:10:31 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail1.windriver.com (8.15.2/8.15.1) with ESMTPS id u2SFAGqX012075
-        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
-        Mon, 28 Mar 2016 08:10:17 -0700 (PDT)
-Received: from yow-pgortmak-d1 (128.224.56.57) by ALA-HCA.corp.ad.wrs.com
- (147.11.189.40) with Microsoft SMTP Server id 14.3.248.2; Mon, 28 Mar 2016
- 08:10:15 -0700
-Received: by yow-pgortmak-d1 (Postfix, from userid 1000)        id CD61E2800AB; Mon,
- 28 Mar 2016 11:10:14 -0400 (EDT)
-Date:   Mon, 28 Mar 2016 11:10:14 -0400
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     James Bottomley <jejb@linux.vnet.ibm.com>
-CC:     <linux-kernel@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        <linux-m68k@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-scsi@vger.kernel.org>
-Subject: Re: [PATCH 0/2] scsi: remove orphaned modular code from non-modular
- drivers
-Message-ID: <20160328151014.GR16831@windriver.com>
-References: <1459098025-26269-1-git-send-email-paul.gortmaker@windriver.com>
- <1459143107.13004.21.camel@linux.vnet.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Mar 2016 19:25:13 +0200 (CEST)
+Received: from mail-pa0-f68.google.com ([209.85.220.68]:34394 "EHLO
+        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025312AbcC1RZLTe024 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Mar 2016 19:25:11 +0200
+Received: by mail-pa0-f68.google.com with SMTP id hj7so16066471pac.1;
+        Mon, 28 Mar 2016 10:25:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-transfer-encoding;
+        bh=YaCi73dDtUsHh2EqkfSizYc6z3dy/uJ+keqCS1diyGg=;
+        b=T8LWIIuRqMT61OD+CaNklW0G9ttu6xSJfpkXYTqMFTBAa8V9lOqn1222Q6hxGi+n8s
+         px3XVMLkL5xnX0wlC9E8ejbS1YkpGaHTfJnD7s/Ox9b4zowllxgy80x4KYrBEmXSIaWW
+         Matx3ML/DClZOtJ3c/+oWo/1XAC4TCavyIy6OZH+VciaVVD9VgCJ9W/wqwyq8DyPSdZ5
+         1OuskqNAuzYlDZePCv8pwiFTdJR2y7oQUiPEHenhYmCfDINUwO5S3a5ZBdjJOO5AitVh
+         UXnG2oJ52Vrg5k6e9PiQp6IK0zYD5STDQXTW+s8bZUQz4PXLtUYYwliPj8L6A8g/PxTH
+         UvLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-transfer-encoding;
+        bh=YaCi73dDtUsHh2EqkfSizYc6z3dy/uJ+keqCS1diyGg=;
+        b=IJXcV4sn9Oi3fMM9DKGImUIA8/YELZdgckc5FEsU+/XnurOYofC7S4gpIqjqMKXrzI
+         kWjqhgALgYg1285kFUyuSqkkcQ520IOs2gUGmfxscobBndwD0EsQe7sefq4iwX32cewB
+         oRMYOpLJ7zQIZooiOaaxxihpCCPfqMgFjoMAb24IieLWKvWMI8WQpo2RACvDPyqsE1eJ
+         2Ei0Nm7Z65FybtRT6ST67jLSJ1CUyQD06QkLwBer1zgT/6twR10QXqaQC14PsgQHUXMZ
+         t/BLd6gIsqlSX/Nr5tgxlFg56ZdIs5nQdcx0RLT8QIODN2hDm+zeK52ArNVzOiRpY40O
+         cIrw==
+X-Gm-Message-State: AD7BkJIa8LzEOvRk2c2VsLiE7zfEIv/OHUVRseV9bGbzF/OfgG9FFeBXQP9Z8nwVnu1udQ==
+X-Received: by 10.66.61.236 with SMTP id t12mr33303799par.83.1459185905167;
+        Mon, 28 Mar 2016 10:25:05 -0700 (PDT)
+Received: from dl.caveonetworks.com ([64.2.3.194])
+        by smtp.googlemail.com with ESMTPSA id 9sm37125513pfm.10.2016.03.28.10.25.02
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 28 Mar 2016 10:25:03 -0700 (PDT)
+Message-ID: <56F968EE.1000307@gmail.com>
+Date:   Mon, 28 Mar 2016 10:25:02 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1459143107.13004.21.camel@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <Paul.Gortmaker@windriver.com>
+To:     "zhaoxiu.zeng" <zhaoxiu.zeng@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 07/31] Add mips-specific parity functions
+References: <1458788612-4367-1-git-send-email-zhaoxiu.zeng@gmail.com> <56F7785F.1090101@gmail.com>
+In-Reply-To: <56F7785F.1090101@gmail.com>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52712
+X-archive-position: 52713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,66 +70,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[Re: [PATCH 0/2] scsi: remove orphaned modular code from non-modular drivers] On 27/03/2016 (Sun 22:31) James Bottomley wrote:
+On 03/26/2016 11:06 PM, zhaoxiu.zeng wrote:
+> From: Zeng Zhaoxiu <zhaoxiu.zeng@gmail.com>
+>
 
-> On Sun, 2016-03-27 at 13:00 -0400, Paul Gortmaker wrote:
-> > In the ongoing audit/cleanup of non-modular code needlessly using 
-> > modular infrastructure, the SCSI subsystem fortunately only contains 
-> > two instances that I detected.  Both are for legacy drivers that 
-> > predate the git epoch, so cleary there is no demand for converting 
-> > these drivers to be tristate.
-> > 
-> > For anyone new to the underlying goal of this cleanup, we are trying 
-> > to not use module support for code that isn't buildable as a module
-> > since:
-> > 
-> >  (1) it is easy to accidentally write unused module_exit and remove
-> > code
-> >  (2) it can be misleading when reading the source, thinking it can be
-> >      modular when the Makefile and/or Kconfig prohibit it
-> >  (3) it requires the include of the module.h header file which in
-> > turn
-> >      includes nearly everything else, thus adding to CPP overhead.
-> >  (4) it gets copied/replicated into other code and spreads like
-> > weeds.
-> 
-> I don't really buy any of these as being credible issues for the
-> ancient drivers, so there doesn't appear to be an real benefit to this
-> conversion; however, besides the danger of touching old stuff, there
-> are some down sides:
+There is nothing MIPS specific here.  Why not put it in asm-generic or 
+some similar place where it can be shared by all architectures?
 
-Thanks James for your review and always interesting/alternative
-viewpoints.  You seem pretty clear in your conviction here, so I won't
-bother making counter points ; best we just agree to disagree, and I
-won't bother you with these patches again.
+Also, are you sure __builtin_popcount() is available on all GCC versions 
+that are supported for building the kernel?
 
-Paul.
---
+David Daney
 
-> 
-> > -MODULE_DESCRIPTION("Sun3x ESP SCSI driver");
-> > -MODULE_AUTHOR("Thomas Bogendoerfer (tsbogend@alpha.franken.de)");
-> > -MODULE_LICENSE("GPL");
-> > -MODULE_VERSION(DRV_VERSION);
-> 
-> These tags are usefully greppable for drivers, regardless of whether
-> they generate actual kernel side information.
-> 
-> > We explicitly disallow a driver unbind, since that doesn't have a
-> > sensible use case anyway, and it allows us to drop the ".remove"
-> > code for non-modular drivers.
-> 
-> That's bogus.  I use bind and unbind a lot for testing built in drivers
-> but the usual user use case is for resetting the devices.
-> 
-> > Build tested for mips (jazz) and m68k (sun3x) on 4.6-rc1 to ensure no
-> > silly typos crept in.
-> 
-> For trivial changes, build testing is not really sufficient: a
-> significant fraction of them break something that isn't spotted by the
-> reviewers.  For the older drivers, this isn't discovered for months to
-> years and then someone has to go digging back through all the so called
-> trivial changes to find which one it was.
-> 
-> James
-> 
+
+> Signed-off-by: Zeng Zhaoxiu <zhaoxiu.zeng@gmail.com>
+> ---
+>   arch/mips/include/asm/arch_parity.h | 44 +++++++++++++++++++++++++++++++++++++
+>   arch/mips/include/asm/bitops.h      |  3 +++
+>   2 files changed, 47 insertions(+)
+>   create mode 100644 arch/mips/include/asm/arch_parity.h
+>
+> diff --git a/arch/mips/include/asm/arch_parity.h b/arch/mips/include/asm/arch_parity.h
+> new file mode 100644
+> index 0000000..23b3c23
+> --- /dev/null
+> +++ b/arch/mips/include/asm/arch_parity.h
+> @@ -0,0 +1,44 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + */
+> +#ifndef _ASM_ARCH_PARITY_H
+> +#define _ASM_ARCH_PARITY_H
+> +
+> +#ifdef ARCH_HAS_USABLE_BUILTIN_POPCOUNT
+> +
+> +#include <asm/types.h>
+> +
+> +static inline unsigned int __arch_parity32(unsigned int w)
+> +{
+> +	return __builtin_popcount(w) & 1;
+> +}
+> +
+> +static inline unsigned int __arch_parity16(unsigned int w)
+> +{
+> +	return __arch_parity32(w & 0xffff);
+> +}
+> +
+> +static inline unsigned int __arch_parity8(unsigned int w)
+> +{
+> +	return __arch_parity32(w & 0xff);
+> +}
+> +
+> +static inline unsigned int __arch_parity4(unsigned int w)
+> +{
+> +	return __arch_parity32(w & 0xf);
+> +}
+> +
+> +static inline unsigned int __arch_parity64(__u64 w)
+> +{
+> +	return (unsigned int)__builtin_popcountll(w) & 1;
+> +}
+> +
+> +#else
+> +#include <asm-generic/bitops/arch_hweight.h>
+> +#include <asm-generic/bitops/arch_parity.h>
+> +#endif
+> +
+> +#endif /* _ASM_ARCH_PARITY_H */
+> diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitops.h
+> index ce9666c..0b87734 100644
+> --- a/arch/mips/include/asm/bitops.h
+> +++ b/arch/mips/include/asm/bitops.h
+> @@ -626,6 +626,9 @@ static inline int ffs(int word)
+>   #include <asm/arch_hweight.h>
+>   #include <asm-generic/bitops/const_hweight.h>
+>
+> +#include <asm/arch_parity.h>
+> +#include <asm-generic/bitops/const_parity.h>
+> +
+>   #include <asm-generic/bitops/le.h>
+>   #include <asm-generic/bitops/ext2-atomic.h>
+>
+>

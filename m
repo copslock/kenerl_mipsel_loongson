@@ -1,44 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 10:55:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:62931 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006779AbcC2Iz5FRZik (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 10:55:57 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id A927A312E3769;
-        Tue, 29 Mar 2016 09:55:48 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 29 Mar 2016 09:55:50 +0100
-Received: from localhost (10.100.200.97) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 29 Mar
- 2016 09:55:50 +0100
-Date:   Tue, 29 Mar 2016 09:55:49 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, Lars Persson <lars.persson@axis.com>,
-        <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 14:46:00 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.136]:40940 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008033AbcC2Mp6EKpNy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Mar 2016 14:45:58 +0200
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 44AD92026F;
+        Tue, 29 Mar 2016 12:45:55 +0000 (UTC)
+Received: from kaball.uk.xensource.com (default-46-102-197-194.interdsl.co.uk [46.102.197.194])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 933CC20149;
+        Tue, 29 Mar 2016 12:45:47 +0000 (UTC)
+Date:   Tue, 29 Mar 2016 13:44:41 +0100 (BST)
+From:   Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@kaball.uk.xensource.com
+To:     Konrad Rzeszutek Wilk <konrad@kernel.org>
+cc:     Sinan Kaya <okaya@codeaurora.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        linux-arm-kernel@lists.infradead.org, timur@codeaurora.org,
+        cov@codeaurora.org, nwatters@codeaurora.org,
+        linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Huacai Chen <chenhc@lemote.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Jisheng Zhang <jszhang@marvell.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Michael Ellerman <mpe@ellerman.id.au>, X86 <x86@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Denys Vlasenko <dvlasenk@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Valentin Rothberg <valentinrothberg@gmail.com>,
+        Chris Zankel <chris@zankel.net>,
+        Tony Luck <tony.luck@intel.com>, linux-pci@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, Dean Nelson <dnelson@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Suthikulpanit, Suravee" <Suravee.Suthikulpanit@amd.com>,
+        Joe Perches <joe@perches.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH 2/4] MIPS: Flush highmem pages in __flush_dcache_page
-Message-ID: <20160329085549.GA17987@NP-P-BURTON>
-References: <1456799879-14711-1-git-send-email-paul.burton@imgtec.com>
- <1456799879-14711-3-git-send-email-paul.burton@imgtec.com>
- <20160329083543.GD11282@linux-mips.org>
+        sstabellini@kernel.org
+Subject: Re: [PATCH 2/3] swiotlb: prefix dma_to_phys and phys_to_dma
+ functions
+In-Reply-To: <CACJDEmrzKOExg-Rchjy2hfVzkzbCZ=WNn4Bu3EVgim748VvRig@mail.gmail.com>
+Message-ID: <alpine.DEB.2.02.1603291329460.18380@kaball.uk.xensource.com>
+References: <1458252137-24497-1-git-send-email-okaya@codeaurora.org> <1458252137-24497-2-git-send-email-okaya@codeaurora.org> <56EBF09A.1060503@arm.com> <56EC1805.5060207@codeaurora.org> <CACJDEmrzKOExg-Rchjy2hfVzkzbCZ=WNn4Bu3EVgim748VvRig@mail.gmail.com>
+User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20160329083543.GD11282@linux-mips.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [10.100.200.97]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sstabellini@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52726
+X-archive-position: 52727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: sstabellini@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,81 +84,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 29, 2016 at 10:35:43AM +0200, Ralf Baechle wrote:
-> On Tue, Mar 01, 2016 at 02:37:57AM +0000, Paul Burton wrote:
-> 
-> > When flush_dcache_page is called on an executable page, that page is
-> > about to be provided to userland & we can presume that the icache
-> > contains no valid entries for its address range. However if the icache
-> > does not fill from the dcache then we cannot presume that the pages
-> > content has been written back as far as the memories that the dcache
-> > will fill from (ie. L2 or further out).
-> > 
-> > This was being done for lowmem pages, but not for highmem which can lead
-> > to icache corruption. Fix this by mapping highmem pages & flushing their
-> > content from the dcache in __flush_dcache_page before providing the page
-> > to userland, just as is done for lowmem pages.
-> > 
-> > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> > Cc: Lars Persson <lars.persson@axis.com>
-> > ---
-> > 
-> >  arch/mips/mm/cache.c | 12 +++++++++---
-> >  1 file changed, 9 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-> > index 3f159ca..5a67d8c 100644
-> > --- a/arch/mips/mm/cache.c
-> > +++ b/arch/mips/mm/cache.c
-> > @@ -16,6 +16,7 @@
-> >  #include <linux/mm.h>
-> >  
+On Mon, 28 Mar 2016, Konrad Rzeszutek Wilk wrote:
+> On Fri, Mar 18, 2016 at 11:00 AM, Sinan Kaya <okaya@codeaurora.org> wrote:
+> > On 3/18/2016 8:12 AM, Robin Murphy wrote:
+> >> Since we know for sure that swiotlb_to_phys is a no-op on arm64, it might be cleaner to simply not reference it at all. I suppose we could have some private local wrappers, e.g.:
+> >>
+> >> #define swiotlb_to_virt(addr) phys_to_virt((phys_addr_t)(addr))
+> >>
+> >> to keep the intent of the code clear (and just in case anyone ever builds a system mad enough to warrant switching out that definition, but I'd hope that never happens).
+> >>
+> >> Otherwise, looks good - thanks for doing this!
+> >
+> > OK. I added this. Reviewed-by?
+> >
+> > I'm not happy to submit such a big patch for all different ARCHs. I couldn't
+> > find a cleaner solution. I'm willing to split this patch into multiple if there
+> > is a better way.
+> >
+> > diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
+> > index ada00c3..8c0f66b 100644
+> > --- a/arch/arm64/mm/dma-mapping.c
+> > +++ b/arch/arm64/mm/dma-mapping.c
+> > @@ -29,6 +29,14 @@
+> >
 > >  #include <asm/cacheflush.h>
-> > +#include <asm/highmem.h>
-> >  #include <asm/processor.h>
-> >  #include <asm/cpu.h>
-> >  #include <asm/cpu-features.h>
-> > @@ -83,8 +84,6 @@ void __flush_dcache_page(struct page *page)
-> >  	struct address_space *mapping = page_mapping(page);
-> >  	unsigned long addr;
-> >  
-> > -	if (PageHighMem(page))
-> > -		return;
-> >  	if (mapping && !mapping_mapped(mapping)) {
-> >  		SetPageDcacheDirty(page);
-> >  		return;
-> > @@ -95,8 +94,15 @@ void __flush_dcache_page(struct page *page)
-> >  	 * case is for exec env/arg pages and those are %99 certainly going to
-> >  	 * get faulted into the tlb (and thus flushed) anyways.
-> >  	 */
-> > -	addr = (unsigned long) page_address(page);
-> > +	if (PageHighMem(page))
-> > +		addr = (unsigned long)kmap_atomic(page);
-> > +	else
-> > +		addr = (unsigned long)page_address(page);
+> >
+> > +/*
+> > + * If you are building a system without IOMMU, then you are using SWIOTLB
+> > + * library. The ARM64 adaptation of this library does not support address
+> > + * translation and it assumes that physical address = dma address for such
+> > + * a use case. Please don't build a platform that violates this.
+> > + */
+> 
+> Why not just expand the ARM64 part to support address translation?
+>
+> > +#define swiotlb_to_virt(addr) phys_to_virt((phys_addr_t)(addr))
 > > +
-> >  	flush_data_cache_page(addr);
-> > +
-> > +	if (PageHighMem(page))
-> > +		__kunmap_atomic((void *)addr);
+> 
+> Adding Stefano here.
+
+Could you please explain what is the problem that you are trying to
+solve? In other words, what is the issue with assuming that physical
+address = dma address (and the current dma_to_phys and phys_to_dma
+static inlines) if no arm64 platforms violate it? That's pretty much
+what is done on x86 too (without X86_DMA_REMAP).
+
+If you want to make sure that the assumption is not violated, you can
+introduce a boot time check or a BUG_ON somewhere.
+
+If there is an arm64 platform with phys_addr != dma_addr, we need proper
+support for it. In fact even if there is an IOMMU on that platform, when
+running Xen on it, the IOMMU would be used by the hypervisor and Linux
+would still end up without it, using the swiotlb.
+
+ 
+> >  static pgprot_t __get_dma_pgprot(struct dma_attrs *attrs, pgprot_t prot,
+> >                                  bool coherent)
+> >  {
+> > @@ -188,7 +196,7 @@ static void __dma_free(struct device *dev, size_t size,
+> >                        void *vaddr, dma_addr_t dma_handle,
+> >                        struct dma_attrs *attrs)
+> >  {
+> > -       void *swiotlb_addr = phys_to_virt(swiotlb_dma_to_phys(dev, dma_handle));
+> > +       void *swiotlb_addr = swiotlb_to_virt(dma_handle);
+> >
+> >         size = PAGE_ALIGN(size);
+> >
+> > @@ -209,8 +217,7 @@ static dma_addr_t __swiotlb_map_page(struct device *dev, struct page *page,
+> >
+> >         dev_addr = swiotlb_map_page(dev, page, offset, size, dir, attrs);
+> >         if (!is_device_dma_coherent(dev))
+> > -               __dma_map_area(phys_to_virt(swiotlb_dma_to_phys(dev, dev_addr)),
+> > -                              size, dir);
+> > +               __dma_map_area(swiotlb_to_virt(dev_addr), size, dir);
+> >
+> >         return dev_addr;
 > >  }
-> >  
-> >  EXPORT_SYMBOL(__flush_dcache_page);
+> > @@ -283,8 +290,7 @@ static void __swiotlb_sync_single_for_device(struct device *dev,
+> >  {
+> >         swiotlb_sync_single_for_device(dev, dev_addr, size, dir);
+> >         if (!is_device_dma_coherent(dev))
+> > -               __dma_map_area(phys_to_virt(swiotlb_dma_to_phys(dev, dev_addr)),
+> > -                              size, dir);
+> > +               __dma_map_area(swiotlb_to_virt(dev_addr), size, dir);
+> >  }
+> >
+> >
+> >
+> >
+> > --
+> > Sinan Kaya
+> > Qualcomm Technologies, Inc. on behalf of Qualcomm Innovation Center, Inc.
+> > Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, a Linux Foundation Collaborative Project
 > 
-> I don't see how this should work with cache aliases.  If the page is unmapped
-> kmap_atomic will pick a deterministic address only under some circumstances,
-> kmap won't.  As the result the wrong cache way will be flushed out, I think.
-> 
->   Ralf
-
-Hi Ralf,
-
-None of the systems I tested this on have cache aliases, and highmem on
-systems with cache aliases is currently unsupported to the extent that
-we BUG_ON such cases in flush_kernel_dcache_page.
-
-So hopefully you won't require that this code making highmem without
-aliases also fix the currently-unsupported highmem with aliases case?
-
-Thanks,
-    Paul

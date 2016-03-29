@@ -1,42 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 10:36:52 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46201 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27024909AbcC2IgAR1iSk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 10:36:00 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 52E6D93B9BCB;
-        Tue, 29 Mar 2016 09:35:52 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 29 Mar 2016 09:35:54 +0100
-Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 29 Mar 2016 09:35:53 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     <IMG-MIPSLinuxKerneldevelopers@imgtec.com>
-CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-mips@linux-mips.org>, Kees Cook <keescook@chromium.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 5/6] MIPS: seccomp: Support compat with both O32 and N32
-Date:   Tue, 29 Mar 2016 09:35:33 +0100
-Message-ID: <1459240534-8658-6-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1459240534-8658-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1459240534-8658-1-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 10:39:58 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:45538 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27006779AbcC2Ij4ErEVk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Mar 2016 10:39:56 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u2T8dt5h013129;
+        Tue, 29 Mar 2016 10:39:55 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u2T8dssr013128;
+        Tue, 29 Mar 2016 10:39:54 +0200
+Date:   Tue, 29 Mar 2016 10:39:54 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Lars Persson <lars.persson@axis.com>,
+        "stable # v4 . 1+" <stable@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jerome Marchand <jmarchan@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH 3/4] MIPS: Handle highmem pages in __update_cache
+Message-ID: <20160329083953.GE11282@linux-mips.org>
+References: <1456799879-14711-1-git-send-email-paul.burton@imgtec.com>
+ <1456799879-14711-4-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1456799879-14711-4-git-send-email-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52724
+X-archive-position: 52725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,79 +48,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Previously the seccomp would only support strict mode on O32 userland
-programs when the kernel had support for both O32 and N32 ABIs. Remove
-kludge and support both ABIs.
+On Tue, Mar 01, 2016 at 02:37:58AM +0000, Paul Burton wrote:
 
-With this patch in place, the seccomp_bpf self test now passes
-global.mode_strict_support with N32 userland.
+> The following patch will expose __update_cache to highmem pages. Handle
+> them by mapping them in for the duration of the cache maintenance, just
+> like in __flush_dcache_page. The code for that isn't shared because we
+> need the page address in __update_cache so sharing became messy. Given
+> that the entirity is an extra 5 lines, just duplicate it.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Lars Persson <lars.persson@axis.com>
+> Cc: stable <stable@vger.kernel.org> # v4.1+
+> ---
+> 
+>  arch/mips/mm/cache.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+> index 5a67d8c..8befa55 100644
+> --- a/arch/mips/mm/cache.c
+> +++ b/arch/mips/mm/cache.c
+> @@ -149,9 +149,17 @@ void __update_cache(struct vm_area_struct *vma, unsigned long address,
+>  		return;
+>  	page = pfn_to_page(pfn);
+>  	if (page_mapping(page) && Page_dcache_dirty(page)) {
+> -		addr = (unsigned long) page_address(page);
+> +		if (PageHighMem(page))
+> +			addr = (unsigned long)kmap_atomic(page);
+> +		else
+> +			addr = (unsigned long)page_address(page);
+> +
+>  		if (exec || pages_do_alias(addr, address & PAGE_MASK))
+>  			flush_data_cache_page(addr);
+> +
+> +		if (PageHighMem(page))
+> +			__kunmap_atomic((void *)addr);
+> +
+>  		ClearPageDcacheDirty(page);
+>  	}
+>  }
 
-Suggested-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
----
+Yet again this is betting the house on getting the right virtual address
+from kmap_atomic.
 
-Changes in v2: None
-
- arch/mips/include/asm/seccomp.h | 47 +++++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 21 deletions(-)
-
-diff --git a/arch/mips/include/asm/seccomp.h b/arch/mips/include/asm/seccomp.h
-index 1d8a2e2c75c1..684fb3a12ed3 100644
---- a/arch/mips/include/asm/seccomp.h
-+++ b/arch/mips/include/asm/seccomp.h
-@@ -2,27 +2,32 @@
- 
- #include <linux/unistd.h>
- 
--/*
-- * Kludge alert:
-- *
-- * The generic seccomp code currently allows only a single compat ABI.	Until
-- * this is fixed we priorize O32 as the compat ABI over N32.
-- */
--#ifdef CONFIG_MIPS32_O32
--
--#define __NR_seccomp_read_32		4003
--#define __NR_seccomp_write_32		4004
--#define __NR_seccomp_exit_32		4001
--#define __NR_seccomp_sigreturn_32	4193	/* rt_sigreturn */
--
--#elif defined(CONFIG_MIPS32_N32)
--
--#define __NR_seccomp_read_32		6000
--#define __NR_seccomp_write_32		6001
--#define __NR_seccomp_exit_32		6058
--#define __NR_seccomp_sigreturn_32	6211	/* rt_sigreturn */
--
--#endif /* CONFIG_MIPS32_O32 */
-+#ifdef CONFIG_COMPAT
-+static inline const int *get_compat_mode1_syscalls(void)
-+{
-+	static const int syscalls_O32[] = {
-+		__NR_O32_Linux + 3, __NR_O32_Linux + 4,
-+		__NR_O32_Linux + 1, __NR_O32_Linux + 193,
-+		0, /* null terminated */
-+	};
-+	static const int syscalls_N32[] = {
-+		__NR_N32_Linux + 0, __NR_N32_Linux + 1,
-+		__NR_N32_Linux + 58, __NR_N32_Linux + 211,
-+		0, /* null terminated */
-+	};
-+
-+	if (config_enabled(CONFIG_MIPS32_O32) && test_thread_flag(TIF_32BIT_REGS))
-+		return syscalls_O32;
-+
-+	if (config_enabled(CONFIG_MIPS32_N32))
-+		return syscalls_N32;
-+
-+	BUG();
-+}
-+
-+#define get_compat_mode1_syscalls get_compat_mode1_syscalls
-+
-+#endif /* CONFIG_COMPAT */
- 
- #include <asm-generic/seccomp.h>
- 
--- 
-2.5.0
+  Ralf

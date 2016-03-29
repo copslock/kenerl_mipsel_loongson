@@ -1,59 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 03:36:43 +0200 (CEST)
-Received: from mail-ob0-f174.google.com ([209.85.214.174]:36426 "EHLO
-        mail-ob0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007881AbcC2BgmNpsAj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 03:36:42 +0200
-Received: by mail-ob0-f174.google.com with SMTP id m7so811976obh.3;
-        Mon, 28 Mar 2016 18:36:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 03:38:27 +0200 (CEST)
+Received: from mail-oi0-f44.google.com ([209.85.218.44]:32794 "EHLO
+        mail-oi0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007881AbcC2BiZuId7j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 03:38:25 +0200
+Received: by mail-oi0-f44.google.com with SMTP id d205so2335669oia.0;
+        Mon, 28 Mar 2016 18:38:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=LDo3TbriMQ/VqzspUXzQm/CYz9GBOUoKlQQ7pvesiF8=;
-        b=iY5Yx1R8SvZz0MM98W1xoF1iaX5nRUJy3NBcWkP6R7ugsUIU3Czto3TSw4/vEZPZdw
-         SJcFOFXY0ofe4o1peZu18nLc4LlCIguVNqG6DnzzdXDidLgbbYVgmmYm5QZPWurRbp7k
-         pyXzHN6HHELvEX6R04E1Sp+G3U8zUQ0kBmkKqHIyhKcsbDeeEFgTYB9GZ0HtrKZUkibk
-         77ioaxwehoCUWt0bfgq8JFIxaEmywebr3pjOBzz/0DS0xQyJTT1zvmOigl/j5Zon/QEG
-         wwM8U7Ji5r1z+XBjcENWdO+rOAqEFrXnwyDv62p0SAswNAh56hqQT+3PQuAhgGGu8Esc
-         cvAg==
+        bh=ZmWQH34/xpImXocnhP4n2pI294qJyBKZqlDO1Uooxps=;
+        b=IlD+Q1QSs22jYZdsLogZiLXpgs3l2X9zILnBwIKx28NhMQSS1nn3bvcI+7lqIQHN+j
+         ZMfYppfXBhHaha+hF8EVqsU9OKnEf6mNq9yWAo2EdxUpT7f7F4OVNtrWnSIvSxmjFy6r
+         zBemf+SWExV7wKFJb0Z9gNZS0QgOiadimKJQhsRXW8IaF7i8YMMXHzmDV05p8Ikb5FNX
+         t+kntm3qflIN8Sn/2/YDCfVX9xihYWis2/GkDeTDt5/mkGQALRCJagLVwZ4+JM4c0tOq
+         AH/F5g/rOgHaDpnUDcNCty0xzJnYATs6y4M+asV7LCa8LUqwfx7jsJxP4N6eYX4I/qR+
+         DB7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=LDo3TbriMQ/VqzspUXzQm/CYz9GBOUoKlQQ7pvesiF8=;
-        b=IJp1o2IzbuviG8CNGqb/cRagdOCkkI5yieRhg1bRpl6jANF0SGq7rdd83BIqID1zMG
-         cWCm3pu/HFAQeLw+77FSf6/VAmNrkXOk3TDExv57LI7TFrXI3oRNdHjlaBOdhDOyZVJ1
-         dWdYDJjt1od8am79I6VZfhBPFVP+2Oj2wb3B0om0seBqtvXLBqhtgADCDqEx5TNtYmhq
-         DyY5GtODR9gqpm+gJhmKd51aWXHTyuwyxtOCfV69VaVxnoeDapNidkLjX+jU/bJKCMsA
-         vFnNgkCOz9kMvEJ7RHUULEgesl3HmegKQ9um22jinDeRvI+oDRnbW5KLAh6ASbuzldyf
-         3JTw==
-X-Gm-Message-State: AD7BkJIg6/Q0v8K09Vl3jfMeG8TzN3BryNBgWidvua4TYFq/8RdTopphN2SPVOa2FXtqAg==
-X-Received: by 10.60.132.180 with SMTP id ov20mr3185723oeb.71.1459215396564;
-        Mon, 28 Mar 2016 18:36:36 -0700 (PDT)
+        bh=ZmWQH34/xpImXocnhP4n2pI294qJyBKZqlDO1Uooxps=;
+        b=cJ27RXt7L6QCjzCmsmD/FaD2VebLujrVBp4NZTTIbQobnRVFWqkmoeEJwG4BJx6mr3
+         1XDikJ964R9FIpIYWlH1DI4bhIe43uFz9ToAHL7P9spw+QE9us2ZcW6x4I3Y8s5e1S4E
+         PP55xb3ebPcTPE2nKL7XXBZaNhJfWGyPd02ENslLtPrBi1Qd6uOJenTlaLmo7QCIJpoG
+         RBV6OcuhHLH2uK92foMnlRh9JmnSvwaF3AWKzb7Bui++E2iwbxg1EkCmr6kozQUJFeL7
+         Xk539vJqVaZHrTgZufEhdej3Ne9CYFNpGTsGAqVh79+WLusy0pWfIaQIWwnzaed/cZwc
+         UKEQ==
+X-Gm-Message-State: AD7BkJIq37iSQLaK/lJoEXjs9DddFd6vThckSmHW3nVAk24ft1YcoHetjSQRYmFt/FMXJw==
+X-Received: by 10.157.29.143 with SMTP id y15mr14104180otd.114.1459215500004;
+        Mon, 28 Mar 2016 18:38:20 -0700 (PDT)
 Received: from ?IPv6:2001:470:d:73f:2903:38c6:7796:9ae1? ([2001:470:d:73f:2903:38c6:7796:9ae1])
-        by smtp.googlemail.com with ESMTPSA id 91sm8720047otg.16.2016.03.28.18.36.35
+        by smtp.googlemail.com with ESMTPSA id tr6sm8853137obb.18.2016.03.28.18.38.18
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 28 Mar 2016 18:36:36 -0700 (PDT)
-Subject: Re: [PATCH 0/4] MIPS: BMIPS5200 SMP support
+        Mon, 28 Mar 2016 18:38:19 -0700 (PDT)
+Subject: Re: [PATCH 0/6] MIPS: BMIPS: RIXI and workarounds support
 To:     linux-mips@linux-mips.org
-References: <1454552093-17897-1-git-send-email-f.fainelli@gmail.com>
+References: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
 Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
-        jon.fraser@broadcom.com, jaedon.shin@gmail.com,
-        dragan.stancevic@gmail.com, jogo@openwrt.org
+        jon.fraser@broadcom.com, pgynther@google.com,
+        paul.burton@imgtec.com, ddaney.cavm@gmail.com
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <56F9DC22.9030309@gmail.com>
-Date:   Mon, 28 Mar 2016 18:36:34 -0700
+Message-ID: <56F9DC8A.5080802@gmail.com>
+Date:   Mon, 28 Mar 2016 18:38:18 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <1454552093-17897-1-git-send-email-f.fainelli@gmail.com>
+In-Reply-To: <1455051354-6225-1-git-send-email-f.fainelli@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52716
+X-archive-position: 52717
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,31 +70,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 03/02/2016 18:14, Florian Fainelli a écrit :
+Le 09/02/2016 12:55, Florian Fainelli a écrit :
 > Hi all,
 > 
-> This patch series adds BCM7435/BMIPS52000 SMP support, it builds
-> on top of the series submitted here:
+> This patch series contains some workarounds for some bug with pref30 on
+> Broadcom BMIPS5000 CPUs in 7344, 7346 and 7425 chips, and some other changes
+> to allow the use of RIXI/rotr on BMIPS4380 and BMIPS5000.
 > 
-> https://www.linux-mips.org/archives/linux-mips/2016-01/msg00737.html
+> Finally, the last patch adds a debugfs entry for current_cpu_data.options since
+> it might be useful to debug that at a time where we set on the final CPU
+> options.
+> 
+> This is on top of mips-for-linux-next as of
+> a13d2abd8e617a96d235c0a528a742b347650853 ("MIPS: highmem: Turn
+> flush_cache_kmaps into a no-op.")
 
-Ralf, can you also queue these for 4.6 if they look okay to you? Thanks!
+Ralf, patches 2-5 have been marked accepted in patchwork, but I am not
+able to find them in mips-for-linux-next, have they been merged some
+place else? Thanks
 
 > 
-> Florian Fainelli (4):
->   MIPS: BMIPS: Add Whirlwind (BMIPS5200) initialization code
->   MIPS: BMIPS: Add missing 7038 L1 register cells to BCM7435
->   MIPS: BMIPS: Remove maxcpus from BCM97435SVMB DTS
->   MIPS: BMIPS: Fill in current_cpu_data.core
+> Thanks!
 > 
->  arch/mips/boot/dts/brcm/bcm7435.dtsi     |   5 +-
->  arch/mips/boot/dts/brcm/bcm97435svmb.dts |   2 +-
->  arch/mips/kernel/Makefile                |   2 +-
->  arch/mips/kernel/bmips_5xxx_init.S       | 753 +++++++++++++++++++++++++++++++
->  arch/mips/kernel/bmips_vec.S             |  41 +-
->  arch/mips/kernel/smp-bmips.c             |   1 +
->  6 files changed, 797 insertions(+), 7 deletions(-)
->  create mode 100644 arch/mips/kernel/bmips_5xxx_init.S
+> Florian Fainelli (6):
+>   MIPS: BMIPS: Disable pref 30 for buggy CPUs
+>   MIPS: BMIPS: Add early CPU initialization code
+>   MIPS: Allow RIXI to be used on non-R2 or R6 cores
+>   MIPS: Move RIXI exception enabling after vendor-specific cpu_probe
+>   MIPS: BMIPS: BMIPS4380 and BMIPS5000 support RIXI
+>   MIPS: Expose current_cpu_data.options through debugfs
+> 
+>  arch/mips/Kconfig                    |  7 +++
+>  arch/mips/bmips/setup.c              | 17 +++++++
+>  arch/mips/include/asm/bmips.h        |  1 +
+>  arch/mips/include/asm/pgtable-bits.h | 11 ++---
+>  arch/mips/kernel/cpu-probe.c         | 41 ++++++++++++-----
+>  arch/mips/kernel/smp-bmips.c         | 87 ++++++++++++++++++++++++++++++++++++
+>  arch/mips/mm/tlbex.c                 |  2 +-
+>  7 files changed, 150 insertions(+), 16 deletions(-)
 > 
 
 

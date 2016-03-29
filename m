@@ -1,39 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 10:35:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:44368 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27006779AbcC2Ifpmdhbk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Mar 2016 10:35:45 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u2T8ZiRR013043;
-        Tue, 29 Mar 2016 10:35:44 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u2T8ZhR4013042;
-        Tue, 29 Mar 2016 10:35:43 +0200
-Date:   Tue, 29 Mar 2016 10:35:43 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Lars Persson <lars.persson@axis.com>,
-        linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 10:36:06 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:8508 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27024936AbcC2Ifxqs1ak (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 10:35:53 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 74F08C7BEA855;
+        Tue, 29 Mar 2016 09:35:45 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Tue, 29 Mar 2016 09:35:47 +0100
+Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Tue, 29 Mar 2016 09:35:46 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     <IMG-MIPSLinuxKerneldevelopers@imgtec.com>
+CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-mips@linux-mips.org>, Arnd Bergmann <arnd@arndb.de>,
+        Andy Lutomirski <luto@amacapital.net>,
+        "Kees Cook" <keescook@chromium.org>,
+        <linux-kernel@vger.kernel.org>,
+        Shuah Khan <shuahkh@osg.samsung.com>,
+        Eric B Munson <emunson@akamai.com>,
+        James Hogan <james.hogan@imgtec.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH 2/4] MIPS: Flush highmem pages in __flush_dcache_page
-Message-ID: <20160329083543.GD11282@linux-mips.org>
-References: <1456799879-14711-1-git-send-email-paul.burton@imgtec.com>
- <1456799879-14711-3-git-send-email-paul.burton@imgtec.com>
+        <linux-kselftest@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+        "Markos Chandras" <markos.chandras@imgtec.com>,
+        Amanieu d'Antras <amanieu@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alex Smith <alex.smith@imgtec.com>,
+        "Paul Burton" <paul.burton@imgtec.com>,
+        Will Drewry <wad@chromium.org>
+Subject: [PATCH v2 0/6] MIPS seccomp_bpf self test and fixups
+Date:   Tue, 29 Mar 2016 09:35:28 +0100
+Message-ID: <1459240534-8658-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1456799879-14711-3-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52720
+X-archive-position: 52721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,68 +58,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 01, 2016 at 02:37:57AM +0000, Paul Burton wrote:
+These patches imporve seccomp support on MIPS.
 
-> When flush_dcache_page is called on an executable page, that page is
-> about to be provided to userland & we can presume that the icache
-> contains no valid entries for its address range. However if the icache
-> does not fill from the dcache then we cannot presume that the pages
-> content has been written back as far as the memories that the dcache
-> will fill from (ie. L2 or further out).
-> 
-> This was being done for lowmem pages, but not for highmem which can lead
-> to icache corruption. Fix this by mapping highmem pages & flushing their
-> content from the dcache in __flush_dcache_page before providing the page
-> to userland, just as is done for lowmem pages.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Lars Persson <lars.persson@axis.com>
-> ---
-> 
->  arch/mips/mm/cache.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-> index 3f159ca..5a67d8c 100644
-> --- a/arch/mips/mm/cache.c
-> +++ b/arch/mips/mm/cache.c
-> @@ -16,6 +16,7 @@
->  #include <linux/mm.h>
->  
->  #include <asm/cacheflush.h>
-> +#include <asm/highmem.h>
->  #include <asm/processor.h>
->  #include <asm/cpu.h>
->  #include <asm/cpu-features.h>
-> @@ -83,8 +84,6 @@ void __flush_dcache_page(struct page *page)
->  	struct address_space *mapping = page_mapping(page);
->  	unsigned long addr;
->  
-> -	if (PageHighMem(page))
-> -		return;
->  	if (mapping && !mapping_mapped(mapping)) {
->  		SetPageDcacheDirty(page);
->  		return;
-> @@ -95,8 +94,15 @@ void __flush_dcache_page(struct page *page)
->  	 * case is for exec env/arg pages and those are %99 certainly going to
->  	 * get faulted into the tlb (and thus flushed) anyways.
->  	 */
-> -	addr = (unsigned long) page_address(page);
-> +	if (PageHighMem(page))
-> +		addr = (unsigned long)kmap_atomic(page);
-> +	else
-> +		addr = (unsigned long)page_address(page);
-> +
->  	flush_data_cache_page(addr);
-> +
-> +	if (PageHighMem(page))
-> +		__kunmap_atomic((void *)addr);
->  }
->  
->  EXPORT_SYMBOL(__flush_dcache_page);
+Firstly support is added for building the seccomp_bpf self test for
+MIPS. The
+initial results of these tests were:
 
-I don't see how this should work with cache aliases.  If the page is unmapped
-kmap_atomic will pick a deterministic address only under some circumstances,
-kmap won't.  As the result the wrong cache way will be flushed out, I think.
+32bit kernel O32 userspace before: 48 / 48 pass
+64bit kernel O32 userspace before: 47 / 48 pass
+ Failures: TRAP.Handler
+64bit kernel N32 userspace before: 44 / 48 pass
+ Failures: global.mode_strict_support, TRAP.handler,
+TRACE_syscall.syscall_redirected, TRACE_syscall.syscall_dropped
+64bit kernel N64 userspace before: 46 / 48 pass
+ Failures: TRACE_syscall.syscall_redirected,
+TRACE_syscall.syscall_dropped
 
-  Ralf
+The subsequent patches fix issues that were causing the above tests to
+fail. With
+these fixes, the results are:
+32bit kernel O32 userspace after: 48 / 48
+64bit kernel O32 userspace after: 48 / 48
+64bit kernel N32 userspace after: 48 / 48
+64bit kernel N64 userspace after: 48 / 48
+
+Thanks,
+Matt
+
+Changes in v2:
+- Tested on additional platforms
+- Replace __NR_syscall which isn't defined for N32 / N64 ABIs
+
+Matt Redfearn (6):
+  selftests/seccomp: add MIPS self-test support
+  MIPS: Support sending SIG_SYS to 32bit userspace from 64bit kernel
+  MIPS: scall: Handle seccomp filters which redirect syscalls
+  seccomp: Get compat syscalls from asm-generic header
+  MIPS: seccomp: Support compat with both O32 and N32
+  secomp: Constify mode1 syscall whitelist
+
+ arch/mips/include/asm/seccomp.h               | 47 +++++++++++++++------------
+ arch/mips/kernel/scall32-o32.S                | 11 +++----
+ arch/mips/kernel/scall64-64.S                 |  3 +-
+ arch/mips/kernel/scall64-n32.S                | 14 +++++---
+ arch/mips/kernel/scall64-o32.S                | 14 +++++---
+ arch/mips/kernel/signal32.c                   |  6 ++++
+ include/asm-generic/seccomp.h                 | 14 ++++++++
+ kernel/seccomp.c                              | 13 ++------
+ tools/testing/selftests/seccomp/seccomp_bpf.c | 30 +++++++++++++++--
+ 9 files changed, 101 insertions(+), 51 deletions(-)
+
+-- 
+2.5.0

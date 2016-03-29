@@ -1,37 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 16:51:09 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44164 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27008125AbcC2OvIT4gA5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 16:51:08 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email Security Gateway with ESMTPS id 24AB54C9494CA;
-        Tue, 29 Mar 2016 15:50:59 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 29 Mar 2016 15:51:02 +0100
-Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 29 Mar 2016 15:51:01 +0100
-From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-To:     <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        <Zubair.Kakakhel@imgtec.com>, <paul.burton@imgtec.com>
-Subject: [PATCH] MIPS: Detect DSP v3 support
-Date:   Tue, 29 Mar 2016 15:50:25 +0100
-Message-ID: <1459263025-9433-1-git-send-email-Zubair.Kakakhel@imgtec.com>
-X-Mailer: git-send-email 1.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 21:36:21 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.17.13]:51482 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27025627AbcC2TgTrT1wh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 21:36:19 +0200
+Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue104) with ESMTPSA (Nemesis) id 0MCIHB-1acV2o0pgf-00984F; Tue, 29 Mar
+ 2016 21:32:26 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     linux-arm-kernel@lists.infradead.org,
+        Denys Vlasenko <dvlasenk@redhat.com>
+Cc:     Konrad Rzeszutek Wilk <konrad@kernel.org>,
+        Sinan Kaya <okaya@codeaurora.org>, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Huacai Chen <chenhc@lemote.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Jisheng Zhang <jszhang@marvell.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Michael Ellerman <mpe@ellerman.id.au>, timur@codeaurora.org,
+        X86 <x86@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Akinobu Mita <akinobu.mita@gmail.com>, cov@codeaurora.org,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Valentin Rothberg <valentinrothberg@gmail.com>,
+        Chris Zankel <chris@zankel.net>,
+        Tony Luck <tony.luck@intel.com>, linux-pci@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, Dean Nelson <dnelson@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Suthikulpanit, Suravee" <Suravee.Suthikulpanit@amd.com>,
+        Joe Perches <joe@perches.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Robin Murphy <robin.murphy@arm.com>, nwatters@codeaurora.org
+Subject: Re: [PATCH 2/3] swiotlb: prefix dma_to_phys and phys_to_dma functions
+Date:   Tue, 29 Mar 2016 21:32:07 +0200
+Message-ID: <6420021.rzhE3kJKJP@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <CACJDEmrzKOExg-Rchjy2hfVzkzbCZ=WNn4Bu3EVgim748VvRig@mail.gmail.com>
+References: <1458252137-24497-1-git-send-email-okaya@codeaurora.org> <56EC1805.5060207@codeaurora.org> <CACJDEmrzKOExg-Rchjy2hfVzkzbCZ=WNn4Bu3EVgim748VvRig@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.45]
-Return-Path: <Zubair.Kakakhel@imgtec.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:tqnwciplf3N9FU4xAL9BHpvbwDqN+UQyVwaClxmX7+x/D+pFWTw
+ WpXRc87/OqIzDIez85/3q/B73zeQYFX3q8eZrfrcDUI5y2VpQLaFnIOAuBKi78wIbyqQRTb
+ mXfAAioky2HsrLnoMi+xnjTZTEKXTid8UMurmgn+dB7LEO9A52Uk4+T+L7zarXB/N5auT7q
+ B2rjZqjDFmzfSCH2zW0NA==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:mjFFRkxZ4e0=:wgDPle4R7k5GpQmxJ1cQpa
+ OEApsS/XivD39HUjsNwAZW16PGy7/w98rxeEGdjTQKcDEKhVCIK8fWEzD3CWtajfnlZePQUho
+ 4EDWzMO9H7TwuRwmmnw5B2s3qd3l9RWEobAwQu02VJSt1s720w+KrhOEb7Qkn7AsqRN3+XgLR
+ EEV73dEL7Jv2+XgcrDEcp0qcHPUtDu6pEK33LwWVfODASn9R0htXa/4aP2EctphjMk2ERIeNS
+ rZEiloYHbhAmT7Vg3cXUIbZxwkzQ9YKDJ8UtR8AsxAFR/82PvM+nm4Kgfb93h2gGQmAgRcqZO
+ b0+t+euf9zsGZBUsymJWK4Im6nQ6z8+r2voVgIKA6m0Ay46WbMW2o45hFvZLgZ+aZuVZBLs21
+ 8KqX7gYUH7VDSU5TPU5ni9sjAQ/6F8A3HJ2O8+NIzIoTIcS06PwDkNyme6Ug7RTkfj7ZcFJSU
+ vxHuYWWQ8cQ8DBlw0aawhBn8K7TQ9Qsym25wvjwDKvF2eSkKcuYZc8FSD08hUgqgJSFZaiBGj
+ YhjW7Iy9kx3dwIlUp1cWxrOAVbabhV7K98ZpKNEgU7+MwOENjDhhaeZGQYAgx2ZUq+5Phya8P
+ SYKqUHYjvWRx+9PmLj/C3GhT5TlZ5qGWemInQEwo4v7cl4AisWRdt0WbqaoO2BzKpNMzAU8no
+ v+6LIcwIatbUDYumGo/GFrFGEcTJ08z4UpvgwvZsPrW4Z1MKjslaM3Xf70sclObnGkscK/PJq
+ 6DJTFXJMKKBhRhCp
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52729
+X-archive-position: 52730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Zubair.Kakakhel@imgtec.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,80 +89,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-DSPv3 is supported on all MIPSr6 systems which indicate support for DSPv2.
+On Monday 28 March 2016 14:29:29 Konrad Rzeszutek Wilk wrote:
+> > diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
+> > index ada00c3..8c0f66b 100644
+> > --- a/arch/arm64/mm/dma-mapping.c
+> > +++ b/arch/arm64/mm/dma-mapping.c
+> > @@ -29,6 +29,14 @@
+> >
+> >  #include <asm/cacheflush.h>
+> >
+> > +/*
+> > + * If you are building a system without IOMMU, then you are using SWIOTLB
+> > + * library. The ARM64 adaptation of this library does not support address
+> > + * translation and it assumes that physical address = dma address for such
+> > + * a use case. Please don't build a platform that violates this.
+> > + */
+> 
+> Why not just expand the ARM64 part to support address translation?
 
-This doesn't require any changes to the kernel's handling of DSP
-resources. The patch is to detect support and indicate it in /proc/cpuinfo
+Because so far all hardware we have is relatively sane. We only
+need to implement this if someone accidentally puts their DMA
+space at the wrong address.
 
-DSP v3 introduces a new instruction BPOSGE32C
+There is at least one platform that could in theory use this because
+their RAM starts at an address that is outside of the reach of 32-bit
+devices, and a static IOMMU mapping (created by firmware) could be
+used to map the start of RAM into DMA address zero, to avoid having
+to use an IOMMU all the time, but it was considered not worth the
+effort to implement that.
 
-Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-
----
-
-Based on v4.6-rc1
----
- arch/mips/include/asm/cpu-features.h | 4 ++++
- arch/mips/include/asm/cpu.h          | 1 +
- arch/mips/kernel/cpu-probe.c         | 5 ++++-
- arch/mips/kernel/proc.c              | 1 +
- 4 files changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index eeec8c8..0671f29 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -307,6 +307,10 @@
- #define cpu_has_dsp2		(cpu_data[0].ases & MIPS_ASE_DSP2P)
- #endif
- 
-+#ifndef cpu_has_dsp3
-+#define cpu_has_dsp3		(cpu_data[0].ases & MIPS_ASE_DSP3)
-+#endif
-+
- #ifndef cpu_has_mipsmt
- #define cpu_has_mipsmt		(cpu_data[0].ases & MIPS_ASE_MIPSMT)
- #endif
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index a97ca97..e699b23 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -401,5 +401,6 @@ enum cpu_type_enum {
- #define MIPS_ASE_DSP2P		0x00000040 /* Signal Processing ASE Rev 2 */
- #define MIPS_ASE_VZ		0x00000080 /* Virtualization ASE */
- #define MIPS_ASE_MSA		0x00000100 /* MIPS SIMD Architecture */
-+#define MIPS_ASE_DSP3		0x00000200 /* Signal Processing ASE Rev 3*/
- 
- #endif /* _ASM_CPU_H */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index b725b71..da0f3be 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -679,8 +679,11 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 		c->options |= MIPS_CPU_RIXI;
- 	if (config3 & MIPS_CONF3_DSP)
- 		c->ases |= MIPS_ASE_DSP;
--	if (config3 & MIPS_CONF3_DSP2P)
-+	if (config3 & MIPS_CONF3_DSP2P) {
- 		c->ases |= MIPS_ASE_DSP2P;
-+		if (cpu_has_mips_r6)
-+			c->ases |= MIPS_ASE_DSP3;
-+	}
- 	if (config3 & MIPS_CONF3_VINT)
- 		c->options |= MIPS_CPU_VINT;
- 	if (config3 & MIPS_CONF3_VEIC)
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 298b2b7..97dc01b 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -114,6 +114,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 	if (cpu_has_smartmips)	seq_printf(m, "%s", " smartmips");
- 	if (cpu_has_dsp)	seq_printf(m, "%s", " dsp");
- 	if (cpu_has_dsp2)	seq_printf(m, "%s", " dsp2");
-+	if (cpu_has_dsp3)	seq_printf(m, "%s", " dsp3");
- 	if (cpu_has_mipsmt)	seq_printf(m, "%s", " mt");
- 	if (cpu_has_mmips)	seq_printf(m, "%s", " micromips");
- 	if (cpu_has_vz)		seq_printf(m, "%s", " vz");
--- 
-1.9.1
+	Arnd

@@ -1,82 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 21:36:21 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.17.13]:51482 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025627AbcC2TgTrT1wh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 21:36:19 +0200
-Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue104) with ESMTPSA (Nemesis) id 0MCIHB-1acV2o0pgf-00984F; Tue, 29 Mar
- 2016 21:32:26 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     linux-arm-kernel@lists.infradead.org,
-        Denys Vlasenko <dvlasenk@redhat.com>
-Cc:     Konrad Rzeszutek Wilk <konrad@kernel.org>,
-        Sinan Kaya <okaya@codeaurora.org>, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Huacai Chen <chenhc@lemote.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Jisheng Zhang <jszhang@marvell.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Michael Ellerman <mpe@ellerman.id.au>, timur@codeaurora.org,
-        X86 <x86@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Akinobu Mita <akinobu.mita@gmail.com>, cov@codeaurora.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Valentin Rothberg <valentinrothberg@gmail.com>,
-        Chris Zankel <chris@zankel.net>,
-        Tony Luck <tony.luck@intel.com>, linux-pci@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Dean Nelson <dnelson@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Suthikulpanit, Suravee" <Suravee.Suthikulpanit@amd.com>,
-        Joe Perches <joe@perches.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Robin Murphy <robin.murphy@arm.com>, nwatters@codeaurora.org
-Subject: Re: [PATCH 2/3] swiotlb: prefix dma_to_phys and phys_to_dma functions
-Date:   Tue, 29 Mar 2016 21:32:07 +0200
-Message-ID: <6420021.rzhE3kJKJP@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <CACJDEmrzKOExg-Rchjy2hfVzkzbCZ=WNn4Bu3EVgim748VvRig@mail.gmail.com>
-References: <1458252137-24497-1-git-send-email-okaya@codeaurora.org> <56EC1805.5060207@codeaurora.org> <CACJDEmrzKOExg-Rchjy2hfVzkzbCZ=WNn4Bu3EVgim748VvRig@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 23:36:56 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:48217 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27025718AbcC2VgzAnkow (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 29 Mar 2016 23:36:55 +0200
+Received: from [IPv6:2003:62:4638:af00:d4b4:c98d:6e18:563a] (p200300624638AF00D4B4C98D6E18563A.dip0.t-ipconnect.de [IPv6:2003:62:4638:af00:d4b4:c98d:6e18:563a])
+        by hauke-m.de (Postfix) with ESMTPSA id 57D9710029B;
+        Tue, 29 Mar 2016 23:36:54 +0200 (CEST)
+Subject: Re: [PATCH v2] MIPS: vdso: flush the vdso data page to update it on
+ all processes
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+References: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
+Cc:     alex.smith@imgtec.com, sergei.shtylyov@cogentembedded.com,
+        "# v4 . 4+" <stable@vger.kernel.org>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <56FAF575.4070607@hauke-m.de>
+Date:   Tue, 29 Mar 2016 23:36:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Icedove/38.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:tqnwciplf3N9FU4xAL9BHpvbwDqN+UQyVwaClxmX7+x/D+pFWTw
- WpXRc87/OqIzDIez85/3q/B73zeQYFX3q8eZrfrcDUI5y2VpQLaFnIOAuBKi78wIbyqQRTb
- mXfAAioky2HsrLnoMi+xnjTZTEKXTid8UMurmgn+dB7LEO9A52Uk4+T+L7zarXB/N5auT7q
- B2rjZqjDFmzfSCH2zW0NA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:mjFFRkxZ4e0=:wgDPle4R7k5GpQmxJ1cQpa
- OEApsS/XivD39HUjsNwAZW16PGy7/w98rxeEGdjTQKcDEKhVCIK8fWEzD3CWtajfnlZePQUho
- 4EDWzMO9H7TwuRwmmnw5B2s3qd3l9RWEobAwQu02VJSt1s720w+KrhOEb7Qkn7AsqRN3+XgLR
- EEV73dEL7Jv2+XgcrDEcp0qcHPUtDu6pEK33LwWVfODASn9R0htXa/4aP2EctphjMk2ERIeNS
- rZEiloYHbhAmT7Vg3cXUIbZxwkzQ9YKDJ8UtR8AsxAFR/82PvM+nm4Kgfb93h2gGQmAgRcqZO
- b0+t+euf9zsGZBUsymJWK4Im6nQ6z8+r2voVgIKA6m0Ay46WbMW2o45hFvZLgZ+aZuVZBLs21
- 8KqX7gYUH7VDSU5TPU5ni9sjAQ/6F8A3HJ2O8+NIzIoTIcS06PwDkNyme6Ug7RTkfj7ZcFJSU
- vxHuYWWQ8cQ8DBlw0aawhBn8K7TQ9Qsym25wvjwDKvF2eSkKcuYZc8FSD08hUgqgJSFZaiBGj
- YhjW7Iy9kx3dwIlUp1cWxrOAVbabhV7K98ZpKNEgU7+MwOENjDhhaeZGQYAgx2ZUq+5Phya8P
- SYKqUHYjvWRx+9PmLj/C3GhT5TlZ5qGWemInQEwo4v7cl4AisWRdt0WbqaoO2BzKpNMzAU8no
- v+6LIcwIatbUDYumGo/GFrFGEcTJ08z4UpvgwvZsPrW4Z1MKjslaM3Xf70sclObnGkscK/PJq
- 6DJTFXJMKKBhRhCp
-Return-Path: <arnd@arndb.de>
+In-Reply-To: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52730
+X-archive-position: 52731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -89,33 +42,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday 28 March 2016 14:29:29 Konrad Rzeszutek Wilk wrote:
-> > diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
-> > index ada00c3..8c0f66b 100644
-> > --- a/arch/arm64/mm/dma-mapping.c
-> > +++ b/arch/arm64/mm/dma-mapping.c
-> > @@ -29,6 +29,14 @@
-> >
-> >  #include <asm/cacheflush.h>
-> >
-> > +/*
-> > + * If you are building a system without IOMMU, then you are using SWIOTLB
-> > + * library. The ARM64 adaptation of this library does not support address
-> > + * translation and it assumes that physical address = dma address for such
-> > + * a use case. Please don't build a platform that violates this.
-> > + */
+On 02/21/2016 06:08 PM, Hauke Mehrtens wrote:
+> Without flushing the vdso data page the vdso call is working on dated
+> or unsynced data. This resulted in problems where the clock_gettime
+> vdso call returned a time 6 seconds later after a 3 seconds sleep,
+> while the syscall reported a time 3 sounds later, like expected. This
+> happened very often and I got these ping results for example:
 > 
-> Why not just expand the ARM64 part to support address translation?
+> root@OpenWrt:/# ping 192.168.1.255
+> PING 192.168.1.255 (192.168.1.255): 56 data bytes
+> 64 bytes from 192.168.1.3: seq=0 ttl=64 time=0.688 ms
+> 64 bytes from 192.168.1.3: seq=1 ttl=64 time=4294172.045 ms
+> 64 bytes from 192.168.1.3: seq=2 ttl=64 time=4293968.105 ms
+> 64 bytes from 192.168.1.3: seq=3 ttl=64 time=4294055.920 ms
+> 64 bytes from 192.168.1.3: seq=4 ttl=64 time=4294671.913 ms
+> 
+> This was tested on a Lantiq/Intel VRX288 (MIPS BE 34Kc V5.6 CPU with
+> two VPEs)
+> 
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> Cc: <stable@vger.kernel.org> # v4.4+
 
-Because so far all hardware we have is relatively sane. We only
-need to implement this if someone accidentally puts their DMA
-space at the wrong address.
+This patch flushes the complete dcache of the CPU if cpu_has_dc_aliases
+is set.
 
-There is at least one platform that could in theory use this because
-their RAM starts at an address that is outside of the reach of 32-bit
-devices, and a static IOMMU mapping (created by firmware) could be
-used to map the start of RAM into DMA address zero, to avoid having
-to use an IOMMU all the time, but it was considered not worth the
-effort to implement that.
+Calling flush_dcache_page(virt_to_page(&vdso_data)); improved the
+situation a litte bit but did not fix my problem.
 
-	Arnd
+Could someone from Imagination please look into this problem. The page
+is linked into many virtual address spaces and when it gets modified by
+the kernel the user space processes are still accessing partly old data,
+even when lush_dcache_page() was called.
+
+> ---
+>  arch/mips/kernel/vdso.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+> index 975e997..8b0d974 100644
+> --- a/arch/mips/kernel/vdso.c
+> +++ b/arch/mips/kernel/vdso.c
+> @@ -20,6 +20,8 @@
+>  #include <linux/timekeeper_internal.h>
+>  
+>  #include <asm/abi.h>
+> +#include <asm/cacheflush.h>
+> +#include <asm/page.h>
+>  #include <asm/vdso.h>
+>  
+>  /* Kernel-provided data used by the VDSO. */
+> @@ -85,6 +87,8 @@ void update_vsyscall(struct timekeeper *tk)
+>  	}
+>  
+>  	vdso_data_write_end(&vdso_data);
+> +	flush_cache_vmap((unsigned long)&vdso_data,
+> +			 (unsigned long)&vdso_data + sizeof(vdso_data));
+>  }
+>  
+>  void update_vsyscall_tz(void)
+> @@ -93,6 +97,8 @@ void update_vsyscall_tz(void)
+>  		vdso_data.tz_minuteswest = sys_tz.tz_minuteswest;
+>  		vdso_data.tz_dsttime = sys_tz.tz_dsttime;
+>  	}
+> +	flush_cache_vmap((unsigned long)&vdso_data,
+> +			 (unsigned long)&vdso_data + sizeof(vdso_data));
+>  }
+>  
+>  int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+> 

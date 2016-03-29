@@ -1,35 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 23:36:56 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:48217 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27025718AbcC2VgzAnkow (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Mar 2016 23:36:55 +0200
-Received: from [IPv6:2003:62:4638:af00:d4b4:c98d:6e18:563a] (p200300624638AF00D4B4C98D6E18563A.dip0.t-ipconnect.de [IPv6:2003:62:4638:af00:d4b4:c98d:6e18:563a])
-        by hauke-m.de (Postfix) with ESMTPSA id 57D9710029B;
-        Tue, 29 Mar 2016 23:36:54 +0200 (CEST)
-Subject: Re: [PATCH v2] MIPS: vdso: flush the vdso data page to update it on
- all processes
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-References: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
-Cc:     alex.smith@imgtec.com, sergei.shtylyov@cogentembedded.com,
-        "# v4 . 4+" <stable@vger.kernel.org>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <56FAF575.4070607@hauke-m.de>
-Date:   Tue, 29 Mar 2016 23:36:53 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 01:19:54 +0200 (CEST)
+Received: from mail-ob0-f173.google.com ([209.85.214.173]:32812 "EHLO
+        mail-ob0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025747AbcC2XTwnhKd4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 01:19:52 +0200
+Received: by mail-ob0-f173.google.com with SMTP id x3so33760193obt.0;
+        Tue, 29 Mar 2016 16:19:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=0/nRHkgnKg5LbVXXVvoXbhoBbah5a7uVRdx2DcIGBmM=;
+        b=w5o5t2wEZ2ZyjsXfW8Gvfgt+NhFKIUBrvGHz749XyiKF/zwRfvUEWv4N/HHoHXmgR9
+         K74TCmaah+t/DG7oSI35SyYGzTpt/gw6mdREog135SilkrId6QGKnXEjeewbNMXshX20
+         LHfE9vJv1ET93G8pMvQk+VkRqdr+c0Luq8ZS5UHstmJWcWWpyhoM65ogItaYPYYZ57YB
+         +Rlu2n+2vLIfx1DgCMj/02jAD+C46WfD7uE16YKp1pEIFEQNPnRY1tBXhAe0yJLxbG89
+         b0RDFGwvc45J5r9IJMFCsgDbTCA0UQ+GLU/ossMNjSktepty/mtBUHoQbreyXnELiBxw
+         NntQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=0/nRHkgnKg5LbVXXVvoXbhoBbah5a7uVRdx2DcIGBmM=;
+        b=fr57wE3ftgco9W8z0klyIqWxyJPaoQBhqsnECYi3zcvuulh8e56wY4fpGQUqwwELny
+         FR78zpznRayjd8pWEBfkHmak7FvQejCl+0Mkx1PMJGgMFLGWUgLIpw8CUBI/JMYjOSZD
+         MCrAHkKlh29VbMSbqFvUD3ZhAxzOSaE3QCdrMGjRFnapXy77S0BT6LGzKDIKqLhEEus1
+         FVPLdZSUf/rrpL1sL3RjHnPLi2CX/fSWSNrFqwx3nJ6m2vsto511OIFC+vvJIn4De5+I
+         bYZuqtcyqT8L3UYUPU4bdd3byhkAEpKzs8qlwGk45V6GMg2+EvjZMHeuxz/hL2a99ue+
+         zmCQ==
+X-Gm-Message-State: AD7BkJIWrp/iIoeXrF3uVfrr2I17HpU5x7waFHNYEKk7+Lep1PFqk29FnDnagy+EnPP0+g==
+X-Received: by 10.60.142.230 with SMTP id rz6mr2649134oeb.5.1459293586673;
+        Tue, 29 Mar 2016 16:19:46 -0700 (PDT)
+Received: from ?IPv6:2001:470:d:73f:df8:552c:372a:790f? ([2001:470:d:73f:df8:552c:372a:790f])
+        by smtp.googlemail.com with ESMTPSA id y66sm376776oif.20.2016.03.29.16.19.44
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 29 Mar 2016 16:19:45 -0700 (PDT)
+Subject: Re: [PATCH v2 03/15] MIPS: PCI: Compatibility with ARM-like PCI host
+ drivers
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1454499045-5020-1-git-send-email-paul.burton@imgtec.com>
+ <1454499045-5020-4-git-send-email-paul.burton@imgtec.com>
+Cc:     Joshua Kinard <kumba@gentoo.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Jens Axboe <axboe@fb.com>, linux-kernel@vger.kernel.org,
+        Yijing Wang <wangyijing@huawei.com>,
+        John Crispin <blogic@openwrt.org>,
+        Yinghai Lu <yinghai@kernel.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <56FB0D90.8000200@gmail.com>
+Date:   Tue, 29 Mar 2016 16:19:44 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Icedove/38.6.0
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+In-Reply-To: <1454499045-5020-4-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52731
+X-archive-position: 52732
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,71 +78,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/21/2016 06:08 PM, Hauke Mehrtens wrote:
-> Without flushing the vdso data page the vdso call is working on dated
-> or unsynced data. This resulted in problems where the clock_gettime
-> vdso call returned a time 6 seconds later after a 3 seconds sleep,
-> while the syscall reported a time 3 sounds later, like expected. This
-> happened very often and I got these ping results for example:
+Le 03/02/2016 03:30, Paul Burton a écrit :
+> Introduce support for struct hw_pci & the associated pci_common_init_dev
+> function as used by the PCI drivers written for ARM platforms under
+> drivers/pci. This is in preparation for reusing the xilinx-pcie driver
+> on the MIPS Boston board.
 > 
-> root@OpenWrt:/# ping 192.168.1.255
-> PING 192.168.1.255 (192.168.1.255): 56 data bytes
-> 64 bytes from 192.168.1.3: seq=0 ttl=64 time=0.688 ms
-> 64 bytes from 192.168.1.3: seq=1 ttl=64 time=4294172.045 ms
-> 64 bytes from 192.168.1.3: seq=2 ttl=64 time=4293968.105 ms
-> 64 bytes from 192.168.1.3: seq=3 ttl=64 time=4294055.920 ms
-> 64 bytes from 192.168.1.3: seq=4 ttl=64 time=4294671.913 ms
+> Platforms that make use of this more generic code will need to select
+> CONFIG_MIPS_GENERIC_PCI. Platforms which don't will continue to work as
+> they have, with the intent that PCI drivers be migrated towards struct
+> hw_pci & drivers/pci/ over time.
 > 
-> This was tested on a Lantiq/Intel VRX288 (MIPS BE 34Kc V5.6 CPU with
-> two VPEs)
-> 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> Cc: <stable@vger.kernel.org> # v4.4+
-
-This patch flushes the complete dcache of the CPU if cpu_has_dc_aliases
-is set.
-
-Calling flush_dcache_page(virt_to_page(&vdso_data)); improved the
-situation a litte bit but did not fix my problem.
-
-Could someone from Imagination please look into this problem. The page
-is linked into many virtual address spaces and when it gets modified by
-the kernel the user space processes are still accessing partly old data,
-even when lush_dcache_page() was called.
-
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 > ---
->  arch/mips/kernel/vdso.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-> index 975e997..8b0d974 100644
-> --- a/arch/mips/kernel/vdso.c
-> +++ b/arch/mips/kernel/vdso.c
-> @@ -20,6 +20,8 @@
->  #include <linux/timekeeper_internal.h>
->  
->  #include <asm/abi.h>
-> +#include <asm/cacheflush.h>
-> +#include <asm/page.h>
->  #include <asm/vdso.h>
->  
->  /* Kernel-provided data used by the VDSO. */
-> @@ -85,6 +87,8 @@ void update_vsyscall(struct timekeeper *tk)
->  	}
->  
->  	vdso_data_write_end(&vdso_data);
-> +	flush_cache_vmap((unsigned long)&vdso_data,
-> +			 (unsigned long)&vdso_data + sizeof(vdso_data));
->  }
->  
->  void update_vsyscall_tz(void)
-> @@ -93,6 +97,8 @@ void update_vsyscall_tz(void)
->  		vdso_data.tz_minuteswest = sys_tz.tz_minuteswest;
->  		vdso_data.tz_dsttime = sys_tz.tz_dsttime;
->  	}
-> +	flush_cache_vmap((unsigned long)&vdso_data,
-> +			 (unsigned long)&vdso_data + sizeof(vdso_data));
->  }
->  
->  int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
-> 
+
+[snip]
+
+> +		if (hw->preinit)
+> +			hw->preinit();
+> +
+> +		ret = hw->setup(i, &ctl->sysdata);
+> +		if (ret < 0) {
+
+This needs to be ret <= 0 to be compliant with what ARM PCI host
+controllers do, which is return 1 in case they could get hw->setup to
+finish with success, and 0 or negative if they could not, see
+arch/arm/kernel/bios32.c.
+-- 
+Florian

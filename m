@@ -1,39 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 10:36:06 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8508 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2016 10:36:21 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:8123 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27024936AbcC2Ifxqs1ak (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 10:35:53 +0200
+        with ESMTP id S27025249AbcC2If5eTKFk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2016 10:35:57 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 74F08C7BEA855;
-        Tue, 29 Mar 2016 09:35:45 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 6E717B041800A;
+        Tue, 29 Mar 2016 09:35:48 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 29 Mar 2016 09:35:47 +0100
+ 14.3.266.1; Tue, 29 Mar 2016 09:35:50 +0100
 Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 29 Mar 2016 09:35:46 +0100
+ 14.3.266.1; Tue, 29 Mar 2016 09:35:49 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     <IMG-MIPSLinuxKerneldevelopers@imgtec.com>
 CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-mips@linux-mips.org>, Arnd Bergmann <arnd@arndb.de>,
-        Andy Lutomirski <luto@amacapital.net>,
-        "Kees Cook" <keescook@chromium.org>,
-        <linux-kernel@vger.kernel.org>,
-        Shuah Khan <shuahkh@osg.samsung.com>,
-        Eric B Munson <emunson@akamai.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        <linux-kselftest@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        "Markos Chandras" <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
         Amanieu d'Antras <amanieu@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
         Alex Smith <alex.smith@imgtec.com>,
-        "Paul Burton" <paul.burton@imgtec.com>,
-        Will Drewry <wad@chromium.org>
-Subject: [PATCH v2 0/6] MIPS seccomp_bpf self test and fixups
-Date:   Tue, 29 Mar 2016 09:35:28 +0100
-Message-ID: <1459240534-8658-1-git-send-email-matt.redfearn@imgtec.com>
+        "Andrew Morton" <akpm@linux-foundation.org>
+Subject: [PATCH v2 2/6] MIPS: Support sending SIG_SYS to 32bit userspace from 64bit kernel
+Date:   Tue, 29 Mar 2016 09:35:30 +0100
+Message-ID: <1459240534-8658-3-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.5.0
+In-Reply-To: <1459240534-8658-1-git-send-email-matt.redfearn@imgtec.com>
+References: <1459240534-8658-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.116]
@@ -41,7 +34,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52721
+X-archive-position: 52722
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,55 +51,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-These patches imporve seccomp support on MIPS.
+The seccomp_bpf self test revealed that a 64bit kernel delivered an
+invalid SIG_SYS to a 32bit userspace, because it was falling into the
+default of the switch statement. Add a case to handle delivering the
+signal.
 
-Firstly support is added for building the seccomp_bpf self test for
-MIPS. The
-initial results of these tests were:
+With this patch, the seccomp_bpf self test now passes the TRAP.handler
+case with O32 and N32 userlands.
 
-32bit kernel O32 userspace before: 48 / 48 pass
-64bit kernel O32 userspace before: 47 / 48 pass
- Failures: TRAP.Handler
-64bit kernel N32 userspace before: 44 / 48 pass
- Failures: global.mode_strict_support, TRAP.handler,
-TRACE_syscall.syscall_redirected, TRACE_syscall.syscall_dropped
-64bit kernel N64 userspace before: 46 / 48 pass
- Failures: TRACE_syscall.syscall_redirected,
-TRACE_syscall.syscall_dropped
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+---
 
-The subsequent patches fix issues that were causing the above tests to
-fail. With
-these fixes, the results are:
-32bit kernel O32 userspace after: 48 / 48
-64bit kernel O32 userspace after: 48 / 48
-64bit kernel N32 userspace after: 48 / 48
-64bit kernel N64 userspace after: 48 / 48
+Changes in v2: None
 
-Thanks,
-Matt
+ arch/mips/kernel/signal32.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Changes in v2:
-- Tested on additional platforms
-- Replace __NR_syscall which isn't defined for N32 / N64 ABIs
-
-Matt Redfearn (6):
-  selftests/seccomp: add MIPS self-test support
-  MIPS: Support sending SIG_SYS to 32bit userspace from 64bit kernel
-  MIPS: scall: Handle seccomp filters which redirect syscalls
-  seccomp: Get compat syscalls from asm-generic header
-  MIPS: seccomp: Support compat with both O32 and N32
-  secomp: Constify mode1 syscall whitelist
-
- arch/mips/include/asm/seccomp.h               | 47 +++++++++++++++------------
- arch/mips/kernel/scall32-o32.S                | 11 +++----
- arch/mips/kernel/scall64-64.S                 |  3 +-
- arch/mips/kernel/scall64-n32.S                | 14 +++++---
- arch/mips/kernel/scall64-o32.S                | 14 +++++---
- arch/mips/kernel/signal32.c                   |  6 ++++
- include/asm-generic/seccomp.h                 | 14 ++++++++
- kernel/seccomp.c                              | 13 ++------
- tools/testing/selftests/seccomp/seccomp_bpf.c | 30 +++++++++++++++--
- 9 files changed, 101 insertions(+), 51 deletions(-)
-
+diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
+index 4909639aa35b..78c8349d151c 100644
+--- a/arch/mips/kernel/signal32.c
++++ b/arch/mips/kernel/signal32.c
+@@ -227,6 +227,12 @@ int copy_siginfo_to_user32(compat_siginfo_t __user *to, const siginfo_t *from)
+ 			err |= __put_user(from->si_uid, &to->si_uid);
+ 			err |= __put_user(from->si_int, &to->si_int);
+ 			break;
++		case __SI_SYS >> 16:
++			err |= __copy_to_user(&to->si_call_addr, &from->si_call_addr,
++					      sizeof(compat_uptr_t));
++			err |= __put_user(from->si_syscall, &to->si_syscall);
++			err |= __put_user(from->si_arch, &to->si_arch);
++			break;
+ 		}
+ 	}
+ 	return err;
 -- 
 2.5.0

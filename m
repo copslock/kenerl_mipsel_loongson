@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:17:42 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:41729 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:18:01 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:41732 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27025914AbcC3QPedzeXN (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27025920AbcC3QPeiZ3DN (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:15:34 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id C75ED1825; Wed, 30 Mar 2016 18:15:27 +0200 (CEST)
+        id D8C3D1834; Wed, 30 Mar 2016 18:15:21 +0200 (CEST)
 Received: from localhost.localdomain (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id E23E7140;
-        Wed, 30 Mar 2016 18:15:16 +0200 (CEST)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 05C771C;
+        Wed, 30 Mar 2016 18:15:11 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -42,9 +42,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Archit Taneja <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: [PATCH v5 13/50] mtd: nand: use mtd_set_ecclayout() where appropriate
-Date:   Wed, 30 Mar 2016 18:14:28 +0200
-Message-Id: <1459354505-32551-14-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v5 06/50] mtd: nand: gpmi: use mtd_ooblayout_xxx() helpers where appropriate
+Date:   Wed, 30 Mar 2016 18:14:21 +0200
+Message-Id: <1459354505-32551-7-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -52,7 +52,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52751
+X-archive-position: 52752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,26 +69,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the mtd_set_ecclayout() helper instead of directly assigning the
-mtd->ecclayout field.
+The mtd_ooblayout_xxx() helper functions have been added to avoid direct
+accesses to the ecclayout field, and thus ease for future reworks.
+Use these helpers in all places where the oobfree[] and eccpos[] arrays
+where directly accessed.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/nand_base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/gpmi-nand/gpmi-nand.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 36a58a0..295af79 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -4288,7 +4288,7 @@ int nand_scan_tail(struct mtd_info *mtd)
- 		ecc->write_oob_raw = ecc->write_oob;
+diff --git a/drivers/mtd/nand/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
+index 8122c69..3a29b65 100644
+--- a/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
++++ b/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
+@@ -1327,18 +1327,19 @@ static int gpmi_ecc_read_oob(struct mtd_info *mtd, struct nand_chip *chip,
+ static int
+ gpmi_ecc_write_oob(struct mtd_info *mtd, struct nand_chip *chip, int page)
+ {
+-	struct nand_oobfree *of = mtd->ecclayout->oobfree;
++	struct mtd_oob_region of = { };
+ 	int status = 0;
  
- 	/* propagate ecc info to mtd_info */
--	mtd->ecclayout = ecc->layout;
-+	mtd_set_ecclayout(mtd, ecc->layout);
- 	mtd->ecc_strength = ecc->strength;
- 	mtd->ecc_step_size = ecc->size;
+ 	/* Do we have available oob area? */
+-	if (!of->length)
++	mtd_ooblayout_free(mtd, 0, &of);
++	if (!of.length)
+ 		return -EPERM;
  
+ 	if (!nand_is_slc(chip))
+ 		return -EPERM;
+ 
+-	chip->cmdfunc(mtd, NAND_CMD_SEQIN, mtd->writesize + of->offset, page);
+-	chip->write_buf(mtd, chip->oob_poi + of->offset, of->length);
++	chip->cmdfunc(mtd, NAND_CMD_SEQIN, mtd->writesize + of.offset, page);
++	chip->write_buf(mtd, chip->oob_poi + of.offset, of.length);
+ 	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
+ 
+ 	status = chip->waitfunc(mtd, chip);
 -- 
 2.5.0

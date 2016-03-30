@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:26:06 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:42332 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:26:28 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:42357 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27025945AbcC3QQ2LKIuN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:28 +0200
+        by eddie.linux-mips.org with ESMTP id S27025938AbcC3QQ3zYlIN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:29 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 676FE1825; Wed, 30 Mar 2016 18:16:27 +0200 (CEST)
+        id 1D6881836; Wed, 30 Mar 2016 18:16:24 +0200 (CEST)
 Received: from localhost.localdomain (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id D7819185C;
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 07F49185A;
         Wed, 30 Mar 2016 18:15:36 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
@@ -42,9 +42,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Archit Taneja <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: [PATCH v5 36/50] mtd: nand: jz4780: switch to mtd_ooblayout_ops
-Date:   Wed, 30 Mar 2016 18:14:51 +0200
-Message-Id: <1459354505-32551-37-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v5 35/50] mtd: nand: hisi504: switch to mtd_ooblayout_ops
+Date:   Wed, 30 Mar 2016 18:14:50 +0200
+Message-Id: <1459354505-32551-36-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -52,7 +52,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52779
+X-archive-position: 52780
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,61 +73,53 @@ Implementing the mtd_ooblayout_ops interface is the new way of exposing
 ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-Tested-by: Harvey Hunt <harvey.hunt@imgtec.com>
 ---
- drivers/mtd/nand/jz4780_nand.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ drivers/mtd/nand/hisi504_nand.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/jz4780_nand.c b/drivers/mtd/nand/jz4780_nand.c
-index e1c016c..b86a579 100644
---- a/drivers/mtd/nand/jz4780_nand.c
-+++ b/drivers/mtd/nand/jz4780_nand.c
-@@ -56,8 +56,6 @@ struct jz4780_nand_chip {
- 	struct nand_chip chip;
- 	struct list_head chip_list;
- 
--	struct nand_ecclayout ecclayout;
--
- 	struct gpio_desc *busy_gpio;
- 	struct gpio_desc *wp_gpio;
- 	unsigned int reading: 1;
-@@ -165,8 +163,7 @@ static int jz4780_nand_init_ecc(struct jz4780_nand_chip *nand, struct device *de
- 	struct nand_chip *chip = &nand->chip;
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct jz4780_nand_controller *nfc = to_jz4780_nand_controller(chip->controller);
--	struct nand_ecclayout *layout = &nand->ecclayout;
--	u32 start, i;
-+	int eccbytes;
- 
- 	chip->ecc.bytes = fls((1 + 8) * chip->ecc.size)	*
- 				(chip->ecc.strength / 8);
-@@ -201,23 +198,17 @@ static int jz4780_nand_init_ecc(struct jz4780_nand_chip *nand, struct device *de
- 		return 0;
- 
- 	/* Generate ECC layout. ECC codes are right aligned in the OOB area. */
--	layout->eccbytes = mtd->writesize / chip->ecc.size * chip->ecc.bytes;
-+	eccbytes = mtd->writesize / chip->ecc.size * chip->ecc.bytes;
- 
--	if (layout->eccbytes > mtd->oobsize - 2) {
-+	if (eccbytes > mtd->oobsize - 2) {
- 		dev_err(dev,
- 			"invalid ECC config: required %d ECC bytes, but only %d are available",
--			layout->eccbytes, mtd->oobsize - 2);
-+			eccbytes, mtd->oobsize - 2);
- 		return -EINVAL;
- 	}
- 
--	start = mtd->oobsize - layout->eccbytes;
--	for (i = 0; i < layout->eccbytes; i++)
--		layout->eccpos[i] = start + i;
--
--	layout->oobfree[0].offset = 2;
--	layout->oobfree[0].length = mtd->oobsize - layout->eccbytes - 2;
-+	mtd->ooblayout = &nand_ooblayout_lp_ops;
- 
--	chip->ecc.layout = layout;
- 	return 0;
+diff --git a/drivers/mtd/nand/hisi504_nand.c b/drivers/mtd/nand/hisi504_nand.c
+index 96502b6..7bf844c 100644
+--- a/drivers/mtd/nand/hisi504_nand.c
++++ b/drivers/mtd/nand/hisi504_nand.c
+@@ -631,8 +631,28 @@ static void hisi_nfc_host_init(struct hinfc_host *host)
+ 	hinfc_write(host, HINFC504_INTEN_DMA, HINFC504_INTEN);
  }
  
+-static struct nand_ecclayout nand_ecc_2K_16bits = {
+-	.oobfree = { {2, 6} },
++static int hisi_ooblayout_ecc(struct mtd_info *mtd, int section,
++			      struct mtd_oob_region *oobregion)
++{
++	/* FIXME: add ECC bytes position */
++	return -ENOTSUPP;
++}
++
++static int hisi_ooblayout_free(struct mtd_info *mtd, int section,
++			       struct mtd_oob_region *oobregion)
++{
++	if (section)
++		return -ERANGE;
++
++	oobregion->offset = 2;
++	oobregion->length = 6;
++
++	return 0;
++}
++
++static const struct mtd_ooblayout_ops hisi_ooblayout_ops = {
++	.ecc = hisi_ooblayout_ecc,
++	.free = hisi_ooblayout_free,
+ };
+ 
+ static int hisi_nfc_ecc_probe(struct hinfc_host *host)
+@@ -668,7 +688,7 @@ static int hisi_nfc_ecc_probe(struct hinfc_host *host)
+ 	case 16:
+ 		ecc_bits = 6;
+ 		if (mtd->writesize == 2048)
+-			chip->ecc.layout = &nand_ecc_2K_16bits;
++			mtd_set_ooblayout(mtd, &hisi_ooblayout_ops);
+ 
+ 		/* TODO: add more page size support */
+ 		break;
 -- 
 2.5.0

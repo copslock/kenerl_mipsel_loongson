@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:25:51 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:26:06 +0200 (CEST)
 Received: from down.free-electrons.com ([37.187.137.238]:42332 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27025942AbcC3QQ109CDN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:27 +0200
+        by eddie.linux-mips.org with ESMTP id S27025945AbcC3QQ2LKIuN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:28 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 9CB9E181A; Wed, 30 Mar 2016 18:16:21 +0200 (CEST)
+        id 676FE1825; Wed, 30 Mar 2016 18:16:27 +0200 (CEST)
 Received: from localhost.localdomain (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 31F741858;
-        Wed, 30 Mar 2016 18:15:35 +0200 (CEST)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id D7819185C;
+        Wed, 30 Mar 2016 18:15:36 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -42,9 +42,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Archit Taneja <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: [PATCH v5 34/50] mtd: nand: gpmi: switch to mtd_ooblayout_ops
-Date:   Wed, 30 Mar 2016 18:14:49 +0200
-Message-Id: <1459354505-32551-35-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v5 36/50] mtd: nand: jz4780: switch to mtd_ooblayout_ops
+Date:   Wed, 30 Mar 2016 18:14:51 +0200
+Message-Id: <1459354505-32551-37-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -52,7 +52,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52778
+X-archive-position: 52779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,100 +73,61 @@ Implementing the mtd_ooblayout_ops interface is the new way of exposing
 ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Tested-by: Harvey Hunt <harvey.hunt@imgtec.com>
 ---
- drivers/mtd/nand/gpmi-nand/gpmi-nand.c | 52 ++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 12 deletions(-)
+ drivers/mtd/nand/jz4780_nand.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/mtd/nand/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
-index 3a29b65..316b5ac 100644
---- a/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
-+++ b/drivers/mtd/nand/gpmi-nand/gpmi-nand.c
-@@ -47,10 +47,44 @@ static struct nand_bbt_descr gpmi_bbt_descr = {
-  * We may change the layout if we can get the ECC info from the datasheet,
-  * else we will use all the (page + OOB).
-  */
--static struct nand_ecclayout gpmi_hw_ecclayout = {
--	.eccbytes = 0,
--	.eccpos = { 0, },
--	.oobfree = { {.offset = 0, .length = 0} }
-+static int gpmi_ooblayout_ecc(struct mtd_info *mtd, int section,
-+			      struct mtd_oob_region *oobregion)
-+{
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct gpmi_nand_data *this = nand_get_controller_data(chip);
-+	struct bch_geometry *geo = &this->bch_geometry;
-+
-+	if (section)
-+		return -ERANGE;
-+
-+	oobregion->offset = 0;
-+	oobregion->length = geo->page_size - mtd->writesize;
-+
-+	return 0;
-+}
-+
-+static int gpmi_ooblayout_free(struct mtd_info *mtd, int section,
-+			       struct mtd_oob_region *oobregion)
-+{
-+	struct nand_chip *chip = mtd_to_nand(mtd);
-+	struct gpmi_nand_data *this = nand_get_controller_data(chip);
-+	struct bch_geometry *geo = &this->bch_geometry;
-+
-+	if (section)
-+		return -ERANGE;
-+
-+	/* The available oob size we have. */
-+	if (geo->page_size < mtd->writesize + mtd->oobsize) {
-+		oobregion->offset = geo->page_size - mtd->writesize;
-+		oobregion->length = mtd->oobsize - oobregion->offset;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct mtd_ooblayout_ops gpmi_ooblayout_ops = {
-+	.ecc = gpmi_ooblayout_ecc,
-+	.free = gpmi_ooblayout_free,
- };
+diff --git a/drivers/mtd/nand/jz4780_nand.c b/drivers/mtd/nand/jz4780_nand.c
+index e1c016c..b86a579 100644
+--- a/drivers/mtd/nand/jz4780_nand.c
++++ b/drivers/mtd/nand/jz4780_nand.c
+@@ -56,8 +56,6 @@ struct jz4780_nand_chip {
+ 	struct nand_chip chip;
+ 	struct list_head chip_list;
  
- static const struct gpmi_devdata gpmi_devdata_imx23 = {
-@@ -141,7 +175,6 @@ static int set_geometry_by_ecc_info(struct gpmi_nand_data *this)
- 	struct bch_geometry *geo = &this->bch_geometry;
- 	struct nand_chip *chip = &this->nand;
- 	struct mtd_info *mtd = nand_to_mtd(chip);
--	struct nand_oobfree *of = gpmi_hw_ecclayout.oobfree;
- 	unsigned int block_mark_bit_offset;
- 
- 	if (!(chip->ecc_strength_ds > 0 && chip->ecc_step_ds > 0))
-@@ -229,12 +262,6 @@ static int set_geometry_by_ecc_info(struct gpmi_nand_data *this)
- 	geo->page_size = mtd->writesize + geo->metadata_size +
- 		(geo->gf_len * geo->ecc_strength * geo->ecc_chunk_count) / 8;
- 
--	/* The available oob size we have. */
--	if (geo->page_size < mtd->writesize + mtd->oobsize) {
--		of->offset = geo->page_size - mtd->writesize;
--		of->length = mtd->oobsize - of->offset;
--	}
+-	struct nand_ecclayout ecclayout;
 -
- 	geo->payload_size = mtd->writesize;
+ 	struct gpio_desc *busy_gpio;
+ 	struct gpio_desc *wp_gpio;
+ 	unsigned int reading: 1;
+@@ -165,8 +163,7 @@ static int jz4780_nand_init_ecc(struct jz4780_nand_chip *nand, struct device *de
+ 	struct nand_chip *chip = &nand->chip;
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct jz4780_nand_controller *nfc = to_jz4780_nand_controller(chip->controller);
+-	struct nand_ecclayout *layout = &nand->ecclayout;
+-	u32 start, i;
++	int eccbytes;
  
- 	geo->auxiliary_status_offset = ALIGN(geo->metadata_size, 4);
-@@ -1841,6 +1868,7 @@ static void gpmi_nand_exit(struct gpmi_nand_data *this)
- static int gpmi_init_last(struct gpmi_nand_data *this)
- {
- 	struct nand_chip *chip = &this->nand;
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	struct bch_geometry *bch_geo = &this->bch_geometry;
- 	int ret;
-@@ -1862,7 +1890,7 @@ static int gpmi_init_last(struct gpmi_nand_data *this)
- 	ecc->mode	= NAND_ECC_HW;
- 	ecc->size	= bch_geo->ecc_chunk_size;
- 	ecc->strength	= bch_geo->ecc_strength;
--	ecc->layout	= &gpmi_hw_ecclayout;
-+	mtd_set_ooblayout(mtd, &gpmi_ooblayout_ops);
+ 	chip->ecc.bytes = fls((1 + 8) * chip->ecc.size)	*
+ 				(chip->ecc.strength / 8);
+@@ -201,23 +198,17 @@ static int jz4780_nand_init_ecc(struct jz4780_nand_chip *nand, struct device *de
+ 		return 0;
  
- 	/*
- 	 * We only enable the subpage read when:
+ 	/* Generate ECC layout. ECC codes are right aligned in the OOB area. */
+-	layout->eccbytes = mtd->writesize / chip->ecc.size * chip->ecc.bytes;
++	eccbytes = mtd->writesize / chip->ecc.size * chip->ecc.bytes;
+ 
+-	if (layout->eccbytes > mtd->oobsize - 2) {
++	if (eccbytes > mtd->oobsize - 2) {
+ 		dev_err(dev,
+ 			"invalid ECC config: required %d ECC bytes, but only %d are available",
+-			layout->eccbytes, mtd->oobsize - 2);
++			eccbytes, mtd->oobsize - 2);
+ 		return -EINVAL;
+ 	}
+ 
+-	start = mtd->oobsize - layout->eccbytes;
+-	for (i = 0; i < layout->eccbytes; i++)
+-		layout->eccpos[i] = start + i;
+-
+-	layout->oobfree[0].offset = 2;
+-	layout->oobfree[0].length = mtd->oobsize - layout->eccbytes - 2;
++	mtd->ooblayout = &nand_ooblayout_lp_ops;
+ 
+-	chip->ecc.layout = layout;
+ 	return 0;
+ }
+ 
 -- 
 2.5.0

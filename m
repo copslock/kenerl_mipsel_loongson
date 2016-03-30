@@ -1,37 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 13:42:55 +0200 (CEST)
-Received: from mail.skyhub.de ([78.46.96.112]:49181 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27025852AbcC3LmxhwIP1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Mar 2016 13:42:53 +0200
-X-Virus-Scanned: Nedap ESD1 at mail.skyhub.de
-Received: from mail.skyhub.de ([127.0.0.1])
-        by localhost (door.skyhub.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id KY-2SkBqebPz; Wed, 30 Mar 2016 13:42:52 +0200 (CEST)
-Received: from pd.tnic (p200300454B3D010025E5E0C016AF59EE.dip0.t-ipconnect.de [IPv6:2003:45:4b3d:100:25e5:e0c0:16af:59ee])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E775A1DA24F;
-        Wed, 30 Mar 2016 13:42:51 +0200 (CEST)
-Received: by pd.tnic (Postfix, from userid 1000)
-        id 7C0321617BB; Wed, 30 Mar 2016 13:42:48 +0200 (CEST)
-From:   Borislav Petkov <bp@alien8.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 2/5] mips/defconfigs: Remove CONFIG_IPV6_PRIVACY
-Date:   Wed, 30 Mar 2016 13:42:45 +0200
-Message-Id: <1459338168-29334-3-git-send-email-bp@alien8.de>
-X-Mailer: git-send-email 2.7.3
-In-Reply-To: <1459338168-29334-1-git-send-email-bp@alien8.de>
-References: <1459338168-29334-1-git-send-email-bp@alien8.de>
-Return-Path: <bp@alien8.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 17:22:18 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24569 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27024719AbcC3PWQN2aL4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 17:22:16 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 3A8C2A73C8EAB;
+        Wed, 30 Mar 2016 16:22:07 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 30 Mar 2016 16:22:09 +0100
+Received: from [192.168.154.45] (192.168.154.45) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Wed, 30 Mar
+ 2016 16:22:09 +0100
+Subject: Re: [PATCH v2] MIPS: vdso: flush the vdso data page to update it on
+ all processes
+To:     Hauke Mehrtens <hauke@hauke-m.de>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>
+References: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
+ <56FAF575.4070607@hauke-m.de>
+CC:     <alex.smith@imgtec.com>, <sergei.shtylyov@cogentembedded.com>,
+        "# v4 . 4+" <stable@vger.kernel.org>
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Message-ID: <56FBEEFF.10406@imgtec.com>
+Date:   Wed, 30 Mar 2016 16:21:35 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
+MIME-Version: 1.0
+In-Reply-To: <56FAF575.4070607@hauke-m.de>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52735
+X-archive-position: 52736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bp@alien8.de
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,159 +51,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Borislav Petkov <bp@suse.de>
+Hi Hauke,
 
-Option is long gone, see
+Could you share details of what version of glibc/rfs setup you are using?
 
-  5d9efa7ee99e ("ipv6: Remove privacy config option.")
+Thanks.
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/configs/bcm47xx_defconfig    | 1 -
- arch/mips/configs/bigsur_defconfig     | 1 -
- arch/mips/configs/decstation_defconfig | 1 -
- arch/mips/configs/ip22_defconfig       | 1 -
- arch/mips/configs/ip27_defconfig       | 1 -
- arch/mips/configs/jazz_defconfig       | 1 -
- arch/mips/configs/lemote2f_defconfig   | 1 -
- arch/mips/configs/mtx1_defconfig       | 1 -
- arch/mips/configs/nlm_xlp_defconfig    | 1 -
- arch/mips/configs/nlm_xlr_defconfig    | 1 -
- arch/mips/configs/rm200_defconfig      | 1 -
- 11 files changed, 11 deletions(-)
+Regards,
+ZubairLK
 
-diff --git a/arch/mips/configs/bcm47xx_defconfig b/arch/mips/configs/bcm47xx_defconfig
-index 0db4eb319e0a..fad8e964f14c 100644
---- a/arch/mips/configs/bcm47xx_defconfig
-+++ b/arch/mips/configs/bcm47xx_defconfig
-@@ -23,7 +23,6 @@ CONFIG_IP_MROUTE=y
- CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
- CONFIG_SYN_COOKIES=y
- CONFIG_TCP_CONG_ADVANCED=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_MULTIPLE_TABLES=y
- CONFIG_IPV6_SUBTREES=y
- CONFIG_IPV6_MROUTE=y
-diff --git a/arch/mips/configs/bigsur_defconfig b/arch/mips/configs/bigsur_defconfig
-index e070dac071c8..d20b09d77b53 100644
---- a/arch/mips/configs/bigsur_defconfig
-+++ b/arch/mips/configs/bigsur_defconfig
-@@ -62,7 +62,6 @@ CONFIG_INET_XFRM_MODE_TRANSPORT=m
- CONFIG_INET_XFRM_MODE_TUNNEL=m
- # CONFIG_INET_LRO is not set
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_ROUTE_INFO=y
- CONFIG_IPV6_OPTIMISTIC_DAD=y
-diff --git a/arch/mips/configs/decstation_defconfig b/arch/mips/configs/decstation_defconfig
-index ebc011c51e5a..2b6cb41d5715 100644
---- a/arch/mips/configs/decstation_defconfig
-+++ b/arch/mips/configs/decstation_defconfig
-@@ -30,7 +30,6 @@ CONFIG_INET_XFRM_MODE_TRANSPORT=m
- CONFIG_INET_XFRM_MODE_TUNNEL=m
- CONFIG_INET_XFRM_MODE_BEET=m
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_ROUTE_INFO=y
- CONFIG_INET6_AH=m
-diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
-index 6ba9ce9fcdd5..5d83ff755547 100644
---- a/arch/mips/configs/ip22_defconfig
-+++ b/arch/mips/configs/ip22_defconfig
-@@ -48,7 +48,6 @@ CONFIG_INET_XFRM_MODE_TUNNEL=m
- CONFIG_INET_XFRM_MODE_BEET=m
- # CONFIG_INET_LRO is not set
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_ROUTE_INFO=y
- CONFIG_IPV6_OPTIMISTIC_DAD=y
-diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-index 77e9f505f5e4..2b74aee320a1 100644
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -43,7 +43,6 @@ CONFIG_INET_XFRM_MODE_TUNNEL=m
- CONFIG_INET_XFRM_MODE_BEET=m
- CONFIG_TCP_MD5SIG=y
- CONFIG_IPV6=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_ROUTE_INFO=y
- CONFIG_IPV6_OPTIMISTIC_DAD=y
-diff --git a/arch/mips/configs/jazz_defconfig b/arch/mips/configs/jazz_defconfig
-index a5e85e1ee5de..3019fce63cd3 100644
---- a/arch/mips/configs/jazz_defconfig
-+++ b/arch/mips/configs/jazz_defconfig
-@@ -34,7 +34,6 @@ CONFIG_IP_PIMSM_V2=y
- CONFIG_INET_XFRM_MODE_TRANSPORT=m
- CONFIG_INET_XFRM_MODE_TUNNEL=m
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_ROUTE_INFO=y
- CONFIG_INET6_AH=m
-diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
-index d1f198b072a0..5da76e0e120f 100644
---- a/arch/mips/configs/lemote2f_defconfig
-+++ b/arch/mips/configs/lemote2f_defconfig
-@@ -71,7 +71,6 @@ CONFIG_TCP_CONG_ADVANCED=y
- CONFIG_TCP_CONG_BIC=y
- CONFIG_DEFAULT_BIC=y
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_TUNNEL=m
- CONFIG_IPV6_MULTIPLE_TABLES=y
-diff --git a/arch/mips/configs/mtx1_defconfig b/arch/mips/configs/mtx1_defconfig
-index 9b6926d6bb32..f3f60056bc27 100644
---- a/arch/mips/configs/mtx1_defconfig
-+++ b/arch/mips/configs/mtx1_defconfig
-@@ -51,7 +51,6 @@ CONFIG_INET_IPCOMP=m
- CONFIG_INET_XFRM_MODE_TRANSPORT=m
- CONFIG_INET_XFRM_MODE_TUNNEL=m
- CONFIG_INET_XFRM_MODE_BEET=m
--CONFIG_IPV6_PRIVACY=y
- CONFIG_INET6_AH=m
- CONFIG_INET6_ESP=m
- CONFIG_INET6_IPCOMP=m
-diff --git a/arch/mips/configs/nlm_xlp_defconfig b/arch/mips/configs/nlm_xlp_defconfig
-index b3d1d37f85ea..b496c25fced6 100644
---- a/arch/mips/configs/nlm_xlp_defconfig
-+++ b/arch/mips/configs/nlm_xlp_defconfig
-@@ -95,7 +95,6 @@ CONFIG_TCP_CONG_YEAH=m
- CONFIG_TCP_CONG_ILLINOIS=m
- CONFIG_TCP_MD5SIG=y
- CONFIG_IPV6=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_INET6_AH=m
- CONFIG_INET6_ESP=m
- CONFIG_INET6_IPCOMP=m
-diff --git a/arch/mips/configs/nlm_xlr_defconfig b/arch/mips/configs/nlm_xlr_defconfig
-index 3d8016d6cf3e..8e99ad807a57 100644
---- a/arch/mips/configs/nlm_xlr_defconfig
-+++ b/arch/mips/configs/nlm_xlr_defconfig
-@@ -75,7 +75,6 @@ CONFIG_TCP_CONG_YEAH=m
- CONFIG_TCP_CONG_ILLINOIS=m
- CONFIG_TCP_MD5SIG=y
- CONFIG_IPV6=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_INET6_AH=m
- CONFIG_INET6_ESP=m
- CONFIG_INET6_IPCOMP=m
-diff --git a/arch/mips/configs/rm200_defconfig b/arch/mips/configs/rm200_defconfig
-index 82db4e3e4cf1..c2b4e3f33a73 100644
---- a/arch/mips/configs/rm200_defconfig
-+++ b/arch/mips/configs/rm200_defconfig
-@@ -37,7 +37,6 @@ CONFIG_INET_XFRM_MODE_TRANSPORT=m
- CONFIG_INET_XFRM_MODE_TUNNEL=m
- CONFIG_INET_XFRM_MODE_BEET=m
- CONFIG_TCP_MD5SIG=y
--CONFIG_IPV6_PRIVACY=y
- CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_ROUTE_INFO=y
- CONFIG_INET6_AH=m
--- 
-2.7.3
+On 29/03/16 22:36, Hauke Mehrtens wrote:
+> On 02/21/2016 06:08 PM, Hauke Mehrtens wrote:
+>> Without flushing the vdso data page the vdso call is working on dated
+>> or unsynced data. This resulted in problems where the clock_gettime
+>> vdso call returned a time 6 seconds later after a 3 seconds sleep,
+>> while the syscall reported a time 3 sounds later, like expected. This
+>> happened very often and I got these ping results for example:
+>>
+>> root@OpenWrt:/# ping 192.168.1.255
+>> PING 192.168.1.255 (192.168.1.255): 56 data bytes
+>> 64 bytes from 192.168.1.3: seq=0 ttl=64 time=0.688 ms
+>> 64 bytes from 192.168.1.3: seq=1 ttl=64 time=4294172.045 ms
+>> 64 bytes from 192.168.1.3: seq=2 ttl=64 time=4293968.105 ms
+>> 64 bytes from 192.168.1.3: seq=3 ttl=64 time=4294055.920 ms
+>> 64 bytes from 192.168.1.3: seq=4 ttl=64 time=4294671.913 ms
+>>
+>> This was tested on a Lantiq/Intel VRX288 (MIPS BE 34Kc V5.6 CPU with
+>> two VPEs)
+>>
+>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>> Cc: <stable@vger.kernel.org> # v4.4+
+>
+> This patch flushes the complete dcache of the CPU if cpu_has_dc_aliases
+> is set.
+>
+> Calling flush_dcache_page(virt_to_page(&vdso_data)); improved the
+> situation a litte bit but did not fix my problem.
+>
+> Could someone from Imagination please look into this problem. The page
+> is linked into many virtual address spaces and when it gets modified by
+> the kernel the user space processes are still accessing partly old data,
+> even when lush_dcache_page() was called.
+>
+>> ---
+>>   arch/mips/kernel/vdso.c | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+>> index 975e997..8b0d974 100644
+>> --- a/arch/mips/kernel/vdso.c
+>> +++ b/arch/mips/kernel/vdso.c
+>> @@ -20,6 +20,8 @@
+>>   #include <linux/timekeeper_internal.h>
+>>
+>>   #include <asm/abi.h>
+>> +#include <asm/cacheflush.h>
+>> +#include <asm/page.h>
+>>   #include <asm/vdso.h>
+>>
+>>   /* Kernel-provided data used by the VDSO. */
+>> @@ -85,6 +87,8 @@ void update_vsyscall(struct timekeeper *tk)
+>>   	}
+>>
+>>   	vdso_data_write_end(&vdso_data);
+>> +	flush_cache_vmap((unsigned long)&vdso_data,
+>> +			 (unsigned long)&vdso_data + sizeof(vdso_data));
+>>   }
+>>
+>>   void update_vsyscall_tz(void)
+>> @@ -93,6 +97,8 @@ void update_vsyscall_tz(void)
+>>   		vdso_data.tz_minuteswest = sys_tz.tz_minuteswest;
+>>   		vdso_data.tz_dsttime = sys_tz.tz_dsttime;
+>>   	}
+>> +	flush_cache_vmap((unsigned long)&vdso_data,
+>> +			 (unsigned long)&vdso_data + sizeof(vdso_data));
+>>   }
+>>
+>>   int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+>>
+>
+>

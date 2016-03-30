@@ -1,80 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 07:06:45 +0200 (CEST)
-Received: from mail-ig0-f171.google.com ([209.85.213.171]:36586 "EHLO
-        mail-ig0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27011414AbcC3FGn20fjN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 07:06:43 +0200
-Received: by mail-ig0-f171.google.com with SMTP id nk17so92815565igb.1
-        for <linux-mips@linux-mips.org>; Tue, 29 Mar 2016 22:06:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc;
-        bh=go1QoYC6qw1XoC+hT2yN5wnA1IyMAaRpzTPA/gj4hcc=;
-        b=lrAaCscVjXm49MgvdeXEo3PPUhcRW/aOEH7D7/CwaNwluj7AWdTBQdjnTn1aiWk7lt
-         8pUVmKmq3HOlSo2eNZWLV6FVkOWthhdBJD92yJCIHHQ10sRY8AEWC3jU9MNDWCHPo0xg
-         Nj9v+UwJiaPnfacX7VHsPdhTXqlM2AOPYpN4LjapfRX1H6SXoQyhB3u+wOL3AvVKiT22
-         OyeZXnVhzgV3RfSc4Mgqc42XWYMcDJ77tTq61v8vJeTlersW5Ofibj54BnSUyqf7Ylpe
-         tPhDndDiKPpz3BCV5CeLbS1oBccyP6AQQJtUKttduXFq0Vc5Uzgzspv5OKC4v7Of9PTL
-         OAcA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc;
-        bh=go1QoYC6qw1XoC+hT2yN5wnA1IyMAaRpzTPA/gj4hcc=;
-        b=nELBT+Akhop5C6JlwRkiHjcrnLwoI2yk+pVD4MluQR2DN2xDhpL+5w4Kz5X0pSIFlc
-         I+tEIr10saQuiPoHU/aksViNIrGVPlzH+8RGbjwlEsPKA1De448eUP4IBiTqyag6sPDX
-         NvkPgQ3k3GdDKihzvXsIzZe59HfD7EVz+vXQY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc;
-        bh=go1QoYC6qw1XoC+hT2yN5wnA1IyMAaRpzTPA/gj4hcc=;
-        b=gLm3LpD9VaQw4uMrMA7T+cEDeXm9eBiY2ADyf8gaZ5nHS+rIcMMOHxmplbrCeeJXO3
-         gChheDcTtosPiJbzq1sRjgyhUeuYxqIRVVpSzSlY1IKJn+loyZfATQ6SSPlspHYnYqLy
-         kt0qf1j2O5TJUeuIExU8Fbvgdo20N1QKMCkpY1oI0KR7+/8NZPu0nnYtBDR7J9ZjFJCA
-         3ASAlZ9wquBwg/SNicnEkeMhe3mCZE9BswpQU2R9C2DAapV1RUkNNFTiEV4BYvxrSYmg
-         I6HNA//VYGQKaTXZ3A8wpRhgjsnPWjgWcBscp1G2q49UYt1Kj0BYaPBNj56Rvksjvn6W
-         MTzQ==
-X-Gm-Message-State: AD7BkJLJPJRUqxoDf9/BlC/L77CD1tIWlt3KbUhuJAXWCTdJNsFd5sjQ09EL0xch1zVAsGPeGCv9gEa49irKUdlF
-MIME-Version: 1.0
-X-Received: by 10.50.60.72 with SMTP id f8mr6956325igr.1.1459314397300; Tue,
- 29 Mar 2016 22:06:37 -0700 (PDT)
-Received: by 10.64.25.129 with HTTP; Tue, 29 Mar 2016 22:06:37 -0700 (PDT)
-In-Reply-To: <1459240534-8658-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1459240534-8658-1-git-send-email-matt.redfearn@imgtec.com>
-Date:   Tue, 29 Mar 2016 22:06:37 -0700
-X-Google-Sender-Auth: 2GBH4YJv9TXQ13HXJiuxqdhg5fo
-Message-ID: <CAGXu5jLJEHzB3ST63g0fApVP4-OWwCT5UcqguAMNoGy-aQXgew@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] MIPS seccomp_bpf self test and fixups
-From:   Kees Cook <keescook@chromium.org>
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-Cc:     IMG-MIPSLinuxKerneldevelopers@imgtec.com,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Lutomirski <luto@amacapital.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Shuah Khan <shuahkh@osg.samsung.com>,
-        Eric B Munson <emunson@akamai.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kselftest@vger.kernel.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        "Amanieu d'Antras" <amanieu@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 10:50:03 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:33639 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27025773AbcC3IuBOG5OR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 10:50:01 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1alBp0-0005yH-Kv; Wed, 30 Mar 2016 10:49:50 +0200
+Date:   Wed, 30 Mar 2016 10:48:19 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     David Daney <ddaney.cavm@gmail.com>
+cc:     Ioan Nicu <ioan.nicu.ext@nokia.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Will Drewry <wad@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+        David Daney <david.daney@cavium.com>,
+        Aleksey Makarov <aleksey.makarov@auriga.com>,
+        Leonid Rosenboim <lrosenboim@caviumnetworks.com>,
+        Jiang Liu <jiang.liu@linux.intel.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
+        Uwe Duerr <uwe.duerr.ext@nokia.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Octeon: do not change affinity for disabled irqs
+In-Reply-To: <56C3C9A4.1040109@gmail.com>
+Message-ID: <alpine.DEB.2.11.1603301030270.3978@nanos>
+References: <20160215154513.GF25050@ulegcpding.emea.nsn-net.net> <56C3C9A4.1040109@gmail.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52733
+X-archive-position: 52734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,66 +52,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 29, 2016 at 1:35 AM, Matt Redfearn <matt.redfearn@imgtec.com> wrote:
-> These patches imporve seccomp support on MIPS.
->
-> Firstly support is added for building the seccomp_bpf self test for
-> MIPS. The
-> initial results of these tests were:
->
-> 32bit kernel O32 userspace before: 48 / 48 pass
-> 64bit kernel O32 userspace before: 47 / 48 pass
->  Failures: TRAP.Handler
-> 64bit kernel N32 userspace before: 44 / 48 pass
->  Failures: global.mode_strict_support, TRAP.handler,
-> TRACE_syscall.syscall_redirected, TRACE_syscall.syscall_dropped
-> 64bit kernel N64 userspace before: 46 / 48 pass
->  Failures: TRACE_syscall.syscall_redirected,
-> TRACE_syscall.syscall_dropped
->
-> The subsequent patches fix issues that were causing the above tests to
-> fail. With
-> these fixes, the results are:
-> 32bit kernel O32 userspace after: 48 / 48
-> 64bit kernel O32 userspace after: 48 / 48
-> 64bit kernel N32 userspace after: 48 / 48
-> 64bit kernel N64 userspace after: 48 / 48
->
-> Thanks,
-> Matt
->
-> Changes in v2:
-> - Tested on additional platforms
-> - Replace __NR_syscall which isn't defined for N32 / N64 ABIs
->
-> Matt Redfearn (6):
->   selftests/seccomp: add MIPS self-test support
->   MIPS: Support sending SIG_SYS to 32bit userspace from 64bit kernel
->   MIPS: scall: Handle seccomp filters which redirect syscalls
->   seccomp: Get compat syscalls from asm-generic header
->   MIPS: seccomp: Support compat with both O32 and N32
->   secomp: Constify mode1 syscall whitelist
->
->  arch/mips/include/asm/seccomp.h               | 47 +++++++++++++++------------
->  arch/mips/kernel/scall32-o32.S                | 11 +++----
->  arch/mips/kernel/scall64-64.S                 |  3 +-
->  arch/mips/kernel/scall64-n32.S                | 14 +++++---
->  arch/mips/kernel/scall64-o32.S                | 14 +++++---
->  arch/mips/kernel/signal32.c                   |  6 ++++
->  include/asm-generic/seccomp.h                 | 14 ++++++++
->  kernel/seccomp.c                              | 13 ++------
->  tools/testing/selftests/seccomp/seccomp_bpf.c | 30 +++++++++++++++--
->  9 files changed, 101 insertions(+), 51 deletions(-)
+On Tue, 16 Feb 2016, David Daney wrote:
+> On 02/15/2016 07:45 AM, Ioan Nicu wrote:
+> > Octeon sets the default irq affinity to value 1 in the early arch init
+> > code, so by default all irqs get registered with their affinity set to
+> > core 0.
+> > 
+> > When setting one CPU ofline, octeon_irq_cpu_offline_ciu() calls
+> > irq_set_affinity_locked(), but this function sets the IRQD_AFFINITY_SET bit
+> > in the irq descriptor. This has the side effect that if one irq is
+> > requested later, after putting one CPU offline, the affinity of this irq
+> > would not be the default anymore, but rather forced to "all cores - the
+> > offline core".
+> > 
+> > This patch sets the IRQCHIP_ONOFFLINE_ENABLED flag in octeon irq
+> > controllers, so that the kernel would call the irq_cpu_[on|off]line()
+> > callbacks only for enabled irqs. If some other irq is requested after
+> > setting one cpu offline, it would use the default irq affinity, same as it
+> > would do in the normal case where there is no CPU hotplug operation.
+> > 
+> > Signed-off-by: Ioan Nicu <ioan.nicu.ext@nokia.com>
+> > Acked-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
+> 
+> In principle, I don't object.
+> 
+> I would like to see what tglx has to say about this though.  If we are
+> worried about the IRQD_AFFINITY_SET bit, I am not convinced that this is the
+> best place to be tweaking code.  Are we papering over something that should
+> be handled in a more general manner?  I don't know.
 
-Thanks for digging into this! Consider all the seccomp pieces:
+Hmm. Good question. We probably should not set IRQD_AFFINITY_SET when called
+from the offline code. The flag was originally meant to preserve user space
+affinity settings across request/free_irq.
 
-Acked-by: Kees Cook <keescook@chromium.org>
+Though it gets set via irq_set_affinity() as well and therefor via
+irq_set_affinity_locked().
 
-Probably best to carry it all in the MIPS tree, but if you want to me
-take pieces of it into my seccomp tree, I can do that. Up to you. :)
+Now we could move that IRQD_AFFINITY_SET flip to the user space interface, but
+we have to look at all the kernel internal call sites of irq_set_affinity()
+and irq_set_affinity_locked() whether any of those relies on affinity settings
+being preserved. irq_set_affinity_locked() probably not, as the only non core
+user is the octeon code, but you probably can answer that question :)
 
--Kees
+Thanks,
 
--- 
-Kees Cook
-Chrome OS & Brillo Security
+	tglx

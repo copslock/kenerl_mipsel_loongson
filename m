@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:24:55 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:42244 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:25:18 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:42274 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27025939AbcC3QQUWPm8N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:20 +0200
+        by eddie.linux-mips.org with ESMTP id S27025928AbcC3QQYsHP0N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:24 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 09E7A1832; Wed, 30 Mar 2016 18:16:14 +0200 (CEST)
+        id 006311838; Wed, 30 Mar 2016 18:16:18 +0200 (CEST)
 Received: from localhost.localdomain (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 08B1C254;
-        Wed, 30 Mar 2016 18:15:32 +0200 (CEST)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 420D1114C;
+        Wed, 30 Mar 2016 18:15:33 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -42,9 +42,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Archit Taneja <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: [PATCH v5 31/50] mtd: nand: fsl_ifc: switch to mtd_ooblayout_ops
-Date:   Wed, 30 Mar 2016 18:14:46 +0200
-Message-Id: <1459354505-32551-32-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v5 32/50] mtd: nand: fsmc: switch to mtd_ooblayout_ops
+Date:   Wed, 30 Mar 2016 18:14:47 +0200
+Message-Id: <1459354505-32551-33-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -52,7 +52,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52775
+X-archive-position: 52776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,302 +74,359 @@ ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/fsl_ifc_nand.c | 230 ++++++++++++----------------------------
- 1 file changed, 66 insertions(+), 164 deletions(-)
+ drivers/mtd/nand/fsmc_nand.c | 298 ++++++++++++-------------------------------
+ 1 file changed, 82 insertions(+), 216 deletions(-)
 
-diff --git a/drivers/mtd/nand/fsl_ifc_nand.c b/drivers/mtd/nand/fsl_ifc_nand.c
-index 2e970ac..5532c38 100644
---- a/drivers/mtd/nand/fsl_ifc_nand.c
-+++ b/drivers/mtd/nand/fsl_ifc_nand.c
-@@ -67,136 +67,6 @@ struct fsl_ifc_nand_ctrl {
+diff --git a/drivers/mtd/nand/fsmc_nand.c b/drivers/mtd/nand/fsmc_nand.c
+index 1bdcd4f..275a98c 100644
+--- a/drivers/mtd/nand/fsmc_nand.c
++++ b/drivers/mtd/nand/fsmc_nand.c
+@@ -39,212 +39,6 @@
+ #include <linux/amba/bus.h>
+ #include <mtd/mtd-abi.h>
  
- static struct fsl_ifc_nand_ctrl *ifc_nand_ctrl;
- 
--/* 512-byte page with 4-bit ECC, 8-bit */
--static struct nand_ecclayout oob_512_8bit_ecc4 = {
--	.eccbytes = 8,
--	.eccpos = {8, 9, 10, 11, 12, 13, 14, 15},
--	.oobfree = { {0, 5}, {6, 2} },
+-static struct nand_ecclayout fsmc_ecc1_128_layout = {
+-	.eccbytes = 24,
+-	.eccpos = {2, 3, 4, 18, 19, 20, 34, 35, 36, 50, 51, 52,
+-		66, 67, 68, 82, 83, 84, 98, 99, 100, 114, 115, 116},
+-	.oobfree = {
+-		{.offset = 8, .length = 8},
+-		{.offset = 24, .length = 8},
+-		{.offset = 40, .length = 8},
+-		{.offset = 56, .length = 8},
+-		{.offset = 72, .length = 8},
+-		{.offset = 88, .length = 8},
+-		{.offset = 104, .length = 8},
+-		{.offset = 120, .length = 8}
+-	}
 -};
 -
--/* 512-byte page with 4-bit ECC, 16-bit */
--static struct nand_ecclayout oob_512_16bit_ecc4 = {
--	.eccbytes = 8,
--	.eccpos = {8, 9, 10, 11, 12, 13, 14, 15},
--	.oobfree = { {2, 6}, },
+-static struct nand_ecclayout fsmc_ecc1_64_layout = {
+-	.eccbytes = 12,
+-	.eccpos = {2, 3, 4, 18, 19, 20, 34, 35, 36, 50, 51, 52},
+-	.oobfree = {
+-		{.offset = 8, .length = 8},
+-		{.offset = 24, .length = 8},
+-		{.offset = 40, .length = 8},
+-		{.offset = 56, .length = 8},
+-	}
 -};
 -
--/* 2048-byte page size with 4-bit ECC */
--static struct nand_ecclayout oob_2048_ecc4 = {
--	.eccbytes = 32,
--	.eccpos = {
--		8, 9, 10, 11, 12, 13, 14, 15,
--		16, 17, 18, 19, 20, 21, 22, 23,
--		24, 25, 26, 27, 28, 29, 30, 31,
--		32, 33, 34, 35, 36, 37, 38, 39,
+-static struct nand_ecclayout fsmc_ecc1_16_layout = {
+-	.eccbytes = 3,
+-	.eccpos = {2, 3, 4},
+-	.oobfree = {
+-		{.offset = 8, .length = 8},
+-	}
+-};
+-
+-/*
+- * ECC4 layout for NAND of pagesize 8192 bytes & OOBsize 256 bytes. 13*16 bytes
+- * of OB size is reserved for ECC, Byte no. 0 & 1 reserved for bad block and 46
+- * bytes are free for use.
+- */
+-static struct nand_ecclayout fsmc_ecc4_256_layout = {
+-	.eccbytes = 208,
+-	.eccpos = {  2,   3,   4,   5,   6,   7,   8,
+-		9,  10,  11,  12,  13,  14,
+-		18,  19,  20,  21,  22,  23,  24,
+-		25,  26,  27,  28,  29,  30,
+-		34,  35,  36,  37,  38,  39,  40,
+-		41,  42,  43,  44,  45,  46,
+-		50,  51,  52,  53,  54,  55,  56,
+-		57,  58,  59,  60,  61,  62,
+-		66,  67,  68,  69,  70,  71,  72,
+-		73,  74,  75,  76,  77,  78,
+-		82,  83,  84,  85,  86,  87,  88,
+-		89,  90,  91,  92,  93,  94,
+-		98,  99, 100, 101, 102, 103, 104,
+-		105, 106, 107, 108, 109, 110,
+-		114, 115, 116, 117, 118, 119, 120,
+-		121, 122, 123, 124, 125, 126,
+-		130, 131, 132, 133, 134, 135, 136,
+-		137, 138, 139, 140, 141, 142,
+-		146, 147, 148, 149, 150, 151, 152,
+-		153, 154, 155, 156, 157, 158,
+-		162, 163, 164, 165, 166, 167, 168,
+-		169, 170, 171, 172, 173, 174,
+-		178, 179, 180, 181, 182, 183, 184,
+-		185, 186, 187, 188, 189, 190,
+-		194, 195, 196, 197, 198, 199, 200,
+-		201, 202, 203, 204, 205, 206,
+-		210, 211, 212, 213, 214, 215, 216,
+-		217, 218, 219, 220, 221, 222,
+-		226, 227, 228, 229, 230, 231, 232,
+-		233, 234, 235, 236, 237, 238,
+-		242, 243, 244, 245, 246, 247, 248,
+-		249, 250, 251, 252, 253, 254
 -	},
--	.oobfree = { {2, 6}, {40, 24} },
+-	.oobfree = {
+-		{.offset = 15, .length = 3},
+-		{.offset = 31, .length = 3},
+-		{.offset = 47, .length = 3},
+-		{.offset = 63, .length = 3},
+-		{.offset = 79, .length = 3},
+-		{.offset = 95, .length = 3},
+-		{.offset = 111, .length = 3},
+-		{.offset = 127, .length = 3},
+-		{.offset = 143, .length = 3},
+-		{.offset = 159, .length = 3},
+-		{.offset = 175, .length = 3},
+-		{.offset = 191, .length = 3},
+-		{.offset = 207, .length = 3},
+-		{.offset = 223, .length = 3},
+-		{.offset = 239, .length = 3},
+-		{.offset = 255, .length = 1}
+-	}
 -};
 -
--/* 4096-byte page size with 4-bit ECC */
--static struct nand_ecclayout oob_4096_ecc4 = {
--	.eccbytes = 64,
--	.eccpos = {
--		8, 9, 10, 11, 12, 13, 14, 15,
--		16, 17, 18, 19, 20, 21, 22, 23,
--		24, 25, 26, 27, 28, 29, 30, 31,
--		32, 33, 34, 35, 36, 37, 38, 39,
--		40, 41, 42, 43, 44, 45, 46, 47,
--		48, 49, 50, 51, 52, 53, 54, 55,
--		56, 57, 58, 59, 60, 61, 62, 63,
--		64, 65, 66, 67, 68, 69, 70, 71,
+-/*
+- * ECC4 layout for NAND of pagesize 4096 bytes & OOBsize 224 bytes. 13*8 bytes
+- * of OOB size is reserved for ECC, Byte no. 0 & 1 reserved for bad block & 118
+- * bytes are free for use.
+- */
+-static struct nand_ecclayout fsmc_ecc4_224_layout = {
+-	.eccbytes = 104,
+-	.eccpos = {  2,   3,   4,   5,   6,   7,   8,
+-		9,  10,  11,  12,  13,  14,
+-		18,  19,  20,  21,  22,  23,  24,
+-		25,  26,  27,  28,  29,  30,
+-		34,  35,  36,  37,  38,  39,  40,
+-		41,  42,  43,  44,  45,  46,
+-		50,  51,  52,  53,  54,  55,  56,
+-		57,  58,  59,  60,  61,  62,
+-		66,  67,  68,  69,  70,  71,  72,
+-		73,  74,  75,  76,  77,  78,
+-		82,  83,  84,  85,  86,  87,  88,
+-		89,  90,  91,  92,  93,  94,
+-		98,  99, 100, 101, 102, 103, 104,
+-		105, 106, 107, 108, 109, 110,
+-		114, 115, 116, 117, 118, 119, 120,
+-		121, 122, 123, 124, 125, 126
 -	},
--	.oobfree = { {2, 6}, {72, 56} },
+-	.oobfree = {
+-		{.offset = 15, .length = 3},
+-		{.offset = 31, .length = 3},
+-		{.offset = 47, .length = 3},
+-		{.offset = 63, .length = 3},
+-		{.offset = 79, .length = 3},
+-		{.offset = 95, .length = 3},
+-		{.offset = 111, .length = 3},
+-		{.offset = 127, .length = 97}
+-	}
 -};
 -
--/* 4096-byte page size with 8-bit ECC -- requires 218-byte OOB */
--static struct nand_ecclayout oob_4096_ecc8 = {
--	.eccbytes = 128,
--	.eccpos = {
--		8, 9, 10, 11, 12, 13, 14, 15,
--		16, 17, 18, 19, 20, 21, 22, 23,
--		24, 25, 26, 27, 28, 29, 30, 31,
--		32, 33, 34, 35, 36, 37, 38, 39,
--		40, 41, 42, 43, 44, 45, 46, 47,
--		48, 49, 50, 51, 52, 53, 54, 55,
--		56, 57, 58, 59, 60, 61, 62, 63,
--		64, 65, 66, 67, 68, 69, 70, 71,
--		72, 73, 74, 75, 76, 77, 78, 79,
--		80, 81, 82, 83, 84, 85, 86, 87,
--		88, 89, 90, 91, 92, 93, 94, 95,
--		96, 97, 98, 99, 100, 101, 102, 103,
--		104, 105, 106, 107, 108, 109, 110, 111,
--		112, 113, 114, 115, 116, 117, 118, 119,
--		120, 121, 122, 123, 124, 125, 126, 127,
--		128, 129, 130, 131, 132, 133, 134, 135,
+-/*
+- * ECC4 layout for NAND of pagesize 4096 bytes & OOBsize 128 bytes. 13*8 bytes
+- * of OOB size is reserved for ECC, Byte no. 0 & 1 reserved for bad block & 22
+- * bytes are free for use.
+- */
+-static struct nand_ecclayout fsmc_ecc4_128_layout = {
+-	.eccbytes = 104,
+-	.eccpos = {  2,   3,   4,   5,   6,   7,   8,
+-		9,  10,  11,  12,  13,  14,
+-		18,  19,  20,  21,  22,  23,  24,
+-		25,  26,  27,  28,  29,  30,
+-		34,  35,  36,  37,  38,  39,  40,
+-		41,  42,  43,  44,  45,  46,
+-		50,  51,  52,  53,  54,  55,  56,
+-		57,  58,  59,  60,  61,  62,
+-		66,  67,  68,  69,  70,  71,  72,
+-		73,  74,  75,  76,  77,  78,
+-		82,  83,  84,  85,  86,  87,  88,
+-		89,  90,  91,  92,  93,  94,
+-		98,  99, 100, 101, 102, 103, 104,
+-		105, 106, 107, 108, 109, 110,
+-		114, 115, 116, 117, 118, 119, 120,
+-		121, 122, 123, 124, 125, 126
 -	},
--	.oobfree = { {2, 6}, {136, 82} },
+-	.oobfree = {
+-		{.offset = 15, .length = 3},
+-		{.offset = 31, .length = 3},
+-		{.offset = 47, .length = 3},
+-		{.offset = 63, .length = 3},
+-		{.offset = 79, .length = 3},
+-		{.offset = 95, .length = 3},
+-		{.offset = 111, .length = 3},
+-		{.offset = 127, .length = 1}
+-	}
 -};
 -
--/* 8192-byte page size with 4-bit ECC */
--static struct nand_ecclayout oob_8192_ecc4 = {
--	.eccbytes = 128,
--	.eccpos = {
--		8, 9, 10, 11, 12, 13, 14, 15,
--		16, 17, 18, 19, 20, 21, 22, 23,
--		24, 25, 26, 27, 28, 29, 30, 31,
--		32, 33, 34, 35, 36, 37, 38, 39,
--		40, 41, 42, 43, 44, 45, 46, 47,
--		48, 49, 50, 51, 52, 53, 54, 55,
--		56, 57, 58, 59, 60, 61, 62, 63,
--		64, 65, 66, 67, 68, 69, 70, 71,
--		72, 73, 74, 75, 76, 77, 78, 79,
--		80, 81, 82, 83, 84, 85, 86, 87,
--		88, 89, 90, 91, 92, 93, 94, 95,
--		96, 97, 98, 99, 100, 101, 102, 103,
--		104, 105, 106, 107, 108, 109, 110, 111,
--		112, 113, 114, 115, 116, 117, 118, 119,
--		120, 121, 122, 123, 124, 125, 126, 127,
--		128, 129, 130, 131, 132, 133, 134, 135,
+-/*
+- * ECC4 layout for NAND of pagesize 2048 bytes & OOBsize 64 bytes. 13*4 bytes of
+- * OOB size is reserved for ECC, Byte no. 0 & 1 reserved for bad block and 10
+- * bytes are free for use.
+- */
+-static struct nand_ecclayout fsmc_ecc4_64_layout = {
+-	.eccbytes = 52,
+-	.eccpos = {  2,   3,   4,   5,   6,   7,   8,
+-		9,  10,  11,  12,  13,  14,
+-		18,  19,  20,  21,  22,  23,  24,
+-		25,  26,  27,  28,  29,  30,
+-		34,  35,  36,  37,  38,  39,  40,
+-		41,  42,  43,  44,  45,  46,
+-		50,  51,  52,  53,  54,  55,  56,
+-		57,  58,  59,  60,  61,  62,
 -	},
--	.oobfree = { {2, 6}, {136, 208} },
+-	.oobfree = {
+-		{.offset = 15, .length = 3},
+-		{.offset = 31, .length = 3},
+-		{.offset = 47, .length = 3},
+-		{.offset = 63, .length = 1},
+-	}
 -};
 -
--/* 8192-byte page size with 8-bit ECC -- requires 218-byte OOB */
--static struct nand_ecclayout oob_8192_ecc8 = {
--	.eccbytes = 256,
--	.eccpos = {
--		8, 9, 10, 11, 12, 13, 14, 15,
--		16, 17, 18, 19, 20, 21, 22, 23,
--		24, 25, 26, 27, 28, 29, 30, 31,
--		32, 33, 34, 35, 36, 37, 38, 39,
--		40, 41, 42, 43, 44, 45, 46, 47,
--		48, 49, 50, 51, 52, 53, 54, 55,
--		56, 57, 58, 59, 60, 61, 62, 63,
--		64, 65, 66, 67, 68, 69, 70, 71,
--		72, 73, 74, 75, 76, 77, 78, 79,
--		80, 81, 82, 83, 84, 85, 86, 87,
--		88, 89, 90, 91, 92, 93, 94, 95,
--		96, 97, 98, 99, 100, 101, 102, 103,
--		104, 105, 106, 107, 108, 109, 110, 111,
--		112, 113, 114, 115, 116, 117, 118, 119,
--		120, 121, 122, 123, 124, 125, 126, 127,
--		128, 129, 130, 131, 132, 133, 134, 135,
--		136, 137, 138, 139, 140, 141, 142, 143,
--		144, 145, 146, 147, 148, 149, 150, 151,
--		152, 153, 154, 155, 156, 157, 158, 159,
--		160, 161, 162, 163, 164, 165, 166, 167,
--		168, 169, 170, 171, 172, 173, 174, 175,
--		176, 177, 178, 179, 180, 181, 182, 183,
--		184, 185, 186, 187, 188, 189, 190, 191,
--		192, 193, 194, 195, 196, 197, 198, 199,
--		200, 201, 202, 203, 204, 205, 206, 207,
--		208, 209, 210, 211, 212, 213, 214, 215,
--		216, 217, 218, 219, 220, 221, 222, 223,
--		224, 225, 226, 227, 228, 229, 230, 231,
--		232, 233, 234, 235, 236, 237, 238, 239,
--		240, 241, 242, 243, 244, 245, 246, 247,
--		248, 249, 250, 251, 252, 253, 254, 255,
--		256, 257, 258, 259, 260, 261, 262, 263,
+-/*
+- * ECC4 layout for NAND of pagesize 512 bytes & OOBsize 16 bytes. 13 bytes of
+- * OOB size is reserved for ECC, Byte no. 4 & 5 reserved for bad block and One
+- * byte is free for use.
+- */
+-static struct nand_ecclayout fsmc_ecc4_16_layout = {
+-	.eccbytes = 13,
+-	.eccpos = { 0,  1,  2,  3,  6,  7, 8,
+-		9, 10, 11, 12, 13, 14
 -	},
--	.oobfree = { {2, 6}, {264, 80} },
+-	.oobfree = {
+-		{.offset = 15, .length = 1},
+-	}
 -};
 -
  /*
-  * Generic flash bbt descriptors
-  */
-@@ -223,6 +93,57 @@ static struct nand_bbt_descr bbt_mirror_descr = {
- 	.pattern = mirror_pattern,
+  * ECC placement definitions in oobfree type format.
+  * There are 13 bytes of ecc for every 512 byte block and it has to be read
+@@ -274,6 +68,84 @@ static struct fsmc_eccplace fsmc_ecc4_sp_place = {
+ 	}
  };
  
-+static int fsl_ifc_ooblayout_ecc(struct mtd_info *mtd, int section,
-+				 struct mtd_oob_region *oobregion)
++static int fsmc_ecc1_ooblayout_ecc(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *oobregion)
 +{
 +	struct nand_chip *chip = mtd_to_nand(mtd);
 +
-+	if (section)
++	if (section >= chip->ecc.steps)
 +		return -ERANGE;
 +
-+	oobregion->offset = 8;
-+	oobregion->length = chip->ecc.total;
++	oobregion->offset = (section * 16) + 2;
++	oobregion->length = 3;
 +
 +	return 0;
 +}
 +
-+static int fsl_ifc_ooblayout_free(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *oobregion)
++static int fsmc_ecc1_ooblayout_free(struct mtd_info *mtd, int section,
++				    struct mtd_oob_region *oobregion)
 +{
 +	struct nand_chip *chip = mtd_to_nand(mtd);
 +
-+	if (section > 1)
++	if (section >= chip->ecc.steps)
 +		return -ERANGE;
 +
-+	if (mtd->writesize == 512 &&
-+	    !(chip->options & NAND_BUSWIDTH_16)) {
-+		if (!section) {
-+			oobregion->offset = 0;
-+			oobregion->length = 5;
-+		} else {
-+			oobregion->offset = 6;
-+			oobregion->length = 2;
-+		}
++	oobregion->offset = (section * 16) + 8;
 +
-+		return 0;
-+	}
-+
-+	if (!section) {
-+		oobregion->offset = 2;
-+		oobregion->length = 6;
-+	} else {
-+		oobregion->offset = chip->ecc.total + 8;
++	if (section < chip->ecc.steps - 1)
++		oobregion->length = 8;
++	else
 +		oobregion->length = mtd->oobsize - oobregion->offset;
-+	}
 +
 +	return 0;
 +}
 +
-+static const struct mtd_ooblayout_ops fsl_ifc_ooblayout_ops = {
-+	.ecc = fsl_ifc_ooblayout_ecc,
-+	.free = fsl_ifc_ooblayout_free,
++static const struct mtd_ooblayout_ops fsmc_ecc1_ooblayout_ops = {
++	.ecc = fsmc_ecc1_ooblayout_ecc,
++	.free = fsmc_ecc1_ooblayout_free,
 +};
 +
- /*
-  * Set up the IFC hardware block and page address fields, and the ifc nand
-  * structure addr field to point to the correct IFC buffer in memory
-@@ -812,8 +733,8 @@ static int fsl_ifc_chip_init_tail(struct mtd_info *mtd)
- 							chip->ecc.bytes);
- 	dev_dbg(priv->dev, "%s: nand->ecc.total = %d\n", __func__,
- 							chip->ecc.total);
--	dev_dbg(priv->dev, "%s: nand->ecc.layout = %p\n", __func__,
--							chip->ecc.layout);
-+	dev_dbg(priv->dev, "%s: mtd->ooblayout = %p\n", __func__,
-+							mtd->ooblayout);
- 	dev_dbg(priv->dev, "%s: mtd->flags = %08x\n", __func__, mtd->flags);
- 	dev_dbg(priv->dev, "%s: mtd->size = %lld\n", __func__, mtd->size);
- 	dev_dbg(priv->dev, "%s: mtd->erasesize = %d\n", __func__,
-@@ -881,7 +802,6 @@ static int fsl_ifc_chip_init(struct fsl_ifc_mtd *priv)
- 	struct fsl_ifc_regs __iomem *ifc = ctrl->regs;
- 	struct nand_chip *chip = &priv->chip;
- 	struct mtd_info *mtd = nand_to_mtd(&priv->chip);
--	struct nand_ecclayout *layout;
- 	u32 csor;
- 
- 	/* Fill in fsl_ifc_mtd structure */
-@@ -925,18 +845,9 @@ static int fsl_ifc_chip_init(struct fsl_ifc_mtd *priv)
- 
- 	csor = ifc_in32(&ifc->csor_cs[priv->bank].csor);
- 
--	/* Hardware generates ECC per 512 Bytes */
--	chip->ecc.size = 512;
--	chip->ecc.bytes = 8;
--	chip->ecc.strength = 4;
--
- 	switch (csor & CSOR_NAND_PGS_MASK) {
- 	case CSOR_NAND_PGS_512:
--		if (chip->options & NAND_BUSWIDTH_16) {
--			layout = &oob_512_16bit_ecc4;
--		} else {
--			layout = &oob_512_8bit_ecc4;
--
-+		if (!(chip->options & NAND_BUSWIDTH_16)) {
- 			/* Avoid conflict with bad block marker */
- 			bbt_main_descr.offs = 0;
- 			bbt_mirror_descr.offs = 0;
-@@ -946,35 +857,16 @@ static int fsl_ifc_chip_init(struct fsl_ifc_mtd *priv)
- 		break;
- 
- 	case CSOR_NAND_PGS_2K:
--		layout = &oob_2048_ecc4;
- 		priv->bufnum_mask = 3;
- 		break;
- 
- 	case CSOR_NAND_PGS_4K:
--		if ((csor & CSOR_NAND_ECC_MODE_MASK) ==
--		    CSOR_NAND_ECC_MODE_4) {
--			layout = &oob_4096_ecc4;
--		} else {
--			layout = &oob_4096_ecc8;
--			chip->ecc.bytes = 16;
--			chip->ecc.strength = 8;
--		}
--
- 		priv->bufnum_mask = 1;
- 		break;
- 
- 	case CSOR_NAND_PGS_8K:
--		if ((csor & CSOR_NAND_ECC_MODE_MASK) ==
--		    CSOR_NAND_ECC_MODE_4) {
--			layout = &oob_8192_ecc4;
--		} else {
--			layout = &oob_8192_ecc8;
--			chip->ecc.bytes = 16;
--			chip->ecc.strength = 8;
--		}
--
- 		priv->bufnum_mask = 0;
--	break;
-+		break;
- 
- 	default:
- 		dev_err(priv->dev, "bad csor %#x: bad page size\n", csor);
-@@ -984,7 +876,17 @@ static int fsl_ifc_chip_init(struct fsl_ifc_mtd *priv)
- 	/* Must also set CSOR_NAND_ECC_ENC_EN if DEC_EN set */
- 	if (csor & CSOR_NAND_ECC_DEC_EN) {
- 		chip->ecc.mode = NAND_ECC_HW;
--		chip->ecc.layout = layout;
-+		mtd_set_ooblayout(mtd, &fsl_ifc_ooblayout_ops);
++static int fsmc_ecc4_ooblayout_ecc(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *oobregion)
++{
++	struct nand_chip *chip = mtd_to_nand(mtd);
 +
-+		/* Hardware generates ECC per 512 Bytes */
-+		chip->ecc.size = 512;
-+		if ((csor & CSOR_NAND_ECC_MODE_MASK) == CSOR_NAND_ECC_MODE_4) {
-+			chip->ecc.bytes = 8;
-+			chip->ecc.strength = 4;
-+		} else {
-+			chip->ecc.bytes = 16;
-+			chip->ecc.strength = 8;
-+		}
++	if (section >= chip->ecc.steps)
++		return -ERANGE;
++
++	oobregion->length = chip->ecc.bytes;
++
++	if (!section && mtd->writesize <= 512)
++		oobregion->offset = 0;
++	else
++		oobregion->offset = (section * 16) + 2;
++
++	return 0;
++}
++
++static int fsmc_ecc4_ooblayout_free(struct mtd_info *mtd, int section,
++				    struct mtd_oob_region *oobregion)
++{
++	struct nand_chip *chip = mtd_to_nand(mtd);
++
++	if (section >= chip->ecc.steps)
++		return -ERANGE;
++
++	oobregion->offset = (section * 16) + 15;
++
++	if (section < chip->ecc.steps - 1)
++		oobregion->length = 3;
++	else
++		oobregion->length = mtd->oobsize - oobregion->offset;
++
++	return 0;
++}
++
++static const struct mtd_ooblayout_ops fsmc_ecc4_ooblayout_ops = {
++	.ecc = fsmc_ecc4_ooblayout_ecc,
++	.free = fsmc_ecc4_ooblayout_free,
++};
++
+ /**
+  * struct fsmc_nand_data - structure for FSMC NAND device state
+  *
+@@ -1084,23 +956,18 @@ static int __init fsmc_nand_probe(struct platform_device *pdev)
+ 	if (AMBA_REV_BITS(host->pid) >= 8) {
+ 		switch (mtd->oobsize) {
+ 		case 16:
+-			nand->ecc.layout = &fsmc_ecc4_16_layout;
+ 			host->ecc_place = &fsmc_ecc4_sp_place;
+ 			break;
+ 		case 64:
+-			nand->ecc.layout = &fsmc_ecc4_64_layout;
+ 			host->ecc_place = &fsmc_ecc4_lp_place;
+ 			break;
+ 		case 128:
+-			nand->ecc.layout = &fsmc_ecc4_128_layout;
+ 			host->ecc_place = &fsmc_ecc4_lp_place;
+ 			break;
+ 		case 224:
+-			nand->ecc.layout = &fsmc_ecc4_224_layout;
+ 			host->ecc_place = &fsmc_ecc4_lp_place;
+ 			break;
+ 		case 256:
+-			nand->ecc.layout = &fsmc_ecc4_256_layout;
+ 			host->ecc_place = &fsmc_ecc4_lp_place;
+ 			break;
+ 		default:
+@@ -1109,6 +976,8 @@ static int __init fsmc_nand_probe(struct platform_device *pdev)
+ 			ret = -EINVAL;
+ 			goto err_probe;
+ 		}
++
++		mtd_set_ooblayout(mtd, &fsmc_ecc4_ooblayout_ops);
  	} else {
- 		chip->ecc.mode = NAND_ECC_SOFT;
- 	}
+ 		switch (nand->ecc.mode) {
+ 		case NAND_ECC_HW:
+@@ -1135,13 +1004,10 @@ static int __init fsmc_nand_probe(struct platform_device *pdev)
+ 		if (nand->ecc.mode != NAND_ECC_SOFT_BCH) {
+ 			switch (mtd->oobsize) {
+ 			case 16:
+-				nand->ecc.layout = &fsmc_ecc1_16_layout;
+-				break;
+ 			case 64:
+-				nand->ecc.layout = &fsmc_ecc1_64_layout;
+-				break;
+ 			case 128:
+-				nand->ecc.layout = &fsmc_ecc1_128_layout;
++				mtd_set_ooblayout(mtd,
++						  &fsmc_ecc1_ooblayout_ops);
+ 				break;
+ 			default:
+ 				dev_warn(&pdev->dev,
 -- 
 2.5.0

@@ -1,44 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 17:22:18 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:24569 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27024719AbcC3PWQN2aL4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 17:22:16 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 3A8C2A73C8EAB;
-        Wed, 30 Mar 2016 16:22:07 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 30 Mar 2016 16:22:09 +0100
-Received: from [192.168.154.45] (192.168.154.45) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Wed, 30 Mar
- 2016 16:22:09 +0100
-Subject: Re: [PATCH v2] MIPS: vdso: flush the vdso data page to update it on
- all processes
-To:     Hauke Mehrtens <hauke@hauke-m.de>, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>
-References: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
- <56FAF575.4070607@hauke-m.de>
-CC:     <alex.smith@imgtec.com>, <sergei.shtylyov@cogentembedded.com>,
-        "# v4 . 4+" <stable@vger.kernel.org>
-From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Message-ID: <56FBEEFF.10406@imgtec.com>
-Date:   Wed, 30 Mar 2016 16:21:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
-MIME-Version: 1.0
-In-Reply-To: <56FAF575.4070607@hauke-m.de>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.45]
-Return-Path: <Zubair.Kakakhel@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 17:30:04 +0200 (CEST)
+Received: from mail-wm0-f44.google.com ([74.125.82.44]:35637 "EHLO
+        mail-wm0-f44.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27024719AbcC3PaCrwLRN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 17:30:02 +0200
+Received: by mail-wm0-f44.google.com with SMTP id 191so94257082wmq.0;
+        Wed, 30 Mar 2016 08:30:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=ZrkR6TBXqVYXNbNiSOEAY2L7Rf2V/yH/PwgqdeGTxCc=;
+        b=TES8b9LPg/56Bo+D9L1stbwiv2KdJQZPSS1vt3aG4IGPEVZj+H2LhQVl4RYbXeHgA8
+         hN0zFbMpJuW/D1+vN3eWomAyaVBjlj2PEu0RLx5AfLj8T/ss/gVp3bnt5jXwYDcL0qPm
+         rdC1KsxbY92L8f0POSt4x1wDUM2/tAkNVjxKzkSV/Trm1N/H94da3Jny51K6eQMS0s+f
+         XwzM6XHRZYFMUZO94DKp3mGKacNwPPeUP2G1iP8W8TMmjJWxm7O6M0of7n3lCuct3yLi
+         5PgrXo5EapvBhWjSrKT92fmx5K8lZR89G14saOJ6VX8M9RlKG7QIb8mxQW4QpaxOKPcw
+         KnNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ZrkR6TBXqVYXNbNiSOEAY2L7Rf2V/yH/PwgqdeGTxCc=;
+        b=f/u9GPrmidKwexJ4u7ootPuMsfS0z/60qjP5wg4brKNNailyIqHZEfcd01O3VCWElk
+         FJK/508QfN5uOf8qV0QkstREled2lUvtCw9U4Ta2htMK+k3/WwmB66WaGYL0cI90Jt0j
+         LJa0BtGNN9jKCD+R483AA+lkIKm1sa2hnDy5QcrgVij1PXwGOqTrTVZGrocPg6+hhHYz
+         Q0YFLilX2mSd4aZSu6zgB5JIuoJnGagZyAy0uH76OmYOe2NLzMQYi5DrrUcNHCLz1H2z
+         PW5MgDlOXPMVf62MBGsY+ljhBEXJQ2nT4LTts6zr1XVBNautvm+0C0JHyHQytk2GYP5n
+         KHpg==
+X-Gm-Message-State: AD7BkJKIbOI/g/vo5imkstzjeL+PJm884yo3EPcIggg1FGz+i6Ll7saHxfNKidficKF3wA==
+X-Received: by 10.194.60.165 with SMTP id i5mr11454616wjr.178.1459351795643;
+        Wed, 30 Mar 2016 08:29:55 -0700 (PDT)
+Received: from sudip-tp.guest.codethink.co.uk (82-70-136-246.dsl.in-addr.zen.co.uk. [82.70.136.246])
+        by smtp.gmail.com with ESMTPSA id w8sm4485577wjf.19.2016.03.30.08.29.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 30 Mar 2016 08:29:54 -0700 (PDT)
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Antony Pavlov <antonynpavlov@gmail.com>
+Subject: [PATCH] MIPS: ath79: fix build failure
+Date:   Wed, 30 Mar 2016 16:29:49 +0100
+Message-Id: <1459351789-24544-1-git-send-email-sudipm.mukherjee@gmail.com>
+X-Mailer: git-send-email 2.1.4
+Return-Path: <sudipm.mukherjee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52736
+X-archive-position: 52737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Zubair.Kakakhel@imgtec.com
+X-original-sender: sudipm.mukherjee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,83 +62,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Hauke,
+The ath79_defconfig build of mips was faling with the errors:
 
-Could you share details of what version of glibc/rfs setup you are using?
+arch/mips/ath79/setup.c: In function 'plat_mem_setup':
+arch/mips/ath79/setup.c:226:20: error: invalid storage class for function 'ath79_of_plat_time_init'
+ static void __init ath79_of_plat_time_init(void)
+                    ^
+arch/mips/ath79/setup.c:226:1: error: ISO C90 forbids mixed declarations and code [-Werror=declaration-after-statement]
+ static void __init ath79_of_plat_time_init(void)
+ ^
+arch/mips/ath79/setup.c:284:20: error: invalid storage class for function 'ath79_setup'
+ static  __init int ath79_setup(void)
+                    ^
+arch/mips/ath79/setup.c:299:1: error: initializer element is not constant
+ arch_initcall(ath79_setup);
 
-Thanks.
+It turns out to be a simple error of a missed closing brace.
 
-Regards,
-ZubairLK
+Fixes: f63ba725caa7 ("MIPS: ath79: Disable platform code for OF boards.")
+Cc: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+---
 
-On 29/03/16 22:36, Hauke Mehrtens wrote:
-> On 02/21/2016 06:08 PM, Hauke Mehrtens wrote:
->> Without flushing the vdso data page the vdso call is working on dated
->> or unsynced data. This resulted in problems where the clock_gettime
->> vdso call returned a time 6 seconds later after a 3 seconds sleep,
->> while the syscall reported a time 3 sounds later, like expected. This
->> happened very often and I got these ping results for example:
->>
->> root@OpenWrt:/# ping 192.168.1.255
->> PING 192.168.1.255 (192.168.1.255): 56 data bytes
->> 64 bytes from 192.168.1.3: seq=0 ttl=64 time=0.688 ms
->> 64 bytes from 192.168.1.3: seq=1 ttl=64 time=4294172.045 ms
->> 64 bytes from 192.168.1.3: seq=2 ttl=64 time=4293968.105 ms
->> 64 bytes from 192.168.1.3: seq=3 ttl=64 time=4294055.920 ms
->> 64 bytes from 192.168.1.3: seq=4 ttl=64 time=4294671.913 ms
->>
->> This was tested on a Lantiq/Intel VRX288 (MIPS BE 34Kc V5.6 CPU with
->> two VPEs)
->>
->> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->> Cc: <stable@vger.kernel.org> # v4.4+
->
-> This patch flushes the complete dcache of the CPU if cpu_has_dc_aliases
-> is set.
->
-> Calling flush_dcache_page(virt_to_page(&vdso_data)); improved the
-> situation a litte bit but did not fix my problem.
->
-> Could someone from Imagination please look into this problem. The page
-> is linked into many virtual address spaces and when it gets modified by
-> the kernel the user space processes are still accessing partly old data,
-> even when lush_dcache_page() was called.
->
->> ---
->>   arch/mips/kernel/vdso.c | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
->> index 975e997..8b0d974 100644
->> --- a/arch/mips/kernel/vdso.c
->> +++ b/arch/mips/kernel/vdso.c
->> @@ -20,6 +20,8 @@
->>   #include <linux/timekeeper_internal.h>
->>
->>   #include <asm/abi.h>
->> +#include <asm/cacheflush.h>
->> +#include <asm/page.h>
->>   #include <asm/vdso.h>
->>
->>   /* Kernel-provided data used by the VDSO. */
->> @@ -85,6 +87,8 @@ void update_vsyscall(struct timekeeper *tk)
->>   	}
->>
->>   	vdso_data_write_end(&vdso_data);
->> +	flush_cache_vmap((unsigned long)&vdso_data,
->> +			 (unsigned long)&vdso_data + sizeof(vdso_data));
->>   }
->>
->>   void update_vsyscall_tz(void)
->> @@ -93,6 +97,8 @@ void update_vsyscall_tz(void)
->>   		vdso_data.tz_minuteswest = sys_tz.tz_minuteswest;
->>   		vdso_data.tz_dsttime = sys_tz.tz_dsttime;
->>   	}
->> +	flush_cache_vmap((unsigned long)&vdso_data,
->> +			 (unsigned long)&vdso_data + sizeof(vdso_data));
->>   }
->>
->>   int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
->>
->
->
+Build log of next-20160330 is at:
+https://travis-ci.org/sudipm-mukherjee/parport/jobs/119417999
+
+ arch/mips/ath79/setup.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 897f49a..e0ff6f3 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -214,6 +214,7 @@ void __init plat_mem_setup(void)
+ 						 AR71XX_PLL_SIZE);
+ 		ath79_detect_sys_type();
+ 		ath79_ddr_ctrl_init();
++	}
+ 
+ 	detect_memory_region(0, ATH79_MEM_SIZE_MIN, ATH79_MEM_SIZE_MAX);
+ 	/* OF machines should use the reset driver */
+-- 
+2.1.4

@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:29:22 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:42602 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:29:42 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:42639 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27025860AbcC3QQthvTlN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:49 +0200
+        by eddie.linux-mips.org with ESMTP id S27025947AbcC3QQuHGrON (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:50 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id D9EED1836; Wed, 30 Mar 2016 18:16:48 +0200 (CEST)
+        id 4E19B185A; Wed, 30 Mar 2016 18:16:44 +0200 (CEST)
 Received: from localhost.localdomain (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 307BF182D;
-        Wed, 30 Mar 2016 18:15:46 +0200 (CEST)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 73AF91BBD;
+        Wed, 30 Mar 2016 18:15:44 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -42,9 +42,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Archit Taneja <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: [PATCH v5 47/50] mtd: onenand: switch to mtd_ooblayout_ops
-Date:   Wed, 30 Mar 2016 18:15:02 +0200
-Message-Id: <1459354505-32551-48-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v5 45/50] mtd: nand: vf610: switch to mtd_ooblayout_ops
+Date:   Wed, 30 Mar 2016 18:15:00 +0200
+Message-Id: <1459354505-32551-46-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -52,7 +52,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52790
+X-archive-position: 52791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,253 +70,70 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Implementing the mtd_ooblayout_ops interface is the new way of exposing
-ECC/OOB layout to MTD users. Modify the onenand drivers to switch to this
-approach.
+ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/onenand/onenand_base.c | 162 ++++++++++++++++++++++---------------
- include/linux/mtd/onenand.h        |   2 -
- 2 files changed, 97 insertions(+), 67 deletions(-)
+ drivers/mtd/nand/vf610_nfc.c | 34 ++++------------------------------
+ 1 file changed, 4 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/mtd/onenand/onenand_base.c b/drivers/mtd/onenand/onenand_base.c
-index d0fa505..a4b029a 100644
---- a/drivers/mtd/onenand/onenand_base.c
-+++ b/drivers/mtd/onenand/onenand_base.c
-@@ -68,21 +68,33 @@ MODULE_PARM_DESC(otp,	"Corresponding behaviour of OneNAND in OTP"
-  * flexonenand_oob_128 - oob info for Flex-Onenand with 4KB page
-  * For now, we expose only 64 out of 80 ecc bytes
-  */
--static struct nand_ecclayout flexonenand_oob_128 = {
--	.eccbytes	= 64,
--	.eccpos		= {
--		6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
--		22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
--		38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
--		54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
--		70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
--		86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
--		102, 103, 104, 105
--		},
--	.oobfree	= {
--		{2, 4}, {18, 4}, {34, 4}, {50, 4},
--		{66, 4}, {82, 4}, {98, 4}, {114, 4}
--	}
-+static int flexonenand_ooblayout_ecc(struct mtd_info *mtd, int section,
-+				     struct mtd_oob_region *oobregion)
-+{
-+	if (section > 7)
-+		return -ERANGE;
-+
-+	oobregion->offset = (section * 16) + 6;
-+	oobregion->length = 10;
-+
-+	return 0;
-+}
-+
-+static int flexonenand_ooblayout_free(struct mtd_info *mtd, int section,
-+				      struct mtd_oob_region *oobregion)
-+{
-+	if (section > 7)
-+		return -ERANGE;
-+
-+	oobregion->offset = (section * 16) + 2;
-+	oobregion->length = 4;
-+
-+	return 0;
-+}
-+
-+static const struct mtd_ooblayout_ops flexonenand_ooblayout_ops = {
-+	.ecc = flexonenand_ooblayout_ecc,
-+	.free = flexonenand_ooblayout_free,
- };
+diff --git a/drivers/mtd/nand/vf610_nfc.c b/drivers/mtd/nand/vf610_nfc.c
+index 293feb1..da34de1 100644
+--- a/drivers/mtd/nand/vf610_nfc.c
++++ b/drivers/mtd/nand/vf610_nfc.c
+@@ -175,34 +175,6 @@ static inline struct vf610_nfc *mtd_to_nfc(struct mtd_info *mtd)
+ 	return container_of(mtd_to_nand(mtd), struct vf610_nfc, chip);
+ }
  
- /*
-@@ -91,56 +103,77 @@ static struct nand_ecclayout flexonenand_oob_128 = {
-  * Based on specification:
-  * 4Gb M-die OneNAND Flash (KFM4G16Q4M, KFN8G16Q4M). Rev. 1.3, Apr. 2010
-  *
-- * For eccpos we expose only 64 bytes out of 72 (see struct nand_ecclayout)
-- *
-- * oobfree uses the spare area fields marked as
-- * "Managed by internal ECC logic for Logical Sector Number area"
-- */
--static struct nand_ecclayout onenand_oob_128 = {
--	.eccbytes	= 64,
--	.eccpos		= {
--		7, 8, 9, 10, 11, 12, 13, 14, 15,
--		23, 24, 25, 26, 27, 28, 29, 30, 31,
--		39, 40, 41, 42, 43, 44, 45, 46, 47,
--		55, 56, 57, 58, 59, 60, 61, 62, 63,
--		71, 72, 73, 74, 75, 76, 77, 78, 79,
--		87, 88, 89, 90, 91, 92, 93, 94, 95,
--		103, 104, 105, 106, 107, 108, 109, 110, 111,
--		119
--	},
--	.oobfree	= {
--		{2, 3}, {18, 3}, {34, 3}, {50, 3},
--		{66, 3}, {82, 3}, {98, 3}, {114, 3}
--	}
-+ */
-+static int onenand_ooblayout_128_ecc(struct mtd_info *mtd, int section,
-+				     struct mtd_oob_region *oobregion)
-+{
-+	if (section > 7)
-+		return -ERANGE;
-+
-+	oobregion->offset = (section * 16) + 7;
-+	oobregion->length = 9;
-+
-+	return 0;
-+}
-+
-+static int onenand_ooblayout_128_free(struct mtd_info *mtd, int section,
-+				      struct mtd_oob_region *oobregion)
-+{
-+	if (section >= 8)
-+		return -ERANGE;
-+
-+	/*
-+	 * free bytes are using the spare area fields marked as
-+	 * "Managed by internal ECC logic for Logical Sector Number area"
-+	 */
-+	oobregion->offset = (section * 16) + 2;
-+	oobregion->length = 3;
-+
-+	return 0;
-+}
-+
-+static const struct mtd_ooblayout_ops onenand_oob_128_ooblayout_ops = {
-+	.ecc = onenand_ooblayout_128_ecc,
-+	.free = onenand_ooblayout_128_free,
- };
- 
- /**
-- * onenand_oob_64 - oob info for large (2KB) page
-+ * onenand_oob_32_64 - oob info for large (2KB) page
-  */
--static struct nand_ecclayout onenand_oob_64 = {
--	.eccbytes	= 20,
--	.eccpos		= {
--		8, 9, 10, 11, 12,
--		24, 25, 26, 27, 28,
--		40, 41, 42, 43, 44,
--		56, 57, 58, 59, 60,
--		},
--	.oobfree	= {
--		{2, 3}, {14, 2}, {18, 3}, {30, 2},
--		{34, 3}, {46, 2}, {50, 3}, {62, 2}
-+static int onenand_ooblayout_32_64_ecc(struct mtd_info *mtd, int section,
-+				       struct mtd_oob_region *oobregion)
-+{
-+	if (section > 3)
-+		return -ERANGE;
-+
-+	oobregion->offset = (section * 16) + 8;
-+	oobregion->length = 5;
-+
-+	return 0;
-+}
-+
-+static int onenand_ooblayout_32_64_free(struct mtd_info *mtd, int section,
-+					struct mtd_oob_region *oobregion)
-+{
-+	int sections = (mtd->oobsize / 32) * 2;
-+
-+	if (section >= sections)
-+		return -ERANGE;
-+
-+	if (section & 1) {
-+		oobregion->offset = ((section - 1) * 16) + 14;
-+		oobregion->length = 2;
-+	} else  {
-+		oobregion->offset = (section * 16) + 2;
-+		oobregion->length = 3;
- 	}
+-static struct nand_ecclayout vf610_nfc_ecc45 = {
+-	.eccbytes = 45,
+-	.eccpos = {19, 20, 21, 22, 23,
+-		   24, 25, 26, 27, 28, 29, 30, 31,
+-		   32, 33, 34, 35, 36, 37, 38, 39,
+-		   40, 41, 42, 43, 44, 45, 46, 47,
+-		   48, 49, 50, 51, 52, 53, 54, 55,
+-		   56, 57, 58, 59, 60, 61, 62, 63},
+-	.oobfree = {
+-		{.offset = 2,
+-		 .length = 17} }
 -};
+-
+-static struct nand_ecclayout vf610_nfc_ecc60 = {
+-	.eccbytes = 60,
+-	.eccpos = { 4,  5,  6,  7,  8,  9, 10, 11,
+-		   12, 13, 14, 15, 16, 17, 18, 19,
+-		   20, 21, 22, 23, 24, 25, 26, 27,
+-		   28, 29, 30, 31, 32, 33, 34, 35,
+-		   36, 37, 38, 39, 40, 41, 42, 43,
+-		   44, 45, 46, 47, 48, 49, 50, 51,
+-		   52, 53, 54, 55, 56, 57, 58, 59,
+-		   60, 61, 62, 63 },
+-	.oobfree = {
+-		{.offset = 2,
+-		 .length = 2} }
+-};
+-
+ static inline u32 vf610_nfc_read(struct vf610_nfc *nfc, uint reg)
+ {
+ 	return readl(nfc->regs + reg);
+@@ -781,14 +753,16 @@ static int vf610_nfc_probe(struct platform_device *pdev)
+ 		if (mtd->oobsize > 64)
+ 			mtd->oobsize = 64;
  
--/**
-- * onenand_oob_32 - oob info for middle (1KB) page
-- */
--static struct nand_ecclayout onenand_oob_32 = {
--	.eccbytes	= 10,
--	.eccpos		= {
--		8, 9, 10, 11, 12,
--		24, 25, 26, 27, 28,
--		},
--	.oobfree	= { {2, 3}, {14, 2}, {18, 3}, {30, 2} }
-+	return 0;
-+}
-+
-+static const struct mtd_ooblayout_ops onenand_oob_32_64_ooblayout_ops = {
-+	.ecc = onenand_ooblayout_32_64_ecc,
-+	.free = onenand_ooblayout_32_64_free,
- };
- 
- static const unsigned char ffchars[] = {
-@@ -3957,22 +3990,22 @@ int onenand_scan(struct mtd_info *mtd, int maxchips)
- 	switch (mtd->oobsize) {
- 	case 128:
- 		if (FLEXONENAND(this)) {
--			this->ecclayout = &flexonenand_oob_128;
-+			mtd_set_ooblayout(mtd, &flexonenand_ooblayout_ops);
- 			mtd->subpage_sft = 0;
++		/*
++		 * mtd->ecclayout is not specified here because we're using the
++		 * default large page ECC layout defined in NAND core.
++		 */
+ 		if (chip->ecc.strength == 32) {
+ 			nfc->ecc_mode = ECC_60_BYTE;
+ 			chip->ecc.bytes = 60;
+-			chip->ecc.layout = &vf610_nfc_ecc60;
+ 		} else if (chip->ecc.strength == 24) {
+ 			nfc->ecc_mode = ECC_45_BYTE;
+ 			chip->ecc.bytes = 45;
+-			chip->ecc.layout = &vf610_nfc_ecc45;
  		} else {
--			this->ecclayout = &onenand_oob_128;
-+			mtd_set_ooblayout(mtd, &onenand_oob_128_ooblayout_ops);
- 			mtd->subpage_sft = 2;
- 		}
- 		if (ONENAND_IS_NOP_1(this))
- 			mtd->subpage_sft = 0;
- 		break;
- 	case 64:
--		this->ecclayout = &onenand_oob_64;
-+		mtd_set_ooblayout(mtd, &onenand_oob_32_64_ooblayout_ops);
- 		mtd->subpage_sft = 2;
- 		break;
- 
- 	case 32:
--		this->ecclayout = &onenand_oob_32;
-+		mtd_set_ooblayout(mtd, &onenand_oob_32_64_ooblayout_ops);
- 		mtd->subpage_sft = 1;
- 		break;
- 
-@@ -3981,7 +4014,7 @@ int onenand_scan(struct mtd_info *mtd, int maxchips)
- 			__func__, mtd->oobsize);
- 		mtd->subpage_sft = 0;
- 		/* To prevent kernel oops */
--		this->ecclayout = &onenand_oob_32;
-+		mtd_set_ooblayout(mtd, &onenand_oob_32_64_ooblayout_ops);
- 		break;
- 	}
- 
-@@ -3997,7 +4030,6 @@ int onenand_scan(struct mtd_info *mtd, int maxchips)
- 
- 	mtd->oobavail = ret;
- 
--	mtd_set_ecclayout(mtd, this->ecclayout);
- 	mtd->ecc_strength = 1;
- 
- 	/* Fill in remaining MTD driver data */
-diff --git a/include/linux/mtd/onenand.h b/include/linux/mtd/onenand.h
-index 4596503..0aaa98b 100644
---- a/include/linux/mtd/onenand.h
-+++ b/include/linux/mtd/onenand.h
-@@ -80,7 +80,6 @@ struct onenand_bufferram {
-  * @page_buf:		[INTERN] page main data buffer
-  * @oob_buf:		[INTERN] page oob data buffer
-  * @subpagesize:	[INTERN] holds the subpagesize
-- * @ecclayout:		[REPLACEABLE] the default ecc placement scheme
-  * @bbm:		[REPLACEABLE] pointer to Bad Block Management
-  * @priv:		[OPTIONAL] pointer to private chip date
-  */
-@@ -134,7 +133,6 @@ struct onenand_chip {
- #endif
- 
- 	int			subpagesize;
--	struct nand_ecclayout	*ecclayout;
- 
- 	void			*bbm;
- 
+ 			dev_err(nfc->dev, "Unsupported ECC strength\n");
+ 			err = -ENXIO;
 -- 
 2.5.0

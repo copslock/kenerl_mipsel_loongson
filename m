@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:20:01 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:41727 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:20:23 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:41725 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27025918AbcC3QPed-KlN (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27025915AbcC3QPed7WcN (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:15:34 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 9DDE31844; Wed, 30 Mar 2016 18:15:28 +0200 (CEST)
+        id ED4831842; Wed, 30 Mar 2016 18:15:26 +0200 (CEST)
 Received: from localhost.localdomain (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id BBE97141;
-        Wed, 30 Mar 2016 18:15:17 +0200 (CEST)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 333731825;
+        Wed, 30 Mar 2016 18:15:15 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -42,9 +42,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Archit Taneja <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: [PATCH v5 14/50] mtd: onenand: use mtd_set_ecclayout() where appropriate
-Date:   Wed, 30 Mar 2016 18:14:29 +0200
-Message-Id: <1459354505-32551-15-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v5 11/50] mtd: add mtd_set_ecclayout() helper function
+Date:   Wed, 30 Mar 2016 18:14:26 +0200
+Message-Id: <1459354505-32551-12-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -52,7 +52,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52759
+X-archive-position: 52760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,26 +69,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use the mtd_set_ecclayout() helper instead of directly assigning the
-mtd->ecclayout field.
+Add an mtd_set_ecclayout() helper function to avoid direct accesses to the
+mtd->ecclayout field. This will ease future reworks of ECC layout
+definition.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/onenand/onenand_base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/mtd/mtd.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mtd/onenand/onenand_base.c b/drivers/mtd/onenand/onenand_base.c
-index 20fdf8c..d0fa505 100644
---- a/drivers/mtd/onenand/onenand_base.c
-+++ b/drivers/mtd/onenand/onenand_base.c
-@@ -3997,7 +3997,7 @@ int onenand_scan(struct mtd_info *mtd, int maxchips)
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index b141f26..6250dd8 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -286,6 +286,12 @@ int mtd_ooblayout_set_databytes(struct mtd_info *mtd, const u8 *databuf,
+ int mtd_ooblayout_count_freebytes(struct mtd_info *mtd);
+ int mtd_ooblayout_count_eccbytes(struct mtd_info *mtd);
  
- 	mtd->oobavail = ret;
- 
--	mtd->ecclayout = this->ecclayout;
-+	mtd_set_ecclayout(mtd, this->ecclayout);
- 	mtd->ecc_strength = 1;
- 
- 	/* Fill in remaining MTD driver data */
++static inline void mtd_set_ecclayout(struct mtd_info *mtd,
++				     struct nand_ecclayout *ecclayout)
++{
++	mtd->ecclayout = ecclayout;
++}
++
+ static inline void mtd_set_of_node(struct mtd_info *mtd,
+ 				   struct device_node *np)
+ {
 -- 
 2.5.0

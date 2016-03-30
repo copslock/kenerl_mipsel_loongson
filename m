@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:24:25 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:42136 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:24:40 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:42213 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27025936AbcC3QQFlUX8N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:05 +0200
+        by eddie.linux-mips.org with ESMTP id S27025937AbcC3QQRjaHhN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:16:17 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id CF5CE1CC4; Wed, 30 Mar 2016 18:15:59 +0200 (CEST)
+        id 87BB91831; Wed, 30 Mar 2016 18:16:11 +0200 (CEST)
 Received: from localhost.localdomain (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 4EFB9184A;
-        Wed, 30 Mar 2016 18:15:30 +0200 (CEST)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 32F71184D;
+        Wed, 30 Mar 2016 18:15:31 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -42,9 +42,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Archit Taneja <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: [PATCH v5 29/50] mtd: nand: docg4: switch to mtd_ooblayout_ops
-Date:   Wed, 30 Mar 2016 18:14:44 +0200
-Message-Id: <1459354505-32551-30-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v5 30/50] mtd: nand: fsl_elbc: switch to mtd_ooblayout_ops
+Date:   Wed, 30 Mar 2016 18:14:45 +0200
+Message-Id: <1459354505-32551-31-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -52,7 +52,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52773
+X-archive-position: 52774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,66 +74,126 @@ ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/docg4.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/fsl_elbc_nand.c | 83 +++++++++++++++++++++++-----------------
+ 1 file changed, 47 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/mtd/nand/docg4.c b/drivers/mtd/nand/docg4.c
-index d86a60e..4731699 100644
---- a/drivers/mtd/nand/docg4.c
-+++ b/drivers/mtd/nand/docg4.c
-@@ -222,10 +222,33 @@ struct docg4_priv {
-  * Bytes 8 - 14 are hw-generated ecc covering entire page + oob bytes 0 - 14.
-  * Byte 15 (the last) is used by the driver as a "page written" flag.
-  */
--static struct nand_ecclayout docg4_oobinfo = {
--	.eccbytes = 9,
--	.eccpos = {7, 8, 9, 10, 11, 12, 13, 14, 15},
--	.oobfree = { {.offset = 2, .length = 5} }
-+static int docg4_ooblayout_ecc(struct mtd_info *mtd, int section,
-+			       struct mtd_oob_region *oobregion)
+diff --git a/drivers/mtd/nand/fsl_elbc_nand.c b/drivers/mtd/nand/fsl_elbc_nand.c
+index 059d5f7..487eae0 100644
+--- a/drivers/mtd/nand/fsl_elbc_nand.c
++++ b/drivers/mtd/nand/fsl_elbc_nand.c
+@@ -79,32 +79,53 @@ struct fsl_elbc_fcm_ctrl {
+ 
+ /* These map to the positions used by the FCM hardware ECC generator */
+ 
+-/* Small Page FLASH with FMR[ECCM] = 0 */
+-static struct nand_ecclayout fsl_elbc_oob_sp_eccm0 = {
+-	.eccbytes = 3,
+-	.eccpos = {6, 7, 8},
+-	.oobfree = { {0, 5}, {9, 7} },
+-};
++static int fsl_elbc_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *oobregion)
 +{
-+	if (section)
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	struct fsl_elbc_mtd *priv = nand_get_controller_data(chip);
+ 
+-/* Small Page FLASH with FMR[ECCM] = 1 */
+-static struct nand_ecclayout fsl_elbc_oob_sp_eccm1 = {
+-	.eccbytes = 3,
+-	.eccpos = {8, 9, 10},
+-	.oobfree = { {0, 5}, {6, 2}, {11, 5} },
+-};
++	if (section >= chip->ecc.steps)
 +		return -ERANGE;
-+
-+	oobregion->offset = 7;
-+	oobregion->length = 9;
+ 
+-/* Large Page FLASH with FMR[ECCM] = 0 */
+-static struct nand_ecclayout fsl_elbc_oob_lp_eccm0 = {
+-	.eccbytes = 12,
+-	.eccpos = {6, 7, 8, 22, 23, 24, 38, 39, 40, 54, 55, 56},
+-	.oobfree = { {1, 5}, {9, 13}, {25, 13}, {41, 13}, {57, 7} },
+-};
++	oobregion->offset = (16 * section) + 6;
++	if (priv->fmr & FMR_ECCM)
++		oobregion->offset += 2;
+ 
+-/* Large Page FLASH with FMR[ECCM] = 1 */
+-static struct nand_ecclayout fsl_elbc_oob_lp_eccm1 = {
+-	.eccbytes = 12,
+-	.eccpos = {8, 9, 10, 24, 25, 26, 40, 41, 42, 56, 57, 58},
+-	.oobfree = { {1, 7}, {11, 13}, {27, 13}, {43, 13}, {59, 5} },
++	oobregion->length = chip->ecc.bytes;
 +
 +	return 0;
 +}
 +
-+static int docg4_ooblayout_free(struct mtd_info *mtd, int section,
-+				struct mtd_oob_region *oobregion)
++static int fsl_elbc_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *oobregion)
 +{
-+	if (section)
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	struct fsl_elbc_mtd *priv = nand_get_controller_data(chip);
++
++	if (section > chip->ecc.steps)
 +		return -ERANGE;
 +
-+	oobregion->offset = 2;
-+	oobregion->length = 5;
++	if (!section) {
++		oobregion->offset = 0;
++		if (mtd->writesize > 512)
++			oobregion->offset++;
++		oobregion->length = (priv->fmr & FMR_ECCM) ? 7 : 5;
++	} else {
++		oobregion->offset = (16 * section) -
++				    ((priv->fmr & FMR_ECCM) ? 5 : 7);
++		if (section < chip->ecc.steps)
++			oobregion->length = 13;
++		else
++			oobregion->length = mtd->oobsize - oobregion->offset;
++	}
 +
 +	return 0;
 +}
 +
-+static const struct mtd_ooblayout_ops docg4_ooblayout_ops = {
-+	.ecc = docg4_ooblayout_ecc,
-+	.free = docg4_ooblayout_free,
++static const struct mtd_ooblayout_ops fsl_elbc_ooblayout_ops = {
++	.ecc = fsl_elbc_ooblayout_ecc,
++	.free = fsl_elbc_ooblayout_free,
  };
  
  /*
-@@ -1209,6 +1232,7 @@ static void __init init_mtd_structs(struct mtd_info *mtd)
- 	mtd->writesize = DOCG4_PAGE_SIZE;
- 	mtd->erasesize = DOCG4_BLOCK_SIZE;
- 	mtd->oobsize = DOCG4_OOB_SIZE;
-+	mtd_set_ooblayout(mtd, &docg4_ooblayout_ops);
- 	nand->chipsize = DOCG4_CHIP_SIZE;
- 	nand->chip_shift = DOCG4_CHIP_SHIFT;
- 	nand->bbt_erase_shift = nand->phys_erase_shift = DOCG4_ERASE_SHIFT;
-@@ -1217,7 +1241,6 @@ static void __init init_mtd_structs(struct mtd_info *mtd)
- 	nand->pagemask = 0x3ffff;
- 	nand->badblockpos = NAND_LARGE_BADBLOCK_POS;
- 	nand->badblockbits = 8;
--	nand->ecc.layout = &docg4_oobinfo;
- 	nand->ecc.mode = NAND_ECC_HW_SYNDROME;
- 	nand->ecc.size = DOCG4_PAGE_SIZE;
- 	nand->ecc.prepad = 8;
+@@ -657,8 +678,8 @@ static int fsl_elbc_chip_init_tail(struct mtd_info *mtd)
+ 	        chip->ecc.bytes);
+ 	dev_dbg(priv->dev, "fsl_elbc_init: nand->ecc.total = %d\n",
+ 	        chip->ecc.total);
+-	dev_dbg(priv->dev, "fsl_elbc_init: nand->ecc.layout = %p\n",
+-	        chip->ecc.layout);
++	dev_dbg(priv->dev, "fsl_elbc_init: mtd->ooblayout = %p\n",
++		mtd->ooblayout);
+ 	dev_dbg(priv->dev, "fsl_elbc_init: mtd->flags = %08x\n", mtd->flags);
+ 	dev_dbg(priv->dev, "fsl_elbc_init: mtd->size = %lld\n", mtd->size);
+ 	dev_dbg(priv->dev, "fsl_elbc_init: mtd->erasesize = %d\n",
+@@ -675,14 +696,6 @@ static int fsl_elbc_chip_init_tail(struct mtd_info *mtd)
+ 	} else if (mtd->writesize == 2048) {
+ 		priv->page_size = 1;
+ 		setbits32(&lbc->bank[priv->bank].or, OR_FCM_PGS);
+-		/* adjust ecc setup if needed */
+-		if ((in_be32(&lbc->bank[priv->bank].br) & BR_DECC) ==
+-		    BR_DECC_CHK_GEN) {
+-			chip->ecc.size = 512;
+-			chip->ecc.layout = (priv->fmr & FMR_ECCM) ?
+-			                   &fsl_elbc_oob_lp_eccm1 :
+-			                   &fsl_elbc_oob_lp_eccm0;
+-		}
+ 	} else {
+ 		dev_err(priv->dev,
+ 		        "fsl_elbc_init: page size %d is not supported\n",
+@@ -780,9 +793,7 @@ static int fsl_elbc_chip_init(struct fsl_elbc_mtd *priv)
+ 	if ((in_be32(&lbc->bank[priv->bank].br) & BR_DECC) ==
+ 	    BR_DECC_CHK_GEN) {
+ 		chip->ecc.mode = NAND_ECC_HW;
+-		/* put in small page settings and adjust later if needed */
+-		chip->ecc.layout = (priv->fmr & FMR_ECCM) ?
+-				&fsl_elbc_oob_sp_eccm1 : &fsl_elbc_oob_sp_eccm0;
++		mtd_set_ooblayout(mtd, &fsl_elbc_ooblayout_ops);
+ 		chip->ecc.size = 512;
+ 		chip->ecc.bytes = 3;
+ 		chip->ecc.strength = 1;
 -- 
 2.5.0

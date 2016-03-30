@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:22:45 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:41938 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2016 18:23:02 +0200 (CEST)
+Received: from down.free-electrons.com ([37.187.137.238]:41995 "EHLO
         mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27025909AbcC3QPrZ--vN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:15:47 +0200
+        by eddie.linux-mips.org with ESMTP id S27025933AbcC3QPwzJYgN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2016 18:15:52 +0200
 Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 6D09E183A; Wed, 30 Mar 2016 18:15:40 +0200 (CEST)
+        id 20B461CBC; Wed, 30 Mar 2016 18:15:47 +0200 (CEST)
 Received: from localhost.localdomain (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 3337B183A;
-        Wed, 30 Mar 2016 18:15:25 +0200 (CEST)
+        by mail.free-electrons.com (Postfix) with ESMTPSA id DA74A183F;
+        Wed, 30 Mar 2016 18:15:26 +0200 (CEST)
 From:   Boris Brezillon <boris.brezillon@free-electrons.com>
 To:     David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
@@ -42,9 +42,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Archit Taneja <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: [PATCH v5 23/50] mtd: nand: bf5xx: switch to mtd_ooblayout_ops
-Date:   Wed, 30 Mar 2016 18:14:38 +0200
-Message-Id: <1459354505-32551-24-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH v5 25/50] mtd: nand: cafe: switch to mtd_ooblayout_ops
+Date:   Wed, 30 Mar 2016 18:14:40 +0200
+Message-Id: <1459354505-32551-26-git-send-email-boris.brezillon@free-electrons.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
@@ -52,7 +52,7 @@ Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52768
+X-archive-position: 52769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,77 +74,81 @@ ECC/OOB layout to MTD users.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/bf5xx_nand.c | 51 ++++++++++++++++++++++++-------------------
- 1 file changed, 28 insertions(+), 23 deletions(-)
+ drivers/mtd/nand/cafe_nand.c | 44 ++++++++++++++++++++++++++++++++------------
+ 1 file changed, 32 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mtd/nand/bf5xx_nand.c b/drivers/mtd/nand/bf5xx_nand.c
-index 7f6b30e..b38f414 100644
---- a/drivers/mtd/nand/bf5xx_nand.c
-+++ b/drivers/mtd/nand/bf5xx_nand.c
-@@ -109,28 +109,33 @@ static const unsigned short bfin_nfc_pin_req[] =
- 	 0};
+diff --git a/drivers/mtd/nand/cafe_nand.c b/drivers/mtd/nand/cafe_nand.c
+index e553aff..0b0c937 100644
+--- a/drivers/mtd/nand/cafe_nand.c
++++ b/drivers/mtd/nand/cafe_nand.c
+@@ -459,10 +459,37 @@ static int cafe_nand_read_page(struct mtd_info *mtd, struct nand_chip *chip,
+ 	return max_bitflips;
+ }
  
- #ifdef CONFIG_MTD_NAND_BF5XX_BOOTROM_ECC
--static struct nand_ecclayout bootrom_ecclayout = {
--	.eccbytes = 24,
--	.eccpos = {
--		0x8 * 0, 0x8 * 0 + 1, 0x8 * 0 + 2,
--		0x8 * 1, 0x8 * 1 + 1, 0x8 * 1 + 2,
--		0x8 * 2, 0x8 * 2 + 1, 0x8 * 2 + 2,
--		0x8 * 3, 0x8 * 3 + 1, 0x8 * 3 + 2,
--		0x8 * 4, 0x8 * 4 + 1, 0x8 * 4 + 2,
--		0x8 * 5, 0x8 * 5 + 1, 0x8 * 5 + 2,
--		0x8 * 6, 0x8 * 6 + 1, 0x8 * 6 + 2,
--		0x8 * 7, 0x8 * 7 + 1, 0x8 * 7 + 2
--	},
--	.oobfree = {
--		{ 0x8 * 0 + 3, 5 },
--		{ 0x8 * 1 + 3, 5 },
--		{ 0x8 * 2 + 3, 5 },
--		{ 0x8 * 3 + 3, 5 },
--		{ 0x8 * 4 + 3, 5 },
--		{ 0x8 * 5 + 3, 5 },
--		{ 0x8 * 6 + 3, 5 },
--		{ 0x8 * 7 + 3, 5 },
--	}
-+static int bootrom_ooblayout_ecc(struct mtd_info *mtd, int section,
-+				 struct mtd_oob_region *oobregion)
+-static struct nand_ecclayout cafe_oobinfo_2048 = {
+-	.eccbytes = 14,
+-	.eccpos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13},
+-	.oobfree = {{14, 50}}
++static int cafe_ooblayout_ecc(struct mtd_info *mtd, int section,
++			      struct mtd_oob_region *oobregion)
 +{
-+	if (section > 7)
++	struct nand_chip *chip = mtd_to_nand(mtd);
++
++	if (section)
 +		return -ERANGE;
 +
-+	oobregion->offset = section * 8;
-+	oobregion->length = 3;
++	oobregion->offset = 0;
++	oobregion->length = chip->ecc.total;
 +
 +	return 0;
 +}
 +
-+static int bootrom_ooblayout_free(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *oobregion)
++static int cafe_ooblayout_free(struct mtd_info *mtd, int section,
++			       struct mtd_oob_region *oobregion)
 +{
-+	if (section > 7)
++	struct nand_chip *chip = mtd_to_nand(mtd);
++
++	if (section)
 +		return -ERANGE;
 +
-+	oobregion->offset = (section * 8) + 3;
-+	oobregion->length = 5;
++	oobregion->offset = chip->ecc.total;
++	oobregion->length = mtd->oobsize - chip->ecc.total;
 +
 +	return 0;
 +}
 +
-+static const struct mtd_ooblayout_ops bootrom_ooblayout_ops = {
-+	.ecc = bootrom_ooblayout_ecc,
-+	.free = bootrom_ooblayout_free,
++static const struct mtd_ooblayout_ops cafe_ooblayout_ops = {
++	.ecc = cafe_ooblayout_ecc,
++	.free = cafe_ooblayout_free,
  };
- #endif
  
-@@ -800,7 +805,7 @@ static int bf5xx_nand_probe(struct platform_device *pdev)
- 	/* setup hardware ECC data struct */
- 	if (hardware_ecc) {
- #ifdef CONFIG_MTD_NAND_BF5XX_BOOTROM_ECC
--		chip->ecc.layout = &bootrom_ecclayout;
-+		mtd_set_ooblayout(mtd, &bootrom_ooblayout_ops);
- #endif
- 		chip->read_buf      = bf5xx_nand_dma_read_buf;
- 		chip->write_buf     = bf5xx_nand_dma_write_buf;
+ /* Ick. The BBT code really ought to be able to work this bit out
+@@ -494,12 +521,6 @@ static struct nand_bbt_descr cafe_bbt_mirror_descr_2048 = {
+ 	.pattern = cafe_mirror_pattern_2048
+ };
+ 
+-static struct nand_ecclayout cafe_oobinfo_512 = {
+-	.eccbytes = 14,
+-	.eccpos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13},
+-	.oobfree = {{14, 2}}
+-};
+-
+ static struct nand_bbt_descr cafe_bbt_main_descr_512 = {
+ 	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
+ 		| NAND_BBT_2BIT | NAND_BBT_VERSION,
+@@ -743,12 +764,11 @@ static int cafe_nand_probe(struct pci_dev *pdev,
+ 		cafe->ctl2 |= 1<<29; /* 2KiB page size */
+ 
+ 	/* Set up ECC according to the type of chip we found */
++	mtd_set_ooblayout(mtd, &cafe_ooblayout_ops);
+ 	if (mtd->writesize == 2048) {
+-		cafe->nand.ecc.layout = &cafe_oobinfo_2048;
+ 		cafe->nand.bbt_td = &cafe_bbt_main_descr_2048;
+ 		cafe->nand.bbt_md = &cafe_bbt_mirror_descr_2048;
+ 	} else if (mtd->writesize == 512) {
+-		cafe->nand.ecc.layout = &cafe_oobinfo_512;
+ 		cafe->nand.bbt_td = &cafe_bbt_main_descr_512;
+ 		cafe->nand.bbt_md = &cafe_bbt_mirror_descr_512;
+ 	} else {
 -- 
 2.5.0

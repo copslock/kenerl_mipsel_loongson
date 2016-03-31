@@ -1,32 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2016 11:08:15 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27819 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2016 11:08:33 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:62136 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025621AbcCaJGVkoIAq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Mar 2016 11:06:21 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 77D1E6BF65D95;
-        Thu, 31 Mar 2016 10:06:13 +0100 (IST)
+        with ESMTP id S27025516AbcCaJGWYL3Dq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Mar 2016 11:06:22 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id 337812C69E186;
+        Thu, 31 Mar 2016 10:06:14 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 31 Mar 2016 10:06:15 +0100
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Thu, 31 Mar 2016 10:06:16 +0100
 Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 31 Mar 2016 10:06:15 +0100
+ 14.3.266.1; Thu, 31 Mar 2016 10:06:16 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>, <kernel-hardening@lists.openwall.com>,
         "Matt Redfearn" <matt.redfearn@imgtec.com>,
-        Aaro Koskinen <aaro.koskinen@nokia.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        <linux-kernel@vger.kernel.org>,
-        Jaedon Shin <jaedon.shin@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 07/11] MIPS: bootmem: When relocatable, free memory below kernel
-Date:   Thu, 31 Mar 2016 10:05:38 +0100
-Message-ID: <1459415142-3412-8-git-send-email-matt.redfearn@imgtec.com>
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 08/11] MIPS: Add CONFIG_RELOCATABLE Kconfig option
+Date:   Thu, 31 Mar 2016 10:05:39 +0100
+Message-ID: <1459415142-3412-9-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1459415142-3412-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1459415142-3412-1-git-send-email-matt.redfearn@imgtec.com>
@@ -37,7 +30,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52814
+X-archive-position: 52815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,55 +47,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The kernel reserves all memory before the _end symbol as bootmem,
-however, once the kernel can be relocated elsewhere in memory this may
-result in a large amount of wasted memory. The assumption is that the
-memory between the link and relocated address of the kernel may be
-released back to the available memory pool.
+Add option to KConfig to enable the kernel to relocate itself at
+runtime.
 
-Memory statistics for a Malta with the kernel relocating by
-16Mb, without the patch:
-Memory: 105952K/131072K available (4604K kernel code, 242K rwdata,
-892K rodata, 1280K init, 183K bss, 25120K reserved, 0K cma-reserved)
-And with the patch:
-Memory: 122336K/131072K available (4604K kernel code, 242K rwdata,
-892K rodata, 1280K init, 183K bss, 8736K reserved, 0K cma-reserved)
-
-The 16Mb offset is removed from the reserved region and added back to
-the available region.
+Relocation is supported R2 and later of the MIPS architecture, 32bit
+and 64bit. The platform is also required to provide support through
+plat_get_fdt() added in a later patch.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 ---
 
 Changes in v2: None
 
- arch/mips/kernel/setup.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/mips/Kconfig | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 5fdaf8bdcd2e..d8376d7b3345 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -469,6 +469,20 @@ static void __init bootmem_init(void)
- 	 */
- 	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size, BOOTMEM_DEFAULT);
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 6f55e1a5d645..4bf1814e57a5 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -473,6 +473,7 @@ config MIPS_MALTA
+ 	select SYS_SUPPORTS_MULTITHREADING
+ 	select SYS_SUPPORTS_SMARTMIPS
+ 	select SYS_SUPPORTS_ZBOOT
++	select SYS_SUPPORTS_RELOCATABLE
+ 	select USE_OF
+ 	select ZONE_DMA32 if 64BIT
+ 	select BUILTIN_DTB
+@@ -516,6 +517,7 @@ config MIPS_SEAD3
+ 	select SYS_SUPPORTS_SMARTMIPS
+ 	select SYS_SUPPORTS_MICROMIPS
+ 	select SYS_SUPPORTS_MIPS16
++	select SYS_SUPPORTS_RELOCATABLE
+ 	select USB_EHCI_BIG_ENDIAN_DESC
+ 	select USB_EHCI_BIG_ENDIAN_MMIO
+ 	select USE_OF
+@@ -1156,6 +1158,13 @@ config ISA_DMA_API
+ config HOLES_IN_ZONE
+ 	bool
  
-+#ifdef CONFIG_RELOCATABLE
-+	/*
-+	 * The kernel reserves all memory below its _end symbol as bootmem,
-+	 * but the kernel may now be at a much higher address. The memory
-+	 * between the original and new locations may be returned to the system.
-+	 */
-+	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
-+		unsigned long offset;
++config SYS_SUPPORTS_RELOCATABLE
++	bool
++	help
++	 Selected if the platform supports relocating the kernel.
++	 The platform must provide plat_get_fdt() if it selects CONFIG_USE_OF
++	 to allow access to command line and entropy sources.
 +
-+		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
-+		free_bootmem(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
-+	}
-+#endif
+ #
+ # Endianness selection.  Sufficiently obscure so many users don't know what to
+ # answer,so we try hard to limit the available choices.  Also the use of a
+@@ -2478,6 +2487,15 @@ config NUMA
+ config SYS_SUPPORTS_NUMA
+ 	bool
+ 
++config RELOCATABLE
++	bool "Relocatable kernel"
++	depends on SYS_SUPPORTS_RELOCATABLE && (CPU_MIPS32_R2 || CPU_MIPS64_R2 || CPU_MIPS32_R6 || CPU_MIPS64_R6)
++	help
++	  This builds a kernel image that retains relocation information
++	  so it can be loaded someplace besides the default 1MB.
++	  The relocations make the kernel binary about 15% larger,
++	  but are discarded at runtime
 +
- 	/*
- 	 * Reserve initrd memory if needed.
- 	 */
+ config RELOCATION_TABLE_SIZE
+ 	hex "Relocation table size"
+ 	depends on RELOCATABLE
 -- 
 2.5.0

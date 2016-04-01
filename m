@@ -1,54 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2016 16:09:12 +0200 (CEST)
-Received: from mail-lf0-f49.google.com ([209.85.215.49]:33875 "EHLO
-        mail-lf0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014356AbcCaOJJrsLlm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Mar 2016 16:09:09 +0200
-Received: by mail-lf0-f49.google.com with SMTP id c62so60482740lfc.1;
-        Thu, 31 Mar 2016 07:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=VByF78s0BAEzgFnXOI1YXnuda/gIl2q5f2HBaCUFtME=;
-        b=XRGuVBAVEutymEAfwKgnRu7hyD2QYqpWCnCOwNUnYMNZ25ifPft9tPONBpC+o1vTK/
-         bsBl6AqWVlPwy504gfhvzqjz9SS6tfOuV0t6Drv/Yv5CqzgqR/wE+/PaB+v/K9kqEHiH
-         L2D+J/LYfigggRBeJ56MiowCntZfhX3dD5GMbqtORRNjcmNuOoUmKvqio5m5exOW/f5T
-         yAmEmJk2fOUYUFq9ITQvqgwZ+TnfErOCcn14hfNit3SGJDGLKKD3RYqPoK9QHVP2/LS9
-         lBH78aMLtLk3mpy3TqqiD08pBWJ6o9bppuF/r17oB5yXFh40LA4tsOB3+KKuTsHM74zr
-         fMTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=VByF78s0BAEzgFnXOI1YXnuda/gIl2q5f2HBaCUFtME=;
-        b=EzbuFcwh0RL18oTwwjwPf1Dft7uBJU2ZYUsSqcbAGfZllFdOcIydKlsnLSVU0+mWt/
-         pwtK7IzwwQY3ycHsA7ttH9jwBVz+wzVN5nKt38QzqKp655yh1PUyTC2OX/CAcH7C+g78
-         JUUheeelw28Zh4ASHN6keSjMGqFX783GX9m2hPMT3eWEZtqRKMeRrIOzu3UDXRDxq7LE
-         kK2cpicNzt266TsCSnF/Cs++8XX/QE1fejmPF8DherRyWF2N9l6jn0KzdWj8zYbPhqel
-         8D7RDQ7IW3K/6gojbPWDIDC2sSYj75lX7NmNcy7dkSn0x0nlrDUw2t7Amw1r9gAS3B3o
-         0+Rw==
-X-Gm-Message-State: AD7BkJKBvOmhCLe+5eZLx2vrFP63OAFlbrBTdCRhdA50DRWxNGDn90lLSsMw0keXs9YLLg==
-X-Received: by 10.25.145.149 with SMTP id t143mr6636740lfd.37.1459433344472;
-        Thu, 31 Mar 2016 07:09:04 -0700 (PDT)
-Received: from puro.NIISI (t35.niisi.ras.ru. [193.232.173.35])
-        by smtp.gmail.com with ESMTPSA id rg10sm1291094lbc.21.2016.03.31.07.09.03
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 31 Mar 2016 07:09:03 -0700 (PDT)
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] fixup! MIPS: ath79: Disable platform code for OF boards.
-Date:   Thu, 31 Mar 2016 17:09:00 +0300
-Message-Id: <1459433340-12526-1-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.7.0
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Apr 2016 10:44:10 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:40140 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27025933AbcDAIoIUJMr5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 1 Apr 2016 10:44:08 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u318i6CO021824;
+        Fri, 1 Apr 2016 10:44:06 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u318i4TN021823;
+        Fri, 1 Apr 2016 10:44:04 +0200
+Date:   Fri, 1 Apr 2016 10:44:04 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        linux-mips@linux-mips.org, kernel-hardening@lists.openwall.com,
+        Aaro Koskinen <aaro.koskinen@nokia.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        linux-kernel@vger.kernel.org, Jaedon Shin <jaedon.shin@gmail.com>,
+        Jonas Gorski <jogo@openwrt.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH v2 11/11] MIPS: KASLR: Print relocation Information on
+ boot
+Message-ID: <20160401084403.GA28123@linux-mips.org>
+References: <1459415142-3412-1-git-send-email-matt.redfearn@imgtec.com>
+ <1459415142-3412-12-git-send-email-matt.redfearn@imgtec.com>
+ <56FD1A32.10204@cogentembedded.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <56FD1A32.10204@cogentembedded.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52822
+X-archive-position: 52823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,28 +52,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
----
- arch/mips/ath79/setup.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+On Thu, Mar 31, 2016 at 03:38:10PM +0300, Sergei Shtylyov wrote:
 
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index 897f49a..7adab18 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -215,9 +215,11 @@ void __init plat_mem_setup(void)
- 		ath79_detect_sys_type();
- 		ath79_ddr_ctrl_init();
- 
--	detect_memory_region(0, ATH79_MEM_SIZE_MIN, ATH79_MEM_SIZE_MAX);
--	/* OF machines should use the reset driver */
--	_machine_restart = ath79_restart;
-+		detect_memory_region(0, ATH79_MEM_SIZE_MIN, ATH79_MEM_SIZE_MAX);
-+
-+		/* OF machines should use the reset driver */
-+		_machine_restart = ath79_restart;
-+	}
- 
- 	_machine_halt = ath79_halt;
- 	pm_power_off = ath79_halt;
--- 
-2.7.0
+> >When debugging a relocated kernel, the addresses of the relocated
+> >symbols and the offset applied is essential information. If the kernel
+> >is compiled with debugging information, then print this information
+> >during bootup using the same function as the panic notifer.
+> 
+>    Notifier.
+
+Fixed when merging.
+
+> >Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> >---
+> >
+> >Changes in v2: None
+> >
+> >  arch/mips/kernel/setup.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> >diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> >index d8376d7b3345..ae71f8d9b555 100644
+> >--- a/arch/mips/kernel/setup.c
+> >+++ b/arch/mips/kernel/setup.c
+> >@@ -477,9 +477,18 @@ static void __init bootmem_init(void)
+> >  	 */
+> >  	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
+> >  		unsigned long offset;
+> >+		extern void show_kernel_relocation(const char *level);
+> >
+> >  		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
+> >  		free_bootmem(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
+> >+
+> >+#if (defined CONFIG_DEBUG_KERNEL) && (defined CONFIG_DEBUG_INFO)
+> 
+>    Not #if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)?
+> 
+> [...]
+
+CPP syntax is not what most people seem to believe that is the parenthesis
+around the argument of defined are not required so above line is unusual
+but perfectly ok.  However following boring standards is good so I changed
+this, too.
+
+  Ralf

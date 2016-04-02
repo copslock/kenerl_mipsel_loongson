@@ -1,64 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Apr 2016 18:41:18 +0200 (CEST)
-Received: from mail.kmu-office.ch ([178.209.48.109]:57905 "EHLO
-        mail.kmu-office.ch" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007002AbcDAQlOr5BWx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Apr 2016 18:41:14 +0200
-Received: from webmail.kmu-office.ch (unknown [178.209.48.103])
-        by mail.kmu-office.ch (Postfix) with ESMTPSA id 99C465C156E;
-        Fri,  1 Apr 2016 18:40:07 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Apr 2016 12:36:57 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:51013 "EHLO hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27014287AbcDBKgx6ggx1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 2 Apr 2016 12:36:53 +0200
+Received: from [IPv6:2003:8b:2f72:6700:d4fc:c109:f1a2:235a] (p2003008B2F726700D4FCC109F1A2235A.dip0.t-ipconnect.de [IPv6:2003:8b:2f72:6700:d4fc:c109:f1a2:235a])
+        by hauke-m.de (Postfix) with ESMTPSA id 351AC10029B;
+        Sat,  2 Apr 2016 12:36:53 +0200 (CEST)
+Subject: Re: [PATCH v2] MIPS: vdso: flush the vdso data page to update it on
+ all processes
+To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        linux-mips@linux-mips.org, ralf@linux-mips.org
+References: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
+ <56FAF575.4070607@hauke-m.de> <56FBEEFF.10406@imgtec.com>
+ <56FC472B.1040801@hauke-m.de>
+Cc:     alex.smith@imgtec.com, sergei.shtylyov@cogentembedded.com,
+        "# v4 . 4+" <stable@vger.kernel.org>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <56FFA0C4.80601@hauke-m.de>
+Date:   Sat, 2 Apr 2016 12:36:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Icedove/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <56FC472B.1040801@hauke-m.de>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Date:   Fri, 01 Apr 2016 09:38:04 -0700
-From:   Stefan Agner <stefan@agner.ch>
-To:     Boris Brezillon <boris.brezillon@free-electrons.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org, Richard Weinberger <richard@nod.at>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Wenyou Yang <wenyou.yang@atmel.com>,
-        Josh Wu <rainyfeeling@outlook.com>,
-        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        punnaiah choudary kalluri <punnaia@xilinx.com>,
-        Priit Laes <plaes@plaes.org>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
-        Harvey Hunt <harvey.hunt@imgtec.com>,
-        Archit Taneja <architt@codeaurora.org>,
-        Han Xu <b45815@freescale.com>,
-        Huang Shijie <shijie.huang@arm.com>
-Subject: Re: [PATCH v5 45/50] mtd: nand: vf610: switch to mtd_ooblayout_ops
-In-Reply-To: <1459354505-32551-46-git-send-email-boris.brezillon@free-electrons.com>
-References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
- <1459354505-32551-46-git-send-email-boris.brezillon@free-electrons.com>
-Message-ID: <93c11b0392cdbcd64c3760e8fe7f6549@agner.ch>
-X-Sender: stefan@agner.ch
-User-Agent: Roundcube Webmail/1.1.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim; t=1459528807; bh=vCA/xnLjXp2/1QyP8hYSCaKLXUdFgCQ0IoRWpqYQC1c=; h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID; b=m09yssKGg8DwTctCpWWYq6JLSuK96sbZvs18OzBzD3F6trCLd+FXcIQUwA5y33gK9TxaVdA6eKjVqWrYJJICEfyq5KosgaAZ2vg9b9tiduQSJ5IyGv8fUevblZhOTHJXlKYR8JlT1pPx8eW03P0ZJjRBxhYGbCI32ZB2qBzyiwo=
-Return-Path: <stefan@agner.ch>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52834
+X-archive-position: 52835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stefan@agner.ch
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,80 +45,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2016-03-30 09:15, Boris Brezillon wrote:
-> Implementing the mtd_ooblayout_ops interface is the new way of exposing
-> ECC/OOB layout to MTD users.
+On 03/30/2016 11:37 PM, Hauke Mehrtens wrote:
+> On 03/30/2016 05:21 PM, Zubair Lutfullah Kakakhel wrote:
+>> Hi Hauke,
+>>
+>> Could you share details of what version of glibc/rfs setup you are using?
+> 
+> Hi,
+> 
+> I am using the musl libc version 1.1.4 in OpenWrt. musl uses the same
+> vdso code on arm and x86, it just needed some extensions to support the
+> -ENOSYS return value which is not returned by the other architectures.
+> 
+> I removed the following patches from OpenWrt to activate vdso
+> gettimeofday in kernel 4.4 again:
+> target/linux/generic/patches-4.4/206-mips-disable-vdso.patch
+> target/linux/generic/patches-4.4/340-MIPS-deactivate-gettimeofday-vdso.patch
 
-I think I sent this already in the last revision:
+I just tried vdso without this patch on a Broadcom BMIPS3300 V0.7 CPU in
+the BCM4712 SoC and haven't seen any problems without this patch. With
+the same number of patches applied to the kernel I have problems on the
+34Kc CPU.
 
-Tested-by: Stefan Agner <stefan@agner.ch>
-Acked-by: Stefan Agner <stefan@agner.ch>
-
---
-Stefan
+Hauke
 
 > 
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> ---
->  drivers/mtd/nand/vf610_nfc.c | 34 ++++------------------------------
->  1 file changed, 4 insertions(+), 30 deletions(-)
+>>
+>> Thanks.
+>>
+>> Regards,
+>> ZubairLK
+>>
+>> On 29/03/16 22:36, Hauke Mehrtens wrote:
+>>> On 02/21/2016 06:08 PM, Hauke Mehrtens wrote:
+>>>> Without flushing the vdso data page the vdso call is working on dated
+>>>> or unsynced data. This resulted in problems where the clock_gettime
+>>>> vdso call returned a time 6 seconds later after a 3 seconds sleep,
+>>>> while the syscall reported a time 3 sounds later, like expected. This
+>>>> happened very often and I got these ping results for example:
+>>>>
+>>>> root@OpenWrt:/# ping 192.168.1.255
+>>>> PING 192.168.1.255 (192.168.1.255): 56 data bytes
+>>>> 64 bytes from 192.168.1.3: seq=0 ttl=64 time=0.688 ms
+>>>> 64 bytes from 192.168.1.3: seq=1 ttl=64 time=4294172.045 ms
+>>>> 64 bytes from 192.168.1.3: seq=2 ttl=64 time=4293968.105 ms
+>>>> 64 bytes from 192.168.1.3: seq=3 ttl=64 time=4294055.920 ms
+>>>> 64 bytes from 192.168.1.3: seq=4 ttl=64 time=4294671.913 ms
+>>>>
+>>>> This was tested on a Lantiq/Intel VRX288 (MIPS BE 34Kc V5.6 CPU with
+>>>> two VPEs)
+>>>>
+>>>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>>>> Cc: <stable@vger.kernel.org> # v4.4+
+>>>
+>>> This patch flushes the complete dcache of the CPU if cpu_has_dc_aliases
+>>> is set.
+>>>
+>>> Calling flush_dcache_page(virt_to_page(&vdso_data)); improved the
+>>> situation a litte bit but did not fix my problem.
+>>>
+>>> Could someone from Imagination please look into this problem. The page
+>>> is linked into many virtual address spaces and when it gets modified by
+>>> the kernel the user space processes are still accessing partly old data,
+>>> even when lush_dcache_page() was called.
+>>>
+>>>> ---
+>>>>   arch/mips/kernel/vdso.c | 6 ++++++
+>>>>   1 file changed, 6 insertions(+)
+>>>>
+>>>> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+>>>> index 975e997..8b0d974 100644
+>>>> --- a/arch/mips/kernel/vdso.c
+>>>> +++ b/arch/mips/kernel/vdso.c
+>>>> @@ -20,6 +20,8 @@
+>>>>   #include <linux/timekeeper_internal.h>
+>>>>
+>>>>   #include <asm/abi.h>
+>>>> +#include <asm/cacheflush.h>
+>>>> +#include <asm/page.h>
+>>>>   #include <asm/vdso.h>
+>>>>
+>>>>   /* Kernel-provided data used by the VDSO. */
+>>>> @@ -85,6 +87,8 @@ void update_vsyscall(struct timekeeper *tk)
+>>>>       }
+>>>>
+>>>>       vdso_data_write_end(&vdso_data);
+>>>> +    flush_cache_vmap((unsigned long)&vdso_data,
+>>>> +             (unsigned long)&vdso_data + sizeof(vdso_data));
+>>>>   }
+>>>>
+>>>>   void update_vsyscall_tz(void)
+>>>> @@ -93,6 +97,8 @@ void update_vsyscall_tz(void)
+>>>>           vdso_data.tz_minuteswest = sys_tz.tz_minuteswest;
+>>>>           vdso_data.tz_dsttime = sys_tz.tz_dsttime;
+>>>>       }
+>>>> +    flush_cache_vmap((unsigned long)&vdso_data,
+>>>> +             (unsigned long)&vdso_data + sizeof(vdso_data));
+>>>>   }
+>>>>
+>>>>   int arch_setup_additional_pages(struct linux_binprm *bprm, int
+>>>> uses_interp)
+>>>>
+>>>
+>>>
 > 
-> diff --git a/drivers/mtd/nand/vf610_nfc.c b/drivers/mtd/nand/vf610_nfc.c
-> index 293feb1..da34de1 100644
-> --- a/drivers/mtd/nand/vf610_nfc.c
-> +++ b/drivers/mtd/nand/vf610_nfc.c
-> @@ -175,34 +175,6 @@ static inline struct vf610_nfc *mtd_to_nfc(struct
-> mtd_info *mtd)
->  	return container_of(mtd_to_nand(mtd), struct vf610_nfc, chip);
->  }
->  
-> -static struct nand_ecclayout vf610_nfc_ecc45 = {
-> -	.eccbytes = 45,
-> -	.eccpos = {19, 20, 21, 22, 23,
-> -		   24, 25, 26, 27, 28, 29, 30, 31,
-> -		   32, 33, 34, 35, 36, 37, 38, 39,
-> -		   40, 41, 42, 43, 44, 45, 46, 47,
-> -		   48, 49, 50, 51, 52, 53, 54, 55,
-> -		   56, 57, 58, 59, 60, 61, 62, 63},
-> -	.oobfree = {
-> -		{.offset = 2,
-> -		 .length = 17} }
-> -};
-> -
-> -static struct nand_ecclayout vf610_nfc_ecc60 = {
-> -	.eccbytes = 60,
-> -	.eccpos = { 4,  5,  6,  7,  8,  9, 10, 11,
-> -		   12, 13, 14, 15, 16, 17, 18, 19,
-> -		   20, 21, 22, 23, 24, 25, 26, 27,
-> -		   28, 29, 30, 31, 32, 33, 34, 35,
-> -		   36, 37, 38, 39, 40, 41, 42, 43,
-> -		   44, 45, 46, 47, 48, 49, 50, 51,
-> -		   52, 53, 54, 55, 56, 57, 58, 59,
-> -		   60, 61, 62, 63 },
-> -	.oobfree = {
-> -		{.offset = 2,
-> -		 .length = 2} }
-> -};
-> -
->  static inline u32 vf610_nfc_read(struct vf610_nfc *nfc, uint reg)
->  {
->  	return readl(nfc->regs + reg);
-> @@ -781,14 +753,16 @@ static int vf610_nfc_probe(struct platform_device *pdev)
->  		if (mtd->oobsize > 64)
->  			mtd->oobsize = 64;
->  
-> +		/*
-> +		 * mtd->ecclayout is not specified here because we're using the
-> +		 * default large page ECC layout defined in NAND core.
-> +		 */
->  		if (chip->ecc.strength == 32) {
->  			nfc->ecc_mode = ECC_60_BYTE;
->  			chip->ecc.bytes = 60;
-> -			chip->ecc.layout = &vf610_nfc_ecc60;
->  		} else if (chip->ecc.strength == 24) {
->  			nfc->ecc_mode = ECC_45_BYTE;
->  			chip->ecc.bytes = 45;
-> -			chip->ecc.layout = &vf610_nfc_ecc45;
->  		} else {
->  			dev_err(nfc->dev, "Unsupported ECC strength\n");
->  			err = -ENXIO;
+> 

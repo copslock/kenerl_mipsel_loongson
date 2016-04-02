@@ -1,38 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Apr 2016 12:36:57 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:51013 "EHLO hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27014287AbcDBKgx6ggx1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 2 Apr 2016 12:36:53 +0200
-Received: from [IPv6:2003:8b:2f72:6700:d4fc:c109:f1a2:235a] (p2003008B2F726700D4FCC109F1A2235A.dip0.t-ipconnect.de [IPv6:2003:8b:2f72:6700:d4fc:c109:f1a2:235a])
-        by hauke-m.de (Postfix) with ESMTPSA id 351AC10029B;
-        Sat,  2 Apr 2016 12:36:53 +0200 (CEST)
-Subject: Re: [PATCH v2] MIPS: vdso: flush the vdso data page to update it on
- all processes
-To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org
-References: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
- <56FAF575.4070607@hauke-m.de> <56FBEEFF.10406@imgtec.com>
- <56FC472B.1040801@hauke-m.de>
-Cc:     alex.smith@imgtec.com, sergei.shtylyov@cogentembedded.com,
-        "# v4 . 4+" <stable@vger.kernel.org>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <56FFA0C4.80601@hauke-m.de>
-Date:   Sat, 2 Apr 2016 12:36:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Icedove/38.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Apr 2016 14:19:16 +0200 (CEST)
+Received: from mail-lb0-f194.google.com ([209.85.217.194]:35755 "EHLO
+        mail-lb0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014287AbcDBMTN4lUcR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Apr 2016 14:19:13 +0200
+Received: by mail-lb0-f194.google.com with SMTP id gk8so10522189lbc.2;
+        Sat, 02 Apr 2016 05:19:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=ZEEJWKgqHSQdaqOLu56vOqKen0y1SgofRSsrJJ6WHNo=;
+        b=IjwAMF9W9oMZdfG9StYPK0lkO1d4Eiq3kRUA+yEez6oe/SGmqUDPHe88yIP7F7c9Wf
+         8eR7CNTlJS/XLDp3PLV/UdNmDaJIAh6IrSTlvB6hHcp0KDCZOTasLYeYDyz1ARp/iIdt
+         70bNufM3pofpwV9/nUAHb8m2hq64Ivy1lFGk65DGjf7hPeuf6AYPY7uvxm2vTVo3TUrZ
+         /6MuRAr5sUYvnToCprze4lS9fN28zU3/Xv6iXWQY1FY1sopFO43S68+E/0I/NtZwAe04
+         iA4h/fMToZ+RnjulUaW8eZ03EV5KgV7CkPon2S+SJaJ3PSBd/LtZ5b4A9Foz/hcmUmnf
+         IcQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=ZEEJWKgqHSQdaqOLu56vOqKen0y1SgofRSsrJJ6WHNo=;
+        b=as+68859q1G4eN+XBPp2gaacAUStXn1Flfa4tUrwDcsC75osqHqySrQnzrxWDfqY3c
+         v/x3vDmB23SJR7Q8WLRqhKVOPHqJGeqsLiudK5AgKPYNuxgl0Icz46/q9WSK5w9Wr4+y
+         xhYRHqd7iV4upLcO93OTNpDLYQIunUU+tue4r1O7zZ/+X1zAJOpKcVYEa4VDigJKEd6d
+         MZngIF41j939BaMf98X39H1E7+ma1EQJzzGPhYA/ZI6PFP4qqMZEtjhlfsWuUvp6+2O+
+         KCgxnc+pAKDkyM2gDFJp+yJrV2a5OwqgBP9C/oZS2IocyrZROujyCx/JSg8J5O3d1/VB
+         E5ag==
+X-Gm-Message-State: AD7BkJLdKo76h/jSiahFWbHnkIkfcZMktTehURIp2q2VlEBP0Y2aUUb53pQRGJoQ4MtcrQ==
+X-Received: by 10.28.24.80 with SMTP id 77mr3205357wmy.16.1459599548516;
+        Sat, 02 Apr 2016 05:19:08 -0700 (PDT)
+Received: from Qaiss-MacBook-Pro.local (92.40.248.138.threembb.co.uk. [92.40.248.138])
+        by smtp.gmail.com with ESMTPSA id w202sm2424491wmw.18.2016.04.02.05.19.07
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sat, 02 Apr 2016 05:19:07 -0700 (PDT)
+Subject: Re: [PATCH] MIPS: Fix broken malta qemu
+To:     Paul Burton <paul.burton@imgtec.com>, ralf@linux-mips.org
+References: <1458248889-24663-1-git-send-email-qsyousef@gmail.com>
+ <20160401124852.GA5145@NP-P-BURTON>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+From:   Qais Yousef <qsyousef@gmail.com>
+Message-ID: <56FFB8B7.8050607@gmail.com>
+Date:   Sat, 2 Apr 2016 13:19:03 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:38.0)
+ Gecko/20100101 Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <56FC472B.1040801@hauke-m.de>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <20160401124852.GA5145@NP-P-BURTON>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+Return-Path: <qsyousef@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52835
+X-archive-position: 52836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: qsyousef@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,108 +71,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/30/2016 11:37 PM, Hauke Mehrtens wrote:
-> On 03/30/2016 05:21 PM, Zubair Lutfullah Kakakhel wrote:
->> Hi Hauke,
->>
->> Could you share details of what version of glibc/rfs setup you are using?
-> 
-> Hi,
-> 
-> I am using the musl libc version 1.1.4 in OpenWrt. musl uses the same
-> vdso code on arm and x86, it just needed some extensions to support the
-> -ENOSYS return value which is not returned by the other architectures.
-> 
-> I removed the following patches from OpenWrt to activate vdso
-> gettimeofday in kernel 4.4 again:
-> target/linux/generic/patches-4.4/206-mips-disable-vdso.patch
-> target/linux/generic/patches-4.4/340-MIPS-deactivate-gettimeofday-vdso.patch
+Hi Paul,
 
-I just tried vdso without this patch on a Broadcom BMIPS3300 V0.7 CPU in
-the BCM4712 SoC and haven't seen any problems without this patch. With
-the same number of patches applied to the kernel I have problems on the
-34Kc CPU.
+On 01/04/2016 13:48, Paul Burton wrote:
+> On Thu, Mar 17, 2016 at 09:08:09PM +0000, Qais Yousef wrote:
+>> Malta defconfig compiles with GIC on. Hence when compiling for SMP it causes the
+>> new IPI code to be activated. But on qemu malta there's no GIC causing a
+>> BUG_ON(!ipidomain) to be hit in mips_smp_ipi_init().
+>>
+>> Since in that configuration one can only run a single core SMP (!), skip IPI
+>> initialisation if we detect that this is the case. It is a sensible behaviour
+>> to introduce and should keep such possible configuration to run rather than die
+>> hard unnecessarily.
+> Hi Qais/Ralf,
+>
+> This patch is insufficient I'm afraid. It's entirely possible to use SMP
+> with multiple VPEs in a single core on Malta boards that don't have a
+> GIC - we have code handling IPIs in that case guarded by #ifdef
+> CONFIG_MIPS_MT_SMP in arch/mips/mti-malta/malta-int.c. I think the
+> BUG_ON needs to be removed entirely, unless that single-core multi-VPE
+> IPI code is also converted to use an IPI irqdomain.
+>
 
-Hauke
+I was under the impression that SMP is only supported under GIC and 
+older forms of SMP are deprecated.
 
-> 
->>
->> Thanks.
->>
->> Regards,
->> ZubairLK
->>
->> On 29/03/16 22:36, Hauke Mehrtens wrote:
->>> On 02/21/2016 06:08 PM, Hauke Mehrtens wrote:
->>>> Without flushing the vdso data page the vdso call is working on dated
->>>> or unsynced data. This resulted in problems where the clock_gettime
->>>> vdso call returned a time 6 seconds later after a 3 seconds sleep,
->>>> while the syscall reported a time 3 sounds later, like expected. This
->>>> happened very often and I got these ping results for example:
->>>>
->>>> root@OpenWrt:/# ping 192.168.1.255
->>>> PING 192.168.1.255 (192.168.1.255): 56 data bytes
->>>> 64 bytes from 192.168.1.3: seq=0 ttl=64 time=0.688 ms
->>>> 64 bytes from 192.168.1.3: seq=1 ttl=64 time=4294172.045 ms
->>>> 64 bytes from 192.168.1.3: seq=2 ttl=64 time=4293968.105 ms
->>>> 64 bytes from 192.168.1.3: seq=3 ttl=64 time=4294055.920 ms
->>>> 64 bytes from 192.168.1.3: seq=4 ttl=64 time=4294671.913 ms
->>>>
->>>> This was tested on a Lantiq/Intel VRX288 (MIPS BE 34Kc V5.6 CPU with
->>>> two VPEs)
->>>>
->>>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->>>> Cc: <stable@vger.kernel.org> # v4.4+
->>>
->>> This patch flushes the complete dcache of the CPU if cpu_has_dc_aliases
->>> is set.
->>>
->>> Calling flush_dcache_page(virt_to_page(&vdso_data)); improved the
->>> situation a litte bit but did not fix my problem.
->>>
->>> Could someone from Imagination please look into this problem. The page
->>> is linked into many virtual address spaces and when it gets modified by
->>> the kernel the user space processes are still accessing partly old data,
->>> even when lush_dcache_page() was called.
->>>
->>>> ---
->>>>   arch/mips/kernel/vdso.c | 6 ++++++
->>>>   1 file changed, 6 insertions(+)
->>>>
->>>> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
->>>> index 975e997..8b0d974 100644
->>>> --- a/arch/mips/kernel/vdso.c
->>>> +++ b/arch/mips/kernel/vdso.c
->>>> @@ -20,6 +20,8 @@
->>>>   #include <linux/timekeeper_internal.h>
->>>>
->>>>   #include <asm/abi.h>
->>>> +#include <asm/cacheflush.h>
->>>> +#include <asm/page.h>
->>>>   #include <asm/vdso.h>
->>>>
->>>>   /* Kernel-provided data used by the VDSO. */
->>>> @@ -85,6 +87,8 @@ void update_vsyscall(struct timekeeper *tk)
->>>>       }
->>>>
->>>>       vdso_data_write_end(&vdso_data);
->>>> +    flush_cache_vmap((unsigned long)&vdso_data,
->>>> +             (unsigned long)&vdso_data + sizeof(vdso_data));
->>>>   }
->>>>
->>>>   void update_vsyscall_tz(void)
->>>> @@ -93,6 +97,8 @@ void update_vsyscall_tz(void)
->>>>           vdso_data.tz_minuteswest = sys_tz.tz_minuteswest;
->>>>           vdso_data.tz_dsttime = sys_tz.tz_dsttime;
->>>>       }
->>>> +    flush_cache_vmap((unsigned long)&vdso_data,
->>>> +             (unsigned long)&vdso_data + sizeof(vdso_data));
->>>>   }
->>>>
->>>>   int arch_setup_additional_pages(struct linux_binprm *bprm, int
->>>> uses_interp)
->>>>
->>>
->>>
-> 
-> 
+I think the problem you're describing is different to the one this is 
+trying to fix. The right fix for your issue is to make 
+CONFIG_GENERIC_IRQ_IPI selected when CONFIG_MIPS_GIC && !CONFIG_MIPS_MT_SMP.
+
+Would it be easy for you to create such a patch and test it?
+
+Thanks,
+Qais

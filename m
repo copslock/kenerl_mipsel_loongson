@@ -1,64 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2016 14:13:51 +0200 (CEST)
-Received: from mail-lb0-f193.google.com ([209.85.217.193]:36196 "EHLO
-        mail-lb0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014434AbcDCMNNmyt0B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Apr 2016 14:13:13 +0200
-Received: by mail-lb0-f193.google.com with SMTP id q4so16799885lbq.3
-        for <linux-mips@linux-mips.org>; Sun, 03 Apr 2016 05:13:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=OcDrx3C91VqhCuEgnc+DnIX6jQ0KnKQVa2L88JpWQ+Y=;
-        b=BvGYjpZ2TtaurMjJEa68m1+DF51vF+Bvqz1Fyf9Ih0ipXqL/2+MLcQiPWJtSIZ86WA
-         sWrj8AHYsf+PxmpcCGTj8BDnv/MC8ohjg7ipJdF96rXYcwwhL7j2a48tGqiFAOfKzDLw
-         RcU68rgZ3Wtcx98zA4NuuVyMkKDOUHLHSXyr69Vec5bUK6bzsjf4tWhEuBsdaB9OB7ht
-         BZAgy2LwHtAtubHqPPzVPq/S48TnAouniz+M9m1cYLUT6h8wo/X3mmdQR5VYCTb4L1NX
-         zjaEDvR9uKotian9C+Q6y3r5JGi9wkA+AiEPnsfqYmX/PK6TTaKPNn6T+dCf/7JwH+vn
-         RbHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=OcDrx3C91VqhCuEgnc+DnIX6jQ0KnKQVa2L88JpWQ+Y=;
-        b=OPX0IIdb1Oos+doh7UADbc0oXuQfds4RJYTWmBXabGEVBvLlHLm7W9aoL8u34YXEv7
-         P7+Eyc6zIws2xaLR1fZKBHZEWN6CY3qtihwoueURXdBLtBk98/LKHMKABOzPrCm6g0eQ
-         uBWC39/umQdzb3wS1PPjAfrbRX9+mvaKzsTWgKLuhnUB5uGuqiH2/Vb+fZmD72fsn3ju
-         r9xcasl/LWfB3zsx9cNBNXYmG0RoeMFBwilyk7XzCgdfDAak5v0WveJnCX0WA/cuF9/l
-         I063uTHZQ/tmn6lohbSkodqCrpuzLKO/yVIr33bzrzjkO5gxeM3CenOj3fh0MX/TwK2C
-         8Xhw==
-X-Gm-Message-State: AD7BkJKmukvNMTN4RWVmw9XkdzeH05CXqGPPhi76ARNRDh9+UYJvOgzQCwha3/2MMtNlhw==
-X-Received: by 10.28.107.9 with SMTP id g9mr7307324wmc.34.1459685588378;
-        Sun, 03 Apr 2016 05:13:08 -0700 (PDT)
-Received: from localhost.localdomain (228.red-83-55-41.dynamicip.rima-tde.net. [83.55.41.228])
-        by smtp.gmail.com with ESMTPSA id i2sm23547388wje.22.2016.04.03.05.13.07
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 03 Apr 2016 05:13:07 -0700 (PDT)
-From:   =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
-        <noltari@gmail.com>
-To:     linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, f.fainelli@gmail.com,
-        jogo@openwrt.org, cernekee@gmail.com, simon@fire.lp0.eu
-Cc:     =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
-        <noltari@gmail.com>
-Subject: [PATCH 3/3] MIPS: BMIPS: improve BCM6368 device tree
-Date:   Sun,  3 Apr 2016 14:13:05 +0200
-Message-Id: <1459685585-11747-3-git-send-email-noltari@gmail.com>
-X-Mailer: git-send-email 2.1.4
-In-Reply-To: <1459685585-11747-1-git-send-email-noltari@gmail.com>
-References: <1459685585-11747-1-git-send-email-noltari@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2016 16:41:33 +0200 (CEST)
+Received: from proxima.lp0.eu ([81.2.80.65]:41090 "EHLO proxima.lp0.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27007080AbcDCOlciVrW1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 3 Apr 2016 16:41:32 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fire.lp0.eu
+        ; s=exim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
+        Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=T85EpemU+/Nw3iM/EUpm+z72+tiWQ5+fxD6Nmu9gvrw=; b=jC6kswQY+sBl1so1eacQXQD09s
+        SZQHcnvUDTZjKfwclsSVdfSWv4HxX8S5FQpF89W5jujk66jaHqKPXcDRHK0jTybnu5oRn05lxdkQM
+        On4YR+CBCxHY2DKe671yGW0DodHl8mSatp9Fh5ZF2EtUvk4glUHf1LVKOsY1t9x1gY2iZG+vEdq/D
+        qql7oSHjTWficiKbZ2VDxLdzeZgjjGLORV87Ed1sD02/1G30wgbhExAcmTEPr1hdwgwH2O1yR9D8+
+        ZN5ZyXQP1yUrlddOQh92ut54mDE2KYKyFz0EJ8ixYugIoEP81wpuKhGYuio3rBCZ06MWcPKqIIr6y
+        lpaZeTnA==;
+Received: from redrum.lp0.eu ([2001:8b0:ffea:0:2e0:81ff:fe4d:2bec]:41116)
+        by proxima.lp0.eu ([2001:8b0:ffea:0:205:b4ff:fe12:530]:465)
+        with esmtpsav (TLSv1.2:ECDHE-RSA-AES256-SHA:256/CN=Simon Arlott)
+        id 1amjDQ-0003L7-Fs (Exim); Sun, 03 Apr 2016 15:41:25 +0100
+Subject: Re: [PATCH] bmips: rename BCM63168 to BCM63268
+To:     =?UTF-8?Q?=c3=81lvaro_Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        f.fainelli@gmail.com, jogo@openwrt.org, cernekee@gmail.com
+References: <1459684846-11308-1-git-send-email-noltari@gmail.com>
+From:   Simon Arlott <simon@fire.lp0.eu>
+Message-ID: <57012B92.6040102@simon.arlott.org.uk>
+Date:   Sun, 3 Apr 2016 15:41:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <1459684846-11308-1-git-send-email-noltari@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Return-Path: <noltari@gmail.com>
+Return-Path: <simon@fire.lp0.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52844
+X-archive-position: 52845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: noltari@gmail.com
+X-original-sender: simon@fire.lp0.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,67 +54,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-- Remove unneeded leds0 alias.
-- Switch to bcm6345-l1-intc interrupt controller.
-- Use interrupt-controller instead of periph_intc.
-- Add uart1 node.
+On 03/04/16 13:00, Álvaro Fernández Rojas wrote:
+> BCM63168 and BCM63268 are very similar and Broadcom refers to them as BCM63268
 
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
----
- arch/mips/boot/dts/brcm/bcm6368.dtsi | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+They are practically the same but they both exist.
 
-diff --git a/arch/mips/boot/dts/brcm/bcm6368.dtsi b/arch/mips/boot/dts/brcm/bcm6368.dtsi
-index 1f6b9b5..75aba97 100644
---- a/arch/mips/boot/dts/brcm/bcm6368.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm6368.dtsi
-@@ -32,8 +32,8 @@
- 	};
- 
- 	aliases {
--		leds0 = &leds0;
- 		uart0 = &uart0;
-+		uart1 = &uart1;
- 	};
- 
- 	cpu_intc: cpu_intc {
-@@ -64,16 +64,16 @@
- 			mask = <0x1>;
- 		};
- 
--		periph_intc: periph_intc@10000020 {
--			compatible = "brcm,bcm3380-l2-intc";
--			reg = <0x10000024 0x4 0x1000002c 0x4>,
--			      <0x10000020 0x4 0x10000028 0x4>;
-+		periph_intc: interrupt-controller@10000020 {
-+			compatible = "brcm,bcm6345-l1-intc";
-+			reg = <0x10000020 0x10>,
-+			      <0x10000030 0x10>;
- 
- 			interrupt-controller;
- 			#interrupt-cells = <1>;
- 
- 			interrupt-parent = <&cpu_intc>;
--			interrupts = <2>;
-+			interrupts = <2>, <3>;
- 		};
- 
- 		leds0: led-controller@100000d0 {
-@@ -93,6 +93,15 @@
- 			status = "disabled";
- 		};
- 
-+		uart1: serial@10000120 {
-+			compatible = "brcm,bcm6345-uart";
-+			reg = <0x10000120 0x18>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <3>;
-+			clocks = <&periph_clk>;
-+			status = "disabled";
-+		};
-+
- 		ehci0: usb@10001500 {
- 			compatible = "brcm,bcm6368-ehci", "generic-ehci";
- 			reg = <0x10001500 0x100>;
+> diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+> index 38b5bd5..bfee6ea 100644
+> --- a/arch/mips/bmips/setup.c
+> +++ b/arch/mips/bmips/setup.c
+> @@ -112,10 +112,10 @@ static void bcm6368_quirks(void)
+>  static const struct bmips_quirk bmips_quirk_list[] = {
+>  	{ "brcm,bcm3384-viper",		&bcm3384_viper_quirks		},
+>  	{ "brcm,bcm33843-viper",	&bcm3384_viper_quirks		},
+> +	{ "brcm,bcm63268",		&bcm6368_quirks			},
+>  	{ "brcm,bcm6328",		&bcm6328_quirks			},
+>  	{ "brcm,bcm6358",		&bcm6358_quirks			},
+>  	{ "brcm,bcm6368",		&bcm6368_quirks			},
+> -	{ "brcm,bcm63168",		&bcm6368_quirks			},
+
+You can add "brcm,bcm63268" but you can't remove support for
+"brcm,bcm63168".
+
+>  	{ },
+>  };
+>  
+> 
+
 -- 
-2.1.4
+Simon Arlott

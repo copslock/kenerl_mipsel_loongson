@@ -1,51 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Apr 2016 18:35:24 +0200 (CEST)
-Received: from mezzanine.sirena.org.uk ([106.187.55.193]:56214 "EHLO
-        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006613AbcDBQfXTEoa5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 2 Apr 2016 18:35:23 +0200
-Received: from [216.2.64.20] (helo=finisterre)
-        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.80)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1amOVw-0001Q7-2k; Sat, 02 Apr 2016 16:35:08 +0000
-Received: from broonie by finisterre with local (Exim 4.87)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1amOVu-0001uY-2L; Sat, 02 Apr 2016 09:35:06 -0700
-Date:   Sat, 2 Apr 2016 09:35:06 -0700
-From:   Mark Brown <broonie@kernel.org>
-To:     Purna Chandra Mandal <purna.mandal@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Joshua Henderson <digitalpeer@digitalpeer.com>,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        Kumar Gala <galak@codeaurora.org>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Message-ID: <20160402163506.GD2350@sirena.org.uk>
-References: <1459509530-22716-1-git-send-email-purna.mandal@microchip.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2016 11:56:26 +0200 (CEST)
+Received: from mail-lb0-f193.google.com ([209.85.217.193]:34175 "EHLO
+        mail-lb0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006514AbcDCJ4X40fNd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Apr 2016 11:56:23 +0200
+Received: by mail-lb0-f193.google.com with SMTP id vk4so16409038lbb.1;
+        Sun, 03 Apr 2016 02:56:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=4PAfrgp/y7FdK2qitmU5FgDV+8fN5sZmrSE9KBPjt6w=;
+        b=DCBtJiLs9OgMvkU6bjs0kgfb6kEeUMGFWhvNFFDkIT1Mo7/ycH8tOFll1MIVnFp7rI
+         MvgXfVhKl2TbhSlVvyb0CRI345ebEH3Y16hgGk4w2ufHA7+4v1/5UeUGcnUN3OcSVNy0
+         ALKqy1Sl1oMG2QowuCdSC+rjfgE06EvluNkEygBdgfasKpUi4AxxXVyekEZwDXs9KtPo
+         2ygIVqzrtVoJrnj0E2lE6GX8ivo2kbwlOPjaT2VdRtgwzYVpbHCfdkzqwtfaF8TmpxGR
+         NKBu5tbxxYUt5k+ksQjRuMz6RSBB2C8PXX/8Pp5vUn3moqNgHWUsQRDg9bI9LQRCWp3D
+         YnqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=4PAfrgp/y7FdK2qitmU5FgDV+8fN5sZmrSE9KBPjt6w=;
+        b=XB+pxphxSBk5aq8jLjAdxhX14GNUIhI1MDAus72qdtohjENN+Xv2gmXMUlnouG8tFB
+         UCt2auUGrFbHYqy+JfLOgLXw2pepaK/GABJWYzZBqwTCwp0R/uy8VR/52LoUY7GNZbYt
+         1L57uu+bIFcfwhfc3bg2Uzkti2fHadyNnIC5cIkwnN3FeklchVJAVfcww0nThFi0OSXu
+         P3GJcF1/Iou++LN0vX+LhpT91D+nBXGlfNCA0kNmCJr9liNdHqBLAYE4MConErlUopQm
+         zak3MOQbIxh1nXfKtd/Nx6v/lpoG0YnnkBCjKpmc0tttBkdtUKU8QiJbJT6rfSnDR3kc
+         oc1Q==
+X-Gm-Message-State: AD7BkJICMOq7DLVTxqKHSp4R3kuiU3vAW/5A4T2t0m/K0FZPZHOqNI8HMPJf/vvMJb5Wfw==
+X-Received: by 10.28.214.11 with SMTP id n11mr6573678wmg.31.1459677378415;
+        Sun, 03 Apr 2016 02:56:18 -0700 (PDT)
+Received: from localhost.localdomain (228.red-83-55-41.dynamicip.rima-tde.net. [83.55.41.228])
+        by smtp.gmail.com with ESMTPSA id w202sm6645124wmw.18.2016.04.03.02.56.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 03 Apr 2016 02:56:17 -0700 (PDT)
+From:   =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
+        <noltari@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree@vger.kernel.org, f.fainelli@gmail.com, jogo@openwrt.org,
+        cernekee@gmail.com, robh@kernel.org
+Cc:     =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
+        <noltari@gmail.com>
+Subject: [PATCH v3 1/2] bmips: add BCM6358 support
+Date:   Sun,  3 Apr 2016 11:56:15 +0200
+Message-Id: <1459677376-10449-1-git-send-email-noltari@gmail.com>
+X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1456054881-26787-1-git-send-email-noltari@gmail.com>
+References: <1456054881-26787-1-git-send-email-noltari@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="dds9jO4idXToq0wP"
-Content-Disposition: inline
-In-Reply-To: <1459509530-22716-1-git-send-email-purna.mandal@microchip.com>
-X-Cookie: If anything can go wrong, it will.
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-SA-Exim-Connect-IP: 216.2.64.20
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-Subject: Re: [PATCH v5 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
-X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
-X-SA-Exim-Scanned: Yes (on mezzanine.sirena.org.uk)
-Return-Path: <broonie@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <noltari@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52838
+X-archive-position: 52839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: noltari@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,30 +71,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+BCM6358 has a shared TLB which conflicts with current SMP support, so it must
+be disabled for now.
+BCM6358 uses >= 0xfffe0000 addresses for internal registers, which need to be
+remapped (by using a simplified version of BRCM63xx ioremap.h).
+However, 0xfff80000 is a better address since it also covers BCM3368, leaving
+the possibility to add it in the future.
 
---dds9jO4idXToq0wP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+---
+ v3: Use a hardcoded constant for is_bmips_internal_registers (BCM3368 base
+  address)
+ v2: Use a different approach for remapping internal registers
 
-On Fri, Apr 01, 2016 at 04:48:49PM +0530, Purna Chandra Mandal wrote:
-> Document the devicetree bindings for the SPI peripheral found
-> on Microchip PIC32 class devices.
+ arch/mips/bmips/setup.c                    | 10 +++++++++
+ arch/mips/include/asm/mach-bmips/ioremap.h | 33 ++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-bmips/ioremap.h
 
-Please use subject lines reflecting the style for the subsystem.
-
---dds9jO4idXToq0wP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJW//S4AAoJECTWi3JdVIfQjfEH+weHKWmxXd0vqovgGShGg0Cd
-lvdbe/YcGan7+wIQY4RfnbuEBgv7SCVDZETrTbKNTFDu/GSxYfzNZQBPCU8PPbzb
-3OQhH3thPKGTsAWdmNGQMTn8B7vCh2HvcNUdDwDFQF8ooMklBNTd4NyjKifuNqto
-PG3VtRHfzjDabfrLnvsuAjRJj9cT3xsYW+Q+/ztZFT2ree6kKwsUL7qL6pDgwhO6
-0FjKVOVZCtUwhLAcMwCNQDovVVyDKcKfkdb9FZP8pIQyEvx4q6icygfeVbBinYk/
-rb22jYg72YKvF+r14gCz6iimQh3GvSiowYoGSk5wOo6ADU8kuhXBNlxdXBBrrf8=
-=+uPx
------END PGP SIGNATURE-----
-
---dds9jO4idXToq0wP--
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index 3553528..38b5bd5 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -95,6 +95,15 @@ static void bcm6328_quirks(void)
+ 		bcm63xx_fixup_cpu1();
+ }
+ 
++static void bcm6358_quirks(void)
++{
++	/*
++	 * BCM6358 needs special handling for its shared TLB, so
++	 * disable SMP for now
++	 */
++	bmips_smp_enabled = 0;
++}
++
+ static void bcm6368_quirks(void)
+ {
+ 	bcm63xx_fixup_cpu1();
+@@ -104,6 +113,7 @@ static const struct bmips_quirk bmips_quirk_list[] = {
+ 	{ "brcm,bcm3384-viper",		&bcm3384_viper_quirks		},
+ 	{ "brcm,bcm33843-viper",	&bcm3384_viper_quirks		},
+ 	{ "brcm,bcm6328",		&bcm6328_quirks			},
++	{ "brcm,bcm6358",		&bcm6358_quirks			},
+ 	{ "brcm,bcm6368",		&bcm6368_quirks			},
+ 	{ "brcm,bcm63168",		&bcm6368_quirks			},
+ 	{ },
+diff --git a/arch/mips/include/asm/mach-bmips/ioremap.h b/arch/mips/include/asm/mach-bmips/ioremap.h
+new file mode 100644
+index 0000000..29c7a7b
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bmips/ioremap.h
+@@ -0,0 +1,33 @@
++#ifndef __ASM_MACH_BMIPS_IOREMAP_H
++#define __ASM_MACH_BMIPS_IOREMAP_H
++
++#include <linux/types.h>
++
++static inline phys_addr_t fixup_bigphys_addr(phys_addr_t phys_addr, phys_addr_t size)
++{
++	return phys_addr;
++}
++
++static inline int is_bmips_internal_registers(phys_addr_t offset)
++{
++	if (offset >= 0xfff80000)
++		return 1;
++
++	return 0;
++}
++
++static inline void __iomem *plat_ioremap(phys_addr_t offset, unsigned long size,
++					 unsigned long flags)
++{
++	if (is_bmips_internal_registers(offset))
++		return (void __iomem *)offset;
++
++	return NULL;
++}
++
++static inline int plat_iounmap(const volatile void __iomem *addr)
++{
++	return is_bmips_internal_registers((unsigned long)addr);
++}
++
++#endif /* __ASM_MACH_BMIPS_IOREMAP_H */
+-- 
+2.1.4

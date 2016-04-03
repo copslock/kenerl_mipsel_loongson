@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2016 14:13:14 +0200 (CEST)
-Received: from mail-lf0-f67.google.com ([209.85.215.67]:34947 "EHLO
-        mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006506AbcDCMNLa7xSB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Apr 2016 14:13:11 +0200
-Received: by mail-lf0-f67.google.com with SMTP id c62so18253963lfc.2
-        for <linux-mips@linux-mips.org>; Sun, 03 Apr 2016 05:13:11 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2016 14:13:29 +0200 (CEST)
+Received: from mail-lb0-f194.google.com ([209.85.217.194]:36188 "EHLO
+        mail-lb0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014198AbcDCMNMl5rKB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Apr 2016 14:13:12 +0200
+Received: by mail-lb0-f194.google.com with SMTP id q4so16799812lbq.3
+        for <linux-mips@linux-mips.org>; Sun, 03 Apr 2016 05:13:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=FWBYpkrgz20/FrB/XyOe5BlbkCKewiTC9ORdNgVySdg=;
-        b=owfJut2PtCzoHI+tKs8zassCCSJv+5rFBpJpotDY0XIiYebeL1aYIZPoifK4gcBe0S
-         Kq3aO8oHVcb5sm8z3HvK+/1PsmHIWpS2jkOyvU8O3OWubRx4z+l4F83CQnfBJ94i+YG7
-         yWdF1SqLOP/X+CBP4eIBpfq9ugZvYgYDCxPPnhRYpPzWZi5QpFMfcLYNkQFq/GhHCJK6
-         CGkJln4JJ7vNIG3KrBzrl3r2PMM7rhidgl+5PWIbofKM+omvORXKv3+ZOoXv32n61sQo
-         oNw5MHnDpvqh+LcVZTvmqiN2eJboed17dC/MtaYYBKy7dumUnG1HvrnwEAP4aCI4DR6F
-         bv1A==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=80Wex0hZqVhNezIUIHPTztfDWv0yMMVFV3jdEcOcGvQ=;
+        b=zSkxLVXlbXyMgC+tm4rMX4G+bopzDbIzmdbHCoHVrV0MUeNPAeEWmORhufxtaGzA/M
+         b/hND6ttQc2f+q9no9+885lm9b5w2jvyV/9MLFMOD2xmFPVu0IYC59CR/mcpLLrq+HzE
+         YPoKH3T4/vnLMT4HWhiM06A1ajVjJ+g/HLHr6txPDdKjeZNrXYhD+rd6bySTmXmgAuOe
+         jf1lkJqotmBHNKJV3amgfThX7K0Bybw+zN0GgQk2oFXWWB6cNosW3gSei7PH1n9Z2QCq
+         fgD16Nb036cNl4FcLXWqCz9xBnRxnsq/Y2RUatef8z9iZY7aX5prxou7AG4IEAcRv0RG
+         qNVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=FWBYpkrgz20/FrB/XyOe5BlbkCKewiTC9ORdNgVySdg=;
-        b=SsO0oirmQ3QfuJJXGyvVxSUYfrYjZYDiAuMdOTLuxd2PTpgOa9+sfE4/OZnA463/fs
-         5JNWUeIaIFDuvK2w/Jj77fjGAyS6JkKWRqd3CGLOFdMLj6ALDpm/XVn/3ni/Ciqn+IfO
-         QyQ7t8BwT7fL8DqsBhH10ly2tJ8eZC2/erLws1rZPNxLAU4H6o8kkZ1yCvoV6SrUo2iW
-         BInBEpx5RR2frjPLK7njzz7AfQYTVo1B6gV8sAijtTOJBTBVTW8AILs5Pg2nC2VQ5hVC
-         AcW6xIvtXYSUbId9IdPaio2V9QvaGL3Qmn0B6SHdDN0N48SL7bEw1BWUE4BGsviLychC
-         g+oA==
-X-Gm-Message-State: AD7BkJIrXGHui1msr+mAMncsPX3tprxzgQpx6a4gLt+0d31RlRtLmpH6DGoyHbgE7p3JFw==
-X-Received: by 10.194.6.234 with SMTP id e10mr2241104wja.118.1459685586081;
-        Sun, 03 Apr 2016 05:13:06 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=80Wex0hZqVhNezIUIHPTztfDWv0yMMVFV3jdEcOcGvQ=;
+        b=drhc/SjgrgwThDrQP3l7RkpBPzPOqWgHnLob9xZcERliFIRCGJx5mzVCoMVhntwsMO
+         AiDQ9fLoksgjk+M3A8NvTseYUe1vd0JVHujMQ2AJS/CfJ4EsPu6V4uXmVkIS/GP98syl
+         Qv3JGD4nf+Y9eE2hx5coOZnooII1TR9FHv2l5fZpovK1MA47hAFHn7nwZ4/Z1EwfFmAn
+         ywYjhEbCprLbFA/8q4T/1h6cg+d9DYHEqFNeIONVDY7KzTW5h76SFbicKzP/+ushqHQ9
+         uvZWpqwKVx/gGDn8c7nXLBxlbqOGkLHv27RiqFKnRA53vBFLMM60Xodk6CB0/Cgw4YyZ
+         iT8w==
+X-Gm-Message-State: AD7BkJJNXcJRTww5XvfNZPvb3oEl3emKwALr04HTGuQKLGWCAjoQx42pNg9sHcLYMqUdyg==
+X-Received: by 10.28.109.4 with SMTP id i4mr7058781wmc.44.1459685587298;
+        Sun, 03 Apr 2016 05:13:07 -0700 (PDT)
 Received: from localhost.localdomain (228.red-83-55-41.dynamicip.rima-tde.net. [83.55.41.228])
-        by smtp.gmail.com with ESMTPSA id i2sm23547388wje.22.2016.04.03.05.13.04
+        by smtp.gmail.com with ESMTPSA id i2sm23547388wje.22.2016.04.03.05.13.06
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 03 Apr 2016 05:13:05 -0700 (PDT)
+        Sun, 03 Apr 2016 05:13:06 -0700 (PDT)
 From:   =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
         <noltari@gmail.com>
 To:     linux-mips@linux-mips.org, devicetree@vger.kernel.org,
@@ -41,10 +41,12 @@ To:     linux-mips@linux-mips.org, devicetree@vger.kernel.org,
         jogo@openwrt.org, cernekee@gmail.com, simon@fire.lp0.eu
 Cc:     =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
         <noltari@gmail.com>
-Subject: [PATCH 1/3] MIPS: BMIPS: improve BCM6328 device tree
-Date:   Sun,  3 Apr 2016 14:13:03 +0200
-Message-Id: <1459685585-11747-1-git-send-email-noltari@gmail.com>
+Subject: [PATCH 2/3] MIPS: BMIPS: improve BCM6358 device tree
+Date:   Sun,  3 Apr 2016 14:13:04 +0200
+Message-Id: <1459685585-11747-2-git-send-email-noltari@gmail.com>
 X-Mailer: git-send-email 2.1.4
+In-Reply-To: <1459685585-11747-1-git-send-email-noltari@gmail.com>
+References: <1459685585-11747-1-git-send-email-noltari@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -52,7 +54,7 @@ Return-Path: <noltari@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52842
+X-archive-position: 52843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,43 +71,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-- Remove unneeded leds0 alias.
 - Switch to bcm6345-l1-intc interrupt controller.
-- Use interrupt-controller instead of periph_intc.
-- Add uart1, ehci0 and ohci0 nodes.
-- Refactor syscon and syscon-reboot.
+- Add ehci0 and ohci0 nodes.
+- Use proper native-endian syscon property.
 
 Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
 ---
- arch/mips/boot/dts/brcm/bcm6328.dtsi | 44 +++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 8 deletions(-)
+ arch/mips/boot/dts/brcm/bcm6358.dtsi | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/boot/dts/brcm/bcm6328.dtsi b/arch/mips/boot/dts/brcm/bcm6328.dtsi
-index 9d19236..8efa420 100644
---- a/arch/mips/boot/dts/brcm/bcm6328.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm6328.dtsi
-@@ -31,8 +31,8 @@
- 	};
+diff --git a/arch/mips/boot/dts/brcm/bcm6358.dtsi b/arch/mips/boot/dts/brcm/bcm6358.dtsi
+index 5ac1ef0..5dc8432 100644
+--- a/arch/mips/boot/dts/brcm/bcm6358.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm6358.dtsi
+@@ -53,7 +53,7 @@
+ 		periph_cntl: syscon@fffe0000 {
+ 			compatible = "syscon";
+ 			reg = <0xfffe0000 0xc>;
+-			little-endian;
++			native-endian;
+ 		};
  
- 	aliases {
--		leds0 = &leds0;
- 		uart0 = &uart0;
-+		uart1 = &uart1;
- 	};
+ 		reboot: syscon-reboot@fffe0008 {
+@@ -64,15 +64,15 @@
+ 		};
  
- 	cpu_intc: cpu_intc {
-@@ -50,16 +50,16 @@
- 		compatible = "simple-bus";
- 		ranges;
- 
--		periph_intc: periph_intc@10000020 {
+ 		periph_intc: interrupt-controller@fffe000c {
 -			compatible = "brcm,bcm3380-l2-intc";
--			reg = <0x10000024 0x4 0x1000002c 0x4>,
--			      <0x10000020 0x4 0x10000028 0x4>;
-+		periph_intc: interrupt-controller@10000020 {
+-			reg = <0xfffe0010 0x4 0xfffe000c 0x4>,
+-			      <0xfffe003c 0x4 0xfffe0038 0x4>;
 +			compatible = "brcm,bcm6345-l1-intc";
-+			reg = <0x10000020 0x10>,
-+			      <0x10000030 0x10>;
++			reg = <0xfffe000c 0x8>,
++			      <0xfffe0038 0x8>;
  
  			interrupt-controller;
  			#interrupt-cells = <1>;
@@ -115,53 +112,28 @@ index 9d19236..8efa420 100644
 +			interrupts = <2>, <3>;
  		};
  
- 		uart0: serial@10000100 {
-@@ -71,13 +71,22 @@
- 			status = "disabled";
- 		};
+ 		leds0: led-controller@fffe00d0 {
+@@ -107,5 +107,24 @@
  
--		timer: timer@10000040 {
-+		uart1: serial@10000120 {
-+			compatible = "brcm,bcm6345-uart";
-+			reg = <0x10000120 0x18>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <39>;
-+			clocks = <&periph_clk>;
-+			status = "disabled";
-+		};
-+
-+		timer: syscon@10000040 {
- 			compatible = "syscon";
- 			reg = <0x10000040 0x2c>;
- 			native-endian;
- 		};
- 
--		reboot {
-+		reboot: syscon-reboot@10000068 {
- 			compatible = "syscon-reboot";
- 			regmap = <&timer>;
- 			offset = <0x28>;
-@@ -91,5 +100,24 @@
- 			reg = <0x10000800 0x24>;
  			status = "disabled";
  		};
 +
-+		ehci0: usb@10002500 {
-+			compatible = "brcm,bcm6328-ehci", "generic-ehci";
-+			reg = <0x10002500 0x100>;
++		ehci0: usb@fffe1300 {
++			compatible = "brcm,bcm6358-ehci", "generic-ehci";
++			reg = <0xfffe1300 0x100>;
 +			big-endian;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <42>;
++			interrupts = <10>;
 +			status = "disabled";
 +		};
 +
-+		ohci0: usb@10002600 {
-+			compatible = "brcm,bcm6328-ohci", "generic-ohci";
-+			reg = <0x10002600 0x100>;
++		ohci0: usb@fffe1400 {
++			compatible = "brcm,bcm6358-ohci", "generic-ohci";
++			reg = <0xfffe1400 0x100>;
 +			big-endian;
 +			no-big-frame-no;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <41>;
++			interrupts = <5>;
 +			status = "disabled";
 +		};
  	};

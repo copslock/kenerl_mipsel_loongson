@@ -1,60 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2016 20:39:25 +0200 (CEST)
-Received: from mail-oi0-f41.google.com ([209.85.218.41]:34953 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2016 20:39:59 +0200 (CEST)
+Received: from mail-oi0-f41.google.com ([209.85.218.41]:34225 "EHLO
         mail-oi0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27007359AbcDCSjX5fgQg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Apr 2016 20:39:23 +0200
-Received: by mail-oi0-f41.google.com with SMTP id p188so140791704oih.2;
-        Sun, 03 Apr 2016 11:39:23 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S27007359AbcDCSj4b2qmg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Apr 2016 20:39:56 +0200
+Received: by mail-oi0-f41.google.com with SMTP id s79so41831369oie.1;
+        Sun, 03 Apr 2016 11:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=BoplsbIKuT4ppJL9u9LSbgX5GKG8SY2Xmmx/X7MwwgM=;
-        b=rGTwTSD88t8zpP/Mxxbyq5cKul31YH0Zcme1dUXD0kxEVBimaGs4W+CjbcDfgVGxlQ
-         vTUDAythyxrig4uqnWT4ZGjf3AwJYLYYfeFLm5Zg95N0kJKR1tDoLrGmBiTA7nZznpff
-         U2iqasUDEuNANkIcCtGxU6dz+zooYP+1kTrMHmHldBDcxLictH2SJvccexQGFZGRKv90
-         rUcFdetnS22eKmCv/Y7WZK/yioSOvBGj21dh0zlYpvli/p7sx9QoxuFsH7y8fVwL7vde
-         Sd8YowoSib6HRI+XelZDGVHUItJUITNX4ZAniHjEKPuPluC+t/zb9UAKUkbapvyvqRTq
-         wRqQ==
+        bh=79wJ09UGDVwnAXVNqt+3uXS5Lr6zCyWOmpWRDsWC+BA=;
+        b=jXiMMU6KfrUFwVXTQsDBQChkkkjA2CbzcNiAT8T+Dj/nbl/3eaWBf9PYROQSDMhaqO
+         x6HBHQiOh6IZV8ioyy5FgA8A/oca1KjTGktR262yoNsNowPAIY5UBYtS30IwI/kEC8Ar
+         AR+y7tjauN59tEvjnhCvrvmzF2wllPUmSlWWCfSD1eRRmfPx2GoPJCSSAxG0ZLtqkPif
+         1vQTG0xli5NrefFjGea5Au4PjeGD6+lrrYWg/V3pv9of0o6E31xGMsEDc6FaYZ6FpKFS
+         srXAuQMldy/k1kznRsU7YhdW7//zeRUqk/BScbw8E6GcsBWBJwkji0g7MHxXCOAVd89k
+         +8Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=BoplsbIKuT4ppJL9u9LSbgX5GKG8SY2Xmmx/X7MwwgM=;
-        b=ZOiFFFuh37rPIcMUQWwVVn1B6q8+3yiB2aot+LqXpPBk3pvafru6afH3zakchOAmOe
-         ptZSk8tAxYpNmiydF5tkP1S3KvsRq79DmYH6kjlPCpUqTjH2hsDiqoA2gLuGSE7Gcm4L
-         D4U8P12oqEMzaAg44JNZ/FNVKX4i5Tbq43cff3CivK+SpnMQxd6aw/+zMjHEs99iXg6Y
-         CWwd7CYJMqrHfxwdeN4e5a39+KAE8Z3RE3dqlpC10yyLG2Vavu6csAELixxgy80BtytH
-         UTpePilBjG4CQlP4wwjRnZ/DmPuazE9p1/G6t2S68KAuOVEFLG2RtKduVw1/TTSbmImW
-         A2BQ==
-X-Gm-Message-State: AD7BkJJvruJjc4o/ecN5cdCxgd67oiW6t1XkCrW9l+wFGfNd+KE4FK7AL8I2KpPm3Ycz0A==
-X-Received: by 10.202.197.66 with SMTP id v63mr4152321oif.23.1459708758244;
-        Sun, 03 Apr 2016 11:39:18 -0700 (PDT)
+        bh=79wJ09UGDVwnAXVNqt+3uXS5Lr6zCyWOmpWRDsWC+BA=;
+        b=I1FyiwOZ0PQSg886yFELNFDckUBvwiUHvA3ZojpMRdxC6DomVVGZZWVE2Hw0dI9b+d
+         4dhxsp3UgMCM2ZJCpXXYvlEL2uJ+qRUmFG4yEPcmmgaUbfUBaQPy/1jPt2MARCz3Xm32
+         qn726N6TE75PamFzMRYclS2yF0D37KX0amdoUaLk3+711FD762M2b5AlozqgnK/Mj0Co
+         sHWo1oTXZmRKEA4MfxenHCsQ6t7QjwhV1khwgaO0v/8KNjriA30ke7tfNLck7GcPjuuz
+         NZXS3AkuivtmKnPvuLOHTVq0ZSTw/QfwhcJv52ZrWZehb6ueaQwAAq0x6+zVOyOkLwCl
+         P9ow==
+X-Gm-Message-State: AD7BkJJMZfo23KuC+s59ewKq5Jx/whNG7/+xV2hy2MuwWEnafFwRszpl6zmysScYhYhK3g==
+X-Received: by 10.202.194.198 with SMTP id s189mr8437670oif.17.1459708790930;
+        Sun, 03 Apr 2016 11:39:50 -0700 (PDT)
 Received: from ?IPv6:2001:470:d:73f:14c4:8f1:9484:755e? ([2001:470:d:73f:14c4:8f1:9484:755e])
-        by smtp.googlemail.com with ESMTPSA id ji4sm7388557obc.6.2016.04.03.11.39.16
+        by smtp.googlemail.com with ESMTPSA id u8sm7273416obf.5.2016.04.03.11.39.49
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 03 Apr 2016 11:39:17 -0700 (PDT)
-Subject: Re: [PATCH 0/6] MIPS: BMIPS: Random fixes for BMIPS5000/5200
+        Sun, 03 Apr 2016 11:39:50 -0700 (PDT)
+Subject: Re: [PATCH 0/4] MIPS: BMIPS5200 SMP support
 To:     linux-mips@linux-mips.org
-References: <1454131046-11124-1-git-send-email-f.fainelli@gmail.com>
- <56F9DBF3.5060309@gmail.com>
+References: <1454552093-17897-1-git-send-email-f.fainelli@gmail.com>
+ <56F9DC22.9030309@gmail.com>
 Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
-        jogo@openwrt.org, jaedon.shin@gmail.com, jfraser@broadcom.com,
-        pgynther@google.com, dragan.stancevic@gmail.com
+        jon.fraser@broadcom.com, jaedon.shin@gmail.com,
+        dragan.stancevic@gmail.com, jogo@openwrt.org
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <57016353.7070500@gmail.com>
-Date:   Sun, 3 Apr 2016 11:39:15 -0700
+Message-ID: <57016375.1000507@gmail.com>
+Date:   Sun, 3 Apr 2016 11:39:49 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <56F9DBF3.5060309@gmail.com>
+In-Reply-To: <56F9DC22.9030309@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52847
+X-archive-position: 52848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,41 +71,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 28/03/2016 18:35, Florian Fainelli a écrit :
-> Le 29/01/2016 21:17, Florian Fainelli a écrit :
+Le 28/03/2016 18:36, Florian Fainelli a écrit :
+> Le 03/02/2016 18:14, Florian Fainelli a écrit :
 >> Hi all,
 >>
->> This patch series contains a bunch of fixes for the BMIPS5000 processor class.
+>> This patch series adds BCM7435/BMIPS52000 SMP support, it builds
+>> on top of the series submitted here:
 >>
->> The first 4 patches are addressing some functional and cosmetic issues, while
->> the last 2 patches fix the existing code to support BMIPS5200 processors.
->>
->> Kevin, Jon, Jonas, please review!
->>
->> These were tested on BCM7425 and BCM7435.
->>
->> BMIPS5200 SMP patches will be submitted on top of this patch series
+>> https://www.linux-mips.org/archives/linux-mips/2016-01/msg00737.html
 > 
-> Ralf, can you queue these patches for 4.6? Thank you!
+> Ralf, can you also queue these for 4.6 if they look okay to you? Thanks!
 
-Ping? Any chance we can get these patches in 4.6?
+Same here, can this make it into 4.6? Thanks
 
 > 
 >>
->> Florian Fainelli (6):
->>   MIPS: BMIPS: BMIPS5000 has I cache filing from D cache
->>   MIPS: BMIPS: Clear MIPS_CACHE_ALIASES earlier
->>   BMIPS: BMIPS: local_r4k___flush_cache_all needs to blast S-cache
->>   MIPS: BMIPS: Add cpu-feature-overrides.h
->>   MIPS: BMIPS: Pretty print BMIPS5200 processor name
->>   MIPS: BMIPS: Fix PRID_IMP_BMIPS5000 masking for BMIPS5200
+>> Florian Fainelli (4):
+>>   MIPS: BMIPS: Add Whirlwind (BMIPS5200) initialization code
+>>   MIPS: BMIPS: Add missing 7038 L1 register cells to BCM7435
+>>   MIPS: BMIPS: Remove maxcpus from BCM97435SVMB DTS
+>>   MIPS: BMIPS: Fill in current_cpu_data.core
 >>
->>  .../include/asm/mach-bmips/cpu-feature-overrides.h |   14 ++++++++++++++
->>  arch/mips/kernel/bmips_vec.S                       |    9 +++++++--
->>  arch/mips/kernel/cpu-probe.c                       |    5 ++++-
->>  arch/mips/mm/c-r4k.c                               |   13 +++++++++++--
->>  4 files changed, 36 insertions(+), 5 deletions(-)
->>  create mode 100644 arch/mips/include/asm/mach-bmips/cpu-feature-overrides.h
+>>  arch/mips/boot/dts/brcm/bcm7435.dtsi     |   5 +-
+>>  arch/mips/boot/dts/brcm/bcm97435svmb.dts |   2 +-
+>>  arch/mips/kernel/Makefile                |   2 +-
+>>  arch/mips/kernel/bmips_5xxx_init.S       | 753 +++++++++++++++++++++++++++++++
+>>  arch/mips/kernel/bmips_vec.S             |  41 +-
+>>  arch/mips/kernel/smp-bmips.c             |   1 +
+>>  6 files changed, 797 insertions(+), 7 deletions(-)
+>>  create mode 100644 arch/mips/kernel/bmips_5xxx_init.S
 >>
 > 
 > 

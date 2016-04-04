@@ -1,51 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 12:10:09 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:20543 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 12:16:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49184 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026006AbcDDKJuN4n2a (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 12:09:50 +0200
+        with ESMTP id S27025878AbcDDKQjt8gda (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 12:16:39 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 9506AB9F09F9B;
-        Mon,  4 Apr 2016 11:09:40 +0100 (IST)
+        by Websense Email Security Gateway with ESMTPS id 3B0207AE96A3C;
+        Mon,  4 Apr 2016 11:16:31 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Mon, 4 Apr 2016 11:09:42 +0100
-Received: from localhost (10.100.200.28) by LEMAIL01.le.imgtec.org
+ 14.3.266.1; Mon, 4 Apr 2016 11:16:33 +0100
+Received: from [192.168.154.45] (192.168.154.45) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 4 Apr
- 2016 11:09:42 +0100
-Date:   Mon, 4 Apr 2016 11:09:40 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        "Joshua Kinard" <kumba@gentoo.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Jens Axboe <axboe@fb.com>, <linux-kernel@vger.kernel.org>,
-        Yijing Wang <wangyijing@huawei.com>,
-        "John Crispin" <blogic@openwrt.org>,
-        Yinghai Lu <yinghai@kernel.org>
-Subject: Re: [PATCH v2 03/15] MIPS: PCI: Compatibility with ARM-like PCI host
- drivers
-Message-ID: <20160404100940.GA21568@NP-P-BURTON>
-References: <1454499045-5020-1-git-send-email-paul.burton@imgtec.com>
- <1454499045-5020-4-git-send-email-paul.burton@imgtec.com>
- <56FB0D90.8000200@gmail.com>
+ 2016 11:16:33 +0100
+Subject: Re: [PATCH v2] MIPS: vdso: flush the vdso data page to update it on
+ all processes
+To:     Hauke Mehrtens <hauke@hauke-m.de>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>
+References: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
+ <56FAF575.4070607@hauke-m.de> <56FBEEFF.10406@imgtec.com>
+ <56FC472B.1040801@hauke-m.de> <56FFA0C4.80601@hauke-m.de>
+CC:     <alex.smith@imgtec.com>, <sergei.shtylyov@cogentembedded.com>,
+        "# v4 . 4+" <stable@vger.kernel.org>
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Message-ID: <57023ED7.5070905@imgtec.com>
+Date:   Mon, 4 Apr 2016 11:15:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <56FB0D90.8000200@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [10.100.200.28]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <56FFA0C4.80601@hauke-m.de>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52871
+X-archive-position: 52872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,46 +52,120 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 29, 2016 at 04:19:44PM -0700, Florian Fainelli wrote:
-> Le 03/02/2016 03:30, Paul Burton a écrit :
-> > Introduce support for struct hw_pci & the associated pci_common_init_dev
-> > function as used by the PCI drivers written for ARM platforms under
-> > drivers/pci. This is in preparation for reusing the xilinx-pcie driver
-> > on the MIPS Boston board.
-> > 
-> > Platforms that make use of this more generic code will need to select
-> > CONFIG_MIPS_GENERIC_PCI. Platforms which don't will continue to work as
-> > they have, with the intent that PCI drivers be migrated towards struct
-> > hw_pci & drivers/pci/ over time.
-> > 
-> > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> > ---
-> 
-> [snip]
-> 
-> > +		if (hw->preinit)
-> > +			hw->preinit();
-> > +
-> > +		ret = hw->setup(i, &ctl->sysdata);
-> > +		if (ret < 0) {
-> 
-> This needs to be ret <= 0 to be compliant with what ARM PCI host
-> controllers do, which is return 1 in case they could get hw->setup to
-> finish with success, and 0 or negative if they could not, see
-> arch/arm/kernel/bios32.c.
-> -- 
-> Florian
+Hi,
 
-Hi Florian,
+On 02/04/16 11:36, Hauke Mehrtens wrote:
+> On 03/30/2016 11:37 PM, Hauke Mehrtens wrote:
+>> On 03/30/2016 05:21 PM, Zubair Lutfullah Kakakhel wrote:
+>>> Hi Hauke,
+>>>
+>>> Could you share details of what version of glibc/rfs setup you are using?
+>>
+>> Hi,
+>>
+>> I am using the musl libc version 1.1.4 in OpenWrt. musl uses the same
+>> vdso code on arm and x86, it just needed some extensions to support the
+>> -ENOSYS return value which is not returned by the other architectures.
+>>
+>> I removed the following patches from OpenWrt to activate vdso
+>> gettimeofday in kernel 4.4 again:
+>> target/linux/generic/patches-4.4/206-mips-disable-vdso.patch
+>> target/linux/generic/patches-4.4/340-MIPS-deactivate-gettimeofday-vdso.patch
+>
+> I just tried vdso without this patch on a Broadcom BMIPS3300 V0.7 CPU in
+> the BCM4712 SoC and haven't seen any problems without this patch. With
+> the same number of patches applied to the kernel I have problems on the
+> 34Kc CPU.
 
-Just an FYI, the pcie-xilinx driver I wrote this for has since been
-converted away from the ARM-like pci_common_init_dev & struct hw_pci to
-use only functions provided by the core PCI subsystem[1]. As a result
-I've stopped using this patch & don't plan to continue work on it.
-Perhaps it would be cleanest to do a similar conversion for the driver
-you're using?
+Thanks for the update.
 
-[1] https://patchwork.ozlabs.org/patch/581967/ & the rest of the series
+Out of curiosity, are there any Endian difference between these two platforms?
 
-Thanks,
-    Paul
+Regards
+ZubairLK
+
+>
+> Hauke
+>
+>>
+>>>
+>>> Thanks.
+>>>
+>>> Regards,
+>>> ZubairLK
+>>>
+>>> On 29/03/16 22:36, Hauke Mehrtens wrote:
+>>>> On 02/21/2016 06:08 PM, Hauke Mehrtens wrote:
+>>>>> Without flushing the vdso data page the vdso call is working on dated
+>>>>> or unsynced data. This resulted in problems where the clock_gettime
+>>>>> vdso call returned a time 6 seconds later after a 3 seconds sleep,
+>>>>> while the syscall reported a time 3 sounds later, like expected. This
+>>>>> happened very often and I got these ping results for example:
+>>>>>
+>>>>> root@OpenWrt:/# ping 192.168.1.255
+>>>>> PING 192.168.1.255 (192.168.1.255): 56 data bytes
+>>>>> 64 bytes from 192.168.1.3: seq=0 ttl=64 time=0.688 ms
+>>>>> 64 bytes from 192.168.1.3: seq=1 ttl=64 time=4294172.045 ms
+>>>>> 64 bytes from 192.168.1.3: seq=2 ttl=64 time=4293968.105 ms
+>>>>> 64 bytes from 192.168.1.3: seq=3 ttl=64 time=4294055.920 ms
+>>>>> 64 bytes from 192.168.1.3: seq=4 ttl=64 time=4294671.913 ms
+>>>>>
+>>>>> This was tested on a Lantiq/Intel VRX288 (MIPS BE 34Kc V5.6 CPU with
+>>>>> two VPEs)
+>>>>>
+>>>>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>>>>> Cc: <stable@vger.kernel.org> # v4.4+
+>>>>
+>>>> This patch flushes the complete dcache of the CPU if cpu_has_dc_aliases
+>>>> is set.
+>>>>
+>>>> Calling flush_dcache_page(virt_to_page(&vdso_data)); improved the
+>>>> situation a litte bit but did not fix my problem.
+>>>>
+>>>> Could someone from Imagination please look into this problem. The page
+>>>> is linked into many virtual address spaces and when it gets modified by
+>>>> the kernel the user space processes are still accessing partly old data,
+>>>> even when lush_dcache_page() was called.
+>>>>
+>>>>> ---
+>>>>>    arch/mips/kernel/vdso.c | 6 ++++++
+>>>>>    1 file changed, 6 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+>>>>> index 975e997..8b0d974 100644
+>>>>> --- a/arch/mips/kernel/vdso.c
+>>>>> +++ b/arch/mips/kernel/vdso.c
+>>>>> @@ -20,6 +20,8 @@
+>>>>>    #include <linux/timekeeper_internal.h>
+>>>>>
+>>>>>    #include <asm/abi.h>
+>>>>> +#include <asm/cacheflush.h>
+>>>>> +#include <asm/page.h>
+>>>>>    #include <asm/vdso.h>
+>>>>>
+>>>>>    /* Kernel-provided data used by the VDSO. */
+>>>>> @@ -85,6 +87,8 @@ void update_vsyscall(struct timekeeper *tk)
+>>>>>        }
+>>>>>
+>>>>>        vdso_data_write_end(&vdso_data);
+>>>>> +    flush_cache_vmap((unsigned long)&vdso_data,
+>>>>> +             (unsigned long)&vdso_data + sizeof(vdso_data));
+>>>>>    }
+>>>>>
+>>>>>    void update_vsyscall_tz(void)
+>>>>> @@ -93,6 +97,8 @@ void update_vsyscall_tz(void)
+>>>>>            vdso_data.tz_minuteswest = sys_tz.tz_minuteswest;
+>>>>>            vdso_data.tz_dsttime = sys_tz.tz_dsttime;
+>>>>>        }
+>>>>> +    flush_cache_vmap((unsigned long)&vdso_data,
+>>>>> +             (unsigned long)&vdso_data + sizeof(vdso_data));
+>>>>>    }
+>>>>>
+>>>>>    int arch_setup_additional_pages(struct linux_binprm *bprm, int
+>>>>> uses_interp)
+>>>>>
+>>>>
+>>>>
+>>
+>>
+>

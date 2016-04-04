@@ -1,65 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 16:42:34 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:59013 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041249AbcFIOhIs0TzQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 16:37:08 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1bB152-0000ko-4B; Thu, 09 Jun 2016 14:37:08 +0000
-Received: from kamal by fourier with local (Exim 4.86_2)
-        (envelope-from <kamal@whence.com>)
-        id 1bB14z-0007Ba-EY; Thu, 09 Jun 2016 07:37:05 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [4.2.y-ckt stable] Patch "MIPS: BMIPS: Pretty print BMIPS5200 processor name" has been added to the 4.2.y-ckt tree
-Date:   Thu,  9 Jun 2016 07:37:04 -0700
-Message-Id: <1465483024-27587-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 2.7.4
-X-Extended-Stable: 4.2
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53957
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Florian Fainelli <f.fainelli@gmail.com>
+Date: Mon, 4 Apr 2016 10:55:38 -0700
+Subject: MIPS: BMIPS: Pretty print BMIPS5200 processor name
+Message-ID: <20160404175538.PQdYS7i2c4bnvmFG1CNGGICfCcKBb_ojWWyZB3QJlCs@z>
 
-This is a note to let you know that I have just added a patch titled
+commit 37808d62afcdc420d98875c4b514c178d56f6815 upstream.
 
-    MIPS: BMIPS: Pretty print BMIPS5200 processor name
+Just to ease debugging of multiplatform kernel, make sure we print
+"Broadcom BMIPS5200" for the BMIPS5200 implementation instead of
+Broadcom BMIPS5000.
 
-to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
-which can be found at:
+Fixes: 68e6a78373a6d ("MIPS: BMIPS: Add PRId for BMIPS5200 (Whirlwind)")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/13014/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kernel/cpu-probe.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-    https://git.launchpad.net/~canonical-kernel/linux/+git/linux-stable-ckt/log/?h=linux-4.2.y-queue
-
-This patch is scheduled to be released in version 4.2.8-ckt12.
-
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
-
-For more information about the 4.2.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Kamal
-
----8<------------------------------------------------------------
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index dbe0792..cbd4c43 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1248,7 +1248,10 @@ static inline void cpu_probe_broadcom(struct cpuinfo_mips *c, unsigned int cpu)
+ 	case PRID_IMP_BMIPS5000:
+ 	case PRID_IMP_BMIPS5200:
+ 		c->cputype = CPU_BMIPS5000;
+-		__cpu_name[cpu] = "Broadcom BMIPS5000";
++		if ((c->processor_id & PRID_IMP_MASK) == PRID_IMP_BMIPS5200)
++			__cpu_name[cpu] = "Broadcom BMIPS5200";
++		else
++			__cpu_name[cpu] = "Broadcom BMIPS5000";
+ 		set_elf_platform(cpu, "bmips5000");
+ 		c->options |= MIPS_CPU_ULRI;
+ 		break;
+--
+2.7.4

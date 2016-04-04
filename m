@@ -1,55 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 13:42:35 +0200 (CEST)
-Received: from mail-pf0-f174.google.com ([209.85.192.174]:36400 "EHLO
-        mail-pf0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026028AbcDDLmdXuSei (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 13:42:33 +0200
-Received: by mail-pf0-f174.google.com with SMTP id e128so121413098pfe.3;
-        Mon, 04 Apr 2016 04:42:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=kFIk8pw6DIdu4XMuoj4znc1+kUrMpGyD1ckMarOvwqQ=;
-        b=lNwJqEoCXUDvFSURxjnDIBI8ygvmaAqHkyHbyk6A7uiPJxwvBSWdTEWa0rzrshAu9a
-         D+wvdF3KxV7+nV4Ndu3y21ZK4W5HTwkLPng91u5tispXDctSC/QD+vAEdke7cJm3oOzX
-         S9PFTetTiwP7is3dYv4VR/2JeHdAku4dqqclrbgJ9EC3OlJgYA2uhvpWV3ufzs9mnb5Q
-         huHZTLDbeN7BKfzEGbc92HDkCcm5ZefXzR8NGY1nidbc8c4Rd+RW6RJLxGJIgU2fR7HW
-         AjrR1cvSsk6/84KuIko9Ed87figLzCoP8WkYLzXM5Yok9hj/mWeKNQwX5shcxWo4r8eb
-         MCzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=kFIk8pw6DIdu4XMuoj4znc1+kUrMpGyD1ckMarOvwqQ=;
-        b=LVeCXgHB4ZiXkj89IF8SwYokuPxupnY2KQQM6F1bj82DRm0TRoWvUpWkYhD0j58hbS
-         CsRbeBp1tOnI7gRo3XMIVgTPBq14FqNjAy6GevwFySAPcVzuhqN7Ywmp7B6vVaLF8Cwv
-         EYrML0Z2icdPlmvaYLyfQXC6IWXYcjXPfA2UVEfX15orm9QCU6TNnGMjfJifSlsYTJuD
-         0qz2iAU82iK0Pb7B8Qcpji8TPcqc6gd9YGCgeG+a1HeNTk5yQq/ib9MOqClmuNZmlgxt
-         /2crFj8fM4ruDdCe9+vDe+e66j+SQjNDOObwvTE4+mh8TfkKkVzZA8mf1L6tCWfMO/jt
-         m45w==
-X-Gm-Message-State: AD7BkJLNi3vd8lB3XIN5JofVeGMwG4SpYILqyRYwVIGMBle8Dnj/QhppZYXRJZMwnWnStQ==
-X-Received: by 10.98.73.132 with SMTP id r4mr20102831pfi.118.1459770147272;
-        Mon, 04 Apr 2016 04:42:27 -0700 (PDT)
-Received: from localhost.localdomain ([103.24.124.194])
-        by smtp.gmail.com with ESMTPSA id fk10sm41161887pab.33.2016.04.04.04.42.23
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 04 Apr 2016 04:42:25 -0700 (PDT)
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-testers@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH] MIPS: remove duplicate definition
-Date:   Mon,  4 Apr 2016 17:12:15 +0530
-Message-Id: <1459770135-6228-1-git-send-email-sudipm.mukherjee@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <sudipm.mukherjee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 14:18:26 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:57311 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006999AbcDDMSVQoVvi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 14:18:21 +0200
+Received: from p5492f5e7.dip0.t-ipconnect.de
+        ([84.146.245.231] helo=nereus.tec.linutronix.de. ident=mdkuser)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA256:128)
+        (Exim 4.80)
+        (envelope-from <anna-maria@linutronix.de>)
+        id 1an3SW-00087s-CA; Mon, 04 Apr 2016 14:18:20 +0200
+From:   Anna-Maria Gleixner <anna-maria@linutronix.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     rt@linutronix.de, Anna-Maria Gleixner <anna-maria@linutronix.de>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: Remove no longer needed work_on_cpu() call
+Date:   Mon,  4 Apr 2016 14:18:03 +0200
+Message-Id: <1459772283-40657-1-git-send-email-anna-maria@linutronix.de>
+X-Mailer: git-send-email 2.7.0
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <anna-maria@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52874
+X-archive-position: 52875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sudipm.mukherjee@gmail.com
+X-original-sender: anna-maria@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,40 +41,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-mips defconfig and allmodconfig are failing with the error:
+Since commit 1cf4f629d9d2 ("cpu/hotplug: Move online calls to
+hotplugged cpu") it is ensured that callbacks of CPU_ONLINE and
+CPU_DOWN_PREPARE are processed on the hotplugged CPU. Due to this
+work_on_cpu() calls are no longer required.
 
-In file included from ../arch/mips/kernel/asm-offsets.c:13:0:
-include/linux/sched.h:2656:20: error: conflicting types for 'exit_thread'
+Replace work_on_cpu() with a direct call of mips_cdmm_bus_up() or
+mips_cdmm_bus_down(). Description of those functions are adapted.
 
-exit_thread() was already defined in include/linux/sched.h.
-
-Fixes: 8664c52c094e ("MIPS: Make flush_thread and exit_thread inline.")
-Signed-off-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Anna-Maria Gleixner <anna-maria@linutronix.de>
 ---
+ drivers/bus/mips_cdmm.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-build log of next-20160404 is at:
-https://travis-ci.org/sudipm-mukherjee/parport/jobs/120536697 (defconfig)
-https://travis-ci.org/sudipm-mukherjee/parport/jobs/120536714 (allmodconfig)
-
-patch has been build tested with defconfig and allmodconfig.
-
- arch/mips/include/asm/processor.h | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 06469df..cfa15ba 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -359,10 +359,6 @@ static inline void flush_thread(void)
+--- a/drivers/bus/mips_cdmm.c
++++ b/drivers/bus/mips_cdmm.c
+@@ -599,8 +599,8 @@ BUILD_PERDEV_HELPER(cpu_up)         /* i
+  * mips_cdmm_bus_down() - Tear down the CDMM bus.
+  * @data:	Pointer to unsigned int CPU number.
+  *
+- * This work_on_cpu callback function is executed on a given CPU to call the
+- * CDMM driver cpu_down callback for all devices on that CPU.
++ * This function is executed on the hotplugged CPU and calls the CDMM
++ * driver cpu_down callback for all devices on that CPU.
+  */
+ static long mips_cdmm_bus_down(void *data)
  {
- }
- 
--static inline void exit_thread(void)
--{
--}
--
- unsigned long get_wchan(struct task_struct *p);
- 
- #define __KSTK_TOS(tsk) ((unsigned long)task_stack_page(tsk) + \
--- 
-1.9.1
+@@ -630,7 +630,9 @@ static long mips_cdmm_bus_down(void *dat
+  * CDMM devices on that CPU, or to call the CDMM driver cpu_up callback for all
+  * devices already discovered on that CPU.
+  *
+- * It is used during initialisation and when CPUs are brought online.
++ * It is used as work_on_cpu callback function during
++ * initialisation. When CPUs are brought online the function is
++ * invoked directly on the hotplugged CPU.
+  */
+ static long mips_cdmm_bus_up(void *data)
+ {
+@@ -677,10 +679,10 @@ static int mips_cdmm_cpu_notify(struct n
+ 	switch (action & ~CPU_TASKS_FROZEN) {
+ 	case CPU_ONLINE:
+ 	case CPU_DOWN_FAILED:
+-		work_on_cpu(cpu, mips_cdmm_bus_up, &cpu);
++		mips_cdmm_bus_up(&cpu);
+ 		break;
+ 	case CPU_DOWN_PREPARE:
+-		work_on_cpu(cpu, mips_cdmm_bus_down, &cpu);
++		mips_cdmm_bus_down(&cpu);
+ 		break;
+ 	default:
+ 		return NOTIFY_DONE;

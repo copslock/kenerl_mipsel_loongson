@@ -1,39 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 13:03:26 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:57480 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026026AbcDDLDXmieqC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Apr 2016 13:03:23 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u34B3L1v019097;
-        Mon, 4 Apr 2016 13:03:21 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u34B3Kbu019096;
-        Mon, 4 Apr 2016 13:03:20 +0200
-Date:   Mon, 4 Apr 2016 13:03:20 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linux-mips@linux-mips.org, alex.smith@imgtec.com,
-        sergei.shtylyov@cogentembedded.com,
-        "# v4 . 4+" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] MIPS: vdso: flush the vdso data page to update it on
- all processes
-Message-ID: <20160404110320.GC15222@linux-mips.org>
-References: <1456074518-13163-1-git-send-email-hauke@hauke-m.de>
- <56FAF575.4070607@hauke-m.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <56FAF575.4070607@hauke-m.de>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 13:42:35 +0200 (CEST)
+Received: from mail-pf0-f174.google.com ([209.85.192.174]:36400 "EHLO
+        mail-pf0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026028AbcDDLmdXuSei (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 13:42:33 +0200
+Received: by mail-pf0-f174.google.com with SMTP id e128so121413098pfe.3;
+        Mon, 04 Apr 2016 04:42:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=kFIk8pw6DIdu4XMuoj4znc1+kUrMpGyD1ckMarOvwqQ=;
+        b=lNwJqEoCXUDvFSURxjnDIBI8ygvmaAqHkyHbyk6A7uiPJxwvBSWdTEWa0rzrshAu9a
+         D+wvdF3KxV7+nV4Ndu3y21ZK4W5HTwkLPng91u5tispXDctSC/QD+vAEdke7cJm3oOzX
+         S9PFTetTiwP7is3dYv4VR/2JeHdAku4dqqclrbgJ9EC3OlJgYA2uhvpWV3ufzs9mnb5Q
+         huHZTLDbeN7BKfzEGbc92HDkCcm5ZefXzR8NGY1nidbc8c4Rd+RW6RJLxGJIgU2fR7HW
+         AjrR1cvSsk6/84KuIko9Ed87figLzCoP8WkYLzXM5Yok9hj/mWeKNQwX5shcxWo4r8eb
+         MCzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=kFIk8pw6DIdu4XMuoj4znc1+kUrMpGyD1ckMarOvwqQ=;
+        b=LVeCXgHB4ZiXkj89IF8SwYokuPxupnY2KQQM6F1bj82DRm0TRoWvUpWkYhD0j58hbS
+         CsRbeBp1tOnI7gRo3XMIVgTPBq14FqNjAy6GevwFySAPcVzuhqN7Ywmp7B6vVaLF8Cwv
+         EYrML0Z2icdPlmvaYLyfQXC6IWXYcjXPfA2UVEfX15orm9QCU6TNnGMjfJifSlsYTJuD
+         0qz2iAU82iK0Pb7B8Qcpji8TPcqc6gd9YGCgeG+a1HeNTk5yQq/ib9MOqClmuNZmlgxt
+         /2crFj8fM4ruDdCe9+vDe+e66j+SQjNDOObwvTE4+mh8TfkKkVzZA8mf1L6tCWfMO/jt
+         m45w==
+X-Gm-Message-State: AD7BkJLNi3vd8lB3XIN5JofVeGMwG4SpYILqyRYwVIGMBle8Dnj/QhppZYXRJZMwnWnStQ==
+X-Received: by 10.98.73.132 with SMTP id r4mr20102831pfi.118.1459770147272;
+        Mon, 04 Apr 2016 04:42:27 -0700 (PDT)
+Received: from localhost.localdomain ([103.24.124.194])
+        by smtp.gmail.com with ESMTPSA id fk10sm41161887pab.33.2016.04.04.04.42.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 04 Apr 2016 04:42:25 -0700 (PDT)
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-testers@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH] MIPS: remove duplicate definition
+Date:   Mon,  4 Apr 2016 17:12:15 +0530
+Message-Id: <1459770135-6228-1-git-send-email-sudipm.mukherjee@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <sudipm.mukherjee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52873
+X-archive-position: 52874
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sudipm.mukherjee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,52 +62,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 29, 2016 at 11:36:53PM +0200, Hauke Mehrtens wrote:
+mips defconfig and allmodconfig are failing with the error:
 
-> On 02/21/2016 06:08 PM, Hauke Mehrtens wrote:
-> > Without flushing the vdso data page the vdso call is working on dated
-> > or unsynced data. This resulted in problems where the clock_gettime
-> > vdso call returned a time 6 seconds later after a 3 seconds sleep,
-> > while the syscall reported a time 3 sounds later, like expected. This
-> > happened very often and I got these ping results for example:
-> > 
-> > root@OpenWrt:/# ping 192.168.1.255
-> > PING 192.168.1.255 (192.168.1.255): 56 data bytes
-> > 64 bytes from 192.168.1.3: seq=0 ttl=64 time=0.688 ms
-> > 64 bytes from 192.168.1.3: seq=1 ttl=64 time=4294172.045 ms
-> > 64 bytes from 192.168.1.3: seq=2 ttl=64 time=4293968.105 ms
-> > 64 bytes from 192.168.1.3: seq=3 ttl=64 time=4294055.920 ms
-> > 64 bytes from 192.168.1.3: seq=4 ttl=64 time=4294671.913 ms
-> > 
-> > This was tested on a Lantiq/Intel VRX288 (MIPS BE 34Kc V5.6 CPU with
-> > two VPEs)
-> > 
-> > Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> > Cc: <stable@vger.kernel.org> # v4.4+
-> 
-> This patch flushes the complete dcache of the CPU if cpu_has_dc_aliases
-> is set.
-> 
-> Calling flush_dcache_page(virt_to_page(&vdso_data)); improved the
-> situation a litte bit but did not fix my problem.
-> 
-> Could someone from Imagination please look into this problem. The page
-> is linked into many virtual address spaces and when it gets modified by
-> the kernel the user space processes are still accessing partly old data,
-> even when lush_dcache_page() was called.
+In file included from ../arch/mips/kernel/asm-offsets.c:13:0:
+include/linux/sched.h:2656:20: error: conflicting types for 'exit_thread'
 
-This is because there may be a stale cache entry on the user virtual
-address.  In order to correctly flush the cache one either has to do
-one of the following.
+exit_thread() was already defined in include/linux/sched.h.
 
- - use indexed cache ops to flush all matching cache ways
- - flush the user space address while running in the mm context of the
-   affected process.  Since this would need to be done for all processes
-   this is not a very practical approach.
- - pick a suitable VA for example in KSEG0 or XKPHYS and user that for
-   the flush operation.
+Fixes: 8664c52c094e ("MIPS: Make flush_thread and exit_thread inline.")
+Signed-off-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+---
 
-Indexed cacheops are not globalized by the MIPS CM so I'd go for the
-last operation.
+build log of next-20160404 is at:
+https://travis-ci.org/sudipm-mukherjee/parport/jobs/120536697 (defconfig)
+https://travis-ci.org/sudipm-mukherjee/parport/jobs/120536714 (allmodconfig)
 
-  Ralf
+patch has been build tested with defconfig and allmodconfig.
+
+ arch/mips/include/asm/processor.h | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index 06469df..cfa15ba 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -359,10 +359,6 @@ static inline void flush_thread(void)
+ {
+ }
+ 
+-static inline void exit_thread(void)
+-{
+-}
+-
+ unsigned long get_wchan(struct task_struct *p);
+ 
+ #define __KSTK_TOS(tsk) ((unsigned long)task_stack_page(tsk) + \
+-- 
+1.9.1

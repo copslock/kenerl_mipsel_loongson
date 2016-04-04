@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 10:40:24 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42924 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 11:05:16 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:31551 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27014185AbcDDIkW5Qj5S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 10:40:22 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email Security Gateway with ESMTPS id 998E73AE166DF;
-        Mon,  4 Apr 2016 09:40:15 +0100 (IST)
+        with ESMTP id S27014185AbcDDJFPZu3lS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 11:05:15 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email Security Gateway with ESMTPS id C54835C456486;
+        Mon,  4 Apr 2016 10:05:07 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Mon, 4 Apr 2016 09:40:17 +0100
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 4 Apr 2016 10:05:09 +0100
 Received: from localhost (10.100.200.28) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 4 Apr
- 2016 09:40:16 +0100
-Date:   Mon, 4 Apr 2016 09:40:15 +0100
+ 2016 10:05:08 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     Qais Yousef <qsyousef@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] MIPS: Fix broken malta qemu
-Message-ID: <20160404084015.GB14758@NP-P-BURTON>
-References: <1458248889-24663-1-git-send-email-qsyousef@gmail.com>
- <20160401124852.GA5145@NP-P-BURTON>
- <56FFB8B7.8050607@gmail.com>
- <20160404064140.GA1368@NP-P-BURTON>
- <20160404080222.GA15222@linux-mips.org>
- <20160404080654.GA14758@NP-P-BURTON>
- <CA+mqd+7YA5JH=CfLBV9S-c+0aQw=NHihT+WyPvgUF6UkmK+tEQ@mail.gmail.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Qais Yousef <qsyousef@gmail.com>,
+        <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        "Markos Chandras" <markos.chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Alex Smith <alex.smith@imgtec.com>
+Subject: [PATCH v2] MIPS: Don't BUG_ON when no IPI domain is found
+Date:   Mon, 4 Apr 2016 10:04:52 +0100
+Message-ID: <1459760692-19325-1-git-send-email-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.8.0
+In-Reply-To: <1459756773-14889-1-git-send-email-paul.burton@imgtec.com>
+References: <1459756773-14889-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <CA+mqd+7YA5JH=CfLBV9S-c+0aQw=NHihT+WyPvgUF6UkmK+tEQ@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain
 X-Originating-IP: [10.100.200.28]
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52867
+X-archive-position: 52868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,69 +51,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Apr 04, 2016 at 09:28:16AM +0100, Qais Yousef wrote:
-> On 4 Apr 2016 09:06, "Paul Burton" <paul.burton@imgtec.com> wrote:
-> >
-> > On Mon, Apr 04, 2016 at 10:02:23AM +0200, Ralf Baechle wrote:
-> > > FYI, Qais' initial fix is in the pull request I sent to Linus yesterday
-> so
-> > > any fixes please relative to that patch.
-> >
-> > Hi Ralf,
-> >
-> > To late - I already submitted:
-> >
-> >     https://patchwork.linux-mips.org/patch/13003/
-> >
-> > I can rebase, but it'll be a revert of Qais' workaround followed by
-> > mine & squashed.
-> >
-> > Thanks,
-> >     Paul
-> 
-> Removing BUG_ON () is the real workaround.
+Commit fbde2d7d8290 ("MIPS: Add generic SMP IPI support") introduced
+code that BUG_ON's in the case of a kernel that supports IPI domains but
+does not have one at runtime. This case is possible on Malta where for
+IPIs we may use either the GIC (which has an IPI IRQ domain
+implementation) or core-local software interrupts between VPEs (which do
+not currently have an IPI IRQ domain implementation). We can not know
+which will be used until runtime when we know whether a GIC is actually
+present, and if we run on a system with multiple VPEs and no GIC then
+the BUG_ON is hit.
 
-Hi Qais,
+Commit 19fb5818ed60 ("IPS: Fix broken malta qemu") worked around this
+for the single-core single-VPE case typically seen using QEMU, but does
+not catch the multi-VPE case. This patch removes the insufficient CPU
+presence check that was added and works around the bug differently,
+effectively reverting that commit.
 
-They're both workarounds. I think given the point in the cycle that
-we're at now it's the best option for now.
+A simple way to reproduce this bug is by using QEMU, which partially
+implements the MT ASE but does not implement the GIC as of version 2.5.
+Using "-cpu 34Kf -smp 2" will present a system with 2 VPEs in one core &
+no GIC, hitting the BUG_ON.
 
-> The problem with Malta is that it always selects GIC even when it does
-> not have it.
+Given that we're post-merge-window on the way to v4.6, avoid this by
+just returning from mips_smp_ipi_init when no IPI IRQ domain is found.
+Ideally at some point all IPI implementations would be converted to the
+same IPI IRQ domain interface & we'd be able to restore the check.
 
-No, that's by design. GIC support can be enabled in Kconfig & the actual
-presence of a GIC is detected at runtime. A kernel with GIC support can
-run on a system with or without a GIC.
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Qais Yousef <qsyousef@gmail.com>
+Fixes: fbde2d7d8290 ("MIPS: Add generic SMP IPI support")
+Fixes: 19fb5818ed60 ("IPS: Fix broken malta qemu")
+Reverts: 19fb5818ed60 ("IPS: Fix broken malta qemu")
 
-> If you add 2 ipi domains then you need to add a way to tell the platform
-> which one to use.
+---
 
-Then we may need some way to do that, or perhaps it'll be OK if we only
-register one of them on any given system. As mentioned I haven't really
-deciphered this IPI IRQ domain code yet.
+Changes in v2:
+- Rebase this workaround atop Qais' workaround at Ralf's request.
+- Update the commit message to reflect that.
 
-> All of the patches I sent were sent for review and were around for a long
-> time. There's no need for the passive aggressiveness please because you
-> found a problem now. Everything went through the formal process and you and
-> everyone had a chance to comment and raise issues out.
+ arch/mips/kernel/smp.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-Passive agressiveness? Really?
-
-I'm not complaining about your patches having being merged. I haven't
-said you failed to follow any process. I didn't have time to review your
-patches, and clearly nobody else spotted this either, and a regression
-has snuck into mainline. I simply want to fix it. I would also have
-liked to find some documentation since it's difficult to figure out how
-to add support for the single-core multi-VPE software interrupt case,
-but that's the only criticism I've made of the patches & I think it's
-just. Please don't be so personal...
-
-> My idea of a fix is to get config dependencies sorted but I'll leave it
-> with you and Ralf.
-
-As I tried to explain before and above, we don't have all of the
-required information until runtime, so Kconfig cannot solve this. That
-won't work.
-
-Thanks,
-    Paul
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index c87c0da..630bcfb 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -243,18 +243,6 @@ static int __init mips_smp_ipi_init(void)
+ 	struct irq_domain *ipidomain;
+ 	struct device_node *node;
+ 
+-	/*
+-	 * In some cases like qemu-malta, it is desired to try SMP with
+-	 * a single core. Qemu-malta has no GIC, so an attempt to set any IPIs
+-	 * would cause a BUG_ON() to be triggered since there's no ipidomain.
+-	 *
+-	 * Since for a single core system IPIs aren't required really, skip the
+-	 * initialisation which should generally keep any such configurations
+-	 * happy and only fail hard when trying to truely run SMP.
+-	 */
+-	if (cpumask_weight(cpu_possible_mask) == 1)
+-		return 0;
+-
+ 	node = of_irq_find_parent(of_root);
+ 	ipidomain = irq_find_matching_host(node, DOMAIN_BUS_IPI);
+ 
+@@ -266,7 +254,17 @@ static int __init mips_smp_ipi_init(void)
+ 	if (node && !ipidomain)
+ 		ipidomain = irq_find_matching_host(NULL, DOMAIN_BUS_IPI);
+ 
+-	BUG_ON(!ipidomain);
++	/*
++	 * There are systems which only use IPI domains some of the time,
++	 * depending upon configuration we don't know until runtime. An
++	 * example is Malta where we may compile in support for GIC & the
++	 * MT ASE, but run on a system which has multiple VPEs in a single
++	 * core and doesn't include a GIC. Until all IPI implementations
++	 * have been converted to use IPI domains the best we can do here
++	 * is to return & hope some other code sets up the IPIs.
++	 */
++	if (!ipidomain)
++		return 0;
+ 
+ 	call_virq = irq_reserve_ipi(ipidomain, cpu_possible_mask);
+ 	BUG_ON(!call_virq);
+-- 
+2.8.0

@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 06:50:41 +0200 (CEST)
-Received: from mail-pa0-f54.google.com ([209.85.220.54]:35252 "EHLO
-        mail-pa0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27013787AbcDDEuk1dBBj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 06:50:40 +0200
-Received: by mail-pa0-f54.google.com with SMTP id td3so135313914pab.2
-        for <linux-mips@linux-mips.org>; Sun, 03 Apr 2016 21:50:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 06:55:20 +0200 (CEST)
+Received: from mail-pa0-f53.google.com ([209.85.220.53]:34059 "EHLO
+        mail-pa0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27008573AbcDDEzSeQE6j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Apr 2016 06:55:18 +0200
+Received: by mail-pa0-f53.google.com with SMTP id fe3so135823460pab.1;
+        Sun, 03 Apr 2016 21:55:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=8JB39GqfmTQRtG+SS2uHSozeuxGLKSM7QsimX9Low2s=;
-        b=WwAE4iOvpVr+Ed82p6bGFF5YPHjVooqdzE3ki/h3NEPfkUAXkteMJD/+rn8MIklWnY
-         Sx0RG7BgztSFBbIZZkrOKqj5ku9DDyJui0xlSNSKCqvUC5AIvIa8JQ5/4mSL2nOF5e57
-         ZhDfzMdKC/ltg3zWaPbigU3EdxLn1aYO4+lcA6ovAqGq+YcC+9IVh7onAr8q5+h+RQhn
-         I9tGv5d+QocueIyv6EPtKH4hYCVhjN4ohnJ3xf35fHJHOROPNuvpRxpu+kSXNVkkTJOo
-         L45f/vIuYyfuFQqR6F1tUh3wtV1sFmPTRawe8ARMqi+Sab76P8VtXfv1tzeOwTwIAngr
-         Wbjg==
+        bh=18CwziD8CMnX74qBEpnGDvLMA55Jefo+za9IRmjHOx4=;
+        b=yP7dKgDIylxcrNXP23nNOkXeMOSY/pzIT5xqxecyLhFna9Tqp2ac5o7FasWV7dYoQu
+         mw6HPFz3sQIBGr2/S6FcQRNpS9Osgx8CQcmrxrM0JdimEiQhCioZUC5qm+hxsn+SqQXl
+         9xAJlastEIJ9Ka4u9jg+Wn677akKUwQiXzPIGzwE7+JVq1y/qMhKhPXJOgl/AdIoWGkd
+         +DR0Oe46XTc1mW+2r6Yg+8m3hy2agOCXDZprcqEIM8NjhUI6zeBV+qjnLKNggIlXGNem
+         YDhsDUkT0JI7Sl5RQcvOp4eFwr7XaM0/90KbhsEhzZu8yfpNnUlB2lp20Ozur55wxOhx
+         rhwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=8JB39GqfmTQRtG+SS2uHSozeuxGLKSM7QsimX9Low2s=;
-        b=CcPP5I8k+3sTzjW4gAzDTcOkZJ0q0+HjOJUmYEpZ2jU4ElH73WtRkLgYNGGtXKfsfs
-         guulbJhl05/5gP3jDNzI8OH13ga7Gcx3culW1oIgl18+LdayzdsPiqiOB0RAXSRrqdFy
-         a4uRm3pUWuSjHmSmeS4tWoQazfpCNJl/CnGomnx5zuTEs4F+EdJzIEjJ6klDcsrluiy5
-         1FLG/YJt4x+x09P14w9Xx+SkGHQIIGotkmGY8faV6Ow2nogFeZmNSXrTLXpF+Hwl54ww
-         4dA2BjJMX4lZVY2+JDQm4cgtcRtnM7ot7ze0q8RgCkvrf5EKrN5lMYtaGf/Pm9/OXJgq
-         OVDw==
-X-Gm-Message-State: AD7BkJLeQQoIjzyj4ksi1LWAH7MXCA5QvRlGpAQ3uxkHRdlLIqOeL9EDVIJZ2M4VXRBAyQ==
-X-Received: by 10.67.14.138 with SMTP id fg10mr50196696pad.145.1459745434817;
-        Sun, 03 Apr 2016 21:50:34 -0700 (PDT)
+        bh=18CwziD8CMnX74qBEpnGDvLMA55Jefo+za9IRmjHOx4=;
+        b=iycbX7hwmhluPCWkeWJvfRliezqzcYaaLMUvg1ZOtD9AlYg2J47skm9wI0pt+FizQx
+         v9YoRMgZZdsM0ZSmRfkCQ3rlW12kadu6mzhhOKCurU1u4nOQkA8z6sx07ICsCr6Kxole
+         UxEHNII/YewQVTjmbatSDfxWb4GgSrXyJeJUJg/fw2I1JhXyU6nqFIaCPU1sPdOzV/22
+         zencVU1jfh9Ci/SgBq3N/BR51ZdCsjoc/8u8xKE6UpZyiWbIXzSiGh6Dl2mfHnNdy5/B
+         +12OZeqhsn4QUn1BxNaVOGMmSfLW651tt/ZC42QDeiiOPqB3IKugztqCi7rn1cdK6mwR
+         9C0A==
+X-Gm-Message-State: AD7BkJLL3HrUcyGxm8hBNnSTZujzG1LkrT4/2LnjPsRqR0zf9m6oK/sUPgrQ3vnyc29aLA==
+X-Received: by 10.66.141.76 with SMTP id rm12mr50911135pab.30.1459745712792;
+        Sun, 03 Apr 2016 21:55:12 -0700 (PDT)
 Received: from localhost ([39.7.56.6])
-        by smtp.gmail.com with ESMTPSA id r68sm35667189pfa.33.2016.04.03.21.50.32
+        by smtp.gmail.com with ESMTPSA id v3sm37861466par.17.2016.04.03.21.55.11
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 03 Apr 2016 21:50:33 -0700 (PDT)
-Date:   Mon, 4 Apr 2016 13:52:00 +0900
+        Sun, 03 Apr 2016 21:55:11 -0700 (PDT)
+Date:   Mon, 4 Apr 2016 13:56:30 +0900
 From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
 To:     Petr Mladek <pmladek@suse.com>
-Cc:     kbuild test robot <lkp@intel.com>, kbuild-all@01.org,
-        Andrew Morton <akpm@linux-foundation.org>,
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         Russell King <rmk+kernel@arm.linux.org.uk>,
@@ -52,22 +51,25 @@ Cc:     kbuild test robot <lkp@intel.com>, kbuild-all@01.org,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] printk/nmi: flush NMI messages on the system panic
-Message-ID: <20160404045200.GE6164@swordfish>
-References: <1459353210-20260-6-git-send-email-pmladek@suse.com>
- <201603310000.dKufp7mg%fengguang.wu@intel.com>
- <20160331123657.GN5522@pathway.suse.cz>
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Jan Kara <jack@suse.cz>, Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        David Miller <davem@davemloft.net>
+Subject: Re: [PATCH v4 2/5] printk/nmi: use IRQ work only when ready
+Message-ID: <20160404045629.GF6164@swordfish>
+References: <1459353210-20260-1-git-send-email-pmladek@suse.com>
+ <1459353210-20260-3-git-send-email-pmladek@suse.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20160331123657.GN5522@pathway.suse.cz>
+In-Reply-To: <1459353210-20260-3-git-send-email-pmladek@suse.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Return-Path: <sergey.senozhatsky.work@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52851
+X-archive-position: 52852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -86,19 +88,45 @@ X-list: linux-mips
 
 Hello,
 
-On (03/31/16 14:36), Petr Mladek wrote:
-[..]
->  #ifdef CONFIG_PRINTK_NMI
-> +#define deferred_console_in_nmi() in_nmi()
->  #else
-> +#define deferred_console_in_nmi() 0
-[..]
-> +	if (!in_sched && !deferred_console_in_nmi()) {
->  		lockdep_off();
->  		/*
->  		 * Try to acquire and then immediately release the console
+On (03/30/16 17:53), Petr Mladek wrote:
+> NMIs could happen at any time.  This patch makes sure that the safe
+> printk() in NMI will schedule IRQ work only when the related structs are
+> initialized.
+> 
+> All pending messages are flushed when the IRQ work is being initialized.
 
-or use SCHED level for nmi messages instead of defining deferred_console_in_nmi()?
-so !in_sched will work for both SCHED and NMI messages.
+so, does this patch 'fix' 0001 (in a way)? shouldn't it then be folded?
+sorry if I'm missing something.
 
 	-ss
+
+>  DEFINE_PER_CPU(printk_func_t, printk_func) = vprintk_default;
+> +static int printk_nmi_irq_ready;
+>  
+>  #define NMI_LOG_BUF_LEN (4096 - sizeof(atomic_t) - sizeof(struct irq_work))
+>  
+> @@ -84,8 +85,11 @@ again:
+>  		goto again;
+>  
+>  	/* Get flushed in a more safe context. */
+> -	if (add)
+> +	if (add && printk_nmi_irq_ready) {
+> +		/* Make sure that IRQ work is really initialized. */
+> +		smp_rmb();
+>  		irq_work_queue(&s->work);
+> +	}
+>  
+>  	return add;
+>  }
+> @@ -195,6 +199,13 @@ void __init printk_nmi_init(void)
+>  
+>  		init_irq_work(&s->work, __printk_nmi_flush);
+>  	}
+> +
+> +	/* Make sure that IRQ works are initialized before enabling. */
+> +	smp_wmb();
+> +	printk_nmi_irq_ready = 1;
+> +
+> +	/* Flush pending messages that did not have scheduled IRQ works. */
+> +	printk_nmi_flush();
+>  }

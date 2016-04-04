@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 08:43:59 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:47142 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2016 08:51:15 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47568 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27025935AbcDDGnzgOrtH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Apr 2016 08:43:55 +0200
+        id S27025980AbcDDGvMpWZSH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Apr 2016 08:51:12 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u346hqw1013994;
-        Mon, 4 Apr 2016 08:43:52 +0200
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u346pAd0014151;
+        Mon, 4 Apr 2016 08:51:10 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u346hnHs013993;
-        Mon, 4 Apr 2016 08:43:49 +0200
-Date:   Mon, 4 Apr 2016 08:43:49 +0200
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u346pAOl014150;
+        Mon, 4 Apr 2016 08:51:10 +0200
+Date:   Mon, 4 Apr 2016 08:51:10 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Binbin Zhou <zhoubb@lemote.com>
 Cc:     John Crispin <john@phrozen.org>,
@@ -18,20 +18,21 @@ Cc:     John Crispin <john@phrozen.org>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Kelvin Cheung <keguang.zhang@gmail.com>,
         Chunbo Cui <cuicb@lemote.com>, Huacai Chen <chenhc@lemote.com>
-Subject: Re: [PATCH v3 2/8] MIPS: Loongson: Add Loongson-1A Kconfig options
-Message-ID: <20160404064349.GA13706@linux-mips.org>
+Subject: Re: [PATCH v3 3/8] MIPS: Loongson: Add platform devices for
+ Loongson-1A/1B
+Message-ID: <20160404065110.GB13706@linux-mips.org>
 References: <1456793296-17120-1-git-send-email-zhoubb@lemote.com>
- <1456793296-17120-3-git-send-email-zhoubb@lemote.com>
+ <1456793296-17120-4-git-send-email-zhoubb@lemote.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1456793296-17120-3-git-send-email-zhoubb@lemote.com>
+In-Reply-To: <1456793296-17120-4-git-send-email-zhoubb@lemote.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52855
+X-archive-position: 52856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,23 +49,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 01, 2016 at 08:48:10AM +0800, Binbin Zhou wrote:
+On Tue, Mar 01, 2016 at 08:48:11AM +0800, Binbin Zhou wrote:
 
-> diff --git a/arch/mips/loongson32/Kconfig b/arch/mips/loongson32/Kconfig
-> index 7704f20..741867c 100644
-> --- a/arch/mips/loongson32/Kconfig
-> +++ b/arch/mips/loongson32/Kconfig
-> @@ -1,8 +1,28 @@
->  if MACH_LOONGSON32
->  
-> +config ZONE_DMA
-> +	prompt "Zone DMA"
-> +	bool
-> +
+> Added basic platform devices for Loongson 1A, including serial port,
+> ethernet, AHCI, USB, RTC, SPI and so on.
+> 
+> Most of the devices are shared with Loongson 1B, like serial port,
+> ethernet, USB and so on.
+> Specially, something like AHCI is only used in Loonson 1A.
+                                                 ^^^^^^^
 
-There is already a ZONE_DMA option in arch/mips/Kconfig.  Do you really
-need ZONE_DMA?  Even if so I suggest to not present this option to the
-user interactively but enable it with a select - normal users building
-a kernel will probably not know what ZONE_DMA is.
+Loongson.
+
+> Signed-off-by: Chunbo Cui <cuicb@lemote.com>
+> Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> ---
+>  arch/mips/include/asm/mach-loongson32/irq.h       |   1 +
+>  arch/mips/include/asm/mach-loongson32/loongson1.h | 167 +++++++++++--
+>  arch/mips/include/asm/mach-loongson32/platform.h  |  11 +
+>  arch/mips/loongson32/common/platform.c            | 290 +++++++++++++++++++++-
+>  4 files changed, 441 insertions(+), 28 deletions(-)
+
+How about switching the platform to DT?
 
   Ralf

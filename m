@@ -1,61 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Apr 2016 03:52:38 +0200 (CEST)
-Received: from conuserg-12.nifty.com ([210.131.2.79]:47491 "EHLO
-        conuserg-12.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014043AbcDEBwdYu90Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Apr 2016 03:52:33 +0200
-Received: from beagle.diag.org (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
-        by conuserg-12.nifty.com with ESMTP id u351p6f6010253;
-        Tue, 5 Apr 2016 10:51:09 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com u351p6f6010253
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1459821071;
-        bh=UwBoRhALPeWj3ZjMBY+lFGw7ixCTor699j38hlub/tE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=oqS8RNYy4b5zlP3OWseNVa3SgHk2Y2NS1LwFz71MKj/IO/TPcMCO3xfG5HmYtPohq
-         8hhM1r435M0V+mGAcOgdMM2H13pG5ibd6Rt18hc4EiegFG6pfDgbfvfZaxFVFHUVd6
-         3kFiZI23T/ytobBOSttmo+jg1ibFBZ+Bj9jYRzgl0fz97nqIzTplRwIziHEErH9y0f
-         ol50+4zqmjE6FvuM9DJ8QgMZhSO0EANc0cClYm23rmZ/ohdCn1W9UzO3+9AT9nExps
-         0sB35GG4Rha3za7BJ/YOBOvATmobVGVQ2IUAmO1ETBqQNaL0OBkVnWLi8CjHlzABkL
-         I/9v+sW3kcoNA==
-X-Nifty-SrcIP: [153.142.97.92]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     linux-clk@vger.kernel.org
-Cc:     Stephen Boyd <sboyd@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Turquette <mturquette@baylibre.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Apr 2016 11:09:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:10536 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27006657AbcDEJJ3xN3EQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Apr 2016 11:09:29 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 6145641F8E89;
+        Tue,  5 Apr 2016 10:09:24 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 05 Apr 2016 10:09:24 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 05 Apr 2016 10:09:24 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email Security Gateway with ESMTPS id 994F53564ECC5;
+        Tue,  5 Apr 2016 10:09:22 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Tue, 5 Apr 2016 10:09:23 +0100
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 5 Apr
+ 2016 10:09:23 +0100
+Date:   Tue, 5 Apr 2016 10:09:23 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Kees Cook <keescook@chromium.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "kernel-hardening@lists.openwall.com" 
+        <kernel-hardening@lists.openwall.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        "Aaro Koskinen" <aaro.koskinen@nokia.com>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Ryan Mallon <rmallon@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Steven Miao <realmz6@gmail.com>,
-        Simon Horman <horms@verge.net.au>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-m68k@lists.linux-m68k.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Magnus Damm <magnus.damm@gmail.com>,
-        John Crispin <blogic@openwrt.org>
-Subject: [PATCH v2] clk: let clk_disable() return immediately if clk is NULL or error
-Date:   Tue,  5 Apr 2016 10:51:23 +0900
-Message-Id: <1459821083-28116-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <yamada.masahiro@socionext.com>
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Jaedon Shin <jaedon.shin@gmail.com>,
+        Jonas Gorski <jogo@openwrt.org>,
+        "Paul Burton" <paul.burton@imgtec.com>
+Subject: Re: [kernel-hardening] [PATCH v2 00/11] MIPS relocatable kernel &
+ KASLR
+Message-ID: <20160405090923.GF31316@jhogan-linux.le.imgtec.org>
+References: <1459415142-3412-1-git-send-email-matt.redfearn@imgtec.com>
+ <CAGXu5jKMLcRmMkowF=fUEQdtccTJLR9FEWT4g_zeyZMW4BWQOg@mail.gmail.com>
+ <20160404233721.GB26295@linux-mips.org>
+ <CAGXu5jJ7P95T0ZyAVZagQ0LZhSg28wxkQxR-tRFkhZsHekrN_Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7cm2iqirTL37Ot+N"
+Content-Disposition: inline
+In-Reply-To: <CAGXu5jJ7P95T0ZyAVZagQ0LZhSg28wxkQxR-tRFkhZsHekrN_Q@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 38cac10
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52886
+X-archive-position: 52887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,180 +73,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The clk_disable() in the common clock framework (drivers/clk/clk.c)
-returns immediately if a given clk is NULL or an error pointer.  It
-allows clock consumers to call clk_disable() without IS_ERR_OR_NULL
-checking if drivers are only used with the common clock framework.
+--7cm2iqirTL37Ot+N
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Unfortunately, NULL/error checking is missing from some of non-common
-clk_disable() implementations.  This prevents us from completely
-dropping NULL/error checking from callers.  Let's make it tree-wide
-consistent by adding IS_ERR_OR_NULL(clk) to all callees.
+On Mon, Apr 04, 2016 at 04:56:58PM -0700, Kees Cook wrote:
+> On Mon, Apr 4, 2016 at 4:37 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > On Mon, Apr 04, 2016 at 12:46:29PM -0700, Kees Cook wrote:
+> >
+> >> This is great! Thanks for working on this! :)
+> >>
+> >> Without actually reading the code yet, I wonder if the x86 and MIPS
+> >> relocs tool could be merged at all? Sounds like it might be more
+> >> difficult though -- the relocation output is different and its storage
+> >> location is different...
+> >>
+> >> > Restrictions:
+> >> > * The new kernel is not allowed to overlap the old kernel, such that
+> >> >   the original kernel can still be booted if relocation fails.
+> >>
+> >> This sounds like physical-only relocation then? Is the virtual offset
+> >> randomized as well (like arm64) or just physical (like x86 currently
+> >> -- though there is a series to fix this).
+> >
+> > On MIPS we normally place the kernel in KSEG0 or XKPHYS which address
+> > segments which are not mapped through the TLB so the difference is
+> > kinda moot.
+>=20
+> Ah-ha, excellent. Does this mean that MIPS is effectively doing memory
+> segmentation between userspace and kernel space (or some version of
+> x86's SMEP/SMAP or ARM's PXN/PAN)? I don't know much about the MIPS
+> architecture yet.
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-Acked-by: Greg Ungerer <gerg@uclinux.org>
-Acked-by: Wan Zongshun <mcuos.com@gmail.com>
----
+User and kernel virtual address spaces don't traditionally overlap, so
+you don't get that sort of protection at the moment.
 
-Stephen,
+MIPS TLBs do have ASIDs though, and kernel mappings are marked global,
+so it could easily reserve an ASID with no mappings, and switch to that
+while in kernel mode. It'd have to keep switching between them when
+reading/writing userland though, as you can't directly access another
+ASID, and I don't think thats a particularly cheap operation, especially
+on cores with hardware page table walkers.
 
-This patch has been unapplied for a long time.
+EVA (enhanced virtual addressing) is a feature present on recent MIPS
+32-bit i-class and p-class cores (and p6600 too which is 64-bit),
+intended to make better use of 32-bit virtual address space. It can
+actually overlap kernel and virtual address space, requiring special
+instructions for accessing userland mappings, however each segment can't
+have distinct TLB mappings for kernel and user mode (if kernel and user
+view of segment differs, kernel would need to see it unmapped, i.e. a
+window into physical memory). As such its generally better to keep the
+lowest segment visible to both kernel and user, so that kernel NULL
+dereferences can still be caught, which would negate the point of using
+it for security. It is possible to make it work with watchpoints to
+catch NULL dereferences in lowest 4KB, so kernel can't access any user
+address space directly, but thats a bit of a hack really. Also since EVA
+is aimed at making better use of 32-bit address space, it doesn't
+address 64-bit.
 
-Please let me know if there is something wrong with this patch.
+>=20
+> What do I need to fill in on these tables for MIPS?
+>=20
+> http://kernsec.org/wiki/index.php/Exploit_Methods/Userspace_execution
+> http://kernsec.org/wiki/index.php/Exploit_Methods/Userspace_data_usage
 
-Thanks,
+Both are best addressed using ASID switching in my opinion at the
+moment.
 
+Cheers
+James
 
-Changes in v2:
-  - Rebase on Linux 4.6-rc1
+>=20
+> >
+> >> > * Relocation is supported only by multiples of 64k bytes. This
+> >> >   eliminates the need to handle R_MIPS_LO16 relocations as the bottom
+> >> >   16bits will remain the same at the relocated address.
+> >>
+> >> IIUC, that's actually better than x86, which needs to be 2MB aligned.
+> >
+> > On MIPS a key concern was maintaining a reasonable size for the final
+> > kernel image.  The R_MIPS_LO16 relocatio records make a significant
+> > portion of the relocations in a relocatable .o file, so we wanted to
+> > get rid of them.  This results in a relocation granularity of 64kB.
+> > If we were truely, truely stingy we could come up with a relocation for=
+mat
+> > to save a few more bits but I doubt that'd make any sense.
+> >
+> >> > * In 64 bit kernels, relocation is supported only within the same 4Gb
+> >> >   memory segment as the kernel link address (CONFIG_PHYSICAL_START).
+> >> >   This eliminates the need to handle R_MIPS_HIGHEST and R_MIPS_HIGHER
+> >> >   relocations as the top 32bits will remain the same at the relocated
+> >> >   address.
+> >>
+> >> Interesting. Could the relocation code be updated in the future to
+> >> bump the high addresses too?
+> >
+> > It could but yet again, the idea was to keep the size of the final
+> > generated file under control.  The R_MIPS_HIGHER and R_MIPS_HIGHEST
+> > relocations can be discarded if we constrain the addresses to be in
+> > a single 4GB segment.  Removing this constraint would make a kernel
+> > image much bigger so I suggested to add this restriction at least for
+> > this initial version.
+>=20
+> Awesome, thanks for the details.
+>=20
+> -Kees
+>=20
+> --=20
+> Kees Cook
+> Chrome OS & Brillo Security
 
- arch/arm/mach-ep93xx/clock.c     |  2 +-
- arch/arm/mach-mmp/clock.c        |  3 +++
- arch/arm/mach-sa1100/clock.c     | 15 ++++++++-------
- arch/arm/mach-w90x900/clock.c    |  3 +++
- arch/blackfin/mach-bf609/clock.c |  3 +++
- arch/m68k/coldfire/clk.c         |  4 ++++
- arch/mips/bcm63xx/clk.c          |  3 +++
- arch/mips/lantiq/clk.c           |  3 +++
- drivers/sh/clk/core.c            |  2 +-
- 9 files changed, 29 insertions(+), 9 deletions(-)
+--7cm2iqirTL37Ot+N
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
-index 39ef3b6..4e11f7d 100644
---- a/arch/arm/mach-ep93xx/clock.c
-+++ b/arch/arm/mach-ep93xx/clock.c
-@@ -293,7 +293,7 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
--	if (!clk)
-+	if (IS_ERR_OR_NULL(clk))
- 		return;
- 
- 	spin_lock_irqsave(&clk_lock, flags);
-diff --git a/arch/arm/mach-mmp/clock.c b/arch/arm/mach-mmp/clock.c
-index ac6633d..39ad3896 100644
---- a/arch/arm/mach-mmp/clock.c
-+++ b/arch/arm/mach-mmp/clock.c
-@@ -67,6 +67,9 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	WARN_ON(clk->enabled == 0);
- 
- 	spin_lock_irqsave(&clocks_lock, flags);
-diff --git a/arch/arm/mach-sa1100/clock.c b/arch/arm/mach-sa1100/clock.c
-index cbf53bb..ea103fd 100644
---- a/arch/arm/mach-sa1100/clock.c
-+++ b/arch/arm/mach-sa1100/clock.c
-@@ -85,13 +85,14 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
--	if (clk) {
--		WARN_ON(clk->enabled == 0);
--		spin_lock_irqsave(&clocks_lock, flags);
--		if (--clk->enabled == 0)
--			clk->ops->disable(clk);
--		spin_unlock_irqrestore(&clocks_lock, flags);
--	}
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
-+	WARN_ON(clk->enabled == 0);
-+	spin_lock_irqsave(&clocks_lock, flags);
-+	if (--clk->enabled == 0)
-+		clk->ops->disable(clk);
-+	spin_unlock_irqrestore(&clocks_lock, flags);
- }
- EXPORT_SYMBOL(clk_disable);
- 
-diff --git a/arch/arm/mach-w90x900/clock.c b/arch/arm/mach-w90x900/clock.c
-index 2c371ff..90ec250 100644
---- a/arch/arm/mach-w90x900/clock.c
-+++ b/arch/arm/mach-w90x900/clock.c
-@@ -46,6 +46,9 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	WARN_ON(clk->enabled == 0);
- 
- 	spin_lock_irqsave(&clocks_lock, flags);
-diff --git a/arch/blackfin/mach-bf609/clock.c b/arch/blackfin/mach-bf609/clock.c
-index 3783058..fed8015 100644
---- a/arch/blackfin/mach-bf609/clock.c
-+++ b/arch/blackfin/mach-bf609/clock.c
-@@ -97,6 +97,9 @@ EXPORT_SYMBOL(clk_enable);
- 
- void clk_disable(struct clk *clk)
- {
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	if (clk->ops && clk->ops->disable)
- 		clk->ops->disable(clk);
- }
-diff --git a/arch/m68k/coldfire/clk.c b/arch/m68k/coldfire/clk.c
-index fddfdcc..eb0e8c1 100644
---- a/arch/m68k/coldfire/clk.c
-+++ b/arch/m68k/coldfire/clk.c
-@@ -101,6 +101,10 @@ EXPORT_SYMBOL(clk_enable);
- void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
-+
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	spin_lock_irqsave(&clk_lock, flags);
- 	if ((--clk->enabled == 0) && clk->clk_ops)
- 		clk->clk_ops->disable(clk);
-diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
-index 6375652..d6a39bf 100644
---- a/arch/mips/bcm63xx/clk.c
-+++ b/arch/mips/bcm63xx/clk.c
-@@ -326,6 +326,9 @@ EXPORT_SYMBOL(clk_enable);
- 
- void clk_disable(struct clk *clk)
- {
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	mutex_lock(&clocks_mutex);
- 	clk_disable_unlocked(clk);
- 	mutex_unlock(&clocks_mutex);
-diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
-index a0706fd..c8d87b1 100644
---- a/arch/mips/lantiq/clk.c
-+++ b/arch/mips/lantiq/clk.c
-@@ -130,6 +130,9 @@ EXPORT_SYMBOL(clk_enable);
- 
- void clk_disable(struct clk *clk)
- {
-+	if (IS_ERR_OR_NULL(clk))
-+		return;
-+
- 	if (unlikely(!clk_good(clk)))
- 		return;
- 
-diff --git a/drivers/sh/clk/core.c b/drivers/sh/clk/core.c
-index 92863e3..9978fa4 100644
---- a/drivers/sh/clk/core.c
-+++ b/drivers/sh/clk/core.c
-@@ -252,7 +252,7 @@ void clk_disable(struct clk *clk)
- {
- 	unsigned long flags;
- 
--	if (!clk)
-+	if (IS_ERR_OR_NULL(clk))
- 		return;
- 
- 	spin_lock_irqsave(&clock_lock, flags);
--- 
-1.9.1
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJXA4DDAAoJEGwLaZPeOHZ689sQAJgT4L9JXFTxyfQNT5V88Ceo
+IKGwpq6Z+wXljj+X+M7qpyNq8tSQIQiInc8Eh29s81KZCd+CURhX2PjGU0m2wpJF
+vSXMzwMhOPV+nN3PR8n6elMJxR21v6gKQeeJkjVJs2DcHdWwe1HJOZK4Es/02dEo
+ltWT6RPjetfto+AtIbtTByvqY9vq1Kgk7AyWkAw3vBmXZQ+9fNYVd46KlIs8+4Wa
+9yTFTBvp5a5/Sw+4rmH7uoy626QVzm5pJ7tFp+PiPd+cJOQiSpxri9wtluBwTVMP
+dUs9MefcdlLBA3L7KqtinUV0jN3sNi4e5OOXgyEef/qE9XXEQ/xoDh4cibxG1jEX
+dVKQxnUuViOV36kYVVHb30xscuD6EsapDxNUW2cI8N0GsTHrqJeWnW/LAxSJPeWL
+MdOlbALhjoQK0JwDfG/pbMBaEudMB7d6I0u6U2x80CmPuM+shCTvNmJrtZDNfo4N
+XvHzxvS5/HyPzGKqpwjLSCY1vXOUPx1TMSoLuO3m1l8bqMKhZe0P+7oLWO7rOc/Y
+bXCdWgF++msjTALTnJ7MccxJx+LBkw57LhifnOAkshzpHfCr0+laYtnqOdr9Htel
+a4lKM4CNldwUU0yIZXgg351VD3sTLvfp2etRq5kQ949l6JmIoEU/YLcqA/SpKf2b
+u8q5EBv/6ee09ultPufS
+=8b4a
+-----END PGP SIGNATURE-----
+
+--7cm2iqirTL37Ot+N--

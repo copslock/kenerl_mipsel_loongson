@@ -1,42 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2016 08:50:47 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34476 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025661AbcDGGuqJwpyC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Apr 2016 08:50:46 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 2020D259D06AB;
-        Thu,  7 Apr 2016 07:50:38 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 7 Apr 2016 07:50:39 +0100
-Received: from localhost (10.100.200.148) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 7 Apr
- 2016 07:50:39 +0100
-Date:   Thu, 7 Apr 2016 07:50:38 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Manuel Lauss <manuel.lauss@gmail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: 4.1: XPA breaks Alchemy
-Message-ID: <20160407065038.GC20863@NP-P-BURTON>
-References: <CAOLZvyHPYF2kO2EdijCCX9OSt=hdo8g-tUXzZee0sSXT=-WdDw@mail.gmail.com>
- <20160407000658.GA11065@NP-P-BURTON>
- <20160407055813.GD26267@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2016 08:57:08 +0200 (CEST)
+Received: from mail-pf0-f171.google.com ([209.85.192.171]:34499 "EHLO
+        mail-pf0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025675AbcDGG5EY5x1C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Apr 2016 08:57:04 +0200
+Received: by mail-pf0-f171.google.com with SMTP id c20so50074153pfc.1
+        for <linux-mips@linux-mips.org>; Wed, 06 Apr 2016 23:57:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=HwoQSKaIMOWOxfSbjYL8xMEMiDdbqPGbmHo3EhF0Tig=;
+        b=fkv5CrahDz5n39NWLyYd6Zb69hCIzvO8nD/HWnZ7EB2X99rJXViKB/cD+iZfkp2FwD
+         vUGezhye2liNl3NEr7aF2D8w5hthmngddp7SRGbxuPPSLRFQIEVh1Bqa/xSQwNS9Oarl
+         ZUVXF6xQiglhFh9Uu94BxoijFLWY5EiFfMA+o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=HwoQSKaIMOWOxfSbjYL8xMEMiDdbqPGbmHo3EhF0Tig=;
+        b=DwRtVRdx9xRVwmYz7uJL9ur+fMR1YWEmTaOcnKpdqyOuJr0f23DYyu2EIpIgp2Htc0
+         Ypjj1c/xhzij8CE51Tp5QU6TMswg2LwPv7vCAbGrnBp4s75ZIWpRuZWHqMhZGJs6/ylW
+         ZmWtgfuDqgYXmwwD5oGe+0MotchPDBU6bMUxm+tWZJBcjWDuUGBTYthNy8/ZfaMFKL05
+         RG4Iy+1bHE+KzBTcdeqlj/dG6glBXnqWKLIscf0Pt+PiIrZFbEVZK9Ljk1K44n0V+QN5
+         6Y7qgjAFKJbPbXnQjCltUEIafq7SRjsBuZ1/cVXaR1I/dRqKIwM3IeoOHN+Am2CA0uFg
+         /i1Q==
+X-Gm-Message-State: AD7BkJLlwtWZc7WFLv5n2qrhda4gd3bswDSJ+jb9TW18pRRv0FnGcTiDpghWrHiGJjfXVgdu
+X-Received: by 10.98.13.216 with SMTP id 85mr2395143pfn.143.1460012218262;
+        Wed, 06 Apr 2016 23:56:58 -0700 (PDT)
+Received: from localhost ([122.171.65.211])
+        by smtp.gmail.com with ESMTPSA id l81sm9409889pfj.21.2016.04.06.23.56.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 06 Apr 2016 23:56:57 -0700 (PDT)
+Date:   Thu, 7 Apr 2016 12:26:55 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Keguang Zhang <keguang.zhang@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        linux-pm@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-mtd@lists.infradead.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Richard Weinberger <richard@nod.at>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>
+Subject: Re: [PATCH V1 2/7] cpufreq: Loongson1: Update cpufreq of Loongson1B
+Message-ID: <20160407065655.GH14903@vireshk-i7>
+References: <1459946095-7637-1-git-send-email-keguang.zhang@gmail.com>
+ <1459946095-7637-3-git-send-email-keguang.zhang@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20160407055813.GD26267@linux-mips.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [10.100.200.148]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <1459946095-7637-3-git-send-email-keguang.zhang@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52921
+X-archive-position: 52922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,41 +79,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 07, 2016 at 07:58:13AM +0200, Ralf Baechle wrote:
-> On Thu, Apr 07, 2016 at 01:06:58AM +0100, Paul Burton wrote:
+On 06-04-16, 20:34, Keguang Zhang wrote:
+> From: Kelvin Cheung <keguang.zhang@gmail.com>
 > 
-> > 
-> > I don't suppose you'd be able to try this kernel branch?
-> > 
-> >     https://git.linux-mips.org/cgit/paul/linux.git/log/?h=v4.6-tlb
-> > 
-> >     git://git.linux-mips.org/pub/scm/paul/linux.git -b v4.6-tlb
-> > 
-> > I'm working on fixing up a number of issues with commit c5b367835cfc
-> > ("MIPS: Add support for XPA.") but unfortunately don't have access to
-> > any Alchemy systems to test it myself.
+> - Rename the file to loongson1-cpufreq.c
+> - Use kcalloc() instead of kzalloc()
+> - Use devm_kzalloc() instead of global structure
+> - Use dev_get_platdata() to access the platform_data field
+>   instead of referencing it directly
+> - Remove superfluous error messages
 > 
-> The unique architecural feature of Alchemy is that it has devices such as
-> the PCI bus outside the low 4GB of physical address space.  So I'd
-> suspect something is wrong there.
-> 
-> Everybody is running Sibyte 64 bit; I wonder if highmem with Sibyte is
-> also affected.
-> 
->   Ralf
+> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+> ---
+>  drivers/cpufreq/Makefile            |   2 +-
+>  drivers/cpufreq/loongson1-cpufreq.c | 230 ++++++++++++++++++++++++++++++++++++
+>  drivers/cpufreq/ls1x-cpufreq.c      | 222 ----------------------------------
+>  3 files changed, 231 insertions(+), 223 deletions(-)
+>  create mode 100644 drivers/cpufreq/loongson1-cpufreq.c
+>  delete mode 100644 drivers/cpufreq/ls1x-cpufreq.c
 
-Hi Ralf,
+This can't be reviewed. I am not going to compare them line by line to
+see what you might have changed in between.
 
-The problem is anywhere that formerly used 64 bit physical addresses
-(CONFIG_PHYS_ADDR_T_64BIT) with a MIPS32 CPU (CONFIG_CPU_MIPS32), since
-the XPA support essentially clobbered all that code with the XPA
-implementation rather than treating them as the distinct cases that they
-are. My fix is over here, and I'll submit it for merging in the v4.7
-cycle (I guess I could submit now as it's a fix, but it's built atop
-some rework of pgtable-bits.h to make it more readable so would need
-that to go in too):
-
-    https://git.linux-mips.org/cgit/paul/linux.git/commit/?h=v4.6-tlb&id=3a74e3b7bcb1b392da2400ff27ee4e41989dd54f
-
-Thanks,
-    Paul
+Please use '-C -M' options of git format-patch to generate this, it
+will give a review-able output of this.
+-- 
+viresh

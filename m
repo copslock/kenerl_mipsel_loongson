@@ -1,38 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2016 14:58:17 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:50558 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026210AbcDGM6PJFFvT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 7 Apr 2016 14:58:15 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u37CwCJu003232;
-        Thu, 7 Apr 2016 14:58:12 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u37CwCik003231;
-        Thu, 7 Apr 2016 14:58:12 +0200
-Date:   Thu, 7 Apr 2016 14:58:11 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: linux-next: Tree for Apr 7
-Message-ID: <20160407125811.GH1668@linux-mips.org>
-References: <20160407152922.73d85ce6@canb.auug.org.au>
- <57063E5B.2080206@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2016 15:43:49 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S27025744AbcDGNnpek40e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Apr 2016 15:43:45 +0200
+Date:   Thu, 7 Apr 2016 14:43:45 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Paul Burton <paul.burton@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: 4.1: XPA breaks Alchemy
+In-Reply-To: <20160407055813.GD26267@linux-mips.org>
+Message-ID: <alpine.LFD.2.20.1604071440320.2700@eddie.linux-mips.org>
+References: <CAOLZvyHPYF2kO2EdijCCX9OSt=hdo8g-tUXzZee0sSXT=-WdDw@mail.gmail.com> <20160407000658.GA11065@NP-P-BURTON> <20160407055813.GD26267@linux-mips.org>
+User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <57063E5B.2080206@gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52924
+X-archive-position: 52925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,11 +36,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 07, 2016 at 04:32:51PM +0530, Sudip Mukherjee wrote:
+On Thu, 7 Apr 2016, Ralf Baechle wrote:
 
-> My patch at : https://lkml.org/lkml/2016/4/4/236 fixes the build for
-> defconfig and allmodconfig. I have not checked the patch with other builds.
+> Everybody is running Sibyte 64 bit; I wonder if highmem with Sibyte is
+> also affected.
 
-This is fixed locally; I just haven't pushed a fresh branch, sorry ...
+ Last time I tried SiByte with a 32-bit kernel (a couple years ago) it 
+didn't boot at all in the first place.
 
-  Ralf
+ FWIW,
+
+  Maciej

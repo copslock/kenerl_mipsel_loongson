@@ -1,42 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2016 19:57:48 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:56560 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27026235AbcDGR51KqeaQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 7 Apr 2016 19:57:27 +0200
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id BD9FB2026F;
-        Thu,  7 Apr 2016 17:57:25 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Apr 2016 02:33:38 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:43788 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27008912AbcDHAdcanPDA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Apr 2016 02:33:32 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 6B02A61649;
+        Fri,  8 Apr 2016 00:33:30 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4F2366160E; Fri,  8 Apr 2016 00:33:30 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 980DB20263;
-        Thu,  7 Apr 2016 17:57:24 +0000 (UTC)
-Date:   Thu, 7 Apr 2016 12:57:22 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     =?iso-8859-1?Q?=C1lvaro_Fern=E1ndez?= Rojas <noltari@gmail.com>
-Cc:     linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        f.fainelli@gmail.com, jogo@openwrt.org, cernekee@gmail.com,
-        simon@fire.lp0.eu
-Subject: Re: [PATCH v2] bmips: add support for BCM63268
-Message-ID: <20160407175722.GF32257@rob-hp-laptop>
-References: <1459684846-11308-1-git-send-email-noltari@gmail.com>
- <1459757517-14897-1-git-send-email-noltari@gmail.com>
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6F0FA601A1;
+        Fri,  8 Apr 2016 00:33:29 +0000 (UTC)
+Date:   Thu, 7 Apr 2016 17:33:28 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     linux-clk@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Ryan Mallon <rmallon@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Steven Miao <realmz6@gmail.com>,
+        Simon Horman <horms@verge.net.au>,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-m68k@lists.linux-m68k.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Magnus Damm <magnus.damm@gmail.com>,
+        John Crispin <blogic@openwrt.org>
+Subject: Re: [PATCH v2] clk: let clk_disable() return immediately if clk is
+ NULL or error
+Message-ID: <20160408003328.GA14441@codeaurora.org>
+References: <1459821083-28116-1-git-send-email-yamada.masahiro@socionext.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1459757517-14897-1-git-send-email-noltari@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <1459821083-28116-1-git-send-email-yamada.masahiro@socionext.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52927
+X-archive-position: 52928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,18 +69,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Apr 04, 2016 at 10:11:57AM +0200, Álvaro Fernández Rojas wrote:
-> This SoC is very similar to BCM63168 and Broadcom usually refers to them as
-> BCM63268.
-> Use alphabetical order for bmips quirks.
-> Add BCM63268 and missing BCM63168 to device tree documentation.
+On 04/05, Masahiro Yamada wrote:
+> The clk_disable() in the common clock framework (drivers/clk/clk.c)
+> returns immediately if a given clk is NULL or an error pointer.  It
+> allows clock consumers to call clk_disable() without IS_ERR_OR_NULL
+> checking if drivers are only used with the common clock framework.
 > 
-> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+> Unfortunately, NULL/error checking is missing from some of non-common
+> clk_disable() implementations.  This prevents us from completely
+> dropping NULL/error checking from callers.  Let's make it tree-wide
+> consistent by adding IS_ERR_OR_NULL(clk) to all callees.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Acked-by: Greg Ungerer <gerg@uclinux.org>
+> Acked-by: Wan Zongshun <mcuos.com@gmail.com>
 > ---
->  v2: keep support for BCM63168
 > 
->  Documentation/devicetree/bindings/mips/brcm/soc.txt | 3 ++-
->  arch/mips/bmips/setup.c                             | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
+> Stephen,
+> 
+> This patch has been unapplied for a long time.
+> 
+> Please let me know if there is something wrong with this patch.
+> 
 
-Acked-by: Rob Herring <robh@kernel.org>
+I'm mostly confused why we wouldn't want to encourage people to
+call clk_disable or unprepare on a clk that's an error pointer.
+Typically an error pointer should be dealt with, instead of
+silently ignored, so why wasn't it dealt with by passing it up
+the probe() path?
+
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

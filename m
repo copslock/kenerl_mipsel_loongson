@@ -1,62 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Apr 2016 10:54:14 +0200 (CEST)
-Received: from mail-io0-f193.google.com ([209.85.223.193]:33479 "EHLO
-        mail-io0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006687AbcDJIyKI0ZUB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 10 Apr 2016 10:54:10 +0200
-Received: by mail-io0-f193.google.com with SMTP id g185so22121182ioa.0;
-        Sun, 10 Apr 2016 01:54:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2016 05:52:27 +0200 (CEST)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:34239 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27007911AbcDKDwWhxyJI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Apr 2016 05:52:22 +0200
+Received: by mail-pa0-f51.google.com with SMTP id ot11so29654243pab.1
+        for <linux-mips@linux-mips.org>; Sun, 10 Apr 2016 20:52:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc;
-        bh=5mDPrzMlQO21oTn6CPToTYwRmUrVVi87gjVXn4cfbbU=;
-        b=khdKYiVQeXr4dTfe9uBpE6TIsahMqRGWVUc13gOPHy3EaOLoIZcOzeLmMz0zrqb6Kz
-         dAlurPGb96uA1KULOZNhqr/ThEkGYQ0KkOVShXXBnecNsetrWtPZ3KQwlx39BdxAIDf0
-         CubU+okxTgj34gYzzXMd9qHswC9aFzf9wIxjIyh1Jzxz6hzkSwPjR8unMGH4oNeIQzdZ
-         AsRJBBDfDC9TI5ZrRkUksWP+78S3NI4TfEr0I6d22sYiJGevfLR93DR96TYAjz5uf8Ai
-         oWlUGedM3kmmuuHh5rmxVNLxjh6Cj/qQoF+mabMXFGe/uS58zRuR3ci4bZXQoGS5WxPM
-         85sQ==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=bncTgeEF1gpa6GWbfap2wHgmUchce6Jb+8+iquqYzac=;
+        b=bsosoT9640yQK5OfvXkiH6m0fKUPXGJmkjg5ciNqlVnApKu5tRa3AHAd42g1FU/LtD
+         uDPI/Kg+boSgFUn6LJuPMZJYqNpHFTmnSvF2uK+oGBEGRmRu8JW7Rj0wLIxPRVtJ2SA3
+         Gz9n7b0N+szaJ6y0UkXuBtwWZsN40wS6y+n4k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc;
-        bh=5mDPrzMlQO21oTn6CPToTYwRmUrVVi87gjVXn4cfbbU=;
-        b=gMEXh0UhR7bNvfSbgnBQvKOgp0cCaL7+gaOL2j79KdzNA1oSdH+Cz6BxQl6Exs2R+t
-         3Pi7BPEV78rd3faVGQQlI1GuYn7e/POSbOjbZAlQKNZ+Nn+bQUdRO0Ietjr+C2TdoQA7
-         lHtBQfStddjxQo7UqAIMdnHUcl9PIhKVM10UJo1pL77EDtOp+5Roq7byyEE6y0sBDMI/
-         fGgK1N9tYjhw9gZKKhdlzM2bFAI9emtRc3biy+5EvlhtOKZnpRedDqIufiViRhqgAtty
-         E1SLrqbRXWR7G2aE3EFMf5LFSdHGaTAwDcYwztXUk4kRL8X/PYlTrdr5i3kail+h75P8
-         2HGQ==
-X-Gm-Message-State: AD7BkJLa8zrqxS12ZU77geAk/fvfQKsofX15FhHYBk+e0xJ3t1SGRcRtdyQZ5De/eQsnP+O58SoFI5dPrYXtxA==
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bncTgeEF1gpa6GWbfap2wHgmUchce6Jb+8+iquqYzac=;
+        b=aPdEA98fib6XK+1ae0hp25CRWB3KJNzmQf5sYkiL9qoarTx6pyACG37fskbFJFT2yh
+         dbIIX7qHqYmw4EVcZkZtJiPU4jPjiMNj4bopUJJ93Okc4GSWUsyfPGmyuo4pq6j3Xs34
+         yr1lrB2uVJUxQrXvAABPhktXxME6orH0I74uHnyTJGits/5hTZa0bipfd+9+MuoS7q0h
+         DOmUpTCxzk910i5kFqKkpjkpyR1E2ZriUPvcPxQhJQ3xEZIdjyh3sulIOuAXjKLTJAa4
+         d5oWcB94iPL+8PotkL2zIeWeWVxqKrzRe4sEZg0lXAuZhbcnLe4rfbua4EF04LUtVcvq
+         oKGw==
+X-Gm-Message-State: AD7BkJLf6tDzzcApYrsnRiF7w3B8+A7EwzPS06QzrlObKU+loHbxioHkrpkCDmw1ncK5aNZL
+X-Received: by 10.67.21.205 with SMTP id hm13mr29920535pad.56.1460346736436;
+        Sun, 10 Apr 2016 20:52:16 -0700 (PDT)
+Received: from localhost ([122.172.42.224])
+        by smtp.gmail.com with ESMTPSA id 3sm32097502pfn.59.2016.04.10.20.52.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 10 Apr 2016 20:52:15 -0700 (PDT)
+Date:   Mon, 11 Apr 2016 09:22:11 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Keguang Zhang <keguang.zhang@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        linux-pm@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-mtd@lists.infradead.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Richard Weinberger <richard@nod.at>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>
+Subject: Re: [PATCH V2 2/7] cpufreq: Loongson1: Update cpufreq of Loongson1B
+Message-ID: <20160411035211.GA16238@vireshk-i7>
+References: <1460115779-13141-1-git-send-email-keguang.zhang@gmail.com>
+ <1460115779-13141-2-git-send-email-keguang.zhang@gmail.com>
 MIME-Version: 1.0
-X-Received: by 10.107.6.6 with SMTP id 6mr20184646iog.24.1460278444330; Sun,
- 10 Apr 2016 01:54:04 -0700 (PDT)
-Received: by 10.36.73.106 with HTTP; Sun, 10 Apr 2016 01:54:04 -0700 (PDT)
-In-Reply-To: <1458218233-12129-1-git-send-email-chenhc@lemote.com>
-References: <1458218233-12129-1-git-send-email-chenhc@lemote.com>
-Date:   Sun, 10 Apr 2016 16:54:04 +0800
-X-Google-Sender-Auth: f_62tDtNetjULuCJQT57BUiRrdk
-Message-ID: <CAAhV-H6Fayot_LLi-LjUGe5Bq0oz0z=fTrxj6R-UqUO8h0sE4Q@mail.gmail.com>
-Subject: Re: [PATCH V3 1/4] MIPS: Reserve nosave data for hibernation
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenhuacai@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1460115779-13141-2-git-send-email-keguang.zhang@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52944
+X-archive-position: 52945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,43 +79,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Ralf,
+On 08-04-16, 19:42, Keguang Zhang wrote:
+> From: Kelvin Cheung <keguang.zhang@gmail.com>
+> 
+> - Rename the file to loongson1-cpufreq.c
+> - Use kcalloc() instead of kzalloc()
+> - Use devm_kzalloc() instead of global structure
+> - Use dev_get_platdata() to access the platform_data field
+>   instead of referencing it directly
+> - Remove superfluous error messages
 
-This series is bugfix for Loongson, please merge it if no problem.
+Its much better now, in the sense that I can see what you have done.
+And see you have done a lot.
 
-Huacai
+That's not how you are supposed to send the patches, sorry.
 
-On Thu, Mar 17, 2016 at 8:37 PM, Huacai Chen <chenhc@lemote.com> wrote:
-> After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
-> in the memblock region"), the MIPS hibernation is broken. Because pages
-> in nosave data section should be "reserved", but currently they aren't
-> set to "reserved" at initialization. This patch makes hibernation work
-> again.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> ---
->  arch/mips/kernel/setup.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 4f60734..d20caac 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -706,6 +706,9 @@ static void __init arch_mem_init(char **cmdline_p)
->         for_each_memblock(reserved, reg)
->                 if (reg->size != 0)
->                         reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
-> +
-> +       reserve_bootmem_region(__pa_symbol(&__nosave_begin),
-> +                       __pa_symbol(&__nosave_end)); /* Reserve for hibernation */
->  }
->
->  static void __init resource_init(void)
-> --
-> 2.7.0
->
->
->
->
->
+You need to break this patch into multiple patches, each targeting a
+particular fix.
+
+And I have no idea now, what change you have done to make it work for
+Loongson1B. Which of the above changes does that?
+
+And please, just send out a separate cpufreq series and don't send
+everything in a single patchset that covers DMA, cpufreq, clk, etc..
+
+-- 
+viresh

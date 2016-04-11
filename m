@@ -1,44 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2016 21:33:17 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:39052 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27026295AbcDKTdL1MkGx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 11 Apr 2016 21:33:11 +0200
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 46F6B20173;
-        Mon, 11 Apr 2016 19:33:09 +0000 (UTC)
-Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DAEF220125;
-        Mon, 11 Apr 2016 19:33:07 +0000 (UTC)
-Date:   Mon, 11 Apr 2016 14:33:06 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     =?iso-8859-1?Q?=C1lvaro_Fern=E1ndez?= Rojas <noltari@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, ralf@linux-mips.org,
-        f.fainelli@gmail.com, jogo@openwrt.org, cernekee@gmail.com,
-        simon@fire.lp0.eu
-Subject: Re: [PATCH 2/2] bmips: add device tree example for BCM6358
-Message-ID: <20160411193305.GA14080@rob-hp-laptop>
-References: <1459757353-14683-1-git-send-email-noltari@gmail.com>
- <1460199408-18738-1-git-send-email-noltari@gmail.com>
- <1460199408-18738-2-git-send-email-noltari@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1460199408-18738-2-git-send-email-noltari@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2016 00:34:05 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:50185 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025333AbcDKWeBw4v1v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Apr 2016 00:34:01 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1apkPA-000614-Eb; Mon, 11 Apr 2016 22:34:00 +0000
+Received: from kamal by fourier with local (Exim 4.86_2)
+        (envelope-from <kamal@whence.com>)
+        id 1apkP7-0006HR-NR; Mon, 11 Apr 2016 15:33:57 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Govindraj Raja <Govindraj.Raja@imgtec.com>
+Cc:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        James Hartley <James.Hartley@imgtec.com>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Rob Herring <robh@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [4.2.y-ckt stable] Patch "pinctrl: pistachio: fix mfio84-89 function description and pinmux." has been added to the 4.2.y-ckt tree
+Date:   Mon, 11 Apr 2016 15:33:56 -0700
+Message-Id: <1460414036-24106-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 2.7.4
+X-Extended-Stable: 4.2
+Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52952
+X-archive-position: 52953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: kamal@canonical.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,33 +47,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Apr 09, 2016 at 12:56:48PM +0200, Álvaro Fernández Rojas wrote:
-> This adds a device tree example for SFR Neufbox4 (Sercomm version), which
-> also serves as a real example for brcm,bcm6358-leds.
-> 
-> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-> ---
->  v5: more device tree improvements
->   - There is just ohci/ehci node.
->   - Avoid using underscores in node names.
->   - Use interrupt-controller for cpu_intc.
->   - Rename uart aliases to serial.
->  v4: Device tree improvements:
->   - Switch to native-endian for syscon.
->   - Switch to bcm6345-l1-intc interrupt controller.
->   - Add ehci and ohci nodes.
->  v3: Device tree fixes
->   - Use interrupt-controller instead of periph_intc.
->   - Use led@# instead of naming the LEDs.
->  v2: Remove led0 alias and use stdout-path only
-> 
->  .../devicetree/bindings/mips/brcm/soc.txt          |   2 +-
->  arch/mips/bmips/Kconfig                            |   4 +
->  arch/mips/boot/dts/brcm/Makefile                   |   2 +
->  arch/mips/boot/dts/brcm/bcm6358.dtsi               | 130 +++++++++++++++++++++
->  arch/mips/boot/dts/brcm/bcm96358nb4ser.dts         |  46 ++++++++
->  5 files changed, 183 insertions(+), 1 deletion(-)
->  create mode 100644 arch/mips/boot/dts/brcm/bcm6358.dtsi
->  create mode 100644 arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
+This is a note to let you know that I have just added a patch titled
 
-Acked-by: Rob Herring <robh@kernel.org>
+    pinctrl: pistachio: fix mfio84-89 function description and pinmux.
+
+to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
+which can be found at:
+
+    http://kernel.ubuntu.com/git/ubuntu/linux.git/log/?h=linux-4.2.y-queue
+
+This patch is scheduled to be released in version 4.2.8-ckt8.
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 4.2.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+---8<------------------------------------------------------------

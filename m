@@ -1,59 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2016 16:10:47 +0200 (CEST)
-Received: from mail-pa0-f65.google.com ([209.85.220.65]:33143 "EHLO
-        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026377AbcDKOKozeGnx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Apr 2016 16:10:44 +0200
-Received: by mail-pa0-f65.google.com with SMTP id vv3so1802977pab.0
-        for <linux-mips@linux-mips.org>; Mon, 11 Apr 2016 07:10:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=eOLQ56KJzYTgDGymguu4xPVdLvncUQafQy4Sukg3GPw=;
-        b=AxyjpmFcEE2Evb6CYd0rd8WkvBZUvwa6rDn/5EeqWEhCuFI2sDkHtvvcBgf7Cgp8u4
-         a9h45C1CTPm39jsM6ZkWNffVAuWhVGqlzagkF5kBmXXJgCEIXCF1cqFHY1fZmnTzkLKO
-         dcri6AjvUySpFQwPbInAocRF+R9lQc51ew7dH+6vALMKwiUACY8kgnVSKGOYO5a2hyvB
-         VDRzUDf9FJpRidmL3iDB9fkZiaJHQInDBl7++P3U4u45kXqduST2d5twgqsJI+bAFGsw
-         bLLzkhbuT/bn0HK/ZYgWKNA2oWTcCPVagb216VU+3P9sPEzqDo/+bRad8mRLp9Kuz78m
-         /9yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=eOLQ56KJzYTgDGymguu4xPVdLvncUQafQy4Sukg3GPw=;
-        b=EH+y4an2qejJ5NtI8rMxfaYj9wyJwsK0Yel3rUVu8uqtH4F9acESezxidBDgs9AAOG
-         nT5HP+YoN7BM6QNtazzedF9v5PTera8SfH0z7k7yuzq+5vKrMIUyM1N7lCpNPStjegnQ
-         bsTyw0qKZpjQ7XQAO3idX+AcPujEZEN4B4IPIXHAz3cKRS3QhmLqWb3D0hunvIm3bPYQ
-         69KO40St3Vo/TdOAHyJLv86rdiOCjhL+JV4T6tVbk5ztad3Fkge/HBWqYLbzYe0+Tdqa
-         ex/2zxB7ilmISrYDmzfqqWk84he/s5SnzScqONX6I0jkRY1SNW26/XKgM+yQ/RkeVHvq
-         W2Aw==
-X-Gm-Message-State: AD7BkJK2u6g2TgmaeiFaNTLwXRJW31aIT4kB4HnaJNVN6crtFzDYicW3euF5+XSitCfHPA==
-X-Received: by 10.66.79.162 with SMTP id k2mr31809505pax.121.1460383838574;
-        Mon, 11 Apr 2016 07:10:38 -0700 (PDT)
-Received: from serve.minyard.net (serve.minyard.net. [2001:470:b8f6:1b::1])
-        by smtp.gmail.com with ESMTPSA id 9sm36664557pft.44.2016.04.11.07.10.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 11 Apr 2016 07:10:37 -0700 (PDT)
-Received: from t430.minyard.net (unknown [IPv6:2001:470:b8f6:1b:59a1:bf28:3109:e55d])
-        by serve.minyard.net (Postfix) with ESMTPA id 33F316CF;
-        Mon, 11 Apr 2016 09:10:36 -0500 (CDT)
-Received: by t430.minyard.net (Postfix, from userid 1000)
-        id BF2E7300039; Mon, 11 Apr 2016 09:10:35 -0500 (CDT)
-From:   minyard@acm.org
-To:     linux-mips@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Corey Minyard <cminyard@mvista.com>
-Subject: [PATCH] mips: Fix crash registers on non-crashing CPUs
-Date:   Mon, 11 Apr 2016 09:10:19 -0500
-Message-Id: <1460383819-5213-1-git-send-email-minyard@acm.org>
-X-Mailer: git-send-email 2.5.0
-Return-Path: <tcminyard@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2016 21:33:17 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.136]:39052 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27026295AbcDKTdL1MkGx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 11 Apr 2016 21:33:11 +0200
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 46F6B20173;
+        Mon, 11 Apr 2016 19:33:09 +0000 (UTC)
+Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DAEF220125;
+        Mon, 11 Apr 2016 19:33:07 +0000 (UTC)
+Date:   Mon, 11 Apr 2016 14:33:06 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     =?iso-8859-1?Q?=C1lvaro_Fern=E1ndez?= Rojas <noltari@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, ralf@linux-mips.org,
+        f.fainelli@gmail.com, jogo@openwrt.org, cernekee@gmail.com,
+        simon@fire.lp0.eu
+Subject: Re: [PATCH 2/2] bmips: add device tree example for BCM6358
+Message-ID: <20160411193305.GA14080@rob-hp-laptop>
+References: <1459757353-14683-1-git-send-email-noltari@gmail.com>
+ <1460199408-18738-1-git-send-email-noltari@gmail.com>
+ <1460199408-18738-2-git-send-email-noltari@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1460199408-18738-2-git-send-email-noltari@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52951
+X-archive-position: 52952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: minyard@acm.org
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,51 +51,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Corey Minyard <cminyard@mvista.com>
+On Sat, Apr 09, 2016 at 12:56:48PM +0200, Álvaro Fernández Rojas wrote:
+> This adds a device tree example for SFR Neufbox4 (Sercomm version), which
+> also serves as a real example for brcm,bcm6358-leds.
+> 
+> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+> ---
+>  v5: more device tree improvements
+>   - There is just ohci/ehci node.
+>   - Avoid using underscores in node names.
+>   - Use interrupt-controller for cpu_intc.
+>   - Rename uart aliases to serial.
+>  v4: Device tree improvements:
+>   - Switch to native-endian for syscon.
+>   - Switch to bcm6345-l1-intc interrupt controller.
+>   - Add ehci and ohci nodes.
+>  v3: Device tree fixes
+>   - Use interrupt-controller instead of periph_intc.
+>   - Use led@# instead of naming the LEDs.
+>  v2: Remove led0 alias and use stdout-path only
+> 
+>  .../devicetree/bindings/mips/brcm/soc.txt          |   2 +-
+>  arch/mips/bmips/Kconfig                            |   4 +
+>  arch/mips/boot/dts/brcm/Makefile                   |   2 +
+>  arch/mips/boot/dts/brcm/bcm6358.dtsi               | 130 +++++++++++++++++++++
+>  arch/mips/boot/dts/brcm/bcm96358nb4ser.dts         |  46 ++++++++
+>  5 files changed, 183 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/mips/boot/dts/brcm/bcm6358.dtsi
+>  create mode 100644 arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
 
-As part of handling a crash on an SMP system, an IPI is send to
-all other CPUs to save their current registers and stop.  It was
-using task_pt_regs(current) to get the registers, but that will
-only be accurate if the CPU was interrupted running in userland.
-Instead allow the architecture to pass in the registers (all
-pass NULL now, but allow for the future) and then use get_irq_regs()
-which should be accurate as we are in an interrupt.  Fall back to
-task_pt_regs(current) if nothing else is available.
-
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
----
- arch/mips/kernel/crash.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
-index d434d5d..610f0f3 100644
---- a/arch/mips/kernel/crash.c
-+++ b/arch/mips/kernel/crash.c
-@@ -14,12 +14,22 @@ static int crashing_cpu = -1;
- static cpumask_t cpus_in_crash = CPU_MASK_NONE;
- 
- #ifdef CONFIG_SMP
--static void crash_shutdown_secondary(void *ignore)
-+static void crash_shutdown_secondary(void *passed_regs)
- {
--	struct pt_regs *regs;
-+	struct pt_regs *regs = passed_regs;
- 	int cpu = smp_processor_id();
- 
--	regs = task_pt_regs(current);
-+	/*
-+	 * If we are passed registers, use those.  Otherwise get the
-+	 * regs from the last interrupt, which should be correct, as
-+	 * we are in an interrupt.  But if the regs are not there,
-+	 * pull them from the top of the stack.  They are probably
-+	 * wrong, but we need something to keep from crashing again.
-+	 */
-+	if (!regs)
-+		regs = get_irq_regs();
-+	if (!regs)
-+		regs = task_pt_regs(current);
- 
- 	if (!cpu_online(cpu))
- 		return;
--- 
-2.5.0
+Acked-by: Rob Herring <robh@kernel.org>

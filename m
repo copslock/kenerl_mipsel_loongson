@@ -1,129 +1,103 @@
-From: Govindraj Raja <Govindraj.Raja@imgtec.com>
-Date: Fri, 4 Mar 2016 15:28:22 +0000
-Subject: pinctrl: pistachio: fix mfio84-89 function description and pinmux.
-Message-ID: <20160304152822.35NBYhhAhYXTyu8Qyn5JUFnJbG9rNPzOpg0zoleTAVE@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2016 07:17:47 +0200 (CEST)
+Received: from mail-pf0-f173.google.com ([209.85.192.173]:36573 "EHLO
+        mail-pf0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27014228AbcDLFRnEWDO2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Apr 2016 07:17:43 +0200
+Received: by mail-pf0-f173.google.com with SMTP id e128so6613483pfe.3
+        for <linux-mips@linux-mips.org>; Mon, 11 Apr 2016 22:17:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=WEky9z4ToZpqAgd3YBxQJtd0WIL1S8nS9o3PXtL23UM=;
+        b=IB37d1xQfscpXF+oCXT3PkrH+nIRuQgrmf0sdmjj+mNvsS7eZSX+SbhqF38ZBGSW9M
+         gsQO0/yJhNDFVLvS7EmAAWdB9x+3AYNWypT5yU8Y/oFDse37BdBKf/KcmQFqPw7EqLzo
+         ZpsjWqYnTsmYgxG82Z0f/MH1V0qRrFFKGZqJg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=WEky9z4ToZpqAgd3YBxQJtd0WIL1S8nS9o3PXtL23UM=;
+        b=W5Gji5icHVwt6ev82qUC5qBpVTDqUsMhF7rxFPQCo181DRSc/sICL5aYh0Igzy0UKI
+         dcnRttZaMB6L4/z4JG9DgGUswSsuxWlXfv6L6zjH7UtOjhCM0T3mz8Vw7xnVgcKmw0m4
+         7nKHs27qNYlShtqbAlmU++AvXdODzqrd+wovD6fEJC3udfWjufOZiYl6nN/kkMPhYM/+
+         DDi2ZG561AmQsSjpkERbQrr3/Qe3OrvJTOkz/b3SKcm6cC3UWt5EIeOtiSvQkeD+TeQh
+         HpuoQ5Ss73Zp7vML+EyZ2mPgXzSiOg2IvoguFIy+cq+eEuYTugcNfExQhbdgTlYYQ/Tb
+         xPYQ==
+X-Gm-Message-State: AOPr4FUULfvd7DLT6xY1iyrZKv59b+UDYCpKhiAgfQM4zui6SQ4sVu7216yjnDV8yqWUUpCj
+X-Received: by 10.98.67.139 with SMTP id l11mr1915572pfi.112.1460438257008;
+        Mon, 11 Apr 2016 22:17:37 -0700 (PDT)
+Received: from localhost ([122.172.42.224])
+        by smtp.gmail.com with ESMTPSA id r191sm39897558pfr.36.2016.04.11.22.17.35
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 11 Apr 2016 22:17:36 -0700 (PDT)
+Date:   Tue, 12 Apr 2016 10:47:32 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Keguang Zhang <keguang.zhang@gmail.com>
+Cc:     linux-pm@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCH 1/5] cpufreq: Loongson1: Rename the file to
+ loongson1-cpufreq.c
+Message-ID: <20160412051732.GO16238@vireshk-i7>
+References: <1460375759-20705-1-git-send-email-keguang.zhang@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1460375759-20705-1-git-send-email-keguang.zhang@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <viresh.kumar@linaro.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 52954
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: viresh.kumar@linaro.org
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit e9adb336d0bf391be23e820975ca5cd12c31d781 upstream.
+On 11-04-16, 19:55, Keguang Zhang wrote:
+> From: Kelvin Cheung <keguang.zhang@gmail.com>
+> 
+> This patch renames the file to loongson1-cpufreq.c
+> 
+> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+> ---
+>  drivers/cpufreq/Makefile                                | 2 +-
+>  drivers/cpufreq/{ls1x-cpufreq.c => loongson1-cpufreq.c} | 0
+>  2 files changed, 1 insertion(+), 1 deletion(-)
+>  rename drivers/cpufreq/{ls1x-cpufreq.c => loongson1-cpufreq.c} (100%)
+> 
+> diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
+> index 9e63fb1..bebe9c8 100644
+> --- a/drivers/cpufreq/Makefile
+> +++ b/drivers/cpufreq/Makefile
+> @@ -100,7 +100,7 @@ obj-$(CONFIG_CRIS_MACH_ARTPEC3)		+= cris-artpec3-cpufreq.o
+>  obj-$(CONFIG_ETRAXFS)			+= cris-etraxfs-cpufreq.o
+>  obj-$(CONFIG_IA64_ACPI_CPUFREQ)		+= ia64-acpi-cpufreq.o
+>  obj-$(CONFIG_LOONGSON2_CPUFREQ)		+= loongson2_cpufreq.o
+> -obj-$(CONFIG_LOONGSON1_CPUFREQ)		+= ls1x-cpufreq.o
+> +obj-$(CONFIG_LOONGSON1_CPUFREQ)		+= loongson1-cpufreq.o
+>  obj-$(CONFIG_SH_CPU_FREQ)		+= sh-cpufreq.o
+>  obj-$(CONFIG_SPARC_US2E_CPUFREQ)	+= sparc-us2e-cpufreq.o
+>  obj-$(CONFIG_SPARC_US3_CPUFREQ)		+= sparc-us3-cpufreq.o
+> diff --git a/drivers/cpufreq/ls1x-cpufreq.c b/drivers/cpufreq/loongson1-cpufreq.c
+> similarity index 100%
+> rename from drivers/cpufreq/ls1x-cpufreq.c
+> rename to drivers/cpufreq/loongson1-cpufreq.c
 
-mfio 84 to 89 are described wrongly, fix it to describe
-the right pin and add them to right pin-mux group.
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-The correct order is:
-	pll1_lock => mips_pll	-- MFIO_83
-	pll2_lock => audio_pll	-- MFIO_84
-	pll3_lock => rpu_v_pll	-- MFIO_85
-	pll4_lock => rpu_l_pll	-- MFIO_86
-	pll5_lock => sys_pll	-- MFIO_87
-	pll6_lock => wifi_pll	-- MFIO_88
-	pll7_lock => bt_pll	-- MFIO_89
-
-Cc: linux-gpio@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: James Hartley <James.Hartley@imgtec.com>
-Fixes: cefc03e5995e("pinctrl: Add Pistachio SoC pin control driver")
-Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
-Acked-by: Andrew Bresticker <abrestic@chromium.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- .../bindings/pinctrl/img,pistachio-pinctrl.txt     | 12 +++++------
- drivers/pinctrl/pinctrl-pistachio.c                | 24 +++++++++++-----------
- 2 files changed, 18 insertions(+), 18 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
-index 08a4a32..0326154 100644
---- a/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
-+++ b/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
-@@ -134,12 +134,12 @@ mfio80		ddr_debug, mips_trace_data, mips_debug
- mfio81		dreq0, mips_trace_data, eth_debug
- mfio82		dreq1, mips_trace_data, eth_debug
- mfio83		mips_pll_lock, mips_trace_data, usb_debug
--mfio84		sys_pll_lock, mips_trace_data, usb_debug
--mfio85		wifi_pll_lock, mips_trace_data, sdhost_debug
--mfio86		bt_pll_lock, mips_trace_data, sdhost_debug
--mfio87		rpu_v_pll_lock, dreq2, socif_debug
--mfio88		rpu_l_pll_lock, dreq3, socif_debug
--mfio89		audio_pll_lock, dreq4, dreq5
-+mfio84		audio_pll_lock, mips_trace_data, usb_debug
-+mfio85		rpu_v_pll_lock, mips_trace_data, sdhost_debug
-+mfio86		rpu_l_pll_lock, mips_trace_data, sdhost_debug
-+mfio87		sys_pll_lock, dreq2, socif_debug
-+mfio88		wifi_pll_lock, dreq3, socif_debug
-+mfio89		bt_pll_lock, dreq4, dreq5
- tck
- trstn
- tdi
-diff --git a/drivers/pinctrl/pinctrl-pistachio.c b/drivers/pinctrl/pinctrl-pistachio.c
-index 63100be..8a5bc77 100644
---- a/drivers/pinctrl/pinctrl-pistachio.c
-+++ b/drivers/pinctrl/pinctrl-pistachio.c
-@@ -469,27 +469,27 @@ static const char * const pistachio_mips_pll_lock_groups[] = {
- 	"mfio83",
- };
-
--static const char * const pistachio_sys_pll_lock_groups[] = {
-+static const char * const pistachio_audio_pll_lock_groups[] = {
- 	"mfio84",
- };
-
--static const char * const pistachio_wifi_pll_lock_groups[] = {
-+static const char * const pistachio_rpu_v_pll_lock_groups[] = {
- 	"mfio85",
- };
-
--static const char * const pistachio_bt_pll_lock_groups[] = {
-+static const char * const pistachio_rpu_l_pll_lock_groups[] = {
- 	"mfio86",
- };
-
--static const char * const pistachio_rpu_v_pll_lock_groups[] = {
-+static const char * const pistachio_sys_pll_lock_groups[] = {
- 	"mfio87",
- };
-
--static const char * const pistachio_rpu_l_pll_lock_groups[] = {
-+static const char * const pistachio_wifi_pll_lock_groups[] = {
- 	"mfio88",
- };
-
--static const char * const pistachio_audio_pll_lock_groups[] = {
-+static const char * const pistachio_bt_pll_lock_groups[] = {
- 	"mfio89",
- };
-
-@@ -559,12 +559,12 @@ enum pistachio_mux_option {
- 	PISTACHIO_FUNCTION_DREQ4,
- 	PISTACHIO_FUNCTION_DREQ5,
- 	PISTACHIO_FUNCTION_MIPS_PLL_LOCK,
-+	PISTACHIO_FUNCTION_AUDIO_PLL_LOCK,
-+	PISTACHIO_FUNCTION_RPU_V_PLL_LOCK,
-+	PISTACHIO_FUNCTION_RPU_L_PLL_LOCK,
- 	PISTACHIO_FUNCTION_SYS_PLL_LOCK,
- 	PISTACHIO_FUNCTION_WIFI_PLL_LOCK,
- 	PISTACHIO_FUNCTION_BT_PLL_LOCK,
--	PISTACHIO_FUNCTION_RPU_V_PLL_LOCK,
--	PISTACHIO_FUNCTION_RPU_L_PLL_LOCK,
--	PISTACHIO_FUNCTION_AUDIO_PLL_LOCK,
- 	PISTACHIO_FUNCTION_DEBUG_RAW_CCA_IND,
- 	PISTACHIO_FUNCTION_DEBUG_ED_SEC20_CCA_IND,
- 	PISTACHIO_FUNCTION_DEBUG_ED_SEC40_CCA_IND,
-@@ -620,12 +620,12 @@ static const struct pistachio_function pistachio_functions[] = {
- 	FUNCTION(dreq4),
- 	FUNCTION(dreq5),
- 	FUNCTION(mips_pll_lock),
-+	FUNCTION(audio_pll_lock),
-+	FUNCTION(rpu_v_pll_lock),
-+	FUNCTION(rpu_l_pll_lock),
- 	FUNCTION(sys_pll_lock),
- 	FUNCTION(wifi_pll_lock),
- 	FUNCTION(bt_pll_lock),
--	FUNCTION(rpu_v_pll_lock),
--	FUNCTION(rpu_l_pll_lock),
--	FUNCTION(audio_pll_lock),
- 	FUNCTION(debug_raw_cca_ind),
- 	FUNCTION(debug_ed_sec20_cca_ind),
- 	FUNCTION(debug_ed_sec40_cca_ind),
---
-2.7.4
+-- 
+viresh

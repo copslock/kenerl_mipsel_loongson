@@ -1,59 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2016 12:42:09 +0200 (CEST)
-Received: from mail-pa0-f65.google.com ([209.85.220.65]:36355 "EHLO
-        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026405AbcDLKkzi0w3N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Apr 2016 12:40:55 +0200
-Received: by mail-pa0-f65.google.com with SMTP id k3so1126039pav.3
-        for <linux-mips@linux-mips.org>; Tue, 12 Apr 2016 03:40:55 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2016 12:43:33 +0200 (CEST)
+Received: from mail-pf0-f175.google.com ([209.85.192.175]:33089 "EHLO
+        mail-pf0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026402AbcDLKna0BXNN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Apr 2016 12:43:30 +0200
+Received: by mail-pf0-f175.google.com with SMTP id 184so11810008pff.0
+        for <linux-mips@linux-mips.org>; Tue, 12 Apr 2016 03:43:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=kPUb3V3FH9BoCMEf9+uAsRAxl2s9VDnBWkfHRg6jtC4=;
-        b=M1j3y6GXe/KbF2+fVXrWJItqMAZPrGCHSaWztGiolmhIsDzL66sK6fRTdZn54QsaCE
-         qWuNegB2bmjPwWAj/8Kw7XbUN/NWlp/ZIF6cDBPFISIjkKC9Up2om/H6ZngMAOuK1In0
-         BNfK1Skgl0yB0NNOYweD+vOWz8ZcmLZfk0wbSyx6LZihYrjJqYh13JaxaBCWYzdB8cin
-         TljJzbw5mHxjVga9KhV+WdUP+NcfHVkx68T/qC3unGBwLP3F7jOZwcly2m8TXMOxGEqY
-         qIH8N7o9aYDCBAw/IiKSxYQlpQuBYZCjvc9qT0srh8HL3XmsgPJKXyhIDmyDBZxReM8v
-         LOoA==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=oFG6935Yk+JbDFrwxlxEvgHCY9AtSVJFLLandKqMvNE=;
+        b=Y6VFJkPMm+DHl+E+csP14iDpCbrMITrg0cjC8s5m3uzNu44WIUbL0Hcgz47c7GYJhb
+         iyS2nneaXYjk8bykIYBrGFWDOK5qIcSN9P4ST/FSF+aGaBiiKF30+rTWVWRNe/5msD4v
+         oGp0RcHaNDt3efVfeUnODzliZ8RIXXs0H20mA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=kPUb3V3FH9BoCMEf9+uAsRAxl2s9VDnBWkfHRg6jtC4=;
-        b=EbUQHdZQMEXxolES3DH2bYLwCRXBC06+REC0OANXZWEpeGjSR1ZgwKHTJzLTfV4M1C
-         0c04slVkjMkW5gohAhsfVKqqg/w2fTG2W2VPHsiBJ+uLGcke8ltGcpmCpdNNS6CH+YWe
-         sNsfOIL997edhCYaec5aORgdl9ato0r8e5DTVikye+trDomqZVhUOTbZC+8NLiIPLRLW
-         CPLxixaNPP/bPzu+E08c2G5nRFNly/RfEwWYBYPa6QO1NmQ25nxootan6dnS4TM97cZu
-         noCYNYIGPpEFy9/UumZZ6y827fQ/HRdKF5Dr1xNzRdKzQf6nLqyB3+vMXT3HtEOA7AGH
-         8pog==
-X-Gm-Message-State: AOPr4FWI2kcK0/nY0jEwVpD/XG5FJ1vdlDEMM/enExz+qlOfgZ3qcVdMLx+NeIF+SxZ+jg==
-X-Received: by 10.67.15.9 with SMTP id fk9mr3460270pad.77.1460457649882;
-        Tue, 12 Apr 2016 03:40:49 -0700 (PDT)
-Received: from localhost.localdomain ([175.111.195.49])
-        by smtp.gmail.com with ESMTPSA id m87sm42588365pfj.38.2016.04.12.03.40.46
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 12 Apr 2016 03:40:48 -0700 (PDT)
-From:   Keguang Zhang <keguang.zhang@gmail.com>
-To:     linux-pm@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH V1 5/5] cpufreq: Loongson1: Replace goto out with return in ls1x_cpufreq_probe()
-Date:   Tue, 12 Apr 2016 18:40:19 +0800
-Message-Id: <1460457619-14786-5-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1460457619-14786-1-git-send-email-keguang.zhang@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=oFG6935Yk+JbDFrwxlxEvgHCY9AtSVJFLLandKqMvNE=;
+        b=ZoruuVieTGIzbDZSUe/sV6TX8Btejn9vcDjiTlmyY5IgloGAHHWL9qZxZBgDTxhm5B
+         qgQ5Vj52ItBpnqh/gQ5G3zP3qDqp6JEy7pd1ZgcEBUhva7epHGw+3cY4yJD2h6wI2qd7
+         1EVDxkLEa9AmhTFInfRyzriUHE2pAAKSaBVWdVxOOxj3sq7kRnv2bN8kbObiWbTqju3O
+         yHr9vdfGujAmhvGh00LZTNrEdUGXXhitbAaNhweN8Ts+eMcaoNO2f/1r5TphUmJQtidM
+         tzAmpiSP4LhYXUQxVy8hHWmRJq3RAD6jA2zoyHVmuGENx5YBcMHgCF/KReF/lZ9TQuYl
+         HPiA==
+X-Gm-Message-State: AOPr4FWqsvncAl3V1tIhpDoRESAy/RS6fb9joR1v1japn3LZguS9TnznxPInEVjlMJwmE3fq
+X-Received: by 10.98.44.73 with SMTP id s70mr3634691pfs.2.1460457804737;
+        Tue, 12 Apr 2016 03:43:24 -0700 (PDT)
+Received: from localhost ([122.172.42.224])
+        by smtp.gmail.com with ESMTPSA id u2sm42619049pfi.26.2016.04.12.03.43.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 12 Apr 2016 03:43:23 -0700 (PDT)
+Date:   Tue, 12 Apr 2016 16:13:19 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Keguang Zhang <keguang.zhang@gmail.com>
+Cc:     linux-pm@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCH V1 1/5] cpufreq: Loongson1: Rename the file to
+ loongson1-cpufreq.c
+Message-ID: <20160412104319.GA17650@vireshk-i7>
 References: <1460457619-14786-1-git-send-email-keguang.zhang@gmail.com>
-Return-Path: <keguang.zhang@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1460457619-14786-1-git-send-email-keguang.zhang@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52963
+X-archive-position: 52964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,101 +67,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Kelvin Cheung <keguang.zhang@gmail.com>
+On 12-04-16, 18:40, Keguang Zhang wrote:
+> From: Kelvin Cheung <keguang.zhang@gmail.com>
+> 
+> This patch renames the file to loongson1-cpufreq.c,
+> and also includes some minor updates.
+> 
+> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+> 
+> ---
+> V1:
+>    Merge the minor updates into this patch.
+> ---
+>  drivers/cpufreq/Makefile                                |  2 +-
+>  drivers/cpufreq/{ls1x-cpufreq.c => loongson1-cpufreq.c} | 10 +++++-----
+>  2 files changed, 6 insertions(+), 6 deletions(-)
+>  rename drivers/cpufreq/{ls1x-cpufreq.c => loongson1-cpufreq.c} (96%)
 
-This patch replaces goto out with return in ls1x_cpufreq_probe().
+For the entire series.
 
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
----
-V1:
-   Move the minor updates into patch#1.
-   Fix the brace problem in ls1x_cpufreq_probe().
----
- drivers/cpufreq/loongson1-cpufreq.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/cpufreq/loongson1-cpufreq.c b/drivers/cpufreq/loongson1-cpufreq.c
-index f0d0156..be89416 100644
---- a/drivers/cpufreq/loongson1-cpufreq.c
-+++ b/drivers/cpufreq/loongson1-cpufreq.c
-@@ -141,8 +141,10 @@ static int ls1x_cpufreq_probe(struct platform_device *pdev)
- 	struct clk *clk;
- 	int ret;
- 
--	if (!pdata || !pdata->clk_name || !pdata->osc_clk_name)
-+	if (!pdata || !pdata->clk_name || !pdata->osc_clk_name) {
-+		dev_err(&pdev->dev, "platform data missing\n");
- 		return -EINVAL;
-+	}
- 
- 	cpufreq =
- 	    devm_kzalloc(&pdev->dev, sizeof(struct ls1x_cpufreq), GFP_KERNEL);
-@@ -155,8 +157,7 @@ static int ls1x_cpufreq_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk)) {
- 		dev_err(&pdev->dev, "unable to get %s clock\n",
- 			pdata->clk_name);
--		ret = PTR_ERR(clk);
--		goto out;
-+		return PTR_ERR(clk);
- 	}
- 	cpufreq->clk = clk;
- 
-@@ -164,8 +165,7 @@ static int ls1x_cpufreq_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk)) {
- 		dev_err(&pdev->dev, "unable to get parent of %s clock\n",
- 			__clk_get_name(cpufreq->clk));
--		ret = PTR_ERR(clk);
--		goto out;
-+		return PTR_ERR(clk);
- 	}
- 	cpufreq->mux_clk = clk;
- 
-@@ -173,8 +173,7 @@ static int ls1x_cpufreq_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk)) {
- 		dev_err(&pdev->dev, "unable to get parent of %s clock\n",
- 			__clk_get_name(cpufreq->mux_clk));
--		ret = PTR_ERR(clk);
--		goto out;
-+		return PTR_ERR(clk);
- 	}
- 	cpufreq->pll_clk = clk;
- 
-@@ -182,8 +181,7 @@ static int ls1x_cpufreq_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk)) {
- 		dev_err(&pdev->dev, "unable to get %s clock\n",
- 			pdata->osc_clk_name);
--		ret = PTR_ERR(clk);
--		goto out;
-+		return PTR_ERR(clk);
- 	}
- 	cpufreq->osc_clk = clk;
- 
-@@ -194,19 +192,18 @@ static int ls1x_cpufreq_probe(struct platform_device *pdev)
- 	if (ret) {
- 		dev_err(&pdev->dev,
- 			"failed to register CPUFreq driver: %d\n", ret);
--		goto out;
-+		return ret;
- 	}
- 
- 	ret = cpufreq_register_notifier(&ls1x_cpufreq_notifier_block,
- 					CPUFREQ_TRANSITION_NOTIFIER);
- 
--	if (!ret)
--		goto out;
--
--	dev_err(&pdev->dev, "failed to register cpufreq notifier: %d\n", ret);
-+	if (ret) {
-+		dev_err(&pdev->dev,
-+			"failed to register CPUFreq notifier: %d\n",ret);
-+		cpufreq_unregister_driver(&ls1x_cpufreq_driver);
-+	}
- 
--	cpufreq_unregister_driver(&ls1x_cpufreq_driver);
--out:
- 	return ret;
- }
- 
 -- 
-1.9.1
+viresh

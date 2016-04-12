@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2016 07:24:32 +0200 (CEST)
-Received: from mail-pf0-f173.google.com ([209.85.192.173]:33202 "EHLO
-        mail-pf0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27014448AbcDLFY3LopVb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Apr 2016 07:24:29 +0200
-Received: by mail-pf0-f173.google.com with SMTP id 184so6814844pff.0
-        for <linux-mips@linux-mips.org>; Mon, 11 Apr 2016 22:24:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2016 12:40:46 +0200 (CEST)
+Received: from mail-pa0-f66.google.com ([209.85.220.66]:36312 "EHLO
+        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006743AbcDLKkn1-PyN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Apr 2016 12:40:43 +0200
+Received: by mail-pa0-f66.google.com with SMTP id k3so1125740pav.3
+        for <linux-mips@linux-mips.org>; Tue, 12 Apr 2016 03:40:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vSzT3ULB+9mrL2wduG+iSjImYOHrm0rRUzlyKfekR8A=;
-        b=cG6B1xNakDv/JwxFkiIELHafmjBvEviEmjU79l2TqBFM9XksxmswKTsRlx9pS85VIu
-         /AqhTIb2OGL1KiuoR4h06YXwwd9cP0vCgdpV0nIO8S4MPrZhDITOn9yrEPU+5mpm02c3
-         06RDxsfWuQC5U4Wm9Js/M9eKacW2pshebC3MM=
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=hRIORoAHQpbwrDcYxhOLWrFu9HXByYH0sU774XArSWs=;
+        b=icVWXbNdVyHCmra3vGyuatLLmmKneDT4twDADp6Ql4oMa+JwXxVBg+dXR4RzuHTEFG
+         DkMwCxClKPf8+HlmP/G/AaADaUCm5ToUzBxySglWyhwgbLAMt4dgR9mYhUvHW/5g9rOZ
+         siPDSUCwRed6cTev1O9jwkO8UslZ44bOnIHSEd/l+nUr7v8ek19z8D+B7o+0+RWm3jlw
+         ESx9dcTjNxGOFvoFU/OaRqSWKWABujeiInuQ5AzQrUm1D2SllbdffCCYju4qRadkk3Mk
+         iO5v+vn+Vc5V9PC8X3Oyg2wmwxIZmM7NwiyT/VeSBbkoX34iUxxJcj3pVt82I0Bfl2WE
+         dWvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vSzT3ULB+9mrL2wduG+iSjImYOHrm0rRUzlyKfekR8A=;
-        b=T1QA9UQhwwIQMggdMdQKCI0dqmmv94+IPYHMT6O+UfvABEDHVHzSMtufcT0dNStxt1
-         3O7/aRWyZUimFGOXd5YFlS5f/LHhF/1G267hCGMTPHVAOVof2+KyErwQPWf3idQDuUtw
-         rrGxUP7tim4OTkC+TIRXoz+wrNdxv6HzuRPonxlVHTqNhO4dEKifExNca+eRuuoZJAIw
-         w/xIS8xj2UkNqd9fk+v5CziZ79mZp+pzyoW3sezCmSHFCGhbX2LcJn0jDvTiq5vGn4iJ
-         cHb+OuHQS9g4vyg3v8B1gOCUT2TVU8xn0R3/rINLtocWyW5V1QOKRBuDTPqvYODtqjRr
-         MWKQ==
-X-Gm-Message-State: AOPr4FUMhz15sYls8iZdFlWRpezCTimuqAhPsbiU1oYaPlPZfe0kRnZu74qbd4Rh23wG0Wal
-X-Received: by 10.98.10.156 with SMTP id 28mr1960491pfk.130.1460438663465;
-        Mon, 11 Apr 2016 22:24:23 -0700 (PDT)
-Received: from localhost ([122.172.42.224])
-        by smtp.gmail.com with ESMTPSA id to9sm40052055pab.27.2016.04.11.22.24.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 11 Apr 2016 22:24:22 -0700 (PDT)
-Date:   Tue, 12 Apr 2016 10:54:17 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Keguang Zhang <keguang.zhang@gmail.com>
-Cc:     linux-pm@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH 5/5] cpufreq: Loongson1: Replace goto out with return in
- ls1x_cpufreq_probe()
-Message-ID: <20160412052417.GS16238@vireshk-i7>
-References: <1460375759-20705-1-git-send-email-keguang.zhang@gmail.com>
- <1460375759-20705-5-git-send-email-keguang.zhang@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1460375759-20705-5-git-send-email-keguang.zhang@gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <viresh.kumar@linaro.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=hRIORoAHQpbwrDcYxhOLWrFu9HXByYH0sU774XArSWs=;
+        b=IEwtPP1gudXVk5k3+7bKLxedLsCEQ30CdyhVq1JkvsAwhQqpmjTb6xiJV59PYC/wxA
+         SW7neNrN3zNksch4Xlc2RE4R+kyILzRDduK0uWvFdtwpK1Z4iO0eV7pbi3f+CefQ/1w9
+         NLTMJVyiJ1tzuoPWHVkyB+qCnS4Cku8iC/jgqrjRfwWPN0KN3Dc0DP/VboOQIDh22kEH
+         lgSBB/CRFBTq0XMZu+eqyDN3u5mdts+kJvwmDQzFQfYrOCHwG1A+3gHNc8MnAgkyEcbF
+         r8ojFGZkgTWWfHaSN9qLs2EjKObCxdN9DMhghuq1u2n9R+HDwONXp474L3S6h7VhOfQF
+         d2AQ==
+X-Gm-Message-State: AOPr4FWVcNoSCS9Lw3kg7cIrl8yO65nEmTH/usIvZ8NtFST7ukM9inHD7f7700+bVm7ybg==
+X-Received: by 10.66.168.177 with SMTP id zx17mr3501397pab.3.1460457637302;
+        Tue, 12 Apr 2016 03:40:37 -0700 (PDT)
+Received: from localhost.localdomain ([175.111.195.49])
+        by smtp.gmail.com with ESMTPSA id m87sm42588365pfj.38.2016.04.12.03.40.34
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 12 Apr 2016 03:40:36 -0700 (PDT)
+From:   Keguang Zhang <keguang.zhang@gmail.com>
+To:     linux-pm@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: [PATCH V1 1/5] cpufreq: Loongson1: Rename the file to loongson1-cpufreq.c
+Date:   Tue, 12 Apr 2016 18:40:15 +0800
+Message-Id: <1460457619-14786-1-git-send-email-keguang.zhang@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <keguang.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52958
+X-archive-position: 52959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viresh.kumar@linaro.org
+X-original-sender: keguang.zhang@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,83 +63,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11-04-16, 19:55, Keguang Zhang wrote:
-> From: Kelvin Cheung <keguang.zhang@gmail.com>
-> 
-> This patch replaces goto out with return in ls1x_cpufreq_probe(),
-> and also includes some minor fixes.
-> 
-> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
-> ---
->  drivers/cpufreq/loongson1-cpufreq.c | 37 ++++++++++++++++---------------------
->  1 file changed, 16 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/loongson1-cpufreq.c b/drivers/cpufreq/loongson1-cpufreq.c
-> index 5074f5e..1bc90af 100644
-> --- a/drivers/cpufreq/loongson1-cpufreq.c
-> +++ b/drivers/cpufreq/loongson1-cpufreq.c
-> @@ -1,7 +1,7 @@
->  /*
->   * CPU Frequency Scaling for Loongson 1 SoC
->   *
-> - * Copyright (C) 2014 Zhang, Keguang <keguang.zhang@gmail.com>
-> + * Copyright (C) 2014-2016 Zhang, Keguang <keguang.zhang@gmail.com>
+From: Kelvin Cheung <keguang.zhang@gmail.com>
 
-Actually you should fold above into the first patch of the series,
-that renames this file. It makes much sense that way.
+This patch renames the file to loongson1-cpufreq.c,
+and also includes some minor updates.
 
->   *
->   * This file is licensed under the terms of the GNU General Public
->   * License version 2. This program is licensed "as is" without any
-> @@ -141,7 +141,8 @@ static int ls1x_cpufreq_probe(struct platform_device *pdev)
->  	struct clk *clk;
->  	int ret;
->  
-> -	if (!pdata || !pdata->clk_name || !pdata->osc_clk_name)
-> +	if (!pdata || !pdata->clk_name || !pdata->osc_clk_name) {
+Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
 
-You added a '{' here, but the closing '}' is added way down..
-Something is wrong here I feel..
+---
+V1:
+   Merge the minor updates into this patch.
+---
+ drivers/cpufreq/Makefile                                |  2 +-
+ drivers/cpufreq/{ls1x-cpufreq.c => loongson1-cpufreq.c} | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+ rename drivers/cpufreq/{ls1x-cpufreq.c => loongson1-cpufreq.c} (96%)
 
-> +		dev_err(&pdev->dev, "platform data missing\n");
->  		return -EINVAL;
->  
->  	cpufreq =
-> @@ -155,8 +156,7 @@ static int ls1x_cpufreq_probe(struct platform_device *pdev)
->  	if (IS_ERR(clk)) {
->  		dev_err(&pdev->dev, "unable to get %s clock\n",
->  			pdata->clk_name);
-> -		ret = PTR_ERR(clk);
-> -		goto out;
-> +		return PTR_ERR(clk);
->  	}
-
->  static struct platform_driver ls1x_cpufreq_platdrv = {
-> -	.driver = {
-> +	.probe	= ls1x_cpufreq_probe,
-> +	.remove	= ls1x_cpufreq_remove,
-> +	.driver	= {
->  		.name	= "ls1x-cpufreq",
->  	},
-> -	.probe		= ls1x_cpufreq_probe,
-> -	.remove		= ls1x_cpufreq_remove,
-
-Why do this change at all? Do it in the first patch if you really want
-to.
-
->  };
->  
->  module_platform_driver(ls1x_cpufreq_platdrv);
->  
->  MODULE_AUTHOR("Kelvin Cheung <keguang.zhang@gmail.com>");
-> -MODULE_DESCRIPTION("Loongson 1 CPUFreq driver");
-> +MODULE_DESCRIPTION("Loongson1 CPUFreq driver");
-
-This one as well, move it to the first patch.
-
->  MODULE_LICENSE("GPL");
-> -- 
-> 1.9.1
-
+diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
+index 9e63fb1..bebe9c8 100644
+--- a/drivers/cpufreq/Makefile
++++ b/drivers/cpufreq/Makefile
+@@ -100,7 +100,7 @@ obj-$(CONFIG_CRIS_MACH_ARTPEC3)		+= cris-artpec3-cpufreq.o
+ obj-$(CONFIG_ETRAXFS)			+= cris-etraxfs-cpufreq.o
+ obj-$(CONFIG_IA64_ACPI_CPUFREQ)		+= ia64-acpi-cpufreq.o
+ obj-$(CONFIG_LOONGSON2_CPUFREQ)		+= loongson2_cpufreq.o
+-obj-$(CONFIG_LOONGSON1_CPUFREQ)		+= ls1x-cpufreq.o
++obj-$(CONFIG_LOONGSON1_CPUFREQ)		+= loongson1-cpufreq.o
+ obj-$(CONFIG_SH_CPU_FREQ)		+= sh-cpufreq.o
+ obj-$(CONFIG_SPARC_US2E_CPUFREQ)	+= sparc-us2e-cpufreq.o
+ obj-$(CONFIG_SPARC_US3_CPUFREQ)		+= sparc-us3-cpufreq.o
+diff --git a/drivers/cpufreq/ls1x-cpufreq.c b/drivers/cpufreq/loongson1-cpufreq.c
+similarity index 96%
+rename from drivers/cpufreq/ls1x-cpufreq.c
+rename to drivers/cpufreq/loongson1-cpufreq.c
+index 262581b..57fae9b 100644
+--- a/drivers/cpufreq/ls1x-cpufreq.c
++++ b/drivers/cpufreq/loongson1-cpufreq.c
+@@ -1,7 +1,7 @@
+ /*
+  * CPU Frequency Scaling for Loongson 1 SoC
+  *
+- * Copyright (C) 2014 Zhang, Keguang <keguang.zhang@gmail.com>
++ * Copyright (C) 2014-2016 Zhang, Keguang <keguang.zhang@gmail.com>
+  *
+  * This file is licensed under the terms of the GNU General Public
+  * License version 2. This program is licensed "as is" without any
+@@ -208,15 +208,15 @@ out:
+ }
+ 
+ static struct platform_driver ls1x_cpufreq_platdrv = {
+-	.driver = {
++	.probe	= ls1x_cpufreq_probe,
++	.remove	= ls1x_cpufreq_remove,
++	.driver	= {
+ 		.name	= "ls1x-cpufreq",
+ 	},
+-	.probe		= ls1x_cpufreq_probe,
+-	.remove		= ls1x_cpufreq_remove,
+ };
+ 
+ module_platform_driver(ls1x_cpufreq_platdrv);
+ 
+ MODULE_AUTHOR("Kelvin Cheung <keguang.zhang@gmail.com>");
+-MODULE_DESCRIPTION("Loongson 1 CPUFreq driver");
++MODULE_DESCRIPTION("Loongson1 CPUFreq driver");
+ MODULE_LICENSE("GPL");
 -- 
-viresh
+1.9.1

@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2016 17:15:46 +0200 (CEST)
-Received: from eusmtp01.atmel.com ([212.144.249.242]:3657 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2016 17:28:34 +0200 (CEST)
+Received: from eusmtp01.atmel.com ([212.144.249.243]:9722 "EHLO
         eusmtp01.atmel.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27006955AbcDMPPmetZGK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Apr 2016 17:15:42 +0200
+        with ESMTP id S27006955AbcDMP2atlk-5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Apr 2016 17:28:30 +0200
 Received: from HNOCHT01.corp.atmel.com (10.161.30.161) by eusmtp01.atmel.com
- (10.161.101.30) with Microsoft SMTP Server (TLS) id 14.3.235.1; Wed, 13 Apr
- 2016 17:15:32 +0200
+ (10.161.101.31) with Microsoft SMTP Server (TLS) id 14.3.235.1; Wed, 13 Apr
+ 2016 17:28:18 +0200
 Received: from [10.159.245.112] (10.161.30.18) by HNOCHT01.corp.atmel.com
  (10.161.30.161) with Microsoft SMTP Server (TLS) id 14.3.235.1; Wed, 13 Apr
- 2016 17:15:35 +0200
-Subject: Re: [PATCH v5 22/50] mtd: nand: atmel: switch to mtd_ooblayout_ops
+ 2016 17:28:22 +0200
+Subject: Re: [PATCH v5 04/50] mtd: nand: atmel: use mtd_ooblayout_xxx()
+ helpers where appropriate
 To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
         <linux-mtd@lists.infradead.org>,
         Richard Weinberger <richard@nod.at>
 References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
- <1459354505-32551-23-git-send-email-boris.brezillon@free-electrons.com>
+ <1459354505-32551-5-git-send-email-boris.brezillon@free-electrons.com>
 CC:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
@@ -46,13 +47,14 @@ CC:     Daniel Mack <daniel@zonque.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
 From:   Nicolas Ferre <nicolas.ferre@atmel.com>
+X-Enigmail-Draft-Status: N1110
 Organization: atmel
-Message-ID: <570E62A9.5020204@atmel.com>
-Date:   Wed, 13 Apr 2016 17:15:53 +0200
+Message-ID: <570E65A7.5000705@atmel.com>
+Date:   Wed, 13 Apr 2016 17:28:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <1459354505-32551-23-git-send-email-boris.brezillon@free-electrons.com>
+In-Reply-To: <1459354505-32551-5-git-send-email-boris.brezillon@free-electrons.com>
 Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.161.30.18]
@@ -60,7 +62,7 @@ Return-Path: <Nicolas.FERRE@atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52970
+X-archive-position: 52971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,180 +80,165 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 Le 30/03/2016 18:14, Boris Brezillon a écrit :
-> Implementing the mtd_ooblayout_ops interface is the new way of exposing
-> ECC/OOB layout to MTD users.
+> The mtd_ooblayout_xxx() helper functions have been added to avoid direct
+> accesses to the ecclayout field, and thus ease for future reworks.
+> Use these helpers in all places where the oobfree[] and eccpos[] arrays
+> where directly accessed.
 > 
 > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-
-It seems good:
-Reviewed-by: Nicolas Ferre <nicolas.ferre@atmel.com>
-
-Bye,
-
-
 > ---
->  drivers/mtd/nand/atmel_nand.c | 84 ++++++++++++++++++++-----------------------
->  1 file changed, 38 insertions(+), 46 deletions(-)
+>  drivers/mtd/nand/atmel_nand.c | 48 ++++++++++++++++++++++++++-----------------
+>  1 file changed, 29 insertions(+), 19 deletions(-)
 > 
 > diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-> index 321d331..46a601e 100644
+> index 0b5da72..321d331 100644
 > --- a/drivers/mtd/nand/atmel_nand.c
 > +++ b/drivers/mtd/nand/atmel_nand.c
-> @@ -72,30 +72,44 @@ struct atmel_nand_nfc_caps {
->  	uint32_t rb_mask;
->  };
+> @@ -836,13 +836,16 @@ static void pmecc_correct_data(struct mtd_info *mtd, uint8_t *buf, uint8_t *ecc,
+>  			dev_dbg(host->dev, "Bit flip in data area, byte_pos: %d, bit_pos: %d, 0x%02x -> 0x%02x\n",
+>  				pos, bit_pos, err_byte, *(buf + byte_pos));
+>  		} else {
+> +			struct mtd_oob_region oobregion;
+> +
+>  			/* Bit flip in OOB area */
+>  			tmp = sector_num * nand_chip->ecc.bytes
+>  					+ (byte_pos - sector_size);
+>  			err_byte = ecc[tmp];
+>  			ecc[tmp] ^= (1 << bit_pos);
 >  
-> -/* oob layout for large page size
-> +/*
-> + * oob layout for large page size
->   * bad block info is on bytes 0 and 1
->   * the bytes have to be consecutives to avoid
->   * several NAND_CMD_RNDOUT during read
-> - */
-> -static struct nand_ecclayout atmel_oobinfo_large = {
-> -	.eccbytes = 4,
-> -	.eccpos = {60, 61, 62, 63},
-> -	.oobfree = {
-> -		{2, 58}
-> -	},
-> -};
-> -
-> -/* oob layout for small page size
-> + *
-> + * oob layout for small page size
->   * bad block info is on bytes 4 and 5
->   * the bytes have to be consecutives to avoid
->   * several NAND_CMD_RNDOUT during read
->   */
-> -static struct nand_ecclayout atmel_oobinfo_small = {
-> -	.eccbytes = 4,
-> -	.eccpos = {0, 1, 2, 3},
-> -	.oobfree = {
-> -		{6, 10}
-> -	},
-> +static int atmel_ooblayout_ecc_sp(struct mtd_info *mtd, int section,
-> +				  struct mtd_oob_region *oobregion)
-> +{
-> +	if (section)
-> +		return -ERANGE;
-> +
-> +	oobregion->length = 4;
-> +	oobregion->offset = 0;
-> +
-> +	return 0;
-> +}
-> +
-> +static int atmel_ooblayout_free_sp(struct mtd_info *mtd, int section,
-> +				   struct mtd_oob_region *oobregion)
-> +{
-> +	if (section)
-> +		return -ERANGE;
-> +
-> +	oobregion->offset = 6;
-> +	oobregion->length = mtd->oobsize - oobregion->offset;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct mtd_ooblayout_ops atmel_ooblayout_sp_ops = {
-> +	.ecc = atmel_ooblayout_ecc_sp,
-> +	.free = atmel_ooblayout_free_sp,
->  };
+> -			pos = tmp + nand_chip->ecc.layout->eccpos[0];
+> +			mtd_ooblayout_ecc(mtd, 0, &oobregion);
+> +			pos = tmp + oobregion.offset;
+>  			dev_dbg(host->dev, "Bit flip in OOB, oob_byte_pos: %d, bit_pos: %d, 0x%02x -> 0x%02x\n",
+>  				pos, bit_pos, err_byte, ecc[tmp]);
+>  		}
+> @@ -934,7 +937,6 @@ static int atmel_nand_pmecc_read_page(struct mtd_info *mtd,
+>  	struct atmel_nand_host *host = nand_get_controller_data(chip);
+>  	int eccsize = chip->ecc.size * chip->ecc.steps;
+>  	uint8_t *oob = chip->oob_poi;
+> -	uint32_t *eccpos = chip->ecc.layout->eccpos;
+>  	uint32_t stat;
+>  	unsigned long end_time;
+>  	int bitflips = 0;
+> @@ -956,7 +958,11 @@ static int atmel_nand_pmecc_read_page(struct mtd_info *mtd,
 >  
->  struct atmel_nfc {
-> @@ -163,8 +177,6 @@ struct atmel_nand_host {
->  	int			*pmecc_delta;
->  };
->  
-> -static struct nand_ecclayout atmel_pmecc_oobinfo;
-> -
->  /*
->   * Enable NAND.
->   */
-> @@ -483,22 +495,6 @@ static int pmecc_get_ecc_bytes(int cap, int sector_size)
->  	return (m * cap + 7) / 8;
->  }
->  
-> -static void pmecc_config_ecc_layout(struct nand_ecclayout *layout,
-> -				    int oobsize, int ecc_len)
-> -{
-> -	int i;
-> -
-> -	layout->eccbytes = ecc_len;
-> -
-> -	/* ECC will occupy the last ecc_len bytes continuously */
-> -	for (i = 0; i < ecc_len; i++)
-> -		layout->eccpos[i] = oobsize - ecc_len + i;
-> -
-> -	layout->oobfree[0].offset = PMECC_OOB_RESERVED_BYTES;
-> -	layout->oobfree[0].length =
-> -		oobsize - ecc_len - layout->oobfree[0].offset;
-> -}
-> -
->  static void __iomem *pmecc_get_alpha_to(struct atmel_nand_host *host)
+>  	stat = pmecc_readl_relaxed(host->ecc, ISR);
+>  	if (stat != 0) {
+> -		bitflips = pmecc_correction(mtd, stat, buf, &oob[eccpos[0]]);
+> +		struct mtd_oob_region oobregion;
+> +
+> +		mtd_ooblayout_ecc(mtd, 0, &oobregion);
+> +		bitflips = pmecc_correction(mtd, stat, buf,
+> +					    &oob[oobregion.offset]);
+>  		if (bitflips < 0)
+>  			/* uncorrectable errors */
+>  			return 0;
+> @@ -970,8 +976,8 @@ static int atmel_nand_pmecc_write_page(struct mtd_info *mtd,
+>  		int page)
 >  {
->  	int table_size;
-> @@ -1013,8 +1009,8 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
->  {
->  	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+>  	struct atmel_nand_host *host = nand_get_controller_data(chip);
+> -	uint32_t *eccpos = chip->ecc.layout->eccpos;
+> -	int i, j;
+> +	struct mtd_oob_region oobregion = { };
+> +	int i, j, section = 0;
+>  	unsigned long end_time;
+>  
+>  	if (!host->nfc || !host->nfc->write_by_sram) {
+> @@ -990,11 +996,12 @@ static int atmel_nand_pmecc_write_page(struct mtd_info *mtd,
+>  
+>  	for (i = 0; i < chip->ecc.steps; i++) {
+>  		for (j = 0; j < chip->ecc.bytes; j++) {
+> -			int pos;
+> +			if (!oobregion.length)
+> +				mtd_ooblayout_ecc(mtd, section++, &oobregion);
+
+Here...
+
+
+>  
+> -			pos = i * chip->ecc.bytes + j;
+> -			chip->oob_poi[eccpos[pos]] =
+> +			chip->oob_poi[oobregion.offset++] =
+
+... and there, are you sure to increment the variable inside the
+function call or the table index?
+
+I must say that I don't like it at all.
+
+
+>  				pmecc_readb_ecc_relaxed(host->ecc, i, j);
+> +			oobregion.length--;
+
+Simply do it here, it's so much easier to read and fool proof!
+
+
+>  		}
+>  	}
+>  	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
+> @@ -1008,6 +1015,7 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
 >  	struct atmel_nand_host *host = nand_get_controller_data(nand_chip);
-> +	int eccbytes = mtd_ooblayout_count_eccbytes(mtd);
 >  	uint32_t val = 0;
-> -	struct nand_ecclayout *ecc_layout;
->  	struct mtd_oob_region oobregion;
+>  	struct nand_ecclayout *ecc_layout;
+> +	struct mtd_oob_region oobregion;
 >  
 >  	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_RST);
-> @@ -1065,12 +1061,11 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
->  		| PMECC_CFG_AUTO_DISABLE);
->  	pmecc_writel(host->ecc, CFG, val);
+>  	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_DISABLE);
+> @@ -1059,9 +1067,10 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
 >  
-> -	ecc_layout = nand_chip->ecc.layout;
+>  	ecc_layout = nand_chip->ecc.layout;
 >  	pmecc_writel(host->ecc, SAREA, mtd->oobsize - 1);
->  	mtd_ooblayout_ecc(mtd, 0, &oobregion);
->  	pmecc_writel(host->ecc, SADDR, oobregion.offset);
+> -	pmecc_writel(host->ecc, SADDR, ecc_layout->eccpos[0]);
+> +	mtd_ooblayout_ecc(mtd, 0, &oobregion);
+> +	pmecc_writel(host->ecc, SADDR, oobregion.offset);
 >  	pmecc_writel(host->ecc, EADDR,
-> -		     oobregion.offset + ecc_layout->eccbytes - 1);
-> +		     oobregion.offset + eccbytes - 1);
+> -			ecc_layout->eccpos[ecc_layout->eccbytes - 1]);
+> +		     oobregion.offset + ecc_layout->eccbytes - 1);
 >  	/* See datasheet about PMECC Clock Control Register */
 >  	pmecc_writel(host->ecc, CLK, 2);
 >  	pmecc_writel(host->ecc, IDR, 0xff);
-> @@ -1292,11 +1287,8 @@ static int atmel_pmecc_nand_init_params(struct platform_device *pdev,
->  			err_no = -EINVAL;
->  			goto err;
->  		}
-> -		pmecc_config_ecc_layout(&atmel_pmecc_oobinfo,
-> -					mtd->oobsize,
-> -					nand_chip->ecc.total);
+> @@ -1362,12 +1371,12 @@ static int atmel_nand_read_page(struct mtd_info *mtd, struct nand_chip *chip,
+>  {
+>  	int eccsize = chip->ecc.size;
+>  	int eccbytes = chip->ecc.bytes;
+> -	uint32_t *eccpos = chip->ecc.layout->eccpos;
+>  	uint8_t *p = buf;
+>  	uint8_t *oob = chip->oob_poi;
+>  	uint8_t *ecc_pos;
+>  	int stat;
+>  	unsigned int max_bitflips = 0;
+> +	struct mtd_oob_region oobregion = {};
 >  
-> -		nand_chip->ecc.layout = &atmel_pmecc_oobinfo;
-> +		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
->  		break;
->  	default:
->  		dev_warn(host->dev,
-> @@ -1644,19 +1636,19 @@ static int atmel_hw_nand_init_params(struct platform_device *pdev,
->  	/* set ECC page size and oob layout */
->  	switch (mtd->writesize) {
->  	case 512:
-> -		nand_chip->ecc.layout = &atmel_oobinfo_small;
-> +		mtd_set_ooblayout(mtd, &atmel_ooblayout_sp_ops);
->  		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_528);
->  		break;
->  	case 1024:
-> -		nand_chip->ecc.layout = &atmel_oobinfo_large;
-> +		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
->  		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_1056);
->  		break;
->  	case 2048:
-> -		nand_chip->ecc.layout = &atmel_oobinfo_large;
-> +		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
->  		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_2112);
->  		break;
->  	case 4096:
-> -		nand_chip->ecc.layout = &atmel_oobinfo_large;
-> +		mtd_set_ooblayout(mtd, &nand_ooblayout_lp_ops);
->  		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_4224);
->  		break;
->  	default:
+>  	/*
+>  	 * Errata: ALE is incorrectly wired up to the ECC controller
+> @@ -1385,19 +1394,20 @@ static int atmel_nand_read_page(struct mtd_info *mtd, struct nand_chip *chip,
+>  	chip->read_buf(mtd, p, eccsize);
+>  
+>  	/* move to ECC position if needed */
+> -	if (eccpos[0] != 0) {
+> -		/* This only works on large pages
+> -		 * because the ECC controller waits for
+> -		 * NAND_CMD_RNDOUTSTART after the
+> -		 * NAND_CMD_RNDOUT.
+> -		 * anyway, for small pages, the eccpos[0] == 0
+> +	mtd_ooblayout_ecc(mtd, 0, &oobregion);
+> +	if (oobregion.offset != 0) {
+> +		/*
+> +		 * This only works on large pages because the ECC controller
+> +		 * waits for NAND_CMD_RNDOUTSTART after the NAND_CMD_RNDOUT.
+> +		 * Anyway, for small pages, the first ECC byte is at offset
+> +		 * 0 in the OOB area.
+>  		 */
+>  		chip->cmdfunc(mtd, NAND_CMD_RNDOUT,
+> -				mtd->writesize + eccpos[0], -1);
+> +			      mtd->writesize + oobregion.offset, -1);
+>  	}
+>  
+>  	/* the ECC controller needs to read the ECC just after the data */
+> -	ecc_pos = oob + eccpos[0];
+> +	ecc_pos = oob + oobregion.offset;
+>  	chip->read_buf(mtd, ecc_pos, eccbytes);
+>  
+>  	/* check if there's an error */
 > 
 
 

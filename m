@@ -1,66 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2016 16:41:17 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:40616 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27026480AbcDMOlNa9QGK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Apr 2016 16:41:13 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id DD8CC22B; Wed, 13 Apr 2016 16:41:07 +0200 (CEST)
-Received: from bbrezillon (LMontsouris-657-1-184-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id C2FC342;
-        Wed, 13 Apr 2016 16:41:06 +0200 (CEST)
-Date:   Wed, 13 Apr 2016 16:41:06 +0200
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     David Woodhouse <dwmw2@infradead.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2016 17:15:46 +0200 (CEST)
+Received: from eusmtp01.atmel.com ([212.144.249.242]:3657 "EHLO
+        eusmtp01.atmel.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006955AbcDMPPmetZGK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Apr 2016 17:15:42 +0200
+Received: from HNOCHT01.corp.atmel.com (10.161.30.161) by eusmtp01.atmel.com
+ (10.161.101.30) with Microsoft SMTP Server (TLS) id 14.3.235.1; Wed, 13 Apr
+ 2016 17:15:32 +0200
+Received: from [10.159.245.112] (10.161.30.18) by HNOCHT01.corp.atmel.com
+ (10.161.30.161) with Microsoft SMTP Server (TLS) id 14.3.235.1; Wed, 13 Apr
+ 2016 17:15:35 +0200
+Subject: Re: [PATCH v5 22/50] mtd: nand: atmel: switch to mtd_ooblayout_ops
+To:     Boris Brezillon <boris.brezillon@free-electrons.com>,
+        David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        <linux-mtd@lists.infradead.org>,
         Richard Weinberger <richard@nod.at>
-Cc:     Daniel Mack <daniel@zonque.org>,
+References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1459354505-32551-23-git-send-email-boris.brezillon@free-electrons.com>
+CC:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Kukjin Kim <kgene@kernel.org>,
+        "Kukjin Kim" <kgene@kernel.org>,
         Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>,
         Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
         Alexandre Belloni <alexandre.belloni@free-electrons.com>,
         Wenyou Yang <wenyou.yang@atmel.com>,
         Josh Wu <rainyfeeling@outlook.com>,
         Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
         Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
+        Chen-Yu Tsai <wens@csie.org>, <linux-sunxi@googlegroups.com>,
         Stefan Agner <stefan@agner.ch>,
         Kyungmin Park <kyungmin.park@samsung.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        punnaiah choudary kalluri <punnaia@xilinx.com>,
+        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
+        "punnaiah choudary kalluri" <punnaia@xilinx.com>,
         Priit Laes <plaes@plaes.org>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-api@vger.kernel.org,
-        Harvey Hunt <harvey.hunt@imgtec.com>,
-        Archit Taneja <architt@codeaurora.org>,
+        "Kamal Dasu" <kdasu.kdev@gmail.com>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        <linux-api@vger.kernel.org>, Harvey Hunt <harvey.hunt@imgtec.com>,
+        "Archit Taneja" <architt@codeaurora.org>,
         Han Xu <b45815@freescale.com>,
         Huang Shijie <shijie.huang@arm.com>
-Subject: Re: [PATCH v5 22/50] mtd: nand: atmel: switch to mtd_ooblayout_ops
-Message-ID: <20160413164106.46d8374a@bbrezillon>
-In-Reply-To: <1459354505-32551-23-git-send-email-boris.brezillon@free-electrons.com>
-References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
-        <1459354505-32551-23-git-send-email-boris.brezillon@free-electrons.com>
-X-Mailer: Claws Mail 3.12.0 (GTK+ 2.24.28; x86_64-pc-linux-gnu)
+From:   Nicolas Ferre <nicolas.ferre@atmel.com>
+Organization: atmel
+Message-ID: <570E62A9.5020204@atmel.com>
+Date:   Wed, 13 Apr 2016 17:15:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@free-electrons.com>
+In-Reply-To: <1459354505-32551-23-git-send-email-boris.brezillon@free-electrons.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.161.30.18]
+Return-Path: <Nicolas.FERRE@atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52969
+X-archive-position: 52970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: nicolas.ferre@atmel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,17 +77,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 30 Mar 2016 18:14:37 +0200
-Boris Brezillon <boris.brezillon@free-electrons.com> wrote:
-
+Le 30/03/2016 18:14, Boris Brezillon a écrit :
 > Implementing the mtd_ooblayout_ops interface is the new way of exposing
 > ECC/OOB layout to MTD users.
 > 
 > Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 
-Tested with mtd_oobtest.ko on sama5d4ek.
+It seems good:
+Reviewed-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-Tested-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Bye,
+
 
 > ---
 >  drivers/mtd/nand/atmel_nand.c | 84 ++++++++++++++++++++-----------------------
@@ -248,10 +252,8 @@ Tested-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 >  		ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_4224);
 >  		break;
 >  	default:
-
+> 
 
 
 -- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+Nicolas Ferre

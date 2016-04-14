@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2016 02:33:49 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:33884 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2016 02:40:56 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:34502 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025537AbcDNAdpxSWWA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Apr 2016 02:33:45 +0200
+        with ESMTP id S27025537AbcDNAkzOTeYA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Apr 2016 02:40:55 +0200
 Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id ADD17605BD;
-        Thu, 14 Apr 2016 00:33:43 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTP id 2B13B60CF5;
+        Thu, 14 Apr 2016 00:40:52 +0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 9EFCB615C7; Thu, 14 Apr 2016 00:33:43 +0000 (UTC)
+        id 0A97560DBA; Thu, 14 Apr 2016 00:40:52 +0000 (UTC)
 Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
         (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EB62F601B3;
-        Thu, 14 Apr 2016 00:33:41 +0000 (UTC)
-Date:   Wed, 13 Apr 2016 17:33:41 -0700
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 74264605BD;
+        Thu, 14 Apr 2016 00:40:51 +0000 (UTC)
+Date:   Wed, 13 Apr 2016 17:40:50 -0700
 From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     linux-clk@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-clk@vger.kernel.org,
         Michael Turquette <mturquette@baylibre.com>,
         linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
@@ -33,29 +34,32 @@ Cc:     linux-clk@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         adi-buildroot-devel@lists.sourceforge.net,
         Russell King <linux@arm.linux.org.uk>,
-        linux-m68k@lists.linux-m68k.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-renesas-soc@vger.kernel.org,
+        linux-m68k@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         Magnus Damm <magnus.damm@gmail.com>,
-        John Crispin <blogic@openwrt.org>
+        John Crispin <blogic@openwrt.org>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Paul Walmsley <paul@pwsan.com>,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>
 Subject: Re: [PATCH v2] clk: let clk_disable() return immediately if clk is
  NULL or error
-Message-ID: <20160414003341.GH14441@codeaurora.org>
+Message-ID: <20160414004050.GJ14441@codeaurora.org>
 References: <1459821083-28116-1-git-send-email-yamada.masahiro@socionext.com>
  <20160408003328.GA14441@codeaurora.org>
- <CAK7LNASW+D0B_k97r__AZeYDR5UqNPqn_j1aoQepHz-bGgV2ng@mail.gmail.com>
+ <20160408100600.GI1668@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK7LNASW+D0B_k97r__AZeYDR5UqNPqn_j1aoQepHz-bGgV2ng@mail.gmail.com>
+In-Reply-To: <20160408100600.GI1668@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 X-Virus-Scanned: ClamAV using ClamSMTP
 Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52974
+X-archive-position: 52975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,53 +76,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/08, Masahiro Yamada wrote:
+On 04/08, Ralf Baechle wrote:
 > 
+> While your argument makes perfect sense, Many clk_disable implementations
+> are already doing similar checks, for example:
 > 
-> This makes our driver programming life easier.
+> arch/arm/mach-davinci/clock.c:
 > 
+[...]
 > 
-> For example, let's see drivers/tty/serial/8250/8250_of.c
-> 
-> 
-> The "clock-frequency" DT property takes precedence over "clocks" property.
-> So, it is valid to probe the driver with a NULL pointer for info->clk.
-> 
-> 
->         if (of_property_read_u32(np, "clock-frequency", &clk)) {
-> 
->                 /* Get clk rate through clk driver if present */
->                 info->clk = devm_clk_get(&ofdev->dev, NULL);
->                 if (IS_ERR(info->clk)) {
->                         dev_warn(&ofdev->dev,
->                                 "clk or clock-frequency not defined\n");
->                         return PTR_ERR(info->clk);
->                 }
-> 
->                 ret = clk_prepare_enable(info->clk);
->                 if (ret < 0)
->                         return ret;
-> 
->                 clk = clk_get_rate(info->clk);
->         }
-> 
-> 
-> As a result, we need to make sure the clk pointer is valid
-> before calling clk_disable_unprepare().
-> 
-> 
-> If we could support pointer checking in callees, we would be able to
-> clean-up lots of clock consumers.
-> 
-> 
+> So should we go and weed out these checks?
 
-I'm not sure if you meant to use that example for the error
-pointer case? It bails out if clk_get() returns an error pointer.
-
-I'm all for a no-op in clk_disable()/unprepare() when the pointer
-is NULL. But when it's an error pointer the driver should be
-handling it and bail out before it would ever call enable/prepare
-on it or disable/unprepare.
+Yes, it would be nice to at least make the differing
+implementations of the clk API consistent. Of course, we should
+really put our efforts towards getting rid of the non-CCF
+implementations instead so that there's less confusion overall.
 
 -- 
 Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,

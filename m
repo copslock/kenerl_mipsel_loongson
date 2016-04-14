@@ -1,54 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2016 21:06:14 +0200 (CEST)
-Received: from mail-io0-f194.google.com ([209.85.223.194]:35375 "EHLO
-        mail-io0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026498AbcDNTGLMrNjG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Apr 2016 21:06:11 +0200
-Received: by mail-io0-f194.google.com with SMTP id u185so12294781iod.2
-        for <linux-mips@linux-mips.org>; Thu, 14 Apr 2016 12:06:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:date:message-id:subject:from:to:cc;
-        bh=23OvFgGywyZgGSaXQgQemx8XfVTeYmXjXt5TabkMSBg=;
-        b=Vlbg2eQG1a8AwTE483LgLthqYwyXdm0HuPlriFdIl9RRQBAKhL4QKBLeY6x+SL3vQL
-         K1YMpJdUxibiu33n056A26qN4vJAISOuokvUdbgAjcpF0sy1dZF1fnNd8nqo5qHDAqOc
-         zHUGBx+p3XTcdd1vnbJnwWFWctXMg4Fhubzn0wrbeEQ0RB87ff7g0WZX4DIiAh3myCkr
-         1jSIN75KJRdKtRkVqAyuacCpHoXX3lmfBixT0DdVHwEBtJS3WVDEPPRDvyXG6kTYRH8B
-         /95CB1XNcBw9Qfy6lwwCB6UB5YN2vJ8A3x9eeBv4voEq9kMvZGYoaAJWXPkWAgz+F/+v
-         K6Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:date:message-id:subject:from
-         :to:cc;
-        bh=23OvFgGywyZgGSaXQgQemx8XfVTeYmXjXt5TabkMSBg=;
-        b=B/4QAkOxEuw2F4L1Fa7bs7YVODpzN5MKvj8VSLftU2aUKNhFB7r/pLUS/WIHUtX9gB
-         bgOzaHiK8FHKFLNYdXfCnCW9g0W6R1YKEPrN6WC/rovAD/XxopEyJMFVQBuGO9XN8+4V
-         yw2f0iQfxzvrkCBvbig8c7EAOmCULlYuX+rwCB39Fp4x9pEmTBWrfVuZhyojXN+8AEm4
-         yDMlLcacTL0lWgETYFM2bvstBa+9OeJVh3eG+c7Xt0eVsGxA7JwZXdEsx+oSedlTUBVh
-         lMbqda1rN2EzYTTiXkpCl4cSBD4JF4jzN7LvB84y2WcAYs+v3wYdxUKiasvPR8BLaOC4
-         dXwA==
-X-Gm-Message-State: AOPr4FUbZs8GkThIfx21Fci72RUFU02NynnZhsepgRjx3CmvjwT86t/1fUujPETokIOxKcuJ1xozPtYZP5Hjug==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2016 23:40:07 +0200 (CEST)
+Received: from e36.co.us.ibm.com ([32.97.110.154]:37429 "EHLO
+        e36.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026494AbcDNVkBFC5ww (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Apr 2016 23:40:01 +0200
+Received: from localhost
+        by e36.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Thu, 14 Apr 2016 15:39:54 -0600
+Received: from d03dlp01.boulder.ibm.com (9.17.202.177)
+        by e36.co.us.ibm.com (192.168.1.136) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 14 Apr 2016 15:39:52 -0600
+X-IBM-Helo: d03dlp01.boulder.ibm.com
+X-IBM-MailFrom: paulmck@linux.vnet.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+        by d03dlp01.boulder.ibm.com (Postfix) with ESMTP id AA11F1FF0021;
+        Thu, 14 Apr 2016 15:28:00 -0600 (MDT)
+Received: from d01av01.pok.ibm.com (d01av01.pok.ibm.com [9.56.224.215])
+        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u3ELdpDX34275570;
+        Thu, 14 Apr 2016 21:39:52 GMT
+Received: from d01av01.pok.ibm.com (localhost [127.0.0.1])
+        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u3ELdmBg007590;
+        Thu, 14 Apr 2016 17:39:51 -0400
+Received: from paulmck-ThinkPad-W541 ([9.70.82.191])
+        by d01av01.pok.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u3ELdm73007549;
+        Thu, 14 Apr 2016 17:39:48 -0400
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id ACD8216C2AF6; Thu, 14 Apr 2016 14:40:15 -0700 (PDT)
+Date:   Thu, 14 Apr 2016 14:40:15 -0700
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Will Deacon <will.deacon@arm.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arch@vger.kernel.org,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        virtualization@lists.linux-foundation.org,
+        Stefano Stabellini <stefano.stabellini@eu.citrix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@elte.hu>, "H. Peter Anvin" <hpa@zytor.com>,
+        Joe Perches <joe@perches.com>,
+        David Miller <davem@davemloft.net>, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        x86@kernel.org, user-mode-linux-devel@lists.sourceforge.net,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        xen-devel@lists.xenproject.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>, ddaney.cavm@gmail.com,
+        james.hogan@imgtec.com, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] documentation: Add disclaimer
+Message-ID: <20160414214015.GA31866@linux.vnet.ibm.com>
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <20160114120445.GB15828@arm.com>
+ <56980145.5030901@imgtec.com>
+ <20160114204827.GE3818@linux.vnet.ibm.com>
+ <56981212.7050301@imgtec.com>
+ <20160114222046.GH3818@linux.vnet.ibm.com>
+ <20160126102402.GE6357@twins.programming.kicks-ass.net>
+ <20160126103200.GI6375@twins.programming.kicks-ass.net>
+ <20160126110053.GA21553@arm.com>
+ <20160126201143.GV4503@linux.vnet.ibm.com>
+ <20160127083546.GJ6357@twins.programming.kicks-ass.net>
 MIME-Version: 1.0
-X-Received: by 10.107.26.203 with SMTP id a194mr20569465ioa.115.1460660765183;
- Thu, 14 Apr 2016 12:06:05 -0700 (PDT)
-Received: by 10.107.31.77 with HTTP; Thu, 14 Apr 2016 12:06:05 -0700 (PDT)
-Date:   Thu, 14 Apr 2016 21:06:05 +0200
-X-Google-Sender-Auth: CwMrKcsFND7H_II-vkP2nQsxBuY
-Message-ID: <CAMuHMdUARn_SxhkWiTsGdSixFv9a=VjKLLgQMfPTtxufrjepCg@mail.gmail.com>
-Subject: Revisiting rbtx4927: gpiod_direction_output_raw: invalid GPIO
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160127083546.GJ6357@twins.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16041421-0021-0000-0000-000038A34974
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52985
+X-archive-position: 52986
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,43 +94,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Nemoto-san,
+On Wed, Jan 27, 2016 at 09:35:46AM +0100, Peter Zijlstra wrote:
+> On Tue, Jan 26, 2016 at 12:11:43PM -0800, Paul E. McKenney wrote:
+> > So Peter, would you like to update your patch to include yourself
+> > and Will as authors?
+> 
+> Sure, here goes.
+> 
+> ---
+> Subject: documentation: Add disclaimer
+> 
+> It appears people are reading this document as a requirements list for
+> building hardware. This is not the intent of this document. Nor is it
+> particularly suited for this purpose.
+> 
+> The primary purpose of this document is our collective attempt to define
+> a set of primitives that (hopefully) allow us to write correct code on
+> the myriad of SMP platforms Linux supports.
+> 
+> Its a definite work in progress as our understanding of these platforms,
+> and memory ordering in general, progresses.
+> 
+> Nor does being mentioned in this document mean we think its a
+> particularly good idea; the data dependency barrier required by Alpha
+> being a prime example. Yes we have it, no you're insane to require it
+> when building new hardware.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-I've just updated my old rbtx4927 from v3.13-rc3 to v4.6-rc3.
-Surprisingly, it boots to nfsroot without any kernel changes.
+Rather belatedly queued and pushed to -rcu, apologies for the delay.
+One minor edit noted below.
 
-However, there's an annoying warning in the boot log:
+							Thanx, Paul
 
-        gpiod_direction_output_raw: invalid GPIO
+> ---
+>  Documentation/memory-barriers.txt | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
+> index a61be39c7b51..98626125f484 100644
+> --- a/Documentation/memory-barriers.txt
+> +++ b/Documentation/memory-barriers.txt
+> @@ -4,8 +4,24 @@
+> 
+>  By: David Howells <dhowells@redhat.com>
+>      Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+> +    Will Deacon <will.deacon@arm.com>
+> +    Peter Zijlstra <peterz@infradead.org>
+> 
+> -Contents:
+> +==========
+> +DISCLAIMER
+> +==========
+> +
+> +This document is not a specification; it is intentionally (for the sake of
+> +brevity) and unintentionally (due to being human) incomplete. This document is
+> +meant as a guide to using the various memory barriers provided by Linux, but
+> +in case of any doubt (and there are many) please ask.
+> +
+> +I repeat, this document is not a specification of what Linux expects from
 
-This is caused by the following code in arch/mips/txx9/rbtx4927/setup.c:
+s/I/To/ because there is more than one author.
 
-        static void __init rbtx4927_mem_setup(void)
-        {
-
-                /* TX4927-SIO DTR on (PIO[15]) */
-                gpio_request(15, "sio-dtr");
-
-returns -EPROBE_DEFER
-
-                gpio_direction_output(15, 1);
-
-VALIDATE_DESC triggers the warning.
-
-Probably a silly GPIO conversion was missed during the last 2+ years?
-
-I can bisect (which may take a while), but perhaps this immediately rings a bell
-with someone?
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> +hardware.
+> +
+> +========
+> +CONTENTS
+> +========
+> 
+>   (*) Abstract memory access model.
+> 
+> 

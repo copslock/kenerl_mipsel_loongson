@@ -1,65 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2016 20:20:04 +0200 (CEST)
-Received: from mail-pf0-f174.google.com ([209.85.192.174]:33669 "EHLO
-        mail-pf0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026500AbcDMSUC3lcD5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Apr 2016 20:20:02 +0200
-Received: by mail-pf0-f174.google.com with SMTP id 184so37555060pff.0
-        for <linux-mips@linux-mips.org>; Wed, 13 Apr 2016 11:20:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=3WhdQkNyDr0f94mo6TSlaNQD3amlDeddyHWapxshXIc=;
-        b=AwuXYzn0GfEJOFNY0X0O7ghHG4umYkCdvxfMU3ek4dc/jOb800o/AmOjySuGjla/6V
-         y2tSvPRL8qyu1JtB6fsGftU/JRFvTBGohHumSEzgUHu3+fjc9/95djq2v7vqQQKN/gKy
-         SGPFsz+CV5SSx19qoYbJbbLjmC9p1hKTfWRFPJ7QvR2/CZiLfAW8S+WKiX6MLgS2mgCH
-         tgpsdHZNxVTd6Ykzb64plm7/HsuHv2rOIahmhwnarS4dtzSzUYHEUDF24z7ZV9K5FM8R
-         qoom4aH+JLV9aNrA0GskaJrrXQNV/Zot+fKVXl57DFpWe4zAuHaAcTVJ6GvxUt82Aezu
-         b44Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=3WhdQkNyDr0f94mo6TSlaNQD3amlDeddyHWapxshXIc=;
-        b=JIdNG1edOUG8q+6Ior0IqxfxaZR5VWn1cdsEeYb7mIBqxNRgyVbeUikfmC7YFPJrI3
-         W3cKZ3sqtZoAm5I3kwmjQYfBacueAx2QrXsSS22B7snz98J3LdS8dn+qedFNibpJwQ/9
-         AYsm18IK2Bl01WiN5ISI0YuH1DLHHkM7IdL1oF5v/BigrEnsdz/kl1aAaDAVUIlq4VTy
-         8+r18R2pqHv7c2hr6P1Ge8HkwX4QcVZ1f4EliBNJpJpDyAaRHPWr1mkj/4pb0G//uPpa
-         bXiuqSpQBDAfpuEoXjanRrlO5Y03adizPXwUu2HbZcG2qpQcka51lpfE523FMX8cUoq9
-         xq8Q==
-X-Gm-Message-State: AOPr4FVdzX43Tq+9jIqeV+mfORo1Q0D8M+UGs8wjLkVknLpe8aKxjLyQ6T8u7CtySyV/dA==
-X-Received: by 10.98.70.67 with SMTP id t64mr14915648pfa.110.1460571596398;
-        Wed, 13 Apr 2016 11:19:56 -0700 (PDT)
-Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.gmail.com with ESMTPSA id 17sm52598818pfp.96.2016.04.13.11.19.54
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 13 Apr 2016 11:19:55 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-mips@linux-mips.org, Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2016 02:33:49 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:33884 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27025537AbcDNAdpxSWWA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Apr 2016 02:33:45 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id ADD17605BD;
+        Thu, 14 Apr 2016 00:33:43 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9EFCB615C7; Thu, 14 Apr 2016 00:33:43 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EB62F601B3;
+        Thu, 14 Apr 2016 00:33:41 +0000 (UTC)
+Date:   Wed, 13 Apr 2016 17:33:41 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     linux-clk@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Ryan Mallon <rmallon@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Steven Miao <realmz6@gmail.com>,
+        Simon Horman <horms@verge.net.au>,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        adi-buildroot-devel@lists.sourceforge.net,
         Russell King <linux@arm.linux.org.uk>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        Punit Agrawal <punit.agrawal@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM
-        BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE...),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] bus: brcmstb_gisb: Rework dependencies
-Date:   Wed, 13 Apr 2016 11:17:48 -0700
-Message-Id: <1460571469-20201-1-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.1.0
-Return-Path: <f.fainelli@gmail.com>
+        linux-m68k@lists.linux-m68k.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-renesas-soc@vger.kernel.org,
+        Magnus Damm <magnus.damm@gmail.com>,
+        John Crispin <blogic@openwrt.org>
+Subject: Re: [PATCH v2] clk: let clk_disable() return immediately if clk is
+ NULL or error
+Message-ID: <20160414003341.GH14441@codeaurora.org>
+References: <1459821083-28116-1-git-send-email-yamada.masahiro@socionext.com>
+ <20160408003328.GA14441@codeaurora.org>
+ <CAK7LNASW+D0B_k97r__AZeYDR5UqNPqn_j1aoQepHz-bGgV2ng@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNASW+D0B_k97r__AZeYDR5UqNPqn_j1aoQepHz-bGgV2ng@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52973
+X-archive-position: 52974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,42 +72,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Do not have the machine Kconfig entry point need to select
-BRCMSTB_GISB_ARB, instead, just let it be default ARCH_BRCMSTB which is
-a better way to deal with this. While at it, also make it default
-BMIPS_GENERIC so the legacy MIPS-based STB platforms can benefit from
-the same thing.
+On 04/08, Masahiro Yamada wrote:
+> 
+> 
+> This makes our driver programming life easier.
+> 
+> 
+> For example, let's see drivers/tty/serial/8250/8250_of.c
+> 
+> 
+> The "clock-frequency" DT property takes precedence over "clocks" property.
+> So, it is valid to probe the driver with a NULL pointer for info->clk.
+> 
+> 
+>         if (of_property_read_u32(np, "clock-frequency", &clk)) {
+> 
+>                 /* Get clk rate through clk driver if present */
+>                 info->clk = devm_clk_get(&ofdev->dev, NULL);
+>                 if (IS_ERR(info->clk)) {
+>                         dev_warn(&ofdev->dev,
+>                                 "clk or clock-frequency not defined\n");
+>                         return PTR_ERR(info->clk);
+>                 }
+> 
+>                 ret = clk_prepare_enable(info->clk);
+>                 if (ret < 0)
+>                         return ret;
+> 
+>                 clk = clk_get_rate(info->clk);
+>         }
+> 
+> 
+> As a result, we need to make sure the clk pointer is valid
+> before calling clk_disable_unprepare().
+> 
+> 
+> If we could support pointer checking in callees, we would be able to
+> clean-up lots of clock consumers.
+> 
+> 
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/arm/mach-bcm/Kconfig | 1 -
- drivers/bus/Kconfig       | 2 ++
- 2 files changed, 2 insertions(+), 1 deletion(-)
+I'm not sure if you meant to use that example for the error
+pointer case? It bails out if clk_get() returns an error pointer.
 
-diff --git a/arch/arm/mach-bcm/Kconfig b/arch/arm/mach-bcm/Kconfig
-index 7ef121472cdd..af10ff27a2ed 100644
---- a/arch/arm/mach-bcm/Kconfig
-+++ b/arch/arm/mach-bcm/Kconfig
-@@ -173,7 +173,6 @@ config ARCH_BRCMSTB
- 	select ARM_GIC
- 	select ARM_ERRATA_798181 if SMP
- 	select HAVE_ARM_ARCH_TIMER
--	select BRCMSTB_GISB_ARB
- 	select BRCMSTB_L2_IRQ
- 	select BCM7120_L2_IRQ
- 	select ARCH_DMA_ADDR_T_64BIT if ARM_LPAE
-diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
-index d4a3a3133da5..85c66e5028c1 100644
---- a/drivers/bus/Kconfig
-+++ b/drivers/bus/Kconfig
-@@ -58,6 +58,8 @@ config ARM_CCN
- config BRCMSTB_GISB_ARB
- 	bool "Broadcom STB GISB bus arbiter"
- 	depends on ARM || MIPS
-+	default ARCH_BRCMSTB
-+	default BMIPS_GENERIC
- 	help
- 	  Driver for the Broadcom Set Top Box System-on-a-chip internal bus
- 	  arbiter. This driver provides timeout and target abort error handling
+I'm all for a no-op in clk_disable()/unprepare() when the pointer
+is NULL. But when it's an error pointer the driver should be
+handling it and bail out before it would ever call enable/prepare
+on it or disable/unprepare.
+
 -- 
-2.1.0
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

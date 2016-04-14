@@ -1,38 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2016 19:36:55 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:40366 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026577AbcDNRgwhzIo5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Apr 2016 19:36:52 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u3EHapQ7009766;
-        Thu, 14 Apr 2016 19:36:51 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u3EHanWK009765;
-        Thu, 14 Apr 2016 19:36:49 +0200
-Date:   Thu, 14 Apr 2016 19:36:49 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Dmitry.Dunaev@baikalelectronics.ru
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Constantine.Gurin@baikalelectronics.ru,
-        Alexey.Malahov@baikalelectronics.ru
-Subject: Re: New MIPS SoC code insertion request
-Message-ID: <20160414173649.GB1003@linux-mips.org>
-References: <E6691421972ADD4588ABC5DDDF6E279B8734754A@NRMAIL.baikal.int>
- <E6691421972ADD4588ABC5DDDF6E279B87347565@NRMAIL.baikal.int>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2016 21:06:14 +0200 (CEST)
+Received: from mail-io0-f194.google.com ([209.85.223.194]:35375 "EHLO
+        mail-io0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026498AbcDNTGLMrNjG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Apr 2016 21:06:11 +0200
+Received: by mail-io0-f194.google.com with SMTP id u185so12294781iod.2
+        for <linux-mips@linux-mips.org>; Thu, 14 Apr 2016 12:06:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:date:message-id:subject:from:to:cc;
+        bh=23OvFgGywyZgGSaXQgQemx8XfVTeYmXjXt5TabkMSBg=;
+        b=Vlbg2eQG1a8AwTE483LgLthqYwyXdm0HuPlriFdIl9RRQBAKhL4QKBLeY6x+SL3vQL
+         K1YMpJdUxibiu33n056A26qN4vJAISOuokvUdbgAjcpF0sy1dZF1fnNd8nqo5qHDAqOc
+         zHUGBx+p3XTcdd1vnbJnwWFWctXMg4Fhubzn0wrbeEQ0RB87ff7g0WZX4DIiAh3myCkr
+         1jSIN75KJRdKtRkVqAyuacCpHoXX3lmfBixT0DdVHwEBtJS3WVDEPPRDvyXG6kTYRH8B
+         /95CB1XNcBw9Qfy6lwwCB6UB5YN2vJ8A3x9eeBv4voEq9kMvZGYoaAJWXPkWAgz+F/+v
+         K6Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:date:message-id:subject:from
+         :to:cc;
+        bh=23OvFgGywyZgGSaXQgQemx8XfVTeYmXjXt5TabkMSBg=;
+        b=B/4QAkOxEuw2F4L1Fa7bs7YVODpzN5MKvj8VSLftU2aUKNhFB7r/pLUS/WIHUtX9gB
+         bgOzaHiK8FHKFLNYdXfCnCW9g0W6R1YKEPrN6WC/rovAD/XxopEyJMFVQBuGO9XN8+4V
+         yw2f0iQfxzvrkCBvbig8c7EAOmCULlYuX+rwCB39Fp4x9pEmTBWrfVuZhyojXN+8AEm4
+         yDMlLcacTL0lWgETYFM2bvstBa+9OeJVh3eG+c7Xt0eVsGxA7JwZXdEsx+oSedlTUBVh
+         lMbqda1rN2EzYTTiXkpCl4cSBD4JF4jzN7LvB84y2WcAYs+v3wYdxUKiasvPR8BLaOC4
+         dXwA==
+X-Gm-Message-State: AOPr4FUbZs8GkThIfx21Fci72RUFU02NynnZhsepgRjx3CmvjwT86t/1fUujPETokIOxKcuJ1xozPtYZP5Hjug==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E6691421972ADD4588ABC5DDDF6E279B87347565@NRMAIL.baikal.int>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <ralf@linux-mips.org>
+X-Received: by 10.107.26.203 with SMTP id a194mr20569465ioa.115.1460660765183;
+ Thu, 14 Apr 2016 12:06:05 -0700 (PDT)
+Received: by 10.107.31.77 with HTTP; Thu, 14 Apr 2016 12:06:05 -0700 (PDT)
+Date:   Thu, 14 Apr 2016 21:06:05 +0200
+X-Google-Sender-Auth: CwMrKcsFND7H_II-vkP2nQsxBuY
+Message-ID: <CAMuHMdUARn_SxhkWiTsGdSixFv9a=VjKLLgQMfPTtxufrjepCg@mail.gmail.com>
+Subject: Revisiting rbtx4927: gpiod_direction_output_raw: invalid GPIO
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 52984
+X-archive-position: 52985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,53 +61,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 14, 2016 at 02:43:06PM +0000, Dmitry.Dunaev@baikalelectronics.ru wrote:
+Hi Nemoto-san,
 
-> I'm Dmitry Dunaev, software designer from Baikal Electronics - Russian
-> semiconductor company (http://www.baikalelectronics.com/). Some time ago
-> we are released our first MIPS processor based on P5600 core
-> (https://www.linux-mips.org/wiki/Baikal).
-> 
-> Now we have this SoC in silicon. Also we have released several revisions
-> of development boards for our SoC. So it seems that we ready to add our
-> platform code into Linux kernel mainline.
-> 
-> Could you please clarify me what steps we should to do to add our code
-> into kernel repositary?
+I've just updated my old rbtx4927 from v3.13-rc3 to v4.6-rc3.
+Surprisingly, it boots to nfsroot without any kernel changes.
 
-I generally recommend to start the process of upstreaming the code early
-possibly even before general availability of a new SoC or platform.
-Generally the process of posting a version of patches, review, changing
-issues has to go through several cycles before the code and documentation
-will have reached a shape where it is deemed acceptable.  And even then
-code will only be accepted for the merge window of the next kernel
-release so worst case that could be another like good four months.
+However, there's an annoying warning in the boot log:
 
-Basically the steps are:
+        gpiod_direction_output_raw: invalid GPIO
 
- - Cleanup your code.
- - Split your patches into reasonably sized patches.  You are using
-   git to create postable patches, so use options -C -M to enable the
-   copy and rename detection which may make patches much smaller and
-   easier to review.
- - Read the following files in the kernel:
+This is caused by the following code in arch/mips/txx9/rbtx4927/setup.c:
 
-     Documentation/SubmitChecklist
-     Documentation/SubmittingDrivers
-     Documentation/SubmittingPatches
+        static void __init rbtx4927_mem_setup(void)
+        {
 
-Here's an example how a reasonably split patchset to add a new feature
-may look like:
+                /* TX4927-SIO DTR on (PIO[15]) */
+                gpio_request(15, "sio-dtr");
 
-  https://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=1459415142-3412-1-git-send-email-matt.redfearn%40imgtec.com
+returns -EPROBE_DEFER
 
-And another one adding support for a new platform including a few drivers:
+                gpio_direction_output(15, 1);
 
-  https://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=1452734299-460-1-git-send-email-joshua.henderson%40microchip.com
+VALIDATE_DESC triggers the warning.
 
-I assume you will be posting several support for the core platfroms as well
-as several drivers.  If the maintainers of the respective driver subsystems
-are ok with that, I can carry the patches along with the platform support
-in the MIPS tree which generally makes the the process somewhat easier.
+Probably a silly GPIO conversion was missed during the last 2+ years?
 
-  Ralf
+I can bisect (which may take a while), but perhaps this immediately rings a bell
+with someone?
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

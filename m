@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Apr 2016 12:40:03 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:36948 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Apr 2016 12:40:21 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:48616 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026666AbcDOKj1lXoWe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Apr 2016 12:39:27 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 047A06DD93922;
-        Fri, 15 Apr 2016 11:39:19 +0100 (IST)
+        with ESMTP id S27026657AbcDOKjmvvQ9e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Apr 2016 12:39:42 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id A7E7058C9B47C;
+        Fri, 15 Apr 2016 11:39:33 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 15 Apr 2016 11:39:21 +0100
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 15 Apr 2016 11:39:36 +0100
 Received: from localhost (10.100.200.59) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 15 Apr
- 2016 11:39:20 +0100
+ 2016 11:39:35 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
@@ -21,9 +21,9 @@ CC:     James Hogan <james.hogan@imgtec.com>,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
         <linux-kernel@vger.kernel.org>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 08/12] MIPS: mm: Don't clobber $1 on XPA TLB refill
-Date:   Fri, 15 Apr 2016 11:36:56 +0100
-Message-ID: <1460716620-13382-9-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH 09/12] MIPS: mm: Pass scratch register through to iPTE_SW
+Date:   Fri, 15 Apr 2016 11:36:57 +0100
+Message-ID: <1460716620-13382-10-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.8.0
 In-Reply-To: <1460716620-13382-1-git-send-email-paul.burton@imgtec.com>
 References: <1460716620-13382-1-git-send-email-paul.burton@imgtec.com>
@@ -34,7 +34,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53005
+X-archive-position: 53006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,83 +51,119 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+Rather than hardcode a scratch register for the XPA case in iPTE_SW,
+pass one through from the work registers allocated by the caller. This
+allows for the XPA path to function correctly regardless of the work
+registers in use.
 
-For XPA kernels build_update_entries() uses $1 (at) as a scratch
-register, but doesn't arrange for it to be preserved, so it will always
-be clobbered by the TLB refill exception. Although this register
-normally has a very short lifetime that doesn't cross memory accesses,
-TLB refills due to instruction fetches (either on a page boundary or
-after preemption) could clobber live data, and its easy to reproduce
-the clobber with a little bit of assembler code.
-
-Note that the use of a hardware page table walker will partly mask the
-problem, as the TLB refill handler will not always be invoked.
-
-This is fixed by avoiding the use of the extra scratch register. The
-pte_high parts (going into the lower half of the EntryLo registers) are
-loaded and manipulated separately so as to keep the PTE pointer around
-for the other halves (instead of storing in the scratch register), and
-the pte_low parts (going into the high half of the EntryLo registers)
-are masked with 0x00ffffff using an ext instruction (instead of loading
-0x00ffffff into the scratch register and AND'ing).
-
-[paul.burton@imgtec.com:
-  - Rebase atop other TLB work.
-  - Use ext instead of an sll, srl sequence.
-  - Use cpu_has_xpa instead of #ifdefs.
-  - Modify commit subject to include "mm".]
-
-Fixes: c5b367835cfc ("MIPS: Add support for XPA.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
 ---
 
- arch/mips/mm/tlbex.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ arch/mips/mm/tlbex.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
 diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index ceaee32..004cd9f 100644
+index 004cd9f..d7a7b3d 100644
 --- a/arch/mips/mm/tlbex.c
 +++ b/arch/mips/mm/tlbex.c
-@@ -1006,26 +1006,22 @@ static void build_update_entries(u32 **p, unsigned int tmp, unsigned int ptep)
- 	if (config_enabled(CONFIG_XPA)) {
- 		int pte_off_even = sizeof(pte_t) / 2;
- 		int pte_off_odd = pte_off_even + sizeof(pte_t);
+@@ -1526,14 +1526,12 @@ iPTE_LW(u32 **p, unsigned int pte, unsigned int ptr)
+ 
+ static void
+ iPTE_SW(u32 **p, struct uasm_reloc **r, unsigned int pte, unsigned int ptr,
+-	unsigned int mode)
++	unsigned int mode, unsigned int scratch)
+ {
+ #ifdef CONFIG_PHYS_ADDR_T_64BIT
+ 	unsigned int hwmode = mode & (_PAGE_VALID | _PAGE_DIRTY);
+ 
+ 	if (config_enabled(CONFIG_XPA) && !cpu_has_64bits) {
 -		const int scratch = 1; /* Our extra working register */
 -
--		uasm_i_addu(p, scratch, 0, ptep);
+ 		uasm_i_lui(p, scratch, (mode >> 16));
+ 		uasm_i_or(p, pte, pte, scratch);
+ 	} else
+@@ -1630,11 +1628,11 @@ build_pte_present(u32 **p, struct uasm_reloc **r,
+ /* Make PTE valid, store result in PTR. */
+ static void
+ build_make_valid(u32 **p, struct uasm_reloc **r, unsigned int pte,
+-		 unsigned int ptr)
++		 unsigned int ptr, unsigned int scratch)
+ {
+ 	unsigned int mode = _PAGE_VALID | _PAGE_ACCESSED;
  
- 		uasm_i_lw(p, tmp, pte_off_even, ptep); /* even pte */
- 		UASM_i_ROTR(p, tmp, tmp, ilog2(_PAGE_GLOBAL));
- 		UASM_i_MTC0(p, tmp, C0_ENTRYLO0);
+-	iPTE_SW(p, r, pte, ptr, mode);
++	iPTE_SW(p, r, pte, ptr, mode, scratch);
+ }
  
--		uasm_i_lw(p, ptep, pte_off_odd, ptep); /* odd pte */
--		UASM_i_ROTR(p, ptep, ptep, ilog2(_PAGE_GLOBAL));
--		UASM_i_MTC0(p, ptep, C0_ENTRYLO1);
--
--		uasm_i_lw(p, tmp, 0, scratch);
--		uasm_i_lw(p, ptep, sizeof(pte_t), scratch);
--		uasm_i_lui(p, scratch, 0xff);
--		uasm_i_ori(p, scratch, scratch, 0xffff);
--		uasm_i_and(p, tmp, scratch, tmp);
--		uasm_i_and(p, ptep, scratch, ptep);
-+		uasm_i_lw(p, tmp, 0, ptep);
-+		uasm_i_ext(p, tmp, tmp, 0, 24);
- 		uasm_i_mthc0(p, tmp, C0_ENTRYLO0);
--		uasm_i_mthc0(p, ptep, C0_ENTRYLO1);
-+
-+		uasm_i_lw(p, tmp, pte_off_odd, ptep); /* odd pte */
-+		UASM_i_ROTR(p, tmp, tmp, ilog2(_PAGE_GLOBAL));
-+		UASM_i_MTC0(p, tmp, C0_ENTRYLO1);
-+
-+		uasm_i_lw(p, tmp, sizeof(pte_t), ptep);
-+		uasm_i_ext(p, tmp, tmp, 0, 24);
-+		uasm_i_mthc0(p, tmp, C0_ENTRYLO1);
- 		return;
+ /*
+@@ -1670,12 +1668,12 @@ build_pte_writable(u32 **p, struct uasm_reloc **r,
+  */
+ static void
+ build_make_write(u32 **p, struct uasm_reloc **r, unsigned int pte,
+-		 unsigned int ptr)
++		 unsigned int ptr, unsigned int scratch)
+ {
+ 	unsigned int mode = (_PAGE_ACCESSED | _PAGE_MODIFIED | _PAGE_VALID
+ 			     | _PAGE_DIRTY);
+ 
+-	iPTE_SW(p, r, pte, ptr, mode);
++	iPTE_SW(p, r, pte, ptr, mode, scratch);
+ }
+ 
+ /*
+@@ -1780,7 +1778,7 @@ static void build_r3000_tlb_load_handler(void)
+ 	build_r3000_tlbchange_handler_head(&p, K0, K1);
+ 	build_pte_present(&p, &r, K0, K1, -1, label_nopage_tlbl);
+ 	uasm_i_nop(&p); /* load delay */
+-	build_make_valid(&p, &r, K0, K1);
++	build_make_valid(&p, &r, K0, K1, -1);
+ 	build_r3000_tlb_reload_write(&p, &l, &r, K0, K1);
+ 
+ 	uasm_l_nopage_tlbl(&l, p);
+@@ -1811,7 +1809,7 @@ static void build_r3000_tlb_store_handler(void)
+ 	build_r3000_tlbchange_handler_head(&p, K0, K1);
+ 	build_pte_writable(&p, &r, K0, K1, -1, label_nopage_tlbs);
+ 	uasm_i_nop(&p); /* load delay */
+-	build_make_write(&p, &r, K0, K1);
++	build_make_write(&p, &r, K0, K1, -1);
+ 	build_r3000_tlb_reload_write(&p, &l, &r, K0, K1);
+ 
+ 	uasm_l_nopage_tlbs(&l, p);
+@@ -1842,7 +1840,7 @@ static void build_r3000_tlb_modify_handler(void)
+ 	build_r3000_tlbchange_handler_head(&p, K0, K1);
+ 	build_pte_modifiable(&p, &r, K0, K1,  -1, label_nopage_tlbm);
+ 	uasm_i_nop(&p); /* load delay */
+-	build_make_write(&p, &r, K0, K1);
++	build_make_write(&p, &r, K0, K1, -1);
+ 	build_r3000_pte_reload_tlbwi(&p, K0, K1);
+ 
+ 	uasm_l_nopage_tlbm(&l, p);
+@@ -2010,7 +2008,7 @@ static void build_r4000_tlb_load_handler(void)
+ 		}
+ 		uasm_l_tlbl_goaround1(&l, p);
  	}
+-	build_make_valid(&p, &r, wr.r1, wr.r2);
++	build_make_valid(&p, &r, wr.r1, wr.r2, wr.r3);
+ 	build_r4000_tlbchange_handler_tail(&p, &l, &r, wr.r1, wr.r2);
  
+ #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+@@ -2124,7 +2122,7 @@ static void build_r4000_tlb_store_handler(void)
+ 	build_pte_writable(&p, &r, wr.r1, wr.r2, wr.r3, label_nopage_tlbs);
+ 	if (m4kc_tlbp_war())
+ 		build_tlb_probe_entry(&p);
+-	build_make_write(&p, &r, wr.r1, wr.r2);
++	build_make_write(&p, &r, wr.r1, wr.r2, wr.r3);
+ 	build_r4000_tlbchange_handler_tail(&p, &l, &r, wr.r1, wr.r2);
+ 
+ #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+@@ -2180,7 +2178,7 @@ static void build_r4000_tlb_modify_handler(void)
+ 	if (m4kc_tlbp_war())
+ 		build_tlb_probe_entry(&p);
+ 	/* Present and writable bits set, set accessed and dirty bits. */
+-	build_make_write(&p, &r, wr.r1, wr.r2);
++	build_make_write(&p, &r, wr.r1, wr.r2, wr.r3);
+ 	build_r4000_tlbchange_handler_tail(&p, &l, &r, wr.r1, wr.r2);
+ 
+ #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
 -- 
 2.8.0

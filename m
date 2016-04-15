@@ -1,62 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Apr 2016 19:28:41 +0200 (CEST)
-Received: from mail-ig0-f193.google.com ([209.85.213.193]:33220 "EHLO
-        mail-ig0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026702AbcDOR2iXuzjI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Apr 2016 19:28:38 +0200
-Received: by mail-ig0-f193.google.com with SMTP id g8so3753913igr.0;
-        Fri, 15 Apr 2016 10:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc;
-        bh=YRukMw4wO3TIPPnBIAWHIJfQafPX3BSr92XjiQh0ZHM=;
-        b=JfyEtH5Y82O6JfjxtsO8ZandiTupURFbyZgENLQ9A+VqUnYFDuQsXF66ezGnHq/8RX
-         E4f7srp6rnLiwfsBLDQoO3s5bp4oiE+JnZr3muKnMRkDYgb22x7xdINdItWfdDkepJjC
-         512k9pE+hb5Gf2TtkstpkMAon+KkVWbLavaH6n+srmLh1wGfOVys0Ns8VlqsI3YJze1t
-         0DZBLM43MSNvr49+Ni8VUMMCvL3AqdikKklr/cGkn91qWJ7a/P6MfU6cHuXiPRW4QTBm
-         lt37bd2Ol095KTEH3HEo6bXIzdyS/b8Lx3P1XXp231AdGUioxmU1nV8i767gTjJGdcGn
-         UZtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc;
-        bh=YRukMw4wO3TIPPnBIAWHIJfQafPX3BSr92XjiQh0ZHM=;
-        b=M0p38y33F8ylTgz3agzzSxYMTdgQsPbjUmi6TRQ6RNHAjno1gYe6PTuLSthjb7DHhr
-         TZai5hLeruOANwwLNotesIzK9uCr4YD6c6AhmWQ8CPBBnOwebRdYn/iSmmkmoMMlUxHn
-         SAIh/PIIj1Mov4IpRFpOElLxHTTClFM1Q8I51wfb1//asx8Tbv8VYPEbIu7zdXo0tdVw
-         VsrVyyTO4YLUlGk3c9dZVwHq8P6+/iMz8XpSA99t+dn1TCN2awDLEsJdlPPj3hWWVrCM
-         oPSzwqTKGk3umibPpy1/emz6Ryl+SyLHd8BphmRDIezrufy0Rpyf4bGu0FKbTmNCeUw4
-         E+kw==
-X-Gm-Message-State: AOPr4FUrqDMzqLBNN+iH1iug7o3M1DWyE/gQcE6zGWcyZh43oqdQ7c+zDp9/qVaWQjxhkZ67VIuPGWAm7gb8Hw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Apr 2016 21:16:50 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:13270 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27026175AbcDOTQruH6JG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Apr 2016 21:16:47 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 41CB741F8EED;
+        Fri, 15 Apr 2016 20:16:41 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 15 Apr 2016 20:16:41 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 15 Apr 2016 20:16:41 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id A5AD89B6B52F5;
+        Fri, 15 Apr 2016 20:16:36 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 15 Apr 2016 20:16:40 +0100
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 15 Apr
+ 2016 20:16:40 +0100
+Date:   Fri, 15 Apr 2016 20:16:40 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, "Jonas Gorski" <jogo@openwrt.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        "Alex Smith" <alex.smith@imgtec.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 03/12] MIPS: Remove redundant asm/pgtable-bits.h
+ inclusions
+Message-ID: <20160415191640.GE7859@jhogan-linux.le.imgtec.org>
+References: <1460716620-13382-1-git-send-email-paul.burton@imgtec.com>
+ <1460716620-13382-4-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
-X-Received: by 10.50.108.13 with SMTP id hg13mr6245168igb.29.1460741312574;
- Fri, 15 Apr 2016 10:28:32 -0700 (PDT)
-Received: by 10.107.32.21 with HTTP; Fri, 15 Apr 2016 10:28:32 -0700 (PDT)
-In-Reply-To: <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
-References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
-        <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
-Date:   Fri, 15 Apr 2016 18:28:32 +0100
-X-Google-Sender-Auth: u3goi8x6lA-u_SgSHdHkgpujNJs
-Message-ID: <CAPKp9uYOnhJhNq8YDVRMpLSmGa7yWsktYnhVsMdWLtH1Jru3bw@mail.gmail.com>
-Subject: Re: [PATCH v5 10/14] serial: pic32_uart: Add PIC32 UART driver
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Joshua Henderson <joshua.henderson@microchip.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     open list <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
-        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
-        linux-api@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <sudeepholla.maillist@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="DqhR8hV3EnoxUkKN"
+Content-Disposition: inline
+In-Reply-To: <1460716620-13382-4-git-send-email-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 6e37d52
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53010
+X-archive-position: 53011
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sudeep.holla@arm.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,51 +64,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Greg,
+--DqhR8hV3EnoxUkKN
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I just noticed this now. I am having similar issue with MPS2 UART driver
-posted @[1], hence I am asking here to get some clarification myself.
-Sorry for replying on very old thread.
+On Fri, Apr 15, 2016 at 11:36:51AM +0100, Paul Burton wrote:
+> asm/pgtable-bits.h is included in 2 assembly files and thus has to
+> in either of the assembly files that include it.
 
-On Thu, Jan 14, 2016 at 1:15 AM, Joshua Henderson
-<joshua.henderson@microchip.com> wrote:
-> From: Andrei Pistirica <andrei.pistirica@microchip.com>
->
-> This adds UART and a serial console driver for Microchip PIC32 class
-> devices.
->
-> Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
-> Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
+That could do with rewording :-)
 
-[...]
+Otherwise
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
-> diff --git a/include/uapi/linux/serial_core.h b/include/uapi/linux/serial_core.h
-> index 93ba148..9df0a98 100644
-> --- a/include/uapi/linux/serial_core.h
-> +++ b/include/uapi/linux/serial_core.h
-> @@ -261,4 +261,7 @@
->  /* STM32 USART */
->  #define PORT_STM32     113
->
-> +/* Microchip PIC32 UART */
-> +#define PORT_PIC32     114
+Cheers
+James
 
-This was posted before v4.6-rc1 similar to MPS2 UART and has taken
-port# 114 for it. However MVEBU UART obtained 114 with v4.6-rc1
-And MPS2 UART was assigned 115 when it got revised/reposted.
+>=20
+> Remove the redundant inclusions such that asm/pgtable-bits.h doesn't
+> need to #ifdef around C code, for cleanliness & and in preparation for
+> later patches which will add more C.
+>=20
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
+>=20
+>  arch/mips/include/asm/pgtable-bits.h | 2 --
+>  arch/mips/kernel/head.S              | 1 -
+>  arch/mips/kernel/r4k_switch.S        | 1 -
+>  3 files changed, 4 deletions(-)
+>=20
+> diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm=
+/pgtable-bits.h
+> index 97b3138..2f40312 100644
+> --- a/arch/mips/include/asm/pgtable-bits.h
+> +++ b/arch/mips/include/asm/pgtable-bits.h
+> @@ -191,7 +191,6 @@
+>   */
+> =20
+> =20
+> -#ifndef __ASSEMBLY__
+>  /*
+>   * pte_to_entrylo converts a page table entry (PTE) into a Mips
+>   * entrylo0/1 value.
+> @@ -218,7 +217,6 @@ static inline uint64_t pte_to_entrylo(unsigned long p=
+te_val)
+> =20
+>  	return pte_val >> _PAGE_GLOBAL_SHIFT;
+>  }
+> -#endif
+> =20
+>  /*
+>   * Cache attributes
+> diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
+> index 4e4cc5b..b8fb0ba 100644
+> --- a/arch/mips/kernel/head.S
+> +++ b/arch/mips/kernel/head.S
+> @@ -21,7 +21,6 @@
+>  #include <asm/asmmacro.h>
+>  #include <asm/irqflags.h>
+>  #include <asm/regdef.h>
+> -#include <asm/pgtable-bits.h>
+>  #include <asm/mipsregs.h>
+>  #include <asm/stackframe.h>
+> =20
+> diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
+> index 92cd051..2f0a3b2 100644
+> --- a/arch/mips/kernel/r4k_switch.S
+> +++ b/arch/mips/kernel/r4k_switch.S
+> @@ -15,7 +15,6 @@
+>  #include <asm/fpregdef.h>
+>  #include <asm/mipsregs.h>
+>  #include <asm/asm-offsets.h>
+> -#include <asm/pgtable-bits.h>
+>  #include <asm/regdef.h>
+>  #include <asm/stackframe.h>
+>  #include <asm/thread_info.h>
+> --=20
+> 2.8.0
+>=20
 
-I also see this patch in linux-next with 114 itself as its port number.
-So the allocation of port number needs to be resolved before it gets
-merged or it's OK to wait for v4.7-rc1 ?
+--DqhR8hV3EnoxUkKN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-If it's former, can PORT_PIC32 take 116 as the latest post of MPS2 assigned
-it 115 and I have pulled the same to take it via arm-soc.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-I am fine with any solution, just want to be notified if I need to
-take any action.
+iQIcBAEBCAAGBQJXET4YAAoJEGwLaZPeOHZ6j5wP/AtoZM/60bHhaoMsXQSoAoPU
+xO+TFwdF4tqwoyPQDx/K/CpzYYtViUMVuwISyDcDrefqFMrjGKtVKZU+GDBgeWjf
+HPj6KoqmV5Uzqk7xV9/PKXRPvv3OdO+gNx+w731oh7xxWXUx+RZjVavfxcSgy/nb
+1PmdVSH2RI8axpLRm4sKSJr9v+eW7XeLCfSpNSgKWP7qHQhYbwVH1peibWjL6fjl
+bLZFxXrfufrF5EKKWKKI8uC7xwUfdRJY5fVOEe6TQnboxc9ScRrWgET0baj9Mn5s
+Z23zakUxM9cxeB2RTF0tWzIfX7aNzvhoEGAOiCiVak/CN+zMEZuW/AQoDDUChMOu
+NOUXgZ3qUxQeZ47HE9US52moTR/Q94OVONqNFEob79YwK3EmmS07UCJeFQqEF4rm
+8EsP5eUpzaR1jtxhyeUYuG6Qw9qnyeQanBGh8eG6mwaFI1UXyudIcbqEkfB3tTQx
+RUYHfgdt5Y7bgkBoQbWh89XiDPPuOUQrpTv6eyWOW9dyRqA2qWG8ASy6lg+37fMX
+c/VqEUpO3AX5oWBS3APyXWqjUSNumQ3mvSe7yNfxjl8KSO0pzaYcYqQHCTaEwnNb
+t320rlhNPVFSVJ00ao/xRy3mwnv5pprkU6UhsmxsMQpZwx1HtzKrHPXTaCxasKVv
+Kiiy6osk+H0IscYM5aQD
+=ETBt
+-----END PGP SIGNATURE-----
 
-Regards,
-Sudeep
-
-[1] http://www.spinics.net/lists/devicetree/msg120727.html
+--DqhR8hV3EnoxUkKN--

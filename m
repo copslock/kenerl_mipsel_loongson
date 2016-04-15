@@ -1,86 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Apr 2016 21:26:52 +0200 (CEST)
-Received: from mail-db3on0056.outbound.protection.outlook.com ([157.55.234.56]:56320
-        "EHLO emea01-db3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27026175AbcDOT0rsitMY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Apr 2016 21:26:47 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector1; h=From:To:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=TjO77E/VnoF4RvMB2a6Bup3faPyBudRM4DcywDkffhE=;
- b=ceNd5LXlVkg9q4z28RomzJfRYQkJXsXTP/witJzc/nzPaSin8n2KO1+9+PtpP24nYqzAX6B/3+4zCQu1ZEYFIPkhweYiD4YGzNg6rYM8ehbtqjkIYTIQ/A/z6/rdx7V2uKJQiCA238jO5xvdggNCm9HWMMhJvgeXbaaRhajevWk=
-Authentication-Results: linux-mips.org; dkim=none (message not signed)
- header.d=none;linux-mips.org; dmarc=none action=none
- header.from=mellanox.com;
-Received: from [10.15.7.169] (12.216.194.146) by
- VI1PR05MB1693.eurprd05.prod.outlook.com (10.165.235.155) with Microsoft SMTP
- Server (TLS) id 15.1.466.19; Fri, 15 Apr 2016 19:26:39 +0000
-Subject: Re: [PATCH V3 06/29] Tile and MIPS (if has usable __builtin_popcount)
- use popcount parity functions
-To:     <zengzhaoxiu@163.com>, <linux-kernel@vger.kernel.org>
-References: <1460601525-3822-1-git-send-email-zengzhaoxiu@163.com>
- <1460603162-4670-1-git-send-email-zengzhaoxiu@163.com>
-CC:     Zhaoxiu Zeng <zhaoxiu.zeng@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>
-From:   Chris Metcalf <cmetcalf@mellanox.com>
-Message-ID: <5711405D.5040807@mellanox.com>
-Date:   Fri, 15 Apr 2016 15:26:21 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Apr 2016 22:29:15 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63864 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27026716AbcDOU3MdYyhb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Apr 2016 22:29:12 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 22B1641F8EF3;
+        Fri, 15 Apr 2016 21:29:07 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 15 Apr 2016 21:29:07 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 15 Apr 2016 21:29:07 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id 5BBBDFEA54A34;
+        Fri, 15 Apr 2016 21:29:02 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 15 Apr 2016 21:29:06 +0100
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 15 Apr
+ 2016 21:29:06 +0100
+Date:   Fri, 15 Apr 2016 21:29:06 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Markos Chandras" <markos.chandras@imgtec.com>,
+        Alex Smith <alex.smith@imgtec.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH 04/12] MIPS: Use enums to make asm/pgtable-bits.h readable
+Message-ID: <20160415202906.GF7859@jhogan-linux.le.imgtec.org>
+References: <1460716620-13382-1-git-send-email-paul.burton@imgtec.com>
+ <1460716620-13382-5-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <1460603162-4670-1-git-send-email-zengzhaoxiu@163.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [12.216.194.146]
-X-ClientProxiedBy: CY1PR20CA0042.namprd20.prod.outlook.com (10.161.165.180) To
- VI1PR05MB1693.eurprd05.prod.outlook.com (10.165.235.155)
-X-MS-Office365-Filtering-Correlation-Id: 4b0e61cb-fa09-4752-f96c-08d36563df38
-X-Microsoft-Exchange-Diagnostics: 1;VI1PR05MB1693;2:HSfGICSV4ENeEgxgmaDNxwqWfP7OxHwGyqyK7pVriVmq/lTSJmJEEew3t7l/gXOIFnCHzcejn7DgD5SbgQxfjazQXscTLlOYCoYGLcx+cqpTLlo3v+6uYyuOYcTG9eacX/TbdDHMXO2X1hcxS++o/MSmCYJCMOaVwjE1FtIQvvmUWjOeHoNJCCbJYhHpSGAM;3:dOrCIkNK/RcYp+VcKx0JTLs/1nV3XhB/UG08lvanMFQtVtdmFU/5L/u6DbnDzUPeII+uWGwfb5kUapwQdvOtegOaI0CLBgJxHtsLXjhBjedQ5ZQn3pvtmNzC2pZIfhG8;25:aye6quygi/5Y+z1MQrTd6T9e2S6KCPhhPHWup2eqNOM7V+MGwOV8eS40jmfWB+MMotHBO784ShnQqJkDxTfgAwAtge/CK9AVcYlJZ7lTfOsQv//lFVncKw/QSQp2DZsukJHeGneA4nSTTx1uDcVZVopa+JLcbJLyslhTByNXlvmhFnwq7CSHavY2x97BYAwiLisUQsquTCl1rE3gft5xZ4WamjG6O6mSn86BKdZM/gkWbtZ+qc20nZYntT+0z48RqOWA9fDNaww3cEPB40FM5xmrhp+rXMSJlS085pFLnlcr/SOxVmUOLSQrgStQJo7sfoF2/NtoDlG1a0AOwXA+bg==
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:VI1PR05MB1693;
-X-Microsoft-Exchange-Diagnostics: 1;VI1PR05MB1693;20:rcQ5g/9QV1hK8Y9ZzDG+jjcmPwPQI2Nun1XJw7wjP9XSUBMqjOXyGRa+xth01WvBUTBqLk9MYtCH1AfXv9RuuQWgIcT8F13/yZmp1dsIgHBn2d0EygZJ7jkn3VoIRNQbenyi8nwf1yojep2hZJgib/NKxiRTCRbQRcK3C2IWUrvfOm7MEaoiDUrLkM6S/vqAeDT5IN8psnqfRAOt8C4K0lvEXjQziHXGNhforj9n35MpTklF/Mlg6WjzMLLZ4UrO5d8TdMaeZ2e6kl/UiJ0OU/AfSgDr0TXs8/S2QBK+Ts0gob4iul4kRsqz9ujCDZNNESPbUWSR1c6JqL7peJb1oLkw18ptA2Di41T618Kf3VvwX23edF7MoYkTRESCfmBPbwGB2VMHx+bTa7lU2CvtLdbDsPkO+NBSjGuTkNkhLx6+zV8/5lHcr1rUKA7kIG8AFxLRglSTKnZ2/gaGMeMUEGCCyHY6QZByZCNX+cRkPhLwcghDdNHpRNWSdw18X/rF;4:xNcxxYqWVo0eBDHFGAqGqAH71ZdF2QCEqC538GxBmr3DmSkmXovUM9BxLA8wtBfZ0b5bmwy18D/r8fuABf71JxVYtGUobponoWlIEnTBS50xsq0TtYe6EHY7WE+x6TUhXmzuTEzpZj3EbgMzDdr6x05GZQQiqtZ5/YsnqLKhzDlsI1WmaJCacz/D3ibLam9NffVOOu2fEtY6MvnnYkyqHzz8tEHjMgRiaJUj1xDUChmJrWOu9rVQWZPFyFYobXyBZ3bclyUjsj74QOklcdVDoM9i+Y4mjB1a3bZywv9xkFTlzGRm6I1XzINPmwCxBix1fn+fGg2zIQRUigmEB9fwG9xSYz/2LZXeGt5PclGMogZIWSjh7PzcEs4SAw+7F/Wy9oakowrPxp6c22Sm5mpzq7DYY31DMDgXpqbcQdkQhl4=
-X-Microsoft-Antispam-PRVS: <VI1PR05MB1693A3FC973746EAC7353FA9B2680@VI1PR05MB1693.eurprd05.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(9101521026)(601004)(2401047)(5005006)(8121501046)(10201501046)(3002001)(6055026);SRVR:VI1PR05MB1693;BCL:0;PCL:0;RULEID:;SRVR:VI1PR05MB1693;
-X-Forefront-PRVS: 0913EA1D60
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6049001)(6009001)(377454003)(24454002)(5008740100001)(23746002)(59896002)(2950100001)(66066001)(5004730100002)(65956001)(65806001)(65816999)(54356999)(47776003)(76176999)(92566002)(87266999)(50986999)(99136001)(77096005)(4001350100001)(189998001)(15975445007)(5001770100001)(42186005)(33656002)(86362001)(3846002)(81166005)(4326007)(36756003)(80316001)(2906002)(19580395003)(230700001)(83506001)(19580405001)(1096002)(6116002)(586003)(18886065003);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR05MB1693;H:[10.15.7.169];FPR:;SPF:None;MLV:sfv;LANG:en;
-X-Microsoft-Exchange-Diagnostics: =?Windows-1252?Q?1;VI1PR05MB1693;23:d2/ZlNudOSFMMsabkdBTl+VclQ7F8lc5tfapO?=
- =?Windows-1252?Q?rmqnCsL9w4PChUSTV1+moEOLfbtCWpgirN0rA1eEqX0EFxdQodT/7JnO?=
- =?Windows-1252?Q?cqVePA3TEdEP1s+MGQSEan4i3y+gmcKlXCjaYPGk1nJo64Xxyqd5fNpN?=
- =?Windows-1252?Q?W/M0IHVmqKh/0NDZwGu1m3g0FuMHhRazfOPW9btPfdCUUgbySdqie1IL?=
- =?Windows-1252?Q?hayq3oOQMTxCfhXDKFV7jJiEAtMhO53qI+GJE/W80HCe4goq2WiaFta7?=
- =?Windows-1252?Q?x6FrUBL4kW7PQIMpzc2DftjZrwqHdbplPO9WmlIuphjgHh6/8Y0qPfdT?=
- =?Windows-1252?Q?mvj+8sQgSKaEC9hMEb3MaNmkDpsFOYgG13v0IdKbrB5xhDWqbGvFWFjp?=
- =?Windows-1252?Q?45TaBZXc3jLdfx5tSfMKQqlgMtbcoSMVMav+V5zDzGa5GGgAiXPk2Bp3?=
- =?Windows-1252?Q?hG5cUbt7EIfFC1EcyKyWFJIij9E9XVZK3YAkmNeerG52aYqKV8l4EEbj?=
- =?Windows-1252?Q?8pFoLpFsYVXBeQ0aCD3Oozm0hwaWDIXABXMx4r2nurWO88QHljxNVDBL?=
- =?Windows-1252?Q?i6xZBX7JSxNSnDPB3VNTtXq1YRtq1IFJMB/TIcAo0ctKUU6uDc2VddwN?=
- =?Windows-1252?Q?8sWhgKa5I4YilxTr8DeK+1QQttQDvD+B32IO5fdYc9T3iShkVjUeBDNL?=
- =?Windows-1252?Q?YaPTVhUbUy6po3n1KCWy1I8u7v+SaDKp0eQ1oThESmclqGHyI+VNz7Zl?=
- =?Windows-1252?Q?WxlHi12NkAuXEi17XcKxNa47lc9h6B0VC3lNfyX2iPS7cpiDazvbHXDb?=
- =?Windows-1252?Q?OYdMEDB8aiF6J2J2GRmKBgtrH+uxK00jSo7wQ/WEqCw1WxhDQosrzbbm?=
- =?Windows-1252?Q?xYHwklPkq+/oCf3Fu0ww1T9Qqsd/h3QShWmH3WnwAzgYcbfh5a58B0dG?=
- =?Windows-1252?Q?Kib7bWre/98oP4cHB/IUFFVAL7CrdJNGsS4x5MOIM3LVbOFsOSO5RBsQ?=
- =?Windows-1252?Q?fscbMnuduizZ0yR2bH+OS/3P4UKxW+RWSKSynct+wOIQEt+/WpiwW+Sz?=
- =?Windows-1252?Q?oefp7jtmyjM/8fvnHNwiN5HefFzBpBhHh2RK02gx7H8Au/zo4LugqaNp?=
- =?Windows-1252?Q?7rA0nop47ZXSR/c9aB8i8YI8tpfSe6gubg3pvQQe9We89WhBAALaWAsH?=
- =?Windows-1252?Q?u8cZPdpwxbgaz1dRnC9m6nJQ3K1qFj/5wwfMCbFtPCpaEn8itS/?=
-X-Microsoft-Exchange-Diagnostics: 1;VI1PR05MB1693;5:lW88AvfdcWe3i/ffLpvTFQ42ilcrpKcHa6LfiW6daZXi+nlyZjdrtg3Ok5PeLNOPGCICVlnDu8XCLoa/qKMJqAGx2WICFmOmTyX13/0zyj07EzsTAEkDaLO0NcEDtBAVT3mqfStkANZKONLjRA3kPH6OYjwhZsFIKjZjeisiVrWCrFVkv1sM/rz++EMUVFBL;24:7pwzWoCsYoHegAGlw0PdsuWBnIUFByjsxUXCk2mfA1URuxVjU3X6DXC513EmH+vvL1P/SLdacGt0cz3Eqrl+KwDpjAlfdOO1Drq7hAAG5Ds=;7:XiZKXDVwHszH5h5qFMvmuQXrOiJ5VDSy+mAno634yISidKS4jUhWqjfKz9asLp6cVkvXCEOXBk81etUE/M93WuLVrirBvVqxQ6z8BaeKIp1OMliFGvXrJQ191gqRIzipcNwkcHw82jIHt7IYsYxYEaN+alf9g30gtFTcYc9Cfvuge85sASdt+O8fZ3EhI1mMzzdYaKWHQgvtKTCYhxNOF9WF8cApG+/nlL8zkYxTq18=
-SpamDiagnosticOutput: 1:23
-SpamDiagnosticMetadata: NSPM
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2016 19:26:39.3560 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR05MB1693
-Return-Path: <cmetcalf@mellanox.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ni93GHxFvA+th69W"
+Content-Disposition: inline
+In-Reply-To: <1460716620-13382-5-git-send-email-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 6e37d52
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53012
+X-archive-position: 53013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cmetcalf@mellanox.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -93,17 +62,293 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 4/13/2016 11:05 PM, zengzhaoxiu@163.com wrote:
-> From: Zhaoxiu Zeng<zhaoxiu.zeng@gmail.com>
->
-> Signed-off-by: Zhaoxiu Zeng<zhaoxiu.zeng@gmail.com>
+--ni93GHxFvA+th69W
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Apr 15, 2016 at 11:36:52AM +0100, Paul Burton wrote:
+> asm/pgtable-bits.h has grown to become an unreadable mess of #ifdef
+> directives defining bits conditionally upon other bits all at the
+> preprocessing stage, for no good reason.
+>=20
+> Instead of having quite so many #ifdef's, simply use enums to provide
+> sequential numbering for bit shifts, without having to keep track
+> manually of what the last bit defined was. Masks are defined separately,
+> after the shifts, which allows for most of their definitions to be
+> reused for all systems rather than duplicated.
+>=20
+> This patch is not intended to make any behavioural change to the code -
+> all bits should be used in the same way they were before this patch.
+>=20
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 > ---
->   arch/mips/include/asm/bitops.h | 7 +++++++
->   arch/tile/include/asm/bitops.h | 2 ++
->   2 files changed, 9 insertions(+)
+>=20
+>  arch/mips/include/asm/pgtable-bits.h | 189 +++++++++++++++--------------=
+------
+>  1 file changed, 81 insertions(+), 108 deletions(-)
 
-Acked-by: Chris Metcalf <cmetcalf@mellanox.com> [for tile]
+Having had to work my way through some of this file to manually walk
+page tables only this week, I really do think this is an excellent
+cleanup (if nothing else, look at that diffstat :-D ).
 
--- 
-Chris Metcalf, Mellanox Technologies
-http://www.mellanox.com
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+
+Thanks!
+James
+
+>=20
+> diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm=
+/pgtable-bits.h
+> index 2f40312..c81fc17 100644
+> --- a/arch/mips/include/asm/pgtable-bits.h
+> +++ b/arch/mips/include/asm/pgtable-bits.h
+> @@ -35,36 +35,25 @@
+>  #if defined(CONFIG_PHYS_ADDR_T_64BIT) && defined(CONFIG_CPU_MIPS32)
+> =20
+>  /*
+> - * The following bits are implemented by the TLB hardware
+> + * Page table bit offsets used for 64 bit physical addressing on MIPS32,
+> + * for example with Alchemy, Netlogic XLP/XLR or XPA.
+>   */
+> -#define _PAGE_NO_EXEC_SHIFT	0
+> -#define _PAGE_NO_EXEC		(1 << _PAGE_NO_EXEC_SHIFT)
+> -#define _PAGE_NO_READ_SHIFT	(_PAGE_NO_EXEC_SHIFT + 1)
+> -#define _PAGE_NO_READ		(1 << _PAGE_NO_READ_SHIFT)
+> -#define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
+> -#define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+> -#define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
+> -#define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)
+> -#define _PAGE_DIRTY_SHIFT	(_PAGE_VALID_SHIFT + 1)
+> -#define _PAGE_DIRTY		(1 << _PAGE_DIRTY_SHIFT)
+> -#define _CACHE_SHIFT		(_PAGE_DIRTY_SHIFT + 1)
+> -#define _CACHE_MASK		(7 << _CACHE_SHIFT)
+> -
+> -/*
+> - * The following bits are implemented in software
+> - */
+> -#define _PAGE_PRESENT_SHIFT	(24)
+> -#define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
+> -#define _PAGE_READ_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
+> -#define _PAGE_READ		(1 << _PAGE_READ_SHIFT)
+> -#define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
+> -#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
+> -#define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
+> -#define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
+> -#define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
+> -#define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
+> -
+> -#define _PFN_SHIFT		(PAGE_SHIFT - 12 + _CACHE_SHIFT + 3)
+> +enum pgtable_bits {
+> +	/* Used by TLB hardware (placed in EntryLo*) */
+> +	_PAGE_NO_EXEC_SHIFT,
+> +	_PAGE_NO_READ_SHIFT,
+> +	_PAGE_GLOBAL_SHIFT,
+> +	_PAGE_VALID_SHIFT,
+> +	_PAGE_DIRTY_SHIFT,
+> +	_CACHE_SHIFT,
+> +
+> +	/* Used only by software (masked out before writing EntryLo*) */
+> +	_PAGE_PRESENT_SHIFT =3D 24,
+> +	_PAGE_READ_SHIFT,
+> +	_PAGE_WRITE_SHIFT,
+> +	_PAGE_ACCESSED_SHIFT,
+> +	_PAGE_MODIFIED_SHIFT,
+> +};
+> =20
+>  /*
+>   * Bits for extended EntryLo0/EntryLo1 registers
+> @@ -73,101 +62,85 @@
+> =20
+>  #elif defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+> =20
+> -/*
+> - * The following bits are implemented in software
+> - */
+> -#define _PAGE_PRESENT_SHIFT	(0)
+> -#define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
+> -#define _PAGE_READ_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
+> -#define _PAGE_READ		(1 << _PAGE_READ_SHIFT)
+> -#define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
+> -#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
+> -#define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
+> -#define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
+> -#define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
+> -#define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
+> +/* Page table bits used for r3k systems */
+> +enum pgtable_bits {
+> +	/* Used only by software (writes to EntryLo ignored) */
+> +	_PAGE_PRESENT_SHIFT,
+> +	_PAGE_READ_SHIFT,
+> +	_PAGE_WRITE_SHIFT,
+> +	_PAGE_ACCESSED_SHIFT,
+> +	_PAGE_MODIFIED_SHIFT,
+> +
+> +	/* Used by TLB hardware (placed in EntryLo) */
+> +	_PAGE_GLOBAL_SHIFT =3D 8,
+> +	_PAGE_VALID_SHIFT,
+> +	_PAGE_DIRTY_SHIFT,
+> +	_CACHE_UNCACHED_SHIFT,
+> +};
+> =20
+> -/*
+> - * The following bits are implemented by the TLB hardware
+> - */
+> -#define _PAGE_GLOBAL_SHIFT	(_PAGE_MODIFIED_SHIFT + 4)
+> -#define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+> -#define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
+> -#define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)
+> -#define _PAGE_DIRTY_SHIFT	(_PAGE_VALID_SHIFT + 1)
+> -#define _PAGE_DIRTY		(1 << _PAGE_DIRTY_SHIFT)
+> -#define _CACHE_UNCACHED_SHIFT	(_PAGE_DIRTY_SHIFT + 1)
+> -#define _CACHE_UNCACHED		(1 << _CACHE_UNCACHED_SHIFT)
+> -#define _CACHE_MASK		_CACHE_UNCACHED
+> +#else
+> =20
+> -#define _PFN_SHIFT		PAGE_SHIFT
+> +/* Page table bits used for r4k systems */
+> +enum pgtable_bits {
+> +	/* Used only by software (masked out before writing EntryLo*) */
+> +	_PAGE_PRESENT_SHIFT,
+> +#if !defined(CONFIG_CPU_MIPSR2) && !defined(CONFIG_CPU_MIPSR6)
+> +	_PAGE_READ_SHIFT,
+> +#endif
+> +	_PAGE_WRITE_SHIFT,
+> +	_PAGE_ACCESSED_SHIFT,
+> +	_PAGE_MODIFIED_SHIFT,
+> +#if defined(CONFIG_64BIT) && defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
+> +	_PAGE_HUGE_SHIFT,
+> +#endif
+> =20
+> -#else
+> -/*
+> - * Below are the "Normal" R4K cases
+> - */
+> +	/* Used by TLB hardware (placed in EntryLo*) */
+> +#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+> +	_PAGE_NO_EXEC_SHIFT,
+> +	_PAGE_NO_READ_SHIFT,
+> +	_PAGE_READ_SHIFT =3D _PAGE_NO_READ_SHIFT,
+> +#endif
+> +	_PAGE_GLOBAL_SHIFT,
+> +	_PAGE_VALID_SHIFT,
+> +	_PAGE_DIRTY_SHIFT,
+> +	_CACHE_SHIFT,
+> +};
+> =20
+> -/*
+> - * The following bits are implemented in software
+> - */
+> -#define _PAGE_PRESENT_SHIFT	0
+> +#endif /* defined(CONFIG_PHYS_ADDR_T_64BIT && defined(CONFIG_CPU_MIPS32)=
+ */
+> +
+> +/* Used only by software */
+>  #define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
+> -/* R2 or later cores check for RI/XI support to determine _PAGE_READ */
+>  #if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+> -#define _PAGE_WRITE_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
+> -#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
+> +# define _PAGE_READ		(cpu_has_rixi ? 0 : (1 << _PAGE_READ_SHIFT))
+>  #else
+> -#define _PAGE_READ_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
+> -#define _PAGE_READ		(1 << _PAGE_READ_SHIFT)
+> -#define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
+> -#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
+> +# define _PAGE_READ		(1 << _PAGE_READ_SHIFT)
+>  #endif
+> -#define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
+> +#define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
+>  #define _PAGE_ACCESSED		(1 << _PAGE_ACCESSED_SHIFT)
+> -#define _PAGE_MODIFIED_SHIFT	(_PAGE_ACCESSED_SHIFT + 1)
+>  #define _PAGE_MODIFIED		(1 << _PAGE_MODIFIED_SHIFT)
+> -
+>  #if defined(CONFIG_64BIT) && defined(CONFIG_MIPS_HUGE_TLB_SUPPORT)
+> -/* Huge TLB page */
+> -#define _PAGE_HUGE_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
+> -#define _PAGE_HUGE		(1 << _PAGE_HUGE_SHIFT)
+> -#endif	/* CONFIG_64BIT && CONFIG_MIPS_HUGE_TLB_SUPPORT */
+> -
+> -#if defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+> -/* XI - page cannot be executed */
+> -#ifdef _PAGE_HUGE_SHIFT
+> -#define _PAGE_NO_EXEC_SHIFT	(_PAGE_HUGE_SHIFT + 1)
+> -#else
+> -#define _PAGE_NO_EXEC_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
+> +# define _PAGE_HUGE		(1 << _PAGE_HUGE_SHIFT)
+>  #endif
+> -#define _PAGE_NO_EXEC		(cpu_has_rixi ? (1 << _PAGE_NO_EXEC_SHIFT) : 0)
+> -
+> -/* RI - page cannot be read */
+> -#define _PAGE_READ_SHIFT	(_PAGE_NO_EXEC_SHIFT + 1)
+> -#define _PAGE_READ		(cpu_has_rixi ? 0 : (1 << _PAGE_READ_SHIFT))
+> -#define _PAGE_NO_READ_SHIFT	_PAGE_READ_SHIFT
+> -#define _PAGE_NO_READ		(cpu_has_rixi ? (1 << _PAGE_READ_SHIFT) : 0)
+> -#endif	/* defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6) */
+> -
+> -#if defined(_PAGE_NO_READ_SHIFT)
+> -#define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
+> -#elif defined(_PAGE_HUGE_SHIFT)
+> -#define _PAGE_GLOBAL_SHIFT	(_PAGE_HUGE_SHIFT + 1)
+> -#else
+> -#define _PAGE_GLOBAL_SHIFT	(_PAGE_MODIFIED_SHIFT + 1)
+> +
+> +/* Used by TLB hardware (placed in EntryLo*) */
+> +#if (defined(CONFIG_PHYS_ADDR_T_64BIT) && defined(CONFIG_CPU_MIPS32))
+> +# define _PAGE_NO_EXEC		(1 << _PAGE_NO_EXEC_SHIFT)
+> +# define _PAGE_NO_READ		(1 << _PAGE_NO_READ_SHIFT)
+> +#elif defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)
+> +# define _PAGE_NO_EXEC		(cpu_has_rixi ? (1 << _PAGE_NO_EXEC_SHIFT) : 0)
+> +# define _PAGE_NO_READ		(cpu_has_rixi ? (1 << _PAGE_NO_READ_SHIFT) : 0)
+>  #endif
+>  #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+> -
+> -#define _PAGE_VALID_SHIFT	(_PAGE_GLOBAL_SHIFT + 1)
+>  #define _PAGE_VALID		(1 << _PAGE_VALID_SHIFT)
+> -#define _PAGE_DIRTY_SHIFT	(_PAGE_VALID_SHIFT + 1)
+>  #define _PAGE_DIRTY		(1 << _PAGE_DIRTY_SHIFT)
+> -#define _CACHE_SHIFT		(_PAGE_DIRTY_SHIFT + 1)
+> -#define _CACHE_MASK		(7 << _CACHE_SHIFT)
+> -
+> -#define _PFN_SHIFT		(PAGE_SHIFT - 12 + _CACHE_SHIFT + 3)
+> -
+> -#endif /* defined(CONFIG_PHYS_ADDR_T_64BIT && defined(CONFIG_CPU_MIPS32)=
+ */
+> +#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+> +# define _CACHE_UNCACHED	(1 << _CACHE_UNCACHED_SHIFT)
+> +# define _CACHE_MASK		_CACHE_UNCACHED
+> +# define _PFN_SHIFT		PAGE_SHIFT
+> +#else
+> +# define _CACHE_MASK		(7 << _CACHE_SHIFT)
+> +# define _PFN_SHIFT		(PAGE_SHIFT - 12 + _CACHE_SHIFT + 3)
+> +#endif
+> =20
+>  #ifndef _PAGE_NO_EXEC
+>  #define _PAGE_NO_EXEC		0
+> --=20
+> 2.8.0
+>=20
+
+--ni93GHxFvA+th69W
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJXEU8SAAoJEGwLaZPeOHZ6+dMP/i8npgayUV2UFwgX5Jvw2QgR
+wVaXFQvv2PJ+s+dK9JzHyZM3CeHXwUUJe+qcyf+5mL2qbCck9yUqAbxDWcasjviQ
+iyMjm/ZLJk75P56tALpFYLDGVxVABjsNh8VLcHYLZVruqoYr0HGmUcw4JNqRW4Q0
+4Mgx1diHGVWgn+9shd2R3hOIh8vy8VVs4X/+L0fvztWzlgHayuBT6GxrrYhtn1iY
+mzoWnVnC6oto0MWmuqh4O9tOezQGLUPI+tW8BHZqj2lZN77jsdlQP/Fue7FrzRTh
+MUvJtjwwR9tpyYzaoA/PLmJLAVnWIavCTkma+QJuQQTwpY4QXZdJ46niJjKb0R7L
+P+PccWDQ5R+Oi/wuh4dOhTVnRwdIJxjwmHllofB0xAALcUWIkfz1oIfFPUNuj6iw
+VjOcPiHDWiml/hvZ1Icy0oQ5FcVtfw/rFhhXkUEO2ZqdzeoDsMgHM4MfYo4kjAd1
+8mGHeG3WDE1NKdMQsPz/6stmCqGtx3P7Iq87K+8UWW5LkMdaSLLqmUxWv2UeBk+g
+XKAJ2ynP45Uj17kxIY4xyQesvoCkqQLOQt2Tlde0OTseXY8EAIyGWX6zwAgVZCPJ
+pVlpx9nDjAuly5o6WbVqe8g95Dv396mAbSac/y6cFPpXlNCDUAHpxzDxn5oK+ydC
+GSySbrpOrzZr7cutMs+n
+=Hm+J
+-----END PGP SIGNATURE-----
+
+--ni93GHxFvA+th69W--

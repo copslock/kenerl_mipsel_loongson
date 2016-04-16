@@ -1,56 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2016 02:34:36 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:35620 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026634AbcDPAed7Vk1A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2016 02:34:33 +0200
-Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id C8DC1611CD;
-        Sat, 16 Apr 2016 00:34:32 +0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id BC0F261515; Sat, 16 Apr 2016 00:34:32 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 48F22601B5;
-        Sat, 16 Apr 2016 00:34:31 +0000 (UTC)
-Date:   Fri, 15 Apr 2016 17:34:30 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Keguang Zhang <keguang.zhang@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        linux-pm@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-mtd@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Richard Weinberger <richard@nod.at>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [PATCH V1 1/7] clk: Loongson1: Update clocks of Loongson1B
-Message-ID: <20160416003430.GL26353@codeaurora.org>
-References: <1459946095-7637-1-git-send-email-keguang.zhang@gmail.com>
- <1459946095-7637-2-git-send-email-keguang.zhang@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2016 18:10:03 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37888 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026689AbcDPQJ5jrTY3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2016 18:09:57 +0200
+Received: from localhost (unknown [70.102.234.3])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C5A61C67;
+        Sat, 16 Apr 2016 16:09:50 +0000 (UTC)
+Date:   Sat, 16 Apr 2016 09:09:50 -0700
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     Joshua Henderson <joshua.henderson@microchip.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Andrei Pistirica <andrei.pistirica@microchip.com>,
+        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
+        linux-api@vger.kernel.org
+Subject: Re: [PATCH v5 10/14] serial: pic32_uart: Add PIC32 UART driver
+Message-ID: <20160416160950.GD10824@kroah.com>
+References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
+ <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
+ <CAPKp9uYOnhJhNq8YDVRMpLSmGa7yWsktYnhVsMdWLtH1Jru3bw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1459946095-7637-2-git-send-email-keguang.zhang@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <sboyd@codeaurora.org>
+In-Reply-To: <CAPKp9uYOnhJhNq8YDVRMpLSmGa7yWsktYnhVsMdWLtH1Jru3bw@mail.gmail.com>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53022
+X-archive-position: 53023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,21 +46,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/06, Keguang Zhang wrote:
-> From: Kelvin Cheung <keguang.zhang@gmail.com>
+On Fri, Apr 15, 2016 at 06:28:32PM +0100, Sudeep Holla wrote:
+> Hi Greg,
 > 
-> - Rename the file to clk-loongson1.c
-> - Add AC97, DMA and NAND clock
-> - Update clock names
-> - Remove superfluous error messages
+> I just noticed this now. I am having similar issue with MPS2 UART driver
+> posted @[1], hence I am asking here to get some clarification myself.
+> Sorry for replying on very old thread.
 > 
-> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
-> ---
+> On Thu, Jan 14, 2016 at 1:15 AM, Joshua Henderson
+> <joshua.henderson@microchip.com> wrote:
+> > From: Andrei Pistirica <andrei.pistirica@microchip.com>
+> >
+> > This adds UART and a serial console driver for Microchip PIC32 class
+> > devices.
+> >
+> > Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
+> > Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> 
+> [...]
+> 
+> > diff --git a/include/uapi/linux/serial_core.h b/include/uapi/linux/serial_core.h
+> > index 93ba148..9df0a98 100644
+> > --- a/include/uapi/linux/serial_core.h
+> > +++ b/include/uapi/linux/serial_core.h
+> > @@ -261,4 +261,7 @@
+> >  /* STM32 USART */
+> >  #define PORT_STM32     113
+> >
+> > +/* Microchip PIC32 UART */
+> > +#define PORT_PIC32     114
+> 
+> This was posted before v4.6-rc1 similar to MPS2 UART and has taken
+> port# 114 for it. However MVEBU UART obtained 114 with v4.6-rc1
+> And MPS2 UART was assigned 115 when it got revised/reposted.
+> 
+> I also see this patch in linux-next with 114 itself as its port number.
+> So the allocation of port number needs to be resolved before it gets
+> merged or it's OK to wait for v4.7-rc1 ?
+> 
+> If it's former, can PORT_PIC32 take 116 as the latest post of MPS2 assigned
+> it 115 and I have pulled the same to take it via arm-soc.
+> 
+> I am fine with any solution, just want to be notified if I need to
+> take any action.
 
-I applied it manually to see the differences.
+Just do the merge so the numbers are allocated in sequence.
 
-Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
+We really need to fix this up one of these days, there's no real need
+for these numbers, and it's a pain in merging, as you have found out...
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+thanks,
+
+greg k-h

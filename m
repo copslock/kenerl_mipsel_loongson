@@ -1,39 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2016 18:10:03 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37888 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026689AbcDPQJ5jrTY3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2016 18:09:57 +0200
-Received: from localhost (unknown [70.102.234.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C5A61C67;
-        Sat, 16 Apr 2016 16:09:50 +0000 (UTC)
-Date:   Sat, 16 Apr 2016 09:09:50 -0700
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Joshua Henderson <joshua.henderson@microchip.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
-        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
-        linux-api@vger.kernel.org
-Subject: Re: [PATCH v5 10/14] serial: pic32_uart: Add PIC32 UART driver
-Message-ID: <20160416160950.GD10824@kroah.com>
-References: <1452734299-460-1-git-send-email-joshua.henderson@microchip.com>
- <1452734299-460-11-git-send-email-joshua.henderson@microchip.com>
- <CAPKp9uYOnhJhNq8YDVRMpLSmGa7yWsktYnhVsMdWLtH1Jru3bw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2016 21:50:52 +0200 (CEST)
+Received: from mout.kundenserver.de ([217.72.192.74]:58470 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026777AbcDPTuuuGkre (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2016 21:50:50 +0200
+Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue101) with ESMTPSA (Nemesis) id 0LkPhj-1bSVcE0PLH-00cOJB; Sat, 16 Apr
+ 2016 21:50:29 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] phy: Add a driver for simple phy
+Date:   Sat, 16 Apr 2016 21:50:26 +0200
+Message-ID: <4848615.OezLJod6Cv@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <570F303A.6030605@ti.com>
+References: <1447708924-15076-1-git-send-email-albeu@free.fr> <1447708924-15076-2-git-send-email-albeu@free.fr> <570F303A.6030605@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPKp9uYOnhJhNq8YDVRMpLSmGa7yWsktYnhVsMdWLtH1Jru3bw@mail.gmail.com>
-User-Agent: Mutt/1.6.0 (2016-04-01)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:MWlb3iJYHvJ7+HKj+fH7epwLJFFz0/l0lV7Wcr/8tB1Zh3rlMO+
+ q8fCH7NoyIWszn//VK/6mUkS4H/XpoFEKZxpBDxQQePEcJy2LRX+WmlfCocIJbd7Aqwgcu5
+ J1JRBLTATUCKof1VGCUpy+AVJx3j1uKpnW2XUENHSOhOX+borvEJHV/0Gs0nCVrXIoMDN2X
+ rzeWBJFlkAOtgIZDzyD6g==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:D94fUqZv00w=:UkoadAeuSJ8JZR2OZbaE6d
+ BKnDYgnN/ycdD/ksbe351Q5SpySEL9PV6Qw7IZObMpakGPvGIZ2nAv2FkuOTGCHPpZsQlNFxf
+ 0IgnQVTcU/2m9i5JUwokY+s7IclyNUfUc9JH7YLUImvcHll9t75Ut48KYBDXFxpaSWUDFNS1e
+ 1n2fxyxbVrzF4wXcKfut1zuWk5MiijhMxni2Oy5DLPPFEwvGNJ4/x7yZ3coqs0pY682Nx+Fko
+ LWScvvsoebIDOptaa+7CIHr0W3o392o9LcWiAycGAng4yENZ0TqNPPdeTaLRjP+r3u/mAJH0Z
+ ntV5JG6AVmHKd+OvgQyTPgRRS5ilquXHcnPyY9I/iOLkhRZnxJD+GSEjBVdcASPr3cHeQDCFt
+ LvkkI8VBYTeWm9zESBNDqB9s4TmnTl7c05PIOVubi2neYEMVAJ/npJS3ppeKQIu+grbL4cdEU
+ JaULWHzvd0KPN/XcnejumDD5mKkxtWI1lToBfyz+LyReZT7SRr/4d9PnObUCRTqY+46RCuSQ5
+ dAU17WRnNmeFaC+F9z7l6idThh4zJLCM+9i86mzvRAqQx49zxZcR9IIPQ95prdwIar540A/eT
+ 64BtGo0dNR9isxAgQIzyTBcyagDJmmxvBZIsLZe/zV0gd249SyGArFcSxGANKClPtlzg9GPhc
+ prImRsg92+YF9+d4kjl3aZqLo0EZ+PgiDY35eMzIdqlDzij/b7CyWL6oS58ek+Tzsru0dnrEV
+ yzW9fQXts6b9sfK2
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53023
+X-archive-position: 53024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,56 +62,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 15, 2016 at 06:28:32PM +0100, Sudeep Holla wrote:
-> Hi Greg,
+On Thursday 14 April 2016 11:22:58 Kishon Vijay Abraham I wrote:
 > 
-> I just noticed this now. I am having similar issue with MPS2 UART driver
-> posted @[1], hence I am asking here to get some clarification myself.
-> Sorry for replying on very old thread.
+> IMO simple-phy driver should be an independent driver and shouldn't export
+> symbols. The dt binding for the simple phy device should be something like
+> below where all the properties of the simple phy device should be in the
+> binding documentation.
+> usbphy {
+>         compatible = "simple-phy";
+>         phy-supply = <&supply>;
+>         clocks = <&clock>;
+>         reset = <&reset>;
+> };
 > 
-> On Thu, Jan 14, 2016 at 1:15 AM, Joshua Henderson
-> <joshua.henderson@microchip.com> wrote:
-> > From: Andrei Pistirica <andrei.pistirica@microchip.com>
-> >
-> > This adds UART and a serial console driver for Microchip PIC32 class
-> > devices.
-> >
-> > Signed-off-by: Andrei Pistirica <andrei.pistirica@microchip.com>
-> > Signed-off-by: Joshua Henderson <joshua.henderson@microchip.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> 
-> [...]
-> 
-> > diff --git a/include/uapi/linux/serial_core.h b/include/uapi/linux/serial_core.h
-> > index 93ba148..9df0a98 100644
-> > --- a/include/uapi/linux/serial_core.h
-> > +++ b/include/uapi/linux/serial_core.h
-> > @@ -261,4 +261,7 @@
-> >  /* STM32 USART */
-> >  #define PORT_STM32     113
-> >
-> > +/* Microchip PIC32 UART */
-> > +#define PORT_PIC32     114
-> 
-> This was posted before v4.6-rc1 similar to MPS2 UART and has taken
-> port# 114 for it. However MVEBU UART obtained 114 with v4.6-rc1
-> And MPS2 UART was assigned 115 when it got revised/reposted.
-> 
-> I also see this patch in linux-next with 114 itself as its port number.
-> So the allocation of port number needs to be resolved before it gets
-> merged or it's OK to wait for v4.7-rc1 ?
-> 
-> If it's former, can PORT_PIC32 take 116 as the latest post of MPS2 assigned
-> it 115 and I have pulled the same to take it via arm-soc.
-> 
-> I am fine with any solution, just want to be notified if I need to
-> take any action.
+> Anything that needs more than this shouldn't be a simple phy.
 
-Just do the merge so the numbers are allocated in sequence.
+I think there are two aspects here:
 
-We really need to fix this up one of these days, there's no real need
-for these numbers, and it's a pain in merging, as you have found out...
+a) I agree that a driver that matches "simple-phy" should only call
+   the generic functions and not use any other properties.
 
-thanks,
+b) Independent of that, I think that it makes a lot of sense to export
+   those functions from the generic PHY subsystems so they can be
+   called from drivers that are a little less generic, or that already
+   have an established binding but need no other code.
 
-greg k-h
+	Arnd

@@ -1,51 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2016 21:50:52 +0200 (CEST)
-Received: from mout.kundenserver.de ([217.72.192.74]:58470 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2016 22:02:04 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.17.13]:63830 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026777AbcDPTuuuGkre (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2016 21:50:50 +0200
+        with ESMTP id S27007663AbcDPUCAs1wve (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2016 22:02:00 +0200
 Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue101) with ESMTPSA (Nemesis) id 0LkPhj-1bSVcE0PLH-00cOJB; Sat, 16 Apr
- 2016 21:50:29 +0200
+ (mreue101) with ESMTPSA (Nemesis) id 0Lw14n-1bqEsS1RAj-017p2P; Sat, 16 Apr
+ 2016 22:01:09 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Alban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Pawel Moll <pawel.moll@arm.com>,
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Olof Johansson <olof@lixom.net>,
+        Punit Agrawal <punit.agrawal@arm.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] phy: Add a driver for simple phy
-Date:   Sat, 16 Apr 2016 21:50:26 +0200
-Message-ID: <4848615.OezLJod6Cv@wuerfel>
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        "open list:BROADCOM BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE..." 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] bus: brcmstb_gisb: Rework dependencies
+Date:   Sat, 16 Apr 2016 22:01:05 +0200
+Message-ID: <13932531.o87aikNi0r@wuerfel>
 User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <570F303A.6030605@ti.com>
-References: <1447708924-15076-1-git-send-email-albeu@free.fr> <1447708924-15076-2-git-send-email-albeu@free.fr> <570F303A.6030605@ti.com>
+In-Reply-To: <1460571469-20201-1-git-send-email-f.fainelli@gmail.com>
+References: <1460571469-20201-1-git-send-email-f.fainelli@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:MWlb3iJYHvJ7+HKj+fH7epwLJFFz0/l0lV7Wcr/8tB1Zh3rlMO+
- q8fCH7NoyIWszn//VK/6mUkS4H/XpoFEKZxpBDxQQePEcJy2LRX+WmlfCocIJbd7Aqwgcu5
- J1JRBLTATUCKof1VGCUpy+AVJx3j1uKpnW2XUENHSOhOX+borvEJHV/0Gs0nCVrXIoMDN2X
- rzeWBJFlkAOtgIZDzyD6g==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:D94fUqZv00w=:UkoadAeuSJ8JZR2OZbaE6d
- BKnDYgnN/ycdD/ksbe351Q5SpySEL9PV6Qw7IZObMpakGPvGIZ2nAv2FkuOTGCHPpZsQlNFxf
- 0IgnQVTcU/2m9i5JUwokY+s7IclyNUfUc9JH7YLUImvcHll9t75Ut48KYBDXFxpaSWUDFNS1e
- 1n2fxyxbVrzF4wXcKfut1zuWk5MiijhMxni2Oy5DLPPFEwvGNJ4/x7yZ3coqs0pY682Nx+Fko
- LWScvvsoebIDOptaa+7CIHr0W3o392o9LcWiAycGAng4yENZ0TqNPPdeTaLRjP+r3u/mAJH0Z
- ntV5JG6AVmHKd+OvgQyTPgRRS5ilquXHcnPyY9I/iOLkhRZnxJD+GSEjBVdcASPr3cHeQDCFt
- LvkkI8VBYTeWm9zESBNDqB9s4TmnTl7c05PIOVubi2neYEMVAJ/npJS3ppeKQIu+grbL4cdEU
- JaULWHzvd0KPN/XcnejumDD5mKkxtWI1lToBfyz+LyReZT7SRr/4d9PnObUCRTqY+46RCuSQ5
- dAU17WRnNmeFaC+F9z7l6idThh4zJLCM+9i86mzvRAqQx49zxZcR9IIPQ95prdwIar540A/eT
- 64BtGo0dNR9isxAgQIzyTBcyagDJmmxvBZIsLZe/zV0gd249SyGArFcSxGANKClPtlzg9GPhc
- prImRsg92+YF9+d4kjl3aZqLo0EZ+PgiDY35eMzIdqlDzij/b7CyWL6oS58ek+Tzsru0dnrEV
- yzW9fQXts6b9sfK2
+X-Provags-ID: V03:K0:C8WFOF7jEqGEbygH/TCd8tV1ONeDE41wN/eOP7aB9JXjNSKQsYi
+ ZxDrNO4R6Rn6n/PcGXBdExDPG6KWe6rLWOMfDFGlH/yXZr24vvFLMTqtuIA0GOfFWrLfggd
+ 8bGX9zNPjMPNmYMiTEXQ54ZDy5WcOn7hY07Oo+viNLa7sSjHjUqe77D/pG7AtRf47fVb03+
+ tPyXnQBpNnDVxxgRKZH2A==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:OYz18JTk828=:GpV2N5Q6/nveBBTBz9Ha3y
+ jMNpk4sab9MvVqzZI6DbAHMI3W++MRuMjABaAHJbzYdgux2V33W98q/Z/dS+IdmJArJzKes6c
+ xU8vDgp2iZ0zlPr24uun3W5eRo4CMigmAOAYBkq2E06kx2C3XWL8jBKC4ajLEN5VoPgdJJivQ
+ FojqsfJSaVBJ2EufL7YCtx9HBVGXT20cs/lMQ8trulG9rkEq84SKthW55o40wdMk+7WNJSnod
+ 7t89vZnoSbDPXAxbwY0dncvmSv32TqW8oE1PZgioqPc1xBWbTiaaQr9cKqaVwXBAaiSy3GVMB
+ iUc87Lmu3Y1MJYf07gKMAXAC6Yco3I0n2998ukQfkhGWSHiCV3yxO1b9kCse9gqqdJ3YZJ4G4
+ Nx3kSj2JCYfKogJD5BVUhymmRSOuRySVESLXF3tEYx5OnyqI3K7nbom6jJ9mpRi9V6b4WYyy6
+ yY/LZFLpMHCmI1yWmboYt0Zp8zRiY2sPhMU//oT4riDOEKH3Q9l7SZ3RFa4HSjzMuPiwVkfOq
+ EyfKPwazMiI/EIGM1wRJflOvCDS95mcPb4fBJEshwxGiZwYcj4Fl/dXvrZGmX4QIwpGPpjikg
+ tvSCxqLtx6UmsQUlVf2tam2dS9YBTdaHdRu/tcHjoYGH6foPQTjlj2lLXLW9iSJLbyin3hcdk
+ dT1fHI//6J34P4+jQcxQ0KjVqY9q+Er99DCkoNlLz22HWhNLyeScLxoALyJU82BJVm5cbgq0q
+ dYT7HRKLpvqQ1Xw8
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53024
+X-archive-position: 53025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,29 +67,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 14 April 2016 11:22:58 Kishon Vijay Abraham I wrote:
+On Wednesday 13 April 2016 11:17:48 Florian Fainelli wrote:
+> --- a/drivers/bus/Kconfig
+> +++ b/drivers/bus/Kconfig
+> @@ -58,6 +58,8 @@ config ARM_CCN
+>  config BRCMSTB_GISB_ARB
+>         bool "Broadcom STB GISB bus arbiter"
+>         depends on ARM || MIPS
+> +       default ARCH_BRCMSTB
+> +       default BMIPS_GENERIC
 > 
-> IMO simple-phy driver should be an independent driver and shouldn't export
-> symbols. The dt binding for the simple phy device should be something like
-> below where all the properties of the simple phy device should be in the
-> binding documentation.
-> usbphy {
->         compatible = "simple-phy";
->         phy-supply = <&supply>;
->         clocks = <&clock>;
->         reset = <&reset>;
-> };
-> 
-> Anything that needs more than this shouldn't be a simple phy.
 
-I think there are two aspects here:
+I think having two 'default' statements is not clear to human
+readers, how about changing it to
 
-a) I agree that a driver that matches "simple-phy" should only call
-   the generic functions and not use any other properties.
+	default ARCH_BRCMSTB || BMIPS_GENERIC
 
-b) Independent of that, I think that it makes a lot of sense to export
-   those functions from the generic PHY subsystems so they can be
-   called from drivers that are a little less generic, or that already
-   have an established binding but need no other code.
 
 	Arnd

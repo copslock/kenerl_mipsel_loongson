@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2016 02:33:27 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:35337 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2016 02:34:36 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:35620 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026634AbcDPAdZBdYBA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2016 02:33:25 +0200
+        with ESMTP id S27026634AbcDPAed7Vk1A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2016 02:34:33 +0200
 Received: from smtp.codeaurora.org (localhost [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 775E6603B4;
-        Sat, 16 Apr 2016 00:33:23 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTP id C8DC1611CD;
+        Sat, 16 Apr 2016 00:34:32 +0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6572561506; Sat, 16 Apr 2016 00:33:23 +0000 (UTC)
+        id BC0F261515; Sat, 16 Apr 2016 00:34:32 +0000 (UTC)
 Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
         (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C5FBC60677;
-        Sat, 16 Apr 2016 00:33:22 +0000 (UTC)
-Date:   Fri, 15 Apr 2016 17:33:22 -0700
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 48F22601B5;
+        Sat, 16 Apr 2016 00:34:31 +0000 (UTC)
+Date:   Fri, 15 Apr 2016 17:34:30 -0700
 From:   Stephen Boyd <sboyd@codeaurora.org>
 To:     Keguang Zhang <keguang.zhang@gmail.com>
 Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
@@ -33,7 +33,7 @@ Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         David Woodhouse <dwmw2@infradead.org>,
         Brian Norris <computersforpeace@gmail.com>
 Subject: Re: [PATCH V1 1/7] clk: Loongson1: Update clocks of Loongson1B
-Message-ID: <20160416003322.GK26353@codeaurora.org>
+Message-ID: <20160416003430.GL26353@codeaurora.org>
 References: <1459946095-7637-1-git-send-email-keguang.zhang@gmail.com>
  <1459946095-7637-2-git-send-email-keguang.zhang@gmail.com>
 MIME-Version: 1.0
@@ -46,7 +46,7 @@ Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53021
+X-archive-position: 53022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,8 +74,9 @@ On 04/06, Keguang Zhang wrote:
 > Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
 > ---
 
-Can you please send this with git format-patch -M? I can't easily
-tell what has changed.
+I applied it manually to see the differences.
+
+Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
 
 -- 
 Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,

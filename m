@@ -1,160 +1,152 @@
-From: Manuel Lauss <manuel.lauss@gmail.com>
-Date: Wed, 2 Mar 2016 10:34:43 +0100
-Subject: pcmcia: db1xxx_ss: fix last irq_to_gpio user
-Message-ID: <20160302093443.Yqj4uldqOUjpi2u2ihpZP9DtzQySnoLR0zbECiiL9sU@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Apr 2016 14:39:11 +0200 (CEST)
+Received: from mail-pf0-f173.google.com ([209.85.192.173]:35237 "EHLO
+        mail-pf0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026803AbcDQMjIDw1Vr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Apr 2016 14:39:08 +0200
+Received: by mail-pf0-f173.google.com with SMTP id n1so71619453pfn.2;
+        Sun, 17 Apr 2016 05:39:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=rF8tBR6FeVKmNAFmTqMzkb6ZmHXyqas7YHtcuM09CVM=;
+        b=V7pNzT7xeuViB4xZOm2JrSU0tSeVXJntYg5RhBPcD7zHw7IoZ2OYcfO9sEsjXwLn22
+         ING2eDG0+QXUAP+EMYRTujmlTpaCXBVezK2Ih+BXbVGMwHotL5iNbtmLCs7iWmKQxyfz
+         8KCByXPfPT47Y7bP+5iNuDnnbdzZh2UKiJAm7pMeHO5Blrwv3hVadksTe9yoxTWfttJg
+         JThYcaJjltSG4HlK1ZC4zAGjTJfVLabSBV1ErVe53vST21wOTDceV7JGTI4e06Nkv3y4
+         MRr9tamYLjIVkUz3De/VMUQbBeLtfKh3gKxt5jYcmkYtkca9WYREBjdKTke6JIATNKUx
+         o8+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=rF8tBR6FeVKmNAFmTqMzkb6ZmHXyqas7YHtcuM09CVM=;
+        b=RG8lGQdEMrrIa1hs69Geucxh6Pvh+GwCNOGGsvlNQHVnKBiY00B9vUPheXrkRZRdS2
+         nqywX+Tlh/mlvDyXQrCK8WZlxWtKlauVaeqOspR4Ax/SZ+qC0sxnWE787y41BWd/PKc/
+         sMKg97//1fHsXzHGvMtRjk4Mhlp5tmse9cxErqwvUpJAFSq8k5JQ8AgJjTS+OzLXKH1K
+         KuVT8n+MLf9fI9v3PeLSukiSOWPKzU4WSLEHAbqwl4f3gZ9ywq26gzIntTEBEuIZP8Lp
+         7UmUl7PTmowjsv22gJwtDqsSnoBxEG3lCmMFMfkFRm3ovP1bCETUbjJ7FV95owRT35jV
+         4yxg==
+X-Gm-Message-State: AOPr4FVYKC2uw8o8KKgvbnnbJeuhruF3c1uDvhpa8+ZMSgNgmeszPAZwITqx3rQTC4stcA==
+X-Received: by 10.98.69.1 with SMTP id s1mr42788103pfa.56.1460896741959;
+        Sun, 17 Apr 2016 05:39:01 -0700 (PDT)
+Received: from dtor-ws ([2620:0:1000:1311:8532:83a7:8148:9133])
+        by smtp.gmail.com with ESMTPSA id w125sm13204085pfb.16.2016.04.17.05.38.59
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sun, 17 Apr 2016 05:39:01 -0700 (PDT)
+Date:   Sun, 17 Apr 2016 05:38:57 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     zengzhaoxiu@163.com
+Cc:     linux-kernel@vger.kernel.org,
+        Zhaoxiu Zeng <zhaoxiu.zeng@gmail.com>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anton Blanchard <anton@samba.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Borislav Petkov <bp@suse.de>,
+        Bruce Allan <bruce.w.allan@intel.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        David Herrmann <dh.herrmann@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Denys Vlasenko <dvlasenk@redhat.com>,
+        Duson Lin <dusonlin@emc.com.tw>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Hans Verkuil <hans.verkuil@cisco.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.vnet.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Julian Calaby <julian.calaby@gmail.com>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        linux-crypto@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux@lists.openrisc.net,
+        linux-m68k@lists.linux-m68k.org, linux-media@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        Martin Kepplinger <martink@posteo.de>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Nazarewicz <mina86@mina86.com>, netdev@vger.kernel.org,
+        Peter Hutterer <peter.hutterer@who-t.net>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Pingchao Yang <pingchao.yang@intel.com>, qat-linux@intel.com,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Sasha Levin <sasha.levin@oracle.com>,
+        Scott Wood <oss@buserror.net>, sparclinux@vger.kernel.org,
+        Tadeusz Struk <tadeusz.struk@intel.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Torsten Duwe <duwe@lst.de>,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        Ulrik De Bie <ulrik.debie-os@e2big.org>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "wim.coekaerts@oracle.com" <wim.coekaerts@oracle.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Yury Norov <yury.norov@gmail.com>,
+        =?utf-8?B?5rSq5LiA56u5?= <sam.hung@emc.com.tw>
+Subject: Re: [PATCH V3 00/29] bitops: add parity functions
+Message-ID: <20160417123857.GD33215@dtor-ws>
+References: <1460601525-3822-1-git-send-email-zengzhaoxiu@163.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1460601525-3822-1-git-send-email-zengzhaoxiu@163.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dmitry.torokhov@gmail.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 53030
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: dmitry.torokhov@gmail.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
+On Thu, Apr 14, 2016 at 10:36:41AM +0800, zengzhaoxiu@163.com wrote:
+>  drivers/input/joystick/grip_mp.c             |  16 +--
+>  drivers/input/joystick/sidewinder.c          |  24 +----
+>  drivers/input/mouse/elantech.c               |  10 +-
+>  drivers/input/mouse/elantech.h               |   1 -
+>  drivers/input/serio/ams_delta_serio.c        |   8 +-
+>  drivers/input/serio/pcips2.c                 |   2 +-
+>  drivers/input/serio/sa1111ps2.c              |   2 +-
 
-commit e34b6fcf9b09ec9d93503edd5f81489791ffd602 upstream.
+For input bits:
 
-remove the usage of removed irq_to_gpio() function.  On pre-DB1200
-boards, pass the actual carddetect GPIO number instead of the IRQ,
-because we need the gpio to actually test card status (inserted or
-not) and can get the irq number with gpio_to_irq() instead.
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-Tested on DB1300 and DB1500, this patch fixes PCMCIA on the DB1500,
-which used irq_to_gpio().
+Thanks.
 
-Fixes: 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h")
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-pcmcia@lists.infradead.org
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Patchwork: https://patchwork.linux-mips.org/patch/12747/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/alchemy/devboards/db1000.c |   18 ++++++++----------
- arch/mips/alchemy/devboards/db1550.c |    4 ++--
- drivers/pcmcia/db1xxx_ss.c           |   11 +++++++++--
- 3 files changed, 19 insertions(+), 14 deletions(-)
-
---- a/arch/mips/alchemy/devboards/db1000.c
-+++ b/arch/mips/alchemy/devboards/db1000.c
-@@ -503,15 +503,15 @@ int __init db1000_dev_setup(void)
- 	if (board == BCSR_WHOAMI_DB1500) {
- 		c0 = AU1500_GPIO2_INT;
- 		c1 = AU1500_GPIO5_INT;
--		d0 = AU1500_GPIO0_INT;
--		d1 = AU1500_GPIO3_INT;
-+		d0 = 0;	/* GPIO number, NOT irq! */
-+		d1 = 3; /* GPIO number, NOT irq! */
- 		s0 = AU1500_GPIO1_INT;
- 		s1 = AU1500_GPIO4_INT;
- 	} else if (board == BCSR_WHOAMI_DB1100) {
- 		c0 = AU1100_GPIO2_INT;
- 		c1 = AU1100_GPIO5_INT;
--		d0 = AU1100_GPIO0_INT;
--		d1 = AU1100_GPIO3_INT;
-+		d0 = 0; /* GPIO number, NOT irq! */
-+		d1 = 3; /* GPIO number, NOT irq! */
- 		s0 = AU1100_GPIO1_INT;
- 		s1 = AU1100_GPIO4_INT;
- 
-@@ -545,15 +545,15 @@ int __init db1000_dev_setup(void)
- 	} else if (board == BCSR_WHOAMI_DB1000) {
- 		c0 = AU1000_GPIO2_INT;
- 		c1 = AU1000_GPIO5_INT;
--		d0 = AU1000_GPIO0_INT;
--		d1 = AU1000_GPIO3_INT;
-+		d0 = 0; /* GPIO number, NOT irq! */
-+		d1 = 3; /* GPIO number, NOT irq! */
- 		s0 = AU1000_GPIO1_INT;
- 		s1 = AU1000_GPIO4_INT;
- 		platform_add_devices(db1000_devs, ARRAY_SIZE(db1000_devs));
- 	} else if ((board == BCSR_WHOAMI_PB1500) ||
- 		   (board == BCSR_WHOAMI_PB1500R2)) {
- 		c0 = AU1500_GPIO203_INT;
--		d0 = AU1500_GPIO201_INT;
-+		d0 = 1; /* GPIO number, NOT irq! */
- 		s0 = AU1500_GPIO202_INT;
- 		twosocks = 0;
- 		flashsize = 64;
-@@ -566,7 +566,7 @@ int __init db1000_dev_setup(void)
- 		 */
- 	} else if (board == BCSR_WHOAMI_PB1100) {
- 		c0 = AU1100_GPIO11_INT;
--		d0 = AU1100_GPIO9_INT;
-+		d0 = 9; /* GPIO number, NOT irq! */
- 		s0 = AU1100_GPIO10_INT;
- 		twosocks = 0;
- 		flashsize = 64;
-@@ -583,7 +583,6 @@ int __init db1000_dev_setup(void)
- 	} else
- 		return 0; /* unknown board, no further dev setup to do */
- 
--	irq_set_irq_type(d0, IRQ_TYPE_EDGE_BOTH);
- 	irq_set_irq_type(c0, IRQ_TYPE_LEVEL_LOW);
- 	irq_set_irq_type(s0, IRQ_TYPE_LEVEL_LOW);
- 
-@@ -597,7 +596,6 @@ int __init db1000_dev_setup(void)
- 		c0, d0, /*s0*/0, 0, 0);
- 
- 	if (twosocks) {
--		irq_set_irq_type(d1, IRQ_TYPE_EDGE_BOTH);
- 		irq_set_irq_type(c1, IRQ_TYPE_LEVEL_LOW);
- 		irq_set_irq_type(s1, IRQ_TYPE_LEVEL_LOW);
- 
---- a/arch/mips/alchemy/devboards/db1550.c
-+++ b/arch/mips/alchemy/devboards/db1550.c
-@@ -514,7 +514,7 @@ static void __init db1550_devices(void)
- 		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
- 		AU1000_PCMCIA_IO_PHYS_ADDR,
- 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
--		AU1550_GPIO3_INT, AU1550_GPIO0_INT,
-+		AU1550_GPIO3_INT, 0,
- 		/*AU1550_GPIO21_INT*/0, 0, 0);
- 
- 	db1x_register_pcmcia_socket(
-@@ -524,7 +524,7 @@ static void __init db1550_devices(void)
- 		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
- 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
- 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
--		AU1550_GPIO5_INT, AU1550_GPIO1_INT,
-+		AU1550_GPIO5_INT, 1,
- 		/*AU1550_GPIO22_INT*/0, 0, 1);
- 
- 	platform_device_register(&db1550_nand_dev);
---- a/drivers/pcmcia/db1xxx_ss.c
-+++ b/drivers/pcmcia/db1xxx_ss.c
-@@ -56,6 +56,7 @@ struct db1x_pcmcia_sock {
- 	int	stschg_irq;	/* card-status-change irq */
- 	int	card_irq;	/* card irq */
- 	int	eject_irq;	/* db1200/pb1200 have these */
-+	int	insert_gpio;	/* db1000 carddetect gpio */
- 
- #define BOARD_TYPE_DEFAULT	0	/* most boards */
- #define BOARD_TYPE_DB1200	1	/* IRQs aren't gpios */
-@@ -83,7 +84,7 @@ static int db1200_card_inserted(struct d
- /* carddetect gpio: low-active */
- static int db1000_card_inserted(struct db1x_pcmcia_sock *sock)
- {
--	return !gpio_get_value(irq_to_gpio(sock->insert_irq));
-+	return !gpio_get_value(sock->insert_gpio);
- }
- 
- static int db1x_card_inserted(struct db1x_pcmcia_sock *sock)
-@@ -457,9 +458,15 @@ static int db1x_pcmcia_socket_probe(stru
- 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "card");
- 	sock->card_irq = r ? r->start : 0;
- 
--	/* insert: irq which triggers on card insertion/ejection */
-+	/* insert: irq which triggers on card insertion/ejection
-+	 * BIG FAT NOTE: on DB1000/1100/1500/1550 we pass a GPIO here!
-+	 */
- 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "insert");
- 	sock->insert_irq = r ? r->start : -1;
-+	if (sock->board_type == BOARD_TYPE_DEFAULT) {
-+		sock->insert_gpio = r ? r->start : -1;
-+		sock->insert_irq = r ? gpio_to_irq(r->start) : -1;
-+	}
- 
- 	/* stschg: irq which trigger on card status change (optional) */
- 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "stschg");
-
-
-Patches currently in stable-queue which might be from manuel.lauss@gmail.com are
-
-queue-4.4/pcmcia-db1xxx_ss-fix-last-irq_to_gpio-user.patch
+-- 
+Dmitry

@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 04:39:08 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:44136 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 04:40:04 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:44231 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006575AbcDRCjEdqFW9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 04:39:04 +0200
+        by eddie.linux-mips.org with ESMTP id S27006575AbcDRCj7ldvt9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 04:39:59 +0200
 Received: from localhost (o141114.ppp.asahi-net.or.jp [202.208.141.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 10FAFE35;
-        Mon, 18 Apr 2016 02:38:56 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B69ADE35;
+        Mon, 18 Apr 2016 02:39:47 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-pcmcia@lists.infradead.org,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 095/137] pcmcia: db1xxx_ss: fix last irq_to_gpio user
-Date:   Mon, 18 Apr 2016 11:29:17 +0900
-Message-Id: <20160418022513.559503899@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        James Cowgill <James.Cowgill@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 085/137] MIPS: Fix MSA ld unaligned failure cases
+Date:   Mon, 18 Apr 2016 11:29:07 +0900
+Message-Id: <20160418022512.842457353@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.0
 In-Reply-To: <20160418022507.236379264@linuxfoundation.org>
 References: <20160418022507.236379264@linuxfoundation.org>
@@ -28,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53038
+X-archive-position: 53039
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,153 +50,112 @@ X-list: linux-mips
 
 ------------------
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit e34b6fcf9b09ec9d93503edd5f81489791ffd602 upstream.
+commit fa8ff601d72bad3078ddf5ef17a5547700d06908 upstream.
 
-remove the usage of removed irq_to_gpio() function.  On pre-DB1200
-boards, pass the actual carddetect GPIO number instead of the IRQ,
-because we need the gpio to actually test card status (inserted or
-not) and can get the irq number with gpio_to_irq() instead.
+Copying the content of an MSA vector from user memory may involve TLB
+faults & mapping in pages. This will fail when preemption is disabled
+due to an inability to acquire mmap_sem from do_page_fault, which meant
+such vector loads to unmapped pages would always fail to be emulated.
+Fix this by disabling preemption later only around the updating of
+vector register state.
 
-Tested on DB1300 and DB1500, this patch fixes PCMCIA on the DB1500,
-which used irq_to_gpio().
+This change does however introduce a race between performing the load
+into thread context & the thread being preempted, saving its current
+live context & clobbering the loaded value. This should be a rare
+occureence, so optimise for the fast path by simply repeating the load if
+we are preempted.
 
-Fixes: 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h")
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-pcmcia@lists.infradead.org
-Cc: Linux-MIPS <linux-mips@linux-mips.org>
-Patchwork: https://patchwork.linux-mips.org/patch/12747/
+Additionally if the copy failed then the failure path was taken with
+preemption left disabled, leading to the kernel typically encountering
+further issues around sleeping whilst atomic. The change to where
+preemption is disabled avoids this issue.
+
+Fixes: e4aa1f153add "MIPS: MSA unaligned memory access support"
+Reported-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: James Cowgill <James.Cowgill@imgtec.com>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12345/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/alchemy/devboards/db1000.c |   18 ++++++++----------
- arch/mips/alchemy/devboards/db1550.c |    4 ++--
- drivers/pcmcia/db1xxx_ss.c           |   11 +++++++++--
- 3 files changed, 19 insertions(+), 14 deletions(-)
+ arch/mips/kernel/unaligned.c |   53 +++++++++++++++++++++++++------------------
+ 1 file changed, 31 insertions(+), 22 deletions(-)
 
---- a/arch/mips/alchemy/devboards/db1000.c
-+++ b/arch/mips/alchemy/devboards/db1000.c
-@@ -503,15 +503,15 @@ int __init db1000_dev_setup(void)
- 	if (board == BCSR_WHOAMI_DB1500) {
- 		c0 = AU1500_GPIO2_INT;
- 		c1 = AU1500_GPIO5_INT;
--		d0 = AU1500_GPIO0_INT;
--		d1 = AU1500_GPIO3_INT;
-+		d0 = 0;	/* GPIO number, NOT irq! */
-+		d1 = 3; /* GPIO number, NOT irq! */
- 		s0 = AU1500_GPIO1_INT;
- 		s1 = AU1500_GPIO4_INT;
- 	} else if (board == BCSR_WHOAMI_DB1100) {
- 		c0 = AU1100_GPIO2_INT;
- 		c1 = AU1100_GPIO5_INT;
--		d0 = AU1100_GPIO0_INT;
--		d1 = AU1100_GPIO3_INT;
-+		d0 = 0; /* GPIO number, NOT irq! */
-+		d1 = 3; /* GPIO number, NOT irq! */
- 		s0 = AU1100_GPIO1_INT;
- 		s1 = AU1100_GPIO4_INT;
- 
-@@ -545,15 +545,15 @@ int __init db1000_dev_setup(void)
- 	} else if (board == BCSR_WHOAMI_DB1000) {
- 		c0 = AU1000_GPIO2_INT;
- 		c1 = AU1000_GPIO5_INT;
--		d0 = AU1000_GPIO0_INT;
--		d1 = AU1000_GPIO3_INT;
-+		d0 = 0; /* GPIO number, NOT irq! */
-+		d1 = 3; /* GPIO number, NOT irq! */
- 		s0 = AU1000_GPIO1_INT;
- 		s1 = AU1000_GPIO4_INT;
- 		platform_add_devices(db1000_devs, ARRAY_SIZE(db1000_devs));
- 	} else if ((board == BCSR_WHOAMI_PB1500) ||
- 		   (board == BCSR_WHOAMI_PB1500R2)) {
- 		c0 = AU1500_GPIO203_INT;
--		d0 = AU1500_GPIO201_INT;
-+		d0 = 1; /* GPIO number, NOT irq! */
- 		s0 = AU1500_GPIO202_INT;
- 		twosocks = 0;
- 		flashsize = 64;
-@@ -566,7 +566,7 @@ int __init db1000_dev_setup(void)
- 		 */
- 	} else if (board == BCSR_WHOAMI_PB1100) {
- 		c0 = AU1100_GPIO11_INT;
--		d0 = AU1100_GPIO9_INT;
-+		d0 = 9; /* GPIO number, NOT irq! */
- 		s0 = AU1100_GPIO10_INT;
- 		twosocks = 0;
- 		flashsize = 64;
-@@ -583,7 +583,6 @@ int __init db1000_dev_setup(void)
- 	} else
- 		return 0; /* unknown board, no further dev setup to do */
- 
--	irq_set_irq_type(d0, IRQ_TYPE_EDGE_BOTH);
- 	irq_set_irq_type(c0, IRQ_TYPE_LEVEL_LOW);
- 	irq_set_irq_type(s0, IRQ_TYPE_LEVEL_LOW);
- 
-@@ -597,7 +596,6 @@ int __init db1000_dev_setup(void)
- 		c0, d0, /*s0*/0, 0, 0);
- 
- 	if (twosocks) {
--		irq_set_irq_type(d1, IRQ_TYPE_EDGE_BOTH);
- 		irq_set_irq_type(c1, IRQ_TYPE_LEVEL_LOW);
- 		irq_set_irq_type(s1, IRQ_TYPE_LEVEL_LOW);
- 
---- a/arch/mips/alchemy/devboards/db1550.c
-+++ b/arch/mips/alchemy/devboards/db1550.c
-@@ -514,7 +514,7 @@ static void __init db1550_devices(void)
- 		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
- 		AU1000_PCMCIA_IO_PHYS_ADDR,
- 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
--		AU1550_GPIO3_INT, AU1550_GPIO0_INT,
-+		AU1550_GPIO3_INT, 0,
- 		/*AU1550_GPIO21_INT*/0, 0, 0);
- 
- 	db1x_register_pcmcia_socket(
-@@ -524,7 +524,7 @@ static void __init db1550_devices(void)
- 		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
- 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
- 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
--		AU1550_GPIO5_INT, AU1550_GPIO1_INT,
-+		AU1550_GPIO5_INT, 1,
- 		/*AU1550_GPIO22_INT*/0, 0, 1);
- 
- 	platform_device_register(&db1550_nand_dev);
---- a/drivers/pcmcia/db1xxx_ss.c
-+++ b/drivers/pcmcia/db1xxx_ss.c
-@@ -56,6 +56,7 @@ struct db1x_pcmcia_sock {
- 	int	stschg_irq;	/* card-status-change irq */
- 	int	card_irq;	/* card irq */
- 	int	eject_irq;	/* db1200/pb1200 have these */
-+	int	insert_gpio;	/* db1000 carddetect gpio */
- 
- #define BOARD_TYPE_DEFAULT	0	/* most boards */
- #define BOARD_TYPE_DB1200	1	/* IRQs aren't gpios */
-@@ -83,7 +84,7 @@ static int db1200_card_inserted(struct d
- /* carddetect gpio: low-active */
- static int db1000_card_inserted(struct db1x_pcmcia_sock *sock)
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -885,7 +885,7 @@ static void emulate_load_store_insn(stru
  {
--	return !gpio_get_value(irq_to_gpio(sock->insert_irq));
-+	return !gpio_get_value(sock->insert_gpio);
- }
+ 	union mips_instruction insn;
+ 	unsigned long value;
+-	unsigned int res;
++	unsigned int res, preempted;
+ 	unsigned long origpc;
+ 	unsigned long orig31;
+ 	void __user *fault_addr = NULL;
+@@ -1226,27 +1226,36 @@ static void emulate_load_store_insn(stru
+ 			if (!access_ok(VERIFY_READ, addr, sizeof(*fpr)))
+ 				goto sigbus;
  
- static int db1x_card_inserted(struct db1x_pcmcia_sock *sock)
-@@ -457,9 +458,15 @@ static int db1x_pcmcia_socket_probe(stru
- 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "card");
- 	sock->card_irq = r ? r->start : 0;
+-			/*
+-			 * Disable preemption to avoid a race between copying
+-			 * state from userland, migrating to another CPU and
+-			 * updating the hardware vector register below.
+-			 */
+-			preempt_disable();
+-
+-			res = __copy_from_user_inatomic(fpr, addr,
+-							sizeof(*fpr));
+-			if (res)
+-				goto fault;
+-
+-			/*
+-			 * Update the hardware register if it is in use by the
+-			 * task in this quantum, in order to avoid having to
+-			 * save & restore the whole vector context.
+-			 */
+-			if (test_thread_flag(TIF_USEDMSA))
+-				write_msa_wr(wd, fpr, df);
+-
+-			preempt_enable();
++			do {
++				/*
++				 * If we have live MSA context keep track of
++				 * whether we get preempted in order to avoid
++				 * the register context we load being clobbered
++				 * by the live context as it's saved during
++				 * preemption. If we don't have live context
++				 * then it can't be saved to clobber the value
++				 * we load.
++				 */
++				preempted = test_thread_flag(TIF_USEDMSA);
++
++				res = __copy_from_user_inatomic(fpr, addr,
++								sizeof(*fpr));
++				if (res)
++					goto fault;
++
++				/*
++				 * Update the hardware register if it is in use
++				 * by the task in this quantum, in order to
++				 * avoid having to save & restore the whole
++				 * vector context.
++				 */
++				preempt_disable();
++				if (test_thread_flag(TIF_USEDMSA)) {
++					write_msa_wr(wd, fpr, df);
++					preempted = 0;
++				}
++				preempt_enable();
++			} while (preempted);
+ 			break;
  
--	/* insert: irq which triggers on card insertion/ejection */
-+	/* insert: irq which triggers on card insertion/ejection
-+	 * BIG FAT NOTE: on DB1000/1100/1500/1550 we pass a GPIO here!
-+	 */
- 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "insert");
- 	sock->insert_irq = r ? r->start : -1;
-+	if (sock->board_type == BOARD_TYPE_DEFAULT) {
-+		sock->insert_gpio = r ? r->start : -1;
-+		sock->insert_irq = r ? gpio_to_irq(r->start) : -1;
-+	}
- 
- 	/* stschg: irq which trigger on card status change (optional) */
- 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "stschg");
+ 		case msa_st_op:

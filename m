@@ -1,35 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 11:36:01 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:9703 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 11:36:17 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:10377 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026828AbcDRJf7cutHM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 11:35:59 +0200
+        with ESMTP id S27026875AbcDRJgNyEjUM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 11:36:13 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 82BD35EC596C2;
-        Mon, 18 Apr 2016 10:35:50 +0100 (IST)
+        by Websense Email with ESMTPS id 0EFA1873E6072;
+        Mon, 18 Apr 2016 10:36:05 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Mon, 18 Apr 2016 10:35:53 +0100
+ 14.3.266.1; Mon, 18 Apr 2016 10:36:07 +0100
 Received: from localhost (10.100.200.164) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 18 Apr
- 2016 10:35:52 +0100
+ 2016 10:36:07 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, Paul Burton
-        <paul.burton@imgtec.com>, "Maciej W. Rozycki" <macro@imgtec.com>, "Joshua
- Kinard" <kumba@gentoo.org>, Huacai Chen <chenhc@lemote.com>, "Maciej W.
- Rozycki" <macro@linux-mips.org>, Paul Gortmaker
-        <paul.gortmaker@windriver.com>, Aneesh Kumar K.V
-        <aneesh.kumar@linux.vnet.ibm.com>, <linux-kernel@vger.kernel.org>, "Peter
- Zijlstra (Intel)" <peterz@infradead.org>, David Hildenbrand
-        <dahi@linux.vnet.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, "David
- Daney" <david.daney@cavium.com>, Jonas Gorski <jogo@openwrt.org>, "Markos
- Chandras" <markos.chandras@imgtec.com>, Ingo Molnar <mingo@kernel.org>,
-        "Jerome Marchand" <jmarchan@redhat.com>, Alex Smith <alex.smith@imgtec.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH v2 00/13] TLB/XPA fixes & cleanups
-Date:   Mon, 18 Apr 2016 10:35:20 +0100
-Message-ID: <1460972133-16973-1-git-send-email-paul.burton@imgtec.com>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        "Joshua Kinard" <kumba@gentoo.org>, <linux-kernel@vger.kernel.org>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH v2 01/13] MIPS: Separate XPA CPU feature into LPA and MVH
+Date:   Mon, 18 Apr 2016 10:35:21 +0100
+Message-ID: <1460972133-16973-2-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.8.0
+In-Reply-To: <1460972133-16973-1-git-send-email-paul.burton@imgtec.com>
+References: <1460972133-16973-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.164]
@@ -37,7 +32,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53043
+X-archive-position: 53044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,43 +49,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series fixes up a number of issues introduced by commit
-c5b367835cfc ("MIPS: Add support for XPA."), including breakage of the
-MIPS32 with 36 bit physical addressing case & clobbering of $1 upon TLB
-refill exceptions. Along the way a number of cleanups are made, which
-leaves pgtable-bits.h in particular much more readable than before.
+From: James Hogan <james.hogan@imgtec.com>
 
-The series applies atop v4.6-rc4.
+XPA (eXtended Physical Addressing) should be detected as a combination
+of two architectural features:
+- Large Physical Address (as per Config3.LPA). With XPA this will be set
+  on MIPS32r5 cores, but it may also be set for MIPS64r2 cores too.
+- MTHC0/MFHC0 instructions (as per Config5.MVH). With XPA this will be
+  set, but it may also be set in VZ guest context even when Config3.LPA
+  in the guest context has been cleared by the hypervisor.
 
-James Hogan (4):
-  MIPS: Separate XPA CPU feature into LPA and MVH
-  MIPS: Fix HTW config on XPA kernel without LPA enabled
-  MIPS: mm: Don't clobber $1 on XPA TLB refill
-  MIPS: mm: Don't do MTHC0 if XPA not present
+As such, XPA is only usable if both bits are set. Update CPU features to
+separate these two features, with cpu_has_xpa requiring both to be set.
 
-Paul Burton (9):
-  MIPS: Remove redundant asm/pgtable-bits.h inclusions
-  MIPS: Use enums to make asm/pgtable-bits.h readable
-  MIPS: mm: Standardise on _PAGE_NO_READ, drop _PAGE_READ
-  MIPS: mm: Unify pte_page definition
-  MIPS: mm: Fix MIPS32 36b physical addressing (alchemy, netlogic)
-  MIPS: mm: Pass scratch register through to iPTE_SW
-  MIPS: mm: Be more explicit about PTE mode bit handling
-  MIPS: mm: Simplify build_update_entries
-  MIPS: mm: Panic if an XPA kernel is run without RIXI
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+---
 
- arch/mips/include/asm/cpu-features.h |   8 +-
- arch/mips/include/asm/cpu.h          |   3 +-
- arch/mips/include/asm/pgtable-32.h   |  33 +++++-
- arch/mips/include/asm/pgtable-bits.h | 211 ++++++++++++++++-------------------
- arch/mips/include/asm/pgtable.h      |  78 +++++++++----
- arch/mips/kernel/cpu-probe.c         |   6 +-
- arch/mips/kernel/head.S              |   1 -
- arch/mips/kernel/r4k_switch.S        |   1 -
- arch/mips/mm/init.c                  |  16 ++-
- arch/mips/mm/tlb-r4k.c               |   6 +-
- arch/mips/mm/tlbex.c                 | 116 +++++++++----------
- 11 files changed, 265 insertions(+), 214 deletions(-)
+Changes in v2: None
 
+ arch/mips/include/asm/cpu-features.h | 8 +++++++-
+ arch/mips/include/asm/cpu.h          | 3 ++-
+ arch/mips/kernel/cpu-probe.c         | 6 +++---
+ 3 files changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index eeec8c8..3993a35 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -142,8 +142,14 @@
+ # endif
+ #endif
+ 
++#ifndef cpu_has_lpa
++#define cpu_has_lpa		(cpu_data[0].options & MIPS_CPU_LPA)
++#endif
++#ifndef cpu_has_mvh
++#define cpu_has_mvh		(cpu_data[0].options & MIPS_CPU_MVH)
++#endif
+ #ifndef cpu_has_xpa
+-#define cpu_has_xpa		(cpu_data[0].options & MIPS_CPU_XPA)
++#define cpu_has_xpa		(cpu_has_lpa && cpu_has_mvh)
+ #endif
+ #ifndef cpu_has_vtag_icache
+ #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index a97ca97..32fa061 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -381,13 +381,14 @@ enum cpu_type_enum {
+ #define MIPS_CPU_MAAR		0x400000000ull /* MAAR(I) registers are present */
+ #define MIPS_CPU_FRE		0x800000000ull /* FRE & UFE bits implemented */
+ #define MIPS_CPU_RW_LLB		0x1000000000ull /* LLADDR/LLB writes are allowed */
+-#define MIPS_CPU_XPA		0x2000000000ull /* CPU supports Extended Physical Addressing */
++#define MIPS_CPU_LPA		0x2000000000ull /* CPU supports Large Physical Addressing */
+ #define MIPS_CPU_CDMM		0x4000000000ull	/* CPU has Common Device Memory Map */
+ #define MIPS_CPU_BP_GHIST	0x8000000000ull /* R12K+ Branch Prediction Global History */
+ #define MIPS_CPU_SP		0x10000000000ull /* Small (1KB) page support */
+ #define MIPS_CPU_FTLB		0x20000000000ull /* CPU has Fixed-page-size TLB */
+ #define MIPS_CPU_NAN_LEGACY	0x40000000000ull /* Legacy NaN implemented */
+ #define MIPS_CPU_NAN_2008	0x80000000000ull /* 2008 NaN implemented */
++#define MIPS_CPU_MVH		0x100000000000ull /* CPU supports MFHC0/MTHC0 */
+ 
+ /*
+  * CPU ASE encodings
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index b725b71..da21fbe 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -685,6 +685,8 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 		c->options |= MIPS_CPU_VINT;
+ 	if (config3 & MIPS_CONF3_VEIC)
+ 		c->options |= MIPS_CPU_VEIC;
++	if (config3 & MIPS_CONF3_LPA)
++		c->options |= MIPS_CPU_LPA;
+ 	if (config3 & MIPS_CONF3_MT)
+ 		c->ases |= MIPS_ASE_MIPSMT;
+ 	if (config3 & MIPS_CONF3_ULRI)
+@@ -792,10 +794,8 @@ static inline unsigned int decode_config5(struct cpuinfo_mips *c)
+ 		c->options |= MIPS_CPU_MAAR;
+ 	if (config5 & MIPS_CONF5_LLB)
+ 		c->options |= MIPS_CPU_RW_LLB;
+-#ifdef CONFIG_XPA
+ 	if (config5 & MIPS_CONF5_MVH)
+-		c->options |= MIPS_CPU_XPA;
+-#endif
++		c->options |= MIPS_CPU_MVH;
+ 
+ 	return config5 & MIPS_CONF_M;
+ }
 -- 
 2.8.0

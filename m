@@ -1,24 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 04:33:16 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:43164 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 04:33:37 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:43221 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006865AbcDRCc5y8H09 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 04:32:57 +0200
+        by eddie.linux-mips.org with ESMTP id S27013787AbcDRCd0Ce-v9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 04:33:26 +0200
 Received: from localhost (o141114.ppp.asahi-net.or.jp [202.208.141.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5451EF5D;
-        Mon, 18 Apr 2016 02:32:51 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8EF6AF6E;
+        Mon, 18 Apr 2016 02:33:19 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hartley <James.Hartley@imgtec.com>,
-        Govindraj Raja <Govindraj.Raja@imgtec.com>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Rob Herring <robh@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 4.5 074/124] pinctrl: pistachio: fix mfio84-89 function description and pinmux.
-Date:   Mon, 18 Apr 2016 11:29:06 +0900
-Message-Id: <20160418022619.547446496@linuxfoundation.org>
+        stable@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-pcmcia@lists.infradead.org,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.5 084/124] pcmcia: db1xxx_ss: fix last irq_to_gpio user
+Date:   Mon, 18 Apr 2016 11:29:16 +0900
+Message-Id: <20160418022620.070131992@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.0
 In-Reply-To: <20160418022615.726954227@linuxfoundation.org>
 References: <20160418022615.726954227@linuxfoundation.org>
@@ -29,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53035
+X-archive-position: 53036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,124 +49,153 @@ X-list: linux-mips
 
 ------------------
 
-From: Govindraj Raja <Govindraj.Raja@imgtec.com>
+From: Manuel Lauss <manuel.lauss@gmail.com>
 
-commit e9adb336d0bf391be23e820975ca5cd12c31d781 upstream.
+commit e34b6fcf9b09ec9d93503edd5f81489791ffd602 upstream.
 
-mfio 84 to 89 are described wrongly, fix it to describe
-the right pin and add them to right pin-mux group.
+remove the usage of removed irq_to_gpio() function.  On pre-DB1200
+boards, pass the actual carddetect GPIO number instead of the IRQ,
+because we need the gpio to actually test card status (inserted or
+not) and can get the irq number with gpio_to_irq() instead.
 
-The correct order is:
-	pll1_lock => mips_pll	-- MFIO_83
-	pll2_lock => audio_pll	-- MFIO_84
-	pll3_lock => rpu_v_pll	-- MFIO_85
-	pll4_lock => rpu_l_pll	-- MFIO_86
-	pll5_lock => sys_pll	-- MFIO_87
-	pll6_lock => wifi_pll	-- MFIO_88
-	pll7_lock => bt_pll	-- MFIO_89
+Tested on DB1300 and DB1500, this patch fixes PCMCIA on the DB1500,
+which used irq_to_gpio().
 
-Cc: linux-gpio@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: James Hartley <James.Hartley@imgtec.com>
-Fixes: cefc03e5995e("pinctrl: Add Pistachio SoC pin control driver")
-Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
-Acked-by: Andrew Bresticker <abrestic@chromium.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 832f5dacfa0b ("MIPS: Remove all the uses of custom gpio.h")
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-pcmcia@lists.infradead.org
+Cc: Linux-MIPS <linux-mips@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/12747/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt |   12 ++---
- drivers/pinctrl/pinctrl-pistachio.c                                 |   24 +++++-----
- 2 files changed, 18 insertions(+), 18 deletions(-)
+ arch/mips/alchemy/devboards/db1000.c |   18 ++++++++----------
+ arch/mips/alchemy/devboards/db1550.c |    4 ++--
+ drivers/pcmcia/db1xxx_ss.c           |   11 +++++++++--
+ 3 files changed, 19 insertions(+), 14 deletions(-)
 
---- a/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
-+++ b/Documentation/devicetree/bindings/pinctrl/img,pistachio-pinctrl.txt
-@@ -134,12 +134,12 @@ mfio80		ddr_debug, mips_trace_data, mips
- mfio81		dreq0, mips_trace_data, eth_debug
- mfio82		dreq1, mips_trace_data, eth_debug
- mfio83		mips_pll_lock, mips_trace_data, usb_debug
--mfio84		sys_pll_lock, mips_trace_data, usb_debug
--mfio85		wifi_pll_lock, mips_trace_data, sdhost_debug
--mfio86		bt_pll_lock, mips_trace_data, sdhost_debug
--mfio87		rpu_v_pll_lock, dreq2, socif_debug
--mfio88		rpu_l_pll_lock, dreq3, socif_debug
--mfio89		audio_pll_lock, dreq4, dreq5
-+mfio84		audio_pll_lock, mips_trace_data, usb_debug
-+mfio85		rpu_v_pll_lock, mips_trace_data, sdhost_debug
-+mfio86		rpu_l_pll_lock, mips_trace_data, sdhost_debug
-+mfio87		sys_pll_lock, dreq2, socif_debug
-+mfio88		wifi_pll_lock, dreq3, socif_debug
-+mfio89		bt_pll_lock, dreq4, dreq5
- tck
- trstn
- tdi
---- a/drivers/pinctrl/pinctrl-pistachio.c
-+++ b/drivers/pinctrl/pinctrl-pistachio.c
-@@ -469,27 +469,27 @@ static const char * const pistachio_mips
- 	"mfio83",
- };
+--- a/arch/mips/alchemy/devboards/db1000.c
++++ b/arch/mips/alchemy/devboards/db1000.c
+@@ -503,15 +503,15 @@ int __init db1000_dev_setup(void)
+ 	if (board == BCSR_WHOAMI_DB1500) {
+ 		c0 = AU1500_GPIO2_INT;
+ 		c1 = AU1500_GPIO5_INT;
+-		d0 = AU1500_GPIO0_INT;
+-		d1 = AU1500_GPIO3_INT;
++		d0 = 0;	/* GPIO number, NOT irq! */
++		d1 = 3; /* GPIO number, NOT irq! */
+ 		s0 = AU1500_GPIO1_INT;
+ 		s1 = AU1500_GPIO4_INT;
+ 	} else if (board == BCSR_WHOAMI_DB1100) {
+ 		c0 = AU1100_GPIO2_INT;
+ 		c1 = AU1100_GPIO5_INT;
+-		d0 = AU1100_GPIO0_INT;
+-		d1 = AU1100_GPIO3_INT;
++		d0 = 0; /* GPIO number, NOT irq! */
++		d1 = 3; /* GPIO number, NOT irq! */
+ 		s0 = AU1100_GPIO1_INT;
+ 		s1 = AU1100_GPIO4_INT;
  
--static const char * const pistachio_sys_pll_lock_groups[] = {
-+static const char * const pistachio_audio_pll_lock_groups[] = {
- 	"mfio84",
- };
+@@ -545,15 +545,15 @@ int __init db1000_dev_setup(void)
+ 	} else if (board == BCSR_WHOAMI_DB1000) {
+ 		c0 = AU1000_GPIO2_INT;
+ 		c1 = AU1000_GPIO5_INT;
+-		d0 = AU1000_GPIO0_INT;
+-		d1 = AU1000_GPIO3_INT;
++		d0 = 0; /* GPIO number, NOT irq! */
++		d1 = 3; /* GPIO number, NOT irq! */
+ 		s0 = AU1000_GPIO1_INT;
+ 		s1 = AU1000_GPIO4_INT;
+ 		platform_add_devices(db1000_devs, ARRAY_SIZE(db1000_devs));
+ 	} else if ((board == BCSR_WHOAMI_PB1500) ||
+ 		   (board == BCSR_WHOAMI_PB1500R2)) {
+ 		c0 = AU1500_GPIO203_INT;
+-		d0 = AU1500_GPIO201_INT;
++		d0 = 1; /* GPIO number, NOT irq! */
+ 		s0 = AU1500_GPIO202_INT;
+ 		twosocks = 0;
+ 		flashsize = 64;
+@@ -566,7 +566,7 @@ int __init db1000_dev_setup(void)
+ 		 */
+ 	} else if (board == BCSR_WHOAMI_PB1100) {
+ 		c0 = AU1100_GPIO11_INT;
+-		d0 = AU1100_GPIO9_INT;
++		d0 = 9; /* GPIO number, NOT irq! */
+ 		s0 = AU1100_GPIO10_INT;
+ 		twosocks = 0;
+ 		flashsize = 64;
+@@ -583,7 +583,6 @@ int __init db1000_dev_setup(void)
+ 	} else
+ 		return 0; /* unknown board, no further dev setup to do */
  
--static const char * const pistachio_wifi_pll_lock_groups[] = {
-+static const char * const pistachio_rpu_v_pll_lock_groups[] = {
- 	"mfio85",
- };
+-	irq_set_irq_type(d0, IRQ_TYPE_EDGE_BOTH);
+ 	irq_set_irq_type(c0, IRQ_TYPE_LEVEL_LOW);
+ 	irq_set_irq_type(s0, IRQ_TYPE_LEVEL_LOW);
  
--static const char * const pistachio_bt_pll_lock_groups[] = {
-+static const char * const pistachio_rpu_l_pll_lock_groups[] = {
- 	"mfio86",
- };
+@@ -597,7 +596,6 @@ int __init db1000_dev_setup(void)
+ 		c0, d0, /*s0*/0, 0, 0);
  
--static const char * const pistachio_rpu_v_pll_lock_groups[] = {
-+static const char * const pistachio_sys_pll_lock_groups[] = {
- 	"mfio87",
- };
+ 	if (twosocks) {
+-		irq_set_irq_type(d1, IRQ_TYPE_EDGE_BOTH);
+ 		irq_set_irq_type(c1, IRQ_TYPE_LEVEL_LOW);
+ 		irq_set_irq_type(s1, IRQ_TYPE_LEVEL_LOW);
  
--static const char * const pistachio_rpu_l_pll_lock_groups[] = {
-+static const char * const pistachio_wifi_pll_lock_groups[] = {
- 	"mfio88",
- };
+--- a/arch/mips/alchemy/devboards/db1550.c
++++ b/arch/mips/alchemy/devboards/db1550.c
+@@ -514,7 +514,7 @@ static void __init db1550_devices(void)
+ 		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
+ 		AU1000_PCMCIA_IO_PHYS_ADDR,
+ 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
+-		AU1550_GPIO3_INT, AU1550_GPIO0_INT,
++		AU1550_GPIO3_INT, 0,
+ 		/*AU1550_GPIO21_INT*/0, 0, 0);
  
--static const char * const pistachio_audio_pll_lock_groups[] = {
-+static const char * const pistachio_bt_pll_lock_groups[] = {
- 	"mfio89",
- };
+ 	db1x_register_pcmcia_socket(
+@@ -524,7 +524,7 @@ static void __init db1550_devices(void)
+ 		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
+ 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
+ 		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
+-		AU1550_GPIO5_INT, AU1550_GPIO1_INT,
++		AU1550_GPIO5_INT, 1,
+ 		/*AU1550_GPIO22_INT*/0, 0, 1);
  
-@@ -559,12 +559,12 @@ enum pistachio_mux_option {
- 	PISTACHIO_FUNCTION_DREQ4,
- 	PISTACHIO_FUNCTION_DREQ5,
- 	PISTACHIO_FUNCTION_MIPS_PLL_LOCK,
-+	PISTACHIO_FUNCTION_AUDIO_PLL_LOCK,
-+	PISTACHIO_FUNCTION_RPU_V_PLL_LOCK,
-+	PISTACHIO_FUNCTION_RPU_L_PLL_LOCK,
- 	PISTACHIO_FUNCTION_SYS_PLL_LOCK,
- 	PISTACHIO_FUNCTION_WIFI_PLL_LOCK,
- 	PISTACHIO_FUNCTION_BT_PLL_LOCK,
--	PISTACHIO_FUNCTION_RPU_V_PLL_LOCK,
--	PISTACHIO_FUNCTION_RPU_L_PLL_LOCK,
--	PISTACHIO_FUNCTION_AUDIO_PLL_LOCK,
- 	PISTACHIO_FUNCTION_DEBUG_RAW_CCA_IND,
- 	PISTACHIO_FUNCTION_DEBUG_ED_SEC20_CCA_IND,
- 	PISTACHIO_FUNCTION_DEBUG_ED_SEC40_CCA_IND,
-@@ -620,12 +620,12 @@ static const struct pistachio_function p
- 	FUNCTION(dreq4),
- 	FUNCTION(dreq5),
- 	FUNCTION(mips_pll_lock),
-+	FUNCTION(audio_pll_lock),
-+	FUNCTION(rpu_v_pll_lock),
-+	FUNCTION(rpu_l_pll_lock),
- 	FUNCTION(sys_pll_lock),
- 	FUNCTION(wifi_pll_lock),
- 	FUNCTION(bt_pll_lock),
--	FUNCTION(rpu_v_pll_lock),
--	FUNCTION(rpu_l_pll_lock),
--	FUNCTION(audio_pll_lock),
- 	FUNCTION(debug_raw_cca_ind),
- 	FUNCTION(debug_ed_sec20_cca_ind),
- 	FUNCTION(debug_ed_sec40_cca_ind),
+ 	platform_device_register(&db1550_nand_dev);
+--- a/drivers/pcmcia/db1xxx_ss.c
++++ b/drivers/pcmcia/db1xxx_ss.c
+@@ -56,6 +56,7 @@ struct db1x_pcmcia_sock {
+ 	int	stschg_irq;	/* card-status-change irq */
+ 	int	card_irq;	/* card irq */
+ 	int	eject_irq;	/* db1200/pb1200 have these */
++	int	insert_gpio;	/* db1000 carddetect gpio */
+ 
+ #define BOARD_TYPE_DEFAULT	0	/* most boards */
+ #define BOARD_TYPE_DB1200	1	/* IRQs aren't gpios */
+@@ -83,7 +84,7 @@ static int db1200_card_inserted(struct d
+ /* carddetect gpio: low-active */
+ static int db1000_card_inserted(struct db1x_pcmcia_sock *sock)
+ {
+-	return !gpio_get_value(irq_to_gpio(sock->insert_irq));
++	return !gpio_get_value(sock->insert_gpio);
+ }
+ 
+ static int db1x_card_inserted(struct db1x_pcmcia_sock *sock)
+@@ -457,9 +458,15 @@ static int db1x_pcmcia_socket_probe(stru
+ 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "card");
+ 	sock->card_irq = r ? r->start : 0;
+ 
+-	/* insert: irq which triggers on card insertion/ejection */
++	/* insert: irq which triggers on card insertion/ejection
++	 * BIG FAT NOTE: on DB1000/1100/1500/1550 we pass a GPIO here!
++	 */
+ 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "insert");
+ 	sock->insert_irq = r ? r->start : -1;
++	if (sock->board_type == BOARD_TYPE_DEFAULT) {
++		sock->insert_gpio = r ? r->start : -1;
++		sock->insert_irq = r ? gpio_to_irq(r->start) : -1;
++	}
+ 
+ 	/* stschg: irq which trigger on card status change (optional) */
+ 	r = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "stschg");

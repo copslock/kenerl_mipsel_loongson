@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 04:40:04 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:44231 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006575AbcDRCj7ldvt9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 04:39:59 +0200
-Received: from localhost (o141114.ppp.asahi-net.or.jp [202.208.141.114])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B69ADE35;
-        Mon, 18 Apr 2016 02:39:47 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        James Cowgill <James.Cowgill@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 085/137] MIPS: Fix MSA ld unaligned failure cases
-Date:   Mon, 18 Apr 2016 11:29:07 +0900
-Message-Id: <20160418022512.842457353@linuxfoundation.org>
-X-Mailer: git-send-email 2.8.0
-In-Reply-To: <20160418022507.236379264@linuxfoundation.org>
-References: <20160418022507.236379264@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 06:56:47 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:44833 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27025160AbcDRE4oybNUv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 06:56:44 +0200
+Received: from smtp.codeaurora.org (localhost [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 3EC2860314;
+        Mon, 18 Apr 2016 04:56:43 +0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 2BBA7608D4; Mon, 18 Apr 2016 04:56:43 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BEA7B60271;
+        Mon, 18 Apr 2016 04:56:42 +0000 (UTC)
+Date:   Sun, 17 Apr 2016 21:56:41 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Kelvin Cheung <keguang.zhang@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>
+Subject: Re: [PATCH V2 1/7] clk: Loongson1: Update clocks of Loongson1B
+Message-ID: <20160418045641.GB15324@codeaurora.org>
+References: <1460115779-13141-1-git-send-email-keguang.zhang@gmail.com>
+ <CAJhJPsWoN3sZwwUS27XduhV=mGVO5eDwRa-ieanAWwvNByUHHA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJhJPsWoN3sZwwUS27XduhV=mGVO5eDwRa-ieanAWwvNByUHHA@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53039
+X-archive-position: 53040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,116 +51,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+On 04/16, Kelvin Cheung wrote:
+> Dear Stephen,
+> Could you check this patch?
+> Thanks!
+> 
+> 2016-04-08 19:42 GMT+08:00 Keguang Zhang <keguang.zhang@gmail.com>:
+> 
+> > From: Kelvin Cheung <keguang.zhang@gmail.com>
+> >
+> > - Rename the file to clk-loongson1.c
+> > - Add AC97, DMA and NAND clock
+> > - Update clock names
+> > - Remove superfluous error messages
+> >
+> > Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+> >
+> > ---
 
-------------------
+Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
 
-From: Paul Burton <paul.burton@imgtec.com>
-
-commit fa8ff601d72bad3078ddf5ef17a5547700d06908 upstream.
-
-Copying the content of an MSA vector from user memory may involve TLB
-faults & mapping in pages. This will fail when preemption is disabled
-due to an inability to acquire mmap_sem from do_page_fault, which meant
-such vector loads to unmapped pages would always fail to be emulated.
-Fix this by disabling preemption later only around the updating of
-vector register state.
-
-This change does however introduce a race between performing the load
-into thread context & the thread being preempted, saving its current
-live context & clobbering the loaded value. This should be a rare
-occureence, so optimise for the fast path by simply repeating the load if
-we are preempted.
-
-Additionally if the copy failed then the failure path was taken with
-preemption left disabled, leading to the kernel typically encountering
-further issues around sleeping whilst atomic. The change to where
-preemption is disabled avoids this issue.
-
-Fixes: e4aa1f153add "MIPS: MSA unaligned memory access support"
-Reported-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc: Maciej W. Rozycki <macro@linux-mips.org>
-Cc: James Cowgill <James.Cowgill@imgtec.com>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12345/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/kernel/unaligned.c |   53 +++++++++++++++++++++++++------------------
- 1 file changed, 31 insertions(+), 22 deletions(-)
-
---- a/arch/mips/kernel/unaligned.c
-+++ b/arch/mips/kernel/unaligned.c
-@@ -885,7 +885,7 @@ static void emulate_load_store_insn(stru
- {
- 	union mips_instruction insn;
- 	unsigned long value;
--	unsigned int res;
-+	unsigned int res, preempted;
- 	unsigned long origpc;
- 	unsigned long orig31;
- 	void __user *fault_addr = NULL;
-@@ -1226,27 +1226,36 @@ static void emulate_load_store_insn(stru
- 			if (!access_ok(VERIFY_READ, addr, sizeof(*fpr)))
- 				goto sigbus;
- 
--			/*
--			 * Disable preemption to avoid a race between copying
--			 * state from userland, migrating to another CPU and
--			 * updating the hardware vector register below.
--			 */
--			preempt_disable();
--
--			res = __copy_from_user_inatomic(fpr, addr,
--							sizeof(*fpr));
--			if (res)
--				goto fault;
--
--			/*
--			 * Update the hardware register if it is in use by the
--			 * task in this quantum, in order to avoid having to
--			 * save & restore the whole vector context.
--			 */
--			if (test_thread_flag(TIF_USEDMSA))
--				write_msa_wr(wd, fpr, df);
--
--			preempt_enable();
-+			do {
-+				/*
-+				 * If we have live MSA context keep track of
-+				 * whether we get preempted in order to avoid
-+				 * the register context we load being clobbered
-+				 * by the live context as it's saved during
-+				 * preemption. If we don't have live context
-+				 * then it can't be saved to clobber the value
-+				 * we load.
-+				 */
-+				preempted = test_thread_flag(TIF_USEDMSA);
-+
-+				res = __copy_from_user_inatomic(fpr, addr,
-+								sizeof(*fpr));
-+				if (res)
-+					goto fault;
-+
-+				/*
-+				 * Update the hardware register if it is in use
-+				 * by the task in this quantum, in order to
-+				 * avoid having to save & restore the whole
-+				 * vector context.
-+				 */
-+				preempt_disable();
-+				if (test_thread_flag(TIF_USEDMSA)) {
-+					write_msa_wr(wd, fpr, df);
-+					preempted = 0;
-+				}
-+				preempt_enable();
-+			} while (preempted);
- 			break;
- 
- 		case msa_st_op:
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

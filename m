@@ -1,68 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 18:59:24 +0200 (CEST)
-Received: from mail-lf0-f51.google.com ([209.85.215.51]:36215 "EHLO
-        mail-lf0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026933AbcDRQ7VxuTW1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 18:59:21 +0200
-Received: by mail-lf0-f51.google.com with SMTP id g184so224316612lfb.3
-        for <linux-mips@linux-mips.org>; Mon, 18 Apr 2016 09:59:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=LK4jbc50rM7dKfBQflRABjUZMX2moRM7PhoMD0VMWpM=;
-        b=VLtBEPy0wfpNmVnzDb/MhcvwicWBwh3z6h2/SLWmPUab00JzYTrdwwRRGInp+iQ42y
-         d5f1LH4EA+PME/GebHhQ5Ojp5Petb+yvU96AkaXHe24EMlYuPof+MQuYeIP4AfMNQnuG
-         JPXLGjnG0g/4pV8fEi5gbtEBXEfBTTfvMkLyPGI/mNC/+ScS5TSurxI5toODDjIte7m5
-         toj87Q65l7pukLXsa34+qloLO4ijDGYIGGsJ4lfCxyYPzr0H/Vcviq6BGVxpii77GSfJ
-         Wu1nD7bV2BYB8kag4Q97RgHBEx477h7iokie1PEbVG9JzcsausrECIw9iSyAmxGEK3E4
-         wpHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-transfer-encoding;
-        bh=LK4jbc50rM7dKfBQflRABjUZMX2moRM7PhoMD0VMWpM=;
-        b=Bu17jh60YGOkGO9c+792Pn3gbGcQ0PrM1oAHNNGap0KB40HheN6f0dfXZbL/Ms/Zoy
-         tvvviNGoWS/ffESfUjzbi3IWAhZMtBkD4peiS/HhmCoh2pyFppk+4voCIHSfK45fesS+
-         XHutWq3/ZUwwV4RGT3cPXgItwX0vEawh/s8ZW2dmbawhiCUuaYqMLPpqyaFnnVOuvIHP
-         tBnHbcTtjQM99OVMa3CRrRhxF6O1p2I57o8DC5MaTvdlm5sAoEN4MMITT0KwjWiLPsxj
-         RSXb1OHp08ulHJjGDKEUhBCaj8pbGQrEEml21m0gKkje63+kA2CRh0r2EPkuPb2EVZfP
-         Jupw==
-X-Gm-Message-State: AOPr4FVU0UK6upUQ60BCS2gtQ5JVunkEh4JXy6YdsykE07O9eAjlVVRUuYuuMrmfbMsMnw==
-X-Received: by 10.112.31.194 with SMTP id c2mr10134264lbi.105.1460998756146;
-        Mon, 18 Apr 2016 09:59:16 -0700 (PDT)
-Received: from wasted.cogentembedded.com ([83.149.9.178])
-        by smtp.gmail.com with ESMTPSA id jo1sm10276780lbc.3.2016.04.18.09.59.13
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 18 Apr 2016 09:59:14 -0700 (PDT)
-Subject: Re: [PATCH] mips: pistachio: Determine SoC revision during boot
-To:     James Hartley <james.hartley@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Jonas Gorski <jogo@openwrt.org>,
-        James Hogan <james.hogan@imgtec.com>
-References: <1460989489-30469-1-git-send-email-james.hartley@imgtec.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ionela Voinescu <ionela.voinescu@imgtec.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <57151260.1060300@cogentembedded.com>
-Date:   Mon, 18 Apr 2016 19:59:12 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.7.1
-MIME-Version: 1.0
-In-Reply-To: <1460989489-30469-1-git-send-email-james.hartley@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 20:59:20 +0200 (CEST)
+Received: from relay6-d.mail.gandi.net ([217.70.183.198]:58543 "EHLO
+        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026877AbcDRS7SU04Xg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 20:59:18 +0200
+Received: from mfilter17-d.gandi.net (mfilter17-d.gandi.net [217.70.178.145])
+        by relay6-d.mail.gandi.net (Postfix) with ESMTP id 13FE6FB883;
+        Mon, 18 Apr 2016 20:59:18 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mfilter17-d.gandi.net
+Received: from relay6-d.mail.gandi.net ([IPv6:::ffff:217.70.183.198])
+        by mfilter17-d.gandi.net (mfilter17-d.gandi.net [::ffff:10.0.15.180]) (amavisd-new, port 10024)
+        with ESMTP id WHR8YgzEXUtD; Mon, 18 Apr 2016 20:59:16 +0200 (CEST)
+X-Originating-IP: 88.159.34.112
+Received: from starbug-2.treewalker.org (unknown [88.159.34.112])
+        (Authenticated sender: relay@treewalker.org)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id DC96CFB8A3;
+        Mon, 18 Apr 2016 20:59:15 +0200 (CEST)
+Received: from hyperion.trinair2002 (hyperion.trinair2002 [192.168.0.43])
+        by starbug-2.treewalker.org (Postfix) with ESMTP id 668924319F;
+        Mon, 18 Apr 2016 20:59:15 +0200 (CEST)
+From:   Maarten ter Huurne <maarten@treewalker.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Maarten ter Huurne <maarten@treewalker.org>
+Subject: [PATCH 1/3] MIPS: JZ4740: Qi LB60: Remove support for AVT2 variant
+Date:   Mon, 18 Apr 2016 20:58:51 +0200
+Message-Id: <1461005933-24876-1-git-send-email-maarten@treewalker.org>
+X-Mailer: git-send-email 2.6.6
+Return-Path: <maarten@treewalker.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53067
+X-archive-position: 53068
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: maarten@treewalker.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,52 +49,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+AVT2 was a prototype board of which about 5 were made, none of which
+are in use anymore.
 
-On 04/18/2016 05:24 PM, James Hartley wrote:
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+---
+ arch/mips/jz4740/board-qi_lb60.c | 52 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 50 deletions(-)
 
-> Now that there are different revisions of the Pistachio SoC
-> in circulation, add this information to the boot log to make
-> it easier for users to determine which hardware they have.
->
-> Signed-off-by: James Hartley <james.hartley@imgtec.com>
-> Signed-off-by: Ionela Voinescu <ionela.voinescu@imgtec.com>
->
-> diff --git a/arch/mips/pistachio/init.c b/arch/mips/pistachio/init.c
-> index 96ba2cc..48f8755 100644
-> --- a/arch/mips/pistachio/init.c
-> +++ b/arch/mips/pistachio/init.c
-[...]
-> @@ -24,9 +26,28 @@
->   #include <asm/smp-ops.h>
->   #include <asm/traps.h>
->
-> +/*
-> + * Core revision register decoding
-> + * Bits 23 to 20: Major rev
-> + * Bits 15 to 8: Minor rev
-> + * Bits 7 to 0: Maintenance rev
-> + */
-> +#define PISTACHIO_CORE_REV_REG	0xB81483D0
-> +#define PISTACHIO_CORE_REV_A1	0x00100006
-> +#define PISTACHIO_CORE_REV_B0	0x00100106
-> +
->   const char *get_system_type(void)
->   {
-> -	return "IMG Pistachio SoC";
-> +	u32 core_rev;
-> +
-> +	core_rev = __raw_readl((const void *)PISTACHIO_CORE_REV_REG);
-> +
-> +	if (core_rev == PISTACHIO_CORE_REV_B0)
-> +		return "IMG Pistachio SoC (B0)";
-> +	else if (core_rev == PISTACHIO_CORE_REV_A1)
-> +		return "IMG_Pistachio SoC (A1)";
-> +	else
-> +		return "IMG_Pistachio SoC";
-
-    How about the *switch* instead?
-
-[...]
-
-MBR, Sergei
+diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+index 934b15b..4e3f9b7a 100644
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -39,8 +39,6 @@
+ 
+ #include "clock.h"
+ 
+-static bool is_avt2;
+-
+ /* GPIOs */
+ #define QI_LB60_GPIO_SD_CD		JZ_GPIO_PORTD(0)
+ #define QI_LB60_GPIO_SD_VCC_EN_N	JZ_GPIO_PORTD(2)
+@@ -367,43 +365,12 @@ static struct jz4740_mmc_platform_data qi_lb60_mmc_pdata = {
+ 	.power_active_low	= 1,
+ };
+ 
+-/* OHCI */
+-static struct regulator_consumer_supply avt2_usb_regulator_consumer =
+-	REGULATOR_SUPPLY("vbus", "jz4740-ohci");
+-
+-static struct regulator_init_data avt2_usb_regulator_init_data = {
+-	.num_consumer_supplies = 1,
+-	.consumer_supplies = &avt2_usb_regulator_consumer,
+-	.constraints = {
+-		.name = "USB power",
+-		.min_uV = 5000000,
+-		.max_uV = 5000000,
+-		.valid_modes_mask = REGULATOR_MODE_NORMAL,
+-		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
+-	},
+-};
+-
+-static struct fixed_voltage_config avt2_usb_regulator_data = {
+-	.supply_name = "USB power",
+-	.microvolts = 5000000,
+-	.gpio = JZ_GPIO_PORTB(17),
+-	.init_data = &avt2_usb_regulator_init_data,
+-};
+-
+-static struct platform_device avt2_usb_regulator_device = {
+-	.name = "reg-fixed-voltage",
+-	.id = -1,
+-	.dev = {
+-		.platform_data = &avt2_usb_regulator_data,
+-	}
+-};
+-
++/* beeper */
+ static struct pwm_lookup qi_lb60_pwm_lookup[] = {
+ 	PWM_LOOKUP("jz4740-pwm", 4, "pwm-beeper", NULL, 0,
+ 		   PWM_POLARITY_NORMAL),
+ };
+ 
+-/* beeper */
+ static struct platform_device qi_lb60_pwm_beeper = {
+ 	.name = "pwm-beeper",
+ 	.id = -1,
+@@ -487,11 +454,6 @@ static int __init qi_lb60_init_platform_devices(void)
+ 	spi_register_board_info(qi_lb60_spi_board_info,
+ 				ARRAY_SIZE(qi_lb60_spi_board_info));
+ 
+-	if (is_avt2) {
+-		platform_device_register(&avt2_usb_regulator_device);
+-		platform_device_register(&jz4740_usb_ohci_device);
+-	}
+-
+ 	pwm_add_table(qi_lb60_pwm_lookup, ARRAY_SIZE(qi_lb60_pwm_lookup));
+ 
+ 	return platform_add_devices(jz_platform_devices,
+@@ -499,19 +461,9 @@ static int __init qi_lb60_init_platform_devices(void)
+ 
+ }
+ 
+-static __init int board_avt2(char *str)
+-{
+-	qi_lb60_mmc_pdata.card_detect_active_low = 1;
+-	is_avt2 = true;
+-
+-	return 1;
+-}
+-__setup("avt2", board_avt2);
+-
+ static int __init qi_lb60_board_setup(void)
+ {
+-	printk(KERN_INFO "Qi Hardware JZ4740 QI %s setup\n",
+-		is_avt2 ? "AVT2" : "LB60");
++	printk(KERN_INFO "Qi Hardware JZ4740 QI LB60 setup\n");
+ 
+ 	board_gpio_setup();
+ 
+-- 
+2.6.6

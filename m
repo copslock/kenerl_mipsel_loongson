@@ -1,66 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2016 13:33:10 +0200 (CEST)
-Received: from mail-pa0-f47.google.com ([209.85.220.47]:33463 "EHLO
-        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027028AbcDSLdIDKilI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Apr 2016 13:33:08 +0200
-Received: by mail-pa0-f47.google.com with SMTP id zm5so5989625pac.0
-        for <linux-mips@linux-mips.org>; Tue, 19 Apr 2016 04:33:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=Tlen3K4y/0uoIaica2V7tIJ/oboVl4kmhwsgZ+/35Z8=;
-        b=JlIvsacZv7jT/VrfCxQqbmEVch66QKY9dMLlgM4Rl86BC9W4Ys16EfaFDnRAY1tg8V
-         ja3QW6VduLg0eMfkYA9CMWzEpZVGALAEFlO250LeL/tPwdHcg2IYDuD7RDMPukX5yBXR
-         1+CM26UsETdOxHXtUMKH+YC8pvc4qEgmjLXkJka/qI5EKQslcpmwHo7Ao60K9z0VTVyx
-         sPbUwhz2E96sm0z+3DzoWDA5CKxHUmjQ9O8Wk1FtPWaPohhy3fx/Me1cFg0UdOJ/N91L
-         VTi/bwMXBib9YiOJ+JMbIOqy1FPA4NTIahVVbXY9gJkqxrKjm5FnlcD/0vabXTqLuczx
-         T9Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=Tlen3K4y/0uoIaica2V7tIJ/oboVl4kmhwsgZ+/35Z8=;
-        b=i3gromaBaWttttU55j3Knn4g1SWMsDrNHg1k+BAkznDl9vs6yoACopM7Cp0dLglsId
-         8942alPXEpLJCpmlvW18GG8jvzdepTIXP1sdg9sHdS/vJOTqvAL99wB01QDD1NnvC/9d
-         bLLLI4WX5NqDRNYInJJzOE07x90tCJfHLWPa5BSNSfS9b7ChYLr1qTsWbYMrIZNYqWcM
-         pn7KkA4KKjvGdZP4kwItlTtLKNY92lzRj8n8WC/Lv+62++fIY3+9t0u5DQT6ZYOiWdhn
-         sV+nXwCR8pzEcGR1yhIncS68wRX4jvhkvsVg/+Bvsef1wraUEli8XgZyUj/syc53bujJ
-         XbvA==
-X-Gm-Message-State: AOPr4FX0IYxJcc/cRyGTRRIiCNUQ6kvn+vfEolSqd2IjHqt3RBAUfPfzUm960cZYD53iDw==
-X-Received: by 10.66.72.198 with SMTP id f6mr3382721pav.60.1461065581970;
-        Tue, 19 Apr 2016 04:33:01 -0700 (PDT)
-Received: from cotter.ozlabs.ibm.com (14-202-194-140.static.tpgi.com.au. [14.202.194.140])
-        by smtp.gmail.com with ESMTPSA id l6sm16567425pfb.12.2016.04.19.04.32.55
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 19 Apr 2016 04:33:01 -0700 (PDT)
-Subject: Re: [PATCH] arch/defconfig: remove CONFIG_RESOURCE_COUNTERS
-To:     Konstantin Khlebnikov <koct9i@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <146105442758.18940.2792564159961963110.stgit@zurg>
-Cc:     linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-am33-list@redhat.com, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org
-From:   Balbir Singh <bsingharora@gmail.com>
-Message-ID: <5716175F.9030001@gmail.com>
-Date:   Tue, 19 Apr 2016 21:32:47 +1000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2016 14:31:51 +0200 (CEST)
+Received: from bear.ext.ti.com ([192.94.94.41]:45561 "EHLO bear.ext.ti.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27027022AbcDSMbtsKZ89 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Apr 2016 14:31:49 +0200
+Received: from dlelxv90.itg.ti.com ([172.17.2.17])
+        by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id u3JCUpdm000753;
+        Tue, 19 Apr 2016 07:30:51 -0500
+Received: from DLEE70.ent.ti.com (dlee70.ent.ti.com [157.170.170.113])
+        by dlelxv90.itg.ti.com (8.14.3/8.13.8) with ESMTP id u3JCUorC001187;
+        Tue, 19 Apr 2016 07:30:50 -0500
+Received: from dflp32.itg.ti.com (10.64.6.15) by DLEE70.ent.ti.com
+ (157.170.170.113) with Microsoft SMTP Server id 14.3.224.2; Tue, 19 Apr 2016
+ 07:30:49 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153]) by
+ dflp32.itg.ti.com (8.14.3/8.13.8) with ESMTP id u3JCUej2014924;        Tue, 19 Apr
+ 2016 07:30:40 -0500
+Subject: Re: [PATCH v5 39/50] mtd: nand: omap2: switch to mtd_ooblayout_ops
+To:     Boris Brezillon <boris.brezillon@free-electrons.com>
+References: <1459354505-32551-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1459354505-32551-40-git-send-email-boris.brezillon@free-electrons.com>
+ <5714F011.5080409@ti.com> <20160418170518.363f732d@bbrezillon>
+ <57160862.90603@ti.com> <20160419132206.5d909f7e@bbrezillon>
+CC:     David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        <linux-mtd@lists.infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        <linux-mips@linux-mips.org>,
+        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        Harvey Hunt <harvey.hunt@imgtec.com>,
+        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        Stefan Agner <stefan@agner.ch>, <linux-sunxi@googlegroups.com>,
+        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
+        punnaiah choudary kalluri <punnaia@xilinx.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        <devel@driverdev.osuosl.org>,
+        Archit Taneja <architt@codeaurora.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Josh Wu <rainyfeeling@outlook.com>,
+        Chen-Yu Tsai <wens@csie.org>, Kukjin Kim <kgene@kernel.org>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
+        Huang Shijie <shijie.huang@arm.com>,
+        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Han Xu <b45815@freescale.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Priit Laes <plaes@plaes.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
+        Wenyou Yang <wenyou.yang@atmel.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        <linux-api@vger.kernel.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Daniel Mack <daniel@zonque.org>
+From:   Roger Quadros <rogerq@ti.com>
+Message-ID: <571624EF.9060707@ti.com>
+Date:   Tue, 19 Apr 2016 15:30:39 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.7.1
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <146105442758.18940.2792564159961963110.stgit@zurg>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20160419132206.5d909f7e@bbrezillon>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-Return-Path: <bsingharora@gmail.com>
+Return-Path: <rogerq@ti.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53100
+X-archive-position: 53101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bsingharora@gmail.com
+X-original-sender: rogerq@ti.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,11 +84,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-On 19/04/16 18:27, Konstantin Khlebnikov wrote:
-> This option replaced by PAGE_COUNTER which is selected by MEMCG.
+On 19/04/16 14:22, Boris Brezillon wrote:
+> Hi Roger,
 > 
-> Signed-off-by: Konstantin Khlebnikov <koct9i@gmail.com>
+> On Tue, 19 Apr 2016 13:28:50 +0300
+> Roger Quadros <rogerq@ti.com> wrote:
+> 
+>>> @@ -1921,6 +1927,9 @@ static int omap_nand_probe(struct platform_device *pdev)
+>>>  		nand_chip->ecc.correct          = omap_correct_data;
+>>>  		mtd_set_ooblayout(mtd, &omap_ooblayout_ops);
+>>>  		oobbytes_per_step		= nand_chip->ecc.bytes;
+>>> +
+>>> +		if (nand_chip->options & NAND_BUSWIDTH_16)
+>>> +			min_oobbytes		= 1;
+>>
+>> Shouldn't this have been
+>> 		if (!(nand_chip->options & NAND_BUSWIDTH_16)
+>> 			min_oobbytes		= 1;
+>> ?
+> 
+> Yep.
+> 
+>>
+>>>  		break;
+>>>  
+>>>  	case OMAP_ECC_BCH4_CODE_HW_DETECTION_SW:
+>>> @@ -2038,10 +2047,8 @@ static int omap_nand_probe(struct platform_device *pdev)
+>>>  	}
+>>>  
+>>>  	/* check if NAND device's OOB is enough to store ECC signatures */
+>>> -	min_oobbytes = (oobbytes_per_step *
+>>> -			(mtd->writesize / nand_chip->ecc.size)) +
+>>> -		       (nand_chip->options & NAND_BUSWIDTH_16 ?
+>>> -			BADBLOCK_MARKER_LENGTH : 1);
+>>> +	min_oobbytes += (oobbytes_per_step *
+>>> +			 (mtd->writesize / nand_chip->ecc.size));
+>>>  	if (mtd->oobsize < min_oobbytes) {
+>>>  		dev_err(&info->pdev->dev,
+>>>  			"not enough OOB bytes required = %d, available=%d\n",
+>>>
+>>
+>> After the above changes BCH with HW ECC worked fine but BCH with SW ECC still failed.
+>> I had to fix it up with the below patch. This is mainly because chip->ecc.steps wasn't
+>> yet initialized before calling nand_bch_init().
+>>
+>> After the below patch it worked fine with bch4 (hw & sw), bch8 (hw & sw) and ham1.
+>> I couldn't yet verify bch16 though.
+> 
 
-Acked-by: Balbir Singh <bsingharora@gmail.com>
+I just verified that bch16 works as well.
+
+> Thanks for the fix, but I'd prefer fixing the bug for all soft BCH
+> users.
+> 
+> Could you try this patch?
+
+I tried your patch and it worked fine.
+You will still need the below change to omap2.c
+
+--
+cheers,
+-roger
+
+diff --git a/drivers/mtd/nand/omap2.c b/drivers/mtd/nand/omap2.c
+index 0abfba6..33c8fde 100644
+--- a/drivers/mtd/nand/omap2.c
++++ b/drivers/mtd/nand/omap2.c
+@@ -1715,7 +1715,7 @@ static int omap_sw_ooblayout_free(struct mtd_info *mtd, int section,
+ 	struct nand_chip *chip = mtd_to_nand(mtd);
+ 	int off = BADBLOCK_MARKER_LENGTH;
+ 
+-	if (section)
++	if (section >= chip->ecc.steps)
+ 		return -ERANGE;
+ 
+ 	/*
+-- 
+2.5.0

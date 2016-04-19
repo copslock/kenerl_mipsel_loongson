@@ -1,38 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2016 16:47:10 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38634 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27007106AbcDSOrJBjAQv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Apr 2016 16:47:09 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id 84E7365331427;
-        Tue, 19 Apr 2016 15:46:59 +0100 (IST)
-Received: from leopard.hh.imgtec.org (192.168.167.31) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 19 Apr 2016 15:47:02 +0100
-From:   James Hartley <james.hartley@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Jonas Gorski <jogo@openwrt.org>,
-        James Hogan <james.hogan@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Ionela Voinescu <ionela.voinescu@imgtec.com>,
-        James Hartley <james.hartley@imgtec.com>
-Subject: [PATCH V2] mips: pistachio: Determine SoC revision during boot
-Date:   Tue, 19 Apr 2016 15:46:55 +0100
-Message-ID: <1461077215-1884-1-git-send-email-james.hartley@imgtec.com>
-X-Mailer: git-send-email 2.5.0
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.167.31]
-Return-Path: <James.Hartley@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 00:26:54 +0200 (CEST)
+Received: from mail-pa0-f48.google.com ([209.85.220.48]:35128 "EHLO
+        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026501AbcDSW0wPBAOB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Apr 2016 00:26:52 +0200
+Received: by mail-pa0-f48.google.com with SMTP id fs9so10814303pac.2;
+        Tue, 19 Apr 2016 15:26:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=n7Z2CmQJwXQx3kAWEONzbVVC7kors9zux2/xkYPj2Eo=;
+        b=CuO13gq0pu8YvKKv7jQQv/xW8eoVCoRbLXOt3JMo75nkKDY8XW4t1zZV+ABGbu5033
+         kFX50gToDkoETgnJGc1NvsUAiWKZu+Zwodf9vkmeoYbQC3MQyCuFQt2mmFGqNFIOlD8L
+         k7s9qAC+ZFaFJpPL2YbP8IqULbsZrIBcTkIgVg5NNrYLAFcSabFrf1qi8I2hyRbimq1y
+         HtWem2q+PCTVadB2ZOaQ4pgpImBnsGi+g7CuwlALSL0XyNduafJzenVml743/dEUjns0
+         1ajZ9QOJ7QCuxmTq8VmQ5qdTakhgqvF0AjHAWxOYTtXZIpuQoyrHds30/ixa0jGIm8cb
+         YwmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=n7Z2CmQJwXQx3kAWEONzbVVC7kors9zux2/xkYPj2Eo=;
+        b=Ha5G+K9eDEFyRsj0moJSVm716uKUwcm63Hmr3TvsXxhxtOYJyfPIFbOev6VTMxg2qb
+         iNytjxRF0BrzfX7VvFbRy3SB89hcsafe6kIq3OVrIBgM7pimOMAYltPDfvJwDJ3rmVIE
+         gZmfv8Yib2wBgiWmfoiHJJC1/pGuJ/fQBf9k/8obuIusbcDkwwPBaTXaZsBu4PXYou39
+         C1SRAS7shaix+ZD6N0vvWhtEr9/iwR1BeXSnym/Y7+6d4NHZOAaHopGKubuwLDx3qsQN
+         fjlYUQIZdwljVuIkGXfUpTTrNkZDiDODcp/S2pP7YnRtYWIzsLJym2GsZT6eV113nAst
+         1WXw==
+X-Gm-Message-State: AOPr4FWlORL0Fzwj0cOYmDXVWw30JXJEeODk0ghXzmBVlUxFPwJCqLZGOZqUc5pDBpzheQ==
+X-Received: by 10.66.221.136 with SMTP id qe8mr7483167pac.7.1461104806155;
+        Tue, 19 Apr 2016 15:26:46 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.gmail.com with ESMTPSA id v189sm26059478pfb.85.2016.04.19.15.26.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 19 Apr 2016 15:26:45 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
+        jaedon.shin@gmail.com,
+        Florian Fainelli <florian.f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: BMIPS: Adjust mips-hpt-frequency for BCM7435
+Date:   Tue, 19 Apr 2016 15:24:33 -0700
+Message-Id: <1461104673-21878-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.1.0
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53105
+X-archive-position: 53106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hartley@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,84 +62,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now that there are different revisions of the Pistachio SoC
-in circulation, add this information to the boot log to make
-it easier for users to determine which hardware they have.
+From: Florian Fainelli <florian.f.fainelli@gmail.com>
 
-Signed-off-by: James Hartley <james.hartley@imgtec.com>
-Signed-off-by: Ionela Voinescu <ionela.voinescu@imgtec.com>
+The CPU actually runs at 1405Mhz which gives us a 175625000 Hz MIPS timer
+frequency (CPU frequency / 8).
+
+Fixes: 8394968be4c7 ("MIPS: BMIPS: Add BCM7435 dtsi")
+Signed-off-by: Florian Fainelli <florian.f.fainelli@gmail.com>
 ---
- arch/mips/pistachio/init.c | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+ arch/mips/boot/dts/brcm/bcm7435.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/pistachio/init.c b/arch/mips/pistachio/init.c
-index 96ba2cc..956c92e 100644
---- a/arch/mips/pistachio/init.c
-+++ b/arch/mips/pistachio/init.c
-@@ -2,6 +2,7 @@
-  * Pistachio platform setup
-  *
-  * Copyright (C) 2014 Google, Inc.
-+ * Copyright (C) 2016 Imagination Technologies
-  *
-  * This program is free software; you can redistribute it and/or modify it
-  * under the terms and conditions of the GNU General Public License,
-@@ -9,6 +10,7 @@
-  */
+diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+index cce752b27055..a874d3a0e2ee 100644
+--- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+@@ -7,7 +7,7 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
  
- #include <linux/init.h>
-+#include <linux/io.h>
- #include <linux/kernel.h>
- #include <linux/of_address.h>
- #include <linux/of_fdt.h>
-@@ -24,9 +26,38 @@
- #include <asm/smp-ops.h>
- #include <asm/traps.h>
+-		mips-hpt-frequency = <163125000>;
++		mips-hpt-frequency = <175625000>;
  
-+/*
-+ * Core revision register decoding
-+ * Bits 23 to 20: Major rev
-+ * Bits 15 to 8: Minor rev
-+ * Bits 7 to 0: Maintenance rev
-+ */
-+#define PISTACHIO_CORE_REV_REG	0xB81483D0
-+#define PISTACHIO_CORE_REV_A1	0x00100006
-+#define PISTACHIO_CORE_REV_B0	0x00100106
-+
- const char *get_system_type(void)
- {
--	return "IMG Pistachio SoC";
-+	u32 core_rev;
-+	const char *sys_type;
-+
-+	core_rev = __raw_readl((const void *)PISTACHIO_CORE_REV_REG);
-+
-+	switch (core_rev) {
-+	case PISTACHIO_CORE_REV_B0:
-+		sys_type = "IMG Pistachio SoC (B0)";
-+		break;
-+
-+	case PISTACHIO_CORE_REV_A1:
-+		sys_type = "IMG Pistachio SoC (A1)";
-+		break;
-+
-+	default:
-+		sys_type = "IMG Pistachio SoC";
-+		break;
-+	}
-+
-+	return sys_type;
- }
- 
- static void __init plat_setup_iocoherency(void)
-@@ -109,6 +140,8 @@ void __init prom_init(void)
- 	mips_cm_probe();
- 	mips_cpc_probe();
- 	register_cps_smp_ops();
-+
-+	pr_info("SoC Type: %s\n", get_system_type());
- }
- 
- void __init prom_free_prom_memory(void)
+ 		cpu@0 {
+ 			compatible = "brcm,bmips5200";
 -- 
-2.5.0
+2.1.0

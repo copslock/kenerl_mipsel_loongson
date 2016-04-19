@@ -1,72 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2016 23:23:19 +0200 (CEST)
-Received: from mail-pf0-f182.google.com ([209.85.192.182]:34685 "EHLO
-        mail-pf0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026949AbcDRVXQ5O50i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2016 23:23:16 +0200
-Received: by mail-pf0-f182.google.com with SMTP id c20so84551515pfc.1
-        for <linux-mips@linux-mips.org>; Mon, 18 Apr 2016 14:23:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=st0YYVAuKBmcPfIwhS8rwMLj2AEuT/b7z2Jsli/bp3E=;
-        b=Bf8Q/V9Pm4oJs+yyJ5dRp+pmFnl61bCMmW+WonZpk0B/UhBKSXBRZwsJT6FVmDuI5p
-         rEUxhHgTqiRv4KYpXrk+BNv4375Cy+ZAlX5E7SRQ8AZRTWweJ3c3sNj4WI5zMkL1p18V
-         dhpvrHN+JFwjt1jnvnxhSA1GHdrpI4e6pahPJGo4uxm4hf+nVxvJwiYibIefENfk5JcQ
-         MPTA2orZ/HgIR0gGLm4+5L3YjcqkrRgpYTaMWe/iDgNwPhhtzHoGVhSg7Wc7ksJ/KZaE
-         oQe57hciBSG0bFiDMZbshzPGMtfYguR5oBLqoSRTCnID84GaP6RvNoBGXbNcSOyD27+4
-         Vx8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=st0YYVAuKBmcPfIwhS8rwMLj2AEuT/b7z2Jsli/bp3E=;
-        b=Mvhkf8qn650px3AjKWcze28hygC4d2TqmGrQgO55+0TvjZlog18nO6iGdwn7wB/YPL
-         qy0cs+7TzfHs8wY5CGdMcfln3J9d+43o4/+LJBFko7gyrcz8ilWrqjh28fk1v706KeTi
-         7ez39t2YToTkFpZ7ZEpadY+EjLMY3DnO1VCOF3Ks5gpjyDAZw+rUob3Y4W6es2PP+Jit
-         vODhaXbHlxToIIWihW85aYhCriHEGqyNH9Alm54PAj7UCDJTe69bphKXuor3+puaBAND
-         OySH5NJPFD6TpJhKPXDCMKkwZSctiSfKVb0SrCOWfIkwHkztcE9iM/A2bPPB9mETncHJ
-         YXnA==
-X-Gm-Message-State: AOPr4FUWVxXcL6SKaC/NIUehbsaNVjjwI/dQKTo6mIkcK4p7VKPePMbxxPNejLAho5AqCA==
-X-Received: by 10.98.84.2 with SMTP id i2mr1094959pfb.156.1461014590721;
-        Mon, 18 Apr 2016 14:23:10 -0700 (PDT)
-Received: from [10.12.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id ud5sm86072339pac.11.2016.04.18.14.23.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 18 Apr 2016 14:23:09 -0700 (PDT)
-Subject: Re: [PATCH v2] bus: brcmstb_gisb: Rework dependencies
-To:     linux-arm-kernel@lists.infradead.org
-References: <1460839575-16869-1-git-send-email-f.fainelli@gmail.com>
-Cc:     linux-mips@linux-mips.org, Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Olof Johansson <olof@lixom.net>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Punit Agrawal <punit.agrawal@arm.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        "open list:BROADCOM BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE..." 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        open list <linux-kernel@vger.kernel.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <57154FBD.9080903@gmail.com>
-Date:   Mon, 18 Apr 2016 14:21:01 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
-MIME-Version: 1.0
-In-Reply-To: <1460839575-16869-1-git-send-email-f.fainelli@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2016 03:48:51 +0200 (CEST)
+Received: from smtpbgsg2.qq.com ([54.254.200.128]:44859 "EHLO smtpbgsg2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27006933AbcDSBspcOyEL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Apr 2016 03:48:45 +0200
+X-QQ-mid: bizesmtp2t1461030483t764t094
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Tue, 19 Apr 2016 09:47:55 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK60B00A0000000
+X-QQ-FEAT: j16GwkBt1Efjj9V41nNIWXBhe8CJTYXmbn67TS4v30jd9nC7Q+FRw0oaHXgAP
+        zmvQOosCvhPgDKZWITMN/oLiVCru/aEV/m13525KPFQzUEE8UoT4RUFmMYYn6Iin2JZ0BR+
+        9XkBuJ6wIWFqIYB9/9JiUM0s/mZ0Rcp2MDR5a2Qqqn+MF5oQ5QlW/E7a9R60tOhBhAwH1BI
+        tI+BiDViJ9GxNziq4Cdl8sX7Yx0DTxmYO2v0Y66r/VMiIYG40b6EUKRbiKZlzp0op/VzA/4
+        7+A3IT/ZYAFALR
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH 0/6] MIPS: Loongson: feature and performance improvements
+Date:   Tue, 19 Apr 2016 09:48:44 +0800
+Message-Id: <1461030530-1236-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53071
+X-archive-position: 53072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,15 +48,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 16/04/16 13:46, Florian Fainelli wrote:
-> Do not have the machine Kconfig entry point need to select
-> BRCMSTB_GISB_ARB, instead, just let it be default ARCH_BRCMSTB which is
-> a better way to deal with this. While at it, also make it default
-> BMIPS_GENERIC so the legacy MIPS-based STB platforms can benefit from
-> the same thing.
-> 
-> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+This patchset is is prepared for the next 4.7 release for Linux/MIPS.
+It adds Loongson's NMI handler support, adds a "model name" knob in
+/proc/cpuinfo which is needed by some userspace tools, improves I/O
+performance by IRQ balancing and IRQ affinity setting, and introduces
+LOONGSON_LLSC_WAR to improve stability.
 
-Applied to drivers/next
--- 
-Florian
+Huacai Chen(6):
+ MIPS: Loongson: Add NMI handler support.
+ MIPS: Loongson-3: IRQ balancing for PCI devices.
+ MIPS: Loongson-3: support irq_set_affinity() in i8259 chip.
+ MIPS: Loogson: Make enum loongson_cpu_type more clear.
+ MIPS: Add __cpu_full_name[] to make CPU names more human-readable.
+ MIPS: Loongson: Introduce and use LOONGSON_LLSC_WAR.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/include/asm/atomic.h                     | 107 ++++++++
+ arch/mips/include/asm/bitops.h                     | 273 ++++++++++++++++-----
+ arch/mips/include/asm/cmpxchg.h                    |  54 ++++
+ arch/mips/include/asm/cpu-info.h                   |   2 +
+ arch/mips/include/asm/edac.h                       |  33 ++-
+ arch/mips/include/asm/futex.h                      |  62 +++++
+ arch/mips/include/asm/irq.h                        |   3 +
+ arch/mips/include/asm/local.h                      |  34 +++
+ arch/mips/include/asm/mach-cavium-octeon/war.h     |   1 +
+ arch/mips/include/asm/mach-generic/war.h           |   1 +
+ arch/mips/include/asm/mach-ip22/war.h              |   1 +
+ arch/mips/include/asm/mach-ip27/war.h              |   1 +
+ arch/mips/include/asm/mach-ip28/war.h              |   1 +
+ arch/mips/include/asm/mach-ip32/war.h              |   1 +
+ arch/mips/include/asm/mach-loongson64/boot_param.h |  22 +-
+ arch/mips/include/asm/mach-loongson64/war.h        |  26 ++
+ arch/mips/include/asm/mach-malta/war.h             |   1 +
+ arch/mips/include/asm/mach-pmcs-msp71xx/war.h      |   1 +
+ arch/mips/include/asm/mach-rc32434/war.h           |   1 +
+ arch/mips/include/asm/mach-rm/war.h                |   1 +
+ arch/mips/include/asm/mach-sead3/war.h             |   1 +
+ arch/mips/include/asm/mach-sibyte/war.h            |   1 +
+ arch/mips/include/asm/mach-tx49xx/war.h            |   1 +
+ arch/mips/include/asm/pgtable.h                    |  19 ++
+ arch/mips/include/asm/spinlock.h                   | 142 +++++++++++
+ arch/mips/include/asm/war.h                        |   8 +
+ arch/mips/kernel/cpu-probe.c                       |  12 +
+ arch/mips/kernel/proc.c                            |   4 +
+ arch/mips/kernel/syscall.c                         |  34 +++
+ arch/mips/loongson64/common/env.c                  |  11 +-
+ arch/mips/loongson64/common/init.c                 |  13 +
+ arch/mips/loongson64/loongson-3/irq.c              |  53 +++-
+ arch/mips/loongson64/loongson-3/smp.c              |  18 +-
+ arch/mips/mm/tlbex.c                               |  17 ++
+ drivers/irqchip/irq-i8259.c                        |   3 +
+ 35 files changed, 885 insertions(+), 78 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson64/war.h
+--
+2.7.0

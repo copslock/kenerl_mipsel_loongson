@@ -1,51 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 00:26:54 +0200 (CEST)
-Received: from mail-pa0-f48.google.com ([209.85.220.48]:35128 "EHLO
-        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026501AbcDSW0wPBAOB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Apr 2016 00:26:52 +0200
-Received: by mail-pa0-f48.google.com with SMTP id fs9so10814303pac.2;
-        Tue, 19 Apr 2016 15:26:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 00:37:59 +0200 (CEST)
+Received: from mail-pf0-f181.google.com ([209.85.192.181]:34662 "EHLO
+        mail-pf0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026974AbcDSWh43YWHB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Apr 2016 00:37:56 +0200
+Received: by mail-pf0-f181.google.com with SMTP id c20so11038266pfc.1;
+        Tue, 19 Apr 2016 15:37:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id;
-        bh=n7Z2CmQJwXQx3kAWEONzbVVC7kors9zux2/xkYPj2Eo=;
-        b=CuO13gq0pu8YvKKv7jQQv/xW8eoVCoRbLXOt3JMo75nkKDY8XW4t1zZV+ABGbu5033
-         kFX50gToDkoETgnJGc1NvsUAiWKZu+Zwodf9vkmeoYbQC3MQyCuFQt2mmFGqNFIOlD8L
-         k7s9qAC+ZFaFJpPL2YbP8IqULbsZrIBcTkIgVg5NNrYLAFcSabFrf1qi8I2hyRbimq1y
-         HtWem2q+PCTVadB2ZOaQ4pgpImBnsGi+g7CuwlALSL0XyNduafJzenVml743/dEUjns0
-         1ajZ9QOJ7QCuxmTq8VmQ5qdTakhgqvF0AjHAWxOYTtXZIpuQoyrHds30/ixa0jGIm8cb
-         YwmQ==
+        bh=orcEiIaraxrMlqidPDyxEr31ubqDP2aCUXLIz6U88Z8=;
+        b=GMO3DbJpbN/rI2C1p6Q19vB0+wRdGiNttu/nFn2bL8Fzc4WLmp+bka+wa2b5qjl+Pw
+         +5+45AtgsNgyhD5BNKhtxpwSrkKmVQwMRbWpwYXBx96XoBOYj54mI3S/X5nIZwLHgiTy
+         jpdPjjfVnXAuKRDivNnT3wgu0TuhVNPfH5I4f2bbdXLQA/aEFtUu6DL9dx0/Jj8HgYcQ
+         eKVaW7Cd8VFieSquqeafNmRyGAUyvA6Qqd/YShW2XFv0ZwdXp9hUUqQRbx3N6flPxZRy
+         7JDlJBUFelQJt4yOt3sE2VsFfuryumA/Dp5ZWw2b60KvWIiCbwPSuiCloq4Aff7jTpeL
+         m/yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=n7Z2CmQJwXQx3kAWEONzbVVC7kors9zux2/xkYPj2Eo=;
-        b=Ha5G+K9eDEFyRsj0moJSVm716uKUwcm63Hmr3TvsXxhxtOYJyfPIFbOev6VTMxg2qb
-         iNytjxRF0BrzfX7VvFbRy3SB89hcsafe6kIq3OVrIBgM7pimOMAYltPDfvJwDJ3rmVIE
-         gZmfv8Yib2wBgiWmfoiHJJC1/pGuJ/fQBf9k/8obuIusbcDkwwPBaTXaZsBu4PXYou39
-         C1SRAS7shaix+ZD6N0vvWhtEr9/iwR1BeXSnym/Y7+6d4NHZOAaHopGKubuwLDx3qsQN
-         fjlYUQIZdwljVuIkGXfUpTTrNkZDiDODcp/S2pP7YnRtYWIzsLJym2GsZT6eV113nAst
-         1WXw==
-X-Gm-Message-State: AOPr4FWlORL0Fzwj0cOYmDXVWw30JXJEeODk0ghXzmBVlUxFPwJCqLZGOZqUc5pDBpzheQ==
-X-Received: by 10.66.221.136 with SMTP id qe8mr7483167pac.7.1461104806155;
-        Tue, 19 Apr 2016 15:26:46 -0700 (PDT)
+        bh=orcEiIaraxrMlqidPDyxEr31ubqDP2aCUXLIz6U88Z8=;
+        b=Nrt7ZpZxP94fe8IUfGACfEmikgkjWynjKVSwT7kYvgwUjftzap6NHdz9JtdLu7kwJw
+         rzJR+r4eYgNRkXsyixqMHIlGTusZC0AkwCPybGSSK4ye/WU6TBF0VVn6RTvumW6ZAmTo
+         XxBFzQZb/XFDuO2dgs48hPAE7FVB5W9y8T5FL1DlFIE2SJ3j1CRkkQrIF9p6RtqKmJGO
+         mDAtFTxtzZFB8YJfv12wb9FSB9iNhWtWUX59Ijg99xlSYoMwMr0sVec1jyF/jkFU1PhF
+         bTax+n6UfhoTLx6Xp1SasYtVczVMYFhAdSspcTgPNoxv5Fu7/LLs/keo+OgNE9b96xFM
+         ax/g==
+X-Gm-Message-State: AOPr4FXspXLZ6pP4xZsqf1tcvQCepkga6d9S5Lwsjx3TSmICkarWFTrwVBmEMMZCvyorqw==
+X-Received: by 10.98.15.145 with SMTP id 17mr7506129pfp.19.1461105470447;
+        Tue, 19 Apr 2016 15:37:50 -0700 (PDT)
 Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.gmail.com with ESMTPSA id v189sm26059478pfb.85.2016.04.19.15.26.44
+        by smtp.gmail.com with ESMTPSA id a5sm33109216pat.19.2016.04.19.15.37.49
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 19 Apr 2016 15:26:45 -0700 (PDT)
+        Tue, 19 Apr 2016 15:37:49 -0700 (PDT)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org, blogic@openwrt.org, cernekee@gmail.com,
-        jaedon.shin@gmail.com,
-        Florian Fainelli <florian.f.fainelli@gmail.com>
-Subject: [PATCH] MIPS: BMIPS: Adjust mips-hpt-frequency for BCM7435
-Date:   Tue, 19 Apr 2016 15:24:33 -0700
-Message-Id: <1461104673-21878-1-git-send-email-f.fainelli@gmail.com>
+        jaedon.shin@gmail.com, Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH v2] MIPS: BMIPS: Adjust mips-hpt-frequency for BCM7435
+Date:   Tue, 19 Apr 2016 15:35:39 -0700
+Message-Id: <1461105339-27679-1-git-send-email-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.1.0
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53106
+X-archive-position: 53107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,14 +61,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Florian Fainelli <florian.f.fainelli@gmail.com>
-
 The CPU actually runs at 1405Mhz which gives us a 175625000 Hz MIPS timer
 frequency (CPU frequency / 8).
 
 Fixes: 8394968be4c7 ("MIPS: BMIPS: Add BCM7435 dtsi")
-Signed-off-by: Florian Fainelli <florian.f.fainelli@gmail.com>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
+Changes in v2:
+
+- fixed Signed-off-by tag
+
  arch/mips/boot/dts/brcm/bcm7435.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 

@@ -1,41 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2016 10:29:53 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:37816 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2016 12:28:02 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39278 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27027034AbcDSI2pWwWSY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Apr 2016 10:28:45 +0200
+        with ESMTP id S27026994AbcDSK2ACBvh1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Apr 2016 12:28:00 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id 094A0A5AEC11E;
-        Tue, 19 Apr 2016 09:28:37 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 19 Apr 2016 09:28:39 +0100
-Received: from localhost (10.100.200.185) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 19 Apr
- 2016 09:28:38 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 13/13] MIPS: mm: Panic if an XPA kernel is run without RIXI
-Date:   Tue, 19 Apr 2016 09:25:11 +0100
-Message-ID: <1461054311-387-14-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.8.0
-In-Reply-To: <1461054311-387-1-git-send-email-paul.burton@imgtec.com>
-References: <1461054311-387-1-git-send-email-paul.burton@imgtec.com>
+        by Websense Email with ESMTPS id E3AE3A303D208;
+        Tue, 19 Apr 2016 11:27:50 +0100 (IST)
+Received: from [192.168.167.31] (192.168.167.31) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 19 Apr
+ 2016 11:27:53 +0100
+Subject: Re: [PATCH] mips: pistachio: Determine SoC revision during boot
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Bresticker <abrestic@chromium.org>,
+        Jonas Gorski <jogo@openwrt.org>,
+        James Hogan <james.hogan@imgtec.com>
+References: <1460989489-30469-1-git-send-email-james.hartley@imgtec.com>
+ <57151260.1060300@cogentembedded.com>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        Ionela Voinescu <ionela.voinescu@imgtec.com>
+From:   James Hartley <james.hartley@imgtec.com>
+X-Enigmail-Draft-Status: N1110
+Message-ID: <5716081C.9080506@imgtec.com>
+Date:   Tue, 19 Apr 2016 11:27:40 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.185]
-Return-Path: <Paul.Burton@imgtec.com>
+In-Reply-To: <57151260.1060300@cogentembedded.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.167.31]
+Return-Path: <James.Hartley@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53094
+X-archive-position: 53095
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: james.hartley@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,37 +51,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-XPA kernels hardcode for the presence of RIXI - the PTE format & its
-handling presume RI & XI bits. Make this dependence explicit by panicing
-if we run on a system that violates it.
+Hi Sergei
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+On 18/04/16 17:59, Sergei Shtylyov wrote:
+> Hello.
+>
+> On 04/18/2016 05:24 PM, James Hartley wrote:
+>
+>> Now that there are different revisions of the Pistachio SoC
+>> in circulation, add this information to the boot log to make
+>> it easier for users to determine which hardware they have.
+>>
+>> Signed-off-by: James Hartley <james.hartley@imgtec.com>
+>> Signed-off-by: Ionela Voinescu <ionela.voinescu@imgtec.com>
+>>
+>> diff --git a/arch/mips/pistachio/init.c b/arch/mips/pistachio/init.c
+>> index 96ba2cc..48f8755 100644
+>> --- a/arch/mips/pistachio/init.c
+>> +++ b/arch/mips/pistachio/init.c
+> [...]
+>> @@ -24,9 +26,28 @@
+>>   #include <asm/smp-ops.h>
+>>   #include <asm/traps.h>
+>>
+>> +/*
+>> + * Core revision register decoding
+>> + * Bits 23 to 20: Major rev
+>> + * Bits 15 to 8: Minor rev
+>> + * Bits 7 to 0: Maintenance rev
+>> + */
+>> +#define PISTACHIO_CORE_REV_REG    0xB81483D0
+>> +#define PISTACHIO_CORE_REV_A1    0x00100006
+>> +#define PISTACHIO_CORE_REV_B0    0x00100106
+>> +
+>>   const char *get_system_type(void)
+>>   {
+>> -    return "IMG Pistachio SoC";
+>> +    u32 core_rev;
+>> +
+>> +    core_rev = __raw_readl((const void *)PISTACHIO_CORE_REV_REG);
+>> +
+>> +    if (core_rev == PISTACHIO_CORE_REV_B0)
+>> +        return "IMG Pistachio SoC (B0)";
+>> +    else if (core_rev == PISTACHIO_CORE_REV_A1)
+>> +        return "IMG_Pistachio SoC (A1)";
+>> +    else
+>> +        return "IMG_Pistachio SoC";
+>
+>    How about the *switch* instead?
+Yes, that would be slightly more readable - I'll do that in V2.
 
----
+Thanks for the review! 
 
-Changes in v3:
-- Remove newline in panic() call.
-
-Changes in v2:
-- New patch, in response to clarification on patch 5.
-
- arch/mips/mm/tlbex.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 3f1a8a2..2afc710 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -2395,6 +2395,9 @@ void build_tlb_refill_handler(void)
- 	 */
- 	static int run_once = 0;
- 
-+	if (config_enabled(CONFIG_XPA) && !cpu_has_rixi)
-+		panic("Kernels supporting XPA currently require CPUs with RIXI");
-+
- 	output_pgtable_bits_defines();
- 	check_pabits();
- 
--- 
-2.8.0
+James.
+>
+> [...]
+>
+> MBR, Sergei
+>

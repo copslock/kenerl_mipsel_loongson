@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2016 03:53:45 +0200 (CEST)
-Received: from smtpbg202.qq.com ([184.105.206.29]:46035 "EHLO smtpbg202.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27006933AbcDSBxnxgc0L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 19 Apr 2016 03:53:43 +0200
-X-QQ-mid: bizesmtp2t1461030773t436t130
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Apr 2016 03:54:04 +0200 (CEST)
+Received: from smtpbguseast2.qq.com ([54.204.34.130]:33875 "EHLO
+        smtpbguseast2.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27006933AbcDSByC6RzdL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Apr 2016 03:54:02 +0200
+X-QQ-mid: bizesmtp2t1461030817t003t096
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 19 Apr 2016 09:52:10 +0800 (CST)
+        id ; Tue, 19 Apr 2016 09:52:55 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FK60B00A0000000
-X-QQ-FEAT: R/yWRekfFco3rdd3AQEz4sELyKTovDKyqWNE+Hyp9c7GKFbQYzH4DZTA4XzyV
-        n3q7SGduRR5LG9QNG4NOpcpEhoJudHDkc4QPqlxxGRhQ6ZPnCTdxwMC6rZeFUkIdYjDymaG
-        IXLwkLrO3VtB01mhf7CoomBqC8/DkuyxFyo+bWZUZKvYmur2bYxdPrhNl1rGxUcrJChwvVc
-        ak1jACxo5zU1WTM18HoM6rRjdsKOEuXA2fHBnPvahLVH8ZCbELAecXQsWl0NjKY9ujlsVti
-        VbDG9UeqOgUZdXAbdef9H4jt0=
+X-QQ-FEAT: MAWdl2WvPGlkLLJyuW0w+FAwZOQ9FDs3umFQBRjjxYHE4P6oTnIwhq52Lml61
+        6KNY8ZOtMYPhA9kgWnWvcIpC3l1c+0gsIM1e1i90brcCp9etxBl2v3L1NjJvotDdIOR4nIq
+        JqK3WK7HmqeD8K2AMP9cWMBRESwHQY0jc7V4ku2dsG8XHcpOVHDs3/Wkjr1n5GN6i09moSR
+        WQOfa4l2issGFHYGQ/zjrSMBfw9ltL2BSSUyDiDEGNAv3EfRUnZje+oUMuYZJMrY5ATM0MP
+        PgUoXyQ5Qd0Is2la7c/HDPp48=
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,9 +21,9 @@ Cc:     Aurelien Jarno <aurelien@aurel32.net>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 4/6] MIPS: Loogson: Make enum loongson_cpu_type more clear
-Date:   Tue, 19 Apr 2016 09:48:48 +0800
-Message-Id: <1461030530-1236-5-git-send-email-chenhc@lemote.com>
+Subject: [PATCH 5/6] MIPS: Add __cpu_full_name[] to make CPU names more human-readable
+Date:   Tue, 19 Apr 2016 09:48:49 +0800
+Message-Id: <1461030530-1236-6-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1461030530-1236-1-git-send-email-chenhc@lemote.com>
 References: <1461030530-1236-1-git-send-email-chenhc@lemote.com>
@@ -33,7 +33,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53076
+X-archive-position: 53077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,84 +50,113 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Sort enum loongson_cpu_type in a more reasonable manner, this makes the
-CPU names more clear and extensible. Those already defined enum values
-are renamed to Legacy_* for compatibility.
+In /proc/cpuinfo, we keep "cpu model" as is, since GCC should use it
+for -march=native. Besides, we add __cpu_full_name[] to describe the
+processor in a more human-readable manner. The full name is displayed
+as "model name" in cpuinfo, which is needed by some userspace tools
+such as gnome-system-monitor.
+
+This is only used by Loongson now.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson64/boot_param.h | 22 ++++++++++++++++------
- arch/mips/loongson64/common/env.c                  | 11 ++++++++---
- 2 files changed, 24 insertions(+), 9 deletions(-)
+ arch/mips/include/asm/cpu-info.h |  2 ++
+ arch/mips/kernel/cpu-probe.c     | 12 ++++++++++++
+ arch/mips/kernel/proc.c          |  4 ++++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
-index d3f3258..9f9bb9c 100644
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -27,12 +27,22 @@ struct efi_memory_map_loongson {
- } __packed;
+diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
+index b090aa5..c673092 100644
+--- a/arch/mips/include/asm/cpu-info.h
++++ b/arch/mips/include/asm/cpu-info.h
+@@ -103,7 +103,9 @@ extern void cpu_probe(void);
+ extern void cpu_report(void);
  
- enum loongson_cpu_type {
--	Loongson_2E = 0,
--	Loongson_2F = 1,
--	Loongson_3A = 2,
--	Loongson_3B = 3,
--	Loongson_1A = 4,
--	Loongson_1B = 5
-+	Legacy_2E = 0x0,
-+	Legacy_2F = 0x1,
-+	Legacy_3A = 0x2,
-+	Legacy_3B = 0x3,
-+	Legacy_1A = 0x4,
-+	Legacy_1B = 0x5,
-+	Legacy_2G = 0x6,
-+	Legacy_2H = 0x7,
-+	Loongson_1A = 0x100,
-+	Loongson_1B = 0x101,
-+	Loongson_2E = 0x200,
-+	Loongson_2F = 0x201,
-+	Loongson_2G = 0x202,
-+	Loongson_2H = 0x203,
-+	Loongson_3A = 0x300,
-+	Loongson_3B = 0x301
- };
+ extern const char *__cpu_name[];
++extern const char *__cpu_full_name[];
+ #define cpu_name_string()	__cpu_name[raw_smp_processor_id()]
++#define cpu_full_name_string()	__cpu_full_name[raw_smp_processor_id()]
  
- /*
-diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
-index 57d590a..1890478 100644
---- a/arch/mips/loongson64/common/env.c
-+++ b/arch/mips/loongson64/common/env.c
-@@ -90,7 +90,9 @@ void __init prom_init_env(void)
+ struct seq_file;
+ struct notifier_block;
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index b766952..1acad54 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1174,6 +1174,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 			set_elf_platform(cpu, "loongson2e");
+ 			set_isa(c, MIPS_CPU_ISA_III);
+ 			c->fpu_msk31 |= FPU_CSR_CONDX;
++			__cpu_full_name[cpu] = "ICT Loongson-2E";
+ 			break;
+ 		case PRID_REV_LOONGSON2F:
+ 			c->cputype = CPU_LOONGSON2;
+@@ -1181,19 +1182,28 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 			set_elf_platform(cpu, "loongson2f");
+ 			set_isa(c, MIPS_CPU_ISA_III);
+ 			c->fpu_msk31 |= FPU_CSR_CONDX;
++			__cpu_full_name[cpu] = "ICT Loongson-2F";
+ 			break;
+ 		case PRID_REV_LOONGSON3A_R1:
+ 			c->cputype = CPU_LOONGSON3;
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R1);
++			__cpu_full_name[cpu] = "ICT Loongson-3A R1 (Loongson-3A1000)";
+ 			break;
+ 		case PRID_REV_LOONGSON3B_R1:
++			c->cputype = CPU_LOONGSON3;
++			__cpu_name[cpu] = "ICT Loongson-3";
++			set_elf_platform(cpu, "loongson3b");
++			set_isa(c, MIPS_CPU_ISA_M64R1);
++			__cpu_full_name[cpu] = "ICT Loongson-3B R1 (Loongson-3B1000)";
++			break;
+ 		case PRID_REV_LOONGSON3B_R2:
+ 			c->cputype = CPU_LOONGSON3;
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3b");
+ 			set_isa(c, MIPS_CPU_ISA_M64R1);
++			__cpu_full_name[cpu] = "ICT Loongson-3B R2 (Loongson-3B1500)";
+ 			break;
+ 		}
  
- 	cpu_clock_freq = ecpu->cpu_clock_freq;
- 	loongson_sysconf.cputype = ecpu->cputype;
--	if (ecpu->cputype == Loongson_3A) {
-+	switch (ecpu->cputype) {
-+	case Legacy_3A:
-+	case Loongson_3A:
- 		loongson_sysconf.cores_per_node = 4;
- 		loongson_sysconf.cores_per_package = 4;
- 		smp_group[0] = 0x900000003ff01000;
-@@ -111,7 +113,9 @@ void __init prom_init_env(void)
- 		loongson_freqctrl[3] = 0x900030001fe001d0;
- 		loongson_sysconf.ht_control_base = 0x90000EFDFB000000;
- 		loongson_sysconf.workarounds = WORKAROUND_CPUFREQ;
--	} else if (ecpu->cputype == Loongson_3B) {
-+		break;
-+	case Legacy_3B:
-+	case Loongson_3B:
- 		loongson_sysconf.cores_per_node = 4; /* One chip has 2 nodes */
- 		loongson_sysconf.cores_per_package = 8;
- 		smp_group[0] = 0x900000003ff01000;
-@@ -132,7 +136,8 @@ void __init prom_init_env(void)
- 		loongson_freqctrl[3] = 0x900060001fe001d0;
- 		loongson_sysconf.ht_control_base = 0x90001EFDFB000000;
- 		loongson_sysconf.workarounds = WORKAROUND_CPUHOTPLUG;
--	} else {
-+		break;
-+	default:
- 		loongson_sysconf.cores_per_node = 1;
- 		loongson_sysconf.cores_per_package = 1;
- 		loongson_chipcfg[0] = 0x900000001fe00180;
+@@ -1527,6 +1537,7 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ 			__cpu_name[cpu] = "ICT Loongson-3";
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
++			__cpu_full_name[cpu] = "ICT Loongson-3A R2 (Loongson-3A2000)";
+ 			break;
+ 		}
+ 
+@@ -1646,6 +1657,7 @@ EXPORT_SYMBOL(__ua_limit);
+ #endif
+ 
+ const char *__cpu_name[NR_CPUS];
++const char *__cpu_full_name[NR_CPUS];
+ const char *__elf_platform;
+ 
+ void cpu_probe(void)
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 97dc01b..4f4a094 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -14,6 +14,7 @@
+ #include <asm/mipsregs.h>
+ #include <asm/processor.h>
+ #include <asm/prom.h>
++#include <asm/time.h>
+ 
+ unsigned int vced_count, vcei_count;
+ 
+@@ -62,6 +63,9 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 	seq_printf(m, fmt, __cpu_name[n],
+ 		      (version >> 4) & 0x0f, version & 0x0f,
+ 		      (fp_vers >> 4) & 0x0f, fp_vers & 0x0f);
++	if (__cpu_full_name[n])
++		seq_printf(m, "model name\t\t: %s @ %uMHz\n",
++		      __cpu_full_name[n], mips_hpt_frequency / 500000);
+ 	seq_printf(m, "BogoMIPS\t\t: %u.%02u\n",
+ 		      cpu_data[n].udelay_val / (500000/HZ),
+ 		      (cpu_data[n].udelay_val / (5000/HZ)) % 100);
 -- 
 2.7.0

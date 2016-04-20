@@ -1,64 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 13:24:18 +0200 (CEST)
-Received: from mail-wm0-f42.google.com ([74.125.82.42]:35061 "EHLO
-        mail-wm0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026633AbcDTLYRKaxS9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Apr 2016 13:24:17 +0200
-Received: by mail-wm0-f42.google.com with SMTP id e201so46624823wme.0
-        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2016 04:24:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 15:25:04 +0200 (CEST)
+Received: from mail-pa0-f41.google.com ([209.85.220.41]:32957 "EHLO
+        mail-pa0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27027131AbcDTNZC3-r5N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Apr 2016 15:25:02 +0200
+Received: by mail-pa0-f41.google.com with SMTP id zm5so17969257pac.0
+        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2016 06:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=LcTva6iXAdONZ+5Tx3ninH4DQ3MHjYyBITL3Wyx5qDc=;
-        b=f8txfkDDWrXk6qQgMixwTPZ3PBMfxW1kX6NDPcSkMRYn0iciOG6YERoiub0BTPyqs0
-         EXJs5/oedMe9+B/u3w9MZL2Vt91Rho+p90GN3sruvfkAr1Z6T/rfqJCkbcTI1fd6AOin
-         cqSc6cMYoEi47NlbjdY+igH6WYaFfMq0DxuFM=
+        d=mvista-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=/1KY9Q3sowO0zrL2LPOcIR+aXxzfr8KX/WIo+S1woYA=;
+        b=tWC8yS400UulTYyd9rjpHaFZQi1MV2WbwhipZKf3HzHymtJlKc84lTKIJJytYuU0tO
+         G5qBEQj472IjiW+foTIx3OpMER3dmslFCwrTleuy0YqIFOU/ifGZjd46zQoKf3q4RrQ8
+         vJ7NpvKegZTtQx0/xMRzMmmVYmkfOnJESK9ax/0bdFnFSIdvHUObcM+jTueuf1xKXAfn
+         o5OEk6kZru95yQun3u9+0l/yDxy/7vKQbCfK+T4zcQQAKpnCqqvP9nMnScWF+RIS25IK
+         fn8aUtOZF0zIeGJSjaTCzH6XU4Yr5Ol9aaKRIwlw1SOyw9KxJqb7BLuId/Vpw0+D+R+y
+         rDng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=LcTva6iXAdONZ+5Tx3ninH4DQ3MHjYyBITL3Wyx5qDc=;
-        b=HBBU38m+Ee7z07b7MeNry9GxsO9qqxyvPWDE47fUcVvTSG/oT+Zd7B4gwe5js6drgu
-         8jZvOK8veOK3NDKjBdKEiqyjsbLADtZpY/XlLhPAPrFvwus0DmO+62jqTZlTl5i1JwGO
-         LQsAhmV8bYdXzE8Da59NyM0Os7TTaJwQ0LOmhUu90+0OO5LnyGt1awLP4NNSS56seW8z
-         UIsTOU7iIwZ7oXF9G5m+ZL8D5wnEbHZZFycnSmzRyBapRZi96QjMR9Ehmqf0LmIHZtIx
-         gIlB3MU00h4H2EC9FL6n1tIis6aI7x/hC45/C8+myklF8Rpqyubjj/r9ujxXS6PImC9f
-         OQ0A==
-X-Gm-Message-State: AOPr4FU4DJ7eP0w6ci5rbXuw2gH9X8tJO7d/8bCmo+PMCMsE0IwjIpiAATH17vu2D1GPgA==
-X-Received: by 10.28.145.67 with SMTP id t64mr9229922wmd.56.1461151451792;
-        Wed, 20 Apr 2016 04:24:11 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:56b5:0:ac27:b86c:7764:9429])
-        by smtp.gmail.com with ESMTPSA id iv1sm5094856wjb.34.2016.04.20.04.24.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 20 Apr 2016 04:24:11 -0700 (PDT)
-Date:   Wed, 20 Apr 2016 13:24:09 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Greg KH <greg@kroah.com>
-Cc:     Huacai Chen <chenhc@lemote.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, stable <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm: Loongson-3 doesn't fully support wc memory
-Message-ID: <20160420112409.GN2510@phenom.ffwll.local>
-References: <1461064751-17873-1-git-send-email-chenhc@lemote.com>
- <CADnq5_OyS_pCu-4wW5uFpnr5kvqkHK5uPdmBKgHHmfZ-dOdXvw@mail.gmail.com>
- <CAAhV-H6EsxUhuXAAYBhun-S4+tM-xhWxKbXD4Jg0btK4sLfjGg@mail.gmail.com>
- <20160420064923.GA698@kroah.com>
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=/1KY9Q3sowO0zrL2LPOcIR+aXxzfr8KX/WIo+S1woYA=;
+        b=HU+6fBO0eFqzWu+Z7FySOT1l0aRusAJ7Ooy/YRn3KYxuSKMPN3E6+juW8kaLP0e8oL
+         xkPC/sf4W0dSiEhppbdaY1fgRo0wgc2qeZ+yzlL5PW9vO6QZrhj9zO4xkDdTV9L9LwYR
+         f52xaVC4/YrJGtnYyGqzXcYbVPYxLKzIUEi4rpNf+8yPfI6KZAJ2xU+POV3ky98P3Zny
+         gEFaV/sPyV+eKC/XdvHmOf9SCnnS5HfHAhiG+QtGg6l4Nh5HCm5x80owfZXnskKDYpjM
+         HRQlKb9EhB7fdP6cyCuCczd7q+WWPkrKejhi//CCwlzL9sBJZffIMeLGo9NjC7+6oNGH
+         zMWg==
+X-Gm-Message-State: AOPr4FU8OVaTOp7hg+2viSbPz44CcZ3dmPfxa/rCmbuCey/4u6t/nIjg1jA+5yGeHS2WvChu
+X-Received: by 10.66.149.194 with SMTP id uc2mr12379759pab.116.1461158696342;
+        Wed, 20 Apr 2016 06:24:56 -0700 (PDT)
+Received: from [192.168.27.3] ([173.71.13.195])
+        by smtp.gmail.com with ESMTPSA id v9sm98512851pfi.50.2016.04.20.06.24.55
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 20 Apr 2016 06:24:55 -0700 (PDT)
+Subject: Re: [PATCH] mips: Fix crash registers on non-crashing CPUs
+To:     minyard@acm.org, linux-mips@linux-mips.org
+References: <1460383819-5213-1-git-send-email-minyard@acm.org>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+From:   Corey Minyard <cminyard@mvista.com>
+Message-ID: <57178326.1090801@mvista.com>
+Date:   Wed, 20 Apr 2016 08:24:54 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160420064923.GA698@kroah.com>
-X-Operating-System: Linux phenom 4.4.0-1-amd64 
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <daniel@ffwll.ch>
+In-Reply-To: <1460383819-5213-1-git-send-email-minyard@acm.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <cminyard@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53120
+X-archive-position: 53121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@ffwll.ch
+X-original-sender: cminyard@mvista.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,31 +69,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Apr 20, 2016 at 03:49:23PM +0900, Greg KH wrote:
-> On Wed, Apr 20, 2016 at 02:18:20PM +0800, Huacai Chen wrote:
-> > Cc: stable@vger.kernel.org
-> 
-> <formletter>
-> 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read Documentation/stable_kernel_rules.txt
-> for how to do this properly.
-> 
-> </formletter>
+Anything on this?
 
-Not sure what exactly your script latched onto, but at least in the drm
-subsystem it's pretty common to remind maintainers with a reply just
-containing
+-corey
 
-Cc: stable@vger.kernel.org
-
-that they need to add that to the patch when applying. Often combined with
-an r-b/a-b tag. And Damien is working to teach patchwork to auto-add
-those, so yeah it's indeed the right way to submit a patch for stable. At
-least here ;-)
-
-Cheers, Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+On 04/11/2016 09:10 AM, minyard@acm.org wrote:
+> From: Corey Minyard <cminyard@mvista.com>
+>
+> As part of handling a crash on an SMP system, an IPI is send to
+> all other CPUs to save their current registers and stop.  It was
+> using task_pt_regs(current) to get the registers, but that will
+> only be accurate if the CPU was interrupted running in userland.
+> Instead allow the architecture to pass in the registers (all
+> pass NULL now, but allow for the future) and then use get_irq_regs()
+> which should be accurate as we are in an interrupt.  Fall back to
+> task_pt_regs(current) if nothing else is available.
+>
+> Signed-off-by: Corey Minyard <cminyard@mvista.com>
+> ---
+>   arch/mips/kernel/crash.c | 16 +++++++++++++---
+>   1 file changed, 13 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
+> index d434d5d..610f0f3 100644
+> --- a/arch/mips/kernel/crash.c
+> +++ b/arch/mips/kernel/crash.c
+> @@ -14,12 +14,22 @@ static int crashing_cpu = -1;
+>   static cpumask_t cpus_in_crash = CPU_MASK_NONE;
+>   
+>   #ifdef CONFIG_SMP
+> -static void crash_shutdown_secondary(void *ignore)
+> +static void crash_shutdown_secondary(void *passed_regs)
+>   {
+> -	struct pt_regs *regs;
+> +	struct pt_regs *regs = passed_regs;
+>   	int cpu = smp_processor_id();
+>   
+> -	regs = task_pt_regs(current);
+> +	/*
+> +	 * If we are passed registers, use those.  Otherwise get the
+> +	 * regs from the last interrupt, which should be correct, as
+> +	 * we are in an interrupt.  But if the regs are not there,
+> +	 * pull them from the top of the stack.  They are probably
+> +	 * wrong, but we need something to keep from crashing again.
+> +	 */
+> +	if (!regs)
+> +		regs = get_irq_regs();
+> +	if (!regs)
+> +		regs = task_pt_regs(current);
+>   
+>   	if (!cpu_online(cpu))
+>   		return;

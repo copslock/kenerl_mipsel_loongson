@@ -1,62 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 18:48:25 +0200 (CEST)
-Received: from e06smtp15.uk.ibm.com ([195.75.94.111]:46889 "EHLO
-        e06smtp15.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026982AbcDTQsWrWCRw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Apr 2016 18:48:22 +0200
-Received: from localhost
-        by e06smtp15.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <cornelia.huck@de.ibm.com>;
-        Wed, 20 Apr 2016 17:48:15 +0100
-Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
-        by e06smtp15.uk.ibm.com (192.168.101.145) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Wed, 20 Apr 2016 17:48:12 +0100
-X-IBM-Helo: d06dlp02.portsmouth.uk.ibm.com
-X-IBM-MailFrom: cornelia.huck@de.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id E618D219004D
-        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2016 17:47:49 +0100 (BST)
-Received: from d06av04.portsmouth.uk.ibm.com (d06av04.portsmouth.uk.ibm.com [9.149.37.216])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u3KGmBAl7340342
-        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2016 16:48:11 GMT
-Received: from d06av04.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av04.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u3KGmAu2014218
-        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2016 10:48:11 -0600
-Received: from gondolin (dyn-9-152-224-197.boeblingen.de.ibm.com [9.152.224.197])
-        by d06av04.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u3KGmA88014203;
-        Wed, 20 Apr 2016 10:48:10 -0600
-Date:   Wed, 20 Apr 2016 18:48:07 +0200
-From:   Cornelia Huck <cornelia.huck@de.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 19:02:24 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:38561 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27027144AbcDTRCUnHMSw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 20 Apr 2016 19:02:20 +0200
+Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 729706264C;
+        Wed, 20 Apr 2016 17:02:14 +0000 (UTC)
+Received: from potion (dhcp-1-215.brq.redhat.com [10.34.1.215])
+        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id u3KH2ADA028986;
+        Wed, 20 Apr 2016 13:02:11 -0400
+Received: by potion (sSMTP sendmail emulation); Wed, 20 Apr 2016 19:02:10 +0200
+Date:   Wed, 20 Apr 2016 19:02:10 +0200
+From:   Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>
 To:     Greg Kurz <gkurz@linux.vnet.ibm.com>
 Cc:     Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
         mingo@redhat.com, linux-mips@linux-mips.org, kvm@vger.kernel.org,
         linux-kernel@vger.kernel.org, qemu-ppc@nongnu.org,
+        Cornelia Huck <cornelia.huck@de.ibm.com>,
         Paul Mackerras <paulus@samba.org>,
         David Gibson <david@gibson.dropbear.id.au>
 Subject: Re: [PATCH v3] KVM: remove buggy vcpu id check on vcpu creation
-Message-ID: <20160420184807.056da314.cornelia.huck@de.ibm.com>
-In-Reply-To: <146116689259.20666.15860134511726195550.stgit@bahia.huguette.org>
+Message-ID: <20160420170209.GA11071@potion>
 References: <146116689259.20666.15860134511726195550.stgit@bahia.huguette.org>
-Organization: IBM Deutschland Research & Development GmbH Vorsitzende des
- Aufsichtsrats: Martina Koederitz =?UTF-8?B?R2VzY2jDpGZ0c2bDvGhydW5nOg==?=
- Dirk Wittkopp Sitz der Gesellschaft: =?UTF-8?B?QsO2Ymxpbmdlbg==?=
- Registergericht: Amtsgericht Stuttgart, HRB 243294
-X-Mailer: Claws Mail 3.8.0 (GTK+ 2.24.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16042016-0021-0000-0000-000033873870
-Return-Path: <cornelia.huck@de.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <146116689259.20666.15860134511726195550.stgit@bahia.huguette.org>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Wed, 20 Apr 2016 17:02:14 +0000 (UTC)
+Return-Path: <rkrcmar@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53134
+X-archive-position: 53135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cornelia.huck@de.ibm.com
+X-original-sender: rkrcmar@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,9 +51,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 20 Apr 2016 17:44:54 +0200
-Greg Kurz <gkurz@linux.vnet.ibm.com> wrote:
-
+2016-04-20 17:44+0200, Greg Kurz:
 > Commit 338c7dbadd26 ("KVM: Improve create VCPU parameter (CVE-2013-4587)")
 > introduced a check to prevent potential kernel memory corruption in case
 > the vcpu id is too great.
@@ -102,5 +82,27 @@ Greg Kurz <gkurz@linux.vnet.ibm.com> wrote:
 >  virt/kvm/kvm_main.c  |    3 ---
 >  3 files changed, 9 insertions(+), 4 deletions(-)
 > 
+> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+> index 70ef1a43c114..0278ea146db5 100644
+> --- a/arch/mips/kvm/mips.c
+> +++ b/arch/mips/kvm/mips.c
+> @@ -248,9 +248,14 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+>  	int err, size, offset;
+>  	void *gebase;
+>  	int i;
+> +	struct kvm_vcpu *vcpu;
+>  
+> -	struct kvm_vcpu *vcpu = kzalloc(sizeof(struct kvm_vcpu), GFP_KERNEL);
+> +	if (id >= KVM_MAX_VCPUS) {
+> +		err = -EINVAL;
+> +		goto out;
 
-Acked-by: Cornelia Huck <cornelia.huck@de.ibm.com>
+'vcpu' looks undefined at this point, so kfree in 'out:' may bug.
+Just 'return ERR_PTR(-EINVAL)'?
+
+> +	}
+>  
+> +	vcpu = kzalloc(sizeof(struct kvm_vcpu), GFP_KERNEL);
+>  	if (!vcpu) {
+>  		err = -ENOMEM;
+>  		goto out;

@@ -1,54 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 15:49:24 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:45078 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27027131AbcDTNtV52K4F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 20 Apr 2016 15:49:21 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 1CB21AB9D;
-        Wed, 20 Apr 2016 13:49:16 +0000 (UTC)
-Date:   Wed, 20 Apr 2016 15:49:14 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Jan Kara <jack@suse.cz>, Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        David Miller <davem@davemloft.net>
-Subject: Re: [PATCH v4 1/5] printk/nmi: generic solution for safe printk in
- NMI
-Message-ID: <20160420134914.GK6862@pathway.suse.cz>
-References: <1459353210-20260-1-git-send-email-pmladek@suse.com>
- <1459353210-20260-2-git-send-email-pmladek@suse.com>
- <20160404044928.GD6164@swordfish>
- <20160404093819.GH1023@pathway.suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2016 17:08:10 +0200 (CEST)
+Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:48028 "EHLO
+        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27027148AbcDTPIJSfksx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Apr 2016 17:08:09 +0200
+Received: from localhost
+        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <gkurz@linux.vnet.ibm.com>;
+        Wed, 20 Apr 2016 16:08:03 +0100
+Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
+        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 20 Apr 2016 16:08:02 +0100
+X-IBM-Helo: d06dlp03.portsmouth.uk.ibm.com
+X-IBM-MailFrom: gkurz@linux.vnet.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id EF3881B0804B
+        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2016 16:08:45 +0100 (BST)
+Received: from d06av08.portsmouth.uk.ibm.com (d06av08.portsmouth.uk.ibm.com [9.149.37.249])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u3KF81Qw2883886
+        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2016 15:08:01 GMT
+Received: from d06av08.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av08.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u3KF80iC013031
+        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2016 09:08:01 -0600
+Received: from smtp.lab.toulouse-stg.fr.ibm.com (srv01.lab.toulouse-stg.fr.ibm.com [9.101.4.1])
+        by d06av08.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u3KF80Ft013021;
+        Wed, 20 Apr 2016 09:08:00 -0600
+Received: from bahia.huguette.org (sig-9-83-160-41.evts.uk.ibm.com [9.83.160.41])
+        by smtp.lab.toulouse-stg.fr.ibm.com (Postfix) with ESMTP id 6110822046A;
+        Wed, 20 Apr 2016 17:07:59 +0200 (CEST)
+Subject: [PATCH] KVM: remove buggy vcpu id check on vcpu creation
+From:   Greg Kurz <gkurz@linux.vnet.ibm.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
+        mingo@redhat.com
+Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, qemu-ppc@nongnu.org,
+        Cornelia Huck <cornelia.huck@de.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        David Gibson <david@gibson.dropbear.id.au>
+Date:   Wed, 20 Apr 2016 17:07:58 +0200
+Message-ID: <146116487861.14909.7528002102875279653.stgit@bahia.huguette.org>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160404093819.GH1023@pathway.suse.cz>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <pmladek@suse.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16042015-0041-0000-0000-0000133107CE
+Return-Path: <gkurz@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53124
+X-archive-position: 53125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pmladek@suse.com
+X-original-sender: gkurz@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,72 +67,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon 2016-04-04 11:38:19, Petr Mladek wrote:
-> On Mon 2016-04-04 13:49:28, Sergey Senozhatsky wrote:
-> > Hello,
-> > 
-> > On (03/30/16 17:53), Petr Mladek wrote:
-> > > +/*
-> > > + * Flush data from the associated per_CPU buffer. The function
-> > > + * can be called either via IRQ work or independently.
-> > > + */
-> > > +static void __printk_nmi_flush(struct irq_work *work)
-> > > +{
-> > > +	static raw_spinlock_t read_lock =
-> > > +		__RAW_SPIN_LOCK_INITIALIZER(read_lock);
-> > > +	struct nmi_seq_buf *s = container_of(work, struct nmi_seq_buf, work);
-> > > +	unsigned long flags;
-> > > +	size_t len, size;
-> > > +	int i, last_i;
-> > > +
-> > > +	/*
-> > > +	 * The lock has two functions. First, one reader has to flush all
-> > > +	 * available message to make the lockless synchronization with
-> > > +	 * writers easier. Second, we do not want to mix messages from
-> > > +	 * different CPUs. This is especially important when printing
-> > > +	 * a backtrace.
-> > > +	 */
-> > > +	raw_spin_lock_irqsave(&read_lock, flags);
-> > > +
-> > 
-> > hm... so here we have
-> > 	for (; i < size; i++)
-> > 		printk()
-> > 
-> > under the spinlock. the thing is that one of printk() can end up
-> > in console_unlock()->call_console_drivers() loop, iterating there
-> > long enough to spinlock lockup other CPUs that might want to flush
-> > NMI buffers (if any), assuming that there are enough printk() (or
-> > may be a slow serial console) happening concurrently on other CPUs
-> > to keep the current ->read_lock busy. async printk can help here,
-> > but user can request sync version of printk.
-> 
-> I think that printk() is called on many other locations under
-> a spinlock and they all are waiting for the async printk.
->
-> > how about using deferred printk for nmi flush?
-> > print_nmi_seq_line()->printk_deferred() ?
+Commit 338c7dbadd26 ("KVM: Improve create VCPU parameter (CVE-2013-4587)")
+introduced a check to prevent potential kernel memory corruption in case
+the vcpu id is too great.
 
-I thought more about it. printk_nmi_flush() is primary called
-via irq work. If we use deferred printk() here we will just delay
-the console stuff to another irq work.
+Unfortunately this check assumes vcpu ids grow in sequence with a common
+difference of 1, which is wrong: archs are free to use vcpu id as they fit.
+For example, QEMU originated vcpu ids for PowerPC cpus running in boot3s_hv
+mode, can grow with a common difference of 2, 4 or 8: if KVM_MAX_VCPUS is
+1024, guests may be limited down to 128 vcpus on POWER8.
 
-If we use async printk from your patch set, it will unnecessary
-create another irq work and delay the waking of the printk kthread.
+This means the check does not belong here and should be moved to some arch
+specific function: kvm_arch_vcpu_create() looks like a good candidate.
 
-If anyone forces sync printk, it will not help much. We will still
-call console from the IRQ context and the potential flood of messages
-still might cause a soft lookup.
+ARM and s390 already have such a check.
 
-Finally, as I already said. This is not different from any other
-printk() call under a spinlock.
+I could not spot any path in the PowerPC or common KVM code where a vcpu
+id is used as described in the above commit: I believe PowerPC can live
+without this check.
 
-After all, I am going to use the normal printk() when flushing
-the NMI buffers.
+In the end, this patch simply moves the check to MIPS and x86.
 
-The only exception will be when this is called on panic in NMI
-context. In this case, printk_deferred() will do exactly what
-we need.
+Signed-off-by: Greg Kurz <gkurz@linux.vnet.ibm.com>
+---
+ arch/mips/kvm/mips.c |    3 +++
+ arch/x86/kvm/x86.c   |    3 +++
+ virt/kvm/kvm_main.c  |    3 ---
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-Best Regards,
-Petr
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index 70ef1a43c114..ce3f1e8a8b3f 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -251,6 +251,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+ 
+ 	struct kvm_vcpu *vcpu = kzalloc(sizeof(struct kvm_vcpu), GFP_KERNEL);
+ 
++	if (id >= KVM_MAX_VCPUS)
++		return -EINVAL;
++
+ 	if (!vcpu) {
+ 		err = -ENOMEM;
+ 		goto out;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 9b7798c7b210..f705d57b12ed 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -7358,6 +7358,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm,
+ {
+ 	struct kvm_vcpu *vcpu;
+ 
++	if (id >= KVM_MAX_VCPUS)
++		return -EINVAL;
++
+ 	if (check_tsc_unstable() && atomic_read(&kvm->online_vcpus) != 0)
+ 		printk_once(KERN_WARNING
+ 		"kvm: SMP vm created on host with unstable TSC; "
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 4fd482fb9260..6b6cca3cb488 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2272,9 +2272,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
+ 	int r;
+ 	struct kvm_vcpu *vcpu;
+ 
+-	if (id >= KVM_MAX_VCPUS)
+-		return -EINVAL;
+-
+ 	vcpu = kvm_arch_vcpu_create(kvm, id);
+ 	if (IS_ERR(vcpu))
+ 		return PTR_ERR(vcpu);

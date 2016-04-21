@@ -1,69 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 16:39:29 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:58591 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041194AbcFIOfUPDryQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 16:35:20 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1bB13G-0000VL-3K; Thu, 09 Jun 2016 14:35:18 +0000
-Received: from kamal by fourier with local (Exim 4.86_2)
-        (envelope-from <kamal@whence.com>)
-        id 1bB13D-0006BP-Di; Thu, 09 Jun 2016 07:35:15 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     "Maciej W . Rozycki" <macro@imgtec.com>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>,
-        kernel-team@lists.ubuntu.com
-Subject: [4.2.y-ckt stable] Patch "MIPS: Disable preemption during prctl(PR_SET_FP_MODE, ...)" has been added to the 4.2.y-ckt tree
-Date:   Thu,  9 Jun 2016 07:35:14 -0700
-Message-Id: <1465482914-23731-1-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 2.7.4
-X-Extended-Stable: 4.2
-Return-Path: <kamal@canonical.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53948
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Paul Burton <paul.burton@imgtec.com>
+Date: Thu, 21 Apr 2016 12:43:57 +0100
+Subject: MIPS: Disable preemption during prctl(PR_SET_FP_MODE, ...)
+Message-ID: <20160421114357.ZenWleHjzKnhu0m5u9Qx8UyL_qgLOvTbkSbjYpWbYFY@z>
 
-This is a note to let you know that I have just added a patch titled
+commit bd239f1e1429e7781096bf3884bdb1b2b1bb4f28 upstream.
 
-    MIPS: Disable preemption during prctl(PR_SET_FP_MODE, ...)
+Whilst a PR_SET_FP_MODE prctl is performed there are decisions made
+based upon whether the task is executing on the current CPU. This may
+change if we're preempted, so disable preemption to avoid such changes
+for the lifetime of the mode switch.
 
-to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
-which can be found at:
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+Cc: Adam Buchbinder <adam.buchbinder@gmail.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13144/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+---
+ arch/mips/kernel/process.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-    https://git.launchpad.net/~canonical-kernel/linux/+git/linux-stable-ckt/log/?h=linux-4.2.y-queue
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 6b3ae73..89847be 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -603,6 +603,9 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
+ 	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
+ 		return -EOPNOTSUPP;
 
-This patch is scheduled to be released in version 4.2.8-ckt12.
++	/* Proceed with the mode switch */
++	preempt_disable();
++
+ 	/* Save FP & vector context, then disable FPU & MSA */
+ 	if (task->signal == current->signal)
+ 		lose_fpu(1);
+@@ -661,6 +664,7 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
 
-If you, or anyone else, feels it should not be added to this tree, please 
-reply to this email.
+ 	/* Allow threads to use FP again */
+ 	atomic_set(&task->mm->context.fp_mode_switching, 0);
++	preempt_enable();
 
-For more information about the 4.2.y-ckt tree, see
-https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
-
-Thanks.
--Kamal
-
----8<------------------------------------------------------------
+ 	return 0;
+ }
+--
+2.7.4

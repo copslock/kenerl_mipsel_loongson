@@ -1,40 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 11:09:03 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39165 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026215AbcDUJJBb1g0Q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Apr 2016 11:09:01 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id F1DDE956A067E;
-        Thu, 21 Apr 2016 10:08:49 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 21 Apr 2016 10:08:55 +0100
-Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 21 Apr 2016 10:08:54 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-CC:     <lisa.parratt@imgtec.com>, <jason@lakedaemon.net>,
-        <ralf@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        <jiang.liu@linux.intel.com>, <marc.zyngier@arm.com>,
-        <linux-mips@linux-mips.org>, Qais Yousef <qsyousef@gmail.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>
-Subject: [PATCH] genirq: Dont allow affinity mask to be updated on IPIs
-Date:   Thu, 21 Apr 2016 10:08:32 +0100
-Message-ID: <1461229712-13057-1-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 12:19:29 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:47924 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27027214AbcDUKTYmVSkE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Apr 2016 12:19:24 +0200
+Received: from ohm.aurel32.net ([2001:bc8:30d7:111::1000])
+        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84_2)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1atBhk-0007Ce-4B
+        for linux-mips@linux-mips.org; Thu, 21 Apr 2016 12:19:24 +0200
+Received: from aurel32 by ohm.aurel32.net with local (Exim 4.87)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1atBhj-0006Tp-Si
+        for linux-mips@linux-mips.org; Thu, 21 Apr 2016 12:19:23 +0200
+Date:   Thu, 21 Apr 2016 12:19:23 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     linux-mips@linux-mips.org
+Subject: Emulation of unaligned LDXC1/SDXC1 instructions
+Message-ID: <20160421101923.GA24852@aurel32.net>
+Mail-Followup-To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53141
+X-archive-position: 53142
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,36 +44,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The IPI domain re-purposes the IRQ affinity to signify the mask of CPUs
-that this IPI will deliver to. This must not be modified before the IPI
-is destroyed again, so set the IRQ_NO_BALANCING flag to prevent the
-affinity being overwritten by setup_affinity().
+Hi all,
 
-Without this, if an IPI is reserved for a single target CPU, then
-allocated using __setup_irq(), the affinity is overwritten with
-cpu_online_mask. When ipi_destroy() is subsequently called on a
-multi-cpu system, it will attempt to free cpumask_weight() IRQs
-that were never allocated, and crash.
+Debian recently got access to Cavium III machines which have an FPU,
+before we were using Cavium II machines with the kernel FPU emulation.
 
-Fixes: d17bf24e6952 ("genirq: Add a new generic IPI reservation code to
-irq core")
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
----
+It appears some code (at least openjdk and lcms2, probably more) use the
+LDXC1 and SDXC1 instructions with word aligned addresses instead of
+double-word aligned addresses as required by the specification. This
+causes a SIGILL. The kernel emulation is more relaxed and allow word
+aligned addresses.
 
- kernel/irq/ipi.c | 1 +
- 1 file changed, 1 insertion(+)
+First of all I am surprised to get a SIGILL in that case instead of a
+SIGBUS, and secondly I think the behavior with and without FPU should be
+consistent. The kernel currently emulates unaligned LDC1 and SDC1
+instructions even with an FPU, so I wonder if the kernel should also
+emulate unaligned LDXC1 and SDXC1 instructions.
 
-diff --git a/kernel/irq/ipi.c b/kernel/irq/ipi.c
-index c37f34b00a11..14777af8e097 100644
---- a/kernel/irq/ipi.c
-+++ b/kernel/irq/ipi.c
-@@ -94,6 +94,7 @@ unsigned int irq_reserve_ipi(struct irq_domain *domain,
- 		data = irq_get_irq_data(virq + i);
- 		cpumask_copy(data->common->affinity, dest);
- 		data->common->ipi_offset = offset;
-+		irq_set_status_flags(virq + i, IRQ_NO_BALANCING);
- 	}
- 	return virq;
- 
+Any opinion?
+
+Thanks,
+Aurelien
+
 -- 
-2.5.0
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

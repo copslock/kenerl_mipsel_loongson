@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 13:44:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:59365 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27027236AbcDULotN0F9h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Apr 2016 13:44:49 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id D5C70EBE11C69;
-        Thu, 21 Apr 2016 12:44:36 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 21 Apr 2016 12:44:42 +0100
-Received: from localhost (10.100.200.79) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 21 Apr
- 2016 12:44:41 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        "stable # v4 . 0+" <stable@vger.kernel.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 2/2] MIPS: Force CPUs to lose FP context during mode switches
-Date:   Thu, 21 Apr 2016 12:43:58 +0100
-Message-ID: <1461239038-19991-2-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.8.0
-In-Reply-To: <1461239038-19991-1-git-send-email-paul.burton@imgtec.com>
-References: <1461239038-19991-1-git-send-email-paul.burton@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.79]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 13:49:09 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:46318 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27027202AbcDULtHkWVdh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Apr 2016 13:49:07 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 6299FAB9D;
+        Thu, 21 Apr 2016 11:49:01 +0000 (UTC)
+From:   Petr Mladek <pmladek@suse.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Petr Mladek <pmladek@suse.com>
+Subject: [PATCH v5 0/4] Cleaning printk stuff in NMI context
+Date:   Thu, 21 Apr 2016 13:48:41 +0200
+Message-Id: <1461239325-22779-1-git-send-email-pmladek@suse.com>
+X-Mailer: git-send-email 1.8.5.6
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53147
+X-archive-position: 53148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,103 +49,112 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options
-for MIPS") added support for the PR_SET_FP_MODE prctl, which allows a
-userland program to modify its FP mode at runtime. This is most notably
-required if dynamic linking leads to the FP mode requirement changing at
-runtime from that indicated in the initial executable's ELF header. In
-order to avoid overhead in the general FP context restore code, it aimed
-to have threads in the process become unable to enable the FPU during a
-mode switch & have the thread calling the prctl syscall wait for all
-other threads in the process to be context switched at least once. Once
-that happens we can know that no thread in the process whose mode will
-be switched has live FP context, and it's safe to perform the mode
-switch. However in the (rare) case of modeswitches occurring in
-multithreaded programs this can lead to indeterminate delays for the
-thread invoking the prctl syscall, and the code monitoring for those
-context switches was woefully inadequate for all but the simplest cases.
+This patch set generalizes the already existing solution for
+printing NMI messages. The main idea comes from Peter Zijlstra.
 
-Fix this by broadcasting an IPI if other CPUs may have live FP context
-for an affected thread, with a handler causing those CPUs to relinquish
-their FPU ownership. Threads will then be allowed to continue running
-but will stall on the wait_on_atomic_t in enable_restore_fp_context if
-they attempt to use FP again whilst the mode switch is still in
-progress. The end result is less fragile poking at scheduler context
-switch counts & a more expedient completion of the mode switch.
+v5 adds changes suggested by Sergey Senozhatsky. It should not longer
+conflict with his async printk patchset.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
-Cc: stable <stable@vger.kernel.org> # v4.0+
+There are some conflicts with the nmi_backtrace improvements
+from Chris Metcalf, see
+https://lkml.kernel.org/g/<1459877208-15119-1-git-send-email-cmetcalf@mellanox.com>
+Feel free to ask me to resolve them.
 
----
 
- arch/mips/kernel/process.c | 40 +++++++++++++++++-----------------------
- 1 file changed, 17 insertions(+), 23 deletions(-)
+Changes against v4:
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index ce55ea0..e1b36a4 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -580,11 +580,19 @@ int mips_get_process_fp_mode(struct task_struct *task)
- 	return value;
- }
- 
-+static void prepare_for_fp_mode_switch(void *info)
-+{
-+	struct mm_struct *mm = info;
-+
-+	if (current->mm == mm)
-+		lose_fpu(1);
-+}
-+
- int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
- {
- 	const unsigned int known_bits = PR_FP_MODE_FR | PR_FP_MODE_FRE;
--	unsigned long switch_count;
- 	struct task_struct *t;
-+	int max_users;
- 
- 	/* Check the value is valid */
- 	if (value & ~known_bits)
-@@ -613,31 +621,17 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
- 	smp_mb__after_atomic();
- 
- 	/*
--	 * If there are multiple online CPUs then wait until all threads whose
--	 * FP mode is about to change have been context switched. This approach
--	 * allows us to only worry about whether an FP mode switch is in
--	 * progress when FP is first used in a tasks time slice. Pretty much all
--	 * of the mode switch overhead can thus be confined to cases where mode
--	 * switches are actually occurring. That is, to here. However for the
--	 * thread performing the mode switch it may take a while...
-+	 * If there are multiple online CPUs then force any which are running
-+	 * threads in this process to lose their FPU context, which they can't
-+	 * regain until fp_mode_switching is cleared later.
- 	 */
- 	if (num_online_cpus() > 1) {
--		spin_lock_irq(&task->sighand->siglock);
--
--		for_each_thread(task, t) {
--			if (t == current)
--				continue;
--
--			switch_count = t->nvcsw + t->nivcsw;
--
--			do {
--				spin_unlock_irq(&task->sighand->siglock);
--				cond_resched();
--				spin_lock_irq(&task->sighand->siglock);
--			} while ((t->nvcsw + t->nivcsw) == switch_count);
--		}
-+		/* No need to send an IPI for the local CPU */
-+		max_users = (task->mm == current->mm) ? 1 : 0;
- 
--		spin_unlock_irq(&task->sighand->siglock);
-+		if (atomic_read(&current->mm->mm_users) > max_users)
-+			smp_call_function(prepare_for_fp_mode_switch,
-+					  (void *)current->mm, 1);
- 	}
- 
- 	/*
+  + merged 2nd patch into the 1st one to do not break bisection
+
+  + set vprintk_nmi() early in nmi_enter() and set vprintk_default()
+    later in nmi_exit() to make sure that all NMI messages are printed
+    to the temporary ring buffer
+
+  + used printk_deferred() when flushing the temporary buffers
+    on panic in NMI; we do not longer need to touch vprintk_emit()
+    and define the ugly macro deferred_console_in_nmi().
+
+
+Changes against v3:
+
+  + merged all small changes from -mm tree, including commit
+    descriptions
+
+  + disabled interrupts when taking the read_lock in __printk_nmi_flush();
+    printk_nmi_flush() might be called from any context; reported
+    by lockdep
+
+  + never introduce NEED_PRINTK_NMI; in -mm tree was introduced
+    in 1st patch and removed in the 4th one
+
+  + flush NMI buffers when the system goes down (new 5th patch);
+    addresses Daniel's concerns
+
+
+Changes against v2:
+
+  + fixed compilation problems reported by 0-day build robot
+
+  + MN10300 and Xtensa architectures will get handled separately
+
+  + dropped the patch that printed NMI messages directly when Oops
+    in progress; it made the solution less reliable
+
+  + made the size of the buffer configurable; use real numbers
+    instead of PAGE_SIZE
+
+
+Changes against v1:
+
+  + rebased on top of 4.4-rc2; there the old implementation was
+    moved to lib/nmi_backtrace.c and used also on arm; I hope that
+    I got the arm side correctly; I was not able to test on arm :-(
+
+  + defined HAVE_NMI on arm for !CPU_V7M instead of !CPU_V7;
+    handle_fiq_as_nmi() is called from entry-armv.S that
+    is compiled when !CPU_V7M
+
+  + defined HAVE_NMI also on mips; it calls nmi_enter() and
+    seems to have real NMIs (or am I wrong?)
+
+  + serialized backtraces when printing directly
+    (oops_in_progress)
+
+
+Petr Mladek (4):
+  printk/nmi: generic solution for safe printk in NMI
+  printk/nmi: warn when some message has been lost in NMI context
+  printk/nmi: increase the size of NMI buffer and make it configurable
+  printk/nmi: flush NMI messages on the system panic
+
+ arch/Kconfig                  |   4 +
+ arch/arm/Kconfig              |   1 +
+ arch/arm/kernel/smp.c         |   2 +
+ arch/avr32/Kconfig            |   1 +
+ arch/blackfin/Kconfig         |   1 +
+ arch/cris/Kconfig             |   1 +
+ arch/mips/Kconfig             |   1 +
+ arch/powerpc/Kconfig          |   1 +
+ arch/s390/Kconfig             |   1 +
+ arch/sh/Kconfig               |   1 +
+ arch/sparc/Kconfig            |   1 +
+ arch/tile/Kconfig             |   1 +
+ arch/x86/Kconfig              |   1 +
+ arch/x86/kernel/apic/hw_nmi.c |   1 -
+ include/linux/hardirq.h       |   2 +
+ include/linux/percpu.h        |   3 -
+ include/linux/printk.h        |  14 ++-
+ init/Kconfig                  |  27 +++++
+ init/main.c                   |   1 +
+ kernel/kexec_core.c           |   1 +
+ kernel/panic.c                |   6 +-
+ kernel/printk/Makefile        |   1 +
+ kernel/printk/internal.h      |  57 +++++++++
+ kernel/printk/nmi.c           | 260 ++++++++++++++++++++++++++++++++++++++++++
+ kernel/printk/printk.c        |  31 ++---
+ lib/nmi_backtrace.c           |  89 +--------------
+ 26 files changed, 401 insertions(+), 109 deletions(-)
+ create mode 100644 kernel/printk/internal.h
+ create mode 100644 kernel/printk/nmi.c
+
 -- 
-2.8.0
+1.8.5.6

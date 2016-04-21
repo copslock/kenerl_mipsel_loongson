@@ -1,70 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 20:09:12 +0200 (CEST)
-Received: from e06smtp09.uk.ibm.com ([195.75.94.105]:41375 "EHLO
-        e06smtp09.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026707AbcDUSJLGQXAB convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Apr 2016 20:09:11 +0200
-Received: from localhost
-        by e06smtp09.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <gkurz@linux.vnet.ibm.com>;
-        Thu, 21 Apr 2016 19:09:05 +0100
-Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
-        by e06smtp09.uk.ibm.com (192.168.101.139) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Thu, 21 Apr 2016 19:09:02 +0100
-X-IBM-Helo: d06dlp03.portsmouth.uk.ibm.com
-X-IBM-MailFrom: gkurz@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id C96301B0806E
-        for <linux-mips@linux-mips.org>; Thu, 21 Apr 2016 19:09:46 +0100 (BST)
-Received: from d06av01.portsmouth.uk.ibm.com (d06av01.portsmouth.uk.ibm.com [9.149.37.212])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u3LI91UO6422830
-        for <linux-mips@linux-mips.org>; Thu, 21 Apr 2016 18:09:02 GMT
-Received: from d06av01.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av01.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u3LI91ff030694
-        for <linux-mips@linux-mips.org>; Thu, 21 Apr 2016 12:09:01 -0600
-Received: from smtp.lab.toulouse-stg.fr.ibm.com (srv01.lab.toulouse-stg.fr.ibm.com [9.101.4.1])
-        by d06av01.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u3LI91hI030689;
-        Thu, 21 Apr 2016 12:09:01 -0600
-Received: from bahia.huguette.org (sig-9-83-160-41.evts.uk.ibm.com [9.83.160.41])
-        by smtp.lab.toulouse-stg.fr.ibm.com (Postfix) with ESMTP id AAD4222050F;
-        Thu, 21 Apr 2016 20:08:59 +0200 (CEST)
-Date:   Thu, 21 Apr 2016 20:08:57 +0200
-From:   Greg Kurz <gkurz@linux.vnet.ibm.com>
-To:     Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
-        mingo@redhat.com, linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, qemu-ppc@nongnu.org,
-        Cornelia Huck <cornelia.huck@de.ibm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v3] KVM: remove buggy vcpu id check on vcpu creation
-Message-ID: <20160421200857.53845535@bahia.huguette.org>
-In-Reply-To: <20160421173931.GB31953@potion>
-References: <146116689259.20666.15860134511726195550.stgit@bahia.huguette.org>
-        <20160420182909.GB4044@potion>
-        <20160421132958.0e9292d5@bahia.huguette.org>
-        <20160421152916.GA30356@potion>
-        <20160421174956.1049e0a5@bahia.huguette.org>
-        <20160421160841.GD25335@potion>
-        <20160421191850.65a07e86@bahia.huguette.org>
-        <20160421173931.GB31953@potion>
-Organization: IBM
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 20:44:19 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:31329 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27026707AbcDUSoPBZM8e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Apr 2016 20:44:15 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id DFD8941F8EBD;
+        Thu, 21 Apr 2016 19:44:07 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 21 Apr 2016 19:44:07 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 21 Apr 2016 19:44:07 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id B37411B8AE6E;
+        Thu, 21 Apr 2016 19:44:00 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Thu, 21 Apr 2016 19:44:07 +0100
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 21 Apr
+ 2016 19:44:06 +0100
+Date:   Thu, 21 Apr 2016 19:44:06 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Michal Marek <mmarek@suse.com>
+CC:     Arnd Bergmann <arnd@arndb.de>, <linux-kernel@vger.kernel.org>,
+        "Heinrich Schuchardt" <xypron.glpk@gmx.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Paul Burton" <paul.burton@imgtec.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        <linux-kbuild@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2 2/2] kbuild: Remove stale asm-generic wrappers
+Message-ID: <20160421184406.GG7859@jhogan-linux.le.imgtec.org>
+References: <1453210670-12596-1-git-send-email-james.hogan@imgtec.com>
+ <1667268.iM977TQnEK@wuerfel>
+ <20160119142213.GA12679@jhogan-linux.le.imgtec.org>
+ <4206493.gjdgtfndZ8@wuerfel>
+ <20160223095107.GC21143@jhogan-linux.le.imgtec.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16042118-0037-0000-0000-00000B860437
-Return-Path: <gkurz@linux.vnet.ibm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="IRIOLc8eTv1AOxGv"
+Content-Disposition: inline
+In-Reply-To: <20160223095107.GC21143@jhogan-linux.le.imgtec.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: ebfc6934
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53186
+X-archive-position: 53187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gkurz@linux.vnet.ibm.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,36 +66,97 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 21 Apr 2016 19:39:31 +0200
-Radim Krčmář <rkrcmar@redhat.com> wrote:
+--IRIOLc8eTv1AOxGv
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 2016-04-21 19:18+0200, Greg Kurz:
-> > On Thu, 21 Apr 2016 18:08:41 +0200
-> > Radim Krčmář <rkrcmar@redhat.com> wrote:  
-> >> 2016-04-21 17:49+0200, Greg Kurz:  
-> >> > So we're good ?    
-> >> 
-> >> I support the change, just had a nit about API design for v2.
-> >>   
-> > 
-> > As I said in my other mail, I'm not sure we should do more... if
-> > that's okay for you and you still support the change, maybe you
-> > can give an Acked-by ?  
-> 
-> I'm evil when it comes to APIs, so bear it a bit longer. :)
-> 
+On Tue, Feb 23, 2016 at 09:51:07AM +0000, James Hogan wrote:
+> Hi Michal,
+>=20
+> On Tue, Jan 19, 2016 at 03:27:24PM +0100, Arnd Bergmann wrote:
+> > On Tuesday 19 January 2016 14:22:13 James Hogan wrote:
+> > > On Tue, Jan 19, 2016 at 03:09:14PM +0100, Arnd Bergmann wrote:
+> > > > On Tuesday 19 January 2016 13:37:50 James Hogan wrote:
+> > > > > When a header file is removed from generic-y (often accompanied b=
+y the
+> > > > > addition of an arch specific header), the generated wrapper file =
+will
+> > > > > persist, and in some cases may still take precedence over the new=
+ arch
+> > > > > header.
+> > > > >=20
+> > > > > For example commit f1fe2d21f4e1 ("MIPS: Add definitions for exten=
+ded
+> > > > > context") removed ucontext.h from generic-y in arch/mips/include/=
+asm/,
+> > > > > and added an arch/mips/include/uapi/asm/ucontext.h. The continued=
+ use of
+> > > > > the wrapper when reusing a dirty build tree resulted in build fai=
+lures
+> > > > > in arch/mips/kernel/signal.c:
+> > > > >=20
+> > > > > arch/mips/kernel/signal.c: In function =E2=80=98sc_to_extcontext=
+=E2=80=99:
+> > > > > arch/mips/kernel/signal.c:142:12: error: =E2=80=98struct ucontext=
+=E2=80=99 has no member named =E2=80=98uc_extcontext=E2=80=99
+> > > > >   return &uc->uc_extcontext;
+> > > > >             ^
+> > > > >=20
+> > > > > Fix by detecting and removing wrapper headers in generated header
+> > > > > directories that do not correspond to a filename in generic-y, ge=
+nhdr-y,
+> > > > > or the newly introduced generated-y.
+> > > >=20
+> > > > Good idea.
+> > > >=20
+> > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > >=20
+> > > Thanks Arnd
+> > >=20
+> > > > Can you merge this through the mips tree, or do you need me to pick=
+ it
+> > > > up through asm-generic?
+> > >=20
+> > > I was envisaging the kbuild tree tbh, but I don't really mind how it
+> > > gets merged. This patch depends on patch 1, which adds generated-y to
+> > > x86 so we don't delete their other generated headers, but other than
+> > > that it doesn't really have any dependencies.
+> >=20
+> > Ok, the kbuild tree works fine too, and I guess the x86 tree would
+> > also be fine if that helps avoid the dependency.
+>=20
+> Were you okay to take these patches, or would you prefer they go via the
+> MIPS tree?
 
-Fair enough :)
+I'm keen for these two patches to make their way upstream one way or
+another.
 
-> >> >                 Whose tree can carry these patches ?    
-> >> 
-> >> (PowerPC is the only immediately affected arch, so I'd it there.)
-> >> 
-> >> What do you think is best?  My experience in this regard is pretty low.
-> >>   
-> > 
-> > Maybe Paolo's tree but I guess we'd need some more acks from x86, ARM and
-> > PowerPC :) KVM maintainers...  
-> 
-> Ok.
-> 
+Ralf: Since it affects MIPS, would you be able to take them?
+
+Cheers
+James
+
+--IRIOLc8eTv1AOxGv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJXGR92AAoJEGwLaZPeOHZ6I3AP/3QBag29Wj1XCKtCidDeCXl1
+XYSd2inkBsRh0HVyjBsNtyBJdxJWHYrAHAtqceSkvL9IcZKwuObQ3zGdOjFgA64B
+0X5KL+joj7fJL9v9coBMNSeWuIPkI4r4vFL6MQsPgJz+ZxHWDArNHQ8LF0ZEo4RR
+Hfcu2tY9opIOkpZg4hrdGfiej3DBS+QR050SkpswNTySpwJPPuPjTl+uzWz6C+2m
+HdLCpRKhR77O7ZL2XCbwyx41XfegoQjTwgWwbMlSXjKHuet//QLKs5QkQRvGIM1T
+SWkAKVl7RlXLqcKtszVt+IScbABM/gFB7rgjBda4I3ewxCTHWiEzxvbTRVLeOluG
+Nsicn1cs+D+CdhEQMiVIxKablmuRAg1i1fLPcQ0E5ZAjFbPWyUDtH9nQWOphU9Cd
+N5V49kg8lkR1ygQx56cOqw1OdGdh8RaSk5d78aM7BDKbqh6SXvJ10e1t7eXeabux
+WL/LAa+FT4c3oefHghWqJjI0+XMjJ2+A2MEM7xDXqMpebG9sraGv90X7ARF3d/Nf
+9pyYMkhU/Mx0A7Jo3LHZ/XwRZQo9WU4Cwz7Se8zPTxB13kmG67WXQWCwOkzbe1fm
+z0hGrDxargrmWyX9WTSHve2LNtwjRwttZng1eZJ/l436YEyLDcQRSia2mY4QG8y8
+j9TK/jNJOu3Mprt63W2I
+=fQxU
+-----END PGP SIGNATURE-----
+
+--IRIOLc8eTv1AOxGv--

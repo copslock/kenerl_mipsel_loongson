@@ -1,28 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 12:32:24 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4467 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 13:26:08 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18404 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026215AbcDUKcWXfYyV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Apr 2016 12:32:22 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 0A2E0B9F3DD6B;
-        Thu, 21 Apr 2016 11:32:10 +0100 (IST)
+        with ESMTP id S27026986AbcDUL0Fazsg4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Apr 2016 13:26:05 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id 581C5D0600DD9;
+        Thu, 21 Apr 2016 12:25:53 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 21 Apr 2016 11:32:16 +0100
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Thu, 21 Apr 2016 12:25:59 +0100
 Received: from localhost (10.100.200.79) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 21 Apr
- 2016 11:32:15 +0100
+ 2016 12:25:58 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        "Marc Zyngier" <marc.zyngier@arm.com>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] irqchip/mips-gic: Don't overrun pcpu_masks array
-Date:   Thu, 21 Apr 2016 11:31:54 +0100
-Message-ID: <1461234714-9975-1-git-send-email-paul.burton@imgtec.com>
+        "Aurelien Jarno" <aurelien@aurel32.net>
+CC:     Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH] MIPS: Allow emulation for unaligned [LS]DXC1 instructions
+Date:   Thu, 21 Apr 2016 12:25:38 +0100
+Message-ID: <1461237938-15228-1-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.8.0
+In-Reply-To: <20160421101923.GA24852@aurel32.net>
+References: <20160421101923.GA24852@aurel32.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.79]
@@ -30,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53143
+X-archive-position: 53144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,51 +46,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 2a0787051182 ("irqchip/mips-gic: Use gic_vpes instead of
-NR_CPUS") & commit 78930f09b940 ("irqchip/mips-gic: Clear percpu_masks
-correctly when mapping") both introduce code which accesses gic_vpes
-entries in the pcpu_masks array. However, this array has length NR_CPUS.
-If NR_CPUS is less than gic_vpes (ie. the kernel supports use of less
-CPUs than are present in the system) then we overrun the array, clobber
-some other data & generally die pretty promptly.
-
-Most notably this affects uniprocessor kernels running on any multicore
-or multithreaded Malta with a GIC (ie. the vast majority of real Malta
-boards).
-
-Fix this by only accessing up to min(gic_vpes, NR_CPUS) entries in the
-pcpu_masks array, preventing the array overrun.
+If an address error exception occurs for a LDXC1 or SDXC1 instruction,
+within the cop1x opcode space, allow it to be passed through to the FPU
+emulator rather than resulting in a SIGILL. This causes LDXC1 & SDXC1 to
+be handled in a manner consistent with the more common LDC1 & SDC1
+instructions.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 2a0787051182 ("irqchip/mips-gic: Use gic_vpes instead of NR_CPUS")
-Fixes: 78930f09b940 ("irqchip/mips-gic: Clear percpu_masks correctly when mapping")
-
+Cc: Aurelien Jarno <aurelien@aurel32.net>
 ---
+Hi Aurelien,
 
- drivers/irqchip/irq-mips-gic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks for tracking that down. Does this simple patch fix your problem?
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 94a30da..4dffccf 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -467,7 +467,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 	gic_map_to_vpe(irq, mips_cm_vp_id(cpumask_first(&tmp)));
+Thanks,
+    Paul
+---
+ arch/mips/kernel/unaligned.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index 5c62065..28b3af7 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -1191,6 +1191,7 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+ 	case ldc1_op:
+ 	case swc1_op:
+ 	case sdc1_op:
++	case cop1x_op:
+ 		die_if_kernel("Unaligned FP access in kernel code", regs);
+ 		BUG_ON(!used_math());
  
- 	/* Update the pcpu_masks */
--	for (i = 0; i < gic_vpes; i++)
-+	for (i = 0; i < min(gic_vpes, NR_CPUS); i++)
- 		clear_bit(irq, pcpu_masks[i].pcpu_mask);
- 	set_bit(irq, pcpu_masks[cpumask_first(&tmp)].pcpu_mask);
- 
-@@ -707,7 +707,7 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 	spin_lock_irqsave(&gic_lock, flags);
- 	gic_map_to_pin(intr, gic_cpu_pin);
- 	gic_map_to_vpe(intr, vpe);
--	for (i = 0; i < gic_vpes; i++)
-+	for (i = 0; i < min(gic_vpes, NR_CPUS); i++)
- 		clear_bit(intr, pcpu_masks[i].pcpu_mask);
- 	set_bit(intr, pcpu_masks[vpe].pcpu_mask);
- 	spin_unlock_irqrestore(&gic_lock, flags);
 -- 
 2.8.0

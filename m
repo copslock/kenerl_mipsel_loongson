@@ -1,44 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 13:50:22 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:46408 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27027244AbcDULtRecbrh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Apr 2016 13:49:17 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 6B664AD95;
-        Thu, 21 Apr 2016 11:49:15 +0000 (UTC)
-From:   Petr Mladek <pmladek@suse.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Petr Mladek <pmladek@suse.com>
-Subject: [PATCH v5 4/4] printk/nmi: flush NMI messages on the system panic
-Date:   Thu, 21 Apr 2016 13:48:45 +0200
-Message-Id: <1461239325-22779-5-git-send-email-pmladek@suse.com>
-X-Mailer: git-send-email 1.8.5.6
-In-Reply-To: <1461239325-22779-1-git-send-email-pmladek@suse.com>
-References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
-Return-Path: <pmladek@suse.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 14:26:32 +0200 (CEST)
+Received: from e06smtp15.uk.ibm.com ([195.75.94.111]:40551 "EHLO
+        e06smtp15.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27027124AbcDUM0bKolhj convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Apr 2016 14:26:31 +0200
+Received: from localhost
+        by e06smtp15.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <cornelia.huck@de.ibm.com>;
+        Thu, 21 Apr 2016 13:26:25 +0100
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp15.uk.ibm.com (192.168.101.145) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 21 Apr 2016 13:26:24 +0100
+X-IBM-Helo: d06dlp02.portsmouth.uk.ibm.com
+X-IBM-MailFrom: cornelia.huck@de.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id 583C22190046
+        for <linux-mips@linux-mips.org>; Thu, 21 Apr 2016 13:26:01 +0100 (BST)
+Received: from d06av07.portsmouth.uk.ibm.com (d06av07.portsmouth.uk.ibm.com [9.149.37.248])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u3LCQNlD8782244
+        for <linux-mips@linux-mips.org>; Thu, 21 Apr 2016 12:26:23 GMT
+Received: from d06av07.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av07.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u3LCQMFb005150
+        for <linux-mips@linux-mips.org>; Thu, 21 Apr 2016 08:26:22 -0400
+Received: from gondolin (sig-9-83-123-140.evts.uk.ibm.com [9.83.123.140])
+        by d06av07.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u3LCQKgt005080;
+        Thu, 21 Apr 2016 08:26:21 -0400
+Date:   Thu, 21 Apr 2016 14:26:19 +0200
+From:   Cornelia Huck <cornelia.huck@de.ibm.com>
+To:     Greg Kurz <gkurz@linux.vnet.ibm.com>
+Cc:     Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
+        mingo@redhat.com, linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, qemu-ppc@nongnu.org,
+        Paul Mackerras <paulus@samba.org>,
+        David Gibson <david@gibson.dropbear.id.au>,
+        David Hildenbrand <dahi@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3] KVM: remove buggy vcpu id check on vcpu creation
+Message-ID: <20160421142619.2ba2c296.cornelia.huck@de.ibm.com>
+In-Reply-To: <20160421132958.0e9292d5@bahia.huguette.org>
+References: <146116689259.20666.15860134511726195550.stgit@bahia.huguette.org>
+        <20160420182909.GB4044@potion>
+        <20160421132958.0e9292d5@bahia.huguette.org>
+Organization: IBM Deutschland Research & Development GmbH Vorsitzende des
+ Aufsichtsrats: Martina Koederitz =?UTF-8?B?R2VzY2jDpGZ0c2bDvGhydW5nOg==?=
+ Dirk Wittkopp Sitz der Gesellschaft: =?UTF-8?B?QsO2Ymxpbmdlbg==?=
+ Registergericht: Amtsgericht Stuttgart, HRB 243294
+X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16042112-0021-0000-0000-0000339B2F60
+Return-Path: <cornelia.huck@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53152
+X-archive-position: 53153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pmladek@suse.com
+X-original-sender: cornelia.huck@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,181 +73,109 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In NMI context, printk() messages are stored into per-CPU buffers to avoid
-a possible deadlock.  They are normally flushed to the main ring buffer via
-an IRQ work.  But the work is never called when the system calls panic() in
-the very same NMI handler.
+On Thu, 21 Apr 2016 13:29:58 +0200
+Greg Kurz <gkurz@linux.vnet.ibm.com> wrote:
 
-This patch tries to flush NMI buffers before the crash dump is generated.
-In this case it does not risk a double release and bails out when the
-logbuf_lock is already taken.  The aim is to get the messages into the main
-ring buffer when possible.  It makes them better accessible in the vmcore.
+> On Wed, 20 Apr 2016 20:29:09 +0200
+> Radim Krčmář <rkrcmar@redhat.com> wrote:
+> 
+> > 2016-04-20 17:44+0200, Greg Kurz:
+> > > Commit 338c7dbadd26 ("KVM: Improve create VCPU parameter (CVE-2013-4587)")
+> > > introduced a check to prevent potential kernel memory corruption in case
+> > > the vcpu id is too great.
+> > > 
+> > > Unfortunately this check assumes vcpu ids grow in sequence with a common
+> > > difference of 1, which is wrong: archs are free to use vcpu id as they fit.
+> > > For example, QEMU originated vcpu ids for PowerPC cpus running in boot3s_hv
+> > > mode, can grow with a common difference of 2, 4 or 8: if KVM_MAX_VCPUS is
+> > > 1024, guests may be limited down to 128 vcpus on POWER8.
+> > > 
+> > > This means the check does not belong here and should be moved to some arch
+> > > specific function: kvm_arch_vcpu_create() looks like a good candidate.
+> > > 
+> > > ARM and s390 already have such a check.
+> > > 
+> > > I could not spot any path in the PowerPC or common KVM code where a vcpu
+> > > id is used as described in the above commit: I believe PowerPC can live
+> > > without this check.  
+> > 
+> > The only problematic path I see is kvm_get_vcpu_by_id(), which returns
+> > NULL for any id above KVM_MAX_VCPUS.
+> 
+> Oops my bad, I started to work on a 4.4 tree and I missed this check brought
+> by commit c896939f7cff (KVM: use heuristic for fast VCPU lookup by id).
+> 
+> But again, I believe the check is wrong there also: the changelog just mentions
+> this is a fastpath for the usual case where "VCPU ids match the array index"...
+> why does the patch add a NULL return path if id >= KVM_MAX_VCPUS ?
 
-Then the patch tries to flush the buffers second time when other CPUs are
-down.  It might be more aggressive and reset logbuf_lock. The aim is to
-get the messages available for the consequent kmsg_dump() and
-console_flush_on_panic() calls.
+Probably because noone considered power :)
 
-The patch causes vprintk_emit() to be called even in NMI context again. But
-it is done via printk_deferred() so that the console handling is skipped.
-Consoles use internal locks and we could not prevent a deadlock easily.
-They are explicitly called later when the crash dump is not generated, see
-console_flush_on_panic().
+> 
+> > kvm_vm_ioctl_create_vcpu() uses kvm_get_vcpu_by_id() to check for
+> > duplicate ids, so PowerPC could end up with many VCPUs of the same id.
+> > I'm not sure what could fail, but code doesn't expect this situation.
+> > Patching kvm_get_vcpu_by_id() is easy, though.
+> > 
+> 
+> Something like this ?
+> 
+> 	if (id < 0)
+> 		return NULL;
+> 	if (id < KVM_MAX_VCPUS)
+> 		vcpu = kvm_get_vcpu(kvm, id);
+> 
+> In the same patch ?
+> 
+> > Second issue is that Documentation/virtual/kvm/api.txt says
+> >   4.7 KVM_CREATE_VCPU
+> >   [...]
+> >   This API adds a vcpu to a virtual machine.  The vcpu id is a small
+> >   integer in the range [0, max_vcpus).
+> > 
+> 
+> Yeah and I find the meaning of max_vcpus is unclear.
+> 
+> Here it is considered as a limit for vcpu id, but if you look at the code,
+> KVM_MAX_VCPUS is also used as a limit for the number of vcpus:
+> 
+> virt/kvm/kvm_main.c:    if (atomic_read(&kvm->online_vcpus) == KVM_MAX_VCPUS) {
+> 
+> > so we'd remove those two lines and change the API too.  The change would
+> > be somewhat backward compatible, but doesn't PowerPC use high vcpu_id
+> > just because KVM is lacking an API to set DT ID?
+> 
+> This is related to a limitation when running in book3s_hv mode with cpus
+> that support SMT (multiple HW threads): all HW threads within a core
+> cannot be running in different guests at the same time. 
+> 
+> We solve this by using a vcpu numbering scheme as follows:
+> 
+> vcpu_id[N] = (N * thread_per_core_guest) / threads_per_core_host + N % threads_per_core_guest
+> 
+> where N means "the Nth vcpu presented to the guest". This allows to have groups of vcpus
+> that can be scheduled to run on the same real core.
+> 
+> So, in the "worst" case where we want to run a guest with 1 thread/core and the host
+> has 8 threads/core, we will need the vcpu_id limit to be 8*KVM_MAX_VCPUS.
+> 
+> > x86 (APIC ID) is affected by this and ARM (MP ID) probably too.
+> > 
+> 
+> x86 is limited to KVM_MAX_VCPUS (== 255) vcpus: it won't be affected if we also
+> patch kvm_get_vcpu_by_id() like suggested above.
+> 
+> Depending on the platform, ARM can be limited to VGIC_V3_MAX_CPUS (== 255) or
+> VGIC_V8_MAX_CPUS (== 8). I guess it won't be affected either.
 
-Signed-off-by: Petr Mladek <pmladek@suse.com>
----
- include/linux/printk.h   |  2 ++
- kernel/kexec_core.c      |  1 +
- kernel/panic.c           |  6 +++++-
- kernel/printk/internal.h |  2 ++
- kernel/printk/nmi.c      | 39 ++++++++++++++++++++++++++++++++++++++-
- kernel/printk/printk.c   |  2 +-
- 6 files changed, 49 insertions(+), 3 deletions(-)
+For s390, it's either 64 (no esca) or 248 (esca).
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index 51dd6b824fe2..f4da695fd615 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -127,11 +127,13 @@ extern void printk_nmi_init(void);
- extern void printk_nmi_enter(void);
- extern void printk_nmi_exit(void);
- extern void printk_nmi_flush(void);
-+extern void printk_nmi_flush_on_panic(void);
- #else
- static inline void printk_nmi_init(void) { }
- static inline void printk_nmi_enter(void) { }
- static inline void printk_nmi_exit(void) { }
- static inline void printk_nmi_flush(void) { }
-+static inline void printk_nmi_flush_on_panic(void) { }
- #endif /* PRINTK_NMI */
- 
- #ifdef CONFIG_PRINTK
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index 8d34308ea449..1dc3fe8495e0 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -893,6 +893,7 @@ void crash_kexec(struct pt_regs *regs)
- 	old_cpu = atomic_cmpxchg(&panic_cpu, PANIC_CPU_INVALID, this_cpu);
- 	if (old_cpu == PANIC_CPU_INVALID) {
- 		/* This is the 1st CPU which comes here, so go ahead. */
-+		printk_nmi_flush_on_panic();
- 		__crash_kexec(regs);
- 
- 		/*
-diff --git a/kernel/panic.c b/kernel/panic.c
-index 535c96510a44..8aa74497cc5a 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -160,8 +160,10 @@ void panic(const char *fmt, ...)
- 	 *
- 	 * Bypass the panic_cpu check and call __crash_kexec directly.
- 	 */
--	if (!crash_kexec_post_notifiers)
-+	if (!crash_kexec_post_notifiers) {
-+		printk_nmi_flush_on_panic();
- 		__crash_kexec(NULL);
-+	}
- 
- 	/*
- 	 * Note smp_send_stop is the usual smp shutdown function, which
-@@ -176,6 +178,8 @@ void panic(const char *fmt, ...)
- 	 */
- 	atomic_notifier_call_chain(&panic_notifier_list, 0, buf);
- 
-+	/* Call flush even twice. It tries harder with a single online CPU */
-+	printk_nmi_flush_on_panic();
- 	kmsg_dump(KMSG_DUMP_PANIC);
- 
- 	/*
-diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
-index 341bedccc065..7fd2838fa417 100644
---- a/kernel/printk/internal.h
-+++ b/kernel/printk/internal.h
-@@ -22,6 +22,8 @@ int __printf(1, 0) vprintk_default(const char *fmt, va_list args);
- 
- #ifdef CONFIG_PRINTK_NMI
- 
-+extern raw_spinlock_t logbuf_lock;
-+
- /*
-  * printk() could not take logbuf_lock in NMI context. Instead,
-  * it temporary stores the strings into a per-CPU buffer.
-diff --git a/kernel/printk/nmi.c b/kernel/printk/nmi.c
-index bf08557d7e3d..b69eb8a2876f 100644
---- a/kernel/printk/nmi.c
-+++ b/kernel/printk/nmi.c
-@@ -17,6 +17,7 @@
- 
- #include <linux/preempt.h>
- #include <linux/spinlock.h>
-+#include <linux/debug_locks.h>
- #include <linux/smp.h>
- #include <linux/cpumask.h>
- #include <linux/irq_work.h>
-@@ -106,7 +107,16 @@ static void print_nmi_seq_line(struct nmi_seq_buf *s, int start, int end)
- {
- 	const char *buf = s->buffer + start;
- 
--	printk("%.*s", (end - start) + 1, buf);
-+	/*
-+	 * The buffers are flushed in NMI only on panic.  The messages must
-+	 * go only into the ring buffer at this stage.  Consoles will get
-+	 * explicitly called later when a crashdump is not generated.
-+	 */
-+	if (in_nmi())
-+		printk_deferred("%.*s", (end - start) + 1, buf);
-+	else
-+		printk("%.*s", (end - start) + 1, buf);
-+
- }
- 
- /*
-@@ -194,6 +204,33 @@ void printk_nmi_flush(void)
- 		__printk_nmi_flush(&per_cpu(nmi_print_seq, cpu).work);
- }
- 
-+/**
-+ * printk_nmi_flush_on_panic - flush all per-cpu nmi buffers when the system
-+ *	goes down.
-+ *
-+ * Similar to printk_nmi_flush() but it can be called even in NMI context when
-+ * the system goes down. It does the best effort to get NMI messages into
-+ * the main ring buffer.
-+ *
-+ * Note that it could try harder when there is only one CPU online.
-+ */
-+void printk_nmi_flush_on_panic(void)
-+{
-+	/*
-+	 * Make sure that we could access the main ring buffer.
-+	 * Do not risk a double release when more CPUs are up.
-+	 */
-+	if (in_nmi() && raw_spin_is_locked(&logbuf_lock)) {
-+		if (num_online_cpus() > 1)
-+			return;
-+
-+		debug_locks_off();
-+		raw_spin_lock_init(&logbuf_lock);
-+	}
-+
-+	printk_nmi_flush();
-+}
-+
- void __init printk_nmi_init(void)
- {
- 	int cpu;
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index e38579d730f4..60cdf6386763 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -245,7 +245,7 @@ __packed __aligned(4)
-  * within the scheduler's rq lock. It must be released before calling
-  * console_unlock() or anything else that might wake up a process.
-  */
--static DEFINE_RAW_SPINLOCK(logbuf_lock);
-+DEFINE_RAW_SPINLOCK(logbuf_lock);
- 
- #ifdef CONFIG_PRINTK
- DECLARE_WAIT_QUEUE_HEAD(log_wait);
--- 
-1.8.5.6
+> 
+> > (Maybe it is time to decouple VCPU ID used in KVM interfaces from
+> >  architecture dependent CPU ID that the guest uses ...
+> 
+> Maybe... I did not get that far.
+
+It seems that the various architectures are more different than I
+thought... wasn't aware of the complicated situation on power, for
+example.

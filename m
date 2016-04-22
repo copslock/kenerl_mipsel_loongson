@@ -1,42 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2016 11:41:09 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14104 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27026470AbcDVJjisQ5Kz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Apr 2016 11:39:38 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id BE70AC9A69F98;
-        Fri, 22 Apr 2016 10:39:30 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 22 Apr 2016 10:39:32 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 22 Apr 2016 10:39:32 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>
-Subject: [PATCH 5/5] MIPS: KVM: Add missing disable FPU hazard barriers
-Date:   Fri, 22 Apr 2016 10:38:49 +0100
-Message-ID: <1461317929-4991-6-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1461317929-4991-1-git-send-email-james.hogan@imgtec.com>
-References: <1461317929-4991-1-git-send-email-james.hogan@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2016 12:22:24 +0200 (CEST)
+Received: from e06smtp06.uk.ibm.com ([195.75.94.102]:47890 "EHLO
+        e06smtp06.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026472AbcDVKWVw62Iz convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Apr 2016 12:22:21 +0200
+Received: from localhost
+        by e06smtp06.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <cornelia.huck@de.ibm.com>;
+        Fri, 22 Apr 2016 11:22:16 +0100
+Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
+        by e06smtp06.uk.ibm.com (192.168.101.136) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Fri, 22 Apr 2016 11:22:14 +0100
+X-IBM-Helo: d06dlp03.portsmouth.uk.ibm.com
+X-IBM-MailFrom: cornelia.huck@de.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 2FCF21B08061
+        for <linux-mips@linux-mips.org>; Fri, 22 Apr 2016 11:22:59 +0100 (BST)
+Received: from d06av09.portsmouth.uk.ibm.com (d06av09.portsmouth.uk.ibm.com [9.149.37.250])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u3MAMESW3473856
+        for <linux-mips@linux-mips.org>; Fri, 22 Apr 2016 10:22:14 GMT
+Received: from d06av09.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av09.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u3MAMDNG007762
+        for <linux-mips@linux-mips.org>; Fri, 22 Apr 2016 04:22:13 -0600
+Received: from gondolin (dyn-9-152-224-197.boeblingen.de.ibm.com [9.152.224.197])
+        by d06av09.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u3MAMCtg007754;
+        Fri, 22 Apr 2016 04:22:12 -0600
+Date:   Fri, 22 Apr 2016 12:22:10 +0200
+From:   Cornelia Huck <cornelia.huck@de.ibm.com>
+To:     Greg Kurz <gkurz@linux.vnet.ibm.com>
+Cc:     Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
+        mingo@redhat.com, linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Hildenbrand <dahi@linux.vnet.ibm.com>,
+        qemu-ppc@nongnu.org, Paul Mackerras <paulus@samba.org>,
+        David Gibson <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH v4 2/2] KVM: move vcpu id checking to archs
+Message-ID: <20160422122210.50450345.cornelia.huck@de.ibm.com>
+In-Reply-To: <20160422112538.41b23a9d@bahia.huguette.org>
+References: <146124809455.32509.15232948272580716135.stgit@bahia.huguette.org>
+        <146124811255.32509.17679765789502091772.stgit@bahia.huguette.org>
+        <20160421160018.GA31953@potion>
+        <20160421184500.6cb5fd8a@bahia.huguette.org>
+        <20160421173611.GB30356@potion>
+        <20160422112538.41b23a9d@bahia.huguette.org>
+Organization: IBM Deutschland Research & Development GmbH Vorsitzende des
+ Aufsichtsrats: Martina Koederitz =?UTF-8?B?R2VzY2jDpGZ0c2bDvGhydW5nOg==?=
+ Dirk Wittkopp Sitz der Gesellschaft: =?UTF-8?B?QsO2Ymxpbmdlbg==?=
+ Registergericht: Amtsgericht Stuttgart, HRB 243294
+X-Mailer: Claws Mail 3.8.0 (GTK+ 2.24.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16042210-0025-0000-0000-000014091660
+Return-Path: <cornelia.huck@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53198
+X-archive-position: 53199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: cornelia.huck@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,42 +76,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add the necessary hazard barriers after disabling the FPU in
-kvm_lose_fpu(), just to be safe.
+On Fri, 22 Apr 2016 11:25:38 +0200
+Greg Kurz <gkurz@linux.vnet.ibm.com> wrote:
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
----
- arch/mips/kvm/mips.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> On Thu, 21 Apr 2016 19:36:11 +0200
+> Radim Krčmář <rkrcmar@redhat.com> wrote:
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index ec3fe09ef15c..23b209463238 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1556,8 +1556,10 @@ void kvm_lose_fpu(struct kvm_vcpu *vcpu)
- 
- 		/* Disable MSA & FPU */
- 		disable_msa();
--		if (vcpu->arch.fpu_inuse & KVM_MIPS_FPU_FPU)
-+		if (vcpu->arch.fpu_inuse & KVM_MIPS_FPU_FPU) {
- 			clear_c0_status(ST0_CU1 | ST0_FR);
-+			disable_fpu_hazard();
-+		}
- 		vcpu->arch.fpu_inuse &= ~(KVM_MIPS_FPU_FPU | KVM_MIPS_FPU_MSA);
- 	} else if (vcpu->arch.fpu_inuse & KVM_MIPS_FPU_FPU) {
- 		set_c0_status(ST0_CU1);
-@@ -1568,6 +1570,7 @@ void kvm_lose_fpu(struct kvm_vcpu *vcpu)
- 
- 		/* Disable FPU */
- 		clear_c0_status(ST0_CU1 | ST0_FR);
-+		disable_fpu_hazard();
- 	}
- 	preempt_enable();
- }
--- 
-2.4.10
+> > > For other architectures, it is simply KVM_MAX_VCPUS.  
+> > 
+> > (Other architectures would not implement the capability.)
+> > 
+> 
+> So this would be KVM_CAP_PPC_MAX_VCPU_ID ?
+> 
+> > >> I think this would also clarify the connection between VCPU limit and
+> > >> VCPU_ID limit.  Or is a boolean cap better?
+> > >>   
+> > > 
+> > > Well, I'm not fan of adding a generic API to handle a corner case...  
+> > 
+> > I don't like it either, but I think that introducing the capability is
+> > worth avoided problems.
+> > 
+> 
+> I admit that having separate capabilities for the number of vcpus and the
+> maximum vcpu id fixes the confusion once and for all.
+
+Yes, and I think that the new max_vpcu_id cap should be generic for
+that reason.

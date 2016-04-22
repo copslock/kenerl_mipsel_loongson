@@ -1,59 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Apr 2016 20:44:19 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31329 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27026707AbcDUSoPBZM8e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Apr 2016 20:44:15 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id DFD8941F8EBD;
-        Thu, 21 Apr 2016 19:44:07 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 21 Apr 2016 19:44:07 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 21 Apr 2016 19:44:07 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id B37411B8AE6E;
-        Thu, 21 Apr 2016 19:44:00 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 21 Apr 2016 19:44:07 +0100
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 21 Apr
- 2016 19:44:06 +0100
-Date:   Thu, 21 Apr 2016 19:44:06 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Michal Marek <mmarek@suse.com>
-CC:     Arnd Bergmann <arnd@arndb.de>, <linux-kernel@vger.kernel.org>,
-        "Heinrich Schuchardt" <xypron.glpk@gmx.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Paul Burton" <paul.burton@imgtec.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        <linux-kbuild@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 2/2] kbuild: Remove stale asm-generic wrappers
-Message-ID: <20160421184406.GG7859@jhogan-linux.le.imgtec.org>
-References: <1453210670-12596-1-git-send-email-james.hogan@imgtec.com>
- <1667268.iM977TQnEK@wuerfel>
- <20160119142213.GA12679@jhogan-linux.le.imgtec.org>
- <4206493.gjdgtfndZ8@wuerfel>
- <20160223095107.GC21143@jhogan-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2016 03:40:51 +0200 (CEST)
+Received: from mail-oi0-f68.google.com ([209.85.218.68]:33275 "EHLO
+        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27027286AbcDVBktDS5N3 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 Apr 2016 03:40:49 +0200
+Received: by mail-oi0-f68.google.com with SMTP id f63so12568107oig.0
+        for <linux-mips@linux-mips.org>; Thu, 21 Apr 2016 18:40:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-transfer-encoding;
+        bh=pBdfQx83JWWoY0ofU7tITE1uPOFgMpbOGeEQsus4tK8=;
+        b=LXVUsxrycLm3PII2GGje3qFqegHOugh0dtHfZlqPjXVih46v04PIvxclJUfvuEN8zI
+         wuIrdKu6A+CswRDgBRnfh9kJdbMgq2qpLhWHFAS0O9O2sG0j6gakX+2g7CPQnqdTumvw
+         IHPzLFIMjm1z/Z3VtyLiCwxtOj/SJRTAM7VAHf9ilY4dHsObc76Zm0t6WFAwocs/9Dh4
+         qI9tUFmdEBW6Rl9v1h0iy56R/YmN2JDugSuHVozD/X+1OfcrazVO3yURm5Oe2Uo+Rf7q
+         Oo1WlnbuHT2vv90fDB9juVkdIC0KsGDh9dux2fZGvnR9+vMexINEIPJ8tq+zqVRao+i8
+         GcAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-transfer-encoding;
+        bh=pBdfQx83JWWoY0ofU7tITE1uPOFgMpbOGeEQsus4tK8=;
+        b=eG41351tEj2itcxyISkG+zRMcCeHBfmR05GwOjes5sGpy31uEEhJq9CEM9JcUVWo8m
+         PlW+O6WPdDsIPm0XeqyBTQ6cjWFLhIoOw90SNiZhAiuEo3nZ+z1ndrsdnrzJylc3R7Er
+         QrHrB2tKQwW3qExcAFYCuh3pEWgEeihhgvCPFtnzIvpn6kf+axdumtEWPkLMS/DGcsKk
+         pdvutOgHyK6G77/DEaOw+s+xKavc1x8i6s28TGxnmONEEj5mtzC4DvaBTk3EkcVA922N
+         rIrX9JK+O+dnMbHcyx2pS3fUSnQvKQBNdAmVnQyL4s7otSYMq3ihFNpJe3AV/1SBaZ9b
+         cuiA==
+X-Gm-Message-State: AOPr4FUO4qEbvk/hX+EwVNnlO2aa2LLdnldot/XVWWkyxVm8FCio3VALsBjLw/kBnQf4YomKsWGWj6NPkiKORw==
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="IRIOLc8eTv1AOxGv"
-Content-Disposition: inline
-In-Reply-To: <20160223095107.GC21143@jhogan-linux.le.imgtec.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: ebfc6934
-Return-Path: <James.Hogan@imgtec.com>
+X-Received: by 10.157.27.180 with SMTP id z49mr7024385otd.61.1461289243102;
+ Thu, 21 Apr 2016 18:40:43 -0700 (PDT)
+Received: by 10.157.44.130 with HTTP; Thu, 21 Apr 2016 18:40:43 -0700 (PDT)
+In-Reply-To: <20160421152916.GA30356@potion>
+References: <146116689259.20666.15860134511726195550.stgit@bahia.huguette.org>
+        <20160420182909.GB4044@potion>
+        <20160421132958.0e9292d5@bahia.huguette.org>
+        <20160421152916.GA30356@potion>
+Date:   Fri, 22 Apr 2016 09:40:43 +0800
+Message-ID: <CANRm+Cwh__btdC4e4t+jYqHsafL6xff6t4eukxT=EmwVLYvrMA@mail.gmail.com>
+Subject: Re: [PATCH v3] KVM: remove buggy vcpu id check on vcpu creation
+From:   Wanpeng Li <kernellwp@gmail.com>
+To:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>
+Cc:     Greg Kurz <gkurz@linux.vnet.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
+        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
+        kvm <kvm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        qemu-ppc@nongnu.org, Cornelia Huck <cornelia.huck@de.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        David Gibson <david@gibson.dropbear.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <kernellwp@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53187
+X-archive-position: 53188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: kernellwp@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,97 +74,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---IRIOLc8eTv1AOxGv
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+2016-04-21 23:29 GMT+08:00 Radim Krčmář <rkrcmar@redhat.com>:
+> 2016-04-21 13:29+0200, Greg Kurz:
+>> On Wed, 20 Apr 2016 20:29:09 +0200
+>> Radim Krčmář <rkrcmar@redhat.com> wrote:
+>>> 2016-04-20 17:44+0200, Greg Kurz:
+>>> > Commit 338c7dbadd26 ("KVM: Improve create VCPU parameter (CVE-2013-4587)")
+>>> > introduced a check to prevent potential kernel memory corruption in case
+>>> > the vcpu id is too great.
+>>> >
+>>> > Unfortunately this check assumes vcpu ids grow in sequence with a common
+>>> > difference of 1, which is wrong: archs are free to use vcpu id as they fit.
+>>> > For example, QEMU originated vcpu ids for PowerPC cpus running in boot3s_hv
+>>> > mode, can grow with a common difference of 2, 4 or 8: if KVM_MAX_VCPUS is
+>>> > 1024, guests may be limited down to 128 vcpus on POWER8.
+>>> >
+>>> > This means the check does not belong here and should be moved to some arch
+>>> > specific function: kvm_arch_vcpu_create() looks like a good candidate.
+>>> >
+>>> > ARM and s390 already have such a check.
+>>> >
+>>> > I could not spot any path in the PowerPC or common KVM code where a vcpu
+>>> > id is used as described in the above commit: I believe PowerPC can live
+>>> > without this check.
+>>>
+>>> The only problematic path I see is kvm_get_vcpu_by_id(), which returns
+>>> NULL for any id above KVM_MAX_VCPUS.
+>>
+>> Oops my bad, I started to work on a 4.4 tree and I missed this check brought
+>> by commit c896939f7cff (KVM: use heuristic for fast VCPU lookup by id).
+>>
+>> But again, I believe the check is wrong there also: the changelog just mentions
+>> this is a fastpath for the usual case where "VCPU ids match the array index"...
+>> why does the patch add a NULL return path if id >= KVM_MAX_VCPUS ?
+>
+> (The patch had to check id >= KVM_MAX_VCPUS for sanity and there could
+>  not be a VCPU with that index according to the spec, so it made a
+>  shortcut to the correct NULL result ...)
+>
+>>> Second issue is that Documentation/virtual/kvm/api.txt says
+>>>   4.7 KVM_CREATE_VCPU
+>>>   [...]
+>>>   This API adds a vcpu to a virtual machine.  The vcpu id is a small
+>>>   integer in the range [0, max_vcpus).
+>>>
+>>
+>> Yeah and I find the meaning of max_vcpus is unclear.
+>>
+>> Here it is considered as a limit for vcpu id, but if you look at the code,
+>> KVM_MAX_VCPUS is also used as a limit for the number of vcpus:
+>>
+>> virt/kvm/kvm_main.c:    if (atomic_read(&kvm->online_vcpus) == KVM_MAX_VCPUS) {
+>
+> I agree.  Naming of KVM_CAP_NR_VCPUS and KVM_CAP_MAX_VCPUS would make
+> you think that online_vcpus limit interpretation is the correct one, but
+> the code is conflicted.
+>
+>>> so we'd remove those two lines and change the API too.  The change would
+>>> be somewhat backward compatible, but doesn't PowerPC use high vcpu_id
+>>> just because KVM is lacking an API to set DT ID?
+>>
+>> This is related to a limitation when running in book3s_hv mode with cpus
+>> that support SMT (multiple HW threads): all HW threads within a core
+>> cannot be running in different guests at the same time.
+>>
+>> We solve this by using a vcpu numbering scheme as follows:
+>>
+>> vcpu_id[N] = (N * thread_per_core_guest) / threads_per_core_host + N % threads_per_core_guest
+>>
+>> where N means "the Nth vcpu presented to the guest". This allows to have groups of vcpus
+>> that can be scheduled to run on the same real core.
+>>
+>> So, in the "worst" case where we want to run a guest with 1 thread/core and the host
+>> has 8 threads/core, we will need the vcpu_id limit to be 8*KVM_MAX_VCPUS.
+>
+> I see, thanks.  Accommodating existing users seems like an acceptable
+> excuse to change the API.
+>
+>>> x86 (APIC ID) is affected by this and ARM (MP ID) probably too.
+>>>
+>>
+>> x86 is limited to KVM_MAX_VCPUS (== 255) vcpus: it won't be affected if we also
+>> patch kvm_get_vcpu_by_id() like suggested above.
+>
+> x86 vcpu_id encodes APIC ID and APIC ID encodes CPU topology by
+> reserving blocks of bits for socket/core/thread, so if core or thread
+> count isn't a power of two, then the set of valid APIC IDs is sparse,
 
-On Tue, Feb 23, 2016 at 09:51:07AM +0000, James Hogan wrote:
-> Hi Michal,
->=20
-> On Tue, Jan 19, 2016 at 03:27:24PM +0100, Arnd Bergmann wrote:
-> > On Tuesday 19 January 2016 14:22:13 James Hogan wrote:
-> > > On Tue, Jan 19, 2016 at 03:09:14PM +0100, Arnd Bergmann wrote:
-> > > > On Tuesday 19 January 2016 13:37:50 James Hogan wrote:
-> > > > > When a header file is removed from generic-y (often accompanied b=
-y the
-> > > > > addition of an arch specific header), the generated wrapper file =
-will
-> > > > > persist, and in some cases may still take precedence over the new=
- arch
-> > > > > header.
-> > > > >=20
-> > > > > For example commit f1fe2d21f4e1 ("MIPS: Add definitions for exten=
-ded
-> > > > > context") removed ucontext.h from generic-y in arch/mips/include/=
-asm/,
-> > > > > and added an arch/mips/include/uapi/asm/ucontext.h. The continued=
- use of
-> > > > > the wrapper when reusing a dirty build tree resulted in build fai=
-lures
-> > > > > in arch/mips/kernel/signal.c:
-> > > > >=20
-> > > > > arch/mips/kernel/signal.c: In function =E2=80=98sc_to_extcontext=
-=E2=80=99:
-> > > > > arch/mips/kernel/signal.c:142:12: error: =E2=80=98struct ucontext=
-=E2=80=99 has no member named =E2=80=98uc_extcontext=E2=80=99
-> > > > >   return &uc->uc_extcontext;
-> > > > >             ^
-> > > > >=20
-> > > > > Fix by detecting and removing wrapper headers in generated header
-> > > > > directories that do not correspond to a filename in generic-y, ge=
-nhdr-y,
-> > > > > or the newly introduced generated-y.
-> > > >=20
-> > > > Good idea.
-> > > >=20
-> > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > >=20
-> > > Thanks Arnd
-> > >=20
-> > > > Can you merge this through the mips tree, or do you need me to pick=
- it
-> > > > up through asm-generic?
-> > >=20
-> > > I was envisaging the kbuild tree tbh, but I don't really mind how it
-> > > gets merged. This patch depends on patch 1, which adds generated-y to
-> > > x86 so we don't delete their other generated headers, but other than
-> > > that it doesn't really have any dependencies.
-> >=20
-> > Ok, the kbuild tree works fine too, and I guess the x86 tree would
-> > also be fine if that helps avoid the dependency.
->=20
-> Were you okay to take these patches, or would you prefer they go via the
-> MIPS tree?
+             ^^^^^^^^^^^^^^^^^^^
+             ^^^^^^^
+Is this the root reason why recommand max vCPUs per vm is 160 and the
+KVM_MAX_VCPUS is 255 instead of due to perforamnce concern?
 
-I'm keen for these two patches to make their way upstream one way or
-another.
+Regards,
+Wanpeng Li
 
-Ralf: Since it affects MIPS, would you be able to take them?
-
-Cheers
-James
-
---IRIOLc8eTv1AOxGv
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJXGR92AAoJEGwLaZPeOHZ6I3AP/3QBag29Wj1XCKtCidDeCXl1
-XYSd2inkBsRh0HVyjBsNtyBJdxJWHYrAHAtqceSkvL9IcZKwuObQ3zGdOjFgA64B
-0X5KL+joj7fJL9v9coBMNSeWuIPkI4r4vFL6MQsPgJz+ZxHWDArNHQ8LF0ZEo4RR
-Hfcu2tY9opIOkpZg4hrdGfiej3DBS+QR050SkpswNTySpwJPPuPjTl+uzWz6C+2m
-HdLCpRKhR77O7ZL2XCbwyx41XfegoQjTwgWwbMlSXjKHuet//QLKs5QkQRvGIM1T
-SWkAKVl7RlXLqcKtszVt+IScbABM/gFB7rgjBda4I3ewxCTHWiEzxvbTRVLeOluG
-Nsicn1cs+D+CdhEQMiVIxKablmuRAg1i1fLPcQ0E5ZAjFbPWyUDtH9nQWOphU9Cd
-N5V49kg8lkR1ygQx56cOqw1OdGdh8RaSk5d78aM7BDKbqh6SXvJ10e1t7eXeabux
-WL/LAa+FT4c3oefHghWqJjI0+XMjJ2+A2MEM7xDXqMpebG9sraGv90X7ARF3d/Nf
-9pyYMkhU/Mx0A7Jo3LHZ/XwRZQo9WU4Cwz7Se8zPTxB13kmG67WXQWCwOkzbe1fm
-z0hGrDxargrmWyX9WTSHve2LNtwjRwttZng1eZJ/l436YEyLDcQRSia2mY4QG8y8
-j9TK/jNJOu3Mprt63W2I
-=fQxU
------END PGP SIGNATURE-----
-
---IRIOLc8eTv1AOxGv--
+> but max id is still limited by 255, so the effective maximum VCPU count
+> is lower.

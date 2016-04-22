@@ -1,70 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2016 16:50:41 +0200 (CEST)
-Received: from e06smtp12.uk.ibm.com ([195.75.94.108]:43918 "EHLO
-        e06smtp12.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27027290AbcDVOujfTtyZ convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Apr 2016 16:50:39 +0200
-Received: from localhost
-        by e06smtp12.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <gkurz@linux.vnet.ibm.com>;
-        Fri, 22 Apr 2016 15:50:34 +0100
-Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
-        by e06smtp12.uk.ibm.com (192.168.101.142) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Fri, 22 Apr 2016 15:50:32 +0100
-X-IBM-Helo: d06dlp03.portsmouth.uk.ibm.com
-X-IBM-MailFrom: gkurz@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 821441B08070
-        for <linux-mips@linux-mips.org>; Fri, 22 Apr 2016 15:51:16 +0100 (BST)
-Received: from d06av01.portsmouth.uk.ibm.com (d06av01.portsmouth.uk.ibm.com [9.149.37.212])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u3MEoVBx1376660
-        for <linux-mips@linux-mips.org>; Fri, 22 Apr 2016 14:50:31 GMT
-Received: from d06av01.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av01.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u3MEoUQa022838
-        for <linux-mips@linux-mips.org>; Fri, 22 Apr 2016 08:50:31 -0600
-Received: from smtp.lab.toulouse-stg.fr.ibm.com (srv01.lab.toulouse-stg.fr.ibm.com [9.101.4.1])
-        by d06av01.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u3MEoUqV022829;
-        Fri, 22 Apr 2016 08:50:30 -0600
-Received: from bahia.huguette.org (sig-9-83-160-41.evts.uk.ibm.com [9.83.160.41])
-        by smtp.lab.toulouse-stg.fr.ibm.com (Postfix) with ESMTP id 9EE1F2201BE;
-        Fri, 22 Apr 2016 16:50:28 +0200 (CEST)
-Date:   Fri, 22 Apr 2016 16:50:24 +0200
-From:   Greg Kurz <gkurz@linux.vnet.ibm.com>
-To:     Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
-        mingo@redhat.com, linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        David Hildenbrand <dahi@linux.vnet.ibm.com>,
-        qemu-ppc@nongnu.org, Cornelia Huck <cornelia.huck@de.ibm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v4 2/2] KVM: move vcpu id checking to archs
-Message-ID: <20160422165024.0d85d31d@bahia.huguette.org>
-In-Reply-To: <20160422134029.GE25335@potion>
-References: <146124809455.32509.15232948272580716135.stgit@bahia.huguette.org>
-        <146124811255.32509.17679765789502091772.stgit@bahia.huguette.org>
-        <20160421160018.GA31953@potion>
-        <20160421184500.6cb5fd8a@bahia.huguette.org>
-        <20160421173611.GB30356@potion>
-        <20160422112538.41b23a9d@bahia.huguette.org>
-        <20160422134029.GE25335@potion>
-Organization: IBM
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2016 17:27:04 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38906 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27027290AbcDVP1DG6Xmy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Apr 2016 17:27:03 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id 83BEBCD94285E;
+        Fri, 22 Apr 2016 16:26:53 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 22 Apr 2016 16:26:56 +0100
+Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 22 Apr 2016 16:26:56 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+CC:     <lisa.parratt@imgtec.com>, <jason@lakedaemon.net>,
+        <ralf@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <jiang.liu@linux.intel.com>, <marc.zyngier@arm.com>,
+        <linux-mips@linux-mips.org>, Qais Yousef <qsyousef@gmail.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>
+Subject: [PATCH 1/2] genirq: Make irq_destroy_ipi take a cpumask of IPIs to destroy
+Date:   Fri, 22 Apr 2016 16:26:48 +0100
+Message-ID: <1461338809-10590-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16042214-0009-0000-0000-000015B82E6E
-Return-Path: <gkurz@linux.vnet.ibm.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53204
+X-archive-position: 53205
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gkurz@linux.vnet.ibm.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,227 +47,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 22 Apr 2016 15:40:30 +0200
-Radim Krčmář <rkrcmar@redhat.com> wrote:
+Previously irq_destroy_ipi() would destroy IPIs to all CPUs that were
+configured by irq_reserve_ipi(). This change makes it possible to
+destroy just a subset of the IPIs. This may be useful to remove IPIs to
+CPUs that have been hot removed so that the IRQ numbers allocated within
+the IPI domain can be re-used.
 
-> 2016-04-22 11:25+0200, Greg Kurz:
-> > Hi Radim !
-> > 
-> > On Thu, 21 Apr 2016 19:36:11 +0200
-> > Radim Krčmář <rkrcmar@redhat.com> wrote:
-> >   
-> > > 2016-04-21 18:45+0200, Greg Kurz:  
-> > > > On Thu, 21 Apr 2016 18:00:19 +0200
-> > > > Radim Krčmář <rkrcmar@redhat.com> wrote:    
-> > > >> 2016-04-21 16:20+0200, Greg Kurz:    
-> > > >> > Commit 338c7dbadd26 ("KVM: Improve create VCPU parameter (CVE-2013-4587)")
-> > > >> > introduced a check to prevent potential kernel memory corruption in case
-> > > >> > the vcpu id is too great.
-> > > >> > 
-> > > >> > Unfortunately this check assumes vcpu ids grow in sequence with a common
-> > > >> > difference of 1, which is wrong: archs are free to use vcpu id as they fit.
-> > > >> > For example, QEMU originated vcpu ids for PowerPC cpus running in boot3s_hv
-> > > >> > mode, can grow with a common difference of 2, 4 or 8: if KVM_MAX_VCPUS is
-> > > >> > 1024, guests may be limited down to 128 vcpus on POWER8.
-> > > >> > 
-> > > >> > This means the check does not belong here and should be moved to some arch
-> > > >> > specific function: kvm_arch_vcpu_create() looks like a good candidate.
-> > > >> > 
-> > > >> > ARM and s390 already have such a check.
-> > > >> > 
-> > > >> > I could not spot any path in the PowerPC or common KVM code where a vcpu
-> > > >> > id is used as described in the above commit: I believe PowerPC can live
-> > > >> > without this check.
-> > > >> > 
-> > > >> > In the end, this patch simply moves the check to MIPS and x86. While here,
-> > > >> > we also update the documentation to dissociate vcpu ids from the maximum
-> > > >> > number of vcpus per virtual machine.
-> > > >> > 
-> > > >> > Acked-by: James Hogan <james.hogan@imgtec.com>
-> > > >> > Acked-by: Cornelia Huck <cornelia.huck@de.ibm.com>
-> > > >> > Signed-off-by: Greg Kurz <gkurz@linux.vnet.ibm.com>
-> > > >> > ---
-> > > >> > v4: - updated subject for more clarity on what the patch does
-> > > >> >     - added James's and Connie's A-b tags
-> > > >> >     - updated documentation
-> > > >> > 
-> > > >> >  Documentation/virtual/kvm/api.txt |    7 +++----
-> > > >> >  arch/mips/kvm/mips.c              |    7 ++++++-
-> > > >> >  arch/x86/kvm/x86.c                |    3 +++
-> > > >> >  virt/kvm/kvm_main.c               |    3 ---
-> > > >> >  4 files changed, 12 insertions(+), 8 deletions(-)
-> > > >> > 
-> > > >> > diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
-> > > >> > index 4d0542c5206b..486a1d783b82 100644
-> > > >> > --- a/Documentation/virtual/kvm/api.txt
-> > > >> > +++ b/Documentation/virtual/kvm/api.txt
-> > > >> > @@ -199,11 +199,10 @@ Type: vm ioctl
-> > > >> >  Parameters: vcpu id (apic id on x86)
-> > > >> >  Returns: vcpu fd on success, -1 on error
-> > > >> >  
-> > > >> > -This API adds a vcpu to a virtual machine.  The vcpu id is a small integer
-> > > >> > -in the range [0, max_vcpus).
-> > > >> > +This API adds a vcpu to a virtual machine.  The vcpu id is a positive integer.      
-> > > >> 
-> > > >> Userspace won't be able to tell if KVM_CREATE_VCPU failed because it
-> > > >> provided too high vcpu_id to an old KVM or because new KVM failed in
-> > > >> other areas.  Not a huge problem (because I expect that userspace will
-> > > >> die on both), but a new KVM_CAP would be able to disambiguate it.
-> > > >> 
-> > > >> Toggleable capability doesn't seem necessary and only PowerPC changes,
-> > > >> so the capability could be arch specific ... I think that a generic one
-> > > >> makes more sense, though.
-> > > >>    
-> > > > 
-> > > > I'm not sure userspace can disambiguate all the cases where KVM_CREATE_VCPU
-> > > > returns EINVAL already... and, FWIW, QEMU simply exits if it gets an error.    
-> > > 
-> > > Yes, userspace cannot disambiguate, but would have the option of not
-> > > doing something that is destined to fail, like with KVM_CAP_MAX_VCPU.
-> > >   
-> > 
-> > It makes sense indeed.
-> >   
-> >> > So I understand your concern but would we have a user for this ?    
-> >> 
-> >> I think so, new userspace on pre-patch KVM is the most likely one.
-> >> 
-> >> Userspace cannot tell that KVM doesn't support the extension and
-> >> behaving like on patched KVM would result in a failure with cryptic
-> >> error message, because KVM only returns EINVAL.
-> >>   
-> > 
-> > This is already the case with or without the patch... which only changes
-> > things for PowerPC userspace.  
-> 
-> I guess that the error message from QEMU should be improved then ...
+The original behaviour is restored by passing the complete mask that the
+IPI was created with.
 
-Definitely.
+There are currently no users of this function that would break from the
+API change.
 
-> The spec is quite clear that KVM is going to fail because of invalid
-> vcpu_id.
-> 
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+---
 
-Agreed.
+ include/linux/irqdomain.h |  2 +-
+ kernel/irq/ipi.c          | 18 ++++++++++++++----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
-> x86 QEMU does this when the amount of CPUs doesn't fit APIC constraints:
->   # qemu-kvm -smp 160,cores=9
->   qemu-system-x86_64: max_cpus is too large. APIC ID of last CPU is 278
-> 
-> Not perfectly understandable to the uninitiated, but it gets the point
-> across.
-> 
-> >                               And in the case of QEMU, we're already
-> > violating the spec with the way we compute vcpu ids.  
-> 
-> The numbering strategy is valid.  KVM spec never said that numbering
-> cannot be sparse/arbitrary, just that vcpu_id must not exceed MAX_VCPUS.
-> 
-
-You're right... it's just conflicting with the API when trying to run guests with
-less threads per core than the host (the situation where we get higher vcpu ids).
-
-This should probably be documented somewhere.
-
-> >> Btw. PowerPC QEMU tries vcpu_id >= KVM_MAX_VCPUS and fails, instead of
-> >> recognizing that the user wanted too much?
-> >>   
-> > 
-> > No. The error is caught in generic code and QEMU exits for all archs.
-> > 
-> > And BTW, how would QEMU guess that vcpu id is too high ? I see at
-> > least three paths that can return EINVAL...  
-> 
-> I agree, -EINVAL is the problem. :)
-> (Returning -ERANGE would have made more sense.)
-> 
-> The userspace has to guess if it tries fails, but if it was aware of the
-> actual limit, it could assume that the creation failed because of high
-> vcpu_id and report it as a user-amendable error ...
-> Userspace would better do some sanity checks beforehand instead of
-> trying and failing, though.
-> 
-
-I'm convinced. :)
-
-> >> >> Userspace also doesn't know the vcpu id limit anymore, and it might
-> >> >> care.  What do you think about returning the arch-specific limit (or the
-> >> >> highest positive integer) as int in KVM_CAP_MAX_VCPU_ID?
-> >> >>     
-> >> > 
-> >> > This is partly true: only arch agnostic code would be lost.
-> >> > 
-> >> > Moreover this is a problem for powerpc only at the moment and userspace code
-> >> > can compute the vcpu_id limit out of KVM_CAP_MAX_VCPUS and KVM_CAP_PPC_SMT.    
-> >> 
-> >> How would that work on KVM without this patch?
-> >>   
-> > 
-> > It doesn't work for PowerPC :)
-> > 
-> > KVM_CAP_MAX_VCPUS indicates we can can start, say, 1024 vcpus and
-> > KVM_CAP_PPC_SMT indicates the host has 8 threads per core.
-> > 
-> > KVM_CREATE_VCPU returns EINVAL when we start the 128th one because
-> > it has vcpu_id == 128 * 8 == 1024.
-> > 
-> > Of course we can patch QEMU to restrict the maximum number of vcpus
-> > to MAX_VCPUS / PPC_SMT for PowerPC, but it would be infortunate since
-> > KVM for PowerPC is sized to run MAX_VCPUS... :\  
-> 
-> Yeah.  If we introduced the capability, then QEMU would restrict vcpu_id
-> to MAX_VCPUS or MAX_VCPU_ID and the number of VCPUS always to MAX_VCPUS.
-> 
-
-Ok. I'll give a try.
-
-Just to be sure I haven't missed something:
-- change the spec to introduce the MAX_VCPU_ID concept
-- update all related checks in KVM
-- provide a KVM_CAP_MAX_VCPU_ID for userspace
-
-> >> > For other architectures, it is simply KVM_MAX_VCPUS.    
-> >> 
-> >> (Other architectures would not implement the capability.)
-> >>   
-> > 
-> > So this would be KVM_CAP_PPC_MAX_VCPU_ID ?  
-> 
-> No, need.  The capability could be generic, because the concept is
-> arch-neutral (and it looks like x86 will use it too).
-> 
-> Unimplemented capabilities return 0, which is why other architectures
-> don't need to implement it.  Nothing can break:  userspace on old KVM
-> will get 0 for the capability, so it's going to behave as if we didn't
-> have this patch and this patch made sure that nothing actually changed
-> for other architectures.
-> 
-> >> >                                                                      maybe later
-> >> > if we have other scenarios where vcpu ids need to cross the limit ?    
-> >> 
-> >> x86 is going to have that soon too -- vcpu_id will be able to range from
-> >> 0 to 2^32-1 (or 2^31), but MAX_CPUS related data structures probably
-> >> won't be improved to actually scale, so MAX_CPUS will remain lower.
-> >>   
-> > 
-> > Do you have some pointers to share so that we can see the broader picture ?  
-> 
-> At the moment, the most concrete one is x2APIC spec, sorry.
-> 
-> KVM currently supports only xAPIC, which has 8 bit APIC ID.
-> (The x2APIC interface that you might see is paravirtualized.)
-> 
-> vcpu_id is APIC ID on x86 and x2APIC still has sparse allocation that
-> encodes topology.  KVM is going to support standard x2APIC (when QEMU
-> supports interrupt remapping), which opens a possibility where we'd end
-> up in exactly the same situation where PowerPC is now -- architectural
-> code would handle vcpu_id bigger than MAX_CPUS, but userspace couldn't
-> make us of it, because of API limitations.
-> 
-
-Thanks for the clarification !
-
-Cheers.
-
---
-Greg
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index 2aed04396210..e1b81d35e7a3 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -348,7 +348,7 @@ int irq_domain_xlate_onetwocell(struct irq_domain *d, struct device_node *ctrlr,
+ /* IPI functions */
+ unsigned int irq_reserve_ipi(struct irq_domain *domain,
+ 			     const struct cpumask *dest);
+-void irq_destroy_ipi(unsigned int irq);
++void irq_destroy_ipi(unsigned int irq, const struct cpumask *dest);
+ 
+ /* V2 interfaces to support hierarchy IRQ domains. */
+ extern struct irq_data *irq_domain_get_irq_data(struct irq_domain *domain,
+diff --git a/kernel/irq/ipi.c b/kernel/irq/ipi.c
+index 14777af8e097..bedc995ae214 100644
+--- a/kernel/irq/ipi.c
++++ b/kernel/irq/ipi.c
+@@ -106,11 +106,12 @@ free_descs:
+ /**
+  * irq_destroy_ipi() - unreserve an IPI that was previously allocated
+  * @irq:	linux irq number to be destroyed
++ * @dest:	cpumask of cpus which should have the IPI removed
+  *
+  * Return the IPIs allocated with irq_reserve_ipi() to the system destroying
+  * all virqs associated with them.
+  */
+-void irq_destroy_ipi(unsigned int irq)
++void irq_destroy_ipi(unsigned int irq, const struct cpumask *dest)
+ {
+ 	struct irq_data *data = irq_get_irq_data(irq);
+ 	struct cpumask *ipimask = data ? irq_data_get_affinity_mask(data) : NULL;
+@@ -129,10 +130,19 @@ void irq_destroy_ipi(unsigned int irq)
+ 		return;
+ 	}
+ 
+-	if (irq_domain_is_ipi_per_cpu(domain))
+-		nr_irqs = cpumask_weight(ipimask);
+-	else
++	if (WARN_ON(!cpumask_subset(dest, ipimask)))
++		/*
++		 * Must be destroying a subset of CPUs to which this IPI
++		 * was set up to target
++		 */
++		return;
++
++	if (irq_domain_is_ipi_per_cpu(domain)) {
++		irq = irq + cpumask_first(dest) - data->common->ipi_offset;
++		nr_irqs = cpumask_weight(dest);
++	} else {
+ 		nr_irqs = 1;
++	}
+ 
+ 	irq_domain_free_irqs(irq, nr_irqs);
+ }
+-- 
+2.5.0

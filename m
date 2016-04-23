@@ -1,53 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Apr 2016 02:55:03 +0200 (CEST)
-Received: from szxga02-in.huawei.com ([119.145.14.65]:62690 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026834AbcDWAzAg0vIf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Apr 2016 02:55:00 +0200
-Received: from 172.24.1.51 (EHLO szxeml431-hub.china.huawei.com) ([172.24.1.51])
-        by szxrg02-dlp.huawei.com (MOS 4.3.7-GA FastPath queued)
-        with ESMTP id DFW17094;
-        Sat, 23 Apr 2016 08:53:39 +0800 (CST)
-Received: from localhost (10.160.19.74) by szxeml431-hub.china.huawei.com
- (10.82.67.208) with Microsoft SMTP Server id 14.3.235.1; Sat, 23 Apr 2016
- 08:53:28 +0800
-Date:   Sat, 23 Apr 2016 08:51:24 +0800
-From:   Wei Yang <richard.weiyang@huawei.com>
-To:     Greg Kurz <gkurz@linux.vnet.ibm.com>
-CC:     Wei Yang <richard.weiyang@huawei.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, <james.hogan@imgtec.com>,
-        <mingo@redhat.com>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>, <rkrcmar@redhat.com>,
-        <linux-kernel@vger.kernel.org>,
-        David Hildenbrand <dahi@linux.vnet.ibm.com>,
-        <qemu-ppc@nongnu.org>, Cornelia Huck <cornelia.huck@de.ibm.com>,
-        "Paul Mackerras" <paulus@samba.org>,
-        David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v4 2/2] KVM: move vcpu id checking to archs
-Message-ID: <20160423005124.GB1718@linux-gk3p>
-Reply-To: Wei Yang <richard.weiyang@huawei.com>
-References: <146124809455.32509.15232948272580716135.stgit@bahia.huguette.org> <146124811255.32509.17679765789502091772.stgit@bahia.huguette.org> <20160422092103.GA3851@linux-gk3p> <20160422113045.14560b66@bahia.huguette.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Apr 2016 05:48:00 +0200 (CEST)
+Received: from mail-pf0-f171.google.com ([209.85.192.171]:36520 "EHLO
+        mail-pf0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006513AbcDWDr6nCS09 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Apr 2016 05:47:58 +0200
+Received: by mail-pf0-f171.google.com with SMTP id c189so3124713pfb.3
+        for <linux-mips@linux-mips.org>; Fri, 22 Apr 2016 20:47:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=O7PAd1hOrL6Z1DpfYdDUCxDjTouW1Bw+s49eUnolFwE=;
+        b=sQGtsdinYRBT4VGphAWwDtlTygbujmnrsizotEiV6tRvkbbw7dK8tOeQSfn4zxqUEd
+         BOZarAOUYEP6VWI3gCBiJ4/QuxzqikiRTdxFVzKFt4LaNJx59TBp4znUCThtXOioA0b6
+         8HXRyeGFVtdbXvMdvcMR0rL73x0jBn0ScBLeTuqAp/UKLVJ4+1Xu3lQOUVtZ35V60Gzm
+         yHXi2CoAUofnBoAkl+v1+XSo1xGW6xIMD72zZctBXLu1WiJZ9adpwtNWMBkQVan+XL99
+         RpQRPtcYh1rvyQxC8QBwdr//FWA/Dxw5bPZ+olz2VIGOQo75saXvaIRATuBzEbDrDO0j
+         AvCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=O7PAd1hOrL6Z1DpfYdDUCxDjTouW1Bw+s49eUnolFwE=;
+        b=Io4v9UdCS/5+/Cd2eYpVxmMD5ZRtNh7a7KLsF5Nqs9if8cvTWS4resvHMr3u9PJkh5
+         LodA84DwyktognVziNyfpDTrs5DaOxtXLS8CgTdjiTD1sMXzyaZp26FH6YArm5auqbyh
+         xte7LHylJwnmfE/tjTemTUcOc5L0dc8m/DiGSr/0Eo0fobUuf3Oac1JJF3xJVijN3fsC
+         //yBBNRXsZx+P7hOYvzvT6FndCiv6Rii4GYtiBCZVGH7XmxpbVOUC6W20FKJAhzzriCa
+         PNjdZ85ApXHoP8IiCS/uaPITvsohYICOGYR7SfD+2nzUiZUBhYmpS4IG3+ddvw7Pdyas
+         FM3w==
+X-Gm-Message-State: AOPr4FXnaYkDfMh78h742w0xss4MdB6R2kj2T0DbwMvflD/1L4cD0nEjVaHRpxRZsUHW/g==
+X-Received: by 10.98.64.132 with SMTP id f4mr33712158pfd.146.1461383272594;
+        Fri, 22 Apr 2016 20:47:52 -0700 (PDT)
+Received: from localhost ([110.70.15.194])
+        by smtp.gmail.com with ESMTPSA id qb1sm12586397pac.44.2016.04.22.20.47.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 22 Apr 2016 20:47:51 -0700 (PDT)
+Date:   Sat, 23 Apr 2016 12:49:24 +0900
+From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] printk/nmi: flush NMI messages on the system panic
+Message-ID: <20160423034924.GA535@swordfish>
+References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
+ <1461239325-22779-5-git-send-email-pmladek@suse.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20160422113045.14560b66@bahia.huguette.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Originating-IP: [10.160.19.74]
-X-CFilter-Loop: Reflected
-X-Mirapoint-Virus-RAPID-Raw: score=unknown(0),
-        refid=str=0001.0A0B0204.571AC795.00D3,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0,
-        ip=0.0.0.0,
-        so=2013-06-18 04:22:30,
-        dmn=2013-03-21 17:37:32
-X-Mirapoint-Loop-Id: 351bb13eff208123c7ba5c4ea277a927
-Return-Path: <richard.weiyang@huawei.com>
+In-Reply-To: <1461239325-22779-5-git-send-email-pmladek@suse.com>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <sergey.senozhatsky.work@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53222
+X-archive-position: 53223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: richard.weiyang@huawei.com
+X-original-sender: sergey.senozhatsky.work@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,147 +82,153 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 22, 2016 at 11:30:45AM +0200, Greg Kurz wrote:
->On Fri, 22 Apr 2016 17:21:03 +0800
->Wei Yang <richard.weiyang@huawei.com> wrote:
->
->> Hi, Greg
->> 
->
->Hi Wei !
->
->> One confusion.
->> 
->> There are 5 kvm_arch_vcpu_create() while in this patch you changed 2 of them.
->> Some particular reason?
->> 
->
->Yes and the reason is given in the changelog:
->- ARM and s390 already have such a check
->- PowerPC can live without this check
->- this patch simply moves the check to MIPS and x86
->
->Does it clarify ?
->
+Hello Petr,
 
-Sure, thanks :-)
+On (04/21/16 13:48), Petr Mladek wrote:
+>  extern void printk_nmi_flush(void);
+> +extern void printk_nmi_flush_on_panic(void);
+>  #else
+>  static inline void printk_nmi_flush(void) { }
+> +static inline void printk_nmi_flush_on_panic(void) { }
+[..]
+> +void printk_nmi_flush_on_panic(void)
+> +{
+> +	/*
+> +	 * Make sure that we could access the main ring buffer.
+> +	 * Do not risk a double release when more CPUs are up.
+> +	 */
+> +	if (in_nmi() && raw_spin_is_locked(&logbuf_lock)) {
+> +		if (num_online_cpus() > 1)
+> +			return;
+> +
+> +		debug_locks_off();
+> +		raw_spin_lock_init(&logbuf_lock);
+> +	}
+> +
+> +	printk_nmi_flush();
+> +}
+[..]
+> -static DEFINE_RAW_SPINLOCK(logbuf_lock);
+> +DEFINE_RAW_SPINLOCK(logbuf_lock);
 
->Cheers.
->
->--
->Greg
->
->> On Thu, Apr 21, 2016 at 04:20:53PM +0200, Greg Kurz wrote:
->> >Commit 338c7dbadd26 ("KVM: Improve create VCPU parameter (CVE-2013-4587)")
->> >introduced a check to prevent potential kernel memory corruption in case
->> >the vcpu id is too great.
->> >
->> >Unfortunately this check assumes vcpu ids grow in sequence with a common
->> >difference of 1, which is wrong: archs are free to use vcpu id as they fit.
->> >For example, QEMU originated vcpu ids for PowerPC cpus running in boot3s_hv
->> >mode, can grow with a common difference of 2, 4 or 8: if KVM_MAX_VCPUS is
->> >1024, guests may be limited down to 128 vcpus on POWER8.
->> >
->> >This means the check does not belong here and should be moved to some arch
->> >specific function: kvm_arch_vcpu_create() looks like a good candidate.
->> >
->> >ARM and s390 already have such a check.
->> >
->> >I could not spot any path in the PowerPC or common KVM code where a vcpu
->> >id is used as described in the above commit: I believe PowerPC can live
->> >without this check.
->> >
->> >In the end, this patch simply moves the check to MIPS and x86. While here,
->> >we also update the documentation to dissociate vcpu ids from the maximum
->> >number of vcpus per virtual machine.
->> >
->> >Acked-by: James Hogan <james.hogan@imgtec.com>
->> >Acked-by: Cornelia Huck <cornelia.huck@de.ibm.com>
->> >Signed-off-by: Greg Kurz <gkurz@linux.vnet.ibm.com>
->> >---
->> >v4: - updated subject for more clarity on what the patch does
->> >    - added James's and Connie's A-b tags
->> >    - updated documentation
->> >
->> > Documentation/virtual/kvm/api.txt |    7 +++----
->> > arch/mips/kvm/mips.c              |    7 ++++++-
->> > arch/x86/kvm/x86.c                |    3 +++
->> > virt/kvm/kvm_main.c               |    3 ---
->> > 4 files changed, 12 insertions(+), 8 deletions(-)
->> >
->> >diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
->> >index 4d0542c5206b..486a1d783b82 100644
->> >--- a/Documentation/virtual/kvm/api.txt
->> >+++ b/Documentation/virtual/kvm/api.txt
->> >@@ -199,11 +199,10 @@ Type: vm ioctl
->> > Parameters: vcpu id (apic id on x86)
->> > Returns: vcpu fd on success, -1 on error
->> > 
->> >-This API adds a vcpu to a virtual machine.  The vcpu id is a small integer
->> >-in the range [0, max_vcpus).
->> >+This API adds a vcpu to a virtual machine.  The vcpu id is a positive integer.
->> > 
->> >-The recommended max_vcpus value can be retrieved using the KVM_CAP_NR_VCPUS of
->> >-the KVM_CHECK_EXTENSION ioctl() at run-time.
->> >+The recommended maximum number of vcpus (max_vcpus) can be retrieved using the
->> >+KVM_CAP_NR_VCPUS of the KVM_CHECK_EXTENSION ioctl() at run-time.
->> > The maximum possible value for max_vcpus can be retrieved using the
->> > KVM_CAP_MAX_VCPUS of the KVM_CHECK_EXTENSION ioctl() at run-time.
->> > 
->> >diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
->> >index 70ef1a43c114..0278ea146db5 100644
->> >--- a/arch/mips/kvm/mips.c
->> >+++ b/arch/mips/kvm/mips.c
->> >@@ -248,9 +248,14 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
->> > 	int err, size, offset;
->> > 	void *gebase;
->> > 	int i;
->> >+	struct kvm_vcpu *vcpu;
->> > 
->> >-	struct kvm_vcpu *vcpu = kzalloc(sizeof(struct kvm_vcpu), GFP_KERNEL);
->> >+	if (id >= KVM_MAX_VCPUS) {
->> >+		err = -EINVAL;
->> >+		goto out;
->> >+	}
->> > 
->> >+	vcpu = kzalloc(sizeof(struct kvm_vcpu), GFP_KERNEL);
->> > 	if (!vcpu) {
->> > 		err = -ENOMEM;
->> > 		goto out;
->> >diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->> >index 9b7798c7b210..7738202edcce 100644
->> >--- a/arch/x86/kvm/x86.c
->> >+++ b/arch/x86/kvm/x86.c
->> >@@ -7358,6 +7358,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm,
->> > {
->> > 	struct kvm_vcpu *vcpu;
->> > 
->> >+	if (id >= KVM_MAX_VCPUS)
->> >+		return ERR_PTR(-EINVAL);
->> >+
->> > 	if (check_tsc_unstable() && atomic_read(&kvm->online_vcpus) != 0)
->> > 		printk_once(KERN_WARNING
->> > 		"kvm: SMP vm created on host with unstable TSC; "
->> >diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
->> >index 4fd482fb9260..6b6cca3cb488 100644
->> >--- a/virt/kvm/kvm_main.c
->> >+++ b/virt/kvm/kvm_main.c
->> >@@ -2272,9 +2272,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
->> > 	int r;
->> > 	struct kvm_vcpu *vcpu;
->> > 
->> >-	if (id >= KVM_MAX_VCPUS)
->> >-		return -EINVAL;
->> >-
->> > 	vcpu = kvm_arch_vcpu_create(kvm, id);
->> > 	if (IS_ERR(vcpu))
->> > 		return PTR_ERR(vcpu);
->> >
->> >--
->> >To unsubscribe from this list: send the line "unsubscribe kvm" in
->> >the body of a message to majordomo@vger.kernel.org
->> >More majordomo info at  http://vger.kernel.org/majordomo-info.html  
->> 
+just an idea,
 
--- 
-Richard Yang\nHelp you, Help me
+how about doing it a bit differently?
+
+
+move printk_nmi_flush_on_panic() to printk.c, and place it next to
+printk_flush_on_panic() (so we will have two printk "flush-on-panic"
+functions sitting together). /* printk_nmi_flush() is in printk.h,
+so it's visible to printk anyway */
+
+it also will let us keep logbuf_lock static, it's a bit too internal
+to printk to expose it, I think.
+
+
+IOW, something like this?
+
+---
+
+ kernel/printk/internal.h |  2 --
+ kernel/printk/nmi.c      | 27 ---------------------------
+ kernel/printk/printk.c   | 29 ++++++++++++++++++++++++++++-
+ 3 files changed, 28 insertions(+), 30 deletions(-)
+
+diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
+index 7fd2838..341bedc 100644
+--- a/kernel/printk/internal.h
++++ b/kernel/printk/internal.h
+@@ -22,8 +22,6 @@ int __printf(1, 0) vprintk_default(const char *fmt, va_list args);
+ 
+ #ifdef CONFIG_PRINTK_NMI
+ 
+-extern raw_spinlock_t logbuf_lock;
+-
+ /*
+  * printk() could not take logbuf_lock in NMI context. Instead,
+  * it temporary stores the strings into a per-CPU buffer.
+diff --git a/kernel/printk/nmi.c b/kernel/printk/nmi.c
+index b69eb8a..b68a9864 100644
+--- a/kernel/printk/nmi.c
++++ b/kernel/printk/nmi.c
+@@ -204,33 +204,6 @@ void printk_nmi_flush(void)
+ 		__printk_nmi_flush(&per_cpu(nmi_print_seq, cpu).work);
+ }
+ 
+-/**
+- * printk_nmi_flush_on_panic - flush all per-cpu nmi buffers when the system
+- *	goes down.
+- *
+- * Similar to printk_nmi_flush() but it can be called even in NMI context when
+- * the system goes down. It does the best effort to get NMI messages into
+- * the main ring buffer.
+- *
+- * Note that it could try harder when there is only one CPU online.
+- */
+-void printk_nmi_flush_on_panic(void)
+-{
+-	/*
+-	 * Make sure that we could access the main ring buffer.
+-	 * Do not risk a double release when more CPUs are up.
+-	 */
+-	if (in_nmi() && raw_spin_is_locked(&logbuf_lock)) {
+-		if (num_online_cpus() > 1)
+-			return;
+-
+-		debug_locks_off();
+-		raw_spin_lock_init(&logbuf_lock);
+-	}
+-
+-	printk_nmi_flush();
+-}
+-
+ void __init printk_nmi_init(void)
+ {
+ 	int cpu;
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 0a0e789..1509baa 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -245,7 +245,7 @@ __packed __aligned(4)
+  * within the scheduler's rq lock. It must be released before calling
+  * console_unlock() or anything else that might wake up a process.
+  */
+-DEFINE_RAW_SPINLOCK(logbuf_lock);
++static DEFINE_RAW_SPINLOCK(logbuf_lock);
+ 
+ #ifdef CONFIG_PRINTK
+ DECLARE_WAIT_QUEUE_HEAD(log_wait);
+@@ -2447,6 +2447,33 @@ void console_unblank(void)
+ }
+ 
+ /**
++ * printk_nmi_flush_on_panic - flush all per-cpu nmi buffers when the system
++ *	goes down.
++ *
++ * Similar to printk_nmi_flush() but it can be called even in NMI context when
++ * the system goes down. It does the best effort to get NMI messages into
++ * the main ring buffer.
++ *
++ * Note that it could try harder when there is only one CPU online.
++ */
++void printk_nmi_flush_on_panic(void)
++{
++	/*
++	 * Make sure that we could access the main ring buffer.
++	 * Do not risk a double release when more CPUs are up.
++	 */
++	if (in_nmi() && raw_spin_is_locked(&logbuf_lock)) {
++		if (num_online_cpus() > 1)
++			return;
++
++		debug_locks_off();
++		raw_spin_lock_init(&logbuf_lock);
++	}
++
++	printk_nmi_flush();
++}
++
++/**
+  * console_flush_on_panic - flush console content on panic
+  *
+  * Immediately output all pending messages no matter what.

@@ -1,45 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Apr 2016 13:57:50 +0200 (CEST)
-Received: from www381.your-server.de ([78.46.137.84]:57556 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026868AbcDWL5rNetBN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Apr 2016 13:57:47 +0200
-Received: from [88.198.220.131] (helo=sslproxy02.your-server.de)
-        by www381.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.85_2)
-        (envelope-from <lars@metafoo.de>)
-        id 1atwBx-0005wx-LE; Sat, 23 Apr 2016 13:57:41 +0200
-Received: from [46.244.243.91] (helo=[192.168.178.38])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-SHA:256)
-        (Exim 4.84_2)
-        (envelope-from <lars@metafoo.de>)
-        id 1atwBx-0007AK-E4; Sat, 23 Apr 2016 13:57:41 +0200
-Subject: Re: [PATCH 1/3] MIPS: JZ4740: Qi LB60: Remove support for AVT2
- variant
-To:     Maarten ter Huurne <maarten@treewalker.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1461005933-24876-1-git-send-email-maarten@treewalker.org>
-Cc:     Paul Cercueil <paul@crapouillou.net>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <571B6334.3070109@metafoo.de>
-Date:   Sat, 23 Apr 2016 13:57:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Icedove/38.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Apr 2016 00:54:23 +0200 (CEST)
+Received: from mail-oi0-f67.google.com ([209.85.218.67]:34367 "EHLO
+        mail-oi0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27027356AbcDWWyVg9CaH convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 24 Apr 2016 00:54:21 +0200
+Received: by mail-oi0-f67.google.com with SMTP id b10so18800251oig.1
+        for <linux-mips@linux-mips.org>; Sat, 23 Apr 2016 15:54:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-transfer-encoding;
+        bh=O9AnsMruC7CL6s6Po3ZnrhxTlgk3QBPH2DArvlUIhbI=;
+        b=i6CUw1Koe0vI6lBHRAJDGx/gqLXv7fEFYf7Oua64J5c0xuest+KNGTH8z1yuNYVDva
+         E8S1d8gCa6LsRVSuw0z25RSUc82KIyydsYdT+1SgWUojgBhDOjBCTt/V5NIHMtkUsSDL
+         aME8dxDbfpjxG8D4vlDApNSPj2Runm7txRAaaVIcPcgqSr9B48pzypIb3nk0w7Mb2FK9
+         Zm4D66m49jhP5aGrDHFTI4pXy2xxieMRYpYGiQDGJP9tNW+FvqmNnWufkX8xdXYJQVyR
+         0kPjv3CO8onJSxYlIn3LYncGkgIyrTHiTHCRm88Z5lj/hpMCJB+dKUPrsH/bF9AQ5bG3
+         UW8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-transfer-encoding;
+        bh=O9AnsMruC7CL6s6Po3ZnrhxTlgk3QBPH2DArvlUIhbI=;
+        b=mJpcgK5+NrVCV0CdOE4yUrnrPwLstSBUpDd9C9kVdH5O1pFjfIAgfJDdOxIeWJYX17
+         tmutSJ58OMnf1FAtNFvhryMMkBSHBxsQN/wtTVNQRbdN2GJKIcD8QYxetntonnyqpIPt
+         Ti/femF4uV/1nCMRWLTDp69ruLCYuZfChvP8tTVooxNVXWLfN3o+LYJ4rCx1tR4AWMxP
+         5JZj7F6LYOHCL2Z1tT7nIXdHr/rocyzg2sDivh4gK+c/tMz7ZhAcu4JzGrShvEDxZgIu
+         ge1v8h2JMkO8YUaTGVEFSbns3nqee4Oc9QzPETOci3wSrVTbZ52DOcDlDouabyK6xl4N
+         Cq9g==
+X-Gm-Message-State: AOPr4FXUAxOA5f3ClNPfOp9ZbUH3FQT2i+ypI9y6lB0/HBvgw55bOLt5In8wtn3VCUgQYpu5qy/BhZrlhLIdig==
 MIME-Version: 1.0
-In-Reply-To: <1461005933-24876-1-git-send-email-maarten@treewalker.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.99/21503/Sat Apr 23 04:36:36 2016)
-Return-Path: <lars@metafoo.de>
+X-Received: by 10.157.34.14 with SMTP id o14mr12836995ota.63.1461452055689;
+ Sat, 23 Apr 2016 15:54:15 -0700 (PDT)
+Received: by 10.157.44.130 with HTTP; Sat, 23 Apr 2016 15:54:15 -0700 (PDT)
+In-Reply-To: <20160422130705.GD7202@potion>
+References: <146116689259.20666.15860134511726195550.stgit@bahia.huguette.org>
+        <20160420182909.GB4044@potion>
+        <20160421132958.0e9292d5@bahia.huguette.org>
+        <20160421152916.GA30356@potion>
+        <CANRm+Cwh__btdC4e4t+jYqHsafL6xff6t4eukxT=EmwVLYvrMA@mail.gmail.com>
+        <20160422130705.GD7202@potion>
+Date:   Sun, 24 Apr 2016 06:54:15 +0800
+Message-ID: <CANRm+CxBUps+pKARfXse-s09Qrsc6pERNjBgVOjUBVCV+B2XPw@mail.gmail.com>
+Subject: Re: [PATCH v3] KVM: remove buggy vcpu id check on vcpu creation
+From:   Wanpeng Li <kernellwp@gmail.com>
+To:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>
+Cc:     Greg Kurz <gkurz@linux.vnet.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
+        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
+        kvm <kvm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        qemu-ppc@nongnu.org, Cornelia Huck <cornelia.huck@de.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        David Gibson <david@gibson.dropbear.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <kernellwp@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53224
+X-archive-position: 53225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: kernellwp@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,12 +76,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/18/2016 08:58 PM, Maarten ter Huurne wrote:
-> AVT2 was a prototype board of which about 5 were made, none of which
-> are in use anymore.
-> 
-> Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+2016-04-22 21:07 GMT+08:00 Radim Krčmář <rkrcmar@redhat.com>:
+> 2016-04-22 09:40+0800, Wanpeng Li:
+>> 2016-04-21 23:29 GMT+08:00 Radim Krčmář <rkrcmar@redhat.com>:
+>>> x86 vcpu_id encodes APIC ID and APIC ID encodes CPU topology by
+>>> reserving blocks of bits for socket/core/thread, so if core or thread
+>>> count isn't a power of two, then the set of valid APIC IDs is sparse,
+>>
+>>              ^^^^^^^^^^^^^^^^^^^
+>>              ^^^^^^^
+>> Is this the root reason why recommand max vCPUs per vm is 160 and the
+>> KVM_MAX_VCPUS is 255 instead of due to perforamnce concern?
+>
+> No, the recommended amout of VCPUs is 160 because I didn't bump it after
+> PLE stopped killing big guests. :/
+>
+> You can get full 255 VCPU guest with a proper configuration, e.g.
+> "-smp 255" or "-smp 255,cores=8" and the only problem is scalability,
+> but I don't know of anything that doesn't scale to that point.
+>
+> (Scaling up to 2^32 is harder, because you don't want O(N) search, nor
+>  full allocation on smaller guests.  Neither is a big problem now.)
 
-Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+I see, thanks Radim.
 
-Thanks.
+Regards,
+Wanpeng Li

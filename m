@@ -1,65 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Apr 2016 09:45:16 +0200 (CEST)
-Received: from e06smtp13.uk.ibm.com ([195.75.94.109]:55233 "EHLO
-        e06smtp13.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27027260AbcDZHpLQ4DhV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Apr 2016 09:45:11 +0200
-Received: from localhost
-        by e06smtp13.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <cornelia.huck@de.ibm.com>;
-        Tue, 26 Apr 2016 08:45:04 +0100
-Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
-        by e06smtp13.uk.ibm.com (192.168.101.143) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 26 Apr 2016 08:45:02 +0100
-X-IBM-Helo: d06dlp03.portsmouth.uk.ibm.com
-X-IBM-MailFrom: cornelia.huck@de.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id AEA751B08070
-        for <linux-mips@linux-mips.org>; Tue, 26 Apr 2016 08:45:48 +0100 (BST)
-Received: from d06av10.portsmouth.uk.ibm.com (d06av10.portsmouth.uk.ibm.com [9.149.37.251])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u3Q7j17o5964230
-        for <linux-mips@linux-mips.org>; Tue, 26 Apr 2016 07:45:01 GMT
-Received: from d06av10.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av10.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u3Q6j3FJ022661
-        for <linux-mips@linux-mips.org>; Tue, 26 Apr 2016 00:45:03 -0600
-Received: from gondolin (dyn-9-152-224-197.boeblingen.de.ibm.com [9.152.224.197])
-        by d06av10.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u3Q6j2Z9022589;
-        Tue, 26 Apr 2016 00:45:02 -0600
-Date:   Tue, 26 Apr 2016 09:44:58 +0200
-From:   Cornelia Huck <cornelia.huck@de.ibm.com>
-To:     Greg Kurz <gkurz@linux.vnet.ibm.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
-        mingo@redhat.com, linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        rkrcmar@redhat.com, linux-kernel@vger.kernel.org,
-        David Hildenbrand <dahi@linux.vnet.ibm.com>,
-        qemu-ppc@nongnu.org, Paul Mackerras <paulus@samba.org>,
-        David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v4 1/2] KVM: remove NULL return path for vcpu ids >=
- KVM_MAX_VCPUS
-Message-ID: <20160426094458.03685ae5.cornelia.huck@de.ibm.com>
-In-Reply-To: <146124810201.32509.2946887043729554992.stgit@bahia.huguette.org>
-References: <146124809455.32509.15232948272580716135.stgit@bahia.huguette.org>
-        <146124810201.32509.2946887043729554992.stgit@bahia.huguette.org>
-Organization: IBM Deutschland Research & Development GmbH Vorsitzende des
- Aufsichtsrats: Martina Koederitz =?UTF-8?B?R2VzY2jDpGZ0c2bDvGhydW5nOg==?=
- Dirk Wittkopp Sitz der Gesellschaft: =?UTF-8?B?QsO2Ymxpbmdlbg==?=
- Registergericht: Amtsgericht Stuttgart, HRB 243294
-X-Mailer: Claws Mail 3.8.0 (GTK+ 2.24.10; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16042607-0013-0000-0000-00000EEB30A1
-Return-Path: <cornelia.huck@de.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Apr 2016 16:22:04 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:48207 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27008467AbcDZOWCv5Y0O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 26 Apr 2016 16:22:02 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 98E23ACCA;
+        Tue, 26 Apr 2016 14:21:58 +0000 (UTC)
+Date:   Tue, 26 Apr 2016 16:21:57 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] printk/nmi: flush NMI messages on the system panic
+Message-ID: <20160426142157.GK2749@pathway.suse.cz>
+References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
+ <1461239325-22779-5-git-send-email-pmladek@suse.com>
+ <20160423034924.GA535@swordfish>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160423034924.GA535@swordfish>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53231
+X-archive-position: 53232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cornelia.huck@de.ibm.com
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,20 +55,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 21 Apr 2016 16:15:05 +0200
-Greg Kurz <gkurz@linux.vnet.ibm.com> wrote:
+On Sat 2016-04-23 12:49:24, Sergey Senozhatsky wrote:
+> Hello Petr,
+> 
+> On (04/21/16 13:48), Petr Mladek wrote:
+> >  extern void printk_nmi_flush(void);
+> > +extern void printk_nmi_flush_on_panic(void);
+> >  #else
+> >  static inline void printk_nmi_flush(void) { }
+> > +static inline void printk_nmi_flush_on_panic(void) { }
+> [..]
+> > +void printk_nmi_flush_on_panic(void)
+> > +{
+> > +	/*
+> > +	 * Make sure that we could access the main ring buffer.
+> > +	 * Do not risk a double release when more CPUs are up.
+> > +	 */
+> > +	if (in_nmi() && raw_spin_is_locked(&logbuf_lock)) {
+> > +		if (num_online_cpus() > 1)
+> > +			return;
+> > +
+> > +		debug_locks_off();
+> > +		raw_spin_lock_init(&logbuf_lock);
+> > +	}
+> > +
+> > +	printk_nmi_flush();
+> > +}
+> [..]
+> > -static DEFINE_RAW_SPINLOCK(logbuf_lock);
+> > +DEFINE_RAW_SPINLOCK(logbuf_lock);
+> 
+> just an idea,
+> 
+> how about doing it a bit differently?
+> 
+> 
+> move printk_nmi_flush_on_panic() to printk.c, and place it next to
+> printk_flush_on_panic() (so we will have two printk "flush-on-panic"
+> functions sitting together). /* printk_nmi_flush() is in printk.h,
+> so it's visible to printk anyway */
+> 
+> it also will let us keep logbuf_lock static, it's a bit too internal
+> to printk to expose it, I think.
+> 
+> IOW, something like this?
 
-> Commit c896939f7cff ("KVM: use heuristic for fast VCPU lookup by id") added
-> a return path that prevents vcpu ids to exceed KVM_MAX_VCPUS. This is a
-> problem for powerpc where vcpu ids can grow up to 8*KVM_MAX_VCPUS.
-> 
-> This patch simply reverses the logic so that we only try fast path if the
-> vcpu id can be tried as an index in kvm->vcpus[]. The slow path is not
-> affected by the change.
-> 
-> Signed-off-by: Greg Kurz <gkurz@linux.vnet.ibm.com>
+It is rather cosmetic change. I 
+
 > ---
->  include/linux/kvm_host.h |    7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+>  kernel/printk/internal.h |  2 --
+>  kernel/printk/nmi.c      | 27 ---------------------------
+>  kernel/printk/printk.c   | 29 ++++++++++++++++++++++++++++-
+>  3 files changed, 28 insertions(+), 30 deletions(-)
+> 
+> diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
+> index 7fd2838..341bedc 100644
+> --- a/kernel/printk/internal.h
+> +++ b/kernel/printk/internal.h
+> @@ -22,8 +22,6 @@ int __printf(1, 0) vprintk_default(const char *fmt, va_list args);
+>  
+>  #ifdef CONFIG_PRINTK_NMI
+>  
+> -extern raw_spinlock_t logbuf_lock;
 
-Reviewed-by: Cornelia Huck <cornelia.huck@de.ibm.com>
+Well, it was exposed only in the internal.h header file. I consider
+this rather a cosmetic change and do not have strong opinion about it. :-)
+
+Anyway, thanks a lot for review.
+
+Best Regards,
+Petr

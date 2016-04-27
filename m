@@ -1,46 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Apr 2016 02:35:31 +0200 (CEST)
-Received: from mail-pa0-f43.google.com ([209.85.220.43]:36816 "EHLO
-        mail-pa0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027146AbcD0Af1XMEF8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Apr 2016 02:35:27 +0200
-Received: by mail-pa0-f43.google.com with SMTP id bt5so12579646pac.3
-        for <linux-mips@linux-mips.org>; Tue, 26 Apr 2016 17:35:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=kAGm62OqMRH6+lOgkOMN/RdwsYRuuG71l3LG8zNekLU=;
-        b=BsX1ELScwMAxhyo8nBnXashvP8O85df6CzjZox5cTQaPjgcsRoZYIga8bS9bDFpqWo
-         FijRZwYk1a9Ur6KXE90L/VVZCqhJNHuDC7OTnVQXs6YVGYChLV8RtjI/z7mDRtD2G6y3
-         78WLQ0/KfoQ4UsAMP8iJQB4sAeW7bFPnyE8XvJtB7QUCbc6tUtuA/7EwzsGY6DeHvGw3
-         vOH4oF3iY4avfaneKo1RZcwIb+A00eTPlCnzfRA7ku3vYFjWBmk5jpPjneYaieTJ9289
-         gPgSiX8H9T7GNF/qFwaS8GnHNkGFnXwpWNjwSuEg5Uy8gnPfH/CPjkpWZjlKMnaUWtMq
-         uTrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=kAGm62OqMRH6+lOgkOMN/RdwsYRuuG71l3LG8zNekLU=;
-        b=UTQOs+jxKtBD5QeG4diPk4u4JU2lRT8DJyhXZ3zutN+K1mZokLR8SeHUhv+bY+uuY/
-         mmEY/WlB/pKrH0hUwXLXnF0Y3eRusdvh2VPD2KzQEDJQQp/hJ61drbCctmMxgUMi9JWm
-         HjwNljKfrcBUFJpKtH/JLcQe4S38T6qvFSQMPDEgfEMwfpCleuaQy2EGx6Dpk4M1sSzz
-         ySD1dmlScHLPfBSFyvDtErBRzzMstOvW+0AJaawmkpP3qZzew02Q5R+/Jet/0J0LlGBP
-         aTE/lHyireABWpyVlZRABKZAfZl4UFy7zJDvrNAkpcEYaxbEWCtEnFpVT/3gWwC6Qj0e
-         psNw==
-X-Gm-Message-State: AOPr4FW1KjH5i2jMZ3C5BKe6bAOjJw8P2DcvIWxgaMEgPTTEiGgiy8x1uBnzi4Vj5t0w0Q==
-X-Received: by 10.66.218.161 with SMTP id ph1mr7650398pac.83.1461717321615;
-        Tue, 26 Apr 2016 17:35:21 -0700 (PDT)
-Received: from localhost ([110.70.50.108])
-        by smtp.gmail.com with ESMTPSA id m184sm1191026pfb.22.2016.04.26.17.35.19
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 26 Apr 2016 17:35:20 -0700 (PDT)
-Date:   Wed, 27 Apr 2016 09:36:54 +0900
-From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Apr 2016 11:33:58 +0200 (CEST)
+Received: from pandora.arm.linux.org.uk ([78.32.30.218]:45848 "EHLO
+        pandora.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026913AbcD0Jdx19apy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Apr 2016 11:33:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=pandora-2014;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=n5xYZzuXq+X1irTOoe3iJT+oNWE5n9tRO5zBZRb9B0Y=;
+        b=ktWCkMlPPNY6WOuJm6m3VnvPtT3dthkRtKywBxatoRNf2KYWSZ5XkYHSuwPeGoWG4MZeDkhvxyAByPNwhiAOs/rlMILHuOzfxmUBL5Cogoge7bJn7q9kYP7LeGEAWxj9qkSXy5YF8PnZ9G5kn4q8YVY8G9JEFQoq5RmzAkEwYcA=;
+Received: from n2100.arm.linux.org.uk ([2001:4d48:ad52:3201:214:fdff:fe10:4f86]:35882)
+        by pandora.arm.linux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1avLoz-0003nz-TX; Wed, 27 Apr 2016 10:31:50 +0100
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1avLow-0000Wn-A5; Wed, 27 Apr 2016 10:31:46 +0100
+Date:   Wed, 27 Apr 2016 10:31:45 +0100
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
 To:     Petr Mladek <pmladek@suse.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -51,24 +30,30 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         adi-buildroot-devel@lists.sourceforge.net,
         linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] Cleaning printk stuff in NMI context
-Message-ID: <20160427003654.GB4782@swordfish>
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Jan Kara <jack@suse.cz>, Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        David Miller <davem@davemloft.net>
+Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
+ NMI
+Message-ID: <20160427093145.GJ19428@n2100.arm.linux.org.uk>
 References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
+ <1461239325-22779-2-git-send-email-pmladek@suse.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1461239325-22779-1-git-send-email-pmladek@suse.com>
-User-Agent: Mutt/1.6.0 (2016-04-01)
-Return-Path: <sergey.senozhatsky.work@gmail.com>
+In-Reply-To: <1461239325-22779-2-git-send-email-pmladek@suse.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53234
+X-archive-position: 53235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergey.senozhatsky.work@gmail.com
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,13 +66,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On (04/21/16 13:48), Petr Mladek wrote:
-> v5 adds changes suggested by Sergey Senozhatsky. It should not longer
-> conflict with his async printk patchset.
+On Thu, Apr 21, 2016 at 01:48:42PM +0200, Petr Mladek wrote:
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index cdfa6c2b7626..259543ec6dc9 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -66,6 +66,7 @@ config ARM
+>  	select HAVE_KRETPROBES if (HAVE_KPROBES)
+>  	select HAVE_MEMBLOCK
+>  	select HAVE_MOD_ARCH_SPECIFIC
+> +	select HAVE_NMI
+>  	select HAVE_OPROFILE if (HAVE_PERF_EVENTS)
+>  	select HAVE_OPTPROBES if !THUMB2_KERNEL
+>  	select HAVE_PERF_EVENTS
+> diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
+> index baee70267f29..df90bc59bfce 100644
+> --- a/arch/arm/kernel/smp.c
+> +++ b/arch/arm/kernel/smp.c
+> @@ -644,9 +644,11 @@ void handle_IPI(int ipinr, struct pt_regs *regs)
+>  		break;
+>  
+>  	case IPI_CPU_BACKTRACE:
+> +		printk_nmi_enter();
+>  		irq_enter();
+>  		nmi_cpu_backtrace(regs);
+>  		irq_exit();
+> +		printk_nmi_exit();
+>  		break;
+>  
+>  	default:
 
-passes my tests. (apart from that cosmetic-nano-nit) the series
-looks good to me
+For the above,
 
-Reviewed-by: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
 
-	-ss
+-- 
+RMK's Patch system: http://www.arm.linux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
+according to speedtest.net.

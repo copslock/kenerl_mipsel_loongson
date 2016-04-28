@@ -1,38 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2016 21:16:01 +0200 (CEST)
-Received: from ns.horizon.com ([71.41.210.147]:45836 "HELO ns.horizon.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S27027746AbcD1TP7DfAtf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 28 Apr 2016 21:15:59 +0200
-Received: (qmail 17439 invoked by uid 1000); 28 Apr 2016 15:15:51 -0400
-Date:   28 Apr 2016 15:15:51 -0400
-Message-ID: <20160428191551.17438.qmail@ns.horizon.com>
-From:   "George Spelvin" <linux@horizon.com>
-To:     dalias@libc.org, geert@linux-m68k.org
-Subject: Re: [patch V3] lib: GCD: add binary GCD algorithm
-Cc:     akpm@linux-foundation.org, davem@davemloft.net, deller@gmx.de,
-        ink@jurassic.park.msu.ru, james.hogan@imgtec.com,
-        jejb@parisc-linux.org, jonas@southpole.se, lennox.wu@gmail.com,
-        lftan@altera.com, linux-alpha@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2016 21:54:18 +0200 (CEST)
+Received: from asavdk4.altibox.net ([109.247.116.15]:38007 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27027713AbcD1TyQnESmL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Apr 2016 21:54:16 +0200
+Received: from ravnborg.org (unknown [188.228.89.252])
+        (using TLSv1.2 with cipher AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 80A2A801AB;
+        Thu, 28 Apr 2016 21:54:07 +0200 (CEST)
+Date:   Thu, 28 Apr 2016 21:54:06 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     George Spelvin <linux@horizon.com>
+Cc:     akpm@linux-foundation.org, peterz@infradead.org,
+        zengzhaoxiu@163.com, dalias@libc.org, davem@davemloft.net,
+        deller@gmx.de, geert@linux-m68k.org, ink@jurassic.park.msu.ru,
+        james.hogan@imgtec.com, jejb@parisc-linux.org, jonas@southpole.se,
+        lennox.wu@gmail.com, lftan@altera.com, linux-alpha@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
         linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
         linux-sh@vger.kernel.org, linux@arm.linux.org.uk,
-        linux@horizon.com, linux@lists.openrisc.net, liqin.linux@gmail.com,
-        mattst88@gmail.com, monstr@monstr.eu,
-        nios2-dev@lists.rocketboards.org, peterz@infradead.org,
-        ralf@linux-mips.org, rth@twiddle.net, sparclinux@vger.kernel.org,
+        liqin.linux@gmail.com, mattst88@gmail.com, monstr@monstr.eu,
+        nios2-dev@lists.rocketboards.org, ralf@linux-mips.org,
+        rth@twiddle.net, sparclinux@vger.kernel.org,
         uclinux-h8-devel@lists.sourceforge.jp, ysato@users.sourceforge.jp,
-        zengzhaoxiu@163.com, zhaoxiu.zeng@gmail.com
-In-Reply-To: <20160428175843.GZ21636@brightrain.aerifal.cx>
-Return-Path: <linux@horizon.com>
+        zhaoxiu.zeng@gmail.com
+Subject: Re: [patch V3] lib: GCD: add binary GCD algorithm
+Message-ID: <20160428195326.GB29802@ravnborg.org>
+References: <1461843824-19853-1-git-send-email-zengzhaoxiu@163.com>
+ <20160428164856.10120.qmail@ns.horizon.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160428164856.10120.qmail@ns.horizon.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.1 cv=Fo6lhzfq c=1 sm=1 tr=0
+        a=Ij76tQDYWdb01v2+RnYW5w==:117 a=Ij76tQDYWdb01v2+RnYW5w==:17
+        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=kj9zAlcOel0A:10
+        a=qc9dTJifL27puRRyOeAA:9 a=CjuIK1q_8ugA:10
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53252
+X-archive-position: 53253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@horizon.com
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,53 +60,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> How does a CPU lack an efficient ffs/ctz anyway? There are all sorts
-> of ways to implement it without a native insn, some of which are
-> almost or just as fast as the native insn on cpus that have the
-> latter. On anything with a fast multiply, the de Bruijn sequence
-> approach is near-optimal, and otherwise one of the binary-search type
-> approaches (possibly branchless) can be used. If the compiler doesn't
-> generate an appropriate one for __builtin_ctz, that's arguably a
-> compiler bug.
+> __ffs on the available architectures:
+> 	Alpha: sometimes (CONFIG_ALPHA_EV6, CONFIG_ALPHA_EV67)
+> 	ARC: sometimes (!CONFIG_ISA_ARCOMPACT)
+> 	ARM: sometimes (V5+)
+> 	ARM64: NO, could be written using RBIT and CLZ
+> 	AVR: yes
+> 	Blackfin: NO, could be written using hweight()
+> 	C6x: yes
+> 	CRIS: NO
+> 	FR-V: yes
+> 	H8300: NO
+> 	Hexagon: yes
+> 	IA64: yes
+> 	M32R: NO
+> 	M68k: sometimes
+> 	MetaG: NO
+> 	Microblaze: NO
+> 	MIPS: sometimes
+> 	MN10300: yes
+> 	OpenRISC: NO
+> 	PA-RISC: NO?  Interesting code, but I think it's a net loss.
+> 	PowerPC: yes
+> 	S390: sometimes (CONFIG_HAVE_MARCH_Z9_109_FEATURES)
+> 	Score: NO
+> 	SH: NO
+> 	SPARC: NO
+SPARC: sparc64: YES, sparc32: NO
+Patch needs to be updated to refelct this.
 
-What's wanted here is something faster than any of those.
-Yes, there's a simple constant-time branch-free implementation:
-
-unsigned inline __attribute__((const))
-hweight32(uint32_t x)
-{
-	x -= (x >> 1) & 0x55555555;
-	x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
-	x += x >> 4;
-	x &= 0x0f0f0f0f;
-	x += x >> 8;
-	x += x >> 16;
-	return x & 63;
-}
-
-unsigned inline __attribute__((const))
-__ffs32(uint32_t x)
-{
-	return hweight(~x & (x-1));
-}
-
-but if you work it through, that's about 19 instructions; a few more on
-platforms without 32-bit immediates.  The shift itself makes an even 20,
-and there are a lot of sequential dependencies (I count a 17-op chain
-including the shift) limiting execution time.
-
-The de Bruijn hack reduces the length but adds a memory access for
-the table lookup.  (http://supertech.csail.mit.edu/papers/debruijn.pdf)
-
-In the GCD code, the number to normalize is basically random, so the
-normalization loop shifts an average of 1 bit.  One bit half the time,
-a second bit 1/4 of the time, etc.
-
-(The posted code in the FAST_FFS case omits one guaranteed shift at the
-end of the loop because the normalization code is constant-time.)
-
-So "fast __ffs" basically means faster than *one* iteration of
-"while (!(x & 1)) x >>= 1;".
-
-In this case "fast" means cheaper than *one* unpredictable branch, which
-is a very small handful of instructions.
+	Sam

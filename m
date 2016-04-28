@@ -1,53 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2016 18:36:54 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:19531 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27027451AbcD1Qgwg0Wv8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Apr 2016 18:36:52 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 27B3E41F8E9D;
-        Thu, 28 Apr 2016 17:36:44 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 28 Apr 2016 17:36:44 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 28 Apr 2016 17:36:44 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 54220BF326861;
-        Thu, 28 Apr 2016 17:36:40 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 28 Apr 2016 17:36:43 +0100
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 28 Apr
- 2016 17:36:43 +0100
-Date:   Thu, 28 Apr 2016 17:36:43 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Maciej W. Rozycki" <macro@imgtec.com>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 3/4] MIPS: malta-time: Don't use PIT timer for cevt/csrc
-Message-ID: <20160428163643.GD2467@jhogan-linux.le.imgtec.org>
-References: <1461345557-2763-1-git-send-email-james.hogan@imgtec.com>
- <1461345557-2763-4-git-send-email-james.hogan@imgtec.com>
- <alpine.DEB.2.00.1604221951290.21846@tp.orcam.me.uk>
- <20160422192312.GM7859@jhogan-linux.le.imgtec.org>
- <20160422192906.GO24051@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="TybLhxa8M7aNoW+V"
-Content-Disposition: inline
-In-Reply-To: <20160422192906.GO24051@linux-mips.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: ebfc6934
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2016 19:11:05 +0200 (CEST)
+Received: from mail-qg0-f50.google.com ([209.85.192.50]:35409 "EHLO
+        mail-qg0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27027719AbcD1RLEJYJo8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Apr 2016 19:11:04 +0200
+Received: by mail-qg0-f50.google.com with SMTP id f74so32459792qge.2;
+        Thu, 28 Apr 2016 10:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=Fk9LM4LBIBfNYkQkgWTgZE0g39BgDi4WAfmUj9hduZA=;
+        b=djdGnM0GYTkCWBNhXPYmGYRnOdgTwy5Lvu7otvdHbFkMVj1NwveNdaag97Z+JLbL6g
+         l82rcJITZ3e9YsA3C4a22Me0Exou6NlMaG87V3nVAskd5dyafCbQiW2Syb7mmqZMAR/8
+         a2ZZ9gKTeDtlC9/lfv51BpxH4Yp44hmxdEjE1gVNNFIfWW+y+ift4zdLvmWNnF3R/SNH
+         uqYTPVKnX5J6Tfp4vIlZSth+lC49etLNr8ZwHS/+ZozCAPoWeEihKsn48131oj/E0nxq
+         2phSdVqvgMO/cUujahpMcvbXdpcu3+DLHwhrpduGbk5uR5yO1e7E+MnoVQaP6pJRzAuJ
+         yreQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=Fk9LM4LBIBfNYkQkgWTgZE0g39BgDi4WAfmUj9hduZA=;
+        b=VuLnrsMUhp2CFXsNgFTdd/pcxBhQee6xBkJlH2aZ2/KxUl9uuw8zyLuOpfERa0GKzM
+         x6QP3a1/oMnL1SLQVCws+dizBRDbfIBn7qFjG9+W7QIuOmHQZNH/Ze83jsYvpsCBueEh
+         8q8eKz65ocATZxb+HCrIOkQZhDnBALIsXMoXTyu37P1NX80EjnErd+L7Qb0XzPwMyZ7M
+         XqbJ86I93aR0x7YLfaOETX6OXcw8gBwX5yoPh+Jxml1EWO4v3Vj6jgztM+Lp6KswfpYc
+         VdSust17viWe/4ILlhpTrwk060w3h8mgb25JxLxbN/6BXeFvbmSukeyNe+1AX2tcECwa
+         AwJA==
+X-Gm-Message-State: AOPr4FX/lgl41T6Bh/qJfZtYYRRS8gQNU6PIVHQI+xYXNLvFFd3k78YXLQ/14LfQvv6tVw==
+X-Received: by 10.140.108.116 with SMTP id i107mr14644949qgf.36.1461863458244;
+        Thu, 28 Apr 2016 10:10:58 -0700 (PDT)
+Received: from [192.168.1.103] (c-73-180-171-104.hsd1.md.comcast.net. [73.180.171.104])
+        by smtp.gmail.com with ESMTPSA id 144sm3095375qhz.14.2016.04.28.10.10.53
+        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 28 Apr 2016 10:10:56 -0700 (PDT)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 6.6 \(1510\))
+Subject: Re: [patch V3] lib: GCD: add binary GCD algorithm
+From:   Josh Juran <jjuran@gmail.com>
+In-Reply-To: <1461843824-19853-1-git-send-email-zengzhaoxiu@163.com>
+Date:   Thu, 28 Apr 2016 13:10:52 -0400
+Cc:     akpm@linux-foundation.org, linux@horizon.com, peterz@infradead.org,
+        Zhaoxiu Zeng <zhaoxiu.zeng@gmail.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Chen Liqin <liqin.linux@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>, Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, nios2-dev@lists.rocketboards.org,
+        linux@lists.openrisc.net, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <6FAE0D2C-A593-488B-AE26-E462AF372D8E@gmail.com>
+References: <1461843824-19853-1-git-send-email-zengzhaoxiu@163.com>
+To:     zengzhaoxiu@163.com
+X-Mailer: Apple Mail (2.1510)
+Return-Path: <jjuran@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53245
+X-archive-position: 53246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: jjuran@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,60 +91,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---TybLhxa8M7aNoW+V
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Apr 28, 2016, at 7:43 AM, zengzhaoxiu@163.com wrote:
 
-On Fri, Apr 22, 2016 at 09:29:07PM +0200, Ralf Baechle wrote:
-> On Fri, Apr 22, 2016 at 08:23:12PM +0100, James Hogan wrote:
->=20
-> > >  Not everyone uses virtualisation, so it's a functional regression fo=
-r=20
-> > > them.  Can't you lower the priority for the timer instead so that it =
-is=20
-> > > not selected by default, just as it's done with other platforms provi=
-ding=20
-> > > a choice of timers?
-> >=20
-> > I'll look into that. Looking back at my IRC logs I suspect I meant to
-> > check why the PIT was taking priority before submitting upstream, but
-> > forgot.
->=20
-> The PIT already has a very low rating and should only be used if everythi=
-ng
-> else fails.  Clock scaling for example would make the cycle counter
-> unusable, there might be no GIC available etc.  Otoh with SMP the PIT is
-> only usable as a clock source but not clock event device.
+> + * This implements the binary GCD algorithm. (Often attributed to Stein,
+> + * but as Knuth has noted, appears a first-century Chinese math text.)
 
-I can't even reproduce the problem any longer. Even with the PIT drivers
-loaded and a message in the log about PIT clocksource it doesn't seem to
-be used, so we can just drop this one anyway. I've marked this patch as
-rejected in patchwork. Sorry for the noise.
+Should this be "appears in a"?
 
-Thanks
-James
-
---TybLhxa8M7aNoW+V
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJXIjwbAAoJEGwLaZPeOHZ6WYQP/3twJUaDi0YbVzaFxfWqOAGI
-EAuIU+Js0pi0XibTh74riAInmXPU7W7L/h6hZsDXIp/zLZ8WphPilAs39A2qy4cO
-AhJvxbI4MXt598BVlOjNPIdCl9vjndrl3/BclZlsDT3bWiPKvwevvs9BNQzljp+J
-0T+3c9GDSTuymzfUTS49faToKlkvwWSVcbgqD0ltkvtve1W59UCGX48qXjrEeJvQ
-CZ4wXPIxjbyvuKbLCgFTcgfU7R2JqA7e/6GFn88a3rniNSGiG6H4crAFMpX/CYj6
-a1TCchOVxQ2KjJLX3KR9BlcwrdicSoSlP+en5EnbESdfJgJDyBEva9jZkpuSZfpb
-X59s3KRsDqLu7tK/a+EBW45n0H7cnHuiL9FGFbVL2Hvvz6rHdr+OvD5/sJc4SsXZ
-jDFrYgbEw1w0dzbqEYAlUmO5WGrnz+wfhQVvqqDTcsQPjF1UqoIl82Y/1h/uTu/b
-cKq63DWJ2zt6Ff8hLaVQMTI19T10m0BzyYlD8HoyLgH/j6DemI0SENn+9awNWVsU
-0RVEzsAgawJKTWtSlutAYyp/ggIljSldsLPr8QNf6JG+sztQdEHvYmdAym6UCvZi
-cQhGeOUcQRJHxqm9Q2sS1/MsBXSIgBcQMJVilE2utzIR1KO4Lx0ba6MuU1lhs9Ox
-vnKiSgHHTtf/XYPgRCnh
-=j4rr
------END PGP SIGNATURE-----
-
---TybLhxa8M7aNoW+V--
+Josh

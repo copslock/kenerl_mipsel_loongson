@@ -1,90 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2016 20:11:42 +0200 (CEST)
-Received: from mail-io0-f196.google.com ([209.85.223.196]:36366 "EHLO
-        mail-io0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27027719AbcD1SLissnbr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Apr 2016 20:11:38 +0200
-Received: by mail-io0-f196.google.com with SMTP id k129so13014479iof.3;
-        Thu, 28 Apr 2016 11:11:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:date:message-id:subject
-         :from:to:cc;
-        bh=aQDScg3gUCk/Fwdsf7l8Mx4U6pRj2Jt6KhME608opWg=;
-        b=ax6Oun+4EBon+SGU80Cf2shjvILFkpeyeQZcErrMo9kQ19GqohMRkJ0bkJ7x2M5QnH
-         Drm35hlifQ9AU3yY0mqCO+PmuA6Kv84tqgEnf/kMMXy1s5uGPChlM1WTyliwJToN3/kW
-         her9dZzopxykctwkl9FTh2B292V5ORm6LygkEwFUSGNInwhz0I+j64nMnsuMuEMGKPJN
-         YFT6rvnyFKWkUu2aXn5ayfbKYcK0pQaCXcy5oMrl97vjCb7zwuxq64yW3HP7oAUeuX7G
-         3u368mdOs0vqSLOE8ZhyfoFq/ynxXhRgtyLshQfXSoi9Q/5pl9dRdaxvG7UE349oy08s
-         Z/Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
-         :message-id:subject:from:to:cc;
-        bh=aQDScg3gUCk/Fwdsf7l8Mx4U6pRj2Jt6KhME608opWg=;
-        b=kqqmZJULwny6d1TjqhpAzn792QIxYcwpN4qSz3+SNRG3HovJPJDqOF08DcsB74UwZM
-         r5dzmBDkUXAVGe7We42kJS2cJjEzzhjQfS+hlO1zCgdlBd3/Q4CzygslOrxmhyiyuqqq
-         WMvjR1RXhBvBeMqqy6EoWpNn8qWCdFzDMmgqCLEXQYqL/tBJxLo349VGoZKd3zFF6UkD
-         ZpV0hVrPx1j5BGlwzpvKb16FDJWVCk+urM0kzYIwnzLhMhHXPtmGBQQ23lAsNVjcRUJG
-         19yisUQbMGWZpvxzThUZaVLvHOKRST+FpVbOmG9KIZwUddG7dUCnMigZppKBCuVIKZFs
-         uq8A==
-X-Gm-Message-State: AOPr4FUh9j8xLiMcmsvMgpkMZmQFdFoarjlDdASKJG46MuUlejp23DB7JP1TWeZXi+B0rO0wvNBXwRUuhweFPQ==
-MIME-Version: 1.0
-X-Received: by 10.107.191.2 with SMTP id p2mr21780105iof.115.1461867093196;
- Thu, 28 Apr 2016 11:11:33 -0700 (PDT)
-Received: by 10.107.31.77 with HTTP; Thu, 28 Apr 2016 11:11:32 -0700 (PDT)
-In-Reply-To: <20160428175843.GZ21636@brightrain.aerifal.cx>
-References: <1461843824-19853-1-git-send-email-zengzhaoxiu@163.com>
-        <20160428164856.10120.qmail@ns.horizon.com>
-        <CAMuHMdU2e2PdwKYVaEsJ73X8Di1XHNPqnxuunr8R8bN8udazxw@mail.gmail.com>
-        <20160428175843.GZ21636@brightrain.aerifal.cx>
-Date:   Thu, 28 Apr 2016 20:11:32 +0200
-X-Google-Sender-Auth: aTRi6KVGPiXYVDG8MkNjxNydI9U
-Message-ID: <CAMuHMdUBWqdyS4w7EKsnvQLXJVgQh624AQsjgQvxT9FRW4s_6g@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2016 21:16:01 +0200 (CEST)
+Received: from ns.horizon.com ([71.41.210.147]:45836 "HELO ns.horizon.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S27027746AbcD1TP7DfAtf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 Apr 2016 21:15:59 +0200
+Received: (qmail 17439 invoked by uid 1000); 28 Apr 2016 15:15:51 -0400
+Date:   28 Apr 2016 15:15:51 -0400
+Message-ID: <20160428191551.17438.qmail@ns.horizon.com>
+From:   "George Spelvin" <linux@horizon.com>
+To:     dalias@libc.org, geert@linux-m68k.org
 Subject: Re: [patch V3] lib: GCD: add binary GCD algorithm
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Rich Felker <dalias@libc.org>
-Cc:     George Spelvin <linux@horizon.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>, zengzhaoxiu@163.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Helge Deller <deller@gmx.de>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        James Hogan <james.hogan@imgtec.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        Ley Foon Tan <lftan@altera.com>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:METAG ARCHITECTURE" <linux-metag@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        linux <linux@lists.openrisc.net>,
-        Chen Liqin <liqin.linux@gmail.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Michal Simek <monstr@monstr.eu>,
-        nios2-dev@lists.rocketboards.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Richard Henderson <rth@twiddle.net>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        zhaoxiu.zeng@gmail.com
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Cc:     akpm@linux-foundation.org, davem@davemloft.net, deller@gmx.de,
+        ink@jurassic.park.msu.ru, james.hogan@imgtec.com,
+        jejb@parisc-linux.org, jonas@southpole.se, lennox.wu@gmail.com,
+        lftan@altera.com, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux@arm.linux.org.uk,
+        linux@horizon.com, linux@lists.openrisc.net, liqin.linux@gmail.com,
+        mattst88@gmail.com, monstr@monstr.eu,
+        nios2-dev@lists.rocketboards.org, peterz@infradead.org,
+        ralf@linux-mips.org, rth@twiddle.net, sparclinux@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, ysato@users.sourceforge.jp,
+        zengzhaoxiu@163.com, zhaoxiu.zeng@gmail.com
+In-Reply-To: <20160428175843.GZ21636@brightrain.aerifal.cx>
+Return-Path: <linux@horizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53251
+X-archive-position: 53252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: linux@horizon.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -97,23 +45,6 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 28, 2016 at 7:58 PM, Rich Felker <dalias@libc.org> wrote:
-> On Thu, Apr 28, 2016 at 07:51:06PM +0200, Geert Uytterhoeven wrote:
->> On Thu, Apr 28, 2016 at 6:48 PM, George Spelvin <linux@horizon.com> wrote:
->> > Another few comments:
->> >
->> > 1. Would ARCH_HAS_FAST_FFS involve fewer changes than CPU_NO_EFFICIENT_FFS?
->>
->> No, as you want to _disable_ ARCH_HAS_FAST_FFS / _enable_
->> CPU_NO_EFFICIENT_FFS as soon as you're enabling support for a
->> CPU that doesn't support it.
->>
->> Logical OR is easier in both the Kconfig and C preprocessor languages
->> than logical NAND.
->>
->> E.g. in Kconfig, a CPU core not supporting it can just select
->> CPU_NO_EFFICIENT_FFS.
->
 > How does a CPU lack an efficient ffs/ctz anyway? There are all sorts
 > of ways to implement it without a native insn, some of which are
 > almost or just as fast as the native insn on cpus that have the
@@ -123,17 +54,44 @@ On Thu, Apr 28, 2016 at 7:58 PM, Rich Felker <dalias@libc.org> wrote:
 > generate an appropriate one for __builtin_ctz, that's arguably a
 > compiler bug.
 
-m68k-linux-gcc 4.6.3 generates:
+What's wanted here is something faster than any of those.
+Yes, there's a simple constant-time branch-free implementation:
 
-        jsr __ctzsi2
+unsigned inline __attribute__((const))
+hweight32(uint32_t x)
+{
+	x -= (x >> 1) & 0x55555555;
+	x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
+	x += x >> 4;
+	x &= 0x0f0f0f0f;
+	x += x >> 8;
+	x += x >> 16;
+	return x & 63;
+}
 
-Gr{oetje,eeting}s,
+unsigned inline __attribute__((const))
+__ffs32(uint32_t x)
+{
+	return hweight(~x & (x-1));
+}
 
-                        Geert
+but if you work it through, that's about 19 instructions; a few more on
+platforms without 32-bit immediates.  The shift itself makes an even 20,
+and there are a lot of sequential dependencies (I count a 17-op chain
+including the shift) limiting execution time.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+The de Bruijn hack reduces the length but adds a memory access for
+the table lookup.  (http://supertech.csail.mit.edu/papers/debruijn.pdf)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+In the GCD code, the number to normalize is basically random, so the
+normalization loop shifts an average of 1 bit.  One bit half the time,
+a second bit 1/4 of the time, etc.
+
+(The posted code in the FAST_FFS case omits one guaranteed shift at the
+end of the loop because the normalization code is constant-time.)
+
+So "fast __ffs" basically means faster than *one* iteration of
+"while (!(x & 1)) x >>= 1;".
+
+In this case "fast" means cheaper than *one* unpredictable branch, which
+is a very small handful of instructions.

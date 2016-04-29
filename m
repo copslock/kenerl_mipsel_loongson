@@ -1,53 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2016 21:54:18 +0200 (CEST)
-Received: from asavdk4.altibox.net ([109.247.116.15]:38007 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27027713AbcD1TyQnESmL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Apr 2016 21:54:16 +0200
-Received: from ravnborg.org (unknown [188.228.89.252])
-        (using TLSv1.2 with cipher AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 80A2A801AB;
-        Thu, 28 Apr 2016 21:54:07 +0200 (CEST)
-Date:   Thu, 28 Apr 2016 21:54:06 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     George Spelvin <linux@horizon.com>
-Cc:     akpm@linux-foundation.org, peterz@infradead.org,
-        zengzhaoxiu@163.com, dalias@libc.org, davem@davemloft.net,
-        deller@gmx.de, geert@linux-m68k.org, ink@jurassic.park.msu.ru,
-        james.hogan@imgtec.com, jejb@parisc-linux.org, jonas@southpole.se,
-        lennox.wu@gmail.com, lftan@altera.com, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux@arm.linux.org.uk,
-        liqin.linux@gmail.com, mattst88@gmail.com, monstr@monstr.eu,
-        nios2-dev@lists.rocketboards.org, ralf@linux-mips.org,
-        rth@twiddle.net, sparclinux@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, ysato@users.sourceforge.jp,
-        zhaoxiu.zeng@gmail.com
-Subject: Re: [patch V3] lib: GCD: add binary GCD algorithm
-Message-ID: <20160428195326.GB29802@ravnborg.org>
-References: <1461843824-19853-1-git-send-email-zengzhaoxiu@163.com>
- <20160428164856.10120.qmail@ns.horizon.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Apr 2016 15:46:16 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4453 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27027690AbcD2NqOgKI2i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Apr 2016 15:46:14 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id 09971A3A0287B;
+        Fri, 29 Apr 2016 14:46:05 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 29 Apr 2016 14:46:08 +0100
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 29 Apr 2016 14:46:07 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Jayachandran C <jchandra@broadcom.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        "Peter Zijlstra" <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Robert Richter <rric@kernel.org>, <linux-mips@linux-mips.org>,
+        <kvm@vger.kernel.org>, <oprofile-list@lists.sf.net>
+Subject: [PATCH 0/5] MIPS: Add feature probing ready for KVM/VZ
+Date:   Fri, 29 Apr 2016 14:45:58 +0100
+Message-ID: <1461937563-13199-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160428164856.10120.qmail@ns.horizon.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.1 cv=Fo6lhzfq c=1 sm=1 tr=0
-        a=Ij76tQDYWdb01v2+RnYW5w==:117 a=Ij76tQDYWdb01v2+RnYW5w==:17
-        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=kj9zAlcOel0A:10
-        a=qc9dTJifL27puRRyOeAA:9 a=CjuIK1q_8ugA:10
-Return-Path: <sam@ravnborg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53253
+X-archive-position: 53254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@ravnborg.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,33 +53,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> __ffs on the available architectures:
-> 	Alpha: sometimes (CONFIG_ALPHA_EV6, CONFIG_ALPHA_EV67)
-> 	ARC: sometimes (!CONFIG_ISA_ARCOMPACT)
-> 	ARM: sometimes (V5+)
-> 	ARM64: NO, could be written using RBIT and CLZ
-> 	AVR: yes
-> 	Blackfin: NO, could be written using hweight()
-> 	C6x: yes
-> 	CRIS: NO
-> 	FR-V: yes
-> 	H8300: NO
-> 	Hexagon: yes
-> 	IA64: yes
-> 	M32R: NO
-> 	M68k: sometimes
-> 	MetaG: NO
-> 	Microblaze: NO
-> 	MIPS: sometimes
-> 	MN10300: yes
-> 	OpenRISC: NO
-> 	PA-RISC: NO?  Interesting code, but I think it's a net loss.
-> 	PowerPC: yes
-> 	S390: sometimes (CONFIG_HAVE_MARCH_Z9_109_FEATURES)
-> 	Score: NO
-> 	SH: NO
-> 	SPARC: NO
-SPARC: sparc64: YES, sparc32: NO
-Patch needs to be updated to refelct this.
+This patchset adds probing of various architectural features which will
+be useful for supporting KVM with VZ (MIPS hardware assisted
+virtualisation extensions).
 
-	Sam
+It is based on the mips-for-linux-next~ of the day (commit
+2f47afda1fa6).
+
+James Hogan (5):
+  MIPS: Define & use CP0_EBase bit definitions
+  MIPS: Add defs & probing of 64-bit CP0_EBase
+  MIPS: Add defs & probing of BadInstr[P] registers
+  MIPS: Add defs & probing of [X]ContextConfig
+  MIPS: Add perf counter feature
+
+ arch/mips/include/asm/cpu-features.h | 20 ++++++++++++++++
+ arch/mips/include/asm/cpu.h          |  5 ++++
+ arch/mips/include/asm/mipsregs.h     | 22 +++++++++++++++++-
+ arch/mips/kernel/cpu-probe.c         | 45 +++++++++++++++++++++++++++++++++++-
+ arch/mips/kernel/perf_event_mipsxx.c |  4 +---
+ arch/mips/kvm/trap_emul.c            |  3 ++-
+ arch/mips/netlogic/xlp/nlm_hal.c     |  2 +-
+ arch/mips/netlogic/xlr/setup.c       |  2 +-
+ arch/mips/oprofile/op_model_mipsxx.c |  4 +---
+ 9 files changed, 96 insertions(+), 11 deletions(-)
+
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jayachandran C <jchandra@broadcom.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Robert Richter <rric@kernel.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Cc: oprofile-list@lists.sf.net
+-- 
+2.4.10

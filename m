@@ -1,66 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 May 2016 19:50:47 +0200 (CEST)
-Received: from e06smtp11.uk.ibm.com ([195.75.94.107]:53953 "EHLO
-        e06smtp11.uk.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27025904AbcEDRuoYF0jj convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 May 2016 19:50:44 +0200
-Received: from localhost
-        by e06smtp11.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <gkurz@linux.vnet.ibm.com>;
-        Wed, 4 May 2016 18:50:38 +0100
-Received: from d06dlp03.portsmouth.uk.ibm.com (9.149.20.15)
-        by e06smtp11.uk.ibm.com (192.168.101.141) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Wed, 4 May 2016 18:50:36 +0100
-X-IBM-Helo: d06dlp03.portsmouth.uk.ibm.com
-X-IBM-MailFrom: gkurz@linux.vnet.ibm.com
-X-IBM-RcptTo: linux-mips@linux-mips.org
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by d06dlp03.portsmouth.uk.ibm.com (Postfix) with ESMTP id 333D61B08061
-        for <linux-mips@linux-mips.org>; Wed,  4 May 2016 18:51:26 +0100 (BST)
-Received: from d06av08.portsmouth.uk.ibm.com (d06av08.portsmouth.uk.ibm.com [9.149.37.249])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u44HoZTn3670338
-        for <linux-mips@linux-mips.org>; Wed, 4 May 2016 17:50:35 GMT
-Received: from d06av08.portsmouth.uk.ibm.com (localhost [127.0.0.1])
-        by d06av08.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u44HoZ05015117
-        for <linux-mips@linux-mips.org>; Wed, 4 May 2016 11:50:35 -0600
-Received: from smtp.lab.toulouse-stg.fr.ibm.com (srv01.lab.toulouse-stg.fr.ibm.com [9.101.4.1])
-        by d06av08.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u44HoYp3015106;
-        Wed, 4 May 2016 11:50:34 -0600
-Received: from bahia.huguette.org (sig-9-83-105-189.evts.uk.ibm.com [9.83.105.189])
-        by smtp.lab.toulouse-stg.fr.ibm.com (Postfix) with ESMTP id E883B220520;
-        Wed,  4 May 2016 19:50:32 +0200 (CEST)
-Date:   Wed, 4 May 2016 19:50:30 +0200
-From:   Greg Kurz <gkurz@linux.vnet.ibm.com>
-To:     Radim =?UTF-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>, james.hogan@imgtec.com,
-        mingo@redhat.com, linux-mips@linux-mips.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        David Hildenbrand <dahi@linux.vnet.ibm.com>,
-        qemu-ppc@nongnu.org, Cornelia Huck <cornelia.huck@de.ibm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v5 2/2] kvm: introduce KVM_MAX_VCPU_ID
-Message-ID: <20160504195030.4125b1ce@bahia.huguette.org>
-In-Reply-To: <20160504164533.GB27590@potion>
-References: <146221092579.32310.10051562885606992534.stgit@bahia.huguette.org>
-        <146221113787.32310.7342723782230547207.stgit@bahia.huguette.org>
-        <20160504164533.GB27590@potion>
-Organization: IBM
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2016 03:36:45 +0200 (CEST)
+Received: from mail-pa0-f45.google.com ([209.85.220.45]:36731 "EHLO
+        mail-pa0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27027436AbcEEBgnIwMId (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 May 2016 03:36:43 +0200
+Received: by mail-pa0-f45.google.com with SMTP id bt5so29826551pac.3;
+        Wed, 04 May 2016 18:36:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=SOzwKKjcrmIaSMLHHkSw2HU6+JyiJcjHt8mwdEHNAUg=;
+        b=Njh267kXlwU/2BeLMJe+BVSIpjwCrms2RY0z1JLKgejOPppTJfM3w6jBh5hzADpcI/
+         sHrzfvoKFq0HTdlUlbBl9M/2hJ20+A2qFiM87Mu5GD7dclrz4INFv7U+gdkdo/qOIgbV
+         /zlwg48pNizTcDYkoialfapCvlvN4uG7QPxHb8Bx3GdDRSmp/4R3zMBskUSgIuyAzD0A
+         wnA4neSyVR8OHDG3UcRsqBggsTn+HPADQ6LGJvR56k82vQj2AixKeMAsBdwhsbYkvxv+
+         38EdaloU9UGK8HYQQxd1q/Cj6XNvNR5EKrfc0U2F0bTwA+g0y1EWYunU01FcQ0rFGNQd
+         iuPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=SOzwKKjcrmIaSMLHHkSw2HU6+JyiJcjHt8mwdEHNAUg=;
+        b=Rh8PkzGTU5374dMTVaWUzXs22+qsVdiQUf6DVIw7uISzNgyi9fiW0FsIri/rO0kcoJ
+         mKUtwOB8f84SIItTxmXdhOFeyF+7YWfTf2g1Z92PbFw3ZId691vDNyFx9hdvY5zxNeqG
+         7IU7lZP4r3LPC0gAwFfluH0mihKOu/jRdixDohdzznuE9HjaL5IcTn8X2nkObTHFUhf6
+         9EmMR2vCRRTenaWHIwBRME8GAj5YA2r4apuHl2MR3JwKs+Mb4u1GoLFpFEVfhwLqcqog
+         Dk4JUdpagapXDsumWoTZ9SgUGuyqg/SBXuNmVduGgbYnqyy5ZqX5en9+iQOLt87UnOzE
+         VFaw==
+X-Gm-Message-State: AOPr4FWaX+bkNjztCAWeO7HoJ/Ut7+6q2X1g3/smq+6IzcXVGLCF7afwiHZW6EZKsxax9g==
+X-Received: by 10.66.177.75 with SMTP id co11mr16884752pac.85.1462412196549;
+        Wed, 04 May 2016 18:36:36 -0700 (PDT)
+Received: from [10.112.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id w125sm8874423pfb.53.2016.05.04.18.36.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 May 2016 18:36:35 -0700 (PDT)
+Subject: Re: [PATCH v2 03/15] MIPS: PCI: Compatibility with ARM-like PCI host
+ drivers
+To:     Paul Burton <paul.burton@imgtec.com>
+References: <1454499045-5020-1-git-send-email-paul.burton@imgtec.com>
+ <1454499045-5020-4-git-send-email-paul.burton@imgtec.com>
+ <56FB0D90.8000200@gmail.com> <20160404100940.GA21568@NP-P-BURTON>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Joshua Kinard <kumba@gentoo.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        Jens Axboe <axboe@fb.com>, linux-kernel@vger.kernel.org,
+        Yijing Wang <wangyijing@huawei.com>,
+        John Crispin <blogic@openwrt.org>,
+        Yinghai Lu <yinghai@kernel.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <572AA3A0.5080201@gmail.com>
+Date:   Wed, 4 May 2016 18:36:32 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-TM-AS-MML: disable
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 16050417-0041-0000-0000-000017452C43
-Return-Path: <gkurz@linux.vnet.ibm.com>
+In-Reply-To: <20160404100940.GA21568@NP-P-BURTON>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53277
+X-archive-position: 53278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gkurz@linux.vnet.ibm.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,59 +79,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 4 May 2016 18:45:34 +0200
-Radim Krčmář <rkrcmar@redhat.com> wrote:
+Hi Paul,
 
-> 2016-05-03 06:52+0200, Greg Kurz:
-> > The KVM_MAX_VCPUS define provides the maximum number of vCPUs per guest, and
-> > also the upper limit for vCPU ids. This is okay for all archs except PowerPC
-> > which can have higher ids, depending on the cpu/core/thread topology. In the
-> > worst case (single threaded guest, host with 8 threads per core), it limits
-> > the maximum number of vCPUS to KVM_MAX_VCPUS / 8.
-> > 
-> > This patch separates the vCPU numbering from the total number of vCPUs, with
-> > the introduction of KVM_MAX_VCPU_ID, as the maximal valid value for vCPU ids
-> > plus one.
-> > 
-> > The corresponding KVM_CAP_MAX_VCPU_ID allows userspace to validate vCPU ids
-> > before passing them to KVM_CREATE_VCPU.
-> > 
-> > Only PowerPC gets unlimited vCPU ids for the moment. This patch doesn't
-> > change anything for other archs.
-> > 
-> > Suggested-by: Radim Krcmar <rkrcmar@redhat.com>
-> > Signed-off-by: Greg Kurz <gkurz@linux.vnet.ibm.com>
-> > ---
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > @@ -2272,7 +2272,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
-> >  	int r;
-> >  	struct kvm_vcpu *vcpu;
-> >  
-> > -	if (id >= KVM_MAX_VCPUS)
-> > +	if (id >= KVM_MAX_VCPU_ID)
-> >  		return -EINVAL;  
+On 04/04/16 03:09, Paul Burton wrote:
+> Hi Florian,
 > 
-> book3s_hv will currently fail with vcpu_id above threads_per_subcore *
-> KVM_MAX_VCORES, so userspace cannot use KVM_CAP_MAX_VCPU_ID to limit
-> vcpu_id ... 
+> Just an FYI, the pcie-xilinx driver I wrote this for has since been
+> converted away from the ARM-like pci_common_init_dev & struct hw_pci to
+> use only functions provided by the core PCI subsystem[1]. As a result
+> I've stopped using this patch & don't plan to continue work on it.
+> Perhaps it would be cleanest to do a similar conversion for the driver
+> you're using?
 
-You're right, I guess powerpc should return threads_per_subcore * KVM_MAX_VCORES
-instead of INT_MAX then.
+Yes, I did just that, but as of v4.6-rc6, I am seeing a bunch of
+undefined references while doing so:
 
-> I thought the check for vcpu_id would move to arch-specific
-> code, like the previous version did, to simplify implementation of a
-> dynamic limit.
-> 
-> The dynamic limit was too complicated to be worth it?
-> (This version is ok too.)
-> 
+arch/mips/pci/built-in.o: In function `pcibios_enable_device':
+(.text+0x550): undefined reference to `pcibios_plat_dev_init'
+arch/mips/pci/built-in.o: In function `pcibios_init':
+pci.c:(.init.text+0x6c): undefined reference to `pcibios_map_irq'
+pci.c:(.init.text+0x78): undefined reference to `pcibios_map_irq'
 
-Actually no, it can be as simple as this in arch/powerpc/include/asm/kvm_host.h:
+and this makes perfect sense because arch/mips/pci/pci.c is referencing
+those functions, while I did not add anything for BMIPS_GENERIC.
 
-#include <asm/cputhreads.h>
-#define KVM_MAX_VCPU_ID		(threads_per_subcore * KVM_MAX_VCORES)
+At this point, I would very much prefer that the MIPS/Linux kernel did
+not rely on the different machines to provide those implementations
+(though it definitively is not a big deal to add them, it just feels
+unnecessary), I will try to cook a patch for that and provide dummy
+fallbacks.
 
-Thanks !
-
---
-Greg
+Thanks!
+-- 
+Florian

@@ -1,50 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2016 23:58:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46087 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27028019AbcEEV6GizMC5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 May 2016 23:58:06 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 4E0CC41F8EA4;
-        Thu,  5 May 2016 22:58:01 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 05 May 2016 22:58:01 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 05 May 2016 22:58:01 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id CF589EBDD031F;
-        Thu,  5 May 2016 22:57:56 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 5 May 2016 22:58:00 +0100
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 5 May
- 2016 22:58:00 +0100
-Date:   Thu, 5 May 2016 22:58:00 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Anna-Maria Gleixner <anna-maria@linutronix.de>
-CC:     <linux-kernel@vger.kernel.org>, <rt@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: Remove no longer needed work_on_cpu() call
-Message-ID: <20160505215800.GA11557@jhogan-linux.le.imgtec.org>
-References: <1462179649-55112-1-git-send-email-anna-maria@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2016 00:16:57 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:59191 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27027695AbcEEWQvwRbn5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 May 2016 00:16:51 +0200
+Received: from [2001:bc8:30d7:120:daeb:97ff:feb6:3f19] (helo=ohm.rr44.fr)
+        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84_2)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1ayRZh-0005W4-KA; Fri, 06 May 2016 00:16:49 +0200
+Received: from aurel32 by ohm.rr44.fr with local (Exim 4.87)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1ayRZh-0000bj-9N; Fri, 06 May 2016 00:16:49 +0200
+Date:   Fri, 6 May 2016 00:16:49 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH] MIPS: Octeon: byteswap initramfs in little endian mode
+Message-ID: <20160505221649.GA29979@aurel32.net>
+Mail-Followup-To: David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+References: <1462484017-29988-1-git-send-email-aurelien@aurel32.net>
+ <572BBDB8.8000300@caviumnetworks.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zhXaljGHf11kAtnf"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1462179649-55112-1-git-send-email-anna-maria@linutronix.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 6e37d52
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <572BBDB8.8000300@caviumnetworks.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53286
+X-archive-position: 53287
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,98 +47,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---zhXaljGHf11kAtnf
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2016-05-05 14:40, David Daney wrote:
+> On 05/05/2016 02:33 PM, Aurelien Jarno wrote:
+> >The initramfs if loaded in memory by U-Boot running in big endian mode.
+> >When the kernel is running in little endian mode, we need to byteswap it
+> >as it is accessed byte by byte.
+> 
+> Ouch!
+> 
+> Really it should be fixed in the bootloader, but that probably won't happen.
 
-On Mon, May 02, 2016 at 11:00:49AM +0200, Anna-Maria Gleixner wrote:
-> Since commit 3b9d6da67e11 ("cpu/hotplug: Fix rollback during error-out
-> in __cpu_disable()") it is ensured that callbacks of CPU_ONLINE and
-> CPU_DOWN_PREPARE are processed on the hotplugged CPU. Due to this
-> work_on_cpu() calls are no longer required.
->=20
-> Replace work_on_cpu() with a direct call of mips_cdmm_bus_up() or
-> mips_cdmm_bus_down(). Description of those functions are adapted.
->=20
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Signed-off-by: Anna-Maria Gleixner <anna-maria@linutronix.de>
+How would you see that fixed in the bootloader? I doubt it's difficult
+to autodetect that, as the initramfs is basically loaded in memory
+first, and later only the address and size are passed on the kernel
+command line using the rd_start= and rd_size= options.
 
-Thanks, looks reasonable to me,
-Acked-by: James Hogan <james.hogan@imgtec.com>
+The other alternative would be to provide reversed endian fatload,
+ext2load, ext4load, ... versions. Or maybe a better alternative would be
+a function to byteswap a memory area, it could be inserted in a bootcmd
+between the load and the bootoctlinux.
 
-Cheers,
-James
+> I wonder, is there a magic number that the initrd has?  If so, we could
+> probe for a byteswapped initrd and not do the byte reversal unconditionally.
 
-> ---
-> Changes in v2:
-> 	- Adapt referenced commit in commit message
->=20
->  drivers/bus/mips_cdmm.c |   12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
->=20
-> --- a/drivers/bus/mips_cdmm.c
-> +++ b/drivers/bus/mips_cdmm.c
-> @@ -599,8 +599,8 @@ BUILD_PERDEV_HELPER(cpu_up)         /* i
->   * mips_cdmm_bus_down() - Tear down the CDMM bus.
->   * @data:	Pointer to unsigned int CPU number.
->   *
-> - * This work_on_cpu callback function is executed on a given CPU to call=
- the
-> - * CDMM driver cpu_down callback for all devices on that CPU.
-> + * This function is executed on the hotplugged CPU and calls the CDMM
-> + * driver cpu_down callback for all devices on that CPU.
->   */
->  static long mips_cdmm_bus_down(void *data)
->  {
-> @@ -630,7 +630,9 @@ static long mips_cdmm_bus_down(void *dat
->   * CDMM devices on that CPU, or to call the CDMM driver cpu_up callback =
-for all
->   * devices already discovered on that CPU.
->   *
-> - * It is used during initialisation and when CPUs are brought online.
-> + * It is used as work_on_cpu callback function during
-> + * initialisation. When CPUs are brought online the function is
-> + * invoked directly on the hotplugged CPU.
->   */
->  static long mips_cdmm_bus_up(void *data)
->  {
-> @@ -677,10 +679,10 @@ static int mips_cdmm_cpu_notify(struct n
->  	switch (action & ~CPU_TASKS_FROZEN) {
->  	case CPU_ONLINE:
->  	case CPU_DOWN_FAILED:
-> -		work_on_cpu(cpu, mips_cdmm_bus_up, &cpu);
-> +		mips_cdmm_bus_up(&cpu);
->  		break;
->  	case CPU_DOWN_PREPARE:
-> -		work_on_cpu(cpu, mips_cdmm_bus_down, &cpu);
-> +		mips_cdmm_bus_down(&cpu);
->  		break;
->  	default:
->  		return NOTIFY_DONE;
->=20
+There is a magic number... after it has been uncompressed. The magics
+for the compressed version are defined in lib/decompress.c. Maybe we can
+call decompress_method() from the finalize_initrd with the first 8 bytes
+byteswapped and check for the result.
 
---zhXaljGHf11kAtnf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> The logic seems correct, we need to byte swap each 8-byte aligned 8-byte
+> word in the image.
+> 
+> >
+> >Cc: David Daney <david.daney@cavium.com>
+> >Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+> >---
+> >  arch/mips/kernel/setup.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> >Note: It might not be the best place to byteswap the initramfs not the
+> >best way to do it. At least it shows the problem and what shoudl be done.
+> >Suggestions to improve the patch are welcome.
+> >
+> >diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> >index 4f60734..e7d015e 100644
+> >--- a/arch/mips/kernel/setup.c
+> >+++ b/arch/mips/kernel/setup.c
+> >@@ -263,6 +263,16 @@ static void __init finalize_initrd(void)
+> >  		goto disable;
+> >  	}
+> >
+> >+#if defined(CONFIG_CPU_CAVIUM_OCTEON) && defined(CONFIG_CPU_LITTLE_ENDIAN)
+> >+	{
+> >+		unsigned long i;
+> >+		pr_info("Cavium Octeon kernel in little endian mode "
+> >+			"detected, byteswapping ramdisk\n");
+> >+		for (i = initrd_start; i < ALIGN(initrd_end, 8); i += 8)
+> >+			*((unsigned long *)i) = swab64(*((unsigned long *)i));
+> >+	}
+> >+#endif
+> >+
+> >  	reserve_bootmem(__pa(initrd_start), size, BOOTMEM_DEFAULT);
+> >  	initrd_below_start_ok = 1;
+> >
+> >
+> 
+> 
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJXK8HoAAoJEGwLaZPeOHZ6a6wQALRVK6fpbcIXrOCngzj5eWI5
-aOVGVjUSPT/ArjguOJjwSRj2hI7hbLoqDPCUXYPAsbt7dWiWl6Il+mRZfWzcSH68
-7BDZeAkhjX6d+oXbJ4WJtSVMxTIFJeMwylRxMtUhIwzf/tEpLHO9krGS/MIfOg/d
-k9HQU2hiNSABJOEL4AEXzFjYC5Uc85zxj6ZvDJp7KRWRniu221pPn1/pTLKPYFWi
-VYHQdBgprJhwjmSSlbD5URggjs+ZahvExhS47bRhzi0tcopAmOPbO/J5zpU+kwUh
-lJq3XjvngRcEbDfomXOa8GXK9Yk8ZEoE5OFx56dTc1CW0s8ol/5ptTwfglvxhGyT
-aQDVVSaf1fA7Ey2n2SQmg/N8Ju1g7s5ewoc9kchry8x6cMVMFSv4423bD1naeX5P
-DXyypH/TdHSorU+YoG8PVFychkOe058Ug2Vwjfcff27Wol3ZdqzCkGiNIfWj/bhr
-oyxB798pNOSlebFRZz9bAZVKmcCCqcEy6WmgnfgMlc6hrOIt7yBOocdV76ZHdf0d
-GDA8+6EKqnRd31wDT7sCcPQUK9huwwNkOM/9osNDYChsN8foDeOSggsEzJscttDq
-lzQin/MqigHyeFTWiNKkOiW1dXniZVmwscxfSM6Ea6PB01oZiR4eUgHNt9WJ17xG
-6cSVkMCa64iFqftAC7jd
-=6TBg
------END PGP SIGNATURE-----
-
---zhXaljGHf11kAtnf--
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

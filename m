@@ -1,37 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2016 14:35:32 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11295 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2016 15:36:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57919 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028035AbcEFMfa2bk2G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 May 2016 14:35:30 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 545B12A971D57;
-        Fri,  6 May 2016 13:35:21 +0100 (IST)
+        with ESMTP id S27027805AbcEFNgj3pQtk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 May 2016 15:36:39 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id 48536AB6B94D5;
+        Fri,  6 May 2016 14:36:28 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 6 May 2016 13:35:24 +0100
-Received: from localhost (10.100.200.129) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 6 May
- 2016 13:35:23 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH] MIPS: Implement __arch_bitrev* using bitswap for MIPSr6
-Date:   Fri, 6 May 2016 13:35:03 +0100
-Message-ID: <1462538103-6633-1-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.8.2
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 6 May 2016 14:36:31 +0100
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Fri, 6 May 2016 14:36:30 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        "Jayachandran C." <jchandra@broadcom.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
+Subject: [PATCH 0/7] MIPS: Add extended ASID support
+Date:   Fri, 6 May 2016 14:36:17 +0100
+Message-ID: <1462541784-22128-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.129]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53290
+X-archive-position: 53291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,68 +50,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Release 6 of the MIPS architecture introduced the bitswap instruction,
-which reverses the bits within each byte of a word. Make use of this
-instruction to implement the __arch_bitrev* functions, which should be
-faster for most MIPSr6 CPUs, reduces code size slightly and allows us to
-avoid the lookup table used by the generic implementation, saving 256
-bytes in the kernel binary by dropping that.
+This patchset is based on v4.6-rc4 and adds support for the optional
+extended ASIDs present since revision 3.5 of the MIPS32/MIPS64
+architecture, which extends the TLB ASIDs from 8 bits to 10 bits. These
+are known to be implemented in XLP and I6400 cores.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
----
+Along the way a few cleanups are made, particularly for KVM which
+manipulates ASIDs from assembly code.
 
- arch/mips/Kconfig              |  1 +
- arch/mips/include/asm/bitrev.h | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
- create mode 100644 arch/mips/include/asm/bitrev.h
+Patch 6 lays most of the groundwork by abstracting asid masks so they
+can be variable, and patch 7 adds the actual support for extended ASIDs.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index dd2b372..5b8fd2e 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2046,6 +2046,7 @@ config CPU_MIPSR2
- config CPU_MIPSR6
- 	bool
- 	default y if CPU_MIPS32_R6 || CPU_MIPS64_R6
-+	select HAVE_ARCH_BITREVERSE
- 	select MIPS_ASID_BITS_VARIABLE
- 	select MIPS_SPRAM
- 
-diff --git a/arch/mips/include/asm/bitrev.h b/arch/mips/include/asm/bitrev.h
-new file mode 100644
-index 0000000..bc739a4
---- /dev/null
-+++ b/arch/mips/include/asm/bitrev.h
-@@ -0,0 +1,30 @@
-+#ifndef __MIPS_ASM_BITREV_H__
-+#define __MIPS_ASM_BITREV_H__
-+
-+#include <linux/swab.h>
-+
-+static __always_inline __attribute_const__ u32 __arch_bitrev32(u32 x)
-+{
-+	u32 ret;
-+
-+	asm("bitswap	%0, %1" : "=r"(ret) : "r"(__swab32(x)));
-+	return ret;
-+}
-+
-+static __always_inline __attribute_const__ u16 __arch_bitrev16(u16 x)
-+{
-+	u16 ret;
-+
-+	asm("bitswap	%0, %1" : "=r"(ret) : "r"(__swab16(x)));
-+	return ret;
-+}
-+
-+static __always_inline __attribute_const__ u8 __arch_bitrev8(u8 x)
-+{
-+	u8 ret;
-+
-+	asm("bitswap	%0, %1" : "=r"(ret) : "r"(x));
-+	return ret;
-+}
-+
-+#endif /* __MIPS_ASM_BITREV_H__ */
+Patches 1-5 do some preliminary clean up around ASID handling, and in
+KVM's locore.S to allow patch 7 to support extended ASIDs.
+
+The use of extended ASIDs can be observed by using the 'x' sysrq to dump
+TLB values, e.g. by repeatedly running this command:
+$(echo x > /proc/sysrq-trigger); dmesg -c | grep asid
+
+James Hogan (4):
+  MIPS: KVM/locore.S: Don't preserve host ASID around vcpu_run
+  MIPS: Add & use CP0_EntryHi ASID definitions
+  MIPS: KVM/locore.S: Only preserve callee saved registers
+  MIPS: KVM/locore.S: Relax noat
+
+Paul Burton (3):
+  MIPS: KVM: Abstract guest ASID mask
+  MIPS: Retrieve ASID masks using function accepting struct cpuinfo_mips
+  MIPS: Support extended ASIDs
+
+ arch/mips/Kconfig                   | 17 +++++++
+ arch/mips/include/asm/cpu-info.h    | 24 ++++++++++
+ arch/mips/include/asm/kvm_host.h    |  5 +-
+ arch/mips/include/asm/mipsregs.h    |  2 +
+ arch/mips/include/asm/mmu_context.h | 41 +++++++---------
+ arch/mips/kernel/asm-offsets.c      | 10 ++++
+ arch/mips/kernel/cpu-probe.c        | 13 +++++
+ arch/mips/kernel/genex.S            |  2 +-
+ arch/mips/kernel/traps.c            |  2 +-
+ arch/mips/kvm/emulate.c             | 25 +++++-----
+ arch/mips/kvm/locore.S              | 94 +++++++++----------------------------
+ arch/mips/kvm/tlb.c                 | 33 ++++++++-----
+ arch/mips/lib/dump_tlb.c            | 10 ++--
+ arch/mips/lib/r3k_dump_tlb.c        |  9 ++--
+ arch/mips/mm/tlb-r3k.c              | 24 ++++++----
+ arch/mips/mm/tlb-r4k.c              |  2 +-
+ arch/mips/mm/tlb-r8k.c              |  2 +-
+ arch/mips/pci/pci-alchemy.c         |  2 +-
+ 18 files changed, 173 insertions(+), 144 deletions(-)
+
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Manuel Lauss <manuel.lauss@gmail.com>
+Cc: Jayachandran C. <jchandra@broadcom.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
 -- 
-2.8.2
+2.4.10

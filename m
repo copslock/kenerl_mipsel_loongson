@@ -1,65 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2016 12:46:41 +0200 (CEST)
-Received: from mail-out.m-online.net ([212.18.0.10]:54094 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27026277AbcEGKqiboeL5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 May 2016 12:46:38 +0200
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 3r250l4KW1z3hkJ4;
-        Sat,  7 May 2016 12:46:15 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
-        by mail.m-online.net (Postfix) with ESMTP id 3r250k4Ttdzvh2h;
-        Sat,  7 May 2016 12:46:14 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavisd-new, port 10024)
-        with ESMTP id EYV3jDpO_ILq; Sat,  7 May 2016 12:46:11 +0200 (CEST)
-X-Auth-Info: sKaBdMi3SXbRupqNFUGK+Q0LeN63VwsoGE8ynF/ju/Lrygsv+uA2plUzOQmPvymv
-Received: from igel.home (ppp-88-217-9-210.dynamic.mnet-online.de [88.217.9.210])
-        by mail.mnet-online.de (Postfix) with ESMTPA;
-        Sat,  7 May 2016 12:46:11 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
-        id 457372C59A0; Sat,  7 May 2016 12:46:11 +0200 (CEST)
-From:   Andreas Schwab <schwab@linux-m68k.org>
-To:     "George Spelvin" <linux@horizon.com>
-Cc:     akpm@linux-foundation.org, dalias@libc.org, davem@davemloft.net,
-        geert@linux-m68k.org, James.Bottomley@HansenPartnership.com,
-        jjuran@gmail.com, peterz@infradead.org, sam@ravnborg.org,
-        zengzhaoxiu@163.com, deller@gmx.de, heiko.carstens@de.ibm.com,
-        ink@jurassic.park.msu.ru, james.hogan@imgtec.com,
-        jejb@parisc-linux.org, jonas@southpole.se, lennox.wu@gmail.com,
-        lftan@altera.com, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2016 13:24:07 +0200 (CEST)
+Received: from asavdk4.altibox.net ([109.247.116.15]:51835 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026277AbcEGLYGDFVSQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 May 2016 13:24:06 +0200
+Received: from ravnborg.org (unknown [188.228.89.252])
+        (using TLSv1.2 with cipher AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id D11AC802C9;
+        Sat,  7 May 2016 13:23:57 +0200 (CEST)
+Date:   Sat, 7 May 2016 13:23:56 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     zengzhaoxiu@163.com
+Cc:     akpm@linux-foundation.org, linux@horizon.com, peterz@infradead.org,
+        jjuran@gmail.com, James.Bottomley@HansenPartnership.com,
+        geert@linux-m68k.org, dalias@libc.org, davem@davemloft.net,
+        Zhaoxiu Zeng <zhaoxiu.zeng@gmail.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        James Hogan <james.hogan@imgtec.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Chen Liqin <liqin.linux@gmail.com>,
+        Lennox Wu <lennox.wu@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
         linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux@arm.linux.org.uk,
-        linux@lists.openrisc.net, liqin.linux@gmail.com,
-        mattst88@gmail.com, monstr@monstr.eu,
-        nios2-dev@lists.rocketboards.org, ralf@linux-mips.org,
-        rth@twiddle.net, schwidefsky@de.ibm.com,
-        sparclinux@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
-        vgupta@synopsys.com, ysato@users.sourceforge.jp,
-        zhaoxiu.zeng@gmail.com
-Subject: Re: [patch V4] lib: GCD: Use binary GCD algorithm instead of Euclidean
-References: <20160507084129.7284.qmail@ns.horizon.com>
-X-Yow:  PUMP UP th' VOLUME!  My BAGEL TOASTER is in tune with th' UNIVERSAL LIFE
- FORCE!!
-Date:   Sat, 07 May 2016 12:46:11 +0200
-In-Reply-To: <20160507084129.7284.qmail@ns.horizon.com> (George Spelvin's
-        message of "7 May 2016 04:41:29 -0400")
-Message-ID: <87d1oyrvrg.fsf@linux-m68k.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.93 (gnu/linux)
+        linux-mips@linux-mips.org, nios2-dev@lists.rocketboards.org,
+        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [patch V4] lib: GCD: Use binary GCD algorithm instead of
+ Euclidean
+Message-ID: <20160507112308.GA2612@ravnborg.org>
+References: <1462527763-15301-1-git-send-email-zengzhaoxiu@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <whitebox@nefkom.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1462527763-15301-1-git-send-email-zengzhaoxiu@163.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.1 cv=Fo6lhzfq c=1 sm=1 tr=0
+        a=Ij76tQDYWdb01v2+RnYW5w==:117 a=Ij76tQDYWdb01v2+RnYW5w==:17
+        a=L9H7d07YOLsA:10 a=9cW_t1CCXrUA:10 a=s5jvgZ67dGcA:10 a=kj9zAlcOel0A:10
+        a=wggRaunBjXu032dz5hIA:9 a=CjuIK1q_8ugA:10
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53302
+X-archive-position: 53303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: schwab@linux-m68k.org
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,16 +74,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-"George Spelvin" <linux@horizon.com> writes:
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index 57ffaf2..ca675ed 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -42,6 +42,7 @@ config SPARC
+>  	select ODD_RT_SIGACTION
+>  	select OLD_SIGSUSPEND
+>  	select ARCH_HAS_SG_CHAIN
+> +	select CPU_NO_EFFICIENT_FFS
+>  
+>  config SPARC32
+>  	def_bool !64BIT
 
-> Your benchmark code doesn't have to have a separate code path if
-> __x86_64__; rdtsc works on 32-bit code just as well.
+sparc64 have an efficient ffs implementation.
+We use run-time patching to use the proper version
+depending on the actual sparc cpu.
 
-Take a look at the CC: list.
+As this is determinded at config time, then let the
+sparc cpu that has the efficient ffs benefit from this.
 
-Andreas.
+In other words - select CPU_NO_EFFICIENT_FFS only for SPARC32.
 
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
-"And now for something completely different."
+	Sam

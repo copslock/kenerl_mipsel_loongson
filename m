@@ -1,20 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2016 10:41:42 +0200 (CEST)
-Received: from ns.horizon.com ([71.41.210.147]:58781 "HELO ns.horizon.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S27027006AbcEGIlhjzMhk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 7 May 2016 10:41:37 +0200
-Received: (qmail 7285 invoked by uid 1000); 7 May 2016 04:41:29 -0400
-Date:   7 May 2016 04:41:29 -0400
-Message-ID: <20160507084129.7284.qmail@ns.horizon.com>
-From:   "George Spelvin" <linux@horizon.com>
-To:     akpm@linux-foundation.org, dalias@libc.org, davem@davemloft.net,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2016 12:46:41 +0200 (CEST)
+Received: from mail-out.m-online.net ([212.18.0.10]:54094 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27026277AbcEGKqiboeL5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 May 2016 12:46:38 +0200
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 3r250l4KW1z3hkJ4;
+        Sat,  7 May 2016 12:46:15 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+        by mail.m-online.net (Postfix) with ESMTP id 3r250k4Ttdzvh2h;
+        Sat,  7 May 2016 12:46:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavisd-new, port 10024)
+        with ESMTP id EYV3jDpO_ILq; Sat,  7 May 2016 12:46:11 +0200 (CEST)
+X-Auth-Info: sKaBdMi3SXbRupqNFUGK+Q0LeN63VwsoGE8ynF/ju/Lrygsv+uA2plUzOQmPvymv
+Received: from igel.home (ppp-88-217-9-210.dynamic.mnet-online.de [88.217.9.210])
+        by mail.mnet-online.de (Postfix) with ESMTPA;
+        Sat,  7 May 2016 12:46:11 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+        id 457372C59A0; Sat,  7 May 2016 12:46:11 +0200 (CEST)
+From:   Andreas Schwab <schwab@linux-m68k.org>
+To:     "George Spelvin" <linux@horizon.com>
+Cc:     akpm@linux-foundation.org, dalias@libc.org, davem@davemloft.net,
         geert@linux-m68k.org, James.Bottomley@HansenPartnership.com,
-        jjuran@gmail.com, linux@horizon.com, peterz@infradead.org,
-        sam@ravnborg.org, zengzhaoxiu@163.com
-Subject: Re: [patch V4] lib: GCD: Use binary GCD algorithm instead of Euclidean
-Cc:     deller@gmx.de, heiko.carstens@de.ibm.com, ink@jurassic.park.msu.ru,
-        james.hogan@imgtec.com, jejb@parisc-linux.org, jonas@southpole.se,
-        lennox.wu@gmail.com, lftan@altera.com, linux-alpha@vger.kernel.org,
+        jjuran@gmail.com, peterz@infradead.org, sam@ravnborg.org,
+        zengzhaoxiu@163.com, deller@gmx.de, heiko.carstens@de.ibm.com,
+        ink@jurassic.park.msu.ru, james.hogan@imgtec.com,
+        jejb@parisc-linux.org, jonas@southpole.se, lennox.wu@gmail.com,
+        lftan@altera.com, linux-alpha@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
         linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
@@ -27,16 +40,26 @@ Cc:     deller@gmx.de, heiko.carstens@de.ibm.com, ink@jurassic.park.msu.ru,
         sparclinux@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
         vgupta@synopsys.com, ysato@users.sourceforge.jp,
         zhaoxiu.zeng@gmail.com
-In-Reply-To: <1462527763-15301-1-git-send-email-zengzhaoxiu@163.com>
-Return-Path: <linux@horizon.com>
+Subject: Re: [patch V4] lib: GCD: Use binary GCD algorithm instead of Euclidean
+References: <20160507084129.7284.qmail@ns.horizon.com>
+X-Yow:  PUMP UP th' VOLUME!  My BAGEL TOASTER is in tune with th' UNIVERSAL LIFE
+ FORCE!!
+Date:   Sat, 07 May 2016 12:46:11 +0200
+In-Reply-To: <20160507084129.7284.qmail@ns.horizon.com> (George Spelvin's
+        message of "7 May 2016 04:41:29 -0400")
+Message-ID: <87d1oyrvrg.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.0.93 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+Return-Path: <whitebox@nefkom.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53301
+X-archive-position: 53302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@horizon.com
+X-original-sender: schwab@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,317 +72,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Nothing critical, but a bit of kibitzing.
-(That is slang in the Yiddish language for a person
-who offers annoying and unwanted advice.)
+"George Spelvin" <linux@horizon.com> writes:
 
-> The binary GCD algorithm is based on the following facts:
-> 	1. If a and b are all evens, then gcd(a,b) = 2 * gcd(a/2, b/2)
->	2. If a is even and b is odd, then gcd(a,b) = gcd(a/2, b)
->	3. If a and b are all odds, then gcd(a,b) = gcd((a-b)/2, b) = gcd((a+b)/2, b)
+> Your benchmark code doesn't have to have a separate code path if
+> __x86_64__; rdtsc works on 32-bit code just as well.
 
-1) "even" and "odd" are adjectives.  In English, adjectives to not have
-   plural suffixes.  Thus, "they are even" or "they are odd".
-2) Although "all" is not exactly wrong, it sounds odd.  Since there are
-   exactly two of them it's clearer to say "both".
+Take a look at the CC: list.
 
-If I also rephrase the last line to fit into 80 columns, you get:
+Andreas.
 
-  The binary GCD algorithm is based on the following facts:
-- 	1. If a and b are all evens, then gcd(a,b) = 2 * gcd(a/2, b/2)
-+ 	1. If a and b are both even, then gcd(a,b) = 2 * gcd(a/2, b/2)
- 	2. If a is even and b is odd, then gcd(a,b) = gcd(a/2, b)
--	3. If a and b are all odds, then gcd(a,b) = gcd((a-b)/2, b) = gcd((a+b)/2, b)
-+	3. If both are odd, then gcd(a,b) = gcd((a-b)/2, b) = gcd((a+b)/2, b)
-
-3) Negative config options are always confusing.
-
-Would it be better to call it CONFIG_INEFFICIEBNT_FFS, or even simpler
-CONFIG_SLOW_FFS?
-
-Also, you're allowed to add "help" to a non-interactive config option,
-and some documentation might be useful.
-E.g.
-
-+config CPU_SLOW_FFS
-+	def_bool n
-+	help
-+	  If n, the CPU supports a fast __ffs (__builtin_ctz) operation,
-+	  either directly or via a short code sequence using a count
-+	  leading zeros or population count instruction.  If y, the
-+	  operation is emulated by slower software, such as an unrolled
-+	  binary search.
-+
-+	  This is purely an optimization option; the kernel
-+	  will function correctly regardless of how it is set.
-+
-
-Your benchmark code doesn't have to have a separate code path if
-__x86_64__; rdtsc works on 32-bit code just as well.  paths.  And the
-way you subtract the end and start times is unnecessarily complicated.
-The C language guarantees that unsigned arithmetic simply wraps modulo
-2^bits as expected.
-
-Here's a simplified version:
-
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <stdint.h>
-	#include <string.h>
-	#include <time.h>
-	#include <unistd.h>
-
-	#define swap(a, b) \
-		do { \
-			a ^= b; \
-			b ^= a; \
-			a ^= b; \
-		} while (0)
-
-	/* The Euclidean GCD algorithm */
-	unsigned long gcd0(unsigned long a, unsigned long b)
-	{
-		if (a < b)
-			swap(a, b);
-
-		while (b != 0) {
-			unsigned long r = a % b;
-			a = b;
-			b = r;
-		}
-		return a;
-	}
-
-	/* The binary GCD algorithm, using __builtin_ctzl */
-	unsigned long gcd1(unsigned long a, unsigned long b)
-	{
-		unsigned long r = a | b;
-
-		if (!a || !b)
-			return r;
-
-		b >>= __builtin_ctzl(b);
-
-		do {
-			a >>= __builtin_ctzl(a);
-
-			if (a < b)
-				swap(a, b);
-			a -= b;
-		} while (a);
-		return b << __builtin_ctzl(r);
-	}
-
-	/* Binary GCD algorithm, even/odd variant, without __builtin_ctzl */
-	unsigned long gcd2(unsigned long a, unsigned long b)
-	{
-		unsigned long r = a | b;
-
-		if (!a || !b)
-			return r;
-
-		r &= -r;
-
-		while (!(b & r))
-			b >>= 1;
-
-		for (;;) {
-			while (!(a & r))
-				a >>= 1;
-			if (a < b)
-				swap(a, b);
-			else if (a == b)
-				return a;
-			a -= b;
-			a >>= 1;
-			if (a & r)
-				a += b;
-			a >>= 1;
-		}
-	}
-
-	/* A variant of gcd1, with early out for gcd = 1 */
-	unsigned long gcd3(unsigned long a, unsigned long b)
-	{
-		unsigned long r = a | b;
-
-		if (!a || !b)
-			return r;
-
-		b >>= __builtin_ctzl(b);
-		if (b == 1)
-			return r & -r;
-
-		for (;;) {
-			a >>= __builtin_ctzl(a);
-			if (a == b || a == 1)
-				return a << __builtin_ctzl(r);
-
-			if (a < b)
-				swap(a, b);
-			a -= b;
-		}
-	}
-
-	unsigned long gcd4(unsigned long a, unsigned long b)
-	{
-		unsigned long r = a | b;
-
-		if (!a || !b)
-			return r;
-
-		r &= -r;
-
-		while (!(b & r))
-			b >>= 1;
-		if (b == r)
-			return r;
-
-		for (;;) {
-			while (!(a & r))
-				a >>= 1;
-			if (a == b || a == r)
-				return a;
-
-			if (a < b)
-				swap(a, b);
-			a -= b;
-			a >>= 1;
-			if (a & r)
-				a += b;
-			a >>= 1;
-		}
-	}
-
-	static unsigned long (*gcd_func[])(unsigned long a, unsigned long b) = {
-		gcd0, gcd1, gcd2, gcd3, gcd4,
-	};
-
-	#define TEST_ENTRIES (int)(sizeof(gcd_func) / sizeof(gcd_func[0]))
-
-	#define rdtscll(val) do { \
-		unsigned __a,__d; \
-		__asm__ __volatile__("rdtsc" : "=a" (__a), "=d" (__d)); \
-		(val) = __a | (unsigned long long)__d << 32; \
-	} while(0)
-
-	static unsigned long long
-	benchmark_gcd_func(unsigned long (*gcd)(unsigned long, unsigned long),
-			   unsigned long a, unsigned long b, unsigned long *res)
-	{
-		unsigned long long start, end;
-		unsigned long gcd_res;
-
-		rdtscll(start);
-		gcd_res = gcd(a, b);
-		rdtscll(end);
-
-		*res = gcd_res;
-		return end - start;
-	}
-
-	static inline unsigned long get_rand()
-	{
-		if (sizeof(long) == 8)
-			return (unsigned long)rand() << 32 | rand();
-		else
-			return rand();
-	}
-
-	int main(int argc, char **argv)
-	{
-		unsigned int seed = time(0);
-		int loops = 100;
-		int repeats = 1000;
-		unsigned long (*res)[TEST_ENTRIES];
-		unsigned long long elapsed[TEST_ENTRIES];
-		int i, j, k;
-
-		for (;;) {
-			int opt = getopt(argc, argv, "n:r:s:");
-			/* End condition always first */
-			if (opt == -1)
-				break;
-
-			switch (opt) {
-			case 'n':
-				loops = atoi(optarg);
-				break;
-			case 'r':
-				repeats = atoi(optarg);
-				break;
-			case 's':
-				seed = strtoul(optarg, NULL, 10);
-				break;
-			default:
-				/* You won't actually get here. */
-				break;
-			}
-		}
-
-		res = malloc(sizeof(unsigned long) * TEST_ENTRIES * loops);
-		memset(elapsed, 0, sizeof(elapsed));
-
-		srand(seed);
-		for (j = 0; j < loops; j++) {
-			unsigned long a = get_rand();
-			/* Do we have args? */
-			unsigned long b = argc > optind ? strtoul(argv[optind], NULL, 10) : get_rand();
-			unsigned long long min_elapsed[TEST_ENTRIES];
-			for (k = 0; k < repeats; k++) {
-				for (i = 0; i < TEST_ENTRIES; i++) {
-					unsigned long long tmp = benchmark_gcd_func(gcd_func[i], a, b, &res[j][i]);
-					if (k == 0 || min_elapsed[i] > tmp)
-						min_elapsed[i] = tmp;
-				}
-			}
-			for (i = 0; i < TEST_ENTRIES; i++)
-				elapsed[i] += min_elapsed[i];
-		}
-
-		for (i = 0; i < TEST_ENTRIES; i++)
-			printf("gcd%d: elapsed %llu\n", i, elapsed[i]);
-
-		k = 0;
-		srand(seed);
-		for (j = 0; j < loops; j++) {
-			unsigned long a = get_rand();
-			unsigned long b = argc > optind ? strtoul(argv[optind], NULL, 10) : get_rand();
-			for (i = 1; i < TEST_ENTRIES; i++) {
-				if (res[j][i] != res[j][0])
-					break;
-			}
-			if (i < TEST_ENTRIES) {
-				if (k == 0) {
-					k = 1;
-					fprintf(stderr, "Error:\n");
-				}
-				fprintf(stderr, "gcd(%lu, %lu): ", a, b);
-				for (i = 0; i < TEST_ENTRIES; i++)
-					fprintf(stderr, "%ld%s", res[j][i], i < TEST_ENTRIES - 1 ? ", " : "\n");
-			}
-		}
-
-		if (k == 0)
-			fprintf(stderr, "PASS\n");
-
-		free(res);
-
-		return 0;
-	}
-
-Here are some more timings, with the same flags as your tests:
-
-First, 32 bit code:
-		gcd0	gcd1	gcd2	gcd3	gcd4
-Ivy Bridge	3156	1192	1740	1160	1640	PASS
-AMD Phenom	7150	2564	2348	2975	2843	PASS
-Core 2		4176	2592	4164	2604	3900	PASS
-Pentium 4	11492	4784	7632	4852	6452	PASS
-
-And 64-bit (longer times becuase the inputs are larger):
-Ivy Bridge	10636	2496	3500	2432	3360	PASS
-AMD Phenom	19482	4058	6030	5001	6845	PASS
-
-Looking at those, I'm not sure how much better the gcd3/4 versions are
-than gcd1/2.  The difference seems pretty minor and sometimes negative.
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
+"And now for something completely different."

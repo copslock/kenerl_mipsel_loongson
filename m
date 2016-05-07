@@ -1,41 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2016 02:11:04 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:37413 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028098AbcEGALCAucCz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 May 2016 02:11:02 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E93A360470; Sat,  7 May 2016 00:10:59 +0000 (UTC)
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9E0FC60224;
-        Sat,  7 May 2016 00:10:57 +0000 (UTC)
-Date:   Fri, 6 May 2016 17:10:56 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Purna Chandra Mandal <purna.mandal@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Joshua Henderson <digitalpeer@digitalpeer.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v10 2/3] clk: microchip: Add PIC32 clock driver
-Message-ID: <20160507001056.GL3492@codeaurora.org>
-References: <1458731208-25333-1-git-send-email-purna.mandal@microchip.com>
- <1458731208-25333-3-git-send-email-purna.mandal@microchip.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1458731208-25333-3-git-send-email-purna.mandal@microchip.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <sboyd@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2016 10:41:42 +0200 (CEST)
+Received: from ns.horizon.com ([71.41.210.147]:58781 "HELO ns.horizon.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S27027006AbcEGIlhjzMhk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 7 May 2016 10:41:37 +0200
+Received: (qmail 7285 invoked by uid 1000); 7 May 2016 04:41:29 -0400
+Date:   7 May 2016 04:41:29 -0400
+Message-ID: <20160507084129.7284.qmail@ns.horizon.com>
+From:   "George Spelvin" <linux@horizon.com>
+To:     akpm@linux-foundation.org, dalias@libc.org, davem@davemloft.net,
+        geert@linux-m68k.org, James.Bottomley@HansenPartnership.com,
+        jjuran@gmail.com, linux@horizon.com, peterz@infradead.org,
+        sam@ravnborg.org, zengzhaoxiu@163.com
+Subject: Re: [patch V4] lib: GCD: Use binary GCD algorithm instead of Euclidean
+Cc:     deller@gmx.de, heiko.carstens@de.ibm.com, ink@jurassic.park.msu.ru,
+        james.hogan@imgtec.com, jejb@parisc-linux.org, jonas@southpole.se,
+        lennox.wu@gmail.com, lftan@altera.com, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux@arm.linux.org.uk,
+        linux@lists.openrisc.net, liqin.linux@gmail.com,
+        mattst88@gmail.com, monstr@monstr.eu,
+        nios2-dev@lists.rocketboards.org, ralf@linux-mips.org,
+        rth@twiddle.net, schwidefsky@de.ibm.com,
+        sparclinux@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
+        vgupta@synopsys.com, ysato@users.sourceforge.jp,
+        zhaoxiu.zeng@gmail.com
+In-Reply-To: <1462527763-15301-1-git-send-email-zengzhaoxiu@163.com>
+Return-Path: <linux@horizon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53300
+X-archive-position: 53301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: linux@horizon.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,772 +49,317 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Mostly nitpicks, although I'm worried about the iomem casting and
-addition stuff. I suppose if those are fixed up at some later
-time then I'm fine with this going through MIPS tree.
+Nothing critical, but a bit of kibitzing.
+(That is slang in the Yiddish language for a person
+who offers annoying and unwanted advice.)
 
-On 03/23, Purna Chandra Mandal wrote:
-> +static int pbclk_set_rate(struct clk_hw *hw, unsigned long rate,
-> +			  unsigned long parent_rate)
-> +{
-> +	struct pic32_periph_clk *pb = clkhw_to_pbclk(hw);
-> +	unsigned long flags;
-> +	u32 v, div;
-> +	int err;
-> +
-> +	/* check & wait for DIV_READY */
-> +	err = readl_poll_timeout_atomic(pb->ctrl_reg, v, v & PB_DIV_READY,
-> +					1, LOCK_TIMEOUT_US);
-> +	if (err)
-> +		return err;
-> +
-> +	/* calculate clkdiv and best rate */
-> +	div = DIV_ROUND_CLOSEST(parent_rate, rate);
-> +
-> +	spin_lock_irqsave(&lock, flags);
-> +
-> +	/* apply new div */
-> +	v = readl(pb->ctrl_reg);
-> +	v &= ~PB_DIV_MASK;
-> +	v |= (div - 1);
-> +
-> +	pic32_syskey_unlock();
-> +
-> +	writel(v, pb->ctrl_reg);
-> +
-> +	spin_unlock_irqrestore(&lock, flags);
-> +
-> +	/* wait again, for pbdivready */
-> +	err = readl_poll_timeout_atomic(pb->ctrl_reg, v, v & PB_DIV_READY,
-> +					1, LOCK_TIMEOUT_US);
+> The binary GCD algorithm is based on the following facts:
+> 	1. If a and b are all evens, then gcd(a,b) = 2 * gcd(a/2, b/2)
+>	2. If a is even and b is odd, then gcd(a,b) = gcd(a/2, b)
+>	3. If a and b are all odds, then gcd(a,b) = gcd((a-b)/2, b) = gcd((a+b)/2, b)
 
-why atomic? The spinlock was released already.
+1) "even" and "odd" are adjectives.  In English, adjectives to not have
+   plural suffixes.  Thus, "they are even" or "they are odd".
+2) Although "all" is not exactly wrong, it sounds odd.  Since there are
+   exactly two of them it's clearer to say "both".
 
-> +	if (err)
-> +		return err;
-> +
-> +	/* confirm that new div is applied correctly */
-> +	return (pbclk_read_pbdiv(pb) == div) ? 0 : -EBUSY;
-> +}
-> +
-> +const struct clk_ops pic32_pbclk_ops = {
-> +	.enable		= pbclk_enable,
-> +	.disable	= pbclk_disable,
-> +	.is_enabled	= pbclk_is_enabled,
-> +	.recalc_rate	= pbclk_recalc_rate,
-> +	.round_rate	= pbclk_round_rate,
-> +	.set_rate	= pbclk_set_rate,
-> +};
-> +
-> +struct clk *pic32_periph_clk_register(struct pic32_periph_clk *pbclk,
-> +				      void __iomem *clk_iobase)
-> +{
-> +	struct clk *clk;
-> +
-> +	pbclk->ctrl_reg += (ulong)clk_iobase;
-> +
-> +	clk = clk_register(NULL, &pbclk->hw);
-> +	if (IS_ERR(clk)) {
-> +		pr_err("%s: clk_register() failed\n", __func__);
-> +		return clk;
-> +	}
-> +
-> +	return clk;
+If I also rephrase the last line to fit into 80 columns, you get:
 
-These two last lines are the same, just print an error and always
-return clk.
+  The binary GCD algorithm is based on the following facts:
+- 	1. If a and b are all evens, then gcd(a,b) = 2 * gcd(a/2, b/2)
++ 	1. If a and b are both even, then gcd(a,b) = 2 * gcd(a/2, b/2)
+ 	2. If a is even and b is odd, then gcd(a,b) = gcd(a/2, b)
+-	3. If a and b are all odds, then gcd(a,b) = gcd((a-b)/2, b) = gcd((a+b)/2, b)
++	3. If both are odd, then gcd(a,b) = gcd((a-b)/2, b) = gcd((a+b)/2, b)
 
-> +}
-> +
-> +/* Reference Oscillator operations */
-> +#define clkhw_to_refosc(_hw)	container_of(_hw, struct pic32_ref_osc, hw)
-> +
-> +static int roclk_is_enabled(struct clk_hw *hw)
-> +{
-> +	struct pic32_ref_osc *refo = clkhw_to_refosc(hw);
-> +
-> +	return readl(refo->regs) & REFO_ON;
-> +}
-> +
-> +static int roclk_enable(struct clk_hw *hw)
-> +{
-> +	struct pic32_ref_osc *refo = clkhw_to_refosc(hw);
-> +
-> +	writel(REFO_ON | REFO_OE, PIC32_SET(refo->regs));
-> +	return 0;
-> +}
-> +
-> +static void roclk_disable(struct clk_hw *hw)
-> +{
-> +	struct pic32_ref_osc *refo = clkhw_to_refosc(hw);
-> +
-> +	writel(REFO_ON | REFO_OE, PIC32_CLR(refo->regs));
-> +}
-> +
-> +static void roclk_init(struct clk_hw *hw)
-> +{
-> +	/* initialize clock in disabled state */
-> +	roclk_disable(hw);
-> +}
-> +
-> +static u8 roclk_get_parent(struct clk_hw *hw)
-> +{
-> +	struct pic32_ref_osc *refo = clkhw_to_refosc(hw);
-> +	u32 v, i;
-> +
-> +	v = (readl(refo->regs) >> REFO_SEL_SHIFT) & REFO_SEL_MASK;
-> +
-> +	if (!refo->parent_map)
-> +		return (u8)v;
-> +
-> +	for (i = 0; i < clk_hw_get_num_parents(hw); i++)
-> +		if (refo->parent_map[i] == v)
-> +			return (u8)i;
+3) Negative config options are always confusing.
 
-That cast is implicit already.
+Would it be better to call it CONFIG_INEFFICIEBNT_FFS, or even simpler
+CONFIG_SLOW_FFS?
 
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static unsigned long roclk_calc_rate(unsigned long parent_rate,
-> +				     u32 rodiv, u32 rotrim)
-> +{
-> +	u64 rate64;
-> +
-> +	/* fout = fin / [2 * {div + (trim / 512)}]
-> +	 *	= fin * 512 / [1024 * div + 2 * trim]
-> +	 *	= fin * 256 / (512 * div + trim)
-> +	 *	= (fin << 8) / ((div << 9) + trim)
-> +	 */
-> +	if (rotrim) {
-> +		rodiv = (rodiv << 9) + rotrim;
-> +		rate64 = parent_rate;
-> +		rate64 <<= 8;
-> +		do_div(rate64, rodiv);
-> +	} else if (rodiv) {
-> +		rate64 = parent_rate / (rodiv << 1);
-> +	} else {
-> +		rate64 = parent_rate;
-> +	}
-> +	return (unsigned long)rate64;
-> +}
-> +
-> +static void roclk_calc_div_trim(unsigned long rate,
-> +				unsigned long parent_rate,
-> +				u32 *rodiv_p, u32 *rotrim_p)
-> +{
-> +	u32 div, rotrim, rodiv;
-> +	u64 frac;
-> +
-> +	/* Find integer approximation of floating-point arithmetic.
-> +	 *      fout = fin / [2 * {rodiv + (rotrim / 512)}] ... (1)
-> +	 * i.e. fout = fin / 2 * DIV
-> +	 *      whereas DIV = rodiv + (rotrim / 512)
-> +	 *
-> +	 * Since kernel does not perform floating-point arithmatic so
-> +	 * (rotrim/512) will be zero. And DIV & rodiv will result same.
-> +	 *
-> +	 * ie. fout = (fin * 256) / [(512 * rodiv) + rotrim]  ... from (1)
-> +	 * ie. rotrim = ((fin * 256) / fout) - (512 * DIV)
-> +	 */
-> +	if (parent_rate <= rate) {
-> +		div = 0;
-> +		frac = 0;
-> +		rodiv = 0;
-> +		rotrim = 0;
-> +	} else {
-> +		div = parent_rate / (rate << 1);
-> +		frac = parent_rate;
-> +		frac <<= 8;
-> +		do_div(frac, rate);
-> +		frac -= (u64)(div << 9);
-> +
-> +		rodiv = (div > REFO_DIV_MASK) ? REFO_DIV_MASK : div;
-> +		rotrim = (frac >= REFO_TRIM_MAX) ? REFO_TRIM_MAX : frac;
-> +	}
-> +
-> +	if (rodiv_p)
-> +		*rodiv_p = rodiv;
-> +
-> +	if (rotrim_p)
-> +		*rotrim_p = rotrim;
-> +}
-> +
-> +static unsigned long roclk_recalc_rate(struct clk_hw *hw,
-> +				       unsigned long parent_rate)
-> +{
-> +	struct pic32_ref_osc *refo = clkhw_to_refosc(hw);
-> +	u32 v, rodiv, rotrim;
-> +
-> +	/* get rodiv */
-> +	v = readl(refo->regs);
-> +	rodiv = (v >> REFO_DIV_SHIFT) & REFO_DIV_MASK;
-> +
-> +	/* get trim */
-> +	v = readl(refo->regs + REFO_TRIM_REG);
-> +	rotrim = (v >> REFO_TRIM_SHIFT) & REFO_TRIM_MASK;
-> +
-> +	return roclk_calc_rate(parent_rate, rodiv, rotrim);
-> +}
-> +
-> +static long roclk_round_rate(struct clk_hw *hw, unsigned long rate,
-> +			     unsigned long *parent_rate)
-> +{
-> +	u32 rotrim, rodiv;
-> +
-> +	/* calculate dividers for new rate */
-> +	roclk_calc_div_trim(rate, *parent_rate, &rodiv, &rotrim);
-> +
-> +	/* caclulate new rate (rounding) based on new rodiv & rotrim */
-> +	return roclk_calc_rate(*parent_rate, rodiv, rotrim);
-> +}
-> +
-> +static int roclk_determine_rate(struct clk_hw *hw,
-> +				struct clk_rate_request *req)
-> +{
-> +	struct clk_hw *parent_clk, *best_parent_clk = NULL;
-> +	unsigned int i, delta, best_delta = -1;
-> +	unsigned long parent_rate, best_parent_rate = 0;
-> +	unsigned long best = 0, nearest_rate;
-> +
-> +	/* find a parent which can generate nearest clkrate >= rate */
-> +	for (i = 0; i < clk_hw_get_num_parents(hw); i++) {
-> +		/* get parent */
-> +		parent_clk = clk_hw_get_parent_by_index(hw, i);
-> +		if (!parent_clk)
-> +			continue;
-> +
-> +		/* skip if parent runs slower than target rate */
-> +		parent_rate = clk_hw_get_rate(parent_clk);
-> +		if (req->rate > parent_rate)
-> +			continue;
-> +
-> +		nearest_rate = roclk_round_rate(hw, req->rate, &parent_rate);
-> +		delta = abs(nearest_rate - req->rate);
-> +		if ((nearest_rate >= req->rate) && (delta < best_delta)) {
-> +			best_parent_clk = parent_clk;
-> +			best_parent_rate = parent_rate;
-> +			best = nearest_rate;
-> +			best_delta = delta;
-> +
-> +			if (delta == 0)
-> +				break;
-> +		}
-> +	}
-> +
-> +	/* if no match found, retain old rate */
-> +	if (!best_parent_clk) {
-> +		pr_err("%s:%s, no parent found for rate %lu.\n",
-> +		       __func__, clk_hw_get_name(hw), req->rate);
-> +		best_parent_clk = clk_hw_get_parent(hw);
-> +		best_parent_rate = clk_hw_get_rate(best_parent_clk);
+Also, you're allowed to add "help" to a non-interactive config option,
+and some documentation might be useful.
+E.g.
 
-The core would already fill these things in by default so we
-don't really need to get it again.
++config CPU_SLOW_FFS
++	def_bool n
++	help
++	  If n, the CPU supports a fast __ffs (__builtin_ctz) operation,
++	  either directly or via a short code sequence using a count
++	  leading zeros or population count instruction.  If y, the
++	  operation is emulated by slower software, such as an unrolled
++	  binary search.
++
++	  This is purely an optimization option; the kernel
++	  will function correctly regardless of how it is set.
++
 
-> +		best = clk_hw_get_rate(hw);
-> +	}
-> +
-> +	pr_debug("%s,rate %lu, best_parent(%s, %lu), best %lu, delta %d\n",
-> +		 clk_hw_get_name(hw), req->rate,
-> +		 clk_hw_get_name(best_parent_clk), best_parent_rate,
-> +		 best, best_delta);
-> +
-> +	if (req->best_parent_rate)
-> +		req->best_parent_rate = best_parent_rate;
-> +
-> +	if (req->best_parent_hw)
-> +		req->best_parent_hw = best_parent_clk;
-> +
-> +	return best;
-> +}
-> +
-> +static int roclk_set_parent(struct clk_hw *hw, u8 index)
-> +{
-> +	struct pic32_ref_osc *refo = clkhw_to_refosc(hw);
-> +	unsigned long flags;
-> +	u32 v;
-> +	int err;
-> +
-> +	if (refo->parent_map)
-> +		index = refo->parent_map[index];
-> +
-> +	/* wait until ACTIVE bit is zero or timeout */
-> +	err = readl_poll_timeout_atomic(refo->regs, v, !(v & REFO_ACTIVE),
+Your benchmark code doesn't have to have a separate code path if
+__x86_64__; rdtsc works on 32-bit code just as well.  paths.  And the
+way you subtract the end and start times is unnecessarily complicated.
+The C language guarantees that unsigned arithmetic simply wraps modulo
+2^bits as expected.
 
-Why atomic?
+Here's a simplified version:
 
-> +					1, LOCK_TIMEOUT_US);
-> +	if (err) {
-> +		pr_err("%s: poll failed, clk active\n", clk_hw_get_name(hw));
-> +		return err;
-> +	}
-> +
-> +	spin_lock_irqsave(&lock, flags);
-> +
-> +	pic32_syskey_unlock();
-> +
-> +	/* calculate & apply new */
-> +	v = readl(refo->regs);
-> +	v &= ~(REFO_SEL_MASK << REFO_SEL_SHIFT);
-> +	v |= index << REFO_SEL_SHIFT;
-> +
-> +	writel(v, refo->regs);
-> +
-> +	spin_unlock_irqrestore(&lock, flags);
-> +
-> +	return 0;
-> +}
-> +
-> +static int roclk_set_rate_and_parent(struct clk_hw *hw,
-> +				     unsigned long rate,
-> +				     unsigned long parent_rate,
-> +				     u8 index)
-> +{
-> +	struct pic32_ref_osc *refo = clkhw_to_refosc(hw);
-> +	unsigned long flags;
-> +	u32 trim, rodiv, v;
-> +	int err;
-> +
-> +	/* calculate new rodiv & rotrim for new rate */
-> +	roclk_calc_div_trim(rate, parent_rate, &rodiv, &trim);
-> +
-> +	pr_debug("parent_rate = %lu, rate = %lu, div = %d, trim = %d\n",
-> +		 parent_rate, rate, rodiv, trim);
-> +
-> +	/* wait till source change is active */
-> +	err = readl_poll_timeout_atomic(refo->regs, v,
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <stdint.h>
+	#include <string.h>
+	#include <time.h>
+	#include <unistd.h>
 
-Why atomic?
+	#define swap(a, b) \
+		do { \
+			a ^= b; \
+			b ^= a; \
+			a ^= b; \
+		} while (0)
 
-> +					!(v & (REFO_ACTIVE | REFO_DIVSW_EN)),
-> +					1, LOCK_TIMEOUT_US);
-> +	if (err) {
-> +		pr_err("%s: poll timedout, clock is still active\n", __func__);
-> +		return err;
-> +	}
-> +
-> +	spin_lock_irqsave(&lock, flags);
-> +	v = readl(refo->regs);
-> +
-> +	pic32_syskey_unlock();
-> +
-> +	/* apply parent, if required */
-> +	if (refo->parent_map)
-> +		index = refo->parent_map[index];
-> +
-> +	v &= ~(REFO_SEL_MASK << REFO_SEL_SHIFT);
-> +	v |= index << REFO_SEL_SHIFT;
-> +
-> +	/* apply RODIV */
-> +	v &= ~(REFO_DIV_MASK << REFO_DIV_SHIFT);
-> +	v |= rodiv << REFO_DIV_SHIFT;
-> +	writel(v, refo->regs);
-> +
-> +	/* apply ROTRIM */
-> +	v = readl(refo->regs + REFO_TRIM_REG);
-> +	v &= ~(REFO_TRIM_MASK << REFO_TRIM_SHIFT);
-> +	v |= trim << REFO_TRIM_SHIFT;
-> +	writel(v, refo->regs + REFO_TRIM_REG);
-> +
-> +	/* enable & activate divider switching */
-> +	writel(REFO_ON | REFO_DIVSW_EN, PIC32_SET(refo->regs));
-> +
-> +	/* wait till divswen is in-progress */
-> +	err = readl_poll_timeout_atomic(refo->regs, v, !(v & REFO_DIVSW_EN),
-> +					1, LOCK_TIMEOUT_US);
-> +	/* leave the clk gated as it was */
-> +	writel(REFO_ON, PIC32_CLR(refo->regs));
-> +
-> +	spin_unlock_irqrestore(&lock, flags);
-> +
-> +	return err;
-> +}
-> +
-> +static int roclk_set_rate(struct clk_hw *hw, unsigned long rate,
-> +			  unsigned long parent_rate)
-> +{
-> +	u8 index = roclk_get_parent(hw);
-> +
-> +	return roclk_set_rate_and_parent(hw, rate, parent_rate, index);
-> +}
-> +
-> +const struct clk_ops pic32_roclk_ops = {
-> +	.enable			= roclk_enable,
-> +	.disable		= roclk_disable,
-> +	.is_enabled		= roclk_is_enabled,
-> +	.get_parent		= roclk_get_parent,
-> +	.set_parent		= roclk_set_parent,
-> +	.determine_rate		= roclk_determine_rate,
-> +	.recalc_rate		= roclk_recalc_rate,
-> +	.set_rate_and_parent	= roclk_set_rate_and_parent,
-> +	.set_rate		= roclk_set_rate,
-> +	.init			= roclk_init,
-> +};
-> +
-> +struct clk *pic32_refo_clk_register(struct pic32_ref_osc *refo,
-> +				    void __iomem *clk_iobase)
-> +{
-> +	struct clk *clk;
-> +
-> +	refo->regs += (ulong)clk_iobase;
+	/* The Euclidean GCD algorithm */
+	unsigned long gcd0(unsigned long a, unsigned long b)
+	{
+		if (a < b)
+			swap(a, b);
 
-What happens if we do this and then the driver probe fails for
-some weird reason and we retry probe later? The whole += thing is
-not very appealing to me. We probably need some sort of
-descriptor structure that we generate the final structure out of
-and populate any required fields with.
+		while (b != 0) {
+			unsigned long r = a % b;
+			a = b;
+			b = r;
+		}
+		return a;
+	}
 
-> +
-> +	clk = clk_register(NULL, &refo->hw);
-> +	if (IS_ERR(clk)) {
-> +		pr_err("%s: clk_register() failed\n", __func__);
-> +		return clk;
-> +	}
-> +
-> +	return clk;
-> +}
-> +
-> +#define clkhw_to_spll(_hw)	container_of(_hw, struct pic32_sys_pll, hw)
-> +
-> +static inline u32 spll_odiv_to_divider(u32 odiv)
-> +{
-> +	odiv = clamp_val(odiv, PLL_ODIV_MIN, PLL_ODIV_MAX);
-> +
-> +	return 1 << odiv;
-> +}
-> +
-> +static unsigned long spll_calc_mult_div(struct pic32_sys_pll *pll,
-> +					unsigned long rate,
-> +					unsigned long parent_rate,
-> +					u32 *mult_p, u32 *odiv_p)
-> +{
-> +	u32 mul, div, best_mul = 1, best_div = 1;
-> +	unsigned long new_rate, best_rate = rate;
-> +	unsigned int best_delta = -1, delta, match_found = 0;
-> +	u64 rate64;
-> +
-> +	parent_rate /= pll->idiv;
-> +
-> +	for (mul = 1; mul <= PLL_MULT_MAX; mul++) {
-> +		for (div = PLL_ODIV_MIN; div <= PLL_ODIV_MAX; div++) {
-> +			rate64 = parent_rate;
-> +			rate64 *= mul;
-> +			do_div(rate64, 1 << div);
-> +			new_rate = (u32)rate64;
-> +			delta = abs(rate - new_rate);
-> +			if ((new_rate >= rate) && (delta < best_delta)) {
-> +				best_delta = delta;
-> +				best_rate = new_rate;
-> +				best_mul = mul;
-> +				best_div = div;
-> +				match_found = 1;
-> +			}
-> +		}
-> +	}
-> +
-> +	if (!match_found) {
-> +		pr_warn("spll: no match found\n");
-> +		return 0;
-> +	}
-> +
-> +	pr_debug("rate %lu, par_rate %lu/mult %u, div %u, best_rate %lu\n",
-> +		 rate, parent_rate, best_mul, best_div, best_rate);
-> +
-> +	if (mult_p)
-> +		*mult_p = best_mul - 1;
-> +
-> +	if (odiv_p)
-> +		*odiv_p = best_div;
-> +
-> +	return best_rate;
-> +}
-> +
-> +static unsigned long spll_clk_recalc_rate(struct clk_hw *hw,
-> +					  unsigned long parent_rate)
-> +{
-> +	struct pic32_sys_pll *pll = clkhw_to_spll(hw);
-> +	unsigned long pll_in_rate;
-> +	u32 mult, odiv, div, v;
-> +	u64 rate64;
-> +
-> +	v = readl(pll->ctrl_reg);
-> +	odiv = ((v >> PLL_ODIV_SHIFT) & PLL_ODIV_MASK);
-> +	mult = ((v >> PLL_MULT_SHIFT) & PLL_MULT_MASK) + 1;
-> +	div = spll_odiv_to_divider(odiv);
-> +
-> +	/* pll_in_rate = parent_rate / idiv
-> +	 * pll_out_rate = pll_in_rate * mult / div;
-> +	 */
-> +	pll_in_rate = parent_rate / pll->idiv;
-> +	rate64 = pll_in_rate;
-> +	rate64 *= mult;
-> +	do_div(rate64, div);
-> +
-> +	return (unsigned long)rate64;
+	/* The binary GCD algorithm, using __builtin_ctzl */
+	unsigned long gcd1(unsigned long a, unsigned long b)
+	{
+		unsigned long r = a | b;
 
-Cast is useless (it's implicit).
+		if (!a || !b)
+			return r;
 
-> +}
-> +
-> +static long spll_clk_round_rate(struct clk_hw *hw, unsigned long rate,
-> +				unsigned long *parent_rate)
-> +{
-> +	struct pic32_sys_pll *pll = clkhw_to_spll(hw);
-> +
-> +	return spll_calc_mult_div(pll, rate, *parent_rate, NULL, NULL);
-> +}
-> +
-> +static int spll_clk_set_rate(struct clk_hw *hw, unsigned long rate,
-> +			     unsigned long parent_rate)
-> +{
-> +	struct pic32_sys_pll *pll = clkhw_to_spll(hw);
-> +	unsigned long ret, flags;
-> +	u32 mult, odiv, v;
-> +	int err;
-> +
-> +	ret = spll_calc_mult_div(pll, rate, parent_rate, &mult, &odiv);
-> +	if (!ret)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * We can't change SPLL counters when it is in-active use
-> +	 * by system clock. So ensure that PLL clock is not active
-> +	 * parent of SYSCLK before applying new counter/rate.
-> +	 */
-> +
-> +	/* Is spll_clk active parent of sys_clk ? */
-> +	if (unlikely(clk_hw_get_parent(pic32_sclk_hw) == hw)) {
+		b >>= __builtin_ctzl(b);
 
-Why can't we use CLK_SET_RATE_GATE here?
+		do {
+			a >>= __builtin_ctzl(a);
 
-> +		pr_err("%s: failed, clk in-use\n", __func__);
-> +		return -EBUSY;
-> +	}
-> +
-> +	spin_lock_irqsave(&lock, flags);
-> +
-> +	/* apply new multiplier & divisor (read-modify-write) */
-> +	v = readl(pll->ctrl_reg);
-> +	v &= ~(PLL_MULT_MASK << PLL_MULT_SHIFT);
-> +	v &= ~(PLL_ODIV_MASK << PLL_ODIV_SHIFT);
-> +	v |= (mult << PLL_MULT_SHIFT) | (odiv << PLL_ODIV_SHIFT);
-> +
-> diff --git a/drivers/clk/microchip/clk-core.h b/drivers/clk/microchip/clk-core.h
-> new file mode 100644
-> index 0000000..276869a
-> --- /dev/null
-> +++ b/drivers/clk/microchip/clk-core.h
-> @@ -0,0 +1,78 @@
-> +/*
-> + * Purna Chandra Mandal,<purna.mandal@microchip.com>
-> + * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
-> + *
-> + * This program is free software; you can distribute it and/or modify it
-> + * under the terms of the GNU General Public License (Version 2) as
-> + * published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope it will be useful, but WITHOUT
-> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-> + * for more details.
-> + */
-> +#ifndef __MICROCHIP_CLK_PIC32_H_
-> +#define __MICROCHIP_CLK_PIC32_H_
-> +
-> +struct clk_hw;
+			if (a < b)
+				swap(a, b);
+			a -= b;
+		} while (a);
+		return b << __builtin_ctzl(r);
+	}
 
-Not sure why we forward declare this. struct clk_hw is not used
-as a pointer below, so we really need to include clk-provider.h
-here.
+	/* Binary GCD algorithm, even/odd variant, without __builtin_ctzl */
+	unsigned long gcd2(unsigned long a, unsigned long b)
+	{
+		unsigned long r = a | b;
 
-> +
-> +/* System PLL clock */
-> +struct pic32_sys_pll {
-> +	struct clk_hw hw;
-> +	void __iomem *ctrl_reg;
-> +	void __iomem *status_reg;
-> +	u32 lock_mask;
-> +	u32 idiv; /* PLL iclk divider, treated fixed */
-> +};
-> +
-[..]
-> +#endif /* __MICROCHIP_CLK_PIC32_H_*/
-> diff --git a/drivers/clk/microchip/clk-pic32mzda.c b/drivers/clk/microchip/clk-pic32mzda.c
-> new file mode 100644
-> index 0000000..e92e581
-> --- /dev/null
-> +++ b/drivers/clk/microchip/clk-pic32mzda.c
-> @@ -0,0 +1,240 @@
-> +/*
-> + * Purna Chandra Mandal,<purna.mandal@microchip.com>
-> + * Copyright (C) 2015 Microchip Technology Inc.  All rights reserved.
-> + *
-> + * This program is free software; you can distribute it and/or modify it
-> + * under the terms of the GNU General Public License (Version 2) as
-> + * published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope it will be useful, but WITHOUT
-> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-> + * for more details.
-> + */
-> +#include <dt-bindings/clock/microchip,pic32-clock.h>
-> +#include <linux/clk-provider.h>
-> +#include <linux/clkdev.h>
-> +#include <linux/module.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +#include <asm/traps.h>
-> +
-> +#include "clk-core.h"
-> +
-> +static void __iomem *pic32_clk_iobase;
-> +static DEFINE_SPINLOCK(lock);
+		if (!a || !b)
+			return r;
 
-Please use a better name. pic32_clk_lock? That way when we get
-the lockdep info it doesn't say 'lock'.
+		r &= -r;
 
-> +
-> +/* FRC Postscaler */
-> +#define OSC_FRCDIV_MASK		0x07
-> +#define OSC_FRCDIV_SHIFT	24
-> +
-> +/* SPLL fields */
-> +#define PLL_ICLK_MASK		0x01
-> +#define PLL_ICLK_SHIFT		7
-> +
-[...]
-> +
-> +static struct pic32_sec_osc sosc_clk = {
-> +	.enable_reg = (void __iomem *)0x0,
-> +	.status_reg = (void __iomem *)0x1d0,
-> +	.enable_bitmask = BIT(1),
-> +	.status_bitmask = BIT(4),
-> +	.hw.init = &(struct clk_init_data) {
-> +		.name = "sosc_clk",
-> +		.parent_names = NULL,
-> +		.num_parents = 0,
+		while (!(b & r))
+			b >>= 1;
 
-This is static data so = 0 is pretty useless.
+		for (;;) {
+			while (!(a & r))
+				a >>= 1;
+			if (a < b)
+				swap(a, b);
+			else if (a == b)
+				return a;
+			a -= b;
+			a >>= 1;
+			if (a & r)
+				a += b;
+			a >>= 1;
+		}
+	}
 
-> +		.flags = CLK_IS_ROOT,
+	/* A variant of gcd1, with early out for gcd = 1 */
+	unsigned long gcd3(unsigned long a, unsigned long b)
+	{
+		unsigned long r = a | b;
 
-This flag is going away. Please don't use it.
+		if (!a || !b)
+			return r;
 
-> +		.ops = &pic32_sosc_ops,
-> +	},
-> +};
-> +
-> +static int pic32_fscm_nmi(struct notifier_block *nb,
-> +			  unsigned long action, void *data)
-> +{
-> +	if (readl(pic32_clk_iobase) & BIT(2))
+		b >>= __builtin_ctzl(b);
+		if (b == 1)
+			return r & -r;
 
-Why can't we pass this to the notifier by making a wrapper
-structure to hold the iomem pointer and notifier block? That way
-we don't have a static global for this iomem region.
+		for (;;) {
+			a >>= __builtin_ctzl(a);
+			if (a == b || a == 1)
+				return a << __builtin_ctzl(r);
 
-> +		pr_err("pic32-clk: FSCM detected clk failure.\n");
+			if (a < b)
+				swap(a, b);
+			a -= b;
+		}
+	}
 
-That's it? No recovery? Is this for debugging (i.e. pr_debug)? 
+	unsigned long gcd4(unsigned long a, unsigned long b)
+	{
+		unsigned long r = a | b;
 
-> +
-> +	return NOTIFY_OK;
-> +}
-> +
-> +static struct notifier_block failsafe_clk_notifier = {
+		if (!a || !b)
+			return r;
 
-pic32_failsafe_clk_notifier?
+		r &= -r;
 
-> +	.notifier_call = pic32_fscm_nmi,
-> +};
-> +
-> +static int pic32mzda_clk_probe(struct platform_device *pdev)
-> +{
-> +	const char *const pll_mux_parents[] = {"posc_clk", "frc_clk"};
-> +	struct device_node *np = pdev->dev.of_node;
-> +	static struct clk_onecell_data onecell_data;
-> +	static struct clk *clks[MAXCLKS];
-> +	struct clk *pll_mux_clk;
-> +	int nr_clks = 0, i;
-> +
-> +	pic32_clk_iobase = of_io_request_and_map(np, 0, of_node_full_name(np));
-> +	if (IS_ERR(pic32_clk_iobase))
-> +		panic("pic32-clk: failed to map registers\n");
+		while (!(b & r))
+			b >>= 1;
+		if (b == r)
+			return r;
 
-Just return an error? Panic in probe is not too nice.
+		for (;;) {
+			while (!(a & r))
+				a >>= 1;
+			if (a == b || a == r)
+				return a;
 
-> +
-> +	/* register fixed rate clocks */
-> +	clks[POSCCLK] = clk_register_fixed_rate(NULL, "posc_clk", NULL,
-> +						CLK_IS_ROOT, 24000000);
-> +	clks[FRCCLK] =  clk_register_fixed_rate(NULL, "frc_clk", NULL,
-> +						CLK_IS_ROOT, 8000000);
-> +	clks[BFRCCLK] = clk_register_fixed_rate(NULL, "bfrc_clk", NULL,
-> +						CLK_IS_ROOT, 8000000);
-> +	clks[LPRCCLK] = clk_register_fixed_rate(NULL, "lprc_clk", NULL,
-> +						CLK_IS_ROOT, 32000);
-> +	clks[UPLLCLK] = clk_register_fixed_rate(NULL, "usbphy_clk", NULL,
-> +						CLK_IS_ROOT, 24000000);
-> +	/* fixed rate (optional) clock */
-> +	if (of_find_property(np, "microchip,pic32mzda-sosc", NULL)) {
-> +		pr_info("pic32-clk: dt requests SOSC.\n");
-> +		clks[SOSCCLK] = pic32_sosc_clk_register(&sosc_clk,
-> +							pic32_clk_iobase);
-> +	}
-> +	/* divider clock */
-> +	clks[FRCDIVCLK] = clk_register_divider(NULL, "frcdiv_clk",
-> +					       "frc_clk", 0,
-> +					       pic32_clk_iobase,
-> +					       OSC_FRCDIV_SHIFT,
-> +					       OSC_FRCDIV_MASK,
-> +					       CLK_DIVIDER_POWER_OF_TWO,
-> +					       &lock);
-> +	/* PLL ICLK mux */
-> +	pll_mux_clk = clk_register_mux(NULL, "spll_mux_clk",
+			if (a < b)
+				swap(a, b);
+			a -= b;
+			a >>= 1;
+			if (a & r)
+				a += b;
+			a >>= 1;
+		}
+	}
 
-Please pass device to register functions. Who knows, we may
-start using that someday.
+	static unsigned long (*gcd_func[])(unsigned long a, unsigned long b) = {
+		gcd0, gcd1, gcd2, gcd3, gcd4,
+	};
 
-> +				       pll_mux_parents, 2, 0,
-> +				       pic32_clk_iobase + 0x020,
-> +				       PLL_ICLK_SHIFT, 1, 0, &lock);
-> +	if (IS_ERR(pll_mux_clk))
-> +		panic("spll_mux_clk: clk register failed\n");
-> +	/* PLL */
-> +	clks[PLLCLK] = pic32_spll_clk_register(&sys_pll, pic32_clk_iobase);
-> +	/* SYSTEM clock */
-> +	clks[SCLK] = pic32_sys_clk_register(&sys_mux_clk, pic32_clk_iobase);
-> +	/* Peripheral bus clocks */
-> +	for (nr_clks = PB1CLK, i = 0; nr_clks <= PB7CLK; i++, nr_clks++)
-> +		clks[nr_clks] = pic32_periph_clk_register(&periph_clocks[i],
-> +							  pic32_clk_iobase);
-> +
-> +	/* Reference oscillator clock */
-> +	for (nr_clks = REF1CLK, i = 0; nr_clks <= REF5CLK; i++, nr_clks++)
-> +		clks[nr_clks] = pic32_refo_clk_register(&ref_clks[i],
-> +							pic32_clk_iobase);
-> +	/* register clkdev */
-> +	for (i = 0; i < MAXCLKS; i++) {
-> +		if (IS_ERR(clks[i]))
-> +			continue;
-> +		clk_register_clkdev(clks[i], NULL, __clk_get_name(clks[i]));
-> +	}
-> +	/* register clock provider */
-> +	onecell_data.clks = clks;
-> +	onecell_data.clk_num = MAXCLKS;
-> +	of_clk_add_provider(np, of_clk_src_onecell_get, &onecell_data);
+	#define TEST_ENTRIES (int)(sizeof(gcd_func) / sizeof(gcd_func[0]))
 
-Check for errors please.
+	#define rdtscll(val) do { \
+		unsigned __a,__d; \
+		__asm__ __volatile__("rdtsc" : "=a" (__a), "=d" (__d)); \
+		(val) = __a | (unsigned long long)__d << 32; \
+	} while(0)
 
-> +
-> +	/* register NMI for failsafe clock monitor */
-> +	return register_nmi_notifier(&failsafe_clk_notifier);
-> +}
+	static unsigned long long
+	benchmark_gcd_func(unsigned long (*gcd)(unsigned long, unsigned long),
+			   unsigned long a, unsigned long b, unsigned long *res)
+	{
+		unsigned long long start, end;
+		unsigned long gcd_res;
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+		rdtscll(start);
+		gcd_res = gcd(a, b);
+		rdtscll(end);
+
+		*res = gcd_res;
+		return end - start;
+	}
+
+	static inline unsigned long get_rand()
+	{
+		if (sizeof(long) == 8)
+			return (unsigned long)rand() << 32 | rand();
+		else
+			return rand();
+	}
+
+	int main(int argc, char **argv)
+	{
+		unsigned int seed = time(0);
+		int loops = 100;
+		int repeats = 1000;
+		unsigned long (*res)[TEST_ENTRIES];
+		unsigned long long elapsed[TEST_ENTRIES];
+		int i, j, k;
+
+		for (;;) {
+			int opt = getopt(argc, argv, "n:r:s:");
+			/* End condition always first */
+			if (opt == -1)
+				break;
+
+			switch (opt) {
+			case 'n':
+				loops = atoi(optarg);
+				break;
+			case 'r':
+				repeats = atoi(optarg);
+				break;
+			case 's':
+				seed = strtoul(optarg, NULL, 10);
+				break;
+			default:
+				/* You won't actually get here. */
+				break;
+			}
+		}
+
+		res = malloc(sizeof(unsigned long) * TEST_ENTRIES * loops);
+		memset(elapsed, 0, sizeof(elapsed));
+
+		srand(seed);
+		for (j = 0; j < loops; j++) {
+			unsigned long a = get_rand();
+			/* Do we have args? */
+			unsigned long b = argc > optind ? strtoul(argv[optind], NULL, 10) : get_rand();
+			unsigned long long min_elapsed[TEST_ENTRIES];
+			for (k = 0; k < repeats; k++) {
+				for (i = 0; i < TEST_ENTRIES; i++) {
+					unsigned long long tmp = benchmark_gcd_func(gcd_func[i], a, b, &res[j][i]);
+					if (k == 0 || min_elapsed[i] > tmp)
+						min_elapsed[i] = tmp;
+				}
+			}
+			for (i = 0; i < TEST_ENTRIES; i++)
+				elapsed[i] += min_elapsed[i];
+		}
+
+		for (i = 0; i < TEST_ENTRIES; i++)
+			printf("gcd%d: elapsed %llu\n", i, elapsed[i]);
+
+		k = 0;
+		srand(seed);
+		for (j = 0; j < loops; j++) {
+			unsigned long a = get_rand();
+			unsigned long b = argc > optind ? strtoul(argv[optind], NULL, 10) : get_rand();
+			for (i = 1; i < TEST_ENTRIES; i++) {
+				if (res[j][i] != res[j][0])
+					break;
+			}
+			if (i < TEST_ENTRIES) {
+				if (k == 0) {
+					k = 1;
+					fprintf(stderr, "Error:\n");
+				}
+				fprintf(stderr, "gcd(%lu, %lu): ", a, b);
+				for (i = 0; i < TEST_ENTRIES; i++)
+					fprintf(stderr, "%ld%s", res[j][i], i < TEST_ENTRIES - 1 ? ", " : "\n");
+			}
+		}
+
+		if (k == 0)
+			fprintf(stderr, "PASS\n");
+
+		free(res);
+
+		return 0;
+	}
+
+Here are some more timings, with the same flags as your tests:
+
+First, 32 bit code:
+		gcd0	gcd1	gcd2	gcd3	gcd4
+Ivy Bridge	3156	1192	1740	1160	1640	PASS
+AMD Phenom	7150	2564	2348	2975	2843	PASS
+Core 2		4176	2592	4164	2604	3900	PASS
+Pentium 4	11492	4784	7632	4852	6452	PASS
+
+And 64-bit (longer times becuase the inputs are larger):
+Ivy Bridge	10636	2496	3500	2432	3360	PASS
+AMD Phenom	19482	4058	6030	5001	6845	PASS
+
+Looking at those, I'm not sure how much better the gcd3/4 versions are
+than gcd1/2.  The difference seems pretty minor and sometimes negative.

@@ -1,81 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 May 2016 15:06:50 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:43159 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028413AbcEINGpTWnhR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 May 2016 15:06:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
-        bh=taE5i8TT5+vboklpSUuTRRDudZmAgTs7um2mT4CvDWw=; b=eOaokkUSTCiZndfr/IPSu3l+YM
-        +/40cscd3JTVXCl2WJvqQ45MroJv64bKp34eUfpL+7/0tFSed73hxGqvtApg9kZwhE1/ip7naoJjv
-        HnaFn3uNv4WPTXlXp29OjXM0pF9OsmQ11OGrRsKQ6M2+g5pRob3/QJDIa+bR0YM+RBGAbkDk6lG70
-        U4qplwyKQpLOWWorCqDjOMxA17fHUYIg3bFF6dSzZ3GXCZ/56jDItN+IVRofqOnK+to5+FY5BT6a2
-        AsFJ2HljFuPI2ZDMWpxXE8k6qg2GUAypVJoKzkJsEHJdZ/4Y7+u0UmZU/VB4o/WBHns/nJ0qUbXKC
-        nWiozVpw==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:59784 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1azksv-001i25-Vq; Mon, 09 May 2016 13:06:08 +0000
-Subject: Re: [PATCH (v5) 3/11] MIPS: bmips: Add bcm6345-l2-timer interrupt
- controller
-To:     =?UTF-8?Q?=c3=81lvaro_Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>,
-        Simon Arlott <simon@fire.lp0.eu>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <5650BFD6.5030700@simon.arlott.org.uk>
- <CAOiHx=k0Aa+qrBT1J7_cQaQRxndBmwsgSgi3x0eJOYTAy6Zq7Q@mail.gmail.com>
- <5653612A.4050309@simon.arlott.org.uk> <565361AF.20400@simon.arlott.org.uk>
- <70d031ae4c3aa29888d77b64686c39e7e7eaae92@8b5064a13e22126c1b9329f0dc35b8915774b7c3.invalid>
- <5654E67A.9060800@gmail.com> <5657886F.3090908@simon.arlott.org.uk>
- <alpine.DEB.2.11.1511270926580.3572@nanos>
- <56599D73.7040801@simon.arlott.org.uk> <565CE85A.3080904@roeck-us.net>
- <256BE4660FB03085.33070B6A-E0AC-4643-92B8-4FD874210CD9@mail.outlook.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Kumar Gala <galak@codeaurora.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Miguel Gaio <miguel.gaio@efixo.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        linux-watchdog@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <57308B3D.3020502@roeck-us.net>
-Date:   Mon, 9 May 2016 06:06:05 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 May 2016 15:23:24 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57790 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27028417AbcEINXUrhTy7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 May 2016 15:23:20 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u49DNI2M029250;
+        Mon, 9 May 2016 15:23:18 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u49DNGPq029249;
+        Mon, 9 May 2016 15:23:16 +0200
+Date:   Mon, 9 May 2016 15:23:16 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        "Jayachandran C." <jchandra@broadcom.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        linux-mips@linux-mips.org, kvm@vger.kernel.org
+Subject: Re: [PATCH 0/7] MIPS: Add extended ASID support
+Message-ID: <20160509132315.GA28818@linux-mips.org>
+References: <1462541784-22128-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <256BE4660FB03085.33070B6A-E0AC-4643-92B8-4FD874210CD9@mail.outlook.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=0.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1462541784-22128-1-git-send-email-james.hogan@imgtec.com>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53308
+X-archive-position: 53309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,52 +47,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/09/2016 05:01 AM, Álvaro Fernández Rojas wrote:
-> Hello Guenter,
->
-> Are there any other issues preventing this patches from being merged?
->
+On Fri, May 06, 2016 at 02:36:17PM +0100, James Hogan wrote:
 
-My major problem/concern is the interrupt handling and the repeated
-restart of the hardware timer with continuously reduced timeouts.
-This appears fragile, and it doesn't really make sense from a system
-level point of view. Unfortunately, I don't have a data sheet for
-the chip, nor the means or the time to test it myself. So we are pretty
-much in limbo, unless someone from Broadcom confirms that, yes, this is
-the one and expected means to program this watchdog.
+> This patchset is based on v4.6-rc4 and adds support for the optional
+> extended ASIDs present since revision 3.5 of the MIPS32/MIPS64
+> architecture, which extends the TLB ASIDs from 8 bits to 10 bits. These
+> are known to be implemented in XLP and I6400 cores.
+> 
+> Along the way a few cleanups are made, particularly for KVM which
+> manipulates ASIDs from assembly code.
+> 
+> Patch 6 lays most of the groundwork by abstracting asid masks so they
+> can be variable, and patch 7 adds the actual support for extended ASIDs.
+> 
+> Patches 1-5 do some preliminary clean up around ASID handling, and in
+> KVM's locore.S to allow patch 7 to support extended ASIDs.
+> 
+> The use of extended ASIDs can be observed by using the 'x' sysrq to dump
+> TLB values, e.g. by repeatedly running this command:
+> $(echo x > /proc/sysrq-trigger); dmesg -c | grep asid
 
-Guenter
+Oh beloved ASIDs ...
 
-> Regards,
-> Álvaro.
-> _____________________________
-> From: Guenter Roeck <linux@roeck-us.net <mailto:linux@roeck-us.net>>
-> Sent: martes, diciembre 1, 2015 1:23 a. m.
-> Subject: Re: [PATCH (v5) 3/11] MIPS: bmips: Add bcm6345-l2-timer interrupt controller
-> To: Simon Arlott <simon@fire.lp0.eu <mailto:simon@fire.lp0.eu>>, Thomas Gleixner <tglx@linutronix.de <mailto:tglx@linutronix.de>>
-> Cc: Ralf Baechle <ralf@linux-mips.org <mailto:ralf@linux-mips.org>>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org <mailto:linux-kernel@vger.kernel.org>>, Mark Rutland <mark.rutland@arm.com <mailto:mark.rutland@arm.com>>, Florian Fainelli <f.fainelli@gmail.com <mailto:f.fainelli@gmail.com>>, Ian Campbell <ijc+devicetree@hellion.org.uk <mailto:ijc+devicetree@hellion.org.uk>>, Kevin Cernekee <cernekee@gmail.com <mailto:cernekee@gmail.com>>, MIPS Mailing List <linux-mips@linux-mips.org <mailto:linux-mips@linux-mips.org>>, Kumar Gala <galak@codeaurora.org <mailto:galak@codeaurora.org>>, Miguel Gaio <miguel.gaio@efixo.com <mailto:miguel.gaio@efixo.com>>, Jonas Gorski <jogo@openwrt.org <mailto:jogo@openwrt.org>>, Marc Zyngier <marc.zyngier@arm.com <mailto:marc.zyngier@arm.com>>, Pawel Moll <pawel.moll@arm.com <mailto:pawel.moll@arm.com>>, Rob Herring <robh+dt@kernel.org <mailto:robh+dt@kernel.org>>, <devicetree@vger.kernel.org <mailto:devicetree@vger.kernel.org>>, Maxime
-> Bizon <mbizon@freebox.fr <mailto:mbizon@freebox.fr>>, Wim Van Sebroeck <wim@iguana.be <mailto:wim@iguana.be>>, <linux-watchdog@vger.kernel.org <mailto:linux-watchdog@vger.kernel.org>>, Jason Cooper <jason@lakedaemon.net <mailto:jason@lakedaemon.net>>
->
->
-> On 11/28/2015 04:26 AM, Simon Arlott wrote:
->  > Add the BCM6345/BCM6318 timer as an interrupt controller so that it can be
->  > used by the watchdog to warn that its timer will expire soon.
->  >
->  > Support for clocksource/clockevents is not implemented as the timer
->  > interrupt is not per CPU (except on the BCM6318) and the MIPS clock is
->  > better. This could be added later if required without changing the device
->  > tree binding.
->  >
->  > Signed-off-by: Simon Arlott <simon@fire.lp0.eu <mailto:simon@fire.lp0.eu>>
->
-> Hi Simon,
->
-> can you please re-send the entire series, with all Acked-by:/Reviewed-by:
-> tags as appropriate ?
->
-> Thanks,
-> Guenter
->
->
->
->
+Already PMC-Sierra's RM9000 / E9000 core had an extended ASID field, of
+12 bits for 4096 ASID contexts.  Afaics this was an extension derived
+in-house back in the wild days before everything had to be sanctioned by
+the architecture folks, so there is nothing in a config register to test
+for it.
+
+PMCS simply extended the ASID field to 12 bits; no of the EntryHi bits
+which today would conflict doing so did exist back then.
+
+Afair there was yet another core with such a non-standard extension of the
+ASID field.  R6000 and R8000 were weird, too.
+
+Until commit f67e4ffc79905482c3b9b8c8dd65197bac7eb508 ("My proposal for
+non-generic kernels:") we used to runtime patch the kernel (That's the
+cowboy patch the commit message is refering to) to allow for variable
+size of the ASID field and position of the ASID field in the EntryHi
+register.
+
+  Ralf

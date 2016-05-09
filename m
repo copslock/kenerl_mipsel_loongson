@@ -1,40 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 May 2016 15:23:24 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:57790 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27028417AbcEINXUrhTy7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 9 May 2016 15:23:20 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u49DNI2M029250;
-        Mon, 9 May 2016 15:23:18 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u49DNGPq029249;
-        Mon, 9 May 2016 15:23:16 +0200
-Date:   Mon, 9 May 2016 15:23:16 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        "Jayachandran C." <jchandra@broadcom.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        linux-mips@linux-mips.org, kvm@vger.kernel.org
-Subject: Re: [PATCH 0/7] MIPS: Add extended ASID support
-Message-ID: <20160509132315.GA28818@linux-mips.org>
-References: <1462541784-22128-1-git-send-email-james.hogan@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1462541784-22128-1-git-send-email-james.hogan@imgtec.com>
-User-Agent: Mutt/1.6.0 (2016-04-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 May 2016 16:03:52 +0200 (CEST)
+Received: from e23smtp09.au.ibm.com ([202.81.31.142]:58136 "EHLO
+        e23smtp09.au.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27028421AbcEIODrmOvvo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 May 2016 16:03:47 +0200
+Received: from localhost
+        by e23smtp09.au.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <benh@au1.ibm.com>;
+        Tue, 10 May 2016 00:03:39 +1000
+Received: from d23dlp01.au.ibm.com (202.81.31.203)
+        by e23smtp09.au.ibm.com (202.81.31.206) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Tue, 10 May 2016 00:03:36 +1000
+X-IBM-Helo: d23dlp01.au.ibm.com
+X-IBM-MailFrom: benh@au1.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org
+Received: from d23relay06.au.ibm.com (d23relay06.au.ibm.com [9.185.63.219])
+        by d23dlp01.au.ibm.com (Postfix) with ESMTP id 09D1D2CE8057
+        for <linux-mips@linux-mips.org>; Tue, 10 May 2016 00:03:36 +1000 (EST)
+Received: from d23av01.au.ibm.com (d23av01.au.ibm.com [9.190.234.96])
+        by d23relay06.au.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u49E3SId39583890
+        for <linux-mips@linux-mips.org>; Tue, 10 May 2016 00:03:36 +1000
+Received: from d23av01.au.ibm.com (localhost [127.0.0.1])
+        by d23av01.au.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u49E33Wm018388
+        for <linux-mips@linux-mips.org>; Tue, 10 May 2016 00:03:03 +1000
+Received: from ozlabs.au.ibm.com (ozlabs.au.ibm.com [9.192.253.14])
+        by d23av01.au.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u49E33AC017682;
+        Tue, 10 May 2016 00:03:03 +1000
+Received: from pasglop (unknown [9.192.207.37])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2067DA0227;
+        Tue, 10 May 2016 00:02:08 +1000 (AEST)
+Message-ID: <1462802528.20290.104.camel@au1.ibm.com>
+Subject: Re: usb: dwc2: regression on MyBook Live Duo / Canyonlands since
+ 4.3.0-rc4
+From:   Benjamin Herrenschmidt <benh@au1.ibm.com>
+Reply-To: benh@au1.ibm.com
+To:     Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
+        linux-mips@linux-mips.org
+Cc:     Christian Lamparter <chunkeey@googlemail.com>,
+        linux-usb@vger.kernel.org, johnyoun@synopsys.com,
+        gregkh@linuxfoundation.org, a.seppala@gmail.com,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 10 May 2016 00:02:08 +1000
+In-Reply-To: <4162108.qmr2GZCaDN@wuerfel>
+References: <4231696.iL6nGs74X8@debian64> <1908894.Nkk1LXQkFm@debian64>
+         <1462753402.20290.95.camel@au1.ibm.com> <4162108.qmr2GZCaDN@wuerfel>
+Organization: IBM Australia
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.18.5.2 (3.18.5.2-1.fc23) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16050914-0033-0000-0000-000005D39EE6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+Return-Path: <benh@au1.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53309
+X-archive-position: 53310
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: benh@au1.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,44 +75,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 06, 2016 at 02:36:17PM +0100, James Hogan wrote:
+On Mon, 2016-05-09 at 12:36 +0200, Arnd Bergmann wrote:
+> 
+> I think we can simply make this set of accessors architecture-
+> dependent
+> (MIPS vs. the rest of the world) to revert ARM and PowerPC back to
+> the working version.
 
-> This patchset is based on v4.6-rc4 and adds support for the optional
-> extended ASIDs present since revision 3.5 of the MIPS32/MIPS64
-> architecture, which extends the TLB ASIDs from 8 bits to 10 bits. These
-> are known to be implemented in XLP and I6400 cores.
+Or use writel_be which mips seems to support...
+
+Really, make it a BE vs. LE device test is a much better solution.
+
+For now, since dwc2_readl() and writel don't take the device as an
+argument, you can make it a function of a compile time #define, or
+maybe a driver global, but the right way is really something like
+
+	if (device_is_be())
+		return readl_be(...)
+	else
+		return readl(...)
+
+With the device_is_be() being temporarily set to true for MIPS for
+example, and later, a second pass, add the device argument and make it
+a device-flag initialized from the probe routine, possibly from the DT.
+
+Cheers,
+Ben.
+
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > 
-> Along the way a few cleanups are made, particularly for KVM which
-> manipulates ASIDs from assembly code.
-> 
-> Patch 6 lays most of the groundwork by abstracting asid masks so they
-> can be variable, and patch 7 adds the actual support for extended ASIDs.
-> 
-> Patches 1-5 do some preliminary clean up around ASID handling, and in
-> KVM's locore.S to allow patch 7 to support extended ASIDs.
-> 
-> The use of extended ASIDs can be observed by using the 'x' sysrq to dump
-> TLB values, e.g. by repeatedly running this command:
-> $(echo x > /proc/sysrq-trigger); dmesg -c | grep asid
-
-Oh beloved ASIDs ...
-
-Already PMC-Sierra's RM9000 / E9000 core had an extended ASID field, of
-12 bits for 4096 ASID contexts.  Afaics this was an extension derived
-in-house back in the wild days before everything had to be sanctioned by
-the architecture folks, so there is nothing in a config register to test
-for it.
-
-PMCS simply extended the ASID field to 12 bits; no of the EntryHi bits
-which today would conflict doing so did exist back then.
-
-Afair there was yet another core with such a non-standard extension of the
-ASID field.  R6000 and R8000 were weird, too.
-
-Until commit f67e4ffc79905482c3b9b8c8dd65197bac7eb508 ("My proposal for
-non-generic kernels:") we used to runtime patch the kernel (That's the
-cowboy patch the commit message is refering to) to allow for variable
-size of the ASID field and position of the ASID field in the EntryHi
-register.
-
-  Ralf
+> diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
+> index 3c58d633ce80..1f8ed149a40f 100644
+> --- a/drivers/usb/dwc2/core.h
+> +++ b/drivers/usb/dwc2/core.h
+> @@ -64,12 +64,24 @@
+>  	DWC2_TRACE_SCHEDULER_VB(pr_fmt("%s: SCH: " fmt),		
+> \
+>  				dev_name(hsotg->dev), ##__VA_ARGS__)
+>  
+> +
+> +#ifdef CONFIG_MIPS
+> +/*
+> + * There are some MIPS machines that can run in either big-endian
+> + * or little-endian mode and that use the dwc2 register without
+> + * a byteswap in both ways.
+> + * Unlike other architectures, MIPS does not require a barrier
+> + * before the __raw_writel() to synchronize with DMA but does
+> + * require the barrier after the writel() to serialize a series
+> + * of writes. This set of operations was added specifically for
+> + * MIPS and should only be used there.
+> + */
+>  static inline u32 dwc2_readl(const void __iomem *addr)
+>  {
+>  	u32 value = __raw_readl(addr);
+>  
+> -	/* In order to preserve endianness __raw_* operation is
+> used. Therefore
+> -	 * a barrier is needed to ensure IO access is not re-ordered 
+> across
+> +	/* in order to preserve endianness __raw_* operation is
+> used. therefore
+> +	 * a barrier is needed to ensure io access is not re-ordered 
+> across
+>  	 * reads or writes
+>  	 */
+>  	mb();
+> @@ -81,15 +93,32 @@ static inline void dwc2_writel(u32 value, void
+> __iomem *addr)
+>  	__raw_writel(value, addr);
+>  
+>  	/*
+> -	 * In order to preserve endianness __raw_* operation is
+> used. Therefore
+> -	 * a barrier is needed to ensure IO access is not re-ordered 
+> across
+> +	 * in order to preserve endianness __raw_* operation is
+> used. therefore
+> +	 * a barrier is needed to ensure io access is not re-ordered 
+> across
+>  	 * reads or writes
+>  	 */
+>  	mb();
+> -#ifdef DWC2_LOG_WRITES
+> -	pr_info("INFO:: wrote %08x to %p\n", value, addr);
+> +#ifdef dwc2_log_writes
+> +	pr_info("info:: wrote %08x to %p\n", value, addr);
+>  #endif
+>  }
+> +#else
+> +/* Normal architectures just use readl/write */
+> +static inline u32 dwc2_readl(const void __iomem *addr)
+> +{
+> +	u32 value = readl(addr);
+> +	return value;
+> +}
+> +
+> +static inline void dwc2_writel(u32 value, void __iomem *addr)
+> +{
+> +	writel(value, addr);
+> +
+> +#ifdef dwc2_log_writes
+> +	pr_info("info:: wrote %08x to %p\n", value, addr);
+> +#endif
+> +}
+> +#endif
+>  
+>  /* Maximum number of Endpoints/HostChannels */
+>  #define MAX_EPS_CHANNELS	16

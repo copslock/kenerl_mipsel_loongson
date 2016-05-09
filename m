@@ -1,35 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 May 2016 16:19:34 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59508 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27028422AbcEIOTbX3Lco (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 9 May 2016 16:19:31 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u49EJU5R030336;
-        Mon, 9 May 2016 16:19:30 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u49EJUDf030335;
-        Mon, 9 May 2016 16:19:30 +0200
-Date:   Mon, 9 May 2016 16:19:30 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Implement __arch_bitrev* using bitswap for MIPSr6
-Message-ID: <20160509141930.GB28818@linux-mips.org>
-References: <1462538103-6633-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 May 2016 16:22:46 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:34405 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27028421AbcEIOWpRyiSo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 9 May 2016 16:22:45 +0200
+Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 9EB1B486A4;
+        Mon,  9 May 2016 14:22:37 +0000 (UTC)
+Received: from [10.36.112.65] (ovpn-112-65.ams2.redhat.com [10.36.112.65])
+        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u49EMX6n020210
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Mon, 9 May 2016 10:22:35 -0400
+Subject: Re: [PATCH 1/7] MIPS: KVM/locore.S: Don't preserve host ASID around
+ vcpu_run
+To:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1462541784-22128-1-git-send-email-james.hogan@imgtec.com>
+ <1462541784-22128-2-git-send-email-james.hogan@imgtec.com>
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        linux-mips@linux-mips.org, kvm@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <57309D29.6010903@redhat.com>
+Date:   Mon, 9 May 2016 16:22:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1462538103-6633-1-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.6.0 (2016-04-01)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1462541784-22128-2-git-send-email-james.hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.30]); Mon, 09 May 2016 14:22:37 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53311
+X-archive-position: 53312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,19 +53,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, May 06, 2016 at 01:35:03PM +0100, Paul Burton wrote:
 
-> Release 6 of the MIPS architecture introduced the bitswap instruction,
-> which reverses the bits within each byte of a word. Make use of this
-> instruction to implement the __arch_bitrev* functions, which should be
-> faster for most MIPSr6 CPUs, reduces code size slightly and allows us to
-> avoid the lookup table used by the generic implementation, saving 256
-> bytes in the kernel binary by dropping that.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 
-Applied after fixing up a trivial conflict.  It would be a bit cleaner
-if <asm/bitrev.h> was including <linux/types.h> itself.  <linux/swab.h>
-does so but there's no guarantee for that.
+On 06/05/2016 15:36, James Hogan wrote:
+> - It is actually redundant, since the host ASID will be restored
+>   correctly by kvm_arch_vcpu_put(), which is called almost immediately
+>   after kvm_arch_vcpu_ioctl_run() returns.
 
-  Ralf
+What happens if the guest does a rogue access to the area where the host
+kernel resides?  Would that cause a wrong entry in the TLB?
+
+Paolo

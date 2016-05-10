@@ -1,37 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 May 2016 10:05:29 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:58776 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 May 2016 10:09:44 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:59134 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27028570AbcEJIF0kPf0v (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 10 May 2016 10:05:26 +0200
+        id S27028568AbcEJIJlpArOv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 10 May 2016 10:09:41 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4A85Pg0017979;
-        Tue, 10 May 2016 10:05:25 +0200
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4A89ehf018040;
+        Tue, 10 May 2016 10:09:40 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4A85OHM017978;
-        Tue, 10 May 2016 10:05:24 +0200
-Date:   Tue, 10 May 2016 10:05:24 +0200
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4A89eda018039;
+        Tue, 10 May 2016 10:09:40 +0200
+Date:   Tue, 10 May 2016 10:09:40 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-gpio@vger.kernel.org,
-        Alexandre Courbot <acourbot@nvidia.com>,
-        Michael =?iso-8859-1?Q?B=FCsch?= <m@bues.ch>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 10/23] MIPS: do away with
- ARCH_[WANT_OPTIONAL|REQUIRE]_GPIOLIB
-Message-ID: <20160510080524.GC16402@linux-mips.org>
-References: <1461142701-21096-1-git-send-email-linus.walleij@linaro.org>
- <1461142701-21096-11-git-send-email-linus.walleij@linaro.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: Re: [PATCH 01/11] MIPS: math-emu: Fix BC1{EQ,NE}Z emulation
+Message-ID: <20160510080940.GD16402@linux-mips.org>
+References: <1461243895-30371-1-git-send-email-paul.burton@imgtec.com>
+ <1461243895-30371-2-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1461142701-21096-11-git-send-email-linus.walleij@linaro.org>
+In-Reply-To: <1461243895-30371-2-git-send-email-paul.burton@imgtec.com>
 User-Agent: Mutt/1.6.0 (2016-04-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53335
+X-archive-position: 53336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,49 +45,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Apr 20, 2016 at 10:58:08AM +0200, Linus Walleij wrote:
+On Thu, Apr 21, 2016 at 02:04:45PM +0100, Paul Burton wrote:
 
-> This replaces:
+> The conditions for branching when emulating the BC1EQZ & BC1NEZ
+> instructions were backwards, leading to each of those instructions being
+> treated as the other. Fix this by reversing the conditions, and clear up
+> the code a little for readability & checkpatch.
 > 
-> - "select ARCH_REQUIRE_GPIOLIB" with "select GPIOLIB" as this can
->   now be selected directly.
-> 
-> - "select ARCH_WANT_OPTIONAL_GPIOLIB" with no dependency: GPIOLIB
->   is now selectable by everyone, so we need not declare our
->   intent to select it.
-> 
-> When ordering the symbols the following rationale was used:
-> if the selects were in alphabetical order, I moved select GPIOLIB
-> to be in alphabetical order, but if the selects were not
-> maintained in alphabetical order, I just replaced
-> "select ARCH_REQUIRE_GPIOLIB" with "select GPIOLIB".
-> 
-> Cc: Michael Büsch <m@bues.ch>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Various arch maintainers:
-> 
-> either ACK this and I will merge it into the GPIO tree for v4.7
-> anticipating no clashes, or you wait until I have the enabling patch
-> upstream (patch 1 in this series, removing deps on
-> ARCH_[WANTS_OPTIONAL|REQUIRES]_GPIOLIB), and you will be able to
-> merge it to your arch trees yourselves for late v4.7
-> (post GPIO tree merge) or for v4.8.
-> 
-> You can also ask me for an immutable branch if you prefer that, I
-> will put the enabling patch on a branch and the patch for your arch
-> on top and ask you to pull it.
-> 
-> Select your option from the menu, silence probably means I will
-> merge it to the GPIO tree. Unless you are X86 or ARM in which case
-> I will be cautious.
+> Fixes: c909ca718e8f ("MIPS: math-emu: Emulate missing BC1{EQ,NE}Z instructions")
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
-Warning of the snappish maintainer ;-)
-
-For this one:
-
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+Patch ok - but you may want to take Markos off the cc list.  Or iff he's
+still interested, is there any new address for him to use instead?
 
   Ralf

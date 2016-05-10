@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 May 2016 15:56:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:58002 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 May 2016 17:34:44 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:5108 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27028040AbcEJN4Ka8pE0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 May 2016 15:56:10 +0200
+        by eddie.linux-mips.org with ESMTP id S27028415AbcEJPem3JIXj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 May 2016 17:34:42 +0200
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 591FF41F8DC1;
-        Tue, 10 May 2016 14:56:02 +0100 (BST)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id A980941F8DCA;
+        Tue, 10 May 2016 16:34:36 +0100 (BST)
 Received: from mailapp01.imgtec.com ([10.100.180.242])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 10 May 2016 14:56:02 +0100
+  Tue, 10 May 2016 16:34:36 +0100
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 10 May 2016 14:56:02 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 13E0DACEE3381;
-        Tue, 10 May 2016 14:55:59 +0100 (IST)
+        by imgpgp01.kl.imgtec.org on Tue, 10 May 2016 16:34:36 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id 2A9AE8B0D36C5;
+        Tue, 10 May 2016 16:34:33 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 10 May 2016 14:56:01 +0100
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Tue, 10 May 2016 16:34:36 +0100
 Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 10 May
- 2016 14:56:01 +0100
-Date:   Tue, 10 May 2016 14:56:01 +0100
+ 2016 16:34:35 +0100
+Date:   Tue, 10 May 2016 16:34:35 +0100
 From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH 0/5] MIPS: KVM: A few misc fixes
-Message-ID: <20160510135601.GH23699@jhogan-linux.le.imgtec.org>
-References: <1461317929-4991-1-git-send-email-james.hogan@imgtec.com>
- <5731DBD3.50200@redhat.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <Matt.Redfearn@imgtec.com>
+Subject: Re: [PATCH 2/5] MIPS: Add defs & probing of 64-bit CP0_EBase
+Message-ID: <20160510153435.GJ23699@jhogan-linux.le.imgtec.org>
+References: <1461937563-13199-1-git-send-email-james.hogan@imgtec.com>
+ <1461937563-13199-3-git-send-email-james.hogan@imgtec.com>
+ <20160510100209.GB12554@jhogan-linux.le.imgtec.org>
+ <20160510102406.GF16402@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6cMF9JLEeZkfJjkP"
+        protocol="application/pgp-signature"; boundary="/qIPZgKzMPM+y5U5"
 Content-Disposition: inline
-In-Reply-To: <5731DBD3.50200@redhat.com>
+In-Reply-To: <20160510102406.GF16402@linux-mips.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: ebfc6934
@@ -43,7 +43,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53344
+X-archive-position: 53345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,69 +60,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---6cMF9JLEeZkfJjkP
+--/qIPZgKzMPM+y5U5
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 10, 2016 at 03:02:11PM +0200, Paolo Bonzini wrote:
+On Tue, May 10, 2016 at 12:24:06PM +0200, Ralf Baechle wrote:
+> On Tue, May 10, 2016 at 11:02:09AM +0100, James Hogan wrote:
 >=20
+> > On Fri, Apr 29, 2016 at 02:46:00PM +0100, James Hogan wrote:
+> > > MIPS64r2 and later cores may optionally have a 64-bit CP0_EBase
+> > > register, with a write gate (WG) bit to allow the upper half to be
+> > > written. The presence of this feature will need to be known about for=
+ VZ
+> > > support in order to correctly save and restore the guest CP0_EBase
+> > > register, so add CPU feature definitions and probing for this
+> > > capability.
+> >=20
+> > Okay, so it turns out EBase.WG can be present on MIPS32 too, to allow
+> > writing of bits 31:30 (thanks Matt!), so this needs a little more
+> > thought.
 >=20
-> On 22/04/2016 11:38, James Hogan wrote:
-> > Here are a few misc fixes for KVM on MIPS, including 2 guest timer race
-> > fixes, 2 preemption fixes, and missing hazard barriers after disabling
-> > FPU.
-> >=20
-> > James Hogan (5):
-> >   MIPS: KVM: Fix timer IRQ race when freezing timer
-> >   MIPS: KVM: Fix timer IRQ race when writing CP0_Compare
-> >   MIPS: KVM: Fix preemptable kvm_mips_get_*_asid() calls
-> >   MIPS: KVM: Fix preemption warning reading FPU capability
-> >   MIPS: KVM: Add missing disable FPU hazard barriers
-> >=20
-> >  arch/mips/include/asm/kvm_host.h |  2 +-
-> >  arch/mips/kvm/emulate.c          | 89 ++++++++++++++++++++++----------=
---------
-> >  arch/mips/kvm/mips.c             |  8 +++-
-> >  arch/mips/kvm/tlb.c              | 32 ++++++++++-----
-> >  arch/mips/kvm/trap_emul.c        |  2 +-
-> >  5 files changed, 79 insertions(+), 54 deletions(-)
-> >=20
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: "Radim Kr=C4=8Dm=C3=A1=C5=99" <rkrcmar@redhat.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > Cc: kvm@vger.kernel.org
-> > Cc: <stable@vger.kernel.org>
-> >=20
->=20
-> Queued to kvm/next, thanks.
+> So drop the series for now or do you want to patch it up later?
 
-Thanks Paolo!
+Yes, please drop it. I'll submit a v2 which probes for WG instead (i.e.
+detects it on MIPS32 too).
 
-Cheers
+Thanks
 James
 
---6cMF9JLEeZkfJjkP
+--/qIPZgKzMPM+y5U5
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJXMehxAAoJEGwLaZPeOHZ6CdMP/0pM//8M0Jb8bCJKqcwOXvzb
-u/EA6/nd+vWN5mRDTCH8JXuQC3WJKPYvOpQn9JIvP4LcAYURTkzdslvApUMr7ixD
-I9/gjndPdaEhzBo1dWPdMz7v7kWeelWOZ1Is2YnFXY7pyX23HFZTn90x0qWe811x
-If8ZStBRwYWp9qgy6F0cU0zcNUzcSqHpxrCuhKayLJZmDgiULMgixoX2Ys3b4jYX
-L8fjXSePcDsMF6ESroNT61mmvHLQIzDD8GjzVIVLdStPHJ/pT96ad2xCZ5pV0IAo
-VzEuGOiXRYtN+T9DLXLCw19oI58UEva7ZnC3jyRPLaV0NABOUX2N0eh9jVeYBSwQ
-HetIFsDC2jnCo5c52ABbn31Yv/RRHqzfpchHKRitirkPqchZKRf8lH6HAsqW6j5a
-Hcf/8J+1wQxryXsv6qmGniljjLGoqW7xC6KV22yxYDjt5ZJwIU5A72acpE2hafiP
-z57Tzg4ZBq7s4m+jNlIlVrJUBUi6zbsuAhrW5weAPgnomZg4D32SyIKmM/Q6lSB6
-PODUp+rNNYS6eQ43OotJb8GKiXmDGY5F2SXZyk8b1+VeHQtGHWJPZiq5tmUSZ3L9
-TuQh5kiOQJX7gVLAysKOhVyq8a1x/YqGKEsWjGNLTrde5zPdTkOAXuA46v7B2AN8
-XyMBja24ET0uhjw0+O0K
-=+p5u
+iQIcBAEBCAAGBQJXMf+LAAoJEGwLaZPeOHZ6yIQP/1OUynuniMpTI77R6tJ5kQgw
+8+NsLQx3ITHtdeLqJAcAp82h9lo0HwQ66i0aCUrIpEL5qrfzmM3EDk94SzKFCUln
+PPvOUws/ZhsJ84x70hWLSH5TBf2jpG23nT8O6GiQV7y3xgtHQvv07c/nVsMoLLFU
+Kii+JJsXYbRFohJFQ9UHDIje/RBDDWz12ZA6EkcVt1imkRykMO4/VRWU1otwiGtU
+a3lUUJdsxKSzkn25rHqcjbLyTJCciL4LmYEMm7+mPxTTttRTpMV3Kn5Y7rcQt84l
+L9Qto/G+gdeeHW+RAmKNgLn4GYbNRm2s+MH1mVayIVmQUW9ntEnaQiOCtSBg+1WH
+vd7XqEQ0mCoOOWAsrNspyHqzEd/BnRAA5DvOY6n4Dsptwfsu5/nVO3sDMHjuhVeB
+B3wVDa+0PzMkzwwbbm6sl1lSuuW5L1pCZe05wUiX9qU0EbTo0RyZVJd44uhJYboI
+gL168+xavyH2cJY6ch0xxEMGHkPc0V4UUGDAvO8LYcI7vhzp+s3DonA5ogiulmWN
+NsC8aUwgr++0Ib2klJQuU7Jyigix0TjuMvk5Ozo4c8YeXCHyw+pjtIR9c8UNJdSl
+28fnFaUIFetEROXFl2+6UTtyGtQAdW/jtleKeDvP4GZ8nfVa+srmvV8KryGLgu9L
+2YwZXhvRA/J5VDHj9Kyv
+=m6JZ
 -----END PGP SIGNATURE-----
 
---6cMF9JLEeZkfJjkP--
+--/qIPZgKzMPM+y5U5--

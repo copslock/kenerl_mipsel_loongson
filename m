@@ -1,53 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 May 2016 14:44:53 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:47624 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27028664AbcEJMotULsid (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 10 May 2016 14:44:49 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4ACiapZ023553;
-        Tue, 10 May 2016 14:44:36 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4ACiQm9023546;
-        Tue, 10 May 2016 14:44:26 +0200
-Date:   Tue, 10 May 2016 14:44:26 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Joshua Kinard <kumba@gentoo.org>,
-        Huacai Chen <chenhc@lemote.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        David Hildenbrand <dahi@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Daney <david.daney@cavium.com>,
-        Jonas Gorski <jogo@openwrt.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Alex Smith <alex.smith@imgtec.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 00/12] TLB/XPA fixes & cleanups
-Message-ID: <20160510124426.GG16402@linux-mips.org>
-References: <1460716620-13382-1-git-send-email-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 May 2016 15:02:20 +0200 (CEST)
+Received: from mail-wm0-f68.google.com ([74.125.82.68]:34838 "EHLO
+        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27028649AbcEJNCStNdFd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 May 2016 15:02:18 +0200
+Received: by mail-wm0-f68.google.com with SMTP id e201so2569005wme.2;
+        Tue, 10 May 2016 06:02:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=Q1ykQrR7qrxnlrJ9ba/N3BgejiIFg655YYR5670kMk4=;
+        b=ENx1EQWPzBqyY8VEcsjgTqdhxanZosj9DLLcOfkANghR4e0QgYuDS5kaQ7YnHdPtyp
+         IthjqUFr4zIJUtu+90nUUzO96MwgSmkwWb5wxOTWlguE0/HBUgTnIPhYz/1oihfhoJwU
+         jxWUVfIlz+qNst0v9z6jo99ogbKHJtbo0Zs+/eP7S4KvknuykRH5y7k68iRDIajGQ5Po
+         HpLBX+7mtVtsLeQ34q2ZtCGL+J6rtFL+y7+igkMu8Ccdylcs7vfnATgvCGOZ1Tfn3Sbn
+         JXNmreupJT6lOaYyYgt5/FJBMWgggZCS6gNPlPYEjvjhh9AqPIMEaXs4/Tc69k2g6+zu
+         63yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=Q1ykQrR7qrxnlrJ9ba/N3BgejiIFg655YYR5670kMk4=;
+        b=Das4iWFRCgKpPFcnl8yJ+ia3vBGQPROL2Nrb4q4BUuEzwljQ86WKB9+UzCI5cX7Xfl
+         7tS5fx7yUVvMTQF5DCRpQHJ2jFZqdn8AyrkKr18wQP27Nu+QPzUeETn2GqFrWABtw1ye
+         YxE9dUPKAoERM2UQEYZeOpruzS5a//vizz7eViXTmNJHOJeT4gIxNyge+wAt7cfj8YOp
+         kzli3FHg2JOo8bQNkmkuHDRaw/JNFujtwbCHaCm+LU9Cekf/l4trzYid35qGs4i2b8Pe
+         a30WbWcJBoaKyzcsdwuhPKV4GAWiL1yh4TM/H711bm5fN7kXUr+GS9PDFkod6XzSHkxj
+         FcbQ==
+X-Gm-Message-State: AOPr4FWXboSrzYGnB7RKdW51q0N5GG2wyGLIC1faavi9v6LXodn0j0U3RVUvmzq0BtHjqg==
+X-Received: by 10.194.11.36 with SMTP id n4mr41828017wjb.10.1462885333490;
+        Tue, 10 May 2016 06:02:13 -0700 (PDT)
+Received: from [192.168.10.150] (dynamic-adsl-78-12-252-58.clienti.tiscali.it. [78.12.252.58])
+        by smtp.googlemail.com with ESMTPSA id d23sm2911421wmd.1.2016.05.10.06.02.11
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 10 May 2016 06:02:12 -0700 (PDT)
+Subject: Re: [PATCH 0/5] MIPS: KVM: A few misc fixes
+To:     James Hogan <james.hogan@imgtec.com>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1461317929-4991-1-git-send-email-james.hogan@imgtec.com>
+Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        stable@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <5731DBD3.50200@redhat.com>
+Date:   Tue, 10 May 2016 15:02:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1460716620-13382-1-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.6.0 (2016-04-01)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1461317929-4991-1-git-send-email-james.hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <paolo.bonzini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53342
+X-archive-position: 53343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,41 +71,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 15, 2016 at 11:36:48AM +0100, Paul Burton wrote:
 
-> This series fixes up a number of issues introduced by commit
-> c5b367835cfc ("MIPS: Add support for XPA."), including breakage of the
-> MIPS32 with 36 bit physical addressing case & clobbering of $1 upon TLB
-> refill exceptions. Along the way a number of cleanups are made, which
-> leaves pgtable-bits.h in particular much more readable than before.
+
+On 22/04/2016 11:38, James Hogan wrote:
+> Here are a few misc fixes for KVM on MIPS, including 2 guest timer race
+> fixes, 2 preemption fixes, and missing hazard barriers after disabling
+> FPU.
 > 
-> The series applies atop v4.6-rc3.
+> James Hogan (5):
+>   MIPS: KVM: Fix timer IRQ race when freezing timer
+>   MIPS: KVM: Fix timer IRQ race when writing CP0_Compare
+>   MIPS: KVM: Fix preemptable kvm_mips_get_*_asid() calls
+>   MIPS: KVM: Fix preemption warning reading FPU capability
+>   MIPS: KVM: Add missing disable FPU hazard barriers
 > 
-> James Hogan (4):
->   MIPS: Separate XPA CPU feature into LPA and MVH
->   MIPS: Fix HTW config on XPA kernel without LPA enabled
->   MIPS: mm: Don't clobber $1 on XPA TLB refill
->   MIPS: mm: Don't do MTHC0 if XPA not present
+>  arch/mips/include/asm/kvm_host.h |  2 +-
+>  arch/mips/kvm/emulate.c          | 89 ++++++++++++++++++++++------------------
+>  arch/mips/kvm/mips.c             |  8 +++-
+>  arch/mips/kvm/tlb.c              | 32 ++++++++++-----
+>  arch/mips/kvm/trap_emul.c        |  2 +-
+>  5 files changed, 79 insertions(+), 54 deletions(-)
 > 
-> Paul Burton (8):
->   MIPS: Remove redundant asm/pgtable-bits.h inclusions
->   MIPS: Use enums to make asm/pgtable-bits.h readable
->   MIPS: mm: Standardise on _PAGE_NO_READ, drop _PAGE_READ
->   MIPS: mm: Unify pte_page definition
->   MIPS: mm: Fix MIPS32 36b physical addressing (alchemy, netlogic)
->   MIPS: mm: Pass scratch register through to iPTE_SW
->   MIPS: mm: Be more explicit about PTE mode bit handling
->   MIPS: mm: Simplify build_update_entries
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: kvm@vger.kernel.org
+> Cc: <stable@vger.kernel.org>
+> 
 
-Applied - but "MIPS: Separate XPA CPU feature into LPA and MVH" causes
-a massive conflict with Florian's RIXI patches
+Queued to kvm/next, thanks.
 
-  [3/6] MIPS: Allow RIXI to be used on non-R2 or R6 core
-  [4/6] MIPS: Move RIXI exception enabling after vendor-specific cpu_probe
-  [5/6] MIPS: BMIPS: BMIPS4380 and BMIPS5000 support RIXI
-
-I figured unapplying those three, applying Paul's series then re-applying
-Florian's patch on top of the whole series will be the easier path as in
-leaving me with the smaller rejects to manage.
-
-  Ralf
+Paolo

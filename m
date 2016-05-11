@@ -1,39 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 14:51:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40749 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 14:52:13 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:27122 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028947AbcEKMvhXJWU2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 May 2016 14:51:37 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id 706CEFBD510F4;
+        with ESMTP id S27028949AbcEKMviSFGX2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 May 2016 14:51:38 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id EE653BAB8AD56;
         Wed, 11 May 2016 13:51:28 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 11 May 2016 13:51:31 +0100
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 11 May 2016 13:51:32 +0100
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 11 May 2016 13:51:30 +0100
+ 14.3.266.1; Wed, 11 May 2016 13:51:31 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
-        Jayachandran C <jchandra@broadcom.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v2 1/5] MIPS: Define & use CP0_EBase bit definitions
-Date:   Wed, 11 May 2016 13:50:49 +0100
-Message-ID: <1462971053-25622-2-git-send-email-james.hogan@imgtec.com>
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: [PATCH v2 2/5] MIPS: Add defs & probing of extended CP0_EBase
+Date:   Wed, 11 May 2016 13:50:50 +0100
+Message-ID: <1462971053-25622-3-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1462971053-25622-1-git-send-email-james.hogan@imgtec.com>
 References: <1462971053-25622-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [192.168.154.110]
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53367
+X-archive-position: 53368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,91 +47,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add definitions for the bits & fields in the CP0_EBase register, and use
-them from a few different places in arch/mips which hardcoded these
-values.
+The CP0_EBase register may optionally have a write gate (WG) bit to
+allow the upper bits to be written, i.e. bits 31:30 on MIPS32 since r3
+(to allow for an exception base outside of KSeg0/KSeg1 when segmentation
+control is in use) and bits 63:30 on MIPS64 (which also implies the
+extension of CP0_EBase to 64 bits long).
+
+The presence of this feature will need to be known about for VZ support
+in order to correctly save and restore all the bits of the guest
+CP0_EBase register, so add CPU feature definition and probing for this
+feature.
+
+Probing the WG bit on MIPS64 can be a bit fiddly, since 64-bit COP0
+register access instructions were UNDEFINED for 32-bit registers prior
+to MIPS r6, and it'd be nice to be able to probe without clobbering the
+existing state, so there are 3 potential paths:
+
+- If we do a 32-bit read of CP0_EBase and the WG bit is already set, the
+  register must be 64-bit.
+
+- On MIPS r6 we can do a 64-bit read-modify-write to set CP0_EBase.WG,
+  since the upper bits will read 0 and be ignored on write if the
+  register is 32-bit.
+
+- On pre-r6 cores, we do a 32-bit read-modify-write of CP0_EBase. This
+  avoids the potentially UNDEFINED behaviour, but will clobber the upper
+  32-bits of CP0_EBase if it isn't a simple sign extension (which also
+  requires us to ensure BEV=1 or modifying the exception base would be
+  UNDEFINED too). It is hopefully unlikely a bootloader would set up
+  CP0_EBase to a 64-bit segment and leave WG=0.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Jayachandran C <jchandra@broadcom.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: Matt Redfearn <matt.redfearn@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/mipsregs.h | 10 +++++++++-
- arch/mips/kvm/trap_emul.c        |  3 ++-
- arch/mips/netlogic/xlp/nlm_hal.c |  2 +-
- arch/mips/netlogic/xlr/setup.c   |  2 +-
- 4 files changed, 13 insertions(+), 4 deletions(-)
+Changes in v2:
+- Changed to handle MIPS32r3+, which can also have a WG bit to allow
+  bits 31:30 to be written. The feature provided is now just the
+  presence of the WG bit rather than the extension of CP0_EBase to
+  64-bits (which is implied if WG is present on MIPS64).
+---
+ arch/mips/include/asm/cpu-features.h |  4 ++++
+ arch/mips/include/asm/cpu.h          |  1 +
+ arch/mips/include/asm/mipsregs.h     |  3 +++
+ arch/mips/kernel/cpu-probe.c         | 35 +++++++++++++++++++++++++++++++++++
+ 4 files changed, 43 insertions(+)
 
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index da92d513a395..3d82a4043e80 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -432,4 +432,8 @@
+ #define cpu_has_nan_2008	(cpu_data[0].options & MIPS_CPU_NAN_2008)
+ #endif
+ 
++#ifndef cpu_has_ebase_wg
++# define cpu_has_ebase_wg	(cpu_data[0].options & MIPS_CPU_EBASE_WG)
++#endif
++
+ #endif /* __ASM_CPU_FEATURES_H */
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 79ce9ae0a3c7..379beefefb5c 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -403,6 +403,7 @@ enum cpu_type_enum {
+ #define MIPS_CPU_NAN_2008	MBIT_ULL(39)	/* 2008 NaN implemented */
+ #define MIPS_CPU_VP		MBIT_ULL(40)	/* MIPSr6 Virtual Processors (multi-threading) */
+ #define MIPS_CPU_LDPTE		MBIT_ULL(41)	 /* CPU has ldpte/lddir instructions */
++#define MIPS_CPU_EBASE_WG	MBIT_ULL(42)	/* CPU has EBase.WG */
+ 
+ /*
+  * CPU ASE encodings
 diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index b7705ef09df2..57d72f2bf745 100644
+index 57d72f2bf745..4e8ad9d6038a 100644
 --- a/arch/mips/include/asm/mipsregs.h
 +++ b/arch/mips/include/asm/mipsregs.h
-@@ -676,6 +676,14 @@
- #define MIPS_MAAR_S		(_ULCAST_(1) << 1)
- #define MIPS_MAAR_V		(_ULCAST_(1) << 0)
+@@ -1458,6 +1458,9 @@ do {									\
+ #define read_c0_ebase()		__read_32bit_c0_register($15, 1)
+ #define write_c0_ebase(val)	__write_32bit_c0_register($15, 1, val)
  
-+/* EBase bit definitions */
-+#define MIPS_EBASE_CPUNUM_SHIFT	0
-+#define MIPS_EBASE_CPUNUM	(_ULCAST_(0x3ff) << 0)
-+#define MIPS_EBASE_WG_SHIFT	11
-+#define MIPS_EBASE_WG		(_ULCAST_(1) << 11)
-+#define MIPS_EBASE_BASE_SHIFT	12
-+#define MIPS_EBASE_BASE		(~_ULCAST_((1 << MIPS_EBASE_BASE_SHIFT) - 1))
++#define read_c0_ebase_64()	__read_64bit_c0_register($15, 1)
++#define write_c0_ebase_64(val)	__write_64bit_c0_register($15, 1, val)
 +
- /* CMGCRBase bit definitions */
- #define MIPS_CMGCRB_BASE	11
- #define MIPS_CMGCRF_BASE	(~_ULCAST_((1 << MIPS_CMGCRB_BASE) - 1))
-@@ -2104,7 +2112,7 @@ __BUILD_SET_C0(brcm_mode)
-  */
- static inline unsigned int get_ebase_cpunum(void)
- {
--	return read_c0_ebase() & 0x3ff;
-+	return read_c0_ebase() & MIPS_EBASE_CPUNUM;
- }
+ #define read_c0_cdmmbase()	__read_ulong_c0_register($15, 2)
+ #define write_c0_cdmmbase(val)	__write_ulong_c0_register($15, 2, val)
  
- #endif /* !__ASSEMBLY__ */
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index c4038d2a724c..fd43f0afdb9f 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -505,7 +505,8 @@ static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
- 	kvm_write_c0_guest_intctl(cop0, 0xFC000000);
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index a6ce1db191aa..c4795568c1f2 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -858,6 +858,41 @@ static void decode_configs(struct cpuinfo_mips *c)
+ 	if (ok)
+ 		ok = decode_config5(c);
  
- 	/* Put in vcpu id as CPUNum into Ebase Reg to handle SMP Guests */
--	kvm_write_c0_guest_ebase(cop0, KVM_GUEST_KSEG0 | (vcpu_id & 0xFF));
-+	kvm_write_c0_guest_ebase(cop0, KVM_GUEST_KSEG0 |
-+				       (vcpu_id & MIPS_EBASE_CPUNUM));
++	/* Probe the EBase.WG bit */
++	if (cpu_has_mips_r2_r6) {
++		u64 ebase;
++		unsigned int status;
++
++		/* {read,write}_c0_ebase_64() may be UNDEFINED prior to r6 */
++		ebase = cpu_has_mips64r6 ? read_c0_ebase_64()
++					 : (s32)read_c0_ebase();
++		if (ebase & MIPS_EBASE_WG) {
++			/* WG bit already set, we can avoid the clumsy probe */
++			c->options |= MIPS_CPU_EBASE_WG;
++		} else {
++			/* Its UNDEFINED to change EBase while BEV=0 */
++			status = read_c0_status();
++			write_c0_status(status | ST0_BEV);
++			irq_enable_hazard();
++			/*
++			 * On pre-r6 cores, this may well clobber the upper bits
++			 * of EBase. This is hard to avoid without potentially
++			 * hitting UNDEFINED dm*c0 behaviour if EBase is 32-bit.
++			 */
++			if (cpu_has_mips64r6)
++				write_c0_ebase_64(ebase | MIPS_EBASE_WG);
++			else
++				write_c0_ebase(ebase | MIPS_EBASE_WG);
++			back_to_back_c0_hazard();
++			/* Restore BEV */
++			write_c0_status(status);
++			if (read_c0_ebase() & MIPS_EBASE_WG) {
++				c->options |= MIPS_CPU_EBASE_WG;
++				write_c0_ebase(ebase);
++			}
++		}
++	}
++
+ 	mips_probe_watch_registers(c);
  
- 	return 0;
- }
-diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index 80ec929747c3..25ee69489e5e 100644
---- a/arch/mips/netlogic/xlp/nlm_hal.c
-+++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -58,7 +58,7 @@ void nlm_node_init(int node)
- 		nodep->coremask = 1;	/* node 0, boot cpu */
- 	nodep->sysbase = nlm_get_sys_regbase(node);
- 	nodep->picbase = nlm_get_pic_regbase(node);
--	nodep->ebase = read_c0_ebase() & (~((1 << 12) - 1));
-+	nodep->ebase = read_c0_ebase() & MIPS_EBASE_BASE;
- 	if (cpu_is_xlp9xx())
- 		nodep->socbus = xlp9xx_get_socbus(node);
- 	else
-diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
-index d118b9aa7647..72ceddc9a03f 100644
---- a/arch/mips/netlogic/xlr/setup.c
-+++ b/arch/mips/netlogic/xlr/setup.c
-@@ -168,7 +168,7 @@ static void nlm_init_node(void)
- 
- 	nodep = nlm_current_node();
- 	nodep->picbase = nlm_mmio_base(NETLOGIC_IO_PIC_OFFSET);
--	nodep->ebase = read_c0_ebase() & (~((1 << 12) - 1));
-+	nodep->ebase = read_c0_ebase() & MIPS_EBASE_BASE;
- 	spin_lock_init(&nodep->piclock);
- }
- 
+ #ifndef CONFIG_MIPS_CPS
 -- 
 2.4.10

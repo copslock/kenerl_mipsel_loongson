@@ -1,37 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 19:17:51 +0200 (CEST)
-Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:50801 "EHLO
-        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27029049AbcEKRRqRQX69 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 May 2016 19:17:46 +0200
-Received: from raspberrypi.musicnaut.iki.fi (85-76-144-175-nat.elisa-mobile.fi [85.76.144.175])
-        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 0D4341A2623;
-        Wed, 11 May 2016 20:17:43 +0300 (EEST)
-Date:   Wed, 11 May 2016 20:17:43 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Michal Toman <michal.toman@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        "stable # v4 . 3+" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] MIPS: Prevent "restoration" of MSA context in non-MSA
- kernels
-Message-ID: <20160511171743.GB996@raspberrypi.musicnaut.iki.fi>
-References: <alpine.DEB.2.00.1604211731030.21846@tp.orcam.me.uk>
- <1461258293-8863-1-git-send-email-paul.burton@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1461258293-8863-1-git-send-email-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 21:16:28 +0200 (CEST)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:33206 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27029103AbcEKTQ1A07Wo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 May 2016 21:16:27 +0200
+Received: by mail-pf0-f195.google.com with SMTP id y7so4418649pfb.0;
+        Wed, 11 May 2016 12:16:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=b6yu7OsZWAFhR8lQWnVEAYjmHwFxKckbZHCkY/XQ8g4=;
+        b=L3yYKlh1OVyRoJ5UNXZtO9rXMhYPGjYUoqX4MIgpXSg/3V4ZLgrjqtUZZDH4cLSjsy
+         ct4NWill9iFuMAhkz7MdET1AgX6qI1H/haxd3mZWzfImPaeuBXFRzS9UVSq7TKen1kAQ
+         9S/huh7wHt+ZsvymHvDgi8s1fn40ZwBfdB+gqPu+2J/N9Shb8YoE6ixJ6UBZJzBqOPP+
+         QbFX6uHl9zfcsJqCRobXvMfGbRrg89W3oZEO9iEUsL/pMcnmMRJJ9dOL4Fmnn7N3Ra1O
+         2VM5FH6BWVheLlaJ6EroL+QfvmYRGlRtdyu/DHrP8KqU0PEjnr8vkROogQfWdpiSg5bt
+         p5Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=b6yu7OsZWAFhR8lQWnVEAYjmHwFxKckbZHCkY/XQ8g4=;
+        b=gdTZCa/CgcV5kxp+ARGg4/B9hEXf1TpiWnITp6tBuoL66uARvMGgrrYpHsWCeA/cnv
+         akoTxrF0vRXxCWpqTJvE+A3BDImEmkGd20Hlh8TEHO2HZBDOH0iISxK6Nh6V9E7WR67f
+         BO+7tp85/F39Z/6ljfhJ4lER6U9lhPwKlSqo3iJjxWuHDvLoKJf8zKpqpMPo/HiHMzUQ
+         0yjGPoM6KTJ7f/b77O9HfqH4oTsqYzOS5TDr2tLu1ZPKIiSiIL8t0xJZ6XCrcw/A/+Ny
+         SNYCB27aYcQm8BLUMwk/Tk9wlpq1buUwpIH5WEfQQJLsM0KHHCUcSgoKAHVMvodpYcn7
+         mopg==
+X-Gm-Message-State: AOPr4FWH6Js27vjPa5/lRUawKzkj1L25phwIVUU/D1f2EFU1QUFsiUwF/wfvp/FyhWX0Qg==
+X-Received: by 10.98.92.66 with SMTP id q63mr7461473pfb.21.1462994180847;
+        Wed, 11 May 2016 12:16:20 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.gmail.com with ESMTPSA id xd14sm14082872pac.6.2016.05.11.12.16.19
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 11 May 2016 12:16:19 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, matt.redfearn@imgtec.com,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: tools: Ignore relocation tool
+Date:   Wed, 11 May 2016 12:16:17 -0700
+Message-Id: <1462994177-6460-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53382
+X-archive-position: 53383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,82 +61,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Add a .gitignore ignoring arch/mips/boot/tools/relocs.
 
-On Thu, Apr 21, 2016 at 06:04:53PM +0100, Paul Burton wrote:
-> If a kernel doesn't support MSA context (ie. CONFIG_CPU_HAS_MSA=n) then
-> it will only keep 64 bits per FP register in thread context, and the
-> calls to set_fpr64 in restore_msa_extcontext will overrun the end of the
-> FP register context into the FCSR & MSACSR values. GCC 6.x has become
-> smart enough to detect this & complain like so:
-> 
->     arch/mips/kernel/signal.c: In function 'protected_restore_fp_context':
->     ./arch/mips/include/asm/processor.h:114:17: error: array subscript is above array bounds [-Werror=array-bounds]
->       fpr->val##width[FPR_IDX(width, idx)] = val;   \
->       ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
->     ./arch/mips/include/asm/processor.h:118:1: note: in expansion of macro 'BUILD_FPR_ACCESS'
->      BUILD_FPR_ACCESS(64)
-> 
-> The only way to trigger this code to run would be for a program to set
-> up an artificial extended MSA context structure following a sigframe &
-> execute sigreturn. Whilst this doesn't allow a program to write to any
-> state that it couldn't already, it makes little sense to allow this
-> "restoration" of MSA context in a system that doesn't support MSA.
-> 
-> Fix this by killing a program with SIGSYS if it tries something as crazy
-> as "restoring" fake MSA context in this way, also fixing the build error
-> & allowing for most of restore_msa_extcontext to be optimised out of
-> kernels without support for MSA.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Reported-by: Michal Toman <michal.toman@imgtec.com>
-> Fixes: bf82cb30c7e5 ("MIPS: Save MSA extended context around signals")
-> Cc: James Hogan <james.hogan@imgtec.com>
-> Cc: stable <stable@vger.kernel.org> # v4.3+
+Fixes: 5f552da15721 ("MIPS: tools: Add relocs tool")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ arch/mips/boot/tools/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 arch/mips/boot/tools/.gitignore
 
-This patch is needed to build MIPS kernel with GCC 6.1.
-
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-
-Thanks,
-
-A.
-
-
-> ---
-> 
-> Changes in v2:
-> - Prevent potential for malformed errno/signal from protected_restore_fp_context.
-> 
->  arch/mips/kernel/signal.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-> index bf792e2..fc7c1f0 100644
-> --- a/arch/mips/kernel/signal.c
-> +++ b/arch/mips/kernel/signal.c
-> @@ -195,6 +195,9 @@ static int restore_msa_extcontext(void __user *buf, unsigned int size)
->  	unsigned int csr;
->  	int i, err;
->  
-> +	if (!config_enabled(CONFIG_CPU_HAS_MSA))
-> +		return SIGSYS;
-> +
->  	if (size != sizeof(*msa))
->  		return -EINVAL;
->  
-> @@ -398,8 +401,8 @@ int protected_restore_fp_context(void __user *sc)
->  	}
->  
->  fp_done:
-> -	if (used & USED_EXTCONTEXT)
-> -		err |= restore_extcontext(sc_to_extcontext(sc));
-> +	if (!err && (used & USED_EXTCONTEXT))
-> +		err = restore_extcontext(sc_to_extcontext(sc));
->  
->  	return err ?: sig;
->  }
-> -- 
-> 2.8.0
-> 
-> 
+diff --git a/arch/mips/boot/tools/.gitignore b/arch/mips/boot/tools/.gitignore
+new file mode 100644
+index 000000000000..be0ed065249b
+--- /dev/null
++++ b/arch/mips/boot/tools/.gitignore
+@@ -0,0 +1 @@
++relocs
+-- 
+2.7.4

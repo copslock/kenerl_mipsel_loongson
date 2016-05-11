@@ -1,38 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 14:05:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54454 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 14:09:05 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:54748 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27028944AbcEKMFs2AKMY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 May 2016 14:05:48 +0200
+        id S27028944AbcEKMJCIRblY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 May 2016 14:09:02 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4BC5k2G017331;
-        Wed, 11 May 2016 14:05:47 +0200
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4BC907Y017391;
+        Wed, 11 May 2016 14:09:00 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4BC5iEt017330;
-        Wed, 11 May 2016 14:05:44 +0200
-Date:   Wed, 11 May 2016 14:05:44 +0200
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4BC90iU017390;
+        Wed, 11 May 2016 14:09:00 +0200
+Date:   Wed, 11 May 2016 14:09:00 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     "Maciej W. Rozycki" <macro@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        linux-mips@linux-mips.org, fengguang.wu@intel.com,
-        "stable # v4 . 4+" <stable@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Allow R6 compact branch policy to be left
- unspecified
-Message-ID: <20160511120544.GM16402@linux-mips.org>
-References: <1461314611-15317-1-git-send-email-paul.burton@imgtec.com>
- <alpine.DEB.2.00.1604221648580.21846@tp.orcam.me.uk>
- <20160422173245.GC2467@jhogan-linux.le.imgtec.org>
+To:     Stephen Boyd <sboyd@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] MIPS: ath79: Remove CLK_IS_ROOT
+Message-ID: <20160511120900.GN16402@linux-mips.org>
+References: <1461116001-768-1-git-send-email-sboyd@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20160422173245.GC2467@jhogan-linux.le.imgtec.org>
+In-Reply-To: <1461116001-768-1-git-send-email-sboyd@codeaurora.org>
 User-Agent: Mutt/1.6.0 (2016-04-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53363
+X-archive-position: 53364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,9 +43,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I was wondering if we should simply probe for the availability of the
-GCC option and not use it, if using an older GCC, then change the
-help text for the option accordingly.  This approach would allow
-make randconfig or similar to work as expected with older compilers.
+On Tue, Apr 19, 2016 at 06:33:21PM -0700, Stephen Boyd wrote:
+
+> This flag is a no-op now (see commit 47b0eeb3dc8a "clk: Deprecate
+> CLK_IS_ROOT", 2016-02-02) so remove it.
+> 
+> Cc: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+
+Thanks, applied.
 
   Ralf

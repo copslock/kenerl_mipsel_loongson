@@ -1,44 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 14:53:04 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15475 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 14:56:26 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:52206 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028960AbcEKMvmb97I2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 May 2016 14:51:42 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id 9B4589FC36A3C;
-        Wed, 11 May 2016 13:51:31 +0100 (IST)
+        with ESMTP id S27028957AbcEKM4WhR1l2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 May 2016 14:56:22 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id 32EC97776EC3E;
+        Wed, 11 May 2016 13:56:13 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 11 May 2016 13:51:34 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 11 May 2016 13:51:34 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Arnaldo Carvalho de Melo" <acme@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Robert Richter <rric@kernel.org>, <linux-mips@linux-mips.org>,
-        <oprofile-list@lists.sf.net>
-Subject: [PATCH v2 5/5] MIPS: Add perf counter feature
-Date:   Wed, 11 May 2016 13:50:53 +0100
-Message-ID: <1462971053-25622-6-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1462971053-25622-1-git-send-email-james.hogan@imgtec.com>
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 11 May 2016 13:56:15 +0100
+Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Wed, 11 May
+ 2016 13:56:15 +0100
+Subject: Re: [PATCH v2 2/5] MIPS: Add defs & probing of extended CP0_EBase
+To:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
 References: <1462971053-25622-1-git-send-email-james.hogan@imgtec.com>
+ <1462971053-25622-3-git-send-email-james.hogan@imgtec.com>
+CC:     <linux-mips@linux-mips.org>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <57332BEF.8030406@imgtec.com>
+Date:   Wed, 11 May 2016 13:56:15 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <1462971053-25622-3-git-send-email-james.hogan@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53371
+X-archive-position: 53372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,106 +49,143 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add CPU feature for standard MIPS r2 performance counters, as determined
-by the Config1.PC bit. Both perf_events and oprofile probe this bit, so
-lets combine the probing and change both to use cpu_has_perf.
 
-This will also be used for VZ support in KVM to know whether performance
-counters exist which can be exposed to guests.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Robert Richter <rric@kernel.org>
-Cc: linux-mips@linux-mips.org
-Cc: oprofile-list@lists.sf.net
----
- arch/mips/include/asm/cpu-features.h | 4 ++++
- arch/mips/include/asm/cpu.h          | 1 +
- arch/mips/kernel/cpu-probe.c         | 2 ++
- arch/mips/kernel/perf_event_mipsxx.c | 4 +---
- arch/mips/oprofile/op_model_mipsxx.c | 4 +---
- 5 files changed, 9 insertions(+), 6 deletions(-)
+On 11/05/16 13:50, James Hogan wrote:
+> The CP0_EBase register may optionally have a write gate (WG) bit to
+> allow the upper bits to be written, i.e. bits 31:30 on MIPS32 since r3
+> (to allow for an exception base outside of KSeg0/KSeg1 when segmentation
+> control is in use) and bits 63:30 on MIPS64 (which also implies the
+> extension of CP0_EBase to 64 bits long).
+>
+> The presence of this feature will need to be known about for VZ support
+> in order to correctly save and restore all the bits of the guest
+> CP0_EBase register, so add CPU feature definition and probing for this
+> feature.
+>
+> Probing the WG bit on MIPS64 can be a bit fiddly, since 64-bit COP0
+> register access instructions were UNDEFINED for 32-bit registers prior
+> to MIPS r6, and it'd be nice to be able to probe without clobbering the
+> existing state, so there are 3 potential paths:
+>
+> - If we do a 32-bit read of CP0_EBase and the WG bit is already set, the
+>    register must be 64-bit.
+>
+> - On MIPS r6 we can do a 64-bit read-modify-write to set CP0_EBase.WG,
+>    since the upper bits will read 0 and be ignored on write if the
+>    register is 32-bit.
+>
+> - On pre-r6 cores, we do a 32-bit read-modify-write of CP0_EBase. This
+>    avoids the potentially UNDEFINED behaviour, but will clobber the upper
+>    32-bits of CP0_EBase if it isn't a simple sign extension (which also
+>    requires us to ensure BEV=1 or modifying the exception base would be
+>    UNDEFINED too). It is hopefully unlikely a bootloader would set up
+>    CP0_EBase to a 64-bit segment and leave WG=0.
+>
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+> Cc: linux-mips@linux-mips.org
+> ---
+> Changes in v2:
+> - Changed to handle MIPS32r3+, which can also have a WG bit to allow
+>    bits 31:30 to be written. The feature provided is now just the
+>    presence of the WG bit rather than the extension of CP0_EBase to
+>    64-bits (which is implied if WG is present on MIPS64).
+> ---
+>   arch/mips/include/asm/cpu-features.h |  4 ++++
+>   arch/mips/include/asm/cpu.h          |  1 +
+>   arch/mips/include/asm/mipsregs.h     |  3 +++
+>   arch/mips/kernel/cpu-probe.c         | 35 +++++++++++++++++++++++++++++++++++
+>   4 files changed, 43 insertions(+)
+>
+> diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+> index da92d513a395..3d82a4043e80 100644
+> --- a/arch/mips/include/asm/cpu-features.h
+> +++ b/arch/mips/include/asm/cpu-features.h
+> @@ -432,4 +432,8 @@
+>   #define cpu_has_nan_2008	(cpu_data[0].options & MIPS_CPU_NAN_2008)
+>   #endif
+>   
+> +#ifndef cpu_has_ebase_wg
+> +# define cpu_has_ebase_wg	(cpu_data[0].options & MIPS_CPU_EBASE_WG)
+> +#endif
+> +
+>   #endif /* __ASM_CPU_FEATURES_H */
+> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+> index 79ce9ae0a3c7..379beefefb5c 100644
+> --- a/arch/mips/include/asm/cpu.h
+> +++ b/arch/mips/include/asm/cpu.h
+> @@ -403,6 +403,7 @@ enum cpu_type_enum {
+>   #define MIPS_CPU_NAN_2008	MBIT_ULL(39)	/* 2008 NaN implemented */
+>   #define MIPS_CPU_VP		MBIT_ULL(40)	/* MIPSr6 Virtual Processors (multi-threading) */
+>   #define MIPS_CPU_LDPTE		MBIT_ULL(41)	 /* CPU has ldpte/lddir instructions */
+> +#define MIPS_CPU_EBASE_WG	MBIT_ULL(42)	/* CPU has EBase.WG */
+>   
+>   /*
+>    * CPU ASE encodings
+> diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+> index 57d72f2bf745..4e8ad9d6038a 100644
+> --- a/arch/mips/include/asm/mipsregs.h
+> +++ b/arch/mips/include/asm/mipsregs.h
+> @@ -1458,6 +1458,9 @@ do {									\
+>   #define read_c0_ebase()		__read_32bit_c0_register($15, 1)
+>   #define write_c0_ebase(val)	__write_32bit_c0_register($15, 1, val)
+>   
+> +#define read_c0_ebase_64()	__read_64bit_c0_register($15, 1)
+> +#define write_c0_ebase_64(val)	__write_64bit_c0_register($15, 1, val)
+> +
+>   #define read_c0_cdmmbase()	__read_ulong_c0_register($15, 2)
+>   #define write_c0_cdmmbase(val)	__write_ulong_c0_register($15, 2, val)
+>   
+> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> index a6ce1db191aa..c4795568c1f2 100644
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -858,6 +858,41 @@ static void decode_configs(struct cpuinfo_mips *c)
+>   	if (ok)
+>   		ok = decode_config5(c);
+>   
+> +	/* Probe the EBase.WG bit */
+> +	if (cpu_has_mips_r2_r6) {
+> +		u64 ebase;
+> +		unsigned int status;
+> +
+> +		/* {read,write}_c0_ebase_64() may be UNDEFINED prior to r6 */
+> +		ebase = cpu_has_mips64r6 ? read_c0_ebase_64()
+> +					 : (s32)read_c0_ebase();
+> +		if (ebase & MIPS_EBASE_WG) {
+> +			/* WG bit already set, we can avoid the clumsy probe */
+> +			c->options |= MIPS_CPU_EBASE_WG;
+> +		} else {
+> +			/* Its UNDEFINED to change EBase while BEV=0 */
+> +			status = read_c0_status();
+> +			write_c0_status(status | ST0_BEV);
+> +			irq_enable_hazard();
+> +			/*
+> +			 * On pre-r6 cores, this may well clobber the upper bits
+> +			 * of EBase. This is hard to avoid without potentially
+> +			 * hitting UNDEFINED dm*c0 behaviour if EBase is 32-bit.
+> +			 */
+> +			if (cpu_has_mips64r6)
+> +				write_c0_ebase_64(ebase | MIPS_EBASE_WG);
+> +			else
+> +				write_c0_ebase(ebase | MIPS_EBASE_WG);
+> +			back_to_back_c0_hazard();
+> +			/* Restore BEV */
+> +			write_c0_status(status);
+> +			if (read_c0_ebase() & MIPS_EBASE_WG) {
+> +				c->options |= MIPS_CPU_EBASE_WG;
+> +				write_c0_ebase(ebase);
+> +			}
+> +		}
+> +	}
+> +
+>   	mips_probe_watch_registers(c);
+>   
+>   #ifndef CONFIG_MIPS_CPS
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 04b91d624c81..7cf708b52349 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -448,4 +448,8 @@
- # define cpu_has_contextconfig	(cpu_data[0].options & MIPS_CPU_CTXTC)
- #endif
- 
-+#ifndef cpu_has_perf
-+# define cpu_has_perf		(cpu_data[0].options & MIPS_CPU_PERF)
-+#endif
-+
- #endif /* __ASM_CPU_FEATURES_H */
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 3a3848e2f481..3a4499660416 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -407,6 +407,7 @@ enum cpu_type_enum {
- #define MIPS_CPU_BADINSTR	MBIT_ULL(43)	/* CPU has BadInstr register */
- #define MIPS_CPU_BADINSTRP	MBIT_ULL(44)	/* CPU has BadInstrP register */
- #define MIPS_CPU_CTXTC		MBIT_ULL(45)	/* CPU has [X]ConfigContext registers */
-+#define MIPS_CPU_PERF		MBIT_ULL(46)	/* CPU has MIPS performance counters */
- 
- /*
-  * CPU ASE encodings
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index e9bbb0a18168..316c4d7dd7ae 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -648,6 +648,8 @@ static inline unsigned int decode_config1(struct cpuinfo_mips *c)
- 
- 	if (config1 & MIPS_CONF1_MD)
- 		c->ases |= MIPS_ASE_MDMX;
-+	if (config1 & MIPS_CONF1_PC)
-+		c->options |= MIPS_CPU_PERF;
- 	if (config1 & MIPS_CONF1_WR)
- 		c->options |= MIPS_CPU_WATCH;
- 	if (config1 & MIPS_CONF1_CA)
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index 656769c166fc..302af8c975df 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -101,8 +101,6 @@ struct mips_pmu {
- 
- static struct mips_pmu mipspmu;
- 
--#define M_CONFIG1_PC	(1 << 4)
--
- #define M_PERFCTL_EXL			(1	<<  0)
- #define M_PERFCTL_KERNEL		(1	<<  1)
- #define M_PERFCTL_SUPERVISOR		(1	<<  2)
-@@ -754,7 +752,7 @@ static void handle_associated_event(struct cpu_hw_events *cpuc,
- 
- static int __n_counters(void)
- {
--	if (!(read_c0_config1() & M_CONFIG1_PC))
-+	if (!cpu_has_perf)
- 		return 0;
- 	if (!(read_c0_perfctrl0() & M_PERFCTL_MORE))
- 		return 1;
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 8f988a61b7a8..45cb27469fba 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -269,11 +269,9 @@ static int mipsxx_perfcount_handler(void)
- 	return handled;
- }
- 
--#define M_CONFIG1_PC	(1 << 4)
--
- static inline int __n_counters(void)
- {
--	if (!(read_c0_config1() & M_CONFIG1_PC))
-+	if (!cpu_has_perf)
- 		return 0;
- 	if (!(read_c0_perfctrl0() & M_PERFCTL_MORE))
- 		return 1;
--- 
-2.4.10
+With this change the kernel correctly detects presence of the WG bit on 
+32bit Interaptiv.
+
+Tested-by: Matt Redfearn <matt.redfearn@imgtec.com>

@@ -1,38 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 16:52:53 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39561 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27029027AbcEKOu6DqWpz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 May 2016 16:50:58 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id EC0F2A9F0CAB5;
-        Wed, 11 May 2016 15:50:48 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 11 May 2016 15:50:52 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 11 May 2016 15:50:51 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
-Subject: [PATCH v2 6/6] MIPS: Print GuestCtl1 on machine check exception
-Date:   Wed, 11 May 2016 15:50:32 +0100
-Message-ID: <1462978232-10670-7-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1462978232-10670-1-git-send-email-james.hogan@imgtec.com>
-References: <1462978232-10670-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 17:44:41 +0200 (CEST)
+Received: from hall.aurel32.net ([195.154.112.97]:57100 "EHLO hall.aurel32.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27028618AbcEKPojBt-Fz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 May 2016 17:44:39 +0200
+Received: from ohm.aurel32.net ([2001:bc8:30d7:111::1000])
+        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.84_2)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1b0WJR-0002oa-1j; Wed, 11 May 2016 17:44:37 +0200
+Received: from aurel32 by ohm.aurel32.net with local (Exim 4.87)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1b0WJN-0002Lo-F1; Wed, 11 May 2016 17:44:33 +0200
+Date:   Wed, 11 May 2016 17:44:33 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH] MIPS: Octeon: byteswap initramfs in little endian mode
+Message-ID: <20160511154433.GA15079@aurel32.net>
+Mail-Followup-To: David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+References: <1462484017-29988-1-git-send-email-aurelien@aurel32.net>
+ <572BBDB8.8000300@caviumnetworks.com>
+ <20160505221649.GA29979@aurel32.net>
+ <572BCECE.7040600@caviumnetworks.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <572BCECE.7040600@caviumnetworks.com>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53380
+X-archive-position: 53381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,31 +49,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The GuestCtl1 CP0 register can contain the GuestID used for root TLB
-operations, which affects TLB matching. The other TLB registers are
-already dumped out to the log on a machine check exception due to
-multiple matching TLB entries, so also dump the value of the GuestCtl1
-register if GuestIDs are supported.
+[ I have just realized this mail was never sent. Doing it now so that it
+can given a bit of context for the v2 ]
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/lib/dump_tlb.c | 2 ++
- 1 file changed, 2 insertions(+)
+On 2016-05-05 15:53, David Daney wrote:
+> 
+> 
+> On 05/05/2016 03:16 PM, Aurelien Jarno wrote:
+> > On 2016-05-05 14:40, David Daney wrote:
+> > > On 05/05/2016 02:33 PM, Aurelien Jarno wrote:
+> > > > The initramfs if loaded in memory by U-Boot running in big endian mode.
+> > > > When the kernel is running in little endian mode, we need to byteswap it
+> > > > as it is accessed byte by byte.
+> > > 
+> > > Ouch!
+> > > 
+> > > Really it should be fixed in the bootloader, but that probably won't happen.
+> > 
+> > How would you see that fixed in the bootloader? I doubt it's difficult
+> > to autodetect that, as the initramfs is basically loaded in memory
+> > first, and later only the address and size are passed on the kernel
+> > command line using the rd_start= and rd_size= options.
+> > 
+> > The other alternative would be to provide reversed endian fatload,
+> > ext2load, ext4load, ... versions. Or maybe a better alternative would be
+> > a function to byteswap a memory area, it could be inserted in a bootcmd
+> > between the load and the bootoctlinux.
+> 
+> The easiest thing might be to byteswap it before u-boot ever gets involved,
+> and leave the kernel alone.
 
-diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
-index 2cb10dba8838..0f80b936e75e 100644
---- a/arch/mips/lib/dump_tlb.c
-+++ b/arch/mips/lib/dump_tlb.c
-@@ -19,6 +19,8 @@ void dump_tlb_regs(void)
- 
- 	pr_info("Index    : %0x\n", read_c0_index());
- 	pr_info("PageMask : %0x\n", read_c0_pagemask());
-+	if (cpu_has_guestid)
-+		pr_info("GuestCtl1: %0x\n", read_c0_guestctl1());
- 	pr_info("EntryHi  : %0*lx\n", field, read_c0_entryhi());
- 	pr_info("EntryLo0 : %0*lx\n", field, read_c0_entrylo0());
- 	pr_info("EntryLo1 : %0*lx\n", field, read_c0_entrylo1());
+I guess you basically mean in userland when generating the initramfs. It
+means that we have to store the initramfs byte swapped on the hard
+drive. It will break standard tools which might try to access it (e.g.
+lsinitramfs).
+
+In addition to that it will also breaks kexec, which will be run in
+little endian mode. This is also a reason to not always byte swap the
+initramfs in the kernel.
+
+> > 
+> > > I wonder, is there a magic number that the initrd has?  If so, we could
+> > > probe for a byteswapped initrd and not do the byte reversal unconditionally.
+> > 
+> > There is a magic number... after it has been uncompressed. The magics
+> > for the compressed version are defined in lib/decompress.c. Maybe we can
+> > call decompress_method() from the finalize_initrd with the first 8 bytes
+> > byteswapped and check for the result.
+> 
+> I guess you could look for magic numbers of the supported compression
+> protocols (gzip, xz, etc), but that could be error prone.
+> 
+> I don't really object to the original patch, but was just trying to consider
+> alternatives.
+
+I have just sent a patch which does that.
+
+Aurelien
+
 -- 
-2.4.10
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

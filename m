@@ -1,42 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 17:44:41 +0200 (CEST)
-Received: from hall.aurel32.net ([195.154.112.97]:57100 "EHLO hall.aurel32.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27028618AbcEKPojBt-Fz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 May 2016 17:44:39 +0200
-Received: from ohm.aurel32.net ([2001:bc8:30d7:111::1000])
-        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84_2)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1b0WJR-0002oa-1j; Wed, 11 May 2016 17:44:37 +0200
-Received: from aurel32 by ohm.aurel32.net with local (Exim 4.87)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1b0WJN-0002Lo-F1; Wed, 11 May 2016 17:44:33 +0200
-Date:   Wed, 11 May 2016 17:44:33 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS: Octeon: byteswap initramfs in little endian mode
-Message-ID: <20160511154433.GA15079@aurel32.net>
-Mail-Followup-To: David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
-References: <1462484017-29988-1-git-send-email-aurelien@aurel32.net>
- <572BBDB8.8000300@caviumnetworks.com>
- <20160505221649.GA29979@aurel32.net>
- <572BCECE.7040600@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 May 2016 19:17:51 +0200 (CEST)
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:50801 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27029049AbcEKRRqRQX69 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 May 2016 19:17:46 +0200
+Received: from raspberrypi.musicnaut.iki.fi (85-76-144-175-nat.elisa-mobile.fi [85.76.144.175])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 0D4341A2623;
+        Wed, 11 May 2016 20:17:43 +0300 (EEST)
+Date:   Wed, 11 May 2016 20:17:43 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Michal Toman <michal.toman@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        "stable # v4 . 3+" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] MIPS: Prevent "restoration" of MSA context in non-MSA
+ kernels
+Message-ID: <20160511171743.GB996@raspberrypi.musicnaut.iki.fi>
+References: <alpine.DEB.2.00.1604211731030.21846@tp.orcam.me.uk>
+ <1461258293-8863-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <572BCECE.7040600@caviumnetworks.com>
-User-Agent: Mutt/1.6.0 (2016-04-01)
-Return-Path: <aurelien@aurel32.net>
+In-Reply-To: <1461258293-8863-1-git-send-email-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53381
+X-archive-position: 53382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,64 +44,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-[ I have just realized this mail was never sent. Doing it now so that it
-can given a bit of context for the v2 ]
+Hi,
 
-On 2016-05-05 15:53, David Daney wrote:
+On Thu, Apr 21, 2016 at 06:04:53PM +0100, Paul Burton wrote:
+> If a kernel doesn't support MSA context (ie. CONFIG_CPU_HAS_MSA=n) then
+> it will only keep 64 bits per FP register in thread context, and the
+> calls to set_fpr64 in restore_msa_extcontext will overrun the end of the
+> FP register context into the FCSR & MSACSR values. GCC 6.x has become
+> smart enough to detect this & complain like so:
+> 
+>     arch/mips/kernel/signal.c: In function 'protected_restore_fp_context':
+>     ./arch/mips/include/asm/processor.h:114:17: error: array subscript is above array bounds [-Werror=array-bounds]
+>       fpr->val##width[FPR_IDX(width, idx)] = val;   \
+>       ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+>     ./arch/mips/include/asm/processor.h:118:1: note: in expansion of macro 'BUILD_FPR_ACCESS'
+>      BUILD_FPR_ACCESS(64)
+> 
+> The only way to trigger this code to run would be for a program to set
+> up an artificial extended MSA context structure following a sigframe &
+> execute sigreturn. Whilst this doesn't allow a program to write to any
+> state that it couldn't already, it makes little sense to allow this
+> "restoration" of MSA context in a system that doesn't support MSA.
+> 
+> Fix this by killing a program with SIGSYS if it tries something as crazy
+> as "restoring" fake MSA context in this way, also fixing the build error
+> & allowing for most of restore_msa_extcontext to be optimised out of
+> kernels without support for MSA.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Reported-by: Michal Toman <michal.toman@imgtec.com>
+> Fixes: bf82cb30c7e5 ("MIPS: Save MSA extended context around signals")
+> Cc: James Hogan <james.hogan@imgtec.com>
+> Cc: stable <stable@vger.kernel.org> # v4.3+
+
+This patch is needed to build MIPS kernel with GCC 6.1.
+
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+Thanks,
+
+A.
+
+
+> ---
+> 
+> Changes in v2:
+> - Prevent potential for malformed errno/signal from protected_restore_fp_context.
+> 
+>  arch/mips/kernel/signal.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+> index bf792e2..fc7c1f0 100644
+> --- a/arch/mips/kernel/signal.c
+> +++ b/arch/mips/kernel/signal.c
+> @@ -195,6 +195,9 @@ static int restore_msa_extcontext(void __user *buf, unsigned int size)
+>  	unsigned int csr;
+>  	int i, err;
+>  
+> +	if (!config_enabled(CONFIG_CPU_HAS_MSA))
+> +		return SIGSYS;
+> +
+>  	if (size != sizeof(*msa))
+>  		return -EINVAL;
+>  
+> @@ -398,8 +401,8 @@ int protected_restore_fp_context(void __user *sc)
+>  	}
+>  
+>  fp_done:
+> -	if (used & USED_EXTCONTEXT)
+> -		err |= restore_extcontext(sc_to_extcontext(sc));
+> +	if (!err && (used & USED_EXTCONTEXT))
+> +		err = restore_extcontext(sc_to_extcontext(sc));
+>  
+>  	return err ?: sig;
+>  }
+> -- 
+> 2.8.0
 > 
 > 
-> On 05/05/2016 03:16 PM, Aurelien Jarno wrote:
-> > On 2016-05-05 14:40, David Daney wrote:
-> > > On 05/05/2016 02:33 PM, Aurelien Jarno wrote:
-> > > > The initramfs if loaded in memory by U-Boot running in big endian mode.
-> > > > When the kernel is running in little endian mode, we need to byteswap it
-> > > > as it is accessed byte by byte.
-> > > 
-> > > Ouch!
-> > > 
-> > > Really it should be fixed in the bootloader, but that probably won't happen.
-> > 
-> > How would you see that fixed in the bootloader? I doubt it's difficult
-> > to autodetect that, as the initramfs is basically loaded in memory
-> > first, and later only the address and size are passed on the kernel
-> > command line using the rd_start= and rd_size= options.
-> > 
-> > The other alternative would be to provide reversed endian fatload,
-> > ext2load, ext4load, ... versions. Or maybe a better alternative would be
-> > a function to byteswap a memory area, it could be inserted in a bootcmd
-> > between the load and the bootoctlinux.
-> 
-> The easiest thing might be to byteswap it before u-boot ever gets involved,
-> and leave the kernel alone.
-
-I guess you basically mean in userland when generating the initramfs. It
-means that we have to store the initramfs byte swapped on the hard
-drive. It will break standard tools which might try to access it (e.g.
-lsinitramfs).
-
-In addition to that it will also breaks kexec, which will be run in
-little endian mode. This is also a reason to not always byte swap the
-initramfs in the kernel.
-
-> > 
-> > > I wonder, is there a magic number that the initrd has?  If so, we could
-> > > probe for a byteswapped initrd and not do the byte reversal unconditionally.
-> > 
-> > There is a magic number... after it has been uncompressed. The magics
-> > for the compressed version are defined in lib/decompress.c. Maybe we can
-> > call decompress_method() from the finalize_initrd with the first 8 bytes
-> > byteswapped and check for the result.
-> 
-> I guess you could look for magic numbers of the supported compression
-> protocols (gzip, xz, etc), but that could be error prone.
-> 
-> I don't really object to the original patch, but was just trying to consider
-> alternatives.
-
-I have just sent a patch which does that.
-
-Aurelien
-
--- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                 http://www.aurel32.net

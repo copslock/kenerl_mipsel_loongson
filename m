@@ -1,63 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 06:47:33 +0200 (CEST)
-Received: from mail-oi0-f48.google.com ([209.85.218.48]:34851 "EHLO
-        mail-oi0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27029192AbcELErbWDFi3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 06:47:31 +0200
-Received: by mail-oi0-f48.google.com with SMTP id x19so101973684oix.2;
-        Wed, 11 May 2016 21:47:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=FdQU8pWCRxTU7iNweGxISlBmw5B2KFNAUaPTd4IVhpA=;
-        b=UE69Lb5tkQObkOTgZM45w0E/OaGN2xX+N57Jfcem8auXgdyHtZQYber3vKA7v1DdFv
-         I69T1F80Wy/TubxJ/UkqWfwt1GsRdwLHIvW7pJKDkQ9hQ+aq5ndjLiSPDANuQNp36dwJ
-         mP1rdJDQtHyNeI2DAXJdWff23AgFvNILgXlfntltPwGTFUZUVZCYFQ0paDqtQ27CcjOb
-         n0fQ45t7ma72IyuiSrkk8YlzOav4yxf18sg+pDvUCE439l2Tj/6AVkDYlosWD3myGd5i
-         AYcd3Jd4WeP5ss6VWB0V+Py+RuKlOQ7ZPuSIUfUJhqm0RlukXOv4KZCNrHBa5FnfUEay
-         keCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=FdQU8pWCRxTU7iNweGxISlBmw5B2KFNAUaPTd4IVhpA=;
-        b=fi9+kBrjNZ0SCooFoIkkrKyzgZUs0g3agN29nHwMczmQ1deCItNXOWr2NGNE2wc0Q7
-         Xw/F4HbgVyc+2g7IJl2cdW143Noy78VKVfFsO5xzwJ0Hlrs6c+Rsgnc12/L79+qQlUcE
-         JpX5ouDSjTztdsJTBo66Uq6UT94U7JVrB59FC2NP+07xZI/ADi78ceVnhJc08Nn1u5xN
-         UxFaNZut+bvs46L65Yxv2SLuvFYaafIoc8zok6rsMPhg1Q/LaCS2DCk0yf2mALCUW5u9
-         fEml2q8LBqFgWhG9jyQFlWrJmyCzuUj1BPcf64v4sRktQAQAGoA1SSJoxY6DD+TIuAgf
-         cKng==
-X-Gm-Message-State: AOPr4FXC68IUURHtrT+sp8BZs/or523Ah7g5gZasM7cR2NBu0ZcikVTTl2RtvvgpDN4YVw==
-X-Received: by 10.202.203.78 with SMTP id b75mr3655857oig.161.1463028445369;
-        Wed, 11 May 2016 21:47:25 -0700 (PDT)
-Received: from ?IPv6:2001:470:d:73f:fd11:36d5:8f47:86e5? ([2001:470:d:73f:fd11:36d5:8f47:86e5])
-        by smtp.googlemail.com with ESMTPSA id o31sm3327139oik.20.2016.05.11.21.47.23
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 11 May 2016 21:47:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 09:21:33 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:43202 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27029211AbcELHVa41unN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 12 May 2016 09:21:30 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4C7LSWg006307;
+        Thu, 12 May 2016 09:21:28 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4C7LRV2006306;
+        Thu, 12 May 2016 09:21:27 +0200
+Date:   Thu, 12 May 2016 09:21:27 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     "Maciej W. Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
+        matt.redfearn@imgtec.com
 Subject: Re: [PATCH] MIPS: tools: Ignore relocation tool
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Message-ID: <20160512072127.GQ16402@linux-mips.org>
 References: <1462994177-6460-1-git-send-email-f.fainelli@gmail.com>
  <alpine.DEB.2.00.1605120218540.6794@tp.orcam.me.uk>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        matt.redfearn@imgtec.com
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <57340ADB.5040508@gmail.com>
-Date:   Wed, 11 May 2016 21:47:23 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.7.2
+ <57340ADB.5040508@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.00.1605120218540.6794@tp.orcam.me.uk>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+In-Reply-To: <57340ADB.5040508@gmail.com>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53390
+X-archive-position: 53391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,15 +46,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 11/05/2016 18:32, Maciej W. Rozycki a Ã©crit :
-> On Wed, 11 May 2016, Florian Fainelli wrote:
-> 
->> Add a .gitignore ignoring arch/mips/boot/tools/relocs.
-> 
->  It's also left behind after `make distclean' so looks like it's missing a 
-> clean-up rule or one hasn't been properly wired.
+On Wed, May 11, 2016 at 09:47:23PM -0700, Florian Fainelli wrote:
 
-Whoops did not notice that, I will send a follow-up patch for that too,
-thanks!
--- 
-Florian
+> Le 11/05/2016 18:32, Maciej W. Rozycki a écrit :
+> > On Wed, 11 May 2016, Florian Fainelli wrote:
+> > 
+> >> Add a .gitignore ignoring arch/mips/boot/tools/relocs.
+> > 
+> >  It's also left behind after `make distclean' so looks like it's missing a 
+> > clean-up rule or one hasn't been properly wired.
+> 
+> Whoops did not notice that, I will send a follow-up patch for that too,
+> thanks!
+
+Somehow that also popped up on my radar only a day or two ago.  It seems
+the tools/ directory isn't wired up like other dirs and thus make clean
+etc. never get executed on it.
+
+  Ralf

@@ -1,53 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 13:56:07 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.133]:49778 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27029302AbcELL4FofA0n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 13:56:05 +0200
-Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue004) with ESMTPSA (Nemesis) id 0LhRTw-1bMwdQ15Au-00mZWs; Thu, 12 May
- 2016 13:55:48 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Christian Lamparter <chunkeey@googlemail.com>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        linux-mips@linux-mips.org, johnyoun@synopsys.com,
-        gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, a.seppala@gmail.com,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: usb: dwc2: regression on MyBook Live Duo / Canyonlands since 4.3.0-rc4
-Date:   Thu, 12 May 2016 13:55:44 +0200
-Message-ID: <2924514.Pic5Z1NUsc@wuerfel>
-User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
-In-Reply-To: <7745292.ZB3149zIk7@debian64>
-References: <4231696.iL6nGs74X8@debian64> <5347627.S9K7mIusOJ@wuerfel> <7745292.ZB3149zIk7@debian64>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 14:53:47 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:58644 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27028189AbcELMxnAKrU4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 12 May 2016 14:53:43 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4CCrg3J012913;
+        Thu, 12 May 2016 14:53:42 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4CCrgnq012912;
+        Thu, 12 May 2016 14:53:42 +0200
+Date:   Thu, 12 May 2016 14:53:42 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Florian Weimer <fweimer@redhat.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Endless loop on execution attempt on non-executable page
+Message-ID: <20160512125342.GS16402@linux-mips.org>
+References: <57345F0D.9070503@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:5J8LZNX73AAST1QcIDxOs1X2ruioYgkJBYk291QfK1mxvS0nPav
- DktFwP4oNPV9Vmbn/tmWa81y4rRY+zYxql/EUgwqKIqXKF8vDc1hCw5S2Xdo2recudTRwqq
- rpbeGp1aFvvDU+xYQKSnakBq3YnbRiDXwTpid8V0C/+FrIg15xrGs2Jm/3FbYQs54X78oTk
- xI8dinCQLG6Y4jn3GFi1Q==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:iHBcLPm8xp4=:WSkdyTsowe2lvB71o2V1PF
- Euc+80dTivZP9RSi0Ry16gO/6IG7GNcodXyqZ6g0+TDbm/mAGvIFCxR9rORTGaluYBoj+gWA6
- nN4s3vvmIK01BLaDsDajqM1PHs2Fcdll4/2WlRb2kGLOCFvHYIxCczZFu2+IHZxXljfHQS+EL
- eCLAi+WbKS7JMKc7rP15Z6OUo6lb/LYSlUWdFuBBbfG9El6U1RGZAe6wzRLrGgFu4Ba+1BsFL
- RHr+2c54zbD8m+HJ/ZFWbiNY88luudMwJOz8PM3nQK8IEFvBmKaXlOA5QjrU8xkDSIBii9pX7
- o71O9NTLyXXbXsByHBRrUVah5tuWH3sYKZOjCT9veybckkAxhLffP5agDIR8rRIqdHb8Y0Etv
- dGDC+MheW19R6RsFgXGc6DI8HM6moRF9CF3yvePker2qIkMlDgOyXf3cQEVcYDlSmGiNTqI28
- CLTaDwWYr5QtGDaBP6heiBJHrb4BzEGa2wJm/MollE6NYdL2nUvbkjtrLdw1ouV3KZiBMw+NX
- EnHOnR0QQzzAt0OaGzL/xICsK+vGPGhyJZWlrcqFxKQ4tqIW8Ipyyny4z6Y49ZmnjsQZiTZaN
- 3Q0pWP8TGQW6kbFAROkjWmYJEjB7smaBOh16rxFQz+pFdhH4Ag+Qnf9RaA+gs0ZeXYBhBHAnt
- QvHTrzOSBUMvzQLkcAv9Tq9IjCWtSTDU7OnA1MBV0g9ElgK+IAHY3ECUbB6ezVH/L5pW9vlm4
- mFtL6ilE0Inzf/0f
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <57345F0D.9070503@redhat.com>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53406
+X-archive-position: 53407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,43 +43,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thursday 12 May 2016 11:58:18 Christian Lamparter wrote:
-> > > > Detecting the endianess of the
-> > > > device is probably the best future-proof solution, but it's also
-> > > > considerably more work to do in the driver, and comes with a
-> > > > tiny runtime overhead.
-> > > 
-> > > The runtime overhead is probably non-measurable compared with the cost
-> > > of the actual MMIOs.
-> > 
-> > Right. The code size increase is probably measurable (but still small),
-> > the runtime overhead is not.
-> 
-> Ok, so no rebuts or complains have been posted.
-> 
-> I've tested the patch you made in: https://lkml.org/lkml/2016/5/9/354
-> and it works: 
-> 
-> Tested-by: Christian Lamparter <chunkeey@googlemail.com>
-> 
-> So, how do we go from here? There is are two small issues with the
-> original patch (#ifdef DWC2_LOG_WRITES got converted to lower case:
-> #ifdef dwc2_log_writes) and I guess a proper subject would be nice.  
-> 
-> Arnd, can you please respin and post it (cc'd stable as well)?
-> So this is can be picked up? Or what's your plan?
+On Thu, May 12, 2016 at 12:46:37PM +0200, Florian Weimer wrote:
 
-(I just realized my reply was stuck in my outbox, so the patch
-went out first)
+> The GCC compile farm has a big-endian 64-bit MIPS box.  The kernel is:
+> 
+> Linux erpro8-fsf1 3.14.10-er8mod-00013-ge0fe977 #1 SMP PREEMPT Wed Jan
+> 14 12:33:22 PST 2015 mips64 GNU/Linux
+> 
+> Which is a vendor kernel for the EdgeRouter Pro-8.
+> 
+> /proc/cpuinfo reports:
+> 
+> system type             : UBNT_E200 (CN6120p1.1-1000-NSP)
+> machine                 : Unknown
+> processor               : 0
+> cpu model               : Cavium Octeon II V0.1
+> 
+> While testing W^X (execmod, DEP, NX) stack enforcement, I noticed that once
+> I try to execute code off a non-executable page, I do not get a signal, but
+> the code appears to enter an infinite loop.  The generated function starts
+> with a jump instruction to return to the caller, but instead, the program
+> counter does not seem to change at all.
+> 
+> “si” in GDB also hangs (but can be interrupted with ^C).
+> 
+> My test code is here:
+> 
+>   https://pagure.io/execmod-tests
+> 
+> Is this a kernel bug or an issue with the silicon?
 
-If I recall correctly, the rough consensus was to go with your longer
-patch in the future (fixed up for the comments that BenH and
-I sent), and I'd suggest basing it on top of a fixed version of
-my patch.
+I see the test case uses mprotect to add PROT_EXEC after writing the code
+to memory.  I don't think mprotect however gives any guarantee that this
+will make the I-cache coherent with the D-cache, that is that the CPU will
+actually fetch and execute the instruction that were just written to memory.
+For that you have to do something architecture specific such as dancing
+around a fire waving a dead chicken.  Or on MIPS call cacheflush(), see
+the man page for details.
 
-Felipe just had another idea, to change the endianess of the dwc2
-block by setting a registers (if that exists). That would indeed
-be preferable, then we can just revert the broken change that
-went into 4.4 and backport that fix instead.
+For portability sake to some broken processors you should also ensure
+that a 32 byte cache line is entirely filled with valid instructions by
+padding the two test instructions with another six no-op (opcode 0).
+The test case as it is guarantees this implicitly by using a freshly
+allocated page but I thought I should mention it.
 
-	Arnd
+  Ralf

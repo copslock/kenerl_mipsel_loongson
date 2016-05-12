@@ -1,61 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 17:57:22 +0200 (CEST)
-Received: from mail-pa0-f52.google.com ([209.85.220.52]:33538 "EHLO
-        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006153AbcELP5UedHf0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 17:57:20 +0200
-Received: by mail-pa0-f52.google.com with SMTP id xk12so31001168pac.0;
-        Thu, 12 May 2016 08:57:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-transfer-encoding;
-        bh=ZFUqo4ovoG81w4/aFyKJeJyHttR/MiANSZZM6tmnDME=;
-        b=F9Xi2tKwh81O7oqZajwVbEpEhQBI/jeAeaQ4RWBepUe/3f8oqt9hHzN6zH0C38hHbc
-         JbRO0wz2VvWvchLU+LXv/9jOudu7VxbcNyzXYgVNMs2l8PeF/OtZ6XSVYiN6tw0+UmBE
-         zqfzyvf2A+XXng1fax1s+29S1Fai7PeD4wF7Mz5w0YwDg+ymRe7oJbsyV5nEmt1mMNot
-         Z0ecEU0JOI2YBfBnq16PHoL/QLaDyUnrMIODjY1OT/xSJ3WbJLVLrRy7/D3m4kWjZrLB
-         24TePqrSruY7Q17IY+FVXT+qOFqgtECR4GSIDqc+WVWXiLOUz1usa3kOu+tazZPGAc+n
-         7dbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-transfer-encoding;
-        bh=ZFUqo4ovoG81w4/aFyKJeJyHttR/MiANSZZM6tmnDME=;
-        b=Q/l+2i3rIJLv8giXx1Fe8xhtf9MqnTicTQ1s7hIYb7TFW/DNfLGSZq3zliPw+8krEJ
-         91UfrWL8YobCnvUM8CcglXNv6U35R9jPFM1aTv1kUe9lHhNSSGDB28Bs8lIswStiVlNU
-         WUUoHvUJP3Pf/ylRlH0US8lOvnOGVhibYQrztfczuTqm2ifphkGcP6VH/m4aZKBdfpkW
-         fYSfsrkKErOahGozwJltmM5sURuzMrVlYsNIyvBWl7d6BVNKgUiTqOzG3F6VaPfxclWh
-         wogC1Er/EoqAZJko9dMiQmQMGZLUXTbhia+SWEz73wZ+bdh7uTCujEOedOMaZb9UpBvp
-         6nMQ==
-X-Gm-Message-State: AOPr4FVqcR08+6pSpM7Hw1u43zO7sYb1d8BfvOO7113XGUHChLOKESlDlsyYmexm5jHOUA==
-X-Received: by 10.66.253.68 with SMTP id zy4mr14956969pac.81.1463068634393;
-        Thu, 12 May 2016 08:57:14 -0700 (PDT)
-Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.googlemail.com with ESMTPSA id n190sm20874513pfn.23.2016.05.12.08.57.12
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 12 May 2016 08:57:13 -0700 (PDT)
-Message-ID: <5734A7D8.9030407@gmail.com>
-Date:   Thu, 12 May 2016 08:57:12 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 18:12:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:13531 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27027167AbcELQMaR8k30 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 18:12:30 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 4508541F8E9D;
+        Thu, 12 May 2016 17:12:24 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 12 May 2016 17:12:24 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 12 May 2016 17:12:24 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id AE88815465C84;
+        Thu, 12 May 2016 17:12:20 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Thu, 12 May 2016 17:12:23 +0100
+Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 12 May
+ 2016 17:12:23 +0100
+Date:   Thu, 12 May 2016 17:12:23 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2 2/5] MIPS: Add defs & probing of extended CP0_EBase
+Message-ID: <20160512161223.GQ23699@jhogan-linux.le.imgtec.org>
+References: <1462971053-25622-1-git-send-email-james.hogan@imgtec.com>
+ <1462971053-25622-3-git-send-email-james.hogan@imgtec.com>
+ <alpine.DEB.2.00.1605120115470.6794@tp.orcam.me.uk>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        "Hill, Steven" <Steven.Hill@caviumnetworks.com>
-CC:     Florian Weimer <fweimer@redhat.com>, linux-mips@linux-mips.org
-Subject: Re: Endless loop on execution attempt on non-executable page
-References: <57345F0D.9070503@redhat.com> <20160512125342.GS16402@linux-mips.org> <9af052f6-b50c-7ba5-ebbb-0bdff0c58dd9@redhat.com> <20160512142306.GT16402@linux-mips.org>
-In-Reply-To: <20160512142306.GT16402@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="E50aLcSU4JxQSj/B"
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1605120115470.6794@tp.orcam.me.uk>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 6e37d52
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53412
+X-archive-position: 53413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,82 +60,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/12/2016 07:23 AM, Ralf Baechle wrote:
-> On Thu, May 12, 2016 at 03:07:51PM +0200, Florian Weimer wrote:
->
->> On 05/12/2016 02:53 PM, Ralf Baechle wrote:
->>> On Thu, May 12, 2016 at 12:46:37PM +0200, Florian Weimer wrote:
->>>
->>>> The GCC compile farm has a big-endian 64-bit MIPS box.  The kernel is:
->>>>
->>>> Linux erpro8-fsf1 3.14.10-er8mod-00013-ge0fe977 #1 SMP PREEMPT Wed Jan
->>>> 14 12:33:22 PST 2015 mips64 GNU/Linux
->>>>
->>>> Which is a vendor kernel for the EdgeRouter Pro-8.
->>>>
->>>> /proc/cpuinfo reports:
->>>>
->>>> system type             : UBNT_E200 (CN6120p1.1-1000-NSP)
->>>> machine                 : Unknown
->>>> processor               : 0
->>>> cpu model               : Cavium Octeon II V0.1
->>>>
->>>> While testing W^X (execmod, DEP, NX) stack enforcement, I noticed that once
->>>> I try to execute code off a non-executable page, I do not get a signal, but
->>>> the code appears to enter an infinite loop.  The generated function starts
->>>> with a jump instruction to return to the caller, but instead, the program
->>>> counter does not seem to change at all.
->>>>
->>>> “si” in GDB also hangs (but can be interrupted with ^C).
->>>>
->>>> My test code is here:
->>>>
->>>>    https://pagure.io/execmod-tests
->>>>
->>>> Is this a kernel bug or an issue with the silicon?
->>>
->>> I see the test case uses mprotect to add PROT_EXEC after writing the code
->>> to memory.  I don't think mprotect however gives any guarantee that this
->>> will make the I-cache coherent with the D-cache, that is that the CPU will
->>> actually fetch and execute the instruction that were just written to memory.
->>> For that you have to do something architecture specific such as dancing
->>> around a fire waving a dead chicken.  Or on MIPS call cacheflush(), see
->>> the man page for details.
->>
->> There is a fork between the write and the execute.  It is somewhat unlikely
->> that that's not a barrier, but it did happen on POWER.
->>
->> However, I can successfully execute code without the barrier, so this whole
->> thing goes in the wrong direction. :)
->>
->> I have added it, just to be on the safe side.
->>
->>> For portability sake to some broken processors you should also ensure
->>> that a 32 byte cache line is entirely filled with valid instructions by
->>> padding the two test instructions with another six no-op (opcode 0).
->>
->> Added as well.
->>
->>> The test case as it is guarantees this implicitly by using a freshly
->>> allocated page but I thought I should mention it.
->>
->> There are some tests that don't (the stack variable might be clobbered, for
->> example).
->>
->> Anyway, neither change fixed things for me.  Given the peculiar “si”
->> behavior in GDB, that's not entirely unexpected ...
->
-> Thanks for fixing and testing this obvious things.  Now let's look one
-> or two levels deeper ...
->
+--E50aLcSU4JxQSj/B
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This is something that would be easy to diagnose on the OCTEON simulator...
+On Thu, May 12, 2016 at 02:10:41AM +0100, Maciej W. Rozycki wrote:
+> Hi James,
+>=20
+> > diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> > index a6ce1db191aa..c4795568c1f2 100644
+> > --- a/arch/mips/kernel/cpu-probe.c
+> > +++ b/arch/mips/kernel/cpu-probe.c
+> > @@ -858,6 +858,41 @@ static void decode_configs(struct cpuinfo_mips *c)
+> >  	if (ok)
+> >  		ok =3D decode_config5(c);
+> > =20
+> > +	/* Probe the EBase.WG bit */
+> > +	if (cpu_has_mips_r2_r6) {
+> > +		u64 ebase;
+> > +		unsigned int status;
+> > +
+> > +		/* {read,write}_c0_ebase_64() may be UNDEFINED prior to r6 */
+> > +		ebase =3D cpu_has_mips64r6 ? read_c0_ebase_64()
+> > +					 : (s32)read_c0_ebase();
+> > +		if (ebase & MIPS_EBASE_WG) {
+> > +			/* WG bit already set, we can avoid the clumsy probe */
+> > +			c->options |=3D MIPS_CPU_EBASE_WG;
+>=20
+>  You may additionally check for bits 31:30 !=3D 0b10 as a satisfactory=20
+> condition for WG's presence, under the assumption that 0b10 is not very=
+=20
+> likely if a truly 64-bit exception base has been loaded.  E.g.:
+>=20
+> #define MIPS_EBASE_SEG_MASK (3 << 30)
+> 		s32 mask;
+>=20
+> 		/* Avoid the clumsy probe if contents indicate 64 bits.  */
+> 		mask =3D MIPS_EBASE_SEG_MASK | MIPS_CPU_EBASE_WG;
+> 		if ((ebase & mask) !=3D CKSEG0) {
+> 			c->options |=3D MIPS_CPU_EBASE_WG;
+>=20
+> or so.
 
-Before spending time doing that, has anyone tried this on current 
-kernels rather than the 3.14 indicated above?
+Yep, good idea (I was originally working under the mistaken assumption
+MIPS32 wouldn't have WG :-) ).
 
-It might also be interesting to know if it still happens when booting on 
-only a single CPU rather than what I assume is the default on this 
-platform of all available CPUs
+>=20
+>  NB I find the current description of EBase questionable to say the least=
+=2E =20
+> This statement:
+>=20
+> "The addition of the base address and the exception offset is performed=
+=20
+> inhibiting a carry between bits 29 and 30 of the final exception address.=
+"=20
+>=20
+> is repeated twice as if a leftover from the days before WG support.  I=20
+> think this needs to be clarified in the case of bits 31:30 !=3D 0b10.  Al=
+so=20
+> I think the effect on the Cache Error exception vector in this case has t=
+o=20
+> be better specified.  Can you please raise it with the architecture=20
+> documentation maintainers?
 
-David Daney
+I agree, and ISTR its also stated that it must be set such that the
+vectored interrupt spacing doesn't make it cross that boundary either,
+in which case the inhibited carry is redundant. How it is supposed to
+behave in the presence of cache error exceptions is indeed also
+confusing, can it even ensure it gets handled from uncached memory? I
+did raise this a while back, but will chase it up.
+
+>=20
+>  Also the description of DMFC0 is inconsistent with the corresponding=20
+> pseudo code.  As from r6.04 of the instruction set document the pseudo=20
+> code has been updated to take into account the R6 semantics for 32-bit=20
+> registers you rely on here, however the description still claims such=20
+> operation is UNDEFINED.  Can you please raise it with the architecture=20
+> documentation maintainers as well?
+
+Yes, I'll chase this up too.
+
+Thanks
+James
+
+--E50aLcSU4JxQSj/B
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJXNKtnAAoJEGwLaZPeOHZ6QTgQAIAPBWqtgzrAXjuRBgaQ5mse
+gCcO1+qLxsHiYqRx43hq1krPUbLksITfJigP4HZgPmMteZ5L7CfjCyNnrVadnfmc
+pbgTn7orh2RJNHI1UAj1OftDhae9fx3dqkJOZWBmZ/tkGmH3fJ1gJj5/n5cWMAP5
+9fqcZP2Lx1r29uYBDpj6BV1BvpkI+puFASbh/pzuMdeeWBGAqrdJ3pw6/J0D6YS9
+pnsbnG7Oifa2aksX+9d4PSACRznTg+s7rVWjYpOvi0O0GM+9eN7bNbMowp42UChy
+YdbGxA7n06Cl+zwe+TfDI5zwPRzIAGhN/qbgmkQTizp6ncqALjDtVkRAM9PEcfpX
+U8r2BUH4BCiuwd8P9tEToCIIwcgWIzaMtE3IdUPhQ2NAUGWK0TGLj6Dx+PMasCwm
+gs0q+BGmkm40jCguQ65MjWbmSdiF1shAFChtAh3fef/u5eD77sWON2GVLM6JKHJR
+NX+8+wju/ES4G0jW+btC/dDJfLFJ8xN6aD+U7vwkt7G4b/fUj+Ln1k8Ibyxn4JQO
+rTQmZRuyxs1M1XWcCI95ZQuIFNcrEleaZWZXYy4Rg8PJBcfFJsRbW2wcd3TtPeSp
+l+FMNyoQDT77RsR0D8JWveZgHHW8TOqvMUQgcUz04H5zqxoIMxlur1Qs7IFUQk3Z
+CkW81e0EQzfrP4O5T4CY
+=mqF1
+-----END PGP SIGNATURE-----
+
+--E50aLcSU4JxQSj/B--

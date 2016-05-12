@@ -1,35 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 11:19:26 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63191 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27029236AbcELJTWrIDZT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 11:19:22 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id EA77F7FB8C90;
-        Thu, 12 May 2016 10:19:13 +0100 (IST)
-Received: from [10.20.78.171] (10.20.78.171) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Thu, 12 May 2016
- 10:19:15 +0100
-Date:   Thu, 12 May 2016 10:19:08 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: [PATCH 2/2] MIPS: ptrace: Prevent writes to read-only FCSR bits
-In-Reply-To: <alpine.DEB.2.00.1605120014000.6794@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1605121010290.6794@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1605120014000.6794@tp.orcam.me.uk>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 11:58:28 +0200 (CEST)
+Received: from mail-wm0-f66.google.com ([74.125.82.66]:33042 "EHLO
+        mail-wm0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27029199AbcELJ61BcRmA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 11:58:27 +0200
+Received: by mail-wm0-f66.google.com with SMTP id r12so14969795wme.0
+        for <linux-mips@linux-mips.org>; Thu, 12 May 2016 02:58:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:user-agent:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=/n8m7s577hshOOUn/mrYA/azM+D8LJ9JLSBmZ887qdA=;
+        b=BKbbmK2BRoJK+SiJcbdgZ6euEBXmmA8rlMUD2riONfclD/4mTLdRSGX/51Erve1ZRo
+         cNAqMFqa/Uqewwc6kWw/7KB9c+Vz0jX1Io3hq15PKs0yLdvbLf9shMRJ/w0ng6Yj3/hg
+         z2PTi9yxuc6vxS8b5GqzuzGZ/6IuGWt99hStP7gNkIAm9vHZG+WSpsvdmwfdMMv5QXe0
+         tV98aZ3xfxdmEXqjaTolgyR4kbm0J/HlgH2CnyXeWjeg5Eh/OYODvM/mCOuPgIwhZ/UO
+         BbcDS3FyoQ2ZOUBBZpxGgmSVV0ndMyEIMrKDzsvxpHL1ubG0nqZJd+EA1iJY6EuFhI+a
+         XBAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:user-agent
+         :in-reply-to:references:mime-version:content-transfer-encoding;
+        bh=/n8m7s577hshOOUn/mrYA/azM+D8LJ9JLSBmZ887qdA=;
+        b=WTSN/CCE4C5MKpG5tYmaszl6l60CkeCLc4MUWkj+TpcORfPh3X0sQzh6oDAeG3saYe
+         8JrnMLJqSCoL8vAUXm74cvqa3HVSVgSYyy1zbd44FjoUckdViMMGr7XKwpN54iZLfx92
+         uohiL/eVEC9ozz7u2JcQp7ZfPi2eu3XTGqf9z37m2tK7qqVJSHOj4TN8hNXwN7jToOF4
+         xpO0REp4E0Zme9ujJlrxqf9GnJOosKBx8JSb2x9YySBe2l53D0Z97o7Wk1d37pCBFRvD
+         j5mIlAx05PcQcxQzqCU+8jQEKLd3DMERmCceuia9E+VvRjq0Kla8pEVH59Zpehvqerja
+         GEQQ==
+X-Gm-Message-State: AOPr4FVjQX1BNw3NIImcKpxQedd7fPJeRqfVgw0pJFWZ5e6FbmVg0Yd7ttkMG1fXlS5FVg==
+X-Received: by 10.28.169.69 with SMTP id s66mr9214362wme.83.1463047101710;
+        Thu, 12 May 2016 02:58:21 -0700 (PDT)
+Received: from debian64.daheim (pD9F89BEC.dip0.t-ipconnect.de. [217.248.155.236])
+        by smtp.googlemail.com with ESMTPSA id kz1sm12506954wjc.46.2016.05.12.02.58.20
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 May 2016 02:58:20 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
+        by debian64.daheim with esmtps (TLS1.0:ECDHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.87)
+        (envelope-from <chunkeey@googlemail.com>)
+        id 1b0nNq-0006AB-S4; Thu, 12 May 2016 11:58:18 +0200
+From:   Christian Lamparter <chunkeey@googlemail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        linux-mips@linux-mips.org, johnyoun@synopsys.com,
+        gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, a.seppala@gmail.com,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: usb: dwc2: regression on MyBook Live Duo / Canyonlands since 4.3.0-rc4
+Date:   Thu, 12 May 2016 11:58:18 +0200
+Message-ID: <7745292.ZB3149zIk7@debian64>
+User-Agent: KMail/4.14.10 (Linux/4.6.0-rc5-wt; KDE/4.14.14; x86_64; ; )
+In-Reply-To: <5347627.S9K7mIusOJ@wuerfel>
+References: <4231696.iL6nGs74X8@debian64> <1462833472.20290.129.camel@kernel.crashing.org> <5347627.S9K7mIusOJ@wuerfel>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.171]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Return-Path: <chunkeey@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53398
+X-archive-position: 53399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: chunkeey@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,106 +77,111 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Correct the cases missed with commit 9b26616c8d9d ("MIPS: Respect the 
-ISA level in FCSR handling") and prevent writes to read-only FCSR bits 
-there.
+On Tuesday, May 10, 2016 09:23:59 AM Arnd Bergmann wrote:
+> On Tuesday 10 May 2016 08:37:52 Benjamin Herrenschmidt wrote:
+> > On Mon, 2016-05-09 at 17:08 +0200, Arnd Bergmann wrote:
+> > > 
+> > > Unfortunately, I don't see any way this could be done in MIPS specific
+> > > code: There is typically a byteswap between the internal bus and the PCI
+> > > bus on big-endian MIPS systems, so the PCI MMIO ends up being little-endian,
+> > 
+> > Ugh ... not exactly, re-watch my talk on the matter :-) While there is
+> > a specific lane wiring to preserve byte addresss, in the end it's the
+> > end device itself that is either BE or LE. Regardless of any "bus
+> > endianness".
+> 
+> I found your slides on
+> 
+> http://www.linuxplumbersconf.org/2012/wp-content/uploads/2012/09/2012-lpc-ref-big-little-endian-herrenschmidt.odp
+> 
+> but there are at least two more twists that you completely missed here:
+> 
+> - Some architectures (e.g. ARMv5 "BE32" mode in IXP4xx, surely some others)
+>   do not implement big-endian mode by wiring up the data lines between the
+>   bus and the CPU differently between big- and little-endian mode like
+>   powerpc and armv7 "BE8" do, but instead they swizzle the *address* lines
+>   on 8-bit and 16-bit addresses. The effect of that is that normal RAM
+>   accesses work as expected both ways, and devices that are accessed using
+>   32-bit MMIO ops never need any byteswap (you actually get "native
+>   endian") while MMIO with 8 and 16 bit width does something completely
+>   unexpected and touches the wrong register. Having an explicit byteswap
+>   on the PCI host bridge gets you the expected addresses again for 8-bit
+>   cycles but it also means that readl()/writel() again need to swap the
+>   data.
+> 
+> - Some other architectures (e.g. Broadcom MIPS) apparently are even fancier
+>   and use a strapping pin on the SoC flips the endianess of the CPU core
+>   at the same time as all the peripheral MMIO registers, with the intention
+>   of never requiring any byte swaps. I believe they are implemented careful
+>   enough to actually get this right, but it confuses the heck out of
+>   Linux drivers that don't expect this.
+> 
+> > > which matches the expected behavior of readl/writel. However, drivers
+> > > for non-PCI devices often use the same readl/writel accessors because
+> > > that is how it's done on ARMv6/ARMv7.
+> > 
+> > Even then, you can have on-SoC (non-PCI) devices that also have a
+> > different endianness from the main CPU. How does it work on ARM for
+> > example ? The device endianness should be fixed, regardless of the
+> > endianness of the core, no ?
+> 
+> ARMv6/v7 is uses BE8 mode like powerpc: each peripheral is fixed-endian
+> and you have to know what it is. Only Freescale managed to put identical
+> IP blocks on various (powerpc-derived) SoCs and have a subset of them
+> treat the access as little-endian while others remain big-endian, so all
+> those drivers now require runtime detection.
+> 
+> > > Doing it hardcoded by architecture is just the simplest way to deal
+> > > with it, working on the assumption that nothing actually needs the
+> > > runtime detection that Ben suggested. 
+> > 
+> > No, it's not an archicture problem. It's a problem specific to that one
+> > SoC that the device was synthetized to be a certain endian while it was
+> > synthetized differently on another SoC... that also happens to be a
+> > different architecture. But doesn't have to.
+> > 
+> > For example, we had in the past cases of both LE and BE EHCI
+> > implementations on the same architecture (PowerPC).
+> 
+> I understand this, but from what I see in this history of this particular
+> driver, all ARM and PowerPC implementations chose to use LE registers for
+> DWC2 because the normal approach for these is to not mess with endianess,
+> while presumably all MIPS users of the same block wired up the endian-select
+> line of the IP block to match that of the CPU core, again because it's
+> what you are expected to do on a MIPS based SoC.
+> 
+> So hardcoding it per architecture would make an assumption based on
+> the mindset of the SoC designers rather than strict technical differences,
+> and that can fail as soon as someone does things differently on any of
+> them (see the Freescale example), but I still think it's the easiest
+> workaround for backporting to stable kernels. A revert of the original
+> patch would be even easier, but that would break the one big-endian
+> MIPS machine we know about.
+> 
+> > > Detecting the endianess of the
+> > > device is probably the best future-proof solution, but it's also
+> > > considerably more work to do in the driver, and comes with a
+> > > tiny runtime overhead.
+> > 
+> > The runtime overhead is probably non-measurable compared with the cost
+> > of the actual MMIOs.
+> 
+> Right. The code size increase is probably measurable (but still small),
+> the runtime overhead is not.
 
-This in particular applies to FP context initialisation where any IEEE
-754-2008 bits preset by `mips_set_personality_nan' are cleared before 
-the relevant ptrace(2) call takes effect and the PTRACE_POKEUSR request
-addressing FPC_CSR where no masking of read-only FCSR bits is done.
+Ok, so no rebuts or complains have been posted.
 
-Remove the FCSR clearing from FP context initialisation then and unify
-PTRACE_POKEUSR/FPC_CSR and PTRACE_SETFPREGS handling, by factoring out
-code from `ptrace_setfpregs' and calling it from both places.
+I've tested the patch you made in: https://lkml.org/lkml/2016/5/9/354
+and it works: 
 
-This mostly matters to soft float configurations where the emulator can 
-be switched this way to a mode which should not be accessible and cannot 
-be set with the CTC1 instruction.  With hard float configurations any 
-effect is transient anyway as read-only bits will retain their values at 
-the time the FP context is restored.
+Tested-by: Christian Lamparter <chunkeey@googlemail.com>
 
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
-Cc: stable@vger.kernel.org # v4.0+
----
-Hi,
+So, how do we go from here? There is are two small issues with the
+original patch (#ifdef DWC2_LOG_WRITES got converted to lower case:
+#ifdef dwc2_log_writes) and I guess a proper subject would be nice.  
 
- It's a bit involving to verify PTRACE_POKEUSR/FPC_CSR handling these days 
-as the request is considered legacy these days with the usual suspects, 
-that is GDB and gdbserver having switched to PTRACE_SETFPREGS instead.  I 
-think this change can be considered correct though by virtue of sharing 
-the same code between the two requests.
+Arnd, can you please respin and post it (cc'd stable as well)?
+So this is can be picked up? Or what's your plan?
 
- Please apply then.
-
-  Maciej
-
-linux-mips-ptrace-fcsr-set.diff
-Index: linux-sfr-test/arch/mips/kernel/ptrace.c
-===================================================================
---- linux-sfr-test.orig/arch/mips/kernel/ptrace.c	2016-05-12 02:33:36.379981000 +0100
-+++ linux-sfr-test/arch/mips/kernel/ptrace.c	2016-05-12 04:18:46.529982000 +0100
-@@ -57,8 +57,7 @@ static void init_fp_ctx(struct task_stru
- 	/* Begin with data registers set to all 1s... */
- 	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
- 
--	/* ...and FCSR zeroed */
--	target->thread.fpu.fcr31 = 0;
-+	/* FCSR has been preset by `mips_set_personality_nan'.  */
- 
- 	/*
- 	 * Record that the target has "used" math, such that the context
-@@ -80,6 +79,22 @@ void ptrace_disable(struct task_struct *
- }
- 
- /*
-+ * Poke at FCSR according to its mask.  Don't set the cause bits as
-+ * this is currently not handled correctly in FP context restoration
-+ * and will cause an oops if a corresponding enable bit is set.
-+ */
-+static void ptrace_setfcr31(struct task_struct *child, u32 value)
-+{
-+	u32 fcr31;
-+	u32 mask;
-+
-+	value &= ~FPU_CSR_ALL_X;
-+	fcr31 = child->thread.fpu.fcr31;
-+	mask = boot_cpu_data.fpu_msk31;
-+	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
-+}
-+
-+/*
-  * Read a general register set.	 We always use the 64-bit format, even
-  * for 32-bit kernels and for 32-bit processes on a 64-bit kernel.
-  * Registers are sign extended to fill the available space.
-@@ -159,9 +174,7 @@ int ptrace_setfpregs(struct task_struct 
- {
- 	union fpureg *fregs;
- 	u64 fpr_val;
--	u32 fcr31;
- 	u32 value;
--	u32 mask;
- 	int i;
- 
- 	if (!access_ok(VERIFY_READ, data, 33 * 8))
-@@ -176,10 +189,7 @@ int ptrace_setfpregs(struct task_struct 
- 	}
- 
- 	__get_user(value, data + 64);
--	value &= ~FPU_CSR_ALL_X;
--	fcr31 = child->thread.fpu.fcr31;
--	mask = boot_cpu_data.fpu_msk31;
--	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
-+	ptrace_setfcr31(child, value);
- 
- 	/* FIR may not be written.  */
- 
-@@ -807,7 +817,7 @@ long arch_ptrace(struct task_struct *chi
- 			break;
- #endif
- 		case FPC_CSR:
--			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
-+			ptrace_setfcr31(child, data);
- 			break;
- 		case DSP_BASE ... DSP_BASE + 5: {
- 			dspreg_t *dregs;
+Regards,
+Christian

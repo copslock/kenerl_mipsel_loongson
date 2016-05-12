@@ -1,60 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 02:15:31 +0200 (CEST)
-Received: from mail-pa0-f67.google.com ([209.85.220.67]:33419 "EHLO
-        mail-pa0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27029173AbcELAP2S4Ava (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 02:15:28 +0200
-Received: by mail-pa0-f67.google.com with SMTP id gh9so4632068pac.0;
-        Wed, 11 May 2016 17:15:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-transfer-encoding;
-        bh=hwdSuWLNj6jcjbxSJ6ElvxPeAUuaYKCvqIKzSdENk4A=;
-        b=a11oKknYruJkR8tqUfcbyIOy9R5lBX2XQIR77oEfQOCX1pWKQnHV/1gHBQ57/7nhYo
-         3knrrb2EPd/zeb20E+nJ9xi7KLnw8imky7zxVbw8uK2UDZ1x1dkhbvf4Rqr3N3J9tBew
-         mS9HtGtY6X0tQfgFy1a8J/aDyOKCSouDwxlz640l7khNEit5BWQWzDWqBkWNmyILwhkX
-         162mJxXkvQ7r+HTH33efb04Jep1WbRyz6JBBr8T1UykYIic5aQJy0nSLFa9K0dsoeYzD
-         HIXqLrtVwphYi/zJ5CqcZ3C7Nz0SHVSUw3rhzakG+tiQRCU0dWi8YfVZaKT9ZXboJpJe
-         Txkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-transfer-encoding;
-        bh=hwdSuWLNj6jcjbxSJ6ElvxPeAUuaYKCvqIKzSdENk4A=;
-        b=R5Uczm84T+ybkKpon/hNHOPzY9WtiDoL5ziOc9BXRbbg8jerlcx9pSHqrroyTXNdR9
-         q2I0NtKV8gcZnYACekRcrA6734T04PIqyvvqHLQ4D/M+/m2fAgoM5Ma82bWtflv+u1/7
-         CoFEGDYjFDLPq4O9dOwmtIsXvXkyXXY+9Uim99v+s6vI8fxJKpkxyJ52cp6Q5HQ5a6fg
-         rjjrsaFwoLU5OI3DtWyYuBGpuTUhOwvsApSD7Dh3UBpmbSpUZQ7qoqK8t3yWF5XiIT8W
-         dLXuJT/CUhbqe9gq8UMGF47zY/OR/UHGaRnP4XaatIDHBRnwbZMDVyc7emxSnJLUOUw4
-         PV+A==
-X-Gm-Message-State: AOPr4FWk7QqeMng1QB/lVL9rPdoauUvcoD+SAVb+osPex4x9a26Xc1XPR9Hveskw3aGTVA==
-X-Received: by 10.66.231.73 with SMTP id te9mr9380077pac.62.1463012122156;
-        Wed, 11 May 2016 17:15:22 -0700 (PDT)
-Received: from dl.caveonetworks.com ([64.2.3.194])
-        by smtp.googlemail.com with ESMTPSA id v185sm14869758pfb.72.2016.05.11.17.15.20
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 11 May 2016 17:15:20 -0700 (PDT)
-Message-ID: <5733CB17.9000904@gmail.com>
-Date:   Wed, 11 May 2016 17:15:19 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 03:11:03 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55703 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27029187AbcELBK4Rvcbb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 03:10:56 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id 2D21D1212CAD5;
+        Thu, 12 May 2016 02:10:49 +0100 (IST)
+Received: from [10.20.78.171] (10.20.78.171) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Thu, 12 May 2016
+ 02:10:49 +0100
+Date:   Thu, 12 May 2016 02:10:41 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
 To:     James Hogan <james.hogan@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 3/6] MIPS: Add guest CP0 accessors
-References: <1462978232-10670-1-git-send-email-james.hogan@imgtec.com> <1462978232-10670-4-git-send-email-james.hogan@imgtec.com>
-In-Reply-To: <1462978232-10670-4-git-send-email-james.hogan@imgtec.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v2 2/5] MIPS: Add defs & probing of extended CP0_EBase
+In-Reply-To: <1462971053-25622-3-git-send-email-james.hogan@imgtec.com>
+Message-ID: <alpine.DEB.2.00.1605120115470.6794@tp.orcam.me.uk>
+References: <1462971053-25622-1-git-send-email-james.hogan@imgtec.com> <1462971053-25622-3-git-send-email-james.hogan@imgtec.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.171]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53387
+X-archive-position: 53388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,23 +44,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/11/2016 07:50 AM, James Hogan wrote:
-> Add guest CP0 accessors and guest TLB operations along the same lines as
-> the existing macros and functions for the root CP0.
->
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
+Hi James,
 
-Not tested, but this looks correct.
+> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> index a6ce1db191aa..c4795568c1f2 100644
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -858,6 +858,41 @@ static void decode_configs(struct cpuinfo_mips *c)
+>  	if (ok)
+>  		ok = decode_config5(c);
+>  
+> +	/* Probe the EBase.WG bit */
+> +	if (cpu_has_mips_r2_r6) {
+> +		u64 ebase;
+> +		unsigned int status;
+> +
+> +		/* {read,write}_c0_ebase_64() may be UNDEFINED prior to r6 */
+> +		ebase = cpu_has_mips64r6 ? read_c0_ebase_64()
+> +					 : (s32)read_c0_ebase();
+> +		if (ebase & MIPS_EBASE_WG) {
+> +			/* WG bit already set, we can avoid the clumsy probe */
+> +			c->options |= MIPS_CPU_EBASE_WG;
 
-We are tying ourselves to binutils versions that understand the "virt" 
-instructions, but that is probably OK.
+ You may additionally check for bits 31:30 != 0b10 as a satisfactory 
+condition for WG's presence, under the assumption that 0b10 is not very 
+likely if a truly 64-bit exception base has been loaded.  E.g.:
 
-Acked-by: David Daney <david.daney@cavium.com>
+#define MIPS_EBASE_SEG_MASK (3 << 30)
+		s32 mask;
 
-> ---
->   arch/mips/include/asm/mipsregs.h | 341 +++++++++++++++++++++++++++++++++++++--
->   1 file changed, 330 insertions(+), 11 deletions(-)
->
-[...]
+		/* Avoid the clumsy probe if contents indicate 64 bits.  */
+		mask = MIPS_EBASE_SEG_MASK | MIPS_CPU_EBASE_WG;
+		if ((ebase & mask) != CKSEG0) {
+			c->options |= MIPS_CPU_EBASE_WG;
+
+or so.
+
+ NB I find the current description of EBase questionable to say the least.  
+This statement:
+
+"The addition of the base address and the exception offset is performed 
+inhibiting a carry between bits 29 and 30 of the final exception address." 
+
+is repeated twice as if a leftover from the days before WG support.  I 
+think this needs to be clarified in the case of bits 31:30 != 0b10.  Also 
+I think the effect on the Cache Error exception vector in this case has to 
+be better specified.  Can you please raise it with the architecture 
+documentation maintainers?
+
+ Also the description of DMFC0 is inconsistent with the corresponding 
+pseudo code.  As from r6.04 of the instruction set document the pseudo 
+code has been updated to take into account the R6 semantics for 32-bit 
+registers you rely on here, however the description still claims such 
+operation is UNDEFINED.  Can you please raise it with the architecture 
+documentation maintainers as well?
+
+  Maciej

@@ -1,51 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 17:55:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:5414 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27006153AbcELPzxwR530 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 17:55:53 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 4062941F8E05;
-        Thu, 12 May 2016 16:55:48 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 12 May 2016 16:55:48 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 12 May 2016 16:55:48 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id A58EB1D749B7E;
-        Thu, 12 May 2016 16:55:44 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 12 May 2016 16:55:47 +0100
-Received: from localhost (192.168.154.110) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 12 May
- 2016 16:55:47 +0100
-Date:   Thu, 12 May 2016 16:55:47 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 3/6] MIPS: Add guest CP0 accessors
-Message-ID: <20160512155547.GP23699@jhogan-linux.le.imgtec.org>
-References: <1462978232-10670-1-git-send-email-james.hogan@imgtec.com>
- <1462978232-10670-4-git-send-email-james.hogan@imgtec.com>
- <5733CB17.9000904@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2016 17:57:22 +0200 (CEST)
+Received: from mail-pa0-f52.google.com ([209.85.220.52]:33538 "EHLO
+        mail-pa0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006153AbcELP5UedHf0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 May 2016 17:57:20 +0200
+Received: by mail-pa0-f52.google.com with SMTP id xk12so31001168pac.0;
+        Thu, 12 May 2016 08:57:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-transfer-encoding;
+        bh=ZFUqo4ovoG81w4/aFyKJeJyHttR/MiANSZZM6tmnDME=;
+        b=F9Xi2tKwh81O7oqZajwVbEpEhQBI/jeAeaQ4RWBepUe/3f8oqt9hHzN6zH0C38hHbc
+         JbRO0wz2VvWvchLU+LXv/9jOudu7VxbcNyzXYgVNMs2l8PeF/OtZ6XSVYiN6tw0+UmBE
+         zqfzyvf2A+XXng1fax1s+29S1Fai7PeD4wF7Mz5w0YwDg+ymRe7oJbsyV5nEmt1mMNot
+         Z0ecEU0JOI2YBfBnq16PHoL/QLaDyUnrMIODjY1OT/xSJ3WbJLVLrRy7/D3m4kWjZrLB
+         24TePqrSruY7Q17IY+FVXT+qOFqgtECR4GSIDqc+WVWXiLOUz1usa3kOu+tazZPGAc+n
+         7dbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-transfer-encoding;
+        bh=ZFUqo4ovoG81w4/aFyKJeJyHttR/MiANSZZM6tmnDME=;
+        b=Q/l+2i3rIJLv8giXx1Fe8xhtf9MqnTicTQ1s7hIYb7TFW/DNfLGSZq3zliPw+8krEJ
+         91UfrWL8YobCnvUM8CcglXNv6U35R9jPFM1aTv1kUe9lHhNSSGDB28Bs8lIswStiVlNU
+         WUUoHvUJP3Pf/ylRlH0US8lOvnOGVhibYQrztfczuTqm2ifphkGcP6VH/m4aZKBdfpkW
+         fYSfsrkKErOahGozwJltmM5sURuzMrVlYsNIyvBWl7d6BVNKgUiTqOzG3F6VaPfxclWh
+         wogC1Er/EoqAZJko9dMiQmQMGZLUXTbhia+SWEz73wZ+bdh7uTCujEOedOMaZb9UpBvp
+         6nMQ==
+X-Gm-Message-State: AOPr4FVqcR08+6pSpM7Hw1u43zO7sYb1d8BfvOO7113XGUHChLOKESlDlsyYmexm5jHOUA==
+X-Received: by 10.66.253.68 with SMTP id zy4mr14956969pac.81.1463068634393;
+        Thu, 12 May 2016 08:57:14 -0700 (PDT)
+Received: from dl.caveonetworks.com ([64.2.3.194])
+        by smtp.googlemail.com with ESMTPSA id n190sm20874513pfn.23.2016.05.12.08.57.12
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 12 May 2016 08:57:13 -0700 (PDT)
+Message-ID: <5734A7D8.9030407@gmail.com>
+Date:   Thu, 12 May 2016 08:57:12 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="pvq4FPIYehQuVelz"
-Content-Disposition: inline
-In-Reply-To: <5733CB17.9000904@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 6e37d52
-Return-Path: <James.Hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        "Hill, Steven" <Steven.Hill@caviumnetworks.com>
+CC:     Florian Weimer <fweimer@redhat.com>, linux-mips@linux-mips.org
+Subject: Re: Endless loop on execution attempt on non-executable page
+References: <57345F0D.9070503@redhat.com> <20160512125342.GS16402@linux-mips.org> <9af052f6-b50c-7ba5-ebbb-0bdff0c58dd9@redhat.com> <20160512142306.GT16402@linux-mips.org>
+In-Reply-To: <20160512142306.GT16402@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53411
+X-archive-position: 53412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,67 +68,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---pvq4FPIYehQuVelz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 05/12/2016 07:23 AM, Ralf Baechle wrote:
+> On Thu, May 12, 2016 at 03:07:51PM +0200, Florian Weimer wrote:
+>
+>> On 05/12/2016 02:53 PM, Ralf Baechle wrote:
+>>> On Thu, May 12, 2016 at 12:46:37PM +0200, Florian Weimer wrote:
+>>>
+>>>> The GCC compile farm has a big-endian 64-bit MIPS box.  The kernel is:
+>>>>
+>>>> Linux erpro8-fsf1 3.14.10-er8mod-00013-ge0fe977 #1 SMP PREEMPT Wed Jan
+>>>> 14 12:33:22 PST 2015 mips64 GNU/Linux
+>>>>
+>>>> Which is a vendor kernel for the EdgeRouter Pro-8.
+>>>>
+>>>> /proc/cpuinfo reports:
+>>>>
+>>>> system type             : UBNT_E200 (CN6120p1.1-1000-NSP)
+>>>> machine                 : Unknown
+>>>> processor               : 0
+>>>> cpu model               : Cavium Octeon II V0.1
+>>>>
+>>>> While testing W^X (execmod, DEP, NX) stack enforcement, I noticed that once
+>>>> I try to execute code off a non-executable page, I do not get a signal, but
+>>>> the code appears to enter an infinite loop.  The generated function starts
+>>>> with a jump instruction to return to the caller, but instead, the program
+>>>> counter does not seem to change at all.
+>>>>
+>>>> “si” in GDB also hangs (but can be interrupted with ^C).
+>>>>
+>>>> My test code is here:
+>>>>
+>>>>    https://pagure.io/execmod-tests
+>>>>
+>>>> Is this a kernel bug or an issue with the silicon?
+>>>
+>>> I see the test case uses mprotect to add PROT_EXEC after writing the code
+>>> to memory.  I don't think mprotect however gives any guarantee that this
+>>> will make the I-cache coherent with the D-cache, that is that the CPU will
+>>> actually fetch and execute the instruction that were just written to memory.
+>>> For that you have to do something architecture specific such as dancing
+>>> around a fire waving a dead chicken.  Or on MIPS call cacheflush(), see
+>>> the man page for details.
+>>
+>> There is a fork between the write and the execute.  It is somewhat unlikely
+>> that that's not a barrier, but it did happen on POWER.
+>>
+>> However, I can successfully execute code without the barrier, so this whole
+>> thing goes in the wrong direction. :)
+>>
+>> I have added it, just to be on the safe side.
+>>
+>>> For portability sake to some broken processors you should also ensure
+>>> that a 32 byte cache line is entirely filled with valid instructions by
+>>> padding the two test instructions with another six no-op (opcode 0).
+>>
+>> Added as well.
+>>
+>>> The test case as it is guarantees this implicitly by using a freshly
+>>> allocated page but I thought I should mention it.
+>>
+>> There are some tests that don't (the stack variable might be clobbered, for
+>> example).
+>>
+>> Anyway, neither change fixed things for me.  Given the peculiar “si”
+>> behavior in GDB, that's not entirely unexpected ...
+>
+> Thanks for fixing and testing this obvious things.  Now let's look one
+> or two levels deeper ...
+>
 
-On Wed, May 11, 2016 at 05:15:19PM -0700, David Daney wrote:
-> On 05/11/2016 07:50 AM, James Hogan wrote:
-> > Add guest CP0 accessors and guest TLB operations along the same lines as
-> > the existing macros and functions for the root CP0.
-> >
-> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
->=20
-> Not tested, but this looks correct.
->=20
-> We are tying ourselves to binutils versions that understand the "virt"=20
-> instructions, but that is probably OK.
->=20
-> Acked-by: David Daney <david.daney@cavium.com>
+This is something that would be easy to diagnose on the OCTEON simulator...
 
-Thanks for taking a look David,
+Before spending time doing that, has anyone tried this on current 
+kernels rather than the 3.14 indicated above?
 
-Yes, i think its supported since binutils 2.24, which is now over 2
-years old.
+It might also be interesting to know if it still happens when booting on 
+only a single CPU rather than what I assume is the default on this 
+platform of all available CPUs
 
-What's the policy regarding binutils support for this sort of thing? I
-know we have hacks for assemblers that don't support MSA yet, but was
-hoping to avoid that sort of thing if possible here.
-
-Cheers
-James
-
->=20
-> > ---
-> >   arch/mips/include/asm/mipsregs.h | 341 ++++++++++++++++++++++++++++++=
-+++++++--
-> >   1 file changed, 330 insertions(+), 11 deletions(-)
-> >
-> [...]
-
---pvq4FPIYehQuVelz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJXNKeDAAoJEGwLaZPeOHZ6ofQQAJa5jQy6W0O2ul6xT4+Ked2Y
-Z0ZWsIwtik57nbocJhZ3mSRjyw9YuCWog2jJLbWnYBP1JWTiZC5ZPKf7uJkL4RRo
-g3xTBXOuBbeE5FkGcdv03j2+1PXFHdl61EtMiA3Xs7vW3MXWNRHjzkL+1mG6OxCI
-h8YVqKls/R5CF5DPb6nDw2Yrf6HexMwgOuLHHAiSaPfXJpZoupup+R1v/PuBvrVs
-J0ygG5gQWo1Krk+neopW8TB/7zXhDLmvG21ECmvujRNtugCZ2zXijNRInPxkja4a
-Mq8sJ/QZ3676mwmolMFqMjwbz5EqrxFLR03R0cfYduLiR/MeKhCS4qeUUQkZ8NR7
-UkLuemwLTD3FX443mJkkAADClV9RpDyZIpjqGb3OPnzymsiG3Lg8deLfa2ZOarWk
-PFyERnil2gG6lqirGbBW1I79XIgv+VsV0hWuy1gEIrxhv0ANDqFCiTU4ZsBBkXs9
-x8ylo9+o1lkUf7x+9clvgzeeACfNU7j+wqOPD7oZUQJhN72zE2RKKlVnPnDzbaEH
-j2tw9Zt39FD/Xm6gTpz+CbsMUkcS+qQvznewVU8E9XPp4h/Kmkw9b9dToWD2B3/n
-YeP9Gml/eA6KkWOhtTpfPjB0Jtg21LLlO3kHy3q8jYvv/lZjE0eceUj+0KjqxLhi
-8f9HCNZijwrmSMyipfVb
-=M/Ep
------END PGP SIGNATURE-----
-
---pvq4FPIYehQuVelz--
+David Daney

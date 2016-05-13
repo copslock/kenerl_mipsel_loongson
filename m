@@ -1,40 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2016 00:18:01 +0200 (CEST)
-Received: from gate.crashing.org ([63.228.1.57]:60413 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27027861AbcELWRzxMqD0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 May 2016 00:17:55 +0200
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id u4CMHZZV021219;
-        Thu, 12 May 2016 17:17:37 -0500
-Message-ID: <1463091454.3237.19.camel@kernel.crashing.org>
-Subject: Re: usb: dwc2: regression on MyBook Live Duo / Canyonlands since
- 4.3.0-rc4
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Christian Lamparter <chunkeey@googlemail.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Felipe Balbi <felipe.balbi@linux.intel.com>,
-        linux-mips@linux-mips.org, johnyoun@synopsys.com,
-        gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, a.seppala@gmail.com,
-        linuxppc-dev@lists.ozlabs.org
-Date:   Fri, 13 May 2016 08:17:34 +1000
-In-Reply-To: <7745292.ZB3149zIk7@debian64>
-References: <4231696.iL6nGs74X8@debian64>
-         <1462833472.20290.129.camel@kernel.crashing.org>
-         <5347627.S9K7mIusOJ@wuerfel> <7745292.ZB3149zIk7@debian64>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.18.5.2 (3.18.5.2-1.fc23) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <benh@kernel.crashing.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2016 02:04:09 +0200 (CEST)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:35393 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27027050AbcEMAEGT3Kmn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2016 02:04:06 +0200
+Received: by mail-pf0-f195.google.com with SMTP id r187so9139782pfr.2;
+        Thu, 12 May 2016 17:04:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=vN5JyfJonD7jgVdero5nfMr4qbuDZbUEswLxoZ2AaLk=;
+        b=V0y6pwwr3ekoNE/ok5P4Th/j7ODPa5iFRbvXxBVJMUpa3VSGNQ1D2Iuxg3AbCs/F7/
+         1s3v06rnZ9BVzjjCqJL7X9v74RfW/uV1Ur1zQfUj32FyeoXl8D0JwKR5haT8wfLg7JeY
+         2UTNdV1LUykNFBUo+SFyk6e8mAbxbKamMK5WS+NkbKkncnOqzdXxur7wvYLmX8x33l2F
+         M8+/CMhEXApeIrX2UQOPYlGrahA/P+FN0E3jDkQiQwDlEQ6e/tgC4Dsxwd9UlKXhdq2A
+         gGOvUIG/fN6nTgEEhZheTHabo9Vbw2AYHLjSSwtBvc8uloJD1szwCM0jf5WXC4x5vkTG
+         6G8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=vN5JyfJonD7jgVdero5nfMr4qbuDZbUEswLxoZ2AaLk=;
+        b=SKXIF94fIW7j3bPY/reCZq1RDaI/F13wGXMjbHe0xfy/31Tyg43x/5AcE/bLvNNwAN
+         UqUSrIWLmS416AFJGfeABnwhcsFlAHewfxcucneJlyw6xjzCu4zEICHSCQ51qMyFiiPu
+         iIckt3sktlFhSRwAYNWIpYRSTFluaZh76sm7gOx04vQXfSulQpH6UUlR7Ku8BcXR4bln
+         Ucgy0mdZ1GVxU+GEUhHcbQiV/4coCNsHCAG4+7mqt4KpImaOiULQAWFnY1Vya4F0iqTu
+         35agDLdEMPB/bH1M+AmuCejgRz/zn/s2YXTtddySGqiSRXPiY4+JA7bA3V+q8h0CdCiz
+         8pmQ==
+X-Gm-Message-State: AOPr4FW2HYMYjQdLAAY/1kDtPyaSViLJSXwnnMHGh1chKCh3kRQhzmjeq3lbR8nye5NeUg==
+X-Received: by 10.98.23.150 with SMTP id 144mr18182131pfx.96.1463097840132;
+        Thu, 12 May 2016 17:04:00 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.gmail.com with ESMTPSA id g27sm22468585pfd.25.2016.05.12.17.03.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 12 May 2016 17:03:59 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, macro@imgtec.com, matt.redfearn@imgtec.com,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: Descend into arch/mips/boot/tools while cleaning
+Date:   Thu, 12 May 2016 17:01:44 -0700
+Message-Id: <1463097704-23755-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <20160512072127.GQ16402@linux-mips.org>
+References: <20160512072127.GQ16402@linux-mips.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53419
+X-archive-position: 53420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,37 +64,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 2016-05-12 at 11:58 +0200, Christian Lamparter wrote:
-> 
-> > http://www.linuxplumbersconf.org/2012/wp-content/uploads/2012/09/2012-lpc-ref-big-little-endian-herrenschmidt.odp
-> > 
-> > but there are at least two more twists that you completely missed here:
-> > 
-> > - Some architectures (e.g. ARMv5 "BE32" mode in IXP4xx, surely some others)
-> >   do not implement big-endian mode by wiring up the data lines between the
-> >   bus and the CPU differently between big- and little-endian mode like
-> >   powerpc and armv7 "BE8" do, but instead they swizzle the *address* lines
-> >   on 8-bit and 16-bit addresses. The effect of that is that normal RAM
-> >   accesses work as expected both ways, and devices that are accessed using
-> >   32-bit MMIO ops never need any byteswap (you actually get "native
-> >   endian") while MMIO with 8 and 16 bit width does something completely
-> >   unexpected and touches the wrong register. Having an explicit byteswap
-> >   on the PCI host bridge gets you the expected addresses again for 8-bit
-> >   cycles but it also means that readl()/writel() again need to swap the
-> >   data.
+arch/mips/boot/tools/relocs was not being cleaned since we did not wire
+this directory into the archclean target, fix that.
 
-Right. Old PowerPC did that too and it's completely stupid. Thankfully
-most vendors grew a clue since then and this practice has slowly fallen
-into oblivion.
+Fixes: 5f552da15721 ("MIPS: tools: Add relocs tool")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ arch/mips/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-> > - Some other architectures (e.g. Broadcom MIPS) apparently are even fancier
-> >   and use a strapping pin on the SoC flips the endianess of the CPU core
-> >   at the same time as all the peripheral MMIO registers, with the intention
-> >   of never requiring any byte swaps. I believe they are implemented careful
-> >   enough to actually get this right, but it confuses the heck out of
-> >   Linux drivers that don't expect this.
-
-Right. Drivers like that will need an explicit test in the accessors.
-
-Cheers,
-Ben.
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 8388ef6a0044..c0b002a09bef 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -404,6 +404,7 @@ endif
+ archclean:
+ 	$(Q)$(MAKE) $(clean)=arch/mips/boot
+ 	$(Q)$(MAKE) $(clean)=arch/mips/boot/compressed
++	$(Q)$(MAKE) $(clean)=arch/mips/boot/tools
+ 	$(Q)$(MAKE) $(clean)=arch/mips/lasat
+ 
+ define archhelp
+-- 
+2.7.4

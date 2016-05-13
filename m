@@ -1,42 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2016 12:03:44 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:43144 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028544AbcEMKDbO3wkP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2016 12:03:31 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id 5786E1F535BB0;
-        Fri, 13 May 2016 11:03:22 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 13 May 2016 11:03:25 +0100
-Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 13 May
- 2016 11:03:25 +0100
-Subject: Re: [PATCH] MIPS: Descend into arch/mips/boot/tools while cleaning
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        <linux-mips@linux-mips.org>
-References: <20160512072127.GQ16402@linux-mips.org>
- <1463097704-23755-1-git-send-email-f.fainelli@gmail.com>
-CC:     <ralf@linux-mips.org>, <macro@imgtec.com>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <5735A66C.4030706@imgtec.com>
-Date:   Fri, 13 May 2016 11:03:24 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2016 14:18:40 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57766 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27028599AbcEMMSi6MNd1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 May 2016 14:18:38 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4DCIZRv005317;
+        Fri, 13 May 2016 14:18:35 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4DCIX0t005316;
+        Fri, 13 May 2016 14:18:33 +0200
+Date:   Fri, 13 May 2016 14:18:33 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Purna Chandra Mandal <purna.mandal@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Joshua Henderson <joshua.henderson@microchip.com>,
+        Pawel Moll <pawel.moll@arm.com>,
+        Sandeep Sheriker <sandeepsheriker.mallikarjun@microchip.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v11 0/3] PIC32MZDA Clock Driver
+Message-ID: <20160513121833.GC4215@linux-mips.org>
+References: <1463125961-10706-1-git-send-email-purna.mandal@microchip.com>
 MIME-Version: 1.0
-In-Reply-To: <1463097704-23755-1-git-send-email-f.fainelli@gmail.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1463125961-10706-1-git-send-email-purna.mandal@microchip.com>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53433
+X-archive-position: 53434
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,29 +52,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-And this one.
+On Fri, May 13, 2016 at 01:22:38PM +0530, Purna Chandra Mandal wrote:
 
-Acked-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Thanks for resolving the remaining issues.  As per discussion of the
+last version I've now queued the entire series for 4.7.
 
-On 13/05/16 01:01, Florian Fainelli wrote:
-> arch/mips/boot/tools/relocs was not being cleaned since we did not wire
-> this directory into the archclean target, fix that.
->
-> Fixes: 5f552da15721 ("MIPS: tools: Add relocs tool")
-> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-> ---
->   arch/mips/Makefile | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 8388ef6a0044..c0b002a09bef 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -404,6 +404,7 @@ endif
->   archclean:
->   	$(Q)$(MAKE) $(clean)=arch/mips/boot
->   	$(Q)$(MAKE) $(clean)=arch/mips/boot/compressed
-> +	$(Q)$(MAKE) $(clean)=arch/mips/boot/tools
->   	$(Q)$(MAKE) $(clean)=arch/mips/lasat
->   
->   define archhelp
+One step closer to full PIC32MZDA in-tree support!
+
+  Ralf

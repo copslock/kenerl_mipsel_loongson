@@ -1,64 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2016 15:43:04 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:57513 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27027015AbcEMNnCyvW5z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2016 15:43:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
-        bh=qAfoBa5L3Wq+09GXL9p5HqF+ISZECvC/FCD5bvIyFU8=; b=KSYu48c2ud9Dbk7DQGeSlgKe1q
-        z5VOU6Xk2NUaZFzzyy2jGB3JQVozbER1kJeCDKnefltjtQ+yvLDxEthpjiNaUgkF11BYXit4BDaN6
-        D+H2gI1P8SMJrs2EXIbnQl1MBSOsjVouDa7ZkC1RVKSEYSOVhknlnLy7w7Mid48ryRIaSNrSQ8IOe
-        ZQDJvMDoQysQdR4hoJagvOhBfFO/y7CHhJCalQvAs7otRZXUsXAnmIogeOojQUu+onRAFlmwCeIOJ
-        lwbncK/P0OMd/ebVGHBnuqGcJoNd44aoYv/aS5PyFVO13e06R6UQ73ajkrnrwoJFmmgsMZvYY1jWX
-        BIvJv6yA==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:47134 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1b1DMg-002DOW-9N; Fri, 13 May 2016 13:42:51 +0000
-Subject: Re: next: fuloong2e qemu boot failure due to 'MIPS: Loongson:
- AddLoongson-3A R2 basic support'
-To:     Huacai Chen <chenhc@lemote.com>
-References: <20160420025454.GA17200@roeck-us.net>
- <tencent_5BBD94596E55516D1B4FED5F@qq.com> <5717090E.2050004@roeck-us.net>
- <CAAhV-H6Br2r0yMX2+2gCqjY=+LxSh4Pf9pwvZhDu4MYx5b_jZQ@mail.gmail.com>
- <57354E33.8080905@roeck-us.net>
- <CAAhV-H6s4EmFOqrGFR2YSDV4nyPX_hZDzQ8kt6bYBqDMGNWDJw@mail.gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        linux-next <linux-next@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <5735D9DD.1030408@roeck-us.net>
-Date:   Fri, 13 May 2016 06:42:53 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2016 15:49:01 +0200 (CEST)
+Received: from mout.kundenserver.de ([217.72.192.73]:63027 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27028609AbcEMNtAIMQ7z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2016 15:49:00 +0200
+Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue102) with ESMTPSA (Nemesis) id 0MORwj-1avQZ213TB-005mLl; Fri, 13 May
+ 2016 15:48:25 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     John Youn <John.Youn@synopsys.com>
+Cc:     Christian Lamparter <chunkeey@googlemail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "a.seppala@gmail.com" <a.seppala@gmail.com>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Felipe Balbi <balbi@ti.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Gregory Herrero <gregory.herrero@intel.com>,
+        Mian Yousaf Kaukab <yousaf.kaukab@intel.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: Re: [PATCH v3] usb: dwc2: fix regression on big-endian PowerPC/ARM systems
+Date:   Fri, 13 May 2016 15:48:14 +0200
+Message-ID: <5706100.G8QoS78uJd@wuerfel>
+User-Agent: KMail/4.11.5 (Linux/3.16.0-10-generic; KDE/4.11.5; x86_64; ; )
+In-Reply-To: <573574F2.8010901@synopsys.com>
+References: <1463086588-2393828-1-git-send-email-arnd@arndb.de> <573574F2.8010901@synopsys.com>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H6s4EmFOqrGFR2YSDV4nyPX_hZDzQ8kt6bYBqDMGNWDJw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:yIv14ijM96Q0fNlMp2Nc2ik6e8rZcmhFCs+iWnZLLewA9OZ50kx
+ EyKVdT/MnABn740eGdxk/VW0WsKEc/7kKv1R3p9uxScU7GTCyIQjikTVfIeackxcC7rrJXL
+ D0jlEx5wx079dudpevQqo4Elejmmy033YagS9STNQ3Wi+Iq9DjSzmjqhTAI2VbGFJGkm15P
+ mVs8sNXS4aNSuhYvKDOAg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:03wtSxP2/oI=:nt5CmDIOk7xMHrDpbqe2Fx
+ sN82jwvgTrp/9olJ18F6JgpvT/FvavpWAy0FMldQCAcZhQCyfgu/N91+kHY91Kn91U0REHho+
+ NQoj+TUc4QdBnDj/VQ7+L5EzNu9+WUMyF2XKVlPK/Jl9/0AmgGuWRa4fZAC7bZyiZoO0Wt3sG
+ Nx86t5kMp/Ev8HFF0B2MRzzE54nhtiMCp1YizbbiIlfiTG1B60a1vUB+sIQ8rMI8ZuMuW7OdD
+ qnLGtotu3o/78xeV8DawS6/2hK9Is+/ycZblxTRq1NAwIkKRidt5vGBuO/YJ6r37bfagCfQqo
+ u/9TxSX4vSJT1hhzetD1QRbDc3BOhg+7ajueBiksD5a5LysIV8TX0hCNMEBaRCyRW3kVB9NIN
+ GPU4hkT7K06lMVB9bdqzI/NiHr6EzxKo/XNOxddJE2ic4xeAtWLxFK79VpHoUGvSnax9bXC4D
+ Fh1JR4ECeRP1VgAG22EeLwxXYNU2TmS2jiRDLZhY/Rn3ocABokAIQxfiEG2A/VRY5DhdZYdBr
+ BVTrK5OoRFAQgIziQQDYmnXXAdfE1EPCKiosytDhTJ00cYoV14WbAEnIAOAb5wVHF9aZJw1ot
+ llTkoi5DePBlzK8+1UKeIg9oMsZ2elH1acEI49P5B4vyQhVUx5UfTeSSCDEGzsNT0/qub0vgS
+ iKEQgu2q1Q29fLswXsgNQP8fnucKK0ZZdBW4zrUF4nFe5/Cc05Wfv3fzi5V5dri4nntc+hUc2
+ CtkX8g7oq0WDQIMM
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53436
+X-archive-position: 53437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,129 +68,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/12/2016 10:49 PM, Huacai Chen wrote:
-> I'll send a patch, but it seems be ignored by maintainer.
-> https://patchwork.linux-mips.org/patch/13136/
->
+On Thursday 12 May 2016 23:32:18 John Youn wrote:
+> 
+> Hi Arnd,
+> 
+> The capitalization issue is still there in this patch.
+> 
+> There's also a few checkpatch issues.
 
-It is marked as accepted, so it should be in Ralf's queue.
+Fixed now, thanks. I'll send a v4 in a bit.
 
-Thanks,
-Guenter
+> And should the barrier be moved after the write like it says in the
+> comment? That seems to have been removed since earlier versions of
+> the patch.
 
-> Huacai
->
-> On Fri, May 13, 2016 at 11:46 AM, Guenter Roeck <linux@roeck-us.net> wrote:
->> On 04/19/2016 10:41 PM, Huacai Chen wrote:
->>>
->>> This is a kernel bug, I'll send a patch.
->>>
->>
->> Did you ever send a patch to fix this problem ? It is still broken in
->> next-20160512.
->>
->> Guenter
->>
->>
->>> Huacai
->>>
->>> On Wed, Apr 20, 2016 at 12:43 PM, Guenter Roeck <linux@roeck-us.net>
->>> wrote:
->>>>
->>>> On 04/19/2016 08:37 PM, 陈华才 wrote:
->>>>>
->>>>>
->>>>> Hi,
->>>>>
->>>>> Could you please remove the line "#define cpu_hwrena_impl_bits
->>>>> 0xc0000000" in
->>>>> arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h
->>>>> and try again?Thanks.
->>>>>
->>>>
->>>> That fixes the problem.
->>>>
->>>> Does this need to be addressed in qemu or in the Linux kernel ?
->>>>
->>>> Thanks,
->>>> Guenter
->>>>
->>>>
->>>>> Huacai
->>>>>
->>>>> ------------------ Original ------------------
->>>>> From:  "Guenter Roeck"<linux@roeck-us.net>;
->>>>> Date:  Wed, Apr 20, 2016 10:54 AM
->>>>> To:  "Huacai Chen"<chenhc@lemote.com>;
->>>>> Cc:  "Ralf Baechle"<ralf@linux-mips.org>;
->>>>> "linux-mips"<linux-mips@linux-mips.org>;
->>>>> "linux-next"<linux-next@vger.kernel.org>;
->>>>> "linux-kernel"<linux-kernel@vger.kernel.org>;
->>>>> Subject:  next: fuloong2e qemu boot failure due to 'MIPS: Loongson:
->>>>> AddLoongson-3A R2 basic support'
->>>>>
->>>>> Hi,
->>>>>
->>>>> qemu fails to boot in -next for machine fulong2e with configuration
->>>>> fuloong2e_defconfig. Bisect points to commit 'MIPS: Loongson: Add
->>>>> Loongson-3A R2 basic support'. qemu hangs in boot, after displaying
->>>>> "Inode-cache hash table entries: 16384 (order: 3, 131072 bytes)".
->>>>>
->>>>> Bisect log is attached.
->>>>>
->>>>> Guenter
->>>>>
->>>>> ---
->>>>> # bad: [1bd7a2081d2c7b096f75aa934658e404ccaba5fd] Add linux-next
->>>>> specific
->>>>> files for 20160418
->>>>> # good: [bf16200689118d19de1b8d2a3c314fc21f5dc7bb] Linux 4.6-rc3
->>>>> git bisect start 'HEAD' 'v4.6-rc3'
->>>>> # bad: [493ac92ff65ec4c4cd4c43870e778760a012951d] Merge remote-tracking
->>>>> branch 'ipvs-next/master'
->>>>> git bisect bad 493ac92ff65ec4c4cd4c43870e778760a012951d
->>>>> # bad: [20ca3ae9c517eee9b2f1bd0fb2a06e2d14153792] Merge remote-tracking
->>>>> branch 'btrfs-kdave/for-next'
->>>>> git bisect bad 20ca3ae9c517eee9b2f1bd0fb2a06e2d14153792
->>>>> # good: [c454e65fb9ade11d0f84718d06a6888e2c92804d] Merge remote-tracking
->>>>> branch 'omap/for-next'
->>>>> git bisect good c454e65fb9ade11d0f84718d06a6888e2c92804d
->>>>> # good: [6f5c70fb9b4fc0534157bfa40cea9b402e6f2506] Merge remote-tracking
->>>>> branch 'microblaze/next'
->>>>> git bisect good 6f5c70fb9b4fc0534157bfa40cea9b402e6f2506
->>>>> # bad: [7f053cd68fd14243c8f202b4086d7dd75c409e6f] MIPS: Loongson-3:
->>>>> Introduce CONFIG_LOONGSON3_ENHANCEMENT
->>>>> git bisect bad 7f053cd68fd14243c8f202b4086d7dd75c409e6f
->>>>> # good: [e9aacdd7f0b66c4ace17e5950c48e7cc61a253c8] MIPS: Allow RIXI to
->>>>> be
->>>>> used on non-R2 or R6 cores
->>>>> git bisect good e9aacdd7f0b66c4ace17e5950c48e7cc61a253c8
->>>>> # good: [d1e8b9a8dc6c7fa9add5dfa7083e035ce037e56d] MAINTAINERS: add
->>>>> Loongson1 architecture entry
->>>>> git bisect good d1e8b9a8dc6c7fa9add5dfa7083e035ce037e56d
->>>>> # good: [13ff6275bb389c3669082d3ef8483592a31eb0ea] MIPS: Fix siginfo.h
->>>>> to
->>>>> use strict posix types
->>>>> git bisect good 13ff6275bb389c3669082d3ef8483592a31eb0ea
->>>>> # good: [66e74bdd51e617023fa2e79a807b704fb3eed8aa] MIPS: Enable ptrace
->>>>> hw
->>>>> watchpoints on MIPS R6
->>>>> git bisect good 66e74bdd51e617023fa2e79a807b704fb3eed8aa
->>>>> # good: [f7cabc2dac8adf5986dbc700584bc3b8fe493d4d] MIPS: Loongson-3:
->>>>> Adjust irq dispatch to speedup processing
->>>>> git bisect good f7cabc2dac8adf5986dbc700584bc3b8fe493d4d
->>>>> # bad: [4978c8477e96fb9e9d870d8f42328dcabf1a65e9] MIPS: Loongson-3: Set
->>>>> cache flush handlers to cache_noop
->>>>> git bisect bad 4978c8477e96fb9e9d870d8f42328dcabf1a65e9
->>>>> # bad: [04a35922c1dac1b4864b8b366a37474e9e51d8c0] MIPS: Loongson: Add
->>>>> Loongson-3A R2 basic support
->>>>> git bisect bad 04a35922c1dac1b4864b8b366a37474e9e51d8c0
->>>>> # first bad commit: [04a35922c1dac1b4864b8b366a37474e9e51d8c0] MIPS:
->>>>> Loongson: Add Loongson-3A R2 basic support
->>>>>
->>>>
->>>>
->>>
->>
->>
->
+I've clarified the comment, so we refer to the __raw_writel
+not the writel. It's also possible that this was just another
+bug in the patch that broke powerpc, but I don't know anything
+about MIPS barrier semantics, so I prefer not to touch that.
+
+	Arnd

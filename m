@@ -1,66 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 May 2016 04:50:31 +0200 (CEST)
-Received: from smtprelay4.synopsys.com ([198.182.47.9]:54020 "EHLO
-        smtprelay.synopsys.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27006933AbcENCu1Ph4lK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 14 May 2016 04:50:27 +0200
-Received: from us02secmta1.synopsys.com (us02secmta1.synopsys.com [10.12.235.96])
-        by smtprelay.synopsys.com (Postfix) with ESMTP id 136E624E1585;
-        Fri, 13 May 2016 19:50:18 -0700 (PDT)
-Received: from us02secmta1.internal.synopsys.com (us02secmta1.internal.synopsys.com [127.0.0.1])
-        by us02secmta1.internal.synopsys.com (Service) with ESMTP id A95A44E215;
-        Fri, 13 May 2016 19:50:18 -0700 (PDT)
-Received: from mailhost.synopsys.com (mailhost1.synopsys.com [10.12.238.239])
-        by us02secmta1.internal.synopsys.com (Service) with ESMTP id 22A2C4E214;
-        Fri, 13 May 2016 19:50:18 -0700 (PDT)
-Received: from mailhost.synopsys.com (localhost [127.0.0.1])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 037E0EC2;
-        Fri, 13 May 2016 19:50:18 -0700 (PDT)
-Received: from US01WEHTC2.internal.synopsys.com (us01wehtc2-vip.internal.synopsys.com [10.12.239.238])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 65E29EBF;
-        Fri, 13 May 2016 19:50:16 -0700 (PDT)
-Received: from US01WEHTC1.internal.synopsys.com (10.12.239.236) by
- US01WEHTC2.internal.synopsys.com (10.12.239.237) with Microsoft SMTP Server
- (TLS) id 14.3.195.1; Fri, 13 May 2016 19:50:16 -0700
-Received: from [10.10.186.125] (10.10.186.125) by
- us01wehtc1.internal.synopsys.com (10.12.239.231) with Microsoft SMTP Server
- (TLS) id 14.3.195.1; Fri, 13 May 2016 19:50:15 -0700
-Subject: Re: [PATCH v4] usb: dwc2: fix regression on big-endian PowerPC/ARM
- systems
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>
-References: <1463147559-544140-1-git-send-email-arnd@arndb.de>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "John.Youn@synopsys.com" <John.Youn@synopsys.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "a.seppala@gmail.com" <a.seppala@gmail.com>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 May 2016 11:22:24 +0200 (CEST)
+Received: from mail-wm0-f67.google.com ([74.125.82.67]:33402 "EHLO
+        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27028789AbcENJWWHAUSm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 14 May 2016 11:22:22 +0200
+Received: by mail-wm0-f67.google.com with SMTP id r12so8058121wme.0
+        for <linux-mips@linux-mips.org>; Sat, 14 May 2016 02:22:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:user-agent:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ZOTYTalEGosSySnjnj47AMdgXs58EGjniS35J5prwqE=;
+        b=taGpuDgTrlCgCsRidE68ms73nYmVBVatYlisflqZxWLam84Cq9BiRdzFB/sbMxvKrH
+         CZ2+8HKXL9CRDnjdHcCZ0eQ4ykkmz2jDay5P3TiE/l/kL/OOvanRa8J51BEAtfbKO9kV
+         k60bV8SnqEu8grOIwqJjBHgwfEOt82IP79YpVltNQ+X7LAOrg8NONEwZG+yNiUtKZkNb
+         8SsGcnCHay3XyW5EdvV9wlukarsAvUo8Jr6W8Jyu9UfmoKfdsWtrQ4d3tmsaIAiPinlk
+         Tngfbmqqe5Cxq9WM3EXcSp8xETDJSTqtGGNh2AXVPNBKTwsbz/YgVz4PNi9SOwevN8iv
+         KHwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:user-agent
+         :in-reply-to:references:mime-version:content-transfer-encoding;
+        bh=ZOTYTalEGosSySnjnj47AMdgXs58EGjniS35J5prwqE=;
+        b=ZDxt8cloKuGLabrUlZRNCO/1DKMbBIUG26nLCp/fRH9Sj+Ee8XgUTtPJ+583chU3u4
+         5V4qQsrmC9jkekpAZdyn07uEMK3CITBu0RwxXRVITt/4k2j0ljZ2ck4V6PjRaOQQeTRb
+         u6Q7rbOoL0gat8GJ075ZgAQGQp9+i/5XW4+SqzJvYN7a2lRZelHic7HOU4w37Bj6SCmI
+         VZjAT7RryPfSf0QjIZKxN/elQ2v4qYaIXsRNknQMHTi1Yu9V3sNNwljmivPtcceKSH2Z
+         e4ds4TCgXbDpGvsJma8OSRdMrd0LHb9BYYeO9Eg1tiyEMP6YvYThkUpUgfOFZWTl6vHG
+         NDpQ==
+X-Gm-Message-State: AOPr4FVHhEAZaNxyK6q3bnlQmz1CYb7Y2jJ6J+qCxF2QnEXtiyCLKf3LoW0l3YBcsL2JSw==
+X-Received: by 10.28.125.138 with SMTP id y132mr7891098wmc.90.1463217736769;
+        Sat, 14 May 2016 02:22:16 -0700 (PDT)
+Received: from debian64.daheim (pD9F8A692.dip0.t-ipconnect.de. [217.248.166.146])
+        by smtp.googlemail.com with ESMTPSA id ck9sm22796331wjc.22.2016.05.14.02.22.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 14 May 2016 02:22:15 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
+        by debian64.daheim with esmtps (TLS1.0:ECDHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.87)
+        (envelope-from <chunkeey@googlemail.com>)
+        id 1b1Vm1-0008Fc-2L; Sat, 14 May 2016 11:22:13 +0200
+From:   Christian Lamparter <chunkeey@googlemail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        linux-mips@linux-mips.org, johnyoun@synopsys.com,
+        gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, a.seppala@gmail.com,
+        linuxppc-dev@lists.ozlabs.org,
         Douglas Anderson <dianders@chromium.org>,
         Gregory Herrero <gregory.herrero@intel.com>,
         Mian Yousaf Kaukab <yousaf.kaukab@intel.com>,
         Marek Szyprowski <m.szyprowski@samsung.com>
-From:   John Youn <John.Youn@synopsys.com>
-Message-ID: <57369267.6060308@synopsys.com>
-Date:   Fri, 13 May 2016 19:50:15 -0700
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.7.2
-MIME-Version: 1.0
+Subject: Re: [PATCH v4] usb: dwc2: fix regression on big-endian PowerPC/ARM systems
+Date:   Sat, 14 May 2016 11:22:12 +0200
+Message-ID: <6179749.eyWcSy75sL@debian64>
+User-Agent: KMail/4.14.10 (Linux/4.6.0-rc5-wt; KDE/4.14.14; x86_64; ; )
 In-Reply-To: <1463147559-544140-1-git-send-email-arnd@arndb.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.10.186.125]
-Return-Path: <John.Youn@synopsys.com>
+References: <1463147559-544140-1-git-send-email-arnd@arndb.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Return-Path: <chunkeey@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53442
+X-archive-position: 53443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: John.Youn@synopsys.com
+X-original-sender: chunkeey@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,7 +81,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 5/13/2016 6:53 AM, Arnd Bergmann wrote:
+On Friday, May 13, 2016 03:52:27 PM Arnd Bergmann wrote:
 > A patch that went into Linux-4.4 to fix big-endian mode on a Lantiq
 > MIPS system unfortunately broke big-endian operation on PowerPC
 > APM82181 as reported by Christian Lamparter, and likely other
@@ -111,59 +119,17 @@ On 5/13/2016 6:53 AM, Arnd Bergmann wrote:
 > 
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > Fixes: 95c8bc360944 ("usb: dwc2: Use platform endianness when accessing registers")
-> ---
->  drivers/usb/dwc2/core.h | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
-> diff --git a/drivers/usb/dwc2/core.h b/drivers/usb/dwc2/core.h
-> index 3c58d633ce80..dec0b21fc626 100644
-> --- a/drivers/usb/dwc2/core.h
-> +++ b/drivers/usb/dwc2/core.h
-> @@ -64,6 +64,17 @@
->  	DWC2_TRACE_SCHEDULER_VB(pr_fmt("%s: SCH: " fmt),		\
->  				dev_name(hsotg->dev), ##__VA_ARGS__)
->  
-> +#ifdef CONFIG_MIPS
-> +/*
-> + * There are some MIPS machines that can run in either big-endian
-> + * or little-endian mode and that use the dwc2 register without
-> + * a byteswap in both ways.
-> + * Unlike other architectures, MIPS apparently does not require a
-> + * barrier before the __raw_writel() to synchronize with DMA but does
-> + * require the barrier after the __raw_writel() to serialize a set of
-> + * writes. This set of operations was added specifically for MIPS and
-> + * should only be used there.
-> + */
->  static inline u32 dwc2_readl(const void __iomem *addr)
->  {
->  	u32 value = __raw_readl(addr);
-> @@ -90,6 +101,22 @@ static inline void dwc2_writel(u32 value, void __iomem *addr)
->  	pr_info("INFO:: wrote %08x to %p\n", value, addr);
->  #endif
->  }
-> +#else
-> +/* Normal architectures just use readl/write */
-> +static inline u32 dwc2_readl(const void __iomem *addr)
-> +{
-> +	return readl(addr);
-> +}
-> +
-> +static inline void dwc2_writel(u32 value, void __iomem *addr)
-> +{
-> +	writel(value, addr);
-> +
-> +#ifdef DWC2_LOG_WRITES
-> +	pr_info("info:: wrote %08x to %p\n", value, addr);
-> +#endif
-> +}
-> +#endif
->  
->  /* Maximum number of Endpoints/HostChannels */
->  #define MAX_EPS_CHANNELS	16
-> 
+Thanks Arnd,
 
-Thanks Arnd.
+Tested-by: Christian Lamparter <chunkeey@googlemail.com>
 
-Acked-by: John Youn <johnyoun@synopsys.com>
+dwc2 4bff80000.usbotg: Specified GNPTXFDEP=1024 > 256
+dwc2 4bff80000.usbotg: EPs: 3, shared fifos, 2042 entries in SPRAM
+dwc2 4bff80000.usbotg: DWC OTG Controller
+dwc2 4bff80000.usbotg: new USB bus registered, assigned bus number 1
+dwc2 4bff80000.usbotg: irq 33, io mem 0x00000000
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 1 port detected
 
-John
+Regards,
+Christian

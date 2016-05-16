@@ -1,47 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2016 13:16:07 +0200 (CEST)
-Received: from bastet.se.axis.com ([195.60.68.11]:58903 "EHLO
-        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27029224AbcEPLQFQAuZR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2016 13:16:05 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bastet.se.axis.com (Postfix) with ESMTP id DC0231807A;
-        Mon, 16 May 2016 13:15:59 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
-Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id V4wL44fIRnxQ; Mon, 16 May 2016 13:15:58 +0200 (CEST)
-Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
-        by bastet.se.axis.com (Postfix) with ESMTP id 7CC2318078;
-        Mon, 16 May 2016 13:15:58 +0200 (CEST)
-Received: from boulder.se.axis.com (localhost [127.0.0.1])
-        by postfix.imss71 (Postfix) with ESMTP id 4F08B1B08;
-        Mon, 16 May 2016 13:15:58 +0200 (CEST)
-Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
-        by boulder.se.axis.com (Postfix) with ESMTP id 440BB1B0A;
-        Mon, 16 May 2016 13:15:58 +0200 (CEST)
-Received: from lnxartpec.se.axis.com (lnxartpec.se.axis.com [10.88.4.9])
-        by thoth.se.axis.com (Postfix) with ESMTP id 41D2FFE2;
-        Mon, 16 May 2016 13:15:58 +0200 (CEST)
-Received: by lnxartpec.se.axis.com (Postfix, from userid 10564)
-        id 3BC87820DB; Mon, 16 May 2016 13:15:58 +0200 (CEST)
-From:   Rabin Vincent <rabin.vincent@axis.com>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     andrew@lunn.ch, f.fainelli@gmail.com, netdev@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, Rabin Vincent <rabinv@axis.com>
-Subject: [PATCH] phy: remove irq param to fix crash in fixed_phy_add()
-Date:   Mon, 16 May 2016 13:15:56 +0200
-Message-Id: <1463397356-5656-1-git-send-email-rabin.vincent@axis.com>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <rabin.vincent@axis.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2016 13:51:08 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:43625 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27014177AbcEPLvFo0RjU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2016 13:51:05 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id 4FF903FBA2237;
+        Mon, 16 May 2016 12:50:55 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 16 May 2016 12:50:58 +0100
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 16 May 2016 12:50:57 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Guenter Roeck <private@roeck-us.net>,
+        <linux-kernel@vger.kernel.org>, <linux-next@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: Fix VZ probe gas errors with binutils <2.24
+Date:   Mon, 16 May 2016 12:50:04 +0100
+Message-ID: <1463399404-10978-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
+In-Reply-To: <57374216.10307@roeck-us.net>
+References: <57374216.10307@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53454
+X-archive-position: 53455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rabin.vincent@axis.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,219 +48,594 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Rabin Vincent <rabinv@axis.com>
+The VZ guest register & TLB access macros introduced in commit "MIPS:
+Add guest CP0 accessors" use VZ ASE specific instructions that aren't
+understood by versions of binutils prior to 2.24.
 
-Since e7f4dc3536a ("mdio: Move allocation of interrupts into core"),
-platforms which call fixed_phy_add() before fixed_mdio_bus_init() is
-called (for example, because the platform code and the fixed_phy driver
-use the same initcall level) crash in fixed_phy_add() since the
-->mii_bus is not allocated.
+Add a check for whether the toolchain supports the -mvirt option,
+similar to the MSA toolchain check, and implement the accessors using
+.word if not.
 
-Also since e7f4dc3536a, these interrupts are initalized to polling by
-default.  All callers of both fixed_phy_register() and fixed_phy_add()
-pass PHY_POLL for the irq argument, so we can fix these crashes by
-simply removing the irq parameter, since the default is correct for all
-users.
+Due to difficulty in converting compiler specified registers (e.g. "$3")
+to usable numbers (e.g. "3") in inline asm, we need to copy to/from a
+temporary register, namely the assembler temporary (at/$1), and specify
+guest CP0 registers numerically in the gc0 macros.
 
-Fixes: e7f4dc3536a400 ("mdio: Move allocation of interrupts into core")
-Signed-off-by: Rabin Vincent <rabinv@axis.com>
+Fixes: 7eb91118227d ("MIPS: Add guest CP0 accessors")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
 ---
- arch/m68k/coldfire/m5272.c                   |  2 +-
- arch/mips/ar7/platform.c                     |  5 ++---
- arch/mips/bcm47xx/setup.c                    |  2 +-
- drivers/net/ethernet/broadcom/bgmac.c        |  2 +-
- drivers/net/ethernet/broadcom/genet/bcmmii.c |  2 +-
- drivers/net/phy/fixed_phy.c                  | 10 +++-------
- drivers/of/of_mdio.c                         |  6 +++---
- include/linux/phy_fixed.h                    | 16 ++++++----------
- 8 files changed, 18 insertions(+), 27 deletions(-)
+Ralf: If it isn't too late, can this to be squashed into the "MIPS: Add
+guest CP0 accessors" commit?
+---
+ arch/mips/Makefile               |   2 +
+ arch/mips/include/asm/mipsregs.h | 475 ++++++++++++++++++++++++---------------
+ 2 files changed, 296 insertions(+), 181 deletions(-)
 
-diff --git a/arch/m68k/coldfire/m5272.c b/arch/m68k/coldfire/m5272.c
-index c525e4c..217e2e0 100644
---- a/arch/m68k/coldfire/m5272.c
-+++ b/arch/m68k/coldfire/m5272.c
-@@ -126,7 +126,7 @@ static struct fixed_phy_status nettel_fixed_phy_status __initdata = {
- static int __init init_BSP(void)
- {
- 	m5272_uarts_init();
--	fixed_phy_add(PHY_POLL, 0, &nettel_fixed_phy_status, -1);
-+	fixed_phy_add(0, &nettel_fixed_phy_status, -1);
- 	return 0;
- }
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index c0b002a09bef..efd7a9dc93c4 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -200,6 +200,8 @@ ifeq ($(CONFIG_CPU_HAS_MSA),y)
+ toolchain-msa				:= $(call cc-option-yn,$(mips-cflags) -mhard-float -mfp64 -Wa$(comma)-mmsa)
+ cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
+ endif
++toolchain-virt				:= $(call cc-option-yn,$(mips-cflags) -mvirt)
++cflags-$(toolchain-virt)		+= -DTOOLCHAIN_SUPPORTS_VIRT
  
-diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-index 58fca9a..0a024b0 100644
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -678,8 +678,7 @@ static int __init ar7_register_devices(void)
- 	}
+ cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_NEVER)	+= -mcompact-branches=never
+ cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_OPTIMAL)	+= -mcompact-branches=optimal
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 1019de6bb2a8..25d01577d0b5 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1683,15 +1683,18 @@ do {									\
+  * Macros to access the guest system control coprocessor
+  */
  
- 	if (ar7_has_high_cpmac()) {
--		res = fixed_phy_add(PHY_POLL, cpmac_high.id,
--				    &fixed_phy_status, -1);
-+		res = fixed_phy_add(cpmac_high.id, &fixed_phy_status, -1);
- 		if (!res) {
- 			cpmac_get_mac(1, cpmac_high_data.dev_addr);
++#ifdef TOOLCHAIN_SUPPORTS_VIRT
++
+ #define __read_32bit_gc0_register(source, sel)				\
+ ({ int __res;								\
+ 	__asm__ __volatile__(						\
+ 		".set\tpush\n\t"					\
+ 		".set\tmips32r2\n\t"					\
+ 		".set\tvirt\n\t"					\
+-		"mfgc0\t%0, " #source ", " #sel "\n\t"			\
++		"mfgc0\t%0, $%1, %2\n\t"				\
+ 		".set\tpop"						\
+-		: "=r" (__res));					\
++		: "=r" (__res)						\
++		: "i" (source), "i" (sel));				\
+ 	__res;								\
+ })
  
-@@ -692,7 +691,7 @@ static int __init ar7_register_devices(void)
- 	} else
- 		cpmac_low_data.phy_mask = 0xffffffff;
+@@ -1701,9 +1704,10 @@ do {									\
+ 		".set\tpush\n\t"					\
+ 		".set\tmips64r2\n\t"					\
+ 		".set\tvirt\n\t"					\
+-		"dmfgc0\t%0, " #source ", " #sel "\n\t"			\
++		"dmfgc0\t%0, $%1, %2\n\t"			\
+ 		".set\tpop"						\
+-		: "=r" (__res));					\
++		: "=r" (__res)						\
++		: "i" (source), "i" (sel));				\
+ 	__res;								\
+ })
  
--	res = fixed_phy_add(PHY_POLL, cpmac_low.id, &fixed_phy_status, -1);
-+	res = fixed_phy_add(cpmac_low.id, &fixed_phy_status, -1);
- 	if (!res) {
- 		cpmac_get_mac(0, cpmac_low_data.dev_addr);
- 		res = platform_device_register(&cpmac_low);
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index c807e32..ca3fbd1 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -243,7 +243,7 @@ static int __init bcm47xx_register_bus_complete(void)
- 	bcm47xx_leds_register();
- 	bcm47xx_workarounds();
+@@ -1713,9 +1717,10 @@ do {									\
+ 		".set\tpush\n\t"					\
+ 		".set\tmips32r2\n\t"					\
+ 		".set\tvirt\n\t"					\
+-		"mtgc0\t%z0, " #register ", " #sel "\n\t"		\
++		"mtgc0\t%z0, $%1, %2\n\t"				\
+ 		".set\tpop"						\
+-		: : "Jr" ((unsigned int)(value)));			\
++		: : "Jr" ((unsigned int)(value)),			\
++		    "i" (register), "i" (sel));				\
+ } while (0)
  
--	fixed_phy_add(PHY_POLL, 0, &bcm47xx_fixed_phy_status, -1);
-+	fixed_phy_add(0, &bcm47xx_fixed_phy_status, -1);
- 	return 0;
- }
- device_initcall(bcm47xx_register_bus_complete);
-diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-index 38db2e4..0c8f467 100644
---- a/drivers/net/ethernet/broadcom/bgmac.c
-+++ b/drivers/net/ethernet/broadcom/bgmac.c
-@@ -1460,7 +1460,7 @@ static int bgmac_fixed_phy_register(struct bgmac *bgmac)
- 	struct phy_device *phy_dev;
- 	int err;
+ #define __write_64bit_gc0_register(register, sel, value)		\
+@@ -1724,11 +1729,70 @@ do {									\
+ 		".set\tpush\n\t"					\
+ 		".set\tmips64r2\n\t"					\
+ 		".set\tvirt\n\t"					\
+-		"dmtgc0\t%z0, " #register ", " #sel "\n\t"		\
++		"dmtgc0\t%z0, $%1, %2\n\t"				\
+ 		".set\tpop"						\
+-		: : "Jr" (value));					\
++		: : "Jr" (value),					\
++		    "i" (register), "i" (sel));				\
+ } while (0)
  
--	phy_dev = fixed_phy_register(PHY_POLL, &fphy_status, -1, NULL);
-+	phy_dev = fixed_phy_register(&fphy_status, -1, NULL);
- 	if (!phy_dev || IS_ERR(phy_dev)) {
- 		bgmac_err(bgmac, "Failed to register fixed PHY device\n");
- 		return -ENODEV;
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-index 457c3bc..f181fd1 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -595,7 +595,7 @@ static int bcmgenet_mii_pd_init(struct bcmgenet_priv *priv)
- 			.asym_pause = 0,
- 		};
++#else	/* TOOLCHAIN_SUPPORTS_VIRT */
++
++#define __read_32bit_gc0_register(source, sel)				\
++({ int __res;								\
++	__asm__ __volatile__(						\
++		".set\tpush\n\t"					\
++		".set\tnoat\n\t"					\
++		"# mfgc0\t$1, $%1, %2\n\t"				\
++		".word\t(0x40610000 | %1 << 11 | %2)\n\t"		\
++		"move\t%0, $1\n\t"					\
++		".set\tpop"						\
++		: "=r" (__res)						\
++		: "i" (source), "i" (sel));				\
++	__res;								\
++})
++
++#define __read_64bit_gc0_register(source, sel)				\
++({ unsigned long long __res;						\
++	__asm__ __volatile__(						\
++		".set\tpush\n\t"					\
++		".set\tnoat\n\t"					\
++		"# dmfgc0\t$1, $%1, %2\n\t"				\
++		".word\t(0x40610100 | %1 << 11 | %2)\n\t"		\
++		"move\t%0, $1\n\t"					\
++		".set\tpop"						\
++		: "=r" (__res)						\
++		: "i" (source), "i" (sel));				\
++	__res;								\
++})
++
++#define __write_32bit_gc0_register(register, sel, value)		\
++do {									\
++	__asm__ __volatile__(						\
++		".set\tpush\n\t"					\
++		".set\tnoat\n\t"					\
++		"move\t$1, %0\n\t"					\
++		"# mtgc0\t$1, $%1, %2\n\t"				\
++		".word\t(0x40610200 | %1 << 11 | %2)\n\t"		\
++		".set\tpop"						\
++		: : "Jr" ((unsigned int)(value)),			\
++		    "i" (register), "i" (sel));				\
++} while (0)
++
++#define __write_64bit_gc0_register(register, sel, value)		\
++do {									\
++	__asm__ __volatile__(						\
++		".set\tpush\n\t"					\
++		".set\tnoat\n\t"					\
++		"move\t$1, %0\n\t"					\
++		"# dmtgc0\t$1, $%1, %2\n\t"				\
++		".word\t(0x40610300 | %1 << 11 | %2)\n\t"		\
++		".set\tpop"						\
++		: : "Jr" (value),					\
++		    "i" (register), "i" (sel));				\
++} while (0)
++
++#endif	/* !TOOLCHAIN_SUPPORTS_VIRT */
++
+ #define __read_ulong_gc0_register(reg, sel)				\
+ 	((sizeof(unsigned long) == 4) ?					\
+ 	(unsigned long) __read_32bit_gc0_register(reg, sel) :		\
+@@ -1742,189 +1806,189 @@ do {									\
+ 		__write_64bit_gc0_register(reg, sel, val);		\
+ } while (0)
  
--		phydev = fixed_phy_register(PHY_POLL, &fphy_status, -1, NULL);
-+		phydev = fixed_phy_register(&fphy_status, -1, NULL);
- 		if (!phydev || IS_ERR(phydev)) {
- 			dev_err(kdev, "failed to register fixed PHY device\n");
- 			return -ENODEV;
-diff --git a/drivers/net/phy/fixed_phy.c b/drivers/net/phy/fixed_phy.c
-index fc07a88..295e6bd 100644
---- a/drivers/net/phy/fixed_phy.c
-+++ b/drivers/net/phy/fixed_phy.c
-@@ -241,8 +241,7 @@ int fixed_phy_update_state(struct phy_device *phydev,
- }
- EXPORT_SYMBOL(fixed_phy_update_state);
+-#define read_gc0_index()		__read_32bit_gc0_register($0, 0)
+-#define write_gc0_index(val)		__write_32bit_gc0_register($0, 0, val)
++#define read_gc0_index()		__read_32bit_gc0_register(0, 0)
++#define write_gc0_index(val)		__write_32bit_gc0_register(0, 0, val)
  
--int fixed_phy_add(unsigned int irq, int phy_addr,
--		  struct fixed_phy_status *status,
-+int fixed_phy_add(int phy_addr, struct fixed_phy_status *status,
- 		  int link_gpio)
- {
- 	int ret;
-@@ -255,8 +254,6 @@ int fixed_phy_add(unsigned int irq, int phy_addr,
+-#define read_gc0_entrylo0()		__read_ulong_gc0_register($2, 0)
+-#define write_gc0_entrylo0(val)		__write_ulong_gc0_register($2, 0, val)
++#define read_gc0_entrylo0()		__read_ulong_gc0_register(2, 0)
++#define write_gc0_entrylo0(val)		__write_ulong_gc0_register(2, 0, val)
  
- 	memset(fp->regs, 0xFF,  sizeof(fp->regs[0]) * MII_REGS_NUM);
+-#define read_gc0_entrylo1()		__read_ulong_gc0_register($3, 0)
+-#define write_gc0_entrylo1(val)		__write_ulong_gc0_register($3, 0, val)
++#define read_gc0_entrylo1()		__read_ulong_gc0_register(3, 0)
++#define write_gc0_entrylo1(val)		__write_ulong_gc0_register(3, 0, val)
  
--	fmb->mii_bus->irq[phy_addr] = irq;
+-#define read_gc0_context()		__read_ulong_gc0_register($4, 0)
+-#define write_gc0_context(val)		__write_ulong_gc0_register($4, 0, val)
++#define read_gc0_context()		__read_ulong_gc0_register(4, 0)
++#define write_gc0_context(val)		__write_ulong_gc0_register(4, 0, val)
+ 
+-#define read_gc0_contextconfig()	__read_32bit_gc0_register($4, 1)
+-#define write_gc0_contextconfig(val)	__write_32bit_gc0_register($4, 1, val)
++#define read_gc0_contextconfig()	__read_32bit_gc0_register(4, 1)
++#define write_gc0_contextconfig(val)	__write_32bit_gc0_register(4, 1, val)
+ 
+-#define read_gc0_userlocal()		__read_ulong_gc0_register($4, 2)
+-#define write_gc0_userlocal(val)	__write_ulong_gc0_register($4, 2, val)
++#define read_gc0_userlocal()		__read_ulong_gc0_register(4, 2)
++#define write_gc0_userlocal(val)	__write_ulong_gc0_register(4, 2, val)
+ 
+-#define read_gc0_xcontextconfig()	__read_ulong_gc0_register($4, 3)
+-#define write_gc0_xcontextconfig(val)	__write_ulong_gc0_register($4, 3, val)
++#define read_gc0_xcontextconfig()	__read_ulong_gc0_register(4, 3)
++#define write_gc0_xcontextconfig(val)	__write_ulong_gc0_register(4, 3, val)
+ 
+-#define read_gc0_pagemask()		__read_32bit_gc0_register($5, 0)
+-#define write_gc0_pagemask(val)		__write_32bit_gc0_register($5, 0, val)
++#define read_gc0_pagemask()		__read_32bit_gc0_register(5, 0)
++#define write_gc0_pagemask(val)		__write_32bit_gc0_register(5, 0, val)
+ 
+-#define read_gc0_pagegrain()		__read_32bit_gc0_register($5, 1)
+-#define write_gc0_pagegrain(val)	__write_32bit_gc0_register($5, 1, val)
++#define read_gc0_pagegrain()		__read_32bit_gc0_register(5, 1)
++#define write_gc0_pagegrain(val)	__write_32bit_gc0_register(5, 1, val)
+ 
+-#define read_gc0_segctl0()		__read_ulong_gc0_register($5, 2)
+-#define write_gc0_segctl0(val)		__write_ulong_gc0_register($5, 2, val)
++#define read_gc0_segctl0()		__read_ulong_gc0_register(5, 2)
++#define write_gc0_segctl0(val)		__write_ulong_gc0_register(5, 2, val)
+ 
+-#define read_gc0_segctl1()		__read_ulong_gc0_register($5, 3)
+-#define write_gc0_segctl1(val)		__write_ulong_gc0_register($5, 3, val)
 -
- 	fp->addr = phy_addr;
- 	fp->status = *status;
- 	fp->link_gpio = link_gpio;
-@@ -304,8 +301,7 @@ static void fixed_phy_del(int phy_addr)
- static int phy_fixed_addr;
- static DEFINE_SPINLOCK(phy_fixed_addr_lock);
+-#define read_gc0_segctl2()		__read_ulong_gc0_register($5, 4)
+-#define write_gc0_segctl2(val)		__write_ulong_gc0_register($5, 4, val)
+-
+-#define read_gc0_pwbase()		__read_ulong_gc0_register($5, 5)
+-#define write_gc0_pwbase(val)		__write_ulong_gc0_register($5, 5, val)
+-
+-#define read_gc0_pwfield()		__read_ulong_gc0_register($5, 6)
+-#define write_gc0_pwfield(val)		__write_ulong_gc0_register($5, 6, val)
+-
+-#define read_gc0_pwsize()		__read_ulong_gc0_register($5, 7)
+-#define write_gc0_pwsize(val)		__write_ulong_gc0_register($5, 7, val)
+-
+-#define read_gc0_wired()		__read_32bit_gc0_register($6, 0)
+-#define write_gc0_wired(val)		__write_32bit_gc0_register($6, 0, val)
+-
+-#define read_gc0_pwctl()		__read_32bit_gc0_register($6, 6)
+-#define write_gc0_pwctl(val)		__write_32bit_gc0_register($6, 6, val)
+-
+-#define read_gc0_hwrena()		__read_32bit_gc0_register($7, 0)
+-#define write_gc0_hwrena(val)		__write_32bit_gc0_register($7, 0, val)
+-
+-#define read_gc0_badvaddr()		__read_ulong_gc0_register($8, 0)
+-#define write_gc0_badvaddr(val)		__write_ulong_gc0_register($8, 0, val)
+-
+-#define read_gc0_badinstr()		__read_32bit_gc0_register($8, 1)
+-#define write_gc0_badinstr(val)		__write_32bit_gc0_register($8, 1, val)
+-
+-#define read_gc0_badinstrp()		__read_32bit_gc0_register($8, 2)
+-#define write_gc0_badinstrp(val)	__write_32bit_gc0_register($8, 2, val)
+-
+-#define read_gc0_count()		__read_32bit_gc0_register($9, 0)
+-
+-#define read_gc0_entryhi()		__read_ulong_gc0_register($10, 0)
+-#define write_gc0_entryhi(val)		__write_ulong_gc0_register($10, 0, val)
+-
+-#define read_gc0_compare()		__read_32bit_gc0_register($11, 0)
+-#define write_gc0_compare(val)		__write_32bit_gc0_register($11, 0, val)
+-
+-#define read_gc0_status()		__read_32bit_gc0_register($12, 0)
+-#define write_gc0_status(val)		__write_32bit_gc0_register($12, 0, val)
+-
+-#define read_gc0_intctl()		__read_32bit_gc0_register($12, 1)
+-#define write_gc0_intctl(val)		__write_32bit_gc0_register($12, 1, val)
+-
+-#define read_gc0_cause()		__read_32bit_gc0_register($13, 0)
+-#define write_gc0_cause(val)		__write_32bit_gc0_register($13, 0, val)
+-
+-#define read_gc0_epc()			__read_ulong_gc0_register($14, 0)
+-#define write_gc0_epc(val)		__write_ulong_gc0_register($14, 0, val)
+-
+-#define read_gc0_ebase()		__read_32bit_gc0_register($15, 1)
+-#define write_gc0_ebase(val)		__write_32bit_gc0_register($15, 1, val)
+-
+-#define read_gc0_ebase_64()		__read_64bit_gc0_register($15, 1)
+-#define write_gc0_ebase_64(val)		__write_64bit_gc0_register($15, 1, val)
+-
+-#define read_gc0_config()		__read_32bit_gc0_register($16, 0)
+-#define read_gc0_config1()		__read_32bit_gc0_register($16, 1)
+-#define read_gc0_config2()		__read_32bit_gc0_register($16, 2)
+-#define read_gc0_config3()		__read_32bit_gc0_register($16, 3)
+-#define read_gc0_config4()		__read_32bit_gc0_register($16, 4)
+-#define read_gc0_config5()		__read_32bit_gc0_register($16, 5)
+-#define read_gc0_config6()		__read_32bit_gc0_register($16, 6)
+-#define read_gc0_config7()		__read_32bit_gc0_register($16, 7)
+-#define write_gc0_config(val)		__write_32bit_gc0_register($16, 0, val)
+-#define write_gc0_config1(val)		__write_32bit_gc0_register($16, 1, val)
+-#define write_gc0_config2(val)		__write_32bit_gc0_register($16, 2, val)
+-#define write_gc0_config3(val)		__write_32bit_gc0_register($16, 3, val)
+-#define write_gc0_config4(val)		__write_32bit_gc0_register($16, 4, val)
+-#define write_gc0_config5(val)		__write_32bit_gc0_register($16, 5, val)
+-#define write_gc0_config6(val)		__write_32bit_gc0_register($16, 6, val)
+-#define write_gc0_config7(val)		__write_32bit_gc0_register($16, 7, val)
+-
+-#define read_gc0_watchlo0()		__read_ulong_gc0_register($18, 0)
+-#define read_gc0_watchlo1()		__read_ulong_gc0_register($18, 1)
+-#define read_gc0_watchlo2()		__read_ulong_gc0_register($18, 2)
+-#define read_gc0_watchlo3()		__read_ulong_gc0_register($18, 3)
+-#define read_gc0_watchlo4()		__read_ulong_gc0_register($18, 4)
+-#define read_gc0_watchlo5()		__read_ulong_gc0_register($18, 5)
+-#define read_gc0_watchlo6()		__read_ulong_gc0_register($18, 6)
+-#define read_gc0_watchlo7()		__read_ulong_gc0_register($18, 7)
+-#define write_gc0_watchlo0(val)		__write_ulong_gc0_register($18, 0, val)
+-#define write_gc0_watchlo1(val)		__write_ulong_gc0_register($18, 1, val)
+-#define write_gc0_watchlo2(val)		__write_ulong_gc0_register($18, 2, val)
+-#define write_gc0_watchlo3(val)		__write_ulong_gc0_register($18, 3, val)
+-#define write_gc0_watchlo4(val)		__write_ulong_gc0_register($18, 4, val)
+-#define write_gc0_watchlo5(val)		__write_ulong_gc0_register($18, 5, val)
+-#define write_gc0_watchlo6(val)		__write_ulong_gc0_register($18, 6, val)
+-#define write_gc0_watchlo7(val)		__write_ulong_gc0_register($18, 7, val)
+-
+-#define read_gc0_watchhi0()		__read_32bit_gc0_register($19, 0)
+-#define read_gc0_watchhi1()		__read_32bit_gc0_register($19, 1)
+-#define read_gc0_watchhi2()		__read_32bit_gc0_register($19, 2)
+-#define read_gc0_watchhi3()		__read_32bit_gc0_register($19, 3)
+-#define read_gc0_watchhi4()		__read_32bit_gc0_register($19, 4)
+-#define read_gc0_watchhi5()		__read_32bit_gc0_register($19, 5)
+-#define read_gc0_watchhi6()		__read_32bit_gc0_register($19, 6)
+-#define read_gc0_watchhi7()		__read_32bit_gc0_register($19, 7)
+-#define write_gc0_watchhi0(val)		__write_32bit_gc0_register($19, 0, val)
+-#define write_gc0_watchhi1(val)		__write_32bit_gc0_register($19, 1, val)
+-#define write_gc0_watchhi2(val)		__write_32bit_gc0_register($19, 2, val)
+-#define write_gc0_watchhi3(val)		__write_32bit_gc0_register($19, 3, val)
+-#define write_gc0_watchhi4(val)		__write_32bit_gc0_register($19, 4, val)
+-#define write_gc0_watchhi5(val)		__write_32bit_gc0_register($19, 5, val)
+-#define write_gc0_watchhi6(val)		__write_32bit_gc0_register($19, 6, val)
+-#define write_gc0_watchhi7(val)		__write_32bit_gc0_register($19, 7, val)
+-
+-#define read_gc0_xcontext()		__read_ulong_gc0_register($20, 0)
+-#define write_gc0_xcontext(val)		__write_ulong_gc0_register($20, 0, val)
+-
+-#define read_gc0_perfctrl0()		__read_32bit_gc0_register($25, 0)
+-#define write_gc0_perfctrl0(val)	__write_32bit_gc0_register($25, 0, val)
+-#define read_gc0_perfcntr0()		__read_32bit_gc0_register($25, 1)
+-#define write_gc0_perfcntr0(val)	__write_32bit_gc0_register($25, 1, val)
+-#define read_gc0_perfcntr0_64()		__read_64bit_gc0_register($25, 1)
+-#define write_gc0_perfcntr0_64(val)	__write_64bit_gc0_register($25, 1, val)
+-#define read_gc0_perfctrl1()		__read_32bit_gc0_register($25, 2)
+-#define write_gc0_perfctrl1(val)	__write_32bit_gc0_register($25, 2, val)
+-#define read_gc0_perfcntr1()		__read_32bit_gc0_register($25, 3)
+-#define write_gc0_perfcntr1(val)	__write_32bit_gc0_register($25, 3, val)
+-#define read_gc0_perfcntr1_64()		__read_64bit_gc0_register($25, 3)
+-#define write_gc0_perfcntr1_64(val)	__write_64bit_gc0_register($25, 3, val)
+-#define read_gc0_perfctrl2()		__read_32bit_gc0_register($25, 4)
+-#define write_gc0_perfctrl2(val)	__write_32bit_gc0_register($25, 4, val)
+-#define read_gc0_perfcntr2()		__read_32bit_gc0_register($25, 5)
+-#define write_gc0_perfcntr2(val)	__write_32bit_gc0_register($25, 5, val)
+-#define read_gc0_perfcntr2_64()		__read_64bit_gc0_register($25, 5)
+-#define write_gc0_perfcntr2_64(val)	__write_64bit_gc0_register($25, 5, val)
+-#define read_gc0_perfctrl3()		__read_32bit_gc0_register($25, 6)
+-#define write_gc0_perfctrl3(val)	__write_32bit_gc0_register($25, 6, val)
+-#define read_gc0_perfcntr3()		__read_32bit_gc0_register($25, 7)
+-#define write_gc0_perfcntr3(val)	__write_32bit_gc0_register($25, 7, val)
+-#define read_gc0_perfcntr3_64()		__read_64bit_gc0_register($25, 7)
+-#define write_gc0_perfcntr3_64(val)	__write_64bit_gc0_register($25, 7, val)
+-
+-#define read_gc0_errorepc()		__read_ulong_gc0_register($30, 0)
+-#define write_gc0_errorepc(val)		__write_ulong_gc0_register($30, 0, val)
+-
+-#define read_gc0_kscratch1()		__read_ulong_gc0_register($31, 2)
+-#define read_gc0_kscratch2()		__read_ulong_gc0_register($31, 3)
+-#define read_gc0_kscratch3()		__read_ulong_gc0_register($31, 4)
+-#define read_gc0_kscratch4()		__read_ulong_gc0_register($31, 5)
+-#define read_gc0_kscratch5()		__read_ulong_gc0_register($31, 6)
+-#define read_gc0_kscratch6()		__read_ulong_gc0_register($31, 7)
+-#define write_gc0_kscratch1(val)	__write_ulong_gc0_register($31, 2, val)
+-#define write_gc0_kscratch2(val)	__write_ulong_gc0_register($31, 3, val)
+-#define write_gc0_kscratch3(val)	__write_ulong_gc0_register($31, 4, val)
+-#define write_gc0_kscratch4(val)	__write_ulong_gc0_register($31, 5, val)
+-#define write_gc0_kscratch5(val)	__write_ulong_gc0_register($31, 6, val)
+-#define write_gc0_kscratch6(val)	__write_ulong_gc0_register($31, 7, val)
++#define read_gc0_segctl1()		__read_ulong_gc0_register(5, 3)
++#define write_gc0_segctl1(val)		__write_ulong_gc0_register(5, 3, val)
++
++#define read_gc0_segctl2()		__read_ulong_gc0_register(5, 4)
++#define write_gc0_segctl2(val)		__write_ulong_gc0_register(5, 4, val)
++
++#define read_gc0_pwbase()		__read_ulong_gc0_register(5, 5)
++#define write_gc0_pwbase(val)		__write_ulong_gc0_register(5, 5, val)
++
++#define read_gc0_pwfield()		__read_ulong_gc0_register(5, 6)
++#define write_gc0_pwfield(val)		__write_ulong_gc0_register(5, 6, val)
++
++#define read_gc0_pwsize()		__read_ulong_gc0_register(5, 7)
++#define write_gc0_pwsize(val)		__write_ulong_gc0_register(5, 7, val)
++
++#define read_gc0_wired()		__read_32bit_gc0_register(6, 0)
++#define write_gc0_wired(val)		__write_32bit_gc0_register(6, 0, val)
++
++#define read_gc0_pwctl()		__read_32bit_gc0_register(6, 6)
++#define write_gc0_pwctl(val)		__write_32bit_gc0_register(6, 6, val)
++
++#define read_gc0_hwrena()		__read_32bit_gc0_register(7, 0)
++#define write_gc0_hwrena(val)		__write_32bit_gc0_register(7, 0, val)
++
++#define read_gc0_badvaddr()		__read_ulong_gc0_register(8, 0)
++#define write_gc0_badvaddr(val)		__write_ulong_gc0_register(8, 0, val)
++
++#define read_gc0_badinstr()		__read_32bit_gc0_register(8, 1)
++#define write_gc0_badinstr(val)		__write_32bit_gc0_register(8, 1, val)
++
++#define read_gc0_badinstrp()		__read_32bit_gc0_register(8, 2)
++#define write_gc0_badinstrp(val)	__write_32bit_gc0_register(8, 2, val)
++
++#define read_gc0_count()		__read_32bit_gc0_register(9, 0)
++
++#define read_gc0_entryhi()		__read_ulong_gc0_register(10, 0)
++#define write_gc0_entryhi(val)		__write_ulong_gc0_register(10, 0, val)
++
++#define read_gc0_compare()		__read_32bit_gc0_register(11, 0)
++#define write_gc0_compare(val)		__write_32bit_gc0_register(11, 0, val)
++
++#define read_gc0_status()		__read_32bit_gc0_register(12, 0)
++#define write_gc0_status(val)		__write_32bit_gc0_register(12, 0, val)
++
++#define read_gc0_intctl()		__read_32bit_gc0_register(12, 1)
++#define write_gc0_intctl(val)		__write_32bit_gc0_register(12, 1, val)
++
++#define read_gc0_cause()		__read_32bit_gc0_register(13, 0)
++#define write_gc0_cause(val)		__write_32bit_gc0_register(13, 0, val)
++
++#define read_gc0_epc()			__read_ulong_gc0_register(14, 0)
++#define write_gc0_epc(val)		__write_ulong_gc0_register(14, 0, val)
++
++#define read_gc0_ebase()		__read_32bit_gc0_register(15, 1)
++#define write_gc0_ebase(val)		__write_32bit_gc0_register(15, 1, val)
++
++#define read_gc0_ebase_64()		__read_64bit_gc0_register(15, 1)
++#define write_gc0_ebase_64(val)		__write_64bit_gc0_register(15, 1, val)
++
++#define read_gc0_config()		__read_32bit_gc0_register(16, 0)
++#define read_gc0_config1()		__read_32bit_gc0_register(16, 1)
++#define read_gc0_config2()		__read_32bit_gc0_register(16, 2)
++#define read_gc0_config3()		__read_32bit_gc0_register(16, 3)
++#define read_gc0_config4()		__read_32bit_gc0_register(16, 4)
++#define read_gc0_config5()		__read_32bit_gc0_register(16, 5)
++#define read_gc0_config6()		__read_32bit_gc0_register(16, 6)
++#define read_gc0_config7()		__read_32bit_gc0_register(16, 7)
++#define write_gc0_config(val)		__write_32bit_gc0_register(16, 0, val)
++#define write_gc0_config1(val)		__write_32bit_gc0_register(16, 1, val)
++#define write_gc0_config2(val)		__write_32bit_gc0_register(16, 2, val)
++#define write_gc0_config3(val)		__write_32bit_gc0_register(16, 3, val)
++#define write_gc0_config4(val)		__write_32bit_gc0_register(16, 4, val)
++#define write_gc0_config5(val)		__write_32bit_gc0_register(16, 5, val)
++#define write_gc0_config6(val)		__write_32bit_gc0_register(16, 6, val)
++#define write_gc0_config7(val)		__write_32bit_gc0_register(16, 7, val)
++
++#define read_gc0_watchlo0()		__read_ulong_gc0_register(18, 0)
++#define read_gc0_watchlo1()		__read_ulong_gc0_register(18, 1)
++#define read_gc0_watchlo2()		__read_ulong_gc0_register(18, 2)
++#define read_gc0_watchlo3()		__read_ulong_gc0_register(18, 3)
++#define read_gc0_watchlo4()		__read_ulong_gc0_register(18, 4)
++#define read_gc0_watchlo5()		__read_ulong_gc0_register(18, 5)
++#define read_gc0_watchlo6()		__read_ulong_gc0_register(18, 6)
++#define read_gc0_watchlo7()		__read_ulong_gc0_register(18, 7)
++#define write_gc0_watchlo0(val)		__write_ulong_gc0_register(18, 0, val)
++#define write_gc0_watchlo1(val)		__write_ulong_gc0_register(18, 1, val)
++#define write_gc0_watchlo2(val)		__write_ulong_gc0_register(18, 2, val)
++#define write_gc0_watchlo3(val)		__write_ulong_gc0_register(18, 3, val)
++#define write_gc0_watchlo4(val)		__write_ulong_gc0_register(18, 4, val)
++#define write_gc0_watchlo5(val)		__write_ulong_gc0_register(18, 5, val)
++#define write_gc0_watchlo6(val)		__write_ulong_gc0_register(18, 6, val)
++#define write_gc0_watchlo7(val)		__write_ulong_gc0_register(18, 7, val)
++
++#define read_gc0_watchhi0()		__read_32bit_gc0_register(19, 0)
++#define read_gc0_watchhi1()		__read_32bit_gc0_register(19, 1)
++#define read_gc0_watchhi2()		__read_32bit_gc0_register(19, 2)
++#define read_gc0_watchhi3()		__read_32bit_gc0_register(19, 3)
++#define read_gc0_watchhi4()		__read_32bit_gc0_register(19, 4)
++#define read_gc0_watchhi5()		__read_32bit_gc0_register(19, 5)
++#define read_gc0_watchhi6()		__read_32bit_gc0_register(19, 6)
++#define read_gc0_watchhi7()		__read_32bit_gc0_register(19, 7)
++#define write_gc0_watchhi0(val)		__write_32bit_gc0_register(19, 0, val)
++#define write_gc0_watchhi1(val)		__write_32bit_gc0_register(19, 1, val)
++#define write_gc0_watchhi2(val)		__write_32bit_gc0_register(19, 2, val)
++#define write_gc0_watchhi3(val)		__write_32bit_gc0_register(19, 3, val)
++#define write_gc0_watchhi4(val)		__write_32bit_gc0_register(19, 4, val)
++#define write_gc0_watchhi5(val)		__write_32bit_gc0_register(19, 5, val)
++#define write_gc0_watchhi6(val)		__write_32bit_gc0_register(19, 6, val)
++#define write_gc0_watchhi7(val)		__write_32bit_gc0_register(19, 7, val)
++
++#define read_gc0_xcontext()		__read_ulong_gc0_register(20, 0)
++#define write_gc0_xcontext(val)		__write_ulong_gc0_register(20, 0, val)
++
++#define read_gc0_perfctrl0()		__read_32bit_gc0_register(25, 0)
++#define write_gc0_perfctrl0(val)	__write_32bit_gc0_register(25, 0, val)
++#define read_gc0_perfcntr0()		__read_32bit_gc0_register(25, 1)
++#define write_gc0_perfcntr0(val)	__write_32bit_gc0_register(25, 1, val)
++#define read_gc0_perfcntr0_64()		__read_64bit_gc0_register(25, 1)
++#define write_gc0_perfcntr0_64(val)	__write_64bit_gc0_register(25, 1, val)
++#define read_gc0_perfctrl1()		__read_32bit_gc0_register(25, 2)
++#define write_gc0_perfctrl1(val)	__write_32bit_gc0_register(25, 2, val)
++#define read_gc0_perfcntr1()		__read_32bit_gc0_register(25, 3)
++#define write_gc0_perfcntr1(val)	__write_32bit_gc0_register(25, 3, val)
++#define read_gc0_perfcntr1_64()		__read_64bit_gc0_register(25, 3)
++#define write_gc0_perfcntr1_64(val)	__write_64bit_gc0_register(25, 3, val)
++#define read_gc0_perfctrl2()		__read_32bit_gc0_register(25, 4)
++#define write_gc0_perfctrl2(val)	__write_32bit_gc0_register(25, 4, val)
++#define read_gc0_perfcntr2()		__read_32bit_gc0_register(25, 5)
++#define write_gc0_perfcntr2(val)	__write_32bit_gc0_register(25, 5, val)
++#define read_gc0_perfcntr2_64()		__read_64bit_gc0_register(25, 5)
++#define write_gc0_perfcntr2_64(val)	__write_64bit_gc0_register(25, 5, val)
++#define read_gc0_perfctrl3()		__read_32bit_gc0_register(25, 6)
++#define write_gc0_perfctrl3(val)	__write_32bit_gc0_register(25, 6, val)
++#define read_gc0_perfcntr3()		__read_32bit_gc0_register(25, 7)
++#define write_gc0_perfcntr3(val)	__write_32bit_gc0_register(25, 7, val)
++#define read_gc0_perfcntr3_64()		__read_64bit_gc0_register(25, 7)
++#define write_gc0_perfcntr3_64(val)	__write_64bit_gc0_register(25, 7, val)
++
++#define read_gc0_errorepc()		__read_ulong_gc0_register(30, 0)
++#define write_gc0_errorepc(val)		__write_ulong_gc0_register(30, 0, val)
++
++#define read_gc0_kscratch1()		__read_ulong_gc0_register(31, 2)
++#define read_gc0_kscratch2()		__read_ulong_gc0_register(31, 3)
++#define read_gc0_kscratch3()		__read_ulong_gc0_register(31, 4)
++#define read_gc0_kscratch4()		__read_ulong_gc0_register(31, 5)
++#define read_gc0_kscratch5()		__read_ulong_gc0_register(31, 6)
++#define read_gc0_kscratch6()		__read_ulong_gc0_register(31, 7)
++#define write_gc0_kscratch1(val)	__write_ulong_gc0_register(31, 2, val)
++#define write_gc0_kscratch2(val)	__write_ulong_gc0_register(31, 3, val)
++#define write_gc0_kscratch3(val)	__write_ulong_gc0_register(31, 4, val)
++#define write_gc0_kscratch4(val)	__write_ulong_gc0_register(31, 5, val)
++#define write_gc0_kscratch5(val)	__write_ulong_gc0_register(31, 6, val)
++#define write_gc0_kscratch6(val)	__write_ulong_gc0_register(31, 7, val)
  
--struct phy_device *fixed_phy_register(unsigned int irq,
--				      struct fixed_phy_status *status,
-+struct phy_device *fixed_phy_register(struct fixed_phy_status *status,
- 				      int link_gpio,
- 				      struct device_node *np)
- {
-@@ -323,7 +319,7 @@ struct phy_device *fixed_phy_register(unsigned int irq,
- 	phy_addr = phy_fixed_addr++;
- 	spin_unlock(&phy_fixed_addr_lock);
- 
--	ret = fixed_phy_add(irq, phy_addr, status, link_gpio);
-+	ret = fixed_phy_add(phy_addr, status, link_gpio);
- 	if (ret < 0)
- 		return ERR_PTR(ret);
- 
-diff --git a/drivers/of/of_mdio.c b/drivers/of/of_mdio.c
-index 8453f08..bc4ef2ce 100644
---- a/drivers/of/of_mdio.c
-+++ b/drivers/of/of_mdio.c
-@@ -411,7 +411,7 @@ int of_phy_register_fixed_link(struct device_node *np)
- 	if (err == 0) {
- 		if (strcmp(managed, "in-band-status") == 0) {
- 			/* status is zeroed, namely its .link member */
--			phy = fixed_phy_register(PHY_POLL, &status, -1, np);
-+			phy = fixed_phy_register(&status, -1, np);
- 			return PTR_ERR_OR_ZERO(phy);
- 		}
- 	}
-@@ -433,7 +433,7 @@ int of_phy_register_fixed_link(struct device_node *np)
- 		if (link_gpio == -EPROBE_DEFER)
- 			return -EPROBE_DEFER;
- 
--		phy = fixed_phy_register(PHY_POLL, &status, link_gpio, np);
-+		phy = fixed_phy_register(&status, link_gpio, np);
- 		return PTR_ERR_OR_ZERO(phy);
- 	}
- 
-@@ -445,7 +445,7 @@ int of_phy_register_fixed_link(struct device_node *np)
- 		status.speed = be32_to_cpu(fixed_link_prop[2]);
- 		status.pause = be32_to_cpu(fixed_link_prop[3]);
- 		status.asym_pause = be32_to_cpu(fixed_link_prop[4]);
--		phy = fixed_phy_register(PHY_POLL, &status, -1, np);
-+		phy = fixed_phy_register(&status, -1, np);
- 		return PTR_ERR_OR_ZERO(phy);
- 	}
- 
-diff --git a/include/linux/phy_fixed.h b/include/linux/phy_fixed.h
-index 1d41ec4..43aca21 100644
---- a/include/linux/phy_fixed.h
-+++ b/include/linux/phy_fixed.h
-@@ -12,11 +12,9 @@ struct fixed_phy_status {
- struct device_node;
- 
- #if IS_ENABLED(CONFIG_FIXED_PHY)
--extern int fixed_phy_add(unsigned int irq, int phy_id,
--			 struct fixed_phy_status *status,
-+extern int fixed_phy_add(int phy_id, struct fixed_phy_status *status,
- 			 int link_gpio);
--extern struct phy_device *fixed_phy_register(unsigned int irq,
--					     struct fixed_phy_status *status,
-+extern struct phy_device *fixed_phy_register(struct fixed_phy_status *status,
- 					     int link_gpio,
- 					     struct device_node *np);
- extern void fixed_phy_unregister(struct phy_device *phydev);
-@@ -27,16 +25,14 @@ extern int fixed_phy_update_state(struct phy_device *phydev,
- 			   const struct fixed_phy_status *status,
- 			   const struct fixed_phy_status *changed);
- #else
--static inline int fixed_phy_add(unsigned int irq, int phy_id,
--				struct fixed_phy_status *status,
-+static inline int fixed_phy_add(int phy_id, struct fixed_phy_status *status,
- 				int link_gpio)
- {
- 	return -ENODEV;
+ /*
+  * Macros to access the floating point coprocessor control registers
+@@ -2421,6 +2485,8 @@ static inline void tlb_write_random(void)
+ 		".set reorder");
  }
--static inline struct phy_device *fixed_phy_register(unsigned int irq,
--						struct fixed_phy_status *status,
--						int gpio_link,
--						struct device_node *np)
-+static inline struct phy_device *
-+fixed_phy_register(struct fixed_phy_status *status, int gpio_link,
-+		   struct device_node *np)
- {
- 	return ERR_PTR(-ENODEV);
+ 
++#ifdef TOOLCHAIN_SUPPORTS_VIRT
++
+ /*
+  * Guest TLB operations.
+  *
+@@ -2479,6 +2545,53 @@ static inline void guest_tlbinvf(void)
+ 		".set pop");
  }
+ 
++#else	/* TOOLCHAIN_SUPPORTS_VIRT */
++
++/*
++ * Guest TLB operations.
++ *
++ * It is responsibility of the caller to take care of any TLB hazards.
++ */
++static inline void guest_tlb_probe(void)
++{
++	__asm__ __volatile__(
++		"# tlbgp\n\t"
++		".word 0x42000010");
++}
++
++static inline void guest_tlb_read(void)
++{
++	__asm__ __volatile__(
++		"# tlbgr\n\t"
++		".word 0x42000009");
++}
++
++static inline void guest_tlb_write_indexed(void)
++{
++	__asm__ __volatile__(
++		"# tlbgwi\n\t"
++		".word 0x4200000a");
++}
++
++static inline void guest_tlb_write_random(void)
++{
++	__asm__ __volatile__(
++		"# tlbgwr\n\t"
++		".word 0x4200000e");
++}
++
++/*
++ * Guest TLB Invalidate Flush
++ */
++static inline void guest_tlbinvf(void)
++{
++	__asm__ __volatile__(
++		"# tlbginvf\n\t"
++		".word 0x4200000c");
++}
++
++#endif	/* !TOOLCHAIN_SUPPORTS_VIRT */
++
+ /*
+  * Manipulate bits in a register.
+  */
 -- 
-2.1.4
+2.4.10

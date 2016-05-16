@@ -1,47 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2016 16:21:09 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50285 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028345AbcEPOVHnhjRn convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2016 16:21:07 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 25FF837BBE4CA;
-        Mon, 16 May 2016 15:20:58 +0100 (IST)
-Received: from hhmail02.hh.imgtec.org ([fe80::5400:d33e:81a4:f775]) by
- HHMAIL01.hh.imgtec.org ([fe80::710b:f219:72bc:e0b3%26]) with mapi id
- 14.03.0266.001; Mon, 16 May 2016 15:21:01 +0100
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Maciej Rozycki <Maciej.Rozycki@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
-        "binutils@sourceware.org" <binutils@sourceware.org>,
-        "gcc@gcc.gnu.org" <gcc@gcc.gnu.org>
-CC:     Joseph Myers <joseph@codesourcery.com>
-Subject: RE: [RFC v2] MIPS ABI Extension for IEEE Std 754 Non-Compliant
- Interlinking
-Thread-Topic: [RFC v2] MIPS ABI Extension for IEEE Std 754 Non-Compliant
- Interlinking
-Thread-Index: AQHRrgOUwaHVYqP+hUemv+Dv8MXdNJ+7lSHw
-Date:   Mon, 16 May 2016 14:21:00 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B023537E40C27F@hhmail02.hh.imgtec.org>
-References: <alpine.DEB.2.00.1605141043120.6794@tp.orcam.me.uk>
-In-Reply-To: <alpine.DEB.2.00.1605141043120.6794@tp.orcam.me.uk>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.152.105]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2016 19:26:28 +0200 (CEST)
+Received: from mail-pf0-f170.google.com ([209.85.192.170]:35617 "EHLO
+        mail-pf0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27029155AbcEPR00lR5F0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2016 19:26:26 +0200
+Received: by mail-pf0-f170.google.com with SMTP id 77so69352260pfv.2
+        for <linux-mips@linux-mips.org>; Mon, 16 May 2016 10:26:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=GE6fmIOy87aQCDHez1GzxESqd/Bwx6C0I1bkIyNrs+8=;
+        b=clVHTClmyQyIPcmsu8NZXdZM/Ui/FrTtFG6t5xdClVqwjYqqRNPYJPoR4KZd9uVrGk
+         /tG+ujTP+v2bcIrvxohhvBQXcxklN/VY5+HPvEvw03xqTJBZDY8dnIHpiu3rpoL1H1UJ
+         lm21BMwPrVTehgb851Zdv4vtD0YhtG+7y3f7De8OfdQMpZ0fWXW3sq1lO5DhetSR8FJf
+         NtkYpjHb2LtirU26zJcVWd1gBdme2oL/D6HvGn9+3lvX5gnYsAjW3k9eSUz/xNMdeuyq
+         /fX81MRGUqVe2c6b8EasPuviRI6Y90/NvtFRKbeUEhxc30cD0Bm3UteQA5T8fKSr2YVh
+         EBiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=GE6fmIOy87aQCDHez1GzxESqd/Bwx6C0I1bkIyNrs+8=;
+        b=Bojq+7m9ytUYbRahgH0PNbIwPbJd0o5EydtxBHYeFeOt//48PJkJq/iolOGsgN3xBv
+         19BwXdY/SD3eKgzjCa83hH3symkp8Kiywhz8q+8pzxJobax6sXNUoqHV2ZPR3ACeThc0
+         S6yoZhCXoZE9ouAGw74+b8eKSsvKkX/nqIWzIU2zIrVWuAVQuRljPgcLePNiRkigIVks
+         u4m7/Rtn1qasq0nlYI4KMgloXwrYoonRvDPKizI5v+p2fE8yzHT3Qt82bGQpn50vBEGW
+         eY4AmjquHRX5TfUyOUBnRn25GCIuqj3boSNkDYuaKrCrH9Dd1aQvUc1QdEeS9Wh0ZZ/X
+         S9Xg==
+X-Gm-Message-State: AOPr4FXLnO/PwxSOwcg005VYCYX/SmGpgbxuc8zFM5Savy62y1oMyFDCLEna38JaSkgscg==
+X-Received: by 10.98.35.212 with SMTP id q81mr48085763pfj.108.1463419580610;
+        Mon, 16 May 2016 10:26:20 -0700 (PDT)
+Received: from [10.112.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id ba9sm48753712pab.24.2016.05.16.10.26.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 16 May 2016 10:26:19 -0700 (PDT)
+Subject: Re: [PATCH] phy: remove irq param to fix crash in fixed_phy_add()
+To:     Andrew Lunn <andrew@lunn.ch>, Rabin Vincent <rabin@rab.in>
+References: <1463397356-5656-1-git-send-email-rabin.vincent@axis.com>
+ <20160516122903.GA27725@lunn.ch>
+ <20160516131134.GA31094@lnxartpec.se.axis.com>
+ <20160516134042.GD27725@lunn.ch>
+Cc:     Rabin Vincent <rabin.vincent@axis.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, Rabin Vincent <rabinv@axis.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <573A02BA.3080709@gmail.com>
+Date:   Mon, 16 May 2016 10:26:18 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.7.2
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+In-Reply-To: <20160516134042.GD27725@lunn.ch>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53460
+X-archive-position: 53461
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,43 +74,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Maciej,
-
-Thanks for the update.  I've read through the whole proposal again and
-it looks good.  I'd like to discuss legacy objects a bit more though...
-
-Maciej Rozycki <Maciej.Rozycki@imgtec.com> writes:
-> 3.4 Relocatable Object Generation
+On 05/16/2016 06:40 AM, Andrew Lunn wrote:
+> On Mon, May 16, 2016 at 03:11:35PM +0200, Rabin Vincent wrote:
+>> On Mon, May 16, 2016 at 02:29:03PM +0200, Andrew Lunn wrote:
+>>> What i think is better is to make fixed_phy_add() return -EPROBE_DEFER
+>>> if it is called before fixed_mdio_bus_init().
+>>
+>> I don't see how this will work for platforms such as ar7 and bcm47xx
+>> which call fixed_phy_add() from platform code.
 > 
->  Tools that produce relocatable objects such as the assembler shall
-> always produce a SHT_MIPS_ABIFLAGS section according to the IEEE Std 754
-> compliance mode selected.  In the absence of any explicit user
-> instructions the `strict' mode shall be assumed.  No new `legacy'
-> objects shall be produced.
+> Ah! Not good.
+> 
+> fixed_phy_add() is the lower layer call. What we can do is only access
+> fmb->mii_bus->irq[phy_addr] if irq != PHY_POLL. That should make ar7
+> and bcm47xx work again.
+> 
+> The higher level function fixed_phy_register() should return
+> -EPROBE_DEFER if fixed_mdio_bus_init() has not been called yet.
 
-Is it necessary to say that no new legacy objects can be created?
-
-I think there is value in still being able to generate legacy objects because
-of the fact that strict executables leave no room for override at runtime.
-Apart from the fact that strict cannot be disabled there is otherwise no
-difference between legacy and strict compliance modes.
-
-I believe the strict option is really intended for conscious use so that
-programmers who know they need it, can use it. Ordinary users still get the
-casual safety they need as legacy objects are just as good as strict until
-overridden. If we lose the ability to override then in some environments we
-will accumulate lots of needlessly strict executables just because of a tools
-upgrade whereas the old tools would have generated executables that were as
-safe but also could be overridden by kernel options. 
-
-Allowing legacy objects to be generated may also allow the linkage rules to
-be tightened.  I.e. Forcing a relaxed mode at link time could simply fail
-if confronted by a strict object instead only allowing legacy objects to
-be relaxed.
-
-A default build of GCC and binutils would therefore still generate legacy
-objects until someone consciously updated the configure options or used
-command line options.
-
-Thanks,
-Matthew
+ar7 and bcm47xx date back from when the fixed MDIO bus needed its fixed
+PHYs to be registered before the MDIO bus driver had a chance to probe
+them, otherwise, you would not be able to utilize them. Things have
+changed now, and your suggestion makes sense.
+-- 
+Florian

@@ -1,67 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2016 19:26:28 +0200 (CEST)
-Received: from mail-pf0-f170.google.com ([209.85.192.170]:35617 "EHLO
-        mail-pf0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27029155AbcEPR00lR5F0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2016 19:26:26 +0200
-Received: by mail-pf0-f170.google.com with SMTP id 77so69352260pfv.2
-        for <linux-mips@linux-mips.org>; Mon, 16 May 2016 10:26:26 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2016 19:49:03 +0200 (CEST)
+Received: from mail-lb0-f178.google.com ([209.85.217.178]:32984 "EHLO
+        mail-lb0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27029336AbcEPRs5nmap0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2016 19:48:57 +0200
+Received: by mail-lb0-f178.google.com with SMTP id jj5so52759164lbc.0
+        for <linux-mips@linux-mips.org>; Mon, 16 May 2016 10:48:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=GE6fmIOy87aQCDHez1GzxESqd/Bwx6C0I1bkIyNrs+8=;
-        b=clVHTClmyQyIPcmsu8NZXdZM/Ui/FrTtFG6t5xdClVqwjYqqRNPYJPoR4KZd9uVrGk
-         /tG+ujTP+v2bcIrvxohhvBQXcxklN/VY5+HPvEvw03xqTJBZDY8dnIHpiu3rpoL1H1UJ
-         lm21BMwPrVTehgb851Zdv4vtD0YhtG+7y3f7De8OfdQMpZ0fWXW3sq1lO5DhetSR8FJf
-         NtkYpjHb2LtirU26zJcVWd1gBdme2oL/D6HvGn9+3lvX5gnYsAjW3k9eSUz/xNMdeuyq
-         /fX81MRGUqVe2c6b8EasPuviRI6Y90/NvtFRKbeUEhxc30cD0Bm3UteQA5T8fKSr2YVh
-         EBiw==
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=my55+r4j4lfhEwc5azPtqetNzLpWLQtQ6RR+is96hnw=;
+        b=YgcC/hr8iAa4w0cZCEb659AAckFcMwDsVYOXwtFiydyOdUQvtuUnaCsmCv6g0+Ek/+
+         1lRJ9WJL40EUcRS78QWFuz5V+BgLi7vTPiaoBBTx38syhWTxoqvgtv9BW3tiHEtqmIA9
+         V16cVcvYm7MYL1wr2f81lXFVqRyHrgqQU/hhXAGNPhDGGKbZPUs8wG06dGT/riyWPKYa
+         83WFofIaML44uZWzhj4nQKf8QBuGcb2/cKBKTNgXwJ67T7MPY8HdvgAe5cM8QrmxRgxX
+         8MB84RZioCAUr31wFkesCIO2trmJOEtwpBI+sj0iIErRaJg0PqLrBk7LIzsJt0A5HgR0
+         im9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=GE6fmIOy87aQCDHez1GzxESqd/Bwx6C0I1bkIyNrs+8=;
-        b=Bojq+7m9ytUYbRahgH0PNbIwPbJd0o5EydtxBHYeFeOt//48PJkJq/iolOGsgN3xBv
-         19BwXdY/SD3eKgzjCa83hH3symkp8Kiywhz8q+8pzxJobax6sXNUoqHV2ZPR3ACeThc0
-         S6yoZhCXoZE9ouAGw74+b8eKSsvKkX/nqIWzIU2zIrVWuAVQuRljPgcLePNiRkigIVks
-         u4m7/Rtn1qasq0nlYI4KMgloXwrYoonRvDPKizI5v+p2fE8yzHT3Qt82bGQpn50vBEGW
-         eY4AmjquHRX5TfUyOUBnRn25GCIuqj3boSNkDYuaKrCrH9Dd1aQvUc1QdEeS9Wh0ZZ/X
-         S9Xg==
-X-Gm-Message-State: AOPr4FXLnO/PwxSOwcg005VYCYX/SmGpgbxuc8zFM5Savy62y1oMyFDCLEna38JaSkgscg==
-X-Received: by 10.98.35.212 with SMTP id q81mr48085763pfj.108.1463419580610;
-        Mon, 16 May 2016 10:26:20 -0700 (PDT)
-Received: from [10.112.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id ba9sm48753712pab.24.2016.05.16.10.26.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 16 May 2016 10:26:19 -0700 (PDT)
-Subject: Re: [PATCH] phy: remove irq param to fix crash in fixed_phy_add()
-To:     Andrew Lunn <andrew@lunn.ch>, Rabin Vincent <rabin@rab.in>
-References: <1463397356-5656-1-git-send-email-rabin.vincent@axis.com>
- <20160516122903.GA27725@lunn.ch>
- <20160516131134.GA31094@lnxartpec.se.axis.com>
- <20160516134042.GD27725@lunn.ch>
-Cc:     Rabin Vincent <rabin.vincent@axis.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, Rabin Vincent <rabinv@axis.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <573A02BA.3080709@gmail.com>
-Date:   Mon, 16 May 2016 10:26:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.7.2
+        h=x-gm-message-state:subject:to:references:cc:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding;
+        bh=my55+r4j4lfhEwc5azPtqetNzLpWLQtQ6RR+is96hnw=;
+        b=l/A1Dh8tud4tGQu6cOPMyR7+6qWzIwJGFsURLlvbloynz92ligrwJY0ubFHclQCIBd
+         w/IBd/KtUC2YXNNbNOma7KtPhyWrEzc8mT7sKHDUs7cZ9tuy7lFwMCM0PBp/2ajrhM7A
+         pRXjDzwYT3w81ANCZelnRsJAWWRrU+FJxje9In0sqyGrSSsl+TajBod1oPtDi1HTYhan
+         OylDubvX391N5q+9wwRMLIL+NsuspRBd3OUSsE875fHor9hDLhkNjmtxvRlpsHxcVIZA
+         asrTHLQBBE8A8SSpV2nAeMtiYy3a/GuUhjCeRHgBCGIOJZi9w+6N8tOSptXc++fscTho
+         yjQg==
+X-Gm-Message-State: AOPr4FUzKIQQX/kd9rcP4gzzD/dzqjyu3zQIMQz2XBFH8csX1HEztf5rQor8oE3WB1F8qQ==
+X-Received: by 10.112.141.135 with SMTP id ro7mr12054319lbb.0.1463420931509;
+        Mon, 16 May 2016 10:48:51 -0700 (PDT)
+Received: from wasted.cogentembedded.com ([31.173.86.208])
+        by smtp.gmail.com with ESMTPSA id sg8sm5343339lbb.28.2016.05.16.10.48.47
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 16 May 2016 10:48:50 -0700 (PDT)
+Subject: Re: [PATCH 2/2] MIPS: ath79: fix regression in PCI window
+ initialization
+To:     Felix Fietkau <nbd@nbd.name>, linux-mips@linux-mips.org
+References: <1463311930-40536-1-git-send-email-nbd@nbd.name>
+ <1463311930-40536-2-git-send-email-nbd@nbd.name>
+Cc:     albeu@free.fr
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <bc4766ff-1d7d-05fb-75d1-7cf605a9dbc3@cogentembedded.com>
+Date:   Mon, 16 May 2016 20:48:47 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.0
 MIME-Version: 1.0
-In-Reply-To: <20160516134042.GD27725@lunn.ch>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <1463311930-40536-2-git-send-email-nbd@nbd.name>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53461
+X-archive-position: 53462
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,27 +72,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/16/2016 06:40 AM, Andrew Lunn wrote:
-> On Mon, May 16, 2016 at 03:11:35PM +0200, Rabin Vincent wrote:
->> On Mon, May 16, 2016 at 02:29:03PM +0200, Andrew Lunn wrote:
->>> What i think is better is to make fixed_phy_add() return -EPROBE_DEFER
->>> if it is called before fixed_mdio_bus_init().
->>
->> I don't see how this will work for platforms such as ar7 and bcm47xx
->> which call fixed_phy_add() from platform code.
-> 
-> Ah! Not good.
-> 
-> fixed_phy_add() is the lower layer call. What we can do is only access
-> fmb->mii_bus->irq[phy_addr] if irq != PHY_POLL. That should make ar7
-> and bcm47xx work again.
-> 
-> The higher level function fixed_phy_register() should return
-> -EPROBE_DEFER if fixed_mdio_bus_init() has not been called yet.
+Hello.
 
-ar7 and bcm47xx date back from when the fixed MDIO bus needed its fixed
-PHYs to be registered before the MDIO bus driver had a chance to probe
-them, otherwise, you would not be able to utilize them. Things have
-changed now, and your suggestion makes sense.
--- 
-Florian
+On 05/15/2016 02:32 PM, Felix Fietkau wrote:
+
+> ath79_ddr_pci_win_base has the type void __iomem *, so register offsets
+> need to be a multiple of 4.
+>
+> Cc: Alban Bedel <albeu@free.fr>
+> Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  arch/mips/ath79/common.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
+> index 84d4502..5e26fd8 100644
+> --- a/arch/mips/ath79/common.c
+> +++ b/arch/mips/ath79/common.c
+> @@ -76,14 +76,14 @@ void ath79_ddr_set_pci_windows(void)
+>  {
+>  	BUG_ON(!ath79_ddr_pci_win_base);
+>
+> -	__raw_writel(AR71XX_PCI_WIN0_OFFS, ath79_ddr_pci_win_base + 0);
+> -	__raw_writel(AR71XX_PCI_WIN1_OFFS, ath79_ddr_pci_win_base + 1);
+> -	__raw_writel(AR71XX_PCI_WIN2_OFFS, ath79_ddr_pci_win_base + 2);
+> -	__raw_writel(AR71XX_PCI_WIN3_OFFS, ath79_ddr_pci_win_base + 3);
+> -	__raw_writel(AR71XX_PCI_WIN4_OFFS, ath79_ddr_pci_win_base + 4);
+> -	__raw_writel(AR71XX_PCI_WIN5_OFFS, ath79_ddr_pci_win_base + 5);
+> -	__raw_writel(AR71XX_PCI_WIN6_OFFS, ath79_ddr_pci_win_base + 6);
+> -	__raw_writel(AR71XX_PCI_WIN7_OFFS, ath79_ddr_pci_win_base + 7);
+> +	__raw_writel(AR71XX_PCI_WIN0_OFFS, ath79_ddr_pci_win_base + 0x0);
+> +	__raw_writel(AR71XX_PCI_WIN1_OFFS, ath79_ddr_pci_win_base + 0x4);
+> +	__raw_writel(AR71XX_PCI_WIN2_OFFS, ath79_ddr_pci_win_base + 0x8);
+> +	__raw_writel(AR71XX_PCI_WIN3_OFFS, ath79_ddr_pci_win_base + 0xc);
+> +	__raw_writel(AR71XX_PCI_WIN4_OFFS, ath79_ddr_pci_win_base + 0x10);
+> +	__raw_writel(AR71XX_PCI_WIN5_OFFS, ath79_ddr_pci_win_base + 0x14);
+> +	__raw_writel(AR71XX_PCI_WIN6_OFFS, ath79_ddr_pci_win_base + 0x18);
+> +	__raw_writel(AR71XX_PCI_WIN7_OFFS, ath79_ddr_pci_win_base + 0x20);
+
+    Maybe 0x1c?
+
+[...]
+
+MBR, Sergei

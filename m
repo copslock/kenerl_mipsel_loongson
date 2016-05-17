@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 07:10:27 +0200 (CEST)
-Received: from smtpout.microchip.com ([198.175.253.82]:57265 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 07:10:43 +0200 (CEST)
+Received: from smtpout.microchip.com ([198.175.253.82]:57268 "EHLO
         email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27029452AbcEQFIyMlQ76 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2016 07:08:54 +0200
+        by eddie.linux-mips.org with ESMTP id S27029465AbcEQFJIbHwd6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2016 07:09:08 +0200
 Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch07.mchp-main.com
  (10.10.76.108) with Microsoft SMTP Server id 14.3.181.6; Mon, 16 May 2016
- 22:08:46 -0700
+ 22:09:00 -0700
 Received: by mx.microchip.com (sSMTP sendmail emulation); Tue, 17 May 2016
- 10:36:58 +0530
+ 10:37:12 +0530
 From:   Purna Chandra Mandal <purna.mandal@microchip.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
@@ -16,11 +16,10 @@ CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
         Ian Campbell <ijc+devicetree@hellion.org.uk>,
         Rob Herring <robh+dt@kernel.org>,
         Joshua Henderson <joshua.henderson@microchip.com>,
-        Andrei Pistirica <andrei.pistirica@microchip.com>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 08/11] dt/bindings: Correct clk binding example for PIC32 serial.
-Date:   Tue, 17 May 2016 10:35:57 +0530
-Message-ID: <1463461560-9629-8-git-send-email-purna.mandal@microchip.com>
+Subject: [PATCH 09/11] dt/bindings: Correct clk binding example for PIC32 DMT.
+Date:   Tue, 17 May 2016 10:35:58 +0530
+Message-ID: <1463461560-9629-9-git-send-email-purna.mandal@microchip.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1463461560-9629-1-git-send-email-purna.mandal@microchip.com>
 References: <1463461560-9629-1-git-send-email-purna.mandal@microchip.com>
@@ -30,7 +29,7 @@ Return-Path: <Purna.Mandal@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53474
+X-archive-position: 53475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,21 +52,27 @@ Update binding example based on new clock binding scheme.
 Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
 ---
 
- Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt b/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
-index 65b38bf..7a34345 100644
---- a/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
-+++ b/Documentation/devicetree/bindings/serial/microchip,pic32-uart.txt
-@@ -20,7 +20,7 @@ Example:
- 		interrupts = <112 IRQ_TYPE_LEVEL_HIGH>,
- 			<113 IRQ_TYPE_LEVEL_HIGH>,
- 			<114 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&PBCLK2>;
-+		clocks = <&rootclk PB2CLK>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_uart1
- 				&pinctrl_uart1_cts
+diff --git a/Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt b/Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt
+index 852f694..49485f8 100644
+--- a/Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt
++++ b/Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt
+@@ -8,12 +8,12 @@ Required properties:
+ - compatible: must be "microchip,pic32mzda-dmt".
+ - reg: physical base address of the controller and length of memory mapped
+   region.
+-- clocks: phandle of parent clock (should be &PBCLK7).
++- clocks: phandle of source clk. Should be <&rootclk PB7CLK>.
+ 
+ Example:
+ 
+ 	watchdog@1f800a00 {
+ 		compatible = "microchip,pic32mzda-dmt";
+ 		reg = <0x1f800a00 0x80>;
+-		clocks = <&PBCLK7>;
++		clocks = <&rootclk PB7CLK>;
+ 	};
 -- 
 1.8.3.1

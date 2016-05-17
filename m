@@ -1,46 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 12:15:41 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:40375 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27029575AbcEQKPjTVWzF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 May 2016 12:15:39 +0200
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id E93C86264E;
-        Tue, 17 May 2016 10:15:31 +0000 (UTC)
-Received: from oldenburg.str.redhat.com (ovpn-204-28.brq.redhat.com [10.40.204.28])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u4HAFTd8011984
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Tue, 17 May 2016 06:15:30 -0400
-Subject: Re: Endless loop on execution attempt on non-executable page
-To:     David Daney <ddaney.cavm@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Hill, Steven" <Steven.Hill@caviumnetworks.com>
-References: <57345F0D.9070503@redhat.com>
- <20160512125342.GS16402@linux-mips.org>
- <9af052f6-b50c-7ba5-ebbb-0bdff0c58dd9@redhat.com>
- <20160512142306.GT16402@linux-mips.org> <5734A7D8.9030407@gmail.com>
-Cc:     linux-mips@linux-mips.org
-From:   Florian Weimer <fweimer@redhat.com>
-Message-ID: <4c6e84e7-fa29-2baf-44ac-4d4aa0cb1bdd@redhat.com>
-Date:   Tue, 17 May 2016 12:15:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 14:30:37 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:41908 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27028268AbcEQMaepIokl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 May 2016 14:30:34 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4HCUXwc005358;
+        Tue, 17 May 2016 14:30:33 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4HCUWFx005357;
+        Tue, 17 May 2016 14:30:32 +0200
+Date:   Tue, 17 May 2016 14:30:32 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Purna Chandra Mandal <purna.mandal@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Joshua Henderson <digitalpeer@digitalpeer.com>
+Subject: Re: [PATCH 03/11] MIPS: pic32mzda: fix getting timer clock rate.
+Message-ID: <20160517123032.GD14481@linux-mips.org>
+References: <1463461560-9629-1-git-send-email-purna.mandal@microchip.com>
+ <1463461560-9629-3-git-send-email-purna.mandal@microchip.com>
 MIME-Version: 1.0
-In-Reply-To: <5734A7D8.9030407@gmail.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Tue, 17 May 2016 10:15:32 +0000 (UTC)
-Return-Path: <fweimer@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1463461560-9629-3-git-send-email-purna.mandal@microchip.com>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53480
+X-archive-position: 53481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fweimer@redhat.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,15 +44,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/12/2016 05:57 PM, David Daney wrote:
+On Tue, May 17, 2016 at 10:35:52AM +0530, Purna Chandra Mandal wrote:
 
-> This is something that would be easy to diagnose on the OCTEON simulator...
->
-> Before spending time doing that, has anyone tried this on current
-> kernels rather than the 3.14 indicated above?
+> PIC32 clock driver is now implemented as platform driver instead of
+> as part of of_clk_init(). It meants all the clock modules are available
+> quite late in the boot sequence. So request for CPU clock by clk_get_sys()
+> and clk_get_rate() to find c0_timer rate fails.
+> 
+> To fix this use PIC32 specific early clock functions implemented for early
+> console support.
+> 
+> Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+> 
+> ---
+> Note: Please pull this complete series through the MIPS tree.
+> 
+> ---
+> 
+>  arch/mips/pic32/pic32mzda/time.c | 13 ++++---------
 
-I can't swap kernels on this device, and I suspect it's running a vendor 
-kernel for a reason (lack of Debian/upstream support, presumably). 
-Sorry about that.
+For now I applied only this patch as it seems independent of the remainder
+of the series which still will need to be reviewed and acked by the
+respective maintainers.
 
-Florian
+  Ralf

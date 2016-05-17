@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 07:10:43 +0200 (CEST)
-Received: from smtpout.microchip.com ([198.175.253.82]:57268 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 07:11:09 +0200 (CEST)
+Received: from exsmtp01.microchip.com ([198.175.253.37]:22451 "EHLO
         email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27029465AbcEQFJIbHwd6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2016 07:09:08 +0200
-Received: from mx.microchip.com (10.10.76.4) by chn-sv-exch07.mchp-main.com
- (10.10.76.108) with Microsoft SMTP Server id 14.3.181.6; Mon, 16 May 2016
- 22:09:00 -0700
+        by eddie.linux-mips.org with ESMTP id S27029432AbcEQFJUs4i16 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2016 07:09:20 +0200
+Received: from mx.microchip.com (10.10.76.4) by CHN-SV-EXCH01.mchp-main.com
+ (10.10.76.37) with Microsoft SMTP Server id 14.3.181.6; Mon, 16 May 2016
+ 22:09:13 -0700
 Received: by mx.microchip.com (sSMTP sendmail emulation); Tue, 17 May 2016
- 10:37:12 +0530
+ 10:37:25 +0530
 From:   Purna Chandra Mandal <purna.mandal@microchip.com>
 To:     <linux-kernel@vger.kernel.org>
 CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
@@ -17,9 +17,9 @@ CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
         Joshua Henderson <joshua.henderson@microchip.com>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 09/11] dt/bindings: Correct clk binding example for PIC32 DMT.
-Date:   Tue, 17 May 2016 10:35:58 +0530
-Message-ID: <1463461560-9629-9-git-send-email-purna.mandal@microchip.com>
+Subject: [PATCH 10/11] dt/bindings: Correct clk binding example for PIC32 WDT.
+Date:   Tue, 17 May 2016 10:35:59 +0530
+Message-ID: <1463461560-9629-10-git-send-email-purna.mandal@microchip.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1463461560-9629-1-git-send-email-purna.mandal@microchip.com>
 References: <1463461560-9629-1-git-send-email-purna.mandal@microchip.com>
@@ -29,7 +29,7 @@ Return-Path: <Purna.Mandal@microchip.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53475
+X-archive-position: 53476
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,27 +52,27 @@ Update binding example based on new clock binding scheme.
 Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
 ---
 
- Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt | 4 ++--
+ Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt b/Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt
-index 852f694..49485f8 100644
---- a/Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt
-+++ b/Documentation/devicetree/bindings/watchdog/microchip,pic32-dmt.txt
-@@ -8,12 +8,12 @@ Required properties:
- - compatible: must be "microchip,pic32mzda-dmt".
+diff --git a/Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt b/Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt
+index d140103..f03a29a 100644
+--- a/Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt
++++ b/Documentation/devicetree/bindings/watchdog/microchip,pic32-wdt.txt
+@@ -7,12 +7,12 @@ Required properties:
+ - compatible: must be "microchip,pic32mzda-wdt".
  - reg: physical base address of the controller and length of memory mapped
    region.
--- clocks: phandle of parent clock (should be &PBCLK7).
-+- clocks: phandle of source clk. Should be <&rootclk PB7CLK>.
+-- clocks: phandle of source clk. should be <&LPRC> clk.
++- clocks: phandle of source clk. Should be <&rootclk LPRCCLK>.
  
  Example:
  
- 	watchdog@1f800a00 {
- 		compatible = "microchip,pic32mzda-dmt";
- 		reg = <0x1f800a00 0x80>;
--		clocks = <&PBCLK7>;
-+		clocks = <&rootclk PB7CLK>;
+ 	watchdog@1f800800 {
+ 		compatible = "microchip,pic32mzda-wdt";
+ 		reg = <0x1f800800 0x200>;
+-		clocks = <&LPRC>;
++		clocks = <&rootclk LPRCCLK>;
  	};
 -- 
 1.8.3.1

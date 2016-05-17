@@ -1,31 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 16:32:28 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41211 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 16:56:32 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:34964 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27029652AbcEQOcUd-yno (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2016 16:32:20 +0200
+        with ESMTP id S27029564AbcEQO43fuS5o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2016 16:56:29 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id 4DA6391A7DACB;
-        Tue, 17 May 2016 15:32:11 +0100 (IST)
+        by Websense Email with ESMTPS id 94A5B42A23DD6;
+        Tue, 17 May 2016 15:56:19 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
  HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 17 May 2016 15:32:14 +0100
+ 14.3.266.1; Tue, 17 May 2016 15:56:22 +0100
 Received: from localhost (10.100.200.141) by LEMAIL01.le.imgtec.org
  (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 17 May
- 2016 15:32:13 +0100
+ 2016 15:56:22 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
+CC:     "Maciej W . Rozycki" <Maciej.Rozycki@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        "stable # v4 . 4+" <stable@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH 3/3] irqchip: mips-gic: Setup EIC mode on each CPU if it's in use
-Date:   Tue, 17 May 2016 15:31:06 +0100
-Message-ID: <1463495466-29689-4-git-send-email-paul.burton@imgtec.com>
+Subject: [PATCH v2 1/2] MIPS: Allow R6 compact branch policy to be left unspecified
+Date:   Tue, 17 May 2016 15:55:53 +0100
+Message-ID: <1463496954-24713-1-git-send-email-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.8.2
-In-Reply-To: <1463495466-29689-1-git-send-email-paul.burton@imgtec.com>
-References: <1463495466-29689-1-git-send-email-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.141]
@@ -33,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53489
+X-archive-position: 53490
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,43 +46,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When EIC mode is in use (cpu_has_veic is true) enable it on each CPU
-during GIC initialisation. Otherwise there may be a mismatch between the
-hardware default interrupt model & that expected by the kernel.
+It turns out that some toolchains which support MIPS R6 don't support
+the -mcompact-branches flag to specify compact branch behaviour. Default
+to not providing the -mcompact-branch option to the compiler such that
+we can build with such toolchains.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Reported-by: kbuild test robot <fengguang.wu@intel.com>
+Fixes: c1a0e9bc885d ("MIPS: Allow compact branch policy to be changed")
+Cc: stable <stable@vger.kernel.org> # v4.4+
+
 ---
 
- drivers/irqchip/irq-mips-gic.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Changes in v2:
+- Hide the options behind CONFIG_DEBUG_KERNEL.
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 4dffccf..bc23c92 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -956,7 +956,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 			      unsigned int cpu_vec, unsigned int irqbase,
- 			      struct device_node *node)
- {
--	unsigned int gicconfig;
-+	unsigned int gicconfig, cpu;
- 	unsigned int v[2];
+ arch/mips/Kconfig.debug | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+index f0e314c..ee3dc9b 100644
+--- a/arch/mips/Kconfig.debug
++++ b/arch/mips/Kconfig.debug
+@@ -117,7 +117,16 @@ if CPU_MIPSR6
  
- 	__gic_base_addr = gic_base_addr;
-@@ -973,6 +973,14 @@ static void __init __gic_init(unsigned long gic_base_addr,
- 	gic_vpes = gic_vpes + 1;
- 
- 	if (cpu_has_veic) {
-+		/* Set EIC mode for all VPEs */
-+		for_each_present_cpu(cpu) {
-+			gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR),
-+				  mips_cm_vp_id(cpu));
-+			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_CTL),
-+				  GIC_VPE_CTL_EIC_MODE_MSK);
-+		}
+ choice
+ 	prompt "Compact branch policy"
+-	default MIPS_COMPACT_BRANCHES_OPTIMAL
++	depends on DEBUG_KERNEL
++	default MIPS_COMPACT_BRANCHES_DEFAULT
 +
- 		/* Always use vector 1 in EIC mode */
- 		gic_cpu_pin = 0;
- 		timer_cpu_pin = gic_cpu_pin;
++config MIPS_COMPACT_BRANCHES_DEFAULT
++	bool "Toolchain Default (don't specify)"
++	help
++	  Don't pass the -mcompact-branches flag to the compiler, allowing it
++	  to use its default (generally "optimal"). This is particularly
++	  useful for early R6-supporting toolchains which don't support the
++	  -mcompact-branches flag.
+ 
+ config MIPS_COMPACT_BRANCHES_NEVER
+ 	bool "Never (force delay slot branches)"
 -- 
 2.8.2

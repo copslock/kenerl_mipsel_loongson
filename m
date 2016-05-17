@@ -1,41 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 16:56:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:19852 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27029683AbcEQO4nWIqoo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2016 16:56:43 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id 0F55433E338AB;
-        Tue, 17 May 2016 15:56:34 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 17 May 2016 15:56:37 +0100
-Received: from localhost (10.100.200.141) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Tue, 17 May
- 2016 15:56:36 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     "Maciej W . Rozycki" <Maciej.Rozycki@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "stable # v4 . 4+" <stable@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 2/2] MIPS: Error out if unsupported compact branch policy is set
-Date:   Tue, 17 May 2016 15:55:54 +0100
-Message-ID: <1463496954-24713-2-git-send-email-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.8.2
-In-Reply-To: <1463496954-24713-1-git-send-email-paul.burton@imgtec.com>
-References: <1463496954-24713-1-git-send-email-paul.burton@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.141]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2016 20:20:41 +0200 (CEST)
+Received: from shards.monkeyblade.net ([149.20.54.216]:52388 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27029624AbcEQSUiluXVx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2016 20:20:38 +0200
+Received: from localhost (unknown [38.140.131.194])
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 361165B5BB0;
+        Tue, 17 May 2016 11:20:35 -0700 (PDT)
+Date:   Tue, 17 May 2016 14:20:34 -0400 (EDT)
+Message-Id: <20160517.142034.611823602956859056.davem@davemloft.net>
+To:     rabin.vincent@axis.com
+Cc:     andrew@lunn.ch, f.fainelli@gmail.com, netdev@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, rabinv@axis.com
+Subject: Re: [PATCH] phy: remove irq param to fix crash in fixed_phy_add()
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1463397356-5656-1-git-send-email-rabin.vincent@axis.com>
+References: <1463397356-5656-1-git-send-email-rabin.vincent@axis.com>
+X-Mailer: Mew version 6.6 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 17 May 2016 11:20:35 -0700 (PDT)
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53491
+X-archive-position: 53492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,43 +43,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If an explicit compact branch policy is requested by the user via the
-debug options in Kconfig, and the toolchain does not support specifying
-an explicit compact branch policy, then error out with an understandable
-error message to make it clearer what's happened.
+From: Rabin Vincent <rabin.vincent@axis.com>
+Date: Mon, 16 May 2016 13:15:56 +0200
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: c1a0e9bc885d ("MIPS: Allow compact branch policy to be changed")
-Cc: stable <stable@vger.kernel.org> # v4.4+
+> From: Rabin Vincent <rabinv@axis.com>
+> 
+> Since e7f4dc3536a ("mdio: Move allocation of interrupts into core"),
+> platforms which call fixed_phy_add() before fixed_mdio_bus_init() is
+> called (for example, because the platform code and the fixed_phy driver
+> use the same initcall level) crash in fixed_phy_add() since the
+> ->mii_bus is not allocated.
+> 
+> Also since e7f4dc3536a, these interrupts are initalized to polling by
+> default.  All callers of both fixed_phy_register() and fixed_phy_add()
+> pass PHY_POLL for the irq argument, so we can fix these crashes by
+> simply removing the irq parameter, since the default is correct for all
+> users.
+> 
+> Fixes: e7f4dc3536a400 ("mdio: Move allocation of interrupts into core")
+> Signed-off-by: Rabin Vincent <rabinv@axis.com>
 
----
-
-Changes in v2:
-- New patch.
-
- arch/mips/Makefile | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index e78d60d..1ac4612 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -194,9 +194,13 @@ toolchain-msa				:= $(call cc-option-yn,$(mips-cflags) -mhard-float -mfp64 -Wa$(
- cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
- endif
- 
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_NEVER)	+= -mcompact-branches=never
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_OPTIMAL)	+= -mcompact-branches=optimal
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_ALWAYS)	+= -mcompact-branches=always
-+ifeq ($(call cc-option-yn,-mcompact-branches=optimal), y)
-+  cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_NEVER)		+= -mcompact-branches=never
-+  cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_OPTIMAL)	+= -mcompact-branches=optimal
-+  cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_ALWAYS)		+= -mcompact-branches=always
-+else ifneq ($(CONFIG_MIPS_COMPACT_BRANCHES_DEFAULT),y)
-+  $(error Compact branch policy specified, but lacking toolchain support)
-+endif
- 
- #
- # Firmware support
--- 
-2.8.2
+Applied.

@@ -1,36 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 18:04:53 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:6786 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 18:12:50 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38991 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27030076AbcERQEwXwvb8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 May 2016 18:04:52 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id BAA3A4F1B9150;
-        Wed, 18 May 2016 17:04:41 +0100 (IST)
+        with ESMTP id S27029944AbcERQMsZE628 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 May 2016 18:12:48 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id D3E223382C7CF;
+        Wed, 18 May 2016 17:12:38 +0100 (IST)
 Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 18 May 2016 17:04:45 +0100
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 18 May 2016 17:12:42 +0100
+Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
  LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 18 May 2016 17:04:44 +0100
-From:   James Hogan <james.hogan@imgtec.com>
+ 14.3.266.1; Wed, 18 May 2016 17:12:42 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
-Subject: [PATCH] MIPS: Fix write_gc0_* macros when writing zero
-Date:   Wed, 18 May 2016 17:04:38 +0100
-Message-ID: <1463587478-5815-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
+CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-mips@linux-mips.org>, Joshua Kinard <kumba@gentoo.org>,
+        <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Chris Packham <judge.packham@gmail.com>,
+        "Paul Burton" <paul.burton@imgtec.com>
+Subject: [PATCH v2 1/2] MIPS: Add definitions of SegCtl registers and use them
+Date:   Wed, 18 May 2016 17:12:35 +0100
+Message-ID: <1463587956-9160-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.5.0
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53516
+X-archive-position: 53517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,41 +48,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The versions of the __write_{32,64}bit_gc0_register() macros for when
-there is no virt support in the assembler use the "J" inline asm
-constraint to allow integer zero, but this needs to be accompanied by
-the "z" formatting string so that it turns into $0. Fix both macros to
-do this.
+The SegCtl registers are standard for MIPSr3..MIPSr5. Add definitions of
+these registers and use them rather than constants
 
-Fixes: bad50d79255a ("MIPS: Fix VZ probe gas errors with binutils <2.24")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 ---
- arch/mips/include/asm/mipsregs.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
+Changes in v2: None
+
+ arch/mips/include/asm/mach-malta/kernel-entry-init.h | 6 +++---
+ arch/mips/include/asm/mipsregs.h                     | 3 +++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-malta/kernel-entry-init.h b/arch/mips/include/asm/mach-malta/kernel-entry-init.h
+index 0cf8622db27f..ab03eb3fadac 100644
+--- a/arch/mips/include/asm/mach-malta/kernel-entry-init.h
++++ b/arch/mips/include/asm/mach-malta/kernel-entry-init.h
+@@ -56,7 +56,7 @@
+ 		(0 << MIPS_SEGCFG_PA_SHIFT) |				\
+ 		(1 << MIPS_SEGCFG_EU_SHIFT)) << 16)
+ 	or	t0, t2
+-	mtc0	t0, $5, 2
++	mtc0	t0, CP0_SEGCTL0
+ 
+ 	/* SegCtl1 */
+ 	li      t0, ((MIPS_SEGCFG_MUSUK << MIPS_SEGCFG_AM_SHIFT) |	\
+@@ -67,7 +67,7 @@
+ 		(0 << MIPS_SEGCFG_PA_SHIFT) |				\
+ 		(1 << MIPS_SEGCFG_EU_SHIFT)) << 16)
+ 	ins	t0, t1, 16, 3
+-	mtc0	t0, $5, 3
++	mtc0	t0, CP0_SEGCTL1
+ 
+ 	/* SegCtl2 */
+ 	li	t0, ((MIPS_SEGCFG_MUSUK << MIPS_SEGCFG_AM_SHIFT) |	\
+@@ -77,7 +77,7 @@
+ 		(4 << MIPS_SEGCFG_PA_SHIFT) |				\
+ 		(1 << MIPS_SEGCFG_EU_SHIFT)) << 16)
+ 	or	t0, t2
+-	mtc0	t0, $5, 4
++	mtc0	t0, CP0_SEGCTL2
+ 
+ 	jal	mips_ihb
+ 	mfc0    t0, $16, 5
 diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 25d01577d0b5..18bb6f9f0d16 100644
+index 3ad19ad04d8a..639137f12f1a 100644
 --- a/arch/mips/include/asm/mipsregs.h
 +++ b/arch/mips/include/asm/mipsregs.h
-@@ -1770,7 +1770,7 @@ do {									\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
- 		".set\tnoat\n\t"					\
--		"move\t$1, %0\n\t"					\
-+		"move\t$1, %z0\n\t"					\
- 		"# mtgc0\t$1, $%1, %2\n\t"				\
- 		".word\t(0x40610200 | %1 << 11 | %2)\n\t"		\
- 		".set\tpop"						\
-@@ -1783,7 +1783,7 @@ do {									\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
- 		".set\tnoat\n\t"					\
--		"move\t$1, %0\n\t"					\
-+		"move\t$1, %z0\n\t"					\
- 		"# dmtgc0\t$1, $%1, %2\n\t"				\
- 		".word\t(0x40610300 | %1 << 11 | %2)\n\t"		\
- 		".set\tpop"						\
+@@ -48,6 +48,9 @@
+ #define CP0_CONF $3
+ #define CP0_CONTEXT $4
+ #define CP0_PAGEMASK $5
++#define CP0_SEGCTL0 $5, 2
++#define CP0_SEGCTL1 $5, 3
++#define CP0_SEGCTL2 $5, 4
+ #define CP0_WIRED $6
+ #define CP0_INFO $7
+ #define CP0_HWRENA $7, 0
 -- 
-2.4.10
+2.5.0

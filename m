@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 12:54:45 +0200 (CEST)
-Received: from smtpbg340.qq.com ([14.17.44.35]:54525 "EHLO smtpbg340.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 12:55:08 +0200 (CEST)
+Received: from smtpbg65.qq.com ([103.7.28.233]:59950 "EHLO smtpbg65.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27029935AbcERKw5HSl-1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 May 2016 12:52:57 +0200
-X-QQ-mid: bizesmtp3t1463568751t207t072
+        id S27029936AbcERKw6QtMW1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 May 2016 12:52:58 +0200
+X-QQ-mid: bizesmtp3t1463568753t298t105
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 18 May 2016 18:52:30 +0800 (CST)
+        id ; Wed, 18 May 2016 18:52:32 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FG60000A0000000
-X-QQ-FEAT: FRywArojKxa7ncZWH8YfFYUhYKXNfA6Fknmay098qJ35dnzYXKhZZ4LtshW4t
-        JCC1TbqFcvafc43jUoN7aSYAoqCesWNr9OB1/M+jxcQ/qvxcHGvWE1Z9QEOff21nDyrnDAE
-        0K7NR/272gn7e7ehTmhcQeNoVxvjIhu38p8LyFvBC8P5FNpwy67iN+n7TQXHpjHwc2RnDdp
-        66xu9ajZmsUbGRj/UwM4uyi8fYxZf33hqVynoCB5jooGb09KUiy6VU4RIgvImKiOIO0E2Bx
-        bdXWm5ogZfH4DDW6VIfF7qlkY=
+X-QQ-FEAT: 6dXuswn9i1Ugy63OhKBqaQiEf1yj27DZKVOOPJztf73l282I+9pYblHGnb01C
+        HRM+l5iSwzaazL65G3Nk8UHBze6wTFiXBTEalnKa88tMnx0XIiJZ6V4pAg/QllmZPg0c3OY
+        sd65nfkQ2rjeC9sav0GI2bKn1sUYCh2w9/zuOUT2D9+RXP5RTwIo6BLo8/evbB7xmwQ9Wqe
+        enkwbC2TV3pGu2WC8NkGa0X+1s1YBrb4QVufFXMn0tE/C0DAmxoNoLxdJomzgFP9fuegiu4
+        qJI0N8QvL3VlXEnJLwl3ZDs57FaDFyFSxh4A==
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -21,11 +21,11 @@ Cc:     John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Kelvin Cheung <keguang.zhang@gmail.com>,
-        Binbin Zhou <zhoubb@lemote.com>,
+        Binbin Zhou <zhoubb@lemote.com>, Chunbo Cui <cuichboo@163.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH 8/9] MIPS: Loongson-1B: Update config file
-Date:   Wed, 18 May 2016 18:50:00 +0800
-Message-Id: <1463568601-25042-7-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH 9/9] MIPS: Loongson: Add a Loongson-1A default config file
+Date:   Wed, 18 May 2016 18:50:01 +0800
+Message-Id: <1463568601-25042-8-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1463568601-25042-1-git-send-email-zhoubb@lemote.com>
 References: <1463568601-25042-1-git-send-email-zhoubb@lemote.com>
@@ -35,7 +35,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53506
+X-archive-position: 53507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,42 +52,150 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-CONFIG_LOONGSON1_LS1B=y is needed to be set.
-
+Signed-off-by: Chunbo Cui <cuichboo@163.com>
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/configs/loongson1b_defconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/mips/configs/loongson1a_defconfig | 131 +++++++++++++++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
+ create mode 100644 arch/mips/configs/loongson1a_defconfig
 
-diff --git a/arch/mips/configs/loongson1b_defconfig b/arch/mips/configs/loongson1b_defconfig
-index c442f27..476f52b 100644
---- a/arch/mips/configs/loongson1b_defconfig
-+++ b/arch/mips/configs/loongson1b_defconfig
-@@ -1,4 +1,5 @@
- CONFIG_MACH_LOONGSON32=y
-+CONFIG_LOONGSON1_LS1B=y
- CONFIG_PREEMPT=y
- # CONFIG_SECCOMP is not set
- # CONFIG_LOCALVERSION_AUTO is not set
-@@ -43,7 +44,6 @@ CONFIG_MTD=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_NAND=y
--CONFIG_MTD_NAND_LOONGSON1=y
- CONFIG_MTD_UBI=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_SCSI=m
-@@ -72,7 +72,6 @@ CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- # CONFIG_HW_RANDOM is not set
- CONFIG_GPIOLIB=y
--CONFIG_GPIO_LOONGSON1=y
- # CONFIG_HWMON is not set
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_HID_GENERIC=m
+diff --git a/arch/mips/configs/loongson1a_defconfig b/arch/mips/configs/loongson1a_defconfig
+new file mode 100644
+index 0000000..6a0450e
+--- /dev/null
++++ b/arch/mips/configs/loongson1a_defconfig
+@@ -0,0 +1,131 @@
++CONFIG_MACH_LOONGSON32=y
++CONFIG_PAGE_SIZE_16KB=y
++CONFIG_HIGHMEM=y
++CONFIG_HZ_1000=y
++CONFIG_PREEMPT_VOLUNTARY=y
++# CONFIG_SECCOMP is not set
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_BSD_PROCESS_ACCT=y
++CONFIG_BSD_PROCESS_ACCT_V3=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_CGROUPS=y
++CONFIG_BLK_CGROUP=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_CGROUP_FREEZER=y
++CONFIG_CPUSETS=y
++CONFIG_CGROUP_DEVICE=y
++CONFIG_EXPERT=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_SUSPEND is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_SYN_COOKIES=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_DIAG is not set
++# CONFIG_IPV6 is not set
++CONFIG_BRIDGE=y
++# CONFIG_BRIDGE_IGMP_SNOOPING is not set
++# CONFIG_WIRELESS is not set
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++CONFIG_MTD=y
++CONFIG_MTD_CMDLINE_PARTS=y
++CONFIG_MTD_BLOCK=y
++CONFIG_NFTL=y
++CONFIG_NFTL_RW=y
++CONFIG_MTD_NAND=y
++CONFIG_MTD_SPI_NOR=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_RAM=y
++# CONFIG_SCSI_PROC_FS is not set
++CONFIG_BLK_DEV_SD=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_ATA=y
++# CONFIG_SATA_PMP is not set
++CONFIG_SATA_AHCI_PLATFORM=y
++# CONFIG_ATA_SFF is not set
++CONFIG_NETDEVICES=y
++CONFIG_NETCONSOLE=y
++# CONFIG_NET_VENDOR_ARC is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_SAMSUNG is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++CONFIG_STMMAC_ETH=y
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_NET_VENDOR_WIZNET is not set
++CONFIG_REALTEK_PHY=y
++# CONFIG_USB_NET_DRIVERS is not set
++# CONFIG_WLAN is not set
++# CONFIG_INPUT_MOUSEDEV is not set
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_SERIO is not set
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_LEGACY_PTY_COUNT=8
++# CONFIG_DEVKMEM is not set
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++# CONFIG_HW_RANDOM is not set
++CONFIG_I2C=y
++CONFIG_SPI=y
++# CONFIG_HWMON is not set
++CONFIG_WATCHDOG=y
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_USB=y
++CONFIG_USB_MON=y
++CONFIG_USB_XHCI_HCD=m
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_HCD_PLATFORM=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_HCD_PLATFORM=y
++CONFIG_USB_STORAGE=m
++CONFIG_USB_GADGET=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_PCF8563=y
++# CONFIG_IOMMU_SUPPORT is not set
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_VFAT_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++# CONFIG_MISC_FILESYSTEMS is not set
++# CONFIG_NETWORK_FILESYSTEMS is not set
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_PRINTK_TIME=y
++# CONFIG_ENABLE_WARN_DEPRECATED is not set
++# CONFIG_ENABLE_MUST_CHECK is not set
++CONFIG_MAGIC_SYSRQ=y
++# CONFIG_SCHED_DEBUG is not set
++# CONFIG_FTRACE is not set
++CONFIG_XZ_DEC=y
 -- 
 1.9.1
-
-
-ÿÿÿÿ	

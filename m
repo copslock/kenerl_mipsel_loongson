@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 18:13:07 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:52377 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27030081AbcERQMtKPD18 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 May 2016 18:12:49 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id E5C7D9EFC6D5F;
-        Wed, 18 May 2016 17:12:39 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 18 May 2016 17:12:43 +0100
-Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 18 May 2016 17:12:42 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 2/2] MIPS: CPS: Copy EVA configuration when starting secondary VPs.
-Date:   Wed, 18 May 2016 17:12:36 +0100
-Message-ID: <1463587956-9160-2-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.5.0
-In-Reply-To: <1463587956-9160-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1463587956-9160-1-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 18:50:30 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.136]:51206 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27030108AbcERQuYetrbC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 May 2016 18:50:24 +0200
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 651962035E;
+        Wed, 18 May 2016 16:50:22 +0000 (UTC)
+Received: from rob-hp-laptop (72-48-98-129.dyn.grandenetworks.net [72.48.98.129])
+        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9AD9A2034E;
+        Wed, 18 May 2016 16:50:20 +0000 (UTC)
+Date:   Wed, 18 May 2016 11:50:18 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Purna Chandra Mandal <purna.mandal@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Joshua Henderson <joshua.henderson@microchip.com>,
+        Andrei Pistirica <andrei.pistirica@microchip.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH 06/11] dt/bindings: Correct clk binding example for PIC32
+ SDHCI
+Message-ID: <20160518165018.GA1666@rob-hp-laptop>
+References: <1463461560-9629-1-git-send-email-purna.mandal@microchip.com>
+ <1463461560-9629-6-git-send-email-purna.mandal@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1463461560-9629-6-git-send-email-purna.mandal@microchip.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53518
+X-archive-position: 53519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,49 +55,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When starting secondary VPEs which support EVA and the SegCtl registers,
-copy the memory segmentation configuration from the running VPE to ensure
-that all VPEs in the core have a consistent virtual memory map.
+On Tue, May 17, 2016 at 10:35:55AM +0530, Purna Chandra Mandal wrote:
+> Update binding example based on new clock binding documentation.
+> [1] Documentation/devicetree/bindings/clock/microchip,pic32.txt
+> 
+> Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+> ---
+> 
+>  Documentation/devicetree/bindings/mmc/microchip,sdhci-pic32.txt | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-The EVA configuration of secondary cores is dealt with when starting the
-core via the CM.
-
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
----
-
-Changes in v2:
-- Skip check for config3 existing - we know it must to be doing
-multithreading
-- Use a unique lable name in the function
-
- arch/mips/kernel/cps-vec.S | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
-index ac81edd44563..f8eae9189e38 100644
---- a/arch/mips/kernel/cps-vec.S
-+++ b/arch/mips/kernel/cps-vec.S
-@@ -431,6 +431,21 @@ LEAF(mips_cps_boot_vpes)
- 	mfc0	t0, CP0_CONFIG
- 	mttc0	t0, CP0_CONFIG
- 
-+	/*
-+	 * Copy the EVA config from this VPE if the CPU supports it.
-+	 * CONFIG3 must exist to be running MT startup - just read it.
-+	 */
-+	mfc0	t0, CP0_CONFIG, 3
-+	and	t0, t0, MIPS_CONF3_SC
-+	beqz	t0, 3f
-+	 nop
-+	mfc0    t0, CP0_SEGCTL0
-+	mttc0	t0, CP0_SEGCTL0
-+	mfc0    t0, CP0_SEGCTL1
-+	mttc0	t0, CP0_SEGCTL1
-+	mfc0    t0, CP0_SEGCTL2
-+	mttc0	t0, CP0_SEGCTL2
-+3:
- 	/* Ensure no software interrupts are pending */
- 	mttc0	zero, CP0_CAUSE
- 	mttc0	zero, CP0_STATUS
--- 
-2.5.0
+Acked-by: Rob Herring <robh@kernel.org>

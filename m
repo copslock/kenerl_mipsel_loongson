@@ -1,35 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 13:09:05 +0200 (CEST)
-Received: from smtp2-g21.free.fr ([212.27.42.2]:37780 "EHLO smtp2-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27028533AbcERLJDvG3W1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 May 2016 13:09:03 +0200
-Received: from [172.27.0.114] (unknown [83.142.147.193])
-        (Authenticated sender: slash.tmp)
-        by smtp2-g21.free.fr (Postfix) with ESMTPSA id AD461200216;
-        Wed, 18 May 2016 10:59:27 +0200 (CEST)
-Subject: Re: [PATCH 5/9] MIPS: Loongson-1A: workaround of pll register's
- write-only property
-To:     Binbin Zhou <zhoubb@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-References: <1463569018-25189-1-git-send-email-zhoubb@lemote.com>
-From:   Mason <slash.tmp@free.fr>
-Message-ID: <573C4D44.1050600@free.fr>
-Date:   Wed, 18 May 2016 13:08:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:42.0) Gecko/20100101
- Firefox/42.0 SeaMonkey/2.39
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 16:46:55 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4887 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27026667AbcEROqxMf5nY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 May 2016 16:46:53 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id DD8FC77D71896;
+        Wed, 18 May 2016 15:46:43 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 18 May 2016 15:46:47 +0100
+Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Wed, 18 May 2016 15:46:46 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-mips@linux-mips.org>, Joshua Kinard <kumba@gentoo.org>,
+        <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Chris Packham <judge.packham@gmail.com>,
+        "Paul Burton" <paul.burton@imgtec.com>
+Subject: [PATCH 1/2] MIPS: Add definitions of SegCtl registers and use them
+Date:   Wed, 18 May 2016 15:45:21 +0100
+Message-ID: <1463582722-31420-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.5.0
 MIME-Version: 1.0
-In-Reply-To: <1463569018-25189-1-git-send-email-zhoubb@lemote.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <slash.tmp@free.fr>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53510
+X-archive-position: 53511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: slash.tmp@free.fr
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,20 +48,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 18/05/2016 12:56, Binbin Zhou wrote:
+The SegCtl registers are standard for MIPSr3..MIPSr5. Add definitions of
+these registers and use them rather than constants
 
-> diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-> index 24f35b6..0c3c608 100644
-> --- a/arch/mips/loongson32/common/platform.c
-> +++ b/arch/mips/loongson32/common/platform.c
-> @@ -62,9 +62,15 @@ struct platform_device ls1x_uart_pdev = {
->  
->  void __init ls1x_serial_set_uartclk(struct platform_device *pdev)
->  {
-> -	struct clk *clk;
-> +	u32 ls1x_uartclk;
->  	struct plat_serial8250_port *p;
->  
-> +#ifdef CONIFG_CPU_LOONGSON1A
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+---
 
-CONIFG? :-)
+ arch/mips/include/asm/mach-malta/kernel-entry-init.h | 6 +++---
+ arch/mips/include/asm/mipsregs.h                     | 3 +++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-malta/kernel-entry-init.h b/arch/mips/include/asm/mach-malta/kernel-entry-init.h
+index 0cf8622db27f..ab03eb3fadac 100644
+--- a/arch/mips/include/asm/mach-malta/kernel-entry-init.h
++++ b/arch/mips/include/asm/mach-malta/kernel-entry-init.h
+@@ -56,7 +56,7 @@
+ 		(0 << MIPS_SEGCFG_PA_SHIFT) |				\
+ 		(1 << MIPS_SEGCFG_EU_SHIFT)) << 16)
+ 	or	t0, t2
+-	mtc0	t0, $5, 2
++	mtc0	t0, CP0_SEGCTL0
+ 
+ 	/* SegCtl1 */
+ 	li      t0, ((MIPS_SEGCFG_MUSUK << MIPS_SEGCFG_AM_SHIFT) |	\
+@@ -67,7 +67,7 @@
+ 		(0 << MIPS_SEGCFG_PA_SHIFT) |				\
+ 		(1 << MIPS_SEGCFG_EU_SHIFT)) << 16)
+ 	ins	t0, t1, 16, 3
+-	mtc0	t0, $5, 3
++	mtc0	t0, CP0_SEGCTL1
+ 
+ 	/* SegCtl2 */
+ 	li	t0, ((MIPS_SEGCFG_MUSUK << MIPS_SEGCFG_AM_SHIFT) |	\
+@@ -77,7 +77,7 @@
+ 		(4 << MIPS_SEGCFG_PA_SHIFT) |				\
+ 		(1 << MIPS_SEGCFG_EU_SHIFT)) << 16)
+ 	or	t0, t2
+-	mtc0	t0, $5, 4
++	mtc0	t0, CP0_SEGCTL2
+ 
+ 	jal	mips_ihb
+ 	mfc0    t0, $16, 5
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 3ad19ad04d8a..639137f12f1a 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -48,6 +48,9 @@
+ #define CP0_CONF $3
+ #define CP0_CONTEXT $4
+ #define CP0_PAGEMASK $5
++#define CP0_SEGCTL0 $5, 2
++#define CP0_SEGCTL1 $5, 3
++#define CP0_SEGCTL2 $5, 4
+ #define CP0_WIRED $6
+ #define CP0_INFO $7
+ #define CP0_HWRENA $7, 0
+-- 
+2.5.0

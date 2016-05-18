@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 08:54:21 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:59710 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27029837AbcERGyPu-6HY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 May 2016 08:54:15 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Websense Email with ESMTPS id D0EC36F474A45;
-        Wed, 18 May 2016 07:54:07 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Wed, 18 May 2016 07:54:09 +0100
-Received: from [192.168.154.116] (192.168.154.116) by LEMAIL01.le.imgtec.org
- (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Wed, 18 May
- 2016 07:54:09 +0100
-Subject: Re: [PATCH 3/3] irqchip: mips-gic: Setup EIC mode on each CPU if it's
- in use
-To:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>,
-        "Ralf Baechle" <ralf@linux-mips.org>
-References: <1463495466-29689-1-git-send-email-paul.burton@imgtec.com>
- <1463495466-29689-4-git-send-email-paul.burton@imgtec.com>
-CC:     Marc Zyngier <marc.zyngier@arm.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        <linux-kernel@vger.kernel.org>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <573C1191.80707@imgtec.com>
-Date:   Wed, 18 May 2016 07:54:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
-MIME-Version: 1.0
-In-Reply-To: <1463495466-29689-4-git-send-email-paul.burton@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 May 2016 12:52:47 +0200 (CEST)
+Received: from smtpbgbr2.qq.com ([54.207.22.56]:56050 "EHLO smtpbgbr2.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27029929AbcERKwpjPVX1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 May 2016 12:52:45 +0200
+X-QQ-mid: bizesmtp3t1463568738t987t096
+Received: from localhost.localdomain (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Wed, 18 May 2016 18:52:17 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FF50000A0000000
+X-QQ-FEAT: r8geFCKg7nYlIXdBA5iej9hnQ3Po39Apxyhl0nFjH2kBXjrCZgGsqx9Yz6LhI
+        eQ7R5C+L+6lm3ojeEgTSALYu+c1ZNWJUxZA9v3QW0lYEGkoGOrMTaBFeQk+8f1trUGFVDZj
+        JlPpFkHUPVw+msol7HWxMNV2KrRxgZ3+4MEWJPH4IyYBV6+URldRV3hZ4AtQVyiOUztXB90
+        qrCYqgCBF9+50gz3edQHQ9K1i5hXPuB//UIgi61FBt03yWyNEXUlTqnRdUgoiUgrPQGhvQU
+        U0bPG6BOMbTtf/cBx+XRn65wtU7YuoGcXHnQ==
+X-QQ-GoodBg: 0
+From:   Binbin Zhou <zhoubb@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J. Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Binbin Zhou <zhoubb@lemote.com>, Chunbo Cui <cuichboo@163.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH 1/9] MIPS: Loongson: Add basic Loongson-1A CPU support
+Date:   Wed, 18 May 2016 18:49:55 +0800
+Message-Id: <1463568601-25042-2-git-send-email-zhoubb@lemote.com>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1463568601-25042-1-git-send-email-zhoubb@lemote.com>
+References: <1463568601-25042-1-git-send-email-zhoubb@lemote.com>
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53499
+X-archive-position: 53500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: zhoubb@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,51 +52,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The Loongson 1A is similar with Loongson 1B, which is a 32-bit SoC.
+It implements the MIPS32 release 2 instruction set.
 
+They share the same PRID, so we rewrite the PRID_REV_LOONGSON1B to
+PRID_REV_LOONGSON1A_1B, and use their CPU macros to distinguish.
 
-On 17/05/16 15:31, Paul Burton wrote:
-> When EIC mode is in use (cpu_has_veic is true) enable it on each CPU
-> during GIC initialisation. Otherwise there may be a mismatch between the
-> hardware default interrupt model & that expected by the kernel.
->
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
->
->   drivers/irqchip/irq-mips-gic.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-> index 4dffccf..bc23c92 100644
-> --- a/drivers/irqchip/irq-mips-gic.c
-> +++ b/drivers/irqchip/irq-mips-gic.c
-> @@ -956,7 +956,7 @@ static void __init __gic_init(unsigned long gic_base_addr,
->   			      unsigned int cpu_vec, unsigned int irqbase,
->   			      struct device_node *node)
->   {
-> -	unsigned int gicconfig;
-> +	unsigned int gicconfig, cpu;
->   	unsigned int v[2];
->   
->   	__gic_base_addr = gic_base_addr;
-> @@ -973,6 +973,14 @@ static void __init __gic_init(unsigned long gic_base_addr,
->   	gic_vpes = gic_vpes + 1;
->   
->   	if (cpu_has_veic) {
-> +		/* Set EIC mode for all VPEs */
-> +		for_each_present_cpu(cpu) {
-> +			gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR),
-> +				  mips_cm_vp_id(cpu));
-> +			gic_write(GIC_REG(VPE_OTHER, GIC_VPE_CTL),
-> +				  GIC_VPE_CTL_EIC_MODE_MSK);
-> +		}
-> +
->   		/* Always use vector 1 in EIC mode */
->   		gic_cpu_pin = 0;
->   		timer_cpu_pin = gic_cpu_pin;
-Hi Paul
+Signed-off-by: Chunbo Cui <cuichboo@163.com>
+Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/include/asm/cpu-type.h    | 3 ++-
+ arch/mips/include/asm/cpu.h         | 2 +-
+ arch/mips/kernel/cpu-probe.c        | 6 +++++-
+ arch/mips/loongson32/Platform       | 1 +
+ arch/mips/loongson32/common/setup.c | 6 +++++-
+ arch/mips/mm/c-r4k.c                | 9 +++++++++
+ 6 files changed, 23 insertions(+), 4 deletions(-)
 
-Reviewed-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Tested-by: Matt Redfearn <matt.redfearn@imgtec.com>
-
-Thanks,
-Matt
+diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
+index fbe1881..ab69178 100644
+--- a/arch/mips/include/asm/cpu-type.h
++++ b/arch/mips/include/asm/cpu-type.h
+@@ -24,7 +24,8 @@ static inline int __pure __get_cpu_type(const int cpu_type)
+ 	case CPU_LOONGSON3:
+ #endif
+ 
+-#ifdef CONFIG_SYS_HAS_CPU_LOONGSON1B
++#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1A) || \
++    defined(CONFIG_SYS_HAS_CPU_LOONGSON1B)
+ 	case CPU_LOONGSON1:
+ #endif
+ 
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index f672df8..43812ba 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -239,7 +239,7 @@
+ #define PRID_REV_VR4181A	0x0070	/* Same as VR4122 */
+ #define PRID_REV_VR4130		0x0080
+ #define PRID_REV_34K_V1_0_2	0x0022
+-#define PRID_REV_LOONGSON1B	0x0020
++#define PRID_REV_LOONGSON1A_1B	0x0020
+ #define PRID_REV_LOONGSON2E	0x0002
+ #define PRID_REV_LOONGSON2F	0x0003
+ #define PRID_REV_LOONGSON3A_R1	0x0005
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 5ac5c3e..efa8c33 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1497,8 +1497,12 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_LOONGSON1;
+ 
+ 		switch (c->processor_id & PRID_REV_MASK) {
+-		case PRID_REV_LOONGSON1B:
++		case PRID_REV_LOONGSON1A_1B:
++#ifdef CONFIG_CPU_LOONGSON1A
++			__cpu_name[cpu] = "Loongson 1A";
++#else
+ 			__cpu_name[cpu] = "Loongson 1B";
++#endif
+ 			break;
+ 		}
+ 
+diff --git a/arch/mips/loongson32/Platform b/arch/mips/loongson32/Platform
+index ebb6dc2..e114c85 100644
+--- a/arch/mips/loongson32/Platform
++++ b/arch/mips/loongson32/Platform
+@@ -4,4 +4,5 @@ cflags-$(CONFIG_CPU_LOONGSON1)	+= \
+ 
+ platform-$(CONFIG_MACH_LOONGSON32)	+= loongson32/
+ cflags-$(CONFIG_MACH_LOONGSON32)	+= -I$(srctree)/arch/mips/include/asm/mach-loongson32
++load-$(CONFIG_LOONGSON1_LS1A)		+= 0xffffffff80200000
+ load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80100000
+diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
+index 62f41af..c3d2036 100644
+--- a/arch/mips/loongson32/common/setup.c
++++ b/arch/mips/loongson32/common/setup.c
+@@ -21,8 +21,12 @@ const char *get_system_type(void)
+ 	unsigned int processor_id = (&current_cpu_data)->processor_id;
+ 
+ 	switch (processor_id & PRID_REV_MASK) {
+-	case PRID_REV_LOONGSON1B:
++	case PRID_REV_LOONGSON1A_1B:
++#ifdef CONFIG_CPU_LOONGSON1A
++		return "LOONGSON LS1A";
++#else
+ 		return "LOONGSON LS1B";
++#endif
+ 	default:
+ 		return "LOONGSON (unknown)";
+ 	}
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index ef7f925..8c9eabc 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1306,6 +1306,15 @@ static void probe_pcache(void)
+ 			c->dcache.flags |= MIPS_CACHE_PINDEX;
+ 			break;
+ 		}
++	case CPU_LOONGSON1:
++		if ((read_c0_config7() & (1 << 16))) {
++			/*
++			 * effectively physically indexed dcache,
++			 * thus no virtual aliases.
++			 */
++			c->dcache.flags |= MIPS_CACHE_PINDEX;
++			break;
++		}
+ 	default:
+ 		if (has_74k_erratum || c->dcache.waysize > PAGE_SIZE)
+ 			c->dcache.flags |= MIPS_CACHE_ALIASES;
+-- 
+1.9.1

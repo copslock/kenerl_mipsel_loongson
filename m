@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2016 03:42:55 +0200 (CEST)
-Received: from smtpproxy19.qq.com ([184.105.206.84]:41691 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2016 03:43:16 +0200 (CEST)
+Received: from smtpproxy19.qq.com ([184.105.206.84]:41784 "EHLO
         smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028735AbcESBmx4iTk0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 May 2016 03:42:53 +0200
-X-QQ-mid: bizesmtp3t1463622161t557t177
+        with ESMTP id S27030384AbcESBmzmaOT0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 May 2016 03:42:55 +0200
+X-QQ-mid: bizesmtp3t1463622164t327t307
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 19 May 2016 09:42:39 +0800 (CST)
+        id ; Thu, 19 May 2016 09:42:43 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FG70000A0000000
-X-QQ-FEAT: QX/rXDl9P1tHnm5aWhsCbndWRF2kNHAzkfsxMIqA+9joR9NKiGIxFFGvGLm5X
-        ABtBHjyKDylC26BY+nTbQK9qCtnfIVaEPeuWIW8VsVv0Oq+27FhJ32AL4h7wzpUg/HXr1u9
-        JzY8NDmTt1HDWshStBCCVjuzw5xNxzFpxitB15ICViQFF89ya5qZTtL+339LRfFNKXl3xWD
-        XmBs9o+njCQNK6JAzV/Cy4XQbZ9SP2lrc/8Wj23dA3iB6Al6s8tjj22DhxB2Q6ZLlqVwsUD
-        mh1hIgRWrNsaPmH+E24KIWnkc=
+X-QQ-FEAT: 0Z8ZWerpdWbw7/WOsfXWxfpexsLgLJnSTtsHq7lplvPeIW9jHM9JZpTyS48w+
+        axDfdO9E6gs4QxBGqXlX5Co58GxG4EAu1Uj/w8kbef5sEwmZmlcaCVSmsaTvQ8T92l3MoB+
+        vPF0LszwCykR8P4kx3/B51p0kYOvw21BL8sR4io2Y5kXFOC+WHsoqG8WrZmdQZAl84x3XU2
+        I3SbiOUHGQR31DzkTKCjDzWe2stTMBPHYnd9oRMhny4v4/RwCQUbcULL+2lAu/Pf8dwOlZV
+        KIhauipf0DZB94WFHzlEQLp/twQLTNdCBh5g==
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -23,9 +23,9 @@ Cc:     John Crispin <john@phrozen.org>,
         Kelvin Cheung <keguang.zhang@gmail.com>,
         Binbin Zhou <zhoubb@lemote.com>, Chunbo Cui <cuichboo@163.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH RESEND v4 3/9] MIPS: Loongson: Add platform devices for Loongson-1A/1B
-Date:   Thu, 19 May 2016 09:38:28 +0800
-Message-Id: <1463621912-9883-4-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH RESEND v4 4/9] MIPS: Loongson: Add loongson-1A board support
+Date:   Thu, 19 May 2016 09:38:29 +0800
+Message-Id: <1463621912-9883-5-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1463621912-9883-1-git-send-email-zhoubb@lemote.com>
 References: <1463621912-9883-1-git-send-email-zhoubb@lemote.com>
@@ -35,7 +35,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53529
+X-archive-position: 53530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,614 +52,283 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Added basic platform devices for Loongson 1A, including serial port,
-ethernet, AHCI, USB, RTC, SPI and so on.
+Loongson 1A's platform devices register.
 
-Most of the devices are shared with Loongson 1B, like serial port,
-ethernet, USB and so on.
-Specially, something like AHCI is only used in Loonson 1A.
+Specially, Loongson 1A use ACPI to control restart/poweroff/halt.
 
 Signed-off-by: Chunbo Cui <cuichboo@163.com>
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson32/dma.h       |   1 +
- arch/mips/include/asm/mach-loongson32/irq.h       |   1 +
- arch/mips/include/asm/mach-loongson32/loongson1.h | 172 ++++++++++++---
- arch/mips/include/asm/mach-loongson32/nand.h      |   1 +
- arch/mips/include/asm/mach-loongson32/platform.h  |  10 +
- arch/mips/include/asm/mach-loongson32/regs-mux.h  |   2 +-
- arch/mips/loongson32/common/irq.c                 |   2 +-
- arch/mips/loongson32/common/platform.c            | 243 +++++++++++++++++++++-
- 8 files changed, 390 insertions(+), 42 deletions(-)
+ arch/mips/include/asm/mach-loongson32/loongson1.h |  11 +++
+ arch/mips/loongson32/Makefile                     |   6 ++
+ arch/mips/loongson32/common/prom.c                |   6 ++
+ arch/mips/loongson32/common/reset.c               |   6 ++
+ arch/mips/loongson32/common/setup.c               |  42 +++++++++
+ arch/mips/loongson32/ls1a/Makefile                |   5 ++
+ arch/mips/loongson32/ls1a/board.c                 | 105 ++++++++++++++++++++++
+ 7 files changed, 181 insertions(+)
+ create mode 100644 arch/mips/loongson32/ls1a/Makefile
+ create mode 100644 arch/mips/loongson32/ls1a/board.c
 
-diff --git a/arch/mips/include/asm/mach-loongson32/dma.h b/arch/mips/include/asm/mach-loongson32/dma.h
-index ad1dec7..170c16a 100644
---- a/arch/mips/include/asm/mach-loongson32/dma.h
-+++ b/arch/mips/include/asm/mach-loongson32/dma.h
-@@ -20,6 +20,7 @@ struct plat_ls1x_dma {
- 	int nr_channels;
- };
- 
-+extern struct plat_ls1x_dma ls1a_dma_pdata;
- extern struct plat_ls1x_dma ls1b_dma_pdata;
- 
- #endif /* __ASM_MACH_LOONGSON32_DMA_H */
-diff --git a/arch/mips/include/asm/mach-loongson32/irq.h b/arch/mips/include/asm/mach-loongson32/irq.h
-index c1c7441..e17232c 100644
---- a/arch/mips/include/asm/mach-loongson32/irq.h
-+++ b/arch/mips/include/asm/mach-loongson32/irq.h
-@@ -64,6 +64,7 @@
- #define LS1X_OHCI_IRQ			LS1X_IRQ(1, 1)
- #define LS1X_GMAC0_IRQ			LS1X_IRQ(1, 2)
- #define LS1X_GMAC1_IRQ			LS1X_IRQ(1, 3)
-+#define LS1X_AHCI_IRQ			LS1X_IRQ(1, 4)
- 
- #define LS1X_IRQS		(LS1X_IRQ(4, 31) + 1 - LS1X_IRQ_BASE)
- 
 diff --git a/arch/mips/include/asm/mach-loongson32/loongson1.h b/arch/mips/include/asm/mach-loongson32/loongson1.h
-index 978f6df..8ba34f9 100644
+index 8ba34f9..67ca11c 100644
 --- a/arch/mips/include/asm/mach-loongson32/loongson1.h
 +++ b/arch/mips/include/asm/mach-loongson32/loongson1.h
-@@ -14,35 +14,149 @@
+@@ -158,6 +158,17 @@
+ #define LS1X_LPC_CFG2_REG		(LS1X_LPC_REG_BASE + 0x8)
+ #define LS1X_LPC_CFG3_REG		(LS1X_LPC_REG_BASE + 0xc)
  
- #define DEFAULT_MEMSIZE			256	/* If no memsize provided */
- 
--/* Loongson 1 Register Bases */
--#define LS1X_MUX_BASE			0x1fd00420
--#define LS1X_INTC_BASE			0x1fd01040
--#define LS1X_GPIO0_BASE			0x1fd010c0
--#define LS1X_GPIO1_BASE			0x1fd010c4
--#define LS1X_DMAC_BASE			0x1fd01160
--#define LS1X_EHCI_BASE			0x1fe00000
--#define LS1X_OHCI_BASE			0x1fe08000
--#define LS1X_GMAC0_BASE			0x1fe10000
--#define LS1X_GMAC1_BASE			0x1fe20000
--
--#define LS1X_UART0_BASE			0x1fe40000
--#define LS1X_UART1_BASE			0x1fe44000
--#define LS1X_UART2_BASE			0x1fe48000
--#define LS1X_UART3_BASE			0x1fe4c000
--#define LS1X_CAN0_BASE			0x1fe50000
--#define LS1X_CAN1_BASE			0x1fe54000
--#define LS1X_I2C0_BASE			0x1fe58000
--#define LS1X_I2C1_BASE			0x1fe68000
--#define LS1X_I2C2_BASE			0x1fe70000
--#define LS1X_PWM0_BASE			0x1fe5c000
--#define LS1X_PWM1_BASE			0x1fe5c010
--#define LS1X_PWM2_BASE			0x1fe5c020
--#define LS1X_PWM3_BASE			0x1fe5c030
--#define LS1X_WDT_BASE			0x1fe5c060
--#define LS1X_RTC_BASE			0x1fe64000
--#define LS1X_AC97_BASE			0x1fe74000
--#define LS1X_NAND_BASE			0x1fe78000
--#define LS1X_CLK_BASE			0x1fe78030
-+#define LS1X_DC_REG_BASE		0x1c200000
-+#define LS1X_MUX_REG_BASE		0x1f000000
++#define LS1X_PCIIO_BASE			0x1c000000
++#define LS1X_PCIIO_SIZE			0x00100000	/* 1M */
 +
-+#define LS1X_CFG_REG_BASE		(LS1X_MUX_REG_BASE + 0x00d00000)
++/* reg access */
++#define ls1x_readb(addr)		(*(volatile u8 *)CKSEG1ADDR(addr))
++#define ls1x_readw(addr)		(*(volatile u16 *)CKSEG1ADDR(addr))
++#define ls1x_readl(addr)		(*(volatile u32 *)CKSEG1ADDR(addr))
++#define ls1x_writeb(val, addr)		(*(volatile u8 *)CKSEG1ADDR(addr) = (val))
++#define ls1x_writew(val, addr)		(*(volatile u16 *)CKSEG1ADDR(addr) = (val))
++#define ls1x_writel(val, addr)		(*(volatile u32 *)CKSEG1ADDR(addr) = (val))
 +
-+#define LS1X_GPIO_MUX_BASE		(LS1X_CFG_REG_BASE + 0x0420)
-+
-+/*INT regs */
-+#define LS1X_INT_REG_BASE		(LS1X_CFG_REG_BASE + 0x1040)
-+
-+/* GPIO regs */
-+#define LS1X_GPIO_REG_BASE		(LS1X_CFG_REG_BASE + 0x10c0)
-+#define LS1X_GPIO_CFG0_REG		(LS1X_CFG_REG_BASE + 0x10c0)
-+#define LS1X_GPIO_CFG1_REG		(LS1X_CFG_REG_BASE + 0x10c4)
-+#define LS1X_GPIO_CFG2_REG		(LS1X_CFG_REG_BASE + 0x10c8)
-+#define LS1X_GPIO_OE0_REG		(LS1X_CFG_REG_BASE + 0x10d0)
-+#define LS1X_GPIO_OE1_REG		(LS1X_CFG_REG_BASE + 0x10d4)
-+#define LS1X_GPIO_OE2_REG		(LS1X_CFG_REG_BASE + 0x10d8)
-+#define LS1X_GPIO_IN0_REG		(LS1X_CFG_REG_BASE + 0x10e0)
-+#define LS1X_GPIO_IN1_REG		(LS1X_CFG_REG_BASE + 0x10e4)
-+#define LS1X_GPIO_IN2_REG		(LS1X_CFG_REG_BASE + 0x10e8)
-+#define LS1X_GPIO_OUT0_REG		(LS1X_CFG_REG_BASE + 0x10f0)
-+#define LS1X_GPIO_OUT1_REG		(LS1X_CFG_REG_BASE + 0x10f4)
-+#define LS1X_GPIO_OUT2_REG		(LS1X_CFG_REG_BASE + 0x10f8)
-+
-+#define LS1X_DMA_ORDER_REG		(LS1X_CFG_REG_BASE + 0x1160)
-+
-+/* USB regs */
-+#define LS1X_EHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e00000)
-+#define LS1X_OHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e08000)
-+
-+/* GMAC regs */
-+#define LS1X_GMAC0_BASE			(LS1X_MUX_REG_BASE + 0x00e10000)
-+#define LS1X_GMAC0_DMA_REG		(LS1X_GMAC0_BASE + 0x1000)
-+#define LS1X_GMAC1_BASE			(LS1X_MUX_REG_BASE + 0x00e20000)
-+#define LS1X_GMAC1_DMA_REG		(LS1X_GMAC1_BASE + 0x1000)
-+
-+/* SATA regs */
-+#define LS1X_AHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e30000)
-+
-+/* APB regs */
-+#define LS1X_APB_REG_BASE		(LS1X_MUX_REG_BASE + 0x00e40000)
-+
-+/* UART regs */
-+#define LS1X_UART0_BASE			(LS1X_APB_REG_BASE + 0x0000)
-+#define LS1X_UART1_BASE			(LS1X_APB_REG_BASE + 0x4000)
-+#define LS1X_UART2_BASE			(LS1X_APB_REG_BASE + 0x8000)
-+#define LS1X_UART3_BASE			(LS1X_APB_REG_BASE + 0xc000)
-+
-+/* CAN regs */
-+#define LS1X_CAN0_BASE			(LS1X_APB_REG_BASE + 0x10000)
-+#define LS1X_CAN1_BASE			(LS1X_APB_REG_BASE + 0x14000)
-+
-+/* I2C regs */
-+#define LS1X_I2C0_BASE			(LS1X_APB_REG_BASE + 0x18000)
-+#define LS1X_I2C0_PRER_LO_REG		(LS1X_I2C0_BASE + 0x0)
-+#define LS1X_I2C0_PRER_HI_REG		(LS1X_I2C0_BASE + 0x1)
-+#define LS1X_I2C0_CTR_REG		(LS1X_I2C0_BASE + 0x2)
-+#define LS1X_I2C0_TXR_REG		(LS1X_I2C0_BASE + 0x3)
-+#define LS1X_I2C0_RXR_REG		(LS1X_I2C0_BASE + 0x3)
-+#define LS1X_I2C0_CR_REG		(LS1X_I2C0_BASE + 0x4)
-+#define LS1X_I2C0_SR_REG		(LS1X_I2C0_BASE + 0x4)
-+
-+#define LS1X_I2C1_BASE			(LS1X_APB_REG_BASE + 0x28000)
-+#define LS1X_I2C1_PRER_LO_REG		(LS1X_I2C1_BASE + 0x0)
-+#define LS1X_I2C1_PRER_HI_REG		(LS1X_I2C1_BASE + 0x1)
-+#define LS1X_I2C1_CTR_REG		(LS1X_I2C1_BASE + 0x2)
-+#define LS1X_I2C1_TXR_REG		(LS1X_I2C1_BASE + 0x3)
-+#define LS1X_I2C1_RXR_REG		(LS1X_I2C1_BASE + 0x3)
-+#define LS1X_I2C1_CR_REG		(LS1X_I2C1_BASE + 0x4)
-+#define LS1X_I2C1_SR_REG		(LS1X_I2C1_BASE + 0x4)
-+
-+#define LS1X_I2C2_BASE			(LS1X_APB_REG_BASE + 0x30000)
-+#define LS1X_I2C2_PRER_LO_REG		(LS1X_I2C2_BASE + 0x0)
-+#define LS1X_I2C2_PRER_HI_REG		(LS1X_I2C2_BASE + 0x1)
-+#define LS1X_I2C2_CTR_REG		(LS1X_I2C2_BASE + 0x2)
-+#define LS1X_I2C2_TXR_REG		(LS1X_I2C2_BASE + 0x3)
-+#define LS1X_I2C2_RXR_REG		(LS1X_I2C2_BASE + 0x3)
-+#define LS1X_I2C2_CR_REG		(LS1X_I2C2_BASE + 0x4)
-+#define LS1X_I2C2_SR_REG		(LS1X_I2C2_BASE + 0x4)
-+
-+#define LS1X_PWM_REG_BASE		(LS1X_APB_REG_BASE + 0x1c000)
-+#define LS1X_PWM0_BASE			(LS1X_PWM_REG_BASE + 0x00)
-+#define LS1X_PWM1_BASE			(LS1X_PWM_REG_BASE + 0x10)
-+#define LS1X_PWM2_BASE			(LS1X_PWM_REG_BASE + 0x20)
-+#define LS1X_PWM3_BASE			(LS1X_PWM_REG_BASE + 0x30)
-+
-+/* RTC regs */
-+#define LS1X_RTC_BASE			(LS1X_APB_REG_BASE + 0x24000)
-+
-+/* AC97 regs */
-+#define LS1X_AC97_BASE			(LS1X_APB_REG_BASE + 0x34000)
-+
-+/* Watchdog regs */
-+#ifdef CONFIG_CPU_LOONGSON1A
-+#define LS1X_WDT_BASE			(LS1X_MUX_REG_BASE + 0x00e7c060)
-+#else
-+#define LS1X_WDT_BASE			(LS1X_MUX_REG_BASE + 0x00e5c060)
-+#endif
-+
-+/* CLK regs */
-+#define LS1X_CLK_BASE			(LS1X_MUX_REG_BASE + 0x00e78030)
-+
-+/* NAND regs */
-+#define LS1X_NAND_REG_BASE		(LS1X_APB_REG_BASE + 0x38000)
-+#define LS1X_NAND_CMD_REG		(LS1X_NAND_REG_BASE + 0x0000)
-+#define LS1X_NAND_ADDR_C_REG		(LS1X_NAND_REG_BASE + 0x0004)
-+#define LS1X_NAND_ADDR_R_REG		(LS1X_NAND_REG_BASE + 0x0008)
-+#define LS1X_NAND_TIMING_REG		(LS1X_NAND_REG_BASE + 0x000c)
-+#define LS1X_NAND_IDL_REG		(LS1X_NAND_REG_BASE + 0x0010)
-+#define LS1X_NAND_STA_IDH_REG		(LS1X_NAND_REG_BASE + 0x0014)
-+#define LS1X_NAND_PARAM_REG		(LS1X_NAND_REG_BASE + 0x0018)
-+#define LS1X_NAND_OP_NUM_REG		(LS1X_NAND_REG_BASE + 0x001c)
-+#define LS1X_NAND_CSRDY_MAP_REG		(LS1X_NAND_REG_BASE + 0x0020)
-+#define LS1X_NAND_DMA_ACC_REG		(LS1X_NAND_REG_BASE + 0x0040)
-+
-+/* ACPI regs for ls1a */
-+#define LS1X_ACPI_REG_BASE		(LS1X_APB_REG_BASE + 0x3c000)
-+#define LS1X_PM1_STS_REG		(LS1X_ACPI_REG_BASE + 0x0000)
-+#define LS1X_PM1_EN_REG			(LS1X_ACPI_REG_BASE + 0x0004)
-+#define LS1X_PM1_CNT_REG		(LS1X_ACPI_REG_BASE + 0x0008)
-+#define LS1X_PM1_TMR_REG		(LS1X_ACPI_REG_BASE + 0x000c)
-+#define LS1X_P_CNT_REG			(LS1X_ACPI_REG_BASE + 0x0010)
-+#define LS1X_P_LVL2_REG			(LS1X_ACPI_REG_BASE + 0x0014)
-+#define LS1X_P_LVL3_REG			(LS1X_ACPI_REG_BASE + 0x0018)
-+#define LS1X_GPE0_STS_REG		(LS1X_ACPI_REG_BASE + 0x0020)
-+#define LS1X_GPE0_EN_REG		(LS1X_ACPI_REG_BASE + 0x0024)
-+#define LS1X_PM_CONF1_REG		(LS1X_ACPI_REG_BASE + 0x0030)
-+#define LS1X_PM_CONF2_REG		(LS1X_ACPI_REG_BASE + 0x0034)
-+#define LS1X_PM_CONF3_REG		(LS1X_ACPI_REG_BASE + 0x0038)
-+#define LS1X_RST_CNT_REG		(LS1X_ACPI_REG_BASE + 0x0044)
-+#define LS1X_CPU_INIT_REG		(LS1X_ACPI_REG_BASE + 0x0050)
-+
-+#define LS1X_SPI0_REG_BASE		(LS1X_MUX_REG_BASE + 0x00e80000)
-+#define LS1X_SPI1_REG_BASE		(LS1X_MUX_REG_BASE + 0x00ec0000)
-+
-+/* LPC regs */
-+#define LS1X_LPC_IO_BASE		(LS1X_MUX_REG_BASE + 0x00f00000)
-+#define LS1X_LPC_REG_BASE		(LS1X_MUX_REG_BASE + 0x00f10200)
-+#define LS1X_LPC_CFG0_REG		(LS1X_LPC_REG_BASE + 0x0)
-+#define LS1X_LPC_CFG1_REG		(LS1X_LPC_REG_BASE + 0x4)
-+#define LS1X_LPC_CFG2_REG		(LS1X_LPC_REG_BASE + 0x8)
-+#define LS1X_LPC_CFG3_REG		(LS1X_LPC_REG_BASE + 0xc)
- 
  #include <regs-clk.h>
  #include <regs-mux.h>
-diff --git a/arch/mips/include/asm/mach-loongson32/nand.h b/arch/mips/include/asm/mach-loongson32/nand.h
-index e274912..d141e0a 100644
---- a/arch/mips/include/asm/mach-loongson32/nand.h
-+++ b/arch/mips/include/asm/mach-loongson32/nand.h
-@@ -23,6 +23,7 @@ struct plat_ls1x_nand {
- 	int wait_cycle;
- };
+ #include <regs-pwm.h>
+diff --git a/arch/mips/loongson32/Makefile b/arch/mips/loongson32/Makefile
+index 5f4bd6e..c2a6559 100644
+--- a/arch/mips/loongson32/Makefile
++++ b/arch/mips/loongson32/Makefile
+@@ -5,6 +5,12 @@
+ obj-$(CONFIG_MACH_LOONGSON32) += common/
  
-+extern struct plat_ls1x_nand ls1a_nand_pdata;
- extern struct plat_ls1x_nand ls1b_nand_pdata;
+ #
++# Loongson LS1A board
++#
++
++obj-$(CONFIG_LOONGSON1_LS1A)  += ls1a/
++
++#
+ # Loongson LS1B board
+ #
  
- bool ls1x_dma_filter_fn(struct dma_chan *chan, void *param);
-diff --git a/arch/mips/include/asm/mach-loongson32/platform.h b/arch/mips/include/asm/mach-loongson32/platform.h
-index 672531a..c48f17b 100644
---- a/arch/mips/include/asm/mach-loongson32/platform.h
-+++ b/arch/mips/include/asm/mach-loongson32/platform.h
-@@ -25,6 +25,16 @@ extern struct platform_device ls1x_gpio0_pdev;
- extern struct platform_device ls1x_gpio1_pdev;
- extern struct platform_device ls1x_nand_pdev;
- extern struct platform_device ls1x_rtc_pdev;
-+extern struct platform_device ls1x_fb_pdev;
-+extern struct platform_device ls1x_i2c0_pdev;
-+extern struct platform_device ls1x_i2c1_pdev;
-+extern struct platform_device ls1x_i2c2_pdev;
-+extern struct platform_device ls1x_ahci_pdev;
-+extern struct platform_device ls1x_ohci_pdev;
-+extern struct platform_device ls1x_wat_pdev;
-+extern struct platform_device ls1x_audio_pdev;
-+extern struct platform_device ls1x_spi0_pdev;
-+extern struct platform_device ls1x_spi1_pdev;
+diff --git a/arch/mips/loongson32/common/prom.c b/arch/mips/loongson32/common/prom.c
+index 6860098..e07e473 100644
+--- a/arch/mips/loongson32/common/prom.c
++++ b/arch/mips/loongson32/common/prom.c
+@@ -64,6 +64,12 @@ void __init prom_init(void)
  
- void __init ls1x_clk_init(void);
- void __init ls1x_dma_set_platdata(struct plat_ls1x_dma *pdata);
-diff --git a/arch/mips/include/asm/mach-loongson32/regs-mux.h b/arch/mips/include/asm/mach-loongson32/regs-mux.h
-index 7c394f9..d52ea03 100644
---- a/arch/mips/include/asm/mach-loongson32/regs-mux.h
-+++ b/arch/mips/include/asm/mach-loongson32/regs-mux.h
-@@ -13,7 +13,7 @@
- #define __ASM_MACH_LOONGSON32_REGS_MUX_H
+ 	prom_init_cmdline();
  
- #define LS1X_MUX_REG(x) \
--		((void __iomem *)KSEG1ADDR(LS1X_MUX_BASE + (x)))
-+		((void __iomem *)KSEG1ADDR(LS1X_GPIO_MUX_BASE + (x)))
++#ifdef CONFIG_CPU_LOONGSON1A
++	/* init base address of io space */
++	set_io_port_base((unsigned long)
++		ioremap(LS1X_PCIIO_BASE, LS1X_PCIIO_SIZE));
++#endif
++
+ 	memsize = env_or_default("memsize", DEFAULT_MEMSIZE);
+ 	highmemsize = env_or_default("highmemsize", 0x0);
  
- #define LS1X_MUX_CTRL0			LS1X_MUX_REG(0x0)
- #define LS1X_MUX_CTRL1			LS1X_MUX_REG(0x4)
-diff --git a/arch/mips/loongson32/common/irq.c b/arch/mips/loongson32/common/irq.c
-index 455a770..f2520f2 100644
---- a/arch/mips/loongson32/common/irq.c
-+++ b/arch/mips/loongson32/common/irq.c
-@@ -15,7 +15,7 @@
- #include <irq.h>
+diff --git a/arch/mips/loongson32/common/reset.c b/arch/mips/loongson32/common/reset.c
+index 8a1d9cc..0b653eb 100644
+--- a/arch/mips/loongson32/common/reset.c
++++ b/arch/mips/loongson32/common/reset.c
+@@ -19,10 +19,16 @@ static void __iomem *wdt_reg_base;
  
- #define LS1X_INTC_REG(n, x) \
--		((void __iomem *)KSEG1ADDR(LS1X_INTC_BASE + (n * 0x18) + (x)))
-+		((void __iomem *)KSEG1ADDR(LS1X_INT_REG_BASE + (n * 0x18) + (x)))
+ static void ls1x_halt(void)
+ {
++#ifdef CONFIG_CPU_LOONGSON1A
++	u32 tmp;
++	tmp = ls1x_readl(LS1X_PM1_CNT_REG);
++	ls1x_writel(tmp | 0x3d00, LS1X_PM1_CNT_REG);
++#else
+ 	while (1) {
+ 		if (cpu_wait)
+ 			cpu_wait();
+ 	}
++#endif
+ }
  
- #define LS1X_INTC_INTISR(n)		LS1X_INTC_REG(n, 0x0)
- #define LS1X_INTC_INTIEN(n)		LS1X_INTC_REG(n, 0x4)
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index f2c714d..24f35b6 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -7,7 +7,10 @@
+ static void ls1x_restart(char *command)
+diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
+index c3d2036..95b0155 100644
+--- a/arch/mips/loongson32/common/setup.c
++++ b/arch/mips/loongson32/common/setup.c
+@@ -7,13 +7,55 @@
   * option) any later version.
   */
  
-+#include <linux/init.h>
- #include <linux/clk.h>
-+#include <linux/kernel.h>
-+#include <linux/delay.h>
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/mtd/partitions.h>
-@@ -15,7 +18,15 @@
- #include <linux/phy.h>
- #include <linux/serial_8250.h>
- #include <linux/stmmac.h>
-+#include <linux/resource.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/flash.h>
-+#include <linux/i2c.h>
-+#include <linux/gpio_keys.h>
-+#include <linux/input.h>
- #include <linux/usb/ehci_pdriver.h>
-+#include <linux/usb/ohci_pdriver.h>
-+#include <linux/platform_device.h>
++#include <linux/ioport.h>
++#include <linux/screen_info.h>
+ #include <asm/bootinfo.h>
  
- #include <loongson1.h>
- #include <cpufreq.h>
-@@ -26,6 +37,7 @@
- #define LS1X_UART(_id)						\
- 	{							\
- 		.mapbase	= LS1X_UART ## _id ## _BASE,	\
-+		.membase	= (u8 *)KSEG1ADDR(LS1X_UART ## _id ## _BASE), \
- 		.irq		= LS1X_UART ## _id ## _IRQ,	\
- 		.iotype		= UPIO_MEM,			\
- 		.flags		= UPF_IOREMAP | UPF_FIXED_TYPE, \
-@@ -83,8 +95,8 @@ struct platform_device ls1x_cpufreq_pdev = {
- /* DMA */
- static struct resource ls1x_dma_resources[] = {
- 	[0] = {
--		.start = LS1X_DMAC_BASE,
--		.end = LS1X_DMAC_BASE + SZ_4 - 1,
-+		.start = LS1X_DMA_ORDER_REG,
-+		.end = LS1X_DMA_ORDER_REG + SZ_4 - 1,
- 		.flags = IORESOURCE_MEM,
- 	},
- 	[1] = {
-@@ -240,8 +252,8 @@ struct platform_device ls1x_eth1_pdev = {
- /* GPIO */
- static struct resource ls1x_gpio0_resources[] = {
- 	[0] = {
--		.start	= LS1X_GPIO0_BASE,
--		.end	= LS1X_GPIO0_BASE + SZ_4 - 1,
-+		.start	= LS1X_GPIO_CFG0_REG,
-+		.end	= LS1X_GPIO_CFG0_REG + SZ_4 - 1,
- 		.flags	= IORESOURCE_MEM,
- 	},
- };
-@@ -255,8 +267,8 @@ struct platform_device ls1x_gpio0_pdev = {
+ #include <prom.h>
  
- static struct resource ls1x_gpio1_resources[] = {
- 	[0] = {
--		.start	= LS1X_GPIO1_BASE,
--		.end	= LS1X_GPIO1_BASE + SZ_4 - 1,
-+		.start	= LS1X_GPIO_CFG1_REG,
-+		.end	= LS1X_GPIO_CFG1_REG + SZ_4 - 1,
- 		.flags	= IORESOURCE_MEM,
- 	},
- };
-@@ -268,11 +280,12 @@ struct platform_device ls1x_gpio1_pdev = {
- 	.resource	= ls1x_gpio1_resources,
- };
- 
++#define IO_MEM_RESOURCE_START   0UL
++#define IO_MEM_RESOURCE_END     0xffffffffUL
 +
- /* NAND Flash */
- static struct resource ls1x_nand_resources[] = {
- 	[0] = {
--		.start	= LS1X_NAND_BASE,
--		.end	= LS1X_NAND_BASE + SZ_32 - 1,
-+		.start	= LS1X_NAND_REG_BASE,
-+		.end	= LS1X_NAND_REG_BASE + SZ_32 - 1,
- 		.flags	= IORESOURCE_MEM,
- 	},
- 	[1] = {
-@@ -295,9 +308,9 @@ void __init ls1x_nand_set_platdata(struct plat_ls1x_nand *pdata)
- 	ls1x_nand_pdev.dev.platform_data = pdata;
++#ifdef CONFIG_CPU_LOONGSON1A
++void (*__wbflush)(void);
++static void wbflush_ls1x(void)
++{
++	asm(".set\tpush\n\t"
++	    ".set\tnoreorder\n\t"
++	    ".set mips3\n\t"
++	    "sync\n\t"
++	    "nop\n\t"
++	    ".set\tpop\n\t"
++	    ".set mips0\n\t");
++}
++
++static void __init iomem_resource_init(void)
++{
++	iomem_resource.start	= IO_MEM_RESOURCE_START;
++	iomem_resource.end	= IO_MEM_RESOURCE_END;
++}
++#endif
++
+ void __init plat_mem_setup(void)
+ {
+ 	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
++
++#ifdef CONFIG_CPU_LOONGSON1A
++	iomem_resource_init();
++	__wbflush = wbflush_ls1x;
++
++#if defined(CONFIG_VGA_CONSOLE)
++	screen_info = (struct screen_info) {
++		.orig_x			= 0,
++		.orig_y			= 25,
++		.orig_video_cols	= 80,
++		.orig_video_lines	= 25,
++		.orig_video_isVGA	= VIDEO_TYPE_VGAC,
++		.orig_video_points	= 16,
++	};
++#endif
++	add_memory_region(0x20000000, 0x30000000, BOOT_MEM_RESERVED);
++#endif
  }
  
--/* USB EHCI */
--static u64 ls1x_ehci_dmamask = DMA_BIT_MASK(32);
-+static u64 platform_dma_mask = DMA_BIT_MASK(32);
- 
-+/* USB EHCI */
- static struct resource ls1x_ehci_resources[] = {
- 	[0] = {
- 		.start	= LS1X_EHCI_BASE,
-@@ -319,13 +332,221 @@ struct platform_device ls1x_ehci_pdev = {
- 	.num_resources	= ARRAY_SIZE(ls1x_ehci_resources),
- 	.resource	= ls1x_ehci_resources,
- 	.dev		= {
--		.dma_mask = &ls1x_ehci_dmamask,
-+		.dma_mask = &platform_dma_mask,
- 		.platform_data = &ls1x_ehci_pdata,
- 	},
- };
- 
-+/* USB OHCI */
-+static struct resource ls1x_ohci_resources[] = {
-+	[0] = {
-+		.start	= LS1X_OHCI_BASE,
-+		.end	= LS1X_OHCI_BASE + SZ_32K - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= LS1X_OHCI_IRQ,
-+		.end	= LS1X_OHCI_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	},
+ const char *get_system_type(void)
+diff --git a/arch/mips/loongson32/ls1a/Makefile b/arch/mips/loongson32/ls1a/Makefile
+new file mode 100644
+index 0000000..7f2baf3
+--- /dev/null
++++ b/arch/mips/loongson32/ls1a/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for Loongson 1A based machines.
++#
++
++obj-y += board.o
+diff --git a/arch/mips/loongson32/ls1a/board.c b/arch/mips/loongson32/ls1a/board.c
+new file mode 100644
+index 0000000..56c0dbb
+--- /dev/null
++++ b/arch/mips/loongson32/ls1a/board.c
+@@ -0,0 +1,105 @@
++/*
++ * Platform device support for GS232 SoCs.
++ *
++ * Copyright 2009, Su Wen <suwen@ict.ac.cn>
++ *
++ * base on Au1xxx Socs drivers by Matt Porter <mporter@kernel.crashing.org>
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2.  This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
++
++#include <linux/delay.h>
++#include <linux/i2c.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/flash.h>
++
++#include <irq.h>
++#include <platform.h>
++#include <loongson1.h>
++
++static struct platform_device *ls1a_platform_devices[] __initdata = {
++	&ls1x_nand_pdev,
++	&ls1x_uart_pdev,
++	&ls1x_ahci_pdev,
++	&ls1x_ohci_pdev,
++	&ls1x_ehci_pdev,
++	&ls1x_eth0_pdev,
++	&ls1x_eth1_pdev,
++	&ls1x_wat_pdev,
++	&ls1x_rtc_pdev,
++	&ls1x_audio_pdev,
++	&ls1x_fb_pdev,
++	&ls1x_i2c0_pdev,
++	&ls1x_i2c1_pdev,
++	&ls1x_i2c2_pdev,
++	&ls1x_spi0_pdev,
++	&ls1x_spi1_pdev,
 +};
 +
-+static struct usb_ohci_pdata ls1x_ohci_data = {
++struct i2c_board_info ls1a_pcf8563 __initdata = {
++	I2C_BOARD_INFO("pcf8563", 0x51),
 +};
 +
-+struct platform_device ls1x_ohci_pdev = {
-+	.name		= "ohci-platform",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_ohci_resources),
-+	.resource	= ls1x_ohci_resources,
-+	.dev = {
-+		.dma_mask	= &platform_dma_mask,
-+		.platform_data	= &ls1x_ohci_data,
-+	},
++struct flash_platform_data ls1a_spiflash_data = {
++	.name		= "m25p80",
++	.parts		= NULL,
++	.nr_parts	= 0,
++	.type		= "m25p80",
 +};
 +
-+/* AHCI */
-+static struct resource ls1x_ahci_resources[] = {
-+	[0] = {
-+		.start	= LS1X_AHCI_BASE,
-+		.end	= LS1X_AHCI_BASE + SZ_64K - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= LS1X_AHCI_IRQ,
-+		.end	= LS1X_AHCI_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+struct platform_device ls1x_ahci_pdev = {
-+	.name		= "ahci",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_ahci_resources),
-+	.resource	= ls1x_ahci_resources,
-+	.dev		= {
-+		.dma_mask = &platform_dma_mask,
-+	},
-+};
-+
-+/* Real Time Clock */
-+static struct resource ls1x_rtc_resource[] = {
-+	[0] = {
-+		.start	= LS1X_RTC_BASE,
-+		.end	= LS1X_RTC_BASE + SZ_16K - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= LS1X_TOY_INT2_IRQ,
-+		.end	= LS1X_TOY_INT2_IRQ,
-+		.flags	= IORESOURCE_IRQ,
++struct spi_board_info ls1a_spi_info[] __initdata = {
++	{
++		.modalias	= "m25p80",
++		.max_speed_hz	= 1000000,
++		.bus_num	= 0,
++		.chip_select	= 1,
++		.platform_data	= &ls1a_spiflash_data,
 +	},
 +};
 +
- /* Real Time Clock */
- struct platform_device ls1x_rtc_pdev = {
- 	.name		= "ls1x-rtc",
- 	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_rtc_resource),
-+	.resource	= ls1x_rtc_resource,
-+};
++void ls1a_route_setting(void)
++{
++	/*set gpio 48-61 as normal pin*/
++	ls1x_writel(ls1x_readl(LS1X_GPIO_CFG1_REG) & 0xc000ffff,
++					LS1X_GPIO_CFG1_REG);
 +
-+/* FrameBuffer */
-+static struct resource ls1x_fb_resources[] = {
-+	[0] = {
-+		.start	= LS1X_DC_REG_BASE,
-+		.end	= LS1X_DC_REG_BASE + SZ_1M - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
++	/*set gpio mux : gmac1 to use uart0, uart1 pins*/
++	ls1x_writel((ls1x_readl(LS1X_MUX_REG_BASE) & 0x00fff5ff) | 0x0a0000c0,
++					LS1X_GPIO_CFG1_REG);
 +
-+struct platform_device ls1x_fb_pdev = {
-+	.name           = "ls1x-fb",
-+	.id             = -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_fb_resources),
-+	.resource	= ls1x_fb_resources,
-+};
++	/*multiplex int0 as gpio0 */
++	ls1x_writel(ls1x_readl(LS1X_GPIO_CFG0_REG) | 0x00000001,
++					LS1X_GPIO_CFG0_REG);
++	ls1x_writel(ls1x_readl(LS1X_GPIO_OE0_REG) | 0x00000001,
++					LS1X_GPIO_OE0_REG);
++	ls1x_writel(ls1x_readl(LS1X_GPIO_IN0_REG) & 0xfffffffe,
++					LS1X_GPIO_IN0_REG);
 +
-+/* I2C */
-+static struct resource ls1x_i2c0_resource[] = {
-+	[0] = {
-+		.start	= LS1X_I2C0_BASE,
-+		.end	= LS1X_I2C0_BASE + SZ_16K - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
++	/*i2c gpio configuartion gpio64 scl and gpio65 sda*/
++	ls1x_writel(ls1x_readl(LS1X_GPIO_CFG2_REG) & 0xfffffffd,
++					LS1X_GPIO_CFG2_REG);
 +
-+struct platform_device ls1x_i2c0_pdev = {
-+	.name		= "ls1x-i2c",
-+	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(ls1x_i2c0_resource),
-+	.resource	= ls1x_i2c0_resource,
-+};
++	mdelay(1);
 +
-+static struct resource ls1x_i2c1_resource[] = {
-+	[0] = {
-+		.start	= LS1X_I2C1_BASE,
-+		.end	= LS1X_I2C1_BASE + SZ_16K - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
++	/*ls1a usb reset stop*/
++	ls1x_writel(0x40000000, LS1X_LPC_CFG1_REG);
 +
-+struct platform_device ls1x_i2c1_pdev = {
-+	.name		= "ls1x-i2c",
-+	.id		= 1,
-+	.num_resources	= ARRAY_SIZE(ls1x_i2c1_resource),
-+	.resource	= ls1x_i2c1_resource,
-+};
++	/* Reset GMAC0/1 to avoid DMA error */
++	ls1x_writel(ls1x_readl(LS1X_GMAC0_DMA_REG) | 1, LS1X_GMAC0_DMA_REG);
++	ls1x_writel(ls1x_readl(LS1X_GMAC1_DMA_REG) | 1, LS1X_GMAC1_DMA_REG);
++}
 +
-+static struct resource ls1x_i2c2_resource[] = {
-+	[0] = {
-+		.start	= LS1X_I2C2_BASE,
-+		.end	= LS1X_I2C2_BASE + SZ_16K - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
++int __init ls1a_platform_init(void)
++{
++	ls1a_route_setting();
 +
-+struct platform_device ls1x_i2c2_pdev = {
-+	.name		= "ls1x-i2c",
-+	.id		= 2,
-+	.num_resources	= ARRAY_SIZE(ls1x_i2c2_resource),
-+	.resource	= ls1x_i2c2_resource,
-+};
++	i2c_register_board_info(1, &ls1a_pcf8563, 1);
++	spi_register_board_info(ls1a_spi_info, ARRAY_SIZE(ls1a_spi_info));
 +
-+/* Watchdog */
-+static struct resource ls1x_wat_resource[] = {
-+	[0] = {
-+		.start	= LS1X_WDT_BASE,
-+		.end	= LS1X_WDT_BASE + SZ_8,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
++	return platform_add_devices(ls1a_platform_devices,
++					ARRAY_SIZE(ls1a_platform_devices));
++}
 +
-+struct platform_device ls1x_wat_pdev = {
-+	.name		= "ls1x-wdt",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_wat_resource),
-+	.resource	= ls1x_wat_resource,
-+};
-+
-+/* AC97 Audio */
-+static struct resource ls1x_audio_resources[] = {
-+	[0] = {
-+		.start = LS1X_AC97_BASE,
-+		.end   = LS1X_AC97_BASE + SZ_16K - 1,
-+		.flags = IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start = LS1X_AC97_IRQ,
-+		.end   = LS1X_AC97_IRQ,
-+		.flags = IORESOURCE_IRQ,
-+	},
-+};
-+
-+struct platform_device ls1x_audio_pdev = {
-+	.name		= "ls1x-audio",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_audio_resources),
-+	.resource	= ls1x_audio_resources,
-+};
-+
-+/* SPI */
-+static struct resource ls1x_spi0_resources[] = {
-+	[1] = {
-+		.start	= LS1X_SPI0_REG_BASE,
-+		.end	= LS1X_SPI0_REG_BASE,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[2] = {
-+		.start	= LS1X_SPI0_IRQ,
-+		.end	= LS1X_SPI0_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+struct platform_device ls1x_spi0_pdev = {
-+	.name		= "ls1x-spi",
-+	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(ls1x_spi0_resources),
-+	.resource	= ls1x_spi0_resources,
-+};
-+
-+static struct resource ls1x_spi1_resources[] = {
-+	[1] = {
-+		.start	= LS1X_SPI1_REG_BASE,
-+		.end	= LS1X_SPI1_REG_BASE,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[2] = {
-+		.start	= LS1X_SPI1_IRQ,
-+		.end	= LS1X_SPI1_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+struct platform_device ls1x_spi1_pdev = {
-+	.name		= "ls1x-spi",
-+	.id		= 1,
-+	.num_resources	= ARRAY_SIZE(ls1x_spi1_resources),
-+	.resource	= ls1x_spi1_resources,
- };
++arch_initcall(ls1a_platform_init);
 -- 
 1.9.1

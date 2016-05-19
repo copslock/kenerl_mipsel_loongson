@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2016 03:43:16 +0200 (CEST)
-Received: from smtpproxy19.qq.com ([184.105.206.84]:41784 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2016 03:43:35 +0200 (CEST)
+Received: from smtpproxy19.qq.com ([184.105.206.84]:41891 "EHLO
         smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27030384AbcESBmzmaOT0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 May 2016 03:42:55 +0200
-X-QQ-mid: bizesmtp3t1463622164t327t307
+        with ESMTP id S27030397AbcESBm6S25k0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 May 2016 03:42:58 +0200
+X-QQ-mid: bizesmtp3t1463622149t805t143
 Received: from localhost.localdomain (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 19 May 2016 09:42:43 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FG70000A0000000
-X-QQ-FEAT: 0Z8ZWerpdWbw7/WOsfXWxfpexsLgLJnSTtsHq7lplvPeIW9jHM9JZpTyS48w+
-        axDfdO9E6gs4QxBGqXlX5Co58GxG4EAu1Uj/w8kbef5sEwmZmlcaCVSmsaTvQ8T92l3MoB+
-        vPF0LszwCykR8P4kx3/B51p0kYOvw21BL8sR4io2Y5kXFOC+WHsoqG8WrZmdQZAl84x3XU2
-        I3SbiOUHGQR31DzkTKCjDzWe2stTMBPHYnd9oRMhny4v4/RwCQUbcULL+2lAu/Pf8dwOlZV
-        KIhauipf0DZB94WFHzlEQLp/twQLTNdCBh5g==
+        id ; Thu, 19 May 2016 09:40:34 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FG60000A0000000
+X-QQ-FEAT: fJulx8HYQotNtFRpFtOQqbKLcoqbNqgWxSt83vmgsofVrPRD9hC+/6NTaXH5c
+        8A69x9bhqfe1Pe6/WXOsJHBsoXm0AkUop4tjhJJPWbSm+djlVT1Ef6wi42dM5ZvRqMQbfZy
+        gBpMoizCHjocQSN91XWYyaNgyfGGnzZy1GLd78od9KKB10/XORXRxzkTWDkwY4a9wRRvrCd
+        wtKjQTER59lR3UTCpTr4XWK/VXdO6/AWq8CLDRy68DypL6s2z7OF5Oqmk8HBT6x9/gNqYCG
+        Q/GFW/q+R/Hv2eXNcyT3xocOo=
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -23,19 +23,17 @@ Cc:     John Crispin <john@phrozen.org>,
         Kelvin Cheung <keguang.zhang@gmail.com>,
         Binbin Zhou <zhoubb@lemote.com>, Chunbo Cui <cuichboo@163.com>,
         Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH RESEND v4 4/9] MIPS: Loongson: Add loongson-1A board support
-Date:   Thu, 19 May 2016 09:38:29 +0800
-Message-Id: <1463621912-9883-5-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH RESEND v4 0/9] MIPS: Loongson: Add the Loongson-1A processor support
+Date:   Thu, 19 May 2016 09:38:25 +0800
+Message-Id: <1463621912-9883-1-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1463621912-9883-1-git-send-email-zhoubb@lemote.com>
-References: <1463621912-9883-1-git-send-email-zhoubb@lemote.com>
 X-QQ-SENDSIZE: 520
 X-QQ-Bgrelay: 1
 Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53530
+X-archive-position: 53531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,283 +50,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson 1A's platform devices register.
+The Loongson 1A is similar with Loongson 1B, which is a 32-bit SoC.
+It implements the MIPS32 release 2 instruction set.
 
-Specially, Loongson 1A use ACPI to control restart/poweroff/halt.
+They share the same PRID, so we rewrite the PRID_REV_LOONGSON1B to
+PRID_REV_LOONGSON1A_1B, and use their CPU macros to distinguish.
+
+However, the pll register of Loongson-1A is write-only, so the cpu clk 
+should be set manually with the command line.
+
+The format of command is cpu_clk=osc_clk,cpu_mul
+the osc_clk standby cpu clock and the cpu_mul repect the clock multiplier.
+
+For example, we use the command cpu_clk=33333333,8
+
+Changes since v1:
+
+- According commit c908656a7531771ae7642990a7c5f3c7307bd612
+  (MIPS: Loongson: Naming style cleanup and rework) to fix the naming style.
+
+Changes since v2:
+
+- Remove__irq_set_handler_locked()
+- Rebases on top of v4.5-rc5.
+
+Changes since v3:
+- Move ls1x CPU irq setting to driver/irqchip
+- Rebases on top of v4.6-rc7.
+
+Binbin Zhou(9):
+ MIPS: Loongson: Add basic Loongson-1A CPU support
+ MIPS: Loongson: Add Loongson-1A Kconfig options
+ MIPS: Loongson: Add platform devices for Loongson-1A/1B
+ MIPS: Loongson: Add loongson-1A board support
+ MIPS: Loongson-1A: workaround of pll register's write-only property
+ MIPS: irqchip/ls1x-cpu: Move the CPU IRQ driver from arch/mips/loongson32/common/
+ MIPS: Loongson-1A: Enable SPARSEMEN and HIGHMEM
+ MIPS: Loongson-1B: Update config file
+ MIPS: Loongson: Add a Loongson-1A default config file
 
 Signed-off-by: Chunbo Cui <cuichboo@163.com>
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/mach-loongson32/loongson1.h |  11 +++
- arch/mips/loongson32/Makefile                     |   6 ++
- arch/mips/loongson32/common/prom.c                |   6 ++
- arch/mips/loongson32/common/reset.c               |   6 ++
- arch/mips/loongson32/common/setup.c               |  42 +++++++++
- arch/mips/loongson32/ls1a/Makefile                |   5 ++
- arch/mips/loongson32/ls1a/board.c                 | 105 ++++++++++++++++++++++
- 7 files changed, 181 insertions(+)
+-- 
+ arch/mips/Kconfig                                 |  11 ++++++
+ arch/mips/configs/loongson1a_defconfig            | 131 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/configs/loongson1b_defconfig            |   1 +
+ arch/mips/include/asm/cpu-type.h                  |   3 +-
+ arch/mips/include/asm/cpu.h                       |   2 +-
+ arch/mips/include/asm/irq_cpu.h                   |   1 +
+ arch/mips/include/asm/mach-loongson32/dma.h       |   1 +
+ arch/mips/include/asm/mach-loongson32/irq.h       |   1 +
+ arch/mips/include/asm/mach-loongson32/loongson1.h | 183 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------
+ arch/mips/include/asm/mach-loongson32/nand.h      |   1 +
+ arch/mips/include/asm/mach-loongson32/platform.h  |  14 ++++++++
+ arch/mips/include/asm/mach-loongson32/regs-mux.h  |   2 +-
+ arch/mips/include/asm/sparsemem.h                 |   6 +++-
+ arch/mips/kernel/cpu-probe.c                      |   6 +++-
+ arch/mips/loongson32/Kconfig                      |  17 +++++++++
+ arch/mips/loongson32/Makefile                     |   6 ++++
+ arch/mips/loongson32/Platform                     |   1 +
+ arch/mips/loongson32/common/irq.c                 | 128 +------------------------------------------------------------------
+ arch/mips/loongson32/common/platform.c            | 256 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
+ arch/mips/loongson32/common/prom.c                |   6 ++++
+ arch/mips/loongson32/common/reset.c               |   6 ++++
+ arch/mips/loongson32/common/setup.c               |  49 +++++++++++++++++++++++++-
+ arch/mips/loongson32/ls1a/Makefile                |   5 +++
+ arch/mips/loongson32/ls1a/board.c                 | 122 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/mm/c-r4k.c                              |   9 +++++
+ drivers/clk/clk-ls1x.c                            |  22 +++++++++---
+ drivers/irqchip/Makefile                          |   1 +
+ drivers/irqchip/irq-ls1x-cpu.c                    | 242 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 28 files changed, 1054 insertions(+), 179 deletions(-)
+ create mode 100644 arch/mips/configs/loongson1a_defconfig
  create mode 100644 arch/mips/loongson32/ls1a/Makefile
  create mode 100644 arch/mips/loongson32/ls1a/board.c
-
-diff --git a/arch/mips/include/asm/mach-loongson32/loongson1.h b/arch/mips/include/asm/mach-loongson32/loongson1.h
-index 8ba34f9..67ca11c 100644
---- a/arch/mips/include/asm/mach-loongson32/loongson1.h
-+++ b/arch/mips/include/asm/mach-loongson32/loongson1.h
-@@ -158,6 +158,17 @@
- #define LS1X_LPC_CFG2_REG		(LS1X_LPC_REG_BASE + 0x8)
- #define LS1X_LPC_CFG3_REG		(LS1X_LPC_REG_BASE + 0xc)
- 
-+#define LS1X_PCIIO_BASE			0x1c000000
-+#define LS1X_PCIIO_SIZE			0x00100000	/* 1M */
-+
-+/* reg access */
-+#define ls1x_readb(addr)		(*(volatile u8 *)CKSEG1ADDR(addr))
-+#define ls1x_readw(addr)		(*(volatile u16 *)CKSEG1ADDR(addr))
-+#define ls1x_readl(addr)		(*(volatile u32 *)CKSEG1ADDR(addr))
-+#define ls1x_writeb(val, addr)		(*(volatile u8 *)CKSEG1ADDR(addr) = (val))
-+#define ls1x_writew(val, addr)		(*(volatile u16 *)CKSEG1ADDR(addr) = (val))
-+#define ls1x_writel(val, addr)		(*(volatile u32 *)CKSEG1ADDR(addr) = (val))
-+
- #include <regs-clk.h>
- #include <regs-mux.h>
- #include <regs-pwm.h>
-diff --git a/arch/mips/loongson32/Makefile b/arch/mips/loongson32/Makefile
-index 5f4bd6e..c2a6559 100644
---- a/arch/mips/loongson32/Makefile
-+++ b/arch/mips/loongson32/Makefile
-@@ -5,6 +5,12 @@
- obj-$(CONFIG_MACH_LOONGSON32) += common/
- 
- #
-+# Loongson LS1A board
-+#
-+
-+obj-$(CONFIG_LOONGSON1_LS1A)  += ls1a/
-+
-+#
- # Loongson LS1B board
- #
- 
-diff --git a/arch/mips/loongson32/common/prom.c b/arch/mips/loongson32/common/prom.c
-index 6860098..e07e473 100644
---- a/arch/mips/loongson32/common/prom.c
-+++ b/arch/mips/loongson32/common/prom.c
-@@ -64,6 +64,12 @@ void __init prom_init(void)
- 
- 	prom_init_cmdline();
- 
-+#ifdef CONFIG_CPU_LOONGSON1A
-+	/* init base address of io space */
-+	set_io_port_base((unsigned long)
-+		ioremap(LS1X_PCIIO_BASE, LS1X_PCIIO_SIZE));
-+#endif
-+
- 	memsize = env_or_default("memsize", DEFAULT_MEMSIZE);
- 	highmemsize = env_or_default("highmemsize", 0x0);
- 
-diff --git a/arch/mips/loongson32/common/reset.c b/arch/mips/loongson32/common/reset.c
-index 8a1d9cc..0b653eb 100644
---- a/arch/mips/loongson32/common/reset.c
-+++ b/arch/mips/loongson32/common/reset.c
-@@ -19,10 +19,16 @@ static void __iomem *wdt_reg_base;
- 
- static void ls1x_halt(void)
- {
-+#ifdef CONFIG_CPU_LOONGSON1A
-+	u32 tmp;
-+	tmp = ls1x_readl(LS1X_PM1_CNT_REG);
-+	ls1x_writel(tmp | 0x3d00, LS1X_PM1_CNT_REG);
-+#else
- 	while (1) {
- 		if (cpu_wait)
- 			cpu_wait();
- 	}
-+#endif
- }
- 
- static void ls1x_restart(char *command)
-diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
-index c3d2036..95b0155 100644
---- a/arch/mips/loongson32/common/setup.c
-+++ b/arch/mips/loongson32/common/setup.c
-@@ -7,13 +7,55 @@
-  * option) any later version.
-  */
- 
-+#include <linux/ioport.h>
-+#include <linux/screen_info.h>
- #include <asm/bootinfo.h>
- 
- #include <prom.h>
- 
-+#define IO_MEM_RESOURCE_START   0UL
-+#define IO_MEM_RESOURCE_END     0xffffffffUL
-+
-+#ifdef CONFIG_CPU_LOONGSON1A
-+void (*__wbflush)(void);
-+static void wbflush_ls1x(void)
-+{
-+	asm(".set\tpush\n\t"
-+	    ".set\tnoreorder\n\t"
-+	    ".set mips3\n\t"
-+	    "sync\n\t"
-+	    "nop\n\t"
-+	    ".set\tpop\n\t"
-+	    ".set mips0\n\t");
-+}
-+
-+static void __init iomem_resource_init(void)
-+{
-+	iomem_resource.start	= IO_MEM_RESOURCE_START;
-+	iomem_resource.end	= IO_MEM_RESOURCE_END;
-+}
-+#endif
-+
- void __init plat_mem_setup(void)
- {
- 	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
-+
-+#ifdef CONFIG_CPU_LOONGSON1A
-+	iomem_resource_init();
-+	__wbflush = wbflush_ls1x;
-+
-+#if defined(CONFIG_VGA_CONSOLE)
-+	screen_info = (struct screen_info) {
-+		.orig_x			= 0,
-+		.orig_y			= 25,
-+		.orig_video_cols	= 80,
-+		.orig_video_lines	= 25,
-+		.orig_video_isVGA	= VIDEO_TYPE_VGAC,
-+		.orig_video_points	= 16,
-+	};
-+#endif
-+	add_memory_region(0x20000000, 0x30000000, BOOT_MEM_RESERVED);
-+#endif
- }
- 
- const char *get_system_type(void)
-diff --git a/arch/mips/loongson32/ls1a/Makefile b/arch/mips/loongson32/ls1a/Makefile
-new file mode 100644
-index 0000000..7f2baf3
---- /dev/null
-+++ b/arch/mips/loongson32/ls1a/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for Loongson 1A based machines.
-+#
-+
-+obj-y += board.o
-diff --git a/arch/mips/loongson32/ls1a/board.c b/arch/mips/loongson32/ls1a/board.c
-new file mode 100644
-index 0000000..56c0dbb
---- /dev/null
-+++ b/arch/mips/loongson32/ls1a/board.c
-@@ -0,0 +1,105 @@
-+/*
-+ * Platform device support for GS232 SoCs.
-+ *
-+ * Copyright 2009, Su Wen <suwen@ict.ac.cn>
-+ *
-+ * base on Au1xxx Socs drivers by Matt Porter <mporter@kernel.crashing.org>
-+ *
-+ * This file is licensed under the terms of the GNU General Public
-+ * License version 2.  This program is licensed "as is" without any
-+ * warranty of any kind, whether express or implied.
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/i2c.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/flash.h>
-+
-+#include <irq.h>
-+#include <platform.h>
-+#include <loongson1.h>
-+
-+static struct platform_device *ls1a_platform_devices[] __initdata = {
-+	&ls1x_nand_pdev,
-+	&ls1x_uart_pdev,
-+	&ls1x_ahci_pdev,
-+	&ls1x_ohci_pdev,
-+	&ls1x_ehci_pdev,
-+	&ls1x_eth0_pdev,
-+	&ls1x_eth1_pdev,
-+	&ls1x_wat_pdev,
-+	&ls1x_rtc_pdev,
-+	&ls1x_audio_pdev,
-+	&ls1x_fb_pdev,
-+	&ls1x_i2c0_pdev,
-+	&ls1x_i2c1_pdev,
-+	&ls1x_i2c2_pdev,
-+	&ls1x_spi0_pdev,
-+	&ls1x_spi1_pdev,
-+};
-+
-+struct i2c_board_info ls1a_pcf8563 __initdata = {
-+	I2C_BOARD_INFO("pcf8563", 0x51),
-+};
-+
-+struct flash_platform_data ls1a_spiflash_data = {
-+	.name		= "m25p80",
-+	.parts		= NULL,
-+	.nr_parts	= 0,
-+	.type		= "m25p80",
-+};
-+
-+struct spi_board_info ls1a_spi_info[] __initdata = {
-+	{
-+		.modalias	= "m25p80",
-+		.max_speed_hz	= 1000000,
-+		.bus_num	= 0,
-+		.chip_select	= 1,
-+		.platform_data	= &ls1a_spiflash_data,
-+	},
-+};
-+
-+void ls1a_route_setting(void)
-+{
-+	/*set gpio 48-61 as normal pin*/
-+	ls1x_writel(ls1x_readl(LS1X_GPIO_CFG1_REG) & 0xc000ffff,
-+					LS1X_GPIO_CFG1_REG);
-+
-+	/*set gpio mux : gmac1 to use uart0, uart1 pins*/
-+	ls1x_writel((ls1x_readl(LS1X_MUX_REG_BASE) & 0x00fff5ff) | 0x0a0000c0,
-+					LS1X_GPIO_CFG1_REG);
-+
-+	/*multiplex int0 as gpio0 */
-+	ls1x_writel(ls1x_readl(LS1X_GPIO_CFG0_REG) | 0x00000001,
-+					LS1X_GPIO_CFG0_REG);
-+	ls1x_writel(ls1x_readl(LS1X_GPIO_OE0_REG) | 0x00000001,
-+					LS1X_GPIO_OE0_REG);
-+	ls1x_writel(ls1x_readl(LS1X_GPIO_IN0_REG) & 0xfffffffe,
-+					LS1X_GPIO_IN0_REG);
-+
-+	/*i2c gpio configuartion gpio64 scl and gpio65 sda*/
-+	ls1x_writel(ls1x_readl(LS1X_GPIO_CFG2_REG) & 0xfffffffd,
-+					LS1X_GPIO_CFG2_REG);
-+
-+	mdelay(1);
-+
-+	/*ls1a usb reset stop*/
-+	ls1x_writel(0x40000000, LS1X_LPC_CFG1_REG);
-+
-+	/* Reset GMAC0/1 to avoid DMA error */
-+	ls1x_writel(ls1x_readl(LS1X_GMAC0_DMA_REG) | 1, LS1X_GMAC0_DMA_REG);
-+	ls1x_writel(ls1x_readl(LS1X_GMAC1_DMA_REG) | 1, LS1X_GMAC1_DMA_REG);
-+}
-+
-+int __init ls1a_platform_init(void)
-+{
-+	ls1a_route_setting();
-+
-+	i2c_register_board_info(1, &ls1a_pcf8563, 1);
-+	spi_register_board_info(ls1a_spi_info, ARRAY_SIZE(ls1a_spi_info));
-+
-+	return platform_add_devices(ls1a_platform_devices,
-+					ARRAY_SIZE(ls1a_platform_devices));
-+}
-+
-+arch_initcall(ls1a_platform_init);
--- 
-1.9.1
+ create mode 100644 drivers/irqchip/irq-ls1x-cpu.c
+--
+1.9.0

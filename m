@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2016 15:10:25 +0200 (CEST)
-Received: from smtp5-g21.free.fr ([212.27.42.5]:46791 "EHLO smtp5-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27031676AbcETNKWdWaLY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 May 2016 15:10:22 +0200
-Received: from tock (unknown [78.54.180.121])
-        (Authenticated sender: albeu)
-        by smtp5-g21.free.fr (Postfix) with ESMTPSA id E50E95FF20;
-        Fri, 20 May 2016 15:11:26 +0200 (CEST)
-Date:   Fri, 20 May 2016 15:10:10 +0200
-From:   Alban <albeu@free.fr>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Aban Bedel <albeu@free.fr>, linux-mips@linux-mips.org,
-        sergei.shtylyov@cogentembedded.com
-Subject: Re: [PATCH v2 2/2] MIPS: ath79: fix regression in PCI window
- initialization
-Message-ID: <20160520151010.2f7e5773@tock>
-In-Reply-To: <1463421115-19048-2-git-send-email-nbd@nbd.name>
-References: <1463421115-19048-1-git-send-email-nbd@nbd.name>
-        <1463421115-19048-2-git-send-email-nbd@nbd.name>
-X-Mailer: Claws Mail 3.9.3 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2016 15:13:15 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57096 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27031698AbcETNNNEUpoY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 May 2016 15:13:13 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4KDDBvF003324;
+        Fri, 20 May 2016 15:13:11 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4KDDBb3003323;
+        Fri, 20 May 2016 15:13:11 +0200
+Date:   Fri, 20 May 2016 15:13:11 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Fix write_gc0_* macros when writing zero
+Message-ID: <20160520131310.GA13016@linux-mips.org>
+References: <1463587478-5815-1-git-send-email-james.hogan@imgtec.com>
+ <alpine.DEB.2.00.1605200848410.6794@tp.orcam.me.uk>
+ <20160520081313.GX1124@jhogan-linux.le.imgtec.org>
+ <alpine.DEB.2.00.1605200920370.6794@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- boundary="Sig_/5262r2j.undY5dyrINuumaM"; protocol="application/pgp-signature"
-Return-Path: <albeu@free.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1605200920370.6794@tp.orcam.me.uk>
+User-Agent: Mutt/1.6.1 (2016-04-27)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53557
+X-archive-position: 53558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,44 +45,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Sig_/5262r2j.undY5dyrINuumaM
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Fri, May 20, 2016 at 09:31:15AM +0100, Maciej W. Rozycki wrote:
 
-On Mon, 16 May 2016 19:51:55 +0200
-Felix Fietkau <nbd@nbd.name> wrote:
+> On Fri, 20 May 2016, James Hogan wrote:
+> 
+> > >  NB `z' here is an "operand code" in GCC-speak.  There's a list of the 
+> > > MIPS-specific ones in gcc/config/mips/mips.c above `mips_print_operand'.  
+> > > There are a few generic operand codes as well, most notably `a' to print 
+> > > an address, matching the `p' constraint.  I think it would be good to have 
+> > > this all documented in the GCC manual sometime.
+> > 
+> > Thanks Maciej! To be honest I pretty much guessed at what they were
+> > called. Good to see 'z' does do what I thought. I couldn't find any
+> > documentation online for the MIPS specific operand codes, so having them
+> > documented with GCC would be an excellent idea!
+> 
+>  Yeah, this stuff is a bit obscure (the other one being %-sequences for 
+> the specs) and I always find myself chasing sources when I need any of 
+> this.  Frankly by now I have already remembered roughly where to look for.
+> 
+>  Once tracked down however the description within sources is pretty good 
+> actually, so please refer there for the time being.
 
-> ath79_ddr_pci_win_base has the type void __iomem *, so register offsets
-> need to be a multiple of 4.
->=20
-> Cc: Alban Bedel <albeu@free.fr>
-> Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Material for a wiki page?
 
-Acked-by: Aban Bedel <albeu@free.fr>
-
-Alban
-
---Sig_/5262r2j.undY5dyrINuumaM
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Disposition: attachment; filename=signature.asc
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJXPwyyAAoJEHSUmkuduC28dvwQAOJP9Fwwd3VPWcv6KIwm/0u2
-HigwLSR9LVlIJ0FZMSyoUTvUMVRLtp4DNjFQ4di0tlrc0ho6MNltO7HK8+GbOMGi
-kji/wyrHfJBHvUh82iUmkTtIlNQsJyXBxcP5bGSVFbKrEzctOBhtzlrtUA0+kPnr
-6dmgkQXcklEeq3wYkKm1d/FKZ6geZ8WIjv/HDyBD8JMSLtradNNQzrPdc/bwtmWq
-qPZ2kjuC1sETVsNRGc8xJw5ixcH4MY5GviReExziP237AReekwFLYXAD3rk5sxIJ
-KNUFi6mA/IAjx6dbhR9GGnM4VVm1lyNC3zZs+RWNep8h93oImhhPGf4SihtvVqc1
-6E/DPEb+GCwi+NSZA1vI010vjFLswUDnj2e90v17uxjCAhzwtOZY76GGQTL+PEzH
-MVAv59tsXbhTFVY9STFXQIwMi7KCnUkbKO3ei+t54XOm/qouJg0uteK80P2TRYQD
-LWCJOGay5ihnF7jrwjjVR8Sm9X4357kv+ONeUcR1wMDoHviV1rGjv0EoXP9/qou3
-gXBWKmQ1VY5r2PtO7NN2PEybEmpGzGScWw4TL4eSCYTL+p/dsOiSL6SgKmj8nBsm
-hsbWfZlIynImqwG8Dxt3oWaPjXWTzPoyEHWo48ENS051y6K5WAe+nJIMohOvmIiq
-c+DRfeiVVHTQnA78klOb
-=wdLw
------END PGP SIGNATURE-----
-
---Sig_/5262r2j.undY5dyrINuumaM--
+  Ralf

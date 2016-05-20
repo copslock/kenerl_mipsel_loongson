@@ -1,30 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2016 23:05:28 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:34339 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27028753AbcESVF0MgyEv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 19 May 2016 23:05:26 +0200
-Subject: Re: [PATCH 1/3] MIPS: ralink: fix MT7628 pinmux typos
-To:     linux-mips@linux-mips.org
-References: <1463688456-23795-1-git-send-email-noltari@gmail.com>
- <9918e3d9-b929-8391-d995-0bf555684264@phrozen.org>
-From:   John Crispin <john@phrozen.org>
-Message-ID: <4203bd44-0594-bb6b-82e7-42f15f640d62@phrozen.org>
-Date:   Thu, 19 May 2016 23:05:24 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:45.0)
- Gecko/20100101 Thunderbird/45.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2016 10:01:56 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63425 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27031437AbcETIBy3oDfR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 May 2016 10:01:54 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Websense Email with ESMTPS id 58723F1AFF818;
+        Fri, 20 May 2016 09:01:46 +0100 (IST)
+Received: from [10.20.78.16] (10.20.78.16) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Fri, 20 May 2016
+ 09:01:47 +0100
+Date:   Fri, 20 May 2016 09:01:33 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Fix write_gc0_* macros when writing zero
+In-Reply-To: <1463587478-5815-1-git-send-email-james.hogan@imgtec.com>
+Message-ID: <alpine.DEB.2.00.1605200848410.6794@tp.orcam.me.uk>
+References: <1463587478-5815-1-git-send-email-james.hogan@imgtec.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <9918e3d9-b929-8391-d995-0bf555684264@phrozen.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <john@phrozen.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.16]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53551
+X-archive-position: 53552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,44 +42,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, 18 May 2016, James Hogan wrote:
 
+> The versions of the __write_{32,64}bit_gc0_register() macros for when
+> there is no virt support in the assembler use the "J" inline asm
+> constraint to allow integer zero, but this needs to be accompanied by
+> the "z" formatting string so that it turns into $0. Fix both macros to
+> do this.
 
-On 19/05/2016 22:58, John Crispin wrote:
-> 
-> 
-> On 19/05/2016 22:07, Álvaro Fernández Rojas wrote:
->> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-> 
-> Hi Alvaro,
-> 
-> I think my SoB is missing as i am the original author of these 3 patches.
-> 
-> 	John
-> 
+ NB `z' here is an "operand code" in GCC-speak.  There's a list of the 
+MIPS-specific ones in gcc/config/mips/mips.c above `mips_print_operand'.  
+There are a few generic operand codes as well, most notably `a' to print 
+an address, matching the `p' constraint.  I think it would be good to have 
+this all documented in the GCC manual sometime.
 
-my bad, these are different patches to mine, sorry for the noise
+> Fixes: bad50d79255a ("MIPS: Fix VZ probe gas errors with binutils <2.24")
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> ---
 
-	John
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
 
->> ---
->>  arch/mips/ralink/mt7620.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
->> index 0d3d1a9..caabee1 100644
->> --- a/arch/mips/ralink/mt7620.c
->> +++ b/arch/mips/ralink/mt7620.c
->> @@ -223,9 +223,9 @@ static struct rt2880_pmx_func wled_an_grp_mt7628[] = {
->>  #define MT7628_GPIO_MODE_GPIO		0
->>  
->>  static struct rt2880_pmx_group mt7628an_pinmux_data[] = {
->> -	GRP_G("pmw1", pwm1_grp_mt7628, MT7628_GPIO_MODE_MASK,
->> +	GRP_G("pwm1", pwm1_grp_mt7628, MT7628_GPIO_MODE_MASK,
->>  				1, MT7628_GPIO_MODE_PWM1),
->> -	GRP_G("pmw0", pwm0_grp_mt7628, MT7628_GPIO_MODE_MASK,
->> +	GRP_G("pwm0", pwm0_grp_mt7628, MT7628_GPIO_MODE_MASK,
->>  				1, MT7628_GPIO_MODE_PWM0),
->>  	GRP_G("uart2", uart2_grp_mt7628, MT7628_GPIO_MODE_MASK,
->>  				1, MT7628_GPIO_MODE_UART2),
->>
-> 
+  Maciej

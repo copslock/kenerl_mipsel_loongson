@@ -1,35 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 10:38:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50048 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27028767AbcEUIiLNOTdn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 10:38:11 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id 8725A37C43635;
-        Sat, 21 May 2016 09:38:02 +0100 (IST)
-Received: from [10.20.78.16] (10.20.78.16) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.266.1; Sat, 21 May 2016
- 09:38:04 +0100
-Date:   Sat, 21 May 2016 09:37:55 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 5/5] MIPS: Simplify DSP instruction encoding macros
-In-Reply-To: <7CA8BFBF-73A8-4699-975E-79BDC383C2E4@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1605210844150.6794@tp.orcam.me.uk>
-References: <1463783321-24442-1-git-send-email-james.hogan@imgtec.com> <1463783321-24442-6-git-send-email-james.hogan@imgtec.com> <alpine.DEB.2.00.1605210742260.6794@tp.orcam.me.uk> <7CA8BFBF-73A8-4699-975E-79BDC383C2E4@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.16]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 13:59:43 +0200 (CEST)
+Received: from mail-lb0-f194.google.com ([209.85.217.194]:33985 "EHLO
+        mail-lb0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27032398AbcEUL7lpeJhI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 13:59:41 +0200
+Received: by mail-lb0-f194.google.com with SMTP id t6so59275lbv.1;
+        Sat, 21 May 2016 04:59:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=307QqjCXZeBTB3d83Y7O8BSO8OpUPXorCWJZJHADFfs=;
+        b=ZKPQaihLieeepVMDH1VXLVcLGsPQPGGKncdOKLTLUn/JVTsDaWJd5AdbRlFEwddqKC
+         06/hSErIkhBfk6aytv9qOT3ICUxCXRP81M5ms69LMqfM4B6ub3DXkf/yHxNrarIgPqWg
+         WK3pnMeKYf1+10a1963Ab+bpO/eeB8G2UzWWTcTx1Zoxo7RCytkVv19rzv6ufbHpKkFv
+         epoP5Aj0oEw3i++Fu64NEjtlKpdGCXP+KGfuCY0k8IZGvEPOpszbHisCPaNtNWZ2QLvU
+         5SF88lwUrSKKwDarmBulQVl5pPYhG2/MjF86tVT77F39kQjW8jF0atM0P/dm9I/rMe2b
+         Rqsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=307QqjCXZeBTB3d83Y7O8BSO8OpUPXorCWJZJHADFfs=;
+        b=QpMDudMqWmOy0Y6zKmQkg8bqDaEIWfXQkWgVbuPlCqVcOWcwy7yNa3gHOzRbbUtc4u
+         33fpG/TitzPu80wjf6bpnkoEYt7I2MSCe4jDCaxgCzSKjsKs99K8qCUfHZYwjYZYqBy6
+         PEqi/Gvv/nzoJDfvKG5JrXUBb4S4+q7mJCUWcGZbYnxDlCYgKSz7z8Xk+tnmDJGFMuqY
+         bJM3gC6lTx0P6iDxL3gBurttrkuW7iBK1649MvswnXLd3wN6KVU4TD/2/K5yWsl3JkvA
+         05YgpALnljylyLjVTaD/VnKyr81nscKcWX9et1mjCg1XW/p1qioQrMVZSpReN0Tl9L5s
+         I7cw==
+X-Gm-Message-State: AOPr4FVn8a9qN4owB9mM/keZ4R6ZKIdkC2T85cUoWDTs9/hJDA+jD6m0BkBrFvQQsL1R/A==
+X-Received: by 10.112.170.106 with SMTP id al10mr2755157lbc.12.1463831976406;
+        Sat, 21 May 2016 04:59:36 -0700 (PDT)
+Received: from glen.ipredator.se (anon-35-25.vpn.ipredator.se. [46.246.35.25])
+        by smtp.gmail.com with ESMTPSA id oq7sm4101585lbb.47.2016.05.21.04.59.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sat, 21 May 2016 04:59:35 -0700 (PDT)
+From:   Andrea Gelmini <andrea.gelmini@gelma.net>
+To:     andrea.gelmini@gelma.net
+Cc:     trivial@kernel.org, ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH 0179/1529] Fix typo
+Date:   Sat, 21 May 2016 13:59:32 +0200
+Message-Id: <20160521115932.9141-1-andrea.gelmini@gelma.net>
+X-Mailer: git-send-email 2.8.2.534.g1f66975
+Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53575
+X-archive-position: 53577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: andrea.gelmini@gelma.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,40 +60,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 21 May 2016, James Hogan wrote:
+Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
+---
+ arch/mips/cavium-octeon/executive/cvmx-bootmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> >More importantly the use of `.insn' prevents execution from going
-> >astray 
-> >if there's a label being jumped to at the handcoded instruction.
-> 
-> Right. in my builds i couldn't find any examples of this happening, only 
-> relative branches (the only diff when adding .insn seemed to be objdump 
-> -d printing as microMIPS, but tbh i didn't compare data sections), but 
-> perhaps it could still happen with a different configuration or 
-> toolchain?
-
- It would have to be a JAL instruction (relaxed to JALX as necessary) or 
-one of the register jumps.  The J instruction would cause an assembly or 
-link error, depending on the symbol binding (a global or weak symbol may 
-yet be preempted), as there's no way to switch modes with a direct jump.
-
- Branches however currently ignore the ISA bit, which I consider a bug, as 
-it makes binutils silently produce broken code in regular MIPS and 
-microMIPS interlinking if a branch target turns out to be the other ISA. 
-Therefore I have a binutils patch in the works to correct this problem and 
-make GAS and LD, as applicable, diagnose unsupported mode switches with 
-branches and fail, but it will make `.insn' annotation even more necessary 
-for handcoded machine code and other such odd cases.
-
- I would have actually pushed this change this week already if not for a 
-microMIPS JALX encoding bug I've encountered, which would require me to 
-write nonsensical code if not handled first.  That bug has now been fixed, 
-so I expect to push said branch diagnostics sometime next week.  You may 
-want try building with binutils master afterwards to see if any further 
-cases of missing `.insn' annotation have been revealed.
-
- FAOD (of the other readers) none of this affects regular MIPS kernel 
-builds.  It's all about microMIPS code, so there's no concern about 
-toolchain compatibility with regular (classic) MIPS kernel configurations.
-
-  Maciej
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
+index 504ed61..b65a6c1 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
+@@ -668,7 +668,7 @@ int64_t cvmx_bootmem_phy_named_block_alloc(uint64_t size, uint64_t min_addr,
+ 	/*
+ 	 * Round size up to mult of minimum alignment bytes We need
+ 	 * the actual size allocated to allow for blocks to be
+-	 * coallesced when they are freed.  The alloc routine does the
++	 * coalesced when they are freed. The alloc routine does the
+ 	 * same rounding up on all allocations.
+ 	 */
+ 	size = ALIGN(size, CVMX_BOOTMEM_ALIGNMENT_SIZE);
+-- 
+2.8.2.534.g1f66975

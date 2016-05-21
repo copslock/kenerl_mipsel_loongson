@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:05:29 +0200 (CEST)
-Received: from mail-lb0-f193.google.com ([209.85.217.193]:33537 "EHLO
-        mail-lb0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032476AbcEUMBxYMbPI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:01:53 +0200
-Received: by mail-lb0-f193.google.com with SMTP id u2so694131lbo.0;
-        Sat, 21 May 2016 05:01:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:05:45 +0200 (CEST)
+Received: from mail-lb0-f195.google.com ([209.85.217.195]:33547 "EHLO
+        mail-lb0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27032473AbcEUMCDF0y8I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:02:03 +0200
+Received: by mail-lb0-f195.google.com with SMTP id u2so694183lbo.0;
+        Sat, 21 May 2016 05:02:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=6vmsRIgGii5OdL7FRFO2L/Bht6KRuz4H8US0bsAf27A=;
-        b=jitRk/hMUpdqyRicFVH5hgafZhMmJ+OgA4U2rqXo9sCgNuqkT7LfyLi4km1boSkGlD
-         N2BU6Sr/8V0Hi/lDYq0vPWtrviRla/jaI6pIYik4Wz/ac6l+MKBE20AUjSZ1zNHYhFkC
-         7gT50dcey3djs6muKkFrsWLFlj/u1mPnL5He2p0fGwjDM+Y6JB7LWtulilyubv7412Pj
-         +v7nE+06NFotF9wc/LKju+6l1qSTFYxghMr3Ra4KFOpBZ+Ir+4nl0h2ArB0bN5OfRp6a
-         Hm4MSHsWx7wfUN9FgSb9C5oyiiwGWH7tUbwkUWvHWYpOh/0b8zSChIiJGDrmXIk8qBPI
-         feQA==
+        bh=h+2exuWhbcEzNc7nuv/GNlkltwbCuZTs/aPVqlSr/3A=;
+        b=Dq7wXMQPFPkMPdsSnRIproyRrVm0Ncpfib7tPiQ2ucJESfuJyOy33wWwebwIHgbmG1
+         Z1RRcAT3BY8dfNFmNDzKelXi1sgQyam5qUEkNdYB2hLnFQ0+cNnT0XQWUYKFO5BOk6HL
+         DMIXfiYYdd9UUl47Djj+AB8fuB0u5rEDCCY/CSYup388LDj4QIvQm/J8Cy7BnV6qSIVv
+         +dhrspXaedTf5LYXqSkIEVde1KFxPHMDyTwWy9dgZx4mSPsWm42YVpjpZjsUBDB0Ai8U
+         tlu2GNNnOwf0qQydtS/9p0ofenWQFJMqEgpS1Dh5YmeVl5KlgUFHnjgj2h2QhXvqeETa
+         WVFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=6vmsRIgGii5OdL7FRFO2L/Bht6KRuz4H8US0bsAf27A=;
-        b=BHkMKgjNlzv3dcLElZtHrIEnhkTjq7LFyy7KdIU9xeIJMbdtU0i9JjAAwJXjX+sOaq
-         UFsJc3ctgNicq6Xv6qrisoVJChx/wo4010AYHSuYlJutvyC8imU/Z8oJkKZjtlvIKtOj
-         7lTaXk/HNHMs5URNLv1ODuwZN7VRRzL+2/aAGLhmo/NmQw/ay0Z/GRqmr2CpRTe6t0Of
-         W2Trd5piR4Bu9YYLFvt8d2UhZFjqvtWdXJgSgo7pcWCLKDBtYlyqD9VwkxBVjRHwRsPD
-         YufSgFEHPbkEk8k7qWA8kpsSojM2pzwKYvhnlbXG7DlAe8/KwPbKYTiCbFPxjm6i/wG/
-         Bfjg==
-X-Gm-Message-State: AOPr4FXGt3zsWyl4hfHPPkiIK/0Pg1QTfDs7SzRYFaiIIuJdKxqEkry7cCYFvhzYHy8iiQ==
-X-Received: by 10.112.27.233 with SMTP id w9mr2703073lbg.86.1463832108088;
-        Sat, 21 May 2016 05:01:48 -0700 (PDT)
+        bh=h+2exuWhbcEzNc7nuv/GNlkltwbCuZTs/aPVqlSr/3A=;
+        b=Y74T+6j6oOhM9w6ts3Tg0gh2CXT0tEnq2+dVDJc5k7rihSMgnW68phKE/5Kk5DK10R
+         URpDfhEJAf419TuHiFdo/eygZejeacHDrmhQyWJp8Z2QXR/AtfH8kNzc+vTHGsM0tyO9
+         jdX1WV1oqMjvRMhSbcOq8L9n+qDRSbiCvBrtivquCioOazWuepzG1RanrcGUOCDzQoSq
+         5CvOllNKi8SY3kbDhJ0WEJ9y30FpCKbmvyrNDoMfDLP5fIyMBvN1Cr1ZnHkXpfADJN42
+         HsufqhCSc/fJWgyQNXiJQLYpljSpJ81o27v+/N4m5nr3E3Unp52jS1lz1Qk7KM0iUkh4
+         ffsQ==
+X-Gm-Message-State: AOPr4FWJtbVLDD+atexG0Oh2a43zxus/lrZcLpbKSht90zJwXoVkrsaGfNEL1Ss43+MLSQ==
+X-Received: by 10.112.154.5 with SMTP id vk5mr2840401lbb.126.1463832115995;
+        Sat, 21 May 2016 05:01:55 -0700 (PDT)
 Received: from glen.ipredator.se (anon-35-25.vpn.ipredator.se. [46.246.35.25])
-        by smtp.gmail.com with ESMTPSA id z1sm4100563lbw.2.2016.05.21.05.01.45
+        by smtp.gmail.com with ESMTPSA id k66sm4245058lfe.32.2016.05.21.05.01.53
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 21 May 2016 05:01:47 -0700 (PDT)
+        Sat, 21 May 2016 05:01:54 -0700 (PDT)
 From:   Andrea Gelmini <andrea.gelmini@gelma.net>
 To:     andrea.gelmini@gelma.net
-Cc:     trivial@kernel.org, ralf@linux-mips.org, chenhc@lemote.com,
-        viresh.kumar@linaro.org, linux-mips@linux-mips.org
-Subject: [PATCH 0196/1529] Fix typo
-Date:   Sat, 21 May 2016 14:01:44 +0200
-Message-Id: <20160521120144.10145-1-andrea.gelmini@gelma.net>
+Cc:     trivial@kernel.org, ralf@linux-mips.org, macro@imgtec.com,
+        markos.chandras@imgtec.com, linux-mips@linux-mips.org
+Subject: [PATCH 0197/1529] Fix typo
+Date:   Sat, 21 May 2016 14:01:51 +0200
+Message-Id: <20160521120151.10200-1-andrea.gelmini@gelma.net>
 X-Mailer: git-send-email 2.8.2.534.g1f66975
 Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53594
+X-archive-position: 53595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,21 +63,30 @@ X-list: linux-mips
 
 Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
 ---
- arch/mips/loongson64/loongson-3/hpet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/math-emu/dsemul.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/loongson64/loongson-3/hpet.c b/arch/mips/loongson64/loongson-3/hpet.c
-index a2631a5..249039a 100644
---- a/arch/mips/loongson64/loongson-3/hpet.c
-+++ b/arch/mips/loongson64/loongson-3/hpet.c
-@@ -212,7 +212,7 @@ static void hpet_setup(void)
- 	/* set hpet base address */
- 	smbus_write(SMBUS_PCI_REGB4, HPET_ADDR);
+diff --git a/arch/mips/math-emu/dsemul.c b/arch/mips/math-emu/dsemul.c
+index d4ceacd..4707488 100644
+--- a/arch/mips/math-emu/dsemul.c
++++ b/arch/mips/math-emu/dsemul.c
+@@ -8,7 +8,7 @@
+ #include "ieee754.h"
  
--	/* enable decodeing of access to HPET MMIO*/
-+	/* enable decoding of access to HPET MMIO*/
- 	smbus_enable(SMBUS_PCI_REG40, (1 << 28));
+ /*
+- * Emulate the arbritrary instruction ir at xcp->cp0_epc.  Required when
++ * Emulate the arbitrary instruction ir at xcp->cp0_epc.  Required when
+  * we have to emulate the instruction in a COP1 branch delay slot.  Do
+  * not change cp0_epc due to the instruction
+  *
+@@ -88,7 +88,7 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
+ 	fr = (struct emuframe __user *)
+ 		((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
  
- 	/* HPET irq enable */
+-	/* Verify that the stack pointer is not competely insane */
++	/* Verify that the stack pointer is not completely insane */
+ 	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
+ 		return SIGBUS;
+ 
 -- 
 2.8.2.534.g1f66975

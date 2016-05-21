@@ -1,49 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:05:04 +0200 (CEST)
-Received: from mail-lf0-f66.google.com ([209.85.215.66]:33007 "EHLO
-        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032408AbcEUMBqIhCZI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:01:46 +0200
-Received: by mail-lf0-f66.google.com with SMTP id z203so640252lfd.0;
-        Sat, 21 May 2016 05:01:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:05:29 +0200 (CEST)
+Received: from mail-lb0-f193.google.com ([209.85.217.193]:33537 "EHLO
+        mail-lb0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27032476AbcEUMBxYMbPI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:01:53 +0200
+Received: by mail-lb0-f193.google.com with SMTP id u2so694131lbo.0;
+        Sat, 21 May 2016 05:01:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=LBOIzYqFdiQgMhLmg/uSQnpehzWioPtE+HsG/LkJXpg=;
-        b=L6VnzDOHvJnMJqR32W5OFpzkqGGqP1kMQqAB7i3JasG7uRpNXGIjhaxPlxb91HCBWQ
-         sM7IWuSrcH4gXoRXl2kAEpExnqpODq1CiQaWy0NzUmsB4l6MbzkF6n2zyrgSgHJ1SJGy
-         7nWtL5FVaPuMntEkZDjrx2WupTnoGmgAP+spHRruQspDpJpumjiuC8lR/epreSTxlsYZ
-         NfByJcUZM+8s7ihpjSQs7xqGq9IJjIHuwCaY9bLHOZiM1m0edn0EOJHCfKPotVLu7ENc
-         E6XXlU0pSoEUqj0gv6fVQT+nUbfahFA30kLMmhEYaCwMdH3aJLy30gzh/RZ/4ah6lOYn
-         xqlA==
+        bh=6vmsRIgGii5OdL7FRFO2L/Bht6KRuz4H8US0bsAf27A=;
+        b=jitRk/hMUpdqyRicFVH5hgafZhMmJ+OgA4U2rqXo9sCgNuqkT7LfyLi4km1boSkGlD
+         N2BU6Sr/8V0Hi/lDYq0vPWtrviRla/jaI6pIYik4Wz/ac6l+MKBE20AUjSZ1zNHYhFkC
+         7gT50dcey3djs6muKkFrsWLFlj/u1mPnL5He2p0fGwjDM+Y6JB7LWtulilyubv7412Pj
+         +v7nE+06NFotF9wc/LKju+6l1qSTFYxghMr3Ra4KFOpBZ+Ir+4nl0h2ArB0bN5OfRp6a
+         Hm4MSHsWx7wfUN9FgSb9C5oyiiwGWH7tUbwkUWvHWYpOh/0b8zSChIiJGDrmXIk8qBPI
+         feQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=LBOIzYqFdiQgMhLmg/uSQnpehzWioPtE+HsG/LkJXpg=;
-        b=BDHWsxWxvGLUsIsSfoJmSipF7dve0EW4fo1Sq3ahlqkEMcuhSpMlKjiQ7LihDKday3
-         X1WKbl6ejg5FJEQfY8+HIrgSSA8KwEisj3uTSmcPnoFUErkCQ8KPFuRFv4rYIbrLR+mh
-         O9ex5h60/zCcRod2ITy18VTqSM1Ygq05aFGGvZ7Gg6fceKOolzDhp4DxxZyyryZsZPdl
-         j+ex1TDpdMJU7MkPQUp04G4WI2jAMrA6yzpOfQkQKzH22W10NFTHXlvzZVMzS5X6Nmmo
-         EXUzoE16Tb3JrRJ2vBgcsJ+Hfdjtqtus1Xt2H9bLW3hGsfAxdgmpLKVJf6cQBYbaakdd
-         heww==
-X-Gm-Message-State: AOPr4FU5eGa3NIEAYRAIK/UnW3cjoL35PA48w4Sy4f23dpd15W1EgswOH6GEOuZiQUtf0Q==
-X-Received: by 10.25.125.8 with SMTP id y8mr2763196lfc.81.1463832100802;
-        Sat, 21 May 2016 05:01:40 -0700 (PDT)
+        bh=6vmsRIgGii5OdL7FRFO2L/Bht6KRuz4H8US0bsAf27A=;
+        b=BHkMKgjNlzv3dcLElZtHrIEnhkTjq7LFyy7KdIU9xeIJMbdtU0i9JjAAwJXjX+sOaq
+         UFsJc3ctgNicq6Xv6qrisoVJChx/wo4010AYHSuYlJutvyC8imU/Z8oJkKZjtlvIKtOj
+         7lTaXk/HNHMs5URNLv1ODuwZN7VRRzL+2/aAGLhmo/NmQw/ay0Z/GRqmr2CpRTe6t0Of
+         W2Trd5piR4Bu9YYLFvt8d2UhZFjqvtWdXJgSgo7pcWCLKDBtYlyqD9VwkxBVjRHwRsPD
+         YufSgFEHPbkEk8k7qWA8kpsSojM2pzwKYvhnlbXG7DlAe8/KwPbKYTiCbFPxjm6i/wG/
+         Bfjg==
+X-Gm-Message-State: AOPr4FXGt3zsWyl4hfHPPkiIK/0Pg1QTfDs7SzRYFaiIIuJdKxqEkry7cCYFvhzYHy8iiQ==
+X-Received: by 10.112.27.233 with SMTP id w9mr2703073lbg.86.1463832108088;
+        Sat, 21 May 2016 05:01:48 -0700 (PDT)
 Received: from glen.ipredator.se (anon-35-25.vpn.ipredator.se. [46.246.35.25])
-        by smtp.gmail.com with ESMTPSA id b6sm4131768lbv.39.2016.05.21.05.01.38
+        by smtp.gmail.com with ESMTPSA id z1sm4100563lbw.2.2016.05.21.05.01.45
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 21 May 2016 05:01:39 -0700 (PDT)
+        Sat, 21 May 2016 05:01:47 -0700 (PDT)
 From:   Andrea Gelmini <andrea.gelmini@gelma.net>
 To:     andrea.gelmini@gelma.net
-Cc:     trivial@kernel.org, ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH 0195/1529] Fix typo
-Date:   Sat, 21 May 2016 14:01:36 +0200
-Message-Id: <20160521120136.10090-1-andrea.gelmini@gelma.net>
+Cc:     trivial@kernel.org, ralf@linux-mips.org, chenhc@lemote.com,
+        viresh.kumar@linaro.org, linux-mips@linux-mips.org
+Subject: [PATCH 0196/1529] Fix typo
+Date:   Sat, 21 May 2016 14:01:44 +0200
+Message-Id: <20160521120144.10145-1-andrea.gelmini@gelma.net>
 X-Mailer: git-send-email 2.8.2.534.g1f66975
 Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53593
+X-archive-position: 53594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,21 +63,21 @@ X-list: linux-mips
 
 Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
 ---
- arch/mips/lib/memcpy.S | 2 +-
+ arch/mips/loongson64/loongson-3/hpet.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
-index 9245e17..6c303a9 100644
---- a/arch/mips/lib/memcpy.S
-+++ b/arch/mips/lib/memcpy.S
-@@ -256,7 +256,7 @@
+diff --git a/arch/mips/loongson64/loongson-3/hpet.c b/arch/mips/loongson64/loongson-3/hpet.c
+index a2631a5..249039a 100644
+--- a/arch/mips/loongson64/loongson-3/hpet.c
++++ b/arch/mips/loongson64/loongson-3/hpet.c
+@@ -212,7 +212,7 @@ static void hpet_setup(void)
+ 	/* set hpet base address */
+ 	smbus_write(SMBUS_PCI_REGB4, HPET_ADDR);
  
- 	/*
- 	 * Macro to build the __copy_user common code
--	 * Arguements:
-+	 * Arguments:
- 	 * mode : LEGACY_MODE or EVA_MODE
- 	 * from : Source operand. USEROP or KERNELOP
- 	 * to   : Destination operand. USEROP or KERNELOP
+-	/* enable decodeing of access to HPET MMIO*/
++	/* enable decoding of access to HPET MMIO*/
+ 	smbus_enable(SMBUS_PCI_REG40, (1 << 28));
+ 
+ 	/* HPET irq enable */
 -- 
 2.8.2.534.g1f66975

@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:06:09 +0200 (CEST)
-Received: from mail-lb0-f193.google.com ([209.85.217.193]:34277 "EHLO
-        mail-lb0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032477AbcEUMCGvE6mI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:02:06 +0200
-Received: by mail-lb0-f193.google.com with SMTP id t6so61196lbv.1;
-        Sat, 21 May 2016 05:02:06 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:06:27 +0200 (CEST)
+Received: from mail-lf0-f67.google.com ([209.85.215.67]:33082 "EHLO
+        mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27032256AbcEUMCOf-vFI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:02:14 +0200
+Received: by mail-lf0-f67.google.com with SMTP id z203so640695lfd.0;
+        Sat, 21 May 2016 05:02:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=w8MOzMnSs/ZhY3F36NHfkprSiudtENQw4zYQDf4jHxs=;
-        b=ZQQQwosW2dzBIx8wOTChEOSHO1ZlQ4Aln5VknDly0Y0DpoaVGdcnFzjGNAmzJQShPR
-         M5iBH6pVBnrjJIuOSqIpmVtqhwv26zn5EqXu/j3kCPRI7qd0AERnO/WpX/tWcecIiWWB
-         krThIj/tjYOipVbgBjhjEIbv6cdScnoLAIt9bVxWwICOY3QOkz17A4iRUUl/+bWigRkf
-         DS+R/z+e4ZIj8l7fpzl/FGJzHa8Y5AuZKZ4coJ5snYy4buvzGOCdnuml7byT0HfY2nAs
-         q7jIJxGbhFlSAp9N1F5EVznWpMGn9ErbHQpv+DBjDrN6Xj8hCswaSf0AxbgBwMAjIdqo
-         s7mw==
+        bh=lt7GtqmD9QfNWgPCGU/Qg6PVKTad3yUouUKMe1zMxos=;
+        b=oQ2W2sndyUsx22LUmQTIYMxdZIfmX81GavtZmkk/+GWhq7iyg4sXm43CxflLAPUC0h
+         baleQzG9N7tZevu9e18hPh53o1Ro4DKBwb8S80sWoxzTsagsYqQy1sjh0jcPfqRFJgce
+         iasEyXmnT2GQ7pFRVWfu0vr5cXGEuu0On6HejnKTd9mWDYKSB9FcQs0u6L6E7qd+IM/b
+         nBYhPhQ5mZu0BmGb+TAu+hQpvq01krgS7TUZ/DfrOO4pjcCCKG4VypSwY0AKxYQqO0pt
+         kB9aw44vdAPtcgjZinMvMW3rc9NofjVwsQVYeTxu25NfQnsAVSKoVeJgAlztPOEinQNG
+         jOxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=w8MOzMnSs/ZhY3F36NHfkprSiudtENQw4zYQDf4jHxs=;
-        b=XghtNLe7atYIyK2vrJuHi1tdgfRJDgJUtFmR8DLp3nwE0BSgvO5uqvTfFiGqOQrss8
-         xY4bv/zCrWrT3u0ro0nYWMegdNEUMZl0V8+HAV6HebrJCrizq1XeZsqzovZKOdkUFfSR
-         Zs2N9ohkN6TFI6rvdncnbxkRuMkyfX767LqqL2cy48sAB0kkBhvImGiAsZcQT3L9UvI3
-         ZJtCosNsXWdY74S8YqB78z2gl8cG7VfAMpFCsVcDlGHoArMbzoFC27K2gpWAiVvqp04W
-         67cxoMHlY5lAzbCR2QqqJN6lWjjREoQcS/xyQHttO6kQfF6lOpl3edWSBkPSXJxeO2UD
-         dWWw==
-X-Gm-Message-State: AOPr4FXSTZhxKStojOpf9KRhk0rhrBHQ4vmStaIVt1l00da7ZxJrwpwu+/mFGiRYE6oacQ==
-X-Received: by 10.112.133.1 with SMTP id oy1mr2378494lbb.79.1463832121550;
-        Sat, 21 May 2016 05:02:01 -0700 (PDT)
+        bh=lt7GtqmD9QfNWgPCGU/Qg6PVKTad3yUouUKMe1zMxos=;
+        b=PsZyKOVhCq14kkevGCmQh/vr+hb3hlX9SBahFZjz+Ij4KfF/rjta685/cAzyzOEYkh
+         G9zKjBDkfZDYlP1yaBBW45LEVe5cW+elgTOgQRwIu1kUlmWlCrHMSMILTirEWXyOyw3z
+         8FqEc3rg0DYMhN2/HnAuYaTSfJZ5av+NWPQngoXpgMLkmce/6270QYBTm/u80RfIoXHC
+         qzBu7ZYhlObRtdUQNUUHb0bkyhjpmic20PwKv8sU6D/mSAATOyEDwhUeoRsSWdFR8mhJ
+         yFKRe92vAqKeISrVi5qbXh/0sGEHty9xPyBriz2U0IZBG3jXjacCtxZuOtZuN4PuV9xu
+         kSaQ==
+X-Gm-Message-State: AOPr4FUl50NyeFYtJwZGZfHD9WhL0dZrVt3njV0aXs0MpPvSW8ze8NNyyK6GoVLGPl7POw==
+X-Received: by 10.25.150.8 with SMTP id y8mr2676531lfd.163.1463832128884;
+        Sat, 21 May 2016 05:02:08 -0700 (PDT)
 Received: from glen.ipredator.se (anon-35-25.vpn.ipredator.se. [46.246.35.25])
-        by smtp.gmail.com with ESMTPSA id t11sm4136285lfd.20.2016.05.21.05.01.59
+        by smtp.gmail.com with ESMTPSA id r16sm4148796lfd.35.2016.05.21.05.02.06
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 21 May 2016 05:02:00 -0700 (PDT)
+        Sat, 21 May 2016 05:02:07 -0700 (PDT)
 From:   Andrea Gelmini <andrea.gelmini@gelma.net>
 To:     andrea.gelmini@gelma.net
-Cc:     trivial@kernel.org, rric@kernel.org, ralf@linux-mips.org,
-        oprofile-list@lists.sf.net, linux-mips@linux-mips.org
-Subject: [PATCH 0198/1529] Fix typo
-Date:   Sat, 21 May 2016 14:01:57 +0200
-Message-Id: <20160521120157.10249-1-andrea.gelmini@gelma.net>
+Cc:     trivial@kernel.org, ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH 0199/1529] Fix typo
+Date:   Sat, 21 May 2016 14:02:04 +0200
+Message-Id: <20160521120204.10300-1-andrea.gelmini@gelma.net>
 X-Mailer: git-send-email 2.8.2.534.g1f66975
 Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53596
+X-archive-position: 53597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,21 +62,24 @@ X-list: linux-mips
 
 Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
 ---
- arch/mips/oprofile/op_impl.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/pci/ops-bridge.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/oprofile/op_impl.h b/arch/mips/oprofile/op_impl.h
-index 7c2da27..a4e758a 100644
---- a/arch/mips/oprofile/op_impl.h
-+++ b/arch/mips/oprofile/op_impl.h
-@@ -24,7 +24,7 @@ struct op_counter_config {
- 	unsigned long unit_mask;
- };
- 
--/* Per-architecture configury and hooks.  */
-+/* Per-architecture configure and hooks.  */
- struct op_mips_model {
- 	void (*reg_setup) (struct op_counter_config *);
- 	void (*cpu_setup) (void *dummy);
+diff --git a/arch/mips/pci/ops-bridge.c b/arch/mips/pci/ops-bridge.c
+index 4383194..57e1463 100644
+--- a/arch/mips/pci/ops-bridge.c
++++ b/arch/mips/pci/ops-bridge.c
+@@ -33,9 +33,9 @@ static u32 emulate_ioc3_cfg(int where, int size)
+  * The Bridge ASIC supports both type 0 and type 1 access.  Type 1 is
+  * not really documented, so right now I can't write code which uses it.
+  * Therefore we use type 0 accesses for now even though they won't work
+- * correcly for PCI-to-PCI bridges.
++ * correctly for PCI-to-PCI bridges.
+  *
+- * The function is complicated by the ultimate brokeness of the IOC3 chip
++ * The function is complicated by the ultimate brokenness of the IOC3 chip
+  * which is used in SGI systems.  The IOC3 can only handle 32-bit PCI
+  * accesses and does only decode parts of it's address space.
+  */
 -- 
 2.8.2.534.g1f66975

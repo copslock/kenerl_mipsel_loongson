@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 13:59:43 +0200 (CEST)
-Received: from mail-lb0-f194.google.com ([209.85.217.194]:33985 "EHLO
-        mail-lb0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032398AbcEUL7lpeJhI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 13:59:41 +0200
-Received: by mail-lb0-f194.google.com with SMTP id t6so59275lbv.1;
-        Sat, 21 May 2016 04:59:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:00:01 +0200 (CEST)
+Received: from mail-lf0-f66.google.com ([209.85.215.66]:35537 "EHLO
+        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27032394AbcEUL7ujsH8I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 13:59:50 +0200
+Received: by mail-lf0-f66.google.com with SMTP id p10so3967448lfb.2;
+        Sat, 21 May 2016 04:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=307QqjCXZeBTB3d83Y7O8BSO8OpUPXorCWJZJHADFfs=;
-        b=ZKPQaihLieeepVMDH1VXLVcLGsPQPGGKncdOKLTLUn/JVTsDaWJd5AdbRlFEwddqKC
-         06/hSErIkhBfk6aytv9qOT3ICUxCXRP81M5ms69LMqfM4B6ub3DXkf/yHxNrarIgPqWg
-         WK3pnMeKYf1+10a1963Ab+bpO/eeB8G2UzWWTcTx1Zoxo7RCytkVv19rzv6ufbHpKkFv
-         epoP5Aj0oEw3i++Fu64NEjtlKpdGCXP+KGfuCY0k8IZGvEPOpszbHisCPaNtNWZ2QLvU
-         5SF88lwUrSKKwDarmBulQVl5pPYhG2/MjF86tVT77F39kQjW8jF0atM0P/dm9I/rMe2b
-         Rqsg==
+        bh=ZSJeC09p6tlqWfgJ7UazU6pmyFsbglcnbv8wVM8+bO4=;
+        b=LGVDX2E9ImY64IKYHdCPwN1F+2caXinUkCSwUEqc0FQYP3WuS2lKF7ivJft3AuNOze
+         eJqh4Beiouyw9+o0rT5SVuVFurvEhYq1wM4A2xM+t02l+JEqv5BnUAo9RNofYafYKxT5
+         LPsladxVYzgE5v0tVi5x4KjjirLICIaNTjwX3gIe2T8sSoNKNUs1FBW6mYyhYYcnuDUc
+         3W2wlkXpsvFZhwxnZ4Qx+bCs6UwNqzhkIm/h3aqgF5RZZVghJvbCGWF8y31D+6sqS7/E
+         N4QxP6KK/3hmBtJy3HI+lVJhM8Fkb6pU/2qFHVEJ8+/fo/w3bWQZ2kTL3FoaYfutyJcx
+         bO0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=307QqjCXZeBTB3d83Y7O8BSO8OpUPXorCWJZJHADFfs=;
-        b=QpMDudMqWmOy0Y6zKmQkg8bqDaEIWfXQkWgVbuPlCqVcOWcwy7yNa3gHOzRbbUtc4u
-         33fpG/TitzPu80wjf6bpnkoEYt7I2MSCe4jDCaxgCzSKjsKs99K8qCUfHZYwjYZYqBy6
-         PEqi/Gvv/nzoJDfvKG5JrXUBb4S4+q7mJCUWcGZbYnxDlCYgKSz7z8Xk+tnmDJGFMuqY
-         bJM3gC6lTx0P6iDxL3gBurttrkuW7iBK1649MvswnXLd3wN6KVU4TD/2/K5yWsl3JkvA
-         05YgpALnljylyLjVTaD/VnKyr81nscKcWX9et1mjCg1XW/p1qioQrMVZSpReN0Tl9L5s
-         I7cw==
-X-Gm-Message-State: AOPr4FVn8a9qN4owB9mM/keZ4R6ZKIdkC2T85cUoWDTs9/hJDA+jD6m0BkBrFvQQsL1R/A==
-X-Received: by 10.112.170.106 with SMTP id al10mr2755157lbc.12.1463831976406;
-        Sat, 21 May 2016 04:59:36 -0700 (PDT)
+        bh=ZSJeC09p6tlqWfgJ7UazU6pmyFsbglcnbv8wVM8+bO4=;
+        b=fa1BGUaipeqHp1yTRq7cZbcBiU/2rDrMi+TaWsMk2UnJyBOCVM72q9gh6llA9hGwh2
+         b4696rJvrdrZa6TmZV8Q5QGv5BQAUBt8mizWfZKxfVWCVJhzZwJXGI0PqQPO/9nMtw5I
+         xLxu4BIXmadRw5cjiN6mU7pGYtyWj17LPBtlq0TkJ2V2cxzNoBWIdNqj4MpgQtLT9Zgr
+         dvW3p/9BdGMcY+3He5f48OekLFalsaG6SLsOieKYOnv9CCj9oEZLVzhqQq5I1w4NAtdJ
+         +p35ruUr3b4LCN0r8a4/P4UBnr3r7XiTGAKQYBSWkmm/Pq+nZWHvmo1IJdqsZbOMWjJt
+         9WWg==
+X-Gm-Message-State: AOPr4FUzCF3HLR02xEzKPI4kG+ddrU25D6tY5/kDvFCAR7yQrg7ZyHOuycYtD1+vpBmSiQ==
+X-Received: by 10.25.150.8 with SMTP id y8mr2673677lfd.163.1463831985365;
+        Sat, 21 May 2016 04:59:45 -0700 (PDT)
 Received: from glen.ipredator.se (anon-35-25.vpn.ipredator.se. [46.246.35.25])
-        by smtp.gmail.com with ESMTPSA id oq7sm4101585lbb.47.2016.05.21.04.59.33
+        by smtp.gmail.com with ESMTPSA id h9sm4158319lfg.3.2016.05.21.04.59.42
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 21 May 2016 04:59:35 -0700 (PDT)
+        Sat, 21 May 2016 04:59:43 -0700 (PDT)
 From:   Andrea Gelmini <andrea.gelmini@gelma.net>
 To:     andrea.gelmini@gelma.net
 Cc:     trivial@kernel.org, ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH 0179/1529] Fix typo
-Date:   Sat, 21 May 2016 13:59:32 +0200
-Message-Id: <20160521115932.9141-1-andrea.gelmini@gelma.net>
+Subject: [PATCH 0180/1529] Fix typo
+Date:   Sat, 21 May 2016 13:59:39 +0200
+Message-Id: <20160521115939.9225-1-andrea.gelmini@gelma.net>
 X-Mailer: git-send-email 2.8.2.534.g1f66975
 Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53577
+X-archive-position: 53578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,21 +62,23 @@ X-list: linux-mips
 
 Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
 ---
- arch/mips/cavium-octeon/executive/cvmx-bootmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/cobalt/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-index 504ed61..b65a6c1 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-bootmem.c
-@@ -668,7 +668,7 @@ int64_t cvmx_bootmem_phy_named_block_alloc(uint64_t size, uint64_t min_addr,
- 	/*
- 	 * Round size up to mult of minimum alignment bytes We need
- 	 * the actual size allocated to allow for blocks to be
--	 * coallesced when they are freed.  The alloc routine does the
-+	 * coalesced when they are freed. The alloc routine does the
- 	 * same rounding up on all allocations.
- 	 */
- 	size = ALIGN(size, CVMX_BOOTMEM_ALIGNMENT_SIZE);
+diff --git a/arch/mips/cobalt/setup.c b/arch/mips/cobalt/setup.c
+index 9a8c2fe..c136a18 100644
+--- a/arch/mips/cobalt/setup.c
++++ b/arch/mips/cobalt/setup.c
+@@ -42,8 +42,8 @@ const char *get_system_type(void)
+ 
+ /*
+  * Cobalt doesn't have PS/2 keyboard/mouse interfaces,
+- * keyboard conntroller is never used.
+- * Also PCI-ISA bridge DMA contoroller is never used.
++ * keyboard controller is never used.
++ * Also PCI-ISA bridge DMA controller is never used.
+  */
+ static struct resource cobalt_reserved_resources[] = {
+ 	{	/* dma1 */
 -- 
 2.8.2.534.g1f66975

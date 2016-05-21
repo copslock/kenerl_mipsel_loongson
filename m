@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:02:29 +0200 (CEST)
-Received: from mail-lf0-f67.google.com ([209.85.215.67]:35678 "EHLO
-        mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032437AbcEUMAm4M0sI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:00:42 +0200
-Received: by mail-lf0-f67.google.com with SMTP id p10so3968347lfb.2;
-        Sat, 21 May 2016 05:00:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:02:53 +0200 (CEST)
+Received: from mail-lb0-f194.google.com ([209.85.217.194]:33392 "EHLO
+        mail-lb0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27027023AbcEUMAuROKuI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:00:50 +0200
+Received: by mail-lb0-f194.google.com with SMTP id u2so693085lbo.0;
+        Sat, 21 May 2016 05:00:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=fRhtpSaq1fbTHWOT3NgJRG3nXVmFwXByUXTepK2uDMA=;
-        b=Lw/edJRU+J2W8B1kptALwbLs0t/nPsKCzrEVgpiDT6WjhXneWQkzsS2nVYo+JfK9h4
-         PYWmsXeJFzjrtN++rdEnzwMyFy6wgXfUi9xtHUbwUjMcSaN1mHxhaBJ1Nq4P5T40Fi/z
-         nT/wPKb635rwdXFIm0RkuK5GiVFqv6fYYHa2WYC8cjQNqQW+3HAJqL3rDx8ERlrL4btE
-         8BMoy5s4KOdh3iKV0KIc1KswW+I8xgegFgKfiFQBuzdJHQ8WZa3s/uXPjhuwunUDDvr/
-         E259EEYyfDct3H4c+FWvNHBHPlW4KYfqIBzKbz+xXe7wSPVQ8+AbNU2k7g2NKftvmE0J
-         IeHw==
+        bh=evTkSZYtM5lvuXESgU6NX6axmO5FvjbBoeALZjWjUpc=;
+        b=N3QWt10bZPc78IMEDuA+mrf7CnW2l0Iphr7Y/BOBzdAkhfdiOvwt4iAkV1psw8+M0X
+         fwxu9dq3Gm25pWa1hRHh4euLhvKyoJ71jp4VW9/Hjhizr8Q0H2QpHWc8KgMMS3UmoYGH
+         aJEuPR/RkLL6efFp1FQPTr8co3QWAKppDRptWltpIPWdkPkf4zJ6NqXMJ4ANdkQ/IwcH
+         HYr/VBmX5meH5d3Juwboz4qQMaFGIPRzZIPhxflvfnBQQviuRONdtOUXA1D9734doTgG
+         pckD3mU2ggRWrXlRT7I+8hTeRQg71iYxF5U3bn6zh1m+lYil2URqeaaFSafPr1GesCkd
+         3BmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=fRhtpSaq1fbTHWOT3NgJRG3nXVmFwXByUXTepK2uDMA=;
-        b=jh9tk5zipEuH490mOBeHOg/2UNbTYWscDKdXZ5ULYpjm1qKrg7/txe330VbDlXcrP6
-         MjK0KUlUfCbCjrJZnYw/M//oYWPTq6NCeuXnAE3gP5YKwFzbUrttprXobNLF6/0NKuMa
-         zLd3fg6SWodfOtzW2/0U+y+A21yUlrP0VxCWuS15EkcUyd5QN9zdMOwsh7EhALhJv0aW
-         j5xGQFnlWEeQGXhmtCB0dx2D3b5hRI7B1uRKmI2d/g9yIcmlxq9JXBAfwAdgunnsiAfJ
-         yqGSTdun+Ean8OPxw9zN2JWTgQQUe55XDQyvSo45FOUG27mO0Td8yWXCqecKEWKjGcf6
-         M7YA==
-X-Gm-Message-State: AOPr4FWGDc0CG5VHCeJsdUTIELwKzTspAO9T8BXNjmcdzt2jYyyI/Hg+ZKvLlcwADf6YaA==
-X-Received: by 10.25.148.16 with SMTP id w16mr2693471lfd.40.1463832037636;
-        Sat, 21 May 2016 05:00:37 -0700 (PDT)
+        bh=evTkSZYtM5lvuXESgU6NX6axmO5FvjbBoeALZjWjUpc=;
+        b=BnBipliUXUTUpJz8sEuQqymtqzCmA2Lolomiun6MHil+AnJv1D4cGNUMZDH3LRBUjK
+         mTrz7EfInNo6/GuqLQN8j06WxCC3Gb/renfiFDPImn1cPgZP56jboaEU0218TnCQMrVg
+         762fS4S6EUULSDUqE5RcrH3hMI24Nzu/mXI2w9imhy1XdMVKNQlCsT5Ne6aq/iANcscA
+         fwO74e+AmhPWWJE7Tnzmp453ziZXNiRRSyecw4Ofc7FeLiwax0MS9Qc4WA/Ea0Ht0z5e
+         lf53sTpPr0bMrKfsGtQl7DLltvdwOB/JYFQ+MNXQAA+38aOOsMIcSjd+4PeSEXjnMb0R
+         PIUA==
+X-Gm-Message-State: AOPr4FW21XV6tIfvpoWVDO4CjkTRm8i4ujeb3Q7+Lditsvs+TgwTY0roCm6bma5e/+6S8w==
+X-Received: by 10.112.163.73 with SMTP id yg9mr2537421lbb.73.1463832044945;
+        Sat, 21 May 2016 05:00:44 -0700 (PDT)
 Received: from glen.ipredator.se (anon-35-25.vpn.ipredator.se. [46.246.35.25])
-        by smtp.gmail.com with ESMTPSA id h18sm1984099lbb.8.2016.05.21.05.00.35
+        by smtp.gmail.com with ESMTPSA id c20sm4195223lfb.21.2016.05.21.05.00.42
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 21 May 2016 05:00:36 -0700 (PDT)
+        Sat, 21 May 2016 05:00:43 -0700 (PDT)
 From:   Andrea Gelmini <andrea.gelmini@gelma.net>
 To:     andrea.gelmini@gelma.net
 Cc:     trivial@kernel.org, ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH 0187/1529] Fix typo
-Date:   Sat, 21 May 2016 14:00:33 +0200
-Message-Id: <20160521120033.9598-1-andrea.gelmini@gelma.net>
+Subject: [PATCH 0188/1529] Fix typo
+Date:   Sat, 21 May 2016 14:00:40 +0200
+Message-Id: <20160521120040.9648-1-andrea.gelmini@gelma.net>
 X-Mailer: git-send-email 2.8.2.534.g1f66975
 Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53585
+X-archive-position: 53586
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,19 +62,21 @@ X-list: linux-mips
 
 Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
 ---
- arch/mips/include/asm/mips_mt.h | 2 +-
+ arch/mips/include/asm/octeon/cvmx-cmd-queue.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mips_mt.h b/arch/mips/include/asm/mips_mt.h
-index f6ba004..aa4cca0 100644
---- a/arch/mips/include/asm/mips_mt.h
-+++ b/arch/mips/include/asm/mips_mt.h
-@@ -1,5 +1,5 @@
- /*
-- * Definitions and decalrations for MIPS MT support that are common between
-+ * Definitions and declarations for MIPS MT support that are common between
-  * the VSMP, and AP/SP kernel models.
+diff --git a/arch/mips/include/asm/octeon/cvmx-cmd-queue.h b/arch/mips/include/asm/octeon/cvmx-cmd-queue.h
+index 8d05d90..a07a36f 100644
+--- a/arch/mips/include/asm/octeon/cvmx-cmd-queue.h
++++ b/arch/mips/include/asm/octeon/cvmx-cmd-queue.h
+@@ -146,7 +146,7 @@ typedef struct {
+  * This structure contains the global state of all command queues.
+  * It is stored in a bootmem named block and shared by all
+  * applications running on Octeon. Tickets are stored in a differnet
+- * cahce line that queue information to reduce the contention on the
++ * cache line that queue information to reduce the contention on the
+  * ll/sc used to get a ticket. If this is not the case, the update
+  * of queue state causes the ll/sc to fail quite often.
   */
- #ifndef __ASM_MIPS_MT_H
 -- 
 2.8.2.534.g1f66975

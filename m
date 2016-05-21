@@ -1,51 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:04:47 +0200 (CEST)
-Received: from mail-lf0-f68.google.com ([209.85.215.68]:34259 "EHLO
-        mail-lf0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032452AbcEUMBiY0FEI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:01:38 +0200
-Received: by mail-lf0-f68.google.com with SMTP id 65so25317lfq.1;
-        Sat, 21 May 2016 05:01:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:05:04 +0200 (CEST)
+Received: from mail-lf0-f66.google.com ([209.85.215.66]:33007 "EHLO
+        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27032408AbcEUMBqIhCZI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:01:46 +0200
+Received: by mail-lf0-f66.google.com with SMTP id z203so640252lfd.0;
+        Sat, 21 May 2016 05:01:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=+bHz7ucxEEyzQlRPIQoN/Usbt15mNe3OYtf2H185y3Q=;
-        b=BVDGJ4LV85mdX+0mA8dpt1IiYdgGNBDyIhAIxIxyW1Wh76X5YyDVDaPu5KtZMRXwUt
-         M21fU/SvfALfKD+I9x5xart1UeYLgwBTg6PT5nOvDGxvcbjiVCA3jv8vsCpuR0SectFe
-         cVBACmLbhg0r2x5Fs5tMIv36Yy+ex/o/QJbJIvp/mGbfTwbYBEzuk1L0w5fe7mkl/4zV
-         vJxCs6UsVPAbJAD8Ja8SwbHae/JDSXF2sNXGaGYNnmDmyminFAx1z2IYbJVBXry/aQGS
-         hWi0diUOGfsMofmhLM5S6R/9hzZSP4rl2ZZtspe/eKeL4UZfredFWmcjqyWMllnz2BfX
-         HtjQ==
+        bh=LBOIzYqFdiQgMhLmg/uSQnpehzWioPtE+HsG/LkJXpg=;
+        b=L6VnzDOHvJnMJqR32W5OFpzkqGGqP1kMQqAB7i3JasG7uRpNXGIjhaxPlxb91HCBWQ
+         sM7IWuSrcH4gXoRXl2kAEpExnqpODq1CiQaWy0NzUmsB4l6MbzkF6n2zyrgSgHJ1SJGy
+         7nWtL5FVaPuMntEkZDjrx2WupTnoGmgAP+spHRruQspDpJpumjiuC8lR/epreSTxlsYZ
+         NfByJcUZM+8s7ihpjSQs7xqGq9IJjIHuwCaY9bLHOZiM1m0edn0EOJHCfKPotVLu7ENc
+         E6XXlU0pSoEUqj0gv6fVQT+nUbfahFA30kLMmhEYaCwMdH3aJLy30gzh/RZ/4ah6lOYn
+         xqlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=+bHz7ucxEEyzQlRPIQoN/Usbt15mNe3OYtf2H185y3Q=;
-        b=Ixc7NXvEVEslnLPiHa57i67pOIrbVjHZdaTuNZzfzE19KmKK45tbCD9bRnyJyvaZxd
-         G00Lq0H1Lsm7CUkDqhPBAJZKK7udlu4vtYWNa+DpJ381iA/ddYZWmXgwslBjRJv5bg2Z
-         2aUzn9tK9CdkU2Fse/SlJV5dF9d+ovoZqCHU4qYjpdEUEQqatxbZDurL4m7zar3e97zI
-         F08g8dS9TkYQRoYDoChtLhzQwMj73dmGWGetyfXX/CgsFrOYxJFMG3D6l/mXYp5sZXvL
-         +mlLJofH0a5IJJcSDcioNCdT0YYjWWt4RxZrYfoLCWi2TpkY5XQ+fvGs8MnxeJsxlKGZ
-         zfPQ==
-X-Gm-Message-State: AOPr4FVIcw7FYO8a38zpS3X0Le+P4h32jYKFfDyI6myON9H7AzRK/LSxl/WINVSow/Plnw==
-X-Received: by 10.25.151.20 with SMTP id z20mr2754320lfd.92.1463832093113;
-        Sat, 21 May 2016 05:01:33 -0700 (PDT)
+        bh=LBOIzYqFdiQgMhLmg/uSQnpehzWioPtE+HsG/LkJXpg=;
+        b=BDHWsxWxvGLUsIsSfoJmSipF7dve0EW4fo1Sq3ahlqkEMcuhSpMlKjiQ7LihDKday3
+         X1WKbl6ejg5FJEQfY8+HIrgSSA8KwEisj3uTSmcPnoFUErkCQ8KPFuRFv4rYIbrLR+mh
+         O9ex5h60/zCcRod2ITy18VTqSM1Ygq05aFGGvZ7Gg6fceKOolzDhp4DxxZyyryZsZPdl
+         j+ex1TDpdMJU7MkPQUp04G4WI2jAMrA6yzpOfQkQKzH22W10NFTHXlvzZVMzS5X6Nmmo
+         EXUzoE16Tb3JrRJ2vBgcsJ+Hfdjtqtus1Xt2H9bLW3hGsfAxdgmpLKVJf6cQBYbaakdd
+         heww==
+X-Gm-Message-State: AOPr4FU5eGa3NIEAYRAIK/UnW3cjoL35PA48w4Sy4f23dpd15W1EgswOH6GEOuZiQUtf0Q==
+X-Received: by 10.25.125.8 with SMTP id y8mr2763196lfc.81.1463832100802;
+        Sat, 21 May 2016 05:01:40 -0700 (PDT)
 Received: from glen.ipredator.se (anon-35-25.vpn.ipredator.se. [46.246.35.25])
-        by smtp.gmail.com with ESMTPSA id wc3sm2086037lbb.27.2016.05.21.05.01.29
+        by smtp.gmail.com with ESMTPSA id b6sm4131768lbv.39.2016.05.21.05.01.38
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 21 May 2016 05:01:31 -0700 (PDT)
+        Sat, 21 May 2016 05:01:39 -0700 (PDT)
 From:   Andrea Gelmini <andrea.gelmini@gelma.net>
 To:     andrea.gelmini@gelma.net
-Cc:     trivial@kernel.org, ralf@linux-mips.org, paul.burton@imgtec.com,
-        macro@imgtec.com, james.hogan@imgtec.com, jslaby@suse.cz,
-        adam.buchbinder@gmail.com, linux-mips@linux-mips.org
-Subject: [PATCH 0194/1529] Fix typo
-Date:   Sat, 21 May 2016 14:01:27 +0200
-Message-Id: <20160521120127.10031-1-andrea.gelmini@gelma.net>
+Cc:     trivial@kernel.org, ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH 0195/1529] Fix typo
+Date:   Sat, 21 May 2016 14:01:36 +0200
+Message-Id: <20160521120136.10090-1-andrea.gelmini@gelma.net>
 X-Mailer: git-send-email 2.8.2.534.g1f66975
 Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53592
+X-archive-position: 53593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,21 +62,21 @@ X-list: linux-mips
 
 Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
 ---
- arch/mips/kernel/process.c | 2 +-
+ arch/mips/lib/memcpy.S | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 411c971..813ed78 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -345,7 +345,7 @@ static int get_frame_info(struct mips_frame_info *info)
- 		return 0;
- 	if (info->pc_offset < 0) /* leaf */
- 		return 1;
--	/* prologue seems boggus... */
-+	/* prologue seems bogus... */
- err:
- 	return -1;
- }
+diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
+index 9245e17..6c303a9 100644
+--- a/arch/mips/lib/memcpy.S
++++ b/arch/mips/lib/memcpy.S
+@@ -256,7 +256,7 @@
+ 
+ 	/*
+ 	 * Macro to build the __copy_user common code
+-	 * Arguements:
++	 * Arguments:
+ 	 * mode : LEGACY_MODE or EVA_MODE
+ 	 * from : Source operand. USEROP or KERNELOP
+ 	 * to   : Destination operand. USEROP or KERNELOP
 -- 
 2.8.2.534.g1f66975

@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:03:09 +0200 (CEST)
-Received: from mail-lb0-f196.google.com ([209.85.217.196]:35784 "EHLO
-        mail-lb0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27029238AbcEUMA6LjhgI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:00:58 +0200
-Received: by mail-lb0-f196.google.com with SMTP id mx9so6875724lbb.2;
-        Sat, 21 May 2016 05:00:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2016 14:03:30 +0200 (CEST)
+Received: from mail-lf0-f66.google.com ([209.85.215.66]:35726 "EHLO
+        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27032448AbcEUMBFPfWyI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2016 14:01:05 +0200
+Received: by mail-lf0-f66.google.com with SMTP id p10so3968827lfb.2;
+        Sat, 21 May 2016 05:01:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=sender:from:to:cc:subject:date:message-id;
-        bh=zdNw3k2SpBXrC9BwZ/9NF4kmRp0+5PWq2zFlBO97P/8=;
-        b=K0F3NC/6BOJFoE9BTqUwnULgUqKFV3wol4J0cPbMRB25r3i5VsF4HJfogOUATpYR0D
-         XJJbkmGmqE2D3dmYSolnJGm0xvG5nzfOw6fltml9vNDgplljLv0aAhO+C5LrIaD/Nsaj
-         NkO+LKSOsryZ6fSVZMuTvn2tNfZ+qleUfT9MgTrTKGxmLXgJ26VNf0+/9kdeZh0qC5fL
-         u13QLOEhG61cTVPLtF70qshd2RqgCNaw4nkUpq68QueCYuo2ApbK85ct3vjpoIRlxHy0
-         u8AwtfRfUZFp1pxNgBd1U7YUcGe1dbKpuCPCyO5ABxI+2jIZjXCOLs6O1PORFKStASGW
-         cRYw==
+        bh=FBrw4C64JD8eeo4v8BzkTeNxGJKLpX8s7oOB9gLfK+0=;
+        b=S+rUcKDZlJgHGsHz33DedKv45BziUdxBDgzkwcxFudWhTzUTjptlZZRkB020Spq/k3
+         sFjtZsM5DxgJsD3oHwe5ufM4ZnHFPdGBNB4t7tiJnwZNzJY8iaFI6XDV243lfy/wHyC4
+         cIebNZNGVCHr7nv8Jkprowfya+vm68MqKFE1cINCMaM6vk7ncpX86gtztI3Y7f4SL8l/
+         kD1uFHxd6pn4wd4bXDDmVlS6MRdT9TTcR17sU5SXwof7iuDJc8VaOfB7fmT4BQWImFdX
+         8cLtDXDAZmkalw5c3ZecMwogEawEPTeBIPNyz2nrLR1gtf+nb0idwQjHmH2Jy5JV1HP5
+         yqwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=zdNw3k2SpBXrC9BwZ/9NF4kmRp0+5PWq2zFlBO97P/8=;
-        b=cY2pedgjsQskvEF74ci7gdJm6t66YWyhFJOtAOw2fzQKjwninlDw5H46qF5duHQFCs
-         T7Zh/RJgf1JmF4uI00VipI/D/9qovYq9DOWYY8dJfPwef1geNeujpxuQn1uL3J3Rhh3w
-         rLuWiVQQhdhkhJ1zAPKZm6jit4xzrLOAp6Q8KxZc+mZFd4efcQxTFb9GAW6zHB31hBpi
-         5Cw+p4Fk5LbxNp8uc7tLlrNEi/PtfJp1JnRbwW30CW42i7V1UzKhzD28dy7b7FsXb/oH
-         ZOPjsWVzzkvH+/sFAnex2zUZmFxJHNpOR4qnry4ospLNKWRCe5ARX5Fa2cV2ShLR0Cv8
-         G2Sw==
-X-Gm-Message-State: AOPr4FWMSNa4McXoJl936+ad5BB5U9TQpERP3WLmp5NMmAoinwzRqGnnGwrlpqNrSxm7rQ==
-X-Received: by 10.112.157.65 with SMTP id wk1mr2669169lbb.131.1463832052899;
-        Sat, 21 May 2016 05:00:52 -0700 (PDT)
+        bh=FBrw4C64JD8eeo4v8BzkTeNxGJKLpX8s7oOB9gLfK+0=;
+        b=A8btaLd6nDiQRBwED23Lr9JVvKehSHKnWGvlaH+qSIw7JRAqRxJAIe5fkld3shA8AC
+         6oEy+forz2MK5kqvIl9XXYNwEXmXnIC0d/Og4vR1xk0cf6LNKZFk1Va3ZctuUnayda/B
+         vn3sykaeyG4KuUHTFWAYZgtQxRQ8YI5kFzkZno+jV1pPE+wCFeTDVrci5ymf6fx+wIUL
+         PpEFjvbjAR4a0/M0OgMVKzdS30/7i+XkUhMsbFCeXz+mRnlwzR1OSdhOIFIstAuX+4eV
+         B0wnKCjNQz72tqlAGmWgLNCvYx/3hvNFocCLY6n9JD6zwal9Xmz9K/FnjnUwCE5Bh6O1
+         m3bA==
+X-Gm-Message-State: AOPr4FVSZB9ditJGXYrznlGioCx+3pECBqJ0MUxo4KX0YUzUTB8F+t32wz8ITbde/RIaJg==
+X-Received: by 10.25.134.138 with SMTP id i132mr2736243lfd.70.1463832059931;
+        Sat, 21 May 2016 05:00:59 -0700 (PDT)
 Received: from glen.ipredator.se (anon-35-25.vpn.ipredator.se. [46.246.35.25])
-        by smtp.gmail.com with ESMTPSA id g10sm4153895lbc.43.2016.05.21.05.00.49
+        by smtp.gmail.com with ESMTPSA id d63sm2625048lfb.48.2016.05.21.05.00.57
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 21 May 2016 05:00:51 -0700 (PDT)
+        Sat, 21 May 2016 05:00:58 -0700 (PDT)
 From:   Andrea Gelmini <andrea.gelmini@gelma.net>
 To:     andrea.gelmini@gelma.net
 Cc:     trivial@kernel.org, ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH 0189/1529] Fix typo
-Date:   Sat, 21 May 2016 14:00:48 +0200
-Message-Id: <20160521120048.9710-1-andrea.gelmini@gelma.net>
+Subject: [PATCH 0190/1529] Fix typo
+Date:   Sat, 21 May 2016 14:00:56 +0200
+Message-Id: <20160521120056.9766-1-andrea.gelmini@gelma.net>
 X-Mailer: git-send-email 2.8.2.534.g1f66975
 Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53587
+X-archive-position: 53588
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,21 +62,21 @@ X-list: linux-mips
 
 Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
 ---
- arch/mips/include/asm/octeon/cvmx-helper-board.h | 2 +-
+ arch/mips/include/asm/octeon/cvmx-ipd.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-board.h b/arch/mips/include/asm/octeon/cvmx-helper-board.h
-index 8933203..cda93ae 100644
---- a/arch/mips/include/asm/octeon/cvmx-helper-board.h
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-board.h
-@@ -94,7 +94,7 @@ extern int cvmx_helper_board_get_mii_address(int ipd_port);
-  * @phy_addr:  The address of the PHY to program
-  * @link_flags:
-  *		    Flags to control autonegotiation.  Bit 0 is autonegotiation
-- *		    enable/disable to maintain backware compatibility.
-+ *		    enable/disable to maintain backward compatibility.
-  * @link_info: Link speed to program. If the speed is zero and autonegotiation
-  *		    is enabled, all possible negotiation speeds are advertised.
-  *
+diff --git a/arch/mips/include/asm/octeon/cvmx-ipd.h b/arch/mips/include/asm/octeon/cvmx-ipd.h
+index e13490e..cbdc14b 100644
+--- a/arch/mips/include/asm/octeon/cvmx-ipd.h
++++ b/arch/mips/include/asm/octeon/cvmx-ipd.h
+@@ -39,7 +39,7 @@
+ 
+ enum cvmx_ipd_mode {
+    CVMX_IPD_OPC_MODE_STT = 0LL,	  /* All blocks DRAM, not cached in L2 */
+-   CVMX_IPD_OPC_MODE_STF = 1LL,	  /* All bloccks into  L2 */
++   CVMX_IPD_OPC_MODE_STF = 1LL,	  /* All blocks into  L2 */
+    CVMX_IPD_OPC_MODE_STF1_STT = 2LL,   /* 1st block L2, rest DRAM */
+    CVMX_IPD_OPC_MODE_STF2_STT = 3LL    /* 1st, 2nd blocks L2, rest DRAM */
+ };
 -- 
 2.8.2.534.g1f66975

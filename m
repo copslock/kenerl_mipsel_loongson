@@ -1,58 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2016 17:57:21 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.131]:54649 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27033458AbcEWP5QB-w3E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 May 2016 17:57:16 +0200
-Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
- (mreue005) with ESMTPSA (Nemesis) id 0MfDvq-1atPqS08oU-00OpRz; Mon, 23 May
- 2016 17:55:06 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Michal Marek <mmarek@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] kbuild: Remove stale asm-generic wrappers
-Date:   Mon, 23 May 2016 17:55:02 +0200
-Message-ID: <6113470.ejZJVBYpBf@wuerfel>
-User-Agent: KMail/5.1.3 (Linux/4.4.0-22-generic; KDE/5.18.0; x86_64; ; )
-In-Reply-To: <1463991681-3531-1-git-send-email-james.hogan@imgtec.com>
-References: <1463991681-3531-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2016 18:21:32 +0200 (CEST)
+Received: from mail-pf0-f170.google.com ([209.85.192.170]:35840 "EHLO
+        mail-pf0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27033136AbcEWQVbR6WAE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 May 2016 18:21:31 +0200
+Received: by mail-pf0-f170.google.com with SMTP id c189so68045326pfb.3;
+        Mon, 23 May 2016 09:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-transfer-encoding;
+        bh=Khiq8rZyRqavS4yl1VTnmHwEciNVi5RrcA1LWZZL9XA=;
+        b=lmtEdIlZX2jbQ6TXATyUHmbTpv7T3bJaq1WVuReZJBsReTRjCDrfnBphnPXHq2l2fY
+         HbksuUhiiOW/h63yTaAt3wP2bCneW0v2O8XAKrNXuvDePWXLB4Ykgcb05L7G/rLpVQ/f
+         jra/ADWrB1YtIszerh50M8FBIh8Mc5+DSqpReUnaApmXgD9wOH6Qlt0ehUCAYjonia4j
+         jHsseZWfDC/QRFprQ7VdFUHvSS1Ksj692z9TE/WsMGjZTTSadBm6Ts0SaGaLvlcg/B2I
+         y0dy0yzB5taFGhzfo7ySpKQx8HZZoanm+HHMhSUVE4EteACcxv5ESrGk6F50l0UZY37/
+         4j1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-transfer-encoding;
+        bh=Khiq8rZyRqavS4yl1VTnmHwEciNVi5RrcA1LWZZL9XA=;
+        b=ayi6DpofK+qDXE6Gtpjsc3zIO9Xu6yzEyP0I05saY4n7euGpMeLw3BAtLsPCL/Lfme
+         VARm2Yw1Hrf6FH8GLqlAkVnB/B7yxi3/QTWKq1Aq+k8/HxTD3osu5b1mErMxkj4by9w0
+         4RuxLB2IsuJyAF/F/5ZbGPpn//SilH/kU5sX4gYcNlSdPJAR67k6kD+UUAx7xH+S3ygh
+         CZ6KepI6x4HyKhLJ5fDoXHRnONg8uWNCNOqkk3TMuaLkqLwCJ+xAvqiFHLme65OdSLzA
+         jSJz4HpX49fmu/IWWJVh4H9flENCq6yijE0AaAcx2q8TiNHtrw2/tW0fB4rKBUWzym6V
+         E88g==
+X-Gm-Message-State: AOPr4FWybAoZptGMmxqTOUrZco/VusLju++lz1Kpb7a0xvJ5S0Z0f7VLCCBpiIUakNOUkA==
+X-Received: by 10.98.47.194 with SMTP id v185mr28351496pfv.120.1464020485077;
+        Mon, 23 May 2016 09:21:25 -0700 (PDT)
+Received: from dl.caveonetworks.com ([50.233.148.158])
+        by smtp.googlemail.com with ESMTPSA id l123sm47818645pfl.36.2016.05.23.09.21.23
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 23 May 2016 09:21:23 -0700 (PDT)
+Message-ID: <57432E02.9000008@gmail.com>
+Date:   Mon, 23 May 2016 09:21:22 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:Uv7HTrCyxvb950Wu4RkCVASb5ks/JW1e34dY2WD41hRko9E60Df
- rMJOxD9xE4IV14jo3fg9uX9KPxYSrtwOlBWqHTglZm4dt/zKaINAQYA1uTRp4r/S9XyPRLK
- nnIuevoVtENQcOSyFnGQpEctDfq+nOjkCyNtDuz82OT7DPoGY5ZLZabUhlr//YwOuqp7gnb
- HaAaSrxUdrNx9um9+fjFQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:8AleXzpeRBU=:I2abN/WPb9urFbjuhVWmaQ
- ALkpYwbq4gsy1a7gwC37MbraAiZPRQMbIcfhC+feuDHPmr2zwYTgr34epL0+1+AeAmq1XrZEs
- xZwa4ATeWaGMIsX2z48wrnA05DgeRjpTL7FPZzZlRsiMgVHs7NRdmgSeNIf2IhIckaU/RAT+J
- YBrFTSNDZOSmqwC+p6p4GEJtnbxDMRzLrEZCaczEsthz/RuF1awIh2yCtwYAYlcOYAoFOqkKJ
- 5HVCioDvbTS1M6A/9rmzlgKzfrB/iz3R5FsQ7ZBEodXSBDN6lF4vs8InjfuyWI7KcQlk2pY6w
- yDyiG7f8Juxd4V+RiX8BWkBXZYW5DjZe08mufWrL7uWoS1zgYaarReIA5iX4iz3+KfjzUUnXI
- 1V3uA9z95PddvIupQkmXNDJ5acyQx4NybF/b+TdsykxGEOpwW86mgWV5KHLn615hZ1S/yvEWW
- cq7NVH3f7ULd83IuEqgbKPY/T2ybdLd/X1h5AMc0eYBwsFXqq4R5wW+ViUGlM43WzROhjFAzQ
- W7vfGdsiqZIvFWU2BUB69EGh59cZ9H5BU27z3ZymDw1IfJPxVYb0NxwwF58f1nId9+aIRRL6J
- +WVWPC7E6XretEB2j/ZeoTOJlfO2rxrPpg/ud39kzQsHkpZ7wwoDTp1WTdO9ajWweWEUWQGNx
- DKU/qtvVvRRRMnAaKPgOAKOfK70eFHdzFwYMkBTZf6dRv7s4oRTpKmOFzc+payBPqOuE2N3Gp
- KKiQWdlaULjWcQmp
-Return-Path: <arnd@arndb.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Aaro Koskinen <aaro.koskinen@nokia.com>,
+        Joshua Kinard <kumba@gentoo.org>, linux-mips@linux-mips.org,
+        "Hill, Steven" <Steven.Hill@cavium.com>
+Subject: Re: THP broken on OCTEON?
+References: <20160523151346.GA23204@ak-desktop.emea.nsn-net.net> <20160523152007.GB28729@linux-mips.org>
+In-Reply-To: <20160523152007.GB28729@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53616
+X-archive-position: 53617
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,26 +69,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday, May 23, 2016 9:21:19 AM CEST James Hogan wrote:
-> This patchset attempts to fix kbuild to automatically remove stale
-> asm-generic wrappers, i.e. when files are removed from generic-y and
-> added directly into arch/*/include/uapi/asm/, but where the existing
-> wrapper in arch/*/include/generated/asm/ continues to be used.
-> 
-> MIPS was recently burned by this in v4.3 (see patch 2), with continuing
-> reports of build failures when people upgrade their trees, which go away
-> after arch/mips/include/generated is removed (or reportedly make
-> mrproper/distclean). It is particularly irritating during bisection.
+On 05/23/2016 08:20 AM, Ralf Baechle wrote:
+> On Mon, May 23, 2016 at 06:13:46PM +0300, Aaro Koskinen wrote:
+>
+>> I'm getting kernel crashes (see below) reliably when building Perl in
+>> parallel (make -j16) on OCTEON EBH5600 board (8 cores, 4 GB RAM) with
+>> Linux 4.6.
+>>
+>> It seems that CONFIG_TRANSPARENT_HUGEPAGE has something to do with the
+>> issue - disabling it makes build go through fine.
+>>
+>> Any ideas?
+>
+> I thought it was working except on SGI Origin 200/2000 aka IP27 where
+> Joshua Kinard (added to cc) was hitting issues as well.
+>
+> Joshua, does that similar to the issues you were hitting?
 
-Nice series!
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+There is nothing OCTEON specific in the THP code, or huge pages in general.
 
-There are a number of files that we leave behind after a make clean,
-and I also wondered if we could remove some more of them, but I couldn't
-easily figure out which of them were left intentionally.
+That said, we have seen other THP related failures, and have never been 
+able to find the cause.
 
-The asm-generic wrappers certainly are not there for a good reason,
-and it's good to see them gone.
+If someone can come up with a reproducible test case that triggers 
+quickly, we can run it in our simulator and easily find the problem.
 
-	Arnd
+There are THP tweaking knobs in /sys/kernel/mm/transparent_hugepage.  If 
+you reduce the time in khugepaged/scan_sleep_millisecs, it often makes 
+things fail much more quickly.
+
+David.

@@ -1,37 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 May 2016 11:07:05 +0200 (CEST)
-Received: from albert.telenet-ops.be ([195.130.137.90]:57861 "EHLO
-        albert.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032919AbcEVJGqVwUV6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 May 2016 11:06:46 +0200
-Received: from ayla.of.borg ([84.195.107.21])
-        by albert.telenet-ops.be with bizsmtp
-        id xM6l1s0180TjorY06M6l8f; Sun, 22 May 2016 11:06:46 +0200
-Received: from ramsan.of.borg ([192.168.97.29] helo=ramsan)
-        by ayla.of.borg with esmtp (Exim 4.82)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1b4PLR-0006PI-OS; Sun, 22 May 2016 11:06:45 +0200
-Received: from geert by ramsan with local (Exim 4.82)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1b4PLV-00028F-Ch; Sun, 22 May 2016 11:06:49 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 30/54] MAINTAINERS: Add file patterns for mips device tree bindings
-Date:   Sun, 22 May 2016 11:06:07 +0200
-Message-Id: <1463907991-7916-31-git-send-email-geert@linux-m68k.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1463907991-7916-1-git-send-email-geert@linux-m68k.org>
-References: <1463907991-7916-1-git-send-email-geert@linux-m68k.org>
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2016 10:21:52 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:65277 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27029436AbcEWIVt7delG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 May 2016 10:21:49 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id 5F2EFC116707;
+        Mon, 23 May 2016 09:21:41 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 23 May 2016 09:21:43 +0100
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Mon, 23 May 2016 09:21:43 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <x86@kernel.org>, <linux-arch@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, Thomas Gleixner <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Michal Marek <mmarek@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        <linux-kbuild@vger.kernel.org>, <linux-doc@vger.kernel.org>
+Subject: [PATCH v3 0/2] kbuild: Remove stale asm-generic wrappers
+Date:   Mon, 23 May 2016 09:21:19 +0100
+Message-ID: <1463991681-3531-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53605
+X-archive-position: 53606
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,30 +55,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Submitters of device tree binding documentation may forget to CC
-the subsystem maintainer if this is missing.
+This patchset attempts to fix kbuild to automatically remove stale
+asm-generic wrappers, i.e. when files are removed from generic-y and
+added directly into arch/*/include/uapi/asm/, but where the existing
+wrapper in arch/*/include/generated/asm/ continues to be used.
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+MIPS was recently burned by this in v4.3 (see patch 2), with continuing
+reports of build failures when people upgrade their trees, which go away
+after arch/mips/include/generated is removed (or reportedly make
+mrproper/distclean). It is particularly irritating during bisection.
+
+Since v2 I've seen other cases of this breaking MIPS build, and testing
+on x86_64, starting a build first on v4.0 and then on mainline with this
+patchset shows one stale generated header:
+  REMOVE  arch/x86/include/generated/asm/scatterlist.h
+
+Changes in v3:
+- Ensure FORCE actually gets marked .PHONY.
+
+Changes in v2:
+- New patch 1 to add tracking of generated headers that aren't generic-y
+  wrappers, via generated-y, particularly for x86 (thanks to kbuild test
+  robot).
+- Rewrite a bit, drawing inspiration from Makefile.headersinst.
+- Exclude genhdr-y and generated-y (thanks to kbuild test robot).
+
+James Hogan (2):
+  kbuild, x86: Track generated headers with generated-y
+  kbuild: Remove stale asm-generic wrappers
+
+ Documentation/kbuild/makefiles.txt | 14 ++++++++++++++
+ arch/x86/include/asm/Kbuild        |  6 ++++++
+ scripts/Makefile.asm-generic       | 17 ++++++++++++++++-
+ 3 files changed, 36 insertions(+), 1 deletion(-)
+
+Cc: Michal Marek <mmarek@suse.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc: linux-kbuild@vger.kernel.org
+Cc: x86@kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
 Cc: linux-mips@linux-mips.org
----
-Please apply this patch directly if you want to be involved in device
-tree binding documentation for your subsystem.
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 48ef0bd805968787..c1e413b2c61a9746 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7536,6 +7536,7 @@ W:	http://www.linux-mips.org/
- T:	git git://git.linux-mips.org/pub/scm/ralf/linux.git
- Q:	http://patchwork.linux-mips.org/project/linux-mips/list/
- S:	Supported
-+F:	Documentation/devicetree/bindings/mips/
- F:	Documentation/mips/
- F:	arch/mips/
- 
 -- 
-1.9.1
+2.4.10

@@ -1,53 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2016 17:47:44 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:38058 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27033472AbcEWPrkTsiXE convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 May 2016 17:47:40 +0200
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 228BB203C2;
-        Mon, 23 May 2016 15:47:38 +0000 (UTC)
-Received: from mail-yw0-f181.google.com (mail-yw0-f181.google.com [209.85.161.181])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E7584203A5;
-        Mon, 23 May 2016 15:47:36 +0000 (UTC)
-Received: by mail-yw0-f181.google.com with SMTP id x189so174494671ywe.3;
-        Mon, 23 May 2016 08:47:36 -0700 (PDT)
-X-Gm-Message-State: ALyK8tIwIUjRKONCtsdlYkwxEdnokSBAUraS20d5ADJmoGXfA/h9jsSJDALz4xWcf8gs681Q+OafwG2NC5IALg==
-X-Received: by 10.129.153.72 with SMTP id q69mr4464134ywg.116.1464018456313;
- Mon, 23 May 2016 08:47:36 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.129.107.135 with HTTP; Mon, 23 May 2016 08:47:16 -0700 (PDT)
-In-Reply-To: <1464003540-13009-1-git-send-email-antonynpavlov@gmail.com>
-References: <1464003540-13009-1-git-send-email-antonynpavlov@gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 23 May 2016 10:47:16 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+CC3p0hPTtPB=RsL9O7sqX1ZXKkoFk0dOj0gvvKifAkw@mail.gmail.com>
-Message-ID: <CAL_Jsq+CC3p0hPTtPB=RsL9O7sqX1ZXKkoFk0dOj0gvvKifAkw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: devicetree: fix cpu interrupt controller node-names
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 May 2016 17:57:21 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.126.131]:54649 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27033458AbcEWP5QB-w3E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 May 2016 17:57:16 +0200
+Received: from wuerfel.localnet ([78.42.132.4]) by mrelayeu.kundenserver.de
+ (mreue005) with ESMTPSA (Nemesis) id 0MfDvq-1atPqS08oU-00OpRz; Mon, 23 May
+ 2016 17:55:06 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Michal Marek <mmarek@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Pawel Moll <pawel.moll@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Kumar Gala <galak@codeaurora.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh+dt@kernel.org>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] kbuild: Remove stale asm-generic wrappers
+Date:   Mon, 23 May 2016 17:55:02 +0200
+Message-ID: <6113470.ejZJVBYpBf@wuerfel>
+User-Agent: KMail/5.1.3 (Linux/4.4.0-22-generic; KDE/5.18.0; x86_64; ; )
+In-Reply-To: <1463991681-3531-1-git-send-email-james.hogan@imgtec.com>
+References: <1463991681-3531-1-git-send-email-james.hogan@imgtec.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:Uv7HTrCyxvb950Wu4RkCVASb5ks/JW1e34dY2WD41hRko9E60Df
+ rMJOxD9xE4IV14jo3fg9uX9KPxYSrtwOlBWqHTglZm4dt/zKaINAQYA1uTRp4r/S9XyPRLK
+ nnIuevoVtENQcOSyFnGQpEctDfq+nOjkCyNtDuz82OT7DPoGY5ZLZabUhlr//YwOuqp7gnb
+ HaAaSrxUdrNx9um9+fjFQ==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:8AleXzpeRBU=:I2abN/WPb9urFbjuhVWmaQ
+ ALkpYwbq4gsy1a7gwC37MbraAiZPRQMbIcfhC+feuDHPmr2zwYTgr34epL0+1+AeAmq1XrZEs
+ xZwa4ATeWaGMIsX2z48wrnA05DgeRjpTL7FPZzZlRsiMgVHs7NRdmgSeNIf2IhIckaU/RAT+J
+ YBrFTSNDZOSmqwC+p6p4GEJtnbxDMRzLrEZCaczEsthz/RuF1awIh2yCtwYAYlcOYAoFOqkKJ
+ 5HVCioDvbTS1M6A/9rmzlgKzfrB/iz3R5FsQ7ZBEodXSBDN6lF4vs8InjfuyWI7KcQlk2pY6w
+ yDyiG7f8Juxd4V+RiX8BWkBXZYW5DjZe08mufWrL7uWoS1zgYaarReIA5iX4iz3+KfjzUUnXI
+ 1V3uA9z95PddvIupQkmXNDJ5acyQx4NybF/b+TdsykxGEOpwW86mgWV5KHLn615hZ1S/yvEWW
+ cq7NVH3f7ULd83IuEqgbKPY/T2ybdLd/X1h5AMc0eYBwsFXqq4R5wW+ViUGlM43WzROhjFAzQ
+ W7vfGdsiqZIvFWU2BUB69EGh59cZ9H5BU27z3ZymDw1IfJPxVYb0NxwwF58f1nId9+aIRRL6J
+ +WVWPC7E6XretEB2j/ZeoTOJlfO2rxrPpg/ud39kzQsHkpZ7wwoDTp1WTdO9ajWweWEUWQGNx
+ DKU/qtvVvRRRMnAaKPgOAKOfK70eFHdzFwYMkBTZf6dRv7s4oRTpKmOFzc+payBPqOuE2N3Gp
+ KKiQWdlaULjWcQmp
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53615
+X-archive-position: 53616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh+dt@kernel.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,43 +65,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 23, 2016 at 6:39 AM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> Here is the quote from [1]:
->
->     The unit-address must match the first address specified
->     in the reg property of the node. If the node has no reg property,
->     the @ and unit-address must be omitted and the node-name alone
->     differentiates the node from other nodes at the same level
->
-> This patch adjusts MIPS dts-files and devicetree binding
-> documentation in accordance with [1].
->
->     [1] Power.org(tm) Standard for Embedded Power Architecture(tm)
->         Platform Requirements (ePAPR). Version 1.1 – 08 April 2011.
->         Chapter 2.2.1.1 Node Name Requirements
+On Monday, May 23, 2016 9:21:19 AM CEST James Hogan wrote:
+> This patchset attempts to fix kbuild to automatically remove stale
+> asm-generic wrappers, i.e. when files are removed from generic-y and
+> added directly into arch/*/include/uapi/asm/, but where the existing
+> wrapper in arch/*/include/generated/asm/ continues to be used.
+> 
+> MIPS was recently burned by this in v4.3 (see patch 2), with continuing
+> reports of build failures when people upgrade their trees, which go away
+> after arch/mips/include/generated is removed (or reportedly make
+> mrproper/distclean). It is particularly irritating during bisection.
 
-FYI, you can reference "the Devicetree Spec" now: devicetree.org
+Nice series!
 
-Acked-by: Rob Herring <robh@kernel.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@imgtec.com>
-> Cc: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Pawel Moll <pawel.moll@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Ian Campbell <ijc+devicetree@hellion.org.uk>
-> Cc: Kumar Gala <galak@codeaurora.org>
-> Cc: linux-mips@linux-mips.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  Documentation/devicetree/bindings/mips/cpu_irq.txt | 2 +-
->  arch/mips/boot/dts/ingenic/jz4740.dtsi             | 2 +-
->  arch/mips/boot/dts/ralink/mt7620a.dtsi             | 2 +-
->  arch/mips/boot/dts/ralink/rt2880.dtsi              | 2 +-
->  arch/mips/boot/dts/ralink/rt3050.dtsi              | 2 +-
->  arch/mips/boot/dts/ralink/rt3883.dtsi              | 2 +-
->  arch/mips/boot/dts/xilfpga/nexys4ddr.dts           | 2 +-
->  7 files changed, 7 insertions(+), 7 deletions(-)
+There are a number of files that we leave behind after a make clean,
+and I also wondered if we could remove some more of them, but I couldn't
+easily figure out which of them were left intentionally.
+
+The asm-generic wrappers certainly are not there for a good reason,
+and it's good to see them gone.
+
+	Arnd

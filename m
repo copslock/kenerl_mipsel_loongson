@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2016 12:42:46 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:18895 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27030917AbcEXKmoe46OM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 May 2016 12:42:44 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id D93B0ED0ABAB0;
-        Tue, 24 May 2016 11:42:35 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 24 May 2016 11:42:38 +0100
-Received: from mredfearn-linux.kl.imgtec.org (192.168.154.116) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Tue, 24 May 2016 11:42:34 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] genirq: Fix missing return value in irq_destroy_ipi()
-Date:   Tue, 24 May 2016 11:42:30 +0100
-Message-ID: <1464086550-24734-1-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2016 13:03:56 +0200 (CEST)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:41718 "EHLO smtp2-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27030917AbcEXLDyeO8nM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 24 May 2016 13:03:54 +0200
+Received: from [172.27.0.114] (unknown [83.142.147.193])
+        (Authenticated sender: slash.tmp)
+        by smtp2-g21.free.fr (Postfix) with ESMTPSA id D4B172003AC;
+        Tue, 24 May 2016 10:54:39 +0200 (CEST)
+Subject: Re: [PATCH RESEND v4 5/9] MIPS: Loongson-1A: workaround of pll
+ register's write-only property
+To:     Binbin Zhou <zhoubb@lemote.com>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org
+References: <1463622432-10298-1-git-send-email-zhoubb@lemote.com>
+From:   Mason <slash.tmp@free.fr>
+Message-ID: <57443510.4020105@free.fr>
+Date:   Tue, 24 May 2016 13:03:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:42.0) Gecko/20100101
+ Firefox/42.0 SeaMonkey/2.39
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.116]
-Return-Path: <Matt.Redfearn@imgtec.com>
+In-Reply-To: <1463622432-10298-1-git-send-email-zhoubb@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <slash.tmp@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53634
+X-archive-position: 53635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: slash.tmp@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,36 +42,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 7cec18a3906b ("genirq: Add error code reporting to
-irq_{reserve,destroy}_ipi") changed the return type of irq_destroy_ipi
-to int, but missed adding a value to one return statement. Fix this to
-silence the resultant compiler warning:
+On 19/05/2016 03:47, Binbin Zhou wrote:
 
-kernel/irq/ipi.c In function ‘irq_destroy_ipi’:
-kernel/irq/ipi.c:128:3: warning: ‘return’ with no value, in function returning non-void [-Wreturn-type]
-  return;
-  ^
-Fixes: 7cec18a3906b ("genirq: Add error code reporting to
-irq_{reserve,destroy}_ipi")
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> +#ifdef CONIFG_CPU_LOONGSON1A
 
----
+As I pointed out last week, CONFIG is misspelled.
 
- kernel/irq/ipi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/irq/ipi.c b/kernel/irq/ipi.c
-index c42742208e5e..89b49f6773f0 100644
---- a/kernel/irq/ipi.c
-+++ b/kernel/irq/ipi.c
-@@ -125,7 +125,7 @@ int irq_destroy_ipi(unsigned int irq, const struct cpumask *dest)
- 
- 	domain = data->domain;
- 	if (WARN_ON(domain == NULL))
--		return;
-+		return -EINVAL;
- 
- 	if (!irq_domain_is_ipi(domain)) {
- 		pr_warn("Trying to destroy a non IPI domain!\n");
--- 
-2.5.0
+Regards.

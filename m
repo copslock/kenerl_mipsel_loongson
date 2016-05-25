@@ -1,61 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2016 00:39:42 +0200 (CEST)
-Received: from mail-pf0-f182.google.com ([209.85.192.182]:34470 "EHLO
-        mail-pf0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032211AbcEXWjjVwMr1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2016 00:39:39 +0200
-Received: by mail-pf0-f182.google.com with SMTP id y69so11194820pfb.1;
-        Tue, 24 May 2016 15:39:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2016 10:41:34 +0200 (CEST)
+Received: from mail-lf0-f47.google.com ([209.85.215.47]:35074 "EHLO
+        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27006865AbcEYIldOwYM1 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 May 2016 10:41:33 +0200
+Received: by mail-lf0-f47.google.com with SMTP id w16so3101256lfd.2
+        for <linux-mips@linux-mips.org>; Wed, 25 May 2016 01:41:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-transfer-encoding;
-        bh=LLcnsKQRVA4H5dlOBuRggg5+770wMBMpvbhIx/aWJUM=;
-        b=keCJZ4M8Hy9zJWZ+Rr34UeDVAxYoptg/2al1h5r2fF8+sI/l8HvRO8CGOexQUeDWcZ
-         fOk/BvycnuugIjoeDPfihsPf3cGrjo3p6XMuY7Wj9l+dvG3Fwv+ju8NoWckyLJzKaDA8
-         7PcbqoXOksBRJs4iHcO5/zqkrA/weJgagPSM4vCTfDawsZ51564+yBLSay3DYr+iu754
-         Ay3tggidCYsUP3YzLDdHLHizoFwWR2HSpmQKWgETmmrDE5Xaw1+mU8PpoFpyMMHefEyT
-         4Zue8vptPo5H++L93tZCdLr80pGWTvWhMewR2wEYRqeXV8H1J46tTc0AflpfLGSCwPuq
-         Gl0A==
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=jrs9buI419aKYJx+80E74Ok6Hu12gj9XO8q5Ddlay6c=;
+        b=0hgPlZovNg2Mfz9StPAZOmpamZTOlJAzU2/Lj9febrj4Q4mNArtiHdSFGC61qDQZIJ
+         DfOTr+81eAyVelIZZxtQalWsF6ucJVEiXKdcdZw5osrZlYeD2XSXhhaXRK2morNIvbLy
+         VVGIXYe9hqsgjnjWTrv4twQneCcWV3WNaNSNPFzE6J9HhNX8w/5f8kDHIzBBMwr0TgnB
+         cbOqVDANsX7t+kG++cScZekYvM6iX/RiBxgocsE545RVxDkpVBMkip14SI6nIfljhzK7
+         LkbiZa91iPJuexYE4gz1eekp/PRUweTDFlFQOc8kYwcfM0P1tpDXw24btH7F4/Ejf2p1
+         cEfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-transfer-encoding;
-        bh=LLcnsKQRVA4H5dlOBuRggg5+770wMBMpvbhIx/aWJUM=;
-        b=dB6cuG3HjvXpsGwszhjCer1hmIabqHWhNmAUhkPHiLg+r5MPKn8iiECFdviq2BWNFX
-         LSjoOrMkiurac8SZYPktdvQD1CVWoKuyRcxOM1FA3PY1QkIPyjyDJ0qTVorfBB9xCOrH
-         qWqurBDaoTU+v6yluQNbnXkoliIMwrmFLCmNzaBxvlIA2ZfvXd0lclS8SX7jWQ+r0F1s
-         q6n8b2UK4vFRXVfY0K5aoKzfp6neSF3idVylM7B548Xgc4SsVTDEq+iY9T+aBXZ/x60r
-         XA33rbcUpHZkubk0Fpi9PxHesAfp6W4M1GHQ0WIH18sgwtPDdE784O8PiwuRlp7bLCyA
-         Er2Q==
-X-Gm-Message-State: ALyK8tKo7iEboKpLae+DZ8BBkzx8Np5avUuAUCwBlts9TVxr2xz3+QoNkYjVseNPKtf5PA==
-X-Received: by 10.98.90.130 with SMTP id o124mr830002pfb.115.1464129573180;
-        Tue, 24 May 2016 15:39:33 -0700 (PDT)
-Received: from dl.caveonetworks.com ([50.233.148.158])
-        by smtp.googlemail.com with ESMTPSA id 205sm8375958pfy.32.2016.05.24.15.39.31
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=jrs9buI419aKYJx+80E74Ok6Hu12gj9XO8q5Ddlay6c=;
+        b=UN1klRVcoCOlQ5Z+yUyv3PAqMZKwV5Fyafrk/SbQgunVRkTKhr58aJUMQZC3tehipK
+         yWaRzDae0ShLq296/z2BFIWGPvlIQv0ALDftOBsUD5fskqWsm7zuHCaMaQtT2IX2RKmK
+         VWbYMOMxSQB63RyYtK8Poa/moVLUr1QVdvuAVxPDeWepbYwyveUXnKocz2CeaYSjm1TN
+         DlF90WG4S+/8vrsbhyLLDJQiNvfXDuGKsl90oruzVii5M5NazVCmMHqlytrUUsRIV2dj
+         brcIuDEJe+ysLZscj13dxBVtv1I0g3dD4TWrlQgdDiBhzFlkfdDO1Stoo5a2O+pckagU
+         Rwmg==
+X-Gm-Message-State: ALyK8tLtoLIzqlCJAvGABcyra0mkXGMqsrl9GfYn9+y4QpkwAlLHalROx3UzFUZXFdBP5w==
+X-Received: by 10.25.216.234 with SMTP id r103mr253288lfi.192.1464147001690;
+        Tue, 24 May 2016 20:30:01 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id d126sm1029023lfd.42.2016.05.24.20.30.00
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 24 May 2016 15:39:31 -0700 (PDT)
-Message-ID: <5744D823.2060001@gmail.com>
-Date:   Tue, 24 May 2016 15:39:31 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
-MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     Joshua Kinard <kumba@gentoo.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: THP broken on OCTEON?
-References: <20160523151346.GA23204@ak-desktop.emea.nsn-net.net> <20160523152007.GB28729@linux-mips.org> <5743529A.4070506@gentoo.org> <20160523192219.GB24125@linux-mips.org> <57435CB4.5080609@gentoo.org> <20160524212139.GC1253@raspberrypi.musicnaut.iki.fi>
-In-Reply-To: <20160524212139.GC1253@raspberrypi.musicnaut.iki.fi>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+        Tue, 24 May 2016 20:30:00 -0700 (PDT)
+Date:   Wed, 25 May 2016 06:31:05 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>, linux-mips@linux-mips.org,
+        Jonas Gorski <jogo@openwrt.org>,
+        Mathias Kresin <openwrt@kresin.me>
+Subject: Re: [RFC PATCH] Re: Adding support for device tree and command line
+Message-Id: <20160525063105.85bfe3e0c4dde0b716981fb1@gmail.com>
+In-Reply-To: <1464109249.27173.27.camel@chimera>
+References: <574372CD.1060201@hauke-m.de>
+        <5743777F.9060801@hauke-m.de>
+        <1464041521.5475.18.camel@chimera>
+        <1464067930.27173.7.camel@chimera>
+        <20160524142711.58a6bf90f3adbe18a28973b3@gmail.com>
+        <1464102907.27173.23.camel@chimera>
+        <1464103650.27173.26.camel@chimera>
+        <20160524194818.9e8399a56669134de4baee1e@gmail.com>
+        <1464109249.27173.27.camel@chimera>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53649
+X-archive-position: 53650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,28 +78,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/24/2016 02:21 PM, Aaro Koskinen wrote:
-> Hi,
->
-> On Mon, May 23, 2016 at 03:40:36PM -0400, Joshua Kinard wrote:
->> Might try some of those combinations and see if things improve on the Octeon?
->> IP27 was equally affected by this, minus the bits about RAM and Impact Gfx.
->> turning off THP, IP30 can run 64KB PAGE_SIZE without issue (compiles of
->> packages is actually sped up quite significantly under >4KB PAGE_SIZE).
->
-> I think with 64KB page size, huge pages (512MB) are never allocated
-> unless you have insane amounts of memory?
+On Tue, 24 May 2016 10:00:49 -0700
+Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us> wrote:
 
-Yes, you need a lot of memory, but more importantly the replacement of 
-pages with a THP cannot happen unless there are 512MB aligned chunks of 
-VMAs, and that is rare.
+> On Tue, 2016-05-24 at 19:48 +0300, Antony Pavlov wrote:
+> > Also we can drop '#if defined(CONFIG_*' in favour of 'if
+> > (IS_ENABLED(CONFIG_*'.
+> > 
+> > -- 
+> > Best regards,
+> >   Antony Pavlov
+> 
+> OK. Anything else?
 
-> I tried today some builds
-> with 64KB pages on 4GB system and it was stable, but also AnonHugePages
-> stayed constantly at zero. But with 4KB pages it is frequently changing,
-> and crashes in minutes.
->
-> A.
->
->
->
+I have nothing more to say just now.
+At the moment I don't use UHI-enabled bootloader.
+I'm planning to add UHI support to barebox bootloader (http://www.barebox.org)
+in a few weeks.
+
+What bootloader do you use?
+
+-- 
+Best regards,
+  Antony Pavlov

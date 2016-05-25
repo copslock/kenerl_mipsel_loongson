@@ -1,54 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Jun 2016 20:41:07 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49763 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042204AbcFDSlERUZeq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Jun 2016 20:41:04 +0200
-Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0D3A894A;
-        Sat,  4 Jun 2016 18:40:58 +0000 (UTC)
-Subject: Patch "MIPS: lib: Mark intrinsics notrace" has been added to the 4.4-stable tree
-To:     harvey.hunt@imgtec.com, gregkh@linuxfoundation.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org
-Cc:     <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 04 Jun 2016 11:40:57 -0700
-Message-ID: <146506565726122@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53808
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Harvey Hunt <harvey.hunt@imgtec.com>
+Date: Wed, 25 May 2016 11:06:35 +0100
+Subject: MIPS: lib: Mark intrinsics notrace
+Message-ID: <20160525100635.7mRB66VBKS5a5-3HdUs7knHW9f_X5p3Nd4twt0HgPz8@z>
+
+From: Harvey Hunt <harvey.hunt@imgtec.com>
+
+commit aedcfbe06558a9f53002e82d5be64c6c94687726 upstream.
+
+On certain MIPS32 devices, the ftrace tracer "function_graph" uses
+__lshrdi3() during the capturing of trace data. ftrace then attempts to
+trace __lshrdi3() which leads to infinite recursion and a stack overflow.
+Fix this by marking __lshrdi3() as notrace. Mark the other compiler
+intrinsics as notrace in case the compiler decides to use them in the
+ftrace path.
+
+Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
+Cc: <linux-mips@linux-mips.org>
+Cc: <linux-kernel@vger.kernel.org>
+Patchwork: https://patchwork.linux-mips.org/patch/13354/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/lib/ashldi3.c |    2 +-
+ arch/mips/lib/ashrdi3.c |    2 +-
+ arch/mips/lib/bswapdi.c |    2 +-
+ arch/mips/lib/bswapsi.c |    2 +-
+ arch/mips/lib/cmpdi2.c  |    2 +-
+ arch/mips/lib/lshrdi3.c |    2 +-
+ arch/mips/lib/ucmpdi2.c |    2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
+
+--- a/arch/mips/lib/ashldi3.c
++++ b/arch/mips/lib/ashldi3.c
+@@ -2,7 +2,7 @@
+ 
+ #include "libgcc.h"
+ 
+-long long __ashldi3(long long u, word_type b)
++long long notrace __ashldi3(long long u, word_type b)
+ {
+ 	DWunion uu, w;
+ 	word_type bm;
+--- a/arch/mips/lib/ashrdi3.c
++++ b/arch/mips/lib/ashrdi3.c
+@@ -2,7 +2,7 @@
+ 
+ #include "libgcc.h"
+ 
+-long long __ashrdi3(long long u, word_type b)
++long long notrace __ashrdi3(long long u, word_type b)
+ {
+ 	DWunion uu, w;
+ 	word_type bm;
+--- a/arch/mips/lib/bswapdi.c
++++ b/arch/mips/lib/bswapdi.c
+@@ -1,6 +1,6 @@
+ #include <linux/module.h>
+ 
+-unsigned long long __bswapdi2(unsigned long long u)
++unsigned long long notrace __bswapdi2(unsigned long long u)
+ {
+ 	return (((u) & 0xff00000000000000ull) >> 56) |
+ 	       (((u) & 0x00ff000000000000ull) >> 40) |
+--- a/arch/mips/lib/bswapsi.c
++++ b/arch/mips/lib/bswapsi.c
+@@ -1,6 +1,6 @@
+ #include <linux/module.h>
+ 
+-unsigned int __bswapsi2(unsigned int u)
++unsigned int notrace __bswapsi2(unsigned int u)
+ {
+ 	return (((u) & 0xff000000) >> 24) |
+ 	       (((u) & 0x00ff0000) >>  8) |
+--- a/arch/mips/lib/cmpdi2.c
++++ b/arch/mips/lib/cmpdi2.c
+@@ -2,7 +2,7 @@
+ 
+ #include "libgcc.h"
+ 
+-word_type __cmpdi2(long long a, long long b)
++word_type notrace __cmpdi2(long long a, long long b)
+ {
+ 	const DWunion au = {
+ 		.ll = a
+--- a/arch/mips/lib/lshrdi3.c
++++ b/arch/mips/lib/lshrdi3.c
+@@ -2,7 +2,7 @@
+ 
+ #include "libgcc.h"
+ 
+-long long __lshrdi3(long long u, word_type b)
++long long notrace __lshrdi3(long long u, word_type b)
+ {
+ 	DWunion uu, w;
+ 	word_type bm;
+--- a/arch/mips/lib/ucmpdi2.c
++++ b/arch/mips/lib/ucmpdi2.c
+@@ -2,7 +2,7 @@
+ 
+ #include "libgcc.h"
+ 
+-word_type __ucmpdi2(unsigned long long a, unsigned long long b)
++word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
+ {
+ 	const DWunion au = {.ll = a};
+ 	const DWunion bu = {.ll = b};
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from harvey.hunt@imgtec.com are
 
-    MIPS: lib: Mark intrinsics notrace
-
-to the 4.4-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mips-lib-mark-intrinsics-notrace.patch
-and it can be found in the queue-4.4 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.4/mips-lib-mark-intrinsics-notrace.patch

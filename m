@@ -1,68 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2016 11:03:36 +0200 (CEST)
-Received: from mail-pa0-f42.google.com ([209.85.220.42]:34988 "EHLO
-        mail-pa0-f42.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27028400AbcEYJDeVf2F1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2016 11:03:34 +0200
-Received: by mail-pa0-f42.google.com with SMTP id tb2so15901033pac.2
-        for <linux-mips@linux-mips.org>; Wed, 25 May 2016 02:03:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com; s=20150623;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=2VpVQ5sjT50gzM4Vh4vZAKAaeESxjG6M2hMI3zfNNLQ=;
-        b=O4jXr4w70573NqcOnK4/ZecRPh/HP7L5FXd3/tWqsCB7s2pXJ8HPt4OPMRMcLV6XY/
-         gsVQuT+djxXWIUtJermXp31klFJup8mhtL3a7E4ybMWDhCqz0UTUQBrkkhE2iTcdh7a4
-         SMgpw0kOvuT/Z8f6YXcqIsia9z6o3b9n2bg2FtksHODHqAxeDB7xRDYKMC51aGPgz5FT
-         NvwBBu+UE9wZ6Y3FiWXjaZftEkHZxdS1p3Ka+1Tm8bAweXgqGfvJtWcRv4WHk1YHWyaE
-         Jp580xsiPLSyXghmAWOcjpJWAvfUAn/b7BsdkBXCzlCoH/EQ/Atvrz6w2szzIWlnUin0
-         9fOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=2VpVQ5sjT50gzM4Vh4vZAKAaeESxjG6M2hMI3zfNNLQ=;
-        b=U3XSSWpml1nF7YpGkzlp3WwZrZ8ohYZib4e/bB1cEQa+dSLdrPNXiO/t6vPuxZdMom
-         Kn6L1gTUqVlTRtiClsXq4QqNYXJkPPBKZPS5PzwMk+HllFLPchuEg6FEC2ATzM/e2Xqw
-         ZdClsNrJ9Z59eeNL1/g3O9TqSuAnSuAQdp0XBpmYO2hj1g9fjez3v5Tfzj+ckNJKcxfC
-         Kr3qrngA6uDsKxucRzznwuw9iv0fV+rb3Q1N8tbxBfn1Y8jqSVnBXMsDcnlD1bJkKcaE
-         tGAsmlfNtzQiCYl62ozYOTtTulECCO3VC3AOb7vFSzNFVcqlki8LTK5JmfyQEFyVawLm
-         sS4w==
-X-Gm-Message-State: ALyK8tJzJr8MN75cEaf0ZgiESPSVO/qxFwc/ExF8Wq91wgiYzZesgmSjDYCiTrXztih7+A==
-X-Received: by 10.66.222.202 with SMTP id qo10mr2265376pac.141.1464147187756;
-        Tue, 24 May 2016 20:33:07 -0700 (PDT)
-Received: from ?IPv6:2601:645:c200:33:f573:6891:973c:b422? ([2601:645:c200:33:f573:6891:973c:b422])
-        by smtp.gmail.com with ESMTPSA id t8sm8468798paw.16.2016.05.24.20.33.06
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 24 May 2016 20:33:07 -0700 (PDT)
-Message-ID: <1464147185.27173.29.camel@chimera>
-Subject: Re: [RFC PATCH] Re: Adding support for device tree and command line
-From:   Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-To:     Antony Pavlov <antonynpavlov@gmail.com>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>, linux-mips@linux-mips.org,
-        Jonas Gorski <jogo@openwrt.org>,
-        Mathias Kresin <openwrt@kresin.me>
-Date:   Tue, 24 May 2016 20:33:05 -0700
-In-Reply-To: <20160525063105.85bfe3e0c4dde0b716981fb1@gmail.com>
-References: <574372CD.1060201@hauke-m.de> <5743777F.9060801@hauke-m.de>
-         <1464041521.5475.18.camel@chimera> <1464067930.27173.7.camel@chimera>
-         <20160524142711.58a6bf90f3adbe18a28973b3@gmail.com>
-         <1464102907.27173.23.camel@chimera> <1464103650.27173.26.camel@chimera>
-         <20160524194818.9e8399a56669134de4baee1e@gmail.com>
-         <1464109249.27173.27.camel@chimera>
-         <20160525063105.85bfe3e0c4dde0b716981fb1@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <daniel@gimpelevich.san-francisco.ca.us>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2016 11:50:40 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:35209 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27027714AbcEYJugHd58o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2016 11:50:36 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <anna-maria@linutronix.de>)
+        id 1b5VSU-000196-Vv; Wed, 25 May 2016 11:50:35 +0200
+Date:   Wed, 25 May 2016 11:51:20 +0200 (CEST)
+From:   Anna-Maria Gleixner <anna-maria@linutronix.de>
+To:     David Daney <ddaney.cavm@gmail.com>
+cc:     linux-kernel@vger.kernel.org, rt@linutronix.de,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Add missing FROZEN hotplug notifier transitions
+In-Reply-To: <57449A28.3020901@gmail.com>
+Message-ID: <alpine.DEB.2.11.1605251149140.2902@hypnos.tec.linutronix.de>
+References: <1464095327-55194-1-git-send-email-anna-maria@linutronix.de> <57449A28.3020901@gmail.com>
+User-Agent: Alpine 2.11 (DEB 23 2013-08-11)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
+Return-Path: <anna-maria@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53651
+X-archive-position: 53652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@gimpelevich.san-francisco.ca.us
+X-original-sender: anna-maria@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,30 +44,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 2016-05-25 at 06:31 +0300, Antony Pavlov wrote:
-> On Tue, 24 May 2016 10:00:49 -0700
-> Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us> wrote:
-> 
-> > On Tue, 2016-05-24 at 19:48 +0300, Antony Pavlov wrote:
-> > > Also we can drop '#if defined(CONFIG_*' in favour of 'if
-> > > (IS_ENABLED(CONFIG_*'.
-> > > 
-> > > -- 
-> > > Best regards,
-> > >   Antony Pavlov
-> > 
-> > OK. Anything else?
-> 
-> I have nothing more to say just now.
-> At the moment I don't use UHI-enabled bootloader.
-> I'm planning to add UHI support to barebox bootloader (http://www.barebox.org)
-> in a few weeks.
-> 
-> What bootloader do you use?
-> 
-> -- 
-> Best regards,
->   Antony Pavlov
+On Tue, 24 May 2016, David Daney wrote:
 
-The device in question has a non-UHI u-boot, and OpenWrt/LEDE have to
-append a DTB.
+> On 05/24/2016 06:08 AM, Anna-Maria Gleixner wrote:
+> > The corresponding FROZEN hotplug notifier transitions used on
+> > suspend/resume are ignored. Therefore the switch case action argument
+> > is masked with the frozen hotplug notifier transition mask.
+> > 
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: linux-mips@linux-mips.org
+> > Signed-off-by: Anna-Maria Gleixner <anna-maria@linutronix.de>
+> 
+> This seems sane, and I don't object, but can you tell us how this was tested?
+
+It is compile tested only due to lack of hardware.
+
+Anna-Maria

@@ -1,63 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 May 2016 19:25:06 +0200 (CEST)
-Received: from mail-pf0-f193.google.com ([209.85.192.193]:33159 "EHLO
-        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032729AbcEZRZEr6hr1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 May 2016 19:25:04 +0200
-Received: by mail-pf0-f193.google.com with SMTP id b124so9547922pfb.0
-        for <linux-mips@linux-mips.org>; Thu, 26 May 2016 10:25:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 May 2016 20:00:01 +0200 (CEST)
+Received: from mail-pa0-f51.google.com ([209.85.220.51]:33964 "EHLO
+        mail-pa0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27034839AbcEZR77BSKyC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 May 2016 19:59:59 +0200
+Received: by mail-pa0-f51.google.com with SMTP id bz2so2207715pad.1;
+        Thu, 26 May 2016 10:59:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com; s=20150623;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=poysibdLGyTYJuIrELs+DndAAFfg671MfqzzCgfhWjo=;
-        b=wAOmpyiRFuv2YlBzomqsQPvj0avzlESod1GREdrVodBWLmy0Z/hpDfF9SjlLXUNSqd
-         wy8dDLM4BVg0vN1UzxMHwIqh41I5w9GFYOeGvEqLcr7EvWLVw63+ie9LrTcvxGQe2+w4
-         hbLjVN2aWQqvjUfV4Imco/Q43WAUbUV5pUr0cuIZVnpvmN+of0zrxGfxTfo+Q7YuGT0k
-         9yj+6vmOprh/hrjMhLypjl7HKk8bjbBoW7VJe4trskh7VKGf7+s+5RAnL7fRD6i0u0V1
-         SUDP+Ir9NtEj1afspIx3K4vb4tFr57J3vCe1/0maibNSIncIocnm+Afng685atyRt99H
-         UkjA==
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-transfer-encoding;
+        bh=F4C2mne2JW62HTIAypaICVEWga1CWABamXIh/kz5Lmk=;
+        b=UXMzwUV4+zP2yaGy4/AiarJgdLUOpFf2cGEN6TTl1nBAOSoEYC/WD5jUXWV+5Xgafs
+         i7iPa3Dhpygl25BsDimlg/SPH5e/B0vnrylracR9PP4WN4kRI68WgVkpeFDngIUMmnDx
+         VlAKfw4nuixsClo1/lp6m81fuVujZ8iZflWBb78JuAeWKJn6UmkE5DhT6cHIzDj/pvih
+         2eSKOtFDezmawO5+TUj0XEH6sL0QQMWYuRpxNf2NE9B9WD71RrLHEzf5UNtT9SaBgOQp
+         jMdYaZGTchtXBM1JnMxiUw0QylsDMmZ7snSIpfzjrABrA6KtGdUk/pydC7lE2a+GEAUu
+         aSEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=poysibdLGyTYJuIrELs+DndAAFfg671MfqzzCgfhWjo=;
-        b=Vnklu7XnTYEbBHUKHs0sSqdGdq8tCwVUAGiku8Qp5DoNlLJE59pfUhhEKTxD9fc92n
-         fL/C4AnzaKf0UwyrId6cwLMXP23mTtIW4J1A/m6q4Rb5eMlIvD1HBgWwDlhvG+E6JgJX
-         nJA091cDkGCiA4HRvP0hJynDKf1ug93aFQEBrM1jlg4XP9gVfLv09CfVyngayHIAEVy2
-         Yk0zYHjob0lqMxvb9ZwxIyuFRbdLMP/2DwNnct3ODyosPCPnU/53cKk4gQ8FZefLukSj
-         dfQlpDp1vAoclDDFXqgNi2EAeZSa/xpwLyAIL8R821DEAlOEWFr8fgJIF+D7vAflhHTa
-         8Pvw==
-X-Gm-Message-State: ALyK8tIV8tmo8hkcqZVD011A+ErOr2YGHt48uS+qEM9civv0KNbw7RdnMziq5Gfy02vmhA==
-X-Received: by 10.98.1.6 with SMTP id 6mr15908981pfb.155.1464283498512;
-        Thu, 26 May 2016 10:24:58 -0700 (PDT)
-Received: from ?IPv6:2601:645:c200:33:2447:a10d:9051:be13? ([2601:645:c200:33:2447:a10d:9051:be13])
-        by smtp.gmail.com with ESMTPSA id 17sm7441740pfj.96.2016.05.26.10.24.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 26 May 2016 10:24:57 -0700 (PDT)
-Message-ID: <1464283495.5020.16.camel@chimera>
-Subject: Re: [RFC PATCH] Re: Adding support for device tree and command line
-From:   Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linux-mips@linux-mips.org, Jonas Gorski <jogo@openwrt.org>,
-        Mathias Kresin <openwrt@kresin.me>
-Date:   Thu, 26 May 2016 10:24:55 -0700
-In-Reply-To: <57472386.8030605@hauke-m.de>
-References: <574372CD.1060201@hauke-m.de> <5743777F.9060801@hauke-m.de>
-         <1464041521.5475.18.camel@chimera> <1464067930.27173.7.camel@chimera>
-         <57472386.8030605@hauke-m.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <daniel@gimpelevich.san-francisco.ca.us>
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-transfer-encoding;
+        bh=F4C2mne2JW62HTIAypaICVEWga1CWABamXIh/kz5Lmk=;
+        b=cC8q3Gm090DWC4GmqcGsshWPqQV3lO/nE+bXSmEG9tqBZLTvmRdqqt0n8vmfdBJcOO
+         9jlo+HjNP+mJztBYlSb4GsviuzxTB1GMHAbHu5M+6RbYhtaf0MaOixmGgyn5NAfnhP3D
+         vm2sVF0ZW1X42JTAq0br9XBSLEXjRJmyIMEdggDrJ+ZcbYqr0hpRosP/XG9eFyhjH7uq
+         CpGaWJ5zIbDstFDl9s2VcjXVVzhVJeaD6rLvpTZ8S1zvodrRf1GVLx3Nf0JXwelGDIsS
+         IoN4ADzvUSSI5wFVKVBF3rSiN/Mcz5ZkRhl2+x5y3dNl78Ef+jHg4gVLjBQmb1xbFYei
+         CyMQ==
+X-Gm-Message-State: ALyK8tJqMqZlu0DqLqpQJ79VvrhW4yCxpayrzpZPwxXe8GJktNQFM3hL87633sw4pAhaPg==
+X-Received: by 10.66.178.139 with SMTP id cy11mr15813756pac.157.1464285592587;
+        Thu, 26 May 2016 10:59:52 -0700 (PDT)
+Received: from dl.caveonetworks.com ([50.233.148.158])
+        by smtp.googlemail.com with ESMTPSA id zs16sm22082478pab.13.2016.05.26.10.59.50
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 26 May 2016 10:59:51 -0700 (PDT)
+Message-ID: <57473996.7030705@gmail.com>
+Date:   Thu, 26 May 2016 10:59:50 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Aaro Koskinen <aaro.koskinen@nokia.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: THP broken on OCTEON?
+References: <20160523151346.GA23204@ak-desktop.emea.nsn-net.net> <20160525134152.GG23204@ak-desktop.emea.nsn-net.net>
+In-Reply-To: <20160525134152.GG23204@ak-desktop.emea.nsn-net.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53666
+X-archive-position: 53667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@gimpelevich.san-francisco.ca.us
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,22 +67,227 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 2016-05-26 at 18:25 +0200, Hauke Mehrtens wrote:
-> I like it in the ARM arch code that the SoC specific code does not
-> have
-> to take care of this stuff. The normal arch code provides the device
-> tree and so on.
+On 05/25/2016 06:41 AM, Aaro Koskinen wrote:
+> Hi,
+>
+> On Mon, May 23, 2016 at 06:13:46PM +0300, Aaro Koskinen wrote:
+>> I'm getting kernel crashes (see below) reliably when building Perl in
+>> parallel (make -j16) on OCTEON EBH5600 board (8 cores, 4 GB RAM) with
+>> Linux 4.6.
+>>
+>> It seems that CONFIG_TRANSPARENT_HUGEPAGE has something to do with the
+>> issue - disabling it makes build go through fine.
+>
+> Seems to be also reproducible on MIPS64/Malta/QEMU (UP, 2 GB RAM). This
+> happened during Perl's Configure script on the first try:
+>
 
-Well, MIPS bootloaders are strikingly more diverse than on ARM…
+Are you sure this failure is THP related?
 
-> Can we at least add a function to mips which will read the device tree
-> and the kernel cmd, so I do not have to open code it for each SoC, but
-> only call this function.
+Also, what is the source of your rootfs (compilers, tools etc.)?
 
-That would take a serious arch overhaul not unlike the migration to DT,
-and I suspect multiple targets would break. So far, this argc == -2
-stuff has been used on only two targets that I could see, so I don't
-believe it belongs in head.S even with such an overhaul. That said, if
-_real_ UHI spec compliance gets in, the SoC-specific stuff could just be
-dropped. In the meantime, I propose this patch with the changes
-previously suggested.
+Will a similar config fail this way on OCTEON booted with numcores=1?
+
+
+
+
+> ...
+>
+> killpg() found.
+>
+> lchown() found.
+>
+> LDBL_DIG found.
+>
+> <math.h> found.
+>
+> Checking to see if your libm supports _LIB_VERSION...
+> [ 1180.488704] Data bus error, epc == 000000fff4c0ae10, ra == 000000fff4df5d3c
+> [ 1180.650437] Unhandled kernel unaligned access[#1]:
+> [ 1180.651021] CPU: 0 PID: 3213 Comm: ld Not tainted 4.6.0-mipsqemu-distro.git-v2.16-3-g8f2e042-dirty-00002-g97bf1a1 #1
+> [ 1180.651619] task: 98000000fdc6e300 ti: 98000000fdd98000 task.ti: 98000000fdd98000
+> [ 1180.652049] $ 0   : 0000000000000000 ffffffff8021b2c8 9800000001000600 00000000f1a005bf
+> [ 1180.652928] $ 4   : 00000000f1a005bf 0000000120200000 00000000000f1a00 0000000000100077
+> [ 1180.653417] $ 8   : 000000000000001c 98000000fdd9ba60 98000000fdd9ba68 0000000000000000
+> [ 1180.653852] $12   : 98000000fdd9ba58 000000000000a400 0000000000000000 0000000000000000
+> [ 1180.654309] $16   : 0000000120200000 0000000120200000 0000000120200000 98000000fdcfd500
+> [ 1180.654764] $20   : 0000000000000000 ffffffff80e10000 0000000000000003 00000001206f5000
+> [ 1180.655220] $24   : 0000000000000000 ffffffff801629d0
+> [ 1180.655725] $28   : 98000000fdd98000 98000000fdd9ba20 0000000000000000 ffffffff8021b2c8
+> [ 1180.656219] Hi    : 00000000002d4e00
+> [ 1180.656453] Lo    : 00000000000f1a00
+> [ 1180.657115] epc   : ffffffff8012c990 r4k_flush_cache_page+0x80/0x4f0
+> [ 1180.657529] ra    : ffffffff8021b2c8 get_dump_page+0x90/0xb8
+> [ 1180.657809] Status: 1400a4e3	KX SX UX KERNEL EXL IE
+> [ 1180.658268] Cause : 00800010 (ExcCode 04)
+> [ 1180.658500] BadVA : 00000000f1a005bf
+> [ 1180.658703] PrId  : 000182a0 (MIPS 20Kc)
+> [ 1180.658931] Modules linked in: autofs4
+> [ 1180.659360] Process ld (pid: 3213, threadinfo=98000000fdd98000, task=98000000fdc6e300, tls=000000fff4eba700)
+> [ 1180.659821] Stack : 0000000120200000 98000000fdee2480 0000000120200000 98000000fdee2a80
+> 	  0000000000000000 98000000fdc95580 0000000000000003 ffffffff8021b2c8
+> 	  98000000044db600 98000000fdc95580 98000000fe602100 ffffffff802ad418
+> 	  98000000fe636800 ffffffff806c0188 0000000300000088 98000000fe602300
+> 	  ffffffff806c0188 5349474900000080 98000000fdd9bae8 ffffffff806c0188
+> 	  0000000600000120 98000000fdcfd630 ffffffff806c0188 46494c45000004c7
+> 	  c000000000171000 0000000a00000080 0000000000000000 0000000000000000
+> 	  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> 	  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> 	  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> 	  ...
+> [ 1180.664677] Call Trace:
+> [ 1180.665054] [<ffffffff8012c990>] r4k_flush_cache_page+0x80/0x4f0
+> [ 1180.666422] [<ffffffff8021b2c8>] get_dump_page+0x90/0xb8
+> [ 1180.667099] [<ffffffff802ad418>] elf_core_dump+0x11a0/0x1350
+> [ 1180.667813] [<ffffffff802b1b30>] do_coredump+0x5a0/0xdf0
+> [ 1180.668500] [<ffffffff80143bfc>] get_signal+0x2bc/0x688
+> [ 1180.669172] [<ffffffff8010a874>] do_signal+0x24/0x1e8
+> [ 1180.669808] [<ffffffff8010b740>] do_notify_resume+0xa8/0xc8
+> [ 1180.670504] [<ffffffff80105d00>] work_notifysig+0x10/0x18
+> [ 1180.671514]
+> [ 1180.671806]
+> Code: 00111a7a  30630ff8  0064182d <dc630000> 30640001  1080005b  00000000  df840000  dc8402b8
+> [ 1180.674251] ---[ end trace b03bb9be4922a576 ]---
+> [ 1180.675178] Fatal exception: panic in 5 seconds
+> [ 1185.681555] Kernel panic - not syncing: Fatal exception
+> [ 1185.682849] ---[ end Kernel panic - not syncing: Fatal exception
+>
+> Used kernel config:
+>
+> CONFIG_MIPS_MALTA=y
+> CONFIG_CPU_MIPS64_R1=y
+> CONFIG_64BIT=y
+> # CONFIG_BOUNCE is not set
+> CONFIG_TRANSPARENT_HUGEPAGE=y
+> CONFIG_HZ_100=y
+> CONFIG_KEXEC=y
+> # CONFIG_SECCOMP is not set
+> CONFIG_LOCALVERSION="-mipsqemu"
+> CONFIG_SYSVIPC=y
+> CONFIG_POSIX_MQUEUE=y
+> # CONFIG_CROSS_MEMORY_ATTACH is not set
+> CONFIG_AUDIT=y
+> CONFIG_NO_HZ_IDLE=y
+> CONFIG_HIGH_RES_TIMERS=y
+> CONFIG_LOG_BUF_SHIFT=14
+> CONFIG_NAMESPACES=y
+> CONFIG_SCHED_AUTOGROUP=y
+> CONFIG_BLK_DEV_INITRD=y
+> CONFIG_KALLSYMS_ALL=y
+> CONFIG_EMBEDDED=y
+> CONFIG_MODULES=y
+> CONFIG_MODULE_FORCE_LOAD=y
+> CONFIG_MODULE_UNLOAD=y
+> CONFIG_MODULE_FORCE_UNLOAD=y
+> # CONFIG_BLK_DEV_BSG is not set
+> CONFIG_PARTITION_ADVANCED=y
+> # CONFIG_EFI_PARTITION is not set
+> # CONFIG_IOSCHED_DEADLINE is not set
+> CONFIG_PCI=y
+> CONFIG_MIPS32_O32=y
+> CONFIG_MIPS32_N32=y
+> CONFIG_NET=y
+> CONFIG_PACKET=y
+> CONFIG_UNIX=y
+> CONFIG_INET=y
+> CONFIG_IP_MULTICAST=y
+> CONFIG_IP_MROUTE=y
+> CONFIG_IP_PIMSM_V1=y
+> CONFIG_IP_PIMSM_V2=y
+> # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+> # CONFIG_INET_XFRM_MODE_TUNNEL is not set
+> # CONFIG_INET_XFRM_MODE_BEET is not set
+> # CONFIG_INET_DIAG is not set
+> CONFIG_TCP_MD5SIG=y
+> CONFIG_INET6_AH=m
+> CONFIG_INET6_ESP=m
+> CONFIG_INET6_IPCOMP=m
+> CONFIG_INET6_XFRM_MODE_TRANSPORT=m
+> CONFIG_INET6_XFRM_MODE_TUNNEL=m
+> CONFIG_INET6_XFRM_MODE_BEET=m
+> CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=m
+> CONFIG_IPV6_SIT=m
+> CONFIG_IPV6_GRE=m
+> CONFIG_IPV6_MULTIPLE_TABLES=y
+> CONFIG_NETFILTER=y
+> CONFIG_NF_CONNTRACK=m
+> CONFIG_NF_CONNTRACK_IPV4=m
+> CONFIG_IP_NF_IPTABLES=m
+> CONFIG_IP_NF_NAT=m
+> CONFIG_IP_NF_TARGET_MASQUERADE=m
+> CONFIG_IP_NF_TARGET_NETMAP=m
+> CONFIG_IP_NF_TARGET_REDIRECT=m
+> CONFIG_NF_CONNTRACK_IPV6=m
+> CONFIG_IP6_NF_IPTABLES=m
+> CONFIG_IP6_NF_NAT=m
+> CONFIG_IP6_NF_TARGET_MASQUERADE=m
+> CONFIG_IP6_NF_TARGET_NPT=m
+> CONFIG_VLAN_8021Q=m
+> # CONFIG_WIRELESS is not set
+> CONFIG_NET_9P=y
+> CONFIG_NET_9P_VIRTIO=y
+> CONFIG_DEVTMPFS=y
+> # CONFIG_FW_LOADER is not set
+> CONFIG_BLK_DEV_LOOP=y
+> CONFIG_BLK_DEV_DRBD=m
+> CONFIG_VIRTIO_BLK=y
+> CONFIG_BLK_DEV_SD=y
+> # CONFIG_SCSI_LOWLEVEL is not set
+> CONFIG_ATA=y
+> CONFIG_ATA_PIIX=y
+> CONFIG_MD=y
+> CONFIG_BLK_DEV_DM=m
+> CONFIG_DM_MULTIPATH=m
+> CONFIG_DM_MULTIPATH_QL=m
+> CONFIG_DM_MULTIPATH_ST=m
+> CONFIG_NETDEVICES=y
+> CONFIG_DUMMY=m
+> CONFIG_VXLAN=m
+> CONFIG_NETCONSOLE=m
+> CONFIG_VIRTIO_NET=y
+> # CONFIG_ETHERNET is not set
+> # CONFIG_WLAN is not set
+> # CONFIG_INPUT is not set
+> # CONFIG_SERIO is not set
+> # CONFIG_VT is not set
+> # CONFIG_LEGACY_PTYS is not set
+> CONFIG_SERIAL_8250=y
+> CONFIG_SERIAL_8250_CONSOLE=y
+> CONFIG_SERIAL_8250_NR_UARTS=3
+> CONFIG_SERIAL_8250_RUNTIME_UARTS=3
+> # CONFIG_HW_RANDOM is not set
+> # CONFIG_HWMON is not set
+> # CONFIG_VGA_ARB is not set
+> CONFIG_VIRTIO_PCI=y
+> # CONFIG_IOMMU_SUPPORT is not set
+> CONFIG_EXT4_FS=y
+> CONFIG_EXT4_FS_POSIX_ACL=y
+> CONFIG_EXT4_FS_SECURITY=y
+> CONFIG_AUTOFS4_FS=m
+> CONFIG_FUSE_FS=m
+> CONFIG_ISO9660_FS=m
+> CONFIG_VFAT_FS=m
+> CONFIG_PROC_KCORE=y
+> CONFIG_TMPFS=y
+> CONFIG_TMPFS_POSIX_ACL=y
+> # CONFIG_MISC_FILESYSTEMS is not set
+> CONFIG_NFS_FS=m
+> CONFIG_NFS_V3_ACL=y
+> CONFIG_NFS_V4=m
+> CONFIG_NFSD=m
+> CONFIG_NFSD_V3_ACL=y
+> CONFIG_NFSD_V4=y
+> CONFIG_9P_FS=y
+> CONFIG_PRINTK_TIME=y
+> CONFIG_DEBUG_INFO=y
+> CONFIG_MAGIC_SYSRQ=y
+> CONFIG_SCHEDSTATS=y
+> CONFIG_IRQSOFF_TRACER=y
+> CONFIG_SCHED_TRACER=y
+> CONFIG_FTRACE_SYSCALLS=y
+> CONFIG_STACK_TRACER=y
+> CONFIG_BLK_DEV_IO_TRACE=y
+> # CONFIG_CRYPTO_HW is not set
+>
+> A.
+>

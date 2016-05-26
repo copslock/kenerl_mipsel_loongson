@@ -1,41 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2016 18:02:45 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:58805 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27033797AbcEYQCmhLE9y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2016 18:02:42 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Websense Email with ESMTPS id 8503DFC89B213;
-        Wed, 25 May 2016 17:02:32 +0100 (IST)
-Received: from [192.168.154.26] (192.168.154.26) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.266.1; Wed, 25 May
- 2016 17:02:35 +0100
-Subject: Re: [PATCH 03/11] MIPS: pic32mzda: fix getting timer clock rate.
-To:     Purna Chandra Mandal <purna.mandal@microchip.com>,
-        <linux-kernel@vger.kernel.org>
-References: <1463461560-9629-1-git-send-email-purna.mandal@microchip.com>
- <1463461560-9629-3-git-send-email-purna.mandal@microchip.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        Joshua Henderson <digitalpeer@digitalpeer.com>,
-        Joshua Henderson <joshua.henderson@microchip.com>
-From:   Harvey Hunt <harvey.hunt@imgtec.com>
-Message-ID: <062abb47-931c-c47f-bcc1-1642db0c0def@imgtec.com>
-Date:   Wed, 25 May 2016 17:02:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 May 2016 10:37:30 +0200 (CEST)
+Received: from mail-oi0-f43.google.com ([209.85.218.43]:36045 "EHLO
+        mail-oi0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27034297AbcEZIh0u9Mck (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 May 2016 10:37:26 +0200
+Received: by mail-oi0-f43.google.com with SMTP id j1so113649686oih.3
+        for <linux-mips@linux-mips.org>; Thu, 26 May 2016 01:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc;
+        bh=II2bnpFXva4v/QAZ2J5OiM0SVJwG7JSKrbPtTmVxctE=;
+        b=J1qwXDJvfCdGxgd7WfDIXxRQ4zg3cNTBhVMSNH6b5XiVQYb8ouX3XoszKOjBsQLAv6
+         jFLaBMFdzTsYZ3PKZe7Um51YRy7azh33BIw/A5Ari2i+K9ChOCJoWxIeuYm4AaWK2Cs3
+         mSPm0W6qX+8/+M5pSaYJVSo2KnjenLea6Mlbw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc;
+        bh=II2bnpFXva4v/QAZ2J5OiM0SVJwG7JSKrbPtTmVxctE=;
+        b=YjhknRjuC6HWEFOsRvemetGEmnnfWb+QNirhKTYDel+uCOWTmIEdVTeZdQo0pNOepI
+         hlIGI8jh0qJ2xsEllBWDxG6dxycKzzR9J8ncxru98FV5zWgtBbvHCJ63SoJyB2XlkQ66
+         G9oXMKOSSH+Q5HUWLzm5cl9c6N65zcB1hNFswInDP/mf9rbxOT/PSezx9APJ58mgtCL6
+         SSAJBTEklfKEG1DodmMvHH/vo/nvkodZpsWo6QCOZbMH/BEL1ljI0f/D5W0D9NHF/4pE
+         TAIhFwLjpIZIQf0vYr1iwNshWU/VpkQNq9qSyeXw2Xk5uXFfL3Gun6v3LBTgDMY40Tce
+         4EuA==
+X-Gm-Message-State: ALyK8tJlckze8set9Eu7KSCd0xat9RynuBHinKE3kaV0YiKMHc22SgqcZoex7b+16JnlZi2yRc5TyAnmC4a8cfEn
 MIME-Version: 1.0
-In-Reply-To: <1463461560-9629-3-git-send-email-purna.mandal@microchip.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.26]
-Return-Path: <Harvey.Hunt@imgtec.com>
+X-Received: by 10.157.44.72 with SMTP id f66mr5368392otb.126.1464251840675;
+ Thu, 26 May 2016 01:37:20 -0700 (PDT)
+Received: by 10.182.176.104 with HTTP; Thu, 26 May 2016 01:37:20 -0700 (PDT)
+In-Reply-To: <1463461560-9629-7-git-send-email-purna.mandal@microchip.com>
+References: <1463461560-9629-1-git-send-email-purna.mandal@microchip.com>
+        <1463461560-9629-7-git-send-email-purna.mandal@microchip.com>
+Date:   Thu, 26 May 2016 10:37:20 +0200
+Message-ID: <CACRpkdZPHd2G+LRu5WJBDOu2rjWBqprqYYbfTnOQhXpkT3g=dQ@mail.gmail.com>
+Subject: Re: [PATCH 07/11] dt/bindings: Correct clk binding example for PIC32 pinctrl
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Purna Chandra Mandal <purna.mandal@microchip.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Kumar Gala <galak@codeaurora.org>,
+        Ian Campbell <ijc+devicetree@hellion.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Joshua Henderson <joshua.henderson@microchip.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53658
+X-archive-position: 53659
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: harvey.hunt@imgtec.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,60 +68,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Purna,
+On Tue, May 17, 2016 at 7:05 AM, Purna Chandra Mandal
+<purna.mandal@microchip.com> wrote:
 
-On 17/05/16 06:05, Purna Chandra Mandal wrote:
-> PIC32 clock driver is now implemented as platform driver instead of
-> as part of of_clk_init(). It meants all the clock modules are available
-> quite late in the boot sequence. So request for CPU clock by clk_get_sys()
-> and clk_get_rate() to find c0_timer rate fails.
->
-> To fix this use PIC32 specific early clock functions implemented for early
-> console support.
+> Update binding example based on new clock binding scheme.
+> [1] Documentation/devicetree/bindings/clock/microchip,pic32.txt
 >
 > Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
->
-> ---
-> Note: Please pull this complete series through the MIPS tree.
->
-> ---
->
->  arch/mips/pic32/pic32mzda/time.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/mips/pic32/pic32mzda/time.c b/arch/mips/pic32/pic32mzda/time.c
-> index ca6a62b..62a0a78 100644
-> --- a/arch/mips/pic32/pic32mzda/time.c
-> +++ b/arch/mips/pic32/pic32mzda/time.c
-> @@ -11,13 +11,12 @@
->   *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
->   *  for more details.
->   */
-> -#include <linux/clk.h>
->  #include <linux/clk-provider.h>
->  #include <linux/clocksource.h>
->  #include <linux/init.h>
-> +#include <linux/irqdomain.h>
->  #include <linux/of.h>
->  #include <linux/of_irq.h>
-> -#include <linux/irqdomain.h>
->
->  #include <asm/time.h>
->
-> @@ -58,16 +57,12 @@ unsigned int get_c0_compare_int(void)
->
->  void __init plat_time_init(void)
->  {
-> -	struct clk *clk;
-> +	unsigned long rate = pic32_get_pbclk(7);
 
-pic32_get_pbclk() is defined in arch/mips/pic32/pic32mzda/early_clk.c. 
-When CONFIG_EARLY_PRINTK isn't set, early_clk.c isn't compiled and so a 
-linker error occurs.
+Patch applied to the pinctrl tree with Rob's ACK.
 
-Maybe it's best to always build the early_clk.c file, or perhaps there 
-is a better place to put pic32_get_pbclk()?
-
-Thanks,
-
-Harvey
+Yours,
+Linus Walleij

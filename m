@@ -1,61 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2016 00:13:44 +0200 (CEST)
-Received: from mail-pf0-f194.google.com ([209.85.192.194]:35160 "EHLO
-        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27032283AbcEZWNnIZWrP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2016 00:13:43 +0200
-Received: by mail-pf0-f194.google.com with SMTP id f144so3704590pfa.2;
-        Thu, 26 May 2016 15:13:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-transfer-encoding;
-        bh=OZcz1bo8aLQf1smvApCxdiuQ+4A8eNqpljmNwqJaEy4=;
-        b=fNi53WJ0YEuejcwDFW+PYcofqLszFyIw27URwK/fZEzm9O8P5GaRH17K8c194OP8zB
-         eNFfWt6AMTbo36LF702V8oI7FA8cz7F+Pwbe2f8sJsYKNYyPUzqemuILdPXhAFe+bPFL
-         AUIfofiZ80ey4743o2y7UH96N0W7uaG9+jbEhuvQcA9bJA3uqcTLIRe3cDgqJDvQTTBf
-         2shRd9k9PUaj7cLBNfxLV0nrD2xg8EoUJcaUgWitK391ra6q9/Wzox2kszlsa+FwWVLU
-         jMNyCyAejNtfrkRbGcF8moc4MOPIB4b2IEkfpQo+WHni1BaeidfjXcJn1MvASgs4vztz
-         hg6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-transfer-encoding;
-        bh=OZcz1bo8aLQf1smvApCxdiuQ+4A8eNqpljmNwqJaEy4=;
-        b=llvqAux/GRLzY5e20ZRC917waysgXqQ5m1S3W//eVhE93KTg3wEf2h5WV0lo8Pl2PS
-         yqQ3SOuL/87pHpRj1mgLMcBLuG2txd5R0w3bYEPGrXl6FDGZzSNSvUC8XVoTZCi9UNfD
-         oC/BIesoFXzQDo1EFuW8d0GH9HHbutKn2DCjvnzUr8y8OX155papRjd/j76vpxIDUTf7
-         sh5XnDRQHd5soOLOCCcqPeIp1RRTAJBdWfvtbXxP3zZD9F/LbaFvKkTSOg3fd1oM+7/4
-         lwcunI+Ey4xC7oFCJzRBuJF2aeJvk3Y/a3OA1bLZDJey5BTLNdXgtcXzr1R9biN2D+w+
-         2hvQ==
-X-Gm-Message-State: ALyK8tILd5ONo9FL9Rs/ricahiqNxL7sdYw4oMT8CTpfkx0HRs/YBKgYj0RDjdEzALd4yQ==
-X-Received: by 10.98.71.81 with SMTP id u78mr17300952pfa.29.1464300816508;
-        Thu, 26 May 2016 15:13:36 -0700 (PDT)
-Received: from dl.caveonetworks.com ([50.233.148.158])
-        by smtp.googlemail.com with ESMTPSA id 17sm8356546pfa.59.2016.05.26.15.13.34
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 26 May 2016 15:13:35 -0700 (PDT)
-Message-ID: <5747750E.4090000@gmail.com>
-Date:   Thu, 26 May 2016 15:13:34 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2016 17:36:13 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:61863 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27035796AbcE0PgLrtwxz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2016 17:36:11 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id 9BCB2CF8547EA;
+        Fri, 27 May 2016 16:36:01 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 27 May 2016 16:36:05 +0100
+Received: from localhost (10.100.200.32) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 27 May
+ 2016 16:36:04 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-arch@vger.kernel.org>,
+        "Paul Burton" <paul.burton@imgtec.com>,
+        "# v4 . 4+" <stable@vger.kernel.org>
+Subject: [PATCH 1/2] compiler-gcc: Allow arch-specific override of unreachable
+Date:   Fri, 27 May 2016 16:35:49 +0100
+Message-ID: <20160527153550.27303-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.8.3
 MIME-Version: 1.0
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-CC:     Aaro Koskinen <aaro.koskinen@nokia.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: THP broken on OCTEON?
-References: <20160523151346.GA23204@ak-desktop.emea.nsn-net.net> <20160525134152.GG23204@ak-desktop.emea.nsn-net.net> <57473996.7030705@gmail.com> <20160526192330.GA17985@raspberrypi.musicnaut.iki.fi>
-In-Reply-To: <20160526192330.GA17985@raspberrypi.musicnaut.iki.fi>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.32]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53669
+X-archive-position: 53670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,60 +45,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/26/2016 12:23 PM, Aaro Koskinen wrote:
-> Hi,
->
-> On Thu, May 26, 2016 at 10:59:50AM -0700, David Daney wrote:
->> On 05/25/2016 06:41 AM, Aaro Koskinen wrote:
->>> On Mon, May 23, 2016 at 06:13:46PM +0300, Aaro Koskinen wrote:
->>>> I'm getting kernel crashes (see below) reliably when building Perl in
->>>> parallel (make -j16) on OCTEON EBH5600 board (8 cores, 4 GB RAM) with
->>>> Linux 4.6.
->>>>
->>>> It seems that CONFIG_TRANSPARENT_HUGEPAGE has something to do with the
->>>> issue - disabling it makes build go through fine.
->>>
->>> Seems to be also reproducible on MIPS64/Malta/QEMU (UP, 2 GB RAM). This
->>> happened during Perl's Configure script on the first try:
->>
->> Are you sure this failure is THP related?
->
-> We have used MIPS64 Malta QEMU for regular package builds many months,
-> and it has never failed with THP disabled. With THP enabled builds
-> fail reliably.
->
->> Also, what is the source of your rootfs (compilers, tools etc.)?
->
-> Compiler is mainline GCC 4.9.3 and binutils 2.26. The whole rootfs is
-> compiled from scratch (64-bit ABI).
->
-> On ER Pro, I use O32 userspace and kernel compiled with GCC 6.1.0.
->
->> Will a similar config fail this way on OCTEON booted with numcores=1?
->
-> Yes, just tested with ER Pro using single core, and also with just "make"
-> without any parallel threads. And it failed with SIGSEGV this time:
+Include an arch-specific asm/compiler-gcc.h and allow for it to define a
+custom version of unreachable(), which is needed to workaround a bug in
+current versions of GCC for the MIPS architecture. This patch includes
+an effectively empty asm-generic implementation of asm/compiler-gcc.h &
+leaves the architecture specifics to a further patch.
 
-Is it possible for you to create a root file system that substitutes 
-/sbin/init with a script that does the minimal amount of system 
-initialization and then runs the "make" command?
+Marked for stable as far back as v4.4 such that the MIPS patch depending
+upon it can be backported too.
 
-The idea being that the system without any user input of any kind would 
-boot directly to the failure case.  Ideally this would be for the single 
-CPU case.
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: <stable@vger.kernel.org> # v4.4+
+---
+ include/asm-generic/compiler-gcc.h | 8 ++++++++
+ include/linux/compiler-gcc.h       | 7 ++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+ create mode 100644 include/asm-generic/compiler-gcc.h
 
-With an ext2 image of that and the vmlinux file, it would be child's 
-play to run in our simulator and find the cause.
-
-
-
->
-> [  744.268063]
-> do_page_fault(): sending SIGSEGV to miniperl for invalid read access from 000000000000000c
-> [  744.277418] epc = 00000000004ca8e8 in miniperl[400000+19e000]
-> [  744.283202] ra  = 00000000004c9e8c in miniperl[400000+19e000]
-> [  744.289005]
->
-> A.
->
->
+diff --git a/include/asm-generic/compiler-gcc.h b/include/asm-generic/compiler-gcc.h
+new file mode 100644
+index 0000000..e8ba230
+--- /dev/null
++++ b/include/asm-generic/compiler-gcc.h
+@@ -0,0 +1,8 @@
++#ifndef __LINUX_COMPILER_H
++#error "Please don't include <asm/compiler.gcc.h> directly, include <linux/compiler.h> instead."
++#endif
++
++/*
++ * We have nothing architecture-specific to do here, simply leave everything to
++ * the generic linux/compiler-gcc.h.
++ */
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index 3d5202e..e556cb8 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -9,6 +9,9 @@
+ 		     + __GNUC_MINOR__ * 100	\
+ 		     + __GNUC_PATCHLEVEL__)
+ 
++/* Allow architectures to override some definitions where necessary */
++#include <asm/compiler-gcc.h>
++
+ /* Optimization barrier */
+ 
+ /* The "volatile" is due to gcc bugs */
+@@ -196,7 +199,9 @@
+  * this in the preprocessor, but we can live with this because they're
+  * unreleased.  Really, we need to have autoconf for the kernel.
+  */
+-#define unreachable() __builtin_unreachable()
++#ifndef unreachable
++# define unreachable() __builtin_unreachable()
++#endif
+ 
+ /* Mark a function definition as prohibited from being cloned. */
+ #define __noclone	__attribute__((__noclone__, __optimize__("no-tracer")))
+-- 
+2.8.3

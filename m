@@ -1,50 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 May 2016 11:52:18 +0200 (CEST)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:35231 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27037190AbcE1JwQ1giz- (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 May 2016 11:52:33 +0200 (CEST)
+Received: from mail-pa0-f65.google.com ([209.85.220.65]:33883 "EHLO
+        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27037191AbcE1JwQ4Pac- (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sat, 28 May 2016 11:52:16 +0200
-Received: by mail-pf0-f195.google.com with SMTP id f144so9162402pfa.2;
-        Sat, 28 May 2016 02:52:15 -0700 (PDT)
+Received: by mail-pa0-f65.google.com with SMTP id yl2so15495497pac.1;
+        Sat, 28 May 2016 02:52:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=XPm2zkB2pTxSNJNKvKMXWNx+b2B6J2zwxJyqKhF/TFc=;
-        b=UZawoBysmAxN3s1vhwNSo1upLl1jdoQWY1tF5SqtxhkHFyNLF5oXAO+Y8Kjmx7j47j
-         SKU72L+nkKrJ/SyiKhEuLDylU9TdkaV669G0MhIYN7DRaUTVZavngR4ARG/srdkqQsfe
-         Ewy7aNzW0tzRb0C19YjPdcJ+EG3pCpisLocrvVI9z5saHkUMSgNswZQOaZ9zzsHfgUA8
-         /VeLh3YYxV/UTq9isgESKcCf+mYs1Wx+AhdyH5QfgQT8u1m0g/YONGfeWN3rR7uVq5Ff
-         CJHQKeZ6kqywNAr7ofA5N+CbhrDTfJczCCQgNZkdZTKpdYHJ4K/dCV+kmlH25vf0C95+
-         MCzw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=HVpwT1GOwwJ3CWryzZC5MPcbr/UxFkGPaGHT9cXNfh8=;
+        b=WKUAub7D+G8X2Ge1u6n3iCMJDRsMX78gDfqJDlwwibo7HLReCph88w/a6WZAsyt+kZ
+         y4wFcATHHDsC0mwkOInc90FVTuuuX+rKFGd/FC6UJq7mjG1FSBMVKf1NVtHkw+78atCY
+         sSLsgw49KDeDXVzPQsxJK93b/gHyObNzqbvtQuP1uOkmS659oXVGvr2PEn/n3JkjQN85
+         1MrjkTrdb79rAt7mLyy/LHxuYLgoNBORein6rLytzjJRwa1aJxeDe8mZCTRgC7qMDjsG
+         w8pk78aiSDiFzaOZvffOfvh3aIOaDIQIkmcoZ3nsvdkyrp4cuBADlbiRd9PgGks5W616
+         KTLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=XPm2zkB2pTxSNJNKvKMXWNx+b2B6J2zwxJyqKhF/TFc=;
-        b=Hs66cnAOSbhPZRERN2yj5YolVYsNsIJrE/wrSoNxz7fGYOckI/ayIBMVn/hKG0O+QO
-         dg5vqHiGEaO4B2Yr68ZeeD5FO1bCFYmdx6Kd4fLNMBz66Buu+rGyBhO9tV5IBr4OvvMO
-         O6RkfQMnU63ujI+ROf1mZ0p9XAvezXOgA6dkWUxazBMu4a73o/JfdJDesaZWjoe7d7Hp
-         fxbglps3ri5CfSlQKHq9HV3zapDsirhMUdBTpHtHhP0JCaBRVvMSBNgsMY+YeTAitxaM
-         HPJx4mwPMs4CG3nEIklXG/A/qjUHy+36PR583aNhylyVNyH4l85fCnVAhCG9Ai5I6OkU
-         BCUA==
-X-Gm-Message-State: ALyK8tLz8t1+MsJta+yR3hRRylXYVCFSWJc8ndXrqerEfGwAJ7NGpisvyxKgvi+d1MZ+SQ==
-X-Received: by 10.98.8.146 with SMTP id 18mr25934661pfi.14.1464429128236;
-        Sat, 28 May 2016 02:52:08 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=HVpwT1GOwwJ3CWryzZC5MPcbr/UxFkGPaGHT9cXNfh8=;
+        b=RkPK1s+yafyRXGKx2249LdWa1xaTKYf2oUnX1+KzF2dtKQnfpWUOCMPNYxPT4EDzQ9
+         QX2//9BbKp9C7xLd8XL4+V+tlo15+2qbbwunKiNROhjdr5BmBJ/eGBAR6wfP+S1WosUq
+         9Mr7nJFD4AXARWJGb8UIC7Dj/TX1k04TEHKj6KqiaxlUhK50E4YQ1+D2oDXsOztQRk8Q
+         jISYEioV0v0wkgHqCBhVzj1VJyyaa13BPZeP0JUamcH6tnuP4Wzuk9bgAOfA/9r4HC3c
+         l2Xb5eDBFTKkGYmdgd9zcaFu4JiB4A4m+7aRq2J0fkav4ImizonW28Z0USM1NcM1duLC
+         sgvA==
+X-Gm-Message-State: ALyK8tIKkR/w/EpRAgBm3TJzCSf2lhx2ZMP6gpdrd7cGPHKcuuZ+zEC1Vt+8MU1oiD1RhA==
+X-Received: by 10.66.43.51 with SMTP id t19mr29559954pal.48.1464429131141;
+        Sat, 28 May 2016 02:52:11 -0700 (PDT)
 Received: from localhost.localdomain ([175.111.195.49])
-        by smtp.gmail.com with ESMTPSA id m64sm19539935pfc.19.2016.05.28.02.52.05
+        by smtp.gmail.com with ESMTPSA id m64sm19539935pfc.19.2016.05.28.02.52.08
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 28 May 2016 02:52:07 -0700 (PDT)
+        Sat, 28 May 2016 02:52:10 -0700 (PDT)
 From:   Keguang Zhang <keguang.zhang@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH] MIPS: Loongson1B: Remove ARCH_WANT_OPTIONAL_GPIOLIB
-Date:   Sat, 28 May 2016 17:51:51 +0800
-Message-Id: <1464429112-27590-1-git-send-email-keguang.zhang@gmail.com>
+Subject: [PATCH] MIPS: Loongson1B: Provide DMA filter callbacks via platform data
+Date:   Sat, 28 May 2016 17:51:52 +0800
+Message-Id: <1464429112-27590-2-git-send-email-keguang.zhang@gmail.com>
 X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1464429112-27590-1-git-send-email-keguang.zhang@gmail.com>
+References: <1464429112-27590-1-git-send-email-keguang.zhang@gmail.com>
 Return-Path: <keguang.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53683
+X-archive-position: 53684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,24 +66,63 @@ X-list: linux-mips
 
 From: Kelvin Cheung <keguang.zhang@gmail.com>
 
-This patch removes ARCH_WANT_OPTIONAL_GPIOLIB due to upstream changes.
+This patch provides DMA filter callbacks via platform data
+to make NAND driver independent of single DMA engine driver.
 
 Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
 ---
- arch/mips/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/include/asm/mach-loongson32/dma.h  | 4 ++++
+ arch/mips/include/asm/mach-loongson32/nand.h | 3 +--
+ arch/mips/loongson32/ls1b/board.c            | 1 +
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 5663f41..34ed662 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1404,7 +1404,6 @@ config CPU_LOONGSON1B
- 	bool "Loongson 1B"
- 	depends on SYS_HAS_CPU_LOONGSON1B
- 	select CPU_LOONGSON1
--	select ARCH_WANT_OPTIONAL_GPIOLIB
- 	select LEDS_GPIO_REGISTER
- 	help
- 	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
+diff --git a/arch/mips/include/asm/mach-loongson32/dma.h b/arch/mips/include/asm/mach-loongson32/dma.h
+index ad1dec7..d3ae391 100644
+--- a/arch/mips/include/asm/mach-loongson32/dma.h
++++ b/arch/mips/include/asm/mach-loongson32/dma.h
+@@ -12,6 +12,8 @@
+ #ifndef __ASM_MACH_LOONGSON32_DMA_H
+ #define __ASM_MACH_LOONGSON32_DMA_H
+ 
++#include <linux/dmaengine.h>
++
+ #define LS1X_DMA_CHANNEL0	0
+ #define LS1X_DMA_CHANNEL1	1
+ #define LS1X_DMA_CHANNEL2	2
+@@ -22,4 +24,6 @@ struct plat_ls1x_dma {
+ 
+ extern struct plat_ls1x_dma ls1b_dma_pdata;
+ 
++bool ls1x_dma_filter(struct dma_chan *chan, void *param);
++
+ #endif /* __ASM_MACH_LOONGSON32_DMA_H */
+diff --git a/arch/mips/include/asm/mach-loongson32/nand.h b/arch/mips/include/asm/mach-loongson32/nand.h
+index e274912..a1f8704 100644
+--- a/arch/mips/include/asm/mach-loongson32/nand.h
++++ b/arch/mips/include/asm/mach-loongson32/nand.h
+@@ -21,10 +21,9 @@ struct plat_ls1x_nand {
+ 
+ 	int hold_cycle;
+ 	int wait_cycle;
++	bool (*dma_filter)(struct dma_chan *chan, void *param);
+ };
+ 
+ extern struct plat_ls1x_nand ls1b_nand_pdata;
+ 
+-bool ls1x_dma_filter_fn(struct dma_chan *chan, void *param);
+-
+ #endif /* __ASM_MACH_LOONGSON32_NAND_H */
+diff --git a/arch/mips/loongson32/ls1b/board.c b/arch/mips/loongson32/ls1b/board.c
+index 38a1d40..0a57337 100644
+--- a/arch/mips/loongson32/ls1b/board.c
++++ b/arch/mips/loongson32/ls1b/board.c
+@@ -38,6 +38,7 @@ struct plat_ls1x_nand ls1x_nand_pdata = {
+ 	.nr_parts	= ARRAY_SIZE(ls1x_nand_parts),
+ 	.hold_cycle	= 0x2,
+ 	.wait_cycle	= 0xc,
++	.dma_filter	= ls1x_dma_filter,
+ };
+ 
+ static const struct gpio_led ls1x_gpio_leds[] __initconst = {
 -- 
 1.9.1

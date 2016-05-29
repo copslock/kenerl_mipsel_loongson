@@ -1,45 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 May 2016 21:30:20 +0200 (CEST)
-Received: from caladan.dune.hu ([78.24.191.180]:32838 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 May 2016 23:03:46 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:56662 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27030121AbcE2TaSoHx8g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 29 May 2016 21:30:18 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 3C6FAB92140;
-        Sun, 29 May 2016 21:30:18 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.0.2] (dslb-088-073-007-040.088.073.pools.vodafone-ip.de [88.73.7.40])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id CE49FB9210F;
-        Sun, 29 May 2016 21:30:08 +0200 (CEST)
-Subject: Re: [PATCH v2] Re: Adding support for device tree and command line
-To:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-References: <20160524194818.9e8399a56669134de4baee1e@gmail.com>
- <1464383198-6316-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
- <c481d3b1-bee1-89c9-bbb8-ef17d91570bf@openwrt.org>
- <1464547128.5020.32.camel@chimera>
- <16b32a30-b0b4-d69e-b53d-827b9640c0cb@openwrt.org>
- <1464548936.5020.37.camel@chimera>
- <9757c228-5835-422f-2b8c-bbced1d15df4@openwrt.org>
- <1464550007.5020.39.camel@chimera>
-Cc:     linux-mips@linux-mips.org, hauke@hauke-m.de, openwrt@kresin.me,
-        antonynpavlov@gmail.com
-From:   Jonas Gorski <jogo@openwrt.org>
-Message-ID: <579ebd0d-d08f-8507-8170-b25268843cf4@openwrt.org>
-Date:   Sun, 29 May 2016 21:30:24 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.1.0
+        id S27039217AbcE2VDnsWFmS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 29 May 2016 23:03:43 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u4TL3g2L025633;
+        Sun, 29 May 2016 23:03:42 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u4TL3ffU025632;
+        Sun, 29 May 2016 23:03:42 +0200
+Date:   Sun, 29 May 2016 23:03:41 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Harvey Hunt <harvey.hunt@imgtec.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        "# 4 . 2 . x-" <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: lib: Mark intrinsics notrace
+Message-ID: <20160529210340.GA25587@linux-mips.org>
+References: <20160525100635.22541-1-harvey.hunt@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <1464550007.5020.39.camel@chimera>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <jogo@openwrt.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160525100635.22541-1-harvey.hunt@imgtec.com>
+User-Agent: Mutt/1.6.1 (2016-04-27)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53698
+X-archive-position: 53699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,19 +43,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 29.05.2016 21:26, Daniel Gimpelevich wrote:
-> On Sun, 2016-05-29 at 21:22 +0200, Jonas Gorski wrote:
->> That still leaves the question which one should be preferred in case
->> both
->> are present.
-> 
-> In the already merged code, the appended one is preferred, so I would
-> favor that.
-> 
+On Wed, May 25, 2016 at 11:06:35AM +0100, Harvey Hunt wrote:
 
-Makes sense. mach code can still check for a0 == -2 and then a1 != fw_passed_dtb
-to know if the appended one was used or the passed one, in case it
-needs to know/wants to switch.
+> On certain MIPS32 devices, the ftrace tracer "function_graph" uses
+> __lshrdi3() during the capturing of trace data. ftrace then attempts to
+> trace __lshrdi3() which leads to infinite recursion and a stack overflow.
+> Fix this by marking __lshrdi3() as notrace. Mark the other compiler
+> intrinsics as notrace in case the compiler decides to use them in the
+> ftrace path.
 
+Makes perfect sense - but I'm wondering how you triggered it.  Was this
+a build with the GCC option -Os that is CONFIG_CC_OPTIMIZE_FOR_SIZE?
+Usually people build with CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE that is -O2
+which results in intrinsics being inlined.
 
-Jonas
+  Ralf

@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 May 2016 21:05:17 +0200 (CEST)
-Received: from mail-pf0-f176.google.com ([209.85.192.176]:33936 "EHLO
-        mail-pf0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27037735AbcE1TFPfXxFd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 May 2016 21:05:15 +0200
-Received: by mail-pf0-f176.google.com with SMTP id 62so7410236pfd.1
-        for <linux-mips@linux-mips.org>; Sat, 28 May 2016 12:05:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 May 2016 03:23:52 +0200 (CEST)
+Received: from mail-pf0-f179.google.com ([209.85.192.179]:35467 "EHLO
+        mail-pf0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27033826AbcE2BXueMfsU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 May 2016 03:23:50 +0200
+Received: by mail-pf0-f179.google.com with SMTP id g64so53444848pfb.2
+        for <linux-mips@linux-mips.org>; Sat, 28 May 2016 18:23:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com; s=20150623;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ym1YrwcGj0Y1h+EE96SvPkyIaE5x7tNPmdsGXHFefCk=;
-        b=Gl/oCmKcMc+KISatzKOdins5AnQho62/QorXKmlhkf9lLTTrjv0BhrsG1QsoDm6PG/
-         q8mWedFZdTOVLct+lUs4HW4S9J2SuJ5hUBjvnJkpxDh5TvBiTbZd89NfEUt7rtU2JU/M
-         hoSNIujXNitHW/9axdyKeKIPQfeZu7t85dH2FThi0zNd68AwuIFd7FWILWW2BGjwAf27
-         zFtn1p2DTbFo9OGUwoQls85uEHag546l3+kCahC/nGzTBzkUJn9NKO+byD+MQTDGyu2m
-         mcg2mYL90+POBwZnO5zKjcoDuT5AtLHil65hTpmkp9ye4XqQTitPu88mQ/B4aUjHK7eU
-         0FRQ==
+        bh=ySdRXCGmjyWaqoWmmca3ncosrKTbT/DeZ3pgNmLgGKc=;
+        b=TzpDZt+SUVHLp1sznUja2adMr8aeia6CcGyqSWtfyl1ykEhUtMAleRRW4Gwj92ygee
+         l23tZG5ylI89jBWNkghBSXWYZ4CJC6HbKzKCI/Ozw9PFSXrhc1DwzmO7nykII4Y/K63c
+         A2SNUU8gQBjHtn8yYSongFlxRbumL0WLADjbkZTYds/GGV8ORjCdzfoNNPJ5cdzw93vM
+         KNh5VZ1zGDt/ts21BRgM7MrQdvnYALnmMjvKPDaX95X01wh8CeDVMisVQCbU9d3UC0/b
+         QT1KxFqIf+W01FBe96rHUpKlXgIvSdsCBiZbzCKAmZgL/bcTW+7gnIBcxFzMtig/F5/t
+         sxfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ym1YrwcGj0Y1h+EE96SvPkyIaE5x7tNPmdsGXHFefCk=;
-        b=bD5Y7oxVN0593OuvEmLaK8onesGbLLjj3U9u9VepLm4iH//TcxkZ5c69S7MO8XZ29E
-         t5IZD/VzeXMglmFo/DYxrOp9vdRFf64VDW3+xdwAp6zDCuRqzfisJkx3sL1EYNeiEFMi
-         RytWinSQHwcbZPIiSolLZ2qyvQ4x4E9zakzHEVmvyx9733PeJyBgjUJacqYGq9LPal5f
-         hL4nSDjH2m/qUinqYZCDw+LvBQ9VzZEucRVbTuECSiUmvcd+s9byec+Kih5ZFmkkD9At
-         2kfWZrgQdlxe6e7C0y4yUroI440pwWCUbBoecuXOdEiJqSNM9ffEz4WzdYTX53u/0x+p
-         SU/w==
-X-Gm-Message-State: ALyK8tIwwcOkckxsPytNUqSSL2g4FaXKZPQ2irf/U6ja+U0a1EnBW40Dai895S+gK4TIPQ==
-X-Received: by 10.98.91.195 with SMTP id p186mr31892151pfb.81.1464462309444;
-        Sat, 28 May 2016 12:05:09 -0700 (PDT)
+        bh=ySdRXCGmjyWaqoWmmca3ncosrKTbT/DeZ3pgNmLgGKc=;
+        b=ajRge6xT9kmNsf3v7V5BDPB4jSNNawxFwNoY1vB26DuoBTHaTJueovVXKwXbRt5mXA
+         mtxsIq09uoaOl8aUL1XU4YT0ZVg5Sevw42QTSAK4yR9X0749+60eaZm3wRjnMfIPwuJl
+         +CgIKkTkIbMWD76glHFFHLG5n7XE+tWzZ54F4eULrSFEKAtFv59LpPuE/thLlCUz4gl9
+         lFZar3hIhsgiOywbA/uLCgYmVNYNam1lfQ/21s/LAQDbnJjZsI4EkErbgzMwMAy9lNBh
+         U1CE61OkboPkvzo3NG2CzXdwBkcnOpxGO/gvMrUkK7bhpiz4A3JXuod2nblFkxZJfil6
+         eiXA==
+X-Gm-Message-State: ALyK8tIlTa7tDu/dUEEoj6i1yVgybdIh/bBVid2WIAHvHw3P+okivAjd0JITUDVz7VVtMg==
+X-Received: by 10.98.21.210 with SMTP id 201mr34585119pfv.51.1464485024309;
+        Sat, 28 May 2016 18:23:44 -0700 (PDT)
 Received: from ?IPv6:2601:645:c200:33:b546:9ef3:e6a7:b5eb? ([2601:645:c200:33:b546:9ef3:e6a7:b5eb])
-        by smtp.gmail.com with ESMTPSA id a19sm22311605pfc.57.2016.05.28.12.05.08
+        by smtp.gmail.com with ESMTPSA id v185sm23135040pfb.72.2016.05.28.18.23.43
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 28 May 2016 12:05:08 -0700 (PDT)
-Message-ID: <1464462306.5020.25.camel@chimera>
+        Sat, 28 May 2016 18:23:43 -0700 (PDT)
+Message-ID: <1464485020.5020.28.camel@chimera>
 Subject: Re: [PATCH v2] Re: Adding support for device tree and command line
 From:   Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
 To:     Antony Pavlov <antonynpavlov@gmail.com>
 Cc:     linux-mips@linux-mips.org, hauke@hauke-m.de, jogo@openwrt.org,
         openwrt@kresin.me
-Date:   Sat, 28 May 2016 12:05:06 -0700
-In-Reply-To: <20160528133152.cc8b7fad8665b20a3519f4e0@gmail.com>
+Date:   Sat, 28 May 2016 18:23:40 -0700
+In-Reply-To: <1464462306.5020.25.camel@chimera>
 References: <20160524194818.9e8399a56669134de4baee1e@gmail.com>
          <1464383198-6316-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
          <20160528133152.cc8b7fad8665b20a3519f4e0@gmail.com>
+         <1464462306.5020.25.camel@chimera>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.10.4-0ubuntu2 
 Mime-Version: 1.0
@@ -53,7 +54,7 @@ Return-Path: <daniel@gimpelevich.san-francisco.ca.us>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53689
+X-archive-position: 53690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,16 +71,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 2016-05-28 at 13:31 +0300, Antony Pavlov wrote:
->   Can we use 'if' instead of preprocessor's '#if' here?
+On Sat, 2016-05-28 at 12:05 -0700, Daniel Gimpelevich wrote:
+> On Sat, 2016-05-28 at 13:31 +0300, Antony Pavlov wrote:
+> >   Can we use 'if' instead of preprocessor's '#if' here?
+> > 
+> >   If we use regular C 'if' operator with IS_ENABLED() instead of
+> > '#if/#ifdef'
+> >   then the compiler can check all the code.
+> > 
+> >   E.g. please see this barebox patch:
+> > 
+> > 
+> > http://lists.infradead.org/pipermail/barebox/2014-February/017834.html
 > 
->   If we use regular C 'if' operator with IS_ENABLED() instead of
-> '#if/#ifdef'
->   then the compiler can check all the code.
-> 
->   E.g. please see this barebox patch:
-> 
-> 
-> http://lists.infradead.org/pipermail/barebox/2014-February/017834.html
+> Sigh. I guess I will resubmit again…
 
-Sigh. I guess I will resubmit again…
+Upon further review, no, we cannot use 'if' instead of '#if' here. The
+reference to the appended DTB would throw a linker error if the option
+to put it there is not enabled. Sorry.

@@ -1,43 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 May 2016 21:22:26 +0200 (CEST)
-Received: from caladan.dune.hu ([78.24.191.180]:60674 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27036620AbcE2TWYn5ODR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 29 May 2016 21:22:24 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 0FDBAB91D5A;
-        Sun, 29 May 2016 21:22:24 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.0.2] (dslb-088-073-007-040.088.073.pools.vodafone-ip.de [88.73.7.40])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 53191B91D3C;
-        Sun, 29 May 2016 21:22:14 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 May 2016 21:26:58 +0200 (CEST)
+Received: from mail-pa0-f48.google.com ([209.85.220.48]:34250 "EHLO
+        mail-pa0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27039115AbcE2T04rCsxg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 May 2016 21:26:56 +0200
+Received: by mail-pa0-f48.google.com with SMTP id bz2so25565124pad.1
+        for <linux-mips@linux-mips.org>; Sun, 29 May 2016 12:26:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com; s=20150623;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=lAOnMWwF4qAQcVeNjQH4AwmlxKBfK+M5jR0kCak5yWA=;
+        b=cWlQgp5s/hrsqVAZcNsmSt6keRLcRHizD1bYm9fmK8od8zXszWCaylZhxR9lX1FL6/
+         zsxy4n3FcmXCrI9Of/TZpqlw+DMQiBCq6OqL+8Eobc79GPzMdgntihRPV2piNsq63/Dv
+         kb2OIbsbSnlb265bnGoo++Dfcsi5PgQVRmhgyssVh1gqob6k+z2Em0OvcyDqfWc1LQZg
+         bH7HEcgcmXApKR6mXvUfWgMML01XcButHEWyG4gAQmiGBDAQwBpxnTMAL3ZcxrQ8OKQw
+         ULTpr1Gx36IpsROcBZEiUrAdvxb2uzt+P5RLqNWZnK3cda6gat4LiHALfHptR35NMSwR
+         fqUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=lAOnMWwF4qAQcVeNjQH4AwmlxKBfK+M5jR0kCak5yWA=;
+        b=Q9wNcBcxf3txL2+9pGeagtizqwyll2A/O0juserijpINg3uguAtSa+dAMSp/BRFSw6
+         HFJp9yVKWfCMmO+7CzzjgQfK/8HH79ELqq5b34SFLfViM8QAx9Z/p6KiT4UHIuVfU5cP
+         rHBoSBSPxoDx/0gTvbRZK46iHLhe1HSoQ1aYWBN5N0qgQy7cvWzYsrzcaEygVFoTDbeY
+         C6NuneXKqtXKurCZ+LZiY1B4eAOXtuQqEnG79OApUrAIHVUiXIuqtz+g1gGUimhXjag8
+         fn2SxOqu7Mgsv7VJzM2IrbWXnrrfws110pvirOOMyHIRR/T/ga2oTSCWk99Mb3BkmHB2
+         Thfw==
+X-Gm-Message-State: ALyK8tLxKTkQELWTVrECtQL7cLbrQ+YPA/3DiqyOn7i4CxxOSGDRbARDIFk5kAbAPr6saw==
+X-Received: by 10.66.26.37 with SMTP id i5mr40596602pag.15.1464550010743;
+        Sun, 29 May 2016 12:26:50 -0700 (PDT)
+Received: from ?IPv6:2601:645:c200:33:b546:9ef3:e6a7:b5eb? ([2601:645:c200:33:b546:9ef3:e6a7:b5eb])
+        by smtp.gmail.com with ESMTPSA id to9sm41987841pab.27.2016.05.29.12.26.49
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 29 May 2016 12:26:50 -0700 (PDT)
+Message-ID: <1464550007.5020.39.camel@chimera>
 Subject: Re: [PATCH v2] Re: Adding support for device tree and command line
-To:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-References: <20160524194818.9e8399a56669134de4baee1e@gmail.com>
- <1464383198-6316-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
- <c481d3b1-bee1-89c9-bbb8-ef17d91570bf@openwrt.org>
- <1464547128.5020.32.camel@chimera>
- <16b32a30-b0b4-d69e-b53d-827b9640c0cb@openwrt.org>
- <1464548936.5020.37.camel@chimera>
+From:   Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+To:     Jonas Gorski <jogo@openwrt.org>
 Cc:     linux-mips@linux-mips.org, hauke@hauke-m.de, openwrt@kresin.me,
         antonynpavlov@gmail.com
-From:   Jonas Gorski <jogo@openwrt.org>
-Message-ID: <9757c228-5835-422f-2b8c-bbced1d15df4@openwrt.org>
-Date:   Sun, 29 May 2016 21:22:29 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.1.0
-MIME-Version: 1.0
-In-Reply-To: <1464548936.5020.37.camel@chimera>
-Content-Type: text/plain; charset=utf-8
+Date:   Sun, 29 May 2016 12:26:47 -0700
+In-Reply-To: <9757c228-5835-422f-2b8c-bbced1d15df4@openwrt.org>
+References: <20160524194818.9e8399a56669134de4baee1e@gmail.com>
+         <1464383198-6316-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
+         <c481d3b1-bee1-89c9-bbb8-ef17d91570bf@openwrt.org>
+         <1464547128.5020.32.camel@chimera>
+         <16b32a30-b0b4-d69e-b53d-827b9640c0cb@openwrt.org>
+         <1464548936.5020.37.camel@chimera>
+         <9757c228-5835-422f-2b8c-bbced1d15df4@openwrt.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-Path: <jogo@openwrt.org>
+Return-Path: <daniel@gimpelevich.san-francisco.ca.us>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53696
+X-archive-position: 53697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: daniel@gimpelevich.san-francisco.ca.us
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,73 +74,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 29.05.2016 21:08, Daniel Gimpelevich wrote:
-> On Sun, 2016-05-29 at 21:01 +0200, Jonas Gorski wrote:
->> On 29.05.2016 20:38, Daniel Gimpelevich wrote:
->>> On Sun, 2016-05-29 at 12:53 +0200, Jonas Gorski wrote:
->>>> This will break/won't compile for ZBOOT_APPENDED_DTB as __appended_dtb
->>>> is
->>>> part of the wrapping decompressor, and the kernel has no knowledge of
->>>> this
->>>> this symbol.
->>>
->>> If this were true, it wouldn't compile with the code you added to
->>> compressed/head.S, either. You're referencing it as an external symbol,
->>> which is exactly the same thing I'm doing here.
->>
->> There are two different __appended_dtb definitions: the one for the
->> (uncompressed) kernel appended one that is visible to the kernel (in
->> kernel/vmlinux.lds.S), and one in boot/compressed/ld.script that is
->> visible only to the wrapping decompressor.
->>
->> Since the wrapping decompressor is built *after* the kernel was compiled
->> and compressed, there is no way to tell the kernel where __appended_dtb is
->> relative to the decompressor, so for ZBOOT_APPENDED_DTB you cannot
->> reference __appended_dtb from kernel code.
->>
->>  Your proposed
->>> alternatives are functionally almost equivalent to your earlier rejected
->>> patches:
->>
->> These weren't rejected, just deemed insufficient (mostly by me myself).
->>
->> And only to this one is similar:
->>> https://patchwork.linux-mips.org/patch/7274/
->>
->> But in contrast to this one, it doesn't populate initial_boot_params auto-
->> matically, but instead still requires the mach to do that (by calling
->> __dt_setup_arch()). I dropped that because IIRC at that time I read that
->> initial_boot_params isn't supposed to be directly accessed.
->> Also not populating initial_boot_params is IMHO better as just because
->> a0 says -2 it doesn't mean a1 references a dtb - that should still be up
->> to the mach to say that it expects a dtb to be passed.
->>
->>
->>> https://patchwork.linux-mips.org/patch/7313/
->>
->> This one was only missing alignment for the !SMP case but is otherwise
->> equivalent to what is in the kernel now.
->>
->>
->> Jonas
-> 
-> I see, and you are absolutely right in what you now suggest. What
-> escapes me at the moment, though, is how to reconcile all this with UHI.
-> UHI bootloaders may pass an external DTB, and it should be
-> indistinguishable by the boot code from an appended DTB. Thoughts?
+On Sun, 2016-05-29 at 21:22 +0200, Jonas Gorski wrote:
+> That still leaves the question which one should be preferred in case
+> both
+> are present.
 
-That's what my proposed code does:
-
-if a0 is -2, then store a1 in fw_passed_dtb
-else if appended dtb support is enabled and there is a valid dtb at
-__appended_dtb, then store the address of it in fw_passed_dtb.
-else set fw_passed_dtb to 0.
-
-so for the kernel/mach side, there is no difference between a UHI passed
-dtb and a __appended_dtb, both will populate fw_passed_dtb.
-
-That still leaves the question which one should be preferred in case both
-are present.
-
-
-Jonas
+In the already merged code, the appended one is preferred, so I would
+favor that.

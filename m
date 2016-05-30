@@ -1,38 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 06:43:51 +0200 (CEST)
-Received: from mga02.intel.com ([134.134.136.20]:6821 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27039613AbcE3Ens6-ulh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 May 2016 06:43:48 +0200
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP; 29 May 2016 21:43:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.26,387,1459839600"; 
-   d="scan'208";a="964887803"
-Received: from vkoul-udesk7.iind.intel.com (HELO localhost) ([10.223.84.143])
-  by orsmga001.jf.intel.com with ESMTP; 29 May 2016 21:43:44 -0700
-Date:   Mon, 30 May 2016 10:20:14 +0530
-From:   Vinod Koul <vinod.koul@intel.com>
-To:     Keguang Zhang <keguang.zhang@gmail.com>
-Cc:     dmaengine@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH V3] dmaengine: Loongson1: add Loongson1 dmaengine driver
-Message-ID: <20160530045014.GG16910@localhost>
-References: <1464428833-27517-1-git-send-email-keguang.zhang@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 19:24:54 +0200 (CEST)
+Received: from mail-qg0-f54.google.com ([209.85.192.54]:36691 "EHLO
+        mail-qg0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27040035AbcE3RYv5Y2uS convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 May 2016 19:24:51 +0200
+Received: by mail-qg0-f54.google.com with SMTP id q32so80721206qgq.3
+        for <linux-mips@linux-mips.org>; Mon, 30 May 2016 10:24:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-transfer-encoding;
+        bh=Dagj7cZRnT8VX+UiK94uMCgHYVQNU+S9NwMl4j+suDo=;
+        b=SExmeuz7xTpG/TAX9E4UtdM7UIeNE/RRLOam+ntZUDfa4dSq/gkhzStaXOTxThSR2m
+         pxeVcxIRGoP7mvX21luKpdl2MGmZcN2qlZOV5cQ3qECluLupRcrYGNTwPhbHrmntezUk
+         o8jp1MwTvYnu2qDzguC8LGEdIkWxwrWb6k/Rqhb8GiNRcB9okZcCfvPZ3QSk7h8lAq19
+         TgC0+ud/NnXtjd2VcYPkMIYPQ0qF2g64RVAgMOfam6N9Jl9VE5yxRTE4RlJ5URo/4BCs
+         ccU+QSbDqDanWd6bkS/P6L7wTVBImn02zMQT0LMCTWtJ1OBlY/hY2eYRIG4lqIw71SeA
+         7TTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-transfer-encoding;
+        bh=Dagj7cZRnT8VX+UiK94uMCgHYVQNU+S9NwMl4j+suDo=;
+        b=CxBcXhXQ5xplCKAx6kiNV/53a4VbZhUg1Rne43faGS31c2SmISwEA52rtwql0234+9
+         TwfiaYsv1gmJ8qOU+TChrtN3+iLrwUNO7xfXIz9SLBQe2OMeo+n9icLZ5DHE/HW4HB2V
+         I15SePDh6UgCWUJ7LO6mhg5s/PNZRNUODiracP/nCtNwLAWPYN24k1/XqslgnngBW+AU
+         jJRVBuRo+N8J5Mf9fuhR0XtcCbG2ece1vIR2ztTzkhxtZd9tmmhiK9ycUs0KGWoLU4aP
+         XMAwVDvhxdfPCH0jhSrtUccfyZmIuIAyQjEx/77lKfSG28freAaMfq8+Ndk/bwnEH2+1
+         +mbw==
+X-Gm-Message-State: ALyK8tLZlLSv/DHyde5MbOdewlu9PtRTNVdRsqd93sd0ZSmAH+fkpZLJghZ6Xuecu1EI9XK3ghZGGNKQYL9Iqw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1464428833-27517-1-git-send-email-keguang.zhang@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <vinod.koul@intel.com>
+X-Received: by 10.140.109.198 with SMTP id l64mr26098869qgf.65.1464629086075;
+ Mon, 30 May 2016 10:24:46 -0700 (PDT)
+Received: by 10.55.169.22 with HTTP; Mon, 30 May 2016 10:24:45 -0700 (PDT)
+In-Reply-To: <1464485020.5020.28.camel@chimera>
+References: <20160524194818.9e8399a56669134de4baee1e@gmail.com>
+        <1464383198-6316-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
+        <20160528133152.cc8b7fad8665b20a3519f4e0@gmail.com>
+        <1464462306.5020.25.camel@chimera>
+        <1464485020.5020.28.camel@chimera>
+Date:   Mon, 30 May 2016 20:24:45 +0300
+Message-ID: <CAA4bVAE=irtiqX5PHQBT2ZNR5xyCku2gwgkCQTZp6f-rc2wimA@mail.gmail.com>
+Subject: Re: [PATCH v2] Re: Adding support for device tree and command line
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+Cc:     linux-mips@linux-mips.org, hauke@hauke-m.de, jogo@openwrt.org,
+        openwrt@kresin.me
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53701
+X-archive-position: 53702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vinod.koul@intel.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,135 +69,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, May 28, 2016 at 05:47:13PM +0800, Keguang Zhang wrote:
-> +/* Loongson 1 DMA Register Definitions */
-> +#define DMA_CTRL		0x0
-> +
-> +/* DMA Control Register Bits */
-> +#define DMA_STOP		BIT(4)
-> +#define DMA_START		BIT(3)
-> +#define ASK_VALID		BIT(2)
-> +
-> +#define DMA_ADDR_MASK		(0xffffffc0)
+On 29/05/2016, Daniel Gimpelevich
+<daniel@gimpelevich.san-francisco.ca.us> wrote:
+> On Sat, 2016-05-28 at 12:05 -0700, Daniel Gimpelevich wrote:
+>> On Sat, 2016-05-28 at 13:31 +0300, Antony Pavlov wrote:
+>> >   Can we use 'if' instead of preprocessor's '#if' here?
+>> >
+>> >   If we use regular C 'if' operator with IS_ENABLED() instead of
+>> > '#if/#ifdef'
+>> >   then the compiler can check all the code.
+>> >
+>> >   E.g. please see this barebox patch:
+>> >
+>> >
+>> > http://lists.infradead.org/pipermail/barebox/2014-February/017834.html
+>>
+>> Sigh. I guess I will resubmit again…
+>
+> Upon further review, no, we cannot use 'if' instead of '#if' here. The
+> reference to the appended DTB would throw a linker error if the option
+> to put it there is not enabled. Sorry.
 
-These should be namespaced properly. Having generic one like DMA_STOP
-DMA_ADDR_MASK makes it prone to conflicts with common symbols!
+Please note that modern gcc ignores 'undefined reference' errors
+inside optimized out code block (e.g. 'if (0) { ... }').
 
-> +bool ls1x_dma_filter(struct dma_chan *chan, void *param)
-> +{
-> +	struct ls1x_dma_chan *dma_chan = to_ls1x_dma_chan(chan);
-> +	unsigned int chan_id = *(unsigned int *)param;
-> +
-> +	if (chan_id == dma_chan->id)
-> +		return true;
-> +	else
-> +		return false;
-> +}
+Here is an example:
 
-considering this is a new driver do you need a filter? Also where are the
-bindings for this driver?
+    $ echo <<EOF; > esymbol.c
+    int main()
+    {
+    	if (CONFIG_ESYMBOL_STUFF) {
+    		extern int esymbol;
 
-> +static struct ls1x_dma_desc *ls1x_dma_alloc_desc(struct ls1x_dma_chan *dma_chan,
-> +						 int sg_len)
+    		esymbol = 1;
+    	}
+    }
+    EOF
 
-if you splitting up please ensure preceding line is < 80 char, this looks
-quite bad
+    $ gcc -DCONFIG_ESYMBOL_STUFF=1 esymbol.c
+    /tmp/ccNCGFCS.o: In function `main':
+    esymbol.c:(.text+0x6): undefined reference to `esymbol'
+    collect2: error: ld returned 1 exit status
 
-> +
-> +	switch (direction) {
-> +	case DMA_MEM_TO_DEV:
-> +		dev_addr = config->dst_addr;
-> +		bus_width = config->dst_addr_width;
-> +		cmd = DMA_RAM2DEV | DMA_INT;
-> +		break;
+    $ gcc -DCONFIG_ESYMBOL_STUFF=0 esymbol.c
+    $ echo $?
+    0
+    $
 
-empty line here
-
-> +	case DMA_DEV_TO_MEM:
-> +		dev_addr = config->src_addr;
-> +		bus_width = config->src_addr_width;
-> +		cmd = DMA_INT;
-> +		break;
-
-here too
-
-> +static size_t ls1x_dma_desc_residue(struct ls1x_dma_desc *dma_desc,
-> +				    unsigned int next_sg)
-> +{
-> +	struct ls1x_dma_chan *dma_chan = dma_desc->chan;
-> +	struct dma_slave_config *config = &dma_chan->config;
-> +	unsigned int i, bus_width, bytes = 0;
-> +
-> +	if (dma_desc->dir == DMA_MEM_TO_DEV)
-> +		bus_width = config->dst_addr_width;
-> +	else
-> +		bus_width = config->src_addr_width;
-
-dma slave config can be reprogrammed for subsequent transaction, you should
-read this from descriptor and not channel
-
-> +
-> +	for (i = next_sg; i < dma_desc->nr_descs; i++)
-> +		bytes += dma_desc->desc[i]->length * bus_width;
-> +
-> +	return bytes;
-
-Okay how does this tell me "residue"
-
-For not yet processed this tells me all descriptor size, why would I want
-that?
-
-> +}
-> +
-> +static enum dma_status ls1x_dma_tx_status(struct dma_chan *chan,
-> +					  dma_cookie_t cookie,
-> +					  struct dma_tx_state *txstate)
-> +{
-> +	struct ls1x_dma_chan *dma_chan = to_ls1x_dma_chan(chan);
-> +	struct ls1x_dma_desc *dma_desc = dma_chan->dma_desc;
-> +	struct virt_dma_desc *vdesc;
-> +	enum dma_status status;
-> +	unsigned int residue = 0;
-> +	unsigned long flags;
-> +
-> +	status = dma_cookie_status(chan, cookie, txstate);
-> +	if ((status == DMA_COMPLETE) || !txstate)
-> +		return status;
-> +
-> +	spin_lock_irqsave(&dma_chan->vchan.lock, flags);
-> +
-> +	vdesc = vchan_find_desc(&dma_chan->vchan, cookie);
-> +	if (vdesc)
-> +		/* not yet processed */
-> +		residue = ls1x_dma_desc_residue(to_ls1x_dma_desc(vdesc), 0);
-> +	else if (cookie == dma_chan->dma_desc->vdesc.tx.cookie)
-> +		/* in progress */
-> +		residue = ls1x_dma_desc_residue(dma_desc, dma_desc->nr_done);
-> +	else
-> +		residue = 0;
-> +
-> +	spin_unlock_irqrestore(&dma_chan->vchan.lock, flags);
-> +
-> +	dma_set_residue(txstate, residue);
-> +
-> +	return status;
-> +}
-
-> +static int ls1x_dma_remove(struct platform_device *pdev)
-> +{
-> +	struct ls1x_dma *dma = platform_get_drvdata(pdev);
-> +
-> +	dma_async_device_unregister(&dma->dma_dev);
-> +	clk_disable_unprepare(dma->clk);
-
-You are using devm_request_irq(), now how is the irq quisced at this point
-and how do you ensure all your tasklets have finished processing!
-
-> +MODULE_AUTHOR("Kelvin Cheung <keguang.zhang@gmail.com>");
-> +MODULE_DESCRIPTION("Loongson1 DMA driver");
-> +MODULE_LICENSE("GPL");
-
-No ALIAS?
+    $ gcc --version
+    gcc (Debian 4.9.3-12) 4.9.3
+    Copyright (C) 2015 Free Software Foundation, Inc.
+    This is free software; see the source for copying conditions.  There is NO
+    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 -- 
-~Vinod
+Best regards,
+  Antony Pavlov

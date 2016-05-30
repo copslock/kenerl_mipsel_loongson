@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 23:00:32 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41575 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 23:00:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41823 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27040226AbcE3VAJvVj5l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 May 2016 23:00:09 +0200
+        by eddie.linux-mips.org with ESMTP id S27040230AbcE3VAnaprPl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 May 2016 23:00:43 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C074A884;
-        Mon, 30 May 2016 21:00:03 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 701E0919;
+        Mon, 30 May 2016 21:00:37 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,12 +14,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Radim=20Kr=C3=84=C2=8Dm=C3=83=C2=A1=C3=85=E2=84=A2?= 
         <rkrcmar@redhat.com>, Ralf Baechle <ralf@linux-mips.org>,
         linux-mips@linux-mips.org, kvm@vger.kernel.org
-Subject: [PATCH 4.4 60/86] MIPS: KVM: Fix timer IRQ race when writing CP0_Compare
-Date:   Mon, 30 May 2016 13:49:49 -0700
-Message-Id: <20160530204939.436833570@linuxfoundation.org>
+Subject: [PATCH 4.5 60/87] MIPS: KVM: Fix timer IRQ race when writing CP0_Compare
+Date:   Mon, 30 May 2016 13:49:58 -0700
+Message-Id: <20160530204935.780638715@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
-In-Reply-To: <20160530204937.379068148@linuxfoundation.org>
-References: <20160530204937.379068148@linuxfoundation.org>
+In-Reply-To: <20160530204933.149873142@linuxfoundation.org>
+References: <20160530204933.149873142@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53705
+X-archive-position: 53706
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +44,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,7 +85,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -784,7 +784,7 @@ extern enum emulation_result kvm_mips_co
+@@ -747,7 +747,7 @@ extern enum emulation_result kvm_mips_co
  
  uint32_t kvm_mips_read_count(struct kvm_vcpu *vcpu);
  void kvm_mips_write_count(struct kvm_vcpu *vcpu, uint32_t count);
@@ -192,7 +192,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
 --- a/arch/mips/kvm/trap_emul.c
 +++ b/arch/mips/kvm/trap_emul.c
-@@ -547,7 +547,7 @@ static int kvm_trap_emul_set_one_reg(str
+@@ -546,7 +546,7 @@ static int kvm_trap_emul_set_one_reg(str
  		kvm_mips_write_count(vcpu, v);
  		break;
  	case KVM_REG_MIPS_CP0_COMPARE:

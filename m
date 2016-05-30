@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 23:01:33 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41939 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 23:11:24 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:42267 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27040242AbcE3VAyNTyLl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 May 2016 23:00:54 +0200
+        by eddie.linux-mips.org with ESMTP id S27040242AbcE3VLWlr3Ql (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 May 2016 23:11:22 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EAA40919;
-        Mon, 30 May 2016 21:00:47 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4887E93D;
+        Mon, 30 May 2016 21:11:16 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,12 +14,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Radim=20Kr=C3=84=C2=8Dm=C3=83=C2=A1=C3=85=E2=84=A2?= 
         <rkrcmar@redhat.com>, Ralf Baechle <ralf@linux-mips.org>,
         linux-mips@linux-mips.org, kvm@vger.kernel.org
-Subject: [PATCH 4.5 59/87] MIPS: KVM: Fix timer IRQ race when freezing timer
-Date:   Mon, 30 May 2016 13:49:57 -0700
-Message-Id: <20160530204935.745240029@linuxfoundation.org>
+Subject: [PATCH 4.6 064/100] MIPS: KVM: Fix timer IRQ race when freezing timer
+Date:   Mon, 30 May 2016 13:49:59 -0700
+Message-Id: <20160530204910.507919791@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
-In-Reply-To: <20160530204933.149873142@linuxfoundation.org>
-References: <20160530204933.149873142@linuxfoundation.org>
+In-Reply-To: <20160530204908.422037419@linuxfoundation.org>
+References: <20160530204908.422037419@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53708
+X-archive-position: 53709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +44,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.5-stable review patch.  If anyone has any objections, please let me know.
+4.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

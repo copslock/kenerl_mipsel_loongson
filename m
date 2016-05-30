@@ -1,25 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 23:01:08 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:41880 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 23:01:33 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41939 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27040218AbcE3VAsro7Ul (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 May 2016 23:00:48 +0200
+        by eddie.linux-mips.org with ESMTP id S27040242AbcE3VAyNTyLl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 May 2016 23:00:54 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B15E8943;
-        Mon, 30 May 2016 21:00:42 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EAA40919;
+        Mon, 30 May 2016 21:00:47 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>, Petr Malat <oss@malat.biz>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Christopher Ferris <cferris@google.com>,
-        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org
-Subject: [PATCH 4.5 81/87] SIGNAL: Move generic copy_siginfo() to signal.h
-Date:   Mon, 30 May 2016 13:50:19 -0700
-Message-Id: <20160530204936.512475694@linuxfoundation.org>
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C3=84=C2=8Dm=C3=83=C2=A1=C3=85=E2=84=A2?= 
+        <rkrcmar@redhat.com>, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org, kvm@vger.kernel.org
+Subject: [PATCH 4.5 59/87] MIPS: KVM: Fix timer IRQ race when freezing timer
+Date:   Mon, 30 May 2016 13:49:57 -0700
+Message-Id: <20160530204935.745240029@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160530204933.149873142@linuxfoundation.org>
 References: <20160530204933.149873142@linuxfoundation.org>
@@ -30,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53707
+X-archive-position: 53708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,94 +50,93 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit ca9eb49aa9562eaadf3cea071ec7018ad6800425 upstream.
+commit 4355c44f063d3de4f072d796604c7f4ba4085cc3 upstream.
 
-The generic copy_siginfo() is currently defined in
-asm-generic/siginfo.h, after including uapi/asm-generic/siginfo.h which
-defines the generic struct siginfo. However this makes it awkward for an
-architecture to use it if it has to define its own struct siginfo (e.g.
-MIPS and potentially IA64), since it means that asm-generic/siginfo.h
-can only be included after defining the arch-specific siginfo, which may
-be problematic if the arch-specific definition needs definitions from
-uapi/asm-generic/siginfo.h.
+There's a particularly narrow and subtle race condition when the
+software emulated guest timer is frozen which can allow a guest timer
+interrupt to be missed.
 
-It is possible to work around this by first including
-uapi/asm-generic/siginfo.h to get the constants before defining the
-arch-specific siginfo, and include asm-generic/siginfo.h after. However
-uapi headers can't be included by other uapi headers, so that first
-include has to be in an ifdef __kernel__, with the non __kernel__ case
-including the non-UAPI header instead.
+This happens due to the hrtimer expiry being inexact, so very
+occasionally the freeze time will be after the moment when the emulated
+CP0_Count transitions to the same value as CP0_Compare (so an IRQ should
+be generated), but before the moment when the hrtimer is due to expire
+(so no IRQ is generated). The IRQ won't be generated when the timer is
+resumed either, since the resume CP0_Count will already match CP0_Compare.
 
-Instead of that mess, move the generic copy_siginfo() definition into
-linux/signal.h, which allows an arch-specific uapi/asm/siginfo.h to
-include asm-generic/siginfo.h and define the arch-specific siginfo, and
-for the generic copy_siginfo() to see that arch-specific definition.
+With VZ guests in particular this is far more likely to happen, since
+the soft timer may be frozen frequently in order to restore the timer
+state to the hardware guest timer. This happens after 5-10 hours of
+guest soak testing, resulting in an overflow in guest kernel timekeeping
+calculations, hanging the guest. A more focussed test case to
+intentionally hit the race (with the help of a new hypcall to cause the
+timer state to migrated between hardware & software) hits the condition
+fairly reliably within around 30 seconds.
 
+Instead of relying purely on the inexact hrtimer expiry to determine
+whether an IRQ should be generated, read the guest CP0_Compare and
+directly check whether the freeze time is before or after it. Only if
+CP0_Count is on or after CP0_Compare do we check the hrtimer expiry to
+determine whether the last IRQ has already been generated (which will
+have pushed back the expiry by one timer period).
+
+Fixes: e30492bbe95a ("MIPS: KVM: Rewrite count/compare timer emulation")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim KrÄmÃ¡Å™" <rkrcmar@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Petr Malat <oss@malat.biz>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Christopher Ferris <cferris@google.com>
-Cc: linux-arch@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12478/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- include/asm-generic/siginfo.h |   15 ---------------
- include/linux/signal.h        |   15 +++++++++++++++
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ arch/mips/kvm/emulate.c |   28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
---- a/include/asm-generic/siginfo.h
-+++ b/include/asm-generic/siginfo.h
-@@ -17,21 +17,6 @@
- struct siginfo;
- void do_schedule_next_timer(struct siginfo *info);
- 
--#ifndef HAVE_ARCH_COPY_SIGINFO
--
--#include <linux/string.h>
--
--static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
--{
--	if (from->si_code < 0)
--		memcpy(to, from, sizeof(*to));
--	else
--		/* _sigchld is currently the largest know union member */
--		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
--}
--
--#endif
--
- extern int copy_siginfo_to_user(struct siginfo __user *to, const struct siginfo *from);
- 
- #endif
---- a/include/linux/signal.h
-+++ b/include/linux/signal.h
-@@ -28,6 +28,21 @@ struct sigpending {
- 	sigset_t signal;
- };
- 
-+#ifndef HAVE_ARCH_COPY_SIGINFO
-+
-+#include <linux/string.h>
-+
-+static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
-+{
-+	if (from->si_code < 0)
-+		memcpy(to, from, sizeof(*to));
-+	else
-+		/* _sigchld is currently the largest know union member */
-+		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
-+}
-+
-+#endif
-+
- /*
-  * Define some primitives to manipulate sigset_t.
+--- a/arch/mips/kvm/emulate.c
++++ b/arch/mips/kvm/emulate.c
+@@ -302,12 +302,31 @@ static inline ktime_t kvm_mips_count_tim
   */
+ static uint32_t kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t now)
+ {
+-	ktime_t expires;
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	ktime_t expires, threshold;
++	uint32_t count, compare;
+ 	int running;
+ 
+-	/* Is the hrtimer pending? */
++	/* Calculate the biased and scaled guest CP0_Count */
++	count = vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
++	compare = kvm_read_c0_guest_compare(cop0);
++
++	/*
++	 * Find whether CP0_Count has reached the closest timer interrupt. If
++	 * not, we shouldn't inject it.
++	 */
++	if ((int32_t)(count - compare) < 0)
++		return count;
++
++	/*
++	 * The CP0_Count we're going to return has already reached the closest
++	 * timer interrupt. Quickly check if it really is a new interrupt by
++	 * looking at whether the interval until the hrtimer expiry time is
++	 * less than 1/4 of the timer period.
++	 */
+ 	expires = hrtimer_get_expires(&vcpu->arch.comparecount_timer);
+-	if (ktime_compare(now, expires) >= 0) {
++	threshold = ktime_add_ns(now, vcpu->arch.count_period / 4);
++	if (ktime_before(expires, threshold)) {
+ 		/*
+ 		 * Cancel it while we handle it so there's no chance of
+ 		 * interference with the timeout handler.
+@@ -329,8 +348,7 @@ static uint32_t kvm_mips_read_count_runn
+ 		}
+ 	}
+ 
+-	/* Return the biased and scaled guest CP0_Count */
+-	return vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
++	return count;
+ }
+ 
+ /**

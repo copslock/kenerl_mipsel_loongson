@@ -1,62 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 19:24:54 +0200 (CEST)
-Received: from mail-qg0-f54.google.com ([209.85.192.54]:36691 "EHLO
-        mail-qg0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27040035AbcE3RYv5Y2uS convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 May 2016 19:24:51 +0200
-Received: by mail-qg0-f54.google.com with SMTP id q32so80721206qgq.3
-        for <linux-mips@linux-mips.org>; Mon, 30 May 2016 10:24:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-transfer-encoding;
-        bh=Dagj7cZRnT8VX+UiK94uMCgHYVQNU+S9NwMl4j+suDo=;
-        b=SExmeuz7xTpG/TAX9E4UtdM7UIeNE/RRLOam+ntZUDfa4dSq/gkhzStaXOTxThSR2m
-         pxeVcxIRGoP7mvX21luKpdl2MGmZcN2qlZOV5cQ3qECluLupRcrYGNTwPhbHrmntezUk
-         o8jp1MwTvYnu2qDzguC8LGEdIkWxwrWb6k/Rqhb8GiNRcB9okZcCfvPZ3QSk7h8lAq19
-         TgC0+ud/NnXtjd2VcYPkMIYPQ0qF2g64RVAgMOfam6N9Jl9VE5yxRTE4RlJ5URo/4BCs
-         ccU+QSbDqDanWd6bkS/P6L7wTVBImn02zMQT0LMCTWtJ1OBlY/hY2eYRIG4lqIw71SeA
-         7TTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-transfer-encoding;
-        bh=Dagj7cZRnT8VX+UiK94uMCgHYVQNU+S9NwMl4j+suDo=;
-        b=CxBcXhXQ5xplCKAx6kiNV/53a4VbZhUg1Rne43faGS31c2SmISwEA52rtwql0234+9
-         TwfiaYsv1gmJ8qOU+TChrtN3+iLrwUNO7xfXIz9SLBQe2OMeo+n9icLZ5DHE/HW4HB2V
-         I15SePDh6UgCWUJ7LO6mhg5s/PNZRNUODiracP/nCtNwLAWPYN24k1/XqslgnngBW+AU
-         jJRVBuRo+N8J5Mf9fuhR0XtcCbG2ece1vIR2ztTzkhxtZd9tmmhiK9ycUs0KGWoLU4aP
-         XMAwVDvhxdfPCH0jhSrtUccfyZmIuIAyQjEx/77lKfSG28freAaMfq8+Ndk/bwnEH2+1
-         +mbw==
-X-Gm-Message-State: ALyK8tLZlLSv/DHyde5MbOdewlu9PtRTNVdRsqd93sd0ZSmAH+fkpZLJghZ6Xuecu1EI9XK3ghZGGNKQYL9Iqw==
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 22:50:57 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:41522 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27040208AbcE3UuvNMN5l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 May 2016 22:50:51 +0200
+Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D2FAB932;
+        Mon, 30 May 2016 20:50:44 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ralf Baechle <ralf@linux-mips.org>, Petr Malat <oss@malat.biz>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Christopher Ferris <cferris@google.com>,
+        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH 4.4 80/86] SIGNAL: Move generic copy_siginfo() to signal.h
+Date:   Mon, 30 May 2016 13:50:09 -0700
+Message-Id: <20160530204940.052347962@linuxfoundation.org>
+X-Mailer: git-send-email 2.8.3
+In-Reply-To: <20160530204937.379068148@linuxfoundation.org>
+References: <20160530204937.379068148@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-X-Received: by 10.140.109.198 with SMTP id l64mr26098869qgf.65.1464629086075;
- Mon, 30 May 2016 10:24:46 -0700 (PDT)
-Received: by 10.55.169.22 with HTTP; Mon, 30 May 2016 10:24:45 -0700 (PDT)
-In-Reply-To: <1464485020.5020.28.camel@chimera>
-References: <20160524194818.9e8399a56669134de4baee1e@gmail.com>
-        <1464383198-6316-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
-        <20160528133152.cc8b7fad8665b20a3519f4e0@gmail.com>
-        <1464462306.5020.25.camel@chimera>
-        <1464485020.5020.28.camel@chimera>
-Date:   Mon, 30 May 2016 20:24:45 +0300
-Message-ID: <CAA4bVAE=irtiqX5PHQBT2ZNR5xyCku2gwgkCQTZp6f-rc2wimA@mail.gmail.com>
-Subject: Re: [PATCH v2] Re: Adding support for device tree and command line
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-Cc:     linux-mips@linux-mips.org, hauke@hauke-m.de, jogo@openwrt.org,
-        openwrt@kresin.me
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <antonynpavlov@gmail.com>
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53702
+X-archive-position: 53703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,59 +47,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 29/05/2016, Daniel Gimpelevich
-<daniel@gimpelevich.san-francisco.ca.us> wrote:
-> On Sat, 2016-05-28 at 12:05 -0700, Daniel Gimpelevich wrote:
->> On Sat, 2016-05-28 at 13:31 +0300, Antony Pavlov wrote:
->> >   Can we use 'if' instead of preprocessor's '#if' here?
->> >
->> >   If we use regular C 'if' operator with IS_ENABLED() instead of
->> > '#if/#ifdef'
->> >   then the compiler can check all the code.
->> >
->> >   E.g. please see this barebox patch:
->> >
->> >
->> > http://lists.infradead.org/pipermail/barebox/2014-February/017834.html
->>
->> Sigh. I guess I will resubmit again…
->
-> Upon further review, no, we cannot use 'if' instead of '#if' here. The
-> reference to the appended DTB would throw a linker error if the option
-> to put it there is not enabled. Sorry.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-Please note that modern gcc ignores 'undefined reference' errors
-inside optimized out code block (e.g. 'if (0) { ... }').
+------------------
 
-Here is an example:
+From: James Hogan <james.hogan@imgtec.com>
 
-    $ echo <<EOF; > esymbol.c
-    int main()
-    {
-    	if (CONFIG_ESYMBOL_STUFF) {
-    		extern int esymbol;
+commit ca9eb49aa9562eaadf3cea071ec7018ad6800425 upstream.
 
-    		esymbol = 1;
-    	}
-    }
-    EOF
+The generic copy_siginfo() is currently defined in
+asm-generic/siginfo.h, after including uapi/asm-generic/siginfo.h which
+defines the generic struct siginfo. However this makes it awkward for an
+architecture to use it if it has to define its own struct siginfo (e.g.
+MIPS and potentially IA64), since it means that asm-generic/siginfo.h
+can only be included after defining the arch-specific siginfo, which may
+be problematic if the arch-specific definition needs definitions from
+uapi/asm-generic/siginfo.h.
 
-    $ gcc -DCONFIG_ESYMBOL_STUFF=1 esymbol.c
-    /tmp/ccNCGFCS.o: In function `main':
-    esymbol.c:(.text+0x6): undefined reference to `esymbol'
-    collect2: error: ld returned 1 exit status
+It is possible to work around this by first including
+uapi/asm-generic/siginfo.h to get the constants before defining the
+arch-specific siginfo, and include asm-generic/siginfo.h after. However
+uapi headers can't be included by other uapi headers, so that first
+include has to be in an ifdef __kernel__, with the non __kernel__ case
+including the non-UAPI header instead.
 
-    $ gcc -DCONFIG_ESYMBOL_STUFF=0 esymbol.c
-    $ echo $?
-    0
-    $
+Instead of that mess, move the generic copy_siginfo() definition into
+linux/signal.h, which allows an arch-specific uapi/asm/siginfo.h to
+include asm-generic/siginfo.h and define the arch-specific siginfo, and
+for the generic copy_siginfo() to see that arch-specific definition.
 
-    $ gcc --version
-    gcc (Debian 4.9.3-12) 4.9.3
-    Copyright (C) 2015 Free Software Foundation, Inc.
-    This is free software; see the source for copying conditions.  There is NO
-    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Petr Malat <oss@malat.biz>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Christopher Ferris <cferris@google.com>
+Cc: linux-arch@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12478/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
--- 
-Best regards,
-  Antony Pavlov
+---
+ include/asm-generic/siginfo.h |   15 ---------------
+ include/linux/signal.h        |   15 +++++++++++++++
+ 2 files changed, 15 insertions(+), 15 deletions(-)
+
+--- a/include/asm-generic/siginfo.h
++++ b/include/asm-generic/siginfo.h
+@@ -17,21 +17,6 @@
+ struct siginfo;
+ void do_schedule_next_timer(struct siginfo *info);
+ 
+-#ifndef HAVE_ARCH_COPY_SIGINFO
+-
+-#include <linux/string.h>
+-
+-static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
+-{
+-	if (from->si_code < 0)
+-		memcpy(to, from, sizeof(*to));
+-	else
+-		/* _sigchld is currently the largest know union member */
+-		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
+-}
+-
+-#endif
+-
+ extern int copy_siginfo_to_user(struct siginfo __user *to, const struct siginfo *from);
+ 
+ #endif
+--- a/include/linux/signal.h
++++ b/include/linux/signal.h
+@@ -28,6 +28,21 @@ struct sigpending {
+ 	sigset_t signal;
+ };
+ 
++#ifndef HAVE_ARCH_COPY_SIGINFO
++
++#include <linux/string.h>
++
++static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
++{
++	if (from->si_code < 0)
++		memcpy(to, from, sizeof(*to));
++	else
++		/* _sigchld is currently the largest know union member */
++		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
++}
++
++#endif
++
+ /*
+  * Define some primitives to manipulate sigset_t.
+  */

@@ -1,63 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 May 2016 23:19:47 +0200 (CEST)
-Received: from mail-pf0-f179.google.com ([209.85.192.179]:33292 "EHLO
-        mail-pf0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27039245AbcE2VToyuEyS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 29 May 2016 23:19:44 +0200
-Received: by mail-pf0-f179.google.com with SMTP id b124so57923297pfb.0
-        for <linux-mips@linux-mips.org>; Sun, 29 May 2016 14:19:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gimpelevich-san-francisco-ca-us.20150623.gappssmtp.com; s=20150623;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=yDa2hKHMpTBitKI27cTnaYQwH8jxuQnL9Y32mLas6yc=;
-        b=oGcot5eWlFkvJ5U+Apgag117a8lbQ69TFE/FvrCDMxmEI+nJ5nAaSxaNGuxUeM/W0x
-         +KDNp6iUj2wocqHb+dA/D6h+NXtZWO7LhPnynkY+7y65NwNICQ5m8c4E5YvC1cMJgwQu
-         h+0SnVOiYnNJQBNFOTIYZmWVPjcKD/AnN3fRcZlBiY/SdoNhcNRPLwQBiNYUG8E8yyX+
-         TaNj+4SKWcaAs5p5n/sjPsWC4IUu8qt9v02FkmZ3yj5K+Spfck6src/MlZd3nPva2aL/
-         K5G8BevrxRV0yeSTkxjsrV2zJVOxKkvN33MO06c+bTUgY8hNuca+NmuSn5EsZ1W/Xoj2
-         oUag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=yDa2hKHMpTBitKI27cTnaYQwH8jxuQnL9Y32mLas6yc=;
-        b=WCApW1WkTjOfL82m6auZuX0JlyiddSal+aSz+5Q4sC3q5ltHUM6wJHm1mzQqDRiWP2
-         /TiyHI7sbNbLF3AlYIdLpBIRljpTBkeN9XrN7KlF+MHtIblqpSD6s/sJvnKgvep+ZnU2
-         cWE900UzPcis+J4PBJXoJaluXe8J3VGnIaG8xMN0Pntr3Z6T7uQrljReNOy94SYDIoI6
-         Q47odrvscMn4qVjdQGVDsZfYzdFklJml5JcKmH3zWKjvMw2JCYv0qdqz0pO+MNptATZT
-         ILmc9OwnsKPCpEGNsUVqNh8Wd9NNE/bK+e7NdKyMU5qtITqNNne/oWELPoMAI8BiOOoU
-         Wn7g==
-X-Gm-Message-State: ALyK8tL3TA8Tccc/yaMd5rFMDeBPrhq6osqAYYjQQ+gYPiebgnzfheX8Kd7ODhxKSjMG1g==
-X-Received: by 10.98.28.148 with SMTP id c142mr41256750pfc.102.1464556778726;
-        Sun, 29 May 2016 14:19:38 -0700 (PDT)
-Received: from ?IPv6:2601:645:c200:33:b546:9ef3:e6a7:b5eb? ([2601:645:c200:33:b546:9ef3:e6a7:b5eb])
-        by smtp.gmail.com with ESMTPSA id b73sm24632889pfd.61.2016.05.29.14.19.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 29 May 2016 14:19:38 -0700 (PDT)
-Message-ID: <1464556766.5020.42.camel@chimera>
-Subject: Re: [PATCH v2] Re: Adding support for device tree and command line
-From:   Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-To:     Jonas Gorski <jogo@openwrt.org>
-Cc:     linux-mips@linux-mips.org, hauke@hauke-m.de, openwrt@kresin.me,
-        antonynpavlov@gmail.com
-Date:   Sun, 29 May 2016 14:19:26 -0700
-In-Reply-To: <c481d3b1-bee1-89c9-bbb8-ef17d91570bf@openwrt.org>
-References: <20160524194818.9e8399a56669134de4baee1e@gmail.com>
-         <1464383198-6316-1-git-send-email-daniel@gimpelevich.san-francisco.ca.us>
-         <c481d3b1-bee1-89c9-bbb8-ef17d91570bf@openwrt.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Return-Path: <daniel@gimpelevich.san-francisco.ca.us>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 06:43:51 +0200 (CEST)
+Received: from mga02.intel.com ([134.134.136.20]:6821 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27039613AbcE3Ens6-ulh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 May 2016 06:43:48 +0200
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP; 29 May 2016 21:43:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.26,387,1459839600"; 
+   d="scan'208";a="964887803"
+Received: from vkoul-udesk7.iind.intel.com (HELO localhost) ([10.223.84.143])
+  by orsmga001.jf.intel.com with ESMTP; 29 May 2016 21:43:44 -0700
+Date:   Mon, 30 May 2016 10:20:14 +0530
+From:   Vinod Koul <vinod.koul@intel.com>
+To:     Keguang Zhang <keguang.zhang@gmail.com>
+Cc:     dmaengine@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH V3] dmaengine: Loongson1: add Loongson1 dmaengine driver
+Message-ID: <20160530045014.GG16910@localhost>
+References: <1464428833-27517-1-git-send-email-keguang.zhang@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1464428833-27517-1-git-send-email-keguang.zhang@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <vinod.koul@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53700
+X-archive-position: 53701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@gimpelevich.san-francisco.ca.us
+X-original-sender: vinod.koul@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,65 +45,135 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 2016-05-29 at 12:53 +0200, Jonas Gorski wrote:
-> Maybe a better solution here would be to create a new symbol
-> fw_passed_dtb and let the code store a1 in there if a0 is -2, or
-> __appended_dtb in case it is valid? Then we wouldn't need to special
-> case APPENDED_DTB for any mach wanting to use it, and they can just
-> check fw_passed_dtb.
-> 
-> something like:
-> 
-> arch/mips/kernel/head.S:
-> ...
-> 
-> #ifdef CONFIG_USE_OF
->         li              t1, -2
->         beq             a0, t1, dtb_found
->         move            t0, a0
-> 
-> #ifdef CONFIG_MIPS_RAW_APPENDED_DTB
->         PTR_LA          t0, __appended_dtb
-> 
-> #ifdef CONFIG_CPU_BIG_ENDIAN
->         li              t1, 0xd00dfeed
-> #else
->         li              t1, 0xedfe0dd0
-> #endif
->         lw              t2, (t0)
->         bne             t1, t2, no_dtb_found
->          nop
-> 
-> #endif
-> no_dtb_found:
->         li              t0, 0
-> dtb_found:
->         LONG_S          t0, fw_passed_dtb
-> #endif
+On Sat, May 28, 2016 at 05:47:13PM +0800, Keguang Zhang wrote:
+> +/* Loongson 1 DMA Register Definitions */
+> +#define DMA_CTRL		0x0
+> +
+> +/* DMA Control Register Bits */
+> +#define DMA_STOP		BIT(4)
+> +#define DMA_START		BIT(3)
+> +#define ASK_VALID		BIT(2)
+> +
+> +#define DMA_ADDR_MASK		(0xffffffc0)
 
-That prefers the wrong DTB in case both are present. I propose this
-instead:
+These should be namespaced properly. Having generic one like DMA_STOP
+DMA_ADDR_MASK makes it prone to conflicts with common symbols!
 
-#ifdef CONFIG_USE_OF
-#ifdef CONFIG_MIPS_RAW_APPENDED_DTB
-        PTR_LA          t0, __appended_dtb
+> +bool ls1x_dma_filter(struct dma_chan *chan, void *param)
+> +{
+> +	struct ls1x_dma_chan *dma_chan = to_ls1x_dma_chan(chan);
+> +	unsigned int chan_id = *(unsigned int *)param;
+> +
+> +	if (chan_id == dma_chan->id)
+> +		return true;
+> +	else
+> +		return false;
+> +}
 
-#ifdef CONFIG_CPU_BIG_ENDIAN
-        li              t1, 0xd00dfeed
-#else
-        li              t1, 0xedfe0dd0
-#endif
-        lw              t2, (t0)
-        beq             t1, t2, dtb_found
-         nop
+considering this is a new driver do you need a filter? Also where are the
+bindings for this driver?
 
-#endif
-        li              t1, -2
-        beq             a0, t1, dtb_found
-        move            t0, a1
+> +static struct ls1x_dma_desc *ls1x_dma_alloc_desc(struct ls1x_dma_chan *dma_chan,
+> +						 int sg_len)
 
-no_dtb_found:
-        li              t0, 0
-dtb_found:
-        LONG_S          t0, fw_passed_dtb
-#endif
+if you splitting up please ensure preceding line is < 80 char, this looks
+quite bad
+
+> +
+> +	switch (direction) {
+> +	case DMA_MEM_TO_DEV:
+> +		dev_addr = config->dst_addr;
+> +		bus_width = config->dst_addr_width;
+> +		cmd = DMA_RAM2DEV | DMA_INT;
+> +		break;
+
+empty line here
+
+> +	case DMA_DEV_TO_MEM:
+> +		dev_addr = config->src_addr;
+> +		bus_width = config->src_addr_width;
+> +		cmd = DMA_INT;
+> +		break;
+
+here too
+
+> +static size_t ls1x_dma_desc_residue(struct ls1x_dma_desc *dma_desc,
+> +				    unsigned int next_sg)
+> +{
+> +	struct ls1x_dma_chan *dma_chan = dma_desc->chan;
+> +	struct dma_slave_config *config = &dma_chan->config;
+> +	unsigned int i, bus_width, bytes = 0;
+> +
+> +	if (dma_desc->dir == DMA_MEM_TO_DEV)
+> +		bus_width = config->dst_addr_width;
+> +	else
+> +		bus_width = config->src_addr_width;
+
+dma slave config can be reprogrammed for subsequent transaction, you should
+read this from descriptor and not channel
+
+> +
+> +	for (i = next_sg; i < dma_desc->nr_descs; i++)
+> +		bytes += dma_desc->desc[i]->length * bus_width;
+> +
+> +	return bytes;
+
+Okay how does this tell me "residue"
+
+For not yet processed this tells me all descriptor size, why would I want
+that?
+
+> +}
+> +
+> +static enum dma_status ls1x_dma_tx_status(struct dma_chan *chan,
+> +					  dma_cookie_t cookie,
+> +					  struct dma_tx_state *txstate)
+> +{
+> +	struct ls1x_dma_chan *dma_chan = to_ls1x_dma_chan(chan);
+> +	struct ls1x_dma_desc *dma_desc = dma_chan->dma_desc;
+> +	struct virt_dma_desc *vdesc;
+> +	enum dma_status status;
+> +	unsigned int residue = 0;
+> +	unsigned long flags;
+> +
+> +	status = dma_cookie_status(chan, cookie, txstate);
+> +	if ((status == DMA_COMPLETE) || !txstate)
+> +		return status;
+> +
+> +	spin_lock_irqsave(&dma_chan->vchan.lock, flags);
+> +
+> +	vdesc = vchan_find_desc(&dma_chan->vchan, cookie);
+> +	if (vdesc)
+> +		/* not yet processed */
+> +		residue = ls1x_dma_desc_residue(to_ls1x_dma_desc(vdesc), 0);
+> +	else if (cookie == dma_chan->dma_desc->vdesc.tx.cookie)
+> +		/* in progress */
+> +		residue = ls1x_dma_desc_residue(dma_desc, dma_desc->nr_done);
+> +	else
+> +		residue = 0;
+> +
+> +	spin_unlock_irqrestore(&dma_chan->vchan.lock, flags);
+> +
+> +	dma_set_residue(txstate, residue);
+> +
+> +	return status;
+> +}
+
+> +static int ls1x_dma_remove(struct platform_device *pdev)
+> +{
+> +	struct ls1x_dma *dma = platform_get_drvdata(pdev);
+> +
+> +	dma_async_device_unregister(&dma->dma_dev);
+> +	clk_disable_unprepare(dma->clk);
+
+You are using devm_request_irq(), now how is the irq quisced at this point
+and how do you ensure all your tasklets have finished processing!
+
+> +MODULE_AUTHOR("Kelvin Cheung <keguang.zhang@gmail.com>");
+> +MODULE_DESCRIPTION("Loongson1 DMA driver");
+> +MODULE_LICENSE("GPL");
+
+No ALIAS?
+
+-- 
+~Vinod

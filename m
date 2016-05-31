@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 May 2016 23:12:02 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:42411 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27040282AbcE3VLfmZ0vl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 May 2016 23:11:35 +0200
-Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 95FBE93D;
-        Mon, 30 May 2016 21:11:29 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>, Petr Malat <oss@malat.biz>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Christopher Ferris <cferris@google.com>,
-        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-ia64@vger.kernel.org
-Subject: [PATCH 4.6 092/100] SIGNAL: Move generic copy_siginfo() to signal.h
-Date:   Mon, 30 May 2016 13:50:27 -0700
-Message-Id: <20160530204911.401732344@linuxfoundation.org>
-X-Mailer: git-send-email 2.8.3
-In-Reply-To: <20160530204908.422037419@linuxfoundation.org>
-References: <20160530204908.422037419@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 May 2016 14:18:36 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:34938 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27040881AbcEaMSeZNJ-i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 May 2016 14:18:34 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Websense Email with ESMTPS id 75451679D1331;
+        Tue, 31 May 2016 13:18:25 +0100 (IST)
+Received: from [192.168.154.26] (192.168.154.26) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 31 May
+ 2016 13:18:28 +0100
+Subject: Re: [PATCH] MIPS: lib: Mark intrinsics notrace
+To:     Ralf Baechle <ralf@linux-mips.org>
+References: <20160525100635.22541-1-harvey.hunt@imgtec.com>
+ <20160529210340.GA25587@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        "# 4 . 2 . x-" <stable@vger.kernel.org>
+From:   Harvey Hunt <harvey.hunt@imgtec.com>
+Message-ID: <eab5a895-a174-9d2c-16ba-f660c04190ba@imgtec.com>
+Date:   Tue, 31 May 2016 13:18:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+In-Reply-To: <20160529210340.GA25587@linux-mips.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.26]
+Return-Path: <Harvey.Hunt@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53711
+X-archive-position: 53712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: harvey.hunt@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,100 +46,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.6-stable review patch.  If anyone has any objections, please let me know.
+Hi Ralf,
 
-------------------
+On 29/05/16 22:03, Ralf Baechle wrote:
+> On Wed, May 25, 2016 at 11:06:35AM +0100, Harvey Hunt wrote:
+>
+>> On certain MIPS32 devices, the ftrace tracer "function_graph" uses
+>> __lshrdi3() during the capturing of trace data. ftrace then attempts to
+>> trace __lshrdi3() which leads to infinite recursion and a stack overflow.
+>> Fix this by marking __lshrdi3() as notrace. Mark the other compiler
+>> intrinsics as notrace in case the compiler decides to use them in the
+>> ftrace path.
+>
+> Makes perfect sense - but I'm wondering how you triggered it.  Was this
+> a build with the GCC option -Os that is CONFIG_CC_OPTIMIZE_FOR_SIZE?
+> Usually people build with CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE that is -O2
+> which results in intrinsics being inlined.
 
-From: James Hogan <james.hogan@imgtec.com>
+This is triggered by building with CONFIG_CC_OPTIMIZE_FOR_SIZE. This 
+explains why I only saw it on certain MIPS32 devices - Malta's 
+defconfigs don't have CONFIG_CC_OPTIMIZE_FOR_SIZE enabled, but the 
+pistachio and Ci20 defconfigs do.
 
-commit ca9eb49aa9562eaadf3cea071ec7018ad6800425 upstream.
+>
+>   Ralf
+>
 
-The generic copy_siginfo() is currently defined in
-asm-generic/siginfo.h, after including uapi/asm-generic/siginfo.h which
-defines the generic struct siginfo. However this makes it awkward for an
-architecture to use it if it has to define its own struct siginfo (e.g.
-MIPS and potentially IA64), since it means that asm-generic/siginfo.h
-can only be included after defining the arch-specific siginfo, which may
-be problematic if the arch-specific definition needs definitions from
-uapi/asm-generic/siginfo.h.
+Thanks,
 
-It is possible to work around this by first including
-uapi/asm-generic/siginfo.h to get the constants before defining the
-arch-specific siginfo, and include asm-generic/siginfo.h after. However
-uapi headers can't be included by other uapi headers, so that first
-include has to be in an ifdef __kernel__, with the non __kernel__ case
-including the non-UAPI header instead.
-
-Instead of that mess, move the generic copy_siginfo() definition into
-linux/signal.h, which allows an arch-specific uapi/asm/siginfo.h to
-include asm-generic/siginfo.h and define the arch-specific siginfo, and
-for the generic copy_siginfo() to see that arch-specific definition.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Petr Malat <oss@malat.biz>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Christopher Ferris <cferris@google.com>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12478/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- include/asm-generic/siginfo.h |   15 ---------------
- include/linux/signal.h        |   15 +++++++++++++++
- 2 files changed, 15 insertions(+), 15 deletions(-)
-
---- a/include/asm-generic/siginfo.h
-+++ b/include/asm-generic/siginfo.h
-@@ -17,21 +17,6 @@
- struct siginfo;
- void do_schedule_next_timer(struct siginfo *info);
- 
--#ifndef HAVE_ARCH_COPY_SIGINFO
--
--#include <linux/string.h>
--
--static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
--{
--	if (from->si_code < 0)
--		memcpy(to, from, sizeof(*to));
--	else
--		/* _sigchld is currently the largest know union member */
--		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
--}
--
--#endif
--
- extern int copy_siginfo_to_user(struct siginfo __user *to, const struct siginfo *from);
- 
- #endif
---- a/include/linux/signal.h
-+++ b/include/linux/signal.h
-@@ -28,6 +28,21 @@ struct sigpending {
- 	sigset_t signal;
- };
- 
-+#ifndef HAVE_ARCH_COPY_SIGINFO
-+
-+#include <linux/string.h>
-+
-+static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
-+{
-+	if (from->si_code < 0)
-+		memcpy(to, from, sizeof(*to));
-+	else
-+		/* _sigchld is currently the largest know union member */
-+		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
-+}
-+
-+#endif
-+
- /*
-  * Define some primitives to manipulate sigset_t.
-  */
+Harvey

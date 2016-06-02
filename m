@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:48:19 +0200 (CEST)
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:49354 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041786AbcFBPlmJWZU2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:41:42 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:48:36 +0200 (CEST)
+Received: from mailout4.w1.samsung.com ([210.118.77.14]:15875 "EHLO
+        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041787AbcFBPlnDkLw2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:41:43 +0200
 Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout1.w1.samsung.com
+ by mailout4.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500L29I9BAI10@mailout1.w1.samsung.com>; Thu,
- 02 Jun 2016 16:41:36 +0100 (BST)
-X-AuditID: cbfec7f5-f792a6d000001302-cc-575053af4686
+ with ESMTP id <0O8500CA2I9IR710@mailout4.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:41:42 +0100 (BST)
+X-AuditID: cbfec7f5-f792a6d000001302-de-575053b544b9
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 6F.0C.04866.FA350575; Thu,
- 2 Jun 2016 16:41:35 +0100 (BST)
+        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 67.1C.04866.5B350575; Thu,
+ 2 Jun 2016 16:41:41 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:41:35 +0100 (BST)
+ 02 Jun 2016 16:41:41 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,34 +89,34 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 23/45] video: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:25 +0200
-Message-id: <1464881987-13203-24-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 25/45] iommu: intel: dma-mapping: Use unsigned long for
+ dma_attrs
+Date:   Thu, 02 Jun 2016 17:39:27 +0200
+Message-id: <1464881987-13203-26-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTdxTH+d3ffRRik2vH5h0Ml9TMRKP42GKOjzjJEvdL3GI3luA02dbB
-        FdwASQtkGh+VChvK40qHAmUdaHk/LoXgwI2xNoROWTc6DG7KwyCgDUo7lG1YqWvF/ff5nu/5
-        5pycHAVWjTFRikPpmaIuXZuqZiPogYBzaL0cr0nYaPt2HeR3+zlwthlYKPz1KgWVcjMLiyX9
-        HNjKZAZ8ObkYrDkp4L6QS4O3tgBBXf27MD53C8Fsjp+GwIP7GK7Pe1k412DCcLZ1goO883FQ
-        edeFYPpmDwVWz06w//E3BwPSRQrO21bAv/PGYPCaDUNV73aYtdzDMN7ayMBdRwWGyj83w5Ny
-        HwX55jYOZu5tgtpLUwimpBEWZkf7EFT0jtLQfmeYgXO9Lg76zBIF9U2tGKrzrDT8XORjwHu6
-        iwXfV7MMDF2pZKFusgVDQVtnUBrdoa2+pEEqLeHAbC2mYeLaIAUui5OFaUchDXO3n2KQqo0Y
-        yn77MXiPJ19jyB1poaDB1cKBo7QHgf+fALNrP5m0WyiS2yOxpNnSjMjQsBsT/+MSRG60asiM
-        SQqWigopYp9wsOSix0CT7opRjvj++ohUtWcRc+kwIgXdvyDSUb9Ws2V/xI4kMfVQtqjbsPOT
-        iJQ83w0q40HkF94iK21AFcvPoHCFwL8h1A5N4yV+SRgck9kzKEKh4muQMFBmeS5OUULNeBMX
-        6mL514WOOuszI5K3CYLhjvtZHPPHBI/zMQrxC/weYXzhIRVimn9NuDw3yIZYyROhTS5gl8at
-        FK72m5gQhwfrVrmBDrGKf1twGzsYCSmrUFgjelHMSszQf5qctjlWr03TZ6UnxyYeTmtHS183
-        34Vq+rc5EK9A6mXKsHV7E1SMNlt/JM2BBAVWRyoz39ckqJRJ2iNHRd3hj3VZqaLegaIVtHqF
-        svyK9wMVn6zNFD8XxQxR979LKcKjDKjpdx9njlIfvFm8QUaXd+/9kCp33o+no6ud9jcHol+W
-        4uJete+q++GnsuKTrvIxOWByx3oW+jofvfPWgVdaRrbvOLX43aTmwnrLVk9MrHnxuChnF+cv
-        mGLW7H4vUSX4xdVPPwtsi3ORE3tWJUUdIFON9sZvTsbs+z7Ma5zpOt25MkNN61O0m9ZinV77
-        H8dCTcJxAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTHee5z3yBrvKlsPMHFkBo/yKZM2ZYTp07dh90sMxI1aWIWteod
+        GKCSlprpNKl0RcUClzdFWhteqqWsvBQ0EwwjNA1MBKVh6cYGw4CADKWVyVQQthb12+///5+T
+        c3JyeKwcYuL5Y9psSafVZKjYGPruUvfA+pt7U9QfjTzdDBdaFzjobjKykH/vDgW2RjcLi8Vd
+        HHjKGxkI5ZgxOHLSwH/ZTEPwugWBs3YXjMz+iWAmZ4GGpSePMfw6F2ShyFWC4WLDKAe5l3aA
+        bbIPwcQf7RQ4prZB5+//cnBXrqbgkicOXsyZwo09HgyVHZ/BjP0RhpGGOgYmvRUYbIOb4NWV
+        EAUXrE0cTD/aCNdrxhGMy0MszAz7EFR0DNPQPBZgoKijjwOfVaag9scGDFW5Dhp+KQgxEPzh
+        Fguh8zMMDLTZWHA+rMdgaboZliZ/ZKtzNMhlxRxYHYU0jPb0U9Bn72ZhwptPw+yD/zDIVSYM
+        5fd/Dt/jVSkG81A9Ba6+eg68Ze0IFp4vMdv3iw877ZRobpdZ0W13I3Eg4MfiwnwxEn9rSBGn
+        S+SwVZBPiZ2jXlasnjLSYmvFMCeGnh4QK5sNorUsgERLay8SW2oTUz7dH7PlqJRx7ISkS9p2
+        KCZtcbAXZeWt/M5unmCMqGZFHormifAxqZr34df8Hun/q5HNQzG8UriGyL3il2/EWYrcH3Qt
+        V7FCMmlxOpaDWMFDiHHMvxxg4TSZ6p5HEV4p7COdhS/DPs/TwlriG9odQYUgkun2N8NWkztd
+        JUyEo8O2o9FFR1gpfEn8phZGRopKFFWH3pUMR7L0h1MzN23QazL1Bm3qhiPHM5vR65+bu4Wu
+        dW32IoFHqncUUR/uVisZzQn9yUwvIjxWxSqy96SolYqjmpOnJN3xgzpDhqT3olU8rYpTXGkL
+        7lMKqZpsKV2SsiTd25Tio+ONSIjrZ+L+iS3dc873Uy6fxCV/k7d9Z+GzIu0LJzEkhHbUfSHf
+        eN9xGn2yymKdxQWJvX8fsNWsseSgZFyjru5hJ8+gsSj3onNrW+D70vXxVbc96gRddvrtYJb5
+        q3XfUof4QMKD81+bSJL28OCznebLp8ZdRgF/PlyWftVd7vwgSkXr0zQbE7FOr/kfD1asim8D        AAA=
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53747
+X-archive-position: 53748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -138,80 +138,65 @@ squashed with main commit.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 12 ++++++------
- drivers/video/fbdev/omap2/omapfb/omapfb.h      |  3 +--
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/iommu/intel-iommu.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-index d3af01c94a58..59172a2185c0 100644
---- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-+++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-@@ -1332,7 +1332,7 @@ static void omapfb_free_fbmem(struct fb_info *fbi)
- 	}
+diff --git a/drivers/iommu/intel-iommu.c b/drivers/iommu/intel-iommu.c
+index a644d0cec2d8..ba9d28acbf3a 100644
+--- a/drivers/iommu/intel-iommu.c
++++ b/drivers/iommu/intel-iommu.c
+@@ -3545,7 +3545,7 @@ error:
+ static dma_addr_t intel_map_page(struct device *dev, struct page *page,
+ 				 unsigned long offset, size_t size,
+ 				 enum dma_data_direction dir,
+-				 struct dma_attrs *attrs)
++				 unsigned long attrs)
+ {
+ 	return __intel_map_single(dev, page_to_phys(page) + offset, size,
+ 				  dir, *dev->dma_mask);
+@@ -3704,14 +3704,14 @@ static void intel_unmap(struct device *dev, dma_addr_t dev_addr, size_t size)
  
- 	dma_free_attrs(fbdev->dev, rg->size, rg->token, rg->dma_handle,
--			&rg->attrs);
-+			rg->attrs);
+ static void intel_unmap_page(struct device *dev, dma_addr_t dev_addr,
+ 			     size_t size, enum dma_data_direction dir,
+-			     struct dma_attrs *attrs)
++			     unsigned long attrs)
+ {
+ 	intel_unmap(dev, dev_addr, size);
+ }
  
- 	rg->token = NULL;
- 	rg->vaddr = NULL;
-@@ -1370,7 +1370,7 @@ static int omapfb_alloc_fbmem(struct fb_info *fbi, unsigned long size,
- 	struct omapfb2_device *fbdev = ofbi->fbdev;
- 	struct omapfb2_mem_region *rg;
- 	void *token;
--	DEFINE_DMA_ATTRS(attrs);
-+	unsigned long attrs;
- 	dma_addr_t dma_handle;
- 	int r;
+ static void *intel_alloc_coherent(struct device *dev, size_t size,
+ 				  dma_addr_t *dma_handle, gfp_t flags,
+-				  struct dma_attrs *attrs)
++				  unsigned long attrs)
+ {
+ 	struct page *page = NULL;
+ 	int order;
+@@ -3757,7 +3757,7 @@ static void *intel_alloc_coherent(struct device *dev, size_t size,
+ }
  
-@@ -1386,15 +1386,15 @@ static int omapfb_alloc_fbmem(struct fb_info *fbi, unsigned long size,
+ static void intel_free_coherent(struct device *dev, size_t size, void *vaddr,
+-				dma_addr_t dma_handle, struct dma_attrs *attrs)
++				dma_addr_t dma_handle, unsigned long attrs)
+ {
+ 	int order;
+ 	struct page *page = virt_to_page(vaddr);
+@@ -3772,7 +3772,7 @@ static void intel_free_coherent(struct device *dev, size_t size, void *vaddr,
  
- 	size = PAGE_ALIGN(size);
+ static void intel_unmap_sg(struct device *dev, struct scatterlist *sglist,
+ 			   int nelems, enum dma_data_direction dir,
+-			   struct dma_attrs *attrs)
++			   unsigned long attrs)
+ {
+ 	dma_addr_t startaddr = sg_dma_address(sglist) & PAGE_MASK;
+ 	unsigned long nrpages = 0;
+@@ -3801,7 +3801,7 @@ static int intel_nontranslate_map_sg(struct device *hddev,
+ }
  
--	dma_set_attr(DMA_ATTR_WRITE_COMBINE, &attrs);
-+	attrs = DMA_ATTR_WRITE_COMBINE;
- 
- 	if (ofbi->rotation_type == OMAP_DSS_ROT_VRFB)
--		dma_set_attr(DMA_ATTR_NO_KERNEL_MAPPING, &attrs);
-+		attrs |= DMA_ATTR_NO_KERNEL_MAPPING;
- 
- 	DBG("allocating %lu bytes for fb %d\n", size, ofbi->id);
- 
- 	token = dma_alloc_attrs(fbdev->dev, size, &dma_handle,
--			GFP_KERNEL, &attrs);
-+			GFP_KERNEL, attrs);
- 
- 	if (token == NULL) {
- 		dev_err(fbdev->dev, "failed to allocate framebuffer\n");
-@@ -1408,7 +1408,7 @@ static int omapfb_alloc_fbmem(struct fb_info *fbi, unsigned long size,
- 		r = omap_vrfb_request_ctx(&rg->vrfb);
- 		if (r) {
- 			dma_free_attrs(fbdev->dev, size, token, dma_handle,
--					&attrs);
-+					attrs);
- 			dev_err(fbdev->dev, "vrfb create ctx failed\n");
- 			return r;
- 		}
-diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb.h b/drivers/video/fbdev/omap2/omapfb/omapfb.h
-index 623cd872a367..8aaa2f643820 100644
---- a/drivers/video/fbdev/omap2/omapfb/omapfb.h
-+++ b/drivers/video/fbdev/omap2/omapfb/omapfb.h
-@@ -28,7 +28,6 @@
- #endif
- 
- #include <linux/rwsem.h>
--#include <linux/dma-attrs.h>
- #include <linux/dma-mapping.h>
- 
- #include <video/omapdss.h>
-@@ -51,7 +50,7 @@ extern bool omapfb_debug;
- 
- struct omapfb2_mem_region {
- 	int             id;
--	struct dma_attrs attrs;
-+	unsigned long	attrs;
- 	void		*token;
- 	dma_addr_t	dma_handle;
- 	u32		paddr;
+ static int intel_map_sg(struct device *dev, struct scatterlist *sglist, int nelems,
+-			enum dma_data_direction dir, struct dma_attrs *attrs)
++			enum dma_data_direction dir, unsigned long attrs)
+ {
+ 	int i;
+ 	struct dmar_domain *domain;
 -- 
 1.9.1

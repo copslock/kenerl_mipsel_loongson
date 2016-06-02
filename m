@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:51:10 +0200 (CEST)
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:49543 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041790AbcFBPmKPEiw2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:10 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout1.w1.samsung.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:51:33 +0200 (CEST)
+Received: from mailout4.w1.samsung.com ([210.118.77.14]:16047 "EHLO
+        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041792AbcFBPmNP6Au2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:13 +0200
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout4.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500L2QIA3AI10@mailout1.w1.samsung.com>; Thu,
- 02 Jun 2016 16:42:04 +0100 (BST)
-X-AuditID: cbfec7f5-f792a6d000001302-26-575053cbca0b
+ with ESMTP id <0O8500CB0IA6Z110@mailout4.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:42:07 +0100 (BST)
+X-AuditID: cbfec7f4-f796c6d000001486-d4-575053cef269
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id BC.2C.04866.BC350575; Thu,
- 2 Jun 2016 16:42:03 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id EF.7A.05254.EC350575; Thu,
+ 2 Jun 2016 16:42:06 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:42:03 +0100 (BST)
+ 02 Jun 2016 16:42:06 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,34 +89,34 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 32/45] mips: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:34 +0200
-Message-id: <1464881987-13203-33-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 33/45] mn10300: dma-mapping: Use unsigned long for dma_attrs
+Date:   Thu, 02 Jun 2016 17:39:35 +0200
+Message-id: <1464881987-13203-34-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzVSe0xTZxTnu999QWxy06G9skVjp38MFESNOZNFXbLEmyVmdTN2YWNa5AYQ
-        CqSlRpcl1rKqdGDLUwTWgFSepVCI8oiIbUwrIEqDQQWZBhFkKu1M2Bbq0ALZf7/Xye/k5LBY
-        OklFselZuaImS5UppyPIoSXv6Lah7xTK7fquTyC/J8iAt11PQ+G9AQKq2+w0/FfsYcBZ0UZB
-        wGDEYDOkge+SkQR/fQGChsaD8PTtBIJ5Q5CEpTevMTxY8NNQ1FSC4TfHFAPnyr+E6tlhBDPj
-        fQTY5vaC69HfDAxZrhBQ7pTBvwt5ocFBJ4aa/gSYt77E8NTRTMGsuxJD9eMd8O5ygID8qnYG
-        Xr2Mh/q6FwheWJ7QMD95G0Fl/yQJHc/HKCjqH2bgdpWFgMYWB4baczYS7lwMUOD/tZuGwIV5
-        CkZ7q2lomG7FUNB+LUTzfMtbnSfBUlbMQJXNTMLU4AgBw1YvDTPuQhLePnuPwVKbh6Hi/s3Q
-        Pd6VYjA+aSWgabiVAXdZH4LgP0vU/kRh2mUlBGOfhRbsVjsSRsd8WAguFiPhoUMhvCqxhKSL
-        hYTgmnLTwpU5PSn0VE4yQuCvn4SaDp1QVTaGhIKeu0jobIxW7E6M+CJFzEw/KWri9h6LSLOa
-        PEyOPuGU32Fm9Kg23oTCWZ7bxZ+de0at4nX8yB9ttAlFsFLuKuINziG8Ss4SvPvWFF5O0dxO
-        vrPBtpKK5Jw8r3/uWzEw9ws/511Ey/gj7mveUDe9gkluC+9tNpAmxLISTuAnXJtW2zbwA56S
-        lebwkGxrayKXsZQ7wPvyOikLktSgsGa0VtQdz9Emp6p3xGpVaq0uKzX2eLa6A60+3UI3uurZ
-        40Yci+RrJGFbv1FKKdVJ7Wm1G/EslkdKcr9VKKWSFNXpn0VN9lGNLlPUutHHLCmXSS73+g9L
-        uVRVrpghijmi5n+XYMOj9Ej9/fpSyUzGvoyBW+a4kT1b75rXbD5xSPH546KELYPdBxJIWb/J
-        rBz4rPSrluufbty+VL8trsVRV67LcJ3Bi5uOHMqPGldmJylj9r2hdTfW3mkUfzBOP5y1P3pw
-        X5ZEbT4V5pGNp6aP/v5nRUxlsnYiJVhztKtufUvMjwc32ulL9/QlclKbpoqPxhqt6gMx4MNk
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTHfe5zXwqs8aaC3FRDYo3LNAEGmu24GSbJEp8vbIwtIWHJoOoN
+        mAFiC2yaJavU4lBwVyoVoWsQqhQthYImQERGh0VF0MrSqbPTgIKI0kp8C1S0Bfftd/7/85aT
+        I8MKH6OU7SosFjWF6nwVG0kPLQyOxo98m5758YWmtVDRPc/BYLuOhaqRKxSY2+wsvKl2c+Cs
+        bWMgUGbAYC3LA89xAw3+05UImm1pcG/2XwQzZfM0LDx9guHvF34WjrYYMRx2jHFQbkoF8+Qw
+        gok7vRRYp1Kg/9ZLDoakRgpMzlh4/UIfKrzqxNDQ9znMWB5huOc4w8Ckqw6D+XYyBE8EKKio
+        b+dg+lESnG56iOChdJeFGd8Agro+Hw0d414GjvYNczBQL1FgO+vAcLLcSsPlIwEG/Ae6WAj8
+        NsPAaI+ZheYHrRgq28+HQr0nvNVBGqSaag7qrb/TMHb1BgXDlkEWJlxVNMzef4tBOqnHUHv9
+        YugewWMYDHdbKWgZbuXAVdOLYP7VArM1izzot1DE0CuxxG6xIzLq9WAyP1eNyD+OdDJtlELS
+        kSqK9I+5WNI4paNJd52PI4FnP5CGjhJSX+NFpLL7GiKdtg3pn2RFbtkp5u8qFTWJKTmReU/v
+        TKMin/znObuD0iFb1CEUIRP4TcKQYYBa4pXCjf/a2EMoUqbgTyGho/E5HTYU/H5KeBwsDTPL
+        bxQ6m62LSdG8UxB04x4cNjD/izA1OIfCvIJPE/pPBRd1ml8nmILji43kPBH8l3q5pWlxwhW3
+        kQlzREi3trW8H7ZN8Og7GQnJG9CyMyhGLNlRpN2eW5CUoFUXaEsKcxN27C7oQEtP97wLNbk/
+        cyFehlQfyG3rv85UMOpS7d4CFxJkWBUtL85Iz1TId6r37hM1u7M1Jfmi1oVWyWhVrPyPHv93
+        Cj5XXSz+KIpFouZ/l5JFKHVIfzZ1rX0q0aDQ+6TxzfGvnwhbLMrqm8f1eVu9F7K/8X4Rc1u+
+        LdlI0m5NOP86WHHz8Z4vx1DGqpzlZv8lkqhcE3fOvT+nRtpOfZj8U3zPyOhXblNK7Uu9+vsV
+        m88bY8rRp31DsRlxJ5Imu7isc9ejotZ9ZFBGK1+ZZtsTUldn//mritbmqZM2YI1W/Q62sYPT
         cAMAAA==
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53756
+X-archive-position: 53757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -138,183 +138,48 @@ squashed with main commit.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- arch/mips/cavium-octeon/dma-octeon.c      |  8 ++++----
- arch/mips/loongson64/common/dma-swiotlb.c | 10 +++++-----
- arch/mips/mm/dma-default.c                | 14 +++++++-------
- arch/mips/netlogic/common/nlm-dma.c       |  4 ++--
- 4 files changed, 18 insertions(+), 18 deletions(-)
+ arch/mn10300/mm/dma-alloc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
-index 2cd45f5f9481..fd69528b24fb 100644
---- a/arch/mips/cavium-octeon/dma-octeon.c
-+++ b/arch/mips/cavium-octeon/dma-octeon.c
-@@ -125,7 +125,7 @@ static phys_addr_t octeon_small_dma_to_phys(struct device *dev,
+diff --git a/arch/mn10300/mm/dma-alloc.c b/arch/mn10300/mm/dma-alloc.c
+index 8842394cb49a..4f4b9029f0ea 100644
+--- a/arch/mn10300/mm/dma-alloc.c
++++ b/arch/mn10300/mm/dma-alloc.c
+@@ -21,7 +21,7 @@
+ static unsigned long pci_sram_allocated = 0xbc000000;
  
- static dma_addr_t octeon_dma_map_page(struct device *dev, struct page *page,
- 	unsigned long offset, size_t size, enum dma_data_direction direction,
--	struct dma_attrs *attrs)
-+	unsigned long attrs)
- {
- 	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
- 					    direction, attrs);
-@@ -135,7 +135,7 @@ static dma_addr_t octeon_dma_map_page(struct device *dev, struct page *page,
- }
- 
- static int octeon_dma_map_sg(struct device *dev, struct scatterlist *sg,
--	int nents, enum dma_data_direction direction, struct dma_attrs *attrs)
-+	int nents, enum dma_data_direction direction, unsigned long attrs)
- {
- 	int r = swiotlb_map_sg_attrs(dev, sg, nents, direction, attrs);
- 	mb();
-@@ -157,7 +157,7 @@ static void octeon_dma_sync_sg_for_device(struct device *dev,
- }
- 
- static void *octeon_dma_alloc_coherent(struct device *dev, size_t size,
--	dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
-+	dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
- {
- 	void *ret;
- 
-@@ -189,7 +189,7 @@ static void *octeon_dma_alloc_coherent(struct device *dev, size_t size,
- }
- 
- static void octeon_dma_free_coherent(struct device *dev, size_t size,
--	void *vaddr, dma_addr_t dma_handle, struct dma_attrs *attrs)
-+	void *vaddr, dma_addr_t dma_handle, unsigned long attrs)
- {
- 	swiotlb_free_coherent(dev, size, vaddr, dma_handle);
- }
-diff --git a/arch/mips/loongson64/common/dma-swiotlb.c b/arch/mips/loongson64/common/dma-swiotlb.c
-index 4ffa6fc81c8f..1a80b6f73ab2 100644
---- a/arch/mips/loongson64/common/dma-swiotlb.c
-+++ b/arch/mips/loongson64/common/dma-swiotlb.c
-@@ -10,7 +10,7 @@
- #include <dma-coherence.h>
- 
- static void *loongson_dma_alloc_coherent(struct device *dev, size_t size,
+ static void *mn10300_dma_alloc(struct device *dev, size_t size,
 -		dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
 +		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
  {
+ 	unsigned long addr;
  	void *ret;
- 
-@@ -41,7 +41,7 @@ static void *loongson_dma_alloc_coherent(struct device *dev, size_t size,
+@@ -63,7 +63,7 @@ done:
  }
  
- static void loongson_dma_free_coherent(struct device *dev, size_t size,
--		void *vaddr, dma_addr_t dma_handle, struct dma_attrs *attrs)
-+		void *vaddr, dma_addr_t dma_handle, unsigned long attrs)
+ static void mn10300_dma_free(struct device *dev, size_t size, void *vaddr,
+-		dma_addr_t dma_handle, struct dma_attrs *attrs)
++		dma_addr_t dma_handle, unsigned long attrs)
  {
- 	swiotlb_free_coherent(dev, size, vaddr, dma_handle);
- }
-@@ -49,7 +49,7 @@ static void loongson_dma_free_coherent(struct device *dev, size_t size,
- static dma_addr_t loongson_dma_map_page(struct device *dev, struct page *page,
- 				unsigned long offset, size_t size,
- 				enum dma_data_direction dir,
--				struct dma_attrs *attrs)
-+				unsigned long attrs)
- {
- 	dma_addr_t daddr = swiotlb_map_page(dev, page, offset, size,
- 					dir, attrs);
-@@ -59,9 +59,9 @@ static dma_addr_t loongson_dma_map_page(struct device *dev, struct page *page,
+ 	unsigned long addr = (unsigned long) vaddr & ~0x20000000;
  
- static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
- 				int nents, enum dma_data_direction dir,
--				struct dma_attrs *attrs)
-+				unsigned long attrs)
- {
--	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, NULL);
-+	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, 0);
- 	mb();
+@@ -75,7 +75,7 @@ static void mn10300_dma_free(struct device *dev, size_t size, void *vaddr,
  
- 	return r;
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index cb557d28cb21..c9052108094f 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -131,7 +131,7 @@ static void *mips_dma_alloc_noncoherent(struct device *dev, size_t size,
- }
- 
- static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
--	dma_addr_t * dma_handle, gfp_t gfp, struct dma_attrs *attrs)
-+	dma_addr_t * dma_handle, gfp_t gfp, unsigned long attrs)
+ static int mn10300_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ 		int nents, enum dma_data_direction direction,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
  {
- 	void *ret;
- 	struct page *page = NULL;
-@@ -176,7 +176,7 @@ static void mips_dma_free_noncoherent(struct device *dev, size_t size,
- }
- 
- static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
--	dma_addr_t dma_handle, struct dma_attrs *attrs)
-+	dma_addr_t dma_handle, unsigned long attrs)
- {
- 	unsigned long addr = (unsigned long) vaddr;
- 	unsigned int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
-@@ -200,7 +200,7 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
- 
- static int mips_dma_mmap(struct device *dev, struct vm_area_struct *vma,
- 	void *cpu_addr, dma_addr_t dma_addr, size_t size,
--	struct dma_attrs *attrs)
-+	unsigned long attrs)
- {
- 	unsigned long user_count = (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
- 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
-@@ -291,7 +291,7 @@ static inline void __dma_sync(struct page *page,
- }
- 
- static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
--	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
-+	size_t size, enum dma_data_direction direction, unsigned long attrs)
- {
- 	if (cpu_needs_post_dma_flush(dev))
- 		__dma_sync(dma_addr_to_page(dev, dma_addr),
-@@ -301,7 +301,7 @@ static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
- }
- 
- static int mips_dma_map_sg(struct device *dev, struct scatterlist *sglist,
--	int nents, enum dma_data_direction direction, struct dma_attrs *attrs)
-+	int nents, enum dma_data_direction direction, unsigned long attrs)
- {
- 	int i;
  	struct scatterlist *sg;
-@@ -322,7 +322,7 @@ static int mips_dma_map_sg(struct device *dev, struct scatterlist *sglist,
- 
- static dma_addr_t mips_dma_map_page(struct device *dev, struct page *page,
- 	unsigned long offset, size_t size, enum dma_data_direction direction,
--	struct dma_attrs *attrs)
-+	unsigned long attrs)
- {
- 	if (!plat_device_is_coherent(dev))
- 		__dma_sync(page, offset, size, direction);
-@@ -332,7 +332,7 @@ static dma_addr_t mips_dma_map_page(struct device *dev, struct page *page,
- 
- static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sglist,
- 	int nhwentries, enum dma_data_direction direction,
--	struct dma_attrs *attrs)
-+	unsigned long attrs)
- {
  	int i;
- 	struct scatterlist *sg;
-diff --git a/arch/mips/netlogic/common/nlm-dma.c b/arch/mips/netlogic/common/nlm-dma.c
-index 3758715d4ab6..0630693bec2a 100644
---- a/arch/mips/netlogic/common/nlm-dma.c
-+++ b/arch/mips/netlogic/common/nlm-dma.c
-@@ -45,7 +45,7 @@
- static char *nlm_swiotlb;
+@@ -92,7 +92,7 @@ static int mn10300_dma_map_sg(struct device *dev, struct scatterlist *sglist,
  
- static void *nlm_dma_alloc_coherent(struct device *dev, size_t size,
--	dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
-+	dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+ static dma_addr_t mn10300_dma_map_page(struct device *dev, struct page *page,
+ 		unsigned long offset, size_t size,
+-		enum dma_data_direction direction, struct dma_attrs *attrs)
++		enum dma_data_direction direction, unsigned long attrs)
  {
- 	/* ignore region specifiers */
- 	gfp &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
-@@ -62,7 +62,7 @@ static void *nlm_dma_alloc_coherent(struct device *dev, size_t size,
- }
- 
- static void nlm_dma_free_coherent(struct device *dev, size_t size,
--	void *vaddr, dma_addr_t dma_handle, struct dma_attrs *attrs)
-+	void *vaddr, dma_addr_t dma_handle, unsigned long attrs)
- {
- 	swiotlb_free_coherent(dev, size, vaddr, dma_handle);
+ 	return page_to_bus(page) + offset;
  }
 -- 
 1.9.1

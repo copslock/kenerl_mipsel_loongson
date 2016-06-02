@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:45:19 +0200 (CEST)
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:45277 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041770AbcFBPlO363x2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:41:14 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout2.w1.samsung.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:45:40 +0200 (CEST)
+Received: from mailout3.w1.samsung.com ([210.118.77.13]:18403 "EHLO
+        mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041776AbcFBPlRqqNb2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:41:17 +0200
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout3.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500GH1I8KC540@mailout2.w1.samsung.com>; Thu,
- 02 Jun 2016 16:41:08 +0100 (BST)
-X-AuditID: cbfec7f5-f792a6d000001302-64-575053938c59
+ with ESMTP id <0O85008LTI8ND710@mailout3.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:41:11 +0100 (BST)
+X-AuditID: cbfec7f4-f796c6d000001486-2c-5750539638d8
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 6A.DB.04866.39350575; Thu,
- 2 Jun 2016 16:41:07 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id C4.3A.05254.69350575; Thu,
+ 2 Jun 2016 16:41:10 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:41:07 +0100 (BST)
+ 02 Jun 2016 16:41:10 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,33 +89,35 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 14/45] drm/msm: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:16 +0200
-Message-id: <1464881987-13203-15-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 15/45] drm/nouveau: dma-mapping: Use unsigned long for
+ dma_attrs
+Date:   Thu, 02 Jun 2016 17:39:17 +0200
+Message-id: <1464881987-13203-16-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTdxTH/d3ffdHQ7K5z40YzE5vsj7Hp1C14Mo0REuM1ztixLWSaCFVv
-        QAUkrXW6aFLLwImA5TkeDYGuPO2DQoxghoTG0Al00JQgbEAJjwpRaNXxCC9tIf73PZ/v9+Sc
-        nBwWy0apbeyF1CuiKlWZLKclZPe607Or4AdF3J7F2f1wp3WFAWejloacf54SYLCZaVjL72TA
-        XmKjIKDLwGDSJYH7jwwS/DXZCGrrToD39X8I5nQrJKzPvsTQP++nIa++AMNd6zgDmcXRYHju
-        QuD7t40A08wh6BhcYKBbbySg2B4BS/PpwcYuO4bK9gMwVzGNwWttoOC5owyDYWgfrJYGCLhT
-        3sjAi+m9UPPnFIIp/TANcyNPEJS1j5DQNDFAQV67i4En5XoC6u5bMVRlmkj4OzdAgf+3FhoC
-        v89R4HlkoKF20oIhu/FBsEx3h7a6TYK+KJ+BctM9Esa7+ghwVThp8DlySHg99haDviodQ0nv
-        4+A9VgsxZAxbCKh3WRhwFLUhWFlcpw6fEiY7Kggho01PC+YKMxI8A24srCznI+GZVSG8KNAH
-        UW4OIXSMO2jBOKMlhdayEUYIvDojVDZphPKiASRkt/YgobkuUhF1SnLwvJh84aqo+upQgiTp
-        /xIXlfZQes1eZae1yC/JQmEsz33D+61N9Kb+hO8btQW1hJVx1Yj3OQ14s7hF8Gu6xyiUormv
-        +eZa00ZqK2fnee2EG4cMzN3gZ5zLG6GPuBP8kLGGCGmS+4yfKPRucCkn8EtZJeTmuB38084C
-        KqTDgtxkq9/gMu4o705vpvRIWom2NKCPRc25NPXZxJR9u9XKFLUmNXH3ucspTWjz6+ZbUHXn
-        tw7EsUgeLt3y5ck4GaW8qr6e4kA8i+VbpftjFXEy6Xnl9V9F1eV4lSZZVDvQdpaUR0hLH/l/
-        lHGJyiviJVFME1XvXYIN26ZF3DHZRE6g+C/T0r3C1Ybtnc5fcj/NWozJrebPOEq/iLrJ/fTd
-        8GC4782HtvjYNY9tdXBhMurZ8Z1xJ2Ms5os/Ew2m0z0J8Xn9SbSl32P5/vh0/0hEewyb1Rt9
-        bc18JG1oYWzgc2+sz+gqimidOqDTGL19H0TXJrRU5SlQ5Wxy+B45qU5S7o3EKrXyHU1Rvdtx        AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTGfe9773tLQ+dN5+TGfZjUuGUuc+KW5bgPM5ctvtEgTTRhIUYt
+        egNmFEkr3Vj2R1egCqPuCoMBhYpaLGA/KGSZmDFC58APutlgcB90LAhI5yyVISOWlbWS/fc7
+        z/OcnJOTo8DqMW6d4mjRcclQpCvUECV7IzE08nL9Xm3OFnlkG1T2xnkY6jITsP14jYFmn5vA
+        vzWDPPgbfBzELBUYnJYCCH1VwcLshWoErvYsGJ/7DUHUEmchcf8vDLcezhI43VGL4XPvBA/W
+        +h3QfDeIYPrXPgacke0w8PMCDzfkcwzU+zNg8WFZsvG6H0Nr/5sQdcxgGPd2cnA30ISh+Zet
+        sNQYY6DS3sXDvZlMuHB+CsGUPEYgGr6CoKk/zEL3nVEOTvcHebhilxlov+jFcNbqZOHqqRgH
+        s+WXCMRORjkYudxMwDXpwVDd9XWyLAultjrBglxXw4Pd+QULE9dvMhB0DBGYDthYmPtjGYN8
+        tgxDw0/fJe+x9CWGijEPAx1BDw+Buj4E8X8S3Du5dHLAwdCKPplQt8ON6MhoCNP4oxpEb3u1
+        9F6tnJRO2Rg6MBEg9FzEzNLepjBPYw8O0NbuEmqvG0W0uncY0Z72TdrXc5VvHZEKj5okwyvb
+        DykL5rzfs8Wdqz9u+CZEzOhWehVSKEThNdE79UwVSkviWvHm7z6SYrXQhsSW2PtVSJnkzxhx
+        sTyMUgYRXhV7XE6SMtYIflE03wnhlIGFT8XI0KPHoSeFvaK7MsKlmBU2ij/YFvgUqwQq1gan
+        +ZVpz4nXBmsfZ9KSutPXwa5M3imGyno4Gala0apO9JRUcrjYmJevz9xs1OmNJUX5mw8f03ej
+        lZ+bv4TOD74RQIICadJV7S9m56g5nclYqg8gUYE1a1TWLG2OWnVEV/qJZDh20FBSKBkD6GkF
+        q8lQtVye3acW8nXHpQ8lqVgy/O8yirR1ZpSNM/6O3/aRk+k7HYvk4q6Plq1vL+mXbcHuxvV7
+        7O8pxz9I7Na0DQ9Wjz2Yd/H8eNjS9u27Jse+57VX54Z3zGhK/ffzPC+tP7MtLfvPgkaPOK2s
+        cetf2Giy5JHdT+xfdhSZTgS2up5dGyUJLXdg3lo+uajJitgWtuS62w52baAa1ligy9yEDUbd
+        f+3GYO1vAwAA
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53738
+X-archive-position: 53739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -137,52 +139,53 @@ squashed with main commit.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- drivers/gpu/drm/msm/msm_drv.c | 13 ++++++-------
+ drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c | 13 ++++++-------
  1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
-index 1f7de47d817e..9b806e576d35 100644
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -230,11 +230,10 @@ static int msm_drm_uninit(struct device *dev)
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c
+index 6b8f2a19b2d9..a6a7fa0d7679 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c
+@@ -109,7 +109,7 @@ struct gk20a_instmem {
+ 	u16 iommu_bit;
+ 
+ 	/* Only used by DMA API */
+-	struct dma_attrs attrs;
++	unsigned long attrs;
+ };
+ #define gk20a_instmem(p) container_of((p), struct gk20a_instmem, base)
+ 
+@@ -293,7 +293,7 @@ gk20a_instobj_dtor_dma(struct nvkm_memory *memory)
+ 		goto out;
+ 
+ 	dma_free_attrs(dev, node->base.mem.size << PAGE_SHIFT, node->base.vaddr,
+-		       node->handle, &imem->attrs);
++		       node->handle, imem->attrs);
+ 
+ out:
+ 	return node;
+@@ -386,7 +386,7 @@ gk20a_instobj_ctor_dma(struct gk20a_instmem *imem, u32 npages, u32 align,
+ 
+ 	node->base.vaddr = dma_alloc_attrs(dev, npages << PAGE_SHIFT,
+ 					   &node->handle, GFP_KERNEL,
+-					   &imem->attrs);
++					   imem->attrs);
+ 	if (!node->base.vaddr) {
+ 		nvkm_error(subdev, "cannot allocate DMA memory\n");
+ 		return -ENOMEM;
+@@ -597,10 +597,9 @@ gk20a_instmem_new(struct nvkm_device *device, int index,
+ 
+ 		nvkm_info(&imem->base.subdev, "using IOMMU\n");
+ 	} else {
+-		init_dma_attrs(&imem->attrs);
+-		dma_set_attr(DMA_ATTR_NON_CONSISTENT, &imem->attrs);
+-		dma_set_attr(DMA_ATTR_WEAK_ORDERING, &imem->attrs);
+-		dma_set_attr(DMA_ATTR_WRITE_COMBINE, &imem->attrs);
++		imem->attrs = DMA_ATTR_NON_CONSISTENT |
++			      DMA_ATTR_WEAK_ORDERING |
++			      DMA_ATTR_WRITE_COMBINE;
+ 
+ 		nvkm_info(&imem->base.subdev, "using DMA API\n");
  	}
- 
- 	if (priv->vram.paddr) {
--		DEFINE_DMA_ATTRS(attrs);
--		dma_set_attr(DMA_ATTR_NO_KERNEL_MAPPING, &attrs);
-+		unsigned long attrs = DMA_ATTR_NO_KERNEL_MAPPING;
- 		drm_mm_takedown(&priv->vram.mm);
- 		dma_free_attrs(dev, priv->vram.size, NULL,
--			       priv->vram.paddr, &attrs);
-+			       priv->vram.paddr, attrs);
- 	}
- 
- 	component_unbind_all(dev, ddev);
-@@ -299,21 +298,21 @@ static int msm_init_vram(struct drm_device *dev)
- 	}
- 
- 	if (size) {
--		DEFINE_DMA_ATTRS(attrs);
-+		unsigned long attrs = 0;
- 		void *p;
- 
- 		priv->vram.size = size;
- 
- 		drm_mm_init(&priv->vram.mm, 0, (size >> PAGE_SHIFT) - 1);
- 
--		dma_set_attr(DMA_ATTR_NO_KERNEL_MAPPING, &attrs);
--		dma_set_attr(DMA_ATTR_WRITE_COMBINE, &attrs);
-+		attrs |= DMA_ATTR_NO_KERNEL_MAPPING;
-+		attrs |= DMA_ATTR_WRITE_COMBINE;
- 
- 		/* note that for no-kernel-mapping, the vaddr returned
- 		 * is bogus, but non-null if allocation succeeded:
- 		 */
- 		p = dma_alloc_attrs(dev->dev, size,
--				&priv->vram.paddr, GFP_KERNEL, &attrs);
-+				&priv->vram.paddr, GFP_KERNEL, attrs);
- 		if (!p) {
- 			dev_err(dev->dev, "failed to allocate VRAM\n");
- 			priv->vram.paddr = 0;
 -- 
 1.9.1

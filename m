@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:51:33 +0200 (CEST)
-Received: from mailout4.w1.samsung.com ([210.118.77.14]:16047 "EHLO
-        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041792AbcFBPmNP6Au2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:13 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:51:52 +0200 (CEST)
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:45444 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041762AbcFBPmQyaHt2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:16 +0200
 Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
- by mailout4.w1.samsung.com
+ by mailout2.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500CB0IA6Z110@mailout4.w1.samsung.com>; Thu,
- 02 Jun 2016 16:42:07 +0100 (BST)
-X-AuditID: cbfec7f4-f796c6d000001486-d4-575053cef269
+ with ESMTP id <0O8500DSHIAA1J40@mailout2.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:42:10 +0100 (BST)
+X-AuditID: cbfec7f4-f796c6d000001486-db-575053d1878a
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id EF.7A.05254.EC350575; Thu,
- 2 Jun 2016 16:42:06 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 86.8A.05254.1D350575; Thu,
+ 2 Jun 2016 16:42:09 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:42:06 +0100 (BST)
+ 02 Jun 2016 16:42:09 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,34 +89,34 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 33/45] mn10300: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:35 +0200
-Message-id: <1464881987-13203-34-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 34/45] nios2: dma-mapping: Use unsigned long for dma_attrs
+Date:   Thu, 02 Jun 2016 17:39:36 +0200
+Message-id: <1464881987-13203-35-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTHfe5zXwqs8aaC3FRDYo3LNAEGmu24GSbJEp8vbIwtIWHJoOoN
-        mAFiC2yaJavU4lBwVyoVoWsQqhQthYImQERGh0VF0MrSqbPTgIKI0kp8C1S0Bfftd/7/85aT
-        I8MKH6OU7SosFjWF6nwVG0kPLQyOxo98m5758YWmtVDRPc/BYLuOhaqRKxSY2+wsvKl2c+Cs
-        bWMgUGbAYC3LA89xAw3+05UImm1pcG/2XwQzZfM0LDx9guHvF34WjrYYMRx2jHFQbkoF8+Qw
-        gok7vRRYp1Kg/9ZLDoakRgpMzlh4/UIfKrzqxNDQ9znMWB5huOc4w8Ckqw6D+XYyBE8EKKio
-        b+dg+lESnG56iOChdJeFGd8Agro+Hw0d414GjvYNczBQL1FgO+vAcLLcSsPlIwEG/Ae6WAj8
-        NsPAaI+ZheYHrRgq28+HQr0nvNVBGqSaag7qrb/TMHb1BgXDlkEWJlxVNMzef4tBOqnHUHv9
-        YugewWMYDHdbKWgZbuXAVdOLYP7VArM1izzot1DE0CuxxG6xIzLq9WAyP1eNyD+OdDJtlELS
-        kSqK9I+5WNI4paNJd52PI4FnP5CGjhJSX+NFpLL7GiKdtg3pn2RFbtkp5u8qFTWJKTmReU/v
-        TKMin/znObuD0iFb1CEUIRP4TcKQYYBa4pXCjf/a2EMoUqbgTyGho/E5HTYU/H5KeBwsDTPL
-        bxQ6m62LSdG8UxB04x4cNjD/izA1OIfCvIJPE/pPBRd1ml8nmILji43kPBH8l3q5pWlxwhW3
-        kQlzREi3trW8H7ZN8Og7GQnJG9CyMyhGLNlRpN2eW5CUoFUXaEsKcxN27C7oQEtP97wLNbk/
-        cyFehlQfyG3rv85UMOpS7d4CFxJkWBUtL85Iz1TId6r37hM1u7M1Jfmi1oVWyWhVrPyPHv93
-        Cj5XXSz+KIpFouZ/l5JFKHVIfzZ1rX0q0aDQ+6TxzfGvnwhbLMrqm8f1eVu9F7K/8X4Rc1u+
-        LdlI0m5NOP86WHHz8Z4vx1DGqpzlZv8lkqhcE3fOvT+nRtpOfZj8U3zPyOhXblNK7Uu9+vsV
-        m88bY8rRp31DsRlxJ5Imu7isc9ejotZ9ZFBGK1+ZZtsTUldn//mritbmqZM2YI1W/Q62sYPT
-        cAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzVSe0xTdxT2d3/3BbN606H8oouPTpLBIoou88Sp0SWLNwGV+AiJLGwd3AAK
+        SFpqBtuSDoaKgl5AFIE1oFUKK5RHnECGhPKooHU0LFUHqEFRHq7tmOgiFW0l/ved7/vO+U5O
+        Do+VQ8wyPjktQ9KkqVNUbCB9c842uNaxLzpmvbsnBPJaZzmwNehZKLjdR0GFxczC66JeDhpL
+        LQx4snMxGLOTwHE+lwb3lXwE1aZd8GB6CIEre5aGuX+eYfhrxs1CYU0xhlP1oxwcO7cDKp7a
+        ETz5u50C48Q26Lz7goOb8kUKzjUGw/8zOb7G/kYMlR1fgMswjuFBfS0DT61lGCrubQDvBQ8F
+        eeUNHEyNR8CVS2MIxuRhFlwj3QjKOkZoaHrkZKCww85Bd7lMgem3egxVx4w03DjtYcD9SwsL
+        nhMuBgbbKlioflyHIb/hqq/Mcfi3Ok6DXFLEQbnxDA2j/QMU2A02Fp5YC2iYfvgGg1yVg6H0
+        z+u+e3jPYsgdrqOgxl7HgbWkHcHsyzlm+0HxcaeBEnPbZVY0G8xIHHQ6sDj7qgiJd+qjxali
+        2UedLqDEzlErK16c0NNia9kIJ3r+jRMrm3RieYkTifmtt5DYbAqL/vxg4JYEKSX5qKRZt+3b
+        wKSpsjwmvVL5vdlwnNYj76KTKIAnwmfk9msZzeOlZOC+hT2JAnmlcBkRb0c25xeUws8UcV5d
+        78essJE0VxvfmYKERkL0jxzYL2DhRzJhe+WbxPMfCpHEejfSD2khhHinN/sdCkEkDV16ej5r
+        BenrLWb8OMDHGy019HzUTuLIaWZkpKhEC2rREkkXn679LjE1IlyrTtXq0hLD44+kNqH5l3ve
+        gi71brYigUeqhQpT6J4YJaM+qs1MtSLCY1WQImNvdIxSkaDOzJI0R77R6FIkrRUt52lVsOLX
+        Nvd+pZCozpAOS1K6pHmvUnzAMj36YYYMVq/r2lW0e2vUqZbrXeMDn9q2dgcvmeAn4aePlr60
+        9VUpIrPi1iSt/ID8kfVsA/3JjM1pPrHisKm38KuHi/tj31y7/3vMqtVrt+RH9ajTDhV+vHxT
+        lTPuRvymugOTcc91VOz+a2MZIXdK/0u48CLTFrnHUhLqmtRGfZ1nZ2qTvwxT0dokdUQY1mjV
+        bwENz/t8bgMAAA==
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53757
+X-archive-position: 53758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -138,48 +138,65 @@ squashed with main commit.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- arch/mn10300/mm/dma-alloc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/nios2/mm/dma-mapping.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mn10300/mm/dma-alloc.c b/arch/mn10300/mm/dma-alloc.c
-index 8842394cb49a..4f4b9029f0ea 100644
---- a/arch/mn10300/mm/dma-alloc.c
-+++ b/arch/mn10300/mm/dma-alloc.c
-@@ -21,7 +21,7 @@
- static unsigned long pci_sram_allocated = 0xbc000000;
+diff --git a/arch/nios2/mm/dma-mapping.c b/arch/nios2/mm/dma-mapping.c
+index 90422c367ed3..d800fad87896 100644
+--- a/arch/nios2/mm/dma-mapping.c
++++ b/arch/nios2/mm/dma-mapping.c
+@@ -59,7 +59,7 @@ static inline void __dma_sync_for_cpu(void *vaddr, size_t size,
+ }
  
- static void *mn10300_dma_alloc(struct device *dev, size_t size,
+ static void *nios2_dma_alloc(struct device *dev, size_t size,
 -		dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
 +		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
  {
- 	unsigned long addr;
  	void *ret;
-@@ -63,7 +63,7 @@ done:
+ 
+@@ -84,7 +84,7 @@ static void *nios2_dma_alloc(struct device *dev, size_t size,
  }
  
- static void mn10300_dma_free(struct device *dev, size_t size, void *vaddr,
+ static void nios2_dma_free(struct device *dev, size_t size, void *vaddr,
 -		dma_addr_t dma_handle, struct dma_attrs *attrs)
 +		dma_addr_t dma_handle, unsigned long attrs)
  {
- 	unsigned long addr = (unsigned long) vaddr & ~0x20000000;
+ 	unsigned long addr = (unsigned long) CAC_ADDR((unsigned long) vaddr);
  
-@@ -75,7 +75,7 @@ static void mn10300_dma_free(struct device *dev, size_t size, void *vaddr,
+@@ -93,7 +93,7 @@ static void nios2_dma_free(struct device *dev, size_t size, void *vaddr,
  
- static int mn10300_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ static int nios2_dma_map_sg(struct device *dev, struct scatterlist *sg,
  		int nents, enum dma_data_direction direction,
 -		struct dma_attrs *attrs)
 +		unsigned long attrs)
  {
- 	struct scatterlist *sg;
  	int i;
-@@ -92,7 +92,7 @@ static int mn10300_dma_map_sg(struct device *dev, struct scatterlist *sglist,
  
- static dma_addr_t mn10300_dma_map_page(struct device *dev, struct page *page,
- 		unsigned long offset, size_t size,
--		enum dma_data_direction direction, struct dma_attrs *attrs)
-+		enum dma_data_direction direction, unsigned long attrs)
+@@ -113,7 +113,7 @@ static int nios2_dma_map_sg(struct device *dev, struct scatterlist *sg,
+ static dma_addr_t nios2_dma_map_page(struct device *dev, struct page *page,
+ 			unsigned long offset, size_t size,
+ 			enum dma_data_direction direction,
+-			struct dma_attrs *attrs)
++			unsigned long attrs)
  {
- 	return page_to_bus(page) + offset;
+ 	void *addr = page_address(page) + offset;
+ 
+@@ -123,14 +123,14 @@ static dma_addr_t nios2_dma_map_page(struct device *dev, struct page *page,
+ 
+ static void nios2_dma_unmap_page(struct device *dev, dma_addr_t dma_address,
+ 		size_t size, enum dma_data_direction direction,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
+ {
+ 	__dma_sync_for_cpu(phys_to_virt(dma_address), size, direction);
  }
+ 
+ static void nios2_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
+ 		int nhwentries, enum dma_data_direction direction,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
+ {
+ 	void *addr;
+ 	int i;
 -- 
 1.9.1

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:45:00 +0200 (CEST)
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:45223 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:45:19 +0200 (CEST)
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:45277 "EHLO
         mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041774AbcFBPlLJOtC2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:41:11 +0200
-Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+        by eddie.linux-mips.org with ESMTP id S27041770AbcFBPlO363x2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:41:14 +0200
+Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
  by mailout2.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500DRFI8E1J40@mailout2.w1.samsung.com>; Thu,
- 02 Jun 2016 16:41:02 +0100 (BST)
-X-AuditID: cbfec7f4-f796c6d000001486-0f-5750538d0e7e
+ with ESMTP id <0O8500GH1I8KC540@mailout2.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:41:08 +0100 (BST)
+X-AuditID: cbfec7f5-f792a6d000001302-64-575053938c59
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 9A.2A.05254.D8350575; Thu,
- 2 Jun 2016 16:41:01 +0100 (BST)
+        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 6A.DB.04866.39350575; Thu,
+ 2 Jun 2016 16:41:07 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:41:01 +0100 (BST)
+ 02 Jun 2016 16:41:07 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,34 +89,33 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 12/45] drm/exynos: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:14 +0200
-Message-id: <1464881987-13203-13-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 14/45] drm/msm: dma-mapping: Use unsigned long for dma_attrs
+Date:   Thu, 02 Jun 2016 17:39:16 +0200
+Message-id: <1464881987-13203-15-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTG9973ftGs5q6K3EBcZo3LhhFFtuVkKpnLjG+y6WpkMoxRO7kD
-        I0XWWqOLSypYHEj1AkMcIEGp8iG0QEMCMqjcCJ0iaMPGPqTTgKJMKUVFp3VsrcT/fs/znJNz
-        cnJ4rBlmovldmXslY6Y+Q8uq6L4Zz+BS2yZd8nKrfRnktQc58DRZWLANXKagwtnAwr9FvRw0
-        n3QyEMi2YrBnp4O31ErD5LkCBDW16+HmwxsI/NlBGmYmHmD4ZXqShcK6YgxHHSMc5J5YAxV3
-        +xGM/dlJgX08Ebp/f8JBn3yGghPNUfDPdE6o8Uozhir3SvBX3sNw01HPwF2lDEPFHyvgxY8B
-        CvLKmzi4fy8ezlXfQXBHHmbB77uEoMzto6FldIiBQnc/B5fKZQpqzzswnM610/DzsQADk4fb
-        WAh872dg8EIFCzW3GzEUNLWGZI43vNURGuSSIg7K7cdpGLlynYL+Sg8LY4qNhoe3/sMgn87B
-        cPJaV+geL37AYB1upKCuv5EDpaQTQfDpDPPRFnK7u5Ii1k6ZJQ2VDYgMDnkxCT4vQuQ3h47c
-        L5ZD1jEbRbpHFJacGbfQpL3Mx5HA1DZS1WIm5SVDiBS0X0XEVRur+2CLalWqlLFrn2RclrhD
-        lT6dvznrVsL+wYvjlAWVLslHPC8K74lT07p8FBHC+eL1v5xsPlLxGuEsEg+77fSsOESJSn0X
-        Fa5ihQTRVWN/WTVPaBZFy6gXhwMsHBTHPc9RmOcKOvFvv/LSp4XF4vm2MS7MaoGIj37qYGfH
-        vSle7i1mwhwR8u3OOjrMGmGd6M1xMTJSV6HX6lGkZN6ZZfoqzRAfZ9IbTObMtLidewwtaPbn
-        Hreh6t4PFSTwSPu6uvbdz5M1jH6f6YBBQSKPtfPUuet1yRp1qv7At5Jxz3ajOUMyKSiGp7VR
-        6lMXJpM0Qpp+r7RbkrIk46uU4iOiLch0KsXlWj0nkDIxEN+3KaVHWFsYu/tgYuuD1nfyBnpi
-        yhYsSko6kvxs1B0X+Z2GJKz6mtlhpKcK2gcCx4Ug8+ta7/D2FYs+61ItTJm/2vmp9Ilvzkbx
-        bYNSndtWv+FxqTnmjW+2LrFORL4VOPTlx1GO96mOXp/HtvziFx03SE8qHS1raVO6Pj4WG036
-        /wHc7jgKbwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTdxTH/d3ffdHQ7K5z40YzE5vsj7Hp1C14Mo0REuM1ztixLWSaCFVv
+        QAUkrXW6aFLLwImA5TkeDYGuPO2DQoxghoTG0Al00JQgbEAJjwpRaNXxCC9tIf73PZ/v9+Sc
+        nBwWy0apbeyF1CuiKlWZLKclZPe607Or4AdF3J7F2f1wp3WFAWejloacf54SYLCZaVjL72TA
+        XmKjIKDLwGDSJYH7jwwS/DXZCGrrToD39X8I5nQrJKzPvsTQP++nIa++AMNd6zgDmcXRYHju
+        QuD7t40A08wh6BhcYKBbbySg2B4BS/PpwcYuO4bK9gMwVzGNwWttoOC5owyDYWgfrJYGCLhT
+        3sjAi+m9UPPnFIIp/TANcyNPEJS1j5DQNDFAQV67i4En5XoC6u5bMVRlmkj4OzdAgf+3FhoC
+        v89R4HlkoKF20oIhu/FBsEx3h7a6TYK+KJ+BctM9Esa7+ghwVThp8DlySHg99haDviodQ0nv
+        4+A9VgsxZAxbCKh3WRhwFLUhWFlcpw6fEiY7Kggho01PC+YKMxI8A24srCznI+GZVSG8KNAH
+        UW4OIXSMO2jBOKMlhdayEUYIvDojVDZphPKiASRkt/YgobkuUhF1SnLwvJh84aqo+upQgiTp
+        /xIXlfZQes1eZae1yC/JQmEsz33D+61N9Kb+hO8btQW1hJVx1Yj3OQ14s7hF8Gu6xyiUormv
+        +eZa00ZqK2fnee2EG4cMzN3gZ5zLG6GPuBP8kLGGCGmS+4yfKPRucCkn8EtZJeTmuB38084C
+        KqTDgtxkq9/gMu4o705vpvRIWom2NKCPRc25NPXZxJR9u9XKFLUmNXH3ucspTWjz6+ZbUHXn
+        tw7EsUgeLt3y5ck4GaW8qr6e4kA8i+VbpftjFXEy6Xnl9V9F1eV4lSZZVDvQdpaUR0hLH/l/
+        lHGJyiviJVFME1XvXYIN26ZF3DHZRE6g+C/T0r3C1Ybtnc5fcj/NWozJrebPOEq/iLrJ/fTd
+        8GC4782HtvjYNY9tdXBhMurZ8Z1xJ2Ms5os/Ew2m0z0J8Xn9SbSl32P5/vh0/0hEewyb1Rt9
+        bc18JG1oYWzgc2+sz+gqimidOqDTGL19H0TXJrRU5SlQ5Wxy+B45qU5S7o3EKrXyHU1Rvdtx        AwAA
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53737
+X-archive-position: 53738
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -138,179 +137,52 @@ squashed with main commit.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- drivers/gpu/drm/exynos/exynos_drm_fbdev.c |  2 +-
- drivers/gpu/drm/exynos/exynos_drm_g2d.c   | 12 +++++-------
- drivers/gpu/drm/exynos/exynos_drm_gem.c   | 20 ++++++++++----------
- drivers/gpu/drm/exynos/exynos_drm_gem.h   |  2 +-
- 4 files changed, 17 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/msm/msm_drv.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_fbdev.c b/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
-index 67dcd6831291..dd091175fc2d 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
-@@ -52,7 +52,7 @@ static int exynos_drm_fb_mmap(struct fb_info *info,
- 
- 	ret = dma_mmap_attrs(to_dma_dev(helper->dev), vma, exynos_gem->cookie,
- 			     exynos_gem->dma_addr, exynos_gem->size,
--			     &exynos_gem->dma_attrs);
-+			     exynos_gem->dma_attrs);
- 	if (ret < 0) {
- 		DRM_ERROR("failed to mmap.\n");
- 		return ret;
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_g2d.c b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-index 493552368295..15539aea8415 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-@@ -17,7 +17,6 @@
- #include <linux/slab.h>
- #include <linux/workqueue.h>
- #include <linux/dma-mapping.h>
--#include <linux/dma-attrs.h>
- #include <linux/of.h>
- 
- #include <drm/drmP.h>
-@@ -235,7 +234,7 @@ struct g2d_data {
- 	struct mutex			cmdlist_mutex;
- 	dma_addr_t			cmdlist_pool;
- 	void				*cmdlist_pool_virt;
--	struct dma_attrs		cmdlist_dma_attrs;
-+	unsigned long			cmdlist_dma_attrs;
- 
- 	/* runqueue*/
- 	struct g2d_runqueue_node	*runqueue_node;
-@@ -256,13 +255,12 @@ static int g2d_init_cmdlist(struct g2d_data *g2d)
- 	int ret;
- 	struct g2d_buf_info *buf_info;
- 
--	init_dma_attrs(&g2d->cmdlist_dma_attrs);
--	dma_set_attr(DMA_ATTR_WRITE_COMBINE, &g2d->cmdlist_dma_attrs);
-+	g2d->cmdlist_dma_attrs = DMA_ATTR_WRITE_COMBINE;
- 
- 	g2d->cmdlist_pool_virt = dma_alloc_attrs(to_dma_dev(subdrv->drm_dev),
- 						G2D_CMDLIST_POOL_SIZE,
- 						&g2d->cmdlist_pool, GFP_KERNEL,
--						&g2d->cmdlist_dma_attrs);
-+						g2d->cmdlist_dma_attrs);
- 	if (!g2d->cmdlist_pool_virt) {
- 		dev_err(dev, "failed to allocate dma memory\n");
- 		return -ENOMEM;
-@@ -295,7 +293,7 @@ static int g2d_init_cmdlist(struct g2d_data *g2d)
- err:
- 	dma_free_attrs(to_dma_dev(subdrv->drm_dev), G2D_CMDLIST_POOL_SIZE,
- 			g2d->cmdlist_pool_virt,
--			g2d->cmdlist_pool, &g2d->cmdlist_dma_attrs);
-+			g2d->cmdlist_pool, g2d->cmdlist_dma_attrs);
- 	return ret;
- }
- 
-@@ -309,7 +307,7 @@ static void g2d_fini_cmdlist(struct g2d_data *g2d)
- 		dma_free_attrs(to_dma_dev(subdrv->drm_dev),
- 				G2D_CMDLIST_POOL_SIZE,
- 				g2d->cmdlist_pool_virt,
--				g2d->cmdlist_pool, &g2d->cmdlist_dma_attrs);
-+				g2d->cmdlist_pool, g2d->cmdlist_dma_attrs);
- 	}
- }
- 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gem.c b/drivers/gpu/drm/exynos/exynos_drm_gem.c
-index cdf9f1af4347..f2ae72ba7d5a 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_gem.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_gem.c
-@@ -24,7 +24,7 @@
- static int exynos_drm_alloc_buf(struct exynos_drm_gem *exynos_gem)
- {
- 	struct drm_device *dev = exynos_gem->base.dev;
--	enum dma_attr attr;
-+	unsigned long attr;
- 	unsigned int nr_pages;
- 	struct sg_table sgt;
- 	int ret = -ENOMEM;
-@@ -34,7 +34,7 @@ static int exynos_drm_alloc_buf(struct exynos_drm_gem *exynos_gem)
- 		return 0;
+diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
+index 1f7de47d817e..9b806e576d35 100644
+--- a/drivers/gpu/drm/msm/msm_drv.c
++++ b/drivers/gpu/drm/msm/msm_drv.c
+@@ -230,11 +230,10 @@ static int msm_drm_uninit(struct device *dev)
  	}
  
--	init_dma_attrs(&exynos_gem->dma_attrs);
-+	exynos_gem->dma_attrs = 0;
+ 	if (priv->vram.paddr) {
+-		DEFINE_DMA_ATTRS(attrs);
+-		dma_set_attr(DMA_ATTR_NO_KERNEL_MAPPING, &attrs);
++		unsigned long attrs = DMA_ATTR_NO_KERNEL_MAPPING;
+ 		drm_mm_takedown(&priv->vram.mm);
+ 		dma_free_attrs(dev, priv->vram.size, NULL,
+-			       priv->vram.paddr, &attrs);
++			       priv->vram.paddr, attrs);
+ 	}
  
- 	/*
- 	 * if EXYNOS_BO_CONTIG, fully physically contiguous memory
-@@ -42,7 +42,7 @@ static int exynos_drm_alloc_buf(struct exynos_drm_gem *exynos_gem)
- 	 * as possible.
- 	 */
- 	if (!(exynos_gem->flags & EXYNOS_BO_NONCONTIG))
--		dma_set_attr(DMA_ATTR_FORCE_CONTIGUOUS, &exynos_gem->dma_attrs);
-+		exynos_gem->dma_attrs |= DMA_ATTR_FORCE_CONTIGUOUS;
+ 	component_unbind_all(dev, ddev);
+@@ -299,21 +298,21 @@ static int msm_init_vram(struct drm_device *dev)
+ 	}
  
- 	/*
- 	 * if EXYNOS_BO_WC or EXYNOS_BO_NONCACHABLE, writecombine mapping
-@@ -54,8 +54,8 @@ static int exynos_drm_alloc_buf(struct exynos_drm_gem *exynos_gem)
- 	else
- 		attr = DMA_ATTR_NON_CONSISTENT;
+ 	if (size) {
+-		DEFINE_DMA_ATTRS(attrs);
++		unsigned long attrs = 0;
+ 		void *p;
  
--	dma_set_attr(attr, &exynos_gem->dma_attrs);
--	dma_set_attr(DMA_ATTR_NO_KERNEL_MAPPING, &exynos_gem->dma_attrs);
-+	exynos_gem->dma_attrs |= attr;
-+	exynos_gem->dma_attrs |= DMA_ATTR_NO_KERNEL_MAPPING;
+ 		priv->vram.size = size;
  
- 	nr_pages = exynos_gem->size >> PAGE_SHIFT;
+ 		drm_mm_init(&priv->vram.mm, 0, (size >> PAGE_SHIFT) - 1);
  
-@@ -67,7 +67,7 @@ static int exynos_drm_alloc_buf(struct exynos_drm_gem *exynos_gem)
+-		dma_set_attr(DMA_ATTR_NO_KERNEL_MAPPING, &attrs);
+-		dma_set_attr(DMA_ATTR_WRITE_COMBINE, &attrs);
++		attrs |= DMA_ATTR_NO_KERNEL_MAPPING;
++		attrs |= DMA_ATTR_WRITE_COMBINE;
  
- 	exynos_gem->cookie = dma_alloc_attrs(to_dma_dev(dev), exynos_gem->size,
- 					     &exynos_gem->dma_addr, GFP_KERNEL,
--					     &exynos_gem->dma_attrs);
-+					     exynos_gem->dma_attrs);
- 	if (!exynos_gem->cookie) {
- 		DRM_ERROR("failed to allocate buffer.\n");
- 		goto err_free;
-@@ -75,7 +75,7 @@ static int exynos_drm_alloc_buf(struct exynos_drm_gem *exynos_gem)
- 
- 	ret = dma_get_sgtable_attrs(to_dma_dev(dev), &sgt, exynos_gem->cookie,
- 				    exynos_gem->dma_addr, exynos_gem->size,
--				    &exynos_gem->dma_attrs);
-+				    exynos_gem->dma_attrs);
- 	if (ret < 0) {
- 		DRM_ERROR("failed to get sgtable.\n");
- 		goto err_dma_free;
-@@ -99,7 +99,7 @@ err_sgt_free:
- 	sg_free_table(&sgt);
- err_dma_free:
- 	dma_free_attrs(to_dma_dev(dev), exynos_gem->size, exynos_gem->cookie,
--		       exynos_gem->dma_addr, &exynos_gem->dma_attrs);
-+		       exynos_gem->dma_addr, exynos_gem->dma_attrs);
- err_free:
- 	drm_free_large(exynos_gem->pages);
- 
-@@ -120,7 +120,7 @@ static void exynos_drm_free_buf(struct exynos_drm_gem *exynos_gem)
- 
- 	dma_free_attrs(to_dma_dev(dev), exynos_gem->size, exynos_gem->cookie,
- 			(dma_addr_t)exynos_gem->dma_addr,
--			&exynos_gem->dma_attrs);
-+			exynos_gem->dma_attrs);
- 
- 	drm_free_large(exynos_gem->pages);
- }
-@@ -346,7 +346,7 @@ static int exynos_drm_gem_mmap_buffer(struct exynos_drm_gem *exynos_gem,
- 
- 	ret = dma_mmap_attrs(to_dma_dev(drm_dev), vma, exynos_gem->cookie,
- 			     exynos_gem->dma_addr, exynos_gem->size,
--			     &exynos_gem->dma_attrs);
-+			     exynos_gem->dma_attrs);
- 	if (ret < 0) {
- 		DRM_ERROR("failed to mmap.\n");
- 		return ret;
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gem.h b/drivers/gpu/drm/exynos/exynos_drm_gem.h
-index 78100742281d..df7c543d6558 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_gem.h
-+++ b/drivers/gpu/drm/exynos/exynos_drm_gem.h
-@@ -50,7 +50,7 @@ struct exynos_drm_gem {
- 	void			*cookie;
- 	void __iomem		*kvaddr;
- 	dma_addr_t		dma_addr;
--	struct dma_attrs	dma_attrs;
-+	unsigned long		dma_attrs;
- 	struct page		**pages;
- 	struct sg_table		*sgt;
- };
+ 		/* note that for no-kernel-mapping, the vaddr returned
+ 		 * is bogus, but non-null if allocation succeeded:
+ 		 */
+ 		p = dma_alloc_attrs(dev->dev, size,
+-				&priv->vram.paddr, GFP_KERNEL, &attrs);
++				&priv->vram.paddr, GFP_KERNEL, attrs);
+ 		if (!p) {
+ 			dev_err(dev->dev, "failed to allocate VRAM\n");
+ 			priv->vram.paddr = 0;
 -- 
 1.9.1

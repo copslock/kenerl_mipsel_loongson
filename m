@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:41:34 +0200 (CEST)
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:45077 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041757AbcFBPklqPoX2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:40:41 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout2.w1.samsung.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:41:57 +0200 (CEST)
+Received: from mailout4.w1.samsung.com ([210.118.77.14]:15502 "EHLO
+        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041763AbcFBPknMRUN2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:40:43 +0200
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout4.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500EOEI7MAW40@mailout2.w1.samsung.com>; Thu,
- 02 Jun 2016 16:40:34 +0100 (BST)
-X-AuditID: cbfec7f5-f792a6d000001302-06-57505371e303
+ with ESMTP id <0O8500C9MI7PZ110@mailout4.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:40:37 +0100 (BST)
+X-AuditID: cbfec7f4-f796c6d000001486-d3-575053754b03
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 37.BB.04866.17350575; Thu,
- 2 Jun 2016 16:40:34 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id E1.0A.05254.57350575; Thu,
+ 2 Jun 2016 16:40:37 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:40:33 +0100 (BST)
+ 02 Jun 2016 16:40:36 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,34 +89,34 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 03/45] alpha: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:05 +0200
-Message-id: <1464881987-13203-4-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 04/45] arc: dma-mapping: Use unsigned long for dma_attrs
+Date:   Thu, 02 Jun 2016 17:39:06 +0200
+Message-id: <1464881987-13203-5-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzVSe0xTZxT3u9990djkWtm40WhMEw0xk6kseuIWN+cf3sTH6iskzugq3AGR
-        ImmtmcYshVo3KLBLeUwoISCFFnmUlhAtGQIdgoCgHYyhwnAIKkOhNmE4cGgr7r/f6zxyclis
-        GKZWsYnJZ0VtsjpJScvInsXO/k3aw6qYzc4ADemeBQY66w00ZPV1EVDsrKHhP0sHA64rTgr8
-        aSYMtrQE8P1sImGmMhOB3bEfRgMPEUynLZCw+OI5hoHZGRpyqnIxmOvGGLhcsAuKn/YiePKg
-        mQDb5E5oG/qHgR7pKgEFrgh4NWsMFna7MJS2fArTJc8wjNZdo+CptwhD8f2t8LrQT0C6tZ6B
-        qWdboLJ8AsGENEzD9Eg7gqKWERLcjwcpyGnpZaDdKhHgqK7DUHbZRsLtbD8FM5du0OD/cZqC
-        /qZiGuzjtRgy6xuD1OgLbfUDCVK+hQGr7ScSxrrvEdBb0knDE28WCYFHbzBIZUYMV+7eDN7j
-        dR4G03AtAVW9tQx485sRLMwtUl8cE8bbSgjB1CzRQk1JDRL6B31YWJi3IOGPOpUwlSsFpews
-        Qmgb89LC1UkDKXiKRhjB//KEUOrWC9b8QSRkeu4gocGxUbXtmOyzODEp8Zyo/XjnN7KEX3Pu
-        oxTLmu/6qg8bkCsiA4WxPPcJXz6QSizhD/l7fzrpDCRjFVwF4scHJt6TVII32t1UKEVz0XyD
-        3fbOCOdcPG947MMhA3MX+cnOeZSBWHYlt5d3efaFZJJbz5fVF9AhLOf28G/mrPTStLV8V0fu
-        u55hnMDbnFVkCCuCGZ+xgZKQvBQtu4Y+EPWxKbpT8ZqtUTq1RqdPjo+KPaNxo6Wfm72BKjp2
-        eBHHIuVy+bKPvopRUOpzuvMaL+JZrAyXbz+kilHI49TnL4jaMye1+iRR50WrWVIZIS9smjmi
-        4OLVZ8XTopgiav93CTZslQHtm7+YWk1Mxpq6ElNjXhzs/mVIDH8+37Ui+8s5x3XzweR1qpTj
-        j9rXxg5I5TvMlDu67NuJ3df3WtssPbd+K3dssFf81eqo0DQemP23qHCIPFqZF/l1c/TU978/
-        6OMC6ZEtka8u7G79XHZzz2irOeuhh7TqEwnj+kO7Vv8dWJl3C68zK0ldgnrLRqzVqd8C+vvc
-        cm8DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTG9973flFXc1NRryzOpYkxsoyJGnPwK9tfvFs0krkMY6Kug5tC
+        pEhaa3AaU2HAUMBLGcgKa1A6KAiUj/gBhJFWBQFRGxxT5MMBoojQYoYSYGUtZP/9zvM8J+fk
+        5PBY1c+E8PGJJyV9oiZBzSroLl97z2fGg1HRWy5d5iGzcZ6D9loTC9kPOigodlSx8K+5jYO6
+        QgcD3pQ0DLaUOHBfTqPBU5aFoNy+H4bePkMwlTJPg2/yDYbHMx4WcivyMFysGeYgveBLKH7Z
+        jWCsr4UC2/hecD55x0GXfJWCgrq1MDuT6m/srMNQ0roLpqyvMAzVVDLw0mXBUPx0Kyz86qUg
+        s6iWg4lX4VBW+gLBC7mfhamBOwgsrQM01I/0MpDb2s3BnSKZAvu1GgxX0m003MvxMuD56RYL
+        3p+nGOhpKmahfLQaQ1btdX+Z6g5slUGDnG/moMh2iYbhzkcUdFvbWRhzZdPw9vkiBvlKKobC
+        h3/477HwC4a0/moKKrqrOXDltyCYf+9jvjhMRp1WiqS1yCypslYh0tPrxmR+zozIXzVRZCJP
+        9ks52RRxDrtYcnXcRJNGywBHvNNHSUm9kRTl9yKS1XgfkQZ7aNSOw4rdsVJC/ClJ//ne7xVx
+        mfdnqaQnyuQbt+2sCRWuuICCeFHYLnrsrewyrxEfDTr8rOBVwu9ItJhnccBQCecp0VdGAswK
+        28SGcttSKFioE0XTiHsphIWz4nj7HLqAeH6V8JVov7k9INPCRvHPHN9SRClEiiWFPfTysI/F
+        jrY8JsBBAhFtjgp6eVak6E5tYGSkLEEfVKLVkjEmyfCDVhceZtDoDMZEbVjMCV09Wv65f26h
+        0radLiTwSP2h0r75QLSK0ZwynNa5kMhjdbAyfX9UtEoZqzn9o6Q/cUxvTJAMLvQRT6vXKn9r
+        8nyrErSak9JxSUqS9P+7FB8UYkIrTfoF+e/J2EWn+9OBzNj06VE6ZM3MusWxvsrI63t0d8/p
+        u2JyQ/PWR6wMfr0xYkOYNjm4aVfz174byd/si1CUxvdZY6YPTRzxah2jgxkdHu6g5bvH58BV
+        PXSGfT02uGeD3Zi8O+OT5unJA843cZP7zkYWmOuzVjSPHJ3rnFvYpKtU04Y4TXgo1hs0/wGN
+        R3eybwMAAA==
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53727
+X-archive-position: 53728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -138,94 +138,48 @@ squashed with main commit.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- arch/alpha/include/asm/dma-mapping.h |  2 --
- arch/alpha/kernel/pci-noop.c         |  2 +-
- arch/alpha/kernel/pci_iommu.c        | 12 ++++++------
- 3 files changed, 7 insertions(+), 9 deletions(-)
+ arch/arc/mm/dma.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/alpha/include/asm/dma-mapping.h b/arch/alpha/include/asm/dma-mapping.h
-index 3c3451f58ff4..c63b6ac19ee5 100644
---- a/arch/alpha/include/asm/dma-mapping.h
-+++ b/arch/alpha/include/asm/dma-mapping.h
-@@ -1,8 +1,6 @@
- #ifndef _ALPHA_DMA_MAPPING_H
- #define _ALPHA_DMA_MAPPING_H
+diff --git a/arch/arc/mm/dma.c b/arch/arc/mm/dma.c
+index 73d7e4c75b7d..3d1f467d1792 100644
+--- a/arch/arc/mm/dma.c
++++ b/arch/arc/mm/dma.c
+@@ -22,7 +22,7 @@
  
--#include <linux/dma-attrs.h>
--
- extern struct dma_map_ops *dma_ops;
  
- static inline struct dma_map_ops *get_dma_ops(struct device *dev)
-diff --git a/arch/alpha/kernel/pci-noop.c b/arch/alpha/kernel/pci-noop.c
-index 8e735b5e56bd..bb152e21e5ae 100644
---- a/arch/alpha/kernel/pci-noop.c
-+++ b/arch/alpha/kernel/pci-noop.c
-@@ -109,7 +109,7 @@ sys_pciconfig_write(unsigned long bus, unsigned long dfn,
- 
- static void *alpha_noop_alloc_coherent(struct device *dev, size_t size,
- 				       dma_addr_t *dma_handle, gfp_t gfp,
--				       struct dma_attrs *attrs)
-+				       unsigned long attrs)
+ static void *arc_dma_alloc(struct device *dev, size_t size,
+-		dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
++		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
  {
- 	void *ret;
+ 	unsigned long order = get_order(size);
+ 	struct page *page;
+@@ -90,7 +90,7 @@ static void *arc_dma_alloc(struct device *dev, size_t size,
+ }
  
-diff --git a/arch/alpha/kernel/pci_iommu.c b/arch/alpha/kernel/pci_iommu.c
-index 8969bf2dfe3a..451fc9cdd323 100644
---- a/arch/alpha/kernel/pci_iommu.c
-+++ b/arch/alpha/kernel/pci_iommu.c
-@@ -349,7 +349,7 @@ static struct pci_dev *alpha_gendev_to_pci(struct device *dev)
- static dma_addr_t alpha_pci_map_page(struct device *dev, struct page *page,
- 				     unsigned long offset, size_t size,
- 				     enum dma_data_direction dir,
--				     struct dma_attrs *attrs)
-+				     unsigned long attrs)
+ static void arc_dma_free(struct device *dev, size_t size, void *vaddr,
+-		dma_addr_t dma_handle, struct dma_attrs *attrs)
++		dma_addr_t dma_handle, unsigned long attrs)
  {
- 	struct pci_dev *pdev = alpha_gendev_to_pci(dev);
- 	int dac_allowed;
-@@ -369,7 +369,7 @@ static dma_addr_t alpha_pci_map_page(struct device *dev, struct page *page,
+ 	struct page *page = virt_to_page(dma_handle);
+ 	int is_non_coh = 1;
+@@ -129,7 +129,7 @@ static void _dma_cache_sync(phys_addr_t paddr, size_t size,
  
- static void alpha_pci_unmap_page(struct device *dev, dma_addr_t dma_addr,
- 				 size_t size, enum dma_data_direction dir,
--				 struct dma_attrs *attrs)
-+				 unsigned long attrs)
+ static dma_addr_t arc_dma_map_page(struct device *dev, struct page *page,
+ 		unsigned long offset, size_t size, enum dma_data_direction dir,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
  {
- 	unsigned long flags;
- 	struct pci_dev *pdev = alpha_gendev_to_pci(dev);
-@@ -433,7 +433,7 @@ static void alpha_pci_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 	phys_addr_t paddr = page_to_phys(page) + offset;
+ 	_dma_cache_sync(paddr, size, dir);
+@@ -137,7 +137,7 @@ static dma_addr_t arc_dma_map_page(struct device *dev, struct page *page,
+ }
  
- static void *alpha_pci_alloc_coherent(struct device *dev, size_t size,
- 				      dma_addr_t *dma_addrp, gfp_t gfp,
--				      struct dma_attrs *attrs)
-+				      unsigned long attrs)
+ static int arc_dma_map_sg(struct device *dev, struct scatterlist *sg,
+-	   int nents, enum dma_data_direction dir, struct dma_attrs *attrs)
++	   int nents, enum dma_data_direction dir, unsigned long attrs)
  {
- 	struct pci_dev *pdev = alpha_gendev_to_pci(dev);
- 	void *cpu_addr;
-@@ -478,7 +478,7 @@ try_again:
- 
- static void alpha_pci_free_coherent(struct device *dev, size_t size,
- 				    void *cpu_addr, dma_addr_t dma_addr,
--				    struct dma_attrs *attrs)
-+				    unsigned long attrs)
- {
- 	struct pci_dev *pdev = alpha_gendev_to_pci(dev);
- 	pci_unmap_single(pdev, dma_addr, size, PCI_DMA_BIDIRECTIONAL);
-@@ -651,7 +651,7 @@ sg_fill(struct device *dev, struct scatterlist *leader, struct scatterlist *end,
- 
- static int alpha_pci_map_sg(struct device *dev, struct scatterlist *sg,
- 			    int nents, enum dma_data_direction dir,
--			    struct dma_attrs *attrs)
-+			    unsigned long attrs)
- {
- 	struct pci_dev *pdev = alpha_gendev_to_pci(dev);
- 	struct scatterlist *start, *end, *out;
-@@ -729,7 +729,7 @@ static int alpha_pci_map_sg(struct device *dev, struct scatterlist *sg,
- 
- static void alpha_pci_unmap_sg(struct device *dev, struct scatterlist *sg,
- 			       int nents, enum dma_data_direction dir,
--			       struct dma_attrs *attrs)
-+			       unsigned long attrs)
- {
- 	struct pci_dev *pdev = alpha_gendev_to_pci(dev);
- 	unsigned long flags;
+ 	struct scatterlist *s;
+ 	int i;
 -- 
 1.9.1

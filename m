@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:55:08 +0200 (CEST)
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:49699 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041806AbcFBPmp5zfu2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:45 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout1.w1.samsung.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:55:34 +0200 (CEST)
+Received: from mailout4.w1.samsung.com ([210.118.77.14]:16134 "EHLO
+        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041807AbcFBPmrGAt22 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:47 +0200
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout4.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500M0FIB79W10@mailout1.w1.samsung.com>; Thu,
- 02 Jun 2016 16:42:44 +0100 (BST)
-X-AuditID: cbfec7f5-f792a6d000001302-a5-575053f3a839
+ with ESMTP id <0O8500CBHIB4Z110@mailout4.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:42:41 +0100 (BST)
+X-AuditID: cbfec7f4-f796c6d000001486-33-575053f0f3fd
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 81.6C.04866.3F350575; Thu,
- 2 Jun 2016 16:42:43 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id BB.AA.05254.0F350575; Thu,
+ 2 Jun 2016 16:42:40 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:42:43 +0100 (BST)
+ 02 Jun 2016 16:42:40 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,35 +89,33 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 45/45] dma-mapping: Document the DMA attributes right in
- declaration
-Date:   Thu, 02 Jun 2016 17:39:47 +0200
-Message-id: <1464881987-13203-46-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 44/45] dma-mapping: Remove dma_get_attr
+Date:   Thu, 02 Jun 2016 17:39:46 +0200
+Message-id: <1464881987-13203-45-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTGee97PwpZzc1Vx40uuDQxJm5zfueom9kWM95EDUSXNCHZtMoV
-        DBRrLzVqjOlAdLrCKlgVSprKWr5WCgXNBIOVxtAh1NFB8IMPERUkMOhg3SY4WAvZf7/znOfJ
-        OTk5CiwMMCsUR7OyJX2WJlPFxtHtc/6uj6b3J6vX/9m0Ci42znLgrzOykP+wjYLSWhcL/xa2
-        cuC5XstAKCcPgyMnHYLX8miYLDchqKjcC8+mehFM5MzSMPf7OIbu8CQLl6uKMHzvHuLg/NXP
-        oXQkgGD4aTMFjtGd0PL4Lw7azWUUXPXEwz/h3EjwgQeD3bsDJmyvMTxzVzMw4ivBUPpkI7wt
-        DlFw0VrHwdjrDVD+4ysEr8x9LEz030dQ4u2nof5FDwOXvQEO7lvNFFT+5MZw47yDhl8KQgxM
-        nrvNQui7CQa6mkpZqHhZg8FUdytS5gajW12gwWwp5MDq+IGGoQedFARsfhaGffk0TA3OYzDf
-        yMVw/de7kXu8vYIhr6+GgqpADQc+SzOC2b/nmM9SyMsWG0Xyms0scdlciHT1BDGZnSlE5JE7
-        mYwVmSNSQT5FWoZ8LCkbNdKksaSfI6E/viH2egOxWnoQMTV2INJQuTZ5a0rcJ6lS5tETkv7j
-        nQfj0nutIVp3TTh5bmacMqI3Sy6hWIXIbxary/vZRX5X7ByojXCcQuCdSHS1d9OLxbeUWDjs
-        oaIult8kNlQ4FlzLeI8oGl8EcbSB+TPiqH8GRXkprxaLO6oWAjS/WgzYvQu6kidi78wgXhyX
-        ILa1FjFRjo3ojtoqOsoCnygGcxsYM1LaUUw1Wi4ZDuvkQ2najetkjVY2ZKWtO3xMW48Wvy58
-        Gzlbt/sQr0Cqd5QxHyapBUZzQj6l9SFRgVXLlNn7ktWCMlVz6rSkP3ZAb8iUZB9aqaBV8cri
-        psmvBD5Nky1lSJJO0v/fpRSxK4xoTcbq5bqCcYvTdiCnq8yQFTi+5NB8grqgU2i6t8V0RB7o
-        aU61PXrvZNj3gSdct3ubzvmpNqZtrM//fNB/xd3NZOzlhDcpxbvcZdWNF+xfJmzJiJdcqUFy
-        6X2rZTrxN33f9Kak+akvkpyZe46sTPDeHFHvma44q6Y7En/++o5JHlDRcrpmw1qslzX/Aa6F
-        gFlxAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzVSa0xTdxT3f//3BVmTm+rkBrNlKdsSGdOh0xzFGPzk9YMb02UYlugqXgGl
+        tWl5GrNUOnQiYAXLHK2ER4EWgULJElE6QtUiSDc7CIhSMbyUsLXV6DQ8qi3ot9/rPHJyWCwd
+        p6LZDGWWqFbKM2V0JHk32Dv4ZWB/UvJXjQPRcK5zgYHeNi0NJX/1EWCyNdOwVOZioP2yjYJA
+        QSEGc0E6eH4rJMHfUIyg0bIXxp8/ROArWCAh+N+/GIZe+mm4aC3HcL51goEzFbvA9MSNYOaB
+        gwDz7E7ouf8/A3f1tQRUtEfB65e6UGF/O4bq7gTwVT3FMN7aRMETZyUG0+gmWPw9QMA5YxsD
+        c0/joaFuGsG0fowGn/cWgspuLwn2yWEKLna7Gbhl1BNgudqKoeaMmYQ7pQEK/L9coyHwq4+C
+        wesmGhqnWjAUt/0RojpPeKuzJOgNZQwYzRdImOi/R4C7qpeGGWcJCc8fv8Ggr9FhuPz3n6F7
+        LF7CUDjWQoDV3cKA0+BAsPAqSCWmCFM9VYRQ6NDTQnNVMxIGhz1YWJgvQ8JIa5IwV64PSaUl
+        hNAz4aSF2lktKXRWehkh8OygUG3PFoyGYSQUdw4gocMSm7Q1JXLHETEzI0dUb9z5U2S61e1g
+        VGP1KO9NfaIWPTuLilAEy3Nf8xUzpe/wWv7eIxtdhCJZKVePeEPXeXKFnCb4ockADqdobjPf
+        0WheTq3h2nleO+lZNjB3ip/tnV9utZoD3qobXtZJ7jP+kqOJCGMJJ/De2tf0yriP+T5XORXG
+        ESHdbLOSYSzldvMeXQelR5JqtKoJfShmp6o0h9MU8Rs0coUmW5m2IfWEwo5W3u7FNVTn2u5E
+        HItkH0gs679NllLyHE2+wol4FsvWSLL2JSVLJUfk+SdF9YlD6uxMUeNE61hSFiW5ct3/vZRL
+        k2eJx0VRJarfuwQbEa1FTVc00xkd83EHD/xs2F+cGyXLV/xT4/uiK+hJlRJTi659bSl7P922
+        KW/L53U3Yrx7Th4wqn78KGYux3LDS8Xk3gzO3W4wHLMkJFTYmbyldaMZq8riWNvId11Dyk+O
+        8pbROMc3aaoBub3arpzt/6EncSTXNdFlLFo6XRB72N9nuu2WkZp0eXwsVmvkbwHMKoHrcgMA        AA==
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53768
+X-archive-position: 53769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -134,66 +132,533 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Copy documentation abstract about each DMA attribute from
-Documentation/DMA-attributes.txt to the place with declaration.
+After switching DMA attributes to unsigned long it is easier to just
+compare the bits.
 
-Suggested-by: Christoph Hellwig <hch@infradead.org>
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- include/linux/dma-mapping.h | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ Documentation/DMA-API.txt                      |  4 +--
+ arch/arc/mm/dma.c                              |  4 +--
+ arch/arm/mm/dma-mapping.c                      | 36 ++++++++++++--------------
+ arch/arm/xen/mm.c                              |  4 +--
+ arch/arm64/mm/dma-mapping.c                    | 10 +++----
+ arch/avr32/mm/dma-coherent.c                   |  4 +--
+ arch/ia64/sn/pci/pci_dma.c                     | 10 ++-----
+ arch/metag/kernel/dma.c                        |  2 +-
+ arch/mips/mm/dma-default.c                     |  6 ++---
+ arch/openrisc/kernel/dma.c                     |  4 +--
+ arch/parisc/kernel/pci-dma.c                   |  2 +-
+ arch/powerpc/platforms/cell/iommu.c            | 10 +++----
+ drivers/gpu/drm/rockchip/rockchip_drm_gem.c    |  2 +-
+ drivers/iommu/dma-iommu.c                      |  2 +-
+ drivers/media/v4l2-core/videobuf2-dma-contig.c |  2 +-
+ include/linux/dma-mapping.h                    | 13 ----------
+ 16 files changed, 46 insertions(+), 69 deletions(-)
 
+diff --git a/Documentation/DMA-API.txt b/Documentation/DMA-API.txt
+index 24f9688bb98a..1d26eeb6b5f6 100644
+--- a/Documentation/DMA-API.txt
++++ b/Documentation/DMA-API.txt
+@@ -422,9 +422,7 @@ void whizco_dma_map_sg_attrs(struct device *dev, dma_addr_t dma_addr,
+ 			     unsigned long attrs)
+ {
+ 	....
+-	int foo =  dma_get_attr(DMA_ATTR_FOO, attrs);
+-	....
+-	if (foo)
++	if (attrs & DMA_ATTR_FOO)
+ 		/* twizzle the frobnozzle */
+ 	....
+ 
+diff --git a/arch/arc/mm/dma.c b/arch/arc/mm/dma.c
+index 3d1f467d1792..74bbe68dce9d 100644
+--- a/arch/arc/mm/dma.c
++++ b/arch/arc/mm/dma.c
+@@ -46,7 +46,7 @@ static void *arc_dma_alloc(struct device *dev, size_t size,
+ 	 *   (vs. always going to memory - thus are faster)
+ 	 */
+ 	if ((is_isa_arcv2() && ioc_exists) ||
+-	    dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs))
++	    (attrs & DMA_ATTR_NON_CONSISTENT))
+ 		need_coh = 0;
+ 
+ 	/*
+@@ -95,7 +95,7 @@ static void arc_dma_free(struct device *dev, size_t size, void *vaddr,
+ 	struct page *page = virt_to_page(dma_handle);
+ 	int is_non_coh = 1;
+ 
+-	is_non_coh = dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs) ||
++	is_non_coh = (attrs & DMA_ATTR_NON_CONSISTENT) ||
+ 			(is_isa_arcv2() && ioc_exists);
+ 
+ 	if (PageHighMem(page) || !is_non_coh)
+diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
+index ebb3fde99043..43e03b5293d0 100644
+--- a/arch/arm/mm/dma-mapping.c
++++ b/arch/arm/mm/dma-mapping.c
+@@ -126,7 +126,7 @@ static dma_addr_t arm_dma_map_page(struct device *dev, struct page *page,
+ 	     unsigned long offset, size_t size, enum dma_data_direction dir,
+ 	     unsigned long attrs)
+ {
+-	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+ 		__dma_page_cpu_to_dev(page, offset, size, dir);
+ 	return pfn_to_dma(dev, page_to_pfn(page)) + offset;
+ }
+@@ -155,7 +155,7 @@ static dma_addr_t arm_coherent_dma_map_page(struct device *dev, struct page *pag
+ static void arm_dma_unmap_page(struct device *dev, dma_addr_t handle,
+ 		size_t size, enum dma_data_direction dir, unsigned long attrs)
+ {
+-	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+ 		__dma_page_dev_to_cpu(pfn_to_page(dma_to_pfn(dev, handle)),
+ 				      handle & ~PAGE_MASK, size, dir);
+ }
+@@ -622,9 +622,9 @@ static void __free_from_contiguous(struct device *dev, struct page *page,
+ 
+ static inline pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot)
+ {
+-	prot = dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs) ?
+-			    pgprot_writecombine(prot) :
+-			    pgprot_dmacoherent(prot);
++	prot = (attrs & DMA_ATTR_WRITE_COMBINE) ?
++			pgprot_writecombine(prot) :
++			pgprot_dmacoherent(prot);
+ 	return prot;
+ }
+ 
+@@ -744,7 +744,7 @@ static void *__dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+ 		.gfp = gfp,
+ 		.prot = prot,
+ 		.caller = caller,
+-		.want_vaddr = !dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs),
++		.want_vaddr = ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) == 0),
+ 	};
+ 
+ #ifdef CONFIG_DMA_API_DEBUG
+@@ -887,7 +887,7 @@ static void __arm_dma_free(struct device *dev, size_t size, void *cpu_addr,
+ 		.size = PAGE_ALIGN(size),
+ 		.cpu_addr = cpu_addr,
+ 		.page = page,
+-		.want_vaddr = !dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs),
++		.want_vaddr = ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) == 0),
+ 	};
+ 
+ 	buf = arm_dma_buffer_find(cpu_addr);
+@@ -1267,7 +1267,7 @@ static struct page **__iommu_alloc_buffer(struct device *dev, size_t size,
+ 	if (!pages)
+ 		return NULL;
+ 
+-	if (dma_get_attr(DMA_ATTR_FORCE_CONTIGUOUS, attrs))
++	if (attrs & DMA_ATTR_FORCE_CONTIGUOUS)
+ 	{
+ 		unsigned long order = get_order(size);
+ 		struct page *page;
+@@ -1285,7 +1285,7 @@ static struct page **__iommu_alloc_buffer(struct device *dev, size_t size,
+ 	}
+ 
+ 	/* Go straight to 4K chunks if caller says it's OK. */
+-	if (dma_get_attr(DMA_ATTR_ALLOC_SINGLE_PAGES, attrs))
++	if (attrs & DMA_ATTR_ALLOC_SINGLE_PAGES)
+ 		order_idx = ARRAY_SIZE(iommu_order_array) - 1;
+ 
+ 	/*
+@@ -1346,7 +1346,7 @@ static int __iommu_free_buffer(struct device *dev, struct page **pages,
+ 	int count = size >> PAGE_SHIFT;
+ 	int i;
+ 
+-	if (dma_get_attr(DMA_ATTR_FORCE_CONTIGUOUS, attrs)) {
++	if (attrs & DMA_ATTR_FORCE_CONTIGUOUS) {
+ 		dma_release_from_contiguous(dev, pages[0], count);
+ 	} else {
+ 		for (i = 0; i < count; i++)
+@@ -1445,7 +1445,7 @@ static struct page **__iommu_get_pages(void *cpu_addr, unsigned long attrs)
+ 	if (__in_atomic_pool(cpu_addr, PAGE_SIZE))
+ 		return __atomic_get_pages(cpu_addr);
+ 
+-	if (dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs))
++	if (attrs & DMA_ATTR_NO_KERNEL_MAPPING)
+ 		return cpu_addr;
+ 
+ 	area = find_vm_area(cpu_addr);
+@@ -1512,7 +1512,7 @@ static void *arm_iommu_alloc_attrs(struct device *dev, size_t size,
+ 	if (*handle == DMA_ERROR_CODE)
+ 		goto err_buffer;
+ 
+-	if (dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs))
++	if (attrs & DMA_ATTR_NO_KERNEL_MAPPING)
+ 		return pages;
+ 
+ 	addr = __iommu_alloc_remap(pages, size, gfp, prot,
+@@ -1583,7 +1583,7 @@ void arm_iommu_free_attrs(struct device *dev, size_t size, void *cpu_addr,
+ 		return;
+ 	}
+ 
+-	if (!dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs)) {
++	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) == 0) {
+ 		dma_common_free_remap(cpu_addr, size,
+ 			VM_ARM_DMA_CONSISTENT | VM_USERMAP);
+ 	}
+@@ -1653,8 +1653,7 @@ static int __map_sg_chunk(struct device *dev, struct scatterlist *sg,
+ 		phys_addr_t phys = page_to_phys(sg_page(s));
+ 		unsigned int len = PAGE_ALIGN(s->offset + s->length);
+ 
+-		if (!is_coherent &&
+-			!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++		if (!is_coherent && (attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+ 			__dma_page_cpu_to_dev(sg_page(s), s->offset, s->length, dir);
+ 
+ 		prot = __dma_direction_to_prot(dir);
+@@ -1767,8 +1766,7 @@ static void __iommu_unmap_sg(struct device *dev, struct scatterlist *sg,
+ 		if (sg_dma_len(s))
+ 			__iommu_remove_mapping(dev, sg_dma_address(s),
+ 					       sg_dma_len(s));
+-		if (!is_coherent &&
+-		    !dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++		if (!is_coherent && (attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+ 			__dma_page_dev_to_cpu(sg_page(s), s->offset,
+ 					      s->length, dir);
+ 	}
+@@ -1892,7 +1890,7 @@ static dma_addr_t arm_iommu_map_page(struct device *dev, struct page *page,
+ 	     unsigned long offset, size_t size, enum dma_data_direction dir,
+ 	     unsigned long attrs)
+ {
+-	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+ 		__dma_page_cpu_to_dev(page, offset, size, dir);
+ 
+ 	return arm_coherent_iommu_map_page(dev, page, offset, size, dir, attrs);
+@@ -1943,7 +1941,7 @@ static void arm_iommu_unmap_page(struct device *dev, dma_addr_t handle,
+ 	if (!iova)
+ 		return;
+ 
+-	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+ 		__dma_page_dev_to_cpu(page, offset, size, dir);
+ 
+ 	iommu_unmap(mapping->domain, iova, len);
+diff --git a/arch/arm/xen/mm.c b/arch/arm/xen/mm.c
+index fc67ed236a10..d062f08f5020 100644
+--- a/arch/arm/xen/mm.c
++++ b/arch/arm/xen/mm.c
+@@ -102,7 +102,7 @@ void __xen_dma_map_page(struct device *hwdev, struct page *page,
+ {
+ 	if (is_device_dma_coherent(hwdev))
+ 		return;
+-	if (dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if (attrs & DMA_ATTR_SKIP_CPU_SYNC)
+ 		return;
+ 
+ 	__xen_dma_page_cpu_to_dev(hwdev, dev_addr, size, dir);
+@@ -115,7 +115,7 @@ void __xen_dma_unmap_page(struct device *hwdev, dma_addr_t handle,
+ {
+ 	if (is_device_dma_coherent(hwdev))
+ 		return;
+-	if (dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if (attrs & DMA_ATTR_SKIP_CPU_SYNC)
+ 		return;
+ 
+ 	__xen_dma_page_dev_to_cpu(hwdev, handle, size, dir);
+diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
+index a7686028dfeb..e78bf269ee4f 100644
+--- a/arch/arm64/mm/dma-mapping.c
++++ b/arch/arm64/mm/dma-mapping.c
+@@ -32,7 +32,7 @@
+ static pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot,
+ 				 bool coherent)
+ {
+-	if (!coherent || dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs))
++	if (!coherent || (attrs & DMA_ATTR_WRITE_COMBINE))
+ 		return pgprot_writecombine(prot);
+ 	return prot;
+ }
+@@ -702,7 +702,7 @@ static dma_addr_t __iommu_map_page(struct device *dev, struct page *page,
+ 	dma_addr_t dev_addr = iommu_dma_map_page(dev, page, offset, size, prot);
+ 
+ 	if (!iommu_dma_mapping_error(dev, dev_addr) &&
+-	    !dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	    (attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+ 		__iommu_sync_single_for_device(dev, dev_addr, size, dir);
+ 
+ 	return dev_addr;
+@@ -712,7 +712,7 @@ static void __iommu_unmap_page(struct device *dev, dma_addr_t dev_addr,
+ 			       size_t size, enum dma_data_direction dir,
+ 			       unsigned long attrs)
+ {
+-	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC == 0)
+ 		__iommu_sync_single_for_cpu(dev, dev_addr, size, dir);
+ 
+ 	iommu_dma_unmap_page(dev, dev_addr, size, dir, attrs);
+@@ -752,7 +752,7 @@ static int __iommu_map_sg_attrs(struct device *dev, struct scatterlist *sgl,
+ {
+ 	bool coherent = is_device_dma_coherent(dev);
+ 
+-	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC == 0)
+ 		__iommu_sync_sg_for_device(dev, sgl, nelems, dir);
+ 
+ 	return iommu_dma_map_sg(dev, sgl, nelems,
+@@ -764,7 +764,7 @@ static void __iommu_unmap_sg_attrs(struct device *dev,
+ 				   enum dma_data_direction dir,
+ 				   unsigned long attrs)
+ {
+-	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
++	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC == 0)
+ 		__iommu_sync_sg_for_cpu(dev, sgl, nelems, dir);
+ 
+ 	iommu_dma_unmap_sg(dev, sgl, nelems, dir, attrs);
+diff --git a/arch/avr32/mm/dma-coherent.c b/arch/avr32/mm/dma-coherent.c
+index fc51f4421933..58610d0df7ed 100644
+--- a/arch/avr32/mm/dma-coherent.c
++++ b/arch/avr32/mm/dma-coherent.c
+@@ -109,7 +109,7 @@ static void *avr32_dma_alloc(struct device *dev, size_t size,
+ 		return NULL;
+ 	phys = page_to_phys(page);
+ 
+-	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs)) {
++	if (attrs & DMA_ATTR_WRITE_COMBINE) {
+ 		/* Now, map the page into P3 with write-combining turned on */
+ 		*handle = phys;
+ 		return __ioremap(phys, size, _PAGE_BUFFER);
+@@ -123,7 +123,7 @@ static void avr32_dma_free(struct device *dev, size_t size,
+ {
+ 	struct page *page;
+ 
+-	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs)) {
++	if (attrs & DMA_ATTR_WRITE_COMBINE) {
+ 		iounmap(cpu_addr);
+ 
+ 		page = phys_to_page(handle);
+diff --git a/arch/ia64/sn/pci/pci_dma.c b/arch/ia64/sn/pci/pci_dma.c
+index 6b78fc953c4b..74c934a997bb 100644
+--- a/arch/ia64/sn/pci/pci_dma.c
++++ b/arch/ia64/sn/pci/pci_dma.c
+@@ -183,14 +183,11 @@ static dma_addr_t sn_dma_map_page(struct device *dev, struct page *page,
+ 	unsigned long phys_addr;
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+ 	struct sn_pcibus_provider *provider = SN_PCIDEV_BUSPROVIDER(pdev);
+-	int dmabarr;
+-
+-	dmabarr = dma_get_attr(DMA_ATTR_WRITE_BARRIER, attrs);
+ 
+ 	BUG_ON(!dev_is_pci(dev));
+ 
+ 	phys_addr = __pa(cpu_addr);
+-	if (dmabarr)
++	if (attrs & DMA_ATTR_WRITE_BARRIER)
+ 		dma_addr = provider->dma_map_consistent(pdev, phys_addr,
+ 							size, SN_DMA_ADDR_PHYS);
+ 	else
+@@ -280,9 +277,6 @@ static int sn_dma_map_sg(struct device *dev, struct scatterlist *sgl,
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+ 	struct sn_pcibus_provider *provider = SN_PCIDEV_BUSPROVIDER(pdev);
+ 	int i;
+-	int dmabarr;
+-
+-	dmabarr = dma_get_attr(DMA_ATTR_WRITE_BARRIER, attrs);
+ 
+ 	BUG_ON(!dev_is_pci(dev));
+ 
+@@ -292,7 +286,7 @@ static int sn_dma_map_sg(struct device *dev, struct scatterlist *sgl,
+ 	for_each_sg(sgl, sg, nhwentries, i) {
+ 		dma_addr_t dma_addr;
+ 		phys_addr = SG_ENT_PHYS_ADDRESS(sg);
+-		if (dmabarr)
++		if (attrs & DMA_ATTR_WRITE_BARRIER)
+ 			dma_addr = provider->dma_map_consistent(pdev,
+ 								phys_addr,
+ 								sg->length,
+diff --git a/arch/metag/kernel/dma.c b/arch/metag/kernel/dma.c
+index d68f498e82a1..0db31e24c541 100644
+--- a/arch/metag/kernel/dma.c
++++ b/arch/metag/kernel/dma.c
+@@ -337,7 +337,7 @@ static int metag_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+ 	struct metag_vm_region *c;
+ 	int ret = -ENXIO;
+ 
+-	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs))
++	if (attrs & DMA_ATTR_WRITE_COMBINE)
+ 		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
+ 	else
+ 		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index c9052108094f..0306dd0f300a 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -141,7 +141,7 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
+ 	 * XXX: seems like the coherent and non-coherent implementations could
+ 	 * be consolidated.
+ 	 */
+-	if (dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs))
++	if (attrs & DMA_ATTR_NON_CONSISTENT)
+ 		return mips_dma_alloc_noncoherent(dev, size, dma_handle, gfp);
+ 
+ 	gfp = massage_gfp_flags(dev, gfp);
+@@ -182,7 +182,7 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	unsigned int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+ 	struct page *page = NULL;
+ 
+-	if (dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs)) {
++	if (attrs & DMA_ATTR_NON_CONSISTENT) {
+ 		mips_dma_free_noncoherent(dev, size, vaddr, dma_handle);
+ 		return;
+ 	}
+@@ -214,7 +214,7 @@ static int mips_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+ 
+ 	pfn = page_to_pfn(virt_to_page((void *)addr));
+ 
+-	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs))
++	if (attrs & DMA_ATTR_WRITE_COMBINE)
+ 		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
+ 	else
+ 		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+diff --git a/arch/openrisc/kernel/dma.c b/arch/openrisc/kernel/dma.c
+index 50eb1f26c540..140c99140649 100644
+--- a/arch/openrisc/kernel/dma.c
++++ b/arch/openrisc/kernel/dma.c
+@@ -100,7 +100,7 @@ or1k_dma_alloc(struct device *dev, size_t size,
+ 
+ 	va = (unsigned long)page;
+ 
+-	if (!dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs)) {
++	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0) {
+ 		/*
+ 		 * We need to iterate through the pages, clearing the dcache for
+ 		 * them and setting the cache-inhibit bit.
+@@ -124,7 +124,7 @@ or1k_dma_free(struct device *dev, size_t size, void *vaddr,
+ 		.mm = &init_mm
+ 	};
+ 
+-	if (!dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs)) {
++	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0) {
+ 		/* walk_page_range shouldn't be able to fail here */
+ 		WARN_ON(walk_page_range(va, va + size, &walk));
+ 	}
+diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
+index 845fdd52e4c5..02d9ed0f3949 100644
+--- a/arch/parisc/kernel/pci-dma.c
++++ b/arch/parisc/kernel/pci-dma.c
+@@ -581,7 +581,7 @@ static void *pcx_dma_alloc(struct device *dev, size_t size,
+ {
+ 	void *addr;
+ 
+-	if (!dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs))
++	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0)
+ 		return NULL;
+ 
+ 	addr = (void *)__get_free_pages(flag, get_order(size));
+diff --git a/arch/powerpc/platforms/cell/iommu.c b/arch/powerpc/platforms/cell/iommu.c
+index 5d1a7ef3fdee..2018e562d124 100644
+--- a/arch/powerpc/platforms/cell/iommu.c
++++ b/arch/powerpc/platforms/cell/iommu.c
+@@ -193,7 +193,7 @@ static int tce_build_cell(struct iommu_table *tbl, long index, long npages,
+ 	base_pte = CBE_IOPTE_PP_W | CBE_IOPTE_PP_R | CBE_IOPTE_M |
+ 		CBE_IOPTE_SO_RW | (window->ioid & CBE_IOPTE_IOID_Mask);
+ #endif
+-	if (unlikely(dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs)))
++	if (unlikely(attrs & DMA_ATTR_WEAK_ORDERING))
+ 		base_pte &= ~CBE_IOPTE_SO_RW;
+ 
+ 	io_pte = (unsigned long *)tbl->it_base + (index - tbl->it_offset);
+@@ -600,7 +600,7 @@ static dma_addr_t dma_fixed_map_page(struct device *dev, struct page *page,
+ 				     enum dma_data_direction direction,
+ 				     unsigned long attrs)
+ {
+-	if (iommu_fixed_is_weak == dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs))
++	if (iommu_fixed_is_weak == (attrs & DMA_ATTR_WEAK_ORDERING))
+ 		return dma_direct_ops.map_page(dev, page, offset, size,
+ 					       direction, attrs);
+ 	else
+@@ -613,7 +613,7 @@ static void dma_fixed_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 				 size_t size, enum dma_data_direction direction,
+ 				 unsigned long attrs)
+ {
+-	if (iommu_fixed_is_weak == dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs))
++	if (iommu_fixed_is_weak == (attrs & DMA_ATTR_WEAK_ORDERING))
+ 		dma_direct_ops.unmap_page(dev, dma_addr, size, direction,
+ 					  attrs);
+ 	else
+@@ -625,7 +625,7 @@ static int dma_fixed_map_sg(struct device *dev, struct scatterlist *sg,
+ 			   int nents, enum dma_data_direction direction,
+ 			   unsigned long attrs)
+ {
+-	if (iommu_fixed_is_weak == dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs))
++	if (iommu_fixed_is_weak == (attrs & DMA_ATTR_WEAK_ORDERING))
+ 		return dma_direct_ops.map_sg(dev, sg, nents, direction, attrs);
+ 	else
+ 		return ppc_iommu_map_sg(dev, cell_get_iommu_table(dev), sg,
+@@ -637,7 +637,7 @@ static void dma_fixed_unmap_sg(struct device *dev, struct scatterlist *sg,
+ 			       int nents, enum dma_data_direction direction,
+ 			       unsigned long attrs)
+ {
+-	if (iommu_fixed_is_weak == dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs))
++	if (iommu_fixed_is_weak == (attrs & DMA_ATTR_WEAK_ORDERING))
+ 		dma_direct_ops.unmap_sg(dev, sg, nents, direction, attrs);
+ 	else
+ 		ppc_iommu_unmap_sg(cell_get_iommu_table(dev), sg, nents,
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
+index 7b1788e2a808..4a28d6348c76 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
+@@ -273,7 +273,7 @@ void *rockchip_gem_prime_vmap(struct drm_gem_object *obj)
+ {
+ 	struct rockchip_gem_object *rk_obj = to_rockchip_obj(obj);
+ 
+-	if (dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, rk_obj->dma_attrs))
++	if (rk_obj->dma_attrs & DMA_ATTR_NO_KERNEL_MAPPING)
+ 		return NULL;
+ 
+ 	return rk_obj->kvaddr;
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 6c1bda504fb1..08a1e2f3690f 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -306,7 +306,7 @@ struct page **iommu_dma_alloc(struct device *dev, size_t size, gfp_t gfp,
+ 	} else {
+ 		size = ALIGN(size, min_size);
+ 	}
+-	if (dma_get_attr(DMA_ATTR_ALLOC_SINGLE_PAGES, attrs))
++	if (attrs & DMA_ATTR_ALLOC_SINGLE_PAGES)
+ 		alloc_sizes = min_size;
+ 
+ 	count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+diff --git a/drivers/media/v4l2-core/videobuf2-dma-contig.c b/drivers/media/v4l2-core/videobuf2-dma-contig.c
+index 8009a582326b..d2ab541614b8 100644
+--- a/drivers/media/v4l2-core/videobuf2-dma-contig.c
++++ b/drivers/media/v4l2-core/videobuf2-dma-contig.c
+@@ -160,7 +160,7 @@ static void *vb2_dc_alloc(void *alloc_ctx, unsigned long size,
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	if (!dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, buf->attrs))
++	if ((buf->attrs & DMA_ATTR_NO_KERNEL_MAPPING) == 0)
+ 		buf->vaddr = buf->cookie;
+ 
+ 	/* Prevent the device from being released while the buffer is used */
 diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 6d013ba94213..f349df4cb009 100644
+index b752b9ccec78..6d013ba94213 100644
 --- a/include/linux/dma-mapping.h
 +++ b/include/linux/dma-mapping.h
-@@ -14,14 +14,47 @@
- /**
-  * List of possible attributes associated with a DMA mapping. The semantics
-  * of each attribute should be defined in Documentation/DMA-attributes.txt.
-+ *
-+ * DMA_ATTR_WRITE_BARRIER: DMA to a memory region with this attribute
-+ * forces all pending DMA writes to complete.
-  */
- #define DMA_ATTR_WRITE_BARRIER		(1UL << 1)
-+/*
-+ * DMA_ATTR_WEAK_ORDERING: Specifies that reads and writes to the mapping
-+ * may be weakly ordered, that is that reads and writes may pass each other.
-+ */
- #define DMA_ATTR_WEAK_ORDERING		(1UL << 2)
-+/*
-+ * DMA_ATTR_WRITE_COMBINE: Specifies that writes to the mapping may be
-+ * buffered to improve performance.
-+ */
- #define DMA_ATTR_WRITE_COMBINE		(1UL << 3)
-+/*
-+ * DMA_ATTR_NON_CONSISTENT: Lets the platform to choose to return either
-+ * consistent or non-consistent memory as it sees fit.
-+ */
- #define DMA_ATTR_NON_CONSISTENT		(1UL << 4)
-+/*
-+ * DMA_ATTR_NO_KERNEL_MAPPING: Lets the platform to avoid creating a kernel
-+ * virtual mapping for the allocated buffer.
-+ */
- #define DMA_ATTR_NO_KERNEL_MAPPING	(1UL << 5)
-+/*
-+ * DMA_ATTR_SKIP_CPU_SYNC: Allows platform code to skip synchronization of
-+ * the CPU cache for the given buffer assuming that it has been already
-+ * transferred to 'device' domain.
-+ */
- #define DMA_ATTR_SKIP_CPU_SYNC		(1UL << 6)
-+/*
-+ * DMA_ATTR_FORCE_CONTIGUOUS: Forces contiguous allocation of the buffer
-+ * in physical memory.
-+ */
- #define DMA_ATTR_FORCE_CONTIGUOUS	(1UL << 7)
-+/*
-+ * DMA_ATTR_ALLOC_SINGLE_PAGES: This is a hint to the DMA-mapping subsystem
-+ * that it's probably not worth the time to try to allocate memory to in a way
-+ * that gives better TLB efficiency.
-+ */
- #define DMA_ATTR_ALLOC_SINGLE_PAGES	(1UL << 8)
+@@ -101,19 +101,6 @@ static inline int is_device_dma_capable(struct device *dev)
+ 	return dev->dma_mask != NULL && *dev->dma_mask != DMA_MASK_NONE;
+ }
  
+-/**
+- * dma_get_attr - check for a specific attribute
+- * @attr: attribute to look for
+- * @attrs: attributes to check within
+- *
+- * Unlike all other dma-mapping functions, this one gets pointer to
+- * attributes (for old-code compatiblity reasons).
+- */
+-static inline bool dma_get_attr(unsigned long attr, unsigned long attrs)
+-{
+-	return !!(attr & attrs);
+-}
+-
+ #ifdef CONFIG_HAVE_GENERIC_DMA_COHERENT
  /*
+  * These three functions are only for dma allocator.
 -- 
 1.9.1

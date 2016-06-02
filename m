@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:54:52 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:55:08 +0200 (CEST)
 Received: from mailout1.w1.samsung.com ([210.118.77.11]:49699 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041805AbcFBPmppOx02 (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27041806AbcFBPmp5zfu2 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:45 +0200
-Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
  by mailout1.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500NZMIB10I00@mailout1.w1.samsung.com>; Thu,
- 02 Jun 2016 16:42:37 +0100 (BST)
-X-AuditID: cbfec7f4-f796c6d000001486-2c-575053edd99d
+ with ESMTP id <0O8500M0FIB79W10@mailout1.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:42:44 +0100 (BST)
+X-AuditID: cbfec7f5-f792a6d000001302-a5-575053f3a839
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id A5.AA.05254.DE350575; Thu,
- 2 Jun 2016 16:42:37 +0100 (BST)
+        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 81.6C.04866.3F350575; Thu,
+ 2 Jun 2016 16:42:43 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:42:37 +0100 (BST)
+ 02 Jun 2016 16:42:43 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,34 +89,35 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 43/45] xtensa: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:45 +0200
-Message-id: <1464881987-13203-44-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 45/45] dma-mapping: Document the DMA attributes right in
+ declaration
+Date:   Thu, 02 Jun 2016 17:39:47 +0200
+Message-id: <1464881987-13203-46-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzVSe0xTZxTfd7/7olnnTZHxxSVL7B7JTIZjY+7ojNlCsl03lhE1lhCz2ckN
-        GAFZCyjL/qgwQBHYla7gALuilYcCpZAlYtY13LHWx3A2mDKZHaa8ZGBbCe5BAVcg++/8Xvmd
-        nBweawLMJv5wfqFkyNfnalkVfXPFO/zqw73putdGZ+LhVH+UA2+PiYWaW9cpaHZ0srBc5+HA
-        edbBQKS0HIO9NAd8DeU0hFurEbS1fwRj878jCJVGaVh5OIfhzuMwC2c6zBhOdwc5qKh/F5qn
-        hxBMjboosM/sgoHf/uLgpnyegnpnIvzzuCwWvOHEYHO/DSHrAwxj3ZcYmFYaMTTffR2Wvo1Q
-        cKqph4PZB8nQemESwaR8j4VQYBBBoztAQ++4n4Ez7iEOBptkCtovd2NoqbDTcK02wkD4qyss
-        RE6GGBi+2sxC20QXhuqe72OwzLe6VSUNsqWOgyb71zQEb9ymYMjqZWFKqaFh/v4TDHJLGYaz
-        v/4Yu8fSNxjK73VR0DHUxYFicSGI/r3CvJMpTgxYKbHcJbNip7UTicN+Hxaji3VIHOlOF2fN
-        coyqraHEgaDCiudnTLTY3xjgxMijT0Rbb5HYZPEjsbr/FyT2tW9J35ap2pkl5R4ulgxbdx1U
-        5ThbZLrAEn/ca16gTKh2QxWK44mQQhZ9U8z6/Cy5/YeDrUIqXiNcROTid4NoHZygyN3lSmrV
-        xQpvkL42+5pro+AkxDTuw6sCFr4kM97FWILn44U04hzRr9K08BKR/1TWsmpBJEuPbtHrbc+T
-        6x7zWnNcjLc7OtZ4jfA+8ZX1MTJS29BTl1CCVHSowPhZdl5yklGfZyzKz046dDSvF60/3cIV
-        dMGzQ0ECj7RPq9tf+VinYfTFxpI8BREeazeqC/ek6zTqLH3JF5Lh6KeGolzJqKDneFqbqD53
-        NbxPI2TrC6UjklQgGf5XKT5ukwm16ho3jDNzKV3PZLxn/oHUn5g+nrY57cNROvPJi8SvSQhV
-        Lft3vzkZzPp8InX7ZZtO3k9n/3zy9HTSywdU++b2Hmnz/JuAzwXvKFNywwcNKbbOA86SFxId
-        4YyVSuvObWPHMlKLZyddWZbNP817AspbiftTr7ncu6WRioU9oSgLbi1tzNEnb8EGo/4/i3zJ
-        FXADAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTGee97PwpZzc1Vx40uuDQxJm5zfueom9kWM95EDUSXNCHZtMoV
+        DBRrLzVqjOlAdLrCKlgVSprKWr5WCgXNBIOVxtAh1NFB8IMPERUkMOhg3SY4WAvZf7/znOfJ
+        OTk5CiwMMCsUR7OyJX2WJlPFxtHtc/6uj6b3J6vX/9m0Ci42znLgrzOykP+wjYLSWhcL/xa2
+        cuC5XstAKCcPgyMnHYLX8miYLDchqKjcC8+mehFM5MzSMPf7OIbu8CQLl6uKMHzvHuLg/NXP
+        oXQkgGD4aTMFjtGd0PL4Lw7azWUUXPXEwz/h3EjwgQeD3bsDJmyvMTxzVzMw4ivBUPpkI7wt
+        DlFw0VrHwdjrDVD+4ysEr8x9LEz030dQ4u2nof5FDwOXvQEO7lvNFFT+5MZw47yDhl8KQgxM
+        nrvNQui7CQa6mkpZqHhZg8FUdytS5gajW12gwWwp5MDq+IGGoQedFARsfhaGffk0TA3OYzDf
+        yMVw/de7kXu8vYIhr6+GgqpADQc+SzOC2b/nmM9SyMsWG0Xyms0scdlciHT1BDGZnSlE5JE7
+        mYwVmSNSQT5FWoZ8LCkbNdKksaSfI6E/viH2egOxWnoQMTV2INJQuTZ5a0rcJ6lS5tETkv7j
+        nQfj0nutIVp3TTh5bmacMqI3Sy6hWIXIbxary/vZRX5X7ByojXCcQuCdSHS1d9OLxbeUWDjs
+        oaIult8kNlQ4FlzLeI8oGl8EcbSB+TPiqH8GRXkprxaLO6oWAjS/WgzYvQu6kidi78wgXhyX
+        ILa1FjFRjo3ojtoqOsoCnygGcxsYM1LaUUw1Wi4ZDuvkQ2najetkjVY2ZKWtO3xMW48Wvy58
+        Gzlbt/sQr0Cqd5QxHyapBUZzQj6l9SFRgVXLlNn7ktWCMlVz6rSkP3ZAb8iUZB9aqaBV8cri
+        psmvBD5Nky1lSJJO0v/fpRSxK4xoTcbq5bqCcYvTdiCnq8yQFTi+5NB8grqgU2i6t8V0RB7o
+        aU61PXrvZNj3gSdct3ubzvmpNqZtrM//fNB/xd3NZOzlhDcpxbvcZdWNF+xfJmzJiJdcqUFy
+        6X2rZTrxN33f9Kak+akvkpyZe46sTPDeHFHvma44q6Y7En/++o5JHlDRcrpmw1qslzX/Aa6F
+        gFlxAwAA
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53767
+X-archive-position: 53768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -133,70 +134,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Split out subsystem specific changes for easier reviews. This will be
-squashed with main commit.
+Copy documentation abstract about each DMA attribute from
+Documentation/DMA-attributes.txt to the place with declaration.
 
+Suggested-by: Christoph Hellwig <hch@infradead.org>
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- arch/xtensa/kernel/pci-dma.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/dma-mapping.h | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/arch/xtensa/kernel/pci-dma.c b/arch/xtensa/kernel/pci-dma.c
-index cd66698348ca..1e68806d6695 100644
---- a/arch/xtensa/kernel/pci-dma.c
-+++ b/arch/xtensa/kernel/pci-dma.c
-@@ -142,7 +142,7 @@ static void xtensa_sync_sg_for_device(struct device *dev,
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 6d013ba94213..f349df4cb009 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -14,14 +14,47 @@
+ /**
+  * List of possible attributes associated with a DMA mapping. The semantics
+  * of each attribute should be defined in Documentation/DMA-attributes.txt.
++ *
++ * DMA_ATTR_WRITE_BARRIER: DMA to a memory region with this attribute
++ * forces all pending DMA writes to complete.
+  */
+ #define DMA_ATTR_WRITE_BARRIER		(1UL << 1)
++/*
++ * DMA_ATTR_WEAK_ORDERING: Specifies that reads and writes to the mapping
++ * may be weakly ordered, that is that reads and writes may pass each other.
++ */
+ #define DMA_ATTR_WEAK_ORDERING		(1UL << 2)
++/*
++ * DMA_ATTR_WRITE_COMBINE: Specifies that writes to the mapping may be
++ * buffered to improve performance.
++ */
+ #define DMA_ATTR_WRITE_COMBINE		(1UL << 3)
++/*
++ * DMA_ATTR_NON_CONSISTENT: Lets the platform to choose to return either
++ * consistent or non-consistent memory as it sees fit.
++ */
+ #define DMA_ATTR_NON_CONSISTENT		(1UL << 4)
++/*
++ * DMA_ATTR_NO_KERNEL_MAPPING: Lets the platform to avoid creating a kernel
++ * virtual mapping for the allocated buffer.
++ */
+ #define DMA_ATTR_NO_KERNEL_MAPPING	(1UL << 5)
++/*
++ * DMA_ATTR_SKIP_CPU_SYNC: Allows platform code to skip synchronization of
++ * the CPU cache for the given buffer assuming that it has been already
++ * transferred to 'device' domain.
++ */
+ #define DMA_ATTR_SKIP_CPU_SYNC		(1UL << 6)
++/*
++ * DMA_ATTR_FORCE_CONTIGUOUS: Forces contiguous allocation of the buffer
++ * in physical memory.
++ */
+ #define DMA_ATTR_FORCE_CONTIGUOUS	(1UL << 7)
++/*
++ * DMA_ATTR_ALLOC_SINGLE_PAGES: This is a hint to the DMA-mapping subsystem
++ * that it's probably not worth the time to try to allocate memory to in a way
++ * that gives better TLB efficiency.
++ */
+ #define DMA_ATTR_ALLOC_SINGLE_PAGES	(1UL << 8)
  
- static void *xtensa_dma_alloc(struct device *dev, size_t size,
- 			      dma_addr_t *handle, gfp_t flag,
--			      struct dma_attrs *attrs)
-+			      unsigned long attrs)
- {
- 	unsigned long ret;
- 	unsigned long uncached = 0;
-@@ -171,7 +171,7 @@ static void *xtensa_dma_alloc(struct device *dev, size_t size,
- }
- 
- static void xtensa_dma_free(struct device *hwdev, size_t size, void *vaddr,
--			    dma_addr_t dma_handle, struct dma_attrs *attrs)
-+			    dma_addr_t dma_handle, unsigned long attrs)
- {
- 	unsigned long addr = (unsigned long)vaddr +
- 		XCHAL_KSEG_CACHED_VADDR - XCHAL_KSEG_BYPASS_VADDR;
-@@ -185,7 +185,7 @@ static void xtensa_dma_free(struct device *hwdev, size_t size, void *vaddr,
- static dma_addr_t xtensa_map_page(struct device *dev, struct page *page,
- 				  unsigned long offset, size_t size,
- 				  enum dma_data_direction dir,
--				  struct dma_attrs *attrs)
-+				  unsigned long attrs)
- {
- 	dma_addr_t dma_handle = page_to_phys(page) + offset;
- 
-@@ -195,14 +195,14 @@ static dma_addr_t xtensa_map_page(struct device *dev, struct page *page,
- 
- static void xtensa_unmap_page(struct device *dev, dma_addr_t dma_handle,
- 			      size_t size, enum dma_data_direction dir,
--			      struct dma_attrs *attrs)
-+			      unsigned long attrs)
- {
- 	xtensa_sync_single_for_cpu(dev, dma_handle, size, dir);
- }
- 
- static int xtensa_map_sg(struct device *dev, struct scatterlist *sg,
- 			 int nents, enum dma_data_direction dir,
--			 struct dma_attrs *attrs)
-+			 unsigned long attrs)
- {
- 	struct scatterlist *s;
- 	int i;
-@@ -217,7 +217,7 @@ static int xtensa_map_sg(struct device *dev, struct scatterlist *sg,
- static void xtensa_unmap_sg(struct device *dev,
- 			    struct scatterlist *sg, int nents,
- 			    enum dma_data_direction dir,
--			    struct dma_attrs *attrs)
-+			    unsigned long attrs)
- {
- 	struct scatterlist *s;
- 	int i;
+ /*
 -- 
 1.9.1

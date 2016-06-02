@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:49:53 +0200 (CEST)
-Received: from mailout3.w1.samsung.com ([210.118.77.13]:18491 "EHLO
-        mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041757AbcFBPlzSSi02 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:41:55 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:50:16 +0200 (CEST)
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:49478 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041760AbcFBPmAWo4w2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:00 +0200
 Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
- by mailout3.w1.samsung.com
+ by mailout1.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500AFFI9RVM10@mailout3.w1.samsung.com>; Thu,
- 02 Jun 2016 16:41:52 +0100 (BST)
-X-AuditID: cbfec7f4-f796c6d000001486-9e-575053bf0956
+ with ESMTP id <0O8500NZ0I9U0I00@mailout1.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:41:54 +0100 (BST)
+X-AuditID: cbfec7f4-f796c6d000001486-ab-575053c2f3a6
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id B1.6A.05254.FB350575; Thu,
- 2 Jun 2016 16:41:51 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 49.6A.05254.2C350575; Thu,
+ 2 Jun 2016 16:41:54 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:41:51 +0100 (BST)
+ 02 Jun 2016 16:41:54 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,34 +89,33 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 28/45] ia64: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:30 +0200
-Message-id: <1464881987-13203-29-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 29/45] m68k: dma-mapping: Use unsigned long for dma_attrs
+Date:   Thu, 02 Jun 2016 17:39:31 +0200
+Message-id: <1464881987-13203-30-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzVSe0xTZxT3u999gety06F+U2dM4xZnMhQ05sQZ3Cvxbslm45aQEIPr9IYS
-        oWJLiY/9UWDgRMBLGaIUEaEICLQUMgWXrnIxdOpQmm4gCmJAVKYrhQxGANla2P77vc4jJ4fH
-        6kfMaj7ZkC4ZDboUDRtJ31nw+t/zfKmN39Jn4+FU+xwH3mYLCwV3b1FQ7mxk4ZW1iwPXOScD
-        wawcDPYsPfhKc2gYv5yPoLbucxiafIggkDVHw8KfLzH8NjXOQlF9MYbTjmEOcs9+COXPuhE8
-        feCmwD4WBx33pzm4I1dRcNa1CmamskOFt10YKj3vQ6DiOYYhxxUGnillGMr7Y2H+fJCCU7Zm
-        Dl48j4HL1aMIRuUBFgKDNxGUeQZpaBnpZaDI083BTZtMQV2DA8OlXDsNvxQGGRj/ro2F4PcB
-        BvzXy1mofdKEIb/5xxDN9oW3OkmDXGLlwGY/Q8Pw7R4Kuiu8LDxVCmiYfPwPBvlSNoZz934O
-        3WP+Bww5A00U1Hc3caCUuBHM/b3AfJAgPumooMQct8yKjRWNSPT3+rA4N2tFYp9DK74olkNS
-        YQEldgwrrFg1ZqHF9rJBTgxOJIqVLWbRVtKLxPz2X5HYWrdJuz0hcudBKSU5QzJujvs6Uv9H
-        n8KmVe86etUfoCyoKzYPRfBE2EbOX+3nlvBK0vPIyeahSF4t1CBSs1DwH8mkyEzbT0w4xQpb
-        SWutfdGIElyEWEZ8OGxg4Vsy5p1FYfyG8Blp67ewYUwLbxOrO28xoxJE4sntxEvj1pFbXcWL
-        TSNCut1ZT4exWthNfNmtjIxUlWjZFbRCMh9IM32TlBoTbdKlmsyGpOgDh1Nb0NLX/dWGqrt2
-        KEjgkeY1Vd27e+LVjC7DdCxVQYTHmihV+l5tvFp1UHfsuGQ8vN9oTpFMClrD05pVqgvXx79S
-        C0m6dOmQJKVJxv9dio9YbUGl7tl9WRu++LjPulbx9y4rTq9Jcn1yZM2bhoYTUWeIsXSo9dpb
-        K6Mn9id+dHGnzFzcy01l5mlGE47k35jcve71WKzXN1id6x9c6/Fu3PUycQuZX6t9p6WKnByJ
-        E4JFCa7l3OnOVw706fKmE9MZyb9PHtrWMbB5+l5m58yEGRWu32HQ0Ca9LmYTNpp0/wLBhlF4
-        cQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzVSW0xTdxjf//zPjc7CSUU96sJDMx9w3tiM+abGjGSJxyVmzTQhUbNZ4aQY
+        KZIWjJo91GLxBnik4LScMcRqi4MCJRpQEVsJVWonHYpuCCqCWMS24tgFHLOF7O13+y758rFY
+        1U8tYnfn5ouGXG2OmlaQ/mlfz3LvFk3GKmtdIhxrnWLA12iioeSXOwTIDXU0/FvWyUDTmQYK
+        omYLBrs5G4I/WEiIXCxG4HBuhifjfQjC5ikSpl+PYbg/EaHhVK0VwwnXIANFp9NBHgkgePF7
+        GwH20AbwPPqTAb9UQ8DppgXw90RhrLCrCUN1+zoIV73E8MR1iYIRrw2D/Nun8O5slIBjlY0M
+        vHqZBhfPDyMYlh7TEO7vQGBr7yfB/byXglPtAQY6KiUCnD+7MJwrspNwuzRKQeRwCw3Ro2EK
+        eq7KNDiG6jEUN16O0cJgfKsjJEgVZQxU2k+SMNjVTUCgykfDC28JCeNP/8MgnSvEcObejdg9
+        3pVjsDyuJ6A2UM+At6INwdRf09QX24QhTxUhWNokWqirqkNCT28QC1OTZUh46NIIr6xSTCot
+        IQTPoJcWakImUmi19TNC9M23QrW7QKis6EVCcetdJDQ7l2rWbFOszxJzdu8TDSs37FRk3yoK
+        kHk/zd0fiLRhEwonHUcJLM+t5iVrLZrF8/nugQb6OFKwKu4C4o86QsQsOUTwLf5hHE/R3Gd8
+        s8M+k0rmmnje9Dw4Y2Duez7km5xpNZf7irf0SjHMsiS3hPdc3x+XlZzAD10bJ2anpfB3Oq1U
+        HCfEdHtDLRnHKm4jHyxspiSkrEYfXELzxILMPOMunT5thVGrNxbk6lZk7tW70ezT/dGCzneu
+        9SKOReo5Smfq1xkqSrvPeEDvRTyL1cnK/G80GSpllvbAQdGw9ztDQY5o9KLFLKleoPzxamSr
+        itNp88U9opgnGv53CTZhkQmp5aJwRGv+0ploetv5ifxMEZZHduLE8qDsKc3M2p7+a/GSktGP
+        l9mSLgzIffp1C8c897u2TLp9rqePNH53B7EpXHMvdYzXDSxrTFKNXh4e0aWaAykHr9j6uieu
+        QYrlmT50qFR2nnDocxz/lPvG0ze+fTD6edImf/LNj3YkHv5QTRqztWlLscGofQ9t6rnWcAMA        AA==
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53752
+X-archive-position: 53753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -138,200 +137,66 @@ squashed with main commit.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- arch/ia64/hp/common/sba_iommu.c | 22 +++++++++++-----------
- arch/ia64/include/asm/machvec.h |  1 -
- arch/ia64/kernel/pci-swiotlb.c  |  4 ++--
- arch/ia64/sn/pci/pci_dma.c      | 12 ++++++------
- 4 files changed, 19 insertions(+), 20 deletions(-)
+ arch/m68k/kernel/dma.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
-index a6d6190c9d24..630ee8073899 100644
---- a/arch/ia64/hp/common/sba_iommu.c
-+++ b/arch/ia64/hp/common/sba_iommu.c
-@@ -919,7 +919,7 @@ sba_mark_invalid(struct ioc *ioc, dma_addr_t iova, size_t byte_cnt)
- static dma_addr_t sba_map_page(struct device *dev, struct page *page,
- 			       unsigned long poff, size_t size,
- 			       enum dma_data_direction dir,
--			       struct dma_attrs *attrs)
-+			       unsigned long attrs)
- {
- 	struct ioc *ioc;
- 	void *addr = page_address(page) + poff;
-@@ -1005,7 +1005,7 @@ static dma_addr_t sba_map_page(struct device *dev, struct page *page,
+diff --git a/arch/m68k/kernel/dma.c b/arch/m68k/kernel/dma.c
+index cbc78b4117b5..8cf97cbadc91 100644
+--- a/arch/m68k/kernel/dma.c
++++ b/arch/m68k/kernel/dma.c
+@@ -19,7 +19,7 @@
+ #if defined(CONFIG_MMU) && !defined(CONFIG_COLDFIRE)
  
- static dma_addr_t sba_map_single_attrs(struct device *dev, void *addr,
- 				       size_t size, enum dma_data_direction dir,
--				       struct dma_attrs *attrs)
-+				       unsigned long attrs)
+ static void *m68k_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+-		gfp_t flag, struct dma_attrs *attrs)
++		gfp_t flag, unsigned long attrs)
  {
- 	return sba_map_page(dev, virt_to_page(addr),
- 			    (unsigned long)addr & ~PAGE_MASK, size, dir, attrs);
-@@ -1046,7 +1046,7 @@ sba_mark_clean(struct ioc *ioc, dma_addr_t iova, size_t size)
-  * See Documentation/DMA-API-HOWTO.txt
-  */
- static void sba_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
--			   enum dma_data_direction dir, struct dma_attrs *attrs)
-+			   enum dma_data_direction dir, unsigned long attrs)
- {
- 	struct ioc *ioc;
- #if DELAYED_RESOURCE_CNT > 0
-@@ -1115,7 +1115,7 @@ static void sba_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
+ 	struct page *page, **map;
+ 	pgprot_t pgprot;
+@@ -62,7 +62,7 @@ static void *m68k_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
  }
  
- void sba_unmap_single_attrs(struct device *dev, dma_addr_t iova, size_t size,
--			    enum dma_data_direction dir, struct dma_attrs *attrs)
-+			    enum dma_data_direction dir, unsigned long attrs)
+ static void m68k_dma_free(struct device *dev, size_t size, void *addr,
+-		dma_addr_t handle, struct dma_attrs *attrs)
++		dma_addr_t handle, unsigned long attrs)
  {
- 	sba_unmap_page(dev, iova, size, dir, attrs);
- }
-@@ -1130,7 +1130,7 @@ void sba_unmap_single_attrs(struct device *dev, dma_addr_t iova, size_t size,
-  */
- static void *
- sba_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_handle,
--		   gfp_t flags, struct dma_attrs *attrs)
-+		   gfp_t flags, unsigned long attrs)
- {
- 	struct ioc *ioc;
- 	void *addr;
-@@ -1175,7 +1175,7 @@ sba_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	 * device to map single to get an iova mapping.
- 	 */
- 	*dma_handle = sba_map_single_attrs(&ioc->sac_only_dev->dev, addr,
--					   size, 0, NULL);
-+					   size, 0, 0);
+ 	pr_debug("dma_free_coherent: %p, %x\n", addr, handle);
+ 	vfree(addr);
+@@ -73,7 +73,7 @@ static void m68k_dma_free(struct device *dev, size_t size, void *addr,
+ #include <asm/cacheflush.h>
  
- 	return addr;
- }
-@@ -1191,9 +1191,9 @@ sba_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_handle,
-  * See Documentation/DMA-API-HOWTO.txt
-  */
- static void sba_free_coherent(struct device *dev, size_t size, void *vaddr,
--			      dma_addr_t dma_handle, struct dma_attrs *attrs)
-+			      dma_addr_t dma_handle, unsigned long attrs)
+ static void *m68k_dma_alloc(struct device *dev, size_t size,
+-		dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
++		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
  {
--	sba_unmap_single_attrs(dev, dma_handle, size, 0, NULL);
-+	sba_unmap_single_attrs(dev, dma_handle, size, 0, 0);
- 	free_pages((unsigned long) vaddr, get_order(size));
+ 	void *ret;
+ 	/* ignore region specifiers */
+@@ -91,7 +91,7 @@ static void *m68k_dma_alloc(struct device *dev, size_t size,
  }
  
-@@ -1442,7 +1442,7 @@ sba_coalesce_chunks(struct ioc *ioc, struct device *dev,
- 
- static void sba_unmap_sg_attrs(struct device *dev, struct scatterlist *sglist,
- 			       int nents, enum dma_data_direction dir,
--			       struct dma_attrs *attrs);
-+			       unsigned long attrs);
- /**
-  * sba_map_sg - map Scatter/Gather list
-  * @dev: instance of PCI owned by the driver that's asking.
-@@ -1455,7 +1455,7 @@ static void sba_unmap_sg_attrs(struct device *dev, struct scatterlist *sglist,
-  */
- static int sba_map_sg_attrs(struct device *dev, struct scatterlist *sglist,
- 			    int nents, enum dma_data_direction dir,
--			    struct dma_attrs *attrs)
-+			    unsigned long attrs)
+ static void m68k_dma_free(struct device *dev, size_t size, void *vaddr,
+-		dma_addr_t dma_handle, struct dma_attrs *attrs)
++		dma_addr_t dma_handle, unsigned long attrs)
  {
- 	struct ioc *ioc;
- 	int coalesced, filled = 0;
-@@ -1551,7 +1551,7 @@ static int sba_map_sg_attrs(struct device *dev, struct scatterlist *sglist,
-  */
- static void sba_unmap_sg_attrs(struct device *dev, struct scatterlist *sglist,
- 			       int nents, enum dma_data_direction dir,
--			       struct dma_attrs *attrs)
-+			       unsigned long attrs)
- {
- #ifdef ASSERT_PDIR_SANITY
- 	struct ioc *ioc;
-diff --git a/arch/ia64/include/asm/machvec.h b/arch/ia64/include/asm/machvec.h
-index 9c39bdfc2da8..ed7f09089f12 100644
---- a/arch/ia64/include/asm/machvec.h
-+++ b/arch/ia64/include/asm/machvec.h
-@@ -22,7 +22,6 @@ struct pci_bus;
- struct task_struct;
- struct pci_dev;
- struct msi_desc;
--struct dma_attrs;
- 
- typedef void ia64_mv_setup_t (char **);
- typedef void ia64_mv_cpu_init_t (void);
-diff --git a/arch/ia64/kernel/pci-swiotlb.c b/arch/ia64/kernel/pci-swiotlb.c
-index 939260aeac98..2933208c0285 100644
---- a/arch/ia64/kernel/pci-swiotlb.c
-+++ b/arch/ia64/kernel/pci-swiotlb.c
-@@ -16,7 +16,7 @@ EXPORT_SYMBOL(swiotlb);
- 
- static void *ia64_swiotlb_alloc_coherent(struct device *dev, size_t size,
- 					 dma_addr_t *dma_handle, gfp_t gfp,
--					 struct dma_attrs *attrs)
-+					 unsigned long attrs)
- {
- 	if (dev->coherent_dma_mask != DMA_BIT_MASK(64))
- 		gfp |= GFP_DMA;
-@@ -25,7 +25,7 @@ static void *ia64_swiotlb_alloc_coherent(struct device *dev, size_t size,
- 
- static void ia64_swiotlb_free_coherent(struct device *dev, size_t size,
- 				       void *vaddr, dma_addr_t dma_addr,
--				       struct dma_attrs *attrs)
-+				       unsigned long attrs)
- {
- 	swiotlb_free_coherent(dev, size, vaddr, dma_addr);
+ 	free_pages((unsigned long)vaddr, get_order(size));
  }
-diff --git a/arch/ia64/sn/pci/pci_dma.c b/arch/ia64/sn/pci/pci_dma.c
-index 8f59907007cb..6b78fc953c4b 100644
---- a/arch/ia64/sn/pci/pci_dma.c
-+++ b/arch/ia64/sn/pci/pci_dma.c
-@@ -77,7 +77,7 @@ EXPORT_SYMBOL(sn_dma_set_mask);
-  */
- static void *sn_dma_alloc_coherent(struct device *dev, size_t size,
- 				   dma_addr_t * dma_handle, gfp_t flags,
--				   struct dma_attrs *attrs)
-+				   unsigned long attrs)
+@@ -130,7 +130,7 @@ static void m68k_dma_sync_sg_for_device(struct device *dev,
+ 
+ static dma_addr_t m68k_dma_map_page(struct device *dev, struct page *page,
+ 		unsigned long offset, size_t size, enum dma_data_direction dir,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
  {
- 	void *cpuaddr;
- 	unsigned long phys_addr;
-@@ -138,7 +138,7 @@ static void *sn_dma_alloc_coherent(struct device *dev, size_t size,
-  * any associated IOMMU mappings.
-  */
- static void sn_dma_free_coherent(struct device *dev, size_t size, void *cpu_addr,
--				 dma_addr_t dma_handle, struct dma_attrs *attrs)
-+				 dma_addr_t dma_handle, unsigned long attrs)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct sn_pcibus_provider *provider = SN_PCIDEV_BUSPROVIDER(pdev);
-@@ -176,7 +176,7 @@ static void sn_dma_free_coherent(struct device *dev, size_t size, void *cpu_addr
- static dma_addr_t sn_dma_map_page(struct device *dev, struct page *page,
- 				  unsigned long offset, size_t size,
- 				  enum dma_data_direction dir,
--				  struct dma_attrs *attrs)
-+				  unsigned long attrs)
- {
- 	void *cpu_addr = page_address(page) + offset;
- 	dma_addr_t dma_addr;
-@@ -218,7 +218,7 @@ static dma_addr_t sn_dma_map_page(struct device *dev, struct page *page,
-  */
- static void sn_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
- 			      size_t size, enum dma_data_direction dir,
--			      struct dma_attrs *attrs)
-+			      unsigned long attrs)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct sn_pcibus_provider *provider = SN_PCIDEV_BUSPROVIDER(pdev);
-@@ -240,7 +240,7 @@ static void sn_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
-  */
- static void sn_dma_unmap_sg(struct device *dev, struct scatterlist *sgl,
- 			    int nhwentries, enum dma_data_direction dir,
--			    struct dma_attrs *attrs)
-+			    unsigned long attrs)
+ 	dma_addr_t handle = page_to_phys(page) + offset;
+ 
+@@ -139,7 +139,7 @@ static dma_addr_t m68k_dma_map_page(struct device *dev, struct page *page,
+ }
+ 
+ static int m68k_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+-		int nents, enum dma_data_direction dir, struct dma_attrs *attrs)
++		int nents, enum dma_data_direction dir, unsigned long attrs)
  {
  	int i;
- 	struct pci_dev *pdev = to_pci_dev(dev);
-@@ -273,7 +273,7 @@ static void sn_dma_unmap_sg(struct device *dev, struct scatterlist *sgl,
-  */
- static int sn_dma_map_sg(struct device *dev, struct scatterlist *sgl,
- 			 int nhwentries, enum dma_data_direction dir,
--			 struct dma_attrs *attrs)
-+			 unsigned long attrs)
- {
- 	unsigned long phys_addr;
- 	struct scatterlist *saved_sg = sgl, *sg;
+ 	struct scatterlist *sg;
 -- 
 1.9.1

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:52:16 +0200 (CEST)
-Received: from mailout4.w1.samsung.com ([210.118.77.14]:16090 "EHLO
-        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041783AbcFBPmTZ0of2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:19 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout4.w1.samsung.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 17:52:33 +0200 (CEST)
+Received: from mailout3.w1.samsung.com ([210.118.77.13]:18634 "EHLO
+        mailout3.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041798AbcFBPmWZnjy2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 17:42:22 +0200
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout3.w1.samsung.com
  (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O8500AKJIADB610@mailout4.w1.samsung.com>; Thu,
- 02 Jun 2016 16:42:13 +0100 (BST)
-X-AuditID: cbfec7f5-f792a6d000001302-43-575053d4ea48
+ with ESMTP id <0O85005Y1IAF2K10@mailout3.w1.samsung.com>; Thu,
+ 02 Jun 2016 16:42:16 +0100 (BST)
+X-AuditID: cbfec7f4-f796c6d000001486-ed-575053d71e40
 Received: from eusync1.samsung.com ( [203.254.199.211])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 87.3C.04866.4D350575; Thu,
- 2 Jun 2016 16:42:12 +0100 (BST)
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 0E.8A.05254.7D350575; Thu,
+ 2 Jun 2016 16:42:15 +0100 (BST)
 Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
  by eusync1.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
  64bit (built May  5 2014))
  with ESMTPA id <0O85008BCI6FXK50@eusync1.samsung.com>; Thu,
- 02 Jun 2016 16:42:12 +0100 (BST)
+ 02 Jun 2016 16:42:15 +0100 (BST)
 From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
 To:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -89,34 +89,34 @@ To:     Richard Henderson <rth@twiddle.net>,
         linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     hch@infradead.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [RFC v3 35/45] openrisc: dma-mapping: Use unsigned long for dma_attrs
-Date:   Thu, 02 Jun 2016 17:39:37 +0200
-Message-id: <1464881987-13203-36-git-send-email-k.kozlowski@samsung.com>
+Subject: [RFC v3 36/45] parisc: dma-mapping: Use unsigned long for dma_attrs
+Date:   Thu, 02 Jun 2016 17:39:38 +0200
+Message-id: <1464881987-13203-37-git-send-email-k.kozlowski@samsung.com>
 X-Mailer: git-send-email 1.9.1
 In-reply-to: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
 References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzVSa0xTZxjmO993zindao4F9QyzLTZTE0TnLeaNLjizHzv7sUl0SuK9w0Mh
-        ApKWMl2M6ehgQ7kUEOUWUrEI1FIK1QXQyqgEpoxJV4OogMhNEYHOpMIswijEf8/tzfvkzSvB
-        8j46RBKbkCSqE5RxCkZK2mfb3Osf7I2I3Pjm97WQ3uBjoc2mYyDz77sUlNRYGHiX28pCbUEN
-        DZ6UVAymlBhwXUolMHk1A0FF5bfw9PUTBBMpPgKz468wPPBOMpBTlYfhvHWAhbSLu6DkeQeC
-        kccOCkyj4dDc/YaFdkMZBRdrV8C0Vz8/eK8Wg7FpB0yUvsDw1Gqm4bmzCEPJo80wU+ihIL3Y
-        xsLYi01w9cowgmFDDwMTvS0Iipp6CdQNdtGQ09TBQkuxgYLKa1YMl9NMBP7M8tAw+Us9A57f
-        JmhwN5YwUDFUjSHDdmOe6l3+Vr8SMOTnslBsyiYwcK+Tgo7SNgZGnJkEXvfPYTBc1mMouH97
-        /h4zFzCk9lRTUNVRzYIz34HANzVLf3lAGGoupYRUh4ERLKUWJLi7XFjwvc1FwkNrhDCWZ5iX
-        sjIpoXnAyQhlozoiNBT1soLn3yOCsU4rFOd3ISGj4S8k2CtDI7YdkH5xXIyLTRbVn4cfk8Z4
-        +v+jE1uXn5q6ZSQ61L30HAqU8NxWvjOvhyzi5XxnXw1zDkklcq4c8VVZfWSR/EzxZuN15E8x
-        3BbeXmFaSAVztTyvG3Rhv4G5M/xo29uFUBD3HZ9W4GD8mHCr+ezK9AVdxgm8yTnOLK77hL/b
-        mkf7caBfr6laqCHnvuZdejttQDIjCjCjZaI2KlHzgyp+8waNMl6jTVBtiDoZX4cWv85bj8pb
-        tzsRJ0GKD2UBYbsj5bQyWXM63ol4CVYEy5L2RETKZceVp38S1SePqrVxosaJVkqIYoWssHHy
-        ezmnUiaJJ0QxUVS/dylJYIgO3XnX7bN/qvvHmIiJ+uzh+h/Hppftj378DfEcWqMq25/ymWuu
-        vOiPKfLScmLVzo9zuK+WPFn7LOiDkL6gkTMbzw/qLxRqpWEH263u9HUy1UfTySuHsy22m7Kl
-        3tm5IHezOdfM3t/XOG7zXr8TsGbIfio81NHSnxPbObPTGr16e9PQIQXRxCg3hWK1Rvk/RQLY
-        hnEDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzVSe0xTZxT3u999wex2U1FvWGJiIyFzEWXT7WQPw7KZfUs06x4ZidvEWq5A
+        xiu94NRsS4UVJw+tVMTRrkOsUgRaoDERDBIaAqtapUEpUyqK8tKNdmwwJw/XQvzv9zr5nZwc
+        HisHmVg+IztP0mVrMlVsNH11oadvg/8zdfKm7pIEONI6y0FPk56FsuseCizOBhbmy7s5aD7l
+        ZCBUYMBgK0gHX6WBhuC5UgS19h0wNHUHwWTBLA0Lf/6B4eZ0kIXjdSYMJY5hDopOvgeWMS+C
+        0dvtFNgmtkLnwAwHV401FJxsXg1PpgvDg1eaMVR3vA2T1nEMQ47zDIy5qzBYfn8N5n4OUXDE
+        3MTB4/FEOHdmBMGIcZCFyUAXgqqOAA0tD/oZON7h5aDLbKTAXu/AcLrIRsNvR0MMBH+8yELo
+        p0kG+tosLNQ+bMRQ2nQhTAt9ka0O02CsKOfAbDtGw/CVXgq81h4WRt1lNEzde4bBeLoQw6kb
+        l8P3mDuBwTDYSEGdt5EDd0U7gtl/F5ikneRhp5UihnYjSxqsDYj09fswmX1ajojfoSaPTcaw
+        dLSMIp3DbpbUTOhp0loV4Ejor12kuiWfmCv6ESltvYaIy75e/cbO6HdSpcyMfZJu49bd0elt
+        li9yPe/vD01covTI9WYxiuJFYbN464SfWcKrxN67TrYYRfNK4SwS71UOUEvkECXemJujIilW
+        eF101doWUzFCsyjqH/hwxMDCd+JEz1NUjHh+hbBdHG19KSLTQpxYarq2GFEIRKz5rxctta0R
+        Pd2mxeaosG5z1tERrBQ+FH2FLsaIFNVo2Xm0UsrX5sp70rISE2RNlpyfnZagzclqQUs/989F
+        dKb7LTcSeKRarrC/8nGyktHskw9kuZHIY1WMIu9TdbJSkao5cFDS5aTo8jMl2Y1e5mnVasUv
+        bcHPlUKaJk/6RpJyJd1zl+KjYvXosGlAXvPDtzlfaY85ZkaSt9zdUGl1qs1Tf48H4wN3nqQv
+        399m/177wpeHklwhv/mTVHmt3K6d6nr2YrDCH5cyuDl+yzZ5XXylxvdq/fyqxIxH80WPvl67
+        N3fBmxpDLLuX3f6Auj9SP73uV5Xh3YNDYx+VRHWeTfBccssp92PjPEmBGRUtp2sS12OdrPkf
+        exw6iW8DAAA=
 Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53759
+X-archive-position: 53760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -138,89 +138,226 @@ squashed with main commit.
 
 Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 ---
- arch/openrisc/kernel/dma.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ arch/parisc/kernel/pci-dma.c | 16 ++++++++--------
+ drivers/parisc/ccio-dma.c    | 16 ++++++++--------
+ drivers/parisc/sba_iommu.c   | 16 ++++++++--------
+ 3 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/arch/openrisc/kernel/dma.c b/arch/openrisc/kernel/dma.c
-index 0b77ddb1ee07..50eb1f26c540 100644
---- a/arch/openrisc/kernel/dma.c
-+++ b/arch/openrisc/kernel/dma.c
-@@ -22,7 +22,6 @@
- #include <linux/dma-mapping.h>
- #include <linux/dma-debug.h>
- #include <linux/export.h>
--#include <linux/dma-attrs.h>
+diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
+index a27e4928bf73..845fdd52e4c5 100644
+--- a/arch/parisc/kernel/pci-dma.c
++++ b/arch/parisc/kernel/pci-dma.c
+@@ -414,7 +414,7 @@ pcxl_dma_init(void)
+ __initcall(pcxl_dma_init);
  
- #include <asm/cpuinfo.h>
- #include <asm/spr_defs.h>
-@@ -83,7 +82,7 @@ page_clear_nocache(pte_t *pte, unsigned long addr,
- static void *
- or1k_dma_alloc(struct device *dev, size_t size,
- 	       dma_addr_t *dma_handle, gfp_t gfp,
--	       struct dma_attrs *attrs)
-+	       unsigned long attrs)
+ static void *pa11_dma_alloc(struct device *dev, size_t size,
+-		dma_addr_t *dma_handle, gfp_t flag, struct dma_attrs *attrs)
++		dma_addr_t *dma_handle, gfp_t flag, unsigned long attrs)
  {
- 	unsigned long va;
- 	void *page;
-@@ -117,7 +116,7 @@ or1k_dma_alloc(struct device *dev, size_t size,
+ 	unsigned long vaddr;
+ 	unsigned long paddr;
+@@ -441,7 +441,7 @@ static void *pa11_dma_alloc(struct device *dev, size_t size,
+ }
  
- static void
- or1k_dma_free(struct device *dev, size_t size, void *vaddr,
--	      dma_addr_t dma_handle, struct dma_attrs *attrs)
-+	      dma_addr_t dma_handle, unsigned long attrs)
+ static void pa11_dma_free(struct device *dev, size_t size, void *vaddr,
+-		dma_addr_t dma_handle, struct dma_attrs *attrs)
++		dma_addr_t dma_handle, unsigned long attrs)
  {
- 	unsigned long va = (unsigned long)vaddr;
- 	struct mm_walk walk = {
-@@ -137,7 +136,7 @@ static dma_addr_t
- or1k_map_page(struct device *dev, struct page *page,
- 	      unsigned long offset, size_t size,
- 	      enum dma_data_direction dir,
--	      struct dma_attrs *attrs)
-+	      unsigned long attrs)
+ 	int order;
+ 
+@@ -454,7 +454,7 @@ static void pa11_dma_free(struct device *dev, size_t size, void *vaddr,
+ 
+ static dma_addr_t pa11_dma_map_page(struct device *dev, struct page *page,
+ 		unsigned long offset, size_t size,
+-		enum dma_data_direction direction, struct dma_attrs *attrs)
++		enum dma_data_direction direction, unsigned long attrs)
  {
- 	unsigned long cl;
- 	dma_addr_t addr = page_to_phys(page) + offset;
-@@ -170,7 +169,7 @@ or1k_map_page(struct device *dev, struct page *page,
- static void
- or1k_unmap_page(struct device *dev, dma_addr_t dma_handle,
- 		size_t size, enum dma_data_direction dir,
+ 	void *addr = page_address(page) + offset;
+ 	BUG_ON(direction == DMA_NONE);
+@@ -465,7 +465,7 @@ static dma_addr_t pa11_dma_map_page(struct device *dev, struct page *page,
+ 
+ static void pa11_dma_unmap_page(struct device *dev, dma_addr_t dma_handle,
+ 		size_t size, enum dma_data_direction direction,
 -		struct dma_attrs *attrs)
 +		unsigned long attrs)
  {
- 	/* Nothing special to do here... */
+ 	BUG_ON(direction == DMA_NONE);
+ 
+@@ -484,7 +484,7 @@ static void pa11_dma_unmap_page(struct device *dev, dma_addr_t dma_handle,
+ 
+ static int pa11_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ 		int nents, enum dma_data_direction direction,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
+ {
+ 	int i;
+ 	struct scatterlist *sg;
+@@ -503,7 +503,7 @@ static int pa11_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ 
+ static void pa11_dma_unmap_sg(struct device *dev, struct scatterlist *sglist,
+ 		int nents, enum dma_data_direction direction,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
+ {
+ 	int i;
+ 	struct scatterlist *sg;
+@@ -577,7 +577,7 @@ struct dma_map_ops pcxl_dma_ops = {
+ };
+ 
+ static void *pcx_dma_alloc(struct device *dev, size_t size,
+-		dma_addr_t *dma_handle, gfp_t flag, struct dma_attrs *attrs)
++		dma_addr_t *dma_handle, gfp_t flag, unsigned long attrs)
+ {
+ 	void *addr;
+ 
+@@ -592,7 +592,7 @@ static void *pcx_dma_alloc(struct device *dev, size_t size,
  }
-@@ -178,14 +177,14 @@ or1k_unmap_page(struct device *dev, dma_addr_t dma_handle,
+ 
+ static void pcx_dma_free(struct device *dev, size_t size, void *vaddr,
+-		dma_addr_t iova, struct dma_attrs *attrs)
++		dma_addr_t iova, unsigned long attrs)
+ {
+ 	free_pages((unsigned long)vaddr, get_order(size));
+ 	return;
+diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
+index e24b05996a1b..3ed6238f8f6e 100644
+--- a/drivers/parisc/ccio-dma.c
++++ b/drivers/parisc/ccio-dma.c
+@@ -790,7 +790,7 @@ ccio_map_single(struct device *dev, void *addr, size_t size,
+ static dma_addr_t
+ ccio_map_page(struct device *dev, struct page *page, unsigned long offset,
+ 		size_t size, enum dma_data_direction direction,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
+ {
+ 	return ccio_map_single(dev, page_address(page) + offset, size,
+ 			direction);
+@@ -806,7 +806,7 @@ ccio_map_page(struct device *dev, struct page *page, unsigned long offset,
+  */
+ static void 
+ ccio_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
+-		enum dma_data_direction direction, struct dma_attrs *attrs)
++		enum dma_data_direction direction, unsigned long attrs)
+ {
+ 	struct ioc *ioc;
+ 	unsigned long flags; 
+@@ -844,7 +844,7 @@ ccio_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
+  */
+ static void * 
+ ccio_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle, gfp_t flag,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
+ {
+       void *ret;
+ #if 0
+@@ -878,9 +878,9 @@ ccio_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle, gfp_t flag,
+  */
+ static void 
+ ccio_free(struct device *dev, size_t size, void *cpu_addr,
+-		dma_addr_t dma_handle, struct dma_attrs *attrs)
++		dma_addr_t dma_handle, unsigned long attrs)
+ {
+-	ccio_unmap_page(dev, dma_handle, size, 0, NULL);
++	ccio_unmap_page(dev, dma_handle, size, 0, 0);
+ 	free_pages((unsigned long)cpu_addr, get_order(size));
+ }
+ 
+@@ -907,7 +907,7 @@ ccio_free(struct device *dev, size_t size, void *cpu_addr,
+  */
  static int
- or1k_map_sg(struct device *dev, struct scatterlist *sg,
- 	    int nents, enum dma_data_direction dir,
--	    struct dma_attrs *attrs)
-+	    unsigned long attrs)
+ ccio_map_sg(struct device *dev, struct scatterlist *sglist, int nents, 
+-	    enum dma_data_direction direction, struct dma_attrs *attrs)
++	    enum dma_data_direction direction, unsigned long attrs)
  {
- 	struct scatterlist *s;
- 	int i;
+ 	struct ioc *ioc;
+ 	int coalesced, filled = 0;
+@@ -984,7 +984,7 @@ ccio_map_sg(struct device *dev, struct scatterlist *sglist, int nents,
+  */
+ static void 
+ ccio_unmap_sg(struct device *dev, struct scatterlist *sglist, int nents, 
+-	      enum dma_data_direction direction, struct dma_attrs *attrs)
++	      enum dma_data_direction direction, unsigned long attrs)
+ {
+ 	struct ioc *ioc;
  
- 	for_each_sg(sg, s, nents, i) {
- 		s->dma_address = or1k_map_page(dev, sg_page(s), s->offset,
--					       s->length, dir, NULL);
-+					       s->length, dir, 0);
+@@ -1004,7 +1004,7 @@ ccio_unmap_sg(struct device *dev, struct scatterlist *sglist, int nents,
+ 		ioc->usg_pages += sg_dma_len(sglist) >> PAGE_SHIFT;
+ #endif
+ 		ccio_unmap_page(dev, sg_dma_address(sglist),
+-				  sg_dma_len(sglist), direction, NULL);
++				  sg_dma_len(sglist), direction, 0);
+ 		++sglist;
  	}
  
- 	return nents;
-@@ -194,13 +193,13 @@ or1k_map_sg(struct device *dev, struct scatterlist *sg,
+diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
+index 42ec4600b7e4..151b86b6d2e2 100644
+--- a/drivers/parisc/sba_iommu.c
++++ b/drivers/parisc/sba_iommu.c
+@@ -783,7 +783,7 @@ sba_map_single(struct device *dev, void *addr, size_t size,
+ static dma_addr_t
+ sba_map_page(struct device *dev, struct page *page, unsigned long offset,
+ 		size_t size, enum dma_data_direction direction,
+-		struct dma_attrs *attrs)
++		unsigned long attrs)
+ {
+ 	return sba_map_single(dev, page_address(page) + offset, size,
+ 			direction);
+@@ -801,7 +801,7 @@ sba_map_page(struct device *dev, struct page *page, unsigned long offset,
+  */
  static void
- or1k_unmap_sg(struct device *dev, struct scatterlist *sg,
- 	      int nents, enum dma_data_direction dir,
--	      struct dma_attrs *attrs)
-+	      unsigned long attrs)
+ sba_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
+-		enum dma_data_direction direction, struct dma_attrs *attrs)
++		enum dma_data_direction direction, unsigned long attrs)
  {
- 	struct scatterlist *s;
- 	int i;
+ 	struct ioc *ioc;
+ #if DELAYED_RESOURCE_CNT > 0
+@@ -876,7 +876,7 @@ sba_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
+  * See Documentation/DMA-API-HOWTO.txt
+  */
+ static void *sba_alloc(struct device *hwdev, size_t size, dma_addr_t *dma_handle,
+-		gfp_t gfp, struct dma_attrs *attrs)
++		gfp_t gfp, unsigned long attrs)
+ {
+ 	void *ret;
  
- 	for_each_sg(sg, s, nents, i) {
--		or1k_unmap_page(dev, sg_dma_address(s), sg_dma_len(s), dir, NULL);
-+		or1k_unmap_page(dev, sg_dma_address(s), sg_dma_len(s), dir, 0);
- 	}
+@@ -908,9 +908,9 @@ static void *sba_alloc(struct device *hwdev, size_t size, dma_addr_t *dma_handle
+  */
+ static void
+ sba_free(struct device *hwdev, size_t size, void *vaddr,
+-		    dma_addr_t dma_handle, struct dma_attrs *attrs)
++		    dma_addr_t dma_handle, unsigned long attrs)
+ {
+-	sba_unmap_page(hwdev, dma_handle, size, 0, NULL);
++	sba_unmap_page(hwdev, dma_handle, size, 0, 0);
+ 	free_pages((unsigned long) vaddr, get_order(size));
  }
  
+@@ -943,7 +943,7 @@ int dump_run_sg = 0;
+  */
+ static int
+ sba_map_sg(struct device *dev, struct scatterlist *sglist, int nents,
+-	   enum dma_data_direction direction, struct dma_attrs *attrs)
++	   enum dma_data_direction direction, unsigned long attrs)
+ {
+ 	struct ioc *ioc;
+ 	int coalesced, filled = 0;
+@@ -1026,7 +1026,7 @@ sba_map_sg(struct device *dev, struct scatterlist *sglist, int nents,
+  */
+ static void 
+ sba_unmap_sg(struct device *dev, struct scatterlist *sglist, int nents,
+-	     enum dma_data_direction direction, struct dma_attrs *attrs)
++	     enum dma_data_direction direction, unsigned long attrs)
+ {
+ 	struct ioc *ioc;
+ #ifdef ASSERT_PDIR_SANITY
+@@ -1051,7 +1051,7 @@ sba_unmap_sg(struct device *dev, struct scatterlist *sglist, int nents,
+ 	while (sg_dma_len(sglist) && nents--) {
+ 
+ 		sba_unmap_page(dev, sg_dma_address(sglist), sg_dma_len(sglist),
+-				direction, NULL);
++				direction, 0);
+ #ifdef SBA_COLLECT_STATS
+ 		ioc->usg_pages += ((sg_dma_address(sglist) & ~IOVP_MASK) + sg_dma_len(sglist) + IOVP_SIZE - 1) >> PAGE_SHIFT;
+ 		ioc->usingle_calls--;	/* kluge since call is unmap_sg() */
 -- 
 1.9.1

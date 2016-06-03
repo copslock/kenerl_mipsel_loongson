@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 23:38:29 +0200 (CEST)
-Received: from aserp1040.oracle.com ([141.146.126.69]:39842 "EHLO
-        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042018AbcFCVi16BSD4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 23:38:27 +0200
-Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
-        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u53LcHQJ010576
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 23:38:48 +0200 (CEST)
+Received: from userp1040.oracle.com ([156.151.31.81]:23124 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27042083AbcFCVi3AcGW4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 23:38:29 +0200
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u53LcIYT026651
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 3 Jun 2016 21:38:17 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserv0022.oracle.com (8.13.8/8.13.8) with ESMTP id u53LcGET006631
+        Fri, 3 Jun 2016 21:38:18 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u53LcHb1010765
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 3 Jun 2016 21:38:17 GMT
+        Fri, 3 Jun 2016 21:38:18 GMT
 Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u53LcEpA025995;
+        by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id u53LcDpO015173;
         Fri, 3 Jun 2016 21:38:16 GMT
 Received: from lappy.us.oracle.com (/10.154.190.197)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Jun 2016 14:38:14 -0700
+        with ESMTP ; Fri, 03 Jun 2016 14:38:13 -0700
 From:   Sasha Levin <sasha.levin@oracle.com>
 To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Christopher Ferris <cferris@google.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <sasha.levin@oracle.com>
-Subject: [added to the 4.1 stable tree] MIPS: Don't unwind to user mode with EVA
-Date:   Fri,  3 Jun 2016 17:35:57 -0400
-Message-Id: <1464989831-16666-62-git-send-email-sasha.levin@oracle.com>
+Subject: [added to the 4.1 stable tree] MIPS: Fix siginfo.h to use strict posix types
+Date:   Fri,  3 Jun 2016 17:35:56 -0400
+Message-Id: <1464989831-16666-61-git-send-email-sasha.levin@oracle.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1464989831-16666-1-git-send-email-sasha.levin@oracle.com>
 References: <1464989831-16666-1-git-send-email-sasha.levin@oracle.com>
-X-Source-IP: aserv0022.oracle.com [141.146.126.234]
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
 Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53782
+X-archive-position: 53783
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,49 +59,83 @@ objections, please let us know.
 
 ===============
 
-[ Upstream commit a816b306c62195b7c43c92cb13330821a96bdc27 ]
+[ Upstream commit 5daebc477da4dfeb31ae193d83084def58fd2697 ]
 
-When unwinding through IRQs and exceptions, the unwinding only continues
-if the PC is a kernel text address, however since EVA it is possible for
-user and kernel address ranges to overlap, potentially allowing
-unwinding to continue to user mode if the user PC happens to be in the
-kernel text address range.
+Commit 85efde6f4e0d ("make exported headers use strict posix types")
+changed the asm-generic siginfo.h to use the __kernel_* types, and
+commit 3a471cbc081b ("remove __KERNEL_STRICT_NAMES") make the internal
+types accessible only to the kernel, but the MIPS implementation hasn't
+been updated to match.
 
-Adjust the check to also ensure that the register state from before the
-exception is actually running in kernel mode, i.e. !user_mode(regs).
-
-I don't believe any harm can come of this problem, since the PC is only
-output, the stack pointer is checked to ensure it resides within the
-task's stack page before it is dereferenced in search of the return
-address, and the return address register is similarly only output (if
-the PC is in a leaf function or the beginning of a non-leaf function).
-
-However unwind_stack() is only meant for unwinding kernel code, so to be
-correct the unwind should stop there.
+Switch to proper types now so that the exported asm/siginfo.h won't
+produce quite so many compiler errors when included alone by a user
+program.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: Christopher Ferris <cferris@google.com>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.15+
-Patchwork: https://patchwork.linux-mips.org/patch/11700/
+Cc: <stable@vger.kernel.org> # 2.6.30-
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12477/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
 ---
- arch/mips/kernel/process.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/uapi/asm/siginfo.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index f2975d4..6b3ae73 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -457,7 +457,7 @@ unsigned long notrace unwind_stack_by_address(unsigned long stack_page,
- 		    *sp + sizeof(*regs) <= stack_page + THREAD_SIZE - 32) {
- 			regs = (struct pt_regs *)*sp;
- 			pc = regs->cp0_epc;
--			if (__kernel_text_address(pc)) {
-+			if (!user_mode(regs) && __kernel_text_address(pc)) {
- 				*sp = regs->regs[29];
- 				*ra = regs->regs[31];
- 				return pc;
+diff --git a/arch/mips/include/uapi/asm/siginfo.h b/arch/mips/include/uapi/asm/siginfo.h
+index 2cb7fde..03ec109 100644
+--- a/arch/mips/include/uapi/asm/siginfo.h
++++ b/arch/mips/include/uapi/asm/siginfo.h
+@@ -42,13 +42,13 @@ typedef struct siginfo {
+ 
+ 		/* kill() */
+ 		struct {
+-			pid_t _pid;		/* sender's pid */
++			__kernel_pid_t _pid;	/* sender's pid */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 		} _kill;
+ 
+ 		/* POSIX.1b timers */
+ 		struct {
+-			timer_t _tid;		/* timer id */
++			__kernel_timer_t _tid;	/* timer id */
+ 			int _overrun;		/* overrun count */
+ 			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
+ 			sigval_t _sigval;	/* same as below */
+@@ -57,26 +57,26 @@ typedef struct siginfo {
+ 
+ 		/* POSIX.1b signals */
+ 		struct {
+-			pid_t _pid;		/* sender's pid */
++			__kernel_pid_t _pid;	/* sender's pid */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 			sigval_t _sigval;
+ 		} _rt;
+ 
+ 		/* SIGCHLD */
+ 		struct {
+-			pid_t _pid;		/* which child */
++			__kernel_pid_t _pid;	/* which child */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 			int _status;		/* exit code */
+-			clock_t _utime;
+-			clock_t _stime;
++			__kernel_clock_t _utime;
++			__kernel_clock_t _stime;
+ 		} _sigchld;
+ 
+ 		/* IRIX SIGCHLD */
+ 		struct {
+-			pid_t _pid;		/* which child */
+-			clock_t _utime;
++			__kernel_pid_t _pid;	/* which child */
++			__kernel_clock_t _utime;
+ 			int _status;		/* exit code */
+-			clock_t _stime;
++			__kernel_clock_t _stime;
+ 		} _irix_sigchld;
+ 
+ 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
 -- 
 2.5.0

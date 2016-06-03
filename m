@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 23:40:44 +0200 (CEST)
-Received: from aserp1040.oracle.com ([141.146.126.69]:40085 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 23:41:00 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:40089 "EHLO
         aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042096AbcFCVi5zKLT4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 23:38:57 +0200
-Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
-        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u53LcmKL010965
+        with ESMTP id S27042097AbcFCVi6EIu74 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 23:38:58 +0200
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u53LcgwP010891
         (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 3 Jun 2016 21:38:48 GMT
+        Fri, 3 Jun 2016 21:38:42 GMT
 Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u53LcloJ024465
+        by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u53Lcgbr011564
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 3 Jun 2016 21:38:48 GMT
+        Fri, 3 Jun 2016 21:38:42 GMT
 Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u53LclQo026199;
-        Fri, 3 Jun 2016 21:38:47 GMT
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u53LcfKA026108;
+        Fri, 3 Jun 2016 21:38:41 GMT
 Received: from lappy.us.oracle.com (/10.154.190.197)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Jun 2016 14:38:46 -0700
+        with ESMTP ; Fri, 03 Jun 2016 14:38:40 -0700
 From:   Sasha Levin <sasha.levin@oracle.com>
 To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
 Cc:     Paul Burton <paul.burton@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
+        Lars Persson <lars.persson@axis.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jerome Marchand <jmarchan@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Sasha Levin <sasha.levin@oracle.com>
-Subject: [added to the 4.1 stable tree] MIPS: math-emu: Fix jalr emulation when rd == $0
-Date:   Fri,  3 Jun 2016 17:36:28 -0400
-Message-Id: <1464989831-16666-93-git-send-email-sasha.levin@oracle.com>
+Subject: [added to the 4.1 stable tree] MIPS: Handle highmem pages in __update_cache
+Date:   Fri,  3 Jun 2016 17:36:24 -0400
+Message-Id: <1464989831-16666-89-git-send-email-sasha.levin@oracle.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1464989831-16666-1-git-send-email-sasha.levin@oracle.com>
 References: <1464989831-16666-1-git-send-email-sasha.levin@oracle.com>
-X-Source-IP: aserv0021.oracle.com [141.146.126.233]
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
 Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53789
+X-archive-position: 53790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,48 +62,51 @@ objections, please let us know.
 
 ===============
 
-[ Upstream commit ab4a92e66741b35ca12f8497896bafbe579c28a1 ]
+[ Upstream commit f4281bba818105c7c91799abe40bc05c0dbdaa25 ]
 
-When emulating a jalr instruction with rd == $0, the code in
-isBranchInstr was incorrectly writing to GPR $0 which should actually
-always remain zeroed. This would lead to any further instructions
-emulated which use $0 operating on a bogus value until the task is next
-context switched, at which point the value of $0 in the task context
-would be restored to the correct zero by a store in SAVE_SOME. Fix this
-by not writing to rd if it is $0.
+The following patch will expose __update_cache to highmem pages. Handle
+them by mapping them in for the duration of the cache maintenance, just
+like in __flush_dcache_page. The code for that isn't shared because we
+need the page address in __update_cache so sharing became messy. Given
+that the entirity is an extra 5 lines, just duplicate it.
 
-Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Lars Persson <lars.persson@axis.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jerome Marchand <jmarchan@redhat.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Cc: stable <stable@vger.kernel.org> # v3.10
-Patchwork: https://patchwork.linux-mips.org/patch/13160/
+Cc: stable <stable@vger.kernel.org> # v4.1+
+Patchwork: https://patchwork.linux-mips.org/patch/12721/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
 ---
- arch/mips/math-emu/cp1emu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/mips/mm/cache.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 2b95e34..81f6459 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -445,9 +445,11 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 	case spec_op:
- 		switch (insn.r_format.func) {
- 		case jalr_op:
--			regs->regs[insn.r_format.rd] =
--				regs->cp0_epc + dec_insn.pc_inc +
--				dec_insn.next_pc_inc;
-+			if (insn.r_format.rd != 0) {
-+				regs->regs[insn.r_format.rd] =
-+					regs->cp0_epc + dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			}
- 			/* Fall through */
- 		case jr_op:
- 			/* For R6, JR already emulated in jalr_op */
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index 77d96db..576169d 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -143,9 +143,17 @@ void __update_cache(struct vm_area_struct *vma, unsigned long address,
+ 		return;
+ 	page = pfn_to_page(pfn);
+ 	if (page_mapping(page) && Page_dcache_dirty(page)) {
+-		addr = (unsigned long) page_address(page);
++		if (PageHighMem(page))
++			addr = (unsigned long)kmap_atomic(page);
++		else
++			addr = (unsigned long)page_address(page);
++
+ 		if (exec || pages_do_alias(addr, address & PAGE_MASK))
+ 			flush_data_cache_page(addr);
++
++		if (PageHighMem(page))
++			__kunmap_atomic((void *)addr);
++
+ 		ClearPageDcacheDirty(page);
+ 	}
+ }
 -- 
 2.5.0

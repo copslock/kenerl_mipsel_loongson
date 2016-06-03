@@ -1,40 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 23:39:25 +0200 (CEST)
-Received: from userp1040.oracle.com ([156.151.31.81]:23140 "EHLO
-        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042088AbcFCViaL4pN4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 23:38:30 +0200
-Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
-        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u53LcJRF026663
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 3 Jun 2016 21:38:20 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u53LcJ1R023650
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 3 Jun 2016 21:38:19 GMT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 23:39:44 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:39935 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27042091AbcFCVijDaxY4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 23:38:39 +0200
+Received: from userv0022.oracle.com (userv0022.oracle.com [156.151.31.74])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u53LcTDj010723
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 3 Jun 2016 21:38:29 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userv0022.oracle.com (8.14.4/8.13.8) with ESMTP id u53LcS9v005572
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 3 Jun 2016 21:38:28 GMT
 Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.13.8/8.13.8) with ESMTP id u53LcIe5016483;
-        Fri, 3 Jun 2016 21:38:18 GMT
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u53LcSk4026055;
+        Fri, 3 Jun 2016 21:38:28 GMT
 Received: from lappy.us.oracle.com (/10.154.190.197)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Jun 2016 14:38:18 -0700
+        with ESMTP ; Fri, 03 Jun 2016 14:38:27 -0700
 From:   Sasha Levin <sasha.levin@oracle.com>
 To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>, macro@linux-mips.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C3=84=C2=8Dm=C3=83=C2=A1=C3=85=E2=84=A2?= 
+        <rkrcmar@redhat.com>, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org, kvm@vger.kernel.org,
         Sasha Levin <sasha.levin@oracle.com>
-Subject: [added to the 4.1 stable tree] MIPS64: R6: R2 emulation bugfix
-Date:   Fri,  3 Jun 2016 17:36:00 -0400
-Message-Id: <1464989831-16666-65-git-send-email-sasha.levin@oracle.com>
+Subject: [added to the 4.1 stable tree] MIPS: KVM: Fix timer IRQ race when freezing timer
+Date:   Fri,  3 Jun 2016 17:36:11 -0400
+Message-Id: <1464989831-16666-76-git-send-email-sasha.levin@oracle.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1464989831-16666-1-git-send-email-sasha.levin@oracle.com>
 References: <1464989831-16666-1-git-send-email-sasha.levin@oracle.com>
-X-Source-IP: aserv0021.oracle.com [141.146.126.233]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Source-IP: userv0022.oracle.com [156.151.31.74]
 Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53785
+X-archive-position: 53786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,236 +56,104 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
 This patch has been added to the 4.1 stable tree. If you have any
 objections, please let us know.
 
 ===============
 
-[ Upstream commit 41fa29e4d8cf4150568a0fe9bb4d62229f9caed5 ]
+[ Upstream commit 4355c44f063d3de4f072d796604c7f4ba4085cc3 ]
 
-Error recovery pointers for fixups was improperly set as ".word"
-which is unsuitable for MIPS64.
+There's a particularly narrow and subtle race condition when the
+software emulated guest timer is frozen which can allow a guest timer
+interrupt to be missed.
 
-Replaced by STR(PTR)
+This happens due to the hrtimer expiry being inexact, so very
+occasionally the freeze time will be after the moment when the emulated
+CP0_Count transitions to the same value as CP0_Compare (so an IRQ should
+be generated), but before the moment when the hrtimer is due to expire
+(so no IRQ is generated). The IRQ won't be generated when the timer is
+resumed either, since the resume CP0_Count will already match CP0_Compare.
 
-[ralf@linux-mips.org: Apply changes as requested in the review process.]
+With VZ guests in particular this is far more likely to happen, since
+the soft timer may be frozen frequently in order to restore the timer
+state to the hardware guest timer. This happens after 5-10 hours of
+guest soak testing, resulting in an overflow in guest kernel timekeeping
+calculations, hanging the guest. A more focussed test case to
+intentionally hit the race (with the help of a new hypcall to cause the
+timer state to migrated between hardware & software) hits the condition
+fairly reliably within around 30 seconds.
 
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
-Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator for MIPS R6")
-Cc: macro@linux-mips.org
+Instead of relying purely on the inexact hrtimer expiry to determine
+whether an IRQ should be generated, read the guest CP0_Compare and
+directly check whether the freeze time is before or after it. Only if
+CP0_Count is on or after CP0_Compare do we check the hrtimer expiry to
+determine whether the last IRQ has already been generated (which will
+have pushed back the expiry by one timer period).
+
+Fixes: e30492bbe95a ("MIPS: KVM: Rewrite count/compare timer emulation")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim KrÄmÃ¡Å™" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 4.0+
-Patchwork: https://patchwork.linux-mips.org/patch/9911/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Cc: <stable@vger.kernel.org> # 3.16.x-
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
 ---
- arch/mips/kernel/mips-r2-to-r6-emul.c | 105 +++++++++++++++++-----------------
- 1 file changed, 53 insertions(+), 52 deletions(-)
+ arch/mips/kvm/emulate.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/mips-r2-to-r6-emul.c
-index f2977f0..e19fa36 100644
---- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-+++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-@@ -27,6 +27,7 @@
- #include <asm/inst.h>
- #include <asm/mips-r2-to-r6-emul.h>
- #include <asm/local.h>
-+#include <asm/mipsregs.h>
- #include <asm/ptrace.h>
- #include <asm/uaccess.h>
+diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
+index 41b1b09..eaf77b5 100644
+--- a/arch/mips/kvm/emulate.c
++++ b/arch/mips/kvm/emulate.c
+@@ -302,12 +302,31 @@ static inline ktime_t kvm_mips_count_time(struct kvm_vcpu *vcpu)
+  */
+ static uint32_t kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t now)
+ {
+-	ktime_t expires;
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	ktime_t expires, threshold;
++	uint32_t count, compare;
+ 	int running;
  
-@@ -1250,10 +1251,10 @@ fpu_emul:
- 			"	j	10b\n"
- 			"	.previous\n"
- 			"	.section	__ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1325,10 +1326,10 @@ fpu_emul:
- 			"	j	10b\n"
- 			"       .previous\n"
- 			"	.section	__ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1396,10 +1397,10 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1466,10 +1467,10 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1581,14 +1582,14 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
--			"	.word	5b,8b\n"
--			"	.word	6b,8b\n"
--			"	.word	7b,8b\n"
--			"	.word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1700,14 +1701,14 @@ fpu_emul:
- 			"	j      9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word  1b,8b\n"
--			"	.word  2b,8b\n"
--			"	.word  3b,8b\n"
--			"	.word  4b,8b\n"
--			"	.word  5b,8b\n"
--			"	.word  6b,8b\n"
--			"	.word  7b,8b\n"
--			"	.word  0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set    pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1819,14 +1820,14 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
--			"	.word	5b,8b\n"
--			"	.word	6b,8b\n"
--			"	.word	7b,8b\n"
--			"	.word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1937,14 +1938,14 @@ fpu_emul:
- 			"       j	9b\n"
- 			"       .previous\n"
- 			"       .section        __ex_table,\"a\"\n"
--			"       .word	1b,8b\n"
--			"       .word	2b,8b\n"
--			"       .word	3b,8b\n"
--			"       .word	4b,8b\n"
--			"       .word	5b,8b\n"
--			"       .word	6b,8b\n"
--			"       .word	7b,8b\n"
--			"       .word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"       .previous\n"
- 			"       .set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1999,7 +2000,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word  1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "=&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV)
-@@ -2057,7 +2058,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word	1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "+&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV));
-@@ -2118,7 +2119,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word  1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "=&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV)
-@@ -2181,7 +2182,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word	1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "+&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV));
+-	/* Is the hrtimer pending? */
++	/* Calculate the biased and scaled guest CP0_Count */
++	count = vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
++	compare = kvm_read_c0_guest_compare(cop0);
++
++	/*
++	 * Find whether CP0_Count has reached the closest timer interrupt. If
++	 * not, we shouldn't inject it.
++	 */
++	if ((int32_t)(count - compare) < 0)
++		return count;
++
++	/*
++	 * The CP0_Count we're going to return has already reached the closest
++	 * timer interrupt. Quickly check if it really is a new interrupt by
++	 * looking at whether the interval until the hrtimer expiry time is
++	 * less than 1/4 of the timer period.
++	 */
+ 	expires = hrtimer_get_expires(&vcpu->arch.comparecount_timer);
+-	if (ktime_compare(now, expires) >= 0) {
++	threshold = ktime_add_ns(now, vcpu->arch.count_period / 4);
++	if (ktime_before(expires, threshold)) {
+ 		/*
+ 		 * Cancel it while we handle it so there's no chance of
+ 		 * interference with the timeout handler.
+@@ -329,8 +348,7 @@ static uint32_t kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t now)
+ 		}
+ 	}
+ 
+-	/* Return the biased and scaled guest CP0_Count */
+-	return vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
++	return count;
+ }
+ 
+ /**
 -- 
 2.5.0

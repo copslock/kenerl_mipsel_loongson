@@ -1,45 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 09:18:55 +0200 (CEST)
-Received: from mail-io0-f195.google.com ([209.85.223.195]:33174 "EHLO
-        mail-io0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27033863AbcFCHSwp6yr0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 09:18:52 +0200
-Received: by mail-io0-f195.google.com with SMTP id p194so9324666iod.0;
-        Fri, 03 Jun 2016 00:18:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=jIY200dkr0Im0Nsw6RsCa7Od3Dei8w4fvOA20nIr4O4=;
-        b=PYp8TXLrVN4uifinjkSMkte/3Hjzt3AEC8ongcuiSyeBUTwGudO4IMxw1qlPHMV7f7
-         fvbxNCw2V131NhXB6cNkPNte+tkh/SV2GNrhL4Fo4mIhGRsG5qC9Ma7QgBMBLxqUURH3
-         1ftH9Us/EfFYUQUoEwKsTC44S7rja2/SuTKX10MD7FCvfbxG84aOMUjhGwbqpQG9qQQH
-         qF6bHDeA/TpEXoP8IUZyxNGJGZnh92KbgBaTV8t9e+oPE3uwXGf8vqIle3kpHyNcpAQg
-         ToffMrusv9xlVo6OqV7Td/xOv7nLwNFg1zAc+UJTwgnc7G7TLuyv9Ra8w7mjN7/UaPah
-         6RxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=jIY200dkr0Im0Nsw6RsCa7Od3Dei8w4fvOA20nIr4O4=;
-        b=ld5oBG3tCKvi81egbXlGJ4lG9Ljq45s6deVWSkdgUb2GCjBU8HuwDfWDjhRezlGKxM
-         5LqjovazQaT+YK15+dsbUtDdno6oXgIFoBedGd4HvSXF0m+2ayy07FYrZCX1VaN64Khr
-         KoR5uZbGpUmTDUfJdGGiepAvCJKRXuYEqlojWGcVNRCUKBuq1j0kJjeoduBmxHutvXAX
-         MyOmLVOJ6tJms7OeNxFi9u1Xh5H7fp17rA9s9rbrjy90mvlpPvSyzBdPM6GyFB56pG79
-         3ApGOh3zhF+zJwcuRVwyhnkGRWfrkaaHLN+rw3/qNvPmYmW/puqvwQ2wjEs3TzsQEI+W
-         nFjg==
-X-Gm-Message-State: ALyK8tKgCqPGFOqleB03v+QckxAqBOomVDy/hG1v3m6ffdmBwMg8cn7g7ViIwAQY9dTcmCHzxnA8YXh6I/whtQ==
-X-Received: by 10.107.43.214 with SMTP id r205mr178678ior.81.1464938325613;
- Fri, 03 Jun 2016 00:18:45 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.33.135 with HTTP; Fri, 3 Jun 2016 00:18:44 -0700 (PDT)
-In-Reply-To: <1464881987-13203-30-git-send-email-k.kozlowski@samsung.com>
-References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com> <1464881987-13203-30-git-send-email-k.kozlowski@samsung.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 3 Jun 2016 09:18:44 +0200
-X-Google-Sender-Auth: Vppcn6N8ye2iblggr44rVIFH_p4
-Message-ID: <CAMuHMdXpMu6iuSYRJwyqP8mx_A9cAnsgkTh-8nU+JMpD4f2-SA@mail.gmail.com>
-Subject: Re: [RFC v3 29/45] m68k: dma-mapping: Use unsigned long for dma_attrs
-To:     Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 09:50:54 +0200 (CEST)
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:10269 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27039906AbcFCHuwY3yqm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 09:50:52 +0200
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout1.w1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTP id <0O8600HAGR4LX5A0@mailout1.w1.samsung.com>; Fri,
+ 03 Jun 2016 08:50:45 +0100 (BST)
+X-AuditID: cbfec7f4-f796c6d000001486-57-575136d4a4ca
+Received: from eusync3.samsung.com ( [203.254.199.213])
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 4C.49.05254.4D631575; Fri,
+ 3 Jun 2016 08:50:44 +0100 (BST)
+Received: from [106.120.53.17] by eusync3.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTPA id <0O860013ER4HYX40@eusync3.samsung.com>; Fri,
+ 03 Jun 2016 08:50:44 +0100 (BST)
+Subject: Re: [RFC v3 02/45] dma-mapping: Use unsigned long for dma_attrs
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com>
+ <1464881987-13203-3-git-send-email-k.kozlowski@samsung.com>
+ <CAMuHMdXWMf7Dt77wSUj8NytQqb99jzDiAz46kJkAEz+6BX3Uvw@mail.gmail.com>
 Cc:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
@@ -78,11 +59,10 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         David Vrabel <david.vrabel@citrix.com>,
         Juergen Gross <jgross@suse.com>,
-        Muli Ben-Yehuda <muli@il.ibm.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         David Airlie <airlied@linux.ie>,
         Joerg Roedel <joro@8bytes.org>,
@@ -127,16 +107,42 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         Christoph Hellwig <hch@infradead.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
+X-Enigmail-Draft-Status: N1110
+Message-id: <575136D0.6000101@samsung.com>
+Date:   Fri, 03 Jun 2016 09:50:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.8.0
+MIME-version: 1.0
+In-reply-to: <CAMuHMdXWMf7Dt77wSUj8NytQqb99jzDiAz46kJkAEz+6BX3Uvw@mail.gmail.com>
+Content-type: text/plain; charset=utf-8
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxbZRTGfe97e28hq1462F6nmUmNLjYZgwnLiZplc0u8cXFjcQnOzLkO
+        bmBKGWlXdCZLGj6qsHaUAhNKZaUtUGZLC0SFZYzQEarbqpCNiQ4Y4sZgDFqZKFpktjTG/fc8
+        5/yenJOTI8ZSD7NBfCz/hKDKV+TJmHj66op/ePONbfszU76uSIGy7jALfq+WAcP331Fg8bgY
+        +Mc0wEJ7rUcEoaJSDI6iXBj6vJSGYLMeQYvzLbi9cAvBfFGYhpW5BxhuLAYZqGytwnC6bZIF
+        3dmdYLkXQDD1cw8Fjpnt0DfyBwtXjTYKzravh6XF4kjwSjsGa++rMN8wjeF223kR3POZMVh+
+        2grLdSEKyuq9LMxOp0Kz/S6Cu8ZRBubH+hGYe8do6Pj1pggqewMs9NcbKXB+2YahUeeg4dsz
+        IREES7oYCH02L4LrFywMtNxxY9B7v4rY4qHoVp/SYKwxsVDvqKBh8sogBYEGPwNTPgMNCxOP
+        MBgbizHU/nApco/lagylo24KWgNuFnw1PQjCf66Idhzk7/Q1UHxpj5HhXQ0uxF+/OYT58N8m
+        xP/YlsHPVhkjpTMGiu+b9DG8bUZL893mMZYP/XaYt3ZoeH33NcR3OuW8/eIMlZH+bvxr2ULe
+        sUJBtWX7kfjcpsllUYGO+fjyw3NIi6bpciQWEy6N2JqeKkdxEbmODI57mHIUL5ZyTYgM/rKI
+        YmYKkdmSESZKreV4YhipxtFwIreZWP6iYsw1RPSVo6sGc70bSfdScDXAcC+TzhYHExuxkRhO
+        m+iolnByYjOFUVTT3Avkkd6GozqJe4eYv1miYkwCWaoaX+XjuLdJbY0XRQdjbhOprlZGy5h7
+        jnS65rARJZgfS5j/p8yPUVaEz6MkQZNVoD6ao0xNViuUak1+TnLWcWUHir3x713IPvCKD3Fi
+        JFsjcVozMqUiRaH6pNKHiBjLEiVZ8v2ZUkm24uQngur4+ypNnqD2oWfEtGy95IsLwQNSLkdx
+        QvhQEAoE1X9dShy3QYsON+88tNAlfX1f4e4jwZaiF7c8ePqJdY0lruRToeGFrQ/96uGEXdnW
+        dO2zY5pzOucOz5qJuL1peK9cdn+uYvyjPP8teQV7v1FQmC5X7aqr0xW7BxT2njcmDtCnypa3
+        eXI79qS/92aSLRxQJcmwLK1MHv4gUfvk7pTnD71k72917/HKaHWuIlWOVWrFv9wlq5/CAwAA
+Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53772
+X-archive-position: 53773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: k.kozlowski@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -149,24 +155,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 2, 2016 at 5:39 PM, Krzysztof Kozlowski
-<k.kozlowski@samsung.com> wrote:
-> Split out subsystem specific changes for easier reviews. This will be
-> squashed with main commit.
->
-> Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+On 06/03/2016 09:17 AM, Geert Uytterhoeven wrote:
+> Hi Krzysztof,
+> 
+> On Thu, Jun 2, 2016 at 5:39 PM, Krzysztof Kozlowski
+> <k.kozlowski@samsung.com> wrote:
+>> --- a/include/linux/dma-mapping.h
+>> +++ b/include/linux/dma-mapping.h
+>> @@ -5,13 +5,25 @@
+> 
+>> +/**
+>> + * List of possible attributes associated with a DMA mapping. The semantics
+>> + * of each attribute should be defined in Documentation/DMA-attributes.txt.
+>> + */
+>> +#define DMA_ATTR_WRITE_BARRIER         (1UL << 1)
+> 
+> Any particular reason they start at 2, not 1?
 
-Looks good.
+No reason. I'll fix this in next version (and trim Cc-list). Anyway the
+values of constants won't match old ones but that should not be problem
+(unless they are hard-coded somewhere).
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Best regards,
+Krzysztof

@@ -1,38 +1,142 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2016 18:16:08 +0200 (CEST)
-Received: from down.free-electrons.com ([37.187.137.238]:33459 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27028989AbcFBQQGIRqu2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2016 18:16:06 +0200
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 3D776388; Thu,  2 Jun 2016 18:16:00 +0200 (CEST)
-Received: from bbrezillon (LStLambert-657-1-97-87.w90-63.abo.wanadoo.fr [90.63.216.87])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id D7F8322;
-        Thu,  2 Jun 2016 18:15:59 +0200 (CEST)
-Date:   Thu, 2 Jun 2016 18:15:59 +0200
-From:   Boris Brezillon <boris.brezillon@free-electrons.com>
-To:     Keguang Zhang <keguang.zhang@gmail.com>
-Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Brian Norris <computersforpeace@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Richard Weinberger <richard@nod.at>
-Subject: Re: [PATCH V3] mtd: nand: add Loongson1 NAND driver
-Message-ID: <20160602181559.54aa9f67@bbrezillon>
-In-Reply-To: <1464429250-27670-1-git-send-email-keguang.zhang@gmail.com>
-References: <1464429250-27670-1-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 09:17:13 +0200 (CEST)
+Received: from mail-it0-f68.google.com ([209.85.214.68]:34301 "EHLO
+        mail-it0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27033863AbcFCHRGoqf70 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 09:17:06 +0200
+Received: by mail-it0-f68.google.com with SMTP id k76so6766813ita.1;
+        Fri, 03 Jun 2016 00:17:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=uCnxmB1T8a+4D+O4zpeSlaaz1Cfb9og2oC3TvgHjcRE=;
+        b=XIORJNb9acrmFYpTUR+IydSRCx8p6NgGzpCDttIL5VB/L08CUzbSmTqpRHktZyYUZk
+         Go4zRKJacq1XlR3GT11LQgHQA01kmYoADP4XCzXbsprp9X+xuzWcfEq3nPpJSSmma0Ei
+         gKX0mAfwzQs6bSr+KsOv17G1rSmnnUpKoN27qXpI3bSGAMN8Blv3fUGD01NZA9wpqD/W
+         su2VN8g+513h7RqBGkULEsGhpmHyEVyMEBc0jI2g0r21XTZXJyfQPAKuQWmunmUGSynV
+         OO6U5Mk+Rcu7XK3z2sf+o0382n0j1kJtR7CRg3XHQWb32Dp16dsTNrxFhYhefbMSpbOx
+         5onw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=uCnxmB1T8a+4D+O4zpeSlaaz1Cfb9og2oC3TvgHjcRE=;
+        b=aKFyxbm6GgsDgWBkE34AngPoBXmhtjA8Xp++xsKvnobfMecZVyeyrTs5bJFnLEQVMq
+         RfPG/FDiQmOefb55qcdmG87TcZlrRs9n+dv+pa3+G5INjMvulX49wAnTzUD4RXix57Fv
+         7eOT4t0Qs5/NrV5WndHwbV/Fwsx1eH4M+t9LKjSk8rsoYVIvm6/xImaVFzvo5Orlv6SI
+         B9f+E617vpHNq5CBnpIh4Wsj8Djwe/S3LF79uxnXpPZCOw3wFA0TrlYaQhwar9Tk09zJ
+         mV4Im7qfs84Z1C/n6JCQXoR5WktwNYAx8HJl9m05uZxP7XqcUvGzFHdZXyK4cMGpaBwR
+         GTZg==
+X-Gm-Message-State: ALyK8tLO2CdXsPzUQY6/W+VJeav+FeOGU3HLwxrCoFxUwQbJkUnlgt8mrbO/UCbqUMAuLPFAIa3DJJ5lKA+wSw==
+X-Received: by 10.36.101.74 with SMTP id u71mr3141924itb.92.1464938220979;
+ Fri, 03 Jun 2016 00:17:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <boris.brezillon@free-electrons.com>
+Received: by 10.107.33.135 with HTTP; Fri, 3 Jun 2016 00:17:00 -0700 (PDT)
+In-Reply-To: <1464881987-13203-3-git-send-email-k.kozlowski@samsung.com>
+References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com> <1464881987-13203-3-git-send-email-k.kozlowski@samsung.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 3 Jun 2016 09:17:00 +0200
+X-Google-Sender-Auth: GCG0-9JKwZfBT34SARukq3iRTrU
+Message-ID: <CAMuHMdXWMf7Dt77wSUj8NytQqb99jzDiAz46kJkAEz+6BX3Uvw@mail.gmail.com>
+Subject: Re: [RFC v3 02/45] dma-mapping: Use unsigned long for dma_attrs
+To:     Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Steven Miao <realmz6@gmail.com>,
+        Mark Salter <msalter@redhat.com>,
+        Aurelien Jacquiot <a-jacquiot@ti.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>,
+        Ley Foon Tan <lftan@altera.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Geoff Levand <geoff@infradead.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        David Vrabel <david.vrabel@citrix.com>,
+        Juergen Gross <jgross@suse.com>,
+        Muli Ben-Yehuda <muli@il.ibm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        David Airlie <airlied@linux.ie>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        xen-devel@lists.xenproject.org,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        linux-c6x-dev@linux-c6x.org, Cris <linux-cris-kernel@axis.com>,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:METAG ARCHITECTURE" <linux-metag@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "moderated list:PANASONIC MN10300..." <linux-am33-list@redhat.com>,
+        nios2-dev@lists.rocketboards.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>, discuss@x86-64.org,
+        linux-pci <linux-pci@vger.kernel.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        iommu@lists.linux-foundation.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53770
+X-archive-position: 53771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: boris.brezillon@free-electrons.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,367 +149,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 28 May 2016 17:54:10 +0800
-Keguang Zhang <keguang.zhang@gmail.com> wrote:
+Hi Krzysztof,
 
-> From: Kelvin Cheung <keguang.zhang@gmail.com>
-> 
-> This patch adds NAND driver for Loongson1B.
-> 
-> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
-> 
-> ---
-> v3:
->    Replace __raw_readl/__raw_writel with readl/writel.
->    Split ls1x_nand into two structures: ls1x_nand_chip and ls1x_nand_controller.
-> V2:
->    Modify the dependency in Kconfig due to the changes of DMA module.
-> ---
->  drivers/mtd/nand/Kconfig          |   8 +
->  drivers/mtd/nand/Makefile         |   1 +
->  drivers/mtd/nand/loongson1_nand.c | 555 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 564 insertions(+)
->  create mode 100644 drivers/mtd/nand/loongson1_nand.c
-> 
-> diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
-> index f05e0e9..be20fb8 100644
-> --- a/drivers/mtd/nand/Kconfig
-> +++ b/drivers/mtd/nand/Kconfig
-> @@ -563,4 +563,12 @@ config MTD_NAND_QCOM
->  	  Enables support for NAND flash chips on SoCs containing the EBI2 NAND
->  	  controller. This controller is found on IPQ806x SoC.
->  
-> +config MTD_NAND_LOONGSON1
-> +	tristate "Support for Loongson1 SoC NAND controller"
-> +	depends on MACH_LOONGSON32
-> +	select DMADEVICES
-> +	select LOONGSON1_DMA
-> +	help
-> +		Enables support for NAND Flash on Loongson1 SoC based boards.
-> +
->  endif # MTD_NAND
-> diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
-> index f553353..0310c0b 100644
-> --- a/drivers/mtd/nand/Makefile
-> +++ b/drivers/mtd/nand/Makefile
-> @@ -57,5 +57,6 @@ obj-$(CONFIG_MTD_NAND_SUNXI)		+= sunxi_nand.o
->  obj-$(CONFIG_MTD_NAND_HISI504)	        += hisi504_nand.o
->  obj-$(CONFIG_MTD_NAND_BRCMNAND)		+= brcmnand/
->  obj-$(CONFIG_MTD_NAND_QCOM)		+= qcom_nandc.o
-> +obj-$(CONFIG_MTD_NAND_LOONGSON1)	+= loongson1_nand.o
->  
->  nand-objs := nand_base.o nand_bbt.o nand_timings.o
-> diff --git a/drivers/mtd/nand/loongson1_nand.c b/drivers/mtd/nand/loongson1_nand.c
-> new file mode 100644
-> index 0000000..86831773
-> --- /dev/null
-> +++ b/drivers/mtd/nand/loongson1_nand.c
-> @@ -0,0 +1,555 @@
-> +/*
-> + * NAND Flash Driver for Loongson 1 SoC
-> + *
-> + * Copyright (C) 2015-2016 Zhang, Keguang <keguang.zhang@gmail.com>
-> + *
-> + * This file is licensed under the terms of the GNU General Public
-> + * License version 2. This program is licensed "as is" without any
-> + * warranty of any kind, whether express or implied.
+On Thu, Jun 2, 2016 at 5:39 PM, Krzysztof Kozlowski
+<k.kozlowski@samsung.com> wrote:
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -5,13 +5,25 @@
+
+> +/**
+> + * List of possible attributes associated with a DMA mapping. The semantics
+> + * of each attribute should be defined in Documentation/DMA-attributes.txt.
 > + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/clk.h>
-> +#include <linux/dmaengine.h>
-> +#include <linux/dma-mapping.h>
-> +#include <linux/mtd/mtd.h>
-> +#include <linux/mtd/nand.h>
-> +#include <linux/sizes.h>
-> +
-> +#include <nand.h>
-> +
-> +/* Loongson 1 NAND Register Definitions */
-> +#define NAND_CMD		0x0
-> +#define NAND_ADDRL		0x4
-> +#define NAND_ADDRH		0x8
-> +#define NAND_TIMING		0xc
-> +#define NAND_IDL		0x10
-> +#define NAND_IDH		0x14
-> +#define NAND_STATUS		0x14
-> +#define NAND_PARAM		0x18
-> +#define NAND_OP_NUM		0x1c
-> +#define NAND_CS_RDY		0x20
-> +
-> +#define NAND_DMA_ADDR		0x40
-> +
-> +/* NAND Command Register Bits */
-> +#define OP_DONE			BIT(10)
-> +#define OP_SPARE		BIT(9)
-> +#define OP_MAIN			BIT(8)
-> +#define CMD_STATUS		BIT(7)
-> +#define CMD_RESET		BIT(6)
-> +#define CMD_READID		BIT(5)
-> +#define BLOCKS_ERASE		BIT(4)
-> +#define CMD_ERASE		BIT(3)
-> +#define CMD_WRITE		BIT(2)
-> +#define CMD_READ		BIT(1)
-> +#define CMD_VALID		BIT(0)
-> +
-> +#define	LS1X_NAND_TIMEOUT	20
-> +
-> +/* macros for registers read/write */
-> +#define nand_readl(nandc, off)		\
-> +	readl((nandc)->reg_base + (off))
-> +
-> +#define nand_writel(nandc, off, val)	\
-> +	writel((val), (nandc)->reg_base + (off))
-> +
-> +#define set_cmd(nandc, ctrl)		\
-> +	nand_writel(nandc, NAND_CMD, ctrl)
-> +
-> +#define start_nand(nandc)		\
-> +	nand_writel(nandc, NAND_CMD, nand_readl(nandc, NAND_CMD) | CMD_VALID)
-> +
-> +struct ls1x_nand_chip {
-> +	struct nand_chip chip;
-> +	struct plat_ls1x_nand *pdata;
-> +};
-> +
-> +struct ls1x_nand_controller {
+> +#define DMA_ATTR_WRITE_BARRIER         (1UL << 1)
 
-ls1x_nand_controller should inherit from nand_hw_ctrl.
+Any particular reason they start at 2, not 1?
 
-	struct nand_hw_ctrl base;
+> +#define DMA_ATTR_WEAK_ORDERING         (1UL << 2)
+> +#define DMA_ATTR_WRITE_COMBINE         (1UL << 3)
+> +#define DMA_ATTR_NON_CONSISTENT                (1UL << 4)
+> +#define DMA_ATTR_NO_KERNEL_MAPPING     (1UL << 5)
+> +#define DMA_ATTR_SKIP_CPU_SYNC         (1UL << 6)
+> +#define DMA_ATTR_FORCE_CONTIGUOUS      (1UL << 7)
+> +#define DMA_ATTR_ALLOC_SINGLE_PAGES    (1UL << 8)
 
-> +	struct clk *clk;
-> +	void __iomem *reg_base;
-> +
-> +	int cmd_ctrl;
-> +	char datareg[8];
-> +	char *data_ptr;
-> +
-> +	/* DMA stuff */
-> +	unsigned char *dma_buf;
-> +	unsigned int buf_off;
-> +	unsigned int buf_len;
-> +
-> +	/* DMA Engine stuff */
-> +	unsigned int dma_chan_id;
-> +	struct dma_chan *dma_chan;
-> +	dma_cookie_t dma_cookie;
-> +	struct completion dma_complete;
-> +	void __iomem *dma_desc;
-> +};
-> +
-> +static inline struct ls1x_nand_chip *to_ls1x_nand_chip(struct mtd_info *mtd)
-> +{
-> +	return container_of(mtd_to_nand(mtd), struct ls1x_nand_chip, chip);
-> +}
-> +
-> +static void dma_callback(void *data)
-> +{
-> +	struct mtd_info *mtd = (struct mtd_info *)data;
-> +	struct nand_chip *chip = mtd_to_nand(mtd);
-> +	struct ls1x_nand_controller *nandc = nand_get_controller_data(chip);
+Gr{oetje,eeting}s,
 
-And you should not retrieve the controller this way. You should have
-the following function to do that:
+                        Geert
 
-static struct ls1x_nand_controller *
-to_ls1x_nand_controller(struct nand_hw_control *controller)
-{
-	return container_of(controller, struct ls1x_nand_controller,
-			    base);
-}
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-and then do
-	struct ls1x_nand_controller *nandc =
-			to_ls1x_nand_controller(chip->controller);
-
-nand_{get,set}_controller_data() are here to retrieve/assign per-chip
-private data, so in you case, you could store your pdata in there. 
-
-> +	struct dma_tx_state state;
-> +	enum dma_status status;
-> +
-> +	status =
-> +	    dmaengine_tx_status(nandc->dma_chan, nandc->dma_cookie, &state);
-> +	if (likely(status == DMA_COMPLETE))
-> +		dev_dbg(mtd->dev.parent, "DMA complete with cookie=%d\n",
-> +			nandc->dma_cookie);
-> +	else
-> +		dev_err(mtd->dev.parent, "DMA error with cookie=%d\n",
-> +			nandc->dma_cookie);
-> +
-> +	complete(&nandc->dma_complete);
-> +}
-> +
-> +static int setup_dma(struct mtd_info *mtd)
-> +{
-> +	struct ls1x_nand_chip *nand = to_ls1x_nand_chip(mtd);
-> +	struct nand_chip *chip = mtd_to_nand(mtd);
-> +	struct ls1x_nand_controller *nandc = nand_get_controller_data(chip);
-> +	struct dma_slave_config cfg;
-> +	dma_cap_mask_t mask;
-> +	int ret;
-> +
-> +	if (!nand->pdata->dma_filter) {
-> +		dev_err(mtd->dev.parent, "no DMA filter\n");
-> +		return -ENOENT;
-> +	}
-> +
-> +	/* allocate DMA buffer */
-> +	nandc->dma_buf = devm_kzalloc(mtd->dev.parent,
-> +				      mtd->writesize + mtd->oobsize,
-> +				      GFP_KERNEL);
-> +	if (!nandc->dma_buf)
-> +		return -ENOMEM;
-> +
-> +	dma_cap_zero(mask);
-> +	dma_cap_set(DMA_SLAVE, mask);
-> +	nandc->dma_chan = dma_request_channel(mask, nand->pdata->dma_filter,
-> +					      &nandc->dma_chan_id);
-> +	if (!nandc->dma_chan) {
-> +		dev_err(mtd->dev.parent, "failed to request DMA channel\n");
-> +		return -EBUSY;
-> +	}
-> +	dev_info(mtd->dev.parent, "got %s for %s access\n",
-> +		 dma_chan_name(nandc->dma_chan), dev_name(mtd->dev.parent));
-> +
-> +	cfg.src_addr = CPHYSADDR(nandc->reg_base + NAND_DMA_ADDR);
-> +	cfg.dst_addr = CPHYSADDR(nandc->reg_base + NAND_DMA_ADDR);
-> +	cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-> +	cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-> +	ret = dmaengine_slave_config(nandc->dma_chan, &cfg);
-> +	if (ret) {
-> +		dev_err(mtd->dev.parent, "failed to config DMA channel\n");
-> +		dma_release_channel(nandc->dma_chan);
-> +		return ret;
-> +	}
-> +
-> +	init_completion(&nandc->dma_complete);
-> +
-> +	return 0;
-> +}
-> +
-> +static int start_dma(struct mtd_info *mtd, unsigned int len, bool is_write)
-> +{
-> +	struct nand_chip *chip = mtd_to_nand(mtd);
-> +	struct ls1x_nand_controller *nandc = nand_get_controller_data(chip);
-> +	struct dma_chan *chan = nandc->dma_chan;
-> +	struct dma_async_tx_descriptor *desc;
-> +	enum dma_data_direction data_dir =
-> +	    is_write ? DMA_TO_DEVICE : DMA_FROM_DEVICE;
-> +	enum dma_transfer_direction xfer_dir =
-> +	    is_write ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM;
-> +	dma_addr_t dma_addr;
-> +	int ret;
-> +
-> +	dma_addr =
-> +	    dma_map_single(chan->device->dev, nandc->dma_buf, len, data_dir);
-> +	if (dma_mapping_error(chan->device->dev, dma_addr)) {
-> +		dev_err(mtd->dev.parent, "failed to map DMA buffer\n");
-> +		return -ENXIO;
-> +	}
-> +
-> +	desc = dmaengine_prep_slave_single(chan, dma_addr, len, xfer_dir,
-> +					   DMA_PREP_INTERRUPT);
-> +	if (!desc) {
-> +		dev_err(mtd->dev.parent, "failed to prepare DMA descriptor\n");
-> +		ret = PTR_ERR(desc);
-> +		goto err;
-> +	}
-> +	desc->callback = dma_callback;
-> +	desc->callback_param = mtd;
-> +
-> +	nandc->dma_cookie = dmaengine_submit(desc);
-> +	ret = dma_submit_error(nandc->dma_cookie);
-> +	if (ret) {
-> +		dev_err(mtd->dev.parent, "failed to submit DMA descriptor\n");
-> +		goto err;
-> +	}
-> +
-> +	dev_dbg(mtd->dev.parent, "issue DMA with cookie=%d\n",
-> +		nandc->dma_cookie);
-> +	dma_async_issue_pending(chan);
-> +
-> +	ret = wait_for_completion_timeout(&nandc->dma_complete,
-> +					  msecs_to_jiffies(LS1X_NAND_TIMEOUT));
-> +	if (ret <= 0) {
-> +		dev_err(mtd->dev.parent, "DMA timeout\n");
-> +		dmaengine_terminate_all(chan);
-> +		ret = -EIO;
-> +	}
-> +	ret = 0;
-> +err:
-> +	dma_unmap_single(chan->device->dev, dma_addr, len, data_dir);
-> +
-> +	return ret;
-> +}
-> +
-> +static void ls1x_nand_select_chip(struct mtd_info *mtd, int chip)
-> +{
-> +}
-> +
-> +static int ls1x_nand_dev_ready(struct mtd_info *mtd)
-> +{
-> +	struct nand_chip *chip = mtd_to_nand(mtd);
-> +	struct ls1x_nand_controller *nandc = nand_get_controller_data(chip);
-> +
-> +	if (nand_readl(nandc, NAND_CMD) & OP_DONE)
-
-If the OP_DONE flag is really encoding the R/B pin status (as you
-explained in a previous answer), then I would rename it NAND_RDY or
-something like that.
-
-> +		return 1;
-> +
-> +	return 0;
-> +}
-> +
-> +static uint8_t ls1x_nand_read_byte(struct mtd_info *mtd)
-> +{
-> +	struct nand_chip *chip = mtd_to_nand(mtd);
-> +	struct ls1x_nand_controller *nandc = nand_get_controller_data(chip);
-> +
-> +	return *(nandc->data_ptr++);
-> +}
-> +
-> +static void ls1x_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-> +{
-> +	struct nand_chip *chip = mtd_to_nand(mtd);
-> +	struct ls1x_nand_controller *nandc = nand_get_controller_data(chip);
-> +
-> +	int real_len = min_t(size_t, len, nandc->buf_len - nandc->buf_off);
-> +
-> +	memcpy(buf, nandc->dma_buf + nandc->buf_off, real_len);
-> +	nandc->buf_off += real_len;
-> +}
-> +
-> +static void ls1x_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf,
-> +				int len)
-> +{
-> +	struct nand_chip *chip = mtd_to_nand(mtd);
-> +	struct ls1x_nand_controller *nandc = nand_get_controller_data(chip);
-> +
-> +	int real_len = min_t(size_t, len, nandc->buf_len - nandc->buf_off);
-> +
-> +	memcpy(nandc->dma_buf + nandc->buf_off, buf, real_len);
-> +	nandc->buf_off += real_len;
-> +}
-
-Still not happy with these ->{read,write}_{buf,byte}() implementations.
-As explained, you should not guess how many bytes will be read when
-->cmdfunc() is called, and this is what your doing.
-What if you didn't get it right?
-
-Just try to send the command when you really know how much should be
-read/written.
-
-The other approach would be to switch to this "high-level NAND
-controller" driver design, but it's not there yet.
-
-
--- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

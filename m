@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 23:39:44 +0200 (CEST)
-Received: from aserp1040.oracle.com ([141.146.126.69]:39935 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 23:40:06 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:39945 "EHLO
         aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042091AbcFCVijDaxY4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 23:38:39 +0200
-Received: from userv0022.oracle.com (userv0022.oracle.com [156.151.31.74])
-        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u53LcTDj010723
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 3 Jun 2016 21:38:29 GMT
+        with ESMTP id S27042092AbcFCVikM1Ca4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 23:38:40 +0200
+Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u53LcU8L010728
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 3 Jun 2016 21:38:30 GMT
 Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userv0022.oracle.com (8.14.4/8.13.8) with ESMTP id u53LcS9v005572
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 3 Jun 2016 21:38:28 GMT
+        by aserv0022.oracle.com (8.13.8/8.13.8) with ESMTP id u53LcURu006947
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 3 Jun 2016 21:38:30 GMT
 Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u53LcSk4026055;
-        Fri, 3 Jun 2016 21:38:28 GMT
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id u53LcTBS026061;
+        Fri, 3 Jun 2016 21:38:29 GMT
 Received: from lappy.us.oracle.com (/10.154.190.197)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Jun 2016 14:38:27 -0700
+        with ESMTP ; Fri, 03 Jun 2016 14:38:29 -0700
 From:   Sasha Levin <sasha.levin@oracle.com>
 To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
 Cc:     James Hogan <james.hogan@imgtec.com>,
@@ -25,21 +25,21 @@ Cc:     James Hogan <james.hogan@imgtec.com>,
         <rkrcmar@redhat.com>, Ralf Baechle <ralf@linux-mips.org>,
         linux-mips@linux-mips.org, kvm@vger.kernel.org,
         Sasha Levin <sasha.levin@oracle.com>
-Subject: [added to the 4.1 stable tree] MIPS: KVM: Fix timer IRQ race when freezing timer
-Date:   Fri,  3 Jun 2016 17:36:11 -0400
-Message-Id: <1464989831-16666-76-git-send-email-sasha.levin@oracle.com>
+Subject: [added to the 4.1 stable tree] MIPS: KVM: Fix timer IRQ race when writing CP0_Compare
+Date:   Fri,  3 Jun 2016 17:36:12 -0400
+Message-Id: <1464989831-16666-77-git-send-email-sasha.levin@oracle.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1464989831-16666-1-git-send-email-sasha.levin@oracle.com>
 References: <1464989831-16666-1-git-send-email-sasha.levin@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Source-IP: userv0022.oracle.com [156.151.31.74]
+X-Source-IP: aserv0022.oracle.com [141.146.126.234]
 Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53786
+X-archive-position: 53787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,34 +63,22 @@ objections, please let us know.
 
 ===============
 
-[ Upstream commit 4355c44f063d3de4f072d796604c7f4ba4085cc3 ]
+[ Upstream commit b45bacd2d048f405c7760e5cc9b60dd67708734f ]
 
-There's a particularly narrow and subtle race condition when the
-software emulated guest timer is frozen which can allow a guest timer
-interrupt to be missed.
+Writing CP0_Compare clears the timer interrupt pending bit
+(CP0_Cause.TI), but this wasn't being done atomically. If a timer
+interrupt raced with the write of the guest CP0_Compare, the timer
+interrupt could end up being pending even though the new CP0_Compare is
+nowhere near CP0_Count.
 
-This happens due to the hrtimer expiry being inexact, so very
-occasionally the freeze time will be after the moment when the emulated
-CP0_Count transitions to the same value as CP0_Compare (so an IRQ should
-be generated), but before the moment when the hrtimer is due to expire
-(so no IRQ is generated). The IRQ won't be generated when the timer is
-resumed either, since the resume CP0_Count will already match CP0_Compare.
-
-With VZ guests in particular this is far more likely to happen, since
-the soft timer may be frozen frequently in order to restore the timer
-state to the hardware guest timer. This happens after 5-10 hours of
-guest soak testing, resulting in an overflow in guest kernel timekeeping
-calculations, hanging the guest. A more focussed test case to
-intentionally hit the race (with the help of a new hypcall to cause the
-timer state to migrated between hardware & software) hits the condition
-fairly reliably within around 30 seconds.
-
-Instead of relying purely on the inexact hrtimer expiry to determine
-whether an IRQ should be generated, read the guest CP0_Compare and
-directly check whether the freeze time is before or after it. Only if
-CP0_Count is on or after CP0_Compare do we check the hrtimer expiry to
-determine whether the last IRQ has already been generated (which will
-have pushed back the expiry by one timer period).
+We were already updating the hrtimer expiry with
+kvm_mips_update_hrtimer(), which used both kvm_mips_freeze_hrtimer() and
+kvm_mips_resume_hrtimer(). Close the race window by expanding out
+kvm_mips_update_hrtimer(), and clearing CP0_Cause.TI and setting
+CP0_Compare between the freeze and resume. Since the pending timer
+interrupt should not be cleared when CP0_Compare is written via the KVM
+user API, an ack argument is added to distinguish the source of the
+write.
 
 Fixes: e30492bbe95a ("MIPS: KVM: Rewrite count/compare timer emulation")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
@@ -103,57 +91,134 @@ Cc: <stable@vger.kernel.org> # 3.16.x-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
 ---
- arch/mips/kvm/emulate.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/kvm_host.h |  2 +-
+ arch/mips/kvm/emulate.c          | 61 ++++++++++++++++++----------------------
+ arch/mips/kvm/trap_emul.c        |  2 +-
+ 3 files changed, 29 insertions(+), 36 deletions(-)
 
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 4c25823..3585af0 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -782,7 +782,7 @@ extern enum emulation_result kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu,
+ 
+ uint32_t kvm_mips_read_count(struct kvm_vcpu *vcpu);
+ void kvm_mips_write_count(struct kvm_vcpu *vcpu, uint32_t count);
+-void kvm_mips_write_compare(struct kvm_vcpu *vcpu, uint32_t compare);
++void kvm_mips_write_compare(struct kvm_vcpu *vcpu, uint32_t compare, bool ack);
+ void kvm_mips_init_count(struct kvm_vcpu *vcpu);
+ int kvm_mips_set_count_ctl(struct kvm_vcpu *vcpu, s64 count_ctl);
+ int kvm_mips_set_count_resume(struct kvm_vcpu *vcpu, s64 count_resume);
 diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 41b1b09..eaf77b5 100644
+index eaf77b5..dc10c77 100644
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -302,12 +302,31 @@ static inline ktime_t kvm_mips_count_time(struct kvm_vcpu *vcpu)
-  */
- static uint32_t kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t now)
- {
--	ktime_t expires;
-+	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	ktime_t expires, threshold;
-+	uint32_t count, compare;
- 	int running;
- 
--	/* Is the hrtimer pending? */
-+	/* Calculate the biased and scaled guest CP0_Count */
-+	count = vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
-+	compare = kvm_read_c0_guest_compare(cop0);
-+
-+	/*
-+	 * Find whether CP0_Count has reached the closest timer interrupt. If
-+	 * not, we shouldn't inject it.
-+	 */
-+	if ((int32_t)(count - compare) < 0)
-+		return count;
-+
-+	/*
-+	 * The CP0_Count we're going to return has already reached the closest
-+	 * timer interrupt. Quickly check if it really is a new interrupt by
-+	 * looking at whether the interval until the hrtimer expiry time is
-+	 * less than 1/4 of the timer period.
-+	 */
- 	expires = hrtimer_get_expires(&vcpu->arch.comparecount_timer);
--	if (ktime_compare(now, expires) >= 0) {
-+	threshold = ktime_add_ns(now, vcpu->arch.count_period / 4);
-+	if (ktime_before(expires, threshold)) {
- 		/*
- 		 * Cancel it while we handle it so there's no chance of
- 		 * interference with the timeout handler.
-@@ -329,8 +348,7 @@ static uint32_t kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t now)
- 		}
- 	}
- 
--	/* Return the biased and scaled guest CP0_Count */
--	return vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
-+	return count;
+@@ -438,32 +438,6 @@ static void kvm_mips_resume_hrtimer(struct kvm_vcpu *vcpu,
  }
  
  /**
+- * kvm_mips_update_hrtimer() - Update next expiry time of hrtimer.
+- * @vcpu:	Virtual CPU.
+- *
+- * Recalculates and updates the expiry time of the hrtimer. This can be used
+- * after timer parameters have been altered which do not depend on the time that
+- * the change occurs (in those cases kvm_mips_freeze_hrtimer() and
+- * kvm_mips_resume_hrtimer() are used directly).
+- *
+- * It is guaranteed that no timer interrupts will be lost in the process.
+- *
+- * Assumes !kvm_mips_count_disabled(@vcpu) (guest CP0_Count timer is running).
+- */
+-static void kvm_mips_update_hrtimer(struct kvm_vcpu *vcpu)
+-{
+-	ktime_t now;
+-	uint32_t count;
+-
+-	/*
+-	 * freeze_hrtimer takes care of a timer interrupts <= count, and
+-	 * resume_hrtimer the hrtimer takes care of a timer interrupts > count.
+-	 */
+-	now = kvm_mips_freeze_hrtimer(vcpu, &count);
+-	kvm_mips_resume_hrtimer(vcpu, now, count);
+-}
+-
+-/**
+  * kvm_mips_write_count() - Modify the count and update timer.
+  * @vcpu:	Virtual CPU.
+  * @count:	Guest CP0_Count value to set.
+@@ -558,23 +532,42 @@ int kvm_mips_set_count_hz(struct kvm_vcpu *vcpu, s64 count_hz)
+  * kvm_mips_write_compare() - Modify compare and update timer.
+  * @vcpu:	Virtual CPU.
+  * @compare:	New CP0_Compare value.
++ * @ack:	Whether to acknowledge timer interrupt.
+  *
+  * Update CP0_Compare to a new value and update the timeout.
++ * If @ack, atomically acknowledge any pending timer interrupt, otherwise ensure
++ * any pending timer interrupt is preserved.
+  */
+-void kvm_mips_write_compare(struct kvm_vcpu *vcpu, uint32_t compare)
++void kvm_mips_write_compare(struct kvm_vcpu *vcpu, uint32_t compare, bool ack)
+ {
+ 	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	int dc;
++	u32 old_compare = kvm_read_c0_guest_compare(cop0);
++	ktime_t now;
++	uint32_t count;
+ 
+ 	/* if unchanged, must just be an ack */
+-	if (kvm_read_c0_guest_compare(cop0) == compare)
++	if (old_compare == compare) {
++		if (!ack)
++			return;
++		kvm_mips_callbacks->dequeue_timer_int(vcpu);
++		kvm_write_c0_guest_compare(cop0, compare);
+ 		return;
++	}
++
++	/* freeze_hrtimer() takes care of timer interrupts <= count */
++	dc = kvm_mips_count_disabled(vcpu);
++	if (!dc)
++		now = kvm_mips_freeze_hrtimer(vcpu, &count);
++
++	if (ack)
++		kvm_mips_callbacks->dequeue_timer_int(vcpu);
+ 
+-	/* Update compare */
+ 	kvm_write_c0_guest_compare(cop0, compare);
+ 
+-	/* Update timeout if count enabled */
+-	if (!kvm_mips_count_disabled(vcpu))
+-		kvm_mips_update_hrtimer(vcpu);
++	/* resume_hrtimer() takes care of timer interrupts > count */
++	if (!dc)
++		kvm_mips_resume_hrtimer(vcpu, now, count);
+ }
+ 
+ /**
+@@ -1113,9 +1106,9 @@ enum emulation_result kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc,
+ 
+ 				/* If we are writing to COMPARE */
+ 				/* Clear pending timer interrupt, if any */
+-				kvm_mips_callbacks->dequeue_timer_int(vcpu);
+ 				kvm_mips_write_compare(vcpu,
+-						       vcpu->arch.gprs[rt]);
++						       vcpu->arch.gprs[rt],
++						       true);
+ 			} else if ((rd == MIPS_CP0_STATUS) && (sel == 0)) {
+ 				unsigned int old_val, val, change;
+ 
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index d836ed5..307cc4c 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -547,7 +547,7 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
+ 		kvm_mips_write_count(vcpu, v);
+ 		break;
+ 	case KVM_REG_MIPS_CP0_COMPARE:
+-		kvm_mips_write_compare(vcpu, v);
++		kvm_mips_write_compare(vcpu, v, false);
+ 		break;
+ 	case KVM_REG_MIPS_CP0_CAUSE:
+ 		/*
 -- 
 2.5.0

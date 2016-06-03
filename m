@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 09:17:13 +0200 (CEST)
-Received: from mail-it0-f68.google.com ([209.85.214.68]:34301 "EHLO
-        mail-it0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27033863AbcFCHRGoqf70 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 09:17:06 +0200
-Received: by mail-it0-f68.google.com with SMTP id k76so6766813ita.1;
-        Fri, 03 Jun 2016 00:17:06 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2016 09:18:55 +0200 (CEST)
+Received: from mail-io0-f195.google.com ([209.85.223.195]:33174 "EHLO
+        mail-io0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27033863AbcFCHSwp6yr0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2016 09:18:52 +0200
+Received: by mail-io0-f195.google.com with SMTP id p194so9324666iod.0;
+        Fri, 03 Jun 2016 00:18:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=uCnxmB1T8a+4D+O4zpeSlaaz1Cfb9og2oC3TvgHjcRE=;
-        b=XIORJNb9acrmFYpTUR+IydSRCx8p6NgGzpCDttIL5VB/L08CUzbSmTqpRHktZyYUZk
-         Go4zRKJacq1XlR3GT11LQgHQA01kmYoADP4XCzXbsprp9X+xuzWcfEq3nPpJSSmma0Ei
-         gKX0mAfwzQs6bSr+KsOv17G1rSmnnUpKoN27qXpI3bSGAMN8Blv3fUGD01NZA9wpqD/W
-         su2VN8g+513h7RqBGkULEsGhpmHyEVyMEBc0jI2g0r21XTZXJyfQPAKuQWmunmUGSynV
-         OO6U5Mk+Rcu7XK3z2sf+o0382n0j1kJtR7CRg3XHQWb32Dp16dsTNrxFhYhefbMSpbOx
-         5onw==
+        bh=jIY200dkr0Im0Nsw6RsCa7Od3Dei8w4fvOA20nIr4O4=;
+        b=PYp8TXLrVN4uifinjkSMkte/3Hjzt3AEC8ongcuiSyeBUTwGudO4IMxw1qlPHMV7f7
+         fvbxNCw2V131NhXB6cNkPNte+tkh/SV2GNrhL4Fo4mIhGRsG5qC9Ma7QgBMBLxqUURH3
+         1ftH9Us/EfFYUQUoEwKsTC44S7rja2/SuTKX10MD7FCvfbxG84aOMUjhGwbqpQG9qQQH
+         qF6bHDeA/TpEXoP8IUZyxNGJGZnh92KbgBaTV8t9e+oPE3uwXGf8vqIle3kpHyNcpAQg
+         ToffMrusv9xlVo6OqV7Td/xOv7nLwNFg1zAc+UJTwgnc7G7TLuyv9Ra8w7mjN7/UaPah
+         6RxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=uCnxmB1T8a+4D+O4zpeSlaaz1Cfb9og2oC3TvgHjcRE=;
-        b=aKFyxbm6GgsDgWBkE34AngPoBXmhtjA8Xp++xsKvnobfMecZVyeyrTs5bJFnLEQVMq
-         RfPG/FDiQmOefb55qcdmG87TcZlrRs9n+dv+pa3+G5INjMvulX49wAnTzUD4RXix57Fv
-         7eOT4t0Qs5/NrV5WndHwbV/Fwsx1eH4M+t9LKjSk8rsoYVIvm6/xImaVFzvo5Orlv6SI
-         B9f+E617vpHNq5CBnpIh4Wsj8Djwe/S3LF79uxnXpPZCOw3wFA0TrlYaQhwar9Tk09zJ
-         mV4Im7qfs84Z1C/n6JCQXoR5WktwNYAx8HJl9m05uZxP7XqcUvGzFHdZXyK4cMGpaBwR
-         GTZg==
-X-Gm-Message-State: ALyK8tLO2CdXsPzUQY6/W+VJeav+FeOGU3HLwxrCoFxUwQbJkUnlgt8mrbO/UCbqUMAuLPFAIa3DJJ5lKA+wSw==
-X-Received: by 10.36.101.74 with SMTP id u71mr3141924itb.92.1464938220979;
- Fri, 03 Jun 2016 00:17:00 -0700 (PDT)
+        bh=jIY200dkr0Im0Nsw6RsCa7Od3Dei8w4fvOA20nIr4O4=;
+        b=ld5oBG3tCKvi81egbXlGJ4lG9Ljq45s6deVWSkdgUb2GCjBU8HuwDfWDjhRezlGKxM
+         5LqjovazQaT+YK15+dsbUtDdno6oXgIFoBedGd4HvSXF0m+2ayy07FYrZCX1VaN64Khr
+         KoR5uZbGpUmTDUfJdGGiepAvCJKRXuYEqlojWGcVNRCUKBuq1j0kJjeoduBmxHutvXAX
+         MyOmLVOJ6tJms7OeNxFi9u1Xh5H7fp17rA9s9rbrjy90mvlpPvSyzBdPM6GyFB56pG79
+         3ApGOh3zhF+zJwcuRVwyhnkGRWfrkaaHLN+rw3/qNvPmYmW/puqvwQ2wjEs3TzsQEI+W
+         nFjg==
+X-Gm-Message-State: ALyK8tKgCqPGFOqleB03v+QckxAqBOomVDy/hG1v3m6ffdmBwMg8cn7g7ViIwAQY9dTcmCHzxnA8YXh6I/whtQ==
+X-Received: by 10.107.43.214 with SMTP id r205mr178678ior.81.1464938325613;
+ Fri, 03 Jun 2016 00:18:45 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.33.135 with HTTP; Fri, 3 Jun 2016 00:17:00 -0700 (PDT)
-In-Reply-To: <1464881987-13203-3-git-send-email-k.kozlowski@samsung.com>
-References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com> <1464881987-13203-3-git-send-email-k.kozlowski@samsung.com>
+Received: by 10.107.33.135 with HTTP; Fri, 3 Jun 2016 00:18:44 -0700 (PDT)
+In-Reply-To: <1464881987-13203-30-git-send-email-k.kozlowski@samsung.com>
+References: <1464881987-13203-1-git-send-email-k.kozlowski@samsung.com> <1464881987-13203-30-git-send-email-k.kozlowski@samsung.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 3 Jun 2016 09:17:00 +0200
-X-Google-Sender-Auth: GCG0-9JKwZfBT34SARukq3iRTrU
-Message-ID: <CAMuHMdXWMf7Dt77wSUj8NytQqb99jzDiAz46kJkAEz+6BX3Uvw@mail.gmail.com>
-Subject: Re: [RFC v3 02/45] dma-mapping: Use unsigned long for dma_attrs
+Date:   Fri, 3 Jun 2016 09:18:44 +0200
+X-Google-Sender-Auth: Vppcn6N8ye2iblggr44rVIFH_p4
+Message-ID: <CAMuHMdXpMu6iuSYRJwyqP8mx_A9cAnsgkTh-8nU+JMpD4f2-SA@mail.gmail.com>
+Subject: Re: [RFC v3 29/45] m68k: dma-mapping: Use unsigned long for dma_attrs
 To:     Krzysztof Kozlowski <k.kozlowski@samsung.com>
 Cc:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -132,7 +132,7 @@ Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53771
+X-archive-position: 53772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -149,29 +149,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Krzysztof,
-
 On Thu, Jun 2, 2016 at 5:39 PM, Krzysztof Kozlowski
 <k.kozlowski@samsung.com> wrote:
-> --- a/include/linux/dma-mapping.h
-> +++ b/include/linux/dma-mapping.h
-> @@ -5,13 +5,25 @@
+> Split out subsystem specific changes for easier reviews. This will be
+> squashed with main commit.
+>
+> Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 
-> +/**
-> + * List of possible attributes associated with a DMA mapping. The semantics
-> + * of each attribute should be defined in Documentation/DMA-attributes.txt.
-> + */
-> +#define DMA_ATTR_WRITE_BARRIER         (1UL << 1)
+Looks good.
 
-Any particular reason they start at 2, not 1?
-
-> +#define DMA_ATTR_WEAK_ORDERING         (1UL << 2)
-> +#define DMA_ATTR_WRITE_COMBINE         (1UL << 3)
-> +#define DMA_ATTR_NON_CONSISTENT                (1UL << 4)
-> +#define DMA_ATTR_NO_KERNEL_MAPPING     (1UL << 5)
-> +#define DMA_ATTR_SKIP_CPU_SYNC         (1UL << 6)
-> +#define DMA_ATTR_FORCE_CONTIGUOUS      (1UL << 7)
-> +#define DMA_ATTR_ALLOC_SINGLE_PAGES    (1UL << 8)
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
 Gr{oetje,eeting}s,
 

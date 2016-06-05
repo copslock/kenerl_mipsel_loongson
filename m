@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:57:52 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60498 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:58:10 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60521 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042485AbcFEVxEnYtZp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:04 +0200
+        by eddie.linux-mips.org with ESMTP id S27042486AbcFEVxF1pc0p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:05 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 63AFE957;
-        Sun,  5 Jun 2016 21:53:03 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 89FA5954;
+        Sun,  5 Jun 2016 21:52:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 004/121] MIPS: MSA: Fix a link error on `_init_msa_upper with older GCC
-Date:   Sun,  5 Jun 2016 14:42:36 -0700
-Message-Id: <20160605214417.845929522@linuxfoundation.org>
+Subject: [PATCH 4.6 023/121] MIPS: Fix sigreturn via VDSO on microMIPS kernel
+Date:   Sun,  5 Jun 2016 14:42:55 -0700
+Message-Id: <20160605214418.412873356@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53852
+X-archive-position: 53853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,85 +46,51 @@ X-list: linux-mips
 
 ------------------
 
-From: Maciej W. Rozycki <macro@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit e49d38488515057dba8f0c2ba4cfde5be4a7281f upstream.
+commit 13eb192d10bcc9ac518d57356179071d603bcb4e upstream.
 
-Fix a build regression from commit c9017757c532 ("MIPS: init upper 64b
-of vector registers when MSA is first used"):
+In microMIPS kernels, handle_signal() sets the isa16 mode bit in the
+vdso address so that the sigreturn trampolines (which are offset from
+the VDSO) get executed as microMIPS.
 
-arch/mips/built-in.o: In function `enable_restore_fp_context':
-traps.c:(.text+0xbb90): undefined reference to `_init_msa_upper'
-traps.c:(.text+0xbb90): relocation truncated to fit: R_MIPS_26 against `_init_msa_upper'
-traps.c:(.text+0xbef0): undefined reference to `_init_msa_upper'
-traps.c:(.text+0xbef0): relocation truncated to fit: R_MIPS_26 against `_init_msa_upper'
+However commit ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+changed the offsets to come from the VDSO image, which already have the
+isa16 mode bit set correctly since they're extracted from the VDSO
+shared library symbol table.
 
-to !CONFIG_CPU_HAS_MSA configurations with older GCC versions, which are
-unable to figure out that calls to `_init_msa_upper' are indeed dead.
-Of the many ways to tackle this failure choose the approach we have
-already taken in `thread_msa_context_live'.
+Drop the isa16 mode bit handling from handle_signal() to fix sigreturn
+for cores which support both microMIPS and normal MIPS. This doesn't fix
+microMIPS only cores, since the VDSO is still built for normal MIPS, but
+thats a separate problem.
 
-[ralf@linux-mips.org: Drop patch segment to junk file.]
-
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13271/
+Patchwork: https://patchwork.linux-mips.org/patch/13348/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/msa.h |   13 +++++++++++++
- arch/mips/kernel/traps.c    |    6 +++---
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ arch/mips/kernel/signal.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/arch/mips/include/asm/msa.h
-+++ b/arch/mips/include/asm/msa.h
-@@ -147,6 +147,19 @@ static inline void restore_msa(struct ta
- 		_restore_msa(t);
- }
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -770,15 +770,7 @@ static void handle_signal(struct ksignal
+ 	sigset_t *oldset = sigmask_to_save();
+ 	int ret;
+ 	struct mips_abi *abi = current->thread.abi;
+-#ifdef CONFIG_CPU_MICROMIPS
+-	void *vdso;
+-	unsigned long tmp = (unsigned long)current->mm->context.vdso;
+-
+-	set_isa16_mode(tmp);
+-	vdso = (void *)tmp;
+-#else
+ 	void *vdso = current->mm->context.vdso;
+-#endif
  
-+static inline void init_msa_upper(void)
-+{
-+	/*
-+	 * Check cpu_has_msa only if it's a constant. This will allow the
-+	 * compiler to optimise out code for CPUs without MSA without adding
-+	 * an extra redundant check for CPUs with MSA.
-+	 */
-+	if (__builtin_constant_p(cpu_has_msa) && !cpu_has_msa)
-+		return;
-+
-+	_init_msa_upper();
-+}
-+
- #ifdef TOOLCHAIN_SUPPORTS_MSA
- 
- #define __BUILD_MSA_CTL_REG(name, cs)				\
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1249,7 +1249,7 @@ static int enable_restore_fp_context(int
- 		err = init_fpu();
- 		if (msa && !err) {
- 			enable_msa();
--			_init_msa_upper();
-+			init_msa_upper();
- 			set_thread_flag(TIF_USEDMSA);
- 			set_thread_flag(TIF_MSA_CTX_LIVE);
- 		}
-@@ -1312,7 +1312,7 @@ static int enable_restore_fp_context(int
- 	 */
- 	prior_msa = test_and_set_thread_flag(TIF_MSA_CTX_LIVE);
- 	if (!prior_msa && was_fpu_owner) {
--		_init_msa_upper();
-+		init_msa_upper();
- 
- 		goto out;
- 	}
-@@ -1329,7 +1329,7 @@ static int enable_restore_fp_context(int
- 		 * of each vector register such that it cannot see data left
- 		 * behind by another task.
- 		 */
--		_init_msa_upper();
-+		init_msa_upper();
- 	} else {
- 		/* We need to restore the vector context. */
- 		restore_msa(current);
+ 	if (regs->regs[0]) {
+ 		switch(regs->regs[2]) {

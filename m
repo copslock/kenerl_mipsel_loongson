@@ -1,23 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:26:28 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32901 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:26:54 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32946 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042505AbcFEWYwn7cmq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:52 +0200
+        by eddie.linux-mips.org with ESMTP id S27042507AbcFEWY5tjkIj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:57 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C9BBE892;
-        Sun,  5 Jun 2016 22:24:46 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F3BCF2C;
+        Sun,  5 Jun 2016 22:24:47 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J . Hill" <sjhill@realitydiluted.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 014/128] MIPS: Loongson-3: Reserve 32MB for RS780E integrated GPU
-Date:   Sun,  5 Jun 2016 15:22:49 -0700
-Message-Id: <20160605222321.667012348@linuxfoundation.org>
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        Michal Toman <michal.toman@imgtec.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.5 017/128] MIPS: Prevent "restoration" of MSA context in non-MSA kernels
+Date:   Sun,  5 Jun 2016 15:22:52 -0700
+Message-Id: <20160605222321.758151709@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -28,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53866
+X-archive-position: 53867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,42 +48,69 @@ X-list: linux-mips
 
 ------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit 3484de7bcbed20ecbf2b8d80671619e7059e2dd7 upstream.
+commit 6533af4d4831c421cd9aa4dce7cfc19a3514cc09 upstream.
 
-Due to datasheet, reserving 0xff800000~0xffffffff (8MB below 4GB) is
-not enough for RS780E integrated GPU's TOM (top of memory) registers
-and MSI/MSI-x memory region, so we reserve 0xfe000000~0xffffffff (32MB
-below 4GB).
+If a kernel doesn't support MSA context (ie. CONFIG_CPU_HAS_MSA=n) then
+it will only keep 64 bits per FP register in thread context, and the
+calls to set_fpr64 in restore_msa_extcontext will overrun the end of the
+FP register context into the FCSR & MSACSR values. GCC 6.x has become
+smart enough to detect this & complain like so:
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Cc: Steven J . Hill <sjhill@realitydiluted.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+    arch/mips/kernel/signal.c: In function 'protected_restore_fp_context':
+    ./arch/mips/include/asm/processor.h:114:17: error: array subscript is above array bounds [-Werror=array-bounds]
+      fpr->val##width[FPR_IDX(width, idx)] = val;   \
+      ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+    ./arch/mips/include/asm/processor.h:118:1: note: in expansion of macro 'BUILD_FPR_ACCESS'
+     BUILD_FPR_ACCESS(64)
+
+The only way to trigger this code to run would be for a program to set
+up an artificial extended MSA context structure following a sigframe &
+execute sigreturn. Whilst this doesn't allow a program to write to any
+state that it couldn't already, it makes little sense to allow this
+"restoration" of MSA context in a system that doesn't support MSA.
+
+Fix this by killing a program with SIGSYS if it tries something as crazy
+as "restoring" fake MSA context in this way, also fixing the build error
+& allowing for most of restore_msa_extcontext to be optimised out of
+kernels without support for MSA.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Reported-by: Michal Toman <michal.toman@imgtec.com>
+Fixes: bf82cb30c7e5 ("MIPS: Save MSA extended context around signals")
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Michal Toman <michal.toman@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12889/
+Patchwork: https://patchwork.linux-mips.org/patch/13164/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/loongson64/loongson-3/numa.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/kernel/signal.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/mips/loongson64/loongson-3/numa.c
-+++ b/arch/mips/loongson64/loongson-3/numa.c
-@@ -213,10 +213,10 @@ static void __init node_mem_init(unsigne
- 		BOOTMEM_DEFAULT);
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -195,6 +195,9 @@ static int restore_msa_extcontext(void _
+ 	unsigned int csr;
+ 	int i, err;
  
- 	if (node == 0 && node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT)) {
--		/* Reserve 0xff800000~0xffffffff for RS780E integrated GPU */
-+		/* Reserve 0xfe000000~0xffffffff for RS780E integrated GPU */
- 		reserve_bootmem_node(NODE_DATA(node),
--				(node_addrspace_offset | 0xff800000),
--				8 << 20, BOOTMEM_DEFAULT);
-+				(node_addrspace_offset | 0xfe000000),
-+				32 << 20, BOOTMEM_DEFAULT);
++	if (!config_enabled(CONFIG_CPU_HAS_MSA))
++		return SIGSYS;
++
+ 	if (size != sizeof(*msa))
+ 		return -EINVAL;
+ 
+@@ -398,8 +401,8 @@ int protected_restore_fp_context(void __
  	}
  
- 	sparse_memory_present_with_active_regions(node);
+ fp_done:
+-	if (used & USED_EXTCONTEXT)
+-		err |= restore_extcontext(sc_to_extcontext(sc));
++	if (!err && (used & USED_EXTCONTEXT))
++		err = restore_extcontext(sc_to_extcontext(sc));
+ 
+ 	return err ?: sig;
+ }

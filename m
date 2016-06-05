@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:55:09 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60497 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:55:26 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60498 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042479AbcFEVxD5zrgp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:03 +0200
+        by eddie.linux-mips.org with ESMTP id S27042477AbcFEVxEGIhcp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:04 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A358B94D;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 47773884;
         Sun,  5 Jun 2016 21:52:54 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Michal Toman <michal.toman@imgtec.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
         James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 019/121] MIPS: Prevent "restoration" of MSA context in non-MSA kernels
-Date:   Sun,  5 Jun 2016 14:42:51 -0700
-Message-Id: <20160605214418.293609787@linuxfoundation.org>
+Subject: [PATCH 4.6 018/121] MIPS: Force CPUs to lose FP context during mode switches
+Date:   Sun,  5 Jun 2016 14:42:50 -0700
+Message-Id: <20160605214418.264480942@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53844
+X-archive-position: 53845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,67 +50,107 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@imgtec.com>
 
-commit 6533af4d4831c421cd9aa4dce7cfc19a3514cc09 upstream.
+commit 6b8322576e9d325b65c54fbef64e4e8690ad70ce upstream.
 
-If a kernel doesn't support MSA context (ie. CONFIG_CPU_HAS_MSA=n) then
-it will only keep 64 bits per FP register in thread context, and the
-calls to set_fpr64 in restore_msa_extcontext will overrun the end of the
-FP register context into the FCSR & MSACSR values. GCC 6.x has become
-smart enough to detect this & complain like so:
+Commit 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options
+for MIPS") added support for the PR_SET_FP_MODE prctl, which allows a
+userland program to modify its FP mode at runtime. This is most notably
+required if dynamic linking leads to the FP mode requirement changing at
+runtime from that indicated in the initial executable's ELF header. In
+order to avoid overhead in the general FP context restore code, it aimed
+to have threads in the process become unable to enable the FPU during a
+mode switch & have the thread calling the prctl syscall wait for all
+other threads in the process to be context switched at least once. Once
+that happens we can know that no thread in the process whose mode will
+be switched has live FP context, and it's safe to perform the mode
+switch. However in the (rare) case of modeswitches occurring in
+multithreaded programs this can lead to indeterminate delays for the
+thread invoking the prctl syscall, and the code monitoring for those
+context switches was woefully inadequate for all but the simplest cases.
 
-    arch/mips/kernel/signal.c: In function 'protected_restore_fp_context':
-    ./arch/mips/include/asm/processor.h:114:17: error: array subscript is above array bounds [-Werror=array-bounds]
-      fpr->val##width[FPR_IDX(width, idx)] = val;   \
-      ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
-    ./arch/mips/include/asm/processor.h:118:1: note: in expansion of macro 'BUILD_FPR_ACCESS'
-     BUILD_FPR_ACCESS(64)
-
-The only way to trigger this code to run would be for a program to set
-up an artificial extended MSA context structure following a sigframe &
-execute sigreturn. Whilst this doesn't allow a program to write to any
-state that it couldn't already, it makes little sense to allow this
-"restoration" of MSA context in a system that doesn't support MSA.
-
-Fix this by killing a program with SIGSYS if it tries something as crazy
-as "restoring" fake MSA context in this way, also fixing the build error
-& allowing for most of restore_msa_extcontext to be optimised out of
-kernels without support for MSA.
+Fix this by broadcasting an IPI if other CPUs may have live FP context
+for an affected thread, with a handler causing those CPUs to relinquish
+their FPU ownership. Threads will then be allowed to continue running
+but will stall on the wait_on_atomic_t in enable_restore_fp_context if
+they attempt to use FP again whilst the mode switch is still in
+progress. The end result is less fragile poking at scheduler context
+switch counts & a more expedient completion of the mode switch.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reported-by: Michal Toman <michal.toman@imgtec.com>
-Fixes: bf82cb30c7e5 ("MIPS: Save MSA extended context around signals")
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+Cc: Adam Buchbinder <adam.buchbinder@gmail.com>
 Cc: James Hogan <james.hogan@imgtec.com>
-Cc: Michal Toman <michal.toman@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13164/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13145/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/signal.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/kernel/process.c |   40 +++++++++++++++++-----------------------
+ 1 file changed, 17 insertions(+), 23 deletions(-)
 
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -195,6 +195,9 @@ static int restore_msa_extcontext(void _
- 	unsigned int csr;
- 	int i, err;
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -580,11 +580,19 @@ int mips_get_process_fp_mode(struct task
+ 	return value;
+ }
  
-+	if (!config_enabled(CONFIG_CPU_HAS_MSA))
-+		return SIGSYS;
++static void prepare_for_fp_mode_switch(void *info)
++{
++	struct mm_struct *mm = info;
 +
- 	if (size != sizeof(*msa))
- 		return -EINVAL;
++	if (current->mm == mm)
++		lose_fpu(1);
++}
++
+ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
+ {
+ 	const unsigned int known_bits = PR_FP_MODE_FR | PR_FP_MODE_FRE;
+-	unsigned long switch_count;
+ 	struct task_struct *t;
++	int max_users;
  
-@@ -398,8 +401,8 @@ int protected_restore_fp_context(void __
+ 	/* Check the value is valid */
+ 	if (value & ~known_bits)
+@@ -610,31 +618,17 @@ int mips_set_process_fp_mode(struct task
+ 	smp_mb__after_atomic();
+ 
+ 	/*
+-	 * If there are multiple online CPUs then wait until all threads whose
+-	 * FP mode is about to change have been context switched. This approach
+-	 * allows us to only worry about whether an FP mode switch is in
+-	 * progress when FP is first used in a tasks time slice. Pretty much all
+-	 * of the mode switch overhead can thus be confined to cases where mode
+-	 * switches are actually occurring. That is, to here. However for the
+-	 * thread performing the mode switch it may take a while...
++	 * If there are multiple online CPUs then force any which are running
++	 * threads in this process to lose their FPU context, which they can't
++	 * regain until fp_mode_switching is cleared later.
+ 	 */
+ 	if (num_online_cpus() > 1) {
+-		spin_lock_irq(&task->sighand->siglock);
+-
+-		for_each_thread(task, t) {
+-			if (t == current)
+-				continue;
+-
+-			switch_count = t->nvcsw + t->nivcsw;
+-
+-			do {
+-				spin_unlock_irq(&task->sighand->siglock);
+-				cond_resched();
+-				spin_lock_irq(&task->sighand->siglock);
+-			} while ((t->nvcsw + t->nivcsw) == switch_count);
+-		}
++		/* No need to send an IPI for the local CPU */
++		max_users = (task->mm == current->mm) ? 1 : 0;
+ 
+-		spin_unlock_irq(&task->sighand->siglock);
++		if (atomic_read(&current->mm->mm_users) > max_users)
++			smp_call_function(prepare_for_fp_mode_switch,
++					  (void *)current->mm, 1);
  	}
  
- fp_done:
--	if (used & USED_EXTCONTEXT)
--		err |= restore_extcontext(sc_to_extcontext(sc));
-+	if (!err && (used & USED_EXTCONTEXT))
-+		err = restore_extcontext(sc_to_extcontext(sc));
- 
- 	return err ?: sig;
- }
+ 	/*

@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:59:35 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60521 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:59:55 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60520 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042490AbcFEVxH2qWvp (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042491AbcFEVxHxk5hp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:07 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E101D892;
-        Sun,  5 Jun 2016 21:53:06 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 54B2A723;
+        Sun,  5 Jun 2016 21:53:07 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Christopher Ferris <cferris@google.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 007/121] MIPS: Fix siginfo.h to use strict posix types
-Date:   Sun,  5 Jun 2016 14:42:39 -0700
-Message-Id: <20160605214417.933866317@linuxfoundation.org>
+        stable@vger.kernel.org, Christopher Ferris <cferris@google.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Petr Malat <oss@malat.biz>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.6 008/121] MIPS: Fix uapi include in exported asm/siginfo.h
+Date:   Sun,  5 Jun 2016 14:42:40 -0700
+Message-Id: <20160605214417.963900327@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -25,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53857
+X-archive-position: 53858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,79 +49,48 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 5daebc477da4dfeb31ae193d83084def58fd2697 upstream.
+commit 987e5b834467c9251ca584febda65ef8f66351a9 upstream.
 
-Commit 85efde6f4e0d ("make exported headers use strict posix types")
-changed the asm-generic siginfo.h to use the __kernel_* types, and
-commit 3a471cbc081b ("remove __KERNEL_STRICT_NAMES") make the internal
-types accessible only to the kernel, but the MIPS implementation hasn't
-been updated to match.
+Since commit 8cb48fe169dd ("MIPS: Provide correct siginfo_t.si_stime"),
+MIPS' uapi/asm/siginfo.h has included uapi/asm-generic/siginfo.h
+directly before defining MIPS' struct siginfo, in order to get the
+necessary definitions needed for the siginfo struct without the generic
+copy_siginfo() hitting compiler errors due to struct siginfo not yet
+being defined.
 
-Switch to proper types now so that the exported asm/siginfo.h won't
-produce quite so many compiler errors when included alone by a user
-program.
+Now that the generic copy_siginfo() is moved out to linux/signal.h we
+can safely include asm-generic/siginfo.h before defining the MIPS
+specific struct siginfo, which avoids the uapi/ include as well as
+breakage due to generic copy_siginfo() being defined before struct
+siginfo.
 
+Reported-by: Christopher Ferris <cferris@google.com>
+Fixes: 8cb48fe169dd ("MIPS: Provide correct siginfo_t.si_stime")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Christopher Ferris <cferris@google.com>
+Cc: Petr Malat <oss@malat.biz>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12477/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/uapi/asm/siginfo.h |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/mips/include/uapi/asm/siginfo.h |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 --- a/arch/mips/include/uapi/asm/siginfo.h
 +++ b/arch/mips/include/uapi/asm/siginfo.h
-@@ -42,13 +42,13 @@ typedef struct siginfo {
+@@ -28,7 +28,7 @@
  
- 		/* kill() */
- 		struct {
--			pid_t _pid;		/* sender's pid */
-+			__kernel_pid_t _pid;	/* sender's pid */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 		} _kill;
+ #define __ARCH_SIGSYS
  
- 		/* POSIX.1b timers */
- 		struct {
--			timer_t _tid;		/* timer id */
-+			__kernel_timer_t _tid;	/* timer id */
- 			int _overrun;		/* overrun count */
- 			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
- 			sigval_t _sigval;	/* same as below */
-@@ -57,26 +57,26 @@ typedef struct siginfo {
+-#include <uapi/asm-generic/siginfo.h>
++#include <asm-generic/siginfo.h>
  
- 		/* POSIX.1b signals */
- 		struct {
--			pid_t _pid;		/* sender's pid */
-+			__kernel_pid_t _pid;	/* sender's pid */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 			sigval_t _sigval;
- 		} _rt;
+ /* We can't use generic siginfo_t, because our si_code and si_errno are swapped */
+ typedef struct siginfo {
+@@ -123,6 +123,4 @@ typedef struct siginfo {
+ #define SI_TIMER __SI_CODE(__SI_TIMER, -3) /* sent by timer expiration */
+ #define SI_MESGQ __SI_CODE(__SI_MESGQ, -4) /* sent by real time mesq state change */
  
- 		/* SIGCHLD */
- 		struct {
--			pid_t _pid;		/* which child */
-+			__kernel_pid_t _pid;	/* which child */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 			int _status;		/* exit code */
--			clock_t _utime;
--			clock_t _stime;
-+			__kernel_clock_t _utime;
-+			__kernel_clock_t _stime;
- 		} _sigchld;
- 
- 		/* IRIX SIGCHLD */
- 		struct {
--			pid_t _pid;		/* which child */
--			clock_t _utime;
-+			__kernel_pid_t _pid;	/* which child */
-+			__kernel_clock_t _utime;
- 			int _status;		/* exit code */
--			clock_t _stime;
-+			__kernel_clock_t _stime;
- 		} _irix_sigchld;
- 
- 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+-#include <asm-generic/siginfo.h>
+-
+ #endif /* _UAPI_ASM_SIGINFO_H */

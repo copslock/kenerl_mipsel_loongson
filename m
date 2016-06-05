@@ -1,23 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:47:42 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60023 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:48:03 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60008 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042455AbcFEVmltwshp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:42:41 +0200
+        by eddie.linux-mips.org with ESMTP id S27042456AbcFEVmmgaRFp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:42:42 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7C69E94F;
-        Sun,  5 Jun 2016 21:42:34 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0F022723;
+        Sun,  5 Jun 2016 21:42:42 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J . Hill" <sjhill@realitydiluted.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 12/99] MIPS: Reserve nosave data for hibernation
-Date:   Sun,  5 Jun 2016 14:40:45 -0700
-Message-Id: <20160605213904.100946829@linuxfoundation.org>
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 18/99] MIPS: ptrace: Fix FP context restoration FCSR regression
+Date:   Sun,  5 Jun 2016 14:40:51 -0700
+Message-Id: <20160605213904.885319251@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605213902.974592018@linuxfoundation.org>
 References: <20160605213902.974592018@linuxfoundation.org>
@@ -28,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53831
+X-archive-position: 53832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,39 +45,38 @@ X-list: linux-mips
 
 ------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit a95d069204e178f18476f5499abab0d0d9cbc32c upstream.
+commit 4249548454f7ba4581aeee26bd83f42b48a14d15 upstream.
 
-After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
-in the memblock region"), the MIPS hibernation is broken. Because pages
-in nosave data section should be "reserved", but currently they aren't
-set to "reserved" at initialization. This patch makes hibernation work
-again.
+Fix a floating-point context restoration regression introduced with
+commit 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
+that causes a Floating Point exception and consequently a kernel oops
+with hard float configurations when one or more FCSR Enable and their
+corresponding Cause bits are set both at a time via a ptrace(2) call.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Cc: Steven J . Hill <sjhill@realitydiluted.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+To do so reinstate Cause bit masking originally introduced with commit
+b1442d39fac2 ("MIPS: Prevent user from setting FCSR cause bits") to
+address this exact problem and then inadvertently removed from the
+PTRACE_SETFPREGS request with the commit referred above.
+
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12888/
+Patchwork: https://patchwork.linux-mips.org/patch/13238/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/setup.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/kernel/ptrace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -706,6 +706,9 @@ static void __init arch_mem_init(char **
- 	for_each_memblock(reserved, reg)
- 		if (reg->size != 0)
- 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
-+
-+	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
-+			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
- }
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -176,6 +176,7 @@ int ptrace_setfpregs(struct task_struct
+ 	}
  
- static void __init resource_init(void)
+ 	__get_user(value, data + 64);
++	value &= ~FPU_CSR_ALL_X;
+ 	fcr31 = child->thread.fpu.fcr31;
+ 	mask = boot_cpu_data.fpu_msk31;
+ 	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);

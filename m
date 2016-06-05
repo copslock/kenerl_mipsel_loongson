@@ -1,23 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:27:52 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32947 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:28:15 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32944 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042508AbcFEWY5tUgCm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:57 +0200
+        by eddie.linux-mips.org with ESMTP id S27042511AbcFEWY6ArOyW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:58 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 61C5D884;
-        Sun,  5 Jun 2016 22:24:48 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3FFA6412;
+        Sun,  5 Jun 2016 22:24:47 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
         James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 018/128] MIPS: Disable preemption during prctl(PR_SET_FP_MODE, ...)
-Date:   Sun,  5 Jun 2016 15:22:53 -0700
-Message-Id: <20160605222321.795537303@linuxfoundation.org>
+Subject: [PATCH 4.5 015/128] MIPS: Use copy_s.fmt rather than copy_u.fmt
+Date:   Sun,  5 Jun 2016 15:22:50 -0700
+Message-Id: <20160605222321.697131380@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -28,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53870
+X-archive-position: 53871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,46 +48,129 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@imgtec.com>
 
-commit bd239f1e1429e7781096bf3884bdb1b2b1bb4f28 upstream.
+commit 8a3c8b48aca8771bff3536e40aa26ffb311699d1 upstream.
 
-Whilst a PR_SET_FP_MODE prctl is performed there are decisions made
-based upon whether the task is executing on the current CPU. This may
-change if we're preempted, so disable preemption to avoid such changes
-for the lifetime of the mode switch.
+In revision 1.12 of the MSA specification, the copy_u.w instruction has
+been removed for MIPS32 & the copy_u.d instruction has been removed for
+MIPS64. Newer toolchains (eg. Codescape SDK essentials 2015.10) will
+complain about this like so:
+
+arch/mips/kernel/r4k_fpu.S:290: Error: opcode not supported on this
+processor: mips32r2 (mips32r2) `copy_u.w $1,$w26[3]'
+
+Since we always copy to the width of a GPR, simply use copy_s instead of
+copy_u to fix this.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
-Tested-by: Aurelien Jarno <aurelien@aurel32.net>
-Cc: Adam Buchbinder <adam.buchbinder@gmail.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13144/
+Patchwork: https://patchwork.linux-mips.org/patch/13061/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/include/asm/asmmacro.h |   24 ++++++++++++------------
+ arch/mips/kernel/r4k_fpu.S       |   10 +++++-----
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -601,6 +601,9 @@ int mips_set_process_fp_mode(struct task
- 	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
- 		return -EOPNOTSUPP;
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -298,21 +298,21 @@
+ 	.set	pop
+ 	.endm
  
-+	/* Proceed with the mode switch */
-+	preempt_disable();
-+
- 	/* Save FP & vector context, then disable FPU & MSA */
- 	if (task->signal == current->signal)
- 		lose_fpu(1);
-@@ -659,6 +662,7 @@ int mips_set_process_fp_mode(struct task
+-	.macro	copy_u_w	ws, n
++	.macro	copy_s_w	ws, n
+ 	.set	push
+ 	.set	mips32r2
+ 	.set	fp=64
+ 	.set	msa
+-	copy_u.w $1, $w\ws[\n]
++	copy_s.w $1, $w\ws[\n]
+ 	.set	pop
+ 	.endm
  
- 	/* Allow threads to use FP again */
- 	atomic_set(&task->mm->context.fp_mode_switching, 0);
-+	preempt_enable();
+-	.macro	copy_u_d	ws, n
++	.macro	copy_s_d	ws, n
+ 	.set	push
+ 	.set	mips64r2
+ 	.set	fp=64
+ 	.set	msa
+-	copy_u.d $1, $w\ws[\n]
++	copy_s.d $1, $w\ws[\n]
+ 	.set	pop
+ 	.endm
  
- 	return 0;
- }
+@@ -346,8 +346,8 @@
+ #define STH_MSA_INSN		0x5800081f
+ #define STW_MSA_INSN		0x5800082f
+ #define STD_MSA_INSN		0x5800083f
+-#define COPY_UW_MSA_INSN	0x58f00056
+-#define COPY_UD_MSA_INSN	0x58f80056
++#define COPY_SW_MSA_INSN	0x58b00056
++#define COPY_SD_MSA_INSN	0x58b80056
+ #define INSERT_W_MSA_INSN	0x59300816
+ #define INSERT_D_MSA_INSN	0x59380816
+ #else
+@@ -361,8 +361,8 @@
+ #define STH_MSA_INSN		0x78000825
+ #define STW_MSA_INSN		0x78000826
+ #define STD_MSA_INSN		0x78000827
+-#define COPY_UW_MSA_INSN	0x78f00059
+-#define COPY_UD_MSA_INSN	0x78f80059
++#define COPY_SW_MSA_INSN	0x78b00059
++#define COPY_SD_MSA_INSN	0x78b80059
+ #define INSERT_W_MSA_INSN	0x79300819
+ #define INSERT_D_MSA_INSN	0x79380819
+ #endif
+@@ -461,21 +461,21 @@
+ 	.set	pop
+ 	.endm
+ 
+-	.macro	copy_u_w	ws, n
++	.macro	copy_s_w	ws, n
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+ 	.insn
+-	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
++	.word	COPY_SW_MSA_INSN | (\n << 16) | (\ws << 11)
+ 	.set	pop
+ 	.endm
+ 
+-	.macro	copy_u_d	ws, n
++	.macro	copy_s_d	ws, n
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+ 	.insn
+-	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
++	.word	COPY_SD_MSA_INSN | (\n << 16) | (\ws << 11)
+ 	.set	pop
+ 	.endm
+ 
+--- a/arch/mips/kernel/r4k_fpu.S
++++ b/arch/mips/kernel/r4k_fpu.S
+@@ -244,17 +244,17 @@ LEAF(\name)
+ 	.set	push
+ 	.set	noat
+ #ifdef CONFIG_64BIT
+-	copy_u_d \wr, 1
++	copy_s_d \wr, 1
+ 	EX sd	$1, \off(\base)
+ #elif defined(CONFIG_CPU_LITTLE_ENDIAN)
+-	copy_u_w \wr, 2
++	copy_s_w \wr, 2
+ 	EX sw	$1, \off(\base)
+-	copy_u_w \wr, 3
++	copy_s_w \wr, 3
+ 	EX sw	$1, (\off+4)(\base)
+ #else /* CONFIG_CPU_BIG_ENDIAN */
+-	copy_u_w \wr, 2
++	copy_s_w \wr, 2
+ 	EX sw	$1, (\off+4)(\base)
+-	copy_u_w \wr, 3
++	copy_s_w \wr, 3
+ 	EX sw	$1, \off(\base)
+ #endif
+ 	.set	pop

@@ -1,23 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:54:28 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60463 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:54:45 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60495 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042471AbcFEVw7Ap2pp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:52:59 +0200
+        by eddie.linux-mips.org with ESMTP id S27042474AbcFEVxDzyCup (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:03 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0FC688F5;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E03A5941;
         Sun,  5 Jun 2016 21:52:53 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J . Hill" <sjhill@realitydiluted.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 015/121] MIPS: Loongson-3: Reserve 32MB for RS780E integrated GPU
-Date:   Sun,  5 Jun 2016 14:42:47 -0700
-Message-Id: <20160605214418.170866607@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.6 017/121] MIPS: Fix MSA ld_*/st_* asm macros to use PTR_ADDU
+Date:   Sun,  5 Jun 2016 14:42:49 -0700
+Message-Id: <20160605214418.232896025@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -28,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53842
+X-archive-position: 53843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,42 +46,97 @@ X-list: linux-mips
 
 ------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 3484de7bcbed20ecbf2b8d80671619e7059e2dd7 upstream.
+commit ea1688573426adc2587ed52d086b51c7c62eaca3 upstream.
 
-Due to datasheet, reserving 0xff800000~0xffffffff (8MB below 4GB) is
-not enough for RS780E integrated GPU's TOM (top of memory) registers
-and MSI/MSI-x memory region, so we reserve 0xfe000000~0xffffffff (32MB
-below 4GB).
+The MSA ld_*/st_* assembler macros for when the toolchain doesn't
+support MSA use addu to offset the base address. However it is a virtual
+memory pointer so fix it to use PTR_ADDU which expands to daddu for
+64-bit kernels.
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Cc: Steven J . Hill <sjhill@realitydiluted.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12889/
+Patchwork: https://patchwork.linux-mips.org/patch/13062/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/loongson64/loongson-3/numa.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/asmmacro.h |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/arch/mips/loongson64/loongson-3/numa.c
-+++ b/arch/mips/loongson64/loongson-3/numa.c
-@@ -213,10 +213,10 @@ static void __init node_mem_init(unsigne
- 		BOOTMEM_DEFAULT);
- 
- 	if (node == 0 && node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT)) {
--		/* Reserve 0xff800000~0xffffffff for RS780E integrated GPU */
-+		/* Reserve 0xfe000000~0xffffffff for RS780E integrated GPU */
- 		reserve_bootmem_node(NODE_DATA(node),
--				(node_addrspace_offset | 0xff800000),
--				8 << 20, BOOTMEM_DEFAULT);
-+				(node_addrspace_offset | 0xfe000000),
-+				32 << 20, BOOTMEM_DEFAULT);
- 	}
- 
- 	sparse_memory_present_with_active_regions(node);
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -393,7 +393,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	LDB_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -402,7 +402,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	LDH_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -411,7 +411,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	LDW_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -420,7 +420,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	LDD_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -429,7 +429,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	STB_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -438,7 +438,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	STH_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -447,7 +447,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	STW_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -456,7 +456,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	STD_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm

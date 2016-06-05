@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:27:11 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32948 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:27:35 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32945 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042509AbcFEWY5ty4NW (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042510AbcFEWY5tvEML (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:57 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B7BD793D;
-        Sun,  5 Jun 2016 22:24:48 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9487D8F5;
+        Sun,  5 Jun 2016 22:24:47 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 019/128] MIPS: ptrace: Fix FP context restoration FCSR regression
-Date:   Sun,  5 Jun 2016 15:22:54 -0700
-Message-Id: <20160605222321.824982433@linuxfoundation.org>
+Subject: [PATCH 4.5 016/128] MIPS: Fix MSA ld_*/st_* asm macros to use PTR_ADDU
+Date:   Sun,  5 Jun 2016 15:22:51 -0700
+Message-Id: <20160605222321.728064470@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53868
+X-archive-position: 53869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,38 +46,97 @@ X-list: linux-mips
 
 ------------------
 
-From: Maciej W. Rozycki <macro@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 4249548454f7ba4581aeee26bd83f42b48a14d15 upstream.
+commit ea1688573426adc2587ed52d086b51c7c62eaca3 upstream.
 
-Fix a floating-point context restoration regression introduced with
-commit 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
-that causes a Floating Point exception and consequently a kernel oops
-with hard float configurations when one or more FCSR Enable and their
-corresponding Cause bits are set both at a time via a ptrace(2) call.
+The MSA ld_*/st_* assembler macros for when the toolchain doesn't
+support MSA use addu to offset the base address. However it is a virtual
+memory pointer so fix it to use PTR_ADDU which expands to daddu for
+64-bit kernels.
 
-To do so reinstate Cause bit masking originally introduced with commit
-b1442d39fac2 ("MIPS: Prevent user from setting FCSR cause bits") to
-address this exact problem and then inadvertently removed from the
-PTRACE_SETFPREGS request with the commit referred above.
-
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13238/
+Patchwork: https://patchwork.linux-mips.org/patch/13062/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/asmmacro.h |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -176,6 +176,7 @@ int ptrace_setfpregs(struct task_struct
- 	}
- 
- 	__get_user(value, data + 64);
-+	value &= ~FPU_CSR_ALL_X;
- 	fcr31 = child->thread.fpu.fcr31;
- 	mask = boot_cpu_data.fpu_msk31;
- 	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -393,7 +393,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	LDB_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -402,7 +402,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	LDH_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -411,7 +411,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	LDW_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -420,7 +420,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	LDD_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -429,7 +429,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	STB_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -438,7 +438,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	STH_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -447,7 +447,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	STW_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm
+@@ -456,7 +456,7 @@
+ 	.set	push
+ 	.set	noat
+ 	SET_HARDFLOAT
+-	addu	$1, \base, \off
++	PTR_ADDU $1, \base, \off
+ 	.word	STD_MSA_INSN | (\wd << 6)
+ 	.set	pop
+ 	.endm

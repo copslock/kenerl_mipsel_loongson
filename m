@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:25:43 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32870 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:26:10 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32895 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042493AbcFEWYvfJH-b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:51 +0200
+        by eddie.linux-mips.org with ESMTP id S27042503AbcFEWYwZZq51 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:52 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id DAAE1413;
-        Sun,  5 Jun 2016 22:24:44 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 70CF883D;
+        Sun,  5 Jun 2016 22:24:46 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        macro@linux-mips.org, linux-mips@linux-mips.org,
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <sjhill@realitydiluted.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 001/128] MIPS64: R6: R2 emulation bugfix
-Date:   Sun,  5 Jun 2016 15:22:36 -0700
-Message-Id: <20160605222321.250629580@linuxfoundation.org>
+Subject: [PATCH 4.5 013/128] MIPS: Reserve nosave data for hibernation
+Date:   Sun,  5 Jun 2016 15:22:48 -0700
+Message-Id: <20160605222321.637771169@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -28,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53864
+X-archive-position: 53865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,227 +49,39 @@ X-list: linux-mips
 
 ------------------
 
-From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-commit 41fa29e4d8cf4150568a0fe9bb4d62229f9caed5 upstream.
+commit a95d069204e178f18476f5499abab0d0d9cbc32c upstream.
 
-Error recovery pointers for fixups was improperly set as ".word"
-which is unsuitable for MIPS64.
+After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
+in the memblock region"), the MIPS hibernation is broken. Because pages
+in nosave data section should be "reserved", but currently they aren't
+set to "reserved" at initialization. This patch makes hibernation work
+again.
 
-Replaced by STR(PTR)
-
-[ralf@linux-mips.org: Apply changes as requested in the review process.]
-
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
-Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator for MIPS R6")
-Cc: macro@linux-mips.org
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: Aurelien Jarno <aurelien@aurel32.net>
+Cc: Steven J . Hill <sjhill@realitydiluted.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/9911/
+Patchwork: https://patchwork.linux-mips.org/patch/12888/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/mips-r2-to-r6-emul.c |  105 +++++++++++++++++-----------------
- 1 file changed, 53 insertions(+), 52 deletions(-)
+ arch/mips/kernel/setup.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-+++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-@@ -28,6 +28,7 @@
- #include <asm/inst.h>
- #include <asm/mips-r2-to-r6-emul.h>
- #include <asm/local.h>
-+#include <asm/mipsregs.h>
- #include <asm/ptrace.h>
- #include <asm/uaccess.h>
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -706,6 +706,9 @@ static void __init arch_mem_init(char **
+ 	for_each_memblock(reserved, reg)
+ 		if (reg->size != 0)
+ 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
++
++	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
++			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+ }
  
-@@ -1251,10 +1252,10 @@ fpu_emul:
- 			"	j	10b\n"
- 			"	.previous\n"
- 			"	.section	__ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1326,10 +1327,10 @@ fpu_emul:
- 			"	j	10b\n"
- 			"       .previous\n"
- 			"	.section	__ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1397,10 +1398,10 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1467,10 +1468,10 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1582,14 +1583,14 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
--			"	.word	5b,8b\n"
--			"	.word	6b,8b\n"
--			"	.word	7b,8b\n"
--			"	.word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1701,14 +1702,14 @@ fpu_emul:
- 			"	j      9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word  1b,8b\n"
--			"	.word  2b,8b\n"
--			"	.word  3b,8b\n"
--			"	.word  4b,8b\n"
--			"	.word  5b,8b\n"
--			"	.word  6b,8b\n"
--			"	.word  7b,8b\n"
--			"	.word  0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set    pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1820,14 +1821,14 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
--			"	.word	5b,8b\n"
--			"	.word	6b,8b\n"
--			"	.word	7b,8b\n"
--			"	.word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1938,14 +1939,14 @@ fpu_emul:
- 			"       j	9b\n"
- 			"       .previous\n"
- 			"       .section        __ex_table,\"a\"\n"
--			"       .word	1b,8b\n"
--			"       .word	2b,8b\n"
--			"       .word	3b,8b\n"
--			"       .word	4b,8b\n"
--			"       .word	5b,8b\n"
--			"       .word	6b,8b\n"
--			"       .word	7b,8b\n"
--			"       .word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"       .previous\n"
- 			"       .set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -2000,7 +2001,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word  1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "=&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV)
-@@ -2058,7 +2059,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word	1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "+&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV));
-@@ -2119,7 +2120,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word  1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "=&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV)
-@@ -2182,7 +2183,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word	1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "+&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV));
+ static void __init resource_init(void)

@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:54:45 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60495 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:55:09 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60497 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042474AbcFEVxDzyCup (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042479AbcFEVxD5zrgp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:03 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E03A5941;
-        Sun,  5 Jun 2016 21:52:53 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A358B94D;
+        Sun,  5 Jun 2016 21:52:54 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        Michal Toman <michal.toman@imgtec.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 017/121] MIPS: Fix MSA ld_*/st_* asm macros to use PTR_ADDU
-Date:   Sun,  5 Jun 2016 14:42:49 -0700
-Message-Id: <20160605214418.232896025@linuxfoundation.org>
+Subject: [PATCH 4.6 019/121] MIPS: Prevent "restoration" of MSA context in non-MSA kernels
+Date:   Sun,  5 Jun 2016 14:42:51 -0700
+Message-Id: <20160605214418.293609787@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -25,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53843
+X-archive-position: 53844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,97 +48,69 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit ea1688573426adc2587ed52d086b51c7c62eaca3 upstream.
+commit 6533af4d4831c421cd9aa4dce7cfc19a3514cc09 upstream.
 
-The MSA ld_*/st_* assembler macros for when the toolchain doesn't
-support MSA use addu to offset the base address. However it is a virtual
-memory pointer so fix it to use PTR_ADDU which expands to daddu for
-64-bit kernels.
+If a kernel doesn't support MSA context (ie. CONFIG_CPU_HAS_MSA=n) then
+it will only keep 64 bits per FP register in thread context, and the
+calls to set_fpr64 in restore_msa_extcontext will overrun the end of the
+FP register context into the FCSR & MSACSR values. GCC 6.x has become
+smart enough to detect this & complain like so:
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
+    arch/mips/kernel/signal.c: In function 'protected_restore_fp_context':
+    ./arch/mips/include/asm/processor.h:114:17: error: array subscript is above array bounds [-Werror=array-bounds]
+      fpr->val##width[FPR_IDX(width, idx)] = val;   \
+      ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+    ./arch/mips/include/asm/processor.h:118:1: note: in expansion of macro 'BUILD_FPR_ACCESS'
+     BUILD_FPR_ACCESS(64)
+
+The only way to trigger this code to run would be for a program to set
+up an artificial extended MSA context structure following a sigframe &
+execute sigreturn. Whilst this doesn't allow a program to write to any
+state that it couldn't already, it makes little sense to allow this
+"restoration" of MSA context in a system that doesn't support MSA.
+
+Fix this by killing a program with SIGSYS if it tries something as crazy
+as "restoring" fake MSA context in this way, also fixing the build error
+& allowing for most of restore_msa_extcontext to be optimised out of
+kernels without support for MSA.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Reported-by: Michal Toman <michal.toman@imgtec.com>
+Fixes: bf82cb30c7e5 ("MIPS: Save MSA extended context around signals")
+Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Michal Toman <michal.toman@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13062/
+Patchwork: https://patchwork.linux-mips.org/patch/13164/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/asmmacro.h |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/mips/kernel/signal.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -393,7 +393,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	addu	$1, \base, \off
-+	PTR_ADDU $1, \base, \off
- 	.word	LDB_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
-@@ -402,7 +402,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	addu	$1, \base, \off
-+	PTR_ADDU $1, \base, \off
- 	.word	LDH_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
-@@ -411,7 +411,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	addu	$1, \base, \off
-+	PTR_ADDU $1, \base, \off
- 	.word	LDW_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
-@@ -420,7 +420,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	addu	$1, \base, \off
-+	PTR_ADDU $1, \base, \off
- 	.word	LDD_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
-@@ -429,7 +429,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	addu	$1, \base, \off
-+	PTR_ADDU $1, \base, \off
- 	.word	STB_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
-@@ -438,7 +438,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	addu	$1, \base, \off
-+	PTR_ADDU $1, \base, \off
- 	.word	STH_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
-@@ -447,7 +447,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	addu	$1, \base, \off
-+	PTR_ADDU $1, \base, \off
- 	.word	STW_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
-@@ -456,7 +456,7 @@
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	addu	$1, \base, \off
-+	PTR_ADDU $1, \base, \off
- 	.word	STD_MSA_INSN | (\wd << 6)
- 	.set	pop
- 	.endm
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -195,6 +195,9 @@ static int restore_msa_extcontext(void _
+ 	unsigned int csr;
+ 	int i, err;
+ 
++	if (!config_enabled(CONFIG_CPU_HAS_MSA))
++		return SIGSYS;
++
+ 	if (size != sizeof(*msa))
+ 		return -EINVAL;
+ 
+@@ -398,8 +401,8 @@ int protected_restore_fp_context(void __
+ 	}
+ 
+ fp_done:
+-	if (used & USED_EXTCONTEXT)
+-		err |= restore_extcontext(sc_to_extcontext(sc));
++	if (!err && (used & USED_EXTCONTEXT))
++		err = restore_extcontext(sc_to_extcontext(sc));
+ 
+ 	return err ?: sig;
+ }

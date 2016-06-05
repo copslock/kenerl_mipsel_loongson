@@ -1,30 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Jun 2016 23:19:09 +0200 (CEST)
-Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:35971 "EHLO
-        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042249AbcFDVS3L5XJ8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Jun 2016 23:18:29 +0200
-Received: from localhost.localdomain (85-76-130-131-nat.elisa-mobile.fi [85.76.130.131])
-        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 78D941A2750;
-        Sun,  5 Jun 2016 00:18:28 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 3/3] MIPS: OCTEON: dlink_dsr-1000n.dts: add more leds
-Date:   Sun,  5 Jun 2016 00:18:20 +0300
-Message-Id: <1465075100-19705-3-git-send-email-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.7.2
-In-Reply-To: <1465075100-19705-1-git-send-email-aaro.koskinen@iki.fi>
-References: <1465075100-19705-1-git-send-email-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:40:34 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59852 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27042429AbcFEVkbWlQ3p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:40:31 +0200
+Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C752883D;
+        Sun,  5 Jun 2016 21:40:24 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.14 01/23] MIPS: math-emu: Fix jalr emulation when rd == $0
+Date:   Sun,  5 Jun 2016 14:40:01 -0700
+Message-Id: <20160605213827.124657899@linuxfoundation.org>
+X-Mailer: git-send-email 2.8.3
+In-Reply-To: <20160605213826.938892115@linuxfoundation.org>
+References: <20160605213826.938892115@linuxfoundation.org>
+User-Agent: quilt/0.64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53813
+X-archive-position: 53814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,39 +43,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add more leds discovered by reverse engineering. Labels are according
-to markings in the mechanics.
+3.14-stable review patch.  If anyone has any objections, please let me know.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+------------------
+
+From: Paul Burton <paul.burton@imgtec.com>
+
+commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
+
+When emulating a jalr instruction with rd == $0, the code in
+isBranchInstr was incorrectly writing to GPR $0 which should actually
+always remain zeroed. This would lead to any further instructions
+emulated which use $0 operating on a bogus value until the task is next
+context switched, at which point the value of $0 in the task context
+would be restored to the correct zero by a store in SAVE_SOME. Fix this
+by not writing to rd if it is $0.
+
+Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Maciej W. Rozycki <macro@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13160/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- arch/mips/boot/dts/cavium-octeon/dlink_dsr-1000n.dts | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/mips/math-emu/cp1emu.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boot/dts/cavium-octeon/dlink_dsr-1000n.dts b/arch/mips/boot/dts/cavium-octeon/dlink_dsr-1000n.dts
-index a20c5b6..b134798 100644
---- a/arch/mips/boot/dts/cavium-octeon/dlink_dsr-1000n.dts
-+++ b/arch/mips/boot/dts/cavium-octeon/dlink_dsr-1000n.dts
-@@ -71,6 +71,21 @@
- 			label = "usb2";
- 			gpios = <&gpio 10 GPIO_ACTIVE_LOW>;
- 		};
-+
-+		wps {
-+			label = "wps";
-+			gpios = <&gpio 11 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		wireless1 {
-+			label = "5g";
-+			gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		wireless2 {
-+			label = "2.4g";
-+			gpios = <&gpio 18 GPIO_ACTIVE_LOW>;
-+		};
- 	};
- 
- 	aliases {
--- 
-2.7.2
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -676,9 +676,11 @@ static int isBranchInstr(struct pt_regs
+ 	case spec_op:
+ 		switch (insn.r_format.func) {
+ 		case jalr_op:
+-			regs->regs[insn.r_format.rd] =
+-				regs->cp0_epc + dec_insn.pc_inc +
+-				dec_insn.next_pc_inc;
++			if (insn.r_format.rd != 0) {
++				regs->regs[insn.r_format.rd] =
++					regs->cp0_epc + dec_insn.pc_inc +
++					dec_insn.next_pc_inc;
++			}
+ 			/* Fall through */
+ 		case jr_op:
+ 			*contpc = regs->regs[insn.r_format.rs];

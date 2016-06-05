@@ -1,28 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:25:19 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32872 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:25:43 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32870 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042501AbcFEWYvgRgWC (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042493AbcFEWYvfJH-b (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:51 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 451544D3;
-        Sun,  5 Jun 2016 22:24:45 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id DAAE1413;
+        Sun,  5 Jun 2016 22:24:44 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Ionela Voinescu <ionela.voinescu@imgtec.com>,
-        Lars Persson <lars.persson@axis.com>,
-        "Steven J. Hill" <sjhill@realitydiluted.com>,
-        David Daney <david.daney@cavium.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jerome Marchand <jmarchan@redhat.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 010/128] MIPS: Sync icache & dcache in set_pte_at
-Date:   Sun,  5 Jun 2016 15:22:45 -0700
-Message-Id: <20160605222321.540315353@linuxfoundation.org>
+        stable@vger.kernel.org,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        macro@linux-mips.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.5 001/128] MIPS64: R6: R2 emulation bugfix
+Date:   Sun,  5 Jun 2016 15:22:36 -0700
+Message-Id: <20160605222321.250629580@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -33,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53863
+X-archive-position: 53864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,234 +49,227 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-commit 37d22a0d798b5c938b277d32cfd86dc231381342 upstream.
+commit 41fa29e4d8cf4150568a0fe9bb4d62229f9caed5 upstream.
 
-It's possible for pages to become visible prior to update_mmu_cache
-running if a thread within the same address space preempts the current
-thread or runs simultaneously on another CPU. That is, the following
-scenario is possible:
+Error recovery pointers for fixups was improperly set as ".word"
+which is unsuitable for MIPS64.
 
-    CPU0                            CPU1
+Replaced by STR(PTR)
 
-    write to page
-    flush_dcache_page
-    flush_icache_page
-    set_pte_at
-                                    map page
-    update_mmu_cache
+[ralf@linux-mips.org: Apply changes as requested in the review process.]
 
-If CPU1 maps the page in between CPU0's set_pte_at, which marks it valid
-& visible, and update_mmu_cache where the dcache flush occurs then CPU1s
-icache will fill from stale data (unless it fills from the dcache, in
-which case all is good, but most MIPS CPUs don't have this property).
-Commit 4d46a67a3eb8 ("MIPS: Fix race condition in lazy cache flushing.")
-attempted to fix that by performing the dcache flush in
-flush_icache_page such that it occurs before the set_pte_at call makes
-the page visible. However it has the problem that not all code that
-writes to pages exposed to userland call flush_icache_page. There are
-many callers of set_pte_at under mm/ and only 2 of them do call
-flush_icache_page. Thus the race window between a page becoming visible
-& being coherent between the icache & dcache remains open in some cases.
-
-To illustrate some of the cases, a WARN was added to __update_cache with
-this patch applied that triggered in cases where a page about to be
-flushed from the dcache was not the last page provided to
-flush_icache_page. That is, backtraces were obtained for cases in which
-the race window is left open without this patch. The 2 standout examples
-follow.
-
-When forking a process:
-
-[   15.271842] [<80417630>] __update_cache+0xcc/0x188
-[   15.277274] [<80530394>] copy_page_range+0x56c/0x6ac
-[   15.282861] [<8042936c>] copy_process.part.54+0xd40/0x17ac
-[   15.289028] [<80429f80>] do_fork+0xe4/0x420
-[   15.293747] [<80413808>] handle_sys+0x128/0x14c
-
-When exec'ing an ELF binary:
-
-[   14.445964] [<80417630>] __update_cache+0xcc/0x188
-[   14.451369] [<80538d88>] move_page_tables+0x414/0x498
-[   14.457075] [<8055d848>] setup_arg_pages+0x220/0x318
-[   14.462685] [<805b0f38>] load_elf_binary+0x530/0x12a0
-[   14.468374] [<8055ec3c>] search_binary_handler+0xbc/0x214
-[   14.474444] [<8055f6c0>] do_execveat_common+0x43c/0x67c
-[   14.480324] [<8055f938>] do_execve+0x38/0x44
-[   14.485137] [<80413808>] handle_sys+0x128/0x14c
-
-These code paths write into a page, call flush_dcache_page then call
-set_pte_at without flush_icache_page inbetween. The end result is that
-the icache can become corrupted & userland processes may execute
-unexpected or invalid code, typically resulting in a reserved
-instruction exception, a trap or a segfault.
-
-Fix this race condition fully by performing any cache maintenance
-required to keep the icache & dcache in sync in set_pte_at, before the
-page is made valid. This has the added bonus of ensuring the cache
-maintenance always happens in one location, rather than being duplicated
-in flush_icache_page & update_mmu_cache. It also matches the way other
-architectures solve the same problem (see arm, ia64 & powerpc).
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reported-by: Ionela Voinescu <ionela.voinescu@imgtec.com>
-Cc: Lars Persson <lars.persson@axis.com>
-Fixes: 4d46a67a3eb8 ("MIPS: Fix race condition in lazy cache flushing.")
-Cc: Steven J. Hill <sjhill@realitydiluted.com>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.vnet.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jerome Marchand <jmarchan@redhat.com>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
+Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator for MIPS R6")
+Cc: macro@linux-mips.org
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12722/
+Patchwork: https://patchwork.linux-mips.org/patch/9911/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/cacheflush.h |    6 ------
- arch/mips/include/asm/pgtable.h    |   26 +++++++++++++++++++++-----
- arch/mips/mm/cache.c               |   19 +++----------------
- 3 files changed, 24 insertions(+), 27 deletions(-)
+ arch/mips/kernel/mips-r2-to-r6-emul.c |  105 +++++++++++++++++-----------------
+ 1 file changed, 53 insertions(+), 52 deletions(-)
 
---- a/arch/mips/include/asm/cacheflush.h
-+++ b/arch/mips/include/asm/cacheflush.h
-@@ -51,7 +51,6 @@ extern void (*flush_cache_range)(struct
- 	unsigned long start, unsigned long end);
- extern void (*flush_cache_page)(struct vm_area_struct *vma, unsigned long page, unsigned long pfn);
- extern void __flush_dcache_page(struct page *page);
--extern void __flush_icache_page(struct vm_area_struct *vma, struct page *page);
+--- a/arch/mips/kernel/mips-r2-to-r6-emul.c
++++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
+@@ -28,6 +28,7 @@
+ #include <asm/inst.h>
+ #include <asm/mips-r2-to-r6-emul.h>
+ #include <asm/local.h>
++#include <asm/mipsregs.h>
+ #include <asm/ptrace.h>
+ #include <asm/uaccess.h>
  
- #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
- static inline void flush_dcache_page(struct page *page)
-@@ -77,11 +76,6 @@ static inline void flush_anon_page(struc
- static inline void flush_icache_page(struct vm_area_struct *vma,
- 	struct page *page)
- {
--	if (!cpu_has_ic_fills_f_dc && (vma->vm_flags & VM_EXEC) &&
--	    Page_dcache_dirty(page)) {
--		__flush_icache_page(vma, page);
--		ClearPageDcacheDirty(page);
--	}
- }
- 
- extern void (*flush_icache_range)(unsigned long start, unsigned long end);
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -127,10 +127,14 @@ do {									\
- 	}								\
- } while(0)
- 
-+static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
-+			      pte_t *ptep, pte_t pteval);
-+
- #if defined(CONFIG_PHYS_ADDR_T_64BIT) && defined(CONFIG_CPU_MIPS32)
- 
- #define pte_none(pte)		(!(((pte).pte_high) & ~_PAGE_GLOBAL))
- #define pte_present(pte)	((pte).pte_low & _PAGE_PRESENT)
-+#define pte_no_exec(pte)	((pte).pte_low & _PAGE_NO_EXEC)
- 
- static inline void set_pte(pte_t *ptep, pte_t pte)
- {
-@@ -148,7 +152,6 @@ static inline void set_pte(pte_t *ptep,
- 			buddy->pte_high |= _PAGE_GLOBAL;
- 	}
- }
--#define set_pte_at(mm, addr, ptep, pteval) set_pte(ptep, pteval)
- 
- static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
- {
-@@ -166,6 +169,7 @@ static inline void pte_clear(struct mm_s
- 
- #define pte_none(pte)		(!(pte_val(pte) & ~_PAGE_GLOBAL))
- #define pte_present(pte)	(pte_val(pte) & _PAGE_PRESENT)
-+#define pte_no_exec(pte)	(pte_val(pte) & _PAGE_NO_EXEC)
- 
- /*
-  * Certain architectures need to do special things when pte's
-@@ -218,7 +222,6 @@ static inline void set_pte(pte_t *ptep,
- 	}
- #endif
- }
--#define set_pte_at(mm, addr, ptep, pteval) set_pte(ptep, pteval)
- 
- static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
- {
-@@ -234,6 +237,22 @@ static inline void pte_clear(struct mm_s
- }
- #endif
- 
-+static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,
-+			      pte_t *ptep, pte_t pteval)
-+{
-+	extern void __update_cache(unsigned long address, pte_t pte);
-+
-+	if (!pte_present(pteval))
-+		goto cache_sync_done;
-+
-+	if (pte_present(*ptep) && (pte_pfn(*ptep) == pte_pfn(pteval)))
-+		goto cache_sync_done;
-+
-+	__update_cache(addr, pteval);
-+cache_sync_done:
-+	set_pte(ptep, pteval);
-+}
-+
- /*
-  * (pmds are folded into puds so this doesn't get actually called,
-  * but the define is needed for a generic inline function.)
-@@ -430,15 +449,12 @@ static inline pte_t pte_modify(pte_t pte
- 
- extern void __update_tlb(struct vm_area_struct *vma, unsigned long address,
- 	pte_t pte);
--extern void __update_cache(struct vm_area_struct *vma, unsigned long address,
--	pte_t pte);
- 
- static inline void update_mmu_cache(struct vm_area_struct *vma,
- 	unsigned long address, pte_t *ptep)
- {
- 	pte_t pte = *ptep;
- 	__update_tlb(vma, address, pte);
--	__update_cache(vma, address, pte);
- }
- 
- static inline void update_mmu_cache_pmd(struct vm_area_struct *vma,
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -119,30 +119,17 @@ void __flush_anon_page(struct page *page
- 
- EXPORT_SYMBOL(__flush_anon_page);
- 
--void __flush_icache_page(struct vm_area_struct *vma, struct page *page)
--{
--	unsigned long addr;
--
--	if (PageHighMem(page))
--		return;
--
--	addr = (unsigned long) page_address(page);
--	flush_data_cache_page(addr);
--}
--EXPORT_SYMBOL_GPL(__flush_icache_page);
--
--void __update_cache(struct vm_area_struct *vma, unsigned long address,
--	pte_t pte)
-+void __update_cache(unsigned long address, pte_t pte)
- {
- 	struct page *page;
- 	unsigned long pfn, addr;
--	int exec = (vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc;
-+	int exec = !pte_no_exec(pte) && !cpu_has_ic_fills_f_dc;
- 
- 	pfn = pte_pfn(pte);
- 	if (unlikely(!pfn_valid(pfn)))
- 		return;
- 	page = pfn_to_page(pfn);
--	if (page_mapping(page) && Page_dcache_dirty(page)) {
-+	if (Page_dcache_dirty(page)) {
- 		if (PageHighMem(page))
- 			addr = (unsigned long)kmap_atomic(page);
- 		else
+@@ -1251,10 +1252,10 @@ fpu_emul:
+ 			"	j	10b\n"
+ 			"	.previous\n"
+ 			"	.section	__ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1326,10 +1327,10 @@ fpu_emul:
+ 			"	j	10b\n"
+ 			"       .previous\n"
+ 			"	.section	__ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1397,10 +1398,10 @@ fpu_emul:
+ 			"	j	9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1467,10 +1468,10 @@ fpu_emul:
+ 			"	j	9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1582,14 +1583,14 @@ fpu_emul:
+ 			"	j	9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
+-			"	.word	5b,8b\n"
+-			"	.word	6b,8b\n"
+-			"	.word	7b,8b\n"
+-			"	.word	0b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
++			STR(PTR) " 5b,8b\n"
++			STR(PTR) " 6b,8b\n"
++			STR(PTR) " 7b,8b\n"
++			STR(PTR) " 0b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1701,14 +1702,14 @@ fpu_emul:
+ 			"	j      9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word  1b,8b\n"
+-			"	.word  2b,8b\n"
+-			"	.word  3b,8b\n"
+-			"	.word  4b,8b\n"
+-			"	.word  5b,8b\n"
+-			"	.word  6b,8b\n"
+-			"	.word  7b,8b\n"
+-			"	.word  0b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
++			STR(PTR) " 5b,8b\n"
++			STR(PTR) " 6b,8b\n"
++			STR(PTR) " 7b,8b\n"
++			STR(PTR) " 0b,8b\n"
+ 			"	.previous\n"
+ 			"	.set    pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1820,14 +1821,14 @@ fpu_emul:
+ 			"	j	9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
+-			"	.word	5b,8b\n"
+-			"	.word	6b,8b\n"
+-			"	.word	7b,8b\n"
+-			"	.word	0b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
++			STR(PTR) " 5b,8b\n"
++			STR(PTR) " 6b,8b\n"
++			STR(PTR) " 7b,8b\n"
++			STR(PTR) " 0b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1938,14 +1939,14 @@ fpu_emul:
+ 			"       j	9b\n"
+ 			"       .previous\n"
+ 			"       .section        __ex_table,\"a\"\n"
+-			"       .word	1b,8b\n"
+-			"       .word	2b,8b\n"
+-			"       .word	3b,8b\n"
+-			"       .word	4b,8b\n"
+-			"       .word	5b,8b\n"
+-			"       .word	6b,8b\n"
+-			"       .word	7b,8b\n"
+-			"       .word	0b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
++			STR(PTR) " 5b,8b\n"
++			STR(PTR) " 6b,8b\n"
++			STR(PTR) " 7b,8b\n"
++			STR(PTR) " 0b,8b\n"
+ 			"       .previous\n"
+ 			"       .set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -2000,7 +2001,7 @@ fpu_emul:
+ 			"j	2b\n"
+ 			".previous\n"
+ 			".section        __ex_table,\"a\"\n"
+-			".word  1b, 3b\n"
++			STR(PTR) " 1b,3b\n"
+ 			".previous\n"
+ 			: "=&r"(res), "+&r"(err)
+ 			: "r"(vaddr), "i"(SIGSEGV)
+@@ -2058,7 +2059,7 @@ fpu_emul:
+ 			"j	2b\n"
+ 			".previous\n"
+ 			".section        __ex_table,\"a\"\n"
+-			".word	1b, 3b\n"
++			STR(PTR) " 1b,3b\n"
+ 			".previous\n"
+ 			: "+&r"(res), "+&r"(err)
+ 			: "r"(vaddr), "i"(SIGSEGV));
+@@ -2119,7 +2120,7 @@ fpu_emul:
+ 			"j	2b\n"
+ 			".previous\n"
+ 			".section        __ex_table,\"a\"\n"
+-			".word  1b, 3b\n"
++			STR(PTR) " 1b,3b\n"
+ 			".previous\n"
+ 			: "=&r"(res), "+&r"(err)
+ 			: "r"(vaddr), "i"(SIGSEGV)
+@@ -2182,7 +2183,7 @@ fpu_emul:
+ 			"j	2b\n"
+ 			".previous\n"
+ 			".section        __ex_table,\"a\"\n"
+-			".word	1b, 3b\n"
++			STR(PTR) " 1b,3b\n"
+ 			".previous\n"
+ 			: "+&r"(res), "+&r"(err)
+ 			: "r"(vaddr), "i"(SIGSEGV));

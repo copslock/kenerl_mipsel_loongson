@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:00:14 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60521 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:00:36 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60555 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042492AbcFEVxIZcXNp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:08 +0200
+        by eddie.linux-mips.org with ESMTP id S27042493AbcFEVxJ6WQop (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:09 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AE73A8F5;
-        Sun,  5 Jun 2016 21:53:07 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 30A54982;
+        Sun,  5 Jun 2016 21:52:59 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 009/121] MIPS: Fix watchpoint restoration
-Date:   Sun,  5 Jun 2016 14:42:41 -0700
-Message-Id: <20160605214417.993378983@linuxfoundation.org>
+Subject: [PATCH 4.6 003/121] MIPS: math-emu: Fix jalr emulation when rd == $0
+Date:   Sun,  5 Jun 2016 14:42:35 -0700
+Message-Id: <20160605214417.816030887@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -25,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53859
+X-archive-position: 53860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,101 +47,46 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit a7e89326b415b5d81c4b1016fd4a40db861eb58d upstream.
+commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
 
-Commit f51246efee2b ("MIPS: Get rid of finish_arch_switch().") moved the
-__restore_watch() call from finish_arch_switch() (i.e. after resume()
-returns) to before the resume() call in switch_to(). This results in
-watchpoints only being restored when a task is descheduled, preventing
-the watchpoints from being effective most of the time, except due to
-chance before the watchpoints are lazily removed.
+When emulating a jalr instruction with rd == $0, the code in
+isBranchInstr was incorrectly writing to GPR $0 which should actually
+always remain zeroed. This would lead to any further instructions
+emulated which use $0 operating on a bogus value until the task is next
+context switched, at which point the value of $0 in the task context
+would be restored to the correct zero by a store in SAVE_SOME. Fix this
+by not writing to rd if it is $0.
 
-Fix the call sequence from switch_to() through to
-mips_install_watch_registers() to pass the task_struct pointer of the
-next task, instead of using current. This allows the watchpoints for the
-next (non-current) task to be restored without reintroducing
-finish_arch_switch().
-
-Fixes: f51246efee2b ("MIPS: Get rid of finish_arch_switch().")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
+Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Maciej W. Rozycki <macro@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12726/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13160/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/switch_to.h |    2 +-
- arch/mips/include/asm/watch.h     |   10 +++++-----
- arch/mips/kernel/pm.c             |    2 +-
- arch/mips/kernel/watch.c          |    5 ++---
- 4 files changed, 9 insertions(+), 10 deletions(-)
+ arch/mips/math-emu/cp1emu.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/arch/mips/include/asm/switch_to.h
-+++ b/arch/mips/include/asm/switch_to.h
-@@ -105,7 +105,7 @@ do {									\
- 	__clear_software_ll_bit();					\
- 	if (cpu_has_userlocal)						\
- 		write_c0_userlocal(task_thread_info(next)->tp_value);	\
--	__restore_watch();						\
-+	__restore_watch(next);						\
- 	(last) = resume(prev, next, task_thread_info(next));		\
- } while (0)
- 
---- a/arch/mips/include/asm/watch.h
-+++ b/arch/mips/include/asm/watch.h
-@@ -12,21 +12,21 @@
- 
- #include <asm/mipsregs.h>
- 
--void mips_install_watch_registers(void);
-+void mips_install_watch_registers(struct task_struct *t);
- void mips_read_watch_registers(void);
- void mips_clear_watch_registers(void);
- void mips_probe_watch_registers(struct cpuinfo_mips *c);
- 
- #ifdef CONFIG_HARDWARE_WATCHPOINTS
--#define __restore_watch() do {						\
-+#define __restore_watch(task) do {					\
- 	if (unlikely(test_bit(TIF_LOAD_WATCH,				\
--			      &current_thread_info()->flags))) {	\
--		mips_install_watch_registers();				\
-+			      &task_thread_info(task)->flags))) {	\
-+		mips_install_watch_registers(task);			\
- 	}								\
- } while (0)
- 
- #else
--#define __restore_watch() do {} while (0)
-+#define __restore_watch(task) do {} while (0)
- #endif
- 
- #endif /* _ASM_WATCH_H */
---- a/arch/mips/kernel/pm.c
-+++ b/arch/mips/kernel/pm.c
-@@ -56,7 +56,7 @@ static void mips_cpu_restore(void)
- 		write_c0_userlocal(current_thread_info()->tp_value);
- 
- 	/* Restore watch registers */
--	__restore_watch();
-+	__restore_watch(current);
- }
- 
- /**
---- a/arch/mips/kernel/watch.c
-+++ b/arch/mips/kernel/watch.c
-@@ -15,10 +15,9 @@
-  * Install the watch registers for the current thread.	A maximum of
-  * four registers are installed although the machine may have more.
-  */
--void mips_install_watch_registers(void)
-+void mips_install_watch_registers(struct task_struct *t)
- {
--	struct mips3264_watch_reg_state *watches =
--		&current->thread.watch.mips3264;
-+	struct mips3264_watch_reg_state *watches = &t->thread.watch.mips3264;
- 	switch (current_cpu_data.watch_reg_use_cnt) {
- 	default:
- 		BUG();
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -445,9 +445,11 @@ static int isBranchInstr(struct pt_regs
+ 	case spec_op:
+ 		switch (insn.r_format.func) {
+ 		case jalr_op:
+-			regs->regs[insn.r_format.rd] =
+-				regs->cp0_epc + dec_insn.pc_inc +
+-				dec_insn.next_pc_inc;
++			if (insn.r_format.rd != 0) {
++				regs->regs[insn.r_format.rd] =
++					regs->cp0_epc + dec_insn.pc_inc +
++					dec_insn.next_pc_inc;
++			}
+ 			/* Fall through */
+ 		case jr_op:
+ 			/* For R6, JR already emulated in jalr_op */

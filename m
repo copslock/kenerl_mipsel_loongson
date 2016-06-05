@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:28:15 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32944 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:28:34 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32955 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042511AbcFEWY6ArOyW (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042512AbcFEWY6YruU6 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:58 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3FFA6412;
-        Sun,  5 Jun 2016 22:24:47 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1BE2A941;
+        Sun,  5 Jun 2016 22:24:49 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 015/128] MIPS: Use copy_s.fmt rather than copy_u.fmt
-Date:   Sun,  5 Jun 2016 15:22:50 -0700
-Message-Id: <20160605222321.697131380@linuxfoundation.org>
+Subject: [PATCH 4.5 002/128] MIPS: math-emu: Fix jalr emulation when rd == $0
+Date:   Sun,  5 Jun 2016 15:22:37 -0700
+Message-Id: <20160605222321.287843034@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -25,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53871
+X-archive-position: 53872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,129 +49,44 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@imgtec.com>
 
-commit 8a3c8b48aca8771bff3536e40aa26ffb311699d1 upstream.
+commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
 
-In revision 1.12 of the MSA specification, the copy_u.w instruction has
-been removed for MIPS32 & the copy_u.d instruction has been removed for
-MIPS64. Newer toolchains (eg. Codescape SDK essentials 2015.10) will
-complain about this like so:
+When emulating a jalr instruction with rd == $0, the code in
+isBranchInstr was incorrectly writing to GPR $0 which should actually
+always remain zeroed. This would lead to any further instructions
+emulated which use $0 operating on a bogus value until the task is next
+context switched, at which point the value of $0 in the task context
+would be restored to the correct zero by a store in SAVE_SOME. Fix this
+by not writing to rd if it is $0.
 
-arch/mips/kernel/r4k_fpu.S:290: Error: opcode not supported on this
-processor: mips32r2 (mips32r2) `copy_u.w $1,$w26[3]'
-
-Since we always copy to the width of a GPR, simply use copy_s instead of
-copy_u to fix this.
-
+Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Maciej W. Rozycki <macro@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13061/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13160/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/asmmacro.h |   24 ++++++++++++------------
- arch/mips/kernel/r4k_fpu.S       |   10 +++++-----
- 2 files changed, 17 insertions(+), 17 deletions(-)
+ arch/mips/math-emu/cp1emu.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -298,21 +298,21 @@
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_w	ws, n
-+	.macro	copy_s_w	ws, n
- 	.set	push
- 	.set	mips32r2
- 	.set	fp=64
- 	.set	msa
--	copy_u.w $1, $w\ws[\n]
-+	copy_s.w $1, $w\ws[\n]
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_d	ws, n
-+	.macro	copy_s_d	ws, n
- 	.set	push
- 	.set	mips64r2
- 	.set	fp=64
- 	.set	msa
--	copy_u.d $1, $w\ws[\n]
-+	copy_s.d $1, $w\ws[\n]
- 	.set	pop
- 	.endm
- 
-@@ -346,8 +346,8 @@
- #define STH_MSA_INSN		0x5800081f
- #define STW_MSA_INSN		0x5800082f
- #define STD_MSA_INSN		0x5800083f
--#define COPY_UW_MSA_INSN	0x58f00056
--#define COPY_UD_MSA_INSN	0x58f80056
-+#define COPY_SW_MSA_INSN	0x58b00056
-+#define COPY_SD_MSA_INSN	0x58b80056
- #define INSERT_W_MSA_INSN	0x59300816
- #define INSERT_D_MSA_INSN	0x59380816
- #else
-@@ -361,8 +361,8 @@
- #define STH_MSA_INSN		0x78000825
- #define STW_MSA_INSN		0x78000826
- #define STD_MSA_INSN		0x78000827
--#define COPY_UW_MSA_INSN	0x78f00059
--#define COPY_UD_MSA_INSN	0x78f80059
-+#define COPY_SW_MSA_INSN	0x78b00059
-+#define COPY_SD_MSA_INSN	0x78b80059
- #define INSERT_W_MSA_INSN	0x79300819
- #define INSERT_D_MSA_INSN	0x79380819
- #endif
-@@ -461,21 +461,21 @@
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_w	ws, n
-+	.macro	copy_s_w	ws, n
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
- 	.insn
--	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
-+	.word	COPY_SW_MSA_INSN | (\n << 16) | (\ws << 11)
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_d	ws, n
-+	.macro	copy_s_d	ws, n
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
- 	.insn
--	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
-+	.word	COPY_SD_MSA_INSN | (\n << 16) | (\ws << 11)
- 	.set	pop
- 	.endm
- 
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -244,17 +244,17 @@ LEAF(\name)
- 	.set	push
- 	.set	noat
- #ifdef CONFIG_64BIT
--	copy_u_d \wr, 1
-+	copy_s_d \wr, 1
- 	EX sd	$1, \off(\base)
- #elif defined(CONFIG_CPU_LITTLE_ENDIAN)
--	copy_u_w \wr, 2
-+	copy_s_w \wr, 2
- 	EX sw	$1, \off(\base)
--	copy_u_w \wr, 3
-+	copy_s_w \wr, 3
- 	EX sw	$1, (\off+4)(\base)
- #else /* CONFIG_CPU_BIG_ENDIAN */
--	copy_u_w \wr, 2
-+	copy_s_w \wr, 2
- 	EX sw	$1, (\off+4)(\base)
--	copy_u_w \wr, 3
-+	copy_s_w \wr, 3
- 	EX sw	$1, \off(\base)
- #endif
- 	.set	pop
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -445,9 +445,11 @@ static int isBranchInstr(struct pt_regs
+ 	case spec_op:
+ 		switch (insn.r_format.func) {
+ 		case jalr_op:
+-			regs->regs[insn.r_format.rd] =
+-				regs->cp0_epc + dec_insn.pc_inc +
+-				dec_insn.next_pc_inc;
++			if (insn.r_format.rd != 0) {
++				regs->regs[insn.r_format.rd] =
++					regs->cp0_epc + dec_insn.pc_inc +
++					dec_insn.next_pc_inc;
++			}
+ 			/* Fall through */
+ 		case jr_op:
+ 			/* For R6, JR already emulated in jalr_op */

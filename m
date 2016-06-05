@@ -1,22 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:26:54 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32946 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:27:11 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32948 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042507AbcFEWY5tjkIj (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042509AbcFEWY5ty4NW (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:57 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F3BCF2C;
-        Sun,  5 Jun 2016 22:24:47 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B7BD793D;
+        Sun,  5 Jun 2016 22:24:48 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Michal Toman <michal.toman@imgtec.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        James Hogan <james.hogan@imgtec.com>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 017/128] MIPS: Prevent "restoration" of MSA context in non-MSA kernels
-Date:   Sun,  5 Jun 2016 15:22:52 -0700
-Message-Id: <20160605222321.758151709@linuxfoundation.org>
+Subject: [PATCH 4.5 019/128] MIPS: ptrace: Fix FP context restoration FCSR regression
+Date:   Sun,  5 Jun 2016 15:22:54 -0700
+Message-Id: <20160605222321.824982433@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -27,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53867
+X-archive-position: 53868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,69 +45,38 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit 6533af4d4831c421cd9aa4dce7cfc19a3514cc09 upstream.
+commit 4249548454f7ba4581aeee26bd83f42b48a14d15 upstream.
 
-If a kernel doesn't support MSA context (ie. CONFIG_CPU_HAS_MSA=n) then
-it will only keep 64 bits per FP register in thread context, and the
-calls to set_fpr64 in restore_msa_extcontext will overrun the end of the
-FP register context into the FCSR & MSACSR values. GCC 6.x has become
-smart enough to detect this & complain like so:
+Fix a floating-point context restoration regression introduced with
+commit 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
+that causes a Floating Point exception and consequently a kernel oops
+with hard float configurations when one or more FCSR Enable and their
+corresponding Cause bits are set both at a time via a ptrace(2) call.
 
-    arch/mips/kernel/signal.c: In function 'protected_restore_fp_context':
-    ./arch/mips/include/asm/processor.h:114:17: error: array subscript is above array bounds [-Werror=array-bounds]
-      fpr->val##width[FPR_IDX(width, idx)] = val;   \
-      ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
-    ./arch/mips/include/asm/processor.h:118:1: note: in expansion of macro 'BUILD_FPR_ACCESS'
-     BUILD_FPR_ACCESS(64)
+To do so reinstate Cause bit masking originally introduced with commit
+b1442d39fac2 ("MIPS: Prevent user from setting FCSR cause bits") to
+address this exact problem and then inadvertently removed from the
+PTRACE_SETFPREGS request with the commit referred above.
 
-The only way to trigger this code to run would be for a program to set
-up an artificial extended MSA context structure following a sigframe &
-execute sigreturn. Whilst this doesn't allow a program to write to any
-state that it couldn't already, it makes little sense to allow this
-"restoration" of MSA context in a system that doesn't support MSA.
-
-Fix this by killing a program with SIGSYS if it tries something as crazy
-as "restoring" fake MSA context in this way, also fixing the build error
-& allowing for most of restore_msa_extcontext to be optimised out of
-kernels without support for MSA.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reported-by: Michal Toman <michal.toman@imgtec.com>
-Fixes: bf82cb30c7e5 ("MIPS: Save MSA extended context around signals")
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: Michal Toman <michal.toman@imgtec.com>
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13164/
+Patchwork: https://patchwork.linux-mips.org/patch/13238/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/signal.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/kernel/ptrace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -195,6 +195,9 @@ static int restore_msa_extcontext(void _
- 	unsigned int csr;
- 	int i, err;
- 
-+	if (!config_enabled(CONFIG_CPU_HAS_MSA))
-+		return SIGSYS;
-+
- 	if (size != sizeof(*msa))
- 		return -EINVAL;
- 
-@@ -398,8 +401,8 @@ int protected_restore_fp_context(void __
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -176,6 +176,7 @@ int ptrace_setfpregs(struct task_struct
  	}
  
- fp_done:
--	if (used & USED_EXTCONTEXT)
--		err |= restore_extcontext(sc_to_extcontext(sc));
-+	if (!err && (used & USED_EXTCONTEXT))
-+		err = restore_extcontext(sc_to_extcontext(sc));
- 
- 	return err ?: sig;
- }
+ 	__get_user(value, data + 64);
++	value &= ~FPU_CSR_ALL_X;
+ 	fcr31 = child->thread.fpu.fcr31;
+ 	mask = boot_cpu_data.fpu_msk31;
+ 	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);

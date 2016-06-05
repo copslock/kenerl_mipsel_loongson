@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:56:34 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60512 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:56:51 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60495 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042483AbcFEVxEfKV-p (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042481AbcFEVxEenwzp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:04 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BEAE5951;
-        Sun,  5 Jun 2016 21:52:55 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E5D27955;
+        Sun,  5 Jun 2016 21:52:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 021/121] MIPS: ptrace: Fix FP context restoration FCSR regression
-Date:   Sun,  5 Jun 2016 14:42:53 -0700
-Message-Id: <20160605214418.353515672@linuxfoundation.org>
+Subject: [PATCH 4.6 024/121] MIPS: Build microMIPS VDSO for microMIPS kernels
+Date:   Sun,  5 Jun 2016 14:42:56 -0700
+Message-Id: <20160605214418.442804860@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53848
+X-archive-position: 53849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,38 +46,33 @@ X-list: linux-mips
 
 ------------------
 
-From: Maciej W. Rozycki <macro@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 4249548454f7ba4581aeee26bd83f42b48a14d15 upstream.
+commit bb93078e655be1e24d68f28f2756676e62c037ce upstream.
 
-Fix a floating-point context restoration regression introduced with
-commit 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
-that causes a Floating Point exception and consequently a kernel oops
-with hard float configurations when one or more FCSR Enable and their
-corresponding Cause bits are set both at a time via a ptrace(2) call.
+MicroMIPS kernels may be expected to run on microMIPS only cores which
+don't support the normal MIPS instruction set, so be sure to pass the
+-mmicromips flag through to the VDSO cflags.
 
-To do so reinstate Cause bit masking originally introduced with commit
-b1442d39fac2 ("MIPS: Prevent user from setting FCSR cause bits") to
-address this exact problem and then inadvertently removed from the
-PTRACE_SETFPREGS request with the commit referred above.
-
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13238/
+Patchwork: https://patchwork.linux-mips.org/patch/13349/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |    1 +
+ arch/mips/vdso/Makefile |    1 +
  1 file changed, 1 insertion(+)
 
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -176,6 +176,7 @@ int ptrace_setfpregs(struct task_struct
- 	}
- 
- 	__get_user(value, data + 64);
-+	value &= ~FPU_CSR_ALL_X;
- 	fcr31 = child->thread.fpu.fcr31;
- 	mask = boot_cpu_data.fpu_msk31;
- 	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -5,6 +5,7 @@ obj-vdso-y := elf.o gettimeofday.o sigre
+ ccflags-vdso := \
+ 	$(filter -I%,$(KBUILD_CFLAGS)) \
+ 	$(filter -E%,$(KBUILD_CFLAGS)) \
++	$(filter -mmicromips,$(KBUILD_CFLAGS)) \
+ 	$(filter -march=%,$(KBUILD_CFLAGS))
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \

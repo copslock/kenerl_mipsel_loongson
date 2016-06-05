@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:58:10 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60521 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:58:32 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60520 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042486AbcFEVxF1pc0p (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042487AbcFEVxFlttip (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:05 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 89FA5954;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2E8AC952;
         Sun,  5 Jun 2016 21:52:56 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 023/121] MIPS: Fix sigreturn via VDSO on microMIPS kernel
-Date:   Sun,  5 Jun 2016 14:42:55 -0700
-Message-Id: <20160605214418.412873356@linuxfoundation.org>
+Subject: [PATCH 4.6 022/121] MIPS: ptrace: Prevent writes to read-only FCSR bits
+Date:   Sun,  5 Jun 2016 14:42:54 -0700
+Message-Id: <20160605214418.382721541@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53853
+X-archive-position: 53854
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,51 +45,102 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit 13eb192d10bcc9ac518d57356179071d603bcb4e upstream.
+commit abf378be49f38c4d3e23581d3df3fa9f1b1b11d2 upstream.
 
-In microMIPS kernels, handle_signal() sets the isa16 mode bit in the
-vdso address so that the sigreturn trampolines (which are offset from
-the VDSO) get executed as microMIPS.
+Correct the cases missed with commit 9b26616c8d9d ("MIPS: Respect the
+ISA level in FCSR handling") and prevent writes to read-only FCSR bits
+there.
 
-However commit ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
-changed the offsets to come from the VDSO image, which already have the
-isa16 mode bit set correctly since they're extracted from the VDSO
-shared library symbol table.
+This in particular applies to FP context initialisation where any IEEE
+754-2008 bits preset by `mips_set_personality_nan' are cleared before
+the relevant ptrace(2) call takes effect and the PTRACE_POKEUSR request
+addressing FPC_CSR where no masking of read-only FCSR bits is done.
 
-Drop the isa16 mode bit handling from handle_signal() to fix sigreturn
-for cores which support both microMIPS and normal MIPS. This doesn't fix
-microMIPS only cores, since the VDSO is still built for normal MIPS, but
-thats a separate problem.
+Remove the FCSR clearing from FP context initialisation then and unify
+PTRACE_POKEUSR/FPC_CSR and PTRACE_SETFPREGS handling, by factoring out
+code from `ptrace_setfpregs' and calling it from both places.
 
-Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
+This mostly matters to soft float configurations where the emulator can
+be switched this way to a mode which should not be accessible and cannot
+be set with the CTC1 instruction.  With hard float configurations any
+effect is transient anyway as read-only bits will retain their values at
+the time the FP context is restored.
+
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13348/
+Patchwork: https://patchwork.linux-mips.org/patch/13239/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/signal.c |    8 --------
- 1 file changed, 8 deletions(-)
+ arch/mips/kernel/ptrace.c |   28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -770,15 +770,7 @@ static void handle_signal(struct ksignal
- 	sigset_t *oldset = sigmask_to_save();
- 	int ret;
- 	struct mips_abi *abi = current->thread.abi;
--#ifdef CONFIG_CPU_MICROMIPS
--	void *vdso;
--	unsigned long tmp = (unsigned long)current->mm->context.vdso;
--
--	set_isa16_mode(tmp);
--	vdso = (void *)tmp;
--#else
- 	void *vdso = current->mm->context.vdso;
--#endif
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -57,8 +57,7 @@ static void init_fp_ctx(struct task_stru
+ 	/* Begin with data registers set to all 1s... */
+ 	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
  
- 	if (regs->regs[0]) {
- 		switch(regs->regs[2]) {
+-	/* ...and FCSR zeroed */
+-	target->thread.fpu.fcr31 = 0;
++	/* FCSR has been preset by `mips_set_personality_nan'.  */
+ 
+ 	/*
+ 	 * Record that the target has "used" math, such that the context
+@@ -80,6 +79,22 @@ void ptrace_disable(struct task_struct *
+ }
+ 
+ /*
++ * Poke at FCSR according to its mask.  Don't set the cause bits as
++ * this is currently not handled correctly in FP context restoration
++ * and will cause an oops if a corresponding enable bit is set.
++ */
++static void ptrace_setfcr31(struct task_struct *child, u32 value)
++{
++	u32 fcr31;
++	u32 mask;
++
++	value &= ~FPU_CSR_ALL_X;
++	fcr31 = child->thread.fpu.fcr31;
++	mask = boot_cpu_data.fpu_msk31;
++	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
++}
++
++/*
+  * Read a general register set.	 We always use the 64-bit format, even
+  * for 32-bit kernels and for 32-bit processes on a 64-bit kernel.
+  * Registers are sign extended to fill the available space.
+@@ -159,9 +174,7 @@ int ptrace_setfpregs(struct task_struct
+ {
+ 	union fpureg *fregs;
+ 	u64 fpr_val;
+-	u32 fcr31;
+ 	u32 value;
+-	u32 mask;
+ 	int i;
+ 
+ 	if (!access_ok(VERIFY_READ, data, 33 * 8))
+@@ -176,10 +189,7 @@ int ptrace_setfpregs(struct task_struct
+ 	}
+ 
+ 	__get_user(value, data + 64);
+-	value &= ~FPU_CSR_ALL_X;
+-	fcr31 = child->thread.fpu.fcr31;
+-	mask = boot_cpu_data.fpu_msk31;
+-	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
++	ptrace_setfcr31(child, value);
+ 
+ 	/* FIR may not be written.  */
+ 
+@@ -806,7 +816,7 @@ long arch_ptrace(struct task_struct *chi
+ 			break;
+ #endif
+ 		case FPC_CSR:
+-			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
++			ptrace_setfcr31(child, data);
+ 			break;
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;

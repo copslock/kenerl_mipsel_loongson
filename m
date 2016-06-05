@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:45:30 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:59984 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:45:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59982 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042449AbcFEVmjdm0ap (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042450AbcFEVmj4M7kp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:42:39 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0953F723;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 603F693D;
         Sun,  5 Jun 2016 21:42:39 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
@@ -12,9 +12,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 20/99] MIPS: Fix sigreturn via VDSO on microMIPS kernel
-Date:   Sun,  5 Jun 2016 14:40:53 -0700
-Message-Id: <20160605213904.983378524@linuxfoundation.org>
+Subject: [PATCH 4.4 21/99] MIPS: Build microMIPS VDSO for microMIPS kernels
+Date:   Sun,  5 Jun 2016 14:40:54 -0700
+Message-Id: <20160605213905.040748412@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605213902.974592018@linuxfoundation.org>
 References: <20160605213902.974592018@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53825
+X-archive-position: 53826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,49 +48,31 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 13eb192d10bcc9ac518d57356179071d603bcb4e upstream.
+commit bb93078e655be1e24d68f28f2756676e62c037ce upstream.
 
-In microMIPS kernels, handle_signal() sets the isa16 mode bit in the
-vdso address so that the sigreturn trampolines (which are offset from
-the VDSO) get executed as microMIPS.
-
-However commit ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
-changed the offsets to come from the VDSO image, which already have the
-isa16 mode bit set correctly since they're extracted from the VDSO
-shared library symbol table.
-
-Drop the isa16 mode bit handling from handle_signal() to fix sigreturn
-for cores which support both microMIPS and normal MIPS. This doesn't fix
-microMIPS only cores, since the VDSO is still built for normal MIPS, but
-thats a separate problem.
+MicroMIPS kernels may be expected to run on microMIPS only cores which
+don't support the normal MIPS instruction set, so be sure to pass the
+-mmicromips flag through to the VDSO cflags.
 
 Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13348/
+Patchwork: https://patchwork.linux-mips.org/patch/13349/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/signal.c |    8 --------
- 1 file changed, 8 deletions(-)
+ arch/mips/vdso/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -770,15 +770,7 @@ static void handle_signal(struct ksignal
- 	sigset_t *oldset = sigmask_to_save();
- 	int ret;
- 	struct mips_abi *abi = current->thread.abi;
--#ifdef CONFIG_CPU_MICROMIPS
--	void *vdso;
--	unsigned long tmp = (unsigned long)current->mm->context.vdso;
--
--	set_isa16_mode(tmp);
--	vdso = (void *)tmp;
--#else
- 	void *vdso = current->mm->context.vdso;
--#endif
- 
- 	if (regs->regs[0]) {
- 		switch(regs->regs[2]) {
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -5,6 +5,7 @@ obj-vdso-y := elf.o gettimeofday.o sigre
+ ccflags-vdso := \
+ 	$(filter -I%,$(KBUILD_CFLAGS)) \
+ 	$(filter -E%,$(KBUILD_CFLAGS)) \
++	$(filter -mmicromips,$(KBUILD_CFLAGS)) \
+ 	$(filter -march=%,$(KBUILD_CFLAGS))
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \

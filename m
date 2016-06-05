@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:32:01 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32978 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:32:28 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32979 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042523AbcFEWZDrS7Cz (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042524AbcFEWZDrt1MW (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:25:03 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2CC5F954;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E5B64958;
         Sun,  5 Jun 2016 22:24:53 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 005/128] MIPS: Avoid using unwind_stack() with usermode
-Date:   Sun,  5 Jun 2016 15:22:40 -0700
-Message-Id: <20160605222321.381152789@linuxfoundation.org>
+        stable@vger.kernel.org, Christopher Ferris <cferris@google.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Petr Malat <oss@malat.biz>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.5 007/128] MIPS: Fix uapi include in exported asm/siginfo.h
+Date:   Sun,  5 Jun 2016 15:22:42 -0700
+Message-Id: <20160605222321.443518302@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -25,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53882
+X-archive-position: 53883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,40 +49,48 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 81a76d7119f63c359750e4adeff922a31ad1135f upstream.
+commit 987e5b834467c9251ca584febda65ef8f66351a9 upstream.
 
-When showing backtraces in response to traps, for example crashes and
-address errors (usually unaligned accesses) when they are set in debugfs
-to be reported, unwind_stack will be used if the PC was in the kernel
-text address range. However since EVA it is possible for user and kernel
-address ranges to overlap, and even without EVA userland can still
-trigger an address error by jumping to a KSeg0 address.
+Since commit 8cb48fe169dd ("MIPS: Provide correct siginfo_t.si_stime"),
+MIPS' uapi/asm/siginfo.h has included uapi/asm-generic/siginfo.h
+directly before defining MIPS' struct siginfo, in order to get the
+necessary definitions needed for the siginfo struct without the generic
+copy_siginfo() hitting compiler errors due to struct siginfo not yet
+being defined.
 
-Adjust the check to also ensure that it was running in kernel mode. I
-don't believe any harm can come of this problem, since unwind_stack() is
-sufficiently defensive, however it is only meant for unwinding kernel
-code, so to be correct it should use the raw backtracing instead.
+Now that the generic copy_siginfo() is moved out to linux/signal.h we
+can safely include asm-generic/siginfo.h before defining the MIPS
+specific struct siginfo, which avoids the uapi/ include as well as
+breakage due to generic copy_siginfo() being defined before struct
+siginfo.
 
+Reported-by: Christopher Ferris <cferris@google.com>
+Fixes: 8cb48fe169dd ("MIPS: Provide correct siginfo_t.si_stime")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: Petr Malat <oss@malat.biz>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11701/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-(cherry picked from commit d2941a975ac745c607dfb590e92bb30bc352dad9)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/traps.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/uapi/asm/siginfo.h |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -144,7 +144,7 @@ static void show_backtrace(struct task_s
- 	if (!task)
- 		task = current;
+--- a/arch/mips/include/uapi/asm/siginfo.h
++++ b/arch/mips/include/uapi/asm/siginfo.h
+@@ -28,7 +28,7 @@
  
--	if (raw_show_trace || !__kernel_text_address(pc)) {
-+	if (raw_show_trace || user_mode(regs) || !__kernel_text_address(pc)) {
- 		show_raw_backtrace(sp);
- 		return;
- 	}
+ #define __ARCH_SIGSYS
+ 
+-#include <uapi/asm-generic/siginfo.h>
++#include <asm-generic/siginfo.h>
+ 
+ /* We can't use generic siginfo_t, because our si_code and si_errno are swapped */
+ typedef struct siginfo {
+@@ -118,6 +118,4 @@ typedef struct siginfo {
+ #define SI_TIMER __SI_CODE(__SI_TIMER, -3) /* sent by timer expiration */
+ #define SI_MESGQ __SI_CODE(__SI_MESGQ, -4) /* sent by real time mesq state change */
+ 
+-#include <asm-generic/siginfo.h>
+-
+ #endif /* _UAPI_ASM_SIGINFO_H */

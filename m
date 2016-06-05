@@ -1,23 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:57:13 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60511 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:57:30 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60497 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042482AbcFEVxEfCppp (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042484AbcFEVxEfOKIp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:04 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 646C494F;
-        Sun,  5 Jun 2016 21:52:55 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AA4D44D3;
+        Sun,  5 Jun 2016 21:52:57 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
         James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 020/121] MIPS: Disable preemption during prctl(PR_SET_FP_MODE, ...)
-Date:   Sun,  5 Jun 2016 14:42:52 -0700
-Message-Id: <20160605214418.323044501@linuxfoundation.org>
+        Tejun Heo <tj@kernel.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.6 026/121] MIPS: VDSO: Build with `-fno-strict-aliasing
+Date:   Sun,  5 Jun 2016 14:42:58 -0700
+Message-Id: <20160605214418.508652766@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -28,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53850
+X-archive-position: 53851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,48 +47,56 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit bd239f1e1429e7781096bf3884bdb1b2b1bb4f28 upstream.
+commit 94cc36b84acc29f543b48bc5ed786011b112a666 upstream.
 
-Whilst a PR_SET_FP_MODE prctl is performed there are decisions made
-based upon whether the task is executing on the current CPU. This may
-change if we're preempted, so disable preemption to avoid such changes
-for the lifetime of the mode switch.
+Avoid an aliasing issue causing a build error in VDSO:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
-Tested-by: Aurelien Jarno <aurelien@aurel32.net>
-Cc: Adam Buchbinder <adam.buchbinder@gmail.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+In file included from include/linux/srcu.h:34:0,
+                 from include/linux/notifier.h:15,
+                 from ./arch/mips/include/asm/uprobes.h:9,
+                 from include/linux/uprobes.h:61,
+                 from include/linux/mm_types.h:13,
+                 from ./arch/mips/include/asm/vdso.h:14,
+                 from arch/mips/vdso/vdso.h:27,
+                 from arch/mips/vdso/gettimeofday.c:11:
+include/linux/workqueue.h: In function 'work_static':
+include/linux/workqueue.h:186:2: error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]
+  return *work_data_bits(work) & WORK_STRUCT_STATIC;
+  ^
+cc1: all warnings being treated as errors
+make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
+
+with a CONFIG_DEBUG_OBJECTS_WORK configuration and GCC 5.2.0.  Include
+`-fno-strict-aliasing' along with compiler options used, as required for
+kernel code, fixing a problem present since the introduction of VDSO
+with commit ebb5e78cc634 ("MIPS: Initial implementation of a VDSO").
+
+Thanks to Tejun for diagnosing this properly!
+
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Cc: Tejun Heo <tj@kernel.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13144/
+Patchwork: https://patchwork.linux-mips.org/patch/13357/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/vdso/Makefile |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -609,6 +609,9 @@ int mips_set_process_fp_mode(struct task
- 	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
- 		return -EOPNOTSUPP;
- 
-+	/* Proceed with the mode switch */
-+	preempt_disable();
-+
- 	/* Save FP & vector context, then disable FPU & MSA */
- 	if (task->signal == current->signal)
- 		lose_fpu(1);
-@@ -653,6 +656,7 @@ int mips_set_process_fp_mode(struct task
- 
- 	/* Allow threads to use FP again */
- 	atomic_set(&task->mm->context.fp_mode_switching, 0);
-+	preempt_enable();
- 
- 	return 0;
- }
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -9,7 +9,8 @@ ccflags-vdso := \
+ 	$(filter -march=%,$(KBUILD_CFLAGS))
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+-	-O2 -g -fPIC -fno-common -fno-builtin -G 0 -DDISABLE_BRANCH_PROFILING \
++	-O2 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
++	-DDISABLE_BRANCH_PROFILING \
+ 	$(call cc-option, -fno-stack-protector)
+ aflags-vdso := $(ccflags-vdso) \
+ 	$(filter -I%,$(KBUILD_CFLAGS)) \

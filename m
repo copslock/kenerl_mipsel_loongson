@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:58:53 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60521 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:59:15 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60520 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042488AbcFEVxGhyAUp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:06 +0200
+        by eddie.linux-mips.org with ESMTP id S27042489AbcFEVxHDVS5p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:07 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0EFAC884;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7DCFF4D3;
         Sun,  5 Jun 2016 21:53:06 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
@@ -12,9 +12,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 005/121] MIPS: Dont unwind to user mode with EVA
-Date:   Sun,  5 Jun 2016 14:42:37 -0700
-Message-Id: <20160605214417.875619081@linuxfoundation.org>
+Subject: [PATCH 4.6 006/121] MIPS: Avoid using unwind_stack() with usermode
+Date:   Sun,  5 Jun 2016 14:42:38 -0700
+Message-Id: <20160605214417.904526571@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53855
+X-archive-position: 53856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,45 +48,40 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit a816b306c62195b7c43c92cb13330821a96bdc27 upstream.
+commit 81a76d7119f63c359750e4adeff922a31ad1135f upstream.
 
-When unwinding through IRQs and exceptions, the unwinding only continues
-if the PC is a kernel text address, however since EVA it is possible for
-user and kernel address ranges to overlap, potentially allowing
-unwinding to continue to user mode if the user PC happens to be in the
-kernel text address range.
+When showing backtraces in response to traps, for example crashes and
+address errors (usually unaligned accesses) when they are set in debugfs
+to be reported, unwind_stack will be used if the PC was in the kernel
+text address range. However since EVA it is possible for user and kernel
+address ranges to overlap, and even without EVA userland can still
+trigger an address error by jumping to a KSeg0 address.
 
-Adjust the check to also ensure that the register state from before the
-exception is actually running in kernel mode, i.e. !user_mode(regs).
-
-I don't believe any harm can come of this problem, since the PC is only
-output, the stack pointer is checked to ensure it resides within the
-task's stack page before it is dereferenced in search of the return
-address, and the return address register is similarly only output (if
-the PC is in a leaf function or the beginning of a non-leaf function).
-
-However unwind_stack() is only meant for unwinding kernel code, so to be
-correct the unwind should stop there.
+Adjust the check to also ensure that it was running in kernel mode. I
+don't believe any harm can come of this problem, since unwind_stack() is
+sufficiently defensive, however it is only meant for unwinding kernel
+code, so to be correct it should use the raw backtracing instead.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11700/
+Patchwork: https://patchwork.linux-mips.org/patch/11701/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+(cherry picked from commit d2941a975ac745c607dfb590e92bb30bc352dad9)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |    2 +-
+ arch/mips/kernel/traps.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -455,7 +455,7 @@ unsigned long notrace unwind_stack_by_ad
- 		    *sp + sizeof(*regs) <= stack_page + THREAD_SIZE - 32) {
- 			regs = (struct pt_regs *)*sp;
- 			pc = regs->cp0_epc;
--			if (__kernel_text_address(pc)) {
-+			if (!user_mode(regs) && __kernel_text_address(pc)) {
- 				*sp = regs->regs[29];
- 				*ra = regs->regs[31];
- 				return pc;
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -145,7 +145,7 @@ static void show_backtrace(struct task_s
+ 	if (!task)
+ 		task = current;
+ 
+-	if (raw_show_trace || !__kernel_text_address(pc)) {
++	if (raw_show_trace || user_mode(regs) || !__kernel_text_address(pc)) {
+ 		show_raw_backtrace(sp);
+ 		return;
+ 	}

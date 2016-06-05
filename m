@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:29:18 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:32945 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2016 00:29:41 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:32947 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042516AbcFEWY60aWzW (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042514AbcFEWY6Z-ypz (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2016 00:24:58 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C8E0C413;
-        Sun,  5 Jun 2016 22:24:52 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F0D53952;
+        Sun,  5 Jun 2016 22:24:50 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.5 004/128] MIPS: Dont unwind to user mode with EVA
-Date:   Sun,  5 Jun 2016 15:22:39 -0700
-Message-Id: <20160605222321.349865661@linuxfoundation.org>
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Tejun Heo <tj@kernel.org>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.5 024/128] MIPS: VDSO: Build with `-fno-strict-aliasing
+Date:   Sun,  5 Jun 2016 15:22:59 -0700
+Message-Id: <20160605222321.978540501@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605222321.183131188@linuxfoundation.org>
 References: <20160605222321.183131188@linuxfoundation.org>
@@ -25,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53874
+X-archive-position: 53875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,47 +47,56 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit a816b306c62195b7c43c92cb13330821a96bdc27 upstream.
+commit 94cc36b84acc29f543b48bc5ed786011b112a666 upstream.
 
-When unwinding through IRQs and exceptions, the unwinding only continues
-if the PC is a kernel text address, however since EVA it is possible for
-user and kernel address ranges to overlap, potentially allowing
-unwinding to continue to user mode if the user PC happens to be in the
-kernel text address range.
+Avoid an aliasing issue causing a build error in VDSO:
 
-Adjust the check to also ensure that the register state from before the
-exception is actually running in kernel mode, i.e. !user_mode(regs).
+In file included from include/linux/srcu.h:34:0,
+                 from include/linux/notifier.h:15,
+                 from ./arch/mips/include/asm/uprobes.h:9,
+                 from include/linux/uprobes.h:61,
+                 from include/linux/mm_types.h:13,
+                 from ./arch/mips/include/asm/vdso.h:14,
+                 from arch/mips/vdso/vdso.h:27,
+                 from arch/mips/vdso/gettimeofday.c:11:
+include/linux/workqueue.h: In function 'work_static':
+include/linux/workqueue.h:186:2: error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]
+  return *work_data_bits(work) & WORK_STRUCT_STATIC;
+  ^
+cc1: all warnings being treated as errors
+make[2]: *** [arch/mips/vdso/gettimeofday.o] Error 1
 
-I don't believe any harm can come of this problem, since the PC is only
-output, the stack pointer is checked to ensure it resides within the
-task's stack page before it is dereferenced in search of the return
-address, and the return address register is similarly only output (if
-the PC is in a leaf function or the beginning of a non-leaf function).
+with a CONFIG_DEBUG_OBJECTS_WORK configuration and GCC 5.2.0.  Include
+`-fno-strict-aliasing' along with compiler options used, as required for
+kernel code, fixing a problem present since the introduction of VDSO
+with commit ebb5e78cc634 ("MIPS: Initial implementation of a VDSO").
 
-However unwind_stack() is only meant for unwinding kernel code, so to be
-correct the unwind should stop there.
+Thanks to Tejun for diagnosing this properly!
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Cc: Tejun Heo <tj@kernel.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11700/
+Patchwork: https://patchwork.linux-mips.org/patch/13357/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/vdso/Makefile |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -455,7 +455,7 @@ unsigned long notrace unwind_stack_by_ad
- 		    *sp + sizeof(*regs) <= stack_page + THREAD_SIZE - 32) {
- 			regs = (struct pt_regs *)*sp;
- 			pc = regs->cp0_epc;
--			if (__kernel_text_address(pc)) {
-+			if (!user_mode(regs) && __kernel_text_address(pc)) {
- 				*sp = regs->regs[29];
- 				*ra = regs->regs[31];
- 				return pc;
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -9,7 +9,8 @@ ccflags-vdso := \
+ 	$(filter -march=%,$(KBUILD_CFLAGS))
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+-	-O2 -g -fPIC -fno-common -fno-builtin -G 0 -DDISABLE_BRANCH_PROFILING \
++	-O2 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
++	-DDISABLE_BRANCH_PROFILING \
+ 	$(call cc-option, -fno-stack-protector)
+ aflags-vdso := $(ccflags-vdso) \
+ 	$(filter -I%,$(KBUILD_CFLAGS)) \

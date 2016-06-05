@@ -1,23 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:56:10 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60502 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:56:34 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60512 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042480AbcFEVxEIkv0p (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042483AbcFEVxEfKV-p (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:04 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0A7C494E;
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BEAE5951;
         Sun,  5 Jun 2016 21:52:55 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        macro@linux-mips.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 002/121] MIPS64: R6: R2 emulation bugfix
-Date:   Sun,  5 Jun 2016 14:42:34 -0700
-Message-Id: <20160605214417.786355473@linuxfoundation.org>
+        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.6 021/121] MIPS: ptrace: Fix FP context restoration FCSR regression
+Date:   Sun,  5 Jun 2016 14:42:53 -0700
+Message-Id: <20160605214418.353515672@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -28,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53847
+X-archive-position: 53848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,227 +45,38 @@ X-list: linux-mips
 
 ------------------
 
-From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+From: Maciej W. Rozycki <macro@imgtec.com>
 
-commit 41fa29e4d8cf4150568a0fe9bb4d62229f9caed5 upstream.
+commit 4249548454f7ba4581aeee26bd83f42b48a14d15 upstream.
 
-Error recovery pointers for fixups was improperly set as ".word"
-which is unsuitable for MIPS64.
+Fix a floating-point context restoration regression introduced with
+commit 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
+that causes a Floating Point exception and consequently a kernel oops
+with hard float configurations when one or more FCSR Enable and their
+corresponding Cause bits are set both at a time via a ptrace(2) call.
 
-Replaced by STR(PTR)
+To do so reinstate Cause bit masking originally introduced with commit
+b1442d39fac2 ("MIPS: Prevent user from setting FCSR cause bits") to
+address this exact problem and then inadvertently removed from the
+PTRACE_SETFPREGS request with the commit referred above.
 
-[ralf@linux-mips.org: Apply changes as requested in the review process.]
-
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
-Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator for MIPS R6")
-Cc: macro@linux-mips.org
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/9911/
+Patchwork: https://patchwork.linux-mips.org/patch/13238/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/mips-r2-to-r6-emul.c |  105 +++++++++++++++++-----------------
- 1 file changed, 53 insertions(+), 52 deletions(-)
+ arch/mips/kernel/ptrace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-+++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-@@ -28,6 +28,7 @@
- #include <asm/inst.h>
- #include <asm/mips-r2-to-r6-emul.h>
- #include <asm/local.h>
-+#include <asm/mipsregs.h>
- #include <asm/ptrace.h>
- #include <asm/uaccess.h>
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -176,6 +176,7 @@ int ptrace_setfpregs(struct task_struct
+ 	}
  
-@@ -1251,10 +1252,10 @@ fpu_emul:
- 			"	j	10b\n"
- 			"	.previous\n"
- 			"	.section	__ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1326,10 +1327,10 @@ fpu_emul:
- 			"	j	10b\n"
- 			"       .previous\n"
- 			"	.section	__ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1397,10 +1398,10 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1467,10 +1468,10 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1582,14 +1583,14 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
--			"	.word	5b,8b\n"
--			"	.word	6b,8b\n"
--			"	.word	7b,8b\n"
--			"	.word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1701,14 +1702,14 @@ fpu_emul:
- 			"	j      9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word  1b,8b\n"
--			"	.word  2b,8b\n"
--			"	.word  3b,8b\n"
--			"	.word  4b,8b\n"
--			"	.word  5b,8b\n"
--			"	.word  6b,8b\n"
--			"	.word  7b,8b\n"
--			"	.word  0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set    pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1820,14 +1821,14 @@ fpu_emul:
- 			"	j	9b\n"
- 			"	.previous\n"
- 			"	.section        __ex_table,\"a\"\n"
--			"	.word	1b,8b\n"
--			"	.word	2b,8b\n"
--			"	.word	3b,8b\n"
--			"	.word	4b,8b\n"
--			"	.word	5b,8b\n"
--			"	.word	6b,8b\n"
--			"	.word	7b,8b\n"
--			"	.word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"	.previous\n"
- 			"	.set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -1938,14 +1939,14 @@ fpu_emul:
- 			"       j	9b\n"
- 			"       .previous\n"
- 			"       .section        __ex_table,\"a\"\n"
--			"       .word	1b,8b\n"
--			"       .word	2b,8b\n"
--			"       .word	3b,8b\n"
--			"       .word	4b,8b\n"
--			"       .word	5b,8b\n"
--			"       .word	6b,8b\n"
--			"       .word	7b,8b\n"
--			"       .word	0b,8b\n"
-+			STR(PTR) " 1b,8b\n"
-+			STR(PTR) " 2b,8b\n"
-+			STR(PTR) " 3b,8b\n"
-+			STR(PTR) " 4b,8b\n"
-+			STR(PTR) " 5b,8b\n"
-+			STR(PTR) " 6b,8b\n"
-+			STR(PTR) " 7b,8b\n"
-+			STR(PTR) " 0b,8b\n"
- 			"       .previous\n"
- 			"       .set	pop\n"
- 			: "+&r"(rt), "=&r"(rs),
-@@ -2000,7 +2001,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word  1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "=&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV)
-@@ -2058,7 +2059,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word	1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "+&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV));
-@@ -2119,7 +2120,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word  1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "=&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV)
-@@ -2182,7 +2183,7 @@ fpu_emul:
- 			"j	2b\n"
- 			".previous\n"
- 			".section        __ex_table,\"a\"\n"
--			".word	1b, 3b\n"
-+			STR(PTR) " 1b,3b\n"
- 			".previous\n"
- 			: "+&r"(res), "+&r"(err)
- 			: "r"(vaddr), "i"(SIGSEGV));
+ 	__get_user(value, data + 64);
++	value &= ~FPU_CSR_ALL_X;
+ 	fcr31 = child->thread.fpu.fcr31;
+ 	mask = boot_cpu_data.fpu_msk31;
+ 	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);

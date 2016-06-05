@@ -1,22 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:49:47 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60043 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:52:59 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60430 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042458AbcFEVmo1xIop (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:42:44 +0200
+        by eddie.linux-mips.org with ESMTP id S27042429AbcFEVw5Y0B8p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:52:57 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0C448954;
-        Sun,  5 Jun 2016 21:42:37 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 293424D3;
+        Sun,  5 Jun 2016 21:52:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        Lars Persson <lars.persson@axis.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jerome Marchand <jmarchan@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 19/99] MIPS: ptrace: Prevent writes to read-only FCSR bits
-Date:   Sun,  5 Jun 2016 14:40:52 -0700
-Message-Id: <20160605213904.926336064@linuxfoundation.org>
+Subject: [PATCH 4.6 010/121] MIPS: Handle highmem pages in __update_cache
+Date:   Sun,  5 Jun 2016 14:42:42 -0700
+Message-Id: <20160605214418.022772366@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
-In-Reply-To: <20160605213902.974592018@linuxfoundation.org>
-References: <20160605213902.974592018@linuxfoundation.org>
+In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
+References: <20160605214417.708509043@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -24,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53837
+X-archive-position: 53838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,106 +45,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit abf378be49f38c4d3e23581d3df3fa9f1b1b11d2 upstream.
+commit f4281bba818105c7c91799abe40bc05c0dbdaa25 upstream.
 
-Correct the cases missed with commit 9b26616c8d9d ("MIPS: Respect the
-ISA level in FCSR handling") and prevent writes to read-only FCSR bits
-there.
+The following patch will expose __update_cache to highmem pages. Handle
+them by mapping them in for the duration of the cache maintenance, just
+like in __flush_dcache_page. The code for that isn't shared because we
+need the page address in __update_cache so sharing became messy. Given
+that the entirity is an extra 5 lines, just duplicate it.
 
-This in particular applies to FP context initialisation where any IEEE
-754-2008 bits preset by `mips_set_personality_nan' are cleared before
-the relevant ptrace(2) call takes effect and the PTRACE_POKEUSR request
-addressing FPC_CSR where no masking of read-only FCSR bits is done.
-
-Remove the FCSR clearing from FP context initialisation then and unify
-PTRACE_POKEUSR/FPC_CSR and PTRACE_SETFPREGS handling, by factoring out
-code from `ptrace_setfpregs' and calling it from both places.
-
-This mostly matters to soft float configurations where the emulator can
-be switched this way to a mode which should not be accessible and cannot
-be set with the CTC1 instruction.  With hard float configurations any
-effect is transient anyway as read-only bits will retain their values at
-the time the FP context is restored.
-
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Lars Persson <lars.persson@axis.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jerome Marchand <jmarchan@redhat.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13239/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12721/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |   28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ arch/mips/mm/cache.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -57,8 +57,7 @@ static void init_fp_ctx(struct task_stru
- 	/* Begin with data registers set to all 1s... */
- 	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
- 
--	/* ...and FCSR zeroed */
--	target->thread.fpu.fcr31 = 0;
-+	/* FCSR has been preset by `mips_set_personality_nan'.  */
- 
- 	/*
- 	 * Record that the target has "used" math, such that the context
-@@ -80,6 +79,22 @@ void ptrace_disable(struct task_struct *
- }
- 
- /*
-+ * Poke at FCSR according to its mask.  Don't set the cause bits as
-+ * this is currently not handled correctly in FP context restoration
-+ * and will cause an oops if a corresponding enable bit is set.
-+ */
-+static void ptrace_setfcr31(struct task_struct *child, u32 value)
-+{
-+	u32 fcr31;
-+	u32 mask;
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -143,9 +143,17 @@ void __update_cache(struct vm_area_struc
+ 		return;
+ 	page = pfn_to_page(pfn);
+ 	if (page_mapping(page) && Page_dcache_dirty(page)) {
+-		addr = (unsigned long) page_address(page);
++		if (PageHighMem(page))
++			addr = (unsigned long)kmap_atomic(page);
++		else
++			addr = (unsigned long)page_address(page);
 +
-+	value &= ~FPU_CSR_ALL_X;
-+	fcr31 = child->thread.fpu.fcr31;
-+	mask = boot_cpu_data.fpu_msk31;
-+	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
-+}
+ 		if (exec || pages_do_alias(addr, address & PAGE_MASK))
+ 			flush_data_cache_page(addr);
 +
-+/*
-  * Read a general register set.	 We always use the 64-bit format, even
-  * for 32-bit kernels and for 32-bit processes on a 64-bit kernel.
-  * Registers are sign extended to fill the available space.
-@@ -159,9 +174,7 @@ int ptrace_setfpregs(struct task_struct
- {
- 	union fpureg *fregs;
- 	u64 fpr_val;
--	u32 fcr31;
- 	u32 value;
--	u32 mask;
- 	int i;
- 
- 	if (!access_ok(VERIFY_READ, data, 33 * 8))
-@@ -176,10 +189,7 @@ int ptrace_setfpregs(struct task_struct
++		if (PageHighMem(page))
++			__kunmap_atomic((void *)addr);
++
+ 		ClearPageDcacheDirty(page);
  	}
- 
- 	__get_user(value, data + 64);
--	value &= ~FPU_CSR_ALL_X;
--	fcr31 = child->thread.fpu.fcr31;
--	mask = boot_cpu_data.fpu_msk31;
--	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
-+	ptrace_setfcr31(child, value);
- 
- 	/* FIR may not be written.  */
- 
-@@ -809,7 +819,7 @@ long arch_ptrace(struct task_struct *chi
- 			break;
- #endif
- 		case FPC_CSR:
--			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
-+			ptrace_setfcr31(child, data);
- 			break;
- 		case DSP_BASE ... DSP_BASE + 5: {
- 			dspreg_t *dregs;
+ }

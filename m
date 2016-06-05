@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:58:32 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60520 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:58:53 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60521 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042487AbcFEVxFlttip (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:05 +0200
+        by eddie.linux-mips.org with ESMTP id S27042488AbcFEVxGhyAUp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:06 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2E8AC952;
-        Sun,  5 Jun 2016 21:52:56 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0EFAC884;
+        Sun,  5 Jun 2016 21:53:06 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, "Maciej W. Rozycki" <macro@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 022/121] MIPS: ptrace: Prevent writes to read-only FCSR bits
-Date:   Sun,  5 Jun 2016 14:42:54 -0700
-Message-Id: <20160605214418.382721541@linuxfoundation.org>
+Subject: [PATCH 4.6 005/121] MIPS: Dont unwind to user mode with EVA
+Date:   Sun,  5 Jun 2016 14:42:37 -0700
+Message-Id: <20160605214417.875619081@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53854
+X-archive-position: 53855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,102 +46,47 @@ X-list: linux-mips
 
 ------------------
 
-From: Maciej W. Rozycki <macro@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit abf378be49f38c4d3e23581d3df3fa9f1b1b11d2 upstream.
+commit a816b306c62195b7c43c92cb13330821a96bdc27 upstream.
 
-Correct the cases missed with commit 9b26616c8d9d ("MIPS: Respect the
-ISA level in FCSR handling") and prevent writes to read-only FCSR bits
-there.
+When unwinding through IRQs and exceptions, the unwinding only continues
+if the PC is a kernel text address, however since EVA it is possible for
+user and kernel address ranges to overlap, potentially allowing
+unwinding to continue to user mode if the user PC happens to be in the
+kernel text address range.
 
-This in particular applies to FP context initialisation where any IEEE
-754-2008 bits preset by `mips_set_personality_nan' are cleared before
-the relevant ptrace(2) call takes effect and the PTRACE_POKEUSR request
-addressing FPC_CSR where no masking of read-only FCSR bits is done.
+Adjust the check to also ensure that the register state from before the
+exception is actually running in kernel mode, i.e. !user_mode(regs).
 
-Remove the FCSR clearing from FP context initialisation then and unify
-PTRACE_POKEUSR/FPC_CSR and PTRACE_SETFPREGS handling, by factoring out
-code from `ptrace_setfpregs' and calling it from both places.
+I don't believe any harm can come of this problem, since the PC is only
+output, the stack pointer is checked to ensure it resides within the
+task's stack page before it is dereferenced in search of the return
+address, and the return address register is similarly only output (if
+the PC is in a leaf function or the beginning of a non-leaf function).
 
-This mostly matters to soft float configurations where the emulator can
-be switched this way to a mode which should not be accessible and cannot
-be set with the CTC1 instruction.  With hard float configurations any
-effect is transient anyway as read-only bits will retain their values at
-the time the FP context is restored.
+However unwind_stack() is only meant for unwinding kernel code, so to be
+correct the unwind should stop there.
 
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13239/
+Patchwork: https://patchwork.linux-mips.org/patch/11700/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/ptrace.c |   28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ arch/mips/kernel/process.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -57,8 +57,7 @@ static void init_fp_ctx(struct task_stru
- 	/* Begin with data registers set to all 1s... */
- 	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
- 
--	/* ...and FCSR zeroed */
--	target->thread.fpu.fcr31 = 0;
-+	/* FCSR has been preset by `mips_set_personality_nan'.  */
- 
- 	/*
- 	 * Record that the target has "used" math, such that the context
-@@ -80,6 +79,22 @@ void ptrace_disable(struct task_struct *
- }
- 
- /*
-+ * Poke at FCSR according to its mask.  Don't set the cause bits as
-+ * this is currently not handled correctly in FP context restoration
-+ * and will cause an oops if a corresponding enable bit is set.
-+ */
-+static void ptrace_setfcr31(struct task_struct *child, u32 value)
-+{
-+	u32 fcr31;
-+	u32 mask;
-+
-+	value &= ~FPU_CSR_ALL_X;
-+	fcr31 = child->thread.fpu.fcr31;
-+	mask = boot_cpu_data.fpu_msk31;
-+	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
-+}
-+
-+/*
-  * Read a general register set.	 We always use the 64-bit format, even
-  * for 32-bit kernels and for 32-bit processes on a 64-bit kernel.
-  * Registers are sign extended to fill the available space.
-@@ -159,9 +174,7 @@ int ptrace_setfpregs(struct task_struct
- {
- 	union fpureg *fregs;
- 	u64 fpr_val;
--	u32 fcr31;
- 	u32 value;
--	u32 mask;
- 	int i;
- 
- 	if (!access_ok(VERIFY_READ, data, 33 * 8))
-@@ -176,10 +189,7 @@ int ptrace_setfpregs(struct task_struct
- 	}
- 
- 	__get_user(value, data + 64);
--	value &= ~FPU_CSR_ALL_X;
--	fcr31 = child->thread.fpu.fcr31;
--	mask = boot_cpu_data.fpu_msk31;
--	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
-+	ptrace_setfcr31(child, value);
- 
- 	/* FIR may not be written.  */
- 
-@@ -806,7 +816,7 @@ long arch_ptrace(struct task_struct *chi
- 			break;
- #endif
- 		case FPC_CSR:
--			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
-+			ptrace_setfcr31(child, data);
- 			break;
- 		case DSP_BASE ... DSP_BASE + 5: {
- 			dspreg_t *dregs;
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -455,7 +455,7 @@ unsigned long notrace unwind_stack_by_ad
+ 		    *sp + sizeof(*regs) <= stack_page + THREAD_SIZE - 32) {
+ 			regs = (struct pt_regs *)*sp;
+ 			pc = regs->cp0_epc;
+-			if (__kernel_text_address(pc)) {
++			if (!user_mode(regs) && __kernel_text_address(pc)) {
+ 				*sp = regs->regs[29];
+ 				*ra = regs->regs[31];
+ 				return pc;

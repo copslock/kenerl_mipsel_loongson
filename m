@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:45:10 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:59982 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:45:30 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59984 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042448AbcFEVmjEwm0p (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042449AbcFEVmjdm0ap (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:42:39 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A193894E;
-        Sun,  5 Jun 2016 21:42:36 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0953F723;
+        Sun,  5 Jun 2016 21:42:39 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 14/99] MIPS: Use copy_s.fmt rather than copy_u.fmt
-Date:   Sun,  5 Jun 2016 14:40:47 -0700
-Message-Id: <20160605213904.323877720@linuxfoundation.org>
+Subject: [PATCH 4.4 20/99] MIPS: Fix sigreturn via VDSO on microMIPS kernel
+Date:   Sun,  5 Jun 2016 14:40:53 -0700
+Message-Id: <20160605213904.983378524@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605213902.974592018@linuxfoundation.org>
 References: <20160605213902.974592018@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53824
+X-archive-position: 53825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,131 +46,51 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 8a3c8b48aca8771bff3536e40aa26ffb311699d1 upstream.
+commit 13eb192d10bcc9ac518d57356179071d603bcb4e upstream.
 
-In revision 1.12 of the MSA specification, the copy_u.w instruction has
-been removed for MIPS32 & the copy_u.d instruction has been removed for
-MIPS64. Newer toolchains (eg. Codescape SDK essentials 2015.10) will
-complain about this like so:
+In microMIPS kernels, handle_signal() sets the isa16 mode bit in the
+vdso address so that the sigreturn trampolines (which are offset from
+the VDSO) get executed as microMIPS.
 
-arch/mips/kernel/r4k_fpu.S:290: Error: opcode not supported on this
-processor: mips32r2 (mips32r2) `copy_u.w $1,$w26[3]'
+However commit ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+changed the offsets to come from the VDSO image, which already have the
+isa16 mode bit set correctly since they're extracted from the VDSO
+shared library symbol table.
 
-Since we always copy to the width of a GPR, simply use copy_s instead of
-copy_u to fix this.
+Drop the isa16 mode bit handling from handle_signal() to fix sigreturn
+for cores which support both microMIPS and normal MIPS. This doesn't fix
+microMIPS only cores, since the VDSO is still built for normal MIPS, but
+thats a separate problem.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13061/
+Patchwork: https://patchwork.linux-mips.org/patch/13348/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/asmmacro.h |   24 ++++++++++++------------
- arch/mips/kernel/r4k_fpu.S       |   10 +++++-----
- 2 files changed, 17 insertions(+), 17 deletions(-)
+ arch/mips/kernel/signal.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -298,21 +298,21 @@
- 	.set	pop
- 	.endm
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -770,15 +770,7 @@ static void handle_signal(struct ksignal
+ 	sigset_t *oldset = sigmask_to_save();
+ 	int ret;
+ 	struct mips_abi *abi = current->thread.abi;
+-#ifdef CONFIG_CPU_MICROMIPS
+-	void *vdso;
+-	unsigned long tmp = (unsigned long)current->mm->context.vdso;
+-
+-	set_isa16_mode(tmp);
+-	vdso = (void *)tmp;
+-#else
+ 	void *vdso = current->mm->context.vdso;
+-#endif
  
--	.macro	copy_u_w	ws, n
-+	.macro	copy_s_w	ws, n
- 	.set	push
- 	.set	mips32r2
- 	.set	fp=64
- 	.set	msa
--	copy_u.w $1, $w\ws[\n]
-+	copy_s.w $1, $w\ws[\n]
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_d	ws, n
-+	.macro	copy_s_d	ws, n
- 	.set	push
- 	.set	mips64r2
- 	.set	fp=64
- 	.set	msa
--	copy_u.d $1, $w\ws[\n]
-+	copy_s.d $1, $w\ws[\n]
- 	.set	pop
- 	.endm
- 
-@@ -346,8 +346,8 @@
- #define STH_MSA_INSN		0x5800081f
- #define STW_MSA_INSN		0x5800082f
- #define STD_MSA_INSN		0x5800083f
--#define COPY_UW_MSA_INSN	0x58f00056
--#define COPY_UD_MSA_INSN	0x58f80056
-+#define COPY_SW_MSA_INSN	0x58b00056
-+#define COPY_SD_MSA_INSN	0x58b80056
- #define INSERT_W_MSA_INSN	0x59300816
- #define INSERT_D_MSA_INSN	0x59380816
- #else
-@@ -361,8 +361,8 @@
- #define STH_MSA_INSN		0x78000825
- #define STW_MSA_INSN		0x78000826
- #define STD_MSA_INSN		0x78000827
--#define COPY_UW_MSA_INSN	0x78f00059
--#define COPY_UD_MSA_INSN	0x78f80059
-+#define COPY_SW_MSA_INSN	0x78b00059
-+#define COPY_SD_MSA_INSN	0x78b80059
- #define INSERT_W_MSA_INSN	0x79300819
- #define INSERT_D_MSA_INSN	0x79380819
- #endif
-@@ -461,21 +461,21 @@
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_w	ws, n
-+	.macro	copy_s_w	ws, n
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
- 	.insn
--	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
-+	.word	COPY_SW_MSA_INSN | (\n << 16) | (\ws << 11)
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_d	ws, n
-+	.macro	copy_s_d	ws, n
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
- 	.insn
--	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
-+	.word	COPY_SD_MSA_INSN | (\n << 16) | (\ws << 11)
- 	.set	pop
- 	.endm
- 
---- a/arch/mips/kernel/r4k_fpu.S
-+++ b/arch/mips/kernel/r4k_fpu.S
-@@ -244,17 +244,17 @@ LEAF(\name)
- 	.set	push
- 	.set	noat
- #ifdef CONFIG_64BIT
--	copy_u_d \wr, 1
-+	copy_s_d \wr, 1
- 	EX sd	$1, \off(\base)
- #elif defined(CONFIG_CPU_LITTLE_ENDIAN)
--	copy_u_w \wr, 2
-+	copy_s_w \wr, 2
- 	EX sw	$1, \off(\base)
--	copy_u_w \wr, 3
-+	copy_s_w \wr, 3
- 	EX sw	$1, (\off+4)(\base)
- #else /* CONFIG_CPU_BIG_ENDIAN */
--	copy_u_w \wr, 2
-+	copy_s_w \wr, 2
- 	EX sw	$1, (\off+4)(\base)
--	copy_u_w \wr, 3
-+	copy_s_w \wr, 3
- 	EX sw	$1, \off(\base)
- #endif
- 	.set	pop
+ 	if (regs->regs[0]) {
+ 		switch(regs->regs[2]) {

@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:40:34 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:59852 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:40:52 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59853 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042429AbcFEVkbWlQ3p (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042433AbcFEVkb1Wjgp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:40:31 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C752883D;
-        Sun,  5 Jun 2016 21:40:24 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 45788884;
+        Sun,  5 Jun 2016 21:40:25 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Christopher Ferris <cferris@google.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.14 01/23] MIPS: math-emu: Fix jalr emulation when rd == $0
-Date:   Sun,  5 Jun 2016 14:40:01 -0700
-Message-Id: <20160605213827.124657899@linuxfoundation.org>
+Subject: [PATCH 3.14 02/23] MIPS: Fix siginfo.h to use strict posix types
+Date:   Sun,  5 Jun 2016 14:40:02 -0700
+Message-Id: <20160605213827.224509009@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605213826.938892115@linuxfoundation.org>
 References: <20160605213826.938892115@linuxfoundation.org>
@@ -26,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53814
+X-archive-position: 53815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,46 +46,81 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
+commit 5daebc477da4dfeb31ae193d83084def58fd2697 upstream.
 
-When emulating a jalr instruction with rd == $0, the code in
-isBranchInstr was incorrectly writing to GPR $0 which should actually
-always remain zeroed. This would lead to any further instructions
-emulated which use $0 operating on a bogus value until the task is next
-context switched, at which point the value of $0 in the task context
-would be restored to the correct zero by a store in SAVE_SOME. Fix this
-by not writing to rd if it is $0.
+Commit 85efde6f4e0d ("make exported headers use strict posix types")
+changed the asm-generic siginfo.h to use the __kernel_* types, and
+commit 3a471cbc081b ("remove __KERNEL_STRICT_NAMES") make the internal
+types accessible only to the kernel, but the MIPS implementation hasn't
+been updated to match.
 
-Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+Switch to proper types now so that the exported asm/siginfo.h won't
+produce quite so many compiler errors when included alone by a user
+program.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Christopher Ferris <cferris@google.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13160/
+Patchwork: https://patchwork.linux-mips.org/patch/12477/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/math-emu/cp1emu.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/mips/include/uapi/asm/siginfo.h |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -676,9 +676,11 @@ static int isBranchInstr(struct pt_regs
- 	case spec_op:
- 		switch (insn.r_format.func) {
- 		case jalr_op:
--			regs->regs[insn.r_format.rd] =
--				regs->cp0_epc + dec_insn.pc_inc +
--				dec_insn.next_pc_inc;
-+			if (insn.r_format.rd != 0) {
-+				regs->regs[insn.r_format.rd] =
-+					regs->cp0_epc + dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			}
- 			/* Fall through */
- 		case jr_op:
- 			*contpc = regs->regs[insn.r_format.rs];
+--- a/arch/mips/include/uapi/asm/siginfo.h
++++ b/arch/mips/include/uapi/asm/siginfo.h
+@@ -48,13 +48,13 @@ typedef struct siginfo {
+ 
+ 		/* kill() */
+ 		struct {
+-			pid_t _pid;		/* sender's pid */
++			__kernel_pid_t _pid;	/* sender's pid */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 		} _kill;
+ 
+ 		/* POSIX.1b timers */
+ 		struct {
+-			timer_t _tid;		/* timer id */
++			__kernel_timer_t _tid;	/* timer id */
+ 			int _overrun;		/* overrun count */
+ 			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
+ 			sigval_t _sigval;	/* same as below */
+@@ -63,26 +63,26 @@ typedef struct siginfo {
+ 
+ 		/* POSIX.1b signals */
+ 		struct {
+-			pid_t _pid;		/* sender's pid */
++			__kernel_pid_t _pid;	/* sender's pid */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 			sigval_t _sigval;
+ 		} _rt;
+ 
+ 		/* SIGCHLD */
+ 		struct {
+-			pid_t _pid;		/* which child */
++			__kernel_pid_t _pid;	/* which child */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 			int _status;		/* exit code */
+-			clock_t _utime;
+-			clock_t _stime;
++			__kernel_clock_t _utime;
++			__kernel_clock_t _stime;
+ 		} _sigchld;
+ 
+ 		/* IRIX SIGCHLD */
+ 		struct {
+-			pid_t _pid;		/* which child */
+-			clock_t _utime;
++			__kernel_pid_t _pid;	/* which child */
++			__kernel_clock_t _utime;
+ 			int _status;		/* exit code */
+-			clock_t _stime;
++			__kernel_clock_t _stime;
+ 		} _irix_sigchld;
+ 
+ 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */

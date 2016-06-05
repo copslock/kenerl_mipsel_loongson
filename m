@@ -1,20 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:56:51 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60495 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:57:13 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60511 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042481AbcFEVxEenwzp (ORCPT
+        by eddie.linux-mips.org with ESMTP id S27042482AbcFEVxEfCppp (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:53:04 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E5D27955;
-        Sun,  5 Jun 2016 21:52:56 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 646C494F;
+        Sun,  5 Jun 2016 21:52:55 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        James Hogan <james.hogan@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 024/121] MIPS: Build microMIPS VDSO for microMIPS kernels
-Date:   Sun,  5 Jun 2016 14:42:56 -0700
-Message-Id: <20160605214418.442804860@linuxfoundation.org>
+Subject: [PATCH 4.6 020/121] MIPS: Disable preemption during prctl(PR_SET_FP_MODE, ...)
+Date:   Sun,  5 Jun 2016 14:42:52 -0700
+Message-Id: <20160605214418.323044501@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -25,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53849
+X-archive-position: 53850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,33 +49,48 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit bb93078e655be1e24d68f28f2756676e62c037ce upstream.
+commit bd239f1e1429e7781096bf3884bdb1b2b1bb4f28 upstream.
 
-MicroMIPS kernels may be expected to run on microMIPS only cores which
-don't support the normal MIPS instruction set, so be sure to pass the
--mmicromips flag through to the VDSO cflags.
+Whilst a PR_SET_FP_MODE prctl is performed there are decisions made
+based upon whether the task is executing on the current CPU. This may
+change if we're preempted, so disable preemption to avoid such changes
+for the lifetime of the mode switch.
 
-Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+Cc: Adam Buchbinder <adam.buchbinder@gmail.com>
+Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13349/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13144/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/vdso/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/kernel/process.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -5,6 +5,7 @@ obj-vdso-y := elf.o gettimeofday.o sigre
- ccflags-vdso := \
- 	$(filter -I%,$(KBUILD_CFLAGS)) \
- 	$(filter -E%,$(KBUILD_CFLAGS)) \
-+	$(filter -mmicromips,$(KBUILD_CFLAGS)) \
- 	$(filter -march=%,$(KBUILD_CFLAGS))
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -609,6 +609,9 @@ int mips_set_process_fp_mode(struct task
+ 	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
+ 		return -EOPNOTSUPP;
+ 
++	/* Proceed with the mode switch */
++	preempt_disable();
++
+ 	/* Save FP & vector context, then disable FPU & MSA */
+ 	if (task->signal == current->signal)
+ 		lose_fpu(1);
+@@ -653,6 +656,7 @@ int mips_set_process_fp_mode(struct task
+ 
+ 	/* Allow threads to use FP again */
+ 	atomic_set(&task->mm->context.fp_mode_switching, 0);
++	preempt_enable();
+ 
+ 	return 0;
+ }

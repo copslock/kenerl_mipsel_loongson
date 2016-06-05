@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:54:02 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:60456 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2016 23:54:28 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:60463 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042470AbcFEVw6fsbZp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:52:58 +0200
+        by eddie.linux-mips.org with ESMTP id S27042471AbcFEVw7Ap2pp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Jun 2016 23:52:59 +0200
 Received: from localhost (c-50-170-35-168.hsd1.wa.comcast.net [50.170.35.168])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AA854892;
-        Sun,  5 Jun 2016 21:52:52 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0FC688F5;
+        Sun,  5 Jun 2016 21:52:53 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -15,9 +15,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.6 014/121] MIPS: Reserve nosave data for hibernation
-Date:   Sun,  5 Jun 2016 14:42:46 -0700
-Message-Id: <20160605214418.141412238@linuxfoundation.org>
+Subject: [PATCH 4.6 015/121] MIPS: Loongson-3: Reserve 32MB for RS780E integrated GPU
+Date:   Sun,  5 Jun 2016 14:42:47 -0700
+Message-Id: <20160605214418.170866607@linuxfoundation.org>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20160605214417.708509043@linuxfoundation.org>
 References: <20160605214417.708509043@linuxfoundation.org>
@@ -28,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53841
+X-archive-position: 53842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,13 +51,12 @@ X-list: linux-mips
 
 From: Huacai Chen <chenhc@lemote.com>
 
-commit a95d069204e178f18476f5499abab0d0d9cbc32c upstream.
+commit 3484de7bcbed20ecbf2b8d80671619e7059e2dd7 upstream.
 
-After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
-in the memblock region"), the MIPS hibernation is broken. Because pages
-in nosave data section should be "reserved", but currently they aren't
-set to "reserved" at initialization. This patch makes hibernation work
-again.
+Due to datasheet, reserving 0xff800000~0xffffffff (8MB below 4GB) is
+not enough for RS780E integrated GPU's TOM (top of memory) registers
+and MSI/MSI-x memory region, so we reserve 0xfe000000~0xffffffff (32MB
+below 4GB).
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Cc: Aurelien Jarno <aurelien@aurel32.net>
@@ -65,23 +64,27 @@ Cc: Steven J . Hill <sjhill@realitydiluted.com>
 Cc: Fuxin Zhang <zhangfx@lemote.com>
 Cc: Zhangjin Wu <wuzhangjin@gmail.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12888/
+Patchwork: https://patchwork.linux-mips.org/patch/12889/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/setup.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/loongson64/loongson-3/numa.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -706,6 +706,9 @@ static void __init arch_mem_init(char **
- 	for_each_memblock(reserved, reg)
- 		if (reg->size != 0)
- 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
-+
-+	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
-+			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
- }
+--- a/arch/mips/loongson64/loongson-3/numa.c
++++ b/arch/mips/loongson64/loongson-3/numa.c
+@@ -213,10 +213,10 @@ static void __init node_mem_init(unsigne
+ 		BOOTMEM_DEFAULT);
  
- static void __init resource_init(void)
+ 	if (node == 0 && node_end_pfn(0) >= (0xffffffff >> PAGE_SHIFT)) {
+-		/* Reserve 0xff800000~0xffffffff for RS780E integrated GPU */
++		/* Reserve 0xfe000000~0xffffffff for RS780E integrated GPU */
+ 		reserve_bootmem_node(NODE_DATA(node),
+-				(node_addrspace_offset | 0xff800000),
+-				8 << 20, BOOTMEM_DEFAULT);
++				(node_addrspace_offset | 0xfe000000),
++				32 << 20, BOOTMEM_DEFAULT);
+ 	}
+ 
+ 	sparse_memory_present_with_active_regions(node);

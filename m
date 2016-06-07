@@ -1,33 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jun 2016 19:49:41 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:51786 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27031333AbcFGRtU6wURg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Jun 2016 19:49:20 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id A9D14ADA7;
-        Tue,  7 Jun 2016 17:49:20 +0000 (UTC)
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Christopher Ferris <cferris@google.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
-Subject: [patch added to 3.12-stable] MIPS: Fix siginfo.h to use strict posix types
-Date:   Tue,  7 Jun 2016 19:48:56 +0200
-Message-Id: <20160607174916.31952-13-jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jun 2016 20:09:31 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:51100 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27031363AbcFGSJ2jnvIg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Jun 2016 20:09:28 +0200
+Received: from userv0022.oracle.com (userv0022.oracle.com [156.151.31.74])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u57I96VD027391
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 7 Jun 2016 18:09:07 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userv0022.oracle.com (8.14.4/8.13.8) with ESMTP id u57I93oR019035
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 7 Jun 2016 18:09:03 GMT
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0121.oracle.com (8.13.8/8.13.8) with ESMTP id u57I91fG016409;
+        Tue, 7 Jun 2016 18:09:02 GMT
+Received: from userv0022.oracle.com (/10.132.126.127)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Jun 2016 11:09:01 -0700
+From:   Yinghai Lu <yinghai@kernel.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        David Miller <davem@davemloft.net>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Wei Yang <weiyang@linux.vnet.ibm.com>,
+        Khalid Aziz <khalid.aziz@oracle.com>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Yinghai Lu <yinghai@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-cris-kernel@axis.com,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-am33-list@redhat.com, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
+Subject: [PATCH v12.update 01/15] PCI: Let pci_mmap_page_range() take extra resource pointer
+Date:   Tue,  7 Jun 2016 11:08:46 -0700
+Message-Id: <20160607180847.15205-1-yinghai@kernel.org>
 X-Mailer: git-send-email 2.8.3
-In-Reply-To: <20160607174916.31952-1-jslaby@suse.cz>
-References: <20160607174916.31952-1-jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+X-Source-IP: userv0022.oracle.com [156.151.31.74]
+Return-Path: <yinghai@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53898
+X-archive-position: 53899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: yinghai@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,89 +57,460 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+This one is preparing patch for next one:
+  PCI: Let pci_mmap_page_range() take resource addr
 
-This patch has been added to the 3.12 stable tree. If you have any
-objections, please let us know.
+We need to pass extra resource pointer to avoid searching that again
+for powerpc and microblaze prot set operation.
 
-===============
+update for fixing bisectibility problem found by build test robot.
 
-commit 5daebc477da4dfeb31ae193d83084def58fd2697 upstream.
-
-Commit 85efde6f4e0d ("make exported headers use strict posix types")
-changed the asm-generic siginfo.h to use the __kernel_* types, and
-commit 3a471cbc081b ("remove __KERNEL_STRICT_NAMES") make the internal
-types accessible only to the kernel, but the MIPS implementation hasn't
-been updated to match.
-
-Switch to proper types now so that the exported asm/siginfo.h won't
-produce quite so many compiler errors when included alone by a user
-program.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Christopher Ferris <cferris@google.com>
+Signed-off-by: Yinghai Lu <yinghai@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-cris-kernel@axis.com
+Cc: linux-ia64@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12477/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Cc: linux-am33-list@redhat.com
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org
 ---
- arch/mips/include/uapi/asm/siginfo.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/arm/include/asm/pci.h              | 2 --
+ arch/arm/kernel/bios32.c                | 3 ++-
+ arch/cris/arch-v32/drivers/pci/bios.c   | 3 ++-
+ arch/cris/include/asm/pci.h             | 3 ---
+ arch/ia64/include/asm/pci.h             | 2 --
+ arch/ia64/pci/pci.c                     | 3 ++-
+ arch/microblaze/include/asm/pci.h       | 3 ---
+ arch/microblaze/pci/pci-common.c        | 3 ++-
+ arch/mips/include/asm/pci.h             | 3 ---
+ arch/mips/pci/pci.c                     | 3 ++-
+ arch/mn10300/include/asm/pci.h          | 3 ---
+ arch/mn10300/unit-asb2305/pci-asb2305.c | 3 ++-
+ arch/parisc/include/asm/pci.h           | 3 ---
+ arch/parisc/kernel/pci.c                | 3 ++-
+ arch/powerpc/include/asm/pci.h          | 3 ---
+ arch/powerpc/kernel/pci-common.c        | 3 ++-
+ arch/sh/drivers/pci/pci.c               | 3 ++-
+ arch/sh/include/asm/pci.h               | 2 --
+ arch/sparc/include/asm/pci_64.h         | 4 ----
+ arch/sparc/kernel/pci.c                 | 3 ++-
+ arch/unicore32/include/asm/pci.h        | 2 --
+ arch/unicore32/kernel/pci.c             | 3 ++-
+ arch/x86/include/asm/pci.h              | 4 ----
+ arch/x86/pci/i386.c                     | 3 ++-
+ arch/xtensa/include/asm/pci.h           | 4 ----
+ arch/xtensa/kernel/pci.c                | 3 ++-
+ drivers/pci/pci-sysfs.c                 | 2 +-
+ drivers/pci/proc.c                      | 2 +-
+ include/linux/pci.h                     | 6 ++++++
+ 29 files changed, 34 insertions(+), 53 deletions(-)
 
-diff --git a/arch/mips/include/uapi/asm/siginfo.h b/arch/mips/include/uapi/asm/siginfo.h
-index 88e292b7719e..9997e4d48d70 100644
---- a/arch/mips/include/uapi/asm/siginfo.h
-+++ b/arch/mips/include/uapi/asm/siginfo.h
-@@ -46,13 +46,13 @@ typedef struct siginfo {
+diff --git a/arch/arm/include/asm/pci.h b/arch/arm/include/asm/pci.h
+index 057d381..51118a0 100644
+--- a/arch/arm/include/asm/pci.h
++++ b/arch/arm/include/asm/pci.h
+@@ -29,8 +29,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ #define PCI_DMA_BUS_IS_PHYS     (1)
  
- 		/* kill() */
- 		struct {
--			pid_t _pid;		/* sender's pid */
-+			__kernel_pid_t _pid;	/* sender's pid */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 		} _kill;
+ #define HAVE_PCI_MMAP
+-extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-                               enum pci_mmap_state mmap_state, int write_combine);
  
- 		/* POSIX.1b timers */
- 		struct {
--			timer_t _tid;		/* timer id */
-+			__kernel_timer_t _tid;	/* timer id */
- 			int _overrun;		/* overrun count */
- 			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
- 			sigval_t _sigval;	/* same as below */
-@@ -61,26 +61,26 @@ typedef struct siginfo {
+ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+ {
+diff --git a/arch/arm/kernel/bios32.c b/arch/arm/kernel/bios32.c
+index 05e61a2..d3245d1 100644
+--- a/arch/arm/kernel/bios32.c
++++ b/arch/arm/kernel/bios32.c
+@@ -602,7 +602,8 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
+ 	return pci_enable_resources(dev, mask);
+ }
  
- 		/* POSIX.1b signals */
- 		struct {
--			pid_t _pid;		/* sender's pid */
-+			__kernel_pid_t _pid;	/* sender's pid */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 			sigval_t _sigval;
- 		} _rt;
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	if (mmap_state == pci_mmap_io)
+diff --git a/arch/cris/arch-v32/drivers/pci/bios.c b/arch/cris/arch-v32/drivers/pci/bios.c
+index 64a5fb9..082efb9 100644
+--- a/arch/cris/arch-v32/drivers/pci/bios.c
++++ b/arch/cris/arch-v32/drivers/pci/bios.c
+@@ -14,7 +14,8 @@ void pcibios_set_master(struct pci_dev *dev)
+ 	pci_write_config_byte(dev, PCI_LATENCY_TIMER, lat);
+ }
  
- 		/* SIGCHLD */
- 		struct {
--			pid_t _pid;		/* which child */
-+			__kernel_pid_t _pid;	/* which child */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 			int _status;		/* exit code */
--			clock_t _utime;
--			clock_t _stime;
-+			__kernel_clock_t _utime;
-+			__kernel_clock_t _stime;
- 		} _sigchld;
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	unsigned long prot;
+diff --git a/arch/cris/include/asm/pci.h b/arch/cris/include/asm/pci.h
+index b1b289d..65198cb 100644
+--- a/arch/cris/include/asm/pci.h
++++ b/arch/cris/include/asm/pci.h
+@@ -42,9 +42,6 @@ struct pci_dev;
+ #define PCI_DMA_BUS_IS_PHYS	(1)
  
- 		/* IRIX SIGCHLD */
- 		struct {
--			pid_t _pid;		/* which child */
--			clock_t _utime;
-+			__kernel_pid_t _pid;	/* which child */
-+			__kernel_clock_t _utime;
- 			int _status;		/* exit code */
--			clock_t _stime;
-+			__kernel_clock_t _stime;
- 		} _irix_sigchld;
+ #define HAVE_PCI_MMAP
+-extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-			       enum pci_mmap_state mmap_state, int write_combine);
+-
  
- 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+ #endif /* __KERNEL__ */
+ 
+diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
+index c0835b0..6a2f5d8 100644
+--- a/arch/ia64/include/asm/pci.h
++++ b/arch/ia64/include/asm/pci.h
+@@ -51,8 +51,6 @@ extern unsigned long ia64_max_iommu_merge_mask;
+ #define PCI_DMA_BUS_IS_PHYS	(ia64_max_iommu_merge_mask == ~0UL)
+ 
+ #define HAVE_PCI_MMAP
+-extern int pci_mmap_page_range (struct pci_dev *dev, struct vm_area_struct *vma,
+-				enum pci_mmap_state mmap_state, int write_combine);
+ #define HAVE_PCI_LEGACY
+ extern int pci_mmap_legacy_page_range(struct pci_bus *bus,
+ 				      struct vm_area_struct *vma,
+diff --git a/arch/ia64/pci/pci.c b/arch/ia64/pci/pci.c
+index 8f6ac2f..1518d66 100644
+--- a/arch/ia64/pci/pci.c
++++ b/arch/ia64/pci/pci.c
+@@ -419,7 +419,8 @@ pcibios_align_resource (void *data, const struct resource *res,
+ }
+ 
+ int
+-pci_mmap_page_range (struct pci_dev *dev, struct vm_area_struct *vma,
++pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++		     struct vm_area_struct *vma,
+ 		     enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	unsigned long size = vma->vm_end - vma->vm_start;
+diff --git a/arch/microblaze/include/asm/pci.h b/arch/microblaze/include/asm/pci.h
+index fc3ecb5..1b93824 100644
+--- a/arch/microblaze/include/asm/pci.h
++++ b/arch/microblaze/include/asm/pci.h
+@@ -46,9 +46,6 @@ extern int pci_domain_nr(struct pci_bus *bus);
+ extern int pci_proc_domain(struct pci_bus *bus);
+ 
+ struct vm_area_struct;
+-/* Map a range of PCI memory or I/O space for a device into user space */
+-int pci_mmap_page_range(struct pci_dev *pdev, struct vm_area_struct *vma,
+-			enum pci_mmap_state mmap_state, int write_combine);
+ 
+ /* Tell drivers/pci/proc.c that we have pci_mmap_page_range() */
+ #define HAVE_PCI_MMAP	1
+diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
+index 14cba60..fd2b013 100644
+--- a/arch/microblaze/pci/pci-common.c
++++ b/arch/microblaze/pci/pci-common.c
+@@ -304,7 +304,8 @@ pgprot_t pci_phys_mem_access_prot(struct file *file,
+  *
+  * Returns a negative error code on failure, zero on success.
+  */
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	resource_size_t offset =
+diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+index 86b239d..71d2c3b 100644
+--- a/arch/mips/include/asm/pci.h
++++ b/arch/mips/include/asm/pci.h
+@@ -75,9 +75,6 @@ extern void pcibios_set_master(struct pci_dev *dev);
+ 
+ #define HAVE_PCI_MMAP
+ 
+-extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-	enum pci_mmap_state mmap_state, int write_combine);
+-
+ #define HAVE_ARCH_PCI_RESOURCE_TO_USER
+ 
+ static inline void pci_resource_to_user(const struct pci_dev *dev, int bar,
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index f1b11f0..e620333 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -319,7 +319,8 @@ void pcibios_fixup_bus(struct pci_bus *bus)
+ EXPORT_SYMBOL(PCIBIOS_MIN_IO);
+ EXPORT_SYMBOL(PCIBIOS_MIN_MEM);
+ 
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	unsigned long prot;
+diff --git a/arch/mn10300/include/asm/pci.h b/arch/mn10300/include/asm/pci.h
+index 51159ff..082b6de 100644
+--- a/arch/mn10300/include/asm/pci.h
++++ b/arch/mn10300/include/asm/pci.h
+@@ -74,9 +74,6 @@ static inline int pci_controller_num(struct pci_dev *dev)
+ }
+ 
+ #define HAVE_PCI_MMAP
+-extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-			       enum pci_mmap_state mmap_state,
+-			       int write_combine);
+ 
+ #endif /* __KERNEL__ */
+ 
+diff --git a/arch/mn10300/unit-asb2305/pci-asb2305.c b/arch/mn10300/unit-asb2305/pci-asb2305.c
+index b7ab837..40efdc6 100644
+--- a/arch/mn10300/unit-asb2305/pci-asb2305.c
++++ b/arch/mn10300/unit-asb2305/pci-asb2305.c
+@@ -211,7 +211,8 @@ void __init pcibios_resource_survey(void)
+ 	pcibios_allocate_resources(1);
+ }
+ 
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	unsigned long prot;
+diff --git a/arch/parisc/include/asm/pci.h b/arch/parisc/include/asm/pci.h
+index defebd9..bb9ea90 100644
+--- a/arch/parisc/include/asm/pci.h
++++ b/arch/parisc/include/asm/pci.h
+@@ -201,7 +201,4 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+ 
+ #define HAVE_PCI_MMAP
+ 
+-extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-	enum pci_mmap_state mmap_state, int write_combine);
+-
+ #endif /* __ASM_PARISC_PCI_H */
+diff --git a/arch/parisc/kernel/pci.c b/arch/parisc/kernel/pci.c
+index 0903c6a..8d5c34c 100644
+--- a/arch/parisc/kernel/pci.c
++++ b/arch/parisc/kernel/pci.c
+@@ -228,7 +228,8 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+ }
+ 
+ 
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	unsigned long prot;
+diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
+index a6f3ac0..662c1ef 100644
+--- a/arch/powerpc/include/asm/pci.h
++++ b/arch/powerpc/include/asm/pci.h
+@@ -77,9 +77,6 @@ extern int pci_domain_nr(struct pci_bus *bus);
+ extern int pci_proc_domain(struct pci_bus *bus);
+ 
+ struct vm_area_struct;
+-/* Map a range of PCI memory or I/O space for a device into user space */
+-int pci_mmap_page_range(struct pci_dev *pdev, struct vm_area_struct *vma,
+-			enum pci_mmap_state mmap_state, int write_combine);
+ 
+ /* Tell drivers/pci/proc.c that we have pci_mmap_page_range() */
+ #define HAVE_PCI_MMAP	1
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index 0f7a60f..1596362 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -445,7 +445,8 @@ pgprot_t pci_phys_mem_access_prot(struct file *file,
+  *
+  * Returns a negative error code on failure, zero on success.
+  */
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	resource_size_t offset =
+diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
+index d5462b7..a1bc7ba 100644
+--- a/arch/sh/drivers/pci/pci.c
++++ b/arch/sh/drivers/pci/pci.c
+@@ -269,7 +269,8 @@ void __init_refok pcibios_report_status(unsigned int status_mask, int warn)
+ 	}
+ }
+ 
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	/*
+diff --git a/arch/sh/include/asm/pci.h b/arch/sh/include/asm/pci.h
+index 644314f..8e0fdb9 100644
+--- a/arch/sh/include/asm/pci.h
++++ b/arch/sh/include/asm/pci.h
+@@ -66,8 +66,6 @@ extern unsigned long PCIBIOS_MIN_IO, PCIBIOS_MIN_MEM;
+ struct pci_dev;
+ 
+ #define HAVE_PCI_MMAP
+-extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-	enum pci_mmap_state mmap_state, int write_combine);
+ extern void pcibios_set_master(struct pci_dev *dev);
+ 
+ /* Dynamic DMA mapping stuff.
+diff --git a/arch/sparc/include/asm/pci_64.h b/arch/sparc/include/asm/pci_64.h
+index 022d160..f7a93df 100644
+--- a/arch/sparc/include/asm/pci_64.h
++++ b/arch/sparc/include/asm/pci_64.h
+@@ -45,10 +45,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
+ #define HAVE_ARCH_PCI_GET_UNMAPPED_AREA
+ #define get_pci_unmapped_area get_fb_unmapped_area
+ 
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-			enum pci_mmap_state mmap_state,
+-			int write_combine);
+-
+ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+ {
+ 	return PCI_IRQ_NONE;
+diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
+index c2b202d..86d7dda 100644
+--- a/arch/sparc/kernel/pci.c
++++ b/arch/sparc/kernel/pci.c
+@@ -862,7 +862,8 @@ static void __pci_mmap_set_pgprot(struct pci_dev *dev, struct vm_area_struct *vm
+  *
+  * Returns a negative error code on failure, zero on success.
+  */
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state,
+ 			int write_combine)
+ {
+diff --git a/arch/unicore32/include/asm/pci.h b/arch/unicore32/include/asm/pci.h
+index 37e55d0..a5129086 100644
+--- a/arch/unicore32/include/asm/pci.h
++++ b/arch/unicore32/include/asm/pci.h
+@@ -17,8 +17,6 @@
+ #include <mach/hardware.h> /* for PCIBIOS_MIN_* */
+ 
+ #define HAVE_PCI_MMAP
+-extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-	enum pci_mmap_state mmap_state, int write_combine);
+ 
+ #endif /* __KERNEL__ */
+ #endif
+diff --git a/arch/unicore32/kernel/pci.c b/arch/unicore32/kernel/pci.c
+index d45fa5f..ff1b7ef 100644
+--- a/arch/unicore32/kernel/pci.c
++++ b/arch/unicore32/kernel/pci.c
+@@ -362,7 +362,8 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
+ 	return 0;
+ }
+ 
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	unsigned long phys;
+diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
+index 9ab7507..eb87481 100644
+--- a/arch/x86/include/asm/pci.h
++++ b/arch/x86/include/asm/pci.h
+@@ -88,10 +88,6 @@ int pcibios_set_irq_routing(struct pci_dev *dev, int pin, int irq);
+ 
+ 
+ #define HAVE_PCI_MMAP
+-extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+-			       enum pci_mmap_state mmap_state,
+-			       int write_combine);
+-
+ 
+ #ifdef CONFIG_PCI
+ extern void early_quirks(void);
+diff --git a/arch/x86/pci/i386.c b/arch/x86/pci/i386.c
+index 0a9f2ca..36463c7 100644
+--- a/arch/x86/pci/i386.c
++++ b/arch/x86/pci/i386.c
+@@ -411,7 +411,8 @@ static const struct vm_operations_struct pci_mmap_ops = {
+ 	.access = generic_access_phys,
+ };
+ 
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state, int write_combine)
+ {
+ 	unsigned long prot;
+diff --git a/arch/xtensa/include/asm/pci.h b/arch/xtensa/include/asm/pci.h
+index 5d6bd93..bb5510b 100644
+--- a/arch/xtensa/include/asm/pci.h
++++ b/arch/xtensa/include/asm/pci.h
+@@ -46,10 +46,6 @@ struct pci_dev;
+ 
+ #define PCI_DMA_BUS_IS_PHYS	(1)
+ 
+-/* Map a range of PCI memory or I/O space for a device into user space */
+-int pci_mmap_page_range(struct pci_dev *pdev, struct vm_area_struct *vma,
+-			enum pci_mmap_state mmap_state, int write_combine);
+-
+ /* Tell drivers/pci/proc.c that we have pci_mmap_page_range() */
+ #define HAVE_PCI_MMAP	1
+ 
+diff --git a/arch/xtensa/kernel/pci.c b/arch/xtensa/kernel/pci.c
+index b848cc3..89c8687 100644
+--- a/arch/xtensa/kernel/pci.c
++++ b/arch/xtensa/kernel/pci.c
+@@ -362,7 +362,8 @@ __pci_mmap_set_pgprot(struct pci_dev *dev, struct vm_area_struct *vma,
+  *
+  * Returns a negative error code on failure, zero on success.
+  */
+-int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
+ 			enum pci_mmap_state mmap_state,
+ 			int write_combine)
+ {
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index d319a9c..5bbe20c 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -1027,7 +1027,7 @@ static int pci_mmap_resource(struct kobject *kobj, struct bin_attribute *attr,
+ 	pci_resource_to_user(pdev, i, res, &start, &end);
+ 	vma->vm_pgoff += start >> PAGE_SHIFT;
+ 	mmap_type = res->flags & IORESOURCE_MEM ? pci_mmap_mem : pci_mmap_io;
+-	return pci_mmap_page_range(pdev, vma, mmap_type, write_combine);
++	return pci_mmap_page_range(pdev, res, vma, mmap_type, write_combine);
+ }
+ 
+ static int pci_mmap_resource_uc(struct file *filp, struct kobject *kobj,
+diff --git a/drivers/pci/proc.c b/drivers/pci/proc.c
+index 3f155e7..f19ee2a 100644
+--- a/drivers/pci/proc.c
++++ b/drivers/pci/proc.c
+@@ -245,7 +245,7 @@ static int proc_bus_pci_mmap(struct file *file, struct vm_area_struct *vma)
+ 	if (i >= PCI_ROM_RESOURCE)
+ 		return -ENODEV;
+ 
+-	ret = pci_mmap_page_range(dev, vma,
++	ret = pci_mmap_page_range(dev, &dev->resource[i], vma,
+ 				  fpriv->mmap_state,
+ 				  fpriv->write_combine);
+ 	if (ret < 0)
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index b67e4df..3c1a0f4 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -70,6 +70,12 @@ enum pci_mmap_state {
+ 	pci_mmap_mem
+ };
+ 
++struct vm_area_struct;
++/* Map a range of PCI memory or I/O space for a device into user space */
++int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
++			struct vm_area_struct *vma,
++			enum pci_mmap_state mmap_state, int write_combine);
++
+ /*
+  *  For PCI devices, the region numbers are assigned this way:
+  */
 -- 
 2.8.3

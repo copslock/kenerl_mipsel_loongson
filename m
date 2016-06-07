@@ -1,30 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jun 2016 07:20:21 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:50284 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27042654AbcFGFUTXkm9M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Jun 2016 07:20:19 +0200
-Subject: Re: [PATCH] MIPS: lantiq: register IRQ handler for virtual IRQ number
-To:     Hauke Mehrtens <hauke@hauke-m.de>, ralf@linux-mips.org
-References: <1465248513-26604-1-git-send-email-hauke@hauke-m.de>
-Cc:     linux-mips@linux-mips.org, thomas.langer@intel.com
-From:   John Crispin <john@phrozen.org>
-Message-ID: <b4f66318-d7b0-1f24-a5cc-f4208d8b91ff@phrozen.org>
-Date:   Tue, 7 Jun 2016 07:20:13 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:45.0)
- Gecko/20100101 Thunderbird/45.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jun 2016 10:04:43 +0200 (CEST)
+Received: from bastet.se.axis.com ([195.60.68.11]:49488 "EHLO
+        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27042233AbcFGIEkM5OVA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Jun 2016 10:04:40 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bastet.se.axis.com (Postfix) with ESMTP id C4CBC181B6;
+        Tue,  7 Jun 2016 10:04:33 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
+Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id CLAa7SuxY0HR; Tue,  7 Jun 2016 10:04:32 +0200 (CEST)
+Received: from boulder.se.axis.com (boulder.se.axis.com [10.0.2.104])
+        by bastet.se.axis.com (Postfix) with ESMTP id 3AF9F18184;
+        Tue,  7 Jun 2016 10:04:31 +0200 (CEST)
+Received: from boulder.se.axis.com (localhost [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id E2C671B7F;
+        Tue,  7 Jun 2016 10:04:30 +0200 (CEST)
+Received: from thoth.se.axis.com (thoth.se.axis.com [10.0.2.173])
+        by boulder.se.axis.com (Postfix) with ESMTP id D6CC116CC;
+        Tue,  7 Jun 2016 10:04:30 +0200 (CEST)
+Received: from lnxjespern3.se.axis.com (lnxjespern3.se.axis.com [10.88.4.8])
+        by thoth.se.axis.com (Postfix) with ESMTP id D198110E8;
+        Tue,  7 Jun 2016 10:04:30 +0200 (CEST)
+Received: by lnxjespern3.se.axis.com (Postfix, from userid 363)
+        id CCA4C800EB; Tue,  7 Jun 2016 10:04:30 +0200 (CEST)
+Date:   Tue, 7 Jun 2016 10:04:30 +0200
+From:   Jesper Nilsson <jesper.nilsson@axis.com>
+To:     Yinghai Lu <yinghai@kernel.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        David Miller <davem@davemloft.net>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Wei Yang <weiyang@linux.vnet.ibm.com>,
+        Khalid Aziz <khalid.aziz@oracle.com>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-cris-kernel@axis.com,
+        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-am33-list@redhat.com, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
+Subject: Re: [PATCH v12 01/15] PCI: Let pci_mmap_page_range() take extra
+ resource pointer
+Message-ID: <20160607080430.GI3183@axis.com>
+References: <20160604000642.28162-1-yinghai@kernel.org>
+ <20160604000642.28162-2-yinghai@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <1465248513-26604-1-git-send-email-hauke@hauke-m.de>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160604000642.28162-2-yinghai@kernel.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <jesper.nilsson@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53893
+X-archive-position: 53894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: jesper.nilsson@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,42 +70,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-On 06/06/2016 23:28, Hauke Mehrtens wrote:
-> We used the hardware IRQ number to register the IRQ handler and not the
-> virtual one. This probably caused some problems because the hardware
-> IRQ numbers are only unique for each IRQ controller and not in the
-> system. The virtual IRQ number is managed by Linux and unique in the
-> system. This was probably the reason there was a gab of 8 IRQ numbers added
-> before the numbers used for the lantiq IRQ controller. With the current
-> setup the hardware and the virtual IRQ numbers are the same.
+On Fri, Jun 03, 2016 at 05:06:28PM -0700, Yinghai Lu wrote:
+> This one is preparing patch for next one:
+>   PCI: Let pci_mmap_page_range() take resource addr
 > 
-> Reported-by: Thomas Langer <thomas.langer@intel.com>
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-
-had this identical patch in my local tree since last week :-)
-
-there are also 2 small bugs in the ICU code, i'll post the patches the
-next couple of days.
-
-Acked-by: John Crispin <john@phrozen.org>
-
-> ---
->  arch/mips/lantiq/irq.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> We need to pass extra resource pointer to avoid searching that again
+> for powerpc and microblaze prot set operation.
 > 
-> diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-> index ff17669e..56a1703 100644
-> --- a/arch/mips/lantiq/irq.c
-> +++ b/arch/mips/lantiq/irq.c
-> @@ -344,7 +344,7 @@ static int icu_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
->  		if (hw == ltq_eiu_irq[i].start)
->  			chip = &ltq_eiu_type;
->  
-> -	irq_set_chip_and_handler(hw, chip, handle_level_irq);
-> +	irq_set_chip_and_handler(irq, chip, handle_level_irq);
->  
->  	return 0;
+> Signed-off-by: Yinghai Lu <yinghai@kernel.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+
+For the CRIS part:
+
+Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
+
+> diff --git a/arch/cris/arch-v32/drivers/pci/bios.c b/arch/cris/arch-v32/drivers/pci/bios.c
+> index 64a5fb9..082efb9 100644
+> --- a/arch/cris/arch-v32/drivers/pci/bios.c
+> +++ b/arch/cris/arch-v32/drivers/pci/bios.c
+> @@ -14,7 +14,8 @@ void pcibios_set_master(struct pci_dev *dev)
+>  	pci_write_config_byte(dev, PCI_LATENCY_TIMER, lat);
 >  }
-> 
+>  
+> -int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+> +int pci_mmap_page_range(struct pci_dev *dev, struct resource *res,
+> +			struct vm_area_struct *vma,
+>  			enum pci_mmap_state mmap_state, int write_combine)
+>  {
+>  	unsigned long prot;
+> diff --git a/arch/cris/include/asm/pci.h b/arch/cris/include/asm/pci.h
+> index b1b289d..65198cb 100644
+> --- a/arch/cris/include/asm/pci.h
+> +++ b/arch/cris/include/asm/pci.h
+> @@ -42,9 +42,6 @@ struct pci_dev;
+>  #define PCI_DMA_BUS_IS_PHYS	(1)
+>  
+>  #define HAVE_PCI_MMAP
+> -extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
+> -			       enum pci_mmap_state mmap_state, int write_combine);
+> -
+>  
+>  #endif /* __KERNEL__ */
+
+/^JN - Jesper Nilsson
+-- 
+               Jesper Nilsson -- jesper.nilsson@axis.com

@@ -1,36 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2016 12:09:22 +0200 (CEST)
-Received: from caladan.dune.hu ([78.24.191.180]:48264 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S27035420AbcFHKJVJ8m2f (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Jun 2016 12:09:21 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 8D9B6B8009F;
-        Wed,  8 Jun 2016 12:09:20 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from localhost.localdomain (dslb-088-073-007-040.088.073.pools.vodafone-ip.de [88.73.7.40])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 46144B80063;
-        Wed,  8 Jun 2016 12:09:11 +0200 (CEST)
-From:   Jonas Gorski <jogo@openwrt.org>
-To:     linux-serial@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
-        <noltari@gmail.com>, Florian Fainelli <florian@openwrt.org>,
-        Simon Arlott <simon@fire.lp0.eu>, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH] serial/bcm63xx_uart: use correct alias naming
-Date:   Wed,  8 Jun 2016 12:08:43 +0200
-Message-Id: <1465380523-7385-1-git-send-email-jogo@openwrt.org>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <jogo@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2016 20:00:10 +0200 (CEST)
+Received: from 82-70-136-246.dsl.in-addr.zen.co.uk ([82.70.136.246]:45128 "EHLO
+        rainbowdash.ducie.codethink.co.uk" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27030897AbcFHSAILOPmv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jun 2016 20:00:08 +0200
+Received: from ben by rainbowdash.ducie.codethink.co.uk with local (Exim 4.87)
+        (envelope-from <ben.dooks@codethink.co.uk>)
+        id 1bAhln-0004E5-J2; Wed, 08 Jun 2016 18:59:59 +0100
+From:   Ben Dooks <ben.dooks@codethink.co.uk>
+To:     linux-kernel@lists.codethink.co.uk
+Cc:     Ben Dooks <ben.dooks@codethink.co.uk>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org
+Subject: [PATCH] irqchip/bcm7120-l2: make probe functions static
+Date:   Wed,  8 Jun 2016 18:59:58 +0100
+Message-Id: <1465408798-16201-1-git-send-email-ben.dooks@codethink.co.uk>
+X-Mailer: git-send-email 2.8.1
+Return-Path: <ben.dooks@codethink.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53902
+X-archive-position: 53903
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: ben.dooks@codethink.co.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,40 +40,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The bcm63xx_uart driver uses the of alias for determing its id. Recent
-changes in dts files changed the expected 'uartX' to the recommended
-'serialX', breaking serial output. Fix this by checking for a 'serialX'
-alias as well.
+The probe functions in this driver are not exported or declared
+for use elsewhere, so make them static to fix the warnings:
 
-Fixes: e3b992d028f8 ("MIPS: BMIPS: Improve BCM6328 device tree")
-Fixes: 2d52ee82b475 ("MIPS: BMIPS: Improve BCM6368 device tree")
-Fixes: 7537d273e2f3 ("MIPS: BMIPS: Add device tree example for BCM6358")
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+drivers/irqchip/irq-bcm7120-l2.c:218:12: warning: symbol 'bcm7120_l2_intc_probe' was not declared. Should it be static?
+drivers/irqchip/irq-bcm7120-l2.c:342:12: warning: symbol 'bcm7120_l2_intc_probe_7120' was not declared. Should it be static?
+drivers/irqchip/irq-bcm7120-l2.c:349:12: warning: symbol 'bcm7120_l2_intc_probe_3380' was not declared. Should it be static?
+
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
 ---
+Cc: Kevin Cernekee <cernekee@gmail.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-mips@linux-mips.org
+---
+ drivers/irqchip/irq-bcm7120-l2.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Based on 4.7-rc2, which is the current head of tty-next.
-
- drivers/tty/serial/bcm63xx_uart.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/bcm63xx_uart.c b/drivers/tty/serial/bcm63xx_uart.c
-index c28e5c24..5108fab 100644
---- a/drivers/tty/serial/bcm63xx_uart.c
-+++ b/drivers/tty/serial/bcm63xx_uart.c
-@@ -813,8 +813,12 @@ static int bcm_uart_probe(struct platform_device *pdev)
- 	struct clk *clk;
- 	int ret;
+diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+index 61b18ab..0ec9263 100644
+--- a/drivers/irqchip/irq-bcm7120-l2.c
++++ b/drivers/irqchip/irq-bcm7120-l2.c
+@@ -215,7 +215,7 @@ static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
+ 	return 0;
+ }
  
--	if (pdev->dev.of_node)
--		pdev->id = of_alias_get_id(pdev->dev.of_node, "uart");
-+	if (pdev->dev.of_node) {
-+		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
-+
-+		if (pdev->id < 0)
-+			pdev->id = of_alias_get_id(pdev->dev.of_node, "uart");
-+	}
+-int __init bcm7120_l2_intc_probe(struct device_node *dn,
++static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+ 				 struct device_node *parent,
+ 				 int (*iomap_regs_fn)(struct device_node *,
+ 					struct bcm7120_l2_intc_data *),
+@@ -339,15 +339,15 @@ out_unmap:
+ 	return ret;
+ }
  
- 	if (pdev->id < 0 || pdev->id >= BCM63XX_NR_UARTS)
- 		return -EINVAL;
+-int __init bcm7120_l2_intc_probe_7120(struct device_node *dn,
+-				      struct device_node *parent)
++static int __init bcm7120_l2_intc_probe_7120(struct device_node *dn,
++					     struct device_node *parent)
+ {
+ 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_7120,
+ 				     "BCM7120 L2");
+ }
+ 
+-int __init bcm7120_l2_intc_probe_3380(struct device_node *dn,
+-				      struct device_node *parent)
++static int __init bcm7120_l2_intc_probe_3380(struct device_node *dn,
++					     struct device_node *parent)
+ {
+ 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_3380,
+ 				     "BCM3380 L2");
 -- 
-2.1.4
+2.8.1

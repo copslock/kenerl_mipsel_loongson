@@ -1,50 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2016 09:59:40 +0200 (CEST)
-Received: from mail-lf0-f43.google.com ([209.85.215.43]:33012 "EHLO
-        mail-lf0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27034638AbcFHH7i3uxyw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jun 2016 09:59:38 +0200
-Received: by mail-lf0-f43.google.com with SMTP id s64so338858lfe.0
-        for <linux-mips@linux-mips.org>; Wed, 08 Jun 2016 00:59:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=4ZyfFexrEMHdtJPdwZB37LYn8rUlkKeskJAUxDZg94w=;
-        b=dVmP0p8qDBSAjI1+f4nNwKiYJETy6ylzDkgxjzOGJ20OhnISO1iMN9qXqLDdrTZCld
-         OhCoLJd8mHTStNMJWFboOUxR93P2+CGwob7Ua1QznnMi6Endi+fllOZIDZwpDAGEleC5
-         vV6F59/kKWTFranCuBGofLM+mC+kuPvFZ3yCw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=4ZyfFexrEMHdtJPdwZB37LYn8rUlkKeskJAUxDZg94w=;
-        b=SY3tI1ilLL2FfoK0YZ8lubZ0X7UvWUS02fAZlhf2GBQZJAboUfV2qNV74lsUirYVVr
-         sfbEL06tPkauXi9007mtCamS/bbarydtfYBWZibnFxqk3xRDi7fWoE3mwtfjT88n2I72
-         ZbqI1xsTzbI172s1OTvpRLAq8FYCo6Iu4IrgqztKxE9/VPNmsTXM9KBx+b5fAz3w6Edj
-         JV6A7hVAhO7uV1QrvxaeuulCqC16sbu5iGC5bXwKXOPTkqIj8jcwjxsoJLZmVA0avKOA
-         7IhpnMdCKjM2+iHvpRFNbPw6Ye3hFNZZyX8LddxxRnIPbJDlPbUDsZV6yt5b8bX+sbwI
-         b5mQ==
-X-Gm-Message-State: ALyK8tIjhnp86RRgp2l65pOO68q9/wzjvF5qtRSr5abuFKXcZf0ay98ZzjGp6e4PIJcZ83kT
-X-Received: by 10.25.158.73 with SMTP id h70mr3678497lfe.41.1465372772996;
-        Wed, 08 Jun 2016 00:59:32 -0700 (PDT)
-Received: from localhost.localdomain ([85.235.10.227])
-        by smtp.gmail.com with ESMTPSA id m7sm1021lbr.6.2016.06.08.00.59.31
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 08 Jun 2016 00:59:32 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] MIPS: delete use of ARCH_WANT_OPTIONAL_GPIOLIB
-Date:   Wed,  8 Jun 2016 09:59:29 +0200
-Message-Id: <1465372769-6809-1-git-send-email-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.4.11
-Return-Path: <linus.walleij@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2016 12:09:22 +0200 (CEST)
+Received: from caladan.dune.hu ([78.24.191.180]:48264 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27035420AbcFHKJVJ8m2f (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Jun 2016 12:09:21 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by arrakis.dune.hu (Postfix) with ESMTP id 8D9B6B8009F;
+        Wed,  8 Jun 2016 12:09:20 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from localhost.localdomain (dslb-088-073-007-040.088.073.pools.vodafone-ip.de [88.73.7.40])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 46144B80063;
+        Wed,  8 Jun 2016 12:09:11 +0200 (CEST)
+From:   Jonas Gorski <jogo@openwrt.org>
+To:     linux-serial@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
+        <noltari@gmail.com>, Florian Fainelli <florian@openwrt.org>,
+        Simon Arlott <simon@fire.lp0.eu>, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH] serial/bcm63xx_uart: use correct alias naming
+Date:   Wed,  8 Jun 2016 12:08:43 +0200
+Message-Id: <1465380523-7385-1-git-send-email-jogo@openwrt.org>
+X-Mailer: git-send-email 2.1.4
+Return-Path: <jogo@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53901
+X-archive-position: 53902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: jogo@openwrt.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,28 +43,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Loongson1 added a new instance of ARCH_WANT_OPTIONAL_GPIOLIB
-which is no longer required to have GPIOLIB available in
-Kconfig. Delete it.
+The bcm63xx_uart driver uses the of alias for determing its id. Recent
+changes in dts files changed the expected 'uartX' to the recommended
+'serialX', breaking serial output. Fix this by checking for a 'serialX'
+alias as well.
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: e3b992d028f8 ("MIPS: BMIPS: Improve BCM6328 device tree")
+Fixes: 2d52ee82b475 ("MIPS: BMIPS: Improve BCM6368 device tree")
+Fixes: 7537d273e2f3 ("MIPS: BMIPS: Add device tree example for BCM6358")
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
 ---
-Hi Ralf, please apply this patch directly to your tree.
----
- arch/mips/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index ac91939b9b75..4753c8750351 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1406,7 +1406,6 @@ config CPU_LOONGSON1B
- 	bool "Loongson 1B"
- 	depends on SYS_HAS_CPU_LOONGSON1B
- 	select CPU_LOONGSON1
--	select ARCH_WANT_OPTIONAL_GPIOLIB
- 	select LEDS_GPIO_REGISTER
- 	help
- 	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
+Based on 4.7-rc2, which is the current head of tty-next.
+
+ drivers/tty/serial/bcm63xx_uart.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/tty/serial/bcm63xx_uart.c b/drivers/tty/serial/bcm63xx_uart.c
+index c28e5c24..5108fab 100644
+--- a/drivers/tty/serial/bcm63xx_uart.c
++++ b/drivers/tty/serial/bcm63xx_uart.c
+@@ -813,8 +813,12 @@ static int bcm_uart_probe(struct platform_device *pdev)
+ 	struct clk *clk;
+ 	int ret;
+ 
+-	if (pdev->dev.of_node)
+-		pdev->id = of_alias_get_id(pdev->dev.of_node, "uart");
++	if (pdev->dev.of_node) {
++		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
++
++		if (pdev->id < 0)
++			pdev->id = of_alias_get_id(pdev->dev.of_node, "uart");
++	}
+ 
+ 	if (pdev->id < 0 || pdev->id >= BCM63XX_NR_UARTS)
+ 		return -EINVAL;
 -- 
-2.4.11
+2.1.4

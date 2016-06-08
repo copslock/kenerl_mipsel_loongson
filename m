@@ -1,95 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2016 00:29:42 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57675 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27031619AbcFGW3ksZvwD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jun 2016 00:29:40 +0200
-Received: from akpm3.mtv.corp.google.com (unknown [104.132.1.65])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 62FFC258;
-        Tue,  7 Jun 2016 22:29:31 +0000 (UTC)
-Date:   Tue, 7 Jun 2016 15:29:30 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     linux-kernel@vger.kernel.org, Stas Sergeev <stsp@list.ru>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Joshua Kinard <kumba@gentoo.org>, Jiri Slaby <jslaby@suse.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Borislav Petkov <bp@suse.de>, dri-devel@lists.freedesktop.org,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        "Dmitry V. Levin" <ldv@altlinux.org>,
-        yu-cheng yu <yu-cheng.yu@intel.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Will Drewry <wad@chromium.org>,
-        Nikolay Martynov <mar.kolya@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-        James Cowgill <James.Cowgill@imgtec.com>,
-        linux-serial@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Alex Smith <alex.smith@imgtec.com>,
-        linux-media@vger.kernel.org,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Jiang Liu <jiang.liu@linux.intel.com>,
-        Mikko Rapeli <mikko.rapeli@iki.fi>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Denys Vlasenko <dvlasenk@redhat.com>,
-        linaro-mm-sig@lists.linaro.org,
-        Brian Norris <computersforpeace@gmail.com>,
-        Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
-        ath10k@lists.infradead.org, linux-mips@linux-mips.org,
-        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Roland McGrath <roland@hack.frob.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Kalle Valo <kvalo@qca.qualcomm.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Tony Wu <tung7970@gmail.com>,
-        Huaitong Han <huaitong.han@intel.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Juergen Gross <jgross@suse.com>,
-        Kees Cook <keescook@chromium.org>,
-        linux-wireless@vger.kernel.org,
-        Jason Cooper <jason@lakedaemon.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Andrea Gelmini <andrea.gelmini@gelma.net>,
-        ath9k-devel@venema.h4ckr.net,
-        David Woodhouse <dwmw2@infradead.org>, netdev@vger.kernel.org,
-        linux-mtd@lists.infradead.org, Marc Zyngier <marc.zyngier@arm.com>,
-        Rabin Vincent <rabin@rab.in>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] tree-wide: replace config_enabled() with IS_ENABLED()
-Message-Id: <20160607152930.71273719bdaea322814213d0@linux-foundation.org>
-In-Reply-To: <1465215656-20569-1-git-send-email-yamada.masahiro@socionext.com>
-References: <1465215656-20569-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2016 09:59:40 +0200 (CEST)
+Received: from mail-lf0-f43.google.com ([209.85.215.43]:33012 "EHLO
+        mail-lf0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27034638AbcFHH7i3uxyw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jun 2016 09:59:38 +0200
+Received: by mail-lf0-f43.google.com with SMTP id s64so338858lfe.0
+        for <linux-mips@linux-mips.org>; Wed, 08 Jun 2016 00:59:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=4ZyfFexrEMHdtJPdwZB37LYn8rUlkKeskJAUxDZg94w=;
+        b=dVmP0p8qDBSAjI1+f4nNwKiYJETy6ylzDkgxjzOGJ20OhnISO1iMN9qXqLDdrTZCld
+         OhCoLJd8mHTStNMJWFboOUxR93P2+CGwob7Ua1QznnMi6Endi+fllOZIDZwpDAGEleC5
+         vV6F59/kKWTFranCuBGofLM+mC+kuPvFZ3yCw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=4ZyfFexrEMHdtJPdwZB37LYn8rUlkKeskJAUxDZg94w=;
+        b=SY3tI1ilLL2FfoK0YZ8lubZ0X7UvWUS02fAZlhf2GBQZJAboUfV2qNV74lsUirYVVr
+         sfbEL06tPkauXi9007mtCamS/bbarydtfYBWZibnFxqk3xRDi7fWoE3mwtfjT88n2I72
+         ZbqI1xsTzbI172s1OTvpRLAq8FYCo6Iu4IrgqztKxE9/VPNmsTXM9KBx+b5fAz3w6Edj
+         JV6A7hVAhO7uV1QrvxaeuulCqC16sbu5iGC5bXwKXOPTkqIj8jcwjxsoJLZmVA0avKOA
+         7IhpnMdCKjM2+iHvpRFNbPw6Ye3hFNZZyX8LddxxRnIPbJDlPbUDsZV6yt5b8bX+sbwI
+         b5mQ==
+X-Gm-Message-State: ALyK8tIjhnp86RRgp2l65pOO68q9/wzjvF5qtRSr5abuFKXcZf0ay98ZzjGp6e4PIJcZ83kT
+X-Received: by 10.25.158.73 with SMTP id h70mr3678497lfe.41.1465372772996;
+        Wed, 08 Jun 2016 00:59:32 -0700 (PDT)
+Received: from localhost.localdomain ([85.235.10.227])
+        by smtp.gmail.com with ESMTPSA id m7sm1021lbr.6.2016.06.08.00.59.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Jun 2016 00:59:32 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] MIPS: delete use of ARCH_WANT_OPTIONAL_GPIOLIB
+Date:   Wed,  8 Jun 2016 09:59:29 +0200
+Message-Id: <1465372769-6809-1-git-send-email-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.4.11
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53900
+X-archive-position: 53901
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,34 +57,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon,  6 Jun 2016 21:20:56 +0900 Masahiro Yamada <yamada.masahiro@socionext.com> wrote:
+The Loongson1 added a new instance of ARCH_WANT_OPTIONAL_GPIOLIB
+which is no longer required to have GPIOLIB available in
+Kconfig. Delete it.
 
-> The use of config_enabled() against config options is ambiguous.
-> In practical terms, config_enabled() is equivalent to IS_BUILTIN(),
-> but the author might have used it for the meaning of IS_ENABLED().
-> Using IS_ENABLED(), IS_BUILTIN(), IS_MODULE() etc. makes the
-> intention clearer.
-> 
-> This commit replaces config_enabled() with IS_ENABLED() where
-> possible.  This commit is only touching bool config options.
-> 
-> I noticed two cases where config_enabled() is used against a tristate
-> option:
-> 
->  - config_enabled(CONFIG_HWMON)
->   [ drivers/net/wireless/ath/ath10k/thermal.c ]
-> 
->  - config_enabled(CONFIG_BACKLIGHT_CLASS_DEVICE)
->   [ drivers/gpu/drm/gma500/opregion.c ]
-> 
-> I did not touch them because they should be converted to IS_BUILTIN()
-> in order to keep the logic, but I was not sure it was the authors'
-> intention.
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Hi Ralf, please apply this patch directly to your tree.
+---
+ arch/mips/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-Well, we do want to be able to remove config_enabled() altogether if
-we're going to do this.  So please later send along a patch which makes
-a best-effort fix of the unclear usages and let's zap the thing.
-
-If those fixes weren't quite correct then there will be a build error
-(drivers/net/wireless/ath/ath10k/thermal.c) or no change in behaviour
-(drivers/gpu/drm/gma500/opregion.c).
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ac91939b9b75..4753c8750351 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1406,7 +1406,6 @@ config CPU_LOONGSON1B
+ 	bool "Loongson 1B"
+ 	depends on SYS_HAS_CPU_LOONGSON1B
+ 	select CPU_LOONGSON1
+-	select ARCH_WANT_OPTIONAL_GPIOLIB
+ 	select LEDS_GPIO_REGISTER
+ 	help
+ 	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
+-- 
+2.4.11

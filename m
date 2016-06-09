@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 15:24:09 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40490 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 15:24:33 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:56598 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27041104AbcFINTqYOgCi (ORCPT
+        with ESMTP id S27041105AbcFINTqj5xBi (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 15:19:46 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C101DD7A8B68C;
-        Thu,  9 Jun 2016 14:19:41 +0100 (IST)
+        by Forcepoint Email with ESMTPS id A813FD425FE92;
+        Thu,  9 Jun 2016 14:19:42 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 9 Jun 2016 14:19:44 +0100
+ 14.3.294.0; Thu, 9 Jun 2016 14:19:45 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>
 CC:     James Hogan <james.hogan@imgtec.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 17/18] MIPS: KVM: Combine handle_tlb_ld/st_miss
-Date:   Thu, 9 Jun 2016 14:19:20 +0100
-Message-ID: <1465478361-7431-18-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 18/18] MIPS: KVM: Use va in kvm_get_inst()
+Date:   Thu, 9 Jun 2016 14:19:21 +0100
+Message-ID: <1465478361-7431-19-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1465478361-7431-1-git-send-email-james.hogan@imgtec.com>
 References: <1465478361-7431-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53927
+X-archive-position: 53928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,9 +46,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The handle_tlb_ld/st_miss handlers are logically equivalent and
-textually almost identical, so combine their implementations into a
-single kvm_trap_emul_handle_tlb_miss().
+Like other functions, make use of a local unsigned long va, for the
+virtual address of the PC. This reduces the amount of verbose casting of
+the opc pointer to an unsigned long.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -57,117 +57,48 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/trap_emul.c | 71 +++++++++++++----------------------------------
- 1 file changed, 19 insertions(+), 52 deletions(-)
+ arch/mips/kvm/mmu.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index ecf0068bc95e..09b97fa9dabb 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -128,7 +128,7 @@ static int kvm_trap_emul_handle_tlb_mod(struct kvm_vcpu *vcpu)
- 	return ret;
- }
- 
--static int kvm_trap_emul_handle_tlb_st_miss(struct kvm_vcpu *vcpu)
-+static int kvm_trap_emul_handle_tlb_miss(struct kvm_vcpu *vcpu, bool store)
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index ad3125fa9c61..208f70409ccb 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -327,17 +327,18 @@ u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu)
  {
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
-@@ -145,55 +145,8 @@ static int kvm_trap_emul_handle_tlb_st_miss(struct kvm_vcpu *vcpu)
- 		}
- 	} else if (KVM_GUEST_KSEGX(badvaddr) < KVM_GUEST_KSEG0
- 		   || KVM_GUEST_KSEGX(badvaddr) == KVM_GUEST_KSEG23) {
--		kvm_debug("USER ADDR TLB LD fault: cause %#x, PC: %p, BadVaddr: %#lx\n",
--			  cause, opc, badvaddr);
--		er = kvm_mips_handle_tlbmiss(cause, opc, run, vcpu);
--		if (er == EMULATE_DONE)
--			ret = RESUME_GUEST;
--		else {
--			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
--			ret = RESUME_HOST;
--		}
--	} else if (KVM_GUEST_KSEGX(badvaddr) == KVM_GUEST_KSEG0) {
--		/*
--		 * All KSEG0 faults are handled by KVM, as the guest kernel does
--		 * not expect to ever get them
--		 */
--		if (kvm_mips_handle_kseg0_tlb_fault
--		    (vcpu->arch.host_cp0_badvaddr, vcpu) < 0) {
--			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
--			ret = RESUME_HOST;
--		}
--	} else {
--		kvm_err("Illegal TLB LD fault address , cause %#x, PC: %p, BadVaddr: %#lx\n",
--			cause, opc, badvaddr);
--		kvm_mips_dump_host_tlbs();
--		kvm_arch_vcpu_dump_regs(vcpu);
--		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
--		ret = RESUME_HOST;
--	}
--	return ret;
--}
--
--static int kvm_trap_emul_handle_tlb_ld_miss(struct kvm_vcpu *vcpu)
--{
--	struct kvm_run *run = vcpu->run;
--	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
--	unsigned long badvaddr = vcpu->arch.host_cp0_badvaddr;
--	u32 cause = vcpu->arch.host_cp0_cause;
--	enum emulation_result er = EMULATE_DONE;
--	int ret = RESUME_GUEST;
--
--	if (((badvaddr & PAGE_MASK) == KVM_GUEST_COMMPAGE_ADDR)
--	    && KVM_GUEST_KERNEL_MODE(vcpu)) {
--		if (kvm_mips_handle_commpage_tlb_fault(badvaddr, vcpu) < 0) {
--			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
--			ret = RESUME_HOST;
--		}
--	} else if (KVM_GUEST_KSEGX(badvaddr) < KVM_GUEST_KSEG0
--		   || KVM_GUEST_KSEGX(badvaddr) == KVM_GUEST_KSEG23) {
--		kvm_debug("USER ADDR TLB ST fault: PC: %#lx, BadVaddr: %#lx\n",
--			  vcpu->arch.pc, badvaddr);
-+		kvm_debug("USER ADDR TLB %s fault: cause %#x, PC: %p, BadVaddr: %#lx\n",
-+			  store ? "ST" : "LD", cause, opc, badvaddr);
+ 	struct mips_coproc *cop0 = vcpu->arch.cop0;
+ 	unsigned long paddr, flags, vpn2, asid;
++	unsigned long va = (unsigned long)opc;
+ 	u32 inst;
+ 	int index;
  
- 		/*
- 		 * User Address (UA) fault, this could happen if
-@@ -213,14 +166,18 @@ static int kvm_trap_emul_handle_tlb_ld_miss(struct kvm_vcpu *vcpu)
- 			ret = RESUME_HOST;
+-	if (KVM_GUEST_KSEGX((unsigned long) opc) < KVM_GUEST_KSEG0 ||
+-	    KVM_GUEST_KSEGX((unsigned long) opc) == KVM_GUEST_KSEG23) {
++	if (KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0 ||
++	    KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
+ 		local_irq_save(flags);
+-		index = kvm_mips_host_tlb_lookup(vcpu, (unsigned long) opc);
++		index = kvm_mips_host_tlb_lookup(vcpu, va);
+ 		if (index >= 0) {
+ 			inst = *(opc);
+ 		} else {
+-			vpn2 = (unsigned long) opc & VPN2_MASK;
++			vpn2 = va & VPN2_MASK;
+ 			asid = kvm_read_c0_guest_entryhi(cop0) &
+ 						KVM_ENTRYHI_ASID;
+ 			index = kvm_mips_guest_tlb_lookup(vcpu, vpn2 | asid);
+@@ -354,10 +355,8 @@ u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu)
+ 			inst = *(opc);
  		}
- 	} else if (KVM_GUEST_KSEGX(badvaddr) == KVM_GUEST_KSEG0) {
-+		/*
-+		 * All KSEG0 faults are handled by KVM, as the guest kernel does
-+		 * not expect to ever get them
-+		 */
- 		if (kvm_mips_handle_kseg0_tlb_fault
- 		    (vcpu->arch.host_cp0_badvaddr, vcpu) < 0) {
- 			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 			ret = RESUME_HOST;
- 		}
+ 		local_irq_restore(flags);
+-	} else if (KVM_GUEST_KSEGX(opc) == KVM_GUEST_KSEG0) {
+-		paddr =
+-		    kvm_mips_translate_guest_kseg0_to_hpa(vcpu,
+-							  (unsigned long) opc);
++	} else if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
++		paddr = kvm_mips_translate_guest_kseg0_to_hpa(vcpu, va);
+ 		inst = *(u32 *) CKSEG0ADDR(paddr);
  	} else {
--		kvm_err("Illegal TLB ST fault address , cause %#x, PC: %p, BadVaddr: %#lx\n",
--			cause, opc, badvaddr);
-+		kvm_err("Illegal TLB %s fault address , cause %#x, PC: %p, BadVaddr: %#lx\n",
-+			store ? "ST" : "LD", cause, opc, badvaddr);
- 		kvm_mips_dump_host_tlbs();
- 		kvm_arch_vcpu_dump_regs(vcpu);
- 		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-@@ -229,6 +186,16 @@ static int kvm_trap_emul_handle_tlb_ld_miss(struct kvm_vcpu *vcpu)
- 	return ret;
- }
- 
-+static int kvm_trap_emul_handle_tlb_st_miss(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_trap_emul_handle_tlb_miss(vcpu, true);
-+}
-+
-+static int kvm_trap_emul_handle_tlb_ld_miss(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_trap_emul_handle_tlb_miss(vcpu, false);
-+}
-+
- static int kvm_trap_emul_handle_addr_err_st(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
+ 		kvm_err("%s: illegal address: %p\n", __func__, opc);
 -- 
 2.4.10

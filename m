@@ -1,62 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:06:04 +0200 (CEST)
-Received: from mail-pf0-f182.google.com ([209.85.192.182]:36068 "EHLO
-        mail-pf0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041424AbcFIVCftINQE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:02:35 +0200
-Received: by mail-pf0-f182.google.com with SMTP id t190so16330066pfb.3
-        for <linux-mips@linux-mips.org>; Thu, 09 Jun 2016 14:02:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:06:27 +0200 (CEST)
+Received: from mail-pa0-f46.google.com ([209.85.220.46]:36706 "EHLO
+        mail-pa0-f46.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041427AbcFIVCgPvulE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:02:36 +0200
+Received: by mail-pa0-f46.google.com with SMTP id b5so16518626pas.3
+        for <linux-mips@linux-mips.org>; Thu, 09 Jun 2016 14:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=MsvE6N6UqdLeFMmaS/9rZC4XR2ujr1fHSLfiP2y/Gn0=;
-        b=bpwssgpewcKPO78yV+657MZdSY0DX34/P/3SKXqet/xN2BYH3+qOeNGtKDySd2ee5s
-         qEu/ZAt8SE9mIvFdMM6RC8nX71yoEoI9AfUfe8T2ZPiAcGNqDewn0ADRsYwjUa4HS/y4
-         k80kVO4ijjVpJ6N6uWlfgnGzuZVevhqGjgt9Y=
+        bh=9Lch+nmOXeei4KpNKQpy/WFoYPhYHWVDpIemPl8eArQ=;
+        b=l5SJyqxUYbGTxMvgH3Br3Yy5XnnfIl3heEOX/wCDHo36Wg19oBDTVaj0Sg0E+C741J
+         EDKS0Bu8uzHXxE3sWpZzpTXSnDMWT0ikOnRMju/GdJqiWKgxuBkwQIHMPz1hGne/HxIw
+         N2niwNxx6m8t/KoppuFCIZnAhzLmk54iWqKDA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=MsvE6N6UqdLeFMmaS/9rZC4XR2ujr1fHSLfiP2y/Gn0=;
-        b=iTVr3pWc+yO54hjAT7tzW1esU1xWOuuDHayhUy0MuqydzJuuIOMrfdslf2V9YVn0/r
-         v671UzFUksMHZcntjUQjHagPIWWIkQ693755knYUvpY+su7XxtonQETI4czoF3y4zRhB
-         5I2TaadeMgyCw8lKp+SIv2LfsCVTvUHfjHP8WDDUWgezkBqI8ux0uwVZD29PoX212p8d
-         /Hz9rq+iJNT7gBt7SeWj87Qf0utj/OD/R1N7Zj4yBBwMhm/CgmBCAiXfMofuYYipZj5T
-         CuebYIXxAu3aNBN71+y4yBkyGr2U2XdzrbycNwlL4+yDC9gyqNGvgOSFFG4Cwow5+trB
-         MUjw==
-X-Gm-Message-State: ALyK8tInbtz9HcW3IBLV1mlv0PDD/MNZDv23u0eoQoI7pY1VAjsbndMJr21fXvS+waewyoSk
-X-Received: by 10.98.41.133 with SMTP id p127mr6463692pfp.18.1465506150029;
+        bh=9Lch+nmOXeei4KpNKQpy/WFoYPhYHWVDpIemPl8eArQ=;
+        b=mU9dSeRq1fYQ9K8210PSZwmet6q6NetSgrVw+KQEM6cPsU1MgPCZhgNkQg+p3Qvg2F
+         XLFpPlJwblSufpbQK0GGi+ERNOYwwR/7mzJJbxdrBKRJhWbDdblktptW7umOYmWNPuL6
+         pxgNTaO2Zg6KrSu2ziRkpQsplD18M5xLGhHquXeyjvnd1sWGCsh4B5dTy0/5AXgdX5jN
+         hfvWfYLmrHnL+t0wHTrHpTDDUWwPi/pdq10UpDmkouPqX88to5hZ4p7hACJ+FWAVB8ld
+         HRK5xoxEpwHn0b2tdlK2c7qD4R/sws7BMKH0lORhRllBQEr47lWN8mbTUCEQ5a6kos8P
+         GTcA==
+X-Gm-Message-State: ALyK8tJ8XA3E4l1EzJmZhazaCRY7k3+NPt6Pym8I7fbS7jq48BYlpJTpN9I3B7/L8+EQ1mew
+X-Received: by 10.66.132.45 with SMTP id or13mr9202420pab.79.1465506150457;
         Thu, 09 Jun 2016 14:02:30 -0700 (PDT)
-Received: from www.outflux.net ([2002:ada4:7085:0:ae16:2dff:fe07:4fb6])
-        by smtp.gmail.com with ESMTPSA id 12sm12152345pfx.68.2016.06.09.14.02.27
+Received: from www.outflux.net (173-164-112-133-Oregon.hfc.comcastbusiness.net. [173.164.112.133])
+        by smtp.gmail.com with ESMTPSA id d8sm12147380pfg.72.2016.06.09.14.02.27
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 Jun 2016 14:02:27 -0700 (PDT)
+        Thu, 09 Jun 2016 14:02:28 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Kees Cook <keescook@chromium.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        linux-s390@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org, Andy Lutomirski <luto@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Chris Metcalf <cmetcalf@mellanox.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
         Helge Deller <deller@gmx.de>,
         "James E.J. Bottomley" <jejb@parisc-linux.org>,
         James Hogan <james.hogan@imgtec.com>,
         Jeff Dike <jdike@addtoit.com>, linux-arch@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
         "Maciej W. Rozycki" <macro@imgtec.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Richard Weinberger <richard@nod.at>,
         Russell King <linux@armlinux.org.uk>,
         user-mode-linux-devel@lists.sourceforge.net,
         Will Deacon <will.deacon@arm.com>, x86@kernel.org
-Subject: [PATCH 11/14] s390/ptrace: run seccomp after ptrace
-Date:   Thu,  9 Jun 2016 14:02:01 -0700
-Message-Id: <1465506124-21866-12-git-send-email-keescook@chromium.org>
+Subject: [PATCH 12/14] powerpc/ptrace: run seccomp after ptrace
+Date:   Thu,  9 Jun 2016 14:02:02 -0700
+Message-Id: <1465506124-21866-13-git-send-email-keescook@chromium.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465506124-21866-1-git-send-email-keescook@chromium.org>
 References: <1465506124-21866-1-git-send-email-keescook@chromium.org>
@@ -64,7 +64,7 @@ Return-Path: <keescook@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53975
+X-archive-position: 53976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,58 +84,89 @@ X-list: linux-mips
 Close the hole where ptrace can change a syscall out from under seccomp.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: linux-s390@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 ---
- arch/s390/kernel/ptrace.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ arch/powerpc/kernel/ptrace.c | 44 +++++++++++++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
-diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
-index c238e9958c2a..cea17010448f 100644
---- a/arch/s390/kernel/ptrace.c
-+++ b/arch/s390/kernel/ptrace.c
-@@ -821,15 +821,6 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
+index ed799e994773..5dc47ebb3840 100644
+--- a/arch/powerpc/kernel/ptrace.c
++++ b/arch/powerpc/kernel/ptrace.c
+@@ -1788,7 +1788,7 @@ static int do_seccomp(struct pt_regs *regs)
  
- asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
- {
--	long ret = 0;
--
--	/* Do the secure computing check first. */
--	if (secure_computing(NULL)) {
--		/* seccomp failures shouldn't expose any additional code. */
--		ret = -1;
--		goto out;
--	}
--
  	/*
- 	 * The sysc_tracesys code in entry.S stored the system
- 	 * call number to gprs[2].
-@@ -843,7 +834,13 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
- 		 * the system call and the system call restart handling.
- 		 */
- 		clear_pt_regs_flag(regs, PIF_SYSCALL);
--		ret = -1;
-+		return -1;
-+	}
+ 	 * The syscall was allowed by seccomp, restore the register
+-	 * state to what ptrace and audit expect.
++	 * state to what audit expects.
+ 	 * Note that we use orig_gpr3, which means a seccomp tracer can
+ 	 * modify the first syscall parameter (in orig_gpr3) and also
+ 	 * allow the syscall to proceed.
+@@ -1822,22 +1822,25 @@ static inline int do_seccomp(struct pt_regs *regs) { return 0; }
+  */
+ long do_syscall_trace_enter(struct pt_regs *regs)
+ {
+-	bool abort = false;
+-
+ 	user_exit();
+ 
++	/*
++	 * The tracer may decide to abort the syscall, if so tracehook
++	 * will return !0. Note that the tracer may also just change
++	 * regs->gpr[0] to an invalid syscall number, that is handled
++	 * below on the exit path.
++	 */
++	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
++	    tracehook_report_syscall_entry(regs))
++		goto skip;
 +
-+	/* Do the secure computing check after ptrace. */
-+	if (secure_computing(NULL)) {
-+		/* seccomp failures shouldn't expose any additional code. */
-+		return -1;
- 	}
++	/* Run seccomp after ptrace; allow it to set gpr[3]. */
+ 	if (do_seccomp(regs))
+ 		return -1;
+ 
+-	if (test_thread_flag(TIF_SYSCALL_TRACE)) {
+-		/*
+-		 * The tracer may decide to abort the syscall, if so tracehook
+-		 * will return !0. Note that the tracer may also just change
+-		 * regs->gpr[0] to an invalid syscall number, that is handled
+-		 * below on the exit path.
+-		 */
+-		abort = tracehook_report_syscall_entry(regs) != 0;
+-	}
++	/* Avoid trace and audit when syscall is invalid. */
++	if (regs->gpr[0] >= NR_syscalls)
++		goto skip;
  
  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
-@@ -852,8 +849,8 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
- 	audit_syscall_entry(regs->gprs[2], regs->orig_gpr2,
- 			    regs->gprs[3], regs->gprs[4],
- 			    regs->gprs[5]);
--out:
--	return ret ?: regs->gprs[2];
+ 		trace_sys_enter(regs, regs->gpr[0]);
+@@ -1854,17 +1857,16 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+ 				    regs->gpr[5] & 0xffffffff,
+ 				    regs->gpr[6] & 0xffffffff);
+ 
+-	if (abort || regs->gpr[0] >= NR_syscalls) {
+-		/*
+-		 * If we are aborting explicitly, or if the syscall number is
+-		 * now invalid, set the return value to -ENOSYS.
+-		 */
+-		regs->gpr[3] = -ENOSYS;
+-		return -1;
+-	}
+-
+ 	/* Return the possibly modified but valid syscall number */
+ 	return regs->gpr[0];
 +
-+	return regs->gprs[2];
++skip:
++	/*
++	 * If we are aborting explicitly, or if the syscall number is
++	 * now invalid, set the return value to -ENOSYS.
++	 */
++	regs->gpr[3] = -ENOSYS;
++	return -1;
  }
  
- asmlinkage void do_syscall_trace_exit(struct pt_regs *regs)
+ void do_syscall_trace_leave(struct pt_regs *regs)
 -- 
 2.7.4

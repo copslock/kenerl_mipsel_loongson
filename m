@@ -1,25 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:26:02 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:35354 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:26:18 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:35359 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041419AbcFIVUaEm2WE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:30 +0200
+        by eddie.linux-mips.org with ESMTP id S27041511AbcFIVUbP707E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:31 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7NN-0005Ya-DH; Thu, 09 Jun 2016 21:20:29 +0000
+        id 1bB7NO-0005Yj-GB; Thu, 09 Jun 2016 21:20:30 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7NK-0006L2-NM; Thu, 09 Jun 2016 14:20:26 -0700
+        id 1bB7NL-0006L9-Q0; Thu, 09 Jun 2016 14:20:27 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org,
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        "Maciej W . Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 187/206] MIPS: BMIPS: Pretty print BMIPS5200 processor name
-Date:   Thu,  9 Jun 2016 14:16:36 -0700
-Message-Id: <1465507015-23052-188-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 188/206] MIPS: math-emu: Fix BC1{EQ,NE}Z emulation
+Date:   Thu,  9 Jun 2016 14:16:37 -0700
+Message-Id: <1465507015-23052-189-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -28,7 +29,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54002
+X-archive-position: 54003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,39 +50,62 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit 37808d62afcdc420d98875c4b514c178d56f6815 upstream.
+commit 93583e178ebfdd2fadf950eef1547f305cac12ca upstream.
 
-Just to ease debugging of multiplatform kernel, make sure we print
-"Broadcom BMIPS5200" for the BMIPS5200 implementation instead of
-Broadcom BMIPS5000.
+The conditions for branching when emulating the BC1EQZ & BC1NEZ
+instructions were backwards, leading to each of those instructions being
+treated as the other. Fix this by reversing the conditions, and clear up
+the code a little for readability & checkpatch.
 
-Fixes: 68e6a78373a6d ("MIPS: BMIPS: Add PRId for BMIPS5200 (Whirlwind)")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Fixes: c909ca718e8f ("MIPS: math-emu: Emulate missing BC1{EQ,NE}Z instructions")
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Cc: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13014/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13150/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/cpu-probe.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/math-emu/cp1emu.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index dbe0792..cbd4c43 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1248,7 +1248,10 @@ static inline void cpu_probe_broadcom(struct cpuinfo_mips *c, unsigned int cpu)
- 	case PRID_IMP_BMIPS5000:
- 	case PRID_IMP_BMIPS5200:
- 		c->cputype = CPU_BMIPS5000;
--		__cpu_name[cpu] = "Broadcom BMIPS5000";
-+		if ((c->processor_id & PRID_IMP_MASK) == PRID_IMP_BMIPS5200)
-+			__cpu_name[cpu] = "Broadcom BMIPS5200";
-+		else
-+			__cpu_name[cpu] = "Broadcom BMIPS5000";
- 		set_elf_platform(cpu, "bmips5000");
- 		c->options |= MIPS_CPU_ULRI;
- 		break;
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 2bf9209..8d9133f 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -975,9 +975,10 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 		struct mm_decoded_insn dec_insn, void *__user *fault_addr)
+ {
+ 	unsigned long contpc = xcp->cp0_epc + dec_insn.pc_inc;
+-	unsigned int cond, cbit;
++	unsigned int cond, cbit, bit0;
+ 	mips_instruction ir;
+ 	int likely, pc_inc;
++	union fpureg *fpr;
+ 	u32 __user *wva;
+ 	u64 __user *dva;
+ 	u32 wval;
+@@ -1189,14 +1190,14 @@ emul:
+ 				return SIGILL;
+ 
+ 			cond = likely = 0;
++			fpr = &current->thread.fpu.fpr[MIPSInst_RT(ir)];
++			bit0 = get_fpr32(fpr, 0) & 0x1;
+ 			switch (MIPSInst_RS(ir)) {
+ 			case bc1eqz_op:
+-				if (get_fpr32(&current->thread.fpu.fpr[MIPSInst_RT(ir)], 0) & 0x1)
+-				    cond = 1;
++				cond = bit0 == 0;
+ 				break;
+ 			case bc1nez_op:
+-				if (!(get_fpr32(&current->thread.fpu.fpr[MIPSInst_RT(ir)], 0) & 0x1))
+-				    cond = 1;
++				cond = bit0 != 0;
+ 				break;
+ 			}
+ 			goto branch_common;
 -- 
 2.7.4

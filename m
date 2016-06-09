@@ -1,39 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:27:13 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:35425 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041364AbcFIVUnjSuDE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:43 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1bB7NY-0005Zn-47; Thu, 09 Jun 2016 21:20:40 +0000
-Received: from kamal by fourier with local (Exim 4.86_2)
-        (envelope-from <kamal@whence.com>)
-        id 1bB7NV-0006NA-E5; Thu, 09 Jun 2016 14:20:37 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Alban Bedel <albeu@free.fr>, Felix Fietkau <nbd@nbd.name>,
-        sergei.shtylyov@cogentembedded.com, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 197/206] MIPS: ath79: fix regression in PCI window initialization
-Date:   Thu,  9 Jun 2016 14:16:46 -0700
-Message-Id: <1465507015-23052-198-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
-References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 4.2
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2016 00:36:44 +0200 (CEST)
+Received: from mail-vk0-f65.google.com ([209.85.213.65]:33554 "EHLO
+        mail-vk0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27034973AbcFIWgmxpMBr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jun 2016 00:36:42 +0200
+Received: by mail-vk0-f65.google.com with SMTP id z65so8634924vka.0
+        for <linux-mips@linux-mips.org>; Thu, 09 Jun 2016 15:36:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=uzhfRY6wmIeGAgc7fm0h+K3W90FAiccozhvWM7hWYL8=;
+        b=ZVxmQxPgSWVr+YPwENH2TjXInN1R2cSmopjsZS/UavLm+O7RL8bDGwoS1OpD+I0ce8
+         RVOUZWcQAK0k4BgNbQuIVLxHeHWHMUrdTqF8WOrtGk0wPfJNlsoM7djZLvjRTfZKiiVv
+         9Qw5RdT8F4P08ScHnzMR84G79Vw1peszTUmUyxUBFkhRiqMelRMgChwqlu+ElM99RXYX
+         0iwW+eryaQjHaU/nX8BvE7p1lPboHw3iXQVcvkxZrp3hyPYXzVCSGQ55sdAxKDlwso8D
+         yN1Vy1jzWJoehJZxnh6fBz4v/iqNlmTRj3bjR2HZ6f+jAK4Hi5jJrOIeNsPzaoa3iJP0
+         jmFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=uzhfRY6wmIeGAgc7fm0h+K3W90FAiccozhvWM7hWYL8=;
+        b=XTEzu5sLd8hytVzrI1HuhzDJrMc//XuAFnd8wrZmQa2147Cyp+XrMxv3R5gTE3MNwA
+         hX5KM96+dvxFhXhePuaCqQ1sOw3nIcEk17j60BAaScqwA9esAe+ZKhqVrkjjEDnjrOOg
+         NGGof3p51QaQEXtybwiNhkyiQjghz/Zby3/W2gUwR78KITsfHOtitTCeG0/wt++dcoUm
+         0keicRSxnmuWhvO4trH2YXkUHLJ+U6GH34RuvAflXgeXUzA+/vuq4qwbhbpCkbEUEmuu
+         22c8dlPpwD5IHk9G74xPre0pZPoOEvGOUZebdbpDkDeYIjT9VnrXQnksH1Z5KO/ynD4k
+         WFVw==
+X-Gm-Message-State: ALyK8tJZ2CwAKES47jcwRXpPK/fQPHkbZmuGWEkaPiS68wytxCrfPMgIKWGrD5wviGZRyw214Mdaxq6M0r883w==
+X-Received: by 10.176.0.145 with SMTP id 17mr5382649uaj.103.1465511796956;
+ Thu, 09 Jun 2016 15:36:36 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.103.81.11 with HTTP; Thu, 9 Jun 2016 15:36:35 -0700 (PDT)
+In-Reply-To: <CAE9FiQWw0pUB=1iDrX_1qyMFAUGQidSaV7CPc0aNb2CzPB-fZw@mail.gmail.com>
+References: <20160604000642.28162-1-yinghai@kernel.org> <20160604000642.28162-2-yinghai@kernel.org>
+ <20160608210322.GA4248@localhost> <CAE9FiQXPmG6UYYGHG52_i8vaBJ5yPm6Z4Zfx_BhQxVhyWC5fnw@mail.gmail.com>
+ <CAE9FiQWw0pUB=1iDrX_1qyMFAUGQidSaV7CPc0aNb2CzPB-fZw@mail.gmail.com>
+From:   Yinghai Lu <yinghai@kernel.org>
+Date:   Thu, 9 Jun 2016 15:36:35 -0700
+X-Google-Sender-Auth: aUhhfSGFzPGPBgpOiPGl2btal5k
+Message-ID: <CAE9FiQUNZ9xShfCHFvKobOJQ4zBfOrq_s=uYQAcR+YguigNjrQ@mail.gmail.com>
+Subject: Re: [PATCH v12 01/15] PCI: Let pci_mmap_page_range() take extra
+ resource pointer
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        David Miller <davem@davemloft.net>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Wei Yang <weiyang@linux.vnet.ibm.com>,
+        Khalid Aziz <khalid.aziz@oracle.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>, linux-cris-kernel@axis.com,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linux-am33-list@redhat.com, linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-sh@vger.kernel.org,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <yhlu.kernel@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54006
+X-archive-position: 54007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: yinghai@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,55 +82,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.2.8-ckt12 -stable review patch.  If anyone has any objections, please let me know.
+On Wed, Jun 8, 2016 at 5:00 PM, Yinghai Lu <yinghai@kernel.org> wrote:
+> On Wed, Jun 8, 2016 at 3:35 PM, Yinghai Lu <yinghai@kernel.org> wrote:
+>
+>> At the same time, can you kill __pci_mmap_set_pgprot() for powerpc.
+>
+> Can you please put your two patches and this attached one into to pci/next?
+>
+> Then I could send updated PCI: Let pci_mmap_page_range() take resource address.
 
----8<------------------------------------------------------------
+Thanks for putting those patches in pci/resource branch.
 
-From: Felix Fietkau <nbd@nbd.name>
+I just re post updated for second patch.
 
-commit 9184dc8ffa56844352b3b9860e562ec4ee41176f upstream.
+[v12.update2,02/15] PCI: Let pci_mmap_page_range() take resource address
+http://patchwork.ozlabs.org/patch/633399/
 
-ath79_ddr_pci_win_base has the type void __iomem *, so register offsets
-need to be a multiple of 4.
+And the [v12 01/15] is not needed anymore.
 
-Cc: Alban Bedel <albeu@free.fr>
-Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Cc: sergei.shtylyov@cogentembedded.com
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13258/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/ath79/common.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+patch3 to patch15 should still can be applied to pci/resource without problem.
 
-diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
-index 3cedd1f..8ae4067 100644
---- a/arch/mips/ath79/common.c
-+++ b/arch/mips/ath79/common.c
-@@ -76,14 +76,14 @@ void ath79_ddr_set_pci_windows(void)
- {
- 	BUG_ON(!ath79_ddr_pci_win_base);
- 
--	__raw_writel(AR71XX_PCI_WIN0_OFFS, ath79_ddr_pci_win_base + 0);
--	__raw_writel(AR71XX_PCI_WIN1_OFFS, ath79_ddr_pci_win_base + 1);
--	__raw_writel(AR71XX_PCI_WIN2_OFFS, ath79_ddr_pci_win_base + 2);
--	__raw_writel(AR71XX_PCI_WIN3_OFFS, ath79_ddr_pci_win_base + 3);
--	__raw_writel(AR71XX_PCI_WIN4_OFFS, ath79_ddr_pci_win_base + 4);
--	__raw_writel(AR71XX_PCI_WIN5_OFFS, ath79_ddr_pci_win_base + 5);
--	__raw_writel(AR71XX_PCI_WIN6_OFFS, ath79_ddr_pci_win_base + 6);
--	__raw_writel(AR71XX_PCI_WIN7_OFFS, ath79_ddr_pci_win_base + 7);
-+	__raw_writel(AR71XX_PCI_WIN0_OFFS, ath79_ddr_pci_win_base + 0x0);
-+	__raw_writel(AR71XX_PCI_WIN1_OFFS, ath79_ddr_pci_win_base + 0x4);
-+	__raw_writel(AR71XX_PCI_WIN2_OFFS, ath79_ddr_pci_win_base + 0x8);
-+	__raw_writel(AR71XX_PCI_WIN3_OFFS, ath79_ddr_pci_win_base + 0xc);
-+	__raw_writel(AR71XX_PCI_WIN4_OFFS, ath79_ddr_pci_win_base + 0x10);
-+	__raw_writel(AR71XX_PCI_WIN5_OFFS, ath79_ddr_pci_win_base + 0x14);
-+	__raw_writel(AR71XX_PCI_WIN6_OFFS, ath79_ddr_pci_win_base + 0x18);
-+	__raw_writel(AR71XX_PCI_WIN7_OFFS, ath79_ddr_pci_win_base + 0x1c);
- }
- EXPORT_SYMBOL_GPL(ath79_ddr_set_pci_windows);
- 
--- 
-2.7.4
+Thanks
+
+Yinghai

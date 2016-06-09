@@ -1,25 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:22:43 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:34897 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:23:03 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:34874 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041469AbcFIVTAC3TJE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:19:00 +0200
+        by eddie.linux-mips.org with ESMTP id S27041457AbcFIVS5rKUjE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:57 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7Lv-0005MN-E3; Thu, 09 Jun 2016 21:18:59 +0000
+        id 1bB7Lr-0005Lb-33; Thu, 09 Jun 2016 21:18:55 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7Ls-0006CN-N8; Thu, 09 Jun 2016 14:18:56 -0700
+        id 1bB7Lo-0006C3-DI; Thu, 09 Jun 2016 14:18:52 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     "Maciej W . Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 103/206] MIPS: ptrace: Prevent writes to read-only FCSR bits
-Date:   Thu,  9 Jun 2016 14:15:12 -0700
-Message-Id: <1465507015-23052-104-git-send-email-kamal@canonical.com>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ralf Baechle <ralf@linux-mips.org>, Petr Malat <oss@malat.biz>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Christopher Ferris <cferris@google.com>,
+        linux-arch@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-ia64@vger.kernel.org, Kamal Mostafa <kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 099/206] SIGNAL: Move generic copy_siginfo() to signal.h
+Date:   Thu,  9 Jun 2016 14:15:08 -0700
+Message-Id: <1465507015-23052-100-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -28,7 +33,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53992
+X-archive-position: 53993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,105 +54,101 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: "Maciej W. Rozycki" <macro@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit abf378be49f38c4d3e23581d3df3fa9f1b1b11d2 upstream.
+commit ca9eb49aa9562eaadf3cea071ec7018ad6800425 upstream.
 
-Correct the cases missed with commit 9b26616c8d9d ("MIPS: Respect the
-ISA level in FCSR handling") and prevent writes to read-only FCSR bits
-there.
+The generic copy_siginfo() is currently defined in
+asm-generic/siginfo.h, after including uapi/asm-generic/siginfo.h which
+defines the generic struct siginfo. However this makes it awkward for an
+architecture to use it if it has to define its own struct siginfo (e.g.
+MIPS and potentially IA64), since it means that asm-generic/siginfo.h
+can only be included after defining the arch-specific siginfo, which may
+be problematic if the arch-specific definition needs definitions from
+uapi/asm-generic/siginfo.h.
 
-This in particular applies to FP context initialisation where any IEEE
-754-2008 bits preset by `mips_set_personality_nan' are cleared before
-the relevant ptrace(2) call takes effect and the PTRACE_POKEUSR request
-addressing FPC_CSR where no masking of read-only FCSR bits is done.
+It is possible to work around this by first including
+uapi/asm-generic/siginfo.h to get the constants before defining the
+arch-specific siginfo, and include asm-generic/siginfo.h after. However
+uapi headers can't be included by other uapi headers, so that first
+include has to be in an ifdef __kernel__, with the non __kernel__ case
+including the non-UAPI header instead.
 
-Remove the FCSR clearing from FP context initialisation then and unify
-PTRACE_POKEUSR/FPC_CSR and PTRACE_SETFPREGS handling, by factoring out
-code from `ptrace_setfpregs' and calling it from both places.
+Instead of that mess, move the generic copy_siginfo() definition into
+linux/signal.h, which allows an arch-specific uapi/asm/siginfo.h to
+include asm-generic/siginfo.h and define the arch-specific siginfo, and
+for the generic copy_siginfo() to see that arch-specific definition.
 
-This mostly matters to soft float configurations where the emulator can
-be switched this way to a mode which should not be accessible and cannot
-be set with the CTC1 instruction.  With hard float configurations any
-effect is transient anyway as read-only bits will retain their values at
-the time the FP context is restored.
-
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Petr Malat <oss@malat.biz>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Christopher Ferris <cferris@google.com>
+Cc: linux-arch@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13239/
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12478/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/ptrace.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ include/asm-generic/siginfo.h | 15 ---------------
+ include/linux/signal.h        | 15 +++++++++++++++
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index d56642a..f7968b5 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -56,8 +56,7 @@ static void init_fp_ctx(struct task_struct *target)
- 	/* Begin with data registers set to all 1s... */
- 	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
+diff --git a/include/asm-generic/siginfo.h b/include/asm-generic/siginfo.h
+index 3d1a3af..a2508a8 100644
+--- a/include/asm-generic/siginfo.h
++++ b/include/asm-generic/siginfo.h
+@@ -17,21 +17,6 @@
+ struct siginfo;
+ void do_schedule_next_timer(struct siginfo *info);
  
--	/* ...and FCSR zeroed */
--	target->thread.fpu.fcr31 = 0;
-+	/* FCSR has been preset by `mips_set_personality_nan'.  */
+-#ifndef HAVE_ARCH_COPY_SIGINFO
+-
+-#include <linux/string.h>
+-
+-static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
+-{
+-	if (from->si_code < 0)
+-		memcpy(to, from, sizeof(*to));
+-	else
+-		/* _sigchld is currently the largest know union member */
+-		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
+-}
+-
+-#endif
+-
+ extern int copy_siginfo_to_user(struct siginfo __user *to, const struct siginfo *from);
  
- 	/*
- 	 * Record that the target has "used" math, such that the context
-@@ -79,6 +78,22 @@ void ptrace_disable(struct task_struct *child)
- }
+ #endif
+diff --git a/include/linux/signal.h b/include/linux/signal.h
+index 92557bb..d80259a 100644
+--- a/include/linux/signal.h
++++ b/include/linux/signal.h
+@@ -28,6 +28,21 @@ struct sigpending {
+ 	sigset_t signal;
+ };
  
- /*
-+ * Poke at FCSR according to its mask.  Don't set the cause bits as
-+ * this is currently not handled correctly in FP context restoration
-+ * and will cause an oops if a corresponding enable bit is set.
-+ */
-+static void ptrace_setfcr31(struct task_struct *child, u32 value)
-+{
-+	u32 fcr31;
-+	u32 mask;
++#ifndef HAVE_ARCH_COPY_SIGINFO
 +
-+	value &= ~FPU_CSR_ALL_X;
-+	fcr31 = child->thread.fpu.fcr31;
-+	mask = boot_cpu_data.fpu_msk31;
-+	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
++#include <linux/string.h>
++
++static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
++{
++	if (from->si_code < 0)
++		memcpy(to, from, sizeof(*to));
++	else
++		/* _sigchld is currently the largest know union member */
++		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
 +}
 +
-+/*
-  * Read a general register set.	 We always use the 64-bit format, even
-  * for 32-bit kernels and for 32-bit processes on a 64-bit kernel.
-  * Registers are sign extended to fill the available space.
-@@ -158,9 +173,7 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
- {
- 	union fpureg *fregs;
- 	u64 fpr_val;
--	u32 fcr31;
- 	u32 value;
--	u32 mask;
- 	int i;
- 
- 	if (!access_ok(VERIFY_READ, data, 33 * 8))
-@@ -175,10 +188,7 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
- 	}
- 
- 	__get_user(value, data + 64);
--	value &= ~FPU_CSR_ALL_X;
--	fcr31 = child->thread.fpu.fcr31;
--	mask = boot_cpu_data.fpu_msk31;
--	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
-+	ptrace_setfcr31(child, value);
- 
- 	/* FIR may not be written.  */
- 
-@@ -721,7 +731,7 @@ long arch_ptrace(struct task_struct *child, long request,
- 			break;
- #endif
- 		case FPC_CSR:
--			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
-+			ptrace_setfcr31(child, data);
- 			break;
- 		case DSP_BASE ... DSP_BASE + 5: {
- 			dspreg_t *dregs;
++#endif
++
+ /*
+  * Define some primitives to manipulate sigset_t.
+  */
 -- 
 2.7.4

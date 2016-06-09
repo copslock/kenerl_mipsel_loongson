@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:19:07 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:34716 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:19:27 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:34727 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041419AbcFIVS0rol4E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:26 +0200
+        by eddie.linux-mips.org with ESMTP id S27041424AbcFIVS36qX5E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:29 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7LO-0005Gk-2y; Thu, 09 Jun 2016 21:18:26 +0000
+        id 1bB7LR-0005H4-9a; Thu, 09 Jun 2016 21:18:29 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7LL-00069o-Cq; Thu, 09 Jun 2016 14:18:23 -0700
+        id 1bB7LO-0006A3-K3; Thu, 09 Jun 2016 14:18:26 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>, macro@linux-mips.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 072/206] MIPS: Avoid using unwind_stack() with usermode
-Date:   Thu,  9 Jun 2016 14:14:41 -0700
-Message-Id: <1465507015-23052-73-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 075/206] MIPS64: R6: R2 emulation bugfix
+Date:   Thu,  9 Jun 2016 14:14:44 -0700
+Message-Id: <1465507015-23052-76-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -28,7 +28,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53981
+X-archive-position: 53982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,45 +49,230 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-commit 81a76d7119f63c359750e4adeff922a31ad1135f upstream.
+commit 41fa29e4d8cf4150568a0fe9bb4d62229f9caed5 upstream.
 
-When showing backtraces in response to traps, for example crashes and
-address errors (usually unaligned accesses) when they are set in debugfs
-to be reported, unwind_stack will be used if the PC was in the kernel
-text address range. However since EVA it is possible for user and kernel
-address ranges to overlap, and even without EVA userland can still
-trigger an address error by jumping to a KSeg0 address.
+Error recovery pointers for fixups was improperly set as ".word"
+which is unsuitable for MIPS64.
 
-Adjust the check to also ensure that it was running in kernel mode. I
-don't believe any harm can come of this problem, since unwind_stack() is
-sufficiently defensive, however it is only meant for unwinding kernel
-code, so to be correct it should use the raw backtracing instead.
+Replaced by STR(PTR)
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+[ralf@linux-mips.org: Apply changes as requested in the review process.]
+
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Markos Chandras <markos.chandras@imgtec.com>
+Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator for MIPS R6")
+Cc: macro@linux-mips.org
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11701/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/9911/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-(cherry picked from commit d2941a975ac745c607dfb590e92bb30bc352dad9)
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/traps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/mips-r2-to-r6-emul.c | 105 +++++++++++++++++-----------------
+ 1 file changed, 53 insertions(+), 52 deletions(-)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index ef1e9d3..86454f5 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -143,7 +143,7 @@ static void show_backtrace(struct task_struct *task, const struct pt_regs *regs)
- 	if (!task)
- 		task = current;
+diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/mips-r2-to-r6-emul.c
+index f2977f0..e19fa36 100644
+--- a/arch/mips/kernel/mips-r2-to-r6-emul.c
++++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
+@@ -27,6 +27,7 @@
+ #include <asm/inst.h>
+ #include <asm/mips-r2-to-r6-emul.h>
+ #include <asm/local.h>
++#include <asm/mipsregs.h>
+ #include <asm/ptrace.h>
+ #include <asm/uaccess.h>
  
--	if (raw_show_trace || !__kernel_text_address(pc)) {
-+	if (raw_show_trace || user_mode(regs) || !__kernel_text_address(pc)) {
- 		show_raw_backtrace(sp);
- 		return;
- 	}
+@@ -1250,10 +1251,10 @@ fpu_emul:
+ 			"	j	10b\n"
+ 			"	.previous\n"
+ 			"	.section	__ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1325,10 +1326,10 @@ fpu_emul:
+ 			"	j	10b\n"
+ 			"       .previous\n"
+ 			"	.section	__ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1396,10 +1397,10 @@ fpu_emul:
+ 			"	j	9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1466,10 +1467,10 @@ fpu_emul:
+ 			"	j	9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1581,14 +1582,14 @@ fpu_emul:
+ 			"	j	9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
+-			"	.word	5b,8b\n"
+-			"	.word	6b,8b\n"
+-			"	.word	7b,8b\n"
+-			"	.word	0b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
++			STR(PTR) " 5b,8b\n"
++			STR(PTR) " 6b,8b\n"
++			STR(PTR) " 7b,8b\n"
++			STR(PTR) " 0b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1700,14 +1701,14 @@ fpu_emul:
+ 			"	j      9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word  1b,8b\n"
+-			"	.word  2b,8b\n"
+-			"	.word  3b,8b\n"
+-			"	.word  4b,8b\n"
+-			"	.word  5b,8b\n"
+-			"	.word  6b,8b\n"
+-			"	.word  7b,8b\n"
+-			"	.word  0b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
++			STR(PTR) " 5b,8b\n"
++			STR(PTR) " 6b,8b\n"
++			STR(PTR) " 7b,8b\n"
++			STR(PTR) " 0b,8b\n"
+ 			"	.previous\n"
+ 			"	.set    pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1819,14 +1820,14 @@ fpu_emul:
+ 			"	j	9b\n"
+ 			"	.previous\n"
+ 			"	.section        __ex_table,\"a\"\n"
+-			"	.word	1b,8b\n"
+-			"	.word	2b,8b\n"
+-			"	.word	3b,8b\n"
+-			"	.word	4b,8b\n"
+-			"	.word	5b,8b\n"
+-			"	.word	6b,8b\n"
+-			"	.word	7b,8b\n"
+-			"	.word	0b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
++			STR(PTR) " 5b,8b\n"
++			STR(PTR) " 6b,8b\n"
++			STR(PTR) " 7b,8b\n"
++			STR(PTR) " 0b,8b\n"
+ 			"	.previous\n"
+ 			"	.set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1937,14 +1938,14 @@ fpu_emul:
+ 			"       j	9b\n"
+ 			"       .previous\n"
+ 			"       .section        __ex_table,\"a\"\n"
+-			"       .word	1b,8b\n"
+-			"       .word	2b,8b\n"
+-			"       .word	3b,8b\n"
+-			"       .word	4b,8b\n"
+-			"       .word	5b,8b\n"
+-			"       .word	6b,8b\n"
+-			"       .word	7b,8b\n"
+-			"       .word	0b,8b\n"
++			STR(PTR) " 1b,8b\n"
++			STR(PTR) " 2b,8b\n"
++			STR(PTR) " 3b,8b\n"
++			STR(PTR) " 4b,8b\n"
++			STR(PTR) " 5b,8b\n"
++			STR(PTR) " 6b,8b\n"
++			STR(PTR) " 7b,8b\n"
++			STR(PTR) " 0b,8b\n"
+ 			"       .previous\n"
+ 			"       .set	pop\n"
+ 			: "+&r"(rt), "=&r"(rs),
+@@ -1999,7 +2000,7 @@ fpu_emul:
+ 			"j	2b\n"
+ 			".previous\n"
+ 			".section        __ex_table,\"a\"\n"
+-			".word  1b, 3b\n"
++			STR(PTR) " 1b,3b\n"
+ 			".previous\n"
+ 			: "=&r"(res), "+&r"(err)
+ 			: "r"(vaddr), "i"(SIGSEGV)
+@@ -2057,7 +2058,7 @@ fpu_emul:
+ 			"j	2b\n"
+ 			".previous\n"
+ 			".section        __ex_table,\"a\"\n"
+-			".word	1b, 3b\n"
++			STR(PTR) " 1b,3b\n"
+ 			".previous\n"
+ 			: "+&r"(res), "+&r"(err)
+ 			: "r"(vaddr), "i"(SIGSEGV));
+@@ -2118,7 +2119,7 @@ fpu_emul:
+ 			"j	2b\n"
+ 			".previous\n"
+ 			".section        __ex_table,\"a\"\n"
+-			".word  1b, 3b\n"
++			STR(PTR) " 1b,3b\n"
+ 			".previous\n"
+ 			: "=&r"(res), "+&r"(err)
+ 			: "r"(vaddr), "i"(SIGSEGV)
+@@ -2181,7 +2182,7 @@ fpu_emul:
+ 			"j	2b\n"
+ 			".previous\n"
+ 			".section        __ex_table,\"a\"\n"
+-			".word	1b, 3b\n"
++			STR(PTR) " 1b,3b\n"
+ 			".previous\n"
+ 			: "+&r"(res), "+&r"(err)
+ 			: "r"(vaddr), "i"(SIGSEGV));
 -- 
 2.7.4

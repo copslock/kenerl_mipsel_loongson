@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:25:25 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:35342 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:25:42 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:35349 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041422AbcFIVU2AubNE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:28 +0200
+        by eddie.linux-mips.org with ESMTP id S27041484AbcFIVU3AyTWE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:29 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7NL-0005YI-93; Thu, 09 Jun 2016 21:20:27 +0000
+        id 1bB7NM-0005YS-BN; Thu, 09 Jun 2016 21:20:28 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7NI-0006Ks-Je; Thu, 09 Jun 2016 14:20:24 -0700
+        id 1bB7NJ-0006Kx-Le; Thu, 09 Jun 2016 14:20:25 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
 Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 185/206] MIPS: BMIPS: Clear MIPS_CACHE_ALIASES earlier
-Date:   Thu,  9 Jun 2016 14:16:34 -0700
-Message-Id: <1465507015-23052-186-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 186/206] MIPS: BMIPS: local_r4k___flush_cache_all needs to blast S-cache
+Date:   Thu,  9 Jun 2016 14:16:35 -0700
+Message-Id: <1465507015-23052-187-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -28,7 +28,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54000
+X-archive-position: 54001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,53 +51,38 @@ X-list: linux-mips
 
 From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit 73c4ca047f440c79f545bc6133e3033f754cd239 upstream.
+commit f675843ddfdfdf467d08cc922201614a149e439e upstream.
 
-BMIPS5000 and BMIPS5200 processor have no D cache aliases, and this is
-properly handled by the per-CPU override added at the end of
-r4k_cache_init(), the problem is that the output of probe_pcache()
-disagrees with that, since this is too late:
-
-Primary instruction cache 32kB, VIPT, 4-way, linesize 64 bytes.
-Primary data cache 32kB, 4-way, VIPT, cache aliases, linesize 32 bytes
-
-With the change moved earlier, we now have a consistent output with the
-settings we are intending to have:
-
-Primary instruction cache 32kB, VIPT, 4-way, linesize 64 bytes.
-Primary data cache 32kB, 4-way, VIPT, no aliases, linesize 32 bytes
+local_r4k___flush_cache_all() is missing a special check for BMIPS5000
+processors, we need to blast the S-cache, just like other MTI processors
+since we have an inclusive cache. We also need an additional __sync() to
+make sure this is completed.
 
 Fixes: d74b0172e4e2c ("MIPS: BMIPS: Add special cache handling in c-r4k.c")
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13011/
+Patchwork: https://patchwork.linux-mips.org/patch/13012/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/mm/c-r4k.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/mm/c-r4k.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index b2c1685..f22809f 100644
+index f22809f..a50011a 100644
 --- a/arch/mips/mm/c-r4k.c
 +++ b/arch/mips/mm/c-r4k.c
-@@ -1307,6 +1307,8 @@ static void probe_pcache(void)
- 
- 	case CPU_BMIPS5000:
- 		c->icache.flags |= MIPS_CACHE_IC_F_DC;
-+		/* Cache aliases are handled in hardware; allow HIGHMEM */
-+		c->dcache.flags &= ~MIPS_CACHE_ALIASES;
+@@ -447,6 +447,11 @@ static inline void local_r4k___flush_cache_all(void * args)
+ 		r4k_blast_scache();
  		break;
  
- 	case CPU_LOONGSON2:
-@@ -1746,8 +1748,6 @@ void r4k_cache_init(void)
- 		flush_icache_range = (void *)b5k_instruction_hazard;
- 		local_flush_icache_range = (void *)b5k_instruction_hazard;
- 
--		/* Cache aliases are handled in hardware; allow HIGHMEM */
--		current_cpu_data.dcache.flags &= ~MIPS_CACHE_ALIASES;
- 
- 		/* Optimization: an L2 flush implicitly flushes the L1 */
- 		current_cpu_data.options |= MIPS_CPU_INCLUSIVE_CACHES;
++	case CPU_BMIPS5000:
++		r4k_blast_scache();
++		__sync();
++		break;
++
+ 	default:
+ 		r4k_blast_dcache();
+ 		r4k_blast_icache();
 -- 
 2.7.4

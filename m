@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:26:53 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:35370 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:27:13 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:35425 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041488AbcFIVUdjHVkE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:33 +0200
+        by eddie.linux-mips.org with ESMTP id S27041364AbcFIVUnjSuDE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:43 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7NQ-0005Z0-KF; Thu, 09 Jun 2016 21:20:32 +0000
+        id 1bB7NY-0005Zn-47; Thu, 09 Jun 2016 21:20:40 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7NN-0006LJ-Ul; Thu, 09 Jun 2016 14:20:29 -0700
+        id 1bB7NV-0006NA-E5; Thu, 09 Jun 2016 14:20:37 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org,
-        john@phrozen.org, cernekee@gmail.com, jaedon.shin@gmail.com,
+Cc:     Alban Bedel <albeu@free.fr>, Felix Fietkau <nbd@nbd.name>,
+        sergei.shtylyov@cogentembedded.com, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 190/206] MIPS: BMIPS: Adjust mips-hpt-frequency for BCM7435
-Date:   Thu,  9 Jun 2016 14:16:39 -0700
-Message-Id: <1465507015-23052-191-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 197/206] MIPS: ath79: fix regression in PCI window initialization
+Date:   Thu,  9 Jun 2016 14:16:46 -0700
+Message-Id: <1465507015-23052-198-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -29,7 +29,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54005
+X-archive-position: 54006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,38 +50,51 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 80fa40acaa1dad5a0a9c15ed2e5d2e72461843f5 upstream.
+commit 9184dc8ffa56844352b3b9860e562ec4ee41176f upstream.
 
-The CPU actually runs at 1405Mhz which gives us a 175625000 Hz MIPS timer
-frequency (CPU frequency / 8).
+ath79_ddr_pci_win_base has the type void __iomem *, so register offsets
+need to be a multiple of 4.
 
-Fixes: e4c7d009654a ("MIPS: BMIPS: Add BCM7435 dtsi")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Alban Bedel <albeu@free.fr>
+Fixes: 24b0e3e84fbf ("MIPS: ath79: Improve the DDR controller interface")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Cc: sergei.shtylyov@cogentembedded.com
 Cc: linux-mips@linux-mips.org
-Cc: john@phrozen.org
-Cc: cernekee@gmail.com
-Cc: jaedon.shin@gmail.com
-Patchwork: https://patchwork.linux-mips.org/patch/13132/
+Patchwork: https://patchwork.linux-mips.org/patch/13258/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/boot/dts/brcm/bcm7435.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ath79/common.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-index 8b9432c..27b2b8e 100644
---- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-@@ -7,7 +7,7 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
+diff --git a/arch/mips/ath79/common.c b/arch/mips/ath79/common.c
+index 3cedd1f..8ae4067 100644
+--- a/arch/mips/ath79/common.c
++++ b/arch/mips/ath79/common.c
+@@ -76,14 +76,14 @@ void ath79_ddr_set_pci_windows(void)
+ {
+ 	BUG_ON(!ath79_ddr_pci_win_base);
  
--		mips-hpt-frequency = <163125000>;
-+		mips-hpt-frequency = <175625000>;
+-	__raw_writel(AR71XX_PCI_WIN0_OFFS, ath79_ddr_pci_win_base + 0);
+-	__raw_writel(AR71XX_PCI_WIN1_OFFS, ath79_ddr_pci_win_base + 1);
+-	__raw_writel(AR71XX_PCI_WIN2_OFFS, ath79_ddr_pci_win_base + 2);
+-	__raw_writel(AR71XX_PCI_WIN3_OFFS, ath79_ddr_pci_win_base + 3);
+-	__raw_writel(AR71XX_PCI_WIN4_OFFS, ath79_ddr_pci_win_base + 4);
+-	__raw_writel(AR71XX_PCI_WIN5_OFFS, ath79_ddr_pci_win_base + 5);
+-	__raw_writel(AR71XX_PCI_WIN6_OFFS, ath79_ddr_pci_win_base + 6);
+-	__raw_writel(AR71XX_PCI_WIN7_OFFS, ath79_ddr_pci_win_base + 7);
++	__raw_writel(AR71XX_PCI_WIN0_OFFS, ath79_ddr_pci_win_base + 0x0);
++	__raw_writel(AR71XX_PCI_WIN1_OFFS, ath79_ddr_pci_win_base + 0x4);
++	__raw_writel(AR71XX_PCI_WIN2_OFFS, ath79_ddr_pci_win_base + 0x8);
++	__raw_writel(AR71XX_PCI_WIN3_OFFS, ath79_ddr_pci_win_base + 0xc);
++	__raw_writel(AR71XX_PCI_WIN4_OFFS, ath79_ddr_pci_win_base + 0x10);
++	__raw_writel(AR71XX_PCI_WIN5_OFFS, ath79_ddr_pci_win_base + 0x14);
++	__raw_writel(AR71XX_PCI_WIN6_OFFS, ath79_ddr_pci_win_base + 0x18);
++	__raw_writel(AR71XX_PCI_WIN7_OFFS, ath79_ddr_pci_win_base + 0x1c);
+ }
+ EXPORT_SYMBOL_GPL(ath79_ddr_set_pci_windows);
  
- 		cpu@0 {
- 			compatible = "brcm,bmips5200";
 -- 
 2.7.4

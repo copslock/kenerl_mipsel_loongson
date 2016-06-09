@@ -1,25 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:26:37 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:35364 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:26:53 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:35370 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041525AbcFIVUcQObkE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:32 +0200
+        by eddie.linux-mips.org with ESMTP id S27041488AbcFIVUdjHVkE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:33 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7NP-0005Yq-Ie; Thu, 09 Jun 2016 21:20:31 +0000
+        id 1bB7NQ-0005Z0-KF; Thu, 09 Jun 2016 21:20:32 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7NM-0006LE-Sf; Thu, 09 Jun 2016 14:20:28 -0700
+        id 1bB7NN-0006LJ-Ul; Thu, 09 Jun 2016 14:20:29 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+Cc:     Florian Fainelli <f.fainelli@gmail.com>, linux-mips@linux-mips.org,
+        john@phrozen.org, cernekee@gmail.com, jaedon.shin@gmail.com,
         Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 189/206] MIPS: Fix BC1{EQ,NE}Z return offset calculation
-Date:   Thu,  9 Jun 2016 14:16:38 -0700
-Message-Id: <1465507015-23052-190-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 190/206] MIPS: BMIPS: Adjust mips-hpt-frequency for BCM7435
+Date:   Thu,  9 Jun 2016 14:16:39 -0700
+Message-Id: <1465507015-23052-191-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -28,7 +29,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54004
+X-archive-position: 54005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,55 +50,38 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit ac1496980f1d2752f26769f5db63afbc9ac2b603 upstream.
+commit 80fa40acaa1dad5a0a9c15ed2e5d2e72461843f5 upstream.
 
-The conditions for branching when emulating the BC1EQZ & BC1NEZ
-instructions were backwards, leading to each of those instructions being
-treated as the other. Fix this by reversing the conditions, and clear up
-the code a little for readability & checkpatch.
+The CPU actually runs at 1405Mhz which gives us a 175625000 Hz MIPS timer
+frequency (CPU frequency / 8).
 
-Fixes: c8a34581ec09 ("MIPS: Emulate the BC1{EQ,NE}Z FPU instructions")
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Fixes: e4c7d009654a ("MIPS: BMIPS: Add BCM7435 dtsi")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13151/
+Cc: john@phrozen.org
+Cc: cernekee@gmail.com
+Cc: jaedon.shin@gmail.com
+Patchwork: https://patchwork.linux-mips.org/patch/13132/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/branch.c | 18 +++---------------
- 1 file changed, 3 insertions(+), 15 deletions(-)
+ arch/mips/boot/dts/brcm/bcm7435.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
-index d8f9b35..ceca6cc 100644
---- a/arch/mips/kernel/branch.c
-+++ b/arch/mips/kernel/branch.c
-@@ -688,21 +688,9 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
- 			}
- 			lose_fpu(1);    /* Save FPU state for the emulator. */
- 			reg = insn.i_format.rt;
--			bit = 0;
--			switch (insn.i_format.rs) {
--			case bc1eqz_op:
--				/* Test bit 0 */
--				if (get_fpr32(&current->thread.fpu.fpr[reg], 0)
--				    & 0x1)
--					bit = 1;
--				break;
--			case bc1nez_op:
--				/* Test bit 0 */
--				if (!(get_fpr32(&current->thread.fpu.fpr[reg], 0)
--				      & 0x1))
--					bit = 1;
--				break;
--			}
-+			bit = get_fpr32(&current->thread.fpu.fpr[reg], 0) & 0x1;
-+			if (insn.i_format.rs == bc1eqz_op)
-+				bit = !bit;
- 			own_fpu(1);
- 			if (bit)
- 				epc = epc + 4 +
+diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+index 8b9432c..27b2b8e 100644
+--- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+@@ -7,7 +7,7 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
+-		mips-hpt-frequency = <163125000>;
++		mips-hpt-frequency = <175625000>;
+ 
+ 		cpu@0 {
+ 			compatible = "brcm,bmips5200";
 -- 
 2.7.4

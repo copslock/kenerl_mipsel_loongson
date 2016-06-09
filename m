@@ -1,40 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:20:50 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:34788 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:21:14 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:34883 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041452AbcFIVSlpIjxE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:41 +0200
+        by eddie.linux-mips.org with ESMTP id S27041464AbcFIVS6F2CLE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:58 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7Lb-0005Jl-Vl; Thu, 09 Jun 2016 21:18:40 +0000
+        id 1bB7Lt-0005Ls-88; Thu, 09 Jun 2016 21:18:57 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7LZ-0006At-9D; Thu, 09 Jun 2016 14:18:37 -0700
+        id 1bB7Lq-0006CD-Hn; Thu, 09 Jun 2016 14:18:54 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C3=84=C2=8Dm=C3=83=C2=A1=C3=85=E2=84=A2?= 
-        <rkrcmar@redhat.com>, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, kvm@vger.kernel.org,
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        "Maciej W . Rozycki" <macro@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 085/206] MIPS: KVM: Fix timer IRQ race when writing CP0_Compare
-Date:   Thu,  9 Jun 2016 14:14:54 -0700
-Message-Id: <1465507015-23052-86-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 101/206] MIPS: math-emu: Fix jalr emulation when rd == $0
+Date:   Thu,  9 Jun 2016 14:15:10 -0700
+Message-Id: <1465507015-23052-102-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-Extended-Stable: 4.2
-Content-Transfer-Encoding: 8bit
 Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53986
+X-archive-position: 53987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,163 +51,49 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit b45bacd2d048f405c7760e5cc9b60dd67708734f upstream.
+commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
 
-Writing CP0_Compare clears the timer interrupt pending bit
-(CP0_Cause.TI), but this wasn't being done atomically. If a timer
-interrupt raced with the write of the guest CP0_Compare, the timer
-interrupt could end up being pending even though the new CP0_Compare is
-nowhere near CP0_Count.
+When emulating a jalr instruction with rd == $0, the code in
+isBranchInstr was incorrectly writing to GPR $0 which should actually
+always remain zeroed. This would lead to any further instructions
+emulated which use $0 operating on a bogus value until the task is next
+context switched, at which point the value of $0 in the task context
+would be restored to the correct zero by a store in SAVE_SOME. Fix this
+by not writing to rd if it is $0.
 
-We were already updating the hrtimer expiry with
-kvm_mips_update_hrtimer(), which used both kvm_mips_freeze_hrtimer() and
-kvm_mips_resume_hrtimer(). Close the race window by expanding out
-kvm_mips_update_hrtimer(), and clearing CP0_Cause.TI and setting
-CP0_Compare between the freeze and resume. Since the pending timer
-interrupt should not be cleared when CP0_Compare is written via the KVM
-user API, an ack argument is added to distinguish the source of the
-write.
-
-Fixes: e30492bbe95a ("MIPS: KVM: Rewrite count/compare timer emulation")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim KrÄmÃ¡Å™" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Maciej W. Rozycki <macro@imgtec.com>
+Cc: James Hogan <james.hogan@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13160/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/include/asm/kvm_host.h |  2 +-
- arch/mips/kvm/emulate.c          | 61 ++++++++++++++++++----------------------
- arch/mips/kvm/trap_emul.c        |  2 +-
- 3 files changed, 29 insertions(+), 36 deletions(-)
+ arch/mips/math-emu/cp1emu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index e8c8d9d..4afe1ec 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -782,7 +782,7 @@ extern enum emulation_result kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu,
- 
- uint32_t kvm_mips_read_count(struct kvm_vcpu *vcpu);
- void kvm_mips_write_count(struct kvm_vcpu *vcpu, uint32_t count);
--void kvm_mips_write_compare(struct kvm_vcpu *vcpu, uint32_t compare);
-+void kvm_mips_write_compare(struct kvm_vcpu *vcpu, uint32_t compare, bool ack);
- void kvm_mips_init_count(struct kvm_vcpu *vcpu);
- int kvm_mips_set_count_ctl(struct kvm_vcpu *vcpu, s64 count_ctl);
- int kvm_mips_set_count_resume(struct kvm_vcpu *vcpu, s64 count_resume);
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index eaf77b5..dc10c77 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -438,32 +438,6 @@ static void kvm_mips_resume_hrtimer(struct kvm_vcpu *vcpu,
- }
- 
- /**
-- * kvm_mips_update_hrtimer() - Update next expiry time of hrtimer.
-- * @vcpu:	Virtual CPU.
-- *
-- * Recalculates and updates the expiry time of the hrtimer. This can be used
-- * after timer parameters have been altered which do not depend on the time that
-- * the change occurs (in those cases kvm_mips_freeze_hrtimer() and
-- * kvm_mips_resume_hrtimer() are used directly).
-- *
-- * It is guaranteed that no timer interrupts will be lost in the process.
-- *
-- * Assumes !kvm_mips_count_disabled(@vcpu) (guest CP0_Count timer is running).
-- */
--static void kvm_mips_update_hrtimer(struct kvm_vcpu *vcpu)
--{
--	ktime_t now;
--	uint32_t count;
--
--	/*
--	 * freeze_hrtimer takes care of a timer interrupts <= count, and
--	 * resume_hrtimer the hrtimer takes care of a timer interrupts > count.
--	 */
--	now = kvm_mips_freeze_hrtimer(vcpu, &count);
--	kvm_mips_resume_hrtimer(vcpu, now, count);
--}
--
--/**
-  * kvm_mips_write_count() - Modify the count and update timer.
-  * @vcpu:	Virtual CPU.
-  * @count:	Guest CP0_Count value to set.
-@@ -558,23 +532,42 @@ int kvm_mips_set_count_hz(struct kvm_vcpu *vcpu, s64 count_hz)
-  * kvm_mips_write_compare() - Modify compare and update timer.
-  * @vcpu:	Virtual CPU.
-  * @compare:	New CP0_Compare value.
-+ * @ack:	Whether to acknowledge timer interrupt.
-  *
-  * Update CP0_Compare to a new value and update the timeout.
-+ * If @ack, atomically acknowledge any pending timer interrupt, otherwise ensure
-+ * any pending timer interrupt is preserved.
-  */
--void kvm_mips_write_compare(struct kvm_vcpu *vcpu, uint32_t compare)
-+void kvm_mips_write_compare(struct kvm_vcpu *vcpu, uint32_t compare, bool ack)
- {
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	int dc;
-+	u32 old_compare = kvm_read_c0_guest_compare(cop0);
-+	ktime_t now;
-+	uint32_t count;
- 
- 	/* if unchanged, must just be an ack */
--	if (kvm_read_c0_guest_compare(cop0) == compare)
-+	if (old_compare == compare) {
-+		if (!ack)
-+			return;
-+		kvm_mips_callbacks->dequeue_timer_int(vcpu);
-+		kvm_write_c0_guest_compare(cop0, compare);
- 		return;
-+	}
-+
-+	/* freeze_hrtimer() takes care of timer interrupts <= count */
-+	dc = kvm_mips_count_disabled(vcpu);
-+	if (!dc)
-+		now = kvm_mips_freeze_hrtimer(vcpu, &count);
-+
-+	if (ack)
-+		kvm_mips_callbacks->dequeue_timer_int(vcpu);
- 
--	/* Update compare */
- 	kvm_write_c0_guest_compare(cop0, compare);
- 
--	/* Update timeout if count enabled */
--	if (!kvm_mips_count_disabled(vcpu))
--		kvm_mips_update_hrtimer(vcpu);
-+	/* resume_hrtimer() takes care of timer interrupts > count */
-+	if (!dc)
-+		kvm_mips_resume_hrtimer(vcpu, now, count);
- }
- 
- /**
-@@ -1113,9 +1106,9 @@ enum emulation_result kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc,
- 
- 				/* If we are writing to COMPARE */
- 				/* Clear pending timer interrupt, if any */
--				kvm_mips_callbacks->dequeue_timer_int(vcpu);
- 				kvm_mips_write_compare(vcpu,
--						       vcpu->arch.gprs[rt]);
-+						       vcpu->arch.gprs[rt],
-+						       true);
- 			} else if ((rd == MIPS_CP0_STATUS) && (sel == 0)) {
- 				unsigned int old_val, val, change;
- 
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index d836ed5..307cc4c 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -547,7 +547,7 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
- 		kvm_mips_write_count(vcpu, v);
- 		break;
- 	case KVM_REG_MIPS_CP0_COMPARE:
--		kvm_mips_write_compare(vcpu, v);
-+		kvm_mips_write_compare(vcpu, v, false);
- 		break;
- 	case KVM_REG_MIPS_CP0_CAUSE:
- 		/*
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index f0f1b98..2bf9209 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -445,9 +445,11 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
+ 	case spec_op:
+ 		switch (insn.r_format.func) {
+ 		case jalr_op:
+-			regs->regs[insn.r_format.rd] =
+-				regs->cp0_epc + dec_insn.pc_inc +
+-				dec_insn.next_pc_inc;
++			if (insn.r_format.rd != 0) {
++				regs->regs[insn.r_format.rd] =
++					regs->cp0_epc + dec_insn.pc_inc +
++					dec_insn.next_pc_inc;
++			}
+ 			/* Fall through */
+ 		case jr_op:
+ 			/* For R6, JR already emulated in jalr_op */
 -- 
 2.7.4

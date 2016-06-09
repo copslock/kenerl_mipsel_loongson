@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 15:24:52 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4221 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 15:25:10 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:50264 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27041106AbcFINTqxX8vi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 15:19:46 +0200
+        with ESMTP id S27041081AbcFINTrZAJzi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 15:19:47 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 44602CE15CE8F;
-        Thu,  9 Jun 2016 14:19:37 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 0F01AF02765F6;
+        Thu,  9 Jun 2016 14:19:38 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 9 Jun 2016 14:19:40 +0100
+ 14.3.294.0; Thu, 9 Jun 2016 14:19:41 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>
 CC:     James Hogan <james.hogan@imgtec.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 11/18] MIPS: KVM: Restore host EBase from ebase variable
-Date:   Thu, 9 Jun 2016 14:19:14 +0100
-Message-ID: <1465478361-7431-12-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 12/18] MIPS: KVM: Clean up TLB management hazards
+Date:   Thu, 9 Jun 2016 14:19:15 +0100
+Message-ID: <1465478361-7431-13-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1465478361-7431-1-git-send-email-james.hogan@imgtec.com>
 References: <1465478361-7431-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53929
+X-archive-position: 53930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,96 +46,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The host kernel's exception vector base address is currently saved in
-the VCPU structure at creation time, and restored on a guest exit.
-However it doesn't change and can already be easily accessed from the
-'ebase' variable (arch/mips/kernel/traps.c), so drop the host_ebase
-member of kvm_vcpu_arch, export the 'ebase' variable to modules and load
-from there instead.
+KVM's host TLB handling routines were using tlbw hazard barrier macros
+around tlb_read(). Now that hazard barrier macros exist for tlbr, update
+this case to use them.
 
-This does result in a single extra instruction (lui) on the guest exit
-path, but simplifies the code a bit and removes the redundant storage of
-the host exception base address.
-
-Credit for the idea goes to Cavium's VZ KVM implementation.
+Also fix various other unnecessary hazard barriers in this code.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Radim Krčmář <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h | 2 +-
- arch/mips/kernel/asm-offsets.c   | 1 -
- arch/mips/kernel/traps.c         | 1 +
- arch/mips/kvm/locore.S           | 2 +-
- arch/mips/kvm/mips.c             | 3 ---
- 5 files changed, 3 insertions(+), 6 deletions(-)
+ arch/mips/kvm/tlb.c | 27 +++++----------------------
+ 1 file changed, 5 insertions(+), 22 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index f68293b4a598..24a8e557db88 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -334,7 +334,7 @@ struct kvm_mips_tlb {
+diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
+index 37d77ad8431e..d3000680df1f 100644
+--- a/arch/mips/kvm/tlb.c
++++ b/arch/mips/kvm/tlb.c
+@@ -195,7 +195,6 @@ int kvm_mips_host_tlb_write(struct kvm_vcpu *vcpu, unsigned long entryhi,
+ 	/* Restore old ASID */
+ 	write_c0_entryhi(old_entryhi);
+ 	mtc0_tlbw_hazard();
+-	tlbw_use_hazard();
+ 	local_irq_restore(flags);
+ 	return 0;
+ }
+@@ -219,15 +218,11 @@ int kvm_mips_handle_commpage_tlb_fault(unsigned long badvaddr,
+ 	old_entryhi = read_c0_entryhi();
+ 	vaddr = badvaddr & (PAGE_MASK << 1);
+ 	write_c0_entryhi(vaddr | kvm_mips_get_kernel_asid(vcpu));
+-	mtc0_tlbw_hazard();
+ 	write_c0_entrylo0(entrylo0);
+-	mtc0_tlbw_hazard();
+ 	write_c0_entrylo1(entrylo1);
+-	mtc0_tlbw_hazard();
+ 	write_c0_index(kvm_mips_get_commpage_asid(vcpu));
+ 	mtc0_tlbw_hazard();
+ 	tlb_write_indexed();
+-	mtc0_tlbw_hazard();
+ 	tlbw_use_hazard();
  
- #define KVM_MIPS_GUEST_TLB_SIZE	64
- struct kvm_vcpu_arch {
--	void *host_ebase, *guest_ebase;
-+	void *guest_ebase;
- 	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
- 	unsigned long host_stack;
- 	unsigned long host_gp;
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index 420808899c70..a1263d188a5a 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -355,7 +355,6 @@ void output_kvm_defines(void)
- 	OFFSET(VCPU_RUN, kvm_vcpu, run);
- 	OFFSET(VCPU_HOST_ARCH, kvm_vcpu, arch);
+ 	kvm_debug("@ %#lx idx: %2d [entryhi(R): %#lx] entrylo0 (R): 0x%08lx, entrylo1(R): 0x%08lx\n",
+@@ -237,7 +232,6 @@ int kvm_mips_handle_commpage_tlb_fault(unsigned long badvaddr,
+ 	/* Restore old ASID */
+ 	write_c0_entryhi(old_entryhi);
+ 	mtc0_tlbw_hazard();
+-	tlbw_use_hazard();
+ 	local_irq_restore(flags);
  
--	OFFSET(VCPU_HOST_EBASE, kvm_vcpu_arch, host_ebase);
- 	OFFSET(VCPU_GUEST_EBASE, kvm_vcpu_arch, guest_ebase);
+ 	return 0;
+@@ -291,7 +285,6 @@ int kvm_mips_host_tlb_lookup(struct kvm_vcpu *vcpu, unsigned long vaddr)
+ 	/* Restore old ASID */
+ 	write_c0_entryhi(old_entryhi);
+ 	mtc0_tlbw_hazard();
+-	tlbw_use_hazard();
  
- 	OFFSET(VCPU_HOST_STACK, kvm_vcpu_arch, host_stack);
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 4a1712b5abdf..66e5820bfdae 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1859,6 +1859,7 @@ void __noreturn nmi_exception_handler(struct pt_regs *regs)
- #define VECTORSPACING 0x100	/* for EI/VI mode */
+ 	local_irq_restore(flags);
  
- unsigned long ebase;
-+EXPORT_SYMBOL_GPL(ebase);
- unsigned long exception_handlers[32];
- unsigned long vi_handlers[64];
+@@ -322,21 +315,16 @@ int kvm_mips_host_tlb_inv(struct kvm_vcpu *vcpu, unsigned long va)
  
-diff --git a/arch/mips/kvm/locore.S b/arch/mips/kvm/locore.S
-index 43c8ef847efa..f87bec546366 100644
---- a/arch/mips/kvm/locore.S
-+++ b/arch/mips/kvm/locore.S
-@@ -319,7 +319,7 @@ NESTED (MIPSX(GuestException), CALLFRAME_SIZ, ra)
- 	mtc0	k0, CP0_STATUS
- 	ehb
- 
--	LONG_L	k0, VCPU_HOST_EBASE(k1)
-+	LONG_L	k0, ebase
- 	mtc0	k0,CP0_EBASE
- 
- 	/*
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index c1ab6110ca1d..6e753761b5d6 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -273,9 +273,6 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- 	else
- 		size = 0x4000;
- 
--	/* Save Linux EBASE */
--	vcpu->arch.host_ebase = (void *)read_c0_ebase();
+ 	if (idx > 0) {
+ 		write_c0_entryhi(UNIQUE_ENTRYHI(idx));
+-		mtc0_tlbw_hazard();
 -
- 	gebase = kzalloc(ALIGN(size, PAGE_SIZE), GFP_KERNEL);
+ 		write_c0_entrylo0(0);
+-		mtc0_tlbw_hazard();
+-
+ 		write_c0_entrylo1(0);
+ 		mtc0_tlbw_hazard();
  
- 	if (!gebase) {
+ 		tlb_write_indexed();
+-		mtc0_tlbw_hazard();
++		tlbw_use_hazard();
+ 	}
+ 
+ 	write_c0_entryhi(old_entryhi);
+ 	mtc0_tlbw_hazard();
+-	tlbw_use_hazard();
+ 
+ 	local_irq_restore(flags);
+ 
+@@ -364,11 +352,11 @@ void kvm_mips_flush_host_tlb(int skip_kseg0)
+ 	/* Blast 'em all away. */
+ 	for (entry = 0; entry < maxentry; entry++) {
+ 		write_c0_index(entry);
+-		mtc0_tlbw_hazard();
+ 
+ 		if (skip_kseg0) {
++			mtc0_tlbr_hazard();
+ 			tlb_read();
+-			tlbw_use_hazard();
++			tlb_read_hazard();
+ 
+ 			entryhi = read_c0_entryhi();
+ 
+@@ -379,22 +367,17 @@ void kvm_mips_flush_host_tlb(int skip_kseg0)
+ 
+ 		/* Make sure all entries differ. */
+ 		write_c0_entryhi(UNIQUE_ENTRYHI(entry));
+-		mtc0_tlbw_hazard();
+ 		write_c0_entrylo0(0);
+-		mtc0_tlbw_hazard();
+ 		write_c0_entrylo1(0);
+ 		mtc0_tlbw_hazard();
+ 
+ 		tlb_write_indexed();
+-		mtc0_tlbw_hazard();
++		tlbw_use_hazard();
+ 	}
+ 
+-	tlbw_use_hazard();
+-
+ 	write_c0_entryhi(old_entryhi);
+ 	write_c0_pagemask(old_pagemask);
+ 	mtc0_tlbw_hazard();
+-	tlbw_use_hazard();
+ 
+ 	local_irq_restore(flags);
+ }
+@@ -419,9 +402,9 @@ void kvm_local_flush_tlb_all(void)
+ 		write_c0_index(entry);
+ 		mtc0_tlbw_hazard();
+ 		tlb_write_indexed();
++		tlbw_use_hazard();
+ 		entry++;
+ 	}
+-	tlbw_use_hazard();
+ 	write_c0_entryhi(old_ctx);
+ 	mtc0_tlbw_hazard();
+ 
 -- 
 2.4.10

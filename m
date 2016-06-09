@@ -1,27 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:22:27 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:34907 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:22:43 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:34897 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041471AbcFIVTBU7yrE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:19:01 +0200
+        by eddie.linux-mips.org with ESMTP id S27041469AbcFIVTAC3TJE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:19:00 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7Lw-0005MV-FH; Thu, 09 Jun 2016 21:19:00 +0000
+        id 1bB7Lv-0005MN-E3; Thu, 09 Jun 2016 21:18:59 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7Lt-0006Ca-PL; Thu, 09 Jun 2016 14:18:57 -0700
+        id 1bB7Ls-0006CN-N8; Thu, 09 Jun 2016 14:18:56 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+Cc:     "Maciej W . Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 104/206] MIPS: Disable preemption during prctl(PR_SET_FP_MODE, ...)
-Date:   Thu,  9 Jun 2016 14:15:13 -0700
-Message-Id: <1465507015-23052-105-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 103/206] MIPS: ptrace: Prevent writes to read-only FCSR bits
+Date:   Thu,  9 Jun 2016 14:15:12 -0700
+Message-Id: <1465507015-23052-104-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -30,7 +28,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53991
+X-archive-position: 53992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,51 +49,105 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: "Maciej W. Rozycki" <macro@imgtec.com>
 
-commit bd239f1e1429e7781096bf3884bdb1b2b1bb4f28 upstream.
+commit abf378be49f38c4d3e23581d3df3fa9f1b1b11d2 upstream.
 
-Whilst a PR_SET_FP_MODE prctl is performed there are decisions made
-based upon whether the task is executing on the current CPU. This may
-change if we're preempted, so disable preemption to avoid such changes
-for the lifetime of the mode switch.
+Correct the cases missed with commit 9b26616c8d9d ("MIPS: Respect the
+ISA level in FCSR handling") and prevent writes to read-only FCSR bits
+there.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 9791554b45a2 ("MIPS,prctl: add PR_[GS]ET_FP_MODE prctl options for MIPS")
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
-Tested-by: Aurelien Jarno <aurelien@aurel32.net>
-Cc: Adam Buchbinder <adam.buchbinder@gmail.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+This in particular applies to FP context initialisation where any IEEE
+754-2008 bits preset by `mips_set_personality_nan' are cleared before
+the relevant ptrace(2) call takes effect and the PTRACE_POKEUSR request
+addressing FPC_CSR where no masking of read-only FCSR bits is done.
+
+Remove the FCSR clearing from FP context initialisation then and unify
+PTRACE_POKEUSR/FPC_CSR and PTRACE_SETFPREGS handling, by factoring out
+code from `ptrace_setfpregs' and calling it from both places.
+
+This mostly matters to soft float configurations where the emulator can
+be switched this way to a mode which should not be accessible and cannot
+be set with the CTC1 instruction.  With hard float configurations any
+effect is transient anyway as read-only bits will retain their values at
+the time the FP context is restored.
+
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13144/
+Patchwork: https://patchwork.linux-mips.org/patch/13239/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/process.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/kernel/ptrace.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 6b3ae73..89847be 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -603,6 +603,9 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
- 	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
- 		return -EOPNOTSUPP;
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index d56642a..f7968b5 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -56,8 +56,7 @@ static void init_fp_ctx(struct task_struct *target)
+ 	/* Begin with data registers set to all 1s... */
+ 	memset(&target->thread.fpu.fpr, ~0, sizeof(target->thread.fpu.fpr));
  
-+	/* Proceed with the mode switch */
-+	preempt_disable();
-+
- 	/* Save FP & vector context, then disable FPU & MSA */
- 	if (task->signal == current->signal)
- 		lose_fpu(1);
-@@ -661,6 +664,7 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
+-	/* ...and FCSR zeroed */
+-	target->thread.fpu.fcr31 = 0;
++	/* FCSR has been preset by `mips_set_personality_nan'.  */
  
- 	/* Allow threads to use FP again */
- 	atomic_set(&task->mm->context.fp_mode_switching, 0);
-+	preempt_enable();
- 
- 	return 0;
+ 	/*
+ 	 * Record that the target has "used" math, such that the context
+@@ -79,6 +78,22 @@ void ptrace_disable(struct task_struct *child)
  }
+ 
+ /*
++ * Poke at FCSR according to its mask.  Don't set the cause bits as
++ * this is currently not handled correctly in FP context restoration
++ * and will cause an oops if a corresponding enable bit is set.
++ */
++static void ptrace_setfcr31(struct task_struct *child, u32 value)
++{
++	u32 fcr31;
++	u32 mask;
++
++	value &= ~FPU_CSR_ALL_X;
++	fcr31 = child->thread.fpu.fcr31;
++	mask = boot_cpu_data.fpu_msk31;
++	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
++}
++
++/*
+  * Read a general register set.	 We always use the 64-bit format, even
+  * for 32-bit kernels and for 32-bit processes on a 64-bit kernel.
+  * Registers are sign extended to fill the available space.
+@@ -158,9 +173,7 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
+ {
+ 	union fpureg *fregs;
+ 	u64 fpr_val;
+-	u32 fcr31;
+ 	u32 value;
+-	u32 mask;
+ 	int i;
+ 
+ 	if (!access_ok(VERIFY_READ, data, 33 * 8))
+@@ -175,10 +188,7 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
+ 	}
+ 
+ 	__get_user(value, data + 64);
+-	value &= ~FPU_CSR_ALL_X;
+-	fcr31 = child->thread.fpu.fcr31;
+-	mask = boot_cpu_data.fpu_msk31;
+-	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
++	ptrace_setfcr31(child, value);
+ 
+ 	/* FIR may not be written.  */
+ 
+@@ -721,7 +731,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			break;
+ #endif
+ 		case FPC_CSR:
+-			child->thread.fpu.fcr31 = data & ~FPU_CSR_ALL_X;
++			ptrace_setfcr31(child, data);
+ 			break;
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;
 -- 
 2.7.4

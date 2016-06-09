@@ -1,25 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:21:52 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:34888 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:22:08 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:34878 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041465AbcFIVS66e7aE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:58 +0200
+        by eddie.linux-mips.org with ESMTP id S27041456AbcFIVS5qzP6E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:57 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7Lu-0005MB-At; Thu, 09 Jun 2016 21:18:58 +0000
+        id 1bB7Lo-0005LP-Ty; Thu, 09 Jun 2016 21:18:53 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7Lr-0006CI-KA; Thu, 09 Jun 2016 14:18:55 -0700
+        id 1bB7Lm-0006Bt-7i; Thu, 09 Jun 2016 14:18:50 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     "Maciej W . Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Lars Persson <lars.persson@axis.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jerome Marchand <jmarchan@redhat.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 102/206] MIPS: ptrace: Fix FP context restoration FCSR regression
-Date:   Thu,  9 Jun 2016 14:15:11 -0700
-Message-Id: <1465507015-23052-103-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 097/206] MIPS: Handle highmem pages in __update_cache
+Date:   Thu,  9 Jun 2016 14:15:06 -0700
+Message-Id: <1465507015-23052-98-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -28,7 +32,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53989
+X-archive-position: 53990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,41 +53,52 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: "Maciej W. Rozycki" <macro@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit 4249548454f7ba4581aeee26bd83f42b48a14d15 upstream.
+commit f4281bba818105c7c91799abe40bc05c0dbdaa25 upstream.
 
-Fix a floating-point context restoration regression introduced with
-commit 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
-that causes a Floating Point exception and consequently a kernel oops
-with hard float configurations when one or more FCSR Enable and their
-corresponding Cause bits are set both at a time via a ptrace(2) call.
+The following patch will expose __update_cache to highmem pages. Handle
+them by mapping them in for the duration of the cache maintenance, just
+like in __flush_dcache_page. The code for that isn't shared because we
+need the page address in __update_cache so sharing became messy. Given
+that the entirity is an extra 5 lines, just duplicate it.
 
-To do so reinstate Cause bit masking originally introduced with commit
-b1442d39fac2 ("MIPS: Prevent user from setting FCSR cause bits") to
-address this exact problem and then inadvertently removed from the
-PTRACE_SETFPREGS request with the commit referred above.
-
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Lars Persson <lars.persson@axis.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jerome Marchand <jmarchan@redhat.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13238/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12721/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/ptrace.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/mm/cache.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index e933a30..d56642a 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -175,6 +175,7 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index aab218c..0d71fdd 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -143,9 +143,17 @@ void __update_cache(struct vm_area_struct *vma, unsigned long address,
+ 		return;
+ 	page = pfn_to_page(pfn);
+ 	if (page_mapping(page) && Page_dcache_dirty(page)) {
+-		addr = (unsigned long) page_address(page);
++		if (PageHighMem(page))
++			addr = (unsigned long)kmap_atomic(page);
++		else
++			addr = (unsigned long)page_address(page);
++
+ 		if (exec || pages_do_alias(addr, address & PAGE_MASK))
+ 			flush_data_cache_page(addr);
++
++		if (PageHighMem(page))
++			__kunmap_atomic((void *)addr);
++
+ 		ClearPageDcacheDirty(page);
  	}
- 
- 	__get_user(value, data + 64);
-+	value &= ~FPU_CSR_ALL_X;
- 	fcr31 = child->thread.fpu.fcr31;
- 	mask = boot_cpu_data.fpu_msk31;
- 	child->thread.fpu.fcr31 = (value & ~mask) | (fcr31 & mask);
+ }
 -- 
 2.7.4

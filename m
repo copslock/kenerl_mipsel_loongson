@@ -1,26 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:26:18 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:35359 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:26:37 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:35364 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041511AbcFIVUbP707E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:31 +0200
+        by eddie.linux-mips.org with ESMTP id S27041525AbcFIVUcQObkE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:20:32 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7NO-0005Yj-GB; Thu, 09 Jun 2016 21:20:30 +0000
+        id 1bB7NP-0005Yq-Ie; Thu, 09 Jun 2016 21:20:31 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7NL-0006L9-Q0; Thu, 09 Jun 2016 14:20:27 -0700
+        id 1bB7NM-0006LE-Sf; Thu, 09 Jun 2016 14:20:28 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        "Maciej W . Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 188/206] MIPS: math-emu: Fix BC1{EQ,NE}Z emulation
-Date:   Thu,  9 Jun 2016 14:16:37 -0700
-Message-Id: <1465507015-23052-189-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 189/206] MIPS: Fix BC1{EQ,NE}Z return offset calculation
+Date:   Thu,  9 Jun 2016 14:16:38 -0700
+Message-Id: <1465507015-23052-190-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -29,7 +28,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54003
+X-archive-position: 54004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,60 +51,53 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@imgtec.com>
 
-commit 93583e178ebfdd2fadf950eef1547f305cac12ca upstream.
+commit ac1496980f1d2752f26769f5db63afbc9ac2b603 upstream.
 
 The conditions for branching when emulating the BC1EQZ & BC1NEZ
 instructions were backwards, leading to each of those instructions being
 treated as the other. Fix this by reversing the conditions, and clear up
 the code a little for readability & checkpatch.
 
-Fixes: c909ca718e8f ("MIPS: math-emu: Emulate missing BC1{EQ,NE}Z instructions")
+Fixes: c8a34581ec09 ("MIPS: Emulate the BC1{EQ,NE}Z FPU instructions")
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13150/
+Patchwork: https://patchwork.linux-mips.org/patch/13151/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/math-emu/cp1emu.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/mips/kernel/branch.c | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 2bf9209..8d9133f 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -975,9 +975,10 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 		struct mm_decoded_insn dec_insn, void *__user *fault_addr)
- {
- 	unsigned long contpc = xcp->cp0_epc + dec_insn.pc_inc;
--	unsigned int cond, cbit;
-+	unsigned int cond, cbit, bit0;
- 	mips_instruction ir;
- 	int likely, pc_inc;
-+	union fpureg *fpr;
- 	u32 __user *wva;
- 	u64 __user *dva;
- 	u32 wval;
-@@ -1189,14 +1190,14 @@ emul:
- 				return SIGILL;
- 
- 			cond = likely = 0;
-+			fpr = &current->thread.fpu.fpr[MIPSInst_RT(ir)];
-+			bit0 = get_fpr32(fpr, 0) & 0x1;
- 			switch (MIPSInst_RS(ir)) {
- 			case bc1eqz_op:
--				if (get_fpr32(&current->thread.fpu.fpr[MIPSInst_RT(ir)], 0) & 0x1)
--				    cond = 1;
-+				cond = bit0 == 0;
- 				break;
- 			case bc1nez_op:
--				if (!(get_fpr32(&current->thread.fpu.fpr[MIPSInst_RT(ir)], 0) & 0x1))
--				    cond = 1;
-+				cond = bit0 != 0;
- 				break;
+diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
+index d8f9b35..ceca6cc 100644
+--- a/arch/mips/kernel/branch.c
++++ b/arch/mips/kernel/branch.c
+@@ -688,21 +688,9 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
  			}
- 			goto branch_common;
+ 			lose_fpu(1);    /* Save FPU state for the emulator. */
+ 			reg = insn.i_format.rt;
+-			bit = 0;
+-			switch (insn.i_format.rs) {
+-			case bc1eqz_op:
+-				/* Test bit 0 */
+-				if (get_fpr32(&current->thread.fpu.fpr[reg], 0)
+-				    & 0x1)
+-					bit = 1;
+-				break;
+-			case bc1nez_op:
+-				/* Test bit 0 */
+-				if (!(get_fpr32(&current->thread.fpu.fpr[reg], 0)
+-				      & 0x1))
+-					bit = 1;
+-				break;
+-			}
++			bit = get_fpr32(&current->thread.fpu.fpr[reg], 0) & 0x1;
++			if (insn.i_format.rs == bc1eqz_op)
++				bit = !bit;
+ 			own_fpu(1);
+ 			if (bit)
+ 				epc = epc + 4 +
 -- 
 2.7.4

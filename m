@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:03:46 +0200 (CEST)
-Received: from mail-pf0-f177.google.com ([209.85.192.177]:34639 "EHLO
-        mail-pf0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041399AbcFIVCdLRz9E (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:04:03 +0200 (CEST)
+Received: from mail-pf0-f172.google.com ([209.85.192.172]:35033 "EHLO
+        mail-pf0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041406AbcFIVCdfPYbE (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:02:33 +0200
-Received: by mail-pf0-f177.google.com with SMTP id 62so16361397pfd.1
+Received: by mail-pf0-f172.google.com with SMTP id c2so16362984pfa.2
         for <linux-mips@linux-mips.org>; Thu, 09 Jun 2016 14:02:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=HxyjAmQOE5qeZ7EhwE669HPBzRp/2ElYQ397JoX8rz8=;
-        b=Vvl41tl3QAu6SsK87BdulFghpvNhcHpaB3ZvlNgX2UjSYlnLzouS5HKKUaofrwjXfy
-         RkD2R4UZEZElhIlDAJIPGAnlDDaaec426LxMa4YSxwovb0KSJz90i6V0oq0QUROy2XKw
-         EmrsmPZhgBAxDvP2w1ir3JDca/+ppySEyfjo4=
+        bh=3bF1T7UI93B7/xICFk87VhuLeNm9vJZ6lhuj2vxxkEs=;
+        b=nXsTRQimeoe1N/4bPsI49OThHbXo6VyrIReHCbPHHJp7/8JMyoQb+BHD9fS99pLt4H
+         iuXKPYnlxUvrk0G343JWklVQ1KJVaImRVdt6xtiweWCgrMVAYobcGUQNvDKPt/ui1yw5
+         D2eo/QskL+Rt/rl/CDEVAFZZy1ZXPHtCsJUM4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=HxyjAmQOE5qeZ7EhwE669HPBzRp/2ElYQ397JoX8rz8=;
-        b=Jago/lGAE5nyynBhBfJSZQpp0Dd2p4Lj8oqLklIqleV3gXONNJ1dNgvSUF8DJeX9J5
-         J3UhlY1gEuHmRDHqz9KxYuLGbHxv66opIDi38oEWSTJt09bWfc7UZlxeV/yTcVKLUpp5
-         Mws3FTggB0Td+OKUmCPybfuVAl2s38nbAL9fjlKT7fHlCKFhbG5fskoXJ3ygOnUVaFF7
-         KAOLbczU34o+WC2Xqs8/vzka0lrPLGWy1NidglO11wx4h5Vn5tyPEKrycpSX+zY+sNIj
-         5FnhcXT0oyh+aFV468x1mXd7y+EpD0/3anKzbmmeuePQ3Kjm5SMWbjBDL2BXdpUBWmxX
-         Enhg==
-X-Gm-Message-State: ALyK8tJmtLixsGtbsU72hQrAwCx8Hdr5JHEM7wyKlb1RmiMAt8XdF7u0Op+dZwuHpY/p5wuM
-X-Received: by 10.98.216.199 with SMTP id e190mr6655711pfg.76.1465506147310;
+        bh=3bF1T7UI93B7/xICFk87VhuLeNm9vJZ6lhuj2vxxkEs=;
+        b=X9KnoAPiBL/ZVA/22wA+rrUoHjygRGbGbGC9sp88oEl3JKctF0xi1bXehWew3TyiAt
+         uRM39QjbLWQgYWc2OEaAncnIAGVn4G3bXb0vf/N8KdDDb51qgb4ka792jt7n0KXtMxwS
+         Iyck3AeJNI/8leiWBqcv91O0bs3YEt/KWHKjQH7DZaWw2ohWJsR8q79yg6LnCfWXrnSx
+         DxPvIUG7oQmimDXPYnbu0nD8P02oa05up8ZIGhFLFX/46HBOrqqjhxH22pn7kMbTqSzm
+         IQmCP86valsXSI6J4NTGy+SLQ7NDlNyRtxfpdsoTzXX5Mtse6q0CeHw2S2kDnslAw06M
+         5hsg==
+X-Gm-Message-State: ALyK8tJmjNavS8iQnuF6DiDXjS4kYTtjz3p0iuV7doFTftScHNewrSfLv6xWAJgDXMbZnksh
+X-Received: by 10.98.77.6 with SMTP id a6mr6597027pfb.20.1465506147662;
         Thu, 09 Jun 2016 14:02:27 -0700 (PDT)
 Received: from www.outflux.net ([2002:ada4:7085:0:ae16:2dff:fe07:4fb6])
-        by smtp.gmail.com with ESMTPSA id lg17sm12123457pab.36.2016.06.09.14.02.25
+        by smtp.gmail.com with ESMTPSA id n66sm12209770pfb.38.2016.06.09.14.02.25
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
         Thu, 09 Jun 2016 14:02:26 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
@@ -54,9 +54,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Russell King <linux@armlinux.org.uk>,
         user-mode-linux-devel@lists.sourceforge.net,
         Will Deacon <will.deacon@arm.com>, x86@kernel.org
-Subject: [PATCH 03/14] x86/entry: Get rid of two-phase syscall entry work
-Date:   Thu,  9 Jun 2016 14:01:53 -0700
-Message-Id: <1465506124-21866-4-git-send-email-keescook@chromium.org>
+Subject: [PATCH 04/14] seccomp: remove 2-phase API
+Date:   Thu,  9 Jun 2016 14:01:54 -0700
+Message-Id: <1465506124-21866-5-git-send-email-keescook@chromium.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465506124-21866-1-git-send-email-keescook@chromium.org>
 References: <1465506124-21866-1-git-send-email-keescook@chromium.org>
@@ -64,7 +64,7 @@ Return-Path: <keescook@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53968
+X-archive-position: 53969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -81,146 +81,214 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Andy Lutomirski <luto@kernel.org>
+Since nothing is using the 2-phase API, and it adds more complexity than
+benefit, remove it.
 
-I added two-phase syscall entry work back when the entry slow path
-was very slow.  Nowadays, the entry slow path is fast and two-phase
-entry work serves no purpose.  Remove it.
-
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Kees Cook <keescook@chromium.org>
+Cc: Andy Lutomirski <luto@kernel.org>
 ---
- arch/x86/entry/common.c       | 84 +++++--------------------------------------
- arch/x86/include/asm/ptrace.h |  6 ----
- 2 files changed, 8 insertions(+), 82 deletions(-)
+ include/linux/seccomp.h |   6 ---
+ kernel/seccomp.c        | 129 +++++++++++++++---------------------------------
+ 2 files changed, 41 insertions(+), 94 deletions(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index ec138e538c44..df56ca394877 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -64,20 +64,13 @@ static void do_audit_syscall_entry(struct pt_regs *regs, u32 arch)
+diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
+index 9eaa7b34d6da..ecc296c137cd 100644
+--- a/include/linux/seccomp.h
++++ b/include/linux/seccomp.h
+@@ -35,12 +35,6 @@ static inline int secure_computing(const struct seccomp_data *sd)
+ 		return  __secure_computing(sd);
+ 	return 0;
  }
- 
- /*
-- * We can return 0 to resume the syscall or anything else to go to phase
-- * 2.  If we resume the syscall, we need to put something appropriate in
-- * regs->orig_ax.
-- *
-- * NB: We don't have full pt_regs here, but regs->orig_ax and regs->ax
-- * are fully functional.
-- *
-- * For phase 2's benefit, our return value is:
-- * 0:			resume the syscall
-- * 1:			go to phase 2; no seccomp phase 2 needed
-- * anything else:	go to phase 2; pass return value to seccomp
-+ * Returns the syscall nr to run (which should match regs->orig_ax) or -1
-+ * to skip the syscall.
+-
+-#define SECCOMP_PHASE1_OK	0
+-#define SECCOMP_PHASE1_SKIP	1
+-
+-extern u32 seccomp_phase1(struct seccomp_data *sd);
+-int seccomp_phase2(u32 phase1_result);
+ #else
+ extern void secure_computing_strict(int this_syscall);
+ #endif
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 06816290a212..14a37d71b612 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -173,7 +173,7 @@ static int seccomp_check_filter(struct sock_filter *filter, unsigned int flen)
+  *
+  * Returns valid seccomp BPF response codes.
   */
--unsigned long syscall_trace_enter_phase1(struct pt_regs *regs, u32 arch)
-+static long syscall_trace_enter(struct pt_regs *regs)
+-static u32 seccomp_run_filters(struct seccomp_data *sd)
++static u32 seccomp_run_filters(const struct seccomp_data *sd)
  {
-+	u32 arch = in_ia32_syscall() ? AUDIT_ARCH_I386 : AUDIT_ARCH_X86_64;
-+
- 	struct thread_info *ti = pt_regs_to_thread_info(regs);
- 	unsigned long ret = 0;
- 	u32 work;
-@@ -118,59 +111,9 @@ unsigned long syscall_trace_enter_phase1(struct pt_regs *regs, u32 arch)
- 			sd.args[5] = regs->bp;
- 		}
- 
--		BUILD_BUG_ON(SECCOMP_PHASE1_OK != 0);
--		BUILD_BUG_ON(SECCOMP_PHASE1_SKIP != 1);
--
--		ret = seccomp_phase1(&sd);
--		if (ret == SECCOMP_PHASE1_SKIP) {
--			regs->orig_ax = -1;
--			ret = 0;
--		} else if (ret != SECCOMP_PHASE1_OK) {
--			return ret;  /* Go directly to phase 2 */
--		}
--
--		work &= ~_TIF_SECCOMP;
--	}
--#endif
--
--	/* Do our best to finish without phase 2. */
--	if (work == 0)
--		return ret;  /* seccomp and/or nohz only (ret == 0 here) */
--
--#ifdef CONFIG_AUDITSYSCALL
--	if (work == _TIF_SYSCALL_AUDIT) {
--		/*
--		 * If there is no more work to be done except auditing,
--		 * then audit in phase 1.  Phase 2 always audits, so, if
--		 * we audit here, then we can't go on to phase 2.
--		 */
--		do_audit_syscall_entry(regs, arch);
--		return 0;
--	}
--#endif
--
--	return 1;  /* Something is enabled that we can't handle in phase 1 */
--}
--
--/* Returns the syscall nr to run (which should match regs->orig_ax). */
--long syscall_trace_enter_phase2(struct pt_regs *regs, u32 arch,
--				unsigned long phase1_result)
+ 	struct seccomp_data sd_local;
+ 	u32 ret = SECCOMP_RET_ALLOW;
+@@ -554,20 +554,9 @@ void secure_computing_strict(int this_syscall)
+ 		BUG();
+ }
+ #else
+-int __secure_computing(const struct seccomp_data *sd)
 -{
--	struct thread_info *ti = pt_regs_to_thread_info(regs);
--	long ret = 0;
--	u32 work = ACCESS_ONCE(ti->flags) & _TIF_WORK_SYSCALL_ENTRY;
+-	u32 phase1_result = seccomp_phase1(sd);
 -
--	if (IS_ENABLED(CONFIG_DEBUG_ENTRY))
--		BUG_ON(regs != task_pt_regs(current));
--
--#ifdef CONFIG_SECCOMP
--	/*
--	 * Call seccomp_phase2 before running the other hooks so that
--	 * they can see any changes made by a seccomp tracer.
--	 */
--	if (phase1_result > 1 && seccomp_phase2(phase1_result)) {
--		/* seccomp failures shouldn't expose any additional code. */
+-	if (likely(phase1_result == SECCOMP_PHASE1_OK))
+-		return 0;
+-	else if (likely(phase1_result == SECCOMP_PHASE1_SKIP))
 -		return -1;
-+		ret = __secure_computing(&sd);
-+		if (ret == -1)
-+			return ret;
- 	}
+-	else
+-		return seccomp_phase2(phase1_result);
+-}
+ 
+ #ifdef CONFIG_SECCOMP_FILTER
+-static u32 __seccomp_phase1_filter(int this_syscall, struct seccomp_data *sd)
++static int __seccomp_filter(int this_syscall, const struct seccomp_data *sd)
+ {
+ 	u32 filter_ret, action;
+ 	int data;
+@@ -599,10 +588,33 @@ static u32 __seccomp_phase1_filter(int this_syscall, struct seccomp_data *sd)
+ 		goto skip;
+ 
+ 	case SECCOMP_RET_TRACE:
+-		return filter_ret;  /* Save the rest for phase 2. */
++		/* ENOSYS these calls if there is no tracer attached. */
++		if (!ptrace_event_enabled(current, PTRACE_EVENT_SECCOMP)) {
++			syscall_set_return_value(current,
++						 task_pt_regs(current),
++						 -ENOSYS, 0);
++			goto skip;
++		}
++
++		/* Allow the BPF to provide the event message */
++		ptrace_event(PTRACE_EVENT_SECCOMP, data);
++		/*
++		 * The delivery of a fatal signal during event
++		 * notification may silently skip tracer notification.
++		 * Terminating the task now avoids executing a system
++		 * call that may not be intended.
++		 */
++		if (fatal_signal_pending(current))
++			do_exit(SIGSYS);
++		/* Check if the tracer forced the syscall to be skipped. */
++		this_syscall = syscall_get_nr(current, task_pt_regs(current));
++		if (this_syscall < 0)
++			goto skip;
++
++		return 0;
+ 
+ 	case SECCOMP_RET_ALLOW:
+-		return SECCOMP_PHASE1_OK;
++		return 0;
+ 
+ 	case SECCOMP_RET_KILL:
+ 	default:
+@@ -614,96 +626,37 @@ static u32 __seccomp_phase1_filter(int this_syscall, struct seccomp_data *sd)
+ 
+ skip:
+ 	audit_seccomp(this_syscall, 0, action);
+-	return SECCOMP_PHASE1_SKIP;
++	return -1;
++}
++#else
++static int __seccomp_filter(int this_syscall, const struct seccomp_data *sd)
++{
++	BUG();
+ }
  #endif
  
-@@ -189,17 +132,6 @@ long syscall_trace_enter_phase2(struct pt_regs *regs, u32 arch,
- 	return ret ?: regs->orig_ax;
- }
- 
--long syscall_trace_enter(struct pt_regs *regs)
--{
--	u32 arch = in_ia32_syscall() ? AUDIT_ARCH_I386 : AUDIT_ARCH_X86_64;
--	unsigned long phase1_result = syscall_trace_enter_phase1(regs, arch);
--
--	if (phase1_result == 0)
--		return regs->orig_ax;
--	else
--		return syscall_trace_enter_phase2(regs, arch, phase1_result);
--}
--
- #define EXIT_TO_USERMODE_LOOP_FLAGS				\
- 	(_TIF_SIGPENDING | _TIF_NOTIFY_RESUME | _TIF_UPROBE |	\
- 	 _TIF_NEED_RESCHED | _TIF_USER_RETURN_NOTIFY)
-diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
-index 6271281f947d..2b5d686ea9f3 100644
---- a/arch/x86/include/asm/ptrace.h
-+++ b/arch/x86/include/asm/ptrace.h
-@@ -83,12 +83,6 @@ extern void send_sigtrap(struct task_struct *tsk, struct pt_regs *regs,
- 			 int error_code, int si_code);
- 
- 
--extern unsigned long syscall_trace_enter_phase1(struct pt_regs *, u32 arch);
--extern long syscall_trace_enter_phase2(struct pt_regs *, u32 arch,
--				       unsigned long phase1_result);
--
--extern long syscall_trace_enter(struct pt_regs *);
--
- static inline unsigned long regs_return_value(struct pt_regs *regs)
+-/**
+- * seccomp_phase1() - run fast path seccomp checks on the current syscall
+- * @arg sd: The seccomp_data or NULL
+- *
+- * This only reads pt_regs via the syscall_xyz helpers.  The only change
+- * it will make to pt_regs is via syscall_set_return_value, and it will
+- * only do that if it returns SECCOMP_PHASE1_SKIP.
+- *
+- * If sd is provided, it will not read pt_regs at all.
+- *
+- * It may also call do_exit or force a signal; these actions must be
+- * safe.
+- *
+- * If it returns SECCOMP_PHASE1_OK, the syscall passes checks and should
+- * be processed normally.
+- *
+- * If it returns SECCOMP_PHASE1_SKIP, then the syscall should not be
+- * invoked.  In this case, seccomp_phase1 will have set the return value
+- * using syscall_set_return_value.
+- *
+- * If it returns anything else, then the return value should be passed
+- * to seccomp_phase2 from a context in which ptrace hooks are safe.
+- */
+-u32 seccomp_phase1(struct seccomp_data *sd)
++int __secure_computing(const struct seccomp_data *sd)
  {
- 	return regs->ax;
+ 	int mode = current->seccomp.mode;
+-	int this_syscall = sd ? sd->nr :
+-		syscall_get_nr(current, task_pt_regs(current));
++	int this_syscall;
+ 
+ 	if (config_enabled(CONFIG_CHECKPOINT_RESTORE) &&
+ 	    unlikely(current->ptrace & PT_SUSPEND_SECCOMP))
+-		return SECCOMP_PHASE1_OK;
++		return 0;
++
++	this_syscall = sd ? sd->nr :
++		syscall_get_nr(current, task_pt_regs(current));
+ 
+ 	switch (mode) {
+ 	case SECCOMP_MODE_STRICT:
+ 		__secure_computing_strict(this_syscall);  /* may call do_exit */
+-		return SECCOMP_PHASE1_OK;
+-#ifdef CONFIG_SECCOMP_FILTER
++		return 0;
+ 	case SECCOMP_MODE_FILTER:
+-		return __seccomp_phase1_filter(this_syscall, sd);
+-#endif
++		return __seccomp_filter(this_syscall, sd);
+ 	default:
+ 		BUG();
+ 	}
+ }
+-
+-/**
+- * seccomp_phase2() - finish slow path seccomp work for the current syscall
+- * @phase1_result: The return value from seccomp_phase1()
+- *
+- * This must be called from a context in which ptrace hooks can be used.
+- *
+- * Returns 0 if the syscall should be processed or -1 to skip the syscall.
+- */
+-int seccomp_phase2(u32 phase1_result)
+-{
+-	struct pt_regs *regs = task_pt_regs(current);
+-	u32 action = phase1_result & SECCOMP_RET_ACTION;
+-	int data = phase1_result & SECCOMP_RET_DATA;
+-
+-	BUG_ON(action != SECCOMP_RET_TRACE);
+-
+-	audit_seccomp(syscall_get_nr(current, regs), 0, action);
+-
+-	/* Skip these calls if there is no tracer. */
+-	if (!ptrace_event_enabled(current, PTRACE_EVENT_SECCOMP)) {
+-		syscall_set_return_value(current, regs,
+-					 -ENOSYS, 0);
+-		return -1;
+-	}
+-
+-	/* Allow the BPF to provide the event message */
+-	ptrace_event(PTRACE_EVENT_SECCOMP, data);
+-	/*
+-	 * The delivery of a fatal signal during event
+-	 * notification may silently skip tracer notification.
+-	 * Terminating the task now avoids executing a system
+-	 * call that may not be intended.
+-	 */
+-	if (fatal_signal_pending(current))
+-		do_exit(SIGSYS);
+-	if (syscall_get_nr(current, regs) < 0)
+-		return -1;  /* Explicit request to skip. */
+-
+-	return 0;
+-}
+ #endif /* CONFIG_HAVE_ARCH_SECCOMP_FILTER */
+ 
+ long prctl_get_seccomp(void)
 -- 
 2.7.4

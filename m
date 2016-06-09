@@ -1,55 +1,66 @@
-From: Paul Burton <paul.burton@imgtec.com>
-Date: Thu, 21 Apr 2016 14:04:46 +0100
-Subject: MIPS: Fix BC1{EQ,NE}Z return offset calculation
-Message-ID: <20160421130446.FQkJEzx-_rHwPPvXoe0CVll93UVRIO1Jr__wc6LH0jQ@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 16:43:33 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:59028 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041229AbcFIOhNKpRhQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 16:37:13 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1bB156-0000lB-3B; Thu, 09 Jun 2016 14:37:12 +0000
+Received: from kamal by fourier with local (Exim 4.86_2)
+        (envelope-from <kamal@whence.com>)
+        id 1bB153-0007Do-DT; Thu, 09 Jun 2016 07:37:09 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-mips@linux-mips.org, john@phrozen.org, cernekee@gmail.com,
+        jaedon.shin@gmail.com, Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [4.2.y-ckt stable] Patch "MIPS: BMIPS: Adjust mips-hpt-frequency for BCM7435" has been added to the 4.2.y-ckt tree
+Date:   Thu,  9 Jun 2016 07:37:08 -0700
+Message-Id: <1465483028-27725-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 2.7.4
+X-Extended-Stable: 4.2
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 53960
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit ac1496980f1d2752f26769f5db63afbc9ac2b603 upstream.
+This is a note to let you know that I have just added a patch titled
 
-The conditions for branching when emulating the BC1EQZ & BC1NEZ
-instructions were backwards, leading to each of those instructions being
-treated as the other. Fix this by reversing the conditions, and clear up
-the code a little for readability & checkpatch.
+    MIPS: BMIPS: Adjust mips-hpt-frequency for BCM7435
 
-Fixes: c8a34581ec09 ("MIPS: Emulate the BC1{EQ,NE}Z FPU instructions")
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13151/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/kernel/branch.c | 18 +++---------------
- 1 file changed, 3 insertions(+), 15 deletions(-)
+to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
+which can be found at:
 
-diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
-index d8f9b35..ceca6cc 100644
---- a/arch/mips/kernel/branch.c
-+++ b/arch/mips/kernel/branch.c
-@@ -688,21 +688,9 @@ int __compute_return_epc_for_insn(struct pt_regs *regs,
- 			}
- 			lose_fpu(1);    /* Save FPU state for the emulator. */
- 			reg = insn.i_format.rt;
--			bit = 0;
--			switch (insn.i_format.rs) {
--			case bc1eqz_op:
--				/* Test bit 0 */
--				if (get_fpr32(&current->thread.fpu.fpr[reg], 0)
--				    & 0x1)
--					bit = 1;
--				break;
--			case bc1nez_op:
--				/* Test bit 0 */
--				if (!(get_fpr32(&current->thread.fpu.fpr[reg], 0)
--				      & 0x1))
--					bit = 1;
--				break;
--			}
-+			bit = get_fpr32(&current->thread.fpu.fpr[reg], 0) & 0x1;
-+			if (insn.i_format.rs == bc1eqz_op)
-+				bit = !bit;
- 			own_fpu(1);
- 			if (bit)
- 				epc = epc + 4 +
---
-2.7.4
+    https://git.launchpad.net/~canonical-kernel/linux/+git/linux-stable-ckt/log/?h=linux-4.2.y-queue
+
+This patch is scheduled to be released in version 4.2.8-ckt12.
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 4.2.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+---8<------------------------------------------------------------

@@ -1,27 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:21:14 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:34883 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 23:21:32 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:34873 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041464AbcFIVS6F2CLE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:58 +0200
+        by eddie.linux-mips.org with ESMTP id S27041462AbcFIVS5rZhLE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 23:18:57 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bB7Lt-0005Ls-88; Thu, 09 Jun 2016 21:18:57 +0000
+        id 1bB7Ls-0005Lf-5F; Thu, 09 Jun 2016 21:18:56 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bB7Lq-0006CD-Hn; Thu, 09 Jun 2016 14:18:54 -0700
+        id 1bB7Lp-0006C8-FI; Thu, 09 Jun 2016 14:18:53 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        "Maciej W . Rozycki" <macro@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
+Cc:     James Hogan <james.hogan@imgtec.com>, Petr Malat <oss@malat.biz>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 4.2.y-ckt 101/206] MIPS: math-emu: Fix jalr emulation when rd == $0
-Date:   Thu,  9 Jun 2016 14:15:10 -0700
-Message-Id: <1465507015-23052-102-git-send-email-kamal@canonical.com>
+Subject: [PATCH 4.2.y-ckt 100/206] MIPS: Fix uapi include in exported asm/siginfo.h
+Date:   Thu,  9 Jun 2016 14:15:09 -0700
+Message-Id: <1465507015-23052-101-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1465507015-23052-1-git-send-email-kamal@canonical.com>
 References: <1465507015-23052-1-git-send-email-kamal@canonical.com>
@@ -30,7 +28,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53987
+X-archive-position: 53988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,49 +49,53 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
+commit 987e5b834467c9251ca584febda65ef8f66351a9 upstream.
 
-When emulating a jalr instruction with rd == $0, the code in
-isBranchInstr was incorrectly writing to GPR $0 which should actually
-always remain zeroed. This would lead to any further instructions
-emulated which use $0 operating on a bogus value until the task is next
-context switched, at which point the value of $0 in the task context
-would be restored to the correct zero by a store in SAVE_SOME. Fix this
-by not writing to rd if it is $0.
+Since commit 8cb48fe169dd ("MIPS: Provide correct siginfo_t.si_stime"),
+MIPS' uapi/asm/siginfo.h has included uapi/asm-generic/siginfo.h
+directly before defining MIPS' struct siginfo, in order to get the
+necessary definitions needed for the siginfo struct without the generic
+copy_siginfo() hitting compiler errors due to struct siginfo not yet
+being defined.
 
-Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+Now that the generic copy_siginfo() is moved out to linux/signal.h we
+can safely include asm-generic/siginfo.h before defining the MIPS
+specific struct siginfo, which avoids the uapi/ include as well as
+breakage due to generic copy_siginfo() being defined before struct
+siginfo.
+
+Reported-by: Christopher Ferris <cferris@google.com>
+Fixes: 8cb48fe169dd ("MIPS: Provide correct siginfo_t.si_stime")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Petr Malat <oss@malat.biz>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13160/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/math-emu/cp1emu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/mips/include/uapi/asm/siginfo.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index f0f1b98..2bf9209 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -445,9 +445,11 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 	case spec_op:
- 		switch (insn.r_format.func) {
- 		case jalr_op:
--			regs->regs[insn.r_format.rd] =
--				regs->cp0_epc + dec_insn.pc_inc +
--				dec_insn.next_pc_inc;
-+			if (insn.r_format.rd != 0) {
-+				regs->regs[insn.r_format.rd] =
-+					regs->cp0_epc + dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			}
- 			/* Fall through */
- 		case jr_op:
- 			/* For R6, JR already emulated in jalr_op */
+diff --git a/arch/mips/include/uapi/asm/siginfo.h b/arch/mips/include/uapi/asm/siginfo.h
+index 03ec109..e2b5337 100644
+--- a/arch/mips/include/uapi/asm/siginfo.h
++++ b/arch/mips/include/uapi/asm/siginfo.h
+@@ -28,7 +28,7 @@
+ 
+ #define __ARCH_SIGSYS
+ 
+-#include <uapi/asm-generic/siginfo.h>
++#include <asm-generic/siginfo.h>
+ 
+ /* We can't use generic siginfo_t, because our si_code and si_errno are swapped */
+ typedef struct siginfo {
+@@ -118,6 +118,4 @@ typedef struct siginfo {
+ #define SI_TIMER __SI_CODE(__SI_TIMER, -3) /* sent by timer expiration */
+ #define SI_MESGQ __SI_CODE(__SI_MESGQ, -4) /* sent by real time mesq state change */
+ 
+-#include <asm-generic/siginfo.h>
+-
+ #endif /* _UAPI_ASM_SIGINFO_H */
 -- 
 2.7.4

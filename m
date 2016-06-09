@@ -1,96 +1,68 @@
-From: Harvey Hunt <harvey.hunt@imgtec.com>
-Date: Wed, 25 May 2016 11:06:35 +0100
-Subject: MIPS: lib: Mark intrinsics notrace
-Message-ID: <20160525100635.XM-8EPYbktLPqK6ATU6tFJSpa-jekp6W-bty-h7EUOM@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 16:41:10 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:58974 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041118AbcFIOg6WF42Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 16:36:58 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1bB14q-0000fm-9R; Thu, 09 Jun 2016 14:36:56 +0000
+Received: from kamal by fourier with local (Exim 4.86_2)
+        (envelope-from <kamal@whence.com>)
+        id 1bB14n-00074u-Jk; Thu, 09 Jun 2016 07:36:53 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     john@phrozen.org, cernekee@gmail.com, jogo@openwrt.org,
+        jaedon.shin@gmail.com, jfraser@broadcom.com, pgynther@google.com,
+        dragan.stancevic@gmail.com, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [4.2.y-ckt stable] Patch "MIPS: BMIPS: Fix PRID_IMP_BMIPS5000 masking for BMIPS5200" has been added to the 4.2.y-ckt tree
+Date:   Thu,  9 Jun 2016 07:36:52 -0700
+Message-Id: <1465483012-27173-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 2.7.4
+X-Extended-Stable: 4.2
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 53953
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit aedcfbe06558a9f53002e82d5be64c6c94687726 upstream.
+This is a note to let you know that I have just added a patch titled
 
-On certain MIPS32 devices, the ftrace tracer "function_graph" uses
-__lshrdi3() during the capturing of trace data. ftrace then attempts to
-trace __lshrdi3() which leads to infinite recursion and a stack overflow.
-Fix this by marking __lshrdi3() as notrace. Mark the other compiler
-intrinsics as notrace in case the compiler decides to use them in the
-ftrace path.
+    MIPS: BMIPS: Fix PRID_IMP_BMIPS5000 masking for BMIPS5200
 
-Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-Cc: <linux-mips@linux-mips.org>
-Cc: <linux-kernel@vger.kernel.org>
-Patchwork: https://patchwork.linux-mips.org/patch/13354/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-[ kamal: backport to 4.2-stable: no bswap[ds]i.c ]
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/lib/ashldi3.c | 2 +-
- arch/mips/lib/ashrdi3.c | 2 +-
- arch/mips/lib/cmpdi2.c  | 2 +-
- arch/mips/lib/lshrdi3.c | 2 +-
- arch/mips/lib/ucmpdi2.c | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+to the linux-4.2.y-queue branch of the 4.2.y-ckt extended stable tree 
+which can be found at:
 
-diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
-index beb80f31..927dc94 100644
---- a/arch/mips/lib/ashldi3.c
-+++ b/arch/mips/lib/ashldi3.c
-@@ -2,7 +2,7 @@
+    https://git.launchpad.net/~canonical-kernel/linux/+git/linux-stable-ckt/log/?h=linux-4.2.y-queue
 
- #include "libgcc.h"
+This patch is scheduled to be released in version 4.2.8-ckt12.
 
--long long __ashldi3(long long u, word_type b)
-+long long notrace __ashldi3(long long u, word_type b)
- {
- 	DWunion uu, w;
- 	word_type bm;
-diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
-index c884a91..9fdf1a5 100644
---- a/arch/mips/lib/ashrdi3.c
-+++ b/arch/mips/lib/ashrdi3.c
-@@ -2,7 +2,7 @@
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
 
- #include "libgcc.h"
+For more information about the 4.2.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
 
--long long __ashrdi3(long long u, word_type b)
-+long long notrace __ashrdi3(long long u, word_type b)
- {
- 	DWunion uu, w;
- 	word_type bm;
-diff --git a/arch/mips/lib/cmpdi2.c b/arch/mips/lib/cmpdi2.c
-index 8c13064..06857da 100644
---- a/arch/mips/lib/cmpdi2.c
-+++ b/arch/mips/lib/cmpdi2.c
-@@ -2,7 +2,7 @@
+Thanks.
+-Kamal
 
- #include "libgcc.h"
-
--word_type __cmpdi2(long long a, long long b)
-+word_type notrace __cmpdi2(long long a, long long b)
- {
- 	const DWunion au = {
- 		.ll = a
-diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
-index dcf8d68..3645474 100644
---- a/arch/mips/lib/lshrdi3.c
-+++ b/arch/mips/lib/lshrdi3.c
-@@ -2,7 +2,7 @@
-
- #include "libgcc.h"
-
--long long __lshrdi3(long long u, word_type b)
-+long long notrace __lshrdi3(long long u, word_type b)
- {
- 	DWunion uu, w;
- 	word_type bm;
-diff --git a/arch/mips/lib/ucmpdi2.c b/arch/mips/lib/ucmpdi2.c
-index bb4cb2f..bd599f5 100644
---- a/arch/mips/lib/ucmpdi2.c
-+++ b/arch/mips/lib/ucmpdi2.c
-@@ -2,7 +2,7 @@
-
- #include "libgcc.h"
-
--word_type __ucmpdi2(unsigned long long a, unsigned long long b)
-+word_type notrace __ucmpdi2(unsigned long long a, unsigned long long b)
- {
- 	const DWunion au = {.ll = a};
- 	const DWunion bu = {.ll = b};
---
-2.7.4
+---8<------------------------------------------------------------

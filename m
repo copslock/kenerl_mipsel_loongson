@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 15:21:41 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2016 15:22:00 +0200 (CEST)
 Received: from mailapp01.imgtec.com ([195.59.15.196]:56598 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27040861AbcFINToB7z2i (ORCPT
+        with ESMTP id S27041085AbcFINTo1gL6i (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2016 15:19:44 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id AF1047A50B087;
-        Thu,  9 Jun 2016 14:19:33 +0100 (IST)
+        by Forcepoint Email with ESMTPS id C12D7F010164;
+        Thu,  9 Jun 2016 14:19:39 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 9 Jun 2016 14:19:36 +0100
+ 14.3.294.0; Thu, 9 Jun 2016 14:19:42 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 06/18] MIPS: KVM: Make various Cause variables 32-bit
-Date:   Thu, 9 Jun 2016 14:19:09 +0100
-Message-ID: <1465478361-7431-7-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 14/18] MIPS: KVM: Arrayify struct kvm_mips_tlb::tlb_lo*
+Date:   Thu, 9 Jun 2016 14:19:17 +0100
+Message-ID: <1465478361-7431-15-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1465478361-7431-1-git-send-email-james.hogan@imgtec.com>
 References: <1465478361-7431-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 53920
+X-archive-position: 53921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,10 +46,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The CP0 Cause register is passed around in KVM quite a bit, often as an
-unsigned long, even though it is always 32-bits long.
-
-Resize it to u32 throughout MIPS KVM.
+The values of the EntryLo0 and EntryLo1 registers for a TLB entry are
+stored in separate members of struct kvm_mips_tlb called tlb_lo0 and
+tlb_lo1 respectively. To allow future code which needs to manipulate
+arbitrary EntryLo data in the TLB entry to be simpler and less
+conditional, replace these members with an array of two elements.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
@@ -58,529 +59,164 @@ Cc: Radim Krčmář <rkrcmar@redhat.com>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h | 40 +++++++++++++++++++-------------------
- arch/mips/kvm/emulate.c          | 38 ++++++++++++++++++------------------
- arch/mips/kvm/locore.S           |  2 +-
- arch/mips/kvm/trap_emul.c        | 42 ++++++++++++++++++++--------------------
- 4 files changed, 61 insertions(+), 61 deletions(-)
+ arch/mips/include/asm/kvm_host.h | 11 +++++------
+ arch/mips/kvm/emulate.c          | 10 +++++-----
+ arch/mips/kvm/mmu.c              | 20 +++++++++++---------
+ arch/mips/kvm/tlb.c              | 21 +++++++++++----------
+ 4 files changed, 32 insertions(+), 30 deletions(-)
 
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 9250b59acd18..dceb49422e3b 100644
+index 24a8e557db88..2d15da111ba8 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -344,8 +344,8 @@ struct kvm_vcpu_arch {
+@@ -310,13 +310,13 @@ enum emulation_result {
  
- 	/* Host CP0 registers used when handling exits from guest */
- 	unsigned long host_cp0_badvaddr;
--	unsigned long host_cp0_cause;
- 	unsigned long host_cp0_epc;
-+	u32 host_cp0_cause;
+ #define VPN2_MASK		0xffffe000
+ #define KVM_ENTRYHI_ASID	MIPS_ENTRYHI_ASID
+-#define TLB_IS_GLOBAL(x)	(((x).tlb_lo0 & MIPS3_PG_G) &&		\
+-				 ((x).tlb_lo1 & MIPS3_PG_G))
++#define TLB_IS_GLOBAL(x)	(((x).tlb_lo[0] & MIPS3_PG_G) &&	\
++				 ((x).tlb_lo[1] & MIPS3_PG_G))
+ #define TLB_VPN2(x)		((x).tlb_hi & VPN2_MASK)
+ #define TLB_ASID(x)		((x).tlb_hi & KVM_ENTRYHI_ASID)
+ #define TLB_IS_VALID(x, va)	(((va) & (1 << PAGE_SHIFT))		\
+-				 ? ((x).tlb_lo1 & MIPS3_PG_V)		\
+-				 : ((x).tlb_lo0 & MIPS3_PG_V))
++				 ? ((x).tlb_lo[1] & MIPS3_PG_V)		\
++				 : ((x).tlb_lo[0] & MIPS3_PG_V))
+ #define TLB_HI_VPN2_HIT(x, y)	((TLB_VPN2(x) & ~(x).tlb_mask) ==	\
+ 				 ((y) & VPN2_MASK & ~(x).tlb_mask))
+ #define TLB_HI_ASID_HIT(x, y)	(TLB_IS_GLOBAL(x) ||			\
+@@ -325,8 +325,7 @@ enum emulation_result {
+ struct kvm_mips_tlb {
+ 	long tlb_mask;
+ 	long tlb_hi;
+-	long tlb_lo0;
+-	long tlb_lo1;
++	long tlb_lo[2];
+ };
  
- 	/* GPRS */
- 	unsigned long gprs[32];
-@@ -386,7 +386,7 @@ struct kvm_vcpu_arch {
- 	/* Bitmask of pending exceptions to be cleared */
- 	unsigned long pending_exceptions_clr;
- 
--	unsigned long pending_load_cause;
-+	u32 pending_load_cause;
- 
- 	/* Save/Restore the entryhi register when are are preempted/scheduled back in */
- 	unsigned long preempt_entryhi;
-@@ -637,12 +637,12 @@ extern int kvm_mips_handle_mapped_seg_tlb_fault(struct kvm_vcpu *vcpu,
- 						unsigned long *hpa0,
- 						unsigned long *hpa1);
- 
--extern enum emulation_result kvm_mips_handle_tlbmiss(unsigned long cause,
-+extern enum emulation_result kvm_mips_handle_tlbmiss(u32 cause,
- 						     u32 *opc,
- 						     struct kvm_run *run,
- 						     struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_handle_tlbmod(unsigned long cause,
-+extern enum emulation_result kvm_mips_handle_tlbmod(u32 cause,
- 						    u32 *opc,
- 						    struct kvm_run *run,
- 						    struct kvm_vcpu *vcpu);
-@@ -668,77 +668,77 @@ extern void kvm_mips_vcpu_put(struct kvm_vcpu *vcpu);
- u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu);
- enum emulation_result update_pc(struct kvm_vcpu *vcpu, u32 cause);
- 
--extern enum emulation_result kvm_mips_emulate_inst(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_inst(u32 cause,
- 						   u32 *opc,
- 						   struct kvm_run *run,
- 						   struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_syscall(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_syscall(u32 cause,
- 						      u32 *opc,
- 						      struct kvm_run *run,
- 						      struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_tlbmiss_ld(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_tlbmiss_ld(u32 cause,
- 							 u32 *opc,
- 							 struct kvm_run *run,
- 							 struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_tlbinv_ld(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_tlbinv_ld(u32 cause,
- 							u32 *opc,
- 							struct kvm_run *run,
- 							struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_tlbmiss_st(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_tlbmiss_st(u32 cause,
- 							 u32 *opc,
- 							 struct kvm_run *run,
- 							 struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_tlbinv_st(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_tlbinv_st(u32 cause,
- 							u32 *opc,
- 							struct kvm_run *run,
- 							struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_tlbmod(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_tlbmod(u32 cause,
- 						     u32 *opc,
- 						     struct kvm_run *run,
- 						     struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_fpu_exc(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_fpu_exc(u32 cause,
- 						      u32 *opc,
- 						      struct kvm_run *run,
- 						      struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_handle_ri(unsigned long cause,
-+extern enum emulation_result kvm_mips_handle_ri(u32 cause,
- 						u32 *opc,
- 						struct kvm_run *run,
- 						struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_ri_exc(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_ri_exc(u32 cause,
- 						     u32 *opc,
- 						     struct kvm_run *run,
- 						     struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_bp_exc(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_bp_exc(u32 cause,
- 						     u32 *opc,
- 						     struct kvm_run *run,
- 						     struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_trap_exc(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_trap_exc(u32 cause,
- 						       u32 *opc,
- 						       struct kvm_run *run,
- 						       struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_msafpe_exc(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_msafpe_exc(u32 cause,
- 							 u32 *opc,
- 							 struct kvm_run *run,
- 							 struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_fpe_exc(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_fpe_exc(u32 cause,
- 						      u32 *opc,
- 						      struct kvm_run *run,
- 						      struct kvm_vcpu *vcpu);
- 
--extern enum emulation_result kvm_mips_emulate_msadis_exc(unsigned long cause,
-+extern enum emulation_result kvm_mips_emulate_msadis_exc(u32 cause,
- 							 u32 *opc,
- 							 struct kvm_run *run,
- 							 struct kvm_vcpu *vcpu);
-@@ -757,7 +757,7 @@ void kvm_mips_count_enable_cause(struct kvm_vcpu *vcpu);
- void kvm_mips_count_disable_cause(struct kvm_vcpu *vcpu);
- enum hrtimer_restart kvm_mips_count_timeout(struct kvm_vcpu *vcpu);
- 
--enum emulation_result kvm_mips_check_privilege(unsigned long cause,
-+enum emulation_result kvm_mips_check_privilege(u32 cause,
- 					       u32 *opc,
- 					       struct kvm_run *run,
- 					       struct kvm_vcpu *vcpu);
+ #define KVM_MIPS_FPU_FPU	0x1
 diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 8f4f3242a655..3baab5ec3d3b 100644
+index fb77fb469776..5b89c0803405 100644
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -1688,7 +1688,7 @@ dont_update_pc:
- 	return er;
- }
+@@ -833,8 +833,8 @@ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
  
--enum emulation_result kvm_mips_emulate_inst(unsigned long cause, u32 *opc,
-+enum emulation_result kvm_mips_emulate_inst(u32 cause, u32 *opc,
- 					    struct kvm_run *run,
- 					    struct kvm_vcpu *vcpu)
- {
-@@ -1735,7 +1735,7 @@ enum emulation_result kvm_mips_emulate_inst(unsigned long cause, u32 *opc,
- 	return er;
- }
+ 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
+ 	tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
+-	tlb->tlb_lo0 = kvm_read_c0_guest_entrylo0(cop0);
+-	tlb->tlb_lo1 = kvm_read_c0_guest_entrylo1(cop0);
++	tlb->tlb_lo[0] = kvm_read_c0_guest_entrylo0(cop0);
++	tlb->tlb_lo[1] = kvm_read_c0_guest_entrylo1(cop0);
  
--enum emulation_result kvm_mips_emulate_syscall(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_syscall(u32 cause,
- 					       u32 *opc,
- 					       struct kvm_run *run,
- 					       struct kvm_vcpu *vcpu)
-@@ -1770,7 +1770,7 @@ enum emulation_result kvm_mips_emulate_syscall(unsigned long cause,
- 	return er;
- }
+ 	kvm_debug("[%#lx] COP0_TLBWI [%d] (entryhi: %#lx, entrylo0: %#lx entrylo1: %#lx, mask: %#lx)\n",
+ 		  pc, index, kvm_read_c0_guest_entryhi(cop0),
+@@ -866,8 +866,8 @@ enum emulation_result kvm_mips_emul_tlbwr(struct kvm_vcpu *vcpu)
  
--enum emulation_result kvm_mips_emulate_tlbmiss_ld(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_tlbmiss_ld(u32 cause,
- 						  u32 *opc,
- 						  struct kvm_run *run,
- 						  struct kvm_vcpu *vcpu)
-@@ -1816,7 +1816,7 @@ enum emulation_result kvm_mips_emulate_tlbmiss_ld(unsigned long cause,
- 	return EMULATE_DONE;
- }
+ 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
+ 	tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
+-	tlb->tlb_lo0 = kvm_read_c0_guest_entrylo0(cop0);
+-	tlb->tlb_lo1 = kvm_read_c0_guest_entrylo1(cop0);
++	tlb->tlb_lo[0] = kvm_read_c0_guest_entrylo0(cop0);
++	tlb->tlb_lo[1] = kvm_read_c0_guest_entrylo1(cop0);
  
--enum emulation_result kvm_mips_emulate_tlbinv_ld(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_tlbinv_ld(u32 cause,
- 						 u32 *opc,
- 						 struct kvm_run *run,
- 						 struct kvm_vcpu *vcpu)
-@@ -1862,7 +1862,7 @@ enum emulation_result kvm_mips_emulate_tlbinv_ld(unsigned long cause,
- 	return EMULATE_DONE;
- }
- 
--enum emulation_result kvm_mips_emulate_tlbmiss_st(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_tlbmiss_st(u32 cause,
- 						  u32 *opc,
- 						  struct kvm_run *run,
- 						  struct kvm_vcpu *vcpu)
-@@ -1906,7 +1906,7 @@ enum emulation_result kvm_mips_emulate_tlbmiss_st(unsigned long cause,
- 	return EMULATE_DONE;
- }
- 
--enum emulation_result kvm_mips_emulate_tlbinv_st(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_tlbinv_st(u32 cause,
- 						 u32 *opc,
- 						 struct kvm_run *run,
- 						 struct kvm_vcpu *vcpu)
-@@ -1951,7 +1951,7 @@ enum emulation_result kvm_mips_emulate_tlbinv_st(unsigned long cause,
- }
- 
- /* TLBMOD: store into address matching TLB with Dirty bit off */
--enum emulation_result kvm_mips_handle_tlbmod(unsigned long cause, u32 *opc,
-+enum emulation_result kvm_mips_handle_tlbmod(u32 cause, u32 *opc,
- 					     struct kvm_run *run,
- 					     struct kvm_vcpu *vcpu)
- {
-@@ -1979,7 +1979,7 @@ enum emulation_result kvm_mips_handle_tlbmod(unsigned long cause, u32 *opc,
- 	return er;
- }
- 
--enum emulation_result kvm_mips_emulate_tlbmod(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_tlbmod(u32 cause,
- 					      u32 *opc,
- 					      struct kvm_run *run,
- 					      struct kvm_vcpu *vcpu)
-@@ -2022,7 +2022,7 @@ enum emulation_result kvm_mips_emulate_tlbmod(unsigned long cause,
- 	return EMULATE_DONE;
- }
- 
--enum emulation_result kvm_mips_emulate_fpu_exc(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_fpu_exc(u32 cause,
- 					       u32 *opc,
- 					       struct kvm_run *run,
- 					       struct kvm_vcpu *vcpu)
-@@ -2051,7 +2051,7 @@ enum emulation_result kvm_mips_emulate_fpu_exc(unsigned long cause,
- 	return EMULATE_DONE;
- }
- 
--enum emulation_result kvm_mips_emulate_ri_exc(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_ri_exc(u32 cause,
- 					      u32 *opc,
- 					      struct kvm_run *run,
- 					      struct kvm_vcpu *vcpu)
-@@ -2086,7 +2086,7 @@ enum emulation_result kvm_mips_emulate_ri_exc(unsigned long cause,
- 	return er;
- }
- 
--enum emulation_result kvm_mips_emulate_bp_exc(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_bp_exc(u32 cause,
- 					      u32 *opc,
- 					      struct kvm_run *run,
- 					      struct kvm_vcpu *vcpu)
-@@ -2121,7 +2121,7 @@ enum emulation_result kvm_mips_emulate_bp_exc(unsigned long cause,
- 	return er;
- }
- 
--enum emulation_result kvm_mips_emulate_trap_exc(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_trap_exc(u32 cause,
- 						u32 *opc,
- 						struct kvm_run *run,
- 						struct kvm_vcpu *vcpu)
-@@ -2156,7 +2156,7 @@ enum emulation_result kvm_mips_emulate_trap_exc(unsigned long cause,
- 	return er;
- }
- 
--enum emulation_result kvm_mips_emulate_msafpe_exc(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_msafpe_exc(u32 cause,
- 						  u32 *opc,
- 						  struct kvm_run *run,
- 						  struct kvm_vcpu *vcpu)
-@@ -2191,7 +2191,7 @@ enum emulation_result kvm_mips_emulate_msafpe_exc(unsigned long cause,
- 	return er;
- }
- 
--enum emulation_result kvm_mips_emulate_fpe_exc(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_fpe_exc(u32 cause,
- 					       u32 *opc,
- 					       struct kvm_run *run,
- 					       struct kvm_vcpu *vcpu)
-@@ -2226,7 +2226,7 @@ enum emulation_result kvm_mips_emulate_fpe_exc(unsigned long cause,
- 	return er;
- }
- 
--enum emulation_result kvm_mips_emulate_msadis_exc(unsigned long cause,
-+enum emulation_result kvm_mips_emulate_msadis_exc(u32 cause,
- 						  u32 *opc,
- 						  struct kvm_run *run,
- 						  struct kvm_vcpu *vcpu)
-@@ -2276,7 +2276,7 @@ enum emulation_result kvm_mips_emulate_msadis_exc(unsigned long cause,
- #define SYNC   0x0000000f
- #define RDHWR  0x0000003b
- 
--enum emulation_result kvm_mips_handle_ri(unsigned long cause, u32 *opc,
-+enum emulation_result kvm_mips_handle_ri(u32 cause, u32 *opc,
- 					 struct kvm_run *run,
- 					 struct kvm_vcpu *vcpu)
- {
-@@ -2406,7 +2406,7 @@ done:
- 	return er;
- }
- 
--static enum emulation_result kvm_mips_emulate_exc(unsigned long cause,
-+static enum emulation_result kvm_mips_emulate_exc(u32 cause,
- 						  u32 *opc,
- 						  struct kvm_run *run,
- 						  struct kvm_vcpu *vcpu)
-@@ -2444,7 +2444,7 @@ static enum emulation_result kvm_mips_emulate_exc(unsigned long cause,
- 	return er;
- }
- 
--enum emulation_result kvm_mips_check_privilege(unsigned long cause,
-+enum emulation_result kvm_mips_check_privilege(u32 cause,
- 					       u32 *opc,
- 					       struct kvm_run *run,
- 					       struct kvm_vcpu *vcpu)
-@@ -2540,7 +2540,7 @@ enum emulation_result kvm_mips_check_privilege(unsigned long cause,
-  * (2) TLB entry is present in the Guest TLB but not in the shadow, in this
-  *     case we inject the TLB from the Guest TLB into the shadow host TLB
-  */
--enum emulation_result kvm_mips_handle_tlbmiss(unsigned long cause,
-+enum emulation_result kvm_mips_handle_tlbmiss(u32 cause,
- 					      u32 *opc,
- 					      struct kvm_run *run,
- 					      struct kvm_vcpu *vcpu)
-diff --git a/arch/mips/kvm/locore.S b/arch/mips/kvm/locore.S
-index 5ad2d507b125..43c8ef847efa 100644
---- a/arch/mips/kvm/locore.S
-+++ b/arch/mips/kvm/locore.S
-@@ -306,7 +306,7 @@ NESTED (MIPSX(GuestException), CALLFRAME_SIZ, ra)
- 	LONG_S	k0, VCPU_HOST_CP0_BADVADDR(k1)
- 
- 	mfc0	k0, CP0_CAUSE
--	LONG_S	k0, VCPU_HOST_CP0_CAUSE(k1)
-+	sw	k0, VCPU_HOST_CP0_CAUSE(k1)
- 
- 	/* Now restore the host state just enough to run the handlers */
- 
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index 4aa5d77b0d6a..ecf0068bc95e 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -41,7 +41,7 @@ static int kvm_trap_emul_handle_cop_unusable(struct kvm_vcpu *vcpu)
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
- 
-@@ -89,13 +89,13 @@ static int kvm_trap_emul_handle_tlb_mod(struct kvm_vcpu *vcpu)
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
- 	unsigned long badvaddr = vcpu->arch.host_cp0_badvaddr;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
- 
- 	if (KVM_GUEST_KSEGX(badvaddr) < KVM_GUEST_KSEG0
- 	    || KVM_GUEST_KSEGX(badvaddr) == KVM_GUEST_KSEG23) {
--		kvm_debug("USER/KSEG23 ADDR TLB MOD fault: cause %#lx, PC: %p, BadVaddr: %#lx\n",
-+		kvm_debug("USER/KSEG23 ADDR TLB MOD fault: cause %#x, PC: %p, BadVaddr: %#lx\n",
- 			  cause, opc, badvaddr);
- 		er = kvm_mips_handle_tlbmod(cause, opc, run, vcpu);
- 
-@@ -111,14 +111,14 @@ static int kvm_trap_emul_handle_tlb_mod(struct kvm_vcpu *vcpu)
- 		 * when we are not using HIGHMEM. Need to address this in a
- 		 * HIGHMEM kernel
- 		 */
--		kvm_err("TLB MOD fault not handled, cause %#lx, PC: %p, BadVaddr: %#lx\n",
-+		kvm_err("TLB MOD fault not handled, cause %#x, PC: %p, BadVaddr: %#lx\n",
- 			cause, opc, badvaddr);
- 		kvm_mips_dump_host_tlbs();
- 		kvm_arch_vcpu_dump_regs(vcpu);
- 		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		ret = RESUME_HOST;
+ 	kvm_debug("[%#lx] COP0_TLBWR[%d] (entryhi: %#lx, entrylo0: %#lx entrylo1: %#lx)\n",
+ 		  pc, index, kvm_read_c0_guest_entryhi(cop0),
+@@ -2592,7 +2592,7 @@ enum emulation_result kvm_mips_handle_tlbmiss(u32 cause,
+ 			}
+ 		} else {
+ 			kvm_debug("Injecting hi: %#lx, lo0: %#lx, lo1: %#lx into shadow host TLB\n",
+-				  tlb->tlb_hi, tlb->tlb_lo0, tlb->tlb_lo1);
++				  tlb->tlb_hi, tlb->tlb_lo[0], tlb->tlb_lo[1]);
+ 			/*
+ 			 * OK we have a Guest TLB entry, now inject it into the
+ 			 * shadow host TLB
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index 4d42b47b500b..14996aa5e7c4 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -141,28 +141,30 @@ int kvm_mips_handle_mapped_seg_tlb_fault(struct kvm_vcpu *vcpu,
+ 		pfn0 = 0;
+ 		pfn1 = 0;
  	} else {
--		kvm_err("Illegal TLB Mod fault address , cause %#lx, PC: %p, BadVaddr: %#lx\n",
-+		kvm_err("Illegal TLB Mod fault address , cause %#x, PC: %p, BadVaddr: %#lx\n",
- 			cause, opc, badvaddr);
- 		kvm_mips_dump_host_tlbs();
- 		kvm_arch_vcpu_dump_regs(vcpu);
-@@ -133,7 +133,7 @@ static int kvm_trap_emul_handle_tlb_st_miss(struct kvm_vcpu *vcpu)
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
- 	unsigned long badvaddr = vcpu->arch.host_cp0_badvaddr;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
+-		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo0)
++		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo[0])
+ 					   >> PAGE_SHIFT) < 0)
+ 			return -1;
  
-@@ -145,7 +145,7 @@ static int kvm_trap_emul_handle_tlb_st_miss(struct kvm_vcpu *vcpu)
- 		}
- 	} else if (KVM_GUEST_KSEGX(badvaddr) < KVM_GUEST_KSEG0
- 		   || KVM_GUEST_KSEGX(badvaddr) == KVM_GUEST_KSEG23) {
--		kvm_debug("USER ADDR TLB LD fault: cause %#lx, PC: %p, BadVaddr: %#lx\n",
-+		kvm_debug("USER ADDR TLB LD fault: cause %#x, PC: %p, BadVaddr: %#lx\n",
- 			  cause, opc, badvaddr);
- 		er = kvm_mips_handle_tlbmiss(cause, opc, run, vcpu);
- 		if (er == EMULATE_DONE)
-@@ -165,7 +165,7 @@ static int kvm_trap_emul_handle_tlb_st_miss(struct kvm_vcpu *vcpu)
- 			ret = RESUME_HOST;
- 		}
- 	} else {
--		kvm_err("Illegal TLB LD fault address , cause %#lx, PC: %p, BadVaddr: %#lx\n",
-+		kvm_err("Illegal TLB LD fault address , cause %#x, PC: %p, BadVaddr: %#lx\n",
- 			cause, opc, badvaddr);
- 		kvm_mips_dump_host_tlbs();
- 		kvm_arch_vcpu_dump_regs(vcpu);
-@@ -180,7 +180,7 @@ static int kvm_trap_emul_handle_tlb_ld_miss(struct kvm_vcpu *vcpu)
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
- 	unsigned long badvaddr = vcpu->arch.host_cp0_badvaddr;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
+-		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo1)
++		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo[1])
+ 					   >> PAGE_SHIFT) < 0)
+ 			return -1;
  
-@@ -219,7 +219,7 @@ static int kvm_trap_emul_handle_tlb_ld_miss(struct kvm_vcpu *vcpu)
- 			ret = RESUME_HOST;
- 		}
- 	} else {
--		kvm_err("Illegal TLB ST fault address , cause %#lx, PC: %p, BadVaddr: %#lx\n",
-+		kvm_err("Illegal TLB ST fault address , cause %#x, PC: %p, BadVaddr: %#lx\n",
- 			cause, opc, badvaddr);
- 		kvm_mips_dump_host_tlbs();
- 		kvm_arch_vcpu_dump_regs(vcpu);
-@@ -234,7 +234,7 @@ static int kvm_trap_emul_handle_addr_err_st(struct kvm_vcpu *vcpu)
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
- 	unsigned long badvaddr = vcpu->arch.host_cp0_badvaddr;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
+-		pfn0 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo0)
+-					    >> PAGE_SHIFT];
+-		pfn1 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo1)
+-					    >> PAGE_SHIFT];
++		pfn0 = kvm->arch.guest_pmap[
++			mips3_tlbpfn_to_paddr(tlb->tlb_lo[0]) >> PAGE_SHIFT];
++		pfn1 = kvm->arch.guest_pmap[
++			mips3_tlbpfn_to_paddr(tlb->tlb_lo[1]) >> PAGE_SHIFT];
+ 	}
  
-@@ -251,7 +251,7 @@ static int kvm_trap_emul_handle_addr_err_st(struct kvm_vcpu *vcpu)
- 			ret = RESUME_HOST;
- 		}
- 	} else {
--		kvm_err("Address Error (STORE): cause %#lx, PC: %p, BadVaddr: %#lx\n",
-+		kvm_err("Address Error (STORE): cause %#x, PC: %p, BadVaddr: %#lx\n",
- 			cause, opc, badvaddr);
- 		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		ret = RESUME_HOST;
-@@ -264,7 +264,7 @@ static int kvm_trap_emul_handle_addr_err_ld(struct kvm_vcpu *vcpu)
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
- 	unsigned long badvaddr = vcpu->arch.host_cp0_badvaddr;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
+ 	/* Get attributes from the Guest TLB */
+ 	entrylo0 = mips3_paddr_to_tlbpfn(pfn0 << PAGE_SHIFT) | (0x3 << 3) |
+-		   (tlb->tlb_lo0 & MIPS3_PG_D) | (tlb->tlb_lo0 & MIPS3_PG_V);
++		   (tlb->tlb_lo[0] & MIPS3_PG_D) |
++		   (tlb->tlb_lo[0] & MIPS3_PG_V);
+ 	entrylo1 = mips3_paddr_to_tlbpfn(pfn1 << PAGE_SHIFT) | (0x3 << 3) |
+-		   (tlb->tlb_lo1 & MIPS3_PG_D) | (tlb->tlb_lo1 & MIPS3_PG_V);
++		   (tlb->tlb_lo[1] & MIPS3_PG_D) |
++		   (tlb->tlb_lo[1] & MIPS3_PG_V);
  
-@@ -280,7 +280,7 @@ static int kvm_trap_emul_handle_addr_err_ld(struct kvm_vcpu *vcpu)
- 			ret = RESUME_HOST;
- 		}
- 	} else {
--		kvm_err("Address Error (LOAD): cause %#lx, PC: %p, BadVaddr: %#lx\n",
-+		kvm_err("Address Error (LOAD): cause %#x, PC: %p, BadVaddr: %#lx\n",
- 			cause, opc, badvaddr);
- 		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		ret = RESUME_HOST;
-@@ -293,7 +293,7 @@ static int kvm_trap_emul_handle_syscall(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
+ 	kvm_debug("@ %#lx tlb_lo0: 0x%08lx tlb_lo1: 0x%08lx\n", vcpu->arch.pc,
+-		  tlb->tlb_lo0, tlb->tlb_lo1);
++		  tlb->tlb_lo[0], tlb->tlb_lo[1]);
  
-@@ -311,7 +311,7 @@ static int kvm_trap_emul_handle_res_inst(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
+ 	preempt_disable();
+ 	entryhi = (tlb->tlb_hi & VPN2_MASK) | (KVM_GUEST_KERNEL_MODE(vcpu) ?
+diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
+index c0b8e3fc895e..4825d0dbb65e 100644
+--- a/arch/mips/kvm/tlb.c
++++ b/arch/mips/kvm/tlb.c
+@@ -86,18 +86,19 @@ void kvm_mips_dump_guest_tlbs(struct kvm_vcpu *vcpu)
+ 	for (i = 0; i < KVM_MIPS_GUEST_TLB_SIZE; i++) {
+ 		tlb = vcpu->arch.guest_tlb[i];
+ 		kvm_info("TLB%c%3d Hi 0x%08lx ",
+-			 (tlb.tlb_lo0 | tlb.tlb_lo1) & MIPS3_PG_V ? ' ' : '*',
++			 (tlb.tlb_lo[0] | tlb.tlb_lo[1]) & MIPS3_PG_V
++							? ' ' : '*',
+ 			 i, tlb.tlb_hi);
+ 		kvm_info("Lo0=0x%09llx %c%c attr %lx ",
+-			 (u64) mips3_tlbpfn_to_paddr(tlb.tlb_lo0),
+-			 (tlb.tlb_lo0 & MIPS3_PG_D) ? 'D' : ' ',
+-			 (tlb.tlb_lo0 & MIPS3_PG_G) ? 'G' : ' ',
+-			 (tlb.tlb_lo0 >> 3) & 7);
++			 (u64) mips3_tlbpfn_to_paddr(tlb.tlb_lo[0]),
++			 (tlb.tlb_lo[0] & MIPS3_PG_D) ? 'D' : ' ',
++			 (tlb.tlb_lo[0] & MIPS3_PG_G) ? 'G' : ' ',
++			 (tlb.tlb_lo[0] >> 3) & 7);
+ 		kvm_info("Lo1=0x%09llx %c%c attr %lx sz=%lx\n",
+-			 (u64) mips3_tlbpfn_to_paddr(tlb.tlb_lo1),
+-			 (tlb.tlb_lo1 & MIPS3_PG_D) ? 'D' : ' ',
+-			 (tlb.tlb_lo1 & MIPS3_PG_G) ? 'G' : ' ',
+-			 (tlb.tlb_lo1 >> 3) & 7, tlb.tlb_mask);
++			 (u64) mips3_tlbpfn_to_paddr(tlb.tlb_lo[1]),
++			 (tlb.tlb_lo[1] & MIPS3_PG_D) ? 'D' : ' ',
++			 (tlb.tlb_lo[1] & MIPS3_PG_G) ? 'G' : ' ',
++			 (tlb.tlb_lo[1] >> 3) & 7, tlb.tlb_mask);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(kvm_mips_dump_guest_tlbs);
+@@ -219,7 +220,7 @@ int kvm_mips_guest_tlb_lookup(struct kvm_vcpu *vcpu, unsigned long entryhi)
+ 	}
  
-@@ -329,7 +329,7 @@ static int kvm_trap_emul_handle_break(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
+ 	kvm_debug("%s: entryhi: %#lx, index: %d lo0: %#lx, lo1: %#lx\n",
+-		  __func__, entryhi, index, tlb[i].tlb_lo0, tlb[i].tlb_lo1);
++		  __func__, entryhi, index, tlb[i].tlb_lo[0], tlb[i].tlb_lo[1]);
  
-@@ -347,7 +347,7 @@ static int kvm_trap_emul_handle_trap(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *)vcpu->arch.pc;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
- 
-@@ -365,7 +365,7 @@ static int kvm_trap_emul_handle_msa_fpe(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *)vcpu->arch.pc;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
- 
-@@ -383,7 +383,7 @@ static int kvm_trap_emul_handle_fpe(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *)vcpu->arch.pc;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
- 
-@@ -408,7 +408,7 @@ static int kvm_trap_emul_handle_msa_disabled(struct kvm_vcpu *vcpu)
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
- 	struct kvm_run *run = vcpu->run;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
--	unsigned long cause = vcpu->arch.host_cp0_cause;
-+	u32 cause = vcpu->arch.host_cp0_cause;
- 	enum emulation_result er = EMULATE_DONE;
- 	int ret = RESUME_GUEST;
- 
+ 	return index;
+ }
 -- 
 2.4.10

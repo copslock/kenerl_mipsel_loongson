@@ -1,93 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2016 12:59:14 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:47692 "EHLO foss.arm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2016 20:54:47 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:43859 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27041564AbcFJK7LgI4Q8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 10 Jun 2016 12:59:11 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5CE30F;
-        Fri, 10 Jun 2016 03:59:41 -0700 (PDT)
-Received: from [10.1.205.154] (e104324-lin.cambridge.arm.com [10.1.205.154])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB4B83F213;
-        Fri, 10 Jun 2016 03:58:54 -0700 (PDT)
-Subject: Re: [PATCH v4 43/44] dma-mapping: Remove dma_get_attr
-To:     Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <1465553521-27303-1-git-send-email-k.kozlowski@samsung.com>
- <1465553521-27303-44-git-send-email-k.kozlowski@samsung.com>
-Cc:     hch@infradead.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mark Yao <mark.yao@rock-chips.com>,
-        David Airlie <airlied@linux.ie>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Joerg Roedel <joro@8bytes.org>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
-        Andrea Gelmini <andrea.gelmini@gelma.net>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Rabin Vincent <rabin@rab.in>,
-        Alexandre Courbot <acourbot@nvidia.com>,
-        Doug Anderson <armlinux@m.disordat.com>,
-        Jisheng Zhang <jszhang@marvell.com>,
-        "Suthikulpanit, Suravee" <Suravee.Suthikulpanit@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Michal Hocko <mhocko@suse.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Alex Smith <alex.smith@imgtec.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        "Luis R. Rodriguez" <mcgrof@suse.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org,
-        linux-rockchip@lists.infradead.org,
-        iommu@lists.linux-foundation.org, linux-media@vger.kernel.org
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <575A9D6D.9040808@arm.com>
-Date:   Fri, 10 Jun 2016 11:58:53 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
+        id S27041689AbcFJSyp7gH5u (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 10 Jun 2016 20:54:45 +0200
+To:     linux-mips@linux-mips.org
+Cc:     Markos Chandras <markos.chandras@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: SMP regression on MIPS 34Kc (Lantiq VRX220)
+Message-ID: <7f6f4ddd-5cac-520e-2e14-1fe0d7288e6f@nbd.name>
+Date:   Fri, 10 Jun 2016 20:54:44 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0)
+ Gecko/20100101 Thunderbird/45.1.1
 MIME-Version: 1.0
-In-Reply-To: <1465553521-27303-44-git-send-email-k.kozlowski@samsung.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <robin.murphy@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <nbd@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54017
+X-archive-position: 54018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robin.murphy@arm.com
+X-original-sender: nbd@nbd.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -100,86 +36,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/06/16 11:12, Krzysztof Kozlowski wrote:
-> After switching DMA attributes to unsigned long it is easier to just
-> compare the bits.
->
-> Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-> [for avr32]
-> Acked-by: Hans-Christian Noren Egtvedt <egtvedt@samfundet.no>
-> ---
-[...]
->   arch/arm64/mm/dma-mapping.c                    | 10 +++----
-[...]
->   drivers/iommu/dma-iommu.c                      |  2 +-
-[...]
-> diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
-> index a7686028dfeb..06c068ca3541 100644
-> --- a/arch/arm64/mm/dma-mapping.c
-> +++ b/arch/arm64/mm/dma-mapping.c
-> @@ -32,7 +32,7 @@
->   static pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot,
->   				 bool coherent)
->   {
-> -	if (!coherent || dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs))
-> +	if (!coherent || (attrs & DMA_ATTR_WRITE_COMBINE))
->   		return pgprot_writecombine(prot);
->   	return prot;
->   }
-> @@ -702,7 +702,7 @@ static dma_addr_t __iommu_map_page(struct device *dev, struct page *page,
->   	dma_addr_t dev_addr = iommu_dma_map_page(dev, page, offset, size, prot);
->
->   	if (!iommu_dma_mapping_error(dev, dev_addr) &&
-> -	    !dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-> +	    (attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
->   		__iommu_sync_single_for_device(dev, dev_addr, size, dir);
->
->   	return dev_addr;
-> @@ -712,7 +712,7 @@ static void __iommu_unmap_page(struct device *dev, dma_addr_t dev_addr,
->   			       size_t size, enum dma_data_direction dir,
->   			       unsigned long attrs)
->   {
-> -	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-> +	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
->   		__iommu_sync_single_for_cpu(dev, dev_addr, size, dir);
->
->   	iommu_dma_unmap_page(dev, dev_addr, size, dir, attrs);
-> @@ -752,7 +752,7 @@ static int __iommu_map_sg_attrs(struct device *dev, struct scatterlist *sgl,
->   {
->   	bool coherent = is_device_dma_coherent(dev);
->
-> -	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-> +	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
->   		__iommu_sync_sg_for_device(dev, sgl, nelems, dir);
->
->   	return iommu_dma_map_sg(dev, sgl, nelems,
-> @@ -764,7 +764,7 @@ static void __iommu_unmap_sg_attrs(struct device *dev,
->   				   enum dma_data_direction dir,
->   				   unsigned long attrs)
->   {
-> -	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-> +	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
->   		__iommu_sync_sg_for_cpu(dev, sgl, nelems, dir);
->
->   	iommu_dma_unmap_sg(dev, sgl, nelems, dir, attrs);
-[...]
-> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-> index 6c1bda504fb1..08a1e2f3690f 100644
-> --- a/drivers/iommu/dma-iommu.c
-> +++ b/drivers/iommu/dma-iommu.c
-> @@ -306,7 +306,7 @@ struct page **iommu_dma_alloc(struct device *dev, size_t size, gfp_t gfp,
->   	} else {
->   		size = ALIGN(size, min_size);
->   	}
-> -	if (dma_get_attr(DMA_ATTR_ALLOC_SINGLE_PAGES, attrs))
-> +	if (attrs & DMA_ATTR_ALLOC_SINGLE_PAGES)
->   		alloc_sizes = min_size;
->
->   	count = PAGE_ALIGN(size) >> PAGE_SHIFT;
-[...]
+Hi,
 
-These all look appropriate to me; thanks!
+commit cccf34e9411c41b0cbfb41980fe55fc8e7c98fd2
+MIPS: c-r4k: Fix cache flushing for MT cores
 
-For arm64 and dma-iommu:
+This commit breaks SMP on Lantiq VRX220. When r4k_on_each_cpu is called
+for a cache flush, I get the following oops very early when user space 
+starts:
 
-Acked-by: Robin Murphy <robin.murphy@arm.com>
+[    1.689913] CPU 0 Unable to handle kernel paging request at virtual address fffd7000, epc == 80028fd4, ra == 80096240
+[    1.699095] Oops[#1]:
+[    1.701365] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.4.12 #2
+[    1.707280] task: 805278d8 ti: 80518000 task.ti: 80518000
+[    1.712663] $ 0   : 00000000 00000003 80530000 fffd8000
+[    1.717884] $ 4   : fffd7000 00000000 00000001 00000000
+[    1.723105] $ 8   : 1100ff00 1000001f 00000000 00000001
+[    1.728328] $12   : eac0c6e6 00000000 00000000 7748c2b0
+[    1.733551] $16   : 82e6bdb0 00000000 80029a14 fffd7000
+[    1.738773] $20   : 80499e0c 8051a140 80498424 80520000
+[    1.743995] $24   : 00000000 80028fc0                  
+[    1.749217] $28   : 80518000 80519d08 80520000 80096240
+[    1.754441] Hi    : 013b114e
+[    1.757316] Lo    : 6eff374b
+[    1.760209] epc   : 80028fd4 r4k_blast_dcache_page_dc32+0x14/0xb8
+[    1.766299] ra    : 80096240 generic_smp_call_function_single_interrupt+0x160/0x200
+[    1.773941] Status: 1100fd02 KERNEL EXL 
+[    1.777858] Cause : 00800008 (ExcCode 02)
+[    1.781862] BadVA : fffd7000
+[    1.784734] PrId  : 00019556 (MIPS 34Kc)
+[    1.788648] Modules linked in:
+[    1.791706] Process swapper/0 (pid: 0, threadinfo=80518000, task=805278d8, tls=00000000)
+[    1.799789] Stack : 00000001 8007d3f4 00000000 80520000 80528cc0 80530620 00000000 00000000
+         00000001 8000e4f0 00010000 80a922a4 00000001 80520000 00000001 80071ad4
+         80490000 80071c64 00000024 00000100 8051a040 8051a068 8049844c 80498460
+         8051a140 80530620 8052470c 80a922a4 00000001 80520000 00000001 80520000
+         80490000 80076214 804965b0 fffedc9a 80520000 00200000 00000000 00000001
+         ...
+[    1.835300] Call Trace:
+[    1.837757] [<80028fd4>] r4k_blast_dcache_page_dc32+0x14/0xb8
+[    1.843506] [<80096240>] generic_smp_call_function_single_interrupt+0x160/0x200
+[    1.850834] [<8000e4f0>] ipi_call_interrupt+0x10/0x20
+[    1.855874] [<80071ad4>] handle_irq_event_percpu+0x78/0x1b4
+[    1.861445] [<80076214>] handle_percpu_irq+0x88/0xb8
+[    1.866397] [<800711a0>] generic_handle_irq+0x40/0x58
+[    1.871445] [<80015528>] do_IRQ+0x1c/0x2c
+[    1.875447] [<80002430>] ret_from_irq+0x0/0x4
+[    1.879796] [<80015494>] r4k_wait_irqoff+0x18/0x20
+[    1.884606] [<80069464>] cpu_startup_entry+0x164/0x1c4
+[    1.889740] [<80542c28>] start_kernel+0x4a4/0x4c4
+[    1.894416] 
+[    1.895878] 
+Code: 00002821  10000026  8c46ab2c <bc950000> bc950020  bc950040  bc950060  bc950080  bc9500a0 
+[    1.905894] ---[ end trace e17f61a2b2391e19 ]---
+
+If I add a #ifndef CONFIG_MIPS_MT_SMP around the smp_call_function_many call,
+everything works fine again. From what I can tell, we should not do any IPIs
+for cache flushing on that device, since there are only two threads on the
+same core.
+
+- Felix

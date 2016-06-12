@@ -1,65 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2016 22:48:35 +0200 (CEST)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:34734 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27041722AbcFJUsdOEGG2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jun 2016 22:48:33 +0200
-Received: by mail-pf0-f195.google.com with SMTP id 66so3863439pfy.1
-        for <linux-mips@linux-mips.org>; Fri, 10 Jun 2016 13:48:33 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jun 2016 20:45:28 +0200 (CEST)
+Received: from mail-wm0-f65.google.com ([74.125.82.65]:35389 "EHLO
+        mail-wm0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27031333AbcFLSp0mVzwG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jun 2016 20:45:26 +0200
+Received: by mail-wm0-f65.google.com with SMTP id k184so10042237wme.2;
+        Sun, 12 Jun 2016 11:45:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
+        h=sender:subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=2L81vM3FnCkUjdkaUkvpOqScwEqE/o+HgyLMCzUijkA=;
-        b=k7m5YXdJxdN9c4+BnB2YkVi7ZgQ5RMIZ2J7lZH8tSgB5ZQiB67bXSsfJeeE9C5wd8l
-         yEOY8plJEWXmCUNLv6/LMcHH1tyG+Ryyw//T1UAZXq9xoUwdTmnE6uhfSqDH0WFyO/hZ
-         VsjtX0pt/z3a00reQl5d55e0qnAgHMYVySiZfawOFW5jW/CBJ/0C9Si4u8Oz47lJiyGN
-         3QCBDksn4AY3HYvcofekYuI2C/h0C9LAPixIpmLyNKyaAt0br5viFhDHKvCRJq4buEfq
-         lSwLXRaTtMpqqsN/1ZJ/tipPKeRGJ7FZATMAf4UVYjdZhIV08bWoIzh7bmw4F6xKXwUU
-         6lPg==
+        bh=7xf7HbsC0l+m/rT9wD9pGIvoz1UdZwS5Hqt5eziB3hY=;
+        b=jJwGaf9BJ3UbXi30MaFnZIlvfBcFCj+u4lxaVoMayqbO79MjBHlkW8n0yU0AiXv+eg
+         pVWvt5xRN3Vn3vCz5mprRmd0sgf6GsSEwChIDXcr9LDfEhK3bzrzJnU8AXeQ6OPN8lzp
+         OfHSbrd6B4fJE9srl9Zu56MNnsix72YZ6Dn6aSLNMXI4Z3Ht+YZtiTeA87vHcDzuqGFr
+         OLUuXV428eqzYSl8Jgi1TyeOO14odt2oOYJA2sElKJEIxmjOOrFHFGx65VYyiAqx/uj2
+         3DSYlhFkxpbqfCWGKpB8dRtu6zKFYX0gypxUbjbqjs/byIHWz7J3FuLsI9X1JISEfz/S
+         jOBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=2L81vM3FnCkUjdkaUkvpOqScwEqE/o+HgyLMCzUijkA=;
-        b=AKRB/UK44753MkY8fxieMCcTJJyCc6KRGHM82wyTlRYHpM4JLnrknp7Sed1Xtm/lXB
-         XPkAZKiCsyHeZtI32QNdMeqW+jkFggp282cMm7VIGPaYs4PBEu1WVPrYMXQ0dvMEnrsL
-         Osgf+VJcMZhkJOf4KuE7XNC301uqAnNBKLWCDdPjtT4tgseZyq6MMbh1+9dM5PpMjYh+
-         thPwFqIyXJm55eh3KB4sQXWtaf5kEfRdmo3PI3RqMyxfsBnRKRigBcju+bels7+vzAS0
-         cnTcWAGT9GzNy+JbHcSjT1RgZggdd+8HmbXJF0n0P1nw/YEqwDg1QYk61NR6MzB1N1kg
-         Kffw==
-X-Gm-Message-State: ALyK8tKKDhgcZ/4qMt7dMm3IiNhf+ps0u9dtG0cp/sbB7GT5bi0oDT+lOuCzxpdXVudShw==
-X-Received: by 10.98.81.3 with SMTP id f3mr4140400pfb.132.1465591706955;
-        Fri, 10 Jun 2016 13:48:26 -0700 (PDT)
-Received: from [10.112.156.249] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id k69sm19746495pfc.41.2016.06.10.13.48.25
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 10 Jun 2016 13:48:25 -0700 (PDT)
-Subject: Re: [PATCH] serial/bcm63xx_uart: use correct alias naming
-To:     Jonas Gorski <jogo@openwrt.org>, linux-serial@vger.kernel.org
-References: <1465380523-7385-1-git-send-email-jogo@openwrt.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        =?UTF-8?Q?=c3=81lvaro_Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>,
-        Simon Arlott <simon@fire.lp0.eu>, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <575B2798.9000801@gmail.com>
-Date:   Fri, 10 Jun 2016 13:48:24 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
+        h=x-gm-message-state:sender:subject:to:references:cc:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=7xf7HbsC0l+m/rT9wD9pGIvoz1UdZwS5Hqt5eziB3hY=;
+        b=Ko2TJAFjK4KvYWE2Y9zKUumMCKn8+IUPRWDKwkFgvPlbcJNrZZvRuXs10Nu+GFsKpI
+         YOlq5FbEQoCr+poQ2gtLUEeJgdGgp7OXzRlW0x77gM4NAhJIBxqlY6gPiJxLM/jPaJTV
+         G8Vs3OJAX6AhBKoxcCtYnWf1op0gEUsmUZIFcilZb2MagsWi50zmz7BA5uSufYzFdhG+
+         x38MI4hhdOD65r3oOz0taVgcoTziOXd6lKxdLBnKW2NMmGvWyueqmdilkJfWuMXf0Cjz
+         FOLdyOs0r9qQSDFeJoniKMy1ca+6X9BMU5djuugYdCcKY7xdz516NEs91C+HUk9DPvKo
+         wCMg==
+X-Gm-Message-State: ALyK8tKhDOFYLNF7J2E++9j4HoKTdWkTNoKJkmW4IaHqKv3945J1lZ6ewoky21nTm+hzrg==
+X-Received: by 10.28.138.13 with SMTP id m13mr8442289wmd.3.1465757120828;
+        Sun, 12 Jun 2016 11:45:20 -0700 (PDT)
+Received: from [192.168.10.165] (94-39-188-118.adsl-ull.clienti.tiscali.it. [94.39.188.118])
+        by smtp.googlemail.com with ESMTPSA id b200sm10285837wmb.9.2016.06.12.11.45.16
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 12 Jun 2016 11:45:19 -0700 (PDT)
+Subject: Re: [PATCH 0/4] MIPS: KVM: Module + non dynamic translating fixes
+To:     James Hogan <james.hogan@imgtec.com>
+References: <1465465846-31918-1-git-send-email-james.hogan@imgtec.com>
+Cc:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, stable@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <7625eaf3-2faa-690c-514b-c597da7dd3c4@redhat.com>
+Date:   Sun, 12 Jun 2016 20:45:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.1.0
 MIME-Version: 1.0
-In-Reply-To: <1465380523-7385-1-git-send-email-jogo@openwrt.org>
+In-Reply-To: <1465465846-31918-1-git-send-email-james.hogan@imgtec.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Transfer-Encoding: 8bit
+Return-Path: <paolo.bonzini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54019
+X-archive-position: 54020
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,20 +70,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/08/2016 03:08 AM, Jonas Gorski wrote:
-> The bcm63xx_uart driver uses the of alias for determing its id. Recent
-> changes in dts files changed the expected 'uartX' to the recommended
-> 'serialX', breaking serial output. Fix this by checking for a 'serialX'
-> alias as well.
+
+
+On 09/06/2016 11:50, James Hogan wrote:
+> These patches fix a couple of issues I recently spotted when running KVM
+> under QEMU (i.e. the host MIPS kernel is running under QEMU on a PC).
 > 
-> Fixes: e3b992d028f8 ("MIPS: BMIPS: Improve BCM6328 device tree")
-> Fixes: 2d52ee82b475 ("MIPS: BMIPS: Improve BCM6368 device tree")
-> Fixes: 7537d273e2f3 ("MIPS: BMIPS: Add device tree example for BCM6358")
-> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+> Patches 1-2: Fix modular KVM broken by QEMU TLB optimisation (Patch 1
+> marked for stable).
+> 
+> Patches 3-4: Fix cache instruction emulation, exposed by having dynamic
+> translation of emulated instructions accidentally turned off.
+> 
+> James Hogan (4):
+>   MIPS: KVM: Fix modular KVM under QEMU
+>   MIPS: KVM: Include bit 31 in segment matches
+>   MIPS: KVM: Don't unwind PC when emulating CACHE
+>   MIPS: KVM: Fix CACHE triggered exception emulation
+> 
+>  arch/mips/include/asm/kvm_host.h |  3 ++-
+>  arch/mips/kvm/emulate.c          | 21 ++++++++++++++-------
+>  arch/mips/kvm/interrupt.h        |  1 +
+>  arch/mips/kvm/locore.S           |  1 +
+>  arch/mips/kvm/mips.c             | 11 ++++++++++-
+>  5 files changed, 28 insertions(+), 9 deletions(-)
+> 
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Radim Krčmář <rkrcmar@redhat.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: kvm@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: stable@vger.kernel.org
+> 
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Queued for kvm/master.
 
-A future improvement could be to completely get rid of the id and
-instead just dynamically allocate the ports structure.
--- 
-Florian
+Paolo

@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2016 09:39:27 +0200 (CEST)
-Received: from mail-wm0-f67.google.com ([74.125.82.67]:33947 "EHLO
-        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042072AbcFMHivEqJVC (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2016 09:39:46 +0200 (CEST)
+Received: from mail-wm0-f68.google.com ([74.125.82.68]:36841 "EHLO
+        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27042089AbcFMHiv5HQ8C (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jun 2016 09:38:51 +0200
-Received: by mail-wm0-f67.google.com with SMTP id n184so12596847wmn.1;
+Received: by mail-wm0-f68.google.com with SMTP id m124so12562874wme.3;
         Mon, 13 Jun 2016 00:38:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=qyNyAzWIJ/676s4wvnCG59RuzrRgkiJYBJdUJmcHlKI=;
-        b=aza0fmWtV3jveDIWe38ZVBR3jf45DV9nmciUG9aYbw1P3PYnG2f5ledf3B6LymvqIu
-         afSkrVFCFkXk1CSy2BhO6R9XX7XMpMg+vtSkGgQ8RHMxNF+LXjSkuOhPTPUmVkUHGWoN
-         E1GzfWpTRzaunxPLX3j0hz6f1whIcgln0Myy3t8Ma+VQ9RIDwMRrVJb643dfZZoWru8U
-         2eqwFkw7pGs/z9b8y84GV8fT0CD7UE0DY35X6rym5B6oTVygs5kKQqLvd2HeNhk2xeTl
-         TaKR/lCUXaqRCrWc+9otztfPNWSQYfXZHoAspoOo711pvlk7i0Lnbafn0YD+v+FDMicR
-         y5AA==
+        bh=Tz4mZRzLHBOc9FOF9wkCVg55wbZedAWSxanCntXWURY=;
+        b=Rg1CmBG5TwxjJxrDORUdXAfjkMcug+moEdFl1K2Or8ZShC3qRW6/nIWNn+ACZUSSO7
+         n1uBLfScT4bV8XLZHsuUXsUq02nOnX1ZB0HGvRYsnvT8zbTpK4kLCAgKWlDT1lxqtkd0
+         AR3PS7PTAzk1NhqMxlKXjQCRmjB/kdH75HnB9jkWk1XZpvjMnnEb8ozADLpSEtGREuZm
+         IrIMeKFSMKPY9qBodHrFcK3h9aMW0HYUyd+4mt02EJZqrYfMHmC0kvwklAOhNtNvTLR1
+         nt/8Gyy2PWP6+2ua7KmtLeaQzrYw19jhg98WaemJt6XpYHSJ39FxeHLLyeu5zPeKwE6y
+         Bnvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=qyNyAzWIJ/676s4wvnCG59RuzrRgkiJYBJdUJmcHlKI=;
-        b=YrSruz+X9oKip1fJFjkaEU4alNmasixRBJUm4fswxwtudFseC4Typ7QVYrW6pIOHGf
-         Wm49Q2+5u+UbT4tJ+cDMw7nGQPo6ZtLTLj6Di2Rv2ndjrbwhtj3S8gJmYOptDlwQZL5V
-         W3eqDA1naOx5scUwQ7UYf2n/KmE9NFAWzEVkqRCpT+/8lI+Hb7ru1O+3gMNHFuPJj5Ct
-         KiomqjaoRfu0XppHhx6qH7KIhif8mnQ/oQsnlE/h8Sx10LqwQjr+qDT7L6BEO2N57AQ6
-         8RhcjAWg9FHd2OTWvmtdPUkybDHAxQWQxFGeMrspnJsSHKrO/XZAPTAS5/FUuOiuvFhn
-         VI9A==
-X-Gm-Message-State: ALyK8tJmt90K18v1766QdjBGqZsxi/1MH4N8XmaC351nyAjVX5NGsXvVw+ma9VnTcTGn7g==
-X-Received: by 10.28.41.4 with SMTP id p4mr9833460wmp.33.1465803525817;
-        Mon, 13 Jun 2016 00:38:45 -0700 (PDT)
+        bh=Tz4mZRzLHBOc9FOF9wkCVg55wbZedAWSxanCntXWURY=;
+        b=kqAM2C8iQyxYMrsSXgqqG5eFKgY5wY2rvY5mBRi+rS52j4xUAFvdEvBm3AvwMB1fvX
+         Sd6N6zJ32bz0olnqTUtnBilMeMJwCU2HozLfBxaEGOT4gMj8WvG5xFuQRYLXhSaW3YXD
+         nlzfVkmYnF58AAXk54HMkQeIfbVYI2Zv4wvVvpWM0rfHLHihFFvON2klZE1DjNcht+fs
+         /VBBnIfkhPDhDoMtOkxu1e5GsUskqQysyeDzKiMcBYVX6wPVRdnXPUiCmgmO/vspnrzE
+         K0DjkezE5wrNlRoNeYzmsGkeZNqOh7ALAp/sSrybG0FA5C0rFXuJCI90jjzwQICaUrOU
+         61pw==
+X-Gm-Message-State: ALyK8tIkiHAcJ3PNZ8PXK0Q7ZNHl9x4bErjGV/WFD67BheOZ87KdqkB5Rl+DenzK2pjdiA==
+X-Received: by 10.28.158.17 with SMTP id h17mr10714773wme.1.1465803526676;
+        Mon, 13 Jun 2016 00:38:46 -0700 (PDT)
 Received: from localhost.localdomain (145.red-88-15-142.dynamicip.rima-tde.net. [88.15.142.145])
         by smtp.gmail.com with ESMTPSA id g4sm5833759wju.30.2016.06.13.00.38.45
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 13 Jun 2016 00:38:45 -0700 (PDT)
+        Mon, 13 Jun 2016 00:38:46 -0700 (PDT)
 From:   =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
         <noltari@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
@@ -42,9 +42,9 @@ To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         robh@kernel.org, simon@fire.lp0.eu
 Cc:     =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
         <noltari@gmail.com>
-Subject: [PATCH 3/6] MIPS: BMIPS: Add BCM3368 support
-Date:   Mon, 13 Jun 2016 09:38:51 +0200
-Message-Id: <1465803534-25840-3-git-send-email-noltari@gmail.com>
+Subject: [PATCH 4/6] MIPS: BMIPS: Add device tree example for BCM3368
+Date:   Mon, 13 Jun 2016 09:38:52 +0200
+Message-Id: <1465803534-25840-4-git-send-email-noltari@gmail.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1465803534-25840-1-git-send-email-noltari@gmail.com>
 References: <1465803534-25840-1-git-send-email-noltari@gmail.com>
@@ -55,7 +55,7 @@ Return-Path: <noltari@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54026
+X-archive-position: 54027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,48 +72,184 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-BCM3368 has a shared TLB which conflicts with current SMP support, so it must
-be disabled for now.
+This adds a device tree example for Netgear CVG834G.
 
 Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
 ---
- Documentation/devicetree/bindings/mips/brcm/soc.txt | 2 +-
- arch/mips/bmips/setup.c                             | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/bmips/Kconfig                     |   4 ++
+ arch/mips/boot/dts/brcm/Makefile            |   2 +
+ arch/mips/boot/dts/brcm/bcm3368.dtsi        | 101 ++++++++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm93368cvg834g.dts |  22 ++++++
+ 4 files changed, 129 insertions(+)
+ create mode 100644 arch/mips/boot/dts/brcm/bcm3368.dtsi
+ create mode 100644 arch/mips/boot/dts/brcm/bcm93368cvg834g.dts
 
-diff --git a/Documentation/devicetree/bindings/mips/brcm/soc.txt b/Documentation/devicetree/bindings/mips/brcm/soc.txt
-index 4a7e030..65bc572 100644
---- a/Documentation/devicetree/bindings/mips/brcm/soc.txt
-+++ b/Documentation/devicetree/bindings/mips/brcm/soc.txt
-@@ -2,7 +2,7 @@
+diff --git a/arch/mips/bmips/Kconfig b/arch/mips/bmips/Kconfig
+index 14f4b4c..5b0ad8c 100644
+--- a/arch/mips/bmips/Kconfig
++++ b/arch/mips/bmips/Kconfig
+@@ -13,6 +13,10 @@ choice
+ config DT_NONE
+ 	bool "None"
  
- Required properties:
++config DT_BCM93368CVG834G
++	bool "BCM93368CVG834G"
++	select BUILTIN_DTB
++
+ config DT_BCM93384WVG
+ 	bool "BCM93384WVG Zephyr CPU"
+ 	select BUILTIN_DTB
+diff --git a/arch/mips/boot/dts/brcm/Makefile b/arch/mips/boot/dts/brcm/Makefile
+index 2060e70..c553b95 100644
+--- a/arch/mips/boot/dts/brcm/Makefile
++++ b/arch/mips/boot/dts/brcm/Makefile
+@@ -1,3 +1,4 @@
++dtb-$(CONFIG_DT_BCM93368CVG834G)	+= bcm93368cvg834g.dtb
+ dtb-$(CONFIG_DT_BCM93384WVG)		+= bcm93384wvg.dtb
+ dtb-$(CONFIG_DT_BCM93384WVG_VIPER)	+= bcm93384wvg_viper.dtb
+ dtb-$(CONFIG_DT_BCM963268VR3032U)	+= bcm963268vr3032u.dtb
+@@ -14,6 +15,7 @@ dtb-$(CONFIG_DT_BCM97425SVMB)		+= bcm97425svmb.dtb
+ dtb-$(CONFIG_DT_BCM97435SVMB)		+= bcm97435svmb.dtb
  
--- compatible: "brcm,bcm3384", "brcm,bcm33843"
-+- compatible: "brcm,bcm3368", "brcm,bcm3384", "brcm,bcm33843"
-               "brcm,bcm3384-viper", "brcm,bcm33843-viper"
-               "brcm,bcm6328", "brcm,bcm6358", "brcm,bcm6368",
-               "brcm,bcm63168", "brcm,bcm63268",
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index f146d12..4fbd2f1 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -98,7 +98,7 @@ static void bcm6328_quirks(void)
- static void bcm6358_quirks(void)
- {
- 	/*
--	 * BCM6358 needs special handling for its shared TLB, so
-+	 * BCM3368/BCM6358 need special handling for their shared TLB, so
- 	 * disable SMP for now
- 	 */
- 	bmips_smp_enabled = 0;
-@@ -110,6 +110,7 @@ static void bcm6368_quirks(void)
- }
- 
- static const struct bmips_quirk bmips_quirk_list[] = {
-+	{ "brcm,bcm3368",		&bcm6358_quirks			},
- 	{ "brcm,bcm3384-viper",		&bcm3384_viper_quirks		},
- 	{ "brcm,bcm33843-viper",	&bcm3384_viper_quirks		},
- 	{ "brcm,bcm6328",		&bcm6328_quirks			},
+ dtb-$(CONFIG_DT_NONE)			+= \
++						bcm93368cvg834g.dtb	\
+ 						bcm93384wvg.dtb		\
+ 						bcm93384wvg_viper.dtb	\
+ 						bcm963268vr3032u.dtb	\
+diff --git a/arch/mips/boot/dts/brcm/bcm3368.dtsi b/arch/mips/boot/dts/brcm/bcm3368.dtsi
+new file mode 100644
+index 0000000..bee855c
+--- /dev/null
++++ b/arch/mips/boot/dts/brcm/bcm3368.dtsi
+@@ -0,0 +1,101 @@
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "brcm,bcm3368";
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		mips-hpt-frequency = <150000000>;
++
++		cpu@0 {
++			compatible = "brcm,bmips4350";
++			device_type = "cpu";
++			reg = <0>;
++		};
++
++		cpu@1 {
++			compatible = "brcm,bmips4350";
++			device_type = "cpu";
++			reg = <1>;
++		};
++	};
++
++	clocks {
++		periph_clk: periph-clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <50000000>;
++		};
++	};
++
++	aliases {
++		serial0 = &uart0;
++		serial1 = &uart1;
++	};
++
++	cpu_intc: interrupt-controller {
++		#address-cells = <0>;
++		compatible = "mti,cpu-interrupt-controller";
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++	};
++
++	ubus {
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		compatible = "simple-bus";
++		ranges;
++
++		periph_cntl: syscon@fff8c000 {
++			compatible = "syscon";
++			reg = <0xfff8c000 0xc>;
++			native-endian;
++		};
++
++		reboot: syscon-reboot@fff8c008 {
++			compatible = "syscon-reboot";
++			regmap = <&periph_cntl>;
++			offset = <0x8>;
++			mask = <0x1>;
++		};
++
++		periph_intc: interrupt-controller@fff8c00c {
++			compatible = "brcm,bcm6345-l1-intc";
++			reg = <0xfff8c00c 0x8>;
++
++			interrupt-controller;
++			#interrupt-cells = <1>;
++
++			interrupt-parent = <&cpu_intc>;
++			interrupts = <2>;
++		};
++
++		uart0: serial@fff8c100 {
++			compatible = "brcm,bcm6345-uart";
++			reg = <0xfff8c100 0x18>;
++
++			interrupt-parent = <&periph_intc>;
++			interrupts = <2>;
++
++			clocks = <&periph_clk>;
++
++			status = "disabled";
++		};
++
++		uart1: serial@fff8c120 {
++			compatible = "brcm,bcm6345-uart";
++			reg = <0xfff8c120 0x18>;
++
++			interrupt-parent = <&periph_intc>;
++			interrupts = <3>;
++
++			clocks = <&periph_clk>;
++
++			status = "disabled";
++		};
++	};
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm93368cvg834g.dts b/arch/mips/boot/dts/brcm/bcm93368cvg834g.dts
+new file mode 100644
+index 0000000..68475c4
+--- /dev/null
++++ b/arch/mips/boot/dts/brcm/bcm93368cvg834g.dts
+@@ -0,0 +1,22 @@
++/dts-v1/;
++
++/include/ "bcm3368.dtsi"
++
++/ {
++	compatible = "netgear,cvg834g", "brcm,bcm3368";
++	model = "Netgear CVG834G";
++
++	memory@0 {
++		device_type = "memory";
++		reg = <0x00000000 0x02000000>;
++	};
++
++	chosen {
++		bootargs = "console=ttyS0,115200";
++		stdout-path = &uart0;
++	};
++};
++
++&uart0 {
++	status = "okay";
++};
 -- 
 2.1.4

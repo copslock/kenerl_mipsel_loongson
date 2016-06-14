@@ -1,28 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2016 12:29:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:51258 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2016 12:29:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:65003 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27040979AbcFNK2Q0zEkY (ORCPT
+        with ESMTP id S27040983AbcFNK2Q0vQbY (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jun 2016 12:28:16 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id B76A3B347BA32;
-        Tue, 14 Jun 2016 09:40:42 +0100 (IST)
+        by Forcepoint Email with ESMTPS id B7D89EF38AED0;
+        Tue, 14 Jun 2016 09:40:39 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 14 Jun 2016 09:40:45 +0100
+ 14.3.294.0; Tue, 14 Jun 2016 09:40:42 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>
 CC:     James Hogan <james.hogan@imgtec.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, <kvm@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH 4/8] MIPS: KVM: Add kvm_asid_change trace event
-Date:   Tue, 14 Jun 2016 09:40:13 +0100
-Message-ID: <1465893617-5774-5-git-send-email-james.hogan@imgtec.com>
+        Ingo Molnar <mingo@redhat.com>, <linux-mips@linux-mips.org>,
+        <kvm@vger.kernel.org>
+Subject: [PATCH 0/8] MIPS: KVM: Debug & trace event improvements
+Date:   Tue, 14 Jun 2016 09:40:09 +0100
+Message-ID: <1465893617-5774-1-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1465893617-5774-1-git-send-email-james.hogan@imgtec.com>
-References: <1465893617-5774-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -31,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54041
+X-archive-position: 54042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,73 +46,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a trace event for guest ASID changes, replacing the existing
-kvm_debug call.
+These patches improve debugging and trace events in MIPS KVM.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+They are are based on my previous two MIPS KVM patchsets:
+
+[PATCH 0/4] MIPS: KVM: Module + non dynamic translating fixes
+[PATCH 00/18] MIPS: KVM: Miscellaneous clean-ups
+
+Patch 1 is just a rename (in preparation for later VZ support), and is
+included so that patch 2 doesn't have inconsistent naming or need
+changing again later.
+
+Patches 2-6 add and clean up KVM trace events:
+- kvm_exit trace event cleaned up
+- Add kvm_aux, kvm_asid_change, kvm_enter, kvm_reenter, kvm_out,
+  kvm_hwr trace events.
+
+Finally Patches 7-8 make a few minor tweaks for debugging purposes.
+
+James Hogan (8):
+  MIPS: KVM: Generalise fpu_inuse for other state
+  MIPS: KVM: Add kvm_aux trace event
+  MIPS: KVM: Clean up kvm_exit trace event
+  MIPS: KVM: Add kvm_asid_change trace event
+  MIPS: KVM: Add guest mode switch trace events
+  MIPS: KVM: Trace guest register access emulation
+  MIPS: KVM: Dump guest tlbs if kvm_get_inst() fails
+  MIPS: KVM: Print unknown load/store encodings
+
+ arch/mips/include/asm/kvm_host.h |  30 +----
+ arch/mips/kvm/emulate.c          |  56 +++++----
+ arch/mips/kvm/mips.c             |  70 +++++------
+ arch/mips/kvm/mmu.c              |   1 +
+ arch/mips/kvm/stats.c            |  21 ----
+ arch/mips/kvm/trace.h            | 248 ++++++++++++++++++++++++++++++++++++++-
+ 6 files changed, 318 insertions(+), 108 deletions(-)
+
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Radim Krčmář <rkrcmar@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: kvm@vger.kernel.org
 Cc: linux-mips@linux-mips.org
----
- arch/mips/kvm/emulate.c |  7 +++----
- arch/mips/kvm/trace.h   | 22 ++++++++++++++++++++++
- 2 files changed, 25 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index fce08bda9ebc..ee0e61d2b6fb 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1082,11 +1082,10 @@ enum emulation_result kvm_mips_emulate_CP0(u32 inst, u32 *opc, u32 cause,
- 				if ((KSEGX(vcpu->arch.gprs[rt]) != CKSEG0) &&
- 				    ((kvm_read_c0_guest_entryhi(cop0) &
- 				      KVM_ENTRYHI_ASID) != nasid)) {
--					kvm_debug("MTCz, change ASID from %#lx to %#lx\n",
-+					trace_kvm_asid_change(vcpu,
- 						kvm_read_c0_guest_entryhi(cop0)
--						& KVM_ENTRYHI_ASID,
--						vcpu->arch.gprs[rt]
--						& KVM_ENTRYHI_ASID);
-+							& KVM_ENTRYHI_ASID,
-+						nasid);
- 
- 					/* Blow away the shadow host TLBs */
- 					kvm_mips_flush_host_tlb(1);
-diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-index 9a1212e09435..1d67d9e0f340 100644
---- a/arch/mips/kvm/trace.h
-+++ b/arch/mips/kvm/trace.h
-@@ -122,6 +122,28 @@ TRACE_EVENT(kvm_aux,
- 		      __entry->pc)
- );
- 
-+TRACE_EVENT(kvm_asid_change,
-+	    TP_PROTO(struct kvm_vcpu *vcpu, unsigned int old_asid,
-+		     unsigned int new_asid),
-+	    TP_ARGS(vcpu, old_asid, new_asid),
-+	    TP_STRUCT__entry(
-+			__field(unsigned long, pc)
-+			__field(u8, old_asid)
-+			__field(u8, new_asid)
-+	    ),
-+
-+	    TP_fast_assign(
-+			__entry->pc = vcpu->arch.pc;
-+			__entry->old_asid = old_asid;
-+			__entry->new_asid = new_asid;
-+	    ),
-+
-+	    TP_printk("PC: 0x%08lx old: 0x%02x new: 0x%02x",
-+		      __entry->pc,
-+		      __entry->old_asid,
-+		      __entry->new_asid)
-+);
-+
- #endif /* _TRACE_KVM_H */
- 
- /* This part must be outside protection */
+Cc: kvm@vger.kernel.org
 -- 
 2.4.10

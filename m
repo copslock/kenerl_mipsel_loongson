@@ -1,91 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2016 12:09:14 +0200 (CEST)
-Received: from mail-wm0-f54.google.com ([74.125.82.54]:38553 "EHLO
-        mail-wm0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042152AbcFNKJM6doon (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jun 2016 12:09:12 +0200
-Received: by mail-wm0-f54.google.com with SMTP id m124so115445145wme.1
-        for <linux-mips@linux-mips.org>; Tue, 14 Jun 2016 03:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=OhzFLSWek0VqDwYfWBTiCN8FhQYJl83o/F6+Uz3J1dM=;
-        b=Ds6aiG1Iqqu1pUvBFk8QfXcEtn0bj8E7daVP9nA6jpZL8Ox+ON5QsnEuPWJSMZTaDy
-         RQd7zWOQ5Fu3NBv4lMbDRBQLcOvh6wewDkV9ccAvtJmZ7WqiK5RH2qiXq9nOm1RNLZg9
-         HIvmJC1yiAsDBIL+pi2sm0bG+YCQtFr4M6/gKNXVyKMqK1qn39ryrnYdRp3YMLj597E9
-         vDIgRTgXKz/uhxf1O9ScjpP+ayTZZQ82qGcqSfqM8HCgJNbZ9strHRs3j5YC2FVmqgpy
-         OVU6oJFjxBjFj0ALlgy/94Kd5ZjcULNmAbmNjRk3KmidCQ8YhhsfaDyBnJ8LnqDbVsvp
-         kaaw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=OhzFLSWek0VqDwYfWBTiCN8FhQYJl83o/F6+Uz3J1dM=;
-        b=Iw7jHJNJMgxQK3h/ktJPRMAfkpiFO52XbXw6eDwK4qkG83uV8fk3PLn7luVQFTlziR
-         O7YGJLbkj3XwhBhZtteCTHHuc9j32I3LJw6/E8QDO+2GpKXX1Tgj4LFmeV1CzWqHQCJU
-         /qpiTiPilAi3mYVPql4cqHPoHf0/oi4Js9++w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=OhzFLSWek0VqDwYfWBTiCN8FhQYJl83o/F6+Uz3J1dM=;
-        b=IIJ27nkVH0ogf73g+sf34XOJlrBCipiZwEhX4+V6r+fUIVAAbXu9yJq6c7+dG/gXQ+
-         SoFJPlr+CWOVNq+V+kBcNK2qTLHTQV8gYbHJouHHLpCJxDOv4tqb/+q/Ecy1XrSd0Qi4
-         PIL/SaY1YbfFxkspCrPcAG2LLjAWDLWD43kT6Sd3azeMoJA/ODVQbJmxFH9sEHrX+hfg
-         +48pG2Q3Z48f8dLaSE/RCqY8Od+EhaKPLpauGE6bpc7TZ0aQ1QXS5TSuU4LWLRp2a181
-         i44Mkt3yOA07nx1OJPNz/Zljl2mIM2LxbLyGa26cN6gTeTC8oEfpwiPoZKbntHNKk7kS
-         LsIA==
-X-Gm-Message-State: ALyK8tKxCkGSs//WyU3mPHXawsbzIvvPahQ5je2URWZfNwy9gf/VnmWIvfrYmqi8abVVk4eRAgRhqsvGYNgV8Fe6
-X-Received: by 10.28.234.16 with SMTP id i16mr1378739wmh.36.1465851058991;
- Mon, 13 Jun 2016 13:50:58 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.28.29.205 with HTTP; Mon, 13 Jun 2016 13:50:57 -0700 (PDT)
-In-Reply-To: <1465506124-21866-1-git-send-email-keescook@chromium.org>
-References: <1465506124-21866-1-git-send-email-keescook@chromium.org>
-From:   Kees Cook <keescook@chromium.org>
-Date:   Mon, 13 Jun 2016 13:50:57 -0700
-X-Google-Sender-Auth: a4dStZy7XTElewOAKpe3OsiyFDA
-Message-ID: <CAGXu5jJsWOdhRBauQ-_S-4ODd4m+xUbdjk1_zPXQqY7Qp-Dgdw@mail.gmail.com>
-Subject: Re: [PATCH 00/14] run seccomp after ptrace
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2016 12:13:11 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16601 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27041234AbcFNKNJK5sVn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jun 2016 12:13:09 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 682D641F8D18;
+        Tue, 14 Jun 2016 10:17:49 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 14 Jun 2016 10:17:49 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 14 Jun 2016 10:17:49 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 0F90EAEDF1DDF;
+        Tue, 14 Jun 2016 10:17:46 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 14 Jun
+ 2016 10:17:48 +0100
+Date:   Tue, 14 Jun 2016 10:17:48 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>
+CC:     Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        user-mode-linux-devel@lists.sourceforge.net,
-        Will Deacon <will.deacon@arm.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <keescook@google.com>
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, <linux-mips@linux-mips.org>,
+        <kvm@vger.kernel.org>
+Subject: Re: [PATCH 2/8] MIPS: KVM: Add kvm_aux trace event
+Message-ID: <20160614091748.GH30921@jhogan-linux.le.imgtec.org>
+References: <1465893617-5774-1-git-send-email-james.hogan@imgtec.com>
+ <1465893617-5774-3-git-send-email-james.hogan@imgtec.com>
+ <20160614085541.GA17625@jhogan-linux.le.imgtec.org>
+ <cb4fef4f-c66f-42b8-18bc-89985e21a6d7@redhat.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="J/zg8ciPNcraoWb6"
+Content-Disposition: inline
+In-Reply-To: <cb4fef4f-c66f-42b8-18bc-89985e21a6d7@redhat.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 5de3adfe
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54033
+X-archive-position: 54034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keescook@chromium.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -98,40 +60,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-(Oops, forgot to send this series through the lsm list...)
+--J/zg8ciPNcraoWb6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 9, 2016 at 2:01 PM, Kees Cook <keescook@chromium.org> wrote:
-> There has been a long-standing (and documented) issue with seccomp
-> where ptrace can be used to change a syscall out from under seccomp.
-> This is a problem for containers and other wider seccomp filtered
-> environments where ptrace needs to remain available, as it allows
-> for an escape of the seccomp filter.
->
-> Since the ptrace attack surface is available for any allowed syscall,
-> moving seccomp after ptrace doesn't increase the actually available
-> attack surface. And this actually improves tracing since, for
-> example, tracers will be notified of syscall entry before seccomp
-> sends a SIGSYS, which makes debugging filters much easier.
->
-> The per-architecture changes do make one (hopefully small)
-> semantic change, which is that since ptrace comes first, it may
-> request a syscall be skipped. Running seccomp after this doesn't
-> make sense, so if ptrace wants to skip a syscall, it will bail
-> out early similarly to how seccomp was. This means that skipped
-> syscalls will not be fed through audit, though that likely means
-> we're actually avoiding noise this way.
->
-> This series first cleans up seccomp to remove the now unneeded
-> two-phase entry, fixes the SECCOMP_RET_TRACE hole (same as the
-> ptrace hole above), and then reorders seccomp after ptrace on
-> each architecture.
+On Tue, Jun 14, 2016 at 11:15:40AM +0200, Paolo Bonzini wrote:
+>=20
+>=20
+> On 14/06/2016 10:55, James Hogan wrote:
+> > hmm, sorry, I don't know how i didn't spot when I checked these over
+> > that fpu_msa is still referred to here instead of aux. I'll post a V2 of
+> > this patch with s/fpu_msa/aux/.
+>=20
+> I can fix it up to kvm_trace_symbol_aux_op and kvm_trace_symbol_aux_state.
 
-Has anyone else had a chance to review this series? I'd like to get it
-landed in -next as early as possible in case there are unexpected
-problems...
+Great, thanks Paolo. Looks good.
 
--Kees
+Cheers
+James
 
--- 
-Kees Cook
-Chrome OS & Brillo Security
+>=20
+> diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
+> index 32ac7cc82e13..f3ada591ca25 100644
+> --- a/arch/mips/kvm/trace.h
+> +++ b/arch/mips/kvm/trace.h
+> @@ -48,14 +48,14 @@ TRACE_EVENT(kvm_exit,
+>  #define KVM_TRACE_AUX_MSA		2
+>  #define KVM_TRACE_AUX_FPU_MSA		3
+> =20
+> -#define kvm_trace_symbol_fpu_msa_op		\
+> +#define kvm_trace_symbol_aux_op		\
+>  	{ KVM_TRACE_AUX_RESTORE, "restore" },	\
+>  	{ KVM_TRACE_AUX_SAVE,    "save" },	\
+>  	{ KVM_TRACE_AUX_ENABLE,  "enable" },	\
+>  	{ KVM_TRACE_AUX_DISABLE, "disable" },	\
+>  	{ KVM_TRACE_AUX_DISCARD, "discard" }
+> =20
+> -#define kvm_trace_symbol_fpu_msa_state		\
+> +#define kvm_trace_symbol_aux_state		\
+>  	{ KVM_TRACE_AUX_FPU,     "FPU" },	\
+>  	{ KVM_TRACE_AUX_MSA,     "MSA" },	\
+>  	{ KVM_TRACE_AUX_FPU_MSA, "FPU & MSA" }
+> @@ -78,9 +78,9 @@ TRACE_EVENT(kvm_aux,
+> =20
+>  	    TP_printk("%s %s PC: 0x%08lx",
+>  		      __print_symbolic(__entry->op,
+> -				       kvm_trace_symbol_fpu_msa_op),
+> +				       kvm_trace_symbol_aux_op),
+>  		      __print_symbolic(__entry->state,
+> -				       kvm_trace_symbol_fpu_msa_state),
+> +				       kvm_trace_symbol_aux_state),
+>  		      __entry->pc)
+>  );
+> =20
+>=20
+> Paolo
+
+--J/zg8ciPNcraoWb6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJXX8u8AAoJEGwLaZPeOHZ6v2EP/2dKfxU6tucDKbvZYC02UCfU
+e3GoAMrt+d7hjqVlyrFyzoy9U9dTp7bD2moTS4ASxqueUK4WvLx3C0Qksp4WZPZU
+Xv32vlrBRyGRGbwk8xBd9NLg7xJa39qcVP95xxrN3jJVNsYiLYdR455E7FLqmCcX
+Ck/x3yZB0DszyQu0VMOxiDtFVFcmGIe2Dzjy42Lc/BhLunTGExmJ5FTSpiGoW4Ta
+efSpxz0pjElPAzXuU+fgwHhbNklvgGU//zoiDgduGM+rhHJo38BFHQbEyPaXrBzr
+KRuVjNukiTRaF52edvIV/QmjGJ8znyZ6RuOHBhZO2PhnjjoeFxJkVy3bJyEeywbZ
+BEDu0Ryf/74O0uHrrRXkAlnj2jca5npg+r4x1Z0GfjA6p/CnUS3vd07l/pVzXMb3
+NE9RsCp+g8MBoDokpnGzq055U3TbCwPP1K6K93kXJXqjoz6d/YdBpY5OSVQhvNyx
+KXsxz8MYWfDmmR69TSBUvdgAXUMrymsW5WWNrrXLLQQxEJxevEPf802kaO8NbNwM
+jUOO63HwKDIDr97NezuWKx7OtGIzNlCXW5KJ+wGyaFnHwrwn4y1QaH7la9z53Lkq
+vYtIrhwujzaPX0pH41AaItJ3cRvDhH+AA7/qwwOtqr8JLpYU7SdsF8Ifc6J58IWd
+u5yCuLXZzj4QoIlmHQIp
+=g1/u
+-----END PGP SIGNATURE-----
+
+--J/zg8ciPNcraoWb6--

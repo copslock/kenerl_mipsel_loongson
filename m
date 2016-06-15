@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2016 09:31:53 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:38127 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27042182AbcFOHbbj4Mir (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Jun 2016 09:31:31 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 6051FAAB6;
-        Wed, 15 Jun 2016 07:31:31 +0000 (UTC)
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Christopher Ferris <cferris@google.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 31/56] MIPS: Fix siginfo.h to use strict posix types
-Date:   Wed, 15 Jun 2016 09:30:55 +0200
-Message-Id: <b529a79c718c845195a7c3cce0b09fe47469908d.1465975780.git.jslaby@suse.cz>
-X-Mailer: git-send-email 2.9.0
-In-Reply-To: <352d108e14e126b7dfb5fbecde3dc78be62a5ce5.1465975780.git.jslaby@suse.cz>
-References: <352d108e14e126b7dfb5fbecde3dc78be62a5ce5.1465975780.git.jslaby@suse.cz>
-In-Reply-To: <cover.1465975780.git.jslaby@suse.cz>
-References: <cover.1465975780.git.jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2016 20:30:14 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:54556 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27042320AbcFOSaM7amOW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2016 20:30:12 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 57623AE79E133;
+        Wed, 15 Jun 2016 19:30:01 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 15 Jun 2016 19:30:05 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        David Daney <david.daney@cavium.com>,
+        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
+Subject: [PATCH 00/17] MIPS: KVM: Misc KVM T&E improvements
+Date:   Wed, 15 Jun 2016 19:29:44 +0100
+Message-ID: <1466015401-24433-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54052
+X-archive-position: 54053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,88 +45,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+This patchset gathers together some miscellaneous MIPS KVM (trap &
+emulate) improvements.
 
-3.12-stable review patch.  If anyone has any objections, please let me know.
+Patches 8 and 15 in particular change non-KVM MIPS code, so Acks
+appreciated. They are used by other patches in the series, so it makes
+sense I think to keep them together.
 
-===============
+The patchset is based on my recent MIPS KVM patchsets:
 
-commit 5daebc477da4dfeb31ae193d83084def58fd2697 upstream.
+[PATCH 0/4] MIPS: KVM: Module + non dynamic translating fixes
+[PATCH 00/18] MIPS: KVM: Miscellaneous clean-ups
+[PATCH 0/8] MIPS: KVM: Debug & trace event improvements
 
-Commit 85efde6f4e0d ("make exported headers use strict posix types")
-changed the asm-generic siginfo.h to use the __kernel_* types, and
-commit 3a471cbc081b ("remove __KERNEL_STRICT_NAMES") make the internal
-types accessible only to the kernel, but the MIPS implementation hasn't
-been updated to match.
+Changes include:
+- Patches 1-3: Dynamic translation & emulation fix/cleanups.
+- Patches 4-7: Dynamic KVM_GET_REG_LIST so it can actually properly list
+  all available registers, which allows for improved robustness of
+  userland, especially for VZ support where the core may implement
+  optional registers that KVM can't opt out of exposing.
+- Patches 8-11: HWREna / RDHWR handling improvements.
+- Patch 12: Add guest KScratch registers.
+- Patches 13-17: Other miscellaneous improvements.
 
-Switch to proper types now so that the exported asm/siginfo.h won't
-produce quite so many compiler errors when included alone by a user
-program.
+James Hogan (17):
+  MIPS: KVM: Fix translation of MFC0 ErrCtl
+  MIPS: KVM: Factor writing of translated guest instructions
+  MIPS: KVM: Convert emulation to use asm/inst.h
+  MIPS: KVM: Pass all unknown registers to callbacks
+  MIPS: KVM: Make KVM_GET_REG_LIST dynamic
+  MIPS: KVM: Use raw_cpu_has_fpu in kvm_mips_guest_can_have_fpu()
+  MIPS: KVM: List FPU/MSA registers
+  MIPS: Clean up RDHWR handling
+  MIPS: KVM: Don't hardcode restored HWREna
+  MIPS: KVM: Allow ULRI to restrict UserLocal register
+  MIPS: KVM: Emulate RDHWR CPUNum register
+  MIPS: KVM: Add KScratch registers
+  MIPS: KVM: Move commpage so 0x0 is unmapped
+  MIPS: KVM: Use host CCA for TLB mappings
+  MIPS: Add define for Config.VI (virtual icache) bit
+  MIPS: KVM: Report more accurate CP0_Config fields to guest
+  MIPS: KVM: Use mipsregs.h defs for config registers
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Christopher Ferris <cferris@google.com>
+ Documentation/virtual/kvm/api.txt                  |   6 +
+ arch/mips/include/asm/kvm_host.h                   | 122 +++++---------
+ .../asm/mach-cavium-octeon/cpu-feature-overrides.h |   2 +-
+ arch/mips/include/asm/mipsregs.h                   |  21 ++-
+ arch/mips/include/asm/setup.h                      |   1 +
+ arch/mips/include/uapi/asm/inst.h                  |  35 +++-
+ arch/mips/kernel/traps.c                           |  22 ++-
+ arch/mips/kvm/commpage.c                           |   2 +-
+ arch/mips/kvm/dyntrans.c                           | 156 ++++++++----------
+ arch/mips/kvm/emulate.c                            | 142 ++++++++--------
+ arch/mips/kvm/locore.S                             |   4 +-
+ arch/mips/kvm/mips.c                               | 180 +++++++++++++++++----
+ arch/mips/kvm/mmu.c                                |  18 ++-
+ arch/mips/kvm/tlb.c                                |  19 +--
+ arch/mips/kvm/trace.h                              |   6 +
+ arch/mips/kvm/trap_emul.c                          |  39 ++++-
+ arch/mips/mm/c-r4k.c                               |   2 +-
+ 17 files changed, 465 insertions(+), 312 deletions(-)
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: David Daney <david.daney@cavium.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12477/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/include/uapi/asm/siginfo.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/arch/mips/include/uapi/asm/siginfo.h b/arch/mips/include/uapi/asm/siginfo.h
-index 88e292b7719e..9997e4d48d70 100644
---- a/arch/mips/include/uapi/asm/siginfo.h
-+++ b/arch/mips/include/uapi/asm/siginfo.h
-@@ -46,13 +46,13 @@ typedef struct siginfo {
- 
- 		/* kill() */
- 		struct {
--			pid_t _pid;		/* sender's pid */
-+			__kernel_pid_t _pid;	/* sender's pid */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 		} _kill;
- 
- 		/* POSIX.1b timers */
- 		struct {
--			timer_t _tid;		/* timer id */
-+			__kernel_timer_t _tid;	/* timer id */
- 			int _overrun;		/* overrun count */
- 			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
- 			sigval_t _sigval;	/* same as below */
-@@ -61,26 +61,26 @@ typedef struct siginfo {
- 
- 		/* POSIX.1b signals */
- 		struct {
--			pid_t _pid;		/* sender's pid */
-+			__kernel_pid_t _pid;	/* sender's pid */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 			sigval_t _sigval;
- 		} _rt;
- 
- 		/* SIGCHLD */
- 		struct {
--			pid_t _pid;		/* which child */
-+			__kernel_pid_t _pid;	/* which child */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 			int _status;		/* exit code */
--			clock_t _utime;
--			clock_t _stime;
-+			__kernel_clock_t _utime;
-+			__kernel_clock_t _stime;
- 		} _sigchld;
- 
- 		/* IRIX SIGCHLD */
- 		struct {
--			pid_t _pid;		/* which child */
--			clock_t _utime;
-+			__kernel_pid_t _pid;	/* which child */
-+			__kernel_clock_t _utime;
- 			int _status;		/* exit code */
--			clock_t _stime;
-+			__kernel_clock_t _stime;
- 		} _irix_sigchld;
- 
- 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+Cc: kvm@vger.kernel.org
 -- 
-2.9.0
+2.4.10

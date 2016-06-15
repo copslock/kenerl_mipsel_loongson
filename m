@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2016 20:30:49 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:23558 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2016 20:31:07 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:27657 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042324AbcFOSaNwgJ6W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2016 20:30:13 +0200
+        with ESMTP id S27042330AbcFOSaOwBwlW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2016 20:30:14 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id F1482453353FD;
-        Wed, 15 Jun 2016 19:30:02 +0100 (IST)
+        by Forcepoint Email with ESMTPS id A2E0479DA5D88;
+        Wed, 15 Jun 2016 19:30:04 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 15 Jun 2016 19:30:07 +0100
+ 14.3.294.0; Wed, 15 Jun 2016 19:30:08 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 02/17] MIPS: KVM: Factor writing of translated guest instructions
-Date:   Wed, 15 Jun 2016 19:29:46 +0100
-Message-ID: <1466015401-24433-3-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 04/17] MIPS: KVM: Pass all unknown registers to callbacks
+Date:   Wed, 15 Jun 2016 19:29:48 +0100
+Message-ID: <1466015401-24433-5-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1466015401-24433-1-git-send-email-james.hogan@imgtec.com>
 References: <1466015401-24433-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54055
+X-archive-position: 54056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,14 +46,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The code in kvm_mips_dyntrans.c to write a translated guest instruction
-to guest memory depending on the segment is duplicated between each of
-the functions. Additionally the cache op translation functions assume
-the instruction is in the KSEG0/1 segment rather than KSEG2/3, which is
-generally true but isn't guaranteed.
-
-Factor that code into a new kvm_mips_trans_replace() which handles both
-KSEG0/1 and KSEG2/3.
+Pass all unrecognised register IDs through to the set_one_reg() and
+get_one_reg() callbacks, not just select ones. This allows
+implementation specific registers to be more easily added without having
+to modify arch/mips/kvm/mips.c.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -62,153 +58,53 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/dyntrans.c | 92 ++++++++++++++++++------------------------------
- 1 file changed, 34 insertions(+), 58 deletions(-)
+ arch/mips/kvm/mips.c | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/arch/mips/kvm/dyntrans.c b/arch/mips/kvm/dyntrans.c
-index 79b134c91333..eb6e0d17a668 100644
---- a/arch/mips/kvm/dyntrans.c
-+++ b/arch/mips/kvm/dyntrans.c
-@@ -28,21 +28,41 @@
- #define CLEAR_TEMPLATE  0x00000020
- #define SW_TEMPLATE     0xac000000
- 
-+/**
-+ * kvm_mips_trans_replace() - Replace trapping instruction in guest memory.
-+ * @vcpu:	Virtual CPU.
-+ * @opc:	PC of instruction to replace.
-+ * @replace:	Instruction to write
-+ */
-+static int kvm_mips_trans_replace(struct kvm_vcpu *vcpu, u32 *opc, u32 replace)
-+{
-+	unsigned long kseg0_opc, flags;
-+
-+	if (KVM_GUEST_KSEGX(opc) == KVM_GUEST_KSEG0) {
-+		kseg0_opc =
-+		    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
-+			       (vcpu, (unsigned long) opc));
-+		memcpy((void *)kseg0_opc, (void *)&replace, sizeof(u32));
-+		local_flush_icache_range(kseg0_opc, kseg0_opc + 32);
-+	} else if (KVM_GUEST_KSEGX((unsigned long) opc) == KVM_GUEST_KSEG23) {
-+		local_irq_save(flags);
-+		memcpy((void *)opc, (void *)&replace, sizeof(u32));
-+		local_flush_icache_range((unsigned long)opc,
-+					 (unsigned long)opc + 32);
-+		local_irq_restore(flags);
-+	} else {
-+		kvm_err("%s: Invalid address: %p\n", __func__, opc);
-+		return -EFAULT;
-+	}
-+
-+	return 0;
-+}
-+
- int kvm_mips_trans_cache_index(u32 inst, u32 *opc,
- 			       struct kvm_vcpu *vcpu)
- {
--	int result = 0;
--	unsigned long kseg0_opc;
--	u32 synci_inst = 0x0;
--
- 	/* Replace the CACHE instruction, with a NOP */
--	kseg0_opc =
--	    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
--		       (vcpu, (unsigned long) opc));
--	memcpy((void *)kseg0_opc, (void *)&synci_inst, sizeof(u32));
--	local_flush_icache_range(kseg0_opc, kseg0_opc + 32);
--
--	return result;
-+	return kvm_mips_trans_replace(vcpu, opc, 0x00000000);
- }
- 
- /*
-@@ -52,8 +72,6 @@ int kvm_mips_trans_cache_index(u32 inst, u32 *opc,
- int kvm_mips_trans_cache_va(u32 inst, u32 *opc,
- 			    struct kvm_vcpu *vcpu)
- {
--	int result = 0;
--	unsigned long kseg0_opc;
- 	u32 synci_inst = SYNCI_TEMPLATE, base, offset;
- 
- 	base = (inst >> 21) & 0x1f;
-@@ -61,20 +79,13 @@ int kvm_mips_trans_cache_va(u32 inst, u32 *opc,
- 	synci_inst |= (base << 21);
- 	synci_inst |= offset;
- 
--	kseg0_opc =
--	    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
--		       (vcpu, (unsigned long) opc));
--	memcpy((void *)kseg0_opc, (void *)&synci_inst, sizeof(u32));
--	local_flush_icache_range(kseg0_opc, kseg0_opc + 32);
--
--	return result;
-+	return kvm_mips_trans_replace(vcpu, opc, synci_inst);
- }
- 
- int kvm_mips_trans_mfc0(u32 inst, u32 *opc, struct kvm_vcpu *vcpu)
- {
- 	u32 rt, rd, sel;
- 	u32 mfc0_inst;
--	unsigned long kseg0_opc, flags;
- 
- 	rt = (inst >> 16) & 0x1f;
- 	rd = (inst >> 11) & 0x1f;
-@@ -90,31 +101,13 @@ int kvm_mips_trans_mfc0(u32 inst, u32 *opc, struct kvm_vcpu *vcpu)
- 				      cop0.reg[rd][sel]);
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index b5ad2ba1847a..fe82f3354c23 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -688,16 +688,11 @@ static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
+ 		v = (long)kvm_read_c0_guest_errorepc(cop0);
+ 		break;
+ 	/* registers to be handled specially */
+-	case KVM_REG_MIPS_CP0_COUNT:
+-	case KVM_REG_MIPS_COUNT_CTL:
+-	case KVM_REG_MIPS_COUNT_RESUME:
+-	case KVM_REG_MIPS_COUNT_HZ:
++	default:
+ 		ret = kvm_mips_callbacks->get_one_reg(vcpu, reg, &v);
+ 		if (ret)
+ 			return ret;
+ 		break;
+-	default:
+-		return -EINVAL;
  	}
- 
--	if (KVM_GUEST_KSEGX(opc) == KVM_GUEST_KSEG0) {
--		kseg0_opc =
--		    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
--			       (vcpu, (unsigned long) opc));
--		memcpy((void *)kseg0_opc, (void *)&mfc0_inst, sizeof(u32));
--		local_flush_icache_range(kseg0_opc, kseg0_opc + 32);
--	} else if (KVM_GUEST_KSEGX((unsigned long) opc) == KVM_GUEST_KSEG23) {
--		local_irq_save(flags);
--		memcpy((void *)opc, (void *)&mfc0_inst, sizeof(u32));
--		local_flush_icache_range((unsigned long)opc,
--					 (unsigned long)opc + 32);
--		local_irq_restore(flags);
--	} else {
--		kvm_err("%s: Invalid address: %p\n", __func__, opc);
--		return -EFAULT;
--	}
--
--	return 0;
-+	return kvm_mips_trans_replace(vcpu, opc, mfc0_inst);
- }
- 
- int kvm_mips_trans_mtc0(u32 inst, u32 *opc, struct kvm_vcpu *vcpu)
- {
- 	u32 rt, rd, sel;
- 	u32 mtc0_inst = SW_TEMPLATE;
--	unsigned long kseg0_opc, flags;
- 
- 	rt = (inst >> 16) & 0x1f;
- 	rd = (inst >> 11) & 0x1f;
-@@ -123,22 +116,5 @@ int kvm_mips_trans_mtc0(u32 inst, u32 *opc, struct kvm_vcpu *vcpu)
- 	mtc0_inst |= ((rt & 0x1f) << 16);
- 	mtc0_inst |= offsetof(struct kvm_mips_commpage, cop0.reg[rd][sel]);
- 
--	if (KVM_GUEST_KSEGX(opc) == KVM_GUEST_KSEG0) {
--		kseg0_opc =
--		    CKSEG0ADDR(kvm_mips_translate_guest_kseg0_to_hpa
--			       (vcpu, (unsigned long) opc));
--		memcpy((void *)kseg0_opc, (void *)&mtc0_inst, sizeof(u32));
--		local_flush_icache_range(kseg0_opc, kseg0_opc + 32);
--	} else if (KVM_GUEST_KSEGX((unsigned long) opc) == KVM_GUEST_KSEG23) {
--		local_irq_save(flags);
--		memcpy((void *)opc, (void *)&mtc0_inst, sizeof(u32));
--		local_flush_icache_range((unsigned long)opc,
--					 (unsigned long)opc + 32);
--		local_irq_restore(flags);
--	} else {
--		kvm_err("%s: Invalid address: %p\n", __func__, opc);
--		return -EFAULT;
--	}
--
--	return 0;
-+	return kvm_mips_trans_replace(vcpu, opc, mtc0_inst);
+ 	if ((reg->id & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U64) {
+ 		u64 __user *uaddr64 = (u64 __user *)(long)reg->addr;
+@@ -859,21 +854,8 @@ static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
+ 		kvm_write_c0_guest_errorepc(cop0, v);
+ 		break;
+ 	/* registers to be handled specially */
+-	case KVM_REG_MIPS_CP0_COUNT:
+-	case KVM_REG_MIPS_CP0_COMPARE:
+-	case KVM_REG_MIPS_CP0_CAUSE:
+-	case KVM_REG_MIPS_CP0_CONFIG:
+-	case KVM_REG_MIPS_CP0_CONFIG1:
+-	case KVM_REG_MIPS_CP0_CONFIG2:
+-	case KVM_REG_MIPS_CP0_CONFIG3:
+-	case KVM_REG_MIPS_CP0_CONFIG4:
+-	case KVM_REG_MIPS_CP0_CONFIG5:
+-	case KVM_REG_MIPS_COUNT_CTL:
+-	case KVM_REG_MIPS_COUNT_RESUME:
+-	case KVM_REG_MIPS_COUNT_HZ:
++	default:
+ 		return kvm_mips_callbacks->set_one_reg(vcpu, reg, v);
+-	default:
+-		return -EINVAL;
+ 	}
+ 	return 0;
  }
 -- 
 2.4.10

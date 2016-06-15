@@ -1,32 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2016 20:34:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49668 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2016 20:35:11 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:40009 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042350AbcFOSaW1aKpW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2016 20:30:22 +0200
+        with ESMTP id S27042352AbcFOSaXk3tXW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2016 20:30:23 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 5E69BDB3914CA;
-        Wed, 15 Jun 2016 19:30:12 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 125C94F96A1E7;
+        Wed, 15 Jun 2016 19:30:13 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 15 Jun 2016 19:30:16 +0100
+ 14.3.294.0; Wed, 15 Jun 2016 19:30:17 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
-Subject: [PATCH 15/17] MIPS: Add define for Config.VI (virtual icache) bit
-Date:   Wed, 15 Jun 2016 19:29:59 +0100
-Message-ID: <1466015401-24433-16-git-send-email-james.hogan@imgtec.com>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
+Subject: [PATCH 16/17] MIPS: KVM: Report more accurate CP0_Config fields to guest
+Date:   Wed, 15 Jun 2016 19:30:00 +0100
+Message-ID: <1466015401-24433-17-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1466015401-24433-1-git-send-email-james.hogan@imgtec.com>
 References: <1466015401-24433-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [192.168.154.110]
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54069
+X-archive-position: 54070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,42 +46,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Config.VI bit specifies that the instruction cache is virtually
-tagged, which is checked in c-r4k.c's probe_pcache(). Add a proper
-definition for it in mipsregs.h and make use of it.
+Initialise the guest's CP0_Config register with a few more bits of
+information from the host. The BE bit should be set on big endian
+machines, the VI bit should be set on machines with a virtually tagged
+instruction cache, and the reported architecture revision should match
+that of the host (since we won't support emulating pre-r6 instruction
+encodings on r6 or vice versa).
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/mipsregs.h | 1 +
- arch/mips/mm/c-r4k.c             | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/kvm/trap_emul.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 8b1b37d50d15..def9d8d13f6e 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -533,6 +533,7 @@
- #define TX49_CONF_CWFON		(_ULCAST_(1) << 27)
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index eb191c4612bb..1dc003ddca91 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -426,7 +426,7 @@ static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
+ static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
+ {
+ 	struct mips_coproc *cop0 = vcpu->arch.cop0;
+-	u32 config1;
++	u32 config, config1;
+ 	int vcpu_id = vcpu->vcpu_id;
  
- /* Bits specific to the MIPS32/64 PRA.	*/
-+#define MIPS_CONF_VI		(_ULCAST_(1) <<  3)
- #define MIPS_CONF_MT		(_ULCAST_(7) <<	 7)
- #define MIPS_CONF_MT_TLB	(_ULCAST_(1) <<  7)
- #define MIPS_CONF_MT_FTLB	(_ULCAST_(4) <<  7)
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index ef7f925dd1b0..7a9c345e87e5 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1206,7 +1206,7 @@ static void probe_pcache(void)
- 			      c->icache.linesz;
- 		c->icache.waybit = __ffs(icache_size/c->icache.ways);
+ 	/*
+@@ -434,10 +434,20 @@ static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
+ 	 * guest will come up as expected, for now we simulate a MIPS 24kc
+ 	 */
+ 	kvm_write_c0_guest_prid(cop0, 0x00019300);
+-	/* Have config1, Cacheable, noncoherent, write-back, write allocate */
+-	kvm_write_c0_guest_config(cop0, MIPS_CONF_M | (0x3 << CP0C0_K0) |
+-				  (0x1 << CP0C0_AR) |
+-				  (MMU_TYPE_R4000 << CP0C0_MT));
++	/*
++	 * Have config1, Cacheable, noncoherent, write-back, write allocate.
++	 * Endianness, arch revision & virtually tagged icache should match
++	 * host.
++	 */
++	config = read_c0_config() & MIPS_CONF_AR;
++	config |= MIPS_CONF_M | (0x3 << CP0C0_K0) |
++		(MMU_TYPE_R4000 << CP0C0_MT);
++#ifdef CONFIG_CPU_BIG_ENDIAN
++	config |= CONF_BE;
++#endif
++	if (cpu_has_vtag_icache)
++		config |= MIPS_CONF_VI;
++	kvm_write_c0_guest_config(cop0, config);
  
--		if (config & 0x8)		/* VI bit */
-+		if (config & MIPS_CONF_VI)
- 			c->icache.flags |= MIPS_CACHE_VTAG;
- 
- 		/*
+ 	/* Read the cache characteristics from the host Config1 Register */
+ 	config1 = (read_c0_config1() & ~0x7f);
 -- 
 2.4.10

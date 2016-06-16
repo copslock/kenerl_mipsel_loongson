@@ -1,66 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2016 14:24:46 +0200 (CEST)
-Received: from mail-oi0-f53.google.com ([209.85.218.53]:36528 "EHLO
-        mail-oi0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042341AbcFPMYnwjRW9 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Jun 2016 14:24:43 +0200
-Received: by mail-oi0-f53.google.com with SMTP id p204so65973895oih.3;
-        Thu, 16 Jun 2016 05:24:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=DvS6eroV0rSJqS7mdD2PHYoKMLMvV6w0GT8dJy2yXLY=;
-        b=dNpXJX3eCcSkYwcscEB6voxDOctZGr2sT/SiME23GkjSfFUmBU01zXQLCmDrfhnGZg
-         qE5+lDoW4YEAu0qstR35yNvKc63e8Mp5uUZ5BJA40lJIRKlepUyXCtwTPTemw/AEzqCU
-         lL/8tgAzy7hR+8XdCRyPZGIhkO9eUcKi+7EUSQ6QmspqI9Xj0g/aOGibNSqn+ezL9iEO
-         mdmvoyjBtuePU2dGE3NJPBtrSNbkkOelMQmjyMM1UMbiDzQwkpyVuqd83Ddkv2GHd1LI
-         S722Ogfzm/KwiniCcZg4ucaNA/xyonji4AaU/bJdjw/OL8VmQXsPz/AcGEgEjG2kC5xQ
-         /Pfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=DvS6eroV0rSJqS7mdD2PHYoKMLMvV6w0GT8dJy2yXLY=;
-        b=UyoUMg7wRvyPY8jlMYVFL+xL7ZquaW08K5i/bN9nxcScL7lJN9QTBr3+4tkFQb0MQb
-         k9kIK6sqOPSMG1N5iBn7bUbFIzCeIQYbVMPtW7/AIckVWDx6ERQtLe2RFAOXEltH3xt7
-         h9O3Fr3eEqZrvud+W6SvMoAzDBFls8cg4E8WIA72si2TLLzSath3YZnZzcDClN20UhHT
-         MdtoYlqokDuOowgoxXGXyEVegNquaLvylpNVAoUvCQrK9x7qpXDZ05Sy1WOoGUhv3yyK
-         V03rMlHk/YxMrRdDCBwcKDxhz6ztkEUS3PFDOdIl8w1LYVINhjnro2cvYp9H4Kyw29mR
-         78Nw==
-X-Gm-Message-State: ALyK8tLKPcHYm54TJz8JyuemAgD6IS5yy37CEKHBusd5GpkcWK/P7lbV/hyxL/mz6zeb20zgviXCo8NUU5/s5w==
-X-Received: by 10.202.183.131 with SMTP id h125mr2300609oif.189.1466079877830;
- Thu, 16 Jun 2016 05:24:37 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2016 17:35:53 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:20686 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27042510AbcFPPfvx1CF9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jun 2016 17:35:51 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id CE05BA29414F;
+        Thu, 16 Jun 2016 16:35:41 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 16 Jun 2016 16:35:45 +0100
+Received: from hhunt-arch.le.imgtec.org (192.168.154.26) by
+ LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
+ 14.3.266.1; Thu, 16 Jun 2016 16:35:44 +0100
+From:   Harvey Hunt <harvey.hunt@imgtec.com>
+To:     <ralf@linux-mips.org>
+CC:     Harvey Hunt <harvey.hunt@imgtec.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] MIPS: tools: Fix relocs tool compiler warnings
+Date:   Thu, 16 Jun 2016 16:35:39 +0100
+Message-ID: <20160616153539.10600-1-harvey.hunt@imgtec.com>
+X-Mailer: git-send-email 2.8.3
 MIME-Version: 1.0
-Received: by 10.202.175.140 with HTTP; Thu, 16 Jun 2016 05:24:37 -0700 (PDT)
-In-Reply-To: <CAOLZvyFuP2TBFOkUZJPQ2HtaCb6pztMsxjiQVSDr8E5xxH3Ecw@mail.gmail.com>
-References: <CACna6rwCPFWj1wJpm8sW2ZSfNpTRxi9-9MmzKSbJ617HW7LTNw@mail.gmail.com>
- <trinity-17a92ddb-99fb-4084-bd99-4151434f09d4-1466077370809@3capp-gmx-bs78> <CAOLZvyFuP2TBFOkUZJPQ2HtaCb6pztMsxjiQVSDr8E5xxH3Ecw@mail.gmail.com>
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Thu, 16 Jun 2016 14:24:37 +0200
-Message-ID: <CACna6rz0jm2BhCVwiwjXCTayjU5UacNh3Y=TuXp56OcfJ4huUg@mail.gmail.com>
-Subject: Re: BCM4704 stopped booting with 4.4 (due to vmlinux size?)
-To:     Manuel Lauss <manuel.lauss@gmail.com>
-Cc:     Paul Wassi <p.wassi@gmx.at>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        David Daney <david.daney@cavium.com>,
-        =?UTF-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Larry Finger <larry.finger@lwfinger.net>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.26]
+Return-Path: <Harvey.Hunt@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54078
+X-archive-position: 54079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: harvey.hunt@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,25 +46,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 16 June 2016 at 14:19, Manuel Lauss <manuel.lauss@gmail.com> wrote:
-> On Thu, Jun 16, 2016 at 1:42 PM,  <p.wassi@gmx.at> wrote:
->>> On the other hand Paul also experiences some problems with his Linksys
->>> WRT54GL (BCM5352E), the last stable kernel for him seems to be 3.18.
->>
->> I have to calrify that a bit:
->> if I use prebuilt images from OpenWrt 15.05.1, they work out of the box (as you say, it's 3.18)
->> If I take prebuilt images from (LEDE|OpenWrt) trunk (which was 4.1 then), they do not boot.
->> However, if I clone the repo (which was used to build said trunk) and build it myself,
->> the images work fine. (kernel 4.1) [1]
->
-> Differences in toolchain perhaps? What versions of gcc, binutils do
-> you and LEDE/OpenWrt use?
+When using clang as HOSTCC, the following warnings appear:
 
-When building LEDE, it first compiles toolchain and compiler and then
-it uses them to compile all the software. It doesn't use host-provided
-toolchain/gcc. So it shouldn't matter on what machine you build your
-image (buildbot or locally). Right now LEDE's master uses gcc 5.3.0
-and musl 1.1.14.
+In file included from arch/mips/boot/tools/relocs_64.c:27:0:
+arch/mips/boot/tools/relocs.c: In function ‘read_relocs’:
+arch/mips/boot/tools/relocs.c:397:4: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+    ELF_R_SYM(rel->r_info) = elf32_to_cpu(ELF_R_SYM(rel->r_info));
+    ^~~~~~~~~
+arch/mips/boot/tools/relocs.c:397:4: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+arch/mips/boot/tools/relocs.c: In function ‘walk_relocs’:
+arch/mips/boot/tools/relocs.c:491:4: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+    Elf_Sym *sym = &sh_symtab[ELF_R_SYM(rel->r_info)];
+    ^~~~~~~
+arch/mips/boot/tools/relocs.c: In function ‘do_reloc’:
+arch/mips/boot/tools/relocs.c:502:2: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+  unsigned r_type = ELF_R_TYPE(rel->r_info);
+  ^~~~~~~~
+arch/mips/boot/tools/relocs.c: In function ‘do_reloc_info’:
+arch/mips/boot/tools/relocs.c:641:3: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+   rel_type(ELF_R_TYPE(rel->r_info)),
+   ^~~~~~~~
 
+Fix them by making Elf64_Mips_Rela a union
+
+Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
+Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/mips/boot/tools/relocs_64.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/arch/mips/boot/tools/relocs_64.c b/arch/mips/boot/tools/relocs_64.c
+index b671b5e..06066e6a 100644
+--- a/arch/mips/boot/tools/relocs_64.c
++++ b/arch/mips/boot/tools/relocs_64.c
+@@ -9,17 +9,20 @@
+ 
+ typedef uint8_t Elf64_Byte;
+ 
+-typedef struct {
+-	Elf64_Word r_sym;	/* Symbol index.  */
+-	Elf64_Byte r_ssym;	/* Special symbol.  */
+-	Elf64_Byte r_type3;	/* Third relocation.  */
+-	Elf64_Byte r_type2;	/* Second relocation.  */
+-	Elf64_Byte r_type;	/* First relocation.  */
++typedef union {
++	struct {
++		Elf64_Word r_sym;	/* Symbol index.  */
++		Elf64_Byte r_ssym;	/* Special symbol.  */
++		Elf64_Byte r_type3;	/* Third relocation.  */
++		Elf64_Byte r_type2;	/* Second relocation.  */
++		Elf64_Byte r_type;	/* First relocation.  */
++	} fields;
++	Elf64_Xword unused;
+ } Elf64_Mips_Rela;
+ 
+ #define ELF_CLASS               ELFCLASS64
+-#define ELF_R_SYM(val)          (((Elf64_Mips_Rela *)(&val))->r_sym)
+-#define ELF_R_TYPE(val)         (((Elf64_Mips_Rela *)(&val))->r_type)
++#define ELF_R_SYM(val)          (((Elf64_Mips_Rela *)(&val))->fields.r_sym)
++#define ELF_R_TYPE(val)         (((Elf64_Mips_Rela *)(&val))->fields.r_type)
+ #define ELF_ST_TYPE(o)          ELF64_ST_TYPE(o)
+ #define ELF_ST_BIND(o)          ELF64_ST_BIND(o)
+ #define ELF_ST_VISIBILITY(o)    ELF64_ST_VISIBILITY(o)
 -- 
-Rafał
+2.8.3

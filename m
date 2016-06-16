@@ -1,41 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2016 20:44:02 +0200 (CEST)
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:38697 "EHLO
-        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042634AbcFPSoBY8Sf5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jun 2016 20:44:01 +0200
-Received: from raspberrypi.musicnaut.iki.fi (85-76-149-135-nat.elisa-mobile.fi [85.76.149.135])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 090A42340FC;
-        Thu, 16 Jun 2016 21:43:58 +0300 (EEST)
-Date:   Thu, 16 Jun 2016 21:43:58 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        David Daney <david.daney@cavium.com>,
-        Michael =?iso-8859-1?Q?B=FCsch?= <m@bues.ch>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Larry Finger <larry.finger@lwfinger.net>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Paul Wassi <p.wassi@gmx.at>
-Subject: Re: BCM4704 stopped booting with 4.4 (due to vmlinux size?)
-Message-ID: <20160616184358.GC8398@raspberrypi.musicnaut.iki.fi>
-References: <CACna6rwCPFWj1wJpm8sW2ZSfNpTRxi9-9MmzKSbJ617HW7LTNw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACna6rwCPFWj1wJpm8sW2ZSfNpTRxi9-9MmzKSbJ617HW7LTNw@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2016 22:46:27 +0200 (CEST)
+Received: from mail-wm0-f66.google.com ([74.125.82.66]:36395 "EHLO
+        mail-wm0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041914AbcFPUqXgOX9U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jun 2016 22:46:23 +0200
+Received: by mail-wm0-f66.google.com with SMTP id m124so14084536wme.3;
+        Thu, 16 Jun 2016 13:46:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=hvDiJWVXJl8uajFCyhNXUYDASjRJdmB7No7shsCxceA=;
+        b=fI1PTh5+ZItKVD6GcNle6AifRNdnl/QEYCxiKF+GZKJOwY3kkZYKl05ynsrbIzpoxM
+         bVjsff6/WNke+rj6wncYyws6MTCJrYV7+1R7fvWYFTKsRUJlNLW/NUpmm2dRJlGSf5Bv
+         BEwU3HqT0w8Ut5c5W9JuQRRmd9IMafn4a/FvMhSR++W5xA1oVr1HHrZc0+C7zcb9T/IK
+         RD4MjU5Ez/PrYQjI88KRZ0OaEMZnMaAr2hJ6ThrRVIgQiOQ70gYC0Go4Z2sALxBvuuJ0
+         wFVNQkDZOoZrT2/m9iKA388MMGrYLRxSHhjk12+6ijA9gO9i6sGbNStzZllTvIcjJCrt
+         G7zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=hvDiJWVXJl8uajFCyhNXUYDASjRJdmB7No7shsCxceA=;
+        b=BSVh1SCjetryR0YVSEhCThDqtM+CU0O4vy3pEDkKTqCuryKoFIzmJm8sAu6tqPZWx7
+         J8v32FURCU0ghkc8VXz8cUMWs86dQXkxdEJ4aAM7M7ejX2W0NnDANHtukznZnTcYylss
+         2IywqNysvEn87j4wXGQiQBVEOqliuKufUXAWEurM5wxVN1wPxq0Rb8wypfjBD1gjjiaV
+         CDzU85uI52esOjzMHss7mhvr+ZVRJ6lltWrxfjmdf0BY/6Qxcta5WsIGADzlAEl9P2E7
+         2qaVc1G0Mwxq5mVGRpRnJvQW4wqxjLwpyWOOOOHmp1I4WEXHTFL68d0D+7lWAtpxuPOb
+         1ovw==
+X-Gm-Message-State: ALyK8tJGvJ7nt9RR21J84coQ3BFdRs0FHiYpbqXGWHCrJw1SYEkoY1DorM7oBUxTzekrrw==
+X-Received: by 10.194.170.197 with SMTP id ao5mr1223055wjc.99.1466109978258;
+        Thu, 16 Jun 2016 13:46:18 -0700 (PDT)
+Received: from localhost.localdomain (234.98.208.46.dyn.plus.net. [46.208.98.234])
+        by smtp.gmail.com with ESMTPSA id 124sm40980wml.12.2016.06.16.13.46.16
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 16 Jun 2016 13:46:16 -0700 (PDT)
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     John Crispin <john@phrozen.org>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH] MIPS: Lantiq: fix build failure
+Date:   Thu, 16 Jun 2016 21:46:08 +0100
+Message-Id: <1466109968-22033-1-git-send-email-sudipm.mukherjee@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <sudipm.mukherjee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54080
+X-archive-position: 54081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: sudipm.mukherjee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,53 +61,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Some configs of mips like xway_defconffig are failing with the error:
+arch/mips/lantiq/irq.c:209:2: error: initialization from incompatible
+pointer type [-Werror]
+  "icu",
+  ^
+arch/mips/lantiq/irq.c:209:2: error: (near initialization for
+'ltq_irq_type.parent_device') [-Werror]
+arch/mips/lantiq/irq.c:219:2: error: initialization from incompatible
+pointer type [-Werror]
+  "eiu",
+  ^
+arch/mips/lantiq/irq.c:219:2: error: (near initialization for
+'ltq_eiu_type.parent_device') [-Werror]
 
-On Thu, Jun 16, 2016 at 08:17:16AM +0200, Rafał Miłecki wrote:
-> From time to time I test new kernels with ancient Linksys WRT300N v1.0
-> device based on BCM4704 SoC.
-> 
-> I noticed that after updating kernel from 4.3 to 4.4 it doen't boot
-> anymore. All I can see is the last CFE's (bootloader's) message:
-> > Starting program at 0x80001000
-> Enabling CONFIG_EARLY_PRINTK doesn't help.
-> 
-> After hours or bisecting and testing I found out that it's not caused
-> by any /real/ code change but rather adding a kernel message. It seems
-> that by adding enough print messages I can stop kernel from booting.
-> 
-> I didn't know what exactly to look at so I started with "objdump
-> --syms vmlinux". I took 4.1.16 and 4.3.4 and tried adding to them
-> various amount of unique pr_info messages in some random error code
-> path (never executed). I noticed that address of .data was increasing
-> which makes me believe that it's a matter of .rodata size or some
-> affected size/offset in vmlinux.
-> 1) 4.1.6: if .data starts at 80369000 of higher kernel doesn't boot.
-> 2) 4.3.4: if .data starts at 80368000 of higher kernel doesn't boot.
-> 
-> Do you have any idea what this problem can be caused by? Any idea how
-> to fix/workaround it? Can I provide any extra info?
-> 
-> It doesn't affect all BCM4704 devices. Hauke also has some router
-> using this SoC and he couldn't reproduce this problem.
-> On the other hand Paul also experiences some problems with his Linksys
-> WRT54GL (BCM5352E), the last stable kernel for him seems to be 3.18.
-> Not sure if it's related however.
+The first member of the "struct irq" is no longer a pointer for the
+name.
 
-WRT54GL with 16 MB RAM boots fine with 4.7-rc3. However, I've always had
-the issue that the kernel size cannot exceed some limit, so you need to
-craft a very minimal config. You can see the memory map at early boot,
-and the kernel probably should not overlap with any memory used by CFE:
+Fixes: be45beb2df69 ("genirq: Add runtime power management support for IRQ chips")
+Signed-off-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+---
 
-Total memory used by CFE:  0x80300000 - 0x803A39B0 (670128)
-Initialized Data:          0x803398C0 - 0x8033BFD0 (10000)
-BSS Area:                  0x8033BFD0 - 0x8033D9B0 (6624)
-Local Heap:                0x8033D9B0 - 0x803A19B0 (409600)
-Stack Area:                0x803A19B0 - 0x803A39B0 (8192)
-Text (code) segment:       0x80300000 - 0x803398C0 (235712)
-Boot area (physical):      0x003A4000 - 0x003E4000
-Relocation Factor:         I:00000000 - D:00000000
+build log can be seen at:
+https://travis-ci.org/sudipm-mukherjee/parport/jobs/137992701
 
-Probably one workaround could be to change the load address?
+ arch/mips/lantiq/irq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-A.
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index ff17669e..02c0252 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -206,7 +206,7 @@ static void ltq_shutdown_eiu_irq(struct irq_data *d)
+ }
+ 
+ static struct irq_chip ltq_irq_type = {
+-	"icu",
++	.name = "icu",
+ 	.irq_enable = ltq_enable_irq,
+ 	.irq_disable = ltq_disable_irq,
+ 	.irq_unmask = ltq_enable_irq,
+@@ -216,7 +216,7 @@ static struct irq_chip ltq_irq_type = {
+ };
+ 
+ static struct irq_chip ltq_eiu_type = {
+-	"eiu",
++	.name = "eiu",
+ 	.irq_startup = ltq_startup_eiu_irq,
+ 	.irq_shutdown = ltq_shutdown_eiu_irq,
+ 	.irq_enable = ltq_enable_irq,
+-- 
+1.9.1

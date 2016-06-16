@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2016 17:35:53 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:20686 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042510AbcFPPfvx1CF9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jun 2016 17:35:51 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id CE05BA29414F;
-        Thu, 16 Jun 2016 16:35:41 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 16 Jun 2016 16:35:45 +0100
-Received: from hhunt-arch.le.imgtec.org (192.168.154.26) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 16 Jun 2016 16:35:44 +0100
-From:   Harvey Hunt <harvey.hunt@imgtec.com>
-To:     <ralf@linux-mips.org>
-CC:     Harvey Hunt <harvey.hunt@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] MIPS: tools: Fix relocs tool compiler warnings
-Date:   Thu, 16 Jun 2016 16:35:39 +0100
-Message-ID: <20160616153539.10600-1-harvey.hunt@imgtec.com>
-X-Mailer: git-send-email 2.8.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2016 20:44:02 +0200 (CEST)
+Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:38697 "EHLO
+        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27042634AbcFPSoBY8Sf5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Jun 2016 20:44:01 +0200
+Received: from raspberrypi.musicnaut.iki.fi (85-76-149-135-nat.elisa-mobile.fi [85.76.149.135])
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 090A42340FC;
+        Thu, 16 Jun 2016 21:43:58 +0300 (EEST)
+Date:   Thu, 16 Jun 2016 21:43:58 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney.cavm@gmail.com>,
+        David Daney <david.daney@cavium.com>,
+        Michael =?iso-8859-1?Q?B=FCsch?= <m@bues.ch>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Larry Finger <larry.finger@lwfinger.net>,
+        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
+        Paul Wassi <p.wassi@gmx.at>
+Subject: Re: BCM4704 stopped booting with 4.4 (due to vmlinux size?)
+Message-ID: <20160616184358.GC8398@raspberrypi.musicnaut.iki.fi>
+References: <CACna6rwCPFWj1wJpm8sW2ZSfNpTRxi9-9MmzKSbJ617HW7LTNw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.26]
-Return-Path: <Harvey.Hunt@imgtec.com>
+In-Reply-To: <CACna6rwCPFWj1wJpm8sW2ZSfNpTRxi9-9MmzKSbJ617HW7LTNw@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54079
+X-archive-position: 54080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: harvey.hunt@imgtec.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,69 +48,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When using clang as HOSTCC, the following warnings appear:
+Hi,
 
-In file included from arch/mips/boot/tools/relocs_64.c:27:0:
-arch/mips/boot/tools/relocs.c: In function ‘read_relocs’:
-arch/mips/boot/tools/relocs.c:397:4: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
-    ELF_R_SYM(rel->r_info) = elf32_to_cpu(ELF_R_SYM(rel->r_info));
-    ^~~~~~~~~
-arch/mips/boot/tools/relocs.c:397:4: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
-arch/mips/boot/tools/relocs.c: In function ‘walk_relocs’:
-arch/mips/boot/tools/relocs.c:491:4: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
-    Elf_Sym *sym = &sh_symtab[ELF_R_SYM(rel->r_info)];
-    ^~~~~~~
-arch/mips/boot/tools/relocs.c: In function ‘do_reloc’:
-arch/mips/boot/tools/relocs.c:502:2: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
-  unsigned r_type = ELF_R_TYPE(rel->r_info);
-  ^~~~~~~~
-arch/mips/boot/tools/relocs.c: In function ‘do_reloc_info’:
-arch/mips/boot/tools/relocs.c:641:3: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
-   rel_type(ELF_R_TYPE(rel->r_info)),
-   ^~~~~~~~
+On Thu, Jun 16, 2016 at 08:17:16AM +0200, Rafał Miłecki wrote:
+> From time to time I test new kernels with ancient Linksys WRT300N v1.0
+> device based on BCM4704 SoC.
+> 
+> I noticed that after updating kernel from 4.3 to 4.4 it doen't boot
+> anymore. All I can see is the last CFE's (bootloader's) message:
+> > Starting program at 0x80001000
+> Enabling CONFIG_EARLY_PRINTK doesn't help.
+> 
+> After hours or bisecting and testing I found out that it's not caused
+> by any /real/ code change but rather adding a kernel message. It seems
+> that by adding enough print messages I can stop kernel from booting.
+> 
+> I didn't know what exactly to look at so I started with "objdump
+> --syms vmlinux". I took 4.1.16 and 4.3.4 and tried adding to them
+> various amount of unique pr_info messages in some random error code
+> path (never executed). I noticed that address of .data was increasing
+> which makes me believe that it's a matter of .rodata size or some
+> affected size/offset in vmlinux.
+> 1) 4.1.6: if .data starts at 80369000 of higher kernel doesn't boot.
+> 2) 4.3.4: if .data starts at 80368000 of higher kernel doesn't boot.
+> 
+> Do you have any idea what this problem can be caused by? Any idea how
+> to fix/workaround it? Can I provide any extra info?
+> 
+> It doesn't affect all BCM4704 devices. Hauke also has some router
+> using this SoC and he couldn't reproduce this problem.
+> On the other hand Paul also experiences some problems with his Linksys
+> WRT54GL (BCM5352E), the last stable kernel for him seems to be 3.18.
+> Not sure if it's related however.
 
-Fix them by making Elf64_Mips_Rela a union
+WRT54GL with 16 MB RAM boots fine with 4.7-rc3. However, I've always had
+the issue that the kernel size cannot exceed some limit, so you need to
+craft a very minimal config. You can see the memory map at early boot,
+and the kernel probably should not overlap with any memory used by CFE:
 
-Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/mips/boot/tools/relocs_64.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+Total memory used by CFE:  0x80300000 - 0x803A39B0 (670128)
+Initialized Data:          0x803398C0 - 0x8033BFD0 (10000)
+BSS Area:                  0x8033BFD0 - 0x8033D9B0 (6624)
+Local Heap:                0x8033D9B0 - 0x803A19B0 (409600)
+Stack Area:                0x803A19B0 - 0x803A39B0 (8192)
+Text (code) segment:       0x80300000 - 0x803398C0 (235712)
+Boot area (physical):      0x003A4000 - 0x003E4000
+Relocation Factor:         I:00000000 - D:00000000
 
-diff --git a/arch/mips/boot/tools/relocs_64.c b/arch/mips/boot/tools/relocs_64.c
-index b671b5e..06066e6a 100644
---- a/arch/mips/boot/tools/relocs_64.c
-+++ b/arch/mips/boot/tools/relocs_64.c
-@@ -9,17 +9,20 @@
- 
- typedef uint8_t Elf64_Byte;
- 
--typedef struct {
--	Elf64_Word r_sym;	/* Symbol index.  */
--	Elf64_Byte r_ssym;	/* Special symbol.  */
--	Elf64_Byte r_type3;	/* Third relocation.  */
--	Elf64_Byte r_type2;	/* Second relocation.  */
--	Elf64_Byte r_type;	/* First relocation.  */
-+typedef union {
-+	struct {
-+		Elf64_Word r_sym;	/* Symbol index.  */
-+		Elf64_Byte r_ssym;	/* Special symbol.  */
-+		Elf64_Byte r_type3;	/* Third relocation.  */
-+		Elf64_Byte r_type2;	/* Second relocation.  */
-+		Elf64_Byte r_type;	/* First relocation.  */
-+	} fields;
-+	Elf64_Xword unused;
- } Elf64_Mips_Rela;
- 
- #define ELF_CLASS               ELFCLASS64
--#define ELF_R_SYM(val)          (((Elf64_Mips_Rela *)(&val))->r_sym)
--#define ELF_R_TYPE(val)         (((Elf64_Mips_Rela *)(&val))->r_type)
-+#define ELF_R_SYM(val)          (((Elf64_Mips_Rela *)(&val))->fields.r_sym)
-+#define ELF_R_TYPE(val)         (((Elf64_Mips_Rela *)(&val))->fields.r_type)
- #define ELF_ST_TYPE(o)          ELF64_ST_TYPE(o)
- #define ELF_ST_BIND(o)          ELF64_ST_BIND(o)
- #define ELF_ST_VISIBILITY(o)    ELF64_ST_VISIBILITY(o)
--- 
-2.8.3
+Probably one workaround could be to change the load address?
+
+A.

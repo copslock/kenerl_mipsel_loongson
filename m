@@ -1,62 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2016 08:17:24 +0200 (CEST)
-Received: from mail-oi0-f52.google.com ([209.85.218.52]:35956 "EHLO
-        mail-oi0-f52.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042522AbcFPGRXLOvNj convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Jun 2016 08:17:23 +0200
-Received: by mail-oi0-f52.google.com with SMTP id p204so54288096oih.3;
-        Wed, 15 Jun 2016 23:17:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=D6OWLCXeTDZabEisLOomKW7xVeCXrymlFNNYijCmKDc=;
-        b=wqac77kqSCFpXfdVvVseTChjZAa17TLdFsz/r2qhd96+UfEHlotcc7Zy5FE591YAFY
-         G+eDcVyznRmtKiLdMALKvn7K2AXTDtJHNdqi+0tBWtHlOTiDwVcN2s9lMoWxmC3uDtpf
-         e4tbNbQ7NR28al5WjEE4/cfyQpE+jDleKm1o4se3xcWfPxnU//Hq7sPbGmQ5YnPj3hvP
-         RIJ/OLnTkorbAkcLIZ25Oi3LilLBhmAkwWcMyaXf9nqAH+mpV59MVpmcXhReqwxQcFfm
-         p53wXcfOYs+sXcGRuX2I2kftOxkMIrYWzCDMouew/0NZFANZhSF9PDKxwR4FNIclnfb4
-         wG1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=D6OWLCXeTDZabEisLOomKW7xVeCXrymlFNNYijCmKDc=;
-        b=GbBP21Ldb8MHiADlHD5s18nO9G2WIhY7g/CT/k1hs1v71u9y/SHjKJI8tEZcK87cA3
-         07rjAeb1xOZXwEH6YCtDnHbMLTJbTAJqtDMkTgk9enfnBFhoJaVvNptqU74w2+utCMDh
-         WB61yTKvYcmMhin+BPJ/3mmQS+4wlBitGdqnKES7LeWgREmrNdaTyNMSw7uAgg4YddBI
-         BxP/AsP7aeFcDyMi+1yGDqbGPnQtx11LBnp48kToMCHdp14rO00oZZWnehS+MObDvNzR
-         7ZOIWyUQWre2m0XTh+bVSaswuXDya4MESV9HfnjArxg9+iejwRZxpLUGUFf+5fgkyIjI
-         8SOQ==
-X-Gm-Message-State: ALyK8tKYZq2LrLhB8vT4Yp+37pUZRCbBTFNWsPRLrzvujx1yjE54/XErI07MliMIq0eh9R1AbeI6WMAQYIKhMw==
-X-Received: by 10.202.84.23 with SMTP id i23mr1280215oib.170.1466057837069;
- Wed, 15 Jun 2016 23:17:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2016 13:43:15 +0200 (CEST)
+Received: from mout.gmx.net ([212.227.17.22]:58395 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27041197AbcFPLnNvJrXb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Jun 2016 13:43:13 +0200
+Received: from [128.130.56.88] by 3capp-gmx-bs78.server.lan (via HTTP); Thu,
+ 16 Jun 2016 13:42:50 +0200
 MIME-Version: 1.0
-Received: by 10.202.175.140 with HTTP; Wed, 15 Jun 2016 23:17:16 -0700 (PDT)
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Thu, 16 Jun 2016 08:17:16 +0200
-Message-ID: <CACna6rwCPFWj1wJpm8sW2ZSfNpTRxi9-9MmzKSbJ617HW7LTNw@mail.gmail.com>
-Subject: BCM4704 stopped booting with 4.4 (due to vmlinux size?)
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney.cavm@gmail.com>,
-        David Daney <david.daney@cavium.com>,
-        =?UTF-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Larry Finger <larry.finger@lwfinger.net>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Paul Wassi <p.wassi@gmx.at>
+Message-ID: <trinity-17a92ddb-99fb-4084-bd99-4151434f09d4-1466077370809@3capp-gmx-bs78>
+From:   p.wassi@gmx.at
+To:     =?UTF-8?Q?=22Rafa=C5=82_Mi=C5=82ecki=22?= <zajec5@gmail.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "David Daney" <ddaney.cavm@gmail.com>,
+        "David Daney" <david.daney@cavium.com>,
+        =?UTF-8?Q?=22Michael_B=C3=BCsch=22?= <m@bues.ch>,
+        "Hauke Mehrtens" <hauke@hauke-m.de>,
+        "Larry Finger" <larry.finger@lwfinger.net>,
+        "Felix Fietkau" <nbd@nbd.name>, "John Crispin" <john@phrozen.org>
+Subject: Re: BCM4704 stopped booting with 4.4 (due to vmlinux size?)
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zajec5@gmail.com>
+Date:   Thu, 16 Jun 2016 13:42:50 +0200
+Importance: normal
+Sensitivity: Normal
+In-Reply-To: <CACna6rwCPFWj1wJpm8sW2ZSfNpTRxi9-9MmzKSbJ617HW7LTNw@mail.gmail.com>
+References: <CACna6rwCPFWj1wJpm8sW2ZSfNpTRxi9-9MmzKSbJ617HW7LTNw@mail.gmail.com>
+X-UI-Message-Type: mail
+X-Priority: 3
+X-Provags-ID: V03:K0:teTBAoMdIum9j/gIErYpyxiJMT4G1KwV7fRjeWsgcoU
+ jDkDwe4Cf7O37AQwaJnBm5scUFIHTBiApRuF4DWhc2XPUnlKD+
+ Qi/wX9iM2nuX6mQjObnoMC8fUvHoK1vsnUyjUVnBkjFzKd+5As
+ Ijw4n+IvWQuiwMwe5BoVLYQgTBGPPeGJfgZj2szjJen2AcSeEY
+ YJHU+LbxVlNrBIi9+6HGlNXaOC3tP/rD7z72kKePnpGSPpew4L
+ XQs7xcm7vuQuRf9RZdUnINuNUyXDaQqXQfgELYol6rtQc4EFxn Bzrtis=
+X-UI-Out-Filterresults: notjunk:1;V01:K0:LFi+iCx5W3k=:acBpAyZbgI/AQjzyIIY+0Q
+ 0cwKmxdc9zO/79bPfpfnv0w0SNLOYOsvOh+8KoX1ulE9/GeO6vGtKd9nZZVJiAI+KZGenHTgN
+ HIK2BBUCvzsj9UurbjxQgA2MjHId41jD4mhDr3VlRDKya3zNjTSPoMCbRC5mgUrx7ATISV1tW
+ PHCbAFsXws/ENhvkJ3Jr6Z5/arH32JjTcVrKQfnT4OvQf+wnXBDilpaVKw3bMgfMcvtNqDYQx
+ vfehgbZN5G2VjCc1IX4xGS5sP2f8eaG4pva9zJwykgYcyxs0OUTheqIbRRGP4yl+TqYwK609N
+ VZstny1Ypff+Inz4F0OsUCOgwpk2or6hcUE9KCjvldNCRB/JtQczuw+6K13RCZB/0y2WmSZgX
+ X7XDDoNM16HG8lhkUYfF1cRpgqn09Jg1TMov5UMfCJdufAvaVwCvNtfY/IVG6JTZoCleTWnTT
+ jylZum/kRg==
+Return-Path: <p.wassi@gmx.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54075
+X-archive-position: 54076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: p.wassi@gmx.at
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,127 +61,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+Hi Rafal,
 
-From time to time I test new kernels with ancient Linksys WRT300N v1.0
-device based on BCM4704 SoC.
+> On the other hand Paul also experiences some problems with his Linksys
+> WRT54GL (BCM5352E), the last stable kernel for him seems to be 3.18.
 
-I noticed that after updating kernel from 4.3 to 4.4 it doen't boot
-anymore. All I can see is the last CFE's (bootloader's) message:
-> Starting program at 0x80001000
-Enabling CONFIG_EARLY_PRINTK doesn't help.
+I have to calrify that a bit:
+if I use prebuilt images from OpenWrt 15.05.1, they work out of the box (as you say, it's 3.18)
+If I take prebuilt images from (LEDE|OpenWrt) trunk (which was 4.1 then), they do not boot.
+However, if I clone the repo (which was used to build said trunk) and build it myself,
+the images work fine. (kernel 4.1) [1]
 
-After hours or bisecting and testing I found out that it's not caused
-by any /real/ code change but rather adding a kernel message. It seems
-that by adding enough print messages I can stop kernel from booting.
+The behaviour you described (stopping at "Starting program at 0x80001000") is the same
+as I've observed it.
 
-I didn't know what exactly to look at so I started with "objdump
---syms vmlinux". I took 4.1.16 and 4.3.4 and tried adding to them
-various amount of unique pr_info messages in some random error code
-path (never executed). I noticed that address of .data was increasing
-which makes me believe that it's a matter of .rodata size or some
-affected size/offset in vmlinux.
-1) 4.1.6: if .data starts at 80369000 of higher kernel doesn't boot.
-2) 4.3.4: if .data starts at 80368000 of higher kernel doesn't boot.
+When I'm at home (weekend), I'll try if anything changed with 4.4
 
-Do you have any idea what this problem can be caused by? Any idea how
-to fix/workaround it? Can I provide any extra info?
+Just a side note: WRT54GL with 32MB RAM and LEDE work perfectly stable :-)
 
-It doesn't affect all BCM4704 devices. Hauke also has some router
-using this SoC and he couldn't reproduce this problem.
-On the other hand Paul also experiences some problems with his Linksys
-WRT54GL (BCM5352E), the last stable kernel for him seems to be 3.18.
-Not sure if it's related however.
+Best regards,
+P. Wassi
 
-
-4.1.16
-
-GOOD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802bd000 l    d  .rodata        00000000 .rodata
-8035c000 l    d  .data  00000000 .data
-8038ebc8 l    d  .init.data     00000000 .init.data
-
-GOOD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802bd000 l    d  .rodata        00000000 .rodata
-80365000 l    d  .data  00000000 .data
-80398bc8 l    d  .init.data     00000000 .init.data
-
-GOOD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802bd000 l    d  .rodata        00000000 .rodata
-80367000 l    d  .data  00000000 .data
-8039abc8 l    d  .init.data     00000000 .init.data
-
-GOOD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802bd000 l    d  .rodata        00000000 .rodata
-80368000 l    d  .data  00000000 .data
-8039abc8 l    d  .init.data     00000000 .init.data
-
-BAD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802bd000 l    d  .rodata        00000000 .rodata
-80369000 l    d  .data  00000000 .data
-8039cbc8 l    d  .init.data     00000000 .init.data
-
-BAD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802bd000 l    d  .rodata        00000000 .rodata
-8036a000 l    d  .data  00000000 .data
-8039cbc8 l    d  .init.data     00000000 .init.data
-
-BAD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802bd000 l    d  .rodata        00000000 .rodata
-8036b000 l    d  .data  00000000 .data
-8039ebc8 l    d  .init.data     00000000 .init.data
-
-
-4.3.4
-
-GOOD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802c0000 l    d  .rodata        00000000 .rodata
-80362000 l    d  .data  00000000 .data
-80394f68 l    d  .init.data     00000000 .init.data
-
-GOOD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802c0000 l    d  .rodata        00000000 .rodata
-80365000 l    d  .data  00000000 .data
-80398f68 l    d  .init.data     00000000 .init.data
-
-GOOD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802c0000 l    d  .rodata        00000000 .rodata
-80367000 l    d  .data  00000000 .data
-8039af68 l    d  .init.data     00000000 .init.data
-
-BAD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802c0000 l    d  .rodata        00000000 .rodata
-80368000 l    d  .data  00000000 .data
-8039af68 l    d  .init.data     00000000 .init.data
-
-BAD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802c0000 l    d  .rodata        00000000 .rodata
-8036d000 l    d  .data  00000000 .data
-803a0f68 l    d  .init.data     00000000 .init.data
-
-BAD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802c0000 l    d  .rodata        00000000 .rodata
-8036f000 l    d  .data  00000000 .data
-803a2f68 l    d  .init.data     00000000 .init.data
-
-BAD
-> objdump --syms vmlinux | egrep "(ro)?data" | head -n 3
-802c0000 l    d  .rodata        00000000 .rodata
-80372000 l    d  .data  00000000 .data
-803a4f68 l    d  .init.data     00000000 .init.data
-
--- 
-Rafał
+[1]:
+http://lists.infradead.org/pipermail/lede-dev/2016-June/001127.html

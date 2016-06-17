@@ -1,59 +1,132 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 00:52:35 +0200 (CEST)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:34519 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27042677AbcFPWwdrU0I5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jun 2016 00:52:33 +0200
-Received: by mail-pf0-f195.google.com with SMTP id 66so4808101pfy.1;
-        Thu, 16 Jun 2016 15:52:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=0PpAI9dnbQqWC2mUQ38OL9LSYVn7XmuPcg0l+2izO9U=;
-        b=FthdGsYk1MpKFv4Ogk+edRSovzpDg6dW+b+w6NPivVwPzvQj1Jqu85ET5Tsppg+RvO
-         ZAvzeoqUi4KHW5bJW/hPxzNzCr5I81HNS/fsn3s+QWESDnorvCbGsZNuwSg1LYv0uZy/
-         e4Rh2oSN1+D275jg98XxEa70bL/NqAdQpsgPAUkRaSb4yYeWxm1A4cw0Az4w0H+8rwU/
-         PEbZQAf5i0vzG34AwRqi8ULLrBDYVi0ucvSZQ68Up34pN8R5tJn9F8uGrVTC4oIlCrTK
-         aXWoQ7p9C7wAAU+1XF5E6JR4MkWzRb+cKYs2pgCK6hNLvQBzHN/P9v1EICql26ndESSE
-         am0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=0PpAI9dnbQqWC2mUQ38OL9LSYVn7XmuPcg0l+2izO9U=;
-        b=dqsuBp+PJJSY8NEO05XfjK5A7+vtGh2ZByY5ECZB3dvzAbyV2BPEqZ17ACsAV2T9RF
-         epmzYG45sgf1hSTpSMbF0EeiL5JKmKT5R6TCR4ee6Qcw6dGXCRE4hY7ZOiFB7cE2IjwT
-         BmaV0sKSujb2/mnxV1W96Uc8opww28oN2fKOdOXNbRZQ0XUfXrJriVUW2COgEHFxr6mO
-         oB9gOa0wcpGYCab59faPGqAU4Xwi7ztirQHoDvPByLKSFl1eNzmiVfGoFUW3m5pZcRYm
-         k5xGSMsyc26IBzM8HFxa9gaOosnbHRUH5Oqoi+JSYjuDXjDbmNpz1cB5oHneku/Yzc+j
-         I6jw==
-X-Gm-Message-State: ALyK8tKzub+5j9lzxnJTCcyxCJ6HuLuQJUF0W2cG24coY5yfsV3yj6c1fuo2taThWP4N2g==
-X-Received: by 10.98.47.129 with SMTP id v123mr7779697pfv.71.1466117547638;
-        Thu, 16 Jun 2016 15:52:27 -0700 (PDT)
-Received: from dl.caveonetworks.com ([50.233.148.158])
-        by smtp.gmail.com with ESMTPSA id o64sm63059919pfb.76.2016.06.16.15.52.25
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 16 Jun 2016 15:52:26 -0700 (PDT)
-Received: from dl.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dl.caveonetworks.com (8.14.5/8.14.5) with ESMTP id u5GMqOkB018185;
-        Thu, 16 Jun 2016 15:52:24 -0700
-Received: (from ddaney@localhost)
-        by dl.caveonetworks.com (8.14.5/8.14.5/Submit) id u5GMoWEo018053;
-        Thu, 16 Jun 2016 15:50:32 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>, stable@vger.kernel.org
-Subject: [PATCH] MIPS: Fix page table corruption on THP permission changes.
-Date:   Thu, 16 Jun 2016 15:50:31 -0700
-Message-Id: <1466117431-18020-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.11.7
-Return-Path: <ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 10:37:14 +0200 (CEST)
+Received: from mailout4.w1.samsung.com ([210.118.77.14]:61860 "EHLO
+        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27030556AbcFQIhL1Bscu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jun 2016 10:37:11 +0200
+Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
+ by mailout4.w1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTP id <0O8W00JOZQLRRV10@mailout4.w1.samsung.com>; Fri,
+ 17 Jun 2016 09:37:04 +0100 (BST)
+X-AuditID: cbfec7f5-f792a6d000001302-22-5763b6af342b
+Received: from eusync2.samsung.com ( [203.254.199.212])
+        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id D5.93.04866.FA6B3675; Fri,
+ 17 Jun 2016 09:37:03 +0100 (BST)
+Received: from [106.120.53.17] by eusync2.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTPA id <0O8W00613QLOPY30@eusync2.samsung.com>; Fri,
+ 17 Jun 2016 09:37:03 +0100 (BST)
+Subject: Re: [PATCH V2 63/63] clocksources: Switch back to the clksrc table
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, tglx@linutronix.de
+References: <1466112442-31105-1-git-send-email-daniel.lezcano@linaro.org>
+ <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
+        Maxime Coquelin <maxime.coquelin@st.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Kukjin Kim <kgene@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Carlo Caione <carlo@caione.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <kernel@pengutronix.de>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Barry Song <baohua@kernel.org>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Tony Prisk <linux@prisktech.co.nz>,
+        Arnd Bergmann <arnd@arndb.de>,
+        John Stultz <john.stultz@linaro.org>,
+        Noam Camus <noamc@ezchip.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Felipe Balbi <balbi@ti.com>,
+        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Hanjun Guo <hanjun.guo@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Marc Zyngier <Marc.Zyngier@arm.com>,
+        "open list:SYNOPSYS ARC ARCH..." <linux-snps-arc@lists.infradead.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "open list:RALINK MIPS ARCHI..." <linux-mips@linux-mips.org>,
+        "moderated list:NIOS2 ARCHITECTURE" 
+        <nios2-dev@lists.rocketboards.org>,
+        "open list:ARM/STI ARCHITECTURE" <kernel@stlinux.com>,
+        "moderated list:BROADCOM BCM2835..." 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "open list:BROADCOM BCM281XX..." 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "moderated list:ARM/SAMSUNG EXYNO..." 
+        <linux-samsung-soc@vger.kernel.org>,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC..." 
+        <linux-mediatek@lists.infradead.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        "open list:TEGRA ARCHITECTUR..." <linux-tegra@vger.kernel.org>,
+        "open list:GENERIC INCLUDE/A..." <linux-arch@vger.kernel.org>
+From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Message-id: <5763B6AB.3010201@samsung.com>
+Date:   Fri, 17 Jun 2016 10:36:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.8.0
+MIME-version: 1.0
+In-reply-to: <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
+Content-type: text/plain; charset=windows-1252
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxbZRTG896P95bOmrsO5juIMWncXDDgGBpP1ExjYrzGmMzEOJVEV7sb
+        2KCMtWNxxjhEPqTC6KpEdwfIhrWVwcDeDUqBrTSuG2OydUU+tIytgK18DDZlgyGbLY1x/z3n
+        Ob/nnJzkKGi1FScqdubuFQ252hwNVjK99871pzS36rZtCnUqYdS2BZYtXg66Rw/AuKeCBvvA
+        NANNFWcZuNbYTMPsD+UIav96FNyf+RHcvfEzB32TQQZanF+ycD84xcLFpRS4dKcdw1Q4DRqq
+        2hmYG/KyUDk2RcNi6UkKnCVHGZgwBzB8/Y+Ngrojq+AL1zwDjrEBFvyuagz+z30IzFUWDm5d
+        u0/Dod9bOPj20mkKigNNFJT9LWHwVHUhKPLbaXBbSxmYXgpz0DHYh2A5cA9DvamGBeugj4LC
+        onQI9tZjOOXoomH8Zi8DnoMZYJImMEz3X+ag+vyvCMbsMxxc6XwcJg7LGG4cH0dgcSaCxWOA
+        YafMQcnt9yEgyyzYLjgZmOwuYUB2VEXucdUyL70qFHeZsVA468VCY20jEvwDPlpYumtBwu15
+        CyPMDhVzgjT6CxZMPQcpoSV4nBWmy/pYYdzhQ0K7NMIJ9Z1/UoKjoQwLgYFOvPWJ95Qv7BBz
+        du4TDU9t2a7MCrurqbx+9UfeHyu5AhRWmVCcgvBPE+/CdTqm15LLV5uxCSkVat6KyGKTiYoV
+        fyDivtnBRqk1/OvknHdyJRHPv0xah0+zMciEiPyTk4kWNO8nRA4NryQwn05k2/c4qlV8Muk5
+        NrjiM/x6Un60ZkUn8O8QqW2BijGrycJXV5mojotss10PRXxFZGgqGfUlR22af4zIjTO0GfHS
+        Awnpf0p6gKpDdANKEPN1ecYPM/WbU41avTE/NzNVt1vvQLHnnXciq/c5D+IVSPOQyp6g26Zm
+        tfuM+/UeRBS0Jl61S45Yqh3a/R+Lht0fGPJzRKMHJSkYzSOqw67Zt9R8pnavmC2KeaLhvy6l
+        iEssQNXxF7zPV3SUHvCeWTV3Khhyl2Qce/vI6uW2kfxsmy6uuM2/6EvTJ3fvmbPvejgpSzV/
+        /hP1OvHZ9nefLNqY8spQRuX2N3PX3QltyJ45QShX6ybxSvf6mlttL468tufQxhO2xLqtv6nN
+        Z8q/69dTOD2c3ePfIK19I/QNnrtY+MynBUlqDWPM0qYl0waj9l/j97wBuAMAAA==
+Return-Path: <k.kozlowski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54084
+X-archive-position: 54085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: k.kozlowski@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,65 +139,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: David Daney <david.daney@cavium.com>
+On 06/16/2016 11:27 PM, Daniel Lezcano wrote:
+> All the clocksource drivers's init function are now converted to return
+> an error code. CLOCKSOURCE_OF_DECLARE is no longer used as well as the
+> clksrc-of table.
+> 
+> Let's convert back the names:
+>  - CLOCKSOURCE_OF_DECLARE_RET => CLOCKSOURCE_OF_DECLARE
+>  - clksrc-of-ret              => clksrc-of
+> 
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> ---
+>  arch/arc/kernel/time.c                    |  6 +++---
+>  arch/arm/kernel/smp_twd.c                 |  6 +++---
+>  arch/microblaze/kernel/timer.c            |  2 +-
+>  arch/mips/ralink/cevt-rt3352.c            |  2 +-
+>  arch/nios2/kernel/time.c                  |  2 +-
+>  drivers/clocksource/arm_arch_timer.c      |  6 +++---
+>  drivers/clocksource/arm_global_timer.c    |  2 +-
+>  drivers/clocksource/armv7m_systick.c      |  2 +-
+>  drivers/clocksource/asm9260_timer.c       |  2 +-
+>  drivers/clocksource/bcm2835_timer.c       |  2 +-
+>  drivers/clocksource/bcm_kona_timer.c      |  4 ++--
+>  drivers/clocksource/cadence_ttc_timer.c   |  2 +-
+>  drivers/clocksource/clksrc-dbx500-prcmu.c |  2 +-
+>  drivers/clocksource/clksrc-probe.c        | 14 --------------
+>  drivers/clocksource/clksrc_st_lpc.c       |  2 +-
+>  drivers/clocksource/clps711x-timer.c      |  2 +-
+>  drivers/clocksource/dw_apb_timer_of.c     |  8 ++++----
+>  drivers/clocksource/exynos_mct.c          |  4 ++--
+>  drivers/clocksource/fsl_ftm_timer.c       |  2 +-
+>  drivers/clocksource/h8300_timer16.c       |  2 +-
+>  drivers/clocksource/h8300_timer8.c        |  2 +-
+>  drivers/clocksource/h8300_tpu.c           |  2 +-
+>  drivers/clocksource/meson6_timer.c        |  2 +-
+>  drivers/clocksource/mips-gic-timer.c      |  2 +-
+>  drivers/clocksource/moxart_timer.c        |  2 +-
+>  drivers/clocksource/mps2-timer.c          |  2 +-
+>  drivers/clocksource/mtk_timer.c           |  2 +-
+>  drivers/clocksource/mxs_timer.c           |  2 +-
+>  drivers/clocksource/nomadik-mtu.c         |  2 +-
+>  drivers/clocksource/pxa_timer.c           |  2 +-
+>  drivers/clocksource/qcom-timer.c          |  4 ++--
+>  drivers/clocksource/rockchip_timer.c      |  8 ++++----
+>  drivers/clocksource/samsung_pwm_timer.c   |  8 ++++----
 
-When the core THP code is modifying the permissions of a huge page it
-calls pmd_modify(), which unfortunately was clearing the _PAGE_HUGE bit
-of the page table entry.  The result can be kernel messages like:
+For exynos_mct and samsung_pwm_timer:
+Acked-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 
-mm/memory.c:397: bad pmd 000000040080004d.
-mm/memory.c:397: bad pmd 00000003ff00004d.
-mm/memory.c:397: bad pmd 000000040100004d.
-
-or:
-
-------------[ cut here ]------------
-WARNING: at mm/mmap.c:3200 exit_mmap+0x150/0x158()
-Modules linked in: ipv6 at24 octeon3_ethernet octeon_srio_nexus m25p80
-CPU: 12 PID: 1295 Comm: pmderr Not tainted 3.10.87-rt80-Cavium-Octeon #4
-Stack : 0000000040808000 0000000014009ce1 0000000000400004 ffffffff81076ba0
-          0000000000000000 0000000000000000 ffffffff85110000 0000000000000119
-          0000000000000004 0000000000000000 0000000000000119 43617669756d2d4f
-          0000000000000000 ffffffff850fda40 ffffffff85110000 0000000000000000
-          0000000000000000 0000000000000009 ffffffff809207a0 0000000000000c80
-          ffffffff80f1bf20 0000000000000001 000000ffeca36828 0000000000000001
-          0000000000000000 0000000000000001 000000ffeca7e700 ffffffff80886924
-          80000003fd7a0000 80000003fd7a39b0 80000003fdea8000 ffffffff80885780
-          80000003fdea8000 ffffffff80f12218 000000000000000c 000000000000050f
-          0000000000000000 ffffffff80865c4c 0000000000000000 0000000000000000
-          ...
-Call Trace:
-[<ffffffff80865c4c>] show_stack+0x6c/0xf8
-[<ffffffff80885780>] warn_slowpath_common+0x78/0xa8
-[<ffffffff809207a0>] exit_mmap+0x150/0x158
-[<ffffffff80882d44>] mmput+0x5c/0x110
-[<ffffffff8088b450>] do_exit+0x230/0xa68
-[<ffffffff8088be34>] do_group_exit+0x54/0x1d0
-[<ffffffff8088bfc0>] __wake_up_parent+0x0/0x18
-
----[ end trace c7b38293191c57dc ]---
-BUG: Bad rss-counter state mm:80000003fa168000 idx:1 val:1536
-
-Fix by not clearing _PAGE_HUGE bit.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: stable@vger.kernel.org
----
- arch/mips/include/asm/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index a6b611f..477b1b1 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -632,7 +632,7 @@ static inline struct page *pmd_page(pmd_t pmd)
- 
- static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
- {
--	pmd_val(pmd) = (pmd_val(pmd) & _PAGE_CHG_MASK) | pgprot_val(newprot);
-+	pmd_val(pmd) = (pmd_val(pmd) & (_PAGE_CHG_MASK | _PAGE_HUGE)) | pgprot_val(newprot);
- 	return pmd;
- }
- 
--- 
-1.7.11.7
+Best regards,
+Krzysztof

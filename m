@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 19:19:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32300 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042884AbcFQRT5NFs37 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jun 2016 19:19:57 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id BD6D23C2D2357;
-        Fri, 17 Jun 2016 18:19:46 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 17 Jun 2016 18:19:49 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        Steven Rostedt <rostedt@goodmis.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 22:11:53 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.136]:45002 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27041967AbcFQULwcXA8F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Jun 2016 22:11:52 +0200
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 114D8201BC;
+        Fri, 17 Jun 2016 20:11:50 +0000 (UTC)
+Received: from localhost (unknown [69.71.1.1])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 329DB2017E;
+        Fri, 17 Jun 2016 20:11:49 +0000 (UTC)
+Subject: [PATCH v1 0/4] PCI: pci_resource_to_user() cleanups
+To:     Michal Simek <monstr@monstr.eu>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@redhat.com>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>
-Subject: [PATCH] MIPS: KVM: Combine entry trace events into class
-Date:   Fri, 17 Jun 2016 18:19:40 +0100
-Message-ID: <1466183980-11264-1-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Yinghai Lu <yinghai@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Cc:     sparclinux@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Date:   Fri, 17 Jun 2016 15:11:47 -0500
+Message-ID: <20160617195835.11714.18657.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+User-Agent: StGit/0.16
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <helgaas@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54109
+X-archive-position: 54110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,99 +51,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Combine the kvm_enter, kvm_reenter and kvm_out trace events into a
-single kvm_transition event class to reduce duplication and bloat.
+The /sys/devices/pci.../.../resource and /proc/bus/pci/devices files
+contain PCI BAR addresses.  On most architectures these addresses are
+"resource" values, e.g., CPU physical memory addresses or Linux I/O port
+numbers.  These may be offset from the raw PCI values if there are multiple
+PCI host bridges.
 
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Fixes: 93258604ab6d ("MIPS: KVM: Add guest mode switch trace events")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Radim Krčmář <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
+On others (microblaze, mips, powerpc, sparc) they are raw PCI values as
+they would appear on the PCI bus.  pci_resource_to_user() converts from the
+struct resource to whatever the arch wants to expose.  It's a no-op on
+most arches.
+
+The PCI core provides a pcibios_resource_to_bus() function that converts
+from struct resource values to raw PCI bus values.  These patches use that
+when possible instead of the arch-specific hand-coded equivalent.
+
+These shouldn't fix or break anything unless I've made a mistake.
+
 ---
- arch/mips/kvm/trace.h | 62 ++++++++++++++++++---------------------------------
- 1 file changed, 22 insertions(+), 40 deletions(-)
 
-diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-index 75f1fda08f70..e7d140fc574e 100644
---- a/arch/mips/kvm/trace.h
-+++ b/arch/mips/kvm/trace.h
-@@ -20,50 +20,32 @@
- /*
-  * Tracepoints for VM enters
-  */
--TRACE_EVENT(kvm_enter,
--	    TP_PROTO(struct kvm_vcpu *vcpu),
--	    TP_ARGS(vcpu),
--	    TP_STRUCT__entry(
--			__field(unsigned long, pc)
--	    ),
--
--	    TP_fast_assign(
--			__entry->pc = vcpu->arch.pc;
--	    ),
--
--	    TP_printk("PC: 0x%08lx",
--		      __entry->pc)
-+DECLARE_EVENT_CLASS(kvm_transition,
-+	TP_PROTO(struct kvm_vcpu *vcpu),
-+	TP_ARGS(vcpu),
-+	TP_STRUCT__entry(
-+		__field(unsigned long, pc)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pc = vcpu->arch.pc;
-+	),
-+
-+	TP_printk("PC: 0x%08lx",
-+		  __entry->pc)
- );
- 
--TRACE_EVENT(kvm_reenter,
--	    TP_PROTO(struct kvm_vcpu *vcpu),
--	    TP_ARGS(vcpu),
--	    TP_STRUCT__entry(
--			__field(unsigned long, pc)
--	    ),
-+DEFINE_EVENT(kvm_transition, kvm_enter,
-+	     TP_PROTO(struct kvm_vcpu *vcpu),
-+	     TP_ARGS(vcpu));
- 
--	    TP_fast_assign(
--			__entry->pc = vcpu->arch.pc;
--	    ),
--
--	    TP_printk("PC: 0x%08lx",
--		      __entry->pc)
--);
-+DEFINE_EVENT(kvm_transition, kvm_reenter,
-+	     TP_PROTO(struct kvm_vcpu *vcpu),
-+	     TP_ARGS(vcpu));
- 
--TRACE_EVENT(kvm_out,
--	    TP_PROTO(struct kvm_vcpu *vcpu),
--	    TP_ARGS(vcpu),
--	    TP_STRUCT__entry(
--			__field(unsigned long, pc)
--	    ),
--
--	    TP_fast_assign(
--			__entry->pc = vcpu->arch.pc;
--	    ),
--
--	    TP_printk("PC: 0x%08lx",
--		      __entry->pc)
--);
-+DEFINE_EVENT(kvm_transition, kvm_out,
-+	     TP_PROTO(struct kvm_vcpu *vcpu),
-+	     TP_ARGS(vcpu));
- 
- /* The first 32 exit reasons correspond to Cause.ExcCode */
- #define KVM_TRACE_EXIT_INT		 0
--- 
-2.4.10
+Bjorn Helgaas (4):
+      PCI: Unify pci_resource_to_user() declarations
+      microblaze/PCI: Implement pci_resource_to_user() with pcibios_resource_to_bus()
+      powerpc/pci: Implement pci_resource_to_user() with pcibios_resource_to_bus()
+      sparc/PCI: Implement pci_resource_to_user() with pcibios_resource_to_bus()
+
+
+ arch/microblaze/include/asm/pci.h |    3 ---
+ arch/microblaze/pci/pci-common.c  |   42 ++++++++++++-------------------------
+ arch/mips/include/asm/pci.h       |   10 ---------
+ arch/mips/pci/pci.c               |   10 +++++++++
+ arch/powerpc/include/asm/pci.h    |    3 ---
+ arch/powerpc/kernel/pci-common.c  |   42 ++++++++++++-------------------------
+ arch/sparc/include/asm/pci_64.h   |    3 ---
+ arch/sparc/kernel/pci.c           |   20 ++++++++++--------
+ include/linux/pci.h               |    6 ++++-
+ 9 files changed, 54 insertions(+), 85 deletions(-)

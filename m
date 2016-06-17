@@ -1,22 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 18:07:39 +0200 (CEST)
-Received: from aserp1040.oracle.com ([141.146.126.69]:41113 "EHLO
-        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042843AbcFQQHgchTwf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jun 2016 18:07:36 +0200
-Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
-        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u5HG5MqC008450
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 17 Jun 2016 16:05:23 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u5HG5Lcl015240
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 17 Jun 2016 16:05:21 GMT
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id u5HG54uF007159;
-        Fri, 17 Jun 2016 16:05:08 GMT
-Received: from [10.211.55.66] (/10.211.55.66)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 17 Jun 2016 09:05:03 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 18:18:24 +0200 (CEST)
+Received: from mail-wm0-f67.google.com ([74.125.82.67]:33341 "EHLO
+        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27042843AbcFQQSW1Z1hf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jun 2016 18:18:22 +0200
+Received: by mail-wm0-f67.google.com with SMTP id r201so886386wme.0;
+        Fri, 17 Jun 2016 09:18:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=pMF1zOcDZObNBV5lgFc70xacYxiVklvA3TchBoJYH1k=;
+        b=YhBXMQjU4RM+XkX0a/KVrGvt+brlYvmSBseUevj+LhY6/CWxZqWw0xRtBvskkW/mrm
+         K4pKeGP58qsejAHwgyCMr9W4du+OyvPegMSFxGnNmblZZQ/dyJaqP61ZHdVBi+AMXZ7C
+         vAE6JXcVBjCuPtw5EF/e7foCsuQpPfnQq6/1/mlsL4ToQm6f3GzG2D3aCIr2L6MXp2vW
+         LAp+JChn21Z3701gICSB7iJwy5R4wbVP6oqTpEU8wRXP+B86Pvxyh/3YWzBb9D3KWkPX
+         bFB3bYm+o7Sfko3dOX2k80y+/RkUQvBIiF2oOt5RsH+PdJBO6g9/liB4kg13tjEivi/m
+         +FdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=pMF1zOcDZObNBV5lgFc70xacYxiVklvA3TchBoJYH1k=;
+        b=XhEN6JxGANPmg3JAd4IYSgc0DYHo+I20S0YJYT4Y8oMKu1R7T4szXlahO5TAo7PKKK
+         Cyy2de+b49RVUxC96bbmoyNv7nYZ4xBlaYGF6xmvJv4DrsAKS05nXqYo+NGYIqc1IwIZ
+         ON54aDULAnQH64fEwl1TAUfH7RI4osZgg5HEqiMSXGKqEYvAZHpLNOMq8uIifjmjc3jD
+         PYhg1+VgIyojhTUNjnJaB2TuYHlcEI9FTm9TQlaq4NPDx1GOl5z/w67d2/DZpnhfj75M
+         bhhd4e7+0kjgKgmG3MxOwNHyko5zX7rHYJtjJH7F1HIKlucfB4ZVQWh0rVEmjbjgF9f2
+         01VQ==
+X-Gm-Message-State: ALyK8tL5iFkSqP+IlO2uO6fhVAxw7t8zzErg6MJPGVQWRUnJMYBZbHU2PEi3v3T8lECp+w==
+X-Received: by 10.194.80.70 with SMTP id p6mr3022104wjx.45.1466180297122;
+        Fri, 17 Jun 2016 09:18:17 -0700 (PDT)
+Received: from linux-gy6r.site (0.red-83-38-219.dynamicip.rima-tde.net. [83.38.219.0])
+        by smtp.gmail.com with ESMTPSA id x10sm35893666wjj.14.2016.06.17.09.18.13
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 17 Jun 2016 09:18:16 -0700 (PDT)
 Subject: Re: [PATCH V2 63/63] clocksources: Switch back to the clksrc table
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>, tglx@linutronix.de
 References: <1466112442-31105-1-git-send-email-daniel.lezcano@linaro.org>
@@ -46,7 +63,6 @@ Cc:     linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
         Liviu Dudau <liviu.dudau@arm.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
         Heiko Stuebner <heiko@sntech.de>,
         Maxime Ripard <maxime.ripard@free-electrons.com>,
         Chen-Yu Tsai <wens@csie.org>,
@@ -94,26 +110,24 @@ Cc:     linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
         "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
         "open list:TEGRA ARCHITECTUR..." <linux-tegra@vger.kernel.org>,
         "open list:GENERIC INCLUDE/A..." <linux-arch@vger.kernel.org>
-From:   Santosh Shilimkar <santosh.shilimkar@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <afeed273-b0b9-eef6-5e9b-78f069ebe743@oracle.com>
-Date:   Fri, 17 Jun 2016 09:04:47 -0700
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.1.1
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+Message-ID: <576422C4.2000104@gmail.com>
+Date:   Fri, 17 Jun 2016 18:18:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.7.0
 MIME-Version: 1.0
 In-Reply-To: <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Source-IP: userv0021.oracle.com [156.151.31.71]
-Return-Path: <santosh.shilimkar@oracle.com>
+Return-Path: <matthias.bgg@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54104
+X-archive-position: 54105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: santosh.shilimkar@oracle.com
+X-original-sender: matthias.bgg@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -126,18 +140,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 6/16/2016 2:27 PM, Daniel Lezcano wrote:
+
+
+On 16/06/16 23:27, Daniel Lezcano wrote:
 > All the clocksource drivers's init function are now converted to return
 > an error code. CLOCKSOURCE_OF_DECLARE is no longer used as well as the
 > clksrc-of table.
 >
 > Let's convert back the names:
->  - CLOCKSOURCE_OF_DECLARE_RET => CLOCKSOURCE_OF_DECLARE
->  - clksrc-of-ret              => clksrc-of
+>   - CLOCKSOURCE_OF_DECLARE_RET => CLOCKSOURCE_OF_DECLARE
+>   - clksrc-of-ret              => clksrc-of
 >
 > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 > ---
+>   arch/arc/kernel/time.c                    |  6 +++---
 
->  drivers/clocksource/timer-keystone.c      |  2 +-
+[...]
 
-Acked-by: Santosh Shilimkar <ssantosh@kernel.org>
+>   drivers/clocksource/mtk_timer.c           |  2 +-
+
+For mediatek driver:
+Acked-by: Matthias Brugger <matthias.bgg@gmail.com>

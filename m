@@ -1,27 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 10:46:48 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:34406 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 10:54:37 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:34529 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27042775AbcFQIqoY412u (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Jun 2016 10:46:44 +0200
-Subject: Re: [PATCH] MIPS: Lantiq: fix build failure
-To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1466109968-22033-1-git-send-email-sudipm.mukherjee@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+        id S27042775AbcFQIyfBg43u (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Jun 2016 10:54:35 +0200
+Subject: Re: [PATCH V2 57/63] clocksource/drivers/ralink: Convert init
+ function to return error
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, tglx@linutronix.de
+References: <1466112442-31105-1-git-send-email-daniel.lezcano@linaro.org>
+ <1466112442-31105-58-git-send-email-daniel.lezcano@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        "open list:RALINK MIPS ARCHI..." <linux-mips@linux-mips.org>
 From:   John Crispin <john@phrozen.org>
-Message-ID: <224d637f-70b6-f8cc-0c68-c3e51d538906@phrozen.org>
-Date:   Fri, 17 Jun 2016 10:46:43 +0200
+Message-ID: <23a1568b-59c2-d0e6-ae26-27df16240398@phrozen.org>
+Date:   Fri, 17 Jun 2016 10:54:34 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:45.0)
  Gecko/20100101 Thunderbird/45.1.1
 MIME-Version: 1.0
-In-Reply-To: <1466109968-22033-1-git-send-email-sudipm.mukherjee@gmail.com>
+In-Reply-To: <1466112442-31105-58-git-send-email-daniel.lezcano@linaro.org>
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
 Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54087
+X-archive-position: 54088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,57 +42,75 @@ X-list: linux-mips
 
 
 
-On 16/06/2016 22:46, Sudip Mukherjee wrote:
-> Some configs of mips like xway_defconffig are failing with the error:
-> arch/mips/lantiq/irq.c:209:2: error: initialization from incompatible
-> pointer type [-Werror]
->   "icu",
->   ^
-> arch/mips/lantiq/irq.c:209:2: error: (near initialization for
-> 'ltq_irq_type.parent_device') [-Werror]
-> arch/mips/lantiq/irq.c:219:2: error: initialization from incompatible
-> pointer type [-Werror]
->   "eiu",
->   ^
-> arch/mips/lantiq/irq.c:219:2: error: (near initialization for
-> 'ltq_eiu_type.parent_device') [-Werror]
+On 16/06/2016 23:27, Daniel Lezcano wrote:
+> The init functions do not return any error. They behave as the following:
 > 
-> The first member of the "struct irq" is no longer a pointer for the
-> name.
+>   - panic, thus leading to a kernel crash while another timer may work and
+>        make the system boot up correctly
 > 
-> Fixes: be45beb2df69 ("genirq: Add runtime power management support for IRQ chips")
-> Signed-off-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+>   or
+> 
+>   - print an error and let the caller unaware if the state of the system
+> 
+> Change that by converting the init functions to return an error conforming
+> to the CLOCKSOURCE_OF_RET prototype.
+> 
+> Proper error handling (rollback, errno value) will be changed later case
+> by case, thus this change just return back an error or success in the init
+> function.
+> 
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
 Acked-by: John Crispin <john@phrozen.org>
 
 > ---
+>  arch/mips/ralink/cevt-rt3352.c | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
 > 
-> build log can be seen at:
-> https://travis-ci.org/sudipm-mukherjee/parport/jobs/137992701
-> 
->  arch/mips/lantiq/irq.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-> index ff17669e..02c0252 100644
-> --- a/arch/mips/lantiq/irq.c
-> +++ b/arch/mips/lantiq/irq.c
-> @@ -206,7 +206,7 @@ static void ltq_shutdown_eiu_irq(struct irq_data *d)
+> diff --git a/arch/mips/ralink/cevt-rt3352.c b/arch/mips/ralink/cevt-rt3352.c
+> index 3ad0b07..f2d3c79 100644
+> --- a/arch/mips/ralink/cevt-rt3352.c
+> +++ b/arch/mips/ralink/cevt-rt3352.c
+> @@ -117,11 +117,13 @@ static int systick_set_oneshot(struct clock_event_device *evt)
+>  	return 0;
 >  }
 >  
->  static struct irq_chip ltq_irq_type = {
-> -	"icu",
-> +	.name = "icu",
->  	.irq_enable = ltq_enable_irq,
->  	.irq_disable = ltq_disable_irq,
->  	.irq_unmask = ltq_enable_irq,
-> @@ -216,7 +216,7 @@ static struct irq_chip ltq_irq_type = {
->  };
+> -static void __init ralink_systick_init(struct device_node *np)
+> +static int __init ralink_systick_init(struct device_node *np)
+>  {
+> +	int ret;
+> +
+>  	systick.membase = of_iomap(np, 0);
+>  	if (!systick.membase)
+> -		return;
+> +		return -ENXIO;
 >  
->  static struct irq_chip ltq_eiu_type = {
-> -	"eiu",
-> +	.name = "eiu",
->  	.irq_startup = ltq_startup_eiu_irq,
->  	.irq_shutdown = ltq_shutdown_eiu_irq,
->  	.irq_enable = ltq_enable_irq,
+>  	systick_irqaction.name = np->name;
+>  	systick.dev.name = np->name;
+> @@ -131,16 +133,21 @@ static void __init ralink_systick_init(struct device_node *np)
+>  	systick.dev.irq = irq_of_parse_and_map(np, 0);
+>  	if (!systick.dev.irq) {
+>  		pr_err("%s: request_irq failed", np->name);
+> -		return;
+> +		return -EINVAL;
+>  	}
+>  
+> -	clocksource_mmio_init(systick.membase + SYSTICK_COUNT, np->name,
+> -			SYSTICK_FREQ, 301, 16, clocksource_mmio_readl_up);
+> +	ret = clocksource_mmio_init(systick.membase + SYSTICK_COUNT, np->name,
+> +				    SYSTICK_FREQ, 301, 16,
+> +				    clocksource_mmio_readl_up);
+> +	if (ret)
+> +		return ret;
+>  
+>  	clockevents_register_device(&systick.dev);
+>  
+>  	pr_info("%s: running - mult: %d, shift: %d\n",
+>  			np->name, systick.dev.mult, systick.dev.shift);
+> +
+> +	return 0;
+>  }
+>  
+> -CLOCKSOURCE_OF_DECLARE(systick, "ralink,cevt-systick", ralink_systick_init);
+> +CLOCKSOURCE_OF_DECLARE_RET(systick, "ralink,cevt-systick", ralink_systick_init);
 > 

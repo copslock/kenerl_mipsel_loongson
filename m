@@ -1,40 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 17:04:01 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:24802 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27042861AbcFQPEAKXFAn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jun 2016 17:04:00 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id B483DF3C4BE0E;
-        Fri, 17 Jun 2016 16:03:49 +0100 (IST)
-Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 17 Jun 2016 16:03:52 +0100
-Received: from hhunt-arch.le.imgtec.org (192.168.154.26) by
- LEMAIL01.le.imgtec.org (192.168.152.62) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 17 Jun 2016 16:03:52 +0100
-From:   Harvey Hunt <harvey.hunt@imgtec.com>
-To:     <ralf@linux-mips.org>
-CC:     Harvey Hunt <harvey.hunt@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Alex Smith <alex@alex-smith.me.uk>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] MIPS: Factor o32 specific code into signal_o32.c
-Date:   Fri, 17 Jun 2016 16:03:45 +0100
-Message-ID: <20160617150345.18722-1-harvey.hunt@imgtec.com>
-X-Mailer: git-send-email 2.8.3
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.26]
-Return-Path: <Harvey.Hunt@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 17:05:10 +0200 (CEST)
+Received: from mail-lf0-f68.google.com ([209.85.215.68]:33568 "EHLO
+        mail-lf0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27041562AbcFQPFJfkckn convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Jun 2016 17:05:09 +0200
+Received: by mail-lf0-f68.google.com with SMTP id l188so93465lfe.0;
+        Fri, 17 Jun 2016 08:05:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=gCYiINp9yQ19ycEkdwSh3xUEkwTOWqtvBTdA9GPRDg0=;
+        b=GFuLDtM8dI7bQY8R6kT34u8AW775JyXK13F6L+12h8o0eXuxN0+htEw/0Am7ENe3WV
+         cLqyBwnz7nnGDILeatMLE6TDhGpn8yjQlGrmkl/mww1o9S7wva0ZIeewJxXqJ8siVkxf
+         4yI8u+T4V/Y6nG4Try+is5gAGOEo+zXuqCvkpAALPQLpTo+x/UHzs4Wsz+DZ8DPX7h+5
+         d2AVHHR+5YIlVkkDp2m96Zcu5Pq/RGUawKuX6sRPDAuc6kzqU1doKN4oiwZror+iRO9+
+         MUimdI+zhAE783uvBKdGdP5tfRXae2XqpirrLb8pNZo8UnFyTwb9WVky/HQvZUV6KRB5
+         VwQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=gCYiINp9yQ19ycEkdwSh3xUEkwTOWqtvBTdA9GPRDg0=;
+        b=LKuzJzZ+Yg5hAkQ3iyvPIE6Sn4reXQzZA3IbvdnGTzTY22vUTvp/a8NmBYmyrbEvAH
+         IhCIli6w0M3wyvWXmNqfj7XL2yWrDHupeMJGyi44PgAUcAGqLevR5/RqSsxKCvofcZqp
+         BCK1ZKW4JtHBRj/XO6H6hP/StgCCKBJcei5XJK8fF4kbCNJrXknZjChOdFz1BwL4RErT
+         MNI8jPxWYbn5wuRU0KC91jl45eDsllDkNV7Wr02dhdrjzqwJR5vWprXt6KzS7wDsMt8J
+         DpdBg7QgaNYEtWyY7U7acu7nGuHfiX1snqZEpI5YgZViSr7GFEzQOBQJnmU3hJUtkTGb
+         CLEA==
+X-Gm-Message-State: ALyK8tLeZDt6X3clSb0MzWCwcPcN4C+emIZWB/e0uigzN7Pk7SHNBq+VycSLDvfzwEiL/A==
+X-Received: by 10.46.32.73 with SMTP id g70mr801265ljg.28.1466175904152;
+        Fri, 17 Jun 2016 08:05:04 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+        by smtp.gmail.com with ESMTPSA id g1sm4166336lbd.36.2016.06.17.08.05.02
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 17 Jun 2016 08:05:03 -0700 (PDT)
+Date:   Fri, 17 Jun 2016 18:06:41 +0300
+From:   Antony Pavlov <antonynpavlov@gmail.com>
+To:     Jonas Gorski <jogo@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        John Crispin <john@phrozen.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Alban Bedel <albeu@free.fr>,
+        Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+Subject: Re: [PATCH 1/2] MIPS: ZBOOT: copy appended dtb to the end of the
+ kernel
+Message-Id: <20160617180641.b8996bd61014fa1aae68e4b8@gmail.com>
+In-Reply-To: <b57eb27d-f7fe-b457-1915-75e995668a06@openwrt.org>
+References: <1466165260-6897-1-git-send-email-jogo@openwrt.org>
+        <1466165260-6897-2-git-send-email-jogo@openwrt.org>
+        <20160617170141.faf0b14b26177f820f01d140@gmail.com>
+        <b57eb27d-f7fe-b457-1915-75e995668a06@openwrt.org>
+X-Mailer: Sylpheed 3.5.0beta3 (GTK+ 2.24.25; i586-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54100
+X-archive-position: 54101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: harvey.hunt@imgtec.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,662 +79,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The commit ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
-caused building a 64 bit kernel with support for n32 and not o32
-to produce a build error:
+On Fri, 17 Jun 2016 16:44:09 +0200
+Jonas Gorski <jogo@openwrt.org> wrote:
 
-arch/mips/kernel/signal32.c:415:11: error: â€˜vdso_image_o32â€™ undeclared here (not in a function)
-  .vdso  = &vdso_image_o32,
+> Hi Antony,
+> 
+> On 17.06.2016 16:01, Antony Pavlov wrote:
+> > On Fri, 17 Jun 2016 14:07:39 +0200
+> > Jonas Gorski <jogo@openwrt.org> wrote:
+> > 
+> >> Instead of rewriting the arguments, just move the appended dtb to where
+> >> the decompressed kernel expects it. This eliminates the need for special
+> >> casing vmlinuz.bin appended dtb files.
+> >>
+> >> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+> >> ---
+> >>  arch/mips/Kconfig                      | 22 ++--------------------
+> >>  arch/mips/boot/compressed/Makefile     |  1 +
+> >>  arch/mips/boot/compressed/decompress.c | 21 +++++++++++++++++++++
+> >>  arch/mips/boot/compressed/head.S       | 16 ----------------
+> >>  4 files changed, 24 insertions(+), 36 deletions(-)
+> >>
+> >> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> >> index ac91939..0d0f71e 100644
+> >> --- a/arch/mips/Kconfig
+> >> +++ b/arch/mips/Kconfig
+> >> @@ -2885,10 +2885,10 @@ choice
+> >>  		  the documented boot protocol using a device tree.
+> >>  
+> >>  	config MIPS_RAW_APPENDED_DTB
+> >> -		bool "vmlinux.bin"
+> >> +		bool "vmlinux.bin or vmlinuz.bin"
+> >>  		help
+> >>  		  With this option, the boot code will look for a device tree binary
+> >> -		  DTB) appended to raw vmlinux.bin (without decompressor).
+> >> +		  DTB) appended to raw vmlinux.bin or vmlinuz.bin.
+> >>  		  (e.g. cat vmlinux.bin <filename>.dtb > vmlinux_w_dtb).
+> >>  
+> >>  		  This is meant as a backward compatibility convenience for those
+> >> @@ -2900,24 +2900,6 @@ choice
+> >>  		  look like a DTB header after a reboot if no actual DTB is appended
+> >>  		  to vmlinux.bin.  Do not leave this option active in a production kernel
+> >>  		  if you don't intend to always append a DTB.
+> >> -
+> >> -	config MIPS_ZBOOT_APPENDED_DTB
+> >> -		bool "vmlinuz.bin"
+> >> -		depends on SYS_SUPPORTS_ZBOOT
+> >> -		help
+> >> -		  With this option, the boot code will look for a device tree binary
+> >> -		  DTB) appended to raw vmlinuz.bin (with decompressor).
+> >> -		  (e.g. cat vmlinuz.bin <filename>.dtb > vmlinuz_w_dtb).
+> >> -
+> >> -		  This is meant as a backward compatibility convenience for those
+> >> -		  systems with a bootloader that can't be upgraded to accommodate
+> >> -		  the documented boot protocol using a device tree.
+> >> -
+> >> -		  Beware that there is very little in terms of protection against
+> >> -		  this option being confused by leftover garbage in memory that might
+> >> -		  look like a DTB header after a reboot if no actual DTB is appended
+> >> -		  to vmlinuz.bin.  Do not leave this option active in a production kernel
+> >> -		  if you don't intend to always append a DTB.
+> >>  endchoice
+> >>  
+> >>  choice
+> >> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+> >> index 90aca95..f31ec89 100644
+> >> --- a/arch/mips/boot/compressed/Makefile
+> >> +++ b/arch/mips/boot/compressed/Makefile
+> >> @@ -29,6 +29,7 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
+> >>  	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) \
+> >>  	-DKERNEL_ENTRY=$(VMLINUX_ENTRY_ADDRESS)
+> >>  
+> >> +
+> > 
+> > Could you please remote this extra empty line?
+> 
+> Oops, that must have slipped through. Fixed locally.
+> 
+> >>  # decompressor objects (linked with vmlinuz)
+> >>  vmlinuzobjs-y := $(obj)/head.o $(obj)/decompress.o $(obj)/string.o
+> >>  
+> >> diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
+> >> index 080cd53..e18ab3e 100644
+> >> --- a/arch/mips/boot/compressed/decompress.c
+> >> +++ b/arch/mips/boot/compressed/decompress.c
+> >> @@ -36,6 +36,12 @@ extern void puthex(unsigned long long val);
+> >>  #define puthex(val) do {} while (0)
+> >>  #endif
+> >>  
+> >> +#ifdef CONFIG_MIPS_RAW_APPENDED_DTB
+> > 
+> > Do we really need this '#ifdef' here?
+> 
+> No we don't, I was under the assumption the __appended_dtb is
+> only available when appended dtb support is enabled, for for
+> the decompressor it is always defined. At least gcc doesn't
+> seem to complain about it being unused in a quick test
+> compile. Fixed locally.
 
-Fix this by moving the o32 specific code into signal_o32.c and
-updating the Makefile accordingly.
+Now the __appended_dtb variable is always available.
+You can make the next step and try to transform your
 
-Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
-Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc: Alex Smith <alex@alex-smith.me.uk>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/mips/include/asm/signal.h |   2 +-
- arch/mips/kernel/Makefile      |   2 +-
- arch/mips/kernel/signal32.c    | 288 +----------------------------------------
- arch/mips/kernel/signal_o32.c  | 285 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 293 insertions(+), 284 deletions(-)
- create mode 100644 arch/mips/kernel/signal_o32.c
+  +#ifdef CONFIG_MIPS_RAW_APPENDED_DTB
+  +	if (fdt_magic((void *)&__appended_dtb) == FDT_MAGIC) {
+  +		unsigned int image_size, dtb_size;
 
-diff --git a/arch/mips/include/asm/signal.h b/arch/mips/include/asm/signal.h
-index 2292373..77b3b95 100644
---- a/arch/mips/include/asm/signal.h
-+++ b/arch/mips/include/asm/signal.h
-@@ -11,7 +11,7 @@
- 
- #include <uapi/asm/signal.h>
- 
--#ifdef CONFIG_MIPS32_COMPAT
-+#ifdef CONFIG_MIPS32_O32
- extern struct mips_abi mips_abi_32;
- 
- #define sig_uses_siginfo(ka, abi)                               \
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index e6053d0..4a603a3 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -71,7 +71,7 @@ obj-$(CONFIG_32BIT)		+= scall32-o32.o
- obj-$(CONFIG_64BIT)		+= scall64-64.o
- obj-$(CONFIG_MIPS32_COMPAT)	+= linux32.o ptrace32.o signal32.o
- obj-$(CONFIG_MIPS32_N32)	+= binfmt_elfn32.o scall64-n32.o signal_n32.o
--obj-$(CONFIG_MIPS32_O32)	+= binfmt_elfo32.o scall64-o32.o
-+obj-$(CONFIG_MIPS32_O32)	+= binfmt_elfo32.o scall64-o32.o signal_o32.o
- 
- obj-$(CONFIG_KGDB)		+= kgdb.o
- obj-$(CONFIG_PROC_FS)		+= proc.o
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index 78c8349..97b7c51 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -6,129 +6,26 @@
-  * Copyright (C) 1991, 1992  Linus Torvalds
-  * Copyright (C) 1994 - 2000, 2006  Ralf Baechle
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-+ * Copyright (C) 2016, Imagination Technologies Ltd.
-  */
--#include <linux/cache.h>
--#include <linux/compat.h>
--#include <linux/sched.h>
--#include <linux/mm.h>
--#include <linux/smp.h>
-+#include <linux/compiler.h>
-+#include <linux/errno.h>
- #include <linux/kernel.h>
- #include <linux/signal.h>
- #include <linux/syscalls.h>
--#include <linux/errno.h>
--#include <linux/wait.h>
--#include <linux/ptrace.h>
--#include <linux/suspend.h>
--#include <linux/compiler.h>
--#include <linux/uaccess.h>
- 
--#include <asm/abi.h>
--#include <asm/asm.h>
-+#include <asm/compat.h>
- #include <asm/compat-signal.h>
--#include <linux/bitops.h>
--#include <asm/cacheflush.h>
--#include <asm/sim.h>
--#include <asm/ucontext.h>
--#include <asm/fpu.h>
--#include <asm/war.h>
--#include <asm/dsp.h>
-+#include <asm/uaccess.h>
-+#include <asm/unistd.h>
- 
- #include "signal-common.h"
- 
--/*
-- * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
-- */
--#define __NR_O32_restart_syscall	4253
--
- /* 32-bit compatibility types */
- 
- typedef unsigned int __sighandler32_t;
- typedef void (*vfptr_t)(void);
- 
--struct ucontext32 {
--	u32		    uc_flags;
--	s32		    uc_link;
--	compat_stack_t      uc_stack;
--	struct sigcontext32 uc_mcontext;
--	compat_sigset_t	    uc_sigmask;	  /* mask last for extensibility */
--};
--
--struct sigframe32 {
--	u32 sf_ass[4];		/* argument save space for o32 */
--	u32 sf_pad[2];		/* Was: signal trampoline */
--	struct sigcontext32 sf_sc;
--	compat_sigset_t sf_mask;
--};
--
--struct rt_sigframe32 {
--	u32 rs_ass[4];			/* argument save space for o32 */
--	u32 rs_pad[2];			/* Was: signal trampoline */
--	compat_siginfo_t rs_info;
--	struct ucontext32 rs_uc;
--};
--
--static int setup_sigcontext32(struct pt_regs *regs,
--			      struct sigcontext32 __user *sc)
--{
--	int err = 0;
--	int i;
--
--	err |= __put_user(regs->cp0_epc, &sc->sc_pc);
--
--	err |= __put_user(0, &sc->sc_regs[0]);
--	for (i = 1; i < 32; i++)
--		err |= __put_user(regs->regs[i], &sc->sc_regs[i]);
--
--	err |= __put_user(regs->hi, &sc->sc_mdhi);
--	err |= __put_user(regs->lo, &sc->sc_mdlo);
--	if (cpu_has_dsp) {
--		err |= __put_user(rddsp(DSP_MASK), &sc->sc_dsp);
--		err |= __put_user(mfhi1(), &sc->sc_hi1);
--		err |= __put_user(mflo1(), &sc->sc_lo1);
--		err |= __put_user(mfhi2(), &sc->sc_hi2);
--		err |= __put_user(mflo2(), &sc->sc_lo2);
--		err |= __put_user(mfhi3(), &sc->sc_hi3);
--		err |= __put_user(mflo3(), &sc->sc_lo3);
--	}
--
--	/*
--	 * Save FPU state to signal context.  Signal handler
--	 * will "inherit" current FPU state.
--	 */
--	err |= protected_save_fp_context(sc);
--
--	return err;
--}
--
--static int restore_sigcontext32(struct pt_regs *regs,
--				struct sigcontext32 __user *sc)
--{
--	int err = 0;
--	s32 treg;
--	int i;
--
--	/* Always make any pending restarted system calls return -EINTR */
--	current->restart_block.fn = do_no_restart_syscall;
--
--	err |= __get_user(regs->cp0_epc, &sc->sc_pc);
--	err |= __get_user(regs->hi, &sc->sc_mdhi);
--	err |= __get_user(regs->lo, &sc->sc_mdlo);
--	if (cpu_has_dsp) {
--		err |= __get_user(treg, &sc->sc_hi1); mthi1(treg);
--		err |= __get_user(treg, &sc->sc_lo1); mtlo1(treg);
--		err |= __get_user(treg, &sc->sc_hi2); mthi2(treg);
--		err |= __get_user(treg, &sc->sc_lo2); mtlo2(treg);
--		err |= __get_user(treg, &sc->sc_hi3); mthi3(treg);
--		err |= __get_user(treg, &sc->sc_lo3); mtlo3(treg);
--		err |= __get_user(treg, &sc->sc_dsp); wrdsp(treg, DSP_MASK);
--	}
--
--	for (i = 1; i < 32; i++)
--		err |= __get_user(regs->regs[i], &sc->sc_regs[i]);
--
--	return err ?: protected_restore_fp_context(sc);
--}
--
- /*
-  * Atomically swap in the new signal mask, and wait for a signal.
-  */
-@@ -247,176 +144,3 @@ int copy_siginfo_from_user32(siginfo_t *to, compat_siginfo_t __user *from)
- 
- 	return 0;
- }
--
--asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
--{
--	struct sigframe32 __user *frame;
--	sigset_t blocked;
--	int sig;
--
--	frame = (struct sigframe32 __user *) regs.regs[29];
--	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
--		goto badframe;
--	if (__copy_conv_sigset_from_user(&blocked, &frame->sf_mask))
--		goto badframe;
--
--	set_current_blocked(&blocked);
--
--	sig = restore_sigcontext32(&regs, &frame->sf_sc);
--	if (sig < 0)
--		goto badframe;
--	else if (sig)
--		force_sig(sig, current);
--
--	/*
--	 * Don't let your children do this ...
--	 */
--	__asm__ __volatile__(
--		"move\t$29, %0\n\t"
--		"j\tsyscall_exit"
--		:/* no outputs */
--		:"r" (&regs));
--	/* Unreached */
--
--badframe:
--	force_sig(SIGSEGV, current);
--}
--
--asmlinkage void sys32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
--{
--	struct rt_sigframe32 __user *frame;
--	sigset_t set;
--	int sig;
--
--	frame = (struct rt_sigframe32 __user *) regs.regs[29];
--	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
--		goto badframe;
--	if (__copy_conv_sigset_from_user(&set, &frame->rs_uc.uc_sigmask))
--		goto badframe;
--
--	set_current_blocked(&set);
--
--	sig = restore_sigcontext32(&regs, &frame->rs_uc.uc_mcontext);
--	if (sig < 0)
--		goto badframe;
--	else if (sig)
--		force_sig(sig, current);
--
--	if (compat_restore_altstack(&frame->rs_uc.uc_stack))
--		goto badframe;
--
--	/*
--	 * Don't let your children do this ...
--	 */
--	__asm__ __volatile__(
--		"move\t$29, %0\n\t"
--		"j\tsyscall_exit"
--		:/* no outputs */
--		:"r" (&regs));
--	/* Unreached */
--
--badframe:
--	force_sig(SIGSEGV, current);
--}
--
--static int setup_frame_32(void *sig_return, struct ksignal *ksig,
--			  struct pt_regs *regs, sigset_t *set)
--{
--	struct sigframe32 __user *frame;
--	int err = 0;
--
--	frame = get_sigframe(ksig, regs, sizeof(*frame));
--	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
--		return -EFAULT;
--
--	err |= setup_sigcontext32(regs, &frame->sf_sc);
--	err |= __copy_conv_sigset_to_user(&frame->sf_mask, set);
--
--	if (err)
--		return -EFAULT;
--
--	/*
--	 * Arguments to signal handler:
--	 *
--	 *   a0 = signal number
--	 *   a1 = 0 (should be cause)
--	 *   a2 = pointer to struct sigcontext
--	 *
--	 * $25 and c0_epc point to the signal handler, $29 points to the
--	 * struct sigframe.
--	 */
--	regs->regs[ 4] = ksig->sig;
--	regs->regs[ 5] = 0;
--	regs->regs[ 6] = (unsigned long) &frame->sf_sc;
--	regs->regs[29] = (unsigned long) frame;
--	regs->regs[31] = (unsigned long) sig_return;
--	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
--
--	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
--	       current->comm, current->pid,
--	       frame, regs->cp0_epc, regs->regs[31]);
--
--	return 0;
--}
--
--static int setup_rt_frame_32(void *sig_return, struct ksignal *ksig,
--			     struct pt_regs *regs, sigset_t *set)
--{
--	struct rt_sigframe32 __user *frame;
--	int err = 0;
--
--	frame = get_sigframe(ksig, regs, sizeof(*frame));
--	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
--		return -EFAULT;
--
--	/* Convert (siginfo_t -> compat_siginfo_t) and copy to user. */
--	err |= copy_siginfo_to_user32(&frame->rs_info, &ksig->info);
--
--	/* Create the ucontext.	 */
--	err |= __put_user(0, &frame->rs_uc.uc_flags);
--	err |= __put_user(0, &frame->rs_uc.uc_link);
--	err |= __compat_save_altstack(&frame->rs_uc.uc_stack, regs->regs[29]);
--	err |= setup_sigcontext32(regs, &frame->rs_uc.uc_mcontext);
--	err |= __copy_conv_sigset_to_user(&frame->rs_uc.uc_sigmask, set);
--
--	if (err)
--		return -EFAULT;
--
--	/*
--	 * Arguments to signal handler:
--	 *
--	 *   a0 = signal number
--	 *   a1 = 0 (should be cause)
--	 *   a2 = pointer to ucontext
--	 *
--	 * $25 and c0_epc point to the signal handler, $29 points to
--	 * the struct rt_sigframe32.
--	 */
--	regs->regs[ 4] = ksig->sig;
--	regs->regs[ 5] = (unsigned long) &frame->rs_info;
--	regs->regs[ 6] = (unsigned long) &frame->rs_uc;
--	regs->regs[29] = (unsigned long) frame;
--	regs->regs[31] = (unsigned long) sig_return;
--	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
--
--	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
--	       current->comm, current->pid,
--	       frame, regs->cp0_epc, regs->regs[31]);
--
--	return 0;
--}
--
--/*
-- * o32 compatibility on 64-bit kernels, without DSP ASE
-- */
--struct mips_abi mips_abi_32 = {
--	.setup_frame	= setup_frame_32,
--	.setup_rt_frame = setup_rt_frame_32,
--	.restart	= __NR_O32_restart_syscall,
--
--	.off_sc_fpregs = offsetof(struct sigcontext32, sc_fpregs),
--	.off_sc_fpc_csr = offsetof(struct sigcontext32, sc_fpc_csr),
--	.off_sc_used_math = offsetof(struct sigcontext32, sc_used_math),
--
--	.vdso		= &vdso_image_o32,
--};
-diff --git a/arch/mips/kernel/signal_o32.c b/arch/mips/kernel/signal_o32.c
-new file mode 100644
-index 0000000..5e169fc
---- /dev/null
-+++ b/arch/mips/kernel/signal_o32.c
-@@ -0,0 +1,285 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 1991, 1992  Linus Torvalds
-+ * Copyright (C) 1994 - 2000, 2006  Ralf Baechle
-+ * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-+ * Copyright (C) 2016, Imagination Technologies Ltd.
-+ */
-+#include <linux/compiler.h>
-+#include <linux/errno.h>
-+#include <linux/signal.h>
-+#include <linux/uaccess.h>
-+
-+#include <asm/abi.h>
-+#include <asm/compat-signal.h>
-+#include <asm/dsp.h>
-+#include <asm/sim.h>
-+#include <asm/unistd.h>
-+
-+#include "signal-common.h"
-+
-+/*
-+ * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
-+ */
-+#define __NR_O32_restart_syscall	4253
-+
-+struct sigframe32 {
-+	u32 sf_ass[4];		/* argument save space for o32 */
-+	u32 sf_pad[2];		/* Was: signal trampoline */
-+	struct sigcontext32 sf_sc;
-+	compat_sigset_t sf_mask;
-+};
-+
-+struct ucontext32 {
-+	u32		    uc_flags;
-+	s32		    uc_link;
-+	compat_stack_t      uc_stack;
-+	struct sigcontext32 uc_mcontext;
-+	compat_sigset_t	    uc_sigmask;	  /* mask last for extensibility */
-+};
-+
-+struct rt_sigframe32 {
-+	u32 rs_ass[4];			/* argument save space for o32 */
-+	u32 rs_pad[2];			/* Was: signal trampoline */
-+	compat_siginfo_t rs_info;
-+	struct ucontext32 rs_uc;
-+};
-+
-+static int setup_sigcontext32(struct pt_regs *regs,
-+			      struct sigcontext32 __user *sc)
-+{
-+	int err = 0;
-+	int i;
-+
-+	err |= __put_user(regs->cp0_epc, &sc->sc_pc);
-+
-+	err |= __put_user(0, &sc->sc_regs[0]);
-+	for (i = 1; i < 32; i++)
-+		err |= __put_user(regs->regs[i], &sc->sc_regs[i]);
-+
-+	err |= __put_user(regs->hi, &sc->sc_mdhi);
-+	err |= __put_user(regs->lo, &sc->sc_mdlo);
-+	if (cpu_has_dsp) {
-+		err |= __put_user(rddsp(DSP_MASK), &sc->sc_dsp);
-+		err |= __put_user(mfhi1(), &sc->sc_hi1);
-+		err |= __put_user(mflo1(), &sc->sc_lo1);
-+		err |= __put_user(mfhi2(), &sc->sc_hi2);
-+		err |= __put_user(mflo2(), &sc->sc_lo2);
-+		err |= __put_user(mfhi3(), &sc->sc_hi3);
-+		err |= __put_user(mflo3(), &sc->sc_lo3);
-+	}
-+
-+	/*
-+	 * Save FPU state to signal context.  Signal handler
-+	 * will "inherit" current FPU state.
-+	 */
-+	err |= protected_save_fp_context(sc);
-+
-+	return err;
-+}
-+
-+static int restore_sigcontext32(struct pt_regs *regs,
-+				struct sigcontext32 __user *sc)
-+{
-+	int err = 0;
-+	s32 treg;
-+	int i;
-+
-+	/* Always make any pending restarted system calls return -EINTR */
-+	current->restart_block.fn = do_no_restart_syscall;
-+
-+	err |= __get_user(regs->cp0_epc, &sc->sc_pc);
-+	err |= __get_user(regs->hi, &sc->sc_mdhi);
-+	err |= __get_user(regs->lo, &sc->sc_mdlo);
-+	if (cpu_has_dsp) {
-+		err |= __get_user(treg, &sc->sc_hi1); mthi1(treg);
-+		err |= __get_user(treg, &sc->sc_lo1); mtlo1(treg);
-+		err |= __get_user(treg, &sc->sc_hi2); mthi2(treg);
-+		err |= __get_user(treg, &sc->sc_lo2); mtlo2(treg);
-+		err |= __get_user(treg, &sc->sc_hi3); mthi3(treg);
-+		err |= __get_user(treg, &sc->sc_lo3); mtlo3(treg);
-+		err |= __get_user(treg, &sc->sc_dsp); wrdsp(treg, DSP_MASK);
-+	}
-+
-+	for (i = 1; i < 32; i++)
-+		err |= __get_user(regs->regs[i], &sc->sc_regs[i]);
-+
-+	return err ?: protected_restore_fp_context(sc);
-+}
-+
-+static int setup_frame_32(void *sig_return, struct ksignal *ksig,
-+			  struct pt_regs *regs, sigset_t *set)
-+{
-+	struct sigframe32 __user *frame;
-+	int err = 0;
-+
-+	frame = get_sigframe(ksig, regs, sizeof(*frame));
-+	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
-+		return -EFAULT;
-+
-+	err |= setup_sigcontext32(regs, &frame->sf_sc);
-+	err |= __copy_conv_sigset_to_user(&frame->sf_mask, set);
-+
-+	if (err)
-+		return -EFAULT;
-+
-+	/*
-+	 * Arguments to signal handler:
-+	 *
-+	 *   a0 = signal number
-+	 *   a1 = 0 (should be cause)
-+	 *   a2 = pointer to struct sigcontext
-+	 *
-+	 * $25 and c0_epc point to the signal handler, $29 points to the
-+	 * struct sigframe.
-+	 */
-+	regs->regs[ 4] = ksig->sig;
-+	regs->regs[ 5] = 0;
-+	regs->regs[ 6] = (unsigned long) &frame->sf_sc;
-+	regs->regs[29] = (unsigned long) frame;
-+	regs->regs[31] = (unsigned long) sig_return;
-+	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
-+
-+	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
-+	       current->comm, current->pid,
-+	       frame, regs->cp0_epc, regs->regs[31]);
-+
-+	return 0;
-+}
-+
-+asmlinkage void sys32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
-+{
-+	struct rt_sigframe32 __user *frame;
-+	sigset_t set;
-+	int sig;
-+
-+	frame = (struct rt_sigframe32 __user *) regs.regs[29];
-+	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
-+		goto badframe;
-+	if (__copy_conv_sigset_from_user(&set, &frame->rs_uc.uc_sigmask))
-+		goto badframe;
-+
-+	set_current_blocked(&set);
-+
-+	sig = restore_sigcontext32(&regs, &frame->rs_uc.uc_mcontext);
-+	if (sig < 0)
-+		goto badframe;
-+	else if (sig)
-+		force_sig(sig, current);
-+
-+	if (compat_restore_altstack(&frame->rs_uc.uc_stack))
-+		goto badframe;
-+
-+	/*
-+	 * Don't let your children do this ...
-+	 */
-+	__asm__ __volatile__(
-+		"move\t$29, %0\n\t"
-+		"j\tsyscall_exit"
-+		:/* no outputs */
-+		:"r" (&regs));
-+	/* Unreached */
-+
-+badframe:
-+	force_sig(SIGSEGV, current);
-+}
-+
-+static int setup_rt_frame_32(void *sig_return, struct ksignal *ksig,
-+			     struct pt_regs *regs, sigset_t *set)
-+{
-+	struct rt_sigframe32 __user *frame;
-+	int err = 0;
-+
-+	frame = get_sigframe(ksig, regs, sizeof(*frame));
-+	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
-+		return -EFAULT;
-+
-+	/* Convert (siginfo_t -> compat_siginfo_t) and copy to user. */
-+	err |= copy_siginfo_to_user32(&frame->rs_info, &ksig->info);
-+
-+	/* Create the ucontext.	 */
-+	err |= __put_user(0, &frame->rs_uc.uc_flags);
-+	err |= __put_user(0, &frame->rs_uc.uc_link);
-+	err |= __compat_save_altstack(&frame->rs_uc.uc_stack, regs->regs[29]);
-+	err |= setup_sigcontext32(regs, &frame->rs_uc.uc_mcontext);
-+	err |= __copy_conv_sigset_to_user(&frame->rs_uc.uc_sigmask, set);
-+
-+	if (err)
-+		return -EFAULT;
-+
-+	/*
-+	 * Arguments to signal handler:
-+	 *
-+	 *   a0 = signal number
-+	 *   a1 = 0 (should be cause)
-+	 *   a2 = pointer to ucontext
-+	 *
-+	 * $25 and c0_epc point to the signal handler, $29 points to
-+	 * the struct rt_sigframe32.
-+	 */
-+	regs->regs[ 4] = ksig->sig;
-+	regs->regs[ 5] = (unsigned long) &frame->rs_info;
-+	regs->regs[ 6] = (unsigned long) &frame->rs_uc;
-+	regs->regs[29] = (unsigned long) frame;
-+	regs->regs[31] = (unsigned long) sig_return;
-+	regs->cp0_epc = regs->regs[25] = (unsigned long) ksig->ka.sa.sa_handler;
-+
-+	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
-+	       current->comm, current->pid,
-+	       frame, regs->cp0_epc, regs->regs[31]);
-+
-+	return 0;
-+}
-+
-+/*
-+ * o32 compatibility on 64-bit kernels, without DSP ASE
-+ */
-+struct mips_abi mips_abi_32 = {
-+	.setup_frame	= setup_frame_32,
-+	.setup_rt_frame = setup_rt_frame_32,
-+	.restart	= __NR_O32_restart_syscall,
-+
-+	.off_sc_fpregs = offsetof(struct sigcontext32, sc_fpregs),
-+	.off_sc_fpc_csr = offsetof(struct sigcontext32, sc_fpc_csr),
-+	.off_sc_used_math = offsetof(struct sigcontext32, sc_used_math),
-+
-+	.vdso		= &vdso_image_o32,
-+};
-+
-+
-+asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
-+{
-+	struct sigframe32 __user *frame;
-+	sigset_t blocked;
-+	int sig;
-+
-+	frame = (struct sigframe32 __user *) regs.regs[29];
-+	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
-+		goto badframe;
-+	if (__copy_conv_sigset_from_user(&blocked, &frame->sf_mask))
-+		goto badframe;
-+
-+	set_current_blocked(&blocked);
-+
-+	sig = restore_sigcontext32(&regs, &frame->sf_sc);
-+	if (sig < 0)
-+		goto badframe;
-+	else if (sig)
-+		force_sig(sig, current);
-+
-+	/*
-+	 * Don't let your children do this ...
-+	 */
-+	__asm__ __volatile__(
-+		"move\t$29, %0\n\t"
-+		"j\tsyscall_exit"
-+		:/* no outputs */
-+		:"r" (&regs));
-+	/* Unreached */
-+
-+badframe:
-+	force_sig(SIGSEGV, current);
-+}
--- 
-2.8.3
+into something like this
+
+  +     if (IS_ENABLED(CONFIG_MIPS_RAW_APPENDED_DTB) &&
+  +	    fdt_magic((void *)&__appended_dtb) == FDT_MAGIC) {
+  +		unsigned int image_size, dtb_size;
+
+
+Using IS_ENABLED instead of #if/#ifdef the compiler can check
+all the code.
+
+-- 
+Best regards,
+  Antony Pavlov

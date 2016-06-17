@@ -1,44 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 19:11:13 +0200 (CEST)
-Received: from m12-13.163.com ([220.181.12.13]:46341 "EHLO m12-13.163.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27042878AbcFQRLLpN4Q7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Jun 2016 19:11:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=52Rks
-        hwsFqMVfDejpURMmAyimk9W0z5yLjRByYIvFS8=; b=Hyx1Jpsk8e1bo6nazwYdo
-        KBQUFGrDDwtOvOOHuj3EUmr6QGf+4kuMLEuqaB4b4hjsG6nFOjHe8VaIR1fsmumK
-        362RlAneEhIzjp1eF2sMplcgLWMuj0zPqcMctMHTrLOfm7Z6sGHqXRn8BgJZXeX/
-        j/AfLvwq5222ZBZwaDsfHs=
-Received: from localhost.localdomain.localdomain (unknown [117.36.101.242])
-        by smtp9 (Coremail) with SMTP id DcCowAB3Pu8pL2RXGm68AA--.159S3;
-        Sat, 18 Jun 2016 01:11:08 +0800 (CST)
-From:   weiyj_lk@163.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Wei Yongjun <yongjun_wei@trendmicro.com.cn>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: ath79: Fix return value check in ath79_reg_ffclk()
-Date:   Fri, 17 Jun 2016 17:11:05 +0000
-Message-Id: <1466183465-23179-1-git-send-email-weiyj_lk@163.com>
-X-Mailer: git-send-email 2.5.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 19:19:58 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:32300 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S27042884AbcFQRT5NFs37 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Jun 2016 19:19:57 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id BD6D23C2D2357;
+        Fri, 17 Jun 2016 18:19:46 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 17 Jun 2016 18:19:49 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@redhat.com>, <linux-mips@linux-mips.org>,
+        <kvm@vger.kernel.org>
+Subject: [PATCH] MIPS: KVM: Combine entry trace events into class
+Date:   Fri, 17 Jun 2016 18:19:40 +0100
+Message-ID: <1466183980-11264-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: DcCowAB3Pu8pL2RXGm68AA--.159S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Wr4kCr4kWryfArW5ZFyDGFg_yoW3twb_G3
-        yaqw1kKrn5GrnIvry7uF45Ga4aka4Durs3Zw1FqFnrXFyrKrWYkFykZ3srCr17t3yvyrWY
-        kFn5Gr1ayFsFkjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUnorW5UUUUU==
-X-Originating-IP: [117.36.101.242]
-X-CM-SenderInfo: pzhl5yxbonqiywtou0bp/1tbiNQ2L1lSIOT2jaQAAs3
-Return-Path: <weiyj_lk@163.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54108
+X-archive-position: 54109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: weiyj_lk@163.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,27 +46,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+Combine the kvm_enter, kvm_reenter and kvm_out trace events into a
+single kvm_transition event class to reduce duplication and bloat.
 
-In case of error, the function clk_register_fixed_factor() returns
-ERR_PTR() and never returns NULL. The NULL test in the return value
-check should be replaced with IS_ERR().
-
-Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Fixes: 93258604ab6d ("MIPS: KVM: Add guest mode switch trace events")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
 ---
- arch/mips/ath79/clock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kvm/trace.h | 62 ++++++++++++++++++---------------------------------
+ 1 file changed, 22 insertions(+), 40 deletions(-)
 
-diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
-index 2e73784..cc3a1e3 100644
---- a/arch/mips/ath79/clock.c
-+++ b/arch/mips/ath79/clock.c
-@@ -96,7 +96,7 @@ static struct clk * __init ath79_reg_ffclk(const char *name,
- 	struct clk *clk;
+diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
+index 75f1fda08f70..e7d140fc574e 100644
+--- a/arch/mips/kvm/trace.h
++++ b/arch/mips/kvm/trace.h
+@@ -20,50 +20,32 @@
+ /*
+  * Tracepoints for VM enters
+  */
+-TRACE_EVENT(kvm_enter,
+-	    TP_PROTO(struct kvm_vcpu *vcpu),
+-	    TP_ARGS(vcpu),
+-	    TP_STRUCT__entry(
+-			__field(unsigned long, pc)
+-	    ),
+-
+-	    TP_fast_assign(
+-			__entry->pc = vcpu->arch.pc;
+-	    ),
+-
+-	    TP_printk("PC: 0x%08lx",
+-		      __entry->pc)
++DECLARE_EVENT_CLASS(kvm_transition,
++	TP_PROTO(struct kvm_vcpu *vcpu),
++	TP_ARGS(vcpu),
++	TP_STRUCT__entry(
++		__field(unsigned long, pc)
++	),
++
++	TP_fast_assign(
++		__entry->pc = vcpu->arch.pc;
++	),
++
++	TP_printk("PC: 0x%08lx",
++		  __entry->pc)
+ );
  
- 	clk = clk_register_fixed_factor(NULL, name, parent_name, 0, mult, div);
--	if (!clk)
-+	if (IS_ERR(clk))
- 		panic("failed to allocate %s clock structure", name);
+-TRACE_EVENT(kvm_reenter,
+-	    TP_PROTO(struct kvm_vcpu *vcpu),
+-	    TP_ARGS(vcpu),
+-	    TP_STRUCT__entry(
+-			__field(unsigned long, pc)
+-	    ),
++DEFINE_EVENT(kvm_transition, kvm_enter,
++	     TP_PROTO(struct kvm_vcpu *vcpu),
++	     TP_ARGS(vcpu));
  
- 	return clk;
+-	    TP_fast_assign(
+-			__entry->pc = vcpu->arch.pc;
+-	    ),
+-
+-	    TP_printk("PC: 0x%08lx",
+-		      __entry->pc)
+-);
++DEFINE_EVENT(kvm_transition, kvm_reenter,
++	     TP_PROTO(struct kvm_vcpu *vcpu),
++	     TP_ARGS(vcpu));
+ 
+-TRACE_EVENT(kvm_out,
+-	    TP_PROTO(struct kvm_vcpu *vcpu),
+-	    TP_ARGS(vcpu),
+-	    TP_STRUCT__entry(
+-			__field(unsigned long, pc)
+-	    ),
+-
+-	    TP_fast_assign(
+-			__entry->pc = vcpu->arch.pc;
+-	    ),
+-
+-	    TP_printk("PC: 0x%08lx",
+-		      __entry->pc)
+-);
++DEFINE_EVENT(kvm_transition, kvm_out,
++	     TP_PROTO(struct kvm_vcpu *vcpu),
++	     TP_ARGS(vcpu));
+ 
+ /* The first 32 exit reasons correspond to Cause.ExcCode */
+ #define KVM_TRACE_EXIT_INT		 0
+-- 
+2.4.10

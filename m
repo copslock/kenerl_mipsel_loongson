@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 22:12:33 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:45104 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jun 2016 22:12:51 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.136]:45168 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27042895AbcFQUMHCu7MF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Jun 2016 22:12:07 +0200
+        id S27042887AbcFQUMOi2HSF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Jun 2016 22:12:14 +0200
 Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 521BF2017E;
-        Fri, 17 Jun 2016 20:12:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTP id ED2BB2017E;
+        Fri, 17 Jun 2016 20:12:12 +0000 (UTC)
 Received: from localhost (unknown [69.71.1.1])
         (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 63696201BC;
-        Fri, 17 Jun 2016 20:12:04 +0000 (UTC)
-Subject: [PATCH v1 2/4] microblaze/PCI: Implement pci_resource_to_user()
- with pcibios_resource_to_bus()
+        by mail.kernel.org (Postfix) with ESMTPSA id E7E7A201BC;
+        Fri, 17 Jun 2016 20:12:11 +0000 (UTC)
+Subject: [PATCH v1 3/4] powerpc/pci: Implement pci_resource_to_user() with
+ pcibios_resource_to_bus()
 To:     Michal Simek <monstr@monstr.eu>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -24,8 +24,8 @@ From:   Bjorn Helgaas <bhelgaas@google.com>
 Cc:     sparclinux@vger.kernel.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
         linux-pci@vger.kernel.org
-Date:   Fri, 17 Jun 2016 15:12:03 -0500
-Message-ID: <20160617201202.11714.26196.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+Date:   Fri, 17 Jun 2016 15:12:10 -0500
+Message-ID: <20160617201210.11714.5624.stgit@bhelgaas-glaptop2.roam.corp.google.com>
 In-Reply-To: <20160617195835.11714.18657.stgit@bhelgaas-glaptop2.roam.corp.google.com>
 References: <20160617195835.11714.18657.stgit@bhelgaas-glaptop2.roam.corp.google.com>
 User-Agent: StGit/0.16
@@ -37,7 +37,7 @@ Return-Path: <helgaas@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54112
+X-archive-position: 54113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,7 +56,7 @@ X-list: linux-mips
 
 "User" addresses are shown in /sys/devices/pci.../.../resource and
 /proc/bus/pci/devices and used as mmap offsets for /proc/bus/pci/BB/DD.F
-files.  For I/O port resources on microblaze, these are PCI bus addresses,
+files.  For I/O port resources on powerpc, these are PCI bus addresses,
 i.e., raw BAR values.
 
 Previously pci_resource_to_user() computed the user address by subtracting
@@ -72,7 +72,9 @@ offset:
 
   pcibios_setup_phb_resources()
     res = &hose->io_resource;
-    pci_add_resource_offset(resources, res, hose->io_base_virt - _IO_BASE);
+    offset = pcibios_io_space_offset();
+    /* i.e., "offset = hose->io_base_virt - _IO_BASE" */
+    pci_add_resource_offset(resources, res, offset);
 
 so pcibios_resource_to_bus() knows how to do that translation.
 
@@ -81,14 +83,14 @@ No functional change intended.
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Acked-by: Yinghai Lu <yinghai@kernel.org>
 ---
- arch/microblaze/pci/pci-common.c |   42 +++++++++++++-------------------------
+ arch/powerpc/kernel/pci-common.c |   42 +++++++++++++-------------------------
  1 file changed, 14 insertions(+), 28 deletions(-)
 
-diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
-index 1974567..81556b8 100644
---- a/arch/microblaze/pci/pci-common.c
-+++ b/arch/microblaze/pci/pci-common.c
-@@ -444,39 +444,25 @@ void pci_resource_to_user(const struct pci_dev *dev, int bar,
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index 8c6beb0..6de6e0e 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -581,39 +581,25 @@ void pci_resource_to_user(const struct pci_dev *dev, int bar,
  			  const struct resource *rsrc,
  			  resource_size_t *start, resource_size_t *end)
  {
@@ -111,10 +113,7 @@ index 1974567..81556b8 100644
 -	/* We pass a fully fixed up address to userland for MMIO instead of
 -	 * a BAR value because X is lame and expects to be able to use that
 -	 * to pass to /dev/mem !
-+	/* We pass a CPU physical address to userland for MMIO instead of a
-+	 * BAR value because X is lame and expects to be able to use that
-+	 * to pass to /dev/mem!
- 	 *
+-	 *
 -	 * That means that we'll have potentially 64 bits values where some
 -	 * userland apps only expect 32 (like X itself since it thinks only
 -	 * Sparc has 64 bits MMIO) but if we don't do that, we break it on
@@ -125,7 +124,10 @@ index 1974567..81556b8 100644
 -	 * 2 lines below and pass down a BAR value to userland. In that case
 -	 * we'll also have to re-enable the matching code in
 -	 * __pci_mmap_make_offset().
--	 *
++	/* We pass a CPU physical address to userland for MMIO instead of a
++	 * BAR value because X is lame and expects to be able to use that
++	 * to pass to /dev/mem!
+ 	 *
 -	 * BenH.
 +	 * That means we may have 64-bit values where some apps only expect
 +	 * 32 (like X itself since it thinks only Sparc has 64-bit MMIO).

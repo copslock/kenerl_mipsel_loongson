@@ -1,46 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2016 23:17:21 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:10593 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S27041697AbcFTVRUP6SBy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Jun 2016 23:17:20 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 1CD8141F8E34;
-        Mon, 20 Jun 2016 22:17:13 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 20 Jun 2016 22:17:13 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 20 Jun 2016 22:17:13 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 4D8A015B43EFB;
-        Mon, 20 Jun 2016 22:17:08 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 20 Jun
- 2016 22:17:12 +0100
-Date:   Mon, 20 Jun 2016 22:17:12 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <stable@vger.kernel.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        Harvey Hunt <Harvey.Hunt@imgtec.com>
-Subject: Please apply to stable, commit d7de413475f4 ("MIPS: Fix 64k page
- support for 32 bit kernels.")
-Message-ID: <20160620211712.GO30921@jhogan-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2016 23:59:36 +0200 (CEST)
+Received: from mail-lf0-f50.google.com ([209.85.215.50]:35017 "EHLO
+        mail-lf0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27043259AbcFTV7esOhk- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Jun 2016 23:59:34 +0200
+Received: by mail-lf0-f50.google.com with SMTP id l188so48499553lfe.2;
+        Mon, 20 Jun 2016 14:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-transfer-encoding;
+        bh=GlExdjKWHRtuSUGXW1OucW21hiV4TcEDwbTNkGQ0xF8=;
+        b=blYg+yNBRLa+NEeL/jAM2kV2BZj5ndT9joJVy2JC1C1PWGT/Lo+Dc9qO0V8cScSKM9
+         04PZAtlijD7oJHbrUDrTEX+BXIi4A8KrBSlmn7AvP1cZD2wkwdZh29fqjRGym/j3HuR1
+         JRmFHhFeiGBrsXTgvAY8NFq+iyv9889DP3CYRJA6mbvcL0QKyXo9ceMEXa3x67RJqcLa
+         eCrvqNfPXhhUpy1wd1EySM+hyIh41cGLWfGvyVI5v0/SQK5uJQq82fwoyYc0kGkP6Phb
+         RCWrkWrZBj3hJcKu6jaTwoLt2WNj7RLWjBgdm98VCIn7abPwUFyi80/VCnvf96E9o5Z6
+         zWyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-transfer-encoding;
+        bh=GlExdjKWHRtuSUGXW1OucW21hiV4TcEDwbTNkGQ0xF8=;
+        b=GPAuWr40U8kz8B1jSnAHBORvX9Gjeepxe7LXL7FKM6VvuQUrFq2rmOuludZj/ZymYk
+         Iv/lNyu/wsWbWKLdkMRLiNIJKdlL52BmehSpwrC+Uty4uBD293gxWh3ybv9hfl03QXR1
+         q0ASJhBrazaxSLaFN7iccQHByVtsJtM5HXf5s9LMkSq/d1HGJxRd/aiQ+LIacY410Jln
+         juHbSfJqDedveXRtVALcwePvhbi8YfBOw0O8ejO+HdV2u5JO/lkVBNQsETjkxXoFUSS4
+         wYyy8I2XrAUEb8NiAtx1lzYUgT06jznvRN3gu7sV7OKNa/zxp4E987F8kjY11OcqANCD
+         XV6g==
+X-Gm-Message-State: ALyK8tL+0WPNesGYhed3Mtmk3LlfkDTVkcWEiccHOAJzm93sUv4a9a2L/vla7Miw7K3ASA==
+X-Received: by 10.28.184.5 with SMTP id i5mr109156wmf.85.1466459969222;
+        Mon, 20 Jun 2016 14:59:29 -0700 (PDT)
+Received: from [192.168.0.29] (95f1ff31.skybroadband.com. [149.241.255.49])
+        by smtp.gmail.com with ESMTPSA id z14sm64155588wjw.6.2016.06.20.14.59.27
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 20 Jun 2016 14:59:28 -0700 (PDT)
+Message-ID: <57686738.70900@gmail.com>
+Date:   Mon, 20 Jun 2016 22:59:20 +0100
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.4.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="5G50dybFf3pRZKd7"
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: cee91754
-Return-Path: <James.Hogan@imgtec.com>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-next@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org
+Subject: Re: linux-next: Tree for Jun 20
+References: <20160620160537.3ea30484@canb.auug.org.au>
+In-Reply-To: <20160620160537.3ea30484@canb.auug.org.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sudipm.mukherjee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54126
+X-archive-position: 54127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: sudipm.mukherjee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,39 +69,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---5G50dybFf3pRZKd7
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+On Monday 20 June 2016 07:05 AM, Stephen Rothwell wrote:
+> Hi all,
+>
+> Changes since 20160617:
 
-Hi stable maintainers,
+I just started trying gcc 6.1.0 for mips and mips allmodconfig is 
+failing with the error:
 
-Please could commit d7de413475f443957a0c1d256e405d19b3a2cb22 ("MIPS: Fix
-64k page support for 32 bit kernels.") be applied to stable branches.
-This fix was merged into mainline for v4.5-rc4.
+{standard input}: Assembler messages:
+{standard input}:147: Error: number (0x9000000080000000) larger than 32 bits
 
-Thanks
-James
+{standard input}:176: Error: number (0x9000000080000000) larger than 32 bits
 
---5G50dybFf3pRZKd7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+{standard input}:198: Error: number (0x9000000080000000) larger than 32 bits
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+make[3]: *** [arch/mips/mm/sc-ip22.o] Error 1
+make[3]: *** Waiting for unfinished jobs....
+make[2]: *** [arch/mips/mm] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [arch/mips] Error 2
+make[1]: *** Waiting for unfinished jobs....
 
-iQIcBAEBCAAGBQJXaF1YAAoJEGwLaZPeOHZ6bRoP/2+qYAvs8YX1yi6ggeCLdHcq
-hL0JK350Zmu9s8Ph5pLvti3ZfR6bHtyPUVyuDuAOEBdfQQM7UwglFRdrJ+5wlQDy
-rQDz56oR+HaLfg7vy8c5e0Q9OXtVAud90zaIUKKhf8mPgy0i6uViI8r80ETi7O4z
-dzFc9/BttlsRYPYw9f1G7VFVSYU+fn69kdIrh3LiYNMecjN3KmcOygazId+6IkoZ
-o7wpwtC+vQCICzps6x7HpFhVt4dtXhhZNS2TuBVw/IirwiYu++1lzkcRutcXRrD+
-UxjYH/TCLgTj585mcNa/KX2OIZEWm9ProwWAHKwlsa/6rl1KFjtQCb51WNrWjScQ
-uJEEEwQhSXrH2PFdntLuEtv384CudzvQHkhOmsdCTJy89+5NzFJYlHxRRksfJ7eE
-qYHQzyeb1aJD+wvUPhQbXnRIxhJ5+1t8NR3gtKb28gWCnFRTzbJJKyEILLJEBR3X
-D44h6R+YuQxdVnug1QFxEODOdgAO0XmUzBGyWSbfN5IR9J5AilzwHe/uvVmaPzxE
-KjBY0DgZfKjnV6UpJJPHRemhgoqOuCINcOXfXiUUgROzFo+LfjE0IGXyeof50EpX
-j8DFBVbPnZpctxcHoG3HEBV0UJuTWhBtMAhRArnQepY9oIbC/bCPaxOj8KeLNTYX
-jHOAuHgDLj9DAPlM6p5+
-=KnJT
------END PGP SIGNATURE-----
+build log can be seen at:
+https://travis-ci.org/sudipm-mukherjee/parport/jobs/138824794
 
---5G50dybFf3pRZKd7--
+regards
+sudip

@@ -1,17 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jun 2016 15:50:13 +0200 (CEST)
-Received: from gloria.sntech.de ([95.129.55.99]:41692 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27035601AbcFRNuLGSN0z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 18 Jun 2016 15:50:11 +0200
-Received: from ip9234b3aa.dynamic.kabel-deutschland.de ([146.52.179.170] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <heiko@sntech.de>)
-        id 1bEGcD-0007J6-S0; Sat, 18 Jun 2016 15:48:49 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     tglx@linutronix.de, linux-kernel@vger.kernel.org,
-        Vineet Gupta <vgupta@synopsys.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2016 09:45:00 +0200 (CEST)
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:60171 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S27041677AbcFTHo6KaFlp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Jun 2016 09:44:58 +0200
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.11/8.16.0.11) with SMTP id u5K7di2p024211;
+        Mon, 20 Jun 2016 09:43:31 +0200
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 23mw6dsb91-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 20 Jun 2016 09:43:31 +0200
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C676B38;
+        Mon, 20 Jun 2016 07:43:27 +0000 (GMT)
+Received: from Webmail-eu.st.com (Safex1hubcas22.st.com [10.75.90.92])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 5F7821235;
+        Mon, 20 Jun 2016 07:43:26 +0000 (GMT)
+Received: from [10.48.1.66] (10.48.1.66) by Webmail-ga.st.com (10.75.90.48)
+ with Microsoft SMTP Server (TLS) id 14.3.279.2; Mon, 20 Jun 2016 09:43:26
+ +0200
+Subject: Re: [PATCH V2 63/63] clocksources: Switch back to the clksrc table
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, <tglx@linutronix.de>
+References: <1466112442-31105-1-git-send-email-daniel.lezcano@linaro.org>
+ <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
+CC:     <linux-kernel@vger.kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
         Russell King <linux@armlinux.org.uk>,
         Michal Simek <monstr@monstr.eu>,
         John Crispin <john@phrozen.org>,
@@ -19,13 +31,12 @@ Cc:     tglx@linutronix.de, linux-kernel@vger.kernel.org,
         Ley Foon Tan <lftan@altera.com>,
         Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
         Maxime Coquelin <maxime.coquelin@st.com>,
-        Patrice Chotard <patrice.chotard@st.com>,
         Stephen Warren <swarren@wwwdotorg.org>,
         Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Ray Jui <rjui@broadcom.com>,
         Scott Branden <sbranden@broadcom.com>,
-        =?ISO-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Alexander Shiyan <shc_work@mail.ru>,
         Kukjin Kim <kgene@kernel.org>,
@@ -37,11 +48,12 @@ Cc:     tglx@linutronix.de, linux-kernel@vger.kernel.org,
         Sudeep Holla <sudeep.holla@arm.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
         Maxime Ripard <maxime.ripard@free-electrons.com>,
         Chen-Yu Tsai <wens@csie.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Alexandre Courbot <gnurou@gmail.com>,
-        Uwe =?ISO-8859-1?Q?Kleine=2DK=F6nig?= <kernel@pengutronix.de>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <kernel@pengutronix.de>,
         Joachim Eastwood <manabian@gmail.com>,
         Vladimir Zapolskiy <vz@mleia.com>,
         Sylvain Lemieux <slemieux.tyco@gmail.com>,
@@ -83,24 +95,27 @@ Cc:     tglx@linutronix.de, linux-kernel@vger.kernel.org,
         "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
         "open list:TEGRA ARCHITECTUR..." <linux-tegra@vger.kernel.org>,
         "open list:GENERIC INCLUDE/A..." <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH V2 63/63] clocksources: Switch back to the clksrc table
-Date:   Sat, 18 Jun 2016 15:48:49 +0200
-Message-ID: <4420923.qQJUdaA1rI@diego>
-User-Agent: KMail/4.14.10 (Linux/4.5.0-2-amd64; KDE/4.14.14; x86_64; ; )
-In-Reply-To: <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
-References: <1466112442-31105-1-git-send-email-daniel.lezcano@linaro.org> <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
+From:   Patrice Chotard <patrice.chotard@st.com>
+Message-ID: <57679E99.6090607@st.com>
+Date:   Mon, 20 Jun 2016 09:43:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Return-Path: <heiko@sntech.de>
+In-Reply-To: <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.48.1.66]
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2016-06-20_05:,,
+ signatures=0
+Return-Path: <patrice.chotard@st.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54115
+X-archive-position: 54116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: heiko@sntech.de
+X-original-sender: patrice.chotard@st.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -113,36 +128,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am Donnerstag, 16. Juni 2016, 23:27:22 schrieb Daniel Lezcano:
+
+
+On 06/16/2016 11:27 PM, Daniel Lezcano wrote:
 > All the clocksource drivers's init function are now converted to return
 > an error code. CLOCKSOURCE_OF_DECLARE is no longer used as well as the
 > clksrc-of table.
-> 
+>
 > Let's convert back the names:
->  - CLOCKSOURCE_OF_DECLARE_RET => CLOCKSOURCE_OF_DECLARE
->  - clksrc-of-ret              => clksrc-of
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> ---
->  drivers/clocksource/rockchip_timer.c      |  8 ++++----
+>   - CLOCKSOURCE_OF_DECLARE_RET => CLOCKSOURCE_OF_DECLARE
+>   - clksrc-of-ret              => clksrc-of
+>
+>
+>   drivers/clocksource/clksrc_st_lpc.c       |  2 +-
+> diff --git a/drivers/clocksource/clksrc_st_lpc.c b/drivers/clocksource/clksrc_st_lpc.c
+> index c9022a9..03cc492 100644
+> --- a/drivers/clocksource/clksrc_st_lpc.c
+> +++ b/drivers/clocksource/clksrc_st_lpc.c
+> @@ -132,4 +132,4 @@ static int __init st_clksrc_of_register(struct device_node *np)
+>   
+>   	return ret;
+>   }
+> -CLOCKSOURCE_OF_DECLARE_RET(ddata, "st,stih407-lpc", st_clksrc_of_register);
+> +CLOCKSOURCE_OF_DECLARE(ddata, "st,stih407-lpc", st_clksrc_of_register);
+>
 
-> diff --git
-> a/drivers/clocksource/rockchip_timer.c
-> b/drivers/clocksource/rockchip_timer.c index d10bdee..d10e7a5 100644
-> --- a/drivers/clocksource/rockchip_timer.c
-> +++ b/drivers/clocksource/rockchip_timer.c
-> @@ -200,7 +200,7 @@ static int __init rk3399_timer_init(struct device_node
-> *np) return rk_timer_init(np, TIMER_CONTROL_REG3399);
->  }
-> 
-> -CLOCKSOURCE_OF_DECLARE_RET(rk3288_timer, "rockchip,rk3288-timer",
-> -			   rk3288_timer_init);
-> -CLOCKSOURCE_OF_DECLARE_RET(rk3399_timer, "rockchip,rk3399-timer",
-> -			   rk3399_timer_init);
-> +CLOCKSOURCE_OF_DECLARE(rk3288_timer, "rockchip,rk3288-timer",
-> +		       rk3288_timer_init);
-> +CLOCKSOURCE_OF_DECLARE(rk3399_timer, "rockchip,rk3399-timer",
-> +		       rk3399_timer_init);
 
-for the Rockchip-part
-Acked-by: Heiko Stuebner <heiko@sntech.de>
+For STi :
+
+Acked-by: Patrice Chotard <patrice.chotard@st.com>
+
+Thanks

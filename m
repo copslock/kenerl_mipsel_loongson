@@ -1,44 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2016 08:00:48 +0200 (CEST)
-Received: from mail-pa0-f47.google.com ([209.85.220.47]:34825 "EHLO
-        mail-pa0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S27043322AbcFUGApmLWm- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2016 08:00:45 +0200
-Received: by mail-pa0-f47.google.com with SMTP id hl6so2953658pac.2
-        for <linux-mips@linux-mips.org>; Mon, 20 Jun 2016 23:00:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=w1TMntwuk5yHHhTkUXZGPOTw/dA7N0xu4FRSrDD86CQ=;
-        b=KJ8mMnOBIsZKia2yNXGbwFn4eZ0uGiTgL/Z1lUX6OJptXT6r9hJovmFi+h7ijjQnBw
-         eE0eN1KAU/6wdsWmwLqWqDYJhnVjN0IPlYr0FzaxRLa1g38nWHi1R5mIUHY1BpoZd5BP
-         oUa+tqDhD9OX1ffW01kX5XuQnF/UmGqZLcWfc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=w1TMntwuk5yHHhTkUXZGPOTw/dA7N0xu4FRSrDD86CQ=;
-        b=RikYlhTrJyOhZnRlME0e1BxXrKM7T+8Oy1wNlnMxT0HWBLuATSkGIg/8BdNagXn0Xt
-         0FRIGZB69iYDWAV/YUm+QfadzIvuCe3MXGLaGt9k6+nH4t4Z8mz1xnJ4hikw0sB5R6/c
-         xKUG3QmlTt22mhffdXktY7frC96myYcHD7gPSMQnOC5An6II1xkw8xZZxHB0o9x+Q36X
-         Q3gMnn5MHwQzNMTaOm6kyfAwHz0UMdkWABKBZjxzrzfHJN3bzOM+iorA4z6PDgfZpr27
-         3zsVDvv1hsnMWZAy/YJOLZnL/cS+HlclMTY3YYhz2bLd6veY5I7qiBNp8rvfiEFhv6si
-         +gyw==
-X-Gm-Message-State: ALyK8tLDM9lJIaq2XF2ONUHE1UJroTYL8IiDYX4kMyVPVwE3Pb5tgq0Ae1BQfsLpIxUi6ItC
-X-Received: by 10.66.155.167 with SMTP id vx7mr26283626pab.125.1466488839172;
-        Mon, 20 Jun 2016 23:00:39 -0700 (PDT)
-Received: from [10.136.8.236] ([216.31.219.19])
-        by smtp.gmail.com with ESMTPSA id ab6sm22327858pad.44.2016.06.20.23.00.33
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 20 Jun 2016 23:00:38 -0700 (PDT)
-Subject: Re: [PATCH V2 63/63] clocksources: Switch back to the clksrc table
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, tglx@linutronix.de
-References: <1466112442-31105-1-git-send-email-daniel.lezcano@linaro.org>
- <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2016 08:46:14 +0200 (CEST)
+Received: from mail-am1on0076.outbound.protection.outlook.com ([157.56.112.76]:43552
+        "EHLO emea01-am1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S27043322AbcFUGqGGdfUh convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2016 08:46:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=Ea62DiC5WEJ7ZyraWuOLJvok42HdQsAjC7+jLMyUlvs=;
+ b=iF+nwAcQOMm8UaGt4A/u0IwFdml9ef9p9Oh42V1BjsE0Nedb6EAhKRgBCcTC1UAcwbAhhDqftfta9B9VzwDJp7t5+OJNyDIe3HsBG0/fVmGzWrAqvOgeouc2jEyaFf1jdSVJpudB6kc8yFTbVQtHAMZ567YduSFAK2Zc2JMiv6Y=
+Received: from HE1PR05MB1625.eurprd05.prod.outlook.com (10.169.119.139) by
+ HE1PR05MB1625.eurprd05.prod.outlook.com (10.169.119.139) with Microsoft SMTP
+ Server (TLS) id 15.1.523.12; Tue, 21 Jun 2016 06:45:59 +0000
+Received: from HE1PR05MB1625.eurprd05.prod.outlook.com ([10.169.119.139]) by
+ HE1PR05MB1625.eurprd05.prod.outlook.com ([10.169.119.139]) with mapi id
+ 15.01.0523.015; Tue, 21 Jun 2016 06:45:59 +0000
+From:   Noam Camus <noamca@mellanox.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Vineet Gupta" <vgupta@synopsys.com>,
         Russell King <linux@armlinux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        John Crispin <john@phrozen.org>,
+        "Michal Simek" <monstr@monstr.eu>, John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Ley Foon Tan <lftan@altera.com>,
         Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
@@ -49,11 +31,11 @@ Cc:     linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Ray Jui <rjui@broadcom.com>,
         Scott Branden <sbranden@broadcom.com>,
-        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
+        S?ren Brinkmann <soren.brinkmann@xilinx.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Alexander Shiyan <shc_work@mail.ru>,
         Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+        "Krzysztof Kozlowski" <k.kozlowski@samsung.com>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Carlo Caione <carlo@caione.org>,
         Kevin Hilman <khilman@baylibre.com>,
@@ -66,23 +48,22 @@ Cc:     linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
         Chen-Yu Tsai <wens@csie.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Alexandre Courbot <gnurou@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <kernel@pengutronix.de>,
-        Joachim Eastwood <manabian@gmail.com>,
+        Uwe Kleine-K?nig <kernel@pengutronix.de>,
+        "Joachim Eastwood" <manabian@gmail.com>,
         Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        "Sylvain Lemieux" <slemieux.tyco@gmail.com>,
         Barry Song <baohua@kernel.org>,
-        Baruch Siach <baruch@tkos.co.il>,
+        "Baruch Siach" <baruch@tkos.co.il>,
         Santosh Shilimkar <ssantosh@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
+        "Neil Armstrong" <narmstrong@baylibre.com>,
         Tony Prisk <linux@prisktech.co.nz>,
-        Arnd Bergmann <arnd@arndb.de>,
+        "Arnd Bergmann" <arnd@arndb.de>,
         John Stultz <john.stultz@linaro.org>,
-        Noam Camus <noamc@ezchip.com>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Adam Buchbinder <adam.buchbinder@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
+        "Tony Lindgren" <tony@atomide.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        Felipe Balbi <balbi@ti.com>,
+        "Felipe Balbi" <balbi@ti.com>,
         Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Hanjun Guo <hanjun.guo@linaro.org>,
@@ -108,24 +89,51 @@ Cc:     linux-kernel@vger.kernel.org, Vineet Gupta <vgupta@synopsys.com>,
         "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
         "open list:TEGRA ARCHITECTUR..." <linux-tegra@vger.kernel.org>,
         "open list:GENERIC INCLUDE/A..." <linux-arch@vger.kernel.org>
-From:   Ray Jui <ray.jui@broadcom.com>
-Message-ID: <35869d12-1686-98d3-185c-cedacbc7eed1@broadcom.com>
-Date:   Mon, 20 Jun 2016 23:00:22 -0700
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2
-MIME-Version: 1.0
+Subject: RE: [PATCH V2 63/63] clocksources: Switch back to the clksrc table
+Thread-Topic: [PATCH V2 63/63] clocksources: Switch back to the clksrc table
+Thread-Index: AQHRyBY5mwQtw3ZLtkyctDwy1gbbZp/zfjVQ
+Date:   Tue, 21 Jun 2016 06:45:58 +0000
+Message-ID: <HE1PR05MB162581196C0157F45749344FAA2B0@HE1PR05MB1625.eurprd05.prod.outlook.com>
+References: <1466112442-31105-1-git-send-email-daniel.lezcano@linaro.org>
+ <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
 In-Reply-To: <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ray.jui@broadcom.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=noamca@mellanox.com; 
+x-originating-ip: [212.179.42.66]
+x-ms-office365-filtering-correlation-id: 24f6145e-558d-43f1-f5e7-08d3999fb442
+x-microsoft-exchange-diagnostics: 1;HE1PR05MB1625;6:6zmaz2BWI0bZUrEiH6f6DpIx5ByaP7tuspipjNfeQf+ovqGKjmB+WpcSr/WLL26etlcT96G3fcIkJzzKo+OrGD6kS1jIaF43ak/krE18bE9kO4ClYova860JQeoLt1acmIJwBxb9L+ZPkUDqD5/MOPH0tqs6ivvY1+RITYVhHZSnGlcLVqYD10rtrbXTJPSDwiCdA17IITuaOM8lvPxVYF538cQ5c2A71sLwXSusflcnQkCqYuZXy2BKFokWeKOYyWP51tsWBPqRMJgdLpQ26ZHxQGdjUAcfS+58Js8LgeBbydovBU4Jx9HDKyP/lcOnXfj6+Jfb7NPz0nmgLjqioA==;5:x08suStRwCHzg9WjIrembtYLYawnRP05o0KIdLZCYbhQeCa7dFL5kvchXKKq4y822SPgK28PLBzuo788Kzzmja694P7HBnUcSBOBlBSRGq1/AzuhECbugmc7i3O8Kwv9cYahxHsNwBgxWqICmPnJkA==;24:yf5kUwPZBjLUgnmdwcyUbxiZwWEJhKDcNHzl7dHU+CmOrDzsJ1hf9dQQoiNOobqwxm4RNT4meJoIOI7OQyMI3/WEhxS5fxC7oDAYedMTg2w=;7:eFPp7M6779hC8hfW6c5lhy1Jiha/sbNInNPEgV0WVZR3PFELb7zkohL3i8y1+w8S8lcPtlyws6d57iB1rIRzT3cPBbVJOag0MJlg3pkkigF4LYJFQZLBljfTgsn9jsUxlTuao+EQtqwGzcf0ToR6k98pSeED+L3iUFTMvWOU4GxrGMMViN1FJ86L6A8kvKSUtBkGhjdddYqf8r8M/ynmXpB01IUrIB38FeOp1S8WDBKhy4VRaGwxFsleitg+GPgv
+x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:HE1PR05MB1625;
+x-microsoft-antispam-prvs: <HE1PR05MB1625867E5ED976F8A525ED46AA2B0@HE1PR05MB1625.eurprd05.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:;
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(601004)(2401047)(5005006)(8121501046)(10201501046)(3002001)(6055026);SRVR:HE1PR05MB1625;BCL:0;PCL:0;RULEID:;SRVR:HE1PR05MB1625;
+x-forefront-prvs: 098076C36C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(6009001)(7916002)(199003)(377454003)(189002)(81156014)(50986999)(189998001)(97736004)(8936002)(5002640100001)(54356999)(19580395003)(101416001)(106116001)(4326007)(81166006)(7736002)(5003600100003)(76176999)(76576001)(8676002)(11100500001)(122556002)(2906002)(106356001)(105586002)(92566002)(5001770100001)(19580405001)(2950100001)(10400500002)(9686002)(3660700001)(3280700002)(2900100001)(87936001)(33656002)(77096005)(8666005)(7846002)(74316001)(2501003)(102836003)(86362001)(6116002)(3846002)(7696003)(66066001)(586003)(68736007)(7059030)(40753002);DIR:OUT;SFP:1101;SCL:1;SRVR:HE1PR05MB1625;H:HE1PR05MB1625.eurprd05.prod.outlook.com;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+received-spf: None (protection.outlook.com: mellanox.com does not designate
+ permitted sender hosts)
+spamdiagnosticoutput: 1:99
+spamdiagnosticmetadata: NSPM
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jun 2016 06:45:59.0897
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR05MB1625
+Return-Path: <noamca@mellanox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54129
+X-archive-position: 54130
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ray.jui@broadcom.com
+X-original-sender: noamca@mellanox.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -138,106 +146,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Daniel,
+>From: Daniel Lezcano [mailto:daniel.lezcano@linaro.org] 
+>Sent: Friday, June 17, 2016 12:27 AM
 
-On 6/16/2016 2:27 PM, Daniel Lezcano wrote:
-> All the clocksource drivers's init function are now converted to return
-> an error code. CLOCKSOURCE_OF_DECLARE is no longer used as well as the
-> clksrc-of table.
->
-> Let's convert back the names:
->  - CLOCKSOURCE_OF_DECLARE_RET => CLOCKSOURCE_OF_DECLARE
->  - clksrc-of-ret              => clksrc-of
->
+>All the clocksource drivers's init function are now converted to return an error code. CLOCKSOURCE_OF_DECLARE is no longer used as well as the clksrc-of table.
+
+>Let's convert back the names:
+> - CLOCKSOURCE_OF_DECLARE_RET => CLOCKSOURCE_OF_DECLARE
+> - clksrc-of-ret              => clksrc-of
+
 > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 > ---
->  arch/arc/kernel/time.c                    |  6 +++---
->  arch/arm/kernel/smp_twd.c                 |  6 +++---
->  arch/microblaze/kernel/timer.c            |  2 +-
->  arch/mips/ralink/cevt-rt3352.c            |  2 +-
->  arch/nios2/kernel/time.c                  |  2 +-
->  drivers/clocksource/arm_arch_timer.c      |  6 +++---
->  drivers/clocksource/arm_global_timer.c    |  2 +-
->  drivers/clocksource/armv7m_systick.c      |  2 +-
->  drivers/clocksource/asm9260_timer.c       |  2 +-
->  drivers/clocksource/bcm2835_timer.c       |  2 +-
->  drivers/clocksource/bcm_kona_timer.c      |  4 ++--
->  drivers/clocksource/cadence_ttc_timer.c   |  2 +-
->  drivers/clocksource/clksrc-dbx500-prcmu.c |  2 +-
->  drivers/clocksource/clksrc-probe.c        | 14 --------------
->  drivers/clocksource/clksrc_st_lpc.c       |  2 +-
->  drivers/clocksource/clps711x-timer.c      |  2 +-
->  drivers/clocksource/dw_apb_timer_of.c     |  8 ++++----
->  drivers/clocksource/exynos_mct.c          |  4 ++--
->  drivers/clocksource/fsl_ftm_timer.c       |  2 +-
->  drivers/clocksource/h8300_timer16.c       |  2 +-
->  drivers/clocksource/h8300_timer8.c        |  2 +-
->  drivers/clocksource/h8300_tpu.c           |  2 +-
->  drivers/clocksource/meson6_timer.c        |  2 +-
->  drivers/clocksource/mips-gic-timer.c      |  2 +-
->  drivers/clocksource/moxart_timer.c        |  2 +-
->  drivers/clocksource/mps2-timer.c          |  2 +-
->  drivers/clocksource/mtk_timer.c           |  2 +-
->  drivers/clocksource/mxs_timer.c           |  2 +-
->  drivers/clocksource/nomadik-mtu.c         |  2 +-
->  drivers/clocksource/pxa_timer.c           |  2 +-
->  drivers/clocksource/qcom-timer.c          |  4 ++--
->  drivers/clocksource/rockchip_timer.c      |  8 ++++----
->  drivers/clocksource/samsung_pwm_timer.c   |  8 ++++----
->  drivers/clocksource/sun4i_timer.c         |  2 +-
->  drivers/clocksource/tango_xtal.c          |  2 +-
->  drivers/clocksource/tegra20_timer.c       |  4 ++--
->  drivers/clocksource/time-armada-370-xp.c  |  6 +++---
->  drivers/clocksource/time-efm32.c          |  4 ++--
->  drivers/clocksource/time-lpc32xx.c        |  2 +-
->  drivers/clocksource/time-orion.c          |  2 +-
->  drivers/clocksource/time-pistachio.c      |  2 +-
->  drivers/clocksource/timer-atlas7.c        |  2 +-
->  drivers/clocksource/timer-atmel-pit.c     |  2 +-
->  drivers/clocksource/timer-atmel-st.c      |  2 +-
->  drivers/clocksource/timer-digicolor.c     |  2 +-
->  drivers/clocksource/timer-imx-gpt.c       | 24 ++++++++++++------------
->  drivers/clocksource/timer-integrator-ap.c |  2 +-
->  drivers/clocksource/timer-keystone.c      |  2 +-
->  drivers/clocksource/timer-nps.c           |  4 ++--
->  drivers/clocksource/timer-oxnas-rps.c     |  4 ++--
->  drivers/clocksource/timer-prima2.c        |  2 +-
->  drivers/clocksource/timer-sp804.c         |  4 ++--
->  drivers/clocksource/timer-stm32.c         |  2 +-
->  drivers/clocksource/timer-sun5i.c         |  4 ++--
->  drivers/clocksource/timer-ti-32k.c        |  2 +-
->  drivers/clocksource/timer-u300.c          |  2 +-
->  drivers/clocksource/versatile.c           |  4 ++--
->  drivers/clocksource/vf_pit_timer.c        |  2 +-
->  drivers/clocksource/vt8500_timer.c        |  2 +-
->  drivers/clocksource/zevio-timer.c         |  2 +-
->  include/asm-generic/vmlinux.lds.h         |  2 --
->  include/linux/clocksource.h               |  5 +----
->  62 files changed, 98 insertions(+), 117 deletions(-)
+> arch/arc/kernel/time.c                    |  6 +++---
+> arch/arm/kernel/smp_twd.c                 |  6 +++---
+> arch/microblaze/kernel/timer.c            |  2 +-
+> arch/mips/ralink/cevt-rt3352.c            |  2 +-
+> arch/nios2/kernel/time.c                  |  2 +-
+> drivers/clocksource/arm_arch_timer.c      |  6 +++---
+> drivers/clocksource/arm_global_timer.c    |  2 +-
+> drivers/clocksource/armv7m_systick.c      |  2 +-
+> drivers/clocksource/asm9260_timer.c       |  2 +-
+> drivers/clocksource/bcm2835_timer.c       |  2 +-
+> drivers/clocksource/bcm_kona_timer.c      |  4 ++--
+> drivers/clocksource/cadence_ttc_timer.c   |  2 +-
+> drivers/clocksource/clksrc-dbx500-prcmu.c |  2 +-
+> drivers/clocksource/clksrc-probe.c        | 14 --------------
+> drivers/clocksource/clksrc_st_lpc.c       |  2 +-
+> drivers/clocksource/clps711x-timer.c      |  2 +-
+> drivers/clocksource/dw_apb_timer_of.c     |  8 ++++----
+> drivers/clocksource/exynos_mct.c          |  4 ++--
+> drivers/clocksource/fsl_ftm_timer.c       |  2 +-
+> drivers/clocksource/h8300_timer16.c       |  2 +-
+> drivers/clocksource/h8300_timer8.c        |  2 +-
+> drivers/clocksource/h8300_tpu.c           |  2 +-
+> drivers/clocksource/meson6_timer.c        |  2 +-
+> drivers/clocksource/mips-gic-timer.c      |  2 +-
+> drivers/clocksource/moxart_timer.c        |  2 +-
+> drivers/clocksource/mps2-timer.c          |  2 +-
+> drivers/clocksource/mtk_timer.c           |  2 +-
+> drivers/clocksource/mxs_timer.c           |  2 +-
+> drivers/clocksource/nomadik-mtu.c         |  2 +-
+> drivers/clocksource/pxa_timer.c           |  2 +-
+> drivers/clocksource/qcom-timer.c          |  4 ++--
+> drivers/clocksource/rockchip_timer.c      |  8 ++++----
+> drivers/clocksource/samsung_pwm_timer.c   |  8 ++++----
+> drivers/clocksource/sun4i_timer.c         |  2 +-
+> drivers/clocksource/tango_xtal.c          |  2 +-
+> drivers/clocksource/tegra20_timer.c       |  4 ++--
+> drivers/clocksource/time-armada-370-xp.c  |  6 +++---
+> drivers/clocksource/time-efm32.c          |  4 ++--
+> drivers/clocksource/time-lpc32xx.c        |  2 +-
+> drivers/clocksource/time-orion.c          |  2 +-
+> drivers/clocksource/time-pistachio.c      |  2 +-
+> drivers/clocksource/timer-atlas7.c        |  2 +-
+> drivers/clocksource/timer-atmel-pit.c     |  2 +-
+> drivers/clocksource/timer-atmel-st.c      |  2 +-
+> drivers/clocksource/timer-digicolor.c     |  2 +-
+> drivers/clocksource/timer-imx-gpt.c       | 24 ++++++++++++------------
+> drivers/clocksource/timer-integrator-ap.c |  2 +-
+> drivers/clocksource/timer-keystone.c      |  2 +-
+> drivers/clocksource/timer-nps.c           |  4 ++--
+> drivers/clocksource/timer-oxnas-rps.c     |  4 ++--
+> drivers/clocksource/timer-prima2.c        |  2 +-
+> drivers/clocksource/timer-sp804.c         |  4 ++--
+> drivers/clocksource/timer-stm32.c         |  2 +-
+> drivers/clocksource/timer-sun5i.c         |  4 ++--
+> drivers/clocksource/timer-ti-32k.c        |  2 +-
+> drivers/clocksource/timer-u300.c          |  2 +-
+> drivers/clocksource/versatile.c           |  4 ++--
+> drivers/clocksource/vf_pit_timer.c        |  2 +-
+> drivers/clocksource/vt8500_timer.c        |  2 +-
+> drivers/clocksource/zevio-timer.c         |  2 +-
+> include/asm-generic/vmlinux.lds.h         |  2 --
+> include/linux/clocksource.h               |  5 +----
+> 62 files changed, 98 insertions(+), 117 deletions(-)
 
 [..]
 
-> diff --git a/drivers/clocksource/bcm_kona_timer.c b/drivers/clocksource/bcm_kona_timer.c
-> index 98bc2a2..ee07e7e3 100644
-> --- a/drivers/clocksource/bcm_kona_timer.c
-> +++ b/drivers/clocksource/bcm_kona_timer.c
-> @@ -200,9 +200,9 @@ static int __init kona_timer_init(struct device_node *node)
->  	return 0;
->  }
->
-> -CLOCKSOURCE_OF_DECLARE_RET(brcm_kona, "brcm,kona-timer", kona_timer_init);
-> +CLOCKSOURCE_OF_DECLARE(brcm_kona, "brcm,kona-timer", kona_timer_init);
->  /*
->   * bcm,kona-timer is deprecated by brcm,kona-timer
->   * being kept here for driver compatibility
->   */
-> -CLOCKSOURCE_OF_DECLARE_RET(bcm_kona, "bcm,kona-timer", kona_timer_init);
-> +CLOCKSOURCE_OF_DECLARE(bcm_kona, "bcm,kona-timer", kona_timer_init);
+> diff --git a/drivers/clocksource/timer-nps.c b/drivers/clocksource/timer-nps.c index b5c7b2b..70c149a 100644
+> --- a/drivers/clocksource/timer-nps.c
+> +++ b/drivers/clocksource/timer-nps.c
+> @@ -96,5 +96,5 @@ static int __init nps_timer_init(struct device_node *node)
+> 	return nps_setup_clocksource(node, clk);  }
+ 
+> -CLOCKSOURCE_OF_DECLARE_RET(ezchip_nps400_clksrc, "ezchip,nps400-timer",
+> -			   nps_timer_init);
+> +CLOCKSOURCE_OF_DECLARE(ezchip_nps400_clksrc, "ezchip,nps400-timer",
+> +		       nps_timer_init);
+> diff --git a/drivers/clocksource/timer-oxnas-rps.c b/drivers/clocksource/timer-oxnas-rps.c
+> index 0d99f40..bd887e2 100644
+> --- a/drivers/clocksource/timer-oxnas-rps.c
+> +++ b/drivers/clocksource/timer-oxnas-rps.c
+> @@ -293,5 +293,5 @@ err_alloc:
+>  	return ret;
+> }
+ 
 
-For Broadcom Kona timer change:
-
-Acked-by: Ray Jui <ray.jui@broadcom.com>
-
-Thanks!
-
-Ray
+Acked-by: Noam Camus <noamca@mellanox.com>

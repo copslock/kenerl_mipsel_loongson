@@ -1,45 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2016 19:15:50 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:36644 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S27024946AbcFWRPpqLpNz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Jun 2016 19:15:45 +0200
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 5E2C46439A;
-        Thu, 23 Jun 2016 17:15:37 +0000 (UTC)
-Received: from [10.36.112.75] (ovpn-112-75.ams2.redhat.com [10.36.112.75])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u5NHFXnR008923
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 23 Jun 2016 13:15:34 -0400
-Subject: Re: [PATCH] MIPS: KVM: Combine entry trace events into class
-To:     James Hogan <james.hogan@imgtec.com>,
-        Steven Rostedt <rostedt@goodmis.org>
-References: <1466183980-11264-1-git-send-email-james.hogan@imgtec.com>
-Cc:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <7dc4d017-8eed-84e8-a721-34637b6c71a1@redhat.com>
-Date:   Thu, 23 Jun 2016 19:15:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2016 20:11:37 +0200 (CEST)
+Received: from outbound1.eu.mailhop.org ([52.28.251.132]:30897 "EHLO
+        outbound1.eu.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27040905AbcFWSL2p3mEw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jun 2016 20:11:28 +0200
+X-MHO-User: e7c38997-396d-11e6-ac92-3142cfe117f2
+X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Originating-IP: 74.99.78.160
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from io (unknown [74.99.78.160])
+        by outbound1.eu.mailhop.org (Halon Mail Gateway) with ESMTPSA;
+        Thu, 23 Jun 2016 18:11:27 +0000 (UTC)
+Received: from io.lakedaemon.net (localhost [127.0.0.1])
+        by io (Postfix) with ESMTP id 9224C8002F;
+        Thu, 23 Jun 2016 18:11:17 +0000 (UTC)
+X-DKIM: OpenDKIM Filter v2.6.8 io 9224C8002F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
+        s=mail; t=1466705477;
+        bh=mzLTI3WtTMiwS0kl26tClhLoXeHSyi0xE8U99BxhSl0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=vRWPLhbwBx341u+Mu2PX2Pw8YaWrwHdvDjMmzSVKR3NCwPt6KaeUqUee37tpJAugt
+         65qoyKi+ysABi96/HQUDoMYSasPObbXQu2kGsPKXr130e9jCeHwnUuJ+pRdKgHxfiN
+         u285Urbqrn3TVgeUje300x6mQA+Muqd8xM9tpua3qfn8Pb5gWbWl+0lC1VOtuOex/3
+         5vru1Uoma7d117nWWFa+LsxHROxtYk4vw7Cj/WqMUcEa45vke6I1Lxsr9tMbdefzve
+         RNrYrQl2+Tu0C9WudyUgSIX02ES3m3ka5ocA8rGVDms7GUMKWRFU50G+OSlJXB5ib0
+         MC3nIUgOi165Q==
+Date:   Thu, 23 Jun 2016 18:11:17 +0000
+From:   Jason Cooper <jason@lakedaemon.net>
+To:     Qais Yousef <qsyousef@gmail.com>, g@io.lakedaemon.net
+Cc:     Harvey Hunt <harvey.hunt@imgtec.com>, linux-mips@linux-mips.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, marc.zyngier@arm.com
+Subject: Re: [PATCH] irqchip/mips-gic: Fix IRQs in gic_dev_domain
+Message-ID: <20160623181117.GH9922@io.lakedaemon.net>
+References: <1464001552-31174-1-git-send-email-harvey.hunt@imgtec.com>
+ <CA+mqd+7mh3v-1mk4xpxBjxtt4_JjycisWj6VnV7AaOH=i=y3Qw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1466183980-11264-1-git-send-email-james.hogan@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Thu, 23 Jun 2016 17:15:37 +0000 (UTC)
-Return-Path: <pbonzini@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+mqd+7mh3v-1mk4xpxBjxtt4_JjycisWj6VnV7AaOH=i=y3Qw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <jason@lakedaemon.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54152
+X-archive-position: 54153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: jason@lakedaemon.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,105 +60,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Qais,
 
+On Tue, May 24, 2016 at 11:43:07AM +0100, Qais Yousef wrote:
+> Hmm I certainly did test this on real hardware with GIC. Are you using the
+> new dev domain? The idea is that GIC is logically divided and shouldn't be
+> used directly. Sorry I'm travelling and can't check the code.
 
-On 17/06/2016 19:19, James Hogan wrote:
-> Combine the kvm_enter, kvm_reenter and kvm_out trace events into a
-> single kvm_transition event class to reduce duplication and bloat.
+Any update on this patch?  Should I stop tracking it?
+
+thx,
+
+Jason.
+
+> On 23 May 2016 12:06, "Harvey Hunt" <harvey.hunt@imgtec.com> wrote:
 > 
-> Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-> Fixes: 93258604ab6d ("MIPS: KVM: Add guest mode switch trace events")
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Radim Krčmář <rkrcmar@redhat.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: kvm@vger.kernel.org
-> ---
->  arch/mips/kvm/trace.h | 62 ++++++++++++++++++---------------------------------
->  1 file changed, 22 insertions(+), 40 deletions(-)
-> 
-> diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-> index 75f1fda08f70..e7d140fc574e 100644
-> --- a/arch/mips/kvm/trace.h
-> +++ b/arch/mips/kvm/trace.h
-> @@ -20,50 +20,32 @@
->  /*
->   * Tracepoints for VM enters
->   */
-> -TRACE_EVENT(kvm_enter,
-> -	    TP_PROTO(struct kvm_vcpu *vcpu),
-> -	    TP_ARGS(vcpu),
-> -	    TP_STRUCT__entry(
-> -			__field(unsigned long, pc)
-> -	    ),
-> -
-> -	    TP_fast_assign(
-> -			__entry->pc = vcpu->arch.pc;
-> -	    ),
-> -
-> -	    TP_printk("PC: 0x%08lx",
-> -		      __entry->pc)
-> +DECLARE_EVENT_CLASS(kvm_transition,
-> +	TP_PROTO(struct kvm_vcpu *vcpu),
-> +	TP_ARGS(vcpu),
-> +	TP_STRUCT__entry(
-> +		__field(unsigned long, pc)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->pc = vcpu->arch.pc;
-> +	),
-> +
-> +	TP_printk("PC: 0x%08lx",
-> +		  __entry->pc)
->  );
->  
-> -TRACE_EVENT(kvm_reenter,
-> -	    TP_PROTO(struct kvm_vcpu *vcpu),
-> -	    TP_ARGS(vcpu),
-> -	    TP_STRUCT__entry(
-> -			__field(unsigned long, pc)
-> -	    ),
-> +DEFINE_EVENT(kvm_transition, kvm_enter,
-> +	     TP_PROTO(struct kvm_vcpu *vcpu),
-> +	     TP_ARGS(vcpu));
->  
-> -	    TP_fast_assign(
-> -			__entry->pc = vcpu->arch.pc;
-> -	    ),
-> -
-> -	    TP_printk("PC: 0x%08lx",
-> -		      __entry->pc)
-> -);
-> +DEFINE_EVENT(kvm_transition, kvm_reenter,
-> +	     TP_PROTO(struct kvm_vcpu *vcpu),
-> +	     TP_ARGS(vcpu));
->  
-> -TRACE_EVENT(kvm_out,
-> -	    TP_PROTO(struct kvm_vcpu *vcpu),
-> -	    TP_ARGS(vcpu),
-> -	    TP_STRUCT__entry(
-> -			__field(unsigned long, pc)
-> -	    ),
-> -
-> -	    TP_fast_assign(
-> -			__entry->pc = vcpu->arch.pc;
-> -	    ),
-> -
-> -	    TP_printk("PC: 0x%08lx",
-> -		      __entry->pc)
-> -);
-> +DEFINE_EVENT(kvm_transition, kvm_out,
-> +	     TP_PROTO(struct kvm_vcpu *vcpu),
-> +	     TP_ARGS(vcpu));
->  
->  /* The first 32 exit reasons correspond to Cause.ExcCode */
->  #define KVM_TRACE_EXIT_INT		 0
-> 
-
-Queued, thanks.
-
-Paolo
+> > When allocating a new device IRQ, gic_dev_domain_alloc() correctly calls
+> > irq_domain_set_hwirq_and_chip(), but gic_irq_domain_alloc() does not. This
+> > means that gic_irq_domain believes all IRQs from the dev domain have an
+> > hwirq of 0 and creates incorrect mappings in the linear_revmap. As
+> > gic_irq_domain is a parent of the gic_dev_domain, this leads to an
+> > inability to boot on devices with a GIC. Excerpt of the error:
+> >
+> > [    2.297649] irq 0: nobody cared (try booting with the "irqpoll" option)
+> > ...
+> > [    2.436963] handlers:
+> > [    2.439492] Disabling IRQ #0
+> >
+> > Fix this by calling irq_domain_set_hwirq_and_chip() for both the dev and
+> > irq domain.
+> >
+> > Now that we are modifying the parent domain, be sure to clear it up in
+> > case of an allocation error.
+> >
+> > Fixes: c98c1822ee13 ("irqchip/mips-gic: Add device hierarchy domain")
+> > Fixes: 2af70a962070 ("irqchip/mips-gic: Add a IPI hierarchy domain")
+> > Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
+> > Tested-by: Govindraj Raja <Govindraj.Raja@imgtec.com> # On Pistachio SoC
+> > Reviewed-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> > Cc: <linux-mips@linux-mips.org>
+> > Cc: <linux-kernel@vger.kernel.org>
+> > Cc: Qais Yousef <qsyousef@gmail.com>
+> > ---
+> >  drivers/irqchip/irq-mips-gic.c | 12 +++++++++++-
+> >  1 file changed, 11 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/irqchip/irq-mips-gic.c
+> > b/drivers/irqchip/irq-mips-gic.c
+> > index 4dffccf..40fb120 100644
+> > --- a/drivers/irqchip/irq-mips-gic.c
+> > +++ b/drivers/irqchip/irq-mips-gic.c
+> > @@ -734,6 +734,12 @@ static int gic_irq_domain_alloc(struct irq_domain *d,
+> > unsigned int virq,
+> >                 /* verify that it doesn't conflict with an IPI irq */
+> >                 if (test_bit(spec->hwirq, ipi_resrv))
+> >                         return -EBUSY;
+> > +
+> > +               hwirq = GIC_SHARED_TO_HWIRQ(spec->hwirq);
+> > +
+> > +               return irq_domain_set_hwirq_and_chip(d, virq, hwirq,
+> > +
+> > &gic_level_irq_controller,
+> > +                                                    NULL);
+> >         } else {
+> >                 base_hwirq = find_first_bit(ipi_resrv, gic_shared_intrs);
+> >                 if (base_hwirq == gic_shared_intrs) {
+> > @@ -855,10 +861,14 @@ static int gic_dev_domain_alloc(struct irq_domain
+> > *d, unsigned int virq,
+> >
+> > &gic_level_irq_controller,
+> >                                                     NULL);
+> >                 if (ret)
+> > -                       return ret;
+> > +                       goto error;
+> >         }
+> >
+> >         return 0;
+> > +
+> > +error:
+> > +       irq_domain_free_irqs_parent(d, virq, nr_irqs);
+> > +       return ret;
+> >  }
+> >
+> >  void gic_dev_domain_free(struct irq_domain *d, unsigned int virq,
+> > --
+> > 2.8.2
+> >
+> >

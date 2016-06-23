@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2016 18:39:01 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:62380 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2016 18:39:21 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:3605 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27043857AbcFWQfHLjLlz (ORCPT
+        with ESMTP id S27043858AbcFWQfHm55az (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jun 2016 18:35:07 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id EF16C3AD1BA8;
-        Thu, 23 Jun 2016 17:34:56 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 80A6ABE874834;
+        Thu, 23 Jun 2016 17:34:57 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
  14.3.294.0; Thu, 23 Jun 2016 17:35:00 +0100
@@ -15,9 +15,9 @@ To:     Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
         <kvm@vger.kernel.org>
-Subject: [PATCH 13/14] MIPS: KVM: Relative branch to common exit handler
-Date:   Thu, 23 Jun 2016 17:34:46 +0100
-Message-ID: <1466699687-24791-14-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 14/14] MIPS: KVM: Save k0 straight into VCPU structure
+Date:   Thu, 23 Jun 2016 17:34:47 +0100
+Message-ID: <1466699687-24791-15-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1466699687-24791-1-git-send-email-james.hogan@imgtec.com>
 References: <1466699687-24791-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54150
+X-archive-position: 54151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,13 +46,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use a relative branch to get from the individual exception vectors to
-the common guest exit handler, rather than loading the address of the
-exit handler and jumping to it.
+Currently on a guest exception the guest's k0 register is saved to the
+scratch temp register and the guest k1 saved to the exception base
+address + 0x3000 using k0 to extract the Exception Base field of the
+EBase register and as the base operand to the store. Both are then
+copied into the VCPU structure after the other general purpose registers
+have been saved there.
 
-This is made easier due to the fact we are now generating the entry code
-dynamically. This will also allow the exception code to be further
-reduced in future patches.
+This bouncing to exception base + 0x3000 is not actually necessary as
+the VCPU pointer can be determined and written through just as easily
+with only a single spare register. The VCPU pointer is already needed in
+k1 for saving the other GP registers, so lets save the guest k0 register
+straight into the VCPU structure through k1, first saving k1 into the
+scratch temp register instead of k0.
+
+This could potentially pave the way for having a single exception base
+area for use by all guests.
+
+The ehb after saving the k register to the scratch temp register is also
+delayed until just before it needs to be read back.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -61,128 +73,74 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h |  2 +-
- arch/mips/kvm/entry.c            | 23 +++++++++++++++++------
- arch/mips/kvm/mips.c             | 12 +++++++-----
- 3 files changed, 25 insertions(+), 12 deletions(-)
+ arch/mips/kvm/entry.c | 37 +++++++++++++++----------------------
+ 1 file changed, 15 insertions(+), 22 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index a80c3208b234..b32785543787 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -538,7 +538,7 @@ extern int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu);
- /* Building of entry/exception code */
- int kvm_mips_entry_setup(void);
- void *kvm_mips_build_vcpu_run(void *addr);
--void *kvm_mips_build_exception(void *addr);
-+void *kvm_mips_build_exception(void *addr, void *handler);
- void *kvm_mips_build_exit(void *addr);
- 
- /* FPU/MSA context management */
 diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
-index b6e7fd9f12f0..fb2cbf653474 100644
+index fb2cbf653474..de8b6ec5573f 100644
 --- a/arch/mips/kvm/entry.c
 +++ b/arch/mips/kvm/entry.c
-@@ -69,12 +69,14 @@ enum label_id {
- 	label_msa_1,
- 	label_return_to_host,
- 	label_kernel_asid,
-+	label_exit_common,
- };
+@@ -347,17 +347,15 @@ void *kvm_mips_build_exception(void *addr, void *handler)
+ 	memset(labels, 0, sizeof(labels));
+ 	memset(relocs, 0, sizeof(relocs));
  
- UASM_L_LA(_fpu_1)
- UASM_L_LA(_msa_1)
- UASM_L_LA(_return_to_host)
- UASM_L_LA(_kernel_asid)
-+UASM_L_LA(_exit_common)
+-	/* Save guest k0 */
+-	uasm_i_mtc0(&p, K0, scratch_tmp[0], scratch_tmp[1]);
+-	uasm_i_ehb(&p);
++	/* Save guest k1 into scratch register */
++	uasm_i_mtc0(&p, K1, scratch_tmp[0], scratch_tmp[1]);
  
- static void *kvm_mips_build_enter_guest(void *addr);
- static void *kvm_mips_build_ret_from_exit(void *addr);
-@@ -327,15 +329,23 @@ static void *kvm_mips_build_enter_guest(void *addr)
- /**
-  * kvm_mips_build_exception() - Assemble first level guest exception handler.
-  * @addr:	Address to start writing code.
-+ * @handler:	Address of common handler (within range of @addr).
-  *
-  * Assemble exception vector code for guest execution. The generated vector will
-- * jump to the common exception handler generated by kvm_mips_build_exit().
-+ * branch to the common exception handler generated by kvm_mips_build_exit().
-  *
-  * Returns:	Next address after end of written function.
-  */
--void *kvm_mips_build_exception(void *addr)
-+void *kvm_mips_build_exception(void *addr, void *handler)
- {
- 	u32 *p = addr;
-+	struct uasm_label labels[2];
-+	struct uasm_reloc relocs[2];
-+	struct uasm_label *l = labels;
-+	struct uasm_reloc *r = relocs;
+-	/* Get EBASE */
+-	uasm_i_mfc0(&p, K0, C0_EBASE);
+-	/* Get rid of CPUNum */
+-	uasm_i_srl(&p, K0, K0, 10);
+-	uasm_i_sll(&p, K0, K0, 10);
+-	/* Save k1 @ offset 0x3000 */
+-	UASM_i_SW(&p, K1, 0x3000, K0);
++	/* Get the VCPU pointer from the VCPU scratch register */
++	uasm_i_mfc0(&p, K1, scratch_vcpu[0], scratch_vcpu[1]);
++	uasm_i_addiu(&p, K1, K1, offsetof(struct kvm_vcpu, arch));
 +
-+	memset(labels, 0, sizeof(labels));
-+	memset(relocs, 0, sizeof(relocs));
++	/* Save guest k0 into VCPU structure */
++	UASM_i_SW(&p, K0, offsetof(struct kvm_vcpu_arch, gprs[K0]), K1);
  
- 	/* Save guest k0 */
- 	uasm_i_mtc0(&p, K0, scratch_tmp[0], scratch_tmp[1]);
-@@ -349,12 +359,13 @@ void *kvm_mips_build_exception(void *addr)
- 	/* Save k1 @ offset 0x3000 */
- 	UASM_i_SW(&p, K1, 0x3000, K0);
+ 	/* Branch to the common handler */
+ 	uasm_il_b(&p, &r, label_exit_common);
+@@ -395,12 +393,13 @@ void *kvm_mips_build_exit(void *addr)
+ 	/*
+ 	 * Generic Guest exception handler. We end up here when the guest
+ 	 * does something that causes a trap to kernel mode.
++	 *
++	 * Both k0/k1 registers will have already been saved (k0 into the vcpu
++	 * structure, and k1 into the scratch_tmp register).
++	 *
++	 * The k1 register will already contain the kvm_vcpu_arch pointer.
+ 	 */
  
--	/* Exception handler is installed @ offset 0x2000 */
--	uasm_i_addiu(&p, K0, K0, 0x2000);
--	/* Jump to the function */
--	uasm_i_jr(&p, K0);
-+	/* Branch to the common handler */
-+	uasm_il_b(&p, &r, label_exit_common);
- 	 uasm_i_nop(&p);
+-	/* Get the VCPU pointer from the scratch register */
+-	uasm_i_mfc0(&p, K1, scratch_vcpu[0], scratch_vcpu[1]);
+-	uasm_i_addiu(&p, K1, K1, offsetof(struct kvm_vcpu, arch));
+-
+ 	/* Start saving Guest context to VCPU */
+ 	for (i = 0; i < 32; ++i) {
+ 		/* Guest k0/k1 saved later */
+@@ -416,15 +415,9 @@ void *kvm_mips_build_exit(void *addr)
+ 	uasm_i_mflo(&p, T0);
+ 	UASM_i_SW(&p, T0, offsetof(struct kvm_vcpu_arch, lo), K1);
  
-+	uasm_l_exit_common(&l, handler);
-+	uasm_resolve_relocs(relocs, labels);
-+
- 	return p;
- }
+-	/* Finally save guest k0/k1 to VCPU */
++	/* Finally save guest k1 to VCPU */
++	uasm_i_ehb(&p);
+ 	uasm_i_mfc0(&p, T0, scratch_tmp[0], scratch_tmp[1]);
+-	UASM_i_SW(&p, T0, offsetof(struct kvm_vcpu_arch, gprs[K0]), K1);
+-
+-	/* Get GUEST k1 and save it in VCPU */
+-	uasm_i_addiu(&p, T1, ZERO, ~0x2ff);
+-	uasm_i_mfc0(&p, T0, C0_EBASE);
+-	uasm_i_and(&p, T0, T0, T1);
+-	UASM_i_LW(&p, T0, 0x3000, T0);
+ 	UASM_i_SW(&p, T0, offsetof(struct kvm_vcpu_arch, gprs[K1]), K1);
  
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index e45b505e2ad7..a62267f6fb07 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -265,7 +265,7 @@ static inline void dump_handler(const char *symbol, void *start, void *end)
- struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- {
- 	int err, size;
--	void *gebase, *p;
-+	void *gebase, *p, *handler;
- 	int i;
- 
- 	struct kvm_vcpu *vcpu = kzalloc(sizeof(struct kvm_vcpu), GFP_KERNEL);
-@@ -304,22 +304,24 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- 	vcpu->arch.guest_ebase = gebase;
- 
- 	/* Build guest exception vectors dynamically in unmapped memory */
-+	handler = gebase + 0x2000;
- 
- 	/* TLB Refill, EXL = 0 */
--	kvm_mips_build_exception(gebase);
-+	kvm_mips_build_exception(gebase, handler);
- 
- 	/* General Exception Entry point */
--	kvm_mips_build_exception(gebase + 0x180);
-+	kvm_mips_build_exception(gebase + 0x180, handler);
- 
- 	/* For vectored interrupts poke the exception code @ all offsets 0-7 */
- 	for (i = 0; i < 8; i++) {
- 		kvm_debug("L1 Vectored handler @ %p\n",
- 			  gebase + 0x200 + (i * VECTORSPACING));
--		kvm_mips_build_exception(gebase + 0x200 + i * VECTORSPACING);
-+		kvm_mips_build_exception(gebase + 0x200 + i * VECTORSPACING,
-+					 handler);
- 	}
- 
- 	/* General exit handler */
--	p = gebase + 0x2000;
-+	p = handler;
- 	p = kvm_mips_build_exit(p);
- 
- 	/* Guest entry routine */
+ 	/* Now that context has been saved, we can use other registers */
 -- 
 2.4.10

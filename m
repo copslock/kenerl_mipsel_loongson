@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2016 18:37:46 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:38959 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2016 18:38:06 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:7589 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27043853AbcFWQfDiqzkz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jun 2016 18:35:03 +0200
+        with ESMTP id S27043854AbcFWQfE3qyZz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jun 2016 18:35:04 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C869CBD1EAFBE;
-        Thu, 23 Jun 2016 17:34:53 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 8BF62386307EB;
+        Thu, 23 Jun 2016 17:34:54 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 23 Jun 2016 17:34:57 +0100
+ 14.3.294.0; Thu, 23 Jun 2016 17:34:58 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
         <kvm@vger.kernel.org>
-Subject: [PATCH 09/14] MIPS: KVM: Omit FPU handling entry code if possible
-Date:   Thu, 23 Jun 2016 17:34:42 +0100
-Message-ID: <1466699687-24791-10-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 10/14] MIPS: KVM: Check MSA presence at uasm time
+Date:   Thu, 23 Jun 2016 17:34:43 +0100
+Message-ID: <1466699687-24791-11-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1466699687-24791-1-git-send-email-james.hogan@imgtec.com>
 References: <1466699687-24791-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54146
+X-archive-position: 54147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,8 +46,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The FPU handling code on entry from guest is unnecessary if no FPU is
-present, so allow it to be dropped at uasm assembly time.
+Check for presence of MSA at uasm assembly time rather than at runtime
+in the generated KVM host entry code. This optimises the guest exit path
+by eliminating the MSA code entirely if not present, and eliminating the
+read of Config3.MSAP and conditional branch if MSA is present.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -56,46 +58,61 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/entry.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ arch/mips/kvm/entry.c | 35 +++++++++++++++--------------------
+ 1 file changed, 15 insertions(+), 20 deletions(-)
 
 diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
-index 9a18b4939b35..c0d9f551c1c1 100644
+index c0d9f551c1c1..53e1e576d18a 100644
 --- a/arch/mips/kvm/entry.c
 +++ b/arch/mips/kvm/entry.c
-@@ -393,18 +393,21 @@ void *kvm_mips_build_exit(void *addr)
- 	UASM_i_LW(&p, K0, uasm_rel_lo((long)&ebase), K0);
- 	uasm_i_mtc0(&p, K0, C0_EBASE);
+@@ -55,7 +55,6 @@
+ #define C0_CAUSE	13, 0
+ #define C0_EPC		14, 0
+ #define C0_EBASE	15, 1
+-#define C0_CONFIG3	16, 3
+ #define C0_CONFIG5	16, 5
+ #define C0_DDATA_LO	28, 3
+ #define C0_ERROREPC	30, 0
+@@ -409,25 +408,21 @@ void *kvm_mips_build_exit(void *addr)
+ 		uasm_l_fpu_1(&l, p);
+ 	}
  
+-#ifdef CONFIG_CPU_HAS_MSA
 -	/*
--	 * If FPU is enabled, save FCR31 and clear it so that later ctc1's don't
--	 * trigger FPE for pending exceptions.
+-	 * If MSA is enabled, save MSACSR and clear it so that later
+-	 * instructions don't trigger MSAFPE for pending exceptions.
 -	 */
--	uasm_i_lui(&p, AT, ST0_CU1 >> 16);
--	uasm_i_and(&p, V1, V0, AT);
--	uasm_il_beqz(&p, &r, V1, label_fpu_1);
+-	uasm_i_mfc0(&p, T0, C0_CONFIG3);
+-	uasm_i_ext(&p, T0, T0, 28, 1); /* MIPS_CONF3_MSAP */
+-	uasm_il_beqz(&p, &r, T0, label_msa_1);
 -	 uasm_i_nop(&p);
--	uasm_i_cfc1(&p, T0, 31);
--	uasm_i_sw(&p, T0, offsetof(struct kvm_vcpu_arch, fpu.fcr31), K1);
--	uasm_i_ctc1(&p, ZERO, 31);
--	uasm_l_fpu_1(&l, p);
-+	if (raw_cpu_has_fpu) {
+-	uasm_i_mfc0(&p, T0, C0_CONFIG5);
+-	uasm_i_ext(&p, T0, T0, 27, 1); /* MIPS_CONF5_MSAEN */
+-	uasm_il_beqz(&p, &r, T0, label_msa_1);
+-	 uasm_i_nop(&p);
+-	uasm_i_cfcmsa(&p, T0, MSA_CSR);
+-	uasm_i_sw(&p, T0, offsetof(struct kvm_vcpu_arch, fpu.msacsr),
+-		  K1);
+-	uasm_i_ctcmsa(&p, MSA_CSR, ZERO);
+-	uasm_l_msa_1(&l, p);
+-#endif
++	if (cpu_has_msa) {
 +		/*
-+		 * If FPU is enabled, save FCR31 and clear it so that later
-+		 * ctc1's don't trigger FPE for pending exceptions.
++		 * If MSA is enabled, save MSACSR and clear it so that later
++		 * instructions don't trigger MSAFPE for pending exceptions.
 +		 */
-+		uasm_i_lui(&p, AT, ST0_CU1 >> 16);
-+		uasm_i_and(&p, V1, V0, AT);
-+		uasm_il_beqz(&p, &r, V1, label_fpu_1);
++		uasm_i_mfc0(&p, T0, C0_CONFIG5);
++		uasm_i_ext(&p, T0, T0, 27, 1); /* MIPS_CONF5_MSAEN */
++		uasm_il_beqz(&p, &r, T0, label_msa_1);
 +		 uasm_i_nop(&p);
-+		uasm_i_cfc1(&p, T0, 31);
-+		uasm_i_sw(&p, T0, offsetof(struct kvm_vcpu_arch, fpu.fcr31),
++		uasm_i_cfcmsa(&p, T0, MSA_CSR);
++		uasm_i_sw(&p, T0, offsetof(struct kvm_vcpu_arch, fpu.msacsr),
 +			  K1);
-+		uasm_i_ctc1(&p, ZERO, 31);
-+		uasm_l_fpu_1(&l, p);
++		uasm_i_ctcmsa(&p, MSA_CSR, ZERO);
++		uasm_l_msa_1(&l, p);
 +	}
  
- #ifdef CONFIG_CPU_HAS_MSA
- 	/*
+ 	/* Now that the new EBASE has been loaded, unset BEV and KSU_USER */
+ 	uasm_i_addiu(&p, AT, ZERO, ~(ST0_EXL | KSU_USER | ST0_IE));
 -- 
 2.4.10

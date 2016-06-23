@@ -1,39 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2016 18:39:21 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3605 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27043858AbcFWQfHm55az (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jun 2016 18:35:07 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 80A6ABE874834;
-        Thu, 23 Jun 2016 17:34:57 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 23 Jun 2016 17:35:00 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>
-Subject: [PATCH 14/14] MIPS: KVM: Save k0 straight into VCPU structure
-Date:   Thu, 23 Jun 2016 17:34:47 +0100
-Message-ID: <1466699687-24791-15-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1466699687-24791-1-git-send-email-james.hogan@imgtec.com>
-References: <1466699687-24791-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2016 19:15:50 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:36644 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S27024946AbcFWRPpqLpNz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 Jun 2016 19:15:45 +0200
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 5E2C46439A;
+        Thu, 23 Jun 2016 17:15:37 +0000 (UTC)
+Received: from [10.36.112.75] (ovpn-112-75.ams2.redhat.com [10.36.112.75])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u5NHFXnR008923
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 23 Jun 2016 13:15:34 -0400
+Subject: Re: [PATCH] MIPS: KVM: Combine entry trace events into class
+To:     James Hogan <james.hogan@imgtec.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+References: <1466183980-11264-1-git-send-email-james.hogan@imgtec.com>
+Cc:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <7dc4d017-8eed-84e8-a721-34637b6c71a1@redhat.com>
+Date:   Thu, 23 Jun 2016 19:15:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1466183980-11264-1-git-send-email-james.hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Thu, 23 Jun 2016 17:15:37 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54151
+X-archive-position: 54152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,101 +52,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently on a guest exception the guest's k0 register is saved to the
-scratch temp register and the guest k1 saved to the exception base
-address + 0x3000 using k0 to extract the Exception Base field of the
-EBase register and as the base operand to the store. Both are then
-copied into the VCPU structure after the other general purpose registers
-have been saved there.
 
-This bouncing to exception base + 0x3000 is not actually necessary as
-the VCPU pointer can be determined and written through just as easily
-with only a single spare register. The VCPU pointer is already needed in
-k1 for saving the other GP registers, so lets save the guest k0 register
-straight into the VCPU structure through k1, first saving k1 into the
-scratch temp register instead of k0.
 
-This could potentially pave the way for having a single exception base
-area for use by all guests.
+On 17/06/2016 19:19, James Hogan wrote:
+> Combine the kvm_enter, kvm_reenter and kvm_out trace events into a
+> single kvm_transition event class to reduce duplication and bloat.
+> 
+> Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+> Fixes: 93258604ab6d ("MIPS: KVM: Add guest mode switch trace events")
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Radim Krčmář <rkrcmar@redhat.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: kvm@vger.kernel.org
+> ---
+>  arch/mips/kvm/trace.h | 62 ++++++++++++++++++---------------------------------
+>  1 file changed, 22 insertions(+), 40 deletions(-)
+> 
+> diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
+> index 75f1fda08f70..e7d140fc574e 100644
+> --- a/arch/mips/kvm/trace.h
+> +++ b/arch/mips/kvm/trace.h
+> @@ -20,50 +20,32 @@
+>  /*
+>   * Tracepoints for VM enters
+>   */
+> -TRACE_EVENT(kvm_enter,
+> -	    TP_PROTO(struct kvm_vcpu *vcpu),
+> -	    TP_ARGS(vcpu),
+> -	    TP_STRUCT__entry(
+> -			__field(unsigned long, pc)
+> -	    ),
+> -
+> -	    TP_fast_assign(
+> -			__entry->pc = vcpu->arch.pc;
+> -	    ),
+> -
+> -	    TP_printk("PC: 0x%08lx",
+> -		      __entry->pc)
+> +DECLARE_EVENT_CLASS(kvm_transition,
+> +	TP_PROTO(struct kvm_vcpu *vcpu),
+> +	TP_ARGS(vcpu),
+> +	TP_STRUCT__entry(
+> +		__field(unsigned long, pc)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__entry->pc = vcpu->arch.pc;
+> +	),
+> +
+> +	TP_printk("PC: 0x%08lx",
+> +		  __entry->pc)
+>  );
+>  
+> -TRACE_EVENT(kvm_reenter,
+> -	    TP_PROTO(struct kvm_vcpu *vcpu),
+> -	    TP_ARGS(vcpu),
+> -	    TP_STRUCT__entry(
+> -			__field(unsigned long, pc)
+> -	    ),
+> +DEFINE_EVENT(kvm_transition, kvm_enter,
+> +	     TP_PROTO(struct kvm_vcpu *vcpu),
+> +	     TP_ARGS(vcpu));
+>  
+> -	    TP_fast_assign(
+> -			__entry->pc = vcpu->arch.pc;
+> -	    ),
+> -
+> -	    TP_printk("PC: 0x%08lx",
+> -		      __entry->pc)
+> -);
+> +DEFINE_EVENT(kvm_transition, kvm_reenter,
+> +	     TP_PROTO(struct kvm_vcpu *vcpu),
+> +	     TP_ARGS(vcpu));
+>  
+> -TRACE_EVENT(kvm_out,
+> -	    TP_PROTO(struct kvm_vcpu *vcpu),
+> -	    TP_ARGS(vcpu),
+> -	    TP_STRUCT__entry(
+> -			__field(unsigned long, pc)
+> -	    ),
+> -
+> -	    TP_fast_assign(
+> -			__entry->pc = vcpu->arch.pc;
+> -	    ),
+> -
+> -	    TP_printk("PC: 0x%08lx",
+> -		      __entry->pc)
+> -);
+> +DEFINE_EVENT(kvm_transition, kvm_out,
+> +	     TP_PROTO(struct kvm_vcpu *vcpu),
+> +	     TP_ARGS(vcpu));
+>  
+>  /* The first 32 exit reasons correspond to Cause.ExcCode */
+>  #define KVM_TRACE_EXIT_INT		 0
+> 
 
-The ehb after saving the k register to the scratch temp register is also
-delayed until just before it needs to be read back.
+Queued, thanks.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Radim Krčmář <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
----
- arch/mips/kvm/entry.c | 37 +++++++++++++++----------------------
- 1 file changed, 15 insertions(+), 22 deletions(-)
-
-diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
-index fb2cbf653474..de8b6ec5573f 100644
---- a/arch/mips/kvm/entry.c
-+++ b/arch/mips/kvm/entry.c
-@@ -347,17 +347,15 @@ void *kvm_mips_build_exception(void *addr, void *handler)
- 	memset(labels, 0, sizeof(labels));
- 	memset(relocs, 0, sizeof(relocs));
- 
--	/* Save guest k0 */
--	uasm_i_mtc0(&p, K0, scratch_tmp[0], scratch_tmp[1]);
--	uasm_i_ehb(&p);
-+	/* Save guest k1 into scratch register */
-+	uasm_i_mtc0(&p, K1, scratch_tmp[0], scratch_tmp[1]);
- 
--	/* Get EBASE */
--	uasm_i_mfc0(&p, K0, C0_EBASE);
--	/* Get rid of CPUNum */
--	uasm_i_srl(&p, K0, K0, 10);
--	uasm_i_sll(&p, K0, K0, 10);
--	/* Save k1 @ offset 0x3000 */
--	UASM_i_SW(&p, K1, 0x3000, K0);
-+	/* Get the VCPU pointer from the VCPU scratch register */
-+	uasm_i_mfc0(&p, K1, scratch_vcpu[0], scratch_vcpu[1]);
-+	uasm_i_addiu(&p, K1, K1, offsetof(struct kvm_vcpu, arch));
-+
-+	/* Save guest k0 into VCPU structure */
-+	UASM_i_SW(&p, K0, offsetof(struct kvm_vcpu_arch, gprs[K0]), K1);
- 
- 	/* Branch to the common handler */
- 	uasm_il_b(&p, &r, label_exit_common);
-@@ -395,12 +393,13 @@ void *kvm_mips_build_exit(void *addr)
- 	/*
- 	 * Generic Guest exception handler. We end up here when the guest
- 	 * does something that causes a trap to kernel mode.
-+	 *
-+	 * Both k0/k1 registers will have already been saved (k0 into the vcpu
-+	 * structure, and k1 into the scratch_tmp register).
-+	 *
-+	 * The k1 register will already contain the kvm_vcpu_arch pointer.
- 	 */
- 
--	/* Get the VCPU pointer from the scratch register */
--	uasm_i_mfc0(&p, K1, scratch_vcpu[0], scratch_vcpu[1]);
--	uasm_i_addiu(&p, K1, K1, offsetof(struct kvm_vcpu, arch));
--
- 	/* Start saving Guest context to VCPU */
- 	for (i = 0; i < 32; ++i) {
- 		/* Guest k0/k1 saved later */
-@@ -416,15 +415,9 @@ void *kvm_mips_build_exit(void *addr)
- 	uasm_i_mflo(&p, T0);
- 	UASM_i_SW(&p, T0, offsetof(struct kvm_vcpu_arch, lo), K1);
- 
--	/* Finally save guest k0/k1 to VCPU */
-+	/* Finally save guest k1 to VCPU */
-+	uasm_i_ehb(&p);
- 	uasm_i_mfc0(&p, T0, scratch_tmp[0], scratch_tmp[1]);
--	UASM_i_SW(&p, T0, offsetof(struct kvm_vcpu_arch, gprs[K0]), K1);
--
--	/* Get GUEST k1 and save it in VCPU */
--	uasm_i_addiu(&p, T1, ZERO, ~0x2ff);
--	uasm_i_mfc0(&p, T0, C0_EBASE);
--	uasm_i_and(&p, T0, T0, T1);
--	UASM_i_LW(&p, T0, 0x3000, T0);
- 	UASM_i_SW(&p, T0, offsetof(struct kvm_vcpu_arch, gprs[K1]), K1);
- 
- 	/* Now that context has been saved, we can use other registers */
--- 
-2.4.10
+Paolo

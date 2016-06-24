@@ -1,114 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2016 09:13:50 +0200 (CEST)
-Received: from smtp.csie.ntu.edu.tw ([140.112.30.61]:44766 "EHLO
-        smtp.csie.ntu.edu.tw" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27043945AbcFXHNrVDjuV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Jun 2016 09:13:47 +0200
-Received: from mail-it0-f48.google.com (mail-it0-f48.google.com [209.85.214.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: b93043)
-        by smtp.csie.ntu.edu.tw (Postfix) with ESMTPSA id 0132D20837;
-        Fri, 24 Jun 2016 15:13:41 +0800 (CST)
-Received: by mail-it0-f48.google.com with SMTP id f6so8147160ith.0;
-        Fri, 24 Jun 2016 00:13:41 -0700 (PDT)
-X-Gm-Message-State: ALyK8tI07LFPmF4/6wtGoPiQZEPaDfMGM/hsxDWJiXxCQAJRjjdZCoL/Vjth8TKJh9xKU1LSeyIWVjBGjmYO3g==
-X-Received: by 10.36.120.71 with SMTP id p68mr24698906itc.22.1466752420360;
- Fri, 24 Jun 2016 00:13:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2016 13:39:28 +0200 (CEST)
+Received: from resqmta-po-06v.sys.comcast.net ([96.114.154.165]:45131 "EHLO
+        resqmta-po-06v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27025203AbcFXLj1HjMdG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Jun 2016 13:39:27 +0200
+Received: from resomta-po-19v.sys.comcast.net ([96.114.154.243])
+        by resqmta-po-06v.sys.comcast.net with SMTP
+        id GPSBbWf9cBNj9GPSBbVI0e; Fri, 24 Jun 2016 11:39:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1466768359;
+        bh=gR7Lf3G8+LRi8Kp0T4rexfpJSZNEQf2R8HGYEDE76eU=;
+        h=Received:Received:Subject:To:From:Message-ID:Date:MIME-Version:
+         Content-Type;
+        b=s4YsKdoeLK2vjDIT/xqG+fluVzpeXKwFGzYtpbAK1OxAsOow5MVpDvaQEe6JeKcD0
+         Z98pcYDZ8j4aTdNQpm3+qDRjfQJDcXndxloyUo980rhiU0uEMebxOal9HdlcuO26iw
+         +4aujvN4GHQfu4IURBKYzUM6q4ub9nhjfTn34izyNWQ0/UjRERFGAo3z8ZI5RPRrp7
+         ux/7/DzjvM0CmmAgY23WcYd/P6AZOf/3VLQQpYc8rmyiwZxNCJ45oCWgOg40ffwlIr
+         fu/C/gUeOANfe9HbotyADmr0zhTttphUVdJe8Kmi89F/q8Wv5VzN6TjcKNza3XOAkr
+         nCUaY6eiqWEXw==
+Received: from [192.168.1.13] ([76.106.83.43])
+        by resomta-po-19v.sys.comcast.net with comcast
+        id AbfH1t00N0w5D3801bfJ5G; Fri, 24 Jun 2016 11:39:19 +0000
+Subject: Re: THP broken on OCTEON?
+To:     Aaro Koskinen <aaro.koskinen@nokia.com>,
+        David Daney <ddaney.cavm@gmail.com>
+References: <20160523151346.GA23204@ak-desktop.emea.nsn-net.net>
+ <576B0B91.2020608@gmail.com>
+ <20160623120757.GQ3012@ak-desktop.emea.nsn-net.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        "Kirill A. Shutemov" <kirill@shutemov.name>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <0b98da9a-8f1e-5ef1-37d7-253adfec2e10@gentoo.org>
+Date:   Fri, 24 Jun 2016 07:38:56 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.1.1
 MIME-Version: 1.0
-Received: by 10.107.200.5 with HTTP; Fri, 24 Jun 2016 00:13:20 -0700 (PDT)
-In-Reply-To: <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
-References: <1466112442-31105-1-git-send-email-daniel.lezcano@linaro.org> <1466112442-31105-64-git-send-email-daniel.lezcano@linaro.org>
-From:   Chen-Yu Tsai <wens@csie.org>
-Date:   Fri, 24 Jun 2016 15:13:20 +0800
-X-Gmail-Original-Message-ID: <CAGb2v64Qk822h2Mqp1Moc1yV7uXSEQBGiurkyFLSZdJ6NOO3Vg@mail.gmail.com>
-Message-ID: <CAGb2v64Qk822h2Mqp1Moc1yV7uXSEQBGiurkyFLSZdJ6NOO3Vg@mail.gmail.com>
-Subject: Re: [PATCH V2 63/63] clocksources: Switch back to the clksrc table
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        John Crispin <john@phrozen.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@gmail.com>,
-        Maxime Coquelin <maxime.coquelin@st.com>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        =?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Carlo Caione <carlo@caione.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <kernel@pengutronix.de>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Tony Prisk <linux@prisktech.co.nz>,
-        Arnd Bergmann <arnd@arndb.de>,
-        John Stultz <john.stultz@linaro.org>,
-        Noam Camus <noamc@ezchip.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Felipe Balbi <balbi@ti.com>,
-        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hanjun Guo <hanjun.guo@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Marc Zyngier <Marc.Zyngier@arm.com>,
-        "open list:SYNOPSYS ARC ARCH..." <linux-snps-arc@lists.infradead.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "open list:RALINK MIPS ARCHI..." <linux-mips@linux-mips.org>,
-        "moderated list:NIOS2 ARCHITECTURE" 
-        <nios2-dev@lists.rocketboards.org>,
-        "open list:ARM/STI ARCHITECTURE" <kernel@stlinux.com>,
-        "moderated list:BROADCOM BCM2835..." 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "open list:BROADCOM BCM281XX..." 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "moderated list:ARM/SAMSUNG EXYNO..." 
-        <linux-samsung-soc@vger.kernel.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC..." 
-        <linux-mediatek@lists.infradead.org>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        "open list:TEGRA ARCHITECTUR..." <linux-tegra@vger.kernel.org>,
-        "open list:GENERIC INCLUDE/A..." <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <wens@csie.org>
+In-Reply-To: <20160623120757.GQ3012@ak-desktop.emea.nsn-net.net>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54156
+X-archive-position: 54157
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wens@csie.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -121,19 +58,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 17, 2016 at 5:27 AM, Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
-> All the clocksource drivers's init function are now converted to return
-> an error code. CLOCKSOURCE_OF_DECLARE is no longer used as well as the
-> clksrc-of table.
->
-> Let's convert back the names:
->  - CLOCKSOURCE_OF_DECLARE_RET => CLOCKSOURCE_OF_DECLARE
->  - clksrc-of-ret              => clksrc-of
->
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> ---
->  drivers/clocksource/sun4i_timer.c         |  2 +-
->  drivers/clocksource/timer-sun5i.c         |  4 ++--
+On 06/23/2016 08:08, Aaro Koskinen wrote:
+> Hi,
+> 
+> On Wed, Jun 22, 2016 at 03:05:05PM -0700, David Daney wrote:
+>> This is caused by a config bug.
+>>
+>> For THP to work you must have both:
+>>
+>> CONFIG_TRANSPARENT_HUGEPAGE=y
+>> and
+>> CONFIG_HUGETLBFS=y
+> 
+> Oh... I guess this is with MIPS only?
+> 
+>> Please try testing with both of those set as well as applying:
+>>
+>> https://www.linux-mips.org/archives/linux-mips/2016-06/msg00397.html
+> 
+> Works! Now the system is stable. EBH5600 built dozen of different packages
+> without any issues and THP being used:
+> 
+> root@localhost:~$ grep thp /proc/vmstat 
+> thp_fault_alloc 2271
+> thp_fault_fallback 0
+> thp_collapse_alloc 2049
+> thp_collapse_alloc_failed 0
+> thp_split_page 0
+> thp_split_page_failed 0
+> thp_deferred_split_page 3996
+> thp_split_pmd 186
+> thp_zero_page_alloc 0
+> thp_zero_page_alloc_failed 0
+> 
+> Thanks a lot,
+> 
+> A. 
+> 
 
-Acked-by: Chen-Yu Tsai <wens@csie.org>
+The case on the IP27 is still broke, it seems, with this patch.  Actually
+triggers a HUB error interrupt now instead of a bus error, so I guess that's an
+improvement in a sense.  Though, I am still re-working the entire IP27 code
+base, so I'll add this to the list of things to try and hunt down.  I'll have
+to add some code to read HUB's cause register and extract what error bit got
+flipped on.
+
+Have not tried the IP30/Octane case yet.
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

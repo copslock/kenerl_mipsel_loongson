@@ -1,43 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jun 2016 00:43:14 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4028 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S27043816AbcFXWmxRpNhY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Jun 2016 00:42:53 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 29A228D048B63;
-        Fri, 24 Jun 2016 23:42:42 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 24 Jun 2016 23:42:46 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-CC:     <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Michal Marek <mmarek@suse.com>, Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        <linux-kbuild@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH v4 2/2] kbuild: Remove stale asm-generic wrappers
-Date:   Fri, 24 Jun 2016 23:42:24 +0100
-Message-ID: <1466808144-23209-3-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1466808144-23209-1-git-send-email-james.hogan@imgtec.com>
-References: <1466808144-23209-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jun 2016 01:24:41 +0200 (CEST)
+Received: from resqmta-po-12v.sys.comcast.net ([96.114.154.171]:56031 "EHLO
+        resqmta-po-12v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S27012495AbcFXXYjlWd0a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Jun 2016 01:24:39 +0200
+Received: from resomta-po-14v.sys.comcast.net ([96.114.154.238])
+        by resqmta-po-12v.sys.comcast.net with SMTP
+        id GaSYbiaW3GpVBGaSebnDRi; Fri, 24 Jun 2016 23:24:32 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+        s=q20140121; t=1466810672;
+        bh=pXX6kQe67VQew2QdEjlte7/ufnW5D7+7UJsUi97c9fw=;
+        h=Received:Received:Subject:To:From:Message-ID:Date:MIME-Version:
+         Content-Type;
+        b=g3cSE4HMOW0jY56cumx8imSgO+jH2lC5raNBnbADzQvZtccP0OloUdMNd6ZqoZTix
+         aHjY2vK8tdc9BlCnUGznCGtdhNwwBtaEUYTubjelbm/Pb9vq1Jow42aRIHlhlkQvdR
+         9ZrPIW52n1cxpEm7XMdAQ3tODCcStddVmAhzPZuozA9QcCVRHUuyNah9mjYymhi6Uu
+         UHA1SvpIp/r755M5IloL0ufHQ0DPmn/P+uaPvIBbZYVgrqWdeQgyhGF+tslAApmiOx
+         zfWaLusJvQo31D6Gnay75wJdw/E85SMx0ix4fBuBJX9PM2PUHZ/6BxwMk3BCapGjib
+         bijMt8nP5mSSQ==
+Received: from [192.168.1.13] ([76.106.83.43])
+        by resomta-po-14v.sys.comcast.net with comcast
+        id AnQW1t00G0w5D3801nQXmi; Fri, 24 Jun 2016 23:24:32 +0000
+Subject: Re: [PATCH] PCI: PCI_PROBE_ONLY clean-up
+To:     linux-mips@linux-mips.org
+References: <20160623221441.3154.31310.stgit@bhelgaas-glaptop2.roam.corp.google.com>
+ <20160624155021.GD5930@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <3048f087-cdec-66ff-e2f0-25ae6717b407@gentoo.org>
+Date:   Fri, 24 Jun 2016 19:24:08 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <20160624155021.GD5930@linux-mips.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54165
+X-archive-position: 54166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,85 +54,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When a header file is removed from generic-y (often accompanied by the
-addition of an arch specific header), the generated wrapper file will
-persist, and in some cases may still take precedence over the new arch
-header.
+On 06/24/2016 11:50, Ralf Baechle wrote:
+> On Thu, Jun 23, 2016 at 05:16:47PM -0500, Bjorn Helgaas wrote:
+> 
+>> Lorenzo is changing the PCI_PROBE_ONLY case so the BARs and windows remain
+>> immutable, but we insert the resources into the iomem_resource tree.
+>>
+>> The ideal thing would be to remove the use of PCI_PROBE_ONLY completely,
+>> and allow Linux to program BARs as necessary.  If the firmware *has*
+>> programmed the BARs, we don't change them unless we find something broken,
+>> so in most cases PCI_PROBE_ONLY is unnecessary.
+>>
+>> There are several MIPS platforms (bcm1480, ip27, sb1250, virtio_guest, xlp,
+>> xlr) that set PCI_PROBE_ONLY for reasons I don't know.  These were added
+>> by:
+>>
+>>   bcm1480
+>>     Andrew Isaacson <adi@broadcom.com>
+>>     dc41f94f7709 ("Support for the BCM1480 on-chip PCI-X bridge.")
+>>
+>>   ip27
+>>     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+>>     96173a6c4ebc ("[MIPS] IP27: misc fixes")
+> 
+> Afair  I did originally implement the IP27 use of PCI_PROBE_ONLY.  The
+> problem is that it was not possible for the kernel to assign resources
+> properly on an IP27.  Also that would invalidate firmware configuration
+> information, so we had to live with whatever the firmware (mis)configured
+> for us.  Afair - it's a darn long time ...  I think the reasoning for
+> the BCM1480 was similar but Andy will hopefully recall the details.
 
-For example commit f1fe2d21f4e1 ("MIPS: Add definitions for extended
-context") removed ucontext.h from generic-y in arch/mips/include/asm/,
-and added an arch/mips/include/uapi/asm/ucontext.h. The continued use of
-the wrapper when reusing a dirty build tree resulted in build failures
-in arch/mips/kernel/signal.c:
+I'm not onto 4.7 yet, but I've got some major rework of the BRIDGE code that's
+solved the resource assignment bit in IP27 (including being able to kzalloc the
+bridge_controller struct now).  Can try this change out with the changes I've
+done to see if everything still works, or if IP27 (and maybe IP30) still
+require this flag, or if it can be implemented in another way.
 
-arch/mips/kernel/signal.c: In function ‘sc_to_extcontext’:
-arch/mips/kernel/signal.c:142:12: error: ‘struct ucontext’ has no member named ‘uc_extcontext’
-  return &uc->uc_extcontext;
-            ^
 
-Fix by detecting and removing wrapper headers in generated header
-directories that do not correspond to a filename in generic-y, genhdr-y,
-or the newly introduced generated-y.
-
-Reported-by: Jacek Anaszewski <j.anaszewski@samsung.com>
-Reported-by: Hauke Mehrtens <hauke@hauke-m.de>
-Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Michal Marek <mmarek@suse.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: linux-kbuild@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-mips@linux-mips.org
----
-Changes in v4:
-- None (resend).
-
-Changes in v3:
-- Ensure FORCE actually gets marked .PHONY.
-
-Changes in v2:
-- Rewrite a bit, drawing inspiration from Makefile.headersinst.
-- Exclude genhdr-y and generated-y (thanks to kbuild test robot).
----
- scripts/Makefile.asm-generic | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/Makefile.asm-generic b/scripts/Makefile.asm-generic
-index 045e0098e962..e4d017d53819 100644
---- a/scripts/Makefile.asm-generic
-+++ b/scripts/Makefile.asm-generic
-@@ -13,11 +13,26 @@ include scripts/Kbuild.include
- # Create output directory if not already present
- _dummy := $(shell [ -d $(obj) ] || mkdir -p $(obj))
- 
-+# Stale wrappers when the corresponding files are removed from generic-y
-+# need removing.
-+generated-y   := $(generic-y) $(genhdr-y) $(generated-y)
-+all-files     := $(patsubst %, $(obj)/%, $(generated-y))
-+old-headers   := $(wildcard $(obj)/*.h)
-+unwanted      := $(filter-out $(all-files),$(old-headers))
-+
- quiet_cmd_wrap = WRAP    $@
- cmd_wrap = echo "\#include <asm-generic/$*.h>" >$@
- 
--all: $(patsubst %, $(obj)/%, $(generic-y))
-+quiet_cmd_remove = REMOVE  $(unwanted)
-+cmd_remove = rm -f $(unwanted)
-+
-+all: $(patsubst %, $(obj)/%, $(generic-y)) FORCE
-+	$(if $(unwanted),$(call cmd,remove),)
- 	@:
- 
- $(obj)/%.h:
- 	$(call cmd,wrap)
-+
-+PHONY += FORCE
-+.PHONY: $(PHONY)
-+FORCE: ;
 -- 
-2.4.10
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

@@ -1,92 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2016 10:28:48 +0200 (CEST)
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:47679 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992764AbcF3I2i558U0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Jun 2016 10:28:38 +0200
-Received: from eucpsbgm2.samsung.com (unknown [203.254.199.245])
- by mailout2.w1.samsung.com
- (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0O9K000K5SVJLX80@mailout2.w1.samsung.com>; Thu,
- 30 Jun 2016 09:28:31 +0100 (BST)
-X-AuditID: cbfec7f5-f792a6d000001302-27-5774d82f43ad
-Received: from eusync2.samsung.com ( [203.254.199.212])
-        by eucpsbgm2.samsung.com (EUCPMTA) with SMTP id 74.54.04866.F28D4775; Thu,
- 30 Jun 2016 09:28:31 +0100 (BST)
-Received: from AMDC2174.DIGITAL.local ([106.120.53.17])
- by eusync2.samsung.com (Oracle Communications Messaging Server 7.0.5.31.0
- 64bit (built May  5 2014))
- with ESMTPA id <0O9K00F5WSS0I050@eusync2.samsung.com>; Thu,
- 30 Jun 2016 09:28:31 +0100 (BST)
-From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, hch@infradead.org,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mark Yao <mark.yao@rock-chips.com>,
-        David Airlie <airlied@linux.ie>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Joerg Roedel <joro@8bytes.org>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-doc@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-ia64@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org,
-        linux-rockchip@lists.infradead.org,
-        iommu@lists.linux-foundation.org, linux-media@vger.kernel.org
-Subject: [PATCH v5 43/44] dma-mapping: Remove dma_get_attr
-Date:   Thu, 30 Jun 2016 10:26:10 +0200
-Message-id: <1467275171-6298-43-git-send-email-k.kozlowski@samsung.com>
-X-Mailer: git-send-email 1.9.1
-In-reply-to: <1467275171-6298-1-git-send-email-k.kozlowski@samsung.com>
-References: <1467275019-30789-1-git-send-email-k.kozlowski@samsung.com>
- <1467275171-6298-1-git-send-email-k.kozlowski@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0iTYRTHe977hoMXs3xRSBj1xdCyCxzUzLDwgaCCDKGbLX3TyC3b1FL6
-        MC+lTi3TLpYilqVl09l0eUlLh27d0xTNygsmpXjZCmylpjmsb//zOz/O/8vhSNc02oM7qYoX
-        1SpFrJyRUq8WrD0+Gz7Eh2/UT0gh9+0LAooNegb+5FtYeFRooMGeeoEEW3kOgtHWDARDPz4h
-        6JmxMZBdPcLCxes74FXeHQIWRyZo+DWTRkHpswCYLhkjYai6kob5m3YCsopqWJgY84M3qZMs
-        GL/00nD74l0K7JnTNHQ3FTOQU2Oi4evHDAryruWzMPKyk4Afw4skXPhcRYD5WguCOccCDVXt
-        Ayw0XG0loNw4T0Cd1syAvr2MhatTv1l437wWHlZHwGTnIAVm0wgF49+fU+CoKyCCffBoWwmB
-        9SV6hLt7u0g8N5uP8J1xLYUbbw2w2P79KM5pfI1w7X1vXNY8TuCcyXQaGyuzGPy8cI7CHQ+q
-        CFz/c5jGQ9lWYp/XQWlglBh7MlFUbwg6Jo0xZ7ajuNH76FzzlcukFrXokA5xnMBvEbT9ch2S
-        LMXVQueggdEhKefK30PC74Kuf0MKIbTXakmnxfCbhdqKu4wzu/E+QuW3JtIpkfyUi9Bz3cE6
-        r67k/YX6Lt7pUPw6obR+kXRiGR8q9Ga6LZetEV5YCmgnlizhIsfe5ap0JFie5pN5SFaKVlSi
-        VWJCZJzmeLRyk69GodQkqKJ9I08rjWj5NWYa0D2LvxnxHJK7yILJ+HBXWpGoSVKakcCRcjdZ
-        fc8SkkUpkpJF9ekIdUKsqDEjT46Su8tuNtnCXPloRbx4ShTjRPX/LcFJPLToRO5A2wpj8Nbq
-        A2xtTaDEOlyUHulnrdrN7Q8936dUZU7s5I68s3kbDt84s8bnSTjlfmlPwK75mI7+5H5+vnMh
-        Jqh7dr8iolRqKOvTFFMeIWdnK1Z55drUFY047HGz45Cqdc/B0DSX7T/F7IzJsS3qlGe/DC3b
-        Ek3rPTyZ0D8hJjmliVH4eZNqjeIvaKGfexYDAAA=
-Return-Path: <k.kozlowski@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2016 11:01:34 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30103 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992773AbcF3JBZgVB00 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Jun 2016 11:01:25 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 61F8287C5824;
+        Thu, 30 Jun 2016 10:01:14 +0100 (IST)
+Received: from [192.168.154.116] (192.168.154.116) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 30 Jun
+ 2016 10:01:17 +0100
+Subject: Re: [RFC PATCH v3 1/2] MIPS: use per-mm page to execute branch delay
+ slot instructions
+To:     Paul Burton <paul.burton@imgtec.com>, <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <20160629143830.526-1-paul.burton@imgtec.com>
+ <20160629143830.526-2-paul.burton@imgtec.com>
+CC:     Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        Matthew Fortune <matthew.fortune@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <5774DFDC.4000607@imgtec.com>
+Date:   Thu, 30 Jun 2016 10:01:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.8.0
+MIME-Version: 1.0
+In-Reply-To: <20160629143830.526-2-paul.burton@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54180
+X-archive-position: 54181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: k.kozlowski@samsung.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -99,545 +49,823 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-After switching DMA attributes to unsigned long it is easier to just
-compare the bits.
+Hi Paul
 
-Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-[for avr32]
-Acked-by: Hans-Christian Noren Egtvedt <egtvedt@samfundet.no>
-[for arc]
-Acked-by: Vineet Gupta <vgupta@synopsys.com>
-[for arm64 and dma-iommu]
-Acked-by: Robin Murphy <robin.murphy@arm.com>
----
- Documentation/DMA-API.txt                      |  4 +--
- arch/arc/mm/dma.c                              |  4 +--
- arch/arm/mm/dma-mapping.c                      | 36 ++++++++++++--------------
- arch/arm/xen/mm.c                              |  4 +--
- arch/arm64/mm/dma-mapping.c                    | 10 +++----
- arch/avr32/mm/dma-coherent.c                   |  4 +--
- arch/ia64/sn/pci/pci_dma.c                     | 10 ++-----
- arch/metag/kernel/dma.c                        |  2 +-
- arch/mips/mm/dma-default.c                     |  6 ++---
- arch/openrisc/kernel/dma.c                     |  4 +--
- arch/parisc/kernel/pci-dma.c                   |  2 +-
- arch/powerpc/platforms/cell/iommu.c            | 12 ++++-----
- drivers/gpu/drm/rockchip/rockchip_drm_gem.c    |  2 +-
- drivers/iommu/dma-iommu.c                      |  2 +-
- drivers/media/v4l2-core/videobuf2-dma-contig.c |  2 +-
- include/linux/dma-mapping.h                    | 10 -------
- 16 files changed, 47 insertions(+), 67 deletions(-)
+On 29/06/16 15:38, Paul Burton wrote:
+> In some cases the kernel needs to execute an instruction from the delay
+> slot of an emulated branch instruction. These cases include:
+>
+>    - Emulated floating point branch instructions (bc1[ft]l?) for systems
+>      which don't include an FPU, or upon which the kernel is run with the
+>      "nofpu" parameter.
+>
+>    - MIPSr6 systems running binaries targeting older revisions of the
+>      architecture, which may include branch instructions whose encodings
+>      are no longer valid in MIPSr6.
+>
+> Executing instructions from such delay slots is done by writing the
+> instruction to memory followed by a trap, as part of an "emuframe", and
+> executing it. This avoids the requirement of an emulator for the entire
+> MIPS instruction set. Prior to this patch such emuframes are written to
+> the user stack and executed from there.
+>
+> This patch moves FP branch delay emuframes off of the user stack and
+> into a per-mm page. Allocating a page per-mm leaves userland with access
+> to only what it had access to previously, and compared to other
+> solutions is relatively simple.
+>
+> When a thread requires a delay slot emulation, it is allocated a frame.
+> A thread may only have one frame allocated at any one time, since it may
+> only ever be executing one instruction at any one time. In order to
+> ensure that we can free up allocated frame later, its index is recorded
+> in struct thread_struct. In the typical case, after executing the delay
+> slot instruction we'll execute a break instruction with the BRK_MEMU
+> code. This traps back to the kernel & leads to a call to do_dsemulret
+> which frees the allocated frame & moves the user PC back to the
+> instruction that would have executed following the emulated branch.
+> In some cases the delay slot instruction may be invalid, such as a
+> branch, or may trigger an exception. In these cases the BRK_MEMU break
+> instruction will not be hit. In order to ensure that frames are freed
+> this patch introduces dsemul_thread_cleanup() and calls it to free any
+> allocated frame upon thread exit. If the instruction generated an
+> exception & leads to a signal being delivered to the thread, or indeed
+> if a signal simply happens to be delivered to the thread whilst it is
+> executing from the struct emuframe, then we need to take care to exit
+> the frame appropriately. This is done by either rolling back the user PC
+> to the branch or advancing it to the continuation PC prior to signal
+> delivery, using dsemul_thread_rollback(). If this were not done then a
+> sigreturn would return to the struct emuframe, and if that frame had
+> meanwhile been used in response to an emulated branch instruction within
+> the signal handler then we would execute the wrong user code.
+>
+> Whilst a user could theoretically place something like a compact branch
+> to self in a delay slot and cause their thread to become stuck in an
+> infinite loop with the frame never being deallocated, this would:
+>
+>    - Only affect the users single process.
+>
+>    - Be architecturally invalid since there would be a branch in the
+>      delay slot, which is forbidden.
+>
+>    - Be extremely unlikely to happen by mistake, and provide a program
+>      with no more ability to harm the system than a simple infinite loop
+>      would.
+>
+> If a thread requires a delay slot emulation & no frame is available to
+> it (ie. the process has enough other threads that all frames are
+> currently in use) then the thread joins a waitqueue. It will sleep until
+> a frame is freed by another thread in the process.
+>
+> Since we now know whether a thread has an allocated frame due to our
+> tracking of its index, the cookie field of struct emuframe is removed as
+> we can be more certain whether we have a valid frame. Since a thread may
+> only ever have a single frame at any given time, the epc field of struct
+> emuframe is also removed & the PC to continue from is instead stored in
+> struct thread_struct. Together these changes simplify & shrink struct
+> emuframe somewhat, allowing twice as many frames to fit into the page
+> allocated for them.
+>
+> The primary benefit of this patch is that we are now free to mark the
+> user stack non-executable where that is possible.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>
+> ---
+> v2 of this patch can be found here:
+>
+>    https://patchwork.linux-mips.org/patch/6125/
+>
+> This has become a higher priority than it was at the time of v2 since
+> Android has begun marking its stacks non-executable & on MIPSr6 devices
+> we use mips_dsemul() in the emulation of pre-r6 instructions. Since the
+> Android NDK MIPS target is MIPS32, this is important to backwards
+> compatibility for apps on MIPSr6 systems.
+>
+> Changes in v3:
+> - Rebase atop v4.7-rc5.
+> - Select CONFIG_HAVE_EXIT_THREAD.
+> - Track allocated frames per thread, allowing cleanup on exit or signal delivery.
+> - Remove signal blocking & thread information flag now we have other means to ensure frames are cleaned up.
+> - Introduce asm/dsemul.h to group prototypes & definitions logically.
+asm/dsemul.h seems to be missing from the patch?
+> - Avoid using 'fp' in names, since this isn't exclusive to FP branch emulation.
+> - Document with kerneldoc.
+> - Return a frame index from alloc_emuframe such that mips_dsemul can record it in struct thread_struct.
+> - Use bool return type for do_dsemulret rather than a bool-like int.
+> - Rework commit message.
+>
+> Changes in v2:
+> - s/kernels/kernel's/
+> - Use (mm_)isBranchInstr in mips_dsemul rather than duplicating similar logic.
+>
+>   arch/mips/Kconfig                     |   1 +
+>   arch/mips/include/asm/fpu_emulator.h  |  17 +-
+>   arch/mips/include/asm/mmu.h           |  11 ++
+>   arch/mips/include/asm/mmu_context.h   |   7 +
+>   arch/mips/include/asm/processor.h     |  18 +-
+>   arch/mips/kernel/mips-r2-to-r6-emul.c |   8 +-
+>   arch/mips/kernel/process.c            |   6 +
+>   arch/mips/kernel/signal.c             |   8 +
+>   arch/mips/math-emu/cp1emu.c           |   8 +-
+>   arch/mips/math-emu/dsemul.c           | 343 +++++++++++++++++++++++-----------
+>   10 files changed, 294 insertions(+), 133 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index ac91939..49a5396 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -64,6 +64,7 @@ config MIPS
+>   	select GENERIC_TIME_VSYSCALL
+>   	select ARCH_CLOCKSOURCE_DATA
+>   	select HANDLE_DOMAIN_IRQ
+> +	select HAVE_EXIT_THREAD
+>   
+>   menu "Machine selection"
+>   
+> diff --git a/arch/mips/include/asm/fpu_emulator.h b/arch/mips/include/asm/fpu_emulator.h
+> index 3225c3c..355dc25 100644
+> --- a/arch/mips/include/asm/fpu_emulator.h
+> +++ b/arch/mips/include/asm/fpu_emulator.h
+> @@ -24,7 +24,7 @@
+>   #define _ASM_FPU_EMULATOR_H
+>   
+>   #include <linux/sched.h>
+> -#include <asm/break.h>
+> +#include <asm/dsemul.h>
+>   #include <asm/thread_info.h>
+>   #include <asm/inst.h>
+>   #include <asm/local.h>
+> @@ -60,27 +60,16 @@ do {									\
+>   #define MIPS_FPU_EMU_INC_STATS(M) do { } while (0)
+>   #endif /* CONFIG_DEBUG_FS */
+>   
+> -extern int mips_dsemul(struct pt_regs *regs, mips_instruction ir,
+> -	unsigned long cpc);
+> -extern int do_dsemulret(struct pt_regs *xcp);
+>   extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
+>   				    struct mips_fpu_struct *ctx, int has_fpu,
+>   				    void *__user *fault_addr);
+>   int process_fpemu_return(int sig, void __user *fault_addr,
+>   			 unsigned long fcr31);
+> +int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
+> +		  unsigned long *contpc);
+>   int mm_isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
+>   		     unsigned long *contpc);
+>   
+> -/*
+> - * Instruction inserted following the badinst to further tag the sequence
+> - */
+> -#define BD_COOKIE 0x0000bd36	/* tne $0, $0 with baggage */
+> -
+> -/*
+> - * Break instruction with special math emu break code set
+> - */
+> -#define BREAK_MATH(micromips) (((micromips) ? 0x7 : 0xd) | (BRK_MEMU << 16))
+> -
+>   #define SIGNALLING_NAN 0x7ff800007ff80000LL
+>   
+>   static inline void fpu_emulator_init_fpu(void)
+> diff --git a/arch/mips/include/asm/mmu.h b/arch/mips/include/asm/mmu.h
+> index 1afa1f9..df6ec07 100644
+> --- a/arch/mips/include/asm/mmu.h
+> +++ b/arch/mips/include/asm/mmu.h
+> @@ -2,11 +2,22 @@
+>   #define __ASM_MMU_H
+>   
+>   #include <linux/atomic.h>
+> +#include <linux/mutex.h>
+> +#include <linux/wait.h>
+>   
+>   typedef struct {
+>   	unsigned long asid[NR_CPUS];
+>   	void *vdso;
+>   	atomic_t fp_mode_switching;
+> +
+> +	/* address of page used to hold FP branch delay emulation frames */
+> +	unsigned long bd_emupage;
+> +	/* bitmap tracking allocation of fp_bd_emupage */
+> +	unsigned long *bd_emupage_allocmap;
+> +	/* mutex to be held whilst modifying fp_bd_emupage(_allocmap) */
+> +	struct mutex bd_emupage_mutex;
+> +	/* wait queue for threads requiring an emuframe */
+> +	wait_queue_head_t bd_emupage_queue;
+>   } mm_context_t;
+>   
+>   #endif /* __ASM_MMU_H */
+> diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+> index fc57e13..174d68a 100644
+> --- a/arch/mips/include/asm/mmu_context.h
+> +++ b/arch/mips/include/asm/mmu_context.h
+> @@ -16,6 +16,7 @@
+>   #include <linux/smp.h>
+>   #include <linux/slab.h>
+>   #include <asm/cacheflush.h>
+> +#include <asm/dsemul.h>
+>   #include <asm/hazards.h>
+>   #include <asm/tlbflush.h>
+>   #include <asm-generic/mm_hooks.h>
+> @@ -128,6 +129,11 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
+>   
+>   	atomic_set(&mm->context.fp_mode_switching, 0);
+>   
+> +	mm->context.bd_emupage = 0;
+> +	mm->context.bd_emupage_allocmap = NULL;
+> +	mutex_init(&mm->context.bd_emupage_mutex);
+> +	init_waitqueue_head(&mm->context.bd_emupage_queue);
+> +
 
-diff --git a/Documentation/DMA-API.txt b/Documentation/DMA-API.txt
-index 24f9688bb98a..1d26eeb6b5f6 100644
---- a/Documentation/DMA-API.txt
-+++ b/Documentation/DMA-API.txt
-@@ -422,9 +422,7 @@ void whizco_dma_map_sg_attrs(struct device *dev, dma_addr_t dma_addr,
- 			     unsigned long attrs)
- {
- 	....
--	int foo =  dma_get_attr(DMA_ATTR_FOO, attrs);
--	....
--	if (foo)
-+	if (attrs & DMA_ATTR_FOO)
- 		/* twizzle the frobnozzle */
- 	....
- 
-diff --git a/arch/arc/mm/dma.c b/arch/arc/mm/dma.c
-index 3d1f467d1792..74bbe68dce9d 100644
---- a/arch/arc/mm/dma.c
-+++ b/arch/arc/mm/dma.c
-@@ -46,7 +46,7 @@ static void *arc_dma_alloc(struct device *dev, size_t size,
- 	 *   (vs. always going to memory - thus are faster)
- 	 */
- 	if ((is_isa_arcv2() && ioc_exists) ||
--	    dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs))
-+	    (attrs & DMA_ATTR_NON_CONSISTENT))
- 		need_coh = 0;
- 
- 	/*
-@@ -95,7 +95,7 @@ static void arc_dma_free(struct device *dev, size_t size, void *vaddr,
- 	struct page *page = virt_to_page(dma_handle);
- 	int is_non_coh = 1;
- 
--	is_non_coh = dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs) ||
-+	is_non_coh = (attrs & DMA_ATTR_NON_CONSISTENT) ||
- 			(is_isa_arcv2() && ioc_exists);
- 
- 	if (PageHighMem(page) || !is_non_coh)
-diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
-index ebb3fde99043..43e03b5293d0 100644
---- a/arch/arm/mm/dma-mapping.c
-+++ b/arch/arm/mm/dma-mapping.c
-@@ -126,7 +126,7 @@ static dma_addr_t arm_dma_map_page(struct device *dev, struct page *page,
- 	     unsigned long offset, size_t size, enum dma_data_direction dir,
- 	     unsigned long attrs)
- {
--	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 		__dma_page_cpu_to_dev(page, offset, size, dir);
- 	return pfn_to_dma(dev, page_to_pfn(page)) + offset;
- }
-@@ -155,7 +155,7 @@ static dma_addr_t arm_coherent_dma_map_page(struct device *dev, struct page *pag
- static void arm_dma_unmap_page(struct device *dev, dma_addr_t handle,
- 		size_t size, enum dma_data_direction dir, unsigned long attrs)
- {
--	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 		__dma_page_dev_to_cpu(pfn_to_page(dma_to_pfn(dev, handle)),
- 				      handle & ~PAGE_MASK, size, dir);
- }
-@@ -622,9 +622,9 @@ static void __free_from_contiguous(struct device *dev, struct page *page,
- 
- static inline pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot)
- {
--	prot = dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs) ?
--			    pgprot_writecombine(prot) :
--			    pgprot_dmacoherent(prot);
-+	prot = (attrs & DMA_ATTR_WRITE_COMBINE) ?
-+			pgprot_writecombine(prot) :
-+			pgprot_dmacoherent(prot);
- 	return prot;
- }
- 
-@@ -744,7 +744,7 @@ static void *__dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
- 		.gfp = gfp,
- 		.prot = prot,
- 		.caller = caller,
--		.want_vaddr = !dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs),
-+		.want_vaddr = ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) == 0),
- 	};
- 
- #ifdef CONFIG_DMA_API_DEBUG
-@@ -887,7 +887,7 @@ static void __arm_dma_free(struct device *dev, size_t size, void *cpu_addr,
- 		.size = PAGE_ALIGN(size),
- 		.cpu_addr = cpu_addr,
- 		.page = page,
--		.want_vaddr = !dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs),
-+		.want_vaddr = ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) == 0),
- 	};
- 
- 	buf = arm_dma_buffer_find(cpu_addr);
-@@ -1267,7 +1267,7 @@ static struct page **__iommu_alloc_buffer(struct device *dev, size_t size,
- 	if (!pages)
- 		return NULL;
- 
--	if (dma_get_attr(DMA_ATTR_FORCE_CONTIGUOUS, attrs))
-+	if (attrs & DMA_ATTR_FORCE_CONTIGUOUS)
- 	{
- 		unsigned long order = get_order(size);
- 		struct page *page;
-@@ -1285,7 +1285,7 @@ static struct page **__iommu_alloc_buffer(struct device *dev, size_t size,
- 	}
- 
- 	/* Go straight to 4K chunks if caller says it's OK. */
--	if (dma_get_attr(DMA_ATTR_ALLOC_SINGLE_PAGES, attrs))
-+	if (attrs & DMA_ATTR_ALLOC_SINGLE_PAGES)
- 		order_idx = ARRAY_SIZE(iommu_order_array) - 1;
- 
- 	/*
-@@ -1346,7 +1346,7 @@ static int __iommu_free_buffer(struct device *dev, struct page **pages,
- 	int count = size >> PAGE_SHIFT;
- 	int i;
- 
--	if (dma_get_attr(DMA_ATTR_FORCE_CONTIGUOUS, attrs)) {
-+	if (attrs & DMA_ATTR_FORCE_CONTIGUOUS) {
- 		dma_release_from_contiguous(dev, pages[0], count);
- 	} else {
- 		for (i = 0; i < count; i++)
-@@ -1445,7 +1445,7 @@ static struct page **__iommu_get_pages(void *cpu_addr, unsigned long attrs)
- 	if (__in_atomic_pool(cpu_addr, PAGE_SIZE))
- 		return __atomic_get_pages(cpu_addr);
- 
--	if (dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs))
-+	if (attrs & DMA_ATTR_NO_KERNEL_MAPPING)
- 		return cpu_addr;
- 
- 	area = find_vm_area(cpu_addr);
-@@ -1512,7 +1512,7 @@ static void *arm_iommu_alloc_attrs(struct device *dev, size_t size,
- 	if (*handle == DMA_ERROR_CODE)
- 		goto err_buffer;
- 
--	if (dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs))
-+	if (attrs & DMA_ATTR_NO_KERNEL_MAPPING)
- 		return pages;
- 
- 	addr = __iommu_alloc_remap(pages, size, gfp, prot,
-@@ -1583,7 +1583,7 @@ void arm_iommu_free_attrs(struct device *dev, size_t size, void *cpu_addr,
- 		return;
- 	}
- 
--	if (!dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, attrs)) {
-+	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) == 0) {
- 		dma_common_free_remap(cpu_addr, size,
- 			VM_ARM_DMA_CONSISTENT | VM_USERMAP);
- 	}
-@@ -1653,8 +1653,7 @@ static int __map_sg_chunk(struct device *dev, struct scatterlist *sg,
- 		phys_addr_t phys = page_to_phys(sg_page(s));
- 		unsigned int len = PAGE_ALIGN(s->offset + s->length);
- 
--		if (!is_coherent &&
--			!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+		if (!is_coherent && (attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 			__dma_page_cpu_to_dev(sg_page(s), s->offset, s->length, dir);
- 
- 		prot = __dma_direction_to_prot(dir);
-@@ -1767,8 +1766,7 @@ static void __iommu_unmap_sg(struct device *dev, struct scatterlist *sg,
- 		if (sg_dma_len(s))
- 			__iommu_remove_mapping(dev, sg_dma_address(s),
- 					       sg_dma_len(s));
--		if (!is_coherent &&
--		    !dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+		if (!is_coherent && (attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 			__dma_page_dev_to_cpu(sg_page(s), s->offset,
- 					      s->length, dir);
- 	}
-@@ -1892,7 +1890,7 @@ static dma_addr_t arm_iommu_map_page(struct device *dev, struct page *page,
- 	     unsigned long offset, size_t size, enum dma_data_direction dir,
- 	     unsigned long attrs)
- {
--	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 		__dma_page_cpu_to_dev(page, offset, size, dir);
- 
- 	return arm_coherent_iommu_map_page(dev, page, offset, size, dir, attrs);
-@@ -1943,7 +1941,7 @@ static void arm_iommu_unmap_page(struct device *dev, dma_addr_t handle,
- 	if (!iova)
- 		return;
- 
--	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 		__dma_page_dev_to_cpu(page, offset, size, dir);
- 
- 	iommu_unmap(mapping->domain, iova, len);
-diff --git a/arch/arm/xen/mm.c b/arch/arm/xen/mm.c
-index fc67ed236a10..d062f08f5020 100644
---- a/arch/arm/xen/mm.c
-+++ b/arch/arm/xen/mm.c
-@@ -102,7 +102,7 @@ void __xen_dma_map_page(struct device *hwdev, struct page *page,
- {
- 	if (is_device_dma_coherent(hwdev))
- 		return;
--	if (dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if (attrs & DMA_ATTR_SKIP_CPU_SYNC)
- 		return;
- 
- 	__xen_dma_page_cpu_to_dev(hwdev, dev_addr, size, dir);
-@@ -115,7 +115,7 @@ void __xen_dma_unmap_page(struct device *hwdev, dma_addr_t handle,
- {
- 	if (is_device_dma_coherent(hwdev))
- 		return;
--	if (dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if (attrs & DMA_ATTR_SKIP_CPU_SYNC)
- 		return;
- 
- 	__xen_dma_page_dev_to_cpu(hwdev, handle, size, dir);
-diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
-index 65f69943b1cb..e82763af137f 100644
---- a/arch/arm64/mm/dma-mapping.c
-+++ b/arch/arm64/mm/dma-mapping.c
-@@ -32,7 +32,7 @@
- static pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot,
- 				 bool coherent)
- {
--	if (!coherent || dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs))
-+	if (!coherent || (attrs & DMA_ATTR_WRITE_COMBINE))
- 		return pgprot_writecombine(prot);
- 	return prot;
- }
-@@ -701,7 +701,7 @@ static dma_addr_t __iommu_map_page(struct device *dev, struct page *page,
- 	dma_addr_t dev_addr = iommu_dma_map_page(dev, page, offset, size, prot);
- 
- 	if (!iommu_dma_mapping_error(dev, dev_addr) &&
--	    !dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	    (attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 		__iommu_sync_single_for_device(dev, dev_addr, size, dir);
- 
- 	return dev_addr;
-@@ -711,7 +711,7 @@ static void __iommu_unmap_page(struct device *dev, dma_addr_t dev_addr,
- 			       size_t size, enum dma_data_direction dir,
- 			       unsigned long attrs)
- {
--	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 		__iommu_sync_single_for_cpu(dev, dev_addr, size, dir);
- 
- 	iommu_dma_unmap_page(dev, dev_addr, size, dir, attrs);
-@@ -751,7 +751,7 @@ static int __iommu_map_sg_attrs(struct device *dev, struct scatterlist *sgl,
- {
- 	bool coherent = is_device_dma_coherent(dev);
- 
--	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 		__iommu_sync_sg_for_device(dev, sgl, nelems, dir);
- 
- 	return iommu_dma_map_sg(dev, sgl, nelems,
-@@ -763,7 +763,7 @@ static void __iommu_unmap_sg_attrs(struct device *dev,
- 				   enum dma_data_direction dir,
- 				   unsigned long attrs)
- {
--	if (!dma_get_attr(DMA_ATTR_SKIP_CPU_SYNC, attrs))
-+	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
- 		__iommu_sync_sg_for_cpu(dev, sgl, nelems, dir);
- 
- 	iommu_dma_unmap_sg(dev, sgl, nelems, dir, attrs);
-diff --git a/arch/avr32/mm/dma-coherent.c b/arch/avr32/mm/dma-coherent.c
-index fc51f4421933..58610d0df7ed 100644
---- a/arch/avr32/mm/dma-coherent.c
-+++ b/arch/avr32/mm/dma-coherent.c
-@@ -109,7 +109,7 @@ static void *avr32_dma_alloc(struct device *dev, size_t size,
- 		return NULL;
- 	phys = page_to_phys(page);
- 
--	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs)) {
-+	if (attrs & DMA_ATTR_WRITE_COMBINE) {
- 		/* Now, map the page into P3 with write-combining turned on */
- 		*handle = phys;
- 		return __ioremap(phys, size, _PAGE_BUFFER);
-@@ -123,7 +123,7 @@ static void avr32_dma_free(struct device *dev, size_t size,
- {
- 	struct page *page;
- 
--	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs)) {
-+	if (attrs & DMA_ATTR_WRITE_COMBINE) {
- 		iounmap(cpu_addr);
- 
- 		page = phys_to_page(handle);
-diff --git a/arch/ia64/sn/pci/pci_dma.c b/arch/ia64/sn/pci/pci_dma.c
-index 6b78fc953c4b..74c934a997bb 100644
---- a/arch/ia64/sn/pci/pci_dma.c
-+++ b/arch/ia64/sn/pci/pci_dma.c
-@@ -183,14 +183,11 @@ static dma_addr_t sn_dma_map_page(struct device *dev, struct page *page,
- 	unsigned long phys_addr;
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct sn_pcibus_provider *provider = SN_PCIDEV_BUSPROVIDER(pdev);
--	int dmabarr;
--
--	dmabarr = dma_get_attr(DMA_ATTR_WRITE_BARRIER, attrs);
- 
- 	BUG_ON(!dev_is_pci(dev));
- 
- 	phys_addr = __pa(cpu_addr);
--	if (dmabarr)
-+	if (attrs & DMA_ATTR_WRITE_BARRIER)
- 		dma_addr = provider->dma_map_consistent(pdev, phys_addr,
- 							size, SN_DMA_ADDR_PHYS);
- 	else
-@@ -280,9 +277,6 @@ static int sn_dma_map_sg(struct device *dev, struct scatterlist *sgl,
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct sn_pcibus_provider *provider = SN_PCIDEV_BUSPROVIDER(pdev);
- 	int i;
--	int dmabarr;
--
--	dmabarr = dma_get_attr(DMA_ATTR_WRITE_BARRIER, attrs);
- 
- 	BUG_ON(!dev_is_pci(dev));
- 
-@@ -292,7 +286,7 @@ static int sn_dma_map_sg(struct device *dev, struct scatterlist *sgl,
- 	for_each_sg(sgl, sg, nhwentries, i) {
- 		dma_addr_t dma_addr;
- 		phys_addr = SG_ENT_PHYS_ADDRESS(sg);
--		if (dmabarr)
-+		if (attrs & DMA_ATTR_WRITE_BARRIER)
- 			dma_addr = provider->dma_map_consistent(pdev,
- 								phys_addr,
- 								sg->length,
-diff --git a/arch/metag/kernel/dma.c b/arch/metag/kernel/dma.c
-index d68f498e82a1..0db31e24c541 100644
---- a/arch/metag/kernel/dma.c
-+++ b/arch/metag/kernel/dma.c
-@@ -337,7 +337,7 @@ static int metag_dma_mmap(struct device *dev, struct vm_area_struct *vma,
- 	struct metag_vm_region *c;
- 	int ret = -ENXIO;
- 
--	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs))
-+	if (attrs & DMA_ATTR_WRITE_COMBINE)
- 		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
- 	else
- 		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 0ed9000dc1ff..b2eadd6fa9a1 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -141,7 +141,7 @@ static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
- 	 * XXX: seems like the coherent and non-coherent implementations could
- 	 * be consolidated.
- 	 */
--	if (dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs))
-+	if (attrs & DMA_ATTR_NON_CONSISTENT)
- 		return mips_dma_alloc_noncoherent(dev, size, dma_handle, gfp);
- 
- 	gfp = massage_gfp_flags(dev, gfp);
-@@ -182,7 +182,7 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
- 	unsigned int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
- 	struct page *page = NULL;
- 
--	if (dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs)) {
-+	if (attrs & DMA_ATTR_NON_CONSISTENT) {
- 		mips_dma_free_noncoherent(dev, size, vaddr, dma_handle);
- 		return;
- 	}
-@@ -214,7 +214,7 @@ static int mips_dma_mmap(struct device *dev, struct vm_area_struct *vma,
- 
- 	pfn = page_to_pfn(virt_to_page((void *)addr));
- 
--	if (dma_get_attr(DMA_ATTR_WRITE_COMBINE, attrs))
-+	if (attrs & DMA_ATTR_WRITE_COMBINE)
- 		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
- 	else
- 		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-diff --git a/arch/openrisc/kernel/dma.c b/arch/openrisc/kernel/dma.c
-index 50eb1f26c540..140c99140649 100644
---- a/arch/openrisc/kernel/dma.c
-+++ b/arch/openrisc/kernel/dma.c
-@@ -100,7 +100,7 @@ or1k_dma_alloc(struct device *dev, size_t size,
- 
- 	va = (unsigned long)page;
- 
--	if (!dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs)) {
-+	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0) {
- 		/*
- 		 * We need to iterate through the pages, clearing the dcache for
- 		 * them and setting the cache-inhibit bit.
-@@ -124,7 +124,7 @@ or1k_dma_free(struct device *dev, size_t size, void *vaddr,
- 		.mm = &init_mm
- 	};
- 
--	if (!dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs)) {
-+	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0) {
- 		/* walk_page_range shouldn't be able to fail here */
- 		WARN_ON(walk_page_range(va, va + size, &walk));
- 	}
-diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
-index 845fdd52e4c5..02d9ed0f3949 100644
---- a/arch/parisc/kernel/pci-dma.c
-+++ b/arch/parisc/kernel/pci-dma.c
-@@ -581,7 +581,7 @@ static void *pcx_dma_alloc(struct device *dev, size_t size,
- {
- 	void *addr;
- 
--	if (!dma_get_attr(DMA_ATTR_NON_CONSISTENT, attrs))
-+	if ((attrs & DMA_ATTR_NON_CONSISTENT) == 0)
- 		return NULL;
- 
- 	addr = (void *)__get_free_pages(flag, get_order(size));
-diff --git a/arch/powerpc/platforms/cell/iommu.c b/arch/powerpc/platforms/cell/iommu.c
-index c8e11e020335..6128bdb428b2 100644
---- a/arch/powerpc/platforms/cell/iommu.c
-+++ b/arch/powerpc/platforms/cell/iommu.c
-@@ -193,7 +193,7 @@ static int tce_build_cell(struct iommu_table *tbl, long index, long npages,
- 	base_pte = CBE_IOPTE_PP_W | CBE_IOPTE_PP_R | CBE_IOPTE_M |
- 		CBE_IOPTE_SO_RW | (window->ioid & CBE_IOPTE_IOID_Mask);
- #endif
--	if (unlikely(dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs)))
-+	if (unlikely(attrs & DMA_ATTR_WEAK_ORDERING))
- 		base_pte &= ~CBE_IOPTE_SO_RW;
- 
- 	io_pte = (unsigned long *)tbl->it_base + (index - tbl->it_offset);
-@@ -600,7 +600,7 @@ static dma_addr_t dma_fixed_map_page(struct device *dev, struct page *page,
- 				     enum dma_data_direction direction,
- 				     unsigned long attrs)
- {
--	if (iommu_fixed_is_weak == dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs))
-+	if (iommu_fixed_is_weak == (attrs & DMA_ATTR_WEAK_ORDERING))
- 		return dma_direct_ops.map_page(dev, page, offset, size,
- 					       direction, attrs);
- 	else
-@@ -613,7 +613,7 @@ static void dma_fixed_unmap_page(struct device *dev, dma_addr_t dma_addr,
- 				 size_t size, enum dma_data_direction direction,
- 				 unsigned long attrs)
- {
--	if (iommu_fixed_is_weak == dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs))
-+	if (iommu_fixed_is_weak == (attrs & DMA_ATTR_WEAK_ORDERING))
- 		dma_direct_ops.unmap_page(dev, dma_addr, size, direction,
- 					  attrs);
- 	else
-@@ -625,7 +625,7 @@ static int dma_fixed_map_sg(struct device *dev, struct scatterlist *sg,
- 			   int nents, enum dma_data_direction direction,
- 			   unsigned long attrs)
- {
--	if (iommu_fixed_is_weak == dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs))
-+	if (iommu_fixed_is_weak == (attrs & DMA_ATTR_WEAK_ORDERING))
- 		return dma_direct_ops.map_sg(dev, sg, nents, direction, attrs);
- 	else
- 		return ppc_iommu_map_sg(dev, cell_get_iommu_table(dev), sg,
-@@ -637,7 +637,7 @@ static void dma_fixed_unmap_sg(struct device *dev, struct scatterlist *sg,
- 			       int nents, enum dma_data_direction direction,
- 			       unsigned long attrs)
- {
--	if (iommu_fixed_is_weak == dma_get_attr(DMA_ATTR_WEAK_ORDERING, attrs))
-+	if (iommu_fixed_is_weak == (attrs & DMA_ATTR_WEAK_ORDERING))
- 		dma_direct_ops.unmap_sg(dev, sg, nents, direction, attrs);
- 	else
- 		ppc_iommu_unmap_sg(cell_get_iommu_table(dev), sg, nents,
-@@ -1162,7 +1162,7 @@ static int __init setup_iommu_fixed(char *str)
- 	pciep = of_find_node_by_type(NULL, "pcie-endpoint");
- 
- 	if (strcmp(str, "weak") == 0 || (pciep && strcmp(str, "strong") != 0))
--		iommu_fixed_is_weak = 1;
-+		iommu_fixed_is_weak = DMA_ATTR_WEAK_ORDERING;
- 
- 	of_node_put(pciep);
- 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-index 7b1788e2a808..4a28d6348c76 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-@@ -273,7 +273,7 @@ void *rockchip_gem_prime_vmap(struct drm_gem_object *obj)
- {
- 	struct rockchip_gem_object *rk_obj = to_rockchip_obj(obj);
- 
--	if (dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, rk_obj->dma_attrs))
-+	if (rk_obj->dma_attrs & DMA_ATTR_NO_KERNEL_MAPPING)
- 		return NULL;
- 
- 	return rk_obj->kvaddr;
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 6c1bda504fb1..08a1e2f3690f 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -306,7 +306,7 @@ struct page **iommu_dma_alloc(struct device *dev, size_t size, gfp_t gfp,
- 	} else {
- 		size = ALIGN(size, min_size);
- 	}
--	if (dma_get_attr(DMA_ATTR_ALLOC_SINGLE_PAGES, attrs))
-+	if (attrs & DMA_ATTR_ALLOC_SINGLE_PAGES)
- 		alloc_sizes = min_size;
- 
- 	count = PAGE_ALIGN(size) >> PAGE_SHIFT;
-diff --git a/drivers/media/v4l2-core/videobuf2-dma-contig.c b/drivers/media/v4l2-core/videobuf2-dma-contig.c
-index 8009a582326b..d2ab541614b8 100644
---- a/drivers/media/v4l2-core/videobuf2-dma-contig.c
-+++ b/drivers/media/v4l2-core/videobuf2-dma-contig.c
-@@ -160,7 +160,7 @@ static void *vb2_dc_alloc(void *alloc_ctx, unsigned long size,
- 		return ERR_PTR(-ENOMEM);
- 	}
- 
--	if (!dma_get_attr(DMA_ATTR_NO_KERNEL_MAPPING, buf->attrs))
-+	if ((buf->attrs & DMA_ATTR_NO_KERNEL_MAPPING) == 0)
- 		buf->vaddr = buf->cookie;
- 
- 	/* Prevent the device from being released while the buffer is used */
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 1fd9860487b1..d8fb67783cb7 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -101,16 +101,6 @@ static inline int is_device_dma_capable(struct device *dev)
- 	return dev->dma_mask != NULL && *dev->dma_mask != DMA_MASK_NONE;
- }
- 
--/**
-- * dma_get_attr - check for a specific attribute
-- * @attr: attribute to look for
-- * @attrs: attributes to check within
-- */
--static inline bool dma_get_attr(unsigned long attr, unsigned long attrs)
--{
--	return !!(attr & attrs);
--}
--
- #ifdef CONFIG_HAVE_GENERIC_DMA_COHERENT
- /*
-  * These three functions are only for dma allocator.
--- 
-1.9.1
+Should this be wrapped in a CONFIG? We're introducing overhead to every 
+tsk creation even if we won't be making use of the emulation.
+
+>   	return 0;
+>   }
+>   
+> @@ -162,6 +168,7 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+>    */
+>   static inline void destroy_context(struct mm_struct *mm)
+>   {
+> +	dsemul_mm_cleanup(mm);
+Ditto.
+>   }
+>   
+>   #define deactivate_mm(tsk, mm)	do { } while (0)
+> diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+> index 7e78b62..0d36c87 100644
+> --- a/arch/mips/include/asm/processor.h
+> +++ b/arch/mips/include/asm/processor.h
+> @@ -11,12 +11,14 @@
+>   #ifndef _ASM_PROCESSOR_H
+>   #define _ASM_PROCESSOR_H
+>   
+> +#include <linux/atomic.h>
+>   #include <linux/cpumask.h>
+>   #include <linux/threads.h>
+>   
+>   #include <asm/cachectl.h>
+>   #include <asm/cpu.h>
+>   #include <asm/cpu-info.h>
+> +#include <asm/dsemul.h>
+>   #include <asm/mipsregs.h>
+>   #include <asm/prefetch.h>
+>   
+> @@ -78,7 +80,11 @@ extern unsigned int vced_count, vcei_count;
+>   
+>   #endif
+>   
+> -#define STACK_TOP	(TASK_SIZE & PAGE_MASK)
+> +/*
+> + * One page above the stack is used for branch delay slot "emulation".
+> + * See dsemul.c for details.
+> + */
+> +#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - PAGE_SIZE)
+
+Again, should this be dependent on config? Otherwise we waste a page for 
+every task.
+
+>   
+>   /*
+>    * This decides where the kernel will search for a free chunk of vm
+> @@ -256,6 +262,12 @@ struct thread_struct {
+>   
+>   	/* Saved fpu/fpu emulator stuff. */
+>   	struct mips_fpu_struct fpu FPU_ALIGN;
+> +	/* Assigned branch delay slot 'emulation' frame */
+> +	atomic_t bd_emu_frame;
+> +	/* PC of the branch from a branch delay slot 'emulation' */
+> +	unsigned long bd_emu_branch_pc;
+> +	/* PC to continue from following a branch delay slot 'emulation' */
+> +	unsigned long bd_emu_cont_pc;
+>   #ifdef CONFIG_MIPS_MT_FPAFF
+>   	/* Emulated instruction count */
+>   	unsigned long emulated_fp;
+> @@ -323,6 +335,10 @@ struct thread_struct {
+>   	 * FPU affinity state (null if not FPAFF)		\
+>   	 */							\
+>   	FPAFF_INIT						\
+> +	/* Delay slot emulation */				\
+> +	.bd_emu_frame = ATOMIC_INIT(BD_EMUFRAME_NONE),		\
+> +	.bd_emu_branch_pc = 0,					\
+> +	.bd_emu_cont_pc = 0,					\
+>   	/*							\
+>   	 * Saved DSP stuff					\
+>   	 */							\
+> diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/mips-r2-to-r6-emul.c
+> index 7ff2a55..ef23c61 100644
+> --- a/arch/mips/kernel/mips-r2-to-r6-emul.c
+> +++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
+> @@ -283,7 +283,7 @@ static int jr_func(struct pt_regs *regs, u32 ir)
+>   		err = mipsr6_emul(regs, nir);
+>   		if (err > 0) {
+>   			regs->cp0_epc = nepc;
+> -			err = mips_dsemul(regs, nir, cepc);
+> +			err = mips_dsemul(regs, nir, epc, cepc);
+>   			if (err == SIGILL)
+>   				err = SIGEMT;
+>   			MIPS_R2_STATS(dsemul);
+> @@ -1033,7 +1033,7 @@ repeat:
+>   			if (nir) {
+>   				err = mipsr6_emul(regs, nir);
+>   				if (err > 0) {
+> -					err = mips_dsemul(regs, nir, cpc);
+> +					err = mips_dsemul(regs, nir, epc, cpc);
+>   					if (err == SIGILL)
+>   						err = SIGEMT;
+>   					MIPS_R2_STATS(dsemul);
+> @@ -1082,7 +1082,7 @@ repeat:
+>   			if (nir) {
+>   				err = mipsr6_emul(regs, nir);
+>   				if (err > 0) {
+> -					err = mips_dsemul(regs, nir, cpc);
+> +					err = mips_dsemul(regs, nir, epc, cpc);
+>   					if (err == SIGILL)
+>   						err = SIGEMT;
+>   					MIPS_R2_STATS(dsemul);
+> @@ -1149,7 +1149,7 @@ repeat:
+>   		if (nir) {
+>   			err = mipsr6_emul(regs, nir);
+>   			if (err > 0) {
+> -				err = mips_dsemul(regs, nir, cpc);
+> +				err = mips_dsemul(regs, nir, epc, cpc);
+>   				if (err == SIGILL)
+>   					err = SIGEMT;
+>   				MIPS_R2_STATS(dsemul);
+> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+> index 813ed78..0fb1e8c 100644
+> --- a/arch/mips/kernel/process.c
+> +++ b/arch/mips/kernel/process.c
+> @@ -30,6 +30,7 @@
+>   #include <asm/asm.h>
+>   #include <asm/bootinfo.h>
+>   #include <asm/cpu.h>
+> +#include <asm/dsemul.h>
+>   #include <asm/dsp.h>
+>   #include <asm/fpu.h>
+>   #include <asm/msa.h>
+> @@ -73,6 +74,11 @@ void start_thread(struct pt_regs * regs, unsigned long pc, unsigned long sp)
+>   	regs->regs[29] = sp;
+>   }
+>   
+> +void exit_thread(struct task_struct *tsk)
+> +{
+> +	dsemul_thread_cleanup();
+> +}
+> +
+>   int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+>   {
+>   	/*
+> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+> index ae42314..9383635 100644
+> --- a/arch/mips/kernel/signal.c
+> +++ b/arch/mips/kernel/signal.c
+> @@ -772,6 +772,14 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
+>   	struct mips_abi *abi = current->thread.abi;
+>   	void *vdso = current->mm->context.vdso;
+>   
+> +	/*
+> +	 * If we were emulating a delay slot instruction, exit that frame such
+> +	 * that addresses in the sigframe are as expected for userland and we
+> +	 * don't have a problem if we reuse the thread's frame for an
+> +	 * instruction within the signal handler.
+> +	 */
+> +	dsemul_thread_rollback(regs);
+> +
+>   	if (regs->regs[0]) {
+>   		switch(regs->regs[2]) {
+>   		case ERESTART_RESTARTBLOCK:
+> diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+> index d96e912..8afa090 100644
+> --- a/arch/mips/math-emu/cp1emu.c
+> +++ b/arch/mips/math-emu/cp1emu.c
+> @@ -434,8 +434,8 @@ static int microMIPS32_to_MIPS32(union mips_instruction *insn_ptr)
+>    * a single subroutine should be used across both
+>    * modules.
+>    */
+> -static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
+> -			 unsigned long *contpc)
+> +int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
+> +		  unsigned long *contpc)
+>   {
+>   	union mips_instruction insn = (union mips_instruction)dec_insn.insn;
+>   	unsigned int fcr31;
+> @@ -1268,7 +1268,7 @@ branch_common:
+>   						 * instruction in the dslot.
+>   						 */
+>   						sig = mips_dsemul(xcp, ir,
+> -								  contpc);
+> +								  bcpc, contpc);
+>   						if (sig < 0)
+>   							break;
+>   						if (sig)
+> @@ -1323,7 +1323,7 @@ branch_common:
+>   				 * Single step the non-cp1
+>   				 * instruction in the dslot
+>   				 */
+> -				sig = mips_dsemul(xcp, ir, contpc);
+> +				sig = mips_dsemul(xcp, ir, bcpc, contpc);
+>   				if (sig < 0)
+>   					break;
+>   				if (sig)
+> diff --git a/arch/mips/math-emu/dsemul.c b/arch/mips/math-emu/dsemul.c
+> index 4707488..d21af2f 100644
+> --- a/arch/mips/math-emu/dsemul.c
+> +++ b/arch/mips/math-emu/dsemul.c
+> @@ -1,3 +1,6 @@
+> +#include <linux/err.h>
+> +#include <linux/slab.h>
+> +
+>   #include <asm/branch.h>
+>   #include <asm/cacheflush.h>
+>   #include <asm/fpu_emulator.h>
+> @@ -5,43 +8,221 @@
+>   #include <asm/mipsregs.h>
+>   #include <asm/uaccess.h>
+>   
+> -#include "ieee754.h"
+> -
+> -/*
+> - * Emulate the arbitrary instruction ir at xcp->cp0_epc.  Required when
+> - * we have to emulate the instruction in a COP1 branch delay slot.  Do
+> - * not change cp0_epc due to the instruction
+> +/**
+> + * struct emuframe - The 'emulation' frame structure
+> + * @emul:	The instruction to 'emulate'.
+> + * @badinst:	A break instruction to cause a return to the kernel.
+>    *
+> - * According to the spec:
+> - * 1) it shouldn't be a branch :-)
+> - * 2) it can be a COP instruction :-(
+> - * 3) if we are tring to run a protected memory space we must take
+> - *    special care on memory access instructions :-(
+> - */
+> -
+> -/*
+> - * "Trampoline" return routine to catch exception following
+> - *  execution of delay-slot instruction execution.
+> + * This structure defines the frames placed within the delay slot emulation
+> + * page in response to a call to mips_dsemul(). Each thread may be allocated
+> + * only one frame at any given time. The kernel stores within it the
+> + * instruction to be 'emulated' followed by a break instruction, then
+> + * executes the frame in user mode. The break causes a trap to the kernel
+> + * which leads to do_dsemulret() being called unless the instruction in
+> + * @emul causes a trap itself, is a branch, or a signal is delivered to
+> + * the thread. In these cases the allocated frame will either be reused by
+> + * a subsequent delay slot 'emulation', or be freed during signal delivery or
+> + * upon thread exit.
+> + *
+> + * This approach is used because:
+> + *
+> + * - Actually emulating all instructions isn't feasible. We would need to
+> + *   be able to handle instructions from all revisions of the MIPS ISA,
+> + *   all ASEs & all vendor instruction set extensions. This would be a
+> + *   whole lot of work & continual maintenance burden as new instructions
+> + *   are introduced, and in the case of some vendor extensions may not
+> + *   even be possible. Thus we need to take the approach of actually
+> + *   executing the instruction.
+> + *
+> + * - We must execute the instruction within user context. If we were to
+> + *   execute the instruction in kernel mode then it would have access to
+> + *   kernel resources without very careful checks, leaving us with a
+> + *   high potential for security or stability issues to arise.
+> + *
+> + * - We used to place the frame on the users stack, but this requires
+> + *   that the stack be executable. This is bad for security so the
+> + *   per-process page is now used instead.
+> + *
+> + * - The instruction in @emul may be something entirely invalid for a
+> + *   delay slot. The user may (intentionally or otherwise) place a branch
+> + *   in a delay slot, or a kernel mode instruction, or something else
+> + *   which generates an exception. Thus we can't rely upon the break in
+> + *   @badinst always being hit. For this reason we track the index of the
+> + *   frame allocated to each thread, allowing us to clean it up at later
+> + *   points such as signal delivery or thread exit.
+> + *
+> + * - The user may generate a fake struct emuframe if they wish, invoking
+> + *   the BRK_MEMU break instruction themselves. We must therefore not
+> + *   trust that BRK_MEMU means there's actually a valid frame allocated
+> + *   to the thread, and must not allow the user to do anything they
+> + *   couldn't already.
+>    */
+> -
+>   struct emuframe {
+>   	mips_instruction	emul;
+>   	mips_instruction	badinst;
+> -	mips_instruction	cookie;
+> -	unsigned long		epc;
+>   };
+>   
+> -/*
+> - * Set up an emulation frame for instruction IR, from a delay slot of
+> - * a branch jumping to CPC.  Return 0 if successful, -1 if no emulation
+> - * required, otherwise a signal number causing a frame setup failure.
+> - */
+> -int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
+> +static const int emupage_frame_count = PAGE_SIZE / sizeof(struct emuframe);
+> +
+> +static int alloc_emuframe(void)
+> +{
+> +	mm_context_t *mm_ctx = &current->mm->context;
+> +	unsigned long addr;
+> +	int idx;
+> +
+> +retry:
+> +	mutex_lock(&mm_ctx->bd_emupage_mutex);
+> +
+> +	/* Ensure we have a page allocated for emuframes */
+> +	if (!mm_ctx->bd_emupage) {
+> +		addr = mmap_region(NULL, STACK_TOP, PAGE_SIZE,
+> +				   VM_READ|VM_WRITE|VM_EXEC|
+> +				   VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
+> +				   0);
+> +		if (IS_ERR_VALUE(addr)) {
+> +			idx = BD_EMUFRAME_NONE;
+> +			goto out_unlock;
+> +		}
+> +
+> +		mm_ctx->bd_emupage = addr;
+> +		pr_debug("allocate emupage at 0x%08lx to %d\n", addr,
+> +			 current->pid);
+> +	}
+> +
+> +	/* Ensure we have an allocation bitmap */
+> +	if (!mm_ctx->bd_emupage_allocmap) {
+> +		mm_ctx->bd_emupage_allocmap =
+> +			kcalloc(BITS_TO_LONGS(emupage_frame_count),
+> +					      sizeof(unsigned long),
+> +				GFP_KERNEL);
+> +
+> +		if (!mm_ctx->bd_emupage_allocmap) {
+> +			idx = BD_EMUFRAME_NONE;
+> +			goto out_unlock;
+> +		}
+> +	}
+> +
+> +	/* Attempt to allocate a single bit/frame */
+> +	idx = bitmap_find_free_region(mm_ctx->bd_emupage_allocmap,
+> +				      emupage_frame_count, 0);
+> +	if (idx < 0) {
+> +		/*
+> +		 * Failed to allocate a frame. We'll wait until one becomes
+> +		 * available. The mutex is unlocked so that other threads
+> +		 * actually get the opportunity to free their frames, which
+> +		 * means technically the result of bitmap_full may be incorrect.
+> +		 * However the worst case is that we repeat all this and end up
+> +		 * back here again.
+> +		 */
+> +		mutex_unlock(&mm_ctx->bd_emupage_mutex);
+> +		if (!wait_event_killable(mm_ctx->bd_emupage_queue,
+> +			!bitmap_full(mm_ctx->bd_emupage_allocmap,
+> +				     emupage_frame_count)))
+> +			goto retry;
+> +
+> +		/* Received a fatal signal - just give in */
+> +		return BD_EMUFRAME_NONE;
+> +	}
+> +
+> +	/* Success! */
+> +	pr_debug("allocate emuframe %d to %d\n", idx, current->pid);
+> +out_unlock:
+> +	mutex_unlock(&mm_ctx->bd_emupage_mutex);
+> +	return idx;
+> +}
+> +
+> +static void free_emuframe(int idx)
+> +{
+> +	mm_context_t *mm_ctx = &current->mm->context;
+> +
+> +	mutex_lock(&mm_ctx->bd_emupage_mutex);
+> +
+> +	pr_debug("free emuframe %d from %d\n", idx, current->pid);
+> +	bitmap_clear(mm_ctx->bd_emupage_allocmap, idx, 1);
+> +
+> +	/* If some thread is waiting for a frame, now's its chance */
+> +	wake_up(&mm_ctx->bd_emupage_queue);
+> +
+> +	mutex_unlock(&mm_ctx->bd_emupage_mutex);
+> +}
+> +
+> +static bool within_emuframe(struct pt_regs *regs)
+> +{
+> +	mm_context_t *mm_ctx = &current->mm->context;
+> +
+> +	if (regs->cp0_epc < mm_ctx->bd_emupage)
+> +		return false;
+> +	if (regs->cp0_epc >= (mm_ctx->bd_emupage + PAGE_SIZE))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +bool dsemul_thread_cleanup(void)
+> +{
+> +	int fr_idx;
+> +
+> +	/* Clear any allocated frame, retrieving its index */
+> +	fr_idx = atomic_xchg(&current->thread.bd_emu_frame, BD_EMUFRAME_NONE);
+> +
+> +	/* If no frame was allocated, we're done */
+> +	if (fr_idx == BD_EMUFRAME_NONE)
+> +		return false;
+> +
+> +	/* Free the frame that this thread had allocated */
+> +	free_emuframe(fr_idx);
+> +	return true;
+> +}
+> +
+> +bool dsemul_thread_rollback(struct pt_regs *regs)
+> +{
+> +	mm_context_t *mm_ctx = &current->mm->context;
+> +	struct emuframe __user *fr;
+> +	int fr_idx;
+> +
+> +	/* Do nothing if we're not executing from a frame */
+> +	if (!within_emuframe(regs))
+> +		return false;
+> +
+> +	/* Find the frame being executed */
+> +	fr_idx = atomic_read(&current->thread.bd_emu_frame);
+> +	if (fr_idx == BD_EMUFRAME_NONE)
+> +		return false;
+> +	fr = &((struct emuframe __user *)mm_ctx->bd_emupage)[fr_idx];
+> +
+> +	/*
+> +	 * If the PC is at the emul instruction, roll back to the branch. If
+> +	 * PC is at the badinst (break) instruction, we've already emulated the
+> +	 * instruction so progress to the continue PC. If it's anything else
+> +	 * then something is amiss.
+> +	 */
+> +	if (msk_isa16_mode(regs->cp0_epc) == (unsigned long)&fr->emul)
+> +		regs->cp0_epc = current->thread.bd_emu_branch_pc;
+> +	else if (msk_isa16_mode(regs->cp0_epc) == (unsigned long)&fr->badinst)
+> +		regs->cp0_epc = current->thread.bd_emu_cont_pc;
+> +	else
+> +		return false;
+Would that lead to bd_emu_frame getting stuck?
+
+Matt
+> +
+> +	atomic_set(&current->thread.bd_emu_frame, BD_EMUFRAME_NONE);
+> +	free_emuframe(fr_idx);
+> +	return true;
+> +}
+> +
+> +void dsemul_mm_cleanup(struct mm_struct *mm)
+> +{
+> +	mm_context_t *mm_ctx = &mm->context;
+> +
+> +	kfree(mm_ctx->bd_emupage_allocmap);
+> +}
+> +
+> +int mips_dsemul(struct pt_regs *regs, mips_instruction ir,
+> +		unsigned long branch_pc, unsigned long cont_pc)
+>   {
+>   	int isa16 = get_isa16_mode(regs->cp0_epc);
+>   	mips_instruction break_math;
+> +	mm_context_t *mm_ctx = &current->mm->context;
+>   	struct emuframe __user *fr;
+> -	int err;
+> +	int err, fr_idx;
+>   
+>   	/* NOP is easy */
+>   	if (ir == 0)
+> @@ -68,30 +249,20 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
+>   		}
+>   	}
+>   
+> -	pr_debug("dsemul %lx %lx\n", regs->cp0_epc, cpc);
+> +	pr_debug("dsemul 0x%08lx cont at 0x%08lx\n", regs->cp0_epc, cont_pc);
+>   
+> -	/*
+> -	 * The strategy is to push the instruction onto the user stack
+> -	 * and put a trap after it which we can catch and jump to
+> -	 * the required address any alternative apart from full
+> -	 * instruction emulation!!.
+> -	 *
+> -	 * Algorithmics used a system call instruction, and
+> -	 * borrowed that vector.  MIPS/Linux version is a bit
+> -	 * more heavyweight in the interests of portability and
+> -	 * multiprocessor support.  For Linux we use a BREAK 514
+> -	 * instruction causing a breakpoint exception.
+> -	 */
+> -	break_math = BREAK_MATH(isa16);
+> -
+> -	/* Ensure that the two instructions are in the same cache line */
+> -	fr = (struct emuframe __user *)
+> -		((regs->regs[29] - sizeof(struct emuframe)) & ~0x7);
+> -
+> -	/* Verify that the stack pointer is not completely insane */
+> -	if (unlikely(!access_ok(VERIFY_WRITE, fr, sizeof(struct emuframe))))
+> +	/* Allocate a frame if we don't already have one */
+> +	fr_idx = atomic_read(&current->thread.bd_emu_frame);
+> +	if (fr_idx == BD_EMUFRAME_NONE)
+> +		fr_idx = alloc_emuframe();
+> +	if (fr_idx == BD_EMUFRAME_NONE)
+>   		return SIGBUS;
+> +	fr = &((struct emuframe __user *)mm_ctx->bd_emupage)[fr_idx];
+> +
+> +	/* Retrieve the appropriately encoded break instruction */
+> +	break_math = BREAK_MATH(isa16);
+>   
+> +	/* Write the instructions to the frame */
+>   	if (isa16) {
+>   		err = __put_user(ir >> 16,
+>   				 (u16 __user *)(&fr->emul));
+> @@ -106,84 +277,36 @@ int mips_dsemul(struct pt_regs *regs, mips_instruction ir, unsigned long cpc)
+>   		err |= __put_user(break_math, &fr->badinst);
+>   	}
+>   
+> -	err |= __put_user((mips_instruction)BD_COOKIE, &fr->cookie);
+> -	err |= __put_user(cpc, &fr->epc);
+> -
+>   	if (unlikely(err)) {
+>   		MIPS_FPU_EMU_INC_STATS(errors);
+> +		free_emuframe(fr_idx);
+>   		return SIGBUS;
+>   	}
+>   
+> +	/* Record the PC of the branch, PC to continue from & frame index */
+> +	current->thread.bd_emu_branch_pc = branch_pc;
+> +	current->thread.bd_emu_cont_pc = cont_pc;
+> +	atomic_set(&current->thread.bd_emu_frame, fr_idx);
+> +
+> +	/* Change user register context to execute the frame */
+>   	regs->cp0_epc = (unsigned long)&fr->emul | isa16;
+>   
+> +	/* Ensure the icache observes our newly written frame */
+>   	flush_cache_sigtramp((unsigned long)&fr->emul);
+>   
+>   	return 0;
+>   }
+>   
+> -int do_dsemulret(struct pt_regs *xcp)
+> +bool do_dsemulret(struct pt_regs *xcp)
+>   {
+> -	int isa16 = get_isa16_mode(xcp->cp0_epc);
+> -	struct emuframe __user *fr;
+> -	unsigned long epc;
+> -	u32 insn, cookie;
+> -	int err = 0;
+> -	u16 instr[2];
+> -
+> -	fr = (struct emuframe __user *)
+> -		(msk_isa16_mode(xcp->cp0_epc) - sizeof(mips_instruction));
+> -
+> -	/*
+> -	 * If we can't even access the area, something is very wrong, but we'll
+> -	 * leave that to the default handling
+> -	 */
+> -	if (!access_ok(VERIFY_READ, fr, sizeof(struct emuframe)))
+> -		return 0;
+> -
+> -	/*
+> -	 * Do some sanity checking on the stackframe:
+> -	 *
+> -	 *  - Is the instruction pointed to by the EPC an BREAK_MATH?
+> -	 *  - Is the following memory word the BD_COOKIE?
+> -	 */
+> -	if (isa16) {
+> -		err = __get_user(instr[0],
+> -				 (u16 __user *)(&fr->badinst));
+> -		err |= __get_user(instr[1],
+> -				  (u16 __user *)((long)(&fr->badinst) + 2));
+> -		insn = (instr[0] << 16) | instr[1];
+> -	} else {
+> -		err = __get_user(insn, &fr->badinst);
+> -	}
+> -	err |= __get_user(cookie, &fr->cookie);
+> -
+> -	if (unlikely(err ||
+> -		     insn != BREAK_MATH(isa16) || cookie != BD_COOKIE)) {
+> +	/* Cleanup the allocated frame, returning if there wasn't one */
+> +	if (!dsemul_thread_cleanup()) {
+>   		MIPS_FPU_EMU_INC_STATS(errors);
+> -		return 0;
+> -	}
+> -
+> -	/*
+> -	 * At this point, we are satisfied that it's a BD emulation trap.  Yes,
+> -	 * a user might have deliberately put two malformed and useless
+> -	 * instructions in a row in his program, in which case he's in for a
+> -	 * nasty surprise - the next instruction will be treated as a
+> -	 * continuation address!  Alas, this seems to be the only way that we
+> -	 * can handle signals, recursion, and longjmps() in the context of
+> -	 * emulating the branch delay instruction.
+> -	 */
+> -
+> -	pr_debug("dsemulret\n");
+> -
+> -	if (__get_user(epc, &fr->epc)) {		/* Saved EPC */
+> -		/* This is not a good situation to be in */
+> -		force_sig(SIGBUS, current);
+> -
+> -		return 0;
+> +		return false;
+>   	}
+>   
+>   	/* Set EPC to return to post-branch instruction */
+> -	xcp->cp0_epc = epc;
+> -	MIPS_FPU_EMU_INC_STATS(ds_emul);
+> -	return 1;
+> +	xcp->cp0_epc = current->thread.bd_emu_cont_pc;
+> +	pr_debug("dsemulret to 0x%08lx\n", xcp->cp0_epc);
+> +	return true;
+>   }

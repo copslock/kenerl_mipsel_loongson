@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2016 11:25:50 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:2225 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2016 12:17:26 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:3587 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992648AbcF3JZmE8600 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Jun 2016 11:25:42 +0200
+        with ESMTP id S23992866AbcF3KRURK7v0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Jun 2016 12:17:20 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 0CD83721CBB35;
-        Thu, 30 Jun 2016 10:25:33 +0100 (IST)
-Received: from HHMAIL01.hh.imgtec.org ([fe80::710b:f219:72bc:e0b3]) by
- hhmail02.hh.imgtec.org ([fe80::5400:d33e:81a4:f775%25]) with mapi id
- 14.03.0294.000; Thu, 30 Jun 2016 10:25:35 +0100
-From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
-To:     Paul Burton <Paul.Burton@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Raghu Gandham <Raghu.Gandham@imgtec.com>,
-        Faraz Shahbazker <Faraz.Shahbazker@imgtec.com>,
-        Maciej Rozycki <Maciej.Rozycki@imgtec.com>
-Subject: RE: [RFC PATCH v3 2/2] MIPS: non-exec stack & heap when non-exec
- PT_GNU_STACK is present
-Thread-Topic: [RFC PATCH v3 2/2] MIPS: non-exec stack & heap when non-exec
- PT_GNU_STACK is present
-Thread-Index: AQHR0hQTTmJmtt1Vk0q5X1N8w1HBqqABvOyw
-Date:   Thu, 30 Jun 2016 09:25:34 +0000
-Message-ID: <6D39441BF12EF246A7ABCE6654B023537E465A74@HHMAIL01.hh.imgtec.org>
+        by Forcepoint Email with ESMTPS id 2CB971AFE048A;
+        Thu, 30 Jun 2016 11:17:11 +0100 (IST)
+Received: from LEMAIL01.le.imgtec.org (192.168.152.62) by
+ hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 30 Jun 2016 11:17:13 +0100
+Received: from [127.0.0.1] (10.100.200.138) by LEMAIL01.le.imgtec.org
+ (192.168.152.62) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 30 Jun
+ 2016 11:17:13 +0100
+Subject: Re: [RFC PATCH v3 1/2] MIPS: use per-mm page to execute branch delay
+ slot instructions
+To:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 References: <20160629143830.526-1-paul.burton@imgtec.com>
- <20160629143830.526-3-paul.burton@imgtec.com>
-In-Reply-To: <20160629143830.526-3-paul.burton@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.159.176]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ <20160629143830.526-2-paul.burton@imgtec.com> <5774DFDC.4000607@imgtec.com>
+CC:     Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        Matthew Fortune <matthew.fortune@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>
+From:   Paul Burton <paul.burton@imgtec.com>
+Message-ID: <9c74a08a-afbb-68c6-e022-a4f01713f01c@imgtec.com>
+Date:   Thu, 30 Jun 2016 11:17:12 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.1.1
 MIME-Version: 1.0
-Return-Path: <Matthew.Fortune@imgtec.com>
+In-Reply-To: <5774DFDC.4000607@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.100.200.138]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54182
+X-archive-position: 54183
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matthew.Fortune@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,117 +52,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Paul Burton <Paul.Burton@imgtec.com> writes:
-> The stack and heap have both been executable by default on MIPS until
-> now. This patch changes the default to be non-executable, but only for
-> ELF binaries with a non-executable PT_GNU_STACK header present. This
-> does apply to both the heap & the stack, despite the name PT_GNU_STACK,
-> and this matches the behaviour of other architectures like ARM & x86.
-> 
-> Current MIPS toolchains do not produce the PT_GNU_STACK header, which
-> means that we can rely upon this patch not changing the behaviour of
-> existing binaries. The new default will only take effect for newly
-> compiled binaries once toolchains are updated to support PT_GNU_STACK,
-> and since those binaries are newly compiled they can be compiled
-> expecting the change in default behaviour. Again this matches the way in
-> which the ARM & x86 architectures handled their implementations of
-> non-executable memory.
+On 30/06/16 10:01, Matt Redfearn wrote:
+> Hi Paul
 
-There will be some extra work on top of this to inform user-mode that
-no-exec-stack support is actually safe. I'm a bit fuzzy on the exact
-details though as I have not been directly involved for a while.
+Hi Matt :)
 
-https://www.sourceware.org/ml/libc-alpha/2016-01/msg00719.html
+>> @@ -128,6 +129,11 @@ init_new_context(struct task_struct *tsk, struct
+>> mm_struct *mm)
+>>         atomic_set(&mm->context.fp_mode_switching, 0);
+>>   +    mm->context.bd_emupage = 0;
+>> +    mm->context.bd_emupage_allocmap = NULL;
+>> +    mutex_init(&mm->context.bd_emupage_mutex);
+>> +    init_waitqueue_head(&mm->context.bd_emupage_queue);
+>> +
+>
+> Should this be wrapped in a CONFIG? We're introducing overhead to every
+> tsk creation even if we won't be making use of the emulation.
 
-Adding Faraz who worked on the user-mode side and Maciej who has been
-reviewing.
+Since this is used by the FPU emulator, which we always include in the 
+kernel, no I'd say not. The overhead here should be very small - all the 
+actual memory allocation & book-keeping is left until a delay slot 
+emulation is actually performed, we're effectively just setting some 
+variables to sane & constant initial values here.
+
+In order to guarantee that we don't use this code we'd need to guarantee 
+that we don't use the FPU emulator (or MIPSr2 emulation on a MIPSr6 
+system) and right now at least there is no way for us to do that. We 
+could add an option to build the kernel without the emulator, but then 
+we'd have issues even if we run on a system with an FPU that doesn't 
+implement certain operations (eg. denormals), so in practice I think 
+that would mean we'd be much better with an option to disable use of FP 
+entirely. That is probably something it would be useful to have anyway 
+for people who know their userland is entirely soft-float, but it's not 
+something I think this patch should do.
+
+>>   @@ -162,6 +168,7 @@ static inline void switch_mm(struct mm_struct
+>> *prev, struct mm_struct *next,
+>>    */
+>>   static inline void destroy_context(struct mm_struct *mm)
+>>   {
+>> +    dsemul_mm_cleanup(mm);
+> Ditto.
+
+Likewise.
+
+>>   -#define STACK_TOP    (TASK_SIZE & PAGE_MASK)
+>> +/*
+>> + * One page above the stack is used for branch delay slot "emulation".
+>> + * See dsemul.c for details.
+>> + */
+>> +#define STACK_TOP    ((TASK_SIZE & PAGE_MASK) - PAGE_SIZE)
+>
+> Again, should this be dependent on config? Otherwise we waste a page for
+> every task.
+
+Likewise. Note that we don't actually use a page of memory for every 
+process, we just reserve a page of its virtual address space. The actual 
+memory allocation only occurs (in alloc_emuframe) if we perform a delay 
+slot emulation.
+
+>> +    /*
+>> +     * If the PC is at the emul instruction, roll back to the branch. If
+>> +     * PC is at the badinst (break) instruction, we've already
+>> emulated the
+>> +     * instruction so progress to the continue PC. If it's anything else
+>> +     * then something is amiss.
+>> +     */
+>> +    if (msk_isa16_mode(regs->cp0_epc) == (unsigned long)&fr->emul)
+>> +        regs->cp0_epc = current->thread.bd_emu_branch_pc;
+>> +    else if (msk_isa16_mode(regs->cp0_epc) == (unsigned
+>> long)&fr->badinst)
+>> +        regs->cp0_epc = current->thread.bd_emu_cont_pc;
+>> +    else
+>> +        return false;
+> Would that lead to bd_emu_frame getting stuck?
+
+The only way I can think of this case possibly being hit would be if the 
+user code tried to trick the kernel into thinking it was executing from 
+a struct emuframe when it actually wasn't - ie. some time after 
+executing an actual delay slot emulation & preventing the badinst break 
+instruction being hit (either by a well timed signal or an exception & 
+signal generating instruction) the user would need to either manually 
+write to the page & jump into it, or jump to a frame that some other 
+thread had set up (and either way another thread may clobber what it's 
+executing at any moment). If it does try that then yes, the thread's 
+actual frame might persist until the thread either requires another 
+emulation or exits. Worst case scenario the process has one less frame 
+available to it, which I don't see as being an issue. We probably could 
+just free the allocated frame anyway in this case, but actually perhaps 
+SIGKILL would be more suitable.
+
+BTW, a way to prevent one of the above scenarios would be ideal future 
+work: it would be good for security if the user could only execute the 
+page, and the kernel could only write it. That would probably involve 
+having aliased mappings, but would be nice to add later.
 
 Thanks,
-Matthew
-
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> 
-> ---
-> 
-> Changes in v3:
-> - Rebase atop v4.7-rc5.
-> 
-> Changes in v2: None
-> 
->  arch/mips/include/asm/elf.h  |  5 +++++
->  arch/mips/include/asm/page.h |  6 ++++--
->  arch/mips/kernel/elf.c       | 19 +++++++++++++++++++
->  3 files changed, 28 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-> index f5f4571..914981d 100644
-> --- a/arch/mips/include/asm/elf.h
-> +++ b/arch/mips/include/asm/elf.h
-> @@ -498,4 +498,9 @@ extern int arch_check_elf(void *ehdr, bool has_interpreter, void
-> *interp_ehdr,
->  extern void mips_set_personality_nan(struct arch_elf_state *state);
->  extern void mips_set_personality_fp(struct arch_elf_state *state);
-> 
-> +#define elf_read_implies_exec(ex, stk) mips_elf_read_implies_exec(&(ex), stk)
-> +struct elf32_hdr;
-> +extern int mips_elf_read_implies_exec(const struct elf32_hdr *elf_ex,
-> +				      int exstack);
-> +
->  #endif /* _ASM_ELF_H */
-> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-> index 21ed715..74cb004 100644
-> --- a/arch/mips/include/asm/page.h
-> +++ b/arch/mips/include/asm/page.h
-> @@ -229,8 +229,10 @@ extern int __virt_addr_valid(const volatile void *kaddr);
->  #define virt_addr_valid(kaddr)						\
->  	__virt_addr_valid((const volatile void *) (kaddr))
-> 
-> -#define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
-> -				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-> +#define VM_DATA_DEFAULT_FLAGS \
-> +	(VM_READ | VM_WRITE | \
-> +	 ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0) | \
-> +	 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-> 
->  #define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
->  #define CAC_ADDR(addr)		((addr) - UNCAC_BASE + PAGE_OFFSET)
-> diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
-> index 891f5ee..9aa55b8 100644
-> --- a/arch/mips/kernel/elf.c
-> +++ b/arch/mips/kernel/elf.c
-> @@ -8,9 +8,12 @@
->   * option) any later version.
->   */
-> 
-> +#include <linux/binfmts.h>
->  #include <linux/elf.h>
-> +#include <linux/export.h>
->  #include <linux/sched.h>
-> 
-> +#include <asm/cpu-features.h>
->  #include <asm/cpu-info.h>
-> 
->  /* Whether to accept legacy-NaN and 2008-NaN user binaries.  */
-> @@ -326,3 +329,19 @@ void mips_set_personality_nan(struct arch_elf_state *state)
->  		BUG();
->  	}
->  }
-> +
-> +int mips_elf_read_implies_exec(const struct elf32_hdr *elf_ex, int exstack)
-> +{
-> +	if (exstack != EXSTACK_DISABLE_X) {
-> +		/* The binary doesn't request a non-executable stack */
-> +		return 1;
-> +	}
-> +
-> +	if (!cpu_has_rixi) {
-> +		/* The CPU doesn't support non-executable memory */
-> +		return 1;
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(mips_elf_read_implies_exec);
-> --
-> 2.9.0
+     Paul

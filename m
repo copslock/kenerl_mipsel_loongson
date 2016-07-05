@@ -1,49 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2016 12:53:52 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45454 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992696AbcGEKxqGDy2m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jul 2016 12:53:46 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id A189927751A80;
-        Tue,  5 Jul 2016 11:53:37 +0100 (IST)
-Received: from [10.20.78.24] (10.20.78.24) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 5 Jul 2016
- 11:53:38 +0100
-Date:   Tue, 5 Jul 2016 11:53:17 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        John Stultz <john.stultz@linaro.org>, <mguzik@redhat.com>,
-        <athorlton@sgi.com>, <mhocko@suse.com>, <ebiederm@xmission.com>,
-        <gorcunov@openvz.org>, <luto@kernel.org>, <cl@linux.com>,
-        <serge.hallyn@ubuntu.com>, Kees Cook <keescook@chromium.org>,
-        <jslaby@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-        Florian Fainelli <f.fainelli@gmail.com>, <mingo@kernel.org>,
-        <alex.smith@imgtec.com>, <markos.chandras@imgtec.com>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        <david.daney@cavium.com>, <zhaoxiu.zeng@gmail.com>,
-        <chenhc@lemote.com>, <Zubair.Kakakhel@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2016 13:17:02 +0200 (CEST)
+Received: from mail-lf0-f47.google.com ([209.85.215.47]:33850 "EHLO
+        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992923AbcGELQzL5oOm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jul 2016 13:16:55 +0200
+Received: by mail-lf0-f47.google.com with SMTP id h129so132550665lfh.1
+        for <linux-mips@linux-mips.org>; Tue, 05 Jul 2016 04:16:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=UjgporceJkz4cKdSav6DbVCM/XNdokSMRj2Z5GwcJqU=;
+        b=siOKPN935bZW9U/ZNqHctQlPwXVQe6078UpJEaDfjv3oMLztx+YWDXwGuumB8YU86n
+         TSir66ovswc4XZPMRVfyC/GdETnAq5hEWSy6e9gZ3KNMev1KJwikaHEh0CVMrcbZ27S3
+         DVCzIrh3rgGSdCOgBZhtoL4TqE/eNu76NG7b++XgyePiSMhAHsGzxSmOziF/PJT1l+Kf
+         FpuZapXxV91EeetjYpettOEoPgcR/JkzCI9vqElB7isFhKDb77SENXR/stVZmflx+DXv
+         oDDK57kMzfgaua0thLzwQB8JbqaU6Bky5cHYzS5RUUUkRQ9OrDNglZgKwuqiGiTIU5n0
+         +Pwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=UjgporceJkz4cKdSav6DbVCM/XNdokSMRj2Z5GwcJqU=;
+        b=PK0x6eK3fT8Czgmm+26BCnPVG/ryoOwtdI4Zp3x0uHn4sR6l3HVVKZFL4sPZLQQ4Va
+         4h+YFL1qilO+LVLAVYevD00zuWqoSvf0OWYrUJ2tiR/aMpB/wQdtqmKb8Owuva0WB+s8
+         EAyhWHtxds+vaM0cOc8sK7ZWkwcBkslJx2kYXQflN0eP0SNtcTYtSUquhlozqQJht0Ex
+         u6AYMjYTY3JndJfLbDa8NAw4ubLQpnS5kEzh5o138AIfSIfwLQL9YBKW79272DEytzHH
+         HvSG4/Ix8oEvIHxl/D5sQLZa1x8mHGF2fgiE9xyFgDW2HkWTVc/A/54Juff5yWNdtRAG
+         K0UA==
+X-Gm-Message-State: ALyK8tLy7HfNs6cSR6gUU9HGdjhAPfAA8k0T++rBVJkT6SsFBLYsZrmVpyiepc+jTjo3pg==
+X-Received: by 10.25.83.80 with SMTP id h77mr4507432lfb.83.1467717409752;
+        Tue, 05 Jul 2016 04:16:49 -0700 (PDT)
+Received: from [192.168.4.126] ([31.173.85.90])
+        by smtp.gmail.com with ESMTPSA id e195sm168036lfg.13.2016.07.05.04.16.48
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 05 Jul 2016 04:16:49 -0700 (PDT)
+Subject: Re: [PATCH 8/9] MIPS: KVM: Decode RDHWR more strictly
+To:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [RFC] mips: Add MXU context switching support
-In-Reply-To: <CANc+2y7meDYJyrHbbKWGsTNwangKCLB+kWLC6bys89PSXj-TdQ@mail.gmail.com>
-Message-ID: <alpine.DEB.2.00.1607051144190.4076@tp.orcam.me.uk>
-References: <1466856870-17153-1-git-send-email-prasannatsmkumar@gmail.com> <alpine.DEB.2.00.1607042317480.4076@tp.orcam.me.uk> <CANc+2y7meDYJyrHbbKWGsTNwangKCLB+kWLC6bys89PSXj-TdQ@mail.gmail.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+References: <1467657315-19975-1-git-send-email-james.hogan@imgtec.com>
+ <1467657315-19975-9-git-send-email-james.hogan@imgtec.com>
+Cc:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-mips@linux-mips.org, kvm@vger.kernel.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <24b4b1b6-2a58-63f8-f2c2-78ecc6eceb4e@cogentembedded.com>
+Date:   Tue, 5 Jul 2016 14:16:48 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.24]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+In-Reply-To: <1467657315-19975-9-git-send-email-james.hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54215
+X-archive-position: 54216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,25 +73,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 5 Jul 2016, PrasannaKumar Muralidharan wrote:
+Hello.
 
-> >> +     asm volatile(".word     0x700803ee\n\t");
-> >> +     tsk->thread.mxu.xr[15] = reg_val;
-> >> +}
-> >
-> >  Not using an output operand with asms here?
-> 
-> I think the instruction saves the xr* register value to reg_val
-> without need for output operand.
+On 7/4/2016 9:35 PM, James Hogan wrote:
 
- It does, a classic `asm' is supposed to act as an optimisation barrier.  
+> When KVM emulates the RDHWR instruction, decode the instruction more
+> strictly. The rs field (bits 25:21) should be zero, as should bits 10:9.
+> Bits 8:6 is the register select field in MIPSr6, so we aren't strict
+> about those bits (no other operations should use that encoding space).
+>
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Radim Krčmář <rkrcmar@redhat.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: kvm@vger.kernel.org
+> ---
+>  arch/mips/kvm/emulate.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
+> index 62e6a7b313ae..be18dfe9ecaa 100644
+> --- a/arch/mips/kvm/emulate.c
+> +++ b/arch/mips/kvm/emulate.c
+> @@ -2357,7 +2357,9 @@ enum emulation_result kvm_mips_handle_ri(u32 cause, u32 *opc,
+>  	}
+>
+>  	if (inst.r_format.opcode == spec3_op &&
+> -	    inst.r_format.func == rdhwr_op) {
+> +	    inst.r_format.func == rdhwr_op &&
+> +	    inst.r_format.rs == 0 &&
+> +	    (inst.r_format.re >> 3) == 0) {
 
- However since you've used an operand `asm' in `__restore_mxu' I think 
-it would be good for consistency to use one here as well; it would make 
-this piece of code a little bit more readable too, as you wouldn't have 
-to guess that the `asm' writes to `reg_val' then.
+    Inner parens not necessary here.
 
- So I suggest that you convert `__save_mxu' to use an operand `asm' as 
-well.
+[...]
 
-  Maciej
+MBR, Sergei

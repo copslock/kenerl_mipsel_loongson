@@ -1,40 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2016 15:27:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49205 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992967AbcGEN1GHtqgl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jul 2016 15:27:06 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 6890EBAE06049;
-        Tue,  5 Jul 2016 14:26:46 +0100 (IST)
-Received: from localhost (10.100.200.81) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 5 Jul
- 2016 14:26:48 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Qais Yousef <qsyousef@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 2/2] irqchip: mips-gic: Match IPI IRQ domain by bus token only
-Date:   Tue, 5 Jul 2016 14:26:00 +0100
-Message-ID: <20160705132600.27730-2-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.9.0
-In-Reply-To: <20160705132600.27730-1-paul.burton@imgtec.com>
-References: <20160705132600.27730-1-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2016 15:48:26 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:55144 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992990AbcGENsTcGH8l (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jul 2016 15:48:19 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u65DmIZo017428;
+        Tue, 5 Jul 2016 15:48:18 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u65DmGIR017427;
+        Tue, 5 Jul 2016 15:48:16 +0200
+Date:   Tue, 5 Jul 2016 15:48:16 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        linux-mips@linux-mips.org, kvm@vger.kernel.org
+Subject: Re: [PATCH 00/14] MIPS: KVM: Dynamically generate exception code
+Message-ID: <20160705134815.GK7075@linux-mips.org>
+References: <1466699687-24791-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.81]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1466699687-24791-1-git-send-email-james.hogan@imgtec.com>
+User-Agent: Mutt/1.6.1 (2016-04-27)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54220
+X-archive-position: 54221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,91 +44,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit fbde2d7d8290 ("MIPS: Add generic SMP IPI support") introduced
-code which calls irq_find_matching_host with a NULL node parameter in
-order to discover IPI IRQ domains which are not associated with the DT
-root node's interrupt parent. This suggests that implementations of IPI
-IRQ domains should effectively ignore the node parameter if it is NULL
-and search purely based upon the bus token. Commit 2af70a962070
-("irqchip/mips-gic: Add a IPI hierarchy domain") did not do this when
-implementing the GIC IPI IRQ domain, and on MIPS Boston boards this
-leads to no IPI domain being discovered and a NULL pointer dereference
-when attempting to send an IPI:
+On Thu, Jun 23, 2016 at 05:34:33PM +0100, James Hogan wrote:
 
-  CPU 0 Unable to handle kernel paging request at virtual address 0000000000000040, epc == ffffffff8016e70c, ra == ffffffff8010ff5c
-  Oops[#1]:
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.7.0-rc6-00223-gad0d1b6 #945
-  task: a8000000ff066fc0 ti: a8000000ff068000 task.ti: a8000000ff068000
-  $ 0   : 0000000000000000 0000000000000001 ffffffff80730000 0000000000000003
-  $ 4   : 0000000000000000 ffffffff8057e5b0 a800000001e3ee00 0000000000000000
-  $ 8   : 0000000000000000 0000000000000023 0000000000000001 0000000000000001
-  $12   : 0000000000000000 ffffffff803323d0 0000000000000000 0000000000000000
-  $16   : 0000000000000000 0000000000000000 0000000000000001 ffffffff801108fc
-  $20   : 0000000000000000 ffffffff8057e5b0 0000000000000001 0000000000000000
-  $24   : 0000000000000000 ffffffff8012de28
-  $28   : a8000000ff068000 a8000000ff06fbc0 0000000000000000 ffffffff8010ff5c
-  Hi    : ffffffff8014c174
-  Lo    : a800000001e1e140
-  epc   : ffffffff8016e70c __ipi_send_mask+0x24/0x11c
-  ra    : ffffffff8010ff5c mips_smp_send_ipi_mask+0x68/0x178
-  Status: 140084e2        KX SX UX KERNEL EXL
-  Cause : 00800008 (ExcCode 02)
-  BadVA : 0000000000000040
-  PrId  : 0001a920 (MIPS I6400)
-  Process swapper/0 (pid: 1, threadinfo=a8000000ff068000, task=a8000000ff066fc0, tls=0000000000000000)
-  Stack : 0000000000000000 0000000000000000 0000000000000001 ffffffff801108fc
-            0000000000000000 ffffffff8057e5b0 0000000000000001 ffffffff8010ff5c
-            0000000000000001 0000000000000020 0000000000000000 0000000000000000
-            0000000000000000 ffffffff801108fc 0000000000000000 0000000000000001
-            0000000000000001 0000000000000000 0000000000000000 ffffffff801865e8
-            a8000000ff0c7500 a8000000ff06fc90 0000000000000001 0000000000000002
-            ffffffff801108fc ffffffff801868b8 0000000000000000 ffffffff801108fc
-            0000000000000000 0000000000000003 ffffffff8068c700 0000000000000001
-            ffffffff80730000 0000000000000001 a8000000ff00a290 ffffffff80110c50
-            0000000000000003 a800000001e48308 0000000000000003 0000000000000008
-            ...
-  Call Trace:
-  [<ffffffff8016e70c>] __ipi_send_mask+0x24/0x11c
-  [<ffffffff8010ff5c>] mips_smp_send_ipi_mask+0x68/0x178
-  [<ffffffff801865e8>] generic_exec_single+0x150/0x170
-  [<ffffffff801868b8>] smp_call_function_single+0x108/0x160
-  [<ffffffff80110c50>] cps_boot_secondary+0x328/0x394
-  [<ffffffff80110534>] __cpu_up+0x38/0x90
-  [<ffffffff8012de4c>] bringup_cpu+0x24/0xac
-  [<ffffffff8012df40>] cpuhp_up_callbacks+0x58/0xdc
-  [<ffffffff8012e648>] cpu_up+0x118/0x18c
-  [<ffffffff806dc158>] smp_init+0xbc/0xe8
-  [<ffffffff806d4c18>] kernel_init_freeable+0xa0/0x228
-  [<ffffffff8056c908>] kernel_init+0x10/0xf0
-  [<ffffffff80105098>] ret_from_kernel_thread+0x14/0x1c
+> These patches change the MIPS KVM exception entry code to be dynamically
+> assembled by the MIPS "uasm" in-kernel assembler, directly into unmapped
+> memory at run time by a new entry.c. Previously this code was statically
+> assembled from locore.S at build time and later copied into unmapped
+> memory at run time.
+> 
+> Patches 1-5 add support for the necessary instructions to uasm.
+> 
+> Patches 6-8 do the minimal-change conversion of locore.S to entry.c
+> using uasm (I've used -M10% so the diff is shown as a file move).
+> 
+> Patches 9-14 make some related improvements that are possible now that
+> it is dynamically generated, such as avoiding messy runtime conditionals
+> in assembly code, making use of KScratch registers when available, and
+> simplifying the initial GP register save sequence & jump to common code.
+> 
+> Ralf: Since the uasm patches (1-5) are needed for the later patches, I
+> suggest these all go together via the KVM tree (on which the whole
+> patchset is based), so Acks are welcome if they're okay with you.
 
-Fix this by allowing the GIC IPI IRQ domain to match purely based upon
-the bus token if the node provided is NULL.
+Yes, please, so for the MIPS bits, that is patche 01..05:
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 2af70a962070 ("irqchip/mips-gic: Add a IPI hierarchy domain")
-Cc: Qais Yousef <qsyousef@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Marc Zyngier <marc.zyngier@arm.com>
-Cc: linux-mips@linux-mips.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
----
- drivers/irqchip/irq-mips-gic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 69b1b82..70ed1d0 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -959,7 +959,7 @@ int gic_ipi_domain_match(struct irq_domain *d, struct device_node *node,
- 	switch (bus_token) {
- 	case DOMAIN_BUS_IPI:
- 		is_ipi = d->bus_token == bus_token;
--		return to_of_node(d->fwnode) == node && is_ipi;
-+		return (!node || to_of_node(d->fwnode) == node) && is_ipi;
- 		break;
- 	default:
- 		return 0;
--- 
-2.9.0
+  Ralf

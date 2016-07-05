@@ -1,68 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2016 17:22:12 +0200 (CEST)
-Received: from mail-it0-f67.google.com ([209.85.214.67]:35736 "EHLO
-        mail-it0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991945AbcGEPWAgJlmm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Jul 2016 17:22:00 +0200
-Received: by mail-it0-f67.google.com with SMTP id g4so7027702ith.2;
-        Tue, 05 Jul 2016 08:22:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jul 2016 18:18:24 +0200 (CEST)
+Received: from mail-vk0-f51.google.com ([209.85.213.51]:36281 "EHLO
+        mail-vk0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992461AbcGEQSSRyWbL convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jul 2016 18:18:18 +0200
+Received: by mail-vk0-f51.google.com with SMTP id m127so211426368vkb.3
+        for <linux-mips@linux-mips.org>; Tue, 05 Jul 2016 09:18:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
+        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=jD8Vo7UCjwLODcWcAojEIGBT9obivQuwd8bhN1wSi90=;
-        b=1BYWM9SBydyIEu8V0Hc8qW17YmUEoddPly/2+JWSfVpaXIWbL/cHMexdTic+81ihH+
-         w7sNEjetSSSHBIYvHuwBdVrXY5pYqMQwMX8TZwgDk6IS/dRJrAPQjuPyhBSuo3C1I9/q
-         Eo2tczhVV2cfWSu1kFfvDYLvZp0GrL3qdAtGU6iWmTcCe9ub3hGrfSgyegynQXCR0R1K
-         HaUO3haQe3hx3h+UR2NkRcd3gEwwNwR1i7aHhIXGz0B6mMBXMvuuxpsq9nzpH6zhJsyC
-         6qbOxTyjDKWKS6v3Nd8GmtRsaoZsJPgv5Hw6naxK5wCMZLORBW7b2YSSSs+r6R3KyR3k
-         TgAQ==
+         :cc:content-transfer-encoding;
+        bh=wiPXgG7GKwbfKqxJ5k6nF4l7J9pyftAL1bjjkwjhXsk=;
+        b=XfYdPCjtExzQbWk9bii/JEOVlJR7dEPSnDwBNL7Zi0JCyiBaxPUj0H61/rmCbKywP9
+         zcfI4x3d/iOKEOosKlnaGOs9foyoCvqDppSqn3fIo8BR3czprsD84KLKazoEoios0TnP
+         3G++nyz1dY7w22j0yjpSZ3PYnoc6/JUvVZelCOD2dfS+iAbpOijeMoCHAT03ZZKMhwxT
+         vzvOAfg5a453TqN3pqDWIa93cy6DURKO+F8inPkcUMaf94vKB54vI1NulQJlCkCGH8I2
+         wLMvS6H3aQ3xJ8vlEQUeramMp9+r5QtqyN/F9VHgqE6iOzzR/SS5hF5xDHDnkamH+1Mz
+         WVXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=jD8Vo7UCjwLODcWcAojEIGBT9obivQuwd8bhN1wSi90=;
-        b=k4o0QLv673mZYo1RCW8P7APDoZmGQM8w7EcjVV7orLzAe6ZBti2VeRGSZYP+VPurhM
-         5zkGJ8atyBTSc9hY8CNTkXBa8ypLJQg56FZUXpjMW+uTaUOhqKV0w3lrtQkL+IjmeuIe
-         uz4/uH7uSZzpDH8io0u5QCkvws7I0O4fv9/e+1FCijxGCQ8h1+/PT/MCMMduAhDHnekm
-         XaGhtYxQEJZVusL8i3nL5K5DS+w8PcQzQ5M42QUY5PfMOreB+4ZMwJaFv7Tf8y5JNKpV
-         yhT7fN9nbmKFmGTqvoG5cdfMubVdrdu8l6S4Zp3FZyptdK5fVprq+8UWqqVleh3Af1V9
-         XWMQ==
-X-Gm-Message-State: ALyK8tLjdup6uJb3sFQVR5Vg4JZN1xeidKWOATOLDrTkCTE5MvQ6akuRocmzgbuDzbih0hF/B7TZbwwzfphfLw==
-X-Received: by 10.36.31.132 with SMTP id d126mr13602450itd.74.1467732114061;
- Tue, 05 Jul 2016 08:21:54 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=wiPXgG7GKwbfKqxJ5k6nF4l7J9pyftAL1bjjkwjhXsk=;
+        b=ZNncMS7mH0KBajctY2IfdLYlNtU6PxuzDgSK4NPyXc6DGuDJ1V3hH1cQ6k1szIRy4A
+         wJV894o1yX7KVCDZTbGP5PPqWsF4fxSqmYmpfMx3/L1XznMS3CpFlCDddHIjTfhOq6D7
+         dcvnWqgahd8qlZE967S0EwbnYn+rvum3usCJ7a4fkLbtivdX2lVKtFRWPUKZnh3sUBLQ
+         akjtx9iaowLcylny4klRU/WKcFI2FjvRU9yZCQAxPVgFY4HaqbBhHJQvHs0WYzx24nw+
+         KfC3Oy/ILv65X++U5lk1tU0hIxlb2Wm/IaBKgr6wCorxFuAVTW2qBFMUr2CNE8tpLg6a
+         auEA==
+X-Gm-Message-State: ALyK8tILGV6shAa3LOCkVXQoecDP5gBNtkBKepWWHinKV+yrwYmJm6SZZuVf3v5Vd6GHCy6WSkSbWIiLaHVuEyIe
+X-Received: by 10.176.0.118 with SMTP id 109mr1833206uai.101.1467735492059;
+ Tue, 05 Jul 2016 09:18:12 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.168.168 with HTTP; Tue, 5 Jul 2016 08:21:53 -0700 (PDT)
+Received: by 10.103.76.6 with HTTP; Tue, 5 Jul 2016 09:17:49 -0700 (PDT)
 In-Reply-To: <943222fa-1355-14cc-5d03-16873283420f@imgtec.com>
 References: <1466856870-17153-1-git-send-email-prasannatsmkumar@gmail.com> <943222fa-1355-14cc-5d03-16873283420f@imgtec.com>
-From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Tue, 5 Jul 2016 20:51:53 +0530
-Message-ID: <CANc+2y4oxmDyZ85716b1qWjV2LgH++5kcXytwOtcKrtjhp5V-w@mail.gmail.com>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Tue, 5 Jul 2016 09:17:49 -0700
+Message-ID: <CALCETrWio8FO2yJXdsRUYDNQFwuF-ihr=EbopM6bOkfXnsrWPg@mail.gmail.com>
 Subject: Re: [RFC] mips: Add MXU context switching support
 To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+Cc:     Alex Thorlton <athorlton@sgi.com>, zhaoxiu.zeng@gmail.com,
+        Ingo Molnar <mingo@kernel.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        chenhc@lemote.com, Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Lameter <cl@linux.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Alexey Dobriyan <adobriyan@gmail.com>,
-        John Stultz <john.stultz@linaro.org>, mguzik@redhat.com,
-        athorlton@sgi.com, mhocko@suse.com, ebiederm@xmission.com,
-        gorcunov@openvz.org, luto@kernel.org, cl@linux.com,
-        serge.hallyn@ubuntu.com, Kees Cook <keescook@chromium.org>,
-        jslaby@suse.cz, Andrew Morton <akpm@linux-foundation.org>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Florian Fainelli <f.fainelli@gmail.com>, mingo@kernel.org,
-        alex.smith@imgtec.com, markos.chandras@imgtec.com,
+        Zubair.Kakakhel@imgtec.com, alex.smith@imgtec.com,
+        PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
         Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        david.daney@cavium.com, zhaoxiu.zeng@gmail.com, chenhc@lemote.com,
-        Zubair.Kakakhel@imgtec.com, James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
+        f.fainelli@gmail.com, Mateusz Guzik <mguzik@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Michal Hocko <mhocko@suse.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Kees Cook <keescook@chromium.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Serge Hallyn <serge.hallyn@ubuntu.com>,
+        John Stultz <john.stultz@linaro.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Cyrill Gorcunov <gorcunov@openvz.org>,
+        David Daney <david.daney@cavium.com>,
+        Jiri Slaby <jslaby@suse.cz>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <prasannatsmkumar@gmail.com>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54228
+X-archive-position: 54229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prasannatsmkumar@gmail.com
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,8 +86,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 5 July 2016 at 15:04, Paul Burton <paul.burton@imgtec.com> wrote:
+On Jul 5, 2016 5:35 AM, "Paul Burton" <paul.burton@imgtec.com> wrote:
+>
 > Hi PrasannaKumar,
+>
 >
 > On 25/06/16 13:14, PrasannaKumar Muralidharan wrote:
 >>
@@ -90,488 +103,27 @@ On 5 July 2016 at 15:04, Paul Burton <paul.burton@imgtec.com> wrote:
 >> (other than read or write to xr registers) can be done. xr0 is always 0.
 >
 >
-> Do you have any examples of userland programs making use of MXU? They would
-> be useful in allowing people to test this patch.
-
-There is a modified mplayer from ingenic but it assumes MXU is enabled
-by default.
-
+> Do you have any examples of userland programs making use of MXU? They would be useful in allowing people to test this patch.
+>
 > How have you tested this?
-
-I am using a very simple program to test. Will post it somewhere
-online and share the link.
-
+>
+>
 >> Kernel does not know when MXU instruction is enabled or disabled. So
 >> during context switch if MXU is enabled in xr16 register then MXU
 >> registers are saved, restored when the task is run.
 >
 >
-> I'm not convinced this is the right way to go. It seems complex & fragile vs
-> the alternatives, the simplest of which could be to just always save &
-> restore MXU context in kernels with MXU support. Is there a significant
-> performance cost to just unconditionally saving & restoring the MXU context?
-> That is after all what Ingenic's vendor kernel, which it looks like large
-> parts of your patch are taken from, does.
-
-I did not test the impact of save & restore MXU context on every task.
-Any pointers to do it will help.
-
+> I'm not convinced this is the right way to go. It seems complex & fragile vs the alternatives, the simplest of which could be to just always save & restore MXU context in kernels with MXU support. Is there a significant performance cost to just unconditionally saving & restoring the MXU context? That is after all what Ingenic's vendor kernel, which it looks like large parts of your patch are taken from, does.
+>
+>
 >> When user space
 >> application enables MXU, it is not reflected in other threads
 >> immediately. So for convenience the applications can use prctl syscall
 >> to let the MXU state propagate across threads running in different CPUs.
 >
 >
-> Surely it wouldn't be reflected at all, since each thread has its own MXU
-> context? Would you expect applications to actually want to enable MXU on one
-> thread & make use of it from other already running threads? Off the top of
-> my head I can't think of why that would be useful, so I'm wondering whether
-> it would be better to just let each thread handle enabling MXU if it wants &
-> leave the kernel out of it. If we just save & restore unconditionally then
-> this becomes a non-issue anyway.
+> Surely it wouldn't be reflected at all, since each thread has its own MXU context? Would you expect applications to actually want to enable MXU on one thread & make use of it from other already running threads? Off the top of my head I can't think of why that would be useful, so I'm wondering whether it would be better to just let each thread handle enabling MXU if it wants & leave the kernel out of it. If we just save & restore unconditionally then this becomes a non-issue anyway.
+>
 
-Consider a case where a class's constructor enables MXU when first
-instance of it is created, disables MXU when the last instance of it
-is destructed and Garbage collector (running in its own thread) is
-responsible for cleanup. This is not an existing use case. If this use
-case seems unlikely then I will make MXU save and restore per task.
-
->> Signed-off-by: PrasannaKumar Muralidharan
->> <prasannatsmkumar@gmail.com>optimise out
->> ---
->>  arch/mips/include/asm/cpu-features.h |   4 +
->>  arch/mips/include/asm/cpu.h          |   1 +
->>  arch/mips/include/asm/mxu.h          | 157
->> +++++++++++++++++++++++++++++++++++
->>  arch/mips/include/asm/processor.h    |  19 +++++
->>  arch/mips/include/asm/switch_to.h    |  40 +++++++++
->>  arch/mips/kernel/cpu-probe.c         |   1 +
->>  arch/mips/kernel/process.c           |  48 +++++++++++
->>  include/uapi/linux/prctl.h           |   3 +
->>  kernel/sys.c                         |   6 ++
->>  9 files changed, 279 insertions(+)
->>  create mode 100644 arch/mips/include/asm/mxu.h
->>
->> diff --git a/arch/mips/include/asm/cpu-features.h
->> b/arch/mips/include/asm/cpu-features.h
->> index e961c8a..c6270b0 100644
->> --- a/arch/mips/include/asm/cpu-features.h
->> +++ b/arch/mips/include/asm/cpu-features.h
->> @@ -345,6 +345,10 @@
->>  #define cpu_has_dsp3           (cpu_data[0].ases & MIPS_ASE_DSP3)
->>  #endif
->>
->> +#ifndef cpu_has_mxu
->> +#define cpu_has_mxu            (cpu_data[0].ases & MIPS_ASE_MXU)
->
->
-> This really ought to be defined as a constant 0 for non-Ingenic kernels, so
-> that the compiler can discard the MXU code for other systems.
->
-> I'm not sure there's actually any point using one of the ASE flags for it,
-> since we know it's always present on the Ingenic CPUs we support & always
-> not present on non-Ingenic CPUs. That is, "#define cpu_has_mxu
-> IS_ENABLED(CONFIG_MACH_INGENIC)" would work just as well & be compile time
-> constant, allowing the compiler to optimise better.
-
-Completely agree. Will make necessary change in the next version.
-
->> +#endif
->> +
->>  #ifndef cpu_has_mipsmt
->>  #define cpu_has_mipsmt         (cpu_data[0].ases & MIPS_ASE_MIPSMT)
->>  #endif
->> diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
->> index f672df8..77ab797 100644
->> --- a/arch/mips/include/asm/cpu.h
->> +++ b/arch/mips/include/asm/cpu.h
->> @@ -428,5 +428,6 @@ enum cpu_type_enum {
->>  #define MIPS_ASE_VZ            0x00000080 /* Virtualization ASE */
->>  #define MIPS_ASE_MSA           0x00000100 /* MIPS SIMD Architecture */
->>  #define MIPS_ASE_DSP3          0x00000200 /* Signal Processing ASE Rev
->> 3*/
->> +#define MIPS_ASE_MXU           0x00000400 /* Xburst MXU instruction set
->> */
->>
->>  #endif /* _ASM_CPU_H */
->> diff --git a/arch/mips/include/asm/mxu.h b/arch/mips/include/asm/mxu.h
->> new file mode 100644
->> index 0000000..cf77cbd
->> --- /dev/null
->> +++ b/arch/mips/include/asm/mxu.h
->> @@ -0,0 +1,157 @@
->> +/*
->> + * Copyright (C) Ingenic Semiconductor
->> + * File taken from Ingenic Semiconductor's linux repo available in github
->> + *
->> + * This program is free software; you can redistribute it and/or modify
->> it
->> + * under the terms of the GNU General Public License as published by the
->> + * Free Software Foundation;  either version 2 of the  License, or (at
->> your
->> + * option) any later version.
->> + */
->> +#ifndef _ASM_MXU_H
->> +#define _ASM_MXU_H
->> +
->> +#include <asm/cpu.h>
->> +#include <asm/cpu-features.h>
->> +#include <asm/hazards.h>
->> +#include <asm/mipsregs.h>
->> +
->> +static inline void __enable_mxu(void)
->> +{
->> +       unsigned int register val asm("t0");
->> +       val = 3;
->
->
-> Why 3? Please document the magic number. Judging from below bit 0 is enable,
-> but what's bit 1? If you #define names for the bits then use those that
-> would be great.
-
-Will do document these magic numbers.
-
->> +       asm volatile(".word     0x7008042f\n\t"::"r"(val));
->> +}
->> +
->> +static inline void enable_mxu(void)
->> +{
->> +       if (cpu_has_mxu)
->> +               __enable_mxu();
->> +}
->> +
->> +static inline void disable_mxu(void)
->> +{
->> +       unsigned int register val asm("t0");
->> +       val = 0;
->> +       asm volatile(".word     0x7008042f\n\t"::"r"(val));
->> +       asm("nop\n\t");
->> +       asm("nop\n\t");
->> +       asm("nop\n\t");
->
->
-> Why the nops? Does something go wrong without them? Can you explain in a
-> comment?
->
-> On Sat, 25 Jun 2016, PrasannaK
->>
->> +}
->> +
->> +static inline int mxu_used(void)
->> +{
->> +       unsigned int register reg_val asm("t0");
->> +       asm volatile(".word     0x7008042f\n\t"::"r"(reg_val));
->
->
-> This doesn't seem right at all - the instruction you used is the same as in
-> enable_mxu() & disable_mxu(), but in those you'd want to write to xr16 and
-> here you'd want to read it.
-
-I have messed up while porting my changes from 3.0 kernel to
-linux-next. disable_mxu and enable_mxu have different instruction, nop
-should come inside enable_mxu.
-
-I could not find a make linux-next run with my existing user land in
-any of the boards I have, so I have to use older kernel for testing. I
-have clearly overlooked this, a big mistake from my side, I sincerely
-apologise for this.
-
-> As Maciej asked, if you documented the instruction encodings this would be
-> easier to read. Even better if you were to #define some meaningful names
-> then use the names rather than raw encodings it would make it clearer what's
-> going on.
->
->> +       return reg_val &0x01;
->
->
-> Also this magix 0x1 should be #define'd to something useful, perhaps
-> something like "#define MXU_XR16_ENABLE BIT(0)".
-
-Sure will do in the next version.
-
->> +}
->> +
->> +static inline void __save_mxu(void *tsk_void)
->> +{
->> +       struct task_struct *tsk = tsk_void;
->> +
->> +       register unsigned int reg_val asm("t0");
->> +
->> +       asm volatile(".word     0x7008042e\n\t");
->> +       tsk->thread.mxu.xr[0] = reg_val;
->
->
-> Although it's likely to work, as far as I understand there's nothing
-> preventing GCC from clobbering t0 between the asm statement & the write to
-> the context struct.
->
-> To quote
-> https://gcc.gnu.org/onlinedocs/gcc/Local-Register-Variables.html#Local-Register-Variables
->
->   "Defining a register variable does not reserve the register. Other than
-> when invoking the Extended asm, the contents of the specified register are
-> not guaranteed."
->
-> To avoid this I think it may be best to implement the save & restore
-> routines in asm just like we already do for FP & MSA contexts.
->
->
->> +       asm volatile(".word     0x7008006e\n\t");
->> +       tsk->thread.mxu.xr[1] = reg_val;
->> +       asm volatile(".word     0x700800ae\n\t");
->> +       tsk->thread.mxu.xr[2] = reg_val;
->> +       asm volatile(".word     0x700800ee\n\t");
->> +       tsk->thread.mxu.xr[3] = reg_val;
->> +       asm volatile(".word     0x7008012e\n\t");
->> +       tsk->thread.mxu.xr[4] = reg_val;
->> +       asm volatile(".word     0x7008016e\n\t");
->> +       tsk->thread.mxu.xr[5] = reg_val;
->> +       asm volatile(".word     0x700801ae\n\t");
->> +       tsk->thread.mxu.xr[6] = reg_val;
->> +       asm volatile(".word     0x700801ee\n\t");
->> +       tsk->thread.mxu.xr[7] = reg_val;
->> +       asm volatile(".word     0x7008022e\n\t");
->> +       tsk->thread.mxu.xr[8] = reg_val;
->> +       asm volatile(".word     0x7008026e\n\t");
->> +       tsk->thread.mxu.xr[9] = reg_val;
->> +       asm volatile(".word     0x700802ae\n\t");
->> +       tsk->thread.mxu.xr[10] = reg_val;
->> +       asm volatile(".word     0x700802ee\n\t");
->> +       tsk->thread.mxu.xr[11] = reg_val;
->> +       asm volatile(".word     0x7008032e\n\t");
->> +       tsk->thread.mxu.xr[12] = reg_val;
->> +       asm volatile(".word     0x7008036e\n\t");
->> +       tsk->thread.mxu.xr[13] = reg_val;
->> +       asm volatile(".word     0x700803ae\n\t");
->> +       tsk->thread.mxu.xr[14] = reg_val;
->> +       asm volatile(".word     0x700803ee\n\t");
->> +       tsk->thread.mxu.xr[15] = reg_val;
->> +}
->> +
->> +static inline void __restore_mxu(void *tsk_void)
->> +{
->> +       struct task_struct *tsk = tsk_void;
->> +
->> +       register unsigned int reg_val asm("t0");
->> +
->> +       reg_val = tsk->thread.mxu.xr[0];
->> +       asm volatile(".word     0x7008042f\n\t"::"r"(reg_val));
->
->
-> Same comment as for saving context - I don't think this is guaranteed to
-> work.
-
-Will this be a problem as code runs with preemption disabled (inside
-switch_to)? If so it I will change.
-
->
->> +       reg_val = tsk->thread.mxu.xr[1];
->> +       asm volatile(".word     0x7008006f\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[2];
->> +       asm volatile(".word     0x700800af\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[3];
->> +       asm volatile(".word     0x700800ef\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[4];
->> +       asm volatile(".word     0x7008012f\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[5];
->> +       asm volatile(".word     0x7008016f\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[6];
->> +       asm volatile(".word     0x700801af\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[7];
->> +       asm volatile(".word     0x700801ef\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[8];
->> +       asm volatile(".word     0x7008022f\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[9];
->> +       asm volatile(".word     0x7008026f\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[10];
->> +       asm volatile(".word     0x700802af\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[11];
->> +       asm volatile(".word     0x700802ef\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[12];
->> +       asm volatile(".word     0x7008032f\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[13];
->> +       asm volatile(".word     0x7008036f\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[14];
->> +       asm volatile(".word     0x700803af\n\t"::"r"(reg_val));
->> +       reg_val = tsk->thread.mxu.xr[15];
->> +       asm volatile(".word     0x700803ef\n\t"::"r"(reg_val));
->> +}
->> +
->> +#define save_mxu(tsk)                                          \
->> +       do {                                                    \
->> +               if (cpu_has_mxu)                                \
->> +                       __save_mxu(tsk);                        \
->> +       } while (0)
->> +
->> +#define restore_mxu(tsk)                                       \
->> +       do {                                                    \
->> +               if (cpu_has_mxu)                                \
->> +                       __restore_mxu(tsk);                     \
->> +       } while (0)
->> +
->> +#define __get_mxu_regs(tsk)                                    \
->> +       ({                                                      \
->> +               if (tsk == current)                             \
->> +                       __save_mxu(current);                    \
->> +                                                               \
->> +               tsk->thread.mxu.xr;                             \
->> +       })
->> +
->> +#define __let_mxu_regs(tsk, regs)                              \
->> +       do {                                                    \
->> +               int i;                                          \
->> +               for (i = 0; i < NUM_MXU_REGS; i++)              \
->> +                       tsk->thread.mxu.xr[i] = regs[i];        \
->> +               if (tsk == current)                             \
->> +                       __save_mxu(current);                    \
->> +       } while (0)
->> +
->> +#endif /* _ASM_MXU_H */
->> diff --git a/arch/mips/include/asm/processor.h
->> b/arch/mips/include/asm/processor.h
->> index 7e78b62..a4def30 100644
->> --- a/arch/mips/include/asm/processor.h
->> +++ b/arch/mips/include/asm/processor.h
->> @@ -142,6 +142,11 @@ struct mips_dsp_state {
->>         unsigned int    dspcontrol;
->>  };
->>
->> +#define NUM_MXU_REGS 16
->> +struct xburst_mxu_state {
->> +       unsigned int xr[NUM_MXU_REGS];
->> +};
->> +
->>  #define INIT_CPUMASK { \
->>         {0,} \
->>  }
->> @@ -266,6 +271,10 @@ struct thread_struct {
->>         /* Saved state of the DSP ASE, if available. */
->>         struct mips_dsp_state dsp;
->>
->> +       unsigned int mxu_used;
->
->
-> Why not a thread info flag (ie. 1 bit) rather than 4 bytes?
-
-Okay. Will change.
-
->> +       /* Saved registers of Xburst MXU, if available. */
->> +       struct xburst_mxu_state mxu;
->> +
->>         /* Saved watch register state, if available. */
->>         union mips_watch_reg_state watch;
->>
->> @@ -330,6 +339,10 @@ struct thread_struct {
->>                 .dspr           = {0, },                        \
->>                 .dspcontrol     = 0,                            \
->>         },                                                      \
->> +       .mxu_used               = 0,                            \
->> +       .mxu                    = {                             \
->> +               .xr             = {0, },                        \
->> +       },                                                      \
->>         /*                                                      \
->>          * saved watch register stuff                           \
->>          */                                                     \
->> @@ -410,4 +423,10 @@ extern int mips_set_process_fp_mode(struct
->> task_struct *task,
->>  #define GET_FP_MODE(task)              mips_get_process_fp_mode(task)
->>  #define SET_FP_MODE(task,value)
->> mips_set_process_fp_mode(task, value)
->>
->> +extern int mips_enable_mxu_other_cpus(void);
->> +extern int mips_disable_mxu_other_cpus(void);
->> +
->> +#define ENABLE_MXU_OTHER_CPUS()         mips_enable_mxu_other_cpus()
->> +#define DISABLE_MXU_OTHER_CPUS()        mips_disable_mxu_other_cpus()
->> +
->>  #endif /* _ASM_PROCESSOR_H */
->> diff --git a/arch/mips/include/asm/switch_to.h
->> b/arch/mips/include/asm/switch_to.h
->> index ebb5c0f..112aff5 100644
->> --- a/arch/mips/include/asm/switch_to.h
->> +++ b/arch/mips/include/asm/switch_to.h
->> @@ -75,6 +75,43 @@ do { if (cpu_has_rw_llb) {
->> \
->>         }                                                               \
->>  } while (0)
->>
->> +static inline void handle_mxu_state(struct task_struct *prev,
->> +               struct task_struct *next)
->> +{
->> +       struct task_struct *thread = NULL;
->> +
->> +       if (prev->thread.mxu_used) {
->> +               if (mxu_used() == 1) {
->> +                       __save_mxu(prev);
->> +               } else {
->> +                       prev->thread.mxu_used = 0;
->
->
-> This seems weird. If I understand correctly then if a thread uses MXU in one
-> timeslice then runs some non-MXU code in its next timeslice its MXU context
-> may be lost before any third timeslice. That sounds bad. Think about if you
-> had a program that was in the middle of running some MXU-using algorithm
-> when it happens to receive a signal, and the MXU code is interrupted by some
-> non-MXU code for a while long enough for this path to be hit, then the
-> signal handler returns to the MXU-using code & its context is corrupt. Or
-> without signals the same thing could happen if you just happened to call
-> some complex/long running non-MXU code in the middle of your MXU-using code.
-> That sounds bad!
-
-I am sorry that this confusion would have arised because of using
-'mxu_used' in both the places (thread.mxu_used for stored state and
-mxu_used() to get current MXU state from cpu).
-
->> +                       thread = prev;
->> +                       rcu_read_lock();
->> +                       while_each_thread(prev, thread) {
->> +                               thread->thread.mxu_used = 0;
->> +                       };
->> +                       rcu_read_unlock();
->
->
-> I think this would need some commenting to explain what's going on & I'm not
-> concinved it's correct, but also as mentioned earlier I'm not sure the
-> kernel should be taking responsibility for synchronising MXU state across
-> threads so this could possibly be removed.
->
->> +               }
->> +       } else {
->> +               if (mxu_used() == 1) {
->> +                       __save_mxu(prev);
->> +                       prev->thread.mxu_used = 1;
->> +                       thread = prev;
->> +                       rcu_read_lock();
->> +                       while_each_thread(prev, thread) {
->> +                               thread->thread.mxu_used = 1;
->> +                       };
->> +                       rcu_read_unlock();
->
->
-> Likewise.
->
->> +               }
->> +       }
->> +       disable_mxu();
->> +
->> +       if (next->thread.mxu_used) {
->> +               __restore_mxu(next);
->> +               enable_mxu();
->> +       }
->> +}
->> +
-
-In all the cases the MXU state is propogated to other threads in the
-application.
-
-> Another issue would be - should MXU be usable in signal handlers? If so then
-> it needs to have context saved & restored around signals, as part of an
-> extended context structure much like that used for MSA. If not then we
-> probably need to document that restriction somewhere and check that anyone
-> interested is OK with it. Ultimately that probably depends upon the goals
-> here - if MXU were ever to be used for auto-vectorisation for example then
-> it should probably gain that sigcontext save/restore code.
-
-Compiler generating MXU instruction without inline asm code may not
-happen in near future. For now that case can be ignored. I agree that
-it should be documented.
+I don't know much about MIPS, but switching save/restore off depending
+on a bit of *user* state sounds like a gaping security hole.

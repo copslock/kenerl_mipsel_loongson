@@ -1,49 +1,65 @@
-From: Paul Burton <paul.burton@imgtec.com>
-Date: Thu, 21 Apr 2016 14:04:55 +0100
-Subject: MIPS: math-emu: Fix jalr emulation when rd == $0
-Message-ID: <20160421130455.8nzOg2jnRDP0128jRa1hHAbsLePrMyjcBiuPMlTCf7Q@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jul 2016 23:03:18 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:40416 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992214AbcGFVA7Gs5xJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Jul 2016 23:00:59 +0200
+Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <kamal@canonical.com>)
+        id 1bKtwI-0000bQ-GU; Wed, 06 Jul 2016 21:00:58 +0000
+Received: from kamal by fourier with local (Exim 4.86_2)
+        (envelope-from <kamal@whence.com>)
+        id 1bKtwG-0004bQ-Be; Wed, 06 Jul 2016 14:00:56 -0700
+From:   Kamal Mostafa <kamal@canonical.com>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Kamal Mostafa <kamal@canonical.com>,
+        kernel-team@lists.ubuntu.com
+Subject: [3.19.y-ckt stable] Patch "MIPS: MSA: Fix a link error on `_init_msa_upper' with older GCC" has been added to the 3.19.y-ckt tree
+Date:   Wed,  6 Jul 2016 14:00:55 -0700
+Message-Id: <1467838855-17657-1-git-send-email-kamal@canonical.com>
+X-Mailer: git-send-email 2.7.4
+X-Extended-Stable: 3.19
+Return-Path: <kamal@canonical.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 54239
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kamal@canonical.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
+This is a note to let you know that I have just added a patch titled
 
-When emulating a jalr instruction with rd == $0, the code in
-isBranchInstr was incorrectly writing to GPR $0 which should actually
-always remain zeroed. This would lead to any further instructions
-emulated which use $0 operating on a bogus value until the task is next
-context switched, at which point the value of $0 in the task context
-would be restored to the correct zero by a store in SAVE_SOME. Fix this
-by not writing to rd if it is $0.
+    MIPS: MSA: Fix a link error on `_init_msa_upper' with older GCC
 
-Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13160/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/math-emu/cp1emu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+to the linux-3.19.y-queue branch of the 3.19.y-ckt extended stable tree 
+which can be found at:
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 9dfcd7f..862bc86 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -443,9 +443,11 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 	case spec_op:
- 		switch (insn.r_format.func) {
- 		case jalr_op:
--			regs->regs[insn.r_format.rd] =
--				regs->cp0_epc + dec_insn.pc_inc +
--				dec_insn.next_pc_inc;
-+			if (insn.r_format.rd != 0) {
-+				regs->regs[insn.r_format.rd] =
-+					regs->cp0_epc + dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			}
- 			/* Fall through */
- 		case jr_op:
- 			*contpc = regs->regs[insn.r_format.rs];
---
-2.7.4
+    https://git.launchpad.net/~canonical-kernel/linux/+git/linux-stable-ckt/log/?h=linux-3.19.y-queue
+
+This patch is scheduled to be released in version 3.19.8-ckt23.
+
+If you, or anyone else, feels it should not be added to this tree, please 
+reply to this email.
+
+For more information about the 3.19.y-ckt tree, see
+https://wiki.ubuntu.com/Kernel/Dev/ExtendedStable
+
+Thanks.
+-Kamal
+
+---8<------------------------------------------------------------

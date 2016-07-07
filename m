@@ -1,29 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2016 20:41:19 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:52672 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2016 20:41:43 +0200 (CEST)
+Received: from youngberry.canonical.com ([91.189.89.112]:52717 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992400AbcGGSjbuPQOF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jul 2016 20:39:31 +0200
+        by eddie.linux-mips.org with ESMTP id S23992420AbcGGSjgU0PLF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jul 2016 20:39:36 +0200
 Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
         (Exim 4.76)
         (envelope-from <kamal@canonical.com>)
-        id 1bLECo-0007rx-KW; Thu, 07 Jul 2016 18:39:22 +0000
+        id 1bLED1-0007ug-Lt; Thu, 07 Jul 2016 18:39:35 +0000
 Received: from kamal by fourier with local (Exim 4.86_2)
         (envelope-from <kamal@whence.com>)
-        id 1bLECm-0004x0-EL; Thu, 07 Jul 2016 11:39:20 -0700
+        id 1bLECz-0004yw-Go; Thu, 07 Jul 2016 11:39:33 -0700
 From:   Kamal Mostafa <kamal@canonical.com>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         kernel-team@lists.ubuntu.com
-Cc:     Huacai Chen <chenhc@lemote.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J . Hill" <sjhill@realitydiluted.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+Cc:     "Maciej W . Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 46/99] MIPS: Reserve nosave data for hibernation
-Date:   Thu,  7 Jul 2016 11:37:45 -0700
-Message-Id: <1467916718-18638-47-git-send-email-kamal@canonical.com>
+Subject: [PATCH 3.19.y-ckt 70/99] MIPS: MSA: Fix a link error on `_init_msa_upper' with older GCC
+Date:   Thu,  7 Jul 2016 11:38:09 -0700
+Message-Id: <1467916718-18638-71-git-send-email-kamal@canonical.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1467916718-18638-1-git-send-email-kamal@canonical.com>
 References: <1467916718-18638-1-git-send-email-kamal@canonical.com>
@@ -32,7 +28,7 @@ Return-Path: <kamal@canonical.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54252
+X-archive-position: 54253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,42 +49,90 @@ X-list: linux-mips
 
 ---8<------------------------------------------------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: "Maciej W. Rozycki" <macro@imgtec.com>
 
-commit a95d069204e178f18476f5499abab0d0d9cbc32c upstream.
+commit e49d38488515057dba8f0c2ba4cfde5be4a7281f upstream.
 
-After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
-in the memblock region"), the MIPS hibernation is broken. Because pages
-in nosave data section should be "reserved", but currently they aren't
-set to "reserved" at initialization. This patch makes hibernation work
-again.
+Fix a build regression from commit c9017757c532 ("MIPS: init upper 64b
+of vector registers when MSA is first used"):
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Cc: Steven J . Hill <sjhill@realitydiluted.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+arch/mips/built-in.o: In function `enable_restore_fp_context':
+traps.c:(.text+0xbb90): undefined reference to `_init_msa_upper'
+traps.c:(.text+0xbb90): relocation truncated to fit: R_MIPS_26 against `_init_msa_upper'
+traps.c:(.text+0xbef0): undefined reference to `_init_msa_upper'
+traps.c:(.text+0xbef0): relocation truncated to fit: R_MIPS_26 against `_init_msa_upper'
+
+to !CONFIG_CPU_HAS_MSA configurations with older GCC versions, which are
+unable to figure out that calls to `_init_msa_upper' are indeed dead.
+Of the many ways to tackle this failure choose the approach we have
+already taken in `thread_msa_context_live'.
+
+[ralf@linux-mips.org: Drop patch segment to junk file.]
+
+Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12888/
+Patchwork: https://patchwork.linux-mips.org/patch/13271/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Kamal Mostafa <kamal@canonical.com>
 ---
- arch/mips/kernel/setup.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/include/asm/msa.h | 13 +++++++++++++
+ arch/mips/kernel/traps.c    |  6 +++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 0589290..c7d9271 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -685,6 +685,9 @@ static void __init arch_mem_init(char **cmdline_p)
- 	for_each_memblock(reserved, reg)
- 		if (reg->size != 0)
- 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
-+
-+	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
-+			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
+index af5638b..38bbeda 100644
+--- a/arch/mips/include/asm/msa.h
++++ b/arch/mips/include/asm/msa.h
+@@ -67,6 +67,19 @@ static inline void restore_msa(struct task_struct *t)
+ 		_restore_msa(t);
  }
  
- static void __init resource_init(void)
++static inline void init_msa_upper(void)
++{
++	/*
++	 * Check cpu_has_msa only if it's a constant. This will allow the
++	 * compiler to optimise out code for CPUs without MSA without adding
++	 * an extra redundant check for CPUs with MSA.
++	 */
++	if (__builtin_constant_p(cpu_has_msa) && !cpu_has_msa)
++		return;
++
++	_init_msa_upper();
++}
++
+ #ifdef TOOLCHAIN_SUPPORTS_MSA
+ 
+ #define __BUILD_MSA_CTL_REG(name, cs)				\
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index af1475f..e3b5fe1 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1150,7 +1150,7 @@ static int enable_restore_fp_context(int msa)
+ 		err = init_fpu();
+ 		if (msa && !err) {
+ 			enable_msa();
+-			_init_msa_upper();
++			init_msa_upper();
+ 			set_thread_flag(TIF_USEDMSA);
+ 			set_thread_flag(TIF_MSA_CTX_LIVE);
+ 		}
+@@ -1213,7 +1213,7 @@ static int enable_restore_fp_context(int msa)
+ 	 */
+ 	prior_msa = test_and_set_thread_flag(TIF_MSA_CTX_LIVE);
+ 	if (!prior_msa && was_fpu_owner) {
+-		_init_msa_upper();
++		init_msa_upper();
+ 
+ 		goto out;
+ 	}
+@@ -1230,7 +1230,7 @@ static int enable_restore_fp_context(int msa)
+ 		 * of each vector register such that it cannot see data left
+ 		 * behind by another task.
+ 		 */
+-		_init_msa_upper();
++		init_msa_upper();
+ 	} else {
+ 		/* We need to restore the vector context. */
+ 		restore_msa(current);
 -- 
 2.7.4

@@ -1,90 +1,101 @@
-From: "Maciej W. Rozycki" <macro@imgtec.com>
-Date: Tue, 17 May 2016 06:12:27 +0100
-Subject: MIPS: MSA: Fix a link error on `_init_msa_upper' with older GCC
-Message-ID: <20160517051227.wDObp6mZ-4HNiqxLHW7eeS7vhs2Gs35BgR4mZtH5v3s@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2016 09:51:30 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63657 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992308AbcGGHvYQeUH6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jul 2016 09:51:24 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 44034629E804A;
+        Thu,  7 Jul 2016 08:51:15 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (192.168.154.116) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 7 Jul 2016 08:51:17 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH 1/3] MIPS: smp-cps: Allow booting of CPU other than VP0 within a core
+Date:   Thu, 7 Jul 2016 08:50:38 +0100
+Message-ID: <1467877840-32569-2-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1467877840-32569-1-git-send-email-matt.redfearn@imgtec.com>
+References: <1467877840-32569-1-git-send-email-matt.redfearn@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.116]
+Return-Path: <Matt.Redfearn@imgtec.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 54240
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: matt.redfearn@imgtec.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-commit e49d38488515057dba8f0c2ba4cfde5be4a7281f upstream.
+The boot_core function was hardcoded to always start VP0 when starting
+a core via the CPC. When hotplugging a CPU this may not be the desired
+behaviour.
 
-Fix a build regression from commit c9017757c532 ("MIPS: init upper 64b
-of vector registers when MSA is first used"):
+Make boot_core receive the VP ID to start running on the core, such that
+alternate VPs can be started via CPU hotplug.
+Also ensure that all other VPs within the core are stopped before
+bringing the core out of reset so that only the desired VP starts.
 
-arch/mips/built-in.o: In function `enable_restore_fp_context':
-traps.c:(.text+0xbb90): undefined reference to `_init_msa_upper'
-traps.c:(.text+0xbb90): relocation truncated to fit: R_MIPS_26 against `_init_msa_upper'
-traps.c:(.text+0xbef0): undefined reference to `_init_msa_upper'
-traps.c:(.text+0xbef0): relocation truncated to fit: R_MIPS_26 against `_init_msa_upper'
-
-to !CONFIG_CPU_HAS_MSA configurations with older GCC versions, which are
-unable to figure out that calls to `_init_msa_upper' are indeed dead.
-Of the many ways to tackle this failure choose the approach we have
-already taken in `thread_msa_context_live'.
-
-[ralf@linux-mips.org: Drop patch segment to junk file.]
-
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13271/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
 ---
- arch/mips/include/asm/msa.h | 13 +++++++++++++
- arch/mips/kernel/traps.c    |  6 +++---
- 2 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/msa.h b/arch/mips/include/asm/msa.h
-index af5638b..38bbeda 100644
---- a/arch/mips/include/asm/msa.h
-+++ b/arch/mips/include/asm/msa.h
-@@ -67,6 +67,19 @@ static inline void restore_msa(struct task_struct *t)
- 		_restore_msa(t);
+ arch/mips/kernel/smp-cps.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index 4ed36f288d64..006e99de170d 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -206,7 +206,7 @@ err_out:
+ 	}
  }
-
-+static inline void init_msa_upper(void)
-+{
-+	/*
-+	 * Check cpu_has_msa only if it's a constant. This will allow the
-+	 * compiler to optimise out code for CPUs without MSA without adding
-+	 * an extra redundant check for CPUs with MSA.
-+	 */
-+	if (__builtin_constant_p(cpu_has_msa) && !cpu_has_msa)
-+		return;
-+
-+	_init_msa_upper();
-+}
-+
- #ifdef TOOLCHAIN_SUPPORTS_MSA
-
- #define __BUILD_MSA_CTL_REG(name, cs)				\
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index af1475f..e3b5fe1 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1150,7 +1150,7 @@ static int enable_restore_fp_context(int msa)
- 		err = init_fpu();
- 		if (msa && !err) {
- 			enable_msa();
--			_init_msa_upper();
-+			init_msa_upper();
- 			set_thread_flag(TIF_USEDMSA);
- 			set_thread_flag(TIF_MSA_CTX_LIVE);
- 		}
-@@ -1213,7 +1213,7 @@ static int enable_restore_fp_context(int msa)
- 	 */
- 	prior_msa = test_and_set_thread_flag(TIF_MSA_CTX_LIVE);
- 	if (!prior_msa && was_fpu_owner) {
--		_init_msa_upper();
-+		init_msa_upper();
-
+ 
+-static void boot_core(unsigned core)
++static void boot_core(unsigned int core, unsigned int vpe_id)
+ {
+ 	u32 access, stat, seq_state;
+ 	unsigned timeout;
+@@ -233,8 +233,9 @@ static void boot_core(unsigned core)
+ 		mips_cpc_lock_other(core);
+ 
+ 		if (mips_cm_revision() >= CM_REV_CM3) {
+-			/* Run VP0 following the reset */
+-			write_cpc_co_vp_run(0x1);
++			/* Run only the requested VP following the reset */
++			write_cpc_co_vp_stop(0xf);
++			write_cpc_co_vp_run(1 << vpe_id);
+ 
+ 			/*
+ 			 * Ensure that the VP_RUN register is written before the
+@@ -306,7 +307,7 @@ static void cps_boot_secondary(int cpu, struct task_struct *idle)
+ 
+ 	if (!test_bit(core, core_power)) {
+ 		/* Boot a VPE on a powered down core */
+-		boot_core(core);
++		boot_core(core, vpe_id);
  		goto out;
  	}
-@@ -1230,7 +1230,7 @@ static int enable_restore_fp_context(int msa)
- 		 * of each vector register such that it cannot see data left
- 		 * behind by another task.
- 		 */
--		_init_msa_upper();
-+		init_msa_upper();
- 	} else {
- 		/* We need to restore the vector context. */
- 		restore_msa(current);
---
+ 
+-- 
 2.7.4

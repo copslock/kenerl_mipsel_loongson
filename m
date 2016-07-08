@@ -1,35 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2016 12:58:20 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60712 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2016 15:05:59 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9123 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992880AbcGHKyMRUJ3v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jul 2016 12:54:12 +0200
+        with ESMTP id S23992777AbcGHNFxEyhTV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jul 2016 15:05:53 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id E00709324AD04;
-        Fri,  8 Jul 2016 11:53:53 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 14ECD4D0195FE;
+        Fri,  8 Jul 2016 14:05:34 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 8 Jul 2016 11:53:55 +0100
+ 14.3.294.0; Fri, 8 Jul 2016 14:05:36 +0100
 From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 11/12] MIPS: KVM: Reset CP0_PageMask during host TLB flush
-Date:   Fri, 8 Jul 2016 11:53:30 +0100
-Message-ID: <1467975211-12674-12-git-send-email-james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: uasm: Handle low values in uasm_in_compat_space_p()
+Date:   Fri, 8 Jul 2016 14:05:26 +0100
+Message-ID: <1467983126-30121-1-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1467975211-12674-1-git-send-email-james.hogan@imgtec.com>
-References: <1467975211-12674-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [192.168.154.110]
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54270
+X-archive-position: 54271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,47 +40,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-KVM sometimes flushes host TLB entries, reading each one to check if it
-corresponds to a guest KSeg0 address. In the absence of EntryHi.EHInv
-bits to invalidate the whole entry, the entries will be set to unique
-virtual addresses in KSeg0 (which is not TLB mapped), spaced 2*PAGE_SIZE
-apart.
+uasm_in_compat_space_p() determines whether the given value is in the
+32-bit compatibility part of the 64-bit address space, i.e. is in 32-bit
+sign-extended form, however it only handles the top half of the value
+space (corresponding to the kernel compatibility segments in the upper
+half of the address space). Since values < 2^31 (corresponding to the
+low 2GiB of the address space) can also be handled using 32-bit
+instructions (e.g. a LUI and ADDIU) rather than convoluted 64-bit
+immediate generation, rewrite it with a cast to check whether the
+address matches its 32-bit sign extended form.
 
-The TLB read however will clobber the CP0_PageMask register with
-whatever page size that TLB entry had, and that same page size will be
-written back into the TLB entry along with the unique address.
+This allows UASM_i_LA to be used to generate arbitrary 32-bit immediates
+more efficiently on 64-bit CPUs, i.e. more like the li (load immediate)
+pseudo-instruction.
 
-This would cause breakage when transparent huge pages are enabled on
-64-bit host kernels, since huge page entries will overlap other nearby
-entries when separated by only 2*PAGE_SIZE, causing a machine check
-exception.
+For example this code to load the immediate (ST0_EXL | KSU_USER |
+ST0_BEV | ST0_KX) into k0 with UASM_i_LA():
 
-Fix this by restoring the old CP0_PageMask value (which should be set to
-the normal page size) after reading the TLB entry if we're going to go
-ahead and invalidate it.
+ lui        k0,0x0
+ dsll       k0,k0,0x10
+ daddiu     k0,k0,64
+ dsll       k0,k0,0x10
+ daddiu     k0,k0,146
+
+Changes to this more efficient version:
+
+ lui        k0,0x40
+ addiu      k0,k0,146
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/tlb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/mm/uasm.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
-index f5f8c2acae53..254377d8e0b9 100644
---- a/arch/mips/kvm/tlb.c
-+++ b/arch/mips/kvm/tlb.c
-@@ -332,6 +332,8 @@ void kvm_mips_flush_host_tlb(int skip_kseg0)
- 			/* Don't blow away guest kernel entries */
- 			if (KVM_GUEST_KSEGX(entryhi) == KVM_GUEST_KSEG0)
- 				continue;
-+
-+			write_c0_pagemask(old_pagemask);
- 		}
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index ad718debc35a..0b373405766a 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -370,11 +370,7 @@ UASM_EXPORT_SYMBOL(ISAFUNC(uasm_build_label));
+ int ISAFUNC(uasm_in_compat_space_p)(long addr)
+ {
+ 	/* Is this address in 32bit compat space? */
+-#ifdef CONFIG_64BIT
+-	return (((addr) & 0xffffffff00000000L) == 0xffffffff00000000L);
+-#else
+-	return 1;
+-#endif
++	return addr == (int)addr;
+ }
+ UASM_EXPORT_SYMBOL(ISAFUNC(uasm_in_compat_space_p));
  
- 		/* Make sure all entries differ. */
 -- 
 2.4.10

@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jul 2016 20:42:06 +0200 (CEST)
-Received: from youngberry.canonical.com ([91.189.89.112]:52691 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992417AbcGGSjgU0PLF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jul 2016 20:39:36 +0200
-Received: from 1.general.kamal.us.vpn ([10.172.68.52] helo=fourier)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <kamal@canonical.com>)
-        id 1bLECy-0007u7-U5; Thu, 07 Jul 2016 18:39:33 +0000
-Received: from kamal by fourier with local (Exim 4.86_2)
-        (envelope-from <kamal@whence.com>)
-        id 1bLECw-0004yX-Ph; Thu, 07 Jul 2016 11:39:30 -0700
-From:   Kamal Mostafa <kamal@canonical.com>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel-team@lists.ubuntu.com
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        "Maciej W . Rozycki" <macro@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Kamal Mostafa <kamal@canonical.com>
-Subject: [PATCH 3.19.y-ckt 65/99] MIPS: math-emu: Fix jalr emulation when rd == $0
-Date:   Thu,  7 Jul 2016 11:38:04 -0700
-Message-Id: <1467916718-18638-66-git-send-email-kamal@canonical.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1467916718-18638-1-git-send-email-kamal@canonical.com>
-References: <1467916718-18638-1-git-send-email-kamal@canonical.com>
-X-Extended-Stable: 3.19
-Return-Path: <kamal@canonical.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2016 12:06:51 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28314 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992521AbcGHKGpNu3f6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jul 2016 12:06:45 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 8883E8E53AAD8;
+        Fri,  8 Jul 2016 11:06:36 +0100 (IST)
+Received: from localhost (10.100.200.218) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 8 Jul
+ 2016 11:06:38 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        Maciej Rozycki <maciej.rozycki@imgtec.com>,
+        Faraz Shahbazker <faraz.shahbazker@imgtec.com>,
+        Raghu Gandham <raghu.gandham@imgtec.com>,
+        Matthew Fortune <matthew.fortune@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v5 0/2] MIPS non-executable stack support
+Date:   Fri, 8 Jul 2016 11:06:18 +0100
+Message-ID: <20160708100620.4754-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.9.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.218]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54254
+X-archive-position: 54255
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kamal@canonical.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,53 +45,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.19.8-ckt23 -stable review patch.  If anyone has any objections, please let me know.
+This series allows us to support non-executable stacks on systems with
+RIXI by moving delay slot instruction emulation off of the user stack &
+into a dedicated page.
 
----8<------------------------------------------------------------
+This is a revision of patches 6114/6125 & 6115 from a few years back:
 
-From: Paul Burton <paul.burton@imgtec.com>
+    https://patchwork.linux-mips.org/patch/6114
+    https://patchwork.linux-mips.org/patch/6125
+    https://patchwork.linux-mips.org/patch/6115
 
-commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
+The series applies atop v4.7-rc6.
 
-When emulating a jalr instruction with rd == $0, the code in
-isBranchInstr was incorrectly writing to GPR $0 which should actually
-always remain zeroed. This would lead to any further instructions
-emulated which use $0 operating on a bogus value until the task is next
-context switched, at which point the value of $0 in the task context
-would be restored to the correct zero by a store in SAVE_SOME. Fix this
-by not writing to rd if it is $0.
+Paul Burton (2):
+  MIPS: use per-mm page to execute branch delay slot instructions
+  MIPS: non-exec stack & heap when non-exec PT_GNU_STACK is present
 
-Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13160/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kamal Mostafa <kamal@canonical.com>
----
- arch/mips/math-emu/cp1emu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/mips/Kconfig                     |   1 +
+ arch/mips/include/asm/dsemul.h        |  92 ++++++++++
+ arch/mips/include/asm/elf.h           |   3 +
+ arch/mips/include/asm/fpu_emulator.h  |  17 +-
+ arch/mips/include/asm/mmu.h           |   9 +
+ arch/mips/include/asm/mmu_context.h   |   6 +
+ arch/mips/include/asm/page.h          |   6 +-
+ arch/mips/include/asm/processor.h     |  18 +-
+ arch/mips/kernel/elf.c                |  19 ++
+ arch/mips/kernel/mips-r2-to-r6-emul.c |   8 +-
+ arch/mips/kernel/process.c            |  14 ++
+ arch/mips/kernel/signal.c             |   8 +
+ arch/mips/kernel/vdso.c               |  10 +
+ arch/mips/math-emu/cp1emu.c           |   8 +-
+ arch/mips/math-emu/dsemul.c           | 333 +++++++++++++++++++++++-----------
+ 15 files changed, 417 insertions(+), 135 deletions(-)
+ create mode 100644 arch/mips/include/asm/dsemul.h
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 9dfcd7f..862bc86 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -443,9 +443,11 @@ static int isBranchInstr(struct pt_regs *regs, struct mm_decoded_insn dec_insn,
- 	case spec_op:
- 		switch (insn.r_format.func) {
- 		case jalr_op:
--			regs->regs[insn.r_format.rd] =
--				regs->cp0_epc + dec_insn.pc_inc +
--				dec_insn.next_pc_inc;
-+			if (insn.r_format.rd != 0) {
-+				regs->regs[insn.r_format.rd] =
-+					regs->cp0_epc + dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			}
- 			/* Fall through */
- 		case jr_op:
- 			*contpc = regs->regs[insn.r_format.rs];
 -- 
-2.7.4
+2.9.0

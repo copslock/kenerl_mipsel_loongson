@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2016 12:57:17 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30127 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2016 12:57:37 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21232 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992861AbcGHKyHRumhv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jul 2016 12:54:07 +0200
+        with ESMTP id S23992866AbcGHKyIz4Q2v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jul 2016 12:54:08 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id DFC2F63DDE14B;
-        Fri,  8 Jul 2016 11:53:48 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 9CFF78F5A4C7A;
+        Fri,  8 Jul 2016 11:53:50 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 8 Jul 2016 11:53:51 +0100
+ 14.3.294.0; Fri, 8 Jul 2016 11:53:52 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
 CC:     =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         James Hogan <james.hogan@imgtec.com>,
         <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 05/12] MIPS: KVM: Set CP0_Status.KX on MIPS64
-Date:   Fri, 8 Jul 2016 11:53:24 +0100
-Message-ID: <1467975211-12674-6-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 07/12] MIPS: KVM: Fail if ebase doesn't fit in CP0_EBase
+Date:   Fri, 8 Jul 2016 11:53:26 +0100
+Message-ID: <1467975211-12674-8-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1467975211-12674-1-git-send-email-james.hogan@imgtec.com>
 References: <1467975211-12674-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54267
+X-archive-position: 54268
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,11 +46,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Update the KVM entry code to set the CP0_Entry.KX bit on 64-bit kernels.
-This is important to allow the entry code, running in kernel mode, to
-access the full 64-bit address space right up to the point of entering
-the guest, and immediately after exiting the guest, so it can safely
-restore & save the guest context from 64-bit segments.
+Fail if the address of the allocated exception base doesn't fit into the
+CP0_EBase register. This can happen on MIPS64 if CP0_EBase.WG isn't
+implemented but RAM is available outside of the range of KSeg0.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -59,43 +57,31 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/entry.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/mips/kvm/mips.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
-index f4556d0279c6..c824bfc4daa0 100644
---- a/arch/mips/kvm/entry.c
-+++ b/arch/mips/kvm/entry.c
-@@ -61,6 +61,12 @@
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index 0d11d9595600..f01c9ce885f5 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -300,6 +300,18 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+ 	kvm_debug("Allocated %d bytes for KVM Exception Handlers @ %p\n",
+ 		  ALIGN(size, PAGE_SIZE), gebase);
  
- #define CALLFRAME_SIZ   32
- 
-+#ifdef CONFIG_64BIT
-+#define ST0_KX_IF_64	ST0_KX
-+#else
-+#define ST0_KX_IF_64	0
-+#endif
++	/*
++	 * Check new ebase actually fits in CP0_EBase. The lack of a write gate
++	 * limits us to the low 512MB of physical address space. If the memory
++	 * we allocate is out of range, just give up now.
++	 */
++	if (!cpu_has_ebase_wg && virt_to_phys(gebase) >= 0x20000000) {
++		kvm_err("CP0_EBase.WG required for guest exception base %pK\n",
++			gebase);
++		err = -ENOMEM;
++		goto out_free_gebase;
++	}
 +
- static unsigned int scratch_vcpu[2] = { C0_DDATA_LO };
- static unsigned int scratch_tmp[2] = { C0_ERROREPC };
+ 	/* Save new ebase */
+ 	vcpu->arch.guest_ebase = gebase;
  
-@@ -204,7 +210,7 @@ void *kvm_mips_build_vcpu_run(void *addr)
- 	 * Setup status register for running the guest in UM, interrupts
- 	 * are disabled
- 	 */
--	UASM_i_LA(&p, K0, ST0_EXL | KSU_USER | ST0_BEV);
-+	UASM_i_LA(&p, K0, ST0_EXL | KSU_USER | ST0_BEV | ST0_KX_IF_64);
- 	uasm_i_mtc0(&p, K0, C0_STATUS);
- 	uasm_i_ehb(&p);
- 
-@@ -217,7 +223,7 @@ void *kvm_mips_build_vcpu_run(void *addr)
- 	 * interrupt mask as it was but make sure that timer interrupts
- 	 * are enabled
- 	 */
--	uasm_i_addiu(&p, K0, ZERO, ST0_EXL | KSU_USER | ST0_IE);
-+	uasm_i_addiu(&p, K0, ZERO, ST0_EXL | KSU_USER | ST0_IE | ST0_KX_IF_64);
- 	uasm_i_andi(&p, V0, V0, ST0_IM);
- 	uasm_i_or(&p, K0, K0, V0);
- 	uasm_i_mtc0(&p, K0, C0_STATUS);
 -- 
 2.4.10

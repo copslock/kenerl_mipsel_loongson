@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2016 12:54:45 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15620 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2016 12:55:06 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:10903 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992754AbcGHKx52k8Lv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jul 2016 12:53:57 +0200
+        with ESMTP id S23992773AbcGHKx6ORiSv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jul 2016 12:53:58 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 28FA41AF45085;
-        Fri,  8 Jul 2016 11:53:48 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 9995880E8137C;
+        Fri,  8 Jul 2016 11:53:49 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 8 Jul 2016 11:53:50 +0100
+ 14.3.294.0; Fri, 8 Jul 2016 11:53:51 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Paolo Bonzini <pbonzini@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
 CC:     =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         James Hogan <james.hogan@imgtec.com>,
         <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 04/12] MIPS: KVM: Make entry code MIPS64 friendly
-Date:   Fri, 8 Jul 2016 11:53:23 +0100
-Message-ID: <1467975211-12674-5-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 06/12] MIPS: KVM: Use 64-bit CP0_EBase when appropriate
+Date:   Fri, 8 Jul 2016 11:53:25 +0100
+Message-ID: <1467975211-12674-7-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1467975211-12674-1-git-send-email-james.hogan@imgtec.com>
 References: <1467975211-12674-1-git-send-email-james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54260
+X-archive-position: 54261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,25 +46,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS KVM entry code (originally kvm_locore.S, later locore.S, and
-now entry.c) has never quite been right when built for 64-bit, using
-32-bit instructions when 64-bit instructions were needed for handling
-64-bit registers and pointers. Fix several cases of this now.
+Update the KVM entry point to write CP0_EBase as a 64-bit register when
+it is 64-bits wide, and to set the WG (write gate) bit if it exists in
+order to write bits 63:30 (or 31:30 on MIPS32).
 
-The changes roughly fall into the following categories.
-
-- COP0 scratch registers contain guest register values and the VCPU
-  pointer, and are themselves full width. Similarly CP0_EPC and
-  CP0_BadVAddr registers are full width (even though technically we
-  don't support 64-bit guest address spaces with trap & emulate KVM).
-  Use MFC0/MTC0 for accessing them.
-
-- Handling of stack pointers and the VCPU pointer must match the pointer
-  size of the kernel ABI (always o32 or n64), so use ADDIU.
-
-- The CPU number in thread_info, and the guest_{user,kernel}_asid arrays
-  in kvm_vcpu_arch are all 32 bit integers, so use lw (instead of LW) to
-  load them.
+Prior to MIPS64r6 it was UNDEFINED to perform a 64-bit read or write of
+a 32-bit COP0 register. Since this is dynamically generated code,
+generate the right type of access depending on whether the kernel is
+64-bit and cpu_has_ebase_wg.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -73,186 +62,65 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/entry.c | 48 ++++++++++++++++++++++++------------------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ arch/mips/kvm/entry.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
 diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
-index 75ba7c2ecb3d..f4556d0279c6 100644
+index c824bfc4daa0..6a02b3a3fa65 100644
 --- a/arch/mips/kvm/entry.c
 +++ b/arch/mips/kvm/entry.c
-@@ -120,12 +120,12 @@ static void kvm_mips_build_save_scratch(u32 **p, unsigned int tmp,
- 					unsigned int frame)
- {
- 	/* Save the VCPU scratch register value in cp0_epc of the stack frame */
--	uasm_i_mfc0(p, tmp, scratch_vcpu[0], scratch_vcpu[1]);
-+	UASM_i_MFC0(p, tmp, scratch_vcpu[0], scratch_vcpu[1]);
- 	UASM_i_SW(p, tmp, offsetof(struct pt_regs, cp0_epc), frame);
- 
- 	/* Save the temp scratch register value in cp0_cause of stack frame */
- 	if (scratch_tmp[0] == 31) {
--		uasm_i_mfc0(p, tmp, scratch_tmp[0], scratch_tmp[1]);
-+		UASM_i_MFC0(p, tmp, scratch_tmp[0], scratch_tmp[1]);
- 		UASM_i_SW(p, tmp, offsetof(struct pt_regs, cp0_cause), frame);
- 	}
- }
-@@ -138,11 +138,11 @@ static void kvm_mips_build_restore_scratch(u32 **p, unsigned int tmp,
- 	 * kvm_mips_build_save_scratch().
- 	 */
- 	UASM_i_LW(p, tmp, offsetof(struct pt_regs, cp0_epc), frame);
--	uasm_i_mtc0(p, tmp, scratch_vcpu[0], scratch_vcpu[1]);
-+	UASM_i_MTC0(p, tmp, scratch_vcpu[0], scratch_vcpu[1]);
- 
- 	if (scratch_tmp[0] == 31) {
- 		UASM_i_LW(p, tmp, offsetof(struct pt_regs, cp0_cause), frame);
--		uasm_i_mtc0(p, tmp, scratch_tmp[0], scratch_tmp[1]);
-+		UASM_i_MTC0(p, tmp, scratch_tmp[0], scratch_tmp[1]);
- 	}
+@@ -153,6 +153,25 @@ static void kvm_mips_build_restore_scratch(u32 **p, unsigned int tmp,
  }
  
-@@ -171,7 +171,7 @@ void *kvm_mips_build_vcpu_run(void *addr)
- 	 */
+ /**
++ * build_set_exc_base() - Assemble code to write exception base address.
++ * @p:		Code buffer pointer.
++ * @reg:	Source register (generated code may set WG bit in @reg).
++ *
++ * Assemble code to modify the exception base address in the EBase register,
++ * using the appropriately sized access and setting the WG bit if necessary.
++ */
++static inline void build_set_exc_base(u32 **p, unsigned int reg)
++{
++	if (cpu_has_ebase_wg) {
++		/* Set WG so that all the bits get written */
++		uasm_i_ori(p, reg, reg, MIPS_EBASE_WG);
++		UASM_i_MTC0(p, reg, C0_EBASE);
++	} else {
++		uasm_i_mtc0(p, reg, C0_EBASE);
++	}
++}
++
++/**
+  * kvm_mips_build_vcpu_run() - Assemble function to start running a guest VCPU.
+  * @addr:	Address to start writing code.
+  *
+@@ -216,7 +235,7 @@ void *kvm_mips_build_vcpu_run(void *addr)
  
- 	/* k0/k1 not being used in host kernel context */
--	uasm_i_addiu(&p, K1, SP, -(int)sizeof(struct pt_regs));
-+	UASM_i_ADDIU(&p, K1, SP, -(int)sizeof(struct pt_regs));
- 	for (i = 16; i < 32; ++i) {
- 		if (i == 24)
- 			i = 28;
-@@ -186,10 +186,10 @@ void *kvm_mips_build_vcpu_run(void *addr)
- 	kvm_mips_build_save_scratch(&p, V1, K1);
- 
- 	/* VCPU scratch register has pointer to vcpu */
--	uasm_i_mtc0(&p, A1, scratch_vcpu[0], scratch_vcpu[1]);
-+	UASM_i_MTC0(&p, A1, scratch_vcpu[0], scratch_vcpu[1]);
- 
- 	/* Offset into vcpu->arch */
--	uasm_i_addiu(&p, K1, A1, offsetof(struct kvm_vcpu, arch));
-+	UASM_i_ADDIU(&p, K1, A1, offsetof(struct kvm_vcpu, arch));
+ 	/* load up the new EBASE */
+ 	UASM_i_LW(&p, K0, offsetof(struct kvm_vcpu_arch, guest_ebase), K1);
+-	uasm_i_mtc0(&p, K0, C0_EBASE);
++	build_set_exc_base(&p, K0);
  
  	/*
- 	 * Save the host stack to VCPU, used for exception processing
-@@ -252,7 +252,7 @@ static void *kvm_mips_build_enter_guest(void *addr)
+ 	 * Now that the new EBASE has been loaded, unset BEV, set
+@@ -463,7 +482,7 @@ void *kvm_mips_build_exit(void *addr)
  
- 	/* Set Guest EPC */
- 	UASM_i_LW(&p, T0, offsetof(struct kvm_vcpu_arch, pc), K1);
--	uasm_i_mtc0(&p, T0, C0_EPC);
-+	UASM_i_MTC0(&p, T0, C0_EPC);
+ 	UASM_i_LA_mostly(&p, K0, (long)&ebase);
+ 	UASM_i_LW(&p, K0, uasm_rel_lo((long)&ebase), K0);
+-	uasm_i_mtc0(&p, K0, C0_EBASE);
++	build_set_exc_base(&p, K0);
  
- 	/* Set the ASID for the Guest Kernel */
- 	UASM_i_LW(&p, T0, offsetof(struct kvm_vcpu_arch, cop0), K1);
-@@ -261,20 +261,20 @@ static void *kvm_mips_build_enter_guest(void *addr)
- 	uasm_i_andi(&p, T0, T0, KSU_USER | ST0_ERL | ST0_EXL);
- 	uasm_i_xori(&p, T0, T0, KSU_USER);
- 	uasm_il_bnez(&p, &r, T0, label_kernel_asid);
--	 uasm_i_addiu(&p, T1, K1,
-+	 UASM_i_ADDIU(&p, T1, K1,
- 		      offsetof(struct kvm_vcpu_arch, guest_kernel_asid));
- 	/* else user */
--	uasm_i_addiu(&p, T1, K1,
-+	UASM_i_ADDIU(&p, T1, K1,
- 		     offsetof(struct kvm_vcpu_arch, guest_user_asid));
- 	uasm_l_kernel_asid(&l, p);
- 
- 	/* t1: contains the base of the ASID array, need to get the cpu id  */
- 	/* smp_processor_id */
--	UASM_i_LW(&p, T2, offsetof(struct thread_info, cpu), GP);
-+	uasm_i_lw(&p, T2, offsetof(struct thread_info, cpu), GP);
- 	/* x4 */
- 	uasm_i_sll(&p, T2, T2, 2);
- 	UASM_i_ADDU(&p, T3, T1, T2);
--	UASM_i_LW(&p, K0, 0, T3);
-+	uasm_i_lw(&p, K0, 0, T3);
- #ifdef CONFIG_MIPS_ASID_BITS_VARIABLE
- 	/* x sizeof(struct cpuinfo_mips)/4 */
- 	uasm_i_addiu(&p, T3, ZERO, sizeof(struct cpuinfo_mips)/4);
-@@ -344,11 +344,11 @@ void *kvm_mips_build_exception(void *addr, void *handler)
- 	memset(relocs, 0, sizeof(relocs));
- 
- 	/* Save guest k1 into scratch register */
--	uasm_i_mtc0(&p, K1, scratch_tmp[0], scratch_tmp[1]);
-+	UASM_i_MTC0(&p, K1, scratch_tmp[0], scratch_tmp[1]);
- 
- 	/* Get the VCPU pointer from the VCPU scratch register */
--	uasm_i_mfc0(&p, K1, scratch_vcpu[0], scratch_vcpu[1]);
--	uasm_i_addiu(&p, K1, K1, offsetof(struct kvm_vcpu, arch));
-+	UASM_i_MFC0(&p, K1, scratch_vcpu[0], scratch_vcpu[1]);
-+	UASM_i_ADDIU(&p, K1, K1, offsetof(struct kvm_vcpu, arch));
- 
- 	/* Save guest k0 into VCPU structure */
- 	UASM_i_SW(&p, K0, offsetof(struct kvm_vcpu_arch, gprs[K0]), K1);
-@@ -415,13 +415,13 @@ void *kvm_mips_build_exit(void *addr)
- 
- 	/* Finally save guest k1 to VCPU */
+ 	if (raw_cpu_has_fpu) {
+ 		/*
+@@ -620,7 +639,7 @@ static void *kvm_mips_build_ret_to_guest(void *addr)
+ 	uasm_i_or(&p, K0, V1, AT);
+ 	uasm_i_mtc0(&p, K0, C0_STATUS);
  	uasm_i_ehb(&p);
--	uasm_i_mfc0(&p, T0, scratch_tmp[0], scratch_tmp[1]);
-+	UASM_i_MFC0(&p, T0, scratch_tmp[0], scratch_tmp[1]);
- 	UASM_i_SW(&p, T0, offsetof(struct kvm_vcpu_arch, gprs[K1]), K1);
+-	uasm_i_mtc0(&p, T0, C0_EBASE);
++	build_set_exc_base(&p, T0);
  
- 	/* Now that context has been saved, we can use other registers */
- 
- 	/* Restore vcpu */
--	uasm_i_mfc0(&p, A1, scratch_vcpu[0], scratch_vcpu[1]);
-+	UASM_i_MFC0(&p, A1, scratch_vcpu[0], scratch_vcpu[1]);
- 	uasm_i_move(&p, S1, A1);
- 
- 	/* Restore run (vcpu->run) */
-@@ -433,10 +433,10 @@ void *kvm_mips_build_exit(void *addr)
- 	 * Save Host level EPC, BadVaddr and Cause to VCPU, useful to process
- 	 * the exception
- 	 */
--	uasm_i_mfc0(&p, K0, C0_EPC);
-+	UASM_i_MFC0(&p, K0, C0_EPC);
- 	UASM_i_SW(&p, K0, offsetof(struct kvm_vcpu_arch, pc), K1);
- 
--	uasm_i_mfc0(&p, K0, C0_BADVADDR);
-+	UASM_i_MFC0(&p, K0, C0_BADVADDR);
- 	UASM_i_SW(&p, K0, offsetof(struct kvm_vcpu_arch, host_cp0_badvaddr),
- 		  K1);
- 
-@@ -506,7 +506,7 @@ void *kvm_mips_build_exit(void *addr)
- 	UASM_i_LW(&p, SP, offsetof(struct kvm_vcpu_arch, host_stack), K1);
- 
- 	/* Saved host state */
--	uasm_i_addiu(&p, SP, SP, -(int)sizeof(struct pt_regs));
-+	UASM_i_ADDIU(&p, SP, SP, -(int)sizeof(struct pt_regs));
- 
- 	/*
- 	 * XXXKYMA do we need to load the host ASID, maybe not because the
-@@ -529,7 +529,7 @@ void *kvm_mips_build_exit(void *addr)
- 	 */
- 	UASM_i_LA(&p, T9, (unsigned long)kvm_mips_handle_exit);
- 	uasm_i_jalr(&p, RA, T9);
--	 uasm_i_addiu(&p, SP, SP, -CALLFRAME_SIZ);
-+	 UASM_i_ADDIU(&p, SP, SP, -CALLFRAME_SIZ);
- 
- 	uasm_resolve_relocs(relocs, labels);
- 
-@@ -569,7 +569,7 @@ static void *kvm_mips_build_ret_from_exit(void *addr)
- 	 */
- 
- 	uasm_i_move(&p, K1, S1);
--	uasm_i_addiu(&p, K1, K1, offsetof(struct kvm_vcpu, arch));
-+	UASM_i_ADDIU(&p, K1, K1, offsetof(struct kvm_vcpu, arch));
- 
- 	/*
- 	 * Check return value, should tell us if we are returning to the
-@@ -603,7 +603,7 @@ static void *kvm_mips_build_ret_to_guest(void *addr)
- 	u32 *p = addr;
- 
- 	/* Put the saved pointer to vcpu (s1) back into the scratch register */
--	uasm_i_mtc0(&p, S1, scratch_vcpu[0], scratch_vcpu[1]);
-+	UASM_i_MTC0(&p, S1, scratch_vcpu[0], scratch_vcpu[1]);
- 
- 	/* Load up the Guest EBASE to minimize the window where BEV is set */
- 	UASM_i_LW(&p, T0, offsetof(struct kvm_vcpu_arch, guest_ebase), K1);
-@@ -645,7 +645,7 @@ static void *kvm_mips_build_ret_to_host(void *addr)
- 
- 	/* EBASE is already pointing to Linux */
- 	UASM_i_LW(&p, K1, offsetof(struct kvm_vcpu_arch, host_stack), K1);
--	uasm_i_addiu(&p, K1, K1, -(int)sizeof(struct pt_regs));
-+	UASM_i_ADDIU(&p, K1, K1, -(int)sizeof(struct pt_regs));
- 
- 	/*
- 	 * r2/v0 is the return code, shift it down by 2 (arithmetic)
+ 	/* Setup status register for running guest in UM */
+ 	uasm_i_ori(&p, V1, V1, ST0_EXL | KSU_USER | ST0_IE);
 -- 
 2.4.10

@@ -1,41 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2016 20:19:57 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:43034 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993368AbcGKSTtyVDLV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jul 2016 20:19:49 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2016 21:04:06 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:50214 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993405AbcGKTD5iPxTY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jul 2016 21:03:57 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 2117E41F8E08;
+        Mon, 11 Jul 2016 20:03:50 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Mon, 11 Jul 2016 20:03:50 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Mon, 11 Jul 2016 20:03:50 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 3E95F2092226E;
-        Mon, 11 Jul 2016 19:19:30 +0100 (IST)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL01.hh.imgtec.org
- (10.100.10.19) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 11 Jul
- 2016 19:19:33 +0100
-Received: from [10.20.2.61] (10.20.2.61) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 11 Jul
- 2016 11:19:30 -0700
-Message-ID: <5783E332.2020503@imgtec.com>
-Date:   Mon, 11 Jul 2016 11:19:30 -0700
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
-MIME-Version: 1.0
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     <yhb@ruijie.com.cn>, <ralf@linux-mips.org>,
+        by Forcepoint Email with ESMTPS id 1DD8EE9B9B0C6;
+        Mon, 11 Jul 2016 20:03:45 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 11 Jul
+ 2016 20:03:49 +0100
+Date:   Mon, 11 Jul 2016 20:03:49 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     Paolo Bonzini <pbonzini@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
         <linux-mips@linux-mips.org>
-Subject: [PATCH] MIPS: We need to clear MMU contexts of all other processes
- when asid_cache(cpu) wraps to 0.
-References: <80B78A8B8FEE6145A87579E8435D78C30205D5F3@fzex.ruijie.com.cn> <5783DF18.1080408@imgtec.com> <20160711180755.GA29839@jhogan-linux.le.imgtec.org>
-In-Reply-To: <20160711180755.GA29839@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.2.61]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Subject: Re: [PATCH 01/12] MIPS: Fix definition of KSEGX() for 64-bit
+Message-ID: <20160711190349.GB26799@jhogan-linux.le.imgtec.org>
+References: <1467975211-12674-1-git-send-email-james.hogan@imgtec.com>
+ <1467975211-12674-2-git-send-email-james.hogan@imgtec.com>
+ <alpine.LFD.2.20.1607111543480.12953@eddie.linux-mips.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="HcAYCG3uE/tztfnV"
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.20.1607111543480.12953@eddie.linux-mips.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 5de3adfe
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54286
+X-archive-position: 54287
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,55 +58,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/11/2016 11:07 AM, James Hogan wrote:
-> Hi Leonid,
->
-> On Mon, Jul 11, 2016 at 11:02:00AM -0700, Leonid Yegoshin wrote:
->> On 07/10/2016 06:04 AM, yhb@ruijie.com.cn wrote:
->>> Subject: [PATCH] MIPS: We need to clear MMU contexts of all other processes
->>>    when asid_cache(cpu) wraps to 0.
->>>
->>> Suppose that asid_cache(cpu) wraps to 0 every n days.
->>> case 1:
->>> (1)Process 1 got ASID 0x101.
->>> (2)Process 1 slept for n days.
->>> (3)asid_cache(cpu) wrapped to 0x101, and process 2 got ASID 0x101.
->>> (4)Process 1 is woken,and ASID of process 1 is same as ASID of process 2.
->>>
->>> case 2:
->>> (1)Process 1 got ASID 0x101 on CPU 1.
->>> (2)Process 1 migrated to CPU 2.
->>> (3)Process 1 migrated to CPU 1 after n days.
->>> (4)asid_cache on CPU 1 wrapped to 0x101, and process 2 got ASID 0x101.
->>> (5)Process 1 is scheduled, and ASID of process 1 is same as ASID of process 2.
->>>
->>> So we need to clear MMU contexts of all other processes when asid_cache(cpu) wraps to 0.
->>>
->>> Signed-off-by: yhb <yhb@ruijie.com.cn>
->>>
->> I think a more clear description should be given here - there is no
->> indication that wrap happens over 32bit integer.
->>
->> And taking into account "n days" frequency - can we just kill all local
->> ASIDs in all processes (additionally to local_flush_tlb_all) and enforce
->> reassignment if wrap happens? It should be a very rare event, you are
->> first to hit this.
->>
->> It seems to be some localized stuff in get_new_mmu_context() instead of
->> widespread patching.
-> That is what this patch does, but to do so it appears you need to lock
-> the other tasks one by one, and that must be doable from a context
-> switch, i.e. hardirq context, and that requires the task lock to be of
-> the _irqsave variant, hence the widespread changes and the relatively
-> tiny MIPS change hidden in the middle.
->
-Not exactly. The change must be done only for local CPU which executes 
-at the moment get_new_mmu_context(). Just prevent preemption here and 
-change of cpu_context(THIS_CPU,...) can be done safely - other CPUs 
-don't do anything with this variable besides killing it (writing 0 to it).
+--HcAYCG3uE/tztfnV
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-You can look into flush_tlb_mm() for example how it is cleared for 
-single memory map.
+Hi Maciej,
 
-We have a macro to safely walk all processes, right? (don't remember 
-it's name).
+On Mon, Jul 11, 2016 at 03:56:09PM +0100, Maciej W. Rozycki wrote:
+> Hi James,
+>=20
+> > This will help some MIPS KVM code handling 32-bit guest addresses to
+> > work on 64-bit host kernels, but will also affect KSEGX in
+> > dec_kn01_be_backend() on a 64-bit DECstation kernel, and the SiByte DMA
+> > page ops KSEGX check in clear_page() and copy_page() on 64-bit SB1
+> > kernels, neither of which appear to be designed with 64-bit segments in
+> > mind anyway.
+>=20
+>  Thanks for the heads-up!
+>=20
+>  This is not an issue however with `dec_kn01_be_backend', because the KN0=
+1=20
+> baseboard used with the DECstation 2100 and 3100 computers has an R2000=
+=20
+> processor mounted in a permanent manner (no CPU daugthercard as with some=
+=20
+> later baseboards) and will therefore never run a 64-bit kernel.  In fact =
+I=20
+> think kn01-berr.c would best only be built in 32-bit configurations.  I=
+=20
+
+Okay thanks, good to know.
+
+> never got to making such a clean-up though; I may look into it sometime a=
+s=20
+> I have some 2100/3100 stuff outstanding.
+>=20
+>  As to the SiByte platform I have no clue offhand; there's surely some=20
+> stuff there across the port asking for a clean-up.  I reckon using the=20
+> data mover for page ops is a kernel configuration option and I may have=
+=20
+> never enabled it myself.
+
+Indeed, one that defaults to no and isn't enabled in any defconfigs.
+
+I think I'll update this patch to make that configuration depend on
+32BIT, just in case any physical addresses of RAM have bits 31:29 =3D
+0b100, which previously would have failed the test and fallen back to a
+CPU copy, but with this change would have carried on and mistranslated
+the pointer to a physical address on the assumption its in KSeg0.
+
+Cheers
+James
+
+--HcAYCG3uE/tztfnV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJXg+2VAAoJEGwLaZPeOHZ6y2gP/2wSkvLaoAVsRuIbHfr02qsD
+BWrWhyo79GFsGL+Ce2ogeWlmTlU3ATsF3wnaivdFb75etHZzYqLhmuaMZRGuFmGv
+MBaV2BcrHGvspzW45IIElMJv5l3PzY75TMQAAvtFW3Z4hhgIx92ZvEJa4O5ntuLv
+f165AUaic4t8aIbFVWCfbg2maVeGTffFqynNr3CIHmpgeJFvFR+ETgzLySGlFnMq
+kc3UduQlQ04gTswxTcHG9zwnT1W0UcbnfXExMqPkIPRkoGmN7DMO4TgVbsilKYR9
+1XduVO8ZORqp1Qt/X5nhd6IstlIwc2E6/aLCePAzwaKWCeh3NHyo8Yv99MEcbcU7
+0v0kHlBu/gYp4WuWT8E+O6sPyu509LxsYABwTf74zGmDss3YUdSy3WlcNYR0dOdQ
+UsgQUJ43lDMS3XWWIAni0byBeLFW0x+lI/y6S7S97Egw+Fkcu4mWjb8sbwnOSCTz
+zum4NqPiHA1iud7EF6RDYScTbl44L1sVrqAftqaQDgScGZTmss388r7XLrCnBpdd
+eydYHhu7VWeQA9VAN+yzQIDuHM6U4W7hz0bPrfCzvxddo3cnWi8+o6Y8OmwvuODg
+QKt52SRs54FkHSUrJXOHhN53wPm2lT7SJndX+ogk/+CNtUL+PB+hexlkdlL4NwiT
+sTtF0YysR20sF02LtiAO
+=bX1C
+-----END PGP SIGNATURE-----
+
+--HcAYCG3uE/tztfnV--

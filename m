@@ -1,35 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2016 18:02:01 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:49266 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993238AbcGKQBwxSvxQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 11 Jul 2016 18:01:52 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u6BG1pHI001278;
-        Mon, 11 Jul 2016 18:01:51 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u6BG1o55001277;
-        Mon, 11 Jul 2016 18:01:50 +0200
-Date:   Mon, 11 Jul 2016 18:01:50 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Steven J. Hill" <steven.hill@cavium.com>
-Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: OCTEON: Changes to support readq()/writeq() usage.
-Message-ID: <20160711160150.GB1024@linux-mips.org>
-References: <5780652D.2030604@cavium.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2016 20:02:26 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36824 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993275AbcGKSCSl-0EV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jul 2016 20:02:18 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id F2A3D4DCF45EB;
+        Mon, 11 Jul 2016 19:01:58 +0100 (IST)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 11 Jul
+ 2016 19:02:02 +0100
+Received: from [10.20.2.61] (10.20.2.61) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 11 Jul
+ 2016 11:02:00 -0700
+Message-ID: <5783DF18.1080408@imgtec.com>
+Date:   Mon, 11 Jul 2016 11:02:00 -0700
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5780652D.2030604@cavium.com>
-User-Agent: Mutt/1.6.1 (2016-04-27)
-Return-Path: <ralf@linux-mips.org>
+To:     <yhb@ruijie.com.cn>, <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+Subject: Re: MIPS: We need to clear MMU contexts of all other processes when
+ asid_cache(cpu) wraps to 0.
+References: <80B78A8B8FEE6145A87579E8435D78C30205D5F3@fzex.ruijie.com.cn>
+In-Reply-To: <80B78A8B8FEE6145A87579E8435D78C30205D5F3@fzex.ruijie.com.cn>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.2.61]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54282
+X-archive-position: 54283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,17 +47,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jul 08, 2016 at 09:45:01PM -0500, Steven J. Hill wrote:
+On 07/10/2016 06:04 AM, yhb@ruijie.com.cn wrote:
+> Subject: [PATCH] MIPS: We need to clear MMU contexts of all other processes
+>   when asid_cache(cpu) wraps to 0.
+>
+> Suppose that asid_cache(cpu) wraps to 0 every n days.
+> case 1:
+> (1)Process 1 got ASID 0x101.
+> (2)Process 1 slept for n days.
+> (3)asid_cache(cpu) wrapped to 0x101, and process 2 got ASID 0x101.
+> (4)Process 1 is woken,and ASID of process 1 is same as ASID of process 2.
+>
+> case 2:
+> (1)Process 1 got ASID 0x101 on CPU 1.
+> (2)Process 1 migrated to CPU 2.
+> (3)Process 1 migrated to CPU 1 after n days.
+> (4)asid_cache on CPU 1 wrapped to 0x101, and process 2 got ASID 0x101.
+> (5)Process 1 is scheduled, and ASID of process 1 is same as ASID of process 2.
+>
+> So we need to clear MMU contexts of all other processes when asid_cache(cpu) wraps to 0.
+>
+> Signed-off-by: yhb <yhb@ruijie.com.cn>
+>
+I think a more clear description should be given here - there is no 
+indication that wrap happens over 32bit integer.
 
-> Update OCTEON port mangling code to support readq() and
-> writeq() functions to allow driver code to be more portable.
-> Updates also for word and long function pairs. We also
-> remove SWAP_IO_SPACE for OCTEON platforms as the function
-> macros are redundant with the new mangling code.
-> 
-> Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
-> Acked-by: David Daney <david.daney@cavium.com>
+And taking into account "n days" frequency - can we just kill all local 
+ASIDs in all processes (additionally to local_flush_tlb_all) and enforce 
+reassignment if wrap happens? It should be a very rare event, you are 
+first to hit this.
 
-Thanks, applied.
+It seems to be some localized stuff in get_new_mmu_context() instead of 
+widespread patching.
 
-  Ralf
+- Leonid.

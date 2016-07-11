@@ -1,44 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2016 14:31:28 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:53132 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992514AbcGKMbVF70i8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jul 2016 14:31:21 +0200
-Received: from localhost ([127.0.0.1] helo=[127.0.1.1])
-        by Galois.linutronix.de with esmtp (Exim 4.80)
-        (envelope-from <anna-maria@linutronix.de>)
-        id 1bMaMe-0006ow-L9; Mon, 11 Jul 2016 14:31:08 +0200
-Message-Id: <20160711122535.104189590@linutronix.de>
-User-Agent: quilt/0.63-1
-Date:   Mon, 11 Jul 2016 12:29:00 -0000
-From:   Anna-Maria Gleixner <anna-maria@linutronix.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Richard Cochran <rcochran@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Robert Richter <rric@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>, oprofile-list@lists.sf.net,
-        linux-mips@linux-mips.org,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>
-Subject: [patch 53/66] MIPS: Loongson-3: Convert oprofile to hotplug state
- machine
-References: <20160711122450.923603742@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2016 16:56:18 +0200 (CEST)
+Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
+        with ESMTP id S23993193AbcGKO4JsgmR9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jul 2016 16:56:09 +0200
+Date:   Mon, 11 Jul 2016 15:56:09 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        =?ISO-8859-2?Q?Radim_Kr=E8m=E1=F8?= <rkrcmar@redhat.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 01/12] MIPS: Fix definition of KSEGX() for 64-bit
+In-Reply-To: <1467975211-12674-2-git-send-email-james.hogan@imgtec.com>
+Message-ID: <alpine.LFD.2.20.1607111543480.12953@eddie.linux-mips.org>
+References: <1467975211-12674-1-git-send-email-james.hogan@imgtec.com> <1467975211-12674-2-git-send-email-james.hogan@imgtec.com>
+User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Disposition: inline;
- filename=0054-MIPS-Loongson-3-Convert-oprofile-to-hotplug-state-ma.patch
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001,URIBL_BLOCKED=0.001
-Return-Path: <anna-maria@linutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54279
+X-archive-position: 54280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anna-maria@linutronix.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,89 +37,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Richard Cochran <rcochran@linutronix.de>
+Hi James,
 
-Install the callbacks via the state machine and let the core invoke
-the callbacks on the already online CPUs.
+> This will help some MIPS KVM code handling 32-bit guest addresses to
+> work on 64-bit host kernels, but will also affect KSEGX in
+> dec_kn01_be_backend() on a 64-bit DECstation kernel, and the SiByte DMA
+> page ops KSEGX check in clear_page() and copy_page() on 64-bit SB1
+> kernels, neither of which appear to be designed with 64-bit segments in
+> mind anyway.
 
-Signed-off-by: Richard Cochran <rcochran@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Robert Richter <rric@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: oprofile-list@lists.sf.net
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Anna-Maria Gleixner <anna-maria@linutronix.de>
+ Thanks for the heads-up!
 
----
- arch/mips/oprofile/op_model_loongson3.c |   35 ++++++++++++--------------------
- include/linux/cpuhotplug.h              |    1 
- 2 files changed, 15 insertions(+), 21 deletions(-)
+ This is not an issue however with `dec_kn01_be_backend', because the KN01 
+baseboard used with the DECstation 2100 and 3100 computers has an R2000 
+processor mounted in a permanent manner (no CPU daugthercard as with some 
+later baseboards) and will therefore never run a 64-bit kernel.  In fact I 
+think kn01-berr.c would best only be built in 32-bit configurations.  I 
+never got to making such a clean-up though; I may look into it sometime as 
+I have some 2100/3100 stuff outstanding.
 
---- a/arch/mips/oprofile/op_model_loongson3.c
-+++ b/arch/mips/oprofile/op_model_loongson3.c
-@@ -168,33 +168,26 @@ static int loongson3_perfcount_handler(v
- 	return handled;
- }
- 
--static int loongson3_cpu_callback(struct notifier_block *nfb,
--	unsigned long action, void *hcpu)
-+static int loongson3_starting_cpu(unsigned int cpu)
- {
--	switch (action) {
--	case CPU_STARTING:
--	case CPU_STARTING_FROZEN:
--		write_c0_perflo1(reg.control1);
--		write_c0_perflo2(reg.control2);
--		break;
--	case CPU_DYING:
--	case CPU_DYING_FROZEN:
--		write_c0_perflo1(0xc0000000);
--		write_c0_perflo2(0x40000000);
--		break;
--	}
--
--	return NOTIFY_OK;
-+	write_c0_perflo1(reg.control1);
-+	write_c0_perflo2(reg.control2);
-+	return 0;
- }
- 
--static struct notifier_block loongson3_notifier_block = {
--	.notifier_call = loongson3_cpu_callback
--};
-+static int loongson3_dying_cpu(unsigned int cpu)
-+{
-+	write_c0_perflo1(0xc0000000);
-+	write_c0_perflo2(0x40000000);
-+	return 0;
-+}
- 
- static int __init loongson3_init(void)
- {
- 	on_each_cpu(reset_counters, NULL, 1);
--	register_hotcpu_notifier(&loongson3_notifier_block);
-+	cpuhp_setup_state_nocalls(CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
-+				  "AP_MIPS_OP_LOONGSON3_STARTING",
-+				  loongson3_starting_cpu, loongson3_dying_cpu);
- 	save_perf_irq = perf_irq;
- 	perf_irq = loongson3_perfcount_handler;
- 
-@@ -204,7 +197,7 @@ static int __init loongson3_init(void)
- static void loongson3_exit(void)
- {
- 	on_each_cpu(reset_counters, NULL, 1);
--	unregister_hotcpu_notifier(&loongson3_notifier_block);
-+	cpuhp_remove_state_nocalls(CPUHP_AP_MIPS_OP_LOONGSON3_STARTING);
- 	perf_irq = save_perf_irq;
- }
- 
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -36,6 +36,7 @@ enum cpuhp_state {
- 	CPUHP_AP_PERF_X86_CSTATE_STARTING,
- 	CPUHP_AP_PERF_XTENSA_STARTING,
- 	CPUHP_AP_PERF_METAG_STARTING,
-+	CPUHP_AP_MIPS_OP_LOONGSON3_STARTING,
- 	CPUHP_AP_ARM_VFP_STARTING,
- 	CPUHP_AP_PERF_ARM_STARTING,
- 	CPUHP_AP_ARM_L2X0_STARTING,
+ As to the SiByte platform I have no clue offhand; there's surely some 
+stuff there across the port asking for a clean-up.  I reckon using the 
+data mover for page ops is a kernel configuration option and I may have 
+never enabled it myself.
+
+  Maciej

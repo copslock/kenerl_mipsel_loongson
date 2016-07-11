@@ -1,49 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2016 22:18:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:12748 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992880AbcGKUStnvVRs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jul 2016 22:18:49 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id E06E241F8DAD;
-        Mon, 11 Jul 2016 21:18:40 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 11 Jul 2016 21:18:40 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 11 Jul 2016 21:18:40 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jul 2016 22:24:09 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:60734 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992880AbcGKUYCRn4Q0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Jul 2016 22:24:02 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C113DB8FA83BF;
-        Mon, 11 Jul 2016 21:18:36 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 11 Jul
- 2016 21:18:40 +0100
-Date:   Mon, 11 Jul 2016 21:18:40 +0100
+        by Forcepoint Email with ESMTPS id 254C435C7F0A3;
+        Mon, 11 Jul 2016 21:23:42 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Mon, 11 Jul 2016 21:23:45 +0100
 From:   James Hogan <james.hogan@imgtec.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     <yhb@ruijie.com.cn>, <ralf@linux-mips.org>,
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
         <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: We need to clear MMU contexts of all other
- processes when asid_cache(cpu) wraps to 0.
-Message-ID: <20160711201839.GD26799@jhogan-linux.le.imgtec.org>
-References: <80B78A8B8FEE6145A87579E8435D78C30205D5F3@fzex.ruijie.com.cn>
- <5783DF18.1080408@imgtec.com>
- <20160711180755.GA29839@jhogan-linux.le.imgtec.org>
- <5783E332.2020503@imgtec.com>
- <20160711192121.GC26799@jhogan-linux.le.imgtec.org>
- <5783F5D7.2090804@imgtec.com>
+Subject: [PATCH v2 01/12] MIPS: Fix definition of KSEGX() for 64-bit
+Date:   Mon, 11 Jul 2016 21:23:40 +0100
+Message-ID: <1468268620-8600-1-git-send-email-james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.4.10
+In-Reply-To: <1467975211-12674-2-git-send-email-james.hogan@imgtec.com>
+References: <1467975211-12674-2-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="V88s5gaDVPzZ0KCq"
-Content-Disposition: inline
-In-Reply-To: <5783F5D7.2090804@imgtec.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain
 X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: cee91754
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54290
+X-archive-position: 54291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,54 +46,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---V88s5gaDVPzZ0KCq
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The KSEGX() macro is defined to 32-bit sign extend the address argument
+and logically AND the result with 0xe0000000, with the final result
+usually compared against one of the CKSEG macros. However the literal
+0xe0000000 is unsigned as the high bit is set, and is therefore
+zero-extended on 64-bit kernels, resulting in the sign extension bits of
+the argument being masked to zero. This results in the odd situation
+where:
 
-Hi Leonid,
+  KSEGX(CKSEG0) != CKSEG0
+  (0xffffffff80000000 & 0x00000000e0000000) != 0xffffffff80000000)
 
-On Mon, Jul 11, 2016 at 12:39:03PM -0700, Leonid Yegoshin wrote:
-> On 07/11/2016 12:21 PM, James Hogan wrote:
-> > Note also that I have a patch I'm about to submit which changes some of
-> > those assignments of 0 to assign 1 instead (so as not to confuse the
-> > cache management code into thinking the CPU has never run the code when
-> > it has, while still triggering ASID regeneration). That applies here
-> > too, so it should perhaps be doing something like this instead:
-> >
-> > if (t->mm !=3D mm && cpu_context(cpu, t->mm))
-> > 	cpu_context(cpu, t->mm) =3D 1;
-> Not sure, but did you have chance to look into having another variable=20
-> for cache flush control? It can be that some more states may be needed=20
-> in future, so - just disjoin both, TLB and cache coontrol.
+Fix this by 32-bit sign extending the 0xe0000000 literal using
+_ACAST32_.
 
-No, I haven't yet. I'll Cc you so we can discuss there instead, and in
-the mean time perhaps its best to ignore what I said above for this
-patch.
+This will help some MIPS KVM code handling 32-bit guest addresses to
+work on 64-bit host kernels, but will also affect a couple of other
+users:
 
-Cheers
-James
+- KSEGX in dec_kn01_be_backend() on a 64-bit DECstation kernel. Maciej
+  has confirmed this is not a valid combination.
 
---V88s5gaDVPzZ0KCq
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+- The SiByte DMA page ops KSEGX check in clear_page() and copy_page() on
+  64-bit SB1 kernels, which appears not to be designed with 64-bit
+  segments in mind anyway. This would (perhaps unintentionally) have
+  always fallen back to the CPU copy on 64-bit kernels anyway, so we
+  make this explicit by making CONFIG_SIBYTE_DMA_PAGEOPS depend on
+  32BIT, so the change of KSEGX behaviour can't break anything.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Maciej W. Rozycki <macro@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+Changes in v2:
+- Clarify that the DEC code in question shouldn't get used with 64-bit
+  kernels (thanks Maciej).
+- Make SIBYTE_DMA_PAGEOPS depend on 32BIT so the dependence is explicit
+  and so we don't break anything.
+- Correct CKSEG -> CKSEG0 in patch description.
+---
+ arch/mips/Kconfig                 | 2 +-
+ arch/mips/include/asm/addrspace.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-iQIcBAEBCAAGBQJXg/8fAAoJEGwLaZPeOHZ64Q0P/1zylxxSGQ2j1XBBXZkvcrM3
-mlKJbYpVC/MXrSEZ4T99TXRKu3O17eIQvqjuEvknMAa+4pyjakIOpDEDHgaVq118
-sKEHnATghnYzC6Oq1efm6FFCfKyn+n4EYUkP5dBkR6aaalhSMi7XYPshUd00Bf6k
-NPrxJGVBPGCjezSSWd2x7w7WDyJmFp4lxGjuWlYxXnGxprBxBkwkxAIEF5sLpdIK
-cltdpXokj45y0RZznxVMO/u2NPgrHRAynoA9Eumg0gbUGIi3vXmvZlWxMkP50ROF
-lQLKKTkEtv5XzeeVL6SP0EGwvkBpvh8nq8oZGdabloS7tvyU4sRLrPONPPiqe1GP
-IRRf/YHX3jEoJTWWPjXRz2w+0CMQu01uD5puTdD6pVfyoqNiIHgTYoBccrD+pvMn
-v5jRfIQmTfIvLm+tVm/NJWQyc3LUz4j9CJj96DAsTSvVIeImKCT2ESSo0lAPM58b
-oKn2fZoEyNfcyruX2QFKhWm125q7VI+/c+XnmzDNJeAy3PEvARqLVys3LqtwYrY/
-QWIb17jI0OykRLaCN/rAlOrpnAmYpjQuKM41yTJb+Xl/E50NMImnAcBOCTErXIA8
-wXdGrx/Ld6QbgBaleeeUdmEQzYDWxwHWWTv5hIrO3bjNwbTS4yaZs4cwv1t99Uw0
-ogqMf9zspR62cmcT4fKx
-=IWa2
------END PGP SIGNATURE-----
-
---V88s5gaDVPzZ0KCq--
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ac91939b9b75..86a9abd398f5 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2195,7 +2195,7 @@ config RM7000_CPU_SCACHE
+ 
+ config SIBYTE_DMA_PAGEOPS
+ 	bool "Use DMA to clear/copy pages"
+-	depends on CPU_SB1
++	depends on CPU_SB1 && 32BIT
+ 	help
+ 	  Instead of using the CPU to zero and copy pages, use a Data Mover
+ 	  channel.  These DMA channels are otherwise unused by the standard
+diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
+index 3b0e51d5a613..c5b04e752e97 100644
+--- a/arch/mips/include/asm/addrspace.h
++++ b/arch/mips/include/asm/addrspace.h
+@@ -45,7 +45,7 @@
+ /*
+  * Returns the kernel segment base of a given address
+  */
+-#define KSEGX(a)		((_ACAST32_ (a)) & 0xe0000000)
++#define KSEGX(a)		((_ACAST32_(a)) & _ACAST32_(0xe0000000))
+ 
+ /*
+  * Returns the physical address of a CKSEGx / XKPHYS address
+-- 
+2.4.10

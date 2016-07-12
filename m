@@ -1,76 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2016 14:19:24 +0200 (CEST)
-Received: from mailout4.w1.samsung.com ([210.118.77.14]:62870 "EHLO
-        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993494AbcGLMTRUDiY- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jul 2016 14:19:17 +0200
-Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
- by mailout4.w1.samsung.com
- (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0OA7004Z7BJXGF80@mailout4.w1.samsung.com> for
- linux-mips@linux-mips.org; Tue, 12 Jul 2016 13:19:09 +0100 (BST)
-X-AuditID: cbfec7f4-f796c6d000001486-6e-5784e03ddef3
-Received: from eusync3.samsung.com ( [203.254.199.213])
-        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 21.47.05254.D30E4875; Tue,
- 12 Jul 2016 13:19:09 +0100 (BST)
-Received: from [106.120.53.17] by eusync3.samsung.com
- (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTPA id <0OA7003URBJW3T20@eusync3.samsung.com>; Tue,
- 12 Jul 2016 13:19:09 +0100 (BST)
-Subject: Re: [PATCH v5 00/44] dma-mapping: Use unsigned long for dma_attrs
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-rdma@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-sh@vger.kernel.org, hch@infradead.org,
-        linux-rockchip@lists.infradead.org, nouveau@lists.freedesktop.org,
-        xen-devel@lists.xenproject.org, linux-snps-arc@lists.infradead.org,
-        linux-media@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-arm-msm@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-metag@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-cris-kernel@axis.com,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-References: <1467275019-30789-1-git-send-email-k.kozlowski@samsung.com>
- <20160712121625.GP23520@phenom.ffwll.local>
-From:   Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Message-id: <5784E03B.6060000@samsung.com>
-Date:   Tue, 12 Jul 2016 14:19:07 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2016 20:18:43 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:59586 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993518AbcGLSSghjWJj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jul 2016 20:18:36 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.87)
+        (envelope-from <steven.hill@cavium.com>)
+        id 1bN276-0001eN-Ip; Tue, 12 Jul 2016 13:08:56 -0500
+Subject: [PATCH V8 0/2] mmc: OCTEON: Add OCTEON MMC controller.
+To:     linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+From:   "Steven J. Hill" <steven.hill@cavium.com>
+Message-ID: <5785346E.8020702@cavium.com>
+Date:   Tue, 12 Jul 2016 13:18:22 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
  Thunderbird/38.8.0
-MIME-version: 1.0
-In-reply-to: <20160712121625.GP23520@phenom.ffwll.local>
-Content-type: text/plain; charset=windows-1252
-Content-transfer-encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0yNcRjH93tv5605eXsVv2mYQ5tlSsKehRj/vNGmWXOwNh31OpVOtXOc
-        KDZNJZIcqu10XZdD96JSrUnTRbcdFeXaTYipnMglSnRqxn+f7/N8v8/3n4cl+Vh6ORsQfFJU
-        ByuCZIwl1THb0rthx1C0fGNLzBpILytm4La+jIaeryYG0t8ZEXTocgjIqt8Go++d4WN/E4Ly
-        109ouFZvlEBTmo6A/KJSErIvGChoTZigwRRdw8DExY80PK5NZyDvTQkJ8bfuzMmobgQjL2Ip
-        0CVfl0Ca4SoFw+1dBBgzWxgYabhCweeh3yTosqNI0HfeIyB9JomEmL4SAgqMJRKY/j5Lw/eE
-        BBoi2/LnqDKR2LVWeFrqKVTkOwg15aOE0KqfpoTmghJCeH+/mhQGL7cQQoXhnJD4LA8JbTHf
-        KKFTn42ExokeSkioLETCZPlKT6sjltv9xKCAMFHt5OZj6V+UNEyETtOnM5LymEj0gopDFizm
-        NuOx7ExigZfiroEyJg5Zsjx3A+Gql8mSBTGCcNJYBjK7lnB78ev2t/NpG26cxb3nQ8zMc1qc
-        +yuaMTPDueCKPMM8SzkHXDN6WWJmirPH/RnF82223CGcWj1FLHis8VTiwPxNCw6w/tW3uS6W
-        JTlHPNjtYB6T3CpcUTxO6tDi1P8Sqf9cqf+5shBZiGxFrW+o5phS5eyoUag02mClo2+Iqhwt
-        vMeXGpT7wLUBcSySLZIOdUTJeVoRpglXNSDMkjIb6dBAtJyX+inCI0R1yFG1NkjUNCA7lpIt
-        k2bUmrx4Tqk4KZ4QxVBR/XdLsBbLI5GV3VhKXYrhKcOfXZ+rT3F7Hn9KZR+nu9sc6GG72+1c
-        jinxy+yVKW+SC1nx48xD4esHxrrqifuMEximit15fqtXss57v7HPJVy+Z5up8NHPHvlhX1fl
-        TUIuVF+w+zS5cx3R7JGGfQrf7qtbrWxs97EK3PL7+Liy79Im9YGD2vwIGaXxVzg7kGqN4g/v
-        OupAGgMAAA==
-Return-Path: <k.kozlowski@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <steven.hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54298
+X-archive-position: 54299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: k.kozlowski@samsung.com
+X-original-sender: steven.hill@cavium.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,28 +43,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/12/2016 02:16 PM, Daniel Vetter wrote:
-> On Thu, Jun 30, 2016 at 10:23:39AM +0200, Krzysztof Kozlowski wrote:
->> Hi,
->>
->>
->> This is fifth approach for replacing struct dma_attrs with unsigned
->> long.
->>
->> The main patch (1/44) doing the change is split into many subpatches
->> for easier review (2-42).  They should be squashed together when
->> applying.
-> 
-> For all the drm driver patches:
-> 
-> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> 
-> Should I pull these in through drm-misc, or do you prefer to merge them
-> through a special topic branch (with everything else) instead on your own?
-> -Daniel
+The OCTEON MMC controller is currently found on cn61XX and cnf71XX
+devices. Device parameters are configured from device tree data.
 
-Thanks. I saw today that Andrew Morton applied the patchset so I think
-he will handle it.
+The MMC controller can be connected to up to 4 "slots" which may be
+eMMC, MMC or SD card devices. As there is a single controller, each
+available slot is represented as a child node of the controller.
 
-Best regards,
-Krzysztof
+This MMC driver is the product of previous versions and discussions
+which can be found at the below URLs.
+
+[V7] https://patchwork.linux-mips.org/patch/12566/
+     https://patchwork.linux-mips.org/patch/12567/
+[V6] https://patchwork.linux-mips.org/patch/12538/
+     https://patchwork.linux-mips.org/patch/12539/
+     https://patchwork.linux-mips.org/patch/12540/
+[V5] https://patchwork.linux-mips.org/patch/12533/
+[V4] https://patchwork.linux-mips.org/patch/9558/
+[V3] https://patchwork.linux-mips.org/patch/9462/
+[V2] https://patchwork.linux-mips.org/patch/9086/
+[V1] https://patchwork.linux-mips.org/patch/9079/
+
+Steven J. Hill (2):
+  mmc: OCTEON: Add DT bindings for OCTEON MMC controller.
+  mmc: OCTEON: Add host driver for OCTEON MMC controller.
+
+ .../devicetree/bindings/mmc/octeon-mmc.txt         |   72 ++
+ drivers/mmc/host/Kconfig                           |   10 +
+ drivers/mmc/host/Makefile                          |    1 +
+ drivers/mmc/host/octeon_mmc.c                      | 1331 ++++++++++++++++++++
+ 4 files changed, 1414 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mmc/octeon-mmc.txt
+ create mode 100644 drivers/mmc/host/octeon_mmc.c
+
+-- 
+1.9.1

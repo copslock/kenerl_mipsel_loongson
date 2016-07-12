@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2016 05:02:11 +0200 (CEST)
-Received: from userp1040.oracle.com ([156.151.31.81]:49824 "EHLO
-        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992329AbcGLDCCthACM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jul 2016 05:02:02 +0200
-Received: from userv0022.oracle.com (userv0022.oracle.com [156.151.31.74])
-        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u6C31qKR022910
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 12 Jul 2016 03:01:52 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userv0022.oracle.com (8.14.4/8.13.8) with ESMTP id u6C31pjh025183
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2016 05:05:11 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:50694 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992329AbcGLDFE6KUSM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Jul 2016 05:05:04 +0200
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u6C34dxw000596
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 12 Jul 2016 03:04:39 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u6C34c4J026101
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 12 Jul 2016 03:01:51 GMT
+        Tue, 12 Jul 2016 03:04:38 GMT
 Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0121.oracle.com (8.13.8/8.13.8) with ESMTP id u6C31oYc026842;
-        Tue, 12 Jul 2016 03:01:50 GMT
+        by aserv0121.oracle.com (8.13.8/8.13.8) with ESMTP id u6C34a4b010394;
+        Tue, 12 Jul 2016 03:04:37 GMT
 Received: from lappy.us.oracle.com (/10.154.100.236)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 11 Jul 2016 20:01:50 -0700
+        with ESMTP ; Mon, 11 Jul 2016 20:04:36 -0700
 From:   Sasha Levin <sasha.levin@oracle.com>
 To:     stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, Sasha Levin <sasha.levin@oracle.com>
-Subject: [added to the 3.18 stable tree] MIPS: KVM: Fix modular KVM under QEMU
-Date:   Mon, 11 Jul 2016 22:57:57 -0400
-Message-Id: <1468292479-23684-25-git-send-email-sasha.levin@oracle.com>
+Cc:     Huacai Chen <chenhc@lemote.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <sjhill@realitydiluted.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Sasha Levin <sasha.levin@oracle.com>
+Subject: [added to the 3.18 stable tree] MIPS: Reserve nosave data for hibernation
+Date:   Mon, 11 Jul 2016 23:00:45 -0400
+Message-Id: <1468292479-23684-193-git-send-email-sasha.levin@oracle.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1468292479-23684-1-git-send-email-sasha.levin@oracle.com>
 References: <1468292479-23684-1-git-send-email-sasha.levin@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Source-IP: userv0022.oracle.com [156.151.31.74]
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
 Return-Path: <sasha.levin@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54294
+X-archive-position: 54295
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,114 +54,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
 This patch has been added to the 3.18 stable tree. If you have any
 objections, please let us know.
 
 ===============
 
-[ Upstream commit 797179bc4fe06c89e47a9f36f886f68640b423f8 ]
+[ Upstream commit a95d069204e178f18476f5499abab0d0d9cbc32c ]
 
-Copy __kvm_mips_vcpu_run() into unmapped memory, so that we can never
-get a TLB refill exception in it when KVM is built as a module.
+After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
+in the memblock region"), the MIPS hibernation is broken. Because pages
+in nosave data section should be "reserved", but currently they aren't
+set to "reserved" at initialization. This patch makes hibernation work
+again.
 
-This was observed to happen with the host MIPS kernel running under
-QEMU, due to a not entirely transparent optimisation in the QEMU TLB
-handling where TLB entries replaced with TLBWR are copied to a separate
-part of the TLB array. Code in those pages continue to be executable,
-but those mappings persist only until the next ASID switch, even if they
-are marked global.
-
-An ASID switch happens in __kvm_mips_vcpu_run() at exception level after
-switching to the guest exception base. Subsequent TLB mapped kernel
-instructions just prior to switching to the guest trigger a TLB refill
-exception, which enters the guest exception handlers without updating
-EPC. This appears as a guest triggered TLB refill on a host kernel
-mapped (host KSeg2) address, which is not handled correctly as user
-(guest) mode accesses to kernel (host) segments always generate address
-error exceptions.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Radim Krčmář <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: kvm@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: Aurelien Jarno <aurelien@aurel32.net>
+Cc: Steven J . Hill <sjhill@realitydiluted.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.10.x-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: stable@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12888/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
 ---
- arch/mips/include/asm/kvm_host.h |  1 +
- arch/mips/kvm/interrupt.h        |  1 +
- arch/mips/kvm/locore.S           |  1 +
- arch/mips/kvm/mips.c             | 11 ++++++++++-
- 4 files changed, 13 insertions(+), 1 deletion(-)
+ arch/mips/kernel/setup.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 1616b56..b369199 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -377,6 +377,7 @@ struct kvm_mips_tlb {
- #define KVM_MIPS_GUEST_TLB_SIZE	64
- struct kvm_vcpu_arch {
- 	void *host_ebase, *guest_ebase;
-+	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
- 	unsigned long host_stack;
- 	unsigned long host_gp;
- 
-diff --git a/arch/mips/kvm/interrupt.h b/arch/mips/kvm/interrupt.h
-index 4ab4bdf..2143884 100644
---- a/arch/mips/kvm/interrupt.h
-+++ b/arch/mips/kvm/interrupt.h
-@@ -28,6 +28,7 @@
- #define MIPS_EXC_MAX                12
- /* XXXSL More to follow */
- 
-+extern char __kvm_mips_vcpu_run_end[];
- extern char mips32_exception[], mips32_exceptionEnd[];
- extern char mips32_GuestException[], mips32_GuestExceptionEnd[];
- 
-diff --git a/arch/mips/kvm/locore.S b/arch/mips/kvm/locore.S
-index 4a68b17..21c2575 100644
---- a/arch/mips/kvm/locore.S
-+++ b/arch/mips/kvm/locore.S
-@@ -231,6 +231,7 @@ FEXPORT(__kvm_mips_load_k0k1)
- 
- 	/* Jump to guest */
- 	eret
-+EXPORT(__kvm_mips_vcpu_run_end)
- 
- VECTOR(MIPSX(exception), unknown)
- /* Find out what mode we came from and jump to the proper handler. */
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index a53eaf5..26059bf 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -306,6 +306,15 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- 	memcpy(gebase + offset, mips32_GuestException,
- 	       mips32_GuestExceptionEnd - mips32_GuestException);
- 
-+#ifdef MODULE
-+	offset += mips32_GuestExceptionEnd - mips32_GuestException;
-+	memcpy(gebase + offset, (char *)__kvm_mips_vcpu_run,
-+	       __kvm_mips_vcpu_run_end - (char *)__kvm_mips_vcpu_run);
-+	vcpu->arch.vcpu_run = gebase + offset;
-+#else
-+	vcpu->arch.vcpu_run = __kvm_mips_vcpu_run;
-+#endif
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index f3b635f..2168355 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -685,6 +685,9 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	for_each_memblock(reserved, reg)
+ 		if (reg->size != 0)
+ 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
 +
- 	/* Invalidate the icache for these ranges */
- 	local_flush_icache_range((unsigned long)gebase,
- 				(unsigned long)gebase + ALIGN(size, PAGE_SIZE));
-@@ -392,7 +401,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 	/* Disable hardware page table walking while in guest */
- 	htw_stop();
++	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
++			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+ }
  
--	r = __kvm_mips_vcpu_run(run, vcpu);
-+	r = vcpu->arch.vcpu_run(run, vcpu);
- 
- 	/* Re-enable HTW before enabling interrupts */
- 	htw_start();
+ static void __init resource_init(void)
 -- 
 2.5.0

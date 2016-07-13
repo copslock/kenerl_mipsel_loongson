@@ -1,27 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2016 15:14:13 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:6602 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2016 15:14:34 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38459 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992554AbcGMNNZzPtvh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jul 2016 15:13:25 +0200
+        with ESMTP id S23992754AbcGMNN3YA4Hh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jul 2016 15:13:29 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id A8D30AD401458;
-        Wed, 13 Jul 2016 14:13:06 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 082609D7AF8AD;
+        Wed, 13 Jul 2016 14:13:20 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 13 Jul 2016 14:13:09 +0100
+ 14.3.294.0; Wed, 13 Jul 2016 14:13:22 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, Paul Burton
-        <paul.burton@imgtec.com>, Leonid Yegoshin <leonid.yegoshin@imgtec.com>, Felix
- Fietkau <nbd@nbd.name>, David Daney <david.daney@cavium.com>, Florian
- Fainelli <f.fainelli@gmail.com>, Hongliang Tao <taohl@lemote.com>, Huacai
- Chen <chenhc@lemote.com>, Hua Yan <yanh@lemote.com>, Jayachandran C.
-        <jchandra@broadcom.com>, Kevin Cernekee <cernekee@gmail.com>,
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
         <linux-mips@linux-mips.org>
-Subject: [PATCH 00/13] MIPS: c-r4k: SMP cache management fixes
-Date:   Wed, 13 Jul 2016 14:12:43 +0100
-Message-ID: <1468415576-12600-1-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 05/13] MIPS: c-r4k: Fix sigtramp SMP call to use kmap
+Date:   Wed, 13 Jul 2016 14:12:48 +0100
+Message-ID: <1468415576-12600-6-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
+In-Reply-To: <1468415576-12600-1-git-send-email-james.hogan@imgtec.com>
+References: <1468415576-12600-1-git-send-email-james.hogan@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.154.110]
@@ -29,7 +28,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54311
+X-archive-position: 54312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,65 +45,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-These patches collect together various SMP cache management fixes &
-refactorings, particularly to fix the missing SMP calls for indexed
-cache ops on MIPS Coherence Manager (CM) based SMP systems since commit
-cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores").
+Fix r4k_flush_cache_sigtramp() and local_r4k_flush_cache_sigtramp() to
+flush the delay slot emulation trampoline cacheline through a kmap
+rather than directly when the active_mm doesn't match that of the task
+initiating the flush, a bit like local_r4k_flush_cache_page() does.
 
-Patches 1-6 fix various issues in the SMP code and cache management code
-(all in relation to cache management).
+This would fix a corner case on SMP systems without hardware globalized
+hit cache ops, where a migration to another CPU after the flush, where
+that CPU did not have the same mm active at the time of the flush, could
+result in stale icache content being executed instead of the trampoline,
+e.g. from a previous delay slot emulation with a similar stack pointer.
 
-Patches 7-12 then prepare r4k_on_each_cpu() and its various
-callers/callees to distinguish hit/index cache ops so SMP calls can be
-avoided.
+This case was artificially triggered by replacing the icache flush with
+a full indexed flush (not globalized on CM systems) and forcing the SMP
+call to take place, with a test program that alternated two FPU delay
+slots with a parent process repeatedly changing scheduler affinity.
 
-Finally patch 13 makes the change for CM so that indexed cache ops are
-performed on each core via SMP calls.
-
-Patch 9 should also work around the SMP 34Kc regression Felix saw
-recently, but __flush_anon_page() and r4k_flush_data_cache_page()
-definitely still need looking at too.
-
-All feedback & testing gratefully received.
-
-James Hogan (13):
-  MIPS: SMP: Clear ASID without confusing has_valid_asid()
-  MIPS: SMP: Update cpu_foreign_map on CPU disable
-  MIPS: SMP: Drop stop_this_cpu() cpu_foreign_map hack
-  MIPS: c-r4k: Fix protected_writeback_scache_line for EVA
-  MIPS: c-r4k: Fix sigtramp SMP call to use kmap
-  MIPS: c-r4k: Avoid dcache flush for sigtramps
-
-  MIPS: c-r4k: Add r4k_on_each_cpu cache op type arg
-  MIPS: c-r4k: Fix valid ASID optimisation
-  MIPS: c-r4k: Exclude sibling CPUs in SMP calls
-  MIPS: c-r4k: Split r4k_flush_kernel_vmap_range()
-  MIPS: c-r4k: Local flush_icache_range cache op override
-  MIPS: c-r4k: Avoid small flush_icache_range SMP calls
-
-  MIPS: c-r4k: Use SMP calls for CM indexed cache ops
-
- arch/mips/cavium-octeon/smp.c         |   1 +
- arch/mips/include/asm/r4kcache.h      |   4 +
- arch/mips/include/asm/smp.h           |   4 +-
- arch/mips/kernel/smp-bmips.c          |   1 +
- arch/mips/kernel/smp-cps.c            |   1 +
- arch/mips/kernel/smp.c                |  34 +++--
- arch/mips/loongson64/loongson-3/smp.c |   1 +
- arch/mips/mm/c-r4k.c                  | 274 ++++++++++++++++++++++++++++------
- 8 files changed, 257 insertions(+), 63 deletions(-)
-
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-Cc: Felix Fietkau <nbd@nbd.name>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Hongliang Tao <taohl@lemote.com>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Hua Yan <yanh@lemote.com>
-Cc: Jayachandran C. <jchandra@broadcom.com>
-Cc: Kevin Cernekee <cernekee@gmail.com>
+Cc: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
+---
+ arch/mips/mm/c-r4k.c | 75 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 69 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 9204d4e4f02f..600b0ad48319 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -792,25 +792,72 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ }
+ #endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
+ 
++struct flush_cache_sigtramp_args {
++	struct mm_struct *mm;
++	struct page *page;
++	unsigned long addr;
++};
++
+ /*
+  * While we're protected against bad userland addresses we don't care
+  * very much about what happens in that case.  Usually a segmentation
+  * fault will dump the process later on anyway ...
+  */
+-static void local_r4k_flush_cache_sigtramp(void * arg)
++static void local_r4k_flush_cache_sigtramp(void *args)
+ {
++	struct flush_cache_sigtramp_args *fcs_args = args;
++	unsigned long addr = fcs_args->addr;
++	struct page *page = fcs_args->page;
++	struct mm_struct *mm = fcs_args->mm;
++	int map_coherent = 0;
++	void *vaddr;
++
+ 	unsigned long ic_lsize = cpu_icache_line_size();
+ 	unsigned long dc_lsize = cpu_dcache_line_size();
+ 	unsigned long sc_lsize = cpu_scache_line_size();
+-	unsigned long addr = (unsigned long) arg;
++
++	/*
++	 * If owns no valid ASID yet, cannot possibly have gotten
++	 * this page into the cache.
++	 */
++	if (!has_valid_asid(mm))
++		return;
++
++	if (mm == current->active_mm) {
++		vaddr = NULL;
++	} else {
++		/*
++		 * Use kmap_coherent or kmap_atomic to do flushes for
++		 * another ASID than the current one.
++		 */
++		map_coherent = (cpu_has_dc_aliases &&
++				page_mapcount(page) &&
++				!Page_dcache_dirty(page));
++		if (map_coherent)
++			vaddr = kmap_coherent(page, addr);
++		else
++			vaddr = kmap_atomic(page);
++		addr = (unsigned long)vaddr + (addr & ~PAGE_MASK);
++	}
+ 
+ 	R4600_HIT_CACHEOP_WAR_IMPL;
+ 	if (dc_lsize)
+-		protected_writeback_dcache_line(addr & ~(dc_lsize - 1));
++		vaddr ? flush_dcache_line(addr & ~(dc_lsize - 1))
++		      : protected_writeback_dcache_line(addr & ~(dc_lsize - 1));
+ 	if (!cpu_icache_snoops_remote_store && scache_size)
+-		protected_writeback_scache_line(addr & ~(sc_lsize - 1));
++		vaddr ? flush_scache_line(addr & ~(sc_lsize - 1))
++		      : protected_writeback_scache_line(addr & ~(sc_lsize - 1));
+ 	if (ic_lsize)
+-		protected_flush_icache_line(addr & ~(ic_lsize - 1));
++		vaddr ? flush_icache_line(addr & ~(ic_lsize - 1))
++		      : protected_flush_icache_line(addr & ~(ic_lsize - 1));
++
++	if (vaddr) {
++		if (map_coherent)
++			kunmap_coherent();
++		else
++			kunmap_atomic(vaddr);
++	}
++
+ 	if (MIPS4K_ICACHE_REFILL_WAR) {
+ 		__asm__ __volatile__ (
+ 			".set push\n\t"
+@@ -835,7 +882,23 @@ static void local_r4k_flush_cache_sigtramp(void * arg)
+ 
+ static void r4k_flush_cache_sigtramp(unsigned long addr)
+ {
+-	r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, (void *) addr);
++	struct flush_cache_sigtramp_args args;
++	int npages;
++
++	down_read(&current->mm->mmap_sem);
++
++	npages = get_user_pages_fast(addr, 1, 0, &args.page);
++	if (npages < 1)
++		goto out;
++
++	args.mm = current->mm;
++	args.addr = addr;
++
++	r4k_on_each_cpu(local_r4k_flush_cache_sigtramp, &args);
++
++	put_page(args.page);
++out:
++	up_read(&current->mm->mmap_sem);
+ }
+ 
+ static void r4k_flush_icache_all(void)
 -- 
 2.4.10

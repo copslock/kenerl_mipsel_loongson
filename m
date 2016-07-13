@@ -1,38 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2016 15:18:22 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:36807 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993454AbcGMNN67AGmh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jul 2016 15:13:58 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 0577B3C9B20E2;
-        Wed, 13 Jul 2016 14:13:40 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 13 Jul 2016 14:13:42 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH 13/13] MIPS: c-r4k: Use SMP calls for CM indexed cache ops
-Date:   Wed, 13 Jul 2016 14:12:56 +0100
-Message-ID: <1468415576-12600-14-git-send-email-james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.4.10
-In-Reply-To: <1468415576-12600-1-git-send-email-james.hogan@imgtec.com>
-References: <1468415576-12600-1-git-send-email-james.hogan@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2016 15:28:06 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:39445 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993508AbcGMN16w7xO4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Jul 2016 15:27:58 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id ABA9E1A4760;
+        Wed, 13 Jul 2016 15:27:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from mcs14.domain.local (mcs14.domain.local [192.168.232.214])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 95B8C1A4752;
+        Wed, 13 Jul 2016 15:27:51 +0200 (CEST)
+From:   Petar Jovanovic <petar.jovanovic@rt-rk.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Subject: [PATCH] MIPS: traps: return correct si code for accessing nonmapped addresses
+Date:   Wed, 13 Jul 2016 15:23:37 +0200
+Message-Id: <1468416217-54931-1-git-send-email-petar.jovanovic@rt-rk.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <petar.jovanovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54322
+X-archive-position: 54323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: petar.jovanovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,52 +38,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS Coherence Manager (CM) can propagate address-based ("hit")
-cache operations to other cores in the coherent system, alleviating
-software of the need to use SMP calls, however indexed cache operations
-are not propagated by hardware since doing so makes no sense for
-separate caches.
+find_vma() returns the first VMA which satisfies fault_addr < vm_end, but
+it does not guarantee fault_addr is actually within VMA. Therefore, kernel
+has to check that before it chooses correct si code on return.
 
-Update r4k_op_needs_ipi() to report that only hit cache operations are
-globalized by the CM, requiring indexed cache operations to be
-globalized by software via an SMP call.
-
-r4k_on_each_cpu() previously had a special case for CONFIG_MIPS_MT_SMP,
-intended to avoid the SMP calls when the only other CPUs in the system
-were other VPEs in the same core, and hence sharing the same caches.
-This was changed by commit cccf34e9411c ("MIPS: c-r4k: Fix cache
-flushing for MT cores") to apparently handle multi-core multi-VPE
-systems, but it focussed mainly on hit cache ops, so the SMP calls were
-still disabled entirely for CM systems.
-
-This doesn't normally cause problems, but tests can be written to hit
-these corner cases by using multiple threads, or changing task
-affinities to force the process to migrate cores. For example the
-failure of mprotect RW->RX to globally sync icaches (via
-flush_cache_range) can be detected by modifying and mprotecting a code
-page on one core, and migrating to a different core to execute from it.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-Cc: linux-mips@linux-mips.org
+Signed-off-by: Petar Jovanovic <petar.jovanovic@rt-rk.com>
 ---
- arch/mips/mm/c-r4k.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/traps.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 8016babe5c84..3227a0a267f5 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -68,7 +68,7 @@
- static inline bool r4k_op_needs_ipi(unsigned int type)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 4a1712b..b7b50d5 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -704,6 +704,7 @@ asmlinkage void do_ov(struct pt_regs *regs)
+ int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
  {
- 	/* The MIPS Coherence Manager (CM) globalizes address-based cache ops */
--	if (mips_cm_present())
-+	if (type == R4K_HIT && mips_cm_present())
- 		return false;
+ 	struct siginfo si = { 0 };
++	struct vm_area_struct *vma;
  
- 	/*
+ 	switch (sig) {
+ 	case 0:
+@@ -744,7 +745,8 @@ int process_fpemu_return(int sig, void __user *fault_addr, unsigned long fcr31)
+ 		si.si_addr = fault_addr;
+ 		si.si_signo = sig;
+ 		down_read(&current->mm->mmap_sem);
+-		if (find_vma(current->mm, (unsigned long)fault_addr))
++		vma = find_vma(current->mm, (unsigned long)fault_addr);
++		if (vma && (vma->vm_start <= (unsigned long)fault_addr))
+ 			si.si_code = SEGV_ACCERR;
+ 		else
+ 			si.si_code = SEGV_MAPERR;
 -- 
-2.4.10
+1.9.1

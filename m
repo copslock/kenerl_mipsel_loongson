@@ -1,27 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2016 15:15:17 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47010 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2016 15:15:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:40219 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992909AbcGMNNear8Ah (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jul 2016 15:13:34 +0200
+        with ESMTP id S23993107AbcGMNNgNZzFh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jul 2016 15:13:36 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 1AA7616C0F13A;
-        Wed, 13 Jul 2016 14:13:13 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 4DB58C57D1859;
+        Wed, 13 Jul 2016 14:13:17 +0100 (IST)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 13 Jul 2016 14:13:15 +0100
+ 14.3.294.0; Wed, 13 Jul 2016 14:13:19 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        David Daney <david.daney@cavium.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Hongliang Tao <taohl@lemote.com>, Hua Yan <yanh@lemote.com>,
+        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
         <linux-mips@linux-mips.org>
-Subject: [PATCH 02/13] MIPS: SMP: Update cpu_foreign_map on CPU disable
-Date:   Wed, 13 Jul 2016 14:12:45 +0100
-Message-ID: <1468415576-12600-3-git-send-email-james.hogan@imgtec.com>
+Subject: [PATCH 04/13] MIPS: c-r4k: Fix protected_writeback_scache_line for EVA
+Date:   Wed, 13 Jul 2016 14:12:47 +0100
+Message-ID: <1468415576-12600-5-git-send-email-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.4.10
 In-Reply-To: <1468415576-12600-1-git-send-email-james.hogan@imgtec.com>
 References: <1468415576-12600-1-git-send-email-james.hogan@imgtec.com>
@@ -32,7 +27,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54314
+X-archive-position: 54315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,108 +44,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When a CPU is disabled via CPU hotplug, cpu_foreign_map is not updated.
-This could result in cache management SMP calls being sent to offline
-CPUs instead of online siblings in the same core.
+The protected_writeback_scache_line() function is used by
+local_r4k_flush_cache_sigtramp() to flush an FPU delay slot emulation
+trampoline on the userland stack from the caches so it is visible to
+subsequent instruction fetches.
 
-Add a call to calculate_cpu_foreign_map() in the various MIPS cpu
-disable callbacks after set_cpu_online(). All cases are updated for
-consistency and to keep cpu_foreign_map strictly up to date, not just
-those which may support hardware multithreading.
+Commit de8974e3f76c ("MIPS: asm: r4kcache: Add EVA cache flushing
+functions") updated some protected_ cache flush functions to use EVA
+CACHEE instructions via protected_cachee_op(), and commit 83fd43449baa
+("MIPS: r4kcache: Add EVA case for protected_writeback_dcache_line") did
+the same thing for protected_writeback_dcache_line(), but
+protected_writeback_scache_line() never got updated. Lets fix that now
+to flush the right user address from the secondary cache rather than
+some arbitrary kernel unmapped address.
 
-Fixes: cccf34e9411c ("MIPS: c-r4k: Fix cache flushing for MT cores")
+This issue was spotted through code inspection, and it seems unlikely to
+be possible to hit this in practice. It theoretically affect EVA kernels
+on EVA capable cores with an L2 cache, where the icache fetches straight
+from RAM (cpu_icache_snoops_remote_store == 0), running a hard float
+userland with FPU disabled (nofpu). That both Malta and Boston platforms
+override cpu_icache_snoops_remote_store to 1 suggests that all MIPS
+cores fetch instructions into icache straight from L2 rather than RAM.
+
+Fixes: de8974e3f76c ("MIPS: asm: r4kcache: Add EVA cache flushing functions")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Kevin Cernekee <cernekee@gmail.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Huacai Chen <chenhc@lemote.com>
-Cc: Hongliang Tao <taohl@lemote.com>
-Cc: Hua Yan <yanh@lemote.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/cavium-octeon/smp.c         | 1 +
- arch/mips/include/asm/smp.h           | 2 ++
- arch/mips/kernel/smp-bmips.c          | 1 +
- arch/mips/kernel/smp-cps.c            | 1 +
- arch/mips/kernel/smp.c                | 2 +-
- arch/mips/loongson64/loongson-3/smp.c | 1 +
- 6 files changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/r4kcache.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index 33aab89259f3..4d457d602d3b 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -271,6 +271,7 @@ static int octeon_cpu_disable(void)
- 		return -ENOTSUPP;
+diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
+index 38902bf97adc..667ca3c467b7 100644
+--- a/arch/mips/include/asm/r4kcache.h
++++ b/arch/mips/include/asm/r4kcache.h
+@@ -210,7 +210,11 @@ static inline void protected_writeback_dcache_line(unsigned long addr)
  
- 	set_cpu_online(cpu, false);
-+	calculate_cpu_foreign_map();
- 	cpumask_clear_cpu(cpu, &cpu_callin_map);
- 	octeon_fixup_irqs();
- 
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 03722d4326a1..0c534a03bb36 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -53,6 +53,8 @@ extern cpumask_t cpu_coherent_mask;
- 
- extern void asmlinkage smp_bootstrap(void);
- 
-+extern void calculate_cpu_foreign_map(void);
-+
- /*
-  * this function sends a 'reschedule' IPI to another CPU.
-  * it goes straight through and wastes no time serializing
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index e02addc0307f..6d0f1321e084 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -363,6 +363,7 @@ static int bmips_cpu_disable(void)
- 	pr_info("SMP: CPU%d is offline\n", cpu);
- 
- 	set_cpu_online(cpu, false);
-+	calculate_cpu_foreign_map();
- 	cpumask_clear_cpu(cpu, &cpu_callin_map);
- 	clear_c0_status(IE_IRQ5);
- 
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index 4ed36f288d64..47ff5108bed5 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -397,6 +397,7 @@ static int cps_cpu_disable(void)
- 	atomic_sub(1 << cpu_vpe_id(&current_cpu_data), &core_cfg->vpe_mask);
- 	smp_mb__after_atomic();
- 	set_cpu_online(cpu, false);
-+	calculate_cpu_foreign_map();
- 	cpumask_clear_cpu(cpu, &cpu_callin_map);
- 
- 	return 0;
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 0c98b4a313be..a4d4309ecff2 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -124,7 +124,7 @@ static inline void set_cpu_core_map(int cpu)
-  * Calculate a new cpu_foreign_map mask whenever a
-  * new cpu appears or disappears.
-  */
--static inline void calculate_cpu_foreign_map(void)
-+void calculate_cpu_foreign_map(void)
+ static inline void protected_writeback_scache_line(unsigned long addr)
  {
- 	int i, k, core_present;
- 	cpumask_t temp_foreign_map;
-diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
-index e59759af63d9..2fec6f753a35 100644
---- a/arch/mips/loongson64/loongson-3/smp.c
-+++ b/arch/mips/loongson64/loongson-3/smp.c
-@@ -417,6 +417,7 @@ static int loongson3_cpu_disable(void)
- 		return -EBUSY;
++#ifdef CONFIG_EVA
++	protected_cachee_op(Hit_Writeback_Inv_SD, addr);
++#else
+ 	protected_cache_op(Hit_Writeback_Inv_SD, addr);
++#endif
+ }
  
- 	set_cpu_online(cpu, false);
-+	calculate_cpu_foreign_map();
- 	cpumask_clear_cpu(cpu, &cpu_callin_map);
- 	local_irq_save(flags);
- 	fixup_irqs();
+ /*
 -- 
 2.4.10

@@ -1,44 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 12:15:06 +0200 (CEST)
-Received: from userp1040.oracle.com ([156.151.31.81]:17796 "EHLO
-        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23995252AbcGNKPAdEbOL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jul 2016 12:15:00 +0200
-Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
-        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u6EAEh7N007645
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 14 Jul 2016 10:14:43 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u6EAEfUF006377
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 14 Jul 2016 10:14:41 GMT
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id u6EAEbBd011026;
-        Thu, 14 Jul 2016 10:14:38 GMT
-Received: from mwanda (/154.0.139.178)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 14 Jul 2016 03:14:37 -0700
-Date:   Thu, 14 Jul 2016 13:14:29 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>
-Cc:     Rob Herring <robh@kernel.org>, Marc Zyngier <marc.zyngier@arm.com>,
-        linux-mips@linux-mips.org, kernel-janitors@vger.kernel.org
-Subject: [patch] MIPS: OCTEON: Off by one in octeon_irq_gpio_map()
-Message-ID: <20160714101429.GA18175@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.6.0 (2016-04-01)
-X-Source-IP: userv0021.oracle.com [156.151.31.71]
-Return-Path: <dan.carpenter@oracle.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 13:58:20 +0200 (CEST)
+Received: from www62.your-server.de ([213.133.104.62]:35961 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23995267AbcGNL6OKyVXm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jul 2016 13:58:14 +0200
+Received: from [85.1.99.166] (helo=localhost)
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.85_2)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1bNfHL-0000NU-HQ; Thu, 14 Jul 2016 13:58:07 +0200
+From:   Daniel Borkmann <daniel@iogearbox.net>
+To:     ralf@linux-mips.org
+Cc:     dan.carpenter@oracle.com, markos.chandras@imgtec.com,
+        ast@kernel.org, daniel@iogearbox.net, linux-mips@linux-mips.org
+Subject: [PATCH] bpf, mips: fix off-by-one in ctx offset allocation
+Date:   Thu, 14 Jul 2016 13:57:55 +0200
+Message-Id: <4ea94c98412d93aaea7f2a28832b41c26dc17ba7.1468497047.git.daniel@iogearbox.net>
+X-Mailer: git-send-email 1.9.3
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.99.2/21901/Thu Jul 14 12:45:53 2016)
+Return-Path: <daniel@iogearbox.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54332
+X-archive-position: 54333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan.carpenter@oracle.com
+X-original-sender: daniel@iogearbox.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,21 +39,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It should be >= ARRAY_SIZE() instead of > ARRAY_SIZE().
+Dan Carpenter reported [1] a static checker warning that ctx->offsets[]
+may be accessed off by one from build_body(), since it's allocated with
+fp->len * sizeof(*ctx.offsets) as length. The cBPF arm and ppc code
+doesn't have this issue as claimed, so only mips seems to be affected and
+should like most other JITs allocate with fp->len + 1. A few number of
+JITs (x86, sparc, arm64) handle this differently, where they only require
+fp->len array elements.
 
-Fixes: 64b139f97c01 ('MIPS: OCTEON: irq: add CIB and other fixes')
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+  [1] http://www.spinics.net/lists/mips/msg64193.html
 
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index 368eb49..75a4add 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -1260,7 +1260,7 @@ static int octeon_irq_gpio_map(struct irq_domain *d,
+Fixes: c6610de353da ("MIPS: net: Add BPF JIT")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Markos Chandras <markos.chandras@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/net/bpf_jit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+index 1a8c960..a04c393 100644
+--- a/arch/mips/net/bpf_jit.c
++++ b/arch/mips/net/bpf_jit.c
+@@ -1199,7 +1199,7 @@ void bpf_jit_compile(struct bpf_prog *fp)
  
- 	line = (hw + gpiod->base_hwirq) >> 6;
- 	bit = (hw + gpiod->base_hwirq) & 63;
--	if (line > ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
-+	if (line >= ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
- 		octeon_irq_ciu_to_irq[line][bit] != 0)
- 		return -EINVAL;
+ 	memset(&ctx, 0, sizeof(ctx));
  
+-	ctx.offsets = kcalloc(fp->len, sizeof(*ctx.offsets), GFP_KERNEL);
++	ctx.offsets = kcalloc(fp->len + 1, sizeof(*ctx.offsets), GFP_KERNEL);
+ 	if (ctx.offsets == NULL)
+ 		return;
+ 
+-- 
+1.9.3

@@ -1,40 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 10:17:02 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:60351 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993038AbcGNIQ4W2a3Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Jul 2016 10:16:56 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id F1288AE09;
-        Thu, 14 Jul 2016 08:16:55 +0000 (UTC)
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 87/88] MIPS: KVM: Fix modular KVM under QEMU
-Date:   Thu, 14 Jul 2016 10:16:19 +0200
-Message-Id: <b1655f6dcbe5973cfb7e7a689e3465083b980548.1468483951.git.jslaby@suse.cz>
-X-Mailer: git-send-email 2.9.1
-In-Reply-To: <3d4036cb9b963cdd270c02856a888183da0623db.1468483951.git.jslaby@suse.cz>
-References: <3d4036cb9b963cdd270c02856a888183da0623db.1468483951.git.jslaby@suse.cz>
-In-Reply-To: <cover.1468483950.git.jslaby@suse.cz>
-References: <cover.1468483950.git.jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 12:15:06 +0200 (CEST)
+Received: from userp1040.oracle.com ([156.151.31.81]:17796 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23995252AbcGNKPAdEbOL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jul 2016 12:15:00 +0200
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u6EAEh7N007645
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 14 Jul 2016 10:14:43 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u6EAEfUF006377
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 14 Jul 2016 10:14:41 GMT
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id u6EAEbBd011026;
+        Thu, 14 Jul 2016 10:14:38 GMT
+Received: from mwanda (/154.0.139.178)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 14 Jul 2016 03:14:37 -0700
+Date:   Thu, 14 Jul 2016 13:14:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+Cc:     Rob Herring <robh@kernel.org>, Marc Zyngier <marc.zyngier@arm.com>,
+        linux-mips@linux-mips.org, kernel-janitors@vger.kernel.org
+Subject: [patch] MIPS: OCTEON: Off by one in octeon_irq_gpio_map()
+Message-ID: <20160714101429.GA18175@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <jslaby@suse.cz>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.6.0 (2016-04-01)
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
+Return-Path: <dan.carpenter@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54331
+X-archive-position: 54332
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: dan.carpenter@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,115 +51,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+It should be >= ARRAY_SIZE() instead of > ARRAY_SIZE().
 
-3.12-stable review patch.  If anyone has any objections, please let me know.
+Fixes: 64b139f97c01 ('MIPS: OCTEON: irq: add CIB and other fixes')
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-===============
-
-commit 797179bc4fe06c89e47a9f36f886f68640b423f8 upstream.
-
-Copy __kvm_mips_vcpu_run() into unmapped memory, so that we can never
-get a TLB refill exception in it when KVM is built as a module.
-
-This was observed to happen with the host MIPS kernel running under
-QEMU, due to a not entirely transparent optimisation in the QEMU TLB
-handling where TLB entries replaced with TLBWR are copied to a separate
-part of the TLB array. Code in those pages continue to be executable,
-but those mappings persist only until the next ASID switch, even if they
-are marked global.
-
-An ASID switch happens in __kvm_mips_vcpu_run() at exception level after
-switching to the guest exception base. Subsequent TLB mapped kernel
-instructions just prior to switching to the guest trigger a TLB refill
-exception, which enters the guest exception handlers without updating
-EPC. This appears as a guest triggered TLB refill on a host kernel
-mapped (host KSeg2) address, which is not handled correctly as user
-(guest) mode accesses to kernel (host) segments always generate address
-error exceptions.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Radim Krčmář <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: kvm@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[james.hogan@imgtec.com: backported for stable 3.14]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/include/asm/kvm_host.h |  1 +
- arch/mips/kvm/kvm_locore.S       |  1 +
- arch/mips/kvm/kvm_mips.c         | 11 ++++++++++-
- arch/mips/kvm/kvm_mips_int.h     |  2 ++
- 4 files changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 4d6fa0bf1305..883a162083af 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -349,6 +349,7 @@ struct kvm_mips_tlb {
- #define KVM_MIPS_GUEST_TLB_SIZE     64
- struct kvm_vcpu_arch {
- 	void *host_ebase, *guest_ebase;
-+	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
- 	unsigned long host_stack;
- 	unsigned long host_gp;
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 368eb49..75a4add 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -1260,7 +1260,7 @@ static int octeon_irq_gpio_map(struct irq_domain *d,
  
-diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
-index ba5ce99c021d..d1fa2a57218b 100644
---- a/arch/mips/kvm/kvm_locore.S
-+++ b/arch/mips/kvm/kvm_locore.S
-@@ -229,6 +229,7 @@ FEXPORT(__kvm_mips_load_k0k1)
+ 	line = (hw + gpiod->base_hwirq) >> 6;
+ 	bit = (hw + gpiod->base_hwirq) & 63;
+-	if (line > ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
++	if (line >= ARRAY_SIZE(octeon_irq_ciu_to_irq) ||
+ 		octeon_irq_ciu_to_irq[line][bit] != 0)
+ 		return -EINVAL;
  
- 	/* Jump to guest */
- 	eret
-+EXPORT(__kvm_mips_vcpu_run_end)
- 
- VECTOR(MIPSX(exception), unknown)
- /*
-diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
-index 7e7de1f2b8ed..08972791edb4 100644
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -347,6 +347,15 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- 	memcpy(gebase + offset, mips32_GuestException,
- 	       mips32_GuestExceptionEnd - mips32_GuestException);
- 
-+#ifdef MODULE
-+	offset += mips32_GuestExceptionEnd - mips32_GuestException;
-+	memcpy(gebase + offset, (char *)__kvm_mips_vcpu_run,
-+	       __kvm_mips_vcpu_run_end - (char *)__kvm_mips_vcpu_run);
-+	vcpu->arch.vcpu_run = gebase + offset;
-+#else
-+	vcpu->arch.vcpu_run = __kvm_mips_vcpu_run;
-+#endif
-+
- 	/* Invalidate the icache for these ranges */
- 	mips32_SyncICache((unsigned long) gebase, ALIGN(size, PAGE_SIZE));
- 
-@@ -430,7 +439,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 
- 	kvm_guest_enter();
- 
--	r = __kvm_mips_vcpu_run(run, vcpu);
-+	r = vcpu->arch.vcpu_run(run, vcpu);
- 
- 	kvm_guest_exit();
- 	local_irq_enable();
-diff --git a/arch/mips/kvm/kvm_mips_int.h b/arch/mips/kvm/kvm_mips_int.h
-index 20da7d29eede..bf41ea36210e 100644
---- a/arch/mips/kvm/kvm_mips_int.h
-+++ b/arch/mips/kvm/kvm_mips_int.h
-@@ -27,6 +27,8 @@
- #define MIPS_EXC_MAX                12
- /* XXXSL More to follow */
- 
-+extern char __kvm_mips_vcpu_run_end[];
-+
- #define C_TI        (_ULCAST_(1) << 30)
- 
- #define KVM_MIPS_IRQ_DELIVER_ALL_AT_ONCE (0)
--- 
-2.9.1

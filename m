@@ -1,32 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 13:58:20 +0200 (CEST)
-Received: from www62.your-server.de ([213.133.104.62]:35961 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23995267AbcGNL6OKyVXm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jul 2016 13:58:14 +0200
-Received: from [85.1.99.166] (helo=localhost)
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.85_2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1bNfHL-0000NU-HQ; Thu, 14 Jul 2016 13:58:07 +0200
-From:   Daniel Borkmann <daniel@iogearbox.net>
-To:     ralf@linux-mips.org
-Cc:     dan.carpenter@oracle.com, markos.chandras@imgtec.com,
-        ast@kernel.org, daniel@iogearbox.net, linux-mips@linux-mips.org
-Subject: [PATCH] bpf, mips: fix off-by-one in ctx offset allocation
-Date:   Thu, 14 Jul 2016 13:57:55 +0200
-Message-Id: <4ea94c98412d93aaea7f2a28832b41c26dc17ba7.1468497047.git.daniel@iogearbox.net>
-X-Mailer: git-send-email 1.9.3
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.99.2/21901/Thu Jul 14 12:45:53 2016)
-Return-Path: <daniel@iogearbox.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 15:39:51 +0200 (CEST)
+Received: from aserp1040.oracle.com ([141.146.126.69]:17732 "EHLO
+        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23995280AbcGNNjouQUpZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jul 2016 15:39:44 +0200
+Received: from aserv0021.oracle.com (aserv0021.oracle.com [141.146.126.233])
+        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u6EDdLJb002180
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 14 Jul 2016 13:39:21 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserv0021.oracle.com (8.13.8/8.13.8) with ESMTP id u6EDdLIT032337
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Thu, 14 Jul 2016 13:39:21 GMT
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id u6EDdHNh001471;
+        Thu, 14 Jul 2016 13:39:19 GMT
+Received: from mwanda (/154.0.139.178)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 14 Jul 2016 06:39:16 -0700
+Date:   Thu, 14 Jul 2016 16:39:21 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Daniel Borkmann <daniel@iogearbox.net>
+Cc:     ralf@linux-mips.org, markos.chandras@imgtec.com, ast@kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] bpf, mips: fix off-by-one in ctx offset allocation
+Message-ID: <20160714133921.GY32247@mwanda>
+References: <4ea94c98412d93aaea7f2a28832b41c26dc17ba7.1468497047.git.daniel@iogearbox.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ea94c98412d93aaea7f2a28832b41c26dc17ba7.1468497047.git.daniel@iogearbox.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Source-IP: aserv0021.oracle.com [141.146.126.233]
+Return-Path: <dan.carpenter@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54333
+X-archive-position: 54334
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@iogearbox.net
+X-original-sender: dan.carpenter@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,39 +52,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Dan Carpenter reported [1] a static checker warning that ctx->offsets[]
-may be accessed off by one from build_body(), since it's allocated with
-fp->len * sizeof(*ctx.offsets) as length. The cBPF arm and ppc code
-doesn't have this issue as claimed, so only mips seems to be affected and
-should like most other JITs allocate with fp->len + 1. A few number of
-JITs (x86, sparc, arm64) handle this differently, where they only require
-fp->len array elements.
+On Thu, Jul 14, 2016 at 01:57:55PM +0200, Daniel Borkmann wrote:
+> The cBPF arm and ppc code doesn't have this issue as claimed
 
-  [1] http://www.spinics.net/lists/mips/msg64193.html
+Oh, yeah.  You're correct, obviously.  I didn't look carefully.
 
-Fixes: c6610de353da ("MIPS: net: Add BPF JIT")
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Markos Chandras <markos.chandras@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/net/bpf_jit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
-index 1a8c960..a04c393 100644
---- a/arch/mips/net/bpf_jit.c
-+++ b/arch/mips/net/bpf_jit.c
-@@ -1199,7 +1199,7 @@ void bpf_jit_compile(struct bpf_prog *fp)
- 
- 	memset(&ctx, 0, sizeof(ctx));
- 
--	ctx.offsets = kcalloc(fp->len, sizeof(*ctx.offsets), GFP_KERNEL);
-+	ctx.offsets = kcalloc(fp->len + 1, sizeof(*ctx.offsets), GFP_KERNEL);
- 	if (ctx.offsets == NULL)
- 		return;
- 
--- 
-1.9.3
+regards,
+dan carpenter

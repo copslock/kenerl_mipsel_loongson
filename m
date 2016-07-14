@@ -1,25 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 09:58:43 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:59000 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 10:17:02 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:60351 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993524AbcGNH6YeEV4Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Jul 2016 09:58:24 +0200
+        id S23993038AbcGNIQ4W2a3Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 Jul 2016 10:16:56 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id C2F1FAC32;
-        Thu, 14 Jul 2016 07:58:23 +0000 (UTC)
+X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id F1288AE09;
+        Thu, 14 Jul 2016 08:16:55 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
-Cc:     James Hogan <james.hogan@imgtec.com>,
+Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
         linux-mips@linux-mips.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [patch added to 3.12-stable] MIPS: KVM: Fix modular KVM under QEMU
-Date:   Thu, 14 Jul 2016 09:58:22 +0200
-Message-Id: <20160714075822.3477-2-jslaby@suse.cz>
+Subject: [PATCH 3.12 87/88] MIPS: KVM: Fix modular KVM under QEMU
+Date:   Thu, 14 Jul 2016 10:16:19 +0200
+Message-Id: <b1655f6dcbe5973cfb7e7a689e3465083b980548.1468483951.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.9.1
-In-Reply-To: <20160714075822.3477-1-jslaby@suse.cz>
-References: <20160714075822.3477-1-jslaby@suse.cz>
+In-Reply-To: <3d4036cb9b963cdd270c02856a888183da0623db.1468483951.git.jslaby@suse.cz>
+References: <3d4036cb9b963cdd270c02856a888183da0623db.1468483951.git.jslaby@suse.cz>
+In-Reply-To: <cover.1468483950.git.jslaby@suse.cz>
+References: <cover.1468483950.git.jslaby@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -27,7 +30,7 @@ Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54330
+X-archive-position: 54331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,8 +49,7 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-This patch has been added to the 3.12 stable tree. If you have any
-objections, please let us know.
+3.12-stable review patch.  If anyone has any objections, please let me know.
 
 ===============
 

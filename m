@@ -1,50 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 09:58:18 +0200 (CEST)
-Received: from mail-wm0-f68.google.com ([74.125.82.68]:35177 "EHLO
-        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993299AbcGNH6MO7wrQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jul 2016 09:58:12 +0200
-Received: by mail-wm0-f68.google.com with SMTP id i5so8534695wmg.2;
-        Thu, 14 Jul 2016 00:58:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=syDXq51lM5J/xKJAa2dwdTahV56/vLNHakwl46jGe78=;
-        b=cOJDHMIWJJzRwTzKw3z8auF6M2lQBsOad2oPPMkjqgzVmQZAERNGDYYcPNrdG/eQX6
-         PptzbzqQuBuwyVNKPRWG9JaDeWDWNzV48Q8hL6iiUwBx33rO2rHW/6yG2ik9SiqHK5Qj
-         tEP4ILLoy6epUR8pKA6bY4nSKmqpWNDhjFZSs8XLh32xQfgXuiPlK0hC/nZwkGu9LiNM
-         nf2q6JJ3hEuXxm2p5dn4rxUSHLYza5srQO/tfVcvO/mxmSgMXVPqH/qTpIpP1z0MueRa
-         GZyKFS6/MGziwBCTcAM05tDU45ZkD6QKVzlKd5+ZB0OwOH7JShv01N+aTeb8nrcQA1NG
-         aRJw==
-X-Gm-Message-State: ALyK8tLN5iyZESlfMmnLwHjWcShTOyjJ8mjQFTFWAil26BZf0xcZNTdKNg7pPOVhI22aUA==
-X-Received: by 10.194.239.232 with SMTP id vv8mr5426030wjc.150.1468483087002;
-        Thu, 14 Jul 2016 00:58:07 -0700 (PDT)
-Received: from ?IPv6:2a01:4240:2e27:ad85:aaaa::19f? (f.9.1.0.0.0.0.0.0.0.0.0.a.a.a.a.5.8.d.a.7.2.e.2.0.4.2.4.1.0.a.2.v6.cust.nbox.cz. [2a01:4240:2e27:ad85:aaaa::19f])
-        by smtp.gmail.com with ESMTPSA id x62sm4497360wmf.13.2016.07.14.00.58.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 14 Jul 2016 00:58:06 -0700 (PDT)
-Subject: Re: [BACKPORT 3.14.y] MIPS: KVM: Fix modular KVM under QEMU
-To:     James Hogan <james.hogan@imgtec.com>, stable@vger.kernel.org
-References: <146827994122156@kroah.com>
- <1468430059-7958-1-git-send-email-james.hogan@imgtec.com>
-Cc:     gregkh@linuxfoundation.org, rkrcmar@redhat.com,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2016 09:58:43 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:59000 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993524AbcGNH6YeEV4Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 Jul 2016 09:58:24 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id C2F1FAC32;
+        Thu, 14 Jul 2016 07:58:23 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
-Message-ID: <f2262a47-8365-3386-4d8b-a2d4a1b1ea7f@suse.cz>
-Date:   Thu, 14 Jul 2016 09:58:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.1.1
+To:     stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to 3.12-stable] MIPS: KVM: Fix modular KVM under QEMU
+Date:   Thu, 14 Jul 2016 09:58:22 +0200
+Message-Id: <20160714075822.3477-2-jslaby@suse.cz>
+X-Mailer: git-send-email 2.9.1
+In-Reply-To: <20160714075822.3477-1-jslaby@suse.cz>
+References: <20160714075822.3477-1-jslaby@suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <1468430059-7958-1-git-send-email-james.hogan@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <jirislaby@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54329
+X-archive-position: 54330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,11 +44,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/13/2016, 07:14 PM, James Hogan wrote:
-> commit 797179bc4fe06c89e47a9f36f886f68640b423f8 upstream.
+From: James Hogan <james.hogan@imgtec.com>
 
-Applied to 3.12 too. Thanks!
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
+===============
+
+commit 797179bc4fe06c89e47a9f36f886f68640b423f8 upstream.
+
+Copy __kvm_mips_vcpu_run() into unmapped memory, so that we can never
+get a TLB refill exception in it when KVM is built as a module.
+
+This was observed to happen with the host MIPS kernel running under
+QEMU, due to a not entirely transparent optimisation in the QEMU TLB
+handling where TLB entries replaced with TLBWR are copied to a separate
+part of the TLB array. Code in those pages continue to be executable,
+but those mappings persist only until the next ASID switch, even if they
+are marked global.
+
+An ASID switch happens in __kvm_mips_vcpu_run() at exception level after
+switching to the guest exception base. Subsequent TLB mapped kernel
+instructions just prior to switching to the guest trigger a TLB refill
+exception, which enters the guest exception handlers without updating
+EPC. This appears as a guest triggered TLB refill on a host kernel
+mapped (host KSeg2) address, which is not handled correctly as user
+(guest) mode accesses to kernel (host) segments always generate address
+error exceptions.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[james.hogan@imgtec.com: backported for stable 3.14]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/include/asm/kvm_host.h |  1 +
+ arch/mips/kvm/kvm_locore.S       |  1 +
+ arch/mips/kvm/kvm_mips.c         | 11 ++++++++++-
+ arch/mips/kvm/kvm_mips_int.h     |  2 ++
+ 4 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 4d6fa0bf1305..883a162083af 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -349,6 +349,7 @@ struct kvm_mips_tlb {
+ #define KVM_MIPS_GUEST_TLB_SIZE     64
+ struct kvm_vcpu_arch {
+ 	void *host_ebase, *guest_ebase;
++	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
+ 	unsigned long host_stack;
+ 	unsigned long host_gp;
+ 
+diff --git a/arch/mips/kvm/kvm_locore.S b/arch/mips/kvm/kvm_locore.S
+index ba5ce99c021d..d1fa2a57218b 100644
+--- a/arch/mips/kvm/kvm_locore.S
++++ b/arch/mips/kvm/kvm_locore.S
+@@ -229,6 +229,7 @@ FEXPORT(__kvm_mips_load_k0k1)
+ 
+ 	/* Jump to guest */
+ 	eret
++EXPORT(__kvm_mips_vcpu_run_end)
+ 
+ VECTOR(MIPSX(exception), unknown)
+ /*
+diff --git a/arch/mips/kvm/kvm_mips.c b/arch/mips/kvm/kvm_mips.c
+index 7e7de1f2b8ed..08972791edb4 100644
+--- a/arch/mips/kvm/kvm_mips.c
++++ b/arch/mips/kvm/kvm_mips.c
+@@ -347,6 +347,15 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+ 	memcpy(gebase + offset, mips32_GuestException,
+ 	       mips32_GuestExceptionEnd - mips32_GuestException);
+ 
++#ifdef MODULE
++	offset += mips32_GuestExceptionEnd - mips32_GuestException;
++	memcpy(gebase + offset, (char *)__kvm_mips_vcpu_run,
++	       __kvm_mips_vcpu_run_end - (char *)__kvm_mips_vcpu_run);
++	vcpu->arch.vcpu_run = gebase + offset;
++#else
++	vcpu->arch.vcpu_run = __kvm_mips_vcpu_run;
++#endif
++
+ 	/* Invalidate the icache for these ranges */
+ 	mips32_SyncICache((unsigned long) gebase, ALIGN(size, PAGE_SIZE));
+ 
+@@ -430,7 +439,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 
+ 	kvm_guest_enter();
+ 
+-	r = __kvm_mips_vcpu_run(run, vcpu);
++	r = vcpu->arch.vcpu_run(run, vcpu);
+ 
+ 	kvm_guest_exit();
+ 	local_irq_enable();
+diff --git a/arch/mips/kvm/kvm_mips_int.h b/arch/mips/kvm/kvm_mips_int.h
+index 20da7d29eede..bf41ea36210e 100644
+--- a/arch/mips/kvm/kvm_mips_int.h
++++ b/arch/mips/kvm/kvm_mips_int.h
+@@ -27,6 +27,8 @@
+ #define MIPS_EXC_MAX                12
+ /* XXXSL More to follow */
+ 
++extern char __kvm_mips_vcpu_run_end[];
++
+ #define C_TI        (_ULCAST_(1) << 30)
+ 
+ #define KVM_MIPS_IRQ_DELIVER_ALL_AT_ONCE (0)
 -- 
-js
-suse labs
+2.9.1

@@ -1,39 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2016 16:19:44 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:57670 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993004AbcGOOThTQlOF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Jul 2016 16:19:37 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u6FEJXpX000965;
-        Fri, 15 Jul 2016 16:19:33 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u6FEJXiA000964;
-        Fri, 15 Jul 2016 16:19:33 +0200
-Date:   Fri, 15 Jul 2016 16:19:33 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 01/12] MIPS: Fix definition of KSEGX() for 64-bit
-Message-ID: <20160715141932.GD1024@linux-mips.org>
-References: <1467975211-12674-2-git-send-email-james.hogan@imgtec.com>
- <1468268620-8600-1-git-send-email-james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2016 22:04:29 +0200 (CEST)
+Received: from userp1040.oracle.com ([156.151.31.81]:29198 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992722AbcGOUEXELLcU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jul 2016 22:04:23 +0200
+Received: from aserv0022.oracle.com (aserv0022.oracle.com [141.146.126.234])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id u6FK4Bl2029420
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 15 Jul 2016 20:04:13 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserv0022.oracle.com (8.13.8/8.13.8) with ESMTP id u6FK4AKR004380
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 15 Jul 2016 20:04:10 GMT
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.13.8/8.13.8) with ESMTP id u6FK459f021821;
+        Fri, 15 Jul 2016 20:04:08 GMT
+Received: from mwanda (/154.0.139.178)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 15 Jul 2016 13:04:05 -0700
+Date:   Fri, 15 Jul 2016 23:03:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     wuzhangjin@gmail.com
+Cc:     linux-mips@linux-mips.org
+Subject: [bug report] MIPS: Lemote 2F: Add basic CS5536 VSM support
+Message-ID: <20160715200359.GA31809@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1468268620-8600-1-git-send-email-james.hogan@imgtec.com>
-User-Agent: Mutt/1.6.1 (2016-04-27)
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+X-Source-IP: aserv0022.oracle.com [141.146.126.234]
+Return-Path: <dan.carpenter@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54338
+X-archive-position: 54339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan.carpenter@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,41 +49,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jul 11, 2016 at 09:23:40PM +0100, James Hogan wrote:
+Hello Wu Zhangjin,
 
-> The KSEGX() macro is defined to 32-bit sign extend the address argument
-> and logically AND the result with 0xe0000000, with the final result
-> usually compared against one of the CKSEG macros. However the literal
-> 0xe0000000 is unsigned as the high bit is set, and is therefore
-> zero-extended on 64-bit kernels, resulting in the sign extension bits of
-> the argument being masked to zero. This results in the odd situation
-> where:
-> 
->   KSEGX(CKSEG0) != CKSEG0
->   (0xffffffff80000000 & 0x00000000e0000000) != 0xffffffff80000000)
-> 
-> Fix this by 32-bit sign extending the 0xe0000000 literal using
-> _ACAST32_.
-> 
-> This will help some MIPS KVM code handling 32-bit guest addresses to
-> work on 64-bit host kernels, but will also affect a couple of other
-> users:
-> 
-> - KSEGX in dec_kn01_be_backend() on a 64-bit DECstation kernel. Maciej
->   has confirmed this is not a valid combination.
-> 
-> - The SiByte DMA page ops KSEGX check in clear_page() and copy_page() on
->   64-bit SB1 kernels, which appears not to be designed with 64-bit
->   segments in mind anyway. This would (perhaps unintentionally) have
->   always fallen back to the CPU copy on 64-bit kernels anyway, so we
->   make this explicit by making CONFIG_SIBYTE_DMA_PAGEOPS depend on
->   32BIT, so the change of KSEGX behaviour can't break anything.
-> 
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Maciej W. Rozycki <macro@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
+The patch 22c21003a91b: "MIPS: Lemote 2F: Add basic CS5536 VSM
+support" from Nov 10, 2009, leads to the following static checker
+warning:
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+	arch/mips/loongson64/common/cs5536/cs5536_ohci.c:141 pci_ohci_read_reg()
+	warn: masked condition '(lo & 3840) == 11' is always false.
 
-  Ralf
+arch/mips/loongson64/common/cs5536/cs5536_ohci.c
+   135          case PCI_INTERRUPT_LINE:
+   136                  conf_data =
+   137                      CFG_PCI_INTERRUPT_LINE(PCI_DEFAULT_PIN, CS5536_USB_INTR);
+   138                  break;
+   139          case PCI_OHCI_INT_REG:
+   140                  _rdmsr(DIVIL_MSR_REG(PIC_YSEL_LOW), &hi, &lo);
+   141                  if ((lo & 0x00000f00) == CS5536_USB_INTR)
+                                                 ^^^^^^^^^^^^^^^
+This is 11 so the condition can't be true.  I don't know what was
+intended.
+
+   142                          conf_data = 1;
+   143                  break;
+   144          default:
+   145                  break;
+   146          }
+
+regards,
+dan carpenter

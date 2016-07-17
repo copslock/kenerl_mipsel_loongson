@@ -1,49 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jul 2016 15:48:21 +0200 (CEST)
-Received: from caladan.dune.hu ([78.24.191.180]:59042 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992544AbcGQNsOphO9K (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 17 Jul 2016 15:48:14 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by arrakis.dune.hu (Postfix) with ESMTP id 0AEBAB911EB;
-        Sun, 17 Jul 2016 15:48:14 +0200 (CEST)
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.0.2] (dslb-088-073-002-213.088.073.pools.vodafone-ip.de [88.73.2.213])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 5339DB911E2;
-        Sun, 17 Jul 2016 15:48:04 +0200 (CEST)
-Subject: Re: [PATCH v2 2/2] MIPS: store the appended dtb address in a variable
-To:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-References: <1466414857-30456-1-git-send-email-jogo@openwrt.org>
- <1466414857-30456-3-git-send-email-jogo@openwrt.org>
- <1468758512.6100.10.camel@chimera>
- <CAOiHx==dcJMTaHggOW1skRcAfL7Zu3rOXGytvbz0rMi8O=zBcA@mail.gmail.com>
- <1468760611.6100.20.camel@chimera>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        John Crispin <john@phrozen.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Alban Bedel <albeu@free.fr>,
-        Antony Pavlov <antonynpavlov@gmail.com>
-From:   Jonas Gorski <jogo@openwrt.org>
-Message-ID: <b01cce22-7e1f-05e0-74b4-87a84d26df64@openwrt.org>
-Date:   Sun, 17 Jul 2016 15:48:04 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jul 2016 16:02:49 +0200 (CEST)
+Received: from mail-io0-f193.google.com ([209.85.223.193]:33990 "EHLO
+        mail-io0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992585AbcGQOCmIcbbK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Jul 2016 16:02:42 +0200
+Received: by mail-io0-f193.google.com with SMTP id g86so9343299ioj.1;
+        Sun, 17 Jul 2016 07:02:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=vCyzfv76QrQ1ecyP+nKuMmKjFF1B4uSwrMbVxcc4n44=;
+        b=o2hHsayp1b0i4bkuVsXi+Wm4PAVzYcGCQ2pQGzcytWqXQllld5HGSdf2uUrAg8CUAH
+         gFP5jdALFOZJ0L5FEQnGkar0YY0KoTXCp/hlE1JMuXDCbLAMxMmZ/DRd1MpxhtdcUXec
+         YlNym/jO2Z2jiTCmbFxKB8gNxpOADSh4+kE9Cqvbd50qL0KaAsXzZwjcyFnXfe58J48B
+         fSLzBJUFtgDlbm//Q9azSvGQKF3dct1Ds6B8+nmSjkg80G8gOz2QWK10X5wi/m6thU6J
+         +uaAn/xhENWGZC8cUdDL60iaPyo4xZOR/GgxNwbK+XAAs02OR4xNcVWF8h/kUXL+I21L
+         fmBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=vCyzfv76QrQ1ecyP+nKuMmKjFF1B4uSwrMbVxcc4n44=;
+        b=EAGIX049oO09908iBdqDoUDKO0P3380rrqr4EcaTEUIbHkb7IHyasteHwKglEGDg5t
+         UgH48Y3mvBuWWgKF7hCFCK+XAZnbZn9/dwjsYfKtEXgBAbEKiidxamPQij6oEVTipvMn
+         TXPMH4Aioed5IckBZIUg0yumfrP28BL+oB4xBFvEpR7sdDhV6kMkBim6E6hNHAVR03Lz
+         EngIqZ/n6YIkohRT9f16st/sMr9WIhd8p4kIaoWBZ4TccROS4Gb398kVv0Jk9F8g8EF+
+         tODjuz+LptoZICeI+NIqtnk244rTwpb3p6Vy7X2vKMpBuSvUac2vJU5z7F/aW6F0jBfs
+         eClQ==
+X-Gm-Message-State: ALyK8tI5wkQfwXqmsxm9TlfJc5vamBVA2Y+W8iDffD1mPATUudvIC8lwg+CbdCUF9WdPTcumJpj2FIr78sg7tg==
+X-Received: by 10.107.152.149 with SMTP id a143mr17611047ioe.193.1468764156156;
+ Sun, 17 Jul 2016 07:02:36 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1468760611.6100.20.camel@chimera>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <jogo@openwrt.org>
+Received: by 10.36.94.136 with HTTP; Sun, 17 Jul 2016 07:02:35 -0700 (PDT)
+In-Reply-To: <1468292170-22812-233-git-send-email-sasha.levin@oracle.com>
+References: <1468292170-22812-1-git-send-email-sasha.levin@oracle.com> <1468292170-22812-233-git-send-email-sasha.levin@oracle.com>
+From:   Huacai Chen <chenhc@lemote.com>
+Date:   Sun, 17 Jul 2016 22:02:35 +0800
+X-Google-Sender-Auth: tQnGJpnsOpTF9K-iorIn-QaZ8v4
+Message-ID: <CAAhV-H5JMQhz1v4UJZG+P6sTS2_OQJV00wTkDHSQHkeX=KroBA@mail.gmail.com>
+Subject: Re: [added to the 4.1 stable tree] MIPS: Reserve nosave data for hibernation
+To:     Sasha Levin <sasha.levin@oracle.com>
+Cc:     stable <stable@vger.kernel.org>, stable-commits@vger.kernel.org,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        "Steven J . Hill" <sjhill@realitydiluted.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <chenhuacai@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54344
+X-archive-position: 54345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jogo@openwrt.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,79 +69,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 17.07.2016 15:03, Daniel Gimpelevich wrote:
-> On Sun, 2016-07-17 at 14:52 +0200, Jonas Gorski wrote:
->> On 17 July 2016 at 14:28, Daniel Gimpelevich
->> <daniel@gimpelevich.san-francisco.ca.us> wrote:
->>> On Mon, 2016-06-20 at 11:27 +0200, Jonas Gorski wrote:
->>>> Instead of rewriting the arguments to match the UHI spec, store the
->>>> address of a appended or UHI supplied dtb in fw_supplied_dtb.
->>>>
->>>> That way the original bootloader arugments are kept intact while still
->>>> making the use of an appended dtb invisible for mach code.
->>>>
->>>> Mach code can still find out if it is an appended dtb by comparing
->>>> fw_arg1 with fw_supplied_dtb.
->>>>
->>>> Signed-off-by: Jonas Gorski <jogo@openwrt.org>
->>>> ---
->>>> v1 -> v2:
->>>>  * no changes
->>>>
->>>>  arch/mips/ath79/setup.c          |  4 ++--
->>>>  arch/mips/bmips/setup.c          |  4 ++--
->>>>  arch/mips/include/asm/bootinfo.h |  4 ++++
->>>>  arch/mips/kernel/head.S          | 21 ++++++++++++++-------
->>>>  arch/mips/kernel/setup.c         |  4 ++++
->>>>  arch/mips/lantiq/prom.c          |  4 ++--
->>>>  arch/mips/pic32/pic32mzda/init.c |  4 ++--
->>>>  7 files changed, 30 insertions(+), 15 deletions(-)
->>> [snip]
->>>> -       else if (fw_arg0 == -2) /* UHI interface */
->>>> -               dtb = (void *)fw_arg1;
->>>> +       else if (fw_passed_dtb) /* UHI interface */
->>>> +               dtb = (void *)fw_passed_dtb;
->>>
->>> I just now realized that this is also incorrect, on each platform. The
->>> check for fw_passed_dtb should be in addition (prior) to checking for
->>> UHI via fw_arg0 == -2, not instead of it.
->>
->> No it isn't, the code in head.S already does this, so there is no need
->> to check fw_arg0 again, unless you need to know if this was an
->> appended dtb or a UHI passed one. The whole point of using
->> fw_passed_dtb is that you *don't* need to check individually for UHI
->> and appended dtb.
->>
->>
->> Jonas
-> 
-> Not quite. The idea behind the old code was to mimic UHI bootloaders so
-> that the kernel would not distinguish between them and a passed DTB.
-> With fw_passed_dtb separate, the case of a real UHI bootloader is
-> unhandled unless fw_arg0 is checked separately after it. It cannot
-> presently be known for certain which platforms will have UHI available,
-> and it does not hurt the kernel to conform to an overall MIPS spec even
-> when unused, so removing the check for fw_arg0 even in the presence of a
-> check for fw_passed_dtb at this point is feature removal, which there is
-> no need to do.
+Hi, Sasha,
 
-Did you even read the code or what I wrote?
+This patch should only be added to 4.2+.
 
-> On Sun, 2016-07-17 at 14:52 +0200, Jonas Gorski wrote:
->> No it isn't, the code in head.S already does this
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Huacai
 
-in simplified pseudo c-code:
-
-if (IS_ENABLED(APPENDED_DTB) && *__appended_dtb == FDT_MAGIC)
-	fw_passed_dtb = __appended_dtb;
-else if (fw_arg0 == -2) <- UHI interface
-	fw_passed_dtb = fw_arg1;
-else
-	fw_passed_dtb = 0;
-
-So if the the bootloader uses UHI, then fw_passed_dtb *will* be populated.
-There is no need to check for it again from arch code.
-
-
-Jonas
+On Tue, Jul 12, 2016 at 10:55 AM, Sasha Levin <sasha.levin@oracle.com> wrote:
+> From: Huacai Chen <chenhc@lemote.com>
+>
+> This patch has been added to the 4.1 stable tree. If you have any
+> objections, please let us know.
+>
+> ===============
+>
+> [ Upstream commit a95d069204e178f18476f5499abab0d0d9cbc32c ]
+>
+> After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
+> in the memblock region"), the MIPS hibernation is broken. Because pages
+> in nosave data section should be "reserved", but currently they aren't
+> set to "reserved" at initialization. This patch makes hibernation work
+> again.
+>
+> Signed-off-by: Huacai Chen <chenhc@lemote.com>
+> Cc: Aurelien Jarno <aurelien@aurel32.net>
+> Cc: Steven J . Hill <sjhill@realitydiluted.com>
+> Cc: Fuxin Zhang <zhangfx@lemote.com>
+> Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: stable@vger.kernel.org
+> Patchwork: https://patchwork.linux-mips.org/patch/12888/
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
+> ---
+>  arch/mips/kernel/setup.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index be73c49..49b5203 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -686,6 +686,9 @@ static void __init arch_mem_init(char **cmdline_p)
+>         for_each_memblock(reserved, reg)
+>                 if (reg->size != 0)
+>                         reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
+> +
+> +       reserve_bootmem_region(__pa_symbol(&__nosave_begin),
+> +                       __pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+>  }
+>
+>  static void __init resource_init(void)
+> --
+> 2.5.0
+>
+>

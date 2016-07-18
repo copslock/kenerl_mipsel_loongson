@@ -1,62 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Jul 2016 16:02:49 +0200 (CEST)
-Received: from mail-io0-f193.google.com ([209.85.223.193]:33990 "EHLO
-        mail-io0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992585AbcGQOCmIcbbK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Jul 2016 16:02:42 +0200
-Received: by mail-io0-f193.google.com with SMTP id g86so9343299ioj.1;
-        Sun, 17 Jul 2016 07:02:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=vCyzfv76QrQ1ecyP+nKuMmKjFF1B4uSwrMbVxcc4n44=;
-        b=o2hHsayp1b0i4bkuVsXi+Wm4PAVzYcGCQ2pQGzcytWqXQllld5HGSdf2uUrAg8CUAH
-         gFP5jdALFOZJ0L5FEQnGkar0YY0KoTXCp/hlE1JMuXDCbLAMxMmZ/DRd1MpxhtdcUXec
-         YlNym/jO2Z2jiTCmbFxKB8gNxpOADSh4+kE9Cqvbd50qL0KaAsXzZwjcyFnXfe58J48B
-         fSLzBJUFtgDlbm//Q9azSvGQKF3dct1Ds6B8+nmSjkg80G8gOz2QWK10X5wi/m6thU6J
-         +uaAn/xhENWGZC8cUdDL60iaPyo4xZOR/GgxNwbK+XAAs02OR4xNcVWF8h/kUXL+I21L
-         fmBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=vCyzfv76QrQ1ecyP+nKuMmKjFF1B4uSwrMbVxcc4n44=;
-        b=EAGIX049oO09908iBdqDoUDKO0P3380rrqr4EcaTEUIbHkb7IHyasteHwKglEGDg5t
-         UgH48Y3mvBuWWgKF7hCFCK+XAZnbZn9/dwjsYfKtEXgBAbEKiidxamPQij6oEVTipvMn
-         TXPMH4Aioed5IckBZIUg0yumfrP28BL+oB4xBFvEpR7sdDhV6kMkBim6E6hNHAVR03Lz
-         EngIqZ/n6YIkohRT9f16st/sMr9WIhd8p4kIaoWBZ4TccROS4Gb398kVv0Jk9F8g8EF+
-         tODjuz+LptoZICeI+NIqtnk244rTwpb3p6Vy7X2vKMpBuSvUac2vJU5z7F/aW6F0jBfs
-         eClQ==
-X-Gm-Message-State: ALyK8tI5wkQfwXqmsxm9TlfJc5vamBVA2Y+W8iDffD1mPATUudvIC8lwg+CbdCUF9WdPTcumJpj2FIr78sg7tg==
-X-Received: by 10.107.152.149 with SMTP id a143mr17611047ioe.193.1468764156156;
- Sun, 17 Jul 2016 07:02:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2016 13:55:41 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58190 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992663AbcGRLzeWgp4D convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jul 2016 13:55:34 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id A0D49A344F467;
+        Mon, 18 Jul 2016 12:55:14 +0100 (IST)
+Received: from HHMAIL01.hh.imgtec.org ([fe80::710b:f219:72bc:e0b3]) by
+ hhmail02.hh.imgtec.org ([fe80::5400:d33e:81a4:f775%25]) with mapi id
+ 14.03.0294.000; Mon, 18 Jul 2016 12:55:17 +0100
+From:   Matthew Fortune <Matthew.Fortune@imgtec.com>
+To:     Maciej Rozycki <Maciej.Rozycki@imgtec.com>,
+        Faraz Shahbazker <Faraz.Shahbazker@imgtec.com>
+CC:     Paul Burton <Paul.Burton@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Leonid Yegoshin" <Leonid.Yegoshin@imgtec.com>,
+        Raghu Gandham <Raghu.Gandham@imgtec.com>
+Subject: RE: [PATCH v5 2/2] MIPS: non-exec stack & heap when non-exec
+ PT_GNU_STACK is present
+Thread-Topic: [PATCH v5 2/2] MIPS: non-exec stack & heap when non-exec
+ PT_GNU_STACK is present
+Thread-Index: AQHR2QB+CywUwQZeWUO+QkPS4ltKPqAOqvkAgAAj3oCAABMwgIAPPryA
+Date:   Mon, 18 Jul 2016 11:55:16 +0000
+Message-ID: <6D39441BF12EF246A7ABCE6654B023537E47FB7A@HHMAIL01.hh.imgtec.org>
+References: <20160708100620.4754-1-paul.burton@imgtec.com>
+ <20160708100620.4754-3-paul.burton@imgtec.com>
+ <alpine.DEB.2.00.1607081655580.4076@tp.orcam.me.uk>
+ <577FF4A1.5000200@imgtec.com>
+ <alpine.DEB.2.00.1607082025140.4076@tp.orcam.me.uk>
+In-Reply-To: <alpine.DEB.2.00.1607082025140.4076@tp.orcam.me.uk>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.152.105]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 10.36.94.136 with HTTP; Sun, 17 Jul 2016 07:02:35 -0700 (PDT)
-In-Reply-To: <1468292170-22812-233-git-send-email-sasha.levin@oracle.com>
-References: <1468292170-22812-1-git-send-email-sasha.levin@oracle.com> <1468292170-22812-233-git-send-email-sasha.levin@oracle.com>
-From:   Huacai Chen <chenhc@lemote.com>
-Date:   Sun, 17 Jul 2016 22:02:35 +0800
-X-Google-Sender-Auth: tQnGJpnsOpTF9K-iorIn-QaZ8v4
-Message-ID: <CAAhV-H5JMQhz1v4UJZG+P6sTS2_OQJV00wTkDHSQHkeX=KroBA@mail.gmail.com>
-Subject: Re: [added to the 4.1 stable tree] MIPS: Reserve nosave data for hibernation
-To:     Sasha Levin <sasha.levin@oracle.com>
-Cc:     stable <stable@vger.kernel.org>, stable-commits@vger.kernel.org,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        "Steven J . Hill" <sjhill@realitydiluted.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <chenhuacai@gmail.com>
+Return-Path: <Matthew.Fortune@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54345
+X-archive-position: 54346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: Matthew.Fortune@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,57 +59,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Sasha,
+Maciej Rozycki <Maciej.Rozycki@imgtec.com> writes:
+> On Fri, 8 Jul 2016, Faraz Shahbazker wrote:
+> 
+> > On 07/08/2016 09:36 AM, Maciej W. Rozycki wrote:
+> > > implementation previously present, and the MIPS port specifically
+> > > has been updated to actually report this at the EI_ABIVERSION offset
+> > > of the `e_ident' array of the ELF header with commit 17733f5be961
+> > > ("Increment the ABIVERSION to 5 for MIPS objects with non-executable
+> > > stacks."), earlier this year (it's not clear to me offhand why we
+> > > need to do this rather than relying on the lone presence of
+> > > PT_GNU_STACK, but I'm sure someone will enlighten me).
+> >
+> > This was simply to be able to check whether the tools support a safe
+> > non-exec stack scheme, before enabling it as a default in the
+> > compiler. Refer to the attached e-mail from Matthew. Neither linker
+> nor compiler patch is upstream.
+> 
+>  Hmm, now I am really confused: what problem are we trying to solve on
+> the toolchain side?
 
-This patch should only be added to 4.2+.
+The problem was that if we just turn on no-exec-stack support in GCC then
+when someone combines that with an older binutils and/or build glibc
+from source (using those tools) then they would get an executable that
+asked for a non-executable stack and the kernel would willingly do so.
 
-Huacai
+However, this would then crash. So we need a way to prevent the generic
+logic in glibc's build system from creating a no-exec-stack library until
+we have the kernel checks in place in glibc to undo no-exec-stack. This
+then leads to the convoluted system of increased EI_ABIVERSION (or some
+other equally complex plan) to ensure mix-and-match of new and old tools
+glibc and kernel all behave nicely.
 
-On Tue, Jul 12, 2016 at 10:55 AM, Sasha Levin <sasha.levin@oracle.com> wrote:
-> From: Huacai Chen <chenhc@lemote.com>
->
-> This patch has been added to the 4.1 stable tree. If you have any
-> objections, please let us know.
->
-> ===============
->
-> [ Upstream commit a95d069204e178f18476f5499abab0d0d9cbc32c ]
->
-> After commit 92923ca3aacef63c92d ("mm: meminit: only set page reserved
-> in the memblock region"), the MIPS hibernation is broken. Because pages
-> in nosave data section should be "reserved", but currently they aren't
-> set to "reserved" at initialization. This patch makes hibernation work
-> again.
->
-> Signed-off-by: Huacai Chen <chenhc@lemote.com>
-> Cc: Aurelien Jarno <aurelien@aurel32.net>
-> Cc: Steven J . Hill <sjhill@realitydiluted.com>
-> Cc: Fuxin Zhang <zhangfx@lemote.com>
-> Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: stable@vger.kernel.org
-> Patchwork: https://patchwork.linux-mips.org/patch/12888/
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> Signed-off-by: Sasha Levin <sasha.levin@oracle.com>
-> ---
->  arch/mips/kernel/setup.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index be73c49..49b5203 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -686,6 +686,9 @@ static void __init arch_mem_init(char **cmdline_p)
->         for_each_memblock(reserved, reg)
->                 if (reg->size != 0)
->                         reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
-> +
-> +       reserve_bootmem_region(__pa_symbol(&__nosave_begin),
-> +                       __pa_symbol(&__nosave_end)); /* Reserve for hibernation */
->  }
->
->  static void __init resource_init(void)
-> --
-> 2.5.0
->
->
+>  As I understand the current state of affairs, we have now have a
+> situation where the toolchain may be asked (although it is not on by
+> default) to produce a MIPS PT_GNU_STACK binary, which will be happily
+> executed by the kernel with the execution permission disabled for the
+> stack memory (where supported by hardware, i.e. RIXI), however then it
+> will itself happily try to execute from that stack memory in the FPU
+> emulator.
+> 
+>  So first of all we need to address the problem in the kernel by making
+> the FPU emulator avoid stack execution.  That will fix PT_GNU_STACK
+> support on our target.
+
+Yes.
+
+>  Second we want to enforce the non-executable-stack policy in the
+> userland by adding a check early on in glibc startup for a flag, such as
+> in the FLAGS entry of the auxiliary vector, set by a fixed kernel only,
+> telling glibc that the presence of PT_GNU_STACK has been respected by
+> the kernel, and make the startup bail out right away if the flag is not
+> there.
+
+Yes.
+
+>  So where does the static linker EI_ABIVERSION update fit here?  What is
+> it needed for?  What have I missed?
+
+Making sure new GCC + new binutils + old glibc (from source) does not create
+executables that crash. My proposal was to also make sure that a MIPS GCC
+with no-exec-stack support would fail the generic glibc build system test
+for no-exec-stack and instead need a new MIPS specific test so that old
+glibc built from source never ended up with no-exec-stack support for MIPS.
+
+I'd love to simplify all this if for some reason this isn't actually a
+problem. I was trying to stick to the principle of all combinations of old
+and new tools/libraries should just work.
+
+Matthew

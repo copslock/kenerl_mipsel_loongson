@@ -1,56 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2016 23:19:57 +0200 (CEST)
-Received: from mail-wm0-f49.google.com ([74.125.82.49]:38530 "EHLO
-        mail-wm0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993200AbcGSVTtrOGoQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jul 2016 23:19:49 +0200
-Received: by mail-wm0-f49.google.com with SMTP id o80so42044325wme.1
-        for <linux-mips@linux-mips.org>; Tue, 19 Jul 2016 14:19:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=KKUdQIqaU5nhXObYV3siChNfxeePXhtso337VQmsPI8=;
-        b=kYjVNZ2f5Uq6m+7B3Cyw0IrgDMdLvvYCumSX2Lbny4oDrNbJxnHsg/g67cexI7C2EK
-         tr00M/xZWN0JX5TtQgBhmVszEkZF5S7mh98kbRpNOKGGfakH2mm8NsbEsiNkQB/cE6GC
-         TKYkuysD0rwT3BIinLaLXIYF8c6ZkzLWFlFD4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=KKUdQIqaU5nhXObYV3siChNfxeePXhtso337VQmsPI8=;
-        b=XoIIB8A6VipDv0MNKxWnSwygExYjVU209S9BVe6tbEGBFm1ztRj6m868FAI+BYajn5
-         NFWpG8WY+e88ZEVOIYBS7xRW4mzC/CXlBTnvAkNqT3v06PdBj3mKtcuOxOMSTfdyeM73
-         tOQTpTi3gUNZpGkGuLQK4rlKm8aTkWPd/NSCWpQIHumiJlWkMMzr+tdjCzu7LqLzKLWl
-         Q2J8D9e7fVG+L1eX0OMJi8XFUAEaNjCQgz4nRh0FZS7+cbCGUp/IZvkjwy3V90S8QUNk
-         /xFZk2BvTJ8/Sa/qaiaS/TkATuV5dcq99zkwdHjDtUarnCuuapDxeealUlMrPzE/BFNp
-         bbqA==
-X-Gm-Message-State: ALyK8tIRfwErEJimO543bxlrhnr8++x+k62wlhEH7/mwMx4VRO/KcIzfdoMT6qOeUOOJQb/AGjXkNV58KxBKBkjs
-X-Received: by 10.28.167.80 with SMTP id q77mr7132311wme.62.1468963184343;
- Tue, 19 Jul 2016 14:19:44 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.194.25.233 with HTTP; Tue, 19 Jul 2016 14:19:43 -0700 (PDT)
-In-Reply-To: <578E71E6.2020700@caviumnetworks.com>
-References: <57853474.9050108@cavium.com> <578E71E6.2020700@caviumnetworks.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 19 Jul 2016 23:19:43 +0200
-Message-ID: <CAPDyKFqb-7LLM0XPtVWj1qHib991E2dHt+6W0UPgbXnukGkmXA@mail.gmail.com>
-Subject: Re: [PATCH V8 2/2] mmc: OCTEON: Add host driver for OCTEON MMC controller.
-To:     "Steven J. Hill" <Steven.Hill@caviumnetworks.com>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        linux-mips@linux-mips.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <ulf.hansson@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2016 08:28:59 +0200 (CEST)
+Received: from smtpbg202.qq.com ([184.105.206.29]:41655 "EHLO smtpbg202.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992942AbcGUG2wk7dbr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Jul 2016 08:28:52 +0200
+X-QQ-mid: bizesmtp1t1469082496t804t181
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Thu, 21 Jul 2016 14:27:55 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK72B00A0000000
+X-QQ-FEAT: +c2Kczbw9d2yYhlXxy5xjpSJXxCFssUaQdfMKsLsJMKnZan+WLrFpc/0JIJzT
+        HUH7hSaT03qGcea1TOKW9P61qim9NdYbrxFaXxtrCYfi5chDeUcySfkznvmtQ81BarNKU87
+        BuJct/1KFBIRZe5/jsPOjy3z2C3YYiK87K+XYW6xJZGGkJReZWbHp808tdOVeAaXVzVNdQq
+        qaN3QEBMMb3dbmXuoPtRy+mxGSPNKubSrmZzQbBux003bOTbJAtbiaRaPa/8tqWydJW+399
+        dyxfKRg7wyKvXtXF5vNZu6rsc=
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org,
+        Heiher <r@hev.cc>
+Subject: [PATCH 1/3] MIPS: Fix r4k clockevents registration
+Date:   Thu, 21 Jul 2016 14:27:49 +0800
+Message-Id: <1469082471-4936-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54349
+X-archive-position: 54350
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ulf.hansson@linaro.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,21 +49,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 19 July 2016 at 20:31, Steven J. Hill <Steven.Hill@caviumnetworks.com> wrote:
-> On 07/12/2016 01:18 PM, Steven J. Hill wrote:
->>
->> The OCTEON MMC controller is currently found on cn61XX and cn71XX
->> devices. Device parameters are configured from device tree data.
->> eMMC, MMC and SD devices are supported. Tested on Rhino labs UTM8
->> and Cavium CN7130 board.
->>
->> Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
->> Acked-by: David Daney <david.daney@cavium.com>
->>
-> Has anyone reviewed the driver or have any comments? Thanks.
+CPUFreq need min_delta_ticks/max_delta_ticks to be initialized, and
+this can be done by clockevents_config_and_register().
 
-Sorry I need more time, been partly out of office lately.
-I intend to review this prior rc1 is out, but no promises.
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiher <r@hev.cc>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/kernel/cevt-r4k.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-Kind regards
-Uffe
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index e4c21bb..804d2a2 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -276,12 +276,7 @@ int r4k_clockevent_init(void)
+ 				  CLOCK_EVT_FEAT_C3STOP |
+ 				  CLOCK_EVT_FEAT_PERCPU;
+ 
+-	clockevent_set_clock(cd, mips_hpt_frequency);
+-
+-	/* Calculate the min / max delta */
+-	cd->max_delta_ns	= clockevent_delta2ns(0x7fffffff, cd);
+ 	min_delta		= calculate_min_delta();
+-	cd->min_delta_ns	= clockevent_delta2ns(min_delta, cd);
+ 
+ 	cd->rating		= 300;
+ 	cd->irq			= irq;
+@@ -289,7 +284,7 @@ int r4k_clockevent_init(void)
+ 	cd->set_next_event	= mips_next_event;
+ 	cd->event_handler	= mips_event_handler;
+ 
+-	clockevents_register_device(cd);
++	clockevents_config_and_register(cd, mips_hpt_frequency, min_delta, 0x7fffffff);
+ 
+ 	if (cp0_timer_irq_installed)
+ 		return 0;
+-- 
+2.7.0

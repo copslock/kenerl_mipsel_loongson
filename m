@@ -1,62 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jul 2016 01:30:21 +0200 (CEST)
-Received: from mail-pa0-f68.google.com ([209.85.220.68]:34028 "EHLO
-        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993074AbcGVXaODVVMt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jul 2016 01:30:14 +0200
-Received: by mail-pa0-f68.google.com with SMTP id hh10so7648130pac.1;
-        Fri, 22 Jul 2016 16:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=eJNXXzq4gR7jxoFSYyAn4Ww/DisHqTSNseEAbjpPrgc=;
-        b=MlhgRbtnklh2bJxD7Lr8Afe2a9N21FryKhaL+HzC3llPU2T9bTkpEb3+g0t8lNyLcU
-         ad/SGxGFtt31MWvnEamM5C6q/bKoBsRmXGNW8qlW7G7K7+Y09QiPYQCBM0YDmurRCt6m
-         h3Tah6FS5HYYtSRyzFU130fOSfBbE3u6gujIFqvHJxUuueCZ8mElXdiajr6IHwjk26ue
-         dyOaGbauyNxEbc23mnqpuOBIw4smpfu2Zigj/zmovMiWFtUZR2DoWOsCegZyatEXRPRl
-         wuZiDRfJWKV6qUCRnFxZt9WzmoPjR7AcTIT5Oetnjek4rbX6zyi6pUbGV4SLSxGEXhvh
-         6CNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=eJNXXzq4gR7jxoFSYyAn4Ww/DisHqTSNseEAbjpPrgc=;
-        b=AFKHkeZefIQ+B1flKSnLCNT54wNKSu6F+BIAUbu2VpQ1ouqZgrrMPieGB8STb2Kl4s
-         HGO7p5jxOUZK1C6o4UFZOxYFVyAraQ5rMx+3xXbzs6uhq74dGZPdorEXy/NdkUnAek3d
-         eccRzQ/b8qiFZu87trQFAuUtpTzdQfokp51Lowdzay1MyaSOklgSSglDeL5WjFin57Yg
-         c+JlsiYyUSbEgUYDir4dcWlYHI4PBFPRb5u2hTH8Ml65wFZCVvt+X8Zs3R/lZMomRy+M
-         PAvba4SAQXXkesHjdvlstqOCpxSKkyNRQACrhuMqGDluP+GsLlm4fh3MJLbeGVdO3yXb
-         3X2Q==
-X-Gm-Message-State: AEkoouswNbThHPRHNnXvEVbGfowI9zXRvCt1Rl+YV+XLqZrLdJrA6dvwPp1WOJwMePqijw==
-X-Received: by 10.66.146.69 with SMTP id ta5mr10871496pab.157.1469230208050;
-        Fri, 22 Jul 2016 16:30:08 -0700 (PDT)
-Received: from [10.112.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id x5sm4187920pax.33.2016.07.22.16.30.06
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 22 Jul 2016 16:30:06 -0700 (PDT)
-Subject: Re: MIPS: traps: return correct si code for accessing nonmapped
- addresses
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-References: <S23992942AbcGUNNgF7uup/20160721131336Z+440@eddie.linux-mips.org>
-Cc:     john@phrozen.org
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <5369f961-a67b-6c73-6549-eda92c31bea4@gmail.com>
-Date:   Fri, 22 Jul 2016 16:30:05 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
-MIME-Version: 1.0
-In-Reply-To: <S23992942AbcGUNNgF7uup/20160721131336Z+440@eddie.linux-mips.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jul 2016 02:00:33 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:33961 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990778AbcGXAA0eqUkg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Jul 2016 02:00:26 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Message-Id:Date:Subject:Cc:To:From;
+        bh=+lJosto0MtExF5iGcc/3Txt+Das6TiWT/B5R3Zt0toM=; b=G4RTBVdkQPgaiLJe9StlrD78oC
+        5xC4Z/kAiIuQuDyrYKO5Zu9kWzNDCpdVjCnaEPa7lvubBeFl7xn1DcK0gE28QLzo1pl5eD4ZerUJJ
+        1jHHO4z0P3bl5hyBVxii2RkLyZtf9AmTm9CfSBujVgwzxREymWFYI6dimPh03+Ug2t2yhHOsiHeYS
+        pUflsSYI0MBSSHKztOm7VjT/LF+FflucF9umYehvz2qAyvY1IhReUxWgSvDtZ8vc/MpOu3kayEEpB
+        1A/e8PydyU2AM2ZlHBPiYG2j3XUMAFaU4poLg1g5lFJ3uvvoJuzJE/VOP2EaEDEVBFYZkwaHM0lB+
+        9dFXZ7cw==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:35334 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1bR6q9-002pZi-Jj; Sun, 24 Jul 2016 00:00:18 +0000
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh@kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH -next] MIPS: ath79: Add missing include file
+Date:   Sat, 23 Jul 2016 17:00:15 -0700
+Message-Id: <1469318415-1834-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 2.5.0
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54358
+X-archive-position: 54359
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,58 +58,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07/21/2016 06:13 AM, linux-mips@linux-mips.org wrote:
-> Author: Petar Jovanovic <petar.jovanovic@rt-rk.com> Wed Jul 13 15:23:37 2016 +0200
-> Comitter: Ralf Baechle <ralf@linux-mips.org> Thu Jul 21 14:22:07 2016 +0200
-> Commit: 1cb2fcc8cd1bd32cca6ce4b76bb9cc36ef5fc76d
-> Gitweb: https://git.linux-mips.org/g/ralf/linux/1cb2fcc8cd1b
-> Branch: linux-3.3-stable
-> 
-> find_vma() returns the first VMA which satisfies fault_addr < vm_end, but
-> it does not guarantee fault_addr is actually within VMA. Therefore, kernel
-> has to check that before it chooses correct si code on return.
-> 
-> Signed-off-by: Petar Jovanovic <petar.jovanovic@rt-rk.com>
-> Cc: linux-mips@linux-mips.org
-> Patchwork: https://patchwork.linux-mips.org/patch/13808/
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> (cherry picked from commit abe687d221b4e9fd564d5db76f5847636dae6c2e)
-> 
-> ---
-> 
->  arch/mips/kernel/traps.c |    5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index 0bb48ee..4870e02 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -673,13 +673,16 @@ asmlinkage void do_ov(struct pt_regs *regs)
->  
->  static int process_fpemu_return(int sig, void __user *fault_addr)
->  {
-> +	struct vm_area_struct *vma;
-> +
->  	if (sig == SIGSEGV || sig == SIGBUS) {
->  		struct siginfo si = {0};
->  		si.si_addr = fault_addr;
->  		si.si_signo = sig;
->  		if (sig == SIGSEGV) {
->  			down_read(&current->mm->mmap_sem);
-> -			if (find_vma(current->mm, (unsigned long)fault_addr))
-> +			find_vma(current->mm, (unsigned long)fault_addr);
+Commit ddd0ce87bfde ("mips: Remove unnecessary of_platform_populate with
+default match table") dropped the include of linux/clk-provider.h from
+arch/mips/ath79/setup.c. This results in the following build error.
 
-Are not we missing a vma = find_vma() assignment here?
+arch/mips/ath79/setup.c: In function 'ath79_of_plat_time_init':
+arch/mips/ath79/setup.c:232:2: error:
+	implicit declaration of function 'of_clk_init'
 
-linux-4.0-stable seems to be the first branch where this cherry-pick
-failed and all the way down to linux-2.6.16-stable branches...
+Fixes: ddd0ce87bfde ("mips: Remove unnecessary of_platform_populate with default match table")
+Cc: Rob Herring <robh@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ arch/mips/ath79/setup.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> +			if (vma && (vma->vm_start <= (unsigned long)fault_addr))
->  				si.si_code = SEGV_ACCERR;
->  			else
->  				si.si_code = SEGV_MAPERR;
-> 
-
-
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 8887eb1ffc73..3a0019deb7f7 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -17,6 +17,7 @@
+ #include <linux/bootmem.h>
+ #include <linux/err.h>
+ #include <linux/clk.h>
++#include <linux/clk-provider.h>
+ #include <linux/of_fdt.h>
+ 
+ #include <asm/bootinfo.h>
 -- 
-Florian
+2.5.0

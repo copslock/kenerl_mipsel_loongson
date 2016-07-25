@@ -1,51 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jul 2016 02:00:33 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:33961 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990778AbcGXAA0eqUkg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Jul 2016 02:00:26 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Message-Id:Date:Subject:Cc:To:From;
-        bh=+lJosto0MtExF5iGcc/3Txt+Das6TiWT/B5R3Zt0toM=; b=G4RTBVdkQPgaiLJe9StlrD78oC
-        5xC4Z/kAiIuQuDyrYKO5Zu9kWzNDCpdVjCnaEPa7lvubBeFl7xn1DcK0gE28QLzo1pl5eD4ZerUJJ
-        1jHHO4z0P3bl5hyBVxii2RkLyZtf9AmTm9CfSBujVgwzxREymWFYI6dimPh03+Ug2t2yhHOsiHeYS
-        pUflsSYI0MBSSHKztOm7VjT/LF+FflucF9umYehvz2qAyvY1IhReUxWgSvDtZ8vc/MpOu3kayEEpB
-        1A/e8PydyU2AM2ZlHBPiYG2j3XUMAFaU4poLg1g5lFJ3uvvoJuzJE/VOP2EaEDEVBFYZkwaHM0lB+
-        9dFXZ7cw==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:35334 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1bR6q9-002pZi-Jj; Sun, 24 Jul 2016 00:00:18 +0000
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh@kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH -next] MIPS: ath79: Add missing include file
-Date:   Sat, 23 Jul 2016 17:00:15 -0700
-Message-Id: <1469318415-1834-1-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 2.5.0
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 05:43:41 +0200 (CEST)
+Received: from mail1.windriver.com ([147.11.146.13]:46426 "EHLO
+        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991964AbcGYDneXlv3E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jul 2016 05:43:34 +0200
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
+        by mail1.windriver.com (8.15.2/8.15.1) with ESMTPS id u6P3hQFi007626
+        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
+        Sun, 24 Jul 2016 20:43:27 -0700 (PDT)
+Received: from yow-lpgnfs-02.corp.ad.wrs.com (128.224.56.235) by
+ ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
+ 14.3.248.2; Sun, 24 Jul 2016 20:43:26 -0700
+From:   Paul Gortmaker <paul.gortmaker@windriver.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <linux-arch@vger.kernel.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: [PATCH 05/14] mips: migrate exception table users off module.h and onto extable.h
+Date:   Sun, 24 Jul 2016 23:42:38 -0400
+Message-ID: <20160725034247.109173-6-paul.gortmaker@windriver.com>
+X-Mailer: git-send-email 2.8.4
+In-Reply-To: <20160725034247.109173-1-paul.gortmaker@windriver.com>
+References: <20160725034247.109173-1-paul.gortmaker@windriver.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+Return-Path: <Paul.Gortmaker@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54359
+X-archive-position: 54360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: paul.gortmaker@windriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,33 +44,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit ddd0ce87bfde ("mips: Remove unnecessary of_platform_populate with
-default match table") dropped the include of linux/clk-provider.h from
-arch/mips/ath79/setup.c. This results in the following build error.
+These files were only including module.h for exception table
+related functions.  We've now separated that content out into its
+own file "extable.h" so now move over to that and avoid all the
+extra header content in module.h that we don't really need to compile
+these files.
 
-arch/mips/ath79/setup.c: In function 'ath79_of_plat_time_init':
-arch/mips/ath79/setup.c:232:2: error:
-	implicit declaration of function 'of_clk_init'
-
-Fixes: ddd0ce87bfde ("mips: Remove unnecessary of_platform_populate with default match table")
-Cc: Rob Herring <robh@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 ---
- arch/mips/ath79/setup.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/kernel/module.c | 1 +
+ arch/mips/kernel/traps.c  | 2 +-
+ arch/mips/mm/extable.c    | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index 8887eb1ffc73..3a0019deb7f7 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -17,6 +17,7 @@
- #include <linux/bootmem.h>
- #include <linux/err.h>
- #include <linux/clk.h>
-+#include <linux/clk-provider.h>
- #include <linux/of_fdt.h>
+diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
+index 79850e376ef6..94627a3a6a0d 100644
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -20,6 +20,7 @@
  
- #include <asm/bootinfo.h>
+ #undef DEBUG
+ 
++#include <linux/extable.h>
+ #include <linux/moduleloader.h>
+ #include <linux/elf.h>
+ #include <linux/mm.h>
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 6fb4704bd156..b4522e3a0562 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -20,7 +20,7 @@
+ #include <linux/kexec.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/module.h>
++#include <linux/extable.h>
+ #include <linux/mm.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
+diff --git a/arch/mips/mm/extable.c b/arch/mips/mm/extable.c
+index 9d25d2ba4b9e..e474fa2efed4 100644
+--- a/arch/mips/mm/extable.c
++++ b/arch/mips/mm/extable.c
+@@ -5,7 +5,7 @@
+  *
+  * Copyright (C) 1997, 99, 2001 - 2004 Ralf Baechle <ralf@linux-mips.org>
+  */
+-#include <linux/module.h>
++#include <linux/extable.h>
+ #include <linux/spinlock.h>
+ #include <asm/branch.h>
+ #include <asm/uaccess.h>
 -- 
-2.5.0
+2.8.4

@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 15:20:50 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:44110 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992721AbcGYNUmWJdyQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 25 Jul 2016 15:20:42 +0200
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id E64F42047C;
-        Mon, 25 Jul 2016 13:20:39 +0000 (UTC)
-Received: from mail-qk0-f169.google.com (mail-qk0-f169.google.com [209.85.220.169])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 66B952049D;
-        Mon, 25 Jul 2016 13:20:37 +0000 (UTC)
-Received: by mail-qk0-f169.google.com with SMTP id s63so159454287qkb.2;
-        Mon, 25 Jul 2016 06:20:37 -0700 (PDT)
-X-Gm-Message-State: AEkoousxVrudE6FQ1Z5oeYvWWKcHsaBi8NYj3alifyi4eRxSCrcNeS7+aCsKi9XHrlOzLkykCjRDbuHiiJQgrA==
-X-Received: by 10.13.247.131 with SMTP id h125mr15141898ywf.18.1469452836661;
- Mon, 25 Jul 2016 06:20:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 17:49:24 +0200 (CEST)
+Received: from relay1.mentorg.com ([192.94.38.131]:54201 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992170AbcGYPtReZmyE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jul 2016 17:49:17 +0200
+Received: from nat-ies.mentorg.com ([192.94.31.2] helo=SVR-IES-FEM-02.mgc.mentorg.com)
+        by relay1.mentorg.com with esmtp 
+        id 1bRi7x-0000Te-Kc from joseph_myers@mentor.com ; Mon, 25 Jul 2016 08:49:09 -0700
+Received: from digraph.polyomino.org.uk (137.202.0.76) by
+ SVR-IES-FEM-02.mgc.mentorg.com (137.202.0.106) with Microsoft SMTP Server id
+ 14.3.224.2; Mon, 25 Jul 2016 16:49:08 +0100
+Received: from jsm28 (helo=localhost)   by digraph.polyomino.org.uk with
+ local-esmtp (Exim 4.86_2)      (envelope-from <joseph@codesourcery.com>)       id
+ 1bRi7v-00087v-3y; Mon, 25 Jul 2016 15:49:07 +0000
+Date:   Mon, 25 Jul 2016 15:49:07 +0000
+From:   Joseph Myers <joseph@codesourcery.com>
+X-X-Sender: jsm28@digraph.polyomino.org.uk
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+CC:     Matthew Fortune <Matthew.Fortune@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
+        "binutils@sourceware.org" <binutils@sourceware.org>,
+        "gcc@gcc.gnu.org" <gcc@gcc.gnu.org>
+Subject: RE: [RFC v2] MIPS ABI Extension for IEEE Std 754 Non-Compliant
+ Interlinking
+In-Reply-To: <alpine.DEB.2.00.1607121323050.4076@tp.orcam.me.uk>
+Message-ID: <alpine.DEB.2.20.1607251544340.22934@digraph.polyomino.org.uk>
+References: <alpine.DEB.2.00.1605141043120.6794@tp.orcam.me.uk> <6D39441BF12EF246A7ABCE6654B023537E40C27F@hhmail02.hh.imgtec.org> <alpine.DEB.2.00.1607121323050.4076@tp.orcam.me.uk>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Received: by 10.129.155.200 with HTTP; Mon, 25 Jul 2016 06:20:17 -0700 (PDT)
-In-Reply-To: <1469318415-1834-1-git-send-email-linux@roeck-us.net>
-References: <1469318415-1834-1-git-send-email-linux@roeck-us.net>
-From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 25 Jul 2016 08:20:17 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+2OSmj-xTmiLPTgtpJV7fZtV1bKtCCmLdaxmW+wqQ2nQ@mail.gmail.com>
-Message-ID: <CAL_Jsq+2OSmj-xTmiLPTgtpJV7fZtV1bKtCCmLdaxmW+wqQ2nQ@mail.gmail.com>
-Subject: Re: [PATCH -next] MIPS: ath79: Add missing include file
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+Return-Path: <joseph_myers@mentor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54365
+X-archive-position: 54366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: joseph@codesourcery.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,23 +50,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Jul 23, 2016 at 7:00 PM, Guenter Roeck <linux@roeck-us.net> wrote:
-> Commit ddd0ce87bfde ("mips: Remove unnecessary of_platform_populate with
-> default match table") dropped the include of linux/clk-provider.h from
-> arch/mips/ath79/setup.c. This results in the following build error.
->
-> arch/mips/ath79/setup.c: In function 'ath79_of_plat_time_init':
-> arch/mips/ath79/setup.c:232:2: error:
->         implicit declaration of function 'of_clk_init'
->
-> Fixes: ddd0ce87bfde ("mips: Remove unnecessary of_platform_populate with default match table")
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
->  arch/mips/ath79/setup.c | 1 +
->  1 file changed, 1 insertion(+)
+On Thu, 14 Jul 2016, Maciej W. Rozycki wrote:
 
-Since the error is in my tree, I've applied this. Thanks.
+> 2. An idea has been proposed to have objects marked by the assembler to 
+>    indicate whether they include an FP hardware instruction or not.  The 
+>    latters would automatically become don't-cares as far as NaN encoding
+>    is concerned and if all the objects were such in a given static link, 
 
-Rob
+I don't think presence of FP hardware instructions is much of a guide to 
+whether code cares about NaN encodings.  I'd expect most code simply doing 
+arithmetic not to care (that is, the same object code would work correctly 
+on systems with either NaN encoding - given the right encodings for that 
+system as inputs, it would produce the right encodings as outputs), while 
+code using a NaN encoding explicitly (typically through __builtin_nan or 
+folded 0.0 / 0.0 in a static initializer) cares even if that object does 
+not use FP instructions.  (Formally, of course code knowing the ABI can 
+creating encodings directly, implement issignaling itself, etc., but that 
+should be rare.)
+
+-- 
+Joseph S. Myers
+joseph@codesourcery.com

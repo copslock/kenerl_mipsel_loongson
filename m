@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 22:55:50 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34717 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 22:57:26 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35039 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990514AbcGYUznFgYko (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jul 2016 22:55:43 +0200
+        by eddie.linux-mips.org with ESMTP id S23992186AbcGYU5T06C0o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jul 2016 22:57:19 +0200
 Received: from localhost (unknown [104.132.1.103])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A79D3726;
-        Mon, 25 Jul 2016 20:55:36 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2403198B;
+        Mon, 25 Jul 2016 20:57:12 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,12 +14,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: [PATCH 3.14 26/53] MIPS: KVM: Fix modular KVM under QEMU
-Date:   Mon, 25 Jul 2016 13:55:08 -0700
-Message-Id: <20160725203515.400899411@linuxfoundation.org>
+Subject: [PATCH 4.4 040/146] MIPS: KVM: Fix modular KVM under QEMU
+Date:   Mon, 25 Jul 2016 13:54:55 -0700
+Message-Id: <20160725203523.019779062@linuxfoundation.org>
 X-Mailer: git-send-email 2.9.0
-In-Reply-To: <20160725203514.202312855@linuxfoundation.org>
-References: <20160725203514.202312855@linuxfoundation.org>
+In-Reply-To: <20160725203521.340401316@linuxfoundation.org>
+References: <20160725203521.340401316@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54371
+X-archive-position: 54372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +44,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.14-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -77,41 +77,49 @@ Cc: Radim Krčmář <rkrcmar@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: kvm@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 3.10.x-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[james.hogan@imgtec.com: backported for stable 3.14]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
  arch/mips/include/asm/kvm_host.h |    1 +
- arch/mips/kvm/kvm_locore.S       |    1 +
- arch/mips/kvm/kvm_mips.c         |   11 ++++++++++-
- arch/mips/kvm/kvm_mips_int.h     |    2 ++
- 4 files changed, 14 insertions(+), 1 deletion(-)
+ arch/mips/kvm/interrupt.h        |    1 +
+ arch/mips/kvm/locore.S           |    1 +
+ arch/mips/kvm/mips.c             |   11 ++++++++++-
+ 4 files changed, 13 insertions(+), 1 deletion(-)
 
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -342,6 +342,7 @@ struct kvm_mips_tlb {
- #define KVM_MIPS_GUEST_TLB_SIZE     64
+@@ -372,6 +372,7 @@ struct kvm_mips_tlb {
+ #define KVM_MIPS_GUEST_TLB_SIZE	64
  struct kvm_vcpu_arch {
  	void *host_ebase, *guest_ebase;
 +	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
  	unsigned long host_stack;
  	unsigned long host_gp;
  
---- a/arch/mips/kvm/kvm_locore.S
-+++ b/arch/mips/kvm/kvm_locore.S
-@@ -229,6 +229,7 @@ FEXPORT(__kvm_mips_load_k0k1)
+--- a/arch/mips/kvm/interrupt.h
++++ b/arch/mips/kvm/interrupt.h
+@@ -28,6 +28,7 @@
+ #define MIPS_EXC_MAX                12
+ /* XXXSL More to follow */
+ 
++extern char __kvm_mips_vcpu_run_end[];
+ extern char mips32_exception[], mips32_exceptionEnd[];
+ extern char mips32_GuestException[], mips32_GuestExceptionEnd[];
+ 
+--- a/arch/mips/kvm/locore.S
++++ b/arch/mips/kvm/locore.S
+@@ -227,6 +227,7 @@ FEXPORT(__kvm_mips_load_k0k1)
  
  	/* Jump to guest */
  	eret
 +EXPORT(__kvm_mips_vcpu_run_end)
  
  VECTOR(MIPSX(exception), unknown)
- /*
---- a/arch/mips/kvm/kvm_mips.c
-+++ b/arch/mips/kvm/kvm_mips.c
-@@ -348,6 +348,15 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
+ /* Find out what mode we came from and jump to the proper handler. */
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -314,6 +314,15 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
  	memcpy(gebase + offset, mips32_GuestException,
  	       mips32_GuestExceptionEnd - mips32_GuestException);
  
@@ -125,25 +133,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +#endif
 +
  	/* Invalidate the icache for these ranges */
- 	mips32_SyncICache((unsigned long) gebase, ALIGN(size, PAGE_SIZE));
- 
-@@ -431,7 +440,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
- 
- 	kvm_guest_enter();
+ 	local_flush_icache_range((unsigned long)gebase,
+ 				(unsigned long)gebase + ALIGN(size, PAGE_SIZE));
+@@ -403,7 +412,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
+ 	/* Disable hardware page table walking while in guest */
+ 	htw_stop();
  
 -	r = __kvm_mips_vcpu_run(run, vcpu);
 +	r = vcpu->arch.vcpu_run(run, vcpu);
  
- 	kvm_guest_exit();
- 	local_irq_enable();
---- a/arch/mips/kvm/kvm_mips_int.h
-+++ b/arch/mips/kvm/kvm_mips_int.h
-@@ -27,6 +27,8 @@
- #define MIPS_EXC_MAX                12
- /* XXXSL More to follow */
- 
-+extern char __kvm_mips_vcpu_run_end[];
-+
- #define C_TI        (_ULCAST_(1) << 30)
- 
- #define KVM_MIPS_IRQ_DELIVER_ALL_AT_ONCE (0)
+ 	/* Re-enable HTW before enabling interrupts */
+ 	htw_start();

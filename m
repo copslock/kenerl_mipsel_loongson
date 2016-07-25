@@ -1,33 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 22:44:59 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:59754 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991964AbcGYUofPC6-o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jul 2016 22:44:35 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.87)
-        (envelope-from <sjhill@bethel-hill.org>)
-        id 1bRmal-0003Lo-Iz; Mon, 25 Jul 2016 15:35:11 -0500
-Subject: [PATCH] MIPS: Octeon: Improve USB reset code for OCTEON II.
-To:     linux-mips@linux-mips.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>
-From:   "Steven J. Hill" <sjhill@bethel-hill.org>
-Message-ID: <57967A2C.3020002@bethel-hill.org>
-Date:   Mon, 25 Jul 2016 15:44:28 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 22:55:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34717 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990514AbcGYUznFgYko (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jul 2016 22:55:43 +0200
+Received: from localhost (unknown [104.132.1.103])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A79D3726;
+        Mon, 25 Jul 2016 20:55:36 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: [PATCH 3.14 26/53] MIPS: KVM: Fix modular KVM under QEMU
+Date:   Mon, 25 Jul 2016 13:55:08 -0700
+Message-Id: <20160725203515.400899411@linuxfoundation.org>
+X-Mailer: git-send-email 2.9.0
+In-Reply-To: <20160725203514.202312855@linuxfoundation.org>
+References: <20160725203514.202312855@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <sjhill@bethel-hill.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54370
+X-archive-position: 54371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sjhill@bethel-hill.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,206 +44,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-At boot time, do a better job of resetting the USB host controller
-to make the frequency "eye" diagram more compliant with the USB
-standard while making the controller more reliable.
+3.14-stable review patch.  If anyone has any objections, please let me know.
 
-Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
-Acked-by: David Daney <david.daney@cavium.com>
-Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
+------------------
+
+From: James Hogan <james.hogan@imgtec.com>
+
+commit 797179bc4fe06c89e47a9f36f886f68640b423f8 upstream.
+
+Copy __kvm_mips_vcpu_run() into unmapped memory, so that we can never
+get a TLB refill exception in it when KVM is built as a module.
+
+This was observed to happen with the host MIPS kernel running under
+QEMU, due to a not entirely transparent optimisation in the QEMU TLB
+handling where TLB entries replaced with TLBWR are copied to a separate
+part of the TLB array. Code in those pages continue to be executable,
+but those mappings persist only until the next ASID switch, even if they
+are marked global.
+
+An ASID switch happens in __kvm_mips_vcpu_run() at exception level after
+switching to the guest exception base. Subsequent TLB mapped kernel
+instructions just prior to switching to the guest trigger a TLB refill
+exception, which enters the guest exception handlers without updating
+EPC. This appears as a guest triggered TLB refill on a host kernel
+mapped (host KSeg2) address, which is not handled correctly as user
+(guest) mode accesses to kernel (host) segments always generate address
+error exceptions.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 3.10.x-
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[james.hogan@imgtec.com: backported for stable 3.14]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/cavium-octeon/octeon-platform.c | 114 +++++++++++++++++-------------
- 1 file changed, 65 insertions(+), 49 deletions(-)
+ arch/mips/include/asm/kvm_host.h |    1 +
+ arch/mips/kvm/kvm_locore.S       |    1 +
+ arch/mips/kvm/kvm_mips.c         |   11 ++++++++++-
+ arch/mips/kvm/kvm_mips_int.h     |    2 ++
+ 4 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 7aeafed..eeda373 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -3,33 +3,27 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 2004-2011 Cavium Networks
-+ * Copyright (C) 2004-2016 Cavium Networks
-  * Copyright (C) 2008 Wind River Systems
-  */
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -342,6 +342,7 @@ struct kvm_mips_tlb {
+ #define KVM_MIPS_GUEST_TLB_SIZE     64
+ struct kvm_vcpu_arch {
+ 	void *host_ebase, *guest_ebase;
++	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
+ 	unsigned long host_stack;
+ 	unsigned long host_gp;
  
--#include <linux/delay.h>
- #include <linux/init.h>
--#include <linux/irq.h>
--#include <linux/i2c.h>
--#include <linux/usb.h>
--#include <linux/dma-mapping.h>
-+#include <linux/delay.h>
- #include <linux/etherdevice.h>
--#include <linux/module.h>
--#include <linux/mutex.h>
--#include <linux/slab.h>
--#include <linux/platform_device.h>
- #include <linux/of_platform.h>
- #include <linux/of_fdt.h>
- #include <linux/libfdt.h>
-+#include <linux/usb/ehci_def.h>
- #include <linux/usb/ehci_pdriver.h>
- #include <linux/usb/ohci_pdriver.h>
+--- a/arch/mips/kvm/kvm_locore.S
++++ b/arch/mips/kvm/kvm_locore.S
+@@ -229,6 +229,7 @@ FEXPORT(__kvm_mips_load_k0k1)
  
- #include <asm/octeon/octeon.h>
--#include <asm/octeon/cvmx-rnm-defs.h>
--#include <asm/octeon/cvmx-helper.h>
- #include <asm/octeon/cvmx-helper-board.h>
- #include <asm/octeon/cvmx-uctlx-defs.h>
+ 	/* Jump to guest */
+ 	eret
++EXPORT(__kvm_mips_vcpu_run_end)
  
-+#define CVMX_UAHCX_EHCI_USBCMD	(CVMX_ADD_IO_SEG(0x00016F0000000010ull))
-+#define CVMX_UAHCX_OHCI_USBCMD	(CVMX_ADD_IO_SEG(0x00016F0000000408ull))
+ VECTOR(MIPSX(exception), unknown)
+ /*
+--- a/arch/mips/kvm/kvm_mips.c
++++ b/arch/mips/kvm/kvm_mips.c
+@@ -348,6 +348,15 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
+ 	memcpy(gebase + offset, mips32_GuestException,
+ 	       mips32_GuestExceptionEnd - mips32_GuestException);
+ 
++#ifdef MODULE
++	offset += mips32_GuestExceptionEnd - mips32_GuestException;
++	memcpy(gebase + offset, (char *)__kvm_mips_vcpu_run,
++	       __kvm_mips_vcpu_run_end - (char *)__kvm_mips_vcpu_run);
++	vcpu->arch.vcpu_run = gebase + offset;
++#else
++	vcpu->arch.vcpu_run = __kvm_mips_vcpu_run;
++#endif
 +
- /* Octeon Random Number Generator.  */
- static int __init octeon_rng_device_init(void)
- {
-@@ -78,12 +72,36 @@ static DEFINE_MUTEX(octeon2_usb_clocks_mutex);
+ 	/* Invalidate the icache for these ranges */
+ 	mips32_SyncICache((unsigned long) gebase, ALIGN(size, PAGE_SIZE));
  
- static int octeon2_usb_clock_start_cnt;
+@@ -431,7 +440,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
  
-+static int __init octeon2_usb_reset(void)
-+{
-+	union cvmx_uctlx_clk_rst_ctl clk_rst_ctl;
-+	u32 ucmd;
-+
-+	if (!OCTEON_IS_OCTEON2())
-+		return 0;
-+
-+	clk_rst_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_CLK_RST_CTL(0));
-+	if (clk_rst_ctl.s.hrst) {
-+		ucmd = cvmx_read64_uint32(CVMX_UAHCX_EHCI_USBCMD);
-+		ucmd &= ~CMD_RUN;
-+		cvmx_write64_uint32(CVMX_UAHCX_EHCI_USBCMD, ucmd);
-+		mdelay(2);
-+		ucmd |= CMD_RESET;
-+		cvmx_write64_uint32(CVMX_UAHCX_EHCI_USBCMD, ucmd);
-+		ucmd = cvmx_read64_uint32(CVMX_UAHCX_OHCI_USBCMD);
-+		ucmd |= CMD_RUN;
-+		cvmx_write64_uint32(CVMX_UAHCX_OHCI_USBCMD, ucmd);
-+	}
-+
-+	return 0;
-+}
-+arch_initcall(octeon2_usb_reset);
-+
- static void octeon2_usb_clocks_start(struct device *dev)
- {
- 	u64 div;
- 	union cvmx_uctlx_if_ena if_ena;
- 	union cvmx_uctlx_clk_rst_ctl clk_rst_ctl;
--	union cvmx_uctlx_uphy_ctl_status uphy_ctl_status;
- 	union cvmx_uctlx_uphy_portx_ctl_status port_ctl_status;
- 	int i;
- 	unsigned long io_clk_64_to_ns;
-@@ -131,6 +149,17 @@ static void octeon2_usb_clocks_start(struct device *dev)
- 	if_ena.s.en = 1;
- 	cvmx_write_csr(CVMX_UCTLX_IF_ENA(0), if_ena.u64);
+ 	kvm_guest_enter();
  
-+	for (i = 0; i <= 1; i++) {
-+		port_ctl_status.u64 =
-+			cvmx_read_csr(CVMX_UCTLX_UPHY_PORTX_CTL_STATUS(i, 0));
-+		/* Set txvreftune to 15 to obtain compliant 'eye' diagram. */
-+		port_ctl_status.s.txvreftune = 15;
-+		port_ctl_status.s.txrisetune = 1;
-+		port_ctl_status.s.txpreemphasistune = 1;
-+		cvmx_write_csr(CVMX_UCTLX_UPHY_PORTX_CTL_STATUS(i, 0),
-+			       port_ctl_status.u64);
-+	}
+-	r = __kvm_mips_vcpu_run(run, vcpu);
++	r = vcpu->arch.vcpu_run(run, vcpu);
+ 
+ 	kvm_guest_exit();
+ 	local_irq_enable();
+--- a/arch/mips/kvm/kvm_mips_int.h
++++ b/arch/mips/kvm/kvm_mips_int.h
+@@ -27,6 +27,8 @@
+ #define MIPS_EXC_MAX                12
+ /* XXXSL More to follow */
+ 
++extern char __kvm_mips_vcpu_run_end[];
 +
- 	/* Step 3: Configure the reference clock, PHY, and HCLK */
- 	clk_rst_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_CLK_RST_CTL(0));
+ #define C_TI        (_ULCAST_(1) << 30)
  
-@@ -218,29 +247,10 @@ static void octeon2_usb_clocks_start(struct device *dev)
- 	clk_rst_ctl.s.p_por = 0;
- 	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
- 
--	/* Step 5:    Wait 1 ms for the PHY clock to start. */
--	mdelay(1);
--
--	/*
--	 * Step 6: Program the reset input from automatic test
--	 * equipment field in the UPHY CSR
--	 */
--	uphy_ctl_status.u64 = cvmx_read_csr(CVMX_UCTLX_UPHY_CTL_STATUS(0));
--	uphy_ctl_status.s.ate_reset = 1;
--	cvmx_write_csr(CVMX_UCTLX_UPHY_CTL_STATUS(0), uphy_ctl_status.u64);
--
--	/* Step 7: Wait for at least 10ns. */
--	ndelay(10);
--
--	/* Step 8: Clear the ATE_RESET field in the UPHY CSR. */
--	uphy_ctl_status.s.ate_reset = 0;
--	cvmx_write_csr(CVMX_UCTLX_UPHY_CTL_STATUS(0), uphy_ctl_status.u64);
-+	/* Step 5:    Wait 3 ms for the PHY clock to start. */
-+	mdelay(3);
- 
--	/*
--	 * Step 9: Wait for at least 20ns for UPHY to output PHY clock
--	 * signals and OHCI_CLK48
--	 */
--	ndelay(20);
-+	/* Steps 6..9 for ATE only, are skipped. */
- 
- 	/* Step 10: Configure the OHCI_CLK48 and OHCI_CLK12 clocks. */
- 	/* 10a */
-@@ -261,6 +271,20 @@ static void octeon2_usb_clocks_start(struct device *dev)
- 	clk_rst_ctl.s.p_prst = 1;
- 	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
- 
-+	/* Step 11b */
-+	udelay(1);
-+
-+	/* Step 11c */
-+	clk_rst_ctl.s.p_prst = 0;
-+	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
-+
-+	/* Step 11d */
-+	mdelay(1);
-+
-+	/* Step 11e */
-+	clk_rst_ctl.s.p_prst = 1;
-+	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
-+
- 	/* Step 12: Wait 1 uS. */
- 	udelay(1);
- 
-@@ -269,21 +293,9 @@ static void octeon2_usb_clocks_start(struct device *dev)
- 	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
- 
- end_clock:
--	/* Now we can set some other registers.  */
--
--	for (i = 0; i <= 1; i++) {
--		port_ctl_status.u64 =
--			cvmx_read_csr(CVMX_UCTLX_UPHY_PORTX_CTL_STATUS(i, 0));
--		/* Set txvreftune to 15 to obtain compliant 'eye' diagram. */
--		port_ctl_status.s.txvreftune = 15;
--		port_ctl_status.s.txrisetune = 1;
--		port_ctl_status.s.txpreemphasistune = 1;
--		cvmx_write_csr(CVMX_UCTLX_UPHY_PORTX_CTL_STATUS(i, 0),
--			       port_ctl_status.u64);
--	}
--
- 	/* Set uSOF cycle period to 60,000 bits. */
- 	cvmx_write_csr(CVMX_UCTLX_EHCI_FLA(0), 0x20ull);
-+
- exit:
- 	mutex_unlock(&octeon2_usb_clocks_mutex);
- }
-@@ -311,7 +323,11 @@ static struct usb_ehci_pdata octeon_ehci_pdata = {
- #ifdef __BIG_ENDIAN
- 	.big_endian_mmio	= 1,
- #endif
--	.dma_mask_64	= 1,
-+	/*
-+	 * We can DMA from anywhere. But the descriptors must be in
-+	 * the lower 4GB.
-+	 */
-+	.dma_mask_64	= 0,
- 	.power_on	= octeon_ehci_power_on,
- 	.power_off	= octeon_ehci_power_off,
- };
--- 
-1.9.1
+ #define KVM_MIPS_IRQ_DELIVER_ALL_AT_ONCE (0)

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 23:31:48 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36003 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jul 2016 23:32:12 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36007 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992186AbcGYVblr6RQk (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992472AbcGYVblx7f3k (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jul 2016 23:31:41 +0200
 Received: from localhost (unknown [104.132.1.103])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9788C726;
-        Mon, 25 Jul 2016 21:31:32 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 169FA959;
+        Mon, 25 Jul 2016 21:31:33 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH 4.6 065/203] MIPS: KVM: Fix modular KVM under QEMU
-Date:   Mon, 25 Jul 2016 13:54:40 -0700
-Message-Id: <20160725203431.951329001@linuxfoundation.org>
+        stable@vger.kernel.org, Harvey Hunt <harvey.hunt@imgtec.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        linux-mips@linux-mips.org, Qais Yousef <qsyousef@gmail.com>,
+        jason@lakedaemon.net, marc.zyngier@arm.com,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 4.6 066/203] irqchip/mips-gic: Fix IRQs in gic_dev_domain
+Date:   Mon, 25 Jul 2016 13:54:41 -0700
+Message-Id: <20160725203431.991168511@linuxfoundation.org>
 X-Mailer: git-send-email 2.9.0
 In-Reply-To: <20160725203429.221747288@linuxfoundation.org>
 References: <20160725203429.221747288@linuxfoundation.org>
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54375
+X-archive-position: 54376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,99 +48,73 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Harvey Hunt <harvey.hunt@imgtec.com>
 
-commit 797179bc4fe06c89e47a9f36f886f68640b423f8 upstream.
+commit 4b2312bd0592708c85ed94368c874819e7013309 upstream.
 
-Copy __kvm_mips_vcpu_run() into unmapped memory, so that we can never
-get a TLB refill exception in it when KVM is built as a module.
+When allocating a new device IRQ, gic_dev_domain_alloc() correctly calls
+irq_domain_set_hwirq_and_chip(), but gic_irq_domain_alloc() does not. This
+means that gic_irq_domain believes all IRQs from the dev domain have an
+hwirq of 0 and creates incorrect mappings in the linear_revmap. As
+gic_irq_domain is a parent of the gic_dev_domain, this leads to an
+inability to boot on devices with a GIC. Excerpt of the error:
 
-This was observed to happen with the host MIPS kernel running under
-QEMU, due to a not entirely transparent optimisation in the QEMU TLB
-handling where TLB entries replaced with TLBWR are copied to a separate
-part of the TLB array. Code in those pages continue to be executable,
-but those mappings persist only until the next ASID switch, even if they
-are marked global.
+[    2.297649] irq 0: nobody cared (try booting with the "irqpoll" option)
+...
+[    2.436963] handlers:
+[    2.439492] Disabling IRQ #0
 
-An ASID switch happens in __kvm_mips_vcpu_run() at exception level after
-switching to the guest exception base. Subsequent TLB mapped kernel
-instructions just prior to switching to the guest trigger a TLB refill
-exception, which enters the guest exception handlers without updating
-EPC. This appears as a guest triggered TLB refill on a host kernel
-mapped (host KSeg2) address, which is not handled correctly as user
-(guest) mode accesses to kernel (host) segments always generate address
-error exceptions.
+Fix this by calling irq_domain_set_hwirq_and_chip() for both the dev and
+irq domain.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Radim Krčmář <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: kvm@vger.kernel.org
+Now that we are modifying the parent domain, be sure to clear it up in
+case of an allocation error.
+
+Fixes: c98c1822ee13 ("irqchip/mips-gic: Add device hierarchy domain")
+Fixes: 2af70a962070 ("irqchip/mips-gic: Add a IPI hierarchy domain")
+Signed-off-by: Harvey Hunt <harvey.hunt@imgtec.com>
+Tested-by: Govindraj Raja <Govindraj.Raja@imgtec.com> # On Pistachio SoC
+Reviewed-by: Matt Redfearn <matt.redfearn@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Qais Yousef <qsyousef@gmail.com>
+Cc: jason@lakedaemon.net
+Cc: marc.zyngier@arm.com
+Link: http://lkml.kernel.org/r/1464001552-31174-1-git-send-email-harvey.hunt@imgtec.com
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/kvm_host.h |    1 +
- arch/mips/kvm/interrupt.h        |    1 +
- arch/mips/kvm/locore.S           |    1 +
- arch/mips/kvm/mips.c             |   11 ++++++++++-
- 4 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-mips-gic.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -336,6 +336,7 @@ struct kvm_mips_tlb {
- #define KVM_MIPS_GUEST_TLB_SIZE	64
- struct kvm_vcpu_arch {
- 	void *host_ebase, *guest_ebase;
-+	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
- 	unsigned long host_stack;
- 	unsigned long host_gp;
- 
---- a/arch/mips/kvm/interrupt.h
-+++ b/arch/mips/kvm/interrupt.h
-@@ -28,6 +28,7 @@
- #define MIPS_EXC_MAX                12
- /* XXXSL More to follow */
- 
-+extern char __kvm_mips_vcpu_run_end[];
- extern char mips32_exception[], mips32_exceptionEnd[];
- extern char mips32_GuestException[], mips32_GuestExceptionEnd[];
- 
---- a/arch/mips/kvm/locore.S
-+++ b/arch/mips/kvm/locore.S
-@@ -227,6 +227,7 @@ FEXPORT(__kvm_mips_load_k0k1)
- 
- 	/* Jump to guest */
- 	eret
-+EXPORT(__kvm_mips_vcpu_run_end)
- 
- VECTOR(MIPSX(exception), unknown)
- /* Find out what mode we came from and jump to the proper handler. */
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -314,6 +314,15 @@ struct kvm_vcpu *kvm_arch_vcpu_create(st
- 	memcpy(gebase + offset, mips32_GuestException,
- 	       mips32_GuestExceptionEnd - mips32_GuestException);
- 
-+#ifdef MODULE
-+	offset += mips32_GuestExceptionEnd - mips32_GuestException;
-+	memcpy(gebase + offset, (char *)__kvm_mips_vcpu_run,
-+	       __kvm_mips_vcpu_run_end - (char *)__kvm_mips_vcpu_run);
-+	vcpu->arch.vcpu_run = gebase + offset;
-+#else
-+	vcpu->arch.vcpu_run = __kvm_mips_vcpu_run;
-+#endif
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -734,6 +734,12 @@ static int gic_irq_domain_alloc(struct i
+ 		/* verify that it doesn't conflict with an IPI irq */
+ 		if (test_bit(spec->hwirq, ipi_resrv))
+ 			return -EBUSY;
 +
- 	/* Invalidate the icache for these ranges */
- 	local_flush_icache_range((unsigned long)gebase,
- 				(unsigned long)gebase + ALIGN(size, PAGE_SIZE));
-@@ -403,7 +412,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
- 	/* Disable hardware page table walking while in guest */
- 	htw_stop();
++		hwirq = GIC_SHARED_TO_HWIRQ(spec->hwirq);
++
++		return irq_domain_set_hwirq_and_chip(d, virq, hwirq,
++						     &gic_level_irq_controller,
++						     NULL);
+ 	} else {
+ 		base_hwirq = find_first_bit(ipi_resrv, gic_shared_intrs);
+ 		if (base_hwirq == gic_shared_intrs) {
+@@ -855,10 +861,14 @@ static int gic_dev_domain_alloc(struct i
+ 						    &gic_level_irq_controller,
+ 						    NULL);
+ 		if (ret)
+-			return ret;
++			goto error;
+ 	}
  
--	r = __kvm_mips_vcpu_run(run, vcpu);
-+	r = vcpu->arch.vcpu_run(run, vcpu);
+ 	return 0;
++
++error:
++	irq_domain_free_irqs_parent(d, virq, nr_irqs);
++	return ret;
+ }
  
- 	/* Re-enable HTW before enabling interrupts */
- 	htw_start();
+ void gic_dev_domain_free(struct irq_domain *d, unsigned int virq,

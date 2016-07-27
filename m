@@ -1,32 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jul 2016 17:27:00 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:59760 "EHLO
-        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993042AbcGZP0dpByLL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jul 2016 17:26:33 +0200
-Received: by home.bethel-hill.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.87)
-        (envelope-from <steven.hill@cavium.com>)
-        id 1bS46Y-00043p-Qo; Tue, 26 Jul 2016 10:17:10 -0500
-Subject: [PATCH] MIPS: Octeon: Improve USB reset code for OCTEON II.
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2016 12:43:56 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:36186 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992215AbcG0Knt0j-Qd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Jul 2016 12:43:49 +0200
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 222EA81229;
+        Wed, 27 Jul 2016 10:43:40 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-116-10.phx2.redhat.com [10.3.116.10])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u6RAhbVA008975;
+        Wed, 27 Jul 2016 06:43:38 -0400
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+ Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+ Kingdom.
+ Registered in England and Wales under Company Registration No. 3798903
+Subject: [PATCH] KEYS: MIPS64 needs to use compat_sys_keyctl for 32-bit
+ userspace
+From:   David Howells <dhowells@redhat.com>
 To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-From:   "Steven J. Hill" <steven.hill@cavium.com>
-Message-ID: <57978122.1050802@cavium.com>
-Date:   Tue, 26 Jul 2016 10:26:26 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
+Cc:     smueller@chronox.de, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, dhowells@redhat.com,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
+Date:   Wed, 27 Jul 2016 11:43:37 +0100
+Message-ID: <146961621766.14504.8539728847207913941.stgit@warthog.procyon.org.uk>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <steven.hill@cavium.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Wed, 27 Jul 2016 10:43:40 +0000 (UTC)
+Return-Path: <dhowells@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54379
+X-archive-position: 54380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: steven.hill@cavium.com
+X-original-sender: dhowells@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,192 +51,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-At boot time, do a better job of resetting the USB host controller
-to make the frequency "eye" diagram more compliant with the USB
-standard while making the controller more reliable.
+MIPS64 needs to use compat_sys_keyctl for 32-bit userspace rather than
+calling sys_keyctl.  The latter will work in a lot of cases, thereby hiding
+the issue.
 
-Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
-Acked-by: David Daney <david.daney@cavium.com>
+Reported-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: stable@vger.kernel.org
 ---
- arch/mips/cavium-octeon/octeon-platform.c | 108 +++++++++++++++++-------------
- 1 file changed, 60 insertions(+), 48 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index c9359fd..eeda373 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -3,33 +3,27 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 2004-2011 Cavium Networks
-+ * Copyright (C) 2004-2016 Cavium Networks
-  * Copyright (C) 2008 Wind River Systems
-  */
- 
--#include <linux/delay.h>
- #include <linux/init.h>
--#include <linux/irq.h>
--#include <linux/i2c.h>
--#include <linux/usb.h>
--#include <linux/dma-mapping.h>
-+#include <linux/delay.h>
- #include <linux/etherdevice.h>
--#include <linux/module.h>
--#include <linux/mutex.h>
--#include <linux/slab.h>
--#include <linux/platform_device.h>
- #include <linux/of_platform.h>
- #include <linux/of_fdt.h>
- #include <linux/libfdt.h>
-+#include <linux/usb/ehci_def.h>
- #include <linux/usb/ehci_pdriver.h>
- #include <linux/usb/ohci_pdriver.h>
- 
- #include <asm/octeon/octeon.h>
--#include <asm/octeon/cvmx-rnm-defs.h>
--#include <asm/octeon/cvmx-helper.h>
- #include <asm/octeon/cvmx-helper-board.h>
- #include <asm/octeon/cvmx-uctlx-defs.h>
- 
-+#define CVMX_UAHCX_EHCI_USBCMD	(CVMX_ADD_IO_SEG(0x00016F0000000010ull))
-+#define CVMX_UAHCX_OHCI_USBCMD	(CVMX_ADD_IO_SEG(0x00016F0000000408ull))
-+
- /* Octeon Random Number Generator.  */
- static int __init octeon_rng_device_init(void)
- {
-@@ -78,12 +72,36 @@ static DEFINE_MUTEX(octeon2_usb_clocks_mutex);
- 
- static int octeon2_usb_clock_start_cnt;
- 
-+static int __init octeon2_usb_reset(void)
-+{
-+	union cvmx_uctlx_clk_rst_ctl clk_rst_ctl;
-+	u32 ucmd;
-+
-+	if (!OCTEON_IS_OCTEON2())
-+		return 0;
-+
-+	clk_rst_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_CLK_RST_CTL(0));
-+	if (clk_rst_ctl.s.hrst) {
-+		ucmd = cvmx_read64_uint32(CVMX_UAHCX_EHCI_USBCMD);
-+		ucmd &= ~CMD_RUN;
-+		cvmx_write64_uint32(CVMX_UAHCX_EHCI_USBCMD, ucmd);
-+		mdelay(2);
-+		ucmd |= CMD_RESET;
-+		cvmx_write64_uint32(CVMX_UAHCX_EHCI_USBCMD, ucmd);
-+		ucmd = cvmx_read64_uint32(CVMX_UAHCX_OHCI_USBCMD);
-+		ucmd |= CMD_RUN;
-+		cvmx_write64_uint32(CVMX_UAHCX_OHCI_USBCMD, ucmd);
-+	}
-+
-+	return 0;
-+}
-+arch_initcall(octeon2_usb_reset);
-+
- static void octeon2_usb_clocks_start(struct device *dev)
- {
- 	u64 div;
- 	union cvmx_uctlx_if_ena if_ena;
- 	union cvmx_uctlx_clk_rst_ctl clk_rst_ctl;
--	union cvmx_uctlx_uphy_ctl_status uphy_ctl_status;
- 	union cvmx_uctlx_uphy_portx_ctl_status port_ctl_status;
- 	int i;
- 	unsigned long io_clk_64_to_ns;
-@@ -131,6 +149,17 @@ static void octeon2_usb_clocks_start(struct device *dev)
- 	if_ena.s.en = 1;
- 	cvmx_write_csr(CVMX_UCTLX_IF_ENA(0), if_ena.u64);
- 
-+	for (i = 0; i <= 1; i++) {
-+		port_ctl_status.u64 =
-+			cvmx_read_csr(CVMX_UCTLX_UPHY_PORTX_CTL_STATUS(i, 0));
-+		/* Set txvreftune to 15 to obtain compliant 'eye' diagram. */
-+		port_ctl_status.s.txvreftune = 15;
-+		port_ctl_status.s.txrisetune = 1;
-+		port_ctl_status.s.txpreemphasistune = 1;
-+		cvmx_write_csr(CVMX_UCTLX_UPHY_PORTX_CTL_STATUS(i, 0),
-+			       port_ctl_status.u64);
-+	}
-+
- 	/* Step 3: Configure the reference clock, PHY, and HCLK */
- 	clk_rst_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_CLK_RST_CTL(0));
- 
-@@ -218,29 +247,10 @@ static void octeon2_usb_clocks_start(struct device *dev)
- 	clk_rst_ctl.s.p_por = 0;
- 	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
- 
--	/* Step 5:    Wait 1 ms for the PHY clock to start. */
--	mdelay(1);
--
--	/*
--	 * Step 6: Program the reset input from automatic test
--	 * equipment field in the UPHY CSR
--	 */
--	uphy_ctl_status.u64 = cvmx_read_csr(CVMX_UCTLX_UPHY_CTL_STATUS(0));
--	uphy_ctl_status.s.ate_reset = 1;
--	cvmx_write_csr(CVMX_UCTLX_UPHY_CTL_STATUS(0), uphy_ctl_status.u64);
--
--	/* Step 7: Wait for at least 10ns. */
--	ndelay(10);
-+	/* Step 5:    Wait 3 ms for the PHY clock to start. */
-+	mdelay(3);
- 
--	/* Step 8: Clear the ATE_RESET field in the UPHY CSR. */
--	uphy_ctl_status.s.ate_reset = 0;
--	cvmx_write_csr(CVMX_UCTLX_UPHY_CTL_STATUS(0), uphy_ctl_status.u64);
--
--	/*
--	 * Step 9: Wait for at least 20ns for UPHY to output PHY clock
--	 * signals and OHCI_CLK48
--	 */
--	ndelay(20);
-+	/* Steps 6..9 for ATE only, are skipped. */
- 
- 	/* Step 10: Configure the OHCI_CLK48 and OHCI_CLK12 clocks. */
- 	/* 10a */
-@@ -261,6 +271,20 @@ static void octeon2_usb_clocks_start(struct device *dev)
- 	clk_rst_ctl.s.p_prst = 1;
- 	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
- 
-+	/* Step 11b */
-+	udelay(1);
-+
-+	/* Step 11c */
-+	clk_rst_ctl.s.p_prst = 0;
-+	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
-+
-+	/* Step 11d */
-+	mdelay(1);
-+
-+	/* Step 11e */
-+	clk_rst_ctl.s.p_prst = 1;
-+	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
-+
- 	/* Step 12: Wait 1 uS. */
- 	udelay(1);
- 
-@@ -269,21 +293,9 @@ static void octeon2_usb_clocks_start(struct device *dev)
- 	cvmx_write_csr(CVMX_UCTLX_CLK_RST_CTL(0), clk_rst_ctl.u64);
- 
- end_clock:
--	/* Now we can set some other registers.  */
--
--	for (i = 0; i <= 1; i++) {
--		port_ctl_status.u64 =
--			cvmx_read_csr(CVMX_UCTLX_UPHY_PORTX_CTL_STATUS(i, 0));
--		/* Set txvreftune to 15 to obtain compliant 'eye' diagram. */
--		port_ctl_status.s.txvreftune = 15;
--		port_ctl_status.s.txrisetune = 1;
--		port_ctl_status.s.txpreemphasistune = 1;
--		cvmx_write_csr(CVMX_UCTLX_UPHY_PORTX_CTL_STATUS(i, 0),
--			       port_ctl_status.u64);
--	}
--
- 	/* Set uSOF cycle period to 60,000 bits. */
- 	cvmx_write_csr(CVMX_UCTLX_EHCI_FLA(0), 0x20ull);
-+
- exit:
- 	mutex_unlock(&octeon2_usb_clocks_mutex);
- }
--- 
-1.9.1
+ arch/mips/kernel/scall64-n32.S |    2 +-
+ arch/mips/kernel/scall64-o32.S |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index 9c0b387d6427..51d3988933f8 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -348,7 +348,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_ni_syscall			/* available, was setaltroot */
+ 	PTR	sys_add_key
+ 	PTR	sys_request_key
+-	PTR	sys_keyctl			/* 6245 */
++	PTR	compat_sys_keyctl		/* 6245 */
+ 	PTR	sys_set_thread_area
+ 	PTR	sys_inotify_init
+ 	PTR	sys_inotify_add_watch
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index f4f28b1580de..6efa7136748f 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -504,7 +504,7 @@ EXPORT(sys32_call_table)
+ 	PTR	sys_ni_syscall			/* available, was setaltroot */
+ 	PTR	sys_add_key			/* 4280 */
+ 	PTR	sys_request_key
+-	PTR	sys_keyctl
++	PTR	compat_sys_keyctl
+ 	PTR	sys_set_thread_area
+ 	PTR	sys_inotify_init
+ 	PTR	sys_inotify_add_watch		/* 4285 */

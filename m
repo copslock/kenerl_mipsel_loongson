@@ -1,35 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2016 05:36:12 +0200 (CEST)
-Received: from mail5.windriver.com ([192.103.53.11]:57028 "EHLO mail5.wrs.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992870AbcHADgFovmEJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Aug 2016 05:36:05 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail5.wrs.com (8.15.2/8.15.2) with ESMTPS id u713ZuQv023132
-        (version=TLSv1 cipher=AES128-SHA bits=128 verify=OK);
-        Sun, 31 Jul 2016 20:35:56 -0700
-Received: from yow-lpgnfs-02.corp.ad.wrs.com (128.224.149.8) by
- ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.3.248.2; Sun, 31 Jul 2016 20:35:55 -0700
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH] clocksource: mips-gic-timer: make gic_clocksource_of_init return int
-Date:   Sun, 31 Jul 2016 23:35:46 -0400
-Message-ID: <20160801033546.26472-1-paul.gortmaker@windriver.com>
-X-Mailer: git-send-email 2.8.4
-MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <Paul.Gortmaker@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2016 16:24:16 +0200 (CEST)
+Received: from mogw1122.ocn.ad.jp ([153.149.229.23]:52451 "EHLO
+        mogw1122.ocn.ad.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992854AbcHAOYI14SfH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Aug 2016 16:24:08 +0200
+Received: from mf-smf-ucb008.ocn.ad.jp (mf-smf-ucb008.ocn.ad.jp [153.149.227.68])
+        by mogw1122.ocn.ad.jp (Postfix) with ESMTP id D2FA4B8002A;
+        Mon,  1 Aug 2016 23:24:04 +0900 (JST)
+Received: from ntt.pod01.mv-mta-ucb019 ([mv-mta-ucb019.ocn.ad.jp [153.128.50.2]]) by mf-smf-ucb008.ocn.ad.jp with RELAY id u71ENCBI005314 ;
+          Mon, 1 Aug 2016 23:24:04 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.166])
+        by ntt.pod01.mv-mta-ucb019 with 
+        id RqQ41t0013c2f7501qQ4L2; Mon, 01 Aug 2016 14:24:04 +0000
+Received: from localhost (p994239-ipngn803funabasi.chiba.ocn.ne.jp [180.34.224.239])
+        by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+        Mon,  1 Aug 2016 23:24:04 +0900 (JST)
+Date:   Mon, 01 Aug 2016 23:23:59 +0900 (JST)
+Message-Id: <20160801.232359.1867350514422089320.anemo@mba.ocn.ne.jp>
+To:     geert@linux-m68k.org
+Cc:     linux-mips@linux-mips.org, linux-gpio@vger.kernel.org
+Subject: Re: Revisiting rbtx4927: gpiod_direction_output_raw: invalid GPIO
+From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <CAMuHMdUARn_SxhkWiTsGdSixFv9a=VjKLLgQMfPTtxufrjepCg@mail.gmail.com>
+References: <CAMuHMdUARn_SxhkWiTsGdSixFv9a=VjKLLgQMfPTtxufrjepCg@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net:11371/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 6.5 on Emacs 24.3 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54386
+X-archive-position: 54387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,46 +49,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In commit d8152bf85d2c057fc39c3e20a4d623f524d9f09c:
-  ("clocksource/drivers/mips-gic-timer: Convert init function to return error")
+Hi Geert, sorry for loooong delay ...
 
-several return values were added to a void function resulting in:
+On Thu, 14 Apr 2016 21:06:05 +0200, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> I've just updated my old rbtx4927 from v3.13-rc3 to v4.6-rc3.
+> Surprisingly, it boots to nfsroot without any kernel changes.
 
- clocksource/mips-gic-timer.c: In function 'gic_clocksource_of_init':
- clocksource/mips-gic-timer.c:175:3: warning: 'return' with a value, in function returning void [enabled by default]
- clocksource/mips-gic-timer.c:183:4: warning: 'return' with a value, in function returning void [enabled by default]
- clocksource/mips-gic-timer.c:190:3: warning: 'return' with a value, in function returning void [enabled by default]
- clocksource/mips-gic-timer.c:195:3: warning: 'return' with a value, in function returning void [enabled by default]
- clocksource/mips-gic-timer.c:200:3: warning: 'return' with a value, in function returning void [enabled by default]
- clocksource/mips-gic-timer.c:211:2: warning: 'return' with a value, in function returning void [enabled by default]
- clocksource/mips-gic-timer.c: At top level:
- clocksource/mips-gic-timer.c:213:1: warning: comparison of distinct pointer types lacks a cast [enabled by default]
- clocksource/mips-gic-timer.c: In function 'gic_clocksource_of_init':
- clocksource/mips-gic-timer.c:183:18: warning: ignoring return value of 'PTR_ERR', declared with attribute warn_unused_result [-Wunused-result]
+Good news!  I'm happy to hear that.
 
-Given that the addition of the return values was intentional, it seems
-that the conversion of the containing function from void to int was
-simply overlooked.
+> However, there's an annoying warning in the boot log:
+> 
+>         gpiod_direction_output_raw: invalid GPIO
+> 
+> This is caused by the following code in arch/mips/txx9/rbtx4927/setup.c:
+> 
+>         static void __init rbtx4927_mem_setup(void)
+>         {
+> 
+>                 /* TX4927-SIO DTR on (PIO[15]) */
+>                 gpio_request(15, "sio-dtr");
+> 
+> returns -EPROBE_DEFER
+> 
+>                 gpio_direction_output(15, 1);
+> 
+> VALIDATE_DESC triggers the warning.
+> 
+> Probably a silly GPIO conversion was missed during the last 2+ years?
 
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Maybe txx9_gpio_init() failed to add gpio_chip since it was called too
+early on startup.
+
+Nowadays gpiochip_add_data calls kzalloc so cannot be called from
+plat_mem_setup context.
+
+Could you try moving these txx9_gpio_init(), gpio_request() and
+gpio_direction_output() calls to rbtx4927_arch_init() or
+rbtx4927_device_init()?
+
 ---
- drivers/clocksource/mips-gic-timer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-index d91e8725917c..b4b3ab5a11ad 100644
---- a/drivers/clocksource/mips-gic-timer.c
-+++ b/drivers/clocksource/mips-gic-timer.c
-@@ -164,7 +164,7 @@ void __init gic_clocksource_init(unsigned int frequency)
- 	gic_start_count();
- }
- 
--static void __init gic_clocksource_of_init(struct device_node *node)
-+static int __init gic_clocksource_of_init(struct device_node *node)
- {
- 	struct clk *clk;
- 	int ret;
--- 
-2.8.4
+Atsushi Nemoto

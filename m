@@ -1,42 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2016 16:24:16 +0200 (CEST)
-Received: from mogw1122.ocn.ad.jp ([153.149.229.23]:52451 "EHLO
-        mogw1122.ocn.ad.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992854AbcHAOYI14SfH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Aug 2016 16:24:08 +0200
-Received: from mf-smf-ucb008.ocn.ad.jp (mf-smf-ucb008.ocn.ad.jp [153.149.227.68])
-        by mogw1122.ocn.ad.jp (Postfix) with ESMTP id D2FA4B8002A;
-        Mon,  1 Aug 2016 23:24:04 +0900 (JST)
-Received: from ntt.pod01.mv-mta-ucb019 ([mv-mta-ucb019.ocn.ad.jp [153.128.50.2]]) by mf-smf-ucb008.ocn.ad.jp with RELAY id u71ENCBI005314 ;
-          Mon, 1 Aug 2016 23:24:04 +0900
-Received: from smtp.ocn.ne.jp ([153.149.227.166])
-        by ntt.pod01.mv-mta-ucb019 with 
-        id RqQ41t0013c2f7501qQ4L2; Mon, 01 Aug 2016 14:24:04 +0000
-Received: from localhost (p994239-ipngn803funabasi.chiba.ocn.ne.jp [180.34.224.239])
-        by smtp.ocn.ne.jp (Postfix) with ESMTPA;
-        Mon,  1 Aug 2016 23:24:04 +0900 (JST)
-Date:   Mon, 01 Aug 2016 23:23:59 +0900 (JST)
-Message-Id: <20160801.232359.1867350514422089320.anemo@mba.ocn.ne.jp>
-To:     geert@linux-m68k.org
-Cc:     linux-mips@linux-mips.org, linux-gpio@vger.kernel.org
-Subject: Re: Revisiting rbtx4927: gpiod_direction_output_raw: invalid GPIO
-From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <CAMuHMdUARn_SxhkWiTsGdSixFv9a=VjKLLgQMfPTtxufrjepCg@mail.gmail.com>
-References: <CAMuHMdUARn_SxhkWiTsGdSixFv9a=VjKLLgQMfPTtxufrjepCg@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net:11371/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 6.5 on Emacs 24.3 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2016 18:51:35 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:14898 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992866AbcHAQv1sXiuR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Aug 2016 18:51:27 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id BC8453824DA98;
+        Mon,  1 Aug 2016 17:51:07 +0100 (IST)
+Received: from [127.0.0.1] (10.100.200.113) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 1 Aug
+ 2016 17:51:10 +0100
+Subject: Re: [PATCH v2] MIPS: Use CPHYSADDR to implement mips32 __pa
+To:     Ralf Baechle <ralf@linux-mips.org>
+References: <1455644478-23415-1-git-send-email-paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        <linux-kernel@vger.kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>
+From:   Paul Burton <paul.burton@imgtec.com>
+Message-ID: <eb5c9780-f0ed-8a91-d727-46119e1ee192@imgtec.com>
+Date:   Mon, 1 Aug 2016 17:51:10 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <1455644478-23415-1-git-send-email-paul.burton@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Originating-IP: [10.100.200.113]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54387
+X-archive-position: 54388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,43 +48,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Geert, sorry for loooong delay ...
+On 16/02/16 17:41, Paul Burton wrote:
+> Use CPHYSADDR to implement the __pa macro converting from a virtual to a
+> physical address for MIPS32, much as is already done for MIPS64 (though
+> without the complication of having both compatibility & XKPHYS
+> segments).
+>
+> This allows for __pa to work regardless of whether the address being
+> translated is in kseg0 or kseg1, unlike the previous subtraction based
+> approach which only worked for addresses in kseg0. Working for kseg1
+> addresses is important if __pa is used on addresses allocated by
+> dma_alloc_coherent, where on systems with non-coherent I/O we provide
+> addresses in kseg1. If this address is then used with
+> dma_map_single_attrs then it is provided to virt_to_page, which in turn
+> calls virt_to_phys which is a wrapper around __pa. The result is that we
+> end up with a physical address 0x20000000 bytes (ie. the size of kseg0)
+> too high.
+>
+> In addition to providing consistency with MIPS64 & fixing the kseg1 case
+> above this has the added bonus of generating smaller code for systems
+> implementing MIPS32r2 & beyond, where a single ext instruction can
+> extract the physical address rather than needing to load an immediate
+> into a temp register & subtract it. This results in ~1.3KB savings for a
+> boston_defconfig kernel adjusted to set CONFIG_32BIT=y.
+>
+> This patch does not change the EVA case, which may or may not have
+> similar issues around handling both cached & uncached addresses but is
+> beyond the scope of this patch.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+>
 
-On Thu, 14 Apr 2016 21:06:05 +0200, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> I've just updated my old rbtx4927 from v3.13-rc3 to v4.6-rc3.
-> Surprisingly, it boots to nfsroot without any kernel changes.
+Hi Ralf,
 
-Good news!  I'm happy to hear that.
+Any thoughts on this one? It matters for Boston (where it affects the 
+pch_gbe ethernet driver) which I'll be submitting again for the 4.9 cycle.
 
-> However, there's an annoying warning in the boot log:
-> 
->         gpiod_direction_output_raw: invalid GPIO
-> 
-> This is caused by the following code in arch/mips/txx9/rbtx4927/setup.c:
-> 
->         static void __init rbtx4927_mem_setup(void)
->         {
-> 
->                 /* TX4927-SIO DTR on (PIO[15]) */
->                 gpio_request(15, "sio-dtr");
-> 
-> returns -EPROBE_DEFER
-> 
->                 gpio_direction_output(15, 1);
-> 
-> VALIDATE_DESC triggers the warning.
-> 
-> Probably a silly GPIO conversion was missed during the last 2+ years?
+Thanks,
+     Paul
 
-Maybe txx9_gpio_init() failed to add gpio_chip since it was called too
-early on startup.
-
-Nowadays gpiochip_add_data calls kzalloc so cannot be called from
-plat_mem_setup context.
-
-Could you try moving these txx9_gpio_init(), gpio_request() and
-gpio_direction_output() calls to rbtx4927_arch_init() or
-rbtx4927_device_init()?
-
----
-Atsushi Nemoto
+> ---
+>
+> Changes in v2:
+> - Leave the EVA case as-is.
+>
+>  arch/mips/include/asm/page.h | 20 ++++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+> index 21ed715..ac0c1b7 100644
+> --- a/arch/mips/include/asm/page.h
+> +++ b/arch/mips/include/asm/page.h
+> @@ -169,8 +169,24 @@ typedef struct { unsigned long pgprot; } pgprot_t;
+>      __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
+>  })
+>  #else
+> -#define __pa(x)								\
+> -    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
+> +static inline unsigned long __pa(unsigned long x)
+> +{
+> +	if (!config_enabled(CONFIG_EVA)) {
+> +		/*
+> +		 * We're using the standard MIPS32 legacy memory map, ie.
+> +		 * the address x is going to be in kseg0 or kseg1. We can
+> +		 * handle either case by masking out the desired bits using
+> +		 * CPHYSADDR.
+> +		 */
+> +		return CPHYSADDR(x);
+> +	}
+> +
+> +	/*
+> +	 * EVA is in use so the memory map could be anything, making it not
+> +	 * safe to just mask out bits.
+> +	 */
+> +	return x - PAGE_OFFSET + PHYS_OFFSET;
+> +}
+>  #endif
+>  #define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
+>  #include <asm/io.h>
+>

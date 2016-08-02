@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Aug 2016 10:29:44 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59424 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Aug 2016 10:32:48 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:59866 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992990AbcHBI3d7hfqO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Aug 2016 10:29:33 +0200
+        id S23993021AbcHBIclYmJUO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 2 Aug 2016 10:32:41 +0200
 Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u728TSrS016397;
-        Tue, 2 Aug 2016 10:29:28 +0200
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u728Wc9Q016506;
+        Tue, 2 Aug 2016 10:32:38 +0200
 Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u728TNws016396;
-        Tue, 2 Aug 2016 10:29:23 +0200
-Date:   Tue, 2 Aug 2016 10:29:23 +0200
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u728Wccx016505;
+        Tue, 2 Aug 2016 10:32:38 +0200
+Date:   Tue, 2 Aug 2016 10:32:38 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Binbin Zhou <zhoubb@lemote.com>,
-        James Hogan <james.hogan@imgtec.com>
+To:     Binbin Zhou <zhoubb@lemote.com>
 Cc:     John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Kelvin Cheung <keguang.zhang@gmail.com>,
         Chunbo Cui <cuichboo@163.com>, Huacai Chen <chenhc@lemote.com>
-Subject: Re: [PATCH RESEND v4 7/9] MIPS: Loongson-1A: Enable SPARSEMEN and
- HIGHMEM
-Message-ID: <20160802082923.GA15910@linux-mips.org>
+Subject: Re: [PATCH RESEND v4 1/9] MIPS: Loongson: Add basic Loongson-1A CPU
+ support
+Message-ID: <20160802083237.GB15910@linux-mips.org>
 References: <1463621912-9883-1-git-send-email-zhoubb@lemote.com>
- <1463621912-9883-6-git-send-email-zhoubb@lemote.com>
+ <1463621912-9883-2-git-send-email-zhoubb@lemote.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1463621912-9883-6-git-send-email-zhoubb@lemote.com>
+In-Reply-To: <1463621912-9883-2-git-send-email-zhoubb@lemote.com>
 User-Agent: Mutt/1.6.2 (2016-07-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54389
+X-archive-position: 54390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,26 +48,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, May 19, 2016 at 09:38:30AM +0800, Binbin Zhou wrote:
+On Thu, May 19, 2016 at 09:38:26AM +0800, Binbin Zhou wrote:
 
-> diff --git a/arch/mips/include/asm/sparsemem.h b/arch/mips/include/asm/sparsemem.h
-> index b1071c1..f73e671 100644
-> --- a/arch/mips/include/asm/sparsemem.h
-> +++ b/arch/mips/include/asm/sparsemem.h
-> @@ -11,7 +11,11 @@
->  #else
->  # define SECTION_SIZE_BITS	28
->  #endif
-> -#define MAX_PHYSMEM_BITS	48
-> +#ifdef CONFIG_64BIT
-> +# define MAX_PHYSMEM_BITS	48
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -1497,8 +1497,12 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+>  		c->cputype = CPU_LOONGSON1;
+>  
+>  		switch (c->processor_id & PRID_REV_MASK) {
+> -		case PRID_REV_LOONGSON1B:
+> +		case PRID_REV_LOONGSON1A_1B:
+> +#ifdef CONFIG_CPU_LOONGSON1A
+> +			__cpu_name[cpu] = "Loongson 1A";
 > +#else
-> +# define MAX_PHYSMEM_BITS	36
+>  			__cpu_name[cpu] = "Loongson 1B";
 > +#endif
 
-This doesn't look right for XPA.  What do you think, James?
+Is there no way to distinguish between Loongson 1A and 1B at runtime for
+example by looking at the version number or similar?
 
-I think we don't use sparsemem on XPA atm so I can apply this safely -
-but it should be fixed properly.
+> --- a/arch/mips/loongson32/common/setup.c
+> +++ b/arch/mips/loongson32/common/setup.c
+> @@ -21,8 +21,12 @@ const char *get_system_type(void)
+>  	unsigned int processor_id = (&current_cpu_data)->processor_id;
+>  
+>  	switch (processor_id & PRID_REV_MASK) {
+> -	case PRID_REV_LOONGSON1B:
+> +	case PRID_REV_LOONGSON1A_1B:
+> +#ifdef CONFIG_CPU_LOONGSON1A
+> +		return "LOONGSON LS1A";
+> +#else
+>  		return "LOONGSON LS1B";
+> +#endif
+>  	default:
+>  		return "LOONGSON (unknown)";
+>  	}
+
+Ditto.
 
   Ralf

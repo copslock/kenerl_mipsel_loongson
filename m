@@ -1,37 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Aug 2016 08:14:29 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54408 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990517AbcHCGOWO74Yp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Aug 2016 08:14:22 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u736ELUC015149;
-        Wed, 3 Aug 2016 08:14:21 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u736EKdM015148;
-        Wed, 3 Aug 2016 08:14:20 +0200
-Date:   Wed, 3 Aug 2016 08:14:20 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Keguang Zhang <keguang.zhang@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Loongson1B: Provide DMA filter callbacks via
- platform data
-Message-ID: <20160803061419.GH15910@linux-mips.org>
-References: <1464429112-27590-1-git-send-email-keguang.zhang@gmail.com>
- <1464429112-27590-2-git-send-email-keguang.zhang@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Aug 2016 11:58:28 +0200 (CEST)
+Received: from mail-wm0-f67.google.com ([74.125.82.67]:34570 "EHLO
+        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992183AbcHCJ6WKTCe0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Aug 2016 11:58:22 +0200
+Received: by mail-wm0-f67.google.com with SMTP id q128so35470655wma.1;
+        Wed, 03 Aug 2016 02:58:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=v6+5w3t/08g+uDnltIjmczK8vC/myz4oWS3TTfjfRG8=;
+        b=A8e/DA12aK0ghIYN14FLBy3OShLr5hvP4JUVzW/iF4d8ewmYjKIAjmO4m+GVds82cC
+         x8xCE3mrGduS5qA554cwCcKS6NviPK7hjHraK6kQM8E9NWYdLlDgHOu49jG9cMQW1T7M
+         LdsISBFvnc4xNq/UL7whaveX2iaoCU0JosxG/tcmryKLlCn2+rJoxHDfRvrLoSjIYc2b
+         abq2K/iR83bD08mwjUqRVbN5Zu1FPfueQogzlKy/fKoZh87XvAQ+JvCvOKxSRduSdqW1
+         iCdgw+cO5wNanwkp6qLwJmLkwctSVAIczHZKz/fcl3AxftOkGQpXYZ1BIySXWBRDJO8c
+         qljg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=v6+5w3t/08g+uDnltIjmczK8vC/myz4oWS3TTfjfRG8=;
+        b=QZZeOVPY+ABeHx6u+TIDb9ukiRUtO666SWRtf62Pc9pxMAXzwcP78SYLvC6wz6vWnP
+         CFwnO0ya7KWkridZ2gPIZZDbUDSNjiPs/TXcAWmUrnRAcmdBoPHAb7Fp0YYROnGLPSyQ
+         dx3cIQIbPkX9gqq0dN4TP/yoQwD+yjcSbW/XKwqZ8ANSJrhWzlTcWpLUG7kjQQz0rkeT
+         jYCKye8OMzJgXzCW3wvDJ5Zt1A13sRfZVlAz7qeSLTWa+KzYwU7rs2ZD/a6DSR1Wdn7h
+         7AXOALYrhgxEdxzlxv7jEH6pjUe9WNl4AEmC8lGbP2PKPn63InkCQecNKmgamJFrGyje
+         /VVw==
+X-Gm-Message-State: AEkoouvuN42pRQwBV6ylcmZ6Uawobc/xPxuIJ7QgeiUhEyW3XvUpFDshXDsFfEw41ly+Aw==
+X-Received: by 10.194.77.97 with SMTP id r1mr64610371wjw.83.1470218296828;
+        Wed, 03 Aug 2016 02:58:16 -0700 (PDT)
+Received: from localhost.localdomain (219.red-83-55-40.dynamicip.rima-tde.net. [83.55.40.219])
+        by smtp.gmail.com with ESMTPSA id d80sm26368107wmd.14.2016.08.03.02.58.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 03 Aug 2016 02:58:16 -0700 (PDT)
+From:   =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
+        <noltari@gmail.com>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, ralf@linux-mips.org,
+        f.fainelli@gmail.com, jogo@openwrt.org, cernekee@gmail.com,
+        robh@kernel.org, simon@fire.lp0.eu, john@phrozen.org
+Cc:     =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
+        <noltari@gmail.com>
+Subject: [PATCH v2 1/7] MIPS: BMIPS: add missing bcm97435svmb to DT_NONE
+Date:   Wed,  3 Aug 2016 11:58:24 +0200
+Message-Id: <1470218310-2978-1-git-send-email-noltari@gmail.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1464429112-27590-2-git-send-email-keguang.zhang@gmail.com>
-User-Agent: Mutt/1.6.2 (2016-07-01)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <noltari@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54401
+X-archive-position: 54402
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: noltari@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,37 +70,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, May 28, 2016 at 05:51:52PM +0800, Keguang Zhang wrote:
+Commit 380e4270 added support for bcm97435svmb.dtb but missed adding it to
+DT_NONE.
+Also refactor DT_NONE dtbs in order to add larger names in the future.
 
-> diff --git a/arch/mips/include/asm/mach-loongson32/nand.h b/arch/mips/include/asm/mach-loongson32/nand.h
-> index e274912..a1f8704 100644
-> --- a/arch/mips/include/asm/mach-loongson32/nand.h
-> +++ b/arch/mips/include/asm/mach-loongson32/nand.h
-> @@ -21,10 +21,9 @@ struct plat_ls1x_nand {
->  
->  	int hold_cycle;
->  	int wait_cycle;
-> +	bool (*dma_filter)(struct dma_chan *chan, void *param);
->  };
->  
->  extern struct plat_ls1x_nand ls1b_nand_pdata;
->  
-> -bool ls1x_dma_filter_fn(struct dma_chan *chan, void *param);
-> -
->  #endif /* __ASM_MACH_LOONGSON32_NAND_H */
-> diff --git a/arch/mips/loongson32/ls1b/board.c b/arch/mips/loongson32/ls1b/board.c
-> index 38a1d40..0a57337 100644
-> --- a/arch/mips/loongson32/ls1b/board.c
-> +++ b/arch/mips/loongson32/ls1b/board.c
-> @@ -38,6 +38,7 @@ struct plat_ls1x_nand ls1x_nand_pdata = {
->  	.nr_parts	= ARRAY_SIZE(ls1x_nand_parts),
->  	.hold_cycle	= 0x2,
->  	.wait_cycle	= 0xc,
-> +	.dma_filter	= ls1x_dma_filter,
->  };
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+---
+ arch/mips/boot/dts/brcm/Makefile | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-Without the DMA driver which Vinod has requested changes for this
-patch will result in build errors.  It will also result in a build
-error if CONFIG_LOONGSON1_DMA is disabled.
-
-  Ralf
+diff --git a/arch/mips/boot/dts/brcm/Makefile b/arch/mips/boot/dts/brcm/Makefile
+index fda9d38..87e07e2 100644
+--- a/arch/mips/boot/dts/brcm/Makefile
++++ b/arch/mips/boot/dts/brcm/Makefile
+@@ -12,19 +12,20 @@ dtb-$(CONFIG_DT_BCM97420C)		+= bcm97420c.dtb
+ dtb-$(CONFIG_DT_BCM97425SVMB)		+= bcm97425svmb.dtb
+ dtb-$(CONFIG_DT_BCM97435SVMB)		+= bcm97435svmb.dtb
+ 
+-dtb-$(CONFIG_DT_NONE)			+= \
+-						bcm93384wvg.dtb		\
+-						bcm93384wvg_viper.dtb	\
+-						bcm96358nb4ser.dtb	\
+-						bcm96368mvwg.dtb	\
+-						bcm9ejtagprb.dtb	\
+-						bcm97125cbmb.dtb	\
+-						bcm97346dbsmb.dtb	\
+-						bcm97358svmb.dtb	\
+-						bcm97360svmb.dtb	\
+-						bcm97362svmb.dtb	\
+-						bcm97420c.dtb		\
+-						bcm97425svmb.dtb
++dtb-$(CONFIG_DT_NONE) += \
++	bcm93384wvg.dtb \
++	bcm93384wvg_viper.dtb \
++	bcm96358nb4ser.dtb \
++	bcm96368mvwg.dtb \
++	bcm9ejtagprb.dtb \
++	bcm97125cbmb.dtb \
++	bcm97346dbsmb.dtb \
++	bcm97358svmb.dtb \
++	bcm97360svmb.dtb \
++	bcm97362svmb.dtb \
++	bcm97420c.dtb \
++	bcm97425svmb.dtb \
++	bcm97435svmb.dtb
+ 
+ obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
+ 
+-- 
+2.1.4

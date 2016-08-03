@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Aug 2016 11:58:49 +0200 (CEST)
-Received: from mail-wm0-f67.google.com ([74.125.82.67]:34597 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Aug 2016 11:59:12 +0200 (CEST)
+Received: from mail-wm0-f67.google.com ([74.125.82.67]:36236 "EHLO
         mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992914AbcHCJ6YxJvl0 (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992489AbcHCJ6YhHlw0 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 3 Aug 2016 11:58:24 +0200
-Received: by mail-wm0-f67.google.com with SMTP id q128so35470915wma.1;
-        Wed, 03 Aug 2016 02:58:24 -0700 (PDT)
+Received: by mail-wm0-f67.google.com with SMTP id x83so35402743wma.3;
+        Wed, 03 Aug 2016 02:58:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=qyNyAzWIJ/676s4wvnCG59RuzrRgkiJYBJdUJmcHlKI=;
-        b=nRYJmrnvvsdjdkEHL/TGY1jGCBvapMk8GJ6wcTUnLdRyQOZq30+5CxsDxIRZV2pAYQ
-         m1oES/yuALwytv3oW+ZUZEQUm2YO8UOjqxqw0/wwOoH/neAU1z/2QMNMrAByu4GvUc4V
-         ZFJkp93rtOKgM/TATglrB8fcbOS2RtcYcEJAklCkASIQKv070IQzRFjMFtfZlJNuqBnD
-         q5/5WuZuLgoa8drXx6NWQA6YzXLnTUAXHY0HZzn2xB8+C8kzrsvpfklhe7GN8jNXqFOb
-         5c8xXqik08O/JBIZv5NAYUb9g/C8KI6/ltrfAThKIeSrE6EVFYJAgM5IKagfjUVKYwz4
-         87SA==
+        bh=SjCO2MRUQXNvzl9WBWB8RcaHz7AC592Hd4JJe12v8y0=;
+        b=CC9/Hylt3UlkqAKJec3r7XSd7ALKZUm3M7xjmfjsKyV4Ni07wF34fBCu9BVh6wupbn
+         O79aKcjh/SH8i66Qc3Uk0vbNEEsvOPSnmwOiUnUVeUHBueJ6D0Hd5Z0BhlvQAAmpbGiV
+         woyD1iGfpWPc2R1mYEtzg8IWe1JYueC3yHgoxqQ0PHRsDhRrZQvAzKyikzQaR7INELi6
+         J3ZETQdT+3FnU7Xus/X3I1ZP7nQEXzTujPrh/xjlNR7dJMntRRiZQ8JDR2PjWp13s6c6
+         3BMocCb7AZmnqDFPETGeY/5ijA7BuXtmDcsKMA0zpUVz8X3FE+nr0OywU8pZloZm57WQ
+         gV4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=qyNyAzWIJ/676s4wvnCG59RuzrRgkiJYBJdUJmcHlKI=;
-        b=DjiamT7yHA7xN9oHAaKby/MDu4SgD72kwf6FnrZVhk1TmHXYPPuxUkuq/M78MX4nZv
-         /6CAjOi1zC/jFyhR+ogVu15/4i8caKrNKY+nqhurLqcWCgnpHumyRAUxu6PxXO/iCUo6
-         PyG8Ryy/+AjrCmRePi/RfkMec/ljdXw/Pe0hnDEIf3PFnsMiE9rRfs26v+HTjSRHaq3x
-         xhwcvEpmkG3x7oP4LylzGiDW6QXXRWbj5+C4KAesLTJp6lFLIhyTMD+o4r40Fst4URNn
-         zS+7U3roD6KN/Lvql5F/y2gv/dSRkhN54jW1ghGY1E73m4Wozi628Az80o7/bif9LGxZ
-         Hm1g==
-X-Gm-Message-State: AEkooutkIdHR16dw1cKwuJZKt4weYR9tE+CggSWsvJmc7XQfA4GnjX8vd0lLBBU9xBZEhQ==
-X-Received: by 10.28.10.21 with SMTP id 21mr69424779wmk.3.1470218299584;
-        Wed, 03 Aug 2016 02:58:19 -0700 (PDT)
+        bh=SjCO2MRUQXNvzl9WBWB8RcaHz7AC592Hd4JJe12v8y0=;
+        b=RtsUqIx4vdjD3+snfH1HLBd/Fbq27frNzDF+x0UsdYBJdUsvqWFibL4W+CQHPOKSZ5
+         WO/uRJHopEqXb6FvX/SVZuHF5UbFwhE3q8gkef9OV9qIrX0SCV6SS4oJPuj01uvb5TLk
+         +2WE09bjLasYssc5pxytMFytK4sFh8bs4LnqmhWyefePsRzZVWHLzIxPOetWRkGTxu7/
+         D1PHqouJi9QWnulxJoN5TitIipXUUzJR7ZgT0Y0F+FLOcFQ4dfcN87icz7C4BlkZ38/e
+         rnuOUluGG8yKhd/tTyU/YP9f3v6nXUttbWRfN2rdcASpIZ4N5T7jd7z7copw4RIVVkC2
+         E/Wg==
+X-Gm-Message-State: AEkoousfk6SGs1Jx7Z/sRjJm9RRFPNXNtt+7J2aLyjeG41P8cgXuUO6ES8cxwkn4N6C8UQ==
+X-Received: by 10.194.187.134 with SMTP id fs6mr31526583wjc.3.1470218297776;
+        Wed, 03 Aug 2016 02:58:17 -0700 (PDT)
 Received: from localhost.localdomain (219.red-83-55-40.dynamicip.rima-tde.net. [83.55.40.219])
-        by smtp.gmail.com with ESMTPSA id d80sm26368107wmd.14.2016.08.03.02.58.18
+        by smtp.gmail.com with ESMTPSA id d80sm26368107wmd.14.2016.08.03.02.58.16
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 03 Aug 2016 02:58:19 -0700 (PDT)
+        Wed, 03 Aug 2016 02:58:17 -0700 (PDT)
 From:   =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
         <noltari@gmail.com>
 To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
@@ -42,9 +42,9 @@ To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         robh@kernel.org, simon@fire.lp0.eu, john@phrozen.org
 Cc:     =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
         <noltari@gmail.com>
-Subject: [PATCH v2 4/7] MIPS: BMIPS: Add BCM3368 support
-Date:   Wed,  3 Aug 2016 11:58:27 +0200
-Message-Id: <1470218310-2978-4-git-send-email-noltari@gmail.com>
+Subject: [PATCH v2 2/7] MIPS: BMIPS: rename bcm96358nb4ser to bcm6358-neufbox4-sercom
+Date:   Wed,  3 Aug 2016 11:58:25 +0200
+Message-Id: <1470218310-2978-2-git-send-email-noltari@gmail.com>
 X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,7 +53,7 @@ Return-Path: <noltari@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54403
+X-archive-position: 54404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,48 +70,172 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-BCM3368 has a shared TLB which conflicts with current SMP support, so it must
-be disabled for now.
+The prefix bcm9* should only be used for reference and evaluation boards from
+Broadcom.
+Also adds missing console output to bootargs.
 
 Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
 ---
- Documentation/devicetree/bindings/mips/brcm/soc.txt | 2 +-
- arch/mips/bmips/setup.c                             | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/bmips/Kconfig                            |  8 ++--
+ arch/mips/boot/dts/brcm/Makefile                   |  3 +-
+ .../boot/dts/brcm/bcm6358-neufbox4-sercomm.dts     | 47 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm96358nb4ser.dts         | 46 ---------------------
+ 4 files changed, 53 insertions(+), 51 deletions(-)
+ create mode 100644 arch/mips/boot/dts/brcm/bcm6358-neufbox4-sercomm.dts
+ delete mode 100644 arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
 
-diff --git a/Documentation/devicetree/bindings/mips/brcm/soc.txt b/Documentation/devicetree/bindings/mips/brcm/soc.txt
-index 4a7e030..65bc572 100644
---- a/Documentation/devicetree/bindings/mips/brcm/soc.txt
-+++ b/Documentation/devicetree/bindings/mips/brcm/soc.txt
-@@ -2,7 +2,7 @@
+diff --git a/arch/mips/bmips/Kconfig b/arch/mips/bmips/Kconfig
+index 264328d..c8f1427 100644
+--- a/arch/mips/bmips/Kconfig
++++ b/arch/mips/bmips/Kconfig
+@@ -21,10 +21,6 @@ config DT_BCM93384WVG_VIPER
+ 	bool "BCM93384WVG Viper CPU (EXPERIMENTAL)"
+ 	select BUILTIN_DTB
  
- Required properties:
+-config DT_BCM96358NB4SER
+-	bool "BCM96358NB4SER"
+-	select BUILTIN_DTB
+-
+ config DT_BCM96368MVWG
+ 	bool "BCM96368MVWG"
+ 	select BUILTIN_DTB
+@@ -65,6 +61,10 @@ config DT_BCM97435SVMB
+ 	bool "BCM97435SVMB"
+ 	select BUILTIN_DTB
  
--- compatible: "brcm,bcm3384", "brcm,bcm33843"
-+- compatible: "brcm,bcm3368", "brcm,bcm3384", "brcm,bcm33843"
-               "brcm,bcm3384-viper", "brcm,bcm33843-viper"
-               "brcm,bcm6328", "brcm,bcm6358", "brcm,bcm6368",
-               "brcm,bcm63168", "brcm,bcm63268",
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index f146d12..4fbd2f1 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -98,7 +98,7 @@ static void bcm6328_quirks(void)
- static void bcm6358_quirks(void)
- {
- 	/*
--	 * BCM6358 needs special handling for its shared TLB, so
-+	 * BCM3368/BCM6358 need special handling for their shared TLB, so
- 	 * disable SMP for now
- 	 */
- 	bmips_smp_enabled = 0;
-@@ -110,6 +110,7 @@ static void bcm6368_quirks(void)
- }
++config DT_SFR_NEUFBOX4_SERCOMM
++	bool "SFR Neufbox 4 (Sercomm)"
++	select BUILTIN_DTB
++
+ endchoice
  
- static const struct bmips_quirk bmips_quirk_list[] = {
-+	{ "brcm,bcm3368",		&bcm6358_quirks			},
- 	{ "brcm,bcm3384-viper",		&bcm3384_viper_quirks		},
- 	{ "brcm,bcm33843-viper",	&bcm3384_viper_quirks		},
- 	{ "brcm,bcm6328",		&bcm6328_quirks			},
+ endif
+diff --git a/arch/mips/boot/dts/brcm/Makefile b/arch/mips/boot/dts/brcm/Makefile
+index 87e07e2..0abe298 100644
+--- a/arch/mips/boot/dts/brcm/Makefile
++++ b/arch/mips/boot/dts/brcm/Makefile
+@@ -1,6 +1,5 @@
+ dtb-$(CONFIG_DT_BCM93384WVG)		+= bcm93384wvg.dtb
+ dtb-$(CONFIG_DT_BCM93384WVG_VIPER)	+= bcm93384wvg_viper.dtb
+-dtb-$(CONFIG_DT_BCM96358NB4SER)		+= bcm96358nb4ser.dtb
+ dtb-$(CONFIG_DT_BCM96368MVWG)		+= bcm96368mvwg.dtb
+ dtb-$(CONFIG_DT_BCM9EJTAGPRB)		+= bcm9ejtagprb.dtb
+ dtb-$(CONFIG_DT_BCM97125CBMB)		+= bcm97125cbmb.dtb
+@@ -11,8 +10,10 @@ dtb-$(CONFIG_DT_BCM97362SVMB)		+= bcm97362svmb.dtb
+ dtb-$(CONFIG_DT_BCM97420C)		+= bcm97420c.dtb
+ dtb-$(CONFIG_DT_BCM97425SVMB)		+= bcm97425svmb.dtb
+ dtb-$(CONFIG_DT_BCM97435SVMB)		+= bcm97435svmb.dtb
++dtb-$(CONFIG_DT_SFR_NEUFBOX4_SERCOMM)	+= bcm6358-neufbox4-sercomm.dtb
+ 
+ dtb-$(CONFIG_DT_NONE) += \
++	bcm6358-neufbox4-sercomm.dtb \
+ 	bcm93384wvg.dtb \
+ 	bcm93384wvg_viper.dtb \
+ 	bcm96358nb4ser.dtb \
+diff --git a/arch/mips/boot/dts/brcm/bcm6358-neufbox4-sercomm.dts b/arch/mips/boot/dts/brcm/bcm6358-neufbox4-sercomm.dts
+new file mode 100644
+index 0000000..702eae2
+--- /dev/null
++++ b/arch/mips/boot/dts/brcm/bcm6358-neufbox4-sercomm.dts
+@@ -0,0 +1,47 @@
++/dts-v1/;
++
++/include/ "bcm6358.dtsi"
++
++/ {
++	compatible = "sfr,nb4-ser", "brcm,bcm6358";
++	model = "SFR Neufbox 4 (Sercomm)";
++
++	memory@0 {
++		device_type = "memory";
++		reg = <0x00000000 0x02000000>;
++	};
++
++	chosen {
++		bootargs = "console=ttyS0,115200";
++		stdout-path = &uart0;
++	};
++};
++
++&leds0 {
++	status = "ok";
++
++	led@0 {
++		reg = <0>;
++		active-low;
++		label = "nb4-ser:white:alarm";
++	};
++	led@2 {
++		reg = <2>;
++		active-low;
++		label = "nb4-ser:white:tv";
++	};
++	led@3 {
++		reg = <3>;
++		active-low;
++		label = "nb4-ser:white:tel";
++	};
++	led@4 {
++		reg = <4>;
++		active-low;
++		label = "nb4-ser:white:adsl";
++	};
++};
++
++&uart0 {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts b/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
+deleted file mode 100644
+index f412117..0000000
+--- a/arch/mips/boot/dts/brcm/bcm96358nb4ser.dts
++++ /dev/null
+@@ -1,46 +0,0 @@
+-/dts-v1/;
+-
+-/include/ "bcm6358.dtsi"
+-
+-/ {
+-	compatible = "sfr,nb4-ser", "brcm,bcm6358";
+-	model = "SFR Neufbox 4 (Sercomm)";
+-
+-	memory@0 {
+-		device_type = "memory";
+-		reg = <0x00000000 0x02000000>;
+-	};
+-
+-	chosen {
+-		stdout-path = &uart0;
+-	};
+-};
+-
+-&leds0 {
+-	status = "ok";
+-
+-	led@0 {
+-		reg = <0>;
+-		active-low;
+-		label = "nb4-ser:white:alarm";
+-	};
+-	led@2 {
+-		reg = <2>;
+-		active-low;
+-		label = "nb4-ser:white:tv";
+-	};
+-	led@3 {
+-		reg = <3>;
+-		active-low;
+-		label = "nb4-ser:white:tel";
+-	};
+-	led@4 {
+-		reg = <4>;
+-		active-low;
+-		label = "nb4-ser:white:adsl";
+-	};
+-};
+-
+-&uart0 {
+-	status = "okay";
+-};
 -- 
 2.1.4

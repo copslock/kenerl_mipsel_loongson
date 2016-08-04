@@ -1,39 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Aug 2016 18:20:47 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7314 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992249AbcHDQUkWhlLf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Aug 2016 18:20:40 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 2B044F7080C9D;
-        Thu,  4 Aug 2016 17:20:18 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 4 Aug 2016 17:20:21 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH] MIPS: Move identification of VP(E) into proc.c from smp-mt.c
-Date:   Thu, 4 Aug 2016 17:19:38 +0100
-Message-ID: <1470327578-31260-1-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Aug 2016 19:47:34 +0200 (CEST)
+Received: from mail-oi0-f65.google.com ([209.85.218.65]:32878 "EHLO
+        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992509AbcHDRr04hmXv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Aug 2016 19:47:26 +0200
+Received: by mail-oi0-f65.google.com with SMTP id l9so26546715oih.0;
+        Thu, 04 Aug 2016 10:47:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=f0ejoFGXNicr7U08FlTiGIVQlpJ/r9dvoQ72a6+86FM=;
+        b=YmYci9UbhAhKRvIvz6DmQkn95++GbReN1tblxJpRzpmm+m7cqeEzY1MVZKmJLoymjs
+         86KvEKXY8MxFFczpjiqdx1bGB5K/SUjORXj14558aYxSaR2khjObnzvYJrgbn/y7epZz
+         5IptLd7HQv3eYG6bsiwgL8+zvVyimqFg2Tcp2bTFlvs7jZ0oJVhmTJxiFQSC+azYA5LX
+         pBr9afD2411HYb6NywXro4ng0sy40YReUDk+XvYZwUQhlbCmqBxfqv0JDBAF5vUzOmkY
+         kjZ7qS8Hlw5YYuC5sDMqbEkNwu18uVx6cXqMxcvFIKj0A9qGbxYLUXM+IVa9Oj6pNxnw
+         GbJQ==
+X-Gm-Message-State: AEkoouvAQanJ8Ms9ONoLf/toklYEw0MMYOaRl6SSjJRIcRK2lt2wS6wIx5/yY+bbqN5fRQ==
+X-Received: by 10.202.72.70 with SMTP id v67mr40783353oia.143.1470332841093;
+        Thu, 04 Aug 2016 10:47:21 -0700 (PDT)
+Received: from localhost (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
+        by smtp.gmail.com with ESMTPSA id z189sm6686516oig.29.2016.08.04.10.47.20
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 04 Aug 2016 10:47:20 -0700 (PDT)
+Date:   Thu, 4 Aug 2016 12:47:19 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     =?iso-8859-1?Q?=C1lvaro_Fern=E1ndez?= Rojas <noltari@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, ralf@linux-mips.org,
+        f.fainelli@gmail.com, jogo@openwrt.org, cernekee@gmail.com,
+        simon@fire.lp0.eu, john@phrozen.org
+Subject: Re: [PATCH v2 4/7] MIPS: BMIPS: Add BCM3368 support
+Message-ID: <20160804174719.GA24679@rob-hp-laptop>
+References: <1470218310-2978-4-git-send-email-noltari@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1470218310-2978-4-git-send-email-noltari@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54414
+X-archive-position: 54415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,70 +61,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The addition of VPE information to /proc/cpuinfo used to be in smp-mt.c.
-This file is not used by MIPS r6 kernels, so the Virtual Processor
-information was not present for these CPU types.
+On Wed, Aug 03, 2016 at 11:58:27AM +0200, Álvaro Fernández Rojas wrote:
+> BCM3368 has a shared TLB which conflicts with current SMP support, so it must
+> be disabled for now.
+> 
+> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/mips/brcm/soc.txt | 2 +-
+>  arch/mips/bmips/setup.c                             | 3 ++-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/mips/brcm/soc.txt b/Documentation/devicetree/bindings/mips/brcm/soc.txt
+> index 4a7e030..65bc572 100644
+> --- a/Documentation/devicetree/bindings/mips/brcm/soc.txt
+> +++ b/Documentation/devicetree/bindings/mips/brcm/soc.txt
+> @@ -2,7 +2,7 @@
+>  
+>  Required properties:
+>  
+> -- compatible: "brcm,bcm3384", "brcm,bcm33843"
+> +- compatible: "brcm,bcm3368", "brcm,bcm3384", "brcm,bcm33843"
 
-Move the code to print VPE information into proc.c, add a case for MIPS
-r6 CPUS, and remove the block from smp-mt.c.
+No need to respin just for this, but please make this one valid 
+combination per line if you respin the series.
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Acked-by: Rob Herring <robh@kernel.org>
 
----
-
- arch/mips/kernel/proc.c   |  7 +++++++
- arch/mips/kernel/smp-mt.c | 23 -----------------------
- 2 files changed, 7 insertions(+), 23 deletions(-)
-
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 97dc01b03631..4eff2aed7360 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -135,6 +135,13 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 	seq_printf(m, "package\t\t\t: %d\n", cpu_data[n].package);
- 	seq_printf(m, "core\t\t\t: %d\n", cpu_data[n].core);
- 
-+#if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_CPU_MIPSR6)
-+	if (cpu_has_mipsmt)
-+		seq_printf(m, "VPE\t\t\t: %d\n", cpu_data[n].vpe_id);
-+	else if (cpu_has_vp)
-+		seq_printf(m, "VP\t\t\t: %d\n", cpu_data[n].vpe_id);
-+#endif
-+
- 	sprintf(fmt, "VCE%%c exceptions\t\t: %s\n",
- 		      cpu_has_vce ? "%u" : "not available");
- 	seq_printf(m, fmt, 'D', vced_count);
-diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
-index 4f9570a57e8d..e077ea3e11fb 100644
---- a/arch/mips/kernel/smp-mt.c
-+++ b/arch/mips/kernel/smp-mt.c
-@@ -289,26 +289,3 @@ struct plat_smp_ops vsmp_smp_ops = {
- 	.prepare_cpus		= vsmp_prepare_cpus,
- };
- 
--#ifdef CONFIG_PROC_FS
--static int proc_cpuinfo_chain_call(struct notifier_block *nfb,
--	unsigned long action_unused, void *data)
--{
--	struct proc_cpuinfo_notifier_args *pcn = data;
--	struct seq_file *m = pcn->m;
--	unsigned long n = pcn->n;
--
--	if (!cpu_has_mipsmt)
--		return NOTIFY_OK;
--
--	seq_printf(m, "VPE\t\t\t: %d\n", cpu_data[n].vpe_id);
--
--	return NOTIFY_OK;
--}
--
--static int __init proc_cpuinfo_notifier_init(void)
--{
--	return proc_cpuinfo_notifier(proc_cpuinfo_chain_call, 0);
--}
--
--subsys_initcall(proc_cpuinfo_notifier_init);
--#endif
--- 
-2.7.4
+>                "brcm,bcm3384-viper", "brcm,bcm33843-viper"
+>                "brcm,bcm6328", "brcm,bcm6358", "brcm,bcm6368",
+>                "brcm,bcm63168", "brcm,bcm63268",

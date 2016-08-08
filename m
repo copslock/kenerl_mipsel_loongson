@@ -1,39 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Aug 2016 00:58:03 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38125 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992843AbcHEW546stfw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Aug 2016 00:57:56 +0200
-Received: from [2a05:e201:0:1224:f87e:2ae4:6385:7b44] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1bVo3t-0001ad-US; Fri, 05 Aug 2016 23:57:54 +0100
-Received: from ben by deadeye with local (Exim 4.87)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1bVo3t-0005ZF-KV; Fri, 05 Aug 2016 23:57:53 +0100
-Message-ID: <1470437868.4189.6.camel@decadent.org.uk>
-Subject: [stable] MIPS page-table fixes
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org,
-        stable <stable@vger.kernel.org>
-Date:   Fri, 05 Aug 2016 23:57:48 +0100
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-0W9S1Fh8cqK9CLEsJaX5"
-X-Mailer: Evolution 3.20.4-1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 2a05:e201:0:1224:f87e:2ae4:6385:7b44
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Aug 2016 04:17:52 +0200 (CEST)
+Received: from mail-pf0-f193.google.com ([209.85.192.193]:35213 "EHLO
+        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991960AbcHHCRqYsBOX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Aug 2016 04:17:46 +0200
+Received: by mail-pf0-f193.google.com with SMTP id h186so23996397pfg.2;
+        Sun, 07 Aug 2016 19:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=ae2uOy4QfBuWschEi/lFKGuaYkKt8vhQL8jUoPikFFk=;
+        b=WI/JO20Mt/XyIFOPf1HrKgu/7uYFTByzJAHdQ/IY0/9DPZeSQNUJIJ+DDKFRNrkljv
+         A6r6awgrwRnMMWncFdbLB/jrzxr2FynIqb95WFvQ6Ju7C691ifOjUTk6vOENt7ux+4Rj
+         o9rgzWX6CU+XDIYvDtHpJhTPIpXSCIiQpanmG4HGmsJtI6I1MdAudW8BbpSPzjITi2oN
+         NdOK/fxY884IJXgw57nCc3gaSAIbzBsTiVquuXlYcCZwqhnqlt6WjZWdgoClh5oue1pC
+         kb1508/H6h6zYsHRGwXUEYrzlfNgpIsKopwwQDeUOIU9b/Oojy5J1UNKwNXHIsKSm9zK
+         1Vgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ae2uOy4QfBuWschEi/lFKGuaYkKt8vhQL8jUoPikFFk=;
+        b=PXCIr05VoAjN4UGbCmz+tH75uKVY8exsEJbQFMkWw/YKQ24MVTVfIL6mM7xzX8bsyK
+         Ovc5c80zzHNAagnFcXXvqLGvtb1v9EpTk+idnPbaCzWc0XmNoYzZ1JtjGS44lmeTX9mM
+         ZKcwAadmQkPs3Saj0VZTt3/4VwMScik0UoywdrKY38eBSNB1ZSitHEuFMkal/9tUDTF3
+         07QW2vsP3NFiQq9eiI6ivetxZlu8+poBfl4RjkJm720dCuZIs10H2nB8IMJR6yl17vrs
+         FTMLuywuxJECEnxRxBsU/1x7PFalgTXy9Hb9rLbjs14B4R8Gq+C2Su4CgUkp0Io233o0
+         k//g==
+X-Gm-Message-State: AEkoouuvCFLJKHpEj7VX0xVtxnQ2y/7huBdiNsYTvNZ7c7o+G2FIaA88IiWKPDvN36Axzw==
+X-Received: by 10.98.35.7 with SMTP id j7mr158572141pfj.39.1470622660275;
+        Sun, 07 Aug 2016 19:17:40 -0700 (PDT)
+Received: from localhost.localdomain ([125.130.116.2])
+        by smtp.gmail.com with ESMTPSA id r2sm12701468pal.14.2016.08.07.19.17.37
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Sun, 07 Aug 2016 19:17:39 -0700 (PDT)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-mips@linux-mips.org,
+        Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [PATCH 0/4] Add device nodes for BCM7xxx SoCs
+Date:   Mon,  8 Aug 2016 11:17:15 +0900
+Message-Id: <20160808021719.4680-1-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.9.2
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54417
+X-archive-position: 54418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,65 +63,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hi all,
 
---=-0W9S1Fh8cqK9CLEsJaX5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This patch series adds support for Broadcom BCM7xxx MIPS based SoCs.
 
-It looks like the following commits should be backported to all stable
-branches:
+The NAND device nodes have common file including chip select, BCH
+and partitions for the reference board with the same properties.
 
-commit 6d037de90a1fd7b4879b48d4dd5c4839b271be98
-Author: Ralf Baechle <ra
-lf@linux-mips.org>
-Date:=C2=A0=C2=A0=C2=A0Fri Jul 1 15:01:01 2016 +0200
+Jaedon Shin (4):
+  MIPS: BMIPS: Add support PWM device nodes
+  MIPS: BMIPS: Add support GPIO device nodes
+  MIPS: BMIPS: Add support SDHCI device nodes
+  MIPS: BMIPS: Add support NAND device nodes
 
-=C2=A0=C2=A0=C2=A0=C2=A0MIPS: Fix possible corruption of cache mode by mpro=
-tect.
+ arch/mips/boot/dts/brcm/bcm7125.dtsi               | 46 ++++++++++
+ arch/mips/boot/dts/brcm/bcm7346.dtsi               | 87 +++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7358.dtsi               | 79 +++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7360.dtsi               | 79 +++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7362.dtsi               | 79 +++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7420.dtsi               | 54 ++++++++++++
+ arch/mips/boot/dts/brcm/bcm7425.dtsi               | 99 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7435.dtsi               | 99 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7xxx-nand-cs1-bch8.dtsi | 24 ++++++
+ arch/mips/boot/dts/brcm/bcm97125cbmb.dts           | 13 +++
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts          | 25 ++++++
+ arch/mips/boot/dts/brcm/bcm97358svmb.dts           | 21 +++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts           | 21 +++++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts           | 21 +++++
+ arch/mips/boot/dts/brcm/bcm97420c.dts              | 17 ++++
+ arch/mips/boot/dts/brcm/bcm97425svmb.dts           | 29 +++++++
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts           | 29 +++++++
+ 17 files changed, 822 insertions(+)
+ create mode 100644 arch/mips/boot/dts/brcm/bcm7xxx-nand-cs1-bch8.dtsi
 
-commit 88d02a2ba6c52350f9a73ff1b01a5be839c3ca17
-Author: David Daney <david.daney@cavium.com>
-Date:=C2=A0=C2=A0=C2=A0Thu Jun 16 15:50:31 2016 -0700
-
-=C2=A0=C2=A0=C2=A0=C2=A0MIPS: Fix page table corruption on THP permission c=
-hanges.
-
-The second seems to depend on the first, and the first seems to depend on:
-
-commit 77a5c59332aa75e66f0d95f9eeb69baf3c68970d
-Author: Steven J. Hill <Steven.Hill@imgtec.com>
-Date:=C2=A0=C2=A0=C2=A0Thu Nov 13 09:52:01 2014 -0600
-
-=C2=A0=C2=A0=C2=A0=C2=A0MIPS: Cosmetic cleanups of page table headers.
-
-Does it make sense to pick all of these for stable? =C2=A0Are=20
-there additional dependencies?
-
-Ben.
-
---=20
-Ben Hutchings
-Sturgeon's Law: Ninety percent of everything is crap.
---=-0W9S1Fh8cqK9CLEsJaX5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAABCgAGBQJXpRntAAoJEOe/yOyVhhEJxYMP/iWQsX8cOjdaQF8/zX9p59Um
-vOytIuQyft+iO3i0J2p927R3ZyjV3ZEhGUGypllyWqHub2B1BfHyMTN2psFO06+e
-zI/HPa3jOzjZfrF/G3WEF2QzVZT+IgUZKP/LF0c//JwV8zk3+ByorRZKJ+wha7Qy
-6fjCbNnFcI55KPA+BeuxWvXKAdOMZZYVTUo2M2q3kHudabm5Uf3xGplcME7USX0G
-oUu29aCMp0LdH1WVz4PNOawOYNxRIBsr72wGJhU0X2NRUI7H9ZmTajgK+7DmT9W/
-8YmKM4KHT+ee/oxS9nso+WxRdu6XYR8seTPEG2Ry0/DaY9ErzOyp9t4U+VyJq2Gh
-J5pt5WLL110j+oUF4gHqt1KE8i6XhgQAaZ6CCschBG9J+N5TsicdTloljleLBwzF
-Qr3HGViJIWPkUJDlVtqhypnn3HeaQ6hJIuyd4fGCtS4oYVUZB1B49Rm6SMf9oTYN
-t9IqNxGe7UP+o+QIIn7Uvyiqc+XE0gt2+FFch4BmF/DQC5okFYocBrx66UnxdhqF
-n6waM2rhFhYKz/NpGB9bp4LZTt2BKbFhAWgFScCEetyaM9swN60q7yFgoosQbVTt
-SdR59GnYWYxov1GbD/cPeeaVr76/PqY9z/2IxSwASP++oWfW5Vg7ks5gYnlQHqJ5
-xy+xo27PgDZMzsKz8Qa2
-=jaRh
------END PGP SIGNATURE-----
-
---=-0W9S1Fh8cqK9CLEsJaX5--
+-- 
+2.9.2

@@ -1,48 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 14:36:26 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49521 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 14:36:49 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21627 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992544AbcHIMgTjEeo4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 14:36:19 +0200
+        with ESMTP id S23992639AbcHIMgc7ZWl4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 14:36:32 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 53EF82390CB82;
-        Tue,  9 Aug 2016 13:35:59 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 017ACE26260F9;
+        Tue,  9 Aug 2016 13:36:14 +0100 (IST)
 Received: from localhost (10.100.200.230) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 9 Aug
- 2016 13:36:02 +0100
+ 2016 13:36:16 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Ondrej Zary <linux@rainbow-software.org>,
-        <linux-fbdev@vger.kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
         Jacek Anaszewski <j.anaszewski@samsung.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        <linux-leds@vger.kernel.org>, Richard Purdie <rpurdie@rpsys.net>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        <devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        Simon Horman <horms+renesas@verge.net.au>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        <linux-usb@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        <linux-kernel@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 00/20] MIPS: SEAD3 device tree conversion
-Date:   Tue, 9 Aug 2016 13:35:25 +0100
-Message-ID: <20160809123546.10190-1-paul.burton@imgtec.com>
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 01/20] MIPS: SEAD3: Split obj-y entries across lines
+Date:   Tue, 9 Aug 2016 13:35:26 +0100
+Message-ID: <20160809123546.10190-2-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.2
+In-Reply-To: <20160809123546.10190-1-paul.burton@imgtec.com>
+References: <20160809123546.10190-1-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.230]
@@ -50,7 +27,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54436
+X-archive-position: 54437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,77 +44,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Although the SEAD3 board has already made some minimal use of device
-tree, until now most peripherals have been left probed by platform code.
+Split the obj-y entries for SEAD3 onto a line each, so that they're more
+independent & can be modified more clearly by later commits.
 
-This series converts all SEAD3 peripherals to instead be probed from
-device tree. The amount of platform code is significantly reduced
-leaving SEAD3 primed & ready for a wider task of genericising the
-kernel.
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+---
 
-Applies atop v4.8-rc1.
+ arch/mips/mti-sead3/Makefile | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-Paul Burton (20):
-  MIPS: SEAD3: Split obj-y entries across lines
-  MIPS: SEAD3: Probe interrupt controllers using DT
-  MIPS: SEAD3: Probe UARTs using DT
-  MIPS: SEAD3: Use generic ns16550a earlycon support
-  MIPS: SEAD3: Probe ethernet controller using DT
-  usb: host: ehci-sead3: Support probing using device tree
-  MIPS: SEAD3: Probe EHCI controller using DT
-  usb: host: ehci-sead3: Remove non-DT probe code
-  SEAD3: Probe parallel flash via DT
-  MIPS: SEAD3: Use register-bit-led driver via DT for LEDs
-  leds: Remove SEAD3 driver
-  MIPS: SEAD3: Reset via generic syscon-reboot driver & DT
-  MIPS: SEAD3: Use generic restart-poweroff driver
-  MIPS: SEAD3: Parse memsize in DT shim
-  MIPS: SEAD3: Drop use of cobalt fbdev driver
-  fbdev: cobalt_lcdfb: Drop SEAD3 support
-  dt-bindings: img-ascii-lcd: Document a binding for simple ASCII LCDs
-  auxdisplay: img-ascii-lcd: driver for simple ASCII LCD displays
-  MIPS: SEAD3: Use img-ascii-lcd driver
-  MIPS: SEAD3: Remove custom read_persistent_clock
-
- .../bindings/auxdisplay/img-ascii-lcd.txt          |  17 +
- MAINTAINERS                                        |   6 +
- arch/mips/Kconfig                                  |   1 -
- arch/mips/boot/dts/mti/sead3.dts                   | 228 +++++++++++
- arch/mips/configs/sead3_defconfig                  |   8 +
- arch/mips/include/asm/mach-sead3/sead3-dtshim.h    |  29 ++
- arch/mips/include/asm/mips-boards/sead3int.h       |  32 --
- arch/mips/mti-sead3/Makefile                       |  10 +-
- arch/mips/mti-sead3/sead3-console.c                |  46 ---
- arch/mips/mti-sead3/sead3-display.c                |  77 ----
- arch/mips/mti-sead3/sead3-dtshim.c                 | 291 ++++++++++++++
- arch/mips/mti-sead3/sead3-init.c                   |  52 ---
- arch/mips/mti-sead3/sead3-int.c                    |  27 +-
- arch/mips/mti-sead3/sead3-lcd.c                    |  43 --
- arch/mips/mti-sead3/sead3-platform.c               | 223 -----------
- arch/mips/mti-sead3/sead3-reset.c                  |  40 --
- arch/mips/mti-sead3/sead3-setup.c                  |  77 +---
- arch/mips/mti-sead3/sead3-time.c                   |   8 -
- drivers/auxdisplay/Kconfig                         |   9 +
- drivers/auxdisplay/Makefile                        |   1 +
- drivers/auxdisplay/img-ascii-lcd.c                 | 443 +++++++++++++++++++++
- drivers/leds/Kconfig                               |  10 -
- drivers/leds/Makefile                              |   1 -
- drivers/leds/leds-sead3.c                          |  78 ----
- drivers/usb/host/ehci-sead3.c                      |  21 +-
- drivers/video/fbdev/Kconfig                        |   2 +-
- drivers/video/fbdev/cobalt_lcdfb.c                 |  42 --
- 27 files changed, 1061 insertions(+), 761 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
- create mode 100644 arch/mips/include/asm/mach-sead3/sead3-dtshim.h
- delete mode 100644 arch/mips/include/asm/mips-boards/sead3int.h
- delete mode 100644 arch/mips/mti-sead3/sead3-console.c
- delete mode 100644 arch/mips/mti-sead3/sead3-display.c
- create mode 100644 arch/mips/mti-sead3/sead3-dtshim.c
- delete mode 100644 arch/mips/mti-sead3/sead3-lcd.c
- delete mode 100644 arch/mips/mti-sead3/sead3-platform.c
- delete mode 100644 arch/mips/mti-sead3/sead3-reset.c
- create mode 100644 drivers/auxdisplay/img-ascii-lcd.c
- delete mode 100644 drivers/leds/leds-sead3.c
-
+diff --git a/arch/mips/mti-sead3/Makefile b/arch/mips/mti-sead3/Makefile
+index 7a584e0..8b03cfb 100644
+--- a/arch/mips/mti-sead3/Makefile
++++ b/arch/mips/mti-sead3/Makefile
+@@ -8,8 +8,13 @@
+ # Copyright (C) 2012 MIPS Technoligies, Inc.  All rights reserved.
+ # Steven J. Hill <sjhill@mips.com>
+ #
+-obj-y				:= sead3-lcd.o sead3-display.o sead3-init.o \
+-				   sead3-int.o sead3-platform.o sead3-reset.o \
+-				   sead3-setup.o sead3-time.o
++obj-y := sead3-lcd.o
++obj-y += sead3-display.o
++obj-y += sead3-init.o
++obj-y += sead3-int.o
++obj-y += sead3-platform.o
++obj-y += sead3-reset.o
++obj-y += sead3-setup.o
++obj-y += sead3-time.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK)	+= sead3-console.o
 -- 
 2.9.2

@@ -1,26 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 14:37:11 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:51322 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 14:37:36 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:54444 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992544AbcHIMgtI6Te4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 14:36:49 +0200
+        with ESMTP id S23992640AbcHIMhDWY1U4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 14:37:03 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 4E39B8D0CDEF5;
-        Tue,  9 Aug 2016 13:36:28 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 0826135BEF781;
+        Tue,  9 Aug 2016 13:36:43 +0100 (IST)
 Received: from localhost (10.100.200.230) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 9 Aug
- 2016 13:36:31 +0100
+ 2016 13:36:45 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        <devicetree@vger.kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Jacek Anaszewski <j.anaszewski@samsung.com>,
+CC:     Paul Burton <paul.burton@imgtec.com>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 02/20] MIPS: SEAD3: Probe interrupt controllers using DT
-Date:   Tue, 9 Aug 2016 13:35:27 +0100
-Message-ID: <20160809123546.10190-3-paul.burton@imgtec.com>
+Subject: [PATCH 03/20] MIPS: SEAD3: Probe UARTs using DT
+Date:   Tue, 9 Aug 2016 13:35:28 +0100
+Message-ID: <20160809123546.10190-4-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.2
 In-Reply-To: <20160809123546.10190-1-paul.burton@imgtec.com>
 References: <20160809123546.10190-1-paul.burton@imgtec.com>
@@ -31,7 +27,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54438
+X-archive-position: 54439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,392 +44,378 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Probe the CPU interrupt controller & optional Global Interrupt
-Controller (GIC) using devicetree rather than platform code. Because the
-bootloader on SEAD3 does not provide a device tree to the kernel & the
-device tree is always built in, we patch out the GIC node during boot if
-we detect that a GIC is not present in the system.
+Probe the UARTs on SEAD3 boards using device tree rather than platform
+code, in order to reduce the amount of the latter. This requires that
+CONFIG_SERIAL_OF_PLATFORM be enabled, so enable it in sead3_defconfig.
+The SEAD3 DT shim code is extended to read bootloader environment
+variables to determine the appropriate UART & mode for kernel console
+output & set the stdout-path property of the chosen node accordingly.
 
-The appropriate IRQ domain is discovered by platform code setting up
-device IRQ numbers temporarily. It will be removed by further patches
-which move the devices towards being probed via device tree.
-
-No behavioural change is intended by this patch.
+In contrast to the old platform code, which appears to have only ever
+set "console=ttyS0,38400n8r" with the code in console_config never
+having an effect, this will honor the "yamontty" environment variable to
+select between the 2 UARTs on the board and then check the "modetty0" or
+"modetty1" variable as appropriate to determine the UART configuration.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/boot/dts/mti/sead3.dts                | 31 +++++++++
- arch/mips/include/asm/mach-sead3/sead3-dtshim.h | 29 ++++++++
- arch/mips/include/asm/mips-boards/sead3int.h    |  5 --
- arch/mips/mti-sead3/Makefile                    |  1 +
- arch/mips/mti-sead3/sead3-dtshim.c              | 91 +++++++++++++++++++++++++
- arch/mips/mti-sead3/sead3-int.c                 | 27 ++------
- arch/mips/mti-sead3/sead3-platform.c            | 43 +++++++++---
- arch/mips/mti-sead3/sead3-setup.c               | 13 ++--
- 8 files changed, 196 insertions(+), 44 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-sead3/sead3-dtshim.h
- create mode 100644 arch/mips/mti-sead3/sead3-dtshim.c
+ arch/mips/boot/dts/mti/sead3.dts             |  37 ++++++++++
+ arch/mips/configs/sead3_defconfig            |   2 +
+ arch/mips/include/asm/mips-boards/sead3int.h |   4 --
+ arch/mips/mti-sead3/sead3-dtshim.c           | 104 ++++++++++++++++++++++++++-
+ arch/mips/mti-sead3/sead3-init.c             |  46 ------------
+ arch/mips/mti-sead3/sead3-platform.c         |  30 --------
+ 6 files changed, 142 insertions(+), 81 deletions(-)
 
 diff --git a/arch/mips/boot/dts/mti/sead3.dts b/arch/mips/boot/dts/mti/sead3.dts
-index e4b317d..051b3a9 100644
+index 051b3a9..3f681c5 100644
 --- a/arch/mips/boot/dts/mti/sead3.dts
 +++ b/arch/mips/boot/dts/mti/sead3.dts
-@@ -4,10 +4,13 @@
- /memreserve/ 0x00001000 0x000ef000;	// ROM data
- /memreserve/ 0x000f0000 0x004cc000;	// reserved
- 
-+#include <dt-bindings/interrupt-controller/mips-gic.h>
-+
- / {
- 	#address-cells = <1>;
- 	#size-cells = <1>;
+@@ -12,6 +12,15 @@
  	compatible = "mti,sead-3";
-+	interrupt-parent = <&gic>;
+ 	interrupt-parent = <&gic>;
  
++	chosen {
++		stdout-path = "uart1:115200";
++	};
++
++	aliases {
++		uart0 = &uart0;
++		uart1 = &uart1;
++	};
++
  	cpus {
  		cpu@0 {
-@@ -19,4 +22,32 @@
- 		device_type = "memory";
- 		reg = <0x0 0x08000000>;
+ 			compatible = "mti,mips14KEc", "mti,mips14Kc";
+@@ -50,4 +59,32 @@
+ 			interrupts = <GIC_LOCAL 1 IRQ_TYPE_NONE>;
+ 		};
  	};
 +
-+	cpu_intc: interrupt-controller {
-+		compatible = "mti,cpu-interrupt-controller";
++	/* UART connected to FTDI & miniUSB socket */
++	uart0: uart@1f000900 {
++		compatible = "ns16550a";
++		reg = <0x1f000900 0x20>;
++		reg-io-width = <4>;
++		reg-shift = <2>;
 +
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
++		clock-frequency = <14745600>;
++
++		interrupts = <3>; /* GIC 3 or CPU 4 */
++
++		no-loopback-test;
 +	};
 +
-+	gic: interrupt-controller@1b1c0000 {
-+		compatible = "mti,gic";
-+		reg = <0x1b1c0000 0x20000>;
++	/* UART connected to RS232 socket */
++	uart1: uart@1f000800 {
++		compatible = "ns16550a";
++		reg = <0x1f000800 0x20>;
++		reg-io-width = <4>;
++		reg-shift = <2>;
 +
-+		interrupt-controller;
-+		#interrupt-cells = <3>;
++		clock-frequency = <14745600>;
 +
-+		/*
-+		 * Declare the interrupt-parent even though the mti,gic
-+		 * binding doesn't require it, such that the kernel can
-+		 * figure out that cpu_intc is the root interrupt
-+		 * controller & should be probed first.
-+		 */
-+		interrupt-parent = <&cpu_intc>;
++		interrupts = <2>; /* GIC 2 or CPU 4 */
 +
-+		timer {
-+			compatible = "mti,gic-timer";
-+			interrupts = <GIC_LOCAL 1 IRQ_TYPE_NONE>;
-+		};
++		no-loopback-test;
 +	};
  };
-diff --git a/arch/mips/include/asm/mach-sead3/sead3-dtshim.h b/arch/mips/include/asm/mach-sead3/sead3-dtshim.h
-new file mode 100644
-index 0000000..f5d7d9c
---- /dev/null
-+++ b/arch/mips/include/asm/mach-sead3/sead3-dtshim.h
-@@ -0,0 +1,29 @@
-+/*
-+ * Copyright (C) 2016 Imagination Technologies
-+ * Author: Paul Burton <paul.burton@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
-+ */
-+
-+#ifndef __MIPS_SEAD3_DTSHIM_H__
-+#define __MIPS_SEAD3_DTSHIM_H__
-+
-+#include <linux/init.h>
-+
-+#ifdef CONFIG_MIPS_SEAD3
-+
-+extern void __init *sead3_dt_shim(void *fdt);
-+
-+#else /* !CONFIG_MIPS_SEAD3 */
-+
-+static inline void *sead3_dt_shim(void *fdt)
-+{
-+	return fdt;
-+}
-+
-+#endif /* !CONFIG_MIPS_SEAD3 */
-+
-+#endif /* __MIPS_SEAD3_DTSHIM_H__ */
+diff --git a/arch/mips/configs/sead3_defconfig b/arch/mips/configs/sead3_defconfig
+index dae9354..deb48fb 100644
+--- a/arch/mips/configs/sead3_defconfig
++++ b/arch/mips/configs/sead3_defconfig
+@@ -39,6 +39,7 @@ CONFIG_MTD_CFI_INTELEXT=y
+ CONFIG_MTD_PHYSMAP=y
+ CONFIG_MTD_UBI=y
+ CONFIG_MTD_UBI_GLUEBI=y
++CONFIG_OF=y
+ CONFIG_BLK_DEV_LOOP=y
+ CONFIG_BLK_DEV_CRYPTOLOOP=m
+ CONFIG_SCSI=y
+@@ -70,6 +71,7 @@ CONFIG_SERIAL_8250=y
+ CONFIG_SERIAL_8250_CONSOLE=y
+ CONFIG_SERIAL_8250_NR_UARTS=2
+ CONFIG_SERIAL_8250_RUNTIME_UARTS=2
++CONFIG_SERIAL_OF_PLATFORM=y
+ # CONFIG_HW_RANDOM is not set
+ CONFIG_I2C=y
+ # CONFIG_I2C_COMPAT is not set
 diff --git a/arch/mips/include/asm/mips-boards/sead3int.h b/arch/mips/include/asm/mips-boards/sead3int.h
-index 8932c7d..bd85da3 100644
+index bd85da3..3a5e079 100644
 --- a/arch/mips/include/asm/mips-boards/sead3int.h
 +++ b/arch/mips/include/asm/mips-boards/sead3int.h
-@@ -12,12 +12,7 @@
+@@ -14,14 +14,10 @@
  
- #include <linux/irqchip/mips-gic.h>
- 
--/* SEAD-3 GIC address space definitions. */
--#define GIC_BASE_ADDR		0x1b1c0000
--#define GIC_ADDRSPACE_SZ	(128 * 1024)
--
  /* CPU interrupt offsets */
--#define CPU_INT_GIC		2
  #define CPU_INT_EHCI		2
- #define CPU_INT_UART0		4
- #define CPU_INT_UART1		4
-diff --git a/arch/mips/mti-sead3/Makefile b/arch/mips/mti-sead3/Makefile
-index 8b03cfb..aad67aa 100644
---- a/arch/mips/mti-sead3/Makefile
-+++ b/arch/mips/mti-sead3/Makefile
-@@ -10,6 +10,7 @@
- #
- obj-y := sead3-lcd.o
- obj-y += sead3-display.o
-+obj-y += sead3-dtshim.o
- obj-y += sead3-init.o
- obj-y += sead3-int.o
- obj-y += sead3-platform.o
+-#define CPU_INT_UART0		4
+-#define CPU_INT_UART1		4
+ #define CPU_INT_NET		6
+ 
+ /* GIC interrupt offsets */
+ #define GIC_INT_NET		GIC_SHARED_TO_HWIRQ(0)
+-#define GIC_INT_UART1		GIC_SHARED_TO_HWIRQ(2)
+-#define GIC_INT_UART0		GIC_SHARED_TO_HWIRQ(3)
+ #define GIC_INT_EHCI		GIC_SHARED_TO_HWIRQ(5)
+ 
+ #endif /* !(_MIPS_SEAD3INT_H) */
 diff --git a/arch/mips/mti-sead3/sead3-dtshim.c b/arch/mips/mti-sead3/sead3-dtshim.c
-new file mode 100644
-index 0000000..1592d07
---- /dev/null
+index 1592d07..8314943 100644
+--- a/arch/mips/mti-sead3/sead3-dtshim.c
 +++ b/arch/mips/mti-sead3/sead3-dtshim.c
-@@ -0,0 +1,91 @@
-+/*
-+ * Copyright (C) 2016 Imagination Technologies
-+ * Author: Paul Burton <paul.burton@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
-+ */
+@@ -22,7 +22,8 @@ static unsigned char fdt_buf[16 << 10] __initdata;
+ 
+ static int remove_gic(void *fdt)
+ {
+-	int gic_off, cpu_off, err;
++	const unsigned int cpu_uart_int = 4;
++	int gic_off, cpu_off, uart_off, err;
+ 	uint32_t cfg, cpu_phandle;
+ 
+ 	/* leave the GIC node intact if a GIC is present */
+@@ -61,6 +62,103 @@ static int remove_gic(void *fdt)
+ 		return err;
+ 	}
+ 
++	uart_off = fdt_node_offset_by_compatible(fdt, -1, "ns16550a");
++	while (uart_off >= 0) {
++		err = fdt_setprop_u32(fdt, uart_off, "interrupts",
++				      cpu_uart_int);
++		if (err) {
++			pr_err("unable to set UART interrupts property: %d\n",
++			       err);
++			return err;
++		}
 +
-+#define pr_fmt(fmt) "sead3-dtshim: " fmt
-+
-+#include <linux/libfdt.h>
-+#include <linux/printk.h>
-+
-+#include <asm/io.h>
-+
-+#define SEAD_CONFIG			CKSEG1ADDR(0x1b100110)
-+#define SEAD_CONFIG_GIC_PRESENT		BIT(1)
-+
-+static unsigned char fdt_buf[16 << 10] __initdata;
-+
-+static int remove_gic(void *fdt)
-+{
-+	int gic_off, cpu_off, err;
-+	uint32_t cfg, cpu_phandle;
-+
-+	/* leave the GIC node intact if a GIC is present */
-+	cfg = __raw_readl((uint32_t *)SEAD_CONFIG);
-+	if (cfg & SEAD_CONFIG_GIC_PRESENT)
-+		return 0;
-+
-+	gic_off = fdt_node_offset_by_compatible(fdt, -1, "mti,gic");
-+	if (gic_off < 0) {
-+		pr_err("unable to find DT GIC node: %d\n", gic_off);
-+		return gic_off;
++		uart_off = fdt_node_offset_by_compatible(fdt, uart_off,
++							 "ns16550a");
 +	}
-+
-+	err = fdt_nop_node(fdt, gic_off);
-+	if (err) {
-+		pr_err("unable to nop GIC node\n");
-+		return err;
-+	}
-+
-+	cpu_off = fdt_node_offset_by_compatible(fdt, -1,
-+			"mti,cpu-interrupt-controller");
-+	if (cpu_off < 0) {
-+		pr_err("unable to find CPU intc node: %d\n", cpu_off);
-+		return cpu_off;
-+	}
-+
-+	cpu_phandle = fdt_get_phandle(fdt, cpu_off);
-+	if (!cpu_phandle) {
-+		pr_err("unable to get CPU intc phandle\n");
-+		return -EINVAL;
-+	}
-+
-+	err = fdt_setprop_u32(fdt, 0, "interrupt-parent", cpu_phandle);
-+	if (err) {
-+		pr_err("unable to set root interrupt-parent: %d\n", err);
-+		return err;
++	if (uart_off != -FDT_ERR_NOTFOUND) {
++		pr_err("error searching for UART DT node: %d\n", uart_off);
++		return uart_off;
 +	}
 +
 +	return 0;
 +}
 +
-+void __init *sead3_dt_shim(void *fdt)
++static int serial_config(void *fdt)
 +{
-+	int err;
++	const char *yamontty, *mode_var;
++	char mode_var_name[9], path[18], parity;
++	unsigned int uart, baud, stop_bits;
++	bool hw_flow;
++	int chosen_off, err;
 +
-+	if (fdt_check_header(fdt))
-+		panic("Corrupt DT");
++	yamontty = fw_getenv("yamontty");
++	if (!yamontty || !strcmp(yamontty, "tty0")) {
++		uart = 0;
++	} else if (!strcmp(yamontty, "tty1")) {
++		uart = 1;
++	} else {
++		pr_warn("yamontty environment variable '%s' invalid\n",
++			yamontty);
++		uart = 0;
++	}
 +
-+	/* if this isn't SEAD3, leave the DT alone */
-+	if (fdt_node_check_compatible(fdt, 0, "mti,sead-3"))
-+		return fdt;
++	baud = stop_bits = 0;
++	parity = 0;
++	hw_flow = false;
 +
-+	err = fdt_open_into(fdt, fdt_buf, sizeof(fdt_buf));
-+	if (err)
-+		panic("Unable to open FDT: %d", err);
++	snprintf(mode_var_name, sizeof(mode_var_name), "modetty%u", uart);
++	mode_var = fw_getenv(mode_var_name);
++	if (mode_var) {
++		while (mode_var[0] >= '0' && mode_var[0] <= '9') {
++			baud *= 10;
++			baud += mode_var[0] - '0';
++			mode_var++;
++		}
++		if (mode_var[0] == ',')
++			mode_var++;
++		if (mode_var[0])
++			parity = mode_var[0];
++		if (mode_var[0] == ',')
++			mode_var++;
++		if (mode_var[0])
++			stop_bits = mode_var[0] - '0';
++		if (mode_var[0] == ',')
++			mode_var++;
++		if (!strcmp(mode_var, "hw"))
++			hw_flow = true;
++	}
 +
-+	err = remove_gic(fdt_buf);
++	if (!baud)
++		baud = 38400;
++
++	if (parity != 'e' && parity != 'n' && parity != 'o')
++		parity = 'n';
++
++	if (stop_bits != 7 && stop_bits != 8)
++		stop_bits = 8;
++
++	WARN_ON(snprintf(path, sizeof(path), "uart%u:%u%c%u%s",
++			 uart, baud, parity, stop_bits,
++			 hw_flow ? "r" : "") >= sizeof(path));
++
++	/* find or add chosen node */
++	chosen_off = fdt_path_offset(fdt, "/chosen");
++	if (chosen_off == -FDT_ERR_NOTFOUND)
++		chosen_off = fdt_path_offset(fdt, "/chosen@0");
++	if (chosen_off == -FDT_ERR_NOTFOUND)
++		chosen_off = fdt_add_subnode(fdt, 0, "chosen");
++	if (chosen_off < 0) {
++		pr_err("Unable to find or add DT chosen node: %d\n",
++		       chosen_off);
++		return chosen_off;
++	}
++
++	err = fdt_setprop_string(fdt, chosen_off, "stdout-path", path);
++	if (err) {
++		pr_err("Unable to set stdout-path property: %d\n", err);
++		return err;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -83,6 +181,10 @@ void __init *sead3_dt_shim(void *fdt)
+ 	if (err)
+ 		panic("Unable to patch FDT: %d", err);
+ 
++	err = serial_config(fdt_buf);
 +	if (err)
 +		panic("Unable to patch FDT: %d", err);
 +
-+	err = fdt_pack(fdt_buf);
-+	if (err)
-+		panic("Unable to pack FDT: %d\n", err);
-+
-+	return fdt_buf;
-+}
-diff --git a/arch/mips/mti-sead3/sead3-int.c b/arch/mips/mti-sead3/sead3-int.c
-index e31e17f..2e6b732 100644
---- a/arch/mips/mti-sead3/sead3-int.c
-+++ b/arch/mips/mti-sead3/sead3-int.c
-@@ -6,37 +6,18 @@
-  * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
-  */
- #include <linux/init.h>
--#include <linux/irq.h>
-+#include <linux/irqchip.h>
- #include <linux/irqchip/mips-gic.h>
--#include <linux/io.h>
+ 	err = fdt_pack(fdt_buf);
+ 	if (err)
+ 		panic("Unable to pack FDT: %d\n", err);
+diff --git a/arch/mips/mti-sead3/sead3-init.c b/arch/mips/mti-sead3/sead3-init.c
+index 3572ea3..e81f5b7 100644
+--- a/arch/mips/mti-sead3/sead3-init.c
++++ b/arch/mips/mti-sead3/sead3-init.c
+@@ -17,47 +17,6 @@
+ extern char except_vec_nmi;
+ extern char except_vec_ejtag_debug;
  
--#include <asm/irq_cpu.h>
--#include <asm/setup.h>
+-#ifdef CONFIG_SERIAL_8250_CONSOLE
+-static void __init console_config(void)
+-{
+-	char console_string[40];
+-	int baud = 0;
+-	char parity = '\0', bits = '\0', flow = '\0';
+-	char *s;
 -
--#include <asm/mips-boards/sead3int.h>
+-	if ((strstr(fw_getcmdline(), "console=")) == NULL) {
+-		s = fw_getenv("modetty0");
+-		if (s) {
+-			while (*s >= '0' && *s <= '9')
+-				baud = baud*10 + *s++ - '0';
+-			if (*s == ',')
+-				s++;
+-			if (*s)
+-				parity = *s++;
+-			if (*s == ',')
+-				s++;
+-			if (*s)
+-				bits = *s++;
+-			if (*s == ',')
+-				s++;
+-			if (*s == 'h')
+-				flow = 'r';
+-		}
+-		if (baud == 0)
+-			baud = 38400;
+-		if (parity != 'n' && parity != 'o' && parity != 'e')
+-			parity = 'n';
+-		if (bits != '7' && bits != '8')
+-			bits = '8';
+-		if (flow == '\0')
+-			flow = 'r';
+-		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud,
+-			parity, bits, flow);
+-		strcat(fw_getcmdline(), console_string);
+-	}
+-}
+-#endif
 -
--#define SEAD_CONFIG_GIC_PRESENT_SHF	1
--#define SEAD_CONFIG_GIC_PRESENT_MSK	(1 << SEAD_CONFIG_GIC_PRESENT_SHF)
--#define SEAD_CONFIG_BASE		0x1b100110
--#define SEAD_CONFIG_SIZE		4
--
--static void __iomem *sead3_config_reg;
-+#include <asm/cpu-info.h>
-+#include <asm/irq.h>
- 
- void __init arch_init_irq(void)
+ static void __init mips_nmi_setup(void)
  {
--	if (!cpu_has_veic)
--		mips_cpu_irq_init();
-+	irqchip_init();
- 
--	sead3_config_reg = ioremap_nocache(SEAD_CONFIG_BASE, SEAD_CONFIG_SIZE);
--	gic_present = (__raw_readl(sead3_config_reg) &
--		       SEAD_CONFIG_GIC_PRESENT_MSK) >>
--		SEAD_CONFIG_GIC_PRESENT_SHF;
- 	pr_info("GIC: %spresent\n", (gic_present) ? "" : "not ");
- 	pr_info("EIC: %s\n",
- 		(current_cpu_data.options & MIPS_CPU_VEIC) ?  "on" : "off");
--
--	if (gic_present)
--		gic_init(GIC_BASE_ADDR, GIC_ADDRSPACE_SZ, CPU_INT_GIC,
--			 MIPS_GIC_IRQ_BASE);
+ 	void *base;
+@@ -140,11 +99,6 @@ void __init prom_init(void)
+ 	else if ((strstr(fw_getcmdline(), "console=ttyS1")) != NULL)
+ 		fw_init_early_console(1);
+ #endif
+-#ifdef CONFIG_SERIAL_8250_CONSOLE
+-	if ((strstr(fw_getcmdline(), "console=")) == NULL)
+-		strcat(fw_getcmdline(), " console=ttyS0,38400n8r");
+-	console_config();
+-#endif
  }
  
+ void __init prom_free_prom_memory(void)
 diff --git a/arch/mips/mti-sead3/sead3-platform.c b/arch/mips/mti-sead3/sead3-platform.c
-index 73b73ef..12cf905 100644
+index 12cf905..e772a05 100644
 --- a/arch/mips/mti-sead3/sead3-platform.c
 +++ b/arch/mips/mti-sead3/sead3-platform.c
-@@ -9,8 +9,10 @@
- #include <linux/init.h>
- #include <linux/irq.h>
- #include <linux/irqchip/mips-gic.h>
-+#include <linux/irqdomain.h>
- #include <linux/leds.h>
+@@ -14,35 +14,10 @@
  #include <linux/mtd/physmap.h>
-+#include <linux/of.h>
+ #include <linux/of.h>
  #include <linux/platform_device.h>
- #include <linux/serial_8250.h>
+-#include <linux/serial_8250.h>
  #include <linux/smsc911x.h>
-@@ -204,16 +206,41 @@ static struct platform_device *sead3_platform_devices[] __initdata = {
  
- static int __init sead3_platforms_device_init(void)
- {
-+	const char *intc_compat;
-+	struct device_node *node;
-+	struct irq_domain *irqd;
-+
-+	if (gic_present)
-+		intc_compat = "mti,gic"
-+	else
-+		intc_compat = "mti,cpu-interrupt-controller";
-+
-+	node = of_find_compatible_node(NULL, NULL, intc_compat);
-+	if (!node) {
-+		pr_err("unable to find interrupt controller DT node\n");
-+		return -ENODEV;
-+	}
-+
-+	irqd = irq_find_host(node);
-+	if (!irqd) {
-+		pr_err("unable to find interrupt controller IRQ domain\n");
-+		return -ENODEV;
-+	}
-+
- 	if (gic_present) {
--		uart8250_data[0].irq = MIPS_GIC_IRQ_BASE + GIC_INT_UART0;
--		uart8250_data[1].irq = MIPS_GIC_IRQ_BASE + GIC_INT_UART1;
--		ehci_resources[1].start = MIPS_GIC_IRQ_BASE + GIC_INT_EHCI;
--		sead3_net_resources[1].start = MIPS_GIC_IRQ_BASE + GIC_INT_NET;
-+		uart8250_data[0].irq = irq_create_mapping(irqd, GIC_INT_UART0);
-+		uart8250_data[1].irq = irq_create_mapping(irqd, GIC_INT_UART1);
-+		ehci_resources[1].start =
-+			irq_create_mapping(irqd, GIC_INT_EHCI);
-+		sead3_net_resources[1].start =
-+			irq_create_mapping(irqd, GIC_INT_NET);
- 	} else {
--		uart8250_data[0].irq = MIPS_CPU_IRQ_BASE + CPU_INT_UART0;
--		uart8250_data[1].irq = MIPS_CPU_IRQ_BASE + CPU_INT_UART1;
--		ehci_resources[1].start = MIPS_CPU_IRQ_BASE + CPU_INT_EHCI;
--		sead3_net_resources[1].start = MIPS_CPU_IRQ_BASE + CPU_INT_NET;
-+		uart8250_data[0].irq = irq_create_mapping(irqd, CPU_INT_UART0);
-+		uart8250_data[1].irq = irq_create_mapping(irqd, CPU_INT_UART1);
-+		ehci_resources[1].start =
-+			irq_create_mapping(irqd, CPU_INT_EHCI);
-+		sead3_net_resources[1].start =
-+			irq_create_mapping(irqd, CPU_INT_NET);
+ #include <asm/mips-boards/sead3int.h>
+ 
+-#define UART(base)							\
+-{									\
+-	.mapbase	= base,						\
+-	.irq		= -1,						\
+-	.uartclk	= 14745600,					\
+-	.iotype		= UPIO_MEM32,					\
+-	.flags		= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST | UPF_IOREMAP, \
+-	.regshift	= 2,						\
+-}
+-
+-static struct plat_serial8250_port uart8250_data[] = {
+-	UART(0x1f000900),   /* ttyS0 = USB   */
+-	UART(0x1f000800),   /* ttyS1 = RS232 */
+-	{ },
+-};
+-
+-static struct platform_device uart8250_device = {
+-	.name			= "serial8250",
+-	.id			= PLAT8250_DEV_PLATFORM2,
+-	.dev			= {
+-		.platform_data	= uart8250_data,
+-	},
+-};
+-
+ static struct smsc911x_platform_config sead3_smsc911x_data = {
+ 	.irq_polarity	= SMSC911X_IRQ_POLARITY_ACTIVE_LOW,
+ 	.irq_type	= SMSC911X_IRQ_TYPE_PUSH_PULL,
+@@ -195,7 +170,6 @@ static struct platform_device ehci_device = {
+ };
+ 
+ static struct platform_device *sead3_platform_devices[] __initdata = {
+-	&uart8250_device,
+ 	&sead3_flash,
+ 	&pled_device,
+ 	&fled_device,
+@@ -228,15 +202,11 @@ static int __init sead3_platforms_device_init(void)
  	}
  
- 	return platform_add_devices(sead3_platform_devices,
-diff --git a/arch/mips/mti-sead3/sead3-setup.c b/arch/mips/mti-sead3/sead3-setup.c
-index edfcaf0..c4fc0c6 100644
---- a/arch/mips/mti-sead3/sead3-setup.c
-+++ b/arch/mips/mti-sead3/sead3-setup.c
-@@ -13,6 +13,7 @@
- #include <asm/prom.h>
- #include <asm/fw/fw.h>
- 
-+#include <asm/mach-sead3/sead3-dtshim.h>
- #include <asm/mips-boards/generic.h>
- 
- const char *get_system_type(void)
-@@ -89,20 +90,16 @@ void __init *plat_get_fdt(void)
- 
- void __init plat_mem_setup(void)
- {
-+	void *fdt = plat_get_fdt();
-+
- 	/* allow command line/bootloader env to override memory size in DT */
- 	parse_memsize_param();
- 
--	/*
--	 * Load the builtin devicetree. This causes the chosen node to be
--	 * parsed resulting in our memory appearing
--	 */
--	__dt_setup_arch(__dtb_start);
-+	fdt = sead3_dt_shim(fdt);
-+	__dt_setup_arch(fdt);
- }
- 
- void __init device_tree_init(void)
- {
--	if (!initial_boot_params)
--		return;
--
- 	unflatten_and_copy_device_tree();
- }
+ 	if (gic_present) {
+-		uart8250_data[0].irq = irq_create_mapping(irqd, GIC_INT_UART0);
+-		uart8250_data[1].irq = irq_create_mapping(irqd, GIC_INT_UART1);
+ 		ehci_resources[1].start =
+ 			irq_create_mapping(irqd, GIC_INT_EHCI);
+ 		sead3_net_resources[1].start =
+ 			irq_create_mapping(irqd, GIC_INT_NET);
+ 	} else {
+-		uart8250_data[0].irq = irq_create_mapping(irqd, CPU_INT_UART0);
+-		uart8250_data[1].irq = irq_create_mapping(irqd, CPU_INT_UART1);
+ 		ehci_resources[1].start =
+ 			irq_create_mapping(irqd, CPU_INT_EHCI);
+ 		sead3_net_resources[1].start =
 -- 
 2.9.2

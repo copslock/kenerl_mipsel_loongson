@@ -1,37 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 14:22:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63047 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 14:36:26 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:49521 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992544AbcHIMWMOVJKf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 14:22:12 +0200
+        with ESMTP id S23992544AbcHIMgTjEeo4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 14:36:19 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 24C6B83525AF6;
-        Tue,  9 Aug 2016 13:21:53 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 9 Aug 2016 13:21:56 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH 2/2] MIPS: MAAR: Fix address alignment
-Date:   Tue, 9 Aug 2016 13:21:49 +0100
-Message-ID: <90055c0cfa8675f589aa5cf28e77a38b676881df.1470745146.git-series.james.hogan@imgtec.com>
+        by Forcepoint Email with ESMTPS id 53EF82390CB82;
+        Tue,  9 Aug 2016 13:35:59 +0100 (IST)
+Received: from localhost (10.100.200.230) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 9 Aug
+ 2016 13:36:02 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Ondrej Zary <linux@rainbow-software.org>,
+        <linux-fbdev@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jacek Anaszewski <j.anaszewski@samsung.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        <linux-leds@vger.kernel.org>, Richard Purdie <rpurdie@rpsys.net>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        <devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        <linux-usb@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 00/20] MIPS: SEAD3 device tree conversion
+Date:   Tue, 9 Aug 2016 13:35:25 +0100
+Message-ID: <20160809123546.10190-1-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.2
-In-Reply-To: <cover.842913b0756706569a896ef308bb5bf98be4f0ce.1470745146.git-series.james.hogan@imgtec.com>
-References: <cover.842913b0756706569a896ef308bb5bf98be4f0ce.1470745146.git-series.james.hogan@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+X-Originating-IP: [10.100.200.230]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54435
+X-archive-position: 54436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,59 +67,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The alignment of MIPS MAAR region addresses isn't quite right.
+Although the SEAD3 board has already made some minimal use of device
+tree, until now most peripherals have been left probed by platform code.
 
-- It rounds an already 64 KiB aligned start address up to the next
-  64 KiB boundary, e.g. 0x80000000 is rounded up to 0x80010000.
+This series converts all SEAD3 peripherals to instead be probed from
+device tree. The amount of platform code is significantly reduced
+leaving SEAD3 primed & ready for a wider task of genericising the
+kernel.
 
-- It assumes the end address is already on a 64 KiB boundary and doesn't
-  round it down. Should that not be the case it will hit the second
-  BUG_ON() in write_maar_pair().
+Applies atop v4.8-rc1.
 
-Both cases are addressed by rounding up and down to 64 KiB boundaries in
-the more traditional way of adding 0xffff (for rounding up) and masking
-off the low 16 bits.
+Paul Burton (20):
+  MIPS: SEAD3: Split obj-y entries across lines
+  MIPS: SEAD3: Probe interrupt controllers using DT
+  MIPS: SEAD3: Probe UARTs using DT
+  MIPS: SEAD3: Use generic ns16550a earlycon support
+  MIPS: SEAD3: Probe ethernet controller using DT
+  usb: host: ehci-sead3: Support probing using device tree
+  MIPS: SEAD3: Probe EHCI controller using DT
+  usb: host: ehci-sead3: Remove non-DT probe code
+  SEAD3: Probe parallel flash via DT
+  MIPS: SEAD3: Use register-bit-led driver via DT for LEDs
+  leds: Remove SEAD3 driver
+  MIPS: SEAD3: Reset via generic syscon-reboot driver & DT
+  MIPS: SEAD3: Use generic restart-poweroff driver
+  MIPS: SEAD3: Parse memsize in DT shim
+  MIPS: SEAD3: Drop use of cobalt fbdev driver
+  fbdev: cobalt_lcdfb: Drop SEAD3 support
+  dt-bindings: img-ascii-lcd: Document a binding for simple ASCII LCDs
+  auxdisplay: img-ascii-lcd: driver for simple ASCII LCD displays
+  MIPS: SEAD3: Use img-ascii-lcd driver
+  MIPS: SEAD3: Remove custom read_persistent_clock
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/mm/init.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ .../bindings/auxdisplay/img-ascii-lcd.txt          |  17 +
+ MAINTAINERS                                        |   6 +
+ arch/mips/Kconfig                                  |   1 -
+ arch/mips/boot/dts/mti/sead3.dts                   | 228 +++++++++++
+ arch/mips/configs/sead3_defconfig                  |   8 +
+ arch/mips/include/asm/mach-sead3/sead3-dtshim.h    |  29 ++
+ arch/mips/include/asm/mips-boards/sead3int.h       |  32 --
+ arch/mips/mti-sead3/Makefile                       |  10 +-
+ arch/mips/mti-sead3/sead3-console.c                |  46 ---
+ arch/mips/mti-sead3/sead3-display.c                |  77 ----
+ arch/mips/mti-sead3/sead3-dtshim.c                 | 291 ++++++++++++++
+ arch/mips/mti-sead3/sead3-init.c                   |  52 ---
+ arch/mips/mti-sead3/sead3-int.c                    |  27 +-
+ arch/mips/mti-sead3/sead3-lcd.c                    |  43 --
+ arch/mips/mti-sead3/sead3-platform.c               | 223 -----------
+ arch/mips/mti-sead3/sead3-reset.c                  |  40 --
+ arch/mips/mti-sead3/sead3-setup.c                  |  77 +---
+ arch/mips/mti-sead3/sead3-time.c                   |   8 -
+ drivers/auxdisplay/Kconfig                         |   9 +
+ drivers/auxdisplay/Makefile                        |   1 +
+ drivers/auxdisplay/img-ascii-lcd.c                 | 443 +++++++++++++++++++++
+ drivers/leds/Kconfig                               |  10 -
+ drivers/leds/Makefile                              |   1 -
+ drivers/leds/leds-sead3.c                          |  78 ----
+ drivers/usb/host/ehci-sead3.c                      |  21 +-
+ drivers/video/fbdev/Kconfig                        |   2 +-
+ drivers/video/fbdev/cobalt_lcdfb.c                 |  42 --
+ 27 files changed, 1061 insertions(+), 761 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
+ create mode 100644 arch/mips/include/asm/mach-sead3/sead3-dtshim.h
+ delete mode 100644 arch/mips/include/asm/mips-boards/sead3int.h
+ delete mode 100644 arch/mips/mti-sead3/sead3-console.c
+ delete mode 100644 arch/mips/mti-sead3/sead3-display.c
+ create mode 100644 arch/mips/mti-sead3/sead3-dtshim.c
+ delete mode 100644 arch/mips/mti-sead3/sead3-lcd.c
+ delete mode 100644 arch/mips/mti-sead3/sead3-platform.c
+ delete mode 100644 arch/mips/mti-sead3/sead3-reset.c
+ create mode 100644 drivers/auxdisplay/img-ascii-lcd.c
+ delete mode 100644 drivers/leds/leds-sead3.c
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index a5509e7dcad2..2c3749d98f04 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -261,7 +261,6 @@ unsigned __weak platform_maar_init(unsigned num_pairs)
- {
- 	struct maar_config cfg[BOOT_MEM_MAP_MAX];
- 	unsigned i, num_configured, num_cfg = 0;
--	phys_addr_t skip;
- 
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		switch (boot_mem_map.map[i].type) {
-@@ -272,14 +271,14 @@ unsigned __weak platform_maar_init(unsigned num_pairs)
- 			continue;
- 		}
- 
--		skip = 0x10000 - (boot_mem_map.map[i].addr & 0xffff);
--
-+		/* Round lower up */
- 		cfg[num_cfg].lower = boot_mem_map.map[i].addr;
--		cfg[num_cfg].lower += skip;
-+		cfg[num_cfg].lower = (cfg[num_cfg].lower + 0xffff) & ~0xffff;
- 
--		cfg[num_cfg].upper = cfg[num_cfg].lower;
--		cfg[num_cfg].upper += boot_mem_map.map[i].size - 1;
--		cfg[num_cfg].upper -= skip;
-+		/* Round upper down */
-+		cfg[num_cfg].upper = boot_mem_map.map[i].addr +
-+					boot_mem_map.map[i].size;
-+		cfg[num_cfg].upper = (cfg[num_cfg].upper & ~0xffff) - 1;
- 
- 		cfg[num_cfg].attrs = MIPS_MAAR_S;
- 		num_cfg++;
 -- 
-git-series 0.8.7
+2.9.2

@@ -1,31 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 14:42:35 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30779 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 14:42:56 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30635 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993187AbcHIMkMR6Ut4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 14:40:12 +0200
+        with ESMTP id S23992722AbcHIMk0sXkk4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 14:40:26 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C08A84A853DF1;
-        Tue,  9 Aug 2016 13:39:52 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 8579E6396A017;
+        Tue,  9 Aug 2016 13:40:07 +0100 (IST)
 Received: from localhost (10.100.200.230) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 9 Aug
- 2016 13:39:55 +0100
+ 2016 13:40:10 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Ondrej Zary <linux@rainbow-software.org>,
-        <linux-fbdev@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        <devicetree@vger.kernel.org>, Guenter Roeck <linux@roeck-us.net>,
         <linux-kernel@vger.kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms+renesas@verge.net.au>
-Subject: [PATCH 16/20] fbdev: cobalt_lcdfb: Drop SEAD3 support
-Date:   Tue, 9 Aug 2016 13:35:41 +0100
-Message-ID: <20160809123546.10190-17-paul.burton@imgtec.com>
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 17/20] dt-bindings: img-ascii-lcd: Document a binding for simple ASCII LCDs
+Date:   Tue, 9 Aug 2016 13:35:42 +0100
+Message-ID: <20160809123546.10190-18-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.2
 In-Reply-To: <20160809123546.10190-1-paul.burton@imgtec.com>
 References: <20160809123546.10190-1-paul.burton@imgtec.com>
@@ -36,7 +34,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54452
+X-archive-position: 54453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,88 +51,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The SEAD3 board no longer uses the cobalt_lcdfb driver, so remove the
-SEAD3-specific code from it.
+Add documentation for a devicetree binding for the simple ASCII LCD
+displays found on development boards such as the MIPS Boston, MIPS Malta
+& MIPS SEAD3 from Imagination Technologies.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- drivers/video/fbdev/Kconfig        |  2 +-
- drivers/video/fbdev/cobalt_lcdfb.c | 42 --------------------------------------
- 2 files changed, 1 insertion(+), 43 deletions(-)
+ .../devicetree/bindings/auxdisplay/img-ascii-lcd.txt    | 17 +++++++++++++++++
+ MAINTAINERS                                             |  5 +++++
+ 2 files changed, 22 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 88b008f..914bfb2 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -2183,7 +2183,7 @@ config FB_GOLDFISH
+diff --git a/Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt b/Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
+new file mode 100644
+index 0000000..b69bb68
+--- /dev/null
++++ b/Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
+@@ -0,0 +1,17 @@
++Binding for ASCII LCD displays on Imagination Technologies boards
++
++Required properties:
++- compatible : should be one of:
++    "img,boston-lcd"
++    "mti,malta-lcd"
++    "mti,sead3-lcd"
++
++Required properties for "img,boston-lcd":
++- reg : memory region locating the device registers
++
++Required properties for "mti,malta-lcd" or "mti,sead3-lcd":
++- regmap: phandle of the system controller containing the LCD registers
++- offset: offset in bytes to the LCD registers within the system controller
++
++The layout of the registers & properties of the display are determined
++from the compatible string, making this binding somewhat trivial.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 20bb1d0..d08cf6d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1971,6 +1971,11 @@ S:	Maintained
+ F:	Documentation/hwmon/asc7621
+ F:	drivers/hwmon/asc7621.c
  
- config FB_COBALT
- 	tristate "Cobalt server LCD frame buffer support"
--	depends on FB && (MIPS_COBALT || MIPS_SEAD3)
-+	depends on FB && MIPS_COBALT
- 
- config FB_SH7760
- 	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
-diff --git a/drivers/video/fbdev/cobalt_lcdfb.c b/drivers/video/fbdev/cobalt_lcdfb.c
-index 07675d6..2d3b691 100644
---- a/drivers/video/fbdev/cobalt_lcdfb.c
-+++ b/drivers/video/fbdev/cobalt_lcdfb.c
-@@ -63,7 +63,6 @@
- #define LCD_CUR_POS(x)		((x) & LCD_CUR_POS_MASK)
- #define LCD_TEXT_POS(x)		((x) | LCD_TEXT_MODE)
- 
--#ifdef CONFIG_MIPS_COBALT
- static inline void lcd_write_control(struct fb_info *info, u8 control)
- {
- 	writel((u32)control << 24, info->screen_base);
-@@ -83,47 +82,6 @@ static inline u8 lcd_read_data(struct fb_info *info)
- {
- 	return readl(info->screen_base + LCD_DATA_REG_OFFSET) >> 24;
- }
--#else
--
--#define LCD_CTL			0x00
--#define LCD_DATA		0x08
--#define CPLD_STATUS		0x10
--#define CPLD_DATA		0x18
--
--static inline void cpld_wait(struct fb_info *info)
--{
--	do {
--	} while (readl(info->screen_base + CPLD_STATUS) & 1);
--}
--
--static inline void lcd_write_control(struct fb_info *info, u8 control)
--{
--	cpld_wait(info);
--	writel(control, info->screen_base + LCD_CTL);
--}
--
--static inline u8 lcd_read_control(struct fb_info *info)
--{
--	cpld_wait(info);
--	readl(info->screen_base + LCD_CTL);
--	cpld_wait(info);
--	return readl(info->screen_base + CPLD_DATA) & 0xff;
--}
--
--static inline void lcd_write_data(struct fb_info *info, u8 data)
--{
--	cpld_wait(info);
--	writel(data, info->screen_base + LCD_DATA);
--}
--
--static inline u8 lcd_read_data(struct fb_info *info)
--{
--	cpld_wait(info);
--	readl(info->screen_base + LCD_DATA);
--	cpld_wait(info);
--	return readl(info->screen_base + CPLD_DATA) & 0xff;
--}
--#endif
- 
- static int lcd_busy_wait(struct fb_info *info)
- {
++ASCII LCD DRIVER
++M:	Paul Burton <paul.burton@imgtec.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/ascii-lcd.txt
++
+ ASUS NOTEBOOKS AND EEEPC ACPI/WMI EXTRAS DRIVERS
+ M:	Corentin Chary <corentin.chary@gmail.com>
+ L:	acpi4asus-user@lists.sourceforge.net
 -- 
 2.9.2

@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Aug 2016 23:57:41 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57218 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992398AbcHIV5dnk0XF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Aug 2016 23:57:33 +0200
-Received: from akpm3.mtv.corp.google.com (unknown [104.132.1.73])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 907D13EE;
-        Tue,  9 Aug 2016 21:57:26 +0000 (UTC)
-Date:   Tue, 9 Aug 2016 14:57:26 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        Tejun Heo <tj@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Ivan Delalande <colona@arista.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Borislav Petkov <bp@suse.de>, Jan Kara <jack@suse.com>,
-        Petr Mladek <pmladek@suse.com>, <linux-kernel@vger.kernel.org>,
-        Joe Perches <joe@perches.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v2] console: Don't prefer first registered if DT
- specifies stdout-path
-Message-Id: <20160809145726.1f9f5e5752c94b3113d77674@linux-foundation.org>
-In-Reply-To: <20160809151937.26118-1-paul.burton@imgtec.com>
-References: <20160809125010.14150-1-paul.burton@imgtec.com>
-        <20160809151937.26118-1-paul.burton@imgtec.com>
-X-Mailer: Sylpheed 3.4.1 (GTK+ 2.24.23; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2016 10:14:28 +0200 (CEST)
+Received: from mail9.hitachi.co.jp ([133.145.228.44]:39454 "EHLO
+        mail9.hitachi.co.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992037AbcHJIOVjI4SH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Aug 2016 10:14:21 +0200
+Received: from mlsw6.hitachi.co.jp (unknown [133.144.234.166])
+        by mail9.hitachi.co.jp (Postfix) with ESMTP id 4B574109BD83;
+        Wed, 10 Aug 2016 17:14:18 +0900 (JST)
+Received: from mfilter6.hitachi.co.jp by mlsw6.hitachi.co.jp (8.13.8/8.13.8) id u7A8EILU025538; Wed, 10 Aug 2016 17:14:18 +0900
+Received: from vshuts04.hitachi.co.jp (vshuts04.hitachi.co.jp [10.201.6.86])
+        by mfilter6.hitachi.co.jp (Switch-3.3.4/Switch-3.3.4) with ESMTP id u7A8EG5S026594;
+        Wed, 10 Aug 2016 17:14:17 +0900
+Received: from hsdlmain.sdl.hitachi.co.jp (unknown [133.144.14.194])
+        by vshuts04.hitachi.co.jp (Postfix) with ESMTP id 05F8713E03F;
+        Wed, 10 Aug 2016 17:14:17 +0900 (JST)
+Received: from [10.198.219.51] by hsdlmain.sdl.hitachi.co.jp (8.13.8/3.7W11021512) id u7A8EG0e019363; Wed, 10 Aug 2016 17:14:16 +0900
+Subject: [V4 PATCH 0/2] kexec: crash_kexec_post_notifiers boot option related
+ fixes
+From:   Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Dave Young <dyoung@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Baoquan He <bhe@redhat.com>, Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Xunlei Pang <xpang@redhat.com>,
+        x86@kernel.org, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        xen-devel@lists.xenproject.org, Daniel Walker <dwalker@fifo99.com>,
+        Vivek Goyal <vgoyal@redhat.com>
+Date:   Wed, 10 Aug 2016 17:09:46 +0900
+Message-ID: <20160810080946.11028.97686.stgit@sysi4-13.yrl.intra.hitachi.co.jp>
+User-Agent: StGit/0.17.1-dirty
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <akpm@linux-foundation.org>
+X-TM-AS-GCONF: 00
+Return-Path: <hidehiro.kawai.ez@hitachi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54464
+X-archive-position: 54465
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: hidehiro.kawai.ez@hitachi.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,37 +56,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 9 Aug 2016 16:19:37 +0100 Paul Burton <paul.burton@imgtec.com> wrote:
+Daniel Walker reported problems which happens when
+crash_kexec_post_notifiers kernel option is enabled
+(https://lkml.org/lkml/2015/6/24/44).
 
-> If a device tree specifies a preferred device for kernel console output
-> via the stdout-path or linux,stdout-path chosen node properties or the
-> stdout alias then the kernel ought to honor it & output the kernel
-> console to that device. As it stands, this isn't the case. Whilst we
-> parse the stdout-path properties & set an of_stdout variable from
-> of_alias_scan(), and use that from of_console_check() to determine
-> whether to add a console device as a preferred console whilst
-> registering it, we also prefer the first registered console if no other
-> has been selected at the time of its registration.
-> 
-> This means that if a console other than the one the device tree selects
-> via stdout-path is registered first, we will switch to using it & when
-> the stdout-path console is later registered the call to
-> add_preferred_console() via of_console_check() is too late to do
-> anything useful. In practice this seems to mean that we switch to the
-> dummy console device fairly early & see no further console output:
-> 
->     Console: colour dummy device 80x25
->     console [tty0] enabled
->     bootconsole [ns16550a0] disabled
-> 
-> Fix this by not automatically preferring the first registered console if
-> one is specified by the device tree. This allows consoles to be
-> registered but not enabled, and once the driver for the console selected
-> by stdout-path calls of_console_check() the driver will be added to the
-> list of preferred consoles before any other console has been enabled.
-> When that console is then registered via register_console() it will be
-> enabled as expected.
+In that case, smp_send_stop() is called before entering kdump routines
+which assume other CPUs are still online.  This causes some issues
+depending on architectures.  For example, for x86, kdump routines fail
+to save other CPUs' registers and disable virtualization extensions.
+For MIPS OCTEON, it fails to stop the watchdog timer.
 
-Looks reasonable.  Could you please do `grep -r stdout-path
-Documentation' and check that everything therein is complete, accurate
-and necessary?
+To fix this problem, call a new kdump friendly function,
+crash_smp_send_stop(), instead of the smp_send_stop() when
+crash_kexec_post_notifiers is enabled.  crash_smp_send_stop() is a
+weak function, and it just call smp_send_stop().  Architecture
+codes should override it so that kdump can work appropriately.
+This patch set supports only x86 and MIPS.
+
+NOTE:
+- Right solution would be to place crash_smp_send_stop() before
+  __crash_kexec() invocation in all cases and remove smp_send_stop(),
+  but we can't do that until all architectures implement own
+  crash_smp_send_stop()
+- crash_smp_send_stop()-like work is still needed by
+  machine_crash_shutdown() because crash_kexec() can be called without
+  entering panic()
+
+Changes in V4:
+- Keep to use smp_send_stop if crash_kexec_post_notifiers is not set
+- Rename panic_smp_send_stop to crash_smp_send_stop
+- Don't change the behavior for Xen's PV kernel
+- Support MIPS
+
+Changes in V3: https://lkml.org/lkml/2016/7/5/221
+- Revise comments, description, and symbol names (the logic doesn't
+  change)
+- Make crash_kexec_post_notifiers boot option modifiable after boot
+
+Changes in V2: https://lkml.org/lkml/2015/7/23/864
+- Replace smp_send_stop() call with crash_kexec version which
+  saves cpu states and does cleanups instead of changing execution
+  flow
+- Drop a fix for Problem 1
+- Drop other patches because they aren't needed anymore
+
+V1: https://lkml.org/lkml/2015/7/10/316
+
+---
+
+Hidehiro Kawai (2):
+      x86/panic: Replace smp_send_stop() with kdump friendly version in panic path
+      mips/panic: Replace smp_send_stop() with kdump friendly version in panic path
+
+
+ arch/mips/cavium-octeon/setup.c  |   14 +++++++++++
+ arch/mips/include/asm/kexec.h    |    1 +
+ arch/mips/kernel/crash.c         |   18 ++++++++++++++-
+ arch/mips/kernel/machine_kexec.c |    1 +
+ arch/x86/include/asm/kexec.h     |    1 +
+ arch/x86/include/asm/smp.h       |    1 +
+ arch/x86/kernel/crash.c          |   22 +++++++++++++++---
+ arch/x86/kernel/smp.c            |    5 ++++
+ kernel/panic.c                   |   47 ++++++++++++++++++++++++++++++++------
+ 9 files changed, 99 insertions(+), 11 deletions(-)
+
+
+-- 
+Hidehiro Kawai
+Hitachi, Ltd. Research & Development Group

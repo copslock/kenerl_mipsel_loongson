@@ -1,34 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2016 18:11:34 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32311 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992366AbcHJQL1QD1Qy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Aug 2016 18:11:27 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 8DDFEA9569BE6;
-        Wed, 10 Aug 2016 17:11:07 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 10 Aug 2016 17:11:10 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, <paul.burton@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>
-Subject: [PATCH] MIPS: Delete unused file smp-gic.c
-Date:   Wed, 10 Aug 2016 17:11:03 +0100
-Message-ID: <1470845463-25269-1-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Aug 2016 00:17:12 +0200 (CEST)
+Received: from mail-oi0-f66.google.com ([209.85.218.66]:32921 "EHLO
+        mail-oi0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992521AbcHJWREb8tPs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Aug 2016 00:17:04 +0200
+Received: by mail-oi0-f66.google.com with SMTP id s207so5013761oie.0;
+        Wed, 10 Aug 2016 15:17:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ckzlcAVrF/CqnTai35aouQ1H5OuwCOq7zPd3V0AGC4Y=;
+        b=LWYyhFFLfQx+dk5/uhlV1rCG2Y5C9y+VF9Zp9jqyX1uKxGwY3uQrRWiXC+Gby8m7Px
+         RIl5tU8qT51/Jfr6ZPXZ52UOnMlgcq0ArhEkpWZbT+P1NVcyfPS+FHfqOdY+yTypDDbX
+         Sj7I3tuTKfg9U11t7iDTyxdz1M5uW1ANe8vHpriPFBgKsw3OaJtkX0KnBm0xGVhwbhw8
+         8KvVb+yjO4O5EQZW/pDFUO5hDzCFnqakhtpvV+RwE46Tpb8Ciff0HnCm0nDipFhNQPwF
+         +N9CzrpjlqH9t5XUKjEXr+GnUVBox+3QHExMuhoT7Jf1KK2E/eFHuntf6cG00TqM7JoN
+         q0yA==
+X-Gm-Message-State: AEkoouvR9Lerm16A9IXZkONhMmcXf0ZgBD9bbAJCF6OtW2PTQkrddLSMvH3c+6chmiX7xQ==
+X-Received: by 10.157.12.10 with SMTP id 10mr95975otr.18.1470867418627;
+        Wed, 10 Aug 2016 15:16:58 -0700 (PDT)
+Received: from localhost (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
+        by smtp.gmail.com with ESMTPSA id n39sm86476otn.10.2016.08.10.15.16.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 10 Aug 2016 15:16:58 -0700 (PDT)
+Date:   Wed, 10 Aug 2016 17:16:57 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        devicetree@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 17/20] dt-bindings: img-ascii-lcd: Document a binding for
+ simple ASCII LCDs
+Message-ID: <20160810221657.GA20008@rob-hp-laptop>
+References: <20160809123546.10190-1-paul.burton@imgtec.com>
+ <20160809123546.10190-18-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160809123546.10190-18-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54473
+X-archive-position: 54474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,89 +66,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 7eb8c99db26c ("MIPS: Delete smp-gic.c") removed the file from the
-Makefile and the option to build it from KConfig, but left the file
-itself floating in the tree.
+On Tue, Aug 09, 2016 at 01:35:42PM +0100, Paul Burton wrote:
+> Add documentation for a devicetree binding for the simple ASCII LCD
+> displays found on development boards such as the MIPS Boston, MIPS Malta
+> & MIPS SEAD3 from Imagination Technologies.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
+> 
+>  .../devicetree/bindings/auxdisplay/img-ascii-lcd.txt    | 17 +++++++++++++++++
+>  MAINTAINERS                                             |  5 +++++
+>  2 files changed, 22 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt b/Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
+> new file mode 100644
+> index 0000000..b69bb68
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
+> @@ -0,0 +1,17 @@
+> +Binding for ASCII LCD displays on Imagination Technologies boards
+> +
+> +Required properties:
+> +- compatible : should be one of:
+> +    "img,boston-lcd"
+> +    "mti,malta-lcd"
+> +    "mti,sead3-lcd"
+> +
+> +Required properties for "img,boston-lcd":
+> +- reg : memory region locating the device registers
+> +
+> +Required properties for "mti,malta-lcd" or "mti,sead3-lcd":
+> +- regmap: phandle of the system controller containing the LCD registers
+> +- offset: offset in bytes to the LCD registers within the system controller
+> +
+> +The layout of the registers & properties of the display are determined
+> +from the compatible string, making this binding somewhat trivial.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 20bb1d0..d08cf6d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1971,6 +1971,11 @@ S:	Maintained
+>  F:	Documentation/hwmon/asc7621
+>  F:	drivers/hwmon/asc7621.c
+>  
+> +ASCII LCD DRIVER
+> +M:	Paul Burton <paul.burton@imgtec.com>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/ascii-lcd.txt
 
-Remove the unused source file.
+Wrong path and filename.
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
----
- arch/mips/kernel/smp-gic.c | 66 ----------------------------------------------
- 1 file changed, 66 deletions(-)
- delete mode 100644 arch/mips/kernel/smp-gic.c
-
-diff --git a/arch/mips/kernel/smp-gic.c b/arch/mips/kernel/smp-gic.c
-deleted file mode 100644
-index 9b63829cf929..000000000000
---- a/arch/mips/kernel/smp-gic.c
-+++ /dev/null
-@@ -1,66 +0,0 @@
--/*
-- * Copyright (C) 2013 Imagination Technologies
-- * Author: Paul Burton <paul.burton@imgtec.com>
-- *
-- * Based on smp-cmp.c:
-- *  Copyright (C) 2007 MIPS Technologies, Inc.
-- *  Author: Chris Dearman (chris@mips.com)
-- *
-- * This program is free software; you can redistribute it and/or modify it
-- * under the terms of the GNU General Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--
--#include <linux/irqchip/mips-gic.h>
--#include <linux/printk.h>
--
--#include <asm/mips-cpc.h>
--#include <asm/smp-ops.h>
--
--void gic_send_ipi_single(int cpu, unsigned int action)
--{
--	unsigned long flags;
--	unsigned int intr;
--	unsigned int core = cpu_data[cpu].core;
--
--	pr_debug("CPU%d: %s cpu %d action %u status %08x\n",
--		 smp_processor_id(), __func__, cpu, action, read_c0_status());
--
--	local_irq_save(flags);
--
--	switch (action) {
--	case SMP_CALL_FUNCTION:
--		intr = plat_ipi_call_int_xlate(cpu);
--		break;
--
--	case SMP_RESCHEDULE_YOURSELF:
--		intr = plat_ipi_resched_int_xlate(cpu);
--		break;
--
--	default:
--		BUG();
--	}
--
--	gic_send_ipi(intr);
--
--	if (mips_cpc_present() && (core != current_cpu_data.core)) {
--		while (!cpumask_test_cpu(cpu, &cpu_coherent_mask)) {
--			mips_cm_lock_other(core, 0);
--			mips_cpc_lock_other(core);
--			write_cpc_co_cmd(CPC_Cx_CMD_PWRUP);
--			mips_cpc_unlock_other();
--			mips_cm_unlock_other();
--		}
--	}
--
--	local_irq_restore(flags);
--}
--
--void gic_send_ipi_mask(const struct cpumask *mask, unsigned int action)
--{
--	unsigned int i;
--
--	for_each_cpu(i, mask)
--		gic_send_ipi_single(i, action);
--}
--- 
-2.7.4
+> +
+>  ASUS NOTEBOOKS AND EEEPC ACPI/WMI EXTRAS DRIVERS
+>  M:	Corentin Chary <corentin.chary@gmail.com>
+>  L:	acpi4asus-user@lists.sourceforge.net
+> -- 
+> 2.9.2
+> 

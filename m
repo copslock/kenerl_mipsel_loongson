@@ -1,36 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2016 11:42:52 +0200 (CEST)
-Received: from mga04.intel.com ([192.55.52.120]:52553 "EHLO mga04.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2016 12:16:13 +0200 (CEST)
+Received: from mga04.intel.com ([192.55.52.120]:32686 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992279AbcHJJmpr2JlH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Aug 2016 11:42:45 +0200
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP; 10 Aug 2016 02:42:37 -0700
+        id S23992424AbcHJKQGpDgBH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Aug 2016 12:16:06 +0200
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP; 10 Aug 2016 03:15:59 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.28,499,1464678000"; 
-   d="gz'50?scan'50,208,50";a="746765107"
+   d="gz'50?scan'50,208,50";a="1022948245"
 Received: from bee.sh.intel.com (HELO bee) ([10.239.97.14])
-  by FMSMGA003.fm.intel.com with ESMTP; 10 Aug 2016 02:42:35 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 10 Aug 2016 03:15:58 -0700
 Received: from kbuild by bee with local (Exim 4.84_2)
         (envelope-from <fengguang.wu@intel.com>)
-        id 1bXQ1k-000Uck-Dn; Wed, 10 Aug 2016 17:42:20 +0800
-Date:   Wed, 10 Aug 2016 17:41:27 +0800
+        id 1bXQY1-000DPr-PI; Wed, 10 Aug 2016 18:15:41 +0800
+Date:   Wed, 10 Aug 2016 18:15:16 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     Paul Burton <paul.burton@imgtec.com>
 Cc:     kbuild-all@01.org, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        devicetree@vger.kernel.org,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Jacek Anaszewski <j.anaszewski@samsung.com>,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 02/20] MIPS: SEAD3: Probe interrupt controllers using DT
-Message-ID: <201608101726.RGUJn72l%fengguang.wu@intel.com>
+Subject: Re: [PATCH 03/20] MIPS: SEAD3: Probe UARTs using DT
+Message-ID: <201608101804.gdP70W7I%fengguang.wu@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="VbJkn9YxBvnuCH5J"
+Content-Type: multipart/mixed; boundary="J2SCkAp4GZ/dPZZf"
 Content-Disposition: inline
-In-Reply-To: <20160809123546.10190-3-paul.burton@imgtec.com>
+In-Reply-To: <20160809123546.10190-4-paul.burton@imgtec.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-SA-Exim-Connect-IP: <locally generated>
 X-SA-Exim-Mail-From: fengguang.wu@intel.com
@@ -39,7 +36,7 @@ Return-Path: <fengguang.wu@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54468
+X-archive-position: 54469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,7 +54,7 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---VbJkn9YxBvnuCH5J
+--J2SCkAp4GZ/dPZZf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -76,42 +73,51 @@ reproduce:
         # save the attached .config to linux build tree
         make.cross ARCH=mips 
 
+Note: the linux-review/Paul-Burton/MIPS-SEAD3-device-tree-conversion/20160809-204707 HEAD 0eed2040422cad5cd9998891bc53368a6f15871c builds fine.
+      It only hurts bisectibility.
+
 All errors (new ones prefixed by >>):
 
    arch/mips/mti-sead3/sead3-dtshim.c: In function 'remove_gic':
->> arch/mips/mti-sead3/sead3-dtshim.c:55:11: error: 'EINVAL' undeclared (first use in this function)
+   arch/mips/mti-sead3/sead3-dtshim.c:56:11: error: 'EINVAL' undeclared (first use in this function)
       return -EINVAL;
               ^
-   arch/mips/mti-sead3/sead3-dtshim.c:55:11: note: each undeclared identifier is reported only once for each function it appears in
---
-   arch/mips/mti-sead3/sead3-platform.c: In function 'sead3_platforms_device_init':
->> arch/mips/mti-sead3/sead3-platform.c:215:2: error: expected ';' before 'else'
-     else
-     ^
+   arch/mips/mti-sead3/sead3-dtshim.c:56:11: note: each undeclared identifier is reported only once for each function it appears in
+   arch/mips/mti-sead3/sead3-dtshim.c: In function 'serial_config':
+>> arch/mips/mti-sead3/sead3-dtshim.c:94:13: error: implicit declaration of function 'fw_getenv' [-Werror=implicit-function-declaration]
+     yamontty = fw_getenv("yamontty");
+                ^
+   arch/mips/mti-sead3/sead3-dtshim.c:94:11: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+     yamontty = fw_getenv("yamontty");
+              ^
+   arch/mips/mti-sead3/sead3-dtshim.c:110:11: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+     mode_var = fw_getenv(mode_var_name);
+              ^
+   cc1: some warnings being treated as errors
 
-vim +/EINVAL +55 arch/mips/mti-sead3/sead3-dtshim.c
+vim +/fw_getenv +94 arch/mips/mti-sead3/sead3-dtshim.c
 
-    49			return cpu_off;
-    50		}
-    51	
-    52		cpu_phandle = fdt_get_phandle(fdt, cpu_off);
-    53		if (!cpu_phandle) {
-    54			pr_err("unable to get CPU intc phandle\n");
-  > 55			return -EINVAL;
-    56		}
-    57	
-    58		err = fdt_setprop_u32(fdt, 0, "interrupt-parent", cpu_phandle);
+    88		const char *yamontty, *mode_var;
+    89		char mode_var_name[9], path[18], parity;
+    90		unsigned int uart, baud, stop_bits;
+    91		bool hw_flow;
+    92		int chosen_off, err;
+    93	
+  > 94		yamontty = fw_getenv("yamontty");
+    95		if (!yamontty || !strcmp(yamontty, "tty0")) {
+    96			uart = 0;
+    97		} else if (!strcmp(yamontty, "tty1")) {
 
 ---
 0-DAY kernel test infrastructure                Open Source Technology Center
 https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
---VbJkn9YxBvnuCH5J
+--J2SCkAp4GZ/dPZZf
 Content-Type: application/octet-stream
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICKzuqlcAAy5jb25maWcAjFxdc9s2s77vr+CkZ860M01jyx9x5kwuQBCUUJEEA4Cy7BuO
+H4sICBT7qlcAAy5jb25maWcAjFxdc9s2s77vr+CkZ860M01jyx9x5kwuQBCUUJEEA4Cy7BuO
 YiuNpo7t15LbN//+7IKkRJALpRetY+xi8bUfzy5A//zTzxF73T19W+02d6uHh+/Rn+vH9ctq
 t76Pvmwe1v8XJSoqlI1EIu3vwJxtHl//++7b5nkbnf9+9fvJ25e702i+fnlcP0T86fHL5s9X
 6L15evzp55+4KlI5rXNZmo/ff4KGn6N8dfd187iOtuuH9V3L9nPUY6xZxmciv4k22+jxaQeM
@@ -388,4 +394,4 @@ kHQtndiE1seVRWzY7iednBR/3iHgNMao2j5pGoteN8muvgm8Mfbh8KJQBWxj5Ki1PJn0mSn3
 fZrXYLIeCImU3gdTHfqWUbVAb0BMEk+BuWyZndlghg4wpa5wFpHZIuk+hzndlYij+15Jjf8D
 FR13L2vyAAA=
 
---VbJkn9YxBvnuCH5J--
+--J2SCkAp4GZ/dPZZf--

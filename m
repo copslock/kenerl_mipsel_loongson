@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Aug 2016 13:00:04 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3259 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Aug 2016 13:31:09 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:10291 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992721AbcHKK6vzwfJ8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Aug 2016 12:58:51 +0200
+        with ESMTP id S23992728AbcHKLbDB9sQ8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Aug 2016 13:31:03 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 7FB308A5A8ADC;
-        Thu, 11 Aug 2016 11:58:32 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 11 Aug 2016 11:58:35 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>,
-        <stable@vger.kernel.org>, James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 4/4] MIPS: KVM: Propagate kseg0/mapped tlb fault errors
-Date:   Thu, 11 Aug 2016 11:58:15 +0100
-Message-ID: <74d50bf458aadaee94f89ac3d34557306cec1ef7.1470911944.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.9.2
+        by Forcepoint Email with ESMTPS id C4C3E160FE219;
+        Thu, 11 Aug 2016 12:30:42 +0100 (IST)
+Received: from [127.0.0.1] (10.100.200.106) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 11 Aug
+ 2016 12:30:45 +0100
+Subject: Re: [PATCH] MIPS: Delete unused file smp-gic.c
+To:     Matt Redfearn <matt.redfearn@imgtec.com>, <ralf@linux-mips.org>
+References: <1470845463-25269-1-git-send-email-matt.redfearn@imgtec.com>
+ <a284afa7-caf7-b4fa-e936-03486ef14a7d@imgtec.com>
+ <57AC54D1.5020900@imgtec.com>
+CC:     <linux-mips@linux-mips.org>
+From:   Paul Burton <paul.burton@imgtec.com>
+Message-ID: <7087eb68-9369-f2e6-a8ec-97ad8a6e8968@imgtec.com>
+Date:   Thu, 11 Aug 2016 12:30:45 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <cover.e70247d7d77e67a2331e65b6b7fd3894508e5d28.1470911944.git-series.james.hogan@imgtec.com>
-References: <cover.e70247d7d77e67a2331e65b6b7fd3894508e5d28.1470911944.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <57AC54D1.5020900@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.100.200.106]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54483
+X-archive-position: 54484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,107 +46,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Propagate errors from kvm_mips_handle_kseg0_tlb_fault() and
-kvm_mips_handle_mapped_seg_tlb_fault(), usually triggering an internal
-error since they normally indicate the guest accessed bad physical
-memory or the commpage in an unexpected way.
+On 11/08/16 11:34, Matt Redfearn wrote:
+>>> -    gic_send_ipi(intr);
+>>> -
+>>> -    if (mips_cpc_present() && (core != current_cpu_data.core)) {
+>>> -        while (!cpumask_test_cpu(cpu, &cpu_coherent_mask)) {
+>>> -            mips_cm_lock_other(core, 0);
+>>> -            mips_cpc_lock_other(core);
+>>> -            write_cpc_co_cmd(CPC_Cx_CMD_PWRUP);
+>>> -            mips_cpc_unlock_other();
+>>> -            mips_cm_unlock_other();
+>>> -        }
+>>> -    }
+>> Hi Matt,
+>>
+>> This patch itself makes sense, but it does bring to light that the IPI
+>> IRQ domain stuff will have broken cpuidle. When a core goes into one of
+>> the deeper power saving states (becoming clock gated or power gated) it
+>> won't automatically wake back up upon interrupts, which is why the bit
+>> of code above exists to bring it back out of the power saving state via
+>> the CPC.
+> 
+> There is equivalent code to that removed by the IPI IRQ domain here:
+> http://lxr.free-electrons.com/source/arch/mips/kernel/smp.c#L185.
+> 
+> With a 2c2t Interaptiv, core 1 does seem to be getting clock & power gated:
+> # cat /sys/devices/system/cpu/cpu2/cpuidle/state2/desc
+> core clock gated
+> # cat /sys/devices/system/cpu/cpu2/cpuidle/state3/desc
+> core power gated
+> # cat /sys/devices/system/cpu/cpu2/cpuidle/state2/time
+> 7007
+> # cat /sys/devices/system/cpu/cpu2/cpuidle/state3/time
+> 300549307
+> # cat /sys/devices/system/cpu/cpu3/cpuidle/state2/time
+> 8556
+> # cat /sys/devices/system/cpu/cpu3/cpuidle/state3/time
+> 301527771
+> 
+> So I think it's all good.
 
-Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 3.10.x-
----
- arch/mips/kvm/emulate.c | 35 ++++++++++++++++++++++++++---------
- arch/mips/kvm/mmu.c     | 12 +++++++++---
- 2 files changed, 35 insertions(+), 12 deletions(-)
+Hi Matt,
 
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 6eb52b9c9818..e788515f766b 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1642,8 +1642,14 @@ enum emulation_result kvm_mips_emulate_cache(union mips_instruction inst,
- 
- 	preempt_disable();
- 	if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
--		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0)
--			kvm_mips_handle_kseg0_tlb_fault(va, vcpu);
-+		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0 &&
-+		    kvm_mips_handle_kseg0_tlb_fault(va, vcpu)) {
-+			kvm_err("%s: handling mapped kseg0 tlb fault for %lx, vcpu: %p, ASID: %#lx\n",
-+				__func__, va, vcpu, read_c0_entryhi());
-+			er = EMULATE_FAIL;
-+			preempt_enable();
-+			goto done;
-+		}
- 	} else if ((KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0) ||
- 		   KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
- 		int index;
-@@ -1680,12 +1686,18 @@ enum emulation_result kvm_mips_emulate_cache(union mips_instruction inst,
- 								run, vcpu);
- 				preempt_enable();
- 				goto dont_update_pc;
--			} else {
--				/*
--				 * We fault an entry from the guest tlb to the
--				 * shadow host TLB
--				 */
--				kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb);
-+			}
-+			/*
-+			 * We fault an entry from the guest tlb to the
-+			 * shadow host TLB
-+			 */
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb)) {
-+				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, va, index, vcpu,
-+					read_c0_entryhi());
-+				er = EMULATE_FAIL;
-+				preempt_enable();
-+				goto done;
- 			}
- 		}
- 	} else {
-@@ -2659,7 +2671,12 @@ enum emulation_result kvm_mips_handle_tlbmiss(u32 cause,
- 			 * OK we have a Guest TLB entry, now inject it into the
- 			 * shadow host TLB
- 			 */
--			kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb);
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb)) {
-+				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, va, index, vcpu,
-+					read_c0_entryhi());
-+				er = EMULATE_FAIL;
-+			}
- 		}
- 	}
- 
-diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
-index 6a8a21859502..6cfdcf55572d 100644
---- a/arch/mips/kvm/mmu.c
-+++ b/arch/mips/kvm/mmu.c
-@@ -368,9 +368,15 @@ u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu)
- 				local_irq_restore(flags);
- 				return KVM_INVALID_INST;
- 			}
--			kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
--							     &vcpu->arch.
--							     guest_tlb[index]);
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
-+						&vcpu->arch.guest_tlb[index])) {
-+				kvm_err("%s: handling mapped seg tlb fault failed for %p, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, opc, index, vcpu,
-+					read_c0_entryhi());
-+				kvm_mips_dump_guest_tlbs(vcpu);
-+				local_irq_restore(flags);
-+				return KVM_INVALID_INST;
-+			}
- 			inst = *(opc);
- 		}
- 		local_irq_restore(flags);
--- 
-git-series 0.8.7
+Right you are :) I hadn't realised the code had been copied there.
+
+Thanks,
+    Paul

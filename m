@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 10:54:11 +0200 (CEST)
-Received: from mail-pa0-f66.google.com ([209.85.220.66]:33821 "EHLO
-        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992880AbcHLIw6nN4B- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 10:52:58 +0200
-Received: by mail-pa0-f66.google.com with SMTP id hh10so1176209pac.1;
-        Fri, 12 Aug 2016 01:52:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 10:54:35 +0200 (CEST)
+Received: from mail-pf0-f194.google.com ([209.85.192.194]:36392 "EHLO
+        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992914AbcHLIxBpqF7- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 10:53:01 +0200
+Received: by mail-pf0-f194.google.com with SMTP id y134so1213498pfg.3;
+        Fri, 12 Aug 2016 01:53:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=eapLXA7qOxou41/xodKBp2OqOhJjwo27oWdv8255C8M=;
-        b=LEzqav3Zi4tF8DcXgQ9zEGmnCVzLc1vxpcVqg3GL0iRJZjqkMgxhjolYPy+anT7fPB
-         WuhTkK786r/asBF/ohPEad/ZkwBTKbALZrEbcd4JehVKJHz8v3U97dSwccubYP5g50Jz
-         8o3GPnMU7fnSFJoQv0fuilZJEzUVR5PPEFayMuQsY+6lQzebIg0mc2KXaIZFX9KWaE/1
-         uYZ9/dt+dQSAFxua1aG2bC24lxTKM5YasUZ/kgupC+X1BB6As6Qw6aSQoluoPEjCKEBF
-         rk1XE3r43itVXdCfpTqXIm/ringVzWaePqChuMOJcKLSdsGvTof6UXcryIWOBpMPp1Hh
-         yarw==
+        bh=jdKSJCPFJM3FEQ7idAl+u4kuDBqHl821uHetA0TOY5E=;
+        b=e2uuXkq9QNOUNbfjsRoKp1j0DmxEmMjfYgIaNgg3ZJxYIR1GaiFaaJwj/XmKIKGG/9
+         JQBak14g/PWudA/3mCrz+bt72A+ElOpKqCZjkoxbEr6C5EVQA1cWKUuQSpUL/3V6MaIc
+         RdHr/nKnxvLfZJfVBWcQzcqi7Bcrv5LNa/DYuj6LW+zxgkMi2GeD9Zph3+reo3FNBRHF
+         drHpB8QuZzaHQDrDJLvhYPmg9cP716cNDycd9qKuZhT93zMLxDpAzRaH8Y80XprJAiFx
+         hyBgh03z8hYNm/DSXswu7ct8rjh30mMjSq8BcD3Tei+pCO0wo78tpWJne52tGX8vunAw
+         sgnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=eapLXA7qOxou41/xodKBp2OqOhJjwo27oWdv8255C8M=;
-        b=AOUu2wxsldVeMZEjg7Gjb+Bnd/jG1hidZlBONe9g5ey8Ii0lyX86U7gtQ6J3ED/if/
-         Tvd6LplX1hOB88QbUVMWUIhlPGMTH2TnklPbFFing7SnYCbqIQ9adTBmdHnbt3JCEHOm
-         v/bj4dhQ9dS66Ex9dzsweuTDtdaLu37SdyHaboL1jvxmBjoZF2BaFthU54CySJh0DBAM
-         5hFpiwM7onkE3YdTBL7s5r3QywYDXgy0veixRoy9FHUp4Ej8izAY6iBk9ezs2EYN7Ce0
-         ci1Xiq/R6r9u8QkMrk91GlNeM+gMnKMDnylhixipPSsuD6r4pubEOtXjn0wq04HJlrFY
-         UPzw==
-X-Gm-Message-State: AEkooutd7p8lmugWqxovWfbV5UGMzueDc4ZxhJzIWjsKkMLuocO2tcovdbnya8acSCN8uQ==
-X-Received: by 10.66.132.38 with SMTP id or6mr25042619pab.84.1470991972705;
-        Fri, 12 Aug 2016 01:52:52 -0700 (PDT)
+        bh=jdKSJCPFJM3FEQ7idAl+u4kuDBqHl821uHetA0TOY5E=;
+        b=LuKh4aS7EdaZYA4DThFi1r8VgW80NzUZX+Qjpjn2whuCOAAj9AfBwoi0ID4cmftTZp
+         qXu1unwTeF89WeSV2JwdGvw7lEmbbVtZ2otlxsPARX1iPplPhF4QVqqRI6J1DJz6M6Fs
+         j6Mrc/0UYYe8vEhJJke2E0WMdw8VmlRomjDZb3UaYvXKK4+aDgE4dU3b9jBR3BFqd2GA
+         eEJUnQZXtxic6bGDTQ8C0amCfKr587w12WaywuMZAPI7a0B3mYTnAIZ2sVH3Q3+htcgl
+         LSibNCn4jyoigdaLp5bCWDH2UzyNG6NqzIG95wTTIydgmeekm83QO24zg6JVKeYf7HoC
+         Ukhw==
+X-Gm-Message-State: AEkoouuKHGCn7TAsvZ/kqDEs43OnKkTWCMICtYrA7Aew3YYa4+T9Kn79nhaHEWF4EAkSBQ==
+X-Received: by 10.98.84.65 with SMTP id i62mr24977123pfb.72.1470991975774;
+        Fri, 12 Aug 2016 01:52:55 -0700 (PDT)
 Received: from localhost.localdomain ([125.130.116.2])
-        by smtp.gmail.com with ESMTPSA id ty6sm11024819pac.18.2016.08.12.01.52.50
+        by smtp.gmail.com with ESMTPSA id ty6sm11024819pac.18.2016.08.12.01.52.53
         (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Fri, 12 Aug 2016 01:52:52 -0700 (PDT)
+        Fri, 12 Aug 2016 01:52:55 -0700 (PDT)
 From:   Jaedon Shin <jaedon.shin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -41,9 +41,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [v3 3/5] MIPS: BMIPS: Add support SDHCI device nodes
-Date:   Fri, 12 Aug 2016 17:52:29 +0900
-Message-Id: <20160812085231.53290-4-jaedon.shin@gmail.com>
+Subject: [v3 4/5] MIPS: BMIPS: Add support NAND device nodes
+Date:   Fri, 12 Aug 2016 17:52:30 +0900
+Message-Id: <20160812085231.53290-5-jaedon.shin@gmail.com>
 X-Mailer: git-send-email 2.9.2
 In-Reply-To: <20160812085231.53290-1-jaedon.shin@gmail.com>
 References: <20160812085231.53290-1-jaedon.shin@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54498
+X-archive-position: 54499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,203 +68,375 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adds SDHCI device nodes to BCM7xxx MIPS based SoCs.
+Adds NAND device nodes to BCM7xxx MIPS based SoCs.
 
 Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 ---
- arch/mips/boot/dts/brcm/bcm7346.dtsi      |  8 ++++++++
- arch/mips/boot/dts/brcm/bcm7360.dtsi      |  8 ++++++++
- arch/mips/boot/dts/brcm/bcm7362.dtsi      |  8 ++++++++
- arch/mips/boot/dts/brcm/bcm7425.dtsi      | 20 ++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7435.dtsi      | 20 ++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm97346dbsmb.dts |  4 ++++
- arch/mips/boot/dts/brcm/bcm97360svmb.dts  |  4 ++++
- arch/mips/boot/dts/brcm/bcm97362svmb.dts  |  4 ++++
- arch/mips/boot/dts/brcm/bcm97425svmb.dts  |  8 ++++++++
- arch/mips/boot/dts/brcm/bcm97435svmb.dts  |  8 ++++++++
- 10 files changed, 92 insertions(+)
+ arch/mips/boot/dts/brcm/bcm7346.dtsi               | 20 ++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7358.dtsi               | 20 ++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7360.dtsi               | 20 ++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7362.dtsi               | 20 ++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7425.dtsi               | 20 ++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7435.dtsi               | 20 ++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts          |  5 +++++
+ arch/mips/boot/dts/brcm/bcm97358svmb.dts           |  5 +++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts           |  5 +++++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts           |  5 +++++
+ arch/mips/boot/dts/brcm/bcm97425svmb.dts           |  5 +++++
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts           |  5 +++++
+ .../mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi | 24 ++++++++++++++++++++++
+ 13 files changed, 174 insertions(+)
+ create mode 100644 arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi
 
 diff --git a/arch/mips/boot/dts/brcm/bcm7346.dtsi b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-index f29e68a84086..8c0466bd84d0 100644
+index 8c0466bd84d0..d8ea487f334f 100644
 --- a/arch/mips/boot/dts/brcm/bcm7346.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-@@ -411,5 +411,13 @@
- 				#phy-cells = <0>;
- 			};
+@@ -372,6 +372,26 @@
+ 			status = "disabled";
+ 		};
+ 
++		hif_l2_intc: hif_l2_intc@411000 {
++			compatible = "brcm,l2-intc";
++			reg = <0x411000 0x30>;
++			interrupt-controller;
++			#interrupt-cells = <1>;
++			interrupt-parent = <&periph_intc>;
++			interrupts = <30>;
++		};
++
++		nand: nand@412800 {
++			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg-names = "nand";
++			reg = <0x412800 0x400>;
++			interrupt-parent = <&hif_l2_intc>;
++			interrupts = <24>;
++			status = "disabled";
++		};
++
+ 		sata: sata@181000 {
+ 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
+ 			reg-names = "ahci", "top-ctrl";
+diff --git a/arch/mips/boot/dts/brcm/bcm7358.dtsi b/arch/mips/boot/dts/brcm/bcm7358.dtsi
+index aa4a75ea8e40..21718d71ba03 100644
+--- a/arch/mips/boot/dts/brcm/bcm7358.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7358.dtsi
+@@ -298,5 +298,25 @@
+ 			interrupts = <66>;
+ 			status = "disabled";
  		};
 +
-+		sdhci0: sdhci@413500 {
-+			compatible = "brcm,bcm7425-sdhci";
-+			reg = <0x413500 0x100>;
++		hif_l2_intc: hif_l2_intc@411000 {
++			compatible = "brcm,l2-intc";
++			reg = <0x411000 0x30>;
++			interrupt-controller;
++			#interrupt-cells = <1>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <85>;
++			interrupts = <30>;
++		};
++
++		nand: nand@412800 {
++			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg-names = "nand";
++			reg = <0x412800 0x400>;
++			interrupt-parent = <&hif_l2_intc>;
++			interrupts = <24>;
 +			status = "disabled";
 +		};
  	};
  };
 diff --git a/arch/mips/boot/dts/brcm/bcm7360.dtsi b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-index 269ab73db354..bcab913aea36 100644
+index bcab913aea36..2a9d30ddd7a9 100644
 --- a/arch/mips/boot/dts/brcm/bcm7360.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-@@ -330,5 +330,13 @@
- 				#phy-cells = <0>;
- 			};
+@@ -291,6 +291,26 @@
+ 			status = "disabled";
  		};
-+
-+		sdhci0: sdhci@410000 {
-+			compatible = "brcm,bcm7425-sdhci";
-+			reg = <0x410000 0x100>;
+ 
++		hif_l2_intc: hif_l2_intc@411000 {
++			compatible = "brcm,l2-intc";
++			reg = <0x411000 0x30>;
++			interrupt-controller;
++			#interrupt-cells = <1>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <82>;
++			interrupts = <30>;
++		};
++
++		nand: nand@412800 {
++			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg-names = "nand";
++			reg = <0x412800 0x400>;
++			interrupt-parent = <&hif_l2_intc>;
++			interrupts = <24>;
 +			status = "disabled";
 +		};
- 	};
- };
++
+ 		sata: sata@181000 {
+ 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
+ 			reg-names = "ahci", "top-ctrl";
 diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index 95f07a65c9dd..9214ec55ffc2 100644
+index 9214ec55ffc2..57973b082dcc 100644
 --- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -326,5 +326,13 @@
- 				#phy-cells = <0>;
- 			};
+@@ -287,6 +287,26 @@
+ 			status = "disabled";
  		};
-+
-+		sdhci0: sdhci@410000 {
-+			compatible = "brcm,bcm7425-sdhci";
-+			reg = <0x410000 0x100>;
+ 
++		hif_l2_intc: hif_l2_intc@411000 {
++			compatible = "brcm,l2-intc";
++			reg = <0x411000 0x30>;
++			interrupt-controller;
++			#interrupt-cells = <1>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <82>;
++			interrupts = <30>;
++		};
++
++		nand: nand@412800 {
++			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg-names = "nand";
++			reg = <0x412800 0x400>;
++			interrupt-parent = <&hif_l2_intc>;
++			interrupts = <24>;
 +			status = "disabled";
 +		};
- 	};
- };
++
+ 		sata: sata@181000 {
+ 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
+ 			reg-names = "ahci", "top-ctrl";
 diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-index f7f0833ef403..de4c7744caab 100644
+index de4c7744caab..2a64f16c5741 100644
 --- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-@@ -410,5 +410,25 @@
- 				#phy-cells = <0>;
- 			};
+@@ -371,6 +371,26 @@
+ 			status = "disabled";
  		};
-+
-+		sdhci0: sdhci@419000 {
-+			compatible = "brcm,bcm7425-sdhci";
-+			reg = <0x419000 0x100>;
+ 
++		hif_l2_intc: hif_l2_intc@41a000 {
++			compatible = "brcm,l2-intc";
++			reg = <0x41a000 0x30>;
++			interrupt-controller;
++			#interrupt-cells = <1>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <43>;
-+			sd-uhs-sdr50;
-+			mmc-hs200-1_8v;
++			interrupts = <24>;
++		};
++
++		nand: nand@41b800 {
++			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg-names = "nand";
++			reg = <0x41b800 0x400>;
++			interrupt-parent = <&hif_l2_intc>;
++			interrupts = <24>;
 +			status = "disabled";
 +		};
 +
-+		sdhci1: sdhci@419200 {
-+			compatible = "brcm,bcm7425-sdhci";
-+			reg = <0x419200 0x100>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <44>;
-+			sd-uhs-sdr50;
-+			mmc-hs200-1_8v;
-+			status = "disabled";
-+		};
- 	};
- };
+ 		sata: sata@181000 {
+ 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
+ 			reg-names = "ahci", "top-ctrl";
 diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-index 4bbe4888d8a6..7a9c76d59ff3 100644
+index 7a9c76d59ff3..6863c35bbd11 100644
 --- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-@@ -425,5 +425,25 @@
- 				#phy-cells = <0>;
- 			};
+@@ -386,6 +386,26 @@
+ 			status = "disabled";
  		};
-+
-+		sdhci0: sdhci@41a000 {
-+			compatible = "brcm,bcm7425-sdhci";
-+			reg = <0x41a000 0x100>;
+ 
++		hif_l2_intc: hif_l2_intc@41b000 {
++			compatible = "brcm,l2-intc";
++			reg = <0x41b000 0x30>;
++			interrupt-controller;
++			#interrupt-cells = <1>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <47>;
-+			sd-uhs-sdr50;
-+			mmc-hs200-1_8v;
++			interrupts = <24>;
++		};
++
++		nand: nand@41c800 {
++			compatible = "brcm,brcmnand-v6.2", "brcm,brcmnand";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg-names = "nand", "flash-dma";
++			reg = <0x41c800 0x600>, <0x41d000 0x100>;
++			interrupt-parent = <&hif_l2_intc>;
++			interrupts = <24>, <4>;
 +			status = "disabled";
 +		};
 +
-+		sdhci1: sdhci@41a200 {
-+			compatible = "brcm,bcm7425-sdhci";
-+			reg = <0x41a200 0x100>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <48>;
-+			sd-uhs-sdr50;
-+			mmc-hs200-1_8v;
-+			status = "disabled";
-+		};
- 	};
- };
+ 		sata: sata@181000 {
+ 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
+ 			reg-names = "ahci", "top-ctrl";
 diff --git a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
-index 2c55ab094a29..27c9f127a7ca 100644
+index 27c9f127a7ca..1c3090683e67 100644
 --- a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
 +++ b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
-@@ -100,3 +100,7 @@
- &sata_phy {
+@@ -1,6 +1,7 @@
+ /dts-v1/;
+ 
+ /include/ "bcm7346.dtsi"
++/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
+ 
+ / {
+ 	compatible = "brcm,bcm97346dbsmb", "brcm,bcm7346";
+@@ -93,6 +94,10 @@
+ 	status = "okay";
+ };
+ 
++&nand {
++	status = "okay";
++};
++
+ &sata {
+ 	status = "okay";
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97358svmb.dts b/arch/mips/boot/dts/brcm/bcm97358svmb.dts
+index 757fe9d5f4df..a939ec7af82b 100644
+--- a/arch/mips/boot/dts/brcm/bcm97358svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97358svmb.dts
+@@ -1,6 +1,7 @@
+ /dts-v1/;
+ 
+ /include/ "bcm7358.dtsi"
++/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
+ 
+ / {
+ 	compatible = "brcm,bcm97358svmb", "brcm,bcm7358";
+@@ -64,3 +65,7 @@
+ &ohci0 {
  	status = "okay";
  };
 +
-+&sdhci0 {
++&nand {
 +	status = "okay";
 +};
 diff --git a/arch/mips/boot/dts/brcm/bcm97360svmb.dts b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
-index 496e6ed9fae3..bed821b03013 100644
+index bed821b03013..c216fdf9370e 100644
 --- a/arch/mips/boot/dts/brcm/bcm97360svmb.dts
 +++ b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
-@@ -68,3 +68,7 @@
- &sata_phy {
+@@ -1,6 +1,7 @@
+ /dts-v1/;
+ 
+ /include/ "bcm7360.dtsi"
++/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
+ 
+ / {
+ 	compatible = "brcm,bcm97360svmb", "brcm,bcm7360";
+@@ -61,6 +62,10 @@
  	status = "okay";
  };
-+
-+&sdhci0 {
+ 
++&nand {
 +	status = "okay";
 +};
++
+ &sata {
+ 	status = "okay";
+ };
 diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-index b880c018f3d8..1b9bc4b2d9ae 100644
+index 1b9bc4b2d9ae..cb4406192d44 100644
 --- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
 +++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-@@ -64,3 +64,7 @@
- &sata_phy {
+@@ -1,6 +1,7 @@
+ /dts-v1/;
+ 
+ /include/ "bcm7362.dtsi"
++/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
+ 
+ / {
+ 	compatible = "brcm,bcm97362svmb", "brcm,bcm7362";
+@@ -57,6 +58,10 @@
  	status = "okay";
  };
-+
-+&sdhci0 {
+ 
++&nand {
 +	status = "okay";
 +};
++
+ &sata {
+ 	status = "okay";
+ };
 diff --git a/arch/mips/boot/dts/brcm/bcm97425svmb.dts b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
-index f091e91b11c5..1c6b74daef56 100644
+index 1c6b74daef56..3b917cac7efe 100644
 --- a/arch/mips/boot/dts/brcm/bcm97425svmb.dts
 +++ b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
-@@ -94,3 +94,11 @@
- &ohci3 {
+@@ -1,6 +1,7 @@
+ /dts-v1/;
+ 
+ /include/ "bcm7425.dtsi"
++/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
+ 
+ / {
+ 	compatible = "brcm,bcm97425svmb", "brcm,bcm7425";
+@@ -95,6 +96,10 @@
  	status = "okay";
  };
-+
-+&sdhci0 {
+ 
++&nand {
 +	status = "okay";
 +};
 +
-+&sdhci1 {
-+	status = "okay";
-+};
+ &sdhci0 {
+ 	status = "okay";
+ };
 diff --git a/arch/mips/boot/dts/brcm/bcm97435svmb.dts b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
-index 9db84f2a6664..64bb1988dbc8 100644
+index 64bb1988dbc8..54351e54ff68 100644
 --- a/arch/mips/boot/dts/brcm/bcm97435svmb.dts
 +++ b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
-@@ -102,3 +102,11 @@
- &sata_phy {
+@@ -1,6 +1,7 @@
+ /dts-v1/;
+ 
+ /include/ "bcm7435.dtsi"
++/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
+ 
+ / {
+ 	compatible = "brcm,bcm97435svmb", "brcm,bcm7435";
+@@ -95,6 +96,10 @@
  	status = "okay";
  };
-+
-+&sdhci0 {
+ 
++&nand {
 +	status = "okay";
 +};
 +
-+&sdhci1 {
-+	status = "okay";
+ &sata {
+ 	status = "okay";
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi b/arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi
+new file mode 100644
+index 000000000000..5f17f149fcf7
+--- /dev/null
++++ b/arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi
+@@ -0,0 +1,24 @@
++&nand {
++	nandcs@1 {
++		compatible = "brcm,nandcs";
++		reg = <1>;
++
++		nand-ecc-step-size = <512>;
++		nand-ecc-strength = <8>;
++		nand-on-flash-bbt;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			flash1.rootfs@0 {
++				reg = <0x0 0x10000000>;
++			};
++
++			flash1.kernel@10000000 {
++				reg = <0x10000000 0x400000>;
++			};
++		};
++	};
 +};
 -- 
 2.9.2

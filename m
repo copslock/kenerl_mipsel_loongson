@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 04:11:22 +0200 (CEST)
-Received: from mail-pf0-f194.google.com ([209.85.192.194]:35763 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 04:11:44 +0200 (CEST)
+Received: from mail-pf0-f194.google.com ([209.85.192.194]:34016 "EHLO
         mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990521AbcHLCJ6tIHYx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 04:09:58 +0200
-Received: by mail-pf0-f194.google.com with SMTP id h186so656560pfg.2;
-        Thu, 11 Aug 2016 19:09:58 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23990778AbcHLCKBPoEbx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 04:10:01 +0200
+Received: by mail-pf0-f194.google.com with SMTP id g202so664541pfb.1;
+        Thu, 11 Aug 2016 19:10:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=84iCa0MPHFZcm6ET3Hko4WsCe+ayLcAak8niM6BdNAA=;
-        b=c/kma8+uluFZNsu06q7yqpB9MR2sAwVHsi1NFlUO0GrUsR5EZfeaXzhDjzu3kmHDeU
-         +E6V1AjzxRR5Tf1oEjtmlz2c4edjcv/0hlZKOd1QhoX99GVGyJ3Fw79WXd7VPCBWG5O8
-         RW+w4WTv/Roo7G7MpYbesLqjl45+xavG4U/WQKknkHRTBeD25dSP0JvbFLIEUI342GAB
-         l3CRy7pa6l+Yz7dzUtBHYgGCMsbZYjm8m0BU7bsHPRowcW6HLk+Qx/6lYoj2PEpzBvLs
-         0R56qETa9upFmS+XElzniJUh/uXWV1JwISs4Okk4Ly6Z0HVn9+s8AO0LihSrXhm85DK3
-         efBA==
+        bh=JueeCuaCmQyPOdRmMr+AAey4ujx1meRlcuF19PsF94c=;
+        b=ysk1BomaSMKLwgJOI7IrIzlTNDyuH73bhGj+o7LsSrM31AV4zcQIkRiDnuMwixM45A
+         XMT6YXt2VvzSXvOn/g6zd3edPog8Q9qfFegSgwgGWE+ZxakI9is6E7kQUchz66hfL/QV
+         j80QE8BF2JkGiH7ox0LmO1+YPvdxY4T2BwtY49w4yXjtGqyZkRP7E5FpCwMETvW3mvA/
+         WRHlOj951U2BfzHDtmBm81QzViMZKkSkwzB7p1QqJaK/j+A8h613rxoV46G2nET+I0xm
+         1vI/q5bo6EWHD1hMeSTcZtYJfrSmEZCwNMSXFcQIlckzpFrLgADS2fE+0X5kqNm5cwnr
+         YP7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=84iCa0MPHFZcm6ET3Hko4WsCe+ayLcAak8niM6BdNAA=;
-        b=AHVaQT8NVDUoaU+ijuklfVbi9+I+jvP7zvzls5ot7JspPkOCH11z/L+EgWaYZ9eQ7K
-         0QxxYf7dJDEOSkJptRJbx6zXkNYPub5Lrq9oDVQT9PipfUq/79cITaoPvK8equWfzL7W
-         rY2FQ75Q1rFeEBEObW3MHRmazfzniH+yRxI6eHiO1RYVPZuWbplHHMHpN0lHqU4W9Nak
-         bCq90oMIzPbW8cORpg9Ap0kqiMlamWOJ86Em2SQjIGmK1l54T4NsZ3ktc1zXdPide9GQ
-         m8CLSDpTcRQDXfxtgiXGGU729Zah+1meBLFg6WdxLNEuxftdD+0LHwmB9u1fgoYRVILB
-         8sug==
-X-Gm-Message-State: AEkoouvo/otCtn5XT/cz7NMAjhPyXDht76UQlfsVgxzvRdNIsb37UfpNNhdx3SNPiI+qog==
-X-Received: by 10.98.47.132 with SMTP id v126mr23121224pfv.152.1470967792670;
-        Thu, 11 Aug 2016 19:09:52 -0700 (PDT)
+        bh=JueeCuaCmQyPOdRmMr+AAey4ujx1meRlcuF19PsF94c=;
+        b=lGMYPY7WqRtYhADqQ98RisYR/lDtCiqtB1fzaxyGanheTGJvEE654qisYwzYW0WuLK
+         MCHEV3Qrx3QOJfvrpqmpk8WmZ9j0VaPnEGwSeh+g+WVpS90/lWtmG3duDkWNbs4HagGF
+         YTCz6NeJsM4xi2d91yMEA74gHcgAsiEXszm0sRDSUGgMUFgNZLJMncBu9W9Dyk3v3CRi
+         84jikNayhC9Yj8m2SfDWdxMoTsaT72tUL1/dqzpcQFdO/ANp1HTYrnpUu8bredci7dFu
+         qb4oBV8k8xN389C+Gny5Rp0LaEW0RPmhfknqZ6/WJIsSlVLmGfiOCFT39aTHbwVvYa76
+         +d7A==
+X-Gm-Message-State: AEkooutHrTketizzYvI8oH9LLyl8GaKr8mHnrkIDfr5Gf7Ql09mrX+K514EzRJCCFBk2ww==
+X-Received: by 10.98.201.2 with SMTP id k2mr22655830pfg.95.1470967795041;
+        Thu, 11 Aug 2016 19:09:55 -0700 (PDT)
 Received: from localhost.localdomain ([125.130.116.2])
-        by smtp.gmail.com with ESMTPSA id ao6sm8209846pac.8.2016.08.11.19.09.50
+        by smtp.gmail.com with ESMTPSA id ao6sm8209846pac.8.2016.08.11.19.09.52
         (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 11 Aug 2016 19:09:52 -0700 (PDT)
+        Thu, 11 Aug 2016 19:09:54 -0700 (PDT)
 From:   Jaedon Shin <jaedon.shin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -41,9 +41,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [v2 4/5] MIPS: BMIPS: Add support NAND device nodes
-Date:   Fri, 12 Aug 2016 11:09:22 +0900
-Message-Id: <20160812020923.3299-5-jaedon.shin@gmail.com>
+Subject: [v2 5/5] MIPS: BMIPS: Use interrupt-controller node name
+Date:   Fri, 12 Aug 2016 11:09:23 +0900
+Message-Id: <20160812020923.3299-6-jaedon.shin@gmail.com>
 X-Mailer: git-send-email 2.9.2
 In-Reply-To: <20160812020923.3299-1-jaedon.shin@gmail.com>
 References: <20160812020923.3299-1-jaedon.shin@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54489
+X-archive-position: 54490
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,375 +68,502 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adds NAND device nodes to BCM7xxx MIPS based SoCs.
+Changes node names of the interrupt-controller device nodes to
+interrupt-controller instead of label strings.
 
 Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 ---
- arch/mips/boot/dts/brcm/bcm7346.dtsi               | 20 ++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7358.dtsi               | 20 ++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7360.dtsi               | 20 ++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7362.dtsi               | 20 ++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7425.dtsi               | 20 ++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7435.dtsi               | 20 ++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm97346dbsmb.dts          |  5 +++++
- arch/mips/boot/dts/brcm/bcm97358svmb.dts           |  5 +++++
- arch/mips/boot/dts/brcm/bcm97360svmb.dts           |  5 +++++
- arch/mips/boot/dts/brcm/bcm97362svmb.dts           |  5 +++++
- arch/mips/boot/dts/brcm/bcm97425svmb.dts           |  5 +++++
- arch/mips/boot/dts/brcm/bcm97435svmb.dts           |  5 +++++
- .../mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi | 24 ++++++++++++++++++++++
- 13 files changed, 174 insertions(+)
- create mode 100644 arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi
+ arch/mips/boot/dts/brcm/bcm7125.dtsi |  8 ++++----
+ arch/mips/boot/dts/brcm/bcm7346.dtsi | 14 +++++++-------
+ arch/mips/boot/dts/brcm/bcm7358.dtsi | 14 +++++++-------
+ arch/mips/boot/dts/brcm/bcm7360.dtsi | 14 +++++++-------
+ arch/mips/boot/dts/brcm/bcm7362.dtsi | 14 +++++++-------
+ arch/mips/boot/dts/brcm/bcm7420.dtsi |  8 ++++----
+ arch/mips/boot/dts/brcm/bcm7425.dtsi | 14 +++++++-------
+ arch/mips/boot/dts/brcm/bcm7435.dtsi | 14 +++++++-------
+ 8 files changed, 50 insertions(+), 50 deletions(-)
 
+diff --git a/arch/mips/boot/dts/brcm/bcm7125.dtsi b/arch/mips/boot/dts/brcm/bcm7125.dtsi
+index 746ed06c85de..bbd00f65ce39 100644
+--- a/arch/mips/boot/dts/brcm/bcm7125.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7125.dtsi
+@@ -26,7 +26,7 @@
+ 		uart0 = &uart0;
+ 	};
+ 
+-	cpu_intc: cpu_intc {
++	cpu_intc: interrupt-controller {
+ 		#address-cells = <0>;
+ 		compatible = "mti,cpu-interrupt-controller";
+ 
+@@ -55,7 +55,7 @@
+ 		compatible = "simple-bus";
+ 		ranges = <0 0x10000000 0x01000000>;
+ 
+-		periph_intc: periph_intc@441400 {
++		periph_intc: interrupt-controller@441400 {
+ 			compatible = "brcm,bcm7038-l1-intc";
+ 			reg = <0x441400 0x30>, <0x441600 0x30>;
+ 
+@@ -66,7 +66,7 @@
+ 			interrupts = <2>, <3>;
+ 		};
+ 
+-		sun_l2_intc: sun_l2_intc@401800 {
++		sun_l2_intc: interrupt-controller@401800 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x401800 0x30>;
+ 			interrupt-controller;
+@@ -87,7 +87,7 @@
+ 						     "avd_0", "jtag_0";
+ 		};
+ 
+-		upg_irq0_intc: upg_irq0_intc@406780 {
++		upg_irq0_intc: interrupt-controller@406780 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x406780 0x8>;
+ 
 diff --git a/arch/mips/boot/dts/brcm/bcm7346.dtsi b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-index 30af896ddb60..1e19050825b5 100644
+index 1e19050825b5..487687bd878c 100644
 --- a/arch/mips/boot/dts/brcm/bcm7346.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-@@ -372,6 +372,26 @@
+@@ -26,7 +26,7 @@
+ 		uart0 = &uart0;
+ 	};
+ 
+-	cpu_intc: cpu_intc {
++	cpu_intc: interrupt-controller {
+ 		#address-cells = <0>;
+ 		compatible = "mti,cpu-interrupt-controller";
+ 
+@@ -55,7 +55,7 @@
+ 		compatible = "simple-bus";
+ 		ranges = <0 0x10000000 0x01000000>;
+ 
+-		periph_intc: periph_intc@411400 {
++		periph_intc: interrupt-controller@411400 {
+ 			compatible = "brcm,bcm7038-l1-intc";
+ 			reg = <0x411400 0x30>, <0x411600 0x30>;
+ 
+@@ -66,7 +66,7 @@
+ 			interrupts = <2>, <3>;
+ 		};
+ 
+-		sun_l2_intc: sun_l2_intc@403000 {
++		sun_l2_intc: interrupt-controller@403000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x403000 0x30>;
+ 			interrupt-controller;
+@@ -87,7 +87,7 @@
+ 						     "jtag_0", "svd_0";
+ 		};
+ 
+-		upg_irq0_intc: upg_irq0_intc@406780 {
++		upg_irq0_intc: interrupt-controller@406780 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x406780 0x8>;
+ 
+@@ -102,7 +102,7 @@
+ 			interrupt-names = "upg_main", "upg_bsc";
+ 		};
+ 
+-		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
++		upg_aon_irq0_intc: interrupt-controller@408b80 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x408b80 0x8>;
+ 
+@@ -232,7 +232,7 @@
  			status = "disabled";
  		};
  
-+		hif_l2_intc: hif_l2_intc@411000 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x411000 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <30>;
-+		};
-+
-+		nand: nand@412800 {
-+			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg-names = "nand";
-+			reg = <0x412800 0x400>;
-+			interrupt-parent = <&hif_l2_intc>;
-+			interrupts = <24>;
-+			status = "disabled";
-+		};
-+
- 		sata: sata@181000 {
- 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
- 			reg-names = "ahci", "top-ctrl";
+-		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
++		aon_pm_l2_intc: interrupt-controller@408440 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x408440 0x30>;
+ 			interrupt-controller;
+@@ -372,7 +372,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		hif_l2_intc: hif_l2_intc@411000 {
++		hif_l2_intc: interrupt-controller@411000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x411000 0x30>;
+ 			interrupt-controller;
 diff --git a/arch/mips/boot/dts/brcm/bcm7358.dtsi b/arch/mips/boot/dts/brcm/bcm7358.dtsi
-index bb099ee046a1..079163b00994 100644
+index 079163b00994..6f9b8423152a 100644
 --- a/arch/mips/boot/dts/brcm/bcm7358.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7358.dtsi
-@@ -298,5 +298,25 @@
- 			interrupts = <66>;
+@@ -20,7 +20,7 @@
+ 		uart0 = &uart0;
+ 	};
+ 
+-	cpu_intc: cpu_intc {
++	cpu_intc: interrupt-controller {
+ 		#address-cells = <0>;
+ 		compatible = "mti,cpu-interrupt-controller";
+ 
+@@ -49,7 +49,7 @@
+ 		compatible = "simple-bus";
+ 		ranges = <0 0x10000000 0x01000000>;
+ 
+-		periph_intc: periph_intc@411400 {
++		periph_intc: interrupt-controller@411400 {
+ 			compatible = "brcm,bcm7038-l1-intc";
+ 			reg = <0x411400 0x30>;
+ 
+@@ -60,7 +60,7 @@
+ 			interrupts = <2>;
+ 		};
+ 
+-		sun_l2_intc: sun_l2_intc@403000 {
++		sun_l2_intc: interrupt-controller@403000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x403000 0x30>;
+ 			interrupt-controller;
+@@ -81,7 +81,7 @@
+ 						     "avd_0", "jtag_0";
+ 		};
+ 
+-		upg_irq0_intc: upg_irq0_intc@406600 {
++		upg_irq0_intc: interrupt-controller@406600 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x406600 0x8>;
+ 
+@@ -96,7 +96,7 @@
+ 			interrupt-names = "upg_main", "upg_bsc";
+ 		};
+ 
+-		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
++		upg_aon_irq0_intc: interrupt-controller@408b80 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x408b80 0x8>;
+ 
+@@ -216,7 +216,7 @@
  			status = "disabled";
  		};
-+
-+		hif_l2_intc: hif_l2_intc@411000 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x411000 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <30>;
-+		};
-+
-+		nand: nand@412800 {
-+			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg-names = "nand";
-+			reg = <0x412800 0x400>;
-+			interrupt-parent = <&hif_l2_intc>;
-+			interrupts = <24>;
-+			status = "disabled";
-+		};
- 	};
- };
+ 
+-		aon_pm_l2_intc: aon_pm_l2_intc@408240 {
++		aon_pm_l2_intc: interrupt-controller@408240 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x408240 0x30>;
+ 			interrupt-controller;
+@@ -299,7 +299,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		hif_l2_intc: hif_l2_intc@411000 {
++		hif_l2_intc: interrupt-controller@411000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x411000 0x30>;
+ 			interrupt-controller;
 diff --git a/arch/mips/boot/dts/brcm/bcm7360.dtsi b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-index 05d868cbb5c0..37dc60a3e730 100644
+index 37dc60a3e730..094d288eace8 100644
 --- a/arch/mips/boot/dts/brcm/bcm7360.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-@@ -291,6 +291,26 @@
+@@ -20,7 +20,7 @@
+ 		uart0 = &uart0;
+ 	};
+ 
+-	cpu_intc: cpu_intc {
++	cpu_intc: interrupt-controller {
+ 		#address-cells = <0>;
+ 		compatible = "mti,cpu-interrupt-controller";
+ 
+@@ -49,7 +49,7 @@
+ 		compatible = "simple-bus";
+ 		ranges = <0 0x10000000 0x01000000>;
+ 
+-		periph_intc: periph_intc@411400 {
++		periph_intc: interrupt-controller@411400 {
+ 			compatible = "brcm,bcm7038-l1-intc";
+ 			reg = <0x411400 0x30>;
+ 
+@@ -60,7 +60,7 @@
+ 			interrupts = <2>;
+ 		};
+ 
+-		sun_l2_intc: sun_l2_intc@403000 {
++		sun_l2_intc: interrupt-controller@403000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x403000 0x30>;
+ 			interrupt-controller;
+@@ -81,7 +81,7 @@
+ 						     "avd_0", "jtag_0";
+ 		};
+ 
+-		upg_irq0_intc: upg_irq0_intc@406600 {
++		upg_irq0_intc: interrupt-controller@406600 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x406600 0x8>;
+ 
+@@ -96,7 +96,7 @@
+ 			interrupt-names = "upg_main", "upg_bsc";
+ 		};
+ 
+-		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
++		upg_aon_irq0_intc: interrupt-controller@408b80 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x408b80 0x8>;
+ 
+@@ -208,7 +208,7 @@
  			status = "disabled";
  		};
  
-+		hif_l2_intc: hif_l2_intc@411000 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x411000 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <30>;
-+		};
-+
-+		nand: nand@412800 {
-+			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg-names = "nand";
-+			reg = <0x412800 0x400>;
-+			interrupt-parent = <&hif_l2_intc>;
-+			interrupts = <24>;
-+			status = "disabled";
-+		};
-+
- 		sata: sata@181000 {
- 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
- 			reg-names = "ahci", "top-ctrl";
+-		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
++		aon_pm_l2_intc: interrupt-controller@408440 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x408440 0x30>;
+ 			interrupt-controller;
+@@ -291,7 +291,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		hif_l2_intc: hif_l2_intc@411000 {
++		hif_l2_intc: interrupt-controller@411000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x411000 0x30>;
+ 			interrupt-controller;
 diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index ff555e52c088..b148acb7e116 100644
+index b148acb7e116..5a849dbd1b6a 100644
 --- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -287,6 +287,26 @@
+@@ -26,7 +26,7 @@
+ 		uart0 = &uart0;
+ 	};
+ 
+-	cpu_intc: cpu_intc {
++	cpu_intc: interrupt-controller {
+ 		#address-cells = <0>;
+ 		compatible = "mti,cpu-interrupt-controller";
+ 
+@@ -55,7 +55,7 @@
+ 		compatible = "simple-bus";
+ 		ranges = <0 0x10000000 0x01000000>;
+ 
+-		periph_intc: periph_intc@411400 {
++		periph_intc: interrupt-controller@411400 {
+ 			compatible = "brcm,bcm7038-l1-intc";
+ 			reg = <0x411400 0x30>, <0x411600 0x30>;
+ 
+@@ -66,7 +66,7 @@
+ 			interrupts = <2>, <3>;
+ 		};
+ 
+-		sun_l2_intc: sun_l2_intc@403000 {
++		sun_l2_intc: interrupt-controller@403000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x403000 0x30>;
+ 			interrupt-controller;
+@@ -87,7 +87,7 @@
+ 						     "avd_0", "jtag_0";
+ 		};
+ 
+-		upg_irq0_intc: upg_irq0_intc@406600 {
++		upg_irq0_intc: interrupt-controller@406600 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x406600 0x8>;
+ 
+@@ -102,7 +102,7 @@
+ 			interrupt-names = "upg_main", "upg_bsc";
+ 		};
+ 
+-		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
++		upg_aon_irq0_intc: interrupt-controller@408b80 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x408b80 0x8>;
+ 
+@@ -204,7 +204,7 @@
  			status = "disabled";
  		};
  
-+		hif_l2_intc: hif_l2_intc@411000 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x411000 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <30>;
-+		};
-+
-+		nand: nand@412800 {
-+			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg-names = "nand";
-+			reg = <0x412800 0x400>;
-+			interrupt-parent = <&hif_l2_intc>;
-+			interrupts = <24>;
-+			status = "disabled";
-+		};
-+
- 		sata: sata@181000 {
- 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
- 			reg-names = "ahci", "top-ctrl";
+-		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
++		aon_pm_l2_intc: interrupt-controller@408440 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x408440 0x30>;
+ 			interrupt-controller;
+@@ -287,7 +287,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		hif_l2_intc: hif_l2_intc@411000 {
++		hif_l2_intc: interrupt-controller@411000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x411000 0x30>;
+ 			interrupt-controller;
+diff --git a/arch/mips/boot/dts/brcm/bcm7420.dtsi b/arch/mips/boot/dts/brcm/bcm7420.dtsi
+index 0d391d77c780..b143723c674e 100644
+--- a/arch/mips/boot/dts/brcm/bcm7420.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7420.dtsi
+@@ -26,7 +26,7 @@
+ 		uart0 = &uart0;
+ 	};
+ 
+-	cpu_intc: cpu_intc {
++	cpu_intc: interrupt-controller {
+ 		#address-cells = <0>;
+ 		compatible = "mti,cpu-interrupt-controller";
+ 
+@@ -55,7 +55,7 @@
+ 		compatible = "simple-bus";
+ 		ranges = <0 0x10000000 0x01000000>;
+ 
+-		periph_intc: periph_intc@441400 {
++		periph_intc: interrupt-controller@441400 {
+ 			compatible = "brcm,bcm7038-l1-intc";
+ 			reg = <0x441400 0x30>, <0x441600 0x30>;
+ 
+@@ -66,7 +66,7 @@
+ 			interrupts = <2>, <3>;
+ 		};
+ 
+-		sun_l2_intc: sun_l2_intc@401800 {
++		sun_l2_intc: interrupt-controller@401800 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x401800 0x30>;
+ 			interrupt-controller;
+@@ -88,7 +88,7 @@
+ 						     "jtag_0";
+ 		};
+ 
+-		upg_irq0_intc: upg_irq0_intc@406780 {
++		upg_irq0_intc: interrupt-controller@406780 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x406780 0x8>;
+ 
 diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-index 4e387d05bb5b..a80d5d1e31ed 100644
+index a80d5d1e31ed..0f51a438f42b 100644
 --- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-@@ -371,6 +371,26 @@
+@@ -26,7 +26,7 @@
+ 		uart0 = &uart0;
+ 	};
+ 
+-	cpu_intc: cpu_intc {
++	cpu_intc: interrupt-controller {
+ 		#address-cells = <0>;
+ 		compatible = "mti,cpu-interrupt-controller";
+ 
+@@ -55,7 +55,7 @@
+ 		compatible = "simple-bus";
+ 		ranges = <0 0x10000000 0x01000000>;
+ 
+-		periph_intc: periph_intc@41a400 {
++		periph_intc: interrupt-controller@41a400 {
+ 			compatible = "brcm,bcm7038-l1-intc";
+ 			reg = <0x41a400 0x30>, <0x41a600 0x30>;
+ 
+@@ -66,7 +66,7 @@
+ 			interrupts = <2>, <3>;
+ 		};
+ 
+-		sun_l2_intc: sun_l2_intc@403000 {
++		sun_l2_intc: interrupt-controller@403000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x403000 0x30>;
+ 			interrupt-controller;
+@@ -89,7 +89,7 @@
+ 						     "vice_0";
+ 		};
+ 
+-		upg_irq0_intc: upg_irq0_intc@406780 {
++		upg_irq0_intc: interrupt-controller@406780 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x406780 0x8>;
+ 
+@@ -104,7 +104,7 @@
+ 			interrupt-names = "upg_main", "upg_bsc";
+ 		};
+ 
+-		upg_aon_irq0_intc: upg_aon_irq0_intc@409480 {
++		upg_aon_irq0_intc: interrupt-controller@409480 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x409480 0x8>;
+ 
+@@ -231,7 +231,7 @@
  			status = "disabled";
  		};
  
-+		hif_l2_intc: hif_l2_intc@41a000 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x41a000 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <24>;
-+		};
-+
-+		nand: nand@41b800 {
-+			compatible = "brcm,brcmnand-v5.0", "brcm,brcmnand";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg-names = "nand";
-+			reg = <0x41b800 0x400>;
-+			interrupt-parent = <&hif_l2_intc>;
-+			interrupts = <24>;
-+			status = "disabled";
-+		};
-+
- 		sata: sata@181000 {
- 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
- 			reg-names = "ahci", "top-ctrl";
+-		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
++		aon_pm_l2_intc: interrupt-controller@408440 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x408440 0x30>;
+ 			interrupt-controller;
+@@ -371,7 +371,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		hif_l2_intc: hif_l2_intc@41a000 {
++		hif_l2_intc: interrupt-controller@41a000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x41a000 0x30>;
+ 			interrupt-controller;
 diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-index d3130f7b7b70..ae5c6311db59 100644
+index ae5c6311db59..4d57319f3e48 100644
 --- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-@@ -386,6 +386,26 @@
+@@ -38,7 +38,7 @@
+ 		uart0 = &uart0;
+ 	};
+ 
+-	cpu_intc: cpu_intc {
++	cpu_intc: interrupt-controller {
+ 		#address-cells = <0>;
+ 		compatible = "mti,cpu-interrupt-controller";
+ 
+@@ -67,7 +67,7 @@
+ 		compatible = "simple-bus";
+ 		ranges = <0 0x10000000 0x01000000>;
+ 
+-		periph_intc: periph_intc@41b500 {
++		periph_intc: interrupt-controller@41b500 {
+ 			compatible = "brcm,bcm7038-l1-intc";
+ 			reg = <0x41b500 0x40>, <0x41b600 0x40>,
+ 				<0x41b700 0x40>, <0x41b800 0x40>;
+@@ -79,7 +79,7 @@
+ 			interrupts = <2>, <3>, <2>, <3>;
+ 		};
+ 
+-		sun_l2_intc: sun_l2_intc@403000 {
++		sun_l2_intc: interrupt-controller@403000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x403000 0x30>;
+ 			interrupt-controller;
+@@ -104,7 +104,7 @@
+ 						     "scpu";
+ 		};
+ 
+-		upg_irq0_intc: upg_irq0_intc@406780 {
++		upg_irq0_intc: interrupt-controller@406780 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x406780 0x8>;
+ 
+@@ -119,7 +119,7 @@
+ 			interrupt-names = "upg_main", "upg_bsc";
+ 		};
+ 
+-		upg_aon_irq0_intc: upg_aon_irq0_intc@409480 {
++		upg_aon_irq0_intc: interrupt-controller@409480 {
+ 			compatible = "brcm,bcm7120-l2-intc";
+ 			reg = <0x409480 0x8>;
+ 
+@@ -246,7 +246,7 @@
  			status = "disabled";
  		};
  
-+		hif_l2_intc: hif_l2_intc@41b000 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x41b000 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <24>;
-+		};
-+
-+		nand: nand@41c800 {
-+			compatible = "brcm,brcmnand-v6.2", "brcm,brcmnand";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg-names = "nand", "flash-dma";
-+			reg = <0x41c800 0x600>, <0x41d000 0x100>;
-+			interrupt-parent = <&hif_l2_intc>;
-+			interrupts = <24>, <4>;
-+			status = "disabled";
-+		};
-+
- 		sata: sata@181000 {
- 			compatible = "brcm,bcm7425-ahci", "brcm,sata3-ahci";
- 			reg-names = "ahci", "top-ctrl";
-diff --git a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
-index 27c9f127a7ca..1c3090683e67 100644
---- a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
-@@ -1,6 +1,7 @@
- /dts-v1/;
+-		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
++		aon_pm_l2_intc: interrupt-controller@408440 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x408440 0x30>;
+ 			interrupt-controller;
+@@ -386,7 +386,7 @@
+ 			status = "disabled";
+ 		};
  
- /include/ "bcm7346.dtsi"
-+/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
- 
- / {
- 	compatible = "brcm,bcm97346dbsmb", "brcm,bcm7346";
-@@ -93,6 +94,10 @@
- 	status = "okay";
- };
- 
-+&nand {
-+	status = "okay";
-+};
-+
- &sata {
- 	status = "okay";
- };
-diff --git a/arch/mips/boot/dts/brcm/bcm97358svmb.dts b/arch/mips/boot/dts/brcm/bcm97358svmb.dts
-index 757fe9d5f4df..a939ec7af82b 100644
---- a/arch/mips/boot/dts/brcm/bcm97358svmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97358svmb.dts
-@@ -1,6 +1,7 @@
- /dts-v1/;
- 
- /include/ "bcm7358.dtsi"
-+/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
- 
- / {
- 	compatible = "brcm,bcm97358svmb", "brcm,bcm7358";
-@@ -64,3 +65,7 @@
- &ohci0 {
- 	status = "okay";
- };
-+
-+&nand {
-+	status = "okay";
-+};
-diff --git a/arch/mips/boot/dts/brcm/bcm97360svmb.dts b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
-index bed821b03013..c216fdf9370e 100644
---- a/arch/mips/boot/dts/brcm/bcm97360svmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
-@@ -1,6 +1,7 @@
- /dts-v1/;
- 
- /include/ "bcm7360.dtsi"
-+/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
- 
- / {
- 	compatible = "brcm,bcm97360svmb", "brcm,bcm7360";
-@@ -61,6 +62,10 @@
- 	status = "okay";
- };
- 
-+&nand {
-+	status = "okay";
-+};
-+
- &sata {
- 	status = "okay";
- };
-diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-index 1b9bc4b2d9ae..cb4406192d44 100644
---- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
-@@ -1,6 +1,7 @@
- /dts-v1/;
- 
- /include/ "bcm7362.dtsi"
-+/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
- 
- / {
- 	compatible = "brcm,bcm97362svmb", "brcm,bcm7362";
-@@ -57,6 +58,10 @@
- 	status = "okay";
- };
- 
-+&nand {
-+	status = "okay";
-+};
-+
- &sata {
- 	status = "okay";
- };
-diff --git a/arch/mips/boot/dts/brcm/bcm97425svmb.dts b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
-index 1c6b74daef56..3b917cac7efe 100644
---- a/arch/mips/boot/dts/brcm/bcm97425svmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
-@@ -1,6 +1,7 @@
- /dts-v1/;
- 
- /include/ "bcm7425.dtsi"
-+/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
- 
- / {
- 	compatible = "brcm,bcm97425svmb", "brcm,bcm7425";
-@@ -95,6 +96,10 @@
- 	status = "okay";
- };
- 
-+&nand {
-+	status = "okay";
-+};
-+
- &sdhci0 {
- 	status = "okay";
- };
-diff --git a/arch/mips/boot/dts/brcm/bcm97435svmb.dts b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
-index 64bb1988dbc8..54351e54ff68 100644
---- a/arch/mips/boot/dts/brcm/bcm97435svmb.dts
-+++ b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
-@@ -1,6 +1,7 @@
- /dts-v1/;
- 
- /include/ "bcm7435.dtsi"
-+/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
- 
- / {
- 	compatible = "brcm,bcm97435svmb", "brcm,bcm7435";
-@@ -95,6 +96,10 @@
- 	status = "okay";
- };
- 
-+&nand {
-+	status = "okay";
-+};
-+
- &sata {
- 	status = "okay";
- };
-diff --git a/arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi b/arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi
-new file mode 100644
-index 000000000000..5f17f149fcf7
---- /dev/null
-+++ b/arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi
-@@ -0,0 +1,24 @@
-+&nand {
-+	nandcs@1 {
-+		compatible = "brcm,nandcs";
-+		reg = <1>;
-+
-+		nand-ecc-step-size = <512>;
-+		nand-ecc-strength = <8>;
-+		nand-on-flash-bbt;
-+
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			flash1.rootfs@0 {
-+				reg = <0x0 0x10000000>;
-+			};
-+
-+			flash1.kernel@10000000 {
-+				reg = <0x10000000 0x400000>;
-+			};
-+		};
-+	};
-+};
+-		hif_l2_intc: hif_l2_intc@41b000 {
++		hif_l2_intc: interrupt-controller@41b000 {
+ 			compatible = "brcm,l2-intc";
+ 			reg = <0x41b000 0x30>;
+ 			interrupt-controller;
 -- 
 2.9.2

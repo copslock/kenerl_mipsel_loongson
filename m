@@ -1,62 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 01:17:39 +0200 (CEST)
-Received: from mail-pf0-f194.google.com ([209.85.192.194]:35965 "EHLO
-        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993501AbcHLXRcSvgIp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 01:17:32 +0200
-Received: by mail-pf0-f194.google.com with SMTP id y134so44405pfg.3;
-        Fri, 12 Aug 2016 16:17:32 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 01:24:55 +0200 (CEST)
+Received: from mail-pf0-f193.google.com ([209.85.192.193]:35966 "EHLO
+        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993505AbcHLXYtWCm5W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 01:24:49 +0200
+Received: by mail-pf0-f193.google.com with SMTP id y134so51787pfg.3;
+        Fri, 12 Aug 2016 16:24:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=928DpcKyZfnjXk4ciX3SVaOekloYiAypCfrsFCn+LcE=;
-        b=T7gQGiu1f5+priIsG4InAt32lyB38S1KbrXa9vDklg7bpvifxXKu6rvz44tJNKTFGu
-         tChdNeFJ1D9JLQZf3+LLgaAxW1bcF5YS/xqsVHEe/R82t9nb9kWntJO0n/z+LwFSTumm
-         5SZXZlctlCA0zodl6k6A07qJJZ1Xhmhn1JXiLJYqp/GSNjBvqDPF+3c+t6RtxQWls8MY
-         prx+FKEAVvAmOR2rjB+x+CCnLXcFp+csiYVJgGyMkK+pqd+gd2ymVhVF6YzDtrKT14Kl
-         XNoMGEpqodVGCikTtdzma0jbbP6JMEfwVDKxy6uRZM4u12RMkUNMZxCtqEWULZsZYYC2
-         uDgg==
+        bh=C9s8D0KJ2nvOZ18dEFmdLklIihaWSB7fOCTlyYN4O/M=;
+        b=tdz/3uAPjIIRDybiUavYL9VICrB3YkuWAkuqoK/M9tivHLj7/0X72wRaRR5iWGqIwE
+         xbpqnU+O3R72Z6klvawC+GsRLjUbESBDBiqPPN5+ShnyZarMgBZOOuA9CjkHr7dBtMK/
+         oxglOhVeFLm/9P7Kcy6EglHqyKdt+wGIjAytbUTJk+dymd41T52Cm5FurXiAd2m8e7ua
+         Jdm7dqwmNtvcfMwMxZCV6RLkjoEVgcuItuiHwsW1atjhAFiyLXAz4T4x8sAjKc4U15mS
+         ziXPrI4S3RcpXMaLBRM9ivHa7q5BeyGQe3G8Vqw1DNxaDslm7nLWz8DdUfU/cF2YTZO0
+         ljbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=928DpcKyZfnjXk4ciX3SVaOekloYiAypCfrsFCn+LcE=;
-        b=cSMHaBcjVILOygnY8kDppBluo9PqNyX2KAZS1QRNITr6LSlZumTA3J1D2V4H6GczJa
-         5N+Y9sXdb45/lTlhdQT7KTvyTKFEUk2v4ZMYnMTsC2hVYyVWy4N1RiwnHQBmKdbhnYy2
-         GTc/oh2dLHvDyh7EQ4UkC4otWep5gATa/bYqTqmE8owmo3g1AggAUFGLKrP2XPL7RDSW
-         /SkYI8767KhBBMACstWgkcESL++HRDpR+840NUp8wKj+Z5ObKGJEyBPpLwfbCBYtKQps
-         EYgI23xA2P/hbeYJgs4//FR12PoF8+d3jY8qPP2Lqm2rxMCStZuJtY4rvQeHKggcdRYe
-         xlfg==
-X-Gm-Message-State: AEkoouv7ItrPZzc/Zw/uVrK65ISEPZJGEKrv4IS+wUFhMDoI/HdFrxtKiosrpIu7Qm8jvw==
-X-Received: by 10.98.16.75 with SMTP id y72mr31514299pfi.50.1471043846415;
-        Fri, 12 Aug 2016 16:17:26 -0700 (PDT)
+        bh=C9s8D0KJ2nvOZ18dEFmdLklIihaWSB7fOCTlyYN4O/M=;
+        b=k4ZKiuVNWLEmNxvPiMW35w2qmB9WkRwvHz/Gan5THEoHKI7lYVays35MomsfEF1eQY
+         pwXA6uS3VPlSutvr5pgolMAsgvf6WUTYxywKTg8ysPidb+bsj+1Yp+o2FT+67QFhMDyW
+         tbcKfhGxy0Aq6ge820MKm0GGtRYjhGBLHkr9Eido6d3tB0yCg6DT4fygHJqx1TrUXAUn
+         HZEd6ehbO5PHnbFQ72W7AEjzswcm4bwZ8AP6xWSatNlVzgiDbmyweofVEyC6kP1iELjS
+         u45LJlkDUkMJMA8Tj0wE2Rlqav5bphLIa9uySTXfX6XylYJG04aKvdLKyirq4DQmnyR+
+         avGQ==
+X-Gm-Message-State: AEkoouuDa8GJ5a2GVozM77y0uxkRWJGYKOgGWNNF5g5Ne05s4dkRyg7HQgjI7zigMoAgmg==
+X-Received: by 10.98.30.133 with SMTP id e127mr31695186pfe.104.1471044283604;
+        Fri, 12 Aug 2016 16:24:43 -0700 (PDT)
 Received: from [10.112.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
-        by smtp.googlemail.com with ESMTPSA id h125sm15496130pfg.54.2016.08.12.16.17.25
+        by smtp.googlemail.com with ESMTPSA id s89sm15489086pfi.83.2016.08.12.16.24.42
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 12 Aug 2016 16:17:25 -0700 (PDT)
-Subject: Re: [v3 4/5] MIPS: BMIPS: Add support NAND device nodes
+        Fri, 12 Aug 2016 16:24:42 -0700 (PDT)
+Subject: Re: [v3 3/5] MIPS: BMIPS: Add support SDHCI device nodes
 To:     Jaedon Shin <jaedon.shin@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>
 References: <20160812085231.53290-1-jaedon.shin@gmail.com>
- <20160812085231.53290-5-jaedon.shin@gmail.com>
+ <20160812085231.53290-4-jaedon.shin@gmail.com>
 Cc:     Jonas Gorski <jonas.gorski@gmail.com>,
         Kevin Cernekee <cernekee@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <947152ab-0a28-365d-4fd9-eb84cdfd2147@gmail.com>
-Date:   Fri, 12 Aug 2016 16:17:24 -0700
+Message-ID: <2d8ad754-e9b7-e80e-9925-15ccd9c15856@gmail.com>
+Date:   Fri, 12 Aug 2016 16:24:41 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <20160812085231.53290-5-jaedon.shin@gmail.com>
+In-Reply-To: <20160812085231.53290-4-jaedon.shin@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54516
+X-archive-position: 54517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,79 +74,21 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On 08/12/2016 01:52 AM, Jaedon Shin wrote:
-> Adds NAND device nodes to BCM7xxx MIPS based SoCs.
-> 
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
-> ---
+> Adds SDHCI device nodes to BCM7xxx MIPS based SoCs.
 
-I did not check all the reference boards, but for 7425 and 7435 here is
-what you should have:
+While this looks good, I don't think you will have working SDHCI
+interfaces on the 7425/7435 without additional pinmuxing, because
+sometimes the bootloader indicates in a scratch register whether the
+SDHCI0 is usable and the default pinmuxing does not necessarily make
+this possible:
 
-> diff --git a/arch/mips/boot/dts/brcm/bcm97425svmb.dts b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
-> index 1c6b74daef56..3b917cac7efe 100644
-> --- a/arch/mips/boot/dts/brcm/bcm97425svmb.dts
-> +++ b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
-> @@ -1,6 +1,7 @@
->  /dts-v1/;
->  
->  /include/ "bcm7425.dtsi"
-> +/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
->  
->  / {
->  	compatible = "brcm,bcm97425svmb", "brcm,bcm7425";
-> @@ -95,6 +96,10 @@
->  	status = "okay";
->  };
->  
-> +&nand {
-> +	status = "okay";
-> +};
+https://github.com/Broadcom/stblinux-3.3/blob/master/linux/drivers/brcmstb/board.c#L325
 
-Here are the correct properties for our BCM97425SVMB board:
+We have some currently out of tree patches using the pinctrl-single and
+some CFE shim to fix that.
 
-&nand {
-        status = "okay";
+Other than that:
 
-        nandcs@1 {
-                #size-cells = <0x2>;
-                #address-cells = <0x2>;
-                compatible = "brcm,nandcs";
-                reg = <0x1>;
-                nand-on-flash-bbt;
-
-                nand-ecc-strength = <24>;
-                nand-ecc-step-size = <1024>;
-                brcm,nand-oob-sector-size = <27>;
-
-> +
->  &sdhci0 {
->  	status = "okay";
->  };
-> diff --git a/arch/mips/boot/dts/brcm/bcm97435svmb.dts b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
-> index 64bb1988dbc8..54351e54ff68 100644
-> --- a/arch/mips/boot/dts/brcm/bcm97435svmb.dts
-> +++ b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
-> @@ -1,6 +1,7 @@
->  /dts-v1/;
->  
->  /include/ "bcm7435.dtsi"
-> +/include/ "bcm97xxx-nand-cs1-bch8.dtsi"
-
-And here are those for the BCM97435SVMB:
-
-&nand {
-        status = "okay";
-
-        nandcs@1 {
-                #size-cells = <0x2>;
-                #address-cells = <0x2>;
-                compatible = "brcm,nandcs";
-                reg = <0x1>;
-                nand-on-flash-bbt;
-
-                nand-ecc-strength = <24>;
-                nand-ecc-step-size = <1024>;
-                brcm,nand-oob-sector-size = <27>;
-
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
 Florian

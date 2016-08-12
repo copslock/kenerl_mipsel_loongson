@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 10:53:48 +0200 (CEST)
-Received: from mail-pa0-f65.google.com ([209.85.220.65]:35990 "EHLO
-        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992821AbcHLIwzmBhN- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 10:52:55 +0200
-Received: by mail-pa0-f65.google.com with SMTP id ez1so1169387pab.3;
-        Fri, 12 Aug 2016 01:52:55 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 10:54:11 +0200 (CEST)
+Received: from mail-pa0-f66.google.com ([209.85.220.66]:33821 "EHLO
+        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992880AbcHLIw6nN4B- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 10:52:58 +0200
+Received: by mail-pa0-f66.google.com with SMTP id hh10so1176209pac.1;
+        Fri, 12 Aug 2016 01:52:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=IUT2tQo6rSZg7Hfre627ZTvO7ktg4+GgvbeaT6u2qmE=;
-        b=ZZd5P4jnRc+2sb3LBBUEUGUOfNn6CJlFM1Yb32I5Q5zh5PSnXmzxLejAAnbcygx8Qn
-         qhb1IC9OJObNsT+/kf1mZiS6wjTJ69/RWxHuVMUAxlAagFi5k6unZzJf+6SiRo7LuxdE
-         lGWqY5WteXh2fYeC6M8/BDcBwFpWyl4LEOOV3ZAOaEOvGnjKhrWt/tScjeC1mIQby9XI
-         8cgJMAe4hKMCG0wu06TgvcoU1zFrKjjyr0zN2Y5+CG4vDNyrgjkLXDm4qY5MJ8PPjugD
-         hE67mB/2o27KMIG7TdNYVWEv2Z/ySVHVRAC11t0ucZyrY4UykG9DBxBkYYJp9+tqaDwe
-         TMPg==
+        bh=eapLXA7qOxou41/xodKBp2OqOhJjwo27oWdv8255C8M=;
+        b=LEzqav3Zi4tF8DcXgQ9zEGmnCVzLc1vxpcVqg3GL0iRJZjqkMgxhjolYPy+anT7fPB
+         WuhTkK786r/asBF/ohPEad/ZkwBTKbALZrEbcd4JehVKJHz8v3U97dSwccubYP5g50Jz
+         8o3GPnMU7fnSFJoQv0fuilZJEzUVR5PPEFayMuQsY+6lQzebIg0mc2KXaIZFX9KWaE/1
+         uYZ9/dt+dQSAFxua1aG2bC24lxTKM5YasUZ/kgupC+X1BB6As6Qw6aSQoluoPEjCKEBF
+         rk1XE3r43itVXdCfpTqXIm/ringVzWaePqChuMOJcKLSdsGvTof6UXcryIWOBpMPp1Hh
+         yarw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=IUT2tQo6rSZg7Hfre627ZTvO7ktg4+GgvbeaT6u2qmE=;
-        b=IDQyapMk0Wp5KXiaFLBqIEDzimvV/r07IDGrAN01iHSsLGC7nbkyITFXo0QNUMdEhY
-         ND8j10Uit8jvWFYmC53oH9Ud/5L7JS73Vm8YTi0jrPbGhyJD159mJs+hAZFEXvT4dXhD
-         EdUPc9g0WaWopevogAQHIYsMayT5jjujIS0Oio1W3sFHuLbuHEAW4f2OWzkDh1GityIr
-         trgsQQZeA8LFDuoxRRcRENRmUKDLwfXHiRpvlYIcqfpxTeu9WdzsMDFPZ4Ubm5+gDoV3
-         ZeEcX7yQwNY65bM8t+FD4iZxF4z2h+nvbfy0k8UOnJzazsA1Ga/o3gP9/XzboBT0RGMH
-         X88A==
-X-Gm-Message-State: AEkoouu9M9Uzwh3AzQQ4JprR+nlf9A0Q8DfckkKGOsNnILyfgrTNxtydaJ6g4CmIR1GABA==
-X-Received: by 10.66.164.227 with SMTP id yt3mr25271771pab.117.1470991969644;
-        Fri, 12 Aug 2016 01:52:49 -0700 (PDT)
+        bh=eapLXA7qOxou41/xodKBp2OqOhJjwo27oWdv8255C8M=;
+        b=AOUu2wxsldVeMZEjg7Gjb+Bnd/jG1hidZlBONe9g5ey8Ii0lyX86U7gtQ6J3ED/if/
+         Tvd6LplX1hOB88QbUVMWUIhlPGMTH2TnklPbFFing7SnYCbqIQ9adTBmdHnbt3JCEHOm
+         v/bj4dhQ9dS66Ex9dzsweuTDtdaLu37SdyHaboL1jvxmBjoZF2BaFthU54CySJh0DBAM
+         5hFpiwM7onkE3YdTBL7s5r3QywYDXgy0veixRoy9FHUp4Ej8izAY6iBk9ezs2EYN7Ce0
+         ci1Xiq/R6r9u8QkMrk91GlNeM+gMnKMDnylhixipPSsuD6r4pubEOtXjn0wq04HJlrFY
+         UPzw==
+X-Gm-Message-State: AEkooutd7p8lmugWqxovWfbV5UGMzueDc4ZxhJzIWjsKkMLuocO2tcovdbnya8acSCN8uQ==
+X-Received: by 10.66.132.38 with SMTP id or6mr25042619pab.84.1470991972705;
+        Fri, 12 Aug 2016 01:52:52 -0700 (PDT)
 Received: from localhost.localdomain ([125.130.116.2])
-        by smtp.gmail.com with ESMTPSA id ty6sm11024819pac.18.2016.08.12.01.52.47
+        by smtp.gmail.com with ESMTPSA id ty6sm11024819pac.18.2016.08.12.01.52.50
         (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Fri, 12 Aug 2016 01:52:49 -0700 (PDT)
+        Fri, 12 Aug 2016 01:52:52 -0700 (PDT)
 From:   Jaedon Shin <jaedon.shin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -41,9 +41,9 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [v3 2/5] MIPS: BMIPS: Add support GPIO device nodes
-Date:   Fri, 12 Aug 2016 17:52:28 +0900
-Message-Id: <20160812085231.53290-3-jaedon.shin@gmail.com>
+Subject: [v3 3/5] MIPS: BMIPS: Add support SDHCI device nodes
+Date:   Fri, 12 Aug 2016 17:52:29 +0900
+Message-Id: <20160812085231.53290-4-jaedon.shin@gmail.com>
 X-Mailer: git-send-email 2.9.2
 In-Reply-To: <20160812085231.53290-1-jaedon.shin@gmail.com>
 References: <20160812085231.53290-1-jaedon.shin@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54497
+X-archive-position: 54498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,353 +68,203 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Adds GPIO device nodes to BCM7xxx MIPS based SoCs.
+Adds SDHCI device nodes to BCM7xxx MIPS based SoCs.
 
 Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 ---
- arch/mips/boot/dts/brcm/bcm7125.dtsi | 12 ++++++++++++
- arch/mips/boot/dts/brcm/bcm7346.dtsi | 37 ++++++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7358.dtsi | 37 ++++++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7360.dtsi | 37 ++++++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7362.dtsi | 37 ++++++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7420.dtsi | 12 ++++++++++++
- arch/mips/boot/dts/brcm/bcm7425.dtsi | 37 ++++++++++++++++++++++++++++++++++++
- arch/mips/boot/dts/brcm/bcm7435.dtsi | 37 ++++++++++++++++++++++++++++++++++++
- 8 files changed, 246 insertions(+)
+ arch/mips/boot/dts/brcm/bcm7346.dtsi      |  8 ++++++++
+ arch/mips/boot/dts/brcm/bcm7360.dtsi      |  8 ++++++++
+ arch/mips/boot/dts/brcm/bcm7362.dtsi      |  8 ++++++++
+ arch/mips/boot/dts/brcm/bcm7425.dtsi      | 20 ++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7435.dtsi      | 20 ++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97425svmb.dts  |  8 ++++++++
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts  |  8 ++++++++
+ 10 files changed, 92 insertions(+)
 
-diff --git a/arch/mips/boot/dts/brcm/bcm7125.dtsi b/arch/mips/boot/dts/brcm/bcm7125.dtsi
-index 97191f6bca28..746ed06c85de 100644
---- a/arch/mips/boot/dts/brcm/bcm7125.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7125.dtsi
-@@ -197,6 +197,18 @@
- 			status = "disabled";
- 		};
- 
-+		upg_gio: gpio@406700 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x406700 0x80>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_irq0_intc>;
-+			interrupts = <6>;
-+			brcm,gpio-bank-widths = <32 32 32 18>;
-+		};
-+
- 		ehci0: usb@488300 {
- 			compatible = "brcm,bcm7125-ehci", "generic-ehci";
- 			reg = <0x488300 0x100>;
 diff --git a/arch/mips/boot/dts/brcm/bcm7346.dtsi b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-index eb7b19a32e3e..f29e68a84086 100644
+index f29e68a84086..8c0466bd84d0 100644
 --- a/arch/mips/boot/dts/brcm/bcm7346.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-@@ -232,6 +232,43 @@
- 			status = "disabled";
+@@ -411,5 +411,13 @@
+ 				#phy-cells = <0>;
+ 			};
  		};
- 
-+		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x408440 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
++
++		sdhci0: sdhci@413500 {
++			compatible = "brcm,bcm7425-sdhci";
++			reg = <0x413500 0x100>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <53>;
-+			brcm,irq-can-wake;
++			interrupts = <85>;
++			status = "disabled";
 +		};
-+
-+		upg_gio: gpio@406700 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x406700 0x60>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_irq0_intc>;
-+			interrupts = <6>;
-+			brcm,gpio-bank-widths = <32 32 16>;
-+		};
-+
-+		upg_gio_aon: gpio@408c00 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x408c00 0x60>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_aon_irq0_intc>;
-+			interrupts = <6>;
-+			interrupts-extended = <&upg_aon_irq0_intc 6>,
-+					      <&aon_pm_l2_intc 5>;
-+			wakeup-source;
-+			brcm,gpio-bank-widths = <27 32 2>;
-+		};
-+
- 		enet0: ethernet@430000 {
- 			phy-mode = "internal";
- 			phy-handle = <&phy1>;
-diff --git a/arch/mips/boot/dts/brcm/bcm7358.dtsi b/arch/mips/boot/dts/brcm/bcm7358.dtsi
-index b2276b1e12d4..aa4a75ea8e40 100644
---- a/arch/mips/boot/dts/brcm/bcm7358.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7358.dtsi
-@@ -216,6 +216,43 @@
- 			status = "disabled";
- 		};
- 
-+		aon_pm_l2_intc: aon_pm_l2_intc@408240 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x408240 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+			interrupt-parent = <&periph_intc>;
-+			interrupts = <50>;
-+			brcm,irq-can-wake;
-+		};
-+
-+		upg_gio: gpio@406500 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x406500 0xa0>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_irq0_intc>;
-+			interrupts = <6>;
-+			brcm,gpio-bank-widths = <32 32 32 29 4>;
-+		};
-+
-+		upg_gio_aon: gpio@408c00 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x408c00 0x60>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_aon_irq0_intc>;
-+			interrupts = <6>;
-+			interrupts-extended = <&upg_aon_irq0_intc 6>,
-+					      <&aon_pm_l2_intc 5>;
-+			wakeup-source;
-+			brcm,gpio-bank-widths = <21 32 2>;
-+		};
-+
- 		enet0: ethernet@430000 {
- 			phy-mode = "internal";
- 			phy-handle = <&phy1>;
+ 	};
+ };
 diff --git a/arch/mips/boot/dts/brcm/bcm7360.dtsi b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-index e414af1e14ff..269ab73db354 100644
+index 269ab73db354..bcab913aea36 100644
 --- a/arch/mips/boot/dts/brcm/bcm7360.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-@@ -208,6 +208,43 @@
- 			status = "disabled";
+@@ -330,5 +330,13 @@
+ 				#phy-cells = <0>;
+ 			};
  		};
- 
-+		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x408440 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
++
++		sdhci0: sdhci@410000 {
++			compatible = "brcm,bcm7425-sdhci";
++			reg = <0x410000 0x100>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <50>;
-+			brcm,irq-can-wake;
++			interrupts = <82>;
++			status = "disabled";
 +		};
-+
-+		upg_gio: gpio@406500 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x406500 0xa0>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_irq0_intc>;
-+			interrupts = <6>;
-+			brcm,gpio-bank-widths = <32 32 32 29 4>;
-+		};
-+
-+		upg_gio_aon: gpio@408c00 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x408c00 0x60>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_aon_irq0_intc>;
-+			interrupts = <6>;
-+			interrupts-extended = <&upg_aon_irq0_intc 6>,
-+					      <&aon_pm_l2_intc 5>;
-+			wakeup-source;
-+			brcm,gpio-bank-widths = <21 32 2>;
-+		};
-+
- 		enet0: ethernet@430000 {
- 			phy-mode = "internal";
- 			phy-handle = <&phy1>;
+ 	};
+ };
 diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index 3bd1c0111d43..95f07a65c9dd 100644
+index 95f07a65c9dd..9214ec55ffc2 100644
 --- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -204,6 +204,43 @@
- 			status = "disabled";
+@@ -326,5 +326,13 @@
+ 				#phy-cells = <0>;
+ 			};
  		};
- 
-+		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x408440 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
++
++		sdhci0: sdhci@410000 {
++			compatible = "brcm,bcm7425-sdhci";
++			reg = <0x410000 0x100>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <50>;
-+			brcm,irq-can-wake;
++			interrupts = <82>;
++			status = "disabled";
 +		};
-+
-+		upg_gio: gpio@406500 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x406500 0xa0>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_irq0_intc>;
-+			interrupts = <6>;
-+			brcm,gpio-bank-widths = <32 32 32 29 4>;
-+		};
-+
-+		upg_gio_aon: gpio@408c00 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x408c00 0x60>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_aon_irq0_intc>;
-+			interrupts = <6>;
-+			interrupts-extended = <&upg_aon_irq0_intc 6>,
-+					      <&aon_pm_l2_intc 5>;
-+			wakeup-source;
-+			brcm,gpio-bank-widths = <21 32 2>;
-+		};
-+
- 		enet0: ethernet@430000 {
- 			phy-mode = "internal";
- 			phy-handle = <&phy1>;
-diff --git a/arch/mips/boot/dts/brcm/bcm7420.dtsi b/arch/mips/boot/dts/brcm/bcm7420.dtsi
-index 27c3d45556b9..0d391d77c780 100644
---- a/arch/mips/boot/dts/brcm/bcm7420.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7420.dtsi
-@@ -213,6 +213,18 @@
- 			status = "disabled";
- 		};
- 
-+		upg_gio: gpio@406700 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x406700 0x80>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_irq0_intc>;
-+			interrupts = <6>;
-+			brcm,gpio-bank-widths = <32 32 32 27>;
-+		};
-+
- 		enet0: ethernet@468000 {
- 			phy-mode = "internal";
- 			phy-handle = <&phy1>;
+ 	};
+ };
 diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-index 9ab65d64e948..f7f0833ef403 100644
+index f7f0833ef403..de4c7744caab 100644
 --- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-@@ -231,6 +231,43 @@
- 			status = "disabled";
+@@ -410,5 +410,25 @@
+ 				#phy-cells = <0>;
+ 			};
  		};
- 
-+		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x408440 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
++
++		sdhci0: sdhci@419000 {
++			compatible = "brcm,bcm7425-sdhci";
++			reg = <0x419000 0x100>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <49>;
-+			brcm,irq-can-wake;
++			interrupts = <43>;
++			sd-uhs-sdr50;
++			mmc-hs200-1_8v;
++			status = "disabled";
 +		};
 +
-+		upg_gio: gpio@406700 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x406700 0x80>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_irq0_intc>;
-+			interrupts = <6>;
-+			brcm,gpio-bank-widths = <32 32 32 21>;
++		sdhci1: sdhci@419200 {
++			compatible = "brcm,bcm7425-sdhci";
++			reg = <0x419200 0x100>;
++			interrupt-parent = <&periph_intc>;
++			interrupts = <44>;
++			sd-uhs-sdr50;
++			mmc-hs200-1_8v;
++			status = "disabled";
 +		};
-+
-+		upg_gio_aon: gpio@4094c0 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x4094c0 0x40>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_aon_irq0_intc>;
-+			interrupts = <6>;
-+			interrupts-extended = <&upg_aon_irq0_intc 6>,
-+					      <&aon_pm_l2_intc 5>;
-+			wakeup-source;
-+			brcm,gpio-bank-widths = <18 4>;
-+		};
-+
- 		enet0: ethernet@b80000 {
- 			phy-mode = "internal";
- 			phy-handle = <&phy1>;
+ 	};
+ };
 diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-index 7801169416e7..4bbe4888d8a6 100644
+index 4bbe4888d8a6..7a9c76d59ff3 100644
 --- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
 +++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-@@ -246,6 +246,43 @@
- 			status = "disabled";
+@@ -425,5 +425,25 @@
+ 				#phy-cells = <0>;
+ 			};
  		};
- 
-+		aon_pm_l2_intc: aon_pm_l2_intc@408440 {
-+			compatible = "brcm,l2-intc";
-+			reg = <0x408440 0x30>;
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
++
++		sdhci0: sdhci@41a000 {
++			compatible = "brcm,bcm7425-sdhci";
++			reg = <0x41a000 0x100>;
 +			interrupt-parent = <&periph_intc>;
-+			interrupts = <54>;
-+			brcm,irq-can-wake;
++			interrupts = <47>;
++			sd-uhs-sdr50;
++			mmc-hs200-1_8v;
++			status = "disabled";
 +		};
 +
-+		upg_gio: gpio@406700 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x406700 0x80>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_irq0_intc>;
-+			interrupts = <6>;
-+			brcm,gpio-bank-widths = <32 32 32 21>;
++		sdhci1: sdhci@41a200 {
++			compatible = "brcm,bcm7425-sdhci";
++			reg = <0x41a200 0x100>;
++			interrupt-parent = <&periph_intc>;
++			interrupts = <48>;
++			sd-uhs-sdr50;
++			mmc-hs200-1_8v;
++			status = "disabled";
 +		};
+ 	};
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
+index 2c55ab094a29..27c9f127a7ca 100644
+--- a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
+@@ -100,3 +100,7 @@
+ &sata_phy {
+ 	status = "okay";
+ };
 +
-+		upg_gio_aon: gpio@4094c0 {
-+			compatible = "brcm,brcmstb-gpio";
-+			reg = <0x4094c0 0x40>;
-+			#gpio-cells = <2>;
-+			#interrupt-cells = <2>;
-+			gpio-controller;
-+			interrupt-controller;
-+			interrupt-parent = <&upg_aon_irq0_intc>;
-+			interrupts = <6>;
-+			interrupts-extended = <&upg_aon_irq0_intc 6>,
-+					      <&aon_pm_l2_intc 5>;
-+			wakeup-source;
-+			brcm,gpio-bank-widths = <18 4>;
-+		};
++&sdhci0 {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97360svmb.dts b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
+index 496e6ed9fae3..bed821b03013 100644
+--- a/arch/mips/boot/dts/brcm/bcm97360svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
+@@ -68,3 +68,7 @@
+ &sata_phy {
+ 	status = "okay";
+ };
 +
- 		enet0: ethernet@b80000 {
- 			phy-mode = "internal";
- 			phy-handle = <&phy1>;
++&sdhci0 {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+index b880c018f3d8..1b9bc4b2d9ae 100644
+--- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+@@ -64,3 +64,7 @@
+ &sata_phy {
+ 	status = "okay";
+ };
++
++&sdhci0 {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97425svmb.dts b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
+index f091e91b11c5..1c6b74daef56 100644
+--- a/arch/mips/boot/dts/brcm/bcm97425svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
+@@ -94,3 +94,11 @@
+ &ohci3 {
+ 	status = "okay";
+ };
++
++&sdhci0 {
++	status = "okay";
++};
++
++&sdhci1 {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/brcm/bcm97435svmb.dts b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
+index 9db84f2a6664..64bb1988dbc8 100644
+--- a/arch/mips/boot/dts/brcm/bcm97435svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
+@@ -102,3 +102,11 @@
+ &sata_phy {
+ 	status = "okay";
+ };
++
++&sdhci0 {
++	status = "okay";
++};
++
++&sdhci1 {
++	status = "okay";
++};
 -- 
 2.9.2

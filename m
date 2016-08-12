@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 12:51:57 +0200 (CEST)
-Received: from mail-ua0-f195.google.com ([209.85.217.195]:34595 "EHLO
-        mail-ua0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993207AbcHLKvvWqtS5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 12:51:51 +0200
-Received: by mail-ua0-f195.google.com with SMTP id d97so1751198uad.1;
-        Fri, 12 Aug 2016 03:51:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 12:52:21 +0200 (CEST)
+Received: from mail-pa0-f65.google.com ([209.85.220.65]:33750 "EHLO
+        mail-pa0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993233AbcHLKwOWQQK5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 12:52:14 +0200
+Received: by mail-pa0-f65.google.com with SMTP id vy10so1330995pac.0
+        for <linux-mips@linux-mips.org>; Fri, 12 Aug 2016 03:52:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=Lx6y/sQJiVRGHDDVo9Q3TwFCCW38cEPZ8ZHcg5fZQvk=;
-        b=VoLThP6FZ4x/wVajCLwoSVS2mcaOOB2qdO6+i/4tq7QYBzSGlqJBuL5dFAbXy0JMGr
-         avmCbaONf+4x6Tj0uLokgyOAe4H7WQQjrz79Qpp+1aixPjEtLwB9faosuCbX7PwV2gAH
-         wg+tzidNqYmErrhhmYCyV5ecruxNGyvWEulPN+1tiW+NVbEz2RWmIjG+KuVNfiOIYsF1
-         IHVKrbk8AF82MFpPMZUBUdhvtX81k81OJgNDKhye9soQi0m2xSXOM2I/iR0UPgxag817
-         lHjOaEpc16uHLPgNYjihnWIz3AH4XqEeeAO22vQDygCr5L695gcRifFEs2mNkZOvkCOl
-         DLdQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=y0QUuFrKnMaGHdwfKYvIgrIVQbGZ9ae9BE93k75vySg=;
+        b=iW59YahooZHC2+3Loy2RjmYcoFGzJO90HBxAH8T2eyyhjYa5lQCPwRPJ5D/2QF+Ujz
+         yeSWyvzpPrzlQuTKLxnDDZYl45ldp8K1RADbNGN/ZgMOQfawq2ISwACOtPkjUyJ0EIz/
+         8tYnjYUbseA2Xs0a92QPtX0XKweeBpxke/vbM9YH/OynBlEps4s4qFOVV2NO05Xq2esA
+         ZCxBr/nmAg6MCPwmEGoCdWXqTwhstTt3HAXs2d5hBUQ5bLcQOfdfJXZUbh496gsIPgla
+         f10ZqDFgjIBlCGGZjlPZtP5lk3SZolLG9Rn1+TJBM8FZOkcmPYSvHokF9qb5VhWU5UxX
+         L91g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=Lx6y/sQJiVRGHDDVo9Q3TwFCCW38cEPZ8ZHcg5fZQvk=;
-        b=mdBViHiW5Rw1TLMJhpKtgJK50/0CYlBotpEOtZoP+o/wbVMGbr+A+9jj2DtwRpNb5U
-         3D/0yJwmAQPhjYS1nzAN3+nSNJcpq7Jwv/6eJIq3rLnaUoPs7cQb0VTwwK6SCowbg3cA
-         F/es9wszZMlPiNCUtvLvI2gX0TMbt53jfbR8Oj4DjaPlqHr07syBctDPxl8a6M998XGW
-         9HoVvWYNB+t7dejYRqKiD7eE/pM8gU4fVHI7nOXsy1gkK5XTQ+8tatsWMVbQNWfaLhlL
-         FFwddNRUIJEsQQkNXs99ylqnYpelUsZ2QOYDkOVS2tJ11crVK2wq8doh5y1TootIWzjc
-         7NeA==
-X-Gm-Message-State: AEkoousnNH514ZldWQIxPkZ95pFzDJGLIDewH6cHQSkL46cVGN4NVE762TYHFMa9H5R60wLoFNkjV3rDOcnzfg==
-X-Received: by 10.31.248.9 with SMTP id w9mr723467vkh.64.1470999105400; Fri,
- 12 Aug 2016 03:51:45 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.159.34.129 with HTTP; Fri, 12 Aug 2016 03:51:25 -0700 (PDT)
-In-Reply-To: <20160812085231.53290-1-jaedon.shin@gmail.com>
-References: <20160812085231.53290-1-jaedon.shin@gmail.com>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Fri, 12 Aug 2016 12:51:25 +0200
-Message-ID: <CAOiHx=ke2CC9tm6Rn01A5UAGRscb1QJGWq-som74r5UO5_g9EA@mail.gmail.com>
-Subject: Re: [v3 0/5] Add device nodes for BCM7xxx SoCs
-To:     Jaedon Shin <jaedon.shin@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jonas.gorski@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=y0QUuFrKnMaGHdwfKYvIgrIVQbGZ9ae9BE93k75vySg=;
+        b=RTPTZvUe+XgHw25QxZ0SvLUjgiHDW1aOxA5+N1aFSapxIxhnj6QjuYxekZinEnt623
+         CqPcAoU3Mzexm4BDJKwzVo62E99Dp46wCEIqZUBZO0Bu786qE1i0BCS9DTer3S46dWtd
+         AI0c+X99ekiD/eDRKmkxYfqBQPbuRaj0Vyfnkt4SB8toxHDUQmtRMe7+daTQNoM2Duyn
+         8m6L9DSydR61rR7dk8dvXX/1mRoKmqPl24RWcSVTY6iE7K0mbaXbOHpdHpbXSwpS2MOc
+         flhp/jNtgst3/JU0k1JVIG7PJ18f2oBcBi+b5sXbPAlNbHf+MnNmbB9ZPix6bAtOyvoF
+         upAQ==
+X-Gm-Message-State: AEkoouvBTGjz657CQLN+Cf/q4YGiyDtKfhwwbq3aRxMYREhQ/BNQl3UXshCx2hoAB3dwIA==
+X-Received: by 10.66.132.105 with SMTP id ot9mr26366535pab.88.1470999128257;
+        Fri, 12 Aug 2016 03:52:08 -0700 (PDT)
+Received: from localhost.localdomain ([175.111.195.49])
+        by smtp.gmail.com with ESMTPSA id k78sm12034940pfa.78.2016.08.12.03.52.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 12 Aug 2016 03:52:07 -0700 (PDT)
+From:   Keguang Zhang <keguang.zhang@gmail.com>
+To:     linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Keguang Zhang <keguang.zhang@spreadtrum.com>
+Subject: [PATCH 0/3] Refactor Loongson1 clock
+Date:   Fri, 12 Aug 2016 18:51:45 +0800
+Message-Id: <1470999108-9851-1-git-send-email-keguang.zhang@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <keguang.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54501
+X-archive-position: 54502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: keguang.zhang@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,35 +63,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+From: Keguang Zhang <keguang.zhang@spreadtrum.com>
 
-On 12 August 2016 at 10:52, Jaedon Shin <jaedon.shin@gmail.com> wrote:
-> This patch series adds support for Broadcom BCM7xxx MIPS based SoCs.
->
-> The NAND device nodes have common file including chip select, BCH
-> and partitions for the reference board with the same properties.
->
-> Changes in v3:
-> - Fixed incorrect interrupt number in aon_pm_l2_intc.
->
-> Changes in v2:
-> - Removed status properties in always enabled GPIO nodes.
-> - Removed NAND nodes for v3.3 brcmnand controller.
-> - Renamed interrupt-controller instead of lable string.
-> - Renamed bcm97xxx-nand-cs1-bch8.dtsi
->
-> Jaedon Shin (5):
->   MIPS: BMIPS: Add support PWM device nodes
->   MIPS: BMIPS: Add support GPIO device nodes
->   MIPS: BMIPS: Add support SDHCI device nodes
->   MIPS: BMIPS: Add support NAND device nodes
->   MIPS: BMIPS: Use interrupt-controller node name
+This patchset is to refactor Loongson1 clock,
+and update Loongson1B clocks.
 
-Please directly add the interrupt controller names with the correct
-name instead of fixing them up later.
+This applies on top of clk-next.
 
-Also please CC devicetree@vger for device tree related patches.
+Thanks!
 
+Kelvin Cheung (3):
+  clk: Loongson1: Refactor Loongson1 clock
+  clk: Loongson1: Update clocks of Loongson1B
+  clk: Loongson1: Make use of GENMASK
 
-Regards
-Jonas
+ drivers/clk/Makefile                               |  2 +-
+ drivers/clk/loongson1/Makefile                     |  2 +
+ .../clk/{clk-ls1x.c => loongson1/clk-loongson1b.c} | 71 ++++++----------------
+ drivers/clk/loongson1/clk.c                        | 52 ++++++++++++++++
+ drivers/clk/loongson1/clk.h                        | 21 +++++++
+ 5 files changed, 93 insertions(+), 55 deletions(-)
+ create mode 100644 drivers/clk/loongson1/Makefile
+ rename drivers/clk/{clk-ls1x.c => loongson1/clk-loongson1b.c} (68%)
+ create mode 100644 drivers/clk/loongson1/clk.c
+ create mode 100644 drivers/clk/loongson1/clk.h
+
+-- 
+1.9.1

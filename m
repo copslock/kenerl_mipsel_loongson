@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 04:09:54 +0200 (CEST)
-Received: from mail-pa0-f66.google.com ([209.85.220.66]:36618 "EHLO
-        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990451AbcHLCJrkL6Sx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 04:09:47 +0200
-Received: by mail-pa0-f66.google.com with SMTP id ez1so632025pab.3;
-        Thu, 11 Aug 2016 19:09:47 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Aug 2016 04:10:16 +0200 (CEST)
+Received: from mail-pa0-f68.google.com ([209.85.220.68]:36630 "EHLO
+        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990506AbcHLCJvNXTAx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Aug 2016 04:09:51 +0200
+Received: by mail-pa0-f68.google.com with SMTP id ez1so632125pab.3;
+        Thu, 11 Aug 2016 19:09:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=K7F6zzVv6Ij737eNknJTysucYhybHKAbw7j7lSMfAfU=;
-        b=oHLOE/Hal1gMrF+yT1/IGOw4sWFAmY8BSIHKpMg7w7yZB7CR4yA2AGhAy3tATH8Cxy
-         BrbxMofnSZKaSMHj31C9AT5zaI50jQfZId+RkvDMZW7+oFFXhSS5cVu1vEMGu6AK/uIy
-         JBvVu028mRC+RWwwPtdlcDMjhJRuApC2qeghvlcMlL7+mHHWQNN2tvIWHn/u91ECU1So
-         tiIE9NPtrnZGqILk5nn1EvCW8vpr1GBwTXK6CYSfTcucJlC6cIXj/6nlvt2WxZCl6e+k
-         jfbvAH6OPCbNZe5rVbL8kKLt3rL9nMI2wmGnEcB75JwDtCTIHENziJ9R33tzvDJ0kBSa
-         zCUQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=CZYhSMVTMxBDzms2oir8bSK8WoYDRvXdhoow58aZuSo=;
+        b=pG2A7qk9QRhH6eRFUEG/50XB1RrQNfVTNjd5r6XBzmOC65j0Zbhc9qZ0485Xek8KkG
+         s+yoLkyVoL/gd+QGGOcioyElEn5SqKZ3QA1HJNe9xLXDjQGi6god8gNbXriPWGa6Tzuz
+         T2aO7i7IcGgtz1SLyrITrucVugpY0qF0EdrRzKQkDgiLpr0pKu6k2GQy5Qoj4CK6Vk8N
+         qmCntWgmXHv0JF/MQY1L2nro9wqpsVhBDi98ceTUzVzrAg/WPKNsqiiV1Ra3mmioxtdO
+         FfciQBW2WFqUlG+2FP7TUCpXJK+o/oWwQiRPucdRFvPVigmWdY1ejUWQfbRya+O/z+xN
+         bUZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=K7F6zzVv6Ij737eNknJTysucYhybHKAbw7j7lSMfAfU=;
-        b=SfLDq8cTUBRRfUkpE75z2oT2Pq5VHSBmvs+EJFhAjww0NnpfQ59TzkkmsLj8udehXO
-         2jEB7vq8o48bJti1dnSodWvEbWSEeUPn1ODs3x/src9vd/B4X/j+ioWV+JtMnCBrSjJL
-         sWzejdU4U2H0Q61quMeuXL0tE/u/vXIFqbf6cuzp4BnTVpjN9akXS8bP3fsbmlMzhtQO
-         iNXp1HJCBv8HursrPbBTxZ6qe9vv09/zalqtrD86sTWtnaxnBLqMosxXASN7lK6nn83F
-         zCdcFrafN8UbJTdEym8K6KhdEC93wmz/OuZaUv0vU3TBMUp5Zqstdg3W1h+MDYEnJGPm
-         vmug==
-X-Gm-Message-State: AEkooutIOK8sMfRmePekII4Fql9OCSzJvV0N0pFX6WpwDcSuT7rgrxlaeCxeuChYwaGE6g==
-X-Received: by 10.66.233.38 with SMTP id tt6mr22595664pac.99.1470967780980;
-        Thu, 11 Aug 2016 19:09:40 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=CZYhSMVTMxBDzms2oir8bSK8WoYDRvXdhoow58aZuSo=;
+        b=O+l/1Nze9CtuUATTPrz+2gRcXNKlU4UcFtmzCq+hu988KQy8Ss+BQM8/YTl/pOIaj2
+         kK5g+mK3cdcXKlOk5LcMQvcZGcxcsftTaL3cFx70nu5wPr5sMV0j+i9vFdzScMSHK9l0
+         M0D+zFql4OEHmJG4QObjNKSc4xeCVpG3vemmIYzUfnkG+T0usUkQf7qnxS4oM6Abhg3a
+         QWJhjnPjnEZv9dlvS92Ngbbw5Cyj1MLjxyBtc8eW7wIJYghu6h7wHRX6qFspUkhemkmW
+         AauoX9l0mGMMW3EaCEK6tI8l+R4LTHgoa0pbP54qrwbNSXkPETdbLnhb1Yane6gvBDbv
+         PddA==
+X-Gm-Message-State: AEkoout70r83CUqg6lDr6wjM/fMXDdl6iVZIzjtnj5jnaCuZy9TOTvuFvMqcqMFxUHWPVQ==
+X-Received: by 10.66.132.105 with SMTP id ot9mr23081836pab.88.1470967784967;
+        Thu, 11 Aug 2016 19:09:44 -0700 (PDT)
 Received: from localhost.localdomain ([125.130.116.2])
-        by smtp.gmail.com with ESMTPSA id ao6sm8209846pac.8.2016.08.11.19.09.38
+        by smtp.gmail.com with ESMTPSA id ao6sm8209846pac.8.2016.08.11.19.09.41
         (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 11 Aug 2016 19:09:40 -0700 (PDT)
+        Thu, 11 Aug 2016 19:09:43 -0700 (PDT)
 From:   Jaedon Shin <jaedon.shin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -40,15 +41,17 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [v2 0/5] Add device nodes for BCM7xxx SoCs
-Date:   Fri, 12 Aug 2016 11:09:18 +0900
-Message-Id: <20160812020923.3299-1-jaedon.shin@gmail.com>
+Subject: [v2 1/5] MIPS: BMIPS: Add support PWM device nodes
+Date:   Fri, 12 Aug 2016 11:09:19 +0900
+Message-Id: <20160812020923.3299-2-jaedon.shin@gmail.com>
 X-Mailer: git-send-email 2.9.2
+In-Reply-To: <20160812020923.3299-1-jaedon.shin@gmail.com>
+References: <20160812020923.3299-1-jaedon.shin@gmail.com>
 Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54485
+X-archive-position: 54486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,43 +68,463 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch series adds support for Broadcom BCM7xxx MIPS based SoCs.
+Adds PWM device nodes to BCM7xxx MIPS based SoCs.
 
-The NAND device nodes have common file including chip select, BCH
-and partitions for the reference board with the same properties.
+Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+---
+ arch/mips/boot/dts/brcm/bcm7125.dtsi      | 14 ++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7346.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7358.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7360.dtsi      | 14 ++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7362.dtsi      | 14 ++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7420.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7425.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm7435.dtsi      | 22 ++++++++++++++++++++++
+ arch/mips/boot/dts/brcm/bcm97125cbmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97346dbsmb.dts |  8 ++++++++
+ arch/mips/boot/dts/brcm/bcm97358svmb.dts  |  8 ++++++++
+ arch/mips/boot/dts/brcm/bcm97360svmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97362svmb.dts  |  4 ++++
+ arch/mips/boot/dts/brcm/bcm97420c.dts     |  8 ++++++++
+ arch/mips/boot/dts/brcm/bcm97425svmb.dts  |  8 ++++++++
+ arch/mips/boot/dts/brcm/bcm97435svmb.dts  |  8 ++++++++
+ 16 files changed, 204 insertions(+)
 
-Changes in v2:
-- Removed status properties in always enabled GPIO nodes.
-- Removed NAND nodes for v3.3 brcmnand controller.
-- Renamed interrupt-controller instead of lable string.
-- Renamed bcm97xxx-nand-cs1-bch8.dtsi
-
-Jaedon Shin (5):
-  MIPS: BMIPS: Add support PWM device nodes
-  MIPS: BMIPS: Add support GPIO device nodes
-  MIPS: BMIPS: Add support SDHCI device nodes
-  MIPS: BMIPS: Add support NAND device nodes
-  MIPS: BMIPS: Use interrupt-controller node name
-
- arch/mips/boot/dts/brcm/bcm7125.dtsi               |  34 ++++++-
- arch/mips/boot/dts/brcm/bcm7346.dtsi               |  97 +++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm7358.dtsi               |  89 ++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm7360.dtsi               |  89 ++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm7362.dtsi               |  89 ++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm7420.dtsi               |  42 +++++++-
- arch/mips/boot/dts/brcm/bcm7425.dtsi               | 109 ++++++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm7435.dtsi               | 109 ++++++++++++++++++++-
- arch/mips/boot/dts/brcm/bcm97125cbmb.dts           |   4 +
- arch/mips/boot/dts/brcm/bcm97346dbsmb.dts          |  17 ++++
- arch/mips/boot/dts/brcm/bcm97358svmb.dts           |  13 +++
- arch/mips/boot/dts/brcm/bcm97360svmb.dts           |  13 +++
- arch/mips/boot/dts/brcm/bcm97362svmb.dts           |  13 +++
- arch/mips/boot/dts/brcm/bcm97420c.dts              |   8 ++
- arch/mips/boot/dts/brcm/bcm97425svmb.dts           |  21 ++++
- arch/mips/boot/dts/brcm/bcm97435svmb.dts           |  21 ++++
- .../mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi |  24 +++++
- 17 files changed, 754 insertions(+), 38 deletions(-)
- create mode 100644 arch/mips/boot/dts/brcm/bcm97xxx-nand-cs1-bch8.dtsi
-
+diff --git a/arch/mips/boot/dts/brcm/bcm7125.dtsi b/arch/mips/boot/dts/brcm/bcm7125.dtsi
+index 550e1d9e3ee0..97191f6bca28 100644
+--- a/arch/mips/boot/dts/brcm/bcm7125.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7125.dtsi
+@@ -40,6 +40,12 @@
+ 			#clock-cells = <0>;
+ 			clock-frequency = <81000000>;
+ 		};
++
++		upg_clk: upg_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <27000000>;
++		};
+ 	};
+ 
+ 	rdb {
+@@ -183,6 +189,14 @@
+ 		      status = "disabled";
+ 		};
+ 
++		pwma: pwm@406580 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406580 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
+ 		ehci0: usb@488300 {
+ 			compatible = "brcm,bcm7125-ehci", "generic-ehci";
+ 			reg = <0x488300 0x100>;
+diff --git a/arch/mips/boot/dts/brcm/bcm7346.dtsi b/arch/mips/boot/dts/brcm/bcm7346.dtsi
+index ec959061d52e..eb7b19a32e3e 100644
+--- a/arch/mips/boot/dts/brcm/bcm7346.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7346.dtsi
+@@ -40,6 +40,12 @@
+ 			#clock-cells = <0>;
+ 			clock-frequency = <81000000>;
+ 		};
++
++		upg_clk: upg_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <27000000>;
++		};
+ 	};
+ 
+ 	rdb {
+@@ -210,6 +216,22 @@
+ 		      status = "disabled";
+ 		};
+ 
++		pwma: pwm@406580 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406580 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
++		pwmb: pwm@406800 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406800 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
+ 		enet0: ethernet@430000 {
+ 			phy-mode = "internal";
+ 			phy-handle = <&phy1>;
+diff --git a/arch/mips/boot/dts/brcm/bcm7358.dtsi b/arch/mips/boot/dts/brcm/bcm7358.dtsi
+index ca57fb5eb122..b2276b1e12d4 100644
+--- a/arch/mips/boot/dts/brcm/bcm7358.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7358.dtsi
+@@ -34,6 +34,12 @@
+ 			#clock-cells = <0>;
+ 			clock-frequency = <81000000>;
+ 		};
++
++		upg_clk: upg_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <27000000>;
++		};
+ 	};
+ 
+ 	rdb {
+@@ -194,6 +200,22 @@
+ 		      status = "disabled";
+ 		};
+ 
++		pwma: pwm@406400 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406400 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
++		pwmb: pwm@406700 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406700 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
+ 		enet0: ethernet@430000 {
+ 			phy-mode = "internal";
+ 			phy-handle = <&phy1>;
+diff --git a/arch/mips/boot/dts/brcm/bcm7360.dtsi b/arch/mips/boot/dts/brcm/bcm7360.dtsi
+index 1c0c3d438c7a..e414af1e14ff 100644
+--- a/arch/mips/boot/dts/brcm/bcm7360.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7360.dtsi
+@@ -34,6 +34,12 @@
+ 			#clock-cells = <0>;
+ 			clock-frequency = <81000000>;
+ 		};
++
++		upg_clk: upg_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <27000000>;
++		};
+ 	};
+ 
+ 	rdb {
+@@ -194,6 +200,14 @@
+ 		      status = "disabled";
+ 		};
+ 
++		pwma: pwm@406400 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406400 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
+ 		enet0: ethernet@430000 {
+ 			phy-mode = "internal";
+ 			phy-handle = <&phy1>;
+diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
+index 6b4713add4b8..3bd1c0111d43 100644
+--- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
+@@ -40,6 +40,12 @@
+ 			#clock-cells = <0>;
+ 			clock-frequency = <81000000>;
+ 		};
++
++		upg_clk: upg_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <27000000>;
++		};
+ 	};
+ 
+ 	rdb {
+@@ -190,6 +196,14 @@
+ 		      status = "disabled";
+ 		};
+ 
++		pwma: pwm@406400 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406400 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
+ 		enet0: ethernet@430000 {
+ 			phy-mode = "internal";
+ 			phy-handle = <&phy1>;
+diff --git a/arch/mips/boot/dts/brcm/bcm7420.dtsi b/arch/mips/boot/dts/brcm/bcm7420.dtsi
+index 0586bf662571..27c3d45556b9 100644
+--- a/arch/mips/boot/dts/brcm/bcm7420.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7420.dtsi
+@@ -40,6 +40,12 @@
+ 			#clock-cells = <0>;
+ 			clock-frequency = <81000000>;
+ 		};
++
++		upg_clk: upg_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <27000000>;
++		};
+ 	};
+ 
+ 	rdb {
+@@ -191,6 +197,22 @@
+ 		      status = "disabled";
+ 		};
+ 
++		pwma: pwm@406580 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406580 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
++		pwmb: pwm@406880 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406880 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
+ 		enet0: ethernet@468000 {
+ 			phy-mode = "internal";
+ 			phy-handle = <&phy1>;
+diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
+index c1c15edaf829..9ab65d64e948 100644
+--- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
+@@ -40,6 +40,12 @@
+ 			#clock-cells = <0>;
+ 			clock-frequency = <81000000>;
+ 		};
++
++		upg_clk: upg_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <27000000>;
++		};
+ 	};
+ 
+ 	rdb {
+@@ -209,6 +215,22 @@
+ 		      status = "disabled";
+ 		};
+ 
++		pwma: pwm@406580 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406580 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
++		pwmb: pwm@406800 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406800 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
+ 		enet0: ethernet@b80000 {
+ 			phy-mode = "internal";
+ 			phy-handle = <&phy1>;
+diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+index a874d3a0e2ee..7801169416e7 100644
+--- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
+@@ -52,6 +52,12 @@
+ 			#clock-cells = <0>;
+ 			clock-frequency = <81000000>;
+ 		};
++
++		upg_clk: upg_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <27000000>;
++		};
+ 	};
+ 
+ 	rdb {
+@@ -224,6 +230,22 @@
+ 		      status = "disabled";
+ 		};
+ 
++		pwma: pwm@406580 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406580 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
++		pwmb: pwm@406800 {
++			compatible = "brcm,bcm7038-pwm";
++			reg = <0x406800 0x28>;
++			#pwm-cells = <2>;
++			clocks = <&upg_clk>;
++			status = "disabled";
++		};
++
+ 		enet0: ethernet@b80000 {
+ 			phy-mode = "internal";
+ 			phy-handle = <&phy1>;
+diff --git a/arch/mips/boot/dts/brcm/bcm97125cbmb.dts b/arch/mips/boot/dts/brcm/bcm97125cbmb.dts
+index f2449d147c6d..5c24eacd72dd 100644
+--- a/arch/mips/boot/dts/brcm/bcm97125cbmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97125cbmb.dts
+@@ -45,6 +45,10 @@
+ 	status = "okay";
+ };
+ 
++&pwma {
++	status = "okay";
++};
++
+ /* FIXME: USB is wonky; disable it for now */
+ &ehci0 {
+ 	status = "disabled";
+diff --git a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
+index d3d28816a027..2c55ab094a29 100644
+--- a/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97346dbsmb.dts
+@@ -49,6 +49,14 @@
+ 	status = "okay";
+ };
+ 
++&pwma {
++	status = "okay";
++};
++
++&pwmb {
++	status = "okay";
++};
++
+ &enet0 {
+ 	status = "okay";
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97358svmb.dts b/arch/mips/boot/dts/brcm/bcm97358svmb.dts
+index 02ce6b429dc4..757fe9d5f4df 100644
+--- a/arch/mips/boot/dts/brcm/bcm97358svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97358svmb.dts
+@@ -45,6 +45,14 @@
+ 	status = "okay";
+ };
+ 
++&pwma {
++	status = "okay";
++};
++
++&pwmb {
++	status = "okay";
++};
++
+ &enet0 {
+ 	status = "okay";
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97360svmb.dts b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
+index 73124be9548a..496e6ed9fae3 100644
+--- a/arch/mips/boot/dts/brcm/bcm97360svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97360svmb.dts
+@@ -45,6 +45,10 @@
+ 	status = "okay";
+ };
+ 
++&pwma {
++	status = "okay";
++};
++
+ &enet0 {
+ 	status = "okay";
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97362svmb.dts b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+index 3cfcaebe7f79..b880c018f3d8 100644
+--- a/arch/mips/boot/dts/brcm/bcm97362svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97362svmb.dts
+@@ -41,6 +41,10 @@
+ 	status = "okay";
+ };
+ 
++&pwma {
++	status = "okay";
++};
++
+ &enet0 {
+ 	status = "okay";
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97420c.dts b/arch/mips/boot/dts/brcm/bcm97420c.dts
+index 600d57abee05..e66271af055e 100644
+--- a/arch/mips/boot/dts/brcm/bcm97420c.dts
++++ b/arch/mips/boot/dts/brcm/bcm97420c.dts
+@@ -51,6 +51,14 @@
+ 	status = "okay";
+ };
+ 
++&pwma {
++	status = "okay";
++};
++
++&pwmb {
++	status = "okay";
++};
++
+ /* FIXME: MAC driver comes up but cannot attach to PHY */
+ &enet0 {
+ 	status = "disabled";
+diff --git a/arch/mips/boot/dts/brcm/bcm97425svmb.dts b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
+index 119c714805cb..f091e91b11c5 100644
+--- a/arch/mips/boot/dts/brcm/bcm97425svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97425svmb.dts
+@@ -51,6 +51,14 @@
+ 	status = "okay";
+ };
+ 
++&pwma {
++	status = "okay";
++};
++
++&pwmb {
++	status = "okay";
++};
++
+ &enet0 {
+ 	status = "okay";
+ };
+diff --git a/arch/mips/boot/dts/brcm/bcm97435svmb.dts b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
+index 43e3ba27f07b..9db84f2a6664 100644
+--- a/arch/mips/boot/dts/brcm/bcm97435svmb.dts
++++ b/arch/mips/boot/dts/brcm/bcm97435svmb.dts
+@@ -51,6 +51,14 @@
+ 	status = "okay";
+ };
+ 
++&pwma {
++	status = "okay";
++};
++
++&pwmb {
++	status = "okay";
++};
++
+ &enet0 {
+ 	status = "okay";
+ };
 -- 
 2.9.2

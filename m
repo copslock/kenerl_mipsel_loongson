@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 20:07:06 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38615 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 20:09:51 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38808 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993074AbcHMSG7LOkoD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 20:06:59 +0200
+        by eddie.linux-mips.org with ESMTP id S23993074AbcHMSJob6VbD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 20:09:44 +0200
 Received: from 92.40.249.202.threembb.co.uk ([92.40.249.202] helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1bYdKj-0004H6-Ng; Sat, 13 Aug 2016 19:06:58 +0100
+        id 1bYdNP-0004Ml-GQ; Sat, 13 Aug 2016 19:09:43 +0100
 Received: from ben by deadeye with local (Exim 4.87)
         (envelope-from <ben@decadent.org.uk>)
-        id 1bYd3f-0002sc-8D; Sat, 13 Aug 2016 18:49:19 +0100
+        id 1bYd3g-0002xO-AT; Sat, 13 Aug 2016 18:49:20 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        "Leonid Yegoshin" <Leonid.Yegoshin@imgtec.com>,
-        "James Hogan" <james.hogan@imgtec.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>
+CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org, "Paul Burton" <paul.burton@imgtec.com>
 Date:   Sat, 13 Aug 2016 18:42:51 +0100
-Message-ID: <lsq.1471110171.372856919@decadent.org.uk>
+Message-ID: <lsq.1471110171.294452247@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 054/305] MIPS: Avoid using unwind_stack() with usermode
+Subject: [PATCH 3.16 128/305] MIPS: fix read_msa_* & write_msa_* functions
+ on non-MSA toolchains
 In-Reply-To: <lsq.1471110169.907390585@decadent.org.uk>
 X-SA-Exim-Connect-IP: 92.40.249.202
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -33,7 +32,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54525
+X-archive-position: 54526
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,41 +53,49 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit 81a76d7119f63c359750e4adeff922a31ad1135f upstream.
+commit 70dff4d90aab40326d1d06a331e2b07eae99d067 upstream.
 
-When showing backtraces in response to traps, for example crashes and
-address errors (usually unaligned accesses) when they are set in debugfs
-to be reported, unwind_stack will be used if the PC was in the kernel
-text address range. However since EVA it is possible for user and kernel
-address ranges to overlap, and even without EVA userland can still
-trigger an address error by jumping to a KSeg0 address.
+Commit d96cc3d1ec5d "MIPS: Add microMIPS MSA support." attempted to use
+the value of a macro within an inline asm statement but instead emitted
+a comment leading to the cfcmsa & ctcmsa instructions being omitted. Fix
+that by passing CFC_MSA_INSN & CTC_MSA_INSN as arguments to the asm
+statements.
 
-Adjust the check to also ensure that it was running in kernel mode. I
-don't believe any harm can come of this problem, since unwind_stack() is
-sufficiently defensive, however it is only meant for unwinding kernel
-code, so to be correct it should use the raw backtracing instead.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/11701/
+Patchwork: https://patchwork.linux-mips.org/patch/7305/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-(cherry picked from commit d2941a975ac745c607dfb590e92bb30bc352dad9)
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/traps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/msa.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -140,7 +140,7 @@ static void show_backtrace(struct task_s
- 	if (!task)
- 		task = current;
+--- a/arch/mips/include/asm/msa.h
++++ b/arch/mips/include/asm/msa.h
+@@ -112,10 +112,10 @@ static inline unsigned int read_msa_##na
+ 	"	.set	push\n"					\
+ 	"	.set	noat\n"					\
+ 	"	.insn\n"					\
+-	"	.word	#CFC_MSA_INSN | (" #cs " << 11)\n"	\
++	"	.word	%1 | (" #cs " << 11)\n"			\
+ 	"	move	%0, $1\n"				\
+ 	"	.set	pop\n"					\
+-	: "=r"(reg));						\
++	: "=r"(reg) : "i"(CFC_MSA_INSN));			\
+ 	return reg;						\
+ }								\
+ 								\
+@@ -126,9 +126,9 @@ static inline void write_msa_##name(unsi
+ 	"	.set	noat\n"					\
+ 	"	move	$1, %0\n"				\
+ 	"	.insn\n"					\
+-	"	.word	#CTC_MSA_INSN | (" #cs " << 6)\n"	\
++	"	.word	%1 | (" #cs " << 6)\n"			\
+ 	"	.set	pop\n"					\
+-	: : "r"(val));						\
++	: : "r"(val), "i"(CTC_MSA_INSN));			\
+ }
  
--	if (raw_show_trace || !__kernel_text_address(pc)) {
-+	if (raw_show_trace || user_mode(regs) || !__kernel_text_address(pc)) {
- 		show_raw_backtrace(sp);
- 		return;
- 	}
+ #endif /* !TOOLCHAIN_SUPPORTS_MSA */

@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 19:59:47 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38091 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 20:04:43 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38422 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993040AbcHMR7boqbqD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 19:59:31 +0200
+        by eddie.linux-mips.org with ESMTP id S23993074AbcHMSEe6us6D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 20:04:34 +0200
 Received: from 92.40.249.202.threembb.co.uk ([92.40.249.202] helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1bYdDV-0003fH-KV; Sat, 13 Aug 2016 18:59:29 +0100
+        id 1bYdIO-00040D-5P; Sat, 13 Aug 2016 19:04:32 +0100
 Received: from ben by deadeye with local (Exim 4.87)
         (envelope-from <ben@decadent.org.uk>)
-        id 1bYd3f-0002sQ-6g; Sat, 13 Aug 2016 18:49:19 +0100
+        id 1bYd3f-0002t4-BM; Sat, 13 Aug 2016 18:49:19 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "James Hogan" <james.hogan@imgtec.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Christopher Ferris" <cferris@google.com>,
-        linux-mips@linux-mips.org
+CC:     akpm@linux-foundation.org, "Paolo Bonzini" <pbonzini@redhat.com>,
+        "Radim =?UTF-8?Q?Kr=C3=84=C2=8Dm=C3=83=C2=A1=C3=85=E2=84=A2?=" 
+        <rkrcmar@redhat.com>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, "James Hogan" <james.hogan@imgtec.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>
 Date:   Sat, 13 Aug 2016 18:42:51 +0100
-Message-ID: <lsq.1471110171.723725154@decadent.org.uk>
+Message-ID: <lsq.1471110171.101903260@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 051/305] MIPS: Fix siginfo.h to use strict posix types
+Subject: [PATCH 3.16 061/305] MIPS: KVM: Fix timer IRQ race when freezing
+ timer
 In-Reply-To: <lsq.1471110169.907390585@decadent.org.uk>
 X-SA-Exim-Connect-IP: 92.40.249.202
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -33,7 +35,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54521
+X-archive-position: 54522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,78 +58,93 @@ X-list: linux-mips
 
 From: James Hogan <james.hogan@imgtec.com>
 
-commit 5daebc477da4dfeb31ae193d83084def58fd2697 upstream.
+commit 4355c44f063d3de4f072d796604c7f4ba4085cc3 upstream.
 
-Commit 85efde6f4e0d ("make exported headers use strict posix types")
-changed the asm-generic siginfo.h to use the __kernel_* types, and
-commit 3a471cbc081b ("remove __KERNEL_STRICT_NAMES") make the internal
-types accessible only to the kernel, but the MIPS implementation hasn't
-been updated to match.
+There's a particularly narrow and subtle race condition when the
+software emulated guest timer is frozen which can allow a guest timer
+interrupt to be missed.
 
-Switch to proper types now so that the exported asm/siginfo.h won't
-produce quite so many compiler errors when included alone by a user
-program.
+This happens due to the hrtimer expiry being inexact, so very
+occasionally the freeze time will be after the moment when the emulated
+CP0_Count transitions to the same value as CP0_Compare (so an IRQ should
+be generated), but before the moment when the hrtimer is due to expire
+(so no IRQ is generated). The IRQ won't be generated when the timer is
+resumed either, since the resume CP0_Count will already match CP0_Compare.
 
+With VZ guests in particular this is far more likely to happen, since
+the soft timer may be frozen frequently in order to restore the timer
+state to the hardware guest timer. This happens after 5-10 hours of
+guest soak testing, resulting in an overflow in guest kernel timekeeping
+calculations, hanging the guest. A more focussed test case to
+intentionally hit the race (with the help of a new hypcall to cause the
+timer state to migrated between hardware & software) hits the condition
+fairly reliably within around 30 seconds.
+
+Instead of relying purely on the inexact hrtimer expiry to determine
+whether an IRQ should be generated, read the guest CP0_Compare and
+directly check whether the freeze time is before or after it. Only if
+CP0_Count is on or after CP0_Compare do we check the hrtimer expiry to
+determine whether the last IRQ has already been generated (which will
+have pushed back the expiry by one timer period).
+
+Fixes: e30492bbe95a ("MIPS: KVM: Rewrite count/compare timer emulation")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Christopher Ferris <cferris@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim KrÄmÃ¡Å™" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/12477/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[bwh: Backported to 3.16: adjust filename]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/include/uapi/asm/siginfo.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/mips/kvm/kvm_mips_emul.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
---- a/arch/mips/include/uapi/asm/siginfo.h
-+++ b/arch/mips/include/uapi/asm/siginfo.h
-@@ -48,13 +48,13 @@ typedef struct siginfo {
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -310,12 +310,31 @@ static inline ktime_t kvm_mips_count_tim
+  */
+ static uint32_t kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t now)
+ {
+-	ktime_t expires;
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	ktime_t expires, threshold;
++	uint32_t count, compare;
+ 	int running;
  
- 		/* kill() */
- 		struct {
--			pid_t _pid;		/* sender's pid */
-+			__kernel_pid_t _pid;	/* sender's pid */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 		} _kill;
+-	/* Is the hrtimer pending? */
++	/* Calculate the biased and scaled guest CP0_Count */
++	count = vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
++	compare = kvm_read_c0_guest_compare(cop0);
++
++	/*
++	 * Find whether CP0_Count has reached the closest timer interrupt. If
++	 * not, we shouldn't inject it.
++	 */
++	if ((int32_t)(count - compare) < 0)
++		return count;
++
++	/*
++	 * The CP0_Count we're going to return has already reached the closest
++	 * timer interrupt. Quickly check if it really is a new interrupt by
++	 * looking at whether the interval until the hrtimer expiry time is
++	 * less than 1/4 of the timer period.
++	 */
+ 	expires = hrtimer_get_expires(&vcpu->arch.comparecount_timer);
+-	if (ktime_compare(now, expires) >= 0) {
++	threshold = ktime_add_ns(now, vcpu->arch.count_period / 4);
++	if (ktime_before(expires, threshold)) {
+ 		/*
+ 		 * Cancel it while we handle it so there's no chance of
+ 		 * interference with the timeout handler.
+@@ -337,8 +356,7 @@ static uint32_t kvm_mips_read_count_runn
+ 		}
+ 	}
  
- 		/* POSIX.1b timers */
- 		struct {
--			timer_t _tid;		/* timer id */
-+			__kernel_timer_t _tid;	/* timer id */
- 			int _overrun;		/* overrun count */
- 			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
- 			sigval_t _sigval;	/* same as below */
-@@ -63,26 +63,26 @@ typedef struct siginfo {
+-	/* Return the biased and scaled guest CP0_Count */
+-	return vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
++	return count;
+ }
  
- 		/* POSIX.1b signals */
- 		struct {
--			pid_t _pid;		/* sender's pid */
-+			__kernel_pid_t _pid;	/* sender's pid */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 			sigval_t _sigval;
- 		} _rt;
- 
- 		/* SIGCHLD */
- 		struct {
--			pid_t _pid;		/* which child */
-+			__kernel_pid_t _pid;	/* which child */
- 			__ARCH_SI_UID_T _uid;	/* sender's uid */
- 			int _status;		/* exit code */
--			clock_t _utime;
--			clock_t _stime;
-+			__kernel_clock_t _utime;
-+			__kernel_clock_t _stime;
- 		} _sigchld;
- 
- 		/* IRIX SIGCHLD */
- 		struct {
--			pid_t _pid;		/* which child */
--			clock_t _utime;
-+			__kernel_pid_t _pid;	/* which child */
-+			__kernel_clock_t _utime;
- 			int _status;		/* exit code */
--			clock_t _stime;
-+			__kernel_clock_t _stime;
- 		} _irix_sigchld;
- 
- 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+ /**

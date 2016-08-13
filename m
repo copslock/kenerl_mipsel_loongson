@@ -1,36 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 02:04:05 +0200 (CEST)
-Received: from emh06.mail.saunalahti.fi ([62.142.5.116]:33374 "EHLO
-        emh06.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993523AbcHMAD5eAHCf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 02:03:57 +0200
-Received: from raspberrypi.musicnaut.iki.fi (85-76-167-73-nat.elisa-mobile.fi [85.76.167.73])
-        by emh06.mail.saunalahti.fi (Postfix) with ESMTP id 49482699CC;
-        Sat, 13 Aug 2016 03:03:56 +0300 (EEST)
-Date:   Sat, 13 Aug 2016 03:03:55 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     "Steven J. Hill" <steven.hill@cavium.com>,
-        David Daney <david.daney@cavium.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: OCTEON: Changes to support readq()/writeq() usage.
-Message-ID: <20160813000355.GD10648@raspberrypi.musicnaut.iki.fi>
-References: <5780652D.2030604@cavium.com>
- <20160812213801.GC10648@raspberrypi.musicnaut.iki.fi>
- <57AE4F63.4010506@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 19:53:02 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37824 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992888AbcHMRwwmou8D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 19:52:52 +0200
+Received: from 92.40.249.202.threembb.co.uk ([92.40.249.202] helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1bYd73-0003Kc-F4; Sat, 13 Aug 2016 18:52:49 +0100
+Received: from ben by deadeye with local (Exim 4.87)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1bYd3f-0002sY-7h; Sat, 13 Aug 2016 18:49:19 +0100
+Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
-In-Reply-To: <57AE4F63.4010506@caviumnetworks.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
+        "Leonid Yegoshin" <Leonid.Yegoshin@imgtec.com>,
+        "James Hogan" <james.hogan@imgtec.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+Date:   Sat, 13 Aug 2016 18:42:51 +0100
+Message-ID: <lsq.1471110171.630214331@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+Subject: [PATCH 3.16 053/305] MIPS: Don't unwind to user mode with EVA
+In-Reply-To: <lsq.1471110169.907390585@decadent.org.uk>
+X-SA-Exim-Connect-IP: 92.40.249.202
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54518
+X-archive-position: 54519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,205 +50,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+3.16.37-rc1 review patch.  If anyone has any objections, please let me know.
 
-On Fri, Aug 12, 2016 at 03:36:19PM -0700, David Daney wrote:
-> On 08/12/2016 02:38 PM, Aaro Koskinen wrote:
-> >On Fri, Jul 08, 2016 at 09:45:01PM -0500, Steven J. Hill wrote:
-> >>Update OCTEON port mangling code to support readq() and
-> >>writeq() functions to allow driver code to be more portable.
-> >>Updates also for word and long function pairs. We also
-> >>remove SWAP_IO_SPACE for OCTEON platforms as the function
-> >>macros are redundant with the new mangling code.
-> >>
-> >>Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
-> >>Acked-by: David Daney <david.daney@cavium.com>
-> >
-> >[...]
-> >
-> >>+static inline bool __should_swizzle_bits(volatile void *a)
-> >>+{
-> >>+	extern const bool octeon_should_swizzle_table[];
-> >>+
-> >>+	unsigned long did = ((unsigned long)a >> 40) & 0xff;
-> >>+	return octeon_should_swizzle_table[did];
-> >>+}
-> >
-> >v4.8-rc1 OCTEON build is now broken with GCC 6.1 when support for 32-bit
-> >ABIs is enabled:
-> 
-> I don't get it.  The kernel is always 64-bit, so unsigned long will have a
-> width of 64.
+------------------
 
-VDSO code is built with -mabi=32 when CONFIG_MIPS32_O32 is enabled
-(see arch/mips/vdso/Makefile).
+From: James Hogan <james.hogan@imgtec.com>
 
-> What kernel config are you using?
+commit a816b306c62195b7c43c92cb13330821a96bdc27 upstream.
 
-See below. AFAIK, you cannot disable VDSO?
+When unwinding through IRQs and exceptions, the unwinding only continues
+if the PC is a kernel text address, however since EVA it is possible for
+user and kernel address ranges to overlap, potentially allowing
+unwinding to continue to user mode if the user PC happens to be in the
+kernel text address range.
 
-...
+Adjust the check to also ensure that the register state from before the
+exception is actually running in kernel mode, i.e. !user_mode(regs).
 
-CONFIG_CAVIUM_OCTEON_SOC=y
-CONFIG_CAVIUM_CN63XXP1=y
-CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE=2
-# CONFIG_COMPACTION is not set
-CONFIG_SMP=y
-CONFIG_NR_CPUS=2
-CONFIG_HZ_100=y
-CONFIG_MIPS_ELF_APPENDED_DTB=y
-CONFIG_LOCALVERSION="-octeon"
-CONFIG_SYSVIPC=y
-CONFIG_POSIX_MQUEUE=y
-CONFIG_NO_HZ_IDLE=y
-CONFIG_HIGH_RES_TIMERS=y
-CONFIG_LOG_BUF_SHIFT=14
-CONFIG_SCHED_AUTOGROUP=y
-CONFIG_BLK_DEV_INITRD=y
-CONFIG_EMBEDDED=y
-# CONFIG_PERF_EVENTS is not set
-CONFIG_PROFILING=y
-CONFIG_OPROFILE=m
-CONFIG_MODULES=y
-CONFIG_MODULE_UNLOAD=y
-# CONFIG_BLK_DEV_BSG is not set
-CONFIG_PCI=y
-CONFIG_PCI_MSI=y
-CONFIG_MIPS32_O32=y
-CONFIG_MIPS32_N32=y
-CONFIG_NET=y
-CONFIG_PACKET=y
-CONFIG_UNIX=y
-CONFIG_INET=y
-# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-# CONFIG_INET_XFRM_MODE_BEET is not set
-# CONFIG_INET_DIAG is not set
-# CONFIG_IPV6 is not set
-CONFIG_BRIDGE=y
-# CONFIG_BRIDGE_IGMP_SNOOPING is not set
-CONFIG_CFG80211=y
-CONFIG_MAC80211=y
-CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-CONFIG_DEVTMPFS=y
-# CONFIG_FW_LOADER is not set
-CONFIG_MTD=y
-CONFIG_MTD_CMDLINE_PARTS=y
-# CONFIG_MTD_OF_PARTS is not set
-CONFIG_MTD_BLOCK=y
-CONFIG_MTD_CFI=y
-CONFIG_MTD_CFI_AMDSTD=y
-CONFIG_MTD_SLRAM=y
-CONFIG_BLK_DEV_LOOP=y
-CONFIG_EEPROM_AT24=y
-CONFIG_EEPROM_AT25=y
-CONFIG_SCSI=y
-CONFIG_BLK_DEV_SD=y
-CONFIG_BLK_DEV_SR=y
-CONFIG_BLK_DEV_SR_VENDOR=y
-# CONFIG_SCSI_LOWLEVEL is not set
-CONFIG_NETDEVICES=y
-# CONFIG_NET_VENDOR_3COM is not set
-# CONFIG_NET_VENDOR_ADAPTEC is not set
-# CONFIG_NET_VENDOR_ALTEON is not set
-# CONFIG_NET_VENDOR_AMD is not set
-# CONFIG_NET_VENDOR_ATHEROS is not set
-# CONFIG_NET_VENDOR_BROADCOM is not set
-# CONFIG_NET_VENDOR_BROCADE is not set
-# CONFIG_NET_VENDOR_CHELSIO is not set
-# CONFIG_NET_VENDOR_CISCO is not set
-# CONFIG_NET_VENDOR_DEC is not set
-# CONFIG_NET_VENDOR_DLINK is not set
-# CONFIG_NET_VENDOR_EMULEX is not set
-# CONFIG_NET_VENDOR_EXAR is not set
-# CONFIG_NET_VENDOR_HP is not set
-# CONFIG_NET_VENDOR_INTEL is not set
-# CONFIG_NET_VENDOR_MARVELL is not set
-# CONFIG_NET_VENDOR_MELLANOX is not set
-# CONFIG_NET_VENDOR_MICREL is not set
-# CONFIG_NET_VENDOR_MICROCHIP is not set
-# CONFIG_NET_VENDOR_MYRI is not set
-# CONFIG_NET_VENDOR_NATSEMI is not set
-# CONFIG_NET_VENDOR_NVIDIA is not set
-# CONFIG_NET_VENDOR_OKI is not set
-# CONFIG_NET_PACKET_ENGINE is not set
-# CONFIG_NET_VENDOR_QLOGIC is not set
-# CONFIG_NET_VENDOR_REALTEK is not set
-# CONFIG_NET_VENDOR_RDC is not set
-# CONFIG_NET_VENDOR_SEEQ is not set
-# CONFIG_NET_VENDOR_SILAN is not set
-# CONFIG_NET_VENDOR_SIS is not set
-# CONFIG_NET_VENDOR_SMSC is not set
-# CONFIG_NET_VENDOR_STMICRO is not set
-# CONFIG_NET_VENDOR_SUN is not set
-# CONFIG_NET_VENDOR_TEHUTI is not set
-# CONFIG_NET_VENDOR_TI is not set
-# CONFIG_NET_VENDOR_TOSHIBA is not set
-# CONFIG_NET_VENDOR_VIA is not set
-# CONFIG_NET_VENDOR_WIZNET is not set
-CONFIG_AT803X_PHY=m
-CONFIG_BROADCOM_PHY=m
-CONFIG_PPP=y
-CONFIG_PPP_DEFLATE=y
-CONFIG_PPP_ASYNC=y
-# CONFIG_ATH9K_BTCOEX_SUPPORT is not set
-CONFIG_ATH9K=y
-# CONFIG_ATH9K_PCOEM is not set
-# CONFIG_RTL_CARDS is not set
-# CONFIG_INPUT is not set
-# CONFIG_SERIO is not set
-# CONFIG_VT is not set
-# CONFIG_LEGACY_PTYS is not set
-CONFIG_SERIAL_8250=y
-CONFIG_SERIAL_8250_CONSOLE=y
-CONFIG_SERIAL_8250_NR_UARTS=2
-CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-CONFIG_SERIAL_8250_EXTENDED=y
-CONFIG_SERIAL_8250_DW=y
-# CONFIG_HW_RANDOM is not set
-CONFIG_I2C=y
-CONFIG_I2C_OCTEON=y
-CONFIG_SPI=y
-CONFIG_SPI_OCTEON=y
-CONFIG_GPIO_SYSFS=y
-# CONFIG_HWMON is not set
-CONFIG_WATCHDOG=y
-# CONFIG_VGA_ARB is not set
-CONFIG_USB=y
-CONFIG_USB_EHCI_HCD=y
-CONFIG_USB_EHCI_HCD_PLATFORM=y
-CONFIG_USB_OHCI_HCD=y
-CONFIG_USB_OHCI_HCD_PLATFORM=y
-CONFIG_USB_ACM=y
-CONFIG_USB_STORAGE=y
-CONFIG_USB_SERIAL=y
-CONFIG_USB_SERIAL_OPTION=y
-CONFIG_LEDS_GPIO=y
-CONFIG_RTC_CLASS=y
-CONFIG_RTC_DRV_DS1307=y
-CONFIG_STAGING=y
-CONFIG_OCTEON_ETHERNET=y
-CONFIG_OCTEON_USB=y
-# CONFIG_IOMMU_SUPPORT is not set
-CONFIG_EXT4_FS=y
-CONFIG_MSDOS_FS=y
-CONFIG_VFAT_FS=y
-CONFIG_PROC_KCORE=y
-CONFIG_TMPFS=y
-# CONFIG_MISC_FILESYSTEMS is not set
-# CONFIG_NETWORK_FILESYSTEMS is not set
-CONFIG_NLS_CODEPAGE_437=y
-CONFIG_NLS_ASCII=y
-CONFIG_NLS_ISO8859_1=y
-CONFIG_NLS_UTF8=y
-CONFIG_PRINTK_TIME=y
-CONFIG_DEBUG_INFO=y
-CONFIG_MAGIC_SYSRQ=y
-CONFIG_LOCKUP_DETECTOR=y
-# CONFIG_SCHED_DEBUG is not set
-# CONFIG_FTRACE is not set
-CONFIG_CRYPTO_TEST=m
-CONFIG_CRYPTO_MD5_OCTEON=y
-# CONFIG_CRYPTO_HW is not set
+I don't believe any harm can come of this problem, since the PC is only
+output, the stack pointer is checked to ensure it resides within the
+task's stack page before it is dereferenced in search of the return
+address, and the return address register is similarly only output (if
+the PC is in a leaf function or the beginning of a non-leaf function).
 
-A.
+However unwind_stack() is only meant for unwinding kernel code, so to be
+correct the unwind should stop there.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/11700/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+---
+ arch/mips/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -489,7 +489,7 @@ unsigned long notrace unwind_stack_by_ad
+ 		    *sp + sizeof(*regs) <= stack_page + THREAD_SIZE - 32) {
+ 			regs = (struct pt_regs *)*sp;
+ 			pc = regs->cp0_epc;
+-			if (__kernel_text_address(pc)) {
++			if (!user_mode(regs) && __kernel_text_address(pc)) {
+ 				*sp = regs->regs[29];
+ 				*ra = regs->regs[31];
+ 				return pc;

@@ -1,33 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 19:59:23 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38079 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 19:59:47 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38091 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992955AbcHMR7Qg0h2D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 19:59:16 +0200
+        by eddie.linux-mips.org with ESMTP id S23993040AbcHMR7boqbqD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 19:59:31 +0200
 Received: from 92.40.249.202.threembb.co.uk ([92.40.249.202] helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1bYdDE-0003ey-Hq; Sat, 13 Aug 2016 18:59:12 +0100
+        id 1bYdDV-0003fH-KV; Sat, 13 Aug 2016 18:59:29 +0100
 Received: from ben by deadeye with local (Exim 4.87)
         (envelope-from <ben@decadent.org.uk>)
-        id 1bYd3f-0002sU-7C; Sat, 13 Aug 2016 18:49:19 +0100
+        id 1bYd3f-0002sQ-6g; Sat, 13 Aug 2016 18:49:19 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, pgynther@google.com,
+CC:     akpm@linux-foundation.org, "James Hogan" <james.hogan@imgtec.com>,
         "Ralf Baechle" <ralf@linux-mips.org>,
-        "Florian Fainelli" <f.fainelli@gmail.com>, john@phrozen.org,
-        cernekee@gmail.com, dragan.stancevic@gmail.com, jogo@openwrt.org,
-        linux-mips@linux-mips.org, jaedon.shin@gmail.com,
-        jfraser@broadcom.com
+        "Christopher Ferris" <cferris@google.com>,
+        linux-mips@linux-mips.org
 Date:   Sat, 13 Aug 2016 18:42:51 +0100
-Message-ID: <lsq.1471110171.501971181@decadent.org.uk>
+Message-ID: <lsq.1471110171.723725154@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 052/305] MIPS: BMIPS: Fix PRID_IMP_BMIPS5000 masking
- for BMIPS5200
+Subject: [PATCH 3.16 051/305] MIPS: Fix siginfo.h to use strict posix types
 In-Reply-To: <lsq.1471110169.907390585@decadent.org.uk>
 X-SA-Exim-Connect-IP: 92.40.249.202
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -36,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54520
+X-archive-position: 54521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,66 +54,80 @@ X-list: linux-mips
 
 ------------------
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit cbbda6e7c9c3e4532bd70a73ff9d5e6655c894dc upstream.
+commit 5daebc477da4dfeb31ae193d83084def58fd2697 upstream.
 
-BMIPS5000 have a PrID value of 0x5A00 and BMIPS5200 have a PrID value of
-0x5B00, which, masked with 0x5A00, returns 0x5A00. Update all conditionals on
-the PrID to cover both variants since we are going to need this to enable
-BMIPS5200 SMP. The existing check, masking with 0xFF00 would not cover
-BMIPS5200 at all.
+Commit 85efde6f4e0d ("make exported headers use strict posix types")
+changed the asm-generic siginfo.h to use the __kernel_* types, and
+commit 3a471cbc081b ("remove __KERNEL_STRICT_NAMES") make the internal
+types accessible only to the kernel, but the MIPS implementation hasn't
+been updated to match.
 
-Fixes: 68e6a78373a6d ("MIPS: BMIPS: Add PRId for BMIPS5200 (Whirlwind)")
-Fixes: 6465460c92a85 ("MIPS: BMIPS: change compile time checks to runtime checks")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Cc: john@phrozen.org
-Cc: cernekee@gmail.com
-Cc: jogo@openwrt.org
-Cc: jaedon.shin@gmail.com
-Cc: jfraser@broadcom.com
-Cc: pgynther@google.com
-Cc: dragan.stancevic@gmail.com
+Switch to proper types now so that the exported asm/siginfo.h won't
+produce quite so many compiler errors when included alone by a user
+program.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Christopher Ferris <cferris@google.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/12279/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/12477/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kernel/bmips_vec.S | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/mips/include/uapi/asm/siginfo.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/arch/mips/kernel/bmips_vec.S
-+++ b/arch/mips/kernel/bmips_vec.S
-@@ -93,7 +93,8 @@ NESTED(bmips_reset_nmi_vec, PT_SIZE, sp)
- #if defined(CONFIG_CPU_BMIPS5000)
- 	mfc0	k0, CP0_PRID
- 	li	k1, PRID_IMP_BMIPS5000
--	andi	k0, 0xff00
-+	/* mask with PRID_IMP_BMIPS5000 to cover both variants */
-+	andi	k0, PRID_IMP_BMIPS5000
- 	bne	k0, k1, 1f
+--- a/arch/mips/include/uapi/asm/siginfo.h
++++ b/arch/mips/include/uapi/asm/siginfo.h
+@@ -48,13 +48,13 @@ typedef struct siginfo {
  
- 	/* if we're not on core 0, this must be the SMP boot signal */
-@@ -166,10 +167,12 @@ bmips_smp_entry:
- 2:
- #endif /* CONFIG_CPU_BMIPS4350 || CONFIG_CPU_BMIPS4380 */
- #if defined(CONFIG_CPU_BMIPS5000)
--	/* set exception vector base */
-+	/* mask with PRID_IMP_BMIPS5000 to cover both variants */
- 	li	k1, PRID_IMP_BMIPS5000
-+	andi	k0, PRID_IMP_BMIPS5000
- 	bne	k0, k1, 3f
+ 		/* kill() */
+ 		struct {
+-			pid_t _pid;		/* sender's pid */
++			__kernel_pid_t _pid;	/* sender's pid */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 		} _kill;
  
-+	/* set exception vector base */
- 	la	k0, ebase
- 	lw	k0, 0(k0)
- 	mtc0	k0, $15, 1
-@@ -264,6 +267,8 @@ LEAF(bmips_enable_xks01)
- #endif /* CONFIG_CPU_BMIPS4380 */
- #if defined(CONFIG_CPU_BMIPS5000)
- 	li	t1, PRID_IMP_BMIPS5000
-+	/* mask with PRID_IMP_BMIPS5000 to cover both variants */
-+	andi	t2, PRID_IMP_BMIPS5000
- 	bne	t2, t1, 2f
+ 		/* POSIX.1b timers */
+ 		struct {
+-			timer_t _tid;		/* timer id */
++			__kernel_timer_t _tid;	/* timer id */
+ 			int _overrun;		/* overrun count */
+ 			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
+ 			sigval_t _sigval;	/* same as below */
+@@ -63,26 +63,26 @@ typedef struct siginfo {
  
- 	mfc0	t0, $22, 5
+ 		/* POSIX.1b signals */
+ 		struct {
+-			pid_t _pid;		/* sender's pid */
++			__kernel_pid_t _pid;	/* sender's pid */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 			sigval_t _sigval;
+ 		} _rt;
+ 
+ 		/* SIGCHLD */
+ 		struct {
+-			pid_t _pid;		/* which child */
++			__kernel_pid_t _pid;	/* which child */
+ 			__ARCH_SI_UID_T _uid;	/* sender's uid */
+ 			int _status;		/* exit code */
+-			clock_t _utime;
+-			clock_t _stime;
++			__kernel_clock_t _utime;
++			__kernel_clock_t _stime;
+ 		} _sigchld;
+ 
+ 		/* IRIX SIGCHLD */
+ 		struct {
+-			pid_t _pid;		/* which child */
+-			clock_t _utime;
++			__kernel_pid_t _pid;	/* which child */
++			__kernel_clock_t _utime;
+ 			int _status;		/* exit code */
+-			clock_t _stime;
++			__kernel_clock_t _stime;
+ 		} _irix_sigchld;
+ 
+ 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */

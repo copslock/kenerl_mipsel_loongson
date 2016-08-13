@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 20:04:43 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38422 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 20:05:32 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38489 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993074AbcHMSEe6us6D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 20:04:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23993074AbcHMSFXfMJOD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 20:05:23 +0200
 Received: from 92.40.249.202.threembb.co.uk ([92.40.249.202] helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1bYdIO-00040D-5P; Sat, 13 Aug 2016 19:04:32 +0100
+        id 1bYdJ8-00049o-Uv; Sat, 13 Aug 2016 19:05:19 +0100
 Received: from ben by deadeye with local (Exim 4.87)
         (envelope-from <ben@decadent.org.uk>)
-        id 1bYd3f-0002t4-BM; Sat, 13 Aug 2016 18:49:19 +0100
+        id 1bYd3R-0002ja-9t; Sat, 13 Aug 2016 18:49:05 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Paolo Bonzini" <pbonzini@redhat.com>,
-        "Radim =?UTF-8?Q?Kr=C3=84=C2=8Dm=C3=83=C2=A1=C3=85=E2=84=A2?=" 
-        <rkrcmar@redhat.com>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, "James Hogan" <james.hogan@imgtec.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Date:   Sat, 13 Aug 2016 18:42:51 +0100
-Message-ID: <lsq.1471110171.101903260@decadent.org.uk>
+CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "David Daney" <david.daney@cavium.com>,
+        "Joshua Kinard" <kumba@gentoo.org>,
+        "Linux/MIPS" <linux-mips@linux-mips.org>
+Date:   Sat, 13 Aug 2016 18:42:58 +0100
+Message-ID: <lsq.1471110178.89164292@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 061/305] MIPS: KVM: Fix timer IRQ race when freezing
- timer
-In-Reply-To: <lsq.1471110169.907390585@decadent.org.uk>
+Subject: [PATCH 3.2 15/94] MIPS: Adjust set_pte() SMP fix to handle
+ R10000_LLSC_WAR
+In-Reply-To: <lsq.1471110177.296693567@decadent.org.uk>
 X-SA-Exim-Connect-IP: 92.40.249.202
 X-SA-Exim-Mail-From: ben@decadent.org.uk
 X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
@@ -35,7 +34,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54522
+X-archive-position: 54523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,99 +51,89 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.37-rc1 review patch.  If anyone has any objections, please let me know.
+3.2.82-rc1 review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Joshua Kinard <kumba@gentoo.org>
 
-commit 4355c44f063d3de4f072d796604c7f4ba4085cc3 upstream.
+commit 128639395b2ceacc6a56a0141d0261012bfe04d3 upstream.
 
-There's a particularly narrow and subtle race condition when the
-software emulated guest timer is frozen which can allow a guest timer
-interrupt to be missed.
+Update the recent changes to set_pte() that were added in 46011e6ea392
+to handle R10000_LLSC_WAR, and format the assembly to match other areas
+of the MIPS tree using the same WAR.
 
-This happens due to the hrtimer expiry being inexact, so very
-occasionally the freeze time will be after the moment when the emulated
-CP0_Count transitions to the same value as CP0_Compare (so an IRQ should
-be generated), but before the moment when the hrtimer is due to expire
-(so no IRQ is generated). The IRQ won't be generated when the timer is
-resumed either, since the resume CP0_Count will already match CP0_Compare.
+This also incorporates a patch recently sent in my Markos Chandras,
+"Remove local LL/SC preprocessor variants", so that patch doesn't need
+to be applied if this one is accepted.
 
-With VZ guests in particular this is far more likely to happen, since
-the soft timer may be frozen frequently in order to restore the timer
-state to the hardware guest timer. This happens after 5-10 hours of
-guest soak testing, resulting in an overflow in guest kernel timekeeping
-calculations, hanging the guest. A more focussed test case to
-intentionally hit the race (with the help of a new hypcall to cause the
-timer state to migrated between hardware & software) hits the condition
-fairly reliably within around 30 seconds.
-
-Instead of relying purely on the inexact hrtimer expiry to determine
-whether an IRQ should be generated, read the guest CP0_Compare and
-directly check whether the freeze time is before or after it. Only if
-CP0_Count is on or after CP0_Compare do we check the hrtimer expiry to
-determine whether the last IRQ has already been generated (which will
-have pushed back the expiry by one timer period).
-
-Fixes: e30492bbe95a ("MIPS: KVM: Rewrite count/compare timer emulation")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim KrÄmÃ¡Å™" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[bwh: Backported to 3.16: adjust filename]
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+Fixes: 46011e6ea392 ("MIPS: Make set_pte() SMP safe.)
+Cc: David Daney <david.daney@cavium.com>
+Cc: Linux/MIPS <linux-mips@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/11103/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+[bwh: Backported to 3.2:
+ - Use {LL,SC}_INSN not __{LL,SC}
+ - Use literal arch=r4000 instead of MIPS_ISA_ARCH_LEVEL since R6 is not
+   supported]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kvm/kvm_mips_emul.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/pgtable.h | 45 +++++++++++++++++++++++++++++------------
+ 1 file changed, 32 insertions(+), 13 deletions(-)
 
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -310,12 +310,31 @@ static inline ktime_t kvm_mips_count_tim
-  */
- static uint32_t kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t now)
- {
--	ktime_t expires;
-+	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+	ktime_t expires, threshold;
-+	uint32_t count, compare;
- 	int running;
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -168,20 +168,39 @@ static inline void set_pte(pte_t *ptep,
+ 		unsigned long page_global = _PAGE_GLOBAL;
+ 		unsigned long tmp;
  
--	/* Is the hrtimer pending? */
-+	/* Calculate the biased and scaled guest CP0_Count */
-+	count = vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
-+	compare = kvm_read_c0_guest_compare(cop0);
-+
-+	/*
-+	 * Find whether CP0_Count has reached the closest timer interrupt. If
-+	 * not, we shouldn't inject it.
-+	 */
-+	if ((int32_t)(count - compare) < 0)
-+		return count;
-+
-+	/*
-+	 * The CP0_Count we're going to return has already reached the closest
-+	 * timer interrupt. Quickly check if it really is a new interrupt by
-+	 * looking at whether the interval until the hrtimer expiry time is
-+	 * less than 1/4 of the timer period.
-+	 */
- 	expires = hrtimer_get_expires(&vcpu->arch.comparecount_timer);
--	if (ktime_compare(now, expires) >= 0) {
-+	threshold = ktime_add_ns(now, vcpu->arch.count_period / 4);
-+	if (ktime_before(expires, threshold)) {
- 		/*
- 		 * Cancel it while we handle it so there's no chance of
- 		 * interference with the timeout handler.
-@@ -337,8 +356,7 @@ static uint32_t kvm_mips_read_count_runn
- 		}
- 	}
- 
--	/* Return the biased and scaled guest CP0_Count */
--	return vcpu->arch.count_bias + kvm_mips_ktime_to_count(vcpu, now);
-+	return count;
- }
- 
- /**
+-		__asm__ __volatile__ (
+-			"	.set	push\n"
+-			"	.set	noreorder\n"
+-			"1:	" LL_INSN "	%[tmp], %[buddy]\n"
+-			"	bnez	%[tmp], 2f\n"
+-			"	 or	%[tmp], %[tmp], %[global]\n"
+-			"	" SC_INSN "	%[tmp], %[buddy]\n"
+-			"	beqz	%[tmp], 1b\n"
+-			"	 nop\n"
+-			"2:\n"
+-			"	.set pop"
+-			: [buddy] "+m" (buddy->pte),
+-			  [tmp] "=&r" (tmp)
++		if (kernel_uses_llsc && R10000_LLSC_WAR) {
++			__asm__ __volatile__ (
++			"	.set	arch=r4000			\n"
++			"	.set	push				\n"
++			"	.set	noreorder			\n"
++			"1:"	LL_INSN	" %[tmp], %[buddy]		\n"
++			"	bnez	%[tmp], 2f			\n"
++			"	 or	%[tmp], %[tmp], %[global]	\n"
++				SC_INSN	" %[tmp], %[buddy]		\n"
++			"	beqzl	%[tmp], 1b			\n"
++			"	nop					\n"
++			"2:						\n"
++			"	.set	pop				\n"
++			"	.set	mips0				\n"
++			: [buddy] "+m" (buddy->pte), [tmp] "=&r" (tmp)
+ 			: [global] "r" (page_global));
++		} else if (kernel_uses_llsc) {
++			__asm__ __volatile__ (
++			"	.set	arch=r4000			\n"
++			"	.set	push				\n"
++			"	.set	noreorder			\n"
++			"1:"	LL_INSN	" %[tmp], %[buddy]		\n"
++			"	bnez	%[tmp], 2f			\n"
++			"	 or	%[tmp], %[tmp], %[global]	\n"
++				SC_INSN	" %[tmp], %[buddy]		\n"
++			"	beqz	%[tmp], 1b			\n"
++			"	nop					\n"
++			"2:						\n"
++			"	.set	pop				\n"
++			"	.set	mips0				\n"
++			: [buddy] "+m" (buddy->pte), [tmp] "=&r" (tmp)
++			: [global] "r" (page_global));
++		}
+ #else /* !CONFIG_SMP */
+ 		if (pte_none(*buddy))
+ 			pte_val(*buddy) = pte_val(*buddy) | _PAGE_GLOBAL;

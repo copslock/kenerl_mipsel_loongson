@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Aug 2016 22:24:33 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34231 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Aug 2016 22:42:12 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34947 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992178AbcHNUYYOszLk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Aug 2016 22:24:24 +0200
+        by eddie.linux-mips.org with ESMTP id S23992239AbcHNUmFJ82Br (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Aug 2016 22:42:05 +0200
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 31B1689C;
-        Sun, 14 Aug 2016 20:24:16 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 790DA725;
+        Sun, 14 Aug 2016 20:41:58 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         David Howells <dhowells@redhat.com>, linux-mips@linux-mips.org,
         linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 18/49] KEYS: 64-bit MIPS needs to use compat_sys_keyctl for 32-bit userspace
-Date:   Sun, 14 Aug 2016 22:23:18 +0200
-Message-Id: <20160814202303.487889841@linuxfoundation.org>
+Subject: [PATCH 4.6 17/56] KEYS: 64-bit MIPS needs to use compat_sys_keyctl for 32-bit userspace
+Date:   Sun, 14 Aug 2016 22:37:21 +0200
+Message-Id: <20160814202505.623327779@linuxfoundation.org>
 X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160814202302.493206349@linuxfoundation.org>
-References: <20160814202302.493206349@linuxfoundation.org>
+In-Reply-To: <20160814202504.908694181@linuxfoundation.org>
+References: <20160814202504.908694181@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54531
+X-archive-position: 54532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

@@ -1,43 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Aug 2016 20:17:26 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:39432 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993374AbcHMSRTvZraD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Aug 2016 20:17:19 +0200
-Received: from 92.40.249.202.threembb.co.uk ([92.40.249.202] helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1bYdUk-00050i-LS; Sat, 13 Aug 2016 19:17:18 +0100
-Received: from ben by deadeye with local (Exim 4.87)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1bYd3f-0002u2-IT; Sat, 13 Aug 2016 18:49:19 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Aug 2016 22:08:14 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33912 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992178AbcHNUIHHvFd6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Aug 2016 22:08:07 +0200
+Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A6C1378D;
+        Sun, 14 Aug 2016 20:07:59 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Stephan Mueller <smueller@chronox.de>,
+        David Howells <dhowells@redhat.com>, linux-mips@linux-mips.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 3.14 10/29] KEYS: 64-bit MIPS needs to use compat_sys_keyctl for 32-bit userspace
+Date:   Sun, 14 Aug 2016 22:07:38 +0200
+Message-Id: <20160814200731.931761587@linuxfoundation.org>
+X-Mailer: git-send-email 2.9.3
+In-Reply-To: <20160814200731.375346059@linuxfoundation.org>
+References: <20160814200731.375346059@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
-        "James Hogan" <james.hogan@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        "Paul Burton" <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-Date:   Sat, 13 Aug 2016 18:42:51 +0100
-Message-ID: <lsq.1471110171.266006049@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 076/305] MIPS: math-emu: Fix jalr emulation when rd == $0
-In-Reply-To: <lsq.1471110169.907390585@decadent.org.uk>
-X-SA-Exim-Connect-IP: 92.40.249.202
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54529
+X-archive-position: 54530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,49 +43,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.37-rc1 review patch.  If anyone has any objections, please let me know.
+3.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: David Howells <dhowells@redhat.com>
 
-commit ab4a92e66741b35ca12f8497896bafbe579c28a1 upstream.
+commit 20f06ed9f61a185c6dabd662c310bed6189470df upstream.
 
-When emulating a jalr instruction with rd == $0, the code in
-isBranchInstr was incorrectly writing to GPR $0 which should actually
-always remain zeroed. This would lead to any further instructions
-emulated which use $0 operating on a bogus value until the task is next
-context switched, at which point the value of $0 in the task context
-would be restored to the correct zero by a store in SAVE_SOME. Fix this
-by not writing to rd if it is $0.
+MIPS64 needs to use compat_sys_keyctl for 32-bit userspace rather than
+calling sys_keyctl.  The latter will work in a lot of cases, thereby hiding
+the issue.
 
-Fixes: 102cedc32a6e ("MIPS: microMIPS: Floating point support.")
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: James Hogan <james.hogan@imgtec.com>
+Reported-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: David Howells <dhowells@redhat.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13160/
+Cc: linux-security-module@vger.kernel.org
+Cc: keyrings@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13832/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/math-emu/cp1emu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -443,9 +443,11 @@ static int isBranchInstr(struct pt_regs
- 	case spec_op:
- 		switch (insn.r_format.func) {
- 		case jalr_op:
--			regs->regs[insn.r_format.rd] =
--				regs->cp0_epc + dec_insn.pc_inc +
--				dec_insn.next_pc_inc;
-+			if (insn.r_format.rd != 0) {
-+				regs->regs[insn.r_format.rd] =
-+					regs->cp0_epc + dec_insn.pc_inc +
-+					dec_insn.next_pc_inc;
-+			}
- 			/* Fall through */
- 		case jr_op:
- 			*contpc = regs->regs[insn.r_format.rs];
+---
+ arch/mips/kernel/scall64-n32.S |    2 +-
+ arch/mips/kernel/scall64-o32.S |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -350,7 +350,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_ni_syscall			/* available, was setaltroot */
+ 	PTR	sys_add_key
+ 	PTR	sys_request_key
+-	PTR	sys_keyctl			/* 6245 */
++	PTR	compat_sys_keyctl		/* 6245 */
+ 	PTR	sys_set_thread_area
+ 	PTR	sys_inotify_init
+ 	PTR	sys_inotify_add_watch
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -474,7 +474,7 @@ EXPORT(sys32_call_table)
+ 	PTR	sys_ni_syscall			/* available, was setaltroot */
+ 	PTR	sys_add_key			/* 4280 */
+ 	PTR	sys_request_key
+-	PTR	sys_keyctl
++	PTR	compat_sys_keyctl
+ 	PTR	sys_set_thread_area
+ 	PTR	sys_inotify_init
+ 	PTR	sys_inotify_add_watch		/* 4285 */

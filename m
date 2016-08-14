@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Aug 2016 22:08:14 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33912 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Aug 2016 22:24:33 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34231 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992178AbcHNUIHHvFd6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Aug 2016 22:08:07 +0200
+        by eddie.linux-mips.org with ESMTP id S23992178AbcHNUYYOszLk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Aug 2016 22:24:24 +0200
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A6C1378D;
-        Sun, 14 Aug 2016 20:07:59 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 31B1689C;
+        Sun, 14 Aug 2016 20:24:16 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         David Howells <dhowells@redhat.com>, linux-mips@linux-mips.org,
         linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 3.14 10/29] KEYS: 64-bit MIPS needs to use compat_sys_keyctl for 32-bit userspace
-Date:   Sun, 14 Aug 2016 22:07:38 +0200
-Message-Id: <20160814200731.931761587@linuxfoundation.org>
+Subject: [PATCH 4.4 18/49] KEYS: 64-bit MIPS needs to use compat_sys_keyctl for 32-bit userspace
+Date:   Sun, 14 Aug 2016 22:23:18 +0200
+Message-Id: <20160814202303.487889841@linuxfoundation.org>
 X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160814200731.375346059@linuxfoundation.org>
-References: <20160814200731.375346059@linuxfoundation.org>
+In-Reply-To: <20160814202302.493206349@linuxfoundation.org>
+References: <20160814202302.493206349@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54530
+X-archive-position: 54531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.14-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -72,7 +72,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/kernel/scall64-n32.S
 +++ b/arch/mips/kernel/scall64-n32.S
-@@ -350,7 +350,7 @@ EXPORT(sysn32_call_table)
+@@ -344,7 +344,7 @@ EXPORT(sysn32_call_table)
  	PTR	sys_ni_syscall			/* available, was setaltroot */
  	PTR	sys_add_key
  	PTR	sys_request_key
@@ -83,7 +83,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	PTR	sys_inotify_add_watch
 --- a/arch/mips/kernel/scall64-o32.S
 +++ b/arch/mips/kernel/scall64-o32.S
-@@ -474,7 +474,7 @@ EXPORT(sys32_call_table)
+@@ -500,7 +500,7 @@ EXPORT(sys32_call_table)
  	PTR	sys_ni_syscall			/* available, was setaltroot */
  	PTR	sys_add_key			/* 4280 */
  	PTR	sys_request_key

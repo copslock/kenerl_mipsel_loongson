@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2016 22:32:28 +0200 (CEST)
-Received: from mail5.windriver.com ([192.103.53.11]:33298 "EHLO mail5.wrs.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992492AbcHOUbfHsKGS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Aug 2016 22:31:35 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2016 22:32:49 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:50125 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992509AbcHOUbwMCwOS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Aug 2016 22:31:52 +0200
 Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail5.wrs.com (8.15.2/8.15.2) with ESMTPS id u7FKVR1k030459
-        (version=TLSv1 cipher=AES128-SHA bits=128 verify=OK);
-        Mon, 15 Aug 2016 13:31:28 -0700
+        by mail.windriver.com (8.15.2/8.15.1) with ESMTPS id u7FKVHYZ026395
+        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
+        Mon, 15 Aug 2016 13:31:17 -0700 (PDT)
 Received: from yow-lpgnfs-02.wrs.com (128.224.149.8) by
  ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.3.248.2; Mon, 15 Aug 2016 13:31:26 -0700
+ 14.3.248.2; Mon, 15 Aug 2016 13:31:16 -0700
 From:   Paul Gortmaker <paul.gortmaker@windriver.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
         John Crispin <john@phrozen.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4/4] mips: lantiq: make xrx200_phy_fw explicitly non-modular
-Date:   Mon, 15 Aug 2016 16:30:55 -0400
-Message-ID: <20160815203055.20541-5-paul.gortmaker@windriver.com>
+Subject: [PATCH 0/4] mips: demodularize non-modular drivers.
+Date:   Mon, 15 Aug 2016 16:30:51 -0400
+Message-ID: <20160815203055.20541-1-paul.gortmaker@windriver.com>
 X-Mailer: git-send-email 2.8.4
-In-Reply-To: <20160815203055.20541-1-paul.gortmaker@windriver.com>
-References: <20160815203055.20541-1-paul.gortmaker@windriver.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Return-Path: <Paul.Gortmaker@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54555
+X-archive-position: 54556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,73 +46,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Kconfig currently controlling compilation of this code is:
+This series of commits is a part of a larger project to ensure
+people don't reference modular support functions in non-modular
+code.  Overall there was roughly 5k lines of dead code in the
+kernel due to this.  So far we've fixed several areas, like tty,
+x86, net, ... and we continue to work on other areas.
 
-arch/mips/lantiq/Kconfig:config XRX200_PHY_FW
-arch/mips/lantiq/Kconfig:       bool "XRX200 PHY firmware loader"
+There are several reasons to not use module support for code that
+can never be built as a module, but the big ones are:
 
-...meaning that it currently is not being built as a module by anyone.
+ (1) it is easy to accidentally write unused module_exit and remove code
+ (2) it can be misleading when reading the source, thinking it can be
+     modular when the Makefile and/or Kconfig prohibit it
+ (3) it requires the include of the module.h header file which in turn
+     includes nearly everything else, thus adding to CPP overhead.
+ (4) it gets copied/replicated into other code and spreads like weeds.
 
-Lets remove the couple traces of modular infrastructure use, so that
-when reading the driver there is no doubt it is builtin-only.
+This represents the drivers actually using modular functions; there are
+also drivers/files that include module.h but don't use any of the macros
+or functions within it.  Those MIPS instances will be handled separately.
 
-Since module_platform_driver() uses the same init level priority as
-builtin_platform_driver() the init ordering remains unchanged with
-this commit.
+Paul.
 
-Also note that MODULE_DEVICE_TABLE is a no-op for non-modular code.
+---
 
-We also delete the MODULE_LICENSE tag etc. since all that information
-was (or is now) contained at the top of the file in the comments.
-
-We don't replace module.h with init.h since the file doesn't need that.
-
+Cc: Aurelien Jarno <aurelien@aurel32.net>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
 Cc: John Crispin <john@phrozen.org>
+Cc: "Rafał Miłecki" <zajec5@gmail.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
----
- arch/mips/lantiq/xway/xrx200_phy_fw.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/lantiq/xway/xrx200_phy_fw.c b/arch/mips/lantiq/xway/xrx200_phy_fw.c
-index 71e518c1e7e7..f0a0f2d431b2 100644
---- a/arch/mips/lantiq/xway/xrx200_phy_fw.c
-+++ b/arch/mips/lantiq/xway/xrx200_phy_fw.c
-@@ -1,4 +1,7 @@
- /*
-+ * Lantiq XRX200 PHY Firmware Loader
-+ * Author: John Crispin
-+ *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License version 2 as published
-  *  by the Free Software Foundation.
-@@ -8,7 +11,6 @@
- 
- #include <linux/delay.h>
- #include <linux/dma-mapping.h>
--#include <linux/module.h>
- #include <linux/firmware.h>
- #include <linux/of_platform.h>
- 
-@@ -100,7 +102,6 @@ static const struct of_device_id xway_phy_match[] = {
- 	{ .compatible = "lantiq,phy-xrx200" },
- 	{},
- };
--MODULE_DEVICE_TABLE(of, xway_phy_match);
- 
- static struct platform_driver xway_phy_driver = {
- 	.probe = xway_phy_fw_probe,
-@@ -109,9 +110,4 @@ static struct platform_driver xway_phy_driver = {
- 		.of_match_table = xway_phy_match,
- 	},
- };
--
--module_platform_driver(xway_phy_driver);
--
--MODULE_AUTHOR("John Crispin <john@phrozen.org>");
--MODULE_DESCRIPTION("Lantiq XRX200 PHY Firmware Loader");
--MODULE_LICENSE("GPL");
-+builtin_platform_driver(xway_phy_driver);
+Paul Gortmaker (4):
+  mips: bcm47xx: make serial explicitly non-modular
+  mips: ralink: make timer explicitly non-modular
+  mips: lantiq: make vmmc explicitly non-modular
+  mips: lantiq: make xrx200_phy_fw explicitly non-modular
+
+ arch/mips/bcm47xx/serial.c            | 11 ++++-------
+ arch/mips/lantiq/xway/vmmc.c          |  6 ++----
+ arch/mips/lantiq/xway/xrx200_phy_fw.c | 12 ++++--------
+ arch/mips/ralink/timer.c              | 28 +++++++---------------------
+ 4 files changed, 17 insertions(+), 40 deletions(-)
+
 -- 
 2.8.4

@@ -1,49 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2016 17:13:18 +0200 (CEST)
-Received: from pmta2.delivery5.ore.mailhop.org ([54.186.218.12]:39047 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2016 17:17:19 +0200 (CEST)
+Received: from pmta2.delivery5.ore.mailhop.org ([54.186.218.12]:47251 "EHLO
         pmta2.delivery5.ore.mailhop.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992043AbcHOPNEY0m0f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Aug 2016 17:13:04 +0200
-X-MHO-User: f7b0e588-62fa-11e6-8929-8ded99d5e9d7
+        by eddie.linux-mips.org with ESMTP id S23992128AbcHOPRKdBlZf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Aug 2016 17:17:10 +0200
+X-MHO-User: 89b93464-62fb-11e6-8929-8ded99d5e9d7
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Originating-IP: 74.99.77.15
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from io (unknown [74.99.77.15])
         by outbound2.ore.mailhop.org (Halon Mail Gateway) with ESMTPSA;
-        Mon, 15 Aug 2016 15:14:31 +0000 (UTC)
+        Mon, 15 Aug 2016 15:18:36 +0000 (UTC)
 Received: from io.lakedaemon.net (localhost [127.0.0.1])
-        by io (Postfix) with ESMTP id 8562280071;
-        Mon, 15 Aug 2016 15:12:59 +0000 (UTC)
-X-DKIM: OpenDKIM Filter v2.6.8 io 8562280071
+        by io (Postfix) with ESMTP id A82FE80064;
+        Mon, 15 Aug 2016 15:17:03 +0000 (UTC)
+X-DKIM: OpenDKIM Filter v2.6.8 io A82FE80064
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
-        s=mail; t=1471273979;
-        bh=2L9H4xLE9QOyo/nnl6N8PezwQgKMFNbhNijKDtd4yyM=;
+        s=mail; t=1471274223;
+        bh=c+Xoz3iedM9ql3ctkz5v7DOSvoK+bg/rSkgjuIQ6UwM=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=p2wLFZzOoIhjS9HFfRQ+qLMNLstzRB6If9ZLeF4BKrSwEPuhXeStEN3RjsPW08d/d
-         wwf9KFBZchwvghdgxqIoQuRpKF4b6uHWoL7K5Xg0gxQbC+mLTeeNQ4wv2auQSp3XF1
-         whmQI8oXQDg3nhz48ZjpsJDdfLNwh61FCiCs4kCCRLVOcYFpvvnSJtZl60siJAFax+
-         biz5IXiWh5LVCmzOnndNUWXClAk2gN3+W7mpMfvyzAXJuytNh/X+yMDhy3Ls89kq1S
-         9WpnQvL5uQF2FzgZimkqJrA+aRr1LARUJ3OsQNYvlNpZFiasrqd8OwEWiuAsURibgj
-         VmlylQtefPyVQ==
-Date:   Mon, 15 Aug 2016 15:12:59 +0000
+        b=2BiqF6GwXCd+ccmgM8c1oSXHkBVI6JXvPcdIX5R87ZEAmpUxetM0ii/e243E29fPT
+         S59Eg7ZAtrJSvmsEpDfJjK52I0Vo/8W2PpP4AguEnNh7KH9a7ew2cjr7b9Ktz2jxgH
+         eALeILr7sHaibSdgs4qHXmNUXmYgJ8RJdIz8/itbYAmiu7kKH0kdQtbspwDaPxh3O6
+         mfrh0oWQzphFUQLzjb/+1t1snnDwPkdJl+IGNo+7l9AcIBDgBFYfhz48HXXezqytne
+         7/UqYN/7fkxEWV+P264plC5yLyOv3U6MyIMGAIPOHMmlAQhts+bL6t3l5uy/tiS43h
+         I2mGJZlMrzCuA==
+Date:   Mon, 15 Aug 2016 15:17:03 +0000
 From:   Jason Cooper <jason@lakedaemon.net>
 To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 Cc:     monstr@monstr.eu, ralf@linux-mips.org, tglx@linutronix.de,
         marc.zyngier@arm.com, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 4/9] MIPS: xilfpga: Use Xilinx AXI Interrupt Controller
-Message-ID: <20160815151259.GC3353@io.lakedaemon.net>
+Subject: Re: [PATCH 8/9] MIPS: xilfpga: Add DT node for AXI emaclite
+Message-ID: <20160815151703.GD3353@io.lakedaemon.net>
 References: <1471269335-58747-1-git-send-email-Zubair.Kakakhel@imgtec.com>
- <1471269335-58747-5-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <1471269335-58747-9-git-send-email-Zubair.Kakakhel@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1471269335-58747-5-git-send-email-Zubair.Kakakhel@imgtec.com>
+In-Reply-To: <1471269335-58747-9-git-send-email-Zubair.Kakakhel@imgtec.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <jason@lakedaemon.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54547
+X-archive-position: 54548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,63 +62,64 @@ X-list: linux-mips
 
 Hi Zubair,
 
-On Mon, Aug 15, 2016 at 02:55:30PM +0100, Zubair Lutfullah Kakakhel wrote:
-> IRQs from peripherals such as i2c/uart/ethernet come via
-> the AXI Interrupt controller.
+On Mon, Aug 15, 2016 at 02:55:34PM +0100, Zubair Lutfullah Kakakhel wrote:
+> The xilfpga platform has a Xilinx AXI emaclite block.
 > 
-> Select it in Kconfig for xilfpga and add the DT node
+> Add the DT node to use it.
 > 
 > Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 > ---
->  arch/mips/Kconfig                        |  1 +
->  arch/mips/boot/dts/xilfpga/nexys4ddr.dts | 12 ++++++++++++
->  2 files changed, 13 insertions(+)
+>  arch/mips/boot/dts/xilfpga/nexys4ddr.dts | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
 > 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 2638856..42ecf40 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -426,6 +426,7 @@ config MACH_XILFPGA
->  	select SYS_SUPPORTS_ZBOOT_UART16550
->  	select USE_OF
->  	select USE_GENERIC_EARLY_PRINTK_8250
-> +	select XILINX_IRQ
->  	help
->  	  This enables support for the IMG University Program MIPSfpga platform.
-
-Please split dt changes from code changes.
-
 > diff --git a/arch/mips/boot/dts/xilfpga/nexys4ddr.dts b/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
-> index 48d2112..8db660b 100644
+> index 3658e21..58bc62f 100644
 > --- a/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
 > +++ b/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
-> @@ -17,6 +17,18 @@
->  		compatible = "mti,cpu-interrupt-controller";
->  	};
+> @@ -42,6 +42,33 @@
+>  		xlnx,tri-default = <0xffffffff>;
+>  	} ;
 >  
-> +	axi_intc: interrupt-controller@10200000 {
-> +		#interrupt-cells = <1>;
-> +		compatible = "xlnx,xps-intc-1.00.a";
+> +	axi_ethernetlite: ethernet@10e00000 {
+> +		compatible = "xlnx,xps-ethernetlite-3.00.a";
 
-This compatible string isn't documented, mind adding it?  Please make
-sure to Cc the devicetree maintainers on it.
+This one also isn't documented.
+
+> +		device_type = "network";
+> +		interrupt-parent = <&axi_intc>;
+> +		interrupts = <1>;
+> +		local-mac-address = [08 86 4C 0D F7 09];
+
+I'm pretty sure you don't want this in the mainline dts file.
 
 thx,
 
 Jason.
 
-> +		interrupt-controller;
-> +		reg = <0x10200000 0x10000>;
-> +		xlnx,kind-of-intr = <0x0>;
-> +		xlnx,num-intr-inputs = <0x6>;
-> +
-> +		interrupt-parent = <&cpuintc>;
-> +		interrupts = <6>;
+> +		phy-handle = <&phy0>;
+> +		reg = <0x10e00000 0x10000>;
+> +		xlnx,duplex = <0x1>;
+> +		xlnx,include-global-buffers = <0x1>;
+> +		xlnx,include-internal-loopback = <0x0>;
+> +		xlnx,include-mdio = <0x1>;
+> +		xlnx,instance = "axi_ethernetlite_inst";
+> +		xlnx,rx-ping-pong = <0x1>;
+> +		xlnx,s-axi-id-width = <0x1>;
+> +		xlnx,tx-ping-pong = <0x1>;
+> +		xlnx,use-internal = <0x0>;
+> +		mdio {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			phy0: phy@1 {
+> +				device_type = "ethernet-phy";
+> +				reg = <1>;
+> +			};
+> +		};
 > +	};
 > +
->  	axi_gpio: gpio@10600000 {
->  		#gpio-cells = <1>;
->  		compatible = "xlnx,xps-gpio-1.00.a";
+>  	axi_uart16550: serial@10400000 {
+>  		compatible = "ns16550a";
+>  		reg = <0x10400000 0x10000>;
 > -- 
 > 1.9.1
 > 

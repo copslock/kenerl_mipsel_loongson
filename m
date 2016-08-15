@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2016 15:57:14 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49271 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2016 15:57:38 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38095 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992501AbcHON4ExLIij (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Aug 2016 15:56:04 +0200
+        with ESMTP id S23992509AbcHON4G69KPj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Aug 2016 15:56:06 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C191A2AC3446F;
-        Mon, 15 Aug 2016 14:55:45 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 477993742189E;
+        Mon, 15 Aug 2016 14:55:47 +0100 (IST)
 Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Mon, 15 Aug 2016 14:55:49 +0100
+ 14.3.294.0; Mon, 15 Aug 2016 14:55:50 +0100
 From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 To:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>
 CC:     <jason@lakedaemon.net>, <marc.zyngier@arm.com>,
         <Zubair.Kakakhel@imgtec.com>, <linux-mips@linux-mips.org>,
         <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH 3/9] MIPS: xilfpga: Use irqchip_init instead of the legacy way
-Date:   Mon, 15 Aug 2016 14:55:29 +0100
-Message-ID: <1471269335-58747-4-git-send-email-Zubair.Kakakhel@imgtec.com>
+Subject: [PATCH 5/9] MIPS: xilfpga: Update DT node and specify uart irq
+Date:   Mon, 15 Aug 2016 14:55:31 +0100
+Message-ID: <1471269335-58747-6-git-send-email-Zubair.Kakakhel@imgtec.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1471269335-58747-1-git-send-email-Zubair.Kakakhel@imgtec.com>
 References: <1471269335-58747-1-git-send-email-Zubair.Kakakhel@imgtec.com>
@@ -27,7 +27,7 @@ Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54539
+X-archive-position: 54540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,35 +44,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This prepares the code use the Xilinx AXI Interrupt Controller
-driver now available in drivers/irqchip/irq-xilinx.c
+Update the DT node with the UART irq
 
 Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 ---
- arch/mips/xilfpga/intc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/mips/boot/dts/xilfpga/nexys4ddr.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/xilfpga/intc.c b/arch/mips/xilfpga/intc.c
-index c4d1a71..a127cca 100644
---- a/arch/mips/xilfpga/intc.c
-+++ b/arch/mips/xilfpga/intc.c
-@@ -11,15 +11,12 @@
+diff --git a/arch/mips/boot/dts/xilfpga/nexys4ddr.dts b/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
+index 8db660b..d285c8d 100644
+--- a/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
++++ b/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
+@@ -50,6 +50,9 @@
+ 		reg-offset = <0x1000>;
  
- #include <linux/of.h>
- #include <linux/of_irq.h>
-+#include <linux/irqchip.h>
+ 		clocks	= <&ext>;
++
++		interrupt-parent = <&axi_intc>;
++		interrupts = <0>;
+ 	};
+ };
  
- #include <asm/irq_cpu.h>
- 
--static struct of_device_id of_irq_ids[] __initdata = {
--	{ .compatible = "mti,cpu-interrupt-controller", .data = mips_cpu_irq_of_init },
--	{},
--};
- 
- void __init arch_init_irq(void)
- {
--	of_irq_init(of_irq_ids);
-+	irqchip_init();
- }
 -- 
 1.9.1

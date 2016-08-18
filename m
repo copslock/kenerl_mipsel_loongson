@@ -1,54 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 14:31:45 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3857 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993262AbcHRMbiQQDDL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 14:31:38 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id DDC3A41F8ECC;
-        Thu, 18 Aug 2016 13:31:32 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 18 Aug 2016 13:31:32 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 18 Aug 2016 13:31:32 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 03940169CA0C4;
-        Thu, 18 Aug 2016 13:31:30 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 18 Aug
- 2016 13:31:32 +0100
-Date:   Thu, 18 Aug 2016 13:31:32 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     "Levin, Alexander" <alexander.levin@verizon.com>
-CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: [PATCH BACKPORT 3.17-4.4 2/4] MIPS: KVM: Add missing gfn range
- check
-Message-ID: <20160818123132.GF19514@jhogan-linux.le.imgtec.org>
-References: <cover.6970eb00e72f05828fc82d97b7283d20eac8951e.1471018436.git-series.james.hogan@imgtec.com>
- <5ae3371dc11534460b722864ea8c6ef27e8506d1.1471018436.git-series.james.hogan@imgtec.com>
- <8ae95d49-3491-02cd-9ce6-fd876df1fe4d@verizon.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 14:37:12 +0200 (CEST)
+Received: from mail-it0-f52.google.com ([209.85.214.52]:36448 "EHLO
+        mail-it0-f52.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993262AbcHRMhDxFd9L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 14:37:03 +0200
+Received: by mail-it0-f52.google.com with SMTP id e63so25208392ith.1
+        for <linux-mips@linux-mips.org>; Thu, 18 Aug 2016 05:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=z0PIW29l7nJ7g5bTQ5MfCYLtUelb3dTBjKIGUEJ7EcE=;
+        b=OOZrLcNexna96SzJ2wnZsB/Ovx9NqeLxuxeqvOvhl2IGkHhxVXd93c7esZUCwhWrCH
+         x251grrZ51VOH5J+Zxr8TMXVyyswzVR3PMzZKGp7zCcgffwi5sW/YInUNu8srnaur8o5
+         8KIXi7GEBGcmQJqXIRT80bsek+Al36av//DdaEGGp/0ayFteGSd6HcSRDnjlvwFCYpg2
+         msYwxNLbVgXeJqwgDinLm7kgr5tsZxe8DgqFY8mUC/f1DdEOykbSurXXnPaTv1E6MUtl
+         UayWrNyB7rN84cFirguo5JZtsHXxbQYHXCjkIGmAtv74xm5hwd0L0F6ZkcENmvLpzRfR
+         1Kjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=z0PIW29l7nJ7g5bTQ5MfCYLtUelb3dTBjKIGUEJ7EcE=;
+        b=MY8lD2uB0ZCVe+BjYpH2f1SVSCIkgFBuJ6ygMAnoO3fsc6Vu8xBIWCK2VHfnx0eIbJ
+         wwixSY8EDFWMS4h5MhUGJazAiZcCcO5kTYRAmezZDOq7hgecaTr+0i0meByIqWkH2x19
+         pFg3KuTFzo9SLP9Qp+im12Cswsg0N6DHmTpJA8SKrSQYHOjBAm0F64KJhyh8yYTAaxPa
+         HJAvRRsxVQpOilacu3ykoSm1yBGhci44XIYjkNTHbYriF/AnNSf2Y9gyxOO2w8+K29RD
+         D293SoWTr4JrC1w3pQyGuGKCwzhCml6UyTN2jyQzmIbhiDqFyfHw87gSLBoDiiq9OL8A
+         aa3A==
+X-Gm-Message-State: AEkoouvnY0ZnLVNqnn9rwYOA1DHv8pgKSSFwe/c639ecLcBjS43mf6xYRFHrA2I+nKqLPHtbdBUIy6FkiLhHsg==
+X-Received: by 10.36.200.134 with SMTP id w128mr3003099itf.92.1471523815233;
+ Thu, 18 Aug 2016 05:36:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Ruyc9IU5x/hZJuxv"
-Content-Disposition: inline
-In-Reply-To: <8ae95d49-3491-02cd-9ce6-fd876df1fe4d@verizon.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: cee91754
-Return-Path: <James.Hogan@imgtec.com>
+Received: by 10.107.3.232 with HTTP; Thu, 18 Aug 2016 05:36:54 -0700 (PDT)
+In-Reply-To: <20160801.232359.1867350514422089320.anemo@mba.ocn.ne.jp>
+References: <CAMuHMdUARn_SxhkWiTsGdSixFv9a=VjKLLgQMfPTtxufrjepCg@mail.gmail.com>
+ <20160801.232359.1867350514422089320.anemo@mba.ocn.ne.jp>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 18 Aug 2016 14:36:54 +0200
+X-Google-Sender-Auth: 190qE8djfoYbhALJhjibs8cK01M
+Message-ID: <CAMuHMdW6e=Tms0TXLVomRm7EdhPNpvFTO13nx3W2cyx52VDUmQ@mail.gmail.com>
+Subject: Re: Revisiting rbtx4927: gpiod_direction_output_raw: invalid GPIO
+To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54615
+X-archive-position: 54616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,105 +65,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Ruyc9IU5x/hZJuxv
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Nemoto-san,
 
-Hi Sasha,
+On Mon, Aug 1, 2016 at 4:23 PM, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> On Thu, 14 Apr 2016 21:06:05 +0200, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>> I've just updated my old rbtx4927 from v3.13-rc3 to v4.6-rc3.
+>> Surprisingly, it boots to nfsroot without any kernel changes.
+>
+> Good news!  I'm happy to hear that.
+>
+>> However, there's an annoying warning in the boot log:
+>>
+>>         gpiod_direction_output_raw: invalid GPIO
+>>
+>> This is caused by the following code in arch/mips/txx9/rbtx4927/setup.c:
+>>
+>>         static void __init rbtx4927_mem_setup(void)
+>>         {
+>>
+>>                 /* TX4927-SIO DTR on (PIO[15]) */
+>>                 gpio_request(15, "sio-dtr");
+>>
+>> returns -EPROBE_DEFER
+>>
+>>                 gpio_direction_output(15, 1);
+>>
+>> VALIDATE_DESC triggers the warning.
 
-On Thu, Aug 18, 2016 at 07:45:33AM -0400, Levin, Alexander wrote:
-> On 08/18/2016 05:05 AM, James Hogan wrote:
-> > commit 8985d50382359e5bf118fdbefc859d0dbf6cebc7 upstream.
-> >=20
-> > kvm_mips_handle_mapped_seg_tlb_fault() calculates the guest frame number
-> > based on the guest TLB EntryLo values, however it is not range checked
-> > to ensure it lies within the guest_pmap. If the physical memory the
-> > guest refers to is out of range then dump the guest TLB and emit an
-> > internal error.
-> >=20
-> > Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
-> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: "Radim Kr=C4=8Dm=C3=A1=C5=99" <rkrcmar@redhat.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > Cc: kvm@vger.kernel.org
-> > Signed-off-by: Radim Kr=C4=8Dm=C3=A1=C5=99 <rkrcmar@redhat.com>
-> > [james.hogan@imgtec.com: Backport to v3.17.y - v4.4.y]
-> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
->=20
-> Hey James,
->=20
-> Thanks for the backport!
->=20
-> Applying this one seems to fail with:
->=20
-> $ git apply --reject [PATCH BACKPORT 3.17-4.4 1_4] MIPS: KVM: Fix mapped
-> fault broken commpage handling - James Hogan <james.hogan@imgtec.com> -
-> 2016-08-18 0505.eml
-> Checking patch arch/mips/kvm/tlb.c...
-> error: while searching for:
-> 	unsigned long entryhi =3D 0, entrylo0 =3D 0, entrylo1 =3D 0;
-> 	struct kvm *kvm =3D vcpu->kvm;
-> 	pfn_t pfn0, pfn1;
-> 	long tlb_lo[2];
->=20
-> 	tlb_lo[0] =3D tlb->tlb_lo0;
->=20
-> error: patch failed: arch/mips/kvm/tlb.c:361
-> error: while searching for:
-> 			VPN2_MASK & (PAGE_MASK << 1)))
-> 		tlb_lo[(KVM_GUEST_COMMPAGE_ADDR >> PAGE_SHIFT) & 1] =3D 0;
->=20
-> 	if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb_lo[0])
-> 				   >> PAGE_SHIFT) < 0)
-> 		return -1;
->=20
-> 	if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb_lo[1])
-> 				   >> PAGE_SHIFT) < 0)
-> 		return -1;
->=20
-> 	pfn0 =3D kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb_lo[0])
-> 				    >> PAGE_SHIFT];
-> 	pfn1 =3D kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb_lo[1])
-> 				    >> PAGE_SHIFT];
->=20
-> 	if (hpa0)
-> 		*hpa0 =3D pfn0 << PAGE_SHIFT;
->=20
-> error: patch failed: arch/mips/kvm/tlb.c:374
-> Applying patch arch/mips/kvm/tlb.c with 2 rejects...
-> Rejected hunk #1.
-> Rejected hunk #2.
+Note that as of commit 54d77198fdfbc4f0 ("gpio: bail out silently on NULL
+descriptors"), the warning is gone. But the underlying issue isn't.
 
-This works for me (on 558ba5fd7d8d Linux 4.1.30) as long as 1/4 is
-applied first. Are you applying them in the right order?
+>> Probably a silly GPIO conversion was missed during the last 2+ years?
+>
+> Maybe txx9_gpio_init() failed to add gpio_chip since it was called too
+> early on startup.
+>
+> Nowadays gpiochip_add_data calls kzalloc so cannot be called from
+> plat_mem_setup context.
 
-Cheers
-James
+That's correct. It failed (silently) with -12, which is -ENOMEM...
 
+> Could you try moving these txx9_gpio_init(), gpio_request() and
+> gpio_direction_output() calls to rbtx4927_arch_init() or
+> rbtx4927_device_init()?
 
---Ruyc9IU5x/hZJuxv
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Thanks, that works! Will send patches soon...
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Gr{oetje,eeting}s,
 
-iQIcBAEBCAAGBQJXtaqkAAoJEGwLaZPeOHZ6+zcP/0FxbvC2YHM037ut03VR+VqS
-KEUbWt/X4csa3Ag/WC634atmDeIC3THEJUieDMbldofENESm/UUFEwdwFsk8yG1o
-3aj3p/XphFOQdTyM+zFyu1XoYn8FnyMDANMNaOtVtkLWq8LF1QhbcV9cNLB4hRFn
-BGDygBASlHqzqTVl2OGYMk7Ep8q5QctOX2ajZEo56bRpo0vQ9GV1JdXDOlRzqyjN
-wzVR43+YvZAHSYAIpm2XUeX79/Mr62WcIOPfF65hYT1HmtBAZcRHWw/qL3yPO9F/
-UxVscDCNJQxJ2ORgqqsv/uYc/3Eqk3rY8vsqyHQhMoQ7RzJVspQU93A6t51Whfqt
-sp41eNK4JUvkFovaBIzyEZ6kqerO46Of0HpBcQgPHfdoQ7jTdX/M51eXXOgqDuIl
-e3j6bYTGYSMpgBUysknE1u59fQEXuyY21U54fM68zAoohq62Jj2h9hsNdiF5EHOd
-F6A1IgzdJ43D/6Gt637uKh/W456Q2CGvncysDmeF+7f1z0Vhh4lp9lRPZ8qUBhgV
-UA+3ka1WJxojR2U9ktZuhnVLAhXykDH+EIfrQ/oywIjlGGst8mhMMfmZmtc+Y1zI
-vnqP86GuiIJbG/cdNFVxb2MtsGus21tlWXA47KGKNo8aqqPIC7SaQ5Co3YbGyikN
-v8bW3vW3zEF37gC9967Q
-=KOAt
------END PGP SIGNATURE-----
+                        Geert
 
---Ruyc9IU5x/hZJuxv--
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,37 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:13:21 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54016 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993375AbcHROMITiZ3I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:12:08 +0200
-Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 96ECB78D;
-        Thu, 18 Aug 2016 14:12:00 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
-Subject: [PATCH 4.7 088/186] MIPS: KVM: Propagate kseg0/mapped tlb fault errors
-Date:   Thu, 18 Aug 2016 15:58:25 +0200
-Message-Id: <20160818135935.907260009@linuxfoundation.org>
-X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160818135932.219369981@linuxfoundation.org>
-References: <20160818135932.219369981@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:13:42 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:56665 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993411AbcHROMrlplkI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Aug 2016 16:12:47 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 9D3DDABEF;
+        Thu, 18 Aug 2016 14:12:43 +0000 (UTC)
+Date:   Thu, 18 Aug 2016 16:12:42 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Chris Metcalf <cmetcalf@mellanox.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Russell King <linux@arm.linux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Aaron Tomlin <atomlin@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>, Andrew Morton <akpm@osdl.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        "Ralf Baechle ralf @ linux-mips . org David S. Miller" 
+        <davem@davemloft.net>, linux-mips@linux-mips.org,
+        sparclinux@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 1/4] nmi_backtrace: add more trigger_*_cpu_backtrace()
+ methods
+Message-ID: <20160818141242.GK26194@pathway.suse.cz>
+References: <1471377024-2244-1-git-send-email-cmetcalf@mellanox.com>
+ <1471377024-2244-2-git-send-email-cmetcalf@mellanox.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1471377024-2244-2-git-send-email-cmetcalf@mellanox.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54650
+X-archive-position: 54651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,120 +52,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.7-stable review patch.  If anyone has any objections, please let me know.
+On Tue 2016-08-16 15:50:21, Chris Metcalf wrote:
+> Currently you can only request a backtrace of either all cpus, or
+> all cpus but yourself.  It can also be helpful to request a remote
+> backtrace of a single cpu, and since we want that, the logical
+> extension is to support a cpumask as the underlying primitive.
+> 
+> This change modifies the existing lib/nmi_backtrace.c code to take
+> a cpumask as its basic primitive, and modifies the linux/nmi.h code
+> to use the new "cpumask" method instead.
+> 
+> The mips code ignored the "include_self" boolean but with this change
+> it will now also dump a local backtrace if requested.
+> 
+> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+> index 7429ad09fbe3..fea1fa7726e3 100644
+> --- a/arch/mips/kernel/process.c
+> +++ b/arch/mips/kernel/process.c
+> @@ -569,9 +569,16 @@ static void arch_dump_stack(void *info)
+>  	dump_stack();
+>  }
+>  
+> -void arch_trigger_all_cpu_backtrace(bool include_self)
+> +void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
+>  {
+> -	smp_call_function(arch_dump_stack, NULL, 1);
+> +	long this_cpu = get_cpu();
+> +
+> +	if (cpumask_test_cpu(this_cpu, mask) && !exclude_self)
+> +		dump_stack();
 
-------------------
+The bit is not cleared in the mask. Therefore arch_dump_stack
+will get called for this CPU as well.
 
-From: James Hogan <james.hogan@imgtec.com>
+We could either use similar tricks as in lib/nmi_backtrace().
+I mean to copy the mask into a global variable and prevent
+parallel call with a backtrace_flag.
 
-commit 9b731bcfdec4c159ad2e4312e25d69221709b96a upstream.
+Or we could ignore the exclude_self flag as it was done
+before. It is a separate problem after all and it need
+not be solved in this patch(set).
 
-Propagate errors from kvm_mips_handle_kseg0_tlb_fault() and
-kvm_mips_handle_mapped_seg_tlb_fault(), usually triggering an internal
-error since they normally indicate the guest accessed bad physical
-memory or the commpage in an unexpected way.
+> +
+> +	smp_call_function_many(mask, arch_dump_stack, NULL, 1);
+> +
+> +	put_cpu();
+>  }
 
-Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 3.10.x-
-Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
-[james.hogan@imgtec.com: Backport to v4.7]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/kvm/emulate.c |   40 ++++++++++++++++++++++++++++------------
- arch/mips/kvm/tlb.c     |   14 ++++++++++----
- 2 files changed, 38 insertions(+), 16 deletions(-)
+Otherwise the patch patch looks good to me.
 
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1615,8 +1615,14 @@ enum emulation_result kvm_mips_emulate_c
- 
- 	preempt_disable();
- 	if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
--		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0)
--			kvm_mips_handle_kseg0_tlb_fault(va, vcpu);
-+		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0 &&
-+		    kvm_mips_handle_kseg0_tlb_fault(va, vcpu)) {
-+			kvm_err("%s: handling mapped kseg0 tlb fault for %lx, vcpu: %p, ASID: %#lx\n",
-+				__func__, va, vcpu, read_c0_entryhi());
-+			er = EMULATE_FAIL;
-+			preempt_enable();
-+			goto done;
-+		}
- 	} else if ((KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0) ||
- 		   KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
- 		int index;
-@@ -1654,14 +1660,19 @@ enum emulation_result kvm_mips_emulate_c
- 								run, vcpu);
- 				preempt_enable();
- 				goto dont_update_pc;
--			} else {
--				/*
--				 * We fault an entry from the guest tlb to the
--				 * shadow host TLB
--				 */
--				kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
--								     NULL,
--								     NULL);
-+			}
-+			/*
-+			 * We fault an entry from the guest tlb to the
-+			 * shadow host TLB
-+			 */
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
-+								 NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, va, index, vcpu,
-+					read_c0_entryhi());
-+				er = EMULATE_FAIL;
-+				preempt_enable();
-+				goto done;
- 			}
- 		}
- 	} else {
-@@ -2625,8 +2636,13 @@ enum emulation_result kvm_mips_handle_tl
- 			 * OK we have a Guest TLB entry, now inject it into the
- 			 * shadow host TLB
- 			 */
--			kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb, NULL,
--							     NULL);
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
-+								 NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, va, index, vcpu,
-+					read_c0_entryhi());
-+				er = EMULATE_FAIL;
-+			}
- 		}
- 	}
- 
---- a/arch/mips/kvm/tlb.c
-+++ b/arch/mips/kvm/tlb.c
-@@ -790,10 +790,16 @@ uint32_t kvm_get_inst(uint32_t *opc, str
- 				local_irq_restore(flags);
- 				return KVM_INVALID_INST;
- 			}
--			kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
--							     &vcpu->arch.
--							     guest_tlb[index],
--							     NULL, NULL);
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
-+						&vcpu->arch.guest_tlb[index],
-+						NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault failed for %p, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, opc, index, vcpu,
-+					read_c0_entryhi());
-+				kvm_mips_dump_guest_tlbs(vcpu);
-+				local_irq_restore(flags);
-+				return KVM_INVALID_INST;
-+			}
- 			inst = *(opc);
- 		}
- 		local_irq_restore(flags);
+Best Regards,
+Petr

@@ -1,38 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:17:30 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54689 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993409AbcHRORINOO0I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:17:08 +0200
-Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AD9579F3;
-        Thu, 18 Aug 2016 14:17:01 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.7 177/186] MIPS: hpet: Increase HPET_MIN_PROG_DELTA and decrease HPET_MIN_CYCLES
-Date:   Thu, 18 Aug 2016 15:59:54 +0200
-Message-Id: <20160818135939.794336538@linuxfoundation.org>
-X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160818135932.219369981@linuxfoundation.org>
-References: <20160818135932.219369981@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 19:34:43 +0200 (CEST)
+Received: from baptiste.telenet-ops.be ([195.130.132.51]:40852 "EHLO
+        baptiste.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992474AbcHRRedcS8b- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 19:34:33 +0200
+Received: from ayla.of.borg ([84.193.137.253])
+        by baptiste.telenet-ops.be with bizsmtp
+        id YhaY1t0035UCtCs01haYa2; Thu, 18 Aug 2016 19:34:32 +0200
+Received: from ramsan.of.borg ([192.168.97.29] helo=ramsan)
+        by ayla.of.borg with esmtp (Exim 4.82)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1baRD6-0002hM-7S; Thu, 18 Aug 2016 19:34:32 +0200
+Received: from geert by ramsan with local (Exim 4.82)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1baRD8-0007zg-7Q; Thu, 18 Aug 2016 19:34:34 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Mark Brown <broonie@kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 0/3] MIPS: TXx9: Common Clock Framework Conversion
+Date:   Thu, 18 Aug 2016 19:34:24 +0200
+Message-Id: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54655
+X-archive-position: 54656
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,86 +50,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.7-stable review patch.  If anyone has any objections, please let me know.
+	Hi Ralf, Nemoto-san, Mark, Wim, Günter,
 
-------------------
+This patch series converts the Toshiba TXx9 platforms from their own
+custom minimal clock implementation to the Common Clock Framework.
 
-From: Huacai Chen <chenhc@lemote.com>
+  - Patches 1 and 2 add missing clock (un)prepare calls to TXx9-specific
+    drivers,
+  - Patch 3 replaces the custom clock implementation by a CCF-based one,
+    providing a minimal set of clocks.
 
-commit 3ef06653987d4c4536b408321edf0e5caa2a317f upstream.
+Patches 1 and 2 can be applied independently.
+Patch 3 has a hard dependency on patches 1 and 2.
+I don't know how you prefer to handle this?
 
-At first, we prefer to use mips clockevent device, so we decrease the
-rating of hpet clockevent device.
+This has been tested with the watchdog on RBTX4927.
 
-For hpet, if HPET_MIN_PROG_DELTA (minimum delta of hpet programming) is
-too small and HPET_MIN_CYCLES (threshold of -ETIME checking) is too
-large, then hpet_next_event() can easily return -ETIME. After commit
-c6eb3f70d44828 ("hrtimer: Get rid of hrtimer softirq") this will cause
-a RCU stall.
+Thanks!
 
-So, HPET_MIN_PROG_DELTA must be sufficient that we don't re-trip the
--ETIME check -- if we do, we will return -ETIME, forward the next event
-time, try to set it, return -ETIME again, and basically lock the system
-up. Meanwhile, HPET_MIN_CYCLES doesn't need to be too large, 16 cycles
-is enough.
+Geert Uytterhoeven (3):
+  spi: spi-txx9: Add missing clock (un)prepare calls for CCF
+  watchdog: txx9wdt: Add missing clock (un)prepare calls for CCF
+  MIPS: TXx9: Convert to Common Clock Framework
 
-This solution is similar to commit f9eccf24615672 ("clocksource/drivers
-/vt8500: Increase the minimum delta").
+ arch/mips/txx9/Kconfig         |  2 +-
+ arch/mips/txx9/generic/setup.c | 68 ++++++++++++++++++++----------------------
+ drivers/spi/spi-txx9.c         |  6 ++--
+ drivers/watchdog/txx9wdt.c     |  6 ++--
+ 4 files changed, 40 insertions(+), 42 deletions(-)
 
-By the way, this patch ensures hpet count/compare to be 32-bit long.
+-- 
+1.9.1
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: Steven J . Hill <Steven.Hill@imgtec.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13819/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Gr{oetje,eeting}s,
 
----
- arch/mips/loongson64/loongson-3/hpet.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+						Geert
 
---- a/arch/mips/loongson64/loongson-3/hpet.c
-+++ b/arch/mips/loongson64/loongson-3/hpet.c
-@@ -13,8 +13,8 @@
- #define SMBUS_PCI_REG64		0x64
- #define SMBUS_PCI_REGB4		0xb4
- 
--#define HPET_MIN_CYCLES		64
--#define HPET_MIN_PROG_DELTA	(HPET_MIN_CYCLES + (HPET_MIN_CYCLES >> 1))
-+#define HPET_MIN_CYCLES		16
-+#define HPET_MIN_PROG_DELTA	(HPET_MIN_CYCLES * 12)
- 
- static DEFINE_SPINLOCK(hpet_lock);
- DEFINE_PER_CPU(struct clock_event_device, hpet_clockevent_device);
-@@ -157,14 +157,14 @@ static int hpet_tick_resume(struct clock
- static int hpet_next_event(unsigned long delta,
- 		struct clock_event_device *evt)
- {
--	unsigned int cnt;
--	int res;
-+	u32 cnt;
-+	s32 res;
- 
- 	cnt = hpet_read(HPET_COUNTER);
--	cnt += delta;
-+	cnt += (u32) delta;
- 	hpet_write(HPET_T0_CMP, cnt);
- 
--	res = (int)(cnt - hpet_read(HPET_COUNTER));
-+	res = (s32)(cnt - hpet_read(HPET_COUNTER));
- 
- 	return res < HPET_MIN_CYCLES ? -ETIME : 0;
- }
-@@ -230,7 +230,7 @@ void __init setup_hpet_timer(void)
- 
- 	cd = &per_cpu(hpet_clockevent_device, cpu);
- 	cd->name = "hpet";
--	cd->rating = 320;
-+	cd->rating = 100;
- 	cd->features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT;
- 	cd->set_state_shutdown = hpet_set_state_shutdown;
- 	cd->set_state_periodic = hpet_set_state_periodic;
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

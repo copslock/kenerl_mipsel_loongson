@@ -1,65 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 13:46:42 +0200 (CEST)
-Received: from omzsmtpe03.verizonbusiness.com ([199.249.25.208]:5602 "EHLO
-        omzsmtpe03.verizonbusiness.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993200AbcHRLq0vi8yp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 13:46:26 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=verizon.com; i=@verizon.com; q=dns/txt; s=corp;
-  t=1471520786; x=1503056786;
-  h=from:to:cc:date:subject:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=a5vRTqweAZJ5bRXMq08iD5Ay1u9OgO2Ry2vhf6fxPVM=;
-  b=VlFVbbDYPb0kd22eSypRIY8lm/7Usabf/oKhbN3oxBhUerqBdYLTg2gK
-   P10z9Xssqld844skKMeL+0eP8aWcYQoEYzb8TDnNsJNGKSaql/fPg04Oa
-   auxqtGjypbfsgfmMPMJHlztVSOYDfIfzwTT1HROSk9xa5LruyqOXphpId
-   g=;
-X-IronPort-Anti-Spam-Filtered: false
-Received: from unknown (HELO fldsmtpi02.verizon.com) ([166.68.71.144])
-  by omzsmtpe03.verizonbusiness.com with ESMTP; 18 Aug 2016 11:46:20 +0000
-From:   "Levin, Alexander" <alexander.levin@verizon.com>
-X-IronPort-AV: E=Sophos;i="5.28,539,1464652800"; 
-   d="scan'208";a="1257673313"
-Received: from fhdp1lumxc7hb01.verizon.com (HELO FHDP1LUMXC7HB01.us.one.verizon.com) ([166.68.59.188])
-  by fldsmtpi02.verizon.com with ESMTP; 18 Aug 2016 11:45:32 +0000
-Received: from FHDP1LUMXC7V93.us.one.verizon.com ([166.68.240.160]) by
- FHDP1LUMXC7HB01.us.one.verizon.com ([166.68.59.188]) with mapi; Thu, 18 Aug
- 2016 07:45:31 -0400
-To:     James Hogan <james.hogan@imgtec.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?utf-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Date:   Thu, 18 Aug 2016 07:45:33 -0400
-Subject: Re: [PATCH BACKPORT 3.17-4.4 2/4] MIPS: KVM: Add missing gfn range
- check
-Thread-Topic: [PATCH BACKPORT 3.17-4.4 2/4] MIPS: KVM: Add missing gfn range
- check
-Thread-Index: AdH5RgXPr9Bx14BBTvaelgkiAUYlOg==
-Message-ID: <8ae95d49-3491-02cd-9ce6-fd876df1fe4d@verizon.com>
-References: <cover.6970eb00e72f05828fc82d97b7283d20eac8951e.1471018436.git-series.james.hogan@imgtec.com>
- <5ae3371dc11534460b722864ea8c6ef27e8506d1.1471018436.git-series.james.hogan@imgtec.com>
-In-Reply-To: <5ae3371dc11534460b722864ea8c6ef27e8506d1.1471018436.git-series.james.hogan@imgtec.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
-acceptlanguage: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 13:53:15 +0200 (CEST)
+Received: from mail-wm0-f67.google.com ([74.125.82.67]:34718 "EHLO
+        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993243AbcHRLxJ3bonp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 13:53:09 +0200
+Received: by mail-wm0-f67.google.com with SMTP id q128so5285485wma.1;
+        Thu, 18 Aug 2016 04:53:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=AM+i8oo+lmmduyjfJ5e32IHmjZSMoFJLHpQZyB8BMuI=;
+        b=Pb4xOMeACltZMunLKaDEuVNg0iAm/IbZIhD1RAkE3ngkE+tfSQ0NM1ce7s22t9NlUS
+         5u84PG0holFAcfD7AsVgPXDBG4tEXwIvKcVlHmdJnugJJ+QzkQqtcezHZ18esBn6+5Qh
+         kdxNu3DOCXIawcHHOld+deHWcCGu2l28/IXD7B+4bwma1RjjrkdQUA27TS9NkZhQvvAq
+         XOPvMPZ0OfNK4WiuyOkVaMGiH7kIzXELdoteU3+XuEd2EjqGn5E04jBHi4RsJk9tJX2h
+         Uwt8T0J+wcU88w1qe8xqS5QNeTxN/xuspisI5sjkuyLngUlwNyxPTSNmHGR2MAT523hd
+         dApA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=AM+i8oo+lmmduyjfJ5e32IHmjZSMoFJLHpQZyB8BMuI=;
+        b=ZiayNbRRydoCFw7M+/mLI20M5mkyhUdDqZT4vnr0699xFwh5cpa08JrpjdU0Dgumy/
+         9wsQK/mmfbvcl4klp/rqRy1QlRgsrW6BrISbd0/JM6xvFnieT507yON7zwXhhRnPTYtl
+         hEqkKA2P39o5VnTzzMVV1f7PKGZ5N9MRmlKj5eos3/aQbJUKq1A1IV8TyTHdBy+TFVG2
+         9nBbZvwTGX/U8N3MbMFjJNi+/9InBSctZptqLDYmYH+KEFQ9Ssp68nBhNgOYiZm9ARGS
+         NhGz5qiw3/DQ6MSCfza6yYCAGjxd4EdCdv7jfLNsW7HlesD2LR1O0FdUN82j89bvqVcL
+         848w==
+X-Gm-Message-State: AEkoousnA4A6WqesKs8KD5yfTVjOIkIMaOL14s9Qg/q9tOhvib/UmzOXMUdihsVn5C4Qug==
+X-Received: by 10.194.100.129 with SMTP id ey1mr2056424wjb.60.1471521184137;
+        Thu, 18 Aug 2016 04:53:04 -0700 (PDT)
+Received: from Red (ANice-651-1-11-220.w86-203.abo.wanadoo.fr. [86.203.162.220])
+        by smtp.googlemail.com with ESMTPSA id v134sm31376789wmf.10.2016.08.18.04.53.01
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Aug 2016 04:53:03 -0700 (PDT)
+Date:   Thu, 18 Aug 2016 13:53:00 +0200
+From:   LABBE Corentin <clabbe.montjoie@gmail.com>
+To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Cc:     mpm@selenic.com, Herbert Xu <herbert@gondor.apana.org.au>,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        Ralf Baechle <ralf@linux-mips.org>, davem@davemloft.net,
+        geert@linux-m68k.org, Andrew Morton <akpm@linux-foundation.org>,
+        Greg KH <gregkh@linuxfoundation.org>, mchehab@kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        boris.brezillon@free-electrons.com, harvey.hunt@imgtec.com,
+        alex.smith@imgtec.com,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        kieran@ksquared.org.uk, Krzysztof Kozlowski <krzk@kernel.org>,
+        joshua.henderson@microchip.com, yendapally.reddy@broadcom.com,
+        narmstrong@baylibre.com, wangkefeng.wang@huawei.com,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        =?iso-8859-1?Q?=C1lvaro_Fern=E1ndez?= Rojas <noltari@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>, pankaj.dev@st.com,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Add Ingenic JZ4780 hardware RNG driver
+Message-ID: <20160818115300.GA6621@Red>
+References: <1471448151-20850-1-git-send-email-prasannatsmkumar@gmail.com>
+ <92a00062-9a87-0053-2c99-17bd1a304a4a@gmail.com>
+ <CANc+2y55ZCkauwKNtuuCxLx-WOtm8z+A_EBKsYSjEUdc+ZbZTQ@mail.gmail.com>
 MIME-Version: 1.0
-Return-Path: <alexander.levin@verizon.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANc+2y55ZCkauwKNtuuCxLx-WOtm8z+A_EBKsYSjEUdc+ZbZTQ@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <clabbe.montjoie@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54612
+X-archive-position: 54613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.levin@verizon.com
+X-original-sender: clabbe.montjoie@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,41 +88,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-T24gMDgvMTgvMjAxNiAwNTowNSBBTSwgSmFtZXMgSG9nYW4gd3JvdGU6DQo+IGNvbW1pdCA4OTg1
-ZDUwMzgyMzU5ZTViZjExOGZkYmVmYzg1OWQwZGJmNmNlYmM3IHVwc3RyZWFtLg0KPiANCj4ga3Zt
-X21pcHNfaGFuZGxlX21hcHBlZF9zZWdfdGxiX2ZhdWx0KCkgY2FsY3VsYXRlcyB0aGUgZ3Vlc3Qg
-ZnJhbWUgbnVtYmVyDQo+IGJhc2VkIG9uIHRoZSBndWVzdCBUTEIgRW50cnlMbyB2YWx1ZXMsIGhv
-d2V2ZXIgaXQgaXMgbm90IHJhbmdlIGNoZWNrZWQNCj4gdG8gZW5zdXJlIGl0IGxpZXMgd2l0aGlu
-IHRoZSBndWVzdF9wbWFwLiBJZiB0aGUgcGh5c2ljYWwgbWVtb3J5IHRoZQ0KPiBndWVzdCByZWZl
-cnMgdG8gaXMgb3V0IG9mIHJhbmdlIHRoZW4gZHVtcCB0aGUgZ3Vlc3QgVExCIGFuZCBlbWl0IGFu
-DQo+IGludGVybmFsIGVycm9yLg0KPiANCj4gRml4ZXM6IDg1OGRkNWQ0NTczMyAoIktWTS9NSVBT
-MzI6IE1NVS9UTEIgb3BlcmF0aW9ucyBmb3IgdGhlIEd1ZXN0LiIpDQo+IFNpZ25lZC1vZmYtYnk6
-IEphbWVzIEhvZ2FuIDxqYW1lcy5ob2dhbkBpbWd0ZWMuY29tPg0KPiBDYzogUGFvbG8gQm9uemlu
-aSA8cGJvbnppbmlAcmVkaGF0LmNvbT4NCj4gQ2M6ICJSYWRpbSBLcsSNbcOhxZkiIDxya3JjbWFy
-QHJlZGhhdC5jb20+DQo+IENjOiBSYWxmIEJhZWNobGUgPHJhbGZAbGludXgtbWlwcy5vcmc+DQo+
-IENjOiBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnDQo+IENjOiBrdm1Admdlci5rZXJuZWwub3Jn
-DQo+IFNpZ25lZC1vZmYtYnk6IFJhZGltIEtyxI1tw6HFmSA8cmtyY21hckByZWRoYXQuY29tPg0K
-PiBbamFtZXMuaG9nYW5AaW1ndGVjLmNvbTogQmFja3BvcnQgdG8gdjMuMTcueSAtIHY0LjQueV0N
-Cj4gU2lnbmVkLW9mZi1ieTogSmFtZXMgSG9nYW4gPGphbWVzLmhvZ2FuQGltZ3RlYy5jb20+DQoN
-CkhleSBKYW1lcywNCg0KVGhhbmtzIGZvciB0aGUgYmFja3BvcnQhDQoNCkFwcGx5aW5nIHRoaXMg
-b25lIHNlZW1zIHRvIGZhaWwgd2l0aDoNCg0KJCBnaXQgYXBwbHkgLS1yZWplY3QgW1BBVENIIEJB
-Q0tQT1JUIDMuMTctNC40IDFfNF0gTUlQUzogS1ZNOiBGaXggbWFwcGVkDQpmYXVsdCBicm9rZW4g
-Y29tbXBhZ2UgaGFuZGxpbmcgLSBKYW1lcyBIb2dhbiA8amFtZXMuaG9nYW5AaW1ndGVjLmNvbT4g
-LQ0KMjAxNi0wOC0xOCAwNTA1LmVtbA0KQ2hlY2tpbmcgcGF0Y2ggYXJjaC9taXBzL2t2bS90bGIu
-Yy4uLg0KZXJyb3I6IHdoaWxlIHNlYXJjaGluZyBmb3I6DQoJdW5zaWduZWQgbG9uZyBlbnRyeWhp
-ID0gMCwgZW50cnlsbzAgPSAwLCBlbnRyeWxvMSA9IDA7DQoJc3RydWN0IGt2bSAqa3ZtID0gdmNw
-dS0+a3ZtOw0KCXBmbl90IHBmbjAsIHBmbjE7DQoJbG9uZyB0bGJfbG9bMl07DQoNCgl0bGJfbG9b
-MF0gPSB0bGItPnRsYl9sbzA7DQoNCmVycm9yOiBwYXRjaCBmYWlsZWQ6IGFyY2gvbWlwcy9rdm0v
-dGxiLmM6MzYxDQplcnJvcjogd2hpbGUgc2VhcmNoaW5nIGZvcjoNCgkJCVZQTjJfTUFTSyAmIChQ
-QUdFX01BU0sgPDwgMSkpKQ0KCQl0bGJfbG9bKEtWTV9HVUVTVF9DT01NUEFHRV9BRERSID4+IFBB
-R0VfU0hJRlQpICYgMV0gPSAwOw0KDQoJaWYgKGt2bV9taXBzX21hcF9wYWdlKGt2bSwgbWlwczNf
-dGxicGZuX3RvX3BhZGRyKHRsYl9sb1swXSkNCgkJCQkgICA+PiBQQUdFX1NISUZUKSA8IDApDQoJ
-CXJldHVybiAtMTsNCg0KCWlmIChrdm1fbWlwc19tYXBfcGFnZShrdm0sIG1pcHMzX3RsYnBmbl90
-b19wYWRkcih0bGJfbG9bMV0pDQoJCQkJICAgPj4gUEFHRV9TSElGVCkgPCAwKQ0KCQlyZXR1cm4g
-LTE7DQoNCglwZm4wID0ga3ZtLT5hcmNoLmd1ZXN0X3BtYXBbbWlwczNfdGxicGZuX3RvX3BhZGRy
-KHRsYl9sb1swXSkNCgkJCQkgICAgPj4gUEFHRV9TSElGVF07DQoJcGZuMSA9IGt2bS0+YXJjaC5n
-dWVzdF9wbWFwW21pcHMzX3RsYnBmbl90b19wYWRkcih0bGJfbG9bMV0pDQoJCQkJICAgID4+IFBB
-R0VfU0hJRlRdOw0KDQoJaWYgKGhwYTApDQoJCSpocGEwID0gcGZuMCA8PCBQQUdFX1NISUZUOw0K
-DQplcnJvcjogcGF0Y2ggZmFpbGVkOiBhcmNoL21pcHMva3ZtL3RsYi5jOjM3NA0KQXBwbHlpbmcg
-cGF0Y2ggYXJjaC9taXBzL2t2bS90bGIuYyB3aXRoIDIgcmVqZWN0cy4uLg0KUmVqZWN0ZWQgaHVu
-ayAjMS4NClJlamVjdGVkIGh1bmsgIzIuDQoNCg0KVGhhbmtzLA0KU2FzaGE=
+On Thu, Aug 18, 2016 at 10:44:18AM +0530, PrasannaKumar Muralidharan wrote:
+> >> +static int jz4780_rng_read(struct hwrng *rng, void *buf, size_t max, bool wait)
+> >> +{
+> >> +     struct jz4780_rng *jz4780_rng = container_of(rng, struct jz4780_rng,
+> >> +                                                     rng);
+> >> +     u32 *data = buf;
+> >> +     *data = jz4780_rng_readl(jz4780_rng, REG_RNG_DATA);
+> >> +     return 4;
+> >> +}
+> >
+> > If max is less than 4, its bad
+> 
+> Data will be 4 bytes.
+> 
+
+No, according to comment in include/linux/hw_random.h "drivers can fill up to max bytes of data"
+So you cannot write more than max bytes without risking buffer overflow.
+
+And if max > 4, hwrng client need to recall your read function.
+The better example I found is tpm_get_random() in drivers/char/tpm/tpm-interface.c for handling both problem.
+
+Regards

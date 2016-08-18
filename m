@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:08:23 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:53634 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:08:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53625 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993387AbcHROHv70jZI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:07:51 +0200
+        by eddie.linux-mips.org with ESMTP id S23993375AbcHROHuW3cNI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:07:50 +0200
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9B9EC9F3;
-        Thu, 18 Aug 2016 14:07:45 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5F13C9F2;
+        Thu, 18 Aug 2016 14:07:43 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
         John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 130/138] MIPS: hpet: Increase HPET_MIN_PROG_DELTA and decrease HPET_MIN_CYCLES
-Date:   Thu, 18 Aug 2016 15:59:00 +0200
-Message-Id: <20160818135612.869180865@linuxfoundation.org>
+Subject: [PATCH 4.4 129/138] MIPS: Dont register r4k sched clock when CPUFREQ enabled
+Date:   Thu, 18 Aug 2016 15:58:59 +0200
+Message-Id: <20160818135612.704054393@linuxfoundation.org>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20160818135553.377018690@linuxfoundation.org>
 References: <20160818135553.377018690@linuxfoundation.org>
@@ -28,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54645
+X-archive-position: 54646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,80 +51,43 @@ X-list: linux-mips
 
 From: Huacai Chen <chenhc@lemote.com>
 
-commit 3ef06653987d4c4536b408321edf0e5caa2a317f upstream.
+commit 07d69579e7fec27e371296d8ca9d6076fc401b5c upstream.
 
-At first, we prefer to use mips clockevent device, so we decrease the
-rating of hpet clockevent device.
-
-For hpet, if HPET_MIN_PROG_DELTA (minimum delta of hpet programming) is
-too small and HPET_MIN_CYCLES (threshold of -ETIME checking) is too
-large, then hpet_next_event() can easily return -ETIME. After commit
-c6eb3f70d44828 ("hrtimer: Get rid of hrtimer softirq") this will cause
-a RCU stall.
-
-So, HPET_MIN_PROG_DELTA must be sufficient that we don't re-trip the
--ETIME check -- if we do, we will return -ETIME, forward the next event
-time, try to set it, return -ETIME again, and basically lock the system
-up. Meanwhile, HPET_MIN_CYCLES doesn't need to be too large, 16 cycles
-is enough.
-
-This solution is similar to commit f9eccf24615672 ("clocksource/drivers
-/vt8500: Increase the minimum delta").
-
-By the way, this patch ensures hpet count/compare to be 32-bit long.
+Don't register r4k sched clock when CPUFREQ enabled because sched clock
+need a constant frequency.
 
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Cc: John Crispin <john@phrozen.org>
-Cc: Steven J . Hill <Steven.Hill@imgtec.com>
+Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
 Cc: Fuxin Zhang <zhangfx@lemote.com>
 Cc: Zhangjin Wu <wuzhangjin@gmail.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13819/
+Patchwork: https://patchwork.linux-mips.org/patch/13820/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/loongson64/loongson-3/hpet.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/mips/kernel/csrc-r4k.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/mips/loongson64/loongson-3/hpet.c
-+++ b/arch/mips/loongson64/loongson-3/hpet.c
-@@ -13,8 +13,8 @@
- #define SMBUS_PCI_REG64		0x64
- #define SMBUS_PCI_REGB4		0xb4
+--- a/arch/mips/kernel/csrc-r4k.c
++++ b/arch/mips/kernel/csrc-r4k.c
+@@ -23,7 +23,7 @@ static struct clocksource clocksource_mi
+ 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
  
--#define HPET_MIN_CYCLES		64
--#define HPET_MIN_PROG_DELTA	(HPET_MIN_CYCLES + (HPET_MIN_CYCLES >> 1))
-+#define HPET_MIN_CYCLES		16
-+#define HPET_MIN_PROG_DELTA	(HPET_MIN_CYCLES * 12)
- 
- static DEFINE_SPINLOCK(hpet_lock);
- DEFINE_PER_CPU(struct clock_event_device, hpet_clockevent_device);
-@@ -157,14 +157,14 @@ static int hpet_tick_resume(struct clock
- static int hpet_next_event(unsigned long delta,
- 		struct clock_event_device *evt)
+-static u64 notrace r4k_read_sched_clock(void)
++static u64 __maybe_unused notrace r4k_read_sched_clock(void)
  {
--	unsigned int cnt;
--	int res;
-+	u32 cnt;
-+	s32 res;
- 
- 	cnt = hpet_read(HPET_COUNTER);
--	cnt += delta;
-+	cnt += (u32) delta;
- 	hpet_write(HPET_T0_CMP, cnt);
- 
--	res = (int)(cnt - hpet_read(HPET_COUNTER));
-+	res = (s32)(cnt - hpet_read(HPET_COUNTER));
- 
- 	return res < HPET_MIN_CYCLES ? -ETIME : 0;
+ 	return read_c0_count();
  }
-@@ -230,7 +230,7 @@ void __init setup_hpet_timer(void)
+@@ -82,7 +82,9 @@ int __init init_r4k_clocksource(void)
  
- 	cd = &per_cpu(hpet_clockevent_device, cpu);
- 	cd->name = "hpet";
--	cd->rating = 320;
-+	cd->rating = 100;
- 	cd->features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT;
- 	cd->set_state_shutdown = hpet_set_state_shutdown;
- 	cd->set_state_periodic = hpet_set_state_periodic;
+ 	clocksource_register_hz(&clocksource_mips, mips_hpt_frequency);
+ 
++#ifndef CONFIG_CPU_FREQ
+ 	sched_clock_register(r4k_read_sched_clock, 32, mips_hpt_frequency);
++#endif
+ 
+ 	return 0;
+ }

@@ -1,26 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:08:50 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:53625 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:12:08 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:53992 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993375AbcHROHuW3cNI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:07:50 +0200
+        by eddie.linux-mips.org with ESMTP id S23993204AbcHROL7bGkiI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:11:59 +0200
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5F13C9F2;
-        Thu, 18 Aug 2016 14:07:43 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4905678D;
+        Thu, 18 Aug 2016 14:11:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 129/138] MIPS: Dont register r4k sched clock when CPUFREQ enabled
-Date:   Thu, 18 Aug 2016 15:58:59 +0200
-Message-Id: <20160818135612.704054393@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+Subject: [PATCH 4.7 085/186] MIPS: KVM: Fix mapped fault broken commpage handling
+Date:   Thu, 18 Aug 2016 15:58:22 +0200
+Message-Id: <20160818135935.761248419@linuxfoundation.org>
 X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160818135553.377018690@linuxfoundation.org>
-References: <20160818135553.377018690@linuxfoundation.org>
+In-Reply-To: <20160818135932.219369981@linuxfoundation.org>
+References: <20160818135932.219369981@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -28,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54646
+X-archive-position: 54647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,49 +44,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 07d69579e7fec27e371296d8ca9d6076fc401b5c upstream.
+commit c604cffa93478f8888bec62b23d6073dad03d43a upstream.
 
-Don't register r4k sched clock when CPUFREQ enabled because sched clock
-need a constant frequency.
+kvm_mips_handle_mapped_seg_tlb_fault() appears to map the guest page at
+virtual address 0 to PFN 0 if the guest has created its own mapping
+there. The intention is unclear, but it may have been an attempt to
+protect the zero page from being mapped to anything but the comm page in
+code paths you wouldn't expect from genuine commpage accesses (guest
+kernel mode cache instructions on that address, hitting trapping
+instructions when executing from that address with a coincidental TLB
+eviction during the KVM handling, and guest user mode accesses to that
+address).
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Fix this to check for mappings exactly at KVM_GUEST_COMMPAGE_ADDR (it
+may not be at address 0 since commit 42aa12e74e91 ("MIPS: KVM: Move
+commpage so 0x0 is unmapped")), and set the corresponding EntryLo to be
+interpreted as 0 (invalid).
+
+Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13820/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Cc: <stable@vger.kernel.org> # 3.10.x-
+Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
+[james.hogan@imgtec.com: Backport to v4.7]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
 ---
- arch/mips/kernel/csrc-r4k.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/kvm/tlb.c |   45 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
---- a/arch/mips/kernel/csrc-r4k.c
-+++ b/arch/mips/kernel/csrc-r4k.c
-@@ -23,7 +23,7 @@ static struct clocksource clocksource_mi
- 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
- };
+--- a/arch/mips/kvm/tlb.c
++++ b/arch/mips/kvm/tlb.c
+@@ -373,25 +373,32 @@ int kvm_mips_handle_mapped_seg_tlb_fault
+ 	unsigned long entryhi = 0, entrylo0 = 0, entrylo1 = 0;
+ 	struct kvm *kvm = vcpu->kvm;
+ 	kvm_pfn_t pfn0, pfn1;
++	long tlb_lo[2];
+ 	int ret;
  
--static u64 notrace r4k_read_sched_clock(void)
-+static u64 __maybe_unused notrace r4k_read_sched_clock(void)
- {
- 	return read_c0_count();
- }
-@@ -82,7 +82,9 @@ int __init init_r4k_clocksource(void)
+-	if ((tlb->tlb_hi & VPN2_MASK) == 0) {
+-		pfn0 = 0;
+-		pfn1 = 0;
+-	} else {
+-		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo0)
+-					   >> PAGE_SHIFT) < 0)
+-			return -1;
+-
+-		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo1)
+-					   >> PAGE_SHIFT) < 0)
+-			return -1;
+-
+-		pfn0 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo0)
+-					    >> PAGE_SHIFT];
+-		pfn1 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo1)
+-					    >> PAGE_SHIFT];
+-	}
++	tlb_lo[0] = tlb->tlb_lo0;
++	tlb_lo[1] = tlb->tlb_lo1;
++
++	/*
++	 * The commpage address must not be mapped to anything else if the guest
++	 * TLB contains entries nearby, or commpage accesses will break.
++	 */
++	if (!((tlb->tlb_hi ^ KVM_GUEST_COMMPAGE_ADDR) &
++			VPN2_MASK & (PAGE_MASK << 1)))
++		tlb_lo[(KVM_GUEST_COMMPAGE_ADDR >> PAGE_SHIFT) & 1] = 0;
++
++	if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb_lo[0])
++				   >> PAGE_SHIFT) < 0)
++		return -1;
++
++	if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb_lo[1])
++				   >> PAGE_SHIFT) < 0)
++		return -1;
++
++	pfn0 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb_lo[0])
++				    >> PAGE_SHIFT];
++	pfn1 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb_lo[1])
++				    >> PAGE_SHIFT];
  
- 	clocksource_register_hz(&clocksource_mips, mips_hpt_frequency);
+ 	if (hpa0)
+ 		*hpa0 = pfn0 << PAGE_SHIFT;
+@@ -401,9 +408,9 @@ int kvm_mips_handle_mapped_seg_tlb_fault
  
-+#ifndef CONFIG_CPU_FREQ
- 	sched_clock_register(r4k_read_sched_clock, 32, mips_hpt_frequency);
-+#endif
+ 	/* Get attributes from the Guest TLB */
+ 	entrylo0 = mips3_paddr_to_tlbpfn(pfn0 << PAGE_SHIFT) | (0x3 << 3) |
+-		   (tlb->tlb_lo0 & MIPS3_PG_D) | (tlb->tlb_lo0 & MIPS3_PG_V);
++		   (tlb_lo[0] & MIPS3_PG_D) | (tlb_lo[0] & MIPS3_PG_V);
+ 	entrylo1 = mips3_paddr_to_tlbpfn(pfn1 << PAGE_SHIFT) | (0x3 << 3) |
+-		   (tlb->tlb_lo1 & MIPS3_PG_D) | (tlb->tlb_lo1 & MIPS3_PG_V);
++		   (tlb_lo[1] & MIPS3_PG_D) | (tlb_lo[1] & MIPS3_PG_V);
  
- 	return 0;
- }
+ 	kvm_debug("@ %#lx tlb_lo0: 0x%08lx tlb_lo1: 0x%08lx\n", vcpu->arch.pc,
+ 		  tlb->tlb_lo0, tlb->tlb_lo1);

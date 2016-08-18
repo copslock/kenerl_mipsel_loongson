@@ -1,54 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 11:40:13 +0200 (CEST)
-Received: from mail-wm0-f68.google.com ([74.125.82.68]:35330 "EHLO
-        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993207AbcHRJkHWN3eP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 11:40:07 +0200
-Received: by mail-wm0-f68.google.com with SMTP id i5so4448609wmg.2;
-        Thu, 18 Aug 2016 02:40:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=P3prpvUkh0B49YJTh38DhMilPt12iPRC2irG53c7FF8=;
-        b=RHlCqoDQiDrCXecrFTAtWCP3RGHsfuiDFUs2Fqc38xmiUXKeUKWCeGtgFJcZQBiDh8
-         tCWFKQmYG927DlQVjZDt3VcapeUC0iTqLIJKl+Naz8FMQ7sD3PgGr2EKu+MAu7nEcKVj
-         FdYN0DV4JLOjDCpnh+fW+outxhphtzdD7uvmYuQtYq76TV4Qvw0mBaC2hIIcsIEibYTF
-         qfSRa+Cs8UFfv8koGEI6CH5PWz4KfsjBY/2vbZWthXph8XOLDrl1FEolqcKj3MXPl7Fs
-         fLwF2UfOhGquYF49ryGCDn4RQDkjSw6oc/8YK1zF1wPCr6yFxhW2REyecOpemjPKFi3Q
-         L/AA==
-X-Gm-Message-State: AEkooutQFT/lVbBYDrwkuYZa339W2OTpdZV+O1qPKihexi6kAE+P2Jof2wyiaYqW7hsDpA==
-X-Received: by 10.28.214.130 with SMTP id n124mr1574607wmg.37.1471513202092;
-        Thu, 18 Aug 2016 02:40:02 -0700 (PDT)
-Received: from ?IPv6:2a01:4240:2e27:ad85:aaaa::19f? (f.9.1.0.0.0.0.0.0.0.0.0.a.a.a.a.5.8.d.a.7.2.e.2.0.4.2.4.1.0.a.2.v6.cust.nbox.cz. [2a01:4240:2e27:ad85:aaaa::19f])
-        by smtp.gmail.com with ESMTPSA id p71sm4341143wmf.9.2016.08.18.02.40.00
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Aug 2016 02:40:01 -0700 (PDT)
-Subject: Re: [PATCH BACKPORT 3.10-3.15 0/4] MIPS: KVM: Fix MMU/TLB management
- issues
-To:     James Hogan <james.hogan@imgtec.com>, stable@vger.kernel.org
-References: <cover.04bc2e89e693aeb69bf6e36d1d7b18ffb591bd31.1471021142.git-series.james.hogan@imgtec.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 11:42:25 +0200 (CEST)
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:40175 "EHLO
+        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993225AbcHRJmQz8hIP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 11:42:16 +0200
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id E079E201E4;
+        Thu, 18 Aug 2016 05:42:15 -0400 (EDT)
+Received: from frontend2 ([10.202.2.161])
+  by compute5.internal (MEProxy); Thu, 18 Aug 2016 05:42:16 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-sasl-enc
+        :x-sasl-enc; s=smtpout; bh=5gz3WSge5OXyIRku+pXQPr1fqQE=; b=J+l/I
+        YrFD1ivMV05fNtUD4yOtHGPM0xMUx0pdXQgVqVRrFckUtxwN4Wy58gdEvrrjmxWX
+        w56kds6zsopxEexUcFbanshZdVMAmI2NqQRimdncdB6VJM9DZzgBGvjqJVlM0pUf
+        FiTmOELFfbhN59vzk1Y3KnI2Xb4pzQbYcU8ruY=
+X-Sasl-enc: FtR/Oy0++Lv5yf3HvQE8AdCOPkbVmLyJnp/iZDwCUyMq 1471513335
+Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 67546CCD83;
+        Thu, 18 Aug 2016 05:42:15 -0400 (EDT)
+Date:   Thu, 18 Aug 2016 11:42:17 +0200
+From:   Greg KH <greg@kroah.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         kvm@vger.kernel.org
-From:   Jiri Slaby <jslaby@suse.cz>
-Message-ID: <17ecba53-e7f7-c341-0522-74eec7d1ca56@suse.cz>
-Date:   Thu, 18 Aug 2016 11:39:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2
+Subject: Re: [PATCH BACKPORT 4.7 0/4] MIPS: KVM: Fix MMU/TLB management issues
+Message-ID: <20160818094217.GA1509@kroah.com>
+References: <cover.d02ea4d58713b53527649c3ad5487b32fd8df3cd.1471018462.git-series.james.hogan@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <cover.04bc2e89e693aeb69bf6e36d1d7b18ffb591bd31.1471021142.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <jirislaby@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.d02ea4d58713b53527649c3ad5487b32fd8df3cd.1471018462.git-series.james.hogan@imgtec.com>
+User-Agent: Mutt/1.6.2 (2016-07-01)
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54595
+X-archive-position: 54596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: greg@kroah.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,12 +55,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/18/2016, 11:22 AM, James Hogan wrote:
+On Thu, Aug 18, 2016 at 10:01:25AM +0100, James Hogan wrote:
 > These patches backport fixes for several issues in the management of
-> MIPS KVM TLB faults to 3.15, and should apply back to 3.10 too.
+> MIPS KVM TLB faults to v4.7.
 
-Applied to 3.12, thanks!
+Thanks for these, now applied.
 
--- 
-js
-suse labs
+greg k-h

@@ -1,40 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 11:24:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:22907 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993200AbcHRJXX0RKrd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 11:23:23 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 160C7B7ACA618;
-        Thu, 18 Aug 2016 10:23:05 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 18 Aug 2016 10:23:06 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <stable@vger.kernel.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH BACKPORT 3.10-3.15 4/4] MIPS: KVM: Propagate kseg0/mapped tlb fault errors
-Date:   Thu, 18 Aug 2016 10:22:55 +0100
-Message-ID: <f985ed835cfcabe5c7f313abd1de1bb3ee8737f9.1471021142.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.9.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 11:40:13 +0200 (CEST)
+Received: from mail-wm0-f68.google.com ([74.125.82.68]:35330 "EHLO
+        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993207AbcHRJkHWN3eP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 11:40:07 +0200
+Received: by mail-wm0-f68.google.com with SMTP id i5so4448609wmg.2;
+        Thu, 18 Aug 2016 02:40:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=P3prpvUkh0B49YJTh38DhMilPt12iPRC2irG53c7FF8=;
+        b=RHlCqoDQiDrCXecrFTAtWCP3RGHsfuiDFUs2Fqc38xmiUXKeUKWCeGtgFJcZQBiDh8
+         tCWFKQmYG927DlQVjZDt3VcapeUC0iTqLIJKl+Naz8FMQ7sD3PgGr2EKu+MAu7nEcKVj
+         FdYN0DV4JLOjDCpnh+fW+outxhphtzdD7uvmYuQtYq76TV4Qvw0mBaC2hIIcsIEibYTF
+         qfSRa+Cs8UFfv8koGEI6CH5PWz4KfsjBY/2vbZWthXph8XOLDrl1FEolqcKj3MXPl7Fs
+         fLwF2UfOhGquYF49ryGCDn4RQDkjSw6oc/8YK1zF1wPCr6yFxhW2REyecOpemjPKFi3Q
+         L/AA==
+X-Gm-Message-State: AEkooutQFT/lVbBYDrwkuYZa339W2OTpdZV+O1qPKihexi6kAE+P2Jof2wyiaYqW7hsDpA==
+X-Received: by 10.28.214.130 with SMTP id n124mr1574607wmg.37.1471513202092;
+        Thu, 18 Aug 2016 02:40:02 -0700 (PDT)
+Received: from ?IPv6:2a01:4240:2e27:ad85:aaaa::19f? (f.9.1.0.0.0.0.0.0.0.0.0.a.a.a.a.5.8.d.a.7.2.e.2.0.4.2.4.1.0.a.2.v6.cust.nbox.cz. [2a01:4240:2e27:ad85:aaaa::19f])
+        by smtp.gmail.com with ESMTPSA id p71sm4341143wmf.9.2016.08.18.02.40.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Aug 2016 02:40:01 -0700 (PDT)
+Subject: Re: [PATCH BACKPORT 3.10-3.15 0/4] MIPS: KVM: Fix MMU/TLB management
+ issues
+To:     James Hogan <james.hogan@imgtec.com>, stable@vger.kernel.org
+References: <cover.04bc2e89e693aeb69bf6e36d1d7b18ffb591bd31.1471021142.git-series.james.hogan@imgtec.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+From:   Jiri Slaby <jslaby@suse.cz>
+Message-ID: <17ecba53-e7f7-c341-0522-74eec7d1ca56@suse.cz>
+Date:   Thu, 18 Aug 2016 11:39:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2
 MIME-Version: 1.0
 In-Reply-To: <cover.04bc2e89e693aeb69bf6e36d1d7b18ffb591bd31.1471021142.git-series.james.hogan@imgtec.com>
-References: <cover.04bc2e89e693aeb69bf6e36d1d7b18ffb591bd31.1471021142.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <jirislaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54594
+X-archive-position: 54595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,111 +61,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-commit 9b731bcfdec4c159ad2e4312e25d69221709b96a upstream.
+On 08/18/2016, 11:22 AM, James Hogan wrote:
+> These patches backport fixes for several issues in the management of
+> MIPS KVM TLB faults to 3.15, and should apply back to 3.10 too.
 
-Propagate errors from kvm_mips_handle_kseg0_tlb_fault() and
-kvm_mips_handle_mapped_seg_tlb_fault(), usually triggering an internal
-error since they normally indicate the guest accessed bad physical
-memory or the commpage in an unexpected way.
+Applied to 3.12, thanks!
 
-Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
-[james.hogan@imgtec.com: Backport to v3.10.y - v3.15.y]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
----
- arch/mips/kvm/kvm_mips_emul.c | 33 ++++++++++++++++++++++++---------
- arch/mips/kvm/kvm_tlb.c       | 14 ++++++++++----
- 2 files changed, 34 insertions(+), 13 deletions(-)
-
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index e3fec99941a7..090f7be2bd13 100644
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -965,8 +965,13 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
- 	preempt_disable();
- 	if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
- 
--		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0) {
--			kvm_mips_handle_kseg0_tlb_fault(va, vcpu);
-+		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0 &&
-+		    kvm_mips_handle_kseg0_tlb_fault(va, vcpu)) {
-+			kvm_err("%s: handling mapped kseg0 tlb fault for %lx, vcpu: %p, ASID: %#lx\n",
-+				__func__, va, vcpu, read_c0_entryhi());
-+			er = EMULATE_FAIL;
-+			preempt_enable();
-+			goto done;
- 		}
- 	} else if ((KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0) ||
- 		   KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
-@@ -999,11 +1004,16 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
- 								run, vcpu);
- 				preempt_enable();
- 				goto dont_update_pc;
--			} else {
--				/* We fault an entry from the guest tlb to the shadow host TLB */
--				kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
--								     NULL,
--								     NULL);
-+			}
-+			/* We fault an entry from the guest tlb to the shadow host TLB */
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
-+								 NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, va, index, vcpu,
-+					read_c0_entryhi());
-+				er = EMULATE_FAIL;
-+				preempt_enable();
-+				goto done;
- 			}
- 		}
- 	} else {
-@@ -1816,8 +1826,13 @@ kvm_mips_handle_tlbmiss(unsigned long cause, uint32_t *opc,
- 			     tlb->tlb_hi, tlb->tlb_lo0, tlb->tlb_lo1);
- #endif
- 			/* OK we have a Guest TLB entry, now inject it into the shadow host TLB */
--			kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb, NULL,
--							     NULL);
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
-+								 NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, va, index, vcpu,
-+					read_c0_entryhi());
-+				er = EMULATE_FAIL;
-+			}
- 		}
- 	}
- 
-diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
-index 7966086d4225..356b8aa03a70 100644
---- a/arch/mips/kvm/kvm_tlb.c
-+++ b/arch/mips/kvm/kvm_tlb.c
-@@ -797,10 +797,16 @@ uint32_t kvm_get_inst(uint32_t *opc, struct kvm_vcpu *vcpu)
- 				local_irq_restore(flags);
- 				return KVM_INVALID_INST;
- 			}
--			kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
--							     &vcpu->arch.
--							     guest_tlb[index],
--							     NULL, NULL);
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
-+						&vcpu->arch.guest_tlb[index],
-+						NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault failed for %p, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, opc, index, vcpu,
-+					read_c0_entryhi());
-+				kvm_mips_dump_guest_tlbs(vcpu);
-+				local_irq_restore(flags);
-+				return KVM_INVALID_INST;
-+			}
- 			inst = *(opc);
- 		}
- 		local_irq_restore(flags);
 -- 
-git-series 0.8.8
+js
+suse labs

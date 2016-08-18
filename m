@@ -1,24 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:16:39 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54585 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:17:01 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54591 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993438AbcHROQGWdUWI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:16:06 +0200
+        by eddie.linux-mips.org with ESMTP id S23993443AbcHROQJhPfFI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:16:09 +0200
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9B0FF98B;
-        Thu, 18 Aug 2016 14:15:59 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A9F8B955;
+        Thu, 18 Aug 2016 14:16:02 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Heiher <r@hev.cc>,
-        Huacai Chen <chenhc@lemote.com>,
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
         John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.7 175/186] MIPS: Fix r4k clockevents registration
-Date:   Thu, 18 Aug 2016 15:59:52 +0200
-Message-Id: <20160818135939.704290797@linuxfoundation.org>
+Subject: [PATCH 4.7 176/186] MIPS: Dont register r4k sched clock when CPUFREQ enabled
+Date:   Thu, 18 Aug 2016 15:59:53 +0200
+Message-Id: <20160818135939.755382700@linuxfoundation.org>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20160818135932.219369981@linuxfoundation.org>
 References: <20160818135932.219369981@linuxfoundation.org>
@@ -29,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54653
+X-archive-position: 54654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,47 +51,43 @@ X-list: linux-mips
 
 From: Huacai Chen <chenhc@lemote.com>
 
-commit 6dabf2b7a597a9613f0b8a2fcbe01e2a0a05c896 upstream.
+commit 07d69579e7fec27e371296d8ca9d6076fc401b5c upstream.
 
-CPUFreq need min_delta_ticks/max_delta_ticks to be initialized, and
-this can be done by clockevents_config_and_register().
+Don't register r4k sched clock when CPUFREQ enabled because sched clock
+need a constant frequency.
 
-Signed-off-by: Heiher <r@hev.cc>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Cc: John Crispin <john@phrozen.org>
-Cc: Steven J . Hill <Steven.Hill@imgtec.com>
+Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
 Cc: Fuxin Zhang <zhangfx@lemote.com>
 Cc: Zhangjin Wu <wuzhangjin@gmail.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13817/
+Patchwork: https://patchwork.linux-mips.org/patch/13820/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/cevt-r4k.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/mips/kernel/csrc-r4k.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/cevt-r4k.c
-+++ b/arch/mips/kernel/cevt-r4k.c
-@@ -276,12 +276,7 @@ int r4k_clockevent_init(void)
- 				  CLOCK_EVT_FEAT_C3STOP |
- 				  CLOCK_EVT_FEAT_PERCPU;
+--- a/arch/mips/kernel/csrc-r4k.c
++++ b/arch/mips/kernel/csrc-r4k.c
+@@ -23,7 +23,7 @@ static struct clocksource clocksource_mi
+ 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
  
--	clockevent_set_clock(cd, mips_hpt_frequency);
--
--	/* Calculate the min / max delta */
--	cd->max_delta_ns	= clockevent_delta2ns(0x7fffffff, cd);
- 	min_delta		= calculate_min_delta();
--	cd->min_delta_ns	= clockevent_delta2ns(min_delta, cd);
+-static u64 notrace r4k_read_sched_clock(void)
++static u64 __maybe_unused notrace r4k_read_sched_clock(void)
+ {
+ 	return read_c0_count();
+ }
+@@ -82,7 +82,9 @@ int __init init_r4k_clocksource(void)
  
- 	cd->rating		= 300;
- 	cd->irq			= irq;
-@@ -289,7 +284,7 @@ int r4k_clockevent_init(void)
- 	cd->set_next_event	= mips_next_event;
- 	cd->event_handler	= mips_event_handler;
+ 	clocksource_register_hz(&clocksource_mips, mips_hpt_frequency);
  
--	clockevents_register_device(cd);
-+	clockevents_config_and_register(cd, mips_hpt_frequency, min_delta, 0x7fffffff);
++#ifndef CONFIG_CPU_FREQ
+ 	sched_clock_register(r4k_read_sched_clock, 32, mips_hpt_frequency);
++#endif
  
- 	if (cp0_timer_irq_installed)
- 		return 0;
+ 	return 0;
+ }

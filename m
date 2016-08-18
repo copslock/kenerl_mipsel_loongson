@@ -1,19 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:16:11 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54582 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 16:16:39 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:54585 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993411AbcHROQD4Q18I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:16:03 +0200
+        by eddie.linux-mips.org with ESMTP id S23993438AbcHROQGWdUWI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 16:16:06 +0200
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 499029BA;
-        Thu, 18 Aug 2016 14:15:57 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 9B0FF98B;
+        Thu, 18 Aug 2016 14:15:59 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.7 174/186] MIPS: mm: Fix definition of R6 cache instruction
-Date:   Thu, 18 Aug 2016 15:59:51 +0200
-Message-Id: <20160818135939.663137636@linuxfoundation.org>
+        stable@vger.kernel.org, Heiher <r@hev.cc>,
+        Huacai Chen <chenhc@lemote.com>,
+        John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.7 175/186] MIPS: Fix r4k clockevents registration
+Date:   Thu, 18 Aug 2016 15:59:52 +0200
+Message-Id: <20160818135939.704290797@linuxfoundation.org>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20160818135932.219369981@linuxfoundation.org>
 References: <20160818135932.219369981@linuxfoundation.org>
@@ -24,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54652
+X-archive-position: 54653
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,38 +50,49 @@ X-list: linux-mips
 
 ------------------
 
-From: Matt Redfearn <matt.redfearn@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-commit 4f53989b0652ffe2605221c81ca8ffcfc90aed2a upstream.
+commit 6dabf2b7a597a9613f0b8a2fcbe01e2a0a05c896 upstream.
 
-Commit a168b8f1cde6 ("MIPS: mm: Add MIPS R6 instruction encodings") added
-an incorrect definition of the redefined MIPSr6 cache instruction.
+CPUFreq need min_delta_ticks/max_delta_ticks to be initialized, and
+this can be done by clockevents_config_and_register().
 
-Executing any kernel code including this instuction results in a
-reserved instruction exception and kernel panic.
-
-Fix the instruction definition.
-
-Fixes: a168b8f1cde6588ff7a67699fa11e01bc77a5ddd
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Signed-off-by: Heiher <r@hev.cc>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: John Crispin <john@phrozen.org>
+Cc: Steven J . Hill <Steven.Hill@imgtec.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/13663/
+Patchwork: https://patchwork.linux-mips.org/patch/13817/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/mm/uasm-mips.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/cevt-r4k.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/arch/mips/mm/uasm-mips.c
-+++ b/arch/mips/mm/uasm-mips.c
-@@ -65,7 +65,7 @@ static struct insn insn_table[] = {
- #ifndef CONFIG_CPU_MIPSR6
- 	{ insn_cache,  M(cache_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
- #else
--	{ insn_cache,  M6(cache_op, 0, 0, 0, cache6_op),  RS | RT | SIMM9 },
-+	{ insn_cache,  M6(spec3_op, 0, 0, 0, cache6_op),  RS | RT | SIMM9 },
- #endif
- 	{ insn_daddiu, M(daddiu_op, 0, 0, 0, 0, 0), RS | RT | SIMM },
- 	{ insn_daddu, M(spec_op, 0, 0, 0, 0, daddu_op), RS | RT | RD },
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -276,12 +276,7 @@ int r4k_clockevent_init(void)
+ 				  CLOCK_EVT_FEAT_C3STOP |
+ 				  CLOCK_EVT_FEAT_PERCPU;
+ 
+-	clockevent_set_clock(cd, mips_hpt_frequency);
+-
+-	/* Calculate the min / max delta */
+-	cd->max_delta_ns	= clockevent_delta2ns(0x7fffffff, cd);
+ 	min_delta		= calculate_min_delta();
+-	cd->min_delta_ns	= clockevent_delta2ns(min_delta, cd);
+ 
+ 	cd->rating		= 300;
+ 	cd->irq			= irq;
+@@ -289,7 +284,7 @@ int r4k_clockevent_init(void)
+ 	cd->set_next_event	= mips_next_event;
+ 	cd->event_handler	= mips_event_handler;
+ 
+-	clockevents_register_device(cd);
++	clockevents_config_and_register(cd, mips_hpt_frequency, min_delta, 0x7fffffff);
+ 
+ 	if (cp0_timer_irq_installed)
+ 		return 0;

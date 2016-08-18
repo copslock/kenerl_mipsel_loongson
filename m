@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 14:58:42 +0200 (CEST)
-Received: from baptiste.telenet-ops.be ([195.130.132.51]:52432 "EHLO
-        baptiste.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993279AbcHRM5yKSg-L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 14:57:54 +0200
-Received: from ayla.of.borg ([84.193.137.253])
-        by baptiste.telenet-ops.be with bizsmtp
-        id Ycxq1t00H5UCtCs01cxqY2; Thu, 18 Aug 2016 14:57:52 +0200
-Received: from ramsan.of.borg ([192.168.97.29] helo=ramsan)
-        by ayla.of.borg with esmtp (Exim 4.82)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1baMtL-0001gB-6y; Thu, 18 Aug 2016 14:57:51 +0200
-Received: from geert by ramsan with local (Exim 4.82)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1baMtN-0000PJ-21; Thu, 18 Aug 2016 14:57:53 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        linux-mips@linux-mips.org, linux-gpio@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 1/2] MIPS: TXx9: tx39xx: Move GPIO setup from .mem_setup() to .arch_init()
-Date:   Thu, 18 Aug 2016 14:57:47 +0200
-Message-Id: <1471525068-1525-2-git-send-email-geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2016 15:44:15 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59433 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992474AbcHRNoIIczTI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2016 15:44:08 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 0F7B878CADB8C;
+        Thu, 18 Aug 2016 14:43:49 +0100 (IST)
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 18 Aug 2016 14:43:51 +0100
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+To:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>
+CC:     <jason@lakedaemon.net>, <marc.zyngier@arm.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <Zubair.Kakakhel@imgtec.com>
+Subject: [PATCH V2 00/10] microblaze/MIPS: xilfpga: intc and peripheral
+Date:   Thu, 18 Aug 2016 14:43:14 +0100
+Message-ID: <1471527804-26175-1-git-send-email-Zubair.Kakakhel@imgtec.com>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1471525068-1525-1-git-send-email-geert@linux-m68k.org>
-References: <1471525068-1525-1-git-send-email-geert@linux-m68k.org>
-Return-Path: <geert@linux-m68k.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54624
+X-archive-position: 54625
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,68 +42,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-txx9_gpio_init() calls gpiochip_add_data(), which fails with -ENOMEM as
-it is called too early in the boot process. This causes all subsequent
-GPIO operations to fail silently.
+Hi,
 
-Postpone all GPIO setup to .arch_init() time to fix this.
+The MIPS based Xilfpga platform uses the axi interrupt controller
+daisy chained to the MIPS microAptiv cpu interrupt controller.
+This patch series moves the axi interrupt controller driver out
+of arch/microblaze to drivers/irqchip. This makes it usable by
+MIPS. The rest of the series basically enables drivers and adds dt
+nodes.
 
-Suggested-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
-Untested due to lack of hardware.
----
- arch/mips/txx9/generic/setup_tx3927.c |  1 -
- arch/mips/txx9/jmr3927/setup.c        | 11 +++++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+Would make sense for this to go via the MIPS tree.
+Hence, ACKs from microblaze. irqchip and net welcome.
 
-diff --git a/arch/mips/txx9/generic/setup_tx3927.c b/arch/mips/txx9/generic/setup_tx3927.c
-index 110e05c3eb8fb638..d3b83a92cf26c707 100644
---- a/arch/mips/txx9/generic/setup_tx3927.c
-+++ b/arch/mips/txx9/generic/setup_tx3927.c
-@@ -92,7 +92,6 @@ void __init tx3927_setup(void)
- 	/* PIO */
- 	__raw_writel(0, &tx3927_pioptr->maskcpu);
- 	__raw_writel(0, &tx3927_pioptr->maskext);
--	txx9_gpio_init(TX3927_PIO_REG, 0, 16);
- 
- 	conf = read_c0_conf();
- 	if (conf & TX39_CONF_DCE) {
-diff --git a/arch/mips/txx9/jmr3927/setup.c b/arch/mips/txx9/jmr3927/setup.c
-index 3206f76f300b727a..a455166dc6d44fe7 100644
---- a/arch/mips/txx9/jmr3927/setup.c
-+++ b/arch/mips/txx9/jmr3927/setup.c
-@@ -142,8 +142,6 @@ static void __init jmr3927_board_init(void)
- 
- 	/* PIO[15:12] connected to LEDs */
- 	__raw_writel(0x0000f000, &tx3927_pioptr->dir);
--	gpio_request(11, "dipsw1");
--	gpio_request(10, "dipsw2");
- 
- 	jmr3927_pci_setup();
- 
-@@ -204,6 +202,14 @@ static void __init jmr3927_device_init(void)
- 	txx9_iocled_init(iocled_base, -1, 8, 1, "green", NULL);
- }
- 
-+static void __init jmr3927_arch_init(void)
-+{
-+	txx9_gpio_init(TX3927_PIO_REG, 0, 16);
-+
-+	gpio_request(11, "dipsw1");
-+	gpio_request(10, "dipsw2");
-+}
-+
- struct txx9_board_vec jmr3927_vec __initdata = {
- 	.system = "Toshiba JMR_TX3927",
- 	.prom_init = jmr3927_prom_init,
-@@ -211,6 +217,7 @@ struct txx9_board_vec jmr3927_vec __initdata = {
- 	.irq_setup = jmr3927_irq_setup,
- 	.time_init = jmr3927_time_init,
- 	.device_init = jmr3927_device_init,
-+	.arch_init = jmr3927_arch_init,
- #ifdef CONFIG_PCI
- 	.pci_map_irq = jmr3927_pci_map_irq,
- #endif
+Compile tested on microblaze-el only!
+Based on v4.8-rc2
+
+Regards,
+ZubairLK
+
+V1 -> V2
+Resubmitting without truncating the diff output for file moves
+Removed accidental local mac address entry
+Individual logs have more detail
+
+Zubair Lutfullah Kakakhel (10):
+  microblaze: irqchip: Move intc driver to irqchip
+  irqchip: xilinx: Add support for parent intc
+  MIPS: xilfpga: Use irqchip_init instead of the legacy way
+  MIPS: xilfpga: Use Xilinx AXI Interrupt Controller
+  MIPS: xilfpga: Update DT node and specify uart irq
+  MIPS: Xilfpga: Add DT node for AXI I2C
+  net: ethernet: xilinx: Generate random mac if none found
+  net: ethernet: xilinx: Enable emaclite for MIPS
+  MIPS: xilfpga: Add DT node for AXI emaclite
+  MIPS: xilfpga: Update defconfig
+
+ arch/microblaze/Kconfig                       |   1 +
+ arch/microblaze/kernel/Makefile               |   2 +-
+ arch/microblaze/kernel/intc.c                 | 196 -----------------------
+ arch/mips/Kconfig                             |   1 +
+ arch/mips/boot/dts/xilfpga/nexys4ddr.dts      |  63 ++++++++
+ arch/mips/configs/xilfpga_defconfig           |  37 ++++-
+ arch/mips/xilfpga/intc.c                      |   7 +-
+ drivers/irqchip/Kconfig                       |   4 +
+ drivers/irqchip/Makefile                      |   1 +
+ drivers/irqchip/irq-axi-intc.c                | 222 ++++++++++++++++++++++++++
+ drivers/net/ethernet/xilinx/Kconfig           |   4 +-
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c |   6 +-
+ 12 files changed, 337 insertions(+), 207 deletions(-)
+ delete mode 100644 arch/microblaze/kernel/intc.c
+ create mode 100644 drivers/irqchip/irq-axi-intc.c
+
 -- 
 1.9.1

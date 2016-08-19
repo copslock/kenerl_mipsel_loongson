@@ -1,61 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2016 04:54:46 +0200 (CEST)
-Received: from mail-pf0-f193.google.com ([209.85.192.193]:35167 "EHLO
-        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992247AbcHSCxBStjDi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Aug 2016 04:53:01 +0200
-Received: by mail-pf0-f193.google.com with SMTP id h186so682103pfg.2;
-        Thu, 18 Aug 2016 19:53:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=bwyp4vFfr2LAiF80/meP6764SXZ3wb/HihAz1zFmjMc=;
-        b=xscR9qyTaV0gDbe0lvvycY+0VmJzbFRLbQjPG45bjrpVJqJIC/8pKnCp9iNv1O3lx0
-         FxaqLmp09hIs2XKICkrkr4gx9ApSrbYyFMFAqMKovuJHV+y9Pnci8H3fzUu9gCuiSb5B
-         Nrk8f4APNfSmyxTxgH4jiUdvE75e4Ca5q4XvQP49vaNSfZtBs/pzDthTUasAazC2G/Sd
-         XDQYBML1zkhyeP+YwWd/j2mcOktqgxdEASmdsBy4WKXHrZtAGPeBNXGZ3YHCCsASAo8v
-         in39ZrBBnLQJ6W+B501SHFYjEVR4/87lJknZVr9+DGjQ3g21GXhIQWc3WnKuJQYAXm6d
-         /vIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=bwyp4vFfr2LAiF80/meP6764SXZ3wb/HihAz1zFmjMc=;
-        b=h3gA0nGxTTdcTClpDzdkZerDXIgrq7Szo3RXbSWoxqU1J3lvWqmXT5MOS7xtcMaRBg
-         Y0RqvNuqadWcBmvrk4fglAfqB3c/QQulcmVp1FK1kDAtzfrKSV6amRekBWOHIaCVxlmZ
-         q/aMyBfKLo2+vePOzI6eY8GKzc5D3rK/ddDAfnvkykOe+WxDJDNkQP3jRNq7Nmy2UcDS
-         TqWnWoVeUgXy0+CaGJ8Cp9DIf3jqmwmQNPbHoz10NI6X3iuqEWUnC/t5F/W9icBS5GG/
-         m/r0PtezrKTZcV3cwnrZ8GyfrJMBlvshG6pyqbvueFdwgANZl0hqmkluBkCUi1NZEcCt
-         6WRQ==
-X-Gm-Message-State: AEkoouuF3ZorG86m4lT/3KYWeWaYohbxRKaE02wqIB+RBBOck/xr15i6Nlqw4Jg1l6UhOw==
-X-Received: by 10.98.71.91 with SMTP id u88mr9928457pfa.145.1471575175311;
-        Thu, 18 Aug 2016 19:52:55 -0700 (PDT)
-Received: from localhost.localdomain ([125.130.116.2])
-        by smtp.gmail.com with ESMTPSA id 132sm1886744pfu.6.2016.08.18.19.52.52
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 18 Aug 2016 19:52:55 -0700 (PDT)
-From:   Jaedon Shin <jaedon.shin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>,
-        devicetree@vger.kernel.org, Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [v4 5/5] MIPS: BMIPS: Use interrupt-controller node name
-Date:   Fri, 19 Aug 2016 11:52:30 +0900
-Message-Id: <20160819025230.31882-6-jaedon.shin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2016 09:12:03 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:54876 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992475AbcHSHL5IIcvS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Aug 2016 09:11:57 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 9D8EDACC5;
+        Fri, 19 Aug 2016 07:11:56 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 050/100] MIPS: KVM: Fix mapped fault broken commpage handling
+Date:   Fri, 19 Aug 2016 09:10:49 +0200
+Message-Id: <0a73cdedcf38e9e976b739aad2d15a897e5e6965.1471589700.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160819025230.31882-1-jaedon.shin@gmail.com>
-References: <20160819025230.31882-1-jaedon.shin@gmail.com>
-Return-Path: <jaedon.shin@gmail.com>
+In-Reply-To: <bc76af4e1436406a1f53da243e76bd10327691f2.1471589700.git.jslaby@suse.cz>
+References: <bc76af4e1436406a1f53da243e76bd10327691f2.1471589700.git.jslaby@suse.cz>
+In-Reply-To: <cover.1471589700.git.jslaby@suse.cz>
+References: <cover.1471589700.git.jslaby@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54674
+X-archive-position: 54675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jaedon.shin@gmail.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,394 +47,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Changes node names of the interrupt-controller device nodes to
-interrupt-controller instead of label strings.
+From: James Hogan <james.hogan@imgtec.com>
 
-Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+3.12-stable review patch.  If anyone has any objections, please let me know.
+
+===============
+
+commit c604cffa93478f8888bec62b23d6073dad03d43a upstream.
+
+kvm_mips_handle_mapped_seg_tlb_fault() appears to map the guest page at
+virtual address 0 to PFN 0 if the guest has created its own mapping
+there. The intention is unclear, but it may have been an attempt to
+protect the zero page from being mapped to anything but the comm page in
+code paths you wouldn't expect from genuine commpage accesses (guest
+kernel mode cache instructions on that address, hitting trapping
+instructions when executing from that address with a coincidental TLB
+eviction during the KVM handling, and guest user mode accesses to that
+address).
+
+Fix this to check for mappings exactly at KVM_GUEST_COMMPAGE_ADDR (it
+may not be at address 0 since commit 42aa12e74e91 ("MIPS: KVM: Move
+commpage so 0x0 is unmapped")), and set the corresponding EntryLo to be
+interpreted as 0 (invalid).
+
+Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
+[james.hogan@imgtec.com: Backport to v3.10.y - v3.15.y]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/boot/dts/brcm/bcm7125.dtsi |  8 ++++----
- arch/mips/boot/dts/brcm/bcm7346.dtsi | 10 +++++-----
- arch/mips/boot/dts/brcm/bcm7358.dtsi | 10 +++++-----
- arch/mips/boot/dts/brcm/bcm7360.dtsi | 10 +++++-----
- arch/mips/boot/dts/brcm/bcm7362.dtsi | 10 +++++-----
- arch/mips/boot/dts/brcm/bcm7420.dtsi |  8 ++++----
- arch/mips/boot/dts/brcm/bcm7425.dtsi | 10 +++++-----
- arch/mips/boot/dts/brcm/bcm7435.dtsi | 10 +++++-----
- 8 files changed, 38 insertions(+), 38 deletions(-)
+ arch/mips/kvm/kvm_tlb.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/boot/dts/brcm/bcm7125.dtsi b/arch/mips/boot/dts/brcm/bcm7125.dtsi
-index 746ed06c85de..bbd00f65ce39 100644
---- a/arch/mips/boot/dts/brcm/bcm7125.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7125.dtsi
-@@ -26,7 +26,7 @@
- 		uart0 = &uart0;
- 	};
- 
--	cpu_intc: cpu_intc {
-+	cpu_intc: interrupt-controller {
- 		#address-cells = <0>;
- 		compatible = "mti,cpu-interrupt-controller";
- 
-@@ -55,7 +55,7 @@
- 		compatible = "simple-bus";
- 		ranges = <0 0x10000000 0x01000000>;
- 
--		periph_intc: periph_intc@441400 {
-+		periph_intc: interrupt-controller@441400 {
- 			compatible = "brcm,bcm7038-l1-intc";
- 			reg = <0x441400 0x30>, <0x441600 0x30>;
- 
-@@ -66,7 +66,7 @@
- 			interrupts = <2>, <3>;
- 		};
- 
--		sun_l2_intc: sun_l2_intc@401800 {
-+		sun_l2_intc: interrupt-controller@401800 {
- 			compatible = "brcm,l2-intc";
- 			reg = <0x401800 0x30>;
- 			interrupt-controller;
-@@ -87,7 +87,7 @@
- 						     "avd_0", "jtag_0";
- 		};
- 
--		upg_irq0_intc: upg_irq0_intc@406780 {
-+		upg_irq0_intc: interrupt-controller@406780 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406780 0x8>;
- 
-diff --git a/arch/mips/boot/dts/brcm/bcm7346.dtsi b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-index 72d9cffa8927..4bbcc95f1c15 100644
---- a/arch/mips/boot/dts/brcm/bcm7346.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7346.dtsi
-@@ -26,7 +26,7 @@
- 		uart0 = &uart0;
- 	};
- 
--	cpu_intc: cpu_intc {
-+	cpu_intc: interrupt-controller {
- 		#address-cells = <0>;
- 		compatible = "mti,cpu-interrupt-controller";
- 
-@@ -55,7 +55,7 @@
- 		compatible = "simple-bus";
- 		ranges = <0 0x10000000 0x01000000>;
- 
--		periph_intc: periph_intc@411400 {
-+		periph_intc: interrupt-controller@411400 {
- 			compatible = "brcm,bcm7038-l1-intc";
- 			reg = <0x411400 0x30>, <0x411600 0x30>;
- 
-@@ -66,7 +66,7 @@
- 			interrupts = <2>, <3>;
- 		};
- 
--		sun_l2_intc: sun_l2_intc@403000 {
-+		sun_l2_intc: interrupt-controller@403000 {
- 			compatible = "brcm,l2-intc";
- 			reg = <0x403000 0x30>;
- 			interrupt-controller;
-@@ -87,7 +87,7 @@
- 						     "jtag_0", "svd_0";
- 		};
- 
--		upg_irq0_intc: upg_irq0_intc@406780 {
-+		upg_irq0_intc: interrupt-controller@406780 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406780 0x8>;
- 
-@@ -102,7 +102,7 @@
- 			interrupt-names = "upg_main", "upg_bsc";
- 		};
- 
--		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
-+		upg_aon_irq0_intc: interrupt-controller@408b80 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x408b80 0x8>;
- 
-diff --git a/arch/mips/boot/dts/brcm/bcm7358.dtsi b/arch/mips/boot/dts/brcm/bcm7358.dtsi
-index 7f78bfab164b..3e42535c8d29 100644
---- a/arch/mips/boot/dts/brcm/bcm7358.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7358.dtsi
-@@ -20,7 +20,7 @@
- 		uart0 = &uart0;
- 	};
- 
--	cpu_intc: cpu_intc {
-+	cpu_intc: interrupt-controller {
- 		#address-cells = <0>;
- 		compatible = "mti,cpu-interrupt-controller";
- 
-@@ -49,7 +49,7 @@
- 		compatible = "simple-bus";
- 		ranges = <0 0x10000000 0x01000000>;
- 
--		periph_intc: periph_intc@411400 {
-+		periph_intc: interrupt-controller@411400 {
- 			compatible = "brcm,bcm7038-l1-intc";
- 			reg = <0x411400 0x30>;
- 
-@@ -60,7 +60,7 @@
- 			interrupts = <2>;
- 		};
- 
--		sun_l2_intc: sun_l2_intc@403000 {
-+		sun_l2_intc: interrupt-controller@403000 {
- 			compatible = "brcm,l2-intc";
- 			reg = <0x403000 0x30>;
- 			interrupt-controller;
-@@ -81,7 +81,7 @@
- 						     "avd_0", "jtag_0";
- 		};
- 
--		upg_irq0_intc: upg_irq0_intc@406600 {
-+		upg_irq0_intc: interrupt-controller@406600 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406600 0x8>;
- 
-@@ -96,7 +96,7 @@
- 			interrupt-names = "upg_main", "upg_bsc";
- 		};
- 
--		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
-+		upg_aon_irq0_intc: interrupt-controller@408b80 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x408b80 0x8>;
- 
-diff --git a/arch/mips/boot/dts/brcm/bcm7360.dtsi b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-index 64b9fd90941d..112a5571c596 100644
---- a/arch/mips/boot/dts/brcm/bcm7360.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7360.dtsi
-@@ -20,7 +20,7 @@
- 		uart0 = &uart0;
- 	};
- 
--	cpu_intc: cpu_intc {
-+	cpu_intc: interrupt-controller {
- 		#address-cells = <0>;
- 		compatible = "mti,cpu-interrupt-controller";
- 
-@@ -49,7 +49,7 @@
- 		compatible = "simple-bus";
- 		ranges = <0 0x10000000 0x01000000>;
- 
--		periph_intc: periph_intc@411400 {
-+		periph_intc: interrupt-controller@411400 {
- 			compatible = "brcm,bcm7038-l1-intc";
- 			reg = <0x411400 0x30>;
- 
-@@ -60,7 +60,7 @@
- 			interrupts = <2>;
- 		};
- 
--		sun_l2_intc: sun_l2_intc@403000 {
-+		sun_l2_intc: interrupt-controller@403000 {
- 			compatible = "brcm,l2-intc";
- 			reg = <0x403000 0x30>;
- 			interrupt-controller;
-@@ -81,7 +81,7 @@
- 						     "avd_0", "jtag_0";
- 		};
- 
--		upg_irq0_intc: upg_irq0_intc@406600 {
-+		upg_irq0_intc: interrupt-controller@406600 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406600 0x8>;
- 
-@@ -96,7 +96,7 @@
- 			interrupt-names = "upg_main", "upg_bsc";
- 		};
- 
--		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
-+		upg_aon_irq0_intc: interrupt-controller@408b80 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x408b80 0x8>;
- 
-diff --git a/arch/mips/boot/dts/brcm/bcm7362.dtsi b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-index 784d58725227..34abfb0b07e7 100644
---- a/arch/mips/boot/dts/brcm/bcm7362.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7362.dtsi
-@@ -26,7 +26,7 @@
- 		uart0 = &uart0;
- 	};
- 
--	cpu_intc: cpu_intc {
-+	cpu_intc: interrupt-controller {
- 		#address-cells = <0>;
- 		compatible = "mti,cpu-interrupt-controller";
- 
-@@ -55,7 +55,7 @@
- 		compatible = "simple-bus";
- 		ranges = <0 0x10000000 0x01000000>;
- 
--		periph_intc: periph_intc@411400 {
-+		periph_intc: interrupt-controller@411400 {
- 			compatible = "brcm,bcm7038-l1-intc";
- 			reg = <0x411400 0x30>, <0x411600 0x30>;
- 
-@@ -66,7 +66,7 @@
- 			interrupts = <2>, <3>;
- 		};
- 
--		sun_l2_intc: sun_l2_intc@403000 {
-+		sun_l2_intc: interrupt-controller@403000 {
- 			compatible = "brcm,l2-intc";
- 			reg = <0x403000 0x30>;
- 			interrupt-controller;
-@@ -87,7 +87,7 @@
- 						     "avd_0", "jtag_0";
- 		};
- 
--		upg_irq0_intc: upg_irq0_intc@406600 {
-+		upg_irq0_intc: interrupt-controller@406600 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406600 0x8>;
- 
-@@ -102,7 +102,7 @@
- 			interrupt-names = "upg_main", "upg_bsc";
- 		};
- 
--		upg_aon_irq0_intc: upg_aon_irq0_intc@408b80 {
-+		upg_aon_irq0_intc: interrupt-controller@408b80 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x408b80 0x8>;
- 
-diff --git a/arch/mips/boot/dts/brcm/bcm7420.dtsi b/arch/mips/boot/dts/brcm/bcm7420.dtsi
-index 0d391d77c780..b143723c674e 100644
---- a/arch/mips/boot/dts/brcm/bcm7420.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7420.dtsi
-@@ -26,7 +26,7 @@
- 		uart0 = &uart0;
- 	};
- 
--	cpu_intc: cpu_intc {
-+	cpu_intc: interrupt-controller {
- 		#address-cells = <0>;
- 		compatible = "mti,cpu-interrupt-controller";
- 
-@@ -55,7 +55,7 @@
- 		compatible = "simple-bus";
- 		ranges = <0 0x10000000 0x01000000>;
- 
--		periph_intc: periph_intc@441400 {
-+		periph_intc: interrupt-controller@441400 {
- 			compatible = "brcm,bcm7038-l1-intc";
- 			reg = <0x441400 0x30>, <0x441600 0x30>;
- 
-@@ -66,7 +66,7 @@
- 			interrupts = <2>, <3>;
- 		};
- 
--		sun_l2_intc: sun_l2_intc@401800 {
-+		sun_l2_intc: interrupt-controller@401800 {
- 			compatible = "brcm,l2-intc";
- 			reg = <0x401800 0x30>;
- 			interrupt-controller;
-@@ -88,7 +88,7 @@
- 						     "jtag_0";
- 		};
- 
--		upg_irq0_intc: upg_irq0_intc@406780 {
-+		upg_irq0_intc: interrupt-controller@406780 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406780 0x8>;
- 
-diff --git a/arch/mips/boot/dts/brcm/bcm7425.dtsi b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-index 7124c9822479..2488d2f61f60 100644
---- a/arch/mips/boot/dts/brcm/bcm7425.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7425.dtsi
-@@ -26,7 +26,7 @@
- 		uart0 = &uart0;
- 	};
- 
--	cpu_intc: cpu_intc {
-+	cpu_intc: interrupt-controller {
- 		#address-cells = <0>;
- 		compatible = "mti,cpu-interrupt-controller";
- 
-@@ -55,7 +55,7 @@
- 		compatible = "simple-bus";
- 		ranges = <0 0x10000000 0x01000000>;
- 
--		periph_intc: periph_intc@41a400 {
-+		periph_intc: interrupt-controller@41a400 {
- 			compatible = "brcm,bcm7038-l1-intc";
- 			reg = <0x41a400 0x30>, <0x41a600 0x30>;
- 
-@@ -66,7 +66,7 @@
- 			interrupts = <2>, <3>;
- 		};
- 
--		sun_l2_intc: sun_l2_intc@403000 {
-+		sun_l2_intc: interrupt-controller@403000 {
- 			compatible = "brcm,l2-intc";
- 			reg = <0x403000 0x30>;
- 			interrupt-controller;
-@@ -89,7 +89,7 @@
- 						     "vice_0";
- 		};
- 
--		upg_irq0_intc: upg_irq0_intc@406780 {
-+		upg_irq0_intc: interrupt-controller@406780 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406780 0x8>;
- 
-@@ -104,7 +104,7 @@
- 			interrupt-names = "upg_main", "upg_bsc";
- 		};
- 
--		upg_aon_irq0_intc: upg_aon_irq0_intc@409480 {
-+		upg_aon_irq0_intc: interrupt-controller@409480 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x409480 0x8>;
- 
-diff --git a/arch/mips/boot/dts/brcm/bcm7435.dtsi b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-index a3648964be3a..19fa259b968b 100644
---- a/arch/mips/boot/dts/brcm/bcm7435.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm7435.dtsi
-@@ -38,7 +38,7 @@
- 		uart0 = &uart0;
- 	};
- 
--	cpu_intc: cpu_intc {
-+	cpu_intc: interrupt-controller {
- 		#address-cells = <0>;
- 		compatible = "mti,cpu-interrupt-controller";
- 
-@@ -67,7 +67,7 @@
- 		compatible = "simple-bus";
- 		ranges = <0 0x10000000 0x01000000>;
- 
--		periph_intc: periph_intc@41b500 {
-+		periph_intc: interrupt-controller@41b500 {
- 			compatible = "brcm,bcm7038-l1-intc";
- 			reg = <0x41b500 0x40>, <0x41b600 0x40>,
- 				<0x41b700 0x40>, <0x41b800 0x40>;
-@@ -79,7 +79,7 @@
- 			interrupts = <2>, <3>, <2>, <3>;
- 		};
- 
--		sun_l2_intc: sun_l2_intc@403000 {
-+		sun_l2_intc: interrupt-controller@403000 {
- 			compatible = "brcm,l2-intc";
- 			reg = <0x403000 0x30>;
- 			interrupt-controller;
-@@ -104,7 +104,7 @@
- 						     "scpu";
- 		};
- 
--		upg_irq0_intc: upg_irq0_intc@406780 {
-+		upg_irq0_intc: interrupt-controller@406780 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x406780 0x8>;
- 
-@@ -119,7 +119,7 @@
- 			interrupt-names = "upg_main", "upg_bsc";
- 		};
- 
--		upg_aon_irq0_intc: upg_aon_irq0_intc@409480 {
-+		upg_aon_irq0_intc: interrupt-controller@409480 {
- 			compatible = "brcm,bcm7120-l2-intc";
- 			reg = <0x409480 0x8>;
- 
+diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
+index c777dd36d4a8..1e6b1f124377 100644
+--- a/arch/mips/kvm/kvm_tlb.c
++++ b/arch/mips/kvm/kvm_tlb.c
+@@ -397,21 +397,27 @@ kvm_mips_handle_mapped_seg_tlb_fault(struct kvm_vcpu *vcpu,
+ 	unsigned long entryhi = 0, entrylo0 = 0, entrylo1 = 0;
+ 	struct kvm *kvm = vcpu->kvm;
+ 	pfn_t pfn0, pfn1;
++	long tlb_lo[2];
+ 
++	tlb_lo[0] = tlb->tlb_lo0;
++	tlb_lo[1] = tlb->tlb_lo1;
+ 
+-	if ((tlb->tlb_hi & VPN2_MASK) == 0) {
+-		pfn0 = 0;
+-		pfn1 = 0;
+-	} else {
+-		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo0) >> PAGE_SHIFT) < 0)
+-			return -1;
++	/*
++	 * The commpage address must not be mapped to anything else if the guest
++	 * TLB contains entries nearby, or commpage accesses will break.
++	 */
++	if (!((tlb->tlb_hi ^ KVM_GUEST_COMMPAGE_ADDR) &
++			VPN2_MASK & (PAGE_MASK << 1)))
++		tlb_lo[(KVM_GUEST_COMMPAGE_ADDR >> PAGE_SHIFT) & 1] = 0;
+ 
+-		if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb->tlb_lo1) >> PAGE_SHIFT) < 0)
+-			return -1;
++	if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb_lo[0]) >> PAGE_SHIFT) < 0)
++		return -1;
+ 
+-		pfn0 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo0) >> PAGE_SHIFT];
+-		pfn1 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb->tlb_lo1) >> PAGE_SHIFT];
+-	}
++	if (kvm_mips_map_page(kvm, mips3_tlbpfn_to_paddr(tlb_lo[1]) >> PAGE_SHIFT) < 0)
++		return -1;
++
++	pfn0 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb_lo[0]) >> PAGE_SHIFT];
++	pfn1 = kvm->arch.guest_pmap[mips3_tlbpfn_to_paddr(tlb_lo[1]) >> PAGE_SHIFT];
+ 
+ 	if (hpa0)
+ 		*hpa0 = pfn0 << PAGE_SHIFT;
+@@ -423,9 +429,9 @@ kvm_mips_handle_mapped_seg_tlb_fault(struct kvm_vcpu *vcpu,
+ 	entryhi = (tlb->tlb_hi & VPN2_MASK) | (KVM_GUEST_KERNEL_MODE(vcpu) ?
+ 			kvm_mips_get_kernel_asid(vcpu) : kvm_mips_get_user_asid(vcpu));
+ 	entrylo0 = mips3_paddr_to_tlbpfn(pfn0 << PAGE_SHIFT) | (0x3 << 3) |
+-			(tlb->tlb_lo0 & MIPS3_PG_D) | (tlb->tlb_lo0 & MIPS3_PG_V);
++			(tlb_lo[0] & MIPS3_PG_D) | (tlb_lo[0] & MIPS3_PG_V);
+ 	entrylo1 = mips3_paddr_to_tlbpfn(pfn1 << PAGE_SHIFT) | (0x3 << 3) |
+-			(tlb->tlb_lo1 & MIPS3_PG_D) | (tlb->tlb_lo1 & MIPS3_PG_V);
++			(tlb_lo[1] & MIPS3_PG_D) | (tlb_lo[1] & MIPS3_PG_V);
+ 
+ #ifdef DEBUG
+ 	kvm_debug("@ %#lx tlb_lo0: 0x%08lx tlb_lo1: 0x%08lx\n", vcpu->arch.pc,
 -- 
 2.9.3

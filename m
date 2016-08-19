@@ -1,36 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2016 09:13:15 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:54893 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2016 09:13:38 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:54922 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992494AbcHSHL6OcnyS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 19 Aug 2016 09:11:58 +0200
+        id S23992536AbcHSHMAr0ZaS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Aug 2016 09:12:00 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
 Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 0225DABDC;
-        Fri, 19 Aug 2016 07:11:58 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 86AFBABDC;
+        Fri, 19 Aug 2016 07:12:00 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 053/100] MIPS: KVM: Propagate kseg0/mapped tlb fault errors
-Date:   Fri, 19 Aug 2016 09:10:52 +0200
-Message-Id: <8aa244a8474c2cdaf166f34826d517a9a2c4c325.1471589700.git.jslaby@suse.cz>
+Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        linux-mips@linux-mips.org, linux-security-module@vger.kernel.org,
+        keyrings@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 058/100] KEYS: 64-bit MIPS needs to use compat_sys_keyctl for 32-bit userspace
+Date:   Fri, 19 Aug 2016 09:10:57 +0200
+Message-Id: <07e92f8086d83a7c4de513a3022185b12d6788ad.1471589700.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <bc76af4e1436406a1f53da243e76bd10327691f2.1471589700.git.jslaby@suse.cz>
 References: <bc76af4e1436406a1f53da243e76bd10327691f2.1471589700.git.jslaby@suse.cz>
 In-Reply-To: <cover.1471589700.git.jslaby@suse.cz>
 References: <cover.1471589700.git.jslaby@suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54678
+X-archive-position: 54679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,118 +43,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+From: David Howells <dhowells@redhat.com>
 
 3.12-stable review patch.  If anyone has any objections, please let me know.
 
 ===============
 
-commit 9b731bcfdec4c159ad2e4312e25d69221709b96a upstream.
+commit 20f06ed9f61a185c6dabd662c310bed6189470df upstream.
 
-Propagate errors from kvm_mips_handle_kseg0_tlb_fault() and
-kvm_mips_handle_mapped_seg_tlb_fault(), usually triggering an internal
-error since they normally indicate the guest accessed bad physical
-memory or the commpage in an unexpected way.
+MIPS64 needs to use compat_sys_keyctl for 32-bit userspace rather than
+calling sys_keyctl.  The latter will work in a lot of cases, thereby hiding
+the issue.
 
-Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Reported-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: David Howells <dhowells@redhat.com>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
-[james.hogan@imgtec.com: Backport to v3.10.y - v3.15.y]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: keyrings@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13832/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/kvm/kvm_mips_emul.c | 33 ++++++++++++++++++++++++---------
- arch/mips/kvm/kvm_tlb.c       | 14 ++++++++++----
- 2 files changed, 34 insertions(+), 13 deletions(-)
+ arch/mips/kernel/scall64-n32.S | 2 +-
+ arch/mips/kernel/scall64-o32.S | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index 33085819cd89..9f7643874fba 100644
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -972,8 +972,13 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
- 	preempt_disable();
- 	if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
- 
--		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0) {
--			kvm_mips_handle_kseg0_tlb_fault(va, vcpu);
-+		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0 &&
-+		    kvm_mips_handle_kseg0_tlb_fault(va, vcpu)) {
-+			kvm_err("%s: handling mapped kseg0 tlb fault for %lx, vcpu: %p, ASID: %#lx\n",
-+				__func__, va, vcpu, read_c0_entryhi());
-+			er = EMULATE_FAIL;
-+			preempt_enable();
-+			goto done;
- 		}
- 	} else if ((KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0) ||
- 		   KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
-@@ -1006,11 +1011,16 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
- 								run, vcpu);
- 				preempt_enable();
- 				goto dont_update_pc;
--			} else {
--				/* We fault an entry from the guest tlb to the shadow host TLB */
--				kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
--								     NULL,
--								     NULL);
-+			}
-+			/* We fault an entry from the guest tlb to the shadow host TLB */
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
-+								 NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, va, index, vcpu,
-+					read_c0_entryhi());
-+				er = EMULATE_FAIL;
-+				preempt_enable();
-+				goto done;
- 			}
- 		}
- 	} else {
-@@ -1821,8 +1831,13 @@ kvm_mips_handle_tlbmiss(unsigned long cause, uint32_t *opc,
- 			     tlb->tlb_hi, tlb->tlb_lo0, tlb->tlb_lo1);
- #endif
- 			/* OK we have a Guest TLB entry, now inject it into the shadow host TLB */
--			kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb, NULL,
--							     NULL);
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
-+								 NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, va, index, vcpu,
-+					read_c0_entryhi());
-+				er = EMULATE_FAIL;
-+			}
- 		}
- 	}
- 
-diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
-index 5a3c3731214f..4bee4397dca8 100644
---- a/arch/mips/kvm/kvm_tlb.c
-+++ b/arch/mips/kvm/kvm_tlb.c
-@@ -926,10 +926,16 @@ uint32_t kvm_get_inst(uint32_t *opc, struct kvm_vcpu *vcpu)
- 				local_irq_restore(flags);
- 				return KVM_INVALID_INST;
- 			}
--			kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
--							     &vcpu->arch.
--							     guest_tlb[index],
--							     NULL, NULL);
-+			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
-+						&vcpu->arch.guest_tlb[index],
-+						NULL, NULL)) {
-+				kvm_err("%s: handling mapped seg tlb fault failed for %p, index: %u, vcpu: %p, ASID: %#lx\n",
-+					__func__, opc, index, vcpu,
-+					read_c0_entryhi());
-+				kvm_mips_dump_guest_tlbs(vcpu);
-+				local_irq_restore(flags);
-+				return KVM_INVALID_INST;
-+			}
- 			inst = *(opc);
- 		}
- 		local_irq_restore(flags);
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index cab150789c8d..b657fbefc466 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -349,7 +349,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_ni_syscall			/* available, was setaltroot */
+ 	PTR	sys_add_key
+ 	PTR	sys_request_key
+-	PTR	sys_keyctl			/* 6245 */
++	PTR	compat_sys_keyctl		/* 6245 */
+ 	PTR	sys_set_thread_area
+ 	PTR	sys_inotify_init
+ 	PTR	sys_inotify_add_watch
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index 37605dc8eef7..bf56d7e271dd 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -474,7 +474,7 @@ sys_call_table:
+ 	PTR	sys_ni_syscall			/* available, was setaltroot */
+ 	PTR	sys_add_key			/* 4280 */
+ 	PTR	sys_request_key
+-	PTR	sys_keyctl
++	PTR	compat_sys_keyctl
+ 	PTR	sys_set_thread_area
+ 	PTR	sys_inotify_init
+ 	PTR	sys_inotify_add_watch		/* 4285 */
 -- 
 2.9.3

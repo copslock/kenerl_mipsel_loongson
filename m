@@ -1,35 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2016 19:20:15 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4177 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992500AbcHSRTm7JMhr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Aug 2016 19:19:42 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 7FF7F2F8182E;
-        Fri, 19 Aug 2016 18:19:23 +0100 (IST)
-Received: from localhost (10.100.200.126) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 19 Aug
- 2016 18:19:26 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 3/3] MIPS: clear execution hazard after changing FTLB enable
-Date:   Fri, 19 Aug 2016 18:18:28 +0100
-Message-ID: <20160819171828.29109-4-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160819171828.29109-1-paul.burton@imgtec.com>
-References: <20160819171828.29109-1-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2016 21:17:59 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:45494 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992215AbcHSTRxPTQzl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Aug 2016 21:17:53 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 6CDF661CF2; Fri, 19 Aug 2016 19:17:51 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D27866178A;
+        Fri, 19 Aug 2016 19:17:50 +0000 (UTC)
+Date:   Fri, 19 Aug 2016 12:17:50 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Mark Brown <broonie@kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Guenter Roeck <linux@roeck-us.net>, linux-clk@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-spi@vger.kernel.org,
+        linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH 3/3] MIPS: TXx9: Convert to Common Clock Framework
+Message-ID: <20160819191750.GV361@codeaurora.org>
+References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
+ <1471541667-30689-4-git-send-email-geert@linux-m68k.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.126]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1471541667-30689-4-git-send-email-geert@linux-m68k.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54700
+X-archive-position: 54701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,42 +51,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On current P-series cores from Imagination the FTLB can be enabled or
-disabled via a bit in the Config6 register, and an execution hazard is
-created by changing the value of bit. The ftlb_disable function already
-cleared that hazard but that does no good for other callers. Clear the
-hazard in the set_ftlb_enable function that creates it, and only for the
-cores where it applies.
+On 08/18, Geert Uytterhoeven wrote:
+> diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+> index ada92db92f87d91a..2fdbcf91b2cc472c 100644
+> --- a/arch/mips/txx9/generic/setup.c
+> +++ b/arch/mips/txx9/generic/setup.c
+> @@ -560,8 +527,39 @@ void __init plat_time_init(void)
+>  	txx9_board_vec->time_init();
+>  }
+>  
+> +static void txx9_clk_init(void)
+> +{
+> +	struct clk *clk;
+> +	int error;
+> +
+> +	clk = clk_register_fixed_rate(NULL, "gbus", NULL, 0, txx9_gbus_clock);
 
-This has the effect of reverting c982c6d6c48b ("MIPS: cpu-probe: Remove
-cp0 hazard barrier when enabling the FTLB") which was incorrect.
+Can we use the clk_hw_*() based variants instead please?
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: c982c6d6c48b ("MIPS: cpu-probe: Remove cp0 hazard barrier when enabling the FTLB")
----
- arch/mips/kernel/cpu-probe.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 5069b5b1..dd31754 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -376,8 +376,6 @@ static int __init ftlb_disable(char *s)
- 		return 1;
- 	}
- 
--	back_to_back_c0_hazard();
--
- 	config4 = read_c0_config4();
- 
- 	/* Check that FTLB has been disabled */
-@@ -560,6 +558,7 @@ static int set_ftlb_enable(struct cpuinfo_mips *c, enum ftlb_flags flags)
- 		}
- 
- 		write_c0_config6(config);
-+		back_to_back_c0_hazard();
- 		break;
- 	case CPU_I6400:
- 		/* There's no way to disable the FTLB */
 -- 
-2.9.3
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

@@ -1,63 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Aug 2016 10:36:18 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:50450 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992156AbcHTIgL0WX4J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Aug 2016 10:36:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
-        bh=Ey2aYLrGeQzlly+801oio9EaxOI7kcSBy3nNkFgiuvQ=; b=tUon96N0B0I1/nIT7a/mN7ANkc
-        jh3LlEEhvzK40sABfQibpjEglJ0inVkaB9HkUMK1kgW77GY7osZthb8hYxUNwEhI2WXbBnSohJMjt
-        G8KpkiFB4+XfY5rEzMqArTooLnZq1U6TSZ6WCbpQBzJCE/nRT4kEq7SpsaKCXqMH21gaRjpHudlK9
-        f4Hc+aAYbbPzVYrsDok6mh/agEcx+e3dDtfIB1Ezf34eQlIylsYYni7ZQTWReih+TTqxzkvMOiKst
-        BJtD42aOJLednvl8KBddNhmKnJvqMPGEZCIWURLAWqc2rROcw18q0pX6YLmm6lRlNBR2IuKcBtOaN
-        Fr/ZfBBQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:33818 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1bb1l4-002QNh-DE; Sat, 20 Aug 2016 08:36:02 +0000
-Subject: Re: [PATCH 2/3] watchdog: txx9wdt: Add missing clock (un)prepare
- calls for CCF
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-        Mark Brown <broonie@kernel.org>,
-        Wim Van Sebroeck <wim@iguana.be>
-References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
- <1471541667-30689-3-git-send-email-geert@linux-m68k.org>
-Cc:     linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <4a958a01-7772-dc9d-ff00-7e1cbad7ffe3@roeck-us.net>
-Date:   Sat, 20 Aug 2016 01:36:02 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Aug 2016 17:33:15 +0200 (CEST)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:55510 "EHLO 1wt.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992318AbcHUPdI0uot3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 21 Aug 2016 17:33:08 +0200
+Received: (from willy@localhost)
+        by pcw.home.local (8.15.2/8.15.2/Submit) id u7LFWGDp013308;
+        Sun, 21 Aug 2016 17:32:16 +0200
+From:   Willy Tarreau <w@1wt.eu>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 3.10 053/180] MIPS: KVM: Propagate kseg0/mapped tlb fault errors
+Date:   Sun, 21 Aug 2016 17:29:43 +0200
+Message-Id: <1471793510-13022-54-git-send-email-w@1wt.eu>
+X-Mailer: git-send-email 2.8.0.rc2.1.gbe9624a
+In-Reply-To: <1471793510-13022-1-git-send-email-w@1wt.eu>
+References: <1471793510-13022-1-git-send-email-w@1wt.eu>
 MIME-Version: 1.0
-In-Reply-To: <1471541667-30689-3-git-send-email-geert@linux-m68k.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain; charset=latin1
+Content-Transfer-Encoding: 8bit
+Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54703
+X-archive-position: 54704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: w@1wt.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,52 +43,114 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/18/2016 10:34 AM, Geert Uytterhoeven wrote:
-> While the custom minimal TXx9 clock implementation doesn't need or use
-> clock (un)prepare calls (they are dummies if !CONFIG_HAVE_CLK_PREPARE),
-> they are mandatory when using the Common Clock Framework.
->
-> Hence add them, to prepare for the advent of CCF.
->
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+From: James Hogan <james.hogan@imgtec.com>
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+commit 9b731bcfdec4c159ad2e4312e25d69221709b96a upstream.
 
-> ---
-> Tested on RBTX4927.
-> ---
->  drivers/watchdog/txx9wdt.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/watchdog/txx9wdt.c b/drivers/watchdog/txx9wdt.c
-> index c2da880292bc2f32..6f7a9deb27d05d25 100644
-> --- a/drivers/watchdog/txx9wdt.c
-> +++ b/drivers/watchdog/txx9wdt.c
-> @@ -112,7 +112,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
->  		txx9_imclk = NULL;
->  		goto exit;
->  	}
-> -	ret = clk_enable(txx9_imclk);
-> +	ret = clk_prepare_enable(txx9_imclk);
->  	if (ret) {
->  		clk_put(txx9_imclk);
->  		txx9_imclk = NULL;
-> @@ -144,7 +144,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
->  	return 0;
->  exit:
->  	if (txx9_imclk) {
-> -		clk_disable(txx9_imclk);
-> +		clk_disable_unprepare(txx9_imclk);
->  		clk_put(txx9_imclk);
->  	}
->  	return ret;
-> @@ -153,7 +153,7 @@ exit:
->  static int __exit txx9wdt_remove(struct platform_device *dev)
->  {
->  	watchdog_unregister_device(&txx9wdt);
-> -	clk_disable(txx9_imclk);
-> +	clk_disable_unprepare(txx9_imclk);
->  	clk_put(txx9_imclk);
->  	return 0;
->  }
->
+Propagate errors from kvm_mips_handle_kseg0_tlb_fault() and
+kvm_mips_handle_mapped_seg_tlb_fault(), usually triggering an internal
+error since they normally indicate the guest accessed bad physical
+memory or the commpage in an unexpected way.
+
+Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
+Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
+[james.hogan@imgtec.com: Backport to v3.10.y - v3.15.y]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Willy Tarreau <w@1wt.eu>
+---
+ arch/mips/kvm/kvm_mips_emul.c | 33 ++++++++++++++++++++++++---------
+ arch/mips/kvm/kvm_tlb.c       | 14 ++++++++++----
+ 2 files changed, 34 insertions(+), 13 deletions(-)
+
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 3308581..9f76438 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -972,8 +972,13 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
+ 	preempt_disable();
+ 	if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
+ 
+-		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0) {
+-			kvm_mips_handle_kseg0_tlb_fault(va, vcpu);
++		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0 &&
++		    kvm_mips_handle_kseg0_tlb_fault(va, vcpu)) {
++			kvm_err("%s: handling mapped kseg0 tlb fault for %lx, vcpu: %p, ASID: %#lx\n",
++				__func__, va, vcpu, read_c0_entryhi());
++			er = EMULATE_FAIL;
++			preempt_enable();
++			goto done;
+ 		}
+ 	} else if ((KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0) ||
+ 		   KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
+@@ -1006,11 +1011,16 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
+ 								run, vcpu);
+ 				preempt_enable();
+ 				goto dont_update_pc;
+-			} else {
+-				/* We fault an entry from the guest tlb to the shadow host TLB */
+-				kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
+-								     NULL,
+-								     NULL);
++			}
++			/* We fault an entry from the guest tlb to the shadow host TLB */
++			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
++								 NULL, NULL)) {
++				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
++					__func__, va, index, vcpu,
++					read_c0_entryhi());
++				er = EMULATE_FAIL;
++				preempt_enable();
++				goto done;
+ 			}
+ 		}
+ 	} else {
+@@ -1821,8 +1831,13 @@ kvm_mips_handle_tlbmiss(unsigned long cause, uint32_t *opc,
+ 			     tlb->tlb_hi, tlb->tlb_lo0, tlb->tlb_lo1);
+ #endif
+ 			/* OK we have a Guest TLB entry, now inject it into the shadow host TLB */
+-			kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb, NULL,
+-							     NULL);
++			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
++								 NULL, NULL)) {
++				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
++					__func__, va, index, vcpu,
++					read_c0_entryhi());
++				er = EMULATE_FAIL;
++			}
+ 		}
+ 	}
+ 
+diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
+index 5a3c373..4bee439 100644
+--- a/arch/mips/kvm/kvm_tlb.c
++++ b/arch/mips/kvm/kvm_tlb.c
+@@ -926,10 +926,16 @@ uint32_t kvm_get_inst(uint32_t *opc, struct kvm_vcpu *vcpu)
+ 				local_irq_restore(flags);
+ 				return KVM_INVALID_INST;
+ 			}
+-			kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
+-							     &vcpu->arch.
+-							     guest_tlb[index],
+-							     NULL, NULL);
++			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
++						&vcpu->arch.guest_tlb[index],
++						NULL, NULL)) {
++				kvm_err("%s: handling mapped seg tlb fault failed for %p, index: %u, vcpu: %p, ASID: %#lx\n",
++					__func__, opc, index, vcpu,
++					read_c0_entryhi());
++				kvm_mips_dump_guest_tlbs(vcpu);
++				local_irq_restore(flags);
++				return KVM_INVALID_INST;
++			}
+ 			inst = *(opc);
+ 		}
+ 		local_irq_restore(flags);
+-- 
+2.8.0.rc2.1.gbe9624a

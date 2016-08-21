@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Aug 2016 21:59:42 +0200 (CEST)
-Received: from mail5.windriver.com ([192.103.53.11]:45860 "EHLO mail5.wrs.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992381AbcHUT6woHgFn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 21 Aug 2016 21:58:52 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Aug 2016 22:00:02 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:49523 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992443AbcHUT6wx0mBn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Aug 2016 21:58:52 +0200
 Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail5.wrs.com (8.15.2/8.15.2) with ESMTPS id u7LJwhQ8001945
-        (version=TLSv1 cipher=AES128-SHA bits=128 verify=OK);
-        Sun, 21 Aug 2016 12:58:45 -0700
+        by mail.windriver.com (8.15.2/8.15.1) with ESMTPS id u7LJwkCG023782
+        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
+        Sun, 21 Aug 2016 12:58:46 -0700 (PDT)
 Received: from yow-lpgnfs-02.wrs.com (128.224.149.8) by
  ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.3.248.2; Sun, 21 Aug 2016 12:58:42 -0700
+ 14.3.248.2; Sun, 21 Aug 2016 12:58:46 -0700
 From:   Paul Gortmaker <paul.gortmaker@windriver.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Gortmaker <paul.gortmaker@windriver.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 2/5] mips/mm: Audit and remove any unnecessary uses of module.h
-Date:   Sun, 21 Aug 2016 15:58:14 -0400
-Message-ID: <20160821195817.5802-3-paul.gortmaker@windriver.com>
+Subject: [PATCH 3/5] mips/lib: Audit and remove any unnecessary uses of module.h
+Date:   Sun, 21 Aug 2016 15:58:15 -0400
+Message-ID: <20160821195817.5802-4-paul.gortmaker@windriver.com>
 X-Mailer: git-send-email 2.8.4
 In-Reply-To: <20160821195817.5802-1-paul.gortmaker@windriver.com>
 References: <20160821195817.5802-1-paul.gortmaker@windriver.com>
@@ -26,7 +26,7 @@ Return-Path: <Paul.Gortmaker@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54714
+X-archive-position: 54715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,148 +58,135 @@ Since module.h was the source for init.h (for __init) and for
 export.h (for EXPORT_SYMBOL) we consider each obj-y/bool instance
 for the presence of either and replace as needed.
 
+The compiler.h additions are for an implict presence of the
+"notrace" which module.h brought in but export.h does not.
+
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 ---
- arch/mips/mm/c-r4k.c       | 2 +-
- arch/mips/mm/cache.c       | 2 +-
- arch/mips/mm/dma-default.c | 2 +-
- arch/mips/mm/fault.c       | 1 -
- arch/mips/mm/highmem.c     | 3 ++-
- arch/mips/mm/init.c        | 2 +-
- arch/mips/mm/ioremap.c     | 2 +-
- arch/mips/mm/mmap.c        | 2 +-
- arch/mips/mm/page.c        | 1 -
- arch/mips/mm/tlb-r4k.c     | 2 +-
- 10 files changed, 9 insertions(+), 10 deletions(-)
+ arch/mips/lib/ashldi3.c   | 2 +-
+ arch/mips/lib/ashrdi3.c   | 2 +-
+ arch/mips/lib/bswapdi.c   | 3 ++-
+ arch/mips/lib/bswapsi.c   | 3 ++-
+ arch/mips/lib/cmpdi2.c    | 2 +-
+ arch/mips/lib/delay.c     | 2 +-
+ arch/mips/lib/iomap-pci.c | 2 +-
+ arch/mips/lib/iomap.c     | 2 +-
+ arch/mips/lib/lshrdi3.c   | 2 +-
+ arch/mips/lib/ucmpdi2.c   | 2 +-
+ 10 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index cd72805b64a7..82889922e5b8 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -17,7 +17,7 @@
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/mm.h>
+diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
+index 927dc94a030f..c3e22053d13e 100644
+--- a/arch/mips/lib/ashldi3.c
++++ b/arch/mips/lib/ashldi3.c
+@@ -1,4 +1,4 @@
 -#include <linux/module.h>
 +#include <linux/export.h>
- #include <linux/bitops.h>
  
- #include <asm/bcache.h>
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index bf04c6c479a4..208199e2d55b 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -10,7 +10,7 @@
- #include <linux/fcntl.h>
- #include <linux/kernel.h>
- #include <linux/linkage.h>
+ #include "libgcc.h"
+ 
+diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
+index 9fdf1a598428..17456024873d 100644
+--- a/arch/mips/lib/ashrdi3.c
++++ b/arch/mips/lib/ashrdi3.c
+@@ -1,4 +1,4 @@
 -#include <linux/module.h>
 +#include <linux/export.h>
- #include <linux/sched.h>
- #include <linux/syscalls.h>
- #include <linux/mm.h>
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index b2eadd6fa9a1..755259c54976 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -11,7 +11,7 @@
- #include <linux/types.h>
- #include <linux/dma-mapping.h>
- #include <linux/mm.h>
+ 
+ #include "libgcc.h"
+ 
+diff --git a/arch/mips/lib/bswapdi.c b/arch/mips/lib/bswapdi.c
+index e3e77aa52c95..a8114148f82a 100644
+--- a/arch/mips/lib/bswapdi.c
++++ b/arch/mips/lib/bswapdi.c
+@@ -1,4 +1,5 @@
 -#include <linux/module.h>
 +#include <linux/export.h>
- #include <linux/scatterlist.h>
- #include <linux/string.h>
- #include <linux/gfp.h>
-diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
-index 9560ad731120..d56a855828c2 100644
---- a/arch/mips/mm/fault.c
-+++ b/arch/mips/mm/fault.c
-@@ -18,7 +18,6 @@
- #include <linux/mman.h>
- #include <linux/mm.h>
- #include <linux/smp.h>
++#include <linux/compiler.h>
+ 
+ unsigned long long notrace __bswapdi2(unsigned long long u)
+ {
+diff --git a/arch/mips/lib/bswapsi.c b/arch/mips/lib/bswapsi.c
+index 530a8afe6fda..106fd978317d 100644
+--- a/arch/mips/lib/bswapsi.c
++++ b/arch/mips/lib/bswapsi.c
+@@ -1,4 +1,5 @@
 -#include <linux/module.h>
- #include <linux/kprobes.h>
- #include <linux/perf_event.h>
- #include <linux/uaccess.h>
-diff --git a/arch/mips/mm/highmem.c b/arch/mips/mm/highmem.c
-index d7258a103439..f13f51003bd8 100644
---- a/arch/mips/mm/highmem.c
-+++ b/arch/mips/mm/highmem.c
-@@ -1,5 +1,6 @@
- #include <linux/compiler.h>
--#include <linux/module.h>
-+#include <linux/init.h>
 +#include <linux/export.h>
- #include <linux/highmem.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 2c3749d98f04..8fa31b3c7012 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -10,7 +10,7 @@
++#include <linux/compiler.h>
+ 
+ unsigned int notrace __bswapsi2(unsigned int u)
+ {
+diff --git a/arch/mips/lib/cmpdi2.c b/arch/mips/lib/cmpdi2.c
+index 06857da96993..9d849d8743c9 100644
+--- a/arch/mips/lib/cmpdi2.c
++++ b/arch/mips/lib/cmpdi2.c
+@@ -1,4 +1,4 @@
+-#include <linux/module.h>
++#include <linux/export.h>
+ 
+ #include "libgcc.h"
+ 
+diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+index 21d27c6819a2..2307a3cb2714 100644
+--- a/arch/mips/lib/delay.c
++++ b/arch/mips/lib/delay.c
+@@ -8,7 +8,7 @@
+  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
+  * Copyright (C) 2007, 2014 Maciej W. Rozycki
   */
- #include <linux/bug.h>
- #include <linux/init.h>
 -#include <linux/module.h>
 +#include <linux/export.h>
- #include <linux/signal.h>
- #include <linux/sched.h>
+ #include <linux/param.h>
  #include <linux/smp.h>
-diff --git a/arch/mips/mm/ioremap.c b/arch/mips/mm/ioremap.c
-index 8d5008cbdc0f..1f189627440f 100644
---- a/arch/mips/mm/ioremap.c
-+++ b/arch/mips/mm/ioremap.c
+ #include <linux/stringify.h>
+diff --git a/arch/mips/lib/iomap-pci.c b/arch/mips/lib/iomap-pci.c
+index fd35daa45314..a629077fd7b9 100644
+--- a/arch/mips/lib/iomap-pci.c
++++ b/arch/mips/lib/iomap-pci.c
+@@ -7,7 +7,7 @@
+  *     written by Ralf Baechle <ralf@linux-mips.org>
+  */
+ #include <linux/pci.h>
+-#include <linux/module.h>
++#include <linux/export.h>
+ #include <asm/io.h>
+ 
+ void __iomem *__pci_ioport_map(struct pci_dev *dev,
+diff --git a/arch/mips/lib/iomap.c b/arch/mips/lib/iomap.c
+index 8e7e378ce51c..9daa92428e23 100644
+--- a/arch/mips/lib/iomap.c
++++ b/arch/mips/lib/iomap.c
 @@ -6,7 +6,7 @@
-  * (C) Copyright 1995 1996 Linus Torvalds
-  * (C) Copyright 2001, 2002 Ralf Baechle
+  * (C) Copyright 2007 MIPS Technologies, Inc.
+  *     written by Ralf Baechle <ralf@linux-mips.org>
   */
 -#include <linux/module.h>
 +#include <linux/export.h>
- #include <asm/addrspace.h>
- #include <asm/byteorder.h>
- #include <linux/sched.h>
-diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
-index 353037699512..d08ea3ff0f53 100644
---- a/arch/mips/mm/mmap.c
-+++ b/arch/mips/mm/mmap.c
-@@ -10,7 +10,7 @@
- #include <linux/errno.h>
- #include <linux/mm.h>
- #include <linux/mman.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/personality.h>
- #include <linux/random.h>
- #include <linux/sched.h>
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index c41953ca6605..6f804f5960ab 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -12,7 +12,6 @@
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/mm.h>
--#include <linux/module.h>
- #include <linux/proc_fs.h>
+ #include <asm/io.h>
  
- #include <asm/bugs.h>
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index e8b335c16295..d4aec9656495 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -14,7 +14,7 @@
- #include <linux/smp.h>
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
+ /*
+diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
+index 364547449c65..221167c1be55 100644
+--- a/arch/mips/lib/lshrdi3.c
++++ b/arch/mips/lib/lshrdi3.c
+@@ -1,4 +1,4 @@
 -#include <linux/module.h>
 +#include <linux/export.h>
  
- #include <asm/cpu.h>
- #include <asm/cpu-type.h>
+ #include "libgcc.h"
+ 
+diff --git a/arch/mips/lib/ucmpdi2.c b/arch/mips/lib/ucmpdi2.c
+index bd599f58234c..08067fa538f2 100644
+--- a/arch/mips/lib/ucmpdi2.c
++++ b/arch/mips/lib/ucmpdi2.c
+@@ -1,4 +1,4 @@
+-#include <linux/module.h>
++#include <linux/export.h>
+ 
+ #include "libgcc.h"
+ 
 -- 
 2.8.4

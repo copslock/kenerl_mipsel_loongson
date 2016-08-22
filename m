@@ -1,65 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2016 10:46:37 +0200 (CEST)
-Received: from mail-io0-f195.google.com ([209.85.223.195]:35737 "EHLO
-        mail-io0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991977AbcHVIqbTqzkh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Aug 2016 10:46:31 +0200
-Received: by mail-io0-f195.google.com with SMTP id q83so8495482iod.2;
-        Mon, 22 Aug 2016 01:46:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2016 12:01:03 +0200 (CEST)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:32939 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991977AbcHVKA4oVRLA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Aug 2016 12:00:56 +0200
+Received: by mail-pf0-f195.google.com with SMTP id i6so6056471pfe.0;
+        Mon, 22 Aug 2016 03:00:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=A6oerL0JPTGclWtRWXfc+NzZNOHWWJG0mmxObNrpvTo=;
-        b=gLsyBuNo1OgI97iDkIQM1+CeO2bc+nSUSEQT+6G/AQ1mSlkDWCC4E4/F9plyjkNYLC
-         OQb5VdLLdP/wDX2OHNVmNQA/KBceZ1/FXMIDPa7vzAntPYkbzob/HVxZzXkWnkLz/q0s
-         3if0FwZlVhVlQpBr2Y/IuhM4fU2U06xUlW20hiCGB5W1rlYHBU0BmyXvMUVBoaDlIwDO
-         G/R/M6LEBSi88/5aJHJ6G8XkRsq83j1H+6HVGmI+B0CuPw6zyU9C7MLkVCjm/nuj53c0
-         CuCXXE4CZfUAuIVRhnZHC6qxhSTfjc2oIMoYHYqawEwUQ4Y7uzSH1b5U9ScUQuy4csYL
-         Zb0g==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=PteW8ubLykgS17iGSpHdzRa+V1B1+ib44tNOFEHZtpE=;
+        b=KlNj3pQSgdlmtBFZKdmTwMEP3h+kXT1Ml0YCris1lYidbvJlTuCRbdJYvnBP/SnY2n
+         QJjY4OU/J+1QAwDZFJh4ovwr9iukGy2v72WL+bzf+fOctizvFtqkWTb4qRt2ko665mbf
+         SZ7QJGtu6eKg/JXtU2Qp92JHLGXMRvQosEI8cSLAJ3WjARFXq4GmVK3ySwaFxOM7fT33
+         HMaYU11RmVlHsPxpSTxd4IS5KOosCMJrCYPOqm+qj46CdCAdWA/wxOg/2KrvtNEMqz1P
+         8PB8ThlXL8/FVzh7nNxTpME6Jt3yKpiuxmePpDkUsYLpv2qdOiExfvrojpsKjptUVr9Z
+         W2+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=A6oerL0JPTGclWtRWXfc+NzZNOHWWJG0mmxObNrpvTo=;
-        b=nGWsA9ssR/ia8mcOIzozKMWSU4nXk7jDKezeGZoU1XLbNcBmY9IU384+ki1/QKIgas
-         iUQETT//k1JTKaOoFVSPIKStGV9aGCrkhUnnff6+Jca3+KpcJRgGQ3s8FMWuSP+73uWh
-         WZnIZg+xqxp0jNvvQi8kjon6/RisF+CHv1oN8jBHjYcceBdAD7lxWUeV5CfBLfAVWqWI
-         DlmK5sa1ouRRrOV3j9DliAS+/aBllxPSNgBKRhAMLvOMIrNPDf0aARaiq4noxktsxTVZ
-         k/yYUxeIMAPjsCMy1gQeUgCnhtDML05t9tvl6F0SUn9zT3v2yQWtBrs4Iv4c4Kmem6WM
-         xlHA==
-X-Gm-Message-State: AEkooutg4CEdJD6kg2o/mVVHebsfCMibrremnl05dOYYpsSX0G67T+ioR2sDFoPHBMNdGExF4bAeW2xyZcS+0Q==
-X-Received: by 10.107.43.16 with SMTP id r16mr21883707ior.81.1471855585385;
- Mon, 22 Aug 2016 01:46:25 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=PteW8ubLykgS17iGSpHdzRa+V1B1+ib44tNOFEHZtpE=;
+        b=cZTbtqxbyAPYxcQRHMFZqmAuE3pzWj6ExZYwVnbd9n/CJWtB31XInjs8ST05dbINBD
+         4s676d7gRV+990G3IsY9c7Z+b4XySADifiiDzZqFaZezX6bhNy2Uz8vR8pc+lL9rr/Zr
+         zeu2FwVb4DtmUi+vo96rJGLBrGtq721Tue0VGvZhZdYtWkuUrYjMkqlePjIWi6zgVAXL
+         nrGvUuOJ++2qPeeB8ZYc3smnIFTM99Ty/IIcgcarsxkt3nQfOyAb6lAjN5ThkNwVP1jC
+         8lOMYkG+OIJ/v5tNb04nUAqL2MVXW/wEPvgCufxuUiIxwWCy7ghdZDN9JzAd47qGZmAD
+         eC/A==
+X-Gm-Message-State: AEkooutoNzh61K2arNb5+uHp6Us6yrJYqd8ZPZUHtM2YY60klUOHYFXrvE/W5y8jubhLTw==
+X-Received: by 10.98.192.144 with SMTP id g16mr41532938pfk.55.1471860050708;
+        Mon, 22 Aug 2016 03:00:50 -0700 (PDT)
+Received: from ly-pc ([114.222.149.114])
+        by smtp.gmail.com with ESMTPSA id ww14sm31011125pac.34.2016.08.22.03.00.33
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 22 Aug 2016 03:00:49 -0700 (PDT)
+Date:   Mon, 22 Aug 2016 18:00:28 +0800
+From:   Yang Ling <gnaygnil@gmail.com>
+To:     ralf@linux-mips.org, keguang.zhang@gmail.com
+Cc:     james.hogan@imgtec.com, paul.burton@imgtec.com,
+        david.daney@cavium.com, chenhc@lemote.com,
+        markos.chandras@imgtec.com, macro@imgtec.com, f.fainelli@gmail.com,
+        gnaygnil@gmail.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: Use PRID_REV_LOONGSON1ABC instead of the legacy macro
+Message-ID: <20160822095955.GA5527@ly-pc>
 MIME-Version: 1.0
-Received: by 10.107.3.232 with HTTP; Mon, 22 Aug 2016 01:46:24 -0700 (PDT)
-In-Reply-To: <20160819191750.GV361@codeaurora.org>
-References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
- <1471541667-30689-4-git-send-email-geert@linux-m68k.org> <20160819191750.GV361@codeaurora.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 22 Aug 2016 10:46:24 +0200
-X-Google-Sender-Auth: aPu4Aod3ofx5l6f640qNEZpfvec
-Message-ID: <CAMuHMdVjd5iJL8AJBb0aVOEkcgJ-m-K19pjD-tJL=GLhPVm_Pg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] MIPS: TXx9: Convert to Common Clock Framework
-To:     Stephen Boyd <sboyd@codeaurora.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-        Mark Brown <broonie@kernel.org>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Watchdog Mailing List <linux-watchdog@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <gnaygnil@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54720
+X-archive-position: 54721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: gnaygnil@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,39 +69,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Stephen,
+Signed-off-by: Yang Ling <gnaygnil@gmail.com>
+---
+ arch/mips/include/asm/cpu.h         | 3 +--
+ arch/mips/kernel/cpu-probe.c        | 8 +++++++-
+ arch/mips/loongson32/common/setup.c | 6 ++++--
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
-On Fri, Aug 19, 2016 at 9:17 PM, Stephen Boyd <sboyd@codeaurora.org> wrote:
-> On 08/18, Geert Uytterhoeven wrote:
->> diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
->> index ada92db92f87d91a..2fdbcf91b2cc472c 100644
->> --- a/arch/mips/txx9/generic/setup.c
->> +++ b/arch/mips/txx9/generic/setup.c
->> @@ -560,8 +527,39 @@ void __init plat_time_init(void)
->>       txx9_board_vec->time_init();
->>  }
->>
->> +static void txx9_clk_init(void)
->> +{
->> +     struct clk *clk;
->> +     int error;
->> +
->> +     clk = clk_register_fixed_rate(NULL, "gbus", NULL, 0, txx9_gbus_clock);
->
-> Can we use the clk_hw_*() based variants instead please?
-
-Yes we can.
-
-BTW, is it intentional that clk_hw_register_clkdev() doesn't detect errors
-from a previous registration call, like clk_register_clkdev() does?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 9a83724..76c0b56c3 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -239,8 +239,7 @@
+ #define PRID_REV_VR4181A	0x0070	/* Same as VR4122 */
+ #define PRID_REV_VR4130		0x0080
+ #define PRID_REV_34K_V1_0_2	0x0022
+-#define PRID_REV_LOONGSON1B	0x0020
+-#define PRID_REV_LOONGSON1C	0x0020	/* Same as Loongson-1B */
++#define PRID_REV_LOONGSON1ABC	0x0020
+ #define PRID_REV_LOONGSON2E	0x0002
+ #define PRID_REV_LOONGSON2F	0x0003
+ #define PRID_REV_LOONGSON3A_R1	0x0005
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index a88d442..0afa4be 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1495,8 +1495,14 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_LOONGSON1;
+ 
+ 		switch (c->processor_id & PRID_REV_MASK) {
+-		case PRID_REV_LOONGSON1B:
++		case PRID_REV_LOONGSON1ABC:
++#if defined(CONFIG_CPU_LOONGSON1A)
++			__cpu_name[cpu] = "Loongson 1A";
++#elif defined(CONFIG_CPU_LOONGSON1B)
+ 			__cpu_name[cpu] = "Loongson 1B";
++#elif defined(CONFIG_CPU_LOONGSON1C)
++			__cpu_name[cpu] = "Loongson 1C";
++#endif
+ 			break;
+ 		}
+ 
+diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
+index 1640744..1c3324a 100644
+--- a/arch/mips/loongson32/common/setup.c
++++ b/arch/mips/loongson32/common/setup.c
+@@ -21,8 +21,10 @@ const char *get_system_type(void)
+ 	unsigned int processor_id = (&current_cpu_data)->processor_id;
+ 
+ 	switch (processor_id & PRID_REV_MASK) {
+-	case PRID_REV_LOONGSON1B:
+-#if defined(CONFIG_LOONGSON1_LS1B)
++	case PRID_REV_LOONGSON1ABC:
++#if defined(CONFIG_LOONGSON1_LS1A)
++		return "LOONGSON LS1A";
++#elif defined(CONFIG_LOONGSON1_LS1B)
+ 		return "LOONGSON LS1B";
+ #elif defined(CONFIG_LOONGSON1_LS1C)
+ 		return "LOONGSON LS1C";
+-- 
+1.9.1

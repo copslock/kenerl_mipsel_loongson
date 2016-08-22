@@ -1,57 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2016 15:29:24 +0200 (CEST)
-Received: from mail-oi0-f54.google.com ([209.85.218.54]:33748 "EHLO
-        mail-oi0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992002AbcHVN3RseSyH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Aug 2016 15:29:17 +0200
-Received: by mail-oi0-f54.google.com with SMTP id c15so150219095oig.0
-        for <linux-mips@linux-mips.org>; Mon, 22 Aug 2016 06:29:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=wIG062Qcg2bwGT/8z48wdZBfTDWzqw4HhWWNLtuHwcc=;
-        b=PmPn2bAOiQA7DvAoasC/UsXs246MX2/OkQNsm9GmIE82drbUth576tTfiLKGOzO+hN
-         snXGh+DhC14HV6jjhOWg3ZXz92JOjbW95MWBRABocb+Fz1o6nYBAcuGZTeY2JesKghlx
-         rIJUQv7ZF96wdO65vGqRLJlX7vsBYaChsaH+o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=wIG062Qcg2bwGT/8z48wdZBfTDWzqw4HhWWNLtuHwcc=;
-        b=aSbKgd5X6rLiPADbD165DHobb+jKWv4zU+TQoz2QAA/2U5egPWuwBDZXhX1UiXmCEN
-         +uDTOjm4X4ftJQetabl7c//GvS2MtcZMiuzZUiHElSozv6IJoxfhCnkbQLavWZ96c1+V
-         0PEpydRZJboie3JZQmwZA2gPonJq/j6U7Urr8ObHM22RBxGqtcgaQESFvbmae68a/lqT
-         2/3GyjclJwNYUz905lAYdNqdQwHd+sId3UYiS5ZI5oY90SZ0BEQChFz+f/dFlnND3Rpw
-         1sDR6r2ddPQWIfsumU0kuUclznY5v+QfsWvQyilKEGnmg4d7MGvOZLJRdHj/1ZcUOqQL
-         EtpA==
-X-Gm-Message-State: AEkoouvn3zgkRUsZQoyR+WqHv9Ch5izTN6bFuCKV7g3Aw3I4Kqb0ng4gdygbw/6oE6tJkM66PBK9NTbdvLn6aca8
-X-Received: by 10.157.52.180 with SMTP id g49mr13263766otc.195.1471872549558;
- Mon, 22 Aug 2016 06:29:09 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2016 19:37:13 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:50295 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992002AbcHVRhGWZ9IJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Aug 2016 19:37:06 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9D373615A4; Mon, 22 Aug 2016 17:37:04 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F219461C86;
+        Mon, 22 Aug 2016 17:37:02 +0000 (UTC)
+Date:   Mon, 22 Aug 2016 10:37:02 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Mark Brown <broonie@kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Watchdog Mailing List <linux-watchdog@vger.kernel.org>
+Subject: Re: [PATCH 3/3] MIPS: TXx9: Convert to Common Clock Framework
+Message-ID: <20160822173702.GM6502@codeaurora.org>
+References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
+ <1471541667-30689-4-git-send-email-geert@linux-m68k.org>
+ <20160819191750.GV361@codeaurora.org>
+ <CAMuHMdVjd5iJL8AJBb0aVOEkcgJ-m-K19pjD-tJL=GLhPVm_Pg@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.182.76.199 with HTTP; Mon, 22 Aug 2016 06:29:09 -0700 (PDT)
-In-Reply-To: <1471604603-23221-1-git-send-email-james.hartley@imgtec.com>
-References: <1471604603-23221-1-git-send-email-james.hartley@imgtec.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 22 Aug 2016 15:29:09 +0200
-Message-ID: <CACRpkda9DL=KPOpXyN8AR7tJ8vmA3=-HS70RHqog_WuczsE-7Q@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: pistachio: fix mfio pll_lock pinmux
-To:     James Hartley <james.hartley@imgtec.com>
-Cc:     "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Andrew Bresticker <abrestic@chromium.org>,
-        Damien Horsley <Damien.Horsley@imgtec.com>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "# 4 . 4 . x-" <stable@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdVjd5iJL8AJBb0aVOEkcgJ-m-K19pjD-tJL=GLhPVm_Pg@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54725
+X-archive-position: 54726
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,23 +55,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 19, 2016 at 1:03 PM, James Hartley <james.hartley@imgtec.com> wrote:
+On 08/22, Geert Uytterhoeven wrote:
+> Hi Stephen,
+> 
+> On Fri, Aug 19, 2016 at 9:17 PM, Stephen Boyd <sboyd@codeaurora.org> wrote:
+> > On 08/18, Geert Uytterhoeven wrote:
+> >> diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+> >> index ada92db92f87d91a..2fdbcf91b2cc472c 100644
+> >> --- a/arch/mips/txx9/generic/setup.c
+> >> +++ b/arch/mips/txx9/generic/setup.c
+> >> @@ -560,8 +527,39 @@ void __init plat_time_init(void)
+> >>       txx9_board_vec->time_init();
+> >>  }
+> >>
+> >> +static void txx9_clk_init(void)
+> >> +{
+> >> +     struct clk *clk;
+> >> +     int error;
+> >> +
+> >> +     clk = clk_register_fixed_rate(NULL, "gbus", NULL, 0, txx9_gbus_clock);
+> >
+> > Can we use the clk_hw_*() based variants instead please?
+> 
+> Yes we can.
+> 
+> BTW, is it intentional that clk_hw_register_clkdev() doesn't detect errors
+> from a previous registration call, like clk_register_clkdev() does?
+> 
 
-> A previous patch attempted to fix the pinmuxes for mfio 84 - 89, but it
-> omitted a change to pistachio_pin_group pistachio_groups, which results
-> in incorrect pll_lock signals being routed.
->
-> Apply the correct mux settings throughout the driver.
->
-> fixes: cefc03e5995e ("pinctrl: Add Pistachio SoC pin control driver")
-> fixes: e9adb336d0bf ("pinctrl: pistachio: fix mfio84-89 function description and pinmux.")
->
-> Cc: <stable@vger.kernel.org> # 4.4.x-
->
-> Signed-off-by: James Hartley <james.hartley@imgtec.com>
-> Reviewed-by: Sifan Naeem <Sifan.Naeem@imgtec.com>
+Slightly intentional, because the assumption is providers already
+have a clk_hw structure that they've created themselves when they
+register a clkdev, whereas a struct clk is more likely to be an
+error pointer because of clk_get(), etc. But I suppose we can add
+the error check to ease registration in cases where providers are
+using the basic types.
 
-Patch applied for fixes.
-
-Yours,
-Linus Walleij
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

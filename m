@@ -1,40 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Aug 2016 22:00:45 +0200 (CEST)
-Received: from mail5.windriver.com ([192.103.53.11]:45864 "EHLO mail5.wrs.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992473AbcHUT7DdJmNn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 21 Aug 2016 21:59:03 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-        by mail5.wrs.com (8.15.2/8.15.2) with ESMTPS id u7LJwnrp001948
-        (version=TLSv1 cipher=AES128-SHA bits=128 verify=OK);
-        Sun, 21 Aug 2016 12:58:49 -0700
-Received: from yow-lpgnfs-02.wrs.com (128.224.149.8) by
- ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.3.248.2; Sun, 21 Aug 2016 12:58:48 -0700
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 5/5] mips/kvm: Audit and remove any unnecessary uses of module.h
-Date:   Sun, 21 Aug 2016 15:58:17 -0400
-Message-ID: <20160821195817.5802-6-paul.gortmaker@windriver.com>
-X-Mailer: git-send-email 2.8.4
-In-Reply-To: <20160821195817.5802-1-paul.gortmaker@windriver.com>
-References: <20160821195817.5802-1-paul.gortmaker@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2016 06:50:53 +0200 (CEST)
+Received: from mail-pf0-f194.google.com ([209.85.192.194]:36472 "EHLO
+        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990518AbcHVEuqo2rUA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Aug 2016 06:50:46 +0200
+Received: by mail-pf0-f194.google.com with SMTP id y134so5572074pfg.3
+        for <linux-mips@linux-mips.org>; Sun, 21 Aug 2016 21:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=upW2vr8mnv5WEblHfoPvbhYidJWqLYNG5mLbTkRisNI=;
+        b=UgI0X+XiJkvoGq/YioP+foklpz0LeJrS1hcHHQB57hkYt6ZjWgQ5ipvusccxKJ1Y8d
+         azcd+S3uDHCKdSnlrPSF9575YoIiCvhiZKACiV8cuD4h4DbzMOryD0GyIEGVKd8vz+eh
+         pAUGjeh//YZloPTO9OnptiGGMtgDkIaDYDDOksuTrMQ123V2PIp+3MTCBbzXqzY6SH90
+         2TUDMV677VHb3xjDybm+DPyWzqqlCOel98dN1pLlXU9xbGP4c3wB7qvj40NDk+DegURF
+         IiDcSKC48fmk5D8ZEvTfYtlJgrUQMpG0uERbWAEy4wRwLrqz34tB3tYY5kalGM9fSuhv
+         dbwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=upW2vr8mnv5WEblHfoPvbhYidJWqLYNG5mLbTkRisNI=;
+        b=b+DKrwuDjo2QBIpvMK8f7qvcqwGVkUMDoGiMUr8eSKAeMWtFbmnONVkPKal13tpYea
+         ncdHf9f/yI7XwWzK4wnwNGtsdE27YJFB0GYZOur+FLodIstStqdpu0aVlxObDJ9qe0Eh
+         ogd5rB7paxjRaPmhrvTzruiGobzBnV47GQiSdvaBCiJ2UWkkLL38ykGKQmx965MakiDP
+         WUoUvnssbhxSvZ+t3IuTAoSbShTdnj7UAWB662+cTOOpE7JRm3PNyginlG371+UxLVxa
+         aCVkix4INIb0lwohMjiDDf8UaCs6p6x21Zp9HK3rC36/CAa/Z/PRyOOFfP5o2Yz4tZAU
+         xsvw==
+X-Gm-Message-State: AEkooutAlyHkwiTd1/y3/ZOZ/b10neQNLB9+ugDisWUVNI3qbPBN7uV+jwwH3zLnDdBJSA==
+X-Received: by 10.98.98.193 with SMTP id w184mr39364389pfb.120.1471841440722;
+        Sun, 21 Aug 2016 21:50:40 -0700 (PDT)
+Received: from ly-pc ([114.221.236.83])
+        by smtp.gmail.com with ESMTPSA id d9sm28533631pan.7.2016.08.21.21.50.37
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sun, 21 Aug 2016 21:50:39 -0700 (PDT)
+Date:   Mon, 22 Aug 2016 12:50:39 +0800
+From:   Yang Ling <gnaygnil@gmail.com>
+To:     keguang.zhang@gmail.com, mturquette@baylibre.com,
+        sboyd@codeaurora.org
+Cc:     linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] CLK: Add Loongson1C clock support
+Message-ID: <20160822045034.GA6545@ly-pc>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Return-Path: <Paul.Gortmaker@windriver.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <gnaygnil@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54717
+X-archive-position: 54718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: gnaygnil@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,101 +67,134 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Historically a lot of these existed because we did not have
-a distinction between what was modular code and what was providing
-support to modules via EXPORT_SYMBOL and friends.  That changed
-when we forked out support for the latter into the export.h file.
+This patch adds clock support to Loongson1C SoC.
 
-This means we should be able to reduce the usage of module.h
-in code that is obj-y Makefile or bool Kconfig.  In the case of
-kvm where it is modular, we can extend that to also include files
-that are building basic support functionality but not related
-to loading or registering the final module; such files also have
-no need whatsoever for module.h
+Signed-off-by: Yang Ling <gnaygnil@gmail.com>
 
-The advantage in removing such instances is that module.h itself
-sources about 15 other headers; adding significantly to what we feed
-cpp, and it can obscure what headers we are effectively using.
-
-Since module.h was the source for init.h (for __init) and for
-export.h (for EXPORT_SYMBOL) we consider each instance for the
-presence of either and replace as needed.  In this case, we did
-not need to add either to any files.
-
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: kvm@vger.kernel.org
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 ---
- arch/mips/kvm/commpage.c  | 1 -
- arch/mips/kvm/dyntrans.c  | 1 -
- arch/mips/kvm/emulate.c   | 1 -
- arch/mips/kvm/interrupt.c | 1 -
- arch/mips/kvm/trap_emul.c | 1 -
- 5 files changed, 5 deletions(-)
+V2:
+  Use loongson1 generic clock interface.
+---
+ drivers/clk/loongson1/Makefile         |   1 +
+ drivers/clk/loongson1/clk-loongson1c.c | 102 +++++++++++++++++++++++++++++++++
+ 2 files changed, 103 insertions(+)
+ create mode 100644 drivers/clk/loongson1/clk-loongson1c.c
 
-diff --git a/arch/mips/kvm/commpage.c b/arch/mips/kvm/commpage.c
-index a36b77e1705c..f43629979a0e 100644
---- a/arch/mips/kvm/commpage.c
-+++ b/arch/mips/kvm/commpage.c
-@@ -12,7 +12,6 @@
- 
- #include <linux/errno.h>
- #include <linux/err.h>
--#include <linux/module.h>
- #include <linux/vmalloc.h>
- #include <linux/fs.h>
- #include <linux/bootmem.h>
-diff --git a/arch/mips/kvm/dyntrans.c b/arch/mips/kvm/dyntrans.c
-index d280894915ed..b36c8ddc03ea 100644
---- a/arch/mips/kvm/dyntrans.c
-+++ b/arch/mips/kvm/dyntrans.c
-@@ -13,7 +13,6 @@
- #include <linux/err.h>
- #include <linux/highmem.h>
- #include <linux/kvm_host.h>
--#include <linux/module.h>
- #include <linux/vmalloc.h>
- #include <linux/fs.h>
- #include <linux/bootmem.h>
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index e788515f766b..68fd666f8cb9 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -13,7 +13,6 @@
- #include <linux/err.h>
- #include <linux/ktime.h>
- #include <linux/kvm_host.h>
--#include <linux/module.h>
- #include <linux/vmalloc.h>
- #include <linux/fs.h>
- #include <linux/bootmem.h>
-diff --git a/arch/mips/kvm/interrupt.c b/arch/mips/kvm/interrupt.c
-index ad28dac6b7e9..e88403b3dcdd 100644
---- a/arch/mips/kvm/interrupt.c
-+++ b/arch/mips/kvm/interrupt.c
-@@ -11,7 +11,6 @@
- 
- #include <linux/errno.h>
- #include <linux/err.h>
--#include <linux/module.h>
- #include <linux/vmalloc.h>
- #include <linux/fs.h>
- #include <linux/bootmem.h>
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index 091553942bcb..21d80274ccff 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -11,7 +11,6 @@
- 
- #include <linux/errno.h>
- #include <linux/err.h>
--#include <linux/module.h>
- #include <linux/vmalloc.h>
- 
- #include <linux/kvm_host.h>
+diff --git a/drivers/clk/loongson1/Makefile b/drivers/clk/loongson1/Makefile
+index 5a162a1..b7f6a16 100644
+--- a/drivers/clk/loongson1/Makefile
++++ b/drivers/clk/loongson1/Makefile
+@@ -1,2 +1,3 @@
+ obj-y				+= clk.o
+ obj-$(CONFIG_LOONGSON1_LS1B)	+= clk-loongson1b.o
++obj-$(CONFIG_LOONGSON1_LS1C)	+= clk-loongson1c.o
+diff --git a/drivers/clk/loongson1/clk-loongson1c.c b/drivers/clk/loongson1/clk-loongson1c.c
+new file mode 100644
+index 0000000..7e7e5ff
+--- /dev/null
++++ b/drivers/clk/loongson1/clk-loongson1c.c
+@@ -0,0 +1,102 @@
++/*
++ * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/clkdev.h>
++#include <linux/clk-provider.h>
++
++#include <loongson1.h>
++#include "clk.h"
++
++#define OSC		(24 * 1000000)
++#define DIV_APB		1
++
++static DEFINE_SPINLOCK(_lock);
++
++static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
++					  unsigned long parent_rate)
++{
++	u32 pll, rate;
++
++	pll = __raw_readl(LS1X_CLK_PLL_FREQ);
++	rate = ((pll >> 8) & 0xff) + ((pll >> 16) & 0xff);
++	rate *= OSC;
++	rate >>= 2;
++
++	return rate;
++}
++
++static const struct clk_ops ls1x_pll_clk_ops = {
++	.enable = ls1x_pll_clk_enable,
++	.disable = ls1x_pll_clk_disable,
++	.recalc_rate = ls1x_pll_recalc_rate,
++};
++
++static const char *const cpu_parents[] = { "cpu_clk_div", "osc_clk", };
++static const char *const ahb_parents[] = { "ahb_clk_div", "osc_clk", };
++static const char *const dc_parents[] = { "dc_clk_div", "osc_clk", };
++
++static const struct clk_div_table ahb_div_table[] = {
++	[0] = {	.val = 0, .div = 2 },
++	[1] = {	.val = 1, .div = 4 },
++	[2] = {	.val = 2, .div = 3 },
++	[3] = {	.val = 3, .div = 3 },
++};
++
++void __init ls1x_clk_init(void)
++{
++	struct clk *clk;
++
++	clk = clk_register_fixed_rate(NULL, "osc_clk", NULL, 0, OSC);
++	clk_register_clkdev(clk, "osc_clk", NULL);
++
++	/* clock derived from 24 MHz OSC clk */
++	clk = clk_register_pll(NULL, "pll_clk", "osc_clk",
++				&ls1x_pll_clk_ops, 0);
++	clk_register_clkdev(clk, "pll_clk", NULL);
++
++	clk = clk_register_divider(NULL, "cpu_clk_div", "pll_clk",
++				   CLK_GET_RATE_NOCACHE, LS1X_CLK_PLL_DIV,
++				   DIV_CPU_SHIFT, DIV_CPU_WIDTH,
++				   CLK_DIVIDER_ONE_BASED |
++				   CLK_DIVIDER_ROUND_CLOSEST, &_lock);
++	clk_register_clkdev(clk, "cpu_clk_div", NULL);
++	clk = clk_register_fixed_factor(NULL, "cpu_clk", "cpu_clk_div",
++					0, 1, 1);
++	clk_register_clkdev(clk, "cpu_clk", NULL);
++
++	clk = clk_register_divider(NULL, "dc_clk_div", "pll_clk",
++				   0, LS1X_CLK_PLL_DIV, DIV_DC_SHIFT,
++				   DIV_DC_WIDTH, CLK_DIVIDER_ONE_BASED, &_lock);
++	clk_register_clkdev(clk, "dc_clk_div", NULL);
++	clk = clk_register_fixed_factor(NULL, "dc_clk", "dc_clk_div", 0, 1, 1);
++	clk_register_clkdev(clk, "dc_clk", NULL);
++
++	clk = clk_register_divider_table(NULL, "ahb_clk_div", "cpu_clk_div",
++				0, LS1X_CLK_PLL_FREQ, DIV_DDR_SHIFT,
++				DIV_DDR_WIDTH, CLK_DIVIDER_ALLOW_ZERO,
++				ahb_div_table, &_lock);
++	clk_register_clkdev(clk, "ahb_clk_div", NULL);
++	clk = clk_register_fixed_factor(NULL, "ahb_clk", "ahb_clk_div",
++					0, 1, 1);
++	clk_register_clkdev(clk, "ahb_clk", NULL);
++	clk_register_clkdev(clk, "ls1x-dma", NULL);
++	clk_register_clkdev(clk, "stmmaceth", NULL);
++
++	/* clock derived from AHB clk */
++	clk = clk_register_fixed_factor(NULL, "apb_clk", "ahb_clk", 0, 1,
++					DIV_APB);
++	clk_register_clkdev(clk, "apb_clk", NULL);
++	clk_register_clkdev(clk, "ls1x-ac97", NULL);
++	clk_register_clkdev(clk, "ls1x-i2c", NULL);
++	clk_register_clkdev(clk, "ls1x-nand", NULL);
++	clk_register_clkdev(clk, "ls1x-pwmtimer", NULL);
++	clk_register_clkdev(clk, "ls1x-spi", NULL);
++	clk_register_clkdev(clk, "ls1x-wdt", NULL);
++	clk_register_clkdev(clk, "serial8250", NULL);
++}
 -- 
-2.8.4
+1.9.1

@@ -1,59 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2016 09:32:40 +0200 (CEST)
-Received: from mail-wm0-f44.google.com ([74.125.82.44]:36054 "EHLO
-        mail-wm0-f44.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990864AbcHXHcdG07Rb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Aug 2016 09:32:33 +0200
-Received: by mail-wm0-f44.google.com with SMTP id q128so189581677wma.1
-        for <linux-mips@linux-mips.org>; Wed, 24 Aug 2016 00:32:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=dm0Bi7PY4/A/t3hv0JjJA3iYhv0MuCI7c369OykdBFU=;
-        b=O6UMeASrTEnc5ki7ivJiM6KUL0ju/3DYlCMqJJ7/JT+CduwbrnAT0TxlqHi/YAD7NH
-         14sAEAYwcKbZfF08Q67JRPBPVAaACLobDMNlrOehqJDmKLutjbz7Jmll4AR2Uanog4hh
-         qjC+osUqcYXMpTq44cPs/qpOYKI6tH5eFQDO0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=dm0Bi7PY4/A/t3hv0JjJA3iYhv0MuCI7c369OykdBFU=;
-        b=e025UKCMne93zsLMVXw/B111S8PYMAvCukHo8mDceOGJ0h3rht/+VPz2wJ9Et8n45N
-         UfTuHVyjpnXB3+DFeYnpKr8QUU3YYg9oaX71qZN8a/X48pk7BdkNbDScKHytXPbXU9L2
-         9jWYINHIR6QveNIwVBInqftvB7Ho20MRVojHxp8egjUgoaGZlFG+tyrvcfcJA7/2ZAYB
-         erBPUovqDoEn5y/hrs8CoDPllORV3w0KAZgIVWs17VoQw/I/Jx6dwDFvITX2p7+NWwFp
-         J/+sTUl6C/cvSYKLxd6xpZNNolvrWhfEAgsDlpqaxPVLZ35FBBaCC0O4xE1e2LuLF1ER
-         5Zwg==
-X-Gm-Message-State: AE9vXwPuZvhpW4Zj76ehKyUAmlZws3vDJ4wNlJNfyhM1YHYGHc5gjqGHdo1CilDUYRWz7+/PS5wEBESteDKo1FbC
-X-Received: by 10.28.9.210 with SMTP id 201mr1658831wmj.104.1472023947780;
- Wed, 24 Aug 2016 00:32:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2016 09:51:52 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:36741 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991984AbcHXHvpOqxfb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Aug 2016 09:51:45 +0200
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.11/8.16.0.11) with SMTP id u7O7n7D6084737
+        for <linux-mips@linux-mips.org>; Wed, 24 Aug 2016 03:51:43 -0400
+Received: from e06smtp06.uk.ibm.com (e06smtp06.uk.ibm.com [195.75.94.102])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 250pg851s3-1
+        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Wed, 24 Aug 2016 03:51:43 -0400
+Received: from localhost
+        by e06smtp06.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <oberpar@linux.vnet.ibm.com>;
+        Wed, 24 Aug 2016 08:51:40 +0100
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp06.uk.ibm.com (192.168.101.136) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 24 Aug 2016 08:51:38 +0100
+X-IBM-Helo: d06dlp02.portsmouth.uk.ibm.com
+X-IBM-MailFrom: oberpar@linux.vnet.ibm.com
+X-IBM-RcptTo: linux-mips@linux-mips.org;ralf@linux-mips.org
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id 19BE92190023;
+        Wed, 24 Aug 2016 08:51:01 +0100 (BST)
+Received: from d06av01.portsmouth.uk.ibm.com (d06av01.portsmouth.uk.ibm.com [9.149.37.212])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id u7O7pbJV8258006;
+        Wed, 24 Aug 2016 07:51:37 GMT
+Received: from d06av01.portsmouth.uk.ibm.com (localhost [127.0.0.1])
+        by d06av01.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVout) with ESMTP id u7O7paeD031347;
+        Wed, 24 Aug 2016 01:51:37 -0600
+Received: from [9.152.212.148] (dyn-9-152-212-148.boeblingen.de.ibm.com [9.152.212.148])
+        by d06av01.portsmouth.uk.ibm.com (8.14.4/8.14.4/NCO v10.0 AVin) with ESMTP id u7O7pZhe031307;
+        Wed, 24 Aug 2016 01:51:35 -0600
+Subject: Re: [PATCH] treewide: replace config_enabled() with IS_ENABLED() (2nd
+ round)
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+References: <1471970749-24867-1-git-send-email-yamada.masahiro@socionext.com>
+Cc:     linux-s390@vger.kernel.org,
+        Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Toshi Kani <toshi.kani@hpe.com>, linux-mips@linux-mips.org,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Garnier <thgarnie@google.com>,
+        David Hildenbrand <dahi@linux.vnet.ibm.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>
+From:   Peter Oberparleiter <oberpar@linux.vnet.ibm.com>
+Date:   Wed, 24 Aug 2016 09:51:36 +0200
 MIME-Version: 1.0
-Received: by 10.194.221.193 with HTTP; Wed, 24 Aug 2016 00:32:26 -0700 (PDT)
-In-Reply-To: <57BCAB27.8060502@caviumnetworks.com>
-References: <57853474.9050108@cavium.com> <CAPDyKFqaGLWxkG+CqViqDfPqeffKE5rutgR0gduuGs9F0DX+zg@mail.gmail.com>
- <57BC8ACA.1040506@caviumnetworks.com> <CAPDyKFp047jKEZngegTxk1grvwPivqj+tqAX1ekF82s1zDE53Q@mail.gmail.com>
- <57BCAB27.8060502@caviumnetworks.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 24 Aug 2016 09:32:26 +0200
-Message-ID: <CAPDyKFpT0YuuaS3cppp+Q+hPfzOLj6jYSO_KVimLOq_OvPaEzw@mail.gmail.com>
-Subject: Re: [PATCH V8 2/2] mmc: OCTEON: Add host driver for OCTEON MMC controller.
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     "Steven J. Hill" <steven.hill@cavium.com>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        linux-mips@linux-mips.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <ulf.hansson@linaro.org>
+In-Reply-To: <1471970749-24867-1-git-send-email-yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-MML: disable
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 16082407-0024-0000-0000-00000209B6B6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 16082407-0025-0000-0000-00002019D811
+Message-Id: <55efa12b-4368-3d1c-c4df-466d920f6de7@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2016-08-24_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=1
+ malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.0.1-1604210000
+ definitions=main-1608240071
+Return-Path: <oberpar@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54740
+X-archive-position: 54741
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ulf.hansson@linaro.org
+X-original-sender: oberpar@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,56 +92,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 23 August 2016 at 21:59, David Daney <ddaney@caviumnetworks.com> wrote:
-> On 08/23/2016 12:46 PM, Ulf Hansson wrote:
->>
->> On 23 August 2016 at 19:41, David Daney <ddaney@caviumnetworks.com> wrote:
->>>
->>> On 08/23/2016 07:53 AM, Ulf Hansson wrote:
->>>>
->>>>
->>>> On 12 July 2016 at 20:18, Steven J. Hill <steven.hill@cavium.com> wrote:
->>>
->>>
->>> [...]
->>>
->>>>> +#include <asm/byteorder.h>
->>>>> +#include <asm/octeon/octeon.h>
->>>>
->>>>
->>>>
->>>
->>> OK, we will duplicate any needed definitions from octeon.h into the
->>> driver
->>> source file.
->>
->>
->> Why can't you share it via a platfrom data header at
->> include/linux/platform_data/* ?
->>
->
-> It isn't "platform_data", it is register layout definitions (thousands of
-> lines of them), so I don't think it it appropriate to place in
-> include/linux.
->
-> I think the cleanest approach is to put the register definitions in the
-> driver file, which is the only user, and delete the definition header files
-> in arch/mips/include/...
->
-> David.
+On 23.08.2016 18:45, Masahiro Yamada wrote:
+> Commit 97f2645f358b ("tree-wide: replace config_enabled() with
+> IS_ENABLED()") mostly killed config_enabled(), but some new users
+> have appeared for v4.8-rc1.  They are all used for a boolean option,
+> so can be replaced with IS_ENABLED() safely.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-I guess we are not looking at the same header file. :-)
+Acked-by: Peter Oberparleiter <oberpar@linux.vnet.ibm.com>
 
-arch/mips/include/asm/octeon/octeon.h contains declarations of
-functions/structs and even globally exported variables.
+> ---
+> 
+>  arch/mips/include/asm/page.h | 4 ++--
+>  arch/s390/kernel/setup.c     | 6 ++----
+>  arch/x86/mm/kaslr.c          | 2 +-
+>  3 files changed, 5 insertions(+), 7 deletions(-)
 
-At a closer look this header need a serious cleanup anyway...
-
-* Some of the functions/structs are not used or even implemented.
-** Some of the functions/structs is used only internally by the SoC
-specific code, thus should be moved to a local header.
-*** Some of the functions/structs/exported variables is being used by
-several clients. The cavium mmc driver is only one of them.
-
-Kind regards
-Uffe
+-- 
+Peter Oberparleiter
+Linux on z Systems Development - IBM Germany

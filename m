@@ -1,74 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2016 09:53:03 +0200 (CEST)
-Received: from mail-it0-f66.google.com ([209.85.214.66]:34907 "EHLO
-        mail-it0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991948AbcHYHwyU7qxT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2016 09:52:54 +0200
-Received: by mail-it0-f66.google.com with SMTP id f6so5087065ith.2;
-        Thu, 25 Aug 2016 00:52:54 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2016 17:27:23 +0200 (CEST)
+Received: from mail-pa0-f67.google.com ([209.85.220.67]:36077 "EHLO
+        mail-pa0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991965AbcHYP1Pqe0YD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2016 17:27:15 +0200
+Received: by mail-pa0-f67.google.com with SMTP id ez1so3290043pab.3;
+        Thu, 25 Aug 2016 08:27:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=g3UEftNZtkx7nWFRPZ8ewqn+V9mvCyDct7cMSdqv/IY=;
-        b=0C9LedTmVHqxM3TCOFHGhdlLwSIBdsNDbsoqsyi8Y1WbLamFVftVU2qC5uG8bdcFiP
-         I41rLygvkMAogfnyePlSAl/ciyMpW4p/Y8w39DsZJEoPD1nSvTsvBD1tEj2rmfhpuVWU
-         CLOD76pz8xQqjc+8EBw5aguXn9zApg4weyvx16f4FgowPpcBRGFAAnpqVrbRcpI8nU2a
-         ylkfwudpmoRhJ/4t7RdPep8WeApiLpH2akpjEYFUhWzHDPiRBwysOxPRxuPYRWJbte78
-         mEHh4hbwWgBw9bwhfDp7v/TFnoVIImUKLym7VQjGE1IqFk9UdY74cHPCCAJAB8Hvao+H
-         iqTQ==
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=lmTjMc+13JI/Z8fNOGJBTzpGcUbxJD82Uh81VefhlIw=;
+        b=ubQtWR0UMJu412/hBBkhuH4sFmr6MBBbrrjn/k0vJH1RlIi350eAi7Z0frv2Gyc8sS
+         XlvkhPKRf+kw9feYtxYG1ZiBoRm46/vDcKQBSE7RRmakDyKBveKUCqwH+0zGRPKcji2Y
+         60y+kiEg9jRzsnvXTYZBGfefa8plpqtzzn3XjOrwYr1g9JkRiBqAsJpTK1LgrEJR6Z2y
+         smMTwZmh7p7FQsZ+lDezB5e5u5rUB5t76mFopbqI/EPU+UqQMDUhmASkvxNRs+V+XFOa
+         Sy+w/0DGml6+iEbdKJdPD/Z1SbF5H3zWKlzfdh+LohWODF4AYS79bRFkeljpb8hysVW0
+         s5QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=g3UEftNZtkx7nWFRPZ8ewqn+V9mvCyDct7cMSdqv/IY=;
-        b=XMj7dj32Ef6SNdgvdI0YOHlfM0xybqKpLbs4SsJG+JZOtrQ3dmmH0xrOkUl9M9zMMF
-         8YiTEk7mKZm+Gt2tZMdHM4N6aD+/K3vFCuo/jQ2pHpOVEfHw0RBAjK8pJKSQbZEXdI4b
-         Q3BJ/Ua7M/bHR5PBVz0WCLYdmgq5HVpcfJejCD87lQvL6gC64KGrgvez5iYgis/yz+4j
-         HupFuA2ootbRDWi0EB9uaWS4i1cz/h6Kn6maVGsxEpUH/ZUSIPe6ypIG1gcahj2jcEG8
-         N0r8EOk5vFO+QHrabRYkJ5PanrYnSTwcXoR1/CeZRJgGFF9SLyjzK87idaZeCY5SOpMl
-         Sbog==
-X-Gm-Message-State: AE9vXwM4vixzV87VHjpcIgCzAf4JY9lanUwirbyrY7GCPdjYP8yM0IE+N0xGJdz7hk2RkT7AqkxxKnI1vyNn+w==
-X-Received: by 10.107.43.16 with SMTP id r16mr8662890ior.81.1472111568229;
- Thu, 25 Aug 2016 00:52:48 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.3.232 with HTTP; Thu, 25 Aug 2016 00:52:47 -0700 (PDT)
-In-Reply-To: <1472059613-30551-1-git-send-email-yamada.masahiro@socionext.com>
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=lmTjMc+13JI/Z8fNOGJBTzpGcUbxJD82Uh81VefhlIw=;
+        b=Ie/tlS9rVGrnp7OIBPaGbTSIgTgpwK+FcvEF7Qi08kvex0RRg39LC+nksiXHHm3wfP
+         3QJSe1UqLOvhCELqkkWU3XfHl6kVRMLxkNWjByBg9Aq0L95QwQIn0483W1jhmEBClx1R
+         TI8f5C2Va484LM4U02jGKboDlVvVa8niwe994k3PtmyCRtPIQnpLe4SX9/ARs/JVaZOj
+         JJXS2HRJdiUbE2OR+5gKbislHamEBxj6ikVStLDN0o1rJKPQOn70d2awhQ5l6PtfE1Kw
+         zZXBcD2loqiiaSHkh4mY2YQiY7XYnOBCPxWwmYBxU52mfcVzK2nb4hZULdumaBEZqF5n
+         46Tg==
+X-Gm-Message-State: AE9vXwO0jUJqBihBGoYMnFm/nB3mypMYyEylmbrPYEACIZu8EfS/mId42uNUyEIfHPRp1g==
+X-Received: by 10.66.165.67 with SMTP id yw3mr17478177pab.8.1472138829801;
+        Thu, 25 Aug 2016 08:27:09 -0700 (PDT)
+Received: from [10.112.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id c7sm21785942pfj.25.2016.08.25.08.27.07
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 25 Aug 2016 08:27:08 -0700 (PDT)
+Subject: Re: [PATCH v3] clk: let clk_disable() return immediately if clk is
+ NULL
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-clk@vger.kernel.org
 References: <1472059613-30551-1-git-send-email-yamada.masahiro@socionext.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 25 Aug 2016 09:52:47 +0200
-X-Google-Sender-Auth: RvVXJ6BwomGd3GaWI6pLcmKMFAk
-Message-ID: <CAMuHMdUC9d4KNPTDY51DCptmMFQ1F2jLmRDO9WLt=WZA09qRew@mail.gmail.com>
-Subject: Re: [PATCH v3] clk: let clk_disable() return immediately if clk is NULL
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     linux-clk <linux-clk@vger.kernel.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
+Cc:     Stephen Boyd <sboyd@codeaurora.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-mips@linux-mips.org,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Eric Miao <eric.y.miao@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
+        linux-kernel@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
         Greg Ungerer <gerg@linux-m68k.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-m68k@lists.linux-m68k.org,
         bcm-kernel-feedback-list@broadcom.com,
         Wan ZongShun <mcuos.com@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Steven Miao <realmz6@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+        linux-arm-kernel@lists.infradead.org
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <194aebe5-38dd-f43d-fb4d-16ce592a68e8@gmail.com>
+Date:   Thu, 25 Aug 2016 08:27:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <1472059613-30551-1-git-send-email-yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54748
+X-archive-position: 54749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,26 +85,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 24, 2016 at 7:26 PM, Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
+On 08/24/2016 10:26 AM, Masahiro Yamada wrote:
 > Many of clk_disable() implementations just return for NULL pointer,
 > but this check is missing from some.  Let's make it tree-wide
 > consistent.  It will allow clock consumers to call clk_disable()
 > without NULL pointer check.
->
+> 
 > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 > Acked-by: Greg Ungerer <gerg@uclinux.org>
 > Acked-by: Wan Zongshun <mcuos.com@gmail.com>
+> ---
+> 
+> I came back after a long pause.
+> You can see the discussion about the previous version:
+> https://www.linux-mips.org/archives/linux-mips/2016-04/msg00063.html
+> 
+> 
+> Changes in v3:
+>   - Return only when clk is NULL.  Do not take care of error pointer.
+> 
+> Changes in v2:
+>   - Rebase on Linux 4.6-rc1
+> 
+>  arch/arm/mach-mmp/clock.c        | 3 +++
+>  arch/arm/mach-w90x900/clock.c    | 3 +++
+>  arch/blackfin/mach-bf609/clock.c | 3 +++
+>  arch/m68k/coldfire/clk.c         | 4 ++++
+>  arch/mips/bcm63xx/clk.c          | 3 +++
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+For bcm63xx:
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian

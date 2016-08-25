@@ -1,51 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2016 03:30:44 +0200 (CEST)
-Received: from mail-ua0-f181.google.com ([209.85.217.181]:36080 "EHLO
-        mail-ua0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992240AbcHYBafZ4bcA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2016 03:30:35 +0200
-Received: by mail-ua0-f181.google.com with SMTP id m60so19577111uam.3
-        for <linux-mips@linux-mips.org>; Wed, 24 Aug 2016 18:30:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2016 09:53:03 +0200 (CEST)
+Received: from mail-it0-f66.google.com ([209.85.214.66]:34907 "EHLO
+        mail-it0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991948AbcHYHwyU7qxT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2016 09:52:54 +0200
+Received: by mail-it0-f66.google.com with SMTP id f6so5087065ith.2;
+        Thu, 25 Aug 2016 00:52:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=skyportsystems.com; s=google;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=OD/rfNzVAhfGCFrhcFp6B7QXsHKe+VzdipjXWdWpQ3s=;
-        b=vB3Qi96XwSzKalSWmIs+hsdiGAsynzYgzussE+eRA9DKOiBAmJhnIM6lLbIiCfzI69
-         9C6jJSJ4uNazO7emr/vSyAB20ex9apsNMwjHLDdBDOuvHyHoweyn5WLTFwnWY//+isU1
-         5nbpT4WB50UN9IPrKo0pw6qAd3w855VxPjvRk=
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=g3UEftNZtkx7nWFRPZ8ewqn+V9mvCyDct7cMSdqv/IY=;
+        b=0C9LedTmVHqxM3TCOFHGhdlLwSIBdsNDbsoqsyi8Y1WbLamFVftVU2qC5uG8bdcFiP
+         I41rLygvkMAogfnyePlSAl/ciyMpW4p/Y8w39DsZJEoPD1nSvTsvBD1tEj2rmfhpuVWU
+         CLOD76pz8xQqjc+8EBw5aguXn9zApg4weyvx16f4FgowPpcBRGFAAnpqVrbRcpI8nU2a
+         ylkfwudpmoRhJ/4t7RdPep8WeApiLpH2akpjEYFUhWzHDPiRBwysOxPRxuPYRWJbte78
+         mEHh4hbwWgBw9bwhfDp7v/TFnoVIImUKLym7VQjGE1IqFk9UdY74cHPCCAJAB8Hvao+H
+         iqTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=OD/rfNzVAhfGCFrhcFp6B7QXsHKe+VzdipjXWdWpQ3s=;
-        b=A/DUeAgw1hnBcfUWlb1ZbgIk7J57vnEBWbzmg6DoLPC5FtEVbjn1nUTtE0ZEUM3Hwl
-         4/Ez7SY3kgV/ntRHCtJA9gHXF19iHvuRK9cY93x5GWrn3UggU/12qFT6mKkKi1tTSDJQ
-         vpFop1QxFTLXp+V3LGL2MIc3vSCSl/Rmb1Mb6GVQRnXb73TxbFnrmAsOf/JLRNSfmx3y
-         4zb/G4OKlrWX8y1/cv0RjvAJPiiADXV+ipCNiZOa+CsqMRVr6guv59PNare5SS15KyWS
-         JHzqOv3fzNmdA12sHWOrBBmkqVOgyBrGaGrkwbY7UgXu7+j5GGFKIV5TqKG+bnVa+Ynf
-         QpGA==
-X-Gm-Message-State: AEkoouunD+rFTcOXom5QgFx5yV1bNhOEB1xa12ZLXdv2fPfypsQOlQMmJhJfqh9waPquZ8YUAWSSBxQUzNF9rI3y
-X-Received: by 10.31.171.214 with SMTP id u205mr3517197vke.119.1472088629505;
- Wed, 24 Aug 2016 18:30:29 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=g3UEftNZtkx7nWFRPZ8ewqn+V9mvCyDct7cMSdqv/IY=;
+        b=XMj7dj32Ef6SNdgvdI0YOHlfM0xybqKpLbs4SsJG+JZOtrQ3dmmH0xrOkUl9M9zMMF
+         8YiTEk7mKZm+Gt2tZMdHM4N6aD+/K3vFCuo/jQ2pHpOVEfHw0RBAjK8pJKSQbZEXdI4b
+         Q3BJ/Ua7M/bHR5PBVz0WCLYdmgq5HVpcfJejCD87lQvL6gC64KGrgvez5iYgis/yz+4j
+         HupFuA2ootbRDWi0EB9uaWS4i1cz/h6Kn6maVGsxEpUH/ZUSIPe6ypIG1gcahj2jcEG8
+         N0r8EOk5vFO+QHrabRYkJ5PanrYnSTwcXoR1/CeZRJgGFF9SLyjzK87idaZeCY5SOpMl
+         Sbog==
+X-Gm-Message-State: AE9vXwM4vixzV87VHjpcIgCzAf4JY9lanUwirbyrY7GCPdjYP8yM0IE+N0xGJdz7hk2RkT7AqkxxKnI1vyNn+w==
+X-Received: by 10.107.43.16 with SMTP id r16mr8662890ior.81.1472111568229;
+ Thu, 25 Aug 2016 00:52:48 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.31.159.86 with HTTP; Wed, 24 Aug 2016 18:29:49 -0700 (PDT)
-From:   Ed Swierk <eswierk@skyportsystems.com>
-Date:   Wed, 24 Aug 2016 18:29:49 -0700
-Message-ID: <CAO_EM_nrb0M49YwU+gjL+bqT4V1rFj4z7DQ8juTYXgaoKet0mg@mail.gmail.com>
-Subject: Improving OCTEON II 10G Ethernet performance
-To:     linux-mips <linux-mips@linux-mips.org>,
-        driverdev-devel <devel@driverdev.osuosl.org>,
-        netdev <netdev@vger.kernel.org>
-Cc:     Aaro Koskinen <aaro.koskinen@nokia.com>,
-        David Daney <ddaney@caviumnetworks.com>
+Received: by 10.107.3.232 with HTTP; Thu, 25 Aug 2016 00:52:47 -0700 (PDT)
+In-Reply-To: <1472059613-30551-1-git-send-email-yamada.masahiro@socionext.com>
+References: <1472059613-30551-1-git-send-email-yamada.masahiro@socionext.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 25 Aug 2016 09:52:47 +0200
+X-Google-Sender-Auth: RvVXJ6BwomGd3GaWI6pLcmKMFAk
+Message-ID: <CAMuHMdUC9d4KNPTDY51DCptmMFQ1F2jLmRDO9WLt=WZA09qRew@mail.gmail.com>
+Subject: Re: [PATCH v3] clk: let clk_disable() return immediately if clk is NULL
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     linux-clk <linux-clk@vger.kernel.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Wan ZongShun <mcuos.com@gmail.com>,
+        Steven Miao <realmz6@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <eswierk@skyportsystems.com>
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54747
+X-archive-position: 54748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eswierk@skyportsystems.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,34 +81,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I'm trying to migrate from the Octeon SDK to a vanilla Linux 4.4
-kernel for a Cavium OCTEON II (CN6880) board running in 64-bit
-little-endian mode. So far I've gotten most of the hardware features I
-need working, including XAUI/RXAUI, USB, boot bus and I2C, with a
-fairly small set of patches.
-https://github.com/skyportsystems/linux/compare/master...octeon2
+On Wed, Aug 24, 2016 at 7:26 PM, Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+> Many of clk_disable() implementations just return for NULL pointer,
+> but this check is missing from some.  Let's make it tree-wide
+> consistent.  It will allow clock consumers to call clk_disable()
+> without NULL pointer check.
+>
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Acked-by: Greg Ungerer <gerg@uclinux.org>
+> Acked-by: Wan Zongshun <mcuos.com@gmail.com>
 
-The biggest remaining hurdle is improving 10G Ethernet performance:
-iperf -P 10 on the SDK kernel gets close to 10 Gbit/sec throughput,
-while on my 4.4 kernel, it tops out around 1 Gbit/sec.
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Comparing the octeon-ethernet driver in the SDK
-(http://git.yoctoproject.org/cgit/cgit.cgi/linux-yocto-contrib/tree/drivers/net/ethernet/octeon?h=apaliwal/octeon)
-against the one in 4.4, the latter appears to utilize only a single
-CPU core for the rx path. It's not clear to me if there is a similar
-issue on the tx side, or other bottlenecks.
+Gr{oetje,eeting}s,
 
-I started trying to port multi-CPU rx from the SDK octeon-ethernet
-driver, but had trouble teasing out just the necessary bits without
-following a maze of dependencies on unrelated functions. (Dragging
-major parts of the SDK wholesale into 4.4 defeats the purpose of
-switching to a vanilla kernel, and doesn't bring us closer to getting
-octeon-ethernet out of staging.)
+                        Geert
 
-Has there been any work on the octeon-ethernet driver since this patch
-set? https://www.linux-mips.org/archives/linux-mips/2015-08/msg00338.html
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Any hints on what to pick out of the SDK code to improve 10G
-performance would be appreciated.
-
---Ed
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

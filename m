@@ -1,39 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2016 23:19:01 +0200 (CEST)
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:33684 "EHLO
-        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992196AbcHYVSy2KOaW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2016 23:18:54 +0200
-Received: from raspberrypi.musicnaut.iki.fi (85-76-72-196-nat.elisa-mobile.fi [85.76.72.196])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 2809623401D;
-        Fri, 26 Aug 2016 00:18:52 +0300 (EEST)
-Date:   Fri, 26 Aug 2016 00:18:52 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Ed Swierk <eswierk@skyportsystems.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        driverdev-devel <devel@driverdev.osuosl.org>,
-        netdev <netdev@vger.kernel.org>,
-        Aaro Koskinen <aaro.koskinen@nokia.com>
-Subject: Re: Improving OCTEON II 10G Ethernet performance
-Message-ID: <20160825211852.GG12169@raspberrypi.musicnaut.iki.fi>
-References: <CAO_EM_nrb0M49YwU+gjL+bqT4V1rFj4z7DQ8juTYXgaoKet0mg@mail.gmail.com>
- <57BF21C7.5070709@caviumnetworks.com>
- <20160825182210.GE12169@raspberrypi.musicnaut.iki.fi>
- <57BF5101.6080909@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2016 23:22:47 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:59968 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992196AbcHYVWk122uW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2016 23:22:40 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.87)
+        (envelope-from <steven.hill@cavium.com>)
+        id 1bd1xs-0005bF-2G; Thu, 25 Aug 2016 16:13:32 -0500
+Subject: [PATCH] MIPS: Octeon: mark GPIO controller node not populated IRQ,
+ init.
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>,
+        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+From:   "Steven J. Hill" <steven.hill@cavium.com>
+Message-ID: <422712ab-4b0d-2b6d-4600-b917c2d327a9@cavium.com>
+Date:   Thu, 25 Aug 2016 16:22:26 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <57BF5101.6080909@caviumnetworks.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <steven.hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54756
+X-archive-position: 54757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: steven.hill@cavium.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,37 +41,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+We clear the OF_POPULATED flag for the GPIO controller node, otherwise
+the GPIO lines used by the MMC driver are never probed.
 
-On Thu, Aug 25, 2016 at 01:11:45PM -0700, David Daney wrote:
-> On 08/25/2016 11:22 AM, Aaro Koskinen wrote:
-> >On Thu, Aug 25, 2016 at 09:50:15AM -0700, David Daney wrote:
-> >>Ideally we would configure the packet classifiers on the RX side to create
-> >>multiple RX queues based on a hash of the TCP 5-tuple, and handle each queue
-> >>with a single NAPI instance.  That should result in better performance while
-> >>maintaining packet ordering.
-> >
-> >Would this need anything else than reprogramming CVMX_PIP_PRT_TAGX, and
-> >eliminating the global pow_receive_group and creating multiple NAPI instances
-> >and registering IRQ handlers?
-> 
-> That is essentially how it works.  Set the tag generation parameters, and
-> use the low order bits of the tag to select which POW/SSO group is assigned.
-> The SSO group corresponds to an "rx queue"
+Fixes: 15cc2ed6dcf9 ("of/irq: Mark initialised interrupt controllers as populated")
+Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
+---
+ arch/mips/cavium-octeon/octeon-irq.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-OK, I will try to experiment with this. Even though my home routers are
-2-core only I could still create more queues and verify that the traffic
-gets distributed by checking the counters...
-
-> >In the Yocto tree, the CVMX_PIP_PRT_TAGX register values are actually
-> >documented:
-> >
-> >http://git.yoctoproject.org/cgit/cgit.cgi/linux-yocto-contrib/tree/arch/mips/include/asm/octeon/cvmx-pip-defs.h?h=apaliwal/octeon#n3737
-> 
-> Wow, I didn't realize that documentation was made public.
-
-Also D-Link and Qbiquity GPL source offerings for their products usually
-include documentation for register fields. Only in mainline kernel they
-are missing.
-
-A.
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 5a9b87b..41d12d4 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -1619,6 +1619,13 @@ static int __init octeon_irq_init_gpio(
+ 		return -ENOMEM;
+ 	}
+ 
++	/*
++	 * Clear the OF_POPULATED flag that was set above for the
++	 * GPIO controller so that the lines used by the MMC driver
++	 * will not be skipped.
++	 */
++	of_node_clear_flag(gpio_node, OF_POPULATED);
++
+ 	return 0;
+ }
+ /*
+-- 
+1.9.1

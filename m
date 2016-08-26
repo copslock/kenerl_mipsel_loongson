@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 00:40:50 +0200 (CEST)
-Received: from emh07.mail.saunalahti.fi ([62.142.5.117]:59563 "EHLO
-        emh07.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992249AbcHYWklI2XEJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 00:40:41 +0200
-Received: from raspberrypi.musicnaut.iki.fi (85-76-72-196-nat.elisa-mobile.fi [85.76.72.196])
-        by emh07.mail.saunalahti.fi (Postfix) with ESMTP id AC1EB409A;
-        Fri, 26 Aug 2016 01:40:34 +0300 (EEST)
-Date:   Fri, 26 Aug 2016 01:40:33 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     "Steven J. Hill" <steven.hill@cavium.com>,
-        Rob Herring <robh@kernel.org>,
-        Jon Hunter <jonathanh@nvidia.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, David Daney <david.daney@cavium.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Octeon: mark GPIO controller node not populated
- IRQ, init.
-Message-ID: <20160825224033.GH12169@raspberrypi.musicnaut.iki.fi>
-References: <422712ab-4b0d-2b6d-4600-b917c2d327a9@cavium.com>
- <57BF6F47.4030803@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 15:41:44 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44901 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992437AbcHZNlfgjFCn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 15:41:35 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id E52AA6BEAB124;
+        Fri, 26 Aug 2016 14:41:13 +0100 (IST)
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 26 Aug 2016 14:41:17 +0100
+Subject: Re: [PATCH V2 00/10] microblaze/MIPS: xilfpga: intc and peripheral
+To:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>
+References: <1471527804-26175-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+CC:     <jason@lakedaemon.net>, <marc.zyngier@arm.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Message-ID: <dfa01405-34da-89b7-0082-9f83a3c3fb18@imgtec.com>
+Date:   Fri, 26 Aug 2016 14:41:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <57BF6F47.4030803@caviumnetworks.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+In-Reply-To: <1471527804-26175-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54760
+X-archive-position: 54761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,52 +48,62 @@ X-list: linux-mips
 
 Hi,
 
-On Thu, Aug 25, 2016 at 03:20:55PM -0700, David Daney wrote:
-> On 08/25/2016 02:22 PM, Steven J. Hill wrote:
-> >We clear the OF_POPULATED flag for the GPIO controller node, otherwise
-> >the GPIO lines used by the MMC driver are never probed.
 
-Please also mention that gpio-leds failed to probe.
+On 08/18/2016 02:43 PM, Zubair Lutfullah Kakakhel wrote:
+> Hi,
+>
+> The MIPS based Xilfpga platform uses the axi interrupt controller
+> daisy chained to the MIPS microAptiv cpu interrupt controller.
+> This patch series moves the axi interrupt controller driver out
+> of arch/microblaze to drivers/irqchip. This makes it usable by
+> MIPS. The rest of the series basically enables drivers and adds dt
+> nodes.
+>
+> Would make sense for this to go via the MIPS tree.
+> Hence, ACKs from microblaze. irqchip and net welcome.
+>
+> Compile tested on microblaze-el only!
+> Based on v4.8-rc2
 
-> >Fixes: 15cc2ed6dcf9 ("of/irq: Mark initialised interrupt controllers as populated")
-> >Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
-> >---
-> >  arch/mips/cavium-octeon/octeon-irq.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> >diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-> >index 5a9b87b..41d12d4 100644
-> >--- a/arch/mips/cavium-octeon/octeon-irq.c
-> >+++ b/arch/mips/cavium-octeon/octeon-irq.c
-> >@@ -1619,6 +1619,13 @@ static int __init octeon_irq_init_gpio(
-> >  		return -ENOMEM;
-> >  	}
-> >
-> >+	/*
-> >+	 * Clear the OF_POPULATED flag that was set above for the
-> 
-> Can we s/above/in of_irq_init()/ to be less ambiguous?
-> 
-> >+	 * GPIO controller so that the lines used by the MMC driver
-> 
-> I suspect that it is not just MMC that was broken by commit 15cc2ed6dcf9.
-> Can we get a real description of exactly which kernel facilities are
-> impacted?  Is it all GPIO, or what?
+Ping. Would be nice to see this in for v4.9.
 
-For me it fixes gpio-leds breakage, so I think it's all GPIO. Referring
-to MMC driver is not appropriate anyway as the OCTEON MMC is not yet
-merged. :-)
+Thanks
+ZubairLK
 
-> >+	 * will not be skipped.
-> >+	 */
-> >+	of_node_clear_flag(gpio_node, OF_POPULATED);
-> >+
-> >  	return 0;
-
-For this actual code change, you can add:
-
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-
-Thanks,
-
-A.
+>
+> Regards,
+> ZubairLK
+>
+> V1 -> V2
+> Resubmitting without truncating the diff output for file moves
+> Removed accidental local mac address entry
+> Individual logs have more detail
+>
+> Zubair Lutfullah Kakakhel (10):
+>   microblaze: irqchip: Move intc driver to irqchip
+>   irqchip: xilinx: Add support for parent intc
+>   MIPS: xilfpga: Use irqchip_init instead of the legacy way
+>   MIPS: xilfpga: Use Xilinx AXI Interrupt Controller
+>   MIPS: xilfpga: Update DT node and specify uart irq
+>   MIPS: Xilfpga: Add DT node for AXI I2C
+>   net: ethernet: xilinx: Generate random mac if none found
+>   net: ethernet: xilinx: Enable emaclite for MIPS
+>   MIPS: xilfpga: Add DT node for AXI emaclite
+>   MIPS: xilfpga: Update defconfig
+>
+>  arch/microblaze/Kconfig                       |   1 +
+>  arch/microblaze/kernel/Makefile               |   2 +-
+>  arch/microblaze/kernel/intc.c                 | 196 -----------------------
+>  arch/mips/Kconfig                             |   1 +
+>  arch/mips/boot/dts/xilfpga/nexys4ddr.dts      |  63 ++++++++
+>  arch/mips/configs/xilfpga_defconfig           |  37 ++++-
+>  arch/mips/xilfpga/intc.c                      |   7 +-
+>  drivers/irqchip/Kconfig                       |   4 +
+>  drivers/irqchip/Makefile                      |   1 +
+>  drivers/irqchip/irq-axi-intc.c                | 222 ++++++++++++++++++++++++++
+>  drivers/net/ethernet/xilinx/Kconfig           |   4 +-
+>  drivers/net/ethernet/xilinx/xilinx_emaclite.c |   6 +-
+>  12 files changed, 337 insertions(+), 207 deletions(-)
+>  delete mode 100644 arch/microblaze/kernel/intc.c
+>  create mode 100644 drivers/irqchip/irq-axi-intc.c
+>

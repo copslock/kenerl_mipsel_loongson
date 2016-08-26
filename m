@@ -1,52 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 18:22:38 +0200 (CEST)
-Received: from mail-lf0-f65.google.com ([209.85.215.65]:36421 "EHLO
-        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992487AbcHZQWbzEpAI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 18:22:31 +0200
-Received: by mail-lf0-f65.google.com with SMTP id 33so4001520lfw.3
-        for <linux-mips@linux-mips.org>; Fri, 26 Aug 2016 09:22:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=2opIQZWYhEEO5vHM6ML/xdQZ/ITQZaPEXThzBYl8wxk=;
-        b=ZGeFI5im5wLq6Vktxo3JACdRNkFbWyMIo852dbs1ww9FBobgoXjO912bXgJZdeu5fN
-         YCp93o69UsXlJsIGiSbVom3rvJruEsfg8sU+eD4YsDAzKbDCI55CmQF6R0ucl5TxglP8
-         AbbsY66U3Qplf6+3lYJoB0plex5EKA1aV48R/35QL1YQhpU9RI90YSz5HWJx/CysvObt
-         Mj+g32aXVgJz8HldtgvSEJMEOAI7dsqTPBNPOFqBwvUQUGevVpZxFh3HZD8pbxGa04+5
-         a6ZYywTsaC/940ArzIgrBAlZfnYMUuVztbZts0OnNS7R9bit955IqL4P9Dzii7RQ8fbb
-         mD1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=2opIQZWYhEEO5vHM6ML/xdQZ/ITQZaPEXThzBYl8wxk=;
-        b=b6FjkFvvbVQzjVywM/9GO4C5SMxk3G4C6VZ+GjDKXtfyCR3HTTjfhx9CiVs+c693q/
-         8028T2lhpSJXHGZsXnURl1J0rrjZvT6HCwyQ8dMkITNppLmHc7f5pFeraBkWwwK5wD1u
-         AZFlffVe4pB+YrE2l0BRKJ9ZbAuQF6rnmNi8OxWA0OR0aBwxnbhMD7nYufF67MeI/gBs
-         9d4NC7XEvDd/sGSJ2XIoqYb3kJzlW17apLlNRfr9koK9Shcn4BP2gei6T4VaO+ujYogT
-         Qh8mHBIymL1E2H6bc5aMUFCYOu9gSRX1tqRsdMv8g/VhfIX+ecDm+kN9RKFkUvrccoUx
-         Gb7g==
-X-Gm-Message-State: AE9vXwMgpbf0NyJOMSL0Vi7M6skHGUNcD144gPxBIpQOAaAzamKAyOJAY2KAmeOTh5TKrC6tldiUXHvx0RQD/Q==
-X-Received: by 10.25.215.205 with SMTP id q74mr1666876lfi.98.1472228546193;
- Fri, 26 Aug 2016 09:22:26 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 19:41:56 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:60909 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992492AbcHZRlroNFrJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 19:41:47 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 99DA161B1D; Fri, 26 Aug 2016 17:41:45 +0000 (UTC)
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DBAA361ACE;
+        Fri, 26 Aug 2016 17:41:44 +0000 (UTC)
+Date:   Fri, 26 Aug 2016 10:41:44 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 25/26] clk: boston: Add a driver for MIPS Boston board
+ clocks
+Message-ID: <20160826174144.GW19826@codeaurora.org>
+References: <20160826153725.11629-1-paul.burton@imgtec.com>
+ <20160826153725.11629-26-paul.burton@imgtec.com>
 MIME-Version: 1.0
-Received: by 10.25.42.212 with HTTP; Fri, 26 Aug 2016 09:22:24 -0700 (PDT)
-Reply-To: rev.sisfatu@gmail.com
-From:   Catholic Rev Sister <queenleeba6@gmail.com>
-Date:   Fri, 26 Aug 2016 16:22:24 +0000
-Message-ID: <CACFZo6KXZ15oxO_C-paOqWQ0nynRHjscGGO8oKyffqSvg6sOWQ@mail.gmail.com>
-Subject: Catholic Rev.Sister
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <queenleeba6@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160826153725.11629-26-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54812
+X-archive-position: 54813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: queenleeba6@gmail.com
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,9 +48,155 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 08/26, Paul Burton wrote:
+> 
+>  drivers/clk/Kconfig      |   9 ++++
+>  drivers/clk/Makefile     |   1 +
+>  drivers/clk/clk-boston.c | 131 +++++++++++++++++++++++++++++++++++++++++++++++
+
+Maybe a vendor subdirectory is appropriate? imgtec?
+
+> +
+> +struct clk_boston_state {
+> +	struct clk *clk[BOSTON_CLK_COUNT];
+> +	struct clk_boston clk_boston[BOSTON_CLK_COUNT];
+> +	struct clk_onecell_data onecell_data[BOSTON_CLK_COUNT];
+> +};
+> +
+> +static const char *clk_names[BOSTON_CLK_COUNT] = {
+
+const char * const?
+
+> +	[BOSTON_CLK_SYS] = "sys",
+> +	[BOSTON_CLK_CPU] = "cpu",
+> +};
+> +
+> +#define BOSTON_PLAT_MMCMDIV		0x30
+> +# define BOSTON_PLAT_MMCMDIV_CLK0DIV	(0xff << 0)
+> +# define BOSTON_PLAT_MMCMDIV_INPUT	(0xff << 8)
+> +# define BOSTON_PLAT_MMCMDIV_MUL	(0xff << 16)
+> +# define BOSTON_PLAT_MMCMDIV_CLK1DIV	(0xff << 24)
+> +
+> +static struct clk_boston *to_clk_boston(struct clk_hw *hw)
+> +{
+> +	return container_of(hw, struct clk_boston, hw);
+> +}
+> +
+> +static uint32_t ext_field(uint32_t val, uint32_t mask)
+
+Please use u32 instead of uint32_t in drivers.
+
+> +{
+> +	return (val & mask) >> (ffs(mask) - 1);
+> +}
+> +
+> +static unsigned long clk_boston_recalc_rate(struct clk_hw *hw,
+> +					    unsigned long parent_rate)
+> +{
+> +	struct clk_boston *state = to_clk_boston(hw);
+> +	uint32_t in_rate, mul, div;
+> +	uint mmcmdiv;
+
+unsigned int?
+
+> +	int err;
+> +
+> +	err = regmap_read(state->regmap, BOSTON_PLAT_MMCMDIV, &mmcmdiv);
+> +	if (err)
+> +		return 0;
+> +
+> +	in_rate = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_INPUT);
+
+This sounds like a parent rate? Should there be another clk
+created for that so that parent_rate in this function is useful?
+
+> +	mul = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_MUL);
+> +
+> +	switch (state->id) {
+> +	case BOSTON_CLK_SYS:
+> +		div = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_CLK0DIV);
+> +		break;
+> +	case BOSTON_CLK_CPU:
+> +		div = ext_field(mmcmdiv, BOSTON_PLAT_MMCMDIV_CLK1DIV);
+
+Why not put the CLK0DIV or CLK1DIV offset in state->id instead?
+That way this function just read in_rate, mul, and div and then
+does the math?
+
+> +		break;
+> +	default:
+> +		return 0;
+> +	}
+> +
+> +	return (in_rate * mul * 1000000) / div;
+
+Is this always fixed at boot? It may be easier to populate fixed
+rate clks during probe with the rate calculated there. Then there
+aren't any clk_ops to implement.
+
+> +}
+> +
+> +static const struct clk_ops clk_boston_ops = {
+> +	.recalc_rate = clk_boston_recalc_rate,
+> +};
+> +
+> +static void __init clk_boston_setup(struct device_node *np)
+> +{
+> +	struct clk_boston_state *state;
+> +	struct clk_init_data init;
+> +	struct regmap *regmap;
+> +	int i, err;
+> +
+> +	state = kzalloc(sizeof(*state), GFP_KERNEL);
+> +	if (!state)
+> +		return;
+> +
+> +	regmap = syscon_regmap_lookup_by_phandle(np, "regmap");
+> +	if (IS_ERR(regmap)) {
+> +		pr_err("failed to find regmap\n");
+> +		return;
+> +	}
+> +
+> +	for (i = 0; i < BOSTON_CLK_COUNT; i++) {
+> +		memset(&init, 0, sizeof(init));
+> +		init.flags = CLK_IS_BASIC;
+
+Please drop this flag unless you really need it for something. As
+far as I know CLK_IS_BASIC is just for OMAP code.
+
+> +		init.name = clk_names[i];
+> +		init.ops = &clk_boston_ops;
+> +
+> +		state->clk_boston[i].hw.init = &init;
+> +		state->clk_boston[i].id = i;
+> +		state->clk_boston[i].regmap = regmap;
+> +
+> +		state->clk[i] = clk_register(NULL, &state->clk_boston[i].hw);
+
+Please use clk_hw_register() instead.
+
+> +		if (IS_ERR(state->clk[i])) {
+> +			pr_err("failed to register clock: %ld\n",
+> +			       PTR_ERR(state->clk[i]));
+> +			return;
+> +		}
+> +	}
+> +
+> +	state->onecell_data->clks = state->clk;
+> +	state->onecell_data->clk_num = BOSTON_CLK_COUNT;
+> +
+> +	err = of_clk_add_provider(np, of_clk_src_onecell_get,
+> +				  state->onecell_data);
+
+Please use of_clk_add_hw_provider() instead.
+
+> +	if (err)
+> +		pr_err("failed to add DT provider: %d\n", err);
+> +}
+> +CLK_OF_DECLARE(clk_boston, "img,boston-clock", clk_boston_setup);
+
+Please make this into a platform driver.
+
 -- 
-Hello,
-
-Am reverend sister Fatu i have an Important Massage to deliver to you.
-
-Rev Sister
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

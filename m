@@ -1,33 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 17:42:01 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45857 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 17:42:24 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:1288 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992509AbcHZPk3WW1vI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 17:40:29 +0200
+        with ESMTP id S23992541AbcHZPkpx40MI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 17:40:45 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C8394D1B7295;
-        Fri, 26 Aug 2016 16:40:08 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 053E4B571DD2A;
+        Fri, 26 Aug 2016 16:40:24 +0100 (IST)
 Received: from localhost (10.100.200.141) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 26 Aug
- 2016 16:40:11 +0100
+ 2016 16:40:27 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Huacai Chen <chenhc@lemote.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
         <linux-kernel@vger.kernel.org>,
-        Krzysztof Kozlowski <k.kozlowski@samsung.com>,
         James Hogan <james.hogan@imgtec.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Joerg Roedel <jroedel@suse.de>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Alex Smith <alex.smith@imgtec.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Valentin Rothberg <valentinrothberg@gmail.com>
-Subject: [PATCH 09/26] MIPS: Support per-device DMA coherence
-Date:   Fri, 26 Aug 2016 16:37:08 +0100
-Message-ID: <20160826153725.11629-10-paul.burton@imgtec.com>
+        Markos Chandras <markos.chandras@imgtec.com>
+Subject: [PATCH 10/26] MIPS: Print CM error reports upon bus errors
+Date:   Fri, 26 Aug 2016 16:37:09 +0100
+Message-ID: <20160826153725.11629-11-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20160826153725.11629-1-paul.burton@imgtec.com>
 References: <20160826153725.11629-1-paul.burton@imgtec.com>
@@ -38,7 +34,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54793
+X-archive-position: 54794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,150 +51,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On some MIPS systems, a subset of devices may have DMA coherent with CPU
-caches. For example in systems including a MIPS I/O Coherence Unit
-(IOCU), some devices may be connected to that IOCU whilst others are
-not.
+If a bus error occurs on a system with a MIPS Coherence Manager (CM)
+then the CM may hold useful diagnostic information. Printing this out
+has so far been left up to boards, with the requirement that they
+register a board_be_handler function & call mips_cm_error_decode() from
+there.
 
-Prior to this patch, we have a plat_device_is_coherent() function but no
-implementation which does anything besides return a global true or
-false, optionally chosen at runtime. For devices such as those described
-above this is insufficient.
+In order to avoid boards other than Malta needing to duplicate this
+code, call mips_cm_error_decode() automatically if the board registers
+no board_be_handler, and remove the Malta implementation of that.
 
-Fix this by tracking DMA coherence on a per-device basis with a
-dma_coherent field in struct dev_archdata. Setting this from
-arch_setup_dma_ops() takes care of devices which set the dma-coherent
-property via device tree, and any PCI devices beneath a bridge described
-in DT, automatically.
+This patch results in no functional change, but removes a further piece
+of platform-specific code.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/Kconfig                                  |  4 ++++
- arch/mips/include/asm/device.h                     |  5 +++++
- arch/mips/include/asm/dma-coherence.h              |  4 +++-
- arch/mips/include/asm/dma-mapping.h                | 10 ++++++++++
- arch/mips/include/asm/mach-generic/dma-coherence.h |  4 ++++
- arch/mips/mm/c-r4k.c                               |  4 ++++
- arch/mips/mm/dma-default.c                         |  2 +-
- 7 files changed, 31 insertions(+), 2 deletions(-)
+ arch/mips/kernel/traps.c          |  3 +++
+ arch/mips/mti-malta/malta-int.c   | 15 ---------------
+ arch/mips/mti-malta/malta-setup.c |  6 ------
+ 3 files changed, 3 insertions(+), 21 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 6c5133f..49eb902 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1097,6 +1097,10 @@ config DMA_MAYBE_COHERENT
- 	select DMA_NONCOHERENT
- 	bool
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 3de85be..e2c571d 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -48,6 +48,7 @@
+ #include <asm/fpu.h>
+ #include <asm/fpu_emulator.h>
+ #include <asm/idle.h>
++#include <asm/mips-cm.h>
+ #include <asm/mips-r2-to-r6-emul.h>
+ #include <asm/mipsregs.h>
+ #include <asm/mipsmtregs.h>
+@@ -444,6 +445,8 @@ asmlinkage void do_be(struct pt_regs *regs)
  
-+config DMA_PERDEV_COHERENT
-+	bool
-+	select DMA_MAYBE_COHERENT
-+
- config DMA_COHERENT
- 	bool
+ 	if (board_be_handler)
+ 		action = board_be_handler(regs, fixup != NULL);
++	else
++		mips_cm_error_report();
  
-diff --git a/arch/mips/include/asm/device.h b/arch/mips/include/asm/device.h
-index c94fafb..21c2082 100644
---- a/arch/mips/include/asm/device.h
-+++ b/arch/mips/include/asm/device.h
-@@ -11,6 +11,11 @@ struct dma_map_ops;
- struct dev_archdata {
- 	/* DMA operations on that device */
- 	struct dma_map_ops *dma_ops;
-+
-+#ifdef CONFIG_DMA_PERDEV_COHERENT
-+	/* Non-zero if DMA is coherent with CPU caches */
-+	bool dma_coherent;
-+#endif
- };
- 
- struct pdev_archdata {
-diff --git a/arch/mips/include/asm/dma-coherence.h b/arch/mips/include/asm/dma-coherence.h
-index 4fbce79..72d0eab 100644
---- a/arch/mips/include/asm/dma-coherence.h
-+++ b/arch/mips/include/asm/dma-coherence.h
-@@ -15,7 +15,9 @@ enum coherent_io_user_state {
- 	IO_COHERENCE_DISABLED,
- };
- 
--#ifdef CONFIG_DMA_MAYBE_COHERENT
-+#if defined(CONFIG_DMA_PERDEV_COHERENT)
-+/* Don't provide (hw_)coherentio to avoid misuse */
-+#elif defined(CONFIG_DMA_MAYBE_COHERENT)
- extern enum coherent_io_user_state coherentio;
- extern int hw_coherentio;
- #else
-diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-index 12fa79e..7aa71b9 100644
---- a/arch/mips/include/asm/dma-mapping.h
-+++ b/arch/mips/include/asm/dma-mapping.h
-@@ -32,4 +32,14 @@ static inline void dma_mark_clean(void *addr, size_t size) {}
- extern void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- 	       enum dma_data_direction direction);
- 
-+#define arch_setup_dma_ops arch_setup_dma_ops
-+static inline void arch_setup_dma_ops(struct device *dev, u64 dma_base,
-+				      u64 size, const struct iommu_ops *iommu,
-+				      bool coherent)
-+{
-+#ifdef CONFIG_DMA_PERDEV_COHERENT
-+	dev->archdata.dma_coherent = coherent;
-+#endif
-+}
-+
- #endif /* _ASM_DMA_MAPPING_H */
-diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
-index 8484f82..61addb1 100644
---- a/arch/mips/include/asm/mach-generic/dma-coherence.h
-+++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
-@@ -49,6 +49,9 @@ static inline int plat_dma_supported(struct device *dev, u64 mask)
- 
- static inline int plat_device_is_coherent(struct device *dev)
- {
-+#ifdef CONFIG_DMA_PERDEV_COHERENT
-+	return dev->archdata.dma_coherent;
-+#else
- 	switch (coherentio) {
- 	default:
- 	case IO_COHERENCE_DEFAULT:
-@@ -58,6 +61,7 @@ static inline int plat_device_is_coherent(struct device *dev)
- 	case IO_COHERENCE_DISABLED:
- 		return 0;
- 	}
-+#endif
+ 	switch (action) {
+ 	case MIPS_BE_DISCARD:
+diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
+index c6a6c7a..548130d 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -376,18 +376,3 @@ void __init arch_init_irq(void)
+ 	setup_irq(i8259_irq, &i8259irq);
+ 	setup_irq(corehi_irq, &corehi_irqaction);
  }
+-
+-void malta_be_init(void)
+-{
+-	/* Could change CM error mask register. */
+-}
+-
+-int malta_be_handler(struct pt_regs *regs, int is_fixup)
+-{
+-	/* This duplicates the handling in do_be which seems wrong */
+-	int retval = is_fixup ? MIPS_BE_FIXUP : MIPS_BE_FATAL;
+-
+-	mips_cm_error_report();
+-
+-	return retval;
+-}
+diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
+index d7d151f..2f25930 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -39,9 +39,6 @@
+ #include <linux/console.h>
+ #endif
  
- #ifndef plat_post_dma_flush
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index c48deab..7529096 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1917,8 +1917,12 @@ void r4k_cache_init(void)
- 	local_flush_icache_range	= local_r4k_flush_icache_range;
- 
- #if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
-+# if defined(CONFIG_DMA_PERDEV_COHERENT)
-+	if (0) {
-+# else
- 	if ((coherentio == IO_COHERENCE_ENABLED) ||
- 	    ((coherentio == IO_COHERENCE_DEFAULT) && hw_coherentio)) {
-+# endif
- 		_dma_cache_wback_inv	= (void *)cache_noop;
- 		_dma_cache_wback	= (void *)cache_noop;
- 		_dma_cache_inv		= (void *)cache_noop;
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 6540355..9f51ee8 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -24,7 +24,7 @@
- 
- #include <dma-coherence.h>
- 
--#ifdef CONFIG_DMA_MAYBE_COHERENT
-+#if defined(CONFIG_DMA_MAYBE_COHERENT) && !defined(CONFIG_DMA_PERDEV_COHERENT)
- /* User defined DMA coherency from command line. */
- enum coherent_io_user_state coherentio = IO_COHERENCE_DEFAULT;
- EXPORT_SYMBOL_GPL(coherentio);
+-extern void malta_be_init(void);
+-extern int malta_be_handler(struct pt_regs *regs, int is_fixup);
+-
+ static struct resource standard_io_resources[] = {
+ 	{
+ 		.name = "dma1",
+@@ -295,7 +292,4 @@ void __init plat_mem_setup(void)
+ #if defined(CONFIG_VT) && defined(CONFIG_VGA_CONSOLE)
+ 	screen_info_setup();
+ #endif
+-
+-	board_be_init = malta_be_init;
+-	board_be_handler = malta_be_handler;
+ }
 -- 
 2.9.3

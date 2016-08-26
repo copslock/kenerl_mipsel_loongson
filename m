@@ -1,44 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 16:13:52 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:49862 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992464AbcHZONovVTtn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Aug 2016 16:13:44 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 21CDD28;
-        Fri, 26 Aug 2016 07:15:19 -0700 (PDT)
-Received: from localhost (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BCC313F220;
-        Fri, 26 Aug 2016 07:13:37 -0700 (PDT)
-Received: from localhost ([::1])
-        by localhost with esmtp (Exim 4.87)
-        (envelope-from <marc.zyngier@arm.com>)
-        id 1bdHt2-0003Bz-QF; Fri, 26 Aug 2016 15:13:36 +0100
-Date:   Fri, 26 Aug 2016 15:13:34 +0100
-From:   Marc Zyngier <marc.zyngier@arm.com>
-To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>,
-        <jason@lakedaemon.net>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH V2 01/10] microblaze: irqchip: Move intc driver to
- irqchip
-Message-ID: <20160826151334.5d702731@arm.com>
-In-Reply-To: <1471527804-26175-2-git-send-email-Zubair.Kakakhel@imgtec.com>
-References: <1471527804-26175-1-git-send-email-Zubair.Kakakhel@imgtec.com>
-        <1471527804-26175-2-git-send-email-Zubair.Kakakhel@imgtec.com>
-Organization: ARM Ltd
-X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.30; arm-unknown-linux-gnueabihf)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 16:18:51 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63485 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992472AbcHZOSoWESqn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 16:18:44 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 0B1EF88A49DA9;
+        Fri, 26 Aug 2016 15:18:24 +0100 (IST)
+Received: from localhost (10.100.200.141) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 26 Aug
+ 2016 15:18:27 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Ondrej Zary <linux@rainbow-software.org>,
+        <linux-fbdev@vger.kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Jacek Anaszewski <j.anaszewski@samsung.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        <linux-leds@vger.kernel.org>, Richard Purdie <rpurdie@rpsys.net>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        <devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Simon Horman <horms+renesas@verge.net.au>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        <linux-usb@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        <linux-kernel@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH v2 00/19] MIPS: SEAD3 device tree conversion
+Date:   Fri, 26 Aug 2016 15:17:32 +0100
+Message-ID: <20160826141751.13121-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.9.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.141]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54762
+X-archive-position: 54763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,285 +66,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 18 Aug 2016 14:43:15 +0100
-Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com> wrote:
+Although the SEAD3 board has already made some minimal use of device
+tree, until now most peripherals have been left probed by platform code.
 
-Hi Zubair,
+This series converts all SEAD3 peripherals to instead be probed from
+device tree. The amount of platform code is significantly reduced
+leaving SEAD3 primed & ready for a wider task of genericising the
+kernel.
 
-Thanks for the heads up, comments below.
+Applies atop v4.8-rc3.
 
-> The Xilinx AXI Interrupt Controller IP block is used by the MIPS
-> based xilfpga platform.
-> 
-> Move the interrupt controller code out of arch/microblaze so that
-> it can be used by everyone
-> 
-> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-> 
-> ---
-> V1 -> V2
-> 
-> Renamed irq-xilinx to irq-axi-intc
-> Renamed CONFIG_XILINX_INTC to CONFIG_XILINX_AXI_INTC
-> Patch is now without rename flag so as to facilitate review
-> ---
->  arch/microblaze/Kconfig         |   1 +
->  arch/microblaze/kernel/Makefile |   2 +-
->  arch/microblaze/kernel/intc.c   | 196 ----------------------------------------
->  drivers/irqchip/Kconfig         |   4 +
->  drivers/irqchip/Makefile        |   1 +
->  drivers/irqchip/irq-axi-intc.c  | 196 ++++++++++++++++++++++++++++++++++++++++
->  6 files changed, 203 insertions(+), 197 deletions(-)
->  delete mode 100644 arch/microblaze/kernel/intc.c
->  create mode 100644 drivers/irqchip/irq-axi-intc.c
-> 
+Paul Burton (19):
+  MIPS: SEAD3: Split obj-y entries across lines
+  MIPS: SEAD3: Probe interrupt controllers using DT
+  MIPS: SEAD3: Probe UARTs using DT
+  MIPS: SEAD3: Use generic ns16550a earlycon support
+  MIPS: SEAD3: Probe ethernet controller using DT
+  MIPS: SEAD3: Probe EHCI controller using DT
+  usb: host: ehci-sead3: Remove SEAD-3 EHCI code
+  SEAD3: Probe parallel flash via DT
+  MIPS: SEAD3: Use register-bit-led driver via DT for LEDs
+  leds: Remove SEAD3 driver
+  MIPS: SEAD3: Reset via generic syscon-reboot driver & DT
+  MIPS: SEAD3: Use generic restart-poweroff driver
+  MIPS: SEAD3: Parse memsize in DT shim
+  MIPS: SEAD3: Drop use of cobalt fbdev driver
+  fbdev: cobalt_lcdfb: Drop SEAD3 support
+  dt-bindings: img-ascii-lcd: Document a binding for simple ASCII LCDs
+  auxdisplay: img-ascii-lcd: driver for simple ASCII LCD displays
+  MIPS: SEAD3: Use img-ascii-lcd driver
+  MIPS: SEAD3: Remove custom read_persistent_clock
 
-[...]
+ .../bindings/auxdisplay/img-ascii-lcd.txt          |  17 +
+ MAINTAINERS                                        |   6 +
+ arch/mips/Kconfig                                  |   1 -
+ arch/mips/boot/dts/mti/sead3.dts                   | 237 +++++++++++
+ arch/mips/configs/sead3_defconfig                  |   8 +
+ arch/mips/include/asm/mach-sead3/sead3-dtshim.h    |  29 ++
+ arch/mips/include/asm/mips-boards/sead3int.h       |  32 --
+ arch/mips/mti-sead3/Makefile                       |  10 +-
+ arch/mips/mti-sead3/sead3-console.c                |  46 ---
+ arch/mips/mti-sead3/sead3-display.c                |  77 ----
+ arch/mips/mti-sead3/sead3-dtshim.c                 | 292 ++++++++++++++
+ arch/mips/mti-sead3/sead3-init.c                   |  52 ---
+ arch/mips/mti-sead3/sead3-int.c                    |  27 +-
+ arch/mips/mti-sead3/sead3-lcd.c                    |  43 --
+ arch/mips/mti-sead3/sead3-platform.c               | 223 -----------
+ arch/mips/mti-sead3/sead3-reset.c                  |  40 --
+ arch/mips/mti-sead3/sead3-setup.c                  |  77 +---
+ arch/mips/mti-sead3/sead3-time.c                   |   8 -
+ drivers/auxdisplay/Kconfig                         |   9 +
+ drivers/auxdisplay/Makefile                        |   1 +
+ drivers/auxdisplay/img-ascii-lcd.c                 | 443 +++++++++++++++++++++
+ drivers/leds/Kconfig                               |  10 -
+ drivers/leds/Makefile                              |   1 -
+ drivers/leds/leds-sead3.c                          |  78 ----
+ drivers/usb/host/ehci-hcd.c                        |   5 -
+ drivers/usb/host/ehci-sead3.c                      | 185 ---------
+ drivers/video/fbdev/Kconfig                        |   2 +-
+ drivers/video/fbdev/cobalt_lcdfb.c                 |  42 --
+ 28 files changed, 1056 insertions(+), 945 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
+ create mode 100644 arch/mips/include/asm/mach-sead3/sead3-dtshim.h
+ delete mode 100644 arch/mips/include/asm/mips-boards/sead3int.h
+ delete mode 100644 arch/mips/mti-sead3/sead3-console.c
+ delete mode 100644 arch/mips/mti-sead3/sead3-display.c
+ create mode 100644 arch/mips/mti-sead3/sead3-dtshim.c
+ delete mode 100644 arch/mips/mti-sead3/sead3-lcd.c
+ delete mode 100644 arch/mips/mti-sead3/sead3-platform.c
+ delete mode 100644 arch/mips/mti-sead3/sead3-reset.c
+ create mode 100644 drivers/auxdisplay/img-ascii-lcd.c
+ delete mode 100644 drivers/leds/leds-sead3.c
+ delete mode 100644 drivers/usb/host/ehci-sead3.c
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-> index 7f87289..4429888 100644
-> --- a/drivers/irqchip/Kconfig
-> +++ b/drivers/irqchip/Kconfig
-> @@ -203,6 +203,10 @@ config XTENSA_MX
->  	bool
->  	select IRQ_DOMAIN
->  
-> +config XILINX_AXI_INTC
-> +	bool
-> +	select IRQ_DOMAIN
-> +
->  config IRQ_CROSSBAR
->  	bool
->  	help
-> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
-> index 4c203b6..bf21f55 100644
-> --- a/drivers/irqchip/Makefile
-> +++ b/drivers/irqchip/Makefile
-> @@ -51,6 +51,7 @@ obj-$(CONFIG_TB10X_IRQC)		+= irq-tb10x.o
->  obj-$(CONFIG_TS4800_IRQ)		+= irq-ts4800.o
->  obj-$(CONFIG_XTENSA)			+= irq-xtensa-pic.o
->  obj-$(CONFIG_XTENSA_MX)			+= irq-xtensa-mx.o
-> +obj-$(CONFIG_XILINX_AXI_INTC)		+= irq-axi-intc.o
->  obj-$(CONFIG_IRQ_CROSSBAR)		+= irq-crossbar.o
->  obj-$(CONFIG_SOC_VF610)			+= irq-vf610-mscm-ir.o
->  obj-$(CONFIG_BCM6345_L1_IRQ)		+= irq-bcm6345-l1.o
-> diff --git a/drivers/irqchip/irq-axi-intc.c b/drivers/irqchip/irq-axi-intc.c
-> new file mode 100644
-> index 0000000..90bec7d
-> --- /dev/null
-> +++ b/drivers/irqchip/irq-axi-intc.c
-> @@ -0,0 +1,196 @@
-> +/*
-> + * Copyright (C) 2007-2013 Michal Simek <monstr@monstr.eu>
-> + * Copyright (C) 2012-2013 Xilinx, Inc.
-> + * Copyright (C) 2007-2009 PetaLogix
-> + * Copyright (C) 2006 Atmark Techno, Inc.
-> + *
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License. See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + */
-> +
-> +#include <linux/irqdomain.h>
-> +#include <linux/irq.h>
-> +#include <linux/irqchip.h>
-> +#include <linux/of_address.h>
-> +#include <linux/io.h>
-> +#include <linux/bug.h>
-> +
-> +static void __iomem *intc_baseaddr;
-> +
-> +/* No one else should require these constants, so define them locally here. */
-> +#define ISR 0x00			/* Interrupt Status Register */
-> +#define IPR 0x04			/* Interrupt Pending Register */
-> +#define IER 0x08			/* Interrupt Enable Register */
-> +#define IAR 0x0c			/* Interrupt Acknowledge Register */
-> +#define SIE 0x10			/* Set Interrupt Enable bits */
-> +#define CIE 0x14			/* Clear Interrupt Enable bits */
-> +#define IVR 0x18			/* Interrupt Vector Register */
-> +#define MER 0x1c			/* Master Enable Register */
-> +
-> +#define MER_ME (1<<0)
-> +#define MER_HIE (1<<1)
-> +
-> +static unsigned int (*read_fn)(void __iomem *);
-> +static void (*write_fn)(u32, void __iomem *);
-> +
-> +static void intc_write32(u32 val, void __iomem *addr)
-> +{
-> +	iowrite32(val, addr);
-> +}
-> +
-> +static unsigned int intc_read32(void __iomem *addr)
-> +{
-> +	return ioread32(addr);
-> +}
-> +
-> +static void intc_write32_be(u32 val, void __iomem *addr)
-> +{
-> +	iowrite32be(val, addr);
-> +}
-> +
-> +static unsigned int intc_read32_be(void __iomem *addr)
-> +{
-> +	return ioread32be(addr);
-> +}
-> +
-> +static void intc_enable_or_unmask(struct irq_data *d)
-> +{
-> +	unsigned long mask = 1 << d->hwirq;
-> +
-> +	pr_debug("enable_or_unmask: %ld\n", d->hwirq);
-> +
-> +	/* ack level irqs because they can't be acked during
-> +	 * ack function since the handle_level_irq function
-> +	 * acks the irq before calling the interrupt handler
-> +	 */
-> +	if (irqd_is_level_type(d))
-> +		write_fn(mask, intc_baseaddr + IAR);
-> +
-> +	write_fn(mask, intc_baseaddr + SIE);
-> +}
-> +
-> +static void intc_disable_or_mask(struct irq_data *d)
-> +{
-> +	pr_debug("disable: %ld\n", d->hwirq);
-> +	write_fn(1 << d->hwirq, intc_baseaddr + CIE);
-> +}
-> +
-> +static void intc_ack(struct irq_data *d)
-> +{
-> +	pr_debug("ack: %ld\n", d->hwirq);
-> +	write_fn(1 << d->hwirq, intc_baseaddr + IAR);
-> +}
-> +
-> +static void intc_mask_ack(struct irq_data *d)
-> +{
-> +	unsigned long mask = 1 << d->hwirq;
-> +
-> +	pr_debug("disable_and_ack: %ld\n", d->hwirq);
-> +	write_fn(mask, intc_baseaddr + CIE);
-> +	write_fn(mask, intc_baseaddr + IAR);
-> +}
-> +
-> +static struct irq_chip intc_dev = {
-> +	.name = "Xilinx INTC",
-> +	.irq_unmask = intc_enable_or_unmask,
-> +	.irq_mask = intc_disable_or_mask,
-> +	.irq_ack = intc_ack,
-> +	.irq_mask_ack = intc_mask_ack,
-> +};
-> +
-> +static struct irq_domain *root_domain;
-> +
-> +unsigned int get_irq(void)
-
-Does this need to be global? It doesn't seem to be used in this patch...
-
-> +{
-> +	unsigned int hwirq, irq = -1;
-> +
-> +	hwirq = read_fn(intc_baseaddr + IVR);
-> +	if (hwirq != -1U)
-> +		irq = irq_find_mapping(root_domain, hwirq);
-> +
-> +	pr_debug("get_irq: hwirq=%d, irq=%d\n", hwirq, irq);
-> +
-> +	return irq;
-> +}
-> +
-> +static int xintc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
-> +{
-> +	u32 intr_mask = (u32)d->host_data;
-> +
-> +	if (intr_mask & (1 << hw)) {
-> +		irq_set_chip_and_handler_name(irq, &intc_dev,
-> +						handle_edge_irq, "edge");
-> +		irq_clear_status_flags(irq, IRQ_LEVEL);
-> +	} else {
-> +		irq_set_chip_and_handler_name(irq, &intc_dev,
-> +						handle_level_irq, "level");
-> +		irq_set_status_flags(irq, IRQ_LEVEL);
-> +	}
-> +	return 0;
-> +}
-> +
-> +static const struct irq_domain_ops xintc_irq_domain_ops = {
-> +	.xlate = irq_domain_xlate_onetwocell,
-> +	.map = xintc_map,
-> +};
-> +
-> +static int __init xilinx_intc_of_init(struct device_node *intc,
-> +					     struct device_node *parent)
-> +{
-> +	u32 nr_irq, intr_mask;
-> +	int ret;
-> +
-> +	intc_baseaddr = of_iomap(intc, 0);
-> +	BUG_ON(!intc_baseaddr);
-> +
-> +	ret = of_property_read_u32(intc, "xlnx,num-intr-inputs", &nr_irq);
-> +	if (ret < 0) {
-> +		pr_err("%s: unable to read xlnx,num-intr-inputs\n", __func__);
-> +		return ret;
-> +	}
-> +
-> +	ret = of_property_read_u32(intc, "xlnx,kind-of-intr", &intr_mask);
-> +	if (ret < 0) {
-> +		pr_err("%s: unable to read xlnx,kind-of-intr\n", __func__);
-> +		return ret;
-> +	}
-> +
-> +	if (intr_mask >> nr_irq)
-> +		pr_warn("%s: mismatch in kind-of-intr param\n", __func__);
-> +
-> +	pr_info("%s: num_irq=%d, edge=0x%x\n",
-> +		intc->full_name, nr_irq, intr_mask);
-> +
-> +	write_fn = intc_write32;
-> +	read_fn = intc_read32;
-> +
-> +	/*
-> +	 * Disable all external interrupts until they are
-> +	 * explicity requested.
-> +	 */
-> +	write_fn(0, intc_baseaddr + IER);
-> +
-> +	/* Acknowledge any pending interrupts just in case. */
-> +	write_fn(0xffffffff, intc_baseaddr + IAR);
-> +
-> +	/* Turn on the Master Enable. */
-> +	write_fn(MER_HIE | MER_ME, intc_baseaddr + MER);
-> +	if (!(read_fn(intc_baseaddr + MER) & (MER_HIE | MER_ME))) {
-> +		write_fn = intc_write32_be;
-> +		read_fn = intc_read32_be;
-> +		write_fn(MER_HIE | MER_ME, intc_baseaddr + MER);
-> +	}
-> +
-> +	/* Yeah, okay, casting the intr_mask to a void* is butt-ugly, but I'm
-> +	 * lazy and Michal can clean it up to something nicer when he tests
-> +	 * and commits this patch.  ~~gcl */
-> +	root_domain = irq_domain_add_linear(intc, nr_irq, &xintc_irq_domain_ops,
-> +							(void *)intr_mask);
-
-Since you're now reworking this driver, how about addressing this
-ugliness? You could store the intr_mask together with intc_baseaddr,
-and the read/write functions in a global structure, and pass a
-pointer to it? That would make the code a bit nicer...
-
-> +
-> +	irq_set_default_host(root_domain);
-> +
-> +	return 0;
-> +}
-> +
-> +IRQCHIP_DECLARE(xilinx_intc, "xlnx,xps-intc-1.00.a", xilinx_intc_of_init);
-
-Is "lnx,xps-intc-1.00.a" the only supported interrupt controller? Or is
-there something slightly more generic than this one?
-
-Thanks,
-
-	M.
 -- 
-Jazz is not dead. It just smells funny.
+2.9.3

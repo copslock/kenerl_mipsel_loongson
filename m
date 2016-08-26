@@ -1,42 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 16:25:58 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49439 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992478AbcHZOXDQsuNn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 16:23:03 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 205F585F266C5;
-        Fri, 26 Aug 2016 15:22:42 +0100 (IST)
-Received: from localhost (10.100.200.141) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 26 Aug
- 2016 15:22:44 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
-        <linux-kernel@vger.kernel.org>, Guenter Roeck <linux@roeck-us.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 17/19] auxdisplay: img-ascii-lcd: driver for simple ASCII LCD displays
-Date:   Fri, 26 Aug 2016 15:17:49 +0100
-Message-ID: <20160826141751.13121-18-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160826141751.13121-1-paul.burton@imgtec.com>
-References: <20160826141751.13121-1-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 16:26:23 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:49943 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992536AbcHZOXJx0won (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Aug 2016 16:23:09 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F063428;
+        Fri, 26 Aug 2016 07:24:44 -0700 (PDT)
+Received: from localhost (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 984243F220;
+        Fri, 26 Aug 2016 07:23:03 -0700 (PDT)
+Received: from localhost ([::1])
+        by localhost with esmtp (Exim 4.87)
+        (envelope-from <marc.zyngier@arm.com>)
+        id 1bdI2A-0003D2-Pl; Fri, 26 Aug 2016 15:23:02 +0100
+Date:   Fri, 26 Aug 2016 15:23:01 +0100
+From:   Marc Zyngier <marc.zyngier@arm.com>
+To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Cc:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>,
+        <jason@lakedaemon.net>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH V2 02/10] irqchip: xilinx: Add support for parent intc
+Message-ID: <20160826152301.74132534@arm.com>
+In-Reply-To: <1471527804-26175-3-git-send-email-Zubair.Kakakhel@imgtec.com>
+References: <1471527804-26175-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+        <1471527804-26175-3-git-send-email-Zubair.Kakakhel@imgtec.com>
+Organization: ARM Ltd
+X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.30; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.141]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54780
+X-archive-position: 54781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,537 +50,108 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a driver for simple ASCII LCD displays found on the MIPS Boston,
-Malta & SEAD3 development boards. The Boston display is an independent
-memory mapped device with a simple memory mapped 8 byte register space
-containing the 8 ASCII characters to display. The Malta display is
-exposed as part of the Malta board registers, and provides 8 registers
-each of which corresponds to one of the ASCII characters to display. The
-SEAD3 display is slightly more complex, exposing an interface to an
-S6A0069 LCD controller via registers provided by the boards CPLD.
-However although the displays differ in their register interface, we
-require similar functionality on each board so abstracting away the
-differences within a single driver allows us to share a significant
-amount of code & ensure consistent behaviour.
+On Thu, 18 Aug 2016 14:43:16 +0100
+Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com> wrote:
 
-The driver displays the Linux kernel version as the default message, but
-allows the message to be changed via a character device. Messages longer
-then the number of characters that the display can show will scroll.
+> The MIPS based xilfpga platform has the following IRQ structure
+> 
+> Peripherals --> xilinx_intcontroller -> mips_cpu_int controller
+> 
+> Add support for the driver to chain the irq handler
+> 
+> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+> 
+> ---
+> V1 -> V2
+> 
+> No change
+> ---
+>  drivers/irqchip/irq-axi-intc.c | 28 +++++++++++++++++++++++++++-
+>  1 file changed, 27 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/irqchip/irq-axi-intc.c b/drivers/irqchip/irq-axi-intc.c
+> index 90bec7d..a0be6fa 100644
+> --- a/drivers/irqchip/irq-axi-intc.c
+> +++ b/drivers/irqchip/irq-axi-intc.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/of_address.h>
+>  #include <linux/io.h>
+>  #include <linux/bug.h>
+> +#include <linux/of_irq.h>
+>  
+>  static void __iomem *intc_baseaddr;
+>  
+> @@ -135,11 +136,26 @@ static const struct irq_domain_ops xintc_irq_domain_ops = {
+>  	.map = xintc_map,
+>  };
+>  
+> +static void xil_intc_irq_handler(struct irq_desc *desc)
+> +{
+> +	u32 pending = get_irq();
+> +
+> +	if (pending != -1U) {
+> +		while (true) {
+> +			pending = get_irq();
+> +			generic_handle_irq(pending);
+> +			if (pending == -1U)
 
-This provides different behaviour to the existing LCD display code for
-the MIPS Malta or MIPS SEAD3 platforms in the following ways:
+Erm... So even when pending is -1, you're calling generic_handle_irq?
+This doesn't seem right.
 
-  - The default string to display is not "LINUX ON MALTA" or "LINUX ON
-    SEAD3" but "Linux" followed by the version number of the kernel
-    (UTS_RELEASE).
+You're also missing the chained_irq_enter/exit calls around this loop.
 
-  - Since that string tends to be significantly longer it scrolls twice
-    as fast, moving every 500ms rather than every 1s.
+Overall, this should be rewritten in a less cumbersome way. Something
+like:
 
-  - The LCD won't be updated until the driver is probed, so it doesn't
-    provide the early "LINUX" string.
+	do {
+		u32 pending;
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+		pending = get_irq();
+		if (pending == ~0)
+			break;
+		generic_handle_irq(pending);
+	} while (true);
 
----
+> +				break;
+> +		}
+> +	}
+> +}
+> +
+>  static int __init xilinx_intc_of_init(struct device_node *intc,
+>  					     struct device_node *parent)
+>  {
+>  	u32 nr_irq, intr_mask;
+> -	int ret;
+> +	int ret, irq;
+> +	struct device_node *parent_node;
+>  
+>  	intc_baseaddr = of_iomap(intc, 0);
+>  	BUG_ON(!intc_baseaddr);
+> @@ -188,6 +204,16 @@ static int __init xilinx_intc_of_init(struct device_node *intc,
+>  	root_domain = irq_domain_add_linear(intc, nr_irq, &xintc_irq_domain_ops,
+>  							(void *)intr_mask);
+>  
+> +	parent_node = of_irq_find_parent(intc);
 
-Changes in v2:
-- Fix filename in MAINTAINERS
+You already have the parent node as an argument to the function. Why do
+you need to do that again?
 
- MAINTAINERS                        |   1 +
- drivers/auxdisplay/Kconfig         |   9 +
- drivers/auxdisplay/Makefile        |   1 +
- drivers/auxdisplay/img-ascii-lcd.c | 443 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 454 insertions(+)
- create mode 100644 drivers/auxdisplay/img-ascii-lcd.c
+> +	if (parent_node) {
+> +		irq = irq_of_parse_and_map(intc, 0);
+> +		if (irq)
+> +			irq_set_chained_handler_and_data(irq,
+> +							 xil_intc_irq_handler,
+> +							 root_domain);
+> +
+> +	}
+> +
+>  	irq_set_default_host(root_domain);
+>  
+>  	return 0;
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f7a68b1..39bda4e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5957,6 +5957,7 @@ IMGTEC ASCII LCD DRIVER
- M:	Paul Burton <paul.burton@imgtec.com>
- S:	Maintained
- F:	Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
-+F:	drivers/auxdisplay/img-ascii-lcd.c
- 
- INA209 HARDWARE MONITOR DRIVER
- M:	Guenter Roeck <linux@roeck-us.net>
-diff --git a/drivers/auxdisplay/Kconfig b/drivers/auxdisplay/Kconfig
-index c07e725..10e1b9e 100644
---- a/drivers/auxdisplay/Kconfig
-+++ b/drivers/auxdisplay/Kconfig
-@@ -119,4 +119,13 @@ config CFAG12864B_RATE
- 	  If you compile this as a module, you can still override this
- 	  value using the module parameters.
- 
-+config IMG_ASCII_LCD
-+	tristate "Imagination Technologies ASCII LCD Display"
-+	default y if MIPS_MALTA || MIPS_SEAD3
-+	select SYSCON
-+	help
-+	  Enable this to support the simple ASCII LCD displays found on
-+	  development boards such as the MIPS Boston, MIPS Malta & MIPS SEAD3
-+	  from Imagination Technologies.
-+
- endif # AUXDISPLAY
-diff --git a/drivers/auxdisplay/Makefile b/drivers/auxdisplay/Makefile
-index 8a8936a..3127175 100644
---- a/drivers/auxdisplay/Makefile
-+++ b/drivers/auxdisplay/Makefile
-@@ -4,3 +4,4 @@
- 
- obj-$(CONFIG_KS0108)		+= ks0108.o
- obj-$(CONFIG_CFAG12864B)	+= cfag12864b.o cfag12864bfb.o
-+obj-$(CONFIG_IMG_ASCII_LCD)	+= img-ascii-lcd.o
-diff --git a/drivers/auxdisplay/img-ascii-lcd.c b/drivers/auxdisplay/img-ascii-lcd.c
-new file mode 100644
-index 0000000..bf43b5d
---- /dev/null
-+++ b/drivers/auxdisplay/img-ascii-lcd.c
-@@ -0,0 +1,443 @@
-+/*
-+ * Copyright (C) 2016 Imagination Technologies
-+ * Author: Paul Burton <paul.burton@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <generated/utsrelease.h>
-+#include <linux/kernel.h>
-+#include <linux/io.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/module.h>
-+#include <linux/of_address.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+#include <linux/sysfs.h>
-+
-+struct img_ascii_lcd_ctx;
-+
-+/**
-+ * struct img_ascii_lcd_config - Configuration information about an LCD model
-+ * @num_chars: the number of characters the LCD can display
-+ * @external_regmap: true if registers are in a system controller, else false
-+ * @update: function called to update the LCD
-+ */
-+struct img_ascii_lcd_config {
-+	unsigned int num_chars;
-+	bool external_regmap;
-+	void (*update)(struct img_ascii_lcd_ctx *ctx);
-+};
-+
-+/**
-+ * struct img_ascii_lcd_ctx - Private data structure
-+ * @pdev: the ASCII LCD platform device
-+ * @base: the base address of the LCD registers
-+ * @regmap: the regmap through which LCD registers are accessed
-+ * @offset: the offset within regmap to the start of the LCD registers
-+ * @cfg: pointer to the LCD model configuration
-+ * @message: the full message to display or scroll on the LCD
-+ * @message_len: the length of the @message string
-+ * @scroll_pos: index of the first character of @message currently displayed
-+ * @scroll_rate: scroll interval in jiffies
-+ * @timer: timer used to implement scrolling
-+ * @curr: the string currently displayed on the LCD
-+ */
-+struct img_ascii_lcd_ctx {
-+	struct platform_device *pdev;
-+	union {
-+		void __iomem *base;
-+		struct regmap *regmap;
-+	};
-+	u32 offset;
-+	const struct img_ascii_lcd_config *cfg;
-+	char *message;
-+	unsigned int message_len;
-+	unsigned int scroll_pos;
-+	unsigned int scroll_rate;
-+	struct timer_list timer;
-+	char curr[] __aligned(8);
-+};
-+
-+/*
-+ * MIPS Boston development board
-+ */
-+
-+static void boston_update(struct img_ascii_lcd_ctx *ctx)
-+{
-+	ulong val;
-+
-+#if BITS_PER_LONG == 64
-+	val = *((u64 *)&ctx->curr[0]);
-+	__raw_writeq(val, ctx->base);
-+#elif BITS_PER_LONG == 32
-+	val = *((u32 *)&ctx->curr[0]);
-+	__raw_writel(val, ctx->base);
-+	val = *((u32 *)&ctx->curr[4]);
-+	__raw_writel(val, ctx->base + 4);
-+#else
-+# error Not 32 or 64 bit
-+#endif
-+}
-+
-+static struct img_ascii_lcd_config boston_config = {
-+	.num_chars = 8,
-+	.update = boston_update,
-+};
-+
-+/*
-+ * MIPS Malta development board
-+ */
-+
-+static void malta_update(struct img_ascii_lcd_ctx *ctx)
-+{
-+	unsigned int i;
-+	int err;
-+
-+	for (i = 0; i < ctx->cfg->num_chars; i++) {
-+		err = regmap_write(ctx->regmap,
-+				   ctx->offset + (i * 8), ctx->curr[i]);
-+		if (err)
-+			break;
-+	}
-+
-+	if (unlikely(err))
-+		pr_err_ratelimited("Failed to update LCD display: %d\n", err);
-+}
-+
-+static struct img_ascii_lcd_config malta_config = {
-+	.num_chars = 8,
-+	.external_regmap = true,
-+	.update = malta_update,
-+};
-+
-+/*
-+ * MIPS SEAD3 development board
-+ */
-+
-+enum {
-+	SEAD3_REG_LCD_CTRL		= 0x00,
-+#define SEAD3_REG_LCD_CTRL_SETDRAM	BIT(7)
-+	SEAD3_REG_LCD_DATA		= 0x08,
-+	SEAD3_REG_CPLD_STATUS		= 0x10,
-+#define SEAD3_REG_CPLD_STATUS_BUSY	BIT(0)
-+	SEAD3_REG_CPLD_DATA		= 0x18,
-+#define SEAD3_REG_CPLD_DATA_BUSY	BIT(7)
-+};
-+
-+static int sead3_wait_sm_idle(struct img_ascii_lcd_ctx *ctx)
-+{
-+	unsigned int status;
-+	int err;
-+
-+	do {
-+		err = regmap_read(ctx->regmap,
-+				  ctx->offset + SEAD3_REG_CPLD_STATUS,
-+				  &status);
-+		if (err)
-+			return err;
-+	} while (status & SEAD3_REG_CPLD_STATUS_BUSY);
-+
-+	return 0;
-+
-+}
-+
-+static int sead3_wait_lcd_idle(struct img_ascii_lcd_ctx *ctx)
-+{
-+	unsigned int cpld_data;
-+	int err;
-+
-+	err = sead3_wait_sm_idle(ctx);
-+	if (err)
-+		return err;
-+
-+	do {
-+		err = regmap_read(ctx->regmap,
-+				  ctx->offset + SEAD3_REG_LCD_CTRL,
-+				  &cpld_data);
-+		if (err)
-+			return err;
-+
-+		err = sead3_wait_sm_idle(ctx);
-+		if (err)
-+			return err;
-+
-+		err = regmap_read(ctx->regmap,
-+				  ctx->offset + SEAD3_REG_CPLD_DATA,
-+				  &cpld_data);
-+		if (err)
-+			return err;
-+	} while (cpld_data & SEAD3_REG_CPLD_DATA_BUSY);
-+
-+	return 0;
-+}
-+
-+static void sead3_update(struct img_ascii_lcd_ctx *ctx)
-+{
-+	unsigned int i;
-+	int err;
-+
-+	for (i = 0; i < ctx->cfg->num_chars; i++) {
-+		err = sead3_wait_lcd_idle(ctx);
-+		if (err)
-+			break;
-+
-+		err = regmap_write(ctx->regmap,
-+				   ctx->offset + SEAD3_REG_LCD_CTRL,
-+				   SEAD3_REG_LCD_CTRL_SETDRAM | i);
-+		if (err)
-+			break;
-+
-+		err = sead3_wait_lcd_idle(ctx);
-+		if (err)
-+			break;
-+
-+		err = regmap_write(ctx->regmap,
-+				   ctx->offset + SEAD3_REG_LCD_DATA,
-+				   ctx->curr[i]);
-+		if (err)
-+			break;
-+	}
-+
-+	if (unlikely(err))
-+		pr_err_ratelimited("Failed to update LCD display: %d\n", err);
-+}
-+
-+static struct img_ascii_lcd_config sead3_config = {
-+	.num_chars = 16,
-+	.external_regmap = true,
-+	.update = sead3_update,
-+};
-+
-+static const struct of_device_id img_ascii_lcd_matches[] = {
-+	{ .compatible = "img,boston-lcd", .data = &boston_config },
-+	{ .compatible = "mti,malta-lcd", .data = &malta_config },
-+	{ .compatible = "mti,sead3-lcd", .data = &sead3_config },
-+};
-+
-+/**
-+ * img_ascii_lcd_scroll() - scroll the display by a character
-+ * @arg: really a pointer to the private data structure
-+ *
-+ * Scroll the current message along the LCD by one character, rearming the
-+ * timer if required.
-+ */
-+static void img_ascii_lcd_scroll(unsigned long arg)
-+{
-+	struct img_ascii_lcd_ctx *ctx = (struct img_ascii_lcd_ctx *)arg;
-+	unsigned int i, ch = ctx->scroll_pos;
-+	unsigned int num_chars = ctx->cfg->num_chars;
-+
-+	/* update the current message string */
-+	for (i = 0; i < num_chars;) {
-+		/* copy as many characters from the string as possible */
-+		for (; i < num_chars && ch < ctx->message_len; i++, ch++)
-+			ctx->curr[i] = ctx->message[ch];
-+
-+		/* wrap around to the start of the string */
-+		ch = 0;
-+	}
-+
-+	/* update the LCD */
-+	ctx->cfg->update(ctx);
-+
-+	/* move on to the next character */
-+	ctx->scroll_pos++;
-+	ctx->scroll_pos %= ctx->message_len;
-+
-+	/* rearm the timer */
-+	if (ctx->message_len > ctx->cfg->num_chars)
-+		mod_timer(&ctx->timer, jiffies + ctx->scroll_rate);
-+}
-+
-+/**
-+ * img_ascii_lcd_display() - set the message to be displayed
-+ * @ctx: pointer to the private data structure
-+ * @msg: the message to display
-+ * @count: length of msg, or -1
-+ *
-+ * Display a new message @msg on the LCD. @msg can be longer than the number of
-+ * characters the LCD can display, in which case it will begin scrolling across
-+ * the LCD display.
-+ *
-+ * Return: 0 on success, -ENOMEM on memory allocation failure
-+ */
-+static int img_ascii_lcd_display(struct img_ascii_lcd_ctx *ctx,
-+			     const char *msg, ssize_t count)
-+{
-+	char *new_msg;
-+
-+	/* stop the scroll timer */
-+	del_timer_sync(&ctx->timer);
-+
-+	if (count == -1)
-+		count = strlen(msg);
-+
-+	/* if the string ends with a newline, trim it */
-+	if (msg[count - 1] == '\n')
-+		count--;
-+
-+	new_msg = devm_kmalloc(&ctx->pdev->dev, count + 1, GFP_KERNEL);
-+	if (!new_msg)
-+		return -ENOMEM;
-+
-+	memcpy(new_msg, msg, count);
-+	new_msg[count] = 0;
-+
-+	if (ctx->message)
-+		devm_kfree(&ctx->pdev->dev, ctx->message);
-+
-+	ctx->message = new_msg;
-+	ctx->message_len = count;
-+	ctx->scroll_pos = 0;
-+
-+	/* update the LCD */
-+	img_ascii_lcd_scroll((unsigned long)ctx);
-+
-+	return 0;
-+}
-+
-+/**
-+ * message_show() - read message via sysfs
-+ * @dev: the LCD device
-+ * @attr: the LCD message attribute
-+ * @buf: the buffer to read the message into
-+ *
-+ * Read the current message being displayed or scrolled across the LCD display
-+ * into @buf, for reads from sysfs.
-+ *
-+ * Return: the number of characters written to @buf
-+ */
-+static ssize_t message_show(struct device *dev, struct device_attribute *attr,
-+			    char *buf)
-+{
-+	struct img_ascii_lcd_ctx *ctx = dev_get_drvdata(dev);
-+
-+	return sprintf(buf, "%s\n", ctx->message);
-+}
-+
-+/**
-+ * message_store() - write a new message via sysfs
-+ * @dev: the LCD device
-+ * @attr: the LCD message attribute
-+ * @buf: the buffer containing the new message
-+ * @count: the size of the message in @buf
-+ *
-+ * Write a new message to display or scroll across the LCD display from sysfs.
-+ *
-+ * Return: the size of the message on success, else -ERRNO
-+ */
-+static ssize_t message_store(struct device *dev, struct device_attribute *attr,
-+			     const char *buf, size_t count)
-+{
-+	struct img_ascii_lcd_ctx *ctx = dev_get_drvdata(dev);
-+	int err;
-+
-+	err = img_ascii_lcd_display(ctx, buf, count);
-+	return err ?: count;
-+}
-+
-+static DEVICE_ATTR_RW(message);
-+
-+/**
-+ * img_ascii_lcd_probe() - probe an LCD display device
-+ * @pdev: the LCD platform device
-+ *
-+ * Probe an LCD display device, ensuring that we have the required resources in
-+ * order to access the LCD & setting up private data as well as sysfs files.
-+ *
-+ * Return: 0 on success, else -ERRNO
-+ */
-+static int img_ascii_lcd_probe(struct platform_device *pdev)
-+{
-+	const struct of_device_id *match;
-+	const struct img_ascii_lcd_config *cfg;
-+	struct img_ascii_lcd_ctx *ctx;
-+	struct resource *res;
-+	int err;
-+
-+	match = of_match_device(img_ascii_lcd_matches, &pdev->dev);
-+	if (!match)
-+		return -ENODEV;
-+
-+	cfg = match->data;
-+	ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx) + cfg->num_chars,
-+			   GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	if (cfg->external_regmap) {
-+		ctx->regmap = syscon_node_to_regmap(pdev->dev.parent->of_node);
-+		if (IS_ERR(ctx->regmap))
-+			return PTR_ERR(ctx->regmap);
-+
-+		if (of_property_read_u32(pdev->dev.of_node, "offset",
-+					 &ctx->offset))
-+			return -EINVAL;
-+	} else {
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+		ctx->base = devm_ioremap_resource(&pdev->dev, res);
-+		if (IS_ERR(ctx->base))
-+			return PTR_ERR(ctx->base);
-+	}
-+
-+	ctx->pdev = pdev;
-+	ctx->cfg = cfg;
-+	ctx->message = NULL;
-+	ctx->scroll_pos = 0;
-+	ctx->scroll_rate = HZ / 2;
-+
-+	/* initialise a timer for scrolling the message */
-+	init_timer(&ctx->timer);
-+	ctx->timer.function = img_ascii_lcd_scroll;
-+	ctx->timer.data = (unsigned long)ctx;
-+
-+	platform_set_drvdata(pdev, ctx);
-+
-+	/* display a default message */
-+	err = img_ascii_lcd_display(ctx, "Linux " UTS_RELEASE "       ", -1);
-+	if (err)
-+		goto out_del_timer;
-+
-+	err = device_create_file(&pdev->dev, &dev_attr_message);
-+	if (err)
-+		goto out_del_timer;
-+
-+	return 0;
-+out_del_timer:
-+	del_timer_sync(&ctx->timer);
-+	return err;
-+}
-+
-+/**
-+ * img_ascii_lcd_remove() - remove an LCD display device
-+ * @pdev: the LCD platform device
-+ *
-+ * Remove an LCD display device, freeing private resources & ensuring that the
-+ * driver stops using the LCD display registers.
-+ *
-+ * Return: 0
-+ */
-+static int img_ascii_lcd_remove(struct platform_device *pdev)
-+{
-+	struct img_ascii_lcd_ctx *ctx = platform_get_drvdata(pdev);
-+
-+	device_remove_file(&pdev->dev, &dev_attr_message);
-+	del_timer_sync(&ctx->timer);
-+	return 0;
-+}
-+
-+static struct platform_driver img_ascii_lcd_driver = {
-+	.driver = {
-+		.name		= "img-ascii-lcd",
-+		.of_match_table	= img_ascii_lcd_matches,
-+	},
-+	.probe	= img_ascii_lcd_probe,
-+	.remove	= img_ascii_lcd_remove,
-+};
-+module_platform_driver(img_ascii_lcd_driver);
+
+Thanks,
+
+	M.
 -- 
-2.9.3
+Jazz is not dead. It just smells funny.

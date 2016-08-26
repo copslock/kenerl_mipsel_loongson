@@ -1,39 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 15:41:44 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44901 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992437AbcHZNlfgjFCn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 15:41:35 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id E52AA6BEAB124;
-        Fri, 26 Aug 2016 14:41:13 +0100 (IST)
-Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 26 Aug 2016 14:41:17 +0100
-Subject: Re: [PATCH V2 00/10] microblaze/MIPS: xilfpga: intc and peripheral
-To:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 16:13:52 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:49862 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992464AbcHZONovVTtn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Aug 2016 16:13:44 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 21CDD28;
+        Fri, 26 Aug 2016 07:15:19 -0700 (PDT)
+Received: from localhost (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BCC313F220;
+        Fri, 26 Aug 2016 07:13:37 -0700 (PDT)
+Received: from localhost ([::1])
+        by localhost with esmtp (Exim 4.87)
+        (envelope-from <marc.zyngier@arm.com>)
+        id 1bdHt2-0003Bz-QF; Fri, 26 Aug 2016 15:13:36 +0100
+Date:   Fri, 26 Aug 2016 15:13:34 +0100
+From:   Marc Zyngier <marc.zyngier@arm.com>
+To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Cc:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>,
+        <jason@lakedaemon.net>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH V2 01/10] microblaze: irqchip: Move intc driver to
+ irqchip
+Message-ID: <20160826151334.5d702731@arm.com>
+In-Reply-To: <1471527804-26175-2-git-send-email-Zubair.Kakakhel@imgtec.com>
 References: <1471527804-26175-1-git-send-email-Zubair.Kakakhel@imgtec.com>
-CC:     <jason@lakedaemon.net>, <marc.zyngier@arm.com>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Message-ID: <dfa01405-34da-89b7-0082-9f83a3c3fb18@imgtec.com>
-Date:   Fri, 26 Aug 2016 14:41:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        <1471527804-26175-2-git-send-email-Zubair.Kakakhel@imgtec.com>
+Organization: ARM Ltd
+X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.30; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-In-Reply-To: <1471527804-26175-1-git-send-email-Zubair.Kakakhel@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.45]
-Return-Path: <Zubair.Kakakhel@imgtec.com>
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54761
+X-archive-position: 54762
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Zubair.Kakakhel@imgtec.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,64 +51,285 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+On Thu, 18 Aug 2016 14:43:15 +0100
+Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com> wrote:
 
+Hi Zubair,
 
-On 08/18/2016 02:43 PM, Zubair Lutfullah Kakakhel wrote:
-> Hi,
->
-> The MIPS based Xilfpga platform uses the axi interrupt controller
-> daisy chained to the MIPS microAptiv cpu interrupt controller.
-> This patch series moves the axi interrupt controller driver out
-> of arch/microblaze to drivers/irqchip. This makes it usable by
-> MIPS. The rest of the series basically enables drivers and adds dt
-> nodes.
->
-> Would make sense for this to go via the MIPS tree.
-> Hence, ACKs from microblaze. irqchip and net welcome.
->
-> Compile tested on microblaze-el only!
-> Based on v4.8-rc2
+Thanks for the heads up, comments below.
 
-Ping. Would be nice to see this in for v4.9.
-
-Thanks
-ZubairLK
-
->
-> Regards,
-> ZubairLK
->
+> The Xilinx AXI Interrupt Controller IP block is used by the MIPS
+> based xilfpga platform.
+> 
+> Move the interrupt controller code out of arch/microblaze so that
+> it can be used by everyone
+> 
+> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+> 
+> ---
 > V1 -> V2
-> Resubmitting without truncating the diff output for file moves
-> Removed accidental local mac address entry
-> Individual logs have more detail
->
-> Zubair Lutfullah Kakakhel (10):
->   microblaze: irqchip: Move intc driver to irqchip
->   irqchip: xilinx: Add support for parent intc
->   MIPS: xilfpga: Use irqchip_init instead of the legacy way
->   MIPS: xilfpga: Use Xilinx AXI Interrupt Controller
->   MIPS: xilfpga: Update DT node and specify uart irq
->   MIPS: Xilfpga: Add DT node for AXI I2C
->   net: ethernet: xilinx: Generate random mac if none found
->   net: ethernet: xilinx: Enable emaclite for MIPS
->   MIPS: xilfpga: Add DT node for AXI emaclite
->   MIPS: xilfpga: Update defconfig
->
->  arch/microblaze/Kconfig                       |   1 +
->  arch/microblaze/kernel/Makefile               |   2 +-
->  arch/microblaze/kernel/intc.c                 | 196 -----------------------
->  arch/mips/Kconfig                             |   1 +
->  arch/mips/boot/dts/xilfpga/nexys4ddr.dts      |  63 ++++++++
->  arch/mips/configs/xilfpga_defconfig           |  37 ++++-
->  arch/mips/xilfpga/intc.c                      |   7 +-
->  drivers/irqchip/Kconfig                       |   4 +
->  drivers/irqchip/Makefile                      |   1 +
->  drivers/irqchip/irq-axi-intc.c                | 222 ++++++++++++++++++++++++++
->  drivers/net/ethernet/xilinx/Kconfig           |   4 +-
->  drivers/net/ethernet/xilinx/xilinx_emaclite.c |   6 +-
->  12 files changed, 337 insertions(+), 207 deletions(-)
+> 
+> Renamed irq-xilinx to irq-axi-intc
+> Renamed CONFIG_XILINX_INTC to CONFIG_XILINX_AXI_INTC
+> Patch is now without rename flag so as to facilitate review
+> ---
+>  arch/microblaze/Kconfig         |   1 +
+>  arch/microblaze/kernel/Makefile |   2 +-
+>  arch/microblaze/kernel/intc.c   | 196 ----------------------------------------
+>  drivers/irqchip/Kconfig         |   4 +
+>  drivers/irqchip/Makefile        |   1 +
+>  drivers/irqchip/irq-axi-intc.c  | 196 ++++++++++++++++++++++++++++++++++++++++
+>  6 files changed, 203 insertions(+), 197 deletions(-)
 >  delete mode 100644 arch/microblaze/kernel/intc.c
 >  create mode 100644 drivers/irqchip/irq-axi-intc.c
->
+> 
+
+[...]
+
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+> index 7f87289..4429888 100644
+> --- a/drivers/irqchip/Kconfig
+> +++ b/drivers/irqchip/Kconfig
+> @@ -203,6 +203,10 @@ config XTENSA_MX
+>  	bool
+>  	select IRQ_DOMAIN
+>  
+> +config XILINX_AXI_INTC
+> +	bool
+> +	select IRQ_DOMAIN
+> +
+>  config IRQ_CROSSBAR
+>  	bool
+>  	help
+> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+> index 4c203b6..bf21f55 100644
+> --- a/drivers/irqchip/Makefile
+> +++ b/drivers/irqchip/Makefile
+> @@ -51,6 +51,7 @@ obj-$(CONFIG_TB10X_IRQC)		+= irq-tb10x.o
+>  obj-$(CONFIG_TS4800_IRQ)		+= irq-ts4800.o
+>  obj-$(CONFIG_XTENSA)			+= irq-xtensa-pic.o
+>  obj-$(CONFIG_XTENSA_MX)			+= irq-xtensa-mx.o
+> +obj-$(CONFIG_XILINX_AXI_INTC)		+= irq-axi-intc.o
+>  obj-$(CONFIG_IRQ_CROSSBAR)		+= irq-crossbar.o
+>  obj-$(CONFIG_SOC_VF610)			+= irq-vf610-mscm-ir.o
+>  obj-$(CONFIG_BCM6345_L1_IRQ)		+= irq-bcm6345-l1.o
+> diff --git a/drivers/irqchip/irq-axi-intc.c b/drivers/irqchip/irq-axi-intc.c
+> new file mode 100644
+> index 0000000..90bec7d
+> --- /dev/null
+> +++ b/drivers/irqchip/irq-axi-intc.c
+> @@ -0,0 +1,196 @@
+> +/*
+> + * Copyright (C) 2007-2013 Michal Simek <monstr@monstr.eu>
+> + * Copyright (C) 2012-2013 Xilinx, Inc.
+> + * Copyright (C) 2007-2009 PetaLogix
+> + * Copyright (C) 2006 Atmark Techno, Inc.
+> + *
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License. See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + */
+> +
+> +#include <linux/irqdomain.h>
+> +#include <linux/irq.h>
+> +#include <linux/irqchip.h>
+> +#include <linux/of_address.h>
+> +#include <linux/io.h>
+> +#include <linux/bug.h>
+> +
+> +static void __iomem *intc_baseaddr;
+> +
+> +/* No one else should require these constants, so define them locally here. */
+> +#define ISR 0x00			/* Interrupt Status Register */
+> +#define IPR 0x04			/* Interrupt Pending Register */
+> +#define IER 0x08			/* Interrupt Enable Register */
+> +#define IAR 0x0c			/* Interrupt Acknowledge Register */
+> +#define SIE 0x10			/* Set Interrupt Enable bits */
+> +#define CIE 0x14			/* Clear Interrupt Enable bits */
+> +#define IVR 0x18			/* Interrupt Vector Register */
+> +#define MER 0x1c			/* Master Enable Register */
+> +
+> +#define MER_ME (1<<0)
+> +#define MER_HIE (1<<1)
+> +
+> +static unsigned int (*read_fn)(void __iomem *);
+> +static void (*write_fn)(u32, void __iomem *);
+> +
+> +static void intc_write32(u32 val, void __iomem *addr)
+> +{
+> +	iowrite32(val, addr);
+> +}
+> +
+> +static unsigned int intc_read32(void __iomem *addr)
+> +{
+> +	return ioread32(addr);
+> +}
+> +
+> +static void intc_write32_be(u32 val, void __iomem *addr)
+> +{
+> +	iowrite32be(val, addr);
+> +}
+> +
+> +static unsigned int intc_read32_be(void __iomem *addr)
+> +{
+> +	return ioread32be(addr);
+> +}
+> +
+> +static void intc_enable_or_unmask(struct irq_data *d)
+> +{
+> +	unsigned long mask = 1 << d->hwirq;
+> +
+> +	pr_debug("enable_or_unmask: %ld\n", d->hwirq);
+> +
+> +	/* ack level irqs because they can't be acked during
+> +	 * ack function since the handle_level_irq function
+> +	 * acks the irq before calling the interrupt handler
+> +	 */
+> +	if (irqd_is_level_type(d))
+> +		write_fn(mask, intc_baseaddr + IAR);
+> +
+> +	write_fn(mask, intc_baseaddr + SIE);
+> +}
+> +
+> +static void intc_disable_or_mask(struct irq_data *d)
+> +{
+> +	pr_debug("disable: %ld\n", d->hwirq);
+> +	write_fn(1 << d->hwirq, intc_baseaddr + CIE);
+> +}
+> +
+> +static void intc_ack(struct irq_data *d)
+> +{
+> +	pr_debug("ack: %ld\n", d->hwirq);
+> +	write_fn(1 << d->hwirq, intc_baseaddr + IAR);
+> +}
+> +
+> +static void intc_mask_ack(struct irq_data *d)
+> +{
+> +	unsigned long mask = 1 << d->hwirq;
+> +
+> +	pr_debug("disable_and_ack: %ld\n", d->hwirq);
+> +	write_fn(mask, intc_baseaddr + CIE);
+> +	write_fn(mask, intc_baseaddr + IAR);
+> +}
+> +
+> +static struct irq_chip intc_dev = {
+> +	.name = "Xilinx INTC",
+> +	.irq_unmask = intc_enable_or_unmask,
+> +	.irq_mask = intc_disable_or_mask,
+> +	.irq_ack = intc_ack,
+> +	.irq_mask_ack = intc_mask_ack,
+> +};
+> +
+> +static struct irq_domain *root_domain;
+> +
+> +unsigned int get_irq(void)
+
+Does this need to be global? It doesn't seem to be used in this patch...
+
+> +{
+> +	unsigned int hwirq, irq = -1;
+> +
+> +	hwirq = read_fn(intc_baseaddr + IVR);
+> +	if (hwirq != -1U)
+> +		irq = irq_find_mapping(root_domain, hwirq);
+> +
+> +	pr_debug("get_irq: hwirq=%d, irq=%d\n", hwirq, irq);
+> +
+> +	return irq;
+> +}
+> +
+> +static int xintc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+> +{
+> +	u32 intr_mask = (u32)d->host_data;
+> +
+> +	if (intr_mask & (1 << hw)) {
+> +		irq_set_chip_and_handler_name(irq, &intc_dev,
+> +						handle_edge_irq, "edge");
+> +		irq_clear_status_flags(irq, IRQ_LEVEL);
+> +	} else {
+> +		irq_set_chip_and_handler_name(irq, &intc_dev,
+> +						handle_level_irq, "level");
+> +		irq_set_status_flags(irq, IRQ_LEVEL);
+> +	}
+> +	return 0;
+> +}
+> +
+> +static const struct irq_domain_ops xintc_irq_domain_ops = {
+> +	.xlate = irq_domain_xlate_onetwocell,
+> +	.map = xintc_map,
+> +};
+> +
+> +static int __init xilinx_intc_of_init(struct device_node *intc,
+> +					     struct device_node *parent)
+> +{
+> +	u32 nr_irq, intr_mask;
+> +	int ret;
+> +
+> +	intc_baseaddr = of_iomap(intc, 0);
+> +	BUG_ON(!intc_baseaddr);
+> +
+> +	ret = of_property_read_u32(intc, "xlnx,num-intr-inputs", &nr_irq);
+> +	if (ret < 0) {
+> +		pr_err("%s: unable to read xlnx,num-intr-inputs\n", __func__);
+> +		return ret;
+> +	}
+> +
+> +	ret = of_property_read_u32(intc, "xlnx,kind-of-intr", &intr_mask);
+> +	if (ret < 0) {
+> +		pr_err("%s: unable to read xlnx,kind-of-intr\n", __func__);
+> +		return ret;
+> +	}
+> +
+> +	if (intr_mask >> nr_irq)
+> +		pr_warn("%s: mismatch in kind-of-intr param\n", __func__);
+> +
+> +	pr_info("%s: num_irq=%d, edge=0x%x\n",
+> +		intc->full_name, nr_irq, intr_mask);
+> +
+> +	write_fn = intc_write32;
+> +	read_fn = intc_read32;
+> +
+> +	/*
+> +	 * Disable all external interrupts until they are
+> +	 * explicity requested.
+> +	 */
+> +	write_fn(0, intc_baseaddr + IER);
+> +
+> +	/* Acknowledge any pending interrupts just in case. */
+> +	write_fn(0xffffffff, intc_baseaddr + IAR);
+> +
+> +	/* Turn on the Master Enable. */
+> +	write_fn(MER_HIE | MER_ME, intc_baseaddr + MER);
+> +	if (!(read_fn(intc_baseaddr + MER) & (MER_HIE | MER_ME))) {
+> +		write_fn = intc_write32_be;
+> +		read_fn = intc_read32_be;
+> +		write_fn(MER_HIE | MER_ME, intc_baseaddr + MER);
+> +	}
+> +
+> +	/* Yeah, okay, casting the intr_mask to a void* is butt-ugly, but I'm
+> +	 * lazy and Michal can clean it up to something nicer when he tests
+> +	 * and commits this patch.  ~~gcl */
+> +	root_domain = irq_domain_add_linear(intc, nr_irq, &xintc_irq_domain_ops,
+> +							(void *)intr_mask);
+
+Since you're now reworking this driver, how about addressing this
+ugliness? You could store the intr_mask together with intc_baseaddr,
+and the read/write functions in a global structure, and pass a
+pointer to it? That would make the code a bit nicer...
+
+> +
+> +	irq_set_default_host(root_domain);
+> +
+> +	return 0;
+> +}
+> +
+> +IRQCHIP_DECLARE(xilinx_intc, "xlnx,xps-intc-1.00.a", xilinx_intc_of_init);
+
+Is "lnx,xps-intc-1.00.a" the only supported interrupt controller? Or is
+there something slightly more generic than this one?
+
+Thanks,
+
+	M.
+-- 
+Jazz is not dead. It just smells funny.

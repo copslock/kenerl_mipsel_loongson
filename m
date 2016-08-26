@@ -1,23 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 17:46:32 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15084 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 17:46:57 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:43893 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992501AbcHZPnNMRsCI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 17:43:13 +0200
+        with ESMTP id S23992495AbcHZPn2letFI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 17:43:28 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 57430766251CB;
-        Fri, 26 Aug 2016 16:42:53 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 4A45D21DE7A61;
+        Fri, 26 Aug 2016 16:43:08 +0100 (IST)
 Received: from localhost (10.100.200.141) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 26 Aug
- 2016 16:42:56 +0100
+ 2016 16:43:11 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 20/26] MIPS: Adjust MIPS64 CAC_BASE to reflect Config.K0
-Date:   Fri, 26 Aug 2016 16:37:19 +0100
-Message-ID: <20160826153725.11629-21-paul.burton@imgtec.com>
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 21/26] MIPS: Support generating Flattened Image Trees (.itb)
+Date:   Fri, 26 Aug 2016 16:37:20 +0100
+Message-ID: <20160826153725.11629-22-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20160826153725.11629-1-paul.burton@imgtec.com>
 References: <20160826153725.11629-1-paul.burton@imgtec.com>
@@ -28,7 +26,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54804
+X-archive-position: 54805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,83 +43,126 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On MIPS64 we define the default CAC_BASE as one of the xkphys regions of
-the virtual address space. Since the CCA is encoded in bits 61:59 of
-xkphys addresses, fixing CAC_BASE to any particular one prevents us from
-dynamically changing the CCA as we do for MIPS32 where CAC_BASE is
-placed within kseg0. In order to make the kernel more generic, drop the
-current kludge that gives CAC_BASE CCA=3 if CONFIG_DMA_NONCOHERENT is
-selected (disregarding CONFIG_DMA_MAYBE_COHERENT) & CCA=5 (which is not
-standardised by the architecture) otherwise. Instead read Config.K0 and
-generate the appropriate offset into xkphys, presuming that either the
-bootloader or early kernel code will have configured Config.K0
-appropriately. This seems like the best option for a generic
-implementation.
+Add support for generating kernel images in the Flattened Image Tree
+(.itb) format as supported by U-Boot. This format is essentially a
+Flattened Device Tree binary containing images (kernels, DTBs, ramdisks)
+and configurations which link those images together. The big advantages
+of FIT images over the uImage format are:
 
-The ip27 spaces.h is adjusted to set its former value of CAC_BASE, since
-it's the only user of CAC_BASE from assembly (in its smp_slave_setup
-macro). This allows the generic case to focus solely on C code without
-breaking ip27.
+  - We can include FDTs in the kernel image in a way that the bootloader
+    can extract it & manipulate it before providing it to the kernel.
+    Thus we can ship FDTs as part of the kernel giving us the advantages
+    of being able to develop & maintain the DT within the kernel tree,
+    but also have the benefits of the bootloader being able to
+    manipulate the FDT. Example uses for this would be to inject the
+    kernel command line into the chosen node, or to fill in the correct
+    memory size.
+
+  - We can include multiple configurations in a single kernel image.
+    This means that a single FIT image can, given appropriate
+    bootloaders, be booted on different boards with the bootloader
+    selecting an appropriate configuration & providing the correct FDT
+    to the kernel.
+
+  - We can support a multitude of hashes over the data.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/include/asm/addrspace.h           | 3 +--
- arch/mips/include/asm/mach-generic/spaces.h | 8 +++-----
- arch/mips/include/asm/mach-ip27/spaces.h    | 1 +
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ arch/mips/Makefile      |  8 ++++++-
+ arch/mips/boot/Makefile | 57 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
-index c5b04e7..4856adc 100644
---- a/arch/mips/include/asm/addrspace.h
-+++ b/arch/mips/include/asm/addrspace.h
-@@ -126,8 +126,7 @@
- #define PHYS_TO_XKSEG_UNCACHED(p)	PHYS_TO_XKPHYS(K_CALG_UNCACHED, (p))
- #define PHYS_TO_XKSEG_CACHED(p)		PHYS_TO_XKPHYS(K_CALG_COH_SHAREABLE, (p))
- #define XKPHYS_TO_PHYS(p)		((p) & TO_PHYS_MASK)
--#define PHYS_TO_XKPHYS(cm, a)		(_CONST64_(0x8000000000000000) | \
--					 (_CONST64_(cm) << 59) | (a))
-+#define PHYS_TO_XKPHYS(cm, a)		(XKPHYS | (_ACAST64_(cm) << 59) | (a))
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index efd7a9d..d968ec0 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -266,7 +266,8 @@ KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y)
+ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
  
- /*
-  * The ultimate limited of the 64-bit MIPS architecture:  2 bits for selecting
-diff --git a/arch/mips/include/asm/mach-generic/spaces.h b/arch/mips/include/asm/mach-generic/spaces.h
-index afc96ec..952b0fd 100644
---- a/arch/mips/include/asm/mach-generic/spaces.h
-+++ b/arch/mips/include/asm/mach-generic/spaces.h
-@@ -12,6 +12,8 @@
+ bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
+-		  VMLINUX_ENTRY_ADDRESS=$(entry-y)
++		  VMLINUX_ENTRY_ADDRESS=$(entry-y) \
++		  PLATFORM=$(platform-y)
  
- #include <linux/const.h>
+ LDFLAGS			+= -m $(ld-emul)
  
-+#include <asm/mipsregs.h>
+@@ -306,6 +307,11 @@ boot-y			+= uImage.gz
+ boot-y			+= uImage.lzma
+ boot-y			+= uImage.lzo
+ endif
++boot-y			+= vmlinux.itb
++boot-y			+= vmlinux.gz.itb
++boot-y			+= vmlinux.bz2.itb
++boot-y			+= vmlinux.lzma.itb
++boot-y			+= vmlinux.lzo.itb
+ 
+ # compressed boot image targets (arch/mips/boot/compressed/)
+ bootz-y			:= vmlinuz
+diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
+index acb1988..ed65663 100644
+--- a/arch/mips/boot/Makefile
++++ b/arch/mips/boot/Makefile
+@@ -100,3 +100,60 @@ $(obj)/uImage.lzo: $(obj)/vmlinux.bin.lzo FORCE
+ $(obj)/uImage: $(obj)/uImage.$(suffix-y)
+ 	@ln -sf $(notdir $<) $@
+ 	@echo '  Image $@ is ready'
 +
- /*
-  * This gives the physical RAM offset.
-  */
-@@ -52,11 +54,7 @@
- #ifdef CONFIG_64BIT
- 
- #ifndef CAC_BASE
--#ifdef CONFIG_DMA_NONCOHERENT
--#define CAC_BASE		_AC(0x9800000000000000, UL)
--#else
--#define CAC_BASE		_AC(0xa800000000000000, UL)
--#endif
-+#define CAC_BASE	PHYS_TO_XKPHYS(read_c0_config() & CONF_CM_CMASK, 0)
- #endif
- 
- #ifndef IO_BASE
-diff --git a/arch/mips/include/asm/mach-ip27/spaces.h b/arch/mips/include/asm/mach-ip27/spaces.h
-index b18802a..4775a11 100644
---- a/arch/mips/include/asm/mach-ip27/spaces.h
-+++ b/arch/mips/include/asm/mach-ip27/spaces.h
-@@ -19,6 +19,7 @@
- #define IO_BASE			0x9200000000000000
- #define MSPEC_BASE		0x9400000000000000
- #define UNCAC_BASE		0x9600000000000000
-+#define CAC_BASE		0xa800000000000000
- 
- #define TO_MSPEC(x)		(MSPEC_BASE | ((x) & TO_PHYS_MASK))
- #define TO_HSPEC(x)		(HSPEC_BASE | ((x) & TO_PHYS_MASK))
++#
++# Flattened Image Tree (.itb) images
++#
++
++targets += vmlinux.itb
++targets += vmlinux.gz.itb
++targets += vmlinux.bz2.itb
++targets += vmlinux.lzma.itb
++targets += vmlinux.lzo.itb
++
++quiet_cmd_cpp_its_S = ITS     $@
++      cmd_cpp_its_S = $(CPP) $(cpp_flags) -P -C -o $@ $< \
++		        -DKERNEL_NAME="\"Linux $(KERNELRELEASE)\"" \
++			-DVMLINUX_BINARY="\"$(3)\"" \
++			-DVMLINUX_COMPRESSION="\"$(2)\"" \
++			-DVMLINUX_LOAD_ADDRESS=$(VMLINUX_LOAD_ADDRESS) \
++			-DVMLINUX_ENTRY_ADDRESS=$(VMLINUX_ENTRY_ADDRESS)
++
++$(obj)/vmlinux.its: $(srctree)/arch/mips/$(PLATFORM)/vmlinux.its.S FORCE
++	$(call if_changed_dep,cpp_its_S,none,vmlinux.bin)
++
++$(obj)/vmlinux.gz.its: $(srctree)/arch/mips/$(PLATFORM)/vmlinux.its.S FORCE
++	$(call if_changed_dep,cpp_its_S,gzip,vmlinux.bin.gz)
++
++$(obj)/vmlinux.bz2.its: $(srctree)/arch/mips/$(PLATFORM)/vmlinux.its.S FORCE
++	$(call if_changed_dep,cpp_its_S,bzip2,vmlinux.bin.bz2)
++
++$(obj)/vmlinux.lzma.its: $(srctree)/arch/mips/$(PLATFORM)/vmlinux.its.S FORCE
++	$(call if_changed_dep,cpp_its_S,lzma,vmlinux.bin.lzma)
++
++$(obj)/vmlinux.lzo.its: $(srctree)/arch/mips/$(PLATFORM)/vmlinux.its.S FORCE
++	$(call if_changed_dep,cpp_its_S,lzo,vmlinux.bin.lzo)
++
++quiet_cmd_itb-image = ITB     $@
++      cmd_itb-image = \
++		env PATH="$(objtree)/scripts/dtc:$(PATH)" \
++		$(CONFIG_SHELL) $(MKIMAGE) \
++		-D "-I dts -O dtb -p 500 \
++			--include $(objtree)/arch/mips \
++			--warning no-unit_address_vs_reg" \
++		-f $(2) $@
++
++$(obj)/vmlinux.itb: $(obj)/vmlinux.its $(obj)/vmlinux.bin FORCE
++	$(call if_changed,itb-image,$<)
++
++$(obj)/vmlinux.gz.itb: $(obj)/vmlinux.gz.its $(obj)/vmlinux.bin.gz FORCE
++	$(call if_changed,itb-image,$<)
++
++$(obj)/vmlinux.bz2.itb: $(obj)/vmlinux.bz2.its $(obj)/vmlinux.bin.bz2 FORCE
++	$(call if_changed,itb-image,$<)
++
++$(obj)/vmlinux.lzma.itb: $(obj)/vmlinux.lzma.its $(obj)/vmlinux.bin.lzma FORCE
++	$(call if_changed,itb-image,$<)
++
++$(obj)/vmlinux.lzo.itb: $(obj)/vmlinux.lzo.its $(obj)/vmlinux.bin.lzo FORCE
++	$(call if_changed,itb-image,$<)
 -- 
 2.9.3

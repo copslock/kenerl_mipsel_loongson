@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 16:21:23 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:49426 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 16:21:48 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:33344 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992492AbcHZOUQVxCKn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 16:20:16 +0200
+        with ESMTP id S23992471AbcHZOUbCz92n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 16:20:31 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id D6EBF851D1367;
-        Fri, 26 Aug 2016 15:19:55 +0100 (IST)
+        by Forcepoint Email with ESMTPS id B5E3340D05063;
+        Fri, 26 Aug 2016 15:20:10 +0100 (IST)
 Received: from localhost (10.100.200.141) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 26 Aug
- 2016 15:19:58 +0100
+ 2016 15:20:13 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v2 06/19] MIPS: SEAD3: Probe EHCI controller using DT
-Date:   Fri, 26 Aug 2016 15:17:38 +0100
-Message-ID: <20160826141751.13121-7-paul.burton@imgtec.com>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>
+Subject: [PATCH v2 07/19] usb: host: ehci-sead3: Remove SEAD-3 EHCI code
+Date:   Fri, 26 Aug 2016 15:17:39 +0100
+Message-ID: <20160826141751.13121-8-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20160826141751.13121-1-paul.burton@imgtec.com>
 References: <20160826141751.13121-1-paul.burton@imgtec.com>
@@ -27,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54769
+X-archive-position: 54770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,198 +45,228 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Probe the SEAD3 EHCI controller using the generic-ehci driver & device
-tree rather than platform code, in order to reduce the amount of the
-latter.
-
-Now that no devices probed from platform code require interrupts, remove
-the retrieval of the IRQ domain & sead3int.h.
+The SEAD-3 board is now probing its EHCI controller using the generic
+EHCI driver & its generic-ehci device tree binding. Remove the unused
+SEAD-3 specific EHCI code.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 
 ---
 
 Changes in v2:
-- Use generic-ehci, dropping SEAD-3 specific driver code
+- New patch, removing SEAD-3 EHCI code instead of extending it
 
- arch/mips/boot/dts/mti/sead3.dts             |  9 +++++
- arch/mips/include/asm/mips-boards/sead3int.h | 21 ----------
- arch/mips/mti-sead3/sead3-dtshim.c           | 15 ++++++-
- arch/mips/mti-sead3/sead3-platform.c         | 59 ----------------------------
- 4 files changed, 23 insertions(+), 81 deletions(-)
- delete mode 100644 arch/mips/include/asm/mips-boards/sead3int.h
+ drivers/usb/host/ehci-hcd.c   |   5 --
+ drivers/usb/host/ehci-sead3.c | 185 ------------------------------------------
+ 2 files changed, 190 deletions(-)
+ delete mode 100644 drivers/usb/host/ehci-sead3.c
 
-diff --git a/arch/mips/boot/dts/mti/sead3.dts b/arch/mips/boot/dts/mti/sead3.dts
-index 29ed194..49f57c2 100644
---- a/arch/mips/boot/dts/mti/sead3.dts
-+++ b/arch/mips/boot/dts/mti/sead3.dts
-@@ -60,6 +60,15 @@
- 		};
- 	};
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 1e5f529..0630648 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1308,11 +1308,6 @@ MODULE_LICENSE ("GPL");
+ #define        PLATFORM_DRIVER         ehci_mv_driver
+ #endif
  
-+	ehci@1b200000 {
-+		compatible = "generic-ehci";
-+		reg = <0x1b200000 0x1000>;
-+
-+		interrupts = <0>; /* GIC 0 or CPU 6 */
-+
-+		has-transaction-translator;
-+	};
-+
- 	/* UART connected to FTDI & miniUSB socket */
- 	uart0: uart@1f000900 {
- 		compatible = "ns16550a";
-diff --git a/arch/mips/include/asm/mips-boards/sead3int.h b/arch/mips/include/asm/mips-boards/sead3int.h
+-#ifdef CONFIG_MIPS_SEAD3
+-#include "ehci-sead3.c"
+-#define	PLATFORM_DRIVER		ehci_hcd_sead3_driver
+-#endif
+-
+ static int __init ehci_hcd_init(void)
+ {
+ 	int retval = 0;
+diff --git a/drivers/usb/host/ehci-sead3.c b/drivers/usb/host/ehci-sead3.c
 deleted file mode 100644
-index 7fdb9d4..0000000
---- a/arch/mips/include/asm/mips-boards/sead3int.h
+index 3d86cc2..0000000
+--- a/drivers/usb/host/ehci-sead3.c
 +++ /dev/null
-@@ -1,21 +0,0 @@
+@@ -1,185 +0,0 @@
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
+- * MIPS CI13320A EHCI Host Controller driver
+- * Based on "ehci-au1xxx.c" by K.Boge <karsten.boge@amd.com>
+- *
+- * Copyright (C) 2012 MIPS Technologies, Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms of the GNU General Public License as published by the
+- * Free Software Foundation; either version 2 of the License, or (at your
+- * option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful, but
+- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 - * for more details.
 - *
-- * Copyright (C) 2000,2012 MIPS Technologies, Inc.  All rights reserved.
-- *	Douglas Leung <douglas@mips.com>
-- *	Steven J. Hill <sjhill@mips.com>
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software Foundation,
+- * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 - */
--#ifndef _MIPS_SEAD3INT_H
--#define _MIPS_SEAD3INT_H
 -
--#include <linux/irqchip/mips-gic.h>
+-#include <linux/err.h>
+-#include <linux/platform_device.h>
 -
--/* CPU interrupt offsets */
--#define CPU_INT_EHCI		2
+-static int ehci_sead3_setup(struct usb_hcd *hcd)
+-{
+-	int ret;
+-	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
 -
--/* GIC interrupt offsets */
--#define GIC_INT_EHCI		GIC_SHARED_TO_HWIRQ(5)
+-	ehci->caps = hcd->regs + 0x100;
 -
--#endif /* !(_MIPS_SEAD3INT_H) */
-diff --git a/arch/mips/mti-sead3/sead3-dtshim.c b/arch/mips/mti-sead3/sead3-dtshim.c
-index 279d8d4..6e32ceb 100644
---- a/arch/mips/mti-sead3/sead3-dtshim.c
-+++ b/arch/mips/mti-sead3/sead3-dtshim.c
-@@ -24,9 +24,10 @@ static unsigned char fdt_buf[16 << 10] __initdata;
- 
- static int remove_gic(void *fdt)
- {
-+	const unsigned int cpu_ehci_int = 2;
- 	const unsigned int cpu_uart_int = 4;
- 	const unsigned int cpu_eth_int = 6;
--	int gic_off, cpu_off, uart_off, eth_off, err;
-+	int gic_off, cpu_off, uart_off, eth_off, ehci_off, err;
- 	uint32_t cfg, cpu_phandle;
- 
- 	/* leave the GIC node intact if a GIC is present */
-@@ -95,6 +96,18 @@ static int remove_gic(void *fdt)
- 		return err;
- 	}
- 
-+	ehci_off = fdt_node_offset_by_compatible(fdt, -1, "mti,sead3-ehci");
-+	if (ehci_off < 0) {
-+		pr_err("unable to find EHCI DT node: %d\n", ehci_off);
-+		return ehci_off;
-+	}
-+
-+	err = fdt_setprop_u32(fdt, ehci_off, "interrupts", cpu_ehci_int);
-+	if (err) {
-+		pr_err("unable to set EHCI interrupts property: %d\n", err);
-+		return err;
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/arch/mips/mti-sead3/sead3-platform.c b/arch/mips/mti-sead3/sead3-platform.c
-index 9f9e914..21047b5 100644
---- a/arch/mips/mti-sead3/sead3-platform.c
-+++ b/arch/mips/mti-sead3/sead3-platform.c
-@@ -7,16 +7,10 @@
-  */
- #include <linux/dma-mapping.h>
- #include <linux/init.h>
--#include <linux/irq.h>
--#include <linux/irqchip/mips-gic.h>
--#include <linux/irqdomain.h>
- #include <linux/leds.h>
- #include <linux/mtd/physmap.h>
--#include <linux/of.h>
- #include <linux/platform_device.h>
- 
--#include <asm/mips-boards/sead3int.h>
+-#ifdef __BIG_ENDIAN
+-	ehci->big_endian_mmio = 1;
+-	ehci->big_endian_desc = 1;
+-#endif
 -
- static struct mtd_partition sead3_mtd_partitions[] = {
- 	{
- 		.name =		"User FS",
-@@ -118,68 +112,15 @@ static struct platform_device sead3_led_device = {
-         .id     = -1,
- };
- 
--static struct resource ehci_resources[] = {
--	{
--		.start			= 0x1b200000,
--		.end			= 0x1b200fff,
--		.flags			= IORESOURCE_MEM
--	}, {
--		.flags			= IORESOURCE_IRQ
+-	ret = ehci_setup(hcd);
+-	if (ret)
+-		return ret;
+-
+-	ehci->need_io_watchdog = 0;
+-
+-	/* Set burst length to 16 words. */
+-	ehci_writel(ehci, 0x1010, &ehci->regs->reserved1[1]);
+-
+-	return ret;
+-}
+-
+-const struct hc_driver ehci_sead3_hc_driver = {
+-	.description		= hcd_name,
+-	.product_desc		= "SEAD-3 EHCI",
+-	.hcd_priv_size		= sizeof(struct ehci_hcd),
+-
+-	/*
+-	 * generic hardware linkage
+-	 */
+-	.irq			= ehci_irq,
+-	.flags			= HCD_MEMORY | HCD_USB2 | HCD_BH,
+-
+-	/*
+-	 * basic lifecycle operations
+-	 *
+-	 */
+-	.reset			= ehci_sead3_setup,
+-	.start			= ehci_run,
+-	.stop			= ehci_stop,
+-	.shutdown		= ehci_shutdown,
+-
+-	/*
+-	 * managing i/o requests and associated device resources
+-	 */
+-	.urb_enqueue		= ehci_urb_enqueue,
+-	.urb_dequeue		= ehci_urb_dequeue,
+-	.endpoint_disable	= ehci_endpoint_disable,
+-	.endpoint_reset		= ehci_endpoint_reset,
+-
+-	/*
+-	 * scheduling support
+-	 */
+-	.get_frame_number	= ehci_get_frame,
+-
+-	/*
+-	 * root hub support
+-	 */
+-	.hub_status_data	= ehci_hub_status_data,
+-	.hub_control		= ehci_hub_control,
+-	.bus_suspend		= ehci_bus_suspend,
+-	.bus_resume		= ehci_bus_resume,
+-	.relinquish_port	= ehci_relinquish_port,
+-	.port_handed_over	= ehci_port_handed_over,
+-
+-	.clear_tt_buffer_complete	= ehci_clear_tt_buffer_complete,
+-};
+-
+-static int ehci_hcd_sead3_drv_probe(struct platform_device *pdev)
+-{
+-	struct usb_hcd *hcd;
+-	struct resource *res;
+-	int ret;
+-
+-	if (usb_disabled())
+-		return -ENODEV;
+-
+-	if (pdev->resource[1].flags != IORESOURCE_IRQ) {
+-		pr_debug("resource[1] is not IORESOURCE_IRQ");
+-		return -ENOMEM;
+-	}
+-	hcd = usb_create_hcd(&ehci_sead3_hc_driver, &pdev->dev, "SEAD-3");
+-	if (!hcd)
+-		return -ENOMEM;
+-
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	hcd->regs = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(hcd->regs)) {
+-		ret = PTR_ERR(hcd->regs);
+-		goto err1;
+-	}
+-	hcd->rsrc_start = res->start;
+-	hcd->rsrc_len = resource_size(res);
+-
+-	/* Root hub has integrated TT. */
+-	hcd->has_tt = 1;
+-
+-	ret = usb_add_hcd(hcd, pdev->resource[1].start,
+-			  IRQF_SHARED);
+-	if (ret == 0) {
+-		platform_set_drvdata(pdev, hcd);
+-		device_wakeup_enable(hcd->self.controller);
+-		return ret;
+-	}
+-
+-err1:
+-	usb_put_hcd(hcd);
+-	return ret;
+-}
+-
+-static int ehci_hcd_sead3_drv_remove(struct platform_device *pdev)
+-{
+-	struct usb_hcd *hcd = platform_get_drvdata(pdev);
+-
+-	usb_remove_hcd(hcd);
+-	usb_put_hcd(hcd);
+-
+-	return 0;
+-}
+-
+-#ifdef CONFIG_PM
+-static int ehci_hcd_sead3_drv_suspend(struct device *dev)
+-{
+-	struct usb_hcd *hcd = dev_get_drvdata(dev);
+-	bool do_wakeup = device_may_wakeup(dev);
+-
+-	return ehci_suspend(hcd, do_wakeup);
+-}
+-
+-static int ehci_hcd_sead3_drv_resume(struct device *dev)
+-{
+-	struct usb_hcd *hcd = dev_get_drvdata(dev);
+-
+-	ehci_resume(hcd, false);
+-	return 0;
+-}
+-
+-static const struct dev_pm_ops sead3_ehci_pmops = {
+-	.suspend	= ehci_hcd_sead3_drv_suspend,
+-	.resume		= ehci_hcd_sead3_drv_resume,
+-};
+-
+-#define SEAD3_EHCI_PMOPS (&sead3_ehci_pmops)
+-
+-#else
+-#define SEAD3_EHCI_PMOPS NULL
+-#endif
+-
+-static struct platform_driver ehci_hcd_sead3_driver = {
+-	.probe		= ehci_hcd_sead3_drv_probe,
+-	.remove		= ehci_hcd_sead3_drv_remove,
+-	.shutdown	= usb_hcd_platform_shutdown,
+-	.driver = {
+-		.name	= "sead3-ehci",
+-		.pm	= SEAD3_EHCI_PMOPS,
 -	}
 -};
 -
--static u64 sead3_usbdev_dma_mask = DMA_BIT_MASK(32);
--
--static struct platform_device ehci_device = {
--	.name		= "sead3-ehci",
--	.id		= 0,
--	.dev		= {
--		.dma_mask		= &sead3_usbdev_dma_mask,
--		.coherent_dma_mask	= DMA_BIT_MASK(32)
--	},
--	.num_resources	= ARRAY_SIZE(ehci_resources),
--	.resource	= ehci_resources
--};
--
- static struct platform_device *sead3_platform_devices[] __initdata = {
- 	&sead3_flash,
- 	&pled_device,
- 	&fled_device,
- 	&sead3_led_device,
--	&ehci_device,
- };
- 
- static int __init sead3_platforms_device_init(void)
- {
--	const char *intc_compat;
--	struct device_node *node;
--	struct irq_domain *irqd;
--
--	if (gic_present)
--		intc_compat = "mti,gic";
--	else
--		intc_compat = "mti,cpu-interrupt-controller";
--
--	node = of_find_compatible_node(NULL, NULL, intc_compat);
--	if (!node) {
--		pr_err("unable to find interrupt controller DT node\n");
--		return -ENODEV;
--	}
--
--	irqd = irq_find_host(node);
--	if (!irqd) {
--		pr_err("unable to find interrupt controller IRQ domain\n");
--		return -ENODEV;
--	}
--
--	if (gic_present) {
--		ehci_resources[1].start =
--			irq_create_mapping(irqd, GIC_INT_EHCI);
--	} else {
--		ehci_resources[1].start =
--			irq_create_mapping(irqd, CPU_INT_EHCI);
--	}
--
- 	return platform_add_devices(sead3_platform_devices,
- 				    ARRAY_SIZE(sead3_platform_devices));
- }
+-MODULE_ALIAS("platform:sead3-ehci");
 -- 
 2.9.3

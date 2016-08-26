@@ -1,24 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 17:39:06 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:58589 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2016 17:39:37 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47528 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992483AbcHZPimO1FGI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 17:38:42 +0200
+        with ESMTP id S23992489AbcHZPi4vfkpI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2016 17:38:56 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 36F1197597CA3;
-        Fri, 26 Aug 2016 16:38:22 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 431A2C4BFA743;
+        Fri, 26 Aug 2016 16:38:37 +0100 (IST)
 Received: from localhost (10.100.200.141) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 26 Aug
- 2016 16:38:25 +0100
+ 2016 16:38:40 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         <linux-kernel@vger.kernel.org>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Subject: [PATCH 02/26] MIPS: PCI: Make pcibios_set_cache_line_size an initcall
-Date:   Fri, 26 Aug 2016 16:37:01 +0100
-Message-ID: <20160826153725.11629-3-paul.burton@imgtec.com>
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Will Deacon <will.deacon@arm.com>
+Subject: [PATCH 03/26] MIPS: PCI: Inline pcibios_assign_all_busses
+Date:   Fri, 26 Aug 2016 16:37:02 +0100
+Message-ID: <20160826153725.11629-4-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20160826153725.11629-1-paul.burton@imgtec.com>
 References: <20160826153725.11629-1-paul.burton@imgtec.com>
@@ -29,7 +30,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54786
+X-archive-position: 54787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,46 +47,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In preparation for allowing configurations in which pcibios_init is not
-included, make pcibios_set_cache_line_size an initcall. arch_initcall is
-used such that it runs before the pcibios_init subsys_initcall for
-platforms that continue to use it.
+The MIPS implementation of pcibios_assign_all_busses trivially returns
+1. Implement it as a static function in asm/pci.h such that the compiler
+can inline it & optimise out never-taken paths.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/pci/pci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/pci.h | 6 ++++--
+ arch/mips/pci/pci.c         | 5 -----
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
+diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+index 0564692..acc651e 100644
+--- a/arch/mips/include/asm/pci.h
++++ b/arch/mips/include/asm/pci.h
+@@ -66,8 +66,10 @@ extern int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
+ /* Can be used to override the logic in pci_scan_bus for skipping
+    already-configured bus numbers - to be used for buggy BIOSes
+    or architectures with incomplete PCI setup by the loader */
+-
+-extern unsigned int pcibios_assign_all_busses(void);
++static inline unsigned int pcibios_assign_all_busses(void)
++{
++	return 1;
++}
+ 
+ extern unsigned long PCIBIOS_MIN_IO;
+ extern unsigned long PCIBIOS_MIN_MEM;
 diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 5207c04..30320a4 100644
+index 30320a4..8cc6ea4 100644
 --- a/arch/mips/pci/pci.c
 +++ b/arch/mips/pci/pci.c
-@@ -220,7 +220,7 @@ out:
- 	       "Skipping PCI bus scan due to resource conflict\n");
+@@ -297,11 +297,6 @@ static int pcibios_enable_resources(struct pci_dev *dev, int mask)
+ 	return 0;
  }
  
--static void __init pcibios_set_cache_line_size(void)
-+static int __init pcibios_set_cache_line_size(void)
- {
- 	struct cpuinfo_mips *c = &current_cpu_data;
- 	unsigned int lsize;
-@@ -238,14 +238,14 @@ static void __init pcibios_set_cache_line_size(void)
- 	pci_dfl_cache_line_size = lsize >> 2;
- 
- 	pr_debug("PCI: pci_cache_line_size set to %d bytes\n", lsize);
-+	return 0;
- }
-+arch_initcall(pcibios_set_cache_line_size);
- 
- static int __init pcibios_init(void)
- {
- 	struct pci_controller *hose;
- 
--	pcibios_set_cache_line_size();
+-unsigned int pcibios_assign_all_busses(void)
+-{
+-	return 1;
+-}
 -
- 	/* Scan all of the recorded PCI controllers.  */
- 	list_for_each_entry(hose, &controllers, list)
- 		pcibios_scanbus(hose);
+ int pcibios_enable_device(struct pci_dev *dev, int mask)
+ {
+ 	int err;
 -- 
 2.9.3

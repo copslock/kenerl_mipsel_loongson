@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Aug 2016 20:17:12 +0200 (CEST)
-Received: from mail-pa0-f68.google.com ([209.85.220.68]:33608 "EHLO
-        mail-pa0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992617AbcH0SQIi7h-j (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Aug 2016 20:16:08 +0200
-Received: by mail-pa0-f68.google.com with SMTP id vy10so6415900pac.0;
-        Sat, 27 Aug 2016 11:16:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Aug 2016 20:17:35 +0200 (CEST)
+Received: from mail-pf0-f194.google.com ([209.85.192.194]:36810 "EHLO
+        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992622AbcH0SQN3gn6j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Aug 2016 20:16:13 +0200
+Received: by mail-pf0-f194.google.com with SMTP id y134so6683447pfg.3;
+        Sat, 27 Aug 2016 11:16:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=r1hD3FvyIQVc4CZQGRZ4h3hyyYYXWmltOMW6n/FuZ3c=;
-        b=ZNuzROYJGBSA2QaQc75OCHW2/1IIwiaLVZL9opb8D5Xy5hFL+/1HqnPzhsMdjOaR4w
-         QHffYlnQMZ8KasOouFUiwX6lyfj2ka1s6hYj7iXSqXPO1apPjpTewjx78dZSBr4GOEkN
-         I9WRw6IU/wtcoHDI3HpR6KKuph5zRAq7tWjfQ+sfCEP0p2UQXrVNP0pbZ4eLINDCKTGI
-         q8JWEza1HzXzeHZZJc3MPt7wKOqYeLFehcv5SHATYtDPRJquaRPro1zadFKG+cs8CCe8
-         2ki0LluOW4DyBnRnHqb99/Z5WDa4cD5z3oaKU6C5XIw2yHoYUGPEPYY44S58ILTRUUce
-         htaA==
+        bh=+RGOoo4L09/rV0OIJdqhQ7x4FeTSnCk01y7fPzqxju8=;
+        b=tpA3v1nHB1Mkgoge2gc2FkkPpGDWulCUA7GVjN7AGmLAZGj7t3m5SdC468p69nTfZ1
+         3utorya/XBCRbUhJ41r4eEpqnUut/3nIYmF1CpG6dN3l73QAyd8V3oVn/usVlexqKFvO
+         z2TMEoipihxQ+gcJ5OBPsTroYdLpzZkmdM38H77+CV+Th2NQ+ZBdQ0scNXVkpCPKaIKM
+         KA26sBGKNRA6cgRK/rj8u1klLyq47dgMg0opb6m3/NqpC5ew2q+8GzKI+ubQEf51KSHl
+         uM3LwOHCb78B25MK8jEqOwsZ7WfyG0Sw4hsb5/5WR1ftdAdsh9hlmeGFQw9qdivugfoh
+         nKPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=r1hD3FvyIQVc4CZQGRZ4h3hyyYYXWmltOMW6n/FuZ3c=;
-        b=Zlsg30ado/a5xO5k0U23YYQRdg8+aI8lYUowahx5t2k6CPGQbV6d/iJEY3QNEbXqZn
-         +XjSLHQB3EOqzVDsaepW4IQ2Fe4kppZ+mIWBbgNmaxzbORUavXjtsUdjBQNsc3kDyUkv
-         k7oSo1lhWesIZD76JUvROSwkOqNDvUXNGJ/RHTUYgBPrj0xWHy90Ds6iEZfZJlr8SQt5
-         4UZh9onPSx5nM7It8pBLL8gp8+WWzm+T+ky618WiRu06zPt6X6oppyHSbsKVowuhvJnP
-         MP3kHnaoqWeUTIWBC6pROm5LdbxYJUpbEh06SgdfMxEpAXL4FtCukQy6lY/MWtnkHAmP
-         TYpw==
-X-Gm-Message-State: AE9vXwMIn4klWLeHqZlpKj4ra0o6Zes2vB+2FTdRnXUvG0v/EFRPKP0y7NRRbWPL1jPXJA==
-X-Received: by 10.66.193.7 with SMTP id hk7mr17074224pac.78.1472321762871;
-        Sat, 27 Aug 2016 11:16:02 -0700 (PDT)
+        bh=+RGOoo4L09/rV0OIJdqhQ7x4FeTSnCk01y7fPzqxju8=;
+        b=PJrMu8ENLi2WZsDcsIdwootSUXEZ8pc7D2v4qiIWJ+HFagHf+x9jqIxz3b8wE8/BxL
+         Cgq2+7KHFl7W21JN/uKnOmaLGRREy52IwTJtmA4u/EX0RstunpFrXCtRuOkeM5uI0IxF
+         fJJssdPMPmmHFk8u74hTSz5HC6+akx61oNTYWaHa/ex6Ox1bKWPLEZyXUTqBrEeWq7RI
+         JIdh3t5RYhLxsRP946sMfy8m5dkcK4CE4kJfmGehkzZuFWScpSHEfPsmMHAjkQUBxBoP
+         +RGELahqDGwS3VbVocvCkrGqzoMNRvBF5iJ2oopxXFls7qjgWYT0CMbzSTRyvBWP8LEU
+         JsCg==
+X-Gm-Message-State: AE9vXwNaEttEYrGevDP/7IfVBGLViEnVOImPQ2fnfv4Gn/wxYldXmhlpPywI8vaNNlBLPQ==
+X-Received: by 10.98.196.138 with SMTP id h10mr17245523pfk.60.1472321767751;
+        Sat, 27 Aug 2016 11:16:07 -0700 (PDT)
 Received: from localhost.localdomain ([1.22.68.54])
-        by smtp.gmail.com with ESMTPSA id y6sm37747529pav.1.2016.08.27.11.15.58
+        by smtp.gmail.com with ESMTPSA id y6sm37747529pav.1.2016.08.27.11.16.03
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 27 Aug 2016 11:16:02 -0700 (PDT)
+        Sat, 27 Aug 2016 11:16:07 -0700 (PDT)
 From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
 To:     mpm@selenic.com, herbert@gondor.apana.org.au, robh+dt@kernel.org,
         mark.rutland@arm.com, ralf@linux-mips.org,
@@ -42,9 +42,9 @@ To:     mpm@selenic.com, herbert@gondor.apana.org.au, robh+dt@kernel.org,
         linus.walleij@linaro.org, linux-crypto@vger.kernel.org,
         devicetree@vger.kernel.org, linux-mips@linux-mips.org
 Cc:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Subject: [PATCH v2 3/4] hw_random: jz4780-rng: Add RNG node to jz4780.dtsi
-Date:   Sat, 27 Aug 2016 23:44:56 +0530
-Message-Id: <1472321697-3094-4-git-send-email-prasannatsmkumar@gmail.com>
+Subject: [PATCH v2 4/4] hw_random: jz4780-rng: Enable hardware RNG in CI20 defconfig
+Date:   Sat, 27 Aug 2016 23:44:57 +0530
+Message-Id: <1472321697-3094-5-git-send-email-prasannatsmkumar@gmail.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1472321697-3094-1-git-send-email-prasannatsmkumar@gmail.com>
 References: <1472321697-3094-1-git-send-email-prasannatsmkumar@gmail.com>
@@ -52,7 +52,7 @@ Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54819
+X-archive-position: 54820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,37 +69,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch adds RNG node to jz4780.dtsi.
+This patch enables the usage of RNG in MIPS Creator CI20 default config.
 
 Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
 ---
- arch/mips/boot/dts/ingenic/jz4780.dtsi | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/configs/ci20_defconfig | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-index b868b42..f11d139 100644
---- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-@@ -36,7 +36,7 @@
- 
- 	cgu: jz4780-cgu@10000000 {
- 		compatible = "ingenic,jz4780-cgu";
--		reg = <0x10000000 0x100>;
-+		reg = <0x10000000 0xD8>;
- 
- 		clocks = <&ext>, <&rtc>;
- 		clock-names = "ext", "rtc";
-@@ -44,6 +44,11 @@
- 		#clock-cells = <1>;
- 	};
- 
-+	rng: jz4780-rng@100000D8 {
-+		compatible = "ingenic,jz4780-rng";
-+		reg = <0x100000D8 0x8>;
-+	};
-+
- 	uart0: serial@10030000 {
- 		compatible = "ingenic,jz4780-uart";
- 		reg = <0x10030000 0x100>;
+diff --git a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
+index bf164fe..51a47a4 100644
+--- a/arch/mips/configs/ci20_defconfig
++++ b/arch/mips/configs/ci20_defconfig
+@@ -88,7 +88,9 @@ CONFIG_SERIAL_8250_NR_UARTS=5
+ CONFIG_SERIAL_8250_RUNTIME_UARTS=5
+ CONFIG_SERIAL_8250_INGENIC=y
+ CONFIG_SERIAL_OF_PLATFORM=y
+-# CONFIG_HW_RANDOM is not set
++CONFIG_HW_RANDOM=y
++# CONFIG_HW_RANDOM_TIMERIOMEM is not set
++CONFIG_HW_RANDOM_JZ4780=y
+ CONFIG_I2C=y
+ CONFIG_I2C_JZ4780=y
+ CONFIG_GPIO_SYSFS=y
 -- 
 2.5.0

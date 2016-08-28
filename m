@@ -1,68 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Aug 2016 12:33:48 +0200 (CEST)
-Received: from mail-lf0-f47.google.com ([209.85.215.47]:33607 "EHLO
-        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992093AbcH1Kdk0JyiV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Aug 2016 12:33:40 +0200
-Received: by mail-lf0-f47.google.com with SMTP id b199so83269416lfe.0
-        for <linux-mips@linux-mips.org>; Sun, 28 Aug 2016 03:33:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-transfer-encoding;
-        bh=/MZ81EvVq9D6NZpbHt+j5a76pYm4h/VjcNqWKE21T30=;
-        b=YBKNBiQEP8vbE1nqDcv2mcf429YdRhsl7/AvFu6OZTrK3qmqX226EHovT4oT3CyjkE
-         1efuUbwJj5/ewvaPySPsyijf6pLNCZZRF6LldzXd6JSIkXjH9ulH26VkzQk2U6djf7er
-         jkIs/crv0664QUJxoRaxxofCgNx3VWPS6TU7ZZ0jdcyJ3IYV16ZWLMnCNdp3/WyNzLiu
-         DjFAxrWpR3tQpPc6GU1BLoDyKonI57S5qseF61jb3bPXhONycyLswwGk/bXiH8MhR2a/
-         PCwxwsdDWXbTDu6xPS5Pm/+Yc6X55q6Xc/hMDYWS1+6lAkqqagGi2mo+tDbWiqhPIRIC
-         7RYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=/MZ81EvVq9D6NZpbHt+j5a76pYm4h/VjcNqWKE21T30=;
-        b=KsAz6NYqxShS4NF6WTFqKFqnKPaF73kHnoKQCavpsMThswVG6vYilzmnwATI6evDkF
-         b8ks55XIBSYhAi8uJ1iUVm6/hkT+QTj+i04cDOTOtHngF0p/r495rJU+N0nR16hRO2NR
-         eQf8dM7iwOZC6au+iJPJhvluedQ4wMroLnJO3ic8wnPBGpfGhgjc31qh9UG2O87IVpxr
-         5Yw4ZDHXnfH+/kjHPaU/GLrFB+HlHvHAOxyDJ80H+UlVrWJtFv3us+ekI6T0eaPhyizo
-         taT14Njpjez44BWkCVW/SuIPOwlqRTdU2wVtTcccbWcE6Wo6D3WlyHQn9AIh5X5fYoeL
-         REvw==
-X-Gm-Message-State: AE9vXwMDe8gQIj6s5C0utAcwjzSNoEferPFt234hFh6WaOXG4Ek02BTGDJVJaIpVnF0p3g==
-X-Received: by 10.25.19.169 with SMTP id 41mr3188446lft.24.1472380414698;
-        Sun, 28 Aug 2016 03:33:34 -0700 (PDT)
-Received: from [192.168.4.126] ([31.173.81.39])
-        by smtp.gmail.com with ESMTPSA id 98sm5467955lja.37.2016.08.28.03.33.32
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 28 Aug 2016 03:33:33 -0700 (PDT)
-Subject: Re: [PATCH v2 3/4] hw_random: jz4780-rng: Add RNG node to jz4780.dtsi
-To:     PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-        mpm@selenic.com, herbert@gondor.apana.org.au, robh+dt@kernel.org,
-        mark.rutland@arm.com, ralf@linux-mips.org,
-        gregkh@linuxfoundation.org, boris.brezillon@free-electrons.com,
-        harvey.hunt@imgtec.com, prarit@redhat.com, f.fainelli@gmail.com,
-        joshua.henderson@microchip.com, narmstrong@baylibre.com,
-        linus.walleij@linaro.org, linux-crypto@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org
-References: <1472321697-3094-1-git-send-email-prasannatsmkumar@gmail.com>
- <1472321697-3094-4-git-send-email-prasannatsmkumar@gmail.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <7a3874e2-069e-7bdf-2289-3364ec2c8cc4@cogentembedded.com>
-Date:   Sun, 28 Aug 2016 13:33:32 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Aug 2016 12:34:22 +0200 (CEST)
+Received: from basicbox7.server-home.net ([195.137.212.29]:58457 "EHLO
+        basicbox7.server-home.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992067AbcH1KeNBDzZV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Aug 2016 12:34:13 +0200
+Received: from ankhmorpork.fritz.box (ip4d15e046.dynamic.kabel-deutschland.de [77.21.224.70])
+        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by basicbox7.server-home.net (Postfix) with ESMTPSA id 303545EE1C7;
+        Sun, 28 Aug 2016 12:34:07 +0200 (CEST)
+Subject: Re: [BISECTED REGRESSION] v4.8-rc: DT/OCTEON driver probing broken
+To:     Aaro Koskinen <aaro.koskinen@nokia.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <david.daney@cavium.com>
+References: <20160816150056.GD18731@ak-desktop.emea.nsn-net.net>
+Cc:     linux-kernel@vger.kernel.org
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+Message-ID: <0336fae0-1717-2f90-c221-6ef69f7024ee@leemhuis.info>
+Date:   Sun, 28 Aug 2016 12:34:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <1472321697-3094-4-git-send-email-prasannatsmkumar@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20160816150056.GD18731@ak-desktop.emea.nsn-net.net>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Return-Path: <regressions@leemhuis.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54821
+X-archive-position: 54822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: regressions@leemhuis.info
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,46 +46,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+Lo! Kefeng, below report made it to the list of regression for 4.8, but
+afaics nothing happened after the initial report. Is there maybe some
+reason why it shouldn't be on the list of regressions at all? Or was the
+problem discussed elsewhere? Or is it even fixed already? I noticed
+https://git.kernel.org/torvalds/c/fc520f8b4f (of/platform: disable the
+of_platform_default_populate_init() for all the ppc board), but that
+change is PPC specific.
 
-On 8/27/2016 9:14 PM, PrasannaKumar Muralidharan wrote:
+Ciao, Thorsten
 
-> This patch adds RNG node to jz4780.dtsi.
->
-> Signed-off-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-> ---
->  arch/mips/boot/dts/ingenic/jz4780.dtsi | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-> index b868b42..f11d139 100644
-> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
-> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-> @@ -36,7 +36,7 @@
->
->  	cgu: jz4780-cgu@10000000 {
->  		compatible = "ingenic,jz4780-cgu";
-> -		reg = <0x10000000 0x100>;
-> +		reg = <0x10000000 0xD8>;
-
-    I think lower case is preferred here.
-
->
->  		clocks = <&ext>, <&rtc>;
->  		clock-names = "ext", "rtc";
-> @@ -44,6 +44,11 @@
->  		#clock-cells = <1>;
->  	};
->
-> +	rng: jz4780-rng@100000D8 {
-
-    All in lower case, please.
-
-> +		compatible = "ingenic,jz4780-rng";
-> +		reg = <0x100000D8 0x8>;
-
-    Likewise.
-
-[...]
-
-MBR, Sergei
+On 16.08.2016 17:00, Aaro Koskinen wrote:
+> Hi,
+> 
+> Commit 44a7185c2ae6 ("of/platform: Add common method to populate default
+> bus") added new arch_initcall of_platform_default_populate_init() that
+> will be called before device_initcall octeon_publish_devices(). Now the
+> of_platform_bus_probe() called in octeon_publish_devices() is apparently
+> doing nothing:
+> 
+> [   52.331353] calling  octeon_publish_devices+0x0/0x14 @ 1
+> [   52.331358] OF: of_platform_bus_probe()
+> [   52.331362] OF:  starting at: /
+> [   52.331378] OF: of_platform_bus_create() - skipping /soc@0, already populated
+> [   52.331394] initcall octeon_publish_devices+0x0/0x14 returned 0 after 29 usecs
+> 
+> This also means that USB etc. won't get probed.
+> 
+> Any ideas what would be the proper fix for this? Changing
+> octeon_publish_devices() to arch_initcall seems to work but that may be
+> a bit hackish... Also, there might be also other MIPS boards affected
+> (arch/mips/netlogic/xlp/dt.c, arch/mips/mti-malta/malta-dt.c).
+> 
+> A.
+> 
+> http://news.gmane.org/find-root.php?message_id=20160816150056.GD18731%40ak-desktop.emea.nsn-net.net 
+> http://mid.gmane.org/20160816150056.GD18731%40ak-desktop.emea.nsn-net.net
+> 

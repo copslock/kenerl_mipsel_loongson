@@ -1,40 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Aug 2016 08:05:53 +0200 (CEST)
-Received: from resqmta-ch2-09v.sys.comcast.net ([69.252.207.41]:57637 "EHLO
-        resqmta-ch2-09v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992022AbcH2GFqdSMWL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Aug 2016 08:05:46 +0200
-Received: from resomta-ch2-06v.sys.comcast.net ([69.252.207.102])
-        by resqmta-ch2-09v.sys.comcast.net with SMTP
-        id eFhUbMZPn1XXBeFhUbUkNr; Mon, 29 Aug 2016 06:05:40 +0000
-Received: from [192.168.1.13] ([76.106.83.43])
-        by resomta-ch2-06v.sys.comcast.net with SMTP
-        id eFhSbqgLrvVwmeFhSbse6B; Mon, 29 Aug 2016 06:05:39 +0000
-Subject: Re: SGI Octane && Bridge DMA bug
-To:     linux-mips@linux-mips.org
-References: <034a1d88-bdf2-8724-6e04-5ae0ba3aef62@gentoo.org>
- <21a02eff-9bd0-c3b9-9845-21b302b8d5ca@gentoo.org>
- <CAGVrzcZ-UsWr_KTLmCHPjv0Qz=GmCp-g3Cqtq8Q3LfeXRFVHLQ@mail.gmail.com>
- <b5270219-8af1-1922-68be-1a216693dc27@gentoo.org>
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <d53b578f-7080-9e59-ba36-649e26d103ab@gentoo.org>
-Date:   Mon, 29 Aug 2016 02:05:34 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Aug 2016 10:55:58 +0200 (CEST)
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:38857 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992022AbcH2IzuCH7Di (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Aug 2016 10:55:50 +0200
+Received: from eucpsbgm1.samsung.com (unknown [203.254.199.244])
+ by mailout2.w1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTP id <0OCN00JWCY4UAK70@mailout2.w1.samsung.com>; Mon,
+ 29 Aug 2016 09:55:42 +0100 (BST)
+X-AuditID: cbfec7f4-f79cb6d000001359-b0-57c3f88ec4bc
+Received: from eusync1.samsung.com ( [203.254.199.211])
+        by eucpsbgm1.samsung.com (EUCPMTA) with SMTP id 68.F1.04953.E88F3C75; Mon,
+ 29 Aug 2016 09:55:42 +0100 (BST)
+Received: from [106.120.53.23] by eusync1.samsung.com
+ (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
+ with ESMTPA id <0OCN001LSY4T2650@eusync1.samsung.com>; Mon,
+ 29 Aug 2016 09:55:42 +0100 (BST)
+From:   Jacek Anaszewski <j.anaszewski@samsung.com>
+Subject: Re: [PATCH v2 10/19] leds: Remove SEAD3 driver
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <20160826141751.13121-1-paul.burton@imgtec.com>
+ <20160826141751.13121-11-paul.burton@imgtec.com>
+Cc:     Richard Purdie <rpurdie@rpsys.net>, linux-leds@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Message-id: <5f2e6c11-d4a7-dfa0-e94a-cf2a1cd66541@samsung.com>
+Date:   Mon, 29 Aug 2016 10:55:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.2.0
-MIME-Version: 1.0
-In-Reply-To: <b5270219-8af1-1922-68be-1a216693dc27@gentoo.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfB/6nmf9C57+ukmUolUzYprq9/x2FKh+d/mRjoQzrpixTdCO+SqjA678a3f9Uf22Xzj27LQQ53tawPRoKv82NABLoQYeARwnTsYcac51VB+wnK/FA41z
- ZwjQecwem7bzaSlWwK71Q/SMccworRaJs4uI6Oxfs6ASOk7jda6l88NI
-Return-Path: <kumba@gentoo.org>
+MIME-version: 1.0
+In-reply-to: <20160826141751.13121-11-paul.burton@imgtec.com>
+Content-type: text/plain; charset=windows-1252; format=flowed
+Content-transfer-encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrPLMWRmVeSWpSXmKPExsVy+t/xy7p9Pw6HG1x/J25xedccNoutb9Yx
+        WkyYOond4v6+jewWl/aoWOze9ZTVgc2jZ+cZRo+jK9cyeeyZ/4PV4/MmuQCWKC6blNSczLLU
+        In27BK6M50ctCy4pVUxe/YOtgfG/dBcjJ4eEgIlEz5ubLBC2mMSFe+vZuhi5OIQEljJKLN58
+        ghkkISTwjFFi0/tSEJtNwFDi54vXTCC2sIC5xKtLi8FsEYFMiZ+v3zBB1OdJvP76gRHEZhZI
+        knj89QiYzStgJ3Hn9Wk2EJtFQFViw/S/YPNFBSIkbq36CFUjKPFj8j2wgzgFbCUaXn1mhphj
+        K7Hg/ToWCFteYvOat8wTGAVmIWmZhaRsFpKyBYzMqxhFU0uTC4qT0nMN9YoTc4tL89L1kvNz
+        NzFCgvnLDsbFx6wOMQpwMCrx8EY8PxQuxJpYVlyZe4hRgoNZSYT36PfD4UK8KYmVValF+fFF
+        pTmpxYcYpTlYlMR55+56HyIkkJ5YkpqdmlqQWgSTZeLglGpgXH1q67qsFt9ZIbLXvOJr/mzP
+        c/nj++Dv/auM+ZtYTJf4VV2bfuOK0qPZy/ek7nqy/9f15W0r7qmLTM9fscDOtTz8zPZ9Fi5d
+        4h8SNzZ8YTiQ+Vwqp19OJ37is9wTGR5/fk+/lKvo55eU3Siqv97zo9ysNd9kkg8Vfp7A5tY8
+        /d6Jmizx3JNX+pVYijMSDbWYi4oTAeJSfuZiAgAA
+Return-Path: <j.anaszewski@samsung.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54829
+X-archive-position: 54830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: j.anaszewski@samsung.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,122 +64,148 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 08/28/2016 23:33, Joshua Kinard wrote:
-> On 08/28/2016 14:06, Florian Fainelli wrote:
->> 2016-08-28 9:58 GMT-07:00 Joshua Kinard <kumba@gentoo.org>:
->>> On 08/28/2016 08:01, Joshua Kinard wrote:
+Hi Paul,
 
-[snip]
+On 08/26/2016 04:17 PM, Paul Burton wrote:
+> SEAD3 is now using the generic syscon & regmap based register-bit-led
+> driver, so remove the unused custom SEAD3 LED driver.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
+>
+> Changes in v2: None
+>
+>  drivers/leds/Kconfig      | 10 ------
+>  drivers/leds/Makefile     |  1 -
+>  drivers/leds/leds-sead3.c | 78 -----------------------------------------------
+>  3 files changed, 89 deletions(-)
+>  delete mode 100644 drivers/leds/leds-sead3.c
+>
+> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+> index 9dcc9b1..025de7e 100644
+> --- a/drivers/leds/Kconfig
+> +++ b/drivers/leds/Kconfig
+> @@ -574,16 +574,6 @@ config LEDS_KTD2692
+>
+>  	  Say Y to enable this driver.
+>
+> -config LEDS_SEAD3
+> -	tristate "LED support for the MIPS SEAD 3 board"
+> -	depends on LEDS_CLASS && MIPS_SEAD3
+> -	help
+> -	  Say Y here to include support for the FLED and PLED LEDs on SEAD3 eval
+> -	  boards.
+> -
+> -	  This driver can also be built as a module. If so the module
+> -	  will be called leds-sead3.
+> -
+>  config LEDS_IS31FL32XX
+>  	tristate "LED support for ISSI IS31FL32XX I2C LED controller family"
+>  	depends on LEDS_CLASS && I2C && OF
+> diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
+> index 0684c86..da594cf 100644
+> --- a/drivers/leds/Makefile
+> +++ b/drivers/leds/Makefile
+> @@ -66,7 +66,6 @@ obj-$(CONFIG_LEDS_VERSATILE)		+= leds-versatile.o
+>  obj-$(CONFIG_LEDS_MENF21BMC)		+= leds-menf21bmc.o
+>  obj-$(CONFIG_LEDS_KTD2692)		+= leds-ktd2692.o
+>  obj-$(CONFIG_LEDS_POWERNV)		+= leds-powernv.o
+> -obj-$(CONFIG_LEDS_SEAD3)		+= leds-sead3.o
+>  obj-$(CONFIG_LEDS_IS31FL32XX)		+= leds-is31fl32xx.o
+>
+>  # LED SPI Drivers
+> diff --git a/drivers/leds/leds-sead3.c b/drivers/leds/leds-sead3.c
+> deleted file mode 100644
+> index eb97a32..0000000
+> --- a/drivers/leds/leds-sead3.c
+> +++ /dev/null
+> @@ -1,78 +0,0 @@
+> -/*
+> - * This file is subject to the terms and conditions of the GNU General Public
+> - * License.  See the file "COPYING" in the main directory of this archive
+> - * for more details.
+> - *
+> - * Copyright (C) 2012 MIPS Technologies, Inc.  All rights reserved.
+> - * Copyright (C) 2015 Imagination Technologies, Inc.
+> - */
+> -#include <linux/kernel.h>
+> -#include <linux/module.h>
+> -#include <linux/init.h>
+> -#include <linux/platform_device.h>
+> -#include <linux/leds.h>
+> -#include <linux/err.h>
+> -#include <linux/io.h>
+> -
+> -#include <asm/mips-boards/sead3-addr.h>
+> -
+> -static void sead3_pled_set(struct led_classdev *led_cdev,
+> -		enum led_brightness value)
+> -{
+> -	writel(value, (void __iomem *)SEAD3_CPLD_P_LED);
+> -}
+> -
+> -static void sead3_fled_set(struct led_classdev *led_cdev,
+> -		enum led_brightness value)
+> -{
+> -	writel(value, (void __iomem *)SEAD3_CPLD_F_LED);
+> -}
+> -
+> -static struct led_classdev sead3_pled = {
+> -	.name		= "sead3::pled",
+> -	.brightness_set = sead3_pled_set,
+> -	.flags		= LED_CORE_SUSPENDRESUME,
+> -};
+> -
+> -static struct led_classdev sead3_fled = {
+> -	.name		= "sead3::fled",
+> -	.brightness_set = sead3_fled_set,
+> -	.flags		= LED_CORE_SUSPENDRESUME,
+> -};
+> -
+> -static int sead3_led_probe(struct platform_device *pdev)
+> -{
+> -	int ret;
+> -
+> -	ret = led_classdev_register(&pdev->dev, &sead3_pled);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	ret = led_classdev_register(&pdev->dev, &sead3_fled);
+> -	if (ret < 0)
+> -		led_classdev_unregister(&sead3_pled);
+> -
+> -	return ret;
+> -}
+> -
+> -static int sead3_led_remove(struct platform_device *pdev)
+> -{
+> -	led_classdev_unregister(&sead3_pled);
+> -	led_classdev_unregister(&sead3_fled);
+> -
+> -	return 0;
+> -}
+> -
+> -static struct platform_driver sead3_led_driver = {
+> -	.probe		= sead3_led_probe,
+> -	.remove		= sead3_led_remove,
+> -	.driver		= {
+> -		.name		= "sead3-led",
+> -	},
+> -};
+> -
+> -module_platform_driver(sead3_led_driver);
+> -
+> -MODULE_AUTHOR("Kristian Kielhofner <kris@krisk.org>");
+> -MODULE_DESCRIPTION("SEAD3 LED driver");
+> -MODULE_LICENSE("GPL");
+>
 
->>
->> Regarding your first question, for all plat_dma_* operations you
->> should be able to inspect the struct device properties and provide the
->> correct implementation based on whether this device is a child of the
->> Bridge IOMMU or not (e.g: looking at dev->parent.name for instance?)
-> 
-> Stan's original code used to check the struct device *dev arg for !NULL to
-> determine if it needed to be cast to struct pci_device for Bridge ops, else,
-> regard it as the Impact board.  But when Impact was converted to a platform
-> device, that check would no longer work (dev was always set then), so I
-> switched it to checking that dev->bus->name was "pci".  I thought that code got
-> executed a lot, though, and strcmp() is expensive.  Turns out, the plat_dma_*
-> functions are not called very often, so a strcmp() shouldn't be too much of an
-> issue.
-> 
-> 
->> You are right that this only works for addresses that have already
->> been allocated, if you need to make sure that the allocation falls
->> under a particular range as well, which is not taken care of by
->> dma-default.c, either setting an appropriate dma_mask, or providing a
->> custom implementation for dma_ma_ops may be required here.
-> 
-> OpenBSD's using some "uvm" subsystem that appears to be quite adaptable once
-> you set a few parameters, which is what their xbridge driver is doing, but it's
-> completely unlike what Linux has.  I can't tell yet if I have to guarantee that
-> Bridge DMA allocations have to stay within 0x20000000 and 0x9fffffff (possibly
-> subtracting/adding 0x20000000 as needed to deal w/ the physical address
-> offset), or if I have to just translate already-allocated addresses to/from
-> that range.  If the latter, I should be able to do that w/ dma-coherence.h.
-> Else, it'll probably be a custom dma_ops setup.  At least I have Loongson and
-> Octeon to look at for examples.
-> 
-> Luckily, SGI appears to have imported large chunks of the original IRIX PCI
-> code into Linux when they were bringing up the Altix platform.  So I've been
-> referring back to 2.4.18 and 2.5.70 to see how the "pcibr.c" and "xtalk.c"
-> drivers implemented a lot of stuff in IA64.
-> 
-> Can't find anything specific to the Octane in the Linux code, though.  So I
-> can't tell if they had any workarounds in place or not for the Bridge ASIC on
-> this platform.  If they did, they probably removed them.
-> 
-
-Hrm, so it looks like qla1280 sets a 64-bit DMA mask if BITS_PER_LONG == 64.
-I've tried using ZONE_DMA or ZONE_DMA32 (but not both together), with no real
-luck so far.  During boot, qla1280 seems to have no issues doing DMA for the
-disk probing and other actions.  MD and XFS are the drivers that are triggering
-the random Oopses when they try to assemble an array or mount the root partition.
-
-Since ZONE_DMA is for the old 24-bit DMA space (16MB), I think for Octane, I
-want ZONE_DMA32, but override MAX_DMA32_PFN to be (1UL << (31 - PAGE_SHIFT)).
-Still need to figure out how to handle translating between phys and DMA
-addresses to handle the 512MB physical address offset imposed by the system's
-design.
-
-I think some of the confusion also arises in that Octane provides three
-separate groups of "windows" into Crosstalk space via HEART, its system controller:
-
-  - sixteen 16MB "small" windows, 0x000010000000 - 0x00001f000000
-  - sixteen 2GB "medium" windows, 0x000800000000 - 0x000f80000000
-  - fifteen 64GB "large" windows, 0x001000000000 - 0x00f000000000
-
-The existing Octane code appears to be picking a "default" window setup by the
-firmware, which seems to be the large 64GB windows.  I think some kind of
-translation layer would be needed to talk to the HEART to dynamically shift
-between the three windows.  Although, not sure why you'd need the smaller
-windows at all (64GB is big enough for everyone, right?).
-
-Then you've got the Crossbow (XBOW) that the HEART connects to as widget #8,
-and that's how it accesses the other widgets, such as Bridge (widget #f) or
-Impact video (widget #c).
-
-Bridge grants you three methods of accessing PCI devices:
-
-  - 64-bit direct-mapped DMA addressing (not affected by 31-bit window bug)
-  - 32-bit direct-mapped DMA addressing (affected by 31-bit window bug)
-  - 32-bit translated addresses, via a type of built-in IOMMU ("ATE")
-
-The ATE is reportedly rather buggy and OpenBSD seems to avoid using it (only
-has 128 "internal" translation entries and cannot be updated while DMA is in
-progress).  They go for the 32-bit direct-mapped DMA instead.
-
-On Linux, I've got the Bridge driver using direct-mapped 64-bit DMA for Octane
-and Onyx2, and that seems to work OK for Onyx2, regardless of installed memory
-(8GB).  Octane is where the problems begin if installed memory is >2GB.  So I
-suspect this 31-bit bug is Octane-exclusive.
-
-It would probably help if I understood PCI addressing better.  Still confused
-over what a BAR is for, and why qla1280 needs three of them (#0, #1, and #6).
-Additionally, if qla1280 can do 64-bit DMA using Bridge's 64-bit direct-mapped
-mode, and thus dodge the 31-bit bug, I'm puzzled why it's always MD or XFS that
-trigger the Oops.
-
-Do software drivers like MD/XFS do their own DMA, or do they use the DMA
-provided by the disk driver?
-
-Goal is to at least get the base I/O devices to work right w/ >2GB RAM,
-preferably as 64-bit PCI devices.  I can then go back and look at handling
-additional Bridge widgets (such as the PCI shoebox or XIO shoehorn adapters).
-PCI devices plugged into the shoebox/horn will probably be pure 32-bit devices,
-so I'll have to defeat this 31-bit bug somehow.
+Currently the patch doesn't apply cleanly on the linux-leds.git,
+for-next branch, due to the fresh changes in the surrounding code in
+the drivers/leds/Makefile and Kconfig. Does this patch depend on
+the previous patches in this series, or I can take it now and apply
+to the LEDs git?
 
 -- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Best regards,
+Jacek Anaszewski

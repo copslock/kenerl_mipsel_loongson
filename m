@@ -1,53 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2016 00:39:49 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:50054 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992247AbcH2WjnCLr8H (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 30 Aug 2016 00:39:43 +0200
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 8F50220219;
-        Mon, 29 Aug 2016 22:39:39 +0000 (UTC)
-Received: from mail-yw0-f178.google.com (mail-yw0-f178.google.com [209.85.161.178])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6975C201BB;
-        Mon, 29 Aug 2016 22:39:36 +0000 (UTC)
-Received: by mail-yw0-f178.google.com with SMTP id z8so1192503ywa.1;
-        Mon, 29 Aug 2016 15:39:36 -0700 (PDT)
-X-Gm-Message-State: AE9vXwMJISnb+IvcyeumLgUWI7pFWjgXZYPJh1msTL+c5rk4Z2fwq2jtk6moUhBm3/2nJlAWwutFNU1eZcbG1Q==
-X-Received: by 10.129.53.197 with SMTP id c188mr412614ywa.70.1472510375680;
- Mon, 29 Aug 2016 15:39:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2016 10:14:59 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:50786 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990451AbcH3IOvovpqe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Aug 2016 10:14:51 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id BCE0FFF2845AB;
+        Tue, 30 Aug 2016 09:14:32 +0100 (IST)
+Received: from [10.80.2.5] (10.80.2.5) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 30 Aug
+ 2016 09:14:34 +0100
+Subject: Re: [PATCH 1/2] tracing/syscalls: allow multiple syscall numbers per
+ syscall
+To:     Andy Lutomirski <luto@amacapital.net>
+References: <1472463007-6469-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <CALCETrW1m9ozck-ugX6AKnL7oNA8rvMTjhFGqtVSvKL9BMXMZA@mail.gmail.com>
+CC:     Linux API <linux-api@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Message-ID: <f40020e1-200c-f113-5174-5fe4d4c000dc@imgtec.com>
+Date:   Tue, 30 Aug 2016 10:14:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Received: by 10.129.162.2 with HTTP; Mon, 29 Aug 2016 15:39:15 -0700 (PDT)
-In-Reply-To: <20160828122239.GA14316@raspberrypi.musicnaut.iki.fi>
-References: <20160816150056.GD18731@ak-desktop.emea.nsn-net.net>
- <0336fae0-1717-2f90-c221-6ef69f7024ee@leemhuis.info> <20160828122239.GA14316@raspberrypi.musicnaut.iki.fi>
-From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 29 Aug 2016 17:39:15 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+mmBH+HVLubj1_rQ0T60zfQj_Dbz41EVe7v_Mj_u2Vug@mail.gmail.com>
-Message-ID: <CAL_Jsq+mmBH+HVLubj1_rQ0T60zfQj_Dbz41EVe7v_Mj_u2Vug@mail.gmail.com>
-Subject: Re: [BISECTED REGRESSION] v4.8-rc: DT/OCTEON driver probing broken
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Michal Simek <monstr@monstr.eu>,
-        Paul Burton <paul.burton@imgtec.com>
-Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Aaro Koskinen <aaro.koskinen@nokia.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+In-Reply-To: <CALCETrW1m9ozck-ugX6AKnL7oNA8rvMTjhFGqtVSvKL9BMXMZA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54836
+X-archive-position: 54837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,40 +50,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Aug 28, 2016 at 7:22 AM, Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-> Hi,
+
+
+On 30.08.2016 01:55, Andy Lutomirski wrote:
+> On Aug 29, 2016 11:30 AM, "Marcin Nowakowski"
+> <marcin.nowakowski@imgtec.com> wrote:
+>>
+>> Syscall metadata makes an assumption that only a single syscall number
+>> corresponds to a given method. This is true for most archs, but
+>> can break tracing otherwise.
+>>
+>> For MIPS platforms, depending on the choice of supported ABIs, up to 3
+>> system call numbers can correspond to the same call - depending on which
+>> ABI the userspace app uses.
 >
-> On Sun, Aug 28, 2016 at 12:34:06PM +0200, Thorsten Leemhuis wrote:
->> Lo! Kefeng, below report made it to the list of regression for 4.8, but
->> afaics nothing happened after the initial report. Is there maybe some
->> reason why it shouldn't be on the list of regressions at all? Or was the
->> problem discussed elsewhere? Or is it even fixed already? I noticed
->> https://git.kernel.org/torvalds/c/fc520f8b4f (of/platform: disable the
->> of_platform_default_populate_init() for all the ppc board), but that
->> change is PPC specific.
+> MIPS isn't special here.  x86 does the same thing.  Why isn't this a
+> problem on x86?
 >
-> There is a fix proposal here:
->
->         https://patchwork.linux-mips.org/patch/14041/
->
-> There is still few other boards remaining that use of_platform_bus_probe()
-> from device_initcall, but who knows, maybe they are not affected.
->
-> arch/microblaze/kernel/platform.c
 
-xlnx,compound is going to fail to probe. I'm adding this to the default.
+Hi Andy,
 
-> arch/mips/mti-malta/malta-dt.c
+My understanding is that MIPS is quite different to what most other 
+architectures do ...
+First of all x86 disables tracing of compat syscalls as that didn't work 
+properly because of wrong mapping of syscall numbers to syscalls:
+http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=f431b634f
 
-This should be fine. It does probe for "isa", but nothing in mainline
-is using that. We can add it to the default when it does.
+Moreover, when trace_syscalls is initialised, the syscall metadata is 
+updated to include the right syscall numbers. That uses 
+arch_syscall_addr method, which has a default implementation in 
+kernel/trace/trace_syscalls.c:
 
-> arch/mips/netlogic/xlp/dt.c
+unsigned long __init __weak arch_syscall_addr(int nr)
+{
+         return (unsigned long)sys_call_table[nr];
+}
 
-Should be okay with default.
+that works for x86 and only uses 'native' syscalls, ie. for x86_64 will 
+not map any of the ia32_sys_call_table entries. So on one hand we have 
+the code that disables tracing for x86_64 compat, on the other we only 
+ensure that the native calls are mapped.
+It is quite different for MIPS where syscall numbers for different ABIs 
+have distinct call numbers, so the following code maps the syscalls
+(for O32 -> 4xxx, N64 -> 5xxx, N32 -> 6xxx):
 
-> arch/x86/platform/olpc/olpc_dt.c
+unsigned long __init arch_syscall_addr(int nr)
+{
+         if (nr >= __NR_N32_Linux && nr <= __NR_N32_Linux + 
+__NR_N32_Linux_syscalls)
+                 return (unsigned long)sysn32_call_table[nr - 
+__NR_N32_Linux];
+         if (nr >= __NR_64_Linux  && nr <= __NR_64_Linux + 
+__NR_64_Linux_syscalls)
+                 return (unsigned long)sys_call_table[nr - __NR_64_Linux];
+         if (nr >= __NR_O32_Linux && nr <= __NR_O32_Linux + 
+__NR_O32_Linux_syscalls)
+                 return (unsigned long)sys32_call_table[nr - 
+__NR_O32_Linux];
+         return (unsigned long) &sys_ni_syscall;
+}
 
-This one needs fixing.
+As a result when init_ftrace_syscalls() loops through all the possible 
+syscall numbers,  it first finds an O32 implementation, then N64 and 
+finally N32. As the current code doesn't expect multiple references to a 
+given syscall number, it always overrides the metadata with the last 
+found - as a result only N32 syscalls are mapped.
+This is generally unexpected and wrong behaviour, and to makes things 
+worse - since when N32 support is enabled, it overwrites N64 entries, it 
+becomes impossible to trace native syscalls.
 
-Rob
+ > Also, you seem to be partially reinventing AUDIT_ARCH here.  Can you
+ > use that and integrate with syscall_get_arch()?
+
+Please correct me if I don't understand what you meant here, but I don't 
+see how these can be integrated ...
+For MIPS syscall_get_arch() properly determines arch type and calling 
+convention, but that information is not enough to determine what call 
+was made and how to map it to syscall metadata from another calling 
+convention.
+
+Marcin

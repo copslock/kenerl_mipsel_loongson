@@ -1,64 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 12:21:33 +0200 (CEST)
-Received: from mail-lf0-f47.google.com ([209.85.215.47]:35658 "EHLO
-        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992036AbcHaKVZxq2rz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 12:21:25 +0200
-Received: by mail-lf0-f47.google.com with SMTP id f93so33278528lfi.2
-        for <linux-mips@linux-mips.org>; Wed, 31 Aug 2016 03:21:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=bGMT3Xp3VYC+2zlcLFQAqkaS8mxp6K6CB342HdGxJGg=;
-        b=tzRHoJZ2tGI99mSM5GzVVuJ+C5wZPQflKBb0FPMnXidnX/mi9Vp9te6CNO74g7Z/Y6
-         YCAuSMtsmnc49VlE0dSdnj6IFZauo22PCXYpUStg8ApThcx4lWdtEaNnJxvVVfwFdLcT
-         mh1H8irPsxAeAEElROLReUnroI1SOSnZKGmoWOziUYWQZJ9miDtu6P9AvoOnCJuAvtrq
-         1ZG/a/vvH/D78QkTS6qNTvdtTz0YwSYLNEwuei/sne9MT8vYkGgZeG2sH0rFtouihU/I
-         ppnc99UXLxT56/JhwX0bCYEZAlmjKtd5AFcvw8suunofVwE1aOjzNmCYscaSvu/7m4a3
-         eDfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=bGMT3Xp3VYC+2zlcLFQAqkaS8mxp6K6CB342HdGxJGg=;
-        b=eO9FCR7K0LcQuX7d3ZdNeES4zUag1PYBMyvnK+qKJhr7KK8r7QtG9B3YEHFW4OebD5
-         cPFdGx1tkMj9fbyxp1tW44tdKUsb6y3v2tRnGeyyrn6HCKPyzvZsW4wlmSw//CeRFRnG
-         WljqE/pv/adgPY5qONfy4bf8ukYXfXC72pDjOzHe2PtNX2M226Oq1y1UEMO2y6Y1/6Q/
-         iEOaV3wQNi6omCeGfxD/gqD8tPAMPoHWnM/YoFvtobXIJoVaqtk2mjP2vuFy9Sw5fhQr
-         bNcLGbxgCRp3WqGXMzDFQZhtZtVKnfNZnHqkI+kn8I0VxaWlnTl7fyqBlxTYjtqs1HiJ
-         Mg4Q==
-X-Gm-Message-State: AE9vXwPTCjX6bnKe26GNxO3Q29sNc5m5X4UpGkkMs/HQ5oYsm8gQcFAX7ItCZ+XKP+tMOw==
-X-Received: by 10.25.215.35 with SMTP id o35mr3138467lfg.40.1472638877527;
-        Wed, 31 Aug 2016 03:21:17 -0700 (PDT)
-Received: from [192.168.4.126] ([31.173.80.179])
-        by smtp.gmail.com with ESMTPSA id f22sm8252328lji.13.2016.08.31.03.21.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Aug 2016 03:21:14 -0700 (PDT)
-Subject: Re: [PATCH v2 12/26] MIPS: CPC: Provide a default
- mips_cpc_default_phys_base
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <20160830172929.16948-1-paul.burton@imgtec.com>
- <20160830172929.16948-13-paul.burton@imgtec.com>
-Cc:     linux-kernel@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <6f7cbf5c-7a74-069b-6205-be0c3cf369fd@cogentembedded.com>
-Date:   Wed, 31 Aug 2016 13:21:13 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 12:33:57 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18816 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991977AbcHaKduamgRD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 12:33:50 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 0A1E02F5948C;
+        Wed, 31 Aug 2016 11:33:32 +0100 (IST)
+Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 31 Aug 2016 11:33:34 +0100
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     <ralf@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Subject: [PATCH] MIPS: Avoid a BUG warning during prctl(PR_SET_FP_MODE, ...)
+Date:   Wed, 31 Aug 2016 12:33:23 +0200
+Message-ID: <1472639603-26533-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <20160830172929.16948-13-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54881
+X-archive-position: 54882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,41 +41,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+cpu_has_fpu macro uses smp_processor_id() and is currently executed
+with preemption enabled, that triggers the warning at runtime.
 
-On 8/30/2016 8:29 PM, Paul Burton wrote:
+It is assumed throughout the kernel that if any CPU has an FPU, then all
+CPUs would have an FPU as well, so it is safe to perform the check with
+preemption enabled - change the code to use raw_ variant of the check to
+avoid the warning.
 
-> Provide a weak default implementation of mips_cpc_default_phys_base
-> which reads the base address of the CPC from the device tree if
-> possible, and failing that returns the existing physical address of the
-> CPC as read from CPC base address GCR. This allows for platforms to make
-> use of the CPC without requiring platform code.
->
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
->
-> Changes in v2: None
->
->  arch/mips/kernel/mips-cpc.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
->
-> diff --git a/arch/mips/kernel/mips-cpc.c b/arch/mips/kernel/mips-cpc.c
-> index 566b8d2..b188787 100644
-> --- a/arch/mips/kernel/mips-cpc.c
-> +++ b/arch/mips/kernel/mips-cpc.c
-[...]
-> @@ -21,6 +23,22 @@ static DEFINE_PER_CPU_ALIGNED(spinlock_t, cpc_core_lock);
->
->  static DEFINE_PER_CPU_ALIGNED(unsigned long, cpc_core_lock_flags);
->
-> +__weak phys_addr_t mips_cpc_default_phys_base(void)
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+---
+ arch/mips/kernel/process.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-    I think it would look better as:
-
-phys_addr_t __weak mips_cpc_default_phys_base(void)
-
-    The other weak function you touch further in the patchset looks this way...
-
-[...]
-
-MBR, Sergei
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 7429ad0..d2d0615 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -605,14 +605,14 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
+ 		return -EOPNOTSUPP;
+ 
+ 	/* Avoid inadvertently triggering emulation */
+-	if ((value & PR_FP_MODE_FR) && cpu_has_fpu &&
+-	    !(current_cpu_data.fpu_id & MIPS_FPIR_F64))
++	if ((value & PR_FP_MODE_FR) && raw_cpu_has_fpu &&
++	    !(raw_current_cpu_data.fpu_id & MIPS_FPIR_F64))
+ 		return -EOPNOTSUPP;
+-	if ((value & PR_FP_MODE_FRE) && cpu_has_fpu && !cpu_has_fre)
++	if ((value & PR_FP_MODE_FRE) && raw_cpu_has_fpu && !cpu_has_fre)
+ 		return -EOPNOTSUPP;
+ 
+ 	/* FR = 0 not supported in MIPS R6 */
+-	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
++	if (!(value & PR_FP_MODE_FR) && raw_cpu_has_fpu && cpu_has_mips_r6)
+ 		return -EOPNOTSUPP;
+ 
+ 	/* Proceed with the mode switch */
+-- 
+2.7.4

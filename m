@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 12:46:26 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:24932 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 12:46:47 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15827 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992110AbcHaKpCobg5D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 12:45:02 +0200
+        with ESMTP id S23992172AbcHaKpDcNr7D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 12:45:03 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 2173ABA47FB93;
-        Wed, 31 Aug 2016 11:44:44 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 3F1F21BCD41E5;
+        Wed, 31 Aug 2016 11:44:45 +0100 (IST)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 31 Aug 2016 11:44:46 +0100
+ 14.3.294.0; Wed, 31 Aug 2016 11:44:47 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
@@ -19,9 +19,9 @@ CC:     <linux-mips@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 03/10] MIPS: pm-cps: Change FSB workaround to CPU blacklist
-Date:   Wed, 31 Aug 2016 11:44:32 +0100
-Message-ID: <1472640279-26593-4-git-send-email-matt.redfearn@imgtec.com>
+Subject: [PATCH 04/10] MIPS: pm-cps: Remove I6400 sync types
+Date:   Wed, 31 Aug 2016 11:44:33 +0100
+Message-ID: <1472640279-26593-5-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1472640279-26593-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1472640279-26593-1-git-send-email-matt.redfearn@imgtec.com>
@@ -32,7 +32,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54886
+X-archive-position: 54887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,39 +49,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The check for whether a CPU required the FSB flush workaround
-previously required every CPU not requiring it to be whitelisted. That
-approach does not scale well as new CPUs are introduced so change the
-default from a WARN and returning an error to just returning 0. Any CPUs
-requiring the workaround can then be added to the blacklist.
+Commit 4e88a8621301 ("MIPS: Add cases for CPU_I6400") added a case for
+I6400 to the selection of lightweight sync types, but these are not
+implemented. Remove the case.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 Reviewed-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/kernel/pm-cps.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ arch/mips/kernel/pm-cps.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index 5b31a9405ebc..2faa227a032e 100644
+index 2faa227a032e..c6b9ad2256f0 100644
 --- a/arch/mips/kernel/pm-cps.c
 +++ b/arch/mips/kernel/pm-cps.c
-@@ -272,14 +272,9 @@ static int __init cps_gen_flush_fsb(u32 **pp, struct uasm_label **pl,
- 		/* On older ones it's unavailable */
- 		return -1;
- 
--	/* CPUs which do not require the workaround */
--	case CPU_P5600:
+@@ -674,7 +674,6 @@ static int __init cps_pm_init(void)
+ 	case CPU_PROAPTIV:
+ 	case CPU_M5150:
+ 	case CPU_P5600:
 -	case CPU_I6400:
--		return 0;
--
- 	default:
--		WARN_ONCE(1, "pm-cps: FSB flush unsupported for this CPU\n");
--		return -1;
-+		/* Assume that the CPU does not need this workaround */
-+		return 0;
- 	}
- 
- 	/*
+ 		stype_intervention = 0x2;
+ 		stype_memory = 0x3;
+ 		stype_ordering = 0x10;
 -- 
 2.7.4

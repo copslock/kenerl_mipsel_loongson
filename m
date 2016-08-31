@@ -1,29 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 12:47:34 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39000 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 12:47:59 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21795 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992221AbcHaKpFVmfCD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 12:45:05 +0200
+        with ESMTP id S23992234AbcHaKpGPSX-D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 12:45:06 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id D0823C8C5AED3;
-        Wed, 31 Aug 2016 11:44:46 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 4F45F567FE31E;
+        Wed, 31 Aug 2016 11:44:47 +0100 (IST)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 31 Aug 2016 11:44:48 +0100
+ 14.3.294.0; Wed, 31 Aug 2016 11:44:49 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
         Adam Buchbinder <adam.buchbinder@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         <linux-kernel@vger.kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         Markos Chandras <markos.chandras@imgtec.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 06/10] MIPS: pm-cps: Use MIPS standard lightweight ordering barrier
-Date:   Wed, 31 Aug 2016 11:44:35 +0100
-Message-ID: <1472640279-26593-7-git-send-email-matt.redfearn@imgtec.com>
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 07/10] MIPS: pm-cps: Add MIPSr6 CPU support
+Date:   Wed, 31 Aug 2016 11:44:36 +0100
+Message-ID: <1472640279-26593-8-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1472640279-26593-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1472640279-26593-1-git-send-email-matt.redfearn@imgtec.com>
@@ -34,7 +32,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54889
+X-archive-position: 54890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,63 +49,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since R2 of the MIPS architecture, SYNC(0x10) has been an optional but
-architecturally defined ordering barrier. If a CPU does not implement it,
-the arch specifies that it must fall back to SYNC(0).
+This patch adds support for CPUs implementing the MIPSr6 ISA to the CPS
+power management code. Three changes are necessary:
 
-Define the barrier type and always use it in the pm-cps code rather than
-falling back to the heavyweight sync(0) such that we can benefit from
-the lighter weight sync.
+1. In MIPSr6, coupled coherence is necessary when CPUS implement multiple
+   Virtual Processors (VPs).
+
+2. MIPSr6 virtual processors are more like real cores and cannot yield
+   to other VPs on the same core, so drop the MT ASE yield instruction.
+
+3. To halt a MIPSr6 VP, the CPC VP_STOP register is used rather than the
+   MT ASE TCHalt CP0 register.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 Reviewed-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/include/asm/barrier.h | 10 ++++++++++
- arch/mips/kernel/pm-cps.c       |  3 +--
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/pm-cps.h |  6 ++++--
+ arch/mips/kernel/pm-cps.c      | 22 ++++++++++++++++++----
+ 2 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/include/asm/barrier.h b/arch/mips/include/asm/barrier.h
-index d296633d890e..90c7a97db7e1 100644
---- a/arch/mips/include/asm/barrier.h
-+++ b/arch/mips/include/asm/barrier.h
-@@ -10,6 +10,16 @@
+diff --git a/arch/mips/include/asm/pm-cps.h b/arch/mips/include/asm/pm-cps.h
+index 625eda53d571..89d58d80b77b 100644
+--- a/arch/mips/include/asm/pm-cps.h
++++ b/arch/mips/include/asm/pm-cps.h
+@@ -13,10 +13,12 @@
  
- #include <asm/addrspace.h>
- 
-+/*
-+ * Lightweight sync types defined by the MIPS architecture
-+ * These values are used with the sync instruction to perform memory barriers
-+ * other than the standard heavyweight sync(0) completion barrier.
-+ */
-+
-+/* Lightweight ordering barrier */
-+#define STYPE_SYNC_MB 0x10
-+
-+
- #ifdef CONFIG_CPU_HAS_SYNC
- #define __sync()				\
- 	__asm__ __volatile__(			\
+ /*
+  * The CM & CPC can only handle coherence & power control on a per-core basis,
+- * thus in an MT system the VPEs within each core are coupled and can only
++ * thus in an MT system the VP(E)s within each core are coupled and can only
+  * enter or exit states requiring CM or CPC assistance in unison.
+  */
+-#ifdef CONFIG_MIPS_MT
++#if defined(CONFIG_CPU_MIPSR6)
++# define coupled_coherence cpu_has_vp
++#elif defined(CONFIG_MIPS_MT)
+ # define coupled_coherence cpu_has_mipsmt
+ #else
+ # define coupled_coherence 0
 diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index f8c8edd0a451..572dc1d016a0 100644
+index 572dc1d016a0..11c951f4f0b9 100644
 --- a/arch/mips/kernel/pm-cps.c
 +++ b/arch/mips/kernel/pm-cps.c
-@@ -76,7 +76,7 @@ static struct uasm_reloc relocs[32] __initdata;
- /* CPU dependant sync types */
- static unsigned stype_intervention;
- static unsigned stype_memory;
--static unsigned stype_ordering;
-+static unsigned stype_ordering = STYPE_SYNC_MB;
+@@ -134,7 +134,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 		return -EINVAL;
  
- enum mips_reg {
- 	zero, at, v0, v1, a0, a1, a2, a3,
-@@ -677,7 +677,6 @@ static int __init cps_pm_init(void)
- 	case CPU_P6600:
- 		stype_intervention = 0x2;
- 		stype_memory = 0x3;
--		stype_ordering = 0x10;
- 		break;
- 
- 	default:
+ 	/* Calculate which coupled CPUs (VPEs) are online */
+-#ifdef CONFIG_MIPS_MT
++#if defined(CONFIG_MIPS_MT) || defined(CONFIG_CPU_MIPSR6)
+ 	if (cpu_online(cpu)) {
+ 		cpumask_and(coupled_mask, cpu_online_mask,
+ 			    &cpu_sibling_map[cpu]);
+@@ -436,7 +436,8 @@ static void * __init cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
+ 			uasm_i_lw(&p, t0, 0, r_nc_count);
+ 			uasm_il_bltz(&p, &r, t0, lbl_secondary_cont);
+ 			uasm_i_ehb(&p);
+-			uasm_i_yield(&p, zero, t1);
++			if (cpu_has_mipsmt)
++				uasm_i_yield(&p, zero, t1);
+ 			uasm_il_b(&p, &r, lbl_poll_cont);
+ 			uasm_i_nop(&p);
+ 		} else {
+@@ -444,8 +445,21 @@ static void * __init cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
+ 			 * The core will lose power & this VPE will not continue
+ 			 * so it can simply halt here.
+ 			 */
+-			uasm_i_addiu(&p, t0, zero, TCHALT_H);
+-			uasm_i_mtc0(&p, t0, 2, 4);
++			if (cpu_has_mipsmt) {
++				/* Halt the VPE via C0 tchalt register */
++				uasm_i_addiu(&p, t0, zero, TCHALT_H);
++				uasm_i_mtc0(&p, t0, 2, 4);
++			} else if (cpu_has_vp) {
++				/* Halt the VP via the CPC VP_STOP register */
++				unsigned int vpe_id;
++
++				vpe_id = cpu_vpe_id(&cpu_data[cpu]);
++				uasm_i_addiu(&p, t0, zero, 1 << vpe_id);
++				UASM_i_LA(&p, t1, (long)addr_cpc_cl_vp_stop());
++				uasm_i_sw(&p, t0, 0, t1);
++			} else {
++				BUG();
++			}
+ 			uasm_build_label(&l, p, lbl_secondary_hang);
+ 			uasm_il_b(&p, &r, lbl_secondary_hang);
+ 			uasm_i_nop(&p);
 -- 
 2.7.4

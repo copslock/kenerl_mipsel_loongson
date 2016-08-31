@@ -1,39 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 12:49:14 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3864 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992257AbcHaKpIZmI3D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 12:45:08 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 0A1E84A90F8BA;
-        Wed, 31 Aug 2016 11:44:50 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 31 Aug 2016 11:44:52 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 10/10] cpuidle: cpuidle-cps: Enable use with MIPSr6 CPUs.
-Date:   Wed, 31 Aug 2016 11:44:39 +0100
-Message-ID: <1472640279-26593-11-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1472640279-26593-1-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 13:49:01 +0200 (CEST)
+Received: from bombadil.infradead.org ([198.137.202.9]:35722 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991977AbcHaLsyu8ThG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 13:48:54 +0200
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=twins.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.85_2 #1 (Red Hat Linux))
+        id 1bf40f-0006bH-PM; Wed, 31 Aug 2016 11:48:49 +0000
+Received: by twins.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 8E2EB12573B0D; Wed, 31 Aug 2016 13:48:47 +0200 (CEST)
+Date:   Wed, 31 Aug 2016 13:48:47 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH 06/10] MIPS: pm-cps: Use MIPS standard lightweight
+ ordering barrier
+Message-ID: <20160831114847.GB10153@twins.programming.kicks-ass.net>
 References: <1472640279-26593-1-git-send-email-matt.redfearn@imgtec.com>
+ <1472640279-26593-7-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1472640279-26593-7-git-send-email-matt.redfearn@imgtec.com>
+User-Agent: Mutt/1.5.23.1 (2014-03-12)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54893
+X-archive-position: 54894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,42 +50,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch enables the MIPS CPS driver for MIPSr6 CPUs.
+On Wed, Aug 31, 2016 at 11:44:35AM +0100, Matt Redfearn wrote:
+> Since R2 of the MIPS architecture, SYNC(0x10) has been an optional but
+> architecturally defined ordering barrier. If a CPU does not implement it,
+> the arch specifies that it must fall back to SYNC(0).
+> 
+> Define the barrier type and always use it in the pm-cps code rather than
+> falling back to the heavyweight sync(0) such that we can benefit from
+> the lighter weight sync.
+> 
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Changelog does not explain what 0x10 is, nor why its sufficient for this
+case.
 
----
+Changelog also fails to explain why you do this.
 
- drivers/cpuidle/Kconfig.mips  | 2 +-
- drivers/cpuidle/cpuidle-cps.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/cpuidle/Kconfig.mips b/drivers/cpuidle/Kconfig.mips
-index 4102be01d06a..512ee37b374b 100644
---- a/drivers/cpuidle/Kconfig.mips
-+++ b/drivers/cpuidle/Kconfig.mips
-@@ -5,7 +5,7 @@ config MIPS_CPS_CPUIDLE
- 	bool "CPU Idle driver for MIPS CPS platforms"
- 	depends on CPU_IDLE && MIPS_CPS
- 	depends on SYS_SUPPORTS_MIPS_CPS
--	select ARCH_NEEDS_CPU_IDLE_COUPLED if MIPS_MT
-+	select ARCH_NEEDS_CPU_IDLE_COUPLED if MIPS_MT || CPU_MIPSR6
- 	select GENERIC_CLOCKEVENTS_BROADCAST if SMP
- 	select MIPS_CPS_PM
- 	default y
-diff --git a/drivers/cpuidle/cpuidle-cps.c b/drivers/cpuidle/cpuidle-cps.c
-index 1adb6980b707..926ba9871c62 100644
---- a/drivers/cpuidle/cpuidle-cps.c
-+++ b/drivers/cpuidle/cpuidle-cps.c
-@@ -163,7 +163,7 @@ static int __init cps_cpuidle_init(void)
- 		core = cpu_data[cpu].core;
- 		device = &per_cpu(cpuidle_dev, cpu);
- 		device->cpu = cpu;
--#ifdef CONFIG_MIPS_MT
-+#ifdef CONFIG_ARCH_NEEDS_CPU_IDLE_COUPLED
- 		cpumask_copy(&device->coupled_cpus, &cpu_sibling_map[cpu]);
- #endif
- 
--- 
-2.7.4
+How do you expect anybody to review this?

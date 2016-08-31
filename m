@@ -1,59 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 18:19:08 +0200 (CEST)
-Received: from mail-oi0-f68.google.com ([209.85.218.68]:33226 "EHLO
-        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992058AbcHaQTAxxxpE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 18:19:00 +0200
-Received: by mail-oi0-f68.google.com with SMTP id s207so5047170oie.0;
-        Wed, 31 Aug 2016 09:19:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=U430GLrinhmYPiZp5JXJDV/P2x4PGn4PCM5vWRlQTv4=;
-        b=Egr5Bori0Lpb8rqx3u0kGZON2CaC4XTT1p4F2bH27LOkmUZo9/ma33ocEBBGFVM5ma
-         cbKMud3pXDSzSMKVSCny5atrwzVFCyB1w0Vud3EsPRvtysqIl3WrWcK1H3AEvxDbpp/N
-         +rvKkUQCz6YisYYNDQ72favMZGN9+0O8EhDFmIY7eTtAYapgQi5dP3sZO7e/uajlj0DT
-         G7nvMnUWTQueaROFpCxjnWzvb+IoEwd3pcT/Efy232dA783xR0NvR6ls5eM82HKNdIMJ
-         DDFNs+aGQ30H9yXS8b0iF/VGg1QghY0/WeM7tOUyplodxokR98POUPysL9hKW1oKORoS
-         JaOw==
-X-Gm-Message-State: AE9vXwOdt67q0ijL4ZIbzStlgGDleGDdTv+zd/TCWwHvdwV0oQTUKXwWkU+yugmTqrLeYQ==
-X-Received: by 10.157.35.4 with SMTP id j4mr11085537otb.38.1472660335115;
-        Wed, 31 Aug 2016 09:18:55 -0700 (PDT)
-Received: from localhost (c-73-166-181-108.hsd1.tx.comcast.net. [73.166.181.108])
-        by smtp.gmail.com with ESMTPSA id v41sm236958otd.3.2016.08.31.09.18.54
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Aug 2016 09:18:54 -0700 (PDT)
-Date:   Wed, 31 Aug 2016 11:18:53 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        devicetree@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 16/19] dt-bindings: img-ascii-lcd: Document a binding
- for simple ASCII LCDs
-Message-ID: <20160831161853.GA14407@rob-hp-laptop>
-References: <20160826141751.13121-1-paul.burton@imgtec.com>
- <20160826141751.13121-17-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 18:37:09 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12325 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992002AbcHaQhC7LWfq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 18:37:02 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 52FB41609AB61;
+        Wed, 31 Aug 2016 17:36:43 +0100 (IST)
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 31 Aug 2016 17:36:46 +0100
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+To:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>,
+        <jason@lakedaemon.net>, <marc.zyngier@arm.com>
+CC:     <soren.brinkmann@xilinx.com>, <Zubair.Kakakhel@imgtec.com>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <michal.simek@xilinx.com>, <netdev@vger.kernel.org>
+Subject: [Patch v3 00/11] microblaze/MIPS: xilfpga: intc and peripheral
+Date:   Wed, 31 Aug 2016 17:35:41 +0100
+Message-ID: <1472661352-11983-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160826141751.13121-17-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <robherring2@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54899
+X-archive-position: 54900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,21 +43,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Aug 26, 2016 at 03:17:48PM +0100, Paul Burton wrote:
-> Add documentation for a devicetree binding for the simple ASCII LCD
-> displays found on development boards such as the MIPS Boston, MIPS Malta
-> & MIPS SEAD3 from Imagination Technologies.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> 
-> ---
-> 
-> Changes in v2:
-> - Fix filename & path in MAINTAINERS
-> 
->  .../devicetree/bindings/auxdisplay/img-ascii-lcd.txt    | 17 +++++++++++++++++
->  MAINTAINERS                                             |  5 +++++
->  2 files changed, 22 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
+Hi,
 
-Acked-by: Rob Herring <robh@kernel.org>
+The MIPS based Xilfpga platform uses the axi interrupt controller
+daisy chained to the MIPS microAptiv cpu interrupt controller.
+This patch series moves the axi interrupt controller driver out
+of arch/microblaze to drivers/irqchip and then cleans it up a bit.
+This makes it usable by MIPS. The rest of the series basically
+enables drivers and adds dt nodes.
+
+Would make sense for this to go via the MIPS tree.
+Hence, ACKs from microblaze. irqchip and net welcome.
+
+Compile tested on microblaze-el only!
+Based on v4.8-rc4
+
+Regards,
+ZubairLK
+
+V2 -> V3
+Cleanup the interrupt controller driver a bit based on feedback
+Rebase to v4.8-rc4
+
+V1 -> V2
+Resubmitting without truncating the diff output for file moves
+Removed accidental local mac address entry
+Individual logs have more detail
+
+Zubair Lutfullah Kakakhel (11):
+  microblaze: irqchip: Move intc driver to irqchip
+  irqchip: axi-intc: Clean up irqdomain argument and read/write
+  irqchip: axi-intc: Add support for parent intc
+  MIPS: xilfpga: Use irqchip_init instead of the legacy way
+  MIPS: xilfpga: Use Xilinx AXI Interrupt Controller
+  MIPS: xilfpga: Update DT node and specify uart irq
+  MIPS: Xilfpga: Add DT node for AXI I2C
+  net: ethernet: xilinx: Generate random mac if none found
+  net: ethernet: xilinx: Enable emaclite for MIPS
+  MIPS: xilfpga: Add DT node for AXI emaclite
+  MIPS: xilfpga: Update defconfig
+
+ arch/microblaze/Kconfig                       |   1 +
+ arch/microblaze/kernel/Makefile               |   2 +-
+ arch/microblaze/kernel/intc.c                 | 196 ---------------------
+ arch/mips/Kconfig                             |   1 +
+ arch/mips/boot/dts/xilfpga/nexys4ddr.dts      |  63 +++++++
+ arch/mips/configs/xilfpga_defconfig           |  37 +++-
+ arch/mips/xilfpga/intc.c                      |   7 +-
+ drivers/irqchip/Kconfig                       |   4 +
+ drivers/irqchip/Makefile                      |   1 +
+ drivers/irqchip/irq-axi-intc.c                | 241 ++++++++++++++++++++++++++
+ drivers/net/ethernet/xilinx/Kconfig           |   4 +-
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c |   6 +-
+ 12 files changed, 356 insertions(+), 207 deletions(-)
+ delete mode 100644 arch/microblaze/kernel/intc.c
+ create mode 100644 drivers/irqchip/irq-axi-intc.c
+
+-- 
+1.9.1

@@ -1,49 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 17:49:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:12432 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992002AbcHaPtlaprJE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 17:49:41 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 5E5F2DCD35E44;
-        Wed, 31 Aug 2016 16:49:21 +0100 (IST)
-Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 31 Aug
- 2016 16:49:24 +0100
-Subject: Re: [PATCH 06/10] MIPS: pm-cps: Use MIPS standard lightweight
- ordering barrier
-To:     Peter Zijlstra <peterz@infradead.org>
-References: <1472640279-26593-1-git-send-email-matt.redfearn@imgtec.com>
- <1472640279-26593-7-git-send-email-matt.redfearn@imgtec.com>
- <20160831114847.GB10153@twins.programming.kicks-ass.net>
- <4c91d6c3-8141-594a-562c-96ea56776d2e@imgtec.com>
- <20160831142821.GF10138@twins.programming.kicks-ass.net>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        <linux-kernel@vger.kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Markos Chandras <markos.chandras@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <3ea993af-5b60-8ade-4d79-8f494ecb45a6@imgtec.com>
-Date:   Wed, 31 Aug 2016 16:49:24 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Aug 2016 18:19:08 +0200 (CEST)
+Received: from mail-oi0-f68.google.com ([209.85.218.68]:33226 "EHLO
+        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992058AbcHaQTAxxxpE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 Aug 2016 18:19:00 +0200
+Received: by mail-oi0-f68.google.com with SMTP id s207so5047170oie.0;
+        Wed, 31 Aug 2016 09:19:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=U430GLrinhmYPiZp5JXJDV/P2x4PGn4PCM5vWRlQTv4=;
+        b=Egr5Bori0Lpb8rqx3u0kGZON2CaC4XTT1p4F2bH27LOkmUZo9/ma33ocEBBGFVM5ma
+         cbKMud3pXDSzSMKVSCny5atrwzVFCyB1w0Vud3EsPRvtysqIl3WrWcK1H3AEvxDbpp/N
+         +rvKkUQCz6YisYYNDQ72favMZGN9+0O8EhDFmIY7eTtAYapgQi5dP3sZO7e/uajlj0DT
+         G7nvMnUWTQueaROFpCxjnWzvb+IoEwd3pcT/Efy232dA783xR0NvR6ls5eM82HKNdIMJ
+         DDFNs+aGQ30H9yXS8b0iF/VGg1QghY0/WeM7tOUyplodxokR98POUPysL9hKW1oKORoS
+         JaOw==
+X-Gm-Message-State: AE9vXwOdt67q0ijL4ZIbzStlgGDleGDdTv+zd/TCWwHvdwV0oQTUKXwWkU+yugmTqrLeYQ==
+X-Received: by 10.157.35.4 with SMTP id j4mr11085537otb.38.1472660335115;
+        Wed, 31 Aug 2016 09:18:55 -0700 (PDT)
+Received: from localhost (c-73-166-181-108.hsd1.tx.comcast.net. [73.166.181.108])
+        by smtp.gmail.com with ESMTPSA id v41sm236958otd.3.2016.08.31.09.18.54
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 31 Aug 2016 09:18:54 -0700 (PDT)
+Date:   Wed, 31 Aug 2016 11:18:53 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        devicetree@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 16/19] dt-bindings: img-ascii-lcd: Document a binding
+ for simple ASCII LCDs
+Message-ID: <20160831161853.GA14407@rob-hp-laptop>
+References: <20160826141751.13121-1-paul.burton@imgtec.com>
+ <20160826141751.13121-17-paul.burton@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <20160831142821.GF10138@twins.programming.kicks-ass.net>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160826141751.13121-17-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54898
+X-archive-position: 54899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,51 +66,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Fri, Aug 26, 2016 at 03:17:48PM +0100, Paul Burton wrote:
+> Add documentation for a devicetree binding for the simple ASCII LCD
+> displays found on development boards such as the MIPS Boston, MIPS Malta
+> & MIPS SEAD3 from Imagination Technologies.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> 
+> ---
+> 
+> Changes in v2:
+> - Fix filename & path in MAINTAINERS
+> 
+>  .../devicetree/bindings/auxdisplay/img-ascii-lcd.txt    | 17 +++++++++++++++++
+>  MAINTAINERS                                             |  5 +++++
+>  2 files changed, 22 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/auxdisplay/img-ascii-lcd.txt
 
-
-On 31/08/16 15:28, Peter Zijlstra wrote:
-> On Wed, Aug 31, 2016 at 02:36:26PM +0100, Matt Redfearn wrote:
->> The code previously had 0x10 as a magic number, this patch just replaces
->> that with a #defined name. The value is documented in the MIPS64 instruction
->> set manual, https://imgtec.com/?do-download=4302, table 6.5.
->>
->> This sync type has been standard since MIPSr2. That document also states
->> that "If an implementation does not use one of these non-zero values to
->> define a different synchronization behavior, then that non-zero value of
->> stype must act the same as stype zero completion barrier." As such,
->> stype_ordering can always be set to this sync type rather than setting it
->> only for certain CPUs.
-
-Hi Peter,
-
-> Right. We all had a bunch of fun trying to decode that manual a while
-> back, and IIRC were left with a bunch of questions on what it all meant
-> in 3+ CPU scenarios.
-
-Yes, I remember that fun....
-
->
-> In anycase, not sure why I was Cc'ed to this patch, but in general I
-
-Patman decided to CC you as you've touched arch/mips/include/barrier.h I 
-suppose.
-
-> have low confidence in barrier patches that lack lots of detail. And the
-> code in question has woefully inadequate comments:
->
->                  /* Ordering barrier */
->                  uasm_i_sync(&p, stype_ordering);
->
-> Order what against what and why? Is my first question. A comment really
-> should explain.
-
-Fair enough - we'll put something together to improve the comments.
-
->
-> In any case, you've removed the only (runtime) assignment to the
-> variable, it can become 'const'.
-
-True enough.
-
-Thanks,
-Matt
+Acked-by: Rob Herring <robh@kernel.org>

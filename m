@@ -1,31 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 22:46:52 +0200 (CEST)
-Received: from emh07.mail.saunalahti.fi ([62.142.5.117]:42605 "EHLO
-        emh07.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992310AbcIAUoMR1r2N (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 22:44:12 +0200
-Received: from localhost.localdomain (85-76-72-196-nat.elisa-mobile.fi [85.76.72.196])
-        by emh07.mail.saunalahti.fi (Postfix) with ESMTP id B4ADC433F;
-        Thu,  1 Sep 2016 23:44:11 +0300 (EEST)
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 6/6] MIPS: OCTEON: delete unused cvmx-mdio.h
-Date:   Thu,  1 Sep 2016 23:44:00 +0300
-Message-Id: <20160901204400.16562-7-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.9.2
-In-Reply-To: <20160901204400.16562-1-aaro.koskinen@iki.fi>
-References: <20160901204400.16562-1-aaro.koskinen@iki.fi>
-Return-Path: <aaro.koskinen@iki.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 01:00:53 +0200 (CEST)
+Received: from mail-sn1nam02on0055.outbound.protection.outlook.com ([104.47.36.55]:5024
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992307AbcIAXAqOdHbb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Sep 2016 01:00:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=NV101bla7gF/QsxjaPo0YwYq7oXIH4SxTHr2tLsINKk=;
+ b=Vy0YjDYMA0Q4I9qxTFuqCWhPZ59s0RlV5oWrLcFJPk/mUKgVsp2JttOpo84br5PUMuXBajl5PiopbFoK7h69IlJY6c0ACaOCJsMBjT80rAUgWx5gnKfiNn+x83ZNT6/aZPTLo8308pzgbCzVpMEzxn5q7vT4AvY9EzngT9sUZ9o=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=David.Daney@cavium.com; 
+Received: from dl.caveonetworks.com (50.233.148.156) by
+ CY1PR07MB2135.namprd07.prod.outlook.com (10.164.112.13) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P384) id
+ 15.1.587.13; Thu, 1 Sep 2016 23:00:38 +0000
+Message-ID: <57C8B313.6030206@caviumnetworks.com>
+Date:   Thu, 1 Sep 2016 16:00:35 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
+MIME-Version: 1.0
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 5/6] MIPS: OCTEON: delete legacy code for PHY access
+References: <20160901204400.16562-1-aaro.koskinen@iki.fi> <20160901204400.16562-6-aaro.koskinen@iki.fi>
+In-Reply-To: <20160901204400.16562-6-aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [50.233.148.156]
+X-ClientProxiedBy: BN6PR07CA0034.namprd07.prod.outlook.com (10.172.104.20) To
+ CY1PR07MB2135.namprd07.prod.outlook.com (10.164.112.13)
+X-MS-Office365-Filtering-Correlation-Id: 8187469c-4940-4125-0512-08d3d2bbcaf7
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2135;2:dmjNB3sIuqKHOe2B4j+vU5Onfs6JaRyOJ6oguGYbaraK5DDmN2Eb/AzkFn1yLnZtL14dz3aL4rg1sBEMjIRhc6eyYEBptk1GKnZNE42RKOrcdRHgArDbfpeEx8239nFNcCk9EkpeDlO7uArVgdc9gnSryvKQilW/3N3MsGHxUjnPUcbDkLLJzIWKnsziBO4p;3:HcbDAB9Givu86SHkQVLlnJyTNhRpObzkYbL92cI0AKaegmerdlof3s0SGD7gQbPcTZer0d1Bn7bVSK/c1q4fDDqZF0DYVnmTS+Beb9WuwUSL6rcgS6HiXgzSxaRnWIEe;25:YUSAo0TTFWe7ZsBPau3uJqjg0SppmNmMcgrZ2EBt2J7FBnPseWLMyiedcB5blilaxlGCjWUt1j7kKiBxhEyFa5kWkSLr+Yrp6x80JQ/WKPUMuZKqQ3m7To25aL+8iYMcflxoGH0i1rFQboyaeiSpsFERynjUKfzoF/0Ca1RaKxb5vtlck/xWGVRZaXyY4U6AZuhP1bPgpA9YTmbdQNk1/y8sQcliXNg2XeTs87qAO5VTI8BIGQI1BVfIpoZ5MYTMvP34Np/IEAKxnU5iQjjLwxWgE8irjKDVB/APSuba3WqapK7t+Bvv6h9mHM21n3pKVMByUL5aLFudG7mHp5y+5fNwZKvZ6VxfmvnOqPTSQALBOyvC9R7yE5o+e+mJbIdAlaYROrWdEcjwEtUQpd9jYP1/J50hTOYdddwUkqb+sm4=
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:CY1PR07MB2135;
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2135;31:J6Ua51/hdT/GL3t0+ScF55RCCywbvNxqMkfxaNtbUvacu54rIdhXAAD5hfBPwha0jeQgz+3vbEgoAusCpyQM6YJzI+V+b/Qvwo72s7a+P5n6yb+mei35ITxIjCyZwcf5vGiBbyrfQZSl5jtvxZUezPSZGCpwUT9KNbGReuAm+a3QMQh64eL3bsjbj4PhuRJ2TxweqhQqzqgjWdgUmh/MhMvbDcNO2rCE+2DacxCkE0w=;20:NMZJoxrrciS5EBsY0gZ8uIBfDfG0FwhMlYQoEWdiLdXHQ2yZHTiqphZSzrVL9AvcG101+jTVid59ksAhB6XZenULuszST2KInWyk4oaWO4sHiTHMloErSyvXJLpzOs+NyKO2sPbAbXUjvbZBpI2CZxrdIO8U13IZhxtbva7d+1oh0kHw+s70C7nCAD9KGYqhNk9qXd3o/X8BnlCNFeBkOsVJUEMtu16CldgRZDHEoN0HzigAWHtz7vtQ4Dcgm6Z5GGvHKRaT7O/67xNw5BXo8C0Lk/uRKjIhFECKUsPx8eet7s4Q4rdZjcqdihfMxmoRx+5P4oxGmTzRMaNfcR4+r7HuINLrN38RLAOpk9FDXGwpsz6bNsU5+85pu52iI9f/JbnKXNiqV60eUrSKFdpZNsvsxGEZR5dvqcLCjUhQx5eL5NUOLnPQjIKu/U20oU5/d7xwpQWmLfqaZEBR7M3nVXZD68AFkrVbE8extyTMs/Sj8qCFUR0n3NuVy3eIjb9ZKHFpLbP5N/fPwvZNG3U6EMBRmWHRRow7JfylAnWKQeuycNO9LJcGbwfEmct7LXZQHlRGX2CNeWbNKVYCVT72+XlWr7cuoJBkhcm22oylJCQ=
+X-Microsoft-Antispam-PRVS: <CY1PR07MB2135F31C8697B949AABDD34297E20@CY1PR07MB2135.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040176)(601004)(2401047)(8121501046)(5005006)(3002001)(10201501046);SRVR:CY1PR07MB2135;BCL:0;PCL:0;RULEID:;SRVR:CY1PR07MB2135;
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2135;4:Uijb+8xDkRESaQdBULnxS3MQy6b8c3h9XJOmDV3YIlTRqRb95w7C/FtxyZvpBRlX/2mGdzhP3ewe1dAbsOPJRO1q8GntTggxYayltnef9r4LkH5hDJKNz6ziOOIwT28KsbAQ1NXOFGNmrwm1G7kiq69vzKNfItdwRipDEfjes/A4LnZ1G19RsblShncnkkC+zGpuugfU9ck/6VxF7dhHZuwW/VkWOrZ5d7zm4/WTfBupao2NB9XbOpO1/eIrGAxODTopINONEidqBHGD22MDHUt5dOzvnq1/ZVsnhunsZYbyW5E76NvPs64R8UeRtD1mPF+YeET2BP4cEKGqyzvb5duuL5/K1MBsyLq+BPXqxPqaHs5A7EMLdE6xQhYf8gBO
+X-Forefront-PRVS: 0052308DC6
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(7916002)(377454003)(189002)(199003)(24454002)(2950100001)(83506001)(19580395003)(4326007)(110136002)(105586002)(66066001)(47776003)(81156014)(7736002)(65956001)(77096005)(33656002)(19580405001)(101416001)(97736004)(7846002)(189998001)(42186005)(4001350100001)(53416004)(305945005)(80316001)(59896002)(92566002)(106356001)(81166006)(8676002)(2906002)(65806001)(3846002)(68736007)(69596002)(64126003)(230700001)(23756003)(50466002)(6116002)(5660300001)(76176999)(36756003)(586003)(87266999)(65816999)(54356999)(50986999);DIR:OUT;SFP:1101;SCL:1;SRVR:CY1PR07MB2135;H:dl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+Received-SPF: None (protection.outlook.com: cavium.com does not designate
+ permitted sender hosts)
+X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;CY1PR07MB2135;23:ElXbtTsqMUW9ietyp3PGFo5tsjhKBd30ff5UYeh?=
+ =?iso-8859-1?Q?HZ2dmu0sECVgEmeRvuJ8VaWHfza/w9wMm5Szensdjvma7XzIGsFNJBmI/l?=
+ =?iso-8859-1?Q?Bsi4fV+vZnRQpDmO1MaHIkzJmcQg95YaHRAfma1IKvWULxhvo+MFW7UFJO?=
+ =?iso-8859-1?Q?yX3AEsgAAz2phz+Aq6tJNZCx0SR29GaixJjGqUIJfIvCXAqtXpeIGUT61O?=
+ =?iso-8859-1?Q?2NXLlYt7UjnXyI3+85kQ/RUueOxx2Jt0mTo9KBdJAPeNWJz4xxi1ipHXA5?=
+ =?iso-8859-1?Q?CZgiLrz5xAmD4/WkOFrHjRPSy3DvWfivrxFlR2Z6l4TDCjz0+QLzVqFWRg?=
+ =?iso-8859-1?Q?ICnaXUOoPQbqZC5Y9upxloiMGlWqUzhTL409OIMbu5aIB2umiwYeZQh9iB?=
+ =?iso-8859-1?Q?UQNtlPE7iJptiYe9LrCEBjfJzVaVsXd+ycCI4AG9bX7zGREWurC7SCMwnK?=
+ =?iso-8859-1?Q?hf6pg5FR10j4Q6S6ykA37WNghW2jUeVxLOkZ0O4TjX7pyKNx5psp72jc71?=
+ =?iso-8859-1?Q?x9kUnXfcnX9kAPbObsBSAkQ+spULM5m8MsiZ1Y6dSnFDOdGiIfxUw0bTBg?=
+ =?iso-8859-1?Q?+6xF+YK9V+YOOvdWdCOszgxSfHOwtmNpyrr0vGsrt0TFPV30xAGb3e/T6m?=
+ =?iso-8859-1?Q?WYAE+WYZaFG8XoVQaHnxuRYDzFDa8/t7weJ7A+ly/0VPzJ91j7AcB3NZGZ?=
+ =?iso-8859-1?Q?jyZDQmL6wdpSkfu7xdg5xLpdnvaNfk6ovek+t4ueX54RVjmEqKCu1CJKH0?=
+ =?iso-8859-1?Q?YrQegNgSG4raS3T3B51mEXreCXDXhTcj2XfxPJS7/DM/eY9yZWFnv8dc0q?=
+ =?iso-8859-1?Q?c75kyY5pQG8PEk7qzUVSObjImsIs2+79xHHR7rRqzQLfqTDgkNoCeNPqvw?=
+ =?iso-8859-1?Q?mWlPjoMwXZFktR8h6xtCugRghyS+e0zSY4Uk6KDhqnMtNRc/uP9LC1hTDP?=
+ =?iso-8859-1?Q?dwbQtLPY4KR/6uHDGUmw3x4WVy7XzTm13ScTVL7kbD8sRg2O16yOZOzfda?=
+ =?iso-8859-1?Q?Tyqym/XP0cHOYTOQP034KTtsKqfj/YajAkxyqS3PJ9mbtnJGNt+ZSE0pyc?=
+ =?iso-8859-1?Q?nS4ii4bz26NEHGj+uG7O3dSlKapzpfUKn40/IPzV3ZqWbnjq4jNTriXXo0?=
+ =?iso-8859-1?Q?UglHu1750cpGrIA+QZ3/0FHE7XF6cwPMlhxZ6WLa9WXvISMYD4l61In0pI?=
+ =?iso-8859-1?Q?GBHlj7VX79BIoAqmJ1KEKtLhcXJS4gYx+WEhmg+Z/2n9UZ9NK/HesqOX3s?=
+ =?iso-8859-1?Q?t3kxmBu0Pnxwe4bnPA+On24bI1tma0w6hHkMkipGBakq38GnCQFVn3x9xo?=
+ =?iso-8859-1?Q?gciDlPzxTXXDGorH2HdWEpeoUCiO5fEf5Y9Q2+KbHKD35qJag9CHzDvVvL?=
+ =?iso-8859-1?Q?5FC8ZoeI=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2135;6:PDLodHeeh5tdZLCSGh6Dc2ikgO7djYtFC0jmFzfnzcOfnGfyC3Y+r8p9SFEyjVg4wa/5pr/lMODaaAPTfbj+z0YCE4xdNb8A3lZ3Kv7R7Ne/gc8An16Id4cOk2rknSnn2TfnVb4FRUV1O6NPl3bc2c13j/COhMeLDxBd5TUxxullRRuKfV+FGJ5HTGmV225S3UdJhh7tPFmVRL4ZkrefzXAh6y3UdAhJxRlmbkjhGJi77uI0OS0Bf1DT5FaLJvy5/FNTwXW20K0sdMjt+YZJCBMXqVrWawqD/1XHmZVfdx0=;5:bM8AV5wjBWGzvQzLQl7HIYWT26Wlfc4zP1qj9pVthLe7B67UvHZLA1lclepeXIGHWbzbmCf21jQt1lTkEznpMjBHo/KPLzFImiidId2rzdMAC+w8C6geX5/3CSwNd8uQfrzxmW6zuq23WDTLr2oRQw==;24:m/GtR+pfnbTp16iVLPcdQB1f6sO5k559wRarQ3W/d1IPqXxt39dg8qx+Q1GPWx0uqU6EqWMaGnL6z6ddq00nvT6i0GO0QRbT53OKAlNwjjQ=;7:bRhTK1a0/e1bpCIOV3xsX+UCfjfRI4oYz41cPc4wPxUoSusSJyybwqV3J2EWuAvdK194oBs2KBzwoz14GBTDpoUFnUlRirwQP4Yy8OPTK6iveDIaMUTjfE9uOBG4MdG+1fUpc9xJRTuA9g+ogkPZM3rzo9eaoVsQZyFTnQT5C5v+zA88175oMLAiIL1fLphJn5HaYzGqUe8bQ4Zuopk7eqlEH1ffKi20h9xc0RbYvmMy681iM74tNgwK63ydGnKh
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-OriginatorOrg: caviumnetworks.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2016 23:00:38.9160 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR07MB2135
+Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54960
+X-archive-position: 54961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,566 +94,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Delete unused cvmx-mdio.h.
+On 09/01/2016 01:43 PM, Aaro Koskinen wrote:
+> PHY access through the board helper should be impossible with the
+> current drivers, so delete this code and add BUG_ON().
+>
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> ---
+>   .../cavium-octeon/executive/cvmx-helper-board.c    | 110 +--------------------
+>   1 file changed, 5 insertions(+), 105 deletions(-)
+>
+> diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> index 5572e39..8d75242 100644
+> --- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+> +++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+[...]
+> +	BUG_ON(cvmx_helper_board_get_mii_address(ipd_port) != -1);
+>
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- .../cavium-octeon/executive/cvmx-helper-board.c    |   2 -
- .../cavium-octeon/executive/cvmx-helper-rgmii.c    |   2 -
- .../cavium-octeon/executive/cvmx-helper-sgmii.c    |   1 -
- arch/mips/include/asm/octeon/cvmx-mdio.h           | 506 ---------------------
- 4 files changed, 511 deletions(-)
- delete mode 100644 arch/mips/include/asm/octeon/cvmx-mdio.h
+Can we do WARN_ON instead?
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-index 8d75242..792afff 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-@@ -36,8 +36,6 @@
- 
- #include <asm/octeon/cvmx-config.h>
- 
--#include <asm/octeon/cvmx-mdio.h>
--
- #include <asm/octeon/cvmx-helper.h>
- #include <asm/octeon/cvmx-helper-util.h>
- #include <asm/octeon/cvmx-helper-board.h>
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-index 809cd8b..671ab1d 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-@@ -33,8 +33,6 @@
- 
- #include <asm/octeon/cvmx-config.h>
- 
--
--#include <asm/octeon/cvmx-mdio.h>
- #include <asm/octeon/cvmx-pko.h>
- #include <asm/octeon/cvmx-helper.h>
- #include <asm/octeon/cvmx-helper-board.h>
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-index 6f9609e..5437534 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-@@ -34,7 +34,6 @@
- 
- #include <asm/octeon/cvmx-config.h>
- 
--#include <asm/octeon/cvmx-mdio.h>
- #include <asm/octeon/cvmx-helper.h>
- #include <asm/octeon/cvmx-helper-board.h>
- 
-diff --git a/arch/mips/include/asm/octeon/cvmx-mdio.h b/arch/mips/include/asm/octeon/cvmx-mdio.h
-deleted file mode 100644
-index 9f6a4f3..0000000
---- a/arch/mips/include/asm/octeon/cvmx-mdio.h
-+++ /dev/null
-@@ -1,506 +0,0 @@
--/***********************license start***************
-- * Author: Cavium Networks
-- *
-- * Contact: support@caviumnetworks.com
-- * This file is part of the OCTEON SDK
-- *
-- * Copyright (c) 2003-2008 Cavium Networks
-- *
-- * This file is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License, Version 2, as
-- * published by the Free Software Foundation.
-- *
-- * This file is distributed in the hope that it will be useful, but
-- * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
-- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
-- * NONINFRINGEMENT.  See the GNU General Public License for more
-- * details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this file; if not, write to the Free Software
-- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-- * or visit http://www.gnu.org/licenses/.
-- *
-- * This file may also be available under a different license from Cavium.
-- * Contact Cavium Networks for more information
-- ***********************license end**************************************/
--
--/*
-- *
-- * Interface to the SMI/MDIO hardware, including support for both IEEE 802.3
-- * clause 22 and clause 45 operations.
-- *
-- */
--
--#ifndef __CVMX_MIO_H__
--#define __CVMX_MIO_H__
--
--#include <asm/octeon/cvmx-smix-defs.h>
--
--/**
-- * PHY register 0 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_CONTROL 0
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t reset:1;
--		uint16_t loopback:1;
--		uint16_t speed_lsb:1;
--		uint16_t autoneg_enable:1;
--		uint16_t power_down:1;
--		uint16_t isolate:1;
--		uint16_t restart_autoneg:1;
--		uint16_t duplex:1;
--		uint16_t collision_test:1;
--		uint16_t speed_msb:1;
--		uint16_t unidirectional_enable:1;
--		uint16_t reserved_0_4:5;
--	} s;
--} cvmx_mdio_phy_reg_control_t;
--
--/**
-- * PHY register 1 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_STATUS 1
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t capable_100base_t4:1;
--		uint16_t capable_100base_x_full:1;
--		uint16_t capable_100base_x_half:1;
--		uint16_t capable_10_full:1;
--		uint16_t capable_10_half:1;
--		uint16_t capable_100base_t2_full:1;
--		uint16_t capable_100base_t2_half:1;
--		uint16_t capable_extended_status:1;
--		uint16_t capable_unidirectional:1;
--		uint16_t capable_mf_preamble_suppression:1;
--		uint16_t autoneg_complete:1;
--		uint16_t remote_fault:1;
--		uint16_t capable_autoneg:1;
--		uint16_t link_status:1;
--		uint16_t jabber_detect:1;
--		uint16_t capable_extended_registers:1;
--
--	} s;
--} cvmx_mdio_phy_reg_status_t;
--
--/**
-- * PHY register 2 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_ID1 2
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t oui_bits_3_18;
--	} s;
--} cvmx_mdio_phy_reg_id1_t;
--
--/**
-- * PHY register 3 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_ID2 3
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t oui_bits_19_24:6;
--		uint16_t model:6;
--		uint16_t revision:4;
--	} s;
--} cvmx_mdio_phy_reg_id2_t;
--
--/**
-- * PHY register 4 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_AUTONEG_ADVER 4
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t next_page:1;
--		uint16_t reserved_14:1;
--		uint16_t remote_fault:1;
--		uint16_t reserved_12:1;
--		uint16_t asymmetric_pause:1;
--		uint16_t pause:1;
--		uint16_t advert_100base_t4:1;
--		uint16_t advert_100base_tx_full:1;
--		uint16_t advert_100base_tx_half:1;
--		uint16_t advert_10base_tx_full:1;
--		uint16_t advert_10base_tx_half:1;
--		uint16_t selector:5;
--	} s;
--} cvmx_mdio_phy_reg_autoneg_adver_t;
--
--/**
-- * PHY register 5 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_LINK_PARTNER_ABILITY 5
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t next_page:1;
--		uint16_t ack:1;
--		uint16_t remote_fault:1;
--		uint16_t reserved_12:1;
--		uint16_t asymmetric_pause:1;
--		uint16_t pause:1;
--		uint16_t advert_100base_t4:1;
--		uint16_t advert_100base_tx_full:1;
--		uint16_t advert_100base_tx_half:1;
--		uint16_t advert_10base_tx_full:1;
--		uint16_t advert_10base_tx_half:1;
--		uint16_t selector:5;
--	} s;
--} cvmx_mdio_phy_reg_link_partner_ability_t;
--
--/**
-- * PHY register 6 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_AUTONEG_EXPANSION 6
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t reserved_5_15:11;
--		uint16_t parallel_detection_fault:1;
--		uint16_t link_partner_next_page_capable:1;
--		uint16_t local_next_page_capable:1;
--		uint16_t page_received:1;
--		uint16_t link_partner_autoneg_capable:1;
--
--	} s;
--} cvmx_mdio_phy_reg_autoneg_expansion_t;
--
--/**
-- * PHY register 9 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_CONTROL_1000 9
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t test_mode:3;
--		uint16_t manual_master_slave:1;
--		uint16_t master:1;
--		uint16_t port_type:1;
--		uint16_t advert_1000base_t_full:1;
--		uint16_t advert_1000base_t_half:1;
--		uint16_t reserved_0_7:8;
--	} s;
--} cvmx_mdio_phy_reg_control_1000_t;
--
--/**
-- * PHY register 10 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_STATUS_1000 10
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t master_slave_fault:1;
--		uint16_t is_master:1;
--		uint16_t local_receiver_ok:1;
--		uint16_t remote_receiver_ok:1;
--		uint16_t remote_capable_1000base_t_full:1;
--		uint16_t remote_capable_1000base_t_half:1;
--		uint16_t reserved_8_9:2;
--		uint16_t idle_error_count:8;
--	} s;
--} cvmx_mdio_phy_reg_status_1000_t;
--
--/**
-- * PHY register 15 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_EXTENDED_STATUS 15
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t capable_1000base_x_full:1;
--		uint16_t capable_1000base_x_half:1;
--		uint16_t capable_1000base_t_full:1;
--		uint16_t capable_1000base_t_half:1;
--		uint16_t reserved_0_11:12;
--	} s;
--} cvmx_mdio_phy_reg_extended_status_t;
--
--/**
-- * PHY register 13 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_MMD_CONTROL 13
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t function:2;
--		uint16_t reserved_5_13:9;
--		uint16_t devad:5;
--	} s;
--} cvmx_mdio_phy_reg_mmd_control_t;
--
--/**
-- * PHY register 14 from the 802.3 spec
-- */
--#define CVMX_MDIO_PHY_REG_MMD_ADDRESS_DATA 14
--typedef union {
--	uint16_t u16;
--	struct {
--		uint16_t address_data:16;
--	} s;
--} cvmx_mdio_phy_reg_mmd_address_data_t;
--
--/* Operating request encodings. */
--#define MDIO_CLAUSE_22_WRITE	0
--#define MDIO_CLAUSE_22_READ	1
--
--#define MDIO_CLAUSE_45_ADDRESS	0
--#define MDIO_CLAUSE_45_WRITE	1
--#define MDIO_CLAUSE_45_READ_INC 2
--#define MDIO_CLAUSE_45_READ	3
--
--/* MMD identifiers, mostly for accessing devices within XENPAK modules. */
--#define CVMX_MMD_DEVICE_PMA_PMD	     1
--#define CVMX_MMD_DEVICE_WIS	     2
--#define CVMX_MMD_DEVICE_PCS	     3
--#define CVMX_MMD_DEVICE_PHY_XS	     4
--#define CVMX_MMD_DEVICE_DTS_XS	     5
--#define CVMX_MMD_DEVICE_TC	     6
--#define CVMX_MMD_DEVICE_CL22_EXT     29
--#define CVMX_MMD_DEVICE_VENDOR_1     30
--#define CVMX_MMD_DEVICE_VENDOR_2     31
--
--/* Helper function to put MDIO interface into clause 45 mode */
--static inline void __cvmx_mdio_set_clause45_mode(int bus_id)
--{
--	union cvmx_smix_clk smi_clk;
--	/* Put bus into clause 45 mode */
--	smi_clk.u64 = cvmx_read_csr(CVMX_SMIX_CLK(bus_id));
--	smi_clk.s.mode = 1;
--	smi_clk.s.preamble = 1;
--	cvmx_write_csr(CVMX_SMIX_CLK(bus_id), smi_clk.u64);
--}
--
--/* Helper function to put MDIO interface into clause 22 mode */
--static inline void __cvmx_mdio_set_clause22_mode(int bus_id)
--{
--	union cvmx_smix_clk smi_clk;
--	/* Put bus into clause 22 mode */
--	smi_clk.u64 = cvmx_read_csr(CVMX_SMIX_CLK(bus_id));
--	smi_clk.s.mode = 0;
--	cvmx_write_csr(CVMX_SMIX_CLK(bus_id), smi_clk.u64);
--}
--
--/**
-- * Perform an MII read. This function is used to read PHY
-- * registers controlling auto negotiation.
-- *
-- * @bus_id:   MDIO bus number. Zero on most chips, but some chips (ex CN56XX)
-- *		   support multiple busses.
-- * @phy_id:   The MII phy id
-- * @location: Register location to read
-- *
-- * Returns Result from the read or -1 on failure
-- */
--static inline int cvmx_mdio_read(int bus_id, int phy_id, int location)
--{
--	union cvmx_smix_cmd smi_cmd;
--	union cvmx_smix_rd_dat smi_rd;
--	int timeout = 1000;
--
--	if (octeon_has_feature(OCTEON_FEATURE_MDIO_CLAUSE_45))
--		__cvmx_mdio_set_clause22_mode(bus_id);
--
--	smi_cmd.u64 = 0;
--	smi_cmd.s.phy_op = MDIO_CLAUSE_22_READ;
--	smi_cmd.s.phy_adr = phy_id;
--	smi_cmd.s.reg_adr = location;
--	cvmx_write_csr(CVMX_SMIX_CMD(bus_id), smi_cmd.u64);
--
--	do {
--		cvmx_wait(1000);
--		smi_rd.u64 = cvmx_read_csr(CVMX_SMIX_RD_DAT(bus_id));
--	} while (smi_rd.s.pending && timeout--);
--
--	if (smi_rd.s.val)
--		return smi_rd.s.dat;
--	else
--		return -1;
--}
--
--/**
-- * Perform an MII write. This function is used to write PHY
-- * registers controlling auto negotiation.
-- *
-- * @bus_id:   MDIO bus number. Zero on most chips, but some chips (ex CN56XX)
-- *		   support multiple busses.
-- * @phy_id:   The MII phy id
-- * @location: Register location to write
-- * @val:      Value to write
-- *
-- * Returns -1 on error
-- *	   0 on success
-- */
--static inline int cvmx_mdio_write(int bus_id, int phy_id, int location, int val)
--{
--	union cvmx_smix_cmd smi_cmd;
--	union cvmx_smix_wr_dat smi_wr;
--	int timeout = 1000;
--
--	if (octeon_has_feature(OCTEON_FEATURE_MDIO_CLAUSE_45))
--		__cvmx_mdio_set_clause22_mode(bus_id);
--
--	smi_wr.u64 = 0;
--	smi_wr.s.dat = val;
--	cvmx_write_csr(CVMX_SMIX_WR_DAT(bus_id), smi_wr.u64);
--
--	smi_cmd.u64 = 0;
--	smi_cmd.s.phy_op = MDIO_CLAUSE_22_WRITE;
--	smi_cmd.s.phy_adr = phy_id;
--	smi_cmd.s.reg_adr = location;
--	cvmx_write_csr(CVMX_SMIX_CMD(bus_id), smi_cmd.u64);
--
--	do {
--		cvmx_wait(1000);
--		smi_wr.u64 = cvmx_read_csr(CVMX_SMIX_WR_DAT(bus_id));
--	} while (smi_wr.s.pending && --timeout);
--	if (timeout <= 0)
--		return -1;
--
--	return 0;
--}
--
--/**
-- * Perform an IEEE 802.3 clause 45 MII read. This function is used to
-- * read PHY registers controlling auto negotiation.
-- *
-- * @bus_id:   MDIO bus number. Zero on most chips, but some chips (ex CN56XX)
-- *		   support multiple busses.
-- * @phy_id:   The MII phy id
-- * @device:   MDIO Managable Device (MMD) id
-- * @location: Register location to read
-- *
-- * Returns Result from the read or -1 on failure
-- */
--
--static inline int cvmx_mdio_45_read(int bus_id, int phy_id, int device,
--				    int location)
--{
--	union cvmx_smix_cmd smi_cmd;
--	union cvmx_smix_rd_dat smi_rd;
--	union cvmx_smix_wr_dat smi_wr;
--	int timeout = 1000;
--
--	if (!octeon_has_feature(OCTEON_FEATURE_MDIO_CLAUSE_45))
--		return -1;
--
--	__cvmx_mdio_set_clause45_mode(bus_id);
--
--	smi_wr.u64 = 0;
--	smi_wr.s.dat = location;
--	cvmx_write_csr(CVMX_SMIX_WR_DAT(bus_id), smi_wr.u64);
--
--	smi_cmd.u64 = 0;
--	smi_cmd.s.phy_op = MDIO_CLAUSE_45_ADDRESS;
--	smi_cmd.s.phy_adr = phy_id;
--	smi_cmd.s.reg_adr = device;
--	cvmx_write_csr(CVMX_SMIX_CMD(bus_id), smi_cmd.u64);
--
--	do {
--		cvmx_wait(1000);
--		smi_wr.u64 = cvmx_read_csr(CVMX_SMIX_WR_DAT(bus_id));
--	} while (smi_wr.s.pending && --timeout);
--	if (timeout <= 0) {
--		cvmx_dprintf("cvmx_mdio_45_read: bus_id %d phy_id %2d "
--			     "device %2d register %2d	TIME OUT(address)\n",
--		     bus_id, phy_id, device, location);
--		return -1;
--	}
--
--	smi_cmd.u64 = 0;
--	smi_cmd.s.phy_op = MDIO_CLAUSE_45_READ;
--	smi_cmd.s.phy_adr = phy_id;
--	smi_cmd.s.reg_adr = device;
--	cvmx_write_csr(CVMX_SMIX_CMD(bus_id), smi_cmd.u64);
--
--	do {
--		cvmx_wait(1000);
--		smi_rd.u64 = cvmx_read_csr(CVMX_SMIX_RD_DAT(bus_id));
--	} while (smi_rd.s.pending && --timeout);
--
--	if (timeout <= 0) {
--		cvmx_dprintf("cvmx_mdio_45_read: bus_id %d phy_id %2d "
--			     "device %2d register %2d	TIME OUT(data)\n",
--		     bus_id, phy_id, device, location);
--		return -1;
--	}
--
--	if (smi_rd.s.val)
--		return smi_rd.s.dat;
--	else {
--		cvmx_dprintf("cvmx_mdio_45_read: bus_id %d phy_id %2d "
--			     "device %2d register %2d	INVALID READ\n",
--		     bus_id, phy_id, device, location);
--		return -1;
--	}
--}
--
--/**
-- * Perform an IEEE 802.3 clause 45 MII write. This function is used to
-- * write PHY registers controlling auto negotiation.
-- *
-- * @bus_id:   MDIO bus number. Zero on most chips, but some chips (ex CN56XX)
-- *		   support multiple busses.
-- * @phy_id:   The MII phy id
-- * @device:   MDIO Managable Device (MMD) id
-- * @location: Register location to write
-- * @val:      Value to write
-- *
-- * Returns -1 on error
-- *	   0 on success
-- */
--static inline int cvmx_mdio_45_write(int bus_id, int phy_id, int device,
--				     int location, int val)
--{
--	union cvmx_smix_cmd smi_cmd;
--	union cvmx_smix_wr_dat smi_wr;
--	int timeout = 1000;
--
--	if (!octeon_has_feature(OCTEON_FEATURE_MDIO_CLAUSE_45))
--		return -1;
--
--	__cvmx_mdio_set_clause45_mode(bus_id);
--
--	smi_wr.u64 = 0;
--	smi_wr.s.dat = location;
--	cvmx_write_csr(CVMX_SMIX_WR_DAT(bus_id), smi_wr.u64);
--
--	smi_cmd.u64 = 0;
--	smi_cmd.s.phy_op = MDIO_CLAUSE_45_ADDRESS;
--	smi_cmd.s.phy_adr = phy_id;
--	smi_cmd.s.reg_adr = device;
--	cvmx_write_csr(CVMX_SMIX_CMD(bus_id), smi_cmd.u64);
--
--	do {
--		cvmx_wait(1000);
--		smi_wr.u64 = cvmx_read_csr(CVMX_SMIX_WR_DAT(bus_id));
--	} while (smi_wr.s.pending && --timeout);
--	if (timeout <= 0)
--		return -1;
--
--	smi_wr.u64 = 0;
--	smi_wr.s.dat = val;
--	cvmx_write_csr(CVMX_SMIX_WR_DAT(bus_id), smi_wr.u64);
--
--	smi_cmd.u64 = 0;
--	smi_cmd.s.phy_op = MDIO_CLAUSE_45_WRITE;
--	smi_cmd.s.phy_adr = phy_id;
--	smi_cmd.s.reg_adr = device;
--	cvmx_write_csr(CVMX_SMIX_CMD(bus_id), smi_cmd.u64);
--
--	do {
--		cvmx_wait(1000);
--		smi_wr.u64 = cvmx_read_csr(CVMX_SMIX_WR_DAT(bus_id));
--	} while (smi_wr.s.pending && --timeout);
--	if (timeout <= 0)
--		return -1;
--
--	return 0;
--}
--
--#endif
--- 
-2.9.2
+No need to crash the kernel for this I think.
+
+David Daney

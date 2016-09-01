@@ -1,63 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 12:52:57 +0200 (CEST)
-Received: from mail-lf0-f47.google.com ([209.85.215.47]:36784 "EHLO
-        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990521AbcIAKwpaazDD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 12:52:45 +0200
-Received: by mail-lf0-f47.google.com with SMTP id g62so57420841lfe.3
-        for <linux-mips@linux-mips.org>; Thu, 01 Sep 2016 03:52:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 12:54:52 +0200 (CEST)
+Received: from mail-lf0-f50.google.com ([209.85.215.50]:35012 "EHLO
+        mail-lf0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990521AbcIAKyo4OvvD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 12:54:44 +0200
+Received: by mail-lf0-f50.google.com with SMTP id e198so23870837lfb.2
+        for <linux-mips@linux-mips.org>; Thu, 01 Sep 2016 03:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=LDUxP3a0mzov0hTCIDAk6/+9mphDrvcYN1X6Mf9sRT4=;
-        b=YFX1RBRNUHL5bBgVRpbMwXE9qwzHJf4IWd9hSMtQ6ibh7RW3SZditLBCnVKOfr/1O8
-         C5NE0Cd/tfiPnetbWEBdGWBvY9Z/ZTxD//EHyOIZ/URM4cJM8LhSp8LlAT+YiaiK/7rT
-         gnu8cl5d19xJjdxezL5S2EOVLN1kcx7ukCLiE47WP66DXtpSK57CVgaaY9nAXjLj0mm9
-         oD49ExuU5ux77E9kl1BPECk8Y15qNxuAv5LjbDsW4x7E11RPOuN/gk1KFwK5W7QiZHjt
-         RcLGP9ay0TZk+7oXG7GbbsSSsVcRwOHyWspB7hBm/FoUIWY+JXp2DJXM3KaVP3Kmmni4
-         tvBQ==
+        bh=w2dvDm98DhNyCgAEhlkJv+IlnzsJuntSNpnoD9tkb00=;
+        b=FloaT8zJVMF0Ny1+qa8wjWgmTyHeLrx42RwHaiEoVMSMZz/NwalR+fNyzA0TMk0J9b
+         MA1bv0HDgJuSpKlvd7bVMIYR9pCFkLDXtjjzz01bnEp5S7vpPLojRMI3lgm713DKterV
+         RbXGPHHshLJumADc5Ak7lOiCnkOmiWCaGXnqfW8X5I4R5jHcmZ1lyXPcxgRH9uexm/1A
+         ibwmREvj9lIQSuYT7R5qFLNPraVZ+wrh4apLaGX1FWXIlpDFZTotd7DlkcX/RYj5S7sv
+         JmdYusmbAA2fYjpzkH3XghhNh6GuvlweVVB8o6uzBYi08zyooxdkVzbo9z7+gRERqOIA
+         eNsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=LDUxP3a0mzov0hTCIDAk6/+9mphDrvcYN1X6Mf9sRT4=;
-        b=ANWT+j2nX6Hq+zb5Ml2MyZ+WjbmSGnSI1FWFb0Qng/sMCiNyrSzTPUeRJrdCCH6NLs
-         Zh/Gz27V3qc2RxP+6oSDtenL/pwAzGmsl2KLgtknoHXSRdzdy5btF2dZWopNpYpr+P7q
-         Qf2qy0Rt1FKd36l6Bvxz2rq0v/Ra28p3whfqjIaTaPWBUz5r3gKSEO4apoMnfMva9iWG
-         XLr5C6uQ9eGdQFGmqoc304F2Cf1H/Kk/a2DLMDytHnshrSL4fUwdhgweyvg2AabIhNLE
-         aIqqV/sJ9NDq8Hd7T5+b/r/Psw8VqE8Kjfk6aWgTAoevNit4yDV1uWQj6hvHtAmoroZl
-         OtWQ==
-X-Gm-Message-State: AE9vXwMejVYe5rcyGaQTJOgvQouOU3Vnak2Hw7sEd59hc4x8pDxf2UGdMCSwK7MN0hpVtA==
-X-Received: by 10.25.215.220 with SMTP id q89mr998698lfi.30.1472727159902;
-        Thu, 01 Sep 2016 03:52:39 -0700 (PDT)
+        bh=w2dvDm98DhNyCgAEhlkJv+IlnzsJuntSNpnoD9tkb00=;
+        b=Cdoazti47XKo48VuW86Y9vfOzfEaQki3ZZ50In7yLv0/WtEYZMBgVq+yjdZogYcNjS
+         cQGOkDhQ2gQqyihkY2EwKR7UkOUjTFRVZGV4a5s74UN94sCImzSAMZ/BNJA+qFMIxrUr
+         T7sinOsYDMG2wcFusqBFFaRH5zPvO9gGEhX3VdgMNWfZ5qj0CktqbSgiViwIo0T8uFTt
+         w/u7KPAmJUPY59XKnKh9qtyudoCrX+kAblFyv1uwrP6z/OrFD+HTK3cwysT2sUYN9Suc
+         zujqY8nyLDCPwUjVtF9r9Z5Fw0pJE9f/XUIQ8kkrUBjh9Az0nQiInIBPBZYAVVQj02UA
+         l0rQ==
+X-Gm-Message-State: AE9vXwNLnKKVhhijMtt8URx0/drEr2SP7daai5aY9YfwNY1se9lfRyyIQyoqLuunrKuD/Q==
+X-Received: by 10.25.92.65 with SMTP id q62mr2715125lfb.3.1472727277104;
+        Thu, 01 Sep 2016 03:54:37 -0700 (PDT)
 Received: from [192.168.4.126] ([31.173.81.49])
-        by smtp.gmail.com with ESMTPSA id u70sm801394lja.15.2016.09.01.03.52.37
+        by smtp.gmail.com with ESMTPSA id i80sm839465lfg.6.2016.09.01.03.54.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 01 Sep 2016 03:52:38 -0700 (PDT)
-Subject: Re: [Patch v3 08/11] net: ethernet: xilinx: Generate random mac if
- none found
+        Thu, 01 Sep 2016 03:54:36 -0700 (PDT)
+Subject: Re: [Patch v3 09/11] net: ethernet: xilinx: Enable emaclite for MIPS
 To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
         monstr@monstr.eu, ralf@linux-mips.org, tglx@linutronix.de,
         jason@lakedaemon.net, marc.zyngier@arm.com
 References: <1472661352-11983-1-git-send-email-Zubair.Kakakhel@imgtec.com>
- <1472661352-11983-9-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <1472661352-11983-10-git-send-email-Zubair.Kakakhel@imgtec.com>
 Cc:     soren.brinkmann@xilinx.com, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, michal.simek@xilinx.com,
         netdev@vger.kernel.org
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <3e2dea83-ee59-2980-3a9d-50da04271158@cogentembedded.com>
-Date:   Thu, 1 Sep 2016 13:52:37 +0300
+Message-ID: <52b2d771-7490-efcc-734f-2caaad6c35e4@cogentembedded.com>
+Date:   Thu, 1 Sep 2016 13:54:35 +0300
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
  Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <1472661352-11983-9-git-send-email-Zubair.Kakakhel@imgtec.com>
+In-Reply-To: <1472661352-11983-10-git-send-email-Zubair.Kakakhel@imgtec.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54917
+X-archive-position: 54918
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -74,35 +73,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
-
 On 8/31/2016 7:35 PM, Zubair Lutfullah Kakakhel wrote:
 
-> At the moment, if the emaclite device doesn't find a mac address
-> from any source, it simply uses 0x0 with a warning printed.
->
-> Instead of using a 0x0 mac address, use a randomly generated one.
+> The MIPS based xilfpga platform uses this driver.
+> Enable it for MIPS
 >
 > Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+
 [...]
 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-> index 3cee84a..22e5a5a 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-> @@ -1134,8 +1134,10 @@ static int xemaclite_of_probe(struct platform_device *ofdev)
->  	if (mac_address)
->  		/* Set the MAC address. */
->  		memcpy(ndev->dev_addr, mac_address, ETH_ALEN);
-> -	else
-> -		dev_warn(dev, "No MAC address found\n");
-> +	else {
-> +		dev_warn(dev, "No MAC address found. Generating Random one\n");
-> +		eth_hw_addr_random(ndev);
-> +	}
+> diff --git a/drivers/net/ethernet/xilinx/Kconfig b/drivers/net/ethernet/xilinx/Kconfig
+> index 4f5c024..ae5c404 100644
+> --- a/drivers/net/ethernet/xilinx/Kconfig
+> +++ b/drivers/net/ethernet/xilinx/Kconfig
+> @@ -5,7 +5,7 @@
+>  config NET_VENDOR_XILINX
+>  	bool "Xilinx devices"
+>  	default y
+> -	depends on PPC || PPC32 || MICROBLAZE || ARCH_ZYNQ
+> +	depends on PPC || PPC32 || MICROBLAZE || ARCH_ZYNQ || MIPS
+>  	---help---
+>  	  If you have a network (Ethernet) card belonging to this class, say Y.
+>
+> @@ -18,7 +18,7 @@ if NET_VENDOR_XILINX
+>
+>  config XILINX_EMACLITE
+>  	tristate "Xilinx 10/100 Ethernet Lite support"
+> -	depends on (PPC32 || MICROBLAZE || ARCH_ZYNQ)
+> +	depends on (PPC32 || MICROBLAZE || ARCH_ZYNQ || MIPS)
 
-    All branches of the *if* statement should have {} if at least one has 
-them, see Documentation/CodingStyle, chaoter 3.
+    Parens not needed here, you could remove them while at it.
 
 [...]
 

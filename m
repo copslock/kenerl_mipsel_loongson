@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 18:34:19 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8324 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 18:51:53 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:64863 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992310AbcIAQbPt99j2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 18:31:15 +0200
+        with ESMTP id S23992247AbcIAQvqiKlt2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 18:51:46 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 466806F262608;
-        Thu,  1 Sep 2016 17:30:56 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+        by Forcepoint Email with ESMTPS id 0D40F9B7262FB;
+        Thu,  1 Sep 2016 17:51:27 +0100 (IST)
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 1 Sep 2016 17:30:59 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH 9/9] MIPS: c-r4k: Fix flush_icache_range() for EVA
-Date:   Thu, 1 Sep 2016 17:30:15 +0100
-Message-ID: <359bd15e6b6797f5e0240ad6ad2e0051a84ae6ec.1472747205.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.9.2
-In-Reply-To: <cover.d93e43428f3c573bdd18d7c874830705b39c3a8a.1472747205.git-series.james.hogan@imgtec.com>
-References: <cover.d93e43428f3c573bdd18d7c874830705b39c3a8a.1472747205.git-series.james.hogan@imgtec.com>
+ 14.3.294.0; Thu, 1 Sep 2016 17:51:29 +0100
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+To:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>,
+        <jason@lakedaemon.net>, <marc.zyngier@arm.com>
+CC:     <soren.brinkmann@xilinx.com>, <Zubair.Kakakhel@imgtec.com>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <michal.simek@xilinx.com>, <netdev@vger.kernel.org>
+Subject: [Patch v4 00/12] microblaze/MIPS: xilfpga: intc and peripheral
+Date:   Thu, 1 Sep 2016 17:50:53 +0100
+Message-ID: <1472748665-47774-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54937
+X-archive-position: 54938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,132 +43,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-flush_icache_range() flushes icache lines in a protected fashion for
-kernel addresses, however this isn't correct with EVA where protected
-cache ops only operate on user addresses, making flush_icache_range()
-ineffective.
+Hi,
 
-Split the implementations of __flush_icache_user_range() from
-flush_icache_range(), changing the normal flush_icache_range() to use
-unprotected normal cache ops.
+The MIPS based Xilfpga platform uses the axi interrupt controller
+daisy chained to the MIPS microAptiv cpu interrupt controller.
+This patch series moves the axi interrupt controller driver out
+of arch/microblaze to drivers/irqchip and then cleans it up a bit.
+This makes it usable by MIPS. The rest of the series basically
+enables drivers and adds dt nodes.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/mm/c-r4k.c | 43 +++++++++++++++++++++++++++++++++++--------
- 1 file changed, 35 insertions(+), 8 deletions(-)
+Would make sense for this to go via the MIPS tree.
+Hence, ACKs from microblaze. irqchip and net welcome.
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 36f4aa6d768f..eed8aefe1de4 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -722,11 +722,13 @@ struct flush_icache_range_args {
- 	unsigned long start;
- 	unsigned long end;
- 	unsigned int type;
-+	bool user;
- };
- 
- static inline void __local_r4k_flush_icache_range(unsigned long start,
- 						  unsigned long end,
--						  unsigned int type)
-+						  unsigned int type,
-+						  bool user)
- {
- 	if (!cpu_has_ic_fills_f_dc) {
- 		if (type == R4K_INDEX ||
-@@ -734,7 +736,10 @@ static inline void __local_r4k_flush_icache_range(unsigned long start,
- 			r4k_blast_dcache();
- 		} else {
- 			R4600_HIT_CACHEOP_WAR_IMPL;
--			protected_blast_dcache_range(start, end);
-+			if (user)
-+				protected_blast_dcache_range(start, end);
-+			else
-+				blast_dcache_range(start, end);
- 		}
- 	}
- 
-@@ -748,7 +753,10 @@ static inline void __local_r4k_flush_icache_range(unsigned long start,
- 			break;
- 
- 		default:
--			protected_blast_icache_range(start, end);
-+			if (user)
-+				protected_blast_icache_range(start, end);
-+			else
-+				blast_icache_range(start, end);
- 			break;
- 		}
- 	}
-@@ -757,7 +765,13 @@ static inline void __local_r4k_flush_icache_range(unsigned long start,
- static inline void local_r4k_flush_icache_range(unsigned long start,
- 						unsigned long end)
- {
--	__local_r4k_flush_icache_range(start, end, R4K_HIT | R4K_INDEX);
-+	__local_r4k_flush_icache_range(start, end, R4K_HIT | R4K_INDEX, false);
-+}
-+
-+static inline void local_r4k_flush_icache_user_range(unsigned long start,
-+						     unsigned long end)
-+{
-+	__local_r4k_flush_icache_range(start, end, R4K_HIT | R4K_INDEX, true);
- }
- 
- static inline void local_r4k_flush_icache_range_ipi(void *args)
-@@ -766,11 +780,13 @@ static inline void local_r4k_flush_icache_range_ipi(void *args)
- 	unsigned long start = fir_args->start;
- 	unsigned long end = fir_args->end;
- 	unsigned int type = fir_args->type;
-+	bool user = fir_args->user;
- 
--	__local_r4k_flush_icache_range(start, end, type);
-+	__local_r4k_flush_icache_range(start, end, type, user);
- }
- 
--static void r4k_flush_icache_range(unsigned long start, unsigned long end)
-+static void __r4k_flush_icache_range(unsigned long start, unsigned long end,
-+				     bool user)
- {
- 	struct flush_icache_range_args args;
- 	unsigned long size, cache_size;
-@@ -778,6 +794,7 @@ static void r4k_flush_icache_range(unsigned long start, unsigned long end)
- 	args.start = start;
- 	args.end = end;
- 	args.type = R4K_HIT | R4K_INDEX;
-+	args.user = user;
- 
- 	/*
- 	 * Indexed cache ops require an SMP call.
-@@ -803,6 +820,16 @@ static void r4k_flush_icache_range(unsigned long start, unsigned long end)
- 	instruction_hazard();
- }
- 
-+static void r4k_flush_icache_range(unsigned long start, unsigned long end)
-+{
-+	return __r4k_flush_icache_range(start, end, false);
-+}
-+
-+static void r4k_flush_icache_user_range(unsigned long start, unsigned long end)
-+{
-+	return __r4k_flush_icache_range(start, end, true);
-+}
-+
- #if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
- 
- static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
-@@ -1904,8 +1931,8 @@ void r4k_cache_init(void)
- 	flush_data_cache_page	= r4k_flush_data_cache_page;
- 	flush_icache_range	= r4k_flush_icache_range;
- 	local_flush_icache_range	= local_r4k_flush_icache_range;
--	__flush_icache_user_range	= r4k_flush_icache_range;
--	__local_flush_icache_user_range	= local_r4k_flush_icache_range;
-+	__flush_icache_user_range	= r4k_flush_icache_user_range;
-+	__local_flush_icache_user_range	= local_r4k_flush_icache_user_range;
- 
- #if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
- 	if (coherentio) {
+Compile tested on microblaze-el only!
+Based on v4.8-rc4
+
+Regards,
+ZubairLK
+
+V3 -> V4
+Better error handling
+Some minor fixups
+
+V2 -> V3
+Cleanup the interrupt controller driver a bit based on feedback
+Rebase to v4.8-rc4
+
+V1 -> V2
+Resubmitting without truncating the diff output for file moves
+Removed accidental local mac address entry
+Individual logs have more detail
+
+Zubair Lutfullah Kakakhel (12):
+  microblaze: irqchip: Move intc driver to irqchip
+  irqchip: axi-intc: Clean up irqdomain argument and read/write
+  irqchip: axi-intc: Rename get_irq to xintc_get_irq
+  irqchip: axi-intc: Add support for parent intc
+  MIPS: xilfpga: Use irqchip_init instead of the legacy way
+  MIPS: xilfpga: Use Xilinx AXI Interrupt Controller
+  MIPS: xilfpga: Update DT node and specify uart irq
+  MIPS: Xilfpga: Add DT node for AXI I2C
+  net: ethernet: xilinx: Generate random mac if none found
+  net: ethernet: xilinx: Enable emaclite for MIPS
+  MIPS: xilfpga: Add DT node for AXI emaclite
+  MIPS: xilfpga: Update defconfig
+
+ arch/microblaze/Kconfig                       |   1 +
+ arch/microblaze/include/asm/irq.h             |   2 +-
+ arch/microblaze/kernel/Makefile               |   2 +-
+ arch/microblaze/kernel/intc.c                 | 196 --------------------
+ arch/microblaze/kernel/irq.c                  |   4 +-
+ arch/mips/Kconfig                             |   1 +
+ arch/mips/boot/dts/xilfpga/nexys4ddr.dts      |  63 +++++++
+ arch/mips/configs/xilfpga_defconfig           |  37 +++-
+ arch/mips/xilfpga/intc.c                      |   7 +-
+ drivers/irqchip/Kconfig                       |   4 +
+ drivers/irqchip/Makefile                      |   1 +
+ drivers/irqchip/irq-axi-intc.c                | 252 ++++++++++++++++++++++++++
+ drivers/net/ethernet/xilinx/Kconfig           |   4 +-
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c |   8 +-
+ 14 files changed, 371 insertions(+), 211 deletions(-)
+ delete mode 100644 arch/microblaze/kernel/intc.c
+ create mode 100644 drivers/irqchip/irq-axi-intc.c
+
 -- 
-git-series 0.8.10
+1.9.1

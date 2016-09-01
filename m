@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 18:55:52 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8708 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 18:56:15 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:22207 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992328AbcIAQv4Ixwh2 (ORCPT
+        with ESMTP id S23992338AbcIAQv4690y2 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 18:51:56 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id CE3D475AA45A0;
-        Thu,  1 Sep 2016 17:51:36 +0100 (IST)
+        by Forcepoint Email with ESMTPS id A38FC7E5B2A1C;
+        Thu,  1 Sep 2016 17:51:37 +0100 (IST)
 Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 1 Sep 2016 17:51:39 +0100
+ 14.3.294.0; Thu, 1 Sep 2016 17:51:40 +0100
 From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 To:     <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>,
         <jason@lakedaemon.net>, <marc.zyngier@arm.com>
 CC:     <soren.brinkmann@xilinx.com>, <Zubair.Kakakhel@imgtec.com>,
         <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
         <michal.simek@xilinx.com>, <netdev@vger.kernel.org>
-Subject: [Patch v4 11/12] MIPS: xilfpga: Add DT node for AXI emaclite
-Date:   Thu, 1 Sep 2016 17:51:04 +0100
-Message-ID: <1472748665-47774-12-git-send-email-Zubair.Kakakhel@imgtec.com>
+Subject: [Patch v4 12/12] MIPS: xilfpga: Update defconfig
+Date:   Thu, 1 Sep 2016 17:51:05 +0100
+Message-ID: <1472748665-47774-13-git-send-email-Zubair.Kakakhel@imgtec.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1472748665-47774-1-git-send-email-Zubair.Kakakhel@imgtec.com>
 References: <1472748665-47774-1-git-send-email-Zubair.Kakakhel@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54949
+X-archive-position: 54950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,9 +45,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The xilfpga platform has a Xilinx AXI emaclite block.
-
-Add the DT node to use it.
+Update defconfig to enable emaclite, i2c, temp sensor found on the
+xilfpga platform
 
 Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 
@@ -59,47 +58,78 @@ V2 -> V3
 No change
 
 V1 -> V2
-Removed accidental local-mac-address entry
+No change
 ---
- arch/mips/boot/dts/xilfpga/nexys4ddr.dts | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/mips/configs/xilfpga_defconfig | 37 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/xilfpga/nexys4ddr.dts b/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
-index f5ebab8..09a62f2 100644
---- a/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
-+++ b/arch/mips/boot/dts/xilfpga/nexys4ddr.dts
-@@ -42,6 +42,32 @@
- 		xlnx,tri-default = <0xffffffff>;
- 	} ;
- 
-+	axi_ethernetlite: ethernet@10e00000 {
-+		compatible = "xlnx,xps-ethernetlite-3.00.a";
-+		device_type = "network";
-+		interrupt-parent = <&axi_intc>;
-+		interrupts = <1>;
-+		phy-handle = <&phy0>;
-+		reg = <0x10e00000 0x10000>;
-+		xlnx,duplex = <0x1>;
-+		xlnx,include-global-buffers = <0x1>;
-+		xlnx,include-internal-loopback = <0x0>;
-+		xlnx,include-mdio = <0x1>;
-+		xlnx,instance = "axi_ethernetlite_inst";
-+		xlnx,rx-ping-pong = <0x1>;
-+		xlnx,s-axi-id-width = <0x1>;
-+		xlnx,tx-ping-pong = <0x1>;
-+		xlnx,use-internal = <0x0>;
-+		mdio {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			phy0: phy@1 {
-+				device_type = "ethernet-phy";
-+				reg = <1>;
-+			};
-+		};
-+	};
-+
- 	axi_uart16550: serial@10400000 {
- 		compatible = "ns16550a";
- 		reg = <0x10400000 0x10000>;
+diff --git a/arch/mips/configs/xilfpga_defconfig b/arch/mips/configs/xilfpga_defconfig
+index ed1dce3..829c637 100644
+--- a/arch/mips/configs/xilfpga_defconfig
++++ b/arch/mips/configs/xilfpga_defconfig
+@@ -7,6 +7,12 @@ CONFIG_EMBEDDED=y
+ CONFIG_SLAB=y
+ # CONFIG_BLOCK is not set
+ # CONFIG_SUSPEND is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++# CONFIG_IPV6 is not set
++# CONFIG_WIRELESS is not set
+ # CONFIG_UEVENT_HELPER is not set
+ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
+@@ -14,6 +20,30 @@ CONFIG_DEVTMPFS_MOUNT=y
+ # CONFIG_PREVENT_FIRMWARE_BUILD is not set
+ # CONFIG_FW_LOADER is not set
+ # CONFIG_ALLOW_DEV_COREDUMP is not set
++CONFIG_NETDEVICES=y
++# CONFIG_NET_CORE is not set
++# CONFIG_NET_VENDOR_ARC is not set
++# CONFIG_NET_CADENCE is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_EZCHIP is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_NETRONOME is not set
++# CONFIG_NET_VENDOR_QUALCOMM is not set
++# CONFIG_NET_VENDOR_RENESAS is not set
++# CONFIG_NET_VENDOR_ROCKER is not set
++# CONFIG_NET_VENDOR_SAMSUNG is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++# CONFIG_NET_VENDOR_STMICRO is not set
++# CONFIG_NET_VENDOR_SYNOPSYS is not set
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_NET_VENDOR_WIZNET is not set
++CONFIG_XILINX_EMACLITE=y
++CONFIG_SMSC_PHY=y
++# CONFIG_WLAN is not set
+ # CONFIG_INPUT_MOUSEDEV is not set
+ # CONFIG_INPUT_KEYBOARD is not set
+ # CONFIG_INPUT_MOUSE is not set
+@@ -25,13 +55,18 @@ CONFIG_SERIAL_8250=y
+ CONFIG_SERIAL_8250_CONSOLE=y
+ CONFIG_SERIAL_OF_PLATFORM=y
+ # CONFIG_HW_RANDOM is not set
++CONFIG_I2C=y
++CONFIG_I2C_CHARDEV=y
++# CONFIG_I2C_HELPER_AUTO is not set
++CONFIG_I2C_XILINX=y
+ CONFIG_GPIO_SYSFS=y
+ CONFIG_GPIO_XILINX=y
+-# CONFIG_HWMON is not set
++CONFIG_SENSORS_ADT7410=y
+ # CONFIG_USB_SUPPORT is not set
+ # CONFIG_MIPS_PLATFORM_DEVICES is not set
+ # CONFIG_IOMMU_SUPPORT is not set
+ # CONFIG_PROC_PAGE_MONITOR is not set
++CONFIG_TMPFS=y
+ # CONFIG_MISC_FILESYSTEMS is not set
+ CONFIG_PANIC_ON_OOPS=y
+ # CONFIG_SCHED_DEBUG is not set
 -- 
 1.9.1

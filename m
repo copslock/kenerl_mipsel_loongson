@@ -1,83 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 01:00:53 +0200 (CEST)
-Received: from mail-sn1nam02on0055.outbound.protection.outlook.com ([104.47.36.55]:5024
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 01:03:17 +0200 (CEST)
+Received: from mail-by2nam01on0086.outbound.protection.outlook.com ([104.47.34.86]:51262
+        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992307AbcIAXAqOdHbb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Sep 2016 01:00:46 +0200
+        id S23992307AbcIAXDJuwRIb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Sep 2016 01:03:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=NV101bla7gF/QsxjaPo0YwYq7oXIH4SxTHr2tLsINKk=;
- b=Vy0YjDYMA0Q4I9qxTFuqCWhPZ59s0RlV5oWrLcFJPk/mUKgVsp2JttOpo84br5PUMuXBajl5PiopbFoK7h69IlJY6c0ACaOCJsMBjT80rAUgWx5gnKfiNn+x83ZNT6/aZPTLo8308pzgbCzVpMEzxn5q7vT4AvY9EzngT9sUZ9o=
+ bh=HI17qmO7gzCeXiFyuGl2QDK1Tdp0Jh980wOwXcaV+34=;
+ b=MyEKeOHrQdHGvRDDhAgsRL3oEuypKVEunBra7jiVla6JnfM5EZKw02blmsfilT3G4c6XqLVJj7LOKkXtb1o68SyMrQ7P3ZYqMO/0IwETSVkdyrg7hC1WTUM5oz6bTRk8VGDezHPDkI7Mr9EtEDrjq4k/i10zujupu8tlMoEam0I=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=David.Daney@cavium.com; 
 Received: from dl.caveonetworks.com (50.233.148.156) by
- CY1PR07MB2135.namprd07.prod.outlook.com (10.164.112.13) with Microsoft SMTP
+ BN4PR07MB2129.namprd07.prod.outlook.com (10.164.63.11) with Microsoft SMTP
  Server (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P384) id
- 15.1.587.13; Thu, 1 Sep 2016 23:00:38 +0000
-Message-ID: <57C8B313.6030206@caviumnetworks.com>
-Date:   Thu, 1 Sep 2016 16:00:35 -0700
+ 15.1.557.21; Thu, 1 Sep 2016 23:03:01 +0000
+Message-ID: <57C8B3A2.4080209@caviumnetworks.com>
+Date:   Thu, 1 Sep 2016 16:02:58 -0700
 From:   David Daney <ddaney@caviumnetworks.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20130625 Thunderbird/17.0.7
 MIME-Version: 1.0
 To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 5/6] MIPS: OCTEON: delete legacy code for PHY access
-References: <20160901204400.16562-1-aaro.koskinen@iki.fi> <20160901204400.16562-6-aaro.koskinen@iki.fi>
-In-Reply-To: <20160901204400.16562-6-aaro.koskinen@iki.fi>
+Subject: Re: [PATCH 6/6] MIPS: OCTEON: delete unused cvmx-mdio.h
+References: <20160901204400.16562-1-aaro.koskinen@iki.fi> <20160901204400.16562-7-aaro.koskinen@iki.fi>
+In-Reply-To: <20160901204400.16562-7-aaro.koskinen@iki.fi>
 Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [50.233.148.156]
-X-ClientProxiedBy: BN6PR07CA0034.namprd07.prod.outlook.com (10.172.104.20) To
- CY1PR07MB2135.namprd07.prod.outlook.com (10.164.112.13)
-X-MS-Office365-Filtering-Correlation-Id: 8187469c-4940-4125-0512-08d3d2bbcaf7
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2135;2:dmjNB3sIuqKHOe2B4j+vU5Onfs6JaRyOJ6oguGYbaraK5DDmN2Eb/AzkFn1yLnZtL14dz3aL4rg1sBEMjIRhc6eyYEBptk1GKnZNE42RKOrcdRHgArDbfpeEx8239nFNcCk9EkpeDlO7uArVgdc9gnSryvKQilW/3N3MsGHxUjnPUcbDkLLJzIWKnsziBO4p;3:HcbDAB9Givu86SHkQVLlnJyTNhRpObzkYbL92cI0AKaegmerdlof3s0SGD7gQbPcTZer0d1Bn7bVSK/c1q4fDDqZF0DYVnmTS+Beb9WuwUSL6rcgS6HiXgzSxaRnWIEe;25:YUSAo0TTFWe7ZsBPau3uJqjg0SppmNmMcgrZ2EBt2J7FBnPseWLMyiedcB5blilaxlGCjWUt1j7kKiBxhEyFa5kWkSLr+Yrp6x80JQ/WKPUMuZKqQ3m7To25aL+8iYMcflxoGH0i1rFQboyaeiSpsFERynjUKfzoF/0Ca1RaKxb5vtlck/xWGVRZaXyY4U6AZuhP1bPgpA9YTmbdQNk1/y8sQcliXNg2XeTs87qAO5VTI8BIGQI1BVfIpoZ5MYTMvP34Np/IEAKxnU5iQjjLwxWgE8irjKDVB/APSuba3WqapK7t+Bvv6h9mHM21n3pKVMByUL5aLFudG7mHp5y+5fNwZKvZ6VxfmvnOqPTSQALBOyvC9R7yE5o+e+mJbIdAlaYROrWdEcjwEtUQpd9jYP1/J50hTOYdddwUkqb+sm4=
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:CY1PR07MB2135;
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2135;31:J6Ua51/hdT/GL3t0+ScF55RCCywbvNxqMkfxaNtbUvacu54rIdhXAAD5hfBPwha0jeQgz+3vbEgoAusCpyQM6YJzI+V+b/Qvwo72s7a+P5n6yb+mei35ITxIjCyZwcf5vGiBbyrfQZSl5jtvxZUezPSZGCpwUT9KNbGReuAm+a3QMQh64eL3bsjbj4PhuRJ2TxweqhQqzqgjWdgUmh/MhMvbDcNO2rCE+2DacxCkE0w=;20:NMZJoxrrciS5EBsY0gZ8uIBfDfG0FwhMlYQoEWdiLdXHQ2yZHTiqphZSzrVL9AvcG101+jTVid59ksAhB6XZenULuszST2KInWyk4oaWO4sHiTHMloErSyvXJLpzOs+NyKO2sPbAbXUjvbZBpI2CZxrdIO8U13IZhxtbva7d+1oh0kHw+s70C7nCAD9KGYqhNk9qXd3o/X8BnlCNFeBkOsVJUEMtu16CldgRZDHEoN0HzigAWHtz7vtQ4Dcgm6Z5GGvHKRaT7O/67xNw5BXo8C0Lk/uRKjIhFECKUsPx8eet7s4Q4rdZjcqdihfMxmoRx+5P4oxGmTzRMaNfcR4+r7HuINLrN38RLAOpk9FDXGwpsz6bNsU5+85pu52iI9f/JbnKXNiqV60eUrSKFdpZNsvsxGEZR5dvqcLCjUhQx5eL5NUOLnPQjIKu/U20oU5/d7xwpQWmLfqaZEBR7M3nVXZD68AFkrVbE8extyTMs/Sj8qCFUR0n3NuVy3eIjb9ZKHFpLbP5N/fPwvZNG3U6EMBRmWHRRow7JfylAnWKQeuycNO9LJcGbwfEmct7LXZQHlRGX2CNeWbNKVYCVT72+XlWr7cuoJBkhcm22oylJCQ=
-X-Microsoft-Antispam-PRVS: <CY1PR07MB2135F31C8697B949AABDD34297E20@CY1PR07MB2135.namprd07.prod.outlook.com>
+X-ClientProxiedBy: BN6PR07CA0047.namprd07.prod.outlook.com (10.172.104.33) To
+ BN4PR07MB2129.namprd07.prod.outlook.com (10.164.63.11)
+X-MS-Office365-Filtering-Correlation-Id: abfbe030-82a6-4f9c-d228-08d3d2bc2019
+X-Microsoft-Exchange-Diagnostics: 1;BN4PR07MB2129;2:4J6Rsoj6+X/XgfrOUz4mPyNh885ZCm69erxJ0mDrN6UOWVHrcnWgrWh2dX3+lY51axjllv/98UbKs4+Sk4cjFzksWMe1If7DxGyYnid/6XlxUXvTwAOV6yivI86I0xr9Cs33yyPe6yFElHWAQbyaGbpL1JEMphF1xLwGYMu6T3LSvh00e6rEJYFy9ylfrl0G;3:t803BaH9WBetMHBQj3PZGoCIjmHtpI7l+Vth2yM0Ijs93b2TjTH9Mf/LXIRqYE1SGPRLhI6hlUArsbk4ljoyZ+0Q1FdmWsCM8p4ZLWk0WBB5ZgZGRmJw6nsZwmaF0ziT;25:Tv/MDpxNbCIPnTVWzUhFvVXO0FPBvVUImtrm0oTbOeoaB3pC+eJ9Rte6sjV/1ZdXApQMO3vmVHaNFIKje3etd18LK8Vab6L2Xl5X1A9tW4An0raQ0kNjhyOYVDvTv4Dlh/+tqRqxEur4jDuj34rm1kxLTrAJtFffiG5nEUAI+R5fD6VIVebVx+pfGZ2PTjd0lTIuMwBcbZtGI4p7UEjQvZ1yfz2GPXmLI0OHIaMWpTrQOozB4uSezPV2xP+tSoF29jsHjH6dCGBUwloI7SXQOzc4vH+d0QXq9y2htkssfGuk8q8FRCjqerpbZJ0D63BNis0BZSK4Y2keZhTwMUMhT6B34f0DRMg+5n4C/MnrkVKZgrIdTrT75EGgjdJ6RCxtHCiSnCEzFmVibs7V7EMlR+kSwLBtz3fq4uW+8DkZ1iY=
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:;SRVR:BN4PR07MB2129;
+X-Microsoft-Exchange-Diagnostics: 1;BN4PR07MB2129;31:O6nxPowKXetLfypzAbvTEqnUsqtjw2w8xLL6S3FDb+HHtrTvWEj/HKt0O3PEmj7BUemrWgjs8wJBx3Arq4yKpirLk6dExkdpnnEu5fdn/wcF2t4+Wvi6BNMjiJ1t90OFfq+FDJWX68AvNynyKN2nO2bdJUvrQcdqwetgDIxi/eE7gqMe4PEcQcPvHHS8TrCgsX+deMVqogzMDe5i3o3ZhKmvEFt6Kgqb+aH4UG1UEeE=;20:J8T1Ctjb7KoYNkG/5zesgAIb2MvWql+yMoAb5PWOySFTfWadTLPH4fF/3mcBrspUaKo7qC2Ropv47vmaf+H+CxQ+CBZjm++t9H2LIkluidB8fyl+cNoZjB/R77lg2lNbiEHU49y0XXzHRThdsdaoWcASZvZXeLsgWw7iJACpIlWS3ONiCUVesw3l/AZr+oQAAOICk3Eu0CEFOjhSgfYGvxjyji/i1hM9ai3pInsc/14e9Uxq+HIUVv5luaTSnpaBoNZ4P5T0R92ZOGrBs4Wvd9VwVlOyOz0kD07MjE4biRxQT/ccyxFVWla5ZHHQAKKk2xgHf0MGJ2ukG/TOUS6GJelTtxGmSsyfbgtmgI2sp7igV2BMBO4+6GlX3CDjgCIdEpKu3J4xWowy0ha8V3vevP9mXQPFWOF4t/fGe371mFhdwBYT/WJZJmdjdSaRHMa3H6TwGZ7VdYqRs6+PDg/rosKr801MmpaPOvQ8WI2QHhC4hBsu0cTleLILteCygbTMy6YRY7M/bK8itIb5mpn1isG/D/SN6mYx88/+7rPz0PErJxDvOAkAVBhlMeOQTyoz6LEd1DgYJuQrwV4SjUvu80MpgifZY7SzY8O6hKF/s9M=
+X-Microsoft-Antispam-PRVS: <BN4PR07MB2129977D9360C883171A6E3497E20@BN4PR07MB2129.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040176)(601004)(2401047)(8121501046)(5005006)(3002001)(10201501046);SRVR:CY1PR07MB2135;BCL:0;PCL:0;RULEID:;SRVR:CY1PR07MB2135;
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2135;4:Uijb+8xDkRESaQdBULnxS3MQy6b8c3h9XJOmDV3YIlTRqRb95w7C/FtxyZvpBRlX/2mGdzhP3ewe1dAbsOPJRO1q8GntTggxYayltnef9r4LkH5hDJKNz6ziOOIwT28KsbAQ1NXOFGNmrwm1G7kiq69vzKNfItdwRipDEfjes/A4LnZ1G19RsblShncnkkC+zGpuugfU9ck/6VxF7dhHZuwW/VkWOrZ5d7zm4/WTfBupao2NB9XbOpO1/eIrGAxODTopINONEidqBHGD22MDHUt5dOzvnq1/ZVsnhunsZYbyW5E76NvPs64R8UeRtD1mPF+YeET2BP4cEKGqyzvb5duuL5/K1MBsyLq+BPXqxPqaHs5A7EMLdE6xQhYf8gBO
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040176)(601004)(2401047)(8121501046)(5005006)(10201501046)(3002001);SRVR:BN4PR07MB2129;BCL:0;PCL:0;RULEID:;SRVR:BN4PR07MB2129;
+X-Microsoft-Exchange-Diagnostics: 1;BN4PR07MB2129;4:Lky18iAyVpX3pVOcBK2zF+tzwu6mVTkLiLj96n1GZHrbjDphVuvZu6jQ5mgNQAcLfgOs8XjdAX/pLGOsi+XDPHhtqyu2mVQtuYnlkckj7bvIbsTn4xB5nc6zRdIi5GHjY6cXJ45JXoTMlCEX+BF2UZ0MUtuKcdmgg558empb1DdEJ9fshgKWn2xf94MtgQ4CKMUpN+CGxsAtl8nBGBoNEm4Nz1ekb28/fqZFyBfWNu0dnyo+3A5ENh9Vv/kaImz/MAKUJlYAbllnzG208iCeWflQB64UC11Gf0RcXgYwBT0/IFxoB0hnx3onySigOdvNgDabwj5YZr8EmWm68L65f30lugu+/DN93XUyQJQYqfBur3ZG2OkuLr/EwVHP10cPiklcg82aplc0VS6ivPQdug==
 X-Forefront-PRVS: 0052308DC6
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(7916002)(377454003)(189002)(199003)(24454002)(2950100001)(83506001)(19580395003)(4326007)(110136002)(105586002)(66066001)(47776003)(81156014)(7736002)(65956001)(77096005)(33656002)(19580405001)(101416001)(97736004)(7846002)(189998001)(42186005)(4001350100001)(53416004)(305945005)(80316001)(59896002)(92566002)(106356001)(81166006)(8676002)(2906002)(65806001)(3846002)(68736007)(69596002)(64126003)(230700001)(23756003)(50466002)(6116002)(5660300001)(76176999)(36756003)(586003)(87266999)(65816999)(54356999)(50986999);DIR:OUT;SFP:1101;SCL:1;SRVR:CY1PR07MB2135;H:dl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(7916002)(24454002)(189002)(199003)(377454003)(68736007)(4326007)(53416004)(66066001)(65806001)(305945005)(47776003)(92566002)(33656002)(5660300001)(65956001)(6116002)(189998001)(69596002)(4001350100001)(110136002)(50466002)(77096005)(3846002)(7846002)(97736004)(586003)(59896002)(7736002)(230700001)(83506001)(2950100001)(101416001)(19580395003)(8676002)(80316001)(19580405001)(64126003)(2906002)(105586002)(36756003)(81166006)(23756003)(42186005)(87266999)(106356001)(54356999)(65816999)(76176999)(50986999)(81156014);DIR:OUT;SFP:1101;SCL:1;SRVR:BN4PR07MB2129;H:dl.caveonetworks.com;FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
 Received-SPF: None (protection.outlook.com: cavium.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;CY1PR07MB2135;23:ElXbtTsqMUW9ietyp3PGFo5tsjhKBd30ff5UYeh?=
- =?iso-8859-1?Q?HZ2dmu0sECVgEmeRvuJ8VaWHfza/w9wMm5Szensdjvma7XzIGsFNJBmI/l?=
- =?iso-8859-1?Q?Bsi4fV+vZnRQpDmO1MaHIkzJmcQg95YaHRAfma1IKvWULxhvo+MFW7UFJO?=
- =?iso-8859-1?Q?yX3AEsgAAz2phz+Aq6tJNZCx0SR29GaixJjGqUIJfIvCXAqtXpeIGUT61O?=
- =?iso-8859-1?Q?2NXLlYt7UjnXyI3+85kQ/RUueOxx2Jt0mTo9KBdJAPeNWJz4xxi1ipHXA5?=
- =?iso-8859-1?Q?CZgiLrz5xAmD4/WkOFrHjRPSy3DvWfivrxFlR2Z6l4TDCjz0+QLzVqFWRg?=
- =?iso-8859-1?Q?ICnaXUOoPQbqZC5Y9upxloiMGlWqUzhTL409OIMbu5aIB2umiwYeZQh9iB?=
- =?iso-8859-1?Q?UQNtlPE7iJptiYe9LrCEBjfJzVaVsXd+ycCI4AG9bX7zGREWurC7SCMwnK?=
- =?iso-8859-1?Q?hf6pg5FR10j4Q6S6ykA37WNghW2jUeVxLOkZ0O4TjX7pyKNx5psp72jc71?=
- =?iso-8859-1?Q?x9kUnXfcnX9kAPbObsBSAkQ+spULM5m8MsiZ1Y6dSnFDOdGiIfxUw0bTBg?=
- =?iso-8859-1?Q?+6xF+YK9V+YOOvdWdCOszgxSfHOwtmNpyrr0vGsrt0TFPV30xAGb3e/T6m?=
- =?iso-8859-1?Q?WYAE+WYZaFG8XoVQaHnxuRYDzFDa8/t7weJ7A+ly/0VPzJ91j7AcB3NZGZ?=
- =?iso-8859-1?Q?jyZDQmL6wdpSkfu7xdg5xLpdnvaNfk6ovek+t4ueX54RVjmEqKCu1CJKH0?=
- =?iso-8859-1?Q?YrQegNgSG4raS3T3B51mEXreCXDXhTcj2XfxPJS7/DM/eY9yZWFnv8dc0q?=
- =?iso-8859-1?Q?c75kyY5pQG8PEk7qzUVSObjImsIs2+79xHHR7rRqzQLfqTDgkNoCeNPqvw?=
- =?iso-8859-1?Q?mWlPjoMwXZFktR8h6xtCugRghyS+e0zSY4Uk6KDhqnMtNRc/uP9LC1hTDP?=
- =?iso-8859-1?Q?dwbQtLPY4KR/6uHDGUmw3x4WVy7XzTm13ScTVL7kbD8sRg2O16yOZOzfda?=
- =?iso-8859-1?Q?Tyqym/XP0cHOYTOQP034KTtsKqfj/YajAkxyqS3PJ9mbtnJGNt+ZSE0pyc?=
- =?iso-8859-1?Q?nS4ii4bz26NEHGj+uG7O3dSlKapzpfUKn40/IPzV3ZqWbnjq4jNTriXXo0?=
- =?iso-8859-1?Q?UglHu1750cpGrIA+QZ3/0FHE7XF6cwPMlhxZ6WLa9WXvISMYD4l61In0pI?=
- =?iso-8859-1?Q?GBHlj7VX79BIoAqmJ1KEKtLhcXJS4gYx+WEhmg+Z/2n9UZ9NK/HesqOX3s?=
- =?iso-8859-1?Q?t3kxmBu0Pnxwe4bnPA+On24bI1tma0w6hHkMkipGBakq38GnCQFVn3x9xo?=
- =?iso-8859-1?Q?gciDlPzxTXXDGorH2HdWEpeoUCiO5fEf5Y9Q2+KbHKD35qJag9CHzDvVvL?=
- =?iso-8859-1?Q?5FC8ZoeI=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;CY1PR07MB2135;6:PDLodHeeh5tdZLCSGh6Dc2ikgO7djYtFC0jmFzfnzcOfnGfyC3Y+r8p9SFEyjVg4wa/5pr/lMODaaAPTfbj+z0YCE4xdNb8A3lZ3Kv7R7Ne/gc8An16Id4cOk2rknSnn2TfnVb4FRUV1O6NPl3bc2c13j/COhMeLDxBd5TUxxullRRuKfV+FGJ5HTGmV225S3UdJhh7tPFmVRL4ZkrefzXAh6y3UdAhJxRlmbkjhGJi77uI0OS0Bf1DT5FaLJvy5/FNTwXW20K0sdMjt+YZJCBMXqVrWawqD/1XHmZVfdx0=;5:bM8AV5wjBWGzvQzLQl7HIYWT26Wlfc4zP1qj9pVthLe7B67UvHZLA1lclepeXIGHWbzbmCf21jQt1lTkEznpMjBHo/KPLzFImiidId2rzdMAC+w8C6geX5/3CSwNd8uQfrzxmW6zuq23WDTLr2oRQw==;24:m/GtR+pfnbTp16iVLPcdQB1f6sO5k559wRarQ3W/d1IPqXxt39dg8qx+Q1GPWx0uqU6EqWMaGnL6z6ddq00nvT6i0GO0QRbT53OKAlNwjjQ=;7:bRhTK1a0/e1bpCIOV3xsX+UCfjfRI4oYz41cPc4wPxUoSusSJyybwqV3J2EWuAvdK194oBs2KBzwoz14GBTDpoUFnUlRirwQP4Yy8OPTK6iveDIaMUTjfE9uOBG4MdG+1fUpc9xJRTuA9g+ogkPZM3rzo9eaoVsQZyFTnQT5C5v+zA88175oMLAiIL1fLphJn5HaYzGqUe8bQ4Zuopk7eqlEH1ffKi20h9xc0RbYvmMy681iM74tNgwK63ydGnKh
+X-Microsoft-Exchange-Diagnostics: =?iso-8859-1?Q?1;BN4PR07MB2129;23:cLxRsZ3zJSRktI4RE4+duIHx9NyKkX9T/ZQ1bQn?=
+ =?iso-8859-1?Q?bcESwi3wpsJzSIy5ooVkv8kTXKAxml1LIyr0Nral2mlN69rWN/kmhUPsY9?=
+ =?iso-8859-1?Q?lb6igLoRonyjMqrntoUszzRAQeLzNAHALlx49luRaxWbjF7yvJtxKx5uJs?=
+ =?iso-8859-1?Q?Pzsqg7UPzRM+Y3exdtxrSGixRdlmkFqhuvS7HlAa+LPqJgxoRbHNw58bkO?=
+ =?iso-8859-1?Q?ZngUdYe4Za+7aKkd8+NrCrO3xPvG4TWh/r1SrClWRCEBqufh3ljTGowewj?=
+ =?iso-8859-1?Q?uSv+g9+rCdtcVNED5hjzNLurJvnSFxo6KQNJVkHZh45wVdpfMJxIM3N2XH?=
+ =?iso-8859-1?Q?9ru8HLVmtUIM+mKyrtz2NX02pYpJ5CovP2NusCzoFIL1qr0VY5GgSmnYI/?=
+ =?iso-8859-1?Q?XAdwfG70s9g+BKGNUEGoRXrmDqKVgBCn4A9ZSQRb3DU9jvMpyvV6Fug/w/?=
+ =?iso-8859-1?Q?SHY6ROfvs8BAAb2kiXbsV1N00q71A2CYi7cpLBRjXYs8hnk8fHceuMn9Z3?=
+ =?iso-8859-1?Q?cK9QLf7LXFtzjg8TYT2vDqRoA3wE+JGZ0SqHgmi2TFrrxQ3mKCvMrZRIR9?=
+ =?iso-8859-1?Q?JW3S3Yhox2Uk00gXFVLGF8EtO5yW9GyYNlcpKT1XP8wmTgGZoSrDSA+6Oh?=
+ =?iso-8859-1?Q?mDLAz/AlZXnLbz5LNKxEgoomeLy2eMsGfUPvLasKyDyVY6rA2kMdai5DEZ?=
+ =?iso-8859-1?Q?EqNsqvTmna6arXqebsghm5gF7rFoEB9P5yl6XRKKFOUbSRNlH078D17hpr?=
+ =?iso-8859-1?Q?B2nD2GqrJzsjxReXVol0IFF96NpGzrCF3wQfQy8/2QYH8gRl3Njrwm8lFD?=
+ =?iso-8859-1?Q?Hcm7VOoVurjY7334bM8MucDEilAMoHcWbRAxGze1VpPw5rHFALyMhRfZJa?=
+ =?iso-8859-1?Q?fFr/rC4QQvl5hbwZGDmZk4EEJjzDgLEAZit0yvB+W9BewN1ojhv6XYPz3d?=
+ =?iso-8859-1?Q?upWmxA9JKIUt7/SpuF8wTR+BVTpFkoCRO8Ui3cAQelgGLb3MPpfDkL9bS3?=
+ =?iso-8859-1?Q?m5vNsIsPjfyotA0IkMiNxgwPPVZVBttqZYOFg62aePkcJ9ksQgp32uFWCl?=
+ =?iso-8859-1?Q?5m8SNSQd6/k0FA7yDM7x2QdtPG4LcyqDLHkPIuq1pWyZjBmEaCDMzs/zEJ?=
+ =?iso-8859-1?Q?LUN7pPxn3bCEkmLDjwgIjhp4lsuvffoP8beco26uhZBj7seN2GxyxSovUZ?=
+ =?iso-8859-1?Q?0rE2QKniySHQwg1U+O2qDeiJqsC63W9wXoAhpSL88USDyjd16XBqhqZO1T?=
+ =?iso-8859-1?Q?sVF0XNezmMO9YVbwBFwiDJB9hbmLM95oV9p+qr23DzUSQhkbJKqa6hkNZn?=
+ =?iso-8859-1?Q?6pWrqgVIkbtsrmtxKi2KBlvBDQesW8gm3zhF7UYgdVII674aMTbnG9clr7?=
+ =?iso-8859-1?Q?6I6oFs90=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;BN4PR07MB2129;6:ncOxjQqHEGohT19JGrakDkFAL8Z5t55Yj2wk+qLHsjLnZ0K0z7KCeKpIc0YYbvnotd36r9yUkdpnarpTLBJEnkRjVxQ+e0r9VhLtWY4K88pvMcAZpgBrf0HHuK21iJ/ESf650KYjNuDJXzWFea+eMmlpQPAfIBJuUig3STq4MFvG6f5KuC51w8uOf2Qss6F57lEXpbc0MkM1g5Hmt/9Oz6NUhzkyOlG2HOerAR24Iyvq3ZXwKnp3917/qXZDyjIe/2trTV2dNc1mbCadMsZPkEt4fcJLwnYqe/M23nFWa/k=;5:ikW82+h1uz9brL7O7KqeqhzzzSqrhksUklaX8P1vcE/Znlk/AxZ/sqx8MBTZh7mBYJHGKqeKJlItV6DeV5dUuv5jBrF2p1IJsSTQx+hmp4zzo6715dAljjis/GFRBRplCRU+wwmaQk+uv1sACISEeA==;24:nRirNnk3iz3PvviE5VJGtBDzGytSEqgWdZOlWb9m6DaPUqU+IOp/sHXXuq9kd3to75EFOF7f4ay43Lu336ZNlDo9A70f99nvBI/ZUJIuO7U=;7:VO5UJtnN4nEZUcpqrvqQR2cJxuLgYA4yu14WNecgmQKEOjVirofUKhwpKnL3Nr9WmsbxyzdelPP0MuFuxLXIz9uTCQXXKfHOBm72Z3dsnWKa16wNmV0nbQr9tD3ZwjpXg2WMRrDnqkWiyWmFk+I7UorblAddblTFRRLyJEde4vI1Ed+zJcYDPN0BWwxGwG4epE0fUpuwF5YXWOIIggIbayM9obYD4IXa/a5PGk0oCN5R1UoRmgYsI7FAP1SNghLv
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
 X-OriginatorOrg: caviumnetworks.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2016 23:00:38.9160 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2016 23:03:01.9713 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR07MB2135
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN4PR07MB2129
 Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54961
+X-archive-position: 54962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -94,25 +94,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/01/2016 01:43 PM, Aaro Koskinen wrote:
-> PHY access through the board helper should be impossible with the
-> current drivers, so delete this code and add BUG_ON().
+On 09/01/2016 01:44 PM, Aaro Koskinen wrote:
+> Delete unused cvmx-mdio.h.
 >
 > Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+Nice one!
+
+Acked-by: me
+
 > ---
->   .../cavium-octeon/executive/cvmx-helper-board.c    | 110 +--------------------
->   1 file changed, 5 insertions(+), 105 deletions(-)
+>   .../cavium-octeon/executive/cvmx-helper-board.c    |   2 -
+>   .../cavium-octeon/executive/cvmx-helper-rgmii.c    |   2 -
+>   .../cavium-octeon/executive/cvmx-helper-sgmii.c    |   1 -
+>   arch/mips/include/asm/octeon/cvmx-mdio.h           | 506 ---------------------
+>   4 files changed, 511 deletions(-)
+>   delete mode 100644 arch/mips/include/asm/octeon/cvmx-mdio.h
 >
-> diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> index 5572e39..8d75242 100644
-> --- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> +++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
 [...]
-> +	BUG_ON(cvmx_helper_board_get_mii_address(ipd_port) != -1);
->
-
-Can we do WARN_ON instead?
-
-No need to crash the kernel for this I think.
-
-David Daney

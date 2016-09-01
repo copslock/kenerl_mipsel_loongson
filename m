@@ -1,44 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 17:30:53 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55240 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 18:30:57 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21699 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992213AbcIAPaqCXmGA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 17:30:46 +0200
+        with ESMTP id S23992213AbcIAQauaPTE2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 18:30:50 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 183A1A7969085;
-        Thu,  1 Sep 2016 16:30:26 +0100 (IST)
-Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
+        by Forcepoint Email with ESMTPS id ED86EF3D9C03D;
+        Thu,  1 Sep 2016 17:30:30 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 1 Sep 2016 16:30:29 +0100
-Subject: Re: [Patch v3 08/11] net: ethernet: xilinx: Generate random mac if
- none found
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>,
-        <jason@lakedaemon.net>, <marc.zyngier@arm.com>
-References: <1472661352-11983-1-git-send-email-Zubair.Kakakhel@imgtec.com>
- <1472661352-11983-9-git-send-email-Zubair.Kakakhel@imgtec.com>
- <3e2dea83-ee59-2980-3a9d-50da04271158@cogentembedded.com>
-CC:     <soren.brinkmann@xilinx.com>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <michal.simek@xilinx.com>,
-        <netdev@vger.kernel.org>
-From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Message-ID: <d7b5d5b9-e87e-73da-6bfe-7516703298c3@imgtec.com>
-Date:   Thu, 1 Sep 2016 16:30:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+ 14.3.294.0; Thu, 1 Sep 2016 17:30:34 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
+Subject: [PATCH 0/9] MIPS: General EVA fixes & cleanups
+Date:   Thu, 1 Sep 2016 17:30:06 +0100
+Message-ID: <cover.d93e43428f3c573bdd18d7c874830705b39c3a8a.1472747205.git-series.james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.9.2
 MIME-Version: 1.0
-In-Reply-To: <3e2dea83-ee59-2980-3a9d-50da04271158@cogentembedded.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.45]
-Return-Path: <Zubair.Kakakhel@imgtec.com>
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54927
+X-archive-position: 54928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Zubair.Kakakhel@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,44 +46,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+These patches fix some general MIPS Enhanced Virtual Addressing (EVA)
+issues, with the aim of allowing KVM to be fixed to work on EVA host
+kernels.
 
+Patches 1-3 improve the CP0_EBase handling, particularly in relation to
+the Write Gate (WG) bit which allows the upper bits (63:30 on MIPS64,
+31:30 on MIPS32) to be modified. This allows CP0_EBase to be set
+correctly with EVA, even when the boot time allocated exception vector
+is not in KSeg0. They will also help with Matt's upcoming rproc patches.
 
-On 09/01/2016 11:52 AM, Sergei Shtylyov wrote:
-> Hello.
->
-> On 8/31/2016 7:35 PM, Zubair Lutfullah Kakakhel wrote:
->
->> At the moment, if the emaclite device doesn't find a mac address
->> from any source, it simply uses 0x0 with a warning printed.
->>
->> Instead of using a 0x0 mac address, use a randomly generated one.
->>
->> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-> [...]
->
->> diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
->> index 3cee84a..22e5a5a 100644
->> --- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
->> +++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
->> @@ -1134,8 +1134,10 @@ static int xemaclite_of_probe(struct platform_device *ofdev)
->>      if (mac_address)
->>          /* Set the MAC address. */
->>          memcpy(ndev->dev_addr, mac_address, ETH_ALEN);
->> -    else
->> -        dev_warn(dev, "No MAC address found\n");
->> +    else {
->> +        dev_warn(dev, "No MAC address found. Generating Random one\n");
->> +        eth_hw_addr_random(ndev);
->> +    }
->
->    All branches of the *if* statement should have {} if at least one has them, see Documentation/CodingStyle, chaoter 3.
+Patch 4 then drops the EVA specific L2 cache flushing from
+flush_icache_range(), which appeared to work around the partial
+CP0_EBase assignment fixed by patch 3.
 
-Спасибо
+Patches 5-9 fix the semantics of flush_icache_range(), which only works
+on user pointers with EVA. We add a new __flush_icache_user_range() API
+in patch 5, fix users of flush_icache_range() with user pointers in
+patches 6-8, and finally separate the implementations so that
+flush_icache_range() works with kernel addresses in patch 9.
 
-ZubairLK
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
 
->
-> [...]
->
-> MBR, Sergei
->
+James Hogan (8):
+  MIPS: traps: 64bit kernels should read CP0_EBase 64bit
+  MIPS: traps: Convert ebase to KSeg0
+  MIPS: c-r4k: Drop bc_wback_inv() from icache flush
+  MIPS: c-r4k: Split user/kernel flush_icache_range()
+  MIPS: cacheflush: Use __flush_icache_user_range()
+  MIPS: uprobes: Flush icache via kernel address
+  MIPS: KVM: Use __local_flush_icache_user_range()
+  MIPS: c-r4k: Fix flush_icache_range() for EVA
+
+Matt Redfearn (1):
+  MIPS: traps: Ensure full EBase is written
+
+ arch/mips/include/asm/cacheflush.h |  5 +++-
+ arch/mips/kernel/traps.c           | 49 +++++++++++++++++++++++++++--
+ arch/mips/kernel/uprobes.c         | 13 ++------
+ arch/mips/kvm/dyntrans.c           |  4 +-
+ arch/mips/mm/c-octeon.c            |  2 +-
+ arch/mips/mm/c-r3k.c               |  2 +-
+ arch/mips/mm/c-r4k.c               | 52 ++++++++++++++++++++-----------
+ arch/mips/mm/c-tx39.c              |  3 ++-
+ arch/mips/mm/cache.c               |  6 +++-
+ 9 files changed, 104 insertions(+), 32 deletions(-)
+
+-- 
+git-series 0.8.10

@@ -1,64 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 09:31:30 +0200 (CEST)
-Received: from mail-pf0-f169.google.com ([209.85.192.169]:34931 "EHLO
-        mail-pf0-f169.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990514AbcIAHbXFlLxI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 09:31:23 +0200
-Received: by mail-pf0-f169.google.com with SMTP id x72so28524769pfd.2
-        for <linux-mips@linux-mips.org>; Thu, 01 Sep 2016 00:31:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=1/u7srTLluux/1N2fkj9UPymhYw4j3dj/tukKwmFx8A=;
-        b=JsrZtOwTiArsWs7pEJnvOU0nSrR+LKnVG0WnbOz5K3QfmnX1xeoSSq/QVbdb+RoWCO
-         Xc///WVyGgi5Pkh6Nak+F0aSIrCxUrxBzM3GhhXco6q8FBTp7TuGSBzdNfMsZCZC9lup
-         2Ym86/FYiVCPFrP93ienYyPHdVxFBneoS57TxNmf7fT+tclLT5KmFaMWbKRUq86vogbV
-         Sqpgobm8oP5X6sonoet5NCUwdoXseSSFk7HqwIb9sxmHPIXJCBC+jEqmfSydDWqc6pw0
-         XJ6Dd4VXbAtA10E674DqhyNG4zD6W2syrjh//1EW4q9tjkDGvyyJ80srNdAoH2+rNI31
-         w8RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1/u7srTLluux/1N2fkj9UPymhYw4j3dj/tukKwmFx8A=;
-        b=e/Nb3wVIF/xgZgtlmADMVPeTgzxzJSX3D7hHtg2G8pih+snRXMXGV+CtewBzij37Rs
-         /lkxSxqBMUQkQ5eKVT7QSOKkAZPljX1nyV7hbHDh/xRcTEsII7eKHXGLjSu8+WblexLp
-         CzZHu3Zsejc+Z6UTr0buUQeaX4yPK/BNa/ria/79WE68/FJPiDFyuuSIUXKg1DLfOZsR
-         aF20QJDI6MZy9Y0/5PyVI9lKikZzztOiLvRwGf/5f7NEX31js32ule34Y8OXd5inJZO2
-         Ma99EMfnxTb2yBAYK07ssdoEW8rdPUcASTdv8M5xrk+/aDRW3IHtzv2igQ2rWakSjBhg
-         LuiA==
-X-Gm-Message-State: AE9vXwNSv4p4Q+9beWmWfIXviXSwxW2ReklIfv/3EiyJq36M1+NPTsUn3HedVjEMF/VVRg==
-X-Received: by 10.98.64.93 with SMTP id n90mr24399009pfa.29.1472715077224;
-        Thu, 01 Sep 2016 00:31:17 -0700 (PDT)
-Received: from ly-pc (ec2-52-77-214-225.ap-southeast-1.compute.amazonaws.com. [52.77.214.225])
-        by smtp.gmail.com with ESMTPSA id i62sm4751021pfg.62.2016.09.01.00.31.10
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Thu, 01 Sep 2016 00:31:16 -0700 (PDT)
-From:   Yang Ling <gnaygnil@gmail.com>
-X-Google-Original-From: Yang Ling <gnaygnail@gmail.com>
-Date:   Thu, 1 Sep 2016 15:31:03 +0800
-To:     Stephen Boyd <sboyd@codeaurora.org>
-Cc:     Yang Ling <gnaygnil@gmail.com>, keguang.zhang@gmail.com,
-        mturquette@baylibre.com, linux-mips@linux-mips.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] CLK: Add Loongson1C clock support
-Message-ID: <20160901073100.GA11754@ly-pc>
-References: <20160822045034.GA6545@ly-pc>
- <20160831225113.GL12510@codeaurora.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 12:41:29 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53695 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990519AbcIAKlVhRrFD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 12:41:21 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 841801BEF9B77;
+        Thu,  1 Sep 2016 11:41:01 +0100 (IST)
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 1 Sep 2016 11:41:03 +0100
+Subject: Re: [Patch v3 02/11] irqchip: axi-intc: Clean up irqdomain argument
+ and read/write
+To:     Marc Zyngier <marc.zyngier@arm.com>, <monstr@monstr.eu>,
+        <ralf@linux-mips.org>, <tglx@linutronix.de>, <jason@lakedaemon.net>
+References: <1472661352-11983-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <1472661352-11983-3-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <57C70B43.6010107@arm.com>
+CC:     <soren.brinkmann@xilinx.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <michal.simek@xilinx.com>,
+        <netdev@vger.kernel.org>
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Message-ID: <97c89803-915f-5f3b-ceaf-b7697d5f6bca@imgtec.com>
+Date:   Thu, 1 Sep 2016 11:41:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160831225113.GL12510@codeaurora.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gnaygnil@gmail.com>
+In-Reply-To: <57C70B43.6010107@arm.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54915
+X-archive-position: 54916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnaygnil@gmail.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,18 +50,130 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Aug 31, 2016 at 03:51:13PM -0700, Stephen Boyd wrote:
-> On 08/22, Yang Ling wrote:
-> > This patch adds clock support to Loongson1C SoC.
-> > 
-> > Signed-off-by: Yang Ling <gnaygnil@gmail.com>
-> > 
-> 
-> It would be better to use the new clk_hw_*() and clkdev_hw_*()
-> registration APIs. Care to make that change? Obviously
-> clk_register_pll() isn't going to work there, but we can fix that
-> later.
-> 
+Hi,
 
-Well, I will use the new APIs to debug the code.
-Thanks for your friendly reminder.
+Thank you for the reviews.
+
+Some comments below
+
+On 08/31/2016 05:52 PM, Marc Zyngier wrote:
+> On 31/08/16 17:35, Zubair Lutfullah Kakakhel wrote:
+>> The drivers read/write function handling is a bit quirky.
+>> And the irqmask is passed directly to the handler.
+>>
+>> Add a new irqchip struct to pass to the handler and
+>> cleanup read/write handling.
+>>
+>> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+>>
+>> ---
+>> V2 -> V3
+>> New patch. Cleans up driver structure
+>> ---
+...
+>>  static int __init xilinx_intc_of_init(struct device_node *intc,
+>>  					     struct device_node *parent)
+>>  {
+>> -	u32 nr_irq, intr_mask;
+>> +	u32 nr_irq;
+>>  	int ret;
+>> +	struct xintc_irq_chip *irqc;
+>> +
+>> +	irqc = kzalloc(sizeof(*irqc), GFP_KERNEL);
+>
+> Now that you dynamically allocate things, how are you handling failures?
+>
+>> +	if (!irqc)
+>> +		return -ENOMEM;
+>> +
+>> +	xintc_irqc = irqc;
+>>
+>> -	intc_baseaddr = of_iomap(intc, 0);
+>> -	BUG_ON(!intc_baseaddr);
+>> +	irqc->base = of_iomap(intc, 0);
+>> +	BUG_ON(!irqc->base);
+>>
+>>  	ret = of_property_read_u32(intc, "xlnx,num-intr-inputs", &nr_irq);
+>>  	if (ret < 0) {
+>> @@ -150,43 +176,40 @@ static int __init xilinx_intc_of_init(struct device_node *intc,
+>>  		return ret;
+>
+> All the return paths should now take care of releasing the allocated
+> resources.
+>
+
+Thanks for pointing it out. I'll fix it in the next series.
+
+>>  	}
+>>
+>> -	ret = of_property_read_u32(intc, "xlnx,kind-of-intr", &intr_mask);
+>> +	ret = of_property_read_u32(intc, "xlnx,kind-of-intr", &irqc->intr_mask);
+>>  	if (ret < 0) {
+>>  		pr_err("%s: unable to read xlnx,kind-of-intr\n", __func__);
+>>  		return ret;
+>>  	}
+>>
+>> -	if (intr_mask >> nr_irq)
+>> +	if (irqc->intr_mask >> nr_irq)
+>>  		pr_warn("%s: mismatch in kind-of-intr param\n", __func__);
+>>
+>>  	pr_info("%s: num_irq=%d, edge=0x%x\n",
+>> -		intc->full_name, nr_irq, intr_mask);
+>> +		intc->full_name, nr_irq, irqc->intr_mask);
+>>
+>> -	write_fn = intc_write32;
+>> -	read_fn = intc_read32;
+>> +	irqc->read = intc_read32;
+>> +	irqc->write = intc_write32;
+>>
+>>  	/*
+>>  	 * Disable all external interrupts until they are
+>>  	 * explicity requested.
+>>  	 */
+>> -	write_fn(0, intc_baseaddr + IER);
+>> +	xintc_write(irqc, IER, 0);
+>>
+>>  	/* Acknowledge any pending interrupts just in case. */
+>> -	write_fn(0xffffffff, intc_baseaddr + IAR);
+>> +	xintc_write(irqc, IAR, 0xffffffff);
+>>
+>>  	/* Turn on the Master Enable. */
+>> -	write_fn(MER_HIE | MER_ME, intc_baseaddr + MER);
+>> -	if (!(read_fn(intc_baseaddr + MER) & (MER_HIE | MER_ME))) {
+>> -		write_fn = intc_write32_be;
+>> -		read_fn = intc_read32_be;
+>> -		write_fn(MER_HIE | MER_ME, intc_baseaddr + MER);
+>> +	xintc_write(irqc, MER, MER_HIE | MER_ME);
+>> +	if (!(xintc_read(irqc, MER) & (MER_HIE | MER_ME))) {
+>> +		irqc->read = intc_read32_be;
+>> +		irqc->write = intc_write32_be;
+>> +		xintc_write(irqc, MER, MER_HIE | MER_ME);
+>>  	}
+>>
+>> -	/* Yeah, okay, casting the intr_mask to a void* is butt-ugly, but I'm
+>> -	 * lazy and Michal can clean it up to something nicer when he tests
+>> -	 * and commits this patch.  ~~gcl */
+>>  	root_domain = irq_domain_add_linear(intc, nr_irq, &xintc_irq_domain_ops,
+>> -							(void *)intr_mask);
+>> +					    irqc);
+>>
+>>  	irq_set_default_host(root_domain);
+>>
+>>
+>
+> You haven't addressed the comment on get_irq() which could be static (at
+> least from solely looking at this file).
+
+Apologies. In a rush to get a series out before heading home, it slipped my mind.
+It is needed as it is used in arch/microblaze/kernel/irq.c
+
+But I'll add a patch to rename it correctly. get_irq is far too generic outside arch code.
+
+Thanks,
+ZubairLK
+
+>
+> Thanks,
+>
+> 	M.
+>

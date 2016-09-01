@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 17:24:43 +0200 (CEST)
-Received: from smtprelay0095.hostedemail.com ([216.40.44.95]:34806 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992209AbcIAPYgKB4pN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 17:24:36 +0200
-Received: from filter.hostedemail.com (unknown [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id F17F112BA1C;
-        Thu,  1 Sep 2016 15:24:32 +0000 (UTC)
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-HE-Tag: badge72_4484ad1069214
-X-Filterd-Recvd-Size: 2459
-Received: from gandalf.local.home (cpe-67-246-153-56.stny.res.rr.com [67.246.153.56])
-        (Authenticated sender: rostedt@goodmis.org)
-        by omf09.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  1 Sep 2016 15:24:30 +0000 (UTC)
-Date:   Thu, 1 Sep 2016 11:24:28 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Linux API <linux-api@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/2] tracing/syscalls: allow multiple syscall numbers
- per syscall
-Message-ID: <20160901112428.7c05dede@gandalf.local.home>
-In-Reply-To: <5227283.eAVLXfitJh@wuerfel>
-References: <1472463007-6469-1-git-send-email-marcin.nowakowski@imgtec.com>
-        <20160830152955.17633511@gandalf.local.home>
-        <CALCETrXA0XbYuqYzWMJA+KjFS31YL0cTVtrvCnmRY_GMK6oNpw@mail.gmail.com>
-        <5227283.eAVLXfitJh@wuerfel>
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2016 17:30:53 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55240 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992213AbcIAPaqCXmGA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Sep 2016 17:30:46 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 183A1A7969085;
+        Thu,  1 Sep 2016 16:30:26 +0100 (IST)
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 1 Sep 2016 16:30:29 +0100
+Subject: Re: [Patch v3 08/11] net: ethernet: xilinx: Generate random mac if
+ none found
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        <monstr@monstr.eu>, <ralf@linux-mips.org>, <tglx@linutronix.de>,
+        <jason@lakedaemon.net>, <marc.zyngier@arm.com>
+References: <1472661352-11983-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <1472661352-11983-9-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <3e2dea83-ee59-2980-3a9d-50da04271158@cogentembedded.com>
+CC:     <soren.brinkmann@xilinx.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <michal.simek@xilinx.com>,
+        <netdev@vger.kernel.org>
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Message-ID: <d7b5d5b9-e87e-73da-6bfe-7516703298c3@imgtec.com>
+Date:   Thu, 1 Sep 2016 16:30:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <rostedt@goodmis.org>
+In-Reply-To: <3e2dea83-ee59-2980-3a9d-50da04271158@cogentembedded.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54926
+X-archive-position: 54927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,34 +51,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 31 Aug 2016 10:24:56 +0200
-Arnd Bergmann <arnd@arndb.de> wrote:
 
-> On Tuesday, August 30, 2016 12:53:53 PM CEST Andy Lutomirski wrote:
-> > Egads!  OK, I see why this is a mess.
-> > 
-> > I guess we should be creating the metadata from the syscall tables
-> > instead of from the syscall definitions, but I guess that's currently
-> > a nasty per-arch mess.
-> >   
-> 
-> I've been thinking for a while about how to improve the situation
-> around adding new syscalls, which currently involves adding a number
-> and an entry in a .S file on most architectures (some already have
-> their own method to simplify it, and others using a shared table
-> in asm-generic).
-> 
-> I was thinking of extending the x86 way of doing this to all
-> architectures, and adding a way to have all future syscalls require
-> only one addition in a single file that gets included by the
-> architecture specific files for the existing syscalls.
-> 
-> Assuming we do this, would that work for generating the metadata
-> from the same file like we do with
-> arch/x86/entry/syscalls/syscall{tbl,hdr}.sh ?
 
-I can't answer this because I'm not sure exactly how you would do this.
-Perhaps you could give it a try and code will be the answer to all my
-questions ;-)
+On 09/01/2016 11:52 AM, Sergei Shtylyov wrote:
+> Hello.
+>
+> On 8/31/2016 7:35 PM, Zubair Lutfullah Kakakhel wrote:
+>
+>> At the moment, if the emaclite device doesn't find a mac address
+>> from any source, it simply uses 0x0 with a warning printed.
+>>
+>> Instead of using a 0x0 mac address, use a randomly generated one.
+>>
+>> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+> [...]
+>
+>> diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+>> index 3cee84a..22e5a5a 100644
+>> --- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+>> +++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
+>> @@ -1134,8 +1134,10 @@ static int xemaclite_of_probe(struct platform_device *ofdev)
+>>      if (mac_address)
+>>          /* Set the MAC address. */
+>>          memcpy(ndev->dev_addr, mac_address, ETH_ALEN);
+>> -    else
+>> -        dev_warn(dev, "No MAC address found\n");
+>> +    else {
+>> +        dev_warn(dev, "No MAC address found. Generating Random one\n");
+>> +        eth_hw_addr_random(ndev);
+>> +    }
+>
+>    All branches of the *if* statement should have {} if at least one has them, see Documentation/CodingStyle, chaoter 3.
 
--- Steve
+Спасибо
+
+ZubairLK
+
+>
+> [...]
+>
+> MBR, Sergei
+>

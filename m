@@ -1,24 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 17:51:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:10831 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 17:52:20 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:45709 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992181AbcIBPvQO7GnA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 17:51:16 +0200
+        with ESMTP id S23992029AbcIBPvbr0HUA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 17:51:31 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 5B4846C8D5646;
-        Fri,  2 Sep 2016 16:50:56 +0100 (IST)
+        by Forcepoint Email with ESMTPS id B8968998056EA;
+        Fri,  2 Sep 2016 16:51:10 +0100 (IST)
 Received: from localhost (10.100.200.40) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 2 Sep
- 2016 16:50:57 +0100
+ 2016 16:51:13 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Kees Cook <keescook@chromium.org>,
-        <linux-kernel@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 05/12] MIPS: Malta: Use all available DDR by default
-Date:   Fri, 2 Sep 2016 16:48:51 +0100
-Message-ID: <20160902154859.24269-6-paul.burton@imgtec.com>
+Subject: [PATCH 06/12] MIPS: Malta: Probe interrupt controllers via DT
+Date:   Fri, 2 Sep 2016 16:48:52 +0100
+Message-ID: <20160902154859.24269-7-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20160902154859.24269-1-paul.burton@imgtec.com>
 References: <20160902154859.24269-1-paul.burton@imgtec.com>
@@ -29,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55009
+X-archive-position: 55010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,196 +48,359 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Malta boards can have more than 256MB DDR available, but we have
-previously only made use of up to 256MB (ie. the DDR accessible via
-kseg0) by default, without the user manually specifying mem= kernel
-parameters. This patch causes all available DDR, as reported by the
-bootloader via the ememsize or memsize environment variables or
-optionally on the command line, to be used when possible without the
-user needing to manually provide the memory ranges.
+Probe the CPU, GIC & i8259 interrupt controllers present in the Malta
+system using device tree. This enables interrupts to be provided to
+devices using device tree as they are moved over to being probed using
+it.
 
-Malta now has 2 subtly different memory maps which have to be taken into
-account when setting this up. The original memory map (referred to by
-the code as v1) has up to 2GB of DDR aliased in both the upper & lower
-halves of the 32 bit physical address space, with a 256MB I/O region
-obscuring 0x10000000-0x1fffffff only in the lower alias. The revised v2
-memory map is flat with up to 4GB DDR starting from 0x0, and the I/O
-region obscures 256MB of DDR which becomes inacessible. The memory map
-in use is indicated by a register provided by the rocit2 system
-controller, which is checked in order to set up the kernels memory
-ranges accordingly.
+Since Malta is very configurable it's unknown whether a GIC will be
+present at compile time. In order to support both cases the
+malta_dt_shim code is added in order to detect whether a GIC is present,
+adjusting the DT to route interrupts correctly and nop out the GIC node
+if no GIC is found.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/mti-malta/malta-dtshim.c | 109 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 103 insertions(+), 6 deletions(-)
+ arch/mips/Kconfig                  |  1 +
+ arch/mips/boot/dts/mti/malta.dts   | 41 ++++++++++++++++
+ arch/mips/mti-malta/malta-dtshim.c | 78 +++++++++++++++++++++++++++++++
+ arch/mips/mti-malta/malta-int.c    | 96 ++------------------------------------
+ 4 files changed, 125 insertions(+), 91 deletions(-)
 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2638856..d875a5a 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -478,6 +478,7 @@ config MIPS_MALTA
+ 	select SYS_SUPPORTS_ZBOOT
+ 	select SYS_SUPPORTS_RELOCATABLE
+ 	select USE_OF
++	select LIBFDT
+ 	select ZONE_DMA32 if 64BIT
+ 	select BUILTIN_DTB
+ 	select LIBFDT
+diff --git a/arch/mips/boot/dts/mti/malta.dts b/arch/mips/boot/dts/mti/malta.dts
+index b18c466..af765af 100644
+--- a/arch/mips/boot/dts/mti/malta.dts
++++ b/arch/mips/boot/dts/mti/malta.dts
+@@ -1,5 +1,8 @@
+ /dts-v1/;
+ 
++#include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/interrupt-controller/mips-gic.h>
++
+ /memreserve/ 0x00000000 0x00001000;	/* YAMON exception vectors */
+ /memreserve/ 0x00001000 0x000ef000;	/* YAMON */
+ /memreserve/ 0x000f0000 0x00010000;	/* PIIX4 ISA memory */
+@@ -8,4 +11,42 @@
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+ 	compatible = "mti,malta";
++
++	cpu_intc: interrupt-controller {
++		compatible = "mti,cpu-interrupt-controller";
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++	};
++
++	gic: interrupt-controller@1bdc0000 {
++		compatible = "mti,gic";
++		reg = <0x1bdc0000 0x20000>;
++
++		interrupt-controller;
++		#interrupt-cells = <3>;
++
++		/*
++		 * Declare the interrupt-parent even though the mti,gic
++		 * binding doesn't require it, such that the kernel can
++		 * figure out that cpu_intc is the root interrupt
++		 * controller & should be probed first.
++		 */
++		interrupt-parent = <&cpu_intc>;
++
++		timer {
++			compatible = "mti,gic-timer";
++			interrupts = <GIC_LOCAL 1 IRQ_TYPE_NONE>;
++		};
++	};
++
++	i8259: interrupt-controller@20 {
++		compatible = "intel,i8259";
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++
++		interrupt-parent = <&gic>;
++		interrupts = <GIC_SHARED 3 IRQ_TYPE_LEVEL_HIGH>;
++	};
+ };
 diff --git a/arch/mips/mti-malta/malta-dtshim.c b/arch/mips/mti-malta/malta-dtshim.c
-index 151f488..5d37b7e 100644
+index 5d37b7e..c398582 100644
 --- a/arch/mips/mti-malta/malta-dtshim.c
 +++ b/arch/mips/mti-malta/malta-dtshim.c
-@@ -13,18 +13,63 @@
- #include <linux/libfdt.h>
- #include <linux/of_fdt.h>
- #include <linux/sizes.h>
-+#include <asm/addrspace.h>
+@@ -16,6 +16,9 @@
+ #include <asm/addrspace.h>
  #include <asm/bootinfo.h>
  #include <asm/fw/fw.h>
++#include <asm/mips-boards/generic.h>
++#include <asm/mips-boards/malta.h>
++#include <asm/mips-cm.h>
  #include <asm/page.h>
  
-+#define ROCIT_REG_BASE			0x1f403000
-+#define ROCIT_CONFIG_GEN1		(ROCIT_REG_BASE + 0x04)
-+#define  ROCIT_CONFIG_GEN1_MEMMAP_SHIFT	8
-+#define  ROCIT_CONFIG_GEN1_MEMMAP_MASK	(0xf << 8)
-+
- static unsigned char fdt_buf[16 << 10] __initdata;
+ #define ROCIT_REG_BASE			0x1f403000
+@@ -225,6 +228,80 @@ static void __init append_memory(void *fdt, int root_off)
+ 		panic("Unable to set linux,usable-memory property: %d", err);
+ }
  
- /* determined physical memory size, not overridden by command line args	 */
- extern unsigned long physical_memsize;
- 
--#define MAX_MEM_ARRAY_ENTRIES 1
-+enum mem_map {
-+	MEM_MAP_V1 = 0,
-+	MEM_MAP_V2,
-+};
-+
-+#define MAX_MEM_ARRAY_ENTRIES 2
-+
-+static __init int malta_scon(void)
++static void __init remove_gic(void *fdt)
 +{
-+	int scon = MIPS_REVISION_SCONID;
++	int err, gic_off, i8259_off, cpu_off;
++	void __iomem *biu_base;
++	uint32_t cpu_phandle, sc_cfg;
 +
-+	if (scon != MIPS_REVISION_SCON_OTHER)
-+		return scon;
++	/* if we have a CM which reports a GIC is present, leave the DT alone */
++	err = mips_cm_probe();
++	if (!err && (read_gcr_gic_status() & CM_GCR_GIC_STATUS_GICEX_MSK))
++		return;
 +
-+	switch (MIPS_REVISION_CORID) {
-+	case MIPS_REVISION_CORID_QED_RM5261:
-+	case MIPS_REVISION_CORID_CORE_LV:
-+	case MIPS_REVISION_CORID_CORE_FPGA:
-+	case MIPS_REVISION_CORID_CORE_FPGAR2:
-+		return MIPS_REVISION_SCON_GT64120;
++	if (malta_scon() == MIPS_REVISION_SCON_ROCIT) {
++		/*
++		 * On systems using the RocIT system controller a GIC may be
++		 * present without a CM. Detect whether that is the case.
++		 */
++		biu_base = ioremap_nocache(MSC01_BIU_REG_BASE,
++				MSC01_BIU_ADDRSPACE_SZ);
++		sc_cfg = __raw_readl(biu_base + MSC01_SC_CFG_OFS);
++		if (sc_cfg & MSC01_SC_CFG_GICPRES_MSK) {
++			/* enable the GIC at the system controller level */
++			sc_cfg |= BIT(MSC01_SC_CFG_GICENA_SHF);
++			__raw_writel(sc_cfg, biu_base + MSC01_SC_CFG_OFS);
++			return;
++		}
++	}
 +
-+	case MIPS_REVISION_CORID_CORE_EMUL_BON:
-+	case MIPS_REVISION_CORID_BONITO64:
-+	case MIPS_REVISION_CORID_CORE_20K:
-+		return MIPS_REVISION_SCON_BONITO;
++	gic_off = fdt_node_offset_by_compatible(fdt, -1, "mti,gic");
++	if (gic_off < 0) {
++		pr_warn("malta-dtshim: unable to find DT GIC node: %d\n",
++			gic_off);
++		return;
++	}
 +
-+	case MIPS_REVISION_CORID_CORE_MSC:
-+	case MIPS_REVISION_CORID_CORE_FPGA2:
-+	case MIPS_REVISION_CORID_CORE_24K:
-+		return MIPS_REVISION_SCON_SOCIT;
++	err = fdt_nop_node(fdt, gic_off);
++	if (err)
++		pr_warn("malta-dtshim: unable to nop GIC node\n");
 +
-+	case MIPS_REVISION_CORID_CORE_FPGA3:
-+	case MIPS_REVISION_CORID_CORE_FPGA4:
-+	case MIPS_REVISION_CORID_CORE_FPGA5:
-+	case MIPS_REVISION_CORID_CORE_EMUL_MSC:
-+	default:
-+		return MIPS_REVISION_SCON_ROCIT;
++	i8259_off = fdt_node_offset_by_compatible(fdt, -1, "intel,i8259");
++	if (i8259_off < 0) {
++		pr_warn("malta-dtshim: unable to find DT i8259 node: %d\n",
++			i8259_off);
++		return;
++	}
++
++	cpu_off = fdt_node_offset_by_compatible(fdt, -1,
++			"mti,cpu-interrupt-controller");
++	if (cpu_off < 0) {
++		pr_warn("malta-dtshim: unable to find CPU intc node: %d\n",
++			cpu_off);
++		return;
++	}
++
++	cpu_phandle = fdt_get_phandle(fdt, cpu_off);
++	if (!cpu_phandle) {
++		pr_warn("malta-dtshim: unable to get CPU intc phandle\n");
++		return;
++	}
++
++	err = fdt_setprop_u32(fdt, i8259_off, "interrupt-parent", cpu_phandle);
++	if (err) {
++		pr_warn("malta-dtshim: unable to set i8259 interrupt-parent: %d\n",
++			err);
++		return;
++	}
++
++	err = fdt_setprop_u32(fdt, i8259_off, "interrupts", 2);
++	if (err) {
++		pr_warn("malta-dtshim: unable to set i8259 interrupts: %d\n",
++			err);
++		return;
 +	}
 +}
- 
--static unsigned __init gen_fdt_mem_array(__be32 *mem_array, unsigned long size)
-+static unsigned __init gen_fdt_mem_array(__be32 *mem_array, unsigned long size,
-+					 enum mem_map map)
++
+ void __init *malta_dt_shim(void *fdt)
  {
- 	unsigned long size_preio;
- 	unsigned entries;
-@@ -39,11 +84,47 @@ static unsigned __init gen_fdt_mem_array(__be32 *mem_array, unsigned long size)
- 		 * DDR but limits it to 2GB.
- 		 */
- 		mem_array[1] = cpu_to_be32(size);
-+		goto done;
-+	}
-+
-+	size_preio = min_t(unsigned long, size, SZ_256M);
-+	mem_array[1] = cpu_to_be32(size_preio);
-+	size -= size_preio;
-+	if (!size)
-+		goto done;
-+
-+	if (map == MEM_MAP_V2) {
-+		/*
-+		 * We have a flat 32 bit physical memory map with DDR filling
-+		 * all 4GB of the memory map, apart from the I/O region which
-+		 * obscures 256MB from 0x10000000-0x1fffffff.
-+		 *
-+		 * Therefore we discard the 256MB behind the I/O region.
-+		 */
-+		if (size <= SZ_256M)
-+			goto done;
-+		size -= SZ_256M;
-+
-+		/* Make use of the memory following the I/O region */
-+		entries++;
-+		mem_array[2] = cpu_to_be32(PHYS_OFFSET + SZ_512M);
-+		mem_array[3] = cpu_to_be32(size);
- 	} else {
--		size_preio = min_t(unsigned long, size, SZ_256M);
--		mem_array[1] = cpu_to_be32(size_preio);
-+		/*
-+		 * We have a 32 bit physical memory map with a 2GB DDR region
-+		 * aliased in the upper & lower halves of it. The I/O region
-+		 * obscures 256MB from 0x10000000-0x1fffffff in the low alias
-+		 * but the DDR it obscures is accessible via the high alias.
-+		 *
-+		 * Simply access everything beyond the lowest 256MB of DDR using
-+		 * the high alias.
-+		 */
-+		entries++;
-+		mem_array[2] = cpu_to_be32(PHYS_OFFSET + SZ_2G + SZ_256M);
-+		mem_array[3] = cpu_to_be32(size);
+ 	int root_off, len, err;
+@@ -250,6 +327,7 @@ void __init *malta_dt_shim(void *fdt)
+ 		return fdt;
+ 
+ 	append_memory(fdt_buf, root_off);
++	remove_gic(fdt_buf);
+ 
+ 	err = fdt_pack(fdt_buf);
+ 	if (err)
+diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
+index c6a6c7a..9f83224 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -14,11 +14,13 @@
+  */
+ #include <linux/init.h>
+ #include <linux/irq.h>
++#include <linux/irqchip.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/irqchip/mips-gic.h>
++#include <linux/of_irq.h>
+ #include <linux/kernel_stat.h>
+ #include <linux/kernel.h>
+ #include <linux/random.h>
+@@ -37,10 +39,6 @@
+ #include <asm/setup.h>
+ #include <asm/rtlx.h>
+ 
+-static void __iomem *_msc01_biu_base;
+-
+-static DEFINE_RAW_SPINLOCK(mips_irq_lock);
+-
+ static inline int mips_pcibios_iack(void)
+ {
+ 	int irq;
+@@ -85,49 +83,6 @@ static inline int mips_pcibios_iack(void)
+ 	return irq;
+ }
+ 
+-static inline int get_int(void)
+-{
+-	unsigned long flags;
+-	int irq;
+-	raw_spin_lock_irqsave(&mips_irq_lock, flags);
+-
+-	irq = mips_pcibios_iack();
+-
+-	/*
+-	 * The only way we can decide if an interrupt is spurious
+-	 * is by checking the 8259 registers.  This needs a spinlock
+-	 * on an SMP system,  so leave it up to the generic code...
+-	 */
+-
+-	raw_spin_unlock_irqrestore(&mips_irq_lock, flags);
+-
+-	return irq;
+-}
+-
+-static void malta_hw0_irqdispatch(void)
+-{
+-	int irq;
+-
+-	irq = get_int();
+-	if (irq < 0) {
+-		/* interrupt has already been cleared */
+-		return;
+-	}
+-
+-	do_IRQ(MALTA_INT_BASE + irq);
+-
+-#ifdef CONFIG_MIPS_VPE_APSP_API_MT
+-	if (aprp_hook)
+-		aprp_hook();
+-#endif
+-}
+-
+-static irqreturn_t i8259_handler(int irq, void *dev_id)
+-{
+-	malta_hw0_irqdispatch();
+-	return IRQ_HANDLED;
+-}
+-
+ static void corehi_irqdispatch(void)
+ {
+ 	unsigned int intedge, intsteer, pcicmd, pcibadaddr;
+@@ -240,12 +195,6 @@ static struct irqaction irq_call = {
+ };
+ #endif /* CONFIG_MIPS_MT_SMP */
+ 
+-static struct irqaction i8259irq = {
+-	.handler = i8259_handler,
+-	.name = "XT-PIC cascade",
+-	.flags = IRQF_NO_THREAD,
+-};
+-
+ static struct irqaction corehi_irqaction = {
+ 	.handler = corehi_handler,
+ 	.name = "CoreHi",
+@@ -281,28 +230,10 @@ void __init arch_init_ipiirq(int irq, struct irqaction *action)
+ 
+ void __init arch_init_irq(void)
+ {
+-	int corehi_irq, i8259_irq;
++	int corehi_irq;
+ 
+-	init_i8259_irqs();
+-
+-	if (!cpu_has_veic)
+-		mips_cpu_irq_init();
+-
+-	if (mips_cm_present()) {
+-		write_gcr_gic_base(GIC_BASE_ADDR | CM_GCR_GIC_BASE_GICEN_MSK);
+-		gic_present = 1;
+-	} else {
+-		if (mips_revision_sconid == MIPS_REVISION_SCON_ROCIT) {
+-			_msc01_biu_base = ioremap_nocache(MSC01_BIU_REG_BASE,
+-						MSC01_BIU_ADDRSPACE_SZ);
+-			gic_present =
+-			  (__raw_readl(_msc01_biu_base + MSC01_SC_CFG_OFS) &
+-			   MSC01_SC_CFG_GICPRES_MSK) >>
+-			  MSC01_SC_CFG_GICPRES_SHF;
+-		}
+-	}
+-	if (gic_present)
+-		pr_debug("GIC present\n");
++	i8259_set_poll(mips_pcibios_iack);
++	irqchip_init();
+ 
+ 	switch (mips_revision_sconid) {
+ 	case MIPS_REVISION_SCON_SOCIT:
+@@ -330,18 +261,6 @@ void __init arch_init_irq(void)
  	}
  
-+done:
- 	BUG_ON(entries > MAX_MEM_ARRAY_ENTRIES);
- 	return entries;
+ 	if (gic_present) {
+-		int i;
+-
+-		gic_init(GIC_BASE_ADDR, GIC_ADDRSPACE_SZ, MIPSCPU_INT_GIC,
+-			 MIPS_GIC_IRQ_BASE);
+-		if (!mips_cm_present()) {
+-			/* Enable the GIC */
+-			i = __raw_readl(_msc01_biu_base + MSC01_SC_CFG_OFS);
+-			__raw_writel(i | (0x1 << MSC01_SC_CFG_GICENA_SHF),
+-				 _msc01_biu_base + MSC01_SC_CFG_OFS);
+-			pr_debug("GIC Enabled\n");
+-		}
+-		i8259_irq = MIPS_GIC_IRQ_BASE + GIC_INT_I8259A;
+ 		corehi_irq = MIPS_CPU_IRQ_BASE + MIPSCPU_INT_COREHI;
+ 	} else {
+ #if defined(CONFIG_MIPS_MT_SMP)
+@@ -361,19 +280,14 @@ void __init arch_init_irq(void)
+ 		arch_init_ipiirq(cpu_ipi_call_irq, &irq_call);
+ #endif
+ 		if (cpu_has_veic) {
+-			set_vi_handler(MSC01E_INT_I8259A,
+-				       malta_hw0_irqdispatch);
+ 			set_vi_handler(MSC01E_INT_COREHI,
+ 				       corehi_irqdispatch);
+-			i8259_irq = MSC01E_INT_BASE + MSC01E_INT_I8259A;
+ 			corehi_irq = MSC01E_INT_BASE + MSC01E_INT_COREHI;
+ 		} else {
+-			i8259_irq = MIPS_CPU_IRQ_BASE + MIPSCPU_INT_I8259A;
+ 			corehi_irq = MIPS_CPU_IRQ_BASE + MIPSCPU_INT_COREHI;
+ 		}
+ 	}
+ 
+-	setup_irq(i8259_irq, &i8259irq);
+ 	setup_irq(corehi_irq, &corehi_irqaction);
  }
-@@ -54,6 +135,8 @@ static void __init append_memory(void *fdt, int root_off)
- 	unsigned long memsize;
- 	unsigned mem_entries;
- 	int i, err, mem_off;
-+	enum mem_map mem_map;
-+	u32 config;
- 	char *var, param_name[10], *var_names[] = {
- 		"ememsize", "memsize",
- 	};
-@@ -106,6 +189,20 @@ static void __init append_memory(void *fdt, int root_off)
- 	/* if the user says there's more RAM than we thought, believe them */
- 	physical_memsize = max_t(unsigned long, physical_memsize, memsize);
  
-+	/* detect the memory map in use */
-+	if (malta_scon() == MIPS_REVISION_SCON_ROCIT) {
-+		/* ROCit has a register indicating the memory map in use */
-+		config = readl((void __iomem *)CKSEG1ADDR(ROCIT_CONFIG_GEN1));
-+		mem_map = config & ROCIT_CONFIG_GEN1_MEMMAP_MASK;
-+		mem_map >>= ROCIT_CONFIG_GEN1_MEMMAP_SHIFT;
-+	} else {
-+		/* if not using ROCit, presume the v1 memory map */
-+		mem_map = MEM_MAP_V1;
-+	}
-+	if (mem_map > MEM_MAP_V2)
-+		panic("Unsupported physical memory map v%u detected",
-+		      (unsigned int)mem_map);
-+
- 	/* append memory to the DT */
- 	mem_off = fdt_add_subnode(fdt, root_off, "memory");
- 	if (mem_off < 0)
-@@ -115,13 +212,13 @@ static void __init append_memory(void *fdt, int root_off)
- 	if (err)
- 		panic("Unable to set memory node device_type: %d", err);
- 
--	mem_entries = gen_fdt_mem_array(mem_array, physical_memsize);
-+	mem_entries = gen_fdt_mem_array(mem_array, physical_memsize, mem_map);
- 	err = fdt_setprop(fdt, mem_off, "reg", mem_array,
- 			  mem_entries * 2 * sizeof(mem_array[0]));
- 	if (err)
- 		panic("Unable to set memory regs property: %d", err);
- 
--	mem_entries = gen_fdt_mem_array(mem_array, memsize);
-+	mem_entries = gen_fdt_mem_array(mem_array, memsize, mem_map);
- 	err = fdt_setprop(fdt, mem_off, "linux,usable-memory", mem_array,
- 			  mem_entries * 2 * sizeof(mem_array[0]));
- 	if (err)
 -- 
 2.9.3

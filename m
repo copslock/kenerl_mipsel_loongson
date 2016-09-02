@@ -1,25 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 22:44:41 +0200 (CEST)
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:52220 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 22:45:03 +0200 (CEST)
+Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:52221 "EHLO
         emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992029AbcIBUoevfebg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 22:44:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23992043AbcIBUofISEZg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 22:44:35 +0200
 Received: from localhost.localdomain (85-76-72-196-nat.elisa-mobile.fi [85.76.72.196])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id E977F23404F;
-        Fri,  2 Sep 2016 23:44:33 +0300 (EEST)
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 793DA2340E9;
+        Fri,  2 Sep 2016 23:44:34 +0300 (EEST)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         David Daney <ddaney@caviumnetworks.com>,
         linux-mips@linux-mips.org
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH v2 0/6] MIPS: OCTEON: clean up platform phy code
-Date:   Fri,  2 Sep 2016 23:44:15 +0300
-Message-Id: <20160902204421.8265-1-aaro.koskinen@iki.fi>
+Subject: [PATCH v2 1/6] MIPS: OCTEON: delete legacy hack for broken bootloaders
+Date:   Fri,  2 Sep 2016 23:44:16 +0300
+Message-Id: <20160902204421.8265-2-aaro.koskinen@iki.fi>
 X-Mailer: git-send-email 2.9.2
+In-Reply-To: <20160902204421.8265-1-aaro.koskinen@iki.fi>
+References: <20160902204421.8265-1-aaro.koskinen@iki.fi>
 Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55019
+X-archive-position: 55020
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,29 +38,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Delete legacy hack for broken bootloaders. The warning has been in kernel
+for several years, and if there are still users using such bootloaders,
+they can fix the boot by supplying a proper DTB.
 
-Some phy/mdio code can be deleted from platform code. Let's do it.
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ .../cavium-octeon/executive/cvmx-helper-board.c    | 42 ----------------------
+ 1 file changed, 42 deletions(-)
 
-	v2: Remove BUG_ON from patch 5/6.
-
-Aaro Koskinen (6):
-  MIPS: OCTEON: delete legacy hack for broken bootloaders
-  MIPS: OCTEON: don't try to maintain link state in early init
-  MIPS: OCTEON: delete cvmx_override_board_link_get
-  MIPS: OCTEON: delete cvmx_helper_board_link_set_phy
-  MIPS: OCTEON: delete legacy code for PHY access
-  MIPS: OCTEON: delete unused cvmx-mdio.h
-
- .../cavium-octeon/executive/cvmx-helper-board.c    | 337 +-------------
- .../cavium-octeon/executive/cvmx-helper-rgmii.c    |   5 +-
- .../cavium-octeon/executive/cvmx-helper-sgmii.c    |   1 -
- .../cavium-octeon/executive/cvmx-helper-xaui.c     |   2 -
- arch/mips/cavium-octeon/executive/cvmx-helper.c    |  10 -
- arch/mips/include/asm/octeon/cvmx-helper-board.h   |  30 --
- arch/mips/include/asm/octeon/cvmx-mdio.h           | 506 ---------------------
- 7 files changed, 3 insertions(+), 888 deletions(-)
- delete mode 100644 arch/mips/include/asm/octeon/cvmx-mdio.h
-
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+index ff49fc0..3751c58 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+@@ -676,48 +676,6 @@ int __cvmx_helper_board_hardware_enable(int interface)
+ 				       0xc);
+ 		}
+ 	} else if (cvmx_sysinfo_get()->board_type ==
+-		   CVMX_BOARD_TYPE_CN3010_EVB_HS5) {
+-		/*
+-		 * Broadcom PHYs require differnet ASX
+-		 * clocks. Unfortunately many boards don't define a
+-		 * new board Id and simply mangle the
+-		 * CN3010_EVB_HS5
+-		 */
+-		if (interface == 0) {
+-			/*
+-			 * Some boards use a hacked up bootloader that
+-			 * identifies them as CN3010_EVB_HS5
+-			 * evaluation boards.  This leads to all kinds
+-			 * of configuration problems.  Detect one
+-			 * case, and print warning, while trying to do
+-			 * the right thing.
+-			 */
+-			int phy_addr = cvmx_helper_board_get_mii_address(0);
+-			if (phy_addr != -1) {
+-				int phy_identifier =
+-				    cvmx_mdio_read(phy_addr >> 8,
+-						   phy_addr & 0xff, 0x2);
+-				/* Is it a Broadcom PHY? */
+-				if (phy_identifier == 0x0143) {
+-					cvmx_dprintf("\n");
+-					cvmx_dprintf("ERROR:\n");
+-					cvmx_dprintf
+-					    ("ERROR: Board type is CVMX_BOARD_TYPE_CN3010_EVB_HS5, but Broadcom PHY found.\n");
+-					cvmx_dprintf
+-					    ("ERROR: The board type is mis-configured, and software malfunctions are likely.\n");
+-					cvmx_dprintf
+-					    ("ERROR: All boards require a unique board type to identify them.\n");
+-					cvmx_dprintf("ERROR:\n");
+-					cvmx_dprintf("\n");
+-					cvmx_wait(1000000000);
+-					cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX
+-						       (0, interface), 5);
+-					cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX
+-						       (0, interface), 5);
+-				}
+-			}
+-		}
+-	} else if (cvmx_sysinfo_get()->board_type ==
+ 			CVMX_BOARD_TYPE_UBNT_E100) {
+ 		cvmx_write_csr(CVMX_ASXX_RX_CLK_SETX(0, interface), 0);
+ 		cvmx_write_csr(CVMX_ASXX_TX_CLK_SETX(0, interface), 0x10);
 -- 
 2.9.2

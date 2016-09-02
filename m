@@ -1,31 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 19:59:37 +0200 (CEST)
-Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:42686 "EHLO
-        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992029AbcIBR73ocxim (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 19:59:29 +0200
-Received: from raspberrypi.musicnaut.iki.fi (85-76-72-196-nat.elisa-mobile.fi [85.76.72.196])
-        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 07C1E1A2904;
-        Fri,  2 Sep 2016 20:59:28 +0300 (EEST)
-Date:   Fri, 2 Sep 2016 20:59:28 +0300
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 22:44:41 +0200 (CEST)
+Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:52220 "EHLO
+        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992029AbcIBUoevfebg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 22:44:34 +0200
+Received: from localhost.localdomain (85-76-72-196-nat.elisa-mobile.fi [85.76.72.196])
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id E977F23404F;
+        Fri,  2 Sep 2016 23:44:33 +0300 (EEST)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 5/6] MIPS: OCTEON: delete legacy code for PHY access
-Message-ID: <20160902175928.GM14316@raspberrypi.musicnaut.iki.fi>
-References: <20160901204400.16562-1-aaro.koskinen@iki.fi>
- <20160901204400.16562-6-aaro.koskinen@iki.fi>
- <57C8B313.6030206@caviumnetworks.com>
- <20160901234515.GL14316@raspberrypi.musicnaut.iki.fi>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20160901234515.GL14316@raspberrypi.musicnaut.iki.fi>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH v2 0/6] MIPS: OCTEON: clean up platform phy code
+Date:   Fri,  2 Sep 2016 23:44:15 +0300
+Message-Id: <20160902204421.8265-1-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.9.2
 Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55018
+X-archive-position: 55019
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,32 +38,27 @@ X-list: linux-mips
 
 Hi,
 
-On Fri, Sep 02, 2016 at 02:45:15AM +0300, Aaro Koskinen wrote:
-> On Thu, Sep 01, 2016 at 04:00:35PM -0700, David Daney wrote:
-> > On 09/01/2016 01:43 PM, Aaro Koskinen wrote:
-> > >PHY access through the board helper should be impossible with the
-> > >current drivers, so delete this code and add BUG_ON().
-> > >
-> > >Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> > >---
-> > >  .../cavium-octeon/executive/cvmx-helper-board.c    | 110 +--------------------
-> > >  1 file changed, 5 insertions(+), 105 deletions(-)
-> > >
-> > >diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> > >index 5572e39..8d75242 100644
-> > >--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> > >+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
-> > [...]
-> > >+	BUG_ON(cvmx_helper_board_get_mii_address(ipd_port) != -1);
-> > >
-> > 
-> > Can we do WARN_ON instead?
-> > 
-> > No need to crash the kernel for this I think.
-> 
-> I could change it, but I really think it is 100% unreachable case with
-> the current mainline:
+Some phy/mdio code can be deleted from platform code. Let's do it.
 
-Actually, thinking more, I will just remove the whole line.
+	v2: Remove BUG_ON from patch 5/6.
 
-A.
+Aaro Koskinen (6):
+  MIPS: OCTEON: delete legacy hack for broken bootloaders
+  MIPS: OCTEON: don't try to maintain link state in early init
+  MIPS: OCTEON: delete cvmx_override_board_link_get
+  MIPS: OCTEON: delete cvmx_helper_board_link_set_phy
+  MIPS: OCTEON: delete legacy code for PHY access
+  MIPS: OCTEON: delete unused cvmx-mdio.h
+
+ .../cavium-octeon/executive/cvmx-helper-board.c    | 337 +-------------
+ .../cavium-octeon/executive/cvmx-helper-rgmii.c    |   5 +-
+ .../cavium-octeon/executive/cvmx-helper-sgmii.c    |   1 -
+ .../cavium-octeon/executive/cvmx-helper-xaui.c     |   2 -
+ arch/mips/cavium-octeon/executive/cvmx-helper.c    |  10 -
+ arch/mips/include/asm/octeon/cvmx-helper-board.h   |  30 --
+ arch/mips/include/asm/octeon/cvmx-mdio.h           | 506 ---------------------
+ 7 files changed, 3 insertions(+), 888 deletions(-)
+ delete mode 100644 arch/mips/include/asm/octeon/cvmx-mdio.h
+
+-- 
+2.9.2

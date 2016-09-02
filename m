@@ -1,65 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 14:57:34 +0200 (CEST)
-Received: from mail-yw0-f170.google.com ([209.85.161.170]:34932 "EHLO
-        mail-yw0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990522AbcIBM5Xzl-4Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 14:57:23 +0200
-Received: by mail-yw0-f170.google.com with SMTP id j12so69029354ywb.2;
-        Fri, 02 Sep 2016 05:57:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=hc3z/gaLZcTSKbeHC0zcJ1wqaJXFczrebEeOeHNkwGA=;
-        b=TpcIdwaLsT6NlUHkosQ9r+0ecsaaP6gAuAjVhpKBOeX/JdtK3TOjNdszBYTBM0dU0A
-         s18+nNcyWodWgnwVpDfXB+XuuRLmKD1Z4uLszZUY8086P5Atnw/Yylbvss3/4XSBZv3U
-         0WYA0OBa8b177ZzS1bCraAsnu8w7o/LjrCcnf8mhDs+kexyBdI8aBP6irQx/uNnCUU02
-         jGQ5/TB/y9kYNRzsurTbEMOXk61eVzngZy05fwpGod7K9BPYd8drxiNbriZVKdc6sCYh
-         Yc49N/WTkk3aLyTv3nRSWsNwXK8yurXKmYxUaO2CBIwGS692/eNQjqLmFKq59YBizBj1
-         Na8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=hc3z/gaLZcTSKbeHC0zcJ1wqaJXFczrebEeOeHNkwGA=;
-        b=jE0F7LsgYlMY7kiGMurY6z3P1vRiO/UDBxmS1gaUU1FHR1ejMpc3ARIWXEYilBLfOy
-         4UOr9WK2rzRNPAoNBnezPsve3uF1hTRKsN5Lxs2mny2JyTbIkLwjG84uyxvJRXsNciu4
-         lldF2WGRGy33fOOvjrUXLFlCINN34i8qguUcR4kCffn+Xw+LpoWReN/4etXdiU56yTdQ
-         wsPep01geC7Gh6cG8+o6axzs8AOfu+///sZJhP75dsjmGoIP0vXjlc/Z5oxyYpaNNbLk
-         BO2JmTq73jcd1uzHicvKpQd8Y1n87gkqwsMQk9o3Nh2r7nn7zNZxZ5wX6Etnc4dUxi62
-         dk5g==
-X-Gm-Message-State: AE9vXwNRrSshDC1G4xJZnATJxVeipO7d8zk994+Ndo4D62bgUORirAfmVRivgvQAmgVcVe3e+IdAHsZ/i36DCQ==
-X-Received: by 10.13.231.199 with SMTP id q190mr19391866ywe.26.1472821038119;
- Fri, 02 Sep 2016 05:57:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 15:28:28 +0200 (CEST)
+Received: from outbound1.eu.mailhop.org ([52.28.251.132]:38917 "EHLO
+        outbound1.eu.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991344AbcIBN2VG-en4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 15:28:21 +0200
+X-MHO-User: 1a33dec5-7111-11e6-b159-2d56437e1029
+X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Originating-IP: 173.50.81.193
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from io (unknown [173.50.81.193])
+        by outbound1.eu.mailhop.org (Halon Mail Gateway) with ESMTPSA;
+        Fri,  2 Sep 2016 13:28:14 +0000 (UTC)
+Received: from io.lakedaemon.net (localhost [127.0.0.1])
+        by io (Postfix) with ESMTP id 990268008C;
+        Fri,  2 Sep 2016 13:28:06 +0000 (UTC)
+X-DKIM: OpenDKIM Filter v2.6.8 io 990268008C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lakedaemon.net;
+        s=mail; t=1472822886;
+        bh=G/C7fTK328zHDMUZR2oSTxlhH29xDiY6s3KznzxX6N4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=r88vn6hmXJZhpieVxOzpeMWci9kRChfFJHw1nZfFZZDoP6WDHme/j9xshbcIsaA8/
+         cKdLTV2BMZdm+1N4krdGa9GQpX1LAHbt7E5gJSpZhgiB4/FLPUNbYeKxSjqdJS5RNF
+         NgUvF66XiNl4AZyusGnehM58N2Dulog4gBOXGLLHdjb+rIMbLCZRUjl0JP7H8ER5/h
+         120fs6OI9B0OjRQPQNgUnyvWQpYZphCVPjSOY52UpxQTB3IYxndwixy7GBbxC5v6Ij
+         lz9qWd8Ksoas0zaM9usy31mWgW89Z4v0RMRvKiigApngB1jrhxnVHFiwS0kcD16SEt
+         R6NSUu6UmsaLw==
+Date:   Fri, 2 Sep 2016 13:28:06 +0000
+From:   Jason Cooper <jason@lakedaemon.net>
+To:     Michal Simek <michal.simek@xilinx.com>
+Cc:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        monstr@monstr.eu, ralf@linux-mips.org, tglx@linutronix.de,
+        marc.zyngier@arm.com, soren.brinkmann@xilinx.com,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        netdev@vger.kernel.org
+Subject: Re: [Patch v4 01/12] microblaze: irqchip: Move intc driver to irqchip
+Message-ID: <20160902132806.GK10637@io.lakedaemon.net>
+References: <1472748665-47774-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <1472748665-47774-2-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <772f883f-79fe-9197-f27c-3ffe91019aaf@xilinx.com>
+ <5d98fd3b-4722-cdd3-4540-c1d1fec1c98c@imgtec.com>
+ <4931182d-7b30-582f-f291-5be59b6b89e4@xilinx.com>
 MIME-Version: 1.0
-Received: by 10.37.36.213 with HTTP; Fri, 2 Sep 2016 05:57:17 -0700 (PDT)
-In-Reply-To: <4a7fb1cb-e0d4-31b7-7016-35adb63a659d@imgtec.com>
-References: <1472321697-3094-1-git-send-email-prasannatsmkumar@gmail.com>
- <1472321697-3094-4-git-send-email-prasannatsmkumar@gmail.com> <4a7fb1cb-e0d4-31b7-7016-35adb63a659d@imgtec.com>
-From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Date:   Fri, 2 Sep 2016 18:27:17 +0530
-Message-ID: <CANc+2y5qm6zdfG5dvway=+80aqkkarSGjfXt+Lq__CiCOTw+Nw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] hw_random: jz4780-rng: Add RNG node to jz4780.dtsi
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     mpm@selenic.com, Herbert Xu <herbert@gondor.apana.org.au>,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        boris.brezillon@free-electrons.com, harvey.hunt@imgtec.com,
-        prarit@redhat.com, Florian Fainelli <f.fainelli@gmail.com>,
-        joshua.henderson@microchip.com, narmstrong@baylibre.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <prasannatsmkumar@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4931182d-7b30-582f-f291-5be59b6b89e4@xilinx.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <jason@lakedaemon.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54993
+X-archive-position: 54994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: prasannatsmkumar@gmail.com
+X-original-sender: jason@lakedaemon.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,15 +65,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-> I don't like this change. The RNG registers are documented as a part of
-> the same hardware block as the clock & power stuff which the CGU driver
-> handles, and indeed in the M200 SoC there is a power-related register
-> after the RNG registers. So shortening the range covered by the CGU
-> driver is not the right way to go.
+Hi Michal, Zubair,
 
-Could not find M200 SoC PM in ingenic's website or ftp. So did not notice this.
+On Fri, Sep 02, 2016 at 12:27:54PM +0200, Michal Simek wrote:
+> On 2.9.2016 12:06, Zubair Lutfullah Kakakhel wrote:
+> > On 09/02/2016 07:25 AM, Michal Simek wrote:
+...
+> >> Also there is another copy of this driver in the tree which was using
+> >> old ppc405 and ppc440 xilinx platforms.
+> >>
+> >> arch/powerpc/include/asm/xilinx_intc.h
+> >> arch/powerpc/sysdev/xilinx_intc.c
+> >>
+> >> These should be also removed by moving this driver to generic folder.
+> > 
+> > I didn't know about that drivers existence.
+> > 
+> > This patch series already touches microblaze, mips and irqchip.
+> > Both microblaze and mips platforms using this driver are little-endian.
+> 
+> MB is big ending too and as you see there is big endian support in the
+> driver already.
+> 
+> > 
+> > Adding a big-endian powerpc driver + platform to the mix is going to
+> > complicate the series further and make it super hard to synchronize
+> > various subsystems, test stuff, and then move the drivers without
+> > breakage.
 
-> Perhaps you could instead have the CGU driver make use of the syscon
-> infrastructure to expose a regmap which your RNG driver could pick up & use?
+The whole point of Linus' push to move drivers out of arch/ is to
+reduce code duplication and create more robust drivers.
 
-I will see how to use syscon and provide an updated patch.
+> > I'd highly recommend letting this move happen. And then the powerpc
+> > driver can transition over time to this driver.
+
+I've seen this argument before, and despite everyone's best intentions,
+it never happens. :(
+
+We have linux-next, 0-day and other resources to test these sorts of
+changes and catch errors before they hit mainline.
+
+Let's take our time and do it right.
+
+thx,
+
+Jason.

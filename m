@@ -1,26 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 12:02:30 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28608 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 12:02:51 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:8784 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992087AbcIBKAbg4FSz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 12:00:31 +0200
+        with ESMTP id S23992111AbcIBKAgWZHHz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 12:00:36 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id E55D73564804D;
+        by Forcepoint Email with ESMTPS id AE11CCC6CF030;
         Fri,  2 Sep 2016 11:00:11 +0100 (IST)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 2 Sep 2016 11:00:14 +0100
+ 14.3.294.0; Fri, 2 Sep 2016 11:00:13 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>
 CC:     <linux-mips@linux-mips.org>, <lisa.parratt@imgtec.com>,
         <linux-kernel@vger.kernel.org>,
+        Lisa Parratt <Lisa.Parratt@imgtec.com>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        <linux-remoteproc@vger.kernel.org>
-Subject: [PATCH 5/6] remoteproc/MIPS: Add a remoteproc driver for MIPS
-Date:   Fri, 2 Sep 2016 10:59:54 +0100
-Message-ID: <1472810395-21381-6-git-send-email-matt.redfearn@imgtec.com>
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH 4/6] MIPS: CPS: Add VP(E) stealing
+Date:   Fri, 2 Sep 2016 10:59:53 +0100
+Message-ID: <1472810395-21381-5-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1472810395-21381-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1472810395-21381-1-git-send-email-matt.redfearn@imgtec.com>
@@ -31,7 +33,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54979
+X-archive-position: 54980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,741 +50,340 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a remoteproc driver to steal, load the firmware, and boot an offline
-MIPS core, turning it into a coprocessor.
+From: Lisa Parratt <Lisa.Parratt@imgtec.com>
 
-This driver provides a sysfs to allow arbitrary firmware to be loaded
-onto a core, which may expose virtio devices. Coprocessor firmware must
-abide by the UHI coprocessor boot protocol.
+VP(E) stealing provides a mechanism for removing an offline Virtual
+Processor from the Linux kernel such that it is available to run bare
+metal code.
+Once the CPU has been offlined from Linux, the CPU can be given a task
+to run via mips_cps_steal_cpu_and_execute(). The CPU is removed from the
+cpu_present mask and is set up to execute from address entry_fn. Stack
+space is assigned via the tsk task_struct so that C initialisation code
+may be used.
+To return the CPU back to Linux control, mips_cps_halt_and_return_cpu
+will arrange to halt the CPU and return it to the cpu_present mask. It
+is then available to be brought online again via CPU hotplug.
 
-Signed-off-by: Lisa Parratt <lisa.parratt@imgtec.com>
+This mechanism is used by the MIPS remote processor driver to allow
+CPUs within the system to execute bare metal code, not under control of
+the kernel.
+
+Signed-off-by: Lisa Parratt <Lisa.Parratt@imgtec.com>
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-
 ---
 
- Documentation/ABI/testing/sysfs-class-mips-rproc |  24 +
- drivers/remoteproc/Kconfig                       |  11 +
- drivers/remoteproc/Makefile                      |   1 +
- drivers/remoteproc/mips_remoteproc.c             | 651 +++++++++++++++++++++++
- 4 files changed, 687 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-class-mips-rproc
- create mode 100644 drivers/remoteproc/mips_remoteproc.c
+ arch/mips/Kconfig               |   7 ++
+ arch/mips/include/asm/smp-cps.h |   8 ++
+ arch/mips/include/asm/smp.h     |   1 +
+ arch/mips/kernel/smp-cps.c      | 162 ++++++++++++++++++++++++++++++++++++++--
+ arch/mips/kernel/smp.c          |  12 +++
+ 5 files changed, 183 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-class-mips-rproc b/Documentation/ABI/testing/sysfs-class-mips-rproc
-new file mode 100644
-index 000000000000..c09d02a755e4
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-class-mips-rproc
-@@ -0,0 +1,24 @@
-+What:		/sys/class/mips-rproc/rproc#/firmware
-+Date:		August 2015
-+Contact:	Lisa Parratt <lisa.parratt@imgtec.com>
-+Description:	MIPS VPE remoteproc start
-+
-+	This node only exists when a VPE is considered offline by Linux. Writes
-+	to this file will start firmware running on a VPE.
-+
-+	If the VPE is idle, specifying a name will cause a remoteproc instance
-+	to be allocated, which will cause the core to be stolen, the firmware
-+	image to be loaded, and the remoteproc instance to be started.
-+	Otherwise, the operation will fail.
-+
-+What:		/sys/class/mips-rproc/rproc#/stop
-+Date:		August 2015
-+Contact:	Lisa Parratt <lisa.parratt@imgtec.com>
-+Description:	MIPS VPE remoteproc stop
-+
-+	This node only exists when a VPE is considered offline by Linux. Writes
-+	to this file will stop firmware running on a VPE.
-+
-+	If the VPE is running a remote proc instance, the instance will be
-+	stopped, the core returned, and the instance freed.
-+	Otherwise, the operation will fail.
-diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
-index 1a8bf76a925f..05db52e0e668 100644
---- a/drivers/remoteproc/Kconfig
-+++ b/drivers/remoteproc/Kconfig
-@@ -100,4 +100,15 @@ config ST_REMOTEPROC
- 	  processor framework.
- 	  This can be either built-in or a loadable module.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 26388562e300..2094cbcea0d4 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2341,6 +2341,13 @@ config MIPS_CPS
+ 	  no external assistance. It is safe to enable this when hardware
+ 	  support is unavailable.
  
-+config MIPS_REMOTEPROC
-+	tristate "MIPS remoteproc support"
-+	depends on MIPS_CPS && HAS_DMA
-+	select CMA
-+	select REMOTEPROC
-+	select MIPS_STEAL
++config MIPS_STEAL
++	bool "VPE stealing"
++	depends on HOTPLUG_CPU && MIPS_CPS
 +	help
-+	  Say y here to support using offline cores/VPEs as remote processors
-+	  via the remote processor framework.
-+	  If unsure say N.
++	  Select this is you wish to be able to run bare metal code on offline
++	  VPEs.
 +
- endmenu
-diff --git a/drivers/remoteproc/Makefile b/drivers/remoteproc/Makefile
-index 92d3758bd15c..de19cd320f3a 100644
---- a/drivers/remoteproc/Makefile
-+++ b/drivers/remoteproc/Makefile
-@@ -14,3 +14,4 @@ obj-$(CONFIG_DA8XX_REMOTEPROC)		+= da8xx_remoteproc.o
- obj-$(CONFIG_QCOM_MDT_LOADER)		+= qcom_mdt_loader.o
- obj-$(CONFIG_QCOM_Q6V5_PIL)		+= qcom_q6v5_pil.o
- obj-$(CONFIG_ST_REMOTEPROC)		+= st_remoteproc.o
-+obj-$(CONFIG_MIPS_REMOTEPROC)		+= mips_remoteproc.o
-diff --git a/drivers/remoteproc/mips_remoteproc.c b/drivers/remoteproc/mips_remoteproc.c
-new file mode 100644
-index 000000000000..944ad66280b4
---- /dev/null
-+++ b/drivers/remoteproc/mips_remoteproc.c
-@@ -0,0 +1,651 @@
-+/*
-+ * MIPS Remote Processor driver
-+ *
-+ * Copyright (C) 2016 Imagination Technologies
-+ * Lisa Parratt <lisa.parratt@imgtec.com>
-+ * Matt Redfearn <matt.redfearn@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
+ config MIPS_CPS_PM
+ 	depends on MIPS_CPS
+ 	select MIPS_CPC
+diff --git a/arch/mips/include/asm/smp-cps.h b/arch/mips/include/asm/smp-cps.h
+index 2ae1f61a4a95..4f6cd5b14185 100644
+--- a/arch/mips/include/asm/smp-cps.h
++++ b/arch/mips/include/asm/smp-cps.h
+@@ -34,6 +34,14 @@ extern void mips_cps_boot_vpes(struct core_boot_config *cfg, unsigned vpe);
+ extern void mips_cps_pm_save(void);
+ extern void mips_cps_pm_restore(void);
+ 
++#ifdef CONFIG_MIPS_STEAL
 +
++extern int mips_cps_steal_cpu_and_execute(unsigned int cpu, void *entry_fn,
++					  struct task_struct *tsk);
++extern int mips_cps_halt_and_return_cpu(unsigned int cpu);
++
++#endif /* CONFIG_MIPS_STEAL */
++
+ #ifdef CONFIG_MIPS_CPS
+ 
+ extern bool mips_cps_smp_in_use(void);
+diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
+index 060f23ff1817..3c62a1958af5 100644
+--- a/arch/mips/include/asm/smp.h
++++ b/arch/mips/include/asm/smp.h
+@@ -117,4 +117,5 @@ static inline void arch_send_call_function_ipi_mask(const struct cpumask *mask)
+ extern void (*dump_ipi_function_ptr)(void *);
+ void dump_send_ipi(void (*dump_ipi_callback)(void *));
+ #endif
++
+ #endif /* __ASM_SMP_H */
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index e9d9fc6c754c..bcb9b62816b1 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -8,6 +8,7 @@
+  * option) any later version.
+  */
+ 
 +#include <linux/cpu.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/irq.h>
-+#include <linux/module.h>
-+#include <linux/of_irq.h>
-+#include <linux/platform_device.h>
-+#include <linux/remoteproc.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/irqchip/mips-gic.h>
+@@ -39,6 +40,31 @@ static int __init setup_nothreads(char *s)
+ }
+ early_param("nothreads", setup_nothreads);
+ 
++#ifdef CONFIG_MIPS_STEAL
++struct cpumask cpu_stolen_mask;
 +
-+#include <asm/dma-coherence.h>
-+#include <asm/smp-cps.h>
-+#include <asm/tlbflush.h>
-+#include <asm/tlbmisc.h>
-+
-+#include "remoteproc_internal.h"
-+
-+struct mips_rproc {
-+	struct rproc		*rproc;
-+	char			*firmware;
-+	struct task_struct	*tsk;
-+	struct device		dev;
-+	unsigned int		cpu;
-+	int			ipi_linux;
-+	int			ipi_remote;
-+};
-+
-+static struct rproc *mips_rprocs[NR_CPUS];
-+
-+#define to_mips_rproc(d) container_of(d, struct mips_rproc, dev)
-+
-+
-+/* Compute the largest page mask a physical address can be mapped with */
-+static unsigned long mips_rproc_largest_pm(unsigned long pa,
-+					   unsigned long maxmask)
++static inline bool cpu_stolen(int cpu)
 +{
-+	unsigned long mask;
-+	/* Find address bits limiting alignment */
-+	unsigned long shift = ffs(pa);
-+
-+	/* Obey MIPS restrictions on page sizes */
-+	if (pa) {
-+		if (shift & 1)
-+			shift -= 2;
-+		else
-+			shift--;
-+	}
-+	mask = ULONG_MAX << shift;
-+	return maxmask & ~mask;
++	return cpumask_test_cpu(cpu, &cpu_stolen_mask);
 +}
 +
-+/* Compute the next largest page mask for a given page mask */
-+static unsigned long mips_rproc_next_pm(unsigned long pm, unsigned long maxmask)
++static inline void set_cpu_stolen(int cpu, bool state)
 +{
-+	if (pm != PM_4K)
-+		return ((pm << 2) | pm) & maxmask;
++	if (state)
++		cpumask_set_cpu(cpu, &cpu_stolen_mask);
 +	else
-+		return PM_16K;
++		cpumask_clear_cpu(cpu, &cpu_stolen_mask);
++}
++#else
++static inline bool cpu_stolen(int cpu)
++{
++	return false;
 +}
 +
-+static void mips_map_page(unsigned long da, unsigned long pa, int c,
-+			  unsigned long pagemask, unsigned long pagesize)
++static inline void set_cpu_stolen(int cpu, bool state) { }
++
++#endif /* CONFIG_MIPS_STEAL */
++
+ static unsigned core_vpe_count(unsigned core)
+ {
+ 	unsigned cfg;
+@@ -109,6 +135,10 @@ static void __init cps_smp_setup(void)
+ 		write_gcr_bev_base(core_entry);
+ 	}
+ 
++#ifdef CONFIG_MIPS_STEAL
++	cpumask_clear(&cpu_stolen_mask);
++#endif /* CONFIG_MIPS_STEAL */
++
+ #ifdef CONFIG_MIPS_MT_FPAFF
+ 	/* If we have an FPU, enroll ourselves in the FPU-full mask */
+ 	if (cpu_has_fpu)
+@@ -287,7 +317,7 @@ static void remote_vpe_boot(void *dummy)
+ 	mips_cps_boot_vpes(core_cfg, cpu_vpe_id(&current_cpu_data));
+ }
+ 
+-static void cps_boot_secondary(int cpu, struct task_struct *idle)
++static void cps_start_secondary(int cpu, void *entry_fn, struct task_struct *tsk)
+ {
+ 	unsigned core = cpu_data[cpu].core;
+ 	unsigned vpe_id = cpu_vpe_id(&cpu_data[cpu]);
+@@ -297,9 +327,9 @@ static void cps_boot_secondary(int cpu, struct task_struct *idle)
+ 	unsigned int remote;
+ 	int err;
+ 
+-	vpe_cfg->pc = (unsigned long)&smp_bootstrap;
+-	vpe_cfg->sp = __KSTK_TOS(idle);
+-	vpe_cfg->gp = (unsigned long)task_thread_info(idle);
++	vpe_cfg->pc = (unsigned long)entry_fn;
++	vpe_cfg->sp = __KSTK_TOS(tsk);
++	vpe_cfg->gp = (unsigned long)task_thread_info(tsk);
+ 
+ 	atomic_or(1 << cpu_vpe_id(&cpu_data[cpu]), &core_cfg->vpe_mask);
+ 
+@@ -343,6 +373,11 @@ out:
+ 	preempt_enable();
+ }
+ 
++static void cps_boot_secondary(int cpu, struct task_struct *idle)
 +{
-+	unsigned long pa2 = pa + (pagesize / 2);
-+	unsigned long entryhi, entrylo0, entrylo1;
-+
-+	/* Compute the mapping */
-+	pa = (pa >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
-+	pa2 = (pa2 >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
-+	entryhi = da & 0xfffffe000;
-+	entrylo0 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa;
-+	entrylo1 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa2;
-+
-+	pr_debug("Create wired entry %d, CCA %d\n", read_c0_wired(), c);
-+	pr_debug(" EntryHi: 0x%016lx\n", entryhi);
-+	pr_debug(" EntryLo0: 0x%016lx\n", entrylo0);
-+	pr_debug(" EntryLo1: 0x%016lx\n", entrylo1);
-+	pr_debug(" Pagemask: 0x%016lx\n", pagemask);
-+	pr_debug("\n");
-+
-+	add_wired_entry(entrylo0, entrylo1, entryhi, pagemask);
++	cps_start_secondary(cpu, &smp_bootstrap, idle);
 +}
 +
-+/*
-+ * Compute the page required to fulfill a mapping. Escapes alignment derived
-+ * page size limitations before using biggest fit to map the remainder.
-+ */
-+static inline void mips_rproc_fit_page(unsigned long da, unsigned long pa,
-+					int c, unsigned long size,
-+					unsigned long maxmask)
-+{
-+	unsigned long bigmask, nextmask;
-+	unsigned long pagemask, pagesize;
-+	unsigned long distance, target;
-+
-+	do {
-+		/* Compute the current largest page mask */
-+		bigmask = mips_rproc_largest_pm(pa, maxmask);
-+		/* Compute the next largest pagesize */
-+		nextmask = mips_rproc_next_pm(bigmask, maxmask);
-+		/*
-+		 * Compute the distance from our current physical address to
-+		 * the next page boundary.
-+		 */
-+		distance = (nextmask + 0x2000) - (pa & nextmask);
-+		/*
-+		 * Decide between searching to get to the next highest page
-+		 * boundary or finishing.
-+		 */
-+		target = distance < size ? distance : size;
-+		/* Fit */
-+		while (target) {
-+			/* Find the largest supported page size that will fit */
-+			for (pagesize = maxmask + 0x2000;
-+			     (pagesize > 0x2000) && (pagesize > target);
-+			     pagesize /= 4) {
-+			}
-+			/* Convert it to a page mask */
-+			pagemask = pagesize - 0x2000;
-+			/* Emit it */
-+			mips_map_page(da, pa, c, pagemask, pagesize);
-+			/* Move to next step */
-+			size -= pagesize;
-+			da += pagesize;
-+			pa += pagesize;
-+			target -= pagesize;
-+		}
-+	} while (size);
-+}
-+
-+
-+static int mips_rproc_carveouts(struct rproc *rproc, int max_pagemask)
-+{
-+	struct rproc_mem_entry *carveout;
-+
-+	list_for_each_entry(carveout, &rproc->carveouts, node) {
-+		int c = CONF_CM_CACHABLE_COW;
-+
-+		dev_dbg(&rproc->dev,
-+			"carveout mapping da 0x%x -> %pad length 0x%x, CCA %d",
-+			carveout->da, &carveout->dma, carveout->len, c);
-+
-+		mips_rproc_fit_page(carveout->da, carveout->dma, c,
-+				    carveout->len, max_pagemask);
-+	}
-+	return 0;
-+}
-+
-+
-+static int mips_rproc_vdevs(struct rproc *rproc, int max_pagemask)
-+{
-+	struct rproc_vdev *rvdev;
-+
-+	list_for_each_entry(rvdev, &rproc->rvdevs, node) {
-+		int i, size;
-+
-+		for (i = 0; i < ARRAY_SIZE(rvdev->vring); i++) {
-+			struct rproc_vring *vring = &rvdev->vring[i];
-+			unsigned long pa = vring->dma;
-+			int c;
-+
-+			if (hw_coherentio) {
-+				/*
-+				 * The DMA API will allocate cacheable buffers
-+				 * for shared resources, so the firmware should
-+				 * also access those buffers cached
-+				 */
-+				c = (_page_cachable_default >> _CACHE_SHIFT);
-+			} else {
-+				/*
-+				 * Otherwise, shared buffers should be accessed
-+				 * uncached
-+				 */
-+				c = CONF_CM_UNCACHED;
-+			}
-+
-+			/* actual size of vring (in bytes) */
-+			size = PAGE_ALIGN(vring_size(vring->len, vring->align));
-+
-+			dev_dbg(&rproc->dev,
-+				"vring mapping da %pad -> %pad length 0x%x, CCA %d",
-+				&vring->dma, &vring->dma, size, c);
-+
-+			mips_rproc_fit_page(pa, pa, c, size, max_pagemask);
-+		}
-+	}
-+	return 0;
-+}
-+
-+static void mips_rproc_cpu_entry(void)
-+{
-+	struct rproc *rproc = mips_rprocs[smp_processor_id()];
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+	int ipi_to_remote = ipi_get_hwirq(mproc->ipi_remote, mproc->cpu);
-+	int ipi_from_remote = ipi_get_hwirq(mproc->ipi_linux, 0);
-+	unsigned long old_pagemask, max_pagemask;
-+
-+	if (!rproc)
-+		return;
-+
-+	dev_info(&rproc->dev, "Starting %s on MIPS CPU%d\n",
-+		 mproc->firmware, mproc->cpu);
-+
-+	/* Get the maximum pagemask supported on this CPU */
-+	old_pagemask = read_c0_pagemask();
-+	write_c0_pagemask(PM_HUGE_MASK);
-+	mtc0_tlbw_hazard();
-+	max_pagemask = read_c0_pagemask();
-+	write_c0_pagemask(old_pagemask);
-+	mtc0_tlbw_hazard();
-+
-+	/* Start with no wired entries */
-+	write_c0_wired(0);
-+
-+	/* Flush all previous TLB entries */
-+	local_flush_tlb_all();
-+
-+	/* Map firmware resources into virtual memory */
-+	mips_rproc_carveouts(rproc, max_pagemask);
-+	mips_rproc_vdevs(rproc, max_pagemask);
-+
-+	dev_dbg(&rproc->dev, "IPI to remote: %d\n", ipi_to_remote);
-+	dev_dbg(&rproc->dev, "IPI from remote: %d\n", ipi_from_remote);
-+
-+	/* Hand off the CPU to the firmware */
-+	dev_dbg(&rproc->dev, "Jumping to firmware at 0x%x\n", rproc->bootaddr);
-+
-+	write_c0_entryhi(0); /* Set ASID 0 */
-+	tlbw_use_hazard();
-+
-+	/* Firmware protocol */
-+	__asm__("addiu $a0, $zero, -3");
-+	__asm__("move $a1, %0" :: "r" (ipi_to_remote));
-+	__asm__("move $a2, %0" :: "r" (ipi_from_remote));
-+	__asm__("move $a3, $zero");
-+	__asm__("jr %0" :: "r" (rproc->bootaddr));
-+}
-+
-+
-+static irqreturn_t mips_rproc_ipi_handler(int irq, void *dev_id)
-+{
-+	/* Synthetic interrupts shouldn't need acking */
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+
-+static irqreturn_t mips_rproc_vq_int(int irq, void *p)
-+{
-+	struct rproc *rproc = (struct rproc *)p;
-+	void *entry;
-+	int id;
-+
-+	/* We don't have a mailbox, so iterate over all vqs and kick them. */
-+	idr_for_each_entry(&rproc->notifyids, entry, id)
-+		rproc_vq_interrupt(rproc, id);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+
-+/* Helper function to find the IPI domain */
-+static struct irq_domain *ipi_domain(void)
-+{
-+	struct device_node *node = of_irq_find_parent(of_root);
-+	struct irq_domain *ipidomain;
-+
-+	ipidomain = irq_find_matching_host(node, DOMAIN_BUS_IPI);
+ static void cps_init_secondary(void)
+ {
+ 	/* Disable MT - we only want to run 1 TC per VPE */
+@@ -394,6 +429,28 @@ static int cps_cpu_disable(void)
+ 	if (!cps_pm_support_state(CPS_PM_POWER_GATED))
+ 		return -EINVAL;
+ 
++#ifdef CONFIG_MIPS_STEAL
 +	/*
-+	 * Some platforms have half DT setup. So if we found irq node but
-+	 * didn't find an ipidomain, try to search for one that is not in the
-+	 * DT.
++	 * With the MT ASE only VPEs in the same core may read / write the
++	 * control registers of other VPEs. Therefore to maintain control of
++	 * any stolen VPEs at least one sibling VPE must be kept online.
 +	 */
-+	if (node && !ipidomain)
-+		ipidomain = irq_find_matching_host(NULL, DOMAIN_BUS_IPI);
++	if (cpu_has_mipsmt) {
++		int stolen, siblings = 0;
 +
-+	return ipidomain;
++		for_each_cpu((stolen), &cpu_stolen_mask)
++			if (cpu_data[stolen].core == cpu_data[cpu].core)
++				siblings++;
++
++		if (siblings == 1)
++			/*
++			 * When a VPE has been stolen, keep at least one of it's
++			 * siblings around in order to control it.
++			 */
++			return -EBUSY;
++	}
++#endif /* CONFIG_MIPS_STEAL */
++
+ 	core_cfg = &mips_cps_core_bootcfg[current_cpu_data.core];
+ 	atomic_sub(1 << cpu_vpe_id(&current_cpu_data), &core_cfg->vpe_mask);
+ 	smp_mb__after_atomic();
+@@ -426,7 +483,7 @@ void play_dead(void)
+ 		core = cpu_data[cpu].core;
+ 
+ 		/* Look for another online VPE within the core */
+-		for_each_online_cpu(cpu_death_sibling) {
++		for_each_possible_cpu(cpu_death_sibling) {
+ 			if (cpu_data[cpu_death_sibling].core != core)
+ 				continue;
+ 
+@@ -434,8 +491,11 @@ void play_dead(void)
+ 			 * There is an online VPE within the core. Just halt
+ 			 * this TC and leave the core alone.
+ 			 */
+-			cpu_death = CPU_DEATH_HALT;
+-			break;
++			if (cpu_online(cpu_death_sibling) ||
++			    cpu_stolen(cpu_death_sibling))
++				cpu_death = CPU_DEATH_HALT;
++			if (cpu_online(cpu_death_sibling))
++				break;
+ 		}
+ 	}
+ 
+@@ -466,6 +526,94 @@ void play_dead(void)
+ 	panic("Failed to offline CPU %u", cpu);
+ }
+ 
++#ifdef CONFIG_MIPS_STEAL
++
++/* Find an online sibling CPU (another VPE in the same core) */
++static inline int mips_cps_get_online_sibling(unsigned int cpu)
++{
++	int sibling;
++
++	for_each_online_cpu(sibling)
++		if (cpu_data[sibling].core == cpu_data[cpu].core)
++			return sibling;
++
++	return -1;
 +}
 +
-+
-+int mips_rproc_op_start(struct rproc *rproc)
++int mips_cps_steal_cpu_and_execute(unsigned int cpu, void *entry_fn,
++				   struct task_struct *tsk)
 +{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+	int err;
-+	int cpu = mproc->cpu;
++	int err = -EINVAL;
 +
-+	if (mips_rprocs[cpu]) {
-+		dev_err(&rproc->dev, "CPU%d in use\n", cpu);
-+		return -EBUSY;
++	preempt_disable();
++
++	if (!cpu_present(cpu) || cpu_online(cpu) || cpu_stolen(cpu))
++		goto out;
++
++	if (cpu_has_mipsmt && (mips_cps_get_online_sibling(cpu) < 0))
++		pr_warn("CPU%d has no online siblings to control it\n", cpu);
++	else {
++		set_cpu_present(cpu, false);
++		set_cpu_stolen(cpu, true);
++
++		cps_start_secondary(cpu, entry_fn, tsk);
++		err = 0;
 +	}
-+	mips_rprocs[cpu] = rproc;
++out:
++	preempt_enable();
++	return err;
++}
 +
-+	/* Create task for the CPU to use before handing off to firmware */
-+	mproc->tsk = fork_idle(cpu);
-+	if (IS_ERR(mproc->tsk)) {
-+		dev_err(&rproc->dev, "fork_idle() failed for CPU%d\n", cpu);
-+		return -ENOMEM;
-+	}
++static void mips_cps_halt_sibling(void *ptr_cpu)
++{
++	unsigned int cpu = (unsigned long)ptr_cpu;
++	unsigned int vpe_id = cpu_vpe_id(&cpu_data[cpu]);
++	unsigned long flags;
++	int vpflags;
 +
-+	/* We won't be needing the Linux IPIs anymore */
-+	if (mips_smp_ipi_free(get_cpu_mask(cpu)))
++	local_irq_save(flags);
++	vpflags = dvpe();
++	settc(vpe_id);
++	write_tc_c0_tchalt(TCHALT_H);
++	evpe(vpflags);
++	local_irq_restore(flags);
++}
++
++int mips_cps_halt_and_return_cpu(unsigned int cpu)
++{
++	unsigned int core = cpu_data[cpu].core;
++	unsigned int vpe_id = cpu_vpe_id(&cpu_data[cpu]);
++
++	if (!cpu_stolen(cpu))
 +		return -EINVAL;
 +
++	if (cpu_has_mipsmt && (core == cpu_data[smp_processor_id()].core))
++		mips_cps_halt_sibling((void *)(unsigned long)cpu);
++	else if (cpu_has_mipsmt) {
++		int sibling = mips_cps_get_online_sibling(cpu);
++
++		if (sibling < 0) {
++			pr_warn("CPU%d has no online siblings\n", cpu);
++			return -EINVAL;
++		}
++
++		if (smp_call_function_single(sibling, mips_cps_halt_sibling,
++						(void *)(unsigned long)cpu, 1))
++			panic("Failed to call sibling CPU\n");
++
++	} else if (cpu_has_vp) {
++		mips_cm_lock_other(core, vpe_id);
++		write_cpc_co_vp_stop(1 << vpe_id);
++		mips_cm_unlock_other();
++	}
++
++	set_cpu_stolen(cpu, false);
++	set_cpu_present(cpu, true);
++	return 0;
++}
++
++#endif /* CONFIG_MIPS_STEAL */
++
+ static void wait_for_sibling_halt(void *ptr_cpu)
+ {
+ 	unsigned cpu = (unsigned long)ptr_cpu;
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index afa06c2bb019..f3d01f556fe2 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -233,6 +233,18 @@ static void smp_ipi_init_one(unsigned int virq,
+ 				    struct irqaction *action)
+ {
+ 	int ret;
++#ifdef CONFIG_MIPS_STEAL
++	struct irq_data *data;
 +	/*
-+	 * Direct IPIs from the remote processor to CPU0 since that can't be
-+	 * offlined while the remote CPU is running.
++	 * A bit of a hack to ensure that the ipi_offset is 0.
++	 * This is to deal with removing / reallocating IPIs
++	 * to subsets of the possible CPUs, where the IPI IRQ domain
++	 * will set ipi_offset to the first cpu in the cpumask when the
++	 * IPI is reallocated.
 +	 */
-+	mproc->ipi_linux = irq_reserve_ipi(ipi_domain(), get_cpu_mask(0));
-+	if (!mproc->ipi_linux) {
-+		dev_err(&mproc->dev, "Failed to reserve incoming kick\n");
-+		goto exit_rproc_nofrom;
-+	}
-+
-+	mproc->ipi_remote = irq_reserve_ipi(ipi_domain(), get_cpu_mask(cpu));
-+	if (!mproc->ipi_remote) {
-+		dev_err(&mproc->dev, "Failed to reserve outgoing kick\n");
-+		goto exit_rproc_noto;
-+	}
-+
-+	/* register incoming ipi */
-+	err = devm_request_threaded_irq(&mproc->dev, mproc->ipi_linux,
-+					mips_rproc_ipi_handler,
-+					mips_rproc_vq_int, 0,
-+					"mips-rproc IPI in", mproc->rproc);
-+	if (err) {
-+		dev_err(&mproc->dev, "Failed to register incoming kick: %d\n",
-+			err);
-+		goto exit_rproc_noint;
-+	}
-+
-+	if (!mips_cps_steal_cpu_and_execute(cpu, &mips_rproc_cpu_entry,
-+						mproc->tsk))
-+		return 0;
-+
-+	dev_err(&mproc->dev, "Failed to steal CPU%d for remote\n", cpu);
-+	devm_free_irq(&mproc->dev, mproc->ipi_linux, mproc->rproc);
-+exit_rproc_noint:
-+	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(cpu));
-+exit_rproc_noto:
-+	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
-+exit_rproc_nofrom:
-+	free_task(mproc->tsk);
-+	mips_rprocs[cpu] = NULL;
-+
-+	/* Set up the Linux IPIs again */
-+	mips_smp_ipi_allocate(get_cpu_mask(cpu));
-+	return -EINVAL;
-+}
-+
-+int mips_rproc_op_stop(struct rproc *rproc)
-+{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+
-+	if (mproc->ipi_linux)
-+		devm_free_irq(&mproc->dev, mproc->ipi_linux, mproc->rproc);
-+
-+	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
-+	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(mproc->cpu));
-+
-+	/* Set up the Linux IPIs again */
-+	mips_smp_ipi_allocate(get_cpu_mask(mproc->cpu));
-+
-+	free_task(mproc->tsk);
-+
-+	mips_rprocs[mproc->cpu] = NULL;
-+
-+	return mips_cps_halt_and_return_cpu(mproc->cpu);
-+}
-+
-+
-+void mips_rproc_op_kick(struct rproc *rproc, int vqid)
-+{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+
-+	ipi_send_single(mproc->ipi_remote, mproc->cpu);
-+}
-+
-+struct rproc_ops mips_rproc_proc_ops = {
-+	.start	= mips_rproc_op_start,
-+	.stop	= mips_rproc_op_stop,
-+	.kick	= mips_rproc_op_kick,
-+};
-+
-+
-+static int mips_rproc_probe(struct platform_device *pdev)
-+{
-+	return 0;
-+}
-+
-+static int mips_rproc_remove(struct platform_device *pdev)
-+{
-+	return 0;
-+}
-+
-+static struct platform_driver mips_rproc_driver = {
-+	.probe = mips_rproc_probe,
-+	.remove = mips_rproc_remove,
-+	.driver = {
-+		.name = "mips-rproc"
-+	},
-+};
-+
-+
-+/* Steal a core and run some firmware on it */
-+int mips_rproc_start(struct mips_rproc *mproc, const char *firmware, size_t len)
-+{
-+	int err = -EINVAL;
-+	struct mips_rproc **priv;
-+
-+	/* Duplicate the filename, dropping whitespace from the end via len */
-+	mproc->firmware = kstrndup(firmware, len, GFP_KERNEL);
-+	if (!mproc->firmware)
-+		return -ENOMEM;
-+
-+	mproc->rproc = rproc_alloc(&mproc->dev, "mips", &mips_rproc_proc_ops,
-+				   mproc->firmware,
-+				   sizeof(struct mips_rproc *));
-+	if (!mproc->rproc)
-+		return -ENOMEM;
-+
-+	priv = mproc->rproc->priv;
-+	*priv = mproc;
-+
-+	/* go live! */
-+	err = rproc_add(mproc->rproc);
-+	if (err) {
-+		dev_err(&mproc->dev, "Failed to add rproc: %d\n", err);
-+		rproc_put(mproc->rproc);
-+		kfree(mproc->firmware);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+/* Stop a core, and return it to being offline */
-+int mips_rproc_stop(struct mips_rproc *mproc)
-+{
-+	rproc_shutdown(mproc->rproc);
-+	rproc_del(mproc->rproc);
-+	rproc_put(mproc->rproc);
-+	mproc->rproc = NULL;
-+	return 0;
-+}
-+
-+/* sysfs interface to mips_rproc_start */
-+static ssize_t firmware_store(struct device *dev,
-+			      struct device_attribute *attr,
-+			      const char *buf, size_t count)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+	size_t len = count;
-+	int err = -EINVAL;
-+
-+	if (buf[count - 1] == '\n')
-+		len--;
-+
-+	if (!mproc->rproc && len)
-+		err = mips_rproc_start(mproc, buf, len);
-+	else if (len)
-+		err = -EBUSY;
-+
-+	return err ? err : count;
-+}
-+static DEVICE_ATTR_WO(firmware);
-+
-+/* sysfs interface to mips_rproc_stop */
-+static ssize_t stop_store(struct device *dev,
-+			      struct device_attribute *attr,
-+			      const char *buf, size_t count)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+	int err = -EINVAL;
-+
-+
-+	if (mproc->rproc)
-+		err = mips_rproc_stop(mproc);
-+	else
-+		err = -EBUSY;
-+
-+	return err ? err : count;
-+}
-+static DEVICE_ATTR_WO(stop);
-+
-+/* Boiler plate for devclarng mips-rproc sysfs devices */
-+static struct attribute *mips_rproc_attrs[] = {
-+	&dev_attr_firmware.attr,
-+	&dev_attr_stop.attr,
-+	NULL
-+};
-+
-+static struct attribute_group mips_rproc_devgroup = {
-+	.attrs = mips_rproc_attrs
-+};
-+
-+static const struct attribute_group *mips_rproc_devgroups[] = {
-+	&mips_rproc_devgroup,
-+	NULL
-+};
-+
-+static char *mips_rproc_devnode(struct device *dev, umode_t *mode)
-+{
-+	return kasprintf(GFP_KERNEL, "mips-rproc/%s", dev_name(dev));
-+}
-+
-+static struct class mips_rproc_class = {
-+	.name		= "mips-rproc",
-+	.devnode	= mips_rproc_devnode,
-+	.dev_groups	= mips_rproc_devgroups,
-+};
-+
-+static void mips_rproc_release(struct device *dev)
-+{
-+}
-+
-+static int mips_rproc_uevent(struct device *dev, struct kobj_uevent_env *env)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+
-+	if (!mproc)
-+		return -ENODEV;
-+
-+	return 0;
-+}
-+
-+static struct device_type mips_rproc_type = {
-+	.release	= mips_rproc_release,
-+	.uevent		= mips_rproc_uevent
-+};
-+
-+/* Helper function for locating the device for a CPU */
-+int mips_rproc_device_rproc_match(struct device *dev, const void *data)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+	unsigned int cpu = *(unsigned int *)data;
-+
-+	return mproc->cpu == cpu;
-+}
-+
-+/* Create a sysfs device in response to CPU down */
-+int mips_rproc_device_register(unsigned int cpu)
-+{
-+	struct mips_rproc *dev;
-+
-+	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+	if (!dev)
-+		return -EINVAL;
-+
-+	dev->dev.driver = &mips_rproc_driver.driver;
-+	dev->dev.type = &mips_rproc_type;
-+	dev->dev.class = &mips_rproc_class;
-+	dev->dev.id = cpu;
-+	dev_set_name(&dev->dev, "rproc%u", cpu);
-+	dev->cpu = cpu;
-+
-+	return device_register(&dev->dev);
-+}
-+
-+/* Destroy a sysfs device in response to CPU up */
-+int mips_rproc_device_unregister(unsigned int cpu)
-+{
-+	struct device *dev = class_find_device(&mips_rproc_class, NULL, &cpu,
-+					       mips_rproc_device_rproc_match);
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+
-+	if (mips_rprocs[cpu])
-+		mips_rproc_stop(mproc);
-+
-+	put_device(dev);
-+	device_unregister(dev);
-+	kfree(mproc);
-+	return 0;
-+}
-+
-+/* Intercept CPU hotplug events for syfs purposes */
-+static int mips_rproc_callback(struct notifier_block *nfb, unsigned long action,
-+			       void *hcpu)
-+{
-+	unsigned int cpu = (unsigned long)hcpu;
-+
-+	switch (action) {
-+	case CPU_UP_PREPARE:
-+	case CPU_DOWN_FAILED:
-+		mips_rproc_device_unregister(cpu);
-+		break;
-+	case CPU_DOWN_PREPARE:
-+		mips_rproc_device_register(cpu);
-+		break;
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block mips_rproc_notifier __refdata = {
-+	.notifier_call = mips_rproc_callback
-+};
-+
-+static int __init mips_rproc_init(void)
-+{
-+	int cpu;
-+	/* create mips-rproc device class for sysfs */
-+	int err = class_register(&mips_rproc_class);
-+
-+	if (err) {
-+		pr_err("mips-proc: unable to register mips-rproc class\n");
-+		return err;
-+	}
-+
-+	/* Dynamically create mips-rproc class devices based on hotplug data */
-+	get_online_cpus();
-+	for_each_possible_cpu(cpu)
-+		if (!cpu_online(cpu))
-+			mips_rproc_device_register(cpu);
-+	register_hotcpu_notifier(&mips_rproc_notifier);
-+	put_online_cpus();
-+
-+	return 0;
-+}
-+
-+static void __exit mips_rproc_exit(void)
-+{
-+	int cpu;
-+	/* Destroy mips-rproc class devices */
-+	get_online_cpus();
-+	unregister_hotcpu_notifier(&mips_rproc_notifier);
-+	for_each_possible_cpu(cpu)
-+		if (!cpu_online(cpu))
-+			mips_rproc_device_unregister(cpu);
-+	put_online_cpus();
-+
-+	class_unregister(&mips_rproc_class);
-+}
-+
-+subsys_initcall(mips_rproc_init);
-+module_exit(mips_rproc_exit);
-+
-+module_platform_driver(mips_rproc_driver);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("MIPS Remote Processor control driver");
++	data = irq_get_irq_data(virq);
++	data->common->ipi_offset = 0;
++#endif /* CONFIG_MIPS_STEAL */
+ 
+ 	irq_set_handler(virq, handle_percpu_irq);
+ 	ret = setup_irq(virq, action);
 -- 
 2.7.4

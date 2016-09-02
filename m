@@ -1,24 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 17:07:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:37081 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 17:10:49 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:11191 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991984AbcIBPHt0uL9f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 17:07:49 +0200
+        with ESMTP id S23992087AbcIBPKmmhFOf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 17:10:42 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 2B437B8FB3E42;
-        Fri,  2 Sep 2016 16:07:30 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 72F3897ECDD7E;
+        Fri,  2 Sep 2016 16:10:23 +0100 (IST)
 Received: from localhost (10.100.200.40) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 2 Sep
- 2016 16:07:32 +0100
+ 2016 16:10:25 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Kees Cook <keescook@chromium.org>,
-        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: Malta: Fix IOCU disable switch read for MIPS64
-Date:   Fri, 2 Sep 2016 16:07:10 +0100
-Message-ID: <20160902150711.18268-1-paul.burton@imgtec.com>
+        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] MIPS: Malta: Cleanup DMA coherence #ifdefs
+Date:   Fri, 2 Sep 2016 16:10:06 +0100
+Message-ID: <20160902151006.4257-1-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.3
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -27,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55002
+X-archive-position: 55003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,64 +45,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Malta boards used with CPU emulators feature a switch to disable use of
-an IOCU. Software has to check this switch & ignore any present IOCU if
-the switch is closed. The read used to do this was unsafe for 64 bit
-kernels, as it simply casted the address 0xbf403000 to a pointer &
-dereferenced it. Whilst in a 32 bit kernel this would access kseg1, in a
-64 bit kernel this attempts to access xuseg & results in an address
-error exception.
-
-Fix by accessing a correctly formed ckseg1 address generated using the
-CKSEG1ADDR macro.
-
-Whilst modifying this code, define the name of the register and the bit
-we care about within it, which indicates whether PCI DMA is routed to
-the IOCU or straight to DRAM. The code previously checked that bit 0 was
-also set, but the least significant 7 bits of the CONFIG_GEN0 register
-contain the value of the MReqInfo signal provided to the IOCU OCP bus,
-so singling out bit 0 makes little sense & that part of the check is
-dropped.
+DMA coherence is not user-selectable in Kconfig, and Malta selects
+CONFIG_DMA_MAYBE_COHERENT which in turn selects CONFIG_DMA_NONCOHERENT.
+Remove #ifdefs on CONFIG_DMA_COHERENT which is not set for Malta. This
+removes a significant amount of code from bonito_quirks_setup(), but the
+code is duplicated in plat_enable_iocoherency() anyway so we lose
+nothing but duplication.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: b6d92b4a6bdb ("MIPS: Add option to disable software I/O coherency.")
 ---
 
- arch/mips/mti-malta/malta-setup.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/mti-malta/malta-setup.c | 38 --------------------------------------
+ 1 file changed, 38 deletions(-)
 
 diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-index ec5b216..7e7364b 100644
+index ec5b216..e573402 100644
 --- a/arch/mips/mti-malta/malta-setup.c
 +++ b/arch/mips/mti-malta/malta-setup.c
-@@ -39,6 +39,9 @@
- #include <linux/console.h>
- #endif
+@@ -141,12 +141,6 @@ static int __init plat_enable_iocoherency(void)
  
-+#define ROCIT_CONFIG_GEN0		0x1f403000
-+#define  ROCIT_CONFIG_GEN0_PCI_IOCU	BIT(7)
-+
- extern void malta_be_init(void);
- extern int malta_be_handler(struct pt_regs *regs, int is_fixup);
- 
-@@ -107,6 +110,8 @@ static void __init fd_activate(void)
- static int __init plat_enable_iocoherency(void)
+ static void __init plat_setup_iocoherency(void)
  {
- 	int supported = 0;
-+	u32 cfg;
-+
- 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
- 		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
- 			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
-@@ -129,7 +134,8 @@ static int __init plat_enable_iocoherency(void)
- 	} else if (mips_cm_numiocu() != 0) {
- 		/* Nothing special needs to be done to enable coherency */
- 		pr_info("CMP IOCU detected\n");
--		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
-+		cfg = __raw_readl((u32 *)CKSEG1ADDR(ROCIT_CONFIG_GEN0));
-+		if (!(cfg & ROCIT_CONFIG_GEN0_PCI_IOCU)) {
- 			pr_crit("IOCU OPERATION DISABLED BY SWITCH - DEFAULTING TO SW IO COHERENCY\n");
- 			return 0;
- 		}
+-#ifdef CONFIG_DMA_NONCOHERENT
+-	/*
+-	 * Kernel has been configured with software coherency
+-	 * but we might choose to turn it off and use hardware
+-	 * coherency instead.
+-	 */
+ 	if (plat_enable_iocoherency()) {
+ 		if (coherentio == 0)
+ 			pr_info("Hardware DMA cache coherency disabled\n");
+@@ -158,10 +152,6 @@ static void __init plat_setup_iocoherency(void)
+ 		else
+ 			pr_info("Software DMA cache coherency enabled\n");
+ 	}
+-#else
+-	if (!plat_enable_iocoherency())
+-		panic("Hardware DMA cache coherency not supported!");
+-#endif
+ }
+ 
+ static void __init pci_clock_check(void)
+@@ -223,29 +213,6 @@ static void __init bonito_quirks_setup(void)
+ 		pr_info("Enabled Bonito debug mode\n");
+ 	} else
+ 		BONITO_BONGENCFG &= ~BONITO_BONGENCFG_DEBUGMODE;
+-
+-#ifdef CONFIG_DMA_COHERENT
+-	if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
+-		BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
+-		pr_info("Enabled Bonito CPU coherency\n");
+-
+-		argptr = fw_getcmdline();
+-		if (strstr(argptr, "iobcuncached")) {
+-			BONITO_PCICACHECTRL &= ~BONITO_PCICACHECTRL_IOBCCOH_EN;
+-			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
+-				~(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
+-					BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
+-			pr_info("Disabled Bonito IOBC coherency\n");
+-		} else {
+-			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_IOBCCOH_EN;
+-			BONITO_PCIMEMBASECFG |=
+-				(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
+-					BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
+-			pr_info("Enabled Bonito IOBC coherency\n");
+-		}
+-	} else
+-		panic("Hardware DMA cache coherency not supported");
+-#endif
+ }
+ 
+ void __init *plat_get_fdt(void)
+@@ -276,11 +243,6 @@ void __init plat_mem_setup(void)
+ 	 */
+ 	enable_dma(4);
+ 
+-#ifdef CONFIG_DMA_COHERENT
+-	if (mips_revision_sconid != MIPS_REVISION_SCON_BONITO)
+-		panic("Hardware DMA cache coherency not supported");
+-#endif
+-
+ 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO)
+ 		bonito_quirks_setup();
+ 
 -- 
 2.9.3

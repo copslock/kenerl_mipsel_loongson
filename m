@@ -1,56 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 14:54:47 +0200 (CEST)
-Received: from mail-oi0-f68.google.com ([209.85.218.68]:35812 "EHLO
-        mail-oi0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992029AbcIBMykcDYMY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 14:54:40 +0200
-Received: by mail-oi0-f68.google.com with SMTP id 2so4278938oif.2;
-        Fri, 02 Sep 2016 05:54:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 14:57:34 +0200 (CEST)
+Received: from mail-yw0-f170.google.com ([209.85.161.170]:34932 "EHLO
+        mail-yw0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990522AbcIBM5Xzl-4Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 14:57:23 +0200
+Received: by mail-yw0-f170.google.com with SMTP id j12so69029354ywb.2;
+        Fri, 02 Sep 2016 05:57:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=hc3z/gaLZcTSKbeHC0zcJ1wqaJXFczrebEeOeHNkwGA=;
+        b=TpcIdwaLsT6NlUHkosQ9r+0ecsaaP6gAuAjVhpKBOeX/JdtK3TOjNdszBYTBM0dU0A
+         s18+nNcyWodWgnwVpDfXB+XuuRLmKD1Z4uLszZUY8086P5Atnw/Yylbvss3/4XSBZv3U
+         0WYA0OBa8b177ZzS1bCraAsnu8w7o/LjrCcnf8mhDs+kexyBdI8aBP6irQx/uNnCUU02
+         jGQ5/TB/y9kYNRzsurTbEMOXk61eVzngZy05fwpGod7K9BPYd8drxiNbriZVKdc6sCYh
+         Yc49N/WTkk3aLyTv3nRSWsNwXK8yurXKmYxUaO2CBIwGS692/eNQjqLmFKq59YBizBj1
+         Na8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=VSyM+jYXBw4+p7s2q5DQDJzx5MLTcsJM9RCmD/aHPVk=;
-        b=Ondw1Wq2ycUlczF/VR3UQcbtg8bqXOf+SXROiKQ/dMIZ08sqbhEmD45JuNplMU2nPj
-         kV4z8Uol/Qrw9uxnVoEPNUxygIyE7jwt4bpgQLP5EWOTHRPDbH4WNWW2phr2Hgrrf2DX
-         D9H6v0SY5rPpZwNfo2bVbqzHmOHYv3GMTxzNKlUQesuFv2TwXlt42+gBu8bkhNBe57zp
-         E6iDTmDqQMzm3p8EUtoFdn/Lma+7pLOrZ4Fx5vka1ZmmQzOCJVB94rVX0ibYUBZ24PgP
-         GEg4CnGqmqcgpkg/uceLBXQ5hlCGDgvUz4pQ8c5zhInMH3UjHCAPVE5lWolDPMX9msaa
-         cUug==
-X-Gm-Message-State: AE9vXwNy18qUD6W0MndMcOSOZfhxMhxu5N4vxj6bQtGulSsyqP1nsRLEWFA1WGjoa5+7eA==
-X-Received: by 10.202.93.197 with SMTP id r188mr18749452oib.88.1472820874660;
-        Fri, 02 Sep 2016 05:54:34 -0700 (PDT)
-Received: from localhost (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
-        by smtp.gmail.com with ESMTPSA id c134sm2183137oih.10.2016.09.02.05.54.33
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 02 Sep 2016 05:54:34 -0700 (PDT)
-Date:   Fri, 2 Sep 2016 07:54:33 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Stephen Boyd <sboyd@codeaurora.org>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>, devicetree@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH 24/26] dt-bindings: Document img,boston-clock binding
-Message-ID: <20160902125433.GA4066@rob-hp-laptop>
-References: <20160826153725.11629-1-paul.burton@imgtec.com>
- <20160826153725.11629-25-paul.burton@imgtec.com>
- <20160826174446.GX19826@codeaurora.org>
- <f0633969-1df4-64c9-a003-8745ad331bc8@imgtec.com>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=hc3z/gaLZcTSKbeHC0zcJ1wqaJXFczrebEeOeHNkwGA=;
+        b=jE0F7LsgYlMY7kiGMurY6z3P1vRiO/UDBxmS1gaUU1FHR1ejMpc3ARIWXEYilBLfOy
+         4UOr9WK2rzRNPAoNBnezPsve3uF1hTRKsN5Lxs2mny2JyTbIkLwjG84uyxvJRXsNciu4
+         lldF2WGRGy33fOOvjrUXLFlCINN34i8qguUcR4kCffn+Xw+LpoWReN/4etXdiU56yTdQ
+         wsPep01geC7Gh6cG8+o6axzs8AOfu+///sZJhP75dsjmGoIP0vXjlc/Z5oxyYpaNNbLk
+         BO2JmTq73jcd1uzHicvKpQd8Y1n87gkqwsMQk9o3Nh2r7nn7zNZxZ5wX6Etnc4dUxi62
+         dk5g==
+X-Gm-Message-State: AE9vXwNRrSshDC1G4xJZnATJxVeipO7d8zk994+Ndo4D62bgUORirAfmVRivgvQAmgVcVe3e+IdAHsZ/i36DCQ==
+X-Received: by 10.13.231.199 with SMTP id q190mr19391866ywe.26.1472821038119;
+ Fri, 02 Sep 2016 05:57:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f0633969-1df4-64c9-a003-8745ad331bc8@imgtec.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <robherring2@gmail.com>
+Received: by 10.37.36.213 with HTTP; Fri, 2 Sep 2016 05:57:17 -0700 (PDT)
+In-Reply-To: <4a7fb1cb-e0d4-31b7-7016-35adb63a659d@imgtec.com>
+References: <1472321697-3094-1-git-send-email-prasannatsmkumar@gmail.com>
+ <1472321697-3094-4-git-send-email-prasannatsmkumar@gmail.com> <4a7fb1cb-e0d4-31b7-7016-35adb63a659d@imgtec.com>
+From:   PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Date:   Fri, 2 Sep 2016 18:27:17 +0530
+Message-ID: <CANc+2y5qm6zdfG5dvway=+80aqkkarSGjfXt+Lq__CiCOTw+Nw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] hw_random: jz4780-rng: Add RNG node to jz4780.dtsi
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     mpm@selenic.com, Herbert Xu <herbert@gondor.apana.org.au>,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        boris.brezillon@free-electrons.com, harvey.hunt@imgtec.com,
+        prarit@redhat.com, Florian Fainelli <f.fainelli@gmail.com>,
+        joshua.henderson@microchip.com, narmstrong@baylibre.com,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <prasannatsmkumar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54992
+X-archive-position: 54993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: prasannatsmkumar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,73 +72,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Aug 30, 2016 at 04:53:01PM +0100, Paul Burton wrote:
-> On 26/08/16 18:44, Stephen Boyd wrote:
-> > On 08/26, Paul Burton wrote:
-> >> diff --git a/Documentation/devicetree/bindings/clock/img,boston-clock.txt b/Documentation/devicetree/bindings/clock/img,boston-clock.txt
-> >> new file mode 100644
-> >> index 0000000..c01ea60
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/clock/img,boston-clock.txt
-> >> @@ -0,0 +1,27 @@
-> >> +Binding for Imagination Technologies MIPS Boston clock sources.
-> >> +
-> >> +This binding uses the common clock binding[1].
-> >> +
-> >> +[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
-> >> +
-> >> +Required properties:
-> >> +- compatible : Should be "img,boston-clock".
-> >> +- #clock-cells : Should be set to 1.
-> >> +  Values available for clock consumers can be found in the header file:
-> >> +    <dt-bindings/clock/boston-clock.h>
-> >> +- regmap : Phandle to the Boston platform register system controller.
-> >> +  This should contain a phandle to the system controller node covering the
-> >> +  platform registers provided by the Boston board.
-> >> +
-> >> +Example:
-> >> +
-> >> +	clk_boston: clock {
-> >> +		compatible = "img,boston-clock";
-> >> +		#clock-cells = <1>;
-> >> +		regmap = <&plat_regs>;
-> > 
-> > Isn't syscon more standard than regmap as the property name? Is
-> > there a binding for the plat_regs device? Is there any reason the
-> > clks can't be populated in that syscon driver?
-> 
-> Hi Stephen,
-> 
-> The plat_regs device doesn't have a custom driver, it simply makes use
-> of the generic "syscon" driver which can provide a regmap.
-> 
-> It would be possible to register the clocks from a register for the
-> plat_regs device, but I don't think it would make much sense. The
-> platform registers in question are essentially just a convenient place
-> where various bits of information about the system are exposed,
-> including the clock frequencies but also other bits & pieces like
-> connectivity of PCIe controllers or I/O coherence units, the RTL
-> revision of the CPU or the wrapper RTL that runs on this FPGA-based
-> board, a register that allows for resetting the board, etc. It's not a
-> single piece of hardware, more a dumping ground for miscellanea. So in
-> my opinion using the syscon approach works best here, and drivers for
-> well defined pieces of hardware or functionality can reference that
-> syscon to retrieve the regmap.
+> I don't like this change. The RNG registers are documented as a part of
+> the same hardware block as the clock & power stuff which the CGU driver
+> handles, and indeed in the M200 SoC there is a power-related register
+> after the RNG registers. So shortening the range covered by the CGU
+> driver is not the right way to go.
 
-That is all quite common for any SoC. Whether it's 2 nodes or 2 drivers 
-are independent questions. You can easily have 1 node and 2 drivers. The 
-decision factor is really how many registers we're dealing with. We 
-don't want to end up with a node per register or register field. That's 
-too fine grained.
+Could not find M200 SoC PM in ingenic's website or ftp. So did not notice this.
 
-> As for whether "syscon" is a more standard property name than "regmap",
-> both seem to be used based on a grep of
-> Documentation/devicetree/bindings/. I believe I picked up use of
-> "regmap" from the generic syscon-poweroff & syscon-reboot drivers, which
-> both use "regmap" as a property name.
+> Perhaps you could instead have the CGU driver make use of the syscon
+> infrastructure to expose a regmap which your RNG driver could pick up & use?
 
-syscon is much more common.
-
-Avoid the phandle altogether and make this a child node.
-
-Rob
+I will see how to use syscon and provide an updated patch.

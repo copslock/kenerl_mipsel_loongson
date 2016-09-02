@@ -1,43 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 12:47:44 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:61526 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991984AbcIBKrgkTme5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 12:47:36 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 78C98EDE13E70;
-        Fri,  2 Sep 2016 11:47:17 +0100 (IST)
-Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 2 Sep 2016 11:47:19 +0100
-Subject: Re: [Patch v4 02/12] irqchip: axi-intc: Clean up irqdomain argument
- and read/write
-To:     Marc Zyngier <marc.zyngier@arm.com>, <monstr@monstr.eu>,
-        <ralf@linux-mips.org>, <tglx@linutronix.de>, <jason@lakedaemon.net>
-References: <1472748665-47774-1-git-send-email-Zubair.Kakakhel@imgtec.com>
- <1472748665-47774-3-git-send-email-Zubair.Kakakhel@imgtec.com>
- <57C86241.8000806@arm.com>
-CC:     <soren.brinkmann@xilinx.com>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <michal.simek@xilinx.com>,
-        <netdev@vger.kernel.org>
-From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Message-ID: <3e4cf28a-2efd-84ab-9f78-6755dec9fb94@imgtec.com>
-Date:   Fri, 2 Sep 2016 11:47:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 12:54:24 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:52082 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992111AbcIBKyOtyBC5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Sep 2016 12:54:14 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8CA52A5E;
+        Fri,  2 Sep 2016 03:54:07 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E7C73F220;
+        Fri,  2 Sep 2016 03:54:06 -0700 (PDT)
+Subject: Re: [PATCH 1/6] irqchip: mips-gic: Add context saving for
+ MIPS_REMOTEPROC
+To:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+References: <1472810395-21381-1-git-send-email-matt.redfearn@imgtec.com>
+ <1472810395-21381-2-git-send-email-matt.redfearn@imgtec.com>
+Cc:     linux-mips@linux-mips.org, lisa.parratt@imgtec.com,
+        linux-kernel@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+X-Enigmail-Draft-Status: N1110
+Organization: ARM Ltd
+Message-ID: <57C95A4C.10703@arm.com>
+Date:   Fri, 2 Sep 2016 11:54:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Icedove/38.7.0
 MIME-Version: 1.0
-In-Reply-To: <57C86241.8000806@arm.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+In-Reply-To: <1472810395-21381-2-git-send-email-matt.redfearn@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.154.45]
-Return-Path: <Zubair.Kakakhel@imgtec.com>
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54984
+X-archive-position: 54985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Zubair.Kakakhel@imgtec.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,160 +50,351 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Hi Matt,
 
-Thanks for the review.
-Comments inline.
+On 02/09/16 10:59, Matt Redfearn wrote:
+> The MIPS remote processor driver allows non-Linux firmware to take
+> control of and execute on one of the systems VPEs. If that VPE is
+> brought back under Linux, it is necessary to ensure that all GIC
+> interrupts are routed and masked as Linux expects them, as the firmware
+> can have done anything it likes with the GIC configuration (hopefully
+> just for that VPEs local interrupt sources, but allow for shared
+> external interrupts as well).
+> 
+> The configuration of shared and local CPU interrupts is maintained and
+> updated every time a change is made. When a CPU is brought online, the
+> saved configuration is restored.
+> 
+> These functions will also be useful for restoring GIC context after a
+> suspend to RAM.
+> 
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> ---
+> 
+>  drivers/irqchip/irq-mips-gic.c | 185 +++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 178 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+> index 83f498393a7f..5ba1fe1468ce 100644
+> --- a/drivers/irqchip/irq-mips-gic.c
+> +++ b/drivers/irqchip/irq-mips-gic.c
+> @@ -8,6 +8,7 @@
+>   */
+>  #include <linux/bitmap.h>
+>  #include <linux/clocksource.h>
+> +#include <linux/cpu.h>
+>  #include <linux/init.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/irq.h>
+> @@ -56,6 +57,47 @@ static unsigned int timer_cpu_pin;
+>  static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
+>  DECLARE_BITMAP(ipi_resrv, GIC_MAX_INTRS);
+>  
+> +#if defined(CONFIG_MIPS_RPROC)
+> +#define CONTEXT_SAVING
+> +#endif
+> +
+> +#ifdef CONTEXT_SAVING
 
-On 09/01/2016 06:15 PM, Marc Zyngier wrote:
-> On 01/09/16 17:50, Zubair Lutfullah Kakakhel wrote:
->> The drivers read/write function handling is a bit quirky.
->> And the irqmask is passed directly to the handler.
->>
->> Add a new irqchip struct to pass to the handler and
->> cleanup read/write handling.
->>
->> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
->>
->> ---
->> V3 -> V4
->> Better error handling for kzalloc
->> Erroring out if the axi intc is probed twice as that isn't
->> supported
->>
+This looks really cumbersome. Why not make everything depend on
+CONFIG_MIPS_RPROC instead?
 
-...
+> +static struct {
+> +	unsigned mask:		GIC_NUM_LOCAL_INTRS;
 
->>  static int __init xilinx_intc_of_init(struct device_node *intc,
->>  					     struct device_node *parent)
->>  {
->> -	u32 nr_irq, intr_mask;
->> +	u32 nr_irq;
->>  	int ret;
->> +	struct xintc_irq_chip *irqc;
->> +
->> +	irqc = kzalloc(sizeof(*irqc), GFP_KERNEL);
->> +	if (!irqc)
->> +		return -ENOMEM;
->>
->> -	intc_baseaddr = of_iomap(intc, 0);
->> -	BUG_ON(!intc_baseaddr);
->> +	if (xintc_irqc) {
->> +		pr_err("%s: Multiple instances of axi_intc aren't supported\n");
->> +		ret = -EINVAL;
->> +		goto err_alloc;
->
-> How about testing the variable first and error-ing early, rather than
-> performing the allocation and undoing it later?
->
+nit/personal taste: can't you make this a normal type instead of a
+bitfield? Considering that GIC_NUM_LOCAL_INTRS is hardcoded to 7, I'd
+rather see a u8... or even an unsigned long if you have to use bitmap
+operations on it.
 
-Sure. Thanks
+> +} gic_local_state[NR_CPUS];
 
->> +	} else {
->> +		xintc_irqc = irqc;
->> +	}
->> +
->> +	irqc->base = of_iomap(intc, 0);
->> +	BUG_ON(!irqc->base);
->>
->>  	ret = of_property_read_u32(intc, "xlnx,num-intr-inputs", &nr_irq);
->>  	if (ret < 0) {
->>  		pr_err("%s: unable to read xlnx,num-intr-inputs\n", __func__);
->> -		return ret;
->> +		goto err_alloc;
->>  	}
->>
->> -	ret = of_property_read_u32(intc, "xlnx,kind-of-intr", &intr_mask);
->> +	ret = of_property_read_u32(intc, "xlnx,kind-of-intr", &irqc->intr_mask);
->>  	if (ret < 0) {
->>  		pr_err("%s: unable to read xlnx,kind-of-intr\n", __func__);
->> -		return ret;
->> +		goto err_alloc;
->>  	}
->>
->> -	if (intr_mask >> nr_irq)
->> +	if (irqc->intr_mask >> nr_irq)
->>  		pr_warn("%s: mismatch in kind-of-intr param\n", __func__);
->>
->>  	pr_info("%s: num_irq=%d, edge=0x%x\n",
->> -		intc->full_name, nr_irq, intr_mask);
->> +		intc->full_name, nr_irq, irqc->intr_mask);
->>
->> -	write_fn = intc_write32;
->> -	read_fn = intc_read32;
->> +	irqc->read = intc_read32;
->> +	irqc->write = intc_write32;
->>
->>  	/*
->>  	 * Disable all external interrupts until they are
->>  	 * explicity requested.
->>  	 */
->> -	write_fn(0, intc_baseaddr + IER);
->> +	xintc_write(irqc, IER, 0);
->>
->>  	/* Acknowledge any pending interrupts just in case. */
->> -	write_fn(0xffffffff, intc_baseaddr + IAR);
->> +	xintc_write(irqc, IAR, 0xffffffff);
->>
->>  	/* Turn on the Master Enable. */
->> -	write_fn(MER_HIE | MER_ME, intc_baseaddr + MER);
->> -	if (!(read_fn(intc_baseaddr + MER) & (MER_HIE | MER_ME))) {
->> -		write_fn = intc_write32_be;
->> -		read_fn = intc_read32_be;
->> -		write_fn(MER_HIE | MER_ME, intc_baseaddr + MER);
->> +	xintc_write(irqc, MER, MER_HIE | MER_ME);
->> +	if (!(xintc_read(irqc, MER) & (MER_HIE | MER_ME))) {
->> +		irqc->read = intc_read32_be;
->> +		irqc->write = intc_write32_be;
->> +		xintc_write(irqc, MER, MER_HIE | MER_ME);
->>  	}
->>
->> -	/* Yeah, okay, casting the intr_mask to a void* is butt-ugly, but I'm
->> -	 * lazy and Michal can clean it up to something nicer when he tests
->> -	 * and commits this patch.  ~~gcl */
->>  	root_domain = irq_domain_add_linear(intc, nr_irq, &xintc_irq_domain_ops,
->> -							(void *)intr_mask);
->> +					    irqc);
->
-> What if the domain allocation fails? You've now configured the HW for
-> something you can't use. What are the side effects? Hint: handle
-> everything that can fail first, and only then poke the HW.
->
+This looks like this really should be a percpu variable.
 
-Thanks for pointing it out. I'll add an error check.
+> +
+> +#define gic_save_local_rmask(vpe, i)	(gic_local_state[vpe].mask &= i)
+> +#define gic_save_local_smask(vpe, i)	(gic_local_state[vpe].mask |= i)
+> +
+> +static struct {
+> +	unsigned vpe:		8;
+> +	unsigned pin:		4;
+> +
+> +	unsigned polarity:	1;
+> +	unsigned trigger:	1;
+> +	unsigned dual_edge:	1;
+> +	unsigned mask:		1;
+> +} gic_shared_state[GIC_MAX_INTRS];
+> +
+> +#define gic_save_shared_vpe(i, v)	gic_shared_state[i].vpe = v
+> +#define gic_save_shared_pin(i, p)	gic_shared_state[i].pin = p
+> +#define gic_save_shared_polarity(i, p)	gic_shared_state[i].polarity = p
+> +#define gic_save_shared_trigger(i, t)	gic_shared_state[i].trigger = t
+> +#define gic_save_shared_dual_edge(i, d)	gic_shared_state[i].dual_edge = d
+> +#define gic_save_shared_mask(i, m)	gic_shared_state[i].mask = m
 
->>
->>  	irq_set_default_host(root_domain);
->>
->>  	return 0;
->> +
->> +err_alloc:
->> +	xintc_irqc = NULL;
->> +	kfree(irqc);
->> +	return ret;
->> +
->>  }
->>
->>  IRQCHIP_DECLARE(xilinx_intc, "xlnx,xps-intc-1.00.a", xilinx_intc_of_init);
->>
->
-> Instead of posting 3 versions in 3 days, please take the time to
-> correctly address the comments, and review your own code before
-> re-posting it. Rushing to get it merged for 4.9 is really not the best
-> approach.
+Why don't you make these static functions? The compiler will inline them
+nicely, and that will save you fixing them (they all miss proper
+bracketing of arguments).
 
-Apologies for the spam. Combination of some free time this week + window of opportunity.
-To be fair, AFAIK, this driver has lived in arch/microblaze without receiving a full thorough
-review by any irqchip maintainer.
+> +
+> +#else
+> +#define gic_save_local_rmask(vpe, i)
+> +#define gic_save_local_smask(vpe, i)
+> +
+> +#define gic_save_shared_vpe(i, v)
+> +#define gic_save_shared_pin(i, p)
+> +#define gic_save_shared_polarity(i, p)
+> +#define gic_save_shared_trigger(i, t)
+> +#define gic_save_shared_dual_edge(i, d)
+> +#define gic_save_shared_mask(i, m)
 
-Hence the various missing bits. e.g. the root_domain error check didn't exist before.
-And I didn't see it.
+Please make those a "do { } while(0)" construct, so that the trailing
+semi-colon is properly swallowed.
 
-Regards,
-ZubairLK
+> +#endif /* CONTEXT_SAVING */
+> +
+>  static void __gic_irq_dispatch(void);
+>  
+>  static inline u32 gic_read32(unsigned int reg)
+> @@ -105,52 +147,94 @@ static inline void gic_update_bits(unsigned int reg, unsigned long mask,
+>  	gic_write(reg, regval);
+>  }
+>  
+> -static inline void gic_reset_mask(unsigned int intr)
+> +static inline void gic_write_reset_mask(unsigned int intr)
+>  {
+>  	gic_write(GIC_REG(SHARED, GIC_SH_RMASK) + GIC_INTR_OFS(intr),
+>  		  1ul << GIC_INTR_BIT(intr));
+>  }
+>  
+> -static inline void gic_set_mask(unsigned int intr)
+> +static inline void gic_reset_mask(unsigned int intr)
+> +{
+> +	gic_save_shared_mask(intr, 0);
+> +	gic_write_reset_mask(intr);
+> +}
+> +
+> +static inline void gic_write_set_mask(unsigned int intr)
+>  {
+>  	gic_write(GIC_REG(SHARED, GIC_SH_SMASK) + GIC_INTR_OFS(intr),
+>  		  1ul << GIC_INTR_BIT(intr));
+>  }
+>  
+> -static inline void gic_set_polarity(unsigned int intr, unsigned int pol)
+> +static inline void gic_set_mask(unsigned int intr)
+> +{
+> +	gic_save_shared_mask(intr, 1);
+> +	gic_write_set_mask(intr);
+> +}
+> +
+> +static inline void gic_write_polarity(unsigned int intr, unsigned int pol)
+>  {
+>  	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_POLARITY) +
+>  			GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
+>  			(unsigned long)pol << GIC_INTR_BIT(intr));
+>  }
+>  
+> -static inline void gic_set_trigger(unsigned int intr, unsigned int trig)
+> +static inline void gic_set_polarity(unsigned int intr, unsigned int pol)
+> +{
+> +	gic_save_shared_polarity(intr, pol);
+> +	gic_write_polarity(intr, pol);
+> +}
+> +
+> +static inline void gic_write_trigger(unsigned int intr, unsigned int trig)
+>  {
+>  	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_TRIGGER) +
+>  			GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
+>  			(unsigned long)trig << GIC_INTR_BIT(intr));
+>  }
+>  
+> -static inline void gic_set_dual_edge(unsigned int intr, unsigned int dual)
+> +static inline void gic_set_trigger(unsigned int intr, unsigned int trig)
+> +{
+> +	gic_save_shared_trigger(intr, trig);
+> +	gic_write_trigger(intr, trig);
+> +}
+> +
+> +static inline void gic_write_dual_edge(unsigned int intr, unsigned int dual)
+>  {
+>  	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_DUAL) + GIC_INTR_OFS(intr),
+>  			1ul << GIC_INTR_BIT(intr),
+>  			(unsigned long)dual << GIC_INTR_BIT(intr));
+>  }
+>  
+> -static inline void gic_map_to_pin(unsigned int intr, unsigned int pin)
+> +static inline void gic_set_dual_edge(unsigned int intr, unsigned int dual)
+> +{
+> +	gic_save_shared_dual_edge(intr, dual);
+> +	gic_write_dual_edge(intr, dual);
+> +}
+> +
+> +static inline void gic_write_map_to_pin(unsigned int intr, unsigned int pin)
+>  {
+>  	gic_write32(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_PIN_BASE) +
+>  		    GIC_SH_MAP_TO_PIN(intr), GIC_MAP_TO_PIN_MSK | pin);
+>  }
+>  
+> -static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
+> +static inline void gic_map_to_pin(unsigned int intr, unsigned int pin)
+> +{
+> +	gic_save_shared_pin(intr, pin);
+> +	gic_write_map_to_pin(intr, pin);
+> +}
+> +
+> +static inline void gic_write_map_to_vpe(unsigned int intr, unsigned int vpe)
+>  {
+>  	gic_write(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_VPE_BASE) +
+>  		  GIC_SH_MAP_TO_VPE_REG_OFF(intr, vpe),
+>  		  GIC_SH_MAP_TO_VPE_REG_BIT(vpe));
+>  }
+>  
+> +static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
+> +{
+> +	gic_save_shared_vpe(intr, vpe);
+> +	gic_write_map_to_vpe(intr, vpe);
+> +}
+> +
+>  #ifdef CONFIG_CLKSRC_MIPS_GIC
+>  cycle_t gic_read_count(void)
+>  {
+> @@ -537,6 +621,7 @@ static void gic_mask_local_irq(struct irq_data *d)
+>  {
+>  	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+>  
+> +	gic_save_local_rmask(smp_processor_id(), (1 << intr));
+>  	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK), 1 << intr);
+>  }
+>  
+> @@ -544,6 +629,7 @@ static void gic_unmask_local_irq(struct irq_data *d)
+>  {
+>  	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+>  
+> +	gic_save_local_smask(smp_processor_id(), (1 << intr));
+>  	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK), 1 << intr);
+>  }
+>  
+> @@ -561,6 +647,7 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+>  
+>  	spin_lock_irqsave(&gic_lock, flags);
+>  	for (i = 0; i < gic_vpes; i++) {
+> +		gic_save_local_rmask(mips_cm_vp_id(i), 1 << intr);
+>  		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR),
+>  			  mips_cm_vp_id(i));
+>  		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << intr);
+> @@ -576,6 +663,7 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+>  
+>  	spin_lock_irqsave(&gic_lock, flags);
+>  	for (i = 0; i < gic_vpes; i++) {
+> +		gic_save_local_smask(mips_cm_vp_id(i), 1 << intr);
+>  		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR),
+>  			  mips_cm_vp_id(i));
+>  		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), 1 << intr);
+> @@ -983,6 +1071,85 @@ static struct irq_domain_ops gic_ipi_domain_ops = {
+>  	.match = gic_ipi_domain_match,
+>  };
+>  
+> +#ifdef CONTEXT_SAVING
+> +static void gic_restore_shared(void)
+> +{
+> +	unsigned long flags;
+> +	int i;
+> +
+> +	spin_lock_irqsave(&gic_lock, flags);
+> +	for (i = 0; i < gic_shared_intrs; i++) {
+> +		gic_write_polarity(i, gic_shared_state[i].polarity);
+> +		gic_write_trigger(i, gic_shared_state[i].trigger);
+> +		gic_write_dual_edge(i, gic_shared_state[i].dual_edge);
+> +		gic_write_map_to_vpe(i, gic_shared_state[i].vpe);
+> +		gic_write_map_to_pin(i, gic_shared_state[i].pin);
+> +
+> +		if (gic_shared_state[i].mask)
+> +			gic_write_set_mask(i);
+> +		else
+> +			gic_write_reset_mask(i);
+> +	}
+> +	spin_unlock_irqrestore(&gic_lock, flags);
+> +}
+> +
+> +static void gic_restore_local(unsigned int vpe)
+> +{
+> +	int hw, virq, intr, mask;
+> +	unsigned long flags;
+> +
+> +	for (hw = 0; hw < GIC_NUM_LOCAL_INTRS; hw++) {
+> +		intr = GIC_LOCAL_TO_HWIRQ(hw);
+> +		virq = irq_linear_revmap(gic_irq_domain, intr);
+> +		gic_local_irq_domain_map(gic_irq_domain, virq, hw);
+> +	}
+> +
+> +	local_irq_save(flags);
+> +	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), vpe);
+> +
+> +	/* Enable EIC mode if necessary */
+> +	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_CTL), cpu_has_veic);
+> +
+> +	/* Restore interrupt masks */
+> +	mask = gic_local_state[vpe].mask;
+> +	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), ~mask);
+> +	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), mask);
+> +
+> +	local_irq_restore(flags);
+> +}
+> +#endif /* CONTEXT_SAVING */
+> +
+> +#ifdef CONFIG_MIPS_RPROC
 
->
-> Thanks,
->
-> 	M.
->
+I'm even more confused now. How can you not have both CONFIG_MIPS_RPROC
+and CONTEXT_SAVING defined at the same time?
+
+> +/*
+> + * The MIPS remote processor driver allows non-Linux firmware to take control
+> + * of and execute on one of the systems VPEs. If that VPE is brought back under
+> + * Linux, it is necessary to ensure that all GIC interrupts are routed and
+> + * masked as Linux expects them, as the firmware can have done anything it
+> + * likes with the GIC configuration (hopefully just for that VPEs local
+> + * interrupt sources, but allow for shared external interrupts as well).
+> + */
+> +static int gic_cpu_notify(struct notifier_block *nfb, unsigned long action,
+> +			       void *hcpu)
+> +{
+> +	unsigned int cpu = mips_cm_vp_id((unsigned long)hcpu);
+> +
+> +	switch (action) {
+> +	case CPU_UP_PREPARE:
+> +	case CPU_DOWN_FAILED:
+> +		gic_restore_shared();
+> +		gic_restore_local(cpu);
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return NOTIFY_OK;
+> +}
+> +
+> +static struct notifier_block gic_cpu_notifier __refdata = {
+> +	.notifier_call = gic_cpu_notify
+> +};
+> +#endif /* CONFIG_MIPS_RPROC */
+> +
+>  static void __init __gic_init(unsigned long gic_base_addr,
+>  			      unsigned long gic_addrspace_size,
+>  			      unsigned int cpu_vec, unsigned int irqbase,
+> @@ -1082,6 +1249,10 @@ static void __init __gic_init(unsigned long gic_base_addr,
+>  	}
+>  
+>  	gic_basic_init();
+> +
+> +#ifdef CONFIG_MIPS_RPROC
+> +	register_hotcpu_notifier(&gic_cpu_notifier);
+> +#endif /* CONFIG_MIPS_RPROC */
+>  }
+>  
+>  void __init gic_init(unsigned long gic_base_addr,
+> 
+
+Thanks,
+
+	M.
+-- 
+Jazz is not dead. It just smells funny...

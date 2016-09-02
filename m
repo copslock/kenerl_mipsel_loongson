@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 22:45:29 +0200 (CEST)
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:52227 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 22:45:50 +0200 (CEST)
+Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:52230 "EHLO
         emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992087AbcIBUofY0Ltg (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992100AbcIBUofzEiug (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 22:44:35 +0200
 Received: from localhost.localdomain (85-76-72-196-nat.elisa-mobile.fi [85.76.72.196])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id C00AD23418D;
-        Fri,  2 Sep 2016 23:44:34 +0300 (EEST)
+        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id 19DC1234196;
+        Fri,  2 Sep 2016 23:44:35 +0300 (EEST)
 From:   Aaro Koskinen <aaro.koskinen@iki.fi>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         David Daney <ddaney@caviumnetworks.com>,
         linux-mips@linux-mips.org
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH v2 2/6] MIPS: OCTEON: don't try to maintain link state in early init
-Date:   Fri,  2 Sep 2016 23:44:17 +0300
-Message-Id: <20160902204421.8265-3-aaro.koskinen@iki.fi>
+Subject: [PATCH v2 3/6] MIPS: OCTEON: delete cvmx_override_board_link_get
+Date:   Fri,  2 Sep 2016 23:44:18 +0300
+Message-Id: <20160902204421.8265-4-aaro.koskinen@iki.fi>
 X-Mailer: git-send-email 2.9.2
 In-Reply-To: <20160902204421.8265-1-aaro.koskinen@iki.fi>
 References: <20160902204421.8265-1-aaro.koskinen@iki.fi>
@@ -21,7 +21,7 @@ Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55021
+X-archive-position: 55022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,70 +38,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Don't try to maintain link state in early init. Leave that to
-actual ethernet/phy drivers.
+Delete unused cvmx_override_board_link_get.
 
 Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 ---
- arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c |  3 +--
- arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c  |  2 --
- arch/mips/cavium-octeon/executive/cvmx-helper.c       | 10 ----------
- 3 files changed, 1 insertion(+), 14 deletions(-)
+ arch/mips/cavium-octeon/executive/cvmx-helper-board.c | 15 ---------------
+ arch/mips/include/asm/octeon/cvmx-helper-board.h      | 10 ----------
+ 2 files changed, 25 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-index f59c88e..809cd8b 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-rgmii.c
-@@ -243,8 +243,7 @@ int __cvmx_helper_rgmii_enable(int interface)
- 	/* enable the ports now */
- 	for (port = 0; port < num_ports; port++) {
- 		union cvmx_gmxx_prtx_cfg gmx_cfg;
--		cvmx_helper_link_autoconf(cvmx_helper_get_ipd_port
--					  (interface, port));
-+
- 		gmx_cfg.u64 =
- 		    cvmx_read_csr(CVMX_GMXX_PRTX_CFG(port, interface));
- 		gmx_cfg.s.en = 1;
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-index a56ee59..d347fe1 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-@@ -234,8 +234,6 @@ int __cvmx_helper_xaui_enable(int interface)
- 	cvmx_write_csr(CVMX_GMXX_TX_INT_EN(interface), gmx_tx_int_en.u64);
- 	cvmx_write_csr(CVMX_PCSXX_INT_EN_REG(interface), pcsx_int_en_reg.u64);
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+index 3751c58..0deeb82 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+@@ -46,17 +46,6 @@
+ #include <asm/octeon/cvmx-asxx-defs.h>
  
--	cvmx_helper_link_autoconf(cvmx_helper_get_ipd_port(interface, 0));
+ /**
+- * cvmx_override_board_link_get(int ipd_port) is a function
+- * pointer. It is meant to allow customization of the process of
+- * talking to a PHY to determine link speed. It is called every
+- * time a PHY must be polled for link status. Users should set
+- * this pointer to a function before calling any cvmx-helper
+- * operations.
+- */
+-cvmx_helper_link_info_t(*cvmx_override_board_link_get) (int ipd_port) =
+-    NULL;
 -
- 	/* (8) Enable packet reception */
- 	xauiMiscCtl.s.gmxeno = 0;
- 	cvmx_write_csr(CVMX_PCSXX_MISC_CTL_REG(interface), xauiMiscCtl.u64);
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-index ff26d02..6456af6 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-@@ -841,7 +841,6 @@ int __cvmx_helper_errata_fix_ipd_ptr_alignment(void)
- 	int retry_cnt;
- 	int retry_loop_cnt;
- 	int i;
--	cvmx_helper_link_info_t link_info;
+-/**
+  * Return the MII PHY address associated with the given IPD
+  * port. A result of -1 means there isn't a MII capable PHY
+  * connected to this port. On chips supporting multiple MII
+@@ -225,10 +214,6 @@ cvmx_helper_link_info_t __cvmx_helper_board_link_get(int ipd_port)
+ 	int phy_addr;
+ 	int is_broadcom_phy = 0;
  
- 	/* Save values for restore at end */
- 	uint64_t prtx_cfg =
-@@ -1002,15 +1001,6 @@ fix_ipd_exit:
- 		       (INDEX(FIX_IPD_OUTPORT), INTERFACE(FIX_IPD_OUTPORT)),
- 		       frame_max);
- 	cvmx_write_csr(CVMX_ASXX_PRT_LOOP(INTERFACE(FIX_IPD_OUTPORT)), 0);
--	/* Set link to down so autonegotiation will set it up again */
--	link_info.u64 = 0;
--	cvmx_helper_link_set(FIX_IPD_OUTPORT, link_info);
+-	/* Give the user a chance to override the processing of this function */
+-	if (cvmx_override_board_link_get)
+-		return cvmx_override_board_link_get(ipd_port);
 -
--	/*
--	 * Bring the link back up as autonegotiation is not done in
--	 * user applications.
--	 */
--	cvmx_helper_link_autoconf(FIX_IPD_OUTPORT);
+ 	/* Unless we fix it later, all links are defaulted to down */
+ 	result.u64 = 0;
  
- 	CVMX_SYNC;
- 	if (num_segs)
+diff --git a/arch/mips/include/asm/octeon/cvmx-helper-board.h b/arch/mips/include/asm/octeon/cvmx-helper-board.h
+index cda93ae..271be7a 100644
+--- a/arch/mips/include/asm/octeon/cvmx-helper-board.h
++++ b/arch/mips/include/asm/octeon/cvmx-helper-board.h
+@@ -58,16 +58,6 @@ typedef enum {
+ #define CVMX_HELPER_BOARD_MGMT_IPD_PORT	    -10
+ 
+ /**
+- * cvmx_override_board_link_get(int ipd_port) is a function
+- * pointer. It is meant to allow customization of the process of
+- * talking to a PHY to determine link speed. It is called every
+- * time a PHY must be polled for link status. Users should set
+- * this pointer to a function before calling any cvmx-helper
+- * operations.
+- */
+-extern cvmx_helper_link_info_t(*cvmx_override_board_link_get) (int ipd_port);
+-
+-/**
+  * Return the MII PHY address associated with the given IPD
+  * port. A result of -1 means there isn't a MII capable PHY
+  * connected to this port. On chips supporting multiple MII
 -- 
 2.9.2

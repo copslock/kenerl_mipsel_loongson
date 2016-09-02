@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 12:02:51 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8784 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2016 12:06:36 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:33152 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992111AbcIBKAgWZHHz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 12:00:36 +0200
+        with ESMTP id S23990864AbcIBKG0fcWDz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2016 12:06:26 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id AE11CCC6CF030;
-        Fri,  2 Sep 2016 11:00:11 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+        by Forcepoint Email with ESMTPS id 8F979563073E6;
+        Fri,  2 Sep 2016 11:06:07 +0100 (IST)
+Received: from zkakakhel-linux.le.imgtec.org (192.168.154.45) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 2 Sep 2016 11:00:13 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     <linux-mips@linux-mips.org>, <lisa.parratt@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        Lisa Parratt <Lisa.Parratt@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 4/6] MIPS: CPS: Add VP(E) stealing
-Date:   Fri, 2 Sep 2016 10:59:53 +0100
-Message-ID: <1472810395-21381-5-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1472810395-21381-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1472810395-21381-1-git-send-email-matt.redfearn@imgtec.com>
+ 14.3.294.0; Fri, 2 Sep 2016 11:06:09 +0100
+Subject: Re: [Patch v4 01/12] microblaze: irqchip: Move intc driver to irqchip
+To:     Michal Simek <michal.simek@xilinx.com>, <monstr@monstr.eu>,
+        <ralf@linux-mips.org>, <tglx@linutronix.de>,
+        <jason@lakedaemon.net>, <marc.zyngier@arm.com>
+References: <1472748665-47774-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <1472748665-47774-2-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <772f883f-79fe-9197-f27c-3ffe91019aaf@xilinx.com>
+CC:     <soren.brinkmann@xilinx.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <netdev@vger.kernel.org>
+From:   Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Message-ID: <5d98fd3b-4722-cdd3-4540-c1d1fec1c98c@imgtec.com>
+Date:   Fri, 2 Sep 2016 11:06:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+In-Reply-To: <772f883f-79fe-9197-f27c-3ffe91019aaf@xilinx.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.154.45]
+Return-Path: <Zubair.Kakakhel@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 54980
+X-archive-position: 54981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: Zubair.Kakakhel@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,340 +49,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Lisa Parratt <Lisa.Parratt@imgtec.com>
+Hi,
 
-VP(E) stealing provides a mechanism for removing an offline Virtual
-Processor from the Linux kernel such that it is available to run bare
-metal code.
-Once the CPU has been offlined from Linux, the CPU can be given a task
-to run via mips_cps_steal_cpu_and_execute(). The CPU is removed from the
-cpu_present mask and is set up to execute from address entry_fn. Stack
-space is assigned via the tsk task_struct so that C initialisation code
-may be used.
-To return the CPU back to Linux control, mips_cps_halt_and_return_cpu
-will arrange to halt the CPU and return it to the cpu_present mask. It
-is then available to be brought online again via CPU hotplug.
+On 09/02/2016 07:25 AM, Michal Simek wrote:
+> On 1.9.2016 18:50, Zubair Lutfullah Kakakhel wrote:
+>> The Xilinx AXI Interrupt Controller IP block is used by the MIPS
+>> based xilfpga platform.
+>>
+>> Move the interrupt controller code out of arch/microblaze so that
+>> it can be used by everyone
+>>
+>> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+>>
+>> ---
+>> V3 -> V4
+>> No change
+>>
+>> V2 -> V3
+>> No change here. Cleanup patches follow after this patch.
+>> Its debatable to cleanup before/after move. Decided to place cleanup
+>> after move to put history in new place.
+>>
+>> V1 -> V2
+>>
+>> Renamed irq-xilinx to irq-axi-intc
+>> Renamed CONFIG_XILINX_INTC to CONFIG_XILINX_AXI_INTC
+>
+>
+> I see that this was suggested by Jason Cooper but using axi name here is
+> not correct.
+> There is xps-intc name which is the name used on old OPB hardware
+> designs. It means this driver can be still used only on system which
+> uses it.
 
-This mechanism is used by the MIPS remote processor driver to allow
-CPUs within the system to execute bare metal code, not under control of
-the kernel.
+Wouldn't axi-intc be more suitable moving forwards?
+The IP block is now known as axi intc for 5 years as far as I can tell.
 
-Signed-off-by: Lisa Parratt <Lisa.Parratt@imgtec.com>
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
----
+Searching "axi intc" online results in the right docs for current and
+future platforms.
 
- arch/mips/Kconfig               |   7 ++
- arch/mips/include/asm/smp-cps.h |   8 ++
- arch/mips/include/asm/smp.h     |   1 +
- arch/mips/kernel/smp-cps.c      | 162 ++++++++++++++++++++++++++++++++++++++--
- arch/mips/kernel/smp.c          |  12 +++
- 5 files changed, 183 insertions(+), 7 deletions(-)
+The binding is still xps-intc as that won't change. So older systems
+should still be able to find their way.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 26388562e300..2094cbcea0d4 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2341,6 +2341,13 @@ config MIPS_CPS
- 	  no external assistance. It is safe to enable this when hardware
- 	  support is unavailable.
- 
-+config MIPS_STEAL
-+	bool "VPE stealing"
-+	depends on HOTPLUG_CPU && MIPS_CPS
-+	help
-+	  Select this is you wish to be able to run bare metal code on offline
-+	  VPEs.
-+
- config MIPS_CPS_PM
- 	depends on MIPS_CPS
- 	select MIPS_CPC
-diff --git a/arch/mips/include/asm/smp-cps.h b/arch/mips/include/asm/smp-cps.h
-index 2ae1f61a4a95..4f6cd5b14185 100644
---- a/arch/mips/include/asm/smp-cps.h
-+++ b/arch/mips/include/asm/smp-cps.h
-@@ -34,6 +34,14 @@ extern void mips_cps_boot_vpes(struct core_boot_config *cfg, unsigned vpe);
- extern void mips_cps_pm_save(void);
- extern void mips_cps_pm_restore(void);
- 
-+#ifdef CONFIG_MIPS_STEAL
-+
-+extern int mips_cps_steal_cpu_and_execute(unsigned int cpu, void *entry_fn,
-+					  struct task_struct *tsk);
-+extern int mips_cps_halt_and_return_cpu(unsigned int cpu);
-+
-+#endif /* CONFIG_MIPS_STEAL */
-+
- #ifdef CONFIG_MIPS_CPS
- 
- extern bool mips_cps_smp_in_use(void);
-diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-index 060f23ff1817..3c62a1958af5 100644
---- a/arch/mips/include/asm/smp.h
-+++ b/arch/mips/include/asm/smp.h
-@@ -117,4 +117,5 @@ static inline void arch_send_call_function_ipi_mask(const struct cpumask *mask)
- extern void (*dump_ipi_function_ptr)(void *);
- void dump_send_ipi(void (*dump_ipi_callback)(void *));
- #endif
-+
- #endif /* __ASM_SMP_H */
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index e9d9fc6c754c..bcb9b62816b1 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -8,6 +8,7 @@
-  * option) any later version.
-  */
- 
-+#include <linux/cpu.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/irqchip/mips-gic.h>
-@@ -39,6 +40,31 @@ static int __init setup_nothreads(char *s)
- }
- early_param("nothreads", setup_nothreads);
- 
-+#ifdef CONFIG_MIPS_STEAL
-+struct cpumask cpu_stolen_mask;
-+
-+static inline bool cpu_stolen(int cpu)
-+{
-+	return cpumask_test_cpu(cpu, &cpu_stolen_mask);
-+}
-+
-+static inline void set_cpu_stolen(int cpu, bool state)
-+{
-+	if (state)
-+		cpumask_set_cpu(cpu, &cpu_stolen_mask);
-+	else
-+		cpumask_clear_cpu(cpu, &cpu_stolen_mask);
-+}
-+#else
-+static inline bool cpu_stolen(int cpu)
-+{
-+	return false;
-+}
-+
-+static inline void set_cpu_stolen(int cpu, bool state) { }
-+
-+#endif /* CONFIG_MIPS_STEAL */
-+
- static unsigned core_vpe_count(unsigned core)
- {
- 	unsigned cfg;
-@@ -109,6 +135,10 @@ static void __init cps_smp_setup(void)
- 		write_gcr_bev_base(core_entry);
- 	}
- 
-+#ifdef CONFIG_MIPS_STEAL
-+	cpumask_clear(&cpu_stolen_mask);
-+#endif /* CONFIG_MIPS_STEAL */
-+
- #ifdef CONFIG_MIPS_MT_FPAFF
- 	/* If we have an FPU, enroll ourselves in the FPU-full mask */
- 	if (cpu_has_fpu)
-@@ -287,7 +317,7 @@ static void remote_vpe_boot(void *dummy)
- 	mips_cps_boot_vpes(core_cfg, cpu_vpe_id(&current_cpu_data));
- }
- 
--static void cps_boot_secondary(int cpu, struct task_struct *idle)
-+static void cps_start_secondary(int cpu, void *entry_fn, struct task_struct *tsk)
- {
- 	unsigned core = cpu_data[cpu].core;
- 	unsigned vpe_id = cpu_vpe_id(&cpu_data[cpu]);
-@@ -297,9 +327,9 @@ static void cps_boot_secondary(int cpu, struct task_struct *idle)
- 	unsigned int remote;
- 	int err;
- 
--	vpe_cfg->pc = (unsigned long)&smp_bootstrap;
--	vpe_cfg->sp = __KSTK_TOS(idle);
--	vpe_cfg->gp = (unsigned long)task_thread_info(idle);
-+	vpe_cfg->pc = (unsigned long)entry_fn;
-+	vpe_cfg->sp = __KSTK_TOS(tsk);
-+	vpe_cfg->gp = (unsigned long)task_thread_info(tsk);
- 
- 	atomic_or(1 << cpu_vpe_id(&cpu_data[cpu]), &core_cfg->vpe_mask);
- 
-@@ -343,6 +373,11 @@ out:
- 	preempt_enable();
- }
- 
-+static void cps_boot_secondary(int cpu, struct task_struct *idle)
-+{
-+	cps_start_secondary(cpu, &smp_bootstrap, idle);
-+}
-+
- static void cps_init_secondary(void)
- {
- 	/* Disable MT - we only want to run 1 TC per VPE */
-@@ -394,6 +429,28 @@ static int cps_cpu_disable(void)
- 	if (!cps_pm_support_state(CPS_PM_POWER_GATED))
- 		return -EINVAL;
- 
-+#ifdef CONFIG_MIPS_STEAL
-+	/*
-+	 * With the MT ASE only VPEs in the same core may read / write the
-+	 * control registers of other VPEs. Therefore to maintain control of
-+	 * any stolen VPEs at least one sibling VPE must be kept online.
-+	 */
-+	if (cpu_has_mipsmt) {
-+		int stolen, siblings = 0;
-+
-+		for_each_cpu((stolen), &cpu_stolen_mask)
-+			if (cpu_data[stolen].core == cpu_data[cpu].core)
-+				siblings++;
-+
-+		if (siblings == 1)
-+			/*
-+			 * When a VPE has been stolen, keep at least one of it's
-+			 * siblings around in order to control it.
-+			 */
-+			return -EBUSY;
-+	}
-+#endif /* CONFIG_MIPS_STEAL */
-+
- 	core_cfg = &mips_cps_core_bootcfg[current_cpu_data.core];
- 	atomic_sub(1 << cpu_vpe_id(&current_cpu_data), &core_cfg->vpe_mask);
- 	smp_mb__after_atomic();
-@@ -426,7 +483,7 @@ void play_dead(void)
- 		core = cpu_data[cpu].core;
- 
- 		/* Look for another online VPE within the core */
--		for_each_online_cpu(cpu_death_sibling) {
-+		for_each_possible_cpu(cpu_death_sibling) {
- 			if (cpu_data[cpu_death_sibling].core != core)
- 				continue;
- 
-@@ -434,8 +491,11 @@ void play_dead(void)
- 			 * There is an online VPE within the core. Just halt
- 			 * this TC and leave the core alone.
- 			 */
--			cpu_death = CPU_DEATH_HALT;
--			break;
-+			if (cpu_online(cpu_death_sibling) ||
-+			    cpu_stolen(cpu_death_sibling))
-+				cpu_death = CPU_DEATH_HALT;
-+			if (cpu_online(cpu_death_sibling))
-+				break;
- 		}
- 	}
- 
-@@ -466,6 +526,94 @@ void play_dead(void)
- 	panic("Failed to offline CPU %u", cpu);
- }
- 
-+#ifdef CONFIG_MIPS_STEAL
-+
-+/* Find an online sibling CPU (another VPE in the same core) */
-+static inline int mips_cps_get_online_sibling(unsigned int cpu)
-+{
-+	int sibling;
-+
-+	for_each_online_cpu(sibling)
-+		if (cpu_data[sibling].core == cpu_data[cpu].core)
-+			return sibling;
-+
-+	return -1;
-+}
-+
-+int mips_cps_steal_cpu_and_execute(unsigned int cpu, void *entry_fn,
-+				   struct task_struct *tsk)
-+{
-+	int err = -EINVAL;
-+
-+	preempt_disable();
-+
-+	if (!cpu_present(cpu) || cpu_online(cpu) || cpu_stolen(cpu))
-+		goto out;
-+
-+	if (cpu_has_mipsmt && (mips_cps_get_online_sibling(cpu) < 0))
-+		pr_warn("CPU%d has no online siblings to control it\n", cpu);
-+	else {
-+		set_cpu_present(cpu, false);
-+		set_cpu_stolen(cpu, true);
-+
-+		cps_start_secondary(cpu, entry_fn, tsk);
-+		err = 0;
-+	}
-+out:
-+	preempt_enable();
-+	return err;
-+}
-+
-+static void mips_cps_halt_sibling(void *ptr_cpu)
-+{
-+	unsigned int cpu = (unsigned long)ptr_cpu;
-+	unsigned int vpe_id = cpu_vpe_id(&cpu_data[cpu]);
-+	unsigned long flags;
-+	int vpflags;
-+
-+	local_irq_save(flags);
-+	vpflags = dvpe();
-+	settc(vpe_id);
-+	write_tc_c0_tchalt(TCHALT_H);
-+	evpe(vpflags);
-+	local_irq_restore(flags);
-+}
-+
-+int mips_cps_halt_and_return_cpu(unsigned int cpu)
-+{
-+	unsigned int core = cpu_data[cpu].core;
-+	unsigned int vpe_id = cpu_vpe_id(&cpu_data[cpu]);
-+
-+	if (!cpu_stolen(cpu))
-+		return -EINVAL;
-+
-+	if (cpu_has_mipsmt && (core == cpu_data[smp_processor_id()].core))
-+		mips_cps_halt_sibling((void *)(unsigned long)cpu);
-+	else if (cpu_has_mipsmt) {
-+		int sibling = mips_cps_get_online_sibling(cpu);
-+
-+		if (sibling < 0) {
-+			pr_warn("CPU%d has no online siblings\n", cpu);
-+			return -EINVAL;
-+		}
-+
-+		if (smp_call_function_single(sibling, mips_cps_halt_sibling,
-+						(void *)(unsigned long)cpu, 1))
-+			panic("Failed to call sibling CPU\n");
-+
-+	} else if (cpu_has_vp) {
-+		mips_cm_lock_other(core, vpe_id);
-+		write_cpc_co_vp_stop(1 << vpe_id);
-+		mips_cm_unlock_other();
-+	}
-+
-+	set_cpu_stolen(cpu, false);
-+	set_cpu_present(cpu, true);
-+	return 0;
-+}
-+
-+#endif /* CONFIG_MIPS_STEAL */
-+
- static void wait_for_sibling_halt(void *ptr_cpu)
- {
- 	unsigned cpu = (unsigned long)ptr_cpu;
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index afa06c2bb019..f3d01f556fe2 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -233,6 +233,18 @@ static void smp_ipi_init_one(unsigned int virq,
- 				    struct irqaction *action)
- {
- 	int ret;
-+#ifdef CONFIG_MIPS_STEAL
-+	struct irq_data *data;
-+	/*
-+	 * A bit of a hack to ensure that the ipi_offset is 0.
-+	 * This is to deal with removing / reallocating IPIs
-+	 * to subsets of the possible CPUs, where the IPI IRQ domain
-+	 * will set ipi_offset to the first cpu in the cpumask when the
-+	 * IPI is reallocated.
-+	 */
-+	data = irq_get_irq_data(virq);
-+	data->common->ipi_offset = 0;
-+#endif /* CONFIG_MIPS_STEAL */
- 
- 	irq_set_handler(virq, handle_percpu_irq);
- 	ret = setup_irq(virq, action);
--- 
-2.7.4
+> Also there is another copy of this driver in the tree which was using
+> old ppc405 and ppc440 xilinx platforms.
+>
+> arch/powerpc/include/asm/xilinx_intc.h
+> arch/powerpc/sysdev/xilinx_intc.c
+>
+> These should be also removed by moving this driver to generic folder.
+
+I didn't know about that drivers existence.
+
+This patch series already touches microblaze, mips and irqchip.
+Both microblaze and mips platforms using this driver are little-endian.
+
+Adding a big-endian powerpc driver + platform to the mix is going to complicate
+the series further and make it super hard to synchronize various subsystems,
+test stuff, and then move the drivers without breakage.
+
+I'd highly recommend letting this move happen. And then the powerpc driver can
+transition over time to this driver.
+
+Regards,
+ZubairLK
+
+>
+> Thanks,
+> Michal
+>

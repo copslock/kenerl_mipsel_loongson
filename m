@@ -1,59 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Sep 2016 14:10:13 +0200 (CEST)
-Received: from mail-lf0-f45.google.com ([209.85.215.45]:34233 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Sep 2016 14:15:50 +0200 (CEST)
+Received: from mail-lf0-f45.google.com ([209.85.215.45]:32851 "EHLO
         mail-lf0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992126AbcICMKFbWQNV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Sep 2016 14:10:05 +0200
-Received: by mail-lf0-f45.google.com with SMTP id p41so81443451lfi.1
-        for <linux-mips@linux-mips.org>; Sat, 03 Sep 2016 05:10:05 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23992143AbcICMPnDvzPV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Sep 2016 14:15:43 +0200
+Received: by mail-lf0-f45.google.com with SMTP id b199so100243354lfe.0
+        for <linux-mips@linux-mips.org>; Sat, 03 Sep 2016 05:15:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=koiSsN+X6ALJ93eneVRvWb9O3oVPXUYsMydQZaZogyQ=;
-        b=iExgFyjAKFcJTWJpsxkDq0uo6ByJfBp9txHVgNYvML9fwtHEM1R6RMRBo5017OTKo3
-         6jJQCayOq5ylCW/X8tpEaMmlIt+ht+AzmbFXc0EZSRNbqV/QwxhFDmZ2dvWz7aIXnn30
-         xLjI19hgonNMy4/WDMD6jlFrhcOYSJBRrH2jeDwkDq7NWhpVapgAm3TFetNAN7hWB6KM
-         fo5mo5MI1T7o268eHdj3wqBhw5yV7HJwAWv/dTcVIG+jWYzEavANrawnhYaFxq+wzAcJ
-         8GFmLSrkQlLzwv2fKVFKOPFkWPh7l5JnlH7JWNEE/8GQj9xQN2QLd0AhH0ukfZVW64EP
-         KNOg==
+        bh=3bH3rddpLFBPSEA33bgR11olP4wMcWbj41ilJmDQHhA=;
+        b=K0En2RiA94xLCxsgG4UpughoqA7Em7VKiZ7y9uewHt6vBWOXdZTdYfXloKw/CTfwNq
+         946R3RqS8foicfVUzoH/A3v8nVBSp4pQU6zr4dpKAsQgIxpQ4umubL+pnlUvbC+JwJBe
+         ZpgXUhyS8Vm8kl1c6b+QY4S2jgBbuMesS0gkNb6BnNZwcmDdoOKNBVNO+zYHhtgo7yb8
+         yTNLU/3fq7bixNvTwjkAoOSSeEaPSQz3lol/z4NFqn2vNPszfhbmokkJTvebIA3qY1bb
+         1+MOCIDyMAyvkq/IJ/smGN4zwTu61EU0if7Cobxk+zXCdFC0yVx/Ft5MXMz33hOYO/ia
+         NgxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=koiSsN+X6ALJ93eneVRvWb9O3oVPXUYsMydQZaZogyQ=;
-        b=hEYH9fcW09XLaS2Y0GslHN8xmliOhZjz29VcRD2PVZUS/JvaI/h8deSpcAlhrWbp3S
-         LFdiySqUG86ud02gFQQgM/5xdl3p0pvhdbAyEpMjzuUaAPQFStFXKhQ/atvQFP8A3RWP
-         QUC1SDEkm9AFdU9u6mp+aPmrrkIgVGBlgWJu3+o1HnpXJ2NIxQ9Ep6Wr8T3mo7Zba82d
-         yKgmfCPFr7IoLw0zo6IzNNu5YBMXegI4OFKR0Whgk9KndwR3cL4tgg31baO86bcb7z4r
-         PoogMIO3hfr3PvFVwISNwI9NTWGpooFQQ8PWabUFjekPpqNwagdFSOyJmtGcusXbGmkl
-         lReA==
-X-Gm-Message-State: AE9vXwPxXQ+b5OPT5uPPTbbm4SW4lEdkEAbDjSJLePGm7TaSye4RlGvLws1+2iWtesEAWQ==
-X-Received: by 10.25.25.69 with SMTP id 66mr8283918lfz.14.1472904599632;
-        Sat, 03 Sep 2016 05:09:59 -0700 (PDT)
+        bh=3bH3rddpLFBPSEA33bgR11olP4wMcWbj41ilJmDQHhA=;
+        b=Akzm441HJyPa/1Lvm+sb9KuAlOhrJW8SlawhCIlQK5n8zdMGTzafzWJo3FbVG+ItL0
+         xNNrcPh5EWDuqjdkKgTB0RPNPUygOAZ3Mwsee7d/0NltRgYmqcMejwkp4gvfMR5mbi31
+         OE6g4iG3Y1lj5kxCO4+VrzO+RiohoGZZzUANrujjsqxbu4IW0KP/jZxUSY+OOXNw61HZ
+         ajFqOKiBV1Mjwx6IEzvOva1bcbStCStgFhLoTngpQwGYmGN1z2rqDuSG05QJ8xef7/6H
+         HkmhzjGJU9hu99KByvAnpDOI+B/Ghjizbv0pqDbCDLdM9eHiLU3F5y/pjQwwutFXHdaO
+         Osdg==
+X-Gm-Message-State: AE9vXwMIto63X9BMOsSPxRjjM4MRVBWSo+3LOX0FsD31o9MASvOjwkiTwVlJy2bo2sI11w==
+X-Received: by 10.46.1.69 with SMTP id 66mr7931720ljb.27.1472904937634;
+        Sat, 03 Sep 2016 05:15:37 -0700 (PDT)
 Received: from [192.168.4.126] ([31.173.81.103])
-        by smtp.gmail.com with ESMTPSA id f71sm2688683lfg.36.2016.09.03.05.09.57
+        by smtp.gmail.com with ESMTPSA id t78sm205910lfi.43.2016.09.03.05.15.36
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 03 Sep 2016 05:09:58 -0700 (PDT)
-Subject: Re: [PATCH 2/3] MIPS: OCTEON: add DTS for D-Link DSR-500N
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <20160902211136.8610-1-aaro.koskinen@iki.fi>
- <20160902211136.8610-3-aaro.koskinen@iki.fi>
-Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+        Sat, 03 Sep 2016 05:15:36 -0700 (PDT)
+Subject: Re: [PATCH 07/12] MIPS: Malta: Probe RTC via DT
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <20160902154859.24269-1-paul.burton@imgtec.com>
+ <20160902154859.24269-8-paul.burton@imgtec.com>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <51b74b54-a624-f85e-55bf-a99c4188cd44@cogentembedded.com>
-Date:   Sat, 3 Sep 2016 15:09:58 +0300
+Message-ID: <8cc3d8af-8851-2f66-fb6d-d3ba35eb66b4@cogentembedded.com>
+Date:   Sat, 3 Sep 2016 15:15:36 +0300
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
  Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <20160902211136.8610-3-aaro.koskinen@iki.fi>
+In-Reply-To: <20160902154859.24269-8-paul.burton@imgtec.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55032
+X-archive-position: 55033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,58 +74,46 @@ X-list: linux-mips
 
 Hello.
 
-On 9/3/2016 12:11 AM, Aaro Koskinen wrote:
+On 9/2/2016 6:48 PM, Paul Burton wrote:
 
-> Add DTS for D-Link DSR-500N.
+> Add the DT node required to probe the RTC, and remove the platform code
+> that was previously doing it.
 >
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 > ---
->  .../mips/boot/dts/cavium-octeon/dlink_dsr-500n.dts | 42 ++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
->  create mode 100644 arch/mips/boot/dts/cavium-octeon/dlink_dsr-500n.dts
 >
-> diff --git a/arch/mips/boot/dts/cavium-octeon/dlink_dsr-500n.dts b/arch/mips/boot/dts/cavium-octeon/dlink_dsr-500n.dts
-> new file mode 100644
-> index 0000000..6cacabb
-> --- /dev/null
-> +++ b/arch/mips/boot/dts/cavium-octeon/dlink_dsr-500n.dts
-> @@ -0,0 +1,42 @@
-> +/*
-> + * Device tree source for D-Link DSR-500N.
-> + *
-> + * Written by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + */
+>  arch/mips/boot/dts/mti/malta.dts     | 15 +++++++++++++++
+>  arch/mips/mti-malta/malta-platform.c | 21 ---------------------
+>  2 files changed, 15 insertions(+), 21 deletions(-)
+>
+> diff --git a/arch/mips/boot/dts/mti/malta.dts b/arch/mips/boot/dts/mti/malta.dts
+> index af765af..ee43296 100644
+> --- a/arch/mips/boot/dts/mti/malta.dts
+> +++ b/arch/mips/boot/dts/mti/malta.dts
+> @@ -49,4 +49,19 @@
+>  		interrupt-parent = <&gic>;
+>  		interrupts = <GIC_SHARED 3 IRQ_TYPE_LEVEL_HIGH>;
+>  	};
 > +
-> +/include/ "dlink_dsr-500n-1000n.dtsi"
-> +#include <dt-bindings/gpio/gpio.h>
+> +	isa {
+> +		compatible = "isa";
+> +		#address-cells = <2>;
+> +		#size-cells = <1>;
+> +		ranges = <1 0 0 0x1000>;
 > +
-> +/ {
-> +	model = "dlink,dsr-500n";
-> +	compatible = "dlink,dsr-500n", "cavium,octeon-3860";
+> +		rtc: mc146818@70 {
+
+    Should be the other way around: you can use the chip name as a label, but 
+you have to use the device class as a node name.
+
+> +			compatible = "motorola,mc146818";
+> +			reg = <1 0x70 0x8>;
 > +
-> +	soc@0 {
-> +		uart0: serial@1180000000800 {
-> +			clock-frequency = <300000000>;
+> +			interrupt-parent = <&i8259>;
+> +			interrupts = <8>;
 > +		};
 > +	};
-> +
-> +	leds {
-> +		compatible = "gpio-leds";
-> +
-> +		usb {
-> +			label = "usb";
-> +			gpios = <&gpio 9 GPIO_ACTIVE_LOW>;
-> +		};
-> +
-> +		wps {
-> +			label = "wps";
-
-    You don't need LED labels when the are identical to the node names.
-
+>  };
 [...]
 
 MBR, Sergei

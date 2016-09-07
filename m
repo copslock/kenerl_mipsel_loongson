@@ -1,38 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Sep 2016 10:25:21 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:18633 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Sep 2016 11:45:50 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:16356 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992022AbcIGIZNz-Qph (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Sep 2016 10:25:13 +0200
+        with ESMTP id S23992028AbcIGJplpDp9S (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Sep 2016 11:45:41 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id CCE3088266811;
-        Wed,  7 Sep 2016 09:24:54 +0100 (IST)
-Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 7 Sep
- 2016 09:24:57 +0100
-Subject: Re: [PATCH 15/21] mips: octeon: smp: Convert to hotplug state machine
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        <linux-kernel@vger.kernel.org>
-References: <20160906170457.32393-1-bigeasy@linutronix.de>
- <20160906170457.32393-16-bigeasy@linutronix.de>
-CC:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, <rt@linutronix.de>,
-        <tglx@linutronix.de>, Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>
+        by Forcepoint Email with ESMTPS id 0EC4BCF493A1C;
+        Wed,  7 Sep 2016 10:45:22 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 7 Sep 2016 10:45:24 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <6ef2674b-aca6-f45f-03b2-ec9aa9a5bf91@imgtec.com>
-Date:   Wed, 7 Sep 2016 09:24:57 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Arnd Bergmann <arnd@arndb.de>, Tony Wu <tung7970@gmail.com>,
+        Nikolay Martynov <mar.kolya@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>, <linux-pm@vger.kernel.org>,
+        Qais Yousef <qsyousef@gmail.com>,
+        <linux-kernel@vger.kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        James Hogan <james.hogan@imgtec.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Markos Chandras <markos.chandras@imgtec.com>,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH v2 00/12] MIPS CPC fixup and CPU Idle for MIPSr6 CPUs
+Date:   Wed, 7 Sep 2016 10:45:08 +0100
+Message-ID: <1473241520-14917-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <20160906170457.32393-16-bigeasy@linutronix.de>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
 Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55044
+X-archive-position: 55045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,79 +57,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-HI Sebastian,
+
+This updated series incorporates comments from Peter Zijlstra on v1
+around the barriers in pm-cps.c.
+
+This series fixes a small issue with the CPC driver when A CM3 is
+present, where a redundant lock was taken.
+
+There are then additions to the pm-cps driver to add support for R6 CPUs
+such as the I6400, and additionally the CM3 present in the I6400.
+
+Finally we enable the cpuidle-cps driver for MIPSr6 CPUs.
+
+Applies atop v4.8-rc4
 
 
-On 06/09/16 18:04, Sebastian Andrzej Siewior wrote:
-> Install the callbacks via the state machine.
->
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> ---
->   arch/mips/cavium-octeon/smp.c | 24 +++---------------------
->   include/linux/cpuhotplug.h    |  1 +
->   2 files changed, 4 insertions(+), 21 deletions(-)
->
-> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-> index 4d457d602d3b..228c1cab2912 100644
-> --- a/arch/mips/cavium-octeon/smp.c
-> +++ b/arch/mips/cavium-octeon/smp.c
-> @@ -380,29 +380,11 @@ static int octeon_update_boot_vector(unsigned int cpu)
->   	return 0;
->   }
->   
-> -static int octeon_cpu_callback(struct notifier_block *nfb,
-> -	unsigned long action, void *hcpu)
-> -{
-> -	unsigned int cpu = (unsigned long)hcpu;
-> -
-> -	switch (action & ~CPU_TASKS_FROZEN) {
-> -	case CPU_UP_PREPARE:
-> -		octeon_update_boot_vector(cpu);
-> -		break;
-> -	case CPU_ONLINE:
-> -		pr_info("Cpu %d online\n", cpu);
-> -		break;
-> -	case CPU_DEAD:
-> -		break;
-> -	}
-> -
-> -	return NOTIFY_OK;
-> -}
-> -
->   static int register_cavium_notifier(void)
->   {
-> -	hotcpu_notifier(octeon_cpu_callback, 0);
-> -	return 0;
-> +	return cpuhp_setup_state_nocalls(CPUHP_MIPS_CAVIUM_PREPARE,
-> +					 "mips/cavium:prepare",
-> +					 octeon_update_boot_vector, NULL);
+Changes in v2:
+Update comments on barriers
+Add new patch to define standard MIPS barrier types
+Use architecturally standard lightweight sync types rather than
+selecting CPU specific ones.
 
-This looks like a nice change which results in much cleaner code
+Matt Redfearn (12):
+  MIPS: CPC: Convert bare 'unsigned' to 'unsigned int'
+  MIPS: CPC: Avoid lock when MIPS CM >= 3 is present
+  MIPS: pm-cps: Change FSB workaround to CPU blacklist
+  MIPS: pm-cps: Update comments on barrier instructions
+  MIPS: Barrier: Add definitions of SYNC stype values
+  MIPS: pm-cps: Use MIPS standard lightweight ordering barrier
+  MIPS: pm-cps: Use MIPS standard completion barrier
+  MIPS: pm-cps: Remove selection of sync types
+  MIPS: pm-cps: Add MIPSr6 CPU support
+  MIPS: pm-cps: Support CM3 changes to Coherence Enable Register
+  MIPS: SMP: Wrap call to mips_cpc_lock_other in mips_cm_lock_other
+  cpuidle: cpuidle-cps: Enable use with MIPSr6 CPUs.
 
->   }
->   late_initcall(register_cavium_notifier);
->   
-> diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-> index 4cbf88c955d6..058d312fdf6f 100644
-> --- a/include/linux/cpuhotplug.h
-> +++ b/include/linux/cpuhotplug.h
-> @@ -44,6 +44,7 @@ enum cpuhp_state {
->   	CPUHP_SH_SH3X_PREPARE,
->   	CPUHP_X86_MICRCODE_PREPARE,
->   	CPUHP_NOTF_ERR_INJ_PREPARE,
-> +	CPUHP_MIPS_CAVIUM_PREPARE,
+ arch/mips/include/asm/barrier.h |  96 +++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/mips-cm.h |   1 +
+ arch/mips/include/asm/pm-cps.h  |   6 ++-
+ arch/mips/kernel/mips-cpc.c     |  17 ++++--
+ arch/mips/kernel/pm-cps.c       | 115 +++++++++++++++++++---------------------
+ arch/mips/kernel/smp.c          |   2 +
+ drivers/cpuidle/Kconfig.mips    |   2 +-
+ drivers/cpuidle/cpuidle-cps.c   |   2 +-
+ 8 files changed, 173 insertions(+), 68 deletions(-)
 
-But I'm curious why we have to create a new state here - this is going 
-to get very unwieldy if every variant of every architecture has to have 
-it's own state values in that enumeration. Can this use, what I assume 
-is (and perhaps could be documented better in 
-include/linux/cpuhotplug.h), the generic prepare state CPUHP_NOTIFY_PREPARE?
-
-Thanks,
-Matt
-
->   	CPUHP_TIMERS_DEAD,
->   	CPUHP_BRINGUP_CPU,
->   	CPUHP_AP_IDLE_DEAD,
+-- 
+2.7.4

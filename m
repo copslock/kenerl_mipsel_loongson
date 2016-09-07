@@ -1,38 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Sep 2016 16:27:28 +0200 (CEST)
-Received: from Galois.linutronix.de ([146.0.238.70]:58714 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992028AbcIGO1VVNWRb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Sep 2016 16:27:21 +0200
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1bhdom-0002jl-Cs; Wed, 07 Sep 2016 16:27:12 +0200
-Date:   Wed, 7 Sep 2016 16:27:12 +0200
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, rt@linutronix.de,
-        tglx@linutronix.de, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 15/21] mips: octeon: smp: Convert to hotplug state machine
-Message-ID: <20160907142712.rr34s2c6xiwcrjaz@linutronix.de>
-References: <20160906170457.32393-1-bigeasy@linutronix.de>
- <20160906170457.32393-16-bigeasy@linutronix.de>
- <6ef2674b-aca6-f45f-03b2-ec9aa9a5bf91@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2016 01:35:18 +0200 (CEST)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:33169 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992121AbcIGXfIbCg-L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Sep 2016 01:35:08 +0200
+Received: by mail-pf0-f195.google.com with SMTP id 128so1599066pfb.0;
+        Wed, 07 Sep 2016 16:35:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=PwiWQH3UbmdRLC60bUs0n/UXBF2zODDQh3RD4jA90fY=;
+        b=WqDCYcpnc71ks4Y8qRyYSSPkCO5rSw5R8k6IlQegz968qL6y2UKz7kp1CAbH0UEIzC
+         8AYeJY/2hbAXEauN1yqOQa1nqKmhLRHtLO4ncqQm6c+9DhxvIKEoPf/oQFgwhLCBEKh2
+         UrY0/DbqypaMFbQrIxt2OpHYJVNY5GLGZ34QqJPHmOUNcFmh+ae16QJxAguXvslLWL2c
+         UACqI84aLX4denl5p9Yisv8Boi9XyhRiGfxafC4XFDWEvCrRtVHiNhvXq8xE3aiTmIAN
+         8hFnfnAMw9Qod1Ofv3r2XGKZnALpVOgZhZus6WvK646NV7TarYLj3BPAzKVGgqig7n9/
+         2FrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=PwiWQH3UbmdRLC60bUs0n/UXBF2zODDQh3RD4jA90fY=;
+        b=G8Q6uQJpfvZzzevWsZjXFEX0pnqmnd4pGTzahRltPpbGbRoQOxoG2BCJN6qFty9PV4
+         1gwTmlu6FsgDo91EuRduU0znYdMIgkEP/2DCqMdgcUocSwkW/giUwsrqIrDnwazBneWV
+         P199zFplQXgtHsDkto0dhGjLcLFIgCSwB8y+IjpzCL5pzrI8qmuLqieBW0hPkr+FuoCN
+         g0Xq6b0NvocMFDzWtZ1R5YS7cUcyYUG9OSoJlX3lrZIjjlQDsHs+o2Sru5I4Uu/TteU7
+         qPbfklbPH81BtX7qNH17aPc1jdNALL3Q9xoPCJY8H/cezCcyof9gbxkCdAtALWWE5ZlW
+         Ja5Q==
+X-Gm-Message-State: AE9vXwPs9REEvkRp00/O0pyUXfh6LjsqrYDf3T0kWV71uWHZ39BL1N17O3j4sc0VZNs3yg==
+X-Received: by 10.98.222.196 with SMTP id h187mr2531296pfg.9.1473291302398;
+        Wed, 07 Sep 2016 16:35:02 -0700 (PDT)
+Received: from [10.112.156.244] (5520-maca-inet1-outside.broadcom.com. [216.31.211.11])
+        by smtp.googlemail.com with ESMTPSA id 81sm51240448pfm.90.2016.09.07.16.35.00
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 07 Sep 2016 16:35:01 -0700 (PDT)
+Subject: Re: [PATCH] MIPS: c-r4k: Fix size calc when avoiding IPIs for small
+ icache flushes
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+References: <20160905142454.30530-1-paul.burton@imgtec.com>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Huacai Chen <chenhc@lemote.com>, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <2c0ffccf-5ccb-7693-099d-efd688a01eec@gmail.com>
+Date:   Wed, 7 Sep 2016 16:34:59 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
+In-Reply-To: <20160905142454.30530-1-paul.burton@imgtec.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6ef2674b-aca6-f45f-03b2-ec9aa9a5bf91@imgtec.com>
-User-Agent: NeoMutt/ (1.7.0)
-Return-Path: <bigeasy@linutronix.de>
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55062
+X-archive-position: 55063
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bigeasy@linutronix.de
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,32 +71,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 2016-09-07 09:24:57 [+0100], Matt Redfearn wrote:
-> HI Sebastian,
-Hi Matt,
-
-> > --- a/include/linux/cpuhotplug.h
-> > +++ b/include/linux/cpuhotplug.h
-> > @@ -44,6 +44,7 @@ enum cpuhp_state {
-> >   	CPUHP_SH_SH3X_PREPARE,
-> >   	CPUHP_X86_MICRCODE_PREPARE,
-> >   	CPUHP_NOTF_ERR_INJ_PREPARE,
-> > +	CPUHP_MIPS_CAVIUM_PREPARE,
+On 09/05/2016 07:24 AM, Paul Burton wrote:
+> Commit f70ddc07b637 ("MIPS: c-r4k: Avoid small flush_icache_range SMP
+> calls") adds checks to force use of hit-type cache ops for small icache
+> flushes where they are globalised & index-type cache ops aren't, in
+> order to avoid the overhead of IPIs in those cases. However it
+> calculated the size of the region being flushed incorrectly, subtracting
+> the end address from the start address rather than the reverse. This
+> would have led to an overflow with size wrapping round to some large
+> value, and likely to the special case for avoiding IPIs not actually
+> being hit.
 > 
-> But I'm curious why we have to create a new state here - this is going to
-> get very unwieldy if every variant of every architecture has to have it's
-> own state values in that enumeration. Can this use, what I assume is (and
-> perhaps could be documented better in include/linux/cpuhotplug.h), the
-> generic prepare state CPUHP_NOTIFY_PREPARE?
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: James Hogan <james.hogan@imgtec.com>
+> Fixes: f70ddc07b637 ("MIPS: c-r4k: Avoid small flush_icache_range SMP calls")
 
-We can't share the states - one state is for one callback and one
-callback only. If you want CPUHP_MIPS_PREPARE and you ensure that this
-used only _once_ then this can be arranged.
-For online states we have dynamic allocation of ids (which is what most
-drivers should use). We don't have this of STARTING + PREPARE callbacks.
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 
-> Thanks,
-> Matt
-> 
-
-Sebastian
+Yes would be good to get that in v4.8.
+-- 
+Florian

@@ -1,36 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Sep 2016 19:06:50 +0200 (CEST)
-Received: from Galois.linutronix.de ([146.0.238.70]:55705 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992249AbcIFRGZsQN2T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Sep 2016 19:06:25 +0200
-Received: from localhost ([127.0.0.1] helo=bazinga.breakpoint.cc)
-        by Galois.linutronix.de with esmtp (Exim 4.80)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1bhJp7-0000Ly-0T; Tue, 06 Sep 2016 19:06:13 +0200
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, rt@linutronix.de,
-        tglx@linutronix.de,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 16/21] mips: loongson: smp: Convert to hotplug state machine
-Date:   Tue,  6 Sep 2016 19:04:52 +0200
-Message-Id: <20160906170457.32393-17-bigeasy@linutronix.de>
-X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160906170457.32393-1-bigeasy@linutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Sep 2016 10:25:21 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18633 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992022AbcIGIZNz-Qph (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Sep 2016 10:25:13 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id CCE3088266811;
+        Wed,  7 Sep 2016 09:24:54 +0100 (IST)
+Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 7 Sep
+ 2016 09:24:57 +0100
+Subject: Re: [PATCH 15/21] mips: octeon: smp: Convert to hotplug state machine
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        <linux-kernel@vger.kernel.org>
 References: <20160906170457.32393-1-bigeasy@linutronix.de>
+ <20160906170457.32393-16-bigeasy@linutronix.de>
+CC:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, <rt@linutronix.de>,
+        <tglx@linutronix.de>, Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <6ef2674b-aca6-f45f-03b2-ec9aa9a5bf91@imgtec.com>
+Date:   Wed, 7 Sep 2016 09:24:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Return-Path: <bigeasy@linutronix.de>
+In-Reply-To: <20160906170457.32393-16-bigeasy@linutronix.de>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55043
+X-archive-position: 55044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bigeasy@linutronix.de
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,94 +49,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Install the callbacks via the state machine.
+HI Sebastian,
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- arch/mips/loongson64/loongson-3/smp.c | 34 ++++++++-----------------------=
----
- include/linux/cpuhotplug.h            |  1 +
- 2 files changed, 9 insertions(+), 26 deletions(-)
 
-diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/l=
-oongson-3/smp.c
-index 2fec6f753a35..bd7c8cf5332d 100644
---- a/arch/mips/loongson64/loongson-3/smp.c
-+++ b/arch/mips/loongson64/loongson-3/smp.c
-@@ -677,7 +677,7 @@ void play_dead(void)
- 	play_dead_at_ckseg1(state_addr);
- }
-=20
--void loongson3_disable_clock(int cpu)
-+static int loongson3_disable_clock(unsigned int cpu)
- {
- 	uint64_t core_id =3D cpu_data[cpu].core;
- 	uint64_t package_id =3D cpu_data[cpu].package;
-@@ -688,9 +688,10 @@ void loongson3_disable_clock(int cpu)
- 		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
- 			LOONGSON_FREQCTRL(package_id) &=3D ~(1 << (core_id * 4 + 3));
- 	}
-+	return 0;
- }
-=20
--void loongson3_enable_clock(int cpu)
-+static int loongson3_enable_clock(unsigned int cpu)
- {
- 	uint64_t core_id =3D cpu_data[cpu].core;
- 	uint64_t package_id =3D cpu_data[cpu].package;
-@@ -701,34 +702,15 @@ void loongson3_enable_clock(int cpu)
- 		if (!(loongson_sysconf.workarounds & WORKAROUND_CPUHOTPLUG))
- 			LOONGSON_FREQCTRL(package_id) |=3D 1 << (core_id * 4 + 3);
- 	}
--}
--
--#define CPU_POST_DEAD_FROZEN	(CPU_POST_DEAD | CPU_TASKS_FROZEN)
--static int loongson3_cpu_callback(struct notifier_block *nfb,
--	unsigned long action, void *hcpu)
--{
--	unsigned int cpu =3D (unsigned long)hcpu;
--
--	switch (action) {
--	case CPU_POST_DEAD:
--	case CPU_POST_DEAD_FROZEN:
--		pr_info("Disable clock for CPU#%d\n", cpu);
--		loongson3_disable_clock(cpu);
--		break;
--	case CPU_UP_PREPARE:
--	case CPU_UP_PREPARE_FROZEN:
--		pr_info("Enable clock for CPU#%d\n", cpu);
--		loongson3_enable_clock(cpu);
--		break;
--	}
--
--	return NOTIFY_OK;
-+	return 0;
- }
-=20
- static int register_loongson3_notifier(void)
- {
--	hotcpu_notifier(loongson3_cpu_callback, 0);
--	return 0;
-+	return cpuhp_setup_state_nocalls(CPUHP_MIPS_LOONGSON_PREPARE,
-+					 "mips/loongson:prepare",
-+					 loongson3_enable_clock,
-+					 loongson3_disable_clock);
- }
- early_initcall(register_loongson3_notifier);
-=20
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index 058d312fdf6f..9e56be3eaf3f 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -45,6 +45,7 @@ enum cpuhp_state {
- 	CPUHP_X86_MICRCODE_PREPARE,
- 	CPUHP_NOTF_ERR_INJ_PREPARE,
- 	CPUHP_MIPS_CAVIUM_PREPARE,
-+	CPUHP_MIPS_LOONGSON_PREPARE,
- 	CPUHP_TIMERS_DEAD,
- 	CPUHP_BRINGUP_CPU,
- 	CPUHP_AP_IDLE_DEAD,
---=20
-2.9.3
+On 06/09/16 18:04, Sebastian Andrzej Siewior wrote:
+> Install the callbacks via the state machine.
+>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> ---
+>   arch/mips/cavium-octeon/smp.c | 24 +++---------------------
+>   include/linux/cpuhotplug.h    |  1 +
+>   2 files changed, 4 insertions(+), 21 deletions(-)
+>
+> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+> index 4d457d602d3b..228c1cab2912 100644
+> --- a/arch/mips/cavium-octeon/smp.c
+> +++ b/arch/mips/cavium-octeon/smp.c
+> @@ -380,29 +380,11 @@ static int octeon_update_boot_vector(unsigned int cpu)
+>   	return 0;
+>   }
+>   
+> -static int octeon_cpu_callback(struct notifier_block *nfb,
+> -	unsigned long action, void *hcpu)
+> -{
+> -	unsigned int cpu = (unsigned long)hcpu;
+> -
+> -	switch (action & ~CPU_TASKS_FROZEN) {
+> -	case CPU_UP_PREPARE:
+> -		octeon_update_boot_vector(cpu);
+> -		break;
+> -	case CPU_ONLINE:
+> -		pr_info("Cpu %d online\n", cpu);
+> -		break;
+> -	case CPU_DEAD:
+> -		break;
+> -	}
+> -
+> -	return NOTIFY_OK;
+> -}
+> -
+>   static int register_cavium_notifier(void)
+>   {
+> -	hotcpu_notifier(octeon_cpu_callback, 0);
+> -	return 0;
+> +	return cpuhp_setup_state_nocalls(CPUHP_MIPS_CAVIUM_PREPARE,
+> +					 "mips/cavium:prepare",
+> +					 octeon_update_boot_vector, NULL);
+
+This looks like a nice change which results in much cleaner code
+
+>   }
+>   late_initcall(register_cavium_notifier);
+>   
+> diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+> index 4cbf88c955d6..058d312fdf6f 100644
+> --- a/include/linux/cpuhotplug.h
+> +++ b/include/linux/cpuhotplug.h
+> @@ -44,6 +44,7 @@ enum cpuhp_state {
+>   	CPUHP_SH_SH3X_PREPARE,
+>   	CPUHP_X86_MICRCODE_PREPARE,
+>   	CPUHP_NOTF_ERR_INJ_PREPARE,
+> +	CPUHP_MIPS_CAVIUM_PREPARE,
+
+But I'm curious why we have to create a new state here - this is going 
+to get very unwieldy if every variant of every architecture has to have 
+it's own state values in that enumeration. Can this use, what I assume 
+is (and perhaps could be documented better in 
+include/linux/cpuhotplug.h), the generic prepare state CPUHP_NOTIFY_PREPARE?
+
+Thanks,
+Matt
+
+>   	CPUHP_TIMERS_DEAD,
+>   	CPUHP_BRINGUP_CPU,
+>   	CPUHP_AP_IDLE_DEAD,

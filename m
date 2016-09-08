@@ -1,39 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2016 14:14:39 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42133 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992481AbcIHMNq6lV7w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Sep 2016 14:13:46 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 2A921C66DE2F1;
-        Thu,  8 Sep 2016 13:13:26 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 8 Sep 2016 13:13:29 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 1/2] MIPS: KVM: Override HVA error values for EVA
-Date:   Thu, 8 Sep 2016 13:13:02 +0100
-Message-ID: <f408640681d7a90782c85a681d43a5c51fa8f7ea.1473335231.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.9.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2016 15:35:14 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:37156 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990557AbcIHNfH3y0Nc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Sep 2016 15:35:07 +0200
+Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 18B5761978;
+        Thu,  8 Sep 2016 13:35:04 +0000 (UTC)
+Received: from [10.36.112.47] (ovpn-112-47.ams2.redhat.com [10.36.112.47])
+        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u88DZ0B9023919
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 8 Sep 2016 09:35:02 -0400
+Subject: Re: [PATCH 0/2] MIPS: KVM: Partial EVA support
+To:     James Hogan <james.hogan@imgtec.com>
+References: <cover.4afb9d6281172d5a66d490da41c5ea418050dcea.1473335231.git-series.james.hogan@imgtec.com>
+Cc:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <5d95c50f-b9bd-49e0-9bca-71242d9d5efd@redhat.com>
+Date:   Thu, 8 Sep 2016 15:34:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
 In-Reply-To: <cover.4afb9d6281172d5a66d490da41c5ea418050dcea.1473335231.git-series.james.hogan@imgtec.com>
-References: <cover.4afb9d6281172d5a66d490da41c5ea418050dcea.1473335231.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 08 Sep 2016 13:35:04 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55071
+X-archive-position: 55072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,49 +50,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS Enhanced Virtual Addressing (EVA) allows the user mode and kernel
-mode address spaces to overlap, breaking the assumption that PAGE_OFFSET
-is an appropriate KVM HVA error value, since PAGE_OFFSET may be as low
-as zero.
 
-Fix this in the same way that s390 does in commit bf640876e21f ("KVM:
-s390: Make KVM_HVA_ERR_BAD usable on s390"), by overriding
-KVM_HVA_ERR_[RO_]BAD and kvm_is_error_hva() in asm/kvm_host.h.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
----
- arch/mips/include/asm/kvm_host.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+), 0 deletions(-)
+On 08/09/2016 14:13, James Hogan wrote:
+> These patches fix a couple of problems when using MIPS KVM on a host
+> kernel with Enhanced Virtual Addressing (EVA) enabled.
+> 
+> Patch 1 fixes the HVA error codes like s390 does, due to PAGE_OFFSET
+> potentially being as low as 0.
+> 
+> Patch 2 allows MMIO to be emulated from TLB refill exceptions as well as
+> address error exceptions (since EVA configurations may make KSeg1
+> addresses TLB mapped to user mode).
+> 
+> It isn't complete as there are still a couple of cases where KVM tries
+> to directly access guest memory using normal loads and stores (which
+> doesn't work with EVA's overlapping usermode & kernel mode address
+> spaces). That really needs fixing properly anyway to handle the
+> potential for TLB invalidations (and the resulting refills & page
+> faults).
+> 
+> For KVM to work on EVA hosts also requires some MIPS architecture
+> changes, as found in my recent "MIPS: General EVA fixes & cleanups"
+> patchset.
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index b54bcadd8aec..4d7e0e466b5a 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -107,6 +107,20 @@
- #define KVM_INVALID_INST		0xdeadbeef
- #define KVM_INVALID_ADDR		0xdeadbeef
- 
-+/*
-+ * EVA has overlapping user & kernel address spaces, so user VAs may be >
-+ * PAGE_OFFSET. For this reason we can't use the default KVM_HVA_ERR_BAD of
-+ * PAGE_OFFSET.
-+ */
-+
-+#define KVM_HVA_ERR_BAD			(-1UL)
-+#define KVM_HVA_ERR_RO_BAD		(-2UL)
-+
-+static inline bool kvm_is_error_hva(unsigned long addr)
-+{
-+	return IS_ERR_VALUE(addr);
-+}
-+
- extern atomic_t kvm_mips_instance;
- 
- struct kvm_vm_stat {
--- 
-git-series 0.8.10
+Since there aren't any overlaps with 4.8 patches, feel free to send a
+pull request for these and any other patches you might have in the rest
+of this cycle.
+
+Paolo

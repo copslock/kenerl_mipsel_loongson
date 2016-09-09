@@ -1,50 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Sep 2016 05:34:30 +0200 (CEST)
-Received: from mail-vk0-f54.google.com ([209.85.213.54]:34795 "EHLO
-        mail-vk0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990518AbcIIDeXgl0XM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Sep 2016 05:34:23 +0200
-Received: by mail-vk0-f54.google.com with SMTP id v189so58537015vkv.1
-        for <linux-mips@linux-mips.org>; Thu, 08 Sep 2016 20:34:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=ErLXiQu+BToDncoIjrp0LQGDdIE9bSSXySJcp361nZU=;
-        b=aL1kDOi3bq0ebiPKlZcmc8EOmgpUVN2JTRUL/IuaKOXfKW4SYOVB9yAHHIB0dV/IKD
-         aEEXKeMRoCpKbVg7IiN298qhUd45GLPopKQbFbFw1SfOs4WRpsc2PwBs8dO+Pt6WCqmJ
-         qmCHgdFEHKQt19TL29tPy+43dgycO3/7dC1Y+XwSwVzCr6mSzOV67kmYsEYVuM65lptj
-         blyqpi8lMsctPEzDvIF0fL/h0Yb7XxmXKELnCBXnGt2NkIzm520sRzpveTqcVXct87+E
-         L1mzmJ5p6kH62AxglB0UgbpsM1AphNjVOkHjqYRWdyBeLrYCBbD0ADz0nNckKo2GDG9c
-         lVpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=ErLXiQu+BToDncoIjrp0LQGDdIE9bSSXySJcp361nZU=;
-        b=C6ytFDuB+eVMHEHdcf4Pcl/+kF+dRtSKd9sKWSvoWab/0AYSm4vQxdOSI9ml2Q4zNX
-         x2veKHSICIetsy56FvW+ZzWHkAL577f6YTd+FWA7yHl7ODyUmLFGD20v1aMu4U9Rm3gH
-         vpRZLCqda4CoNXP6vypCd4QSdFCWlv5rkJmzCrZP7d0axDSPg14mLPJfEvQPQT86MRlm
-         sH/c7eXdt+hjGqO7jJGZpa1ksdbdAMvWSuZt6MXEfC5ZsPOqAsfDtvyDz4sMyLScRhuf
-         bc2TuYg+gH1PVDtZC2HP0IZt72t2Z7DiadlDgowh9WkUS9lVN/fxRA4Ssp2yBL5Q6qBG
-         ss/w==
-X-Gm-Message-State: AE9vXwO8/EUOZmRwyuuDhFxONt970UyLXoN9EEkYMtMS8xHzab1oCBh8LsquMft/lPGyCZMmcaRaKMs4dKM0ug==
-X-Received: by 10.31.131.195 with SMTP id f186mr822699vkd.147.1473392057645;
- Thu, 08 Sep 2016 20:34:17 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.31.242.73 with HTTP; Thu, 8 Sep 2016 20:33:57 -0700 (PDT)
-From:   Sagar Borikar <sagar.borikar@gmail.com>
-Date:   Thu, 8 Sep 2016 20:33:57 -0700
-Message-ID: <CAFwMWxtUHa_Av34RrzFp3Dar0y-ghQRJNeXeUqYeUo3149zOsw@mail.gmail.com>
-Subject: highmem issues with 3.14.10 (LST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Sep 2016 07:28:12 +0200 (CEST)
+Received: from mout.gmx.net ([212.227.17.22]:64630 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990518AbcIIF2FHTDD3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 9 Sep 2016 07:28:05 +0200
+Received: from [192.168.178.27] ([134.3.148.133]) by mail.gmx.com (mrgmx102)
+ with ESMTPSA (Nemesis) id 0Li1hG-1bD4fd3DN4-00n5Jr for
+ <linux-mips@linux-mips.org>; Fri, 09 Sep 2016 07:27:59 +0200
 To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <sagar.borikar@gmail.com>
+From:   Dennis Luehring <dl.soluz@gmx.net>
+Subject: boot >256MiB initrd on malta (using qemu)
+Message-ID: <51feb6c1-abed-71b7-8997-d380b597bd5d@gmx.net>
+Date:   Fri, 9 Sep 2016 07:28:00 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.3.0
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="------------20D329BAD9A1F83B4C171D8E"
+X-Provags-ID: V03:K0:ARYt0+uTk2W5+p/2zzAUcyk+8soPiJbVH+Sb2b2qqhHbnqLTas6
+ s2T2ADtQc8tu0XdGQKaD0osRnJAAI5SYgdX/ubfRKVzBtxQAKxat76swvrPKa3fpD35Qdqk
+ fICBB3hOS0KElio/vEdWTnJVSIWUZgMGrSISLmMD921jr+jQGsjz6p6pU0jfLqCr6JCXLcZ
+ +3Qtx0sc0i7O92UMkcd5w==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:RqNuFZS9g7s=:xC+wRlircJOmFWCDq7e7cS
+ bYrQvP2hnDolgOrWeix3i54sbuuhQj6dm0Yj3063VC/Vr61e0SLpQ/W9CCPfkASyuLFb2EnN+
+ tynD7/FsfEi6GFcKV/pwUN1mk9xmxJ+hSupdjrmm0loeefcQwbS36+l4hlccbzTAYsgHD0qZr
+ Pql88iMhf+lLTA8mczW1hAFI5wtut+FulRqY3yviTCb6nWE0S8bGpRmNAjy1et7K2WLmKZxH4
+ HeSpaJ2aZ8AxBhaN7tTYosSGHhbM7lS9fmls4cJ01fb2hQXapwFtPO1t1BvazbeMMdCJ/q/2o
+ +d2u4nOaqxnD2S8GlK5RjgMBr/xMqD1aguFRHQB3Z4rnZZyaA2XzqNfx0wI8fLh65PRTNOa4N
+ pG+soZZO1iRlQYgWdwpW2gh8jAvlFRhoqw8tsJG0wn7bHUGwM8dOXJ4/fy+l/4V/EI5JGNLOc
+ h0bZ/MwCfdl+A/nVWk/gKd5rIlHk6gjbRi0W9CcGoTBbIuOr9yg8CDLdAUgr+17h0LVstfjF7
+ EGioFStIIa2RZnIqZ/STIUcmvLUOXPdkfFUjy6pKc7WL0n9Ysq4D3xVUUs79rkgv3Gk5l8MaG
+ b3x6aecqiKEUxEfZ/gvZV887eeEJcy3Ij5Z3S9/cvBUP0SRnOQCbf5QsqEFCNkv4xFVw7S/IG
+ OcBGPr7BP7ZDe62OLELtHfAf3NSMPwD4SgYGEss7HpX7witR+6+wa5QRdeNMZtaVTr8wyJjAg
+ UUeCAsA96XvVAkKxz/YrP0JyUAVuyg8I0+Es5sjuXg5Ya7n9UzC90Q0Wzfs=
+Return-Path: <dl.soluz@gmx.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55078
+X-archive-position: 55079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sagar.borikar@gmail.com
+X-original-sender: dl.soluz@gmx.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,86 +53,214 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+This is a multi-part message in MIME format.
+--------------20D329BAD9A1F83B4C171D8E
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I am upgrading kernel for a MIPS Interaptive CPU from 3.10.60 to
-3.14.10 (stable) from:
-https://www.linux-mips.org/wiki/Malta_Linux_Repository
+i've got two cleanly build mips64-64 initrds (based on cross linux
+from scratch, gcc 6.1 and linux kernel 4.7) that i want to boot with qemu
 
- The platform has non-contiguous low memory and high memory. After the
-upgrade, highmem is not getting enabled due to max_low_pfn and
-highend_pfn not being the same.
+initrd.cpio ~14.5 MB
+big_initrd.cpio ~323.4 MB
 
-The commit cce335ae47e231398269fb05fa48e0e9cbf289e0 introduced the
-change apparently for sibyte platform. That change doesn't hold good
-for all platforms where the high memory and low memory is sparsed.
+(attached is the kernel output for both)
 
-If I comment out only following change in arch/mips/mm/init.c, highmem
-gets initialized properly.
+mips64-softmmu/qemu-system-mips64 -M malta -m 1GB -nographic -monitor 
+telnet::4440,server,nowait -serial telnet::3000,server -kernel 
+clfskernel-4.7.0 -initrd initrd.cpio
 
-296     if (cpu_has_dc_aliases && max_low_pfn != highend_pfn) {
-297         printk(KERN_WARNING "This processor doesn't support highmem."
-298                " %ldk highmem ignored\n",
-299                (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
-300         max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
-301         lastpfn = max_low_pfn;
-302     }
+the smaller initrd.cpio (~14.5 MB) boots without any problem and shows 
+the output of an test-program at end of the booting
+the big one with ~323.4 MB seems to hang right before the ramdisk/initrd 
+extraction
 
-So wanted to know whether there is additional change required in
-platform to work with above codebase.
-Secondly, when the system proceeds (with commented code above), it
-seems execve causes panic in copy_strings:
+using the big_initrd the kernel comes to
 
-Kernel bug detected[#1]:
-CPU: 0 PID: 177 Comm: mcp Not tainted 3.14.10 #19
-task: 82c99070 ti: 829b0000 task.ti: 829b0000
-$ 0   : 00000000 81a40018 00000001 00000528
-$ 4   : 806805b0 00000294 00000000 81c76000
-$ 8   : 82c99070 fe001ffc 00000000 805d0000
-$12   : 00000000 00000000 00000000 00000001
-$16   : 8214a760 00000000 81a40010 82c2c580
-$20   : ffffffff 7fff7000 00000000 00000008
-$24   : 00000000 801182a0
-$28   : 829b0000 829b1e78 8214a760 801bb0bc
-Hi    : 000000e1
-Lo    : 00077c44
-epc   : 801bb014 copy_strings+0x304/0x394
-    Not tainted
-ra    : 801bb0bc copy_strings_kernel+0x18/0x2c
-Status: 1100fc03        KERNEL EXL IE
-Cause : 10800034
-PrId  : 0001a020 (MIPS interAptiv)
-Modules linked in:
-Process mcp (pid: 177, threadinfo=829b0000, task=82c99070, tls=770b82f0)
-Stack : 00000080 00000000 00000000 00000000 00000017 829b1e98 00000000 00000000
-          8214a760 82bba0b0 fe001000 00000ff4 80000000 00000080
-82bba0b0 81a40000
-          80b12b00 00000001 80b12b00 7fe5e66c 81c40000 801bb0bc
-80b12b00 82c2c630
-          82c2c580 00000080 82c2c580 801bc4d4 00000003 8013452c
-7649e000 7648fa08
-          82c99234 00000000 00000601 80b12b34 7649e000 7648fa08
-7649e000 7fe5dc50
-         ...
-Call Trace:
-[<801bb014>] copy_strings+0x304/0x394
-[<801bb0bc>] copy_strings_kernel+0x18/0x2c
-[<801bc4d4>] do_execve+0x2fc/0x4c4
-[<8010d37c>] handle_sys+0x11c/0x140
-Code: 0806ec05  00000000  24020001 <00020336> 0c045e64  02002021
-0c0651dd  02002021  0806ec1d
----[ end trace ed487c3c490d886b ]---
-BUG: Bad rss-counter state mm:828bd6a0 idx:1 val:2
+Determined physical RAM map:
+  memory: 0000000010000000 @ 0000000000000000 (usable)
 
-This panic occurs only when I spawn nested fork/execve. If I spawn the
-process directly without nesting, I don't see this panic.
+and stops then
 
-Looks like there are several reports about "Bad rss-counter state"
-panic with 3.14-stable. But I couldn't find any concrete solution to
-the panic.
+some guys from the qemu mailing list pointed me to the lower 256MiB RAM 
+and HighMem (2GB) RAM Feature of the malta
 
-Any pointers?
+is it possible to configure linux (configs or kernel-parameter?) to boot 
+my big_initrd from the highmem area?
 
-Thanks
 
-Sagar
+
+
+--------------20D329BAD9A1F83B4C171D8E
+Content-Type: text/plain; charset=UTF-8;
+ name="big_initrd.cpio.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="big_initrd.cpio.txt"
+
+VHJ5aW5nIDEyNy4wLjAuMS4uLgpDb25uZWN0ZWQgdG8gbG9jYWxob3N0LgpFc2NhcGUgY2hh
+cmFjdGVyIGlzICdeXScuCkxpbnV4IHZlcnNpb24gNC43LjAgKGRsQGRsLWxpbnV4KSAoZ2Nj
+IHZlcnNpb24gNi4xLjAgKEdDQykgKSAjMSBTTVAgU3VuIEF1ZyA3IDA4OjUwOjEyIENFU1Qg
+MjAxNg0KZWFybHljb246IHVhcnQ4MjUwIGF0IEkvTyBwb3J0IDB4M2Y4IChvcHRpb25zICcz
+ODQwMG44JykNCmJvb3Rjb25zb2xlIFt1YXJ0ODI1MF0gZW5hYmxlZA0KQ29uZmlnIHNlcmlh
+bCBjb25zb2xlOiBjb25zb2xlPXR0eVMwLDM4NDAwbjhyDQpDUFUwIHJldmlzaW9uIGlzOiAw
+MDAxODJhMCAoTUlQUyAyMEtjKQ0KRlBVIHJldmlzaW9uIGlzOiAwMDBmODIwMA0KQ2hlY2tp
+bmcgZm9yIHRoZSBtdWx0aXBseS9zaGlmdCBidWcuLi4gbm8uDQpDaGVja2luZyBmb3IgdGhl
+IGRhZGRpdSBidWcuLi4gbm8uDQpNSVBTOiBtYWNoaW5lIGlzIG10aSxtYWx0YQ0KU29mdHdh
+cmUgRE1BIGNhY2hlIGNvaGVyZW5jeSBlbmFibGVkDQpEZXRlcm1pbmVkIHBoeXNpY2FsIFJB
+TSBtYXA6DQogbWVtb3J5OiAwMDAwMDAwMDEwMDAwMDAwIEAgMDAwMDAwMDAwMDAwMDAwMCAo
+dXNhYmxlKQ0K
+--------------20D329BAD9A1F83B4C171D8E
+Content-Type: text/plain; charset=UTF-8;
+ name="initrd.cpio.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="initrd.cpio.txt"
+
+VHJ5aW5nIDEyNy4wLjAuMS4uLgpDb25uZWN0ZWQgdG8gbG9jYWxob3N0LgpFc2NhcGUgY2hh
+cmFjdGVyIGlzICdeXScuCkxpbnV4IHZlcnNpb24gNC43LjAgKGRsQGRsLWxpbnV4KSAoZ2Nj
+IHZlcnNpb24gNi4xLjAgKEdDQykgKSAjMSBTTVAgU3VuIEF1ZyA3IDA4OjUwOjEyIENFU1Qg
+MjAxNg0KZWFybHljb246IHVhcnQ4MjUwIGF0IEkvTyBwb3J0IDB4M2Y4IChvcHRpb25zICcz
+ODQwMG44JykNCmJvb3Rjb25zb2xlIFt1YXJ0ODI1MF0gZW5hYmxlZA0KQ29uZmlnIHNlcmlh
+bCBjb25zb2xlOiBjb25zb2xlPXR0eVMwLDM4NDAwbjhyDQpDUFUwIHJldmlzaW9uIGlzOiAw
+MDAxODJhMCAoTUlQUyAyMEtjKQ0KRlBVIHJldmlzaW9uIGlzOiAwMDBmODIwMA0KQ2hlY2tp
+bmcgZm9yIHRoZSBtdWx0aXBseS9zaGlmdCBidWcuLi4gbm8uDQpDaGVja2luZyBmb3IgdGhl
+IGRhZGRpdSBidWcuLi4gbm8uDQpNSVBTOiBtYWNoaW5lIGlzIG10aSxtYWx0YQ0KU29mdHdh
+cmUgRE1BIGNhY2hlIGNvaGVyZW5jeSBlbmFibGVkDQpEZXRlcm1pbmVkIHBoeXNpY2FsIFJB
+TSBtYXA6DQogbWVtb3J5OiAwMDAwMDAwMDEwMDAwMDAwIEAgMDAwMDAwMDAwMDAwMDAwMCAo
+dXNhYmxlKQ0KSW5pdGlhbCByYW1kaXNrIGF0OiAweDk4MDAwMDAwMDA3YzAwMDAgKDE0NTAy
+OTI1IGJ5dGVzKQ0KWm9uZSByYW5nZXM6DQogIERNQSAgICAgIFttZW0gMHgwMDAwMDAwMDAw
+MDAwMDAwLTB4MDAwMDAwMDAwMGZmZmZmZl0NCiAgRE1BMzIgICAgW21lbSAweDAwMDAwMDAw
+MDEwMDAwMDAtMHgwMDAwMDAwMGZmZmZmZmZmXQ0KICBOb3JtYWwgICBlbXB0eQ0KTW92YWJs
+ZSB6b25lIHN0YXJ0IGZvciBlYWNoIG5vZGUNCkVhcmx5IG1lbW9yeSBub2RlIHJhbmdlcw0K
+ICBub2RlICAgMDogW21lbSAweDAwMDAwMDAwMDAwMDAwMDAtMHgwMDAwMDAwMDBmZmZmZmZm
+XQ0KSW5pdG1lbSBzZXR1cCBub2RlIDAgW21lbSAweDAwMDAwMDAwMDAwMDAwMDAtMHgwMDAw
+MDAwMDBmZmZmZmZmXQ0KUHJpbWFyeSBpbnN0cnVjdGlvbiBjYWNoZSAzMmtCLCBWSVZULCA0
+LXdheSwgbGluZXNpemUgMzIgYnl0ZXMuDQpQcmltYXJ5IGRhdGEgY2FjaGUgMzJrQiwgNC13
+YXksIFBJUFQsIG5vIGFsaWFzZXMsIGxpbmVzaXplIDMyIGJ5dGVzDQpwZXJjcHU6IEVtYmVk
+ZGVkIDQgcGFnZXMvY3B1IEA5ODAwMDAwMDAxNjg4MDAwIHMyODQ0OCByODE5MiBkMjg4OTYg
+dTY1NTM2DQpCdWlsdCAxIHpvbmVsaXN0cyBpbiBab25lIG9yZGVyLCBtb2JpbGl0eSBncm91
+cGluZyBvbi4gIFRvdGFsIHBhZ2VzOiAxNjMyNw0KS2VybmVsIGNvbW1hbmQgbGluZTogcmRf
+c3RhcnQ9MHhmZmZmZmZmZjgwN2MwMDAwIHJkX3NpemU9MTQ1MDI5MjUgIGNvbnNvbGU9dHR5
+UzAsMzg0MDBuOHINClBJRCBoYXNoIHRhYmxlIGVudHJpZXM6IDEwMjQgKG9yZGVyOiAtMSwg
+ODE5MiBieXRlcykNCkRlbnRyeSBjYWNoZSBoYXNoIHRhYmxlIGVudHJpZXM6IDMyNzY4IChv
+cmRlcjogNCwgMjYyMTQ0IGJ5dGVzKQ0KSW5vZGUtY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVz
+OiAxNjM4NCAob3JkZXI6IDMsIDEzMTA3MiBieXRlcykNCkVuYWJsZSBjYWNoZSBwYXJpdHkg
+cHJvdGVjdGlvbiBmb3IgTUlQUyAyMEtDLzI1S0YgQ1BVcy4NCk1lbW9yeTogMjM4NjI0Sy8y
+NjIxNDRLIGF2YWlsYWJsZSAoNDg4Nksga2VybmVsIGNvZGUsIDM1MEsgcndkYXRhLCAxMTAw
+SyByb2RhdGEsIDMwNEsgaW5pdCwgMjQwSyBic3MsIDIzNTIwSyByZXNlcnZlZCwgMEsgY21h
+LXJlc2VydmVkKQ0KSGllcmFyY2hpY2FsIFJDVSBpbXBsZW1lbnRhdGlvbi4NCglCdWlsZC10
+aW1lIGFkanVzdG1lbnQgb2YgbGVhZiBmYW5vdXQgdG8gNjQuDQoJUkNVIHJlc3RyaWN0aW5n
+IENQVXMgZnJvbSBOUl9DUFVTPTggdG8gbnJfY3B1X2lkcz0xLg0KUkNVOiBBZGp1c3Rpbmcg
+Z2VvbWV0cnkgZm9yIHJjdV9mYW5vdXRfbGVhZj02NCwgbnJfY3B1X2lkcz0xDQpOUl9JUlFT
+OjI1Ng0KQ1BVIGZyZXF1ZW5jeSAxMDAuMDAgTUh6DQpjbG9ja3NvdXJjZTogTUlQUzogbWFz
+azogMHhmZmZmZmZmZiBtYXhfY3ljbGVzOiAweGZmZmZmZmZmLCBtYXhfaWRsZV9uczogMTkx
+MTI2Mzg4NjcgbnMNCnNjaGVkX2Nsb2NrOiAzMiBiaXRzIGF0IDk5TUh6LCByZXNvbHV0aW9u
+IDEwbnMsIHdyYXBzIGV2ZXJ5IDIxNDc0ODc1Mzg2bnMNCkNvbnNvbGU6IGNvbG91ciBkdW1t
+eSBkZXZpY2UgODB4MjUNCkNhbGlicmF0aW5nIGRlbGF5IGxvb3AuLi4gODA2LjkxIEJvZ29N
+SVBTIChscGo9NDAzNDU2MCkNCnBpZF9tYXg6IGRlZmF1bHQ6IDMyNzY4IG1pbmltdW06IDMw
+MQ0KTW91bnQtY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiAyMDQ4IChvcmRlcjogMCwgMTYz
+ODQgYnl0ZXMpDQpNb3VudHBvaW50LWNhY2hlIGhhc2ggdGFibGUgZW50cmllczogMjA0OCAo
+b3JkZXI6IDAsIDE2Mzg0IGJ5dGVzKQ0KQ2hlY2tpbmcgZm9yIHRoZSBkYWRkaSBidWcuLi4g
+bm8uDQpCcm91Z2h0IHVwIDEgQ1BVcw0KZGV2dG1wZnM6IGluaXRpYWxpemVkDQpjbG9ja3Nv
+dXJjZTogamlmZmllczogbWFzazogMHhmZmZmZmZmZiBtYXhfY3ljbGVzOiAweGZmZmZmZmZm
+LCBtYXhfaWRsZV9uczogMTkxMTI2MDQ0NjI3NTAwMDAgbnMNCk5FVDogUmVnaXN0ZXJlZCBw
+cm90b2NvbCBmYW1pbHkgMTYNCmNsb2Nrc291cmNlOiBwaXQ6IG1hc2s6IDB4ZmZmZmZmZmYg
+bWF4X2N5Y2xlczogMHhmZmZmZmZmZiwgbWF4X2lkbGVfbnM6IDE2MDE4MTgwMzQ4MjcgbnMN
+CnZnYWFyYjogbG9hZGVkDQpTQ1NJIHN1YnN5c3RlbSBpbml0aWFsaXplZA0KUENJIGhvc3Qg
+YnJpZGdlIHRvIGJ1cyAwMDAwOjAwDQpwY2lfYnVzIDAwMDA6MDA6IHJvb3QgYnVzIHJlc291
+cmNlIFttZW0gMHgxMDAwMDAwMC0weDE3ZmZmZmZmXQ0KcGNpX2J1cyAwMDAwOjAwOiByb290
+IGJ1cyByZXNvdXJjZSBbaW8gIDB4MTAwMC0weDFmZmZmZl0NCnBjaV9idXMgMDAwMDowMDog
+cm9vdCBidXMgcmVzb3VyY2UgWz8/PyAweDAwMDAwMDAwIGZsYWdzIDB4MF0NCnBjaV9idXMg
+MDAwMDowMDogTm8gYnVzbiByZXNvdXJjZSBmb3VuZCBmb3Igcm9vdCBidXMsIHdpbGwgdXNl
+IFtidXMgMDAtZmZdDQpwY2kgMDAwMDowMDowMC4wOiBbRmlybXdhcmUgQnVnXTogcmVnIDB4
+MTQ6IGludmFsaWQgQkFSIChjYW4ndCBzaXplKQ0KcGNpIDAwMDA6MDA6MDAuMDogW0Zpcm13
+YXJlIEJ1Z106IHJlZyAweDE4OiBpbnZhbGlkIEJBUiAoY2FuJ3Qgc2l6ZSkNCnBjaSAwMDAw
+OjAwOjAwLjA6IFtGaXJtd2FyZSBCdWddOiByZWcgMHgxYzogaW52YWxpZCBCQVIgKGNhbid0
+IHNpemUpDQpwY2kgMDAwMDowMDowMC4wOiBbRmlybXdhcmUgQnVnXTogcmVnIDB4MjA6IGlu
+dmFsaWQgQkFSIChjYW4ndCBzaXplKQ0KcGNpIDAwMDA6MDA6MDAuMDogW0Zpcm13YXJlIEJ1
+Z106IHJlZyAweDI0OiBpbnZhbGlkIEJBUiAoY2FuJ3Qgc2l6ZSkNCnBjaSAwMDAwOjAwOjBh
+LjE6IGxlZ2FjeSBJREUgcXVpcms6IHJlZyAweDEwOiBbaW8gIDB4MDFmMC0weDAxZjddDQpw
+Y2kgMDAwMDowMDowYS4xOiBsZWdhY3kgSURFIHF1aXJrOiByZWcgMHgxNDogW2lvICAweDAz
+ZjZdDQpwY2kgMDAwMDowMDowYS4xOiBsZWdhY3kgSURFIHF1aXJrOiByZWcgMHgxODogW2lv
+ICAweDAxNzAtMHgwMTc3XQ0KcGNpIDAwMDA6MDA6MGEuMTogbGVnYWN5IElERSBxdWlyazog
+cmVnIDB4MWM6IFtpbyAgMHgwMzc2XQ0KcGNpIDAwMDA6MDA6MGEuMzogcXVpcms6IFtpbyAg
+MHgxMDAwLTB4MTAzZl0gY2xhaW1lZCBieSBQSUlYNCBBQ1BJDQpwY2kgMDAwMDowMDowYS4z
+OiBxdWlyazogW2lvICAweDExMDAtMHgxMTBmXSBjbGFpbWVkIGJ5IFBJSVg0IFNNQg0Kdmdh
+YXJiOiBkZXZpY2UgYWRkZWQ6IFBDSTowMDAwOjAwOjEyLjAsZGVjb2Rlcz1pbyttZW0sb3du
+cz1ub25lLGxvY2tzPW5vbmUNCnBjaSAwMDAwOjAwOjEyLjA6IEJBUiAwOiBhc3NpZ25lZCBb
+bWVtIDB4MTAwMDAwMDAtMHgxMWZmZmZmZiBwcmVmXQ0KcGNpIDAwMDA6MDA6MGIuMDogQkFS
+IDY6IGFzc2lnbmVkIFttZW0gMHgxMjAwMDAwMC0weDEyMDNmZmZmIHByZWZdDQpwY2kgMDAw
+MDowMDoxMi4wOiBCQVIgNjogYXNzaWduZWQgW21lbSAweDEyMDQwMDAwLTB4MTIwNGZmZmYg
+cHJlZl0NCnBjaSAwMDAwOjAwOjEyLjA6IEJBUiAxOiBhc3NpZ25lZCBbbWVtIDB4MTIwNTAw
+MDAtMHgxMjA1MGZmZl0NCnBjaSAwMDAwOjAwOjBhLjI6IEJBUiA0OiBhc3NpZ25lZCBbaW8g
+IDB4MTA0MC0weDEwNWZdDQpwY2kgMDAwMDowMDowYi4wOiBCQVIgMDogYXNzaWduZWQgW2lv
+ICAweDEwNjAtMHgxMDdmXQ0KcGNpIDAwMDA6MDA6MGIuMDogQkFSIDE6IGFzc2lnbmVkIFtt
+ZW0gMHgxMjA1MTAwMC0weDEyMDUxMDFmXQ0KcGNpIDAwMDA6MDA6MGEuMTogQkFSIDQ6IGFz
+c2lnbmVkIFtpbyAgMHgxMDgwLTB4MTA4Zl0NCmNsb2Nrc291cmNlOiBTd2l0Y2hlZCB0byBj
+bG9ja3NvdXJjZSBNSVBTDQpWRlM6IERpc2sgcXVvdGFzIGRxdW90XzYuNi4wDQpWRlM6IERx
+dW90LWNhY2hlIGhhc2ggdGFibGUgZW50cmllczogMjA0OCAob3JkZXIgMCwgMTYzODQgYnl0
+ZXMpDQpORVQ6IFJlZ2lzdGVyZWQgcHJvdG9jb2wgZmFtaWx5IDINClRDUCBlc3RhYmxpc2hl
+ZCBoYXNoIHRhYmxlIGVudHJpZXM6IDIwNDggKG9yZGVyOiAwLCAxNjM4NCBieXRlcykNClRD
+UCBiaW5kIGhhc2ggdGFibGUgZW50cmllczogMjA0OCAob3JkZXI6IDEsIDMyNzY4IGJ5dGVz
+KQ0KVENQOiBIYXNoIHRhYmxlcyBjb25maWd1cmVkIChlc3RhYmxpc2hlZCAyMDQ4IGJpbmQg
+MjA0OCkNClVEUCBoYXNoIHRhYmxlIGVudHJpZXM6IDUxMiAob3JkZXI6IDAsIDE2Mzg0IGJ5
+dGVzKQ0KVURQLUxpdGUgaGFzaCB0YWJsZSBlbnRyaWVzOiA1MTIgKG9yZGVyOiAwLCAxNjM4
+NCBieXRlcykNCk5FVDogUmVnaXN0ZXJlZCBwcm90b2NvbCBmYW1pbHkgMQ0KUlBDOiBSZWdp
+c3RlcmVkIG5hbWVkIFVOSVggc29ja2V0IHRyYW5zcG9ydCBtb2R1bGUuDQpSUEM6IFJlZ2lz
+dGVyZWQgdWRwIHRyYW5zcG9ydCBtb2R1bGUuDQpSUEM6IFJlZ2lzdGVyZWQgdGNwIHRyYW5z
+cG9ydCBtb2R1bGUuDQpSUEM6IFJlZ2lzdGVyZWQgdGNwIE5GU3Y0LjEgYmFja2NoYW5uZWwg
+dHJhbnNwb3J0IG1vZHVsZS4NClVucGFja2luZyBpbml0cmFtZnMuLi4NCkluaXRyYW1mcyB1
+bnBhY2tpbmcgZmFpbGVkOiBqdW5rIGluIGNvbXByZXNzZWQgYXJjaGl2ZQ0KRnJlZWluZyBp
+bml0cmQgbWVtb3J5OiAxNDE2MEsgKDk4MDAwMDAwMDA3YzAwMDAgLSA5ODAwMDAwMDAxNTk0
+MDAwKQ0KZnV0ZXggaGFzaCB0YWJsZSBlbnRyaWVzOiAyNTYgKG9yZGVyOiAwLCAxNjM4NCBi
+eXRlcykNCndvcmtpbmdzZXQ6IHRpbWVzdGFtcF9iaXRzPTYwIG1heF9vcmRlcj0xNCBidWNr
+ZXRfb3JkZXI9MA0KSW5zdGFsbGluZyBrbmZzZCAoY29weXJpZ2h0IChDKSAxOTk2IG9raXJA
+bW9uYWQuc3diLmRlKS4NCkJsb2NrIGxheWVyIFNDU0kgZ2VuZXJpYyAoYnNnKSBkcml2ZXIg
+dmVyc2lvbiAwLjQgbG9hZGVkIChtYWpvciAyNTMpDQppbyBzY2hlZHVsZXIgbm9vcCByZWdp
+c3RlcmVkDQppbyBzY2hlZHVsZXIgZGVhZGxpbmUgcmVnaXN0ZXJlZA0KaW8gc2NoZWR1bGVy
+IGNmcSByZWdpc3RlcmVkIChkZWZhdWx0KQ0KUENJOiBFbmFibGluZyBkZXZpY2UgMDAwMDow
+MDoxMi4wICgwMDAwIC0+IDAwMDIpDQpjaXJydXNmYiAwMDAwOjAwOjEyLjA6IENpcnJ1cyBM
+b2dpYyBjaGlwc2V0IG9uIFBDSSBidXMsIFJBTSAoNDA5NiBrQikgYXQgMHgxMDAwMDAwMA0K
+Q29uc29sZTogc3dpdGNoaW5nIHRvIGNvbG91ciBmcmFtZSBidWZmZXIgZGV2aWNlIDgweDMw
+DQpTZXJpYWw6IDgyNTAvMTY1NTAgZHJpdmVyLCA0IHBvcnRzLCBJUlEgc2hhcmluZyBkaXNh
+YmxlZA0KY29uc29sZSBbdHR5UzBdIGRpc2FibGVkDQpzZXJpYWw4MjUwLjA6IHR0eVMwIGF0
+IEkvTyAweDNmOCAoaXJxID0gNCwgYmFzZV9iYXVkID0gMTE1MjAwKSBpcyBhIDE2NTUwQQ0K
+Y29uc29sZSBbdHR5UzBdIGVuYWJsZWQNCmNvbnNvbGUgW3R0eVMwXSBlbmFibGVkDQpib290
+Y29uc29sZSBbdWFydDgyNTBdIGRpc2FibGVkDQpib290Y29uc29sZSBbdWFydDgyNTBdIGRp
+c2FibGVkDQpzZXJpYWw4MjUwLjA6IHR0eVMxIGF0IEkvTyAweDJmOCAoaXJxID0gMywgYmFz
+ZV9iYXVkID0gMTE1MjAwKSBpcyBhIDE2NTUwQQ0KVW5pZm9ybSBNdWx0aS1QbGF0Zm9ybSBF
+LUlERSBkcml2ZXINCmlkZV9nZW5lcmljOiBwbGVhc2UgdXNlICJwcm9iZV9tYXNrPTB4M2Yi
+IG1vZHVsZSBwYXJhbWV0ZXIgZm9yIHByb2JpbmcgYWxsIGxlZ2FjeSBJU0EgSURFIHBvcnRz
+DQppZGUtZ2QgZHJpdmVyIDEuMTgNCmlkZS1jZCBkcml2ZXIgNS4wMA0KUENJOiBFbmFibGlu
+ZyBkZXZpY2UgMDAwMDowMDowYS4xICgwMDAwIC0+IDAwMDEpDQpzY3NpIGhvc3QwOiBhdGFf
+cGlpeA0Kc2NzaSBob3N0MTogYXRhX3BpaXgNCmF0YTE6IFBBVEEgbWF4IFVETUEvMzMgY21k
+IDB4MWYwIGN0bCAweDNmNiBibWRtYSAweDEwODAgaXJxIDE0DQphdGEyOiBQQVRBIG1heCBV
+RE1BLzMzIGNtZCAweDE3MCBjdGwgMHgzNzYgYm1kbWEgMHgxMDg4IGlycSAxNQ0KcGh5c21h
+cCBwbGF0Zm9ybSBmbGFzaCBkZXZpY2U6IDAwNDAwMDAwIGF0IDFlMDAwMDAwDQpwaHlzbWFw
+LWZsYXNoLjA6IEZvdW5kIDEgeDMyIGRldmljZXMgYXQgMHgwIGluIDMyLWJpdCBiYW5rLiBN
+YW51ZmFjdHVyZXIgSUQgMHgwMDAwMDAgQ2hpcCBJRCAweDAwMDAwMA0KSW50ZWwvU2hhcnAg
+RXh0ZW5kZWQgUXVlcnkgVGFibGUgYXQgMHgwMDMxDQpVc2luZyBidWZmZXIgd3JpdGUgbWV0
+aG9kDQpDcmVhdGluZyAzIE1URCBwYXJ0aXRpb25zIG9uICJwaHlzbWFwLWZsYXNoLjAiOg0K
+MHgwMDAwMDAwMDAwMDAtMHgwMDAwMDAxMDAwMDAgOiAiWUFNT04iDQoweDAwMDAwMDEwMDAw
+MC0weDAwMDAwMDNlMDAwMCA6ICJVc2VyIEZTIg0KMHgwMDAwMDAzZTAwMDAtMHgwMDAwMDA0
+MDAwMDAgOiAiQm9hcmQgQ29uZmlnIg0KcGNuZXQzMjogcGNuZXQzMi5jOnYxLjM1IDIxLkFw
+ci4yMDA4IHRzYm9nZW5kQGFscGhhLmZyYW5rZW4uZGUNClBDSTogRW5hYmxpbmcgZGV2aWNl
+IDAwMDA6MDA6MGIuMCAoMDAwMCAtPiAwMDAzKQ0KcGNuZXQzMjogUENuZXQvUENJIElJIDc5
+Qzk3MEEgYXQgMHgxMDYwLCA1Mjo1NDowMDoxMjozNDo1NiBhc3NpZ25lZCBJUlEgMTANCnBj
+bmV0MzI6IGV0aDA6IHJlZ2lzdGVyZWQgYXMgUENuZXQvUENJIElJIDc5Qzk3MEENCnBjbmV0
+MzI6IDEgY2FyZHNfZm91bmQNCm1vdXNlZGV2OiBQUy8yIG1vdXNlIGRldmljZSBjb21tb24g
+Zm9yIGFsbCBtaWNlDQpydGNfY21vcyBydGNfY21vczogcnRjIGNvcmU6IHJlZ2lzdGVyZWQg
+cnRjX2Ntb3MgYXMgcnRjMA0KcnRjX2Ntb3MgcnRjX2Ntb3M6IGFsYXJtcyB1cCB0byBvbmUg
+ZGF5LCAyNDIgYnl0ZXMgbnZyYW0NCk5FVDogUmVnaXN0ZXJlZCBwcm90b2NvbCBmYW1pbHkg
+MTcNCk5FVDogUmVnaXN0ZXJlZCBwcm90b2NvbCBmYW1pbHkgMTUNCnJ0Y19jbW9zIHJ0Y19j
+bW9zOiBzZXR0aW5nIHN5c3RlbSBjbG9jayB0byAyMDE2LTA5LTA4IDA5OjAzOjA4IFVUQyAo
+MTQ3MzMyNTM4OCkNCmF0YTIuMDA6IEFUQVBJOiBRRU1VIERWRC1ST00sIDIuNSssIG1heCBV
+RE1BLzEwMA0KYXRhMi4wMDogY29uZmlndXJlZCBmb3IgVURNQS8zMw0Kc2NzaSAxOjA6MDow
+OiBDRC1ST00gICAgICAgICAgICBRRU1VICAgICBRRU1VIERWRC1ST00gICAgIDIuNSsgUFE6
+IDAgQU5TSTogNQ0KRnJlZWluZyB1bnVzZWQga2VybmVsIG1lbW9yeTogMzA0SyAoZmZmZmZm
+ZmY4MDczNDAwMCAtIGZmZmZmZmZmODA3ODAwMDApDQpUaGlzIGFyY2hpdGVjdHVyZSBkb2Vz
+IG5vdCBoYXZlIGtlcm5lbCBtZW1vcnkgcHJvdGVjdGlvbi4NCkMgcHJpbnRmIEhlbGxvIFdv
+cmxkIQ0KQysrIHN0ZDo6Y291dCBIZWxsbyBXb3JsZCENCmVuZGlhbmVzczogYmlnDQovYmlu
+L2Jhc2ggZXhpc3RzPzogRkFMU0UNCmluaXQNCnJvb3QvDQpkZXYvDQogIGNvbnNvbGUNCg==
+--------------20D329BAD9A1F83B4C171D8E--

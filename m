@@ -1,101 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Sep 2016 20:35:39 +0200 (CEST)
-Received: from us01smtprelay-2.synopsys.com ([198.182.47.9]:58710 "EHLO
-        smtprelay.synopsys.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991346AbcIHSfclMkk0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Sep 2016 20:35:32 +0200
-Received: from us02secmta1.synopsys.com (us02secmta1.synopsys.com [10.12.235.96])
-        by smtprelay.synopsys.com (Postfix) with ESMTP id 16F7324E0421;
-        Thu,  8 Sep 2016 11:35:23 -0700 (PDT)
-Received: from us02secmta1.internal.synopsys.com (us02secmta1.internal.synopsys.com [127.0.0.1])
-        by us02secmta1.internal.synopsys.com (Service) with ESMTP id D07744E213;
-        Thu,  8 Sep 2016 11:35:23 -0700 (PDT)
-Received: from mailhost.synopsys.com (mailhost1.synopsys.com [10.12.238.239])
-        by us02secmta1.internal.synopsys.com (Service) with ESMTP id E361F4E202;
-        Thu,  8 Sep 2016 11:35:22 -0700 (PDT)
-Received: from mailhost.synopsys.com (localhost [127.0.0.1])
-        by mailhost.synopsys.com (Postfix) with ESMTP id A3325677;
-        Thu,  8 Sep 2016 11:35:22 -0700 (PDT)
-Received: from US01WEHTC3.internal.synopsys.com (us01wehtc3.internal.synopsys.com [10.15.84.232])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 40D7866D;
-        Thu,  8 Sep 2016 11:35:20 -0700 (PDT)
-Received: from IN01WEHTCB.internal.synopsys.com (10.144.199.106) by
- US01WEHTC3.internal.synopsys.com (10.15.84.232) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Thu, 8 Sep 2016 11:34:51 -0700
-Received: from IN01WEHTCA.internal.synopsys.com (10.144.199.103) by
- IN01WEHTCB.internal.synopsys.com (10.144.199.105) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Fri, 9 Sep 2016 00:04:48 +0530
-Received: from [10.9.130.78] (10.9.130.78) by IN01WEHTCA.internal.synopsys.com
- (10.144.199.243) with Microsoft SMTP Server (TLS) id 14.3.266.1; Fri, 9 Sep
- 2016 00:04:48 +0530
-Subject: Re: [PATCH] atomic64: No need for
- CONFIG_ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
-To:     Peter Zijlstra <peterz@infradead.org>
-References: <1473352098-5822-1-git-send-email-vgupta@synopsys.com>
- <20160908181905.GY10153@twins.programming.kicks-ass.net>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Alexey Brodkin" <Alexey.Brodkin@synopsys.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        Helge Deller <deller@gmx.de>,
-        "x86@kernel.org" <x86@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        "Ingo Molnar" <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Matthew Wilcox <willy@linux.intel.com>,
-        Matt Turner <mattst88@gmail.com>, Borislav Petkov <bp@suse.de>,
-        Ming Lin <ming.l@ssi.samsung.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Will Deacon <will.deacon@arm.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Zhaoxiu Zeng <zhaoxiu.zeng@gmail.com>,
-        "Andrey Ryabinin" <aryabinin@virtuozzo.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Richard Henderson <rth@twiddle.net>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>
-From:   Vineet Gupta <Vineet.Gupta1@synopsys.com>
-Message-ID: <a37b81a2-9634-255e-b20b-51e75913cb40@synopsys.com>
-Date:   Thu, 8 Sep 2016 11:34:29 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Sep 2016 05:34:30 +0200 (CEST)
+Received: from mail-vk0-f54.google.com ([209.85.213.54]:34795 "EHLO
+        mail-vk0-f54.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990518AbcIIDeXgl0XM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Sep 2016 05:34:23 +0200
+Received: by mail-vk0-f54.google.com with SMTP id v189so58537015vkv.1
+        for <linux-mips@linux-mips.org>; Thu, 08 Sep 2016 20:34:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=ErLXiQu+BToDncoIjrp0LQGDdIE9bSSXySJcp361nZU=;
+        b=aL1kDOi3bq0ebiPKlZcmc8EOmgpUVN2JTRUL/IuaKOXfKW4SYOVB9yAHHIB0dV/IKD
+         aEEXKeMRoCpKbVg7IiN298qhUd45GLPopKQbFbFw1SfOs4WRpsc2PwBs8dO+Pt6WCqmJ
+         qmCHgdFEHKQt19TL29tPy+43dgycO3/7dC1Y+XwSwVzCr6mSzOV67kmYsEYVuM65lptj
+         blyqpi8lMsctPEzDvIF0fL/h0Yb7XxmXKELnCBXnGt2NkIzm520sRzpveTqcVXct87+E
+         L1mzmJ5p6kH62AxglB0UgbpsM1AphNjVOkHjqYRWdyBeLrYCBbD0ADz0nNckKo2GDG9c
+         lVpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=ErLXiQu+BToDncoIjrp0LQGDdIE9bSSXySJcp361nZU=;
+        b=C6ytFDuB+eVMHEHdcf4Pcl/+kF+dRtSKd9sKWSvoWab/0AYSm4vQxdOSI9ml2Q4zNX
+         x2veKHSICIetsy56FvW+ZzWHkAL577f6YTd+FWA7yHl7ODyUmLFGD20v1aMu4U9Rm3gH
+         vpRZLCqda4CoNXP6vypCd4QSdFCWlv5rkJmzCrZP7d0axDSPg14mLPJfEvQPQT86MRlm
+         sH/c7eXdt+hjGqO7jJGZpa1ksdbdAMvWSuZt6MXEfC5ZsPOqAsfDtvyDz4sMyLScRhuf
+         bc2TuYg+gH1PVDtZC2HP0IZt72t2Z7DiadlDgowh9WkUS9lVN/fxRA4Ssp2yBL5Q6qBG
+         ss/w==
+X-Gm-Message-State: AE9vXwO8/EUOZmRwyuuDhFxONt970UyLXoN9EEkYMtMS8xHzab1oCBh8LsquMft/lPGyCZMmcaRaKMs4dKM0ug==
+X-Received: by 10.31.131.195 with SMTP id f186mr822699vkd.147.1473392057645;
+ Thu, 08 Sep 2016 20:34:17 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20160908181905.GY10153@twins.programming.kicks-ass.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.9.130.78]
-Return-Path: <Vineet.Gupta1@synopsys.com>
+Received: by 10.31.242.73 with HTTP; Thu, 8 Sep 2016 20:33:57 -0700 (PDT)
+From:   Sagar Borikar <sagar.borikar@gmail.com>
+Date:   Thu, 8 Sep 2016 20:33:57 -0700
+Message-ID: <CAFwMWxtUHa_Av34RrzFp3Dar0y-ghQRJNeXeUqYeUo3149zOsw@mail.gmail.com>
+Subject: highmem issues with 3.14.10 (LST)
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <sagar.borikar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55077
+X-archive-position: 55078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Vineet.Gupta1@synopsys.com
+X-original-sender: sagar.borikar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -108,34 +57,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 09/08/2016 11:19 AM, Peter Zijlstra wrote:
-> On Thu, Sep 08, 2016 at 09:28:18AM -0700, Vineet Gupta wrote:
->> This came to light when implementing native 64-bit atomics for ARCv2.
->>
->> The atomic64 self-test code uses CONFIG_ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
->> to check whether atomic64_dec_if_positive() is available.
->> It seems it was needed when not every arch defined it.
->> However as of current code the Kconfig option seems needless
->>
->> - for CONFIG_GENERIC_ATOMIC64 it is auto-enabled in lib/Kconfig and a
->>   generic definition of API is present lib/atomic64.c
->> - arches with native 64-bit atomics select it in arch/*/Kconfig and
->>   define the API in their headers
->>
->> So I see no point in keeping the Kconfig option
->>
->> Compile tested for 2 representatives:
->>  - blackfin (CONFIG_GENERIC_ATOMIC64)
->>  - x86 (!CONFIG_GENERIC_ATOMIC64)
->>
->> Also logistics wise it seemed simpler to just do this in 1 patch vs.
->> splitting per arch - but I can break it up if maintainer feel that
->> is better to avoid conflicts.
-> Works for me; you want me to take this, or do you need it for you ARCv2
-> patches?
+Hello,
 
-Please do. ARCv2 patch (following shortly) doesn't need it - I selected the
-option in orig patch - which I can just take out.
+I am upgrading kernel for a MIPS Interaptive CPU from 3.10.60 to
+3.14.10 (stable) from:
+https://www.linux-mips.org/wiki/Malta_Linux_Repository
 
-Thx,
--Vineet
+ The platform has non-contiguous low memory and high memory. After the
+upgrade, highmem is not getting enabled due to max_low_pfn and
+highend_pfn not being the same.
+
+The commit cce335ae47e231398269fb05fa48e0e9cbf289e0 introduced the
+change apparently for sibyte platform. That change doesn't hold good
+for all platforms where the high memory and low memory is sparsed.
+
+If I comment out only following change in arch/mips/mm/init.c, highmem
+gets initialized properly.
+
+296     if (cpu_has_dc_aliases && max_low_pfn != highend_pfn) {
+297         printk(KERN_WARNING "This processor doesn't support highmem."
+298                " %ldk highmem ignored\n",
+299                (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
+300         max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
+301         lastpfn = max_low_pfn;
+302     }
+
+So wanted to know whether there is additional change required in
+platform to work with above codebase.
+Secondly, when the system proceeds (with commented code above), it
+seems execve causes panic in copy_strings:
+
+Kernel bug detected[#1]:
+CPU: 0 PID: 177 Comm: mcp Not tainted 3.14.10 #19
+task: 82c99070 ti: 829b0000 task.ti: 829b0000
+$ 0   : 00000000 81a40018 00000001 00000528
+$ 4   : 806805b0 00000294 00000000 81c76000
+$ 8   : 82c99070 fe001ffc 00000000 805d0000
+$12   : 00000000 00000000 00000000 00000001
+$16   : 8214a760 00000000 81a40010 82c2c580
+$20   : ffffffff 7fff7000 00000000 00000008
+$24   : 00000000 801182a0
+$28   : 829b0000 829b1e78 8214a760 801bb0bc
+Hi    : 000000e1
+Lo    : 00077c44
+epc   : 801bb014 copy_strings+0x304/0x394
+    Not tainted
+ra    : 801bb0bc copy_strings_kernel+0x18/0x2c
+Status: 1100fc03        KERNEL EXL IE
+Cause : 10800034
+PrId  : 0001a020 (MIPS interAptiv)
+Modules linked in:
+Process mcp (pid: 177, threadinfo=829b0000, task=82c99070, tls=770b82f0)
+Stack : 00000080 00000000 00000000 00000000 00000017 829b1e98 00000000 00000000
+          8214a760 82bba0b0 fe001000 00000ff4 80000000 00000080
+82bba0b0 81a40000
+          80b12b00 00000001 80b12b00 7fe5e66c 81c40000 801bb0bc
+80b12b00 82c2c630
+          82c2c580 00000080 82c2c580 801bc4d4 00000003 8013452c
+7649e000 7648fa08
+          82c99234 00000000 00000601 80b12b34 7649e000 7648fa08
+7649e000 7fe5dc50
+         ...
+Call Trace:
+[<801bb014>] copy_strings+0x304/0x394
+[<801bb0bc>] copy_strings_kernel+0x18/0x2c
+[<801bc4d4>] do_execve+0x2fc/0x4c4
+[<8010d37c>] handle_sys+0x11c/0x140
+Code: 0806ec05  00000000  24020001 <00020336> 0c045e64  02002021
+0c0651dd  02002021  0806ec1d
+---[ end trace ed487c3c490d886b ]---
+BUG: Bad rss-counter state mm:828bd6a0 idx:1 val:2
+
+This panic occurs only when I spawn nested fork/execve. If I spawn the
+process directly without nesting, I don't see this panic.
+
+Looks like there are several reports about "Bad rss-counter state"
+panic with 3.14-stable. But I couldn't find any concrete solution to
+the panic.
+
+Any pointers?
+
+Thanks
+
+Sagar

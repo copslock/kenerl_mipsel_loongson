@@ -1,43 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Sep 2016 14:34:29 +0200 (CEST)
-Received: from basicbox7.server-home.net ([195.137.212.29]:49409 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Sep 2016 14:41:52 +0200 (CEST)
+Received: from basicbox7.server-home.net ([195.137.212.29]:56245 "EHLO
         basicbox7.server-home.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990522AbcIKMeWksya2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Sep 2016 14:34:22 +0200
+        by eddie.linux-mips.org with ESMTP id S23990522AbcIKMlpwnui2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Sep 2016 14:41:45 +0200
 Received: from ankhmorpork.fritz.box (ip4d15e046.dynamic.kabel-deutschland.de [77.21.224.70])
         (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
         (No client certificate requested)
-        by basicbox7.server-home.net (Postfix) with ESMTPSA id 1FC085EEF2A;
-        Sun, 11 Sep 2016 14:34:15 +0200 (CEST)
-Subject: Re: [BISECTED REGRESSION] v4.8-rc: DT/OCTEON driver probing broken
-To:     Rob Herring <robh@kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Michal Simek <monstr@monstr.eu>,
-        Paul Burton <paul.burton@imgtec.com>
-References: <20160816150056.GD18731@ak-desktop.emea.nsn-net.net>
- <0336fae0-1717-2f90-c221-6ef69f7024ee@leemhuis.info>
- <20160828122239.GA14316@raspberrypi.musicnaut.iki.fi>
- <CAL_Jsq+mmBH+HVLubj1_rQ0T60zfQj_Dbz41EVe7v_Mj_u2Vug@mail.gmail.com>
-Cc:     Aaro Koskinen <aaro.koskinen@nokia.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        by basicbox7.server-home.net (Postfix) with ESMTPSA id 2E04C5EEF2A;
+        Sun, 11 Sep 2016 14:41:40 +0200 (CEST)
+Subject: Re: [BISECTED REGRESSION] v4.8-rc: gpio-leds broken on OCTEON
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Steven J. Hill" <Steven.Hill@cavium.com>
+References: <20160823203605.GA12169@raspberrypi.musicnaut.iki.fi>
+ <57BDCE58.20200@cavium.com>
+ <20160825182453.GF12169@raspberrypi.musicnaut.iki.fi>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 From:   Thorsten Leemhuis <regressions@leemhuis.info>
-Message-ID: <bb9ca373-2018-f795-59f0-00e34336e16e@leemhuis.info>
-Date:   Sun, 11 Sep 2016 14:34:15 +0200
+Message-ID: <dc278c85-5ebd-7b91-2524-8c3549d1ee0c@leemhuis.info>
+Date:   Sun, 11 Sep 2016 14:41:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <CAL_Jsq+mmBH+HVLubj1_rQ0T60zfQj_Dbz41EVe7v_Mj_u2Vug@mail.gmail.com>
+In-Reply-To: <20160825182453.GF12169@raspberrypi.musicnaut.iki.fi>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Return-Path: <regressions@leemhuis.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55094
+X-archive-position: 55095
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,28 +48,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi! On 30.08.2016 00:39, Rob Herring wrote:
-> On Sun, Aug 28, 2016 at 7:22 AM, Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
->> On Sun, Aug 28, 2016 at 12:34:06PM +0200, Thorsten Leemhuis wrote:
->> There is a fix proposal here:
->>         https://patchwork.linux-mips.org/patch/14041/
->> There is still few other boards remaining that use of_platform_bus_probe()
->> from device_initcall, but who knows, maybe they are not affected.
->> arch/microblaze/kernel/platform.c
-> xlnx,compound is going to fail to probe. I'm adding this to the default.
+Hi! On 25.08.2016 20:24, Aaro Koskinen wrote:
+> On Wed, Aug 24, 2016 at 11:42:00AM -0500, Steven J. Hill wrote:
+>> It is actually two patches that cause the breakage. The other is:
+>>    commit e55aeb6ba4e8cc3549bff1e75ea1d029324bce21
+>>    of/irq: Mark interrupt controllers as populated before initialisation
+>> I needed to revert both of these in order to get MMC working on our 71xx and
+>> 78xx boards. For our MMC, I got error messages from the MMC core of "Invalid
+>> POWER GPIO" until I applied the second patch. I will have a fix worthy of
+>> upstreaming today which will be posted today.
 > 
->> arch/mips/mti-malta/malta-dt.c
-> This should be fine. It does probe for "isa", but nothing in mainline
-> is using that. We can add it to the default when it does.
+> The below change works for me...
 > 
->> arch/mips/netlogic/xlp/dt.c
-> Should be okay with default.
-> 
->> arch/x86/platform/olpc/olpc_dt.c
-> This one needs fixing.
+> diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+> index 5a9b87b..5fd57c2 100644
+> --- a/arch/mips/cavium-octeon/octeon-irq.c
+> +++ b/arch/mips/cavium-octeon/octeon-irq.c
+> @@ -1618,6 +1618,7 @@ static int __init octeon_irq_init_gpio(
+>  		pr_warn("Cannot allocate memory for GPIO irq_domain.\n");
+>  		return -ENOMEM;
+>  	}
+> +	of_node_clear_flag(gpio_node, OF_POPULATED);
+>  
+>  	return 0;
+>  }
 
-Rob, did anything happen on this front? This issue is still on the list
-of regression for 4.8, and it seems to me nothing happened in the past
-ten days -- or is this discussed somewhere else?.
+This afaics wasn't merged and the discussion looks stalled. Was this
+issue discussed elsewhere or even fixed in between? Just asking, because
+this issue is on the list of regressions for 4.8.
 
 Ciao, Thorsten

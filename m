@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Sep 2016 10:49:29 +0200 (CEST)
-Received: from baptiste.telenet-ops.be ([195.130.132.51]:46530 "EHLO
-        baptiste.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992029AbcIKIsfnNy6m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Sep 2016 10:48:35 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Sep 2016 11:00:07 +0200 (CEST)
+Received: from albert.telenet-ops.be ([195.130.137.90]:47218 "EHLO
+        albert.telenet-ops.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990864AbcIKI75ROlim (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Sep 2016 10:59:57 +0200
 Received: from ayla.of.borg ([84.193.137.253])
-        by baptiste.telenet-ops.be with bizsmtp
-        id i8ob1t00C5UCtCs018obUU; Sun, 11 Sep 2016 10:48:35 +0200
+        by albert.telenet-ops.be with bizsmtp
+        id i8zw1t00W5UCtCs068zwSK; Sun, 11 Sep 2016 10:59:57 +0200
 Received: from ramsan.of.borg ([192.168.97.29] helo=ramsan)
         by ayla.of.borg with esmtp (Exim 4.82)
         (envelope-from <geert@linux-m68k.org>)
-        id 1bj0RH-0003Wv-3f; Sun, 11 Sep 2016 10:48:35 +0200
+        id 1bj0cG-0003ZB-Jc; Sun, 11 Sep 2016 10:59:56 +0200
 Received: from geert by ramsan with local (Exim 4.82)
         (envelope-from <geert@linux-m68k.org>)
-        id 1bj0RL-0002gh-IB; Sun, 11 Sep 2016 10:48:39 +0200
+        id 1bj0cK-0003NS-O3; Sun, 11 Sep 2016 11:00:00 +0200
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
 To:     Ralf Baechle <ralf@linux-mips.org>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:     linux-mips@linux-mips.org, linux-gpio@vger.kernel.org,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Wim Van Sebroeck <wim@iguana.be>
+Cc:     Guenter Roeck <linux@roeck-us.net>, linux-clk@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org,
         Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v2 2/2] MIPS: TXx9: tx49xx: Move GPIO setup from .mem_setup() to .arch_init()
-Date:   Sun, 11 Sep 2016 10:48:33 +0200
-Message-Id: <1473583713-10275-3-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH v2 1/2] watchdog: txx9wdt: Add missing clock (un)prepare calls for CCF
+Date:   Sun, 11 Sep 2016 10:59:57 +0200
+Message-Id: <1473584398-12942-2-git-send-email-geert@linux-m68k.org>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1473583713-10275-1-git-send-email-geert@linux-m68k.org>
-References: <1473583713-10275-1-git-send-email-geert@linux-m68k.org>
+In-Reply-To: <1473584398-12942-1-git-send-email-geert@linux-m68k.org>
+References: <1473584398-12942-1-git-send-email-geert@linux-m68k.org>
 Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55090
+X-archive-position: 55091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,134 +47,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-txx9_gpio_init() calls gpiochip_add_data(), which fails with -ENOMEM as
-it is called too early in the boot process. This causes all subsequent
-GPIO operations to fail silently (before commit 54d77198fdfbc4f0 ("gpio:
-bail out silently on NULL descriptors") it printed the error message
-"gpiod_direction_output_raw: invalid GPIO" on RBTX49[23]7).
+While the custom minimal TXx9 clock implementation doesn't need or use
+clock (un)prepare calls (they are dummies if !CONFIG_HAVE_CLK_PREPARE),
+they are mandatory when using the Common Clock Framework.
 
-Postpone all GPIO setup to .arch_init() time to fix this.
+Hence add them, to prepare for the advent of CCF.
 
-Suggested-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 ---
-Tested on RBTX4927 only. The gpiochip appears under /sys/class/gpio/.
-
-Sent as a single patch, as RBTX4937 is handled by rbtx4927/setup.c, but
-uses tx4938_setup().
+Tested on RBTX4927.
 
 v2:
-  - Add Acked-by.
+  - Add Reviewed-by.
 ---
- arch/mips/txx9/generic/setup_tx4927.c |  1 -
- arch/mips/txx9/generic/setup_tx4938.c |  1 -
- arch/mips/txx9/rbtx4927/setup.c       | 32 ++++++++++++++++++++++----------
- arch/mips/txx9/rbtx4938/setup.c       |  1 +
- 4 files changed, 23 insertions(+), 12 deletions(-)
+ drivers/watchdog/txx9wdt.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/txx9/generic/setup_tx4927.c b/arch/mips/txx9/generic/setup_tx4927.c
-index a4664cb6c1e18371..8d8011570b1dbe99 100644
---- a/arch/mips/txx9/generic/setup_tx4927.c
-+++ b/arch/mips/txx9/generic/setup_tx4927.c
-@@ -215,7 +215,6 @@ void __init tx4927_setup(void)
- 		txx9_tmr_init(TX4927_TMR_REG(i) & 0xfffffffffULL);
- 
- 	/* PIO */
--	txx9_gpio_init(TX4927_PIO_REG & 0xfffffffffULL, 0, TX4927_NUM_PIO);
- 	__raw_writel(0, &tx4927_pioptr->maskcpu);
- 	__raw_writel(0, &tx4927_pioptr->maskext);
- 
-diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
-index 58cdb2aba5e1ba72..ba265bf1fd067036 100644
---- a/arch/mips/txx9/generic/setup_tx4938.c
-+++ b/arch/mips/txx9/generic/setup_tx4938.c
-@@ -241,7 +241,6 @@ void __init tx4938_setup(void)
- 		txx9_tmr_init(TX4938_TMR_REG(i) & 0xfffffffffULL);
- 
- 	/* PIO */
--	txx9_gpio_init(TX4938_PIO_REG & 0xfffffffffULL, 0, TX4938_NUM_PIO);
- 	__raw_writel(0, &tx4938_pioptr->maskcpu);
- 	__raw_writel(0, &tx4938_pioptr->maskext);
- 
-diff --git a/arch/mips/txx9/rbtx4927/setup.c b/arch/mips/txx9/rbtx4927/setup.c
-index 3c516ef625e57d2d..f5b367e20dff1cfa 100644
---- a/arch/mips/txx9/rbtx4927/setup.c
-+++ b/arch/mips/txx9/rbtx4927/setup.c
-@@ -52,6 +52,7 @@
- #include <linux/leds.h>
- #include <asm/io.h>
- #include <asm/reboot.h>
-+#include <asm/txx9pio.h>
- #include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
- #include <asm/txx9/rbtx4927.h>
-@@ -151,20 +152,37 @@ static void __init tx4937_pci_setup(void)
+diff --git a/drivers/watchdog/txx9wdt.c b/drivers/watchdog/txx9wdt.c
+index c2da880292bc2f32..6f7a9deb27d05d25 100644
+--- a/drivers/watchdog/txx9wdt.c
++++ b/drivers/watchdog/txx9wdt.c
+@@ -112,7 +112,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
+ 		txx9_imclk = NULL;
+ 		goto exit;
  	}
- 	tx4938_setup_pcierr_irq();
- }
-+#else
-+static inline void tx4927_pci_setup(void) {}
-+static inline void tx4937_pci_setup(void) {}
-+#endif /* CONFIG_PCI */
-+
-+static void __init rbtx4927_gpio_init(void)
-+{
-+	/* TX4927-SIO DTR on (PIO[15]) */
-+	gpio_request(15, "sio-dtr");
-+	gpio_direction_output(15, 1);
-+
-+	tx4927_sio_init(0, 0);
-+}
- 
- static void __init rbtx4927_arch_init(void)
+-	ret = clk_enable(txx9_imclk);
++	ret = clk_prepare_enable(txx9_imclk);
+ 	if (ret) {
+ 		clk_put(txx9_imclk);
+ 		txx9_imclk = NULL;
+@@ -144,7 +144,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
+ 	return 0;
+ exit:
+ 	if (txx9_imclk) {
+-		clk_disable(txx9_imclk);
++		clk_disable_unprepare(txx9_imclk);
+ 		clk_put(txx9_imclk);
+ 	}
+ 	return ret;
+@@ -153,7 +153,7 @@ exit:
+ static int __exit txx9wdt_remove(struct platform_device *dev)
  {
-+	txx9_gpio_init(TX4927_PIO_REG & 0xfffffffffULL, 0, TX4927_NUM_PIO);
-+
-+	rbtx4927_gpio_init();
-+
- 	tx4927_pci_setup();
+ 	watchdog_unregister_device(&txx9wdt);
+-	clk_disable(txx9_imclk);
++	clk_disable_unprepare(txx9_imclk);
+ 	clk_put(txx9_imclk);
+ 	return 0;
  }
- 
- static void __init rbtx4937_arch_init(void)
- {
-+	txx9_gpio_init(TX4938_PIO_REG & 0xfffffffffULL, 0, TX4938_NUM_PIO);
-+
-+	rbtx4927_gpio_init();
-+
- 	tx4937_pci_setup();
- }
--#else
--#define rbtx4927_arch_init NULL
--#define rbtx4937_arch_init NULL
--#endif /* CONFIG_PCI */
- 
- static void toshiba_rbtx4927_restart(char *command)
- {
-@@ -205,12 +223,6 @@ static void __init rbtx4927_mem_setup(void)
- #else
- 	set_io_port_base(KSEG1 + RBTX4927_ISA_IO_OFFSET);
- #endif
--
--	/* TX4927-SIO DTR on (PIO[15]) */
--	gpio_request(15, "sio-dtr");
--	gpio_direction_output(15, 1);
--
--	tx4927_sio_init(0, 0);
- }
- 
- static void __init rbtx4927_clock_init(void)
-diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
-index 54de66837103c702..07939ed6b22fdac5 100644
---- a/arch/mips/txx9/rbtx4938/setup.c
-+++ b/arch/mips/txx9/rbtx4938/setup.c
-@@ -336,6 +336,7 @@ static void __init rbtx4938_mtd_init(void)
- 
- static void __init rbtx4938_arch_init(void)
- {
-+	txx9_gpio_init(TX4938_PIO_REG & 0xfffffffffULL, 0, TX4938_NUM_PIO);
- 	gpiochip_add_data(&rbtx4938_spi_gpio_chip, NULL);
- 	rbtx4938_pci_setup();
- 	rbtx4938_spi_init();
 -- 
 1.9.1

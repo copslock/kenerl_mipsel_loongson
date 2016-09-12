@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Sep 2016 19:48:18 +0200 (CEST)
-Received: from smtprelay4.synopsys.com ([198.182.47.9]:45837 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Sep 2016 19:59:08 +0200 (CEST)
+Received: from smtprelay2.synopsys.com ([198.182.60.111]:38874 "EHLO
         smtprelay.synopsys.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992160AbcILRsLZzt4w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Sep 2016 19:48:11 +0200
+        by eddie.linux-mips.org with ESMTP id S23992147AbcILR6yEWnHw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Sep 2016 19:58:54 +0200
 Received: from us02secmta1.synopsys.com (us02secmta1.synopsys.com [10.12.235.96])
-        by smtprelay.synopsys.com (Postfix) with ESMTP id 1C8D224E0D40;
-        Mon, 12 Sep 2016 10:47:54 -0700 (PDT)
+        by smtprelay.synopsys.com (Postfix) with ESMTP id F3A4E10C0B84;
+        Mon, 12 Sep 2016 10:58:39 -0700 (PDT)
 Received: from us02secmta1.internal.synopsys.com (us02secmta1.internal.synopsys.com [127.0.0.1])
-        by us02secmta1.internal.synopsys.com (Service) with ESMTP id E0C794E215;
-        Mon, 12 Sep 2016 10:47:54 -0700 (PDT)
+        by us02secmta1.internal.synopsys.com (Service) with ESMTP id EF04A4E215;
+        Mon, 12 Sep 2016 10:58:39 -0700 (PDT)
 Received: from mailhost.synopsys.com (unknown [10.13.184.66])
-        by us02secmta1.internal.synopsys.com (Service) with ESMTP id E693A4E202;
-        Mon, 12 Sep 2016 10:47:53 -0700 (PDT)
+        by us02secmta1.internal.synopsys.com (Service) with ESMTP id E5BFD4E202;
+        Mon, 12 Sep 2016 10:58:38 -0700 (PDT)
 Received: from mailhost.synopsys.com (localhost [127.0.0.1])
-        by mailhost.synopsys.com (Postfix) with ESMTP id AB229277;
-        Mon, 12 Sep 2016 10:47:53 -0700 (PDT)
-Received: from us01wehtc1.internal.synopsys.com (us01wehtc1.internal.synopsys.com [10.12.239.235])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 3850D268;
-        Mon, 12 Sep 2016 10:47:48 -0700 (PDT)
+        by mailhost.synopsys.com (Postfix) with ESMTP id ACF146A6;
+        Mon, 12 Sep 2016 10:58:38 -0700 (PDT)
+Received: from US01WXQAHTC1.internal.synopsys.com (us01wxqahtc1.internal.synopsys.com [10.12.238.230])
+        by mailhost.synopsys.com (Postfix) with ESMTP id 1E94969E;
+        Mon, 12 Sep 2016 10:58:38 -0700 (PDT)
 Received: from IN01WEHTCB.internal.synopsys.com (10.144.199.106) by
- us01wehtc1.internal.synopsys.com (10.12.239.231) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Mon, 12 Sep 2016 10:47:47 -0700
+ US01WXQAHTC1.internal.synopsys.com (10.12.238.230) with Microsoft SMTP Server
+ (TLS) id 14.3.266.1; Mon, 12 Sep 2016 10:58:37 -0700
 Received: from IN01WEHTCA.internal.synopsys.com (10.144.199.103) by
  IN01WEHTCB.internal.synopsys.com (10.144.199.105) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Mon, 12 Sep 2016 23:17:45 +0530
+ (TLS) id 14.3.266.1; Mon, 12 Sep 2016 23:28:35 +0530
 Received: from vineetg-Latitude-E7450.internal.synopsys.com (10.9.130.78) by
  IN01WEHTCA.internal.synopsys.com (10.144.199.243) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Mon, 12 Sep 2016 23:17:44 +0530
+ (TLS) id 14.3.266.1; Mon, 12 Sep 2016 23:28:34 +0530
 From:   Vineet Gupta <Vineet.Gupta1@synopsys.com>
 To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
         "Ingo Molnar" <mingo@kernel.org>,
@@ -70,12 +70,13 @@ CC:     <linux-kernel@vger.kernel.org>,
         <linux-mips@linux-mips.org>, <linux-parisc@vger.kernel.org>,
         <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
         <sparclinux@vger.kernel.org>, <linux-arch@vger.kernel.org>
-Subject: [PATCH v2 2/2] atomic64: No need for CONFIG_ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
-Date:   Mon, 12 Sep 2016 10:47:12 -0700
-Message-ID: <1473702432-8116-3-git-send-email-vgupta@synopsys.com>
+Subject: [PATCH v3 2/2] atomic64: No need for CONFIG_ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
+Date:   Mon, 12 Sep 2016 10:58:03 -0700
+Message-ID: <1473703083-8625-3-git-send-email-vgupta@synopsys.com>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1473702432-8116-1-git-send-email-vgupta@synopsys.com>
-References: <1473702432-8116-1-git-send-email-vgupta@synopsys.com>
+In-Reply-To: <1473703083-8625-1-git-send-email-vgupta@synopsys.com>
+References: <201609111259.q67d9T4B%fengguang.wu@intel.com>
+ <1473703083-8625-1-git-send-email-vgupta@synopsys.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.9.130.78]
@@ -83,7 +84,7 @@ Return-Path: <Vineet.Gupta1@synopsys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55110
+X-archive-position: 55111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -172,13 +173,13 @@ Signed-off-by: Vineet Gupta <vgupta@synopsys.com>
  arch/mips/Kconfig    | 1 -
  arch/parisc/Kconfig  | 1 -
  arch/powerpc/Kconfig | 1 -
- arch/s390/Kconfig    | 2 +-
+ arch/s390/Kconfig    | 1 -
  arch/sparc/Kconfig   | 1 -
- arch/tile/Kconfig    | 2 +-
- arch/x86/Kconfig     | 2 +-
+ arch/tile/Kconfig    | 1 -
+ arch/x86/Kconfig     | 1 -
  lib/Kconfig          | 3 ---
  lib/atomic64_test.c  | 4 ----
- 12 files changed, 3 insertions(+), 17 deletions(-)
+ 12 files changed, 17 deletions(-)
 
 diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
 index 7f312d80b43b..0e49d39ea74a 100644
@@ -253,15 +254,14 @@ index 927d2ab2ce08..18d1b42cf545 100644
  	select HAVE_PERF_REGS
  	select HAVE_PERF_USER_STACK_DUMP
 diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index c109f073d454..af52b07efde2 100644
+index c109f073d454..d89d97ac83c4 100644
 --- a/arch/s390/Kconfig
 +++ b/arch/s390/Kconfig
-@@ -67,7 +67,7 @@ config DEBUG_RODATA
+@@ -67,7 +67,6 @@ config DEBUG_RODATA
  
  config S390
  	def_bool y
 -	select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
-+	select ARCH_HAS_DEBUG_STRICT_USER_COPY_CHECKS
  	select ARCH_HAS_DEVMEM_IS_ALLOWED
  	select ARCH_HAS_ELF_RANDOMIZE
  	select ARCH_HAS_GCOV_PROFILE_ALL
@@ -278,28 +278,26 @@ index 59b09600dd32..bfedbe0cb7b2 100644
  	select RTC_DRV_M48T59
  	select RTC_SYSTOHC
 diff --git a/arch/tile/Kconfig b/arch/tile/Kconfig
-index 78da75b670bc..12eda5440c93 100644
+index 78da75b670bc..4583c0320059 100644
 --- a/arch/tile/Kconfig
 +++ b/arch/tile/Kconfig
-@@ -3,7 +3,7 @@
+@@ -3,7 +3,6 @@
  
  config TILE
  	def_bool y
 -	select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
-+	select ARCH_HAS_DEBUG_STRICT_USER_COPY_CHECKS
  	select ARCH_HAS_DEVMEM_IS_ALLOWED
  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
  	select ARCH_WANT_FRAME_POINTERS
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2a1f0ce7c59a..0cf609998550 100644
+index 2a1f0ce7c59a..018076fcffcf 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -23,7 +23,7 @@ config X86
+@@ -23,7 +23,6 @@ config X86
  	select ARCH_CLOCKSOURCE_DATA
  	select ARCH_DISCARD_MEMBLOCK
  	select ARCH_HAS_ACPI_TABLE_UPGRADE if ACPI
 -	select ARCH_HAS_ATOMIC64_DEC_IF_POSITIVE
-+	select ARCH_HAS_DEBUG_STRICT_USER_COPY_CHECKS
  	select ARCH_HAS_DEVMEM_IS_ALLOWED
  	select ARCH_HAS_ELF_RANDOMIZE
  	select ARCH_HAS_FAST_MULTIPLIER

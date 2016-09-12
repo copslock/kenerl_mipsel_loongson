@@ -1,56 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Sep 2016 17:28:41 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.130]:51666 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992127AbcILP2ebLiTG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Sep 2016 17:28:34 +0200
-Received: from wuerfel.localnet ([78.43.20.153]) by mrelayeu.kundenserver.de
- (mreue002) with ESMTPSA (Nemesis) id 0M8WB9-1annrp22Bn-00wCNC; Mon, 12 Sep
- 2016 17:20:22 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     kbuild test robot <lkp@intel.com>
-Cc:     Baoyou Xie <baoyou.xie@linaro.org>, kbuild-all@01.org,
-        ralf@linux-mips.org, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, akpm@linux-foundation.org,
-        paul.burton@imgtec.com, chenhc@lemote.com, david.daney@cavium.com,
-        kumba@gentoo.org, yamada.masahiro@socionext.com,
-        kirill.shutemov@linux.intel.com, dave.hansen@linux.intel.com,
-        toshi.kani@hpe.com, JBeulich@suse.com, dan.j.williams@intel.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, xie.baoyou@zte.com.cn
-Subject: Re: [PATCH] mm: move phys_mem_access_prot_allowed() declaration to pgtable.h
-Date:   Mon, 12 Sep 2016 17:20:12 +0200
-Message-ID: <2215618.aZj7FWYi6Z@wuerfel>
-User-Agent: KMail/5.1.3 (Linux/4.4.0-34-generic; KDE/5.18.0; x86_64; ; )
-In-Reply-To: <201609122309.XmaxEnpl%fengguang.wu@intel.com>
-References: <201609122309.XmaxEnpl%fengguang.wu@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Sep 2016 17:32:12 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:58101 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992209AbcILPcE4gmNG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Sep 2016 17:32:04 +0200
+Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id C35DC93E;
+        Mon, 12 Sep 2016 15:31:57 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        linux-mips@linux-mips.org, Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 4.7 40/59] irqchip/mips-gic: Cleanup chip and handler setup
+Date:   Mon, 12 Sep 2016 17:30:00 +0200
+Message-Id: <20160912152130.453719889@linuxfoundation.org>
+X-Mailer: git-send-email 2.9.3
+In-Reply-To: <20160912152128.765864031@linuxfoundation.org>
+References: <20160912152128.765864031@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:kAlG144xvEHhcjGabnmZh2ji43fG3yMXSIInbQ7JojVTsoYaacU
- xuaC18vQm0Iir6rgKA6Bwq6IcidlQfusaKn8zcQnamjuokcOhL6xeWdW76YghSYaqg+Omuo
- RS9qrWhbg+yHuOHSwSZIC2bvvO4v07kFRYgWhh8U4G2YPTAzojtufGLBpN5/BVF0eiBEYNP
- 1c82xcLTZ5g0g7MSDZlHg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:KAQVw1ir2B4=:1j4ESsbzqQwwy47pDZWuPU
- XVpSxNGLiY0s7+hABDISu0TLkWIxSAiLwXg18TnxJx1L9Qs29/PcaTx2ZmZBsqMHnCkDZp3nh
- n+vYLk0sXSivdDlSK/F39szKrnqgsuDLrQd9QD8fD4MH1sj+pXOfc0amE0/cH2fRLLgTWfPCP
- CyjY5OgdITurUcEk8J7r5Lp1ocxPJCz36V2aZiCPkgWUZz+0NTcx61T8iV3WnGcuA/3Z6/0ku
- QtLxZQHxL/dxc5a+ieu/fX6k3uzsv5kicEc3qJVmXbIn7spqvsVFsUcfQNhaX75oLgkE/f1lP
- +JNO7f/tV1Mvc88xieVnl+0soTd1JF1eXZGPhO1Rk4UJFcg/4BlfZxf1jeZEyGFBjr9eWAQID
- ed34YCuu8UDvOx06WYf9oPT1VDME3XPack2kfbLAjp5ETo/+5CgHEwufOrMIPmtXAQdP16L7P
- nirZWOpFoWatSzSA+tfw8Dyv7RrhHRjrDcG2KhitsAKDk8oJ4BNaPbRMGDuTDF+zl/oZtPmrS
- BC1aDYN1VGnL8V3dRWbuiyDqh7NKtSz1YZpFTS+8/LqtvzpSvHlmw93sdKGJBE40IL6JAIrrK
- oR3dmV2aSW/ZjY3VdgxlNO09EJeepuzSHZirsy0dIy5o9MuuH2wpNqTZqjE0RoL5mNUN3aD5c
- r72tP+eIMIvyC693qzZ04RdwowwKnMH2O/Mlvr/00gWscykVecOKHx08G7KAV29GRKYKnqTk0
- ej0dCFsajoUJEuUN
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55105
+X-archive-position: 55106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,13 +43,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Monday, September 12, 2016 11:13:45 PM CEST kbuild test robot wrote:
->    816  
->  > 817  struct file;
->  > 818  int phys_mem_access_prot_allowed(struct file *file, unsigned long pfn,
->  > 819                          unsigned long size, pgprot_t *vma_prot);
->    820  #endif /* _ASM_GENERIC_PGTABLE_H */
+4.7-stable review patch.  If anyone has any objections, please let me know.
 
-This should be inside of the #ifdef __ASSEMBLY__
+------------------
 
-	Arnd
+From: Paul Burton <paul.burton@imgtec.com>
+
+commit 6a33fa2b87513fee44cb8f0cd17b1acd6316bc6b upstream.
+
+gic_shared_irq_domain_map() is called from gic_irq_domain_alloc() where
+the wrong chip has been set, and is then overwritten. Tidy this up by
+setting the correct chip the first time, and setting the
+handle_level_irq handler from gic_irq_domain_alloc() too.
+
+gic_shared_irq_domain_map() is also called from gic_irq_domain_map(),
+which now calls irq_set_chip_and_handler() to retain its previous
+behaviour.
+
+This patch prepares for a follow-on which will call
+gic_shared_irq_domain_map() from a callback where the lock on the struct
+irq_desc is held, which without this change would cause the call to
+irq_set_chip_and_handler() to lead to a deadlock.
+
+Fixes: c98c1822ee13 ("irqchip/mips-gic: Add device hierarchy domain")
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Link: http://lkml.kernel.org/r/20160819170715.27820-1-paul.burton@imgtec.com
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ drivers/irqchip/irq-mips-gic.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -713,9 +713,6 @@ static int gic_shared_irq_domain_map(str
+ 	unsigned long flags;
+ 	int i;
+ 
+-	irq_set_chip_and_handler(virq, &gic_level_irq_controller,
+-				 handle_level_irq);
+-
+ 	spin_lock_irqsave(&gic_lock, flags);
+ 	gic_map_to_pin(intr, gic_cpu_pin);
+ 	gic_map_to_vpe(intr, mips_cm_vp_id(vpe));
+@@ -732,6 +729,10 @@ static int gic_irq_domain_map(struct irq
+ {
+ 	if (GIC_HWIRQ_TO_LOCAL(hw) < GIC_NUM_LOCAL_INTRS)
+ 		return gic_local_irq_domain_map(d, virq, hw);
++
++	irq_set_chip_and_handler(virq, &gic_level_irq_controller,
++				 handle_level_irq);
++
+ 	return gic_shared_irq_domain_map(d, virq, hw, 0);
+ }
+ 
+@@ -771,11 +772,13 @@ static int gic_irq_domain_alloc(struct i
+ 			hwirq = GIC_SHARED_TO_HWIRQ(base_hwirq + i);
+ 
+ 			ret = irq_domain_set_hwirq_and_chip(d, virq + i, hwirq,
+-							    &gic_edge_irq_controller,
++							    &gic_level_irq_controller,
+ 							    NULL);
+ 			if (ret)
+ 				goto error;
+ 
++			irq_set_handler(virq + i, handle_level_irq);
++
+ 			ret = gic_shared_irq_domain_map(d, virq + i, hwirq, cpu);
+ 			if (ret)
+ 				goto error;

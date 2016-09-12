@@ -1,29 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Sep 2016 22:34:58 +0200 (CEST)
-Received: from mail.asbjorn.biz ([185.38.24.25]:58746 "EHLO mail.asbjorn.biz"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992186AbcILUeveqw1X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 12 Sep 2016 22:34:51 +0200
-Received: from x201s.roaming.asbjorn.biz (mon1.fiberby.net [193.104.135.42])
-        by mail.asbjorn.biz (Postfix) with ESMTPSA id E39371C00C67;
-        Mon, 12 Sep 2016 20:34:50 +0000 (UTC)
-Received: by x201s.roaming.asbjorn.biz (Postfix, from userid 1000)
-        id D948C201C5C; Mon, 12 Sep 2016 20:33:43 +0000 (UTC)
-From:   Asbjoern Sloth Toennesen <asbjorn@asbjorn.st>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: Octeon: Use defines instead of magic numbers
-Date:   Mon, 12 Sep 2016 20:33:43 +0000
-Message-Id: <20160912203343.26751-1-asbjorn@asbjorn.st>
-X-Mailer: git-send-email 2.9.3
-Return-Path: <ast@asbjorn.biz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Sep 2016 22:39:22 +0200 (CEST)
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:47818 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992196AbcILUjQS-rTX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Sep 2016 22:39:16 +0200
+Received: from localhost.localdomain (85-76-14-194-nat.elisa-mobile.fi [85.76.14.194])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id BE86F1A2636;
+        Mon, 12 Sep 2016 23:39:15 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH v2 0/3] MIPS: OCTEON: Add support for D-Link DSR-500N router
+Date:   Mon, 12 Sep 2016 23:39:07 +0300
+Message-Id: <20160912203910.1164-1-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 2.9.2
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55112
+X-archive-position: 55113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: asbjorn@asbjorn.st
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -36,68 +35,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The patch will be followed by a similar patch to
-drivers/staging/octeon/ethernet.c
+Hi,
 
-Signed-off-by: Asbjoern Sloth Toennesen <asbjorn@asbjorn.st>
----
- arch/mips/cavium-octeon/executive/cvmx-helper.c | 15 ++++++++++-----
- arch/mips/include/asm/octeon/cvmx-ipd-defs.h    |  2 ++
- 2 files changed, 12 insertions(+), 5 deletions(-)
+D-Link DSR-500N is close to 1000N and with small changes we
+can support both.
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-index ff26d02..9b938c8 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-@@ -46,6 +46,8 @@
- #include <asm/octeon/cvmx-smix-defs.h>
- #include <asm/octeon/cvmx-asxx-defs.h>
- 
-+#include <linux/if_ether.h>
-+
- /**
-  * cvmx_override_pko_queue_priority(int ipd_port, uint64_t
-  * priorities[16]) is a function pointer. It is meant to allow
-@@ -918,7 +920,8 @@ int __cvmx_helper_errata_fix_ipd_ptr_alignment(void)
- 		p64 = (uint64_t *) cvmx_phys_to_ptr(pkt_buffer.s.addr);
- 		p64[0] = 0xffffffffffff0000ull;
- 		p64[1] = 0x08004510ull;
--		p64[2] = ((uint64_t) (size - 14) << 48) | 0x5ae740004000ull;
-+		p64[2] = ((uint64_t) (size - ETH_HLEN) << 48)
-+			| 0x5ae740004000ull;
- 		p64[3] = 0x3a5fc0a81073c0a8ull;
- 
- 		for (i = 0; i < num_segs; i++) {
-@@ -954,11 +957,13 @@ int __cvmx_helper_errata_fix_ipd_ptr_alignment(void)
- 			       1 << INDEX(FIX_IPD_OUTPORT));
- 
- 		cvmx_write_csr(CVMX_GMXX_RXX_JABBER
--			       (INDEX(FIX_IPD_OUTPORT),
--				INTERFACE(FIX_IPD_OUTPORT)), 65392 - 14 - 4);
-+				(INDEX(FIX_IPD_OUTPORT),
-+					INTERFACE(FIX_IPD_OUTPORT)),
-+				CVMX_IPD_MAX_MTU - ETH_HLEN - ETH_FCS_LEN);
- 		cvmx_write_csr(CVMX_GMXX_RXX_FRM_MAX
--			       (INDEX(FIX_IPD_OUTPORT),
--				INTERFACE(FIX_IPD_OUTPORT)), 65392 - 14 - 4);
-+				(INDEX(FIX_IPD_OUTPORT),
-+					INTERFACE(FIX_IPD_OUTPORT)),
-+				CVMX_IPD_MAX_MTU - ETH_HLEN - ETH_FCS_LEN);
- 
- 		cvmx_pko_send_packet_prepare(FIX_IPD_OUTPORT,
- 					     cvmx_pko_get_base_queue
-diff --git a/arch/mips/include/asm/octeon/cvmx-ipd-defs.h b/arch/mips/include/asm/octeon/cvmx-ipd-defs.h
-index 1193f73..a877917 100644
---- a/arch/mips/include/asm/octeon/cvmx-ipd-defs.h
-+++ b/arch/mips/include/asm/octeon/cvmx-ipd-defs.h
-@@ -28,6 +28,8 @@
- #ifndef __CVMX_IPD_DEFS_H__
- #define __CVMX_IPD_DEFS_H__
- 
-+#define CVMX_IPD_MAX_MTU 65392
-+
- #define CVMX_IPD_1ST_MBUFF_SKIP (CVMX_ADD_IO_SEG(0x00014F0000000000ull))
- #define CVMX_IPD_1st_NEXT_PTR_BACK (CVMX_ADD_IO_SEG(0x00014F0000000150ull))
- #define CVMX_IPD_2nd_NEXT_PTR_BACK (CVMX_ADD_IO_SEG(0x00014F0000000158ull))
+	v2: Delete redudant led labels from dlink_dsr-500n.dts.
+
+A.
+
+Aaro Koskinen (3):
+  MIPS: OCTEON: split dlink_dsr-1000n.dts
+  MIPS: OCTEON: add DTS for D-Link DSR-500N
+  MIPS: OCTEON: fix PCI interrupt routing on D-Link DSR-500N
+
+ .../boot/dts/cavium-octeon/dlink_dsr-1000n.dts     | 45 +----------------
+ .../dts/cavium-octeon/dlink_dsr-500n-1000n.dtsi    | 58 ++++++++++++++++++++++
+ .../mips/boot/dts/cavium-octeon/dlink_dsr-500n.dts | 40 +++++++++++++++
+ arch/mips/pci/pci-octeon.c                         |  2 +
+ 4 files changed, 101 insertions(+), 44 deletions(-)
+ create mode 100644 arch/mips/boot/dts/cavium-octeon/dlink_dsr-500n-1000n.dtsi
+ create mode 100644 arch/mips/boot/dts/cavium-octeon/dlink_dsr-500n.dts
+
 -- 
-2.9.3
+2.9.2

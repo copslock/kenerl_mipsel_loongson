@@ -1,36 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2016 16:49:14 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:43022 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992186AbcIMOtHj3KBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Sep 2016 16:49:07 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u8DEn4Zm024255;
-        Tue, 13 Sep 2016 16:49:04 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u8DEn2TO024254;
-        Tue, 13 Sep 2016 16:49:02 +0200
-Date:   Tue, 13 Sep 2016 16:49:02 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: paravirt: Fix undefined reference to smp_bootstrap
-Message-ID: <20160913144901.GB20655@linux-mips.org>
-References: <1473086620-21007-1-git-send-email-matt.redfearn@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1473086620-21007-1-git-send-email-matt.redfearn@imgtec.com>
-User-Agent: Mutt/1.7.0 (2016-08-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2016 17:01:01 +0200 (CEST)
+Received: from mogw0639.ocn.ad.jp ([153.149.228.40]:51106 "EHLO
+        mogw0639.ocn.ad.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991894AbcIMPAwlt7cz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Sep 2016 17:00:52 +0200
+Received: from mf-smf-ucb008.ocn.ad.jp (mf-smf-ucb008.ocn.ad.jp [153.149.227.68])
+        by mogw0639.ocn.ad.jp (Postfix) with ESMTP id 37167130049B;
+        Wed, 14 Sep 2016 00:00:49 +0900 (JST)
+Received: from ntt.pod01.mv-mta-ucb019 ([mv-mta-ucb019.ocn.ad.jp [153.128.50.2]]) by mf-smf-ucb008.ocn.ad.jp with RELAY id u8DF0bWu055572 ;
+          Wed, 14 Sep 2016 00:00:48 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+        by ntt.pod01.mv-mta-ucb019 with 
+        id j30n1t0042vuoep0130ntQ; Tue, 13 Sep 2016 15:00:48 +0000
+Received: from localhost (p5005-ipngn4301funabasi.chiba.ocn.ne.jp [114.165.168.5])
+        by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+        Wed, 14 Sep 2016 00:00:47 +0900 (JST)
+Date:   Wed, 14 Sep 2016 00:00:43 +0900 (JST)
+Message-Id: <20160914.000043.2112235063844984466.anemo@mba.ocn.ne.jp>
+To:     geert@linux-m68k.org
+Cc:     ralf@linux-mips.org, wim@iguana.be, linux@roeck-us.net,
+        linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] MIPS: TXx9: Convert to Common Clock Framework
+From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1473584398-12942-3-git-send-email-geert@linux-m68k.org>
+References: <1473584398-12942-1-git-send-email-geert@linux-m68k.org>
+        <1473584398-12942-3-git-send-email-geert@linux-m68k.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net:11371/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 6.5 on Emacs 24.3 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55125
+X-archive-position: 55126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,45 +52,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 05, 2016 at 03:43:40PM +0100, Matt Redfearn wrote:
+On Sun, 11 Sep 2016 10:59:58 +0200, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> Replace the custom minimal clock implementation for Toshiba TXx9 by a
+> basic implementation using the Common Clock Framework.
+> 
+> The only clocks that are provided are those needed by TXx9-specific
+> drivers ("imbus" and "spi" (TX4938 only)), and their common parent
+> clock "gbus". Other clocks can be added when needed.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> ---
+> Tested on RBTX4927.
+> 
+> v2:
+>   - Protect the TX4938_REV_PCODE() check by #ifdef CONFIG_CPU_TX49XX,
+>   - Use new clk_hw-centric clock registration API.
 
-> If the paravirt machine is compiles without CONFIG_SMP, the following
-> linker error occurs
-> 
-> arch/mips/kernel/head.o: In function `kernel_entry':
-> (.ref.text+0x10): undefined reference to `smp_bootstrap'
-> 
-> due to the kernel entry macro always including SMP startup code.
-> Wrap this code in CONFIG_SMP to fix the error.
-> 
-> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Thank you for updated patch.
 
-Thanks, applied.  This patch should be applied to 3.16+ also so I've
-added a Cc: stable... tag.
+Reviewed-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-  Ralf
-
->  arch/mips/include/asm/mach-paravirt/kernel-entry-init.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h b/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
-> index 2f82bfa3a773..c9f5769dfc8f 100644
-> --- a/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
-> +++ b/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
-> @@ -11,11 +11,13 @@
->  #define CP0_EBASE $15, 1
->  
->  	.macro  kernel_entry_setup
-> +#ifdef CONFIG_SMP
->  	mfc0	t0, CP0_EBASE
->  	andi	t0, t0, 0x3ff		# CPUNum
->  	beqz	t0, 1f
->  	# CPUs other than zero goto smp_bootstrap
->  	j	smp_bootstrap
-> +#endif /* CONFIG_SMP */
->  
->  1:
->  	.endm
-> -- 
-> 2.7.4
-> 
+---
+Atsushi Nemoto

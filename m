@@ -1,45 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2016 17:01:01 +0200 (CEST)
-Received: from mogw0639.ocn.ad.jp ([153.149.228.40]:51106 "EHLO
-        mogw0639.ocn.ad.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991894AbcIMPAwlt7cz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Sep 2016 17:00:52 +0200
-Received: from mf-smf-ucb008.ocn.ad.jp (mf-smf-ucb008.ocn.ad.jp [153.149.227.68])
-        by mogw0639.ocn.ad.jp (Postfix) with ESMTP id 37167130049B;
-        Wed, 14 Sep 2016 00:00:49 +0900 (JST)
-Received: from ntt.pod01.mv-mta-ucb019 ([mv-mta-ucb019.ocn.ad.jp [153.128.50.2]]) by mf-smf-ucb008.ocn.ad.jp with RELAY id u8DF0bWu055572 ;
-          Wed, 14 Sep 2016 00:00:48 +0900
-Received: from smtp.ocn.ne.jp ([153.149.227.135])
-        by ntt.pod01.mv-mta-ucb019 with 
-        id j30n1t0042vuoep0130ntQ; Tue, 13 Sep 2016 15:00:48 +0000
-Received: from localhost (p5005-ipngn4301funabasi.chiba.ocn.ne.jp [114.165.168.5])
-        by smtp.ocn.ne.jp (Postfix) with ESMTPA;
-        Wed, 14 Sep 2016 00:00:47 +0900 (JST)
-Date:   Wed, 14 Sep 2016 00:00:43 +0900 (JST)
-Message-Id: <20160914.000043.2112235063844984466.anemo@mba.ocn.ne.jp>
-To:     geert@linux-m68k.org
-Cc:     ralf@linux-mips.org, wim@iguana.be, linux@roeck-us.net,
-        linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] MIPS: TXx9: Convert to Common Clock Framework
-From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <1473584398-12942-3-git-send-email-geert@linux-m68k.org>
-References: <1473584398-12942-1-git-send-email-geert@linux-m68k.org>
-        <1473584398-12942-3-git-send-email-geert@linux-m68k.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net:11371/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 6.5 on Emacs 24.3 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2016 17:22:10 +0200 (CEST)
+Received: from mga04.intel.com ([192.55.52.120]:46153 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991894AbcIMPWECM0Iz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Sep 2016 17:22:04 +0200
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP; 13 Sep 2016 08:21:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.30,329,1470726000"; 
+   d="scan'208";a="8048297"
+Received: from dcgshare.lm.intel.com ([10.232.118.254])
+  by orsmga005.jf.intel.com with ESMTP; 13 Sep 2016 08:21:56 -0700
+Received: by dcgshare.lm.intel.com (Postfix, from userid 1017)
+        id 80B57E0C6D; Tue, 13 Sep 2016 09:21:56 -0600 (MDT)
+From:   Keith Busch <keith.busch@intel.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     Keith Busch <keith.busch@intel.com>
+Subject: [PATCH] mips/pci: Reduce stack frame usage
+Date:   Tue, 13 Sep 2016 09:21:47 -0600
+Message-Id: <1473780107-4375-1-git-send-email-keith.busch@intel.com>
+X-Mailer: git-send-email 1.7.1
+Return-Path: <keith.busch@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55126
+X-archive-position: 55127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: keith.busch@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,25 +40,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, 11 Sep 2016 10:59:58 +0200, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> Replace the custom minimal clock implementation for Toshiba TXx9 by a
-> basic implementation using the Common Clock Framework.
-> 
-> The only clocks that are provided are those needed by TXx9-specific
-> drivers ("imbus" and "spi" (TX4938 only)), and their common parent
-> clock "gbus". Other clocks can be added when needed.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> ---
-> Tested on RBTX4927.
-> 
-> v2:
->   - Protect the TX4938_REV_PCODE() check by #ifdef CONFIG_CPU_TX49XX,
->   - Use new clk_hw-centric clock registration API.
+This patch removes creating a fake pci device in MIPS early config
+access and instead just uses the pci bus to get the same functionality.
+The struct pci_dev is too large to allocate on the stack, and was relying
+on compiler optimizations to remove its usage.
 
-Thank you for updated patch.
-
-Reviewed-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
+Signed-off-by: Keith Busch <keith.busch@intel.com>
 ---
-Atsushi Nemoto
+
+While I don't have any hardware to test this, the change should be
+exactly the same as before, taking the direct route to the config read
+instead of letting the compiler optimize this.
+
+This patch is preparing to add surprise removed device handling to the
+pci_read_config_*, which makes the compiler optimization that currently
+removes the excessive stack usage impossible.
+
+ arch/mips/txx9/generic/pci.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/arch/mips/txx9/generic/pci.c b/arch/mips/txx9/generic/pci.c
+index 1f6bc9a..285d84e 100644
+--- a/arch/mips/txx9/generic/pci.c
++++ b/arch/mips/txx9/generic/pci.c
+@@ -29,12 +29,8 @@ static int __init
+ early_read_config_word(struct pci_controller *hose,
+ 		       int top_bus, int bus, int devfn, int offset, u16 *value)
+ {
+-	struct pci_dev fake_dev;
+ 	struct pci_bus fake_bus;
+ 
+-	fake_dev.bus = &fake_bus;
+-	fake_dev.sysdata = hose;
+-	fake_dev.devfn = devfn;
+ 	fake_bus.number = bus;
+ 	fake_bus.sysdata = hose;
+ 	fake_bus.ops = hose->pci_ops;
+@@ -45,7 +41,7 @@ early_read_config_word(struct pci_controller *hose,
+ 	else
+ 		fake_bus.parent = NULL;
+ 
+-	return pci_read_config_word(&fake_dev, offset, value);
++	return pci_bus_read_config_word(&fake_bus, devfn, offset, value);
+ }
+ 
+ int __init txx9_pci66_check(struct pci_controller *hose, int top_bus,
+-- 
+2.7.2

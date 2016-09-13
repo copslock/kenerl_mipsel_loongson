@@ -1,39 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2016 19:29:19 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:65318 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991894AbcIMR3IosxwG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Sep 2016 19:29:08 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 7EE7594AC154A;
-        Tue, 13 Sep 2016 18:28:48 +0100 (IST)
-Received: from [127.0.0.1] (10.100.200.124) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 13 Sep
- 2016 18:28:52 +0100
-Subject: Re: [PATCH] MIPS: Remove compact branch policy Kconfig entries
-To:     Ralf Baechle <ralf@linux-mips.org>
-References: <20160912095806.4411-1-paul.burton@imgtec.com>
- <20160913124314.GA20655@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        "stable # v4 . 4+" <stable@vger.kernel.org>
-From:   Paul Burton <paul.burton@imgtec.com>
-Message-ID: <f65c041e-2a9a-804b-db6d-fd9b9cc27494@imgtec.com>
-Date:   Tue, 13 Sep 2016 18:27:10 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2016 21:13:32 +0200 (CEST)
+Received: from mail.asbjorn.biz ([185.38.24.25]:44965 "EHLO mail.asbjorn.biz"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992285AbcIMTN0IKsx7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Sep 2016 21:13:26 +0200
+Received: from x201s.roaming.asbjorn.biz (mon1.fiberby.net [193.104.135.42])
+        by mail.asbjorn.biz (Postfix) with ESMTPSA id 67E681C00C69;
+        Tue, 13 Sep 2016 19:13:25 +0000 (UTC)
+Received: by x201s.roaming.asbjorn.biz (Postfix, from userid 1000)
+        id ACDB2205DD9; Tue, 13 Sep 2016 19:09:59 +0000 (UTC)
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+From:   =?iso-8859-1?q?Asbj=F8rn_Sloth_T=F8nnesen?= <asbjorn@asbjorn.st>
+Subject: Re: [PATCH] MIPS: Octeon: Use defines instead of magic numbers
+Message-ID: <1473793494.15480.1@x201s.roaming.asbjorn.biz>
+References: <20160912210314.GB1658@raspberrypi.musicnaut.iki.fi>
+In-Reply-To: <20160912210314.GB1658@raspberrypi.musicnaut.iki.fi>
+Date:   Tue, 13 Sep 2016 19:04:54 +0000
 MIME-Version: 1.0
-In-Reply-To: <20160913124314.GA20655@linux-mips.org>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.100.200.124]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: multipart/mixed; boundary="=-KVG4CiMFLK/H49O+U8qs"
+Return-Path: <ast@asbjorn.biz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55133
+X-archive-position: 55134
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: asbjorn@asbjorn.st
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,44 +40,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 13/09/16 13:43, Ralf Baechle wrote:
-> On Mon, Sep 12, 2016 at 10:58:06AM +0100, Paul Burton wrote:
-> 
->> Fixing this by hiding the Kconfig entry behind another seems to be more
->> hassle than it's worth, as MIPSr6 & compact branches have been around
->> for a while now and if policy does need to be set for debug it can be
->> done easily enough with KCFLAGS. Therefore remove the compact branch
->> policy Kconfig entries & their handling in the Makefile.
-> 
-> I've applied your patch - and given where we are wrt. to R6 I think this
-> simply and bulletproof solution is certainly the right thing.
-> 
-> But, have you considered probing for the option and only using it where
-> it actually is available with something like:
-> 
-> cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_NEVER)   += $(call cc-option,-mcompact-branches=never)
-> cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_OPTIMAL) += $(call cc-option,-mcompact-branches=optimal)
-> cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_ALWAYS)  += $(call cc-option,-mcompact-branches=always)
-> 
-> ?
+--=-KVG4CiMFLK/H49O+U8qs
+Content-Type: text/plain; charset=UTF-8
 
-Hi Ralf,
+Hi Aaro,
 
-I believe that suggestion came up in discussion about an older patch,
-but I think that might violate the principle of least surprise. ie. it
-would mean you could set the policy to never in Kconfig, build a kernel
-& it could contain compact branches.
-
-> I'm also wondering how much we gain from -mcompact-branches?
+On Tue, 13 Sep 2016 00:03:14 +0300, Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+> On Mon, Sep 12, 2016 at 08:33:43PM +0000, Asbjoern Sloth Toennesen wrote:
+> > The patch will be followed by a similar patch to
+> > drivers/staging/octeon/ethernet.c
 > 
->   Ralf
+> I think you should:
+> 
+> 	1. Move this function to staging/octeon
+> 
+> 	2. Do required cleanups there
+> 
+> 	3. Finally delete the function under arch/mips
+> 
+> We shouldn't start making cleanups (except code removal) to ethernet code
+> under mips/cavium-octeon/executive as it really does not belong there...
 
-Well, the default policy is "optimal" so we shouldn't gain much if
-anything from tweaking it via Kconfig. Different CPUs/pipelines have
-different gains, and the compiler should do something sensible for the
-target CPU when the default optimal policy is set. This was always about
-debugging, and KCFLAGS seems good enough for that especially since there
-shouldn't be much to debug anymore.
+I agree that this would make sense, however I just came across this looking
+at the general MTU code across drivers, and don't have a real interest in
+this particular driver nor mips, so I am not looking to fall that deep into
+the rabbit hole.
 
-Thanks,
-    Paul
+-- 
+Best regards
+Asbjørn Sloth Tønnesen
+
+--=-KVG4CiMFLK/H49O+U8qs--

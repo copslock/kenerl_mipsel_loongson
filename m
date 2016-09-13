@@ -1,42 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2016 14:54:43 +0200 (CEST)
-Received: from Galois.linutronix.de ([146.0.238.70]:49204 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992186AbcIMMydlydTf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Sep 2016 14:54:33 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1bjnCT-0004Z1-RL; Tue, 13 Sep 2016 14:52:34 +0200
-Date:   Tue, 13 Sep 2016 14:50:12 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Baoyou Xie <baoyou.xie@linaro.org>
-cc:     ralf@linux-mips.org, mingo@redhat.com, hpa@zytor.com,
-        x86@kernel.org, arnd@arndb.de, akpm@linux-foundation.org,
-        paul.burton@imgtec.com, chenhc@lemote.com, david.daney@cavium.com,
-        kumba@gentoo.org, yamada.masahiro@socionext.com,
-        kirill.shutemov@linux.intel.com, dave.hansen@linux.intel.com,
-        toshi.kani@hpe.com, dan.j.williams@intel.com, luto@kernel.org,
-        JBeulich@suse.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        xie.baoyou@zte.com.cn
-Subject: Re: [PATCH v2] mm: move phys_mem_access_prot_allowed() declaration
- to pgtable.h
-In-Reply-To: <1473751597-12139-1-git-send-email-baoyou.xie@linaro.org>
-Message-ID: <alpine.DEB.2.20.1609131449460.6233@nanos>
-References: <1473751597-12139-1-git-send-email-baoyou.xie@linaro.org>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Sep 2016 16:49:14 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:43022 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992186AbcIMOtHj3KBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Sep 2016 16:49:07 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u8DEn4Zm024255;
+        Tue, 13 Sep 2016 16:49:04 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u8DEn2TO024254;
+        Tue, 13 Sep 2016 16:49:02 +0200
+Date:   Tue, 13 Sep 2016 16:49:02 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: paravirt: Fix undefined reference to smp_bootstrap
+Message-ID: <20160913144901.GB20655@linux-mips.org>
+References: <1473086620-21007-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1473086620-21007-1-git-send-email-matt.redfearn@imgtec.com>
+User-Agent: Mutt/1.7.0 (2016-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55124
+X-archive-position: 55125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,23 +43,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 13 Sep 2016, Baoyou Xie wrote:
+On Mon, Sep 05, 2016 at 03:43:40PM +0100, Matt Redfearn wrote:
 
-> We get 1 warning when building kernel with W=1:
-> drivers/char/mem.c:220:12: warning: no previous prototype for 'phys_mem_access_prot_allowed' [-Wmissing-prototypes]
->  int __weak phys_mem_access_prot_allowed(struct file *file,
+> If the paravirt machine is compiles without CONFIG_SMP, the following
+> linker error occurs
 > 
-> In fact, its declaration is spreading to several header files
-> in different architecture, but need to be declare in common
-> header file.
+> arch/mips/kernel/head.o: In function `kernel_entry':
+> (.ref.text+0x10): undefined reference to `smp_bootstrap'
 > 
-> So this patch moves phys_mem_access_prot_allowed() to pgtable.h.
+> due to the kernel entry macro always including SMP startup code.
+> Wrap this code in CONFIG_SMP to fix the error.
 > 
-> Signed-off-by: Baoyou Xie <baoyou.xie@linaro.org>
-> ---
->  arch/mips/include/asm/pgtable.h      | 2 --
->  arch/x86/include/asm/pgtable_types.h | 2 --
->  include/asm-generic/pgtable.h        | 3 +++
->  3 files changed, 3 insertions(+), 4 deletions(-)
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Thanks, applied.  This patch should be applied to 3.16+ also so I've
+added a Cc: stable... tag.
+
+  Ralf
+
+>  arch/mips/include/asm/mach-paravirt/kernel-entry-init.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h b/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
+> index 2f82bfa3a773..c9f5769dfc8f 100644
+> --- a/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
+> +++ b/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
+> @@ -11,11 +11,13 @@
+>  #define CP0_EBASE $15, 1
+>  
+>  	.macro  kernel_entry_setup
+> +#ifdef CONFIG_SMP
+>  	mfc0	t0, CP0_EBASE
+>  	andi	t0, t0, 0x3ff		# CPUNum
+>  	beqz	t0, 1f
+>  	# CPUs other than zero goto smp_bootstrap
+>  	j	smp_bootstrap
+> +#endif /* CONFIG_SMP */
+>  
+>  1:
+>  	.endm
+> -- 
+> 2.7.4
+> 

@@ -1,39 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2016 12:01:45 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11184 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992240AbcINKB2id1Ad (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2016 12:01:28 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 7CB8F6F2B581F;
-        Wed, 14 Sep 2016 11:01:09 +0100 (IST)
-Received: from localhost (10.100.200.175) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 14 Sep
- 2016 11:01:11 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        <linux-kernel@vger.kernel.org>,
-        Markos Chandras <markos.chandras@imgtec.com>
-Subject: [PATCH 2/2] MIPS: pm-cps: Generate idle state entry code when CPUs are onlined
-Date:   Wed, 14 Sep 2016 11:00:27 +0100
-Message-ID: <20160914100027.20945-2-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20160914100027.20945-1-paul.burton@imgtec.com>
-References: <20160914100027.20945-1-paul.burton@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.175]
-Return-Path: <Paul.Burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2016 17:32:07 +0200 (CEST)
+Received: from conuserg-07.nifty.com ([210.131.2.74]:44575 "EHLO
+        conuserg-07.nifty.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992940AbcINPcAYkki5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2016 17:32:00 +0200
+Received: from grover.sesame (FL1-111-169-71-157.osk.mesh.ad.jp [111.169.71.157]) (authenticated)
+        by conuserg-07.nifty.com with ESMTP id u8EFV3Si012149;
+        Thu, 15 Sep 2016 00:31:06 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com u8EFV3Si012149
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1473867067;
+        bh=DQESqf1BAqFYEoRcV4Yf+u+UbEzHdA7U+E11f4A/gGY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VAsIIfj/AKnWGeTClAeNOMnzCXb2kb/yzTc7xre0QJ4yrGjFG6lIoFS3U3Kd7y3hD
+         Wz7Vy8z5SJeO1PKdrn7B0KrIo7R1RnyCt80VF7Vcfm0MWKo2U6hLdgNQSdSM22lrnK
+         PNgmSjbN1XTCB5hf56StggkqukZAIk6N61uE248yzdj8L9KlTcZPB9o4Uu03XcrAHY
+         W9VinYjZKsazK++PgdRzQVevVwDWxf4/UuOfBWOdafuZeTM1A88PxLXFfSQ6OK60mj
+         XgtUI+e9XEYZIBJU3Zf6nj2nSpNNWVDHql4iFnGsQCLllH23N/FBKbNLDayhiorYWd
+         XZZsptxuhU7mw==
+X-Nifty-SrcIP: [111.169.71.157]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     linux-mips@linux-mips.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] mips: squash lines for simple wrapper functions
+Date:   Thu, 15 Sep 2016 00:31:01 +0900
+Message-Id: <1473867061-9735-1-git-send-email-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <yamada.masahiro@socionext.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55139
+X-archive-position: 55140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: yamada.masahiro@socionext.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,143 +52,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS Coherent Processing System (CPS) power management code has
-previously generated code used to enter low power idle states once
-during boot for all CPUs. This has the drawback that if a CPU is present
-in the system but not being used (for example due to the maxcpus kernel
-parameter) then we encounter problems due to not having probed that CPU
-for information about its type & properties. The result of this is that
-we generate entry code which is both unused, potentially entirely
-invalid & likely to be unsuitable for the CPU in question anyway.
+Remove unneeded variables and assignments.
 
-Avoid this by generating idle state entry code only when a CPU is
-brought online. This way we only ever generate code for CPUs that we
-know we've probed the properties of, and that will actually be used.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 ---
 
- arch/mips/kernel/pm-cps.c | 45 +++++++++++++++++++--------------------------
- 1 file changed, 19 insertions(+), 26 deletions(-)
+ arch/mips/include/asm/mach-generic/floppy.h | 6 +-----
+ arch/mips/include/asm/pgalloc.h             | 6 +-----
+ arch/mips/mti-malta/malta-platform.c        | 8 +-------
+ arch/mips/pnx833x/common/platform.c         | 8 ++------
+ 4 files changed, 5 insertions(+), 23 deletions(-)
 
-diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index 5b31a94..522a466 100644
---- a/arch/mips/kernel/pm-cps.c
-+++ b/arch/mips/kernel/pm-cps.c
-@@ -8,6 +8,7 @@
-  * option) any later version.
-  */
+diff --git a/arch/mips/include/asm/mach-generic/floppy.h b/arch/mips/include/asm/mach-generic/floppy.h
+index e2561d9..9ec2f6a 100644
+--- a/arch/mips/include/asm/mach-generic/floppy.h
++++ b/arch/mips/include/asm/mach-generic/floppy.h
+@@ -115,11 +115,7 @@ static inline unsigned long fd_getfdaddr1(void)
  
-+#include <linux/cpuhotplug.h>
- #include <linux/init.h>
- #include <linux/percpu.h>
- #include <linux/slab.h>
-@@ -70,8 +71,8 @@ static DEFINE_PER_CPU_ALIGNED(atomic_t, pm_barrier);
- DEFINE_PER_CPU_ALIGNED(struct mips_static_suspend_state, cps_cpu_state);
- 
- /* A somewhat arbitrary number of labels & relocs for uasm */
--static struct uasm_label labels[32] __initdata;
--static struct uasm_reloc relocs[32] __initdata;
-+static struct uasm_label labels[32];
-+static struct uasm_reloc relocs[32];
- 
- /* CPU dependant sync types */
- static unsigned stype_intervention;
-@@ -198,10 +199,10 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	return 0;
+ static inline unsigned long fd_dma_mem_alloc(unsigned long size)
+ {
+-	unsigned long mem;
+-
+-	mem = __get_dma_pages(GFP_KERNEL, get_order(size));
+-
+-	return mem;
++	return __get_dma_pages(GFP_KERNEL, get_order(size));
  }
  
--static void __init cps_gen_cache_routine(u32 **pp, struct uasm_label **pl,
--					 struct uasm_reloc **pr,
--					 const struct cache_desc *cache,
--					 unsigned op, int lbl)
-+static void cps_gen_cache_routine(u32 **pp, struct uasm_label **pl,
-+				  struct uasm_reloc **pr,
-+				  const struct cache_desc *cache,
-+				  unsigned op, int lbl)
+ static inline void fd_dma_mem_free(unsigned long addr, unsigned long size)
+diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
+index 93c079a..a03e869 100644
+--- a/arch/mips/include/asm/pgalloc.h
++++ b/arch/mips/include/asm/pgalloc.h
+@@ -67,11 +67,7 @@ static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm,
+ 	unsigned long address)
  {
- 	unsigned cache_size = cache->ways << cache->waybit;
- 	unsigned i;
-@@ -242,10 +243,10 @@ static void __init cps_gen_cache_routine(u32 **pp, struct uasm_label **pl,
- 	uasm_i_nop(pp);
+-	pte_t *pte;
+-
+-	pte = (pte_t *) __get_free_pages(GFP_KERNEL|__GFP_ZERO, PTE_ORDER);
+-
+-	return pte;
++	return (pte_t *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, PTE_ORDER);
  }
  
--static int __init cps_gen_flush_fsb(u32 **pp, struct uasm_label **pl,
--				    struct uasm_reloc **pr,
--				    const struct cpuinfo_mips *cpu_info,
--				    int lbl)
-+static int cps_gen_flush_fsb(u32 **pp, struct uasm_label **pl,
-+			     struct uasm_reloc **pr,
-+			     const struct cpuinfo_mips *cpu_info,
-+			     int lbl)
- {
- 	unsigned i, fsb_size = 8;
- 	unsigned num_loads = (fsb_size * 3) / 2;
-@@ -340,9 +341,9 @@ static int __init cps_gen_flush_fsb(u32 **pp, struct uasm_label **pl,
- 	return 0;
- }
+ static inline struct page *pte_alloc_one(struct mm_struct *mm,
+diff --git a/arch/mips/mti-malta/malta-platform.c b/arch/mips/mti-malta/malta-platform.c
+index e1dd1c1..20a53e7 100644
+--- a/arch/mips/mti-malta/malta-platform.c
++++ b/arch/mips/mti-malta/malta-platform.c
+@@ -135,13 +135,7 @@ struct resource malta_rtc_resources[] = {
  
--static void __init cps_gen_set_top_bit(u32 **pp, struct uasm_label **pl,
--				       struct uasm_reloc **pr,
--				       unsigned r_addr, int lbl)
-+static void cps_gen_set_top_bit(u32 **pp, struct uasm_label **pl,
-+				struct uasm_reloc **pr,
-+				unsigned r_addr, int lbl)
+ static int __init malta_add_devices(void)
  {
- 	uasm_i_lui(pp, t0, uasm_rel_hi(0x80000000));
- 	uasm_build_label(pl, *pp, lbl);
-@@ -353,7 +354,7 @@ static void __init cps_gen_set_top_bit(u32 **pp, struct uasm_label **pl,
- 	uasm_i_nop(pp);
- }
- 
--static void * __init cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
-+static void *cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
- {
- 	struct uasm_label *l = labels;
- 	struct uasm_reloc *r = relocs;
-@@ -628,7 +629,7 @@ out_err:
- 	return NULL;
- }
- 
--static int __init cps_gen_core_entries(unsigned cpu)
-+static int cps_pm_online_cpu(unsigned int cpu)
- {
- 	enum cps_pm_state state;
- 	unsigned core = cpu_data[cpu].core;
-@@ -670,9 +671,6 @@ static int __init cps_gen_core_entries(unsigned cpu)
- 
- static int __init cps_pm_init(void)
- {
--	unsigned cpu;
 -	int err;
 -
- 	/* Detect appropriate sync types for the system */
- 	switch (current_cpu_data.cputype) {
- 	case CPU_INTERAPTIV:
-@@ -692,7 +690,7 @@ static int __init cps_pm_init(void)
- 	/* A CM is required for all non-coherent states */
- 	if (!mips_cm_present()) {
- 		pr_warn("pm-cps: no CM, non-coherent states unavailable\n");
--		goto out;
-+		return 0;
- 	}
- 
- 	/*
-@@ -722,12 +720,7 @@ static int __init cps_pm_init(void)
- 		pr_warn("pm-cps: no CPC, clock & power gating unavailable\n");
- 	}
- 
--	for_each_present_cpu(cpu) {
--		err = cps_gen_core_entries(cpu);
--		if (err)
--			return err;
--	}
--out:
+-	err = platform_add_devices(malta_devices, ARRAY_SIZE(malta_devices));
+-	if (err)
+-		return err;
+-
 -	return 0;
-+	return cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "AP_PM_CPS_CPU_ONLINE",
-+				 cps_pm_online_cpu, NULL);
++	return platform_add_devices(malta_devices, ARRAY_SIZE(malta_devices));
  }
- arch_initcall(cps_pm_init);
+ 
+ device_initcall(malta_add_devices);
+diff --git a/arch/mips/pnx833x/common/platform.c b/arch/mips/pnx833x/common/platform.c
+index 3cd3577..7cf4eb5 100644
+--- a/arch/mips/pnx833x/common/platform.c
++++ b/arch/mips/pnx833x/common/platform.c
+@@ -232,12 +232,8 @@ struct pnx8xxx_port pnx8xxx_ports[] = {
+ 
+ static int __init pnx833x_platform_init(void)
+ {
+-	int res;
+-
+-	res = platform_add_devices(pnx833x_platform_devices,
+-				   ARRAY_SIZE(pnx833x_platform_devices));
+-
+-	return res;
++	return platform_add_devices(pnx833x_platform_devices,
++				    ARRAY_SIZE(pnx833x_platform_devices));
+ }
+ 
+ arch_initcall(pnx833x_platform_init);
 -- 
-2.9.3
+1.9.1

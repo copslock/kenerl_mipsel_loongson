@@ -1,45 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2016 17:32:07 +0200 (CEST)
-Received: from conuserg-07.nifty.com ([210.131.2.74]:44575 "EHLO
-        conuserg-07.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992940AbcINPcAYkki5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2016 17:32:00 +0200
-Received: from grover.sesame (FL1-111-169-71-157.osk.mesh.ad.jp [111.169.71.157]) (authenticated)
-        by conuserg-07.nifty.com with ESMTP id u8EFV3Si012149;
-        Thu, 15 Sep 2016 00:31:06 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com u8EFV3Si012149
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1473867067;
-        bh=DQESqf1BAqFYEoRcV4Yf+u+UbEzHdA7U+E11f4A/gGY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=VAsIIfj/AKnWGeTClAeNOMnzCXb2kb/yzTc7xre0QJ4yrGjFG6lIoFS3U3Kd7y3hD
-         Wz7Vy8z5SJeO1PKdrn7B0KrIo7R1RnyCt80VF7Vcfm0MWKo2U6hLdgNQSdSM22lrnK
-         PNgmSjbN1XTCB5hf56StggkqukZAIk6N61uE248yzdj8L9KlTcZPB9o4Uu03XcrAHY
-         W9VinYjZKsazK++PgdRzQVevVwDWxf4/UuOfBWOdafuZeTM1A88PxLXFfSQ6OK60mj
-         XgtUI+e9XEYZIBJU3Zf6nj2nSpNNWVDHql4iFnGsQCLllH23N/FBKbNLDayhiorYWd
-         XZZsptxuhU7mw==
-X-Nifty-SrcIP: [111.169.71.157]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     linux-mips@linux-mips.org
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-kernel@vger.kernel.org,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] mips: squash lines for simple wrapper functions
-Date:   Thu, 15 Sep 2016 00:31:01 +0900
-Message-Id: <1473867061-9735-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <yamada.masahiro@socionext.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2016 21:25:46 +0200 (CEST)
+Received: from mail-it0-f67.google.com ([209.85.214.67]:36263 "EHLO
+        mail-it0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991932AbcINTZkX1Kx6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2016 21:25:40 +0200
+Received: by mail-it0-f67.google.com with SMTP id n143so2448396ita.3
+        for <linux-mips@linux-mips.org>; Wed, 14 Sep 2016 12:25:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:from:date:message-id:subject:to:cc;
+        bh=zHBfzpJjEXPgrMij/EuULdIrk29x/mgFMSFu6xnbdMk=;
+        b=i+UuFYzrkYV5qM3v7lHu6UKJppXJ5Ve9jA3hbZ8OSjxi/8iSm7CWvCiM0JD/g8cGNv
+         VxfmK2zFJjjzaJKIzYC+CpO63QEG3b0dx04W0pRLsPGU40Uw4LOulfmsH/xmHhD/mVKa
+         0+Z3MT3gVu9LfZGM/DuQ2M0phiqiuHn9/xWPN7hxPu5J9QyoPdpuuwOpjyghtBSO0/Dz
+         ZYh/V5/kn+JFQCTYzK+Z9hCnP1ulMTXCG0y1IMudLOhzweSI5231u8RTvgsVTYao+LED
+         UYAL52UONxe+jO/t+I4yK9pV3JoW2G5pEgae8tfZ5iYZpLykf4xXaADyTJFTJ/u4xmwm
+         AYLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:cc;
+        bh=zHBfzpJjEXPgrMij/EuULdIrk29x/mgFMSFu6xnbdMk=;
+        b=f7gmJILYoXns4l7umA3jhZLiEU4+XeHlUMEWfYDM2X089uVD87PDd5Cyv/irx0VXFY
+         sAwzgTj8vEr8AQmywDzZW28ZEE7cKYvXCmZQ0eo7dDhjhhR0+lf/xm54tFEIlXfuKSm8
+         ZsIZHaOqhcn4YdxBj1oK+vrbHFqbyQPoe8XGtZH3+eOqnf44s4IqGYGGKwc8kx6FR7yE
+         Wk/2Kkwck7UkLO8XpucxfxsD8KGEXR6NTzdy2Xx3bx08VV4TosxTYX768yZq41SEH9Iz
+         bWfe5uBmnJfu5awKsMws8pUX+p3rsDe3bH1au3wm1ZwAApIxnPXgxJ5phjzoEt+O8C2Y
+         ZGdQ==
+X-Gm-Message-State: AE9vXwPSObojI6ZmYzm67YtBEwCumJ9DxBSbMlC73mS4Ke4Dj7u8LkHLxbNss8TpffH0Thr5sdso+j8B9RGtbQ==
+X-Received: by 10.107.17.36 with SMTP id z36mr9533348ioi.1.1473881134182; Wed,
+ 14 Sep 2016 12:25:34 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.107.3.91 with HTTP; Wed, 14 Sep 2016 12:25:33 -0700 (PDT)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 14 Sep 2016 21:25:33 +0200
+X-Google-Sender-Auth: ZlwqWNZ0klQmDTWNxth74hkHlJU
+Message-ID: <CAMuHMdVW1eTn20=EtYcJ8hkVwohaSuH_yQXrY2MGBEvZ8fpFOg@mail.gmail.com>
+Subject: genirq: Setting trigger mode 0 for irq 11 failed (txx9_irq_set_type+0x0/0xb8)
+To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55140
+X-archive-position: 55141
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,88 +61,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Remove unneeded variables and assignments.
+Hi Nemoto-san,
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
+JFYI, with v4.8-rc6 I'm seeing
 
- arch/mips/include/asm/mach-generic/floppy.h | 6 +-----
- arch/mips/include/asm/pgalloc.h             | 6 +-----
- arch/mips/mti-malta/malta-platform.c        | 8 +-------
- arch/mips/pnx833x/common/platform.c         | 8 ++------
- 4 files changed, 5 insertions(+), 23 deletions(-)
+    genirq: Setting trigger mode 0 for irq 11 failed
+(txx9_irq_set_type+0x0/0xb8)
 
-diff --git a/arch/mips/include/asm/mach-generic/floppy.h b/arch/mips/include/asm/mach-generic/floppy.h
-index e2561d9..9ec2f6a 100644
---- a/arch/mips/include/asm/mach-generic/floppy.h
-+++ b/arch/mips/include/asm/mach-generic/floppy.h
-@@ -115,11 +115,7 @@ static inline unsigned long fd_getfdaddr1(void)
- 
- static inline unsigned long fd_dma_mem_alloc(unsigned long size)
- {
--	unsigned long mem;
--
--	mem = __get_dma_pages(GFP_KERNEL, get_order(size));
--
--	return mem;
-+	return __get_dma_pages(GFP_KERNEL, get_order(size));
- }
- 
- static inline void fd_dma_mem_free(unsigned long addr, unsigned long size)
-diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
-index 93c079a..a03e869 100644
---- a/arch/mips/include/asm/pgalloc.h
-+++ b/arch/mips/include/asm/pgalloc.h
-@@ -67,11 +67,7 @@ static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
- static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm,
- 	unsigned long address)
- {
--	pte_t *pte;
--
--	pte = (pte_t *) __get_free_pages(GFP_KERNEL|__GFP_ZERO, PTE_ORDER);
--
--	return pte;
-+	return (pte_t *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, PTE_ORDER);
- }
- 
- static inline struct page *pte_alloc_one(struct mm_struct *mm,
-diff --git a/arch/mips/mti-malta/malta-platform.c b/arch/mips/mti-malta/malta-platform.c
-index e1dd1c1..20a53e7 100644
---- a/arch/mips/mti-malta/malta-platform.c
-+++ b/arch/mips/mti-malta/malta-platform.c
-@@ -135,13 +135,7 @@ struct resource malta_rtc_resources[] = {
- 
- static int __init malta_add_devices(void)
- {
--	int err;
--
--	err = platform_add_devices(malta_devices, ARRAY_SIZE(malta_devices));
--	if (err)
--		return err;
--
--	return 0;
-+	return platform_add_devices(malta_devices, ARRAY_SIZE(malta_devices));
- }
- 
- device_initcall(malta_add_devices);
-diff --git a/arch/mips/pnx833x/common/platform.c b/arch/mips/pnx833x/common/platform.c
-index 3cd3577..7cf4eb5 100644
---- a/arch/mips/pnx833x/common/platform.c
-+++ b/arch/mips/pnx833x/common/platform.c
-@@ -232,12 +232,8 @@ struct pnx8xxx_port pnx8xxx_ports[] = {
- 
- static int __init pnx833x_platform_init(void)
- {
--	int res;
--
--	res = platform_add_devices(pnx833x_platform_devices,
--				   ARRAY_SIZE(pnx833x_platform_devices));
--
--	return res;
-+	return platform_add_devices(pnx833x_platform_devices,
-+				    ARRAY_SIZE(pnx833x_platform_devices));
- }
- 
- arch_initcall(pnx833x_platform_init);
--- 
-1.9.1
+on rbtx4927. This did not happen with v4.8-rc3.
+
+No idea yet if this has any ill effects...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

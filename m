@@ -1,54 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2016 21:25:46 +0200 (CEST)
-Received: from mail-it0-f67.google.com ([209.85.214.67]:36263 "EHLO
-        mail-it0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991932AbcINTZkX1Kx6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2016 21:25:40 +0200
-Received: by mail-it0-f67.google.com with SMTP id n143so2448396ita.3
-        for <linux-mips@linux-mips.org>; Wed, 14 Sep 2016 12:25:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Sep 2016 14:03:16 +0200 (CEST)
+Received: from mail-oi0-f42.google.com ([209.85.218.42]:35998 "EHLO
+        mail-oi0-f42.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991888AbcIOMDJays62 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Sep 2016 14:03:09 +0200
+Received: by mail-oi0-f42.google.com with SMTP id q188so65388546oia.3
+        for <linux-mips@linux-mips.org>; Thu, 15 Sep 2016 05:03:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:sender:from:date:message-id:subject:to:cc;
-        bh=zHBfzpJjEXPgrMij/EuULdIrk29x/mgFMSFu6xnbdMk=;
-        b=i+UuFYzrkYV5qM3v7lHu6UKJppXJ5Ve9jA3hbZ8OSjxi/8iSm7CWvCiM0JD/g8cGNv
-         VxfmK2zFJjjzaJKIzYC+CpO63QEG3b0dx04W0pRLsPGU40Uw4LOulfmsH/xmHhD/mVKa
-         0+Z3MT3gVu9LfZGM/DuQ2M0phiqiuHn9/xWPN7hxPu5J9QyoPdpuuwOpjyghtBSO0/Dz
-         ZYh/V5/kn+JFQCTYzK+Z9hCnP1ulMTXCG0y1IMudLOhzweSI5231u8RTvgsVTYao+LED
-         UYAL52UONxe+jO/t+I4yK9pV3JoW2G5pEgae8tfZ5iYZpLykf4xXaADyTJFTJ/u4xmwm
-         AYLw==
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=n+2WsSOYI+Zk4xc1Cy9fyk715aTUwrkXiei/5Om2R9U=;
+        b=W++5HzoeUAg0muHPykCaFUkSg51G+mRt7oxxiMT/BU3xJMXLvOzp35SwXUWbxXZ0Q8
+         WjUVdnzpiJeDNUZo2StvTaCsk2mrnU+jAHFytI0WJMVaFb7ZPuvH5Ucd+P9qz83vohm+
+         ZzzmKAWPUMVTMEPHcianFM3rmlbeCFJO0/SDg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:cc;
-        bh=zHBfzpJjEXPgrMij/EuULdIrk29x/mgFMSFu6xnbdMk=;
-        b=f7gmJILYoXns4l7umA3jhZLiEU4+XeHlUMEWfYDM2X089uVD87PDd5Cyv/irx0VXFY
-         sAwzgTj8vEr8AQmywDzZW28ZEE7cKYvXCmZQ0eo7dDhjhhR0+lf/xm54tFEIlXfuKSm8
-         ZsIZHaOqhcn4YdxBj1oK+vrbHFqbyQPoe8XGtZH3+eOqnf44s4IqGYGGKwc8kx6FR7yE
-         Wk/2Kkwck7UkLO8XpucxfxsD8KGEXR6NTzdy2Xx3bx08VV4TosxTYX768yZq41SEH9Iz
-         bWfe5uBmnJfu5awKsMws8pUX+p3rsDe3bH1au3wm1ZwAApIxnPXgxJ5phjzoEt+O8C2Y
-         ZGdQ==
-X-Gm-Message-State: AE9vXwPSObojI6ZmYzm67YtBEwCumJ9DxBSbMlC73mS4Ke4Dj7u8LkHLxbNss8TpffH0Thr5sdso+j8B9RGtbQ==
-X-Received: by 10.107.17.36 with SMTP id z36mr9533348ioi.1.1473881134182; Wed,
- 14 Sep 2016 12:25:34 -0700 (PDT)
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=n+2WsSOYI+Zk4xc1Cy9fyk715aTUwrkXiei/5Om2R9U=;
+        b=fzdLyC87OrwG1gVTpFfqfPcLfdikShNJsyeEeM3ZtqDCnAV2l1tfBsoss2fbsfo8CP
+         3AQY4BiptQPpVBXQY5YFtLvQoKABOgXM9pQTFlLyf3tMTb3Z0Cx87bKtkc9GHuedtnwL
+         XkZTJnWsao3PtBfzbo9kCJPEDMOoNX/vfC67mJQCC0/SHUafginvTz4yczgp7LW+R36k
+         QRpiAHnp2H+QLLTQh+Oyr7HtjLGgL37P8J9kmHsFb7wZB2lRwtG6WFW11tWq/JuVduxX
+         9ckMlD0NsEoVBLO6LhhJVMlgOzst3p1Pd+mzdLB7eHjJ9+ZGFl/FiZ5+aTRil9AnH5Qy
+         QvVQ==
+X-Gm-Message-State: AE9vXwOCVZh2bpVtSczG/NJkmnCdGciA7csDaFDo2EOla8Xv2PKocMluFqTVGuM3IQVaCDJfuVsoomgcrpp+/zOS
+X-Received: by 10.202.97.198 with SMTP id v189mr6846273oib.54.1473940983394;
+ Thu, 15 Sep 2016 05:03:03 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.3.91 with HTTP; Wed, 14 Sep 2016 12:25:33 -0700 (PDT)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 14 Sep 2016 21:25:33 +0200
-X-Google-Sender-Auth: ZlwqWNZ0klQmDTWNxth74hkHlJU
-Message-ID: <CAMuHMdVW1eTn20=EtYcJ8hkVwohaSuH_yQXrY2MGBEvZ8fpFOg@mail.gmail.com>
-Subject: genirq: Setting trigger mode 0 for irq 11 failed (txx9_irq_set_type+0x0/0xb8)
-To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Received: by 10.182.146.7 with HTTP; Thu, 15 Sep 2016 05:03:02 -0700 (PDT)
+In-Reply-To: <20160912221631.15812-7-paul.gortmaker@windriver.com>
+References: <20160912221631.15812-1-paul.gortmaker@windriver.com> <20160912221631.15812-7-paul.gortmaker@windriver.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 15 Sep 2016 14:03:02 +0200
+Message-ID: <CACRpkdYV_uKMaOX1ZLw_hq3BNGXbrtAerwhwnJQixdbLwAP2Uw@mail.gmail.com>
+Subject: Re: [PATCH 6/8] gpio: loongson1: fix implicit assumption module.h is present
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <geert.uytterhoeven@gmail.com>
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55141
+X-archive-position: 55142
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,24 +63,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Nemoto-san,
+On Tue, Sep 13, 2016 at 12:16 AM, Paul Gortmaker
+<paul.gortmaker@windriver.com> wrote:
 
-JFYI, with v4.8-rc6 I'm seeing
+> The Kconfig for this file is:
+>
+> drivers/gpio/Kconfig:config GPIO_LOONGSON1
+> drivers/gpio/Kconfig:   tristate "Loongson1 GPIO support"
+>
+> ...but however it does not include module.h -- it in turn gets it from
+> another header (gpio/driver.h) and we'd like to replace that with a
+> forward delcaration of "struct module;" but if we do, this file will
+> fail to compile.
+>
+> So we fix this first to avoid putting build failures into the bisect
+> commit history.
+>
+> Cc: Keguang Zhang <keguang.zhang@gmail.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Alexandre Courbot <gnurou@gmail.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-gpio@vger.kernel.org
+> Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-    genirq: Setting trigger mode 0 for irq 11 failed
-(txx9_irq_set_type+0x0/0xb8)
+Patch applied.
 
-on rbtx4927. This did not happen with v4.8-rc3.
-
-No idea yet if this has any ill effects...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Yours,
+Linus Walleij

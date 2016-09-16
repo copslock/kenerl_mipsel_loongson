@@ -1,65 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Sep 2016 09:45:32 +0200 (CEST)
-Received: from conssluserg-04.nifty.com ([210.131.2.83]:58791 "EHLO
-        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991960AbcIPHpXGOOo6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Sep 2016 09:45:23 +0200
-Received: from mail-yw0-f175.google.com (mail-yw0-f175.google.com [209.85.161.175]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id u8G7iprX024075;
-        Fri, 16 Sep 2016 16:44:51 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com u8G7iprX024075
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1474011892;
-        bh=dz0/BvCzbclI4ctFJusiqWJqXhrmh2nxRNAAwVHpUKY=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=yb3hftKQYmrMtnb0iqo8+3eJoD3dh9j8L3QOQcgbVffIBQg0XZwQ0JZXKtECEDJuB
-         9cM7z/Ua4CJpAF2HHOaS0ARgtscWdH9WPE1hojoKk/Rql5r8b1UYrRDaJ1N7yF9du1
-         IwdQ7rB2yjDlWs5HnMHYMzTIr2uPttNvfVTR/m5VnprXeI9I5RU/iEmPG8xk74Xs0+
-         WKTrbgUSqZdnw1I+XC+TL4p47N4KgpBsqIUBMzIUesFddlaZraUWxxvRoVp5y2sJZ8
-         s0GqJQH4QCrujrPtpUsHbkf5sLX3jjruvUrQsLrzOH+/b6EyH0C85DMvYh0zBTZ3/Q
-         PHZNWZ7yvA5iw==
-X-Nifty-SrcIP: [209.85.161.175]
-Received: by mail-yw0-f175.google.com with SMTP id u82so77922691ywc.2;
-        Fri, 16 Sep 2016 00:44:51 -0700 (PDT)
-X-Gm-Message-State: AE9vXwPec6PwO9ld9CH/tqjAui4AZtv1iqxSFSOLFJZhyIUS7kqsBLlAlwCJP9KCRMYFoR/ZWSuUvnuOvU8edw==
-X-Received: by 10.129.179.135 with SMTP id r129mr12485215ywh.156.1474011890913;
- Fri, 16 Sep 2016 00:44:50 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.37.49.137 with HTTP; Fri, 16 Sep 2016 00:44:50 -0700 (PDT)
-In-Reply-To: <194aebe5-38dd-f43d-fb4d-16ce592a68e8@gmail.com>
-References: <1472059613-30551-1-git-send-email-yamada.masahiro@socionext.com> <194aebe5-38dd-f43d-fb4d-16ce592a68e8@gmail.com>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Fri, 16 Sep 2016 16:44:50 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARaV6Ga5G1GnYf9hywrr+YwOqqm-v1AzBpfXtM4u9ofBA@mail.gmail.com>
-Message-ID: <CAK7LNARaV6Ga5G1GnYf9hywrr+YwOqqm-v1AzBpfXtM4u9ofBA@mail.gmail.com>
-Subject: Re: [PATCH v3] clk: let clk_disable() return immediately if clk is NULL
-To:     Stephen Boyd <sboyd@codeaurora.org>,
-        Michael Turquette <mturquette@baylibre.com>
-Cc:     linux-clk <linux-clk@vger.kernel.org>, linux-mips@linux-mips.org,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Wan ZongShun <mcuos.com@gmail.com>,
-        Steven Miao <realmz6@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-m68k@lists.linux-m68k.org,
-        Broadcom Kernel Feedback List 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Sep 2016 09:51:17 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:53194 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991960AbcIPHvKhgsm6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 16 Sep 2016 09:51:10 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B09C022E;
+        Fri, 16 Sep 2016 00:51:03 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 833B23F317;
+        Fri, 16 Sep 2016 00:51:02 -0700 (PDT)
+Subject: Re: genirq: Setting trigger mode 0 for irq 11 failed
+ (txx9_irq_set_type+0x0/0xb8)
+To:     Alban Browaeys <alban.browaeys@gmail.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <yamada.masahiro@socionext.com>
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+References: <CAMuHMdVW1eTn20=EtYcJ8hkVwohaSuH_yQXrY2MGBEvZ8fpFOg@mail.gmail.com>
+ <1473980577.17787.21.camel@gmail.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jon Hunter <jonathanh@nvidia.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+X-Enigmail-Draft-Status: N1110
+Organization: ARM Ltd
+Message-ID: <57DBA464.9010506@arm.com>
+Date:   Fri, 16 Sep 2016 08:51:00 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Icedove/38.7.0
+MIME-Version: 1.0
+In-Reply-To: <1473980577.17787.21.camel@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55147
+X-archive-position: 55148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,47 +52,67 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Stephen, Michael,
+Hi Alban,
 
-2016-08-26 0:27 GMT+09:00 Florian Fainelli <f.fainelli@gmail.com>:
-> On 08/24/2016 10:26 AM, Masahiro Yamada wrote:
->> Many of clk_disable() implementations just return for NULL pointer,
->> but this check is missing from some.  Let's make it tree-wide
->> consistent.  It will allow clock consumers to call clk_disable()
->> without NULL pointer check.
+On 16/09/16 00:02, Alban Browaeys wrote:
+> Le mercredi 14 septembre 2016 à 21:25 +0200, Geert Uytterhoeven a
+> écrit :
+>> JFYI, with v4.8-rc6 I'm seeing
 >>
->> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
->> Acked-by: Greg Ungerer <gerg@uclinux.org>
->> Acked-by: Wan Zongshun <mcuos.com@gmail.com>
->> ---
+>>     genirq: Setting trigger mode 0 for irq 11 failed
+>> (txx9_irq_set_type+0x0/0xb8)
 >>
->> I came back after a long pause.
->> You can see the discussion about the previous version:
->> https://www.linux-mips.org/archives/linux-mips/2016-04/msg00063.html
->>
->>
->> Changes in v3:
->>   - Return only when clk is NULL.  Do not take care of error pointer.
->>
->> Changes in v2:
->>   - Rebase on Linux 4.6-rc1
->>
->>  arch/arm/mach-mmp/clock.c        | 3 +++
->>  arch/arm/mach-w90x900/clock.c    | 3 +++
->>  arch/blackfin/mach-bf609/clock.c | 3 +++
->>  arch/m68k/coldfire/clk.c         | 4 ++++
->>  arch/mips/bcm63xx/clk.c          | 3 +++
->
+>> on rbtx4927. This did not happen with v4.8-rc3.
+> 
+> 
+> txx9_irq_set_type receives a type IRQ_TYPE_NONE from the call to
+> __irq_set_trigger added in:
+> 1e12c4a939 ("genirq: Correctly configure the trigger on chained interrupts")
+> 
+> 
+> This patch is a regression fix for :
+> 
+> Desc: irqdomain: Don't set type when mapping an IRQ breaks nexus7 gpio buttons
+> Repo: 2016-07-30 https://marc.info/?l=linux-kernel&m=146985356305280&w=2
+> 
+> I am seeing this on arm odroid u2 devicetree :
+> genirq: Setting trigger mode 0 for irq 16 failed (gic_set_type+0x0/0x64)
 
+Passing IRQ_TYPE_NONE to a cascading interrupt is risky at best...
+Can you point me to the various DTs and their failing interrupts?
 
-Gentle ping...
+Also, can you please give the following patch a go and let me know
+if that fixes the issue (I'm interested in the potential warning here).
 
+diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+index 6373890..8422779 100644
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -820,6 +820,8 @@ __irq_do_set_handler(struct irq_desc *desc, irq_flow_handler_t handle,
+ 	desc->name = name;
+ 
+ 	if (handle != handle_bad_irq && is_chained) {
++		unsigned int type = irqd_get_trigger_type(&desc->irq_data);
++
+ 		/*
+ 		 * We're about to start this interrupt immediately,
+ 		 * hence the need to set the trigger configuration.
+@@ -828,8 +830,10 @@ __irq_do_set_handler(struct irq_desc *desc, irq_flow_handler_t handle,
+ 		 * chained interrupt. Reset it immediately because we
+ 		 * do know better.
+ 		 */
+-		__irq_set_trigger(desc, irqd_get_trigger_type(&desc->irq_data));
+-		desc->handle_irq = handle;
++		if (!(WARN_ON(type == IRQ_TYPE_NONE))) {
++			__irq_set_trigger(desc, type);
++			desc->handle_irq = handle;
++		}
+ 
+ 		irq_settings_set_noprobe(desc);
+ 		irq_settings_set_norequest(desc);
 
-If you are not keen on this,
-shall I split it per-arch and send to each arch subsystem?
+Thanks,
 
-
-
+	M.
 -- 
-Best Regards
-Masahiro Yamada
+Jazz is not dead. It just smells funny...

@@ -1,45 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Sep 2016 20:06:01 +0200 (CEST)
-Received: from conuserg-10.nifty.com ([210.131.2.77]:40674 "EHLO
-        conuserg-10.nifty.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991977AbcIRSFybJdAh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Sep 2016 20:05:54 +0200
-Received: from grover.sesame (FL1-111-169-71-157.osk.mesh.ad.jp [111.169.71.157]) (authenticated)
-        by conuserg-10.nifty.com with ESMTP id u8II4aDd017348;
-        Mon, 19 Sep 2016 03:04:39 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com u8II4aDd017348
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1474221879;
-        bh=WwXnpdHNicD9zDdJA5Y3AIhwZMLkHt7yHQqPbng5lNw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=kew6G0RvbMZerneS/fK5o2PziNYGqRLrC/8M20fNIL6UPQ5y0WL7uLPY+UUJsq+rl
-         WN2qjUGONOivBnPGgelntMLzNAk3Y62JceiZpS4QNbWdSJDzwaYY35IAY9LeSQiLE1
-         1IR5etmm4twkEbDNwDUq5AOzXBjV5zI7/9pZ/hS7agcu0PycOcYEyMfo4yz9tFz0nS
-         l7WY0NNdKxCqr9jwMPesgCAvhDjDwsKpZffk+P/xNafep23ilDjg0j8KhhsqNZodNQ
-         CndK3nbt0XvfDeCEGVBqEWc8jjCK+5mqsBvBI9xYq6gKWu1lv2mq6Ym1imSZ5/0U2j
-         PfQlrKQ8bFlzw==
-X-Nifty-SrcIP: [111.169.71.157]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Sep 2016 21:38:00 +0200 (CEST)
+Received: from mail-oi0-f50.google.com ([209.85.218.50]:35019 "EHLO
+        mail-oi0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992036AbcIRThxBe39f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Sep 2016 21:37:53 +0200
+Received: by mail-oi0-f50.google.com with SMTP id w11so170402206oia.2;
+        Sun, 18 Sep 2016 12:37:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=iVo2pIWuOVxRvCbt/OCeKPJbPFUkK630sVsLU2fz4Kw=;
+        b=Rp9jzADM/scCOt6ZOjfIDJxJ55kRNihPip+obcjKodWyRrsSB9pMmWv8JKtjq6ussn
+         +PmvjEpN3+BaanjN1DJR/UcUKVJfy2soetDLUjNvBeWPyQvPIWHvZF1v430Ou57RJsfv
+         3Xz+KMMdYPB1Kvo9nCcjxX5Xah6dusiTq0t1EOqtLFesGKabRdUUAlwq4JsdStacZSPO
+         m52DKl++Ubn9ymFUoXKH6IezlgnDvcdafAa/wbvo9Nd9TkBV3afeiSULQ2JolfLcdux+
+         rkg7Lfoxlk/eGinln/22eeTgrQHnqYM7HipgHAWE+4aBiyVhpuRnW3/n0MJVRqxbOpA2
+         J7gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=iVo2pIWuOVxRvCbt/OCeKPJbPFUkK630sVsLU2fz4Kw=;
+        b=EL4CByJTpxB7F1/gIDOPvOdmtQzFxBSwIrqV2Vd8GOEvMrnaZn2UBPBvo9TuOtZys/
+         axpyrQ3XwAXjWfxksMfVw8mQf1d9CDU3XLpUpgfBs5jK0c63wIrf8PCvC6A8bchTQ1MD
+         e6HWQ6/yqCip18WyEFDWGm73cs/PWw6d1HsY4IlYS1jIfFacIfijAYk6R9CM84GQ2Dbt
+         dAqVnqHoJdiQmbidSxHQDWq4S7CPQb6FaBw8dvvlU2S5ajb6zJTiVTwEp3wxuQi+Z1QK
+         qFUodsxM7NX1DRKo9+86aEHWQNiOdpSJxHwdjLsw+XPVtHuTh6lj1WXKdCprtqG3UP8D
+         MGiQ==
+X-Gm-Message-State: AE9vXwPAMpGXDFN3P6IRZgDyg8rB/Jh2VlnjUBILbr0Na//ZtQZO3F8gmI2ekTP9sB0sNQ==
+X-Received: by 10.202.104.224 with SMTP id o93mr4980392oik.82.1474227467105;
+        Sun, 18 Sep 2016 12:37:47 -0700 (PDT)
+Received: from ?IPv6:2001:470:d:73f:d4cf:3fa5:ba12:898b? ([2001:470:d:73f:d4cf:3fa5:ba12:898b])
+        by smtp.googlemail.com with ESMTPSA id y10sm16163016oig.29.2016.09.18.12.37.45
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 18 Sep 2016 12:37:46 -0700 (PDT)
+Subject: Re: [PATCH v4] MIPS: bcm63xx: let clk_disable() return immediately if
+ clk is NULL
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+References: <1474221875-22687-1-git-send-email-yamada.masahiro@socionext.com>
 Cc:     Stephen Boyd <sboyd@codeaurora.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
         linux-kernel@vger.kernel.org,
         bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4] MIPS: bcm63xx: let clk_disable() return immediately if clk is NULL
-Date:   Mon, 19 Sep 2016 03:04:35 +0900
-Message-Id: <1474221875-22687-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <yamada.masahiro@socionext.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <d70c5d6c-1648-ba19-627f-c5fb374ad112@gmail.com>
+Date:   Sun, 18 Sep 2016 12:37:45 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <1474221875-22687-1-git-send-email-yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55159
+X-archive-position: 55160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yamada.masahiro@socionext.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,40 +74,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In many of clk_disable() implementations, it is a no-op for a NULL
-pointer input, but this is one of the exceptions.
+Le 18/09/2016 à 11:04, Masahiro Yamada a écrit :
+> In many of clk_disable() implementations, it is a no-op for a NULL
+> pointer input, but this is one of the exceptions.
+> 
+> Making it treewide consistent will allow clock consumers to call
+> clk_disable() without NULL pointer check.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-Making it treewide consistent will allow clock consumers to call
-clk_disable() without NULL pointer check.
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
-
-Changes in v4:
-  - Split into per-arch patches
-
-Changes in v3:
-  - Return only when clk is NULL.  Do not take care of error pointer.
-
-Changes in v2:
-  - Rebase on Linux 4.6-rc1
-
- arch/mips/bcm63xx/clk.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
-index 6375652..b49fc9c 100644
---- a/arch/mips/bcm63xx/clk.c
-+++ b/arch/mips/bcm63xx/clk.c
-@@ -326,6 +326,9 @@ EXPORT_SYMBOL(clk_enable);
- 
- void clk_disable(struct clk *clk)
- {
-+	if (!clk)
-+		return;
-+
- 	mutex_lock(&clocks_mutex);
- 	clk_disable_unlocked(clk);
- 	mutex_unlock(&clocks_mutex);
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
-1.9.1
+Florian

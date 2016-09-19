@@ -1,45 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Sep 2016 23:22:13 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:59953 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Sep 2016 23:22:36 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:19014 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992562AbcISVWGsFtMp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Sep 2016 23:22:06 +0200
+        with ESMTP id S23992688AbcISVWUL6Pxp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Sep 2016 23:22:20 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id E4DC2B5E484D7;
-        Mon, 19 Sep 2016 22:21:45 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 0C9479F429249;
+        Mon, 19 Sep 2016 22:22:00 +0100 (IST)
 Received: from localhost (10.100.200.110) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 19 Sep
- 2016 22:21:49 +0100
+ 2016 22:22:04 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jacek Anaszewski <j.anaszewski@samsung.com>,
-        <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Alexander Sverdlin <alexander.sverdlin@nokia.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Andy Yan <andy.yan@rock-chips.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Chris Brand <chris.brand@broadcom.com>,
-        <devicetree@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
         Marc Zyngier <marc.zyngier@arm.com>,
-        Stephan Linz <linz@li-pro.net>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
         Jason Cooper <jason@lakedaemon.net>,
-        Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v2 00/14] Partial MIPS Malta DT conversion
-Date:   Mon, 19 Sep 2016 22:21:17 +0100
-Message-ID: <20160919212132.28893-1-paul.burton@imgtec.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 01/14] irqchip: i8259: Add domain before mapping parent irq
+Date:   Mon, 19 Sep 2016 22:21:18 +0100
+Message-ID: <20160919212132.28893-2-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.9.3
+In-Reply-To: <20160919212132.28893-1-paul.burton@imgtec.com>
+References: <20160919212132.28893-1-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.110]
@@ -47,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55173
+X-archive-position: 55174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,64 +46,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series begins converting the MIPS Malta board to use device tree to
-probe its various devices & peripherals, with the eventual goal of
-including Malta support in generic kernels.
+Mapping the parent IRQ will use a virq number which may conflict with
+the hardcoded I8259A_IRQ_BASE..I8259A_IRQ_BASE+15 range that the i8259
+driver expects to be free. If this occurs then we'll hit errors when
+adding the i8259 IRQ domain, since one of its virq numbers will already
+be in use.
 
-In terms of use the only change should be that kernels will
-automatically make use of more than 256MB DDR when built for 64 bit, or
-32 bit with highmem enabled.
+Avoid this by adding the i8259 domain before mapping the parent IRQ,
+such that the i8259 virq numbers become used before the parent interrupt
+controller gets a chance to use any of them.
 
-The series leaves Malta with a significant amount less platform code and
-thus closer to being ready for inclusion in a generic MIPS kernel.
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+---
 
-Applies atop v4.8-rc7.
+Changes in v2: None
 
-Paul Burton (14):
-  irqchip: i8259: Add domain before mapping parent irq
-  irqchip: i8259: Allow platforms to override poll function
-  irqchip: i8259: Remove unused i8259A_irq_pending
-  MIPS: Malta: Allow PCI devices DMA to lower 2GB physical
-  MIPS: Malta: Use all available DDR by default
-  MIPS: Malta: Probe interrupt controllers via DT
-  of/platform: Probe "isa" busses by default
-  MIPS: Malta: Remove custom DT match table
-  MIPS: Malta: Probe RTC via DT
-  MIPS: Malta: Probe pflash via DT
-  MIPS: Malta: Use syscon-reboot driver to reboot
-  MIPS: Malta: Remove custom halt implementation
-  power: reset: Add Intel PIIX4 poweroff driver
-  MIPS: Malta: Use PIIX4 poweroff driver to power down
+ drivers/irqchip/irq-i8259.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- arch/mips/Kconfig                           |   7 +-
- arch/mips/boot/dts/mti/malta.dts            |  99 +++++++++++++++
- arch/mips/configs/malta_defconfig           |   5 +-
- arch/mips/configs/malta_kvm_defconfig       |   5 +-
- arch/mips/configs/malta_kvm_guest_defconfig |   5 +-
- arch/mips/configs/malta_qemu_32r6_defconfig |   3 +
- arch/mips/configs/maltaaprp_defconfig       |   3 +
- arch/mips/configs/maltasmvp_defconfig       |   3 +
- arch/mips/configs/maltasmvp_eva_defconfig   |   3 +
- arch/mips/configs/maltaup_defconfig         |   3 +
- arch/mips/configs/maltaup_xpa_defconfig     |   5 +-
- arch/mips/include/asm/i8259.h               |  12 +-
- arch/mips/mti-malta/Makefile                |   2 -
- arch/mips/mti-malta/malta-dt.c              |  15 ---
- arch/mips/mti-malta/malta-dtshim.c          | 187 +++++++++++++++++++++++++++-
- arch/mips/mti-malta/malta-init.c            |  17 ++-
- arch/mips/mti-malta/malta-int.c             |  96 +-------------
- arch/mips/mti-malta/malta-platform.c        |  65 ----------
- arch/mips/mti-malta/malta-pm.c              |  96 --------------
- arch/mips/mti-malta/malta-reset.c           |  47 -------
- drivers/irqchip/irq-i8259.c                 |  30 ++---
- drivers/of/platform.c                       |   1 +
- drivers/power/reset/Kconfig                 |  10 ++
- drivers/power/reset/Makefile                |   1 +
- drivers/power/reset/piix4-poweroff.c        | 104 ++++++++++++++++
- 25 files changed, 461 insertions(+), 363 deletions(-)
- delete mode 100644 arch/mips/mti-malta/malta-pm.c
- delete mode 100644 arch/mips/mti-malta/malta-reset.c
- create mode 100644 drivers/power/reset/piix4-poweroff.c
-
+diff --git a/drivers/irqchip/irq-i8259.c b/drivers/irqchip/irq-i8259.c
+index 6b304eb..85897fd 100644
+--- a/drivers/irqchip/irq-i8259.c
++++ b/drivers/irqchip/irq-i8259.c
+@@ -370,13 +370,15 @@ int __init i8259_of_init(struct device_node *node, struct device_node *parent)
+ 	struct irq_domain *domain;
+ 	unsigned int parent_irq;
+ 
++	domain = __init_i8259_irqs(node);
++
+ 	parent_irq = irq_of_parse_and_map(node, 0);
+ 	if (!parent_irq) {
+ 		pr_err("Failed to map i8259 parent IRQ\n");
++		irq_domain_remove(domain);
+ 		return -ENODEV;
+ 	}
+ 
+-	domain = __init_i8259_irqs(node);
+ 	irq_set_chained_handler_and_data(parent_irq, i8259_irq_dispatch,
+ 					 domain);
+ 	return 0;
 -- 
 2.9.3

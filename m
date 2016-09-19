@@ -1,67 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Sep 2016 21:38:00 +0200 (CEST)
-Received: from mail-oi0-f50.google.com ([209.85.218.50]:35019 "EHLO
-        mail-oi0-f50.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992036AbcIRThxBe39f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Sep 2016 21:37:53 +0200
-Received: by mail-oi0-f50.google.com with SMTP id w11so170402206oia.2;
-        Sun, 18 Sep 2016 12:37:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Sep 2016 06:39:27 +0200 (CEST)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:35551 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990506AbcISEjVLrtkr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Sep 2016 06:39:21 +0200
+Received: by mail-pf0-f195.google.com with SMTP id 6so3687686pfl.2
+        for <linux-mips@linux-mips.org>; Sun, 18 Sep 2016 21:39:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=iVo2pIWuOVxRvCbt/OCeKPJbPFUkK630sVsLU2fz4Kw=;
-        b=Rp9jzADM/scCOt6ZOjfIDJxJ55kRNihPip+obcjKodWyRrsSB9pMmWv8JKtjq6ussn
-         +PmvjEpN3+BaanjN1DJR/UcUKVJfy2soetDLUjNvBeWPyQvPIWHvZF1v430Ou57RJsfv
-         3Xz+KMMdYPB1Kvo9nCcjxX5Xah6dusiTq0t1EOqtLFesGKabRdUUAlwq4JsdStacZSPO
-         m52DKl++Ubn9ymFUoXKH6IezlgnDvcdafAa/wbvo9Nd9TkBV3afeiSULQ2JolfLcdux+
-         rkg7Lfoxlk/eGinln/22eeTgrQHnqYM7HipgHAWE+4aBiyVhpuRnW3/n0MJVRqxbOpA2
-         J7gQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=I6BYCDWLqjfW78WdAfkdsURSlCFOJuWMWa7BwxBvuuY=;
+        b=iDGgJGOgJFJUhl7Md4O0P90ewR+YVTkK1PI/YNZ27gnt9euVn718hjT78oKFZ3EL4D
+         I2NUhy//u1lDvUCMAKme0Mktaya8JCmZxIf46YZHch6vvM3e8nncxajZbdnUDdMYxfM3
+         oAJ9CPx9jPP3sCKMzYeJ0Le/pUE+hosNOHEmiX3lacuooA1UP5jrZYBDJ7nftnfqIvfI
+         gldcjrbg7M/af1G23eL0Q5dLHcN5ueZt9OwP1RLMUE1jVF9lwAqDYzofe9py7YBbMMGJ
+         U0BdaEQMIJ2k6U5OtZokUvQOXfjBQRAbedYatUFOm3DE3Uog0zFT2Jm71KGkWvOeWeMP
+         WVsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=iVo2pIWuOVxRvCbt/OCeKPJbPFUkK630sVsLU2fz4Kw=;
-        b=EL4CByJTpxB7F1/gIDOPvOdmtQzFxBSwIrqV2Vd8GOEvMrnaZn2UBPBvo9TuOtZys/
-         axpyrQ3XwAXjWfxksMfVw8mQf1d9CDU3XLpUpgfBs5jK0c63wIrf8PCvC6A8bchTQ1MD
-         e6HWQ6/yqCip18WyEFDWGm73cs/PWw6d1HsY4IlYS1jIfFacIfijAYk6R9CM84GQ2Dbt
-         dAqVnqHoJdiQmbidSxHQDWq4S7CPQb6FaBw8dvvlU2S5ajb6zJTiVTwEp3wxuQi+Z1QK
-         qFUodsxM7NX1DRKo9+86aEHWQNiOdpSJxHwdjLsw+XPVtHuTh6lj1WXKdCprtqG3UP8D
-         MGiQ==
-X-Gm-Message-State: AE9vXwPAMpGXDFN3P6IRZgDyg8rB/Jh2VlnjUBILbr0Na//ZtQZO3F8gmI2ekTP9sB0sNQ==
-X-Received: by 10.202.104.224 with SMTP id o93mr4980392oik.82.1474227467105;
-        Sun, 18 Sep 2016 12:37:47 -0700 (PDT)
-Received: from ?IPv6:2001:470:d:73f:d4cf:3fa5:ba12:898b? ([2001:470:d:73f:d4cf:3fa5:ba12:898b])
-        by smtp.googlemail.com with ESMTPSA id y10sm16163016oig.29.2016.09.18.12.37.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 18 Sep 2016 12:37:46 -0700 (PDT)
-Subject: Re: [PATCH v4] MIPS: bcm63xx: let clk_disable() return immediately if
- clk is NULL
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <1474221875-22687-1-git-send-email-yamada.masahiro@socionext.com>
-Cc:     Stephen Boyd <sboyd@codeaurora.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-arm-kernel@lists.infradead.org
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <d70c5d6c-1648-ba19-627f-c5fb374ad112@gmail.com>
-Date:   Sun, 18 Sep 2016 12:37:45 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
-MIME-Version: 1.0
-In-Reply-To: <1474221875-22687-1-git-send-email-yamada.masahiro@socionext.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=I6BYCDWLqjfW78WdAfkdsURSlCFOJuWMWa7BwxBvuuY=;
+        b=cn2jt2jMjYUSDVB3c+z9IL5UCT+YafdXfsUf+b9CnuvErVEkPpdWhaCztBWX4io6Zx
+         wlDRwfA67wxxTVIgLJACABV/8ymNUdkwzXA27xC3ozdtrhU1BlA37LFfuigs9rwWa5UV
+         fdIjjFQQCc08aJl+SdaDm6YrpXLu2RPxv2iueaHUmhOTv/hnKA7eXt//5DmBmPaZzb19
+         8wGxXBbAQeKCuJnupuMMhqn+MvNB6jq+qT4SsfhdSUgNUk97dL5aWJwGuMH4FzMqShdB
+         WfNM7cNOkPOuVjqt/W3rnJw4Qa3ZWO8z1XOoem0YjPCqvNCohabTJiLHDxLMVOOfzugw
+         Uitw==
+X-Gm-Message-State: AE9vXwOEe2npbDoa5HB2h53YnblkA0nWo9VvQ61QvGmvOG9JItEjxI+m1kAyfYKHyS+2Fg==
+X-Received: by 10.98.31.133 with SMTP id l5mr29898908pfj.178.1474259955108;
+        Sun, 18 Sep 2016 21:39:15 -0700 (PDT)
+Received: from localhost.localdomain ([175.111.195.49])
+        by smtp.gmail.com with ESMTPSA id p7sm19598950paa.3.2016.09.18.21.39.11
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 18 Sep 2016 21:39:14 -0700 (PDT)
+From:   Keguang Zhang <keguang.zhang@gmail.com>
+To:     linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: [PATCH V1 0/3] Refactor Loongson1 clock
+Date:   Mon, 19 Sep 2016 12:38:53 +0800
+Message-Id: <1474259936-9657-1-git-send-email-keguang.zhang@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <keguang.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55160
+X-archive-position: 55161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: keguang.zhang@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,15 +63,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 18/09/2016 à 11:04, Masahiro Yamada a écrit :
-> In many of clk_disable() implementations, it is a no-op for a NULL
-> pointer input, but this is one of the exceptions.
-> 
-> Making it treewide consistent will allow clock consumers to call
-> clk_disable() without NULL pointer check.
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+From: Kelvin Cheung <keguang.zhang@gmail.com>
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+This patchset is to refactor Loongson1 clock,
+and update Loongson1B clocks.
+
+This applies on top of clk-next.
+
+Thanks!
+
+Changelog:
+v1:
+   Rebase the patch on clk: ls1x: Migrate to clk_hw based OF
+   and registration APIs.
+
+Kelvin Cheung (3):
+  clk: Loongson1: Refactor Loongson1 clock
+  clk: Loongson1: Update clocks of Loongson1B
+  clk: Loongson1: Make use of GENMASK
+
+ drivers/clk/Makefile                               |  2 +-
+ drivers/clk/loongson1/Makefile                     |  2 +
+ .../clk/{clk-ls1x.c => loongson1/clk-loongson1b.c} | 74 +++++-----------------
+ drivers/clk/loongson1/clk.c                        | 43 +++++++++++++
+ drivers/clk/loongson1/clk.h                        | 19 ++++++
+ 5 files changed, 82 insertions(+), 58 deletions(-)
+ create mode 100644 drivers/clk/loongson1/Makefile
+ rename drivers/clk/{clk-ls1x.c => loongson1/clk-loongson1b.c} (67%)
+ create mode 100644 drivers/clk/loongson1/clk.c
+ create mode 100644 drivers/clk/loongson1/clk.h
+
 -- 
-Florian
+1.9.1

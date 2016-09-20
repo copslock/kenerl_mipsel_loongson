@@ -1,75 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2016 10:55:14 +0200 (CEST)
-Received: from mail7.hitachi.co.jp ([133.145.228.42]:33251 "EHLO
-        mail7.hitachi.co.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991984AbcITIzGGzU00 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Sep 2016 10:55:06 +0200
-Received: from mlsw4.hitachi.co.jp (unknown [133.144.234.166])
-        by mail7.hitachi.co.jp (Postfix) with ESMTP id 59360B1D392;
-        Tue, 20 Sep 2016 17:55:02 +0900 (JST)
-Received: from mfilter6.hitachi.co.jp by mlsw4.hitachi.co.jp (8.13.8/8.13.8) id u8K8t2X7005964; Tue, 20 Sep 2016 17:55:02 +0900
-Received: from vshuts01.hitachi.co.jp (vshuts01.hitachi.co.jp [10.201.6.83])
-        by mfilter6.hitachi.co.jp (Switch-3.3.4/Switch-3.3.4) with ESMTP id u8K8t0n5001842;
-        Tue, 20 Sep 2016 17:55:01 +0900
-Received: from GSjpTKYDCehcs21.service.hitachi.net (unknown [158.212.188.184])
-        by vshuts01.hitachi.co.jp (Postfix) with ESMTP id 407FBF2050;
-        Tue, 20 Sep 2016 17:55:00 +0900 (JST)
-Received: from GSJPTKYDCEMBX31.service.hitachi.net ([169.254.4.162]) by
- GSjpTKYDCehcs21.service.hitachi.net ([158.212.188.184]) with mapi id
- 14.03.0224.002; Tue, 20 Sep 2016 17:54:59 +0900
-From:   =?utf-8?B?5rKz5ZCI6Iux5a6PIC8gS0FXQUnvvIxISURFSElSTw==?= 
-        <hidehiro.kawai.ez@hitachi.com>
-To:     "xlpang@redhat.com" <xlpang@redhat.com>,
-        "'Dave Young'" <dyoung@redhat.com>
-CC:     Andrew Morton <akpm@linux-foundation.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Baoquan He <bhe@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        Toshi Kani <toshi.kani@hpe.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        David Vrabel <david.vrabel@citrix.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Daniel Walker <dwalker@fifo99.com>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>, Vivek Goyal <vgoyal@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Subject: RE: Re: [V4 PATCH 1/2] x86/panic: Replace smp_send_stop() with
- kdump friendly version in panic path
-Thread-Topic: [!]Re: [V4 PATCH 1/2] x86/panic: Replace smp_send_stop() with
- kdump friendly version in panic path
-Thread-Index: AQHSExI690qPSunYvUagy7Zobw6Q86CCBGIg
-Date:   Tue, 20 Sep 2016 08:53:17 +0000
-Deferred-Delivery: Tue, 20 Sep 2016 08:55:00 +0000
-Message-ID: <04EAB7311EE43145B2D3536183D1A84454D0FECC@GSjpTKYDCembx31.service.hitachi.net>
-References: <20160810080946.11028.97686.stgit@sysi4-13.yrl.intra.hitachi.co.jp>
- <20160810080948.11028.15344.stgit@sysi4-13.yrl.intra.hitachi.co.jp>
- <20160812031633.GA2983@dhcp-128-65.nay.redhat.com>
- <04EAB7311EE43145B2D3536183D1A84454CBBABC@GSjpTKYDCembx31.service.hitachi.net>
- <57E0E7EC.2010704@redhat.com>
-In-Reply-To: <57E0E7EC.2010704@redhat.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.198.220.44]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2016 11:42:50 +0200 (CEST)
+Received: from Galois.linutronix.de ([146.0.238.70]:49129 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991984AbcITJmnsgmLC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Sep 2016 11:42:43 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1bmHZY-0001M5-JF; Tue, 20 Sep 2016 11:42:40 +0200
+Date:   Tue, 20 Sep 2016 11:40:18 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>, linux-mips@linux-mips.org,
+        linux-remoteproc@vger.kernel.org, lisa.parratt@imgtec.com,
+        linux-kernel@vger.kernel.org, Marc Zyngier <marc.zyngier@arm.com>,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH v2 1/6] irqchip: mips-gic: Add context saving for
+ MIPS_REMOTEPROC
+In-Reply-To: <1474361249-31064-2-git-send-email-matt.redfearn@imgtec.com>
+Message-ID: <alpine.DEB.2.20.1609201139130.6905@nanos>
+References: <1474361249-31064-1-git-send-email-matt.redfearn@imgtec.com> <1474361249-31064-2-git-send-email-matt.redfearn@imgtec.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-Return-Path: <hidehiro.kawai.ez@hitachi.com>
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55199
+X-archive-position: 55200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hidehiro.kawai.ez@hitachi.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -82,184 +46,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-SGkgWHVubGVpLA0KDQo+IEZyb206IFh1bmxlaSBQYW5nIFttYWlsdG86eHBhbmdAcmVkaGF0LmNv
-bV0NCj4gU2VudDogVHVlc2RheSwgU2VwdGVtYmVyIDIwLCAyMDE2IDQ6NDAgUE0NCj4gT24gMjAx
-Ni8wOC8xNS8gYXQgMTk6MjIsIEhpZGVoaXJvIEthd2FpIHdyb3RlOg0KPiA+IEhpIERhdmUsDQo+
-ID4NCj4gPiBUaGFuayB5b3UgZm9yIHRoZSByZXZpZXcuDQo+ID4NCj4gPj4gRnJvbTogRGF2ZSBZ
-b3VuZyBbbWFpbHRvOmR5b3VuZ0ByZWRoYXQuY29tXQ0KPiA+PiBTZW50OiBGcmlkYXksIEF1Z3Vz
-dCAxMiwgMjAxNiAxMjoxNyBQTQ0KPiA+Pg0KPiA+PiBUaGFua3MgZm9yIHRoZSB1cGRhdGUuDQo+
-ID4+IE9uIDA4LzEwLzE2IGF0IDA1OjA5cG0sIEhpZGVoaXJvIEthd2FpIHdyb3RlOg0KPiA+Pj4g
-RGFuaWVsIFdhbGtlciByZXBvcnRlZCBwcm9ibGVtcyB3aGljaCBoYXBwZW5zIHdoZW4NCj4gPj4+
-IGNyYXNoX2tleGVjX3Bvc3Rfbm90aWZpZXJzIGtlcm5lbCBvcHRpb24gaXMgZW5hYmxlZA0KPiA+
-Pj4gKGh0dHBzOi8vbGttbC5vcmcvbGttbC8yMDE1LzYvMjQvNDQpLg0KPiA+Pj4NCj4gPj4+IElu
-IHRoYXQgY2FzZSwgc21wX3NlbmRfc3RvcCgpIGlzIGNhbGxlZCBiZWZvcmUgZW50ZXJpbmcga2R1
-bXAgcm91dGluZXMNCj4gPj4+IHdoaWNoIGFzc3VtZSBvdGhlciBDUFVzIGFyZSBzdGlsbCBvbmxp
-bmUuICBBcyB0aGUgcmVzdWx0LCBmb3IgeDg2LA0KPiA+Pj4ga2R1bXAgcm91dGluZXMgZmFpbCB0
-byBzYXZlIG90aGVyIENQVXMnIHJlZ2lzdGVycyAgYW5kIGRpc2FibGUNCj4gPj4+IHZpcnR1YWxp
-emF0aW9uIGV4dGVuc2lvbnMuDQo+ID4+IFNlZW1zIHlvdSBzaW1wbGlmaWVkIHRoZSBjaGFuZ2Vs
-b2csIGJ1dCBJIHRoaW5rIGEgbGl0dGxlIG1vcmUgZGV0YWlscw0KPiA+PiB3aWxsIGJlIGhlbHBm
-dWwgdG8gdW5kZXJzdGFuZCB0aGUgcGF0Y2guIFlvdSBrbm93IHNvbWV0aW1lcyBsa21sLm9yZw0K
-PiA+PiBkb2VzIG5vdCB3b3JrIHdlbGwuDQo+ID4gU28sIEknbGwgdHJ5IGFub3RoZXIgYXJjaGl2
-ZXMgd2hlbiBJIHBvc3QgcGF0Y2ggc2V0IG5leHQgdGltZS4NCj4gDQo+IEhpIEhpZGVoaXJvIEth
-d2FpLA0KPiANCj4gV2hhdCdzIHRoZSBzdGF0dXMgb2YgdGhpcyBwYXRjaCBzZXQsIGFyZSB5b3Ug
-Z29pbmcgdG8gc2VuZCBhbiB1cGRhdGVkIHZlcnNpb24/DQoNClNvcnJ5LCBJIG1pc3VuZGVyc3Rv
-b2Qgd2hhdCBEYXZlIHNhaWQsIGFuZCBJIHRob3VnaHQgSSBkb24ndA0KbmVlZCB0byByZXZpc2Ug
-dGhlIHBhdGNoIHNldC4NCg0KQ3VycmVudGx5LCB0aGlzIHBhdGNoIHNldCBpcyBpbiAtbW0sIHRo
-ZW4gLW5leHQgdHJlZS4NCldoYXQgSSBuZWVkIHRvIGZpeCBpcyBvbmx5IGNvbW1pdCBkZXNjcmlw
-dGlvbnMsIHNvIEknbSBnb2luZyB0bw0KcG9zdCByZXZpc2VkIGRlc2NyaXB0aW9ucyBhcyByZXBs
-aWVzIHRvIHRoaXMgdGhyZWFkLCBhbmQgdGhlbg0KcmVxdWVzdCB0byBBbmRyZXcgdG8gcmVwbGFj
-ZSB0aGVtIGlmIHRoZXJlIGlzIG5vIG9iamVjdGlvbi4NCihvciBzaG91bGQgSSByZXNlbmQgdGhl
-IHdob2xlIHBhdGNoIHNldD8pDQoNClJlZ2FyZHMsDQpIaWRlaGlybyBLYXdhaQ0KDQo+ID4+PiBU
-byBmaXggdGhpcyBwcm9ibGVtLCBjYWxsIGEgbmV3IGtkdW1wIGZyaWVuZGx5IGZ1bmN0aW9uLA0K
-PiA+Pj4gY3Jhc2hfc21wX3NlbmRfc3RvcCgpLCBpbnN0ZWFkIG9mIHRoZSBzbXBfc2VuZF9zdG9w
-KCkgd2hlbg0KPiA+Pj4gY3Jhc2hfa2V4ZWNfcG9zdF9ub3RpZmllcnMgaXMgZW5hYmxlZC4gIGNy
-YXNoX3NtcF9zZW5kX3N0b3AoKSBpcyBhDQo+ID4+PiB3ZWFrIGZ1bmN0aW9uLCBhbmQgaXQganVz
-dCBjYWxsIHNtcF9zZW5kX3N0b3AoKS4gIEFyY2hpdGVjdHVyZQ0KPiA+Pj4gY29kZXMgc2hvdWxk
-IG92ZXJyaWRlIGl0IHNvIHRoYXQga2R1bXAgY2FuIHdvcmsgYXBwcm9wcmlhdGVseS4NCj4gPj4+
-IFRoaXMgcGF0Y2ggb25seSBwcm92aWRlcyB4ODYtc3BlY2lmaWMgdmVyc2lvbi4NCj4gPj4+DQo+
-ID4+PiBGb3IgWGVuJ3MgUFYga2VybmVsLCBqdXN0IGtlZXAgdGhlIGN1cnJlbnQgYmVoYXZpb3Iu
-DQo+ID4+IENvdWxkIHlvdSBleHBsYWluIGEgYml0IGFib3V0IGFib3ZlIFhlbiBQViBrZXJuZWwg
-YmVoYXZpb3I/DQo+ID4+DQo+ID4+IEJUVywgdGhpcyB2ZXJzaW9uIGxvb2tzIGJldHRlciwgIEkg
-dGhpbmsgSSdtIGZpbmUgd2l0aCB0aGlzIHZlcnNpb24NCj4gPj4gYmVzaWRlcyBvZiB0aGUgcXVl
-c3Rpb25zIGFib3V0IGNoYW5nZWxvZy4NCj4gPiBBcyBmb3IgRG9tMCBrZXJuZWwsIGl0IGRvZXNu
-J3QgdXNlIGNyYXNoX2tleGVjIHJvdXRpbmVzLCBhbmQNCj4gPiBpdCByZWxpZXMgb24gcGFuaWMg
-bm90aWZpZXIgY2hhaW4uICBBdCB0aGUgZW5kIG9mIHRoZSBjaGFpbiwNCj4gPiB4ZW5fcGFuaWNf
-ZXZlbnQgaXMgY2FsbGVkLCBhbmQgaXQgaXNzdWVzIGEgaHlwZXJjYWxsIHdoaWNoDQo+ID4gcmVx
-dWVzdHMgSHlwZXJ2aXNvciB0byBleGVjdXRlIGtkdW1wLiAgVGhpcyBtZWFucyB3aGV0aGVyDQo+
-ID4gY3Jhc2hfa2V4ZWNfcGFuaWNfbm90aWZpZXJzIGlzIHNldCBvciBub3QsIHBhbmljIG5vdGlm
-aWVycw0KPiA+IGFyZSBjYWxsZWQgYWZ0ZXIgc21wX3NlbmRfc3RvcC4gIEV2ZW4gaWYgd2Ugc2F2
-ZSByZWdpc3RlcnMNCj4gPiBpbiBEb20wIGtlcm5lbCwgdGhleSBzZWVtIHRvIGJlIGlnbm9yZWQg
-KEh5cGVydmlzb3IgaXMgcmVzcG9uc2libGUNCj4gPiBmb3IgdGhhdCkuICBUaGlzIGlzIHdoeSBJ
-IGtlcHQgdGhlIGN1cnJlbnQgYmVoYXZpb3IgZm9yIFhlbi4NCj4gPg0KPiA+IEZvciBQViBEb21V
-IGtlcm5lbCwga2R1bXAgaXMgbm90IHN1cHBvcnRlZC4gIEZvciBQViBIVk0NCj4gPiBEb21VLCBJ
-J20gbm90IHN1cmUgd2hhdCB3aWxsIGhhcHBlbiBvbiBwYW5pYyBiZWNhdXNlIEkNCj4gPiBjb3Vs
-ZG4ndCBib290IFBWIEhWTSBEb21VIGFuZCB0ZXN0IGl0LiAgQnV0IEkgdGhpbmsgaXQgd2lsbA0K
-PiA+IHdvcmsgc2ltaWxhcmx5IHRvIGJhcmVtZXRhbCBrZXJuZWxzIHdpdGggZXh0cmEgY2xlYW51
-cHMNCj4gPiBmb3IgSHlwZXJ2aXNvci4NCj4gPg0KPiA+IEJlc3QgcmVnYXJkcywNCj4gPg0KPiA+
-IEhpZGVoaXJvIEthd2FpDQo+ID4NCj4gPj4+IENoYW5nZXMgaW4gVjQ6DQo+ID4+PiAtIEtlZXAg
-dG8gdXNlIHNtcF9zZW5kX3N0b3AgaWYgY3Jhc2hfa2V4ZWNfcG9zdF9ub3RpZmllcnMgaXMgbm90
-IHNldA0KPiA+Pj4gLSBSZW5hbWUgcGFuaWNfc21wX3NlbmRfc3RvcCB0byBjcmFzaF9zbXBfc2Vu
-ZF9zdG9wDQo+ID4+PiAtIERvbid0IGNoYW5nZSB0aGUgYmVoYXZpb3IgZm9yIFhlbidzIFBWIGtl
-cm5lbA0KPiA+Pj4NCj4gPj4+IENoYW5nZXMgaW4gVjM6DQo+ID4+PiAtIFJldmlzZSBjb21tZW50
-cywgZGVzY3JpcHRpb24sIGFuZCBzeW1ib2wgbmFtZXMNCj4gPj4+DQo+ID4+PiBDaGFuZ2VzIGlu
-IFYyOg0KPiA+Pj4gLSBSZXBsYWNlIHNtcF9zZW5kX3N0b3AoKSBjYWxsIHdpdGggY3Jhc2hfa2V4
-ZWMgdmVyc2lvbiB3aGljaA0KPiA+Pj4gICBzYXZlcyBjcHUgc3RhdGVzIGFuZCBjbGVhbnMgdXAg
-Vk1YL1NWTQ0KPiA+Pj4gLSBEcm9wIGEgZml4IGZvciBQcm9ibGVtIDEgYXQgdGhpcyBtb21lbnQN
-Cj4gPj4+DQo+ID4+PiBSZXBvcnRlZC1ieTogRGFuaWVsIFdhbGtlciA8ZHdhbGtlckBmaWZvOTku
-Y29tPg0KPiA+Pj4gRml4ZXM6IGYwNmU1MTUzZjRhZSAoa2VybmVsL3BhbmljLmM6IGFkZCAiY3Jh
-c2hfa2V4ZWNfcG9zdF9ub3RpZmllcnMiIG9wdGlvbikNCj4gPj4+IFNpZ25lZC1vZmYtYnk6IEhp
-ZGVoaXJvIEthd2FpIDxoaWRlaGlyby5rYXdhaS5lekBoaXRhY2hpLmNvbT4NCj4gPj4+IENjOiBE
-YXZlIFlvdW5nIDxkeW91bmdAcmVkaGF0LmNvbT4NCj4gPj4+IENjOiBCYW9xdWFuIEhlIDxiaGVA
-cmVkaGF0LmNvbT4NCj4gPj4+IENjOiBWaXZlayBHb3lhbCA8dmdveWFsQHJlZGhhdC5jb20+DQo+
-ID4+PiBDYzogRXJpYyBCaWVkZXJtYW4gPGViaWVkZXJtQHhtaXNzaW9uLmNvbT4NCj4gPj4+IENj
-OiBNYXNhbWkgSGlyYW1hdHN1IDxtaGlyYW1hdEBrZXJuZWwub3JnPg0KPiA+Pj4gQ2M6IERhbmll
-bCBXYWxrZXIgPGR3YWxrZXJAZmlmbzk5LmNvbT4NCj4gPj4+IENjOiBYdW5sZWkgUGFuZyA8eHBh
-bmdAcmVkaGF0LmNvbT4NCj4gPj4+IENjOiBUaG9tYXMgR2xlaXhuZXIgPHRnbHhAbGludXRyb25p
-eC5kZT4NCj4gPj4+IENjOiBJbmdvIE1vbG5hciA8bWluZ29AcmVkaGF0LmNvbT4NCj4gPj4+IENj
-OiAiSC4gUGV0ZXIgQW52aW4iIDxocGFAenl0b3IuY29tPg0KPiA+Pj4gQ2M6IEJvcmlzbGF2IFBl
-dGtvdiA8YnBAc3VzZS5kZT4NCj4gPj4+IENjOiBEYXZpZCBWcmFiZWwgPGRhdmlkLnZyYWJlbEBj
-aXRyaXguY29tPg0KPiA+Pj4gQ2M6IFRvc2hpIEthbmkgPHRvc2hpLmthbmlAaHBlLmNvbT4NCj4g
-Pj4+IENjOiBBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnPg0KPiA+Pj4g
-LS0tDQo+ID4+PiAgYXJjaC94ODYvaW5jbHVkZS9hc20va2V4ZWMuaCB8ICAgIDEgKw0KPiA+Pj4g
-IGFyY2gveDg2L2luY2x1ZGUvYXNtL3NtcC5oICAgfCAgICAxICsNCj4gPj4+ICBhcmNoL3g4Ni9r
-ZXJuZWwvY3Jhc2guYyAgICAgIHwgICAyMiArKysrKysrKysrKysrKysrKy0tLQ0KPiA+Pj4gIGFy
-Y2gveDg2L2tlcm5lbC9zbXAuYyAgICAgICAgfCAgICA1ICsrKysNCj4gPj4+ICBrZXJuZWwvcGFu
-aWMuYyAgICAgICAgICAgICAgIHwgICA0NyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKystLS0tLS0NCj4gPj4+ICA1IGZpbGVzIGNoYW5nZWQsIDY2IGluc2VydGlvbnMoKyksIDEw
-IGRlbGV0aW9ucygtKQ0KPiA+Pj4NCj4gPj4+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni9pbmNsdWRl
-L2FzbS9rZXhlYy5oIGIvYXJjaC94ODYvaW5jbHVkZS9hc20va2V4ZWMuaA0KPiA+Pj4gaW5kZXgg
-ZDI0MzRjMS4uMjgyNjMwZSAxMDA2NDQNCj4gPj4+IC0tLSBhL2FyY2gveDg2L2luY2x1ZGUvYXNt
-L2tleGVjLmgNCj4gPj4+ICsrKyBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL2tleGVjLmgNCj4gPj4+
-IEBAIC0yMTAsNiArMjEwLDcgQEAgc3RydWN0IGtleGVjX2VudHJ5NjRfcmVncyB7DQo+ID4+Pg0K
-PiA+Pj4gIHR5cGVkZWYgdm9pZCBjcmFzaF92bWNsZWFyX2ZuKHZvaWQpOw0KPiA+Pj4gIGV4dGVy
-biBjcmFzaF92bWNsZWFyX2ZuIF9fcmN1ICpjcmFzaF92bWNsZWFyX2xvYWRlZF92bWNzczsNCj4g
-Pj4+ICtleHRlcm4gdm9pZCBrZHVtcF9ubWlfc2hvb3Rkb3duX2NwdXModm9pZCk7DQo+ID4+Pg0K
-PiA+Pj4gICNlbmRpZiAvKiBfX0FTU0VNQkxZX18gKi8NCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0
-IGEvYXJjaC94ODYvaW5jbHVkZS9hc20vc21wLmggYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9zbXAu
-aA0KPiA+Pj4gaW5kZXggZWJkMGMxNi4uZjcwOTg5YyAxMDA2NDQNCj4gPj4+IC0tLSBhL2FyY2gv
-eDg2L2luY2x1ZGUvYXNtL3NtcC5oDQo+ID4+PiArKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9z
-bXAuaA0KPiA+Pj4gQEAgLTUwLDYgKzUwLDcgQEAgc3RydWN0IHNtcF9vcHMgew0KPiA+Pj4gIAl2
-b2lkICgqc21wX2NwdXNfZG9uZSkodW5zaWduZWQgbWF4X2NwdXMpOw0KPiA+Pj4NCj4gPj4+ICAJ
-dm9pZCAoKnN0b3Bfb3RoZXJfY3B1cykoaW50IHdhaXQpOw0KPiA+Pj4gKwl2b2lkICgqY3Jhc2hf
-c3RvcF9vdGhlcl9jcHVzKSh2b2lkKTsNCj4gPj4+ICAJdm9pZCAoKnNtcF9zZW5kX3Jlc2NoZWR1
-bGUpKGludCBjcHUpOw0KPiA+Pj4NCj4gPj4+ICAJaW50ICgqY3B1X3VwKSh1bnNpZ25lZCBjcHUs
-IHN0cnVjdCB0YXNrX3N0cnVjdCAqdGlkbGUpOw0KPiA+Pj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2
-L2tlcm5lbC9jcmFzaC5jIGIvYXJjaC94ODYva2VybmVsL2NyYXNoLmMNCj4gPj4+IGluZGV4IDk2
-MTZjZjcuLjY1MDgzMGUgMTAwNjQ0DQo+ID4+PiAtLS0gYS9hcmNoL3g4Ni9rZXJuZWwvY3Jhc2gu
-Yw0KPiA+Pj4gKysrIGIvYXJjaC94ODYva2VybmVsL2NyYXNoLmMNCj4gPj4+IEBAIC0xMzMsMTUg
-KzEzMywzMSBAQCBzdGF0aWMgdm9pZCBrZHVtcF9ubWlfY2FsbGJhY2soaW50IGNwdSwgc3RydWN0
-IHB0X3JlZ3MgKnJlZ3MpDQo+ID4+PiAgCWRpc2FibGVfbG9jYWxfQVBJQygpOw0KPiA+Pj4gIH0N
-Cj4gPj4+DQo+ID4+PiAtc3RhdGljIHZvaWQga2R1bXBfbm1pX3Nob290ZG93bl9jcHVzKHZvaWQp
-DQo+ID4+PiArdm9pZCBrZHVtcF9ubWlfc2hvb3Rkb3duX2NwdXModm9pZCkNCj4gPj4+ICB7DQo+
-ID4+PiAgCW5taV9zaG9vdGRvd25fY3B1cyhrZHVtcF9ubWlfY2FsbGJhY2spOw0KPiA+Pj4NCj4g
-Pj4+ICAJZGlzYWJsZV9sb2NhbF9BUElDKCk7DQo+ID4+PiAgfQ0KPiA+Pj4NCj4gPj4+ICsvKiBP
-dmVycmlkZSB0aGUgd2VhayBmdW5jdGlvbiBpbiBrZXJuZWwvcGFuaWMuYyAqLw0KPiA+Pj4gK3Zv
-aWQgY3Jhc2hfc21wX3NlbmRfc3RvcCh2b2lkKQ0KPiA+Pj4gK3sNCj4gPj4+ICsJc3RhdGljIGlu
-dCBjcHVzX3N0b3BwZWQ7DQo+ID4+PiArDQo+ID4+PiArCWlmIChjcHVzX3N0b3BwZWQpDQo+ID4+
-PiArCQlyZXR1cm47DQo+ID4+PiArDQo+ID4+PiArCWlmIChzbXBfb3BzLmNyYXNoX3N0b3Bfb3Ro
-ZXJfY3B1cykNCj4gPj4+ICsJCXNtcF9vcHMuY3Jhc2hfc3RvcF9vdGhlcl9jcHVzKCk7DQo+ID4+
-PiArCWVsc2UNCj4gPj4+ICsJCXNtcF9zZW5kX3N0b3AoKTsNCj4gPj4+ICsNCj4gPj4+ICsJY3B1
-c19zdG9wcGVkID0gMTsNCj4gPj4+ICt9DQo+ID4+PiArDQo+ID4+PiAgI2Vsc2UNCj4gPj4+IC1z
-dGF0aWMgdm9pZCBrZHVtcF9ubWlfc2hvb3Rkb3duX2NwdXModm9pZCkNCj4gPj4+ICt2b2lkIGNy
-YXNoX3NtcF9zZW5kX3N0b3Aodm9pZCkNCj4gPj4+ICB7DQo+ID4+PiAgCS8qIFRoZXJlIGFyZSBu
-byBjcHVzIHRvIHNob290ZG93biAqLw0KPiA+Pj4gIH0NCj4gPj4+IEBAIC0xNjAsNyArMTc2LDcg
-QEAgdm9pZCBuYXRpdmVfbWFjaGluZV9jcmFzaF9zaHV0ZG93bihzdHJ1Y3QgcHRfcmVncyAqcmVn
-cykNCj4gPj4+ICAJLyogVGhlIGtlcm5lbCBpcyBicm9rZW4gc28gZGlzYWJsZSBpbnRlcnJ1cHRz
-ICovDQo+ID4+PiAgCWxvY2FsX2lycV9kaXNhYmxlKCk7DQo+ID4+Pg0KPiA+Pj4gLQlrZHVtcF9u
-bWlfc2hvb3Rkb3duX2NwdXMoKTsNCj4gPj4+ICsJY3Jhc2hfc21wX3NlbmRfc3RvcCgpOw0KPiA+
-Pj4NCj4gPj4+ICAJLyoNCj4gPj4+ICAJICogVk1DTEVBUiBWTUNTcyBsb2FkZWQgb24gdGhpcyBj
-cHUgaWYgbmVlZGVkLg0KPiA+Pj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L2tlcm5lbC9zbXAuYyBi
-L2FyY2gveDg2L2tlcm5lbC9zbXAuYw0KPiA+Pj4gaW5kZXggNjU4Nzc3Yy4uNjhmOGNjMiAxMDA2
-NDQNCj4gPj4+IC0tLSBhL2FyY2gveDg2L2tlcm5lbC9zbXAuYw0KPiA+Pj4gKysrIGIvYXJjaC94
-ODYva2VybmVsL3NtcC5jDQo+ID4+PiBAQCAtMzIsNiArMzIsOCBAQA0KPiA+Pj4gICNpbmNsdWRl
-IDxhc20vbm1pLmg+DQo+ID4+PiAgI2luY2x1ZGUgPGFzbS9tY2UuaD4NCj4gPj4+ICAjaW5jbHVk
-ZSA8YXNtL3RyYWNlL2lycV92ZWN0b3JzLmg+DQo+ID4+PiArI2luY2x1ZGUgPGFzbS9rZXhlYy5o
-Pg0KPiA+Pj4gKw0KPiA+Pj4gIC8qDQo+ID4+PiAgICoJU29tZSBub3RlcyBvbiB4ODYgcHJvY2Vz
-c29yIGJ1Z3MgYWZmZWN0aW5nIFNNUCBvcGVyYXRpb246DQo+ID4+PiAgICoNCj4gPj4+IEBAIC0z
-NDIsNiArMzQ0LDkgQEAgc3RydWN0IHNtcF9vcHMgc21wX29wcyA9IHsNCj4gPj4+ICAJLnNtcF9j
-cHVzX2RvbmUJCT0gbmF0aXZlX3NtcF9jcHVzX2RvbmUsDQo+ID4+Pg0KPiA+Pj4gIAkuc3RvcF9v
-dGhlcl9jcHVzCT0gbmF0aXZlX3N0b3Bfb3RoZXJfY3B1cywNCj4gPj4+ICsjaWYgZGVmaW5lZChD
-T05GSUdfS0VYRUNfQ09SRSkNCj4gPj4+ICsJLmNyYXNoX3N0b3Bfb3RoZXJfY3B1cwk9IGtkdW1w
-X25taV9zaG9vdGRvd25fY3B1cywNCj4gPj4+ICsjZW5kaWYNCj4gPj4+ICAJLnNtcF9zZW5kX3Jl
-c2NoZWR1bGUJPSBuYXRpdmVfc21wX3NlbmRfcmVzY2hlZHVsZSwNCj4gPj4+DQo+ID4+PiAgCS5j
-cHVfdXAJCQk9IG5hdGl2ZV9jcHVfdXAsDQo+ID4+PiBkaWZmIC0tZ2l0IGEva2VybmVsL3Bhbmlj
-LmMgYi9rZXJuZWwvcGFuaWMuYw0KPiA+Pj4gaW5kZXggY2E4Y2VhMS4uZTY0ODBlMiAxMDA2NDQN
-Cj4gPj4+IC0tLSBhL2tlcm5lbC9wYW5pYy5jDQo+ID4+PiArKysgYi9rZXJuZWwvcGFuaWMuYw0K
-PiA+Pj4gQEAgLTcxLDYgKzcxLDMyIEBAIHZvaWQgX193ZWFrIG5taV9wYW5pY19zZWxmX3N0b3Ao
-c3RydWN0IHB0X3JlZ3MgKnJlZ3MpDQo+ID4+PiAgCXBhbmljX3NtcF9zZWxmX3N0b3AoKTsNCj4g
-Pj4+ICB9DQo+ID4+Pg0KPiA+Pj4gKy8qDQo+ID4+PiArICogU3RvcCBvdGhlciBDUFVzIGluIHBh
-bmljLiAgQXJjaGl0ZWN0dXJlIGRlcGVuZGVudCBjb2RlIG1heSBvdmVycmlkZSB0aGlzDQo+ID4+
-PiArICogd2l0aCBtb3JlIHN1aXRhYmxlIHZlcnNpb24uICBGb3IgZXhhbXBsZSwgaWYgdGhlIGFy
-Y2hpdGVjdHVyZSBzdXBwb3J0cw0KPiA+Pj4gKyAqIGNyYXNoIGR1bXAsIGl0IHNob3VsZCBzYXZl
-IHJlZ2lzdGVycyBvZiBlYWNoIHN0b3BwZWQgQ1BVIGFuZCBkaXNhYmxlDQo+ID4+PiArICogcGVy
-LUNQVSBmZWF0dXJlcyBzdWNoIGFzIHZpcnR1YWxpemF0aW9uIGV4dGVuc2lvbnMuDQo+ID4+PiAr
-ICovDQo+ID4+PiArdm9pZCBfX3dlYWsgY3Jhc2hfc21wX3NlbmRfc3RvcCh2b2lkKQ0KPiA+Pj4g
-K3sNCj4gPj4+ICsJc3RhdGljIGludCBjcHVzX3N0b3BwZWQ7DQo+ID4+PiArDQo+ID4+PiArCS8q
-DQo+ID4+PiArCSAqIFRoaXMgZnVuY3Rpb24gY2FuIGJlIGNhbGxlZCB0d2ljZSBpbiBwYW5pYyBw
-YXRoLCBidXQgb2J2aW91c2x5DQo+ID4+PiArCSAqIHdlIGV4ZWN1dGUgdGhpcyBvbmx5IG9uY2Uu
-DQo+ID4+PiArCSAqLw0KPiA+Pj4gKwlpZiAoY3B1c19zdG9wcGVkKQ0KPiA+Pj4gKwkJcmV0dXJu
-Ow0KPiA+Pj4gKw0KPiA+Pj4gKwkvKg0KPiA+Pj4gKwkgKiBOb3RlIHNtcF9zZW5kX3N0b3AgaXMg
-dGhlIHVzdWFsIHNtcCBzaHV0ZG93biBmdW5jdGlvbiwgd2hpY2gNCj4gPj4+ICsJICogdW5mb3J0
-dW5hdGVseSBtZWFucyBpdCBtYXkgbm90IGJlIGhhcmRlbmVkIHRvIHdvcmsgaW4gYSBwYW5pYw0K
-PiA+Pj4gKwkgKiBzaXR1YXRpb24uDQo+ID4+PiArCSAqLw0KPiA+Pj4gKwlzbXBfc2VuZF9zdG9w
-KCk7DQo+ID4+PiArCWNwdXNfc3RvcHBlZCA9IDE7DQo+ID4+PiArfQ0KPiA+Pj4gKw0KPiA+Pj4g
-IGF0b21pY190IHBhbmljX2NwdSA9IEFUT01JQ19JTklUKFBBTklDX0NQVV9JTlZBTElEKTsNCj4g
-Pj4+DQo+ID4+PiAgLyoNCj4gPj4+IEBAIC0xNjQsMTQgKzE5MCwyMSBAQCB2b2lkIHBhbmljKGNv
-bnN0IGNoYXIgKmZtdCwgLi4uKQ0KPiA+Pj4gIAlpZiAoIV9jcmFzaF9rZXhlY19wb3N0X25vdGlm
-aWVycykgew0KPiA+Pj4gIAkJcHJpbnRrX25taV9mbHVzaF9vbl9wYW5pYygpOw0KPiA+Pj4gIAkJ
-X19jcmFzaF9rZXhlYyhOVUxMKTsNCj4gPj4+IC0JfQ0KPiA+Pj4NCj4gPj4+IC0JLyoNCj4gPj4+
-IC0JICogTm90ZSBzbXBfc2VuZF9zdG9wIGlzIHRoZSB1c3VhbCBzbXAgc2h1dGRvd24gZnVuY3Rp
-b24sIHdoaWNoDQo+ID4+PiAtCSAqIHVuZm9ydHVuYXRlbHkgbWVhbnMgaXQgbWF5IG5vdCBiZSBo
-YXJkZW5lZCB0byB3b3JrIGluIGEgcGFuaWMNCj4gPj4+IC0JICogc2l0dWF0aW9uLg0KPiA+Pj4g
-LQkgKi8NCj4gPj4+IC0Jc21wX3NlbmRfc3RvcCgpOw0KPiA+Pj4gKwkJLyoNCj4gPj4+ICsJCSAq
-IE5vdGUgc21wX3NlbmRfc3RvcCBpcyB0aGUgdXN1YWwgc21wIHNodXRkb3duIGZ1bmN0aW9uLCB3
-aGljaA0KPiA+Pj4gKwkJICogdW5mb3J0dW5hdGVseSBtZWFucyBpdCBtYXkgbm90IGJlIGhhcmRl
-bmVkIHRvIHdvcmsgaW4gYQ0KPiA+Pj4gKwkJICogcGFuaWMgc2l0dWF0aW9uLg0KPiA+Pj4gKwkJ
-ICovDQo+ID4+PiArCQlzbXBfc2VuZF9zdG9wKCk7DQo+ID4+PiArCX0gZWxzZSB7DQo+ID4+PiAr
-CQkvKg0KPiA+Pj4gKwkJICogSWYgd2Ugd2FudCB0byBkbyBjcmFzaCBkdW1wIGFmdGVyIG5vdGlm
-aWVyIGNhbGxzIGFuZA0KPiA+Pj4gKwkJICoga21zZ19kdW1wLCB3ZSB3aWxsIG5lZWQgYXJjaGl0
-ZWN0dXJlIGRlcGVuZGVudCBleHRyYQ0KPiA+Pj4gKwkJICogd29ya3MgaW4gYWRkaXRpb24gdG8g
-c3RvcHBpbmcgb3RoZXIgQ1BVcy4NCj4gPj4+ICsJCSAqLw0KPiA+Pj4gKwkJY3Jhc2hfc21wX3Nl
-bmRfc3RvcCgpOw0KPiA+Pj4gKwl9DQo+ID4+Pg0KPiA+Pj4gIAkvKg0KPiA+Pj4gIAkgKiBSdW4g
-YW55IHBhbmljIGhhbmRsZXJzLCBpbmNsdWRpbmcgdGhvc2UgdGhhdCBtaWdodCBuZWVkIHRvDQo+
-ID4+Pg0KPiA+Pj4NCg0K
+On Tue, 20 Sep 2016, Matt Redfearn wrote:
+> +/*
+> + * The MIPS remote processor driver allows non-Linux firmware to take control
+> + * of and execute on one of the systems VPEs. If that VPE is brought back under
+> + * Linux, it is necessary to ensure that all GIC interrupts are routed and
+> + * masked as Linux expects them, as the firmware can have done anything it
+> + * likes with the GIC configuration (hopefully just for that VPEs local
+> + * interrupt sources, but allow for shared external interrupts as well).
+> + */
+> +static int gic_cpu_notify(struct notifier_block *nfb, unsigned long action,
+> +			       void *hcpu)
+> +{
+> +	unsigned int cpu = mips_cm_vp_id((unsigned long)hcpu);
+> +
+> +	switch (action) {
+> +	case CPU_UP_PREPARE:
+> +	case CPU_DOWN_FAILED:
+> +		gic_restore_shared();
+> +		gic_restore_local(cpu);
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return NOTIFY_OK;
+> +}
+
+Please use the new state machine based infrastructure.
+
+Thanks,
+
+	tglx

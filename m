@@ -1,40 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2016 10:50:20 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31477 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992781AbcITIr5hQwI0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Sep 2016 10:47:57 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 9A48831388F8;
-        Tue, 20 Sep 2016 09:47:37 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 20 Sep 2016 09:47:39 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     <linux-mips@linux-mips.org>, <linux-remoteproc@vger.kernel.org>,
-        <lisa.parratt@imgtec.com>, <linux-kernel@vger.kernel.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>
-Subject: [PATCH v2 5/6] remoteproc/MIPS: Add a remoteproc driver for MIPS
-Date:   Tue, 20 Sep 2016 09:47:28 +0100
-Message-ID: <1474361249-31064-6-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1474361249-31064-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1474361249-31064-1-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2016 10:55:14 +0200 (CEST)
+Received: from mail7.hitachi.co.jp ([133.145.228.42]:33251 "EHLO
+        mail7.hitachi.co.jp" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991984AbcITIzGGzU00 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Sep 2016 10:55:06 +0200
+Received: from mlsw4.hitachi.co.jp (unknown [133.144.234.166])
+        by mail7.hitachi.co.jp (Postfix) with ESMTP id 59360B1D392;
+        Tue, 20 Sep 2016 17:55:02 +0900 (JST)
+Received: from mfilter6.hitachi.co.jp by mlsw4.hitachi.co.jp (8.13.8/8.13.8) id u8K8t2X7005964; Tue, 20 Sep 2016 17:55:02 +0900
+Received: from vshuts01.hitachi.co.jp (vshuts01.hitachi.co.jp [10.201.6.83])
+        by mfilter6.hitachi.co.jp (Switch-3.3.4/Switch-3.3.4) with ESMTP id u8K8t0n5001842;
+        Tue, 20 Sep 2016 17:55:01 +0900
+Received: from GSjpTKYDCehcs21.service.hitachi.net (unknown [158.212.188.184])
+        by vshuts01.hitachi.co.jp (Postfix) with ESMTP id 407FBF2050;
+        Tue, 20 Sep 2016 17:55:00 +0900 (JST)
+Received: from GSJPTKYDCEMBX31.service.hitachi.net ([169.254.4.162]) by
+ GSjpTKYDCehcs21.service.hitachi.net ([158.212.188.184]) with mapi id
+ 14.03.0224.002; Tue, 20 Sep 2016 17:54:59 +0900
+From:   =?utf-8?B?5rKz5ZCI6Iux5a6PIC8gS0FXQUnvvIxISURFSElSTw==?= 
+        <hidehiro.kawai.ez@hitachi.com>
+To:     "xlpang@redhat.com" <xlpang@redhat.com>,
+        "'Dave Young'" <dyoung@redhat.com>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Baoquan He <bhe@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        Toshi Kani <toshi.kani@hpe.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        David Vrabel <david.vrabel@citrix.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Daniel Walker <dwalker@fifo99.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, Vivek Goyal <vgoyal@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+Subject: RE: Re: [V4 PATCH 1/2] x86/panic: Replace smp_send_stop() with
+ kdump friendly version in panic path
+Thread-Topic: [!]Re: [V4 PATCH 1/2] x86/panic: Replace smp_send_stop() with
+ kdump friendly version in panic path
+Thread-Index: AQHSExI690qPSunYvUagy7Zobw6Q86CCBGIg
+Date:   Tue, 20 Sep 2016 08:53:17 +0000
+Deferred-Delivery: Tue, 20 Sep 2016 08:55:00 +0000
+Message-ID: <04EAB7311EE43145B2D3536183D1A84454D0FECC@GSjpTKYDCembx31.service.hitachi.net>
+References: <20160810080946.11028.97686.stgit@sysi4-13.yrl.intra.hitachi.co.jp>
+ <20160810080948.11028.15344.stgit@sysi4-13.yrl.intra.hitachi.co.jp>
+ <20160812031633.GA2983@dhcp-128-65.nay.redhat.com>
+ <04EAB7311EE43145B2D3536183D1A84454CBBABC@GSjpTKYDCembx31.service.hitachi.net>
+ <57E0E7EC.2010704@redhat.com>
+In-Reply-To: <57E0E7EC.2010704@redhat.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.198.220.44]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+X-TM-AS-GCONF: 00
+Return-Path: <hidehiro.kawai.ez@hitachi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55198
+X-archive-position: 55199
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: hidehiro.kawai.ez@hitachi.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,743 +82,184 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add a remoteproc driver to steal, load the firmware, and boot an offline
-MIPS core, turning it into a coprocessor.
-
-This driver provides a sysfs to allow arbitrary firmware to be loaded
-onto a core, which may expose virtio devices. Coprocessor firmware must
-abide by the UHI coprocessor boot protocol.
-
-Signed-off-by: Lisa Parratt <lisa.parratt@imgtec.com>
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-
----
-
-Changes in v2: None
-
- Documentation/ABI/testing/sysfs-class-mips-rproc |  24 +
- drivers/remoteproc/Kconfig                       |  11 +
- drivers/remoteproc/Makefile                      |   1 +
- drivers/remoteproc/mips_remoteproc.c             | 651 +++++++++++++++++++++++
- 4 files changed, 687 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-class-mips-rproc
- create mode 100644 drivers/remoteproc/mips_remoteproc.c
-
-diff --git a/Documentation/ABI/testing/sysfs-class-mips-rproc b/Documentation/ABI/testing/sysfs-class-mips-rproc
-new file mode 100644
-index 000000000000..c09d02a755e4
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-class-mips-rproc
-@@ -0,0 +1,24 @@
-+What:		/sys/class/mips-rproc/rproc#/firmware
-+Date:		August 2015
-+Contact:	Lisa Parratt <lisa.parratt@imgtec.com>
-+Description:	MIPS VPE remoteproc start
-+
-+	This node only exists when a VPE is considered offline by Linux. Writes
-+	to this file will start firmware running on a VPE.
-+
-+	If the VPE is idle, specifying a name will cause a remoteproc instance
-+	to be allocated, which will cause the core to be stolen, the firmware
-+	image to be loaded, and the remoteproc instance to be started.
-+	Otherwise, the operation will fail.
-+
-+What:		/sys/class/mips-rproc/rproc#/stop
-+Date:		August 2015
-+Contact:	Lisa Parratt <lisa.parratt@imgtec.com>
-+Description:	MIPS VPE remoteproc stop
-+
-+	This node only exists when a VPE is considered offline by Linux. Writes
-+	to this file will stop firmware running on a VPE.
-+
-+	If the VPE is running a remote proc instance, the instance will be
-+	stopped, the core returned, and the instance freed.
-+	Otherwise, the operation will fail.
-diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
-index 1a8bf76a925f..05db52e0e668 100644
---- a/drivers/remoteproc/Kconfig
-+++ b/drivers/remoteproc/Kconfig
-@@ -100,4 +100,15 @@ config ST_REMOTEPROC
- 	  processor framework.
- 	  This can be either built-in or a loadable module.
- 
-+config MIPS_REMOTEPROC
-+	tristate "MIPS remoteproc support"
-+	depends on MIPS_CPS && HAS_DMA
-+	select CMA
-+	select REMOTEPROC
-+	select MIPS_STEAL
-+	help
-+	  Say y here to support using offline cores/VPEs as remote processors
-+	  via the remote processor framework.
-+	  If unsure say N.
-+
- endmenu
-diff --git a/drivers/remoteproc/Makefile b/drivers/remoteproc/Makefile
-index 92d3758bd15c..de19cd320f3a 100644
---- a/drivers/remoteproc/Makefile
-+++ b/drivers/remoteproc/Makefile
-@@ -14,3 +14,4 @@ obj-$(CONFIG_DA8XX_REMOTEPROC)		+= da8xx_remoteproc.o
- obj-$(CONFIG_QCOM_MDT_LOADER)		+= qcom_mdt_loader.o
- obj-$(CONFIG_QCOM_Q6V5_PIL)		+= qcom_q6v5_pil.o
- obj-$(CONFIG_ST_REMOTEPROC)		+= st_remoteproc.o
-+obj-$(CONFIG_MIPS_REMOTEPROC)		+= mips_remoteproc.o
-diff --git a/drivers/remoteproc/mips_remoteproc.c b/drivers/remoteproc/mips_remoteproc.c
-new file mode 100644
-index 000000000000..944ad66280b4
---- /dev/null
-+++ b/drivers/remoteproc/mips_remoteproc.c
-@@ -0,0 +1,651 @@
-+/*
-+ * MIPS Remote Processor driver
-+ *
-+ * Copyright (C) 2016 Imagination Technologies
-+ * Lisa Parratt <lisa.parratt@imgtec.com>
-+ * Matt Redfearn <matt.redfearn@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/cpu.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/irq.h>
-+#include <linux/module.h>
-+#include <linux/of_irq.h>
-+#include <linux/platform_device.h>
-+#include <linux/remoteproc.h>
-+
-+#include <asm/dma-coherence.h>
-+#include <asm/smp-cps.h>
-+#include <asm/tlbflush.h>
-+#include <asm/tlbmisc.h>
-+
-+#include "remoteproc_internal.h"
-+
-+struct mips_rproc {
-+	struct rproc		*rproc;
-+	char			*firmware;
-+	struct task_struct	*tsk;
-+	struct device		dev;
-+	unsigned int		cpu;
-+	int			ipi_linux;
-+	int			ipi_remote;
-+};
-+
-+static struct rproc *mips_rprocs[NR_CPUS];
-+
-+#define to_mips_rproc(d) container_of(d, struct mips_rproc, dev)
-+
-+
-+/* Compute the largest page mask a physical address can be mapped with */
-+static unsigned long mips_rproc_largest_pm(unsigned long pa,
-+					   unsigned long maxmask)
-+{
-+	unsigned long mask;
-+	/* Find address bits limiting alignment */
-+	unsigned long shift = ffs(pa);
-+
-+	/* Obey MIPS restrictions on page sizes */
-+	if (pa) {
-+		if (shift & 1)
-+			shift -= 2;
-+		else
-+			shift--;
-+	}
-+	mask = ULONG_MAX << shift;
-+	return maxmask & ~mask;
-+}
-+
-+/* Compute the next largest page mask for a given page mask */
-+static unsigned long mips_rproc_next_pm(unsigned long pm, unsigned long maxmask)
-+{
-+	if (pm != PM_4K)
-+		return ((pm << 2) | pm) & maxmask;
-+	else
-+		return PM_16K;
-+}
-+
-+static void mips_map_page(unsigned long da, unsigned long pa, int c,
-+			  unsigned long pagemask, unsigned long pagesize)
-+{
-+	unsigned long pa2 = pa + (pagesize / 2);
-+	unsigned long entryhi, entrylo0, entrylo1;
-+
-+	/* Compute the mapping */
-+	pa = (pa >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
-+	pa2 = (pa2 >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
-+	entryhi = da & 0xfffffe000;
-+	entrylo0 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa;
-+	entrylo1 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa2;
-+
-+	pr_debug("Create wired entry %d, CCA %d\n", read_c0_wired(), c);
-+	pr_debug(" EntryHi: 0x%016lx\n", entryhi);
-+	pr_debug(" EntryLo0: 0x%016lx\n", entrylo0);
-+	pr_debug(" EntryLo1: 0x%016lx\n", entrylo1);
-+	pr_debug(" Pagemask: 0x%016lx\n", pagemask);
-+	pr_debug("\n");
-+
-+	add_wired_entry(entrylo0, entrylo1, entryhi, pagemask);
-+}
-+
-+/*
-+ * Compute the page required to fulfill a mapping. Escapes alignment derived
-+ * page size limitations before using biggest fit to map the remainder.
-+ */
-+static inline void mips_rproc_fit_page(unsigned long da, unsigned long pa,
-+					int c, unsigned long size,
-+					unsigned long maxmask)
-+{
-+	unsigned long bigmask, nextmask;
-+	unsigned long pagemask, pagesize;
-+	unsigned long distance, target;
-+
-+	do {
-+		/* Compute the current largest page mask */
-+		bigmask = mips_rproc_largest_pm(pa, maxmask);
-+		/* Compute the next largest pagesize */
-+		nextmask = mips_rproc_next_pm(bigmask, maxmask);
-+		/*
-+		 * Compute the distance from our current physical address to
-+		 * the next page boundary.
-+		 */
-+		distance = (nextmask + 0x2000) - (pa & nextmask);
-+		/*
-+		 * Decide between searching to get to the next highest page
-+		 * boundary or finishing.
-+		 */
-+		target = distance < size ? distance : size;
-+		/* Fit */
-+		while (target) {
-+			/* Find the largest supported page size that will fit */
-+			for (pagesize = maxmask + 0x2000;
-+			     (pagesize > 0x2000) && (pagesize > target);
-+			     pagesize /= 4) {
-+			}
-+			/* Convert it to a page mask */
-+			pagemask = pagesize - 0x2000;
-+			/* Emit it */
-+			mips_map_page(da, pa, c, pagemask, pagesize);
-+			/* Move to next step */
-+			size -= pagesize;
-+			da += pagesize;
-+			pa += pagesize;
-+			target -= pagesize;
-+		}
-+	} while (size);
-+}
-+
-+
-+static int mips_rproc_carveouts(struct rproc *rproc, int max_pagemask)
-+{
-+	struct rproc_mem_entry *carveout;
-+
-+	list_for_each_entry(carveout, &rproc->carveouts, node) {
-+		int c = CONF_CM_CACHABLE_COW;
-+
-+		dev_dbg(&rproc->dev,
-+			"carveout mapping da 0x%x -> %pad length 0x%x, CCA %d",
-+			carveout->da, &carveout->dma, carveout->len, c);
-+
-+		mips_rproc_fit_page(carveout->da, carveout->dma, c,
-+				    carveout->len, max_pagemask);
-+	}
-+	return 0;
-+}
-+
-+
-+static int mips_rproc_vdevs(struct rproc *rproc, int max_pagemask)
-+{
-+	struct rproc_vdev *rvdev;
-+
-+	list_for_each_entry(rvdev, &rproc->rvdevs, node) {
-+		int i, size;
-+
-+		for (i = 0; i < ARRAY_SIZE(rvdev->vring); i++) {
-+			struct rproc_vring *vring = &rvdev->vring[i];
-+			unsigned long pa = vring->dma;
-+			int c;
-+
-+			if (hw_coherentio) {
-+				/*
-+				 * The DMA API will allocate cacheable buffers
-+				 * for shared resources, so the firmware should
-+				 * also access those buffers cached
-+				 */
-+				c = (_page_cachable_default >> _CACHE_SHIFT);
-+			} else {
-+				/*
-+				 * Otherwise, shared buffers should be accessed
-+				 * uncached
-+				 */
-+				c = CONF_CM_UNCACHED;
-+			}
-+
-+			/* actual size of vring (in bytes) */
-+			size = PAGE_ALIGN(vring_size(vring->len, vring->align));
-+
-+			dev_dbg(&rproc->dev,
-+				"vring mapping da %pad -> %pad length 0x%x, CCA %d",
-+				&vring->dma, &vring->dma, size, c);
-+
-+			mips_rproc_fit_page(pa, pa, c, size, max_pagemask);
-+		}
-+	}
-+	return 0;
-+}
-+
-+static void mips_rproc_cpu_entry(void)
-+{
-+	struct rproc *rproc = mips_rprocs[smp_processor_id()];
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+	int ipi_to_remote = ipi_get_hwirq(mproc->ipi_remote, mproc->cpu);
-+	int ipi_from_remote = ipi_get_hwirq(mproc->ipi_linux, 0);
-+	unsigned long old_pagemask, max_pagemask;
-+
-+	if (!rproc)
-+		return;
-+
-+	dev_info(&rproc->dev, "Starting %s on MIPS CPU%d\n",
-+		 mproc->firmware, mproc->cpu);
-+
-+	/* Get the maximum pagemask supported on this CPU */
-+	old_pagemask = read_c0_pagemask();
-+	write_c0_pagemask(PM_HUGE_MASK);
-+	mtc0_tlbw_hazard();
-+	max_pagemask = read_c0_pagemask();
-+	write_c0_pagemask(old_pagemask);
-+	mtc0_tlbw_hazard();
-+
-+	/* Start with no wired entries */
-+	write_c0_wired(0);
-+
-+	/* Flush all previous TLB entries */
-+	local_flush_tlb_all();
-+
-+	/* Map firmware resources into virtual memory */
-+	mips_rproc_carveouts(rproc, max_pagemask);
-+	mips_rproc_vdevs(rproc, max_pagemask);
-+
-+	dev_dbg(&rproc->dev, "IPI to remote: %d\n", ipi_to_remote);
-+	dev_dbg(&rproc->dev, "IPI from remote: %d\n", ipi_from_remote);
-+
-+	/* Hand off the CPU to the firmware */
-+	dev_dbg(&rproc->dev, "Jumping to firmware at 0x%x\n", rproc->bootaddr);
-+
-+	write_c0_entryhi(0); /* Set ASID 0 */
-+	tlbw_use_hazard();
-+
-+	/* Firmware protocol */
-+	__asm__("addiu $a0, $zero, -3");
-+	__asm__("move $a1, %0" :: "r" (ipi_to_remote));
-+	__asm__("move $a2, %0" :: "r" (ipi_from_remote));
-+	__asm__("move $a3, $zero");
-+	__asm__("jr %0" :: "r" (rproc->bootaddr));
-+}
-+
-+
-+static irqreturn_t mips_rproc_ipi_handler(int irq, void *dev_id)
-+{
-+	/* Synthetic interrupts shouldn't need acking */
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+
-+static irqreturn_t mips_rproc_vq_int(int irq, void *p)
-+{
-+	struct rproc *rproc = (struct rproc *)p;
-+	void *entry;
-+	int id;
-+
-+	/* We don't have a mailbox, so iterate over all vqs and kick them. */
-+	idr_for_each_entry(&rproc->notifyids, entry, id)
-+		rproc_vq_interrupt(rproc, id);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+
-+/* Helper function to find the IPI domain */
-+static struct irq_domain *ipi_domain(void)
-+{
-+	struct device_node *node = of_irq_find_parent(of_root);
-+	struct irq_domain *ipidomain;
-+
-+	ipidomain = irq_find_matching_host(node, DOMAIN_BUS_IPI);
-+	/*
-+	 * Some platforms have half DT setup. So if we found irq node but
-+	 * didn't find an ipidomain, try to search for one that is not in the
-+	 * DT.
-+	 */
-+	if (node && !ipidomain)
-+		ipidomain = irq_find_matching_host(NULL, DOMAIN_BUS_IPI);
-+
-+	return ipidomain;
-+}
-+
-+
-+int mips_rproc_op_start(struct rproc *rproc)
-+{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+	int err;
-+	int cpu = mproc->cpu;
-+
-+	if (mips_rprocs[cpu]) {
-+		dev_err(&rproc->dev, "CPU%d in use\n", cpu);
-+		return -EBUSY;
-+	}
-+	mips_rprocs[cpu] = rproc;
-+
-+	/* Create task for the CPU to use before handing off to firmware */
-+	mproc->tsk = fork_idle(cpu);
-+	if (IS_ERR(mproc->tsk)) {
-+		dev_err(&rproc->dev, "fork_idle() failed for CPU%d\n", cpu);
-+		return -ENOMEM;
-+	}
-+
-+	/* We won't be needing the Linux IPIs anymore */
-+	if (mips_smp_ipi_free(get_cpu_mask(cpu)))
-+		return -EINVAL;
-+
-+	/*
-+	 * Direct IPIs from the remote processor to CPU0 since that can't be
-+	 * offlined while the remote CPU is running.
-+	 */
-+	mproc->ipi_linux = irq_reserve_ipi(ipi_domain(), get_cpu_mask(0));
-+	if (!mproc->ipi_linux) {
-+		dev_err(&mproc->dev, "Failed to reserve incoming kick\n");
-+		goto exit_rproc_nofrom;
-+	}
-+
-+	mproc->ipi_remote = irq_reserve_ipi(ipi_domain(), get_cpu_mask(cpu));
-+	if (!mproc->ipi_remote) {
-+		dev_err(&mproc->dev, "Failed to reserve outgoing kick\n");
-+		goto exit_rproc_noto;
-+	}
-+
-+	/* register incoming ipi */
-+	err = devm_request_threaded_irq(&mproc->dev, mproc->ipi_linux,
-+					mips_rproc_ipi_handler,
-+					mips_rproc_vq_int, 0,
-+					"mips-rproc IPI in", mproc->rproc);
-+	if (err) {
-+		dev_err(&mproc->dev, "Failed to register incoming kick: %d\n",
-+			err);
-+		goto exit_rproc_noint;
-+	}
-+
-+	if (!mips_cps_steal_cpu_and_execute(cpu, &mips_rproc_cpu_entry,
-+						mproc->tsk))
-+		return 0;
-+
-+	dev_err(&mproc->dev, "Failed to steal CPU%d for remote\n", cpu);
-+	devm_free_irq(&mproc->dev, mproc->ipi_linux, mproc->rproc);
-+exit_rproc_noint:
-+	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(cpu));
-+exit_rproc_noto:
-+	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
-+exit_rproc_nofrom:
-+	free_task(mproc->tsk);
-+	mips_rprocs[cpu] = NULL;
-+
-+	/* Set up the Linux IPIs again */
-+	mips_smp_ipi_allocate(get_cpu_mask(cpu));
-+	return -EINVAL;
-+}
-+
-+int mips_rproc_op_stop(struct rproc *rproc)
-+{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+
-+	if (mproc->ipi_linux)
-+		devm_free_irq(&mproc->dev, mproc->ipi_linux, mproc->rproc);
-+
-+	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
-+	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(mproc->cpu));
-+
-+	/* Set up the Linux IPIs again */
-+	mips_smp_ipi_allocate(get_cpu_mask(mproc->cpu));
-+
-+	free_task(mproc->tsk);
-+
-+	mips_rprocs[mproc->cpu] = NULL;
-+
-+	return mips_cps_halt_and_return_cpu(mproc->cpu);
-+}
-+
-+
-+void mips_rproc_op_kick(struct rproc *rproc, int vqid)
-+{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+
-+	ipi_send_single(mproc->ipi_remote, mproc->cpu);
-+}
-+
-+struct rproc_ops mips_rproc_proc_ops = {
-+	.start	= mips_rproc_op_start,
-+	.stop	= mips_rproc_op_stop,
-+	.kick	= mips_rproc_op_kick,
-+};
-+
-+
-+static int mips_rproc_probe(struct platform_device *pdev)
-+{
-+	return 0;
-+}
-+
-+static int mips_rproc_remove(struct platform_device *pdev)
-+{
-+	return 0;
-+}
-+
-+static struct platform_driver mips_rproc_driver = {
-+	.probe = mips_rproc_probe,
-+	.remove = mips_rproc_remove,
-+	.driver = {
-+		.name = "mips-rproc"
-+	},
-+};
-+
-+
-+/* Steal a core and run some firmware on it */
-+int mips_rproc_start(struct mips_rproc *mproc, const char *firmware, size_t len)
-+{
-+	int err = -EINVAL;
-+	struct mips_rproc **priv;
-+
-+	/* Duplicate the filename, dropping whitespace from the end via len */
-+	mproc->firmware = kstrndup(firmware, len, GFP_KERNEL);
-+	if (!mproc->firmware)
-+		return -ENOMEM;
-+
-+	mproc->rproc = rproc_alloc(&mproc->dev, "mips", &mips_rproc_proc_ops,
-+				   mproc->firmware,
-+				   sizeof(struct mips_rproc *));
-+	if (!mproc->rproc)
-+		return -ENOMEM;
-+
-+	priv = mproc->rproc->priv;
-+	*priv = mproc;
-+
-+	/* go live! */
-+	err = rproc_add(mproc->rproc);
-+	if (err) {
-+		dev_err(&mproc->dev, "Failed to add rproc: %d\n", err);
-+		rproc_put(mproc->rproc);
-+		kfree(mproc->firmware);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+/* Stop a core, and return it to being offline */
-+int mips_rproc_stop(struct mips_rproc *mproc)
-+{
-+	rproc_shutdown(mproc->rproc);
-+	rproc_del(mproc->rproc);
-+	rproc_put(mproc->rproc);
-+	mproc->rproc = NULL;
-+	return 0;
-+}
-+
-+/* sysfs interface to mips_rproc_start */
-+static ssize_t firmware_store(struct device *dev,
-+			      struct device_attribute *attr,
-+			      const char *buf, size_t count)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+	size_t len = count;
-+	int err = -EINVAL;
-+
-+	if (buf[count - 1] == '\n')
-+		len--;
-+
-+	if (!mproc->rproc && len)
-+		err = mips_rproc_start(mproc, buf, len);
-+	else if (len)
-+		err = -EBUSY;
-+
-+	return err ? err : count;
-+}
-+static DEVICE_ATTR_WO(firmware);
-+
-+/* sysfs interface to mips_rproc_stop */
-+static ssize_t stop_store(struct device *dev,
-+			      struct device_attribute *attr,
-+			      const char *buf, size_t count)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+	int err = -EINVAL;
-+
-+
-+	if (mproc->rproc)
-+		err = mips_rproc_stop(mproc);
-+	else
-+		err = -EBUSY;
-+
-+	return err ? err : count;
-+}
-+static DEVICE_ATTR_WO(stop);
-+
-+/* Boiler plate for devclarng mips-rproc sysfs devices */
-+static struct attribute *mips_rproc_attrs[] = {
-+	&dev_attr_firmware.attr,
-+	&dev_attr_stop.attr,
-+	NULL
-+};
-+
-+static struct attribute_group mips_rproc_devgroup = {
-+	.attrs = mips_rproc_attrs
-+};
-+
-+static const struct attribute_group *mips_rproc_devgroups[] = {
-+	&mips_rproc_devgroup,
-+	NULL
-+};
-+
-+static char *mips_rproc_devnode(struct device *dev, umode_t *mode)
-+{
-+	return kasprintf(GFP_KERNEL, "mips-rproc/%s", dev_name(dev));
-+}
-+
-+static struct class mips_rproc_class = {
-+	.name		= "mips-rproc",
-+	.devnode	= mips_rproc_devnode,
-+	.dev_groups	= mips_rproc_devgroups,
-+};
-+
-+static void mips_rproc_release(struct device *dev)
-+{
-+}
-+
-+static int mips_rproc_uevent(struct device *dev, struct kobj_uevent_env *env)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+
-+	if (!mproc)
-+		return -ENODEV;
-+
-+	return 0;
-+}
-+
-+static struct device_type mips_rproc_type = {
-+	.release	= mips_rproc_release,
-+	.uevent		= mips_rproc_uevent
-+};
-+
-+/* Helper function for locating the device for a CPU */
-+int mips_rproc_device_rproc_match(struct device *dev, const void *data)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+	unsigned int cpu = *(unsigned int *)data;
-+
-+	return mproc->cpu == cpu;
-+}
-+
-+/* Create a sysfs device in response to CPU down */
-+int mips_rproc_device_register(unsigned int cpu)
-+{
-+	struct mips_rproc *dev;
-+
-+	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+	if (!dev)
-+		return -EINVAL;
-+
-+	dev->dev.driver = &mips_rproc_driver.driver;
-+	dev->dev.type = &mips_rproc_type;
-+	dev->dev.class = &mips_rproc_class;
-+	dev->dev.id = cpu;
-+	dev_set_name(&dev->dev, "rproc%u", cpu);
-+	dev->cpu = cpu;
-+
-+	return device_register(&dev->dev);
-+}
-+
-+/* Destroy a sysfs device in response to CPU up */
-+int mips_rproc_device_unregister(unsigned int cpu)
-+{
-+	struct device *dev = class_find_device(&mips_rproc_class, NULL, &cpu,
-+					       mips_rproc_device_rproc_match);
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+
-+	if (mips_rprocs[cpu])
-+		mips_rproc_stop(mproc);
-+
-+	put_device(dev);
-+	device_unregister(dev);
-+	kfree(mproc);
-+	return 0;
-+}
-+
-+/* Intercept CPU hotplug events for syfs purposes */
-+static int mips_rproc_callback(struct notifier_block *nfb, unsigned long action,
-+			       void *hcpu)
-+{
-+	unsigned int cpu = (unsigned long)hcpu;
-+
-+	switch (action) {
-+	case CPU_UP_PREPARE:
-+	case CPU_DOWN_FAILED:
-+		mips_rproc_device_unregister(cpu);
-+		break;
-+	case CPU_DOWN_PREPARE:
-+		mips_rproc_device_register(cpu);
-+		break;
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block mips_rproc_notifier __refdata = {
-+	.notifier_call = mips_rproc_callback
-+};
-+
-+static int __init mips_rproc_init(void)
-+{
-+	int cpu;
-+	/* create mips-rproc device class for sysfs */
-+	int err = class_register(&mips_rproc_class);
-+
-+	if (err) {
-+		pr_err("mips-proc: unable to register mips-rproc class\n");
-+		return err;
-+	}
-+
-+	/* Dynamically create mips-rproc class devices based on hotplug data */
-+	get_online_cpus();
-+	for_each_possible_cpu(cpu)
-+		if (!cpu_online(cpu))
-+			mips_rproc_device_register(cpu);
-+	register_hotcpu_notifier(&mips_rproc_notifier);
-+	put_online_cpus();
-+
-+	return 0;
-+}
-+
-+static void __exit mips_rproc_exit(void)
-+{
-+	int cpu;
-+	/* Destroy mips-rproc class devices */
-+	get_online_cpus();
-+	unregister_hotcpu_notifier(&mips_rproc_notifier);
-+	for_each_possible_cpu(cpu)
-+		if (!cpu_online(cpu))
-+			mips_rproc_device_unregister(cpu);
-+	put_online_cpus();
-+
-+	class_unregister(&mips_rproc_class);
-+}
-+
-+subsys_initcall(mips_rproc_init);
-+module_exit(mips_rproc_exit);
-+
-+module_platform_driver(mips_rproc_driver);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("MIPS Remote Processor control driver");
--- 
-2.7.4
+SGkgWHVubGVpLA0KDQo+IEZyb206IFh1bmxlaSBQYW5nIFttYWlsdG86eHBhbmdAcmVkaGF0LmNv
+bV0NCj4gU2VudDogVHVlc2RheSwgU2VwdGVtYmVyIDIwLCAyMDE2IDQ6NDAgUE0NCj4gT24gMjAx
+Ni8wOC8xNS8gYXQgMTk6MjIsIEhpZGVoaXJvIEthd2FpIHdyb3RlOg0KPiA+IEhpIERhdmUsDQo+
+ID4NCj4gPiBUaGFuayB5b3UgZm9yIHRoZSByZXZpZXcuDQo+ID4NCj4gPj4gRnJvbTogRGF2ZSBZ
+b3VuZyBbbWFpbHRvOmR5b3VuZ0ByZWRoYXQuY29tXQ0KPiA+PiBTZW50OiBGcmlkYXksIEF1Z3Vz
+dCAxMiwgMjAxNiAxMjoxNyBQTQ0KPiA+Pg0KPiA+PiBUaGFua3MgZm9yIHRoZSB1cGRhdGUuDQo+
+ID4+IE9uIDA4LzEwLzE2IGF0IDA1OjA5cG0sIEhpZGVoaXJvIEthd2FpIHdyb3RlOg0KPiA+Pj4g
+RGFuaWVsIFdhbGtlciByZXBvcnRlZCBwcm9ibGVtcyB3aGljaCBoYXBwZW5zIHdoZW4NCj4gPj4+
+IGNyYXNoX2tleGVjX3Bvc3Rfbm90aWZpZXJzIGtlcm5lbCBvcHRpb24gaXMgZW5hYmxlZA0KPiA+
+Pj4gKGh0dHBzOi8vbGttbC5vcmcvbGttbC8yMDE1LzYvMjQvNDQpLg0KPiA+Pj4NCj4gPj4+IElu
+IHRoYXQgY2FzZSwgc21wX3NlbmRfc3RvcCgpIGlzIGNhbGxlZCBiZWZvcmUgZW50ZXJpbmcga2R1
+bXAgcm91dGluZXMNCj4gPj4+IHdoaWNoIGFzc3VtZSBvdGhlciBDUFVzIGFyZSBzdGlsbCBvbmxp
+bmUuICBBcyB0aGUgcmVzdWx0LCBmb3IgeDg2LA0KPiA+Pj4ga2R1bXAgcm91dGluZXMgZmFpbCB0
+byBzYXZlIG90aGVyIENQVXMnIHJlZ2lzdGVycyAgYW5kIGRpc2FibGUNCj4gPj4+IHZpcnR1YWxp
+emF0aW9uIGV4dGVuc2lvbnMuDQo+ID4+IFNlZW1zIHlvdSBzaW1wbGlmaWVkIHRoZSBjaGFuZ2Vs
+b2csIGJ1dCBJIHRoaW5rIGEgbGl0dGxlIG1vcmUgZGV0YWlscw0KPiA+PiB3aWxsIGJlIGhlbHBm
+dWwgdG8gdW5kZXJzdGFuZCB0aGUgcGF0Y2guIFlvdSBrbm93IHNvbWV0aW1lcyBsa21sLm9yZw0K
+PiA+PiBkb2VzIG5vdCB3b3JrIHdlbGwuDQo+ID4gU28sIEknbGwgdHJ5IGFub3RoZXIgYXJjaGl2
+ZXMgd2hlbiBJIHBvc3QgcGF0Y2ggc2V0IG5leHQgdGltZS4NCj4gDQo+IEhpIEhpZGVoaXJvIEth
+d2FpLA0KPiANCj4gV2hhdCdzIHRoZSBzdGF0dXMgb2YgdGhpcyBwYXRjaCBzZXQsIGFyZSB5b3Ug
+Z29pbmcgdG8gc2VuZCBhbiB1cGRhdGVkIHZlcnNpb24/DQoNClNvcnJ5LCBJIG1pc3VuZGVyc3Rv
+b2Qgd2hhdCBEYXZlIHNhaWQsIGFuZCBJIHRob3VnaHQgSSBkb24ndA0KbmVlZCB0byByZXZpc2Ug
+dGhlIHBhdGNoIHNldC4NCg0KQ3VycmVudGx5LCB0aGlzIHBhdGNoIHNldCBpcyBpbiAtbW0sIHRo
+ZW4gLW5leHQgdHJlZS4NCldoYXQgSSBuZWVkIHRvIGZpeCBpcyBvbmx5IGNvbW1pdCBkZXNjcmlw
+dGlvbnMsIHNvIEknbSBnb2luZyB0bw0KcG9zdCByZXZpc2VkIGRlc2NyaXB0aW9ucyBhcyByZXBs
+aWVzIHRvIHRoaXMgdGhyZWFkLCBhbmQgdGhlbg0KcmVxdWVzdCB0byBBbmRyZXcgdG8gcmVwbGFj
+ZSB0aGVtIGlmIHRoZXJlIGlzIG5vIG9iamVjdGlvbi4NCihvciBzaG91bGQgSSByZXNlbmQgdGhl
+IHdob2xlIHBhdGNoIHNldD8pDQoNClJlZ2FyZHMsDQpIaWRlaGlybyBLYXdhaQ0KDQo+ID4+PiBU
+byBmaXggdGhpcyBwcm9ibGVtLCBjYWxsIGEgbmV3IGtkdW1wIGZyaWVuZGx5IGZ1bmN0aW9uLA0K
+PiA+Pj4gY3Jhc2hfc21wX3NlbmRfc3RvcCgpLCBpbnN0ZWFkIG9mIHRoZSBzbXBfc2VuZF9zdG9w
+KCkgd2hlbg0KPiA+Pj4gY3Jhc2hfa2V4ZWNfcG9zdF9ub3RpZmllcnMgaXMgZW5hYmxlZC4gIGNy
+YXNoX3NtcF9zZW5kX3N0b3AoKSBpcyBhDQo+ID4+PiB3ZWFrIGZ1bmN0aW9uLCBhbmQgaXQganVz
+dCBjYWxsIHNtcF9zZW5kX3N0b3AoKS4gIEFyY2hpdGVjdHVyZQ0KPiA+Pj4gY29kZXMgc2hvdWxk
+IG92ZXJyaWRlIGl0IHNvIHRoYXQga2R1bXAgY2FuIHdvcmsgYXBwcm9wcmlhdGVseS4NCj4gPj4+
+IFRoaXMgcGF0Y2ggb25seSBwcm92aWRlcyB4ODYtc3BlY2lmaWMgdmVyc2lvbi4NCj4gPj4+DQo+
+ID4+PiBGb3IgWGVuJ3MgUFYga2VybmVsLCBqdXN0IGtlZXAgdGhlIGN1cnJlbnQgYmVoYXZpb3Iu
+DQo+ID4+IENvdWxkIHlvdSBleHBsYWluIGEgYml0IGFib3V0IGFib3ZlIFhlbiBQViBrZXJuZWwg
+YmVoYXZpb3I/DQo+ID4+DQo+ID4+IEJUVywgdGhpcyB2ZXJzaW9uIGxvb2tzIGJldHRlciwgIEkg
+dGhpbmsgSSdtIGZpbmUgd2l0aCB0aGlzIHZlcnNpb24NCj4gPj4gYmVzaWRlcyBvZiB0aGUgcXVl
+c3Rpb25zIGFib3V0IGNoYW5nZWxvZy4NCj4gPiBBcyBmb3IgRG9tMCBrZXJuZWwsIGl0IGRvZXNu
+J3QgdXNlIGNyYXNoX2tleGVjIHJvdXRpbmVzLCBhbmQNCj4gPiBpdCByZWxpZXMgb24gcGFuaWMg
+bm90aWZpZXIgY2hhaW4uICBBdCB0aGUgZW5kIG9mIHRoZSBjaGFpbiwNCj4gPiB4ZW5fcGFuaWNf
+ZXZlbnQgaXMgY2FsbGVkLCBhbmQgaXQgaXNzdWVzIGEgaHlwZXJjYWxsIHdoaWNoDQo+ID4gcmVx
+dWVzdHMgSHlwZXJ2aXNvciB0byBleGVjdXRlIGtkdW1wLiAgVGhpcyBtZWFucyB3aGV0aGVyDQo+
+ID4gY3Jhc2hfa2V4ZWNfcGFuaWNfbm90aWZpZXJzIGlzIHNldCBvciBub3QsIHBhbmljIG5vdGlm
+aWVycw0KPiA+IGFyZSBjYWxsZWQgYWZ0ZXIgc21wX3NlbmRfc3RvcC4gIEV2ZW4gaWYgd2Ugc2F2
+ZSByZWdpc3RlcnMNCj4gPiBpbiBEb20wIGtlcm5lbCwgdGhleSBzZWVtIHRvIGJlIGlnbm9yZWQg
+KEh5cGVydmlzb3IgaXMgcmVzcG9uc2libGUNCj4gPiBmb3IgdGhhdCkuICBUaGlzIGlzIHdoeSBJ
+IGtlcHQgdGhlIGN1cnJlbnQgYmVoYXZpb3IgZm9yIFhlbi4NCj4gPg0KPiA+IEZvciBQViBEb21V
+IGtlcm5lbCwga2R1bXAgaXMgbm90IHN1cHBvcnRlZC4gIEZvciBQViBIVk0NCj4gPiBEb21VLCBJ
+J20gbm90IHN1cmUgd2hhdCB3aWxsIGhhcHBlbiBvbiBwYW5pYyBiZWNhdXNlIEkNCj4gPiBjb3Vs
+ZG4ndCBib290IFBWIEhWTSBEb21VIGFuZCB0ZXN0IGl0LiAgQnV0IEkgdGhpbmsgaXQgd2lsbA0K
+PiA+IHdvcmsgc2ltaWxhcmx5IHRvIGJhcmVtZXRhbCBrZXJuZWxzIHdpdGggZXh0cmEgY2xlYW51
+cHMNCj4gPiBmb3IgSHlwZXJ2aXNvci4NCj4gPg0KPiA+IEJlc3QgcmVnYXJkcywNCj4gPg0KPiA+
+IEhpZGVoaXJvIEthd2FpDQo+ID4NCj4gPj4+IENoYW5nZXMgaW4gVjQ6DQo+ID4+PiAtIEtlZXAg
+dG8gdXNlIHNtcF9zZW5kX3N0b3AgaWYgY3Jhc2hfa2V4ZWNfcG9zdF9ub3RpZmllcnMgaXMgbm90
+IHNldA0KPiA+Pj4gLSBSZW5hbWUgcGFuaWNfc21wX3NlbmRfc3RvcCB0byBjcmFzaF9zbXBfc2Vu
+ZF9zdG9wDQo+ID4+PiAtIERvbid0IGNoYW5nZSB0aGUgYmVoYXZpb3IgZm9yIFhlbidzIFBWIGtl
+cm5lbA0KPiA+Pj4NCj4gPj4+IENoYW5nZXMgaW4gVjM6DQo+ID4+PiAtIFJldmlzZSBjb21tZW50
+cywgZGVzY3JpcHRpb24sIGFuZCBzeW1ib2wgbmFtZXMNCj4gPj4+DQo+ID4+PiBDaGFuZ2VzIGlu
+IFYyOg0KPiA+Pj4gLSBSZXBsYWNlIHNtcF9zZW5kX3N0b3AoKSBjYWxsIHdpdGggY3Jhc2hfa2V4
+ZWMgdmVyc2lvbiB3aGljaA0KPiA+Pj4gICBzYXZlcyBjcHUgc3RhdGVzIGFuZCBjbGVhbnMgdXAg
+Vk1YL1NWTQ0KPiA+Pj4gLSBEcm9wIGEgZml4IGZvciBQcm9ibGVtIDEgYXQgdGhpcyBtb21lbnQN
+Cj4gPj4+DQo+ID4+PiBSZXBvcnRlZC1ieTogRGFuaWVsIFdhbGtlciA8ZHdhbGtlckBmaWZvOTku
+Y29tPg0KPiA+Pj4gRml4ZXM6IGYwNmU1MTUzZjRhZSAoa2VybmVsL3BhbmljLmM6IGFkZCAiY3Jh
+c2hfa2V4ZWNfcG9zdF9ub3RpZmllcnMiIG9wdGlvbikNCj4gPj4+IFNpZ25lZC1vZmYtYnk6IEhp
+ZGVoaXJvIEthd2FpIDxoaWRlaGlyby5rYXdhaS5lekBoaXRhY2hpLmNvbT4NCj4gPj4+IENjOiBE
+YXZlIFlvdW5nIDxkeW91bmdAcmVkaGF0LmNvbT4NCj4gPj4+IENjOiBCYW9xdWFuIEhlIDxiaGVA
+cmVkaGF0LmNvbT4NCj4gPj4+IENjOiBWaXZlayBHb3lhbCA8dmdveWFsQHJlZGhhdC5jb20+DQo+
+ID4+PiBDYzogRXJpYyBCaWVkZXJtYW4gPGViaWVkZXJtQHhtaXNzaW9uLmNvbT4NCj4gPj4+IENj
+OiBNYXNhbWkgSGlyYW1hdHN1IDxtaGlyYW1hdEBrZXJuZWwub3JnPg0KPiA+Pj4gQ2M6IERhbmll
+bCBXYWxrZXIgPGR3YWxrZXJAZmlmbzk5LmNvbT4NCj4gPj4+IENjOiBYdW5sZWkgUGFuZyA8eHBh
+bmdAcmVkaGF0LmNvbT4NCj4gPj4+IENjOiBUaG9tYXMgR2xlaXhuZXIgPHRnbHhAbGludXRyb25p
+eC5kZT4NCj4gPj4+IENjOiBJbmdvIE1vbG5hciA8bWluZ29AcmVkaGF0LmNvbT4NCj4gPj4+IENj
+OiAiSC4gUGV0ZXIgQW52aW4iIDxocGFAenl0b3IuY29tPg0KPiA+Pj4gQ2M6IEJvcmlzbGF2IFBl
+dGtvdiA8YnBAc3VzZS5kZT4NCj4gPj4+IENjOiBEYXZpZCBWcmFiZWwgPGRhdmlkLnZyYWJlbEBj
+aXRyaXguY29tPg0KPiA+Pj4gQ2M6IFRvc2hpIEthbmkgPHRvc2hpLmthbmlAaHBlLmNvbT4NCj4g
+Pj4+IENjOiBBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnPg0KPiA+Pj4g
+LS0tDQo+ID4+PiAgYXJjaC94ODYvaW5jbHVkZS9hc20va2V4ZWMuaCB8ICAgIDEgKw0KPiA+Pj4g
+IGFyY2gveDg2L2luY2x1ZGUvYXNtL3NtcC5oICAgfCAgICAxICsNCj4gPj4+ICBhcmNoL3g4Ni9r
+ZXJuZWwvY3Jhc2guYyAgICAgIHwgICAyMiArKysrKysrKysrKysrKysrKy0tLQ0KPiA+Pj4gIGFy
+Y2gveDg2L2tlcm5lbC9zbXAuYyAgICAgICAgfCAgICA1ICsrKysNCj4gPj4+ICBrZXJuZWwvcGFu
+aWMuYyAgICAgICAgICAgICAgIHwgICA0NyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKystLS0tLS0NCj4gPj4+ICA1IGZpbGVzIGNoYW5nZWQsIDY2IGluc2VydGlvbnMoKyksIDEw
+IGRlbGV0aW9ucygtKQ0KPiA+Pj4NCj4gPj4+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni9pbmNsdWRl
+L2FzbS9rZXhlYy5oIGIvYXJjaC94ODYvaW5jbHVkZS9hc20va2V4ZWMuaA0KPiA+Pj4gaW5kZXgg
+ZDI0MzRjMS4uMjgyNjMwZSAxMDA2NDQNCj4gPj4+IC0tLSBhL2FyY2gveDg2L2luY2x1ZGUvYXNt
+L2tleGVjLmgNCj4gPj4+ICsrKyBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL2tleGVjLmgNCj4gPj4+
+IEBAIC0yMTAsNiArMjEwLDcgQEAgc3RydWN0IGtleGVjX2VudHJ5NjRfcmVncyB7DQo+ID4+Pg0K
+PiA+Pj4gIHR5cGVkZWYgdm9pZCBjcmFzaF92bWNsZWFyX2ZuKHZvaWQpOw0KPiA+Pj4gIGV4dGVy
+biBjcmFzaF92bWNsZWFyX2ZuIF9fcmN1ICpjcmFzaF92bWNsZWFyX2xvYWRlZF92bWNzczsNCj4g
+Pj4+ICtleHRlcm4gdm9pZCBrZHVtcF9ubWlfc2hvb3Rkb3duX2NwdXModm9pZCk7DQo+ID4+Pg0K
+PiA+Pj4gICNlbmRpZiAvKiBfX0FTU0VNQkxZX18gKi8NCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0
+IGEvYXJjaC94ODYvaW5jbHVkZS9hc20vc21wLmggYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9zbXAu
+aA0KPiA+Pj4gaW5kZXggZWJkMGMxNi4uZjcwOTg5YyAxMDA2NDQNCj4gPj4+IC0tLSBhL2FyY2gv
+eDg2L2luY2x1ZGUvYXNtL3NtcC5oDQo+ID4+PiArKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9z
+bXAuaA0KPiA+Pj4gQEAgLTUwLDYgKzUwLDcgQEAgc3RydWN0IHNtcF9vcHMgew0KPiA+Pj4gIAl2
+b2lkICgqc21wX2NwdXNfZG9uZSkodW5zaWduZWQgbWF4X2NwdXMpOw0KPiA+Pj4NCj4gPj4+ICAJ
+dm9pZCAoKnN0b3Bfb3RoZXJfY3B1cykoaW50IHdhaXQpOw0KPiA+Pj4gKwl2b2lkICgqY3Jhc2hf
+c3RvcF9vdGhlcl9jcHVzKSh2b2lkKTsNCj4gPj4+ICAJdm9pZCAoKnNtcF9zZW5kX3Jlc2NoZWR1
+bGUpKGludCBjcHUpOw0KPiA+Pj4NCj4gPj4+ICAJaW50ICgqY3B1X3VwKSh1bnNpZ25lZCBjcHUs
+IHN0cnVjdCB0YXNrX3N0cnVjdCAqdGlkbGUpOw0KPiA+Pj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2
+L2tlcm5lbC9jcmFzaC5jIGIvYXJjaC94ODYva2VybmVsL2NyYXNoLmMNCj4gPj4+IGluZGV4IDk2
+MTZjZjcuLjY1MDgzMGUgMTAwNjQ0DQo+ID4+PiAtLS0gYS9hcmNoL3g4Ni9rZXJuZWwvY3Jhc2gu
+Yw0KPiA+Pj4gKysrIGIvYXJjaC94ODYva2VybmVsL2NyYXNoLmMNCj4gPj4+IEBAIC0xMzMsMTUg
+KzEzMywzMSBAQCBzdGF0aWMgdm9pZCBrZHVtcF9ubWlfY2FsbGJhY2soaW50IGNwdSwgc3RydWN0
+IHB0X3JlZ3MgKnJlZ3MpDQo+ID4+PiAgCWRpc2FibGVfbG9jYWxfQVBJQygpOw0KPiA+Pj4gIH0N
+Cj4gPj4+DQo+ID4+PiAtc3RhdGljIHZvaWQga2R1bXBfbm1pX3Nob290ZG93bl9jcHVzKHZvaWQp
+DQo+ID4+PiArdm9pZCBrZHVtcF9ubWlfc2hvb3Rkb3duX2NwdXModm9pZCkNCj4gPj4+ICB7DQo+
+ID4+PiAgCW5taV9zaG9vdGRvd25fY3B1cyhrZHVtcF9ubWlfY2FsbGJhY2spOw0KPiA+Pj4NCj4g
+Pj4+ICAJZGlzYWJsZV9sb2NhbF9BUElDKCk7DQo+ID4+PiAgfQ0KPiA+Pj4NCj4gPj4+ICsvKiBP
+dmVycmlkZSB0aGUgd2VhayBmdW5jdGlvbiBpbiBrZXJuZWwvcGFuaWMuYyAqLw0KPiA+Pj4gK3Zv
+aWQgY3Jhc2hfc21wX3NlbmRfc3RvcCh2b2lkKQ0KPiA+Pj4gK3sNCj4gPj4+ICsJc3RhdGljIGlu
+dCBjcHVzX3N0b3BwZWQ7DQo+ID4+PiArDQo+ID4+PiArCWlmIChjcHVzX3N0b3BwZWQpDQo+ID4+
+PiArCQlyZXR1cm47DQo+ID4+PiArDQo+ID4+PiArCWlmIChzbXBfb3BzLmNyYXNoX3N0b3Bfb3Ro
+ZXJfY3B1cykNCj4gPj4+ICsJCXNtcF9vcHMuY3Jhc2hfc3RvcF9vdGhlcl9jcHVzKCk7DQo+ID4+
+PiArCWVsc2UNCj4gPj4+ICsJCXNtcF9zZW5kX3N0b3AoKTsNCj4gPj4+ICsNCj4gPj4+ICsJY3B1
+c19zdG9wcGVkID0gMTsNCj4gPj4+ICt9DQo+ID4+PiArDQo+ID4+PiAgI2Vsc2UNCj4gPj4+IC1z
+dGF0aWMgdm9pZCBrZHVtcF9ubWlfc2hvb3Rkb3duX2NwdXModm9pZCkNCj4gPj4+ICt2b2lkIGNy
+YXNoX3NtcF9zZW5kX3N0b3Aodm9pZCkNCj4gPj4+ICB7DQo+ID4+PiAgCS8qIFRoZXJlIGFyZSBu
+byBjcHVzIHRvIHNob290ZG93biAqLw0KPiA+Pj4gIH0NCj4gPj4+IEBAIC0xNjAsNyArMTc2LDcg
+QEAgdm9pZCBuYXRpdmVfbWFjaGluZV9jcmFzaF9zaHV0ZG93bihzdHJ1Y3QgcHRfcmVncyAqcmVn
+cykNCj4gPj4+ICAJLyogVGhlIGtlcm5lbCBpcyBicm9rZW4gc28gZGlzYWJsZSBpbnRlcnJ1cHRz
+ICovDQo+ID4+PiAgCWxvY2FsX2lycV9kaXNhYmxlKCk7DQo+ID4+Pg0KPiA+Pj4gLQlrZHVtcF9u
+bWlfc2hvb3Rkb3duX2NwdXMoKTsNCj4gPj4+ICsJY3Jhc2hfc21wX3NlbmRfc3RvcCgpOw0KPiA+
+Pj4NCj4gPj4+ICAJLyoNCj4gPj4+ICAJICogVk1DTEVBUiBWTUNTcyBsb2FkZWQgb24gdGhpcyBj
+cHUgaWYgbmVlZGVkLg0KPiA+Pj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L2tlcm5lbC9zbXAuYyBi
+L2FyY2gveDg2L2tlcm5lbC9zbXAuYw0KPiA+Pj4gaW5kZXggNjU4Nzc3Yy4uNjhmOGNjMiAxMDA2
+NDQNCj4gPj4+IC0tLSBhL2FyY2gveDg2L2tlcm5lbC9zbXAuYw0KPiA+Pj4gKysrIGIvYXJjaC94
+ODYva2VybmVsL3NtcC5jDQo+ID4+PiBAQCAtMzIsNiArMzIsOCBAQA0KPiA+Pj4gICNpbmNsdWRl
+IDxhc20vbm1pLmg+DQo+ID4+PiAgI2luY2x1ZGUgPGFzbS9tY2UuaD4NCj4gPj4+ICAjaW5jbHVk
+ZSA8YXNtL3RyYWNlL2lycV92ZWN0b3JzLmg+DQo+ID4+PiArI2luY2x1ZGUgPGFzbS9rZXhlYy5o
+Pg0KPiA+Pj4gKw0KPiA+Pj4gIC8qDQo+ID4+PiAgICoJU29tZSBub3RlcyBvbiB4ODYgcHJvY2Vz
+c29yIGJ1Z3MgYWZmZWN0aW5nIFNNUCBvcGVyYXRpb246DQo+ID4+PiAgICoNCj4gPj4+IEBAIC0z
+NDIsNiArMzQ0LDkgQEAgc3RydWN0IHNtcF9vcHMgc21wX29wcyA9IHsNCj4gPj4+ICAJLnNtcF9j
+cHVzX2RvbmUJCT0gbmF0aXZlX3NtcF9jcHVzX2RvbmUsDQo+ID4+Pg0KPiA+Pj4gIAkuc3RvcF9v
+dGhlcl9jcHVzCT0gbmF0aXZlX3N0b3Bfb3RoZXJfY3B1cywNCj4gPj4+ICsjaWYgZGVmaW5lZChD
+T05GSUdfS0VYRUNfQ09SRSkNCj4gPj4+ICsJLmNyYXNoX3N0b3Bfb3RoZXJfY3B1cwk9IGtkdW1w
+X25taV9zaG9vdGRvd25fY3B1cywNCj4gPj4+ICsjZW5kaWYNCj4gPj4+ICAJLnNtcF9zZW5kX3Jl
+c2NoZWR1bGUJPSBuYXRpdmVfc21wX3NlbmRfcmVzY2hlZHVsZSwNCj4gPj4+DQo+ID4+PiAgCS5j
+cHVfdXAJCQk9IG5hdGl2ZV9jcHVfdXAsDQo+ID4+PiBkaWZmIC0tZ2l0IGEva2VybmVsL3Bhbmlj
+LmMgYi9rZXJuZWwvcGFuaWMuYw0KPiA+Pj4gaW5kZXggY2E4Y2VhMS4uZTY0ODBlMiAxMDA2NDQN
+Cj4gPj4+IC0tLSBhL2tlcm5lbC9wYW5pYy5jDQo+ID4+PiArKysgYi9rZXJuZWwvcGFuaWMuYw0K
+PiA+Pj4gQEAgLTcxLDYgKzcxLDMyIEBAIHZvaWQgX193ZWFrIG5taV9wYW5pY19zZWxmX3N0b3Ao
+c3RydWN0IHB0X3JlZ3MgKnJlZ3MpDQo+ID4+PiAgCXBhbmljX3NtcF9zZWxmX3N0b3AoKTsNCj4g
+Pj4+ICB9DQo+ID4+Pg0KPiA+Pj4gKy8qDQo+ID4+PiArICogU3RvcCBvdGhlciBDUFVzIGluIHBh
+bmljLiAgQXJjaGl0ZWN0dXJlIGRlcGVuZGVudCBjb2RlIG1heSBvdmVycmlkZSB0aGlzDQo+ID4+
+PiArICogd2l0aCBtb3JlIHN1aXRhYmxlIHZlcnNpb24uICBGb3IgZXhhbXBsZSwgaWYgdGhlIGFy
+Y2hpdGVjdHVyZSBzdXBwb3J0cw0KPiA+Pj4gKyAqIGNyYXNoIGR1bXAsIGl0IHNob3VsZCBzYXZl
+IHJlZ2lzdGVycyBvZiBlYWNoIHN0b3BwZWQgQ1BVIGFuZCBkaXNhYmxlDQo+ID4+PiArICogcGVy
+LUNQVSBmZWF0dXJlcyBzdWNoIGFzIHZpcnR1YWxpemF0aW9uIGV4dGVuc2lvbnMuDQo+ID4+PiAr
+ICovDQo+ID4+PiArdm9pZCBfX3dlYWsgY3Jhc2hfc21wX3NlbmRfc3RvcCh2b2lkKQ0KPiA+Pj4g
+K3sNCj4gPj4+ICsJc3RhdGljIGludCBjcHVzX3N0b3BwZWQ7DQo+ID4+PiArDQo+ID4+PiArCS8q
+DQo+ID4+PiArCSAqIFRoaXMgZnVuY3Rpb24gY2FuIGJlIGNhbGxlZCB0d2ljZSBpbiBwYW5pYyBw
+YXRoLCBidXQgb2J2aW91c2x5DQo+ID4+PiArCSAqIHdlIGV4ZWN1dGUgdGhpcyBvbmx5IG9uY2Uu
+DQo+ID4+PiArCSAqLw0KPiA+Pj4gKwlpZiAoY3B1c19zdG9wcGVkKQ0KPiA+Pj4gKwkJcmV0dXJu
+Ow0KPiA+Pj4gKw0KPiA+Pj4gKwkvKg0KPiA+Pj4gKwkgKiBOb3RlIHNtcF9zZW5kX3N0b3AgaXMg
+dGhlIHVzdWFsIHNtcCBzaHV0ZG93biBmdW5jdGlvbiwgd2hpY2gNCj4gPj4+ICsJICogdW5mb3J0
+dW5hdGVseSBtZWFucyBpdCBtYXkgbm90IGJlIGhhcmRlbmVkIHRvIHdvcmsgaW4gYSBwYW5pYw0K
+PiA+Pj4gKwkgKiBzaXR1YXRpb24uDQo+ID4+PiArCSAqLw0KPiA+Pj4gKwlzbXBfc2VuZF9zdG9w
+KCk7DQo+ID4+PiArCWNwdXNfc3RvcHBlZCA9IDE7DQo+ID4+PiArfQ0KPiA+Pj4gKw0KPiA+Pj4g
+IGF0b21pY190IHBhbmljX2NwdSA9IEFUT01JQ19JTklUKFBBTklDX0NQVV9JTlZBTElEKTsNCj4g
+Pj4+DQo+ID4+PiAgLyoNCj4gPj4+IEBAIC0xNjQsMTQgKzE5MCwyMSBAQCB2b2lkIHBhbmljKGNv
+bnN0IGNoYXIgKmZtdCwgLi4uKQ0KPiA+Pj4gIAlpZiAoIV9jcmFzaF9rZXhlY19wb3N0X25vdGlm
+aWVycykgew0KPiA+Pj4gIAkJcHJpbnRrX25taV9mbHVzaF9vbl9wYW5pYygpOw0KPiA+Pj4gIAkJ
+X19jcmFzaF9rZXhlYyhOVUxMKTsNCj4gPj4+IC0JfQ0KPiA+Pj4NCj4gPj4+IC0JLyoNCj4gPj4+
+IC0JICogTm90ZSBzbXBfc2VuZF9zdG9wIGlzIHRoZSB1c3VhbCBzbXAgc2h1dGRvd24gZnVuY3Rp
+b24sIHdoaWNoDQo+ID4+PiAtCSAqIHVuZm9ydHVuYXRlbHkgbWVhbnMgaXQgbWF5IG5vdCBiZSBo
+YXJkZW5lZCB0byB3b3JrIGluIGEgcGFuaWMNCj4gPj4+IC0JICogc2l0dWF0aW9uLg0KPiA+Pj4g
+LQkgKi8NCj4gPj4+IC0Jc21wX3NlbmRfc3RvcCgpOw0KPiA+Pj4gKwkJLyoNCj4gPj4+ICsJCSAq
+IE5vdGUgc21wX3NlbmRfc3RvcCBpcyB0aGUgdXN1YWwgc21wIHNodXRkb3duIGZ1bmN0aW9uLCB3
+aGljaA0KPiA+Pj4gKwkJICogdW5mb3J0dW5hdGVseSBtZWFucyBpdCBtYXkgbm90IGJlIGhhcmRl
+bmVkIHRvIHdvcmsgaW4gYQ0KPiA+Pj4gKwkJICogcGFuaWMgc2l0dWF0aW9uLg0KPiA+Pj4gKwkJ
+ICovDQo+ID4+PiArCQlzbXBfc2VuZF9zdG9wKCk7DQo+ID4+PiArCX0gZWxzZSB7DQo+ID4+PiAr
+CQkvKg0KPiA+Pj4gKwkJICogSWYgd2Ugd2FudCB0byBkbyBjcmFzaCBkdW1wIGFmdGVyIG5vdGlm
+aWVyIGNhbGxzIGFuZA0KPiA+Pj4gKwkJICoga21zZ19kdW1wLCB3ZSB3aWxsIG5lZWQgYXJjaGl0
+ZWN0dXJlIGRlcGVuZGVudCBleHRyYQ0KPiA+Pj4gKwkJICogd29ya3MgaW4gYWRkaXRpb24gdG8g
+c3RvcHBpbmcgb3RoZXIgQ1BVcy4NCj4gPj4+ICsJCSAqLw0KPiA+Pj4gKwkJY3Jhc2hfc21wX3Nl
+bmRfc3RvcCgpOw0KPiA+Pj4gKwl9DQo+ID4+Pg0KPiA+Pj4gIAkvKg0KPiA+Pj4gIAkgKiBSdW4g
+YW55IHBhbmljIGhhbmRsZXJzLCBpbmNsdWRpbmcgdGhvc2UgdGhhdCBtaWdodCBuZWVkIHRvDQo+
+ID4+Pg0KPiA+Pj4NCg0K

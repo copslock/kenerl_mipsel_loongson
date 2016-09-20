@@ -1,39 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2016 14:06:59 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:34938 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992836AbcITMGSn-dB6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Sep 2016 14:06:18 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id DC649E7CCB628;
-        Tue, 20 Sep 2016 13:05:59 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 20 Sep 2016 13:06:02 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <kvm@vger.kernel.org>
-CC:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 4/4] KVM: MIPS: Drop dubious EntryHi optimisation
-Date:   Tue, 20 Sep 2016 13:05:57 +0100
-Message-ID: <6c11917e34276ec1175d920950be665ef869c119.1474372617.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.7.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2016 14:33:14 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:44840 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992571AbcITMdG6fTuH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Sep 2016 14:33:06 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u8KCX2wI014077;
+        Tue, 20 Sep 2016 14:33:02 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u8KCX1rP014076;
+        Tue, 20 Sep 2016 14:33:01 +0200
+Date:   Tue, 20 Sep 2016 14:33:01 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: dec: Avoid la pseudo-instruction in delay slots
+Message-ID: <20160920123301.GN5881@linux-mips.org>
+References: <20160902141902.2478-1-paul.burton@imgtec.com>
+ <alpine.LFD.2.20.1609192323450.19345@eddie.linux-mips.org>
 MIME-Version: 1.0
-In-Reply-To: <cover.b4aaacd5414bd20c4eb4d53417956b268d69d1af.1474372617.git-series.james.hogan@imgtec.com>
-References: <cover.b4aaacd5414bd20c4eb4d53417956b268d69d1af.1474372617.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.20.1609192323450.19345@eddie.linux-mips.org>
+User-Agent: Mutt/1.7.0 (2016-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55212
+X-archive-position: 55213
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,40 +44,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There exists a slightly dubious optimisation in the implementation of
-the MIPS KVM EntryHi emulation which skips TLB invalidation if the
-EntryHi points to an address in the guest KSeg0 region, intended to
-catch guest TLB invalidations where the ASID is almost immediately
-restored to the previous value.
+On Mon, Sep 19, 2016 at 11:30:25PM +0100, Maciej W. Rozycki wrote:
 
-Now that we perform lazy host ASID regeneration for guest user mode when
-the guest ASID changes we should be able to drop the optimisation
-without a significant impact (only the extra TLB refills for the small
-amount of code while the TLB is being invalidated).
+> > When expanding the la or dla pseudo-instruction in a delay slot the GNU
+> > assembler will complain should the pseudo-instruction expand to multiple
+> > actual instructions, since only the first of them will be in the delay
+> > slot leading to the pseudo-instruction being only partially executed if
+> > the branch is taken. Use of PTR_LA in the dec int-handler.S leads to
+> > such warnings:
+> > 
+> >   arch/mips/dec/int-handler.S: Assembler messages:
+> >   arch/mips/dec/int-handler.S:149: Warning: macro instruction expanded into multiple instructions in a branch delay slot
+> >   arch/mips/dec/int-handler.S:198: Warning: macro instruction expanded into multiple instructions in a branch delay slot
+> > 
+> > Avoid this by placing nops in the delay slots of the affected branches,
+> > leading to the PTR_LA macros being placed after the branches & their
+> > delay slots. Although the nop isn't strictly needed, it's an
+> > insignificant cost & satisfies the assembler easily with more
+> > readable code than the possible alternative of manually expanding the
+> > la/dla pseudo-instructions & placing the appropriate first instruction
+> > into the delay slots.
+> 
+>  I take it it's a quest for a clean compilation with no warnings reported, 
+> as the message is otherwise harmless and correct code is produced here.
+> 
+>  Some of the systems affected are not necessarily fast (e.g. clocked at 
+> 12MHz), so I wonder if we shouldn't just bite the bullet and expand the 
+> %hi/%lo pair here.  Even with R4k DECstations we only support `-msym32' 
+> compilation only, due to R4k errata, so it's not like the higher parts 
+> will ever be needed for address calculation.
+> 
+>  Alternatively we could have a `.set warn'/`.set nowarn' setting in GAS, 
+> previously discussed I believe, although it would take a bit to propagate.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
----
- arch/mips/kvm/emulate.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Yeah, I'm already looking into the other direction whenever this warning
+pops up - and it does so often.  I've even pondered submitting something
+like -Werror for gas ;-)
 
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 8dc9e64346e6..4db4c0370859 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1162,8 +1162,7 @@ enum emulation_result kvm_mips_emulate_CP0(union mips_instruction inst,
- 			} else if (rd == MIPS_CP0_TLB_HI && sel == 0) {
- 				u32 nasid =
- 					vcpu->arch.gprs[rt] & KVM_ENTRYHI_ASID;
--				if ((KSEGX(vcpu->arch.gprs[rt]) != CKSEG0) &&
--				    ((kvm_read_c0_guest_entryhi(cop0) &
-+				if (((kvm_read_c0_guest_entryhi(cop0) &
- 				      KVM_ENTRYHI_ASID) != nasid)) {
- 					trace_kvm_asid_change(vcpu,
- 						kvm_read_c0_guest_entryhi(cop0)
--- 
-git-series 0.8.10
+It's not very elegant but you could just open code everything, see below
+patch.  Compiles but not runtime tested due to lack of hardware.
+
+Maciej, can you test this?
+
+  Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/dec/int-handler.S | 40 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/dec/int-handler.S b/arch/mips/dec/int-handler.S
+index d7b9918..20035fc 100644
+--- a/arch/mips/dec/int-handler.S
++++ b/arch/mips/dec/int-handler.S
+@@ -146,7 +146,25 @@
+ 		/*
+ 		 * Find irq with highest priority
+ 		 */
+-		 PTR_LA	t1,cpu_mask_nr_tbl
++		# open coded PTR_LA t1, cpu_mask_nr_tbl
++#if (_MIPS_SZPTR == 32)
++		# open coded la t1, cpu_mask_nr_tbl
++		lui	t1, %hi(cpu_mask_nr_tbl)
++		addiu	t1, %lo(cpu_mask_nr_tbl)
++		
++#endif
++#if (_MIPS_SZPTR == 64)
++		# open coded dla t1, cpu_mask_nr_tbl
++		.set	push
++		.set	noat
++		lui	t1, %highest(cpu_mask_nr_tbl)
++		lui	AT, %hi(cpu_mask_nr_tbl)
++		daddiu	t1, t1, %higher(cpu_mask_nr_tbl)
++		daddiu	AT, AT, %lo(cpu_mask_nr_tbl)
++		dsll	t1, 32
++		daddu	t1, t1, AT
++		.set	pop
++#endif
+ 1:		lw	t2,(t1)
+ 		nop
+ 		and	t2,t0
+@@ -195,7 +213,25 @@
+ 		/*
+ 		 * Find irq with highest priority
+ 		 */
+-		 PTR_LA	t1,asic_mask_nr_tbl
++		# open coded PTR_LA t1,asic_mask_nr_tbl
++#if (_MIPS_SZPTR == 32)
++		# open coded la t1, asic_mask_nr_tbl
++		lui	t1, %hi(asic_mask_nr_tbl)
++		addiu	t1, %lo(asic_mask_nr_tbl)
++		
++#endif
++#if (_MIPS_SZPTR == 64)
++		# open coded dla t1, asic_mask_nr_tbl
++		.set	push
++		.set	noat
++		lui	t1, %highest(asic_mask_nr_tbl)
++		lui	AT, %hi(asic_mask_nr_tbl)
++		daddiu	t1, t1, %higher(asic_mask_nr_tbl)
++		daddiu	AT, AT, %lo(asic_mask_nr_tbl)
++		dsll	t1, 32
++		daddu	t1, t1, AT
++		.set	pop
++#endif
+ 2:		lw	t2,(t1)
+ 		nop
+ 		and	t2,t0

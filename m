@@ -1,36 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2016 00:57:56 +0200 (CEST)
-Received: from emh06.mail.saunalahti.fi ([62.142.5.116]:50221 "EHLO
-        emh06.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992571AbcITW5tMpYUJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Sep 2016 00:57:49 +0200
-Received: from raspberrypi.musicnaut.iki.fi (85-76-138-228-nat.elisa-mobile.fi [85.76.138.228])
-        by emh06.mail.saunalahti.fi (Postfix) with ESMTP id C4BB569986;
-        Wed, 21 Sep 2016 01:57:47 +0300 (EEST)
-Date:   Wed, 21 Sep 2016 01:57:47 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     "Steven J. Hill" <Steven.Hill@cavium.com>
-Cc:     linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v9] mmc: OCTEON: Add host driver for OCTEON MMC
- controller.
-Message-ID: <20160920225747.GE27622@raspberrypi.musicnaut.iki.fi>
-References: <836c0ca9-18f0-f6b5-bb79-8d0301d54154@cavium.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2016 15:09:01 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47578 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991986AbcIUNIyVZAwA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Sep 2016 15:08:54 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u8LD8rVB015238;
+        Wed, 21 Sep 2016 15:08:53 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u8LD8qee015237;
+        Wed, 21 Sep 2016 15:08:52 +0200
+Date:   Wed, 21 Sep 2016 15:08:52 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Matt Redfearn <matt.redfearn@imgtec.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/9] MIPS: traps: 64bit kernels should read CP0_EBase
+ 64bit
+Message-ID: <20160921130852.GA10899@linux-mips.org>
+References: <cover.d93e43428f3c573bdd18d7c874830705b39c3a8a.1472747205.git-series.james.hogan@imgtec.com>
+ <e826225b15736539cd96a1b6b2a99e2bb2b4eb87.1472747205.git-series.james.hogan@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <836c0ca9-18f0-f6b5-bb79-8d0301d54154@cavium.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <aaro.koskinen@iki.fi>
+In-Reply-To: <e826225b15736539cd96a1b6b2a99e2bb2b4eb87.1472747205.git-series.james.hogan@imgtec.com>
+User-Agent: Mutt/1.7.0 (2016-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55218
+X-archive-position: 55219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,14 +44,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Sep 19, 2016 at 03:24:30PM -0500, Steven J. Hill wrote:
-> The OCTEON MMC controller is currently found on cn61XX and cn71XX
-> devices. Device parameters are configured from device tree data.
-> eMMC, MMC and SD devices are supported. Tested on Cavium CN7130.
-> 
-> Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
-> Acked-by: David Daney <david.daney@cavium.com>
+On Thu, Sep 01, 2016 at 05:30:07PM +0100, James Hogan wrote:
 
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> When reading the CP0_EBase register containing the WG (write gate) bit,
+> the ebase variable should be set to the full value of the register, i.e.
+> on a 64-bit kernel the full 64-bit width of the register via
+> read_cp0_ebase_64(), and on a 32-bit kernel the full 32-bit width
+> including bits 31:30 which may be writeable.
 
-A.
+How about changing the definition of read/write_c0_ebase to
+
+#define read_c0_ebase()         __read_ulong_c0_register($15, 1)
+#define write_c0_ebase(val)     __write_ulong_c0_register($15, 1, val)
+
+or using a new variant like
+
+#define read_c0_ebase_ulong()         __read_ulong_c0_register($15, 1)
+#define write_c0_ebase_ulong(val)     __write_ulong_c0_register($15, 1, val)
+
+to avoid the ifdefery?  This could also make this bit
+
+                ebase = cpu_has_mips64r6 ? read_c0_ebase_64()
+                                         : (s32)read_c0_ebase();
+
+in cpu-probe.c prettier.
+
+  Ralf

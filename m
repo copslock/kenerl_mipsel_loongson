@@ -1,37 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2016 15:27:04 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48616 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992096AbcIUN050SCG6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 21 Sep 2016 15:26:57 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u8LDQuI3015683;
-        Wed, 21 Sep 2016 15:26:56 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u8LDQuDv015682;
-        Wed, 21 Sep 2016 15:26:56 +0200
-Date:   Wed, 21 Sep 2016 15:26:56 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 7/9] MIPS: uprobes: Flush icache via kernel address
-Message-ID: <20160921132656.GF14137@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2016 17:01:49 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:27657 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991970AbcIUPBm4rF-1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Sep 2016 17:01:42 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 3B5FF59018B96;
+        Wed, 21 Sep 2016 16:01:23 +0100 (IST)
+Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 21 Sep
+ 2016 16:01:26 +0100
+Subject: Re: [PATCH 1/9] MIPS: traps: 64bit kernels should read CP0_EBase
+ 64bit
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>
 References: <cover.d93e43428f3c573bdd18d7c874830705b39c3a8a.1472747205.git-series.james.hogan@imgtec.com>
- <0d915756776de050b8a92b5bb5d4e7ffbe784d66.1472747205.git-series.james.hogan@imgtec.com>
+ <e826225b15736539cd96a1b6b2a99e2bb2b4eb87.1472747205.git-series.james.hogan@imgtec.com>
+ <20160921130852.GA10899@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <73eede89-af68-eb17-b0b3-2537084da819@imgtec.com>
+Date:   Wed, 21 Sep 2016 16:01:26 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d915756776de050b8a92b5bb5d4e7ffbe784d66.1472747205.git-series.james.hogan@imgtec.com>
-User-Agent: Mutt/1.7.0 (2016-08-17)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20160921130852.GA10899@linux-mips.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55221
+X-archive-position: 55222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,49 +48,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Sep 01, 2016 at 05:30:13PM +0100, James Hogan wrote:
+Hi Ralf,
 
-> Update arch_uprobe_copy_ixol() to use the kmap_atomic() based kernel
-> address to flush the icache with flush_icache_range(), rather than the
-> user mapping. We have the kernel mapping available anyway and this
-> avoids having to switch to using the new __flush_icache_user_range() for
-> the sake of Enhanced Virtual Addressing (EVA) where flush_icache_range()
-> will become ineffective on user addresses.
-> 
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
-> Cc: linux-mips@linux-mips.org
-> ---
->  arch/mips/kernel/uprobes.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
-> index 8452d933a645..9a507ab1ea38 100644
-> --- a/arch/mips/kernel/uprobes.c
-> +++ b/arch/mips/kernel/uprobes.c
-> @@ -301,19 +301,14 @@ int set_orig_insn(struct arch_uprobe *auprobe, struct mm_struct *mm,
->  void __weak arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
->  				  void *src, unsigned long len)
->  {
-> -	void *kaddr;
-> +	void *kaddr, kstart;
->  
->  	/* Initialize the slot */
->  	kaddr = kmap_atomic(page);
-> -	memcpy(kaddr + (vaddr & ~PAGE_MASK), src, len);
-> +	kstart = kaddr + (vaddr & ~PAGE_MASK);
-> +	memcpy(kstart, src, len);
-> +	flush_icache_range(kstart, kstart + len);
->  	kunmap_atomic(kaddr);
-> -
-> -	/*
-> -	 * The MIPS version of flush_icache_range will operate safely on
-> -	 * user space addresses and more importantly, it doesn't require a
-> -	 * VMA argument.
-> -	 */
-> -	flush_icache_range(vaddr, vaddr + len);
 
-I can't convince myself this is right wrt. to cache aliases ...
+On 21/09/16 14:08, Ralf Baechle wrote:
+> On Thu, Sep 01, 2016 at 05:30:07PM +0100, James Hogan wrote:
+>
+>> When reading the CP0_EBase register containing the WG (write gate) bit,
+>> the ebase variable should be set to the full value of the register, i.e.
+>> on a 64-bit kernel the full 64-bit width of the register via
+>> read_cp0_ebase_64(), and on a 32-bit kernel the full 32-bit width
+>> including bits 31:30 which may be writeable.
+> How about changing the definition of read/write_c0_ebase to
+>
+> #define read_c0_ebase()         __read_ulong_c0_register($15, 1)
+> #define write_c0_ebase(val)     __write_ulong_c0_register($15, 1, val)
 
-  Ralf
+James added the {read,write}_c0_ebase_64 functions in 
+37fb60f8e3f011c25c120081a73886ad8dbc42fd, because performing a 64bit 
+access to 32bit cp0 registers (like ebase on 32bit cpus) was an 
+undefined operation pre-r6, so we can't always access them as longs.
+
+>
+> or using a new variant like
+>
+> #define read_c0_ebase_ulong()         __read_ulong_c0_register($15, 1)
+> #define write_c0_ebase_ulong(val)     __write_ulong_c0_register($15, 1, val)
+>
+> to avoid the ifdefery?  This could also make this bit
+>
+>                  ebase = cpu_has_mips64r6 ? read_c0_ebase_64()
+>                                           : (s32)read_c0_ebase();
+
+This relies on being able to determine a 64bit value for ebase, either 
+by reading it in its entirety on a 64bit cpu (including on a 32bit 
+kernel) or sign extending it from a 32bit read.
+
+Thanks,
+Matt
+
+>
+> in cpu-probe.c prettier.
+>
+>    Ralf

@@ -1,51 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2016 23:32:25 +0200 (CEST)
-Received: from mail-io0-f179.google.com ([209.85.223.179]:36689 "EHLO
-        mail-io0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991970AbcIUVcSr47PT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Sep 2016 23:32:18 +0200
-Received: by mail-io0-f179.google.com with SMTP id m79so66929424ioo.3
-        for <linux-mips@linux-mips.org>; Wed, 21 Sep 2016 14:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=mOxBUd9MDuygTDLn6p64A12TVflWZ0yYtnvhPRns5iI=;
-        b=Q4vUjpvFTRr0/HatkKPoIa04MB/oCp3xIv1NzY7xIfJYTRK9Xrb0CfdMH5T2R6X5BN
-         0yTDHUyRKsJgiBCkUdiXU6Iq/sXMjqeoOIorg8v5qbEDTqcEXaL82WkxkFKSp/FykGIt
-         vHOTC5ORTtzPrMlvdQjRLboqgzUFui9T2LrZLhHdKI2pRHDWbvLQ6ItqqpYLEch++f30
-         TBzllTYAOxOur6sLTrRk+24Jt5t/OlJ13YcrnNckQfig3H8VWBKciEG9L788XgrF+IlQ
-         qRRUnQcRBHfZuuGJs8z0vKT9rnY+KGXgBFyvJEjo5/2ryUir1xkXH13/P/w/YbZZWFLa
-         cNBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=mOxBUd9MDuygTDLn6p64A12TVflWZ0yYtnvhPRns5iI=;
-        b=e5d/+/Lp53zgg0+9oj/wS6d56m696CChvGko9aiYLfJo/3d0jgtcNyxDgZfpjSUtrz
-         ulRZOKGbzoM275jmMc+j29ljkaASzvS8JV0XzCRPI66kSKIZPhe9j4hI2gBU+KbLttlG
-         hos2jzYjFTf07uthvQQVMpBlKAxZYpcMvBj+LqMKv2yaYO1PGeugfyUAk7rhbX4Wuxmv
-         jHhLQm1d64yx36ZQNzmNDDGNYW7T1EwBRiJYjxnvitsjg9Ikr0AlTe61J+4tdBYrXk19
-         mI5enBiawPupmFZiqZdO/cYYx+FLcHAXixfyLsNJy7WTkioCaGlZvNsqiFslskeKsQwu
-         1MeQ==
-X-Gm-Message-State: AE9vXwNR0DEkdul85H9YMqb6he18fHIudtgWgu19hjqx0m+4hRjrEDYc4QxSlhMdI6a88kNBB7/H4ID7JOQiDQ==
-X-Received: by 10.107.1.197 with SMTP id 188mr47989527iob.20.1474493533155;
- Wed, 21 Sep 2016 14:32:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2016 03:54:22 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:55200 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992096AbcIVByOGTL5O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Sep 2016 03:54:14 +0200
+Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 34545C05A2B9;
+        Thu, 22 Sep 2016 01:54:07 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com ([10.66.131.142])
+        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u8M1rtAh002226
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Wed, 21 Sep 2016 21:53:58 -0400
+Date:   Thu, 22 Sep 2016 09:53:54 +0800
+From:   "'Dave Young'" <dyoung@redhat.com>
+To:     =?utf-8?B?5rKz5ZCI6Iux5a6PIC8gS0FXQUnvvIxISURFSElSTw==?= 
+        <hidehiro.kawai.ez@hitachi.com>
+Cc:     "xlpang@redhat.com" <xlpang@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Daniel Walker <dwalker@fifo99.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Baoquan He <bhe@redhat.com>, Toshi Kani <toshi.kani@hpe.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        HATAYAMA Daisuke <d.hatayama@jp.fujitsu.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, Vivek Goyal <vgoyal@redhat.com>,
+        David Vrabel <david.vrabel@citrix.com>
+Subject: Re: [V4 PATCH 1/2] x86/panic: Replace smp_send_stop() with kdump
+ friendly version in panic path
+Message-ID: <20160922015354.GA12860@dhcp-128-65.nay.redhat.com>
+References: <20160810080946.11028.97686.stgit@sysi4-13.yrl.intra.hitachi.co.jp>
+ <20160810080948.11028.15344.stgit@sysi4-13.yrl.intra.hitachi.co.jp>
+ <20160812031633.GA2983@dhcp-128-65.nay.redhat.com>
+ <04EAB7311EE43145B2D3536183D1A84454CBBABC@GSjpTKYDCembx31.service.hitachi.net>
+ <57E0E7EC.2010704@redhat.com>
+ <04EAB7311EE43145B2D3536183D1A84454D0FECC@GSjpTKYDCembx31.service.hitachi.net>
+ <04EAB7311EE43145B2D3536183D1A84454D101A4@GSjpTKYDCembx31.service.hitachi.net>
 MIME-Version: 1.0
-Received: by 10.107.27.79 with HTTP; Wed, 21 Sep 2016 14:32:12 -0700 (PDT)
-From:   Justin Chen <justinpopo6@gmail.com>
-Date:   Wed, 21 Sep 2016 14:32:12 -0700
-Message-ID: <CAJx26kX1ygnds8wD_L95fxwKZRiQhFAkC7DivZmvrGgjas+WLg@mail.gmail.com>
-Subject: [RFC] Timing hazard in arch/mips/kernel/smp.c:start_secondary
-To:     linux-mips@linux-mips.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <justinpopo6@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <04EAB7311EE43145B2D3536183D1A84454D101A4@GSjpTKYDCembx31.service.hitachi.net>
+User-Agent: Mutt/1.7.0 (2016-08-17)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Thu, 22 Sep 2016 01:54:07 +0000 (UTC)
+Return-Path: <dyoung@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55225
+X-archive-position: 55226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justinpopo6@gmail.com
+X-original-sender: dyoung@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,121 +73,94 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello everyone,
+Hi, 河合英宏
 
-I am running into a deadlock while testing bmips power management
-code. Currently attempting to add power management functionality to
-arch/mips/configs/bmips_stb_defconfig. The kernel locks up when coming
-back from a suspend state. I am working on a bcm7435 board.
+Thanks for the patch log update, it looks good to me.
 
-In arch/mips/kernel/smp.c:start_secondary
----
-asmlinkage void start_secondary(void)
-{
-        ....
-        set_cpu_online(cpu, true);
+Acked-by: Dave Young <dyoung@redhat.com>
 
-        set_cpu_sibling_map(cpu);
-        set_cpu_core_map(cpu);
+On 09/20/16 at 11:22am, 河合英宏 / KAWAI，HIDEHIRO wrote:
+> Here is the revised commit description reflecting Dave's
+> comment.  Cc list was copied from -mm version.
+> 
+> From: Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
+> Subject: x86/panic: replace smp_send_stop() with kdump friendly version in panic path
+> 
+> This patch fixes a problem reported by Daniel Walker
+> (https://lkml.org/lkml/2015/6/24/44).
+> 
+> When kernel panics with crash_kexec_post_notifiers kernel parameter
+> enabled, other CPUs are stopped by smp_send_stop() instead of
+> machine_crash_shutdown() in __crash_kexec() path.
+> 
+>   panic()
+>     if crash_kexec_post_notifiers == 1
+>       smp_send_stop()
+>       atomic_notifier_call_chain()
+>       kmsg_dump()
+>     __crash_kexec()
+>       machine_crash_shutdown()
+> 
+> Different from smp_send_stop(), machine_crash_shutdown() stops other
+> CPUs with extra works for kdump.  So, if smp_send_stop() stops other
+> CPUs in advance, these extra works won't be done.  For x86, kdump
+> routines miss to save other CPUs' registers and disable virtualization
+> extensions.
+> 
+> To fix this problem, call a new kdump friendly function,
+> crash_smp_send_stop(), instead of the smp_send_stop() when
+> crash_kexec_post_notifiers is enabled.  crash_smp_send_stop() is a
+> weak function, and it just call smp_send_stop().  Architecture
+> codes should override it so that kdump can work appropriately.
+> This patch only provides x86-specific version.
+> 
+> For Xen's PV kernel, just keep the current behavior.
+> As for Dom0, it doesn't use crash_kexec routines, and it relies on
+> panic notifier chain.  At the end of the chain, a hypercall is
+> issued which requests the hypervisor to execute kdump.  This means
+> regardless of crash_kexec_post_notifiers setting, smp_send_stop().
+> For PV HVM, it would work similarly to baremetal kernels with extra
+> cleanups for hypervisor.  It doesn't need additional care.
+> 
+> Changes in V4:
+> - Keep to use smp_send_stop if crash_kexec_post_notifiers is not set
+> - Rename panic_smp_send_stop to crash_smp_send_stop
+> - Don't change the behavior for Xen's PV kernel
+> 
+> Changes in V3:
+> - Revise comments, description, and symbol names
+> 
+> Changes in V2:
+> - Replace smp_send_stop() call with crash_kexec version which
+>   saves cpu states and cleans up VMX/SVM
+> - Drop a fix for Problem 1 at this moment
+> 
+> Fixes: f06e5153f4ae (kernel/panic.c: add "crash_kexec_post_notifiers" option)
+> Link: http://lkml.kernel.org/r/20160810080948.11028.15344.stgit@sysi4-13.yrl.intra.hitachi.co.jp
+> Signed-off-by: Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
+> Reported-by: Daniel Walker <dwalker@fifo99.com>
+> Cc: Dave Young <dyoung@redhat.com>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Vivek Goyal <vgoyal@redhat.com>
+> Cc: Eric Biederman <ebiederm@xmission.com>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Daniel Walker <dwalker@fifo99.com>
+> Cc: Xunlei Pang <xpang@redhat.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Borislav Petkov <bp@suse.de>
+> Cc: David Vrabel <david.vrabel@citrix.com>
+> Cc: Toshi Kani <toshi.kani@hpe.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: David Daney <david.daney@cavium.com>
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: "Steven J. Hill" <steven.hill@cavium.com>
+> Cc: Corey Minyard <cminyard@mvista.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> 
 
-        calculate_cpu_foreign_map();
+[snip]
 
-        cpumask_set_cpu(cpu, &cpu_callin_map);
-
-        synchronise_count_slave(cpu);
-        ....
-}
----
-The deadlock occurs because the set_cpu_online() is called before
-synchronise_count_slave(). This can cause a deadlock if the boot cpu
-sees that the secondary cpu is online and tries to execute a function
-on it before it synchronizes with it. The boot cpu ends up waiting for
-the secondary cpu to execute a function, while the secondary cpu waits
-for the boot cpu to synchronise with it.
-
-Lets assume the following occurs.
-
-1. CPU0 starts CPU1. CPU0 starts waiting for CPU1 to start up.
-CPU0 ends up at arch/mips/kernel/smp.c:__cpu_up().
----
-int __cpu_up(unsigned int cpu, struct task_struct *tidle)
-{
-        mp_ops->boot_secondary(cpu, tidle);
-
-        /*
-         * Trust is futile.  We should really have timeouts ...
-         */
-        while (!cpumask_test_cpu(cpu, &cpu_callin_map)) {
-                udelay(100);
-                schedule();
-        }
-
-        synchronise_count_master(cpu);
-        return 0;
-}
----
-While CPU0 waits for CPU1 it schedules another thread.
-
-2. CPU0 begins executing a new thread and eventually ends up at
-kernel/smp.c:smp_call_function_many()
----
-void smp_call_function_many(const struct cpumask *mask,
-                            smp_call_func_t func, void *info, bool wait)
-{
-        ....
-        /* No online cpus?  We're done. */
-        if (cpu >= nr_cpu_ids)
-                return;
-
-        /* Do we have another CPU which isn't us? */
-        next_cpu = cpumask_next_and(cpu, mask, cpu_online_mask);
-        if (next_cpu == this_cpu)
-                next_cpu = cpumask_next_and(next_cpu, mask, cpu_online_mask);
-
-        /* Fastpath: do that cpu by itself. */
-        if (next_cpu >= nr_cpu_ids) {
-                smp_call_function_single(cpu, func, info, wait);
-                return;
-        }
-        ....
-}
----
-3. CPU1 executes set_cpu_online() and blocks at
-synchronise_count_slave(). Thus CPU1 is blocked, however it tells
-everyone it is online.
-
-4. CPU0(in kernel/smp.c:smp_call_function_many()) sees that one CPU is
-online and attempts to a run a function on that CPU(which is CPU1).
-CPU0 then blocks with no preempt and irqs off. Thus both CPUs are
-deadlocked.
-CPU0 is blocked at smp_call_function_single()
-CPU1 is blocked at synchronise_count_slave()
-
-I am running into this issue with this execution.
-kernel/power/standby.c: suspend_enter()
-kernel/power/standby.c: syscore_resume() (Coming out of suspend, only 1 cpu up)
-kernel/time/timekeeping.c: timekeeping_resume() (syscore calls the
-timekeeping resume hook)
-kernel/time/hrtimer.c: hrtimer_resume()
-kernel/time/hrtimer.c: clock_was_set_delayed() (We schedule some work for later)
-...
-CPU0 then starts up CPU1
-arch/mips/kernel/smp.c: __cpu_up() (Comes here and decides to schedule
-the hrtimer thread)
-kernel/time/hrtimer.c: clock_was_set_work()
-kernel/time/hrtimer.c: clock_was_set()
-kernel/time/hrtimer.c: on_each_cpu() (and this is where we get screwed)
-...
-kernel/smp.c: smp_call_function_many() (Eventually gets here and
-blocks if CPU1 already executed set_cpu_online())
-
-The deadlock doesn't happen when I test pm with no_console_suspend. I
-am assuming this happens because things get printed out before
-"set_cpu_online()" gets executed. Thus delaying the timing. Then CPU0
-does not see that CPU1 is online when running
-"smp_call_function_many()".
-
-Am I seeing this correctly? What would be the proper fix to this?
-
-Thanks,
-Justin
+Thanks
+Dave

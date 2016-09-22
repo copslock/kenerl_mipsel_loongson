@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2016 19:34:33 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:45133 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2016 19:43:00 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:45710 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992178AbcIVReZX865k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Sep 2016 19:34:25 +0200
+        by eddie.linux-mips.org with ESMTP id S23992126AbcIVRmu5F5Fk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Sep 2016 19:42:50 +0200
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0BE2FB50;
-        Thu, 22 Sep 2016 17:34:16 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 14D47B8F;
+        Thu, 22 Sep 2016 17:42:42 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,12 +14,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         kvm@vger.kernel.org
-Subject: [PATCH 4.4 004/118] MIPS: KVM: Check for pfn noslot case
-Date:   Thu, 22 Sep 2016 19:28:24 +0200
-Message-Id: <20160922172938.872938824@linuxfoundation.org>
+Subject: [PATCH 4.7 002/184] MIPS: KVM: Check for pfn noslot case
+Date:   Thu, 22 Sep 2016 19:38:56 +0200
+Message-Id: <20160922174048.756735154@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
-In-Reply-To: <20160922172938.643879685@linuxfoundation.org>
-References: <20160922172938.643879685@linuxfoundation.org>
+In-Reply-To: <20160922174048.653794923@linuxfoundation.org>
+References: <20160922174048.653794923@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55238
+X-archive-position: 55239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +44,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -84,7 +84,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/kvm/tlb.c
 +++ b/arch/mips/kvm/tlb.c
-@@ -152,7 +152,7 @@ static int kvm_mips_map_page(struct kvm
+@@ -159,7 +159,7 @@ static int kvm_mips_map_page(struct kvm
  	srcu_idx = srcu_read_lock(&kvm->srcu);
  	pfn = kvm_mips_gfn_to_pfn(kvm, gfn);
  

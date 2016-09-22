@@ -1,47 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2016 14:11:59 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:44568 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992178AbcIVMLt0As7C (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Sep 2016 14:11:49 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u8MCBgVK014024;
-        Thu, 22 Sep 2016 14:11:42 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u8MCBbFZ014023;
-        Thu, 22 Sep 2016 14:11:37 +0200
-Date:   Thu, 22 Sep 2016 14:11:37 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, linux-remoteproc@vger.kernel.org,
-        lisa.parratt@imgtec.com, linux-kernel@vger.kernel.org,
-        Hugh Dickins <hughd@google.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2 2/6] MIPS: tlb-r4k: If there are wired entries, don't
- use TLBINVF
-Message-ID: <20160922121136.GA12981@linux-mips.org>
-References: <1474361249-31064-1-git-send-email-matt.redfearn@imgtec.com>
- <1474361249-31064-3-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Sep 2016 15:38:55 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:49058 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992172AbcIVNisrWJwr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Sep 2016 15:38:48 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 28E18EC1214E8;
+        Thu, 22 Sep 2016 14:38:38 +0100 (IST)
+Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 22 Sep 2016 14:38:41 +0100
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Subject: [PATCH 0/3] MIPS uprobe fixes
+Date:   Thu, 22 Sep 2016 15:38:30 +0200
+Message-ID: <1474551513-30647-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1474361249-31064-3-git-send-email-matt.redfearn@imgtec.com>
-User-Agent: Mutt/1.7.0 (2016-08-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55231
+X-archive-position: 55232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,19 +40,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Sep 20, 2016 at 09:47:25AM +0100, Matt Redfearn wrote:
+This patch set fixes a few issues with uprobe support on MIPS:
+1) uretprobe support
+2) probe removal
+3) branch instruction emulation
 
-> When adding a wired entry to the TLB via add_wired_entry, the tlb is
-> flushed with local_flush_tlb_all, which on CPUs with TLBINV results in
-> the new wired entry being flushed again.
-> 
-> Behavior of the TLBINV instruction applies to all applicable TLB entries
-> and is unaffected by the setting of the Wired register. Therefore if
-> the TLB has any wired entries, fall back to iterating over the entries
-> rather than blasting them all using TLBINVF.
-> 
-> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+With these changes I believe all of uprobe tracing for MIPSr2 works properly.
+There are outstanding issues with uprobe tracing for MIPSr6 if a probe is placed
+over compact branch instructions (as these are not currently emulated properly).
 
-Queued for 4.9..
+Marcin Nowakowski (3):
+  MIPS: fix uretprobe implementation
+  MIPS: uprobes: remove incorrect set_orig_insn
+  MIPS: uprobes: fix use of uninitialised variable
 
-  Ralf
+ arch/mips/include/asm/uprobes.h |  1 -
+ arch/mips/kernel/uprobes.c      | 25 +++----------------------
+ 2 files changed, 3 insertions(+), 23 deletions(-)
+
+-- 
+2.7.4

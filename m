@@ -1,56 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2018 18:02:46 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:42400 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990427AbeDYQB6S06ZB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2018 18:01:58 +0200
-Received: from localhost (LFbn-1-12247-202.w90-92.abo.wanadoo.fr [90.92.61.202])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EA99A949;
-        Wed, 25 Apr 2018 16:01:51 +0000 (UTC)
-Subject: Patch "OF: Prevent unaligned access in of_alias_scan()" has been added to the 4.9-stable tree
-To:     amit.pundir@linaro.org, frowand.list@gmail.com,
-        grant.likely@secretlab.ca, gregkh@linuxfoundation.org,
-        linux-mips@linux-mips.org, paul.burton@imgtec.com,
-        ralf@linux-mips.org, robh@kernel.org
-Cc:     <stable-commits@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 25 Apr 2018 18:01:26 +0200
-Message-ID: <1524672086190221@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 63781
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Paul Burton <paul.burton@imgtec.com>
+Date: Fri, 23 Sep 2016 16:38:27 +0100
+Subject: OF: Prevent unaligned access in of_alias_scan()
+Message-ID: <20160923153827.GGpfMdp-0NminOfNSzMhIdiV8FdkNsGoOLHNK5g9iZU@z>
+
+From: Paul Burton <paul.burton@imgtec.com>
+
+commit de96ec2a77c6d06a423c2c495bb4a2f4299f3d9e upstream.
+
+When allocating a struct alias_prop, of_alias_scan() only requested that
+it be aligned on a 4 byte boundary. The struct contains pointers which
+leads to us attempting 64 bit writes on 64 bit systems, and if the CPU
+doesn't support unaligned memory accesses then this causes problems -
+for example on some MIPS64r2 CPUs including the "mips64r2-generic" QEMU
+emulated CPU it will trigger an address error exception.
+
+Fix this by requesting alignment for the struct alias_prop allocation
+matching that which the compiler expects, using the __alignof__ keyword.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Grant Likely <grant.likely@secretlab.ca>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/14306/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ drivers/of/base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2109,7 +2109,7 @@ void of_alias_scan(void * (*dt_alloc)(u6
+ 			continue;
+ 
+ 		/* Allocate an alias_prop with enough space for the stem */
+-		ap = dt_alloc(sizeof(*ap) + len + 1, 4);
++		ap = dt_alloc(sizeof(*ap) + len + 1, __alignof__(*ap));
+ 		if (!ap)
+ 			continue;
+ 		memset(ap, 0, sizeof(*ap) + len + 1);
 
 
-This is a note to let you know that I've just added the patch titled
+Patches currently in stable-queue which might be from paul.burton@imgtec.com are
 
-    OF: Prevent unaligned access in of_alias_scan()
-
-to the 4.9-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     of-prevent-unaligned-access-in-of_alias_scan.patch
-and it can be found in the queue-4.9 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+queue-4.9/irqchip-mips-gic-fix-local-interrupts.patch
+queue-4.9/of-prevent-unaligned-access-in-of_alias_scan.patch

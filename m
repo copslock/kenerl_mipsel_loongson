@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:13:09 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:46707 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:13:34 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:46712 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992990AbcI1JMYyw53G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:12:24 +0200
+        by eddie.linux-mips.org with ESMTP id S23992992AbcI1JM1HQtPG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:12:27 +0200
 Received: from localhost (unknown [89.202.203.52])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 87B5D8D4;
-        Wed, 28 Sep 2016 09:12:18 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CDD1D3EE;
+        Wed, 28 Sep 2016 09:12:20 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
-        Justin Chen <justinpopo6@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.7 45/69] MIPS: SMP: Fix possibility of deadlock when bringing CPUs online
-Date:   Wed, 28 Sep 2016 11:05:27 +0200
-Message-Id: <20160928090446.998680892@linuxfoundation.org>
+Subject: [PATCH 4.7 46/69] MIPS: vDSO: Fix Malta EVA mapping to vDSO page structs
+Date:   Wed, 28 Sep 2016 11:05:28 +0200
+Message-Id: <20160928090447.043547110@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20160928090445.054716307@linuxfoundation.org>
 References: <20160928090445.054716307@linuxfoundation.org>
@@ -26,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55281
+X-archive-position: 55282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,58 +46,63 @@ X-list: linux-mips
 
 ------------------
 
-From: Matt Redfearn <matt.redfearn@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 8f46cca1e6c06a058374816887059bcc017b382f upstream.
+commit 554af0c396380baf416f54c439b99b495180b2f4 upstream.
 
-This patch fixes the possibility of a deadlock when bringing up
-secondary CPUs.
-The deadlock occurs because the set_cpu_online() is called before
-synchronise_count_slave(). This can cause a deadlock if the boot CPU,
-having scheduled another thread, attempts to send an IPI to the
-secondary CPU, which it sees has been marked online. The secondary is
-blocked in synchronise_count_slave() waiting for the boot CPU to enter
-synchronise_count_master(), but the boot cpu is blocked in
-smp_call_function_many() waiting for the secondary to respond to it's
-IPI request.
+The page structures associated with the vDSO pages in the kernel image
+are calculated using virt_to_page(), which uses __pa() under the hood to
+find the pfn associated with the virtual address. The vDSO data pointers
+however point to kernel symbols, so __pa_symbol() should really be used
+instead.
 
-Fix this by marking the CPU online in cpu_callin_map and synchronising
-counters before declaring the CPU online and calculating the maps for
-IPIs.
+Since there is no equivalent to virt_to_page() which uses __pa_symbol(),
+fix init_vdso_image() to work directly with pfns, calculated with
+__phys_to_pfn(__pa_symbol(...)).
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Reported-by: Justin Chen <justinpopo6@gmail.com>
-Tested-by: Justin Chen <justinpopo6@gmail.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
+This issue broke the Malta Enhanced Virtual Addressing (EVA)
+configuration which has a non-default implementation of __pa_symbol().
+This is because it uses a physical alias so that the kernel executes
+from KSeg0 (VA 0x80000000 -> PA 0x00000000), while RAM is provided to
+the kernel in the KUSeg range (VA 0x00000000 -> PA 0x80000000) which
+uses the same underlying RAM.
+
+Since there are no page structures associated with the low physical
+address region, some arbitrary kernel memory would be interpreted as a
+page structure for the vDSO pages and badness ensues.
+
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14302/
+Patchwork: https://patchwork.linux-mips.org/patch/14229/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/smp.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/mips/kernel/vdso.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -320,6 +320,9 @@ asmlinkage void start_secondary(void)
- 	cpumask_set_cpu(cpu, &cpu_coherent_mask);
- 	notify_cpu_starting(cpu);
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -39,16 +39,16 @@ static struct vm_special_mapping vdso_vv
+ static void __init init_vdso_image(struct mips_vdso_image *image)
+ {
+ 	unsigned long num_pages, i;
++	unsigned long data_pfn;
  
-+	cpumask_set_cpu(cpu, &cpu_callin_map);
-+	synchronise_count_slave(cpu);
-+
- 	set_cpu_online(cpu, true);
+ 	BUG_ON(!PAGE_ALIGNED(image->data));
+ 	BUG_ON(!PAGE_ALIGNED(image->size));
  
- 	set_cpu_sibling_map(cpu);
-@@ -327,10 +330,6 @@ asmlinkage void start_secondary(void)
+ 	num_pages = image->size / PAGE_SIZE;
  
- 	calculate_cpu_foreign_map();
+-	for (i = 0; i < num_pages; i++) {
+-		image->mapping.pages[i] =
+-			virt_to_page(image->data + (i * PAGE_SIZE));
+-	}
++	data_pfn = __phys_to_pfn(__pa_symbol(image->data));
++	for (i = 0; i < num_pages; i++)
++		image->mapping.pages[i] = pfn_to_page(data_pfn + i);
+ }
  
--	cpumask_set_cpu(cpu, &cpu_callin_map);
--
--	synchronise_count_slave(cpu);
--
- 	/*
- 	 * irq will be enabled in ->smp_finish(), enabling it too early
- 	 * is dangerous.
+ static int __init init_vdso(void)

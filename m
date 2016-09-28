@@ -1,20 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:14:54 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:46723 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:15:20 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:46726 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992391AbcI1JMcQM0VG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:12:32 +0200
+        by eddie.linux-mips.org with ESMTP id S23992996AbcI1JMeu88UG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:12:34 +0200
 Received: from localhost (unknown [89.202.203.52])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EDBF289E;
-        Wed, 28 Sep 2016 09:12:25 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 76F053EE;
+        Wed, 28 Sep 2016 09:12:28 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.7 48/69] MIPS: Avoid a BUG warning during prctl(PR_SET_FP_MODE, ...)
-Date:   Wed, 28 Sep 2016 11:05:30 +0200
-Message-Id: <20160928090447.128742683@linuxfoundation.org>
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.7 49/69] MIPS: Add a missing ".set pop" in an early commit
+Date:   Wed, 28 Sep 2016 11:05:31 +0200
+Message-Id: <20160928090447.164643000@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20160928090445.054716307@linuxfoundation.org>
 References: <20160928090445.054716307@linuxfoundation.org>
@@ -25,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55285
+X-archive-position: 55286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,46 +49,34 @@ X-list: linux-mips
 
 ------------------
 
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-commit b244614a60ab7ce54c12a9cbe15cfbf8d79d0967 upstream.
+commit 3cbc6fc9c99f1709203711f125bc3b79487aba06 upstream.
 
-cpu_has_fpu macro uses smp_processor_id() and is currently executed
-with preemption enabled, that triggers the warning at runtime.
+Commit 842dfc11ea9a21 ("MIPS: Fix build with binutils 2.24.51+") missing
+a ".set pop" in macro fpu_restore_16even, so add it.
 
-It is assumed throughout the kernel that if any CPU has an FPU, then all
-CPUs would have an FPU as well, so it is safe to perform the check with
-preemption enabled - change the code to use raw_ variant of the check to
-avoid the warning.
-
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Acked-by: Manuel Lauss <manuel.lauss@gmail.com>
+Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14125/
+Patchwork: https://patchwork.linux-mips.org/patch/14210/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/asmmacro.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -591,14 +591,14 @@ int mips_set_process_fp_mode(struct task
- 		return -EOPNOTSUPP;
+--- a/arch/mips/include/asm/asmmacro.h
++++ b/arch/mips/include/asm/asmmacro.h
+@@ -157,6 +157,7 @@
+ 	ldc1	$f28, THREAD_FPR28(\thread)
+ 	ldc1	$f30, THREAD_FPR30(\thread)
+ 	ctc1	\tmp, fcr31
++	.set	pop
+ 	.endm
  
- 	/* Avoid inadvertently triggering emulation */
--	if ((value & PR_FP_MODE_FR) && cpu_has_fpu &&
--	    !(current_cpu_data.fpu_id & MIPS_FPIR_F64))
-+	if ((value & PR_FP_MODE_FR) && raw_cpu_has_fpu &&
-+	    !(raw_current_cpu_data.fpu_id & MIPS_FPIR_F64))
- 		return -EOPNOTSUPP;
--	if ((value & PR_FP_MODE_FRE) && cpu_has_fpu && !cpu_has_fre)
-+	if ((value & PR_FP_MODE_FRE) && raw_cpu_has_fpu && !cpu_has_fre)
- 		return -EOPNOTSUPP;
- 
- 	/* FR = 0 not supported in MIPS R6 */
--	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
-+	if (!(value & PR_FP_MODE_FR) && raw_cpu_has_fpu && cpu_has_mips_r6)
- 		return -EOPNOTSUPP;
- 
- 	/* Proceed with the mode switch */
+ 	.macro	fpu_restore_16odd thread

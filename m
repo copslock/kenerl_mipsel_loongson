@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:09:42 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:46407 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:10:05 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:46414 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990519AbcI1JJen0jzG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:09:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23990506AbcI1JJjakIXG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:09:39 +0200
 Received: from localhost (unknown [89.202.203.52])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B758E8A6;
-        Wed, 28 Sep 2016 09:09:27 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2B66889E;
+        Wed, 28 Sep 2016 09:09:32 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        kbuild test robot <fengguang.wu@intel.com>,
+        stable@vger.kernel.org,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 64/73] MIPS: Remove compact branch policy Kconfig entries
-Date:   Wed, 28 Sep 2016 11:05:34 +0200
-Message-Id: <20160928090438.487342314@linuxfoundation.org>
+Subject: [PATCH 4.4 65/73] MIPS: Avoid a BUG warning during prctl(PR_SET_FP_MODE, ...)
+Date:   Wed, 28 Sep 2016 11:05:35 +0200
+Message-Id: <20160928090438.536065620@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20160928090434.509091655@linuxfoundation.org>
 References: <20160928090434.509091655@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55273
+X-archive-position: 55274
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,100 +46,46 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
-commit b03c1e3b8eed9026733c473071d1f528358a0e50 upstream.
+commit b244614a60ab7ce54c12a9cbe15cfbf8d79d0967 upstream.
 
-Commit c1a0e9bc885d ("MIPS: Allow compact branch policy to be changed")
-added Kconfig entries allowing for the compact branch policy used by the
-compiler for MIPSr6 kernels to be specified. This can be useful for
-debugging, particularly in systems where compact branches have recently
-been introduced.
+cpu_has_fpu macro uses smp_processor_id() and is currently executed
+with preemption enabled, that triggers the warning at runtime.
 
-Unfortunately mainline gcc 5.x supports MIPSr6 but not the
--mcompact-branches compiler flag, leading to MIPSr6 kernels failing to
-build with gcc 5.x with errors such as:
+It is assumed throughout the kernel that if any CPU has an FPU, then all
+CPUs would have an FPU as well, so it is safe to perform the check with
+preemption enabled - change the code to use raw_ variant of the check to
+avoid the warning.
 
-  mipsel-linux-gnu-gcc: error: unrecognized command line option '-mcompact-branches=optimal'
-  make[2]: *** [kernel/bounds.s] Error 1
-
-Fixing this by hiding the Kconfig entry behind another seems to be more
-hassle than it's worth, as MIPSr6 & compact branches have been around
-for a while now and if policy does need to be set for debug it can be
-done easily enough with KCFLAGS. Therefore remove the compact branch
-policy Kconfig entries & their handling in the Makefile.
-
-This reverts commit c1a0e9bc885d ("MIPS: Allow compact branch policy to
-be changed").
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reported-by: kbuild test robot <fengguang.wu@intel.com>
-Fixes: c1a0e9bc885d ("MIPS: Allow compact branch policy to be changed")
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14241/
+Patchwork: https://patchwork.linux-mips.org/patch/14125/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/Kconfig.debug |   36 ------------------------------------
- arch/mips/Makefile      |    4 ----
- 2 files changed, 40 deletions(-)
+ arch/mips/kernel/process.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/Kconfig.debug
-+++ b/arch/mips/Kconfig.debug
-@@ -113,42 +113,6 @@ config SPINLOCK_TEST
- 	help
- 	  Add several files to the debugfs to test spinlock speed.
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -593,14 +593,14 @@ int mips_set_process_fp_mode(struct task
+ 		return -EOPNOTSUPP;
  
--if CPU_MIPSR6
--
--choice
--	prompt "Compact branch policy"
--	default MIPS_COMPACT_BRANCHES_OPTIMAL
--
--config MIPS_COMPACT_BRANCHES_NEVER
--	bool "Never (force delay slot branches)"
--	help
--	  Pass the -mcompact-branches=never flag to the compiler in order to
--	  force it to always emit branches with delay slots, and make no use
--	  of the compact branch instructions introduced by MIPSr6. This is
--	  useful if you suspect there may be an issue with compact branches in
--	  either the compiler or the CPU.
--
--config MIPS_COMPACT_BRANCHES_OPTIMAL
--	bool "Optimal (use where beneficial)"
--	help
--	  Pass the -mcompact-branches=optimal flag to the compiler in order for
--	  it to make use of compact branch instructions where it deems them
--	  beneficial, and use branches with delay slots elsewhere. This is the
--	  default compiler behaviour, and should be used unless you have a
--	  reason to choose otherwise.
--
--config MIPS_COMPACT_BRANCHES_ALWAYS
--	bool "Always (force compact branches)"
--	help
--	  Pass the -mcompact-branches=always flag to the compiler in order to
--	  force it to always emit compact branches, making no use of branch
--	  instructions with delay slots. This can result in more compact code
--	  which may be beneficial in some scenarios.
--
--endchoice
--
--endif # CPU_MIPSR6
--
- config SCACHE_DEBUGFS
- 	bool "L2 cache debugfs entries"
- 	depends on DEBUG_FS
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -204,10 +204,6 @@ toolchain-msa				:= $(call cc-option-yn,
- cflags-$(toolchain-msa)			+= -DTOOLCHAIN_SUPPORTS_MSA
- endif
+ 	/* Avoid inadvertently triggering emulation */
+-	if ((value & PR_FP_MODE_FR) && cpu_has_fpu &&
+-	    !(current_cpu_data.fpu_id & MIPS_FPIR_F64))
++	if ((value & PR_FP_MODE_FR) && raw_cpu_has_fpu &&
++	    !(raw_current_cpu_data.fpu_id & MIPS_FPIR_F64))
+ 		return -EOPNOTSUPP;
+-	if ((value & PR_FP_MODE_FRE) && cpu_has_fpu && !cpu_has_fre)
++	if ((value & PR_FP_MODE_FRE) && raw_cpu_has_fpu && !cpu_has_fre)
+ 		return -EOPNOTSUPP;
  
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_NEVER)	+= -mcompact-branches=never
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_OPTIMAL)	+= -mcompact-branches=optimal
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_ALWAYS)	+= -mcompact-branches=always
--
- #
- # Firmware support
- #
+ 	/* FR = 0 not supported in MIPS R6 */
+-	if (!(value & PR_FP_MODE_FR) && cpu_has_fpu && cpu_has_mips_r6)
++	if (!(value & PR_FP_MODE_FR) && raw_cpu_has_fpu && cpu_has_mips_r6)
+ 		return -EOPNOTSUPP;
+ 
+ 	/* Proceed with the mode switch */

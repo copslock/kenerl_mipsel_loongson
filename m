@@ -1,23 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:10:32 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:46425 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:11:03 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:46432 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991061AbcI1JJpLf1XG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:09:45 +0200
+        by eddie.linux-mips.org with ESMTP id S23991759AbcI1JJsA35NG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:09:48 +0200
 Received: from localhost (unknown [89.202.203.52])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 039808D4;
-        Wed, 28 Sep 2016 09:09:38 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A54ED89E;
+        Wed, 28 Sep 2016 09:09:41 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 66/73] MIPS: Add a missing ".set pop" in an early commit
-Date:   Wed, 28 Sep 2016 11:05:36 +0200
-Message-Id: <20160928090438.582695078@linuxfoundation.org>
+        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 67/73] MIPS: paravirt: Fix undefined reference to smp_bootstrap
+Date:   Wed, 28 Sep 2016 11:05:37 +0200
+Message-Id: <20160928090438.632703781@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20160928090434.509091655@linuxfoundation.org>
 References: <20160928090434.509091655@linuxfoundation.org>
@@ -28,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55275
+X-archive-position: 55276
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,34 +45,43 @@ X-list: linux-mips
 
 ------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-commit 3cbc6fc9c99f1709203711f125bc3b79487aba06 upstream.
+commit 951c39cd3bc0aedf67fbd8fb4b9380287e6205d1 upstream.
 
-Commit 842dfc11ea9a21 ("MIPS: Fix build with binutils 2.24.51+") missing
-a ".set pop" in macro fpu_restore_16even, so add it.
+If the paravirt machine is compiles without CONFIG_SMP, the following
+linker error occurs
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Acked-by: Manuel Lauss <manuel.lauss@gmail.com>
-Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+arch/mips/kernel/head.o: In function `kernel_entry':
+(.ref.text+0x10): undefined reference to `smp_bootstrap'
+
+due to the kernel entry macro always including SMP startup code.
+Wrap this code in CONFIG_SMP to fix the error.
+
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14210/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/14212/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/asmmacro.h |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/mach-paravirt/kernel-entry-init.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -135,6 +135,7 @@
- 	ldc1	$f28, THREAD_FPR28(\thread)
- 	ldc1	$f30, THREAD_FPR30(\thread)
- 	ctc1	\tmp, fcr31
-+	.set	pop
- 	.endm
+--- a/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
++++ b/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
+@@ -11,11 +11,13 @@
+ #define CP0_EBASE $15, 1
  
- 	.macro	fpu_restore_16odd thread
+ 	.macro  kernel_entry_setup
++#ifdef CONFIG_SMP
+ 	mfc0	t0, CP0_EBASE
+ 	andi	t0, t0, 0x3ff		# CPUNum
+ 	beqz	t0, 1f
+ 	# CPUs other than zero goto smp_bootstrap
+ 	j	smp_bootstrap
++#endif /* CONFIG_SMP */
+ 
+ 1:
+ 	.endm

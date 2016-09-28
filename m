@@ -1,23 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:11:51 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:46596 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:12:20 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:46607 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991759AbcI1JLTEwXaG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:11:19 +0200
+        by eddie.linux-mips.org with ESMTP id S23992166AbcI1JL06V9sG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:11:26 +0200
 Received: from localhost (unknown [89.202.203.52])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id ADD4D8A6;
-        Wed, 28 Sep 2016 09:11:12 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 91A3B8A6;
+        Wed, 28 Sep 2016 09:11:20 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
+        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 63/73] MIPS: vDSO: Fix Malta EVA mapping to vDSO page structs
-Date:   Wed, 28 Sep 2016 11:05:33 +0200
-Message-Id: <20160928090438.442889863@linuxfoundation.org>
+Subject: [PATCH 4.7 50/69] MIPS: paravirt: Fix undefined reference to smp_bootstrap
+Date:   Wed, 28 Sep 2016 11:05:32 +0200
+Message-Id: <20160928090447.201853726@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
-In-Reply-To: <20160928090434.509091655@linuxfoundation.org>
-References: <20160928090434.509091655@linuxfoundation.org>
+In-Reply-To: <20160928090445.054716307@linuxfoundation.org>
+References: <20160928090445.054716307@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55278
+X-archive-position: 55279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,67 +41,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-commit 554af0c396380baf416f54c439b99b495180b2f4 upstream.
+commit 951c39cd3bc0aedf67fbd8fb4b9380287e6205d1 upstream.
 
-The page structures associated with the vDSO pages in the kernel image
-are calculated using virt_to_page(), which uses __pa() under the hood to
-find the pfn associated with the virtual address. The vDSO data pointers
-however point to kernel symbols, so __pa_symbol() should really be used
-instead.
+If the paravirt machine is compiles without CONFIG_SMP, the following
+linker error occurs
 
-Since there is no equivalent to virt_to_page() which uses __pa_symbol(),
-fix init_vdso_image() to work directly with pfns, calculated with
-__phys_to_pfn(__pa_symbol(...)).
+arch/mips/kernel/head.o: In function `kernel_entry':
+(.ref.text+0x10): undefined reference to `smp_bootstrap'
 
-This issue broke the Malta Enhanced Virtual Addressing (EVA)
-configuration which has a non-default implementation of __pa_symbol().
-This is because it uses a physical alias so that the kernel executes
-from KSeg0 (VA 0x80000000 -> PA 0x00000000), while RAM is provided to
-the kernel in the KUSeg range (VA 0x00000000 -> PA 0x80000000) which
-uses the same underlying RAM.
+due to the kernel entry macro always including SMP startup code.
+Wrap this code in CONFIG_SMP to fix the error.
 
-Since there are no page structures associated with the low physical
-address region, some arbitrary kernel memory would be interpreted as a
-page structure for the vDSO pages and badness ensues.
-
-Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14229/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/14212/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/vdso.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/mach-paravirt/kernel-entry-init.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/kernel/vdso.c
-+++ b/arch/mips/kernel/vdso.c
-@@ -39,16 +39,16 @@ static struct vm_special_mapping vdso_vv
- static void __init init_vdso_image(struct mips_vdso_image *image)
- {
- 	unsigned long num_pages, i;
-+	unsigned long data_pfn;
+--- a/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
++++ b/arch/mips/include/asm/mach-paravirt/kernel-entry-init.h
+@@ -11,11 +11,13 @@
+ #define CP0_EBASE $15, 1
  
- 	BUG_ON(!PAGE_ALIGNED(image->data));
- 	BUG_ON(!PAGE_ALIGNED(image->size));
+ 	.macro  kernel_entry_setup
++#ifdef CONFIG_SMP
+ 	mfc0	t0, CP0_EBASE
+ 	andi	t0, t0, 0x3ff		# CPUNum
+ 	beqz	t0, 1f
+ 	# CPUs other than zero goto smp_bootstrap
+ 	j	smp_bootstrap
++#endif /* CONFIG_SMP */
  
- 	num_pages = image->size / PAGE_SIZE;
- 
--	for (i = 0; i < num_pages; i++) {
--		image->mapping.pages[i] =
--			virt_to_page(image->data + (i * PAGE_SIZE));
--	}
-+	data_pfn = __phys_to_pfn(__pa_symbol(image->data));
-+	for (i = 0; i < num_pages; i++)
-+		image->mapping.pages[i] = pfn_to_page(data_pfn + i);
- }
- 
- static int __init init_vdso(void)
+ 1:
+ 	.endm

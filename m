@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:14:02 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2016 11:14:25 +0200 (CEST)
 Received: from mail.linuxfoundation.org ([140.211.169.12]:46718 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992279AbcI1JMaCbh-G (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:12:30 +0200
+        by eddie.linux-mips.org with ESMTP id S23991957AbcI1JMcEk7DG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Sep 2016 11:12:32 +0200
 Received: from localhost (unknown [89.202.203.52])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8C0D278D;
-        Wed, 28 Sep 2016 09:12:23 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CE1C478D;
+        Wed, 28 Sep 2016 09:12:30 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        kbuild test robot <fengguang.wu@intel.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.7 47/69] MIPS: Remove compact branch policy Kconfig entries
-Date:   Wed, 28 Sep 2016 11:05:29 +0200
-Message-Id: <20160928090447.086069126@linuxfoundation.org>
+        linux-mips@linux-mips.org, Jason Cooper <jason@lakedaemon.net>,
+        Qais Yousef <qsyousef@gmail.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 4.7 40/69] irqchip/mips-gic: Fix local interrupts
+Date:   Wed, 28 Sep 2016 11:05:22 +0200
+Message-Id: <20160928090446.748458443@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20160928090445.054716307@linuxfoundation.org>
 References: <20160928090445.054716307@linuxfoundation.org>
@@ -25,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55283
+X-archive-position: 55284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,98 +50,216 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@imgtec.com>
 
-commit b03c1e3b8eed9026733c473071d1f528358a0e50 upstream.
+commit e875bd66dfb68f4e898e9a43ef42858c504a7f23 upstream.
 
-Commit c1a0e9bc885d ("MIPS: Allow compact branch policy to be changed")
-added Kconfig entries allowing for the compact branch policy used by the
-compiler for MIPSr6 kernels to be specified. This can be useful for
-debugging, particularly in systems where compact branches have recently
-been introduced.
+Since the device hierarchy domain was added by commit c98c1822ee13
+("irqchip/mips-gic: Add device hierarchy domain"), GIC local interrupts
+have been broken.
 
-Unfortunately mainline gcc 5.x supports MIPSr6 but not the
--mcompact-branches compiler flag, leading to MIPSr6 kernels failing to
-build with gcc 5.x with errors such as:
+Users attempting to setup a per-cpu local IRQ, for example the GIC timer
+clock events code in drivers/clocksource/mips-gic-timer.c, the
+setup_percpu_irq function would refuse with -EINVAL because the GIC
+irqchip driver never called irq_set_percpu_devid so the
+IRQ_PER_CPU_DEVID flag was never set for the IRQ. This happens because
+irq_set_percpu_devid was being called from the gic_irq_domain_map
+function which is no longer called.
 
-  mipsel-linux-gnu-gcc: error: unrecognized command line option '-mcompact-branches=optimal'
-  make[2]: *** [kernel/bounds.s] Error 1
+Doing only that runs into further problems because gic_dev_domain_alloc
+set the struct irq_chip for all interrupts, local or shared, to
+gic_level_irq_controller despite that only being suitable for shared
+interrupts. The typical outcome of this is that gic_level_irq_controller
+callback functions are called for local interrupts, and then hwirq
+number calculations overflow & the driver ends up attempting to access
+some invalid register with an address calculated from an invalid hwirq
+number. Best case scenario is that this then leads to a bus error. This
+is fixed by abstracting the setup of the hwirq & chip to a new function
+gic_setup_dev_chip which is used by both the root GIC IRQ domain & the
+device domain.
 
-Fixing this by hiding the Kconfig entry behind another seems to be more
-hassle than it's worth, as MIPSr6 & compact branches have been around
-for a while now and if policy does need to be set for debug it can be
-done easily enough with KCFLAGS. Therefore remove the compact branch
-policy Kconfig entries & their handling in the Makefile.
+Finally, decoding local interrupts failed because gic_dev_domain_alloc
+only called irq_domain_alloc_irqs_parent for shared interrupts. Local
+ones were therefore never associated with hwirqs in the root GIC IRQ
+domain and the virq in gic_handle_local_int would always be 0. This is
+fixed by calling irq_domain_alloc_irqs_parent unconditionally & having
+gic_irq_domain_alloc handle both local & shared interrupts, which is
+easy due to the aforementioned abstraction of chip setup into
+gic_setup_dev_chip.
 
-This reverts commit c1a0e9bc885d ("MIPS: Allow compact branch policy to
-be changed").
+This fixes use of the MIPS GIC timer for clock events, which has been
+broken since c98c1822ee13 ("irqchip/mips-gic: Add device hierarchy
+domain") but hadn't been noticed due to a silent fallback to the MIPS
+coprocessor 0 count/compare clock events device.
 
+Fixes: c98c1822ee13 ("irqchip/mips-gic: Add device hierarchy domain")
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Reported-by: kbuild test robot <fengguang.wu@intel.com>
-Fixes: c1a0e9bc885d ("MIPS: Allow compact branch policy to be changed")
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14241/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Qais Yousef <qsyousef@gmail.com>
+Cc: Marc Zyngier <marc.zyngier@arm.com>
+Link: http://lkml.kernel.org/r/20160913165335.31389-1-paul.burton@imgtec.com
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/Kconfig.debug |   36 ------------------------------------
- arch/mips/Makefile      |    4 ----
- 2 files changed, 40 deletions(-)
+ drivers/irqchip/irq-mips-gic.c |  105 +++++++++++++++++++----------------------
+ 1 file changed, 50 insertions(+), 55 deletions(-)
 
---- a/arch/mips/Kconfig.debug
-+++ b/arch/mips/Kconfig.debug
-@@ -113,42 +113,6 @@ config SPINLOCK_TEST
- 	help
- 	  Add several files to the debugfs to test spinlock speed.
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -638,27 +638,6 @@ static int gic_local_irq_domain_map(stru
+ 	if (!gic_local_irq_is_routable(intr))
+ 		return -EPERM;
  
--if CPU_MIPSR6
+-	/*
+-	 * HACK: These are all really percpu interrupts, but the rest
+-	 * of the MIPS kernel code does not use the percpu IRQ API for
+-	 * the CP0 timer and performance counter interrupts.
+-	 */
+-	switch (intr) {
+-	case GIC_LOCAL_INT_TIMER:
+-	case GIC_LOCAL_INT_PERFCTR:
+-	case GIC_LOCAL_INT_FDC:
+-		irq_set_chip_and_handler(virq,
+-					 &gic_all_vpes_local_irq_controller,
+-					 handle_percpu_irq);
+-		break;
+-	default:
+-		irq_set_chip_and_handler(virq,
+-					 &gic_local_irq_controller,
+-					 handle_percpu_devid_irq);
+-		irq_set_percpu_devid(virq);
+-		break;
+-	}
 -
--choice
--	prompt "Compact branch policy"
--	default MIPS_COMPACT_BRANCHES_OPTIMAL
--
--config MIPS_COMPACT_BRANCHES_NEVER
--	bool "Never (force delay slot branches)"
--	help
--	  Pass the -mcompact-branches=never flag to the compiler in order to
--	  force it to always emit branches with delay slots, and make no use
--	  of the compact branch instructions introduced by MIPSr6. This is
--	  useful if you suspect there may be an issue with compact branches in
--	  either the compiler or the CPU.
--
--config MIPS_COMPACT_BRANCHES_OPTIMAL
--	bool "Optimal (use where beneficial)"
--	help
--	  Pass the -mcompact-branches=optimal flag to the compiler in order for
--	  it to make use of compact branch instructions where it deems them
--	  beneficial, and use branches with delay slots elsewhere. This is the
--	  default compiler behaviour, and should be used unless you have a
--	  reason to choose otherwise.
--
--config MIPS_COMPACT_BRANCHES_ALWAYS
--	bool "Always (force compact branches)"
--	help
--	  Pass the -mcompact-branches=always flag to the compiler in order to
--	  force it to always emit compact branches, making no use of branch
--	  instructions with delay slots. This can result in more compact code
--	  which may be beneficial in some scenarios.
--
--endchoice
--
--endif # CPU_MIPSR6
--
- config SCACHE_DEBUGFS
- 	bool "L2 cache debugfs entries"
- 	depends on DEBUG_FS
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -203,10 +203,6 @@ endif
- toolchain-virt				:= $(call cc-option-yn,$(mips-cflags) -mvirt)
- cflags-$(toolchain-virt)		+= -DTOOLCHAIN_SUPPORTS_VIRT
+ 	spin_lock_irqsave(&gic_lock, flags);
+ 	for (i = 0; i < gic_vpes; i++) {
+ 		u32 val = GIC_MAP_TO_PIN_MSK | gic_cpu_pin;
+@@ -724,16 +703,42 @@ static int gic_shared_irq_domain_map(str
+ 	return 0;
+ }
  
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_NEVER)	+= -mcompact-branches=never
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_OPTIMAL)	+= -mcompact-branches=optimal
--cflags-$(CONFIG_MIPS_COMPACT_BRANCHES_ALWAYS)	+= -mcompact-branches=always
+-static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+-			      irq_hw_number_t hw)
++static int gic_setup_dev_chip(struct irq_domain *d, unsigned int virq,
++			      unsigned int hwirq)
+ {
+-	if (GIC_HWIRQ_TO_LOCAL(hw) < GIC_NUM_LOCAL_INTRS)
+-		return gic_local_irq_domain_map(d, virq, hw);
++	struct irq_chip *chip;
++	int err;
+ 
+-	irq_set_chip_and_handler(virq, &gic_level_irq_controller,
+-				 handle_level_irq);
++	if (hwirq >= GIC_SHARED_HWIRQ_BASE) {
++		err = irq_domain_set_hwirq_and_chip(d, virq, hwirq,
++						    &gic_level_irq_controller,
++						    NULL);
++	} else {
++		switch (GIC_HWIRQ_TO_LOCAL(hwirq)) {
++		case GIC_LOCAL_INT_TIMER:
++		case GIC_LOCAL_INT_PERFCTR:
++		case GIC_LOCAL_INT_FDC:
++			/*
++			 * HACK: These are all really percpu interrupts, but
++			 * the rest of the MIPS kernel code does not use the
++			 * percpu IRQ API for them.
++			 */
++			chip = &gic_all_vpes_local_irq_controller;
++			irq_set_handler(virq, handle_percpu_irq);
++			break;
++
++		default:
++			chip = &gic_local_irq_controller;
++			irq_set_handler(virq, handle_percpu_devid_irq);
++			irq_set_percpu_devid(virq);
++			break;
++		}
+ 
+-	return gic_shared_irq_domain_map(d, virq, hw, 0);
++		err = irq_domain_set_hwirq_and_chip(d, virq, hwirq,
++						    chip, NULL);
++	}
++
++	return err;
+ }
+ 
+ static int gic_irq_domain_alloc(struct irq_domain *d, unsigned int virq,
+@@ -744,15 +749,12 @@ static int gic_irq_domain_alloc(struct i
+ 	int cpu, ret, i;
+ 
+ 	if (spec->type == GIC_DEVICE) {
+-		/* verify that it doesn't conflict with an IPI irq */
+-		if (test_bit(spec->hwirq, ipi_resrv))
++		/* verify that shared irqs don't conflict with an IPI irq */
++		if ((spec->hwirq >= GIC_SHARED_HWIRQ_BASE) &&
++		    test_bit(GIC_HWIRQ_TO_SHARED(spec->hwirq), ipi_resrv))
+ 			return -EBUSY;
+ 
+-		hwirq = GIC_SHARED_TO_HWIRQ(spec->hwirq);
 -
- #
- # Firmware support
- #
+-		return irq_domain_set_hwirq_and_chip(d, virq, hwirq,
+-						     &gic_level_irq_controller,
+-						     NULL);
++		return gic_setup_dev_chip(d, virq, spec->hwirq);
+ 	} else {
+ 		base_hwirq = find_first_bit(ipi_resrv, gic_shared_intrs);
+ 		if (base_hwirq == gic_shared_intrs) {
+@@ -821,7 +823,6 @@ int gic_irq_domain_match(struct irq_doma
+ }
+ 
+ static const struct irq_domain_ops gic_irq_domain_ops = {
+-	.map = gic_irq_domain_map,
+ 	.alloc = gic_irq_domain_alloc,
+ 	.free = gic_irq_domain_free,
+ 	.match = gic_irq_domain_match,
+@@ -852,29 +853,20 @@ static int gic_dev_domain_alloc(struct i
+ 	struct irq_fwspec *fwspec = arg;
+ 	struct gic_irq_spec spec = {
+ 		.type = GIC_DEVICE,
+-		.hwirq = fwspec->param[1],
+ 	};
+ 	int i, ret;
+-	bool is_shared = fwspec->param[0] == GIC_SHARED;
+-
+-	if (is_shared) {
+-		ret = irq_domain_alloc_irqs_parent(d, virq, nr_irqs, &spec);
+-		if (ret)
+-			return ret;
+-	}
+ 
+-	for (i = 0; i < nr_irqs; i++) {
+-		irq_hw_number_t hwirq;
++	if (fwspec->param[0] == GIC_SHARED)
++		spec.hwirq = GIC_SHARED_TO_HWIRQ(fwspec->param[1]);
++	else
++		spec.hwirq = GIC_LOCAL_TO_HWIRQ(fwspec->param[1]);
+ 
+-		if (is_shared)
+-			hwirq = GIC_SHARED_TO_HWIRQ(spec.hwirq + i);
+-		else
+-			hwirq = GIC_LOCAL_TO_HWIRQ(spec.hwirq + i);
++	ret = irq_domain_alloc_irqs_parent(d, virq, nr_irqs, &spec);
++	if (ret)
++		return ret;
+ 
+-		ret = irq_domain_set_hwirq_and_chip(d, virq + i,
+-						    hwirq,
+-						    &gic_level_irq_controller,
+-						    NULL);
++	for (i = 0; i < nr_irqs; i++) {
++		ret = gic_setup_dev_chip(d, virq + i, spec.hwirq + i);
+ 		if (ret)
+ 			goto error;
+ 	}
+@@ -896,7 +888,10 @@ void gic_dev_domain_free(struct irq_doma
+ static void gic_dev_domain_activate(struct irq_domain *domain,
+ 				    struct irq_data *d)
+ {
+-	gic_shared_irq_domain_map(domain, d->irq, d->hwirq, 0);
++	if (GIC_HWIRQ_TO_LOCAL(d->hwirq) < GIC_NUM_LOCAL_INTRS)
++		gic_local_irq_domain_map(domain, d->irq, d->hwirq);
++	else
++		gic_shared_irq_domain_map(domain, d->irq, d->hwirq, 0);
+ }
+ 
+ static struct irq_domain_ops gic_dev_domain_ops = {

@@ -1,35 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 11:34:32 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:17289 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991965AbcI3JeBB11Le (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 11:34:01 +0200
-Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 527AACFEC27B7;
-        Fri, 30 Sep 2016 10:33:52 +0100 (IST)
-Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
- HHMAIL03.hh.imgtec.org (10.44.0.22) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 30 Sep 2016 10:33:54 +0100
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Subject: [PATCH 2/2] MIPS: tracing: disable uprobe/kprobe on compact branch instructions
-Date:   Fri, 30 Sep 2016 11:33:46 +0200
-Message-ID: <1475228026-25831-2-git-send-email-marcin.nowakowski@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1475228026-25831-1-git-send-email-marcin.nowakowski@imgtec.com>
-References: <1475228026-25831-1-git-send-email-marcin.nowakowski@imgtec.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 16:17:55 +0200 (CEST)
+Received: from mail-pf0-f196.google.com ([209.85.192.196]:34672 "EHLO
+        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992111AbcI3ORrtwdTN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 16:17:47 +0200
+Received: by mail-pf0-f196.google.com with SMTP id 21so5080021pfy.1;
+        Fri, 30 Sep 2016 07:17:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=0S3/incC98t1qjOnTFHMWnqeHw77vzyLUvE+pYxQNg8=;
+        b=J3PX/S2kpQsROOZKX1NNjsgMBYm9i+ffiiJFX3Xq498bkaqiEYOPLB+fc4xwOKbVVB
+         w0I/twviS1JVBfL/o1mxrE7IZxZm1dUUkdK6jmwpQTfmdbBIeiGLAa3CEqp2cZuwYES/
+         Hw2avsc+dO68A9G7QHciI6GeDCvBhAStLS5YiBeqW+d5erm9T6eUe7VuQ2XNedPIswCe
+         UJwT5zjpC7ukmJ+k8uemo4aLbv2pLhnd0sUa9HpweTHodSz0NV7q25AaqmZZ9GMzeTff
+         242QATqDKs7OVjD40rcJ+5kONxdC7AnR5I4SoASR5faWfzvF3ahkGu7jPrYvPrYZMwVU
+         eUiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=0S3/incC98t1qjOnTFHMWnqeHw77vzyLUvE+pYxQNg8=;
+        b=kqY9BkLoK4lvL60+PshcXwicWGSOS/zbja6/+1MmxsqSyzpICFFdyubHBLS1NeT/VG
+         SB1d46PltNZk6YAikWbZrPl3ZAt0XhbbjW31FFsTU6YnhioNLVac3okZbkSCt4cU/HcP
+         wWsgwUe61YJEx+362DoOkvccodV/zqbK1igtBV3M6L+PaA/CdK7ClzoiOzjx33lgp6q+
+         R289mxT2X0URChVdTEQ1J8mdsSfkgdZ704UoqEzsb8w30AY2Ur6aY4Y5UXWA/TClp470
+         uJbkwhIMfIOuvnkfy+iJ9XeOmUDyA6RYLJka4Wawk6AlLWQ+2Q1o3DywvIP/odS5Zo3L
+         f6jA==
+X-Gm-Message-State: AA6/9Rke8qzYfi4a3i25vS8coST0yQs/L0ZQtsPFW3dQ94MQTailhK6M1qRy8Va3cn6zDA==
+X-Received: by 10.98.150.157 with SMTP id s29mr11966359pfk.3.1475245061631;
+        Fri, 30 Sep 2016 07:17:41 -0700 (PDT)
+Received: from localhost.localdomain ([59.12.167.210])
+        by smtp.gmail.com with ESMTPSA id w9sm28452595pfg.34.2016.09.30.07.17.39
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Fri, 30 Sep 2016 07:17:41 -0700 (PDT)
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-mips@linux-mips.org, Jaedon Shin <jaedon.shin@gmail.com>
+Subject: [PATCH] MIPS: BMIPS: Support APPENDED_DTB
+Date:   Fri, 30 Sep 2016 23:17:34 +0900
+Message-Id: <20160930141734.3311-1-jaedon.shin@gmail.com>
+X-Mailer: git-send-email 2.10.0
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55302
+X-archive-position: 55303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,116 +62,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Current instruction decoder for uprobe/kprobe handler only handles
-branches with delay slots. For compact branches the behaviour is rather
-unpredictable - and depending on the encoding of a compact branch
-instruction may result in one (or more) of:
-- executing an instruction that follows a branch which wasn't in a delay
-  slot and shouldn't have been executed
-- incorrectly emulating a branch leading to a jump to a wrong location
-- unexpected branching out of the single-stepped code and never reaching
-  the breakpoint that should terminate the probe handler
+Use appended DTB when available.
 
-Results of these actions are generally unpredictable, but can end up
-with a probed application or kernel crash, so disable placing probes on
-compact branches until they are handled properly.
-
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 ---
- arch/mips/kernel/branch.c        | 34 ++++++++++++++++++++++++++++++++++
- arch/mips/kernel/kprobes.c       |  6 ++++++
- arch/mips/kernel/probes-common.h |  2 ++
- arch/mips/kernel/uprobes.c       |  6 ++++++
- 4 files changed, 48 insertions(+)
+ arch/mips/bmips/setup.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
-index 46c227f..c3dce43 100644
---- a/arch/mips/kernel/branch.c
-+++ b/arch/mips/kernel/branch.c
-@@ -866,3 +866,37 @@ unaligned:
- 	force_sig(SIGBUS, current);
- 	return -EFAULT;
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index 6776042679dd..895baf517db8 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -17,6 +17,7 @@
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+ #include <linux/of_platform.h>
++#include <linux/libfdt.h>
+ #include <linux/smp.h>
+ #include <asm/addrspace.h>
+ #include <asm/bmips.h>
+@@ -150,6 +151,8 @@ void __init plat_time_init(void)
+ 	mips_hpt_frequency = freq;
  }
-+
-+#if (defined CONFIG_KPROBES) || (defined CONFIG_UPROBES)
-+
-+int __insn_is_compact_branch(union mips_instruction insn)
-+{
-+	if (!cpu_has_mips_r6)
-+		return 0;
-+
-+	switch (insn.i_format.opcode) {
-+	case blezl_op:
-+	case bgtzl_op:
-+	case blez_op:
-+	case bgtz_op:
-+		/*
-+		 * blez[l] and bgtz[l] opcodes with non-zero rt
-+		 * are MIPS R6 compact branches
-+		 */
-+		if (insn.i_format.rt)
-+			return 1;
-+		break;
-+	case bc6_op:
-+	case balc6_op:
-+	case pop10_op:
-+	case pop30_op:
-+	case pop66_op:
-+	case pop76_op:
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(__insn_is_compact_branch);
-+
-+#endif  /* CONFIG_KPROBES || CONFIG_UPROBES */
-diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
-index 747e3bf..f5c8bce 100644
---- a/arch/mips/kernel/kprobes.c
-+++ b/arch/mips/kernel/kprobes.c
-@@ -106,6 +106,12 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
- 		goto out;
- 	}
  
-+	if (__insn_is_compact_branch(insn)) {
-+		pr_notice("Kprobes for compact branches are not supported\n");
-+		ret = -EINVAL;
-+		goto out;
-+	}
++extern const char __appended_dtb;
 +
- 	/* insn: must be on special executable page on mips. */
- 	p->ainsn.insn = get_insn_slot();
- 	if (!p->ainsn.insn) {
-diff --git a/arch/mips/kernel/probes-common.h b/arch/mips/kernel/probes-common.h
-index c979c37..dd08e41 100644
---- a/arch/mips/kernel/probes-common.h
-+++ b/arch/mips/kernel/probes-common.h
-@@ -13,6 +13,8 @@
- 
- #include <asm/inst.h>
- 
-+int __insn_is_compact_branch(union mips_instruction insn);
-+
- static inline int __insn_has_delay_slot(const union mips_instruction insn)
+ void __init plat_mem_setup(void)
  {
- 	switch (insn.i_format.opcode) {
-diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
-index a30ca7b..d3c82ad 100644
---- a/arch/mips/kernel/uprobes.c
-+++ b/arch/mips/kernel/uprobes.c
-@@ -36,6 +36,12 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *aup,
- 		return -EINVAL;
+ 	void *dtb;
+@@ -159,6 +162,11 @@ void __init plat_mem_setup(void)
+ 	ioport_resource.start = 0;
+ 	ioport_resource.end = ~0;
  
- 	inst.word = aup->insn[0];
-+
-+	if (__insn_is_compact_branch(inst)) {
-+		pr_notice("Uprobes for compact branches are not supported\n");
-+		return -EINVAL;
-+	}
-+
- 	aup->ixol[0] = aup->insn[insn_has_delay_slot(inst)];
- 	aup->ixol[1] = UPROBE_BRK_UPROBE_XOL;		/* NOP  */
- 
++#ifdef CONFIG_MIPS_ELF_APPENDED_DTB
++	if (!fdt_check_header(&__appended_dtb))
++		dtb = (void *)&__appended_dtb;
++	else
++#endif
+ 	/* intended to somewhat resemble ARM; see Documentation/arm/Booting */
+ 	if (fw_arg0 == 0 && fw_arg1 == 0xffffffff)
+ 		dtb = phys_to_virt(fw_arg2);
 -- 
-2.7.4
+2.10.0

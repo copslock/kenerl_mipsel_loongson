@@ -1,55 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 16:17:55 +0200 (CEST)
-Received: from mail-pf0-f196.google.com ([209.85.192.196]:34672 "EHLO
-        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992111AbcI3ORrtwdTN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 16:17:47 +0200
-Received: by mail-pf0-f196.google.com with SMTP id 21so5080021pfy.1;
-        Fri, 30 Sep 2016 07:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=0S3/incC98t1qjOnTFHMWnqeHw77vzyLUvE+pYxQNg8=;
-        b=J3PX/S2kpQsROOZKX1NNjsgMBYm9i+ffiiJFX3Xq498bkaqiEYOPLB+fc4xwOKbVVB
-         w0I/twviS1JVBfL/o1mxrE7IZxZm1dUUkdK6jmwpQTfmdbBIeiGLAa3CEqp2cZuwYES/
-         Hw2avsc+dO68A9G7QHciI6GeDCvBhAStLS5YiBeqW+d5erm9T6eUe7VuQ2XNedPIswCe
-         UJwT5zjpC7ukmJ+k8uemo4aLbv2pLhnd0sUa9HpweTHodSz0NV7q25AaqmZZ9GMzeTff
-         242QATqDKs7OVjD40rcJ+5kONxdC7AnR5I4SoASR5faWfzvF3ahkGu7jPrYvPrYZMwVU
-         eUiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=0S3/incC98t1qjOnTFHMWnqeHw77vzyLUvE+pYxQNg8=;
-        b=kqY9BkLoK4lvL60+PshcXwicWGSOS/zbja6/+1MmxsqSyzpICFFdyubHBLS1NeT/VG
-         SB1d46PltNZk6YAikWbZrPl3ZAt0XhbbjW31FFsTU6YnhioNLVac3okZbkSCt4cU/HcP
-         wWsgwUe61YJEx+362DoOkvccodV/zqbK1igtBV3M6L+PaA/CdK7ClzoiOzjx33lgp6q+
-         R289mxT2X0URChVdTEQ1J8mdsSfkgdZ704UoqEzsb8w30AY2Ur6aY4Y5UXWA/TClp470
-         uJbkwhIMfIOuvnkfy+iJ9XeOmUDyA6RYLJka4Wawk6AlLWQ+2Q1o3DywvIP/odS5Zo3L
-         f6jA==
-X-Gm-Message-State: AA6/9Rke8qzYfi4a3i25vS8coST0yQs/L0ZQtsPFW3dQ94MQTailhK6M1qRy8Va3cn6zDA==
-X-Received: by 10.98.150.157 with SMTP id s29mr11966359pfk.3.1475245061631;
-        Fri, 30 Sep 2016 07:17:41 -0700 (PDT)
-Received: from localhost.localdomain ([59.12.167.210])
-        by smtp.gmail.com with ESMTPSA id w9sm28452595pfg.34.2016.09.30.07.17.39
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Fri, 30 Sep 2016 07:17:41 -0700 (PDT)
-From:   Jaedon Shin <jaedon.shin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Cc:     linux-mips@linux-mips.org, Jaedon Shin <jaedon.shin@gmail.com>
-Subject: [PATCH] MIPS: BMIPS: Support APPENDED_DTB
-Date:   Fri, 30 Sep 2016 23:17:34 +0900
-Message-Id: <20160930141734.3311-1-jaedon.shin@gmail.com>
-X-Mailer: git-send-email 2.10.0
-Return-Path: <jaedon.shin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 16:41:08 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47975 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992166AbcI3OlAbWqPd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 16:41:00 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 1FB5441F8D64;
+        Fri, 30 Sep 2016 15:40:55 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.44.0.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 30 Sep 2016 15:40:55 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 30 Sep 2016 15:40:55 +0100
+Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
+        by Forcepoint Email with ESMTPS id 91997C87D880E;
+        Fri, 30 Sep 2016 15:40:51 +0100 (IST)
+Received: from np-p-burton.localnet (10.100.200.217) by HHMAIL03.hh.imgtec.org
+ (10.44.0.22) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 30 Sep 2016
+ 15:40:54 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Marc Zyngier <marc.zyngier@arm.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Thomas Gleixner <tglx@linutronix.de>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 01/14] irqchip: i8259: Add domain before mapping parent irq
+Date:   Fri, 30 Sep 2016 15:40:48 +0100
+Message-ID: <7469373.vRGg21xy4h@np-p-burton>
+Organization: Imagination Technologies
+User-Agent: KMail/5.3.1 (Linux/4.7.4-1-ARCH; KDE/5.26.0; x86_64; ; )
+In-Reply-To: <20160919212132.28893-2-paul.burton@imgtec.com>
+References: <20160919212132.28893-1-paul.burton@imgtec.com> <20160919212132.28893-2-paul.burton@imgtec.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart4762191.RMUhLO6Eyp";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+X-Originating-IP: [10.100.200.217]
+X-ESG-ENCRYPT-TAG: 541c1663
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55303
+X-archive-position: 55304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jaedon.shin@gmail.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,45 +56,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use appended DTB when available.
+--nextPart4762191.RMUhLO6Eyp
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
----
- arch/mips/bmips/setup.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On Monday, 19 September 2016 22:21:18 BST Paul Burton wrote:
+> Mapping the parent IRQ will use a virq number which may conflict with
+> the hardcoded I8259A_IRQ_BASE..I8259A_IRQ_BASE+15 range that the i8259
+> driver expects to be free. If this occurs then we'll hit errors when
+> adding the i8259 IRQ domain, since one of its virq numbers will already
+> be in use.
+> 
+> Avoid this by adding the i8259 domain before mapping the parent IRQ,
+> such that the i8259 virq numbers become used before the parent interrupt
+> controller gets a chance to use any of them.
 
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index 6776042679dd..895baf517db8 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -17,6 +17,7 @@
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/of_platform.h>
-+#include <linux/libfdt.h>
- #include <linux/smp.h>
- #include <asm/addrspace.h>
- #include <asm/bmips.h>
-@@ -150,6 +151,8 @@ void __init plat_time_init(void)
- 	mips_hpt_frequency = freq;
- }
- 
-+extern const char __appended_dtb;
-+
- void __init plat_mem_setup(void)
- {
- 	void *dtb;
-@@ -159,6 +162,11 @@ void __init plat_mem_setup(void)
- 	ioport_resource.start = 0;
- 	ioport_resource.end = ~0;
- 
-+#ifdef CONFIG_MIPS_ELF_APPENDED_DTB
-+	if (!fdt_check_header(&__appended_dtb))
-+		dtb = (void *)&__appended_dtb;
-+	else
-+#endif
- 	/* intended to somewhat resemble ARM; see Documentation/arm/Booting */
- 	if (fw_arg0 == 0 && fw_arg1 == 0xffffffff)
- 		dtb = phys_to_virt(fw_arg2);
--- 
-2.10.0
+Hello,
+
+Any chance of getting reviews/acks on this & the following 2 patches in the 
+series so Ralf can take them through the MIPS tree? The lack of these (well, 
+patches 1 & 2 anyway) blocks applying many of the Malta patches later in the 
+series.
+
+Thanks,
+    Paul
+
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
+> 
+> Changes in v2: None
+> 
+>  drivers/irqchip/irq-i8259.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/irqchip/irq-i8259.c b/drivers/irqchip/irq-i8259.c
+> index 6b304eb..85897fd 100644
+> --- a/drivers/irqchip/irq-i8259.c
+> +++ b/drivers/irqchip/irq-i8259.c
+> @@ -370,13 +370,15 @@ int __init i8259_of_init(struct device_node *node,
+> struct device_node *parent) struct irq_domain *domain;
+>  	unsigned int parent_irq;
+> 
+> +	domain = __init_i8259_irqs(node);
+> +
+>  	parent_irq = irq_of_parse_and_map(node, 0);
+>  	if (!parent_irq) {
+>  		pr_err("Failed to map i8259 parent IRQ\n");
+> +		irq_domain_remove(domain);
+>  		return -ENODEV;
+>  	}
+> 
+> -	domain = __init_i8259_irqs(node);
+>  	irq_set_chained_handler_and_data(parent_irq, i8259_irq_dispatch,
+>  					 domain);
+>  	return 0;
+
+
+--nextPart4762191.RMUhLO6Eyp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAABCAAGBQJX7nlwAAoJEIIg2fppPBxl8N4P/jZ9FoGAcVQjbyMxpzBga4Ca
+T6WTqClJgPRok6Qh6xs8hCkWXgoBQB/Mv5EX80DW2AnFU1bBQ31rwO2qEckqcFhj
+wn9fllhY15SMMU3zDt3e0j73rwyfIbg9lj1rfG7tLhgZAvD/y+SvGXWcKz7nlyrp
+XUHk5gl1DbCSzdPx4vGU/2DIQn7zOpM4Bn7Jd80R1QHOUmu34XwuSYQr8y1Rtx0m
+IeCwsU43UYvd2PNNgAY1DOznOqa0PylAWXj80RkCXmkN70YQfO6R3dU0y1yii0zG
+EkAosOK8x44JYo4++qY/DGhrEMwWoBH7Npi5YRF3w25W51a0tKgHDK9Jk+MUwD4P
+JE/5DOSy4u/M2oSy2Rk76hIipvrz2KvTmGzqBQLSIXFbYA1pVXfiR5LW0/OkhD6K
+MH6YNE0KDvnlHxHQ1D7bnkN6ZvGQm6ewXcBMzI42hXlRThA8FeONsEnuXys50A/L
+JU63wmXxYug/gZ2cvHidRXTSHNAKJmJHCHJ3pG847+MKcvv/2tiKBSLvfUaEoaNt
+7x1zwAIE+YDX8Mo+swL3lL5ilxT16JwU+vIZ6OQ8DatQ/Zv3y+sIeskWFg2jVYJq
+P34wufB1gA5pwNbJ0XkeaF2rHG6DljfaUoqDEcc7ngW6I2eqg0JLPmqbJwOwYLYr
+EtI2zWyWui2F2wcI0gve
+=1rjx
+-----END PGP SIGNATURE-----
+
+--nextPart4762191.RMUhLO6Eyp--

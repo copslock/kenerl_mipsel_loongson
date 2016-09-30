@@ -1,21 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 11:34:08 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:33437 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 11:34:32 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:17289 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991948AbcI3Jd74jxZe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 11:33:59 +0200
+        by eddie.linux-mips.org with ESMTP id S23991965AbcI3JeBB11Le (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 11:34:01 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id A6930924D62E6;
-        Fri, 30 Sep 2016 10:33:50 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 527AACFEC27B7;
+        Fri, 30 Sep 2016 10:33:52 +0100 (IST)
 Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
  HHMAIL03.hh.imgtec.org (10.44.0.22) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 30 Sep 2016 10:33:52 +0100
+ 14.3.294.0; Fri, 30 Sep 2016 10:33:54 +0100
 From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
 CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Subject: [PATCH 1/2] MIPS: tracing: move insn_has_delay_slot to a shared header
-Date:   Fri, 30 Sep 2016 11:33:45 +0200
-Message-ID: <1475228026-25831-1-git-send-email-marcin.nowakowski@imgtec.com>
+Subject: [PATCH 2/2] MIPS: tracing: disable uprobe/kprobe on compact branch instructions
+Date:   Fri, 30 Sep 2016 11:33:46 +0200
+Message-ID: <1475228026-25831-2-git-send-email-marcin.nowakowski@imgtec.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1475228026-25831-1-git-send-email-marcin.nowakowski@imgtec.com>
+References: <1475228026-25831-1-git-send-email-marcin.nowakowski@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.80.2.5]
@@ -23,7 +25,7 @@ Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55301
+X-archive-position: 55302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,265 +42,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently both kprobes and uprobes code have definitions of the
-insn_has_delay_slot method. Move it to a separate header as an inline
-method that each probe-specific method can later use.
-No functional change intended, although the methods slightly varied in
-the constraints they set for the methods - the uprobes one was chosen as
-it is slightly more specific when filtering opcode fields.
+Current instruction decoder for uprobe/kprobe handler only handles
+branches with delay slots. For compact branches the behaviour is rather
+unpredictable - and depending on the encoding of a compact branch
+instruction may result in one (or more) of:
+- executing an instruction that follows a branch which wasn't in a delay
+  slot and shouldn't have been executed
+- incorrectly emulating a branch leading to a jump to a wrong location
+- unexpected branching out of the single-stepped code and never reaching
+  the breakpoint that should terminate the probe handler
+
+Results of these actions are generally unpredictable, but can end up
+with a probed application or kernel crash, so disable placing probes on
+compact branches until they are handled properly.
 
 Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 ---
- arch/mips/kernel/kprobes.c       | 61 ++----------------------------
- arch/mips/kernel/probes-common.h | 81 ++++++++++++++++++++++++++++++++++++++++
- arch/mips/kernel/uprobes.c       | 65 ++------------------------------
- 3 files changed, 87 insertions(+), 120 deletions(-)
- create mode 100644 arch/mips/kernel/probes-common.h
+ arch/mips/kernel/branch.c        | 34 ++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/kprobes.c       |  6 ++++++
+ arch/mips/kernel/probes-common.h |  2 ++
+ arch/mips/kernel/uprobes.c       |  6 ++++++
+ 4 files changed, 48 insertions(+)
 
-diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
-index 212f46f..747e3bf 100644
---- a/arch/mips/kernel/kprobes.c
-+++ b/arch/mips/kernel/kprobes.c
-@@ -32,7 +32,8 @@
- #include <asm/ptrace.h>
- #include <asm/branch.h>
- #include <asm/break.h>
--#include <asm/inst.h>
-+
-+#include "probes-common.h"
- 
- static const union mips_instruction breakpoint_insn = {
- 	.b_format = {
-@@ -55,63 +56,7 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
- 
- static int __kprobes insn_has_delayslot(union mips_instruction insn)
- {
--	switch (insn.i_format.opcode) {
--
--		/*
--		 * This group contains:
--		 * jr and jalr are in r_format format.
--		 */
--	case spec_op:
--		switch (insn.r_format.func) {
--		case jr_op:
--		case jalr_op:
--			break;
--		default:
--			goto insn_ok;
--		}
--
--		/*
--		 * This group contains:
--		 * bltz_op, bgez_op, bltzl_op, bgezl_op,
--		 * bltzal_op, bgezal_op, bltzall_op, bgezall_op.
--		 */
--	case bcond_op:
--
--		/*
--		 * These are unconditional and in j_format.
--		 */
--	case jal_op:
--	case j_op:
--
--		/*
--		 * These are conditional and in i_format.
--		 */
--	case beq_op:
--	case beql_op:
--	case bne_op:
--	case bnel_op:
--	case blez_op:
--	case blezl_op:
--	case bgtz_op:
--	case bgtzl_op:
--
--		/*
--		 * These are the FPA/cp1 branch instructions.
--		 */
--	case cop1_op:
--
--#ifdef CONFIG_CPU_CAVIUM_OCTEON
--	case lwc2_op: /* This is bbit0 on Octeon */
--	case ldc2_op: /* This is bbit032 on Octeon */
--	case swc2_op: /* This is bbit1 on Octeon */
--	case sdc2_op: /* This is bbit132 on Octeon */
--#endif
--		return 1;
--	default:
--		break;
--	}
--insn_ok:
--	return 0;
-+	return __insn_has_delay_slot(insn);
+diff --git a/arch/mips/kernel/branch.c b/arch/mips/kernel/branch.c
+index 46c227f..c3dce43 100644
+--- a/arch/mips/kernel/branch.c
++++ b/arch/mips/kernel/branch.c
+@@ -866,3 +866,37 @@ unaligned:
+ 	force_sig(SIGBUS, current);
+ 	return -EFAULT;
  }
- 
- /*
-diff --git a/arch/mips/kernel/probes-common.h b/arch/mips/kernel/probes-common.h
-new file mode 100644
-index 0000000..c979c37
---- /dev/null
-+++ b/arch/mips/kernel/probes-common.h
-@@ -0,0 +1,81 @@
-+/*
-+ * Copyright (C) 2016 Imagination Technologies
-+ * Author: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
-+ */
 +
-+#ifndef __PROBES_COMMON_H
-+#define __PROBES_COMMON_H
++#if (defined CONFIG_KPROBES) || (defined CONFIG_UPROBES)
 +
-+#include <asm/inst.h>
-+
-+static inline int __insn_has_delay_slot(const union mips_instruction insn)
++int __insn_is_compact_branch(union mips_instruction insn)
 +{
++	if (!cpu_has_mips_r6)
++		return 0;
++
 +	switch (insn.i_format.opcode) {
-+	/*
-+	 * jr and jalr are in r_format format.
-+	 */
-+	case spec_op:
-+		switch (insn.r_format.func) {
-+		case jalr_op:
-+		case jr_op:
-+			return 1;
-+		}
-+		break;
-+
-+	/*
-+	 * This group contains:
-+	 * bltz_op, bgez_op, bltzl_op, bgezl_op,
-+	 * bltzal_op, bgezal_op, bltzall_op, bgezall_op.
-+	 */
-+	case bcond_op:
-+		switch (insn.i_format.rt) {
-+		case bltz_op:
-+		case bltzl_op:
-+		case bgez_op:
-+		case bgezl_op:
-+		case bltzal_op:
-+		case bltzall_op:
-+		case bgezal_op:
-+		case bgezall_op:
-+		case bposge32_op:
-+			return 1;
-+		}
-+		break;
-+
-+	/*
-+	 * These are unconditional and in j_format.
-+	 */
-+	case jal_op:
-+	case j_op:
-+	case beq_op:
-+	case beql_op:
-+	case bne_op:
-+	case bnel_op:
-+	case blez_op: /* not really i_format */
 +	case blezl_op:
-+	case bgtz_op:
 +	case bgtzl_op:
-+		return 1;
-+
-+	/*
-+	 * And now the FPA/cp1 branch instructions.
-+	 */
-+	case cop1_op:
-+#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+	case lwc2_op: /* This is bbit0 on Octeon */
-+	case ldc2_op: /* This is bbit032 on Octeon */
-+	case swc2_op: /* This is bbit1 on Octeon */
-+	case sdc2_op: /* This is bbit132 on Octeon */
-+#endif
++	case blez_op:
++	case bgtz_op:
++		/*
++		 * blez[l] and bgtz[l] opcodes with non-zero rt
++		 * are MIPS R6 compact branches
++		 */
++		if (insn.i_format.rt)
++			return 1;
++		break;
++	case bc6_op:
++	case balc6_op:
++	case pop10_op:
++	case pop30_op:
++	case pop66_op:
++	case pop76_op:
 +		return 1;
 +	}
 +
 +	return 0;
 +}
++EXPORT_SYMBOL_GPL(__insn_is_compact_branch);
 +
-+#endif  /* __PROBES_COMMON_H */
++#endif  /* CONFIG_KPROBES || CONFIG_UPROBES */
+diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
+index 747e3bf..f5c8bce 100644
+--- a/arch/mips/kernel/kprobes.c
++++ b/arch/mips/kernel/kprobes.c
+@@ -106,6 +106,12 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+ 		goto out;
+ 	}
+ 
++	if (__insn_is_compact_branch(insn)) {
++		pr_notice("Kprobes for compact branches are not supported\n");
++		ret = -EINVAL;
++		goto out;
++	}
++
+ 	/* insn: must be on special executable page on mips. */
+ 	p->ainsn.insn = get_insn_slot();
+ 	if (!p->ainsn.insn) {
+diff --git a/arch/mips/kernel/probes-common.h b/arch/mips/kernel/probes-common.h
+index c979c37..dd08e41 100644
+--- a/arch/mips/kernel/probes-common.h
++++ b/arch/mips/kernel/probes-common.h
+@@ -13,6 +13,8 @@
+ 
+ #include <asm/inst.h>
+ 
++int __insn_is_compact_branch(union mips_instruction insn);
++
+ static inline int __insn_has_delay_slot(const union mips_instruction insn)
+ {
+ 	switch (insn.i_format.opcode) {
 diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
-index 4c7c155..a30ca7b 100644
+index a30ca7b..d3c82ad 100644
 --- a/arch/mips/kernel/uprobes.c
 +++ b/arch/mips/kernel/uprobes.c
-@@ -8,71 +8,12 @@
- #include <asm/branch.h>
- #include <asm/cpu-features.h>
- #include <asm/ptrace.h>
--#include <asm/inst.h>
+@@ -36,6 +36,12 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *aup,
+ 		return -EINVAL;
+ 
+ 	inst.word = aup->insn[0];
 +
-+#include "probes-common.h"
++	if (__insn_is_compact_branch(inst)) {
++		pr_notice("Uprobes for compact branches are not supported\n");
++		return -EINVAL;
++	}
++
+ 	aup->ixol[0] = aup->insn[insn_has_delay_slot(inst)];
+ 	aup->ixol[1] = UPROBE_BRK_UPROBE_XOL;		/* NOP  */
  
- static inline int insn_has_delay_slot(const union mips_instruction insn)
- {
--	switch (insn.i_format.opcode) {
--	/*
--	 * jr and jalr are in r_format format.
--	 */
--	case spec_op:
--		switch (insn.r_format.func) {
--		case jalr_op:
--		case jr_op:
--			return 1;
--		}
--		break;
--
--	/*
--	 * This group contains:
--	 * bltz_op, bgez_op, bltzl_op, bgezl_op,
--	 * bltzal_op, bgezal_op, bltzall_op, bgezall_op.
--	 */
--	case bcond_op:
--		switch (insn.i_format.rt) {
--		case bltz_op:
--		case bltzl_op:
--		case bgez_op:
--		case bgezl_op:
--		case bltzal_op:
--		case bltzall_op:
--		case bgezal_op:
--		case bgezall_op:
--		case bposge32_op:
--			return 1;
--		}
--		break;
--
--	/*
--	 * These are unconditional and in j_format.
--	 */
--	case jal_op:
--	case j_op:
--	case beq_op:
--	case beql_op:
--	case bne_op:
--	case bnel_op:
--	case blez_op: /* not really i_format */
--	case blezl_op:
--	case bgtz_op:
--	case bgtzl_op:
--		return 1;
--
--	/*
--	 * And now the FPA/cp1 branch instructions.
--	 */
--	case cop1_op:
--#ifdef CONFIG_CPU_CAVIUM_OCTEON
--	case lwc2_op: /* This is bbit0 on Octeon */
--	case ldc2_op: /* This is bbit032 on Octeon */
--	case swc2_op: /* This is bbit1 on Octeon */
--	case sdc2_op: /* This is bbit132 on Octeon */
--#endif
--		return 1;
--	}
--
--	return 0;
-+	return __insn_has_delay_slot(insn);
- }
- 
- /**
 -- 
 2.7.4

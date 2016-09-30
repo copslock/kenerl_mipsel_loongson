@@ -1,59 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 03:25:20 +0200 (CEST)
-Received: from mail-pa0-f66.google.com ([209.85.220.66]:35705 "EHLO
-        mail-pa0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992161AbcI3BZNDF5R0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 03:25:13 +0200
-Received: by mail-pa0-f66.google.com with SMTP id t6so486316pae.2;
-        Thu, 29 Sep 2016 18:25:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=1GLzGz/jb8Oud8JOWVP+lEVD4bcuRbclC+RWqpwMqVQ=;
-        b=TsXpk1icluhndEempp5OyAvMi9Dq78mN8AQGHUgR8kWbCNeo7tBjeIDZQzFuJREt5e
-         5A9DJ9uxqM9MwgcYj7Dc7akQkCYcDpUTdetD3sxLHYKsbSj+lcB081hL/US9+fQe+QXd
-         5bl9cxurDjCcyXBpaLNDjN0X6l14d0PTSTj49uctqy4bsniuFV8wOvKNclLrbQnXT6Sb
-         hW3E0wCwQGhZrqiV3hkAe6sj5aKPyLcGLnIU+4gt2VvCmjxs/J6mEKoZ9kB7Wt+aDPfE
-         LDEOKkeG8JxuyT2E28Fyd3bJQcU56JZJdEClbqx7pZfAYq/IVyVYomyjDlLfZ/YstPQ2
-         53xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=1GLzGz/jb8Oud8JOWVP+lEVD4bcuRbclC+RWqpwMqVQ=;
-        b=gcIL7j/TGRgwW1BIt4c/AKV79B2ydNzXrjnPKBXO/bEEXAOLPK4az03WN2NJCAAgRX
-         ia63vFEwgv/yR/u6cyLdZJmqI+1t7DGmwzk30uJXD8XijObOlx6yldjRLd4ngXINknOs
-         aMeWY/4f+3R/zcc7ebG3PJdV6nK0z1gLjKGF9QTPqnPTAUWyajIpSaYFdooe8vK094Vz
-         L0/tMUe7NDx+cSH9yey8jWTP2G2vfrlF+7VE4yGETxtsUaHMGqvSQurEgizDI/sbhnzO
-         G64EIrme7Imo6sGZl5CWRrUC0Vxnt53yyNuFw0++Yb/rNwU9JvRFHgWv4woBDAz3gosx
-         6NgA==
-X-Gm-Message-State: AA6/9RmGeB2NcWC5PkT3AhIdJ4n7EZsqLKuNxEy0mWgsgY1U5bmfxiZ7+UslsVeFcWhLkQ==
-X-Received: by 10.66.193.71 with SMTP id hm7mr7352058pac.164.1475198707039;
-        Thu, 29 Sep 2016 18:25:07 -0700 (PDT)
-Received: from ly-pc (ec2-52-77-214-225.ap-southeast-1.compute.amazonaws.com. [52.77.214.225])
-        by smtp.gmail.com with ESMTPSA id w69sm22997467pfd.28.2016.09.29.18.25.02
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Thu, 29 Sep 2016 18:25:05 -0700 (PDT)
-Date:   Fri, 30 Sep 2016 09:24:57 +0800
-From:   Yang Ling <gnaygnil@gmail.com>
-To:     keguang.zhang@gmail.com, ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        gnaygnil@gmail.com
-Subject: [PATCH v2] MIPS: loongson32: Remove several RTC-related macros
-Message-ID: <20160930012450.GA8739@ly-pc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 11:34:08 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:33437 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23991948AbcI3Jd74jxZe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 11:33:59 +0200
+Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
+        by Forcepoint Email with ESMTPS id A6930924D62E6;
+        Fri, 30 Sep 2016 10:33:50 +0100 (IST)
+Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
+ HHMAIL03.hh.imgtec.org (10.44.0.22) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 30 Sep 2016 10:33:52 +0100
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Subject: [PATCH 1/2] MIPS: tracing: move insn_has_delay_slot to a shared header
+Date:   Fri, 30 Sep 2016 11:33:45 +0200
+Message-ID: <1475228026-25831-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gnaygnil@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55300
+X-archive-position: 55301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnaygnil@gmail.com
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,107 +40,265 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add regs-rtc.h to replace the macros of redundancy.
+Currently both kprobes and uprobes code have definitions of the
+insn_has_delay_slot method. Move it to a separate header as an inline
+method that each probe-specific method can later use.
+No functional change intended, although the methods slightly varied in
+the constraints they set for the methods - the uprobes one was chosen as
+it is slightly more specific when filtering opcode fields.
 
-Signed-off-by: Yang Ling <gnaygnil@gmail.com>
-
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 ---
-V2:
-  Add the header file regs-rtc.h in loongson1.h.
----
- arch/mips/include/asm/mach-loongson32/loongson1.h |  1 +
- arch/mips/include/asm/mach-loongson32/regs-rtc.h  | 23 +++++++++++++++++++++++
- arch/mips/loongson32/common/platform.c            | 22 +++++++++-------------
- 3 files changed, 33 insertions(+), 13 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-loongson32/regs-rtc.h
+ arch/mips/kernel/kprobes.c       | 61 ++----------------------------
+ arch/mips/kernel/probes-common.h | 81 ++++++++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/uprobes.c       | 65 ++------------------------------
+ 3 files changed, 87 insertions(+), 120 deletions(-)
+ create mode 100644 arch/mips/kernel/probes-common.h
 
-diff --git a/arch/mips/include/asm/mach-loongson32/loongson1.h b/arch/mips/include/asm/mach-loongson32/loongson1.h
-index 3584c40..a4cacda 100644
---- a/arch/mips/include/asm/mach-loongson32/loongson1.h
-+++ b/arch/mips/include/asm/mach-loongson32/loongson1.h
-@@ -52,6 +52,7 @@
- #include <regs-clk.h>
- #include <regs-mux.h>
- #include <regs-pwm.h>
-+#include <regs-rtc.h>
- #include <regs-wdt.h>
+diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
+index 212f46f..747e3bf 100644
+--- a/arch/mips/kernel/kprobes.c
++++ b/arch/mips/kernel/kprobes.c
+@@ -32,7 +32,8 @@
+ #include <asm/ptrace.h>
+ #include <asm/branch.h>
+ #include <asm/break.h>
+-#include <asm/inst.h>
++
++#include "probes-common.h"
  
- #endif /* __ASM_MACH_LOONGSON32_LOONGSON1_H */
-diff --git a/arch/mips/include/asm/mach-loongson32/regs-rtc.h b/arch/mips/include/asm/mach-loongson32/regs-rtc.h
+ static const union mips_instruction breakpoint_insn = {
+ 	.b_format = {
+@@ -55,63 +56,7 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+ 
+ static int __kprobes insn_has_delayslot(union mips_instruction insn)
+ {
+-	switch (insn.i_format.opcode) {
+-
+-		/*
+-		 * This group contains:
+-		 * jr and jalr are in r_format format.
+-		 */
+-	case spec_op:
+-		switch (insn.r_format.func) {
+-		case jr_op:
+-		case jalr_op:
+-			break;
+-		default:
+-			goto insn_ok;
+-		}
+-
+-		/*
+-		 * This group contains:
+-		 * bltz_op, bgez_op, bltzl_op, bgezl_op,
+-		 * bltzal_op, bgezal_op, bltzall_op, bgezall_op.
+-		 */
+-	case bcond_op:
+-
+-		/*
+-		 * These are unconditional and in j_format.
+-		 */
+-	case jal_op:
+-	case j_op:
+-
+-		/*
+-		 * These are conditional and in i_format.
+-		 */
+-	case beq_op:
+-	case beql_op:
+-	case bne_op:
+-	case bnel_op:
+-	case blez_op:
+-	case blezl_op:
+-	case bgtz_op:
+-	case bgtzl_op:
+-
+-		/*
+-		 * These are the FPA/cp1 branch instructions.
+-		 */
+-	case cop1_op:
+-
+-#ifdef CONFIG_CPU_CAVIUM_OCTEON
+-	case lwc2_op: /* This is bbit0 on Octeon */
+-	case ldc2_op: /* This is bbit032 on Octeon */
+-	case swc2_op: /* This is bbit1 on Octeon */
+-	case sdc2_op: /* This is bbit132 on Octeon */
+-#endif
+-		return 1;
+-	default:
+-		break;
+-	}
+-insn_ok:
+-	return 0;
++	return __insn_has_delay_slot(insn);
+ }
+ 
+ /*
+diff --git a/arch/mips/kernel/probes-common.h b/arch/mips/kernel/probes-common.h
 new file mode 100644
-index 0000000..1fe724b
+index 0000000..c979c37
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-loongson32/regs-rtc.h
-@@ -0,0 +1,23 @@
++++ b/arch/mips/kernel/probes-common.h
+@@ -0,0 +1,81 @@
 +/*
-+ * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
++ * Copyright (C) 2016 Imagination Technologies
++ * Author: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 + *
-+ * Loongson 1 RTC timer Register Definitions.
-+ *
-+ * This program is free software; you can redistribute	it and/or modify it
-+ * under  the terms of	the GNU General	 Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or (at your
 + * option) any later version.
 + */
 +
-+#ifndef __ASM_MACH_LOONGSON32_REGS_RTC_H
-+#define __ASM_MACH_LOONGSON32_REGS_RTC_H
++#ifndef __PROBES_COMMON_H
++#define __PROBES_COMMON_H
 +
-+#define LS1X_RTC_REG(x) \
-+		((void __iomem *)KSEG1ADDR(LS1X_RTC_BASE + (x)))
++#include <asm/inst.h>
 +
-+#define LS1X_RTC_CTRL	LS1X_RTC_REG(0x40)
-+
-+#define RTC_EXTCLK_OK	(BIT(5) | BIT(8))
-+#define RTC_EXTCLK_EN	BIT(8)
-+
-+#endif /* __ASM_MACH_LOONGSON32_REGS_RTC_H */
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index beff085..4e28e0f 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -23,10 +23,6 @@
- #include <dma.h>
- #include <nand.h>
- 
--#define LS1X_RTC_CTRL	((void __iomem *)KSEG1ADDR(LS1X_RTC_BASE + 0x40))
--#define RTC_EXTCLK_OK	(BIT(5) | BIT(8))
--#define RTC_EXTCLK_EN	BIT(8)
--
- /* 8250/16550 compatible UART */
- #define LS1X_UART(_id)						\
- 	{							\
-@@ -70,15 +66,6 @@ void __init ls1x_serial_set_uartclk(struct platform_device *pdev)
- 		p->uartclk = clk_get_rate(clk);
- }
- 
--void __init ls1x_rtc_set_extclk(struct platform_device *pdev)
--{
--	u32 val;
--
--	val = __raw_readl(LS1X_RTC_CTRL);
--	if (!(val & RTC_EXTCLK_OK))
--		__raw_writel(val | RTC_EXTCLK_EN, LS1X_RTC_CTRL);
--}
--
- /* CPUFreq */
- static struct plat_ls1x_cpufreq ls1x_cpufreq_pdata = {
- 	.clk_name	= "cpu_clk",
-@@ -357,6 +344,15 @@ struct platform_device ls1x_ehci_pdev = {
- };
- 
- /* Real Time Clock */
-+void __init ls1x_rtc_set_extclk(struct platform_device *pdev)
++static inline int __insn_has_delay_slot(const union mips_instruction insn)
 +{
-+	u32 val;
++	switch (insn.i_format.opcode) {
++	/*
++	 * jr and jalr are in r_format format.
++	 */
++	case spec_op:
++		switch (insn.r_format.func) {
++		case jalr_op:
++		case jr_op:
++			return 1;
++		}
++		break;
 +
-+	val = __raw_readl(LS1X_RTC_CTRL);
-+	if (!(val & RTC_EXTCLK_OK))
-+		__raw_writel(val | RTC_EXTCLK_EN, LS1X_RTC_CTRL);
++	/*
++	 * This group contains:
++	 * bltz_op, bgez_op, bltzl_op, bgezl_op,
++	 * bltzal_op, bgezal_op, bltzall_op, bgezall_op.
++	 */
++	case bcond_op:
++		switch (insn.i_format.rt) {
++		case bltz_op:
++		case bltzl_op:
++		case bgez_op:
++		case bgezl_op:
++		case bltzal_op:
++		case bltzall_op:
++		case bgezal_op:
++		case bgezall_op:
++		case bposge32_op:
++			return 1;
++		}
++		break;
++
++	/*
++	 * These are unconditional and in j_format.
++	 */
++	case jal_op:
++	case j_op:
++	case beq_op:
++	case beql_op:
++	case bne_op:
++	case bnel_op:
++	case blez_op: /* not really i_format */
++	case blezl_op:
++	case bgtz_op:
++	case bgtzl_op:
++		return 1;
++
++	/*
++	 * And now the FPA/cp1 branch instructions.
++	 */
++	case cop1_op:
++#ifdef CONFIG_CPU_CAVIUM_OCTEON
++	case lwc2_op: /* This is bbit0 on Octeon */
++	case ldc2_op: /* This is bbit032 on Octeon */
++	case swc2_op: /* This is bbit1 on Octeon */
++	case sdc2_op: /* This is bbit132 on Octeon */
++#endif
++		return 1;
++	}
++
++	return 0;
 +}
 +
- struct platform_device ls1x_rtc_pdev = {
- 	.name		= "ls1x-rtc",
- 	.id		= -1,
++#endif  /* __PROBES_COMMON_H */
+diff --git a/arch/mips/kernel/uprobes.c b/arch/mips/kernel/uprobes.c
+index 4c7c155..a30ca7b 100644
+--- a/arch/mips/kernel/uprobes.c
++++ b/arch/mips/kernel/uprobes.c
+@@ -8,71 +8,12 @@
+ #include <asm/branch.h>
+ #include <asm/cpu-features.h>
+ #include <asm/ptrace.h>
+-#include <asm/inst.h>
++
++#include "probes-common.h"
+ 
+ static inline int insn_has_delay_slot(const union mips_instruction insn)
+ {
+-	switch (insn.i_format.opcode) {
+-	/*
+-	 * jr and jalr are in r_format format.
+-	 */
+-	case spec_op:
+-		switch (insn.r_format.func) {
+-		case jalr_op:
+-		case jr_op:
+-			return 1;
+-		}
+-		break;
+-
+-	/*
+-	 * This group contains:
+-	 * bltz_op, bgez_op, bltzl_op, bgezl_op,
+-	 * bltzal_op, bgezal_op, bltzall_op, bgezall_op.
+-	 */
+-	case bcond_op:
+-		switch (insn.i_format.rt) {
+-		case bltz_op:
+-		case bltzl_op:
+-		case bgez_op:
+-		case bgezl_op:
+-		case bltzal_op:
+-		case bltzall_op:
+-		case bgezal_op:
+-		case bgezall_op:
+-		case bposge32_op:
+-			return 1;
+-		}
+-		break;
+-
+-	/*
+-	 * These are unconditional and in j_format.
+-	 */
+-	case jal_op:
+-	case j_op:
+-	case beq_op:
+-	case beql_op:
+-	case bne_op:
+-	case bnel_op:
+-	case blez_op: /* not really i_format */
+-	case blezl_op:
+-	case bgtz_op:
+-	case bgtzl_op:
+-		return 1;
+-
+-	/*
+-	 * And now the FPA/cp1 branch instructions.
+-	 */
+-	case cop1_op:
+-#ifdef CONFIG_CPU_CAVIUM_OCTEON
+-	case lwc2_op: /* This is bbit0 on Octeon */
+-	case ldc2_op: /* This is bbit032 on Octeon */
+-	case swc2_op: /* This is bbit1 on Octeon */
+-	case sdc2_op: /* This is bbit132 on Octeon */
+-#endif
+-		return 1;
+-	}
+-
+-	return 0;
++	return __insn_has_delay_slot(insn);
+ }
+ 
+ /**
 -- 
-1.9.1
+2.7.4

@@ -1,45 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 16:41:08 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47975 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992166AbcI3OlAbWqPd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 16:41:00 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 1FB5441F8D64;
-        Fri, 30 Sep 2016 15:40:55 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.44.0.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Fri, 30 Sep 2016 15:40:55 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Fri, 30 Sep 2016 15:40:55 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2016 18:25:29 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:40255 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992688AbcI3QZXHD5RT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2016 18:25:23 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 91997C87D880E;
-        Fri, 30 Sep 2016 15:40:51 +0100 (IST)
-Received: from np-p-burton.localnet (10.100.200.217) by HHMAIL03.hh.imgtec.org
+        by Forcepoint Email with ESMTPS id 212CB41752FB1;
+        Fri, 30 Sep 2016 17:25:13 +0100 (IST)
+Received: from localhost (10.100.200.217) by HHMAIL03.hh.imgtec.org
  (10.44.0.22) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 30 Sep 2016
- 15:40:54 +0100
+ 17:25:16 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
-To:     Marc Zyngier <marc.zyngier@arm.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 01/14] irqchip: i8259: Add domain before mapping parent irq
-Date:   Fri, 30 Sep 2016 15:40:48 +0100
-Message-ID: <7469373.vRGg21xy4h@np-p-burton>
-Organization: Imagination Technologies
-User-Agent: KMail/5.3.1 (Linux/4.7.4-1-ARCH; KDE/5.26.0; x86_64; ; )
-In-Reply-To: <20160919212132.28893-2-paul.burton@imgtec.com>
-References: <20160919212132.28893-1-paul.burton@imgtec.com> <20160919212132.28893-2-paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v2] MIPS: CM: Fix mips_cm_max_vp_width for non-MT kernels on MT systems
+Date:   Fri, 30 Sep 2016 17:25:01 +0100
+Message-ID: <20160930162501.26032-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4762191.RMUhLO6Eyp";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+Content-Type: text/plain
 X-Originating-IP: [10.100.200.217]
-X-ESG-ENCRYPT-TAG: 541c1663
 Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55304
+X-archive-position: 55305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,83 +41,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart4762191.RMUhLO6Eyp
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+When discovering the number of VPEs per core, smp_num_siblings will be
+incorrect for kernels built without support for the MIPS MultiThreading
+(MT) ASE running on systems which implement said ASE. This leads to
+accesses to VPEs in secondary cores being performed incorrectly since
+mips_cm_vp_id calculates the wrong ID to write to the local "other"
+registers. Fix this by examining the number of VPEs in the core as
+reported by the CM.
 
-On Monday, 19 September 2016 22:21:18 BST Paul Burton wrote:
-> Mapping the parent IRQ will use a virq number which may conflict with
-> the hardcoded I8259A_IRQ_BASE..I8259A_IRQ_BASE+15 range that the i8259
-> driver expects to be free. If this occurs then we'll hit errors when
-> adding the i8259 IRQ domain, since one of its virq numbers will already
-> be in use.
-> 
-> Avoid this by adding the i8259 domain before mapping the parent IRQ,
-> such that the i8259 virq numbers become used before the parent interrupt
-> controller gets a chance to use any of them.
+This patch presumes that the number of VPEs will be the same in each
+core of the system. As this path only applies to systems with CM version
+2.5 or lower, and this property is true of all such known systems, this
+is likely to be fine but is described in a comment for good measure.
 
-Hello,
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+---
+Changes in v2:
+- Rebased atop mips-for-linux-next at Ralf's request.
 
-Any chance of getting reviews/acks on this & the following 2 patches in the 
-series so Ralf can take them through the MIPS tree? The lack of these (well, 
-patches 1 & 2 anyway) blocks applying many of the Malta patches later in the 
-series.
+Ralf: This fixes interrupt routing for non-MT kernels running on MT
+      systems, where without it they tend to suffer from both lost &
+      spurious interrupts. It would be great to get in for v4.8.
+---
+ arch/mips/include/asm/mips-cm.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Thanks,
-    Paul
-
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
-> 
-> Changes in v2: None
-> 
->  drivers/irqchip/irq-i8259.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/irqchip/irq-i8259.c b/drivers/irqchip/irq-i8259.c
-> index 6b304eb..85897fd 100644
-> --- a/drivers/irqchip/irq-i8259.c
-> +++ b/drivers/irqchip/irq-i8259.c
-> @@ -370,13 +370,15 @@ int __init i8259_of_init(struct device_node *node,
-> struct device_node *parent) struct irq_domain *domain;
->  	unsigned int parent_irq;
-> 
-> +	domain = __init_i8259_irqs(node);
-> +
->  	parent_irq = irq_of_parse_and_map(node, 0);
->  	if (!parent_irq) {
->  		pr_err("Failed to map i8259 parent IRQ\n");
-> +		irq_domain_remove(domain);
->  		return -ENODEV;
->  	}
-> 
-> -	domain = __init_i8259_irqs(node);
->  	irq_set_chained_handler_and_data(parent_irq, i8259_irq_dispatch,
->  					 domain);
->  	return 0;
-
-
---nextPart4762191.RMUhLO6Eyp
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAABCAAGBQJX7nlwAAoJEIIg2fppPBxl8N4P/jZ9FoGAcVQjbyMxpzBga4Ca
-T6WTqClJgPRok6Qh6xs8hCkWXgoBQB/Mv5EX80DW2AnFU1bBQ31rwO2qEckqcFhj
-wn9fllhY15SMMU3zDt3e0j73rwyfIbg9lj1rfG7tLhgZAvD/y+SvGXWcKz7nlyrp
-XUHk5gl1DbCSzdPx4vGU/2DIQn7zOpM4Bn7Jd80R1QHOUmu34XwuSYQr8y1Rtx0m
-IeCwsU43UYvd2PNNgAY1DOznOqa0PylAWXj80RkCXmkN70YQfO6R3dU0y1yii0zG
-EkAosOK8x44JYo4++qY/DGhrEMwWoBH7Npi5YRF3w25W51a0tKgHDK9Jk+MUwD4P
-JE/5DOSy4u/M2oSy2Rk76hIipvrz2KvTmGzqBQLSIXFbYA1pVXfiR5LW0/OkhD6K
-MH6YNE0KDvnlHxHQ1D7bnkN6ZvGQm6ewXcBMzI42hXlRThA8FeONsEnuXys50A/L
-JU63wmXxYug/gZ2cvHidRXTSHNAKJmJHCHJ3pG847+MKcvv/2tiKBSLvfUaEoaNt
-7x1zwAIE+YDX8Mo+swL3lL5ilxT16JwU+vIZ6OQ8DatQ/Zv3y+sIeskWFg2jVYJq
-P34wufB1gA5pwNbJ0XkeaF2rHG6DljfaUoqDEcc7ngW6I2eqg0JLPmqbJwOwYLYr
-EtI2zWyWui2F2wcI0gve
-=1rjx
------END PGP SIGNATURE-----
-
---nextPart4762191.RMUhLO6Eyp--
+diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
+index ac30981..2e41807 100644
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -459,10 +459,21 @@ static inline int mips_cm_revision(void)
+ static inline unsigned int mips_cm_max_vp_width(void)
+ {
+ 	extern int smp_num_siblings;
++	uint32_t cfg;
+ 
+ 	if (mips_cm_revision() >= CM_REV_CM3)
+ 		return read_gcr_sys_config2() & CM_GCR_SYS_CONFIG2_MAXVPW_MSK;
+ 
++	if (mips_cm_present()) {
++		/*
++		 * We presume that all cores in the system will have the same
++		 * number of VP(E)s, and if that ever changes then this will
++		 * need revisiting.
++		 */
++		cfg = read_gcr_cl_config() & CM_GCR_Cx_CONFIG_PVPE_MSK;
++		return (cfg >> CM_GCR_Cx_CONFIG_PVPE_SHF) + 1;
++	}
++
+ 	if (IS_ENABLED(CONFIG_SMP))
+ 		return smp_num_siblings;
+ 
+-- 
+2.10.0

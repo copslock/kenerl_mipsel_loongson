@@ -1,54 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2016 17:35:48 +0200 (CEST)
-Received: from mail-wm0-f43.google.com ([74.125.82.43]:38191 "EHLO
-        mail-wm0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990845AbcJCPfkdrO0r (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Oct 2016 17:35:40 +0200
-Received: by mail-wm0-f43.google.com with SMTP id p138so157784961wmb.1
-        for <linux-mips@linux-mips.org>; Mon, 03 Oct 2016 08:35:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Oct 2016 00:16:53 +0200 (CEST)
+Received: from mail-pf0-f178.google.com ([209.85.192.178]:32814 "EHLO
+        mail-pf0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991129AbcJCWQqVQiAU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Oct 2016 00:16:46 +0200
+Received: by mail-pf0-f178.google.com with SMTP id 190so21139442pfv.0
+        for <linux-mips@linux-mips.org>; Mon, 03 Oct 2016 15:16:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=TlqwoQvxsX+0Rcm5xWqRP50OHj0qeowLr4PWQWkBiVg=;
-        b=lZ+tXKD8DM3uupXa1VVfYG+BtF+tGEwRC3CNWiDD2SbhzIeQpcwyrQ89ldTNOdlEKe
-         C/HLSriJuE2HcQlZ7013W+ojD7qCRQ0qxOsCpYq8MNrr5hEiyCteOln+rSoslG6gHo+I
-         hC2ZLuZV1W614t4EGgo2kpntDzWFaGWxLRLZyoE6/U0aY1wf04fWQQmwKNn43MKPz+Bk
-         YXKJMRVsiFeFQfb0vNH3jjONls7aZT5l6h5XgftLZvOphaq9aAzWSv6fyJNdG6Lgf4Fq
-         cP4SEHuu9kjnHnpoahC8/p/qHcGf/a7qKpnTsgHbHKhBPXs0mx+iiu5sN0S3v/Ocbacy
-         2STQ==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=xqJSyCcOt0T8uhqy07Q/ouTOSafxc7/yP5LdngEFFmw=;
+        b=S2q9MkWcB6SNpifitYwSmRZe8Er7qpT0pRD2Yol4zq0f1FoRyY5IBsgXd1I+yxqOZT
+         fkpeiYw4Cp9bEzvPMpUOPbQu4eRYCEkf7ovv08kpJgDjcX/KmpKL67ICBhKoFFa3SmNa
+         q9lI1/+1YADEeXk2aLsUia++tB/cMLFLs8B58=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=TlqwoQvxsX+0Rcm5xWqRP50OHj0qeowLr4PWQWkBiVg=;
-        b=MtnbM17drUMxNDIA4hm4YcPAXkxZo3PIzIiKpD5Lf/HckijffTrMUh+SlJb1OjVEFT
-         kpw9iBVI4bOKVvrmHXn8pK3sIW7R3TATqXTPhSm80iExa5AHsng1KN43xOUyvUXJ5Twp
-         VzZqZYJqGC6Q9C/zBlZFImWLioxag1RRT/iCGE+NWbXM07llsKTCEhZYPTAlLhoHo4sR
-         NjHdy2L/ESl0AqVPpIzv17WBPoXQkcwS7KlTilGFBUBL+QDofXpXTVyFG6RpuZoBwT5+
-         bDv+VmoenPanp5jKjYjf16U2jiWdAUg08KftuBGO4/zhyVhT+Fy5t0ZtfJFaRS9D1Td+
-         BVvw==
-X-Gm-Message-State: AA6/9Rkaoqjzd8pJ4pBWpUzzR7A/HSvvg4L14R2O85r4bU/K5OAeRTprAQMVzzzUL3pXiXjd
-X-Received: by 10.194.205.134 with SMTP id lg6mr21918139wjc.148.1475508935121;
-        Mon, 03 Oct 2016 08:35:35 -0700 (PDT)
-Received: from localhost.localdomain ([90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id ce6sm34924915wjc.27.2016.10.03.08.35.34
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 03 Oct 2016 08:35:34 -0700 (PDT)
-From:   Neil Armstrong <narmstrong@baylibre.com>
-To:     ralf@linux-mips.org, albeu@free.fr
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: ath79: Add initial support for the HAPROXY Aloha Pocket board
-Date:   Mon,  3 Oct 2016 17:35:31 +0200
-Message-Id: <1475508931-16800-1-git-send-email-narmstrong@baylibre.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <narmstrong@baylibre.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=xqJSyCcOt0T8uhqy07Q/ouTOSafxc7/yP5LdngEFFmw=;
+        b=ZRsd6+ldI+bHZTbB8DX92td4P718CideMYy0e3LMGWzqUiFvokAo2q/TOoqscuXJ/c
+         q2NWX8eWJrj4xvw3h1D/88GJfyYrjIl8kULZL6f+YiTrt2vKWCigMZmACJvhOB2c4BhW
+         0L+EWuwnzDwlFYMmII4hqkIXFWvg6t282ECGUPGiccJENahckkqHt4xhZMBWAZlmy9cJ
+         UGu3QVUsbxLtkbHVgBD+xG3TsZ38Sh7QvS/LkyRKwOzsKzpie8Wqzcv9yJMDM6R4LeEH
+         7EoS4QhSXlISIjnnhKKfp4A3NNArd5NqjDnJGxdKNon7kN2f5wF2qTYkSXlGz9Rg1+eh
+         UDEw==
+X-Gm-Message-State: AA6/9RmxcZAqzz3Ge3739dUmObmrSvmp84PG5hALxz9B4dMlfkEA82dPREKLZO7ODN8pAAFb
+X-Received: by 10.98.193.193 with SMTP id i184mr610776pfg.56.1475532999964;
+        Mon, 03 Oct 2016 15:16:39 -0700 (PDT)
+Received: from tuxbot (ip68-111-223-48.sd.sd.cox.net. [68.111.223.48])
+        by smtp.gmail.com with ESMTPSA id yg10sm211378pab.8.2016.10.03.15.16.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 03 Oct 2016 15:16:38 -0700 (PDT)
+Date:   Mon, 3 Oct 2016 15:16:36 -0700
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, linux-remoteproc@vger.kernel.org,
+        lisa.parratt@imgtec.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] remoteproc/MIPS: Add a remoteproc driver for MIPS
+Message-ID: <20161003221636.GI7509@tuxbot>
+References: <1474361249-31064-1-git-send-email-matt.redfearn@imgtec.com>
+ <1474361249-31064-6-git-send-email-matt.redfearn@imgtec.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1474361249-31064-6-git-send-email-matt.redfearn@imgtec.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <bjorn.andersson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55311
+X-archive-position: 55312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: narmstrong@baylibre.com
+X-original-sender: bjorn.andersson@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,153 +69,237 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The HAPROXY Aloha pocket board is a Load Balancer demo board based on the
-Atheros AR9331 SoC with 64Mbytes DDR and 16Mbytes on-board SPI Flash.
+On Tue 20 Sep 01:47 PDT 2016, Matt Redfearn wrote:
 
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
----
- arch/mips/ath79/Kconfig             | 12 ++++++
- arch/mips/ath79/Makefile            |  1 +
- arch/mips/ath79/mach-aloha-pocket.c | 86 +++++++++++++++++++++++++++++++++++++
- arch/mips/ath79/machtypes.h         |  1 +
- 4 files changed, 100 insertions(+)
- create mode 100644 arch/mips/ath79/mach-aloha-pocket.c
+> Add a remoteproc driver to steal, load the firmware, and boot an offline
+> MIPS core, turning it into a coprocessor.
+> 
+> This driver provides a sysfs to allow arbitrary firmware to be loaded
+> onto a core, which may expose virtio devices. Coprocessor firmware must
+> abide by the UHI coprocessor boot protocol.
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index dfc6020..937cede 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -71,6 +71,18 @@ config ATH79_MACH_UBNT_XM
- 	  Say 'Y' here if you want your kernel to support the
- 	  Ubiquiti Networks XM (rev 1.0) board.
- 
-+config ATH79_MACH_ALOHA_POCKET
-+	bool "HAPROXY Aloha Pocket board"
-+	select SOC_AR933X
-+	select ATH79_DEV_GPIO_BUTTONS
-+	select ATH79_DEV_LEDS_GPIO
-+	select ATH79_DEV_SPI
-+	select ATH79_DEV_USB
-+	select ATH79_DEV_WMAC
-+	help
-+	  Say 'Y' here if you want your kernel to support the
-+	  HAPROXY Aloha Pocket board.
-+
- endmenu
- 
- config SOC_AR71XX
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index fcc382c..a87c4ee 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -32,3 +32,4 @@ obj-$(CONFIG_ATH79_MACH_AP81)		+= mach-ap81.o
- obj-$(CONFIG_ATH79_MACH_DB120)		+= mach-db120.o
- obj-$(CONFIG_ATH79_MACH_PB44)		+= mach-pb44.o
- obj-$(CONFIG_ATH79_MACH_UBNT_XM)	+= mach-ubnt-xm.o
-+obj-$(CONFIG_ATH79_MACH_ALOHA_POCKET)	+= mach-aloha-pocket.o
-diff --git a/arch/mips/ath79/mach-aloha-pocket.c b/arch/mips/ath79/mach-aloha-pocket.c
-new file mode 100644
-index 0000000..2beb068
---- /dev/null
-+++ b/arch/mips/ath79/mach-aloha-pocket.c
-@@ -0,0 +1,86 @@
-+/*
-+ *  HAPROXY Aloha Pocket board support
-+ *
-+ *  Copyright (C) 2011 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2016 Neil Armstrong <narmstrong@baylibre.com>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#include "machtypes.h"
-+#include "dev-gpio-buttons.h"
-+#include "dev-leds-gpio.h"
-+#include "dev-spi.h"
-+#include "dev-usb.h"
-+#include "dev-wmac.h"
-+
-+#define ALOHA_POCKET_GPIO_LED_WLAN		0
-+#define ALOHA_POCKET_GPIO_LED_LAN		13
-+
-+#define ALOHA_POCKET_GPIO_BTN_RESET		11
-+
-+#define ALOHA_POCKET_KEYS_POLL_INTERVAL	20	/* msecs */
-+#define ALOHA_POCKET_KEYS_DEBOUNCE_INTERVAL	\
-+					(3 * ALOHA_POCKET_KEYS_POLL_INTERVAL)
-+
-+#define ALOHA_POCKET_CAL_DATA_ADDR	0x1fff1000
-+
-+static struct gpio_led aloha_pocket_leds_gpio[] __initdata = {
-+	{
-+		.name		= "aloha-pocket:red:wlan",
-+		.gpio		= ALOHA_POCKET_GPIO_LED_WLAN,
-+		.active_low	= 0,
-+	},
-+	{
-+		.name		= "aloha-pocket:green:lan",
-+		.gpio		= ALOHA_POCKET_GPIO_LED_LAN,
-+		.active_low	= 0,
-+		.default_state	= 1,
-+	},
-+};
-+
-+static struct gpio_keys_button aloha_pocket_gpio_keys[] __initdata = {
-+	{
-+		.desc		= "reset button",
-+		.type		= EV_KEY,
-+		.code		= KEY_RESTART,
-+		.debounce_interval = ALOHA_POCKET_KEYS_DEBOUNCE_INTERVAL,
-+		.gpio		= ALOHA_POCKET_GPIO_BTN_RESET,
-+		.active_low	= 0,
-+	}
-+};
-+
-+static struct spi_board_info aloha_pocket_spi_info[] = {
-+	{
-+		.bus_num	= 0,
-+		.chip_select	= 0,
-+		.max_speed_hz	= 25000000,
-+		.modalias	= "mx25l1606e",
-+	}
-+};
-+
-+static struct ath79_spi_platform_data aloha_pocket_spi_data = {
-+	.bus_num	= 0,
-+	.num_chipselect = 1,
-+};
-+
-+static void __init aloha_pocket_setup(void)
-+{
-+	u8 *cal_data = (u8 *) KSEG1ADDR(ALOHA_POCKET_CAL_DATA_ADDR);
-+
-+	ath79_register_leds_gpio(-1, ARRAY_SIZE(aloha_pocket_leds_gpio),
-+				 aloha_pocket_leds_gpio);
-+	ath79_register_gpio_keys_polled(-1, ALOHA_POCKET_KEYS_POLL_INTERVAL,
-+					ARRAY_SIZE(aloha_pocket_gpio_keys),
-+					aloha_pocket_gpio_keys);
-+
-+	ath79_register_spi(&aloha_pocket_spi_data, aloha_pocket_spi_info,
-+			   ARRAY_SIZE(aloha_pocket_spi_info));
-+	ath79_register_usb();
-+	ath79_register_wmac(cal_data);
-+}
-+
-+MIPS_MACHINE(ATH79_MACH_ALOHA_POCKET, "ALOHA-Pocket",
-+	     "HAPROXY ALOHA Pocket board", aloha_pocket_setup);
-diff --git a/arch/mips/ath79/machtypes.h b/arch/mips/ath79/machtypes.h
-index a13db3d..9c63895 100644
---- a/arch/mips/ath79/machtypes.h
-+++ b/arch/mips/ath79/machtypes.h
-@@ -23,6 +23,7 @@ enum ath79_mach_type {
- 	ATH79_MACH_DB120,		/* Atheros DB120 reference board */
- 	ATH79_MACH_PB44,		/* Atheros PB44 reference board */
- 	ATH79_MACH_UBNT_XM,		/* Ubiquiti Networks XM board rev 1.0 */
-+	ATH79_MACH_ALOHA_POCKET,	/* HAPROXY Aloha Pocket board */
- };
- 
- #endif /* _ATH79_MACHTYPE_H */
--- 
-1.9.1
+Hi Matt,
+
+Sorry for my very slow response, I kept getting side tracked on the
+sysfs part every time I attempted to review this. After discussing with
+others it's obvious that being able to boot a remoteproc with a specific
+firmware image for some amount of time is a very common request.
+
+Rather than adding a MIPS specific interface for controlling this rproc
+I would like for us to bring this to the core.
+
+
+I would also appreciate if Ralf had some input on the MIPS specifics.
+
+
+Also regarding the 32-bit requirement, have you investigated what is
+needed to support 64-bit ELFs?
+
+[..]
+> diff --git a/drivers/remoteproc/mips_remoteproc.c b/drivers/remoteproc/mips_remoteproc.c
+[..]
+> +int mips_rproc_op_start(struct rproc *rproc)
+> +{
+> +	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
+> +	int err;
+> +	int cpu = mproc->cpu;
+> +
+> +	if (mips_rprocs[cpu]) {
+> +		dev_err(&rproc->dev, "CPU%d in use\n", cpu);
+> +		return -EBUSY;
+> +	}
+> +	mips_rprocs[cpu] = rproc;
+> +
+> +	/* Create task for the CPU to use before handing off to firmware */
+> +	mproc->tsk = fork_idle(cpu);
+> +	if (IS_ERR(mproc->tsk)) {
+> +		dev_err(&rproc->dev, "fork_idle() failed for CPU%d\n", cpu);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	/* We won't be needing the Linux IPIs anymore */
+> +	if (mips_smp_ipi_free(get_cpu_mask(cpu)))
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * Direct IPIs from the remote processor to CPU0 since that can't be
+> +	 * offlined while the remote CPU is running.
+> +	 */
+> +	mproc->ipi_linux = irq_reserve_ipi(ipi_domain(), get_cpu_mask(0));
+> +	if (!mproc->ipi_linux) {
+> +		dev_err(&mproc->dev, "Failed to reserve incoming kick\n");
+> +		goto exit_rproc_nofrom;
+> +	}
+> +
+> +	mproc->ipi_remote = irq_reserve_ipi(ipi_domain(), get_cpu_mask(cpu));
+> +	if (!mproc->ipi_remote) {
+> +		dev_err(&mproc->dev, "Failed to reserve outgoing kick\n");
+> +		goto exit_rproc_noto;
+> +	}
+> +
+> +	/* register incoming ipi */
+> +	err = devm_request_threaded_irq(&mproc->dev, mproc->ipi_linux,
+> +					mips_rproc_ipi_handler,
+> +					mips_rproc_vq_int, 0,
+> +					"mips-rproc IPI in", mproc->rproc);
+
+Based on how you've designed this I think it makes sense to just depend
+on the fact that stop() will always be called and hence you do not
+benefit from the devm_ version of this api.
+
+> +	if (err) {
+> +		dev_err(&mproc->dev, "Failed to register incoming kick: %d\n",
+> +			err);
+> +		goto exit_rproc_noint;
+> +	}
+> +
+> +	if (!mips_cps_steal_cpu_and_execute(cpu, &mips_rproc_cpu_entry,
+> +						mproc->tsk))
+> +		return 0;
+
+Please flip this around, to follow the pattern of the others, like:
+
+	if (mips_cps_steal_cpu_and_execute()) {
+		dev_err()
+		goto exit_free_irq;
+	}
+
+	return 0;
+
+exit_free_irq:
+
+> +
+> +	dev_err(&mproc->dev, "Failed to steal CPU%d for remote\n", cpu);
+> +	devm_free_irq(&mproc->dev, mproc->ipi_linux, mproc->rproc);
+> +exit_rproc_noint:
+> +	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(cpu));
+> +exit_rproc_noto:
+> +	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
+> +exit_rproc_nofrom:
+> +	free_task(mproc->tsk);
+> +	mips_rprocs[cpu] = NULL;
+> +
+> +	/* Set up the Linux IPIs again */
+> +	mips_smp_ipi_allocate(get_cpu_mask(cpu));
+> +	return -EINVAL;
+> +}
+> +
+> +int mips_rproc_op_stop(struct rproc *rproc)
+> +{
+> +	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
+> +
+> +	if (mproc->ipi_linux)
+
+stop() should not be called unless start() succeeded, so ipi_linux
+should not be able to be 0.
+
+> +		devm_free_irq(&mproc->dev, mproc->ipi_linux, mproc->rproc);
+> +
+> +	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
+> +	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(mproc->cpu));
+> +
+> +	/* Set up the Linux IPIs again */
+> +	mips_smp_ipi_allocate(get_cpu_mask(mproc->cpu));
+> +
+> +	free_task(mproc->tsk);
+> +
+> +	mips_rprocs[mproc->cpu] = NULL;
+> +
+> +	return mips_cps_halt_and_return_cpu(mproc->cpu);
+> +}
+> +
+> +
+[..]
+> +
+> +/* Steal a core and run some firmware on it */
+> +int mips_rproc_start(struct mips_rproc *mproc, const char *firmware, size_t len)
+> +{
+> +	int err = -EINVAL;
+> +	struct mips_rproc **priv;
+> +
+> +	/* Duplicate the filename, dropping whitespace from the end via len */
+> +	mproc->firmware = kstrndup(firmware, len, GFP_KERNEL);
+> +	if (!mproc->firmware)
+> +		return -ENOMEM;
+> +
+> +	mproc->rproc = rproc_alloc(&mproc->dev, "mips", &mips_rproc_proc_ops,
+> +				   mproc->firmware,
+> +				   sizeof(struct mips_rproc *));
+> +	if (!mproc->rproc)
+> +		return -ENOMEM;
+> +
+> +	priv = mproc->rproc->priv;
+> +	*priv = mproc;
+
+If we move the class into the core, everyone will share the same
+interface for setting firmware, booting and shutting down remoteproc.
+
+I think you should set rproc->auto_boot to false and move this code into
+the probe function above. It would make there be an remoteproc instance
+whenever the cpu is offlined, do you see any problems with this?
+
+> +
+> +	/* go live! */
+> +	err = rproc_add(mproc->rproc);
+> +	if (err) {
+> +		dev_err(&mproc->dev, "Failed to add rproc: %d\n", err);
+> +		rproc_put(mproc->rproc);
+> +		kfree(mproc->firmware);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/* Stop a core, and return it to being offline */
+> +int mips_rproc_stop(struct mips_rproc *mproc)
+> +{
+> +	rproc_shutdown(mproc->rproc);
+
+I presume this shutdown is related to the implicit boot happening in
+rproc_add() if you have virtio devices; I've changed this for v4.9 so
+that rproc_del() shuts down the core if rproc_add() booted it.
+
+There needs to be some more work done in this area though, because there
+are plenty of corner cases that we don't handle properly today...
+
+> +	rproc_del(mproc->rproc);
+> +	rproc_put(mproc->rproc);
+> +	mproc->rproc = NULL;
+> +	return 0;
+> +}
+> +
+[..]
+> +
+> +/* sysfs interface to mips_rproc_stop */
+> +static ssize_t stop_store(struct device *dev,
+> +			      struct device_attribute *attr,
+> +			      const char *buf, size_t count)
+> +{
+> +	struct mips_rproc *mproc = to_mips_rproc(dev);
+> +	int err = -EINVAL;
+> +
+> +
+> +	if (mproc->rproc)
+> +		err = mips_rproc_stop(mproc);
+> +	else
+> +		err = -EBUSY;
+> +
+> +	return err ? err : count;
+> +}
+> +static DEVICE_ATTR_WO(stop);
+
+Please move this control into the core, preferably as "state" which can
+be passed "boot" or "shutdown" - i.e. what we today have in debugfs.
+
+> +
+> +/* Boiler plate for devclarng mips-rproc sysfs devices */
+> +static struct attribute *mips_rproc_attrs[] = {
+> +	&dev_attr_firmware.attr,
+> +	&dev_attr_stop.attr,
+> +	NULL
+> +};
+> +
+
+Regards,
+Bjorn

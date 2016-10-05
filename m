@@ -1,24 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2016 19:19:21 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:2565 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2016 19:19:43 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:59664 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991532AbcJERTOJltju (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Oct 2016 19:19:14 +0200
+        by eddie.linux-mips.org with ESMTP id S23992105AbcJERTWjNzXu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Oct 2016 19:19:22 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 9ED912773CD0D;
-        Wed,  5 Oct 2016 18:19:00 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 525F2405A5C3A;
+        Wed,  5 Oct 2016 18:19:15 +0100 (IST)
 Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
  (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 5 Oct 2016
- 18:19:01 +0100
+ 18:19:16 +0100
 Received: from localhost (10.100.200.82) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 5 Oct
- 2016 18:19:01 +0100
+ 2016 18:19:16 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v3 00/18] MIPS generic kernels, SEAD-3 & Boston support
-Date:   Wed, 5 Oct 2016 18:18:06 +0100
-Message-ID: <20161005171824.18014-1-paul.burton@imgtec.com>
+Subject: [PATCH v3 01/18] MIPS: PCI: Use struct list_head lists
+Date:   Wed, 5 Oct 2016 18:18:07 +0100
+Message-ID: <20161005171824.18014-2-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.10.0
+In-Reply-To: <20161005171824.18014-1-paul.burton@imgtec.com>
+References: <20161005171824.18014-1-paul.burton@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.100.200.82]
@@ -26,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55326
+X-archive-position: 55327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,170 +45,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series introduces some infrastructure for building generic kernels
-which will run on multiple boards depending upon the device tree
-provided to them by the bootloader. It converts SEAD-3 to make use of
-this, and adds support for the MIPS Boston development platform.
+Rather than open-coding a linked list implementation, make use of the
+one in linux/list.h.
 
-The Boston support can be tested in QEMU with this patchset applied:
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 
-  https://lists.gnu.org/archive/html/qemu-devel/2016-08/msg03419.html
+---
 
-To do so, configure the kernel for the generic 64r6el_defconfig & run
-QEMU like so:
+Changes in v3:
+- Include this patch missed from previous submissions.
 
-  $ make ARCH=mips 64r6el_defconfig
-  $ make ARCH=mips CROSS_COMPILE=my-toolchain-
-  $ qemu-system-mips64el -M boston \
-      -kernel arch/mips/boot/vmlinux.gz.itb \
-      serial stdio
+Changes in v2: None
 
-The same kernel binary will also boot on a SEAD-3 if using a bootloader
-capable of loading the FIT image format (ie. U-Boot). These 2 boards
-form the starting point for the generic kernels, with Ci20 & Ci40 able
-to be added easily. Malta will require further work, but I've got most
-peripherals converted to probe using device tree as a starting point &
-will submit that separately.
+ arch/mips/include/asm/pci.h | 3 ++-
+ arch/mips/pci/pci.c         | 9 ++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-v3 drops some patches which aren't critical & need comments made during
-review addressing. This series applies atop mips-for-linux-next as of
-6a44eb2884ca, but needs the remaining patches of my SEAD-3 DT conversion
-series to be applied first.
-
-Paul Burton (18):
-  MIPS: PCI: Use struct list_head lists
-  MIPS: PCI: Support for CONFIG_PCI_DOMAINS_GENERIC
-  MIPS: PCI: Make pcibios_set_cache_line_size an initcall
-  MIPS: PCI: Inline pcibios_assign_all_busses
-  MIPS: PCI: Split pci.c into pci.c & pci-legacy.c
-  MIPS: PCI: Introduce CONFIG_PCI_DRIVERS_LEGACY
-  MIPS: PCI: Support generic drivers
-  MIPS: Sanitise coherentio semantics
-  MIPS: dma-default: Don't check hw_coherentio if device is non-coherent
-  MIPS: Support per-device DMA coherence
-  MIPS: Print CM error reports upon bus errors
-  MIPS: Adjust MIPS64 CAC_BASE to reflect Config.K0
-  MIPS: Support generating Flattened Image Trees (.itb)
-  MIPS: generic: Introduce generic DT-based board support
-  MIPS: generic: Convert SEAD-3 to a generic board
-  dt-bindings: Document img,boston-clock binding
-  clk: boston: Add a driver for MIPS Boston board clocks
-  MIPS: generic: Support MIPS Boston development boards
-
- .../devicetree/bindings/clock/img,boston-clock.txt |  27 ++
- arch/mips/Kbuild.platforms                         |   2 +-
- arch/mips/Kconfig                                  | 105 ++++---
- arch/mips/Makefile                                 |  77 +++++-
- arch/mips/alchemy/common/setup.c                   |   6 +-
- arch/mips/boot/Makefile                            |  66 +++++
- arch/mips/boot/dts/Makefile                        |   1 +
- arch/mips/boot/dts/img/Makefile                    |   7 +
- arch/mips/boot/dts/img/boston.dts                  | 230 ++++++++++++++++
- arch/mips/boot/dts/mti/Makefile                    |   2 +-
- arch/mips/boot/dts/mti/sead3.dts                   |   1 +
- arch/mips/configs/generic/32r1.config              |   2 +
- arch/mips/configs/generic/32r2.config              |   3 +
- arch/mips/configs/generic/32r6.config              |   2 +
- arch/mips/configs/generic/64r1.config              |   4 +
- arch/mips/configs/generic/64r2.config              |   5 +
- arch/mips/configs/generic/64r6.config              |   4 +
- arch/mips/configs/generic/board-boston.config      |  46 ++++
- arch/mips/configs/generic/board-sead-3.config      |  32 +++
- arch/mips/configs/generic/eb.config                |   1 +
- arch/mips/configs/generic/el.config                |   1 +
- arch/mips/configs/generic/micro32r2.config         |   4 +
- arch/mips/configs/generic_defconfig                |  96 +++++++
- arch/mips/configs/sead3_defconfig                  | 129 ---------
- arch/mips/configs/sead3micro_defconfig             | 122 ---------
- arch/mips/generic/Kconfig                          |  27 ++
- arch/mips/generic/Makefile                         |  15 +
- arch/mips/generic/Platform                         |  14 +
- .../sead3-dtshim.c => generic/board-sead3.c}       | 106 +++++++-
- arch/mips/generic/init.c                           | 176 ++++++++++++
- arch/mips/generic/irq.c                            |  64 +++++
- arch/mips/generic/proc.c                           |  29 ++
- arch/mips/generic/vmlinux.its.S                    |  56 ++++
- arch/mips/include/asm/addrspace.h                  |   3 +-
- arch/mips/include/asm/device.h                     |   5 +
- arch/mips/include/asm/dma-coherence.h              |  16 +-
- arch/mips/include/asm/dma-mapping.h                |  10 +
- arch/mips/include/asm/mach-generic/dma-coherence.h |  14 +-
- arch/mips/include/asm/mach-generic/spaces.h        |   8 +-
- arch/mips/include/asm/mach-ip27/spaces.h           |   1 +
- .../include/asm/mach-sead3/cpu-feature-overrides.h |  72 -----
- arch/mips/include/asm/mach-sead3/irq.h             |   9 -
- .../include/asm/mach-sead3/kernel-entry-init.h     |  21 --
- arch/mips/include/asm/mach-sead3/sead3-dtshim.h    |  29 --
- arch/mips/include/asm/mach-sead3/war.h             |  24 --
- arch/mips/include/asm/machine.h                    |  63 +++++
- arch/mips/include/asm/pci.h                        |  60 +++-
- arch/mips/kernel/traps.c                           |   3 +
- arch/mips/lib/iomap-pci.c                          |   4 +
- arch/mips/mm/c-r4k.c                               |   7 +-
- arch/mips/mm/dma-default.c                         |  16 +-
- arch/mips/mti-malta/malta-int.c                    |  15 -
- arch/mips/mti-malta/malta-setup.c                  |  10 +-
- arch/mips/mti-sead3/Makefile                       |  15 -
- arch/mips/mti-sead3/Platform                       |   7 -
- arch/mips/mti-sead3/sead3-init.c                   | 100 -------
- arch/mips/mti-sead3/sead3-int.c                    |  23 --
- arch/mips/mti-sead3/sead3-setup.c                  |  39 ---
- arch/mips/mti-sead3/sead3-time.c                   |  91 -------
- arch/mips/pci/Makefile                             |   2 +
- arch/mips/pci/pci-alchemy.c                        |   3 +-
- arch/mips/pci/pci-generic.c                        |  52 ++++
- arch/mips/pci/pci-legacy.c                         | 302 +++++++++++++++++++++
- arch/mips/pci/pci.c                                | 297 +-------------------
- drivers/clk/Kconfig                                |   1 +
- drivers/clk/Makefile                               |   1 +
- drivers/clk/imgtec/Kconfig                         |  10 +
- drivers/clk/imgtec/Makefile                        |   1 +
- drivers/clk/imgtec/clk-boston.c                    | 101 +++++++
- include/dt-bindings/clock/boston-clock.h           |  14 +
- 70 files changed, 1824 insertions(+), 1087 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/clock/img,boston-clock.txt
- create mode 100644 arch/mips/boot/dts/img/Makefile
- create mode 100644 arch/mips/boot/dts/img/boston.dts
- create mode 100644 arch/mips/configs/generic/32r1.config
- create mode 100644 arch/mips/configs/generic/32r2.config
- create mode 100644 arch/mips/configs/generic/32r6.config
- create mode 100644 arch/mips/configs/generic/64r1.config
- create mode 100644 arch/mips/configs/generic/64r2.config
- create mode 100644 arch/mips/configs/generic/64r6.config
- create mode 100644 arch/mips/configs/generic/board-boston.config
- create mode 100644 arch/mips/configs/generic/board-sead-3.config
- create mode 100644 arch/mips/configs/generic/eb.config
- create mode 100644 arch/mips/configs/generic/el.config
- create mode 100644 arch/mips/configs/generic/micro32r2.config
- create mode 100644 arch/mips/configs/generic_defconfig
- delete mode 100644 arch/mips/configs/sead3_defconfig
- delete mode 100644 arch/mips/configs/sead3micro_defconfig
- create mode 100644 arch/mips/generic/Kconfig
- create mode 100644 arch/mips/generic/Makefile
- create mode 100644 arch/mips/generic/Platform
- rename arch/mips/{mti-sead3/sead3-dtshim.c => generic/board-sead3.c} (72%)
- create mode 100644 arch/mips/generic/init.c
- create mode 100644 arch/mips/generic/irq.c
- create mode 100644 arch/mips/generic/proc.c
- create mode 100644 arch/mips/generic/vmlinux.its.S
- delete mode 100644 arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
- delete mode 100644 arch/mips/include/asm/mach-sead3/irq.h
- delete mode 100644 arch/mips/include/asm/mach-sead3/kernel-entry-init.h
- delete mode 100644 arch/mips/include/asm/mach-sead3/sead3-dtshim.h
- delete mode 100644 arch/mips/include/asm/mach-sead3/war.h
- create mode 100644 arch/mips/include/asm/machine.h
- delete mode 100644 arch/mips/mti-sead3/Makefile
- delete mode 100644 arch/mips/mti-sead3/Platform
- delete mode 100644 arch/mips/mti-sead3/sead3-init.c
- delete mode 100644 arch/mips/mti-sead3/sead3-int.c
- delete mode 100644 arch/mips/mti-sead3/sead3-setup.c
- delete mode 100644 arch/mips/mti-sead3/sead3-time.c
- create mode 100644 arch/mips/pci/pci-generic.c
- create mode 100644 arch/mips/pci/pci-legacy.c
- create mode 100644 drivers/clk/imgtec/Kconfig
- create mode 100644 drivers/clk/imgtec/Makefile
- create mode 100644 drivers/clk/imgtec/clk-boston.c
- create mode 100644 include/dt-bindings/clock/boston-clock.h
-
+diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+index 9b63cd4..547e113 100644
+--- a/arch/mips/include/asm/pci.h
++++ b/arch/mips/include/asm/pci.h
+@@ -17,6 +17,7 @@
+  */
+ 
+ #include <linux/ioport.h>
++#include <linux/list.h>
+ #include <linux/of.h>
+ 
+ /*
+@@ -25,7 +26,7 @@
+  * single controller supporting multiple channels.
+  */
+ struct pci_controller {
+-	struct pci_controller *next;
++	struct list_head list;
+ 	struct pci_bus *bus;
+ 	struct device_node *of_node;
+ 
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index b4c02f2..644ae96 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -28,8 +28,7 @@
+ /*
+  * The PCI controller list.
+  */
+-
+-static struct pci_controller *hose_head, **hose_tail = &hose_head;
++static LIST_HEAD(controllers);
+ 
+ unsigned long PCIBIOS_MIN_IO;
+ unsigned long PCIBIOS_MIN_MEM;
+@@ -193,8 +192,8 @@ void register_pci_controller(struct pci_controller *hose)
+ 		goto out;
+ 	}
+ 
+-	*hose_tail = hose;
+-	hose_tail = &hose->next;
++	INIT_LIST_HEAD(&hose->list);
++	list_add(&hose->list, &controllers);
+ 
+ 	/*
+ 	 * Do not panic here but later - this might happen before console init.
+@@ -248,7 +247,7 @@ static int __init pcibios_init(void)
+ 	pcibios_set_cache_line_size();
+ 
+ 	/* Scan all of the recorded PCI controllers.  */
+-	for (hose = hose_head; hose; hose = hose->next)
++	list_for_each_entry(hose, &controllers, list)
+ 		pcibios_scanbus(hose);
+ 
+ 	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
 -- 
 2.10.0

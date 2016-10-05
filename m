@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2016 19:21:40 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:58405 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2016 19:22:01 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:15878 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992209AbcJERUe5kiwu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Oct 2016 19:20:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23992149AbcJERUsr0kCu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Oct 2016 19:20:48 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 1E856F18A1CB;
-        Wed,  5 Oct 2016 18:20:27 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 3B9ACC76FEEB;
+        Wed,  5 Oct 2016 18:20:41 +0100 (IST)
 Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
  (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 5 Oct 2016
- 18:20:28 +0100
+ 18:20:42 +0100
 Received: from localhost (10.100.200.82) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 5 Oct
- 2016 18:20:27 +0100
+ 2016 18:20:42 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v3 06/18] MIPS: PCI: Introduce CONFIG_PCI_DRIVERS_LEGACY
-Date:   Wed, 5 Oct 2016 18:18:12 +0100
-Message-ID: <20161005171824.18014-7-paul.burton@imgtec.com>
+Subject: [PATCH v3 07/18] MIPS: PCI: Support generic drivers
+Date:   Wed, 5 Oct 2016 18:18:13 +0100
+Message-ID: <20161005171824.18014-8-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20161005171824.18014-1-paul.burton@imgtec.com>
 References: <20161005171824.18014-1-paul.burton@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55332
+X-archive-position: 55333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,20 +45,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Introduce 2 Kconfig symbols, CONFIG_PCI_DRIVERS_GENERIC &
-CONFIG_PCI_DRIVERS_LEGACY, which indicate whether the system should be
-built to for PCI drivers using the MIPS-specific struct pci_controller
-API (hereafter "legacy" drivers) or more generic drivers using only
-functionality provided by the PCI core (hereafter "generic" drivers).
+Introduce support for PCI drivers using only functionality provided
+generically by the PCI subsystem, by adding the minimum arch-provided
+functions required.
 
-The Kconfig entries are created such that platforms have to select
-CONFIG_PCI_DRIVERS_GENERIC if they wish to use it - that is, the default
-is CONFIG_PCI_DRIVERS_LEGACY so that existing platforms need no
-modification.
-
-The functions declared in pci.h are rearranged with those provided only
-by pci-legacy.c being guarded by an #ifdef CONFIG_PCI_DRIVERS_LEGACY to
-ensure they are only used in configurations where they are implemented.
+The driver this has been developed for & tested with the xilinx-pcie on
+a MIPS Boston development board.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
@@ -66,163 +58,93 @@ Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Changes in v3: None
 Changes in v2: None
 
- arch/mips/Kconfig           |  8 ++++++-
- arch/mips/include/asm/pci.h | 54 ++++++++++++++++++++++++++-------------------
- arch/mips/lib/iomap-pci.c   |  4 ++++
- arch/mips/pci/Makefile      |  2 +-
- 4 files changed, 43 insertions(+), 25 deletions(-)
+ arch/mips/Kconfig           |  1 +
+ arch/mips/pci/Makefile      |  1 +
+ arch/mips/pci/pci-generic.c | 52 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 54 insertions(+)
+ create mode 100644 arch/mips/pci/pci-generic.c
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 7a75215..d31f839 100644
+index d31f839..86d5b39 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -2974,7 +2974,6 @@ config PCI
- 	bool "Support for PCI controller"
- 	depends on HW_HAS_PCI
- 	select PCI_DOMAINS
--	select NO_GENERIC_PCI_IOPORT_MAP
- 	help
- 	  Find out whether you have a PCI motherboard. PCI is the name of a
- 	  bus system, i.e. the way the CPU talks to the other stuff inside
-@@ -2998,6 +2997,13 @@ config PCI_DOMAINS
- config PCI_DOMAINS_GENERIC
+@@ -2998,6 +2998,7 @@ config PCI_DOMAINS_GENERIC
  	bool
  
-+config PCI_DRIVERS_GENERIC
-+	bool
-+
-+config PCI_DRIVERS_LEGACY
-+	def_bool !PCI_DRIVERS_GENERIC
-+	select NO_GENERIC_PCI_IOPORT_MAP
-+
- source "drivers/pci/Kconfig"
+ config PCI_DRIVERS_GENERIC
++	select PCI_DOMAINS_GENERIC if PCI_DOMAINS
+ 	bool
  
- #
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index acc651e..30d1129 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -20,6 +20,8 @@
- #include <linux/list.h>
- #include <linux/of.h>
- 
-+#ifdef CONFIG_PCI_DRIVERS_LEGACY
-+
- /*
-  * Each pci channel is a top-level PCI bus seem by CPU.	 A machine  with
-  * multiple PCI channels may have multiple PCI host controllers or a
-@@ -62,6 +64,35 @@ extern void register_pci_controller(struct pci_controller *hose);
-  */
- extern int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
- 
-+/* Do platform specific device initialization at pci_enable_device() time */
-+extern int pcibios_plat_dev_init(struct pci_dev *dev);
-+
-+extern char * (*pcibios_plat_setup)(char *str);
-+
-+#ifdef CONFIG_OF
-+/* this function parses memory ranges from a device node */
-+extern void pci_load_of_ranges(struct pci_controller *hose,
-+			       struct device_node *node);
-+#else
-+static inline void pci_load_of_ranges(struct pci_controller *hose,
-+				      struct device_node *node) {}
-+#endif
-+
-+#ifdef CONFIG_PCI_DOMAINS_GENERIC
-+static inline void set_pci_need_domain_info(struct pci_controller *hose,
-+					    int need_domain_info)
-+{
-+	/* nothing to do */
-+}
-+#elif defined(CONFIG_PCI_DOMAINS)
-+static inline void set_pci_need_domain_info(struct pci_controller *hose,
-+					    int need_domain_info)
-+{
-+	hose->need_domain_info = need_domain_info;
-+}
-+#endif /* CONFIG_PCI_DOMAINS */
-+
-+#endif
- 
- /* Can be used to override the logic in pci_scan_bus for skipping
-    already-configured bus numbers - to be used for buggy BIOSes
-@@ -110,12 +141,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- {
- 	return pci_domain_nr(bus);
- }
--
--static inline void set_pci_need_domain_info(struct pci_controller *hose,
--					    int need_domain_info)
--{
--	/* nothing to do */
--}
- #elif defined(CONFIG_PCI_DOMAINS)
- #define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
- 
-@@ -124,12 +149,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- 	struct pci_controller *hose = bus->sysdata;
- 	return hose->need_domain_info;
- }
--
--static inline void set_pci_need_domain_info(struct pci_controller *hose,
--					    int need_domain_info)
--{
--	hose->need_domain_info = need_domain_info;
--}
- #endif /* CONFIG_PCI_DOMAINS */
- 
- #endif /* __KERNEL__ */
-@@ -143,15 +162,4 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- 	return channel ? 15 : 14;
- }
- 
--extern char * (*pcibios_plat_setup)(char *str);
--
--#ifdef CONFIG_OF
--/* this function parses memory ranges from a device node */
--extern void pci_load_of_ranges(struct pci_controller *hose,
--			       struct device_node *node);
--#else
--static inline void pci_load_of_ranges(struct pci_controller *hose,
--				      struct device_node *node) {}
--#endif
--
- #endif /* _ASM_PCI_H */
-diff --git a/arch/mips/lib/iomap-pci.c b/arch/mips/lib/iomap-pci.c
-index a629077..8ed3f25 100644
---- a/arch/mips/lib/iomap-pci.c
-+++ b/arch/mips/lib/iomap-pci.c
-@@ -10,6 +10,8 @@
- #include <linux/export.h>
- #include <asm/io.h>
- 
-+#ifdef CONFIG_PCI_DRIVERS_LEGACY
-+
- void __iomem *__pci_ioport_map(struct pci_dev *dev,
- 			       unsigned long port, unsigned int nr)
- {
-@@ -40,6 +42,8 @@ void __iomem *__pci_ioport_map(struct pci_dev *dev,
- 	return (void __iomem *) (ctrl->io_map_base + port);
- }
- 
-+#endif /* CONFIG_PCI_DRIVERS_LEGACY */
-+
- void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
- {
- 	iounmap(addr);
+ config PCI_DRIVERS_LEGACY
 diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index 5666637..8478210 100644
+index 8478210..4b82148 100644
 --- a/arch/mips/pci/Makefile
 +++ b/arch/mips/pci/Makefile
-@@ -3,7 +3,7 @@
- #
+@@ -4,6 +4,7 @@
  
  obj-y				+= pci.o
--obj-y				+= pci-legacy.o
-+obj-$(CONFIG_PCI_DRIVERS_LEGACY)+= pci-legacy.o
+ obj-$(CONFIG_PCI_DRIVERS_LEGACY)+= pci-legacy.o
++obj-$(CONFIG_PCI_DRIVERS_GENERIC)+= pci-generic.o
  
  #
  # PCI bus host bridge specific code
+diff --git a/arch/mips/pci/pci-generic.c b/arch/mips/pci/pci-generic.c
+new file mode 100644
+index 0000000..dce304d
+--- /dev/null
++++ b/arch/mips/pci/pci-generic.c
+@@ -0,0 +1,52 @@
++/*
++ * Copyright (C) 2016 Imagination Technologies
++ * Author: Paul Burton <paul.burton@imgtec.com>
++ *
++ * pcibios_align_resource taken from arch/arm/kernel/bios32.c.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/pci.h>
++
++/*
++ * We need to avoid collisions with `mirrored' VGA ports
++ * and other strange ISA hardware, so we always want the
++ * addresses to be allocated in the 0x000-0x0ff region
++ * modulo 0x400.
++ *
++ * Why? Because some silly external IO cards only decode
++ * the low 10 bits of the IO address. The 0x00-0xff region
++ * is reserved for motherboard devices that decode all 16
++ * bits, so it's ok to allocate at, say, 0x2800-0x28ff,
++ * but we want to try to avoid allocating at 0x2900-0x2bff
++ * which might have be mirrored at 0x0100-0x03ff..
++ */
++resource_size_t pcibios_align_resource(void *data, const struct resource *res,
++				resource_size_t size, resource_size_t align)
++{
++	struct pci_dev *dev = data;
++	resource_size_t start = res->start;
++	struct pci_host_bridge *host_bridge;
++
++	if (res->flags & IORESOURCE_IO && start & 0x300)
++		start = (start + 0x3ff) & ~0x3ff;
++
++	start = (start + align - 1) & ~(align - 1);
++
++	host_bridge = pci_find_host_bridge(dev->bus);
++
++	if (host_bridge->align_resource)
++		return host_bridge->align_resource(dev, res,
++				start, size, align);
++
++	return start;
++}
++
++void pcibios_fixup_bus(struct pci_bus *bus)
++{
++	pci_read_bridge_bases(bus);
++}
 -- 
 2.10.0

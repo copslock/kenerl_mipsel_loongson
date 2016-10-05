@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2016 19:20:07 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:64985 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Oct 2016 19:20:30 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:1212 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991532AbcJERThFPbNu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Oct 2016 19:19:37 +0200
+        by eddie.linux-mips.org with ESMTP id S23992149AbcJERTuzIY6u (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Oct 2016 19:19:50 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 7B570532CB1C2;
-        Wed,  5 Oct 2016 18:19:29 +0100 (IST)
+        by Forcepoint Email with ESMTPS id A8326626C963C;
+        Wed,  5 Oct 2016 18:19:43 +0100 (IST)
 Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
  (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 5 Oct 2016
- 18:19:30 +0100
+ 18:19:44 +0100
 Received: from localhost (10.100.200.82) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 5 Oct
- 2016 18:19:30 +0100
+ 2016 18:19:44 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v3 02/18] MIPS: PCI: Support for CONFIG_PCI_DOMAINS_GENERIC
-Date:   Wed, 5 Oct 2016 18:18:08 +0100
-Message-ID: <20161005171824.18014-3-paul.burton@imgtec.com>
+Subject: [PATCH v3 03/18] MIPS: PCI: Make pcibios_set_cache_line_size an initcall
+Date:   Wed, 5 Oct 2016 18:18:09 +0100
+Message-ID: <20161005171824.18014-4-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20161005171824.18014-1-paul.burton@imgtec.com>
 References: <20161005171824.18014-1-paul.burton@imgtec.com>
@@ -28,7 +28,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55328
+X-archive-position: 55329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,12 +45,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Introduce support for CONFIG_PCI_DOMAINS_GENERIC, allowing for platforms
-to make use of generic PCI domains instead of the MIPS-specific
-implementation. The set_pci_need_domain_info function is introduced to
-abstract away the removed need_domain_info field in struct
-pci_controller, and pcibios_scanbus is adjusted to use the pci_domain_nr
-accessor instead of directly accessing the index field.
+In preparation for allowing configurations in which pcibios_init is not
+included, make pcibios_set_cache_line_size an initcall. arch_initcall is
+used such that it runs before the pcibios_init subsys_initcall for
+platforms that continue to use it.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
@@ -58,89 +56,38 @@ Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Changes in v3: None
 Changes in v2: None
 
- arch/mips/Kconfig           |  3 +++
- arch/mips/include/asm/pci.h | 21 ++++++++++++++++++++-
- arch/mips/pci/pci.c         |  4 ++--
- 3 files changed, 25 insertions(+), 3 deletions(-)
+ arch/mips/pci/pci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 400cd36..7a75215 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2995,6 +2995,9 @@ config HT_PCI
- config PCI_DOMAINS
- 	bool
- 
-+config PCI_DOMAINS_GENERIC
-+	bool
-+
- source "drivers/pci/Kconfig"
- 
- #
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index 547e113..0564692 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -39,10 +39,12 @@ struct pci_controller {
- 	struct resource *busn_resource;
- 	unsigned long busn_offset;
- 
-+#ifndef CONFIG_PCI_DOMAINS_GENERIC
- 	unsigned int index;
- 	/* For compatibility with current (as of July 2003) pciutils
- 	   and XFree86. Eventually will be removed. */
- 	unsigned int need_domain_info;
-+#endif
- 
- 	/* Optional access methods for reading/writing the bus number
- 	   of the PCI controller */
-@@ -101,7 +103,18 @@ struct pci_dev;
-  */
- #define PCI_DMA_BUS_IS_PHYS     (1)
- 
--#ifdef CONFIG_PCI_DOMAINS
-+#ifdef CONFIG_PCI_DOMAINS_GENERIC
-+static inline int pci_proc_domain(struct pci_bus *bus)
-+{
-+	return pci_domain_nr(bus);
-+}
-+
-+static inline void set_pci_need_domain_info(struct pci_controller *hose,
-+					    int need_domain_info)
-+{
-+	/* nothing to do */
-+}
-+#elif defined(CONFIG_PCI_DOMAINS)
- #define pci_domain_nr(bus) ((struct pci_controller *)(bus)->sysdata)->index
- 
- static inline int pci_proc_domain(struct pci_bus *bus)
-@@ -109,6 +122,12 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- 	struct pci_controller *hose = bus->sysdata;
- 	return hose->need_domain_info;
- }
-+
-+static inline void set_pci_need_domain_info(struct pci_controller *hose,
-+					    int need_domain_info)
-+{
-+	hose->need_domain_info = need_domain_info;
-+}
- #endif /* CONFIG_PCI_DOMAINS */
- 
- #endif /* __KERNEL__ */
 diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 644ae96..5207c04 100644
+index 5207c04..30320a4 100644
 --- a/arch/mips/pci/pci.c
 +++ b/arch/mips/pci/pci.c
-@@ -95,8 +95,8 @@ static void pcibios_scanbus(struct pci_controller *hose)
- 				&resources);
- 	hose->bus = bus;
+@@ -220,7 +220,7 @@ out:
+ 	       "Skipping PCI bus scan due to resource conflict\n");
+ }
  
--	need_domain_info = need_domain_info || hose->index;
--	hose->need_domain_info = need_domain_info;
-+	need_domain_info = need_domain_info || pci_domain_nr(bus);
-+	set_pci_need_domain_info(hose, need_domain_info);
+-static void __init pcibios_set_cache_line_size(void)
++static int __init pcibios_set_cache_line_size(void)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 	unsigned int lsize;
+@@ -238,14 +238,14 @@ static void __init pcibios_set_cache_line_size(void)
+ 	pci_dfl_cache_line_size = lsize >> 2;
  
- 	if (!bus) {
- 		pci_free_resource_list(&resources);
+ 	pr_debug("PCI: pci_cache_line_size set to %d bytes\n", lsize);
++	return 0;
+ }
++arch_initcall(pcibios_set_cache_line_size);
+ 
+ static int __init pcibios_init(void)
+ {
+ 	struct pci_controller *hose;
+ 
+-	pcibios_set_cache_line_size();
+-
+ 	/* Scan all of the recorded PCI controllers.  */
+ 	list_for_each_entry(hose, &controllers, list)
+ 		pcibios_scanbus(hose);
 -- 
 2.10.0

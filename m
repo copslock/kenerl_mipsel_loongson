@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2016 14:33:05 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:19950 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2016 14:33:29 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:65219 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990517AbcJFMc619nvK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Oct 2016 14:32:58 +0200
+        by eddie.linux-mips.org with ESMTP id S23991346AbcJFMdRgXfkK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Oct 2016 14:33:17 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 41E534AD39E53;
-        Thu,  6 Oct 2016 13:32:47 +0100 (IST)
+        by Forcepoint Email with ESMTPS id D71F9F3717C57;
+        Thu,  6 Oct 2016 13:33:06 +0100 (IST)
 Received: from PUMAIL01.pu.imgtec.org (192.168.91.250) by
  HHMAIL03.hh.imgtec.org (10.44.0.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 6 Oct 2016 13:32:49 +0100
+ 14.3.294.0; Thu, 6 Oct 2016 13:33:09 +0100
 Received: from pudesk287-linux.pu.imgtec.org (192.168.91.23) by
  PUMAIL01.pu.imgtec.org (192.168.91.250) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Thu, 6 Oct 2016 18:02:47 +0530
+ 14.3.266.1; Thu, 6 Oct 2016 18:03:07 +0530
 From:   Rahul Bedarkar <rahul.bedarkar@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -20,10 +20,12 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 CC:     <linux-mips@linux-mips.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
         Rahul Bedarkar <rahul.bedarkar@imgtec.com>
-Subject: [PATCH 1/2] MIPS: DTS: add base device tree for Pistachio SoC
-Date:   Thu, 6 Oct 2016 18:01:33 +0530
-Message-ID: <1475757094-31089-1-git-send-email-rahul.bedarkar@imgtec.com>
+Subject: [PATCH 2/2] MIPS: DTS: img: add device tree for Marduk board
+Date:   Thu, 6 Oct 2016 18:01:34 +0530
+Message-ID: <1475757094-31089-2-git-send-email-rahul.bedarkar@imgtec.com>
 X-Mailer: git-send-email 2.6.2
+In-Reply-To: <1475757094-31089-1-git-send-email-rahul.bedarkar@imgtec.com>
+References: <1475757094-31089-1-git-send-email-rahul.bedarkar@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.91.23]
@@ -31,7 +33,7 @@ Return-Path: <Rahul.Bedarkar@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55353
+X-archive-position: 55354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,980 +50,253 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for the base Device Tree for Imagination Technologies'
-Pistachio SoC.
+Add support for Imagination Technologies' Marduk board which is based
+on Pistachio SoC. It is also known as Creator Ci40. Marduk is legacy
+name and will be there for decades.
 
-This commit supports the following peripherals:
+Documentation for this board can be found on
+https://docs.creatordev.io/ci40/
 
- * Clocks
- * Pinctrl and GPIO
- * UART
- * SPI
- * I2C
- * PWM
- * ADC
- * Watchdog
- * Ethernet
- * MMC
- * DMA engine
- * Crypto
- * I2S
- * SPDIF
- * Internal DAC
- * Timer
- * USB
- * IR
- * Interrupt Controller
+This patch adds initial support for board with following peripherals:
+
+* PWM based heartbeat LED
+* GPIO based buttons
+* SPI NOR flash on SPI1
+* UART0 and UART1
+* SD card
+* Ethernet
+* USB
+* PWM
+* ADC
+* I2C
 
 Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
 ---
- MAINTAINERS                           |   2 +-
- arch/mips/boot/dts/img/pistachio.dtsi | 924 ++++++++++++++++++++++++++++++++++
- 2 files changed, 925 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/boot/dts/img/pistachio.dtsi
+ .../bindings/mips/img/pistachio-marduk.txt         |  10 ++
+ MAINTAINERS                                        |   6 +
+ arch/mips/boot/dts/img/Makefile                    |   9 ++
+ arch/mips/boot/dts/img/pistachio_marduk.dts        | 163 +++++++++++++++++++++
+ 4 files changed, 188 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt
+ create mode 100644 arch/mips/boot/dts/img/Makefile
+ create mode 100644 arch/mips/boot/dts/img/pistachio_marduk.dts
 
+diff --git a/Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt b/Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt
+new file mode 100644
+index 0000000..2d5126d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt
+@@ -0,0 +1,10 @@
++Imagination Technologies' Pistachio SoC based Marduk Board
++==========================================================
++
++Compatible string must be "img,pistachio-marduk", "img,pistachio"
++
++Hardware and other related documentation is available at
++https://docs.creatordev.io/ci40/
++
++It is also known as Creator Ci40. Marduk is legacy name and will
++be there for decades.
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 207eaef..98bcf06 100644
+index 98bcf06..8e6c962b 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -9509,7 +9509,7 @@ L:      linux-mips@linux-mips.org
- S:      Maintained
- F:      arch/mips/pistachio/
- F:      arch/mips/include/asm/mach-pistachio/
--F:      arch/mips/boot/dts/pistachio/
-+F:      arch/mips/boot/dts/img/pistachio*
- F:      arch/mips/configs/pistachio*_defconfig
+@@ -7515,6 +7515,12 @@ W:	http://www.kernel.org/doc/man-pages
+ L:	linux-man@vger.kernel.org
+ S:	Maintained
  
- PKTCDVD DRIVER
-diff --git a/arch/mips/boot/dts/img/pistachio.dtsi b/arch/mips/boot/dts/img/pistachio.dtsi
++MARDUK (CREATOR CI40) DEVICE TREE SUPPORT
++M:	Rahul Bedarkar <rahul.bedarkar@imgtec.com>
++L:	linux-mips@linux-mips.org
++S:	Maintained
++F:	arch/mips/boot/dts/img/pistachio_marduk.dts
++
+ MARVELL 88E6XXX ETHERNET SWITCH FABRIC DRIVER
+ M:	Andrew Lunn <andrew@lunn.ch>
+ M:	Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+diff --git a/arch/mips/boot/dts/img/Makefile b/arch/mips/boot/dts/img/Makefile
 new file mode 100644
-index 0000000..57809f6
+index 0000000..69a65f0
 --- /dev/null
-+++ b/arch/mips/boot/dts/img/pistachio.dtsi
-@@ -0,0 +1,924 @@
++++ b/arch/mips/boot/dts/img/Makefile
+@@ -0,0 +1,9 @@
++dtb-$(CONFIG_MACH_PISTACHIO)	+= pistachio_marduk.dtb
++
++obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
++
++# Force kbuild to make empty built-in.o if necessary
++obj-				+= dummy.o
++
++always				:= $(dtb-y)
++clean-files			:= *.dtb *.dtb.S
+diff --git a/arch/mips/boot/dts/img/pistachio_marduk.dts b/arch/mips/boot/dts/img/pistachio_marduk.dts
+new file mode 100644
+index 0000000..378381e
+--- /dev/null
++++ b/arch/mips/boot/dts/img/pistachio_marduk.dts
+@@ -0,0 +1,163 @@
 +/*
 + * Copyright (C) 2015, 2016 Imagination Technologies Ltd.
-+ * Copyright (C) 2015 Google, Inc.
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License version 2 as
 + * published by the Free Software Foundation.
++ *
++ * IMG Marduk board is also known as Creator Ci40.
 + */
 +
-+#include <dt-bindings/clock/pistachio-clk.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/interrupt-controller/mips-gic.h>
-+#include <dt-bindings/reset/pistachio-resets.h>
++/dts-v1/;
++
++#include "pistachio.dtsi"
 +
 +/ {
-+	compatible = "img,pistachio";
++	model = "IMG Marduk (Creator Ci40)";
++	compatible = "img,pistachio-marduk", "img,pistachio";
 +
-+	#address-cells = <1>;
-+	#size-cells = <1>;
++	aliases {
++		serial0 = &uart0;
++		serial1 = &uart1;
++		ethernet0 = &enet;
++		spi0 = &spfi0;
++		spi1 = &spfi1;
++	};
 +
-+	interrupt-parent = <&gic>;
++	chosen {
++		bootargs = "root=/dev/sda1 rootwait ro lpj=723968";
++		stdout-path = "serial1:115200";
++	};
 +
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++	memory {
++		device_type = "memory";
++		reg =  <0x00000000 0x08000000>;
++	};
 +
-+		cpu0: cpu@0 {
-+			device_type = "cpu";
-+			compatible = "mti,interaptiv";
-+			reg = <0>;
-+			clocks = <&clk_core CLK_MIPS_PLL>;
-+			clock-names = "cpu";
-+			clock-latency = <1000>;
-+			operating-points = <
-+				/* kHz    uV(dummy) */
-+				546000 1150000
-+				520000 1100000
-+				494000 1000000
-+				468000 950000
-+				442000 900000
-+				416000 800000
-+			>;
++	reg_1v8: fixed-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "aux_adc_vref";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-boot-on;
++	};
++
++	internal_dac_supply: internal_dac_supply {
++		compatible = "regulator-fixed";
++		regulator-name = "internal_dac_supply";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++	};
++
++	pwm_leds {
++		compatible = "pwm-leds";
++		heartbeat {
++			label = "marduk:red:heartbeat";
++			pwms = <&pwm 3 300000>;
++			max-brightness = <255>;
++			linux,default-trigger = "heartbeat";
 +		};
 +	};
 +
-+	i2c0: i2c@18100000 {
-+		compatible = "img,scb-i2c";
-+		reg = <0x18100000 0x200>;
-+		interrupts = <GIC_SHARED 2 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_periph PERIPH_CLK_I2C0>,
-+			 <&cr_periph SYS_CLK_I2C0>;
-+		clock-names = "scb", "sys";
-+		assigned-clocks = <&clk_periph PERIPH_CLK_I2C0_PRE_DIV>,
-+				  <&clk_periph PERIPH_CLK_I2C0_DIV>;
-+		assigned-clock-rates = <100000000>, <33333334>;
-+		status = "disabled";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2c0_pins>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
-+
-+	i2c1: i2c@18100200 {
-+		compatible = "img,scb-i2c";
-+		reg = <0x18100200 0x200>;
-+		interrupts = <GIC_SHARED 3 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_periph PERIPH_CLK_I2C1>,
-+			 <&cr_periph SYS_CLK_I2C1>;
-+		clock-names = "scb", "sys";
-+		assigned-clocks = <&clk_periph PERIPH_CLK_I2C1_PRE_DIV>,
-+				  <&clk_periph PERIPH_CLK_I2C1_DIV>;
-+		assigned-clock-rates = <100000000>, <33333334>;
-+		status = "disabled";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2c1_pins>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
-+
-+	i2c2: i2c@18100400 {
-+		compatible = "img,scb-i2c";
-+		reg = <0x18100400 0x200>;
-+		interrupts = <GIC_SHARED 4 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_periph PERIPH_CLK_I2C2>,
-+			 <&cr_periph SYS_CLK_I2C2>;
-+		clock-names = "scb", "sys";
-+		assigned-clocks = <&clk_periph PERIPH_CLK_I2C2_PRE_DIV>,
-+				  <&clk_periph PERIPH_CLK_I2C2_DIV>;
-+		assigned-clock-rates = <100000000>, <33333334>;
-+		status = "disabled";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2c2_pins>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
-+
-+	i2c3: i2c@18100600 {
-+		compatible = "img,scb-i2c";
-+		reg = <0x18100600 0x200>;
-+		interrupts = <GIC_SHARED 5 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_periph PERIPH_CLK_I2C3>,
-+			 <&cr_periph SYS_CLK_I2C3>;
-+		clock-names = "scb", "sys";
-+		assigned-clocks = <&clk_periph PERIPH_CLK_I2C3_PRE_DIV>,
-+				  <&clk_periph PERIPH_CLK_I2C3_DIV>;
-+		assigned-clock-rates = <100000000>, <33333334>;
-+		status = "disabled";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2c3_pins>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
-+
-+	i2s_in: i2s-in@18100800 {
-+		compatible = "img,i2s-in";
-+		reg = <0x18100800 0x200>;
-+		interrupts = <GIC_SHARED 7 IRQ_TYPE_LEVEL_HIGH>;
-+		dmas = <&mdc 30 0xffffffff 0>;
-+		dma-names = "rx";
-+		clocks = <&cr_periph SYS_CLK_I2S_IN>;
-+		clock-names = "sys";
-+		img,i2s-channels = <6>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2s_in_pins>;
-+		status = "disabled";
-+
-+		#sound-dai-cells = <0>;
-+	};
-+
-+	i2s_out: i2s-out@18100a00 {
-+		compatible = "img,i2s-out";
-+		reg = <0x18100a00 0x200>;
-+		interrupts = <GIC_SHARED 13 IRQ_TYPE_LEVEL_HIGH>;
-+		dmas = <&mdc 23 0xffffffff 0>;
-+		dma-names = "tx";
-+		clocks = <&cr_periph SYS_CLK_I2S_OUT>,
-+			 <&clk_core CLK_I2S>;
-+		clock-names = "sys", "ref";
-+		assigned-clocks = <&clk_core CLK_I2S_DIV>;
-+		assigned-clock-rates = <12288000>;
-+		img,i2s-channels = <6>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2s_out_pins>;
-+		status = "disabled";
-+		resets = <&pistachio_reset PISTACHIO_RESET_I2S_OUT>;
-+		reset-names = "rst";
-+		#sound-dai-cells = <0>;
-+	};
-+
-+	parallel_out: parallel-audio-out@18100c00 {
-+		compatible = "img,parallel-out";
-+		reg = <0x18100c00 0x100>;
-+		interrupts = <GIC_SHARED 19 IRQ_TYPE_LEVEL_HIGH>;
-+		dmas = <&mdc 16 0xffffffff 0>;
-+		dma-names = "tx";
-+		clocks = <&cr_periph SYS_CLK_PAUD_OUT>,
-+			 <&clk_core CLK_AUDIO_DAC>;
-+		clock-names = "sys", "ref";
-+		assigned-clocks = <&clk_core CLK_AUDIO_DAC_DIV>;
-+		assigned-clock-rates = <12288000>;
-+		status = "disabled";
-+		resets = <&pistachio_reset PISTACHIO_RESET_PRL_OUT>;
-+		reset-names = "rst";
-+		#sound-dai-cells = <0>;
-+	};
-+
-+	spdif_out: spdif-out@18100d00 {
-+		compatible = "img,spdif-out";
-+		reg = <0x18100d00 0x100>;
-+		interrupts = <GIC_SHARED 21 IRQ_TYPE_LEVEL_HIGH>;
-+		dmas = <&mdc 14 0xffffffff 0>;
-+		dma-names = "tx";
-+		clocks = <&cr_periph SYS_CLK_SPDIF_OUT>,
-+			 <&clk_core CLK_SPDIF>;
-+		clock-names = "sys", "ref";
-+		assigned-clocks = <&clk_core CLK_SPDIF_DIV>;
-+		assigned-clock-rates = <12288000>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&spdif_out_pin>;
-+		status = "disabled";
-+		resets = <&pistachio_reset PISTACHIO_RESET_SPDIF_OUT>;
-+		reset-names = "rst";
-+		#sound-dai-cells = <0>;
-+	};
-+
-+	spdif_in: spdif-in@18100e00 {
-+		compatible = "img,spdif-in";
-+		reg = <0x18100e00 0x100>;
-+		interrupts = <GIC_SHARED 20 IRQ_TYPE_LEVEL_HIGH>;
-+		dmas = <&mdc 15 0xffffffff 0>;
-+		dma-names = "rx";
-+		clocks = <&cr_periph SYS_CLK_SPDIF_IN>;
-+		clock-names = "sys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&spdif_in_pin>;
-+		status = "disabled";
-+
-+		#sound-dai-cells = <0>;
-+	};
-+
-+	internal_dac: internal-dac {
-+		compatible = "img,pistachio-internal-dac";
-+		img,cr-top = <&cr_top>;
-+		img,voltage-select = <1>;
-+
-+		#sound-dai-cells = <0>;
-+	};
-+
-+	spfi0: spi@18100f00 {
-+		compatible = "img,spfi";
-+		reg = <0x18100f00 0x100>;
-+		interrupts = <GIC_SHARED 22 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_core CLK_SPI0>, <&cr_periph SYS_CLK_SPI0_MASTER>;
-+		clock-names = "sys", "spfi";
-+		dmas = <&mdc 9 0xffffffff 0>, <&mdc 10 0xffffffff 0>;
-+		dma-names = "rx", "tx";
-+		spfi-max-frequency = <50000000>;
-+		status = "disabled";
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
-+
-+	spfi1: spi@18101000 {
-+		compatible = "img,spfi";
-+		reg = <0x18101000 0x100>;
-+		interrupts = <GIC_SHARED 26 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_core CLK_SPI1>, <&cr_periph SYS_CLK_SPI1>;
-+		clock-names = "sys", "spfi";
-+		dmas = <&mdc 1 0xffffffff 0>, <&mdc 2 0xffffffff 0>;
-+		dma-names = "rx", "tx";
-+		img,supports-quad-mode;
-+		spfi-max-frequency = <50000000>;
-+		status = "disabled";
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
-+
-+	pwm: pwm@18101300 {
-+		compatible = "img,pistachio-pwm";
-+		reg = <0x18101300 0x100>;
-+		clocks = <&clk_periph PERIPH_CLK_PWM>,
-+			 <&cr_periph SYS_CLK_PWM>;
-+		clock-names = "pwm", "sys";
-+		img,cr-periph = <&cr_periph>;
-+		#pwm-cells = <2>;
-+		status = "disabled";
-+	};
-+
-+	uart0: uart@18101400 {
-+		compatible = "snps,dw-apb-uart";
-+		reg = <0x18101400 0x100>;
-+		interrupts = <GIC_SHARED 24 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_core CLK_UART0>, <&cr_periph SYS_CLK_UART0>;
-+		clock-names = "baudclk", "apb_pclk";
-+		assigned-clocks = <&clk_core CLK_UART0_INTERNAL_DIV>,
-+				  <&clk_core CLK_UART0_DIV>;
-+		reg-shift = <2>;
-+		reg-io-width = <4>;
-+		pinctrl-0 = <&uart0_pins>, <&uart0_rts_cts_pins>;
-+		pinctrl-names = "default";
-+		status = "disabled";
-+	};
-+
-+	uart1: uart@18101500 {
-+		compatible = "snps,dw-apb-uart";
-+		reg = <0x18101500 0x100>;
-+		interrupts = <GIC_SHARED 25 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_core CLK_UART1>, <&cr_periph SYS_CLK_UART1>;
-+		clock-names = "baudclk", "apb_pclk";
-+		assigned-clocks = <&clk_core CLK_UART1_INTERNAL_DIV>,
-+				  <&clk_core CLK_UART1_DIV>;
-+		assigned-clock-rates = <114278400>, <1843200>;
-+		reg-shift = <2>;
-+		reg-io-width = <4>;
-+		pinctrl-0 = <&uart1_pins>;
-+		pinctrl-names = "default";
-+		status = "disabled";
-+	};
-+
-+	adc: adc@18101600 {
-+		compatible = "cosmic,10001-adc";
-+		reg = <0x18101600 0x24>;
-+		adc-reserved-channels = <0x30>;
-+		clocks = <&clk_core CLK_AUX_ADC>;
-+		clock-names = "adc";
-+		assigned-clocks = <&clk_core CLK_AUX_ADC_INTERNAL_DIV>,
-+				  <&clk_core CLK_AUX_ADC_DIV>;
-+		assigned-clock-rates = <100000000>, <1000000>;
-+		status = "disabled";
-+
-+		#io-channel-cells = <1>;
-+	};
-+
-+	pinctrl: pinctrl@18101c00 {
-+		compatible = "img,pistachio-system-pinctrl";
-+		reg = <0x18101c00 0x400>;
-+
-+		gpio0: gpio0 {
-+			interrupts = <GIC_SHARED 71 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pinctrl 0 0 16>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
++	gpio_keys {
++		compatible = "gpio-keys";
++		button@1 {
++			label = "Button 1";
++			linux,code = <0x101>; /* BTN_1 */
++			gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
 +		};
-+
-+		gpio1: gpio1 {
-+			interrupts = <GIC_SHARED 72 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pinctrl 0 16 16>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+
-+		gpio2: gpio2 {
-+			interrupts = <GIC_SHARED 73 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pinctrl 0 32 16>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+
-+		gpio3: gpio3 {
-+			interrupts = <GIC_SHARED 74 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pinctrl 0 48 16>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+
-+		gpio4: gpio4 {
-+			interrupts = <GIC_SHARED 75 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pinctrl 0 64 16>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+
-+		gpio5: gpio5 {
-+			interrupts = <GIC_SHARED 76 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pinctrl 0 80 10>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+
-+		i2c0_pins: i2c0-pins {
-+			pin_i2c0: i2c0 {
-+				pins = "mfio28", "mfio29";
-+				function = "i2c0";
-+				drive-strength = <4>;
-+			};
-+		};
-+
-+		i2c1_pins: i2c1-pins {
-+			pin_i2c1: i2c1 {
-+				pins = "mfio30", "mfio31";
-+				function = "i2c1";
-+				drive-strength = <4>;
-+			};
-+		};
-+
-+		i2c2_pins: i2c2-pins {
-+			pin_i2c2: i2c2 {
-+				pins = "mfio32", "mfio33";
-+				function = "i2c2";
-+				drive-strength = <4>;
-+			};
-+		};
-+
-+		i2c3_pins: i2c3-pins {
-+			pin_i2c3: i2c3 {
-+				pins = "mfio34", "mfio35";
-+				function = "i2c3";
-+				drive-strength = <4>;
-+			};
-+		};
-+
-+		spim0_pins: spim0-pins {
-+			pin_spim0: spim0 {
-+				pins = "mfio9", "mfio10";
-+				function = "spim0";
-+				drive-strength = <4>;
-+			};
-+			spim0_clk: spim0-clk {
-+				pins = "mfio8";
-+				function = "spim0";
-+				drive-strength = <4>;
-+			};
-+		};
-+
-+		spim0_cs0_alt_pin: spim0-cs0-alt-pin {
-+			spim0-cs0 {
-+				pins = "mfio2";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim0_cs1_pin: spim0-cs1-pin {
-+			spim0-cs1 {
-+				pins = "mfio1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim0_cs2_pin: spim0-cs2-pin {
-+			spim0-cs2 {
-+				pins = "mfio55";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim0_cs2_alt_pin: spim0-cs2-alt-pin {
-+			spim0-cs2 {
-+				pins = "mfio28";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim0_cs3_pin: spim0-cs3-pin {
-+			spim0-cs3 {
-+				pins = "mfio56";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim0_cs3_alt_pin: spim0-cs3-alt-pin {
-+			spim0-cs3 {
-+				pins = "mfio29";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim0_cs4_pin: spim0-cs4-pin {
-+			spim0-cs4 {
-+				pins = "mfio57";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim0_cs4_alt_pin: spim0-cs4-alt-pin {
-+			spim0-cs4 {
-+				pins = "mfio30";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_pins: spim1-pins {
-+			spim1 {
-+				pins = "mfio3", "mfio4", "mfio5";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_quad_pins: spim1-quad-pins {
-+			spim1-quad {
-+				pins = "mfio6", "mfio7";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_cs0_pin: spim1-cs0-pins {
-+			spim1-cs0 {
-+				pins = "mfio0";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_cs1_pin: spim1-cs1-pin {
-+			spim1-cs1 {
-+				pins = "mfio1";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_cs1_alt_pin: spim1-cs1-alt-pin {
-+			spim1-cs1 {
-+				pins = "mfio58";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_cs2_pin: spim1-cs2-pin {
-+			spim1-cs2 {
-+				pins = "mfio2";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_cs2_alt0_pin: spim1-cs2-alt0-pin {
-+			spim1-cs2 {
-+				pins = "mfio31";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_cs2_alt1_pin: spim1-cs2-alt1-pin {
-+			spim1-cs2 {
-+				pins = "mfio55";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_cs3_pin: spim1-cs3-pin {
-+			spim1-cs3 {
-+				pins = "mfio56";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spim1_cs4_pin: spim1-cs4-pin {
-+			spim1-cs4 {
-+				pins = "mfio57";
-+				function = "spim1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		uart0_pins: uart0-pins {
-+			uart0 {
-+				pins = "mfio55", "mfio56";
-+				function = "uart0";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		uart0_rts_cts_pins: uart0-rts-cts-pins {
-+			uart0-rts-cts {
-+				pins = "mfio57", "mfio58";
-+				function = "uart0";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		uart1_pins: uart1-pins {
-+			uart1 {
-+				pins = "mfio59", "mfio60";
-+				function = "uart1";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		uart1_rts_cts_pins: uart1-rts-cts-pins {
-+			uart1-rts-cts {
-+				  pins = "mfio1", "mfio2";
-+				  function = "uart1";
-+				  drive-strength = <2>;
-+			};
-+		};
-+
-+		enet_pins: enet-pins {
-+			pin_enet: enet {
-+				pins = "mfio63", "mfio64", "mfio65", "mfio66",
-+				       "mfio67", "mfio68", "mfio69", "mfio70";
-+				function = "eth";
-+				slew-rate = <1>;
-+				drive-strength = <4>;
-+			};
-+			pin_enet_phy_clk: enet-phy-clk {
-+				pins = "mfio71";
-+				function = "eth";
-+				slew-rate = <1>;
-+				drive-strength = <8>;
-+			};
-+		};
-+
-+		sdhost_pins: sdhost-pins {
-+			pin_sdhost_clk: sdhost-clk {
-+				pins = "mfio15";
-+				function = "sdhost";
-+				slew-rate = <1>;
-+				drive-strength = <4>;
-+			};
-+			pin_sdhost_cmd: sdhost-cmd {
-+				pins = "mfio16";
-+				function = "sdhost";
-+				slew-rate = <1>;
-+				drive-strength = <4>;
-+			};
-+			pin_sdhost_data: sdhost-data {
-+				pins = "mfio17", "mfio18", "mfio19", "mfio20",
-+				       "mfio21", "mfio22", "mfio23", "mfio24";
-+				function = "sdhost";
-+				slew-rate = <1>;
-+				drive-strength = <4>;
-+			};
-+			pin_sdhost_power_select: sdhost-power-select {
-+				pins = "mfio25";
-+				function = "sdhost";
-+				slew-rate = <1>;
-+				drive-strength = <2>;
-+			};
-+			pin_sdhost_card_detect: sdhost-card-detect {
-+				pins = "mfio26";
-+				function = "sdhost";
-+				drive-strength = <2>;
-+			};
-+			pin_sdhost_write_protect: sdhost-write-protect {
-+				pins = "mfio27";
-+				function = "sdhost";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		ir_pin: ir-pin {
-+			ir-data {
-+				pins = "mfio72";
-+				function = "ir";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		pwmpdm0_pin: pwmpdm0-pin {
-+			pwmpdm0 {
-+				pins = "mfio73";
-+				function = "pwmpdm";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		pwmpdm1_pin: pwmpdm1-pin {
-+			pwmpdm1 {
-+				pins = "mfio74";
-+				function = "pwmpdm";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		pwmpdm2_pin: pwmpdm2-pin {
-+			pwmpdm2 {
-+				pins = "mfio75";
-+				function = "pwmpdm";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		pwmpdm3_pin: pwmpdm3-pin {
-+			pwmpdm3 {
-+				pins = "mfio76";
-+				function = "pwmpdm";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		dac_clk_pin: dac-clk-pin {
-+			pin_dac_clk: dac-clk {
-+				pins = "mfio45";
-+				function = "i2s_dac_clk";
-+				drive-strength = <4>;
-+			};
-+		};
-+
-+		i2s_mclk_pin: i2s-mclk-pin {
-+			pin_i2s_mclk: i2s-mclk {
-+				pins = "mfio36";
-+				function = "i2s_out";
-+				drive-strength = <4>;
-+			};
-+		};
-+
-+		spdif_out_pin: spdif-out-pin {
-+			spdif-out {
-+				pins = "mfio61";
-+				function = "spdif_out";
-+				slew-rate = <1>;
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		spdif_in_pin: spdif-in-pin {
-+			spdif-in {
-+				pins = "mfio62";
-+				function = "spdif_in";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		i2s_out_pins: i2s-out-pins {
-+			pins_i2s_out_clk: i2s-out-clk {
-+				pins = "mfio37", "mfio38";
-+				function = "i2s_out";
-+				drive-strength = <4>;
-+			};
-+			pins_i2s_out: i2s-out {
-+				pins = "mfio39", "mfio40",
-+				       "mfio41", "mfio42",
-+				       "mfio43", "mfio44";
-+				function = "i2s_out";
-+				drive-strength = <2>;
-+			};
-+		};
-+
-+		i2s_in_pins: i2s-in-pins {
-+			i2s-in {
-+				pins = "mfio47", "mfio48", "mfio49",
-+				       "mfio50", "mfio51", "mfio52",
-+				       "mfio53", "mfio54";
-+				function = "i2s_in";
-+				drive-strength = <2>;
-+			};
++		button@2 {
++			label = "Button 2";
++			linux,code = <0x102>; /* BTN_2 */
++			gpios = <&gpio2 14 GPIO_ACTIVE_LOW>;
 +		};
 +	};
++};
 +
-+	timer: timer@18102000 {
-+		compatible = "img,pistachio-gptimer";
-+		reg = <0x18102000 0x100>;
-+		interrupts = <GIC_SHARED 60 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_periph PERIPH_CLK_COUNTER_FAST>,
-+			 <&cr_periph SYS_CLK_TIMER>;
-+		clock-names = "fast", "sys";
-+		img,cr-periph = <&cr_periph>;
++&internal_dac {
++	VDD-supply = <&internal_dac_supply>;
++};
++
++&spfi1 {
++	status = "okay";
++
++	pinctrl-0 = <&spim1_pins>, <&spim1_quad_pins>, <&spim1_cs0_pin>,
++		    <&spim1_cs1_pin>;
++	pinctrl-names = "default";
++	cs-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>, <&gpio0 1 GPIO_ACTIVE_HIGH>;
++
++	flash@0 {
++		compatible = "jedec,spi-nor";
++		reg = <0>;
++		spi-max-frequency = <50000000>;
++	};
++};
++
++&uart0 {
++	status = "okay";
++	assigned-clock-rates = <114278400>, <1843200>;
++};
++
++&uart1 {
++	status = "okay";
++};
++
++&usb {
++	status = "okay";
++};
++
++&enet {
++	status = "okay";
++};
++
++&pin_enet {
++	drive-strength = <2>;
++};
++
++&pin_enet_phy_clk {
++	drive-strength = <2>;
++};
++
++&sdhost {
++	status = "okay";
++	bus-width = <4>;
++	disable-wp;
++};
++
++&pin_sdhost_cmd {
++	drive-strength = <2>;
++};
++
++&pin_sdhost_data {
++	drive-strength = <2>;
++};
++
++&pwm {
++	status = "okay";
++
++	pinctrl-0 = <&pwmpdm0_pin>, <&pwmpdm1_pin>, <&pwmpdm2_pin>,
++		    <&pwmpdm3_pin>;
++	pinctrl-names = "default";
++};
++
++&adc {
++	status = "okay";
++	vref-supply = <&reg_1v8>;
++	adc-reserved-channels = <0x10>;
++};
++
++&i2c2 {
++	status = "okay";
++	clock-frequency = <400000>;
++
++	tpm@20 {
++		compatible = "infineon,slb9645tt";
++		reg = <0x20>;
 +	};
 +
-+	wdt: watchdog@18102100 {
-+		compatible = "img,pdc-wdt";
-+		reg = <0x18102100 0x100>;
-+		interrupts = <GIC_SHARED 52 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_periph PERIPH_CLK_WD>, <&cr_periph SYS_CLK_WD>;
-+		clock-names = "wdt", "sys";
-+		assigned-clocks = <&clk_periph PERIPH_CLK_WD_PRE_DIV>,
-+				  <&clk_periph PERIPH_CLK_WD_DIV>;
-+		assigned-clock-rates = <4000000>, <32768>;
-+	};
++};
 +
-+	ir: ir@18102200 {
-+		compatible = "img,ir-rev1";
-+		reg = <0x18102200 0x100>;
-+		interrupts = <GIC_SHARED 51 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_periph PERIPH_CLK_IR>, <&cr_periph SYS_CLK_IR>;
-+		clock-names = "core", "sys";
-+		assigned-clocks = <&clk_periph PERIPH_CLK_IR_PRE_DIV>,
-+				  <&clk_periph PERIPH_CLK_IR_DIV>;
-+		assigned-clock-rates = <4000000>, <32768>;
-+		pinctrl-0 = <&ir_pin>;
-+		pinctrl-names = "default";
-+		status = "disabled";
-+	};
-+
-+	usb: usb@18120000 {
-+		compatible = "snps,dwc2";
-+		reg = <0x18120000 0x1c000>;
-+		interrupts = <GIC_SHARED 49 IRQ_TYPE_LEVEL_HIGH>;
-+		phys = <&usb_phy>;
-+		phy-names = "usb2-phy";
-+		g-tx-fifo-size = <256 256 256 256>;
-+		status = "disabled";
-+	};
-+
-+	enet: ethernet@18140000 {
-+		compatible = "snps,dwmac";
-+		reg = <0x18140000 0x2000>;
-+		interrupts = <GIC_SHARED 50 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "macirq";
-+		clocks = <&clk_core CLK_ENET>, <&cr_periph SYS_CLK_ENET>;
-+		clock-names = "stmmaceth", "pclk";
-+		assigned-clocks = <&clk_core CLK_ENET_MUX>,
-+				  <&clk_core CLK_ENET_DIV>;
-+		assigned-clock-parents = <&clk_core CLK_SYS_INTERNAL_DIV>;
-+		assigned-clock-rates = <0>, <50000000>;
-+		pinctrl-0 = <&enet_pins>;
-+		pinctrl-names = "default";
-+		phy-mode = "rmii";
-+		status = "disabled";
-+	};
-+
-+	sdhost: mmc@18142000 {
-+		compatible = "img,pistachio-dw-mshc";
-+		reg = <0x18142000 0x400>;
-+		interrupts = <GIC_SHARED 39 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&clk_core CLK_SD_HOST>, <&cr_periph SYS_CLK_SD_HOST>;
-+		clock-names = "ciu", "biu";
-+		pinctrl-0 = <&sdhost_pins>;
-+		pinctrl-names = "default";
-+		fifo-depth = <0x20>;
-+		num-slots = <1>;
-+		clock-frequency = <50000000>;
-+		bus-width = <8>;
-+		cap-mmc-highspeed;
-+		cap-sd-highspeed;
-+		status = "disabled";
-+	};
-+
-+	sram: sram@1b000000 {
-+		compatible = "mmio-sram";
-+		reg = <0x1b000000 0x10000>;
-+	};
-+
-+	mdc: dma-controller@18143000 {
-+		compatible = "img,pistachio-mdc-dma";
-+		reg = <0x18143000 0x1000>;
-+		interrupts = <GIC_SHARED 27 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 28 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 29 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 30 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 31 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 32 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 33 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 34 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 35 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 36 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 37 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SHARED 38 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&cr_periph SYS_CLK_MDC>;
-+		clock-names = "sys";
-+
-+		img,max-burst-multiplier = <16>;
-+		img,cr-periph = <&cr_periph>;
-+
-+		#dma-cells = <3>;
-+	};
-+
-+	clk_core: clk@18144000 {
-+		compatible = "img,pistachio-clk", "syscon";
-+		clocks = <&xtal>, <&cr_top EXT_CLK_AUDIO_IN>,
-+			 <&cr_top EXT_CLK_ENET_IN>;
-+		clock-names = "xtal", "audio_refclk_ext_gate",
-+			      "ext_enet_in_gate";
-+		reg = <0x18144000 0x800>;
-+		#clock-cells = <1>;
-+	};
-+
-+	clk_periph: clk@18144800 {
-+		compatible = "img,pistachio-clk-periph";
-+		reg = <0x18144800 0x1000>;
-+		clocks = <&clk_core CLK_PERIPH_SYS>;
-+		clock-names = "periph_sys_core";
-+		#clock-cells = <1>;
-+	};
-+
-+	cr_periph: clk@18148000 {
-+		compatible = "img,pistachio-cr-periph", "syscon", "simple-bus";
-+		reg = <0x18148000 0x1000>;
-+		clocks = <&clk_periph PERIPH_CLK_SYS>;
-+		clock-names = "sys";
-+		#clock-cells = <1>;
-+
-+		pistachio_reset: reset-controller {
-+			compatible = "img,pistachio-reset";
-+			#reset-cells = <1>;
-+		};
-+	};
-+
-+	cr_top: clk@18149000 {
-+		compatible = "img,pistachio-cr-top", "syscon";
-+		reg = <0x18149000 0x200>;
-+		#clock-cells = <1>;
-+	};
-+
-+	hash: hash@18149600 {
-+		compatible = "img,hash-accelerator";
-+		reg = <0x18149600 0x100>, <0x18101100 0x4>;
-+		interrupts = <GIC_SHARED 59 IRQ_TYPE_LEVEL_HIGH>;
-+		dmas = <&mdc 8 0xffffffff 0>;
-+		dma-names = "tx";
-+		clocks = <&cr_periph SYS_CLK_HASH>,
-+			 <&clk_periph PERIPH_CLK_ROM>;
-+		clock-names = "sys", "hash";
-+	};
-+
-+	gic: interrupt-controller@1bdc0000 {
-+		compatible = "mti,gic";
-+		reg = <0x1bdc0000 0x20000>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <3>;
-+
-+		timer {
-+			compatible = "mti,gic-timer";
-+			interrupts = <GIC_LOCAL 1 IRQ_TYPE_NONE>;
-+			clocks = <&clk_core CLK_MIPS>;
-+		};
-+	};
-+
-+	usb_phy: usb-phy {
-+		compatible = "img,pistachio-usb-phy";
-+		clocks = <&clk_core CLK_USB_PHY>;
-+		clock-names = "usb_phy";
-+		assigned-clocks = <&clk_core CLK_USB_PHY_DIV>;
-+		assigned-clock-rates = <50000000>;
-+		img,refclk = <0x2>;
-+		img,cr-top = <&cr_top>;
-+		#phy-cells = <0>;
-+	};
-+
-+	xtal: xtal {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <52000000>;
-+		clock-output-names = "xtal";
-+	};
++&i2c3 {
++	status = "okay";
++	clock-frequency = <400000>;
 +};
 -- 
 2.6.2

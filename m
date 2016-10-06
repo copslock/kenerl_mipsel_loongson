@@ -1,32 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2016 01:07:50 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:40848 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992212AbcJFXHnJQxxm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Oct 2016 01:07:43 +0200
-Date:   Fri, 7 Oct 2016 00:07:42 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2016 01:52:56 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:62576 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992212AbcJFXwtDVIqi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Oct 2016 01:52:49 +0200
+Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
+        by Forcepoint Email with ESMTPS id E3A418851DC1E;
+        Fri,  7 Oct 2016 00:52:37 +0100 (IST)
+Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
+ (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 7 Oct 2016
+ 00:52:42 +0100
+Received: from [10.20.78.81] (10.20.78.81) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 7 Oct 2016
+ 00:52:41 +0100
+Date:   Fri, 7 Oct 2016 00:52:32 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
 To:     James Hogan <james.hogan@imgtec.com>
-cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/9] MIPS: traps: 64bit kernels should read CP0_EBase
- 64bit
-In-Reply-To: <20161006225024.GJ19354@jhogan-linux.le.imgtec.org>
-Message-ID: <alpine.LFD.2.20.1610062358550.1794@eddie.linux-mips.org>
-References: <e826225b15736539cd96a1b6b2a99e2bb2b4eb87.1472747205.git-series.james.hogan@imgtec.com> <20160921130852.GA10899@linux-mips.org> <73eede89-af68-eb17-b0b3-2537084da819@imgtec.com> <alpine.LFD.2.20.1610021038190.25303@eddie.linux-mips.org>
- <20161005155653.GG15578@jhogan-linux.le.imgtec.org> <alpine.LFD.2.20.1610061709400.1794@eddie.linux-mips.org> <20161006180525.GG19354@jhogan-linux.le.imgtec.org> <alpine.LFD.2.20.1610062054500.1794@eddie.linux-mips.org> <20161006201943.GI19354@jhogan-linux.le.imgtec.org>
- <alpine.LFD.2.20.1610062335410.1794@eddie.linux-mips.org> <20161006225024.GJ19354@jhogan-linux.le.imgtec.org>
-User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Fix -mabi=64 build of vdso.lds
+In-Reply-To: <a226de28606d340f3e4cf0d6f6f4b4d12e766a69.1475791723.git-series.james.hogan@imgtec.com>
+Message-ID: <alpine.DEB.2.00.1610062349100.31859@tp.orcam.me.uk>
+References: <a226de28606d340f3e4cf0d6f6f4b4d12e766a69.1475791723.git-series.james.hogan@imgtec.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset="ISO-8859-7"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.20.78.81]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55363
+X-archive-position: 55364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,23 +49,40 @@ X-list: linux-mips
 
 On Thu, 6 Oct 2016, James Hogan wrote:
 
-> I don't particularly object to always allocating our own vector when
-> EBase is present. It'd probably break KVM, but that's KVM's fault for
-> not emulating EBase properly yet.
+> The native ABI vDSO linker script vdso.lds is built by preprocessing
+> vdso.lds.S, with the native -mabi flag passed in to get the correct ABI
+> definitions. Unfortunately however certain toolchains choke on -mabi=64
+> without a corresponding compatible -march flag, for example:
+> 
+> cc1: error: ¡-march=mips32r2¢ is not compatible with the selected ABI
+> scripts/Makefile.build:338: recipe for target 'arch/mips/vdso/vdso.lds' failed
+> 
+> Fix this by including ccflags-vdso in the KBUILD_CPPFLAGS for vdso.lds,
+> which includes the appropriate -march flag.
+> 
+> Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: <stable@vger.kernel.org> # 4.4.x-
+> ---
 
- In most cases we'll use the default KSEG0 base address anyway, won't we?
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
 
-> I suppose there is also an advantage to keeping the bootloader exception
-> vector as alive as possible at least until Linux has set up its own one,
-> as it allows early bugs to be caught by the bootloader, which can dump
-> registers etc and even return to the bootloader prompt.
+ NB by default GCC is configured for the default of `-march=from-abi', 
+which is why saying `-mabi=64' only often works as such GCC implicitly 
+switches to a compatible `-march=' setting (i.e. `mips3' vs `mips1' for 
+o32).  However when configured with `-march=' set to a particular ISA 
+level, such as `mips32r2' quoted above you need to select a compatible ISA 
+explicitly when switching to a 64-bit ABI (arguably you could configure 
+with `-march=mips64r2' instead as with a 32-bit ABI such a setting would 
+limit the instruction set to the 32-bit subset automatically).
 
- Right, but I think using our own allocated memory actually helps that in 
-that we can install our exception handlers first and only then switch 
-EBase, which is atomic (modulo probing for WG, but perhaps we don't 
-actually have to do that).  Whereas overwriting firmware memory already 
-pointed to by EBase while installing exception handlers is pretty much 
-destructive right away, as there'll always be a stage at which a partially 
-installed handler is non-functional.
+ Also I've noticed $(aflags-vdso) duplicate `-I' and `-E' options already 
+included with $(ccflags-vdso); I wonder if the duplicates should simply be 
+removed or whether $(cflags-vdso) ought to filter from $(KBUILD_CFLAGS) 
+and $(aflags-vdso) -- from $(KBUILD_AFLAGS) instead (or $(ccflags-vdso) 
+should just take the options from $(KBUILD_CPPFLAGS)).  Also why `-E' is 
+supposed to take an argument?  Can you please have a look at it?
 
   Maciej

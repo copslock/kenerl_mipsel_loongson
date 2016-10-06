@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2016 10:42:56 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36220 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2016 10:54:30 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37668 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990518AbcJFImsKVWro (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Oct 2016 10:42:48 +0200
+        by eddie.linux-mips.org with ESMTP id S23990518AbcJFIyWwaWKo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Oct 2016 10:54:22 +0200
 Received: from localhost (unknown [62.214.2.210])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8CC78902;
-        Thu,  6 Oct 2016 08:42:40 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 779EC904;
+        Thu,  6 Oct 2016 08:54:16 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org,
         Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.7 053/141] MIPS: uprobes: remove incorrect set_orig_insn
-Date:   Thu,  6 Oct 2016 10:28:09 +0200
-Message-Id: <20161006074451.026361646@linuxfoundation.org>
+Subject: [PATCH 4.4 33/93] MIPS: uprobes: remove incorrect set_orig_insn
+Date:   Thu,  6 Oct 2016 10:29:03 +0200
+Message-Id: <20161006074732.529599894@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
-In-Reply-To: <20161006074448.608056610@linuxfoundation.org>
-References: <20161006074448.608056610@linuxfoundation.org>
+In-Reply-To: <20161006074731.150212126@linuxfoundation.org>
+References: <20161006074731.150212126@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55348
+X-archive-position: 55349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,7 +42,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.7-stable review patch.  If anyone has any objections, please let me know.
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

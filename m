@@ -1,50 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Oct 2016 07:15:09 +0200 (CEST)
-Received: from mail-ua0-f175.google.com ([209.85.217.175]:35168 "EHLO
-        mail-ua0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992544AbcJHFPDE9nzw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Oct 2016 07:15:03 +0200
-Received: by mail-ua0-f175.google.com with SMTP id u68so59533142uau.2
-        for <linux-mips@linux-mips.org>; Fri, 07 Oct 2016 22:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=QD0HbhLt4RyR7wCsSDkvgftB94KC0wdHXk4hJ2OGsFA=;
-        b=V2wOD9OEmuquoL2xn1XDqjZZe6rTYNnZJ/hcW083w6vLOnBJFcJufiYR0pRKLPOFQc
-         6au9y+3/xRcTecWanIGXWfyuIvR1mRaZyMIZDgH97hs19YLLByqEsGsfnUy7YBuHtttU
-         bCLKy4p5lm1p22Gyv7izQWrliVQsQChUJbCQ0nKAjIK94hYXIiFUuDfn1S75oOkoCfe2
-         mbvRleie6aIIpEGhcxtGskm4IzsmrwHVa+6Dnh249XnxT+HJ7O5vKjQqDAhdZ1l+yXLz
-         1NliH7y8+LJOio+Tm0fgRO0ZK8rnZWKGwOuy/eMLJXklkEDhq6DB/JSvU+EIVJJvR8V/
-         x5sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=QD0HbhLt4RyR7wCsSDkvgftB94KC0wdHXk4hJ2OGsFA=;
-        b=Tn7Ji0wpj6yMcSGuLSNi1KUXNcYCq7vpBC+7SDr5Ru+xyAYmSXicaxF7bpMk+ROCpm
-         +YLVDRby4zR+Bl9M7o62C2dVg5MLdmSqMJ0ZwTOVjWEp+4WwNXFdFig1WqOQgUk3u9Vd
-         0GQxVxobExOa0dfrNscPLgOHfMuNfC7q9rFzXRIOyGSH8qxA17mcPoqaRiQQElDWF2zV
-         Y2Zn6hwBunHa7bKSWmARdFQf13Sdf3pmUjPec8vqblofUqNff7xlpa1HSFndo06xry/j
-         mj4nR6QshhlesY5uzlCVtMxH8uVRiFDEhW4gqGlPyZAWuJw5FbAglkDcg/S96fVE2C10
-         0RrQ==
-X-Gm-Message-State: AA6/9RkYOXjQis/RCnPIVZY85yAoa9Hjlkrj5BVH/ZYQnQLBI502o1hd1Qhz/gPo0JNYyABFPEIzgO7pICZQ5A==
-X-Received: by 10.159.38.41 with SMTP id 38mr17087482uag.66.1475903697040;
- Fri, 07 Oct 2016 22:14:57 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.31.67.80 with HTTP; Fri, 7 Oct 2016 22:14:36 -0700 (PDT)
-From:   Sagar Borikar <sagar.borikar@gmail.com>
-Date:   Fri, 7 Oct 2016 22:14:36 -0700
-Message-ID: <CAFwMWxubq6=eM4Ut8wu8tu+LXLPJsOvoEMC8ASd4SFjsqxE48Q@mail.gmail.com>
-Subject: kexec-tools for little endian MIPS
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <sagar.borikar@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Oct 2016 16:13:33 +0200 (CEST)
+Received: from spo001.leaseweb.nl ([85.17.2.162]:40208 "EHLO
+        spo001.leaseweb.nl" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993006AbcJHONZgwB1o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Oct 2016 16:13:25 +0200
+Received: from wimvs by spo001.leaseweb.nl with local (Exim 4.50)
+        id 1bssNQ-00067H-F1; Sat, 08 Oct 2016 16:13:24 +0200
+Date:   Sat, 8 Oct 2016 16:13:24 +0200
+From:   Wim Van Sebroeck <wim@iguana.be>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Guenter Roeck <linux@roeck-us.net>, linux-clk@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] watchdog: txx9wdt: Add missing clock (un)prepare calls for CCF
+Message-ID: <20161008141324.GH23290@spo001.leaseweb.nl>
+References: <1473584398-12942-1-git-send-email-geert@linux-m68k.org> <1473584398-12942-2-git-send-email-geert@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1473584398-12942-2-git-send-email-geert@linux-m68k.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <wimvs@spo001.leaseweb.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55373
+X-archive-position: 55374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sagar.borikar@gmail.com
+X-original-sender: wim@iguana.be
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,13 +41,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Hi Geert,
 
-I am porting kexec kdump on interaptiv CPU which is running in little
-endian mode.
-While setting up kexec, I see that the definitions of crash elf
-headers are only for big endian.
-Is there a support for little endian MIPS in kexec tools?
+> While the custom minimal TXx9 clock implementation doesn't need or use
+> clock (un)prepare calls (they are dummies if !CONFIG_HAVE_CLK_PREPARE),
+> they are mandatory when using the Common Clock Framework.
+> 
+> Hence add them, to prepare for the advent of CCF.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
-Thanks
-Sagar
+This patch was added to linux-watchdog-next almost 2 weeks ago.
+
+Kind regards,
+Wim.

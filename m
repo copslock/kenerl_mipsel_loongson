@@ -1,34 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Oct 2016 16:13:33 +0200 (CEST)
-Received: from spo001.leaseweb.nl ([85.17.2.162]:40208 "EHLO
-        spo001.leaseweb.nl" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993006AbcJHONZgwB1o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Oct 2016 16:13:25 +0200
-Received: from wimvs by spo001.leaseweb.nl with local (Exim 4.50)
-        id 1bssNQ-00067H-F1; Sat, 08 Oct 2016 16:13:24 +0200
-Date:   Sat, 8 Oct 2016 16:13:24 +0200
-From:   Wim Van Sebroeck <wim@iguana.be>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-        Guenter Roeck <linux@roeck-us.net>, linux-clk@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] watchdog: txx9wdt: Add missing clock (un)prepare calls for CCF
-Message-ID: <20161008141324.GH23290@spo001.leaseweb.nl>
-References: <1473584398-12942-1-git-send-email-geert@linux-m68k.org> <1473584398-12942-2-git-send-email-geert@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1473584398-12942-2-git-send-email-geert@linux-m68k.org>
-User-Agent: Mutt/1.4.1i
-Return-Path: <wimvs@spo001.leaseweb.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Oct 2016 23:47:55 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:19860 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990509AbcJHVrryTZj4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Oct 2016 23:47:47 +0200
+Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
+        by Forcepoint Email with ESMTPS id 78C5CBD33A2DE;
+        Sat,  8 Oct 2016 22:47:37 +0100 (IST)
+Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
+ (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 8 Oct 2016
+ 22:47:41 +0100
+Received: from localhost (10.100.200.86) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 8 Oct
+ 2016 22:47:40 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH] MIPS: Enable hardened usercopy
+Date:   Sat, 8 Oct 2016 22:47:14 +0100
+Message-ID: <20161008214714.5375-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.10.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.86]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55374
+X-archive-position: 55375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,18 +45,96 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Geert,
+Enable CONFIG_HARDENED_USERCOPY checks for MIPS, calling check_object
+size in all of copy_{to,from}_user(), __copy_{to,from}_user() &
+__copy_{to,from}_user_inatomic().
 
-> While the custom minimal TXx9 clock implementation doesn't need or use
-> clock (un)prepare calls (they are dummies if !CONFIG_HAVE_CLK_PREPARE),
-> they are mandatory when using the Common Clock Framework.
-> 
-> Hence add them, to prepare for the advent of CCF.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Kees Cook <keescook@chromium.org>
+---
 
-This patch was added to linux-watchdog-next almost 2 weeks ago.
+ arch/mips/Kconfig               |  1 +
+ arch/mips/include/asm/uaccess.h | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-Kind regards,
-Wim.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 1a322c8..87d7a1f3 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -65,6 +65,7 @@ config MIPS
+ 	select HANDLE_DOMAIN_IRQ
+ 	select HAVE_EXIT_THREAD
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
++	select HAVE_ARCH_HARDENED_USERCOPY
+ 
+ menu "Machine selection"
+ 
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index 21a2aab..c65707d 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -858,7 +858,10 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
++									\
++	check_object_size(__cu_from, __cu_len, true);			\
+ 	might_fault();							\
++									\
+ 	if (eva_kernel_access())					\
+ 		__cu_len = __invoke_copy_to_kernel(__cu_to, __cu_from,	\
+ 						   __cu_len);		\
+@@ -879,6 +882,9 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
++									\
++	check_object_size(__cu_from, __cu_len, true);			\
++									\
+ 	if (eva_kernel_access())					\
+ 		__cu_len = __invoke_copy_to_kernel(__cu_to, __cu_from,	\
+ 						   __cu_len);		\
+@@ -897,6 +903,9 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
++									\
++	check_object_size(__cu_to, __cu_len, false);			\
++									\
+ 	if (eva_kernel_access())					\
+ 		__cu_len = __invoke_copy_from_kernel_inatomic(__cu_to,	\
+ 							      __cu_from,\
+@@ -931,6 +940,9 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
++									\
++	check_object_size(__cu_from, __cu_len, true);			\
++									\
+ 	if (eva_kernel_access()) {					\
+ 		__cu_len = __invoke_copy_to_kernel(__cu_to,		\
+ 						   __cu_from,		\
+@@ -1123,6 +1135,9 @@ extern size_t __copy_in_user_eva(void *__to, const void *__from, size_t __n);
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
++									\
++	check_object_size(__cu_to, __cu_len, false);			\
++									\
+ 	if (eva_kernel_access()) {					\
+ 		__cu_len = __invoke_copy_from_kernel(__cu_to,		\
+ 						     __cu_from,		\
+@@ -1161,6 +1176,9 @@ extern size_t __copy_in_user_eva(void *__to, const void *__from, size_t __n);
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
++									\
++	check_object_size(__cu_to, __cu_len, false);			\
++									\
+ 	if (eva_kernel_access()) {					\
+ 		__cu_len = __invoke_copy_from_kernel(__cu_to,		\
+ 						     __cu_from,		\
+-- 
+2.10.0

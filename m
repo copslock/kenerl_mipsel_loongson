@@ -1,33 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Oct 2016 19:39:50 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54560 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992232AbcJGRjmGIyXb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Oct 2016 19:39:42 +0200
-Date:   Fri, 7 Oct 2016 18:39:42 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-cc:     James Hogan <james.hogan@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/9] MIPS: traps: 64bit kernels should read CP0_EBase
- 64bit
-In-Reply-To: <57F7C229.9040608@gmail.com>
-Message-ID: <alpine.LFD.2.20.1610071830080.1794@eddie.linux-mips.org>
-References: <cover.d93e43428f3c573bdd18d7c874830705b39c3a8a.1472747205.git-series.james.hogan@imgtec.com> <e826225b15736539cd96a1b6b2a99e2bb2b4eb87.1472747205.git-series.james.hogan@imgtec.com> <20160921130852.GA10899@linux-mips.org>
- <73eede89-af68-eb17-b0b3-2537084da819@imgtec.com> <alpine.LFD.2.20.1610021038190.25303@eddie.linux-mips.org> <20161005155653.GG15578@jhogan-linux.le.imgtec.org> <alpine.LFD.2.20.1610061709400.1794@eddie.linux-mips.org> <57F7C0D5.6000007@gmail.com>
- <57F7C229.9040608@gmail.com>
-User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Oct 2016 07:15:09 +0200 (CEST)
+Received: from mail-ua0-f175.google.com ([209.85.217.175]:35168 "EHLO
+        mail-ua0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992544AbcJHFPDE9nzw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Oct 2016 07:15:03 +0200
+Received: by mail-ua0-f175.google.com with SMTP id u68so59533142uau.2
+        for <linux-mips@linux-mips.org>; Fri, 07 Oct 2016 22:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=QD0HbhLt4RyR7wCsSDkvgftB94KC0wdHXk4hJ2OGsFA=;
+        b=V2wOD9OEmuquoL2xn1XDqjZZe6rTYNnZJ/hcW083w6vLOnBJFcJufiYR0pRKLPOFQc
+         6au9y+3/xRcTecWanIGXWfyuIvR1mRaZyMIZDgH97hs19YLLByqEsGsfnUy7YBuHtttU
+         bCLKy4p5lm1p22Gyv7izQWrliVQsQChUJbCQ0nKAjIK94hYXIiFUuDfn1S75oOkoCfe2
+         mbvRleie6aIIpEGhcxtGskm4IzsmrwHVa+6Dnh249XnxT+HJ7O5vKjQqDAhdZ1l+yXLz
+         1NliH7y8+LJOio+Tm0fgRO0ZK8rnZWKGwOuy/eMLJXklkEDhq6DB/JSvU+EIVJJvR8V/
+         x5sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=QD0HbhLt4RyR7wCsSDkvgftB94KC0wdHXk4hJ2OGsFA=;
+        b=Tn7Ji0wpj6yMcSGuLSNi1KUXNcYCq7vpBC+7SDr5Ru+xyAYmSXicaxF7bpMk+ROCpm
+         +YLVDRby4zR+Bl9M7o62C2dVg5MLdmSqMJ0ZwTOVjWEp+4WwNXFdFig1WqOQgUk3u9Vd
+         0GQxVxobExOa0dfrNscPLgOHfMuNfC7q9rFzXRIOyGSH8qxA17mcPoqaRiQQElDWF2zV
+         Y2Zn6hwBunHa7bKSWmARdFQf13Sdf3pmUjPec8vqblofUqNff7xlpa1HSFndo06xry/j
+         mj4nR6QshhlesY5uzlCVtMxH8uVRiFDEhW4gqGlPyZAWuJw5FbAglkDcg/S96fVE2C10
+         0RrQ==
+X-Gm-Message-State: AA6/9RkYOXjQis/RCnPIVZY85yAoa9Hjlkrj5BVH/ZYQnQLBI502o1hd1Qhz/gPo0JNYyABFPEIzgO7pICZQ5A==
+X-Received: by 10.159.38.41 with SMTP id 38mr17087482uag.66.1475903697040;
+ Fri, 07 Oct 2016 22:14:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: by 10.31.67.80 with HTTP; Fri, 7 Oct 2016 22:14:36 -0700 (PDT)
+From:   Sagar Borikar <sagar.borikar@gmail.com>
+Date:   Fri, 7 Oct 2016 22:14:36 -0700
+Message-ID: <CAFwMWxubq6=eM4Ut8wu8tu+LXLPJsOvoEMC8ASd4SFjsqxE48Q@mail.gmail.com>
+Subject: kexec-tools for little endian MIPS
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <sagar.borikar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55372
+X-archive-position: 55373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: sagar.borikar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -40,37 +57,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 7 Oct 2016, David Daney wrote:
+Hi,
 
-> > >   Indeed, but we need to be prepared to handle the width of 64 bits and
-> > > `cpu_has_mips64r6' does not seem to me to be the right condition.
-> >
-> > It is not the proper condition.
-> >
-> > The presence of a 64-bit EBase should be probed for.
-> >
-> > The proper check is to test of the EBase[WG] (bit 11) can be set to 1.
-> > It it can, this indicates that EBase supports 64-bit accesses.
+I am porting kexec kdump on interaptiv CPU which is running in little
+endian mode.
+While setting up kexec, I see that the definitions of crash elf
+headers are only for big endian.
+Is there a support for little endian MIPS in kexec tools?
 
- Indeed; the problem however is it is destructive, because:
-
-1. Until you have probed for it you cannot use 64-bit DMFC0 to record the 
-   old value of EBase.
-
-2. By using 32-bit MFC0 to record it you miss the upper 32 bits of EBase.
-
-3. And you do need to use 32-bit MTC0 to set WG with this probing, which 
-   clobbers the upper 32 bits of EBase.
-
-So from MIPSr3 through to MIPSr5 you cannot really use the setting left 
-there in EBase by the firmware unless it has also left the WG bit set.
-
-> In r5 systems, the only time 64-bit Ebase is really interesting is for
-> virtualization.
-> 
-> You could also gate probing WG on the presence of the VZ capability.
-
- Still this is an approximation only, the architecture permits 64-bit 
-EBase without VZ.
-
-  Maciej
+Thanks
+Sagar

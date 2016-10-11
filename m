@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2016 15:43:47 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:28690 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2016 15:44:12 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:18085 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992143AbcJKNmtG2rKK (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992111AbcJKNmtG2rKK (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 11 Oct 2016 15:42:49 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id BC7624A761DA0;
-        Tue, 11 Oct 2016 14:42:37 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 749A9528149F9;
+        Tue, 11 Oct 2016 14:42:38 +0100 (IST)
 Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
  (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 11 Oct 2016
- 14:42:40 +0100
+ 14:42:41 +0100
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
  14.3.294.0; Tue, 11 Oct 2016 14:42:40 +0100
@@ -20,18 +20,14 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 CC:     <linux-mips@linux-mips.org>, <linux-remoteproc@vger.kernel.org>,
         <lisa.parratt@imgtec.com>, <linux-kernel@vger.kernel.org>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
-        Qais Yousef <qais.yousef@imgtec.com>,
-        "Masahiro Yamada" <yamada.masahiro@socionext.com>,
-        Lisa Parratt <Lisa.Parratt@imgtec.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        James Hogan <james.hogan@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Marc Zyngier" <marc.zyngier@arm.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v3 0/4] MIPS: Remote processor driver
-Date:   Tue, 11 Oct 2016 14:42:32 +0100
-Message-ID: <1476193356-1350-1-git-send-email-matt.redfearn@imgtec.com>
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: [PATCH v3 1/4] irqchip: mips-gic: Add context saving for MIPS_REMOTEPROC
+Date:   Tue, 11 Oct 2016 14:42:33 +0100
+Message-ID: <1476193356-1350-2-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1476193356-1350-1-git-send-email-matt.redfearn@imgtec.com>
+References: <1476193356-1350-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
@@ -39,7 +35,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55384
+X-archive-position: 55385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,65 +52,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
 The MIPS remote processor driver allows non-Linux firmware to take
-control of and execute on one of the systems VPEs. The CPU must be
-offlined from Linux first. A sysfs interface is created which allows
-firmware to be loaded and changed at runtime. A full description is
-available at [1]. An example firmware that can be used with this driver
-is available at [2].
+control of and execute on one of the systems VPEs. If that VPE is
+brought back under Linux, it is necessary to ensure that all GIC
+interrupts are routed and masked as Linux expects them, as the firmware
+can have done anything it likes with the GIC configuration (hopefully
+just for that VPEs local interrupt sources, but allow for shared
+external interrupts as well).
 
-This is useful to allow running bare metal code, or an RTOS, on one or
-more CPUs while allowing Linux to continue running on those remaining.
+The configuration of shared and local CPU interrupts is maintained and
+updated every time a change is made. When a CPU is brought online, the
+saved configuration is restored.
 
-The remote processor framework allows for firmwares to provide any
-virtio device for communication between the firmware running on the
-remote VP and Linux. For example [1] demonstrates a simple firmware
-which provides a virtual serial port. Any string sent to the port is
-case inverted and returned.
+These functions will also be useful for restoring GIC context after a
+suspend to RAM.
 
-This is conceptually similar to the VPE loader functionality, but is
-more standard as it fits into the remoteproc subsystem.
+This patch depends on Paul Burton's recent patches:
+irqchip: mips-gic: Implement activate op for device domain
+irqchip: mips-gic: Cleanup chip & handler setup
 
-The first patches in this series lay the groundwork for the driver
-before it is added. The last series deprecates the VPE loader.
+Without these patches, the context saving will restore an incorrect map
+to VPE value, since there is a route to not having the interrupt
+affinity set.
 
-This functionality is supported on:
-- MIPS32r2 devices implementing the MIPS MT ASE for multithreading, such
-  as interAptiv.
-- MIPS32r6 devices implementing VPs, such as I6400.
-
-Limitations:
-- The remoteproc core supports only 32bit ELFs. Therefore it is only
-  possible to run 32bit firmware on the remote processor. Also, for
-  virtio communication, pointers are passed from the kernel to firmware.
-  There can be no mismatch in pointer sizes between the kernel and
-  firmware, so this limits the host kernel to 32bit as well.
-
-The functionality has been tested on the Ci40 board which has a 2 core 2
-thread interAptiv.
-
-This series is based on v4.8
-
-Depends on James Hogan's ebase series:
-MIPS: traps: 64bit kernels should read CP0_EBase 64bit
-MIPS: traps: Convert ebase to KSeg0
-MIPS: traps: Ensure full EBase is written
-
-Without these patches, if firmware modifies ebase to allow handling
-exceptions / interrupts, then when the VPE is returned to Linux the
-kernel exception handlers won't be reinstated properly.
-
-[1]
-http://wiki.prplfoundation.org/w/images/d/df/MIPS_OS_Remote_Processor_Driver_Whitepaper_1.0.9.pdf
-[2] https://github.com/MIPS/mips-rproc-example
-
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+---
 
 Changes in v3:
 Update GIC context saving to use CPU hotplug state machine
-Update MIPS remoteproc driver to use CPU hotplug state machine
-Remove sysfs interface from MIPS rproc driver, now provided by the core.
-Drop patches that Ralf has already merged to mips-next
 
 Changes in v2:
 Add dependence on additional patches to mips-gic in commit log
@@ -124,25 +89,322 @@ Incorporate changes from Marc Zynger's review:
 - Make gic_save_* static functions when enabled, and do { } while(0)
   otherwise
 
-Lisa Parratt (1):
-  MIPS: CPS: Add VP(E) stealing
+ drivers/irqchip/irq-mips-gic.c | 208 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 201 insertions(+), 7 deletions(-)
 
-Matt Redfearn (3):
-  irqchip: mips-gic: Add context saving for MIPS_REMOTEPROC
-  remoteproc/MIPS: Add a remoteproc driver for MIPS
-  MIPS: Deprecate VPE Loader
-
- arch/mips/Kconfig                    |  12 +-
- arch/mips/include/asm/smp-cps.h      |   8 +
- arch/mips/include/asm/smp.h          |   1 +
- arch/mips/kernel/smp-cps.c           | 162 +++++++++-
- arch/mips/kernel/smp.c               |  12 +
- drivers/irqchip/irq-mips-gic.c       | 208 ++++++++++++-
- drivers/remoteproc/Kconfig           |  11 +
- drivers/remoteproc/Makefile          |   1 +
- drivers/remoteproc/mips_remoteproc.c | 566 +++++++++++++++++++++++++++++++++++
- 9 files changed, 966 insertions(+), 15 deletions(-)
- create mode 100644 drivers/remoteproc/mips_remoteproc.c
-
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 6185696405d5..7092399b68de 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -8,6 +8,7 @@
+  */
+ #include <linux/bitmap.h>
+ #include <linux/clocksource.h>
++#include <linux/cpu.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+@@ -56,6 +57,79 @@ static unsigned int timer_cpu_pin;
+ static struct irq_chip gic_level_irq_controller, gic_edge_irq_controller;
+ DECLARE_BITMAP(ipi_resrv, GIC_MAX_INTRS);
+ 
++#ifdef CONFIG_MIPS_REMOTEPROC
++struct gic_local_state_t {
++	u8 mask;
++};
++
++DEFINE_PER_CPU(struct gic_local_state_t, gic_local_state);
++
++static void gic_save_local_rmask(int vpe, int mask)
++{
++	struct gic_local_state_t *state = per_cpu_ptr(&gic_local_state, vpe);
++
++	state->mask &= mask;
++}
++
++static void gic_save_local_smask(int vpe, int mask)
++{
++	struct gic_local_state_t *state = per_cpu_ptr(&gic_local_state, vpe);
++
++	state->mask |= mask;
++}
++
++static struct {
++	unsigned vpe:		8;
++	unsigned pin:		4;
++
++	unsigned polarity:	1;
++	unsigned trigger:	1;
++	unsigned dual_edge:	1;
++	unsigned mask:		1;
++} gic_shared_state[GIC_MAX_INTRS];
++
++static void gic_save_shared_vpe(int intr, int vpe)
++{
++	gic_shared_state[intr].vpe = vpe;
++}
++
++static void gic_save_shared_pin(int intr, int pin)
++{
++	gic_shared_state[intr].pin = pin;
++}
++
++static void gic_save_shared_polarity(int intr, int polarity)
++{
++	gic_shared_state[intr].polarity = polarity;
++}
++
++static void gic_save_shared_trigger(int intr, int trigger)
++{
++	gic_shared_state[intr].trigger = trigger;
++}
++
++static void gic_save_shared_dual_edge(int intr, int dual_edge)
++{
++	gic_shared_state[intr].dual_edge = dual_edge;
++}
++
++static void gic_save_shared_mask(int intr, int mask)
++{
++	gic_shared_state[intr].mask = mask;
++}
++
++#else
++#define gic_save_local_rmask(vpe, i)	do { } while (0)
++#define gic_save_local_smask(vpe, i)	do { } while (0)
++
++#define gic_save_shared_vpe(i, v)	do { } while (0)
++#define gic_save_shared_pin(i, p)	do { } while (0)
++#define gic_save_shared_polarity(i, p)	do { } while (0)
++#define gic_save_shared_trigger(i, t)	do { } while (0)
++#define gic_save_shared_dual_edge(i, d)	do { } while (0)
++#define gic_save_shared_mask(i, m)	do { } while (0)
++#endif /* CONFIG_MIPS_REMOTEPROC */
++
+ static void __gic_irq_dispatch(void);
+ 
+ static inline u32 gic_read32(unsigned int reg)
+@@ -105,52 +179,94 @@ static inline void gic_update_bits(unsigned int reg, unsigned long mask,
+ 	gic_write(reg, regval);
+ }
+ 
+-static inline void gic_reset_mask(unsigned int intr)
++static inline void gic_write_reset_mask(unsigned int intr)
+ {
+ 	gic_write(GIC_REG(SHARED, GIC_SH_RMASK) + GIC_INTR_OFS(intr),
+ 		  1ul << GIC_INTR_BIT(intr));
+ }
+ 
+-static inline void gic_set_mask(unsigned int intr)
++static inline void gic_reset_mask(unsigned int intr)
++{
++	gic_save_shared_mask(intr, 0);
++	gic_write_reset_mask(intr);
++}
++
++static inline void gic_write_set_mask(unsigned int intr)
+ {
+ 	gic_write(GIC_REG(SHARED, GIC_SH_SMASK) + GIC_INTR_OFS(intr),
+ 		  1ul << GIC_INTR_BIT(intr));
+ }
+ 
+-static inline void gic_set_polarity(unsigned int intr, unsigned int pol)
++static inline void gic_set_mask(unsigned int intr)
++{
++	gic_save_shared_mask(intr, 1);
++	gic_write_set_mask(intr);
++}
++
++static inline void gic_write_polarity(unsigned int intr, unsigned int pol)
+ {
+ 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_POLARITY) +
+ 			GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
+ 			(unsigned long)pol << GIC_INTR_BIT(intr));
+ }
+ 
+-static inline void gic_set_trigger(unsigned int intr, unsigned int trig)
++static inline void gic_set_polarity(unsigned int intr, unsigned int pol)
++{
++	gic_save_shared_polarity(intr, pol);
++	gic_write_polarity(intr, pol);
++}
++
++static inline void gic_write_trigger(unsigned int intr, unsigned int trig)
+ {
+ 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_TRIGGER) +
+ 			GIC_INTR_OFS(intr), 1ul << GIC_INTR_BIT(intr),
+ 			(unsigned long)trig << GIC_INTR_BIT(intr));
+ }
+ 
+-static inline void gic_set_dual_edge(unsigned int intr, unsigned int dual)
++static inline void gic_set_trigger(unsigned int intr, unsigned int trig)
++{
++	gic_save_shared_trigger(intr, trig);
++	gic_write_trigger(intr, trig);
++}
++
++static inline void gic_write_dual_edge(unsigned int intr, unsigned int dual)
+ {
+ 	gic_update_bits(GIC_REG(SHARED, GIC_SH_SET_DUAL) + GIC_INTR_OFS(intr),
+ 			1ul << GIC_INTR_BIT(intr),
+ 			(unsigned long)dual << GIC_INTR_BIT(intr));
+ }
+ 
+-static inline void gic_map_to_pin(unsigned int intr, unsigned int pin)
++static inline void gic_set_dual_edge(unsigned int intr, unsigned int dual)
++{
++	gic_save_shared_dual_edge(intr, dual);
++	gic_write_dual_edge(intr, dual);
++}
++
++static inline void gic_write_map_to_pin(unsigned int intr, unsigned int pin)
+ {
+ 	gic_write32(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_PIN_BASE) +
+ 		    GIC_SH_MAP_TO_PIN(intr), GIC_MAP_TO_PIN_MSK | pin);
+ }
+ 
+-static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
++static inline void gic_map_to_pin(unsigned int intr, unsigned int pin)
++{
++	gic_save_shared_pin(intr, pin);
++	gic_write_map_to_pin(intr, pin);
++}
++
++static inline void gic_write_map_to_vpe(unsigned int intr, unsigned int vpe)
+ {
+ 	gic_write(GIC_REG(SHARED, GIC_SH_INTR_MAP_TO_VPE_BASE) +
+ 		  GIC_SH_MAP_TO_VPE_REG_OFF(intr, vpe),
+ 		  GIC_SH_MAP_TO_VPE_REG_BIT(vpe));
+ }
+ 
++static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
++{
++	gic_save_shared_vpe(intr, vpe);
++	gic_write_map_to_vpe(intr, vpe);
++}
++
+ #ifdef CONFIG_CLKSRC_MIPS_GIC
+ cycle_t gic_read_count(void)
+ {
+@@ -537,6 +653,7 @@ static void gic_mask_local_irq(struct irq_data *d)
+ {
+ 	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+ 
++	gic_save_local_rmask(smp_processor_id(), (1 << intr));
+ 	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_RMASK), 1 << intr);
+ }
+ 
+@@ -544,6 +661,7 @@ static void gic_unmask_local_irq(struct irq_data *d)
+ {
+ 	int intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+ 
++	gic_save_local_smask(smp_processor_id(), (1 << intr));
+ 	gic_write32(GIC_REG(VPE_LOCAL, GIC_VPE_SMASK), 1 << intr);
+ }
+ 
+@@ -561,6 +679,7 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+ 
+ 	spin_lock_irqsave(&gic_lock, flags);
+ 	for (i = 0; i < gic_vpes; i++) {
++		gic_save_local_rmask(mips_cm_vp_id(i), 1 << intr);
+ 		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR),
+ 			  mips_cm_vp_id(i));
+ 		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), 1 << intr);
+@@ -576,6 +695,7 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+ 
+ 	spin_lock_irqsave(&gic_lock, flags);
+ 	for (i = 0; i < gic_vpes; i++) {
++		gic_save_local_smask(mips_cm_vp_id(i), 1 << intr);
+ 		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR),
+ 			  mips_cm_vp_id(i));
+ 		gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), 1 << intr);
+@@ -978,6 +1098,75 @@ static struct irq_domain_ops gic_ipi_domain_ops = {
+ 	.match = gic_ipi_domain_match,
+ };
+ 
++#ifdef CONFIG_MIPS_REMOTEPROC
++static void gic_restore_shared(void)
++{
++	unsigned long flags;
++	int i;
++
++	spin_lock_irqsave(&gic_lock, flags);
++	for (i = 0; i < gic_shared_intrs; i++) {
++		gic_write_polarity(i, gic_shared_state[i].polarity);
++		gic_write_trigger(i, gic_shared_state[i].trigger);
++		gic_write_dual_edge(i, gic_shared_state[i].dual_edge);
++		gic_write_map_to_vpe(i, gic_shared_state[i].vpe);
++		gic_write_map_to_pin(i, gic_shared_state[i].pin);
++
++		if (gic_shared_state[i].mask)
++			gic_write_set_mask(i);
++		else
++			gic_write_reset_mask(i);
++	}
++	spin_unlock_irqrestore(&gic_lock, flags);
++}
++
++static void gic_restore_local(unsigned int vpe)
++{
++	struct gic_local_state_t state;
++	int hw, virq, intr, mask;
++	unsigned long flags;
++
++	for (hw = 0; hw < GIC_NUM_LOCAL_INTRS; hw++) {
++		intr = GIC_LOCAL_TO_HWIRQ(hw);
++		virq = irq_linear_revmap(gic_irq_domain, intr);
++		gic_local_irq_domain_map(gic_irq_domain, virq, hw);
++	}
++
++	local_irq_save(flags);
++	gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_OTHER_ADDR), vpe);
++
++	/* Enable EIC mode if necessary */
++	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_CTL), cpu_has_veic);
++
++	/* Restore interrupt masks */
++	state = per_cpu(gic_local_state, vpe);
++	mask = state.mask;
++	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_RMASK), ~mask);
++	gic_write32(GIC_REG(VPE_OTHER, GIC_VPE_SMASK), mask);
++
++	local_irq_restore(flags);
++}
++
++/*
++ * The MIPS remote processor driver allows non-Linux firmware to take control
++ * of and execute on one of the systems VPEs. If that VPE is brought back under
++ * Linux, it is necessary to ensure that all GIC interrupts are routed and
++ * masked as Linux expects them, as the firmware can have done anything it
++ * likes with the GIC configuration (hopefully just for that VPEs local
++ * interrupt sources, but allow for shared external interrupts as well).
++ */
++static int gic_cpu_online(unsigned int cpu)
++{
++	unsigned int vpe = mips_cm_vp_id(cpu);
++
++	gic_restore_shared();
++	gic_restore_local(vpe);
++
++	return 0;
++}
++
++#endif /* CONFIG_MIPS_REMOTEPROC */
++
+ static void __init __gic_init(unsigned long gic_base_addr,
+ 			      unsigned long gic_addrspace_size,
+ 			      unsigned int cpu_vec, unsigned int irqbase,
+@@ -1077,6 +1266,11 @@ static void __init __gic_init(unsigned long gic_base_addr,
+ 	}
+ 
+ 	gic_basic_init();
++
++#ifdef CONFIG_MIPS_REMOTEPROC
++	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "MIPS:GIC(REMOTEPROC)",
++			  gic_cpu_online, NULL);
++#endif /* CONFIG_MIPS_REMOTEPROC */
+ }
+ 
+ void __init gic_init(unsigned long gic_base_addr,
 -- 
 2.7.4

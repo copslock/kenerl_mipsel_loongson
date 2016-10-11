@@ -1,43 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2016 15:44:36 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:63808 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992170AbcJKNmuKjtAK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Oct 2016 15:42:50 +0200
-Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 24432E1C3A3BF;
-        Tue, 11 Oct 2016 14:42:40 +0100 (IST)
-Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
- (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 11 Oct 2016
- 14:42:43 +0100
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 11 Oct 2016 14:42:42 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        "Thomas Gleixner" <tglx@linutronix.de>
-CC:     <linux-mips@linux-mips.org>, <linux-remoteproc@vger.kernel.org>,
-        <lisa.parratt@imgtec.com>, <linux-kernel@vger.kernel.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>
-Subject: [PATCH v3 3/4] remoteproc/MIPS: Add a remoteproc driver for MIPS
-Date:   Tue, 11 Oct 2016 14:42:35 +0100
-Message-ID: <1476193356-1350-4-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1476193356-1350-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1476193356-1350-1-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2016 16:10:49 +0200 (CEST)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:33473 "EHLO
+        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992111AbcJKOKmuYKvK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Oct 2016 16:10:42 +0200
+Received: by mail-pf0-f195.google.com with SMTP id 190so699142pfv.0
+        for <linux-mips@linux-mips.org>; Tue, 11 Oct 2016 07:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=IF5PZYeV4Ti7enEpccmUC2KH4wq/803UV661RIqGBfg=;
+        b=P8ZfpmaXFHPlanHNUUhHnjBHWU1RrkRC9hS9p6KVFJUNYrXkPAv/XTVLTECJnpSRHl
+         XPpQ8+Vct+8N2hWGOAsbLal43o0Ya04K6ZLN30vfyvXBUA5mP29AQcNI7PzXVj532JEU
+         Z/f/2S1iohyCVswQLGZVg0AMLGaZilS9vACgAPixPkJj6+/22/22/NktswoitIBaQF3W
+         BRqPelwK0x/s5cWwcPO6EVMQtmM9aFbzKTyh4YzoVeNBdhubp7T++aGbxLo7abFBJjIj
+         UbSag1v+VFBo5cjjB/oVDg92kO8pDEhivpkPTnlXxM9mDW6uIYN7ENlRXK7DGDYNvNW4
+         ZMnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=IF5PZYeV4Ti7enEpccmUC2KH4wq/803UV661RIqGBfg=;
+        b=O2HUWqhUBb2ns6JDnT877KgLFYJrAg2kn7H/mJH6zd/K3UZgyFWFj2hd6+SwOvoeAf
+         do9E3/wM4eCGLXo2+iei4Dd1HJ3+qqZgLi2fJEW7t1BadyIrSM+0ZIKhpJ6snF6pYNLy
+         1gw/Y0iCCJaKDK8JPXYfQKf3KAJ1/QRnmIo0tHhUehEXHHWKciW5d8GuXhghL2/PFoU0
+         Q8l9cvKQAOyJSYfhM5Lf/pQxmp0HHk08rMttBwBylqC3ocCwp7NtrTAmJhID2NbxoBUc
+         Hqf3rUMdBGGcdTpbOVReXn+ouipm8rqx1KasLS5n6XF7tpHHZf0at900nxk4gSRMGB4h
+         eaLA==
+X-Gm-Message-State: AA6/9Rl8NARsy/QwchAafRMTwlnSRe5URK9kKFtkQw8CiNRN7QvR1z2X+XoQIxfQYlxw8A==
+X-Received: by 10.99.208.85 with SMTP id s21mr1450527pgi.128.1476195036882;
+        Tue, 11 Oct 2016 07:10:36 -0700 (PDT)
+Received: from ubuntu ([180.102.120.140])
+        by smtp.gmail.com with ESMTPSA id o184sm4726947pfg.73.2016.10.11.07.10.32
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Tue, 11 Oct 2016 07:10:35 -0700 (PDT)
+Date:   Tue, 11 Oct 2016 22:10:29 +0800
+From:   Yang Ling <gnaygnil@gmail.com>
+To:     Wim Van Sebroeck <wim@iguana.be>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Keguang Zhang <keguang.zhang@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org, Yang Ling <gnaygnil@gmail.com>
+Subject: [PATCH v1.1 1/2] watchdog: loongson1: Add Loongson1 SoC watchdog
+ driver
+Message-ID: <20161011141029.GA26146@ubuntu>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <gnaygnil@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55386
+X-archive-position: 55387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: gnaygnil@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,634 +69,215 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This driver allows a MIPS processor offlined from Linux to be used as a
-remote processor. Firmware may be loaded via the sysfs interface and
-changed at runtime, allowing the processor to handle real-time tasks or
-perform coprocessing while remaining processors are available to Linux.
+Add watchdog timer specific driver for Loongson1 SoC.
 
-Coprocessor firmware must abide by the remoteproc standard, i.e.
-implement the resource table containing memory layouts and virtio device
-descriptions, and additionally abide by the MIPS UHI coprocessor boot
-protocol in the startup code.
-
-Signed-off-by: Lisa Parratt <lisa.parratt@imgtec.com>
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Signed-off-by: Yang Ling <gnaygnil@gmail.com>
 
 ---
+V1.1:
+ Add a little debugging information.
+---
+ drivers/watchdog/Kconfig         |   7 ++
+ drivers/watchdog/Makefile        |   1 +
+ drivers/watchdog/loongson1_wdt.c | 160 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 168 insertions(+)
+ create mode 100644 drivers/watchdog/loongson1_wdt.c
 
-Changes in v3:
-Update MIPS remoteproc driver to use CPU hotplug state machine
-Remove sysfs interface from MIPS rproc driver, now provided by the core.
-Drop patches that Ralf has already merged to mips-next
-
-Changes in v2: None
-
- drivers/remoteproc/Kconfig           |  11 +
- drivers/remoteproc/Makefile          |   1 +
- drivers/remoteproc/mips_remoteproc.c | 566 +++++++++++++++++++++++++++++++++++
- 3 files changed, 578 insertions(+)
- create mode 100644 drivers/remoteproc/mips_remoteproc.c
-
-diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
-index 1a8bf76a925f..05db52e0e668 100644
---- a/drivers/remoteproc/Kconfig
-+++ b/drivers/remoteproc/Kconfig
-@@ -100,4 +100,15 @@ config ST_REMOTEPROC
- 	  processor framework.
- 	  This can be either built-in or a loadable module.
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 50dbaa8..28c44f2 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -1553,6 +1553,13 @@ config PIC32_DMT
+ 	  To compile this driver as a loadable module, choose M here.
+ 	  The module will be called pic32-dmt.
  
-+config MIPS_REMOTEPROC
-+	tristate "MIPS remoteproc support"
-+	depends on MIPS_CPS && HAS_DMA
-+	select CMA
-+	select REMOTEPROC
-+	select MIPS_STEAL
++config LOONGSON1_WDT
++	tristate "Loongson1 SoC hardware watchdog"
++	depends on MACH_LOONGSON32
++	select WATCHDOG_CORE
 +	help
-+	  Say y here to support using offline cores/VPEs as remote processors
-+	  via the remote processor framework.
-+	  If unsure say N.
++	  Hardware driver for the Loongson1 SoC Watchdog Timer.
 +
- endmenu
-diff --git a/drivers/remoteproc/Makefile b/drivers/remoteproc/Makefile
-index 92d3758bd15c..de19cd320f3a 100644
---- a/drivers/remoteproc/Makefile
-+++ b/drivers/remoteproc/Makefile
-@@ -14,3 +14,4 @@ obj-$(CONFIG_DA8XX_REMOTEPROC)		+= da8xx_remoteproc.o
- obj-$(CONFIG_QCOM_MDT_LOADER)		+= qcom_mdt_loader.o
- obj-$(CONFIG_QCOM_Q6V5_PIL)		+= qcom_q6v5_pil.o
- obj-$(CONFIG_ST_REMOTEPROC)		+= st_remoteproc.o
-+obj-$(CONFIG_MIPS_REMOTEPROC)		+= mips_remoteproc.o
-diff --git a/drivers/remoteproc/mips_remoteproc.c b/drivers/remoteproc/mips_remoteproc.c
+ # PARISC Architecture
+ 
+ # POWERPC Architecture
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index cba0043..bd3b00e 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -162,6 +162,7 @@ obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
+ obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
+ obj-$(CONFIG_PIC32_WDT) += pic32-wdt.o
+ obj-$(CONFIG_PIC32_DMT) += pic32-dmt.o
++obj-$(CONFIG_LOONGSON1_WDT) += loongson1_wdt.o
+ 
+ # PARISC Architecture
+ 
+diff --git a/drivers/watchdog/loongson1_wdt.c b/drivers/watchdog/loongson1_wdt.c
 new file mode 100644
-index 000000000000..95aea67416b7
+index 0000000..77b11f9
 --- /dev/null
-+++ b/drivers/remoteproc/mips_remoteproc.c
-@@ -0,0 +1,566 @@
++++ b/drivers/watchdog/loongson1_wdt.c
+@@ -0,0 +1,160 @@
 +/*
-+ * MIPS Remote Processor driver
++ * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
 + *
-+ * Copyright (C) 2016 Imagination Technologies
-+ * Lisa Parratt <lisa.parratt@imgtec.com>
-+ * Matt Redfearn <matt.redfearn@imgtec.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
++ * This program is free software; you can redistribute	it and/or modify it
++ * under  the terms of	the GNU General	 Public License as published by the
 + * Free Software Foundation;  either version 2 of the  License, or (at your
 + * option) any later version.
 + */
 +
-+#include <linux/cpu.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/irq.h>
 +#include <linux/module.h>
-+#include <linux/of_irq.h>
++#include <linux/watchdog.h>
 +#include <linux/platform_device.h>
-+#include <linux/remoteproc.h>
++#include <linux/clk.h>
 +
-+#include <asm/smp-cps.h>
-+#include <asm/tlbflush.h>
-+#include <asm/tlbmisc.h>
++#include <loongson1.h>
 +
-+#include "remoteproc_internal.h"
++#define MIN_HEARTBEAT		1
++#define MAX_HEARTBEAT		30
++#define DEFAULT_HEARTBEAT	10
 +
-+struct mips_rproc {
-+	struct rproc		*rproc;
-+	struct task_struct	*tsk;
-+	struct device		dev;
-+	unsigned int		cpu;
-+	int			ipi_linux;
-+	int			ipi_remote;
++static bool nowayout = WATCHDOG_NOWAYOUT;
++module_param(nowayout, bool, 0);
++
++static unsigned int heartbeat = DEFAULT_HEARTBEAT;
++module_param(heartbeat, uint, 0);
++
++struct ls1x_wdt_drvdata {
++	struct watchdog_device wdt;
++	void __iomem *base;
++	unsigned int count;
++	struct clk *clk;
 +};
 +
-+static struct rproc *mips_rprocs[NR_CPUS];
-+
-+static int cpuhp_state;
-+
-+#define to_mips_rproc(d) container_of(d, struct mips_rproc, dev)
-+
-+
-+/* Compute the largest page mask a physical address can be mapped with */
-+static unsigned long mips_rproc_largest_pm(unsigned long pa,
-+					   unsigned long maxmask)
++static int ls1x_wdt_ping(struct watchdog_device *wdt_dev)
 +{
-+	unsigned long mask;
-+	/* Find address bits limiting alignment */
-+	unsigned long shift = ffs(pa);
++	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
 +
-+	/* Obey MIPS restrictions on page sizes */
-+	if (pa) {
-+		if (shift & 1)
-+			shift -= 2;
-+		else
-+			shift--;
-+	}
-+	mask = ULONG_MAX << shift;
-+	return maxmask & ~mask;
-+}
++	writel(0x1, drvdata->base + WDT_EN);
++	writel(drvdata->count, drvdata->base + WDT_TIMER);
++	writel(0x1, drvdata->base + WDT_SET);
 +
-+/* Compute the next largest page mask for a given page mask */
-+static unsigned long mips_rproc_next_pm(unsigned long pm, unsigned long maxmask)
-+{
-+	if (pm != PM_4K)
-+		return ((pm << 2) | pm) & maxmask;
-+	else
-+		return PM_16K;
-+}
-+
-+static void mips_map_page(unsigned long da, unsigned long pa, int c,
-+			  unsigned long pagemask, unsigned long pagesize)
-+{
-+	unsigned long pa2 = pa + (pagesize / 2);
-+	unsigned long entryhi, entrylo0, entrylo1;
-+
-+	/* Compute the mapping */
-+	pa = (pa >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
-+	pa2 = (pa2 >> 6) & (ULONG_MAX << MIPS_ENTRYLO_PFN_SHIFT);
-+	entryhi = da & 0xfffffe000;
-+	entrylo0 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa;
-+	entrylo1 = (c << ENTRYLO_C_SHIFT) | ENTRYLO_D | ENTRYLO_V | pa2;
-+
-+	pr_debug("Create wired entry %d, CCA %d\n", read_c0_wired(), c);
-+	pr_debug(" EntryHi: 0x%016lx\n", entryhi);
-+	pr_debug(" EntryLo0: 0x%016lx\n", entrylo0);
-+	pr_debug(" EntryLo1: 0x%016lx\n", entrylo1);
-+	pr_debug(" Pagemask: 0x%016lx\n", pagemask);
-+	pr_debug("\n");
-+
-+	add_wired_entry(entrylo0, entrylo1, entryhi, pagemask);
-+}
-+
-+/*
-+ * Compute the page required to fulfill a mapping. Escapes alignment derived
-+ * page size limitations before using biggest fit to map the remainder.
-+ */
-+static inline void mips_rproc_fit_page(unsigned long da, unsigned long pa,
-+					int c, unsigned long size,
-+					unsigned long maxmask)
-+{
-+	unsigned long bigmask, nextmask;
-+	unsigned long pagemask, pagesize;
-+	unsigned long distance, target;
-+
-+	do {
-+		/* Compute the current largest page mask */
-+		bigmask = mips_rproc_largest_pm(pa, maxmask);
-+		/* Compute the next largest pagesize */
-+		nextmask = mips_rproc_next_pm(bigmask, maxmask);
-+		/*
-+		 * Compute the distance from our current physical address to
-+		 * the next page boundary.
-+		 */
-+		distance = (nextmask + 0x2000) - (pa & nextmask);
-+		/*
-+		 * Decide between searching to get to the next highest page
-+		 * boundary or finishing.
-+		 */
-+		target = distance < size ? distance : size;
-+		/* Fit */
-+		while (target) {
-+			/* Find the largest supported page size that will fit */
-+			for (pagesize = maxmask + 0x2000;
-+			     (pagesize > 0x2000) && (pagesize > target);
-+			     pagesize /= 4) {
-+			}
-+			/* Convert it to a page mask */
-+			pagemask = pagesize - 0x2000;
-+			/* Emit it */
-+			mips_map_page(da, pa, c, pagemask, pagesize);
-+			/* Move to next step */
-+			size -= pagesize;
-+			da += pagesize;
-+			pa += pagesize;
-+			target -= pagesize;
-+		}
-+	} while (size);
-+}
-+
-+static int mips_rproc_carveouts(struct rproc *rproc, int max_pagemask)
-+{
-+	struct rproc_mem_entry *carveout;
-+
-+	list_for_each_entry(carveout, &rproc->carveouts, node) {
-+		int c = CONF_CM_CACHABLE_COW;
-+
-+		dev_dbg(&rproc->dev,
-+			"carveout mapping da 0x%x -> %pad length 0x%x, CCA %d",
-+			carveout->da, &carveout->dma, carveout->len, c);
-+
-+		mips_rproc_fit_page(carveout->da, carveout->dma, c,
-+				    carveout->len, max_pagemask);
-+	}
 +	return 0;
 +}
 +
-+static int mips_rproc_vdevs(struct rproc *rproc, int max_pagemask)
++static int ls1x_wdt_set_timeout(struct watchdog_device *wdt_dev,
++				unsigned int new_timeout)
 +{
-+	struct rproc_vdev *rvdev;
++	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
++	int counts_per_second;
 +
-+	list_for_each_entry(rvdev, &rproc->rvdevs, node) {
-+		int i, size;
++	if (watchdog_init_timeout(wdt_dev, new_timeout, NULL))
++		return -EINVAL;
 +
-+		for (i = 0; i < ARRAY_SIZE(rvdev->vring); i++) {
-+			struct rproc_vring *vring = &rvdev->vring[i];
-+			unsigned long pa = vring->dma;
-+			int c;
++	counts_per_second = clk_get_rate(drvdata->clk);
++	drvdata->count = counts_per_second * wdt_dev->timeout;
 +
-+			if (hw_coherentio) {
-+				/*
-+				 * The DMA API will allocate cacheable buffers
-+				 * for shared resources, so the firmware should
-+				 * also access those buffers cached
-+				 */
-+				c = (_page_cachable_default >> _CACHE_SHIFT);
-+			} else {
-+				/*
-+				 * Otherwise, shared buffers should be accessed
-+				 * uncached
-+				 */
-+				c = CONF_CM_UNCACHED;
-+			}
++	ls1x_wdt_ping(wdt_dev);
 +
-+			/* actual size of vring (in bytes) */
-+			size = PAGE_ALIGN(vring_size(vring->len, vring->align));
-+
-+			dev_dbg(&rproc->dev,
-+				"vring mapping da %pad -> %pad length 0x%x, CCA %d",
-+				&vring->dma, &vring->dma, size, c);
-+
-+			mips_rproc_fit_page(pa, pa, c, size, max_pagemask);
-+		}
-+	}
 +	return 0;
 +}
 +
-+static void mips_rproc_cpu_entry(void)
++static int ls1x_wdt_start(struct watchdog_device *wdt_dev)
 +{
-+	struct rproc *rproc = mips_rprocs[smp_processor_id()];
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+	int ipi_to_remote = ipi_get_hwirq(mproc->ipi_remote, mproc->cpu);
-+	int ipi_from_remote = ipi_get_hwirq(mproc->ipi_linux, 0);
-+	unsigned long old_pagemask, max_pagemask;
++	ls1x_wdt_set_timeout(wdt_dev, wdt_dev->timeout);
 +
-+	if (!rproc)
-+		return;
-+
-+	dev_info(&rproc->dev, "Starting %s on MIPS CPU%d\n",
-+		 rproc->firmware, mproc->cpu);
-+
-+	/* Get the maximum pagemask supported on this CPU */
-+	old_pagemask = read_c0_pagemask();
-+	write_c0_pagemask(PM_HUGE_MASK);
-+	mtc0_tlbw_hazard();
-+	max_pagemask = read_c0_pagemask();
-+	write_c0_pagemask(old_pagemask);
-+	mtc0_tlbw_hazard();
-+
-+	/* Start with no wired entries */
-+	write_c0_wired(0);
-+
-+	/* Flush all previous TLB entries */
-+	local_flush_tlb_all();
-+
-+	/* Map firmware resources into virtual memory */
-+	mips_rproc_carveouts(rproc, max_pagemask);
-+	mips_rproc_vdevs(rproc, max_pagemask);
-+
-+	dev_dbg(&rproc->dev, "IPI to remote: %d\n", ipi_to_remote);
-+	dev_dbg(&rproc->dev, "IPI from remote: %d\n", ipi_from_remote);
-+
-+	/* Hand off the CPU to the firmware */
-+	dev_dbg(&rproc->dev, "Jumping to firmware at 0x%x\n", rproc->bootaddr);
-+
-+	write_c0_entryhi(0); /* Set ASID 0 */
-+	tlbw_use_hazard();
-+
-+	/* Firmware protocol */
-+	__asm__("addiu $a0, $zero, -3");
-+	__asm__("move $a1, %0" :: "r" (ipi_to_remote));
-+	__asm__("move $a2, %0" :: "r" (ipi_from_remote));
-+	__asm__("move $a3, $zero");
-+	__asm__("jr %0" :: "r" (rproc->bootaddr));
++	return 0;
 +}
 +
-+static irqreturn_t mips_rproc_ipi_handler(int irq, void *dev_id)
++static int ls1x_wdt_stop(struct watchdog_device *wdt_dev)
 +{
-+	/* Synthetic interrupts shouldn't need acking */
-+	return IRQ_WAKE_THREAD;
++	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
++
++	writel(0x0, drvdata->base + WDT_EN);
++
++	return 0;
 +}
 +
-+static irqreturn_t mips_rproc_vq_int(int irq, void *p)
++static const struct watchdog_info ls1x_wdt_info = {
++	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
++	.identity = "Loongson1 Watchdog",
++};
++
++static const struct watchdog_ops ls1x_wdt_ops = {
++	.owner = THIS_MODULE,
++	.start = ls1x_wdt_start,
++	.stop = ls1x_wdt_stop,
++	.ping = ls1x_wdt_ping,
++	.set_timeout = ls1x_wdt_set_timeout,
++};
++
++static int ls1x_wdt_probe(struct platform_device *pdev)
 +{
-+	struct rproc *rproc = (struct rproc *)p;
-+	void *entry;
-+	int id;
++	struct ls1x_wdt_drvdata *drvdata;
++	struct watchdog_device *ls1x_wdt;
++	struct resource *res;
++	int ret;
 +
-+	/* We don't have a mailbox, so iterate over all vqs and kick them. */
-+	idr_for_each_entry(&rproc->notifyids, entry, id)
-+		rproc_vq_interrupt(rproc, id);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+/* Helper function to find the IPI domain */
-+static struct irq_domain *ipi_domain(void)
-+{
-+	struct device_node *node = of_irq_find_parent(of_root);
-+	struct irq_domain *ipidomain;
-+
-+	ipidomain = irq_find_matching_host(node, DOMAIN_BUS_IPI);
-+	/*
-+	 * Some platforms have half DT setup. So if we found irq node but
-+	 * didn't find an ipidomain, try to search for one that is not in the
-+	 * DT.
-+	 */
-+	if (node && !ipidomain)
-+		ipidomain = irq_find_matching_host(NULL, DOMAIN_BUS_IPI);
-+
-+	return ipidomain;
-+}
-+
-+int mips_rproc_op_start(struct rproc *rproc)
-+{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+	int err;
-+	int cpu = mproc->cpu;
-+
-+	pr_info("%s\n", __func__);
-+
-+	/* Create task for the CPU to use before handing off to firmware */
-+	mproc->tsk = fork_idle(cpu);
-+	if (IS_ERR(mproc->tsk)) {
-+		dev_err(&rproc->dev, "fork_idle() failed for CPU%d\n", cpu);
++	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
++	if (!drvdata)
 +		return -ENOMEM;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(drvdata->base))
++		return PTR_ERR(drvdata->base);
++
++	drvdata->clk = devm_clk_get(&pdev->dev, pdev->name);
++	if (IS_ERR(drvdata->clk)) {
++		dev_err(&pdev->dev, "failed to get %s clock\n", pdev->name);
++		return PTR_ERR(drvdata->clk);
++	}
++	clk_prepare_enable(drvdata->clk);
++
++	ls1x_wdt = &drvdata->wdt;
++	ls1x_wdt->info = &ls1x_wdt_info;
++	ls1x_wdt->ops = &ls1x_wdt_ops;
++	ls1x_wdt->timeout = heartbeat;
++	ls1x_wdt->min_timeout = MIN_HEARTBEAT;
++	ls1x_wdt->max_timeout = MAX_HEARTBEAT;
++	ls1x_wdt->parent = &pdev->dev;
++	watchdog_set_nowayout(ls1x_wdt, nowayout);
++	watchdog_set_drvdata(ls1x_wdt, drvdata);
++
++	ret = watchdog_register_device(&drvdata->wdt);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "failed to register watchdog device\n");
++		return ret;
 +	}
 +
-+	/* We won't be needing the Linux IPIs anymore */
-+	if (mips_smp_ipi_free(get_cpu_mask(cpu))) {
-+		dev_err(&mproc->dev, "Failed to reserve incoming kick\n");
-+		goto exit_free_tsk;
-+	}
++	platform_set_drvdata(pdev, drvdata);
 +
-+	/*
-+	 * Direct IPIs from the remote processor to CPU0 since that can't be
-+	 * offlined while the remote CPU is running.
-+	 */
-+	mproc->ipi_linux = irq_reserve_ipi(ipi_domain(), get_cpu_mask(0));
-+	if (!mproc->ipi_linux) {
-+		dev_err(&mproc->dev, "Failed to reserve incoming kick\n");
-+		goto exit_restore_ipi;
-+	}
++	dev_info(&pdev->dev, "Loongson1 Watchdog driver registered\n");
 +
-+	mproc->ipi_remote = irq_reserve_ipi(ipi_domain(), get_cpu_mask(cpu));
-+	if (!mproc->ipi_remote) {
-+		dev_err(&mproc->dev, "Failed to reserve outgoing kick\n");
-+		goto exit_destroy_ipi_linux;
-+	}
-+
-+	/* register incoming ipi */
-+	err = request_threaded_irq(mproc->ipi_linux, mips_rproc_ipi_handler,
-+				   mips_rproc_vq_int, 0,
-+				   "mips-rproc IPI in", rproc);
-+	if (err) {
-+		dev_err(&mproc->dev, "Failed to register incoming kick: %d\n",
-+			err);
-+		goto exit_destroy_ipi_remote;
-+	}
-+
-+	if (mips_cps_steal_cpu_and_execute(cpu, &mips_rproc_cpu_entry,
-+						mproc->tsk)) {
-+		dev_err(&mproc->dev, "Failed to steal CPU%d for remote\n", cpu);
-+		goto exit_free_irq;
-+	}
-+
-+	dev_info(&mproc->dev, "CPU%d started\n", cpu);
-+	return 0;
-+
-+exit_free_irq:
-+	free_irq(mproc->ipi_linux, rproc);
-+exit_destroy_ipi_remote:
-+	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(cpu));
-+exit_destroy_ipi_linux:
-+	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
-+exit_restore_ipi:
-+	/* Set up the Linux IPIs again */
-+	mips_smp_ipi_allocate(get_cpu_mask(cpu));
-+exit_free_tsk:
-+	free_task(mproc->tsk);
-+
-+	return -EINVAL;
-+}
-+
-+int mips_rproc_op_stop(struct rproc *rproc)
-+{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+
-+	free_irq(mproc->ipi_linux, rproc);
-+
-+	irq_destroy_ipi(mproc->ipi_linux, get_cpu_mask(0));
-+	irq_destroy_ipi(mproc->ipi_remote, get_cpu_mask(mproc->cpu));
-+
-+	/* Set up the Linux IPIs again */
-+	mips_smp_ipi_allocate(get_cpu_mask(mproc->cpu));
-+
-+	free_task(mproc->tsk);
-+
-+	return mips_cps_halt_and_return_cpu(mproc->cpu);
-+}
-+
-+void mips_rproc_op_kick(struct rproc *rproc, int vqid)
-+{
-+	struct mips_rproc *mproc = *(struct mips_rproc **)rproc->priv;
-+
-+	if (rproc->state == RPROC_RUNNING)
-+		ipi_send_single(mproc->ipi_remote, mproc->cpu);
-+}
-+
-+struct rproc_ops mips_rproc_proc_ops = {
-+	.start	= mips_rproc_op_start,
-+	.stop	= mips_rproc_op_stop,
-+	.kick	= mips_rproc_op_kick,
-+};
-+
-+
-+static int mips_rproc_probe(struct platform_device *pdev)
-+{
 +	return 0;
 +}
 +
-+static int mips_rproc_remove(struct platform_device *pdev)
++static int ls1x_wdt_remove(struct platform_device *pdev)
 +{
++	struct ls1x_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
++
++	ls1x_wdt_stop(&drvdata->wdt);
++	watchdog_unregister_device(&drvdata->wdt);
++	clk_disable_unprepare(drvdata->clk);
++
 +	return 0;
 +}
 +
-+static struct platform_driver mips_rproc_driver = {
-+	.probe = mips_rproc_probe,
-+	.remove = mips_rproc_remove,
++static struct platform_driver ls1x_wdt_driver = {
++	.probe = ls1x_wdt_probe,
++	.remove = ls1x_wdt_remove,
 +	.driver = {
-+		.name = "mips-rproc"
++		.name = "ls1x-wdt",
 +	},
 +};
 +
-+static void mips_rproc_release(struct device *dev)
-+{
-+}
++module_platform_driver(ls1x_wdt_driver);
 +
-+static int mips_rproc_uevent(struct device *dev, struct kobj_uevent_env *env)
-+{
-+	struct mips_rproc *mproc = to_mips_rproc(dev);
-+
-+	if (!mproc)
-+		return -ENODEV;
-+
-+	return 0;
-+}
-+
-+static struct device_type mips_rproc_type = {
-+	.release	= mips_rproc_release,
-+	.uevent		= mips_rproc_uevent
-+};
-+
-+/* Create an rproc instance in response to CPU down */
-+static int mips_rproc_device_register(unsigned int cpu)
-+{
-+	char name[64], *template = "mips-cpu%u";
-+	struct rproc *rproc;
-+	struct mips_rproc *mproc;
-+	int err;
-+
-+	pr_debug("Allocating MIPS rproc for cpu%d\n", cpu);
-+
-+	if (mips_rprocs[cpu]) {
-+		dev_err(&rproc->dev, "CPU%d in use\n", cpu);
-+		return -EBUSY;
-+	}
-+
-+	mproc = kzalloc(sizeof(struct mips_rproc), GFP_KERNEL);
-+	if (!mproc) {
-+		err = -ENOMEM;
-+		goto exit;
-+	}
-+
-+	mproc->dev.driver = &mips_rproc_driver.driver;
-+	mproc->dev.type = &mips_rproc_type;
-+	mproc->dev.id = cpu;
-+	snprintf(name, sizeof(name), template, cpu);
-+	dev_set_name(&mproc->dev, name);
-+	mproc->cpu = cpu;
-+
-+	/* Set device to have coherent DMA ops */
-+	arch_setup_dma_ops(&mproc->dev, 0, 0, NULL, 1);
-+
-+	rproc = rproc_alloc(&mproc->dev, dev_name(&mproc->dev),
-+			    &mips_rproc_proc_ops, NULL,
-+			    sizeof(struct mips_rproc *));
-+	if (!rproc) {
-+		pr_err("Error allocting rproc\n");
-+		err = -ENOMEM;
-+		goto exit_free_mproc;
-+	}
-+
-+	*(struct mips_rproc **)rproc->priv = mproc;
-+
-+	err = device_register(&mproc->dev);
-+	if (err) {
-+		pr_err("device add failed\n");
-+		goto exit_free_rproc;
-+	}
-+
-+	err = rproc_add(rproc);
-+	if (err) {
-+		dev_err(&mproc->dev, "Failed to add rproc: %d\n", err);
-+		goto exit_free_rproc;
-+	}
-+
-+	mips_rprocs[cpu] = rproc;
-+	return 0;
-+
-+exit_free_rproc:
-+	rproc_put(rproc);
-+exit_free_mproc:
-+	kfree(mproc);
-+exit:
-+	return err;
-+}
-+
-+/* Destroy rproc instance in response to CPU up */
-+static int mips_rproc_device_unregister(unsigned int cpu)
-+{
-+	struct rproc *rproc = mips_rprocs[cpu];
-+	struct mips_rproc *mproc;
-+
-+	if (!rproc)
-+		/* No rproc class has been created for this CPU */
-+		return 0;
-+
-+	pr_debug("Deallocating MIPS rproc for cpu%d\n", cpu);
-+
-+	rproc_del(rproc);
-+	rproc_put(rproc);
-+
-+	mproc = *(struct mips_rproc **)rproc->priv;
-+	device_unregister(&mproc->dev);
-+	kfree(mproc);
-+
-+	mips_rprocs[cpu] = NULL;
-+	return 0;
-+}
-+
-+static int __init mips_rproc_init(void)
-+{
-+	int cpu;
-+
-+	/*
-+	 * Register with the cpu hotplug state machine.
-+	 * This driver requires opposite sense to "normal" drivers, since the
-+	 * driver is activated for offline CPUs via the teardown callback and
-+	 * deactivated via the online callback.
-+	 */
-+	cpuhp_state = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "MIPS:REMOTEPROC",
-+					mips_rproc_device_unregister,
-+					mips_rproc_device_register);
-+
-+	/* Register a device for each offline CPU */
-+	get_online_cpus();
-+	for_each_possible_cpu(cpu)
-+		if (!cpu_online(cpu))
-+			mips_rproc_device_register(cpu);
-+	put_online_cpus();
-+
-+	return 0;
-+}
-+
-+static void __exit mips_rproc_exit(void)
-+{
-+	int cpu;
-+
-+	if (cpuhp_state) {
-+		/*
-+		 * Unregister with the cpu hotplug state machine, but don't call
-+		 * the teardown callback, since that would try to start the
-+		 * remote processor device.
-+		 */
-+		__cpuhp_remove_state(cpuhp_state, false);
-+		cpuhp_state = 0;
-+	}
-+
-+	get_online_cpus();
-+	/* Unregister devices created for any offline CPUs */
-+	for_each_possible_cpu(cpu)
-+		mips_rproc_device_unregister(cpu);
-+	put_online_cpus();
-+}
-+
-+subsys_initcall(mips_rproc_init);
-+module_exit(mips_rproc_exit);
-+
-+module_platform_driver(mips_rproc_driver);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("MIPS Remote Processor control driver");
++MODULE_AUTHOR("Yang Ling <gnaygnil@gmail.com>");
++MODULE_DESCRIPTION("Loongson1 Watchdog Driver");
++MODULE_LICENSE("GPL");
 -- 
-2.7.4
+1.9.1

@@ -1,55 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2016 23:16:13 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:2269 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991344AbcJKVQExE393 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Oct 2016 23:16:04 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 2B76941F8E9C;
-        Tue, 11 Oct 2016 22:15:46 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.44.0.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 11 Oct 2016 22:15:46 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 11 Oct 2016 22:15:46 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Oct 2016 08:25:42 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:23186 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990451AbcJLGZft8Xfk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 Oct 2016 08:25:35 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id DFD34AF577BF3;
-        Tue, 11 Oct 2016 22:15:54 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 8C300ABBD065D;
+        Wed, 12 Oct 2016 07:25:26 +0100 (IST)
 Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
- (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 11 Oct 2016
- 22:15:58 +0100
-Received: from np-p-burton.localnet (10.100.200.73) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 11 Oct
- 2016 22:15:58 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Rob Herring <robh@kernel.org>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        "Stephen Boyd" <sboyd@codeaurora.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v3 16/18] dt-bindings: Document img,boston-clock binding
-Date:   Tue, 11 Oct 2016 22:15:45 +0100
-Message-ID: <2330857.F1IQS18Qic@np-p-burton>
-Organization: Imagination Technologies
-User-Agent: KMail/5.3.1 (Linux/4.7.6-1-ARCH; KDE/5.26.0; x86_64; ; )
-In-Reply-To: <CAL_Jsq+PkQmkkLMjiurmHegewpc6n_ntUMsik8oMZdM2nXHQ6g@mail.gmail.com>
-References: <20161005171824.18014-1-paul.burton@imgtec.com> <2468748.fALFhzhDcI@np-p-burton> <CAL_Jsq+PkQmkkLMjiurmHegewpc6n_ntUMsik8oMZdM2nXHQ6g@mail.gmail.com>
+ (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 12 Oct 2016
+ 07:25:28 +0100
+Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 12 Oct 2016 07:25:28 +0100
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Subject: [PATCH] MIPS: Wire up new pkey_{mprotect,alloc,free} syscalls
+Date:   Wed, 12 Oct 2016 08:25:24 +0200
+Message-ID: <1476253524-4571-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1681193.t5WapgXVv7";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.100.200.73]
-X-ESG-ENCRYPT-TAG: 1cc78754
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55392
+X-archive-position: 55393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,133 +43,131 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart1681193.t5WapgXVv7
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+---
+ arch/mips/include/uapi/asm/unistd.h | 22 ++++++++++++++++------
+ arch/mips/kernel/scall32-o32.S      |  3 +++
+ arch/mips/kernel/scall64-64.S       |  3 +++
+ arch/mips/kernel/scall64-n32.S      |  3 +++
+ arch/mips/kernel/scall64-o32.S      |  3 +++
+ 5 files changed, 28 insertions(+), 6 deletions(-)
 
-On Tuesday, 11 October 2016 15:06:46 BST Rob Herring wrote:
-> On Tue, Oct 11, 2016 at 11:00 AM, Paul Burton <paul.burton@imgtec.com> 
-wrote:
-> > On Monday, 10 October 2016 08:01:21 BST Rob Herring wrote:
-> >> On Wed, Oct 05, 2016 at 06:18:22PM +0100, Paul Burton wrote:
-> >> > Add device tree binding documentation for the clocks provided by the
-> >> > MIPS Boston development board from Imagination Technologies, and a
-> >> > header file describing the available clocks for use by device trees &
-> >> > driver.
-> >> > 
-> >> > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> >> > Cc: Michael Turquette <mturquette@baylibre.com>
-> >> > Cc: Stephen Boyd <sboyd@codeaurora.org>
-> >> > Cc: linux-clk@vger.kernel.org
-> >> > Cc: Rob Herring <robh+dt@kernel.org>
-> >> > Cc: Mark Rutland <mark.rutland@arm.com>
-> >> > Cc: devicetree@vger.kernel.org
-> >> > 
-> >> > ---
-> >> > 
-> >> > Changes in v3: None
-> >> > Changes in v2:
-> >> > - Add BOSTON_CLK_INPUT to expose the input clock.
-> >> > 
-> >> >  .../devicetree/bindings/clock/img,boston-clock.txt | 27
-> >> >  ++++++++++++++++++++++ include/dt-bindings/clock/boston-clock.h
-> >> >  
-> >> >   | 14 +++++++++++ 2 files changed, 41 insertions(+)
-> >> >  
-> >> >  create mode 100644
-> >> >  Documentation/devicetree/bindings/clock/img,boston-clock.txt create
-> >> >  mode
-> >> >  100644 include/dt-bindings/clock/boston-clock.h
-> >> > 
-> >> > diff --git
-> >> > a/Documentation/devicetree/bindings/clock/img,boston-clock.txt
-> >> > b/Documentation/devicetree/bindings/clock/img,boston-clock.txt new file
-> >> > mode 100644
-> >> > index 0000000..c01ea60
-> >> > --- /dev/null
-> >> > +++ b/Documentation/devicetree/bindings/clock/img,boston-clock.txt
-> >> > @@ -0,0 +1,27 @@
-> >> > +Binding for Imagination Technologies MIPS Boston clock sources.
-> >> > +
-> >> > +This binding uses the common clock binding[1].
-> >> > +
-> >> > +[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
-> >> > +
-> >> > +Required properties:
-> >> > +- compatible : Should be "img,boston-clock".
-> >> > +- #clock-cells : Should be set to 1.
-> >> > +  Values available for clock consumers can be found in the header
-> >> > file:
-> >> > +    <dt-bindings/clock/boston-clock.h>
-> >> > +- regmap : Phandle to the Boston platform register system controller.
-> >> > +  This should contain a phandle to the system controller node covering
-> >> > the
-> >> > +  platform registers provided by the Boston board.
-> >> 
-> >> Can you just make the clock node a child of the system controller and
-> >> drop this?
-> >> 
-> >> Rob
-> > 
-> > Hi Rob,
-> > 
-> > (Apologies to anyone who received my last; my mail client seems to be
-> > misconfigured & previously sent HTML mail.)
-> > 
-> > As I mentioned before technically that could be done, but it would really
-> > not be at all reflective of the hardware & so seems somewhat contrary to
-> > the purpose of a device tree.
-> 
-> Given that you need a reference back to the system controller, it does
-> match the h/w. The system controller h/w contains various functions,
-> therefore the system controller node should contain nodes for those
-> functions (or the sys ctrlr itself could be the clock provider node
-> with no child nodes). Otherwise, what is the parent of the clock node?
-> Root? Root should generally be the top level devices of the SoC,
-> though it gets used for things which have no good parent.
-> 
-> Rob
-
-Hi Rob,
-
-The "system controller" here is a bunch of registers which contain information 
-about the system - nothing more & nothing less. There are a few random bits of 
-functionality such as system level reset exposed through them, but things like 
-clocks are not part of some coherent block of hardware known as the system 
-controller. The register exposing information about the clocks has no actual 
-connection to the clocks at all - it's just a dumb register whose value is 
-filled in by whomever generates the FPGA bitfile. I don't see how that can be 
-reasonably seen as the clocks being a child of this ecclectic bunch of 
-registers.
-
-Perhaps the use of syscon has been misleading here? I'm using the syscon code 
-purely as a nice way to obtain a regmap to that bunch of registers. Please 
-believe me when I say I know this hardware well enough to know that there 
-isn't a coherent block of system controller hardware that provides the clocks 
-here.
-
-Thanks,
-    Paul
---nextPart1681193.t5WapgXVv7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAABCAAGBQJX/VaBAAoJEIIg2fppPBxlbjUP/jt9jAVkOgzQuXBd6B3l4jHM
-sseuupUm8bc+oR28dQpaHTinZKfLMV+KtnY638Aj/0D9We96R0j5ZiVcisIjTchP
-JuvIojL9mW5X9FNNWSr0UlmMB/XJFYr7z26nuxmB7JUw4iEdh5ji/hLDhXmAsfi8
-7mkt4NBlxCBuiJe9WJtAPFZxR7RSCvvotUGAcXAm3Ep2ZiL6WWw3CqRSWc+LXwPH
-mVyGtfNsVP0EXB1rlc3Q5pxibb5CFCD5r35ghp6z6UrEa0Ze8w/j4PvHhcsMvX7l
-11CyFkckfC7DcjfKXJRzhAdZY6PfgffJcXrcAEQ64vacHvF0cwuxG8lIZtSGJUl6
-MW2G6A3gnwr9rhb5nQ7okPpWXm1lcZPuIrCGBWz156P9v1hJc5TF1xR0SJreHK2Q
-ZXHFqTi0LZ6cV+1fz6byill2Xor6+CUHO+vOnmAtRe7n5/0SjlH/aRSWMZGi1iav
-1HfNXDmgUa9jdeIBQ5HfvrcXgU8foawg4v4RwjULnijkG2oRYCqAVGdeindchMYc
-wz64lAFYNx1vTT3woe+74f9KXXmfdA3hliNjHQiox+N+0S+z9LFEs/mUdDfcHvE8
-lHOXpzwUKHQbzOF+VoUaKdwZAbdtlvz6hz3VaudmndJ7AEgG/XVqoFoJ3rsWioYY
-7WJZ7OnLZ4banxhEsX11
-=7AlU
------END PGP SIGNATURE-----
-
---nextPart1681193.t5WapgXVv7--
+diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
+index 24ad815..3e940db 100644
+--- a/arch/mips/include/uapi/asm/unistd.h
++++ b/arch/mips/include/uapi/asm/unistd.h
+@@ -383,16 +383,20 @@
+ #define __NR_copy_file_range		(__NR_Linux + 360)
+ #define __NR_preadv2			(__NR_Linux + 361)
+ #define __NR_pwritev2			(__NR_Linux + 362)
++#define __NR_pkey_mprotect		(__NR_Linux + 363)
++#define __NR_pkey_alloc			(__NR_Linux + 364)
++#define __NR_pkey_free			(__NR_Linux + 365)
++
+ 
+ /*
+  * Offset of the last Linux o32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		362
++#define __NR_Linux_syscalls		365
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+ 
+ #define __NR_O32_Linux			4000
+-#define __NR_O32_Linux_syscalls		362
++#define __NR_O32_Linux_syscalls		365
+ 
+ #if _MIPS_SIM == _MIPS_SIM_ABI64
+ 
+@@ -723,16 +727,19 @@
+ #define __NR_copy_file_range		(__NR_Linux + 320)
+ #define __NR_preadv2			(__NR_Linux + 321)
+ #define __NR_pwritev2			(__NR_Linux + 322)
++#define __NR_pkey_mprotect		(__NR_Linux + 323)
++#define __NR_pkey_alloc			(__NR_Linux + 324)
++#define __NR_pkey_free			(__NR_Linux + 325)
+ 
+ /*
+  * Offset of the last Linux 64-bit flavoured syscall
+  */
+-#define __NR_Linux_syscalls		322
++#define __NR_Linux_syscalls		325
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+ 
+ #define __NR_64_Linux			5000
+-#define __NR_64_Linux_syscalls		322
++#define __NR_64_Linux_syscalls		325
+ 
+ #if _MIPS_SIM == _MIPS_SIM_NABI32
+ 
+@@ -1067,15 +1074,18 @@
+ #define __NR_copy_file_range		(__NR_Linux + 324)
+ #define __NR_preadv2			(__NR_Linux + 325)
+ #define __NR_pwritev2			(__NR_Linux + 326)
++#define __NR_pkey_mprotect		(__NR_Linux + 327)
++#define __NR_pkey_alloc			(__NR_Linux + 328)
++#define __NR_pkey_free			(__NR_Linux + 329)
+ 
+ /*
+  * Offset of the last N32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		326
++#define __NR_Linux_syscalls		329
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+ 
+ #define __NR_N32_Linux			6000
+-#define __NR_N32_Linux_syscalls		326
++#define __NR_N32_Linux_syscalls		329
+ 
+ #endif /* _UAPI_ASM_UNISTD_H */
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index c8e43e0..c29d397 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -597,3 +597,6 @@ EXPORT(sys_call_table)
+ 	PTR	sys_copy_file_range		/* 4360 */
+ 	PTR	sys_preadv2
+ 	PTR	sys_pwritev2
++	PTR	sys_pkey_mprotect
++	PTR	sys_pkey_alloc
++	PTR	sys_pkey_free			/* 4365 */
+diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+index e6ede12..0687f96 100644
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -435,4 +435,7 @@ EXPORT(sys_call_table)
+ 	PTR	sys_copy_file_range		/* 5320 */
+ 	PTR	sys_preadv2
+ 	PTR	sys_pwritev2
++	PTR	sys_pkey_mprotect
++	PTR	sys_pkey_alloc
++	PTR	sys_pkey_free			/* 5325 */
+ 	.size	sys_call_table,.-sys_call_table
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index 51d3988..0331ba3 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -430,4 +430,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_copy_file_range
+ 	PTR	compat_sys_preadv2		/* 6325 */
+ 	PTR	compat_sys_pwritev2
++	PTR	sys_pkey_mprotect
++	PTR	sys_pkey_alloc
++	PTR	sys_pkey_free
+ 	.size	sysn32_call_table,.-sysn32_call_table
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index 6efa713..5a47042 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -585,4 +585,7 @@ EXPORT(sys32_call_table)
+ 	PTR	sys_copy_file_range		/* 4360 */
+ 	PTR	compat_sys_preadv2
+ 	PTR	compat_sys_pwritev2
++	PTR	sys_pkey_mprotect
++	PTR	sys_pkey_alloc
++	PTR	sys_pkey_free			/* 4365 */
+ 	.size	sys32_call_table,.-sys32_call_table
+-- 
+2.7.4

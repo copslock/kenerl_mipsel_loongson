@@ -1,51 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2016 16:09:07 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:36220 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992160AbcJMOJAx0fY2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Oct 2016 16:09:00 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 37CD441F8E0D;
-        Thu, 13 Oct 2016 15:08:37 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.44.0.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 13 Oct 2016 15:08:37 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 13 Oct 2016 15:08:37 +0100
-Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 58117CA1BD177;
-        Thu, 13 Oct 2016 15:08:50 +0100 (IST)
-Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
- (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 13 Oct 2016
- 15:08:53 +0100
-Received: from np-p-burton.localnet (10.100.200.229) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 13 Oct
- 2016 15:08:52 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Kees Cook <keescook@chromium.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Dmitry Vyukov <dvyukov@google.com>
-Subject: Re: [PATCH] MIPS: Enable hardened usercopy
-Date:   Thu, 13 Oct 2016 15:08:46 +0100
-Message-ID: <33584114.GQq7GNxjzm@np-p-burton>
-Organization: Imagination Technologies
-User-Agent: KMail/5.3.1 (Linux/4.7.6-1-ARCH; KDE/5.26.0; x86_64; ; )
-In-Reply-To: <CAGXu5jLZjFu_Mg93bzu0WBPwNVLuqmiNQ7O4Gpo4NaDn=yO_PQ@mail.gmail.com>
-References: <20161008214714.5375-1-paul.burton@imgtec.com> <20161010132642.GA8229@linux-mips.org> <CAGXu5jLZjFu_Mg93bzu0WBPwNVLuqmiNQ7O4Gpo4NaDn=yO_PQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2016 17:09:45 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:58382 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992160AbcJMPJhvtPA4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Oct 2016 17:09:37 +0200
+Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u9DF9bha028031;
+        Thu, 13 Oct 2016 17:09:37 +0200
+Received: (from ralf@localhost)
+        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u9DF9a6Z028030;
+        Thu, 13 Oct 2016 17:09:36 +0200
+Date:   Thu, 13 Oct 2016 17:09:36 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Jonathan Corbet <corbet@lwn.net>, linux-mips@linux-mips.org,
+        linux-doc@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: [PATCH] Documentation: MIPS supports HAVE_REGS_AND_STACK_ACCESS_API
+Message-ID: <20161013150936.GA27810@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1476398034.8NkuqA0XUW";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.100.200.229]
-X-ESG-ENCRYPT-TAG: 1cc78754
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.7.0 (2016-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55421
+X-archive-position: 55422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,51 +41,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart1476398034.8NkuqA0XUW
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+This should have been part of 40e084a506eb ('MIPS: Add uprobes support.').
 
-On Wednesday, 12 October 2016 23:36:28 BST Kees Cook wrote:
-> On Mon, Oct 10, 2016 at 6:26 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > On Sat, Oct 08, 2016 at 10:47:14PM +0100, Paul Burton wrote:
-> >> Enable CONFIG_HARDENED_USERCOPY checks for MIPS, calling check_object
-> >> size in all of copy_{to,from}_user(), __copy_{to,from}_user() &
-> >> __copy_{to,from}_user_inatomic().
-> 
-> Awesome! Thanks for hooking this up. (Were you able to test with
-> lkdtm's usercopy tests?)
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Fixes: 40e084a506eb ("MIPS: Add uprobes support.")
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mips@linux-mips.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+Jonathan, you can funnel this through the MIPS tree if you're ok with that?
+Just lemme know -- Ralf
 
-Hi Kees,
+ Documentation/features/perf/kprobes-event/arch-support.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes - they successfully failed with a v4.8-based kernel, except for the stack 
-ones (because we don't yet have arch_within_stack_frames, which looks to be 
-true of everyone but x86) and the heap flags ones, which I gather from your 
-blog post[1] isn't expected to fail yet.
-
-[1] https://outflux.net/blog/archives/2016/10/04/security-things-in-linux-v4-8/
-
-Thanks,
-    Paul
---nextPart1476398034.8NkuqA0XUW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAABCAAGBQJX/5VuAAoJEIIg2fppPBxlloEP/jqC23gvGqh1QEmoO4m8GCgr
-4Ixh0EoWTzDIFfxVSUcPVfxKeUBBARSl0XJhI65OlpdJXlpaTi0cuRlaqOvUSwvj
-RTi9Uy7NkpWtdgWrswI0NF5ej3TVG3GfSgdZTEfhxyQETLfJ7y/nNS1KlWna6aaN
-G53GI86msq0IZ+3F9wBVdFfcIIUdHAjJqGI2+x/JvLL8krhNGAcRzHnBFlU4cBbP
-QfKRAz4Wz24dpWyazMNNQ2thWfARa8Wkc68I+inRm1cz9PoOPjRCLKvQL7KlKDDs
-Y4S+BRg2Yit+uol8PsCukUtUWsRHdv9bPBmbVox6Jz+q8II7nqvXhIRJszWpBHpY
-G0gtWtVx4SRBdG4oZf0aNoqZpO1oTplQoI4Vl3fpc3MmX1PCyMBjVykm7U1Mc/Z2
-NaZEynih1otWrH1UgW8fJNfBJUkAk6xZQrRcTMPoWfqbnGjAJOZnkOzrcmzAKpD0
-FmF3fH2tO2j5+Ja3YUy9tisVsciqrve1tfdBuUH7LLU1c5BFV5pwnQhzCWJrElN9
-u+PjnQAzogw74HMilkmBORXY58NlBHxPHz6j8egEc2CbQqpM9Y5/nMtMXgkd7nY4
-SWqrYuPGdAK4IP3nc7/PfGbRWlhvk/giD0HILPXDUcGKNK6FbYrXyWSxb6S/ZpxT
-i2p/ShlbNe2iiZGM3gWO
-=Rnvz
------END PGP SIGNATURE-----
-
---nextPart1476398034.8NkuqA0XUW--
+diff --git a/Documentation/features/perf/kprobes-event/arch-support.txt b/Documentation/features/perf/kprobes-event/arch-support.txt
+index 9855ad0..4660bf2 100644
+--- a/Documentation/features/perf/kprobes-event/arch-support.txt
++++ b/Documentation/features/perf/kprobes-event/arch-support.txt
+@@ -22,7 +22,7 @@
+     |        m68k: | TODO |
+     |       metag: | TODO |
+     |  microblaze: | TODO |
+-    |        mips: | TODO |
++    |        mips: |  ok  |
+     |     mn10300: | TODO |
+     |       nios2: | TODO |
+     |    openrisc: | TODO |

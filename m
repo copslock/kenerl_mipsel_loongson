@@ -1,60 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2016 00:26:34 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:21420 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992663AbcJLW01GypbJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Oct 2016 00:26:27 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 7980141F8DF7;
-        Wed, 12 Oct 2016 23:26:06 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.44.0.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Wed, 12 Oct 2016 23:26:06 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Wed, 12 Oct 2016 23:26:06 +0100
-Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 96B3B616EDE9F;
-        Wed, 12 Oct 2016 23:26:16 +0100 (IST)
-Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
- (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 12 Oct 2016
- 23:26:21 +0100
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 12 Oct
- 2016 23:26:20 +0100
-Date:   Wed, 12 Oct 2016 23:26:20 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     Bhushan Attarde <bhushan.attarde@imgtec.com>,
-        <gdb-patches@sourceware.org>,
-        Matthew Fortune <Matthew.Fortune@imgtec.com>,
-        Andrew Bennett <Andrew.Bennett@imgtec.com>,
-        Jaydeep Patil <Jaydeep.Patil@imgtec.com>,
-        <linux-mips@linux-mips.org>, Paul Burton <paul.burton@imgtec.com>
-Subject: Re: [PATCH 02/24]     Add MIPS32 FPU64 GDB target descriptions
-Message-ID: <20161012222620.GW19354@jhogan-linux.le.imgtec.org>
-References: <1467038991-6600-1-git-send-email-bhushan.attarde@imgtec.com>
- <1467038991-6600-2-git-send-email-bhushan.attarde@imgtec.com>
- <alpine.DEB.2.00.1607221827040.4076@tp.orcam.me.uk>
- <20161012135803.GT19354@jhogan-linux.le.imgtec.org>
- <alpine.DEB.2.00.1610121701180.31859@tp.orcam.me.uk>
- <20161012180531.GV19354@jhogan-linux.le.imgtec.org>
- <alpine.DEB.2.00.1610122217350.31859@tp.orcam.me.uk>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="j2Klb18PAKd8hQ5U"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1610122217350.31859@tp.orcam.me.uk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1cc78754
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2016 02:20:37 +0200 (CEST)
+Received: from mail-lf0-f68.google.com ([209.85.215.68]:33399 "EHLO
+        mail-lf0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992800AbcJMAUbXzqO4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Oct 2016 02:20:31 +0200
+Received: by mail-lf0-f68.google.com with SMTP id l131so6885549lfl.0
+        for <linux-mips@linux-mips.org>; Wed, 12 Oct 2016 17:20:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=4MkMi6DhPzcozocme8O7JV2LtcXot4WKeDmNKMALOWs=;
+        b=xu7j6gHACilL0tsyxzMZoqS38TxIBgub8xG0F+HH4z/prcUVbt9O7XcXBrETKLd+04
+         ejyAFhpRclj5Azm3OoyICduFHYUEtSUFoobP6lUsoSHDFONNYVuuYohPPxaaF2GJHuXA
+         58BxITr3al733wmNXWy1Yoo1sUdanm5EbhC9CuC8vxPunOvA0ruT7hU15cUcLtwagE7o
+         K6d/tegESAFo3JYRUCU4zHpg+GVMt8BwlMiViOHCzRRNFpXzuGFuMP9Lev1G51x2OPai
+         gCoB6PpJZ2qyeURNVlKqWxkb8bzgq4EwU2hbAS1IX3Dj6YZff+K0vPMjZB52UgnqnSpp
+         Lw3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=4MkMi6DhPzcozocme8O7JV2LtcXot4WKeDmNKMALOWs=;
+        b=hMKI9tMQQssPMXdMstWJgqtpkrkIMzo1MJsAFXBISPiztsYr3CZH81VmByQ8lDme5c
+         yAKj6OEYD5gDpvVdy/qIPXsTrsrPZeDelZfcTLzSLJWt6DjhmKuagIkwJawlA6LbraOt
+         LiWTFqnmZbkD/8MzjPMNxAr501uPAWOdArmuNlO1W/S033Kw6EGW7buW0OWgPhVgDeRS
+         6NNKcajYTCbMjebIGTfMbITDcMeWc5JdqB8y/xk7VMQJljlLqfUlaTKviS+xQcjQFTiw
+         xEuZXjJ0BXaaA2oD2IgQXR8ITgiyuUDcOHuVkikQnCAto6sugmROdQDqE8RMXKkYZxeD
+         LLmw==
+X-Gm-Message-State: AA6/9RmXis8ftSP94TxdhAoQbDWUGuhzwouazbMfBNfTISA2ir57kSLX2txVZDg7poP0xA==
+X-Received: by 10.28.61.134 with SMTP id k128mr8080wma.51.1476318025735;
+        Wed, 12 Oct 2016 17:20:25 -0700 (PDT)
+Received: from localhost (cpc94060-newt37-2-0-cust185.19-3.cable.virginm.net. [92.234.204.186])
+        by smtp.gmail.com with ESMTPSA id a2sm17407486wjn.10.2016.10.12.17.20.23
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 12 Oct 2016 17:20:24 -0700 (PDT)
+From:   Lorenzo Stoakes <lstoakes@gmail.com>
+To:     linux-mm@kvack.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Rik van Riel <riel@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        ceph-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, kvm@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-cris-kernel@axis.com, linux-fbdev@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-rdma@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: [PATCH 00/10] mm: adjust get_user_pages* functions to explicitly pass FOLL_* flags
+Date:   Thu, 13 Oct 2016 01:20:10 +0100
+Message-Id: <20161013002020.3062-1-lstoakes@gmail.com>
+X-Mailer: git-send-email 2.10.0
+Return-Path: <lstoakes@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55401
+X-archive-position: 55402
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: lstoakes@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,157 +77,95 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---j2Klb18PAKd8hQ5U
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch series adjusts functions in the get_user_pages* family such that
+desired FOLL_* flags are passed as an argument rather than implied by flags.
 
-On Wed, Oct 12, 2016 at 11:04:18PM +0100, Maciej W. Rozycki wrote:
-> On Wed, 12 Oct 2016, James Hogan wrote:
->=20
-> > >  Then I think it makes sense even more not to create this artificial =
-API=20
-> > > and use the CP1C.FRE/CP1C.NFRE registers instead which do correspond =
-to=20
-> > > what hardware presents to user software.
-> >=20
-> > well, barely. Linux at least doesn't enable Config5.UFE or Config5.UFR,
-> > since FP mode changes must be done for all threads in the process, so
-> > userland can't actually directly access those FCRs either.
->=20
->  Hmm, I didn't know that -- what was the reason for this design decision?=
- =20
-> Offhand the limitation does not appear necessary to me, each thread has=
-=20
-> its own distinct register set, so it does not appear to me that its mode=
-=20
-> of operation has to be the same across them all.  The current setting=20
-> would still of course be inherited from the parent by any new threads=20
-> created with clone(2).
+The purpose of this change is to make the use of FOLL_FORCE explicit so it is
+easier to grep for and clearer to callers that this flag is being used. The use
+of FOLL_FORCE is an issue as it overrides missing VM_READ/VM_WRITE flags for the
+VMA whose pages we are reading from/writing to, which can result in surprising
+behaviour.
 
-Paul Burton & Matt Fortune know the details and can correct me if I'm
-wrong, but I believe the idea is that the mode change will usually be
-initiated by the dynamic loader in repsonse to loading a new shared
-library with a more specific FPU ABI (but must of course be compatible
-with the current mode). As such you must be careful that all threads in
-the process change mode so that they can immediately start using the new
-dynamically loaded code using the more specific ABI.
+The patch series came out of the discussion around commit 38e0885, which
+addressed a BUG_ON() being triggered when a page was faulted in with PROT_NONE
+set but having been overridden by FOLL_FORCE. do_numa_page() was run on the
+assumption the page _must_ be one marked for NUMA node migration as an actual
+PROT_NONE page would have been dealt with prior to this code path, however
+FOLL_FORCE introduced a situation where this assumption did not hold.
 
-https://dmz-portal.mips.com/wiki/MIPS_O32_ABI_-_FR0_and_FR1_Interlinking#10=
-=2E5.2._Setting_the_FPU_mode
+See https://marc.info/?l=linux-mm&m=147585445805166 for the patch proposal.
 
-> > (disclaimer: I haven't looked at this gdb patchset in detail as to
-> > whether any of below has changed since I worked on it).
-> >=20
-> > (1) Even singles and doubles always overlap one another, as do odd
-> > singles and doubles when FR=3D1 (and FRE=3D0):
-> > 	/* (little endian) */
-> > 	union __gdb_builtin_mips_fp64 {
-> > 	  float  f32;
-> > 	  double f64;
-> > 	  int32  i32;
-> > 	  int64  i64;
-> > 	};
-> >=20
-> > (2) Odd singles when FR=3D0 (there are no odd doubles):
-> > 	union __gdb_builtin_mips_fp32 {
-> > 	  float f32;
-> > 	  int32_t i32;
-> > 	};
-> >=20
-> > (3) Odd singles and doubles when FR=3D1, FRE=3D1 don't overlap at all:
-> > 	struct __gdb_builtin_mips_fp96 {
-> > 		union {
-> > 			double f64;
-> > 			int64  i64;
-> > 		};
-> > 		union {
-> > 			float  f32;
-> > 			int32  i32;
-> > 		};
-> > 	};
-> >=20
-> > i.e.
-> >=20
-> > FR=3D0:
-> >  (1) even
-> >        double:	FEDCBA9876543210
-> >        single:	        76543210
-> >  (2) odd
-> >        single:	FEDCBA98
-> >=20
-> > FR=3D1, FRE=3D0:
-> >  (1) even
-> >        double:	FEDCBA9876543210
-> >        single:	        76543210
-> >  (1) odd
-> >        double:	                0123456789ABCDEF
-> >        single:	                        89ABCDEF
-> >=20
-> > FR=3D1, FRE=3D1:
-> >  (1) even
-> >        double:	FEDCBA9876543210
-> >        single:	        76543210   (Hybrid FPR emulation)
-> >  (3) odd
-> >        double:	                0123456789ABCDEF
-> >        single:	FEDCBA98           (Hybrid FPR emulation)
-> > )
->=20
->  I haven't got to this part so far and either way will have to think abou=
-t=20
-> it yet.  For one as I noted we do want to present vector (paired-single)=
-=20
-> data with FR=3D1, FRE=3D0 in addition to what you quoted above.
+Lorenzo Stoakes (10):
+  mm: remove write/force parameters from __get_user_pages_locked()
+  mm: remove write/force parameters from __get_user_pages_unlocked()
+  mm: replace get_user_pages_unlocked() write/force parameters with gup_flags
+  mm: replace get_user_pages_locked() write/force parameters with gup_flags
+  mm: replace get_vaddr_frames() write/force parameters with gup_flags
+  mm: replace get_user_pages() write/force parameters with gup_flags
+  mm: replace get_user_pages_remote() write/force parameters with gup_flags
+  mm: replace __access_remote_vm() write parameter with gup_flags
+  mm: replace access_remote_vm() write parameter with gup_flags
+  mm: replace access_process_vm() write parameter with gup_flags
 
-Right, I hadn't looked into that.
-
-> This was all=20
-> implemented in an old MIPS UK patch originally written by Nigel Stephens=
-=20
-> and included with SDE, which I've never got to upstreaming; have you by=
-=20
-> any chance based your work on that?
-
-No.
-
->  As to FR=3D1, FRE=3D1 your quoted representation of singles is a softwar=
-e=20
-> convention only, so I'm not sure offhand how we might represent it in GDB=
-=20
-> to keep it reasonable; the 96-bit cooked FP register structure does not=
-=20
-> appeal to me at all TBH, but maybe it's the best we can do after all.
-
-Me neither, but it at least seems to look reasonable from an assembly
-debugging point of view. It took some effort to bend GDB to my will to
-be honest, especially around mode changes and the remote protocol (since
-the remote could change from FR=3D0 (32-bit FP registers) to FR=3D1 (64-bit
-FP registers even on 32-bit) at almost any time, but I'm really no gdb
-expert.
-
-Cheers
-James
-
---j2Klb18PAKd8hQ5U
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJX/riMAAoJEGwLaZPeOHZ6WE0QAID0XoVuYf7Eo4FYa3+T1x30
-I+UiaVjWlUWuos2HNakExhXpz8W5boQtseYAZ9EEsON2h8FVrqLMN2oyBIeSjyuf
-zgfJSjb62mXizJJK1AFAUMGH92iND6XrFWi1OsQxyU194ix5vvC9g7aOhZ4ybzpX
-KgsBDxwpoxWvI4mRcong2RUGPgSDj9Zovs948si498LqIQKCAy6oHR6ROUN4jE1t
-wTZTdKrsWG44s0YgS5+74vLexh9+rqmYLjX+E6LzW+ewAfPfsOk99YPzqUehH+hS
-O/Fz2IhG7vgsMKJAZA2WPD8CJolC/Q+/KS85aaBOA+mrPRuolLdprSrJqgDQxXfE
-wEH+zs/6awQ/xpnzeriP+VzTvNA1kUzrkBzhvlbCMOOZWjkRO4hcTXebsTcgEcgC
-teu2RO+GeV4oDv74s1WmKDSq1kb7HMxmA+u9fmwYHrwUz2gPWRSvVWofSm31T3JA
-h386b2mss/QsffYgOj7c9xMPzJoZyN/0FaD9Dq45ZfufUn1yDDheRfQGCZMozk0I
-HGIfPMniTasEfeLRklxJ98Ne4ksMZ1my/Rl3sUDNUX6DwoJNZ/JFBES2tfVYmnOT
-rEf28jwul30QAnEWNV6eYfNNwHauE1gEEk7ZqZj5oNWrH9fnjxNtcqKOrg40Gofc
-oy+ZB/B6Z3YB5A0Vs8iT
-=+Arx
------END PGP SIGNATURE-----
-
---j2Klb18PAKd8hQ5U--
+ arch/alpha/kernel/ptrace.c                         |  9 ++--
+ arch/blackfin/kernel/ptrace.c                      |  5 ++-
+ arch/cris/arch-v32/drivers/cryptocop.c             |  4 +-
+ arch/cris/arch-v32/kernel/ptrace.c                 |  4 +-
+ arch/ia64/kernel/err_inject.c                      |  2 +-
+ arch/ia64/kernel/ptrace.c                          | 14 +++---
+ arch/m32r/kernel/ptrace.c                          | 15 ++++---
+ arch/mips/kernel/ptrace32.c                        |  5 ++-
+ arch/mips/mm/gup.c                                 |  2 +-
+ arch/powerpc/kernel/ptrace32.c                     |  5 ++-
+ arch/s390/mm/gup.c                                 |  3 +-
+ arch/score/kernel/ptrace.c                         | 10 +++--
+ arch/sh/mm/gup.c                                   |  3 +-
+ arch/sparc/kernel/ptrace_64.c                      | 24 +++++++----
+ arch/sparc/mm/gup.c                                |  3 +-
+ arch/x86/kernel/step.c                             |  3 +-
+ arch/x86/mm/gup.c                                  |  2 +-
+ arch/x86/mm/mpx.c                                  |  5 +--
+ arch/x86/um/ptrace_32.c                            |  3 +-
+ arch/x86/um/ptrace_64.c                            |  3 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c            |  7 ++-
+ drivers/gpu/drm/etnaviv/etnaviv_gem.c              |  7 ++-
+ drivers/gpu/drm/exynos/exynos_drm_g2d.c            |  3 +-
+ drivers/gpu/drm/i915/i915_gem_userptr.c            |  6 ++-
+ drivers/gpu/drm/radeon/radeon_ttm.c                |  3 +-
+ drivers/gpu/drm/via/via_dmablit.c                  |  4 +-
+ drivers/infiniband/core/umem.c                     |  6 ++-
+ drivers/infiniband/core/umem_odp.c                 |  7 ++-
+ drivers/infiniband/hw/mthca/mthca_memfree.c        |  2 +-
+ drivers/infiniband/hw/qib/qib_user_pages.c         |  3 +-
+ drivers/infiniband/hw/usnic/usnic_uiom.c           |  5 ++-
+ drivers/media/pci/ivtv/ivtv-udma.c                 |  4 +-
+ drivers/media/pci/ivtv/ivtv-yuv.c                  |  5 ++-
+ drivers/media/platform/omap/omap_vout.c            |  2 +-
+ drivers/media/v4l2-core/videobuf-dma-sg.c          |  7 ++-
+ drivers/media/v4l2-core/videobuf2-memops.c         |  6 ++-
+ drivers/misc/mic/scif/scif_rma.c                   |  3 +-
+ drivers/misc/sgi-gru/grufault.c                    |  2 +-
+ drivers/platform/goldfish/goldfish_pipe.c          |  3 +-
+ drivers/rapidio/devices/rio_mport_cdev.c           |  3 +-
+ drivers/scsi/st.c                                  |  5 +--
+ .../interface/vchiq_arm/vchiq_2835_arm.c           |  3 +-
+ .../vc04_services/interface/vchiq_arm/vchiq_arm.c  |  3 +-
+ drivers/video/fbdev/pvr2fb.c                       |  4 +-
+ drivers/virt/fsl_hypervisor.c                      |  4 +-
+ fs/exec.c                                          |  9 +++-
+ fs/proc/base.c                                     | 19 +++++---
+ include/linux/mm.h                                 | 18 ++++----
+ kernel/events/uprobes.c                            |  6 ++-
+ kernel/ptrace.c                                    | 16 ++++---
+ mm/frame_vector.c                                  |  9 ++--
+ mm/gup.c                                           | 50 ++++++++++------------
+ mm/memory.c                                        | 16 ++++---
+ mm/mempolicy.c                                     |  2 +-
+ mm/nommu.c                                         | 38 +++++++---------
+ mm/process_vm_access.c                             |  7 ++-
+ mm/util.c                                          |  8 ++--
+ net/ceph/pagevec.c                                 |  2 +-
+ security/tomoyo/domain.c                           |  2 +-
+ virt/kvm/async_pf.c                                |  3 +-
+ virt/kvm/kvm_main.c                                | 11 +++--
+ 61 files changed, 260 insertions(+), 187 deletions(-)

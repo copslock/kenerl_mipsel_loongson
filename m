@@ -1,54 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2016 15:49:16 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:12836 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992160AbcJMNtJKs512 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Oct 2016 15:49:09 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2016 16:09:07 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36220 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992160AbcJMOJAx0fY2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Oct 2016 16:09:00 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 37CD441F8E0D;
+        Thu, 13 Oct 2016 15:08:37 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.44.0.242])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 13 Oct 2016 15:08:37 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 13 Oct 2016 15:08:37 +0100
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id C6B645E3F2B6F;
-        Thu, 13 Oct 2016 14:48:59 +0100 (IST)
-Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
- HHMAIL03.hh.imgtec.org (10.44.0.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 13 Oct 2016 14:49:02 +0100
-Received: from HHMAIL01.hh.imgtec.org ([fe80::710b:f219:72bc:e0b3]) by
- HHMAIL-X.hh.imgtec.org ([fe80::3509:b0ce:371:2b%18]) with mapi id
- 14.03.0294.000; Thu, 13 Oct 2016 14:49:02 +0100
-From:   James Hartley <James.Hartley@imgtec.com>
-To:     James Hartley <James.Hartley@imgtec.com>,
-        Rahul Bedarkar <Rahul.Bedarkar@imgtec.com>,
-        Rob Herring <robh@kernel.org>
+        by Forcepoint Email with ESMTPS id 58117CA1BD177;
+        Thu, 13 Oct 2016 15:08:50 +0100 (IST)
+Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
+ (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 13 Oct 2016
+ 15:08:53 +0100
+Received: from np-p-burton.localnet (10.100.200.229) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 13 Oct
+ 2016 15:08:52 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Kees Cook <keescook@chromium.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 2/2] MIPS: DTS: img: add device tree for Marduk board
-Thread-Topic: [PATCH 2/2] MIPS: DTS: img: add device tree for Marduk board
-Thread-Index: AQHSH83MFJLEHIy+xEmmOrinu3/Ha6ChsusAgAQ8JACAAC050IAAVM7w
-Date:   Thu, 13 Oct 2016 13:49:01 +0000
-Message-ID: <72BC0C8BD7BB6F45988A99382E5FBAE5889EDBE5@HHMAIL01.hh.imgtec.org>
-References: <1475757094-31089-1-git-send-email-rahul.bedarkar@imgtec.com>
- <1475757094-31089-2-git-send-email-rahul.bedarkar@imgtec.com>
- <20161010142152.GA7920@rob-hp-laptop> <57FF3172.4010709@imgtec.com>
- <72BC0C8BD7BB6F45988A99382E5FBAE5889ED617@HHMAIL01.hh.imgtec.org>
-In-Reply-To: <72BC0C8BD7BB6F45988A99382E5FBAE5889ED617@HHMAIL01.hh.imgtec.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.40.7.55]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Dmitry Vyukov <dvyukov@google.com>
+Subject: Re: [PATCH] MIPS: Enable hardened usercopy
+Date:   Thu, 13 Oct 2016 15:08:46 +0100
+Message-ID: <33584114.GQq7GNxjzm@np-p-burton>
+Organization: Imagination Technologies
+User-Agent: KMail/5.3.1 (Linux/4.7.6-1-ARCH; KDE/5.26.0; x86_64; ; )
+In-Reply-To: <CAGXu5jLZjFu_Mg93bzu0WBPwNVLuqmiNQ7O4Gpo4NaDn=yO_PQ@mail.gmail.com>
+References: <20161008214714.5375-1-paul.burton@imgtec.com> <20161010132642.GA8229@linux-mips.org> <CAGXu5jLZjFu_Mg93bzu0WBPwNVLuqmiNQ7O4Gpo4NaDn=yO_PQ@mail.gmail.com>
 MIME-Version: 1.0
-Return-Path: <James.Hartley@imgtec.com>
+Content-Type: multipart/signed; boundary="nextPart1476398034.8NkuqA0XUW";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+X-Originating-IP: [10.100.200.229]
+X-ESG-ENCRYPT-TAG: 1cc78754
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55420
+X-archive-position: 55421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Hartley@imgtec.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,63 +58,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Rahul,
+--nextPart1476398034.8NkuqA0XUW
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org [mailto:linux-mips-bounce@linux-
-> mips.org] On Behalf Of James Hartley
-> Sent: 13 October 2016 09:50
-> To: Rahul Bedarkar; Rob Herring
-> Cc: Ralf Baechle; Mark Rutland; linux-mips@linux-mips.org;
-> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: RE: [PATCH 2/2] MIPS: DTS: img: add device tree for Marduk board
+On Wednesday, 12 October 2016 23:36:28 BST Kees Cook wrote:
+> On Mon, Oct 10, 2016 at 6:26 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > On Sat, Oct 08, 2016 at 10:47:14PM +0100, Paul Burton wrote:
+> >> Enable CONFIG_HARDENED_USERCOPY checks for MIPS, calling check_object
+> >> size in all of copy_{to,from}_user(), __copy_{to,from}_user() &
+> >> __copy_{to,from}_user_inatomic().
 > 
-> Hi Rahul,
-> 
-> > -----Original Message-----
-> > From: Rahul Bedarkar
-> > Sent: 13 October 2016 08:02
-> > To: Rob Herring
-> > Cc: Ralf Baechle; Mark Rutland; James Hartley;
-> > linux-mips@linux-mips.org; devicetree@vger.kernel.org;
-> > linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH 2/2] MIPS: DTS: img: add device tree for Marduk
-> > board
-> >
-> > Hi,
-> >
-> > On Monday 10 October 2016 07:51 PM, Rob Herring wrote:
-> > >> +
-> > >> +	memory {
-> > >
-> > > Is 0 the actual base, or that gets filled in by bootloader? If the
-> > > formet, add unit address.
-> > >
-> >
-> > Bootloader (uboot) can override or fixup memory node. But with version
-> > of bootloader I tested with, base address is hardcoded to 0 and only
-> > size may get changed. But since booloader can override or fixup memory
-> > node, I assume we don't add unit address in this case.
-> >
-> > >> +		device_type = "memory";
-> > >> +		reg =  <0x00000000 0x08000000>;
-> >
-> > I now realized that size is incorrectly specified in memory node. It
-> > should be 256MB and not 128MB. I will fix this in v2.
-> 
-> This is board dependent, and since you have already explained that the boot
-> loader is expected to configure this, I would recommend leaving it at 128MB
-> (which I believe is the size of the smallest DDR part in use on existing boards).
-> This would mean that if for some reason the boot loader did not adjust the
-> settings, it would still boot on all currently known boards.
+> Awesome! Thanks for hooking this up. (Were you able to test with
+> lkdtm's usercopy tests?)
 
-So it seems the 128MB boards are not CI40 based, so since this dts is CI40 specific, it's fine to have 256MB.
+Hi Kees,
 
-James.
+Yes - they successfully failed with a v4.8-based kernel, except for the stack 
+ones (because we don't yet have arch_within_stack_frames, which looks to be 
+true of everyone but x86) and the heap flags ones, which I gather from your 
+blog post[1] isn't expected to fail yet.
 
-> 
-> James.
-> 
-> >
-> > Thanks,
-> > Rahul
+[1] https://outflux.net/blog/archives/2016/10/04/security-things-in-linux-v4-8/
+
+Thanks,
+    Paul
+--nextPart1476398034.8NkuqA0XUW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAABCAAGBQJX/5VuAAoJEIIg2fppPBxlloEP/jqC23gvGqh1QEmoO4m8GCgr
+4Ixh0EoWTzDIFfxVSUcPVfxKeUBBARSl0XJhI65OlpdJXlpaTi0cuRlaqOvUSwvj
+RTi9Uy7NkpWtdgWrswI0NF5ej3TVG3GfSgdZTEfhxyQETLfJ7y/nNS1KlWna6aaN
+G53GI86msq0IZ+3F9wBVdFfcIIUdHAjJqGI2+x/JvLL8krhNGAcRzHnBFlU4cBbP
+QfKRAz4Wz24dpWyazMNNQ2thWfARa8Wkc68I+inRm1cz9PoOPjRCLKvQL7KlKDDs
+Y4S+BRg2Yit+uol8PsCukUtUWsRHdv9bPBmbVox6Jz+q8II7nqvXhIRJszWpBHpY
+G0gtWtVx4SRBdG4oZf0aNoqZpO1oTplQoI4Vl3fpc3MmX1PCyMBjVykm7U1Mc/Z2
+NaZEynih1otWrH1UgW8fJNfBJUkAk6xZQrRcTMPoWfqbnGjAJOZnkOzrcmzAKpD0
+FmF3fH2tO2j5+Ja3YUy9tisVsciqrve1tfdBuUH7LLU1c5BFV5pwnQhzCWJrElN9
+u+PjnQAzogw74HMilkmBORXY58NlBHxPHz6j8egEc2CbQqpM9Y5/nMtMXgkd7nY4
+SWqrYuPGdAK4IP3nc7/PfGbRWlhvk/giD0HILPXDUcGKNK6FbYrXyWSxb6S/ZpxT
+i2p/ShlbNe2iiZGM3gWO
+=Rnvz
+-----END PGP SIGNATURE-----
+
+--nextPart1476398034.8NkuqA0XUW--

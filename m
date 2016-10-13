@@ -1,34 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2016 17:09:45 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:58382 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992160AbcJMPJhvtPA4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 Oct 2016 17:09:37 +0200
-Received: from scotty.linux-mips.net (localhost.localdomain [127.0.0.1])
-        by scotty.linux-mips.net (8.15.2/8.14.8) with ESMTP id u9DF9bha028031;
-        Thu, 13 Oct 2016 17:09:37 +0200
-Received: (from ralf@localhost)
-        by scotty.linux-mips.net (8.15.2/8.15.2/Submit) id u9DF9a6Z028030;
-        Thu, 13 Oct 2016 17:09:36 +0200
-Date:   Thu, 13 Oct 2016 17:09:36 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jonathan Corbet <corbet@lwn.net>, linux-mips@linux-mips.org,
-        linux-doc@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH] Documentation: MIPS supports HAVE_REGS_AND_STACK_ACCESS_API
-Message-ID: <20161013150936.GA27810@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2016 17:15:19 +0200 (CEST)
+Received: from tex.lwn.net ([70.33.254.29]:46090 "EHLO vena.lwn.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992160AbcJMPPLpJvZ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 Oct 2016 17:15:11 +0200
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by vena.lwn.net (Postfix) with ESMTP id 2F6641540040;
+        Thu, 13 Oct 2016 09:15:08 -0600 (MDT)
+Date:   Thu, 13 Oct 2016 09:15:07 -0600
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Documentation: MIPS supports
+ HAVE_REGS_AND_STACK_ACCESS_API
+Message-ID: <20161013091507.2d6b85f0@lwn.net>
+In-Reply-To: <20161013150936.GA27810@linux-mips.org>
+References: <20161013150936.GA27810@linux-mips.org>
+Organization: LWN.net
+X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.7.0 (2016-08-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Return-Path: <corbet@lwn.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55422
+X-archive-position: 55423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: corbet@lwn.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,31 +44,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This should have been part of 40e084a506eb ('MIPS: Add uprobes support.').
+On Thu, 13 Oct 2016 17:09:36 +0200
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Fixes: 40e084a506eb ("MIPS: Add uprobes support.")
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-mips@linux-mips.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
-Jonathan, you can funnel this through the MIPS tree if you're ok with that?
-Just lemme know -- Ralf
+> Jonathan, you can funnel this through the MIPS tree if you're ok with that?
+> Just lemme know -- Ralf
 
- Documentation/features/perf/kprobes-event/arch-support.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Through the MIPS tree is fine with me.
 
-diff --git a/Documentation/features/perf/kprobes-event/arch-support.txt b/Documentation/features/perf/kprobes-event/arch-support.txt
-index 9855ad0..4660bf2 100644
---- a/Documentation/features/perf/kprobes-event/arch-support.txt
-+++ b/Documentation/features/perf/kprobes-event/arch-support.txt
-@@ -22,7 +22,7 @@
-     |        m68k: | TODO |
-     |       metag: | TODO |
-     |  microblaze: | TODO |
--    |        mips: | TODO |
-+    |        mips: |  ok  |
-     |     mn10300: | TODO |
-     |       nios2: | TODO |
-     |    openrisc: | TODO |
+Thanks,
+
+jon

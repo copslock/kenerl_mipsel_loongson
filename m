@@ -1,43 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2016 07:57:28 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:22616 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992110AbcJNF5J10S5s (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2016 07:57:09 +0200
-Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 3F293D87D8051;
-        Fri, 14 Oct 2016 06:57:00 +0100 (IST)
-Received: from PUMAIL01.pu.imgtec.org (192.168.91.250) by
- HHMAIL03.hh.imgtec.org (10.44.0.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 14 Oct 2016 06:57:02 +0100
-Received: from pudesk287-linux.pu.imgtec.org (192.168.91.23) by
- PUMAIL01.pu.imgtec.org (192.168.91.250) with Microsoft SMTP Server (TLS) id
- 14.3.266.1; Fri, 14 Oct 2016 11:27:00 +0530
-From:   Rahul Bedarkar <rahul.bedarkar@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        James Hartley <james.hartley@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Rahul Bedarkar <rahul.bedarkar@imgtec.com>
-Subject: [PATCH v2 2/2] MIPS: DTS: img: add device tree for Marduk board
-Date:   Fri, 14 Oct 2016 11:25:55 +0530
-Message-ID: <1476424555-22629-2-git-send-email-rahul.bedarkar@imgtec.com>
-X-Mailer: git-send-email 2.6.2
-In-Reply-To: <1476424555-22629-1-git-send-email-rahul.bedarkar@imgtec.com>
-References: <1476424555-22629-1-git-send-email-rahul.bedarkar@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2016 09:09:17 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:51089 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991859AbcJNHJKAlEXU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2016 09:09:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Date:Message-ID:Subject:From:Cc:To;
+        bh=nhkFRpBtXQv74Uy/MFFH3SVBBXhPuACrok9Aboufdrw=; b=UM8Gr7mwQfsjBnBaDhMJI5wjqW
+        Gbd+KDOKUK6dddry/qv6RNtBZI7rZlICp06w/iXbEmeWaspF/X96iNLLxcGVPXB1pBniFlu719tMo
+        pWqUrhuRE7UT+SHn6TJ+R5JDCPn3MEMv2tDJJMPY5H8R7BL76YEJhMyMzssXcUiZLoFWyR9FJuIFp
+        2FTL+Krn2Yp+kuGv9uZlewoO26/CN9O+1pOZ/zX0swNJZmfopSSjLRfXH3mY0dkm91blDI5/P4jmF
+        /Q8StsdmRGOYnJwCFEqb7VuDKPWODGKY2JBqyjykQTtUEXpHVQ3YIHJ8TMlScXUW+dKzLQzc6Sf5P
+        Yeryw3cQ==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:56512 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
+        (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1buwbz-000fut-99; Fri, 14 Oct 2016 07:08:59 +0000
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Commit 'MIPS: Malta: Use syscon-reboot driver to reboot' in -next and
+ changed reset behavior
+Message-ID: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
+Date:   Fri, 14 Oct 2016 00:09:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [192.168.91.23]
-Return-Path: <Rahul.Bedarkar@imgtec.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55426
+X-archive-position: 55427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rahul.bedarkar@imgtec.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,259 +64,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for Imagination Technologies' Marduk board which is based
-on Pistachio SoC. It is also known as Creator Ci40. Marduk is legacy
-name and will be there for decades.
+Hi Paul,
 
-Documentation for this board can be found on
-https://docs.creatordev.io/ci40/
+with commit 'MIPS: Malta: Use syscon-reboot driver to reboot' in -next, the value written
+into the reset register is changed from 0x42 to 0x4d. Is this change on purpose,
+or a copy-and-paste error from the SEAD3 changes ?
 
-This patch adds initial support for board with following peripherals:
+Reason for asking is that qemu only accepts a value of 0x42, which causes the reset
+in qemu to fail. Question is if qemu or the new reset value is wrong.
 
-* PWM based heartbeat LED
-* GPIO based buttons
-* SPI NOR flash on SPI1
-* UART0 and UART1
-* SD card
-* Ethernet
-* USB
-* PWM
-* ADC
-* I2C
+What values are valid ? Can you shed a light ?
 
-Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
----
-Changes in v2:
-  - Correct RAM size. It is 256MB instead of 128MB.
-  - Rename nodes pwm_leds -> leds and gpio_keys -> keys (Suggested by Rob Herring)
-  - Don't use '_' in node name for internal_dac_supply (Suggested by Rob Herring)
-  - Add part name in compatible string for spi-nor (Suggested by Rob Herring)
----
- .../bindings/mips/img/pistachio-marduk.txt         |  10 ++
- MAINTAINERS                                        |   6 +
- arch/mips/boot/dts/img/Makefile                    |   9 ++
- arch/mips/boot/dts/img/pistachio_marduk.dts        | 163 +++++++++++++++++++++
- 4 files changed, 188 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt
- create mode 100644 arch/mips/boot/dts/img/Makefile
- create mode 100644 arch/mips/boot/dts/img/pistachio_marduk.dts
+Second question is endianness. Even when changing the value to 0x42, the system still
+did not reboot for me. After a while I found out that I needed to add "big-endian;"
+to the syscon node when running a big endian image. However, when running a
+little endian image, "big-endian" did not work. In that case, I had to use the default,
+which is little endian.
 
-diff --git a/Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt b/Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt
-new file mode 100644
-index 0000000..2d5126d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt
-@@ -0,0 +1,10 @@
-+Imagination Technologies' Pistachio SoC based Marduk Board
-+==========================================================
-+
-+Compatible string must be "img,pistachio-marduk", "img,pistachio"
-+
-+Hardware and other related documentation is available at
-+https://docs.creatordev.io/ci40/
-+
-+It is also known as Creator Ci40. Marduk is legacy name and will
-+be there for decades.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 98bcf06..8e6c962b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7515,6 +7515,12 @@ W:	http://www.kernel.org/doc/man-pages
- L:	linux-man@vger.kernel.org
- S:	Maintained
- 
-+MARDUK (CREATOR CI40) DEVICE TREE SUPPORT
-+M:	Rahul Bedarkar <rahul.bedarkar@imgtec.com>
-+L:	linux-mips@linux-mips.org
-+S:	Maintained
-+F:	arch/mips/boot/dts/img/pistachio_marduk.dts
-+
- MARVELL 88E6XXX ETHERNET SWITCH FABRIC DRIVER
- M:	Andrew Lunn <andrew@lunn.ch>
- M:	Vivien Didelot <vivien.didelot@savoirfairelinux.com>
-diff --git a/arch/mips/boot/dts/img/Makefile b/arch/mips/boot/dts/img/Makefile
-new file mode 100644
-index 0000000..69a65f0
---- /dev/null
-+++ b/arch/mips/boot/dts/img/Makefile
-@@ -0,0 +1,9 @@
-+dtb-$(CONFIG_MACH_PISTACHIO)	+= pistachio_marduk.dtb
-+
-+obj-y				+= $(patsubst %.dtb, %.dtb.o, $(dtb-y))
-+
-+# Force kbuild to make empty built-in.o if necessary
-+obj-				+= dummy.o
-+
-+always				:= $(dtb-y)
-+clean-files			:= *.dtb *.dtb.S
-diff --git a/arch/mips/boot/dts/img/pistachio_marduk.dts b/arch/mips/boot/dts/img/pistachio_marduk.dts
-new file mode 100644
-index 0000000..cf9cebd
---- /dev/null
-+++ b/arch/mips/boot/dts/img/pistachio_marduk.dts
-@@ -0,0 +1,163 @@
-+/*
-+ * Copyright (C) 2015, 2016 Imagination Technologies Ltd.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * IMG Marduk board is also known as Creator Ci40.
-+ */
-+
-+/dts-v1/;
-+
-+#include "pistachio.dtsi"
-+
-+/ {
-+	model = "IMG Marduk (Creator Ci40)";
-+	compatible = "img,pistachio-marduk", "img,pistachio";
-+
-+	aliases {
-+		serial0 = &uart0;
-+		serial1 = &uart1;
-+		ethernet0 = &enet;
-+		spi0 = &spfi0;
-+		spi1 = &spfi1;
-+	};
-+
-+	chosen {
-+		bootargs = "root=/dev/sda1 rootwait ro lpj=723968";
-+		stdout-path = "serial1:115200";
-+	};
-+
-+	memory {
-+		device_type = "memory";
-+		reg =  <0x00000000 0x10000000>;
-+	};
-+
-+	reg_1v8: fixed-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "aux_adc_vref";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		regulator-boot-on;
-+	};
-+
-+	internal_dac_supply: internal-dac-supply {
-+		compatible = "regulator-fixed";
-+		regulator-name = "internal_dac_supply";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	leds {
-+		compatible = "pwm-leds";
-+		heartbeat {
-+			label = "marduk:red:heartbeat";
-+			pwms = <&pwm 3 300000>;
-+			max-brightness = <255>;
-+			linux,default-trigger = "heartbeat";
-+		};
-+	};
-+
-+	keys {
-+		compatible = "gpio-keys";
-+		button@1 {
-+			label = "Button 1";
-+			linux,code = <0x101>; /* BTN_1 */
-+			gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
-+		};
-+		button@2 {
-+			label = "Button 2";
-+			linux,code = <0x102>; /* BTN_2 */
-+			gpios = <&gpio2 14 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+};
-+
-+&internal_dac {
-+	VDD-supply = <&internal_dac_supply>;
-+};
-+
-+&spfi1 {
-+	status = "okay";
-+
-+	pinctrl-0 = <&spim1_pins>, <&spim1_quad_pins>, <&spim1_cs0_pin>,
-+		    <&spim1_cs1_pin>;
-+	pinctrl-names = "default";
-+	cs-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>, <&gpio0 1 GPIO_ACTIVE_HIGH>;
-+
-+	flash@0 {
-+		compatible = "spansion,s25fl016k", "jedec,spi-nor";
-+		reg = <0>;
-+		spi-max-frequency = <50000000>;
-+	};
-+};
-+
-+&uart0 {
-+	status = "okay";
-+	assigned-clock-rates = <114278400>, <1843200>;
-+};
-+
-+&uart1 {
-+	status = "okay";
-+};
-+
-+&usb {
-+	status = "okay";
-+};
-+
-+&enet {
-+	status = "okay";
-+};
-+
-+&pin_enet {
-+	drive-strength = <2>;
-+};
-+
-+&pin_enet_phy_clk {
-+	drive-strength = <2>;
-+};
-+
-+&sdhost {
-+	status = "okay";
-+	bus-width = <4>;
-+	disable-wp;
-+};
-+
-+&pin_sdhost_cmd {
-+	drive-strength = <2>;
-+};
-+
-+&pin_sdhost_data {
-+	drive-strength = <2>;
-+};
-+
-+&pwm {
-+	status = "okay";
-+
-+	pinctrl-0 = <&pwmpdm0_pin>, <&pwmpdm1_pin>, <&pwmpdm2_pin>,
-+		    <&pwmpdm3_pin>;
-+	pinctrl-names = "default";
-+};
-+
-+&adc {
-+	status = "okay";
-+	vref-supply = <&reg_1v8>;
-+	adc-reserved-channels = <0x10>;
-+};
-+
-+&i2c2 {
-+	status = "okay";
-+	clock-frequency = <400000>;
-+
-+	tpm@20 {
-+		compatible = "infineon,slb9645tt";
-+		reg = <0x20>;
-+	};
-+
-+};
-+
-+&i2c3 {
-+	status = "okay";
-+	clock-frequency = <400000>;
-+};
--- 
-2.6.2
+Which makes me really wonder how this is expected to work. Does the real hardware accept
+any value written into the reset register ?
+
+Thanks,
+Guenter

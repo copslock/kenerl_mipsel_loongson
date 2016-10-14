@@ -1,57 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2016 09:09:17 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:51089 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991859AbcJNHJKAlEXU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2016 09:09:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Date:Message-ID:Subject:From:Cc:To;
-        bh=nhkFRpBtXQv74Uy/MFFH3SVBBXhPuACrok9Aboufdrw=; b=UM8Gr7mwQfsjBnBaDhMJI5wjqW
-        Gbd+KDOKUK6dddry/qv6RNtBZI7rZlICp06w/iXbEmeWaspF/X96iNLLxcGVPXB1pBniFlu719tMo
-        pWqUrhuRE7UT+SHn6TJ+R5JDCPn3MEMv2tDJJMPY5H8R7BL76YEJhMyMzssXcUiZLoFWyR9FJuIFp
-        2FTL+Krn2Yp+kuGv9uZlewoO26/CN9O+1pOZ/zX0swNJZmfopSSjLRfXH3mY0dkm91blDI5/P4jmF
-        /Q8StsdmRGOYnJwCFEqb7VuDKPWODGKY2JBqyjykQTtUEXpHVQ3YIHJ8TMlScXUW+dKzLQzc6Sf5P
-        Yeryw3cQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:56512 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1buwbz-000fut-99; Fri, 14 Oct 2016 07:08:59 +0000
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Commit 'MIPS: Malta: Use syscon-reboot driver to reboot' in -next and
- changed reset behavior
-Message-ID: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
-Date:   Fri, 14 Oct 2016 00:09:01 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2016 11:19:15 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:25132 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23991859AbcJNJTHON5ar (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2016 11:19:07 +0200
+Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
+        by Forcepoint Email with ESMTPS id 4505736720D06;
+        Fri, 14 Oct 2016 10:18:58 +0100 (IST)
+Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
+ (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 14 Oct 2016
+ 10:19:00 +0100
+Received: from localhost (10.100.200.203) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 14 Oct
+ 2016 10:19:00 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Paul Burton <paul.burton@imgtec.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+Subject: [PATCH 1/2] mfd: syscon: Support native-endian regmaps
+Date:   Fri, 14 Oct 2016 10:17:31 +0100
+Message-ID: <20161014091732.27536-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.10.0
+In-Reply-To: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
+References: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.203]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55427
+X-archive-position: 55428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,25 +49,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+The regmap devicetree binding documentation states that a native-endian
+property should be supported as well as big-endian & little-endian,
+however syscon in its duplication of the parsing of these properties
+omits support for native-endian. Fix this by setting
+REGMAP_ENDIAN_NATIVE when a native-endian property is found.
 
-with commit 'MIPS: Malta: Use syscon-reboot driver to reboot' in -next, the value written
-into the reset register is changed from 0x42 to 0x4d. Is this change on purpose,
-or a copy-and-paste error from the SEAD3 changes ?
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ drivers/mfd/syscon.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Reason for asking is that qemu only accepts a value of 0x42, which causes the reset
-in qemu to fail. Question is if qemu or the new reset value is wrong.
-
-What values are valid ? Can you shed a light ?
-
-Second question is endianness. Even when changing the value to 0x42, the system still
-did not reboot for me. After a while I found out that I needed to add "big-endian;"
-to the syscon node when running a big endian image. However, when running a
-little endian image, "big-endian" did not work. In that case, I had to use the default,
-which is little endian.
-
-Which makes me really wonder how this is expected to work. Does the real hardware accept
-any value written into the reset register ?
-
-Thanks,
-Guenter
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 2f2225e..b93fe4c 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -73,8 +73,10 @@ static struct syscon *of_syscon_register(struct device_node *np)
+ 	/* Parse the device's DT node for an endianness specification */
+ 	if (of_property_read_bool(np, "big-endian"))
+ 		syscon_config.val_format_endian = REGMAP_ENDIAN_BIG;
+-	 else if (of_property_read_bool(np, "little-endian"))
++	else if (of_property_read_bool(np, "little-endian"))
+ 		syscon_config.val_format_endian = REGMAP_ENDIAN_LITTLE;
++	else if (of_property_read_bool(np, "native-endian"))
++		syscon_config.val_format_endian = REGMAP_ENDIAN_NATIVE;
+ 
+ 	/*
+ 	 * search for reg-io-width property in DT. If it is not provided,
+-- 
+2.10.0

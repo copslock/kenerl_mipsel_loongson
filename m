@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2016 14:27:55 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57995 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2016 14:55:43 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59190 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992104AbcJNM1rIQnjt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2016 14:27:47 +0200
+        by eddie.linux-mips.org with ESMTP id S23992104AbcJNMzgKKsHt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2016 14:55:36 +0200
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1058D87A;
-        Fri, 14 Oct 2016 12:27:39 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 634BF901;
+        Fri, 14 Oct 2016 12:55:29 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,12 +14,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         kvm@vger.kernel.org
-Subject: [PATCH 4.8 14/37] KVM: MIPS: Drop other CPU ASIDs on guest MMU changes
-Date:   Fri, 14 Oct 2016 14:27:00 +0200
-Message-Id: <20161014122551.733824829@linuxfoundation.org>
+Subject: [PATCH 4.7 14/31] KVM: MIPS: Drop other CPU ASIDs on guest MMU changes
+Date:   Fri, 14 Oct 2016 14:54:58 +0200
+Message-Id: <20161014122715.841372737@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.0
-In-Reply-To: <20161014122549.411962735@linuxfoundation.org>
-References: <20161014122549.411962735@linuxfoundation.org>
+In-Reply-To: <20161014122715.235592611@linuxfoundation.org>
+References: <20161014122715.235592611@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55432
+X-archive-position: 55433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +44,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.8-stable review patch.  If anyone has any objections, please let me know.
+4.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -80,7 +80,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -846,6 +846,47 @@ enum emulation_result kvm_mips_emul_tlbr
+@@ -807,6 +807,47 @@ enum emulation_result kvm_mips_emul_tlbr
  	return EMULATE_FAIL;
  }
  
@@ -128,7 +128,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  /* Write Guest TLB Entry @ Index */
  enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
  {
-@@ -865,11 +906,8 @@ enum emulation_result kvm_mips_emul_tlbw
+@@ -826,11 +867,8 @@ enum emulation_result kvm_mips_emul_tlbw
  	}
  
  	tlb = &vcpu->arch.guest_tlb[index];
@@ -142,7 +142,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
  	tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
-@@ -898,11 +936,7 @@ enum emulation_result kvm_mips_emul_tlbw
+@@ -859,11 +897,7 @@ enum emulation_result kvm_mips_emul_tlbw
  
  	tlb = &vcpu->arch.guest_tlb[index];
  
@@ -155,17 +155,17 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
  	tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
-@@ -1026,6 +1060,7 @@ enum emulation_result kvm_mips_emulate_C
- 	enum emulation_result er = EMULATE_DONE;
- 	u32 rt, rd, sel;
+@@ -982,6 +1016,7 @@ enum emulation_result kvm_mips_emulate_C
+ 	int32_t rt, rd, copz, sel, co_bit, op;
+ 	uint32_t pc = vcpu->arch.pc;
  	unsigned long curr_pc;
 +	int cpu, i;
  
  	/*
  	 * Update PC and hold onto current PC in case there is
-@@ -1135,8 +1170,16 @@ enum emulation_result kvm_mips_emulate_C
- 							& KVM_ENTRYHI_ASID,
- 						nasid);
+@@ -1089,8 +1124,16 @@ enum emulation_result kvm_mips_emulate_C
+ 						vcpu->arch.gprs[rt]
+ 						& KVM_ENTRYHI_ASID);
  
 +					preempt_disable();
  					/* Blow away the shadow host TLBs */

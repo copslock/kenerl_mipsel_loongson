@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 06:51:17 +0200 (CEST)
-Received: from resqmta-ch2-06v.sys.comcast.net ([69.252.207.38]:59952 "EHLO
-        resqmta-ch2-06v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990864AbcJQEvKRXTbf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 06:51:10 +0200
-Received: from resomta-ch2-08v.sys.comcast.net ([69.252.207.104])
-        by resqmta-ch2-06v.sys.comcast.net with SMTP
-        id vzt9bsmoP2Nhqvzt9bbIJj; Mon, 17 Oct 2016 04:51:03 +0000
-Received: from [192.168.1.13] ([76.106.83.43])
-        by resomta-ch2-08v.sys.comcast.net with SMTP
-        id vzt8bzfk6930Jvzt8btyYP; Mon, 17 Oct 2016 04:51:03 +0000
-To:     Linux/MIPS <linux-mips@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-From:   Joshua Kinard <kumba@gentoo.org>
-Subject: IP27's I/O addressing
-Message-ID: <80537976-d7f9-790e-5c76-6b6063fb059e@gentoo.org>
-Date:   Mon, 17 Oct 2016 00:50:32 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 09:48:05 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:42470 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992232AbcJQHrycu1KE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Oct 2016 09:47:54 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 05972AD13;
+        Mon, 17 Oct 2016 07:47:54 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to 3.12-stable] KVM: MIPS: Drop other CPU ASIDs on guest MMU changes
+Date:   Mon, 17 Oct 2016 09:47:48 +0200
+Message-Id: <20161017074748.20426-9-jslaby@suse.cz>
+X-Mailer: git-send-email 2.10.1
+In-Reply-To: <20161017074748.20426-1-jslaby@suse.cz>
+References: <20161017074748.20426-1-jslaby@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfNsWlPqxGDHkTLWTP91T42NRLLTMKS6uOaDN+iBnG42k3A/c7tFWfugrpjwiyxX77QsGe8em3ZlvCqwgptyiSSrB+MqOxtISh059vnFyBOFPFjOv3i+K
- XUMoU+EAeBjYyojsuClMD287VwB7xbCztg8E3+mTo02Zx0ASJmGAVJJrysaYmA49W1cHotsvzypXcQOFv0GBxVPMOUS6ulv0zT5T0g/dIGU316hKEZUiQ8XB
- sVYZqhPkEJZtsetu4Q0iRA==
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55439
+X-archive-position: 55440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,100 +44,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Building off my last message on IP27's issues with PCI_PROBE_ONLY, getting
-annoyed at IOC3, I discovered that an SGI-branded Tigon-II 1Gbps ethernet card
-works fine in the Octane (called an AceNIC).  However, the exact same card does
-not play well in an IP27 because attempting to probe the card results in a data
-bus error:
+From: James Hogan <james.hogan@imgtec.com>
 
-[   41.779116] PCI host bridge to bus 0000:00
-[   41.827659] pci_bus 0000:00: root bus resource [mem
-0x920000000b200000-0x920000000b9fffff]
-[   41.927164] pci_bus 0000:00: root bus resource [io
-0x920000000ba00000-0x920000000bbfffff]
-[   42.026636] pci_bus 0000:00: root bus resource [bus 00-ff]
-[   42.093667] acenic.c: v0.92 08/05/2002  Jes Sorensen, linux-acenic@SunSITE.dk
-[   42.093667]
-http://home.cern.ch/~jes/gige/acenic.html
-[   42.268604] PCI: Enabling device 0000:00:02.0 (0000 -> 0002)
-[   42.336720] 0000:00:02.0: SGI AceNIC Gigabit Ethernet at 0x00400000, irq 1
-[   42.429812] Slice B got dbe at 0xa80000000047a738
-[   42.484468] Hub information:
-[   42.519032] ERR_INT_PEND = 0x100000
-[   42.560925] Hub has valid error information:
-[   42.612246] Overrun is set.   Error stack may contain additional information.
-[   42.697079] Hub error address is 02400208
-[   42.745258] Incoming message command 0x9e
-[   42.793435] Supplemental field of incoming message is 0x7f8
-[   42.860464] T5 Rn (for RRB only) is 0x0
-[   42.906547] Error type is Uncached Partial Read PRERR
-[   42.967312] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.8.2-mipsgit-20161016 #1
-[   43.055275] task: a8000000fe69ca80 task.stack: a8000000fe6a0000
-[   43.126487] $ 0   : 0000000000000000 ffffffff94005ce0 9200000000400000
-0000000000000004
-[   43.222841] $ 4   : 000000000080a0b8 ffffffff94005ce1 0000000000000002
-0000000000dd0000
-[   43.319195] $ 8   : 0000000000dd0000 0000000000000000 00000000000000a5
-0000000000dd0000
-[   43.415550] $12   : 0000000000d90000 0000000000dd0000 0000000000dd0000
-0000000000000020
-[   43.511905] $16   : a8000001fc7a7000 0000000000000000 a8000001fcfd3098
-a8000001fcfd3000
-[   43.608260] $20   : a800000000de0000 0000000000000000 a800000000890000
-a8000000008544bc
-[   43.704614] $24   : 0000000000d90000 0000000000dd0000
-[   43.800970] $28   : a8000000fe6a0000 a8000000fe6a3a70 a800000000889330
-a80000000047a72c
-[   43.897326] Hi    : 0000000000000001
-[   43.940268] Lo    : 0000000000000000
-[   43.983256] epc   : a80000000047a738 acenic_probe_one+0x36c/0x1964
-[   44.057588] ra    : a80000000047a72c acenic_probe_one+0x360/0x1964
-[   44.131929] Status: 94005ce3 KX SX UX KERNEL EXL IE
-[   44.191631] Cause : 0000901c (ExcCode 07)
-[   44.239808] PrId  : 00000f14 (R14000)
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
-[snip at TLB dump]
+===============
 
+commit 91e4f1b6073dd680d86cdb7e42d7cccca9db39d8 upstream.
 
-GDB examination (take 0xa80000000047a738 and back up 4 bytes to
-0xa80000000047a734):
+When a guest TLB entry is replaced by TLBWI or TLBWR, we only invalidate
+TLB entries on the local CPU. This doesn't work correctly on an SMP host
+when the guest is migrated to a different physical CPU, as it could pick
+up stale TLB mappings from the last time the vCPU ran on that physical
+CPU.
 
-(gdb) l *0xa80000000047a734
-0xa80000000047a734 is in acenic_probe_one
-(drivers/net/ethernet/alteon/acenic.c:562).
-557
-558             printk("Gigabit Ethernet at 0x%08lx, ", dev->base_addr);
-559             printk("irq %d\n", pdev->irq);
-560
-561     #ifdef CONFIG_ACENIC_OMIT_TIGON_I
-562             if ((readl(&ap->regs->HostCtrl) >> 28) == 4) {
-563                     printk(KERN_ERR "%s: Driver compiled without Tigon I"
-564                            " support - NIC disabled\n", dev->name);
-565                     goto fail_uninit;
-566             }
-(gdb)
+Therefore invalidate both user and kernel host ASIDs on other CPUs,
+which will cause new ASIDs to be generated when it next runs on those
+CPUs.
 
+We're careful only to do this if the TLB entry was already valid, and
+only for the kernel ASID where the virtual address it mapped is outside
+of the guest user address range.
 
-I'm learning that this machine doesn't like you to randomly poke at various I/O
-addresses, which will trigger a HUB error.  The only safe way to access I/O
-reliably on this platform, other than the IO6 devices on widget 0xf, is to use
-get_dbe() and put_dbe() from asm/paccess.h, which gracefully handle the data
-bus error this machine sometimes likes to throw back.  However, I don't think
-trying to wrap all read[bwl]/write[bwl] calls to use get/put_dbe is a
-reasonable fix.
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kvm/kvm_mips_emul.c | 57 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 53 insertions(+), 4 deletions(-)
 
-Anyone else out there that's played around on an IP27 machine have a clue
-what's going on in these instances?  I'm not running into any kind of access
-control mechanism, am I?
-
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 9f7643874fba..8ab9958767bb 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -310,6 +310,47 @@ enum emulation_result kvm_mips_emul_tlbr(struct kvm_vcpu *vcpu)
+ 	return er;
+ }
+ 
++/**
++ * kvm_mips_invalidate_guest_tlb() - Indicates a change in guest MMU map.
++ * @vcpu:	VCPU with changed mappings.
++ * @tlb:	TLB entry being removed.
++ *
++ * This is called to indicate a single change in guest MMU mappings, so that we
++ * can arrange TLB flushes on this and other CPUs.
++ */
++static void kvm_mips_invalidate_guest_tlb(struct kvm_vcpu *vcpu,
++					  struct kvm_mips_tlb *tlb)
++{
++	int cpu, i;
++	bool user;
++
++	/* No need to flush for entries which are already invalid */
++	if (!((tlb->tlb_lo[0] | tlb->tlb_lo[1]) & ENTRYLO_V))
++		return;
++	/* User address space doesn't need flushing for KSeg2/3 changes */
++	user = tlb->tlb_hi < KVM_GUEST_KSEG0;
++
++	preempt_disable();
++
++	/*
++	 * Probe the shadow host TLB for the entry being overwritten, if one
++	 * matches, invalidate it
++	 */
++	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
++
++	/* Invalidate the whole ASID on other CPUs */
++	cpu = smp_processor_id();
++	for_each_possible_cpu(i) {
++		if (i == cpu)
++			continue;
++		if (user)
++			vcpu->arch.guest_user_asid[i] = 0;
++		vcpu->arch.guest_kernel_asid[i] = 0;
++	}
++
++	preempt_enable();
++}
++
+ /* Write Guest TLB Entry @ Index */
+ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
+ {
+@@ -332,8 +373,8 @@ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
+ 
+ 	tlb = &vcpu->arch.guest_tlb[index];
+ #if 1
+-	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
+-	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
++
++	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
+ #endif
+ 
+ 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
+@@ -374,8 +415,7 @@ enum emulation_result kvm_mips_emul_tlbwr(struct kvm_vcpu *vcpu)
+ 	tlb = &vcpu->arch.guest_tlb[index];
+ 
+ #if 1
+-	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
+-	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
++	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
+ #endif
+ 
+ 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
+@@ -419,6 +459,7 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
+ 	int32_t rt, rd, copz, sel, co_bit, op;
+ 	uint32_t pc = vcpu->arch.pc;
+ 	unsigned long curr_pc;
++	int cpu, i;
+ 
+ 	/*
+ 	 * Update PC and hold onto current PC in case there is
+@@ -538,8 +579,16 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
+ 					     ASID_MASK,
+ 					     vcpu->arch.gprs[rt] & ASID_MASK);
+ 
++					preempt_disable();
+ 					/* Blow away the shadow host TLBs */
+ 					kvm_mips_flush_host_tlb(1);
++					cpu = smp_processor_id();
++					for_each_possible_cpu(i)
++						if (i != cpu) {
++							vcpu->arch.guest_user_asid[i] = 0;
++							vcpu->arch.guest_kernel_asid[i] = 0;
++						}
++					preempt_enable();
+ 				}
+ 				kvm_write_c0_guest_entryhi(cop0,
+ 							   vcpu->arch.gprs[rt]);
 -- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+2.10.1

@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 09:53:09 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:43068 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992226AbcJQHw6t0qZE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Oct 2016 09:52:58 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id A1B2BAE1F;
-        Mon, 17 Oct 2016 07:52:58 +0000 (UTC)
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 84/84] KVM: MIPS: Drop other CPU ASIDs on guest MMU changes
-Date:   Mon, 17 Oct 2016 09:52:11 +0200
-Message-Id: <168e5ebbd63eaf2557b5e37be1afb8c143de2380.1476690493.git.jslaby@suse.cz>
-X-Mailer: git-send-email 2.10.1
-In-Reply-To: <2d291fde5f706ac081e8cfc0ebe7e31dd534dfe7.1476690493.git.jslaby@suse.cz>
-References: <2d291fde5f706ac081e8cfc0ebe7e31dd534dfe7.1476690493.git.jslaby@suse.cz>
-In-Reply-To: <cover.1476690493.git.jslaby@suse.cz>
-References: <cover.1476690493.git.jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 11:09:57 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:57716 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990864AbcJQJJu15iMv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 11:09:50 +0200
+Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
+        by Forcepoint Email with ESMTPS id 3F36FCC9AB66A;
+        Mon, 17 Oct 2016 10:09:41 +0100 (IST)
+Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
+ (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 17 Oct 2016
+ 10:09:44 +0100
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Mon, 17 Oct 2016 10:09:43 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] MIPS: Fix build of compressed image
+Date:   Mon, 17 Oct 2016 10:09:39 +0100
+Message-ID: <1476695379-1808-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <jslaby@suse.cz>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55442
+X-archive-position: 55443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,136 +45,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+Changes introduced to arch/mips/Makefile for the generic kernel resulted
+in build errors when making a compressed image if platform-y has multiple
+values, like this:
 
-3.12-stable review patch.  If anyone has any objections, please let me know.
+make[2]: *** No rule to make target `alchemy/'.
+make[1]: *** [vmlinuz] Error 2
+make[1]: Target `_all' not remade because of errors.
+make: *** [sub-make] Error 2
+make: Target `_all' not remade because of errors.
 
-===============
+Fix this by quoting $(platform-y) as it is passed to the Makefile in
+arch/mips/boot/compressed/Makefile
 
-commit 91e4f1b6073dd680d86cdb7e42d7cccca9db39d8 upstream.
+Reported-by: kernelci.org bot <bot@kernelci.org>
+Link: https://storage.kernelci.org/next/next-20161017/mips-gpr_defconfig/build.log
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
-When a guest TLB entry is replaced by TLBWI or TLBWR, we only invalidate
-TLB entries on the local CPU. This doesn't work correctly on an SMP host
-when the guest is migrated to a different physical CPU, as it could pick
-up stale TLB mappings from the last time the vCPU ran on that physical
-CPU.
-
-Therefore invalidate both user and kernel host ASIDs on other CPUs,
-which will cause new ASIDs to be generated when it next runs on those
-CPUs.
-
-We're careful only to do this if the TLB entry was already valid, and
-only for the kernel ASID where the virtual address it mapped is outside
-of the guest user address range.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/kvm/kvm_mips_emul.c | 57 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 53 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index 9f7643874fba..8ab9958767bb 100644
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -310,6 +310,47 @@ enum emulation_result kvm_mips_emul_tlbr(struct kvm_vcpu *vcpu)
- 	return er;
- }
+ arch/mips/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index fbf40d3c8123..1a6bac7b076f 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -263,7 +263,7 @@ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
  
-+/**
-+ * kvm_mips_invalidate_guest_tlb() - Indicates a change in guest MMU map.
-+ * @vcpu:	VCPU with changed mappings.
-+ * @tlb:	TLB entry being removed.
-+ *
-+ * This is called to indicate a single change in guest MMU mappings, so that we
-+ * can arrange TLB flushes on this and other CPUs.
-+ */
-+static void kvm_mips_invalidate_guest_tlb(struct kvm_vcpu *vcpu,
-+					  struct kvm_mips_tlb *tlb)
-+{
-+	int cpu, i;
-+	bool user;
-+
-+	/* No need to flush for entries which are already invalid */
-+	if (!((tlb->tlb_lo[0] | tlb->tlb_lo[1]) & ENTRYLO_V))
-+		return;
-+	/* User address space doesn't need flushing for KSeg2/3 changes */
-+	user = tlb->tlb_hi < KVM_GUEST_KSEG0;
-+
-+	preempt_disable();
-+
-+	/*
-+	 * Probe the shadow host TLB for the entry being overwritten, if one
-+	 * matches, invalidate it
-+	 */
-+	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
-+
-+	/* Invalidate the whole ASID on other CPUs */
-+	cpu = smp_processor_id();
-+	for_each_possible_cpu(i) {
-+		if (i == cpu)
-+			continue;
-+		if (user)
-+			vcpu->arch.guest_user_asid[i] = 0;
-+		vcpu->arch.guest_kernel_asid[i] = 0;
-+	}
-+
-+	preempt_enable();
-+}
-+
- /* Write Guest TLB Entry @ Index */
- enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
- {
-@@ -332,8 +373,8 @@ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
- 
- 	tlb = &vcpu->arch.guest_tlb[index];
- #if 1
--	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
--	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
-+
-+	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
- #endif
- 
- 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
-@@ -374,8 +415,7 @@ enum emulation_result kvm_mips_emul_tlbwr(struct kvm_vcpu *vcpu)
- 	tlb = &vcpu->arch.guest_tlb[index];
- 
- #if 1
--	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
--	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
-+	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
- #endif
- 
- 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
-@@ -419,6 +459,7 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
- 	int32_t rt, rd, copz, sel, co_bit, op;
- 	uint32_t pc = vcpu->arch.pc;
- 	unsigned long curr_pc;
-+	int cpu, i;
- 
- 	/*
- 	 * Update PC and hold onto current PC in case there is
-@@ -538,8 +579,16 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
- 					     ASID_MASK,
- 					     vcpu->arch.gprs[rt] & ASID_MASK);
- 
-+					preempt_disable();
- 					/* Blow away the shadow host TLBs */
- 					kvm_mips_flush_host_tlb(1);
-+					cpu = smp_processor_id();
-+					for_each_possible_cpu(i)
-+						if (i != cpu) {
-+							vcpu->arch.guest_user_asid[i] = 0;
-+							vcpu->arch.guest_kernel_asid[i] = 0;
-+						}
-+					preempt_enable();
- 				}
- 				kvm_write_c0_guest_entryhi(cop0,
- 							   vcpu->arch.gprs[rt]);
+ bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
+ 		  VMLINUX_ENTRY_ADDRESS=$(entry-y) \
+-		  PLATFORM=$(platform-y)
++		  PLATFORM="$(platform-y)"
+ ifdef CONFIG_32BIT
+ bootvars-y	+= ADDR_BITS=32
+ endif
 -- 
-2.10.1
+2.7.4

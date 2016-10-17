@@ -1,33 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 09:52:48 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:42918 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 09:53:09 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:43068 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990521AbcJQHwmFQCME (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Oct 2016 09:52:42 +0200
+        id S23992226AbcJQHw6t0qZE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Oct 2016 09:52:58 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
 Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 985B4ADFD;
-        Mon, 17 Oct 2016 07:52:41 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id A1B2BAE1F;
+        Mon, 17 Oct 2016 07:52:58 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 51/84] MIPS: Malta: Fix IOCU disable switch read for MIPS64
-Date:   Mon, 17 Oct 2016 09:51:38 +0200
-Message-Id: <159e118992d49740319f003d7230f550e5172e33.1476690493.git.jslaby@suse.cz>
+Cc:     linux-kernel@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 84/84] KVM: MIPS: Drop other CPU ASIDs on guest MMU changes
+Date:   Mon, 17 Oct 2016 09:52:11 +0200
+Message-Id: <168e5ebbd63eaf2557b5e37be1afb8c143de2380.1476690493.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.10.1
 In-Reply-To: <2d291fde5f706ac081e8cfc0ebe7e31dd534dfe7.1476690493.git.jslaby@suse.cz>
 References: <2d291fde5f706ac081e8cfc0ebe7e31dd534dfe7.1476690493.git.jslaby@suse.cz>
 In-Reply-To: <cover.1476690493.git.jslaby@suse.cz>
 References: <cover.1476690493.git.jslaby@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55441
+X-archive-position: 55442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,79 +47,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
 3.12-stable review patch.  If anyone has any objections, please let me know.
 
 ===============
 
-commit 305723ab439e14debc1d339aa04e835d488b8253 upstream.
+commit 91e4f1b6073dd680d86cdb7e42d7cccca9db39d8 upstream.
 
-Malta boards used with CPU emulators feature a switch to disable use of
-an IOCU. Software has to check this switch & ignore any present IOCU if
-the switch is closed. The read used to do this was unsafe for 64 bit
-kernels, as it simply casted the address 0xbf403000 to a pointer &
-dereferenced it. Whilst in a 32 bit kernel this would access kseg1, in a
-64 bit kernel this attempts to access xuseg & results in an address
-error exception.
+When a guest TLB entry is replaced by TLBWI or TLBWR, we only invalidate
+TLB entries on the local CPU. This doesn't work correctly on an SMP host
+when the guest is migrated to a different physical CPU, as it could pick
+up stale TLB mappings from the last time the vCPU ran on that physical
+CPU.
 
-Fix by accessing a correctly formed ckseg1 address generated using the
-CKSEG1ADDR macro.
+Therefore invalidate both user and kernel host ASIDs on other CPUs,
+which will cause new ASIDs to be generated when it next runs on those
+CPUs.
 
-Whilst modifying this code, define the name of the register and the bit
-we care about within it, which indicates whether PCI DMA is routed to
-the IOCU or straight to DRAM. The code previously checked that bit 0 was
-also set, but the least significant 7 bits of the CONFIG_GEN0 register
-contain the value of the MReqInfo signal provided to the IOCU OCP bus,
-so singling out bit 0 makes little sense & that part of the check is
-dropped.
+We're careful only to do this if the TLB entry was already valid, and
+only for the kernel ASID where the virtual address it mapped is outside
+of the guest user address range.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: b6d92b4a6bdb ("MIPS: Add option to disable software I/O coherency.")
-Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14187/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/mti-malta/malta-setup.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/kvm/kvm_mips_emul.c | 57 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 53 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-index c72a06936781..2046e1c385d4 100644
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -36,6 +36,9 @@
- #include <linux/console.h>
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 9f7643874fba..8ab9958767bb 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -310,6 +310,47 @@ enum emulation_result kvm_mips_emul_tlbr(struct kvm_vcpu *vcpu)
+ 	return er;
+ }
+ 
++/**
++ * kvm_mips_invalidate_guest_tlb() - Indicates a change in guest MMU map.
++ * @vcpu:	VCPU with changed mappings.
++ * @tlb:	TLB entry being removed.
++ *
++ * This is called to indicate a single change in guest MMU mappings, so that we
++ * can arrange TLB flushes on this and other CPUs.
++ */
++static void kvm_mips_invalidate_guest_tlb(struct kvm_vcpu *vcpu,
++					  struct kvm_mips_tlb *tlb)
++{
++	int cpu, i;
++	bool user;
++
++	/* No need to flush for entries which are already invalid */
++	if (!((tlb->tlb_lo[0] | tlb->tlb_lo[1]) & ENTRYLO_V))
++		return;
++	/* User address space doesn't need flushing for KSeg2/3 changes */
++	user = tlb->tlb_hi < KVM_GUEST_KSEG0;
++
++	preempt_disable();
++
++	/*
++	 * Probe the shadow host TLB for the entry being overwritten, if one
++	 * matches, invalidate it
++	 */
++	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
++
++	/* Invalidate the whole ASID on other CPUs */
++	cpu = smp_processor_id();
++	for_each_possible_cpu(i) {
++		if (i == cpu)
++			continue;
++		if (user)
++			vcpu->arch.guest_user_asid[i] = 0;
++		vcpu->arch.guest_kernel_asid[i] = 0;
++	}
++
++	preempt_enable();
++}
++
+ /* Write Guest TLB Entry @ Index */
+ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
+ {
+@@ -332,8 +373,8 @@ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
+ 
+ 	tlb = &vcpu->arch.guest_tlb[index];
+ #if 1
+-	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
+-	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
++
++	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
  #endif
  
-+#define ROCIT_CONFIG_GEN0		0x1f403000
-+#define  ROCIT_CONFIG_GEN0_PCI_IOCU	BIT(7)
-+
- extern void malta_be_init(void);
- extern int malta_be_handler(struct pt_regs *regs, int is_fixup);
+ 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
+@@ -374,8 +415,7 @@ enum emulation_result kvm_mips_emul_tlbwr(struct kvm_vcpu *vcpu)
+ 	tlb = &vcpu->arch.guest_tlb[index];
  
-@@ -108,6 +111,8 @@ static void __init fd_activate(void)
- static int __init plat_enable_iocoherency(void)
- {
- 	int supported = 0;
-+	u32 cfg;
-+
- 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
- 		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
- 			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
-@@ -130,7 +135,8 @@ static int __init plat_enable_iocoherency(void)
- 	} else if (gcmp_niocu() != 0) {
- 		/* Nothing special needs to be done to enable coherency */
- 		pr_info("CMP IOCU detected\n");
--		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
-+		cfg = __raw_readl((u32 *)CKSEG1ADDR(ROCIT_CONFIG_GEN0));
-+		if (!(cfg & ROCIT_CONFIG_GEN0_PCI_IOCU)) {
- 			pr_crit("IOCU OPERATION DISABLED BY SWITCH - DEFAULTING TO SW IO COHERENCY\n");
- 			return 0;
- 		}
+ #if 1
+-	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
+-	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
++	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
+ #endif
+ 
+ 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
+@@ -419,6 +459,7 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
+ 	int32_t rt, rd, copz, sel, co_bit, op;
+ 	uint32_t pc = vcpu->arch.pc;
+ 	unsigned long curr_pc;
++	int cpu, i;
+ 
+ 	/*
+ 	 * Update PC and hold onto current PC in case there is
+@@ -538,8 +579,16 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
+ 					     ASID_MASK,
+ 					     vcpu->arch.gprs[rt] & ASID_MASK);
+ 
++					preempt_disable();
+ 					/* Blow away the shadow host TLBs */
+ 					kvm_mips_flush_host_tlb(1);
++					cpu = smp_processor_id();
++					for_each_possible_cpu(i)
++						if (i != cpu) {
++							vcpu->arch.guest_user_asid[i] = 0;
++							vcpu->arch.guest_kernel_asid[i] = 0;
++						}
++					preempt_enable();
+ 				}
+ 				kvm_write_c0_guest_entryhi(cop0,
+ 							   vcpu->arch.gprs[rt]);
 -- 
 2.10.1

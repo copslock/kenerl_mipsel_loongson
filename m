@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 12:08:36 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46894 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 12:22:45 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58322 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990521AbcJQKI2zxKxU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 12:08:28 +0200
+        by eddie.linux-mips.org with ESMTP id S23990521AbcJQKWiNCNzU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 12:22:38 +0200
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id ADFA341F8E1B;
-        Mon, 17 Oct 2016 11:07:59 +0100 (BST)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id EFE9341F8E1B;
+        Mon, 17 Oct 2016 11:22:08 +0100 (BST)
 Received: from mailapp01.imgtec.com ([10.44.0.242])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 17 Oct 2016 11:07:59 +0100
+  Mon, 17 Oct 2016 11:22:08 +0100
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 17 Oct 2016 11:07:59 +0100
+        by imgpgp01.kl.imgtec.org on Mon, 17 Oct 2016 11:22:08 +0100
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 52B5EE5DC9FE;
-        Mon, 17 Oct 2016 11:08:20 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 99EF8AB4DB027;
+        Mon, 17 Oct 2016 11:22:29 +0100 (IST)
 Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
  (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 17 Oct 2016
- 11:08:23 +0100
+ 11:22:32 +0100
 Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 17 Oct
- 2016 11:08:22 +0100
-Date:   Mon, 17 Oct 2016 11:08:22 +0100
+ 2016 11:22:31 +0100
+Date:   Mon, 17 Oct 2016 11:22:31 +0100
 From:   James Hogan <james.hogan@imgtec.com>
 To:     Matt Redfearn <matt.redfearn@imgtec.com>
 CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        "# 4 . 7+" <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: KASLR: Fix handling of NULL FDT
-Message-ID: <20161017100822.GA9443@jhogan-linux.le.imgtec.org>
-References: <1476698694-6685-1-git-send-email-matt.redfearn@imgtec.com>
+        <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH] MIPS: generic: Fix KASLR for generic kernel.
+Message-ID: <20161017102231.GB9443@jhogan-linux.le.imgtec.org>
+References: <1476698709-6771-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="RnlQjJ0d97Da+TV1"
+        protocol="application/pgp-signature"; boundary="mojUlQ0s9EVzWg2t"
 Content-Disposition: inline
-In-Reply-To: <1476698694-6685-1-git-send-email-matt.redfearn@imgtec.com>
+In-Reply-To: <1476698709-6771-1-git-send-email-matt.redfearn@imgtec.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: 1cc78754
@@ -40,7 +41,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55448
+X-archive-position: 55449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,73 +58,105 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---RnlQjJ0d97Da+TV1
+--mojUlQ0s9EVzWg2t
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi Matt,
 
-On Mon, Oct 17, 2016 at 11:04:54AM +0100, Matt Redfearn wrote:
-> If platform code returns a NULL pointer to the FDT, initial_boot_params
-> will not get set to a valid pointer and attempting to find the /chosen
-> node in it will cause a NULL pointer dereference and the kernel to crash
-> immediately on startup - with no output to the console.
+On Mon, Oct 17, 2016 at 11:05:09AM +0100, Matt Redfearn wrote:
+> The KASLR code requires that the plat_get_fdt() function return the
+> address of the device tree, and it must be available early in the boot,
+> before prom_init() is called. Move the code determining the address of
+> the device tree into plat_get_fdt, and call that from prom_init().
 >=20
-> Fix this by checking that initial_boot_params is valid before using it.
+> The fdt pointer will be set up by plat_get_fdt() called from
+> relocate_kernel initially and once the relocated kernel has started,
+> prom_init() will use it again to determine the address in the relocated
+> image.
 >=20
-> Fixes: 405bc8fd12f5 ("MIPS: Kernel: Implement KASLR using CONFIG_RELOCATA=
-BLE")
-> Cc: <stable@vger.kernel.org> # 4.7+
-> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-> ---
->=20
->  arch/mips/kernel/relocate.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
-> index ca1cc30c0891..8810183840ca 100644
-> --- a/arch/mips/kernel/relocate.c
-> +++ b/arch/mips/kernel/relocate.c
-> @@ -200,6 +200,7 @@ static inline __init unsigned long get_random_boot(vo=
-id)
-> =20
->  #if defined(CONFIG_USE_OF)
->  	/* Get any additional entropy passed in device tree */
-> +	if (initial_boot_params)
->  	{
+> Fixes: eed0eabd12ef
 
-The open brace should be on the same line as the if really.
+I believe this is the preferred form:
+
+Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board suppo=
+rt")
+
+Otherwise looks good to me
+
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
 
 Cheers
 James
 
->  		int node, len;
->  		u64 *prop;
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> ---
+>=20
+>  arch/mips/generic/init.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/arch/mips/generic/init.c b/arch/mips/generic/init.c
+> index 0ea73e845440..d493ccbf274a 100644
+> --- a/arch/mips/generic/init.c
+> +++ b/arch/mips/generic/init.c
+> @@ -30,9 +30,19 @@ static __initdata const void *mach_match_data;
+> =20
+>  void __init prom_init(void)
+>  {
+> +	plat_get_fdt();
+> +	BUG_ON(!fdt);
+> +}
+> +
+> +void __init *plat_get_fdt(void)
+> +{
+>  	const struct mips_machine *check_mach;
+>  	const struct of_device_id *match;
+> =20
+> +	if (fdt)
+> +		/* Already set up */
+> +		return (void *)fdt;
+> +
+>  	if ((fw_arg0 =3D=3D -2) && !fdt_check_header((void *)fw_arg1)) {
+>  		/*
+>  		 * We booted using the UHI boot protocol, so we have been
+> @@ -75,12 +85,6 @@ void __init prom_init(void)
+>  		/* Retrieve the machine's FDT */
+>  		fdt =3D mach->fdt;
+>  	}
+> -
+> -	BUG_ON(!fdt);
+> -}
+> -
+> -void __init *plat_get_fdt(void)
+> -{
+>  	return (void *)fdt;
+>  }
+> =20
 > --=20
 > 2.7.4
 >=20
 >=20
 
---RnlQjJ0d97Da+TV1
+--mojUlQ0s9EVzWg2t
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIcBAEBCAAGBQJYBKMQAAoJEGwLaZPeOHZ6NtMP/3RXdTeujPt6l0iMzJ4LVnGp
-HjHTqNS58+ToysiUunbRAA3TCyNIvrq60SnmSXhKEU4LR3nJigMi4OOfMIAnPSIl
-Vl0nIHqpUrwUo4wbwlYBd9qgcr3uC55S1laQvfMWHcbPQVWfvVaMHjS6ArBp6xAw
-m75DJNTfcJo1TXqa/4hZDS19hwH3HOKp5BSJEI8s/gAmqI8rFCty3eUq30o0riUk
-FzAxnnl6dI4g0+75DbTOjFnjGt6aDhIB32tgILyw983p5+a9V8aoNY+lYF86bVht
-VwYZGRY8Vd9jaAgj+dFlo12CB8DpBkxowbxbak/LV+E0fc6by7sOxKDnBErkUvm8
-6iGZs6WHaks49dnM+CVWjG5gmircjlcF0AZT3uXK4uL+uV0UbvS9EIhIrtEVnkal
-3tqjDerQaaJeVZvidPTva8NDwkgCMsXrg/fY1oYq+/I8KQdqQ6hfdI5iEfP/CRaa
-zSfKdm8nhB4qULDmC/b8OGV7LT+ps7BwfPC8eljnQQfbrKnlIyPX+3Hp4+HdnG40
-b2Vlnob6iYY/DbtcowUCoY9VasAKx+5ivJ9N4R4EF/Epw1prOBC5/YcSXCcN3xij
-O3Lybcgd0FlXky47P0IVrwE/UrcDao6lT0FFEfDS2lnr4S1KgLi53yjlhsMKo0Cl
-6L0ziTthmUUAqfAO9xvt
-=3aft
+iQIcBAEBCAAGBQJYBKZnAAoJEGwLaZPeOHZ6X44P/1QazgHAsom8vidd2KFIL1Ii
+V245WTuSzuh+Cpzeln1PmJ9blAlv5k03gg2hgYnIGDg+pfOb67qlI2r5yqfkzRTt
+22GUFiwFXiyHOzj//9jLc4fal2PlyYDKCWiFf8QOn2l45VyjahIAlItssQ/M/PYf
+EfeNFp4Q6Y6gPMz3lbVQGQXbUvPov7hFXbx1ErsZ2GJu8KZPu/Y7rh5oOjNeB6ef
+PhQ4kpnl6iMLdmiwJfbxSTgD4dLaxLx5+bDfRo9d7VQYb6s5tqE+3gyN+8Yd9KBw
+/aRqkv6B0SiCcJdNPWwj/pi8zqgXAECQHKAbpdkej4jemyX/sI2rSQjOpX11XUCb
+B8e9O3VXndTZrjwPaMUAOtOhVyuCXRNntAB9Z0DT6zw1Et+3b8kl39dsm4PqvbBj
+22OW4tIJ8sAaAd9zeaQ15IdEq8K0bemJSuB0bHFWw8kkrfZIqDT5PF6eM9JXdD7U
+m8zEwPiFIsw+qCA7rasTJ63e5Ub9oZ5EmyOA+BiZjXPolm8MxO5tHeE0ucAeHTF9
+KiV1J7IaPs61JYnGC4eTUr8CSUNbiCitUGeEgQwthLXnoHfdVNWhnalIrtdAxXY0
+QIhU+RR7g+ArB/DgE2JiM8NiCuaVcaCyjHFHSNJ3AyiHQUY2d6sGJVHM4IlJX7GJ
+tK6+QOE+VWNikAVpWszF
+=jOH6
 -----END PGP SIGNATURE-----
 
---RnlQjJ0d97Da+TV1--
+--mojUlQ0s9EVzWg2t--

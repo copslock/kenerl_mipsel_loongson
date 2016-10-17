@@ -1,41 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 15:35:01 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:13656 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991759AbcJQNexryokO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 15:34:53 +0200
-Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 4E699D43B9879;
-        Mon, 17 Oct 2016 14:34:44 +0100 (IST)
-Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
- (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 17 Oct 2016
- 14:34:47 +0100
-Received: from [10.20.78.147] (10.20.78.147) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Mon, 17 Oct 2016
- 14:34:46 +0100
-Date:   Mon, 17 Oct 2016 14:34:37 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <stable@vger.kernel.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: IP22: Fix build error in IP22 cache code
-In-Reply-To: <1476440397-13042-1-git-send-email-matt.redfearn@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1610160650120.31859@tp.orcam.me.uk>
-References: <1476440397-13042-1-git-send-email-matt.redfearn@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 15:48:12 +0200 (CEST)
+Received: from mail-lf0-f41.google.com ([209.85.215.41]:33061 "EHLO
+        mail-lf0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991759AbcJQNsD7W7tO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 15:48:03 +0200
+Received: by mail-lf0-f41.google.com with SMTP id x79so295911377lff.0
+        for <linux-mips@linux-mips.org>; Mon, 17 Oct 2016 06:48:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=mel/72jWiG94xGZi7qe90+bUCPNL59KxIZC0mb4S00g=;
+        b=HFI9p/Egl9me2u5Qs0Q5yF0Zqnl7/yxuTtlfaUv7eZpz0RQ2YibZjafwIJU1lFzOQ8
+         kHWNh/+0Lxi8BWeEGtwzVeN4FUgRceWe+CQO8/AGDV5pW7S8Yvp4SBKWNczQehYOKd9s
+         pETWAZkfwc+fwugLdQuSjYWI0/te1eGANX5qwYJmhmMXAGwq/NNVYwB5NFFlO2269zEW
+         Bl+SONLGMij92NiQx9norikBbYma/K5MBF0lveKJ6L5zC6lma0HpZr1Xpx6FuFbEdxtA
+         BCxK6UdctEJDmZf5vNLCvjdIS6kWLYZ9UjFUoOgmaUW6q7xOxCn8m/gOUu3bclGKlB4q
+         WhCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding;
+        bh=mel/72jWiG94xGZi7qe90+bUCPNL59KxIZC0mb4S00g=;
+        b=W2blGJPVTiMSuuvvokQxHDd4nn+ndqzotc6tsUIe/cJ1TeTNzX9bomSm3dzjFsol8Z
+         4D9EEKZXerCqaOL5QNC0xXQMddCRnG6/MuFJ1lND8ogOFf6CVGBC54Atb8wWfR22dKlU
+         1yGrEhHfZQ0LLDKZwnSESa8sFSAC6X6MitjMjwQndz+fA8rQ2cGGK7YM8E4/W3louGGb
+         72Euu4+POmbyPPBKphwr/gWQBTWl2YLlws5K0j+hd6wB63d1BBfvWN8ZTlxMrZwOk8Pc
+         7pLcF+lMgmVDfwBnml7uFBLv3lIIwEYrPK/uIt8CMcZqzhSETUl0gp0ubrPU4m0ZEGT+
+         KYDQ==
+X-Gm-Message-State: AA6/9RlUdoejc6XFnoSl28eucGrqR8V3bCRDaUgUcOLqXtPRIu/TS9Kfr3xxdnZdGJ4q/g==
+X-Received: by 10.25.196.193 with SMTP id u184mr13494713lff.32.1476712078415;
+        Mon, 17 Oct 2016 06:47:58 -0700 (PDT)
+Received: from wasted.cogentembedded.com ([31.173.85.174])
+        by smtp.gmail.com with ESMTPSA id 24sm7910974lfr.49.2016.10.17.06.47.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 17 Oct 2016 06:47:57 -0700 (PDT)
+Subject: Re: [PATCH] MIPS: KASLR: Fix handling of NULL FDT
+To:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1476698694-6685-1-git-send-email-matt.redfearn@imgtec.com>
+Cc:     linux-mips@linux-mips.org, "# 4 . 7+" <stable@vger.kernel.org>,
+        linux-kernel@vger.kernel.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <02ddfa7e-62a5-8ef2-393f-cdd9b5f76bb8@cogentembedded.com>
+Date:   Mon, 17 Oct 2016 16:47:55 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.147]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+In-Reply-To: <1476698694-6685-1-git-send-email-matt.redfearn@imgtec.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55452
+X-archive-position: 55453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,48 +72,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 14 Oct 2016, Matt Redfearn wrote:
+Hello.
 
-> Recent MIPS toolchains complain about the use of an immediate larger
-> than 32bits when compiling a 32bit kernel, leading to the following
-> build failure:
-> {standard input}: Assembler messages:
-> {standard input}:131: Error: number (0x9000000080000000) larger than 32
-> bits
-> {standard input}:154: Error: number (0x9000000080000000) larger than 32
-> bits
-> {standard input}:191: Error: number (0x9000000080000000) larger than 32
-> bits
-> 
-> Fix this by specifying registers are 64bit via the .set gp=64 directive.
-> 
-> Since IP22 is the default MIPS machine, this is causing allnoconfig
-> build failures.
-> 
-> Fixes: 1da177e4c3f4
+On 10/17/2016 01:04 PM, Matt Redfearn wrote:
+
+> If platform code returns a NULL pointer to the FDT, initial_boot_params
+> will not get set to a valid pointer and attempting to find the /chosen
+> node in it will cause a NULL pointer dereference and the kernel to crash
+> immediately on startup - with no output to the console.
+>
+> Fix this by checking that initial_boot_params is valid before using it.
+>
+> Fixes: 405bc8fd12f5 ("MIPS: Kernel: Implement KASLR using CONFIG_RELOCATABLE")
+> Cc: <stable@vger.kernel.org> # 4.7+
 > Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-> 
-> Cc: stable@vger.kernel.org
 > ---
+>
+>  arch/mips/kernel/relocate.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
+> index ca1cc30c0891..8810183840ca 100644
+> --- a/arch/mips/kernel/relocate.c
+> +++ b/arch/mips/kernel/relocate.c
+> @@ -200,6 +200,7 @@ static inline __init unsigned long get_random_boot(void)
+>
+>  #if defined(CONFIG_USE_OF)
+>  	/* Get any additional entropy passed in device tree */
+> +	if (initial_boot_params)
+>  	{
 
- This GAS regression introduced with upstream binutils commit 919731affbef 
-("Add MIPS .module directive") has been fixed with commit 22522f880a8e 
-("MIPS/GAS: Fix an ISA override not lifting ABI restrictions") and release 
-2.27 has been subsequently made.
+    CodingStyle: *if* and { should be on the same line.
 
- Moving forward with your workaround may still make sense, although it 
-will bump the minimum binutils version to 2.18, which is when `.set gp=64' 
-has been added only, from the advertised version 2.12; it may have already 
-effectively happened due to changes elsewhere.  If doing so however, 
-please be accurate with your commit description in that versions 2.25 and 
-2.26 (and their patch releases) only rather than "recent" have been 
-affected.
+[...]
 
- See also: <http://lkml.iu.edu/hypermail/linux/kernel/1604.2/00187.html> 
-and the discussion downthread.  Based on the conclusions made there I'd 
-rather ban binutils 2.25 and 2.26 from use with the MIPS/Linux kernel as 
-the problem with ISA restoration may lead to bad code generation.  So 
-maybe we should really leave this piece unchanged, as a fatal trigger for 
-unsupported binutils versions in the affected scenarios.
-
-  Maciej
+MBR, Sergei

@@ -1,47 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 06:37:24 +0200 (CEST)
-Received: from resqmta-ch2-05v.sys.comcast.net ([69.252.207.37]:41405 "EHLO
-        resqmta-ch2-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990864AbcJQEhNa9Dff (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 06:37:13 +0200
-Received: from resomta-ch2-16v.sys.comcast.net ([69.252.207.112])
-        by resqmta-ch2-05v.sys.comcast.net with SMTP
-        id vzfeb9f8T2FGMvzfebJQbL; Mon, 17 Oct 2016 04:37:06 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 06:51:17 +0200 (CEST)
+Received: from resqmta-ch2-06v.sys.comcast.net ([69.252.207.38]:59952 "EHLO
+        resqmta-ch2-06v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990864AbcJQEvKRXTbf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 06:51:10 +0200
+Received: from resomta-ch2-08v.sys.comcast.net ([69.252.207.104])
+        by resqmta-ch2-06v.sys.comcast.net with SMTP
+        id vzt9bsmoP2Nhqvzt9bbIJj; Mon, 17 Oct 2016 04:51:03 +0000
 Received: from [192.168.1.13] ([76.106.83.43])
-        by resomta-ch2-16v.sys.comcast.net with SMTP
-        id vzfbbOGZt30PRvzfbbOPTI; Mon, 17 Oct 2016 04:37:06 +0000
-Subject: Re: [PATCH] MIPS/PCI: Claim bus resources on PCI_PROBE_ONLY set-ups
-To:     Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <20160623221441.3154.31310.stgit@bhelgaas-glaptop2.roam.corp.google.com>
- <20160623221655.3154.89258.stgit@bhelgaas-glaptop2.roam.corp.google.com>
-Cc:     linux-mips@linux-mips.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Jayachandran C <jchandra@broadcom.com>,
-        Ganesan Ramalingam <ganesanr@broadcom.com>,
-        David Daney <david.daney@cavium.com>,
-        linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Andy Isaacson <adi@hexapodia.org>,
-        Yinghai Lu <yinghai@kernel.org>
+        by resomta-ch2-08v.sys.comcast.net with SMTP
+        id vzt8bzfk6930Jvzt8btyYP; Mon, 17 Oct 2016 04:51:03 +0000
+To:     Linux/MIPS <linux-mips@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <6ec8688e-57ed-33b3-3fe0-55d7d69a2c47@gentoo.org>
-Date:   Mon, 17 Oct 2016 00:36:34 -0400
+Subject: IP27's I/O addressing
+Message-ID: <80537976-d7f9-790e-5c76-6b6063fb059e@gentoo.org>
+Date:   Mon, 17 Oct 2016 00:50:32 -0400
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
  Thunderbird/45.4.0
 MIME-Version: 1.0
-In-Reply-To: <20160623221655.3154.89258.stgit@bhelgaas-glaptop2.roam.corp.google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfAe6oHvrEERedQoR2LdvuRMXptAiaj34mvslQsOMT1kTBCf5ePBpIirPm09jkSpieKgY1ejpgSOkSVdp/XEh586nSBxpwi8AczHkvwJ/getn0e9kPwHR
- T17PG2ZnRVVJJHA5cFh+BxdkqicXrjDwZ3igqo1tHT62tX/DXCgGFVSGW9NBcj2/GaZIeszESn90HToXtUnSF3cT/WjYipM0/5Zon6ugeHYjO8xkpHgRwJNw
- FhK3KXUi8f2mhEIk2diNRCqX/oUDVXELE0QviZ6CiGe59dC/85JIW9KnEG3PHfVWM5IsrW2s0bTZGLRno/XKQ/r91sKsnabFBn4jqHrKEdAI/Wve3hKHbL8K
- AXpWUtXuX+34RElLinB8nupTvxESD9ovJa3kickRJlZKY4UwYZoqodUBHtgVyItsJiuWbYzKnATkjfwtcRIq7AabYai+7++qWA8S5inQiRn/WnXOIjZQNq8j
- OK549ZgCus1N3EWjgOCBMV0VNtsjqjQH/YOG3g==
+X-CMAE-Envelope: MS4wfNsWlPqxGDHkTLWTP91T42NRLLTMKS6uOaDN+iBnG42k3A/c7tFWfugrpjwiyxX77QsGe8em3ZlvCqwgptyiSSrB+MqOxtISh059vnFyBOFPFjOv3i+K
+ XUMoU+EAeBjYyojsuClMD287VwB7xbCztg8E3+mTo02Zx0ASJmGAVJJrysaYmA49W1cHotsvzypXcQOFv0GBxVPMOUS6ulv0zT5T0g/dIGU316hKEZUiQ8XB
+ sVYZqhPkEJZtsetu4Q0iRA==
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55438
+X-archive-position: 55439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,147 +45,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 06/23/2016 18:16, Bjorn Helgaas wrote:
-> We claim PCI BAR and bridge window resources in pci_bus_assign_resources(),
-> but when PCI_PROBE_ONLY is set, we treat those resources as immutable and
-> don't call pci_bus_assign_resources(), so the resources aren't put in the
-> resource tree.
-> 
-> When the resources aren't in the tree, they don't show up in /proc/iomem,
-> we can't detect conflicts, and we need special cases elsewhere for
-> PCI_PROBE_ONLY or resources without a parent pointer.
-> 
-> Claim all PCI BAR and window resources in the PCI_PROBE_ONLY case.
-> 
-> If a PCI_PROBE_ONLY platform assigns conflicting resources, Linux can't fix
-> the conflicts.  Previously we didn't notice the conflicts, but now we will,
-> which may expose new failures.
-> 
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
->  arch/mips/pci/pci.c |    9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-> index 5717384..b4c02f2 100644
-> --- a/arch/mips/pci/pci.c
-> +++ b/arch/mips/pci/pci.c
-> @@ -112,7 +112,14 @@ static void pcibios_scanbus(struct pci_controller *hose)
->  		need_domain_info = 1;
->  	}
->  
-> -	if (!pci_has_flag(PCI_PROBE_ONLY)) {
-> +	/*
-> +	 * We insert PCI resources into the iomem_resource and
-> +	 * ioport_resource trees in either pci_bus_claim_resources()
-> +	 * or pci_bus_assign_resources().
-> +	 */
-> +	if (pci_has_flag(PCI_PROBE_ONLY)) {
-> +		pci_bus_claim_resources(bus);
-> +	} else {
->  		pci_bus_size_bridges(bus);
->  		pci_bus_assign_resources(bus);
->  	}
+Building off my last message on IP27's issues with PCI_PROBE_ONLY, getting
+annoyed at IOC3, I discovered that an SGI-branded Tigon-II 1Gbps ethernet card
+works fine in the Octane (called an AceNIC).  However, the exact same card does
+not play well in an IP27 because attempting to probe the card results in a data
+bus error:
 
-So I finally tested this on two SGI platforms, IP30 and IP27.  For IP30, it
-works fine once I drop the "pci_set_flags(PCI_PROBE_ONLY);" call.  IP30 uses
-standard virtual addressing via ioremap and the like for all of its PCI stuff,
-so it was trivial to fix it.
+[   41.779116] PCI host bridge to bus 0000:00
+[   41.827659] pci_bus 0000:00: root bus resource [mem
+0x920000000b200000-0x920000000b9fffff]
+[   41.927164] pci_bus 0000:00: root bus resource [io
+0x920000000ba00000-0x920000000bbfffff]
+[   42.026636] pci_bus 0000:00: root bus resource [bus 00-ff]
+[   42.093667] acenic.c: v0.92 08/05/2002  Jes Sorensen, linux-acenic@SunSITE.dk
+[   42.093667]
+http://home.cern.ch/~jes/gige/acenic.html
+[   42.268604] PCI: Enabling device 0000:00:02.0 (0000 -> 0002)
+[   42.336720] 0000:00:02.0: SGI AceNIC Gigabit Ethernet at 0x00400000, irq 1
+[   42.429812] Slice B got dbe at 0xa80000000047a738
+[   42.484468] Hub information:
+[   42.519032] ERR_INT_PEND = 0x100000
+[   42.560925] Hub has valid error information:
+[   42.612246] Overrun is set.   Error stack may contain additional information.
+[   42.697079] Hub error address is 02400208
+[   42.745258] Incoming message command 0x9e
+[   42.793435] Supplemental field of incoming message is 0x7f8
+[   42.860464] T5 Rn (for RRB only) is 0x0
+[   42.906547] Error type is Uncached Partial Read PRERR
+[   42.967312] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.8.2-mipsgit-20161016 #1
+[   43.055275] task: a8000000fe69ca80 task.stack: a8000000fe6a0000
+[   43.126487] $ 0   : 0000000000000000 ffffffff94005ce0 9200000000400000
+0000000000000004
+[   43.222841] $ 4   : 000000000080a0b8 ffffffff94005ce1 0000000000000002
+0000000000dd0000
+[   43.319195] $ 8   : 0000000000dd0000 0000000000000000 00000000000000a5
+0000000000dd0000
+[   43.415550] $12   : 0000000000d90000 0000000000dd0000 0000000000dd0000
+0000000000000020
+[   43.511905] $16   : a8000001fc7a7000 0000000000000000 a8000001fcfd3098
+a8000001fcfd3000
+[   43.608260] $20   : a800000000de0000 0000000000000000 a800000000890000
+a8000000008544bc
+[   43.704614] $24   : 0000000000d90000 0000000000dd0000
+[   43.800970] $28   : a8000000fe6a0000 a8000000fe6a3a70 a800000000889330
+a80000000047a72c
+[   43.897326] Hi    : 0000000000000001
+[   43.940268] Lo    : 0000000000000000
+[   43.983256] epc   : a80000000047a738 acenic_probe_one+0x36c/0x1964
+[   44.057588] ra    : a80000000047a72c acenic_probe_one+0x360/0x1964
+[   44.131929] Status: 94005ce3 KX SX UX KERNEL EXL IE
+[   44.191631] Cause : 0000901c (ExcCode 07)
+[   44.239808] PrId  : 00000f14 (R14000)
 
-IP27, on the other hand, is not happy with this change.  I don't know about
-mainline IP27, as that's generally bitrotted and didn't boot the last time I
-tried it, but under the refactored code I'm using that actually boots, this
-platform still needs to bypass *all* attempts to claim or assign the PCI addresses.
-
-I suspect the difference with IP27 is unlike normal systems, IP27 uses special
-physical addresses in the 0x92xxxxxxxxxxxxxx block to address I/O devices, so
-there's no proper ioremap or use of virtual addressing for I/O.  Ralf, does
-this sound correct?
-
-If I use the patches I got plus this change and set PCI_PROBE_ONLY, this is
-what happens:
-
-[   47.299511] PCI host bridge to bus 0001:00
-[   47.348155] pci_bus 0001:00: root bus resource [mem
-0x920000000f200000-0x920000000f9fffff]
-[   47.447663] pci_bus 0001:00: root bus resource [io
-0x920000000fa00000-0x920000000fbfffff]
-[   47.547183] pci_bus 0001:00: root bus resource [bus 01-ff]
-[   47.616581] pci 0001:00:00.0: can't claim BAR 0 [io  0xf200000-0xf2000ff]:
-no compatible bridge window
-[   47.726766] pci 0001:00:00.0: can't claim BAR 1 [mem 0x0f200000-0x0f200fff]:
-no compatible bridge window
-[   47.840937] pci 0001:00:00.0: can't claim BAR 6 [mem 0x00000000-0x0000ffff
-pref]: no compatible bridge window
-[   47.960317] pci 0001:00:01.0: can't claim BAR 0 [io  0xf400000-0xf4000ff]:
-no compatible bridge window
-[   48.072399] pci 0001:00:01.0: can't claim BAR 1 [mem 0x0f400000-0x0f400fff]:
-no compatible bridge window
-[   48.186560] pci 0001:00:01.0: can't claim BAR 6 [mem 0x00000000-0x0000ffff
-pref]: no compatible bridge window
-[   48.305957] pci 0001:00:02.0: can't claim BAR 0 [mem 0x0f600000-0x0f6fffff]:
-no compatible bridge window
-[   48.420098] pci 0001:00:06.0: can't claim BAR 0 [mem 0x0fa00000-0x0fafffff]:
-no compatible bridge window
-[   48.534294] pci 0001:00:07.0: can't claim BAR 0 [mem 0x00000000-0x00001fff]:
-no compatible bridge window
-[   48.648541] qla1280: QLA1040 found on PCI bus 0, dev 0
-[   48.710232] PCI: Enabling device 0001:00:00.0 (0006 -> 0007)
-[   48.779231] qla1280 0001:00:00.0: can't ioremap BAR 1: [mem size 0x00001000]
-[   48.863145] qla1280: Unable to map I/O memory
-[   48.916520] qla1280: QLA1040 found on PCI bus 0, dev 1
-[   48.977298] PCI: Enabling device 0001:00:01.0 (0006 -> 0007)
-[   49.046128] qla1280 0001:00:01.0: can't ioremap BAR 1: [mem size 0x00001000]
-[   49.130201] qla1280: Unable to map I/O memory
-[   49.183068] IOC3 0001:00:02.0: can't ioremap BAR 0: [mem size 0x00100000]
-[   49.264292] ioc3: Unable to remap PCI BAR for 0001:00:02.0.
-[   49.331533] IOC3 0001:00:06.0: can't ioremap BAR 0: [mem size 0x00100000]
-[   49.412984] ioc3: Unable to remap PCI BAR for 0001:00:06.0.
+[snip at TLB dump]
 
 
-If I disable PCI_PROBE_ONLY, then this:
+GDB examination (take 0xa80000000047a738 and back up 4 bytes to
+0xa80000000047a734):
 
-[   47.588033] PCI host bridge to bus 0001:00
-[   47.636649] pci_bus 0001:00: root bus resource [mem
-0x920000000f200000-0x920000000f9fffff]
-[   47.736144] pci_bus 0001:00: root bus resource [io
-0x920000000fa00000-0x920000000fbfffff]
-[   47.835621] pci_bus 0001:00: root bus resource [bus 01-ff]
-[   47.905023] pci 0001:00:02.0: BAR 0: no space for [mem size 0x00100000]
-[   47.982775] pci 0001:00:02.0: BAR 0: failed to assign [mem size 0x00100000]
-[   48.066586] pci 0001:00:06.0: BAR 0: no space for [mem size 0x00100000]
-[   48.146173] pci 0001:00:06.0: BAR 0: failed to assign [mem size 0x00100000]
-[   48.229972] pci 0001:00:00.0: BAR 6: no space for [mem size 0x00010000 pref]
-[   48.314783] pci 0001:00:00.0: BAR 6: failed to assign [mem size 0x00010000 pref]
-[   48.403825] pci 0001:00:01.0: BAR 6: no space for [mem size 0x00010000 pref]
-[   48.488655] pci 0001:00:01.0: BAR 6: failed to assign [mem size 0x00010000 pref]
-[   48.577695] pci 0001:00:00.0: BAR 1: no space for [mem size 0x00001000]
-[   48.657260] pci 0001:00:00.0: BAR 1: failed to assign [mem size 0x00001000]
-[   48.741068] pci 0001:00:01.0: BAR 1: no space for [mem size 0x00001000]
-[   48.820644] pci 0001:00:01.0: BAR 1: failed to assign [mem size 0x00001000]
-[   48.904452] pci 0001:00:00.0: BAR 0: no space for [io  size 0x0100]
-[   48.979840] pci 0001:00:00.0: BAR 0: failed to assign [io  size 0x0100]
-[   49.059459] pci 0001:00:01.0: BAR 0: no space for [io  size 0x0100]
-[   49.134855] pci 0001:00:01.0: BAR 0: failed to assign [io  size 0x0100]
-[   49.214588] qla1280: QLA1040 found on PCI bus 0, dev 0
-[   49.277249] qla1280 0001:00:00.0: can't ioremap BAR 1: [??? 0x00000000 flags
-0x0]
-[   49.366330] qla1280: Unable to map I/O memory
-[   49.419832] qla1280: QLA1040 found on PCI bus 0, dev 1
-[   49.481211] qla1280 0001:00:01.0: can't ioremap BAR 1: [??? 0x00000000 flags
-0x0]
-[   49.570560] qla1280: Unable to map I/O memory
-[   49.623439] IOC3 0001:00:02.0: can't ioremap BAR 0: [??? 0x00000000 flags 0x0]
-[   49.709857] ioc3: Unable to remap PCI BAR for 0001:00:02.0.
-[   49.777113] IOC3 0001:00:06.0: can't ioremap BAR 0: [??? 0x00000000 flags 0x0]
-[   49.863796] ioc3: Unable to remap PCI BAR for 0001:00:06.0.
+(gdb) l *0xa80000000047a734
+0xa80000000047a734 is in acenic_probe_one
+(drivers/net/ethernet/alteon/acenic.c:562).
+557
+558             printk("Gigabit Ethernet at 0x%08lx, ", dev->base_addr);
+559             printk("irq %d\n", pdev->irq);
+560
+561     #ifdef CONFIG_ACENIC_OMIT_TIGON_I
+562             if ((readl(&ap->regs->HostCtrl) >> 28) == 4) {
+563                     printk(KERN_ERR "%s: Driver compiled without Tigon I"
+564                            " support - NIC disabled\n", dev->name);
+565                     goto fail_uninit;
+566             }
+(gdb)
 
 
-The only fix I could come up with was more IP27 #ifdef hackery to retain the
-original code for IP27, but use the new conditional logic for all other
-platforms.  Would a patch for this be acceptable (with verbose comment), or is
-there a better way to deal with IP27 that doesn't involve re-writing its I/O
-addressing support entirely?
+I'm learning that this machine doesn't like you to randomly poke at various I/O
+addresses, which will trigger a HUB error.  The only safe way to access I/O
+reliably on this platform, other than the IO6 devices on widget 0xf, is to use
+get_dbe() and put_dbe() from asm/paccess.h, which gracefully handle the data
+bus error this machine sometimes likes to throw back.  However, I don't think
+trying to wrap all read[bwl]/write[bwl] calls to use get/put_dbe is a
+reasonable fix.
+
+Anyone else out there that's played around on an IP27 machine have a clue
+what's going on in these instances?  I'm not running into any kind of access
+control mechanism, am I?
 
 -- 
 Joshua Kinard

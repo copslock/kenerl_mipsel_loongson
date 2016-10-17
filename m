@@ -1,25 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 18:22:03 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:13092 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 18:25:41 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:55655 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991759AbcJQQV4Zj10B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 18:21:56 +0200
+        by eddie.linux-mips.org with ESMTP id S23991759AbcJQQZe5Q-zE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 18:25:34 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 7D918BEF501BE;
-        Mon, 17 Oct 2016 17:21:46 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 4C8B2B609E946;
+        Mon, 17 Oct 2016 17:25:25 +0100 (IST)
 Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
  (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 17 Oct 2016
- 17:21:50 +0100
+ 17:25:29 +0100
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Mon, 17 Oct 2016 17:21:49 +0100
+ 14.3.294.0; Mon, 17 Oct 2016 17:25:28 +0100
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
-        "# 4 . 7+" <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] MIPS: KASLR: Fix handling of NULL FDT
-Date:   Mon, 17 Oct 2016 17:21:46 +0100
-Message-ID: <1476721306-14742-1-git-send-email-matt.redfearn@imgtec.com>
+        <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        "Paul Burton" <paul.burton@imgtec.com>
+Subject: [PATCH v2] MIPS: generic: Fix KASLR for generic kernel.
+Date:   Mon, 17 Oct 2016 17:25:24 +0100
+Message-ID: <1476721524-15957-1-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -28,7 +30,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55463
+X-archive-position: 55464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,33 +47,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If platform code returns a NULL pointer to the FDT, initial_boot_params
-will not get set to a valid pointer and attempting to find the /chosen
-node in it will cause a NULL pointer dereference and the kernel to crash
-immediately on startup - with no output to the console.
+The KASLR code requires that the plat_get_fdt() function return the
+address of the device tree, and it must be available early in the boot,
+before prom_init() is called. Move the code determining the address of
+the device tree into plat_get_fdt, and call that from prom_init().
 
-Fix this by checking that initial_boot_params is valid before using it.
+The fdt pointer will be set up by plat_get_fdt() called from
+relocate_kernel initially and once the relocated kernel has started,
+prom_init() will use it again to determine the address in the relocated
+image.
 
-Fixes: 405bc8fd12f5 ("MIPS: Kernel: Implement KASLR using CONFIG_RELOCATABLE")
-Cc: <stable@vger.kernel.org> # 4.7+
+Fixes: eed0eabd12ef ("MIPS: generic: Introduce generic DT-based board support")
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/kernel/relocate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+Correct fixes tag
 
-diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
-index ca1cc30c0891..1958910b75c0 100644
---- a/arch/mips/kernel/relocate.c
-+++ b/arch/mips/kernel/relocate.c
-@@ -200,7 +200,7 @@ static inline __init unsigned long get_random_boot(void)
+ arch/mips/generic/init.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/generic/init.c b/arch/mips/generic/init.c
+index 0ea73e845440..d493ccbf274a 100644
+--- a/arch/mips/generic/init.c
++++ b/arch/mips/generic/init.c
+@@ -30,9 +30,19 @@ static __initdata const void *mach_match_data;
  
- #if defined(CONFIG_USE_OF)
- 	/* Get any additional entropy passed in device tree */
--	{
-+	if (initial_boot_params) {
- 		int node, len;
- 		u64 *prop;
+ void __init prom_init(void)
+ {
++	plat_get_fdt();
++	BUG_ON(!fdt);
++}
++
++void __init *plat_get_fdt(void)
++{
+ 	const struct mips_machine *check_mach;
+ 	const struct of_device_id *match;
+ 
++	if (fdt)
++		/* Already set up */
++		return (void *)fdt;
++
+ 	if ((fw_arg0 == -2) && !fdt_check_header((void *)fw_arg1)) {
+ 		/*
+ 		 * We booted using the UHI boot protocol, so we have been
+@@ -75,12 +85,6 @@ void __init prom_init(void)
+ 		/* Retrieve the machine's FDT */
+ 		fdt = mach->fdt;
+ 	}
+-
+-	BUG_ON(!fdt);
+-}
+-
+-void __init *plat_get_fdt(void)
+-{
+ 	return (void *)fdt;
+ }
  
 -- 
 2.7.4

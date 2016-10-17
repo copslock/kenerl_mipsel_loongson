@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 16:35:55 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:24467 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 16:36:20 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:52153 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992240AbcJQOf1uyQg4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 16:35:27 +0200
+        by eddie.linux-mips.org with ESMTP id S23990864AbcJQOfnM3iA4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 16:35:43 +0200
 Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 6D9B17C1249A1;
-        Mon, 17 Oct 2016 15:35:18 +0100 (IST)
+        by Forcepoint Email with ESMTPS id B059A16379B6;
+        Mon, 17 Oct 2016 15:35:32 +0100 (IST)
 Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
  (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 17 Oct 2016
- 15:35:21 +0100
+ 15:35:35 +0100
 Received: from localhost (10.100.200.11) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 17 Oct
- 2016 15:35:21 +0100
+ 2016 15:35:35 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 2/4] MIPS: Cleanup LLBit handling in switch_to
-Date:   Mon, 17 Oct 2016 15:34:36 +0100
-Message-ID: <20161017143438.17298-3-paul.burton@imgtec.com>
+Subject: [PATCH 3/4] MIPS: Allow pre-r6 emulation on SMP MIPSr6 kernels
+Date:   Mon, 17 Oct 2016 15:34:37 +0100
+Message-ID: <20161017143438.17298-4-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20161017143438.17298-1-paul.burton@imgtec.com>
 References: <20161017143438.17298-1-paul.burton@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55456
+X-archive-position: 55457
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,61 +46,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 7c151d3d5d7a ("MIPS: Make use of the ERETNC instruction on MIPS
-R6") began clearing LLBit during context switches, but did so on all
-systems where it is writable for unclear reasons & did so from a macro
-with "software_ll_bit" in its name, which is intended to operate on the
-ll_bit variable used by ll/sc emulation for old CPUs.
-
-We do now need to clear LLBit on MIPSr6 systems where we'll use eretnc
-to return to userland, but we don't need to do so on MIPSr5 systems with
-a writable LLBit.
-
-Move the clear to its own appropriately named macro, do it only for
-MIPSr6 systems & comment about why.
+There's no reason for the pre-r6 instruction emulation code to be
+limited to uniprocessor kernels. We already emulate atomic memory access
+instructions in a way that works for SMP systems, and nothing else
+should be affected. Remove the artificial limitation, allowing pre-r6
+instruction emulation to be used with SMP kernels.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 ---
 
- arch/mips/include/asm/switch_to.h | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ arch/mips/Kconfig | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
-index ebb5c0f..d60ae84 100644
---- a/arch/mips/include/asm/switch_to.h
-+++ b/arch/mips/include/asm/switch_to.h
-@@ -66,13 +66,18 @@ do {									\
- #define __mips_mt_fpaff_switch_to(prev) do { (void) (prev); } while (0)
- #endif
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b3c5bde..5582ce1 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2286,7 +2286,7 @@ config MIPS_MT_FPAFF
  
--#define __clear_software_ll_bit()					\
--do {	if (cpu_has_rw_llb) {						\
-+/*
-+ * Clear LLBit during context switches on MIPSr6 such that eretnc can be used
-+ * unconditionally when returning to userland in entry.S.
-+ */
-+#define __clear_r6_hw_ll_bit() do {					\
-+	if (cpu_has_mips_r6)						\
- 		write_c0_lladdr(0);					\
--	} else {							\
--		if (!__builtin_constant_p(cpu_has_llsc) || !cpu_has_llsc)\
--			ll_bit = 0;					\
--	}								\
-+} while (0)
-+
-+#define __clear_software_ll_bit() do {					\
-+	if (!__builtin_constant_p(cpu_has_llsc) || !cpu_has_llsc)	\
-+		ll_bit = 0;						\
- } while (0)
+ config MIPSR2_TO_R6_EMULATOR
+ 	bool "MIPS R2-to-R6 emulator"
+-	depends on CPU_MIPSR6 && !SMP
++	depends on CPU_MIPSR6
+ 	default y
+ 	help
+ 	  Choose this option if you want to run non-R6 MIPS userland code.
+@@ -2294,8 +2294,6 @@ config MIPSR2_TO_R6_EMULATOR
+ 	  default. You can enable it using the 'mipsr2emu' kernel option.
+ 	  The only reason this is a build-time option is to save ~14K from the
+ 	  final kernel image.
+-comment "MIPS R2-to-R6 emulator is only available for UP kernels"
+-	depends on SMP && CPU_MIPSR6
  
- /*
-@@ -102,6 +107,7 @@ do {									\
- 		}							\
- 		clear_c0_status(ST0_CU2);				\
- 	}								\
-+	__clear_r6_hw_ll_bit();						\
- 	__clear_software_ll_bit();					\
- 	if (cpu_has_userlocal)						\
- 		write_c0_userlocal(task_thread_info(next)->tp_value);	\
+ config MIPS_VPE_LOADER
+ 	bool "VPE loader support."
 -- 
 2.10.0

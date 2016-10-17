@@ -1,38 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 11:09:57 +0200 (CEST)
-Received: from mailapp02.imgtec.com ([217.156.133.132]:57716 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990864AbcJQJJu15iMv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Oct 2016 11:09:50 +0200
-Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id 3F36FCC9AB66A;
-        Mon, 17 Oct 2016 10:09:41 +0100 (IST)
-Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
- (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 17 Oct 2016
- 10:09:44 +0100
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Mon, 17 Oct 2016 10:09:43 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] MIPS: Fix build of compressed image
-Date:   Mon, 17 Oct 2016 10:09:39 +0100
-Message-ID: <1476695379-1808-1-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Oct 2016 11:23:02 +0200 (CEST)
+Received: from bes.se.axis.com ([195.60.68.10]:40996 "EHLO bes.se.axis.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990864AbcJQJWyqBQ8v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Oct 2016 11:22:54 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bes.se.axis.com (Postfix) with ESMTP id BFD512E1A1;
+        Mon, 17 Oct 2016 11:22:48 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
+Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id 2EXd+b8144jV; Mon, 17 Oct 2016 11:22:47 +0200 (CEST)
+Received: from boulder03.se.axis.com (boulder03.se.axis.com [10.0.8.17])
+        by bes.se.axis.com (Postfix) with ESMTPS id F0EEF2E187;
+        Mon, 17 Oct 2016 11:22:46 +0200 (CEST)
+Received: from boulder03.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DDB071E08E;
+        Mon, 17 Oct 2016 11:22:46 +0200 (CEST)
+Received: from boulder03.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CE71C1E080;
+        Mon, 17 Oct 2016 11:22:46 +0200 (CEST)
+Received: from thoth.se.axis.com (unknown [10.0.2.173])
+        by boulder03.se.axis.com (Postfix) with ESMTP;
+        Mon, 17 Oct 2016 11:22:46 +0200 (CEST)
+Received: from lnxjespern3.se.axis.com (lnxjespern3.se.axis.com [10.88.4.8])
+        by thoth.se.axis.com (Postfix) with ESMTP id BE9B8359;
+        Mon, 17 Oct 2016 11:22:46 +0200 (CEST)
+Received: by lnxjespern3.se.axis.com (Postfix, from userid 363)
+        id B8F00800EE; Mon, 17 Oct 2016 11:22:46 +0200 (CEST)
+Date:   Mon, 17 Oct 2016 11:22:46 +0200
+From:   Jesper Nilsson <jesper.nilsson@axis.com>
+To:     Lorenzo Stoakes <lstoakes@gmail.com>
+Cc:     linux-mm@kvack.org, linux-mips@linux-mips.org,
+        linux-fbdev@vger.kernel.org, Jan Kara <jack@suse.cz>,
+        kvm@vger.kernel.org, linux-sh@vger.kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+        x86@kernel.org, Hugh Dickins <hughd@google.com>,
+        linux-media@vger.kernel.org, Rik van Riel <riel@redhat.com>,
+        intel-gfx@lists.freedesktop.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        ceph-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-cris-kernel@axis.com,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mel Gorman <mgorman@techsingularity.net>
+Subject: Re: [PATCH 06/10] mm: replace get_user_pages() write/force
+ parameters with gup_flags
+Message-ID: <20161017092246.GG30704@axis.com>
+References: <20161013002020.3062-1-lstoakes@gmail.com>
+ <20161013002020.3062-7-lstoakes@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20161013002020.3062-7-lstoakes@gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+Return-Path: <jesper.nilsson@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55443
+X-archive-position: 55444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: jesper.nilsson@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,40 +82,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Changes introduced to arch/mips/Makefile for the generic kernel resulted
-in build errors when making a compressed image if platform-y has multiple
-values, like this:
+On Thu, Oct 13, 2016 at 01:20:16AM +0100, Lorenzo Stoakes wrote:
+> This patch removes the write and force parameters from get_user_pages() and
+> replaces them with a gup_flags parameter to make the use of FOLL_FORCE explicit
+> in callers as use of this flag can result in surprising behaviour (and hence
+> bugs) within the mm subsystem.
+> 
+> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+> ---
+>  arch/cris/arch-v32/drivers/cryptocop.c                 |  4 +---
 
-make[2]: *** No rule to make target `alchemy/'.
-make[1]: *** [vmlinuz] Error 2
-make[1]: Target `_all' not remade because of errors.
-make: *** [sub-make] Error 2
-make: Target `_all' not remade because of errors.
+For the CRIS part:
 
-Fix this by quoting $(platform-y) as it is passed to the Makefile in
-arch/mips/boot/compressed/Makefile
+Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
 
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Link: https://storage.kernelci.org/next/next-20161017/mips-gpr_defconfig/build.log
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-
----
-
- arch/mips/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index fbf40d3c8123..1a6bac7b076f 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -263,7 +263,7 @@ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
- 
- bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
- 		  VMLINUX_ENTRY_ADDRESS=$(entry-y) \
--		  PLATFORM=$(platform-y)
-+		  PLATFORM="$(platform-y)"
- ifdef CONFIG_32BIT
- bootvars-y	+= ADDR_BITS=32
- endif
+/^JN - Jesper Nilsson
 -- 
-2.7.4
+               Jesper Nilsson -- jesper.nilsson@axis.com

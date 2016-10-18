@@ -1,63 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2016 11:21:56 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:59598 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992942AbcJRJVtrpiKd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Oct 2016 11:21:49 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 9DB2D41F8E5F;
-        Tue, 18 Oct 2016 10:21:18 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.44.0.242])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 18 Oct 2016 10:21:18 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 18 Oct 2016 10:21:18 +0100
-Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
-        by Forcepoint Email with ESMTPS id D74976DE9730;
-        Tue, 18 Oct 2016 10:21:41 +0100 (IST)
-Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
- (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 18 Oct 2016
- 10:21:43 +0100
-Received: from np-p-burton.localnet (10.100.200.61) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 18 Oct
- 2016 10:21:43 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Andreas Schwab <schwab@linux-m68k.org>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        Tejun Heo <tj@kernel.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        "Jiri Slaby" <jslaby@suse.cz>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        "Ivan Delalande" <colona@arista.com>,
-        Thierry Reding <treding@nvidia.com>,
-        "Borislav Petkov" <bp@suse.de>, Jan Kara <jack@suse.com>,
-        Petr Mladek <pmladek@suse.com>, <linux-kernel@vger.kernel.org>,
-        Joe Perches <joe@perches.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2016 14:43:18 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:40243 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992991AbcJRMnK3LhoK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 18 Oct 2016 14:43:10 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 4AEE4AD8E;
+        Tue, 18 Oct 2016 12:43:08 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+        id E0EF81E0F93; Tue, 18 Oct 2016 14:43:05 +0200 (CEST)
+Date:   Tue, 18 Oct 2016 14:43:05 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     Lorenzo Stoakes <lstoakes@gmail.com>
+Cc:     linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>,
+        Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Rik van Riel <riel@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v2] console: Don't prefer first registered if DT specifies stdout-path
-Date:   Tue, 18 Oct 2016 10:21:36 +0100
-Message-ID: <2401691.yKn6kY81q4@np-p-burton>
-Organization: Imagination Technologies
-User-Agent: KMail/5.3.2 (Linux/4.7.6-1-ARCH; KDE/5.27.0; x86_64; ; )
-In-Reply-To: <87oa2ij2mq.fsf@linux-m68k.org>
-References: <20160809125010.14150-1-paul.burton@imgtec.com> <4033254.tBrl4yKcsP@np-p-burton> <87oa2ij2mq.fsf@linux-m68k.org>
+        adi-buildroot-devel@lists.sourceforge.net,
+        ceph-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, kvm@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-cris-kernel@axis.com, linux-fbdev@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-rdma@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 01/10] mm: remove write/force parameters from
+ __get_user_pages_locked()
+Message-ID: <20161018124305.GA29967@quack2.suse.cz>
+References: <20161013002020.3062-1-lstoakes@gmail.com>
+ <20161013002020.3062-2-lstoakes@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1491817.ehho7IUxQd";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.100.200.61]
-X-ESG-ENCRYPT-TAG: 1cc78754
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20161013002020.3062-2-lstoakes@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <jack@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55483
+X-archive-position: 55484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: jack@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,57 +61,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart1491817.ehho7IUxQd
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-
-On Monday, 17 October 2016 19:39:57 BST Andreas Schwab wrote:
-> On Okt 17 2016, Paul Burton <paul.burton@imgtec.com> wrote:
-> > Could you share the device tree from your system?
+On Thu 13-10-16 01:20:11, Lorenzo Stoakes wrote:
+> This patch removes the write and force parameters from __get_user_pages_locked()
+> to make the use of FOLL_FORCE explicit in callers as use of this flag can result
+> in surprising behaviour (and hence bugs) within the mm subsystem.
 > 
-> This is the contents of chosen/linux,stdout-path on the systems I have:
-> 
-> chosen/linux,stdout-path
->                  "/pci@f0000000/ATY,SnowyParent@10/ATY,Snowy_A@0"
-> 
-> chosen/linux,stdout-path
->                  "/pci@0,f0000000/NVDA,Parent@10/NVDA,Display-B@1"
-> 
-> Is that what you need?  There is also chosen/stdout, but no
-> aliases/stdout.
-> 
-> Andreas.
+> Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
 
-Hi Andreas,
+Looks good. You can add:
 
-I think I see the problem & I'm hoping this patch will fix it:
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-https://lkml.org/lkml/2016/10/18/142
-
-Could you give it a try & let me know?
-
-Thanks,
-    Paul
---nextPart1491817.ehho7IUxQd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAABCAAGBQJYBemgAAoJEIIg2fppPBxl/ocP/RsSGhUJsbbXOzHH0zhvW5/0
-lmP447zgfYfSB63uNeLJ/uZwmyYVy5/6by9+88bPp+pnw5IvbH2oWOcClRXBopP2
-a03Yn/sGYx1nybguqE0CIMql9keWdudPQB2W3008pg7jMRx7DeOnWLLJqgDK2eRH
-/0dqLH8ISm7olbbfbJOmSZhKI/cip2mB3utR0/wln/f89bXbFKDkyf/S9m2p0+/o
-agKLZNbxlT8ApQIgTdy2wYYJej3DIwNe7jofxKVlQ/hjvVBq4T80kbEuLeBYVn9L
-7bUoIplFzLHidsNYCXUm+uuaC8ogtu0kV9akIHzx1yTtwsEiKP59I/N7IjvcvNDU
-AygRucuIiYL6OzXFwktChzqLmG07deHNPSxBS+Tsx82Gt5IO984nFLuOZwYmQFSY
-yWCsTZS/R74GQBth1vhH1hBtMViHPqW6UFvQ5xhUGV/dLsevO+azgSlcYnDFr2GE
-TfZJ/laYn3mh2zSlGmJX5KU8eiqIUuF47eAx29twD3W/6XSMWDj/mJe4LnW9/zqb
-G3WSOoLrv2gYvNaaCGGyAfJMshQqlod9QCCifsXPAnB3jge2VW3AJT47KeBeNzJV
-WtQR5w5PK2iPE05lbcOoLICopg0Utlb005M6UYGzzVSaKD4xkNrDWaOAaTlCfkn8
-SNxS0sVuI8lxwzZNdr3V
-=dSrA
------END PGP SIGNATURE-----
-
---nextPart1491817.ehho7IUxQd--
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR

@@ -1,54 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2016 16:13:53 +0200 (CEST)
-Received: from mail-oi0-f65.google.com ([209.85.218.65]:33756 "EHLO
-        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992991AbcJRONopI70z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Oct 2016 16:13:44 +0200
-Received: by mail-oi0-f65.google.com with SMTP id i127so14464319oia.0;
-        Tue, 18 Oct 2016 07:13:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=HhBBf4RLWxWrSFbmg88PdePO9cFdmlOhe7zpSpIKTfs=;
-        b=DvKc4EXSr+aq85Rn+5mCLrud0pu/I7wtkGb+xO/1F+5KgT0Tk63h6arJ5L2Yxz6QcE
-         RmytqRpP5RuXuxGaCMgZFN7OxEs+HNz+jNfCymKAMVoZLrZH6gVYiHwnIGyzKOHCq7KB
-         bZWXK6hzRsrXdflZLeTrFVI5s16UsI6a19xeQ3AjOHtWEXRw80nmoFiWK0hz58HLGAeK
-         s4aRqnS3FcxZxaT4h9KBRexwivm1y3tJkJL8d37kRMGmtwqR3rdJ4WSKhit0tBXOoT4+
-         tT0Bcn2iXWzRpzJC+OgbshUQ1yojxUvWHbLeVV44PzY3jPp19mTEsUOu7N8co/jH72Yl
-         rF3g==
-X-Gm-Message-State: AA6/9RkVn3dbu/IXdRDAVEH3m2jRUS01vOqUplBCNjLeei+YrzhmvtvwLch0c2zpFDS3xQ==
-X-Received: by 10.202.53.68 with SMTP id c65mr552833oia.57.1476800018882;
-        Tue, 18 Oct 2016 07:13:38 -0700 (PDT)
-Received: from localhost (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
-        by smtp.gmail.com with ESMTPSA id f68sm7544062oic.10.2016.10.18.07.13.38
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 18 Oct 2016 07:13:38 -0700 (PDT)
-Date:   Tue, 18 Oct 2016 09:13:37 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Rahul Bedarkar <rahul.bedarkar@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        James Hartley <james.hartley@imgtec.com>,
-        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] MIPS: DTS: img: add device tree for Marduk board
-Message-ID: <20161018141337.3lardgah2qprqtdx@rob-hp-laptop>
-References: <1476424555-22629-1-git-send-email-rahul.bedarkar@imgtec.com>
- <1476424555-22629-2-git-send-email-rahul.bedarkar@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2016 16:31:01 +0200 (CEST)
+Received: from mailapp02.imgtec.com ([217.156.133.132]:40445 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992992AbcJROayQXgEy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Oct 2016 16:30:54 +0200
+Received: from HHMAIL03.hh.imgtec.org (unknown [10.44.0.21])
+        by Forcepoint Email with ESMTPS id 7A5CD946B3EDF;
+        Tue, 18 Oct 2016 15:30:44 +0100 (IST)
+Received: from HHMAIL01.hh.imgtec.org (10.100.10.19) by HHMAIL03.hh.imgtec.org
+ (10.44.0.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 18 Oct 2016
+ 15:30:47 +0100
+Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 18 Oct
+ 2016 15:30:46 +0100
+Subject: Re: [PATCH v3 0/4] MIPS: Remote processor driver
+To:     Hauke Mehrtens <hauke@hauke-m.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+References: <1476193356-1350-1-git-send-email-matt.redfearn@imgtec.com>
+ <1a12d041-b49c-3412-c867-9bbe47d040fc@hauke-m.de>
+CC:     <linux-mips@linux-mips.org>, <linux-remoteproc@vger.kernel.org>,
+        <lisa.parratt@imgtec.com>, <linux-kernel@vger.kernel.org>,
+        Qais Yousef <qais.yousef@imgtec.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        James Hogan <james.hogan@imgtec.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Paul Burton <paul.burton@imgtec.com>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <8eb30f99-c7b9-49e5-7354-c99fee6f437e@imgtec.com>
+Date:   Tue, 18 Oct 2016 15:30:46 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1476424555-22629-2-git-send-email-rahul.bedarkar@imgtec.com>
-User-Agent: Mutt/1.6.2-neo (2016-08-21)
-Return-Path: <robherring2@gmail.com>
+In-Reply-To: <1a12d041-b49c-3412-c867-9bbe47d040fc@hauke-m.de>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55489
+X-archive-position: 55490
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,42 +60,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 14, 2016 at 11:25:55AM +0530, Rahul Bedarkar wrote:
-> Add support for Imagination Technologies' Marduk board which is based
-> on Pistachio SoC. It is also known as Creator Ci40. Marduk is legacy
-> name and will be there for decades.
-> 
-> Documentation for this board can be found on
-> https://docs.creatordev.io/ci40/
-> 
-> This patch adds initial support for board with following peripherals:
-> 
-> * PWM based heartbeat LED
-> * GPIO based buttons
-> * SPI NOR flash on SPI1
-> * UART0 and UART1
-> * SD card
-> * Ethernet
-> * USB
-> * PWM
-> * ADC
-> * I2C
-> 
-> Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
-> ---
-> Changes in v2:
->   - Correct RAM size. It is 256MB instead of 128MB.
->   - Rename nodes pwm_leds -> leds and gpio_keys -> keys (Suggested by Rob Herring)
->   - Don't use '_' in node name for internal_dac_supply (Suggested by Rob Herring)
->   - Add part name in compatible string for spi-nor (Suggested by Rob Herring)
-> ---
->  .../bindings/mips/img/pistachio-marduk.txt         |  10 ++
->  MAINTAINERS                                        |   6 +
->  arch/mips/boot/dts/img/Makefile                    |   9 ++
->  arch/mips/boot/dts/img/pistachio_marduk.dts        | 163 +++++++++++++++++++++
->  4 files changed, 188 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt
->  create mode 100644 arch/mips/boot/dts/img/Makefile
->  create mode 100644 arch/mips/boot/dts/img/pistachio_marduk.dts
+Hi Hauke,
 
-Acked-by: Rob Herring <robh@kernel.org>
+
+On 17/10/16 22:13, Hauke Mehrtens wrote:
+> On 10/11/2016 03:42 PM, Matt Redfearn wrote:
+>> The MIPS remote processor driver allows non-Linux firmware to take
+>> control of and execute on one of the systems VPEs. The CPU must be
+>> offlined from Linux first. A sysfs interface is created which allows
+>> firmware to be loaded and changed at runtime. A full description is
+>> available at [1]. An example firmware that can be used with this driver
+>> is available at [2].
+>>
+>> This is useful to allow running bare metal code, or an RTOS, on one or
+>> more CPUs while allowing Linux to continue running on those remaining.
+>>
+>> The remote processor framework allows for firmwares to provide any
+>> virtio device for communication between the firmware running on the
+>> remote VP and Linux. For example [1] demonstrates a simple firmware
+>> which provides a virtual serial port. Any string sent to the port is
+>> case inverted and returned.
+>>
+>> This is conceptually similar to the VPE loader functionality, but is
+>> more standard as it fits into the remoteproc subsystem.
+>>
+>> The first patches in this series lay the groundwork for the driver
+>> before it is added. The last series deprecates the VPE loader.
+>>
+>> This functionality is supported on:
+>> - MIPS32r2 devices implementing the MIPS MT ASE for multithreading, such
+>>    as interAptiv.
+>> - MIPS32r6 devices implementing VPs, such as I6400.
+>>
+>> Limitations:
+>> - The remoteproc core supports only 32bit ELFs. Therefore it is only
+>>    possible to run 32bit firmware on the remote processor. Also, for
+>>    virtio communication, pointers are passed from the kernel to firmware.
+>>    There can be no mismatch in pointer sizes between the kernel and
+>>    firmware, so this limits the host kernel to 32bit as well.
+>>
+>> The functionality has been tested on the Ci40 board which has a 2 core 2
+>> thread interAptiv.
+>>
+> Does this also work with big firmware binaries, like 2 MB firmware size?
+> It looks like dma_alloc_coherent() is used in rproc_handle_carveout() to
+> allocate the memory which will probably not work after full boot.
+
+In my testing, a 2Mb firmware carveout does work fine on a Creator Ci40 
+with 256Mb RAM. But like you say, using the DMA api will limit the size 
+of the firmware. In our driver's case, we end up setting up wired TLB 
+entries mapping the carveout into the offline CPUs virtual memory, so in 
+principle there is no reason (for our driver) that the memory has to be 
+contiguous since we could map smaller pages. But this is code in the 
+generic remoteproc framework so must work for other processors which 
+could not deal with that.
+
+>
+> Is it possible to configure the cache line in a way that it will not be
+> removed from the cache to avoid high latency loads from main memory?
+> This is only needed for small firmware binaries, but allows even shorter
+> reaction times and better real time behavior.
+
+The firmware running on the offline CPU has full access to the hardware 
+so could do whatever it likes with it's cache lines - it's not something 
+that the remote processor driver ought to do as a matter of course 
+though I don't think.
+
+>
+> In general I am in favor of having this as a standard Linux interface.
+
+Great :-)
+
+Thanks,
+Matt
+
+> Hauke

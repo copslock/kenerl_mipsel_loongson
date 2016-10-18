@@ -1,80 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2016 15:56:27 +0200 (CEST)
-Received: from mail-lf0-f65.google.com ([209.85.215.65]:36555 "EHLO
-        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992991AbcJRN4Rxm2Fz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Oct 2016 15:56:17 +0200
-Received: by mail-lf0-f65.google.com with SMTP id b75so32556190lfg.3
-        for <linux-mips@linux-mips.org>; Tue, 18 Oct 2016 06:56:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=x5pwEGrbw2h5NC+62Kqklj23B5o1GicvxazdryldPV8=;
-        b=Cf2XW8kbuO+NoNROrbUau1a+0qvpWvYKkd5/QVpvXx4kYH4nmcACCWl6aTR0wfXKR/
-         XRcjUQNqG2e6rMBBnbwNHs2oeRQseCiQQzBxSlK8BmN+JqnobdC0JxKbd3uFqIEz1rty
-         dQouhnCYZ+ryklSC3W6aV6C2/m36WzO+I18Zk663TndoafzZAvxOx8njkX3NfWxtApKD
-         2EzQV5VOYCq8RAjfKNRxm00a96sFTTrrN0dFn66JIc+bdh+r9ys2LM60+rcldjUnQuGJ
-         fOFgIG6QKVbBKrk0+Fk/yZkKfRgPpckX2xGazmZydaO0yEnkBbbTBhmQx2uHzdv02MRH
-         4m0A==
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2016 16:13:53 +0200 (CEST)
+Received: from mail-oi0-f65.google.com ([209.85.218.65]:33756 "EHLO
+        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992991AbcJRONopI70z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Oct 2016 16:13:44 +0200
+Received: by mail-oi0-f65.google.com with SMTP id i127so14464319oia.0;
+        Tue, 18 Oct 2016 07:13:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=x5pwEGrbw2h5NC+62Kqklj23B5o1GicvxazdryldPV8=;
-        b=Rqkcu4cpXqzvI5VU1Qvx/cnpEv8atKJ2MaqfbqU0HFIagWAm5kKPtLTi3NB3PZkcE3
-         +x++xY73VfTzSbUKFzEaQ77PAD0ZnntxhMLKWSrBZgXCL2bd8+RucJbwCMhZMeHepUQw
-         dYgodA8YSV8k3l/FrFH0abLWAbdKc+UHkIgfRGpiMR3euK+iWtMR1weprGZh2SS2Vh62
-         f76Y9u4TJKm8wkHczkUBLVFb61HXYGDDwCUy1UzCQvzae04tQFgvV4hzD1sxvgAIYwbf
-         qjZcIVbx+KAx1GsbQSJKE1B2C8CkQR5cXFa4gHLrQEnyRCNV4WlFN65WiEx9Y4Lqs0Yx
-         GyUA==
-X-Gm-Message-State: AA6/9RlZ9RFsKtC3nzmLeM4cGpzt/vprrqxpW1eTU51V8pYeeWVO1+FeeJqD+3kLXVvxpQ==
-X-Received: by 10.194.189.198 with SMTP id gk6mr306773wjc.167.1476798972276;
-        Tue, 18 Oct 2016 06:56:12 -0700 (PDT)
-Received: from localhost (cpc94060-newt37-2-0-cust185.19-3.cable.virginm.net. [92.234.204.186])
-        by smtp.gmail.com with ESMTPSA id vx1sm29668481wjc.3.2016.10.18.06.56.10
+        bh=HhBBf4RLWxWrSFbmg88PdePO9cFdmlOhe7zpSpIKTfs=;
+        b=DvKc4EXSr+aq85Rn+5mCLrud0pu/I7wtkGb+xO/1F+5KgT0Tk63h6arJ5L2Yxz6QcE
+         RmytqRpP5RuXuxGaCMgZFN7OxEs+HNz+jNfCymKAMVoZLrZH6gVYiHwnIGyzKOHCq7KB
+         bZWXK6hzRsrXdflZLeTrFVI5s16UsI6a19xeQ3AjOHtWEXRw80nmoFiWK0hz58HLGAeK
+         s4aRqnS3FcxZxaT4h9KBRexwivm1y3tJkJL8d37kRMGmtwqR3rdJ4WSKhit0tBXOoT4+
+         tT0Bcn2iXWzRpzJC+OgbshUQ1yojxUvWHbLeVV44PzY3jPp19mTEsUOu7N8co/jH72Yl
+         rF3g==
+X-Gm-Message-State: AA6/9RkVn3dbu/IXdRDAVEH3m2jRUS01vOqUplBCNjLeei+YrzhmvtvwLch0c2zpFDS3xQ==
+X-Received: by 10.202.53.68 with SMTP id c65mr552833oia.57.1476800018882;
+        Tue, 18 Oct 2016 07:13:38 -0700 (PDT)
+Received: from localhost (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
+        by smtp.gmail.com with ESMTPSA id f68sm7544062oic.10.2016.10.18.07.13.38
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 18 Oct 2016 06:56:10 -0700 (PDT)
-Date:   Tue, 18 Oct 2016 14:56:09 +0100
-From:   Lorenzo Stoakes <lstoakes@gmail.com>
-To:     Jan Kara <jack@suse.cz>
-Cc:     linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>,
-        Hugh Dickins <hughd@google.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Rik van Riel <riel@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        ceph-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, kvm@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-cris-kernel@axis.com, linux-fbdev@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-rdma@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 04/10] mm: replace get_user_pages_locked() write/force
- parameters with gup_flags
-Message-ID: <20161018135609.GA30025@lucifer>
-References: <20161013002020.3062-1-lstoakes@gmail.com>
- <20161013002020.3062-5-lstoakes@gmail.com>
- <20161018125425.GD29967@quack2.suse.cz>
+        Tue, 18 Oct 2016 07:13:38 -0700 (PDT)
+Date:   Tue, 18 Oct 2016 09:13:37 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        James Hartley <james.hartley@imgtec.com>,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] MIPS: DTS: img: add device tree for Marduk board
+Message-ID: <20161018141337.3lardgah2qprqtdx@rob-hp-laptop>
+References: <1476424555-22629-1-git-send-email-rahul.bedarkar@imgtec.com>
+ <1476424555-22629-2-git-send-email-rahul.bedarkar@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20161018125425.GD29967@quack2.suse.cz>
-User-Agent: Mutt/1.7.1 (2016-10-04)
-Return-Path: <lstoakes@gmail.com>
+In-Reply-To: <1476424555-22629-2-git-send-email-rahul.bedarkar@imgtec.com>
+User-Agent: Mutt/1.6.2-neo (2016-08-21)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55488
+X-archive-position: 55489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lstoakes@gmail.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,36 +61,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Oct 18, 2016 at 02:54:25PM +0200, Jan Kara wrote:
-> > @@ -1282,7 +1282,7 @@ long get_user_pages(unsigned long start, unsigned long nr_pages,
-> >  			    int write, int force, struct page **pages,
-> >  			    struct vm_area_struct **vmas);
-> >  long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
-> > -		    int write, int force, struct page **pages, int *locked);
-> > +		    unsigned int gup_flags, struct page **pages, int *locked);
->
-> Hum, the prototype is inconsistent with e.g. __get_user_pages_unlocked()
-> where gup_flags come after **pages argument. Actually it makes more sense
-> to have it before **pages so that input arguments come first and output
-> arguments second but I don't care that much. But it definitely should be
-> consistent...
+On Fri, Oct 14, 2016 at 11:25:55AM +0530, Rahul Bedarkar wrote:
+> Add support for Imagination Technologies' Marduk board which is based
+> on Pistachio SoC. It is also known as Creator Ci40. Marduk is legacy
+> name and will be there for decades.
+> 
+> Documentation for this board can be found on
+> https://docs.creatordev.io/ci40/
+> 
+> This patch adds initial support for board with following peripherals:
+> 
+> * PWM based heartbeat LED
+> * GPIO based buttons
+> * SPI NOR flash on SPI1
+> * UART0 and UART1
+> * SD card
+> * Ethernet
+> * USB
+> * PWM
+> * ADC
+> * I2C
+> 
+> Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+> ---
+> Changes in v2:
+>   - Correct RAM size. It is 256MB instead of 128MB.
+>   - Rename nodes pwm_leds -> leds and gpio_keys -> keys (Suggested by Rob Herring)
+>   - Don't use '_' in node name for internal_dac_supply (Suggested by Rob Herring)
+>   - Add part name in compatible string for spi-nor (Suggested by Rob Herring)
+> ---
+>  .../bindings/mips/img/pistachio-marduk.txt         |  10 ++
+>  MAINTAINERS                                        |   6 +
+>  arch/mips/boot/dts/img/Makefile                    |   9 ++
+>  arch/mips/boot/dts/img/pistachio_marduk.dts        | 163 +++++++++++++++++++++
+>  4 files changed, 188 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mips/img/pistachio-marduk.txt
+>  create mode 100644 arch/mips/boot/dts/img/Makefile
+>  create mode 100644 arch/mips/boot/dts/img/pistachio_marduk.dts
 
-It was difficult to decide quite how to arrange parameters as there was
-inconsitency with regards to parameter ordering already - for example
-__get_user_pages() places its flags argument before pages whereas, as you note,
-__get_user_pages_unlocked() puts them afterwards.
-
-I ended up compromising by trying to match the existing ordering of the function
-as much as I could by replacing write, force pairs with gup_flags in the same
-location (with the exception of get_user_pages_unlocked() which I felt should
-match __get_user_pages_unlocked() in signature) or if there was already a
-gup_flags parameter as in the case of __get_user_pages_unlocked() I simply
-removed the write, force pair and left the flags as the last parameter.
-
-I am happy to rearrange parameters as needed, however I am not sure if it'd be
-worthwhile for me to do so (I am keen to try to avoid adding too much noise here
-:)
-
-If we were to rearrange parameters for consistency I'd suggest adjusting
-__get_user_pages_unlocked() to put gup_flags before pages and do the same with
-get_user_pages_unlocked(), let me know what you think.
+Acked-by: Rob Herring <robh@kernel.org>

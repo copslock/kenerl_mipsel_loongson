@@ -1,39 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2016 15:35:16 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:9698 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991986AbcJSNdhTQ-r0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Oct 2016 15:33:37 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id E771AFCD0CCFC;
-        Wed, 19 Oct 2016 14:33:27 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 19 Oct 2016 14:33:31 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, Paul Burton <paul.burton@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 4/4] MIPS: Fix __show_regs() output
-Date:   Wed, 19 Oct 2016 14:33:23 +0100
-Message-ID: <1476884003-17306-5-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1476884003-17306-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1476884003-17306-1-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2016 18:49:59 +0200 (CEST)
+Received: from mga01.intel.com ([192.55.52.88]:46773 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991978AbcJSQtvQY-eb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Oct 2016 18:49:51 +0200
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP; 19 Oct 2016 09:49:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.31,367,1473145200"; 
+   d="scan'208";a="21413430"
+Received: from ray.jf.intel.com (HELO [10.7.201.146]) ([10.7.201.146])
+  by orsmga005.jf.intel.com with ESMTP; 19 Oct 2016 09:49:43 -0700
+Subject: Re: [PATCH 00/10] mm: adjust get_user_pages* functions to explicitly
+ pass FOLL_* flags
+To:     Michal Hocko <mhocko@kernel.org>,
+        Lorenzo Stoakes <lstoakes@gmail.com>
+References: <20161013002020.3062-1-lstoakes@gmail.com>
+ <20161018153050.GC13117@dhcp22.suse.cz> <20161019085815.GA22239@lucifer>
+ <20161019090727.GE7517@dhcp22.suse.cz>
+Cc:     linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>,
+        Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>,
+        Rik van Riel <riel@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        ceph-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, kvm@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-cris-kernel@axis.com, linux-fbdev@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-rdma@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+From:   Dave Hansen <dave.hansen@linux.intel.com>
+Message-ID: <5807A427.7010200@linux.intel.com>
+Date:   Wed, 19 Oct 2016 09:49:43 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+In-Reply-To: <20161019090727.GE7517@dhcp22.suse.cz>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <dave.hansen@linux.intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55515
+X-archive-position: 55516
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: dave.hansen@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,107 +64,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+On 10/19/2016 02:07 AM, Michal Hocko wrote:
+> On Wed 19-10-16 09:58:15, Lorenzo Stoakes wrote:
+>> On Tue, Oct 18, 2016 at 05:30:50PM +0200, Michal Hocko wrote:
+>>> I am wondering whether we can go further. E.g. it is not really clear to
+>>> me whether we need an explicit FOLL_REMOTE when we can in fact check
+>>> mm != current->mm and imply that. Maybe there are some contexts which
+>>> wouldn't work, I haven't checked.
+>>
+>> This flag is set even when /proc/self/mem is used. I've not looked deeply into
+>> this flag but perhaps accessing your own memory this way can be considered
+>> 'remote' since you're not accessing it directly. On the other hand, perhaps this
+>> is just mistaken in this case?
+> 
+> My understanding of the flag is quite limited as well. All I know it is
+> related to protection keys and it is needed to bypass protection check.
+> See arch_vma_access_permitted. See also 1b2ee1266ea6 ("mm/core: Do not
+> enforce PKEY permissions on remote mm access").
 
-Since commit 4bcc595ccd80 ("printk: reinstate KERN_CONT for printing
-continuation lines") the output from __show_regs() on MIPS has been
-pretty unreadable due to the lack of KERN_CONT markers. Use pr_cont to
-provide the appropriate markers & restore the expected register output.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
----
-
- arch/mips/kernel/traps.c | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
-
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 273b4a419f76..b9a910b208f9 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -262,15 +262,15 @@ static void __show_regs(const struct pt_regs *regs)
- 		if ((i % 4) == 0)
- 			printk("$%2d   :", i);
- 		if (i == 0)
--			printk(" %0*lx", field, 0UL);
-+			pr_cont(" %0*lx", field, 0UL);
- 		else if (i == 26 || i == 27)
--			printk(" %*s", field, "");
-+			pr_cont(" %*s", field, "");
- 		else
--			printk(" %0*lx", field, regs->regs[i]);
-+			pr_cont(" %0*lx", field, regs->regs[i]);
- 
- 		i++;
- 		if ((i % 4) == 0)
--			printk("\n");
-+			pr_cont("\n");
- 	}
- 
- #ifdef CONFIG_CPU_HAS_SMARTMIPS
-@@ -291,46 +291,46 @@ static void __show_regs(const struct pt_regs *regs)
- 
- 	if (cpu_has_3kex) {
- 		if (regs->cp0_status & ST0_KUO)
--			printk("KUo ");
-+			pr_cont("KUo ");
- 		if (regs->cp0_status & ST0_IEO)
--			printk("IEo ");
-+			pr_cont("IEo ");
- 		if (regs->cp0_status & ST0_KUP)
--			printk("KUp ");
-+			pr_cont("KUp ");
- 		if (regs->cp0_status & ST0_IEP)
--			printk("IEp ");
-+			pr_cont("IEp ");
- 		if (regs->cp0_status & ST0_KUC)
--			printk("KUc ");
-+			pr_cont("KUc ");
- 		if (regs->cp0_status & ST0_IEC)
--			printk("IEc ");
-+			pr_cont("IEc ");
- 	} else if (cpu_has_4kex) {
- 		if (regs->cp0_status & ST0_KX)
--			printk("KX ");
-+			pr_cont("KX ");
- 		if (regs->cp0_status & ST0_SX)
--			printk("SX ");
-+			pr_cont("SX ");
- 		if (regs->cp0_status & ST0_UX)
--			printk("UX ");
-+			pr_cont("UX ");
- 		switch (regs->cp0_status & ST0_KSU) {
- 		case KSU_USER:
--			printk("USER ");
-+			pr_cont("USER ");
- 			break;
- 		case KSU_SUPERVISOR:
--			printk("SUPERVISOR ");
-+			pr_cont("SUPERVISOR ");
- 			break;
- 		case KSU_KERNEL:
--			printk("KERNEL ");
-+			pr_cont("KERNEL ");
- 			break;
- 		default:
--			printk("BAD_MODE ");
-+			pr_cont("BAD_MODE ");
- 			break;
- 		}
- 		if (regs->cp0_status & ST0_ERL)
--			printk("ERL ");
-+			pr_cont("ERL ");
- 		if (regs->cp0_status & ST0_EXL)
--			printk("EXL ");
-+			pr_cont("EXL ");
- 		if (regs->cp0_status & ST0_IE)
--			printk("IE ");
-+			pr_cont("IE ");
- 	}
--	printk("\n");
-+	pr_cont("\n");
- 
- 	exccode = (cause & CAUSEF_EXCCODE) >> CAUSEB_EXCCODE;
- 	printk("Cause : %08x (ExcCode %02x)\n", cause, exccode);
--- 
-2.7.4
+Yeah, we need the flag to tell us when PKEYs should be applied or not.
+The current task's PKRU (pkey rights register) should really only be
+used to impact access to the task's memory, but has no bearing on how a
+given task should access remote memory.

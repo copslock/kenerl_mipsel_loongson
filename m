@@ -1,39 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2016 13:53:55 +0200 (CEST)
-Received: from ozlabs.org ([103.22.144.67]:36191 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990519AbcJSLxr0oyGB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Oct 2016 13:53:47 +0200
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 3szVhR5fW1z9t15;
-        Wed, 19 Oct 2016 22:53:43 +1100 (AEDT)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        monstr@monstr.eu, ralf@linux-mips.org, tglx@linutronix.de,
-        jason@lakedaemon.net, marc.zyngier@arm.com, alistair@popple.id.au,
-        mporter@kernel.crashing.org
-Cc:     soren.brinkmann@xilinx.com, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, michal.simek@xilinx.com,
-        linuxppc-dev@lists.ozlabs.org, paulus@samba.org,
-        benh@kernel.crashing.org
-Subject: Re: [Patch v5 06/12] powerpc/virtex: Use generic xilinx irqchip driver
-In-Reply-To: <1476723176-39891-7-git-send-email-Zubair.Kakakhel@imgtec.com>
-References: <1476723176-39891-1-git-send-email-Zubair.Kakakhel@imgtec.com> <1476723176-39891-7-git-send-email-Zubair.Kakakhel@imgtec.com>
-User-Agent: Notmuch/0.21 (https://notmuchmail.org)
-Date:   Wed, 19 Oct 2016 22:53:43 +1100
-Message-ID: <87funs4ks8.fsf@concordia.ellerman.id.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2016 15:33:41 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:48176 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990519AbcJSNdeoiPc0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Oct 2016 15:33:34 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 6C1A595E5C823;
+        Wed, 19 Oct 2016 14:33:24 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 19 Oct 2016 14:33:27 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH 0/4] MIPS: traps: Fix fallout from reinstatation of KERN_CONT
+Date:   Wed, 19 Oct 2016 14:33:19 +0100
+Message-ID: <1476884003-17306-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
-Return-Path: <mpe@ellerman.id.au>
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55510
+X-archive-position: 55511
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,21 +45,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com> writes:
+Since commit 4bcc595ccd80 ("printk: reinstate KERN_CONT for printing
+continuation lines") in v4.9-rc1, the output of information from traps.c
+has been garbled. This series fixes the output.
 
-> The Xilinx interrupt controller driver is now available in drivers/irqchip.
-> Switch to using that driver.
->
-> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
->
-> ---
-> V5 New patch
->
-> Tested on virtex440-ml507 using qemu
 
-I don't have one of these to test on, and the patch looks sane, so
-that's good enough for me.
+Matt Redfearn (3):
+  MIPS: traps: Fix output of show_backtrace
+  MIPS: traps: Fix output of show_stacktrace
+  MIPS: traps: Fix output of show_code
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Paul Burton (1):
+  MIPS: Fix __show_regs() output
 
-cheers
+ arch/mips/kernel/traps.c | 65 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 31 deletions(-)
+
+-- 
+2.7.4

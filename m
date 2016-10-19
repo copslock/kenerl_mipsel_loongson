@@ -1,58 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Oct 2016 19:24:03 +0200 (CEST)
-Received: from mga02.intel.com ([134.134.136.20]:20995 "EHLO mga02.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2016 00:50:13 +0200 (CEST)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:20563 "EHLO 1wt.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990519AbcJSRX5YxzQv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Oct 2016 19:23:57 +0200
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP; 19 Oct 2016 10:23:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.31,367,1473145200"; 
-   d="scan'208";a="21749372"
-Received: from ray.jf.intel.com (HELO [10.7.201.146]) ([10.7.201.146])
-  by orsmga004.jf.intel.com with ESMTP; 19 Oct 2016 10:23:55 -0700
-Subject: Re: [PATCH 00/10] mm: adjust get_user_pages* functions to explicitly
- pass FOLL_* flags
-To:     Michal Hocko <mhocko@kernel.org>
-References: <20161013002020.3062-1-lstoakes@gmail.com>
- <20161018153050.GC13117@dhcp22.suse.cz> <20161019085815.GA22239@lucifer>
- <20161019090727.GE7517@dhcp22.suse.cz> <5807A427.7010200@linux.intel.com>
- <20161019170127.GN24393@dhcp22.suse.cz>
-Cc:     Lorenzo Stoakes <lstoakes@gmail.com>, linux-mm@kvack.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>,
-        Rik van Riel <riel@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        ceph-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, kvm@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-cris-kernel@axis.com, linux-fbdev@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-rdma@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
-From:   Dave Hansen <dave.hansen@linux.intel.com>
-Message-ID: <5807AC2B.4090208@linux.intel.com>
-Date:   Wed, 19 Oct 2016 10:23:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.8.0
+        id S23991978AbcJSWuGcvPWa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Oct 2016 00:50:06 +0200
+Received: (from willy@localhost)
+        by pcw.home.local (8.15.2/8.15.2/Submit) id u9JMnw7u028383;
+        Thu, 20 Oct 2016 00:49:58 +0200
+From:   Willy Tarreau <w@1wt.eu>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 3.10 13/16] MIPS: KVM: Check for pfn noslot case
+Date:   Thu, 20 Oct 2016 00:49:37 +0200
+Message-Id: <1476917380-28311-14-git-send-email-w@1wt.eu>
+X-Mailer: git-send-email 2.8.0.rc2.1.gbe9624a
+In-Reply-To: <1476917380-28311-1-git-send-email-w@1wt.eu>
+References: <1476917380-28311-1-git-send-email-w@1wt.eu>
 MIME-Version: 1.0
-In-Reply-To: <20161019170127.GN24393@dhcp22.suse.cz>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <dave.hansen@linux.intel.com>
+Content-Type: text/plain; charset=latin1
+Content-Transfer-Encoding: 8bit
+Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55518
+X-archive-position: 55519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave.hansen@linux.intel.com
+X-original-sender: w@1wt.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,15 +43,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/19/2016 10:01 AM, Michal Hocko wrote:
-> The question I had earlier was whether this has to be an explicit FOLL
-> flag used by g-u-p users or we can just use it internally when mm !=
-> current->mm
+From: James Hogan <james.hogan@imgtec.com>
 
-The reason I chose not to do that was that deferred work gets run under
-a basically random 'current'.  If we just use 'mm != current->mm', then
-the deferred work will sometimes have pkeys enforced and sometimes not,
-basically randomly.
+commit ba913e4f72fc9cfd03dad968dfb110eb49211d80 upstream.
 
-We want to be consistent with whether they are enforced or not, so we
-explicitly indicate that by calling the remote variant vs. plain.
+When mapping a page into the guest we error check using is_error_pfn(),
+however this doesn't detect a value of KVM_PFN_NOSLOT, indicating an
+error HVA for the page. This can only happen on MIPS right now due to
+unusual memslot management (e.g. being moved / removed / resized), or
+with an Enhanced Virtual Memory (EVA) configuration where the default
+KVM_HVA_ERR_* and kvm_is_error_hva() definitions are unsuitable (fixed
+in a later patch). This case will be treated as a pfn of zero, mapping
+the first page of physical memory into the guest.
+
+It would appear the MIPS KVM port wasn't updated prior to being merged
+(in v3.10) to take commit 81c52c56e2b4 ("KVM: do not treat noslot pfn as
+a error pfn") into account (merged v3.8), which converted a bunch of
+is_error_pfn() calls to is_error_noslot_pfn(). Switch to using
+is_error_noslot_pfn() instead to catch this case properly.
+
+Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[james.hogan@imgtec.com: Backport to v3.16.y]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Willy Tarreau <w@1wt.eu>
+---
+ arch/mips/kvm/kvm_tlb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/kvm/kvm_tlb.c b/arch/mips/kvm/kvm_tlb.c
+index 4bee439..8a47bd9 100644
+--- a/arch/mips/kvm/kvm_tlb.c
++++ b/arch/mips/kvm/kvm_tlb.c
+@@ -182,7 +182,7 @@ static int kvm_mips_map_page(struct kvm *kvm, gfn_t gfn)
+         srcu_idx = srcu_read_lock(&kvm->srcu);
+ 	pfn = kvm_mips_gfn_to_pfn(kvm, gfn);
+ 
+-	if (kvm_mips_is_error_pfn(pfn)) {
++	if (is_error_noslot_pfn(pfn)) {
+ 		kvm_err("Couldn't get pfn for gfn %#" PRIx64 "!\n", gfn);
+ 		err = -EFAULT;
+ 		goto out;
+-- 
+2.8.0.rc2.1.gbe9624a

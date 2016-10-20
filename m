@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2016 22:29:36 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32790 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2016 22:30:07 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9341 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993043AbcJTU2hMp2vK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Oct 2016 22:28:37 +0200
+        with ESMTP id S23993038AbcJTU2vOjdTK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Oct 2016 22:28:51 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 9E1E5FE173FA0;
-        Thu, 20 Oct 2016 21:28:26 +0100 (IST)
+        by Forcepoint Email with ESMTPS id A89AD71BA7D1D;
+        Thu, 20 Oct 2016 21:28:40 +0100 (IST)
 Received: from localhost (10.100.200.119) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 20 Oct
- 2016 21:28:30 +0100
+ 2016 21:28:45 +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Nicholas Piggin <npiggin@gmail.com>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 5/6] MIPS: Ensure bss section ends on a long-aligned address
-Date:   Thu, 20 Oct 2016 21:27:04 +0100
-Message-ID: <20161020202705.3783-6-paul.burton@imgtec.com>
+Subject: [PATCH 6/6] MIPS: Use thin archives & dead code elimination
+Date:   Thu, 20 Oct 2016 21:27:05 +0100
+Message-ID: <20161020202705.3783-7-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.10.0
 In-Reply-To: <20161020202705.3783-1-paul.burton@imgtec.com>
 References: <20161020202705.3783-1-paul.burton@imgtec.com>
@@ -27,7 +27,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55534
+X-archive-position: 55535
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,50 +44,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When clearing the .bss section in kernel_entry we do so using LONG_S
-instructions, and branch whilst the current write address doesn't equal
-the end of the .bss section minus the size of a long integer. The .bss
-section always begins at a long-aligned address and we always increment
-the write pointer by the size of a long integer - we therefore rely upon
-the .bss section ending at a long-aligned address. If this is not the
-case then the long-aligned write address can never be equal to the
-non-long-aligned end address & we will continue to increment past the
-end of the .bss section, attempting to zero the rest of memory.
+Enable CONFIG_THIN_ARCHIVES & CONFIG_LD_DEAD_CODE_DATA_ELIMINATION for
+MIPS, ensuring that we keep the data bus exception table & the machine
+list which would be discarded without marking them with KEEP.
 
-Despite this requirement that .bss end at a long-aligned address we pass
-0 as the end alignment requirement to the BSS_SECTION macro and thus
-don't guarantee any particular alignment, allowing us to hit the error
-condition described above.
+This shrinks a typical generic kernel build with drivers enabled for
+Boston, Ci40 & SEAD-3 by around 5%, or ~450kb. As reported by
+bloat-o-meter:
 
-Fix this by instead passing LONGSIZE as the end alignment argument to
-the BSS_SECTION macro.
+  add/remove: 0/3028 grow/shrink: 1/14 up/down: 18/-457362 (-457344)
+  ...
+  Total: Before=9001030, After=8543686, chg -5.08%
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Nicholas Piggin <npiggin@gmail.com>
+
 ---
 
- arch/mips/kernel/vmlinux.lds.S | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/Kconfig              | 2 ++
+ arch/mips/kernel/vmlinux.lds.S | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b3c5bde..8557667 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -66,6 +66,8 @@ config MIPS
+ 	select HAVE_EXIT_THREAD
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_ARCH_HARDENED_USERCOPY
++	select THIN_ARCHIVES
++	select LD_DEAD_CODE_DATA_ELIMINATION
+ 
+ menu "Machine selection"
+ 
 diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index d5de675..d1f5401 100644
+index d1f5401..a43ba2a 100644
 --- a/arch/mips/kernel/vmlinux.lds.S
 +++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -1,3 +1,4 @@
-+#include <asm/asm.h>
- #include <asm/asm-offsets.h>
- #include <asm/thread_info.h>
+@@ -72,7 +72,7 @@ SECTIONS
+ 	/* Exception table for data bus errors */
+ 	__dbe_table : {
+ 		__start___dbe_table = .;
+-		*(__dbe_table)
++		KEEP(*(__dbe_table))
+ 		__stop___dbe_table = .;
+ 	}
  
-@@ -182,7 +183,7 @@ SECTIONS
- 	 * Force .bss to 64K alignment so that .bss..swapper_pg_dir
- 	 * gets that alignment.	 .sbss should be empty, so there will be
- 	 * no holes after __init_end. */
--	BSS_SECTION(0, 0x10000, 0)
-+	BSS_SECTION(0, 0x10000, LONGSIZE)
- 
- 	_end = . ;
+@@ -122,7 +122,7 @@ SECTIONS
+ 	. = ALIGN(4);
+ 	.mips.machines.init : AT(ADDR(.mips.machines.init) - LOAD_OFFSET) {
+ 		__mips_machines_start = .;
+-		*(.mips.machines.init)
++		KEEP(*(.mips.machines.init))
+ 		__mips_machines_end = .;
+ 	}
  
 -- 
 2.10.0

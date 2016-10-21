@@ -1,61 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2016 07:54:18 +0200 (CEST)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:35021 "EHLO
-        mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990513AbcJUFyLxI6LM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2016 07:54:11 +0200
-Received: by mail-pf0-f195.google.com with SMTP id s8so7610587pfj.2;
-        Thu, 20 Oct 2016 22:54:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=TuMjOxAh+cIU8CdzjQ71JBrlKySJrtAI9pbTnvn19II=;
-        b=qBwyRBsS+sRNJN+HeGiwrmnk04V8LyPWU4SsUbPIltZzUNmI/jnGhXRr9NfP64/5IC
-         LmKdIGhsPqbeSn0Z3sxIl3FjXLW+THq3gFUBbFNmurVmahqR55KIeVV9oawYhXBf2YZK
-         g96X8vA+VsRUyhgVRnLDLj5iAJtkRuV3rnRbe1jPNy170Xxi4YQOkHVeM/0r5kdfWQnX
-         gsWo4zk2u1STdLCGSVFQAHLbBhx5f+mh63IiYXbvvj0ksymkzkAVuPbOP6uh6jt9bbrW
-         gkFXltkkt5gu4RYypRTv5GPtTNpEjuwgr5QMD6YQou8WXsJy0uiHhbPPBDB8zN8l9dwQ
-         mlZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=TuMjOxAh+cIU8CdzjQ71JBrlKySJrtAI9pbTnvn19II=;
-        b=lp5ZcJmaE9gLiAMYLF+u65FDD/Bs8hubBFBHkV1kP+wIfMR1P9q+0Fj9nbMbc0LUOP
-         SZUnGKix72rPZxO5VfIzsYejCLSoMdHF01uObS23Hd5vVYuoWjdrODgfDNOEglSiQXeV
-         Z0hjM4I6kjS1eyDPNZJFOh30lCbRETacVgvYml2Edto5pLcb5Bo5WYPb2JJX/T4eLxn9
-         oC4nuISfWfRAqLsI2PVXrKZcZvrZmZRLUCsuiud8qrQLA6lHwkXewrrqIHQdJldZZ9Wx
-         kn86YV855khOZ9hRyvw+blywdQaKY7Q+ztsNd9BR8/PwlVbZI1peU0OhljVTtrCsX7pk
-         OS8w==
-X-Gm-Message-State: AA6/9RkjhDb7qe4JDamn8UqsfxZSEodT0i30BZtxdlaXzdcgHszUnRM341RggfMBXko2Bg==
-X-Received: by 10.98.15.134 with SMTP id 6mr8259705pfp.117.1477029246121;
-        Thu, 20 Oct 2016 22:54:06 -0700 (PDT)
-Received: from ly-pc ([180.110.201.1])
-        by smtp.gmail.com with ESMTPSA id r77sm1502341pfb.2.2016.10.20.22.54.02
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Thu, 20 Oct 2016 22:54:05 -0700 (PDT)
-Date:   Fri, 21 Oct 2016 13:53:58 +0800
-From:   Yang Ling <gnaygnil@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Keguang Zhang <keguang.zhang@gmail.com>
-Cc:     Yang Ling <gnaygnil@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2.1 2/2] MIPS: loongson1: Add watchdog support for Loongson1
- board
-Message-ID: <20161021055358.GA6365@ly-pc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2016 09:46:05 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55875 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990513AbcJUHp7BKa-F (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2016 09:45:59 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 13AC041F8DE5;
+        Fri, 21 Oct 2016 08:45:22 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 21 Oct 2016 08:45:22 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 21 Oct 2016 08:45:22 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 517917F2CCD2C;
+        Fri, 21 Oct 2016 08:45:50 +0100 (IST)
+Received: from np-p-burton.localnet (10.100.200.125) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 21 Oct
+ 2016 08:45:52 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Nicholas Piggin <npiggin@gmail.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 0/6] MIPS: Use thin archives & dead code elimination
+Date:   Fri, 21 Oct 2016 08:45:47 +0100
+Message-ID: <1724594.nvOo2qz5cT@np-p-burton>
+Organization: Imagination Technologies
+User-Agent: KMail/5.3.2 (Linux/4.7.6-1-ARCH; KDE/5.27.0; x86_64; ; )
+In-Reply-To: <20161021115147.0f6eea51@roar.ozlabs.ibm.com>
+References: <20161020202705.3783-1-paul.burton@imgtec.com> <20161021115147.0f6eea51@roar.ozlabs.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gnaygnil@gmail.com>
+Content-Type: multipart/signed; boundary="nextPart23477701.SVBATBIGA1";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+X-Originating-IP: [10.100.200.125]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55538
+X-archive-position: 55539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnaygnil@gmail.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,121 +53,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The patch adds watchdog support for Loongson1 board.
+--nextPart23477701.SVBATBIGA1
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Signed-off-by: Yang Ling <gnaygnil@gmail.com>
+Hi Nick,
 
----
-V2.1:
-  No change.
-V2.0:
-  Add watchdog support for loongson1b_defconfig.
-V1.1:
-  Add watchdog support for Loongson1B.
----
- arch/mips/configs/loongson1b_defconfig           |  4 ++++
- arch/mips/configs/loongson1c_defconfig           |  4 ++++
- arch/mips/include/asm/mach-loongson32/platform.h |  3 ++-
- arch/mips/loongson32/common/platform.c           | 16 ++++++++++++++++
- arch/mips/loongson32/ls1b/board.c                |  1 +
- arch/mips/loongson32/ls1c/board.c                |  1 +
- 6 files changed, 28 insertions(+), 1 deletion(-)
+On Friday, 21 October 2016 11:51:47 BST Nicholas Piggin wrote:
+> Paul Burton <paul.burton@imgtec.com> wrote:
+> > This series fixes a few issues with CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
+> > and then enables it, along with CONFIG_THIN_ARCHIVES, for MIPS. This
+> > 
+> > leads to a typical generic kernel build becoming ~5% smaller:
+> >   add/remove: 0/3028 grow/shrink: 1/14 up/down: 18/-457362 (-457344)
+> >   ...
+> >   Total: Before=9001030, After=8543686, chg -5.08%
+> > 
+> > Applies atop v4.9-rc1.
+> 
+> Very nice, and thanks for the kbuild fixes, I think they all look sane.
+> 
+> Let's try to get those kbuild fixes in through the kbuild tree first
+> (which has some other fixes required for 4.9). I can take them and send
+> them to kbuild maintainer if you like.
 
-diff --git a/arch/mips/configs/loongson1b_defconfig b/arch/mips/configs/loongson1b_defconfig
-index c442f27..914c867 100644
---- a/arch/mips/configs/loongson1b_defconfig
-+++ b/arch/mips/configs/loongson1b_defconfig
-@@ -74,6 +74,10 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_LOONGSON1=y
- # CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_NOWAYOUT=y
-+CONFIG_WATCHDOG_SYSFS=y
-+CONFIG_LOONGSON1_WDT=y
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_HID_GENERIC=m
- CONFIG_USB_HID=m
-diff --git a/arch/mips/configs/loongson1c_defconfig b/arch/mips/configs/loongson1c_defconfig
-index 2304d41..68e42ef 100644
---- a/arch/mips/configs/loongson1c_defconfig
-+++ b/arch/mips/configs/loongson1c_defconfig
-@@ -75,6 +75,10 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_LOONGSON1=y
- # CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_NOWAYOUT=y
-+CONFIG_WATCHDOG_SYSFS=y
-+CONFIG_LOONGSON1_WDT=y
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_HID_GENERIC=m
- CONFIG_USB_HID=m
-diff --git a/arch/mips/include/asm/mach-loongson32/platform.h b/arch/mips/include/asm/mach-loongson32/platform.h
-index 7adc313..85335fd 100644
---- a/arch/mips/include/asm/mach-loongson32/platform.h
-+++ b/arch/mips/include/asm/mach-loongson32/platform.h
-@@ -25,11 +25,12 @@
- extern struct platform_device ls1x_gpio1_pdev;
- extern struct platform_device ls1x_nand_pdev;
- extern struct platform_device ls1x_rtc_pdev;
-+extern struct platform_device ls1x_wdt_pdev;
- 
- void __init ls1x_clk_init(void);
- void __init ls1x_dma_set_platdata(struct plat_ls1x_dma *pdata);
- void __init ls1x_nand_set_platdata(struct plat_ls1x_nand *pdata);
--void __init ls1x_serial_set_uartclk(struct platform_device *pdev);
- void __init ls1x_rtc_set_extclk(struct platform_device *pdev);
-+void __init ls1x_serial_set_uartclk(struct platform_device *pdev);
- 
- #endif /* __ASM_MACH_LOONGSON32_PLATFORM_H */
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index 4e28e0f..1bfcdcb 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -357,3 +357,19 @@ struct platform_device ls1x_rtc_pdev = {
- 	.name		= "ls1x-rtc",
- 	.id		= -1,
- };
-+
-+/* Watchdog */
-+static struct resource ls1x_wdt_resources[] = {
-+	{
-+		.start	= LS1X_WDT_BASE,
-+		.end	= LS1X_WDT_BASE + SZ_16 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+struct platform_device ls1x_wdt_pdev = {
-+	.name		= "ls1x-wdt",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_wdt_resources),
-+	.resource	= ls1x_wdt_resources,
-+};
-diff --git a/arch/mips/loongson32/ls1b/board.c b/arch/mips/loongson32/ls1b/board.c
-index 38a1d40..d0812a3 100644
---- a/arch/mips/loongson32/ls1b/board.c
-+++ b/arch/mips/loongson32/ls1b/board.c
-@@ -72,6 +72,7 @@ struct plat_ls1x_nand ls1x_nand_pdata = {
- 	&ls1x_gpio1_pdev,
- 	&ls1x_nand_pdev,
- 	&ls1x_rtc_pdev,
-+	&ls1x_wdt_pdev,
- };
- 
- static int __init ls1b_platform_init(void)
-diff --git a/arch/mips/loongson32/ls1c/board.c b/arch/mips/loongson32/ls1c/board.c
-index a96bed5..0e02362 100644
---- a/arch/mips/loongson32/ls1c/board.c
-+++ b/arch/mips/loongson32/ls1c/board.c
-@@ -13,6 +13,7 @@
- 	&ls1x_uart_pdev,
- 	&ls1x_eth0_pdev,
- 	&ls1x_rtc_pdev,
-+	&ls1x_wdt_pdev,
- };
- 
- static int __init ls1c_platform_init(void)
--- 
-1.9.1
+That sounds great :)
+
+> On powerpc we'll likely provide an option to select these manually for
+> 4.9 because there has been the odd toolchain issue come up, so that's
+> something to consider.
+
+I imagine the MIPS bits will probably be v4.10 material, but hopefully Ralf 
+can get them into -next as soon as possible after the kbuild bits are in, 
+which should give us some time to discover any toolchain issues.
+
+> For your linker script, you may consider putting the function sections
+> into the same input as other text. TEXT_TEXT does not include .text.*,
+> so mips's .text.* below it will catch those.
+> 
+> You may just open-code your TEXT_TEXT, and have:
+> 
+> *(.text.hot .text .text.fixup .text.unlikely .text.[0-9a-zA-Z_]*)
+> 
+> or similar.
+
+Ah, so are you saying that would give the linker more scope for discarding 
+things?
+
+Thanks,
+    Paul
+--nextPart23477701.SVBATBIGA1
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAABCAAGBQJYCcerAAoJEIIg2fppPBxllhwQAKYrjCJtJSRdaGlUIHyVAcu8
+CFLgqlpez68qcjQtxYTzaraZv/hhm0R+fLl8A+dbdVeyS4fcLQhE2tfIU0DD7Sjk
+MdwhgWpXmmfZP0FfpOfkpnXCHooKLK2Y1kUJclIzhzkrM9V5bBBwjuDvoDv7hUpm
+uDS1hxeGxksiwZMLJWWszLeO4RPdfdtw11AVYkOos9Jjx9OEtEeNtXME4rTmFq1/
+aI6zq1kJY0PKX0z9+Io34fM4abp5Mr+8yJy/XY6uJyn+mG2OZcsvw+LAnJgcnoDZ
+P+CpX/L9EVlZesM6MbZ4N4YokLcnz0mATookzeOu2jsh5lAur64yEt9xPgN9GoDA
+cwWJlqt2vD2SqQdrxwtknzCsRLb5utyRidCfgRmJ7zgdXlJyAA8o9cxxfzETPVV5
+G6Dn4JI3q2szjhWCRjtPQzdrc+sqBaxA7JJ8t/zgj7YaUgqq05FMMu04X2+fzsPB
+Nvn0Z8gQ+fBaQP8gxI41ALD5sMgMfdt8ylO2407g7SqQbO45VS9VShf4IBDA1idj
+jCI+MTWswItld/f+F9dU6HgeVtt4XPC9ck+Nge3DIeVnLPXk9AJofKPnyOeUM/P9
+BzH3r4g7ZkJr/ZkQq5AZRCH2RzsgXLCz//EVkq37vxWK5RFnb/gAfj2FYKsrbQl/
+rtAvXFiH5dP/jOdlblBG
+=5Yuz
+-----END PGP SIGNATURE-----
+
+--nextPart23477701.SVBATBIGA1--

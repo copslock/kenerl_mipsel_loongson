@@ -1,46 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2016 09:46:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55875 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990513AbcJUHp7BKa-F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2016 09:45:59 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 13AC041F8DE5;
-        Fri, 21 Oct 2016 08:45:22 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Fri, 21 Oct 2016 08:45:22 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Fri, 21 Oct 2016 08:45:22 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 517917F2CCD2C;
-        Fri, 21 Oct 2016 08:45:50 +0100 (IST)
-Received: from np-p-burton.localnet (10.100.200.125) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 21 Oct
- 2016 08:45:52 +0100
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Nicholas Piggin <npiggin@gmail.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2016 10:47:43 +0200 (CEST)
+Received: from mail-pf0-f196.google.com ([209.85.192.196]:32783 "EHLO
+        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990513AbcJUIrgsUpCg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2016 10:47:36 +0200
+Received: by mail-pf0-f196.google.com with SMTP id i85so8057400pfa.0;
+        Fri, 21 Oct 2016 01:47:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=PqayG1krtDwGeqKKVh1XS0Xcc3FiidRkaIcpFxVXkFE=;
+        b=0CF1Kw6bklqgHfc1VFjsVdTrO7lpc140ZnBRpeE0jwsjjMrryuEAehinVuMa/EJN9Y
+         eS1A+U7h3JGSDXmyGvzofhIamuT44XqFflpv8OlmoSMgNOq0qr4DK1JXDewY0nsDlrKH
+         hbkE+UXDYDD1CEK0pCIQINYd5fq0EvxrQCf7NfsUbd0TKzJPif6V0mXioMEywfe5PN4j
+         N2ONuKZR8b/ScKmVaXyZSLIuE8se0zBZxLZ7CYMH03ee9hvzr2Jp0sy5DlOgsDw3Slbl
+         c1xlOR9iS0Ae3bMz464+g+3xsVree0eU4ayRu/8h8AK76PWusn9keZm41LorBY82mEPy
+         1KhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=PqayG1krtDwGeqKKVh1XS0Xcc3FiidRkaIcpFxVXkFE=;
+        b=Gy63+pFvOp39//5t6Kx+k07MX+64W7ND0vMHc4uCwrku/saWsyyCjPSRWaZ+JC3N4E
+         nB7JJICXwkvzNJyTbURW1dfXY5+ID5bNhZIEKc2ZPIkVXhlXyOqxTHMn88wwHP8NpvTU
+         MIuEEql7njUfkJul3Z0IQyN7eU8QCJZyzvLRBTB5BATSEtf+7nTjglI/WEb6wvBSWVUy
+         QjLCvYqGUjVNnzuJ4frC1IO1ypD+eGPt197/dXy6L5FDHT0zCa3Xgrddw16FeDave4L4
+         3C6QpSK3utMsVhZ2gHLRt3m7VZX5++MhCBYCXQjLBu5TUs7S0Jx2BJYoMwW3IT9RyyVL
+         VlWA==
+X-Gm-Message-State: AA6/9RnAPEBQ2w8TDhIC6qHD63QRi8vldWlReQb2wBrL1zIlYpVgBk2+M5E9yspKIqf3SA==
+X-Received: by 10.98.149.74 with SMTP id p71mr9430569pfd.126.1477039650710;
+        Fri, 21 Oct 2016 01:47:30 -0700 (PDT)
+Received: from roar.ozlabs.ibm.com ([122.99.82.10])
+        by smtp.gmail.com with ESMTPSA id w67sm3085048pfd.36.2016.10.21.01.47.28
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 21 Oct 2016 01:47:30 -0700 (PDT)
+Date:   Fri, 21 Oct 2016 19:47:18 +1100
+From:   Nicholas Piggin <npiggin@gmail.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: [PATCH 0/6] MIPS: Use thin archives & dead code elimination
-Date:   Fri, 21 Oct 2016 08:45:47 +0100
-Message-ID: <1724594.nvOo2qz5cT@np-p-burton>
-Organization: Imagination Technologies
-User-Agent: KMail/5.3.2 (Linux/4.7.6-1-ARCH; KDE/5.27.0; x86_64; ; )
-In-Reply-To: <20161021115147.0f6eea51@roar.ozlabs.ibm.com>
-References: <20161020202705.3783-1-paul.burton@imgtec.com> <20161021115147.0f6eea51@roar.ozlabs.ibm.com>
+Message-ID: <20161021194718.2cd4b93e@roar.ozlabs.ibm.com>
+In-Reply-To: <1724594.nvOo2qz5cT@np-p-burton>
+References: <20161020202705.3783-1-paul.burton@imgtec.com>
+        <20161021115147.0f6eea51@roar.ozlabs.ibm.com>
+        <1724594.nvOo2qz5cT@np-p-burton>
+Organization: IBM
+X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart23477701.SVBATBIGA1";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.100.200.125]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <npiggin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55539
+X-archive-position: 55540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: npiggin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,75 +70,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart23477701.SVBATBIGA1
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+On Fri, 21 Oct 2016 08:45:47 +0100
+Paul Burton <paul.burton@imgtec.com> wrote:
 
-Hi Nick,
-
-On Friday, 21 October 2016 11:51:47 BST Nicholas Piggin wrote:
-> Paul Burton <paul.burton@imgtec.com> wrote:
-> > This series fixes a few issues with CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-> > and then enables it, along with CONFIG_THIN_ARCHIVES, for MIPS. This
+> Hi Nick,
+> 
+> On Friday, 21 October 2016 11:51:47 BST Nicholas Piggin wrote:
+> > Paul Burton <paul.burton@imgtec.com> wrote:  
+> > > This series fixes a few issues with CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
+> > > and then enables it, along with CONFIG_THIN_ARCHIVES, for MIPS. This
+> > > 
+> > > leads to a typical generic kernel build becoming ~5% smaller:
+> > >   add/remove: 0/3028 grow/shrink: 1/14 up/down: 18/-457362 (-457344)
+> > >   ...
+> > >   Total: Before=9001030, After=8543686, chg -5.08%
+> > > 
+> > > Applies atop v4.9-rc1.  
 > > 
-> > leads to a typical generic kernel build becoming ~5% smaller:
-> >   add/remove: 0/3028 grow/shrink: 1/14 up/down: 18/-457362 (-457344)
-> >   ...
-> >   Total: Before=9001030, After=8543686, chg -5.08%
+> > Very nice, and thanks for the kbuild fixes, I think they all look sane.
 > > 
-> > Applies atop v4.9-rc1.
+> > Let's try to get those kbuild fixes in through the kbuild tree first
+> > (which has some other fixes required for 4.9). I can take them and send
+> > them to kbuild maintainer if you like.  
 > 
-> Very nice, and thanks for the kbuild fixes, I think they all look sane.
+> That sounds great :)
 > 
-> Let's try to get those kbuild fixes in through the kbuild tree first
-> (which has some other fixes required for 4.9). I can take them and send
-> them to kbuild maintainer if you like.
-
-That sounds great :)
-
-> On powerpc we'll likely provide an option to select these manually for
-> 4.9 because there has been the odd toolchain issue come up, so that's
-> something to consider.
-
-I imagine the MIPS bits will probably be v4.10 material, but hopefully Ralf 
-can get them into -next as soon as possible after the kbuild bits are in, 
-which should give us some time to discover any toolchain issues.
-
-> For your linker script, you may consider putting the function sections
-> into the same input as other text. TEXT_TEXT does not include .text.*,
-> so mips's .text.* below it will catch those.
+> > On powerpc we'll likely provide an option to select these manually for
+> > 4.9 because there has been the odd toolchain issue come up, so that's
+> > something to consider.  
 > 
-> You may just open-code your TEXT_TEXT, and have:
-> 
-> *(.text.hot .text .text.fixup .text.unlikely .text.[0-9a-zA-Z_]*)
-> 
-> or similar.
+> I imagine the MIPS bits will probably be v4.10 material, but hopefully Ralf 
+> can get them into -next as soon as possible after the kbuild bits are in, 
+> which should give us some time to discover any toolchain issues.
 
-Ah, so are you saying that would give the linker more scope for discarding 
-things?
+Okay, whatever works for you.
+
+
+> > For your linker script, you may consider putting the function sections
+> > into the same input as other text. TEXT_TEXT does not include .text.*,
+> > so mips's .text.* below it will catch those.
+> > 
+> > You may just open-code your TEXT_TEXT, and have:
+> > 
+> > *(.text.hot .text .text.fixup .text.unlikely .text.[0-9a-zA-Z_]*)
+> > 
+> > or similar.  
+> 
+> Ah, so are you saying that would give the linker more scope for discarding 
+> things?
+
+I don't think discarding, but it will allow those sections to be placed
+together with more scope for reordering. This can reduce the amount of
+branch trampolines required.
+
+Aside from that, it just gives less change in behaviour. Without
+-ffunction-sections, those functions would be placed in .text section,
+so you ideally want to keep them there when enabling it.
 
 Thanks,
-    Paul
---nextPart23477701.SVBATBIGA1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAABCAAGBQJYCcerAAoJEIIg2fppPBxllhwQAKYrjCJtJSRdaGlUIHyVAcu8
-CFLgqlpez68qcjQtxYTzaraZv/hhm0R+fLl8A+dbdVeyS4fcLQhE2tfIU0DD7Sjk
-MdwhgWpXmmfZP0FfpOfkpnXCHooKLK2Y1kUJclIzhzkrM9V5bBBwjuDvoDv7hUpm
-uDS1hxeGxksiwZMLJWWszLeO4RPdfdtw11AVYkOos9Jjx9OEtEeNtXME4rTmFq1/
-aI6zq1kJY0PKX0z9+Io34fM4abp5Mr+8yJy/XY6uJyn+mG2OZcsvw+LAnJgcnoDZ
-P+CpX/L9EVlZesM6MbZ4N4YokLcnz0mATookzeOu2jsh5lAur64yEt9xPgN9GoDA
-cwWJlqt2vD2SqQdrxwtknzCsRLb5utyRidCfgRmJ7zgdXlJyAA8o9cxxfzETPVV5
-G6Dn4JI3q2szjhWCRjtPQzdrc+sqBaxA7JJ8t/zgj7YaUgqq05FMMu04X2+fzsPB
-Nvn0Z8gQ+fBaQP8gxI41ALD5sMgMfdt8ylO2407g7SqQbO45VS9VShf4IBDA1idj
-jCI+MTWswItld/f+F9dU6HgeVtt4XPC9ck+Nge3DIeVnLPXk9AJofKPnyOeUM/P9
-BzH3r4g7ZkJr/ZkQq5AZRCH2RzsgXLCz//EVkq37vxWK5RFnb/gAfj2FYKsrbQl/
-rtAvXFiH5dP/jOdlblBG
-=5Yuz
------END PGP SIGNATURE-----
-
---nextPart23477701.SVBATBIGA1--
+Nick

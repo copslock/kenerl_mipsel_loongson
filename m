@@ -1,63 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2016 10:47:43 +0200 (CEST)
-Received: from mail-pf0-f196.google.com ([209.85.192.196]:32783 "EHLO
-        mail-pf0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990513AbcJUIrgsUpCg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2016 10:47:36 +0200
-Received: by mail-pf0-f196.google.com with SMTP id i85so8057400pfa.0;
-        Fri, 21 Oct 2016 01:47:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2016 11:33:29 +0200 (CEST)
+Received: from mail-lf0-f41.google.com ([209.85.215.41]:33714 "EHLO
+        mail-lf0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991104AbcJUJdW49HRj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2016 11:33:22 +0200
+Received: by mail-lf0-f41.google.com with SMTP id x79so141706392lff.0
+        for <linux-mips@linux-mips.org>; Fri, 21 Oct 2016 02:33:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :organization:mime-version:content-transfer-encoding;
-        bh=PqayG1krtDwGeqKKVh1XS0Xcc3FiidRkaIcpFxVXkFE=;
-        b=0CF1Kw6bklqgHfc1VFjsVdTrO7lpc140ZnBRpeE0jwsjjMrryuEAehinVuMa/EJN9Y
-         eS1A+U7h3JGSDXmyGvzofhIamuT44XqFflpv8OlmoSMgNOq0qr4DK1JXDewY0nsDlrKH
-         hbkE+UXDYDD1CEK0pCIQINYd5fq0EvxrQCf7NfsUbd0TKzJPif6V0mXioMEywfe5PN4j
-         N2ONuKZR8b/ScKmVaXyZSLIuE8se0zBZxLZ7CYMH03ee9hvzr2Jp0sy5DlOgsDw3Slbl
-         c1xlOR9iS0Ae3bMz464+g+3xsVree0eU4ayRu/8h8AK76PWusn9keZm41LorBY82mEPy
-         1KhA==
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=vaxDvLghDv+SkmTSfcsxmaVK0QJOYjKgbKuZLXiKw34=;
+        b=k4E19MzdWqjxmwg6NGYfmZ6ONysQ+fPnfxJhIlBg7XMN2x26j7KIkdoIbwxk1Ehc5Q
+         yqJZoUA+Qf6IUrG9gYdkTfPrJrODUGrxMMHSMiMqqYgr65YI/niYxicZZVrIbUG6Cn/o
+         /5c0GyPnHJrvx9EVwjdcKsnx8KJl8wId3DzI8JbBFw6LdhTJV6TwE39Cw4zDQ1/8wMqB
+         4XFQLx/NrIM0SnBXvwd4BPHTqrTIbUy3We6qGTW9gvnS1Lp+HZ+g++kHH7llubZfkS1Z
+         8s//DFrEADE2CJUy8YpjpSneA4uho7zHfruDbsIBv066wrDghlCGLVouRokf0STV8lt7
+         hU7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:organization:mime-version:content-transfer-encoding;
-        bh=PqayG1krtDwGeqKKVh1XS0Xcc3FiidRkaIcpFxVXkFE=;
-        b=Gy63+pFvOp39//5t6Kx+k07MX+64W7ND0vMHc4uCwrku/saWsyyCjPSRWaZ+JC3N4E
-         nB7JJICXwkvzNJyTbURW1dfXY5+ID5bNhZIEKc2ZPIkVXhlXyOqxTHMn88wwHP8NpvTU
-         MIuEEql7njUfkJul3Z0IQyN7eU8QCJZyzvLRBTB5BATSEtf+7nTjglI/WEb6wvBSWVUy
-         QjLCvYqGUjVNnzuJ4frC1IO1ypD+eGPt197/dXy6L5FDHT0zCa3Xgrddw16FeDave4L4
-         3C6QpSK3utMsVhZ2gHLRt3m7VZX5++MhCBYCXQjLBu5TUs7S0Jx2BJYoMwW3IT9RyyVL
-         VlWA==
-X-Gm-Message-State: AA6/9RnAPEBQ2w8TDhIC6qHD63QRi8vldWlReQb2wBrL1zIlYpVgBk2+M5E9yspKIqf3SA==
-X-Received: by 10.98.149.74 with SMTP id p71mr9430569pfd.126.1477039650710;
-        Fri, 21 Oct 2016 01:47:30 -0700 (PDT)
-Received: from roar.ozlabs.ibm.com ([122.99.82.10])
-        by smtp.gmail.com with ESMTPSA id w67sm3085048pfd.36.2016.10.21.01.47.28
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 21 Oct 2016 01:47:30 -0700 (PDT)
-Date:   Fri, 21 Oct 2016 19:47:18 +1100
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 0/6] MIPS: Use thin archives & dead code elimination
-Message-ID: <20161021194718.2cd4b93e@roar.ozlabs.ibm.com>
-In-Reply-To: <1724594.nvOo2qz5cT@np-p-burton>
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=vaxDvLghDv+SkmTSfcsxmaVK0QJOYjKgbKuZLXiKw34=;
+        b=Edv1L9wGP7/edCvugq+6oFA/J0zpJHlMH3wUN8lAnhzkDmMvsJQ9dQuEsWuPs+Yh0+
+         jojLQWTl+eNVR60lfTqqPVeoFLeQAEZpE6uBdf/F7THbWIwvwX67MFIc9v3dnuzPGETC
+         4UimnJIaMy2q5xqTq5GgB15TAEO+ZmiwQ8ZZya1OJkmQZZkLIhsFidEVfp7/HUG2yvEo
+         ncDqwVd6IyPV16m0O0bxDjRWcRZjfXZOjqF1+ApSVUHmdy77yDuKsPLpTVuMndoX2uqp
+         q0WEoUSEKcRqQ3io3vJcZ0saa97lAPF3djCdkRokO9Z8Ntg4wpj3a1ZtCr5UetnmoGyX
+         q+bQ==
+X-Gm-Message-State: AA6/9Rmy7mDMMvfDSPQ9+0J8TCtXKKhSvP9nVMgrxqJY1gokbnhl9febYWa47nulUEB9yg==
+X-Received: by 10.25.40.74 with SMTP id o71mr6014687lfo.183.1477042396134;
+        Fri, 21 Oct 2016 02:33:16 -0700 (PDT)
+Received: from [192.168.4.126] ([31.173.81.208])
+        by smtp.gmail.com with ESMTPSA id y131sm296601lfd.26.2016.10.21.02.33.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 21 Oct 2016 02:33:15 -0700 (PDT)
+Subject: Re: [PATCH 1/6] kbuild: Keep device tree tables though dead code
+ elimination
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
 References: <20161020202705.3783-1-paul.burton@imgtec.com>
-        <20161021115147.0f6eea51@roar.ozlabs.ibm.com>
-        <1724594.nvOo2qz5cT@np-p-burton>
-Organization: IBM
-X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+ <20161020202705.3783-2-paul.burton@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Nicholas Piggin <npiggin@gmail.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <a4baa8e5-a2e1-9020-dd81-a064e1f7bb81@cogentembedded.com>
+Date:   Fri, 21 Oct 2016 12:33:14 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20161020202705.3783-2-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <npiggin@gmail.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55540
+X-archive-position: 55541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: npiggin@gmail.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,62 +71,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 21 Oct 2016 08:45:47 +0100
-Paul Burton <paul.burton@imgtec.com> wrote:
+Hello.
 
-> Hi Nick,
-> 
-> On Friday, 21 October 2016 11:51:47 BST Nicholas Piggin wrote:
-> > Paul Burton <paul.burton@imgtec.com> wrote:  
-> > > This series fixes a few issues with CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-> > > and then enables it, along with CONFIG_THIN_ARCHIVES, for MIPS. This
-> > > 
-> > > leads to a typical generic kernel build becoming ~5% smaller:
-> > >   add/remove: 0/3028 grow/shrink: 1/14 up/down: 18/-457362 (-457344)
-> > >   ...
-> > >   Total: Before=9001030, After=8543686, chg -5.08%
-> > > 
-> > > Applies atop v4.9-rc1.  
-> > 
-> > Very nice, and thanks for the kbuild fixes, I think they all look sane.
-> > 
-> > Let's try to get those kbuild fixes in through the kbuild tree first
-> > (which has some other fixes required for 4.9). I can take them and send
-> > them to kbuild maintainer if you like.  
-> 
-> That sounds great :)
-> 
-> > On powerpc we'll likely provide an option to select these manually for
-> > 4.9 because there has been the odd toolchain issue come up, so that's
-> > something to consider.  
-> 
-> I imagine the MIPS bits will probably be v4.10 material, but hopefully Ralf 
-> can get them into -next as soon as possible after the kbuild bits are in, 
-> which should give us some time to discover any toolchain issues.
+    s/though/through/ in the subject.
 
-Okay, whatever works for you.
-
-
-> > For your linker script, you may consider putting the function sections
-> > into the same input as other text. TEXT_TEXT does not include .text.*,
-> > so mips's .text.* below it will catch those.
-> > 
-> > You may just open-code your TEXT_TEXT, and have:
-> > 
-> > *(.text.hot .text .text.fixup .text.unlikely .text.[0-9a-zA-Z_]*)
-> > 
-> > or similar.  
-> 
-> Ah, so are you saying that would give the linker more scope for discarding 
-> things?
-
-I don't think discarding, but it will allow those sections to be placed
-together with more scope for reordering. This can reduce the amount of
-branch trampolines required.
-
-Aside from that, it just gives less change in behaviour. Without
--ffunction-sections, those functions would be placed in .text section,
-so you ideally want to keep them there when enabling it.
-
-Thanks,
-Nick
+MBR, Sergei

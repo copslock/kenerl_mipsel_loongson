@@ -1,64 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2016 11:33:29 +0200 (CEST)
-Received: from mail-lf0-f41.google.com ([209.85.215.41]:33714 "EHLO
-        mail-lf0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991104AbcJUJdW49HRj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2016 11:33:22 +0200
-Received: by mail-lf0-f41.google.com with SMTP id x79so141706392lff.0
-        for <linux-mips@linux-mips.org>; Fri, 21 Oct 2016 02:33:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=vaxDvLghDv+SkmTSfcsxmaVK0QJOYjKgbKuZLXiKw34=;
-        b=k4E19MzdWqjxmwg6NGYfmZ6ONysQ+fPnfxJhIlBg7XMN2x26j7KIkdoIbwxk1Ehc5Q
-         yqJZoUA+Qf6IUrG9gYdkTfPrJrODUGrxMMHSMiMqqYgr65YI/niYxicZZVrIbUG6Cn/o
-         /5c0GyPnHJrvx9EVwjdcKsnx8KJl8wId3DzI8JbBFw6LdhTJV6TwE39Cw4zDQ1/8wMqB
-         4XFQLx/NrIM0SnBXvwd4BPHTqrTIbUy3We6qGTW9gvnS1Lp+HZ+g++kHH7llubZfkS1Z
-         8s//DFrEADE2CJUy8YpjpSneA4uho7zHfruDbsIBv066wrDghlCGLVouRokf0STV8lt7
-         hU7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=vaxDvLghDv+SkmTSfcsxmaVK0QJOYjKgbKuZLXiKw34=;
-        b=Edv1L9wGP7/edCvugq+6oFA/J0zpJHlMH3wUN8lAnhzkDmMvsJQ9dQuEsWuPs+Yh0+
-         jojLQWTl+eNVR60lfTqqPVeoFLeQAEZpE6uBdf/F7THbWIwvwX67MFIc9v3dnuzPGETC
-         4UimnJIaMy2q5xqTq5GgB15TAEO+ZmiwQ8ZZya1OJkmQZZkLIhsFidEVfp7/HUG2yvEo
-         ncDqwVd6IyPV16m0O0bxDjRWcRZjfXZOjqF1+ApSVUHmdy77yDuKsPLpTVuMndoX2uqp
-         q0WEoUSEKcRqQ3io3vJcZ0saa97lAPF3djCdkRokO9Z8Ntg4wpj3a1ZtCr5UetnmoGyX
-         q+bQ==
-X-Gm-Message-State: AA6/9Rmy7mDMMvfDSPQ9+0J8TCtXKKhSvP9nVMgrxqJY1gokbnhl9febYWa47nulUEB9yg==
-X-Received: by 10.25.40.74 with SMTP id o71mr6014687lfo.183.1477042396134;
-        Fri, 21 Oct 2016 02:33:16 -0700 (PDT)
-Received: from [192.168.4.126] ([31.173.81.208])
-        by smtp.gmail.com with ESMTPSA id y131sm296601lfd.26.2016.10.21.02.33.15
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 21 Oct 2016 02:33:15 -0700 (PDT)
-Subject: Re: [PATCH 1/6] kbuild: Keep device tree tables though dead code
- elimination
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-References: <20161020202705.3783-1-paul.burton@imgtec.com>
- <20161020202705.3783-2-paul.burton@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Nicholas Piggin <npiggin@gmail.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <a4baa8e5-a2e1-9020-dd81-a064e1f7bb81@cogentembedded.com>
-Date:   Fri, 21 Oct 2016 12:33:14 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2016 11:48:34 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:43232 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991104AbcJUJs0OdDJj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Oct 2016 11:48:26 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 35F1428;
+        Fri, 21 Oct 2016 02:48:19 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EC7343F218;
+        Fri, 21 Oct 2016 02:48:16 -0700 (PDT)
+Subject: Re: [Patch v5 04/12] irqchip: xilinx: Add support for parent intc
+To:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        monstr@monstr.eu, ralf@linux-mips.org, tglx@linutronix.de,
+        jason@lakedaemon.net, alistair@popple.id.au,
+        mporter@kernel.crashing.org
+References: <1476723176-39891-1-git-send-email-Zubair.Kakakhel@imgtec.com>
+ <1476723176-39891-5-git-send-email-Zubair.Kakakhel@imgtec.com>
+Cc:     soren.brinkmann@xilinx.com, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, michal.simek@xilinx.com,
+        linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+        paulus@samba.org, benh@kernel.crashing.org
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <32f5f17d-7864-c782-7a6f-03660b7ab055@arm.com>
+Date:   Fri, 21 Oct 2016 10:48:15 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Icedove/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <20161020202705.3783-2-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <1476723176-39891-5-git-send-email-Zubair.Kakakhel@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55541
+X-archive-position: 55542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,8 +51,101 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+On 17/10/16 17:52, Zubair Lutfullah Kakakhel wrote:
+> The MIPS based xilfpga platform has the following IRQ structure
+> 
+> Peripherals --> xilinx_intcontroller -> mips_cpu_int controller
+> 
+> Add support for the driver to chain the irq handler
+> 
+> Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+> 
+> ---
+> V4 -> V5
+> Rebased to v4.9-rc1
+> Missing curly braces
+> 
+> V3 -> V4
+> Clean up if/else when a parent is found
+> Pass irqchip structure to handler as data
+> 
+> V2 -> V3
+> Reused existing parent node instead of finding again.
+> Cleanup up handler based on review
+> 
+> V1 -> V2
+> 
+> No change
+> ---
+>  drivers/irqchip/irq-xilinx-intc.c | 26 ++++++++++++++++++++++++--
+>  1 file changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/irqchip/irq-xilinx-intc.c b/drivers/irqchip/irq-xilinx-intc.c
+> index 45e5154..dbf8b0c 100644
+> --- a/drivers/irqchip/irq-xilinx-intc.c
+> +++ b/drivers/irqchip/irq-xilinx-intc.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/of_address.h>
+>  #include <linux/io.h>
+>  #include <linux/bug.h>
+> +#include <linux/of_irq.h>
+>  
+>  /* No one else should require these constants, so define them locally here. */
+>  #define ISR 0x00			/* Interrupt Status Register */
+> @@ -154,11 +155,23 @@ static int xintc_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+>  	.map = xintc_map,
+>  };
+>  
+> +static void xil_intc_irq_handler(struct irq_desc *desc)
+> +{
+> +	u32 pending;
+> +
+> +	do {
+> +		pending = xintc_get_irq();
+> +		if (pending == -1U)
+> +			break;
+> +		generic_handle_irq(pending);
+> +	} while (true);
 
-    s/though/through/ in the subject.
+This is missing the chained_irq_enter()/exit() calls, which will lead to
+races or lockups on the root irqchip.
 
-MBR, Sergei
+> +}
+> +
+>  static int __init xilinx_intc_of_init(struct device_node *intc,
+>  					     struct device_node *parent)
+>  {
+>  	u32 nr_irq;
+> -	int ret;
+> +	int ret, irq;
+>  	struct xintc_irq_chip *irqc;
+>  
+>  	if (xintc_irqc) {
+> @@ -221,7 +234,16 @@ static int __init xilinx_intc_of_init(struct device_node *intc,
+>  		goto err_alloc;
+>  	}
+>  
+> -	irq_set_default_host(root_domain);
+> +	if (parent) {
+> +		irq = irq_of_parse_and_map(intc, 0);
+> +		if (irq)
+> +			irq_set_chained_handler_and_data(irq,
+> +							 xil_intc_irq_handler,
+> +							 irqc);
+> +
+
+Shouldn't you return an error if irq is zero?
+
+> +	} else {
+> +		irq_set_default_host(root_domain);
+> +	}
+>  
+>  	return 0;
+>  
+> 
+
+Thanks,
+
+	M.
+-- 
+Jazz is not dead. It just smells funny...

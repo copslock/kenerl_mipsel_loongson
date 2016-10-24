@@ -1,64 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2016 16:54:10 +0200 (CEST)
-Received: from mout.web.de ([212.227.15.4]:59717 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992202AbcJXOyB5JsiX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Oct 2016 16:54:01 +0200
-Received: from [192.168.1.2] ([77.182.95.108]) by smtp.web.de (mrweb003) with
- ESMTPSA (Nemesis) id 0M4qcP-1cr60237aX-00z0GH; Mon, 24 Oct 2016 16:53:35
- +0200
-Subject: Re: MIPS/kernel/r2-to-r6-emul: Use seq_puts() in mipsr2_stats_show()
-To:     Theodore Ts'o <tytso@mit.edu>, linux-mips@linux-mips.org
-References: <3809e713-2f08-db60-92c1-21d735a4f35b@users.sourceforge.net>
- <4126c272-cdf6-677a-fe98-74e8034078d8@users.sourceforge.net>
- <20161024131311.ttwr2bblphg6vd2b@thunk.org>
- <e7ac4cba-bce1-edf5-a537-4c06a357bfb3@users.sourceforge.net>
- <20161024142037.rrslfxtimj44s5t6@thunk.org>
-Cc:     Andrea Gelmini <andrea.gelmini@gelma.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-From:   SF Markus Elfring <elfring@users.sourceforge.net>
-Message-ID: <8592fa0c-e80a-77e2-fc44-4017f0988c8c@users.sourceforge.net>
-Date:   Mon, 24 Oct 2016 16:53:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2016 17:37:35 +0200 (CEST)
+Received: from mail-pf0-f194.google.com ([209.85.192.194]:34949 "EHLO
+        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992195AbcJXPh1aY01A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Oct 2016 17:37:27 +0200
+Received: by mail-pf0-f194.google.com with SMTP id s8so16879286pfj.2
+        for <linux-mips@linux-mips.org>; Mon, 24 Oct 2016 08:37:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=1QXv/0aTGTsagUceCDEzeEXyVx4PTuLyR/dZoXITpyc=;
+        b=Bl6R8FQ65osYIIHd2RVFCMD0npyWyKMAkDbAoQ3SkOwHnvFEqBaw9fQWRBdIc3zmMJ
+         FApoN6CjzsjjiymjgETJN8jYRAl4zLGaW8mn97eXXvLIspBzA4LGFMo2lQWyJBY1Ik4L
+         9EExXqojZ6KsmZq7fJJUzITmrHQmDlctgrqgVi8IWavhmIfH/QBwrGNPsgMit20/uuJW
+         3uK+BUNbw6/jgq+VA785/dHMcanBBjmxfVhij/KgVQSWrAm8Rpm7PEsCGCWKQmXCO/0Y
+         NIfZ2kbC8Zcq0Ma8mdyZaytMXoRBpjIobGK6bTyEhuxGxZbvUusDr6WgM/ebypWM48B8
+         R6VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=1QXv/0aTGTsagUceCDEzeEXyVx4PTuLyR/dZoXITpyc=;
+        b=d7lQFo/K3GhoWOZojenzeCrHOEECiDDmmaYAXAk8NLiN2rttVyQSbEpstmdZ+vbbIj
+         DhekKKfMJTzMwi7nJI9urZ2rzP6U+/9oPlzdGXVyJ6zT0giu8r0dbrfkMpAbgeKarXBP
+         /Df5BfwoggDmzIwR74lWsCp58/1gtEwC+ScSNObEYH49YSR3PFXDuCiYAooFYaSC2xKG
+         fpGwrAowXgF5blKb8tvsx3ewvdK/IVhi7mdwI0g+ivBLN7p/WAgcNANwseso7N6Cffwj
+         YCuy4viep2C89r3bY3s8u94FQo8ZxLc/3m6d7ZyRQbs7H3jPqjFWzATaZuVYMVnd+3GO
+         buxA==
+X-Gm-Message-State: ABUngvec2Xn1SUR21h/iC0a+NeGCuGypfgFvNiTs7mnIH5DEugniqEpcjxtBhm0i8fbnpg==
+X-Received: by 10.99.126.3 with SMTP id z3mr21634269pgc.46.1477323441294;
+        Mon, 24 Oct 2016 08:37:21 -0700 (PDT)
+Received: from ubuntu ([180.102.123.240])
+        by smtp.gmail.com with ESMTPSA id d26sm26375922pfb.37.2016.10.24.08.37.16
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 24 Oct 2016 08:37:20 -0700 (PDT)
+From:   Yang Ling <gnaygnil@gmail.com>
+X-Google-Original-From: Yang Ling <gnaygnail@gmail.com>
+Date:   Mon, 24 Oct 2016 23:37:07 +0800
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Yang Ling <gnaygnil@gmail.com>, Wim Van Sebroeck <wim@iguana.be>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v2.1 1/2] watchdog: loongson1: Add Loongson1 SoC watchdog
+ driver
+Message-ID: <20161024153706.GA25506@ubuntu>
+References: <20161021054539.GA6237@ly-pc>
+ <74afb2ed-35a3-8c08-5878-5d98b91e19a2@roeck-us.net>
 MIME-Version: 1.0
-In-Reply-To: <20161024142037.rrslfxtimj44s5t6@thunk.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:LBrcz7TqRciu/vSr0+fQxG6FSD+VS1Lyz87N/yARV560Q0BzZXd
- wVOCfAwtK+Ue0l4Xk5a93yMJ5hk1ZMvVQiueptUtsFS15D8e6GDgrRSpfp7qqr0PjLSfAKo
- d6UiI5DFxLplDSPwJu4Gbu4xZeUzZ5D1ls0cGLhr6UDOFSSE70vCzm9MZoZQ5JJ5/DcoFA7
- 4rXqtwdLsRLywczy1WvqA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:JSAhTClomQg=:kjKGJQM6XYyMCAql0NUBAI
- OmDpWaMr+/17bfHqFr0xjNWl6/LUp1vUTSb0kWSNw5Je74xctw94A9hGLDixdY/Nw3l9VG8eg
- sBCGOZxnvqL5EV0bcOQiBROI41gJDmV0CHpUXNMUSzxLIIpw1ptRhGtbh/iOsCUQvYi5Grstw
- 2hKNzUS25q+YM39VlVsumrAYiZ3ggFQvPsvNpEmS16RXvSkHnf3W8PDJBS3K/5hXUF6JHCvpD
- WJQeAfbIIFzCZCevQUtXz9vChEVZZsTJ6V+zKoUFwVGnSe0MDh+B5YfZ3/nzbytmBD6WqVXYp
- dIvbLGIo07sM3GppctftEXpZwXaSTRur0K5duqq+zGgleGYGlZmlzbY+4T978MGcWZb7nvjxc
- kHsLXTgAYVSlaxH9wuOeIsdOe5bfadcZbgb9BmL1qMLTHJLcLsCwuJ3UfTPQ1JI1inyX0Mfqg
- tKV7mTfD2XEjLP664uP4Sy1MpJYbXUwW/VllaL7OdJfxssH+5XVOMcUr51H2ijvhkuvxMF6W+
- dBAIXI4wiTCNhYLRm2ZTdjtFpf/GpUh0X7PcSRK3Wlvc7zTA3TsXX/XSp4JZMqsz5+8/AiEIh
- tGqVeRZly72gIafieiSd6/azxtEyjZXDH3MX/jv1B6a1YqmV3NDM0o0neQqOhdQo4hxrqCcT1
- XhU8kgZmCzA+WJ1ijHpGXgAl0T4TBR3r/Rea0Pc/QkZdmW6V7XTGPd85BXJT5spD65VNfAE6z
- P0dPZTlgqcNr5dCsFT+3RM22Loo+djjpikx/9BB5XvfaUzNbiOK3xGnFFgx0m49sp9u43scsD
- C3aBIhn
-Return-Path: <elfring@users.sourceforge.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <74afb2ed-35a3-8c08-5878-5d98b91e19a2@roeck-us.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <gnaygnil@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55558
+X-archive-position: 55559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: elfring@users.sourceforge.net
+X-original-sender: gnaygnil@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,77 +73,259 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
->> I am curious if a second approach will become acceptable in the near future.
+Hi Guenter,
+
+On Fri, Oct 21, 2016 at 07:23:21AM -0700, Guenter Roeck wrote:
+> On 10/20/2016 10:45 PM, Yang Ling wrote:
+> >Add watchdog timer specific driver for Loongson1 SoC.
+> >
+> >Signed-off-by: Yang Ling <gnaygnil@gmail.com>
+> >
+> >---
+> >V2.1 from Kelvin Cheung:
+> >  Use max_hw_heartbeat_ms instead of max_timeout.
+> >V2:
+> >  Increase the value of the default heartbeat.
+> >  Modify the setup process for register.
+> >  Order include files and Makefile alphabetically.
+> >V1.1:
+> >  Add a little debugging information.
+> >---
+> > drivers/watchdog/Kconfig         |   7 ++
+> > drivers/watchdog/Makefile        |   1 +
+> > drivers/watchdog/loongson1_wdt.c | 158 +++++++++++++++++++++++++++++++++++++++
+> > 3 files changed, 166 insertions(+)
+> > create mode 100644 drivers/watchdog/loongson1_wdt.c
+> >
+> >diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> >index 50dbaa8..6707d43 100644
+> >--- a/drivers/watchdog/Kconfig
+> >+++ b/drivers/watchdog/Kconfig
+> >@@ -1513,6 +1513,13 @@ config LANTIQ_WDT
+> > 	help
+> > 	  Hardware driver for the Lantiq SoC Watchdog Timer.
+> >
+> >+config LOONGSON1_WDT
+> >+	tristate "Loongson1 SoC hardware watchdog"
+> >+	depends on MACH_LOONGSON32
+> >+	select WATCHDOG_CORE
+> >+	help
+> >+	  Hardware driver for the Loongson1 SoC Watchdog Timer.
+> >+
+> > config RALINK_WDT
+> > 	tristate "Ralink SoC watchdog"
+> > 	select WATCHDOG_CORE
+> >diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+> >index cba0043..b6a8d70 100644
+> >--- a/drivers/watchdog/Makefile
+> >+++ b/drivers/watchdog/Makefile
+> >@@ -157,6 +157,7 @@ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
+> > obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+> > octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
+> > obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
+> >+obj-$(CONFIG_LOONGSON1_WDT) += loongson1_wdt.o
+> > obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
+> > obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
+> > obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
+> >diff --git a/drivers/watchdog/loongson1_wdt.c b/drivers/watchdog/loongson1_wdt.c
+> >new file mode 100644
+> >index 0000000..f885294
+> >--- /dev/null
+> >+++ b/drivers/watchdog/loongson1_wdt.c
+> >@@ -0,0 +1,158 @@
+> >+/*
+> >+ * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
+> >+ *
+> >+ * This program is free software; you can redistribute	it and/or modify it
+> >+ * under  the terms of	the GNU General	 Public License as published by the
+> >+ * Free Software Foundation;  either version 2 of the  License, or (at your
+> >+ * option) any later version.
 > 
-> I don't know what you were asking.
+> Odd spacing.
 
-I am trying to clarify the suggested software evolution again.
+Remove these wide character in the next release.
 
-
-> I was merely point out that the wording was factually incorrect
-> in all of the patches,
-
-Thanks for this information.
-
-
-> and I didn't feel like replying five times to point out the same mistake.
-
-This is fine.
-
-
->>> since reading from /proc isn't done in a tight loop, and even if it were,
->>> the use of vsprintf is the tiniest part of the overhead.
->>
->> Thanks for your software development opinion.
 > 
-> It's a lot more than just an opinion.  I challenge you to demonstrate
-> how much savings it would take.  Try learning how to use another tool
-> --- say, perf.  Measure how many clock cycles it takes to read from a
-> proc file that uses seq_printf().  Then measure how many clock cycles
-> it takes to read from a proc file that uses seq_puts().  Try doing the
-> experiment 3-5 times each way, to see if the difference is within
-> measurement error, and then figure out what percentage of the total
-> CPU time you have saved.
+> >+ */
+> >+
+> >+#include <linux/clk.h>
+> >+#include <linux/module.h>
+> >+#include <linux/platform_device.h>
+> >+#include <linux/watchdog.h>
+> >+#include <loongson1.h>
+> >+
+> >+#define DEFAULT_HEARTBEAT	30
+> >+
+> >+static bool nowayout = WATCHDOG_NOWAYOUT;
+> >+module_param(nowayout, bool, 0444);
+> >+
+> >+static unsigned int heartbeat = DEFAULT_HEARTBEAT;
+> >+module_param(heartbeat, uint, 0444);
+> >+
+> >+struct ls1x_wdt_drvdata {
+> >+	void __iomem *base;
+> >+	struct clk *clk;
+> >+	unsigned int counts_per_second;
+> >+	struct watchdog_device wdt;
+> >+};
+> >+
+> >+static int ls1x_wdt_ping(struct watchdog_device *wdt_dev)
+> >+{
+> >+	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+> >+
+> >+	writel(0x1, drvdata->base + WDT_SET);
+> >+
+> >+	return 0;
+> >+}
+> >+
+> >+static int ls1x_wdt_set_timeout(struct watchdog_device *wdt_dev,
+> >+				unsigned int timeout)
+> >+{
+> >+	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+> >+	unsigned int counts;
+> >+
+> >+	wdt_dev->timeout = min(timeout, wdt_dev->max_hw_heartbeat_ms / 1000);
+> 
+> The point of using max_hw_heartbeat_ms is that the watchdog core takes care of
+> timeouts larger than the maximum supported by the hardware. What you should do
+> here is something along the line of
+> 
+> 	wdt_dev->timeout = timeout;
+> 	counts = drvdata->counts_per_second * min(timeout, wdt_dev->max_hw_heartbeat_ms / 1000);
 
-Are there any more software developers interested in such system
-performance analyses?
+This will be changed in the next release.
 
+> 
+> >+	counts = drvdata->counts_per_second * wdt_dev->timeout;
+> >+
+> >+	writel(counts, drvdata->base + WDT_TIMER);
+> >+
+> >+	return 0;
+> >+}
+> >+
+> >+static int ls1x_wdt_start(struct watchdog_device *wdt_dev)
+> >+{
+> >+	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+> >+
+> >+	writel(0x1, drvdata->base + WDT_EN);
+> >+
+> >+	return 0;
+> >+}
+> >+
+> >+static int ls1x_wdt_stop(struct watchdog_device *wdt_dev)
+> >+{
+> >+	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
+> >+
+> >+	writel(0x0, drvdata->base + WDT_EN);
+> >+
+> >+	return 0;
+> >+}
+> >+
+> >+static const struct watchdog_info ls1x_wdt_info = {
+> >+	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
+> >+	.identity = "Loongson1 Watchdog",
+> >+};
+> >+
+> >+static const struct watchdog_ops ls1x_wdt_ops = {
+> >+	.owner = THIS_MODULE,
+> >+	.start = ls1x_wdt_start,
+> >+	.stop = ls1x_wdt_stop,
+> >+	.ping = ls1x_wdt_ping,
+> >+	.set_timeout = ls1x_wdt_set_timeout,
+> >+};
+> >+
+> >+static int ls1x_wdt_probe(struct platform_device *pdev)
+> >+{
+> >+	struct ls1x_wdt_drvdata *drvdata;
+> >+	struct watchdog_device *ls1x_wdt;
+> >+	struct resource *res;
+> >+	int ret;
+> >+
+> >+	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
+> >+	if (!drvdata)
+> >+		return -ENOMEM;
+> >+
+> >+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> >+	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
+> >+	if (IS_ERR(drvdata->base))
+> >+		return PTR_ERR(drvdata->base);
+> >+
+> >+	drvdata->clk = devm_clk_get(&pdev->dev, pdev->name);
+> >+	if (IS_ERR(drvdata->clk)) {
+> >+		dev_err(&pdev->dev, "failed to get %s clock\n", pdev->name);
+> >+		return PTR_ERR(drvdata->clk);
+> >+	}
+> >+	clk_prepare_enable(drvdata->clk);
+> >+
+> >+	drvdata->counts_per_second = clk_get_rate(drvdata->clk);
+> 
+> clk_get_rate() can at least in theory return 0,
 
-> If this sort of thing appeals to you, you might want to consider a
-> more productive line of work.  For example, you could do scalability
-> measurements.  Run various benchmarks with lockdep enabled, and
-> measure the average and max hold time on various locks.  Now see if
-> you can reduce the max hold time on those locks.  You may find that
-> you can improve performance for real work loads by orders of magnitude
-> more than you can by sending the sorts of patches you've sent up until now.
+Check the return value in the next release.
 
-Thanks for your hints around other software development areas.
+> 
+> >+
+> >+	ls1x_wdt = &drvdata->wdt;
+> >+	ls1x_wdt->info = &ls1x_wdt_info;
+> >+	ls1x_wdt->ops = &ls1x_wdt_ops;
+> >+	ls1x_wdt->min_timeout = 1;
+> >+	ls1x_wdt->max_hw_heartbeat_ms = U32_MAX / drvdata->counts_per_second *
+> >+					1000;
+> 
+> which would result in a crash here.
+> 
+> >+	ls1x_wdt->parent = &pdev->dev;
+> >+
+> >+	watchdog_init_timeout(ls1x_wdt, heartbeat, &pdev->dev);
+> >+	watchdog_set_nowayout(ls1x_wdt, nowayout);
+> >+	watchdog_set_drvdata(ls1x_wdt, drvdata);
+> >+
+> >+	ret = watchdog_register_device(&drvdata->wdt);
+> >+	if (ret < 0) {
+> >+		dev_err(&pdev->dev, "failed to register watchdog device\n");
+> >+		return ret;
+> >+	}
+> >+
+> >+	platform_set_drvdata(pdev, drvdata);
+> >+
+> >+	dev_info(&pdev->dev, "Loongson1 Watchdog driver registered\n");
+> >+
+> >+	return 0;
+> >+}
+> >+
+> >+static int ls1x_wdt_remove(struct platform_device *pdev)
+> >+{
+> >+	struct ls1x_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
+> >+
+> >+	ls1x_wdt_stop(&drvdata->wdt);
+> 
+> This should not be necessary. If the watchdog device is open (meaning the
+> watchdog may be running), you should not be able to unload the driver.
+> Can you test ?
 
+Remove it in the next release.
 
-> You'd also development more marketable kernel skills, if that has been
-> your goal by spamming the list with hundreds and thousands of mostly
-> pointless patches.
+> 
+> >+	watchdog_unregister_device(&drvdata->wdt);
+> >+	clk_disable_unprepare(drvdata->clk);
+> >+
+> >+	return 0;
+> >+}
+> >+
+> >+static struct platform_driver ls1x_wdt_driver = {
+> >+	.probe = ls1x_wdt_probe,
+> >+	.remove = ls1x_wdt_remove,
+> >+	.driver = {
+> >+		.name = "ls1x-wdt",
+> >+	},
+> >+};
+> >+
+> >+module_platform_driver(ls1x_wdt_driver);
+> >+
+> >+MODULE_AUTHOR("Yang Ling <gnaygnil@gmail.com>");
+> >+MODULE_DESCRIPTION("Loongson1 Watchdog Driver");
+> >+MODULE_LICENSE("GPL");
+> >
+> 
 
-You might categorise my update suggestions with a low value so far.
-
-
-> Note that if a hiring manager were to talk to developers and get
-> their opinion of the sorts of patches you have been sending, trust me,
-> it would _not_ be positive.
-
-There are also some constraints around change resistance involved,
-aren't there?
-
-* Do my suggestions show small improvements for Linux source files?
-
-* If you find some of them so awful, why should I attempt to improve
-  any commit messages in another patch series then?
-
-
-> So trying to send more useful patches might be more helpful
-> if your goal is to try to get gainful employment.
-
-Financial incentives would be also nice as you seem to indicate here.
-
-Regards,
-Markus
+Thanks for your friendly reminder.

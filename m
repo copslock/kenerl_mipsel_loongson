@@ -1,71 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2016 17:51:31 +0200 (CEST)
-Received: from imap.thunk.org ([74.207.234.97]:44896 "EHLO imap.thunk.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2016 20:06:27 +0200 (CEST)
+Received: from mga04.intel.com ([192.55.52.120]:2200 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992178AbcJXPvYfsTFA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Oct 2016 17:51:24 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=thunk.org; s=ef5046eb;
-        h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=9OWu3/PGLwJo0gZtjJpIV6oIk8/yzuOnoQhivFo/mhU=;
-        b=D/mu6pBTvqFb48Iu9jnwko6+VDKlHp0w83SnbWIQbn71oAVQCCMYRbOjhT5uDtekY7TWvCjnGvMVgdJ4YVaEZi+D2PH7II4+0y7rL9EJTvtMd8pYs8hsy5uUSEBj39/gegoC6LqvDQcHTJVyqAShcqIfHMnLoUJox7aUx1EMy0E=;
-Received: from root (helo=callcc.thunk.org)
-        by imap.thunk.org with local-esmtp (Exim 4.84_2)
-        (envelope-from <tytso@thunk.org>)
-        id 1byhWs-0005sT-EP; Mon, 24 Oct 2016 15:51:14 +0000
-Received: by callcc.thunk.org (Postfix, from userid 15806)
-        id 09D99C00FDD; Mon, 24 Oct 2016 11:51:13 -0400 (EDT)
-Date:   Mon, 24 Oct 2016 11:51:12 -0400
-From:   Theodore Ts'o <tytso@mit.edu>
-To:     SF Markus Elfring <elfring@users.sourceforge.net>
-Cc:     linux-mips@linux-mips.org,
-        Andrea Gelmini <andrea.gelmini@gelma.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Ralf =?iso-8859-1?Q?B=E4chle?= <ralf@linux-mips.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: MIPS/kernel/r2-to-r6-emul: Use seq_puts() in mipsr2_stats_show()
-Message-ID: <20161024155112.ixdfi3ucs7sg2zgh@thunk.org>
-Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
-        SF Markus Elfring <elfring@users.sourceforge.net>,
-        linux-mips@linux-mips.org,
-        Andrea Gelmini <andrea.gelmini@gelma.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Ralf =?iso-8859-1?Q?B=E4chle?= <ralf@linux-mips.org>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <3809e713-2f08-db60-92c1-21d735a4f35b@users.sourceforge.net>
- <4126c272-cdf6-677a-fe98-74e8034078d8@users.sourceforge.net>
- <20161024131311.ttwr2bblphg6vd2b@thunk.org>
- <e7ac4cba-bce1-edf5-a537-4c06a357bfb3@users.sourceforge.net>
- <20161024142037.rrslfxtimj44s5t6@thunk.org>
- <8592fa0c-e80a-77e2-fc44-4017f0988c8c@users.sourceforge.net>
+        id S23992202AbcJXSGSZkUEr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 24 Oct 2016 20:06:18 +0200
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga104.fm.intel.com with ESMTP; 24 Oct 2016 11:06:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.31,542,1473145200"; 
+   d="scan'208";a="23058964"
+Received: from ahduyck-blue-test.jf.intel.com ([134.134.2.201])
+  by fmsmga006.fm.intel.com with ESMTP; 24 Oct 2016 11:06:11 -0700
+Subject: [net-next PATCH RFC 13/26] arch/mips: Add option to skip DMA sync
+ as a part of map and unmap
+From:   Alexander Duyck <alexander.h.duyck@intel.com>
+To:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Cc:     linux-mips@linux-mips.org, Keguang Zhang <keguang.zhang@gmail.com>,
+        davem@davemloft.net, Ralf Baechle <ralf@linux-mips.org>,
+        brouer@redhat.com
+Date:   Mon, 24 Oct 2016 08:05:35 -0400
+Message-ID: <20161024120535.16276.21481.stgit@ahduyck-blue-test.jf.intel.com>
+In-Reply-To: <20161024115737.16276.71059.stgit@ahduyck-blue-test.jf.intel.com>
+References: <20161024115737.16276.71059.stgit@ahduyck-blue-test.jf.intel.com>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8592fa0c-e80a-77e2-fc44-4017f0988c8c@users.sourceforge.net>
-User-Agent: NeoMutt/20160916 (1.7.0)
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: tytso@thunk.org
-X-SA-Exim-Scanned: No (on imap.thunk.org); SAEximRunCond expanded to false
-Return-Path: <tytso@thunk.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <alexander.h.duyck@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55560
+X-archive-position: 55561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tytso@mit.edu
+X-original-sender: alexander.h.duyck@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,79 +47,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 24, 2016 at 04:53:32PM +0200, SF Markus Elfring wrote:
-> >>> since reading from /proc isn't done in a tight loop, and even if it were,
-> >>> the use of vsprintf is the tiniest part of the overhead.
-> >>
-> >> Thanks for your software development opinion.
-> > 
-> > It's a lot more than just an opinion.  I challenge you to demonstrate
-> > how much savings it would take.  Try learning how to use another tool
-> > --- say, perf.  Measure how many clock cycles it takes to read from a
-> > proc file that uses seq_printf().  Then measure how many clock cycles
-> > it takes to read from a proc file that uses seq_puts().  Try doing the
-> > experiment 3-5 times each way, to see if the difference is within
-> > measurement error, and then figure out what percentage of the total
-> > CPU time you have saved.
-> 
-> Are there any more software developers interested in such system
-> performance analyses?
+This change allows us to pass DMA_ATTR_SKIP_CPU_SYNC which allows us to
+avoid invoking cache line invalidation if the driver will just handle it
+via a sync_for_cpu or sync_for_device call.
 
-Sure, of course.  This is why serious professionals take a huge amount
-of time doing benchmarking, and making sure that the benchmarks are
-reproducible, and accurately measure something that reflects real
-world usage.  This can often take as much time or more time than the
-actual optimization in some cases.
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Keguang Zhang <keguang.zhang@gmail.com>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Alexander Duyck <alexander.h.duyck@intel.com>
+---
+ arch/mips/loongson64/common/dma-swiotlb.c |    2 +-
+ arch/mips/mm/dma-default.c                |    8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-> There are also some constraints around change resistance involved,
-> aren't there?
-
-To quote from the great Don Knuth:
-
-    Programmers waste enormous amounts of time thinking about, or
-    worrying about, the speed of noncritical parts of their programs,
-    and these attempts at efficiency actually have a strong negative
-    impact when debugging and maintenance are considered. We should
-    forget about small efficiencies, say about 97% of the time:
-    premature optimization is the root of all evil. Yet we should not
-    pass up our opportunities in that critical 3%.
-
-An experienced developer would be able to very easily spot that trying
-to optimize seq_printf() versus seq_puts() is barely going to be
-measurable.  It's the sort of thing that a developer might fix while
-making other, more useful changes to a source file.  But there are
-costs associated with processing a patch, in terms of developer time
-and attention, and those are externalities.  It's for the same reason
-that whitespace only or comment-only patches are controversial.  There
-is always the suspicion that there are people doing this because they
-hope to win some patch counting game, and that they don't care about
-the costs they might be introducing to the rest of the system.  And
-when the patches cause bugs, then it goes from outright marginal value
-to negative value.
-
-> > So trying to send more useful patches might be more helpful
-> > if your goal is to try to get gainful employment.
-> 
-> Financial incentives would be also nice as you seem to indicate here.
-
-Well, please note that having a reputation of someone who insists on
-sending mostly junk patches (and like junk food, they may have some
-nutritive value; but that doesn't change the effect that the net
-benefit to person consuming them is marginal or negative), tends to
-give you a bad reputation, and may in fact be a hinderance towards
-your being able to attain "financial incentives".
-
-If that is in fact your goal, I would gently suggest that you spend
-more time improving your skills, and learning more about higher-value
-ways you could contribute to the kernel, instead of spamming the
-kernel list with lots of low value patches.  In the future if you are
-adding higher value improvements, and you want to do various cleanups,
-such as fixing up seq_printf -> seq_puts changes, sure.  But to the
-extent that dirties the history so it's harder to find who introduced
-a problem using tools such as "git blame", low-value cleanup patches
-do have some costs, so it's not enough to say, "but it improves the
-CPU time used by 0.000001%!"
-
-Cheers,
-
-						- Ted
+diff --git a/arch/mips/loongson64/common/dma-swiotlb.c b/arch/mips/loongson64/common/dma-swiotlb.c
+index 1a80b6f..aab4fd6 100644
+--- a/arch/mips/loongson64/common/dma-swiotlb.c
++++ b/arch/mips/loongson64/common/dma-swiotlb.c
+@@ -61,7 +61,7 @@ static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
+ 				int nents, enum dma_data_direction dir,
+ 				unsigned long attrs)
+ {
+-	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, 0);
++	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, attrs);
+ 	mb();
+ 
+ 	return r;
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index b2eadd6..dd998d7 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -293,7 +293,7 @@ static inline void __dma_sync(struct page *page,
+ static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 	size_t size, enum dma_data_direction direction, unsigned long attrs)
+ {
+-	if (cpu_needs_post_dma_flush(dev))
++	if (cpu_needs_post_dma_flush(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+ 		__dma_sync(dma_addr_to_page(dev, dma_addr),
+ 			   dma_addr & ~PAGE_MASK, size, direction);
+ 	plat_post_dma_flush(dev);
+@@ -307,7 +307,8 @@ static int mips_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ 	struct scatterlist *sg;
+ 
+ 	for_each_sg(sglist, sg, nents, i) {
+-		if (!plat_device_is_coherent(dev))
++		if (!plat_device_is_coherent(dev) &&
++		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+ 			__dma_sync(sg_page(sg), sg->offset, sg->length,
+ 				   direction);
+ #ifdef CONFIG_NEED_SG_DMA_LENGTH
+@@ -324,7 +325,7 @@ static dma_addr_t mips_dma_map_page(struct device *dev, struct page *page,
+ 	unsigned long offset, size_t size, enum dma_data_direction direction,
+ 	unsigned long attrs)
+ {
+-	if (!plat_device_is_coherent(dev))
++	if (!plat_device_is_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+ 		__dma_sync(page, offset, size, direction);
+ 
+ 	return plat_map_dma_mem_page(dev, page) + offset;
+@@ -339,6 +340,7 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sglist,
+ 
+ 	for_each_sg(sglist, sg, nhwentries, i) {
+ 		if (!plat_device_is_coherent(dev) &&
++		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
+ 		    direction != DMA_TO_DEVICE)
+ 			__dma_sync(sg_page(sg), sg->offset, sg->length,
+ 				   direction);

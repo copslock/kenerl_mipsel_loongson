@@ -1,55 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Oct 2016 16:12:27 +0200 (CEST)
-Received: from mail-wm0-f67.google.com ([74.125.82.67]:35143 "EHLO
-        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990644AbcJYOMTKOYvP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Oct 2016 16:12:19 +0200
-Received: by mail-wm0-f67.google.com with SMTP id o81so1264891wma.2;
-        Tue, 25 Oct 2016 07:12:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=sdEqc1/1aa1n41YHsO8xeQFUe4Dm10q5eDY0iXB9YZw=;
-        b=vmHg+eLMO4EpX04eHbdnFyuOVIl9YHM7QQOuf/sOF73mrD0paxrts+qrMv/EGbAeA/
-         M87SrWkVilm2J2JKliqJVjY3fYurO/hUUXbb60pUZWmq4r4vxu5T33sL84NQ/Ezp7aQg
-         p1POvrneBHoE7MyBNeIJgHPBbosmH9vDH2eXFo9pwLLJS3uvV8Ve/HJYNLDlfdFkzkP8
-         AbSe1QpNZf3oKCMDV3AQf93Uj+0KduumYRdO5TaSWJ+D4s5MxOCAX1r4jJlQC+gbsMkS
-         MSUp9xGFjtok8IbMXT35VDcazcrnYR5JlcqMTYqhFbZWWopPzJWBsJmuEPWZVgNfHx0y
-         SsWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=sdEqc1/1aa1n41YHsO8xeQFUe4Dm10q5eDY0iXB9YZw=;
-        b=UrFpYGMBDGUaVLz3naKW0F/M1+7AsM+WVH0aUiuYlPqp1t0aGdbhtnpXNIXwQ50WRe
-         BTnAIFqfFdSpV1Zs5mx6BiN24QMj/Re9qRiC1UrEAs8OfxD+cJBvXT3XoTKP7iMIe0yP
-         wrex95Uc/BSDNUVDN19AJV7M8lEtgyiHyW19qP5Z2Ycas5IUCrIqBrQb503HcZjmhVsu
-         +Q7C76nhe1O+yet3q9s1hUeP/PV+lNSsN140PcXssWTzCJ8Zh2yGZtXhTBfXceWp1WWr
-         8QMdv9Kq9z1jlPPhJOY08X9d9Iom5ZyO5+DA98tyb1f54/Br5xVi6ShVkOqZs11c9ntY
-         hFAQ==
-X-Gm-Message-State: ABUngvdd8ZkKbDVLaTnRvFLInP+maeyyPS00utyBfKGNGtE+4Wa9gSkvyYh9MDH6Db7Gqg==
-X-Received: by 10.28.50.66 with SMTP id y63mr989738wmy.44.1477404732403;
-        Tue, 25 Oct 2016 07:12:12 -0700 (PDT)
-Received: from dargo.roarinelk.net (88-117-48-204.adsl.highway.telekom.at. [88.117.48.204])
-        by smtp.gmail.com with ESMTPSA id u64sm3919455wmd.6.2016.10.25.07.12.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 25 Oct 2016 07:12:11 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH] MIPS: fix build with multiple PLATFORM strings
-Date:   Tue, 25 Oct 2016 16:12:05 +0200
-Message-Id: <20161025141205.244177-1-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 2.10.1
-Return-Path: <manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Oct 2016 16:29:31 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:17170 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990644AbcJYO3Xwj1Sh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Oct 2016 16:29:23 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id D10BB41F8DF9;
+        Tue, 25 Oct 2016 15:28:38 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 25 Oct 2016 15:28:38 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 25 Oct 2016 15:28:38 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 7326C53C29146;
+        Tue, 25 Oct 2016 15:29:14 +0100 (IST)
+Received: from np-p-burton.localnet (10.100.200.225) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 25 Oct
+ 2016 15:29:17 +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Manuel Lauss <manuel.lauss@gmail.com>
+CC:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: fix build with multiple PLATFORM strings
+Date:   Tue, 25 Oct 2016 15:29:12 +0100
+Message-ID: <1949974.ncqLyGp0zq@np-p-burton>
+Organization: Imagination Technologies
+User-Agent: KMail/5.3.2 (Linux/4.8.4-1-ARCH; KDE/5.27.0; x86_64; ; )
+In-Reply-To: <20161025141205.244177-1-manuel.lauss@gmail.com>
+References: <20161025141205.244177-1-manuel.lauss@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart1996882.b33A4RGjNs";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+X-Originating-IP: [10.100.200.225]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55570
+X-archive-position: 55571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@gmail.com
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,34 +54,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit cf2a5e0bb (MIPS: Support generating Flattened Image Trees (.itb))
-broke my alchemy devboard build, because it uses more than one entry
-in the PLATFORM variable:
+--nextPart1996882.b33A4RGjNs
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-make -f kernel/linux/scripts/Makefile.build obj=arch/mips/boot/compressed \
-        VMLINUX_LOAD_ADDRESS=[..] PLATFORM=alchemy/common/ alchemy/devboards/ [..] vmlinuz
-make[2]: *** No rule to make target 'alchemy/devboards/'.  Stop.
-make[1]: *** [arch/mips/Makefile:371: vmlinuz] Error 2
+On Tuesday, 25 October 2016 16:12:05 BST Manuel Lauss wrote:
+> Commit cf2a5e0bb (MIPS: Support generating Flattened Image Trees (.itb))
+> broke my alchemy devboard build, because it uses more than one entry
+> in the PLATFORM variable:
+> 
+> make -f kernel/linux/scripts/Makefile.build obj=arch/mips/boot/compressed \
+>         VMLINUX_LOAD_ADDRESS=[..] PLATFORM=alchemy/common/
+> alchemy/devboards/ [..] vmlinuz make[2]: *** No rule to make target
+> 'alchemy/devboards/'.  Stop.
+> make[1]: *** [arch/mips/Makefile:371: vmlinuz] Error 2
+> 
+> Fix this by wrapping the platform-y expansion in quotes.
 
-Fix this by wrapping the platform-y expansion in quotes.
+Hi Manuel,
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
- arch/mips/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This same fix was already submitted 8 days ago:
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index fbf40d3..1a6bac7 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -263,7 +263,7 @@ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
- 
- bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
- 		  VMLINUX_ENTRY_ADDRESS=$(entry-y) \
--		  PLATFORM=$(platform-y)
-+		  PLATFORM="$(platform-y)"
- ifdef CONFIG_32BIT
- bootvars-y	+= ADDR_BITS=32
- endif
--- 
-2.10.1
+https://patchwork.linux-mips.org/patch/14405/
+
+Thanks,
+    Paul
+
+> 
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> ---
+>  arch/mips/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index fbf40d3..1a6bac7 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -263,7 +263,7 @@ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if
+> $(dataoffset-y),$(dataoffset-y),0)
+> 
+>  bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
+>  		  VMLINUX_ENTRY_ADDRESS=$(entry-y) \
+> -		  PLATFORM=$(platform-y)
+> +		  PLATFORM="$(platform-y)"
+>  ifdef CONFIG_32BIT
+>  bootvars-y	+= ADDR_BITS=32
+>  endif
+
+
+--nextPart1996882.b33A4RGjNs
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAABCAAGBQJYD2w4AAoJEIIg2fppPBxlkHQP/20JLXeWX9hExeBVpZnL364h
+UXz3LyVT7L5fC091GA8u4ZTJi7Hd81VIPDml1MqTnVbP2W9Gvh7GjQ837PMMnsXq
+O5AQwVnsW3IlA7768RwVg5vBLcsd0kgMPtynZHiXfvNWvrSATCoLvfcID+HhfIB/
+LTN/O03NWUXieQ9Tq/dqQvczReLkTSOm5W7XYYAuSrekSyv0MuZpTOQ0Hg/fGtam
+lOMDmPLBmuz8yWdqTyfig09PWwyuQMykgxztPmuSzoeA4f6VCfB5tegx/SyS4uEL
+oo09bU3tKTnMyzc/8YYj6NKJ7a+ugx/Esv5dkm83ssagrFYGT3RaAPegLg0eJlxW
+IOa7EhulBITPzqmEaAPjOz/0gDu61esHjf+rVgKJ5ONNDvXv/L/Ptoevlui2q6El
+27YC/f3FijwdWAGxnyIuHSc3ltoIW0z0AT7FLEwhhd3O6kRgOGKV9YPISCRWiLFK
+6676/AQGMSUiDLMHAEGMfhBPelUGqICNGd3bNG89VXoXCMrsaqfykyLmbkGbD3pX
+DGiAmNI2xkhS4WgWYBKGk1aWMVS5XIogB+LIeQl9TcSjW358LF875tWZAJqzqpC2
+O08A0XdWQqz+vjsWd3DP032QoQgiYY1uEicKsFbE9jhiqpWtpnqkMlkTTHMDib2M
+nw8XN2+gAEeDR6isUHFu
+=6alZ
+-----END PGP SIGNATURE-----
+
+--nextPart1996882.b33A4RGjNs--

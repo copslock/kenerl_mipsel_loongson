@@ -1,39 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Oct 2016 17:11:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25475 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992663AbcJYPLYmxwOh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Oct 2016 17:11:24 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id B76EBCC2EDFE0;
-        Tue, 25 Oct 2016 16:11:14 +0100 (IST)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 25 Oct 2016 16:11:18 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>,
-        <stable@vger.kernel.org>, James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 3/3] KVM: MIPS: Precalculate MMIO load resume PC
-Date:   Tue, 25 Oct 2016 16:11:12 +0100
-Message-ID: <9a82ff28fa4c5243d1d28d757fe87343e162037d.1477320903.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.10.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Oct 2016 17:57:54 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:41450 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992212AbcJYP5qvtvtj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 25 Oct 2016 17:57:46 +0200
+Received: from int-mx13.intmail.prod.int.phx2.redhat.com (int-mx13.intmail.prod.int.phx2.redhat.com [10.5.11.26])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 1A90B730;
+        Tue, 25 Oct 2016 15:57:40 +0000 (UTC)
+Received: from [10.36.112.46] (ovpn-112-46.ams2.redhat.com [10.36.112.46])
+        by int-mx13.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id u9PFvYc0028560
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Tue, 25 Oct 2016 11:57:37 -0400
+Subject: Re: [PATCH 0/3] KVM: MIPS: Miscellaneous 4.9 fixes
+To:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
+References: <cover.c0ced53ae71e1272ec1aaa16007e9eebb1c0eac6.1477320903.git-series.james.hogan@imgtec.com>
+Cc:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, kvm@vger.kernel.org,
+        stable@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <844c4f82-3279-4a19-d87a-2fb036d7410d@redhat.com>
+Date:   Tue, 25 Oct 2016 17:57:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
 In-Reply-To: <cover.c0ced53ae71e1272ec1aaa16007e9eebb1c0eac6.1477320903.git-series.james.hogan@imgtec.com>
-References: <cover.c0ced53ae71e1272ec1aaa16007e9eebb1c0eac6.1477320903.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.26
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Tue, 25 Oct 2016 15:57:40 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55577
+X-archive-position: 55578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,111 +50,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The advancing of the PC when completing an MMIO load is done before
-re-entering the guest, i.e. before restoring the guest ASID. However if
-the load is in a branch delay slot it may need to access guest code to
-read the prior branch instruction. This isn't safe in TLB mapped code at
-the moment, nor in the future when we'll access unmapped guest segments
-using direct user accessors too, as it could read the branch from host
-user memory instead.
 
-Therefore calculate the resume PC in advance while we're still in the
-right context and save it in the new vcpu->arch.io_pc (replacing the no
-longer needed vcpu->arch.pending_load_cause), and restore it on MMIO
-completion.
 
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 3.10.x-
----
- arch/mips/include/asm/kvm_host.h |  7 ++++---
- arch/mips/kvm/emulate.c          | 24 +++++++++++++++---------
- 2 files changed, 19 insertions(+), 12 deletions(-)
+On 25/10/2016 17:08, James Hogan wrote:
+> A few more fixes intended for v4.9. Patches 2 & 3 are tagged for stable.
+> 
+> - The first fixes lazy user ASID regeneration which was introduced in
+>   4.9-rc1 and still wasn't quite right for SMP hosts.
+> 
+> - The second is a minor incorrect behaviour in ERET emulation when both
+>   ERL and EXL are set (i.e. unlikely to hit in practice), which has been
+>   wrong since MIPS KVM was added in v3.10.
+> 
+> - The third fixes a slightly risky completion of an MMIO load in branch
+>   delay slot, where it'll try and read guest code outside of the proper
+>   context. Currently we should only be able to hit this if the MMIO load
+>   in branch delay slot is in guest TLB mapped (i.e. kernel module) code.
+> 
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: kvm@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> 
+> James Hogan (3):
+>   KVM: MIPS: Fix lazy user ASID regenerate for SMP
+>   KVM: MIPS: Make ERET handle ERL before EXL
+>   KVM: MIPS: Precalculate MMIO load resume PC
+> 
+>  arch/mips/include/asm/kvm_host.h |  7 ++++---
+>  arch/mips/kvm/emulate.c          | 32 +++++++++++++++++++-------------
+>  arch/mips/kvm/mips.c             |  5 ++++-
+>  arch/mips/kvm/mmu.c              |  4 ----
+>  4 files changed, 27 insertions(+), 21 deletions(-)
+> 
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 07f58cfc1ab9..bebec370324f 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -293,7 +293,10 @@ struct kvm_vcpu_arch {
- 	/* Host KSEG0 address of the EI/DI offset */
- 	void *kseg0_commpage;
- 
--	u32 io_gpr;		/* GPR used as IO source/target */
-+	/* Resume PC after MMIO completion */
-+	unsigned long io_pc;
-+	/* GPR used as IO source/target */
-+	u32 io_gpr;
- 
- 	struct hrtimer comparecount_timer;
- 	/* Count timer control KVM register */
-@@ -315,8 +318,6 @@ struct kvm_vcpu_arch {
- 	/* Bitmask of pending exceptions to be cleared */
- 	unsigned long pending_exceptions_clr;
- 
--	u32 pending_load_cause;
--
- 	/* Save/Restore the entryhi register when are are preempted/scheduled back in */
- 	unsigned long preempt_entryhi;
- 
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index c45ef0f13dfa..aa0937423e28 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1528,13 +1528,25 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
- 					    struct kvm_vcpu *vcpu)
- {
- 	enum emulation_result er = EMULATE_DO_MMIO;
-+	unsigned long curr_pc;
- 	u32 op, rt;
- 	u32 bytes;
- 
- 	rt = inst.i_format.rt;
- 	op = inst.i_format.opcode;
- 
--	vcpu->arch.pending_load_cause = cause;
-+	/*
-+	 * Find the resume PC now while we have safe and easy access to the
-+	 * prior branch instruction, and save it for
-+	 * kvm_mips_complete_mmio_load() to restore later.
-+	 */
-+	curr_pc = vcpu->arch.pc;
-+	er = update_pc(vcpu, cause);
-+	if (er == EMULATE_FAIL)
-+		return er;
-+	vcpu->arch.io_pc = vcpu->arch.pc;
-+	vcpu->arch.pc = curr_pc;
-+
- 	vcpu->arch.io_gpr = rt;
- 
- 	switch (op) {
-@@ -2494,9 +2506,8 @@ enum emulation_result kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu,
- 		goto done;
- 	}
- 
--	er = update_pc(vcpu, vcpu->arch.pending_load_cause);
--	if (er == EMULATE_FAIL)
--		return er;
-+	/* Restore saved resume PC */
-+	vcpu->arch.pc = vcpu->arch.io_pc;
- 
- 	switch (run->mmio.len) {
- 	case 4:
-@@ -2518,11 +2529,6 @@ enum emulation_result kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu,
- 		break;
- 	}
- 
--	if (vcpu->arch.pending_load_cause & CAUSEF_BD)
--		kvm_debug("[%#lx] Completing %d byte BD Load to gpr %d (0x%08lx) type %d\n",
--			  vcpu->arch.pc, run->mmio.len, vcpu->arch.io_gpr, *gpr,
--			  vcpu->mmio_needed);
--
- done:
- 	return er;
- }
--- 
-git-series 0.8.10
+Applied to kvm/master, thanks.

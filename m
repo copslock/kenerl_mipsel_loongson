@@ -1,41 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Oct 2016 12:56:13 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30469 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992121AbcJYK4GpRej5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Oct 2016 12:56:06 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 6CEFBE571FC26;
-        Tue, 25 Oct 2016 11:55:57 +0100 (IST)
-Received: from [10.20.78.214] (10.20.78.214) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 25 Oct 2016
- 11:55:59 +0100
-Date:   Tue, 25 Oct 2016 11:55:49 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        <devicetree@vger.kernel.org>, Stephan Linz <linz@li-pro.net>,
-        Jacek Anaszewski <j.anaszewski@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v2 11/14] MIPS: Malta: Use syscon-reboot driver to
- reboot
-In-Reply-To: <2861325.0K2k6plxiD@np-p-burton>
-Message-ID: <alpine.DEB.2.00.1610251003330.31859@tp.orcam.me.uk>
-References: <20160919212132.28893-1-paul.burton@imgtec.com> <20160919212132.28893-12-paul.burton@imgtec.com> <alpine.DEB.2.00.1610220956020.31859@tp.orcam.me.uk> <2861325.0K2k6plxiD@np-p-burton>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.214]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Oct 2016 16:12:27 +0200 (CEST)
+Received: from mail-wm0-f67.google.com ([74.125.82.67]:35143 "EHLO
+        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990644AbcJYOMTKOYvP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Oct 2016 16:12:19 +0200
+Received: by mail-wm0-f67.google.com with SMTP id o81so1264891wma.2;
+        Tue, 25 Oct 2016 07:12:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=sdEqc1/1aa1n41YHsO8xeQFUe4Dm10q5eDY0iXB9YZw=;
+        b=vmHg+eLMO4EpX04eHbdnFyuOVIl9YHM7QQOuf/sOF73mrD0paxrts+qrMv/EGbAeA/
+         M87SrWkVilm2J2JKliqJVjY3fYurO/hUUXbb60pUZWmq4r4vxu5T33sL84NQ/Ezp7aQg
+         p1POvrneBHoE7MyBNeIJgHPBbosmH9vDH2eXFo9pwLLJS3uvV8Ve/HJYNLDlfdFkzkP8
+         AbSe1QpNZf3oKCMDV3AQf93Uj+0KduumYRdO5TaSWJ+D4s5MxOCAX1r4jJlQC+gbsMkS
+         MSUp9xGFjtok8IbMXT35VDcazcrnYR5JlcqMTYqhFbZWWopPzJWBsJmuEPWZVgNfHx0y
+         SsWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=sdEqc1/1aa1n41YHsO8xeQFUe4Dm10q5eDY0iXB9YZw=;
+        b=UrFpYGMBDGUaVLz3naKW0F/M1+7AsM+WVH0aUiuYlPqp1t0aGdbhtnpXNIXwQ50WRe
+         BTnAIFqfFdSpV1Zs5mx6BiN24QMj/Re9qRiC1UrEAs8OfxD+cJBvXT3XoTKP7iMIe0yP
+         wrex95Uc/BSDNUVDN19AJV7M8lEtgyiHyW19qP5Z2Ycas5IUCrIqBrQb503HcZjmhVsu
+         +Q7C76nhe1O+yet3q9s1hUeP/PV+lNSsN140PcXssWTzCJ8Zh2yGZtXhTBfXceWp1WWr
+         8QMdv9Kq9z1jlPPhJOY08X9d9Iom5ZyO5+DA98tyb1f54/Br5xVi6ShVkOqZs11c9ntY
+         hFAQ==
+X-Gm-Message-State: ABUngvdd8ZkKbDVLaTnRvFLInP+maeyyPS00utyBfKGNGtE+4Wa9gSkvyYh9MDH6Db7Gqg==
+X-Received: by 10.28.50.66 with SMTP id y63mr989738wmy.44.1477404732403;
+        Tue, 25 Oct 2016 07:12:12 -0700 (PDT)
+Received: from dargo.roarinelk.net (88-117-48-204.adsl.highway.telekom.at. [88.117.48.204])
+        by smtp.gmail.com with ESMTPSA id u64sm3919455wmd.6.2016.10.25.07.12.11
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 25 Oct 2016 07:12:11 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] MIPS: fix build with multiple PLATFORM strings
+Date:   Tue, 25 Oct 2016 16:12:05 +0200
+Message-Id: <20161025141205.244177-1-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 2.10.1
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55569
+X-archive-position: 55570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,37 +62,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+Commit cf2a5e0bb (MIPS: Support generating Flattened Image Trees (.itb))
+broke my alchemy devboard build, because it uses more than one entry
+in the PLATFORM variable:
 
-> >  This has broken reboot support, all I get now is:
-> > 
-> > reboot: Restarting system
-> > Unable to restart system
-> > Reboot failed -- System halted
-> > 
-> > at which point I need to issue a serial BREAK to regain control of the
-> > board and get back to YAMON; fortunately the board is wired for that.
-> 
-> This was already reported over here:
-> 
-> https://www.linux-mips.org/archives/linux-mips/2016-10/msg00120.html 
-> 
-> These 2 patches fix it:
-> 
-> https://patchwork.linux-mips.org/patch/14395/ 
-> https://patchwork.linux-mips.org/patch/14396/ 
+make -f kernel/linux/scripts/Makefile.build obj=arch/mips/boot/compressed \
+        VMLINUX_LOAD_ADDRESS=[..] PLATFORM=alchemy/common/ alchemy/devboards/ [..] vmlinuz
+make[2]: *** No rule to make target 'alchemy/devboards/'.  Stop.
+make[1]: *** [arch/mips/Makefile:371: vmlinuz] Error 2
 
- Thanks, good to know and sorry to raise a late alarm then.
+Fix this by wrapping the platform-y expansion in quotes.
 
- As it happens the board I've been fiddling with has been temporarily 
-sitting idle, so I went ahead and verified that these changes have indeed 
-removed the regression in my configuration.  So you've got a confirmation 
-from a real Malta hardware user now too (QEMU may have its own quirks).
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+ arch/mips/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> I've asked Ralf if we can get those, along with a few others, in ASAP - 
-> preferrably for -rc3.
-
- As these are fixes to a functional regression I also recommend merging 
-them ASAP.
-
-  Maciej
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index fbf40d3..1a6bac7 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -263,7 +263,7 @@ KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
+ 
+ bootvars-y	= VMLINUX_LOAD_ADDRESS=$(load-y) \
+ 		  VMLINUX_ENTRY_ADDRESS=$(entry-y) \
+-		  PLATFORM=$(platform-y)
++		  PLATFORM="$(platform-y)"
+ ifdef CONFIG_32BIT
+ bootvars-y	+= ADDR_BITS=32
+ endif
+-- 
+2.10.1

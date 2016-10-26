@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Oct 2016 11:02:36 +0200 (CEST)
-Received: from sandesh.cdotd.ernet.in ([196.1.105.47]:58117 "HELO
-        sandesh.cdotd.ernet.in" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with SMTP id S23992226AbcJZJCYlz1EN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Oct 2016 11:02:24 +0200
-Received: from mail.cdot.in (webmail.cdotd.ernet.in [196.1.105.198])
-        by sandesh.cdotd.ernet.in (Postfix) with ESMTP id 5B9BD1DDE4C6
-        for <linux-mips@linux-mips.org>; Wed, 26 Oct 2016 14:30:47 +0530 (IST)
-Received: from cdot.in (localhost [127.0.0.1])
-        by mail.cdot.in (8.14.7/8.13.8) with ESMTP id u9Q91p2D019052
-        for <linux-mips@linux-mips.org>; Wed, 26 Oct 2016 14:31:51 +0530
-From:   "Deepak Gaur" <dgaur@cdot.in>
-To:     linux-mips@linux-mips.org
-Subject: System clock going slow/fast with ntpdate
-Date:   Wed, 26 Oct 2016 14:31:51 +0530
-Message-Id: <20161026090102.M12530@cdot.in>
-In-Reply-To: <20161026085306.M18729@cdot.in>
-References: <20161026081208.M10605@cdot.in> <20161026085306.M18729@cdot.in>
-X-Mailer: OpenWebMail 2.54 
-X-OriginatingIP: 192.168.3.57 (dgaur)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Oct 2016 14:27:05 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:44054 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993004AbcJZM06NkCkn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Oct 2016 14:26:58 +0200
+Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CB8189D;
+        Wed, 26 Oct 2016 12:26:50 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.8 070/140] MIPS: Fix -mabi=64 build of vdso.lds
+Date:   Wed, 26 Oct 2016 14:22:10 +0200
+Message-Id: <20161026122223.387112035@linuxfoundation.org>
+X-Mailer: git-send-email 2.10.1
+In-Reply-To: <20161026122220.384323763@linuxfoundation.org>
+References: <20161026122220.384323763@linuxfoundation.org>
+User-Agent: quilt/0.64
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset=utf-8
-Return-Path: <dgaur@cdot.in>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55581
+X-archive-position: 55582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dgaur@cdot.in
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,85 +42,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+4.8-stable review patch.  If anyone has any objections, please let me know.
 
- I have board with MIPS 34Kc processor and linux-2.6.29 with CONFIG_HZ_250=y set in kernel configuration (i.e 250 timer 
- interrupts per 1 real second in /proc/interrupts). When I try to synchronize time using ntpdate command, the time gets 
- synchronized. This resync is being done every 5 min using cron. The clocksource is set to jiffies and is the only source 
- available. After some time (1 hr and more) the system clock (kernel/software) sometimes starts slowing down and sometime 
- goes fast. System time increments very slowly i.e 1 sec on system takes 8-9 real seconds (as per wrist watch) or fast 2 
- sec in 1 real second.
+------------------
 
- #date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:05 IST 2016 
- # date 
- Tue Oct 25 15:14:06 IST 2016 
- # date 
- Tue Oct 25 15:14:06 IST 2016
+From: James Hogan <james.hogan@imgtec.com>
 
- (It took 10 date commands to increment from 14:05 to 15:06)
+commit 034827c727f7f3946a18355b63995b402c226c82 upstream.
 
- On further analysing the system we found the number of timer interrupts in /proc/interrupts has actually gone down from 
- 250 to 40 every 1 real second
+The native ABI vDSO linker script vdso.lds is built by preprocessing
+vdso.lds.S, with the native -mabi flag passed in to get the correct ABI
+definitions. Unfortunately however certain toolchains choke on -mabi=64
+without a corresponding compatible -march flag, for example:
 
- (1) Normal Operation 10 real sec watch window
+cc1: error: ‘-march=mips32r2’ is not compatible with the selected ABI
+scripts/Makefile.build:338: recipe for target 'arch/mips/vdso/vdso.lds' failed
 
- cat /proc/interrupts
+Fix this by including ccflags-vdso in the KBUILD_CPPFLAGS for vdso.lds,
+which includes the appropriate -march flag.
 
- Start of timer  MIPS timer intr count 3856633 
- End of Timer   MIPS timer intr count 3859268
+Fixes: ebb5e78cc634 ("MIPS: Initial implementation of a VDSO")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/14368/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
- Timing approximately 10-11 real sec, the interrupts are 263 per sec.
+---
+ arch/mips/vdso/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- (2) Clock Slow (Less Timer Interrupts) 
- After ntpdate run for 1 hr once per 5 min
-
- cat /proc/interrupts
-
- Start of timer  MIPS timer intr count 985072 
- End of Timer   MIPS timer intr count 985492
-
- 985492 - 985072 = 420 in 10 sec (real) = 42 in 1 sec
-
- (3) Fast Clock with ntpdate (More Timer interrupts)
-
- Start of timer  MIPS timer intr count 4068301 
- End of Timer   MIPS timer intr count 4073411 
- 985492 - 985072 = 5110 in 10 sec (real) = 511 in 1 real sec
-
- ntpdate uses ntp_adjtime()/adjtimex() GNU libc system call for changing system clock and can change it but by a very 
- small amount.
-
- But the issue is it is changing system clock so much that other application have started behaving erratically, timers 
- are not expiring in required time etc.. and once the system clock has slowed down/fast it remains in that state.
-
- # cat /sys/devices/system/clocksource/clocksource0/available_clocksource 
- jiffies 
-   
- # cat /sys/devices/system/clocksource/clocksource0/current_clocksource   
- jiffies
-
- We are using gcc version 4.5.2  and gnu libc
-
- Please help me in understanding this behaviour of NTP with MIPS Linux and possible fixes if any. Is it a kernel bug or a 
- configuration issue?
-
- regards,
-
- Deepak Gaur
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -82,7 +82,7 @@ obj-vdso := $(obj-vdso-y:%.o=$(obj)/%.o)
+ $(obj-vdso): KBUILD_CFLAGS := $(cflags-vdso) $(native-abi)
+ $(obj-vdso): KBUILD_AFLAGS := $(aflags-vdso) $(native-abi)
+ 
+-$(obj)/vdso.lds: KBUILD_CPPFLAGS := $(native-abi)
++$(obj)/vdso.lds: KBUILD_CPPFLAGS := $(ccflags-vdso) $(native-abi)
+ 
+ $(obj)/vdso.so.dbg.raw: $(obj)/vdso.lds $(obj-vdso) FORCE
+ 	$(call if_changed,vdsold)

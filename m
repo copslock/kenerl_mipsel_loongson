@@ -1,31 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Oct 2016 21:56:54 +0200 (CEST)
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:49278 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992087AbcJ2T4Y1O7fh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 29 Oct 2016 21:56:24 +0200
-X-IronPort-AV: E=Sophos;i="5.31,565,1473112800"; 
-   d="scan'208";a="242872221"
-Received: from palace.lip6.fr (HELO localhost.localdomain) ([132.227.105.202])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA256; 29 Oct 2016 21:56:18 +0200
-From:   Julia Lawall <Julia.Lawall@lip6.fr>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 05/15] MIPS: TXx9: 7segled: use permission-specific DEVICE_ATTR variants
-Date:   Sat, 29 Oct 2016 21:36:59 +0200
-Message-Id: <1477769829-22230-6-git-send-email-Julia.Lawall@lip6.fr>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1477769829-22230-1-git-send-email-Julia.Lawall@lip6.fr>
-References: <1477769829-22230-1-git-send-email-Julia.Lawall@lip6.fr>
-Return-Path: <Julia.Lawall@lip6.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Oct 2016 09:26:31 +0100 (CET)
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:54955 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990686AbcJ3I0Y3Oo06 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 30 Oct 2016 09:26:24 +0100
+Received: from localhost.localdomain ([92.140.167.9])
+        by mwinf5d70 with ME
+        id 1kSJ1u0040CVt9o03kSJCa; Sun, 30 Oct 2016 09:26:19 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 30 Oct 2016 09:26:19 +0100
+X-ME-IP: 92.140.167.9
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     ralf@linux-mips.org, antonynpavlov@gmail.com, albeu@free.fr,
+        hackpascal@gmail.com, amitoj1606@gmail.com
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] MIPS: ath79: Fix error handling
+Date:   Sun, 30 Oct 2016 09:25:46 +0100
+Message-Id: <20161030082546.15019-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.9.3
+X-Antivirus: avast! (VPS 161029-0, 29/10/2016), Outbound message
+X-Antivirus-Status: Clean
+Return-Path: <christophe.jaillet@wanadoo.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55594
+X-archive-position: 55595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Julia.Lawall@lip6.fr
+X-original-sender: christophe.jaillet@wanadoo.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,55 +43,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use DEVICE_ATTR_WO for write only attributes.  This simplifies the
-source code, improves readbility, and reduces the chance of
-inconsistencies.
+'clk_register_fixed_rate()' returns an error pointer in case of error, not
+NULL. So test it with IS_ERR.
 
-The semantic patch that makes this change is as follows:
-(http://coccinelle.lip6.fr/)
-
-// <smpl>
-@wo@
-declarer name DEVICE_ATTR;
-identifier x,x_store;
-@@
-
-DEVICE_ATTR(x, \(0200\|S_IWUSR\), NULL, x_store);
-
-@script:ocaml@
-x << wo.x;
-x_store << wo.x_store;
-@@
-
-if not (x^"_store" = x_store) then Coccilib.include_match false
-
-@@
-declarer name DEVICE_ATTR_WO;
-identifier wo.x,wo.x_store;
-@@
-
-- DEVICE_ATTR(x, \(0200\|S_IWUSR\), NULL, x_store);
-+ DEVICE_ATTR_WO(x);
-// </smpl>
-
-Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
-
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- arch/mips/txx9/generic/7segled.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/ath79/clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/txx9/generic/7segled.c b/arch/mips/txx9/generic/7segled.c
-index 566c58b..2203c25 100644
---- a/arch/mips/txx9/generic/7segled.c
-+++ b/arch/mips/txx9/generic/7segled.c
-@@ -55,8 +55,8 @@ static ssize_t raw_store(struct device *dev,
- 	return size;
- }
+diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
+index cc3a1e33a600..c1102cffe37d 100644
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -45,7 +45,7 @@ static struct clk *__init ath79_add_sys_clkdev(
+ 	int err;
  
--static DEVICE_ATTR(ascii, 0200, NULL, ascii_store);
--static DEVICE_ATTR(raw, 0200, NULL, raw_store);
-+static DEVICE_ATTR_WO(ascii);
-+static DEVICE_ATTR_WO(raw);
+ 	clk = clk_register_fixed_rate(NULL, id, NULL, 0, rate);
+-	if (!clk)
++	if (IS_ERR(clk))
+ 		panic("failed to allocate %s clock structure", id);
  
- static ssize_t map_seg7_show(struct device *dev,
- 			     struct device_attribute *attr,
+ 	err = clk_register_clkdev(clk, id, NULL);
+-- 
+2.9.3

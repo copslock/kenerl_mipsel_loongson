@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 00:04:42 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:47730 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 00:05:05 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:48376 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992309AbcJ3XDFs4s2a (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 00:03:05 +0100
+        by eddie.linux-mips.org with ESMTP id S23992514AbcJ3XDISAria (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 00:03:08 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     rtc-linux@googlegroups.com,
         Alessandro Zummo <a.zummo@towertech.it>,
@@ -15,17 +15,17 @@ To:     rtc-linux@googlegroups.com,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
 Cc:     Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 3/7] rtc: rtc-jz4740: Add support for devicetree
-Date:   Mon, 31 Oct 2016 00:02:43 +0100
-Message-Id: <20161030230247.20538-4-paul@crapouillou.net>
+Subject: [PATCH v2 5/7] MIPS: jz4740: DTS: Probe the jz4740-rtc driver from devicetree
+Date:   Mon, 31 Oct 2016 00:02:45 +0100
+Message-Id: <20161030230247.20538-6-paul@crapouillou.net>
 In-Reply-To: <20161030230247.20538-1-paul@crapouillou.net>
 References: <20161030230247.20538-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1477868584; bh=+hJlG5b7oMO3UrV+uuuQJwJla1+fZIMbs+C9Hq/3+HU=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=LYw/APoypkkncyQW/522j8sTEJat8E2mtXnumbQBvfvdsX7BEpXGh/lR+KOnnmkG44YIy87Lw0AbrUy0UkF35UUPci33FFl4CN8mNH3GgopkdHNvcIE0JBCbS4uYt1kfAOC55tPRAIo8zoaeOEF/81fzvglsg0xA3Mrdf+2PY8Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1477868587; bh=lscptfG2SIpuoGSfQuuVQGu5tv53D3ELp5zf3Lhl1ls=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=kV4cH71JrsaX5wuvQu1OdCUJaTBjMiLXIJEuLXCy1k8JjF/1vsQvgnZA1Omp1yFAWltEatf0sbJjLGGncKHOxI/jsNeDZaI8D8LlRGRKkJXAo9F1UFQ8ghghGqh1tiFAY7jqxB8qng1CULN5C9voDc5SbQbBdYE1fbk3+OeDAbc=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55601
+X-archive-position: 55602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,70 +42,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-See
-Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
-for a description of the bindings.
+Now that the jz4740-rtc driver supports devicetree, we can add a
+devicetree node for it.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Acked-by: Maarten ter Huurne <maarten@treewalker.org>
 ---
- drivers/rtc/rtc-jz4740.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ arch/mips/boot/dts/ingenic/jz4740.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-v2: No change
+v2: Previous patch 5/5 was garbage. This is a new patch.
 
-diff --git a/drivers/rtc/rtc-jz4740.c b/drivers/rtc/rtc-jz4740.c
-index c616efe..4213554 100644
---- a/drivers/rtc/rtc-jz4740.c
-+++ b/drivers/rtc/rtc-jz4740.c
-@@ -17,6 +17,7 @@
- #include <linux/io.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/rtc.h>
- #include <linux/slab.h>
-@@ -245,6 +246,13 @@ void jz4740_rtc_poweroff(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(jz4740_rtc_poweroff);
+diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+index f6ae6ed..c6acd6a 100644
+--- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
++++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+@@ -44,6 +44,17 @@
+ 		#clock-cells = <1>;
+ 	};
  
-+static const struct of_device_id jz4740_rtc_of_match[] = {
-+	{ .compatible = "ingenic,jz4740-rtc", .data = (void *) ID_JZ4740 },
-+	{ .compatible = "ingenic,jz4780-rtc", .data = (void *) ID_JZ4780 },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, jz4740_rtc_of_match);
++	rtc_dev: jz4740-rtc@10003000 {
++		compatible = "ingenic,jz4740-rtc";
++		reg = <0x10003000 0x40>;
 +
- static int jz4740_rtc_probe(struct platform_device *pdev)
- {
- 	int ret;
-@@ -252,12 +260,17 @@ static int jz4740_rtc_probe(struct platform_device *pdev)
- 	uint32_t scratchpad;
- 	struct resource *mem;
- 	const struct platform_device_id *id = platform_get_device_id(pdev);
-+	const struct of_device_id *of_id = of_match_device(
-+			jz4740_rtc_of_match, &pdev->dev);
- 
- 	rtc = devm_kzalloc(&pdev->dev, sizeof(*rtc), GFP_KERNEL);
- 	if (!rtc)
- 		return -ENOMEM;
- 
--	rtc->type = id->driver_data;
-+	if (of_id)
-+		rtc->type = (enum jz4740_rtc_type) of_id->data;
-+	else
-+		rtc->type = id->driver_data;
- 
- 	rtc->irq = platform_get_irq(pdev, 0);
- 	if (rtc->irq < 0) {
-@@ -345,6 +358,7 @@ static struct platform_driver jz4740_rtc_driver = {
- 	.driver	 = {
- 		.name  = "jz4740-rtc",
- 		.pm    = JZ4740_RTC_PM_OPS,
-+		.of_match_table = of_match_ptr(jz4740_rtc_of_match),
- 	},
- 	.id_table = jz4740_rtc_ids,
- };
++		interrupt-parent = <&intc>;
++		interrupts = <15>;
++
++		clocks = <&cgu JZ4740_CLK_RTC>;
++		clock-names = "rtc";
++	};
++
+ 	uart0: serial@10030000 {
+ 		compatible = "ingenic,jz4740-uart";
+ 		reg = <0x10030000 0x100>;
 -- 
 2.9.3

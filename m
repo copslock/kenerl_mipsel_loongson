@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 00:05:05 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:48376 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 00:05:29 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:48692 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992514AbcJ3XDISAria (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 00:03:08 +0100
+        by eddie.linux-mips.org with ESMTP id S23992544AbcJ3XDJuBPHa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 00:03:09 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     rtc-linux@googlegroups.com,
         Alessandro Zummo <a.zummo@towertech.it>,
@@ -15,17 +15,17 @@ To:     rtc-linux@googlegroups.com,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
 Cc:     Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 5/7] MIPS: jz4740: DTS: Probe the jz4740-rtc driver from devicetree
-Date:   Mon, 31 Oct 2016 00:02:45 +0100
-Message-Id: <20161030230247.20538-6-paul@crapouillou.net>
+Subject: [PATCH v2 6/7] MIPS: qi_lb60: Probe RTC driver from DT and use it as power controller
+Date:   Mon, 31 Oct 2016 00:02:46 +0100
+Message-Id: <20161030230247.20538-7-paul@crapouillou.net>
 In-Reply-To: <20161030230247.20538-1-paul@crapouillou.net>
 References: <20161030230247.20538-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1477868587; bh=lscptfG2SIpuoGSfQuuVQGu5tv53D3ELp5zf3Lhl1ls=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=kV4cH71JrsaX5wuvQu1OdCUJaTBjMiLXIJEuLXCy1k8JjF/1vsQvgnZA1Omp1yFAWltEatf0sbJjLGGncKHOxI/jsNeDZaI8D8LlRGRKkJXAo9F1UFQ8ghghGqh1tiFAY7jqxB8qng1CULN5C9voDc5SbQbBdYE1fbk3+OeDAbc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1477868589; bh=Z023+pL6M5CvMKbbM+YFyMLu6B2UrFea6C8kayMKGfs=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=jlYBomfiS6KMrNgjvkmnXzIq4bci8kjbBaIFRBDqNHf3+b4ICD1JdZK49Ki/gjJF8CXAN9nzYiW/ckiFV95nzyWLxsCIMJk6Nt0PQ6KNhfPx5ffIZSe+n8tP0J46VoWBzqBjCWcKd/0mn/8F2fJFO0hBhPNs4XMZ3SywPfa2uMY=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55602
+X-archive-position: 55603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,38 +42,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now that the jz4740-rtc driver supports devicetree, we can add a
-devicetree node for it.
+Since we already have a devicetree node for the jz4740-rtc driver, we
+don't have to probe it from platform code.
+
+Besides, using the jz4740-rtc driver as the power controller for the
+qi_lb60 platform allows us to remove the jz4740 platform power-off code,
+since this is the only jz4740-based board upstream.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Acked-by: Maarten ter Huurne <maarten@treewalker.org>
 ---
- arch/mips/boot/dts/ingenic/jz4740.dtsi | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/mips/boot/dts/ingenic/qi_lb60.dts | 4 ++++
+ arch/mips/jz4740/board-qi_lb60.c       | 1 -
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-v2: Previous patch 5/5 was garbage. This is a new patch.
+v2: New patch in this series
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index f6ae6ed..c6acd6a 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -44,6 +44,17 @@
- 		#clock-cells = <1>;
- 	};
- 
-+	rtc_dev: jz4740-rtc@10003000 {
-+		compatible = "ingenic,jz4740-rtc";
-+		reg = <0x10003000 0x40>;
+diff --git a/arch/mips/boot/dts/ingenic/qi_lb60.dts b/arch/mips/boot/dts/ingenic/qi_lb60.dts
+index 2414d63..be1a7d3 100644
+--- a/arch/mips/boot/dts/ingenic/qi_lb60.dts
++++ b/arch/mips/boot/dts/ingenic/qi_lb60.dts
+@@ -13,3 +13,7 @@
+ &ext {
+ 	clock-frequency = <12000000>;
+ };
 +
-+		interrupt-parent = <&intc>;
-+		interrupts = <15>;
-+
-+		clocks = <&cgu JZ4740_CLK_RTC>;
-+		clock-names = "rtc";
-+	};
-+
- 	uart0: serial@10030000 {
- 		compatible = "ingenic,jz4740-uart";
- 		reg = <0x10030000 0x100>;
++&rtc_dev {
++	system-power-controller;
++};
+diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+index 258fd03..a5bd94b 100644
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -438,7 +438,6 @@ static struct platform_device *jz_platform_devices[] __initdata = {
+ 	&jz4740_pcm_device,
+ 	&jz4740_i2s_device,
+ 	&jz4740_codec_device,
+-	&jz4740_rtc_device,
+ 	&jz4740_adc_device,
+ 	&jz4740_pwm_device,
+ 	&jz4740_dma_device,
 -- 
 2.9.3

@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 00:05:29 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:48692 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 00:05:53 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:49006 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992544AbcJ3XDJuBPHa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 00:03:09 +0100
+        by eddie.linux-mips.org with ESMTP id S23992571AbcJ3XDLaDUAa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 00:03:11 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     rtc-linux@googlegroups.com,
         Alessandro Zummo <a.zummo@towertech.it>,
@@ -15,17 +15,17 @@ To:     rtc-linux@googlegroups.com,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
 Cc:     Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 6/7] MIPS: qi_lb60: Probe RTC driver from DT and use it as power controller
-Date:   Mon, 31 Oct 2016 00:02:46 +0100
-Message-Id: <20161030230247.20538-7-paul@crapouillou.net>
+Subject: [PATCH v2 7/7] MIPS: jz4740: Remove obsolete code
+Date:   Mon, 31 Oct 2016 00:02:47 +0100
+Message-Id: <20161030230247.20538-8-paul@crapouillou.net>
 In-Reply-To: <20161030230247.20538-1-paul@crapouillou.net>
 References: <20161030230247.20538-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1477868589; bh=Z023+pL6M5CvMKbbM+YFyMLu6B2UrFea6C8kayMKGfs=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=jlYBomfiS6KMrNgjvkmnXzIq4bci8kjbBaIFRBDqNHf3+b4ICD1JdZK49Ki/gjJF8CXAN9nzYiW/ckiFV95nzyWLxsCIMJk6Nt0PQ6KNhfPx5ffIZSe+n8tP0J46VoWBzqBjCWcKd/0mn/8F2fJFO0hBhPNs4XMZ3SywPfa2uMY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1477868590; bh=z61MsKCKEgkb5EkyOInRSKNh6wabv6AG9jJCp8E1qzc=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=M2DI9mug2r6rhbEKHuXfoQOTqO3o4rqbs9O8Ew1qJnhDj5InTE+MKaQZ8bOV6bNUOZjOHHaCI7xiuntf/l3FzVqPupA3MoETnCcWy0FaWdG4Gr9TdHsAY8ViQLc+PdxhW08KFwtuc4SPcaJI8Eohe5zmsSv16ESzgMdGWNJYinw=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55603
+X-archive-position: 55604
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,45 +42,141 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since we already have a devicetree node for the jz4740-rtc driver, we
-don't have to probe it from platform code.
-
-Besides, using the jz4740-rtc driver as the power controller for the
-qi_lb60 platform allows us to remove the jz4740 platform power-off code,
-since this is the only jz4740-based board upstream.
+This commit removes two things:
+- The platform_device that corresponds to the RTC driver, since we now
+  probe this driver from devicetree;
+- The platform power-off code, since all the jz4740-based platforms are
+  now using the jz4740-rtc driver as the system power controller.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Acked-by: Maarten ter Huurne <maarten@treewalker.org>
 ---
- arch/mips/boot/dts/ingenic/qi_lb60.dts | 4 ++++
- arch/mips/jz4740/board-qi_lb60.c       | 1 -
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/mach-jz4740/platform.h |  1 -
+ arch/mips/jz4740/platform.c                  | 21 ----------
+ arch/mips/jz4740/reset.c                     | 63 ----------------------------
+ 3 files changed, 85 deletions(-)
 
 v2: New patch in this series
 
-diff --git a/arch/mips/boot/dts/ingenic/qi_lb60.dts b/arch/mips/boot/dts/ingenic/qi_lb60.dts
-index 2414d63..be1a7d3 100644
---- a/arch/mips/boot/dts/ingenic/qi_lb60.dts
-+++ b/arch/mips/boot/dts/ingenic/qi_lb60.dts
-@@ -13,3 +13,7 @@
- &ext {
- 	clock-frequency = <12000000>;
+diff --git a/arch/mips/include/asm/mach-jz4740/platform.h b/arch/mips/include/asm/mach-jz4740/platform.h
+index 073b8bf..3645974 100644
+--- a/arch/mips/include/asm/mach-jz4740/platform.h
++++ b/arch/mips/include/asm/mach-jz4740/platform.h
+@@ -22,7 +22,6 @@
+ extern struct platform_device jz4740_udc_device;
+ extern struct platform_device jz4740_udc_xceiv_device;
+ extern struct platform_device jz4740_mmc_device;
+-extern struct platform_device jz4740_rtc_device;
+ extern struct platform_device jz4740_i2c_device;
+ extern struct platform_device jz4740_nand_device;
+ extern struct platform_device jz4740_framebuffer_device;
+diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
+index 2f1dab3..5b7cdd6 100644
+--- a/arch/mips/jz4740/platform.c
++++ b/arch/mips/jz4740/platform.c
+@@ -88,27 +88,6 @@ struct platform_device jz4740_mmc_device = {
+ 	.resource	= jz4740_mmc_resources,
  };
-+
-+&rtc_dev {
-+	system-power-controller;
-+};
-diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
-index 258fd03..a5bd94b 100644
---- a/arch/mips/jz4740/board-qi_lb60.c
-+++ b/arch/mips/jz4740/board-qi_lb60.c
-@@ -438,7 +438,6 @@ static struct platform_device *jz_platform_devices[] __initdata = {
- 	&jz4740_pcm_device,
- 	&jz4740_i2s_device,
- 	&jz4740_codec_device,
--	&jz4740_rtc_device,
- 	&jz4740_adc_device,
- 	&jz4740_pwm_device,
- 	&jz4740_dma_device,
+ 
+-/* RTC controller */
+-static struct resource jz4740_rtc_resources[] = {
+-	{
+-		.start	= JZ4740_RTC_BASE_ADDR,
+-		.end	= JZ4740_RTC_BASE_ADDR + 0x38 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	{
+-		.start	= JZ4740_IRQ_RTC,
+-		.end	= JZ4740_IRQ_RTC,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-struct platform_device jz4740_rtc_device = {
+-	.name		= "jz4740-rtc",
+-	.id		= -1,
+-	.num_resources	= ARRAY_SIZE(jz4740_rtc_resources),
+-	.resource	= jz4740_rtc_resources,
+-};
+-
+ /* I2C controller */
+ static struct resource jz4740_i2c_resources[] = {
+ 	{
+diff --git a/arch/mips/jz4740/reset.c b/arch/mips/jz4740/reset.c
+index 954e669..67780c4 100644
+--- a/arch/mips/jz4740/reset.c
++++ b/arch/mips/jz4740/reset.c
+@@ -57,71 +57,8 @@ static void jz4740_restart(char *command)
+ 	jz4740_halt();
+ }
+ 
+-#define JZ_REG_RTC_CTRL			0x00
+-#define JZ_REG_RTC_HIBERNATE		0x20
+-#define JZ_REG_RTC_WAKEUP_FILTER	0x24
+-#define JZ_REG_RTC_RESET_COUNTER	0x28
+-
+-#define JZ_RTC_CTRL_WRDY		BIT(7)
+-#define JZ_RTC_WAKEUP_FILTER_MASK	0x0000FFE0
+-#define JZ_RTC_RESET_COUNTER_MASK	0x00000FE0
+-
+-static inline void jz4740_rtc_wait_ready(void __iomem *rtc_base)
+-{
+-	uint32_t ctrl;
+-
+-	do {
+-		ctrl = readl(rtc_base + JZ_REG_RTC_CTRL);
+-	} while (!(ctrl & JZ_RTC_CTRL_WRDY));
+-}
+-
+-static void jz4740_power_off(void)
+-{
+-	void __iomem *rtc_base = ioremap(JZ4740_RTC_BASE_ADDR, 0x38);
+-	unsigned long wakeup_filter_ticks;
+-	unsigned long reset_counter_ticks;
+-	struct clk *rtc_clk;
+-	unsigned long rtc_rate;
+-
+-	rtc_clk = clk_get(NULL, "rtc");
+-	if (IS_ERR(rtc_clk))
+-		panic("unable to get RTC clock");
+-	rtc_rate = clk_get_rate(rtc_clk);
+-	clk_put(rtc_clk);
+-
+-	/*
+-	 * Set minimum wakeup pin assertion time: 100 ms.
+-	 * Range is 0 to 2 sec if RTC is clocked at 32 kHz.
+-	 */
+-	wakeup_filter_ticks = (100 * rtc_rate) / 1000;
+-	if (wakeup_filter_ticks < JZ_RTC_WAKEUP_FILTER_MASK)
+-		wakeup_filter_ticks &= JZ_RTC_WAKEUP_FILTER_MASK;
+-	else
+-		wakeup_filter_ticks = JZ_RTC_WAKEUP_FILTER_MASK;
+-	jz4740_rtc_wait_ready(rtc_base);
+-	writel(wakeup_filter_ticks, rtc_base + JZ_REG_RTC_WAKEUP_FILTER);
+-
+-	/*
+-	 * Set reset pin low-level assertion time after wakeup: 60 ms.
+-	 * Range is 0 to 125 ms if RTC is clocked at 32 kHz.
+-	 */
+-	reset_counter_ticks = (60 * rtc_rate) / 1000;
+-	if (reset_counter_ticks < JZ_RTC_RESET_COUNTER_MASK)
+-		reset_counter_ticks &= JZ_RTC_RESET_COUNTER_MASK;
+-	else
+-		reset_counter_ticks = JZ_RTC_RESET_COUNTER_MASK;
+-	jz4740_rtc_wait_ready(rtc_base);
+-	writel(reset_counter_ticks, rtc_base + JZ_REG_RTC_RESET_COUNTER);
+-
+-	jz4740_rtc_wait_ready(rtc_base);
+-	writel(1, rtc_base + JZ_REG_RTC_HIBERNATE);
+-
+-	jz4740_halt();
+-}
+-
+ void jz4740_reset_init(void)
+ {
+ 	_machine_restart = jz4740_restart;
+ 	_machine_halt = jz4740_halt;
+-	pm_power_off = jz4740_power_off;
+ }
 -- 
 2.9.3

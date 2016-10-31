@@ -1,55 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 22:19:31 +0100 (CET)
-Received: from mail-pf0-f195.google.com ([209.85.192.195]:35577 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 22:19:56 +0100 (CET)
+Received: from mail-pf0-f195.google.com ([209.85.192.195]:36004 "EHLO
         mail-pf0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993022AbcJaVRufl0E0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 22:17:50 +0100
-Received: by mail-pf0-f195.google.com with SMTP id s8so9642102pfj.2;
-        Mon, 31 Oct 2016 14:17:50 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23993009AbcJaVSVjlfb0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 22:18:21 +0100
+Received: by mail-pf0-f195.google.com with SMTP id n85so9651432pfi.3;
+        Mon, 31 Oct 2016 14:18:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=bsA+zIAlI4s3FQe0eNmU1RYYnE97ZN4KV1a6MEZflqM=;
-        b=c373pWDAbBYGt4kcd9f+Bfeoplb03wZCeaO8GpoLW64p7PA1odFWBkRBHfnnRpzwkI
-         XsboIHLfdcfO7nM2Osnu47t0QcBw+Pvc5wvTgJeasaSsBfE2rWrpjwEvMOWPJCE1tHfG
-         LlqD/75tyUrD/B65Q4SkASqf2kFtazoP26CE6yke+EqKORJZ9EBJZ1ehzwPMrQrweT5N
-         79gV8pH/i8oBtFWpXrJySF2RcGh7BtKcb1zY8loyWfesSr60lqyTc49CtIWIdfsIyk3u
-         N8pzrZlkb8ZJ1G/Wl2Pw2Bd0d6o7jKZf95vf39/yhN9aaCPLzPEvUQlFaITIAc8x5Nsh
-         KvKg==
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=rM4CzEZZHR0RfYt9g8lQO4LVlWmuDcV9TW7Guagv8BA=;
+        b=JW5PXwXN1sh/9KsWaO1TzureDnXBXxMjDInPevFUhPFcFv/fUhE+ZO/F39RACE/32E
+         PbMLRYi111wc4B32XWbGy0sEHpjz61jZJBnR/+8om5kDv2FBo5XrQWIue3iPiXVSFiK6
+         xACdjG0HlUwtHsDtJysuSlRjq/K8DNGjud7mWCg9twtoxHpha060htUeLaEU8CDkQ9Ix
+         YBaeKHeeIE+B7w14dGwkcq63Z2Zzp60+WSNjX0jPqi4yWqe89O7PAubpLKwL0SXgjvOu
+         RNWuIe52WdJD2xJueO3NDnqaw+f3XZiWrUaBODsSwoQ+TNoSr15iHsgqmp5Pxo8pmTSa
+         8lpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=bsA+zIAlI4s3FQe0eNmU1RYYnE97ZN4KV1a6MEZflqM=;
-        b=fZPcvlOr1NLEvCYtaubeQf/lejU8sX6hibTUDTKudcNLYsmeoyEYkrY8UKEmDV1ZvB
-         iRhGPuabuzjeUx7yFlznuHHo4TOUflzz7tCfoU4n+U+nr1jERhA6Ru9a0cYHT+O6Ayjq
-         lav2rgbjJjXxszcYP1Yig5sJIfUWRAuRt2oqUxN5wrGQQCOqGKjDAKdKth9P7Rl8JZeS
-         yAMqEpyj7G103TYNs7GnE6iSC4Siq7VmVMWR50NRZO/jPSzqrnMLgA+fobdHYZ3Mli/j
-         3GGTdxGrJtjQTQBVAswelHYxpaFewuRtrubqINk3EGjbYna8hTgl02z/4mfRnMG/ROv3
-         PVAQ==
-X-Gm-Message-State: ABUngvfv1sxLzocdPkC5ScE2Rk02WTj1CfrF3KxYZD5BFEJBVEK+vwxpQ/D+R5vU5u3vjw==
-X-Received: by 10.99.158.18 with SMTP id s18mr44321217pgd.114.1477948664794;
-        Mon, 31 Oct 2016 14:17:44 -0700 (PDT)
-Received: from fainelli-desktop.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id w85sm25592601pfk.57.2016.10.31.14.17.43
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 31 Oct 2016 14:17:44 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=rM4CzEZZHR0RfYt9g8lQO4LVlWmuDcV9TW7Guagv8BA=;
+        b=j+kpjB6T0+hRb9M6rr4DsMNzf92mVFa5bH90vUeWwdbRJbyq2w/Hklehp9ESKODK0p
+         9xeX7FidU/Aon9fiJrE9kJEqkkTKKD6bmKA1o0u2awoord+nFxPMZVAr1JNk5WEdldfG
+         3jTs7W2TAJ/eHIH/uBM4Eh9vaqBpqKkH9Ar5dnimpFWHy61gqcqtvmd5Bc6Wo7GOwZU+
+         pH2IK94A0LI9cJAiDAtjaIq7csgvlQopasUd+BtvUlr2bHfW7iGtdlKfOL35Ofig0yns
+         Ylokew8xd+n9gvCp/kia2lxhDe72mwqwmzTlTCsjwTxZIRRPzxZsvx8QMFcwS+hxNaOG
+         ZS3A==
+X-Gm-Message-State: ABUngvc+w9VKKkegUJFA+Y9kNBMPjHskgakc+tgUWWNpyWiA9+vr0KzTycaPggHZAXH98A==
+X-Received: by 10.98.219.5 with SMTP id f5mr11550744pfg.131.1477948695901;
+        Mon, 31 Oct 2016 14:18:15 -0700 (PDT)
+Received: from [10.112.156.244] ([192.19.255.250])
+        by smtp.googlemail.com with ESMTPSA id p62sm37536899pfb.42.2016.10.31.14.18.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 31 Oct 2016 14:18:15 -0700 (PDT)
+Subject: Re: [PATCH 0/2] MIPS: BMIPS: Fix interrupt affinity migration
 To:     linux-mips@linux-mips.org
+References: <1477948656-12966-1-git-send-email-f.fainelli@gmail.com>
 Cc:     ralf@linux-mips.org, cernekee@gmail.com, jaedon.shin@gmail.com,
         justinpopo6@gmail.com, tglx@linutronix.de, marc.zyngier@arm.com,
-        jason@lakedaemon.net, linux-kernel@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH 2/2] MIPS: BMIPS: Migrate interrupts during bmips_cpu_disable
-Date:   Mon, 31 Oct 2016 14:17:36 -0700
-Message-Id: <1477948656-12966-3-git-send-email-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.7.4
+        jason@lakedaemon.net, linux-kernel@vger.kernel.org
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <e0a60cc0-ccc5-a94d-1e57-1c843034f1ee@gmail.com>
+Date:   Mon, 31 Oct 2016 14:18:13 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.3.0
+MIME-Version: 1.0
 In-Reply-To: <1477948656-12966-1-git-send-email-f.fainelli@gmail.com>
-References: <1477948656-12966-1-git-send-email-f.fainelli@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55628
+X-archive-position: 55629
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -66,29 +70,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-While we properly disabled the per-CPU timer interrupt, we also need to
-make sure that all interrupts that can possibly have this CPU in their
-smp_affinity mask also have a chance to see this interrupt migrated to a
-CPU not being taken offline.
+On 10/31/2016 02:17 PM, Florian Fainelli wrote:
+> Hi,
+> 
+> These two patches are against Thomas' irq/core branch as of today:
+> 
+> 4cd13c21b207e80ddb1144c576500098f2d5f882 ("softirq: Let ksoftirqd do its job")
+> 
+> Patches can be taken indepdently or together, your call.
 
-Fixes: 230b6ff57552 ("MIPS: BMIPS: Mask off timer IRQs when hot-unplugging a CPU")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/mips/kernel/smp-bmips.c | 2 ++
- 1 file changed, 2 insertions(+)
+Resending since I goofed on Thomas' address the first time..
 
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 6d0f1321e084..37dffda8f16b 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -365,6 +365,8 @@ static int bmips_cpu_disable(void)
- 	set_cpu_online(cpu, false);
- 	calculate_cpu_foreign_map();
- 	cpumask_clear_cpu(cpu, &cpu_callin_map);
-+
-+	irq_cpu_offline();
- 	clear_c0_status(IE_IRQ5);
- 
- 	local_flush_tlb_all();
+> 
+> Florian Fainelli (2):
+>   irqchip/bcm7038-l1: Implement irq_cpu_offline
+>   MIPS: BMIPS: Migrate interrupts during bmips_cpu_disable
+> 
+>  arch/mips/kernel/smp-bmips.c     |  2 ++
+>  drivers/irqchip/irq-bcm7038-l1.c | 25 +++++++++++++++++++++++++
+>  2 files changed, 27 insertions(+)
+> 
+
+
 -- 
-2.7.4
+Florian

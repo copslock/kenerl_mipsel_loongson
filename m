@@ -1,54 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 22:18:18 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:33366 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993015AbcJaVRVnlI60 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 31 Oct 2016 22:17:21 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id E4A372034C;
-        Mon, 31 Oct 2016 21:17:18 +0000 (UTC)
-Received: from mail-yb0-f179.google.com (mail-yb0-f179.google.com [209.85.213.179])
-        (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BAA80201EF;
-        Mon, 31 Oct 2016 21:17:17 +0000 (UTC)
-Received: by mail-yb0-f179.google.com with SMTP id f97so67921431ybi.1;
-        Mon, 31 Oct 2016 14:17:17 -0700 (PDT)
-X-Gm-Message-State: ABUngvdJx+6iMujxwLAicFPTuVB9YvA2XBU+BaWrPCk0ZS+5tIS4ENsaaZOzVfuQU7my+AdaN7r8Ci/JFhzRuA==
-X-Received: by 10.37.170.198 with SMTP id t64mr26633676ybi.63.1477948637061;
- Mon, 31 Oct 2016 14:17:17 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.13.212.208 with HTTP; Mon, 31 Oct 2016 14:16:56 -0700 (PDT)
-In-Reply-To: <20161031203951.5444-2-paul@crapouillou.net>
-References: <20161030230247.20538-1-paul@crapouillou.net> <20161031203951.5444-1-paul@crapouillou.net>
- <20161031203951.5444-2-paul@crapouillou.net>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 31 Oct 2016 16:16:56 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+5=QXfCTux1S7ysu8J5qnzU5AXr-0xzRTifnUYtzaQOg@mail.gmail.com>
-Message-ID: <CAL_Jsq+5=QXfCTux1S7ysu8J5qnzU5AXr-0xzRTifnUYtzaQOg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/7] Documentation: dt: Add binding info for jz4740-rtc driver
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
-        <rtc-linux@googlegroups.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh+dt@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 22:18:44 +0100 (CET)
+Received: from mail-pf0-f193.google.com ([209.85.192.193]:33896 "EHLO
+        mail-pf0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993003AbcJaVRrAI0Q0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 22:17:47 +0100
+Received: by mail-pf0-f193.google.com with SMTP id y68so3794838pfb.1;
+        Mon, 31 Oct 2016 14:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=from:to:cc:subject:date:message-id;
+        bh=gdQHXG0VZ+kMPhyqzwWw45SJ+bRmTpUvIYjEsv3yYGw=;
+        b=TrLSe4oi3qvQjZY+dWAbbvzwX2MUs5rTZrjIKasikiUQulfPaCUBDUpn1PoK2BdkQ/
+         W1AVT/j43V3qTd2t2LQ32gImJwqIWSsATzaYShhFTjDKDE2FK6gat4IqP9qu7kejgIIH
+         0FTE1lpIWWvlzJzW9kjqJUsMLB8lgkm6UUd+xh8Cj7MDyWeEfi8iW4YoSgeHr8MFhdtr
+         z7Y6FfhhNcn+I+I6L2c9F3VgWlwkRLaFlIyHT4Qaoh3TRFlxOThGJHS49/F8hn+B8nfI
+         +EzIYEptSB9VxaLiccLhYz6mz/wckvsxvvK7iUtYHk14MNSCh+kXnY3KXQRXgqrwpkp4
+         gCfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=gdQHXG0VZ+kMPhyqzwWw45SJ+bRmTpUvIYjEsv3yYGw=;
+        b=EwxjNPLp1AJCGYDenuVKAvXqYVhTZDdvawZchNcDAtNIlGjPaAK/GQ5r75gSzVuVzT
+         gJLE2dCTR85L7WgTggYkMJrb5ThMgkFNlCLZUMfPEA+RhJ+nwkg/nfThLtnbC1y3Gv1J
+         GZwVSYTGeMNfNktY+G6N5Vp9M2YXdui/tK2TgU2oRlLXRXl3OXBmqLtnHt7RymupRJ9X
+         wUxVlVi3jRUQnmYB2S45QMDo/RMgYyVNI+EWG3oi4/xBqMAEXzZmYFi5BtL0daidI7lD
+         6LIBaN3xwiKZAXfYJZ+W6++7CkhIZ/6KOZnPrxKluL2e8uie8vFkFiIA2B56p2Tks/Rq
+         SrtQ==
+X-Gm-Message-State: ABUngvfvu4YnCYUhEZaMFU31uf1A20xwE8Pexlt+3MgHh8/ktCdktkyh2FH9XU9CX6NFAA==
+X-Received: by 10.99.130.198 with SMTP id w189mr44348678pgd.172.1477948661128;
+        Mon, 31 Oct 2016 14:17:41 -0700 (PDT)
+Received: from fainelli-desktop.broadcom.com ([192.19.255.250])
+        by smtp.gmail.com with ESMTPSA id w85sm25592601pfk.57.2016.10.31.14.17.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 31 Oct 2016 14:17:40 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, cernekee@gmail.com, jaedon.shin@gmail.com,
+        justinpopo6@gmail.com, tglx@linutronix.de, marc.zyngier@arm.com,
+        jason@lakedaemon.net, linux-kernel@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH 0/2] MIPS: BMIPS: Fix interrupt affinity migration
+Date:   Mon, 31 Oct 2016 14:17:34 -0700
+Message-Id: <1477948656-12966-1-git-send-email-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55625
+X-archive-position: 55626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh+dt@kernel.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,16 +63,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Oct 31, 2016 at 3:39 PM, Paul Cercueil <paul@crapouillou.net> wrote:
-> This commit adds documentation for the device-tree bindings of the
-> jz4740-rtc driver, which supports the RTC unit present in the JZ4740 and
-> JZ4780 SoCs from Ingenic.
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Acked-by: Maarten ter Huurne <maarten@treewalker.org>
-> ---
->  .../devicetree/bindings/rtc/ingenic,jz4740-rtc.txt | 37 ++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
+Hi,
 
-Acked-by: Rob Herring <robh@kernel.org>
+These two patches are against Thomas' irq/core branch as of today:
+
+4cd13c21b207e80ddb1144c576500098f2d5f882 ("softirq: Let ksoftirqd do its job")
+
+Patches can be taken indepdently or together, your call.
+
+Florian Fainelli (2):
+  irqchip/bcm7038-l1: Implement irq_cpu_offline
+  MIPS: BMIPS: Migrate interrupts during bmips_cpu_disable
+
+ arch/mips/kernel/smp-bmips.c     |  2 ++
+ drivers/irqchip/irq-bcm7038-l1.c | 25 +++++++++++++++++++++++++
+ 2 files changed, 27 insertions(+)
+
+-- 
+2.7.4

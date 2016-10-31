@@ -1,35 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 00:05:53 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:49006 "EHLO
-        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992571AbcJ3XDLaDUAa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 00:03:11 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     rtc-linux@googlegroups.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 07:39:48 +0100 (CET)
+Received: from mail-oi0-f65.google.com ([209.85.218.65]:36416 "EHLO
+        mail-oi0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990557AbcJaGjkz80UV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 07:39:40 +0100
+Received: by mail-oi0-f65.google.com with SMTP id 128so2478595oih.3;
+        Sun, 30 Oct 2016 23:39:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=KQwDdKXLtbXHkM3vmXmTX0V09lrpYv7FYoOQ1tUscfU=;
+        b=iizRCRFVlzI2aIYb/StZsk0pUjRGaG3lNxa9JVbBUwwkbFwBfix4FKTKDMmOnSUMgU
+         yL7OI3UWJLTtBJhvvEE4oC7jY/6wqaad0+75/jSiuBnyQx3nj04TcrqLUg4oubpfJZNj
+         yvIY2Jx4FM1ODlbp4VJ+VSkt+oLd8UH7DQgaZQx1n9RubzuZWStmqX0zv8iXXbeXnzmu
+         cCFwmvJsR5crwuj4OimvDzNGEbYKIGB9b63PwnZEilaiSNxkyl4CgOX0xlHXO8qzFeu/
+         0qMcIsZ2mMPaXJMIYceIuhSER7bJyYI8gq+sdhIO+jTdjHCXBs230g7sTcC/d1uNpekH
+         cWTA==
+X-Gm-Message-State: ABUngvfdtycpSLIUxOGj26fwCbd5oqOTWTlzvJFz25mDU/V9rMDUsVCwro6jxdwMB4lQdw==
+X-Received: by 10.157.34.106 with SMTP id o97mr20987844ota.134.1477895975103;
+        Sun, 30 Oct 2016 23:39:35 -0700 (PDT)
+Received: from localhost ([64.134.26.173])
+        by smtp.gmail.com with ESMTPSA id r126sm8179646oib.27.2016.10.30.23.39.34
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 30 Oct 2016 23:39:34 -0700 (PDT)
+Date:   Mon, 31 Oct 2016 01:39:33 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     rtc-linux@googlegroups.com,
         Alessandro Zummo <a.zummo@towertech.it>,
         Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Maarten ter Huurne <maarten@treewalker.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Cc:     Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 7/7] MIPS: jz4740: Remove obsolete code
-Date:   Mon, 31 Oct 2016 00:02:47 +0100
-Message-Id: <20161030230247.20538-8-paul@crapouillou.net>
-In-Reply-To: <20161030230247.20538-1-paul@crapouillou.net>
+Subject: Re: [PATCH v2 2/7] Documentation: dt: Add binding info for
+ jz4740-rtc driver
+Message-ID: <20161031063933.wvsby4tgdbgc7zrp@rob-hp-laptop>
 References: <20161030230247.20538-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1477868590; bh=z61MsKCKEgkb5EkyOInRSKNh6wabv6AG9jJCp8E1qzc=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=M2DI9mug2r6rhbEKHuXfoQOTqO3o4rqbs9O8Ew1qJnhDj5InTE+MKaQZ8bOV6bNUOZjOHHaCI7xiuntf/l3FzVqPupA3MoETnCcWy0FaWdG4Gr9TdHsAY8ViQLc+PdxhW08KFwtuc4SPcaJI8Eohe5zmsSv16ESzgMdGWNJYinw=
-Return-Path: <paul@outils.crapouillou.net>
+ <20161030230247.20538-3-paul@crapouillou.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20161030230247.20538-3-paul@crapouillou.net>
+User-Agent: Mutt/1.6.2-neo (2016-08-21)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55604
+X-archive-position: 55605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,141 +66,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This commit removes two things:
-- The platform_device that corresponds to the RTC driver, since we now
-  probe this driver from devicetree;
-- The platform power-off code, since all the jz4740-based platforms are
-  now using the jz4740-rtc driver as the system power controller.
+On Mon, Oct 31, 2016 at 12:02:42AM +0100, Paul Cercueil wrote:
+> This commit adds documentation for the device-tree bindings of the
+> jz4740-rtc driver, which supports the RTC unit present in the JZ4740 and
+> JZ4780 SoCs from Ingenic.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> Acked-by: Maarten ter Huurne <maarten@treewalker.org>
+> ---
+>  .../devicetree/bindings/rtc/ingenic,jz4740-rtc.txt | 37 ++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
+> 
+> v2:
+> - Remove 'interrupt-parent' of the list of required properties
+> - Add the -msec suffix for the DT entries that represent time
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Maarten ter Huurne <maarten@treewalker.org>
----
- arch/mips/include/asm/mach-jz4740/platform.h |  1 -
- arch/mips/jz4740/platform.c                  | 21 ----------
- arch/mips/jz4740/reset.c                     | 63 ----------------------------
- 3 files changed, 85 deletions(-)
+Sorry, I told you the wrong suffix. It should be '-ms' as documented in 
+.../bindings/property-units.txt. I never can remember which is why I 
+wrote the doc to begin with. With that fix,
 
-v2: New patch in this series
-
-diff --git a/arch/mips/include/asm/mach-jz4740/platform.h b/arch/mips/include/asm/mach-jz4740/platform.h
-index 073b8bf..3645974 100644
---- a/arch/mips/include/asm/mach-jz4740/platform.h
-+++ b/arch/mips/include/asm/mach-jz4740/platform.h
-@@ -22,7 +22,6 @@
- extern struct platform_device jz4740_udc_device;
- extern struct platform_device jz4740_udc_xceiv_device;
- extern struct platform_device jz4740_mmc_device;
--extern struct platform_device jz4740_rtc_device;
- extern struct platform_device jz4740_i2c_device;
- extern struct platform_device jz4740_nand_device;
- extern struct platform_device jz4740_framebuffer_device;
-diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
-index 2f1dab3..5b7cdd6 100644
---- a/arch/mips/jz4740/platform.c
-+++ b/arch/mips/jz4740/platform.c
-@@ -88,27 +88,6 @@ struct platform_device jz4740_mmc_device = {
- 	.resource	= jz4740_mmc_resources,
- };
- 
--/* RTC controller */
--static struct resource jz4740_rtc_resources[] = {
--	{
--		.start	= JZ4740_RTC_BASE_ADDR,
--		.end	= JZ4740_RTC_BASE_ADDR + 0x38 - 1,
--		.flags	= IORESOURCE_MEM,
--	},
--	{
--		.start	= JZ4740_IRQ_RTC,
--		.end	= JZ4740_IRQ_RTC,
--		.flags	= IORESOURCE_IRQ,
--	},
--};
--
--struct platform_device jz4740_rtc_device = {
--	.name		= "jz4740-rtc",
--	.id		= -1,
--	.num_resources	= ARRAY_SIZE(jz4740_rtc_resources),
--	.resource	= jz4740_rtc_resources,
--};
--
- /* I2C controller */
- static struct resource jz4740_i2c_resources[] = {
- 	{
-diff --git a/arch/mips/jz4740/reset.c b/arch/mips/jz4740/reset.c
-index 954e669..67780c4 100644
---- a/arch/mips/jz4740/reset.c
-+++ b/arch/mips/jz4740/reset.c
-@@ -57,71 +57,8 @@ static void jz4740_restart(char *command)
- 	jz4740_halt();
- }
- 
--#define JZ_REG_RTC_CTRL			0x00
--#define JZ_REG_RTC_HIBERNATE		0x20
--#define JZ_REG_RTC_WAKEUP_FILTER	0x24
--#define JZ_REG_RTC_RESET_COUNTER	0x28
--
--#define JZ_RTC_CTRL_WRDY		BIT(7)
--#define JZ_RTC_WAKEUP_FILTER_MASK	0x0000FFE0
--#define JZ_RTC_RESET_COUNTER_MASK	0x00000FE0
--
--static inline void jz4740_rtc_wait_ready(void __iomem *rtc_base)
--{
--	uint32_t ctrl;
--
--	do {
--		ctrl = readl(rtc_base + JZ_REG_RTC_CTRL);
--	} while (!(ctrl & JZ_RTC_CTRL_WRDY));
--}
--
--static void jz4740_power_off(void)
--{
--	void __iomem *rtc_base = ioremap(JZ4740_RTC_BASE_ADDR, 0x38);
--	unsigned long wakeup_filter_ticks;
--	unsigned long reset_counter_ticks;
--	struct clk *rtc_clk;
--	unsigned long rtc_rate;
--
--	rtc_clk = clk_get(NULL, "rtc");
--	if (IS_ERR(rtc_clk))
--		panic("unable to get RTC clock");
--	rtc_rate = clk_get_rate(rtc_clk);
--	clk_put(rtc_clk);
--
--	/*
--	 * Set minimum wakeup pin assertion time: 100 ms.
--	 * Range is 0 to 2 sec if RTC is clocked at 32 kHz.
--	 */
--	wakeup_filter_ticks = (100 * rtc_rate) / 1000;
--	if (wakeup_filter_ticks < JZ_RTC_WAKEUP_FILTER_MASK)
--		wakeup_filter_ticks &= JZ_RTC_WAKEUP_FILTER_MASK;
--	else
--		wakeup_filter_ticks = JZ_RTC_WAKEUP_FILTER_MASK;
--	jz4740_rtc_wait_ready(rtc_base);
--	writel(wakeup_filter_ticks, rtc_base + JZ_REG_RTC_WAKEUP_FILTER);
--
--	/*
--	 * Set reset pin low-level assertion time after wakeup: 60 ms.
--	 * Range is 0 to 125 ms if RTC is clocked at 32 kHz.
--	 */
--	reset_counter_ticks = (60 * rtc_rate) / 1000;
--	if (reset_counter_ticks < JZ_RTC_RESET_COUNTER_MASK)
--		reset_counter_ticks &= JZ_RTC_RESET_COUNTER_MASK;
--	else
--		reset_counter_ticks = JZ_RTC_RESET_COUNTER_MASK;
--	jz4740_rtc_wait_ready(rtc_base);
--	writel(reset_counter_ticks, rtc_base + JZ_REG_RTC_RESET_COUNTER);
--
--	jz4740_rtc_wait_ready(rtc_base);
--	writel(1, rtc_base + JZ_REG_RTC_HIBERNATE);
--
--	jz4740_halt();
--}
--
- void jz4740_reset_init(void)
- {
- 	_machine_restart = jz4740_restart;
- 	_machine_halt = jz4740_halt;
--	pm_power_off = jz4740_power_off;
- }
--- 
-2.9.3
+Acked-by: Rob Herring <robh@kernel.org>

@@ -1,41 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 10:48:51 +0100 (CET)
-Received: from mail-lf0-f47.google.com ([209.85.215.47]:36800 "EHLO
-        mail-lf0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991129AbcJaJsnsbyJ3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 10:48:43 +0100
-Received: by mail-lf0-f47.google.com with SMTP id t196so12585156lff.3
-        for <linux-mips@linux-mips.org>; Mon, 31 Oct 2016 02:48:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2016 10:50:53 +0100 (CET)
+Received: from mail-lf0-f50.google.com ([209.85.215.50]:34925 "EHLO
+        mail-lf0-f50.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991129AbcJaJupNg1r3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2016 10:50:45 +0100
+Received: by mail-lf0-f50.google.com with SMTP id f134so93869485lfg.2
+        for <linux-mips@linux-mips.org>; Mon, 31 Oct 2016 02:50:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
         h=subject:to:references:from:message-id:date:user-agent:mime-version
          :in-reply-to:content-transfer-encoding;
-        bh=675JJEib1VaDDjql4fVGKkXXejEOyMdjW5odH1LVERQ=;
-        b=iqfcn5euSVvWABVB2LOorqmD5tox3a3f42iWbgq8tYl/ltZHH5og0cHP0SZQ2STZxj
-         r1C0dpl/F/I/UzbKzV8Kp5OKrPwBK/s830XP3CepjYT6zUI/mZWBDvoQgqRyy/2f27GA
-         Yxh2nPJvC12LQ3MiT6ygmepiuGchkq1PqPNgk46yCoRojzcrj2vt8oH6jezsxEe+Rwcl
-         OziI8QwiEWY6rkK77cv0efdk6kOSf8SG1cx4tTBWXlRSNBQb1xrEVAYnrmAsKJuo0WB6
-         GpGoF9lnufYqQbdVqxyIxf92jmq+dOkDhF8So68epxKLMwonmHXHQ9KMGznObINbbU1H
-         q0WQ==
+        bh=LQwcoeipMxhZlBcN3kmvlg/eNqFZ9JZsRYwps8iqsCw=;
+        b=FZsHppmS0uWsinSLn7LdhQLDQb3M8JuCY7n4S58FmMySSgtp+EkKrElhyB/es2O7mN
+         t7HbYAlR7k8iDouc+pprkga8kFRkMn/eAaqzqSTB+N7CmRhoQEe8qYIqfSale95NcW07
+         /nO9LwOPa4eFHMrsyBkbIHcpWxbGMWcxIAR77AMcSxEZBnL4SEk5ZB5d4cmjtF9GLCMd
+         4CE9cr/uxk7BPmCr5BDdOcxO9ZYkH2Y/j44/AqZ+wxCMov2WAfCv6++FMLpEQSpqyYEs
+         oxD3sq6uVq+Ydiuk0MrlOKWx32zODMfXeC0T3yozqK1wMdi0lS8hbWjWj6jjn8lwFpxS
+         gmeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:subject:to:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=675JJEib1VaDDjql4fVGKkXXejEOyMdjW5odH1LVERQ=;
-        b=HgrXC+KMuzX5YAxsq0xHHH+OVdB3JPpFfa0VoOoti1UF202wa8zBDsKTSacSVPAfZt
-         dsK9YWsEHsR6GaVv2CE1atUvrjiqo+5yu0xrUwKMGWrS7NzyEwFlhEyUNJtF/xSfsYwy
-         wgVbvaUrPLXuwqgHeEHWfni3t3IaGH+j88KyG3CJDuv0500emfdh19Euz6pLEmKfrszJ
-         hp/aBsQRWHDr/iIhvtlFFUf3cicRpCsdqVcJ2g2iVfzdZkXQMqONboQrHsFOnJwqE0ot
-         iy4sxWM1WP+s2f4nI+z92/kH4XTAXr3caiZjpFrur3qQOxlg0zXhiPW8EpBxgnPt6Ymg
-         2BLw==
-X-Gm-Message-State: ABUngvdEIbAiu6mYIAePVwpTfh0fafpIWeL7qxN4PkSGbnmdV+0ToRlsjLqEVSU30jt4mA==
-X-Received: by 10.25.31.199 with SMTP id f190mr13858194lff.49.1477907318237;
-        Mon, 31 Oct 2016 02:48:38 -0700 (PDT)
+        bh=LQwcoeipMxhZlBcN3kmvlg/eNqFZ9JZsRYwps8iqsCw=;
+        b=OXFFweii9dcdJED8i6JI9xvDHdDQkV6qA/xj37ItPvJRmcAiT2fdyG6UAH9n+1HzZH
+         6ohzUy5q3p789gWKrSEsP1j1QwdUIOn9153YN8UZDpYXPexvDZ22zguZ/pNht1VXImQf
+         twR1gixCTSQF1FrrUwtpFk+GCaEuAKLmUtCWfx3o7cv4ln/khqRqZrbLGMUZGByVVngY
+         yedvWfo1xAcK0koxOag7hkAbhxSLYIgivsoy05MKd8WWUXcCQjcX9W+/eB5lC9vUowMH
+         GPP+UnBwASZvZBm4Z9g23itTNc0Z+Klel3MtbaLToYCOz9dXD8itCvETxzx6V8imToy/
+         TpjQ==
+X-Gm-Message-State: ABUngvdurw2F0g8Mw2AxlhIaQoDUoPuoMZPxQAHL3cOKipekVInqj8cXMrRZkVtgTT3V3Q==
+X-Received: by 10.25.17.88 with SMTP id g85mr1959848lfi.10.1477907438697;
+        Mon, 31 Oct 2016 02:50:38 -0700 (PDT)
 Received: from [192.168.4.126] ([31.173.80.82])
-        by smtp.gmail.com with ESMTPSA id 127sm2164973ljf.27.2016.10.31.02.48.36
+        by smtp.gmail.com with ESMTPSA id j137sm4377923lfj.40.2016.10.31.02.50.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 31 Oct 2016 02:48:37 -0700 (PDT)
-Subject: Re: [PATCH v2 2/7] Documentation: dt: Add binding info for jz4740-rtc
- driver
+        Mon, 31 Oct 2016 02:50:36 -0700 (PDT)
+Subject: Re: [PATCH v2 5/7] MIPS: jz4740: DTS: Probe the jz4740-rtc driver
+ from devicetree
 To:     Paul Cercueil <paul@crapouillou.net>, rtc-linux@googlegroups.com,
         Alessandro Zummo <a.zummo@towertech.it>,
         Alexandre Belloni <alexandre.belloni@free-electrons.com>,
@@ -47,21 +47,21 @@ To:     Paul Cercueil <paul@crapouillou.net>, rtc-linux@googlegroups.com,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
 References: <20161030230247.20538-1-paul@crapouillou.net>
- <20161030230247.20538-3-paul@crapouillou.net>
+ <20161030230247.20538-6-paul@crapouillou.net>
 From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <27537b7b-2485-d51c-b2e1-cfd6ba29e5bf@cogentembedded.com>
-Date:   Mon, 31 Oct 2016 12:48:36 +0300
+Message-ID: <0c9af39c-85e4-5372-2285-620b2c2863ad@cogentembedded.com>
+Date:   Mon, 31 Oct 2016 12:50:35 +0300
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
  Thunderbird/45.4.0
 MIME-Version: 1.0
-In-Reply-To: <20161030230247.20538-3-paul@crapouillou.net>
+In-Reply-To: <20161030230247.20538-6-paul@crapouillou.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55606
+X-archive-position: 55607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -82,35 +82,28 @@ Hello.
 
 On 10/31/2016 2:02 AM, Paul Cercueil wrote:
 
-> This commit adds documentation for the device-tree bindings of the
-> jz4740-rtc driver, which supports the RTC unit present in the JZ4740 and
-> JZ4780 SoCs from Ingenic.
+> Now that the jz4740-rtc driver supports devicetree, we can add a
+> devicetree node for it.
 >
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 > Acked-by: Maarten ter Huurne <maarten@treewalker.org>
 > ---
->  .../devicetree/bindings/rtc/ingenic,jz4740-rtc.txt | 37 ++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
+>  arch/mips/boot/dts/ingenic/jz4740.dtsi | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 >
-> v2:
-> - Remove 'interrupt-parent' of the list of required properties
-> - Add the -msec suffix for the DT entries that represent time
+> v2: Previous patch 5/5 was garbage. This is a new patch.
 >
-> diff --git a/Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt b/Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
-> new file mode 100644
-> index 0000000..df97594
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/rtc/ingenic,jz4740-rtc.txt
-> @@ -0,0 +1,37 @@
-[...]
-> +Example:
-> +
-> +rtc@10003000 {
-> +	compatible = "ingenic,jz4740-rtc";
-> +	reg = <0x10003000 0x3F>;
+> diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> index f6ae6ed..c6acd6a 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> @@ -44,6 +44,17 @@
+>  		#clock-cells = <1>;
+>  	};
+>
+> +	rtc_dev: jz4740-rtc@10003000 {
 
-    Are you sure it's not 0x40? It's a size, not a limit...
+    Just "rtc@10003000" to comply with the DT spec.
 
 [...]
 

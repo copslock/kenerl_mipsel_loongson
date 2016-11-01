@@ -1,62 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Nov 2016 20:51:08 +0100 (CET)
-Received: from mail-pf0-f194.google.com ([209.85.192.194]:35318 "EHLO
-        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993221AbcKATvAWMTrd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Nov 2016 20:51:00 +0100
-Received: by mail-pf0-f194.google.com with SMTP id i88so1104573pfk.2;
-        Tue, 01 Nov 2016 12:51:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=CVfVKPiopAdq0MKvl+wC51J1H63NKakudmirzs5l3+A=;
-        b=MLA0ErzZelnz5tJpvZUzbWUuDQpLy4QYp2rX5Ls+xgHIJsKvw9ELANpBZTEMI5gd28
-         PCser4nH3pVRWfZ5OhKghq9XEthQFxj91Q0KRueEDHjGWz1YRWKEMQ9C1G8C+IFvDlwQ
-         Br1H36Eu/NyL2JDD2+esQUMt+0R2vnhV2ML/VBzJq2ZVQffUc5m5L+xDYewmTQXsJs9V
-         hSdBrrRPJbgADaS5UQGJFe2+5us66thgfVVprJU+r80G0GhGhLLla8MA9pq6HRh4nNGr
-         pa2PMCWLuiiwzjOlfzHO08WHcDfNx4bqiB6asQZLdry/RiJK2v9uorVEWWY8FicuK7En
-         lPvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=CVfVKPiopAdq0MKvl+wC51J1H63NKakudmirzs5l3+A=;
-        b=gMvWknhEbI6iOVcwp8y3+NyNbTQMrc02uMk4NIRE5lXNE3ztGUe/7MiIlcGfgxilOo
-         mzY1eE5QMgCpXe4/BfOk+l3OznRcLWP+Je1IyZ5/y7fvrFXocjvHnkCk4qF5GSE/+hHp
-         si3oubzAEBAMND6IC1dEeKRMQ48lyXsg6nO4ArxMhbZoqkcMlrqWPQmcJyKn93p3rRzf
-         I7lzUUTN1ChjtccndVkk8mqkNFWAY1XSFmQxLlUPK0/W/qr/s31DUvneY65d6eSDQrCV
-         LUx29HstA05HMbgGx+NdVwKNzbsRUT5+0u2ztXCp4QOJmA+75l77YFlwRh2MnHZcSS1N
-         TV5g==
-X-Gm-Message-State: ABUngvfJ6g1bvOmT9Xkth8cBGDJ/ekuQcwGpA86QQKgEQiQgXyNLrAahnK3LRn7kS6U4/g==
-X-Received: by 10.98.105.68 with SMTP id e65mr56489786pfc.174.1478029854387;
-        Tue, 01 Nov 2016 12:50:54 -0700 (PDT)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id p20sm26355838pfi.78.2016.11.01.12.50.52
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 01 Nov 2016 12:50:53 -0700 (PDT)
-Subject: Re: [PATCH v2] MIPS: Fix max_low_pfn with disabled highmem
-To:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <b7e353db4d5ee94b8e8dfba9f99e5ab9a7b95f65.1478008638.git-series.james.hogan@imgtec.com>
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <24d343a2-2a74-f74d-a32b-68b10ccfe5c6@gmail.com>
-Date:   Tue, 1 Nov 2016 12:50:51 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Nov 2016 21:43:10 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28037 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993209AbcKAUnCsmwzk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Nov 2016 21:43:02 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id B3910D9C8C538;
+        Tue,  1 Nov 2016 20:42:51 +0000 (GMT)
+Received: from [10.20.78.238] (10.20.78.238) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 1 Nov 2016
+ 20:42:55 +0000
+Date:   Tue, 1 Nov 2016 20:42:43 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Markus Gothe <nietzsche@lysator.liu.se>
+CC:     Deepak Gaur <dgaur@cdot.in>, <linux-mips@linux-mips.org>
+Subject: Re: System clock going slow/fast with ntpdate
+In-Reply-To: <2847D646-2B3F-4D6A-9312-8EFE2D3B9AF7@lysator.liu.se>
+Message-ID: <alpine.DEB.2.00.1611012024350.24498@tp.orcam.me.uk>
+References: <20161026081208.M10605@cdot.in> <20161026085306.M18729@cdot.in> <012925E3-E06F-413D-BBD4-9BF40F0F08A7@lysator.liu.se> <alpine.DEB.2.00.1611011900260.24498@tp.orcam.me.uk> <2847D646-2B3F-4D6A-9312-8EFE2D3B9AF7@lysator.liu.se>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <b7e353db4d5ee94b8e8dfba9f99e5ab9a7b95f65.1478008638.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.238]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55644
+X-archive-position: 55645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,30 +42,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/01/2016 06:59 AM, James Hogan wrote:
-> When low memory doesn't reach HIGHMEM_START (e.g. up to 256MB at PA=0 is
-> common) and highmem is present above HIGHMEM_START (e.g. on Malta the
-> RAM overlayed by the IO region is aliased at PA=0x90000000), max_low_pfn
-> will be initially calculated very large and then clipped down to
-> HIGHMEM_START.
-> 
-> This causes crashes when reading /sys/kernel/mm/page_idle/bitmap
-> (i.e. CONFIG_IDLE_PAGE_TRACKING=y) when highmem is disabled. pfn_valid()
-> will compare against max_mapnr which is derived from max_low_pfn when
-> there is no highend_pfn set up, and will return true for PFNs right up
-> to HIGHMEM_START, even though they are beyond the end of low memory and
-> no page structs will actually exist for these PFNs.
-> 
-> This is fixed by skipping high memory regions when initially calculating
-> max_low_pfn if highmem is disabled, so it doesn't get clipped too high.
-> We also clip regions which overlap the highmem boundary when highmem is
-> disabled, so that max_pfn doesn't extend into highmem either.
-> 
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paul.burton@imgtec.com>
-> Cc: linux-mips@linux-mips.org
+On Tue, 1 Nov 2016, Markus Gothe wrote:
 
-Should this also go to -stable, if so, which kernels would be affected?
--- 
-Florian
+> I doubt that it changes spontaneously.
+> 
+> AFAIU this is related to NTP (the issue only shows up when setting time with ntpdate), and
+> time drift is a know circumstance which must be mitigated as described by Larry Doolittle and his rate.awk-scrip.
+
+ You mean you can compensate when suddenly 1 second of system time is only 
+elapsed after 8-9 wall clock seconds?  I seriously doubt it.
+
+ What it looks like to me is some sort of an interrupt delivery or 
+reprogramming issue with the CP0 Count/Compare timer, which as you may 
+recall is a one-shot event and needs rearming.  But it's not worth looking 
+into with a kernel which is 8 years old.  It may well have been the time 
+around which our CP0 timer suport was converted to the HPT framework and 
+new code could have suffered from infancy bugs.
+
+ Switching to another clock source might be a workaround if available with 
+the system being used, e.g. the Malta board has an 8254 PIT clone in the 
+south bridge wired to an interrupt line, which can be used in its periodic 
+mode.  I'm not sure offhand if the PIT clock source is configured though 
+in a pristine Malta kernel; it may well be that nobody cared to arrange 
+that, given the arcane programming interface and the limited resolution of 
+the PIT and the general availability of the CP0 timer.  And then we might 
+not be talking about a Malta anyway.
+
+  Maciej

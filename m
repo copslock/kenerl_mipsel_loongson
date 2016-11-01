@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Nov 2016 10:31:44 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:20164 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Nov 2016 11:35:02 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:10421 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991232AbcKAJbgfGa8u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Nov 2016 10:31:36 +0100
+        by eddie.linux-mips.org with ESMTP id S23993060AbcKAKey1hePZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Nov 2016 11:34:54 +0100
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id B188341F8E8E;
-        Tue,  1 Nov 2016 09:30:38 +0000 (GMT)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 7C46141F8E8E;
+        Tue,  1 Nov 2016 10:33:56 +0000 (GMT)
 Received: from mailapp01.imgtec.com ([10.100.180.241])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 01 Nov 2016 09:30:38 +0000
+  Tue, 01 Nov 2016 10:33:56 +0000
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 01 Nov 2016 09:30:38 +0000
+        by imgpgp01.kl.imgtec.org on Tue, 01 Nov 2016 10:33:56 +0000
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 1743C8F31A39A;
-        Tue,  1 Nov 2016 09:31:28 +0000 (GMT)
-Received: from np-p-burton.localnet (10.100.200.179) by HHMAIL01.hh.imgtec.org
+        by Forcepoint Email with ESMTPS id B853EA846C2A9;
+        Tue,  1 Nov 2016 10:34:45 +0000 (GMT)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 1 Nov
- 2016 09:31:30 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/4] MIPS: Fix ISA I/II FP signal context offsets
-Date:   Tue, 1 Nov 2016 09:31:29 +0000
-Message-ID: <1814661.4I5xJD6gaP@np-p-burton>
-Organization: Imagination Technologies
-User-Agent: KMail/5.3.2 (Linux/4.8.4-1-ARCH; KDE/5.27.0; x86_64; ; )
-In-Reply-To: <alpine.DEB.2.00.1610310407150.31859@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1610310319010.31859@tp.orcam.me.uk> <alpine.DEB.2.00.1610310407150.31859@tp.orcam.me.uk>
+ 2016 10:34:48 +0000
+Date:   Tue, 1 Nov 2016 10:34:48 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Fix max_low_pfn with disabled highmem
+Message-ID: <20161101103448.GZ7370@jhogan-linux.le.imgtec.org>
+References: <2438a2e32ec8b5d9a8ea053ea483534bb63364a4.1477960419.git-series.james.hogan@imgtec.com>
+ <3763478.aakXA3hVDP@np-p-burton>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6355547.4sVSYX5R1t";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.100.200.179]
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="glDgwcODtpHomn63"
+Content-Disposition: inline
+In-Reply-To: <3763478.aakXA3hVDP@np-p-burton>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <Paul.Burton@imgtec.com>
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55634
+X-archive-position: 55635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,365 +54,110 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart6355547.4sVSYX5R1t
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+--glDgwcODtpHomn63
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Monday, 31 October 2016 16:27:01 GMT Maciej W. Rozycki wrote:
-> Fix a regression introduced with commit 2db9ca0a3551 ("MIPS: Use struct
-> mips_abi offsets to save FP context") for MIPS I/I FP signal contexts,
-> by converting save/restore code to the updated internal API.  Start FGR
-> offsets from 0 rather than SC_FPREGS from $a0 and use $a1 rather than
-> the offset of SC_FPC_CSR from $a0 for the Floating Point Control/Status
-> Register (FCSR).
-> 
-> Document the new internal API and adjust assembly code formatting for
-> consistency.
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
-> ---
-> linux-mips-isa12-sig-fp-context-offsets.patch
-> Index: linux-sfr-test/arch/mips/kernel/r2300_fpu.S
-> ===================================================================
-> --- linux-sfr-test.orig/arch/mips/kernel/r2300_fpu.S	2016-10-22
-> 02:28:09.266462000 +0100 +++
-> linux-sfr-test/arch/mips/kernel/r2300_fpu.S	2016-10-22 02:29:01.523906000
-> +0100 @@ -26,97 +26,104 @@
-> 
->  	.set	noreorder
->  	.set	mips1
-> -	/* Save floating point context */
-> +
-> +/**
-> + * _save_fp_context() - save FP context from the FPU
-> + * @a0 - pointer to fpregs field of sigcontext
-> + * @a1 - pointer to fpc_csr field of sigcontext
-> + *
-> + * Save FP context, including the 32 FP data registers and the FP
-> + * control & status register, from the FPU to signal context.
-> + */
->  LEAF(_save_fp_context)
->  	.set	push
->  	SET_HARDFLOAT
->  	li	v0, 0					# assume success
-> -	cfc1	t1,fcr31
-> -	EX(swc1 $f0,(SC_FPREGS+0)(a0))
-> -	EX(swc1 $f1,(SC_FPREGS+8)(a0))
-> -	EX(swc1 $f2,(SC_FPREGS+16)(a0))
-> -	EX(swc1 $f3,(SC_FPREGS+24)(a0))
-> -	EX(swc1 $f4,(SC_FPREGS+32)(a0))
-> -	EX(swc1 $f5,(SC_FPREGS+40)(a0))
-> -	EX(swc1 $f6,(SC_FPREGS+48)(a0))
-> -	EX(swc1 $f7,(SC_FPREGS+56)(a0))
-> -	EX(swc1 $f8,(SC_FPREGS+64)(a0))
-> -	EX(swc1 $f9,(SC_FPREGS+72)(a0))
-> -	EX(swc1 $f10,(SC_FPREGS+80)(a0))
-> -	EX(swc1 $f11,(SC_FPREGS+88)(a0))
-> -	EX(swc1 $f12,(SC_FPREGS+96)(a0))
-> -	EX(swc1 $f13,(SC_FPREGS+104)(a0))
-> -	EX(swc1 $f14,(SC_FPREGS+112)(a0))
-> -	EX(swc1 $f15,(SC_FPREGS+120)(a0))
-> -	EX(swc1 $f16,(SC_FPREGS+128)(a0))
-> -	EX(swc1 $f17,(SC_FPREGS+136)(a0))
-> -	EX(swc1 $f18,(SC_FPREGS+144)(a0))
-> -	EX(swc1 $f19,(SC_FPREGS+152)(a0))
-> -	EX(swc1 $f20,(SC_FPREGS+160)(a0))
-> -	EX(swc1 $f21,(SC_FPREGS+168)(a0))
-> -	EX(swc1 $f22,(SC_FPREGS+176)(a0))
-> -	EX(swc1 $f23,(SC_FPREGS+184)(a0))
-> -	EX(swc1 $f24,(SC_FPREGS+192)(a0))
-> -	EX(swc1 $f25,(SC_FPREGS+200)(a0))
-> -	EX(swc1 $f26,(SC_FPREGS+208)(a0))
-> -	EX(swc1 $f27,(SC_FPREGS+216)(a0))
-> -	EX(swc1 $f28,(SC_FPREGS+224)(a0))
-> -	EX(swc1 $f29,(SC_FPREGS+232)(a0))
-> -	EX(swc1 $f30,(SC_FPREGS+240)(a0))
-> -	EX(swc1 $f31,(SC_FPREGS+248)(a0))
-> +	cfc1	t1, fcr31
-> +	EX(swc1 $f0, 0(a0))
-> +	EX(swc1 $f1, 8(a0))
-> +	EX(swc1 $f2, 16(a0))
-> +	EX(swc1 $f3, 24(a0))
-> +	EX(swc1 $f4, 32(a0))
-> +	EX(swc1 $f5, 40(a0))
-> +	EX(swc1 $f6, 48(a0))
-> +	EX(swc1 $f7, 56(a0))
-> +	EX(swc1 $f8, 64(a0))
-> +	EX(swc1 $f9, 72(a0))
-> +	EX(swc1 $f10, 80(a0))
-> +	EX(swc1 $f11, 88(a0))
-> +	EX(swc1 $f12, 96(a0))
-> +	EX(swc1 $f13, 104(a0))
-> +	EX(swc1 $f14, 112(a0))
-> +	EX(swc1 $f15, 120(a0))
-> +	EX(swc1 $f16, 128(a0))
-> +	EX(swc1 $f17, 136(a0))
-> +	EX(swc1 $f18, 144(a0))
-> +	EX(swc1 $f19, 152(a0))
-> +	EX(swc1 $f20, 160(a0))
-> +	EX(swc1 $f21, 168(a0))
-> +	EX(swc1 $f22, 176(a0))
-> +	EX(swc1 $f23, 184(a0))
-> +	EX(swc1 $f24, 192(a0))
-> +	EX(swc1 $f25, 200(a0))
-> +	EX(swc1 $f26, 208(a0))
-> +	EX(swc1 $f27, 216(a0))
-> +	EX(swc1 $f28, 224(a0))
-> +	EX(swc1 $f29, 232(a0))
-> +	EX(swc1 $f30, 240(a0))
-> +	EX(swc1 $f31, 248(a0))
->  	jr	ra
-> -	 EX(sw	t1,(SC_FPC_CSR)(a0))
-> +	 EX(sw	t1, (a1))
->  	.set	pop
->  	END(_save_fp_context)
-> 
-> -/*
-> - * Restore FPU state:
-> - *  - fp gp registers
-> - *  - cp1 status/control register
-> +/**
-> + * _restore_fp_context() - restore FP context to the FPU
-> + * @a0 - pointer to fpregs field of sigcontext
-> + * @a1 - pointer to fpc_csr field of sigcontext
->   *
-> - * We base the decision which registers to restore from the signal stack
-> - * frame on the current content of c0_status, not on the content of the
-> - * stack frame which might have been changed by the user.
-> + * Restore FP context, including the 32 FP data registers and the FP
-> + * control & status register, from signal context to the FPU.
->   */
->  LEAF(_restore_fp_context)
->  	.set	push
->  	SET_HARDFLOAT
->  	li	v0, 0					# assume success
-> -	EX(lw t0,(SC_FPC_CSR)(a0))
-> -	EX(lwc1 $f0,(SC_FPREGS+0)(a0))
-> -	EX(lwc1 $f1,(SC_FPREGS+8)(a0))
-> -	EX(lwc1 $f2,(SC_FPREGS+16)(a0))
-> -	EX(lwc1 $f3,(SC_FPREGS+24)(a0))
-> -	EX(lwc1 $f4,(SC_FPREGS+32)(a0))
-> -	EX(lwc1 $f5,(SC_FPREGS+40)(a0))
-> -	EX(lwc1 $f6,(SC_FPREGS+48)(a0))
-> -	EX(lwc1 $f7,(SC_FPREGS+56)(a0))
-> -	EX(lwc1 $f8,(SC_FPREGS+64)(a0))
-> -	EX(lwc1 $f9,(SC_FPREGS+72)(a0))
-> -	EX(lwc1 $f10,(SC_FPREGS+80)(a0))
-> -	EX(lwc1 $f11,(SC_FPREGS+88)(a0))
-> -	EX(lwc1 $f12,(SC_FPREGS+96)(a0))
-> -	EX(lwc1 $f13,(SC_FPREGS+104)(a0))
-> -	EX(lwc1 $f14,(SC_FPREGS+112)(a0))
-> -	EX(lwc1 $f15,(SC_FPREGS+120)(a0))
-> -	EX(lwc1 $f16,(SC_FPREGS+128)(a0))
-> -	EX(lwc1 $f17,(SC_FPREGS+136)(a0))
-> -	EX(lwc1 $f18,(SC_FPREGS+144)(a0))
-> -	EX(lwc1 $f19,(SC_FPREGS+152)(a0))
-> -	EX(lwc1 $f20,(SC_FPREGS+160)(a0))
-> -	EX(lwc1 $f21,(SC_FPREGS+168)(a0))
-> -	EX(lwc1 $f22,(SC_FPREGS+176)(a0))
-> -	EX(lwc1 $f23,(SC_FPREGS+184)(a0))
-> -	EX(lwc1 $f24,(SC_FPREGS+192)(a0))
-> -	EX(lwc1 $f25,(SC_FPREGS+200)(a0))
-> -	EX(lwc1 $f26,(SC_FPREGS+208)(a0))
-> -	EX(lwc1 $f27,(SC_FPREGS+216)(a0))
-> -	EX(lwc1 $f28,(SC_FPREGS+224)(a0))
-> -	EX(lwc1 $f29,(SC_FPREGS+232)(a0))
-> -	EX(lwc1 $f30,(SC_FPREGS+240)(a0))
-> -	EX(lwc1 $f31,(SC_FPREGS+248)(a0))
-> +	EX(lw t0, (a1))
-> +	EX(lwc1 $f0, 0(a0))
-> +	EX(lwc1 $f1, 8(a0))
-> +	EX(lwc1 $f2, 16(a0))
-> +	EX(lwc1 $f3, 24(a0))
-> +	EX(lwc1 $f4, 32(a0))
-> +	EX(lwc1 $f5, 40(a0))
-> +	EX(lwc1 $f6, 48(a0))
-> +	EX(lwc1 $f7, 56(a0))
-> +	EX(lwc1 $f8, 64(a0))
-> +	EX(lwc1 $f9, 72(a0))
-> +	EX(lwc1 $f10, 80(a0))
-> +	EX(lwc1 $f11, 88(a0))
-> +	EX(lwc1 $f12, 96(a0))
-> +	EX(lwc1 $f13, 104(a0))
-> +	EX(lwc1 $f14, 112(a0))
-> +	EX(lwc1 $f15, 120(a0))
-> +	EX(lwc1 $f16, 128(a0))
-> +	EX(lwc1 $f17, 136(a0))
-> +	EX(lwc1 $f18, 144(a0))
-> +	EX(lwc1 $f19, 152(a0))
-> +	EX(lwc1 $f20, 160(a0))
-> +	EX(lwc1 $f21, 168(a0))
-> +	EX(lwc1 $f22, 176(a0))
-> +	EX(lwc1 $f23, 184(a0))
-> +	EX(lwc1 $f24, 192(a0))
-> +	EX(lwc1 $f25, 200(a0))
-> +	EX(lwc1 $f26, 208(a0))
-> +	EX(lwc1 $f27, 216(a0))
-> +	EX(lwc1 $f28, 224(a0))
-> +	EX(lwc1 $f29, 232(a0))
-> +	EX(lwc1 $f30, 240(a0))
-> +	EX(lwc1 $f31, 248(a0))
->  	jr	ra
-> -	 ctc1	t0,fcr31
-> +	 ctc1	t0, fcr31
->  	.set	pop
->  	END(_restore_fp_context)
->  	.set	reorder
-> Index: linux-sfr-test/arch/mips/kernel/r6000_fpu.S
-> ===================================================================
-> --- linux-sfr-test.orig/arch/mips/kernel/r6000_fpu.S	2016-10-22
-> 02:28:57.927876000 +0100 +++
-> linux-sfr-test/arch/mips/kernel/r6000_fpu.S	2016-10-22 02:29:12.415002000
-> +0100 @@ -21,7 +21,14 @@
->  	.set	push
->  	SET_HARDFLOAT
-> 
-> -	/* Save floating point context */
-> +/**
-> + * _save_fp_context() - save FP context from the FPU
-> + * @a0 - pointer to fpregs field of sigcontext
-> + * @a1 - pointer to fpc_csr field of sigcontext
-> + *
-> + * Save FP context, including the 32 FP data registers and the FP
-> + * control & status register, from the FPU to signal context.
-> + */
->  	LEAF(_save_fp_context)
->  	mfc0	t0,CP0_STATUS
->  	sll	t0,t0,2
-> @@ -30,59 +37,59 @@
-> 
->  	cfc1	t1,fcr31
->  	/* Store the 16 double precision registers */
-> -	sdc1	$f0,(SC_FPREGS+0)(a0)
-> -	sdc1	$f2,(SC_FPREGS+16)(a0)
-> -	sdc1	$f4,(SC_FPREGS+32)(a0)
-> -	sdc1	$f6,(SC_FPREGS+48)(a0)
-> -	sdc1	$f8,(SC_FPREGS+64)(a0)
-> -	sdc1	$f10,(SC_FPREGS+80)(a0)
-> -	sdc1	$f12,(SC_FPREGS+96)(a0)
-> -	sdc1	$f14,(SC_FPREGS+112)(a0)
-> -	sdc1	$f16,(SC_FPREGS+128)(a0)
-> -	sdc1	$f18,(SC_FPREGS+144)(a0)
-> -	sdc1	$f20,(SC_FPREGS+160)(a0)
-> -	sdc1	$f22,(SC_FPREGS+176)(a0)
-> -	sdc1	$f24,(SC_FPREGS+192)(a0)
-> -	sdc1	$f26,(SC_FPREGS+208)(a0)
-> -	sdc1	$f28,(SC_FPREGS+224)(a0)
-> -	sdc1	$f30,(SC_FPREGS+240)(a0)
-> +	sdc1	$f0,0(a0)
-> +	sdc1	$f2,16(a0)
-> +	sdc1	$f4,32(a0)
-> +	sdc1	$f6,48(a0)
-> +	sdc1	$f8,64(a0)
-> +	sdc1	$f10,80(a0)
-> +	sdc1	$f12,96(a0)
-> +	sdc1	$f14,112(a0)
-> +	sdc1	$f16,128(a0)
-> +	sdc1	$f18,144(a0)
-> +	sdc1	$f20,160(a0)
-> +	sdc1	$f22,176(a0)
-> +	sdc1	$f24,192(a0)
-> +	sdc1	$f26,208(a0)
-> +	sdc1	$f28,224(a0)
-> +	sdc1	$f30,240(a0)
->  	jr	ra
-> -	 sw	t0,SC_FPC_CSR(a0)
-> +	 sw	t0,(a1)
->  1:	jr	ra
->  	 nop
->  	END(_save_fp_context)
-> 
-> -/* Restore FPU state:
-> - *  - fp gp registers
-> - *  - cp1 status/control register
-> +/**
-> + * _restore_fp_context() - restore FP context to the FPU
-> + * @a0 - pointer to fpregs field of sigcontext
-> + * @a1 - pointer to fpc_csr field of sigcontext
->   *
-> - * We base the decision which registers to restore from the signal stack
-> - * frame on the current content of c0_status, not on the content of the
-> - * stack frame which might have been changed by the user.
-> + * Restore FP context, including the 32 FP data registers and the FP
-> + * control & status register, from signal context to the FPU.
->   */
->  	LEAF(_restore_fp_context)
->  	mfc0	t0,CP0_STATUS
->  	sll	t0,t0,2
-> 
->  	bgez	t0,1f
-> -	 lw	t0,SC_FPC_CSR(a0)
-> +	 lw	t0,(a1)
->  	/* Restore the 16 double precision registers */
-> -	ldc1	$f0,(SC_FPREGS+0)(a0)
-> -	ldc1	$f2,(SC_FPREGS+16)(a0)
-> -	ldc1	$f4,(SC_FPREGS+32)(a0)
-> -	ldc1	$f6,(SC_FPREGS+48)(a0)
-> -	ldc1	$f8,(SC_FPREGS+64)(a0)
-> -	ldc1	$f10,(SC_FPREGS+80)(a0)
-> -	ldc1	$f12,(SC_FPREGS+96)(a0)
-> -	ldc1	$f14,(SC_FPREGS+112)(a0)
-> -	ldc1	$f16,(SC_FPREGS+128)(a0)
-> -	ldc1	$f18,(SC_FPREGS+144)(a0)
-> -	ldc1	$f20,(SC_FPREGS+160)(a0)
-> -	ldc1	$f22,(SC_FPREGS+176)(a0)
-> -	ldc1	$f24,(SC_FPREGS+192)(a0)
-> -	ldc1	$f26,(SC_FPREGS+208)(a0)
-> -	ldc1	$f28,(SC_FPREGS+224)(a0)
-> -	ldc1	$f30,(SC_FPREGS+240)(a0)
-> +	ldc1	$f0,0(a0)
-> +	ldc1	$f2,16(a0)
-> +	ldc1	$f4,32(a0)
-> +	ldc1	$f6,48(a0)
-> +	ldc1	$f8,64(a0)
-> +	ldc1	$f10,80(a0)
-> +	ldc1	$f12,96(a0)
-> +	ldc1	$f14,112(a0)
-> +	ldc1	$f16,128(a0)
-> +	ldc1	$f18,144(a0)
-> +	ldc1	$f20,160(a0)
-> +	ldc1	$f22,176(a0)
-> +	ldc1	$f24,192(a0)
-> +	ldc1	$f26,208(a0)
-> +	ldc1	$f28,224(a0)
-> +	ldc1	$f30,240(a0)
->  	jr	ra
->  	 ctc1	t0,fcr31
->  1:	jr	ra
+On Tue, Nov 01, 2016 at 09:11:43AM +0000, Paul Burton wrote:
+> On Tuesday, 1 November 2016 00:40:29 GMT James Hogan wrote:
+> > When low memory doesn't reach HIGHMEM_START (e.g. up to 256MB at PA=3D0=
+ is
+> > common) and highmem is present above HIGHMEM_START (e.g. on Malta the
+> > RAM overlayed by the IO region is aliased at PA=3D0x90000000), max_low_=
+pfn
+> > will be initially calculated very large and then clipped down to
+> > HIGHMEM_START.
+> >=20
+> > This causes crashes when reading /sys/kernel/mm/page_idle/bitmap
+> > (i.e. CONFIG_IDLE_PAGE_TRACKING=3Dy) when highmem is disabled. pfn_vali=
+d()
+> > will compare against max_mapnr which is derived from max_low_pfn when
+> > there is no highend_pfn set up, and will return true for PFNs right up
+> > to HIGHMEM_START, even though they are beyond the end of low memory and
+> > no page structs will actually exist for these PFNs.
+> >=20
+> > This is fixed by skipping high memory regions when initially calculating
+> > max_low_pfn if highmem is disabled, so it doesn't get clipped too high.
+> >=20
+> > Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: linux-mips@linux-mips.org
+> > ---
+> >  arch/mips/kernel/setup.c |  9 +++++++++
+> >  1 file changed, 9 insertions(+), 0 deletions(-)
+> >=20
+> > diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> > index 0d57909d9026..cb6e5895bb7e 100644
+> > --- a/arch/mips/kernel/setup.c
+> > +++ b/arch/mips/kernel/setup.c
+> > @@ -368,6 +368,15 @@ static void __init bootmem_init(void)
+> >  		end =3D PFN_DOWN(boot_mem_map.map[i].addr
+> >  				+ boot_mem_map.map[i].size);
+> >=20
+> > +#ifndef CONFIG_HIGHMEM
+> > +		/*
+> > +		 * Skip highmem here so we get an accurate max_low_pfn if low
+> > +		 * memory stops short of high memory.
+> > +		 */
+> > +		if (start >=3D PFN_DOWN(HIGHMEM_START))
+> > +			continue;
+> > +#endif
+> > +
+> >  		if (end > max_low_pfn)
+> >  			max_low_pfn =3D end;
+> >  		if (start < min_low_pfn)
+>=20
+> Hi James,
+>=20
+> Shouldn't this also clip any region which crosses the boundary from lowme=
+m to=20
+> highmem? (ie. start < PFN_DOWN(HIGHMEM_START) < end)
 
-Hi Maciej,
+I did do this at first, but then I realised it was redundant since
+max_low_pfn already gets clipped to PFN_DOWN(HIGHMEM_START) after the
+loop, i.e. it already does the right thing in that case since memory
+reaches up to HIGHMEM_START.
 
-Thanks for fixing that up:
+The only difference would be max_pfn:
+1) At the moment max_pfn includes highmem even when highmem is disabled.
+2) With this patch max_pfn would only include highmem when highmem is
+   disabled if a memory region crosses the highmem boundary.
+3) Clipping end to PFN_DOWN(HIGHMEM_START) in the #ifndef above would
+   cause max_pfn to exclude highmem when highmem is disabled.=20
 
-    Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Individual pfns are usually checked with pfn_valid() anyway, however (3)
+still sounds more correct (and possibly more efficient when pfns are
+iterated over). It would also correct the number of pfns that can be
+read in /sys/kernel/mm/page_idle/bitmap to exclude highmem when it does
+overlap the boundary.
 
-BTW, do you have a feel for whether there's a good r2k/r3k platform (ideal 
-would be some software emulator if any are good enough) that we could hook up 
-to our continuous integration system? That would help us to catch any 
-regressions like this in future before they hit mainline.
+Sound about right? I'll do a v2.
 
-Thanks,
-    Paul
---nextPart6355547.4sVSYX5R1t
+Thanks for reviewing,
+
+Cheers
+James
+
+--glDgwcODtpHomn63
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIcBAABCAAGBQJYGGDxAAoJEIIg2fppPBxlS/AP/1STLGtbxB4R32jLEiOdXWWm
-He+B7/clYp416jl018jAZRQtO3Be/wX4nyxYuIfNEuzYXumXd6WCjVvfI9vpG7ek
-Dt/069XCrqHFHcw7EcrgAsBsm5lHQNgTbU8M6wnWEVzqs14ODAhD9yKMIbgT7Gvw
-AfrigdR2JbuGuO+03L15LBzCfzrHippyTCy35n9Eww+aUs/AD9rszjDwf9PliUj4
-dncWSU4ZBH/rbkFu+OnP3Pnvlwp1mT+VpjfmJYhoocNtOy195kXpkhhLEYQQ70+O
-bBWgwyA66d60XPM/Yalnzvk00JuI+SIj3S9BMlBaUDzM3Ntx4yKuvFPCpJwx6Ui3
-JODYKgzWIpJPAPXi+3N6IelXJWRKlREeIb1ZgU9KfAQwrrBrgqWrHPgLvEBYtTpF
-SFZvf+Ge+xCU09q3rSH9jc587MbZRAZPDwzPH+mGK/7tOOnZAZ9FHKw37lGmQid1
-x14qQKh1Sa7UQ0ZB2/3/qbsDyuO18tUlqPesM0JbNZAkLeKuCN61FJvMxtOzJ/Ch
-2N8ZRoQX+T5RmVnWaLGiZB5ABJyE0y4x4saCV9+bsb3YpRhbvkt7ckpfqHGmLax7
-DMXIi/D+PNm+dgMv4/UnX46PQJInQDn0W2dur8FXOXVuKiWNt54UFfenlmh1ZRqT
-KOvF4tiXHZiNZo/b7jDw
-=c55I
+iQIcBAEBCAAGBQJYGG/BAAoJEGwLaZPeOHZ6Y48P/308ZIEQ77mVsQZWB0ghau1K
+9CAUwWjEen72f7TzBqk4qqeTmTm17DpBwN6gXQePgeqUEbLmZgJ19qa6l/wX+bxk
+ePEE4EaH43idwPrYgNrbo3tl3HzBu9c363aCXAGMCHclZFp288A7/JNhrqGbMt6p
+Kjxvp0icZldTCZsShdN5WffmOFBOwTbxOtf2yvH+0cHaJYDM0Ogj/CG9Tqw3h9Ga
+4CLpRBWgNSlq2RtHhOIxOcyZVnd0pUz9/yvXuFz1YNinSwqQp3+RPCxMAck2lwnx
+O03mcCKVBD3kQRX29GHVqY71cel7rpjsCLsx5l3LcYr9PwCbtaRPYnIG2M8wopSH
+5uHwUpj1h/uA91wF+Z1mbNEp10yrXqruG+9Duded+N/XDSBGiaFBDOGIGth/NAw7
+vnPFoo3OjrT2jT3drarXLg4UG69LYYXwRp1iMwa5Qq4YRdbTYogpEBwcDDjwldN0
+7mt92349Vd10h9rzgiICiwr51GMyPn0BtOqY9OVHhmAIneOWa8LD3Eu+EfUZMFSJ
+gLc3giZ21zcA65dbc6GZe8Zv8pFlTHS+FAdmR71FLtvSnKSPD9WvQS1ho0GdN0wb
+sMwNqh9LcooRI8XF55Fr25D/KDiQ6IYfbHfcpkhgqZw35VwvwkjOMA9g85/RZb6Y
+ZIidwmuFLuUfCAqfhwJw
+=zhrB
 -----END PGP SIGNATURE-----
 
---nextPart6355547.4sVSYX5R1t--
+--glDgwcODtpHomn63--

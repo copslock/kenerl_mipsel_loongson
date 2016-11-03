@@ -1,39 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Nov 2016 18:15:46 +0100 (CET)
-Received: from mga09.intel.com ([134.134.136.24]:42450 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993022AbcKBRPjDYhzb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Nov 2016 18:15:39 +0100
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga102.jf.intel.com with ESMTP; 02 Nov 2016 10:15:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.31,583,1473145200"; 
-   d="scan'208";a="1079642656"
-Received: from ahduyck-blue-test.jf.intel.com ([134.134.2.201])
-  by fmsmga002.fm.intel.com with ESMTP; 02 Nov 2016 10:15:36 -0700
-Subject: [mm PATCH v2 14/26] arch/mips: Add option to skip DMA sync as a
- part of map and unmap
-From:   Alexander Duyck <alexander.h.duyck@intel.com>
-To:     linux-mm@kvack.org, akpm@linux-foundation.org
-Cc:     linux-mips@linux-mips.org, Keguang Zhang <keguang.zhang@gmail.com>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        netdev@vger.kernel.org
-Date:   Wed, 02 Nov 2016 07:14:39 -0400
-Message-ID: <20161102111437.79519.6389.stgit@ahduyck-blue-test.jf.intel.com>
-In-Reply-To: <20161102111031.79519.14741.stgit@ahduyck-blue-test.jf.intel.com>
-References: <20161102111031.79519.14741.stgit@ahduyck-blue-test.jf.intel.com>
-User-Agent: StGit/0.17.1-dirty
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Nov 2016 11:12:44 +0100 (CET)
+Received: from mail-lf0-f51.google.com ([209.85.215.51]:34603 "EHLO
+        mail-lf0-f51.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992209AbcKCKMfg9VgO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Nov 2016 11:12:35 +0100
+Received: by mail-lf0-f51.google.com with SMTP id b81so33608332lfe.1
+        for <linux-mips@linux-mips.org>; Thu, 03 Nov 2016 03:12:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=cANtHYDEUTfoWuFPHkNKB5MCpJOD7F26AZ8Dj9KN5+w=;
+        b=P2R9EXQkua+RgzBtC1EDKymtK4RmHX/eEN1Z5OKozFCTt1Yd7Zuak+GioEdluXEogE
+         iTzlOkETO7jBDU3dyvxvzML4ZhQZVguM1T1EPpwB89T0TZkUKpMPASp1DNZwG7huaGcR
+         R+dguU4X/Isfjexd8IH37hIdflY+U1foizzwI6PDArJgy+QD6TaAQupjINZ1TjX02JXb
+         AhKMfe3cA11TB2HRcDpBH8FCMwmCygga10FooMQo7etkcv2nD3QTIXDGWh/NWHfjkVcT
+         YSjd6uln1mBaaOOMWioVMlB7LzydS0kkOM0cB87YknuW9Fxt4UuCvK6QXJL+2tkez1QM
+         9AvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=cANtHYDEUTfoWuFPHkNKB5MCpJOD7F26AZ8Dj9KN5+w=;
+        b=QOiqNOpHQbl9HXdr6eFt81Qafn3NP6l6GN7nex3fpBKB/oKn/kfQEhG77NCei8R3p7
+         05hXLPYNDsVXAM8Ip8enfh6s0Za2o+bvVKEeI7RHHBDcM0DU32E/ZJ1bUhHCBnnVxPch
+         m6lP186PtDbnUz5Is06MAP0JXtzUb0Vssgg0yY02uLJsHADTH0CEf49/j2zefzQoXNt6
+         mzhSGLJyeVkUaysAqDZP0dPBd+t+2I7hQ+BitFz4H7X2RSsmLHyM9M1DNvhvvzuJ3gPD
+         G+aHa1dJNtnP8+T603HmKqqQAaXkXEGWVV056ylz+AjZRkTU1l3n6cs3DlDm2VY3tse0
+         9w6Q==
+X-Gm-Message-State: ABUngvehHfdNiPKeYePFC4YQd5v4gQx1ObF3NFF1x5W5Dt2BMPGjjifW2NxSACiMA6j2gQ==
+X-Received: by 10.25.19.106 with SMTP id j103mr4927585lfi.68.1478167949991;
+        Thu, 03 Nov 2016 03:12:29 -0700 (PDT)
+Received: from [192.168.4.126] ([31.173.85.185])
+        by smtp.gmail.com with ESMTPSA id g21sm1262792lfe.47.2016.11.03.03.12.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 03 Nov 2016 03:12:29 -0700 (PDT)
+Subject: Re: [PATCH v4 4/4] MIPS: Deprecate VPE Loader
+To:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+References: <1478103063-17653-1-git-send-email-matt.redfearn@imgtec.com>
+ <1478103063-17653-5-git-send-email-matt.redfearn@imgtec.com>
+Cc:     linux-mips@linux-mips.org, linux-remoteproc@vger.kernel.org,
+        lisa.parratt@imgtec.com, linux-kernel@vger.kernel.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <540026e5-a839-b4db-ec8c-bd5d03d9faca@cogentembedded.com>
+Date:   Thu, 3 Nov 2016 13:12:28 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <1478103063-17653-5-git-send-email-matt.redfearn@imgtec.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <alexander.h.duyck@intel.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55657
+X-archive-position: 55658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexander.h.duyck@intel.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,69 +74,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This change allows us to pass DMA_ATTR_SKIP_CPU_SYNC which allows us to
-avoid invoking cache line invalidation if the driver will just handle it
-via a sync_for_cpu or sync_for_device call.
+Hello.
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Keguang Zhang <keguang.zhang@gmail.com>
-Cc: linux-mips@linux-mips.org
-Signed-off-by: Alexander Duyck <alexander.h.duyck@intel.com>
----
- arch/mips/loongson64/common/dma-swiotlb.c |    2 +-
- arch/mips/mm/dma-default.c                |    8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
+On 11/2/2016 7:11 PM, Matt Redfearn wrote:
 
-diff --git a/arch/mips/loongson64/common/dma-swiotlb.c b/arch/mips/loongson64/common/dma-swiotlb.c
-index 1a80b6f..aab4fd6 100644
---- a/arch/mips/loongson64/common/dma-swiotlb.c
-+++ b/arch/mips/loongson64/common/dma-swiotlb.c
-@@ -61,7 +61,7 @@ static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
- 				int nents, enum dma_data_direction dir,
- 				unsigned long attrs)
- {
--	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, 0);
-+	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, attrs);
- 	mb();
- 
- 	return r;
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 46d5696..a39c36a 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -293,7 +293,7 @@ static inline void __dma_sync(struct page *page,
- static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
- 	size_t size, enum dma_data_direction direction, unsigned long attrs)
- {
--	if (cpu_needs_post_dma_flush(dev))
-+	if (cpu_needs_post_dma_flush(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
- 		__dma_sync(dma_addr_to_page(dev, dma_addr),
- 			   dma_addr & ~PAGE_MASK, size, direction);
- 	plat_post_dma_flush(dev);
-@@ -307,7 +307,8 @@ static int mips_dma_map_sg(struct device *dev, struct scatterlist *sglist,
- 	struct scatterlist *sg;
- 
- 	for_each_sg(sglist, sg, nents, i) {
--		if (!plat_device_is_coherent(dev))
-+		if (!plat_device_is_coherent(dev) &&
-+		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
- 			__dma_sync(sg_page(sg), sg->offset, sg->length,
- 				   direction);
- #ifdef CONFIG_NEED_SG_DMA_LENGTH
-@@ -324,7 +325,7 @@ static dma_addr_t mips_dma_map_page(struct device *dev, struct page *page,
- 	unsigned long offset, size_t size, enum dma_data_direction direction,
- 	unsigned long attrs)
- {
--	if (!plat_device_is_coherent(dev))
-+	if (!plat_device_is_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
- 		__dma_sync(page, offset, size, direction);
- 
- 	return plat_map_dma_mem_page(dev, page) + offset;
-@@ -339,6 +340,7 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sglist,
- 
- 	for_each_sg(sglist, sg, nhwentries, i) {
- 		if (!plat_device_is_coherent(dev) &&
-+		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
- 		    direction != DMA_TO_DEVICE)
- 			__dma_sync(sg_page(sg), sg->offset, sg->length,
- 				   direction);
+> The MIPS remote processor driver (CONFIG_MIPS_REMOTEPROC) provides a
+> more standard mechanism for using one or more VPs as coprocessors
+> running separate firmware.
+>
+> Here we deprecate this mechanism before it is removed.
+>
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> ---
+>
+> Changes in v4: None
+> Changes in v3: None
+> Changes in v2: None
+>
+>  arch/mips/Kconfig | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 6faf7c96ee15..d5b5a25a49e8 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+[...]
+> @@ -2307,6 +2307,9 @@ config MIPS_VPE_LOADER
+>  	  Includes a loader for loading an elf relocatable object
+>  	  onto another VPE and running it.
+>
+> +	  Unless you have a specific need, you should use CONFIG_MIPS_REMOTEPROC
+> +          instead of this.
+
+    Please indent using a leading tab (like above). There's too many spaces too...
+
+[...]
+
+MBR, Sergei

@@ -1,40 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2016 10:29:16 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25188 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2016 10:29:37 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:23692 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990509AbcKDJ3J0WgR0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Nov 2016 10:29:09 +0100
+        with ESMTP id S23990864AbcKDJ3KqB0n0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Nov 2016 10:29:10 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 131CE432F5077;
-        Fri,  4 Nov 2016 09:29:01 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 50CBC9C9A8911;
+        Fri,  4 Nov 2016 09:29:02 +0000 (GMT)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 4 Nov 2016 09:29:02 +0000
+ 14.3.294.0; Fri, 4 Nov 2016 09:29:04 +0000
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
         "Maciej W. Rozycki" <macro@imgtec.com>,
         Jiri Slaby <jslaby@suse.cz>,
-        James Hogan <james.hogan@imgtec.com>,
-        Qais Yousef <qsyousef@gmail.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Qais Yousef <qsyousef@gmail.com>,
+        James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        <linux-kernel@vger.kernel.org>, Yang Shi <yang.shi@windriver.com>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH 0/3] SMP Startup Improvements
-Date:   Fri, 4 Nov 2016 09:28:55 +0000
-Message-ID: <1478251738-13593-1-git-send-email-matt.redfearn@imgtec.com>
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 1/3] MIPS: smp: Use a completion event to signal CPU up
+Date:   Fri, 4 Nov 2016 09:28:56 +0000
+Message-ID: <1478251738-13593-2-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1478251738-13593-1-git-send-email-matt.redfearn@imgtec.com>
+References: <1478251738-13593-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
@@ -42,7 +36,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55665
+X-archive-position: 55666
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,37 +53,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+If a secondary CPU failed to start, for any reason, the CPU requesting
+the secondary to start would get stuck in the loop waiting for the
+secondary to be present in the cpu_callin_map.
 
-This series improves the startup of SMP processors for MIPS. Firstly,
-replace the use of a bitmask of CPUs to detect secondard CPUs starting
-with a completion event. This change means that secondary CPUs can fail
-to start, and this will be detected and handled rather than hanging the
-kernel.
-The second patch removes the now redundant CPU bitmask.
-The third patch improves error handling in the CPS SMP implementation.
-In an unlikely corner case where no online CPU is available in a core
-to start a secondary VPE, previously the kernel would BUG(), this patch
-causes a warning to be printed and the situation handled more
-gracefully.
+Rather than that, use a completion event to signal that the secondary
+CPU has started and is waiting to synchronise counters.
 
-This series is based on v4.9-rc1 and has been tested on Boston, Malta,
-SEAD3, Octeon and Pistachio Ci40 platforms.
+Since the CPU presence will no longer be marked in cpu_callin_map,
+remove the redundant test from arch_cpu_idle_dead().
 
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
+---
 
-Matt Redfearn (3):
-  MIPS: smp: Use a completion event to signal CPU up
-  MIPS: smp: Remove cpu_callin_map
-  MIPS: smp-cps: Don't BUG if a CPU fails to start
+ arch/mips/kernel/process.c |  4 +---
+ arch/mips/kernel/smp.c     | 15 +++++++++------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
- arch/mips/cavium-octeon/smp.c         |  1 -
- arch/mips/include/asm/smp.h           |  2 --
- arch/mips/kernel/process.c            |  4 +---
- arch/mips/kernel/smp-bmips.c          |  1 -
- arch/mips/kernel/smp-cps.c            |  7 +++++--
- arch/mips/kernel/smp.c                | 17 +++++++++--------
- arch/mips/loongson64/loongson-3/smp.c |  1 -
- 7 files changed, 15 insertions(+), 18 deletions(-)
-
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 9514e5f2209f..9a8f61d7c83e 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -49,9 +49,7 @@
+ #ifdef CONFIG_HOTPLUG_CPU
+ void arch_cpu_idle_dead(void)
+ {
+-	/* What the heck is this check doing ? */
+-	if (!cpumask_test_cpu(smp_processor_id(), &cpu_callin_map))
+-		play_dead();
++	play_dead();
+ }
+ #endif
+ 
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 7ebb1918e2ac..03daf9008124 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -68,6 +68,8 @@ EXPORT_SYMBOL(cpu_sibling_map);
+ cpumask_t cpu_core_map[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(cpu_core_map);
+ 
++static DECLARE_COMPLETION(cpu_running);
++
+ /*
+  * A logcal cpu mask containing only one VPE per core to
+  * reduce the number of IPIs on large MT systems.
+@@ -369,7 +371,7 @@ asmlinkage void start_secondary(void)
+ 	cpumask_set_cpu(cpu, &cpu_coherent_mask);
+ 	notify_cpu_starting(cpu);
+ 
+-	cpumask_set_cpu(cpu, &cpu_callin_map);
++	complete(&cpu_running);
+ 	synchronise_count_slave(cpu);
+ 
+ 	set_cpu_online(cpu, true);
+@@ -430,7 +432,6 @@ void smp_prepare_boot_cpu(void)
+ {
+ 	set_cpu_possible(0, true);
+ 	set_cpu_online(0, true);
+-	cpumask_set_cpu(0, &cpu_callin_map);
+ }
+ 
+ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+@@ -438,11 +439,13 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ 	mp_ops->boot_secondary(cpu, tidle);
+ 
+ 	/*
+-	 * Trust is futile.  We should really have timeouts ...
++	 * We must check for timeout here, as the CPU will not be marked
++	 * online until the counters are synchronised.
+ 	 */
+-	while (!cpumask_test_cpu(cpu, &cpu_callin_map)) {
+-		udelay(100);
+-		schedule();
++	if (!wait_for_completion_timeout(&cpu_running,
++					 msecs_to_jiffies(1000))) {
++		pr_crit("CPU%u: failed to start\n", cpu);
++		return -EIO;
+ 	}
+ 
+ 	synchronise_count_master(cpu);
 -- 
 2.7.4

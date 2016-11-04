@@ -1,31 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2016 10:29:37 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:23692 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2016 10:30:05 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59031 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990864AbcKDJ3KqB0n0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Nov 2016 10:29:10 +0100
+        with ESMTP id S23992213AbcKDJ3MEDzn0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Nov 2016 10:29:12 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 50CBC9C9A8911;
-        Fri,  4 Nov 2016 09:29:02 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 8F95D1FE44B8E;
+        Fri,  4 Nov 2016 09:29:03 +0000 (GMT)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 4 Nov 2016 09:29:04 +0000
+ 14.3.294.0; Fri, 4 Nov 2016 09:29:05 +0000
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
 CC:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Qais Yousef <qsyousef@gmail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Huacai Chen <chenhc@lemote.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
         <linux-kernel@vger.kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Qais Yousef <qsyousef@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 1/3] MIPS: smp: Use a completion event to signal CPU up
-Date:   Fri, 4 Nov 2016 09:28:56 +0000
-Message-ID: <1478251738-13593-2-git-send-email-matt.redfearn@imgtec.com>
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Anna-Maria Gleixner <anna-maria@linutronix.de>,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        Yang Shi <yang.shi@windriver.com>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH 2/3] MIPS: smp: Remove cpu_callin_map
+Date:   Fri, 4 Nov 2016 09:28:57 +0000
+Message-ID: <1478251738-13593-3-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1478251738-13593-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1478251738-13593-1-git-send-email-matt.redfearn@imgtec.com>
@@ -36,7 +40,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55666
+X-archive-position: 55667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,86 +57,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If a secondary CPU failed to start, for any reason, the CPU requesting
-the secondary to start would get stuck in the loop waiting for the
-secondary to be present in the cpu_callin_map.
-
-Rather than that, use a completion event to signal that the secondary
-CPU has started and is waiting to synchronise counters.
-
-Since the CPU presence will no longer be marked in cpu_callin_map,
-remove the redundant test from arch_cpu_idle_dead().
+The previous commit made cpu_callin_map redundant, since it is no longer
+used to signal secondary CPUs starting, or going offline. Remove it now.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-
 ---
 
- arch/mips/kernel/process.c |  4 +---
- arch/mips/kernel/smp.c     | 15 +++++++++------
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ arch/mips/cavium-octeon/smp.c         | 1 -
+ arch/mips/include/asm/smp.h           | 2 --
+ arch/mips/kernel/smp-bmips.c          | 1 -
+ arch/mips/kernel/smp-cps.c            | 1 -
+ arch/mips/kernel/smp.c                | 2 --
+ arch/mips/loongson64/loongson-3/smp.c | 1 -
+ 6 files changed, 8 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 9514e5f2209f..9a8f61d7c83e 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -49,9 +49,7 @@
- #ifdef CONFIG_HOTPLUG_CPU
- void arch_cpu_idle_dead(void)
- {
--	/* What the heck is this check doing ? */
--	if (!cpumask_test_cpu(smp_processor_id(), &cpu_callin_map))
--		play_dead();
-+	play_dead();
- }
- #endif
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index 256fe6f65cf2..edaf59647da8 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -272,7 +272,6 @@ static int octeon_cpu_disable(void)
  
+ 	set_cpu_online(cpu, false);
+ 	calculate_cpu_foreign_map();
+-	cpumask_clear_cpu(cpu, &cpu_callin_map);
+ 	octeon_fixup_irqs();
+ 
+ 	__flush_cache_all();
+diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
+index 060f23ff1817..f8c5faa93584 100644
+--- a/arch/mips/include/asm/smp.h
++++ b/arch/mips/include/asm/smp.h
+@@ -46,8 +46,6 @@ extern int __cpu_logical_map[NR_CPUS];
+ #define SMP_DUMP		0x8
+ #define SMP_ASK_C0COUNT		0x10
+ 
+-extern cpumask_t cpu_callin_map;
+-
+ /* Mask of CPUs which are currently definitely operating coherently */
+ extern cpumask_t cpu_coherent_mask;
+ 
+diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+index 6d0f1321e084..f6700dc2fb09 100644
+--- a/arch/mips/kernel/smp-bmips.c
++++ b/arch/mips/kernel/smp-bmips.c
+@@ -364,7 +364,6 @@ static int bmips_cpu_disable(void)
+ 
+ 	set_cpu_online(cpu, false);
+ 	calculate_cpu_foreign_map();
+-	cpumask_clear_cpu(cpu, &cpu_callin_map);
+ 	clear_c0_status(IE_IRQ5);
+ 
+ 	local_flush_tlb_all();
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index 6183ad84cc73..44339b470ef4 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -399,7 +399,6 @@ static int cps_cpu_disable(void)
+ 	smp_mb__after_atomic();
+ 	set_cpu_online(cpu, false);
+ 	calculate_cpu_foreign_map();
+-	cpumask_clear_cpu(cpu, &cpu_callin_map);
+ 
+ 	return 0;
+ }
 diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 7ebb1918e2ac..03daf9008124 100644
+index 03daf9008124..0a831f63b0ec 100644
 --- a/arch/mips/kernel/smp.c
 +++ b/arch/mips/kernel/smp.c
-@@ -68,6 +68,8 @@ EXPORT_SYMBOL(cpu_sibling_map);
- cpumask_t cpu_core_map[NR_CPUS] __read_mostly;
- EXPORT_SYMBOL(cpu_core_map);
+@@ -48,8 +48,6 @@
+ #include <asm/setup.h>
+ #include <asm/maar.h>
  
-+static DECLARE_COMPLETION(cpu_running);
-+
- /*
-  * A logcal cpu mask containing only one VPE per core to
-  * reduce the number of IPIs on large MT systems.
-@@ -369,7 +371,7 @@ asmlinkage void start_secondary(void)
- 	cpumask_set_cpu(cpu, &cpu_coherent_mask);
- 	notify_cpu_starting(cpu);
+-cpumask_t cpu_callin_map;		/* Bitmask of started secondaries */
+-
+ int __cpu_number_map[NR_CPUS];		/* Map physical to logical */
+ EXPORT_SYMBOL(__cpu_number_map);
  
--	cpumask_set_cpu(cpu, &cpu_callin_map);
-+	complete(&cpu_running);
- 	synchronise_count_slave(cpu);
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index 99aab9f85904..cfcf240cedbe 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -418,7 +418,6 @@ static int loongson3_cpu_disable(void)
  
- 	set_cpu_online(cpu, true);
-@@ -430,7 +432,6 @@ void smp_prepare_boot_cpu(void)
- {
- 	set_cpu_possible(0, true);
- 	set_cpu_online(0, true);
--	cpumask_set_cpu(0, &cpu_callin_map);
- }
- 
- int __cpu_up(unsigned int cpu, struct task_struct *tidle)
-@@ -438,11 +439,13 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
- 	mp_ops->boot_secondary(cpu, tidle);
- 
- 	/*
--	 * Trust is futile.  We should really have timeouts ...
-+	 * We must check for timeout here, as the CPU will not be marked
-+	 * online until the counters are synchronised.
- 	 */
--	while (!cpumask_test_cpu(cpu, &cpu_callin_map)) {
--		udelay(100);
--		schedule();
-+	if (!wait_for_completion_timeout(&cpu_running,
-+					 msecs_to_jiffies(1000))) {
-+		pr_crit("CPU%u: failed to start\n", cpu);
-+		return -EIO;
- 	}
- 
- 	synchronise_count_master(cpu);
+ 	set_cpu_online(cpu, false);
+ 	calculate_cpu_foreign_map();
+-	cpumask_clear_cpu(cpu, &cpu_callin_map);
+ 	local_irq_save(flags);
+ 	fixup_irqs();
+ 	local_irq_restore(flags);
 -- 
 2.7.4

@@ -1,40 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2016 20:08:10 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:57404 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993086AbcKDTIDxsd2o (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Nov 2016 20:08:03 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 2FFB12C91078C;
-        Fri,  4 Nov 2016 19:07:54 +0000 (GMT)
-Received: from [10.20.78.29] (10.20.78.29) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 4 Nov 2016
- 19:07:56 +0000
-Date:   Fri, 4 Nov 2016 19:07:47 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Matthew Fortune <Matthew.Fortune@imgtec.com>
-CC:     Guenter Roeck <linux@roeck-us.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Nov 2016 00:08:21 +0100 (CET)
+Received: from up.free-electrons.com ([163.172.77.33]:33236 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993107AbcKDXIOIVPvz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Nov 2016 00:08:14 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id 9B98B20C75; Sat,  5 Nov 2016 00:08:08 +0100 (CET)
+Received: from localhost (unknown [88.191.26.124])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 7423820C30;
+        Sat,  5 Nov 2016 00:08:08 +0100 (CET)
+Date:   Sat, 5 Nov 2016 00:08:08 +0100
+From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     rtc-linux@googlegroups.com,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        James Hogan <James.Hogan@imgtec.com>
-Subject: RE: [PATCH] MIPS: VDSO: Always select -msoft-float
-In-Reply-To: <6D39441BF12EF246A7ABCE6654B0235380AB822B@HHMAIL01.hh.imgtec.org>
-Message-ID: <alpine.DEB.2.00.1611041905370.13938@tp.orcam.me.uk>
-References: <1477843551-21813-1-git-send-email-linux@roeck-us.net> <alpine.DEB.2.00.1611012208400.24498@tp.orcam.me.uk> <20161101233038.GA25472@roeck-us.net> <alpine.DEB.2.00.1611022043010.24498@tp.orcam.me.uk> <6D39441BF12EF246A7ABCE6654B0235380AB79B7@HHMAIL01.hh.imgtec.org>
- <20161104152603.GB12009@roeck-us.net> <alpine.DEB.2.00.1611041558460.13938@tp.orcam.me.uk> <6D39441BF12EF246A7ABCE6654B0235380AB822B@HHMAIL01.hh.imgtec.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v3 1/7] rtc: rtc-jz4740: Add support for the RTC in the
+ jz4780 SoC
+Message-ID: <20161104230808.gulyxjzezczx44jh@piout.net>
+References: <20161030230247.20538-1-paul@crapouillou.net>
+ <20161031203951.5444-1-paul@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.29]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20161031203951.5444-1-paul@crapouillou.net>
+User-Agent: NeoMutt/20161014 (1.7.1)
+Return-Path: <alexandre.belloni@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55677
+X-archive-position: 55678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: alexandre.belloni@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,17 +51,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 4 Nov 2016, Matthew Fortune wrote:
-
-> >  This code is executed in the user mode so while floating-point code may
-> > not be needed there, not at least right now, there's actually nothing
-> > which should stop us from from adding some should such a need arise.
+On 31/10/2016 at 21:39:45 +0100, Paul Cercueil wrote :
+> The RTC unit present in the JZ4780 works mostly the same as the one in
+> the JZ4740. The major difference is that register writes need to be
+> explicitly enabled, by writing a magic code (0xA55A) to a "write
+> enable" register before each access.
 > 
-> Indeed. For now though the switch to -msoft-float is the simplest solution
-> isn't it?
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> Acked-by: Maarten ter Huurne <maarten@treewalker.org>
+> ---
+>  drivers/rtc/Kconfig      |  6 +++---
+>  drivers/rtc/rtc-jz4740.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 51 insertions(+), 5 deletions(-)
+> 
+> v2: No change
+> v3: No change
+> 
 
- As I previously noted I am leaning towards accepting this solution, but 
-please let me do some further research before I answer your question.  
-I'll reply to your original response when I am ready.
+All applied, thanks
 
-  Maciej
+
+-- 
+Alexandre Belloni, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Nov 2016 06:09:38 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:53351 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Nov 2016 06:12:58 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:55899 "EHLO
         bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992942AbcKFFJan8q08 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Nov 2016 06:09:30 +0100
+        with ESMTP id S23992942AbcKFFMudwOc8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Nov 2016 06:12:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
         In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
-        bh=jAWz6JPeK9tWfLeb2DkpsL+0lB+KbAR7v3oNNkzZBSk=; b=vxd6O2ZgelU3Z6em9Hy9bzlFP+
-        Y2FGZheGrBHpNTI0gmOqkpdzzA9ezDAKiHu8dq1g6kZYGBnh8vzjVCIfzbCYF2PVCtk8MBGa8vELU
-        C1rcJoyNyTp5z5jPWiPqFB//O49tSZCO8sDvrK84u2g3xNt65gFLdDfhoUgBhKz+nUsGih+5LeOq1
-        w3JJGt+EsBMWxuB0EJy1K46ei9rjkhNDKhSJ0WnwtJuUP7Sn/6rAWoTmjgCqHfywff7sYy0Qb2lR1
-        Z+1t8vkn3VdKp4C1P5zfEJduJoYUyn+auY3ARaTVhH0dijzVpBOelSN0zcMfnrR7tGrop8xgZuy+p
-        dNmyE/VQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:33150 helo=server.roeck-us.net)
+        bh=GXWRinI4Hi0tmdG3soNJj0xziHAasiGT50aXfNvwonM=; b=nYOw9M16/6gpZrUFXLXSzJYBtN
+        zRdQw/AHxcubzmlpRTQvEL6A2i2EdR9x2ZyjMZY248hU048dIa6TN38ClUKG1a1i/67Tzw9Sp/U93
+        fsEpfTHfDgSuGsvJV96gcMb1Tpq3hfkLTV1RqcMtrWOlXMBKcoUVHaeWf/fd1HfLWrbfwVxiYfRWb
+        J6No2UuMxAGm5HEwQk8K1Moo0MuJzyqugoUE7IiySQhxbtsn34AUXI/DZ4Sdp+rtYpSO5j4C64IXx
+        +L+r71wPZ49mNEkzOQaj6YxNO1KHdTNhT7lFqAptqXywcdEO8QCI63KPfA4GaoR6A8J4cR1c+/nKG
+        aLhLwNxw==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:33160 helo=server.roeck-us.net)
         by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
         (Exim 4.86_1)
         (envelope-from <linux@roeck-us.net>)
-        id 1c3Fhl-0003IX-4e; Sun, 06 Nov 2016 05:09:19 +0000
+        id 1c3Fl2-000Bpp-1B; Sun, 06 Nov 2016 05:12:40 +0000
 Subject: Re: [PATCH 1/2] mfd: syscon: Support native-endian regmaps
 To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
 References: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
@@ -24,8 +24,8 @@ References: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
 Cc:     Lee Jones <lee.jones@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
         Ralf Baechle <ralf@linux-mips.org>
 From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <22f40f6e-6da3-f2ee-1c93-6590a86ee560@roeck-us.net>
-Date:   Sat, 5 Nov 2016 22:09:19 -0700
+Message-ID: <6eee2835-43b2-ffa1-9be3-a1a9d8ed56cf@roeck-us.net>
+Date:   Sat, 5 Nov 2016 22:12:42 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.2.0
 MIME-Version: 1.0
@@ -48,7 +48,7 @@ Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55679
+X-archive-position: 55680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,6 +72,13 @@ On 10/14/2016 02:17 AM, Paul Burton wrote:
 > omits support for native-endian. Fix this by setting
 > REGMAP_ENDIAN_NATIVE when a native-endian property is found.
 >
+
+Any chance to get this patch applied to mainline ? It is in -next, but
+big endian mips malta images still fail to reboot in mainline.
+
+Thanks,
+Guenter
+
 > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 > Cc: Lee Jones <lee.jones@linaro.org>
 > Cc: Arnd Bergmann <arnd@arndb.de>

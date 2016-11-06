@@ -1,44 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Nov 2016 00:08:21 +0100 (CET)
-Received: from up.free-electrons.com ([163.172.77.33]:33236 "EHLO
-        mail.free-electrons.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993107AbcKDXIOIVPvz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Nov 2016 00:08:14 +0100
-Received: by mail.free-electrons.com (Postfix, from userid 110)
-        id 9B98B20C75; Sat,  5 Nov 2016 00:08:08 +0100 (CET)
-Received: from localhost (unknown [88.191.26.124])
-        by mail.free-electrons.com (Postfix) with ESMTPSA id 7423820C30;
-        Sat,  5 Nov 2016 00:08:08 +0100 (CET)
-Date:   Sat, 5 Nov 2016 00:08:08 +0100
-From:   Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     rtc-linux@googlegroups.com,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v3 1/7] rtc: rtc-jz4740: Add support for the RTC in the
- jz4780 SoC
-Message-ID: <20161104230808.gulyxjzezczx44jh@piout.net>
-References: <20161030230247.20538-1-paul@crapouillou.net>
- <20161031203951.5444-1-paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Nov 2016 06:09:38 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:53351 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992942AbcKFFJan8q08 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Nov 2016 06:09:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
+        bh=jAWz6JPeK9tWfLeb2DkpsL+0lB+KbAR7v3oNNkzZBSk=; b=vxd6O2ZgelU3Z6em9Hy9bzlFP+
+        Y2FGZheGrBHpNTI0gmOqkpdzzA9ezDAKiHu8dq1g6kZYGBnh8vzjVCIfzbCYF2PVCtk8MBGa8vELU
+        C1rcJoyNyTp5z5jPWiPqFB//O49tSZCO8sDvrK84u2g3xNt65gFLdDfhoUgBhKz+nUsGih+5LeOq1
+        w3JJGt+EsBMWxuB0EJy1K46ei9rjkhNDKhSJ0WnwtJuUP7Sn/6rAWoTmjgCqHfywff7sYy0Qb2lR1
+        Z+1t8vkn3VdKp4C1P5zfEJduJoYUyn+auY3ARaTVhH0dijzVpBOelSN0zcMfnrR7tGrop8xgZuy+p
+        dNmyE/VQ==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:33150 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
+        (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1c3Fhl-0003IX-4e; Sun, 06 Nov 2016 05:09:19 +0000
+Subject: Re: [PATCH 1/2] mfd: syscon: Support native-endian regmaps
+To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
+References: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
+ <20161014091732.27536-1-paul.burton@imgtec.com>
+Cc:     Lee Jones <lee.jones@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+        Ralf Baechle <ralf@linux-mips.org>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <22f40f6e-6da3-f2ee-1c93-6590a86ee560@roeck-us.net>
+Date:   Sat, 5 Nov 2016 22:09:19 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20161031203951.5444-1-paul@crapouillou.net>
-User-Agent: NeoMutt/20161014 (1.7.1)
-Return-Path: <alexandre.belloni@free-electrons.com>
+In-Reply-To: <20161014091732.27536-1-paul.burton@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55678
+X-archive-position: 55679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alexandre.belloni@free-electrons.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,27 +65,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 31/10/2016 at 21:39:45 +0100, Paul Cercueil wrote :
-> The RTC unit present in the JZ4780 works mostly the same as the one in
-> the JZ4740. The major difference is that register writes need to be
-> explicitly enabled, by writing a magic code (0xA55A) to a "write
-> enable" register before each access.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Acked-by: Maarten ter Huurne <maarten@treewalker.org>
+On 10/14/2016 02:17 AM, Paul Burton wrote:
+> The regmap devicetree binding documentation states that a native-endian
+> property should be supported as well as big-endian & little-endian,
+> however syscon in its duplication of the parsing of these properties
+> omits support for native-endian. Fix this by setting
+> REGMAP_ENDIAN_NATIVE when a native-endian property is found.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
 > ---
->  drivers/rtc/Kconfig      |  6 +++---
->  drivers/rtc/rtc-jz4740.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 51 insertions(+), 5 deletions(-)
-> 
-> v2: No change
-> v3: No change
-> 
-
-All applied, thanks
-
-
--- 
-Alexandre Belloni, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+>  drivers/mfd/syscon.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+> index 2f2225e..b93fe4c 100644
+> --- a/drivers/mfd/syscon.c
+> +++ b/drivers/mfd/syscon.c
+> @@ -73,8 +73,10 @@ static struct syscon *of_syscon_register(struct device_node *np)
+>  	/* Parse the device's DT node for an endianness specification */
+>  	if (of_property_read_bool(np, "big-endian"))
+>  		syscon_config.val_format_endian = REGMAP_ENDIAN_BIG;
+> -	 else if (of_property_read_bool(np, "little-endian"))
+> +	else if (of_property_read_bool(np, "little-endian"))
+>  		syscon_config.val_format_endian = REGMAP_ENDIAN_LITTLE;
+> +	else if (of_property_read_bool(np, "native-endian"))
+> +		syscon_config.val_format_endian = REGMAP_ENDIAN_NATIVE;
+>
+>  	/*
+>  	 * search for reg-io-width property in DT. If it is not provided,
+>

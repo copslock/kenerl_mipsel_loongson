@@ -1,58 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Nov 2016 06:12:58 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:55899 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992942AbcKFFMudwOc8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Nov 2016 06:12:50 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
-        bh=GXWRinI4Hi0tmdG3soNJj0xziHAasiGT50aXfNvwonM=; b=nYOw9M16/6gpZrUFXLXSzJYBtN
-        zRdQw/AHxcubzmlpRTQvEL6A2i2EdR9x2ZyjMZY248hU048dIa6TN38ClUKG1a1i/67Tzw9Sp/U93
-        fsEpfTHfDgSuGsvJV96gcMb1Tpq3hfkLTV1RqcMtrWOlXMBKcoUVHaeWf/fd1HfLWrbfwVxiYfRWb
-        J6No2UuMxAGm5HEwQk8K1Moo0MuJzyqugoUE7IiySQhxbtsn34AUXI/DZ4Sdp+rtYpSO5j4C64IXx
-        +L+r71wPZ49mNEkzOQaj6YxNO1KHdTNhT7lFqAptqXywcdEO8QCI63KPfA4GaoR6A8J4cR1c+/nKG
-        aLhLwNxw==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:33160 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1c3Fl2-000Bpp-1B; Sun, 06 Nov 2016 05:12:40 +0000
-Subject: Re: [PATCH 1/2] mfd: syscon: Support native-endian regmaps
-To:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org
-References: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
- <20161014091732.27536-1-paul.burton@imgtec.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <6eee2835-43b2-ffa1-9be3-a1a9d8ed56cf@roeck-us.net>
-Date:   Sat, 5 Nov 2016 22:12:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 09:54:07 +0100 (CET)
+Received: from smtp3-g21.free.fr ([212.27.42.3]:14800 "EHLO smtp3-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990518AbcKGIx7ksPop (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Nov 2016 09:53:59 +0100
+Received: from avionic-0020 (unknown [87.138.236.184])
+        (Authenticated sender: albeu@free.fr)
+        by smtp3-g21.free.fr (Postfix) with ESMTPSA id 1E32F13F814;
+        Mon,  7 Nov 2016 09:53:41 +0100 (CET)
+Date:   Mon, 7 Nov 2016 09:53:35 +0100
+From:   Alban <albeu@free.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Alban <albeu@free.fr>, ralf@linux-mips.org,
+        antonynpavlov@gmail.com, hackpascal@gmail.com,
+        amitoj1606@gmail.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] MIPS: ath79: Fix error handling
+Message-ID: <20161107095335.276c5c7f@avionic-0020>
+In-Reply-To: <20161030082546.15019-1-christophe.jaillet@wanadoo.fr>
+References: <20161030082546.15019-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20161014091732.27536-1-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/z60iR6RP2Mu=WzIQF=jQuj6"; protocol="application/pgp-signature"
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55680
+X-archive-position: 55681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,44 +43,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 10/14/2016 02:17 AM, Paul Burton wrote:
-> The regmap devicetree binding documentation states that a native-endian
-> property should be supported as well as big-endian & little-endian,
-> however syscon in its duplication of the parsing of these properties
-> omits support for native-endian. Fix this by setting
-> REGMAP_ENDIAN_NATIVE when a native-endian property is found.
->
+--Sig_/z60iR6RP2Mu=WzIQF=jQuj6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Any chance to get this patch applied to mainline ? It is in -next, but
-big endian mips malta images still fail to reboot in mainline.
+On Sun, 30 Oct 2016 09:25:46 +0100
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-Thanks,
-Guenter
+> 'clk_register_fixed_rate()' returns an error pointer in case of error, not
+> NULL. So test it with IS_ERR.
+>=20
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> ---
->  drivers/mfd/syscon.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-> index 2f2225e..b93fe4c 100644
-> --- a/drivers/mfd/syscon.c
-> +++ b/drivers/mfd/syscon.c
-> @@ -73,8 +73,10 @@ static struct syscon *of_syscon_register(struct device_node *np)
->  	/* Parse the device's DT node for an endianness specification */
->  	if (of_property_read_bool(np, "big-endian"))
->  		syscon_config.val_format_endian = REGMAP_ENDIAN_BIG;
-> -	 else if (of_property_read_bool(np, "little-endian"))
-> +	else if (of_property_read_bool(np, "little-endian"))
->  		syscon_config.val_format_endian = REGMAP_ENDIAN_LITTLE;
-> +	else if (of_property_read_bool(np, "native-endian"))
-> +		syscon_config.val_format_endian = REGMAP_ENDIAN_NATIVE;
->
->  	/*
->  	 * search for reg-io-width property in DT. If it is not provided,
->
+Acked-by: Aban Bedel <albeu@free.fr>
+
+Alban
+
+--Sig_/z60iR6RP2Mu=WzIQF=jQuj6
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCAAGBQJYIEEPAAoJEHSUmkuduC28ZX4P+gPm9fsHq0QW+oEokIPnRd6N
+LUX1qwhH1g0TI5ekXQUw0e/tKTVA/P8bUqC2miFnIa8gBTPWpJxzoOoHE+Oylion
+p90ym79Yo2Y19BSMRUbg06VKTCpYGS7jpxfCLI822oIYBJxMa0OZmxWT2QaXSRwg
+xeI17CYsQoDIcqgilJKSCV4j/YB/LpIln4SWuVJzDuWcWCFgKP/vincCkgQHZLud
+gT1LTQSKJJWNpdsyKyLOQIUkxYxCV5NhK1RpTLfWxDzww1cPqhJOWqa8kHjUoBvd
+PcvQxz4GAHc0n9bRTLh+BcY0N/eIqXrXjSfb2sNLJuKy4F5KET4M5b5JNhmZHF8U
+wtCutGY6O8xei7UXTiODas6s/CoYiH0J4K50SRvEnjgs9hoEVx7rPuxoFLJY4Dxv
+3v8MqCGzHgFdjChT7GwocjOJe7vDS567viU+wNW14bLG75m8qL+/FbgwnfnxS4a7
+wH03v2BinLT2abQHrLRLKRuozTW8d5C+58uhC5XkJtunZ+pRurkjfC54msLcSCqL
+8xZZFQY3hLhuKni+C1VqBCTSqPU/1/MkqqgES9fSoiiLzr+TUnyzptJvV4FQfGlm
+gtkTJ3QGUXojY/qBI3D9/l98feMwNQ/tXxqsWY+EoGh9hWbMNP6wJZX7Y1dp7Zfd
+WrSECPUmNicgDpORFRTn
+=u1mB
+-----END PGP SIGNATURE-----
+
+--Sig_/z60iR6RP2Mu=WzIQF=jQuj6--

@@ -1,64 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 10:39:05 +0100 (CET)
-Received: from mail-wm0-f53.google.com ([74.125.82.53]:35536 "EHLO
-        mail-wm0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991344AbcKGJi5wbp-i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2016 10:38:57 +0100
-Received: by mail-wm0-f53.google.com with SMTP id a197so169913810wmd.0
-        for <linux-mips@linux-mips.org>; Mon, 07 Nov 2016 01:38:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=/+Fx6VySCf4szsO+VRLC+kOZOZ/XuhFA9vbRn76iehI=;
-        b=XvIE+8cieBdUcZehaEXPVftY5kMrqTfAuYV8Dge2waa/qrsW5eKk8RISv/27Q7QHat
-         Du8UjHM8b6OIk9LPB3OA5XP/oOdS0XtfgmQE0UkJeUVHTgBecoJFbH8NUBX3TYpKDtsf
-         rlpYQzcPF9940Y6qm56gEUnzc5OzJ9MaA8f78=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=/+Fx6VySCf4szsO+VRLC+kOZOZ/XuhFA9vbRn76iehI=;
-        b=Eqs54JAhDOqxWf01984skMF2FWslUi0G3OOl1/FKogbDEf9qIgD00hg01sHCrzvvam
-         sRLssKgIpnAe9XwiHpEWJ1uayisYl5rKH3uOs4oKNpqh+pZ0Mt687ZW/LWcxQt6nbaa5
-         u6PoZaWjl5RK2ZneJMq0oc5AXZ8XiboJ1I5a2jCSfkBAkBchGedXhCM6fLR6Geb+6mQe
-         +4xuB8fFcfQMbO91xji7TRLyqnliVn22iNtluhMugWF2fNkVkuzBgQXuA/mFuX7pEH+n
-         YpF7xU2Mbl/OjNipN4BigVrF7j+3B0xLNgesc9Lq49E0O8YSgBa+2wdL1/rGPQQVkvXn
-         DnOw==
-X-Gm-Message-State: ABUngvehcbNDCgkKvOEzRJRtXRg+6EV1CvsPzFvAXjXLimLQ79moLMFuMQinRSWFKT/fv3q+
-X-Received: by 10.194.109.168 with SMTP id ht8mr1091074wjb.36.1478511532533;
-        Mon, 07 Nov 2016 01:38:52 -0800 (PST)
-Received: from dell (host81-129-173-176.range81-129.btcentralplus.com. [81.129.173.176])
-        by smtp.gmail.com with ESMTPSA id jb2sm29865376wjb.44.2016.11.07.01.38.51
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 07 Nov 2016 01:38:51 -0800 (PST)
-Date:   Mon, 7 Nov 2016 09:41:37 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 1/2] mfd: syscon: Support native-endian regmaps
-Message-ID: <20161107094137.GD13127@dell>
-References: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
- <20161014091732.27536-1-paul.burton@imgtec.com>
- <6eee2835-43b2-ffa1-9be3-a1a9d8ed56cf@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 12:14:46 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:13697 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991759AbcKGLOjq3-Od (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2016 12:14:39 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 46A634F125256;
+        Mon,  7 Nov 2016 11:14:31 +0000 (GMT)
+Received: from localhost (10.100.200.221) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 7 Nov
+ 2016 11:14:33 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH 00/10] MIPS: Cleanup EXPORT_SYMBOL usage
+Date:   Mon, 7 Nov 2016 11:14:06 +0000
+Message-ID: <20161107111417.11486-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.10.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6eee2835-43b2-ffa1-9be3-a1a9d8ed56cf@roeck-us.net>
-User-Agent: Mutt/1.6.2 (2016-07-01)
-Return-Path: <lee.jones@linaro.org>
+Content-Type: text/plain
+X-Originating-IP: [10.100.200.221]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55682
+X-archive-position: 55683
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lee.jones@linaro.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,52 +41,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 05 Nov 2016, Guenter Roeck wrote:
+This series takes advantage of the recent support for using
+EXPORT_SYMBOL from assembly source to move symbols exports for functions
+written in assembly to be performed close to the definition of the
+function itself. The result is that mips_ksyms.c can be removed
+entirely.
 
-> On 10/14/2016 02:17 AM, Paul Burton wrote:
-> > The regmap devicetree binding documentation states that a native-endian
-> > property should be supported as well as big-endian & little-endian,
-> > however syscon in its duplication of the parsing of these properties
-> > omits support for native-endian. Fix this by setting
-> > REGMAP_ENDIAN_NATIVE when a native-endian property is found.
-> > 
-> 
-> Any chance to get this patch applied to mainline ? It is in -next, but
-> big endian mips malta images still fail to reboot in mainline.
+Along the way we make the handling of functions written (or at least
+stubbed) in assembly a little more consistent for microMIPS kernels.
 
-Applied to -fixes.
+Applies atop v4.9-rc4.
 
-> > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> > Cc: Lee Jones <lee.jones@linaro.org>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
-> > Cc: Guenter Roeck <linux@roeck-us.net>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > ---
-> >  drivers/mfd/syscon.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-> > index 2f2225e..b93fe4c 100644
-> > --- a/drivers/mfd/syscon.c
-> > +++ b/drivers/mfd/syscon.c
-> > @@ -73,8 +73,10 @@ static struct syscon *of_syscon_register(struct device_node *np)
-> >  	/* Parse the device's DT node for an endianness specification */
-> >  	if (of_property_read_bool(np, "big-endian"))
-> >  		syscon_config.val_format_endian = REGMAP_ENDIAN_BIG;
-> > -	 else if (of_property_read_bool(np, "little-endian"))
-> > +	else if (of_property_read_bool(np, "little-endian"))
-> >  		syscon_config.val_format_endian = REGMAP_ENDIAN_LITTLE;
-> > +	else if (of_property_read_bool(np, "native-endian"))
-> > +		syscon_config.val_format_endian = REGMAP_ENDIAN_NATIVE;
-> > 
-> >  	/*
-> >  	 * search for reg-io-width property in DT. If it is not provided,
-> > 
-> 
+
+Paul Burton (10):
+  MIPS: Use generic asm/export.h
+  MIPS: tlbex: Clear ISA bit when writing to handle_tlb{l,m,s}
+  MIPS: End asm function prologue macros with .insn
+  MIPS: Export _save_fp & _save_msa alongside their definitions
+  MIPS: Export _mcount alongside its definition
+  MIPS: Export invalid_pte_table alongside its definition
+  MIPS: Export csum functions alongside their definitions
+  MIPS: Export string functions alongside their definitions
+  MIPS: Export memcpy & memset functions alongside their definitions
+  MIPS: Export {copy,clear}_page functions alongside their definitions
+
+ arch/mips/cavium-octeon/octeon-memcpy.S |  5 ++
+ arch/mips/include/asm/Kbuild            |  1 +
+ arch/mips/include/asm/asm.h             | 10 ++--
+ arch/mips/kernel/Makefile               |  2 +-
+ arch/mips/kernel/mcount.S               |  2 +
+ arch/mips/kernel/mips_ksyms.c           | 94 ---------------------------------
+ arch/mips/kernel/r2300_switch.S         |  2 +
+ arch/mips/kernel/r4k_switch.S           |  3 ++
+ arch/mips/lib/csum_partial.S            |  6 +++
+ arch/mips/lib/memcpy.S                  |  9 ++++
+ arch/mips/lib/memset.S                  |  5 ++
+ arch/mips/lib/strlen_user.S             |  2 +
+ arch/mips/lib/strncpy_user.S            |  5 ++
+ arch/mips/lib/strnlen_user.S            |  3 ++
+ arch/mips/mm/init.c                     |  2 +
+ arch/mips/mm/page-funcs.S               |  3 ++
+ arch/mips/mm/page.c                     |  2 +
+ arch/mips/mm/tlbex.c                    |  6 +--
+ 18 files changed, 60 insertions(+), 102 deletions(-)
+ delete mode 100644 arch/mips/kernel/mips_ksyms.c
 
 -- 
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.10.2

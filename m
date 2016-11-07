@@ -1,39 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 19:39:44 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:40888 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991986AbcKGSjiIHo5T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2016 19:39:38 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 8B7D599C3F502;
-        Mon,  7 Nov 2016 18:39:28 +0000 (GMT)
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
- (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 7 Nov
- 2016 18:39:31 +0000
-Received: from [127.0.1.1] (10.20.2.61) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 7 Nov 2016
- 10:39:28 -0800
-Subject: [PATCH] MIPS: R2-on-R6 emulation bugfix of BLEZL and BGTZL
- instructions
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <paul.burton@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, <ralf@linux-mips.org>,
-        <yamada.masahiro@socionext.com>, <macro@imgtec.com>
-Date:   Mon, 7 Nov 2016 10:39:28 -0800
-Message-ID: <20161107183928.27456.13089.stgit@ubuntu-yegoshin>
-User-Agent: StGit/0.17.1-dirty
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.2.61]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 20:41:41 +0100 (CET)
+Received: from smtp.duncanthrax.net ([89.31.1.170]:35607 "EHLO
+        smtp.duncanthrax.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991978AbcKGTlakie08 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2016 20:41:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=duncanthrax.net; s=dkim; h=References:In-Reply-To:Message-Id:Date:Subject:
+        Cc:To:From; bh=dHMb1PbJQazIi620JCEA/2vpWkPEG5UyL/O0j4vzLG0=; b=oqqa7vqbrrOWGm
+        ErSaBW2vHCbneL7tvQ7lKpdbFuQM5HiBUNuTMcLi1tSAhQWeiRJAe+hjZW+/bSkohdc/95ZzeMBsB
+        0y/gT2J15Ava8ypVIp6bkgSfnXBG7cKwstLWx+qFIp5UwhBdQ33blwYm4rqBdio3Uqgtzl1PVMu3a
+        7aI=;
+Received: from hsi-kbw-109-193-239-081.hsi7.kabel-badenwuerttemberg.de ([109.193.239.81] helo=macbook.stackframe.org)
+        by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <svens@stackframe.org>)
+        id 1c3pnO-0003rp-7X; Mon, 07 Nov 2016 20:41:30 +0100
+From:   Sven Schnelle <svens@stackframe.org>
+To:     linux-mips@linux-mips.org
+Cc:     svens@stackframe.org
+Subject: [PATCH] MIPS: MIPS74K needs post dma flush
+Date:   Mon,  7 Nov 2016 20:41:28 +0100
+Message-Id: <20161107194128.25086-2-svens@stackframe.org>
+X-Mailer: git-send-email 2.10.2
+In-Reply-To: <20161107194128.25086-1-svens@stackframe.org>
+References: <20161107194128.25086-1-svens@stackframe.org>
+Return-Path: <svens@stackframe.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55717
+X-archive-position: 55718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: svens@stackframe.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,50 +44,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS R2 emulation doesn't take into account that BLEZL and BGTZL instructions
-require register RT = 0. If it is not zero it can be some legitimate MIPS R6
-instruction.
+The manual states "A 74K processor contains no direct hardware
+support for managing coherency with respect to its caches, so
+it must be handled via the system design or software"
 
-Problem happens after emulation optimization then emulation routine tries
-to pipeline emulation and after emulation of one instruction it picks up
-a next candidate. In single pass strategy it does not happen because CPU
-doesn't trap on branch-compacts which share opcode space with BLEZL/BGTZL
-(but has RT != 0, of course).
-
-Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Reported-by: Douglas Leung <Douglas.Leung@imgtec.com>
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- arch/mips/kernel/mips-r2-to-r6-emul.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/mips/mm/dma-default.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/mips-r2-to-r6-emul.c
-index 22dedd62818a..b0c86b08c0b9 100644
---- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-+++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-@@ -919,6 +919,7 @@ int mipsr2_decoder(struct pt_regs *regs, u32 inst, unsigned long *fcr31)
- 		BUG();
- 		return SIGEMT;
- 	}
-+	err = 0;
- 	pr_debug("Emulating the 0x%08x R2 instruction @ 0x%08lx (pass=%d))\n",
- 		 inst, epc, pass);
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 46d5696..575b7b8 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -73,7 +73,8 @@ static inline int cpu_needs_post_dma_flush(struct device *dev)
+ 	return !plat_device_is_coherent(dev) &&
+ 	       (boot_cpu_type() == CPU_R10000 ||
+ 		boot_cpu_type() == CPU_R12000 ||
+-		boot_cpu_type() == CPU_BMIPS5000);
++		boot_cpu_type() == CPU_BMIPS5000 ||
++		boot_cpu_type() == CPU_74K);
+ }
  
-@@ -1096,10 +1097,16 @@ int mipsr2_decoder(struct pt_regs *regs, u32 inst, unsigned long *fcr31)
- 		}
- 		break;
- 
--	case beql_op:
--	case bnel_op:
- 	case blezl_op:
- 	case bgtzl_op:
-+		/* return MIPS R6 instruction to CPU execution */
-+		if (MIPSInst_RT(inst)) {
-+			err = SIGILL;
-+			break;
-+		}
-+
-+	case beql_op:
-+	case bnel_op:
- 		if (delay_slot(regs)) {
- 			err = SIGILL;
- 			break;
+ static gfp_t massage_gfp_flags(const struct device *dev, gfp_t gfp)
+-- 
+2.10.2

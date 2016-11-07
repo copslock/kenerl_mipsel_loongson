@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 13:05:22 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:6145 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991986AbcKGMFOJc9ks (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2016 13:05:14 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id AC616613952BF;
-        Mon,  7 Nov 2016 12:05:05 +0000 (GMT)
-Received: from [10.20.78.46] (10.20.78.46) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Mon, 7 Nov 2016
- 12:05:07 +0000
-Date:   Mon, 7 Nov 2016 12:04:58 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 02/10] MIPS: tlbex: Clear ISA bit when writing to
- handle_tlb{l,m,s}
-In-Reply-To: <20161107111417.11486-3-paul.burton@imgtec.com>
-Message-ID: <alpine.DEB.2.20.17.1611071145260.10580@tp.orcam.me.uk>
-References: <20161107111417.11486-1-paul.burton@imgtec.com> <20161107111417.11486-3-paul.burton@imgtec.com>
-User-Agent: Alpine 2.20.17 (DEB 179 2016-10-28)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.46]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 14:05:47 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:51604 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991344AbcKGNFlAoZqu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Nov 2016 14:05:41 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id B2DB6ACEC;
+        Mon,  7 Nov 2016 13:05:40 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH 3.12 36/72] MIPS: ptrace: Fix regs_return_value for kernel context
+Date:   Mon,  7 Nov 2016 14:04:43 +0100
+Message-Id: <75393dbe932eec4d00d15faa5cb18a512d1d7bfe.1478523828.git.jslaby@suse.cz>
+X-Mailer: git-send-email 2.10.2
+In-Reply-To: <0f3caac741164dcff670ae0f4d1cfcb0a7026a1c.1478523828.git.jslaby@suse.cz>
+References: <0f3caac741164dcff670ae0f4d1cfcb0a7026a1c.1478523828.git.jslaby@suse.cz>
+In-Reply-To: <cover.1478523828.git.jslaby@suse.cz>
+References: <cover.1478523828.git.jslaby@suse.cz>
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55706
+X-archive-position: 55707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,52 +43,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 7 Nov 2016, Paul Burton wrote:
+From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
-> When generating TLB exception handling code we write to memory reserved
-> at the handle_tlbl, handle_tlbm & handle_tlbs symbols. Up until now the
-> ISA bit has always been clear simply because the assembly code reserving
-> the space for those functions places no instructions in them. In
-> preparation for marking all LEAF functions as containing code,
-> explicitly clear the ISA bit when calculating the addresses at which to
-> write TLB exception handling code.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> ---
+3.12-stable review patch.  If anyone has any objections, please let me know.
 
- You can avoid this extra code and unnecessary run-time calculation by 
-defining a data alias and using that instead.  E.g. (expanding LEAF):
+===============
 
-		.globl	handle_tlbl
-		.globl	handle_tlbl_data
-		.align	2
-		.type	handle_tlbl, @function
-		.ent	handle_tlbl, 0
-handle_tlbl:
-handle_tlbl_data = .
-		.frame  sp, 0, ra
+commit 74f1077b5b783e7bf4fa3007cefdc8dbd6c07518 upstream.
 
-will make `handle_tlbl' and `handle_tlbl_data' both refer to the same 
-location, hovewer the latter not being a (code) label will have the ISA 
-bit clear, so you'll be able to use it in `build_r4000_tlb_load_handler' 
-without a need to clear the ISA bit explicitly as it won't have been set 
-in the first place.  See how this comes out in `objdump'.
+Currently regs_return_value always negates reg[2] if it determines
+the syscall has failed, but when called in kernel context this check is
+invalid and may result in returning a wrong value.
 
- You might want to wrap the above piece in a macro, I suppose, maybe even 
-do it implicitly in LEAF, etc, or maybe just follow the path of least 
-resistance and use:
+This fixes errors reported by CONFIG_KPROBES_SANITY_TEST
 
-LEAF(handle_tlbl)
-ABS(handle_tlbl_data, .)
+Fixes: d7e7528bcd45 ("Audit: push audit success and retcode into arch ptrace.h")
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/14381/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/include/asm/ptrace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-etc. in arch/mips/mm/tlb-funcs.S, relying on both macros' internals -- 
-being a pseudo `.frame' should not affect the value of `handle_tlbl_data' 
-whether it precedes or follows the assignment operation.
-
- You could use `.set' or `.equ' in place of `=' too; there's also `.equiv' 
-with a slightly different semantics as it bails out on an attempt of 
-symbol redefinition while the other three ways do not.
-
- HTH,
-
-  Maciej
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index 5e6cd0947393..a288de2199d8 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -73,7 +73,7 @@ static inline int is_syscall_success(struct pt_regs *regs)
+ 
+ static inline long regs_return_value(struct pt_regs *regs)
+ {
+-	if (is_syscall_success(regs))
++	if (is_syscall_success(regs) || !user_mode(regs))
+ 		return regs->regs[2];
+ 	else
+ 		return -regs->regs[2];
+-- 
+2.10.2

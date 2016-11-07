@@ -1,36 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 09:54:07 +0100 (CET)
-Received: from smtp3-g21.free.fr ([212.27.42.3]:14800 "EHLO smtp3-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990518AbcKGIx7ksPop (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 Nov 2016 09:53:59 +0100
-Received: from avionic-0020 (unknown [87.138.236.184])
-        (Authenticated sender: albeu@free.fr)
-        by smtp3-g21.free.fr (Postfix) with ESMTPSA id 1E32F13F814;
-        Mon,  7 Nov 2016 09:53:41 +0100 (CET)
-Date:   Mon, 7 Nov 2016 09:53:35 +0100
-From:   Alban <albeu@free.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Alban <albeu@free.fr>, ralf@linux-mips.org,
-        antonynpavlov@gmail.com, hackpascal@gmail.com,
-        amitoj1606@gmail.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] MIPS: ath79: Fix error handling
-Message-ID: <20161107095335.276c5c7f@avionic-0020>
-In-Reply-To: <20161030082546.15019-1-christophe.jaillet@wanadoo.fr>
-References: <20161030082546.15019-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 10:39:05 +0100 (CET)
+Received: from mail-wm0-f53.google.com ([74.125.82.53]:35536 "EHLO
+        mail-wm0-f53.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991344AbcKGJi5wbp-i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2016 10:38:57 +0100
+Received: by mail-wm0-f53.google.com with SMTP id a197so169913810wmd.0
+        for <linux-mips@linux-mips.org>; Mon, 07 Nov 2016 01:38:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=/+Fx6VySCf4szsO+VRLC+kOZOZ/XuhFA9vbRn76iehI=;
+        b=XvIE+8cieBdUcZehaEXPVftY5kMrqTfAuYV8Dge2waa/qrsW5eKk8RISv/27Q7QHat
+         Du8UjHM8b6OIk9LPB3OA5XP/oOdS0XtfgmQE0UkJeUVHTgBecoJFbH8NUBX3TYpKDtsf
+         rlpYQzcPF9940Y6qm56gEUnzc5OzJ9MaA8f78=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=/+Fx6VySCf4szsO+VRLC+kOZOZ/XuhFA9vbRn76iehI=;
+        b=Eqs54JAhDOqxWf01984skMF2FWslUi0G3OOl1/FKogbDEf9qIgD00hg01sHCrzvvam
+         sRLssKgIpnAe9XwiHpEWJ1uayisYl5rKH3uOs4oKNpqh+pZ0Mt687ZW/LWcxQt6nbaa5
+         u6PoZaWjl5RK2ZneJMq0oc5AXZ8XiboJ1I5a2jCSfkBAkBchGedXhCM6fLR6Geb+6mQe
+         +4xuB8fFcfQMbO91xji7TRLyqnliVn22iNtluhMugWF2fNkVkuzBgQXuA/mFuX7pEH+n
+         YpF7xU2Mbl/OjNipN4BigVrF7j+3B0xLNgesc9Lq49E0O8YSgBa+2wdL1/rGPQQVkvXn
+         DnOw==
+X-Gm-Message-State: ABUngvehcbNDCgkKvOEzRJRtXRg+6EV1CvsPzFvAXjXLimLQ79moLMFuMQinRSWFKT/fv3q+
+X-Received: by 10.194.109.168 with SMTP id ht8mr1091074wjb.36.1478511532533;
+        Mon, 07 Nov 2016 01:38:52 -0800 (PST)
+Received: from dell (host81-129-173-176.range81-129.btcentralplus.com. [81.129.173.176])
+        by smtp.gmail.com with ESMTPSA id jb2sm29865376wjb.44.2016.11.07.01.38.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 07 Nov 2016 01:38:51 -0800 (PST)
+Date:   Mon, 7 Nov 2016 09:41:37 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/2] mfd: syscon: Support native-endian regmaps
+Message-ID: <20161107094137.GD13127@dell>
+References: <e50cd48c-e0c4-9bfc-b265-383a33eac569@roeck-us.net>
+ <20161014091732.27536-1-paul.burton@imgtec.com>
+ <6eee2835-43b2-ffa1-9be3-a1a9d8ed56cf@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/z60iR6RP2Mu=WzIQF=jQuj6"; protocol="application/pgp-signature"
-Return-Path: <albeu@free.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6eee2835-43b2-ffa1-9be3-a1a9d8ed56cf@roeck-us.net>
+User-Agent: Mutt/1.6.2 (2016-07-01)
+Return-Path: <lee.jones@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55681
+X-archive-position: 55682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: albeu@free.fr
+X-original-sender: lee.jones@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,42 +71,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Sig_/z60iR6RP2Mu=WzIQF=jQuj6
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Sat, 05 Nov 2016, Guenter Roeck wrote:
 
-On Sun, 30 Oct 2016 09:25:46 +0100
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+> On 10/14/2016 02:17 AM, Paul Burton wrote:
+> > The regmap devicetree binding documentation states that a native-endian
+> > property should be supported as well as big-endian & little-endian,
+> > however syscon in its duplication of the parsing of these properties
+> > omits support for native-endian. Fix this by setting
+> > REGMAP_ENDIAN_NATIVE when a native-endian property is found.
+> > 
+> 
+> Any chance to get this patch applied to mainline ? It is in -next, but
+> big endian mips malta images still fail to reboot in mainline.
 
-> 'clk_register_fixed_rate()' returns an error pointer in case of error, not
-> NULL. So test it with IS_ERR.
->=20
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Applied to -fixes.
 
-Acked-by: Aban Bedel <albeu@free.fr>
+> > Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> > Cc: Lee Jones <lee.jones@linaro.org>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
+> > Cc: Guenter Roeck <linux@roeck-us.net>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: linux-mips@linux-mips.org
+> > ---
+> >  drivers/mfd/syscon.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+> > index 2f2225e..b93fe4c 100644
+> > --- a/drivers/mfd/syscon.c
+> > +++ b/drivers/mfd/syscon.c
+> > @@ -73,8 +73,10 @@ static struct syscon *of_syscon_register(struct device_node *np)
+> >  	/* Parse the device's DT node for an endianness specification */
+> >  	if (of_property_read_bool(np, "big-endian"))
+> >  		syscon_config.val_format_endian = REGMAP_ENDIAN_BIG;
+> > -	 else if (of_property_read_bool(np, "little-endian"))
+> > +	else if (of_property_read_bool(np, "little-endian"))
+> >  		syscon_config.val_format_endian = REGMAP_ENDIAN_LITTLE;
+> > +	else if (of_property_read_bool(np, "native-endian"))
+> > +		syscon_config.val_format_endian = REGMAP_ENDIAN_NATIVE;
+> > 
+> >  	/*
+> >  	 * search for reg-io-width property in DT. If it is not provided,
+> > 
+> 
 
-Alban
-
---Sig_/z60iR6RP2Mu=WzIQF=jQuj6
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCAAGBQJYIEEPAAoJEHSUmkuduC28ZX4P+gPm9fsHq0QW+oEokIPnRd6N
-LUX1qwhH1g0TI5ekXQUw0e/tKTVA/P8bUqC2miFnIa8gBTPWpJxzoOoHE+Oylion
-p90ym79Yo2Y19BSMRUbg06VKTCpYGS7jpxfCLI822oIYBJxMa0OZmxWT2QaXSRwg
-xeI17CYsQoDIcqgilJKSCV4j/YB/LpIln4SWuVJzDuWcWCFgKP/vincCkgQHZLud
-gT1LTQSKJJWNpdsyKyLOQIUkxYxCV5NhK1RpTLfWxDzww1cPqhJOWqa8kHjUoBvd
-PcvQxz4GAHc0n9bRTLh+BcY0N/eIqXrXjSfb2sNLJuKy4F5KET4M5b5JNhmZHF8U
-wtCutGY6O8xei7UXTiODas6s/CoYiH0J4K50SRvEnjgs9hoEVx7rPuxoFLJY4Dxv
-3v8MqCGzHgFdjChT7GwocjOJe7vDS567viU+wNW14bLG75m8qL+/FbgwnfnxS4a7
-wH03v2BinLT2abQHrLRLKRuozTW8d5C+58uhC5XkJtunZ+pRurkjfC54msLcSCqL
-8xZZFQY3hLhuKni+C1VqBCTSqPU/1/MkqqgES9fSoiiLzr+TUnyzptJvV4FQfGlm
-gtkTJ3QGUXojY/qBI3D9/l98feMwNQ/tXxqsWY+EoGh9hWbMNP6wJZX7Y1dp7Zfd
-WrSECPUmNicgDpORFRTn
-=u1mB
------END PGP SIGNATURE-----
-
---Sig_/z60iR6RP2Mu=WzIQF=jQuj6--
+-- 
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

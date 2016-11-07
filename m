@@ -1,34 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 12:52:48 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31801 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2016 13:05:22 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6145 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991986AbcKGLwmQXlvs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2016 12:52:42 +0100
+        with ESMTP id S23991986AbcKGMFOJc9ks (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2016 13:05:14 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id D77181F20C5A0;
-        Mon,  7 Nov 2016 11:52:33 +0000 (GMT)
-Received: from localhost (10.100.200.221) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 7 Nov
- 2016 11:52:35 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2] MIPS: Ensure bss section ends on a long-aligned address
-Date:   Mon, 7 Nov 2016 11:52:19 +0000
-Message-ID: <20161107115219.23882-1-paul.burton@imgtec.com>
-X-Mailer: git-send-email 2.10.2
+        by Forcepoint Email with ESMTPS id AC616613952BF;
+        Mon,  7 Nov 2016 12:05:05 +0000 (GMT)
+Received: from [10.20.78.46] (10.20.78.46) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Mon, 7 Nov 2016
+ 12:05:07 +0000
+Date:   Mon, 7 Nov 2016 12:04:58 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 02/10] MIPS: tlbex: Clear ISA bit when writing to
+ handle_tlb{l,m,s}
+In-Reply-To: <20161107111417.11486-3-paul.burton@imgtec.com>
+Message-ID: <alpine.DEB.2.20.17.1611071145260.10580@tp.orcam.me.uk>
+References: <20161107111417.11486-1-paul.burton@imgtec.com> <20161107111417.11486-3-paul.burton@imgtec.com>
+User-Agent: Alpine 2.20.17 (DEB 179 2016-10-28)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.100.200.221]
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.46]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55705
+X-archive-position: 55706
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,49 +43,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When clearing the .bss section in kernel_entry we do so using LONG_S
-instructions, and branch whilst the current write address doesn't equal
-the end of the .bss section minus the size of a long integer. The .bss
-section always begins at a long-aligned address and we always increment
-the write pointer by the size of a long integer - we therefore rely upon
-the .bss section ending at a long-aligned address. If this is not the
-case then the long-aligned write address can never be equal to the
-non-long-aligned end address & we will continue to increment past the
-end of the .bss section, attempting to zero the rest of memory.
+On Mon, 7 Nov 2016, Paul Burton wrote:
 
-Despite this requirement that .bss end at a long-aligned address we pass
-0 as the end alignment requirement to the BSS_SECTION macro and thus
-don't guarantee any particular alignment, allowing us to hit the error
-condition described above.
+> When generating TLB exception handling code we write to memory reserved
+> at the handle_tlbl, handle_tlbm & handle_tlbs symbols. Up until now the
+> ISA bit has always been clear simply because the assembly code reserving
+> the space for those functions places no instructions in them. In
+> preparation for marking all LEAF functions as containing code,
+> explicitly clear the ISA bit when calculating the addresses at which to
+> write TLB exception handling code.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> ---
 
-Fix this by instead passing 8 bytes as the end alignment argument to
-the BSS_SECTION macro, ensuring that the end of the .bss section is
-always at least long-aligned.
+ You can avoid this extra code and unnecessary run-time calculation by 
+defining a data alias and using that instead.  E.g. (expanding LEAF):
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
+		.globl	handle_tlbl
+		.globl	handle_tlbl_data
+		.align	2
+		.type	handle_tlbl, @function
+		.ent	handle_tlbl, 0
+handle_tlbl:
+handle_tlbl_data = .
+		.frame  sp, 0, ra
 
----
+will make `handle_tlbl' and `handle_tlbl_data' both refer to the same 
+location, hovewer the latter not being a (code) label will have the ISA 
+bit clear, so you'll be able to use it in `build_r4000_tlb_load_handler' 
+without a need to clear the ISA bit explicitly as it won't have been set 
+in the first place.  See how this comes out in `objdump'.
 
-Changes in v2:
-- Use 8 rather than LONGSIZE, to avoid including asm/asm.h & breaking LONG().
+ You might want to wrap the above piece in a macro, I suppose, maybe even 
+do it implicitly in LEAF, etc, or maybe just follow the path of least 
+resistance and use:
 
- arch/mips/kernel/vmlinux.lds.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+LEAF(handle_tlbl)
+ABS(handle_tlbl_data, .)
 
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index d5de675..f0a0e6d 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -182,7 +182,7 @@ SECTIONS
- 	 * Force .bss to 64K alignment so that .bss..swapper_pg_dir
- 	 * gets that alignment.	 .sbss should be empty, so there will be
- 	 * no holes after __init_end. */
--	BSS_SECTION(0, 0x10000, 0)
-+	BSS_SECTION(0, 0x10000, 8)
- 
- 	_end = . ;
- 
--- 
-2.10.2
+etc. in arch/mips/mm/tlb-funcs.S, relying on both macros' internals -- 
+being a pseudo `.frame' should not affect the value of `handle_tlbl_data' 
+whether it precedes or follows the assignment operation.
+
+ You could use `.set' or `.equ' in place of `=' too; there's also `.equiv' 
+with a slightly different semantics as it bails out on an attempt of 
+symbol redefinition while the other three ways do not.
+
+ HTH,
+
+  Maciej

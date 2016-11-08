@@ -1,25 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2016 12:17:26 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47597 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2016 12:20:47 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:65084 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992078AbcKHLRTlQUtg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Nov 2016 12:17:19 +0100
+        with ESMTP id S23992078AbcKHLUk6iZog (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Nov 2016 12:20:40 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 9DED86A1511A4;
-        Tue,  8 Nov 2016 11:17:10 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 12B71E5064A6B;
+        Tue,  8 Nov 2016 11:20:32 +0000 (GMT)
 Received: from [10.20.78.54] (10.20.78.54) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 8 Nov 2016
- 11:17:12 +0000
-Date:   Tue, 8 Nov 2016 11:17:02 +0000
+ 11:20:33 +0000
+Date:   Tue, 8 Nov 2016 11:20:24 +0000
 From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, <paul.burton@imgtec.com>,
-        <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
-        <yamada.masahiro@socionext.com>
-Subject: Re: [PATCH] MIPS: R2-on-R6 emulation bugfix of BLEZL and BGTZL
- instructions
-In-Reply-To: <20161107183928.27456.13089.stgit@ubuntu-yegoshin>
-Message-ID: <alpine.DEB.2.20.17.1611080426360.10580@tp.orcam.me.uk>
-References: <20161107183928.27456.13089.stgit@ubuntu-yegoshin>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 03/10] MIPS: End asm function prologue macros with
+ .insn
+In-Reply-To: <12999809.y5kg6YqSxt@np-p-burton>
+Message-ID: <alpine.DEB.2.20.17.1611080608140.10580@tp.orcam.me.uk>
+References: <20161107111417.11486-1-paul.burton@imgtec.com> <20161107111417.11486-4-paul.burton@imgtec.com> <alpine.DEB.2.20.17.1611071400340.10580@tp.orcam.me.uk> <12999809.y5kg6YqSxt@np-p-burton>
 User-Agent: Alpine 2.20.17 (DEB 179 2016-10-28)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -28,7 +26,7 @@ Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55726
+X-archive-position: 55727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,62 +43,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 7 Nov 2016, Leonid Yegoshin wrote:
+Hi Paul,
 
-> MIPS R2 emulation doesn't take into account that BLEZL and BGTZL instructions
-> require register RT = 0. If it is not zero it can be some legitimate MIPS R6
-> instruction.
+> And thanks for your review :)
 
- Well, it *is* rather than just can be -- one of BLEZC/BGEZC/BGEC or 
-BGTZC/BLTZC/BLTC, respectively, according to the bit patterns in RS/RT, 
-all these instructions being compact branches, so we can stop emulation 
-rather than decoding them.
+ You're welcome!
 
- Also please line-wrap your description at 75 columns, as per 
-Documentation/SubmittingPatches.
+> For the record, the reason I went with placing the EXPORT_SYMBOL invocations 
+> at the start of the functions rather than the end is that the end isn't always 
+> the end of the code in question. For example (until another patch of mine) 
+> memcpy ends part way through user_copy, with code continuing afterwards. We 
+> would then need to place a .insn after the use of EXPORT_SYMBOL if any code 
+> may branch there. Containing the need for .insn to the start of the function 
+> seems neater since a function should always begin with an instruction, which 
+> after this patch will be marked as such, and users of the macros will just get 
+> behaviour that seems natural & expected.
 
-> diff --git a/arch/mips/kernel/mips-r2-to-r6-emul.c b/arch/mips/kernel/mips-r2-to-r6-emul.c
-> index 22dedd62818a..b0c86b08c0b9 100644
-> --- a/arch/mips/kernel/mips-r2-to-r6-emul.c
-> +++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
-> @@ -919,6 +919,7 @@ int mipsr2_decoder(struct pt_regs *regs, u32 inst, unsigned long *fcr31)
->  		BUG();
->  		return SIGEMT;
->  	}
-> +	err = 0;
->  	pr_debug("Emulating the 0x%08x R2 instruction @ 0x%08lx (pass=%d))\n",
->  		 inst, epc, pass);
+ Well, the real end is where END (`.end') is, and I think placing `.end' 
+midway-through a code block is really bad style, partly because it affects 
+frame annotation (all the stuff from `.frame', `.mask', etc.) recorded 
+in the object assembled.  A LEAF/NESTED (`.ent') and END (`.end') pair 
+should really only mark the physical beginning and ending of a whole 
+single function.
 
- Is this because of BRANCH_LIKELY_TAKEN?  It has to be a separate patch 
-then, with a suitable description.
+ If a function has alternative entry points, then FEXPORT should be used 
+for those, which on the MIPS target should include a `.aent' pseudo-op as 
+a part of the symbol definition and I can't really tell why why we don't 
+(trivial patch now in the works).
 
-> @@ -1096,10 +1097,16 @@ int mipsr2_decoder(struct pt_regs *regs, u32 inst,
-> unsigned long *fcr31)
->  		}
->  		break;
->  
-> -	case beql_op:
-> -	case bnel_op:
->  	case blezl_op:
->  	case bgtzl_op:
-> +		/* return MIPS R6 instruction to CPU execution */
-> +		if (MIPSInst_RT(inst)) {
-> +			err = SIGILL;
-> +			break;
-> +		}
+ NB in the MIPS assembly dialect `.type symbol, @function' is redundant in 
+the presence of either `.ent symbol' or `.aent symbol', as is `.size 
+symbol, . - symbol' where `.end symbol' is also present.  There's no harm 
+either though.
 
- Please add:
+> Of course another alternative would be to place EXPORT_SYMBOL before LEAF/
+> NESTED/FEXPORT, but I don't think that would really make any difference  
+> presuming people agree that this patch is a good idea regardless.
 
-		/* Fall through.  */
-
-here so that it is clear it's not a bug; also GCC 7 will catch such cases 
-and issue warnings, which I expect according to our settings will cause a 
-build failure here if this is missing.
-
-> +
-> +	case beql_op:
-> +	case bnel_op:
-
- This part looks fine to me otherwise.
+ TBH I do maintain keeping all the EXPORT_SYMBOL stuff outside function 
+bodies would be the cleanest approach, grouping the handling for all given 
+function's intended entry points after its final END, arranged as I 
+described above.  Do you find this proposal problematic for some reason?
 
   Maciej

@@ -1,36 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2016 12:20:47 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:65084 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2016 18:09:09 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:43022 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992078AbcKHLUk6iZog (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Nov 2016 12:20:40 +0100
+        with ESMTP id S23990552AbcKHRJCq0XdH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Nov 2016 18:09:02 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 12B71E5064A6B;
-        Tue,  8 Nov 2016 11:20:32 +0000 (GMT)
-Received: from [10.20.78.54] (10.20.78.54) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 8 Nov 2016
- 11:20:33 +0000
-Date:   Tue, 8 Nov 2016 11:20:24 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 03/10] MIPS: End asm function prologue macros with
- .insn
-In-Reply-To: <12999809.y5kg6YqSxt@np-p-burton>
-Message-ID: <alpine.DEB.2.20.17.1611080608140.10580@tp.orcam.me.uk>
-References: <20161107111417.11486-1-paul.burton@imgtec.com> <20161107111417.11486-4-paul.burton@imgtec.com> <alpine.DEB.2.20.17.1611071400340.10580@tp.orcam.me.uk> <12999809.y5kg6YqSxt@np-p-burton>
-User-Agent: Alpine 2.20.17 (DEB 179 2016-10-28)
+        by Forcepoint Email with ESMTPS id 52B47EEE967DE;
+        Tue,  8 Nov 2016 17:08:52 +0000 (GMT)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Tue, 8 Nov 2016 17:08:55 +0000
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        <linux-kernel@vger.kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] MIPS: mm: Fix output of __do_page_fault
+Date:   Tue, 8 Nov 2016 17:08:50 +0000
+Message-ID: <1478624930-14111-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.54]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55727
+X-archive-position: 55728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,46 +45,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+Since commit 4bcc595ccd80 ("printk: reinstate KERN_CONT for printing
+continuation lines") the output from __do_page_fault on MIPS has been
+pretty unreadable due to the lack of KERN_CONT markers. Use pr_cont
+to provide the appropriate markers & restore the expected output.
 
-> And thanks for your review :)
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
- You're welcome!
+---
 
-> For the record, the reason I went with placing the EXPORT_SYMBOL invocations 
-> at the start of the functions rather than the end is that the end isn't always 
-> the end of the code in question. For example (until another patch of mine) 
-> memcpy ends part way through user_copy, with code continuing afterwards. We 
-> would then need to place a .insn after the use of EXPORT_SYMBOL if any code 
-> may branch there. Containing the need for .insn to the start of the function 
-> seems neater since a function should always begin with an instruction, which 
-> after this patch will be marked as such, and users of the macros will just get 
-> behaviour that seems natural & expected.
+ arch/mips/mm/fault.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
- Well, the real end is where END (`.end') is, and I think placing `.end' 
-midway-through a code block is really bad style, partly because it affects 
-frame annotation (all the stuff from `.frame', `.mask', etc.) recorded 
-in the object assembled.  A LEAF/NESTED (`.ent') and END (`.end') pair 
-should really only mark the physical beginning and ending of a whole 
-single function.
-
- If a function has alternative entry points, then FEXPORT should be used 
-for those, which on the MIPS target should include a `.aent' pseudo-op as 
-a part of the symbol definition and I can't really tell why why we don't 
-(trivial patch now in the works).
-
- NB in the MIPS assembly dialect `.type symbol, @function' is redundant in 
-the presence of either `.ent symbol' or `.aent symbol', as is `.size 
-symbol, . - symbol' where `.end symbol' is also present.  There's no harm 
-either though.
-
-> Of course another alternative would be to place EXPORT_SYMBOL before LEAF/
-> NESTED/FEXPORT, but I don't think that would really make any difference  
-> presuming people agree that this patch is a good idea regardless.
-
- TBH I do maintain keeping all the EXPORT_SYMBOL stuff outside function 
-bodies would be the cleanest approach, grouping the handling for all given 
-function's intended entry points after its final END, arranged as I 
-described above.  Do you find this proposal problematic for some reason?
-
-  Maciej
+diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+index d56a855828c2..abaf7393f354 100644
+--- a/arch/mips/mm/fault.c
++++ b/arch/mips/mm/fault.c
+@@ -209,17 +209,17 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
+ 		if (show_unhandled_signals &&
+ 		    unhandled_signal(tsk, SIGSEGV) &&
+ 		    __ratelimit(&ratelimit_state)) {
+-			pr_info("\ndo_page_fault(): sending SIGSEGV to %s for invalid %s %0*lx",
++			pr_info("do_page_fault(): sending SIGSEGV to %s for invalid %s %0*lx",
+ 				tsk->comm,
+ 				write ? "write access to" : "read access from",
+ 				field, address);
+-			pr_info("epc = %0*lx in", field,
++			pr_cont("epc = %0*lx in", field,
+ 				(unsigned long) regs->cp0_epc);
+ 			print_vma_addr(" ", regs->cp0_epc);
+-			pr_info("ra  = %0*lx in", field,
++			pr_cont("ra  = %0*lx in", field,
+ 				(unsigned long) regs->regs[31]);
+ 			print_vma_addr(" ", regs->regs[31]);
+-			pr_info("\n");
++			pr_cont("\n");
+ 		}
+ 		current->thread.trap_nr = (regs->cp0_cause >> 2) & 0x1f;
+ 		info.si_signo = SIGSEGV;
+-- 
+2.7.4

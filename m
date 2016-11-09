@@ -1,34 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 12:09:05 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56546 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993064AbcKILIXPa4OA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 12:08:23 +0100
-Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E990CB0B;
-        Wed,  9 Nov 2016 11:08:16 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.8 075/138] MIPS: KASLR: Fix handling of NULL FDT
-Date:   Wed,  9 Nov 2016 11:45:58 +0100
-Message-Id: <20161109102848.289751780@linuxfoundation.org>
-X-Mailer: git-send-email 2.10.2
-In-Reply-To: <20161109102844.808685475@linuxfoundation.org>
-References: <20161109102844.808685475@linuxfoundation.org>
-User-Agent: quilt/0.64
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 14:26:45 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38150 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992544AbcKIN0jchQv0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 14:26:39 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id B3111ED41876B;
+        Wed,  9 Nov 2016 13:26:30 +0000 (GMT)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 9 Nov 2016 13:26:33 +0000
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        <linux-kernel@vger.kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v2] MIPS: mm: Fix output of __do_page_fault
+Date:   Wed, 9 Nov 2016 13:26:25 +0000
+Message-ID: <1478697985-5332-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55737
+X-archive-position: 55738
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,41 +45,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.8-stable review patch.  If anyone has any objections, please let me know.
+Since commit 4bcc595ccd80 ("printk: reinstate KERN_CONT for printing
+continuation lines") the output from __do_page_fault on MIPS has been
+pretty unreadable due to the lack of KERN_CONT markers. Use pr_cont
+to provide the appropriate markers & restore the expected output.
 
-------------------
-
-From: Matt Redfearn <matt.redfearn@imgtec.com>
-
-commit 4736697963385e6257ee8e260e97347e858cd962 upstream.
-
-If platform code returns a NULL pointer to the FDT, initial_boot_params
-will not get set to a valid pointer and attempting to find the /chosen
-node in it will cause a NULL pointer dereference and the kernel to crash
-immediately on startup - with no output to the console.
-
-Fix this by checking that initial_boot_params is valid before using it.
-
-Fixes: 405bc8fd12f5 ("MIPS: Kernel: Implement KASLR using CONFIG_RELOCATABLE")
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14414/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/relocate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/relocate.c
-+++ b/arch/mips/kernel/relocate.c
-@@ -200,7 +200,7 @@ static inline __init unsigned long get_r
- 
- #if defined(CONFIG_USE_OF)
- 	/* Get any additional entropy passed in device tree */
--	{
-+	if (initial_boot_params) {
- 		int node, len;
- 		u64 *prop;
- 
+ arch/mips/mm/fault.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+index d56a855828c2..3bef306cdfdb 100644
+--- a/arch/mips/mm/fault.c
++++ b/arch/mips/mm/fault.c
+@@ -209,17 +209,18 @@ static void __kprobes __do_page_fault(struct pt_regs *regs, unsigned long write,
+ 		if (show_unhandled_signals &&
+ 		    unhandled_signal(tsk, SIGSEGV) &&
+ 		    __ratelimit(&ratelimit_state)) {
+-			pr_info("\ndo_page_fault(): sending SIGSEGV to %s for invalid %s %0*lx",
++			pr_info("do_page_fault(): sending SIGSEGV to %s for invalid %s %0*lx\n",
+ 				tsk->comm,
+ 				write ? "write access to" : "read access from",
+ 				field, address);
+ 			pr_info("epc = %0*lx in", field,
+ 				(unsigned long) regs->cp0_epc);
+-			print_vma_addr(" ", regs->cp0_epc);
++			print_vma_addr(KERN_CONT " ", regs->cp0_epc);
++			pr_cont("\n");
+ 			pr_info("ra  = %0*lx in", field,
+ 				(unsigned long) regs->regs[31]);
+-			print_vma_addr(" ", regs->regs[31]);
+-			pr_info("\n");
++			print_vma_addr(KERN_CONT " ", regs->regs[31]);
++			pr_cont("\n");
+ 		}
+ 		current->thread.trap_nr = (regs->cp0_cause >> 2) & 0x1f;
+ 		info.si_signo = SIGSEGV;
+-- 
+2.7.4

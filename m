@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:30:23 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:45607 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:30:47 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:45615 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993005AbcKIVaQ1fnR1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Nov 2016 22:30:16 +0100
+        id S23993030AbcKIVaRVDz81 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Nov 2016 22:30:17 +0100
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 080DCADC8;
-        Wed,  9 Nov 2016 21:30:16 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 009BCADDD;
+        Wed,  9 Nov 2016 21:30:17 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
-Cc:     James Hogan <james.hogan@imgtec.com>,
+Cc:     Nicholas Mc Guire <hofrat@osadl.org>,
+        Gleb Natapov <gleb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
-Subject: [patch added to 3.12-stable] KVM: MIPS: Drop other CPU ASIDs on guest MMU changes
-Date:   Wed,  9 Nov 2016 22:30:11 +0100
-Message-Id: <20161109213013.11855-2-jslaby@suse.cz>
+        James Hogan <james.hogan@imgtec.com>, kvm@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to 3.12-stable] MIPS: KVM: Fix unused variable build warning
+Date:   Wed,  9 Nov 2016 22:30:12 +0100
+Message-Id: <20161109213013.11855-3-jslaby@suse.cz>
 X-Mailer: git-send-email 2.10.2
 In-Reply-To: <20161109213013.11855-1-jslaby@suse.cz>
 References: <20161109213013.11855-1-jslaby@suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55758
+X-archive-position: 55759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,143 +42,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Nicholas Mc Guire <hofrat@osadl.org>
 
 This patch has been added to the 3.12 stable tree. If you have any
 objections, please let us know.
 
 ===============
 
-commit 91e4f1b6073dd680d86cdb7e42d7cccca9db39d8 upstream.
+commit 5f508c43a7648baa892528922402f1e13f258bd4 upstream.
 
-When a guest TLB entry is replaced by TLBWI or TLBWR, we only invalidate
-TLB entries on the local CPU. This doesn't work correctly on an SMP host
-when the guest is migrated to a different physical CPU, as it could pick
-up stale TLB mappings from the last time the vCPU ran on that physical
-CPU.
+As kvm_mips_complete_mmio_load() did not yet modify PC at this point
+as James Hogans <james.hogan@imgtec.com> explained the curr_pc variable
+and the comments along with it can be dropped.
 
-Therefore invalidate both user and kernel host ASIDs on other CPUs,
-which will cause new ASIDs to be generated when it next runs on those
-CPUs.
-
-We're careful only to do this if the TLB entry was already valid, and
-only for the kernel ASID where the virtual address it mapped is outside
-of the guest user address range.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+Link: http://lkml.org/lkml/2015/5/8/422
+Cc: Gleb Natapov <gleb@kernel.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+Cc: James Hogan <james.hogan@imgtec.com>
 Cc: kvm@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/9993/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 [james.hogan@imgtec.com: Backport to 3.10..3.16]
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/kvm/kvm_mips_emul.c | 61 +++++++++++++++++++++++++++++++++++++------
- 1 file changed, 53 insertions(+), 8 deletions(-)
+ arch/mips/kvm/kvm_mips_emul.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index 9f7643874fba..7f3fb19d2156 100644
+index 7f3fb19d2156..779a376c4cce 100644
 --- a/arch/mips/kvm/kvm_mips_emul.c
 +++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -310,6 +310,47 @@ enum emulation_result kvm_mips_emul_tlbr(struct kvm_vcpu *vcpu)
- 	return er;
- }
- 
-+/**
-+ * kvm_mips_invalidate_guest_tlb() - Indicates a change in guest MMU map.
-+ * @vcpu:	VCPU with changed mappings.
-+ * @tlb:	TLB entry being removed.
-+ *
-+ * This is called to indicate a single change in guest MMU mappings, so that we
-+ * can arrange TLB flushes on this and other CPUs.
-+ */
-+static void kvm_mips_invalidate_guest_tlb(struct kvm_vcpu *vcpu,
-+					  struct kvm_mips_tlb *tlb)
-+{
-+	int cpu, i;
-+	bool user;
-+
-+	/* No need to flush for entries which are already invalid */
-+	if (!((tlb->tlb_lo0 | tlb->tlb_lo1) & MIPS3_PG_V))
-+		return;
-+	/* User address space doesn't need flushing for KSeg2/3 changes */
-+	user = tlb->tlb_hi < KVM_GUEST_KSEG0;
-+
-+	preempt_disable();
-+
-+	/*
-+	 * Probe the shadow host TLB for the entry being overwritten, if one
-+	 * matches, invalidate it
-+	 */
-+	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
-+
-+	/* Invalidate the whole ASID on other CPUs */
-+	cpu = smp_processor_id();
-+	for_each_possible_cpu(i) {
-+		if (i == cpu)
-+			continue;
-+		if (user)
-+			vcpu->arch.guest_user_asid[i] = 0;
-+		vcpu->arch.guest_kernel_asid[i] = 0;
-+	}
-+
-+	preempt_enable();
-+}
-+
- /* Write Guest TLB Entry @ Index */
- enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
+@@ -1655,7 +1655,6 @@ kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run)
  {
-@@ -331,10 +372,8 @@ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
+ 	unsigned long *gpr = &vcpu->arch.gprs[vcpu->arch.io_gpr];
+ 	enum emulation_result er = EMULATE_DONE;
+-	unsigned long curr_pc;
+ 
+ 	if (run->mmio.len > sizeof(*gpr)) {
+ 		printk("Bad MMIO length: %d", run->mmio.len);
+@@ -1663,11 +1662,6 @@ kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 		goto done;
  	}
  
- 	tlb = &vcpu->arch.guest_tlb[index];
--#if 1
--	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
--	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
--#endif
-+
-+	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
- 
- 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
- 	tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
-@@ -373,10 +412,7 @@ enum emulation_result kvm_mips_emul_tlbwr(struct kvm_vcpu *vcpu)
- 
- 	tlb = &vcpu->arch.guest_tlb[index];
- 
--#if 1
--	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
--	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
--#endif
-+	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
- 
- 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
- 	tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
-@@ -419,6 +455,7 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
- 	int32_t rt, rd, copz, sel, co_bit, op;
- 	uint32_t pc = vcpu->arch.pc;
- 	unsigned long curr_pc;
-+	int cpu, i;
- 
- 	/*
- 	 * Update PC and hold onto current PC in case there is
-@@ -538,8 +575,16 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
- 					     ASID_MASK,
- 					     vcpu->arch.gprs[rt] & ASID_MASK);
- 
-+					preempt_disable();
- 					/* Blow away the shadow host TLBs */
- 					kvm_mips_flush_host_tlb(1);
-+					cpu = smp_processor_id();
-+					for_each_possible_cpu(i)
-+						if (i != cpu) {
-+							vcpu->arch.guest_user_asid[i] = 0;
-+							vcpu->arch.guest_kernel_asid[i] = 0;
-+						}
-+					preempt_enable();
- 				}
- 				kvm_write_c0_guest_entryhi(cop0,
- 							   vcpu->arch.gprs[rt]);
+-	/*
+-	 * Update PC and hold onto current PC in case there is
+-	 * an error and we want to rollback the PC
+-	 */
+-	curr_pc = vcpu->arch.pc;
+ 	er = update_pc(vcpu, vcpu->arch.pending_load_cause);
+ 	if (er == EMULATE_FAIL)
+ 		return er;
 -- 
 2.10.2

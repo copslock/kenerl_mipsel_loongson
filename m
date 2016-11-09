@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:27:31 +0100 (CET)
-Received: from frisell.zx2c4.com ([192.95.5.64]:59340 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993030AbcKIV1ZO0ti1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Nov 2016 22:27:25 +0100
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 3b1bfaf8
-        for <linux-mips@linux-mips.org>;
-        Wed, 9 Nov 2016 21:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :from:date:message-id:subject:to:cc:content-type; s=mail; bh=fwR
-        cFtMMhlQoQKQbpn4ZvB4JQSo=; b=26pT9GItiiUAquD4LCaSWfGwxp5oYt1pWGZ
-        ucM+9ruysIeL5QR8kK2vr2QzXt+m4K3y64WqJS5jQPgAI/niF+q30ITWuGET+Glt
-        ggi7SEjpq6oEReljhZbzCMeRCDkoCEa9dQZREu3AiZKDfBUSVaA87DhCWB4Za0+G
-        8/wfkVW1OUen5Z2A+8H9MQxF0EyCWtyKveJ6jh9U2GDEPClgJL0ma+u746lbqjoH
-        fvzQmCdXLpZux7GK3WiA6djs1F1gcUU+gSarEubAS80TCZBl9r5Do2Hv/Kre78mf
-        8SgOBZ+g77MLBTMsRIGC0nfdHKGnVpgDjEsuoSNw8JlLJdDmIKg==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f91456ea (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO)
-        for <linux-mips@linux-mips.org>;
-        Wed, 9 Nov 2016 21:25:15 +0000 (UTC)
-Received: by mail-lf0-f44.google.com with SMTP id t196so175160061lff.3
-        for <linux-mips@linux-mips.org>; Wed, 09 Nov 2016 13:27:16 -0800 (PST)
-X-Gm-Message-State: ABUngveAF0PDO8AMf2lF8kIY/eHmzOBaIeWqQ6kTmNLAgBNuHhnqlJsvcSxWXyhPtBBnIAO1l/hKbi8O1CAW/Q==
-X-Received: by 10.25.18.199 with SMTP id 68mr715650lfs.180.1478726834475; Wed,
- 09 Nov 2016 13:27:14 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:29:12 +0100 (CET)
+Received: from mail-wm0-f67.google.com ([74.125.82.67]:32822 "EHLO
+        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993030AbcKIV3Fqzkx1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 22:29:05 +0100
+Received: by mail-wm0-f67.google.com with SMTP id u144so31787798wmu.0;
+        Wed, 09 Nov 2016 13:29:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=yxTceWifdZenW8nS8aH83RLJiGszyVhkHZr1ywfu66U=;
+        b=gzQdsQARSceoKyQG9X7/nWt98AQ3/aCOHQIWB8nNsSVlpo18zYzoFQCB7MHqx+Kw4H
+         FuepTG3TV7rH/OqX+69MtHPGUE6bDM/CB/t2PN+RsR8bywL5XcNaaaQL2VsgG1Vuz/6s
+         TwFV5QhgH9hWQtNrTSL5fnb9wmUbXVUCUeJgngj3axzBMmrnBgFIbfSXdMqd3fapCTDX
+         Peokf4XIQ0d+I6IXDpupo1y5gZYpG1Fnu66jJ0AuJi1IuCzxLKwR0sHdXxkJeFEiz4nK
+         oNmk/kk9NuSItWjxe7livMSX7oEcF16s3WaJhmbvRYRHBbZteXkuklgAeyOQi9da+fjb
+         M2Ww==
+X-Gm-Message-State: ABUngvdogf9IS/lHN/a5Iy/1EYI2qrvOTqFtig7Fy1odSTfUjZwcFg8FSIhHJysBVkoCzA==
+X-Received: by 10.28.209.67 with SMTP id i64mr2662870wmg.48.1478726940533;
+        Wed, 09 Nov 2016 13:29:00 -0800 (PST)
+Received: from [192.168.0.102] (ip-78-45-88-157.net.upcbroadband.cz. [78.45.88.157])
+        by smtp.gmail.com with ESMTPSA id l67sm18546020wmf.0.2016.11.09.13.28.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 09 Nov 2016 13:28:59 -0800 (PST)
+Subject: Re: [BACKPORT PATCH 3.10..3.16 1/2] MIPS: KVM: Fix unused variable
+ build warning
+To:     James Hogan <james.hogan@imgtec.com>, stable@vger.kernel.org
+References: <2e791b20c24570339d15118a55e174f5b2d63ac1.1478707766.git-series.james.hogan@imgtec.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+From:   Jiri Slaby <jslaby@suse.cz>
+Message-ID: <dc526766-4588-52df-6cee-f7a6121e3468@suse.cz>
+Date:   Wed, 9 Nov 2016 22:28:58 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Received: by 10.25.208.80 with HTTP; Wed, 9 Nov 2016 13:27:13 -0800 (PST)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Wed, 9 Nov 2016 22:27:13 +0100
-X-Gmail-Original-Message-ID: <CAHmME9oSUcAXVMhpLt0bqa9DKHE8rd3u+3JDb_wgviZnOpP7JA@mail.gmail.com>
-Message-ID: <CAHmME9oSUcAXVMhpLt0bqa9DKHE8rd3u+3JDb_wgviZnOpP7JA@mail.gmail.com>
-Subject: Proposal: HAVE_SEPARATE_IRQ_STACK?
-To:     LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
-        linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>
-Cc:     WireGuard mailing list <wireguard@lists.zx2c4.com>, k@vodka.home.kg
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <Jason@zx2c4.com>
+In-Reply-To: <2e791b20c24570339d15118a55e174f5b2d63ac1.1478707766.git-series.james.hogan@imgtec.com>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Transfer-Encoding: 7bit
+Return-Path: <jirislaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55756
+X-archive-position: 55757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,57 +61,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi folks,
+On 11/09/2016, 05:13 PM, James Hogan wrote:
+> From: Nicholas Mc Guire <hofrat@osadl.org>
+> 
+> commit 5f508c43a7648baa892528922402f1e13f258bd4 upstream.
 
-I do some ECC crypto in a kthread. A fast 32bit implementation usually
-uses around 2k - 3k bytes of stack. Since kernel threads get 8k, I
-figured this would be okay. And for the most part, it is. However,
-everything falls apart on architectures like MIPS, which do not use a
-separate irq stack.
+Both applied now to 3.12, albeit the latter didn't apply cleanly.
 
-From what I can tell, on MIPS, the irq handler uses whichever stack
-was in current at the time of interruption. At the end of the irq
-handler, softirqs trigger if preemption hasn't been disabled. When the
-softirq handler runs, it will still use the same interrupted stack. So
-let's take some pathological case of huge softirq stack usage: wifi
-driver inside of l2tp inside of gre inside of ppp. Now, my ECC crypto
-is humming along happily in its kthread, when all of the sudden, a
-wifi packet arrives, triggering the interrupt. Or, perhaps instead,
-TCP sends an ack packet on softirq, using my kthread's stack. The
-interrupt is serviced, and at the end of it, softirq is serviced,
-using my kthread's stack, which was already half full. When this
-softirq is serviced, it goes through our 4 layers of network device
-drivers. Since we started with a half full stack, we very quickly blow
-it up, and everything explodes, and users write angry mailing list
-posts.
-
-It seems to me x86, ARM, SPARC, SH, ParisC, PPC, Metag, and UML all
-concluded that letting the interrupt handler use current's stack was a
-terrible idea, and instead have a per-cpu irq stack that gets used
-when the handler is service. Whew!
-
-But for the remaining platforms, such as MIPS, this is still a
-problem. In an effort to work around this in my code, rather than
-having to invoke kmalloc for what should be stack-based variables, I
-was thinking I'd just disable preemption for those functions that use
-a lot of stack, so that stack-hungry softirq handlers don't crush it.
-This is generally unsatisfactory, so I don't want to do this
-unconditionally. Instead, I'd like to do some cludge such as:
-
-    #ifndef CONFIG_HAVE_SEPARATE_IRQ_STACK
-    preempt_disable();
-    #endif
-
-    some_func_that_uses_lots_of_stack();
-
-    #ifndef CONFIG_HAVE_SEPARATE_IRQ_STACK
-    preempt_enable();
-    #endif
-
-However, for this to work, I actual need that config variable. Would
-you accept a patch that adds this config variable to the relavent
-platforms? If not, do you have a better solution for me (which doesn't
-involve using kmalloc or choosing a different crypto primitive)?
-
-Thanks,
-Jason
+thanks,
+-- 
+js
+suse labs

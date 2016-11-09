@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 11:46:14 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:54524 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 12:08:16 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56490 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992328AbcKIKqH0vm8A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 11:46:07 +0100
+        by eddie.linux-mips.org with ESMTP id S23993010AbcKILIFSSKxA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 12:08:05 +0100
 Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 28586B22;
-        Wed,  9 Nov 2016 10:46:00 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 73C4FB0B;
+        Wed,  9 Nov 2016 11:07:58 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,12 +14,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         kvm@vger.kernel.org
-Subject: [PATCH 4.4 35/69] KVM: MIPS: Make ERET handle ERL before EXL
-Date:   Wed,  9 Nov 2016 11:44:13 +0100
-Message-Id: <20161109102902.590301640@linuxfoundation.org>
+Subject: [PATCH 4.8 070/138] KVM: MIPS: Make ERET handle ERL before EXL
+Date:   Wed,  9 Nov 2016 11:45:53 +0100
+Message-Id: <20161109102848.046467688@linuxfoundation.org>
 X-Mailer: git-send-email 2.10.2
-In-Reply-To: <20161109102901.127641653@linuxfoundation.org>
-References: <20161109102901.127641653@linuxfoundation.org>
+In-Reply-To: <20161109102844.808685475@linuxfoundation.org>
+References: <20161109102844.808685475@linuxfoundation.org>
 User-Agent: quilt/0.64
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55734
+X-archive-position: 55735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,7 +44,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -77,7 +77,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -752,15 +752,15 @@ enum emulation_result kvm_mips_emul_eret
+@@ -791,15 +791,15 @@ enum emulation_result kvm_mips_emul_eret
  	struct mips_coproc *cop0 = vcpu->arch.cop0;
  	enum emulation_result er = EMULATE_DONE;
  

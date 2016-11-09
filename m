@@ -1,54 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:22:15 +0100 (CET)
-Received: from mail-wm0-f66.google.com ([74.125.82.66]:35977 "EHLO
-        mail-wm0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993070AbcKIVWIBzGk7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 22:22:08 +0100
-Received: by mail-wm0-f66.google.com with SMTP id c17so31695853wmc.3;
-        Wed, 09 Nov 2016 13:22:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=garv8mZFTfYVKGwPkMboSgSQMkcPlBG9Aj/5cEUqnoA=;
-        b=U5/H77Puc2gu/AZ8aTh5G7OCZGJNef/ZU/KP9I8CugD+0rB/+W/U7e6B4GzO1hQn4u
-         CiSY2Tca3/Btmv3IfBe9B1W2WhODrUFJ7pRqoPoxHwRUs/uVyCPaWsBISHaypzBnQ/Ym
-         PeSzFcvVkqK7CVdyQtZwqs2cLnv74P7AmJFjAeD2+0KZv0jmc9RpYekgs/3dwTq0FAH3
-         3FgjhMHrlI5pGhU9LkP1VJZGnU+Y/qocofUz52uMEvYoglA+LRjJBbXxA0VaZE9xSYBo
-         Ekf4Xp5ePBhE75QK9Ry7RIZUMsjvmeAS3viUjK96GlAKZNUVdElRMnJZJPE1qJ4FSC5L
-         jtPg==
-X-Gm-Message-State: ABUngve1DjRRW+gkEMCOSBNuCsCjzqMlrL5+Zkpk/DNIKMQCbMAkMGIGSvGVsA73yX5G4A==
-X-Received: by 10.28.52.201 with SMTP id b192mr2367835wma.118.1478726522635;
-        Wed, 09 Nov 2016 13:22:02 -0800 (PST)
-Received: from [192.168.0.102] (ip-78-45-88-157.net.upcbroadband.cz. [78.45.88.157])
-        by smtp.gmail.com with ESMTPSA id 125sm2406808wmh.14.2016.11.09.13.22.01
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 09 Nov 2016 13:22:01 -0800 (PST)
-Subject: Re: [BACKPORT PATCH 3.10..3.16] KVM: MIPS: Drop other CPU ASIDs on
- guest MMU changes
-To:     James Hogan <james.hogan@imgtec.com>, stable@vger.kernel.org
-References: <20161109144624.16683-1-james.hogan@imgtec.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
-From:   Jiri Slaby <jslaby@suse.cz>
-Message-ID: <6066667d-e62d-bfec-ca3e-f16f8bef912d@suse.cz>
-Date:   Wed, 9 Nov 2016 22:22:01 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:27:31 +0100 (CET)
+Received: from frisell.zx2c4.com ([192.95.5.64]:59340 "EHLO frisell.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993030AbcKIV1ZO0ti1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Nov 2016 22:27:25 +0100
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 3b1bfaf8
+        for <linux-mips@linux-mips.org>;
+        Wed, 9 Nov 2016 21:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
+        :from:date:message-id:subject:to:cc:content-type; s=mail; bh=fwR
+        cFtMMhlQoQKQbpn4ZvB4JQSo=; b=26pT9GItiiUAquD4LCaSWfGwxp5oYt1pWGZ
+        ucM+9ruysIeL5QR8kK2vr2QzXt+m4K3y64WqJS5jQPgAI/niF+q30ITWuGET+Glt
+        ggi7SEjpq6oEReljhZbzCMeRCDkoCEa9dQZREu3AiZKDfBUSVaA87DhCWB4Za0+G
+        8/wfkVW1OUen5Z2A+8H9MQxF0EyCWtyKveJ6jh9U2GDEPClgJL0ma+u746lbqjoH
+        fvzQmCdXLpZux7GK3WiA6djs1F1gcUU+gSarEubAS80TCZBl9r5Do2Hv/Kre78mf
+        8SgOBZ+g77MLBTMsRIGC0nfdHKGnVpgDjEsuoSNw8JlLJdDmIKg==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f91456ea (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO)
+        for <linux-mips@linux-mips.org>;
+        Wed, 9 Nov 2016 21:25:15 +0000 (UTC)
+Received: by mail-lf0-f44.google.com with SMTP id t196so175160061lff.3
+        for <linux-mips@linux-mips.org>; Wed, 09 Nov 2016 13:27:16 -0800 (PST)
+X-Gm-Message-State: ABUngveAF0PDO8AMf2lF8kIY/eHmzOBaIeWqQ6kTmNLAgBNuHhnqlJsvcSxWXyhPtBBnIAO1l/hKbi8O1CAW/Q==
+X-Received: by 10.25.18.199 with SMTP id 68mr715650lfs.180.1478726834475; Wed,
+ 09 Nov 2016 13:27:14 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20161109144624.16683-1-james.hogan@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <jirislaby@gmail.com>
+Received: by 10.25.208.80 with HTTP; Wed, 9 Nov 2016 13:27:13 -0800 (PST)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Wed, 9 Nov 2016 22:27:13 +0100
+X-Gmail-Original-Message-ID: <CAHmME9oSUcAXVMhpLt0bqa9DKHE8rd3u+3JDb_wgviZnOpP7JA@mail.gmail.com>
+Message-ID: <CAHmME9oSUcAXVMhpLt0bqa9DKHE8rd3u+3JDb_wgviZnOpP7JA@mail.gmail.com>
+Subject: Proposal: HAVE_SEPARATE_IRQ_STACK?
+To:     LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
+        linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>
+Cc:     WireGuard mailing list <wireguard@lists.zx2c4.com>, k@vodka.home.kg
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55755
+X-archive-position: 55756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,44 +54,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/09/2016, 03:46 PM, James Hogan wrote:
-> commit 91e4f1b6073dd680d86cdb7e42d7cccca9db39d8 upstream.
-> 
-> When a guest TLB entry is replaced by TLBWI or TLBWR, we only invalidate
-> TLB entries on the local CPU. This doesn't work correctly on an SMP host
-> when the guest is migrated to a different physical CPU, as it could pick
-> up stale TLB mappings from the last time the vCPU ran on that physical
-> CPU.
-> 
-> Therefore invalidate both user and kernel host ASIDs on other CPUs,
-> which will cause new ASIDs to be generated when it next runs on those
-> CPUs.
-> 
-> We're careful only to do this if the TLB entry was already valid, and
-> only for the kernel ASID where the virtual address it mapped is outside
-> of the guest user address range.
-> 
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Cc: kvm@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # 3.10.x-
-> Cc: Jiri Slaby <jslaby@suse.cz>
-> [james.hogan@imgtec.com: Backport to 3.10..3.16]
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> ---
-> Unfortunately the original commit went in to v3.12.65 as commit
-> 168e5ebbd63e, without fixing up the references to tlb_lo[0/1] to
-> tlb_lo0/1 which broke the MIPS KVM build, and I didn't twig that I
-> already had a correct backport outstanding (sorry!). That commit should
-> be reverted before applying this backport to 3.12.
+Hi folks,
 
-Thanks, reverted and applied. I wonder the builders didn't break given 4
-mips configurations are tested. I indeed could reproduce locally.
+I do some ECC crypto in a kthread. A fast 32bit implementation usually
+uses around 2k - 3k bytes of stack. Since kernel threads get 8k, I
+figured this would be okay. And for the most part, it is. However,
+everything falls apart on architectures like MIPS, which do not use a
+separate irq stack.
 
+From what I can tell, on MIPS, the irq handler uses whichever stack
+was in current at the time of interruption. At the end of the irq
+handler, softirqs trigger if preemption hasn't been disabled. When the
+softirq handler runs, it will still use the same interrupted stack. So
+let's take some pathological case of huge softirq stack usage: wifi
+driver inside of l2tp inside of gre inside of ppp. Now, my ECC crypto
+is humming along happily in its kthread, when all of the sudden, a
+wifi packet arrives, triggering the interrupt. Or, perhaps instead,
+TCP sends an ack packet on softirq, using my kthread's stack. The
+interrupt is serviced, and at the end of it, softirq is serviced,
+using my kthread's stack, which was already half full. When this
+softirq is serviced, it goes through our 4 layers of network device
+drivers. Since we started with a half full stack, we very quickly blow
+it up, and everything explodes, and users write angry mailing list
+posts.
 
--- 
-js
-suse labs
+It seems to me x86, ARM, SPARC, SH, ParisC, PPC, Metag, and UML all
+concluded that letting the interrupt handler use current's stack was a
+terrible idea, and instead have a per-cpu irq stack that gets used
+when the handler is service. Whew!
+
+But for the remaining platforms, such as MIPS, this is still a
+problem. In an effort to work around this in my code, rather than
+having to invoke kmalloc for what should be stack-based variables, I
+was thinking I'd just disable preemption for those functions that use
+a lot of stack, so that stack-hungry softirq handlers don't crush it.
+This is generally unsatisfactory, so I don't want to do this
+unconditionally. Instead, I'd like to do some cludge such as:
+
+    #ifndef CONFIG_HAVE_SEPARATE_IRQ_STACK
+    preempt_disable();
+    #endif
+
+    some_func_that_uses_lots_of_stack();
+
+    #ifndef CONFIG_HAVE_SEPARATE_IRQ_STACK
+    preempt_enable();
+    #endif
+
+However, for this to work, I actual need that config variable. Would
+you accept a patch that adds this config variable to the relavent
+platforms? If not, do you have a better solution for me (which doesn't
+involve using kmalloc or choosing a different crypto primitive)?
+
+Thanks,
+Jason

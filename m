@@ -1,50 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:29:12 +0100 (CET)
-Received: from mail-wm0-f67.google.com ([74.125.82.67]:32822 "EHLO
-        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993030AbcKIV3Fqzkx1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 22:29:05 +0100
-Received: by mail-wm0-f67.google.com with SMTP id u144so31787798wmu.0;
-        Wed, 09 Nov 2016 13:29:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=yxTceWifdZenW8nS8aH83RLJiGszyVhkHZr1ywfu66U=;
-        b=gzQdsQARSceoKyQG9X7/nWt98AQ3/aCOHQIWB8nNsSVlpo18zYzoFQCB7MHqx+Kw4H
-         FuepTG3TV7rH/OqX+69MtHPGUE6bDM/CB/t2PN+RsR8bywL5XcNaaaQL2VsgG1Vuz/6s
-         TwFV5QhgH9hWQtNrTSL5fnb9wmUbXVUCUeJgngj3axzBMmrnBgFIbfSXdMqd3fapCTDX
-         Peokf4XIQ0d+I6IXDpupo1y5gZYpG1Fnu66jJ0AuJi1IuCzxLKwR0sHdXxkJeFEiz4nK
-         oNmk/kk9NuSItWjxe7livMSX7oEcF16s3WaJhmbvRYRHBbZteXkuklgAeyOQi9da+fjb
-         M2Ww==
-X-Gm-Message-State: ABUngvdogf9IS/lHN/a5Iy/1EYI2qrvOTqFtig7Fy1odSTfUjZwcFg8FSIhHJysBVkoCzA==
-X-Received: by 10.28.209.67 with SMTP id i64mr2662870wmg.48.1478726940533;
-        Wed, 09 Nov 2016 13:29:00 -0800 (PST)
-Received: from [192.168.0.102] (ip-78-45-88-157.net.upcbroadband.cz. [78.45.88.157])
-        by smtp.gmail.com with ESMTPSA id l67sm18546020wmf.0.2016.11.09.13.28.59
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 09 Nov 2016 13:28:59 -0800 (PST)
-Subject: Re: [BACKPORT PATCH 3.10..3.16 1/2] MIPS: KVM: Fix unused variable
- build warning
-To:     James Hogan <james.hogan@imgtec.com>, stable@vger.kernel.org
-References: <2e791b20c24570339d15118a55e174f5b2d63ac1.1478707766.git-series.james.hogan@imgtec.com>
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:30:23 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:45607 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993005AbcKIVaQ1fnR1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Nov 2016 22:30:16 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 080DCADC8;
+        Wed,  9 Nov 2016 21:30:16 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
-Message-ID: <dc526766-4588-52df-6cee-f7a6121e3468@suse.cz>
-Date:   Wed, 9 Nov 2016 22:28:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+To:     stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to 3.12-stable] KVM: MIPS: Drop other CPU ASIDs on guest MMU changes
+Date:   Wed,  9 Nov 2016 22:30:11 +0100
+Message-Id: <20161109213013.11855-2-jslaby@suse.cz>
+X-Mailer: git-send-email 2.10.2
+In-Reply-To: <20161109213013.11855-1-jslaby@suse.cz>
+References: <20161109213013.11855-1-jslaby@suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <2e791b20c24570339d15118a55e174f5b2d63ac1.1478707766.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset=iso-8859-2
-Content-Transfer-Encoding: 7bit
-Return-Path: <jirislaby@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55757
+X-archive-position: 55758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,14 +44,143 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 11/09/2016, 05:13 PM, James Hogan wrote:
-> From: Nicholas Mc Guire <hofrat@osadl.org>
-> 
-> commit 5f508c43a7648baa892528922402f1e13f258bd4 upstream.
+From: James Hogan <james.hogan@imgtec.com>
 
-Both applied now to 3.12, albeit the latter didn't apply cleanly.
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
-thanks,
+===============
+
+commit 91e4f1b6073dd680d86cdb7e42d7cccca9db39d8 upstream.
+
+When a guest TLB entry is replaced by TLBWI or TLBWR, we only invalidate
+TLB entries on the local CPU. This doesn't work correctly on an SMP host
+when the guest is migrated to a different physical CPU, as it could pick
+up stale TLB mappings from the last time the vCPU ran on that physical
+CPU.
+
+Therefore invalidate both user and kernel host ASIDs on other CPUs,
+which will cause new ASIDs to be generated when it next runs on those
+CPUs.
+
+We're careful only to do this if the TLB entry was already valid, and
+only for the kernel ASID where the virtual address it mapped is outside
+of the guest user address range.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+[james.hogan@imgtec.com: Backport to 3.10..3.16]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kvm/kvm_mips_emul.c | 61 +++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 53 insertions(+), 8 deletions(-)
+
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 9f7643874fba..7f3fb19d2156 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -310,6 +310,47 @@ enum emulation_result kvm_mips_emul_tlbr(struct kvm_vcpu *vcpu)
+ 	return er;
+ }
+ 
++/**
++ * kvm_mips_invalidate_guest_tlb() - Indicates a change in guest MMU map.
++ * @vcpu:	VCPU with changed mappings.
++ * @tlb:	TLB entry being removed.
++ *
++ * This is called to indicate a single change in guest MMU mappings, so that we
++ * can arrange TLB flushes on this and other CPUs.
++ */
++static void kvm_mips_invalidate_guest_tlb(struct kvm_vcpu *vcpu,
++					  struct kvm_mips_tlb *tlb)
++{
++	int cpu, i;
++	bool user;
++
++	/* No need to flush for entries which are already invalid */
++	if (!((tlb->tlb_lo0 | tlb->tlb_lo1) & MIPS3_PG_V))
++		return;
++	/* User address space doesn't need flushing for KSeg2/3 changes */
++	user = tlb->tlb_hi < KVM_GUEST_KSEG0;
++
++	preempt_disable();
++
++	/*
++	 * Probe the shadow host TLB for the entry being overwritten, if one
++	 * matches, invalidate it
++	 */
++	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
++
++	/* Invalidate the whole ASID on other CPUs */
++	cpu = smp_processor_id();
++	for_each_possible_cpu(i) {
++		if (i == cpu)
++			continue;
++		if (user)
++			vcpu->arch.guest_user_asid[i] = 0;
++		vcpu->arch.guest_kernel_asid[i] = 0;
++	}
++
++	preempt_enable();
++}
++
+ /* Write Guest TLB Entry @ Index */
+ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
+ {
+@@ -331,10 +372,8 @@ enum emulation_result kvm_mips_emul_tlbwi(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	tlb = &vcpu->arch.guest_tlb[index];
+-#if 1
+-	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
+-	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
+-#endif
++
++	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
+ 
+ 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
+ 	tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
+@@ -373,10 +412,7 @@ enum emulation_result kvm_mips_emul_tlbwr(struct kvm_vcpu *vcpu)
+ 
+ 	tlb = &vcpu->arch.guest_tlb[index];
+ 
+-#if 1
+-	/* Probe the shadow host TLB for the entry being overwritten, if one matches, invalidate it */
+-	kvm_mips_host_tlb_inv(vcpu, tlb->tlb_hi);
+-#endif
++	kvm_mips_invalidate_guest_tlb(vcpu, tlb);
+ 
+ 	tlb->tlb_mask = kvm_read_c0_guest_pagemask(cop0);
+ 	tlb->tlb_hi = kvm_read_c0_guest_entryhi(cop0);
+@@ -419,6 +455,7 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
+ 	int32_t rt, rd, copz, sel, co_bit, op;
+ 	uint32_t pc = vcpu->arch.pc;
+ 	unsigned long curr_pc;
++	int cpu, i;
+ 
+ 	/*
+ 	 * Update PC and hold onto current PC in case there is
+@@ -538,8 +575,16 @@ kvm_mips_emulate_CP0(uint32_t inst, uint32_t *opc, uint32_t cause,
+ 					     ASID_MASK,
+ 					     vcpu->arch.gprs[rt] & ASID_MASK);
+ 
++					preempt_disable();
+ 					/* Blow away the shadow host TLBs */
+ 					kvm_mips_flush_host_tlb(1);
++					cpu = smp_processor_id();
++					for_each_possible_cpu(i)
++						if (i != cpu) {
++							vcpu->arch.guest_user_asid[i] = 0;
++							vcpu->arch.guest_kernel_asid[i] = 0;
++						}
++					preempt_enable();
+ 				}
+ 				kvm_write_c0_guest_entryhi(cop0,
+ 							   vcpu->arch.gprs[rt]);
 -- 
-js
-suse labs
+2.10.2

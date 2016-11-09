@@ -1,56 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 21:45:11 +0100 (CET)
-Received: from mail-wm0-f67.google.com ([74.125.82.67]:34724 "EHLO
-        mail-wm0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992999AbcKIUpFVhtL7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 21:45:05 +0100
-Received: by mail-wm0-f67.google.com with SMTP id g23so358158wme.1;
-        Wed, 09 Nov 2016 12:45:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id;
-        bh=4P/tdhfvTOliA7hJrYyxU9MPh/E5gR0JbbUsfFzCn/g=;
-        b=H7scj/cW+pdVPi2bG2AQekTLCjv7vzicETazUrgKh9rK134D1YqGgVxx0q7ToVBCTs
-         Lhu0Vo1Yp2SqXom6BXNNr3TG3lJuafCzjvnBqZl4ikB3GdlLSyr5v9n4ImLMGGkUgqxy
-         +XMHk/LxhsmIELccqR2wz38tb/hGJ05kcFHYlCaSpIC0sGLgV9arKmYSlQHAqB8YYvh6
-         4+PS1DvQwqJFKxGmuvEoutIOsyKMjkv3NBUppY0NfhmI8cVtDcROhq4GX86xaNVJvNew
-         ICSFCPW/AtZXpWrFQCV+bswkBlO8L8lufEXV+TU+pWUd784uXCfQoBWvt3vPupwGKmhj
-         6VbQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2016 22:22:15 +0100 (CET)
+Received: from mail-wm0-f66.google.com ([74.125.82.66]:35977 "EHLO
+        mail-wm0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993070AbcKIVWIBzGk7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2016 22:22:08 +0100
+Received: by mail-wm0-f66.google.com with SMTP id c17so31695853wmc.3;
+        Wed, 09 Nov 2016 13:22:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=4P/tdhfvTOliA7hJrYyxU9MPh/E5gR0JbbUsfFzCn/g=;
-        b=bElv6OtF/wow7Uc6gQ7HmIcTPWuSf8Y93sh4K/bshArWPmAeu94rRL3crMDEIh1I1t
-         PK7LVb96xtIvUC7PW1zb50kmOjQjOXV1FMbSBk7LZQyr0CqnblO97ZuQUOVqwtc+szcP
-         M6vQMG++s4/h/NRGo0F1ul2Bf7qJyOTab0OjOnRuy2q3RDH4OpEKPYgCSGoAqGUgTEcG
-         Bqjq0C3cBQEsHHQR+F97eXai9RUIJC6NGSCUCMMnsqW8Dg46nlfiYycQzT/vOpehEhFu
-         iKgJi7N2bT7bnIBXJUKTluuNHxI4BsMpLYZ7Boju0N/Eczj3PNz9oCxXaCeuv4pMpEza
-         Bx3g==
-X-Gm-Message-State: ABUngvdtgXUenaWbxhVzvW1RtzQMwXKZZasC9kXGE+/lht7gEWHyGiSXJtGtBW/zuuFZOw==
-X-Received: by 10.194.122.65 with SMTP id lq1mr1378199wjb.12.1478724299947;
-        Wed, 09 Nov 2016 12:44:59 -0800 (PST)
-Received: from sudip-laptop.Home ([94.4.164.233])
-        by smtp.gmail.com with ESMTPSA id w7sm8960833wmd.24.2016.11.09.12.44.59
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 09 Nov 2016 12:44:59 -0800 (PST)
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        james.hogan@imgtec.com,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH v2] MIPS: fix duplicate define
-Date:   Wed,  9 Nov 2016 20:44:54 +0000
-Message-Id: <1478724294-15736-1-git-send-email-sudipm.mukherjee@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <sudipm.mukherjee@gmail.com>
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=garv8mZFTfYVKGwPkMboSgSQMkcPlBG9Aj/5cEUqnoA=;
+        b=U5/H77Puc2gu/AZ8aTh5G7OCZGJNef/ZU/KP9I8CugD+0rB/+W/U7e6B4GzO1hQn4u
+         CiSY2Tca3/Btmv3IfBe9B1W2WhODrUFJ7pRqoPoxHwRUs/uVyCPaWsBISHaypzBnQ/Ym
+         PeSzFcvVkqK7CVdyQtZwqs2cLnv74P7AmJFjAeD2+0KZv0jmc9RpYekgs/3dwTq0FAH3
+         3FgjhMHrlI5pGhU9LkP1VJZGnU+Y/qocofUz52uMEvYoglA+LRjJBbXxA0VaZE9xSYBo
+         Ekf4Xp5ePBhE75QK9Ry7RIZUMsjvmeAS3viUjK96GlAKZNUVdElRMnJZJPE1qJ4FSC5L
+         jtPg==
+X-Gm-Message-State: ABUngve1DjRRW+gkEMCOSBNuCsCjzqMlrL5+Zkpk/DNIKMQCbMAkMGIGSvGVsA73yX5G4A==
+X-Received: by 10.28.52.201 with SMTP id b192mr2367835wma.118.1478726522635;
+        Wed, 09 Nov 2016 13:22:02 -0800 (PST)
+Received: from [192.168.0.102] (ip-78-45-88-157.net.upcbroadband.cz. [78.45.88.157])
+        by smtp.gmail.com with ESMTPSA id 125sm2406808wmh.14.2016.11.09.13.22.01
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 09 Nov 2016 13:22:01 -0800 (PST)
+Subject: Re: [BACKPORT PATCH 3.10..3.16] KVM: MIPS: Drop other CPU ASIDs on
+ guest MMU changes
+To:     James Hogan <james.hogan@imgtec.com>, stable@vger.kernel.org
+References: <20161109144624.16683-1-james.hogan@imgtec.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+From:   Jiri Slaby <jslaby@suse.cz>
+Message-ID: <6066667d-e62d-bfec-ca3e-f16f8bef912d@suse.cz>
+Date:   Wed, 9 Nov 2016 22:22:01 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
+MIME-Version: 1.0
+In-Reply-To: <20161109144624.16683-1-james.hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <jirislaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55754
+X-archive-position: 55755
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sudipm.mukherjee@gmail.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,54 +61,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The mips build of ip27_defconfig is failing with the error:
-In file included from ../arch/mips/include/asm/mach-ip27/spaces.h:29:0,
-		 from ../arch/mips/include/asm/page.h:12,
-		 from ../arch/mips/vdso/vdso.h:26,
-		 from ../arch/mips/vdso/gettimeofday.c:11:
-../arch/mips/include/asm/mach-generic/spaces.h:28:0:
-	error: "CAC_BASE" redefined [-Werror]
- #define CAC_BASE  _AC(0x80000000, UL)
+On 11/09/2016, 03:46 PM, James Hogan wrote:
+> commit 91e4f1b6073dd680d86cdb7e42d7cccca9db39d8 upstream.
+> 
+> When a guest TLB entry is replaced by TLBWI or TLBWR, we only invalidate
+> TLB entries on the local CPU. This doesn't work correctly on an SMP host
+> when the guest is migrated to a different physical CPU, as it could pick
+> up stale TLB mappings from the last time the vCPU ran on that physical
+> CPU.
+> 
+> Therefore invalidate both user and kernel host ASIDs on other CPUs,
+> which will cause new ASIDs to be generated when it next runs on those
+> CPUs.
+> 
+> We're careful only to do this if the TLB entry was already valid, and
+> only for the kernel ASID where the virtual address it mapped is outside
+> of the guest user address range.
+> 
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: kvm@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # 3.10.x-
+> Cc: Jiri Slaby <jslaby@suse.cz>
+> [james.hogan@imgtec.com: Backport to 3.10..3.16]
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> ---
+> Unfortunately the original commit went in to v3.12.65 as commit
+> 168e5ebbd63e, without fixing up the references to tlb_lo[0/1] to
+> tlb_lo0/1 which broke the MIPS KVM build, and I didn't twig that I
+> already had a correct backport outstanding (sorry!). That commit should
+> be reverted before applying this backport to 3.12.
 
-In file included from ../arch/mips/include/asm/page.h:12:0,
-		 from ../arch/mips/vdso/vdso.h:26,
-		 from ../arch/mips/vdso/gettimeofday.c:11:
-../arch/mips/include/asm/mach-ip27/spaces.h:22:0:
-	note: this is the location of the previous definition
- #define CAC_BASE  0xa800000000000000
+Thanks, reverted and applied. I wonder the builders didn't break given 4
+mips configurations are tested. I indeed could reproduce locally.
 
-Add a condition to check if CAC_BASE is already defined, and define it
-only if it is not yet defined.
 
-Fixes: 3ffc17d8768b ("MIPS: Adjust MIPS64 CAC_BASE to reflect Config.K0")
-Signed-off-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
----
-
-v2: corrected a silly mistake of overlooking #else
-
-Build log is at:
-https://travis-ci.org/sudipm-mukherjee/parport/jobs/174134289
-
- arch/mips/include/asm/mach-generic/spaces.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/mips/include/asm/mach-generic/spaces.h b/arch/mips/include/asm/mach-generic/spaces.h
-index 952b0fd..3d6d3b0 100644
---- a/arch/mips/include/asm/mach-generic/spaces.h
-+++ b/arch/mips/include/asm/mach-generic/spaces.h
-@@ -22,11 +22,13 @@
- #endif
- 
- #ifdef CONFIG_32BIT
-+#ifndef CAC_BASE
- #ifdef CONFIG_KVM_GUEST
- #define CAC_BASE		_AC(0x40000000, UL)
- #else
- #define CAC_BASE		_AC(0x80000000, UL)
- #endif
-+#endif
- #ifndef IO_BASE
- #define IO_BASE			_AC(0xa0000000, UL)
- #endif
 -- 
-1.9.1
+js
+suse labs

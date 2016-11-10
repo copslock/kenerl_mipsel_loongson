@@ -1,55 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2016 18:37:54 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:35632 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993180AbcKJRh2PNuLO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Nov 2016 18:37:28 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5BAF341F8E45;
-        Thu, 10 Nov 2016 17:36:12 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 10 Nov 2016 17:36:12 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 10 Nov 2016 17:36:12 +0000
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id B041C98707B62;
-        Thu, 10 Nov 2016 17:37:18 +0000 (GMT)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 10 Nov
- 2016 17:37:22 +0000
-Date:   Thu, 10 Nov 2016 17:37:22 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <fengguang.wu@intel.com>
-CC:     Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.cz>,
-        <stable@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>,
-        Paul Burton <Paul.Burton@imgtec.com>
-Subject: Re: [BACKPORT PATCH 3.10..3.16] KVM: MIPS: Drop other CPU ASIDs on
- guest MMU changes
-Message-ID: <20161110173721.GD7075@jhogan-linux.le.imgtec.org>
-References: <20161109144624.16683-1-james.hogan@imgtec.com>
- <6066667d-e62d-bfec-ca3e-f16f8bef912d@suse.cz>
- <20161109220043.GA7075@jhogan-linux.le.imgtec.org>
- <20161110060843.GA28639@kroah.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2016 18:40:10 +0100 (CET)
+Received: from frisell.zx2c4.com ([192.95.5.64]:51108 "EHLO frisell.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993148AbcKJRkD5WtiO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Nov 2016 18:40:03 +0100
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 55c364f1
+        for <linux-mips@linux-mips.org>;
+        Thu, 10 Nov 2016 17:37:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
+        :in-reply-to:references:from:date:message-id:subject:to:cc
+        :content-type; s=mail; bh=w+c5j4Nw6cNicku3RtnNkhoTcP8=; b=iVlhuw
+        EoOuGN+ClUbhYGbbpE1S0lgsj+9gJmF86IImRyOxyvdtdjhw9leCCYwvYQ+zHe7Z
+        /8YXBNhsXHZvNf2ZgHyhDOctCBqIHJPcQr78rq6cfu71pETHjjINol8INHQXeWav
+        hxNA3nftpxcvbpE1BOMX8CYm0ubYvmdJMznsQcoLjJBQDsyWqARnd5NRuRAPzE5d
+        uGY8N5i2cDVexy2txDqWi4NPsYoLYeqpO4+vNTD0pUMWl8jE+zARW2PXbECBRyv6
+        miUeOAoMXAiy6uJEhH46g5QwQ5VMGDAScnmCUoX4vjK1HB5wd4PEdOpbDHNC8CE2
+        spcUX5tPeQV9bEcQ==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 61991641 (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO)
+        for <linux-mips@linux-mips.org>;
+        Thu, 10 Nov 2016 17:37:49 +0000 (UTC)
+Received: by mail-lf0-f51.google.com with SMTP id b14so195443435lfg.2
+        for <linux-mips@linux-mips.org>; Thu, 10 Nov 2016 09:39:56 -0800 (PST)
+X-Gm-Message-State: ABUngvcqYRg2baqBAl4gY8nKyHBviOGyaZCy97LWbvDaytfHY940MtcIEsY/5yKpjrnkwr/QJraGDvvpO2qhDA==
+X-Received: by 10.25.44.66 with SMTP id s63mr3923815lfs.159.1478799594853;
+ Thu, 10 Nov 2016 09:39:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="IDYEmSnFhs3mNXr+"
-Content-Disposition: inline
-In-Reply-To: <20161110060843.GA28639@kroah.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+Received: by 10.25.208.80 with HTTP; Thu, 10 Nov 2016 09:39:54 -0800 (PST)
+In-Reply-To: <alpine.DEB.2.20.1611101351260.3501@nanos>
+References: <CAHmME9oSUcAXVMhpLt0bqa9DKHE8rd3u+3JDb_wgviZnOpP7JA@mail.gmail.com>
+ <alpine.DEB.2.20.1611092227200.3501@nanos> <CAHmME9pGoRogjHSSy-G-sB4-cHMGcjCeW9PSrNw1h5FsKzfWAw@mail.gmail.com>
+ <alpine.DEB.2.20.1611100959040.3501@nanos> <CAHmME9pHYA82M3iDNfDtDE96gFaZORSsEAn_KnePd3rhFioqHQ@mail.gmail.com>
+ <alpine.DEB.2.20.1611101351260.3501@nanos>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Thu, 10 Nov 2016 18:39:54 +0100
+X-Gmail-Original-Message-ID: <CAHmME9rv8CfgY87S_HVN3njc2RnisjoxzfZxY=H=2FzZkrQqLg@mail.gmail.com>
+Message-ID: <CAHmME9rv8CfgY87S_HVN3njc2RnisjoxzfZxY=H=2FzZkrQqLg@mail.gmail.com>
+Subject: Re: Proposal: HAVE_SEPARATE_IRQ_STACK?
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
+        linux-mm@kvack.org,
+        WireGuard mailing list <wireguard@lists.zx2c4.com>,
+        k@vodka.home.kg
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55777
+X-archive-position: 55778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,72 +62,28 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---IDYEmSnFhs3mNXr+
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Thomas,
 
-Hi Fengguang,
+On Thu, Nov 10, 2016 at 2:00 PM, Thomas Gleixner <tglx@linutronix.de> wrote:
+> Do not even think about going there. That's going to be a major
+> mess.
 
-On Thu, Nov 10, 2016 at 07:08:43AM +0100, Greg KH wrote:
-> On Wed, Nov 09, 2016 at 10:00:43PM +0000, James Hogan wrote:
-> > On Wed, Nov 09, 2016 at 10:22:01PM +0100, Jiri Slaby wrote:
-> > > On 11/09/2016, 03:46 PM, James Hogan wrote:
-> > > > Unfortunately the original commit went in to v3.12.65 as commit
-> > > > 168e5ebbd63e, without fixing up the references to tlb_lo[0/1] to
-> > > > tlb_lo0/1 which broke the MIPS KVM build, and I didn't twig that I
-> > > > already had a correct backport outstanding (sorry!). That commit sh=
-ould
-> > > > be reverted before applying this backport to 3.12.
-> > >=20
-> > > Thanks, reverted and applied. I wonder the builders didn't break give=
-n 4
-> > > mips configurations are tested. I indeed could reproduce locally.
-> >=20
-> > I'm guessing malta_kvm_defconfig isn't one of those defconfigs (and the
-> > imgtec buildbots don't yet test stable branches). Which builders do you
-> > use?
->=20
-> I use 0-day for these types of things, and it is not showing up any
-> errors for the 4.4-stable kernel.  Can you get these configurations
-> added to it so that we can ensure it doesn't regress?
+Lol! Okay. Thank you for reigning in my clearly reckless
+propensities... Sometimes playing in traffic is awfully tempting.
 
-Can we please get a few MIPS defconfigs added to the 0-day testing?
+>
+> As a short time workaround you can increase THREAD_SIZE_ORDER for now and
+> then fix it proper with switching to seperate irq stacks.
 
-- malta_kvm_defconfig
-  this probably doesn't need to be a high priority build, but other
-  configs don't yet cover MIPS KVM so its worth having (that bit us
-  recently with 3.12 and 4.4 stable branches).
+Okay. I think in the end I'll kmalloc, accept the 16% slowdown [1],
+and focus efforts on having a separate IRQ stack. Matt emailed in this
+thread saying he was already looking into it, so I think by the time
+that slowdown makes a difference, we'll have the right pieces in place
+anyway.
 
-- 64r6el_defconfig and 32r2_defconfig (4.9 and later)
-  these are just a couple of the new generic/multiplatform kernel
-  configurations added in 4.9 (Paul Burton Cc'd). There are others too,
-  but these will probably give decent coverage. These are likely to be
-  increasingly relevant as more/new platforms are converted to use it.
-  (note, the r6 one may require a newish toolchain).
+Thanks for the guidance here.
 
-Thanks
-James
+Regards,
+Jason
 
---IDYEmSnFhs3mNXr+
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYJLBLAAoJEGwLaZPeOHZ6yNAQAIeiAQ3a6HE5x7ueirSDnPox
-zPy5rHBU/3XPJ4svwVuTQWR6wHR+3aw6m20sUvUK04XV5K5Ffq3ElCSWD67gRFvE
-XxW+j39WtSRjf+vdtddNktWvq1826Uy3gTrKf6N8UjOaFz8kK4RaCIUA0PpSNCWf
-HKDTE/ODKOJiUQDCddpfH4ONxCH7r2XFS/NrZQDbFYr13tC3ydFio5OAkOkB8OoX
-/NhV0kH8u0Eock0L4cr6BjDWfHQdEY0Tq+bf5K4xW6wPo6E9p8E9OzA+znQOT5dX
-G8e/6xS748/bEYBbtzDsHmbwBCxGzmMojzPrxaR5tTdQq9qIrY4IBGElW0MlXjfz
-gU7JDw91Tw7ombS7OgZoIUWOD+aEk2VvaUqk27Xx/bsSYWLOjCpQ0j3e4Jz0rQLb
-Hm7G/Te+aukM5wJg2JV+w+DvxiZkfxo1BU8xStBCacfVzwRHdBFTZGXESjVsKHA6
-4vV/9psY38M94/UO2U626QHYT8TfdIbeOYbM2f9ctpGp51mygsNX+CpvVfykZ5zc
-hPm6/Fkp3Hz5+QjyEXDvNhAVaILZIdRqtD9jdRat7zB/6DSXelwQSAuMvkHgUp+V
-hdrbqpVoj0Wi3eM48pchKSxD5zstMGRFbWiTwPlz/LpACpICYx3iW0KWg2G2vjWM
-RtjFNgRL9cDDB0f6fctR
-=GICU
------END PGP SIGNATURE-----
-
---IDYEmSnFhs3mNXr+--
+[1] https://git.zx2c4.com/WireGuard/commit/?id=cc3d7df096a88cdf96d016bdcb2f78fa03abb6f3

@@ -1,53 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2016 02:48:04 +0100 (CET)
-Received: from frisell.zx2c4.com ([192.95.5.64]:59212 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993001AbcKJBr5iNzBL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Nov 2016 02:47:57 +0100
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 90787ffa
-        for <linux-mips@linux-mips.org>;
-        Thu, 10 Nov 2016 01:45:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :in-reply-to:references:from:date:message-id:subject:to:cc
-        :content-type; s=mail; bh=cftwH8d/dQj1PrGgibTszCS2MBk=; b=rLPwua
-        gsLehyX3CtGf30tISQ2KznStDfh+MPRDusYk0LoqrXIQ5I5NYzaIzbz3oO6fMR4W
-        3cYNF2sx9+ln100QB2VGdtJRVgr+AaJbZ4Y3QG9VL5s0ZNFdyyPNfp+xMdAlh6We
-        Pkw2opCJeauG3abbFTv17Uv/P5KwVYD2+1g+s+prsBQvIy8HRT7ohXPWLOeUkesX
-        DfyhXXP4DAiAPTwmkeBcXFuxm9I8VBd1HjUtIYTnkgwPbZrfocwBmuWaVLNdMvHv
-        hamcDMtdDoZWn0t+nLLsz8dYl1wCX95P8NLCmyMsYEJIdztOi7zTiXZN1UOIqGk8
-        6Z1LC/D7Q4HK6F7w==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id af59f300 (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO)
-        for <linux-mips@linux-mips.org>;
-        Thu, 10 Nov 2016 01:45:47 +0000 (UTC)
-Received: by mail-lf0-f50.google.com with SMTP id c13so178148497lfg.0
-        for <linux-mips@linux-mips.org>; Wed, 09 Nov 2016 17:47:49 -0800 (PST)
-X-Gm-Message-State: ABUngve3S4I6zCcl+O+9/gE26v5TpGna0e7qQ/WXnEuowjAiUWCAX24/OKLWdg6XJ33WV6aTqu8h2YX65t/kVQ==
-X-Received: by 10.25.99.12 with SMTP id x12mr1086828lfb.174.1478742468140;
- Wed, 09 Nov 2016 17:47:48 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.25.208.80 with HTTP; Wed, 9 Nov 2016 17:47:47 -0800 (PST)
-In-Reply-To: <5823BCA3.2020202@caviumnetworks.com>
-References: <CAHmME9oSUcAXVMhpLt0bqa9DKHE8rd3u+3JDb_wgviZnOpP7JA@mail.gmail.com>
- <5823BCA3.2020202@caviumnetworks.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Thu, 10 Nov 2016 02:47:47 +0100
-X-Gmail-Original-Message-ID: <CAHmME9oXsRrABzCjCQ_+O+QJmMgWyoyj73igHLaJKNfbf-brDQ@mail.gmail.com>
-Message-ID: <CAHmME9oXsRrABzCjCQ_+O+QJmMgWyoyj73igHLaJKNfbf-brDQ@mail.gmail.com>
-Subject: Re: Proposal: HAVE_SEPARATE_IRQ_STACK?
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
-        linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2016 10:05:55 +0100 (CET)
+Received: from Galois.linutronix.de ([146.0.238.70]:55238 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993021AbcKJJFsi22pu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Nov 2016 10:05:48 +0100
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1c4lGm-0004qh-9h; Thu, 10 Nov 2016 10:03:40 +0100
+Date:   Thu, 10 Nov 2016 10:03:11 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+cc:     LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
+        linux-mm@kvack.org,
         WireGuard mailing list <wireguard@lists.zx2c4.com>,
         k@vodka.home.kg
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <Jason@zx2c4.com>
+Subject: Re: Proposal: HAVE_SEPARATE_IRQ_STACK?
+In-Reply-To: <CAHmME9pGoRogjHSSy-G-sB4-cHMGcjCeW9PSrNw1h5FsKzfWAw@mail.gmail.com>
+Message-ID: <alpine.DEB.2.20.1611100959040.3501@nanos>
+References: <CAHmME9oSUcAXVMhpLt0bqa9DKHE8rd3u+3JDb_wgviZnOpP7JA@mail.gmail.com> <alpine.DEB.2.20.1611092227200.3501@nanos> <CAHmME9pGoRogjHSSy-G-sB4-cHMGcjCeW9PSrNw1h5FsKzfWAw@mail.gmail.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55766
+X-archive-position: 55767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,14 +43,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Nov 10, 2016 at 1:17 AM, David Daney <ddaney@caviumnetworks.com> wrote:
-> Easiest thing to do would be to select 16K page size in your .config, I
-> think that will give you a similar sized stack.
+On Thu, 10 Nov 2016, Jason A. Donenfeld wrote:
 
-I didn't realize that was possible...
+> Hey Thomas,
+> 
+> On Wed, Nov 9, 2016 at 10:40 PM, Thomas Gleixner <tglx@linutronix.de> wrote:
+> > That preempt_disable() prevents merily preemption as the name says, but it
+> > wont prevent softirq handlers from running on return from interrupt. So
+> > what's the point?
+> 
+> Oh, interesting. Okay, then in that case the proposed define wouldn't
+> be useful for my purposes.
 
-I'm mostly concerned about the best way to deal with systems that have
-a limited stack size on architectures without support for separate irq
-stacks. Part of this I assume involves actually detecting with a
-processor definition that the current architecture has a deceptively
-small stack.
+If you want to go with that config, then you need
+local_bh_disable()/enable() to fend softirqs off, which disables also
+preemption.
+
+> What clever tricks do I have at my disposal, then?
+
+Make MIPS use interrupt stacks.
+ 
+> >> If not, do you have a better solution for me (which doesn't
+> >> involve using kmalloc or choosing a different crypto primitive)?
+> >
+> > What's wrong with using kmalloc?
+> 
+> It's cumbersome and potentially slow. This is crypto code, where speed
+> matters a lot. Avoiding allocations is usually the lowest hanging
+> fruit among optimizations. To give you some idea, here's a somewhat
+> horrible solution using kmalloc I hacked together: [1]. I'm not to
+> happy with what it looks like, code-wise, and there's around a 16%
+> slowdown, which isn't nice either.
+
+Does the slowdown come from the kmalloc overhead or mostly from the less
+efficient code?
+
+If it's mainly kmalloc, then you can preallocate the buffer once for the
+kthread you're running in and be done with it. If it's the code, then bad
+luck.
+
+Thanks,
+
+	tglx

@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2016 17:36:24 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46179 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993094AbcKJQgRiBk7B (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Nov 2016 17:36:17 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id EDBB27D300C2C;
-        Thu, 10 Nov 2016 16:36:07 +0000 (GMT)
-Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 10 Nov
- 2016 16:36:11 +0000
-Subject: Re: Proposal: HAVE_SEPARATE_IRQ_STACK?
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <CAHmME9oSUcAXVMhpLt0bqa9DKHE8rd3u+3JDb_wgviZnOpP7JA@mail.gmail.com>
- <alpine.DEB.2.20.1611092227200.3501@nanos>
- <CAHmME9pGoRogjHSSy-G-sB4-cHMGcjCeW9PSrNw1h5FsKzfWAw@mail.gmail.com>
- <alpine.DEB.2.20.1611100959040.3501@nanos>
- <CAHmME9pHYA82M3iDNfDtDE96gFaZORSsEAn_KnePd3rhFioqHQ@mail.gmail.com>
-CC:     LKML <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-mm@kvack.org>,
-        WireGuard mailing list <wireguard@lists.zx2c4.com>,
-        <k@vodka.home.kg>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <db056fb5-82b3-c17e-46ce-263872ef7334@imgtec.com>
-Date:   Thu, 10 Nov 2016 16:36:10 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2016 18:36:41 +0100 (CET)
+Received: from mga01.intel.com ([192.55.52.88]:45217 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993111AbcKJRgaWP6tO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Nov 2016 18:36:30 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP; 10 Nov 2016 09:36:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.31,619,1473145200"; 
+   d="scan'208";a="1066806656"
+Received: from ahduyck-blue-test.jf.intel.com ([134.134.2.201])
+  by fmsmga001.fm.intel.com with ESMTP; 10 Nov 2016 09:36:23 -0800
+Subject: [mm PATCH v3 11/23] arch/mips: Add option to skip DMA sync as a
+ part of map and unmap
+From:   Alexander Duyck <alexander.h.duyck@intel.com>
+To:     linux-mm@kvack.org, akpm@linux-foundation.org
+Cc:     linux-mips@linux-mips.org, Keguang Zhang <keguang.zhang@gmail.com>,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        netdev@vger.kernel.org
+Date:   Thu, 10 Nov 2016 06:35:13 -0500
+Message-ID: <20161110113513.76501.32321.stgit@ahduyck-blue-test.jf.intel.com>
+In-Reply-To: <20161110113027.76501.63030.stgit@ahduyck-blue-test.jf.intel.com>
+References: <20161110113027.76501.63030.stgit@ahduyck-blue-test.jf.intel.com>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-In-Reply-To: <CAHmME9pHYA82M3iDNfDtDE96gFaZORSsEAn_KnePd3rhFioqHQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Return-Path: <alexander.h.duyck@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55774
+X-archive-position: 55775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: alexander.h.duyck@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,41 +46,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Jason,
+This change allows us to pass DMA_ATTR_SKIP_CPU_SYNC which allows us to
+avoid invoking cache line invalidation if the driver will just handle it
+via a sync_for_cpu or sync_for_device call.
 
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Keguang Zhang <keguang.zhang@gmail.com>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Alexander Duyck <alexander.h.duyck@intel.com>
+---
+ arch/mips/loongson64/common/dma-swiotlb.c |    2 +-
+ arch/mips/mm/dma-default.c                |    8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-On 10/11/16 11:41, Jason A. Donenfeld wrote:
-> On Thu, Nov 10, 2016 at 10:03 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
->> If you want to go with that config, then you need
->> local_bh_disable()/enable() to fend softirqs off, which disables also
->> preemption.
-> Thanks. Indeed this is what I want.
->
->>> What clever tricks do I have at my disposal, then?
->> Make MIPS use interrupt stacks.
-> Yea, maybe I'll just implement this. It clearly is the most correct solution.
-> @MIPS maintainers: would you merge something like this if done well?
-> Are there reasons other than man-power why it isn't currently that
-> way?
-
-I don't see a reason not to do this - I'm taking a look into it.
-
-Thanks,
-Matt
-
->> Does the slowdown come from the kmalloc overhead or mostly from the less
->> efficient code?
->>
->> If it's mainly kmalloc, then you can preallocate the buffer once for the
->> kthread you're running in and be done with it. If it's the code, then bad
->> luck.
-> I fear both. GCC can optimize stack variables in ways that it cannot
-> optimize various memory reads and writes.
->
-> Strangely, the solution that appeals to me most at the moment is to
-> kmalloc (or vmalloc?) a new stack, copy over thread_info, and fiddle
-> with the stack registers. I don't see any APIs, however, for a
-> platform independent way of doing this. And maybe this is a horrible
-> idea. But at least it'd allow me to keep my stack-based code the
-> same...
->
+diff --git a/arch/mips/loongson64/common/dma-swiotlb.c b/arch/mips/loongson64/common/dma-swiotlb.c
+index 1a80b6f..aab4fd6 100644
+--- a/arch/mips/loongson64/common/dma-swiotlb.c
++++ b/arch/mips/loongson64/common/dma-swiotlb.c
+@@ -61,7 +61,7 @@ static int loongson_dma_map_sg(struct device *dev, struct scatterlist *sg,
+ 				int nents, enum dma_data_direction dir,
+ 				unsigned long attrs)
+ {
+-	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, 0);
++	int r = swiotlb_map_sg_attrs(dev, sg, nents, dir, attrs);
+ 	mb();
+ 
+ 	return r;
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index b2eadd6..dd998d7 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -293,7 +293,7 @@ static inline void __dma_sync(struct page *page,
+ static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 	size_t size, enum dma_data_direction direction, unsigned long attrs)
+ {
+-	if (cpu_needs_post_dma_flush(dev))
++	if (cpu_needs_post_dma_flush(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+ 		__dma_sync(dma_addr_to_page(dev, dma_addr),
+ 			   dma_addr & ~PAGE_MASK, size, direction);
+ 	plat_post_dma_flush(dev);
+@@ -307,7 +307,8 @@ static int mips_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ 	struct scatterlist *sg;
+ 
+ 	for_each_sg(sglist, sg, nents, i) {
+-		if (!plat_device_is_coherent(dev))
++		if (!plat_device_is_coherent(dev) &&
++		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+ 			__dma_sync(sg_page(sg), sg->offset, sg->length,
+ 				   direction);
+ #ifdef CONFIG_NEED_SG_DMA_LENGTH
+@@ -324,7 +325,7 @@ static dma_addr_t mips_dma_map_page(struct device *dev, struct page *page,
+ 	unsigned long offset, size_t size, enum dma_data_direction direction,
+ 	unsigned long attrs)
+ {
+-	if (!plat_device_is_coherent(dev))
++	if (!plat_device_is_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+ 		__dma_sync(page, offset, size, direction);
+ 
+ 	return plat_map_dma_mem_page(dev, page) + offset;
+@@ -339,6 +340,7 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sglist,
+ 
+ 	for_each_sg(sglist, sg, nhwentries, i) {
+ 		if (!plat_device_is_coherent(dev) &&
++		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
+ 		    direction != DMA_TO_DEVICE)
+ 			__dma_sync(sg_page(sg), sg->offset, sg->length,
+ 				   direction);

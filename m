@@ -1,53 +1,126 @@
-From: Jan Glauber <jglauber@cavium.com>
-Date: Fri, 11 Nov 2016 09:40:15 +0100
-Subject: [PATCH 3/3] i2c: octeon: thunderx: Debug prints for timeout and
- recovery
-Message-ID: <20161111084015.Il2y6LnQXNDivL8oqEKOTMTgL-Q5O6jU8oelCBMf6Vc@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2016 09:59:14 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:15701 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992036AbcKKI7HXiXSo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Nov 2016 09:59:07 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 8F2EE41F8DF6;
+        Fri, 11 Nov 2016 08:57:49 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 11 Nov 2016 08:57:49 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 11 Nov 2016 08:57:49 +0000
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 3197983AF115;
+        Fri, 11 Nov 2016 08:58:58 +0000 (GMT)
+Received: from np-p-burton.localnet (10.100.200.149) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 11 Nov
+ 2016 08:59:00 +0000
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Fengguang Wu <fengguang.wu@intel.com>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.cz>, <stable@vger.kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
+Subject: Re: [BACKPORT PATCH 3.10..3.16] KVM: MIPS: Drop other CPU ASIDs on guest MMU changes
+Date:   Fri, 11 Nov 2016 08:58:54 +0000
+Message-ID: <4833601.FN2Qs9JE2h@np-p-burton>
+Organization: Imagination Technologies
+User-Agent: KMail/5.3.2 (Linux/4.8.6-1-ARCH; KDE/5.27.0; x86_64; ; )
+In-Reply-To: <20161111025621.vwa3irwbj56uezhl@wfg-t540p.sh.intel.com>
+References: <20161109144624.16683-1-james.hogan@imgtec.com> <20161110173721.GD7075@jhogan-linux.le.imgtec.org> <20161111025621.vwa3irwbj56uezhl@wfg-t540p.sh.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart14530700.XyaSAqit5D";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+X-Originating-IP: [10.100.200.149]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <Paul.Burton@imgtec.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 55784
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: paul.burton@imgtec.com
+Precedence: bulk
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
+X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+X-list: linux-mips
 
-Signed-off-by: Jan Glauber <jglauber@cavium.com>
----
- drivers/i2c/busses/i2c-octeon-core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+--nextPart14530700.XyaSAqit5D
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-diff --git a/drivers/i2c/busses/i2c-octeon-core.c b/drivers/i2c/busses/i2c-octeon-core.c
-index 1d8775799..a2a92b6 100644
---- a/drivers/i2c/busses/i2c-octeon-core.c
-+++ b/drivers/i2c/busses/i2c-octeon-core.c
-@@ -72,9 +72,10 @@ static int octeon_i2c_wait(struct octeon_i2c *i2c)
- 		return 0;
- 	}
- 
--	if (!time_left)
-+	if (!time_left) {
-+		pr_err("%s: timed out\n", __func__);
- 		return -ETIMEDOUT;
--
-+	}
- 	return 0;
- }
- 
-@@ -169,8 +170,10 @@ static int octeon_i2c_hlc_wait(struct octeon_i2c *i2c)
- 		return 0;
- 	}
- 
--	if (!time_left)
-+	if (!time_left) {
-+		pr_err("%s: timed out\n", __func__);
- 		return -ETIMEDOUT;
-+	}
- 	return 0;
- }
- 
-@@ -280,6 +283,7 @@ static int octeon_i2c_start(struct octeon_i2c *i2c)
- 
- error:
- 	/* START failed, try to recover */
-+	pr_err("%s: try to recover from status: %d\n", __func__, stat);
- 	ret = octeon_i2c_recovery(i2c);
- 	return (ret) ? ret : -EAGAIN;
- }
--- 
-1.9.1
+Hi Fengguang,
 
+On Friday, 11 November 2016 10:56:21 GMT Fengguang Wu wrote:
+> The 0-day build bot should already cover the below configs (not
+> necessarily in the early hours, but very likely in the first day after
+> your git push) since they are included in arch/*/configs/.
 
---T4sUOijqQbZv57TR--
+<snip>
+
+> >- malta_kvm_defconfig
+> >
+> >  this probably doesn't need to be a high priority build, but other
+> >  configs don't yet cover MIPS KVM so its worth having (that bit us
+> >  recently with 3.12 and 4.4 stable branches).
+> >
+> >- 64r6el_defconfig and 32r2_defconfig (4.9 and later)
+> >
+> >  these are just a couple of the new generic/multiplatform kernel
+> >  configurations added in 4.9 (Paul Burton Cc'd). There are others too,
+> >  but these will probably give decent coverage. These are likely to be
+> >  increasingly relevant as more/new platforms are converted to use it.
+> >  (note, the r6 one may require a newish toolchain).
+
+Just wanted to note that this isn't true for the 64r6el_defconfig & 
+32r2_defconfig (or similarly other variations of architecture revision & 
+endianness). They aren't files under arch/mips/configs/, instead these configs 
+are generated by merging a bunch of config fragments atop arch/mips/configs/
+generic_defconfig. This allows us to have these minor variations on the base 
+generic_defconfig without duplicating its content & incurring the maintenance 
+headache of keeping them all in sync. For reference powerpc do similar things 
+to generate variations upon their real defconfigs.
+
+If you do have a way to get 64r6el_defconfig & 32r2_defconfig included that 
+would be great, since more MIPS boards should be covered by these generic 
+configurations over the next few cycles.
+
+Thanks,
+    Paul
+--nextPart14530700.XyaSAqit5D
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAABCAAGBQJYJYhOAAoJEIIg2fppPBxloJwP/joWhFGvgdpaIHTLoO3Hjm7h
+ka/0TrDc3L6+fp3x6mgo4JoZTg30O0UML/ujr4PCFc2OSVp87X7cGupgghwYwdHd
+ZViZLdVC9RFkIKsOqJ1LK+SrmPqF12KnzGvxzGSgrFxk9dCE3esdjTeKi7omAQlj
+UCXHLbzxoZJQ7xgHx0eQk4wBHmkCZL2ewoXpKWClo+FkNwAMLlquJB8nu/wRXemx
+cDNrag4LpTg//YPMtjukvbuecsRN7aCgKluXTSfZnZFdOyAtqUqchE9bMFoSJ00F
+QDw24BcYwjyKgBiohYwYUkookqvz2eYRJrJG3vwg1szoOnQSOPwvxWjWewZnPWYL
+xKskABYn4Vp3qu0R+1NrxqN60rPsUvQ4CAm5E+Qb+KOOwzUkdU3JUl/dfBJCVViR
+7c+SUy9WOwbwmPpnL2JWi6pBxKIHXIB01boy0i9Ot/8fQdMKYou8SFkOa9hAV+F7
+Sc15Y+S/m+XqD3ad0TmeRfahXEqS9rH2ZYA1qEAhnybll6QUEac+1uTDv84GlozX
+PVXmZsJgN2QOPKhksPoJyI2Iw8xGgwi+ZsACXtzZ4jKU/M4lY8d3OWPs8+4LQZVT
+kdLD1AJtythoCjkBt/7MMhMKcxXaaIFNl/bSTPW6iPSKm4AkMGjyP5w4J1JbYG1R
+h/k3HKQP+U0uIpzLU9RE
+=/i6B
+-----END PGP SIGNATURE-----
+
+--nextPart14530700.XyaSAqit5D--

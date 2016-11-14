@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2016 03:09:04 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38398 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2016 03:09:26 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38435 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993043AbcKNCEluLd1O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2016 03:04:41 +0100
+        by eddie.linux-mips.org with ESMTP id S23993045AbcKNCEnZUuuO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2016 03:04:43 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1c66dE-0005pR-BH; Mon, 14 Nov 2016 02:04:24 +0000
+        id 1c66dO-0005pA-AR; Mon, 14 Nov 2016 02:04:34 +0000
 Received: from ben by deadeye with local (Exim 4.87)
         (envelope-from <ben@decadent.org.uk>)
-        id 1c66dC-0000rA-5w; Mon, 14 Nov 2016 02:04:22 +0000
+        id 1c66d8-0000c4-Sg; Mon, 14 Nov 2016 02:04:18 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Paul Burton" <paul.burton@imgtec.com>,
-        "Masahiro Yamada" <yamada.masahiro@socionext.com>,
-        "Matt Redfearn" <matt.redfearn@imgtec.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Kees Cook" <keescook@chromium.org>, linux-mips@linux-mips.org
+CC:     akpm@linux-foundation.org,
+        "Radim =?UTF-8?Q?Kr=C4=8Dm=C3=A1=C5=99?=" <rkrcmar@redhat.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org,
+        "James Hogan" <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        "Ralf Baechle" <ralf@linux-mips.org>
 Date:   Mon, 14 Nov 2016 00:14:20 +0000
-Message-ID: <lsq.1479082460.496488331@decadent.org.uk>
+Message-ID: <lsq.1479082460.632169991@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 326/346] MIPS: Malta: Fix IOCU disable switch read
- for MIPS64
+Subject: [PATCH 3.16 196/346] MIPS: KVM: Check for pfn noslot case
 In-Reply-To: <lsq.1479082458.755945576@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -35,7 +35,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55805
+X-archive-position: 55806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,71 +56,50 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 305723ab439e14debc1d339aa04e835d488b8253 upstream.
+commit ba913e4f72fc9cfd03dad968dfb110eb49211d80 upstream.
 
-Malta boards used with CPU emulators feature a switch to disable use of
-an IOCU. Software has to check this switch & ignore any present IOCU if
-the switch is closed. The read used to do this was unsafe for 64 bit
-kernels, as it simply casted the address 0xbf403000 to a pointer &
-dereferenced it. Whilst in a 32 bit kernel this would access kseg1, in a
-64 bit kernel this attempts to access xuseg & results in an address
-error exception.
+When mapping a page into the guest we error check using is_error_pfn(),
+however this doesn't detect a value of KVM_PFN_NOSLOT, indicating an
+error HVA for the page. This can only happen on MIPS right now due to
+unusual memslot management (e.g. being moved / removed / resized), or
+with an Enhanced Virtual Memory (EVA) configuration where the default
+KVM_HVA_ERR_* and kvm_is_error_hva() definitions are unsuitable (fixed
+in a later patch). This case will be treated as a pfn of zero, mapping
+the first page of physical memory into the guest.
 
-Fix by accessing a correctly formed ckseg1 address generated using the
-CKSEG1ADDR macro.
+It would appear the MIPS KVM port wasn't updated prior to being merged
+(in v3.10) to take commit 81c52c56e2b4 ("KVM: do not treat noslot pfn as
+a error pfn") into account (merged v3.8), which converted a bunch of
+is_error_pfn() calls to is_error_noslot_pfn(). Switch to using
+is_error_noslot_pfn() instead to catch this case properly.
 
-Whilst modifying this code, define the name of the register and the bit
-we care about within it, which indicates whether PCI DMA is routed to
-the IOCU or straight to DRAM. The code previously checked that bit 0 was
-also set, but the least significant 7 bits of the CONFIG_GEN0 register
-contain the value of the MReqInfo signal provided to the IOCU OCP bus,
-so singling out bit 0 makes little sense & that part of the check is
-dropped.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: b6d92b4a6bdb ("MIPS: Add option to disable software I/O coherency.")
-Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Kees Cook <keescook@chromium.org>
+Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Radim Krčmář <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14187/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[james.hogan@imgtec.com: Backport to v4.7.y]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[bwh: Backported to 3.16: adjust filename]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/mti-malta/malta-setup.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/kvm/kvm_tlb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -36,6 +36,9 @@
- #include <linux/console.h>
- #endif
+--- a/arch/mips/kvm/kvm_tlb.c
++++ b/arch/mips/kvm/kvm_tlb.c
+@@ -155,7 +155,7 @@ static int kvm_mips_map_page(struct kvm
+         srcu_idx = srcu_read_lock(&kvm->srcu);
+ 	pfn = kvm_mips_gfn_to_pfn(kvm, gfn);
  
-+#define ROCIT_CONFIG_GEN0		0x1f403000
-+#define  ROCIT_CONFIG_GEN0_PCI_IOCU	BIT(7)
-+
- extern void malta_be_init(void);
- extern int malta_be_handler(struct pt_regs *regs, int is_fixup);
- 
-@@ -104,6 +107,8 @@ static void __init fd_activate(void)
- static int __init plat_enable_iocoherency(void)
- {
- 	int supported = 0;
-+	u32 cfg;
-+
- 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
- 		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
- 			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
-@@ -126,7 +131,8 @@ static int __init plat_enable_iocoherenc
- 	} else if (mips_cm_numiocu() != 0) {
- 		/* Nothing special needs to be done to enable coherency */
- 		pr_info("CMP IOCU detected\n");
--		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
-+		cfg = __raw_readl((u32 *)CKSEG1ADDR(ROCIT_CONFIG_GEN0));
-+		if (!(cfg & ROCIT_CONFIG_GEN0_PCI_IOCU)) {
- 			pr_crit("IOCU OPERATION DISABLED BY SWITCH - DEFAULTING TO SW IO COHERENCY\n");
- 			return 0;
- 		}
+-	if (kvm_mips_is_error_pfn(pfn)) {
++	if (is_error_noslot_pfn(pfn)) {
+ 		kvm_err("Couldn't get pfn for gfn %#" PRIx64 "!\n", gfn);
+ 		err = -EFAULT;
+ 		goto out;

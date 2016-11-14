@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2016 03:08:35 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38378 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2016 03:09:04 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38398 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990720AbcKNCEklW8jO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2016 03:04:40 +0100
+        by eddie.linux-mips.org with ESMTP id S23993043AbcKNCEluLd1O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2016 03:04:41 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1c66d2-0005fH-ED; Mon, 14 Nov 2016 02:04:12 +0000
+        id 1c66dE-0005pR-BH; Mon, 14 Nov 2016 02:04:24 +0000
 Received: from ben by deadeye with local (Exim 4.87)
         (envelope-from <ben@decadent.org.uk>)
-        id 1c66d1-0000Oj-MD; Mon, 14 Nov 2016 02:04:11 +0000
+        id 1c66dC-0000rA-5w; Mon, 14 Nov 2016 02:04:22 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Alexei Starovoitov" <ast@kernel.org>,
-        "Daniel Borkmann" <daniel@iogearbox.net>,
-        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>,
-        "Dan Carpenter" <dan.carpenter@oracle.com>
+CC:     akpm@linux-foundation.org, "Paul Burton" <paul.burton@imgtec.com>,
+        "Masahiro Yamada" <yamada.masahiro@socionext.com>,
+        "Matt Redfearn" <matt.redfearn@imgtec.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "Kees Cook" <keescook@chromium.org>, linux-mips@linux-mips.org
 Date:   Mon, 14 Nov 2016 00:14:20 +0000
-Message-ID: <lsq.1479082460.941175975@decadent.org.uk>
+Message-ID: <lsq.1479082460.496488331@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 101/346] bpf, mips: fix off-by-one in ctx offset
- allocation
+Subject: [PATCH 3.16 326/346] MIPS: Malta: Fix IOCU disable switch read
+ for MIPS64
 In-Reply-To: <lsq.1479082458.755945576@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -34,7 +35,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55804
+X-archive-position: 55805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,42 +56,71 @@ X-list: linux-mips
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Paul Burton <paul.burton@imgtec.com>
 
-commit b4e76f7e6d3200462c6354a6ad4ae167459e61f8 upstream.
+commit 305723ab439e14debc1d339aa04e835d488b8253 upstream.
 
-Dan Carpenter reported [1] a static checker warning that ctx->offsets[]
-may be accessed off by one from build_body(), since it's allocated with
-fp->len * sizeof(*ctx.offsets) as length. The cBPF arm and ppc code
-doesn't have this issue as claimed, so only mips seems to be affected and
-should like most other JITs allocate with fp->len + 1. A few number of
-JITs (x86, sparc, arm64) handle this differently, where they only require
-fp->len array elements.
+Malta boards used with CPU emulators feature a switch to disable use of
+an IOCU. Software has to check this switch & ignore any present IOCU if
+the switch is closed. The read used to do this was unsafe for 64 bit
+kernels, as it simply casted the address 0xbf403000 to a pointer &
+dereferenced it. Whilst in a 32 bit kernel this would access kseg1, in a
+64 bit kernel this attempts to access xuseg & results in an address
+error exception.
 
-  [1] http://www.spinics.net/lists/mips/msg64193.html
+Fix by accessing a correctly formed ckseg1 address generated using the
+CKSEG1ADDR macro.
 
-Fixes: c6610de353da ("MIPS: net: Add BPF JIT")
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: ast@kernel.org
+Whilst modifying this code, define the name of the register and the bit
+we care about within it, which indicates whether PCI DMA is routed to
+the IOCU or straight to DRAM. The code previously checked that bit 0 was
+also set, but the least significant 7 bits of the CONFIG_GEN0 register
+contain the value of the MReqInfo signal provided to the IOCU OCP bus,
+so singling out bit 0 makes little sense & that part of the check is
+dropped.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: b6d92b4a6bdb ("MIPS: Add option to disable software I/O coherency.")
+Cc: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Kees Cook <keescook@chromium.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13814/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/14187/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/net/bpf_jit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/mti-malta/malta-setup.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/mips/net/bpf_jit.c
-+++ b/arch/mips/net/bpf_jit.c
-@@ -1365,7 +1365,7 @@ void bpf_jit_compile(struct sk_filter *f
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -36,6 +36,9 @@
+ #include <linux/console.h>
+ #endif
  
- 	memset(&ctx, 0, sizeof(ctx));
++#define ROCIT_CONFIG_GEN0		0x1f403000
++#define  ROCIT_CONFIG_GEN0_PCI_IOCU	BIT(7)
++
+ extern void malta_be_init(void);
+ extern int malta_be_handler(struct pt_regs *regs, int is_fixup);
  
--	ctx.offsets = kcalloc(fp->len, sizeof(*ctx.offsets), GFP_KERNEL);
-+	ctx.offsets = kcalloc(fp->len + 1, sizeof(*ctx.offsets), GFP_KERNEL);
- 	if (ctx.offsets == NULL)
- 		return;
- 
+@@ -104,6 +107,8 @@ static void __init fd_activate(void)
+ static int __init plat_enable_iocoherency(void)
+ {
+ 	int supported = 0;
++	u32 cfg;
++
+ 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
+ 		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
+ 			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
+@@ -126,7 +131,8 @@ static int __init plat_enable_iocoherenc
+ 	} else if (mips_cm_numiocu() != 0) {
+ 		/* Nothing special needs to be done to enable coherency */
+ 		pr_info("CMP IOCU detected\n");
+-		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
++		cfg = __raw_readl((u32 *)CKSEG1ADDR(ROCIT_CONFIG_GEN0));
++		if (!(cfg & ROCIT_CONFIG_GEN0_PCI_IOCU)) {
+ 			pr_crit("IOCU OPERATION DISABLED BY SWITCH - DEFAULTING TO SW IO COHERENCY\n");
+ 			return 0;
+ 		}

@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2016 03:09:26 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38435 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2016 03:09:52 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:38570 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993045AbcKNCEnZUuuO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2016 03:04:43 +0100
+        by eddie.linux-mips.org with ESMTP id S23993125AbcKNCF47PWvO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2016 03:05:56 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1c66dO-0005pA-AR; Mon, 14 Nov 2016 02:04:34 +0000
+        id 1c66eh-0006an-87; Mon, 14 Nov 2016 02:05:55 +0000
 Received: from ben by deadeye with local (Exim 4.87)
         (envelope-from <ben@decadent.org.uk>)
-        id 1c66d8-0000c4-Sg; Mon, 14 Nov 2016 02:04:18 +0000
+        id 1c66eg-0001BC-Vb; Mon, 14 Nov 2016 02:05:54 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org,
-        "Radim =?UTF-8?Q?Kr=C4=8Dm=C3=A1=C5=99?=" <rkrcmar@redhat.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org,
-        "James Hogan" <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Date:   Mon, 14 Nov 2016 00:14:20 +0000
-Message-ID: <lsq.1479082460.632169991@decadent.org.uk>
+CC:     akpm@linux-foundation.org, kernel-janitors@vger.kernel.org,
+        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "Dan Carpenter" <dan.carpenter@oracle.com>
+Date:   Mon, 14 Nov 2016 00:14:07 +0000
+Message-ID: <lsq.1479082447.908913967@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 196/346] MIPS: KVM: Check for pfn noslot case
-In-Reply-To: <lsq.1479082458.755945576@decadent.org.uk>
+Subject: [PATCH 3.2 036/152] MIPS: RM7000: Double locking bug in
+ rm7k_tc_disable()
+In-Reply-To: <lsq.1479082446.271293126@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
 X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
@@ -35,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55806
+X-archive-position: 55807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,54 +50,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.39-rc1 review patch.  If anyone has any objections, please let me know.
+3.2.84-rc1 review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-commit ba913e4f72fc9cfd03dad968dfb110eb49211d80 upstream.
+commit 58a7e1c140f3ad61646bc0cd9a1f6a9cafc0b225 upstream.
 
-When mapping a page into the guest we error check using is_error_pfn(),
-however this doesn't detect a value of KVM_PFN_NOSLOT, indicating an
-error HVA for the page. This can only happen on MIPS right now due to
-unusual memslot management (e.g. being moved / removed / resized), or
-with an Enhanced Virtual Memory (EVA) configuration where the default
-KVM_HVA_ERR_* and kvm_is_error_hva() definitions are unsuitable (fixed
-in a later patch). This case will be treated as a pfn of zero, mapping
-the first page of physical memory into the guest.
+We obviously intended to enable IRQs again at the end.
 
-It would appear the MIPS KVM port wasn't updated prior to being merged
-(in v3.10) to take commit 81c52c56e2b4 ("KVM: do not treat noslot pfn as
-a error pfn") into account (merged v3.8), which converted a bunch of
-is_error_pfn() calls to is_error_noslot_pfn(). Switch to using
-is_error_noslot_pfn() instead to catch this case properly.
-
-Fixes: 858dd5d45733 ("KVM/MIPS32: MMU/TLB operations for the Guest.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Radim Krčmář <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Fixes: 745aef5df1e2 ('MIPS: RM7000: Add support for tertiary cache')
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[james.hogan@imgtec.com: Backport to v4.7.y]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[bwh: Backported to 3.16: adjust filename]
+Cc: linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/13815/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/kvm/kvm_tlb.c | 2 +-
+ arch/mips/mm/sc-rm7k.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kvm/kvm_tlb.c
-+++ b/arch/mips/kvm/kvm_tlb.c
-@@ -155,7 +155,7 @@ static int kvm_mips_map_page(struct kvm
-         srcu_idx = srcu_read_lock(&kvm->srcu);
- 	pfn = kvm_mips_gfn_to_pfn(kvm, gfn);
+--- a/arch/mips/mm/sc-rm7k.c
++++ b/arch/mips/mm/sc-rm7k.c
+@@ -162,7 +162,7 @@ static void rm7k_tc_disable(void)
+ 	local_irq_save(flags);
+ 	blast_rm7k_tcache();
+ 	clear_c0_config(RM7K_CONF_TE);
+-	local_irq_save(flags);
++	local_irq_restore(flags);
+ }
  
--	if (kvm_mips_is_error_pfn(pfn)) {
-+	if (is_error_noslot_pfn(pfn)) {
- 		kvm_err("Couldn't get pfn for gfn %#" PRIx64 "!\n", gfn);
- 		err = -EFAULT;
- 		goto out;
+ static void rm7k_sc_disable(void)

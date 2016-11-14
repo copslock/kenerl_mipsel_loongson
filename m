@@ -1,31 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2016 03:04:44 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37506 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Nov 2016 03:05:12 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37766 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992121AbcKNCEP3FHlO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2016 03:04:15 +0100
+        by eddie.linux-mips.org with ESMTP id S23992227AbcKNCEU1HPAO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Nov 2016 03:04:20 +0100
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1c66d0-0005f9-Bx; Mon, 14 Nov 2016 02:04:10 +0000
+        id 1c66d7-0005pT-ET; Mon, 14 Nov 2016 02:04:17 +0000
 Received: from ben by deadeye with local (Exim 4.87)
         (envelope-from <ben@decadent.org.uk>)
-        id 1c66cz-0000Gs-UX; Mon, 14 Nov 2016 02:04:09 +0000
+        id 1c66d7-0000Rs-8N; Mon, 14 Nov 2016 02:04:17 +0000
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        "Aaro Koskinen" <aaro.koskinen@nokia.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "David Daney" <david.daney@cavium.com>
+CC:     akpm@linux-foundation.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "James Hogan" <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        "Leonid Yegoshin" <leonid.yegoshin@imgtec.com>
 Date:   Mon, 14 Nov 2016 00:14:20 +0000
-Message-ID: <lsq.1479082460.158968005@decadent.org.uk>
+Message-ID: <lsq.1479082460.109059554@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 044/346] MIPS: Fix page table corruption on THP
- permission changes.
+Subject: [PATCH 3.16 121/346] MIPS: c-r4k: Fix protected_writeback_scache_line
+ for EVA
 In-Reply-To: <lsq.1479082458.755945576@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -34,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55795
+X-archive-position: 55796
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,71 +54,54 @@ X-list: linux-mips
 
 ------------------
 
-From: David Daney <david.daney@cavium.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit acd168c0bf2ce709f056a6b1bf21634b1207d7a5 upstream.
+commit 0758b116b4080d9a2a2a715bec6eee2cbd828215 upstream.
 
-When the core THP code is modifying the permissions of a huge page it
-calls pmd_modify(), which unfortunately was clearing the _PAGE_HUGE bit
-of the page table entry.  The result can be kernel messages like:
+The protected_writeback_scache_line() function is used by
+local_r4k_flush_cache_sigtramp() to flush an FPU delay slot emulation
+trampoline on the userland stack from the caches so it is visible to
+subsequent instruction fetches.
 
-mm/memory.c:397: bad pmd 000000040080004d.
-mm/memory.c:397: bad pmd 00000003ff00004d.
-mm/memory.c:397: bad pmd 000000040100004d.
+Commit de8974e3f76c ("MIPS: asm: r4kcache: Add EVA cache flushing
+functions") updated some protected_ cache flush functions to use EVA
+CACHEE instructions via protected_cachee_op(), and commit 83fd43449baa
+("MIPS: r4kcache: Add EVA case for protected_writeback_dcache_line") did
+the same thing for protected_writeback_dcache_line(), but
+protected_writeback_scache_line() never got updated. Lets fix that now
+to flush the right user address from the secondary cache rather than
+some arbitrary kernel unmapped address.
 
-or:
+This issue was spotted through code inspection, and it seems unlikely to
+be possible to hit this in practice. It theoretically affect EVA kernels
+on EVA capable cores with an L2 cache, where the icache fetches straight
+from RAM (cpu_icache_snoops_remote_store == 0), running a hard float
+userland with FPU disabled (nofpu). That both Malta and Boston platforms
+override cpu_icache_snoops_remote_store to 1 suggests that all MIPS
+cores fetch instructions into icache straight from L2 rather than RAM.
 
-------------[ cut here ]------------
-WARNING: at mm/mmap.c:3200 exit_mmap+0x150/0x158()
-Modules linked in: ipv6 at24 octeon3_ethernet octeon_srio_nexus m25p80
-CPU: 12 PID: 1295 Comm: pmderr Not tainted 3.10.87-rt80-Cavium-Octeon #4
-Stack : 0000000040808000 0000000014009ce1 0000000000400004 ffffffff81076ba0
-          0000000000000000 0000000000000000 ffffffff85110000 0000000000000119
-          0000000000000004 0000000000000000 0000000000000119 43617669756d2d4f
-          0000000000000000 ffffffff850fda40 ffffffff85110000 0000000000000000
-          0000000000000000 0000000000000009 ffffffff809207a0 0000000000000c80
-          ffffffff80f1bf20 0000000000000001 000000ffeca36828 0000000000000001
-          0000000000000000 0000000000000001 000000ffeca7e700 ffffffff80886924
-          80000003fd7a0000 80000003fd7a39b0 80000003fdea8000 ffffffff80885780
-          80000003fdea8000 ffffffff80f12218 000000000000000c 000000000000050f
-          0000000000000000 ffffffff80865c4c 0000000000000000 0000000000000000
-          ...
-Call Trace:
-[<ffffffff80865c4c>] show_stack+0x6c/0xf8
-[<ffffffff80885780>] warn_slowpath_common+0x78/0xa8
-[<ffffffff809207a0>] exit_mmap+0x150/0x158
-[<ffffffff80882d44>] mmput+0x5c/0x110
-[<ffffffff8088b450>] do_exit+0x230/0xa68
-[<ffffffff8088be34>] do_group_exit+0x54/0x1d0
-[<ffffffff8088bfc0>] __wake_up_parent+0x0/0x18
-
----[ end trace c7b38293191c57dc ]---
-BUG: Bad rss-counter state mm:80000003fa168000 idx:1 val:1536
-
-Fix by not clearing _PAGE_HUGE bit.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
-Tested-by: Aaro Koskinen <aaro.koskinen@nokia.com>
+Fixes: de8974e3f76c ("MIPS: asm: r4kcache: Add EVA cache flushing functions")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13687/
+Patchwork: https://patchwork.linux-mips.org/patch/13800/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-[bwh: Backported to 3.16:
- - Adjust context
- - _PAGE_HUGE might not be defined]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -572,7 +572,11 @@ static inline struct page *pmd_page(pmd_
+ arch/mips/include/asm/r4kcache.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+--- a/arch/mips/include/asm/r4kcache.h
++++ b/arch/mips/include/asm/r4kcache.h
+@@ -263,7 +263,11 @@ static inline void protected_writeback_d
  
- static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ static inline void protected_writeback_scache_line(unsigned long addr)
  {
--	pmd_val(pmd) = (pmd_val(pmd) & _PAGE_CHG_MASK) | pgprot_val(newprot);
-+	pmd_val(pmd) = (pmd_val(pmd) & (_PAGE_CHG_MASK
-+#ifdef _PAGE_HUGE
-+					| _PAGE_HUGE
++#ifdef CONFIG_EVA
++	protected_cachee_op(Hit_Writeback_Inv_SD, addr);
++#else
+ 	protected_cache_op(Hit_Writeback_Inv_SD, addr);
 +#endif
-+				)) | pgprot_val(newprot);
- 	return pmd;
  }
  
+ /*

@@ -1,48 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2016 11:39:15 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27768 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991964AbcKPKjIwcFw- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Nov 2016 11:39:08 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id E74A541F8DFD;
-        Wed, 16 Nov 2016 11:38:54 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Wed, 16 Nov 2016 11:38:54 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Wed, 16 Nov 2016 11:38:54 +0000
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id A6905B4FABCE0;
-        Wed, 16 Nov 2016 10:39:00 +0000 (GMT)
-Received: from np-p-burton.localnet (10.100.200.30) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 16 Nov
- 2016 10:39:02 +0000
-From:   Paul Burton <paul.burton@imgtec.com>
-To:     Jan Glauber <jan.glauber@caviumnetworks.com>
-CC:     "Steven J. Hill" <Steven.Hill@cavium.com>,
-        Wolfram Sang <wsa@the-dreams.de>, <linux-i2c@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v2 0/3] i2c: octeon: thunder: Fix i2c not working on Octeon
-Date:   Wed, 16 Nov 2016 10:38:55 +0000
-Message-ID: <21144795.sM34J9FN6K@np-p-burton>
-Organization: Imagination Technologies
-User-Agent: KMail/5.3.2 (Linux/4.8.6-1-ARCH; KDE/5.27.0; x86_64; ; )
-In-Reply-To: <20161115130314.GC2772@hardcore>
-References: <1479149445-4663-1-git-send-email-jglauber@cavium.com> <99500824-4c63-b769-ad66-c136529b14b2@cavium.com> <20161115130314.GC2772@hardcore>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2016 11:39:42 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:49696 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993232AbcKQKjesXNnE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Nov 2016 11:39:34 +0100
+Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B937A8D4;
+        Thu, 17 Nov 2016 10:39:27 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+Subject: [PATCH 4.4 24/38] KVM: MIPS: Precalculate MMIO load resume PC
+Date:   Thu, 17 Nov 2016 11:33:02 +0100
+Message-Id: <20161117103237.525100543@linuxfoundation.org>
+X-Mailer: git-send-email 2.10.2
+In-Reply-To: <20161117103236.423602981@linuxfoundation.org>
+References: <20161117103236.423602981@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart16091310.oYW5glKaQc";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Originating-IP: [10.100.200.30]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <Paul.Burton@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55824
+X-archive-position: 55825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.burton@imgtec.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,69 +44,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---nextPart16091310.oYW5glKaQc
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-Hi Jan,
+------------------
 
-On Tuesday, 15 November 2016 14:03:15 GMT Jan Glauber wrote:
-> On Mon, Nov 14, 2016 at 01:53:40PM -0600, Steven J. Hill wrote:
-> > On 11/14/2016 12:50 PM, Jan Glauber wrote:
-> > > Since time is running out for 4.9 (or might have already if you're not
-> > > going to send another pull request) I'm going for the safe option
-> > > to fix the Octeon i2c problems, which is:
-> > > 
-> > > 1. Reverting the readq_poll_timeout patch since it is broken
-> > > 2. Apply Patch #2 from Paul
-> > > 3. Add a small fix for the recovery that makes Paul's patch
-> > > 
-> > >    work on ThunderX
-> > > 
-> > > I'll try to come up with a better solution for 4.10. My plan is to get
-> > > rid
-> > > of the polling-around-interrupt thing completely, but for that we need
-> > > more
-> > > time to make it work on Octeon.
-> > > 
-> > > Please consider for 4.9.
-> > 
-> > Hey Jan.
-> > 
-> > This does not work on Octeon 71xx platforms. I will look at it more
-> > closely tomorrow.
-> 
-> Paul, can you confirm this? It doesn't make sense for me, since patches #1
-> and #3 are unlikely to break anything... And patch #2 worked for you.
+From: James Hogan <james.hogan@imgtec.com>
 
-For me v4.9-rc5 plus these 3 patches boots fine on a Rhino Labs UTM8 system 
-which previously hung whilst probing the I2C driver & devices. Feel free to 
-add:
+commit e1e575f6b026734be3b1f075e780e91ab08ca541 upstream.
 
-    Tested-by: Paul Burton <paul.burton@imgtec.com>
+The advancing of the PC when completing an MMIO load is done before
+re-entering the guest, i.e. before restoring the guest ASID. However if
+the load is in a branch delay slot it may need to access guest code to
+read the prior branch instruction. This isn't safe in TLB mapped code at
+the moment, nor in the future when we'll access unmapped guest segments
+using direct user accessors too, as it could read the branch from host
+user memory instead.
 
-Thanks,
-    Paul
---nextPart16091310.oYW5glKaQc
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Therefore calculate the resume PC in advance while we're still in the
+right context and save it in the new vcpu->arch.io_pc (replacing the no
+longer needed vcpu->arch.pending_load_cause), and restore it on MMIO
+completion.
 
------BEGIN PGP SIGNATURE-----
+Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[james.hogan@imgtec.com: Backport to 3.18..4.4]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-iQIcBAABCAAGBQJYLDc/AAoJEIIg2fppPBxlz30P/juxVVkqQExUAWrogbfsaN/5
-RlSM6ZOmZPfZfjWq77ViiN2SxglMhNnK2BBkzFYnKpULlbELHwIOtN7KKMfQXuLU
-zv28nW2fithDim/57aoQ0tf0fD3+rsfcPfL+4i+5RT1mD/NYaoYrLiGRhb+0wPWY
-TTk9H14nHh+sbsanatuLHAFrMdKvUTWRkB6K7vDfzwBvu8ZiT0cbIrmirUl6l0AD
-SJeZRM/LhiIQyaObQpg/6Ssfsk/ThDAQPXF/Vi/InpIxmainbJUTPVpxK1xnW0OJ
-Dg5DgCyBSipZ06BE/BOqnWzXE9HjEnuvAXYZ6r/SdfVJXsWMVC5WJpLNPrgJc5QX
-SUh0KKCyAVETFeteSJJRxazM2eJhCSdez8eRDBPnFq+61KaGcEmlyNvdD3ijtQXr
-k3O6f3v0zE0lfBrU4VnOTZfSzQHpvqhKY7hKAXasDAvUGXqsId+FQyTwkf55OjdE
-XMBQQEKtoS3a5OowWfBhm0x11qQMx1JNWn5GSdw8UB3UVU+fxlTHC8E7BZW8YHeT
-1oUYKY1crxYa1EGcX6cVoyaL1pSWpuqdlUYRLkoa9db4DkgNj80rmQaEn8peRy0x
-iSec+j5xLgJhO8GZfULpKM6JuMizotAY8qvEZKWK7BAhIR0PxXdE60vGwWtA1lSZ
-SqjA9aqDfmG/D2Rkq1WD
-=XlJW
------END PGP SIGNATURE-----
+---
+ arch/mips/include/asm/kvm_host.h |    7 ++++---
+ arch/mips/kvm/emulate.c          |   24 +++++++++++++++---------
+ 2 files changed, 19 insertions(+), 12 deletions(-)
 
---nextPart16091310.oYW5glKaQc--
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -400,7 +400,10 @@ struct kvm_vcpu_arch {
+ 	/* Host KSEG0 address of the EI/DI offset */
+ 	void *kseg0_commpage;
+ 
+-	u32 io_gpr;		/* GPR used as IO source/target */
++	/* Resume PC after MMIO completion */
++	unsigned long io_pc;
++	/* GPR used as IO source/target */
++	u32 io_gpr;
+ 
+ 	struct hrtimer comparecount_timer;
+ 	/* Count timer control KVM register */
+@@ -422,8 +425,6 @@ struct kvm_vcpu_arch {
+ 	/* Bitmask of pending exceptions to be cleared */
+ 	unsigned long pending_exceptions_clr;
+ 
+-	unsigned long pending_load_cause;
+-
+ 	/* Save/Restore the entryhi register when are are preempted/scheduled back in */
+ 	unsigned long preempt_entryhi;
+ 
+--- a/arch/mips/kvm/emulate.c
++++ b/arch/mips/kvm/emulate.c
+@@ -1473,6 +1473,7 @@ enum emulation_result kvm_mips_emulate_l
+ 					    struct kvm_vcpu *vcpu)
+ {
+ 	enum emulation_result er = EMULATE_DO_MMIO;
++	unsigned long curr_pc;
+ 	int32_t op, base, rt, offset;
+ 	uint32_t bytes;
+ 
+@@ -1481,7 +1482,18 @@ enum emulation_result kvm_mips_emulate_l
+ 	offset = inst & 0xffff;
+ 	op = (inst >> 26) & 0x3f;
+ 
+-	vcpu->arch.pending_load_cause = cause;
++	/*
++	 * Find the resume PC now while we have safe and easy access to the
++	 * prior branch instruction, and save it for
++	 * kvm_mips_complete_mmio_load() to restore later.
++	 */
++	curr_pc = vcpu->arch.pc;
++	er = update_pc(vcpu, cause);
++	if (er == EMULATE_FAIL)
++		return er;
++	vcpu->arch.io_pc = vcpu->arch.pc;
++	vcpu->arch.pc = curr_pc;
++
+ 	vcpu->arch.io_gpr = rt;
+ 
+ 	switch (op) {
+@@ -2461,9 +2473,8 @@ enum emulation_result kvm_mips_complete_
+ 		goto done;
+ 	}
+ 
+-	er = update_pc(vcpu, vcpu->arch.pending_load_cause);
+-	if (er == EMULATE_FAIL)
+-		return er;
++	/* Restore saved resume PC */
++	vcpu->arch.pc = vcpu->arch.io_pc;
+ 
+ 	switch (run->mmio.len) {
+ 	case 4:
+@@ -2485,11 +2496,6 @@ enum emulation_result kvm_mips_complete_
+ 		break;
+ 	}
+ 
+-	if (vcpu->arch.pending_load_cause & CAUSEF_BD)
+-		kvm_debug("[%#lx] Completing %d byte BD Load to gpr %d (0x%08lx) type %d\n",
+-			  vcpu->arch.pc, run->mmio.len, vcpu->arch.io_gpr, *gpr,
+-			  vcpu->mmio_needed);
+-
+ done:
+ 	return er;
+ }

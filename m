@@ -1,37 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2016 11:39:42 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:49696 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993232AbcKQKjesXNnE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Nov 2016 11:39:34 +0100
-Received: from localhost (pes75-3-78-192-101-3.fbxo.proxad.net [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B937A8D4;
-        Thu, 17 Nov 2016 10:39:27 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
-Subject: [PATCH 4.4 24/38] KVM: MIPS: Precalculate MMIO load resume PC
-Date:   Thu, 17 Nov 2016 11:33:02 +0100
-Message-Id: <20161117103237.525100543@linuxfoundation.org>
-X-Mailer: git-send-email 2.10.2
-In-Reply-To: <20161117103236.423602981@linuxfoundation.org>
-References: <20161117103236.423602981@linuxfoundation.org>
-User-Agent: quilt/0.65
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2016 12:51:20 +0100 (CET)
+Received: from foss.arm.com ([217.140.101.70]:53322 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993253AbcKQLvNB2GeW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Nov 2016 12:51:13 +0100
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EE99A16;
+        Thu, 17 Nov 2016 03:51:05 -0800 (PST)
+Received: from e107155-lin.cambridge.arm.com (unknown [10.1.210.28])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5F1A63F318;
+        Thu, 17 Nov 2016 03:51:04 -0800 (PST)
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Cc:     Sudeep Holla <sudeep.holla@arm.com>, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-renesas-soc@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>
+Subject: [RFC PATCH] of: base: add support to get machine model name
+Date:   Thu, 17 Nov 2016 11:50:50 +0000
+Message-Id: <1479383450-19183-1-git-send-email-sudeep.holla@arm.com>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <sudeep.holla@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55825
+X-archive-position: 55826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: sudeep.holla@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,118 +41,244 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+Currently platforms/drivers needing to get the machine model name are
+replicating the same snippet of code. In some case, the OF reference
+counting is either missing or incorrect.
 
-------------------
+This patch adds support to read the machine model name either using
+the "model" or the "compatible" property in the device tree root node.
 
-From: James Hogan <james.hogan@imgtec.com>
-
-commit e1e575f6b026734be3b1f075e780e91ab08ca541 upstream.
-
-The advancing of the PC when completing an MMIO load is done before
-re-entering the guest, i.e. before restoring the guest ASID. However if
-the load is in a branch delay slot it may need to access guest code to
-read the prior branch instruction. This isn't safe in TLB mapped code at
-the moment, nor in the future when we'll access unmapped guest segments
-using direct user accessors too, as it could read the branch from host
-user memory instead.
-
-Therefore calculate the resume PC in advance while we're still in the
-right context and save it in the new vcpu->arch.io_pc (replacing the no
-longer needed vcpu->arch.pending_load_cause), and restore it on MMIO
-completion.
-
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[james.hogan@imgtec.com: Backport to 3.18..4.4]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
- arch/mips/include/asm/kvm_host.h |    7 ++++---
- arch/mips/kvm/emulate.c          |   24 +++++++++++++++---------
- 2 files changed, 19 insertions(+), 12 deletions(-)
+ arch/arm/mach-imx/cpu.c           |  4 +---
+ arch/arm/mach-mxs/mach-mxs.c      |  3 +--
+ arch/mips/cavium-octeon/setup.c   | 12 ++----------
+ arch/mips/generic/proc.c          | 15 +++------------
+ arch/sh/boards/of-generic.c       |  6 +-----
+ drivers/of/base.c                 | 34 ++++++++++++++++++++++++++++++++++
+ drivers/soc/fsl/guts.c            |  3 +--
+ drivers/soc/renesas/renesas-soc.c |  4 +---
+ include/linux/of.h                |  6 ++++++
+ 9 files changed, 50 insertions(+), 37 deletions(-)
 
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -400,7 +400,10 @@ struct kvm_vcpu_arch {
- 	/* Host KSEG0 address of the EI/DI offset */
- 	void *kseg0_commpage;
- 
--	u32 io_gpr;		/* GPR used as IO source/target */
-+	/* Resume PC after MMIO completion */
-+	unsigned long io_pc;
-+	/* GPR used as IO source/target */
-+	u32 io_gpr;
- 
- 	struct hrtimer comparecount_timer;
- 	/* Count timer control KVM register */
-@@ -422,8 +425,6 @@ struct kvm_vcpu_arch {
- 	/* Bitmask of pending exceptions to be cleared */
- 	unsigned long pending_exceptions_clr;
- 
--	unsigned long pending_load_cause;
+Hi,
+
+While trying to fix a simple build warning(as below) in -next for fsl/guts.c,
+I came across this code duplication in multiple places.
+
+WARNING: modpost: Found 1 section mismatch(es).
+To see full details build your kernel with:
+'make CONFIG_DEBUG_SECTION_MISMATCH=y'
+
+With CONFIG_DEBUG_SECTION_MISMATCH enabled, the details are reported:
+
+WARNING: vmlinux.o(.text+0x55d014): Section mismatch in reference from the
+function fsl_guts_probe() to the function
+.init.text:of_flat_dt_get_machine_name()
+The function fsl_guts_probe() references
+the function __init of_flat_dt_get_machine_name().
+This is often because fsl_guts_probe lacks a __init
+annotation or the annotation of of_flat_dt_get_machine_name is wrong.
+
+I can split the patch if needed if people are OK with the idea.
+
+Regards,
+Sudeep
+
+diff --git a/arch/arm/mach-imx/cpu.c b/arch/arm/mach-imx/cpu.c
+index b3347d32349f..846f40008752 100644
+--- a/arch/arm/mach-imx/cpu.c
++++ b/arch/arm/mach-imx/cpu.c
+@@ -85,9 +85,7 @@ struct device * __init imx_soc_device_init(void)
+
+ 	soc_dev_attr->family = "Freescale i.MX";
+
+-	root = of_find_node_by_path("/");
+-	ret = of_property_read_string(root, "model", &soc_dev_attr->machine);
+-	of_node_put(root);
++	ret = of_machine_get_model_name(&soc_dev_attr->machine);
+ 	if (ret)
+ 		goto free_soc;
+
+diff --git a/arch/arm/mach-mxs/mach-mxs.c b/arch/arm/mach-mxs/mach-mxs.c
+index e4f21086b42b..ed9af3a894f0 100644
+--- a/arch/arm/mach-mxs/mach-mxs.c
++++ b/arch/arm/mach-mxs/mach-mxs.c
+@@ -391,8 +391,7 @@ static void __init mxs_machine_init(void)
+ 	if (!soc_dev_attr)
+ 		return;
+
+-	root = of_find_node_by_path("/");
+-	ret = of_property_read_string(root, "model", &soc_dev_attr->machine);
++	ret = of_machine_get_model_name(&soc_dev_attr->machine);
+ 	if (ret)
+ 		return;
+
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index 9a2db1c013d9..2e2b1b5befa4 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -498,16 +498,8 @@ static void __init init_octeon_system_type(void)
+ 	char const *board_type;
+
+ 	board_type = cvmx_board_type_to_string(octeon_bootinfo->board_type);
+-	if (board_type == NULL) {
+-		struct device_node *root;
+-		int ret;
 -
- 	/* Save/Restore the entryhi register when are are preempted/scheduled back in */
- 	unsigned long preempt_entryhi;
- 
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1473,6 +1473,7 @@ enum emulation_result kvm_mips_emulate_l
- 					    struct kvm_vcpu *vcpu)
+-		root = of_find_node_by_path("/");
+-		ret = of_property_read_string(root, "model", &board_type);
+-		of_node_put(root);
+-		if (ret)
+-			board_type = "Unsupported Board";
+-	}
++	if (!board_type && of_machine_get_model_name(&board_type))
++		board_type = "Unsupported Board";
+
+ 	snprintf(octeon_system_type, sizeof(octeon_system_type), "%s (%s)",
+ 		 board_type, octeon_model_get_string(read_c0_prid()));
+diff --git a/arch/mips/generic/proc.c b/arch/mips/generic/proc.c
+index 42b33250a4a2..f7fc067bf908 100644
+--- a/arch/mips/generic/proc.c
++++ b/arch/mips/generic/proc.c
+@@ -10,20 +10,11 @@
+
+ #include <linux/of.h>
+
+-#include <asm/bootinfo.h>
+-
+ const char *get_system_type(void)
  {
- 	enum emulation_result er = EMULATE_DO_MMIO;
-+	unsigned long curr_pc;
- 	int32_t op, base, rt, offset;
- 	uint32_t bytes;
- 
-@@ -1481,7 +1482,18 @@ enum emulation_result kvm_mips_emulate_l
- 	offset = inst & 0xffff;
- 	op = (inst >> 26) & 0x3f;
- 
--	vcpu->arch.pending_load_cause = cause;
-+	/*
-+	 * Find the resume PC now while we have safe and easy access to the
-+	 * prior branch instruction, and save it for
-+	 * kvm_mips_complete_mmio_load() to restore later.
-+	 */
-+	curr_pc = vcpu->arch.pc;
-+	er = update_pc(vcpu, cause);
-+	if (er == EMULATE_FAIL)
-+		return er;
-+	vcpu->arch.io_pc = vcpu->arch.pc;
-+	vcpu->arch.pc = curr_pc;
-+
- 	vcpu->arch.io_gpr = rt;
- 
- 	switch (op) {
-@@ -2461,9 +2473,8 @@ enum emulation_result kvm_mips_complete_
- 		goto done;
- 	}
- 
--	er = update_pc(vcpu, vcpu->arch.pending_load_cause);
--	if (er == EMULATE_FAIL)
--		return er;
-+	/* Restore saved resume PC */
-+	vcpu->arch.pc = vcpu->arch.io_pc;
- 
- 	switch (run->mmio.len) {
- 	case 4:
-@@ -2485,11 +2496,6 @@ enum emulation_result kvm_mips_complete_
- 		break;
- 	}
- 
--	if (vcpu->arch.pending_load_cause & CAUSEF_BD)
--		kvm_debug("[%#lx] Completing %d byte BD Load to gpr %d (0x%08lx) type %d\n",
--			  vcpu->arch.pc, run->mmio.len, vcpu->arch.io_gpr, *gpr,
--			  vcpu->mmio_needed);
+ 	const char *str;
+-	int err;
 -
- done:
- 	return er;
+-	err = of_property_read_string(of_root, "model", &str);
+-	if (!err)
+-		return str;
+-
+-	err = of_property_read_string_index(of_root, "compatible", 0, &str);
+-	if (!err)
+-		return str;
+
+-	return "Unknown";
++	if (of_machine_get_model_name(&str))
++		return "Unknown";
++	return str;
  }
+diff --git a/arch/sh/boards/of-generic.c b/arch/sh/boards/of-generic.c
+index 1fb6d5714bae..938a14499298 100644
+--- a/arch/sh/boards/of-generic.c
++++ b/arch/sh/boards/of-generic.c
+@@ -135,11 +135,7 @@ static void __init sh_of_setup(char **cmdline_p)
+ 	board_time_init = sh_of_time_init;
+
+ 	sh_mv.mv_name = "Unknown SH model";
+-	root = of_find_node_by_path("/");
+-	if (root) {
+-		of_property_read_string(root, "model", &sh_mv.mv_name);
+-		of_node_put(root);
+-	}
++	of_machine_get_model_name(&sh_mv.mv_name);
+
+ 	sh_of_smp_probe();
+ }
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index a0bccb54a9bd..752cb8eefd6e 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -546,6 +546,40 @@ int of_machine_is_compatible(const char *compat)
+ EXPORT_SYMBOL(of_machine_is_compatible);
+
+ /**
++ * of_machine_get_model_name - Find and read the model name or the compatible
++ *		value for the machine.
++ * @model:	pointer to null terminated return string, modified only if
++ *		return value is 0.
++ *
++ * Returns a string containing either the model name or the compatible value
++ * of the machine if found, else return error.
++ *
++ * Search for a machine model name or the compatible if model name is missing
++ * in a device tree node and retrieve a null terminated string value (pointer
++ * to data, not a copy). Returns 0 on success, -EINVAL if root of the device
++ * tree is not found and other error returned by of_property_read_string on
++ * failure.
++ */
++int of_machine_get_model_name(const char **model)
++{
++	int error;
++	struct device_node *root;
++
++	root = of_find_node_by_path("/");
++	if (!root)
++		return -EINVAL;
++
++	error = of_property_read_string(root, "model", model);
++	if (error)
++		error = of_property_read_string_index(root, "compatible",
++						      0, model);
++	of_node_put(root);
++
++	return error;
++}
++EXPORT_SYMBOL(of_machine_get_model_name);
++
++/**
+  *  __of_device_is_available - check if a device is available for use
+  *
+  *  @device: Node to check for availability, with locks already held
+diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
+index 0ac88263c2d7..94aef0465451 100644
+--- a/drivers/soc/fsl/guts.c
++++ b/drivers/soc/fsl/guts.c
+@@ -152,8 +152,7 @@ static int fsl_guts_probe(struct platform_device *pdev)
+ 		return PTR_ERR(guts->regs);
+
+ 	/* Register soc device */
+-	machine = of_flat_dt_get_machine_name();
+-	if (machine)
++	if (!of_machine_get_model_name(&machine))
+ 		soc_dev_attr.machine = devm_kstrdup(dev, machine, GFP_KERNEL);
+
+ 	svr = fsl_guts_get_svr();
+diff --git a/drivers/soc/renesas/renesas-soc.c b/drivers/soc/renesas/renesas-soc.c
+index 330960312296..d9a119073de5 100644
+--- a/drivers/soc/renesas/renesas-soc.c
++++ b/drivers/soc/renesas/renesas-soc.c
+@@ -228,9 +228,7 @@ static int __init renesas_soc_init(void)
+ 	if (!soc_dev_attr)
+ 		return -ENOMEM;
+
+-	np = of_find_node_by_path("/");
+-	of_property_read_string(np, "model", &soc_dev_attr->machine);
+-	of_node_put(np);
++	of_machine_get_model_name(&soc_dev_attr->machine);
+
+ 	soc_dev_attr->family = kstrdup_const(family->name, GFP_KERNEL);
+ 	soc_dev_attr->soc_id = kstrdup_const(strchr(match->compatible, ',') + 1,
+diff --git a/include/linux/of.h b/include/linux/of.h
+index d72f01009297..13fc66531f1b 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -367,6 +367,7 @@ extern int of_alias_get_id(struct device_node *np, const char *stem);
+ extern int of_alias_get_highest_id(const char *stem);
+
+ extern int of_machine_is_compatible(const char *compat);
++extern int of_machine_get_model_name(const char **model);
+
+ extern int of_add_property(struct device_node *np, struct property *prop);
+ extern int of_remove_property(struct device_node *np, struct property *prop);
+@@ -788,6 +789,11 @@ static inline int of_machine_is_compatible(const char *compat)
+ 	return 0;
+ }
+
++static inline int of_machine_get_model_name(const char **model)
++{
++	return -EINVAL;
++}
++
+ static inline bool of_console_check(const struct device_node *dn, const char *name, int index)
+ {
+ 	return false;
+--
+2.7.4

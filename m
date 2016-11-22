@@ -1,45 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2016 22:17:07 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:64054 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993086AbcKVVRA0vq4W convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Nov 2016 22:17:00 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id C1D1F15BBB7F5;
-        Tue, 22 Nov 2016 21:16:49 +0000 (GMT)
-Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
- hhmail02.hh.imgtec.org (10.100.10.20) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 22 Nov 2016 21:16:53 +0000
-Received: from HHMAIL01.hh.imgtec.org ([fe80::710b:f219:72bc:e0b3]) by
- HHMAIL-X.hh.imgtec.org ([fe80::3509:b0ce:371:2b%18]) with mapi id
- 14.03.0294.000; Tue, 22 Nov 2016 21:16:52 +0000
-From:   Matt Redfearn <Matt.Redfearn@imgtec.com>
-To:     "Steven J. Hill" <Steven.Hill@cavium.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>
-Subject: RE: [PATCH 0/5] Enable KASLR for OCTEON platforms.
-Thread-Topic: [PATCH 0/5] Enable KASLR for OCTEON platforms.
-Thread-Index: AQHSRPq7XMIl/9/oGUa/w/DVGQzPSqDlgTYb
-Date:   Tue, 22 Nov 2016 21:16:52 +0000
-Message-ID: <9FCBB1D1936B2F4DB2DD02BA3957FB504CF9EC31@HHMAIL01.hh.imgtec.org>
-References: <088264c9-75b8-37ff-6514-0f536b1f8e55@cavium.com>
-In-Reply-To: <088264c9-75b8-37ff-6514-0f536b1f8e55@cavium.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-GB
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [82.11.182.224]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2016 23:40:50 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:39714 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993086AbcKVWkl2ldbi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Nov 2016 23:40:41 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id B26AFADC4;
+        Tue, 22 Nov 2016 22:40:40 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     stable@vger.kernel.org
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>
+Subject: [patch added to 3.12-stable] KVM: MIPS: Make ERET handle ERL before EXL
+Date:   Tue, 22 Nov 2016 23:40:09 +0100
+Message-Id: <20161122224029.29962-21-jslaby@suse.cz>
+X-Mailer: git-send-email 2.10.2
+In-Reply-To: <20161122224029.29962-1-jslaby@suse.cz>
+References: <20161122224029.29962-1-jslaby@suse.cz>
 MIME-Version: 1.0
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55861
+X-archive-position: 55862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Matt.Redfearn@imgtec.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,32 +44,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Steven
-Apart from the possibility that https://patchwork.linux-mips.org/patch/14554/ removes the need for patch 2, the series looks good to me.
+From: James Hogan <james.hogan@imgtec.com>
 
-Thanks,
-Matt
-________________________________________
-From: linux-mips-bounce@linux-mips.org [linux-mips-bounce@linux-mips.org] on behalf of Steven J. Hill [Steven.Hill@cavium.com]
-Sent: 22 November 2016 19:43
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org
-Subject: [PATCH 0/5] Enable KASLR for OCTEON platforms.
+This patch has been added to the 3.12 stable tree. If you have any
+objections, please let us know.
 
-This patchset enables support of KASLR for OCTEON platforms.
+===============
 
-Steven J. Hill (5):
-  MIPS: FW: Make fw_init_cmdline() to be __weak.
-  MIPS: Fix vmlinux.64 target for CONFIG_RELOCATABLE
-  MIPS: OCTEON: Add fw_init_cmdline() for Cavium platforms.
-  MIPS: OCTEON: Add plat_get_fdt() function for Cavium platforms.
-  MIPS: OCTEON: Enable KASLR
+commit ede5f3e7b54a4347be4d8525269eae50902bd7cd upstream.
 
- arch/mips/Kconfig               |  3 ++-
- arch/mips/Makefile              |  5 +++++
- arch/mips/cavium-octeon/setup.c | 23 +++++++++++++++++++++++
- arch/mips/include/asm/fw/fw.h   |  2 +-
- 4 files changed, 31 insertions(+), 2 deletions(-)
+The ERET instruction to return from exception is used for returning from
+exception level (Status.EXL) and error level (Status.ERL). If both bits
+are set however we should be returning from ERL first, as ERL can
+interrupt EXL, for example when an NMI is taken. KVM however checks EXL
+first.
 
---
-1.9.1
+Fix the order of the checks to match the pseudocode in the instruction
+set manual.
+
+Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+---
+ arch/mips/kvm/kvm_mips_emul.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 4cfb5bddaa9b..716285497e0e 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -254,15 +254,15 @@ enum emulation_result kvm_mips_emul_eret(struct kvm_vcpu *vcpu)
+ 	struct mips_coproc *cop0 = vcpu->arch.cop0;
+ 	enum emulation_result er = EMULATE_DONE;
+ 
+-	if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
++	if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
++		kvm_clear_c0_guest_status(cop0, ST0_ERL);
++		vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
++	} else if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
+ 		kvm_debug("[%#lx] ERET to %#lx\n", vcpu->arch.pc,
+ 			  kvm_read_c0_guest_epc(cop0));
+ 		kvm_clear_c0_guest_status(cop0, ST0_EXL);
+ 		vcpu->arch.pc = kvm_read_c0_guest_epc(cop0);
+ 
+-	} else if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
+-		kvm_clear_c0_guest_status(cop0, ST0_ERL);
+-		vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
+ 	} else {
+ 		printk("[%#lx] ERET when MIPS_SR_EXL|MIPS_SR_ERL == 0\n",
+ 		       vcpu->arch.pc);
+-- 
+2.10.2

@@ -1,64 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2016 09:47:52 +0100 (CET)
-Received: from mail-qk0-f172.google.com ([209.85.220.172]:35724 "EHLO
-        mail-qk0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990778AbcKWIrod2BRS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Nov 2016 09:47:44 +0100
-Received: by mail-qk0-f172.google.com with SMTP id n204so6937428qke.2
-        for <linux-mips@linux-mips.org>; Wed, 23 Nov 2016 00:47:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=DB5oKLqmLk58KJyVhPOBVg8Mk4j2wClp5EUu9Xric3c=;
-        b=GxF0X515vcTuJy4bwRSX9pjKcnBQZeOVzqJNhHvjQ98JMsdL//BnatGLNWjQkVZDwR
-         XM6Z90J06CdEoF0gJ+I0W63FexfS96y5WEM0PN1tqHcHXyzghJnctv4/KRBpd4zp078+
-         OSVbOGWkerjMPW8adhFY5GoADuIhTLyKRYcwZ0u3NMmLW10i311qVA5kysB7yByiuHj/
-         lv+oRQPQWsMpd9rM2H0j5kWOxbclStz1BkaQl3Q8XgiNiKgEk8m9lGCdU+J+E4cbYIl8
-         OQ2eczVI2mtPsynLznFYPPixLN4JF01yS50VlM0nl/EkmQDRvFxIH0iN+6afRhZ1nSwS
-         /RjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=DB5oKLqmLk58KJyVhPOBVg8Mk4j2wClp5EUu9Xric3c=;
-        b=bUlZubxfT2gv5TvBrhQcUR/dr68lPR/LnXi+QzBAKRt/OdiAmRHKvGV5UU8+UbZZfM
-         HCzCW632xTlobSNxK/9MOMGCBaeCwhZKr+YVZBUdcpNN5iy00DRdOspvPEh3bV1d9x2x
-         yjqcZFoOUbpSzLGrHe+mjCdhdX6x7snfRBIjohkW5/DcTa4lShVhdjzMyTLxo2ywIjin
-         kTU6T1ExGLm9x1ApfK547vElxek3/MVHHOCNQTZuA8SOUvEYvktpf4++bvdsGy6GpwNY
-         zoerXvUMGB6mT/Do5Hwg8vWYa4ZWnNcc26yKOx9+JnBoSS66pyvgBqm5fy+q9RiadGve
-         Ztrw==
-X-Gm-Message-State: AKaTC018TcOMqzej0m8X8Cd5MgzXon+nwYwncluHnnKwIFRQptrP0PvywaXBKPwwgg20Og==
-X-Received: by 10.46.7.10 with SMTP id 10mr636819ljh.60.1479890854939;
-        Wed, 23 Nov 2016 00:47:34 -0800 (PST)
-Received: from [192.168.4.126] ([31.173.81.17])
-        by smtp.gmail.com with ESMTPSA id u204sm6964328lja.5.2016.11.23.00.47.33
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 23 Nov 2016 00:47:34 -0800 (PST)
-Subject: Re: [PATCH 2/2 v2] of: Add check to of_scan_flat_dt() before
- accessing initial_boot_params
-To:     t.wolf@vplace.de
-References: <3700342.djbc9u0nWG@loki> <2281020.GC1GkRyGht@loki>
- <a13d095d-cdc9-8deb-82e2-f19b15748a4a@cogentembedded.com>
- <6667110.cBpoIbUc5V@loki>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2016 10:40:16 +0100 (CET)
+Received: from h1.direct-netware.de ([5.45.107.14]:55640 "EHLO
+        h1.direct-netware.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990864AbcKWJkJckIM9 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Nov 2016 10:40:09 +0100
+Received: from odin.home.local (p54B04C52.dip0.t-ipconnect.de [84.176.76.82])
+        by h1.direct-netware.de (Postfix) with ESMTPA id 0F13FFF866;
+        Wed, 23 Nov 2016 10:40:09 +0100 (CET)
+Received: from loki.localnet (unknown [172.16.255.1])
+        by odin.home.local (Postfix) with ESMTPSA id 28D6863B4C8;
+        Wed, 23 Nov 2016 10:40:08 +0100 (CET)
+From:   Tobias Wolf <dev-NTEO@vplace.de>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Cc:     linux-mips@linux-mips.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <d6072e00-1ca4-d461-e15d-3b7b92a7b998@cogentembedded.com>
-Date:   Wed, 23 Nov 2016 11:47:33 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Subject: [PATCH 2/2 v3] of: Add check to of_scan_flat_dt() before accessing initial_boot_params
+Date:   Wed, 23 Nov 2016 10:40:07 +0100
+Message-ID: <14509742.WUbz5chXyR@loki>
+User-Agent: KMail/5.3.3 (Linux/4.8.8-2-ARCH; KDE/5.28.0; x86_64; ; )
+In-Reply-To: <d6072e00-1ca4-d461-e15d-3b7b92a7b998@cogentembedded.com>
+References: <3700342.djbc9u0nWG@loki> <6667110.cBpoIbUc5V@loki> <d6072e00-1ca4-d461-e15d-3b7b92a7b998@cogentembedded.com>
 MIME-Version: 1.0
-In-Reply-To: <6667110.cBpoIbUc5V@loki>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Return-Path: <dev-NTEO@vplace.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55866
+X-archive-position: 55867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: dev-NTEO@vplace.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,39 +42,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello.
+An empty __dtb_start to __dtb_end section might result in initial_boot_params 
+being null for arch/mips/ralink. This showed that the boot process hangs 
+indefinitely in of_scan_flat_dt().
 
-On 11/23/2016 9:11 AM, Tobias Wolf wrote:
+Signed-off-by: Tobias Wolf <dev-NTEO@vplace.de>
+---
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -738,9 +738,12 @@
+ 	const char *pathp;
+ 	int offset, rc = 0, depth = -1;
+ 
+-        for (offset = fdt_next_node(blob, -1, &depth);
+-             offset >= 0 && depth >= 0 && !rc;
+-             offset = fdt_next_node(blob, offset, &depth)) {
++	if (!blob)
++		return 0;
++
++	for (offset = fdt_next_node(blob, -1, &depth);
++	     offset >= 0 && depth >= 0 && !rc;
++	     offset = fdt_next_node(blob, offset, &depth)) {
+ 
+ 		pathp = fdt_get_name(blob, offset, NULL);
+ 		if (*pathp == '/')
 
-> An empty __dtb_start to __dtb_end section might result in initial_boot_params
-> being null for arch/mips/ralink. This showed that the boot process hangs
-> indefinitely in of_scan_flat_dt().
->
-> Signed-off-by: Tobias Wolf <dev-NTEO@vplace.de>
-> ---
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -628,6 +628,9 @@
->  				     void *data),
->  			   void *data)
->  {
-> +	if (!initial_boot_params)
-> +		return 0;
-> +
->  	const void *blob = initial_boot_params;
->  	const char *pathp;
->  	int offset, rc = 0, depth = -1;
-> ---
->
-> Dear Sergei,
->
-> After checking the use of "of_scan_flat_dt()" I revised the patch to return 0
-> as any other value would most likely break code in:
+Dear Sergei,
 
-    It still causes a compiler warning -- you can't mix code and declarations 
-in C90.
+Missed that warning completely during compilation of a testable image for my 
+device. I regenerated the patch based on your input (for 4.9-rc6 this time) 
+and based the check on the local blob variable this time.
 
-> Best regards
-> Tobias
+Haven't seen any warnings this time.
 
-MBR, Sergei
+Hope it's correct that I reference the new patch version each time in the 
+subject line.
+
+Best regards
+Tobias
+
+Btw.: Last e-mail I wanted to list occurrences EINVAL would break existing 
+code. One is kernel/prom.c in arch/microblaze.

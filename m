@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2016 17:51:06 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11556 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2016 18:33:06 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4284 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993302AbcKXQvAEt0Hb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Nov 2016 17:51:00 +0100
+        with ESMTP id S23993297AbcKXRc5r-WS2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Nov 2016 18:32:57 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 9327AC88D3AD4;
-        Thu, 24 Nov 2016 16:50:50 +0000 (GMT)
-Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 24 Nov
- 2016 16:50:53 +0000
-Subject: Re: [PATCH 2/5] MIPS: Fix vmlinux.64 target for CONFIG_RELOCATABLE
-To:     "Steven J. Hill" <Steven.Hill@cavium.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-References: <6f8e21bd-ca22-5866-83dc-d70e4e10842b@cavium.com>
- <9FCBB1D1936B2F4DB2DD02BA3957FB504CF9EBF8@HHMAIL01.hh.imgtec.org>
- <a8bbc895-6069-a14b-c5de-52af655adc6d@cavium.com>
- <62830a9b-ef2b-8c68-c115-2e53657cba07@imgtec.com>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>
+        by Forcepoint Email with ESMTPS id EA0BF82CC1663;
+        Thu, 24 Nov 2016 17:32:47 +0000 (GMT)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 24 Nov 2016 17:32:51 +0000
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <59715b45-b118-0f3a-29e8-f1dacee7694c@imgtec.com>
-Date:   Thu, 24 Nov 2016 16:50:53 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>, <kernel-hardening@lists.openwall.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Kees Cook <keescook@chromium.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        <linux-kernel@vger.kernel.org>,
+        Daniel Cashman <dcashman@android.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] MIPS: Add support for ARCH_MMAP_RND_{COMPAT_}BITS
+Date:   Thu, 24 Nov 2016 17:32:45 +0000
+Message-ID: <1480008765-3876-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <62830a9b-ef2b-8c68-c115-2e53657cba07@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Originating-IP: [10.150.130.83]
 Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55885
+X-archive-position: 55886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,43 +46,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+arch_mmap_rnd() uses hard-coded limits of 16MB for the randomisation
+of mmap within 32bit processes and 256MB in 64bit processes. Since v4.4
+other arches support tuning this value in /proc/sys/vm/mmap_rnd_bits.
+Add support for this to MIPS.
 
-On 24/11/16 09:14, Matt Redfearn wrote:
->
->
-> On 23/11/16 12:15, Steven J. Hill wrote:
->> On 11/22/2016 03:05 PM, Matt Redfearn wrote:
->>> Please could you see if 
->>> https://patchwork.linux-mips.org/patch/14554/ fixes this issue?
->>>
->> Hey Matt.
->>
->> Unfortunately when objcopy runs, I get a segfault and my image is
->> corrupted. I can send you the output when I add the 'V=1' flag if
->> you would like.
->>
->> Steve
->
-> Hi Steve,
-> From your output it looks like th relocs tool has not been run before 
-> the objcopy is attempted. As the comment in the original code said, 
-> objcopy has issues copying the relocs so they have to be removed by 
-> the tool before that is done.
-> What version kernel are your patches based on? The commit that I 
-> referenced in the patch (fbe6e37dab97) is only present in v4.9-rc1 
-> onwards. Without that commit this patch will not work.
->
-> Thanks,
-> Matt
->
+Set the minimum(default) number of bits randomisation for 32bit to 8 -
+which with 4k pagesize is unchanged from the current 16MB total
+randomness. The minimum(default) for 64bit is 12bits, again with 4k
+pagesize this is the same as the current 256MB.
 
-Hi Steve,
+This patch is necessary for MIPS32 to pass the Android CTS tests, with
+the number of random bits set to 15.
 
-I applied the patch series to test it and confirmed that on v4.9rc-6, 
-which includes  fbe6e37dab97, and 
-https://patchwork.linux-mips.org/patch/14554 applied patch v2 is not 
-necessary.
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+---
 
-Thanks,
+ arch/mips/Kconfig   | 16 ++++++++++++++++
+ arch/mips/mm/mmap.c | 10 +++++-----
+ 2 files changed, 21 insertions(+), 5 deletions(-)
 
-Matt
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b3c5bde43d34..d72cf6129b2c 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -13,6 +13,8 @@ config MIPS
+ 	select HAVE_PERF_EVENTS
+ 	select PERF_USE_VMALLOC
+ 	select HAVE_ARCH_KGDB
++	select HAVE_ARCH_MMAP_RND_BITS if MMU
++	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if MMU && COMPAT
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_CBPF_JIT if !CPU_MICROMIPS
+@@ -3073,6 +3075,20 @@ config MMU
+ 	bool
+ 	default y
+ 
++config ARCH_MMAP_RND_BITS_MIN
++	default 12 if 64BIT
++	default 8
++
++config ARCH_MMAP_RND_BITS_MAX
++	default 18 if 64BIT
++	default 15
++
++config ARCH_MMAP_RND_COMPAT_BITS_MIN
++       default 8
++
++config ARCH_MMAP_RND_COMPAT_BITS_MAX
++       default 15
++
+ config I8253
+ 	bool
+ 	select CLKSRC_I8253
+diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
+index d08ea3ff0f53..d6d92c02308d 100644
+--- a/arch/mips/mm/mmap.c
++++ b/arch/mips/mm/mmap.c
+@@ -146,14 +146,14 @@ unsigned long arch_mmap_rnd(void)
+ {
+ 	unsigned long rnd;
+ 
+-	rnd = get_random_long();
+-	rnd <<= PAGE_SHIFT;
++#ifdef CONFIG_COMPAT
+ 	if (TASK_IS_32BIT_ADDR)
+-		rnd &= 0xfffffful;
++		rnd = get_random_long() & ((1UL << mmap_rnd_compat_bits) - 1);
+ 	else
+-		rnd &= 0xffffffful;
++#endif /* CONFIG_COMPAT */
++		rnd = get_random_long() & ((1UL << mmap_rnd_bits) - 1);
+ 
+-	return rnd;
++	return rnd << PAGE_SHIFT;
+ }
+ 
+ void arch_pick_mmap_layout(struct mm_struct *mm)
+-- 
+2.7.4

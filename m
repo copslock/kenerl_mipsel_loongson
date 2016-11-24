@@ -1,57 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2016 17:06:14 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:55118 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993279AbcKXQGHUpTY4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Nov 2016 17:06:07 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date;
-        bh=2t3CvPn+y+qIQjKZfuQEU8uinJEs1q983Dfoaajidos=; b=QpgObGUyly+22HjseVh+wKczm2
-        NqIrpwVwhBSiJsNflsdqa3lp3SvrOdTMZ5am++OHo3QXbb84p7UVEP02WxgRCHdHsFEXlazvubZMB
-        A4qpghj7IogKu1oRvy8ykklgh/4ImKdZVCZg1ABHNn+VnYbBQkFcF7WVnsO/sFL08ANfWy2+JGItw
-        /o/98C5QENbUpJ5ZZxIeY5fXfK339kttxm1bvDCmweb+1fW7yk3XIgQn+r3HhbPCAPkt7J8zmRr3Z
-        n1M1kBlQ7mp6lmG4JdwBrpkQXA0IG7eGie+RjrQsSDgDwngWKXrFUtq9lq2GgYDOKzYqhVgWrhbg5
-        ZfA/CFxw==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:55492 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1c9wX7-002EZ9-Hi; Thu, 24 Nov 2016 16:05:58 +0000
-Date:   Thu, 24 Nov 2016 08:05:58 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Yang Ling <gnaygnil@gmail.com>
-Cc:     Wim Van Sebroeck <wim@iguana.be>,
-        Keguang Zhang <keguang.zhang@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [v2.1,1/2] watchdog: loongson1: Add Loongson1 SoC watchdog driver
-Message-ID: <20161124160558.GA31064@roeck-us.net>
-References: <20161021054539.GA6237@ly-pc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2016 17:49:32 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:8079 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993299AbcKXQtZOml3b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Nov 2016 17:49:25 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 9514D63C0AD8B;
+        Thu, 24 Nov 2016 16:49:14 +0000 (GMT)
+Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 24 Nov
+ 2016 16:49:17 +0000
+Subject: Re: [PATCH v2 5/5] MIPS: OCTEON: Enable KASLR
+To:     "Steven J. Hill" <Steven.Hill@cavium.com>,
+        <linux-mips@linux-mips.org>
+References: <d760ef90-ad22-dff7-14b6-2bc6af5a6745@cavium.com>
+CC:     <ralf@linux-mips.org>
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+Message-ID: <da9ddbee-2e23-6ff3-6b9e-8dd23d7dd70e@imgtec.com>
+Date:   Thu, 24 Nov 2016 16:49:17 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20161021054539.GA6237@ly-pc>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+In-Reply-To: <d760ef90-ad22-dff7-14b6-2bc6af5a6745@cavium.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55883
+X-archive-position: 55884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,254 +45,259 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Oct 21, 2016 at 01:45:39PM +0800, Yang Ling wrote:
-> Add watchdog timer specific driver for Loongson1 SoC.
-> 
-> Signed-off-by: Yang Ling <gnaygnil@gmail.com>
+Hi Steven,
 
-First of all, sorry for the late reply. I'll try to do better next time.
 
+On 23/11/16 12:26, Steven J. Hill wrote:
+> Add KASLR to be selected on OCTEON systems.
+>
+> Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
 > ---
-> V2.1 from Kelvin Cheung:
->   Use max_hw_heartbeat_ms instead of max_timeout.
-> V2:
->   Increase the value of the default heartbeat.
->   Modify the setup process for register.
->   Order include files and Makefile alphabetically.
-> V1.1:
->   Add a little debugging information.
-> ---
->  drivers/watchdog/Kconfig         |   7 ++
->  drivers/watchdog/Makefile        |   1 +
->  drivers/watchdog/loongson1_wdt.c | 158 +++++++++++++++++++++++++++++++++++++++
->  3 files changed, 166 insertions(+)
->  create mode 100644 drivers/watchdog/loongson1_wdt.c
-> 
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index 50dbaa8..6707d43 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -1513,6 +1513,13 @@ config LANTIQ_WDT
->  	help
->  	  Hardware driver for the Lantiq SoC Watchdog Timer.
->  
-> +config LOONGSON1_WDT
-> +	tristate "Loongson1 SoC hardware watchdog"
-> +	depends on MACH_LOONGSON32
-> +	select WATCHDOG_CORE
-> +	help
-> +	  Hardware driver for the Loongson1 SoC Watchdog Timer.
+>   arch/mips/Kconfig                                  |  3 +-
+>   arch/mips/cavium-octeon/smp.c                      | 42 ++++++++++++++++++++++
+>   .../asm/mach-cavium-octeon/kernel-entry-init.h     |  7 ++--
+>   arch/mips/kernel/relocate.c                        | 17 +++++++++
+>   arch/mips/kernel/setup.c                           |  4 ++-
+>   5 files changed, 69 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 2638856..323d51c 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -892,6 +892,7 @@ config CAVIUM_OCTEON_SOC
+>   	select NR_CPUS_DEFAULT_16
+>   	select BUILTIN_DTB
+>   	select MTD_COMPLEX_MAPPINGS
+> +	select SYS_SUPPORTS_RELOCATABLE
+>   	help
+>   	  This option supports all of the Octeon reference boards from Cavium
+>   	  Networks. It builds a kernel that dynamically determines the Octeon
+> @@ -2535,7 +2536,7 @@ config SYS_SUPPORTS_NUMA
+>
+>   config RELOCATABLE
+>   	bool "Relocatable kernel"
+> -	depends on SYS_SUPPORTS_RELOCATABLE && (CPU_MIPS32_R2 || CPU_MIPS64_R2 || CPU_MIPS32_R6 || CPU_MIPS64_R6)
+> +	depends on SYS_SUPPORTS_RELOCATABLE && (CPU_MIPS32_R2 || CPU_MIPS64_R2 || CPU_MIPS32_R6 || CPU_MIPS64_R6 || CAVIUM_OCTEON_SOC)
+>   	help
+>   	  This builds a kernel image that retains relocation information
+>   	  so it can be loaded someplace besides the default 1MB.
+> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+> index 4d457d60..4ac97a3 100644
+> --- a/arch/mips/cavium-octeon/smp.c
+> +++ b/arch/mips/cavium-octeon/smp.c
+> @@ -12,10 +12,12 @@
+>   #include <linux/kernel_stat.h>
+>   #include <linux/sched.h>
+>   #include <linux/module.h>
+> +#include <linux/bootmem.h>
+>
+>   #include <asm/mmu_context.h>
+>   #include <asm/time.h>
+>   #include <asm/setup.h>
+> +#include <asm/sections.h>
+>
+>   #include <asm/octeon/octeon.h>
+>
+> @@ -24,6 +26,7 @@
+>   volatile unsigned long octeon_processor_boot = 0xff;
+>   volatile unsigned long octeon_processor_sp;
+>   volatile unsigned long octeon_processor_gp;
+> +volatile unsigned long octeon_processor_smpentry;
+>
+>   #ifdef CONFIG_HOTPLUG_CPU
+>   uint64_t octeon_bootloader_entry_addr;
+> @@ -180,6 +183,23 @@ static void __init octeon_smp_setup(void)
+>   	octeon_smp_hotplug_setup();
+>   }
+>
+> +#ifdef CONFIG_RELOCATABLE
+> +static long relocation_offset __initdata;
 > +
->  config RALINK_WDT
->  	tristate "Ralink SoC watchdog"
->  	select WATCHDOG_CORE
-> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-> index cba0043..b6a8d70 100644
-> --- a/drivers/watchdog/Makefile
-> +++ b/drivers/watchdog/Makefile
-> @@ -157,6 +157,7 @@ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
->  obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
->  octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
->  obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
-> +obj-$(CONFIG_LOONGSON1_WDT) += loongson1_wdt.o
->  obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
->  obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
->  obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
-> diff --git a/drivers/watchdog/loongson1_wdt.c b/drivers/watchdog/loongson1_wdt.c
-> new file mode 100644
-> index 0000000..f885294
-> --- /dev/null
-> +++ b/drivers/watchdog/loongson1_wdt.c
-> @@ -0,0 +1,158 @@
+> +void __init plat_save_relocation(long offset)
+> +{
+> +	relocation_offset = offset;
+> +}
+> +
+> +void __init RELOCATE(volatile unsigned long *addr, unsigned long val)
+> +{
+> +	unsigned long *p;
+> +
+> +	p = (unsigned long *) ((unsigned long)addr - relocation_offset);
+> +	*p = val;
+> +}
+> +#endif
+> +
+>   /**
+>    * Firmware CPU startup hook
+>    *
+> @@ -191,9 +211,17 @@ static void octeon_boot_secondary(int cpu, struct task_struct *idle)
+>   	pr_info("SMP: Booting CPU%02d (CoreId %2d)...\n", cpu,
+>   		cpu_logical_map(cpu));
+>
+> +#ifndef CONFIG_RELOCATABLE
+>   	octeon_processor_sp = __KSTK_TOS(idle);
+>   	octeon_processor_gp = (unsigned long)(task_thread_info(idle));
+>   	octeon_processor_boot = cpu_logical_map(cpu);
+> +	octeon_processor_smpentry = (unsigned long)&smp_bootstrap;
+
+I think you should probably set octeon_processor_boot last, otherwise 
+this CPU is racing with the secondary CPU to see it's entry point.
+
+> +#else
+> +	RELOCATE(&octeon_processor_sp, __KSTK_TOS(idle));
+> +	RELOCATE(&octeon_processor_gp, (unsigned long)(task_thread_info(idle)));
+> +	RELOCATE(&octeon_processor_boot, cpu_logical_map(cpu));
+> +	RELOCATE(&octeon_processor_smpentry, (unsigned long)&smp_bootstrap);
+> +#endif
+
+This is a bit kludgy, to have the secondaries spinning in the initial 
+kernel, then have the boot cpu, running the relocated kernel, work out 
+the address those cpus are monitoring in the original kernel such that 
+they can be switched to the new one.
+I think it would be better to set up some indirection such that the boot 
+cpu, having relocated the kernel, can update the address that the 
+secondary cpus are monitoring. That way you avoid most of the changes to 
+the generic relocation code and just add a platform hook once relocation 
+has completed successfully. In the Octeon case you'd use it to update 
+the memory address that the secondary CPUs monitor to find their startup 
+information.
+
+>   	mb();
+>
+>   	count = 10000;
+> @@ -204,6 +232,20 @@ static void octeon_boot_secondary(int cpu, struct task_struct *idle)
+>   	}
+>   	if (count == 0)
+>   		pr_err("Secondary boot timeout\n");
+> +
+> +#ifdef CONFIG_RELOCATABLE
+> +	/*
+> +	 * The last present CPU is now running in the relocated
+> +	 * kernel code. We can free up the bootmem pages.
+> +	 */
+> +	if ((num_present_cpus() - 1) == cpu) {
+> +		unsigned long offset;
+> +
+> +		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
+> +		free_bootmem_late(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
+> +		relocation_offset = 0;
+> +	}
+> +#endif
+
+I see why this has to be done, but what if one boots with "nosmp"? Since 
+the secondaries are not started all memory between the original and 
+relocated kernel will be leaked.
+
+>   }
+>
+>   /**
+> diff --git a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+> index c4873e8..981d072 100644
+> --- a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+> +++ b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+> @@ -113,6 +113,9 @@ octeon_spin_wait_boot:
+>   	# Get my SP from the global variable
+>   	PTR_LA	t0, octeon_processor_sp
+>   	LONG_L	sp, (t0)
+> +	# Get my SMPENTRY target from the global variable
+> +	PTR_LA	t0, octeon_processor_smpentry
+> +	LONG_L	t1, (t0)
+>   	# Set the SP global variable to zero so the master knows we've started
+>   	LONG_S	zero, (t0)
+>   #ifdef __OCTEON__
+> @@ -121,8 +124,8 @@ octeon_spin_wait_boot:
+>   #else
+>   	sync
+>   #endif
+> -	# Jump to the normal Linux SMP entry point
+> -	j   smp_bootstrap
+> +	# Jump to the normal Linux SMP entry point (smp_bootstrap)
+> +	jr	t1
+>   	nop
+>   #else /* CONFIG_SMP */
+>
+> diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
+> index ca1cc30..250ff9c 100644
+> --- a/arch/mips/kernel/relocate.c
+> +++ b/arch/mips/kernel/relocate.c
+> @@ -31,6 +31,20 @@ extern u32 _relocation_end[];	/* End relocation table */
+>   extern long __start___ex_table;	/* Start exception table */
+>   extern long __stop___ex_table;	/* End exception table */
+>
+> +
 > +/*
-> + * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
+> + * Declare this function weak so the platform can choose if they
+> + * want the kernel relocation offset.
 > + *
-> + * This program is free software; you can redistribute	it and/or modify it
-> + * under  the terms of	the GNU General	 Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
+> + * WARNING!!!	This is a potential security risk if the platform
+> + *		function does not zero out the value before getting
+> + *		to userspace!
 > + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/watchdog.h>
-> +#include <loongson1.h>
-> +
-> +#define DEFAULT_HEARTBEAT	30
-> +
-> +static bool nowayout = WATCHDOG_NOWAYOUT;
-> +module_param(nowayout, bool, 0444);
-> +
-> +static unsigned int heartbeat = DEFAULT_HEARTBEAT;
-> +module_param(heartbeat, uint, 0444);
-> +
-> +struct ls1x_wdt_drvdata {
-> +	void __iomem *base;
-> +	struct clk *clk;
-> +	unsigned int counts_per_second;
-> +	struct watchdog_device wdt;
-> +};
-> +
-> +static int ls1x_wdt_ping(struct watchdog_device *wdt_dev)
+> +void __weak plat_save_relocation(long offset)
 > +{
-> +	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-> +
-> +	writel(0x1, drvdata->base + WDT_SET);
-> +
-> +	return 0;
+> +	/* Do nothing... */
 > +}
 > +
-> +static int ls1x_wdt_set_timeout(struct watchdog_device *wdt_dev,
-> +				unsigned int timeout)
-> +{
-> +	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-> +	unsigned int counts;
-> +
-> +	wdt_dev->timeout = min(timeout, wdt_dev->max_hw_heartbeat_ms / 1000);
+>   static inline u32 __init get_synci_step(void)
+>   {
+>   	u32 res;
+> @@ -316,6 +330,9 @@ void *__init relocate_kernel(void)
+>   	arcs_cmdline[0] = '\0';
+>
+>   	if (offset) {
+> +		/* Save the relocation offset value. */
+> +		plat_save_relocation(offset);
 
-wdt_dev->timeout needs to be set to the 'soft' timeout. The hardware timeout,
-if needed, needs to be saved internally (in struct ls1x_wdt_drvdata).
-Not that it is needed here, though - the value is not used elsewhere in the
-driver. So you can do something like
+So you save the relocation offset here into a variable located in the 
+.bss, such that when the .bss is copied a few lines further on, the 
+offset will be present for the new kernel.
+There is an issue with this - if relocation fails for any reason, the 
+boot CPU will go on to execute the original kernel, but when starting 
+the secondaries it will apply the now invalid offset and access some 
+invalid location.
 
-	wdt->timeout = timeout;
-	timeout = min(timeout, wdt_dev->max_hw_heartbeat_ms / 1000);
-	counts = drvdata->counts_per_second * timeout;
+I don't see why the new kernel could figure out the offset for itself by 
+with
 
-> +	counts = drvdata->counts_per_second * wdt_dev->timeout;
-> +
-> +	writel(counts, drvdata->base + WDT_TIMER);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ls1x_wdt_start(struct watchdog_device *wdt_dev)
-> +{
-> +	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-> +
-> +	writel(0x1, drvdata->base + WDT_EN);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ls1x_wdt_stop(struct watchdog_device *wdt_dev)
-> +{
-> +	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-> +
-> +	writel(0x0, drvdata->base + WDT_EN);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct watchdog_info ls1x_wdt_info = {
-> +	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
-> +	.identity = "Loongson1 Watchdog",
-> +};
-> +
-> +static const struct watchdog_ops ls1x_wdt_ops = {
-> +	.owner = THIS_MODULE,
-> +	.start = ls1x_wdt_start,
-> +	.stop = ls1x_wdt_stop,
-> +	.ping = ls1x_wdt_ping,
-> +	.set_timeout = ls1x_wdt_set_timeout,
-> +};
-> +
-> +static int ls1x_wdt_probe(struct platform_device *pdev)
-> +{
-> +	struct ls1x_wdt_drvdata *drvdata;
-> +	struct watchdog_device *ls1x_wdt;
-> +	struct resource *res;
-> +	int ret;
-> +
-> +	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
-> +	if (!drvdata)
-> +		return -ENOMEM;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
-> +	if (IS_ERR(drvdata->base))
-> +		return PTR_ERR(drvdata->base);
-> +
-> +	drvdata->clk = devm_clk_get(&pdev->dev, pdev->name);
-> +	if (IS_ERR(drvdata->clk)) {
-> +		dev_err(&pdev->dev, "failed to get %s clock\n", pdev->name);
+offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
 
-devm_clk_get() can return -EPROBE_DEFER, in which case you would not want
-an error message.
-
-> +		return PTR_ERR(drvdata->clk);
-> +	}
-> +	clk_prepare_enable(drvdata->clk);
-> +
-> +	drvdata->counts_per_second = clk_get_rate(drvdata->clk);
-
-clk_get_rate() can at least in theory return 0.
+eliminating the need for plat_save_relocation().
 
 > +
-> +	ls1x_wdt = &drvdata->wdt;
-> +	ls1x_wdt->info = &ls1x_wdt_info;
-> +	ls1x_wdt->ops = &ls1x_wdt_ops;
-> +	ls1x_wdt->min_timeout = 1;
-> +	ls1x_wdt->max_hw_heartbeat_ms = U32_MAX / drvdata->counts_per_second *
-> +					1000;
-> +	ls1x_wdt->parent = &pdev->dev;
-> +
-> +	watchdog_init_timeout(ls1x_wdt, heartbeat, &pdev->dev);
+>   		/* Copy the kernel to it's new location */
+>   		memcpy(loc_new, &_text, kernel_length);
+>
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 36cf8d6..582c711 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -501,11 +501,13 @@ static void __init bootmem_init(void)
+>   	 * between the original and new locations may be returned to the system.
+>   	 */
+>   	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
+> -		unsigned long offset;
+>   		extern void show_kernel_relocation(const char *level);
+> +#ifndef CONFIG_CAVIUM_OCTEON_SOC
+> +		unsigned long offset;
+>
+>   		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
+>   		free_bootmem(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
+> +#endif
 
-This has little practical effect. Problem is two-fold. First, the default
-heartbeat is not pre-set in ls1x_wdt. This means if the user specifies
-heartbeat=0 as module parameter, the timeout will be set to 0. Second,
-since heartbeat is -re-initialized, watchdog_init_timeout() will never fall
-back to devicetree data to initialize the timeout (maybe that doesn't matter
-for this architecture).
+Rather than add ifdeffery here, I'd rather see a function something like 
+plat_free_original_kernel() with a weak default implementation that does 
+this. In an ideal world though you'd have a different mechanism of 
+starting secondaries such that you didn't have to delay freeing the 
+original kernel until all cpus have started (as I said earlier, there 
+are circumstances in which all of this memory would leak).
 
-In general it is better to set the default module parameter value to 0
-and initialize the timeout together with min_timeout and max_hw_heartbeat_ms.
+>
+>   #if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
+>   		/*
 
-static unsigned int heartbeat;
-...
-ls1x_wdt->timeout = DEFAULT_HEARTBEAT;
-...
-watchdog_init_timeout(ls1x_wdt, heartbeat, &pdev->dev);
+If you added the indirection to the secondary boot process, most of 
+these changes would not be necessary. I think the only generic change 
+would be adding a post relocation platform hook.
 
-> +	watchdog_set_nowayout(ls1x_wdt, nowayout);
-> +	watchdog_set_drvdata(ls1x_wdt, drvdata);
-> +
-> +	ret = watchdog_register_device(&drvdata->wdt);
-> +	if (ret < 0) {
-> +		dev_err(&pdev->dev, "failed to register watchdog device\n");
-> +		return ret;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, drvdata);
-> +
-> +	dev_info(&pdev->dev, "Loongson1 Watchdog driver registered\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int ls1x_wdt_remove(struct platform_device *pdev)
-> +{
-> +	struct ls1x_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
-> +
-> +	ls1x_wdt_stop(&drvdata->wdt);
-> +	watchdog_unregister_device(&drvdata->wdt);
-> +	clk_disable_unprepare(drvdata->clk);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver ls1x_wdt_driver = {
-> +	.probe = ls1x_wdt_probe,
-> +	.remove = ls1x_wdt_remove,
-> +	.driver = {
-> +		.name = "ls1x-wdt",
-> +	},
-> +};
-> +
-> +module_platform_driver(ls1x_wdt_driver);
-> +
-> +MODULE_AUTHOR("Yang Ling <gnaygnil@gmail.com>");
-> +MODULE_DESCRIPTION("Loongson1 Watchdog Driver");
-> +MODULE_LICENSE("GPL");
+Thanks,
+Matt

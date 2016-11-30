@@ -1,26 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Nov 2016 23:58:34 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:42056 "EHLO mail.hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Nov 2016 23:58:56 +0100 (CET)
+Received: from hauke-m.de ([5.39.93.123]:42054 "EHLO mail.hauke-m.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992437AbcK3W6Zr1RiL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Nov 2016 23:58:25 +0100
+        id S23992519AbcK3W60GiNRL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Nov 2016 23:58:26 +0100
 Received: from hauke-desktop.lan (p20030086280C75006955C9BE4344F859.dip0.t-ipconnect.de [IPv6:2003:86:280c:7500:6955:c9be:4344:f859])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 483EB1001CE;
-        Wed, 30 Nov 2016 23:58:25 +0100 (CET)
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 250381001CD;
+        Wed, 30 Nov 2016 23:58:23 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, john@phrozen.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 2/2] lantiq: activate more drivers in default configuration
-Date:   Wed, 30 Nov 2016 23:58:08 +0100
-Message-Id: <20161130225808.11620-2-hauke@hauke-m.de>
+Subject: [PATCH 1/2] lantiq: refresh default configuration
+Date:   Wed, 30 Nov 2016 23:58:07 +0100
+Message-Id: <20161130225808.11620-1-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.10.2
-In-Reply-To: <20161130225808.11620-1-hauke@hauke-m.de>
-References: <20161130225808.11620-1-hauke@hauke-m.de>
 Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55913
+X-archive-position: 55914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,86 +35,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This activates the following functionalities:
-* SMP support (used on xRX200)
-* PCI support
-* NAND driver
-* PHY driver
-* UART
-* Watchdog
-* USB 2.0 controller
-
-These driver are driving different IP cores found on the supported SoCs.
+Just generate a configuration based on this default configuration and
+store it again. This removed some old configuration options.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/configs/xway_defconfig | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/mips/configs/xway_defconfig | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
 diff --git a/arch/mips/configs/xway_defconfig b/arch/mips/configs/xway_defconfig
-index 0ccb642..4365108b 100644
+index 8987846..0ccb642 100644
 --- a/arch/mips/configs/xway_defconfig
 +++ b/arch/mips/configs/xway_defconfig
-@@ -1,7 +1,11 @@
- CONFIG_LANTIQ=y
-+CONFIG_PCI_LANTIQ=y
+@@ -2,11 +2,11 @@ CONFIG_LANTIQ=y
  CONFIG_XRX200_PHY_FW=y
  CONFIG_CPU_MIPS32_R2=y
-+CONFIG_MIPS_MT_SMP=y
-+CONFIG_MIPS_VPE_LOADER=y
  # CONFIG_COMPACTION is not set
-+CONFIG_NR_CPUS=2
+-# CONFIG_CROSS_MEMORY_ATTACH is not set
  CONFIG_HZ_100=y
  # CONFIG_SECCOMP is not set
  # CONFIG_LOCALVERSION_AUTO is not set
-@@ -22,8 +26,8 @@ CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- # CONFIG_IOSCHED_CFQ is not set
-+CONFIG_PCI=y
- # CONFIG_COREDUMP is not set
--# CONFIG_SUSPEND is not set
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -81,6 +85,8 @@ CONFIG_MTD_COMPLEX_MAPPINGS=y
- CONFIG_MTD_PHYSMAP=y
- CONFIG_MTD_PHYSMAP_OF=y
- CONFIG_MTD_LANTIQ=y
-+CONFIG_MTD_NAND=y
-+CONFIG_MTD_NAND_XWAY=y
- CONFIG_EEPROM_93CX6=m
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
-@@ -88,6 +94,7 @@ CONFIG_NETDEVICES=y
- CONFIG_LANTIQ_ETOP=y
- # CONFIG_NET_VENDOR_WIZNET is not set
- CONFIG_PHYLIB=y
-+CONFIG_INTEL_XWAY_PHY=y
- CONFIG_PPP=m
- CONFIG_PPP_FILTER=y
- CONFIG_PPP_MULTILINK=y
-@@ -108,17 +115,21 @@ CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_RUNTIME_UARTS=2
- CONFIG_SERIAL_OF_PLATFORM=y
-+CONFIG_SERIAL_LANTIQ=y
- CONFIG_SPI=y
- CONFIG_GPIO_MM_LANTIQ=y
- CONFIG_GPIO_STP_XWAY=y
- # CONFIG_HWMON is not set
- CONFIG_WATCHDOG=y
-+CONFIG_LANTIQ_WDT=y
- # CONFIG_HID is not set
- # CONFIG_USB_HID is not set
- CONFIG_USB=y
- CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
- CONFIG_USB_STORAGE=y
- CONFIG_USB_STORAGE_DEBUG=y
-+CONFIG_USB_DWC2=y
-+CONFIG_USB_DWC2_PCI=y
- CONFIG_NEW_LEDS=y
- CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_TRIGGERS=y
+ CONFIG_SYSVIPC=y
++# CONFIG_CROSS_MEMORY_ATTACH is not set
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_BLK_DEV_INITRD=y
+ # CONFIG_RD_GZIP is not set
+@@ -35,12 +35,10 @@ CONFIG_IP_ROUTE_MULTIPATH=y
+ CONFIG_IP_ROUTE_VERBOSE=y
+ CONFIG_IP_MROUTE=y
+ CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
+-CONFIG_ARPD=y
+ CONFIG_SYN_COOKIES=y
+ # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+ # CONFIG_INET_XFRM_MODE_TUNNEL is not set
+ # CONFIG_INET_XFRM_MODE_BEET is not set
+-# CONFIG_INET_LRO is not set
+ # CONFIG_INET_DIAG is not set
+ CONFIG_TCP_CONG_ADVANCED=y
+ # CONFIG_TCP_CONG_BIC is not set
+@@ -62,7 +60,6 @@ CONFIG_NETFILTER_XT_MATCH_MAC=m
+ CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
+ CONFIG_NETFILTER_XT_MATCH_STATE=m
+ CONFIG_NF_CONNTRACK_IPV4=m
+-# CONFIG_NF_CONNTRACK_PROC_COMPAT is not set
+ CONFIG_IP_NF_IPTABLES=m
+ CONFIG_IP_NF_FILTER=m
+ CONFIG_IP_NF_TARGET_REJECT=m
+@@ -151,9 +148,6 @@ CONFIG_MAGIC_SYSRQ=y
+ # CONFIG_SCHED_DEBUG is not set
+ # CONFIG_FTRACE is not set
+ CONFIG_CMDLINE_BOOL=y
+-CONFIG_CRYPTO_MANAGER=m
+ CONFIG_CRYPTO_ARC4=m
+-# CONFIG_CRYPTO_ANSI_CPRNG is not set
+ CONFIG_CRC_ITU_T=m
+ CONFIG_CRC32_SARWATE=y
+-CONFIG_AVERAGE=y
 -- 
 2.10.2

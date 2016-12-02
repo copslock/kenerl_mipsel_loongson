@@ -1,26 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Dec 2016 14:41:31 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14236 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Dec 2016 14:41:52 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:10746 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993064AbcLBNjoBaEc6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Dec 2016 14:39:44 +0100
+        with ESMTP id S23993068AbcLBNjp1Z3n6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Dec 2016 14:39:45 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 4C9FE5E80B0E5;
-        Fri,  2 Dec 2016 13:39:34 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 3C979D4FE0FBE;
+        Fri,  2 Dec 2016 13:39:35 +0000 (GMT)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 2 Dec 2016 13:39:37 +0000
+ 14.3.294.0; Fri, 2 Dec 2016 13:39:38 +0000
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
         "Jason A . Donenfeld" <Jason@zx2c4.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 4/5] MIPS: Switch to the irq_stack in interrupts
-Date:   Fri, 2 Dec 2016 13:39:16 +0000
-Message-ID: <1480685957-18809-5-git-send-email-matt.redfearn@imgtec.com>
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 5/5] MIPS: Select HAVE_IRQ_EXIT_ON_IRQ_STACK
+Date:   Fri, 2 Dec 2016 13:39:17 +0000
+Message-ID: <1480685957-18809-6-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1480685957-18809-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1480685957-18809-1-git-send-email-matt.redfearn@imgtec.com>
@@ -31,7 +29,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55929
+X-archive-position: 55930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,122 +46,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When enterring interrupt context via handle_int or except_vec_vi, switch
-to the irq_stack of the current CPU if it is not already in use.
-
-The current stack pointer is masked with the thread size and compared to
-the base or the irq stack. If it does not match then the stack pointer
-is set to the top of that stack, otherwise this is a nested irq being
-handled on the irq stack so the stack pointer should be left as it was.
-
-The in-use stack pointer is placed in the callee saved register s1. It
-will be saved to the stack when plat_irq_dispatch is invoked and can be
-restored once control returns here.
+Since do_IRQ is now invoked on a separate IRQ stack, we select
+HAVE_IRQ_EXIT_ON_IRQ_STACK so that softirq's may be invoked directly
+from irq_exit(), rather than requiring do_softirq_own_stack.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 ---
 
- arch/mips/kernel/genex.S | 81 +++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 76 insertions(+), 5 deletions(-)
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index dc0b29612891..0a7ba4b2f687 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -187,9 +187,44 @@ NESTED(handle_int, PT_SIZE, sp)
- 
- 	LONG_L	s0, TI_REGS($28)
- 	LONG_S	sp, TI_REGS($28)
--	PTR_LA	ra, ret_from_irq
--	PTR_LA	v0, plat_irq_dispatch
--	jr	v0
-+
-+	/*
-+	 * SAVE_ALL ensures we are using a valid kernel stack for the thread.
-+	 * Check if we are already using the IRQ stack.
-+	 */
-+	move	s1, sp # Preserve the sp
-+
-+	/* Get IRQ stack for this CPU */
-+	ASM_CPUID_MFC0	k0, ASM_SMP_CPUID_REG
-+#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
-+	lui	k1, %hi(irq_stack)
-+#else
-+	lui	k1, %highest(irq_stack)
-+	daddiu	k1, %higher(irq_stack)
-+	dsll	k1, 16
-+	daddiu	k1, %hi(irq_stack)
-+	dsll	k1, 16
-+#endif
-+	LONG_SRL	k0, SMP_CPUID_PTRSHIFT
-+	LONG_ADDU	k1, k0
-+	LONG_L	t0, %lo(irq_stack)(k1)
-+
-+	# Check if already on IRQ stack
-+	PTR_LI	t1, ~(_THREAD_SIZE-1)
-+	and	t1, t1, sp
-+	beq	t0, t1, 2f
-+
-+	/* Switch to IRQ stack */
-+	li	t1, _IRQ_STACK_SIZE
-+	PTR_ADD sp, t0, t1
-+
-+2:
-+	jal	plat_irq_dispatch
-+
-+	/* Restore sp */
-+	move	sp, s1
-+
-+	j	ret_from_irq
- #ifdef CONFIG_CPU_MICROMIPS
- 	nop
- #endif
-@@ -262,8 +297,44 @@ NESTED(except_vec_vi_handler, 0, sp)
- 
- 	LONG_L	s0, TI_REGS($28)
- 	LONG_S	sp, TI_REGS($28)
--	PTR_LA	ra, ret_from_irq
--	jr	v0
-+
-+	/*
-+	 * SAVE_ALL ensures we are using a valid kernel stack for the thread.
-+	 * Check if we are already using the IRQ stack.
-+	 */
-+	move	s1, sp # Preserve the sp
-+
-+	/* Get IRQ stack for this CPU */
-+	ASM_CPUID_MFC0	k0, ASM_SMP_CPUID_REG
-+#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
-+	lui	k1, %hi(irq_stack)
-+#else
-+	lui	k1, %highest(irq_stack)
-+	daddiu	k1, %higher(irq_stack)
-+	dsll	k1, 16
-+	daddiu	k1, %hi(irq_stack)
-+	dsll	k1, 16
-+#endif
-+	LONG_SRL	k0, SMP_CPUID_PTRSHIFT
-+	LONG_ADDU	k1, k0
-+	LONG_L	t0, %lo(irq_stack)(k1)
-+
-+	# Check if already on IRQ stack
-+	PTR_LI	t1, ~(_THREAD_SIZE-1)
-+	and	t1, t1, sp
-+	beq	t0, t1, 2f
-+
-+	/* Switch to IRQ stack */
-+	li	t1, _IRQ_STACK_SIZE
-+	PTR_ADD sp, t0, t1
-+
-+2:
-+	jal	plat_irq_dispatch
-+
-+	/* Restore sp */
-+	move	sp, s1
-+
-+	j	ret_from_irq
- 	END(except_vec_vi_handler)
- 
- /*
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b3c5bde43d34..80832aa8e4fb 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -9,6 +9,7 @@ config MIPS
+ 	select HAVE_CONTEXT_TRACKING
+ 	select HAVE_GENERIC_DMA_COHERENT
+ 	select HAVE_IDE
++	select HAVE_IRQ_EXIT_ON_IRQ_STACK
+ 	select HAVE_OPROFILE
+ 	select HAVE_PERF_EVENTS
+ 	select PERF_USE_VMALLOC
 -- 
 2.7.4

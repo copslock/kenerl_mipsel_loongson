@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Dec 2016 14:41:01 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39832 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Dec 2016 14:41:31 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:14236 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993060AbcLBNjnAdCQ6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Dec 2016 14:39:43 +0100
+        with ESMTP id S23993064AbcLBNjoBaEc6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Dec 2016 14:39:44 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 7E2B2407CDCC1;
-        Fri,  2 Dec 2016 13:39:33 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 4C9FE5E80B0E5;
+        Fri,  2 Dec 2016 13:39:34 +0000 (GMT)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
  14.3.294.0; Fri, 2 Dec 2016 13:39:37 +0000
@@ -18,9 +18,9 @@ CC:     <linux-mips@linux-mips.org>,
         <linux-kernel@vger.kernel.org>,
         James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 3/5] MIPS: Only change $28 to thread_info if coming from user mode
-Date:   Fri, 2 Dec 2016 13:39:15 +0000
-Message-ID: <1480685957-18809-4-git-send-email-matt.redfearn@imgtec.com>
+Subject: [PATCH 4/5] MIPS: Switch to the irq_stack in interrupts
+Date:   Fri, 2 Dec 2016 13:39:16 +0000
+Message-ID: <1480685957-18809-5-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1480685957-18809-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1480685957-18809-1-git-send-email-matt.redfearn@imgtec.com>
@@ -31,7 +31,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55928
+X-archive-position: 55929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,55 +48,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The SAVE_SOME macro is used to save the execution context on all
-exceptions.
-If an exception occurs while executing user code, the stack is switched
-to the kernel's stack for the current task, and register $28 is switched
-to point to the current_thread_info, which is at the bottom of the stack
-region.
-If the exception occurs while executing kernel code, the stack is left,
-and this change ensures that register $28 is not updated. This is the
-correct behaviour when the kernel can be executing on the separate irq
-stack, because the thread_info will not be at the base of it.
+When enterring interrupt context via handle_int or except_vec_vi, switch
+to the irq_stack of the current CPU if it is not already in use.
 
-With this change, register $28 is only switched to it's kernel
-conventional usage of the currrent thread info pointer at the point at
-which execution enters kernel space. Doing it on every exception was
-redundant, but OK without an IRQ stack, but will be erroneous once that
-is introduced.
+The current stack pointer is masked with the thread size and compared to
+the base or the irq stack. If it does not match then the stack pointer
+is set to the top of that stack, otherwise this is a nested irq being
+handled on the irq stack so the stack pointer should be left as it was.
+
+The in-use stack pointer is placed in the callee saved register s1. It
+will be saved to the stack when plat_irq_dispatch is invoked and can be
+restored once control returns here.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 ---
 
- arch/mips/include/asm/stackframe.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/kernel/genex.S | 81 +++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 76 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index eebf39549606..5782fa3d63be 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -216,12 +216,22 @@
- 		LONG_S	$25, PT_R25(sp)
- 		LONG_S	$28, PT_R28(sp)
- 		LONG_S	$31, PT_R31(sp)
-+
-+		/* Set thread_info if we're coming from user mode */
-+		.set	reorder
-+		mfc0	k0, CP0_STATUS
-+		sll	k0, 3		/* extract cu0 bit */
-+		.set	noreorder
-+		bltz	k0, 9f
-+		 nop
-+
- 		ori	$28, sp, _THREAD_MASK
- 		xori	$28, _THREAD_MASK
- #ifdef CONFIG_CPU_CAVIUM_OCTEON
- 		.set    mips64
- 		pref    0, 0($28)       /* Prefetch the current pointer */
- #endif
-+9:
- 		.set	pop
- 		.endm
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index dc0b29612891..0a7ba4b2f687 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -187,9 +187,44 @@ NESTED(handle_int, PT_SIZE, sp)
  
+ 	LONG_L	s0, TI_REGS($28)
+ 	LONG_S	sp, TI_REGS($28)
+-	PTR_LA	ra, ret_from_irq
+-	PTR_LA	v0, plat_irq_dispatch
+-	jr	v0
++
++	/*
++	 * SAVE_ALL ensures we are using a valid kernel stack for the thread.
++	 * Check if we are already using the IRQ stack.
++	 */
++	move	s1, sp # Preserve the sp
++
++	/* Get IRQ stack for this CPU */
++	ASM_CPUID_MFC0	k0, ASM_SMP_CPUID_REG
++#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
++	lui	k1, %hi(irq_stack)
++#else
++	lui	k1, %highest(irq_stack)
++	daddiu	k1, %higher(irq_stack)
++	dsll	k1, 16
++	daddiu	k1, %hi(irq_stack)
++	dsll	k1, 16
++#endif
++	LONG_SRL	k0, SMP_CPUID_PTRSHIFT
++	LONG_ADDU	k1, k0
++	LONG_L	t0, %lo(irq_stack)(k1)
++
++	# Check if already on IRQ stack
++	PTR_LI	t1, ~(_THREAD_SIZE-1)
++	and	t1, t1, sp
++	beq	t0, t1, 2f
++
++	/* Switch to IRQ stack */
++	li	t1, _IRQ_STACK_SIZE
++	PTR_ADD sp, t0, t1
++
++2:
++	jal	plat_irq_dispatch
++
++	/* Restore sp */
++	move	sp, s1
++
++	j	ret_from_irq
+ #ifdef CONFIG_CPU_MICROMIPS
+ 	nop
+ #endif
+@@ -262,8 +297,44 @@ NESTED(except_vec_vi_handler, 0, sp)
+ 
+ 	LONG_L	s0, TI_REGS($28)
+ 	LONG_S	sp, TI_REGS($28)
+-	PTR_LA	ra, ret_from_irq
+-	jr	v0
++
++	/*
++	 * SAVE_ALL ensures we are using a valid kernel stack for the thread.
++	 * Check if we are already using the IRQ stack.
++	 */
++	move	s1, sp # Preserve the sp
++
++	/* Get IRQ stack for this CPU */
++	ASM_CPUID_MFC0	k0, ASM_SMP_CPUID_REG
++#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
++	lui	k1, %hi(irq_stack)
++#else
++	lui	k1, %highest(irq_stack)
++	daddiu	k1, %higher(irq_stack)
++	dsll	k1, 16
++	daddiu	k1, %hi(irq_stack)
++	dsll	k1, 16
++#endif
++	LONG_SRL	k0, SMP_CPUID_PTRSHIFT
++	LONG_ADDU	k1, k0
++	LONG_L	t0, %lo(irq_stack)(k1)
++
++	# Check if already on IRQ stack
++	PTR_LI	t1, ~(_THREAD_SIZE-1)
++	and	t1, t1, sp
++	beq	t0, t1, 2f
++
++	/* Switch to IRQ stack */
++	li	t1, _IRQ_STACK_SIZE
++	PTR_ADD sp, t0, t1
++
++2:
++	jal	plat_irq_dispatch
++
++	/* Restore sp */
++	move	sp, s1
++
++	j	ret_from_irq
+ 	END(except_vec_vi_handler)
+ 
+ /*
 -- 
 2.7.4

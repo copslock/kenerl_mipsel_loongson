@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Dec 2016 09:59:54 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27927 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Dec 2016 10:00:16 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38469 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993039AbcLBI6nti890 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Dec 2016 09:58:43 +0100
+        with ESMTP id S23993040AbcLBI6oNEes0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Dec 2016 09:58:44 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 7B4425AC29342;
-        Fri,  2 Dec 2016 08:58:34 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 4978AF5EC75DC;
+        Fri,  2 Dec 2016 08:58:35 +0000 (GMT)
 Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 2 Dec 2016 08:58:36 +0000
+ 14.3.294.0; Fri, 2 Dec 2016 08:58:37 +0000
 From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: [PATCH 3/4] MIPS: kexec: make current SMP handling conditional
-Date:   Fri, 2 Dec 2016 09:58:30 +0100
-Message-ID: <1480669111-15562-4-git-send-email-marcin.nowakowski@imgtec.com>
+Subject: [PATCH 4/4] MIPS: kexec: add SMP hooks for generic platform
+Date:   Fri, 2 Dec 2016 09:58:31 +0100
+Message-ID: <1480669111-15562-5-git-send-email-marcin.nowakowski@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1480669111-15562-1-git-send-email-marcin.nowakowski@imgtec.com>
 References: <1480669111-15562-1-git-send-email-marcin.nowakowski@imgtec.com>
@@ -24,7 +24,7 @@ Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55920
+X-archive-position: 55921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,141 +41,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Current SMP implementation for kexec has been added during kexec
-development for Cavium Octeon platforms and doesn't apply to all other
-SOCs.
+Use disable_nonboot_cpus to shutdown all cores when preparing to switch
+to a new kexec'ed kernel.
 
-Guard current implementation with a new config symbol
-SYS_KEXEC_SMP_BOOT_SECONDARY that is enabled for Cavium Octeon.
+This new method of switching is preferred to the earlier used (and now
+guarded by CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY) for all systems that
+boot with all cores/threads stopped that are expected to be started by
+linux kernel, but the kexec switch to the new kernel is very
+platform-specific, so neither of the solutions may be applicable to all
+existing platforms.
 
 Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 ---
- arch/mips/Kconfig                  | 5 +++++
- arch/mips/include/asm/kexec.h      | 2 ++
- arch/mips/kernel/crash.c           | 3 ++-
- arch/mips/kernel/machine_kexec.c   | 4 +++-
- arch/mips/kernel/relocate_kernel.S | 6 +++---
- 5 files changed, 15 insertions(+), 5 deletions(-)
+ arch/mips/Kconfig         | 2 +-
+ arch/mips/generic/kexec.c | 7 +++++++
+ arch/mips/kernel/crash.c  | 5 +++++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9d07bee..77e6b5a 100644
+index 77e6b5a..11bd8d7 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -868,6 +868,7 @@ config CAVIUM_OCTEON_SOC
- 	select SYS_SUPPORTS_HOTPLUG_CPU if CPU_BIG_ENDIAN
- 	select SYS_HAS_EARLY_PRINTK
- 	select SYS_HAS_CPU_CAVIUM_OCTEON
-+	select SYS_KEXEC_SMP_BOOT_SECONDARY
- 	select HW_HAS_PCI
- 	select ZONE_DMA32
- 	select HOLES_IN_ZONE
-@@ -2780,6 +2781,7 @@ source "kernel/Kconfig.preempt"
+@@ -2781,7 +2781,7 @@ source "kernel/Kconfig.preempt"
  config KEXEC
  	bool "Kexec system call"
  	select KEXEC_CORE
-+	depends on SYS_KEXEC_SMP_BOOT_SECONDARY || !SMP
+-	depends on SYS_KEXEC_SMP_BOOT_SECONDARY || !SMP
++	depends on SYS_KEXEC_SMP_BOOT_SECONDARY || !SMP || PM_SLEEP_SMP
  	help
  	  kexec is a system call that implements the ability to shutdown your
  	  current kernel, and to start another kernel.  It is like a reboot
-@@ -2794,6 +2796,9 @@ config KEXEC
- 	  interface is strongly in flux, so no good recommendation can be
- 	  made.
+diff --git a/arch/mips/generic/kexec.c b/arch/mips/generic/kexec.c
+index 61f812b..cdfd966 100644
+--- a/arch/mips/generic/kexec.c
++++ b/arch/mips/generic/kexec.c
+@@ -8,6 +8,7 @@
+  * option) any later version.
+  */
  
-+config SYS_KEXEC_SMP_BOOT_SECONDARY
-+	bool
-+
- config CRASH_DUMP
- 	bool "Kernel crash dumps"
- 	help
-diff --git a/arch/mips/include/asm/kexec.h b/arch/mips/include/asm/kexec.h
-index 493a3cc..8934725 100644
---- a/arch/mips/include/asm/kexec.h
-+++ b/arch/mips/include/asm/kexec.h
-@@ -41,10 +41,12 @@ extern void (*_machine_kexec_shutdown)(void);
- extern void (*_machine_crash_shutdown)(struct pt_regs *regs);
- extern void default_machine_crash_shutdown(struct pt_regs *regs);
- #ifdef CONFIG_SMP
-+#ifdef CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY
- extern const unsigned char kexec_smp_wait[];
- extern unsigned long secondary_kexec_args[4];
- extern void (*relocated_kexec_smp_wait) (void *);
- extern atomic_t kexec_ready_to_reboot;
-+#endif
- extern void (*_crash_smp_send_stop)(void);
- #endif
- #endif
-diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
-index 5a71518..feeb3b0 100644
---- a/arch/mips/kernel/crash.c
-+++ b/arch/mips/kernel/crash.c
-@@ -38,11 +38,12 @@ static void crash_shutdown_secondary(void *passed_regs)
- 	if (!cpumask_test_cpu(cpu, &cpus_in_crash))
- 		crash_save_cpu(regs, cpu);
- 	cpumask_set_cpu(cpu, &cpus_in_crash);
--
-+#ifdef CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY
- 	while (!atomic_read(&kexec_ready_to_reboot))
- 		cpu_relax();
- 	relocated_kexec_smp_wait(NULL);
- 	/* NOTREACHED */
-+#endif
++#include <linux/cpu.h>
+ #include <linux/kexec.h>
+ #include <linux/libfdt.h>
+ #include <linux/uaccess.h>
+@@ -36,9 +37,15 @@ static int generic_kexec_prepare(struct kimage *image)
+ 	return 0;
  }
  
- static void crash_kexec_prepare_cpus(void)
-diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
-index 8b574bc..5f9a337 100644
---- a/arch/mips/kernel/machine_kexec.c
-+++ b/arch/mips/kernel/machine_kexec.c
-@@ -23,8 +23,10 @@ int (*_machine_kexec_prepare)(struct kimage *) = NULL;
- void (*_machine_kexec_shutdown)(void) = NULL;
- void (*_machine_crash_shutdown)(struct pt_regs *regs) = NULL;
- #ifdef CONFIG_SMP
-+#ifdef CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY
- void (*relocated_kexec_smp_wait) (void *);
- atomic_t kexec_ready_to_reboot = ATOMIC_INIT(0);
++static void generic_kexec_machine_shutdown(void)
++{
++	disable_nonboot_cpus();
++}
++
+ static int __init register_generic_kexec(void)
+ {
+ 	_machine_kexec_prepare = generic_kexec_prepare;
++	_machine_kexec_shutdown = generic_kexec_machine_shutdown;
+ 	return 0;
+ }
+ arch_initcall(register_generic_kexec);
+diff --git a/arch/mips/kernel/crash.c b/arch/mips/kernel/crash.c
+index feeb3b0..e9d36d7 100644
+--- a/arch/mips/kernel/crash.c
++++ b/arch/mips/kernel/crash.c
+@@ -3,6 +3,7 @@
+ #include <linux/reboot.h>
+ #include <linux/kexec.h>
+ #include <linux/bootmem.h>
++#include <linux/cpu.h>
+ #include <linux/crash_dump.h>
+ #include <linux/delay.h>
+ #include <linux/irq.h>
+@@ -60,6 +61,10 @@ static void crash_kexec_prepare_cpus(void)
+ 	smp_call_function(crash_shutdown_secondary, NULL, 0);
+ 	smp_wmb();
+ 
++#ifndef CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY
++	disable_nonboot_cpus();
 +#endif
- void (*_crash_smp_send_stop)(void) = NULL;
- #endif
- 
-@@ -126,7 +128,7 @@ machine_kexec(struct kimage *image)
- 	printk("Will call new kernel at %08lx\n", image->start);
- 	printk("Bye ...\n");
- 	__flush_cache_all();
--#ifdef CONFIG_SMP
-+#ifdef CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY
- 	/* All secondary cpus now may jump to kexec_wait cycle */
- 	relocated_kexec_smp_wait = reboot_code_buffer +
- 		(void *)(kexec_smp_wait - relocate_new_kernel);
-diff --git a/arch/mips/kernel/relocate_kernel.S b/arch/mips/kernel/relocate_kernel.S
-index c6bbf21..dbdb963 100644
---- a/arch/mips/kernel/relocate_kernel.S
-+++ b/arch/mips/kernel/relocate_kernel.S
-@@ -69,7 +69,7 @@ copy_word:
- 	b		process_entry
- 
- done:
--#ifdef CONFIG_SMP
-+#ifdef CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY
- 	/* kexec_flag reset is signal to other CPUs what kernel
- 	   was moved to it's location. Note - we need relocated address
- 	   of kexec_flag.  */
-@@ -100,7 +100,7 @@ done:
- 	j		s1
- 	END(relocate_new_kernel)
- 
--#ifdef CONFIG_SMP
-+#ifdef CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY
- /*
-  * Other CPUs should wait until code is relocated and
-  * then start at entry (?) point.
-@@ -156,7 +156,7 @@ arg2:	PTR		0x0
- arg3:	PTR		0x0
- 	.size	kexec_args,PTRSIZE*4
- 
--#ifdef CONFIG_SMP
-+#ifdef CONFIG_SYS_KEXEC_SMP_BOOT_SECONDARY
- /*
-  * Secondary CPUs may have different kernel parameters in
-  * their registers a0-a3. secondary_kexec_args[0..3] are used
++
+ 	/*
+ 	 * The crash CPU sends an IPI and wait for other CPUs to
+ 	 * respond. Delay of at least 10 seconds.
 -- 
 2.7.4

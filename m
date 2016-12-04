@@ -1,60 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2016 16:06:10 +0100 (CET)
-Received: from mail-pf0-f194.google.com ([209.85.192.194]:35699 "EHLO
-        mail-pf0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993120AbcLDPGDTtEQr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Dec 2016 16:06:03 +0100
-Received: by mail-pf0-f194.google.com with SMTP id i88so6435476pfk.2;
-        Sun, 04 Dec 2016 07:06:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=o0rCJhnMRgvJgt+wD0UziSjNBhFr3NHrMYfyKiPuLkw=;
-        b=d2tirLj4PufzLHhsMj9pPHKQPnj8pInWgXrVjfPMP7e7t0XEBh836VkCq2gw7oZ0i1
-         IwyaBNf+RraBAl2hh9oxC8IdKvqeL2CIqxVUKk/qXAcO5wL7+LFisvTjl/VDG0QgZf2j
-         8EQqgf6fdRSR0vZ0aKsdrGXUbvRouig4TwI6JWYXnUAipTrcDIWmRAoIGNss4LgurtVc
-         RBETA+RnAM5sM6dHR/V2H3scXBLlPlQJd5F6sx5NbQZc3H8OeWp/S2SWDE1tLBUjqbmR
-         xIGYcsMVlcIua8V8D0l7yCMN2vvkHuI4xZfopNG2Otg+xOuQCY1LG95ElLGo0dyjNsLe
-         zFBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=o0rCJhnMRgvJgt+wD0UziSjNBhFr3NHrMYfyKiPuLkw=;
-        b=FPhbM+Mzg7dcnWZYSKN5iLzsK22A5QdpSNf3o2esRfbqCL+2r+VPqFvMZs6b8nEggj
-         f3WzUkMjf/K0J6I0ZQFtgSbK6W6exQoUPsr8z54F2wbDWeFg40DQhePBQM+miM36o0lP
-         8gFWIDpjdhA1OzCoTf9z+xDynh6kKQJ9p13VBG1yHMZry27hoPTL65X1PPrjlfbv0uan
-         jUOdRi1UMPsbQtBvhqYq0UkvUZU270MO8DfrMLaE8FG2T9SzIxL7HiqsHzkHcTX+NJ5u
-         kbyUfLGmZKFcIOaEz/ib0U39Lx5e91MXPWO16ft/+WlL9ZxjIgRqX6R+tLCc1//KPxXL
-         nFDA==
-X-Gm-Message-State: AKaTC02LhSveQLEpLM3z9PV03tVqHo+tMSLwSzzvPGJobIkiWgQ/POG2NHBsjuSjgC5u3Q==
-X-Received: by 10.84.164.231 with SMTP id l36mr116123316plg.33.1480863957391;
-        Sun, 04 Dec 2016 07:05:57 -0800 (PST)
-Received: from ubuntu (ec2-52-77-214-225.ap-southeast-1.compute.amazonaws.com. [52.77.214.225])
-        by smtp.gmail.com with ESMTPSA id b80sm20895905pfe.52.2016.12.04.07.05.50
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sun, 04 Dec 2016 07:05:56 -0800 (PST)
-Date:   Sun, 4 Dec 2016 23:05:40 +0800
-From:   Yang Ling <gnaygnil@gmail.com>
-To:     ralf@linux-mips.org, keguang.zhang@gmail.com
-Cc:     gnaygnil@gmail.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2.3 3/3] MIPS: loongson1: Add watchdog support for Loongson1
- board
-Message-ID: <20161204150523.GA29829@ubuntu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2016 18:26:37 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:39494 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993126AbcLDR0aHzduo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Dec 2016 18:26:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
+        bh=9ceyts4lBkleKGSerEtIfJ6RGOF6154wn2OAqdtuRP4=; b=I9/BkEMO+FhGCDYWpT2GS8I03v
+        V2TFXQM2cbqRmxqfJP7rsLR+RCEv7jW+gniqDmouptA0OF4GcjqyQoMyQpw/t7zG2L2lhkfUy49qx
+        dBzc21g+jwCUjkJr0WL0mLpNgQ0v58apMMSBX6ur7RkMIlaaFjizThypBR0bbpAV1/r175WJFdIt9
+        wszxGIeEfDyfW0rY2EeIy7aqgW4/4qzmd0FWJZg0JtLqjQGUppg5bNlZKXb/dZb5b6B3s+r+TMMY2
+        rqBceeMwq0co6zYQTLYWTH44IbTJPzhn0X0IX5qsUdX5xk4Td8nv/w/sJaZik48HdiMLxYlytCjs6
+        mdoz+sdg==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54204 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
+        (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1cDaYM-0016J3-Vm; Sun, 04 Dec 2016 17:26:19 +0000
+Subject: Re: [PATCH v2.3 2/3] watchdog: loongson1: Add Loongson1 SoC watchdog
+ driver
+To:     Yang Ling <gnaygnil@gmail.com>, wim@iguana.be,
+        keguang.zhang@gmail.com
+References: <20161204150250.GA29772@ubuntu>
+Cc:     linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <8b12c705-27d3-f9a9-2a99-6be190f19ae9@roeck-us.net>
+Date:   Sun, 4 Dec 2016 09:26:19 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gnaygnil@gmail.com>
+In-Reply-To: <20161204150250.GA29772@ubuntu>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55938
+X-archive-position: 55939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnaygnil@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,164 +66,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The patch adds watchdog support for Loongson1 board.
+On 12/04/2016 07:02 AM, Yang Ling wrote:
+> Add watchdog timer specific driver for Loongson1 SoC.
+>
+> Signed-off-by: Yang Ling <gnaygnil@gmail.com>
+>
+> ---
+> V2.3:
+>   Set DEFAULT_HEARTBEAT value to ls1x_wdt->timeout.
+> V2.2:
+>   Remove the wide character.
+>   Check the return value for clk_get_rate().
+> V2.1 from Kelvin Cheung:
+>   Use max_hw_heartbeat_ms instead of max_timeout.
+> V2.0:
+>   Increase the value of the default heartbeat.
+>   Modify the setup process for register.
+>   Order include files and Makefile alphabetically.
+> V1.1:
+>   Add a little debugging information.
+> ---
+>  drivers/watchdog/Kconfig         |   7 ++
+>  drivers/watchdog/Makefile        |   1 +
+>  drivers/watchdog/loongson1_wdt.c | 170 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 178 insertions(+)
+>  create mode 100644 drivers/watchdog/loongson1_wdt.c
+>
+> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> index fdd3228..c5b9c6e 100644
+> --- a/drivers/watchdog/Kconfig
+> +++ b/drivers/watchdog/Kconfig
+> @@ -1513,6 +1513,13 @@ config LANTIQ_WDT
+>  	help
+>  	  Hardware driver for the Lantiq SoC Watchdog Timer.
+>
+> +config LOONGSON1_WDT
+> +	tristate "Loongson1 SoC hardware watchdog"
+> +	depends on MACH_LOONGSON32
+> +	select WATCHDOG_CORE
+> +	help
+> +	  Hardware driver for the Loongson1 SoC Watchdog Timer.
+> +
+>  config RALINK_WDT
+>  	tristate "Ralink SoC watchdog"
+>  	select WATCHDOG_CORE
+> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+> index caa9f4a..0c3d35e 100644
+> --- a/drivers/watchdog/Makefile
+> +++ b/drivers/watchdog/Makefile
+> @@ -163,6 +163,7 @@ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
+>  obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+>  octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
+>  obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
+> +obj-$(CONFIG_LOONGSON1_WDT) += loongson1_wdt.o
+>  obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
+>  obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
+>  obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
+> diff --git a/drivers/watchdog/loongson1_wdt.c b/drivers/watchdog/loongson1_wdt.c
+> new file mode 100644
+> index 0000000..c43ad38
+> --- /dev/null
+> +++ b/drivers/watchdog/loongson1_wdt.c
+> @@ -0,0 +1,170 @@
+> +/*
+> + * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms of the GNU General Public License as published by the
+> + * Free Software Foundation; either version 2 of the License, or (at your
+> + * option) any later version.
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/watchdog.h>
+> +#include <loongson1.h>
+> +
+> +#define DEFAULT_HEARTBEAT	30
+> +
+> +static bool nowayout = WATCHDOG_NOWAYOUT;
+> +module_param(nowayout, bool, 0444);
+> +
+> +static unsigned int heartbeat = DEFAULT_HEARTBEAT;
 
-Signed-off-by: Yang Ling <gnaygnil@gmail.com>
+heartbeat should be 0.
 
----
-V2.3:
-  No change.
-V2.2:
-  Remove the wide character.
-V2.1:
-  No change.
-V2.0:
-  Add watchdog support for loongson1b_defconfig.
-V1.1:
-  Add watchdog support for Loongson1B.
----
- arch/mips/configs/loongson1b_defconfig           |  4 ++++
- arch/mips/configs/loongson1c_defconfig           |  4 ++++
- arch/mips/include/asm/mach-loongson32/platform.h |  9 +++++----
- arch/mips/loongson32/common/platform.c           | 16 ++++++++++++++++
- arch/mips/loongson32/ls1b/board.c                |  7 ++++---
- arch/mips/loongson32/ls1c/board.c                |  7 ++++---
- 6 files changed, 37 insertions(+), 10 deletions(-)
-
-diff --git a/arch/mips/configs/loongson1b_defconfig b/arch/mips/configs/loongson1b_defconfig
-index c442f27..914c867 100644
---- a/arch/mips/configs/loongson1b_defconfig
-+++ b/arch/mips/configs/loongson1b_defconfig
-@@ -74,6 +74,10 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_LOONGSON1=y
- # CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_NOWAYOUT=y
-+CONFIG_WATCHDOG_SYSFS=y
-+CONFIG_LOONGSON1_WDT=y
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_HID_GENERIC=m
- CONFIG_USB_HID=m
-diff --git a/arch/mips/configs/loongson1c_defconfig b/arch/mips/configs/loongson1c_defconfig
-index 2304d41..68e42ef 100644
---- a/arch/mips/configs/loongson1c_defconfig
-+++ b/arch/mips/configs/loongson1c_defconfig
-@@ -75,6 +75,10 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_LOONGSON1=y
- # CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_NOWAYOUT=y
-+CONFIG_WATCHDOG_SYSFS=y
-+CONFIG_LOONGSON1_WDT=y
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_HID_GENERIC=m
- CONFIG_USB_HID=m
-diff --git a/arch/mips/include/asm/mach-loongson32/platform.h b/arch/mips/include/asm/mach-loongson32/platform.h
-index 7adc313..8f8fa43 100644
---- a/arch/mips/include/asm/mach-loongson32/platform.h
-+++ b/arch/mips/include/asm/mach-loongson32/platform.h
-@@ -1,9 +1,9 @@
- /*
-  * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
-  *
-- * This program is free software; you can redistribute	it and/or modify it
-- * under  the terms of	the GNU General	 Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-  * option) any later version.
-  */
- 
-@@ -25,11 +25,12 @@
- extern struct platform_device ls1x_gpio1_pdev;
- extern struct platform_device ls1x_nand_pdev;
- extern struct platform_device ls1x_rtc_pdev;
-+extern struct platform_device ls1x_wdt_pdev;
- 
- void __init ls1x_clk_init(void);
- void __init ls1x_dma_set_platdata(struct plat_ls1x_dma *pdata);
- void __init ls1x_nand_set_platdata(struct plat_ls1x_nand *pdata);
--void __init ls1x_serial_set_uartclk(struct platform_device *pdev);
- void __init ls1x_rtc_set_extclk(struct platform_device *pdev);
-+void __init ls1x_serial_set_uartclk(struct platform_device *pdev);
- 
- #endif /* __ASM_MACH_LOONGSON32_PLATFORM_H */
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index 18c2959..a3dabe9 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -356,3 +356,19 @@ struct platform_device ls1x_rtc_pdev = {
- 	.name		= "ls1x-rtc",
- 	.id		= -1,
- };
-+
-+/* Watchdog */
-+static struct resource ls1x_wdt_resources[] = {
-+	{
-+		.start	= LS1X_WDT_BASE,
-+		.end	= LS1X_WDT_BASE + SZ_16 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+struct platform_device ls1x_wdt_pdev = {
-+	.name		= "ls1x-wdt",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_wdt_resources),
-+	.resource	= ls1x_wdt_resources,
-+};
-diff --git a/arch/mips/loongson32/ls1b/board.c b/arch/mips/loongson32/ls1b/board.c
-index 38a1d40..01aceaa 100644
---- a/arch/mips/loongson32/ls1b/board.c
-+++ b/arch/mips/loongson32/ls1b/board.c
-@@ -1,9 +1,9 @@
- /*
-  * Copyright (c) 2011-2016 Zhang, Keguang <keguang.zhang@gmail.com>
-  *
-- * This program is free software; you can redistribute	it and/or modify it
-- * under  the terms of	the GNU General	 Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-  * option) any later version.
-  */
- 
-@@ -72,6 +72,7 @@ struct plat_ls1x_nand ls1x_nand_pdata = {
- 	&ls1x_gpio1_pdev,
- 	&ls1x_nand_pdev,
- 	&ls1x_rtc_pdev,
-+	&ls1x_wdt_pdev,
- };
- 
- static int __init ls1b_platform_init(void)
-diff --git a/arch/mips/loongson32/ls1c/board.c b/arch/mips/loongson32/ls1c/board.c
-index a96bed5..eb2d913 100644
---- a/arch/mips/loongson32/ls1c/board.c
-+++ b/arch/mips/loongson32/ls1c/board.c
-@@ -1,9 +1,9 @@
- /*
-  * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
-  *
-- * This program is free software; you can redistribute	it and/or modify it
-- * under  the terms of	the GNU General	 Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-  * option) any later version.
-  */
- 
-@@ -13,6 +13,7 @@
- 	&ls1x_uart_pdev,
- 	&ls1x_eth0_pdev,
- 	&ls1x_rtc_pdev,
-+	&ls1x_wdt_pdev,
- };
- 
- static int __init ls1c_platform_init(void)
--- 
-1.9.1
+Guenter

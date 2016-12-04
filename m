@@ -1,59 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2016 18:26:37 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:39494 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993126AbcLDR0aHzduo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Dec 2016 18:26:30 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
-        bh=9ceyts4lBkleKGSerEtIfJ6RGOF6154wn2OAqdtuRP4=; b=I9/BkEMO+FhGCDYWpT2GS8I03v
-        V2TFXQM2cbqRmxqfJP7rsLR+RCEv7jW+gniqDmouptA0OF4GcjqyQoMyQpw/t7zG2L2lhkfUy49qx
-        dBzc21g+jwCUjkJr0WL0mLpNgQ0v58apMMSBX6ur7RkMIlaaFjizThypBR0bbpAV1/r175WJFdIt9
-        wszxGIeEfDyfW0rY2EeIy7aqgW4/4qzmd0FWJZg0JtLqjQGUppg5bNlZKXb/dZb5b6B3s+r+TMMY2
-        rqBceeMwq0co6zYQTLYWTH44IbTJPzhn0X0IX5qsUdX5xk4Td8nv/w/sJaZik48HdiMLxYlytCjs6
-        mdoz+sdg==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54204 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1cDaYM-0016J3-Vm; Sun, 04 Dec 2016 17:26:19 +0000
-Subject: Re: [PATCH v2.3 2/3] watchdog: loongson1: Add Loongson1 SoC watchdog
- driver
-To:     Yang Ling <gnaygnil@gmail.com>, wim@iguana.be,
-        keguang.zhang@gmail.com
-References: <20161204150250.GA29772@ubuntu>
-Cc:     linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@linux-mips.org
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <8b12c705-27d3-f9a9-2a99-6be190f19ae9@roeck-us.net>
-Date:   Sun, 4 Dec 2016 09:26:19 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2016 22:37:20 +0100 (CET)
+Received: from mail-qk0-f179.google.com ([209.85.220.179]:36782 "EHLO
+        mail-qk0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993139AbcLDVhNmFOkf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Dec 2016 22:37:13 +0100
+Received: by mail-qk0-f179.google.com with SMTP id n21so329096159qka.3
+        for <linux-mips@linux-mips.org>; Sun, 04 Dec 2016 13:37:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=20F/xddCveKSXuWm0LE6/5xFZeUQC7rRi0ys+HG44dc=;
+        b=T07UbQ7BVu66i+73xdB8CaizX0ndRu9hH3isgqh0Por9CokkKqVQTImsaE7NmYNlRN
+         p5zm9MQleyL5lB8l9RmnRQbdSU4i9GusM3OymGGQ/BQe5OTLIen+qqWGRYDyGB2gmzZo
+         KMp0w5NsONXfX1xl5Vq/ph0jFwB9mViyvkD8LBpEVPt3i2YKtRXI6IWgU9pWrJArNqDL
+         AxaPqctejFkqkVaxK0OCABSjhwXxdR8jn5KMv0LC2iElhhJWl5eHmfk2ziguVwruzT67
+         EktMgiNy4Hd1c16xsN9d9RGxRI8J3H1sQnqc9y2EM2odRntHjhMzxMb95kXnt/4C6t2z
+         Qmqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=20F/xddCveKSXuWm0LE6/5xFZeUQC7rRi0ys+HG44dc=;
+        b=lmREuzdkxV4EZMCysZwQXGiNuUlQ1VKzQSIIOESX8THOfkkSuM7zBOC3KYuyBvIED7
+         T762Q41d5VQ+PBpm70nrbPkRbfia+n0jQxlDqKQ4d0OVePiDxncz68AbY8VV6BuLjhWg
+         T3jjI7nTRV0hkKF/84gzXqU1YEP3ll5GS7Adn0hXdfpficGkhn8PCJUZVA0eEVkFL3jS
+         G6jF92HjuYR1ZSpaeiOgALLL2fOwiHjCzL5jYGa2ci3AoxU5AHKjCdH4YwF1/Ptx9Zd9
+         GZ4v1GHwNvB61QEJOgK0Ne1Y59Qua5sswLyGSj8vP7QkvYRYbJzr9G5McIiqcwd0ZBRr
+         JySQ==
+X-Gm-Message-State: AKaTC03IF1KbIiSiWtQbU7Ind6PCd4nzfplz/qGG0bQYFFmaWGmp5/Nvrr3htii1o+8ozwd6jNIcqfnAy/y0cw==
+X-Received: by 10.55.123.129 with SMTP id w123mr52477672qkc.288.1480887427773;
+ Sun, 04 Dec 2016 13:37:07 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20161204150250.GA29772@ubuntu>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Received: by 10.12.170.215 with HTTP; Sun, 4 Dec 2016 13:36:47 -0800 (PST)
+From:   Sagar Borikar <sagar.borikar@gmail.com>
+Date:   Sun, 4 Dec 2016 13:36:47 -0800
+Message-ID: <CAFwMWxtEOWEA=EUzj_-k6GSqSeK9fNj9YwvjZVXX-y3nM-Sk5A@mail.gmail.com>
+Subject: Crash doesn't detect the highmem addresses.
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <sagar.borikar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55939
+X-archive-position: 55940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: sagar.borikar@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,90 +57,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/04/2016 07:02 AM, Yang Ling wrote:
-> Add watchdog timer specific driver for Loongson1 SoC.
->
-> Signed-off-by: Yang Ling <gnaygnil@gmail.com>
->
-> ---
-> V2.3:
->   Set DEFAULT_HEARTBEAT value to ls1x_wdt->timeout.
-> V2.2:
->   Remove the wide character.
->   Check the return value for clk_get_rate().
-> V2.1 from Kelvin Cheung:
->   Use max_hw_heartbeat_ms instead of max_timeout.
-> V2.0:
->   Increase the value of the default heartbeat.
->   Modify the setup process for register.
->   Order include files and Makefile alphabetically.
-> V1.1:
->   Add a little debugging information.
-> ---
->  drivers/watchdog/Kconfig         |   7 ++
->  drivers/watchdog/Makefile        |   1 +
->  drivers/watchdog/loongson1_wdt.c | 170 +++++++++++++++++++++++++++++++++++++++
->  3 files changed, 178 insertions(+)
->  create mode 100644 drivers/watchdog/loongson1_wdt.c
->
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index fdd3228..c5b9c6e 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -1513,6 +1513,13 @@ config LANTIQ_WDT
->  	help
->  	  Hardware driver for the Lantiq SoC Watchdog Timer.
->
-> +config LOONGSON1_WDT
-> +	tristate "Loongson1 SoC hardware watchdog"
-> +	depends on MACH_LOONGSON32
-> +	select WATCHDOG_CORE
-> +	help
-> +	  Hardware driver for the Loongson1 SoC Watchdog Timer.
-> +
->  config RALINK_WDT
->  	tristate "Ralink SoC watchdog"
->  	select WATCHDOG_CORE
-> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-> index caa9f4a..0c3d35e 100644
-> --- a/drivers/watchdog/Makefile
-> +++ b/drivers/watchdog/Makefile
-> @@ -163,6 +163,7 @@ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
->  obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
->  octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
->  obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
-> +obj-$(CONFIG_LOONGSON1_WDT) += loongson1_wdt.o
->  obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
->  obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
->  obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
-> diff --git a/drivers/watchdog/loongson1_wdt.c b/drivers/watchdog/loongson1_wdt.c
-> new file mode 100644
-> index 0000000..c43ad38
-> --- /dev/null
-> +++ b/drivers/watchdog/loongson1_wdt.c
-> @@ -0,0 +1,170 @@
-> +/*
-> + * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms of the GNU General Public License as published by the
-> + * Free Software Foundation; either version 2 of the License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/watchdog.h>
-> +#include <loongson1.h>
-> +
-> +#define DEFAULT_HEARTBEAT	30
-> +
-> +static bool nowayout = WATCHDOG_NOWAYOUT;
-> +module_param(nowayout, bool, 0444);
-> +
-> +static unsigned int heartbeat = DEFAULT_HEARTBEAT;
+Hi,
 
-heartbeat should be 0.
+While debugging panic triggered by kernel modules in Interaptiv MIPS
+platform, I see that that crash doesn't decode the high mem addresses
+as the crash notes depend upon "System RAM" regions in /proc/iomem.
 
-Guenter
+# cat /proc/iomem | grep -i "System"
+00044000-042fffff : System RAM
+09b00000-0d1fffff : System RAM
+
+But highmem regions(0x20000000 onwards on this platform) are not
+included in that segment due to following code in resource_init:
+
+732         if (start >= HIGHMEM_START)
+733             continue;
+
+Any reason why highmem is not parsed under resource_init? How can
+crash decode the high mem addresses correctly if the region is not
+specified in /proc/iomem?
+
+Thanks
+Sagar

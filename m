@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2016 15:59:36 +0100 (CET)
-Received: from mail-pg0-f66.google.com ([74.125.83.66]:32935 "EHLO
-        mail-pg0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993120AbcLDO733H0Vr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Dec 2016 15:59:29 +0100
-Received: by mail-pg0-f66.google.com with SMTP id 3so13552198pgd.0;
-        Sun, 04 Dec 2016 06:59:29 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2016 16:03:34 +0100 (CET)
+Received: from mail-pg0-f67.google.com ([74.125.83.67]:34690 "EHLO
+        mail-pg0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993125AbcLDPD2SoZqr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Dec 2016 16:03:28 +0100
+Received: by mail-pg0-f67.google.com with SMTP id e9so13512664pgc.1
+        for <linux-mips@linux-mips.org>; Sun, 04 Dec 2016 07:03:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=date:from:to:cc:subject:message-id:mime-version:content-disposition
          :user-agent;
-        bh=o7kP9c7CXDpKrxmaLeMuchdr7ORAnSEAFttEZuD09jc=;
-        b=RJR0x1sejcd9Oq5J11+8dfN0+rZDVdJA+O5ENIICr2I8ixmsRPhN/nI1pSlf6P+YcH
-         2EkDH1vUfN8lyuNb2npIKwzOTKFJaxtIG9JmmRkv/QdKU+IOHnYdfl7l807D9nNhTCs1
-         NFjUiQH9uS5/srW8lJTZ3EaYlByTQVzG0F7kz8CVPQghJ0aoAEah8JlY0t6yIb38vjY+
-         7GsRhV7JO4SNvP2v/7BZkBfBDVyenlxf31nwucI5yrpX1NnqkdS26Gy4EZsSyxbfBVAh
-         zkfMPyfNgvKQ5kKZtbX2Mv4Yzfkd2b+KOiaRp56UjyzEok9kewWocy3AdWnCxAkThB1x
-         2vUQ==
+        bh=lLF4rAiZxa75hGFu4bm4LCTDKCP2bC/BDnSuuoLkeho=;
+        b=sc9aWWQ5b0c/bY3+wl61i4SqOD4dLoLDrNam0ebEV5p3zeH3bfsnO61bleWllz1Hnb
+         13N/47oA0SA94wnPD2Xb7ARU3Xq+g6yWwmVv6PPwCsdSrPXBS80hYO0PLFXNgXLRzwyA
+         Ieowyfrx2PRKt80DZy1O3fWTU7CIHwfKK4HgXMQAg1G4pZQKPypnOxc0WPc9tMANtjiF
+         mnr2lFhOubD4M3bu0YCl8Nz6jyFNGpuh5oOjQB/XCj4u5Q/IZ8FZ/+3Rv3wEU08j/Z0S
+         QJ4qeE1QhZ569Ka621w51tewIjjP049xm2KBHteUDIpPCCBZCupYCfDOMt8r9MDvECTC
+         0xKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20130820;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
          :content-disposition:user-agent;
-        bh=o7kP9c7CXDpKrxmaLeMuchdr7ORAnSEAFttEZuD09jc=;
-        b=b1nWwL7Ek6hMP28qcwy1Q/dx4K7BKN6qo9f4LxkoFLADwov+WSzvcgHmGR7X+wWkps
-         E0dXByH7OKWbmXkyJi87xxemo+eGLBm7wU6gHb50c2IdtlsEIYVh8Nz+d4PXCA1MNK4E
-         M/cVnySESY48kPudrCVrkPWfOEH6q73+5ctx+8Wc9jgEdqDFDME8XZ6PrBKdGG8MGXv3
-         kxpeyNz2XZXBrTg14kxXj6vhM4wf1GyMh7FgGn3DyN2fh2R8RAsI1pqyWbKpiox4nl4u
-         H5+q1XDzfMEFp6C8PbjVip4QHhf5zPvIji1/i4lnVxHed6Cp94j6u//gimr2sfH4KeZS
-         A45g==
-X-Gm-Message-State: AKaTC02antx+Q5PCONzm0pNrOVzVkHjFAbWbUm7fqWbUTXEaw5wmJGXgdMC2cJdp57eFiA==
-X-Received: by 10.84.209.173 with SMTP id y42mr113587004plh.94.1480863561365;
-        Sun, 04 Dec 2016 06:59:21 -0800 (PST)
+        bh=lLF4rAiZxa75hGFu4bm4LCTDKCP2bC/BDnSuuoLkeho=;
+        b=k3Q44mj3ezjS7yw/3eotQp9W5EyGQc5buaaxqbG6bR9DEVyWN8SIxJYAYJJ+ui2xEe
+         5NeQmzqfgAhUX/8YqDFlNgWNS3r5VGFJlciA7XFMwmFDa74mpUHr8ALYu0dfenV51DH1
+         Pyx2h5ofQl9AQufp1ABuZUVNxlsVZRr2c/UKpRElh3031qcMDRifq9UIGgROdscyZ70m
+         XA82DOzhmWj4SLOdsRBiJJxAhC/7xz+Iv/fYHVIAErbksVQHiVA1h0d93nFHDZRwIi7p
+         alAJ1Kr76uqBKNb2o9kdScLyAEwGM/B78c1Ge8xPkRKNZSIC5ZBYdMaE+y6JNfOkb7SE
+         KSLQ==
+X-Gm-Message-State: AKaTC0012BfOqmjWGIsPgxp7CITVp5JzrBSGSGXbK3snnEi4NLgC42di4zo1460k5o8Xzg==
+X-Received: by 10.84.148.203 with SMTP id y11mr116638453plg.29.1480863802509;
+        Sun, 04 Dec 2016 07:03:22 -0800 (PST)
 Received: from ubuntu (ec2-52-77-214-225.ap-southeast-1.compute.amazonaws.com. [52.77.214.225])
-        by smtp.gmail.com with ESMTPSA id w17sm20962735pgm.18.2016.12.04.06.57.38
+        by smtp.gmail.com with ESMTPSA id v77sm20806525pfa.85.2016.12.04.07.03.11
         (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sun, 04 Dec 2016 06:59:20 -0800 (PST)
-Date:   Sun, 4 Dec 2016 22:57:03 +0800
+        Sun, 04 Dec 2016 07:03:21 -0800 (PST)
+Date:   Sun, 4 Dec 2016 23:02:50 +0800
 From:   Yang Ling <gnaygnil@gmail.com>
-To:     keguang.zhang@gmail.com, ralf@linux-mips.org
-Cc:     gnaygnil@gmail.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2.3 1/3] MIPS: loongson1: Remove several redundant
- RTC-related macros
-Message-ID: <20161204145703.GA29649@ubuntu>
+To:     wim@iguana.be, linux@roeck-us.net, keguang.zhang@gmail.com
+Cc:     linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-mips@linux-mips.org, gnaygnil@gmail.com
+Subject: [PATCH v2.3 2/3] watchdog: loongson1: Add Loongson1 SoC watchdog
+ driver
+Message-ID: <20161204150250.GA29772@ubuntu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -50,7 +50,7 @@ Return-Path: <gnaygnil@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55936
+X-archive-position: 55937
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,59 +67,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Move the RTC-related macros to regs-rtc.h.
+Add watchdog timer specific driver for Loongson1 SoC.
 
 Signed-off-by: Yang Ling <gnaygnil@gmail.com>
 
 ---
 V2.3:
+  Set DEFAULT_HEARTBEAT value to ls1x_wdt->timeout.
+V2.2:
   Remove the wide character.
-V2.1~2.2:
-  No change.
+  Check the return value for clk_get_rate().
+V2.1 from Kelvin Cheung:
+  Use max_hw_heartbeat_ms instead of max_timeout.
 V2.0:
-  Add the header file regs-rtc.h in loongson1.h.
+  Increase the value of the default heartbeat.
+  Modify the setup process for register.
+  Order include files and Makefile alphabetically.
+V1.1:
+  Add a little debugging information.
 ---
- arch/mips/include/asm/mach-loongson32/loongson1.h |  7 +++---
- arch/mips/include/asm/mach-loongson32/regs-rtc.h  | 23 +++++++++++++++++++
- arch/mips/loongson32/common/platform.c            | 27 +++++++++--------------
- 3 files changed, 38 insertions(+), 19 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-loongson32/regs-rtc.h
+ drivers/watchdog/Kconfig         |   7 ++
+ drivers/watchdog/Makefile        |   1 +
+ drivers/watchdog/loongson1_wdt.c | 170 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 178 insertions(+)
+ create mode 100644 drivers/watchdog/loongson1_wdt.c
 
-diff --git a/arch/mips/include/asm/mach-loongson32/loongson1.h b/arch/mips/include/asm/mach-loongson32/loongson1.h
-index 3584c40..30bffcd 100644
---- a/arch/mips/include/asm/mach-loongson32/loongson1.h
-+++ b/arch/mips/include/asm/mach-loongson32/loongson1.h
-@@ -3,9 +3,9 @@
-  *
-  * Register mappings for Loongson 1
-  *
-- * This program is free software; you can redistribute	it and/or modify it
-- * under  the terms of	the GNU General	 Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-  * option) any later version.
-  */
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index fdd3228..c5b9c6e 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -1513,6 +1513,13 @@ config LANTIQ_WDT
+ 	help
+ 	  Hardware driver for the Lantiq SoC Watchdog Timer.
  
-@@ -52,6 +52,7 @@
- #include <regs-clk.h>
- #include <regs-mux.h>
- #include <regs-pwm.h>
-+#include <regs-rtc.h>
- #include <regs-wdt.h>
- 
- #endif /* __ASM_MACH_LOONGSON32_LOONGSON1_H */
-diff --git a/arch/mips/include/asm/mach-loongson32/regs-rtc.h b/arch/mips/include/asm/mach-loongson32/regs-rtc.h
++config LOONGSON1_WDT
++	tristate "Loongson1 SoC hardware watchdog"
++	depends on MACH_LOONGSON32
++	select WATCHDOG_CORE
++	help
++	  Hardware driver for the Loongson1 SoC Watchdog Timer.
++
+ config RALINK_WDT
+ 	tristate "Ralink SoC watchdog"
+ 	select WATCHDOG_CORE
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index caa9f4a..0c3d35e 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -163,6 +163,7 @@ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
+ obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+ octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
+ obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
++obj-$(CONFIG_LOONGSON1_WDT) += loongson1_wdt.o
+ obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
+ obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
+ obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
+diff --git a/drivers/watchdog/loongson1_wdt.c b/drivers/watchdog/loongson1_wdt.c
 new file mode 100644
-index 0000000..e67fda2
+index 0000000..c43ad38
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-loongson32/regs-rtc.h
-@@ -0,0 +1,23 @@
++++ b/drivers/watchdog/loongson1_wdt.c
+@@ -0,0 +1,170 @@
 +/*
 + * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
-+ *
-+ * Loongson 1 RTC timer Register Definitions.
 + *
 + * This program is free software; you can redistribute it and/or modify it
 + * under the terms of the GNU General Public License as published by the
@@ -127,76 +137,166 @@ index 0000000..e67fda2
 + * option) any later version.
 + */
 +
-+#ifndef __ASM_MACH_LOONGSON32_REGS_RTC_H
-+#define __ASM_MACH_LOONGSON32_REGS_RTC_H
++#include <linux/clk.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/watchdog.h>
++#include <loongson1.h>
 +
-+#define LS1X_RTC_REG(x) \
-+		((void __iomem *)KSEG1ADDR(LS1X_RTC_BASE + (x)))
++#define DEFAULT_HEARTBEAT	30
 +
-+#define LS1X_RTC_CTRL	LS1X_RTC_REG(0x40)
++static bool nowayout = WATCHDOG_NOWAYOUT;
++module_param(nowayout, bool, 0444);
 +
-+#define RTC_EXTCLK_OK	(BIT(5) | BIT(8))
-+#define RTC_EXTCLK_EN	BIT(8)
++static unsigned int heartbeat = DEFAULT_HEARTBEAT;
++module_param(heartbeat, uint, 0444);
 +
-+#endif /* __ASM_MACH_LOONGSON32_REGS_RTC_H */
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index beff085..18c2959 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -1,9 +1,9 @@
- /*
-  * Copyright (c) 2011-2016 Zhang, Keguang <keguang.zhang@gmail.com>
-  *
-- * This program is free software; you can redistribute	it and/or modify it
-- * under  the terms of	the GNU General	 Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-  * option) any later version.
-  */
- 
-@@ -23,10 +23,6 @@
- #include <dma.h>
- #include <nand.h>
- 
--#define LS1X_RTC_CTRL	((void __iomem *)KSEG1ADDR(LS1X_RTC_BASE + 0x40))
--#define RTC_EXTCLK_OK	(BIT(5) | BIT(8))
--#define RTC_EXTCLK_EN	BIT(8)
--
- /* 8250/16550 compatible UART */
- #define LS1X_UART(_id)						\
- 	{							\
-@@ -70,15 +66,6 @@ void __init ls1x_serial_set_uartclk(struct platform_device *pdev)
- 		p->uartclk = clk_get_rate(clk);
- }
- 
--void __init ls1x_rtc_set_extclk(struct platform_device *pdev)
--{
--	u32 val;
--
--	val = __raw_readl(LS1X_RTC_CTRL);
--	if (!(val & RTC_EXTCLK_OK))
--		__raw_writel(val | RTC_EXTCLK_EN, LS1X_RTC_CTRL);
--}
--
- /* CPUFreq */
- static struct plat_ls1x_cpufreq ls1x_cpufreq_pdata = {
- 	.clk_name	= "cpu_clk",
-@@ -357,6 +344,14 @@ struct platform_device ls1x_ehci_pdev = {
- };
- 
- /* Real Time Clock */
-+void __init ls1x_rtc_set_extclk(struct platform_device *pdev)
++struct ls1x_wdt_drvdata {
++	void __iomem *base;
++	struct clk *clk;
++	unsigned long clk_rate;
++	struct watchdog_device wdt;
++};
++
++static int ls1x_wdt_ping(struct watchdog_device *wdt_dev)
 +{
-+	u32 val = __raw_readl(LS1X_RTC_CTRL);
++	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
 +
-+	if (!(val & RTC_EXTCLK_OK))
-+		__raw_writel(val | RTC_EXTCLK_EN, LS1X_RTC_CTRL);
++	writel(0x1, drvdata->base + WDT_SET);
++
++	return 0;
 +}
 +
- struct platform_device ls1x_rtc_pdev = {
- 	.name		= "ls1x-rtc",
- 	.id		= -1,
++static int ls1x_wdt_set_timeout(struct watchdog_device *wdt_dev,
++				unsigned int timeout)
++{
++	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
++	unsigned int max_hw_heartbeat = wdt_dev->max_hw_heartbeat_ms / 1000;
++	unsigned int counts;
++
++	wdt_dev->timeout = timeout;
++
++	counts = drvdata->clk_rate * min(timeout, max_hw_heartbeat);
++	writel(counts, drvdata->base + WDT_TIMER);
++
++	return 0;
++}
++
++static int ls1x_wdt_start(struct watchdog_device *wdt_dev)
++{
++	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
++
++	writel(0x1, drvdata->base + WDT_EN);
++
++	return 0;
++}
++
++static int ls1x_wdt_stop(struct watchdog_device *wdt_dev)
++{
++	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
++
++	writel(0x0, drvdata->base + WDT_EN);
++
++	return 0;
++}
++
++static const struct watchdog_info ls1x_wdt_info = {
++	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
++	.identity = "Loongson1 Watchdog",
++};
++
++static const struct watchdog_ops ls1x_wdt_ops = {
++	.owner = THIS_MODULE,
++	.start = ls1x_wdt_start,
++	.stop = ls1x_wdt_stop,
++	.ping = ls1x_wdt_ping,
++	.set_timeout = ls1x_wdt_set_timeout,
++};
++
++static int ls1x_wdt_probe(struct platform_device *pdev)
++{
++	struct ls1x_wdt_drvdata *drvdata;
++	struct watchdog_device *ls1x_wdt;
++	unsigned long clk_rate;
++	struct resource *res;
++	int err;
++
++	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
++	if (!drvdata)
++		return -ENOMEM;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(drvdata->base))
++		return PTR_ERR(drvdata->base);
++
++	drvdata->clk = devm_clk_get(&pdev->dev, pdev->name);
++	if (IS_ERR(drvdata->clk))
++		return PTR_ERR(drvdata->clk);
++
++	err = clk_prepare_enable(drvdata->clk);
++	if (err) {
++		dev_err(&pdev->dev, "clk enable failed\n");
++		return err;
++	}
++
++	clk_rate = clk_get_rate(drvdata->clk);
++	if (!clk_rate) {
++		err = -EINVAL;
++		goto err0;
++	}
++	drvdata->clk_rate = clk_rate;
++
++	ls1x_wdt = &drvdata->wdt;
++	ls1x_wdt->info = &ls1x_wdt_info;
++	ls1x_wdt->ops = &ls1x_wdt_ops;
++	ls1x_wdt->timeout = DEFAULT_HEARTBEAT;
++	ls1x_wdt->min_timeout = 1;
++	ls1x_wdt->max_hw_heartbeat_ms = U32_MAX / clk_rate * 1000;
++	ls1x_wdt->parent = &pdev->dev;
++
++	watchdog_init_timeout(ls1x_wdt, heartbeat, &pdev->dev);
++	watchdog_set_nowayout(ls1x_wdt, nowayout);
++	watchdog_set_drvdata(ls1x_wdt, drvdata);
++
++	err = watchdog_register_device(&drvdata->wdt);
++	if (err) {
++		dev_err(&pdev->dev, "failed to register watchdog device\n");
++		goto err0;
++	}
++
++	platform_set_drvdata(pdev, drvdata);
++
++	dev_info(&pdev->dev, "Loongson1 Watchdog driver registered\n");
++
++	return 0;
++err0:
++	clk_disable_unprepare(drvdata->clk);
++	return err;
++}
++
++static int ls1x_wdt_remove(struct platform_device *pdev)
++{
++	struct ls1x_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
++
++	watchdog_unregister_device(&drvdata->wdt);
++	clk_disable_unprepare(drvdata->clk);
++
++	return 0;
++}
++
++static struct platform_driver ls1x_wdt_driver = {
++	.probe = ls1x_wdt_probe,
++	.remove = ls1x_wdt_remove,
++	.driver = {
++		.name = "ls1x-wdt",
++	},
++};
++
++module_platform_driver(ls1x_wdt_driver);
++
++MODULE_AUTHOR("Yang Ling <gnaygnil@gmail.com>");
++MODULE_DESCRIPTION("Loongson1 Watchdog Driver");
++MODULE_LICENSE("GPL");
 -- 
 1.9.1

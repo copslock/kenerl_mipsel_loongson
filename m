@@ -1,60 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2016 16:01:14 +0100 (CET)
-Received: from mail-pg0-f66.google.com ([74.125.83.66]:34132 "EHLO
-        mail-pg0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992886AbcLEPBHsRBGl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Dec 2016 16:01:07 +0100
-Received: by mail-pg0-f66.google.com with SMTP id e9so16648251pgc.1
-        for <linux-mips@linux-mips.org>; Mon, 05 Dec 2016 07:01:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=/bM+A7LRnVjX7LEleLw4/zO+C2/09OA0T3jjVBC4qc8=;
-        b=bdhl1BGled6GmWYcxcY0ziB3hy1RqH+1eGtyAs2tXYdRig5i6VQcals6dGeSx+tyhi
-         23hEFHD/qY33pv/2iDaxFDP55yU6eKjqF8wx4OL1NS4ZmQ7+cQPFq23CcoE3KGsDR79I
-         IYlERBaALym7GgRerGiVGfxQSwNS4zv1KV3ObVO9NzPJiGCMOvie/fgHEunYyHHmIfZZ
-         3JhQngZ6qUBoLJWczVGLFEynpLUEVEya/WmFXaq66/Nw8VIAOl4NKXfrUkUMneXbg+Lm
-         hU3L0D4hHvScP1BcouH5tk/shdCtiVOj65RQKp0ISmyZ8Zeijbh+TDMBfXWIFXNZX8yh
-         OU1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=/bM+A7LRnVjX7LEleLw4/zO+C2/09OA0T3jjVBC4qc8=;
-        b=aoqJlWoJg+AX8dhbzxSnjAd1MslxeEwVKHfCJZp0hMZ4ieEyXcPDQYF8zt2uaVu0L2
-         ncSKTTYOKkKgrkBGyjC40H1+ORBQsUlQYFK4PKdlC6L1Mv3bKxv6j0sV8bA8MkunS3+I
-         FirLYEVrO0pc1mqCC7V7CzNFYydxu80iF8NxO2Kgz+gnWzXPcpfkxh7b+Vdy3v4G17j1
-         AzUSnxYEUqG2PmJv0yNVxdyN8iw6D6VitZC/ohj0k7y2hVGE+JHTkYpS2EFeYXR7seHK
-         7yTgbxiONXWs119jUNVNDvUh6QA/vjNcBIHSm8pTxzHLTQ0PPAxZ6kWqnKobEp7sIF2/
-         dwiA==
-X-Gm-Message-State: AKaTC02TbLEel3I2tKkzgbudRfjUxRPhXnPBlHCngmqwstZsVI/GBbFcRZ5vCYSeg4ZASw==
-X-Received: by 10.98.11.198 with SMTP id 67mr57301903pfl.90.1480950061798;
-        Mon, 05 Dec 2016 07:01:01 -0800 (PST)
-Received: from ubuntu ([121.237.189.141])
-        by smtp.gmail.com with ESMTPSA id 135sm28354946pgc.7.2016.12.05.07.00.57
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 05 Dec 2016 07:01:00 -0800 (PST)
-Date:   Mon, 5 Dec 2016 23:00:53 +0800
-From:   Yang Ling <gnaygnil@gmail.com>
-To:     wim@iguana.be, linux@roeck-us.net, keguang.zhang@gmail.com
-Cc:     linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-mips@linux-mips.org, gnaygnil@gmail.com
-Subject: [PATCH v2.4 2/3] watchdog: loongson1: Add Loongson1 SoC watchdog
- driver
-Message-ID: <20161205150053.GA12931@ubuntu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2016 17:20:50 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28460 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992943AbcLEQUoB-bej (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Dec 2016 17:20:44 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 8103736C9BF4D;
+        Mon,  5 Dec 2016 16:20:34 +0000 (GMT)
+Received: from [10.20.78.176] (10.20.78.176) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Mon, 5 Dec 2016
+ 16:20:36 +0000
+Date:   Mon, 5 Dec 2016 16:20:27 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: Re: [PATCH 3/5] MIPS: Only change $28 to thread_info if coming from
+ user mode
+In-Reply-To: <1480685957-18809-4-git-send-email-matt.redfearn@imgtec.com>
+Message-ID: <alpine.DEB.2.00.1612051605590.6743@tp.orcam.me.uk>
+References: <1480685957-18809-1-git-send-email-matt.redfearn@imgtec.com> <1480685957-18809-4-git-send-email-matt.redfearn@imgtec.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gnaygnil@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.176]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55942
+X-archive-position: 55943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnaygnil@gmail.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,238 +48,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add watchdog timer specific driver for Loongson1 SoC.
+On Fri, 2 Dec 2016, Matt Redfearn wrote:
 
-Signed-off-by: Yang Ling <gnaygnil@gmail.com>
+> diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+> index eebf39549606..5782fa3d63be 100644
+> --- a/arch/mips/include/asm/stackframe.h
+> +++ b/arch/mips/include/asm/stackframe.h
+> @@ -216,12 +216,22 @@
+>  		LONG_S	$25, PT_R25(sp)
+>  		LONG_S	$28, PT_R28(sp)
+>  		LONG_S	$31, PT_R31(sp)
+> +
+> +		/* Set thread_info if we're coming from user mode */
+> +		.set	reorder
+> +		mfc0	k0, CP0_STATUS
+> +		sll	k0, 3		/* extract cu0 bit */
+> +		.set	noreorder
+> +		bltz	k0, 9f
+> +		 nop
 
----
-V2.4:
-  Set DEFAULT_HEARTBEAT to 0.
-V2.3:
-  Set DEFAULT_HEARTBEAT value to ls1x_wdt->timeout.
-V2.2:
-  Remove the wide character.
-  Check the return value for clk_get_rate().
-V2.1 from Kelvin Cheung:
-  Use max_hw_heartbeat_ms instead of max_timeout.
-V2.0:
-  Increase the value of the default heartbeat.
-  Modify the setup process for register.
-  Order include files and Makefile alphabetically.
-V1.1:
-  Add a little debugging information.
----
- drivers/watchdog/Kconfig         |   7 ++
- drivers/watchdog/Makefile        |   1 +
- drivers/watchdog/loongson1_wdt.c | 170 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 178 insertions(+)
- create mode 100644 drivers/watchdog/loongson1_wdt.c
+ This code is already `.set reorder', although a badly applied CONFIG_EVA 
+change made things slightly less obvious.  So why do you need this `.set 
+reorder' in the first place, and then why do you switch code that follows 
+to `.set noreorder'?
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index fdd3228..c5b9c6e 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -1513,6 +1513,13 @@ config LANTIQ_WDT
- 	help
- 	  Hardware driver for the Lantiq SoC Watchdog Timer.
- 
-+config LOONGSON1_WDT
-+	tristate "Loongson1 SoC hardware watchdog"
-+	depends on MACH_LOONGSON32
-+	select WATCHDOG_CORE
-+	help
-+	  Hardware driver for the Loongson1 SoC Watchdog Timer.
-+
- config RALINK_WDT
- 	tristate "Ralink SoC watchdog"
- 	select WATCHDOG_CORE
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index caa9f4a..0c3d35e 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -163,6 +163,7 @@ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
- obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
- octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
- obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
-+obj-$(CONFIG_LOONGSON1_WDT) += loongson1_wdt.o
- obj-$(CONFIG_RALINK_WDT) += rt2880_wdt.o
- obj-$(CONFIG_IMGPDC_WDT) += imgpdc_wdt.o
- obj-$(CONFIG_MT7621_WDT) += mt7621_wdt.o
-diff --git a/drivers/watchdog/loongson1_wdt.c b/drivers/watchdog/loongson1_wdt.c
-new file mode 100644
-index 0000000..1c75bda
---- /dev/null
-+++ b/drivers/watchdog/loongson1_wdt.c
-@@ -0,0 +1,170 @@
-+/*
-+ * Copyright (c) 2016 Yang Ling <gnaygnil@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/watchdog.h>
-+#include <loongson1.h>
-+
-+#define DEFAULT_HEARTBEAT	0
-+
-+static bool nowayout = WATCHDOG_NOWAYOUT;
-+module_param(nowayout, bool, 0444);
-+
-+static unsigned int heartbeat = DEFAULT_HEARTBEAT;
-+module_param(heartbeat, uint, 0444);
-+
-+struct ls1x_wdt_drvdata {
-+	void __iomem *base;
-+	struct clk *clk;
-+	unsigned long clk_rate;
-+	struct watchdog_device wdt;
-+};
-+
-+static int ls1x_wdt_ping(struct watchdog_device *wdt_dev)
-+{
-+	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-+
-+	writel(0x1, drvdata->base + WDT_SET);
-+
-+	return 0;
-+}
-+
-+static int ls1x_wdt_set_timeout(struct watchdog_device *wdt_dev,
-+				unsigned int timeout)
-+{
-+	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-+	unsigned int max_hw_heartbeat = wdt_dev->max_hw_heartbeat_ms / 1000;
-+	unsigned int counts;
-+
-+	wdt_dev->timeout = timeout;
-+
-+	counts = drvdata->clk_rate * min(timeout, max_hw_heartbeat);
-+	writel(counts, drvdata->base + WDT_TIMER);
-+
-+	return 0;
-+}
-+
-+static int ls1x_wdt_start(struct watchdog_device *wdt_dev)
-+{
-+	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-+
-+	writel(0x1, drvdata->base + WDT_EN);
-+
-+	return 0;
-+}
-+
-+static int ls1x_wdt_stop(struct watchdog_device *wdt_dev)
-+{
-+	struct ls1x_wdt_drvdata *drvdata = watchdog_get_drvdata(wdt_dev);
-+
-+	writel(0x0, drvdata->base + WDT_EN);
-+
-+	return 0;
-+}
-+
-+static const struct watchdog_info ls1x_wdt_info = {
-+	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
-+	.identity = "Loongson1 Watchdog",
-+};
-+
-+static const struct watchdog_ops ls1x_wdt_ops = {
-+	.owner = THIS_MODULE,
-+	.start = ls1x_wdt_start,
-+	.stop = ls1x_wdt_stop,
-+	.ping = ls1x_wdt_ping,
-+	.set_timeout = ls1x_wdt_set_timeout,
-+};
-+
-+static int ls1x_wdt_probe(struct platform_device *pdev)
-+{
-+	struct ls1x_wdt_drvdata *drvdata;
-+	struct watchdog_device *ls1x_wdt;
-+	unsigned long clk_rate;
-+	struct resource *res;
-+	int err;
-+
-+	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
-+	if (!drvdata)
-+		return -ENOMEM;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	drvdata->base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(drvdata->base))
-+		return PTR_ERR(drvdata->base);
-+
-+	drvdata->clk = devm_clk_get(&pdev->dev, pdev->name);
-+	if (IS_ERR(drvdata->clk))
-+		return PTR_ERR(drvdata->clk);
-+
-+	err = clk_prepare_enable(drvdata->clk);
-+	if (err) {
-+		dev_err(&pdev->dev, "clk enable failed\n");
-+		return err;
-+	}
-+
-+	clk_rate = clk_get_rate(drvdata->clk);
-+	if (!clk_rate) {
-+		err = -EINVAL;
-+		goto err0;
-+	}
-+	drvdata->clk_rate = clk_rate;
-+
-+	ls1x_wdt = &drvdata->wdt;
-+	ls1x_wdt->info = &ls1x_wdt_info;
-+	ls1x_wdt->ops = &ls1x_wdt_ops;
-+	ls1x_wdt->timeout = DEFAULT_HEARTBEAT;
-+	ls1x_wdt->min_timeout = 1;
-+	ls1x_wdt->max_hw_heartbeat_ms = U32_MAX / clk_rate * 1000;
-+	ls1x_wdt->parent = &pdev->dev;
-+
-+	watchdog_init_timeout(ls1x_wdt, heartbeat, &pdev->dev);
-+	watchdog_set_nowayout(ls1x_wdt, nowayout);
-+	watchdog_set_drvdata(ls1x_wdt, drvdata);
-+
-+	err = watchdog_register_device(&drvdata->wdt);
-+	if (err) {
-+		dev_err(&pdev->dev, "failed to register watchdog device\n");
-+		goto err0;
-+	}
-+
-+	platform_set_drvdata(pdev, drvdata);
-+
-+	dev_info(&pdev->dev, "Loongson1 Watchdog driver registered\n");
-+
-+	return 0;
-+err0:
-+	clk_disable_unprepare(drvdata->clk);
-+	return err;
-+}
-+
-+static int ls1x_wdt_remove(struct platform_device *pdev)
-+{
-+	struct ls1x_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
-+
-+	watchdog_unregister_device(&drvdata->wdt);
-+	clk_disable_unprepare(drvdata->clk);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver ls1x_wdt_driver = {
-+	.probe = ls1x_wdt_probe,
-+	.remove = ls1x_wdt_remove,
-+	.driver = {
-+		.name = "ls1x-wdt",
-+	},
-+};
-+
-+module_platform_driver(ls1x_wdt_driver);
-+
-+MODULE_AUTHOR("Yang Ling <gnaygnil@gmail.com>");
-+MODULE_DESCRIPTION("Loongson1 Watchdog Driver");
-+MODULE_LICENSE("GPL");
--- 
-1.9.1
+ Overall I think all <asm/stackframe.h> code should be using the (default) 
+`.set reorder' mode, perhaps forced explicitly in case these macros are 
+pasted into `.set noreorder' code, to make it easier to avoid subtle data 
+dependency bugs, and also to make R6 porting easier.  Except maybe for the 
+RFE sequence, for readability's sake, although even there GAS will do the 
+right thing.  Surely the BLTZ/MOVE piece does not have to be `.set 
+noreorder' as GAS will schedule that delay slot automatically if allowed 
+to.
+
+  Maciej

@@ -1,38 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2016 20:52:54 +0100 (CET)
-Received: from shards.monkeyblade.net ([184.105.139.130]:40206 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993376AbcLGTwruZm9Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Dec 2016 20:52:47 +0100
-Received: from localhost (cpe-66-108-81-97.nyc.res.rr.com [66.108.81.97])
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id A50FE12EA737F;
-        Wed,  7 Dec 2016 10:53:21 -0800 (PST)
-Date:   Wed, 07 Dec 2016 14:52:40 -0500 (EST)
-Message-Id: <20161207.145240.1636297838792223189.davem@davemloft.net>
-To:     Jason@zx2c4.com
-Cc:     dave.taht@gmail.com, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        wireguard@lists.zx2c4.com
-Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <CAHmME9oLgjDA2F0gkFzHU2Es8-XCxQHRABS18OKF0EnZgt1=LQ@mail.gmail.com>
-References: <CAA93jw7hcmkcyD=t4VRrQFfHk+n+EkSVgY6KFDq0_-DGpMADYw@mail.gmail.com>
-        <20161207.135127.789629809982860453.davem@davemloft.net>
-        <CAHmME9oLgjDA2F0gkFzHU2Es8-XCxQHRABS18OKF0EnZgt1=LQ@mail.gmail.com>
-X-Mailer: Mew version 6.7 on Emacs 25.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 07 Dec 2016 10:53:22 -0800 (PST)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2016 21:06:55 +0100 (CET)
+Received: from userp1040.oracle.com ([156.151.31.81]:31167 "EHLO
+        userp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993411AbcLGUGtM0ClY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Dec 2016 21:06:49 +0100
+Received: from userv0021.oracle.com (userv0021.oracle.com [156.151.31.71])
+        by userp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id uB7K6gRC015131
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 7 Dec 2016 20:06:42 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userv0021.oracle.com (8.14.4/8.14.4) with ESMTP id uB7K6fOI013007
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 7 Dec 2016 20:06:42 GMT
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id uB7K6f6D032489;
+        Wed, 7 Dec 2016 20:06:41 GMT
+Received: from elgon.mountain (/197.157.0.50)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 07 Dec 2016 12:06:40 -0800
+Date:   Wed, 7 Dec 2016 22:58:20 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org
+Subject: [bug report] [MIPS] Sibyte: Fix ZBbus profiler
+Message-ID: <20161207195820.GA17588@elgon.mountain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Source-IP: userv0021.oracle.com [156.151.31.71]
+Return-Path: <dan.carpenter@oracle.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55962
+X-archive-position: 55963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: dan.carpenter@oracle.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,24 +49,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Wed, 7 Dec 2016 19:54:12 +0100
+Hello Ralf Baechle,
 
-> On Wed, Dec 7, 2016 at 7:51 PM, David Miller <davem@davemloft.net> wrote:
->> It's so much better to analyze properly where the misalignment comes from
->> and address it at the source, as we have for various cases that trip up
->> Sparc too.
-> 
-> That's sort of my attitude too, hence starting this thread. Any
-> pointers you have about this would be most welcome, so as not to
-> perpetuate what already seems like an issue in other parts of the
-> stack.
+The patch bb9b813bb665: "[MIPS] Sibyte: Fix ZBbus profiler" from Mar
+9, 2007, leads to the following static checker warning:
 
-The only truly difficult case to handle is GRE encapsulation.  Is
-that the situation you are running into?
+	arch/mips/sibyte/common/sb_tbprof.c:480 sbprof_tb_read()
+	warn: maybe return -EFAULT instead of the bytes remaining?
 
-If not, please figure out what the header configuration looks like
-in the case that hits for you, and what the originating device is
-just in case it is a device driver issue.
+arch/mips/sibyte/common/sb_tbprof.c
+   452  static ssize_t sbprof_tb_read(struct file *filp, char *buf,
+   453                                size_t size, loff_t *offp)
+   454  {
+   455          int cur_sample, sample_off, cur_count, sample_left;
+   456          char *src;
+   457          int   count   =  0;
+   458          char *dest    =  buf;
+   459          long  cur_off = *offp;
+   460  
+   461          if (!access_ok(VERIFY_WRITE, buf, size))
+   462                  return -EFAULT;
+   463  
+   464          mutex_lock(&sbp.lock);
+   465  
+   466          count = 0;
+   467          cur_sample = cur_off / TB_SAMPLE_SIZE;
+   468          sample_off = cur_off % TB_SAMPLE_SIZE;
+   469          sample_left = TB_SAMPLE_SIZE - sample_off;
+   470  
+   471          while (size && (cur_sample < sbp.next_tb_sample)) {
+   472                  int err;
+   473  
+   474                  cur_count = size < sample_left ? size : sample_left;
+   475                  src = (char *)(((long)sbp.sbprof_tbbuf[cur_sample])+sample_off);
+   476                  err = __copy_to_user(dest, src, cur_count);
+   477                  if (err) {
+   478                          *offp = cur_off + cur_count - err;
+   479                          mutex_unlock(&sbp.lock);
+   480                          return err;
 
-Thanks.
+This doesn't look right.  __copy_to_user() returns the number of bytes
+remaining to be copied so I think we should return either -EFAULT or
+"count + cur_count - err".
+
+   481                  }
+   482                  pr_debug(DEVNAME ": read from sample %d, %d bytes\n",
+   483                           cur_sample, cur_count);
+   484                  size -= cur_count;
+   485                  sample_left -= cur_count;
+   486                  if (!sample_left) {
+   487                          cur_sample++;
+   488                          sample_off = 0;
+   489                          sample_left = TB_SAMPLE_SIZE;
+   490                  } else {
+   491                          sample_off += cur_count;
+   492                  }
+   493                  cur_off += cur_count;
+   494                  dest += cur_count;
+   495                  count += cur_count;
+   496          }
+   497          *offp = cur_off;
+   498          mutex_unlock(&sbp.lock);
+   499  
+   500          return count;
+   501  }
+
+regards,
+dan carpenter

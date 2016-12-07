@@ -1,36 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2016 19:51:40 +0100 (CET)
-Received: from shards.monkeyblade.net ([184.105.139.130]:39164 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993405AbcLGSvdgSl8I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Dec 2016 19:51:33 +0100
-Received: from localhost (unknown [38.140.131.194])
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id ACBF612D8EB53;
-        Wed,  7 Dec 2016 09:52:06 -0800 (PST)
-Date:   Wed, 07 Dec 2016 13:51:27 -0500 (EST)
-Message-Id: <20161207.135127.789629809982860453.davem@davemloft.net>
-To:     dave.taht@gmail.com
-Cc:     Jason@zx2c4.com, netdev@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, wireguard@lists.zx2c4.com
-Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <CAA93jw7hcmkcyD=t4VRrQFfHk+n+EkSVgY6KFDq0_-DGpMADYw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2016 19:54:30 +0100 (CET)
+Received: from frisell.zx2c4.com ([192.95.5.64]:60997 "EHLO frisell.zx2c4.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993400AbcLGSyXC16EI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Dec 2016 19:54:23 +0100
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id f7eda06e
+        for <linux-mips@linux-mips.org>;
+        Wed, 7 Dec 2016 18:48:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
+        :in-reply-to:references:from:date:message-id:subject:to:cc
+        :content-type; s=mail; bh=0EDwr+QhJsgGD6W5/KrORbxnZXM=; b=ZnyerV
+        sc7JagEQNDUcwuyswX7fv/wm8JCe6orP7nc0JdfQS3EX9JXXM6/7ygcQ9goKB4gY
+        Whu6wJ+pujLlL7C/fe/OEa3a5A012Q9JQugEqHdmEVmbW66J9em3wQkVBfy9zdyK
+        wf8ggaiRNUifwR5JTG2rLkoag3RevznZ5g+q5JFAYQ3jkljNfiKBU2Mg2a+oMqnn
+        qBlXtkFkf9Vj0sShhCC0ZIRpYX2fsZZcIQ8OvShnhpvcAQKy3m5t0q6Fm9CmZfws
+        zbAGTc2M45umP8Ez1dwPhK9GNsixDDHpxUTBKzp52kxG09vLWF3HQOCgrKbueILC
+        +8oXqOLPS7rNp4vg==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 442df302 (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO)
+        for <linux-mips@linux-mips.org>;
+        Wed, 7 Dec 2016 18:48:48 +0000 (UTC)
+Received: by mail-wm0-f47.google.com with SMTP id f82so181853460wmf.1
+        for <linux-mips@linux-mips.org>; Wed, 07 Dec 2016 10:54:15 -0800 (PST)
+X-Gm-Message-State: AKaTC00eoMVEHOYgxYbqomlDjbdlfaS28CdAj+/1AJ41/twwNcm+zbJZrbjKAfqsncqIIXcds9iRE4W6fFGRsg==
+X-Received: by 10.25.141.15 with SMTP id p15mr4543294lfd.140.1481136854271;
+ Wed, 07 Dec 2016 10:54:14 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.25.215.12 with HTTP; Wed, 7 Dec 2016 10:54:12 -0800 (PST)
+In-Reply-To: <20161207.135127.789629809982860453.davem@davemloft.net>
 References: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com>
-        <CAA93jw7hcmkcyD=t4VRrQFfHk+n+EkSVgY6KFDq0_-DGpMADYw@mail.gmail.com>
-X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 07 Dec 2016 09:52:07 -0800 (PST)
-Return-Path: <davem@davemloft.net>
+ <CAA93jw7hcmkcyD=t4VRrQFfHk+n+EkSVgY6KFDq0_-DGpMADYw@mail.gmail.com> <20161207.135127.789629809982860453.davem@davemloft.net>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Wed, 7 Dec 2016 19:54:12 +0100
+X-Gmail-Original-Message-ID: <CAHmME9oLgjDA2F0gkFzHU2Es8-XCxQHRABS18OKF0EnZgt1=LQ@mail.gmail.com>
+Message-ID: <CAHmME9oLgjDA2F0gkFzHU2Es8-XCxQHRABS18OKF0EnZgt1=LQ@mail.gmail.com>
+Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
+To:     David Miller <davem@davemloft.net>
+Cc:     Dave Taht <dave.taht@gmail.com>, Netdev <netdev@vger.kernel.org>,
+        linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
+        WireGuard mailing list <wireguard@lists.zx2c4.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55960
+X-archive-position: 55961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,14 +59,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Dave Taht <dave.taht@gmail.com>
-Date: Wed, 7 Dec 2016 10:47:16 -0800
+On Wed, Dec 7, 2016 at 7:51 PM, David Miller <davem@davemloft.net> wrote:
+> It's so much better to analyze properly where the misalignment comes from
+> and address it at the source, as we have for various cases that trip up
+> Sparc too.
 
-> https://git.lede-project.org/?p=openwrt/source.git;a=blob;f=target/linux/ar71xx/patches-4.4/910-unaligned_access_hacks.patch;h=b4b749e4b9c02a74a9f712a2740d63e554de5c64;hb=ee53a240ac902dc83209008a2671e7fdcf55957a
-
-It's so much better to analyze properly where the misalignment comes from
-and address it at the source, as we have for various cases that trip up
-Sparc too.
-
-Marking structures "packed" is going to kill performance and is not
-the answer.
+That's sort of my attitude too, hence starting this thread. Any
+pointers you have about this would be most welcome, so as not to
+perpetuate what already seems like an issue in other parts of the
+stack.

@@ -1,47 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2016 19:36:07 +0100 (CET)
-Received: from frisell.zx2c4.com ([192.95.5.64]:33739 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992571AbcLGSgAt3pBI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Dec 2016 19:36:00 +0100
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 84504c58
-        for <linux-mips@linux-mips.org>;
-        Wed, 7 Dec 2016 18:30:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :from:date:message-id:subject:to:cc:content-type; s=mail; bh=oyk
-        v23MKIpqPS3M5VuCoaQAcrr0=; b=bpimWirKQQAE9hVd7b5yTOQV/hdSyB2qHg/
-        DEnAH4CEwnNGW95VyBdB/q/ePWUUR3Tmb/bkbLzYgt+Dg1s41/UeOQik2IKAE0Ax
-        STiMYBE9t00EbtnlhIrB1h1X7S5i2TPQ0rURRnrYeMwkbp3vHmsDt7aygQxXt0zT
-        SA6jgLOKR6QqlB9Ci6ig+coZSlkGwsJNJK80YmroAPMu+1UbIBps/wKREdaAgeEV
-        oj3FpT1/Cq86Vefyt/seLz3NtlMQT9mzN7e8J8Z9S5EONPQfzS+flxc2+tX+NI1d
-        UkFZ7N5i/8Sf9NTvhgIBK/BavDMkaOhh0WhXfKhM7U1V79swWIg==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f6418b93 (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO)
-        for <linux-mips@linux-mips.org>;
-        Wed, 7 Dec 2016 18:30:26 +0000 (UTC)
-Received: by mail-wm0-f49.google.com with SMTP id g23so181810653wme.1
-        for <linux-mips@linux-mips.org>; Wed, 07 Dec 2016 10:35:52 -0800 (PST)
-X-Gm-Message-State: AKaTC00WUw0MkHochXwKixgvlAVZS0yZJNjnGDY2nkGT7oNr3Dc9B1x+DAUT4v42/8/OuEIuV+/s111E3guMMA==
-X-Received: by 10.46.75.1 with SMTP id y1mr29004729lja.45.1481135751710; Wed,
- 07 Dec 2016 10:35:51 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2016 19:47:31 +0100 (CET)
+Received: from mail-qk0-f193.google.com ([209.85.220.193]:33568 "EHLO
+        mail-qk0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993398AbcLGSrWyWcfI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Dec 2016 19:47:22 +0100
+Received: by mail-qk0-f193.google.com with SMTP id x190so49575357qkb.0
+        for <linux-mips@linux-mips.org>; Wed, 07 Dec 2016 10:47:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=3+ywN81BCEBTKTPAlnu7N371EgHwfemmN2OglaIVC+4=;
+        b=wvBjfBSTBtY8+IXjqYnz2LFSF0Uk/3LF6GYpMuv+0TX2ojAHSx53CvhKRyYLZJWea+
+         EI2dtwpUFOIII1udY//X3I0FaRaoxrc92qHOW6EHY3wcSenIX4XR1tOdEj64tMEpDHWB
+         U/DrTMOiW+8mSLSiSCrnE+TOhxsBowRKskmh0tyta0niiGCW8p4pQCsikWfnMn4NVA9a
+         5Weo7Z1nrapXQ6WPwMqIxulxn+ZXXOTO2UdEQDtO4nXo6h2uYVEjtwXp/yYnlL/Rkq9o
+         EkYxBo/P8c0OANgPY/QJqQYe7s5EgxR6b1heUW7a/dYiR1TtR3NPy3gOAlaTSjOtCLL6
+         DjiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=3+ywN81BCEBTKTPAlnu7N371EgHwfemmN2OglaIVC+4=;
+        b=ZM0LdvDLIuCR8h+k/68SE58hCuWfvYwHI76ll31saJEFkeUIp2bIWkNvp+1iLqVptI
+         bEpZ8Ecl6AiTpnJtC3DZFTNY9BDCsMtEUqDGsviNoLhxRV/o7X8k9dnA4LclcC6rgIoW
+         dT19ewDVbOGyoCxQQHD46N+SAXO0LShyirV8LctsYINgc8nPveujBHZQlPNZMb2wakY3
+         sj4E1uQWKt66V+laOM3TCLk7btAblfZaczTByVP9XJhEj6+yqGtQVSkFkh8JnBbNoZg8
+         t9LpvytYr5CHcbRaqq/+eZrHQS6KsTxGTWaYVvuuvGpVJopVysaQwOOMY1/WH4uG1GtI
+         2bCg==
+X-Gm-Message-State: AKaTC03n4cpEolYYebeotvYu72LfU0SAbj58bnbkKfbI8IWklyd+Eu1/SQh77wfBRR4sb4mUl87fiNbPrtR58Q==
+X-Received: by 10.55.72.86 with SMTP id v83mr60130462qka.262.1481136437117;
+ Wed, 07 Dec 2016 10:47:17 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.25.17.101 with HTTP; Wed, 7 Dec 2016 10:35:51 -0800 (PST)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Wed, 7 Dec 2016 19:35:51 +0100
-X-Gmail-Original-Message-ID: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com>
-Message-ID: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com>
-Subject: Misalignment, MIPS, and ip_hdr(skb)->version
-To:     Netdev <netdev@vger.kernel.org>, linux-mips@linux-mips.org
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+Received: by 10.12.152.197 with HTTP; Wed, 7 Dec 2016 10:47:16 -0800 (PST)
+In-Reply-To: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com>
+References: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com>
+From:   Dave Taht <dave.taht@gmail.com>
+Date:   Wed, 7 Dec 2016 10:47:16 -0800
+Message-ID: <CAA93jw7hcmkcyD=t4VRrQFfHk+n+EkSVgY6KFDq0_-DGpMADYw@mail.gmail.com>
+Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     Netdev <netdev@vger.kernel.org>, linux-mips@linux-mips.org,
+        LKML <linux-kernel@vger.kernel.org>,
         WireGuard mailing list <wireguard@lists.zx2c4.com>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <Jason@zx2c4.com>
+Return-Path: <dave.taht@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55958
+X-archive-position: 55959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: dave.taht@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,43 +64,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hey MIPS Networking People,
+The openwrt tree has long contained a set of patches that correct for
+unaligned issues throughout the linux network stack.
 
-I receive encrypted packets with a 13 byte header. I decrypt the
-ciphertext in place, and then discard the header. I then pass the
-plaintext to the rest of the networking stack. The plaintext is an IP
-packet. Due to the 13 byte header that was discarded, the plaintext
-possibly begins at an unaligned location (depending on whether
-dev->needed_headroom was respected).
+https://git.lede-project.org/?p=openwrt/source.git;a=blob;f=target/linux/ar71xx/patches-4.4/910-unaligned_access_hacks.patch;h=b4b749e4b9c02a74a9f712a2740d63e554de5c64;hb=ee53a240ac902dc83209008a2671e7fdcf55957a
 
-Does this matter? Is this bad? Will there be a necessary performance hit?
-
-In order to find out, I instrumented the MIPS unaligned access
-exception handler to see where I was actually in trouble.
-Surprisingly, the only part of the stack that seemed to be upset was
-on calls to ip_hdr(skb)->version.
-
-Two things disturb me about this. First, this seems too good to be
-true. Does it seem reasonable to you that this is actually the only
-place that would be problematic? Or was my testing methodology wrong
-to arrive at such an optimistic conclusion?
-
-Secondly, why should a call to ip_hdr(skb)->version cause an unaligned
-access anyway? This struct member is simply the second half of a
-single byte in a bit field. I'd expect for the compiler to generate a
-single byte load, followed by a bitshift or a mask. Instead, the
-compiler appears to generate a double byte load, hence the exception.
-What's up with this? Stupid compiler that should be fixed? Some odd
-optimization? What to do?
-
-I'm considering just adding an extra byte of padding (see discussion
-in [1]), but before I make any decision like that (and hopefully it
-won't be necessary), I'd like to completely and entirely understand
-the full effects and consequences of calling netif_rx(skb) when
-skb->data is unaligned. Any insight you have to offer would be most
-welcome.
-
-Thanks,
-Jason
-
-[1] https://lists.zx2c4.com/pipermail/wireguard/2016-December/000709.html
+unaligned access traps in the packet processing path on certain versions of
+the mips architecture is horrifically bad. I had kind of hoped these
+patches in some form would have made it upstream by now. (or the
+arches that have the issue retired, I think it's mostly just mips24k)

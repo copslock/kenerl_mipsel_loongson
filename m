@@ -1,38 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2016 00:15:10 +0100 (CET)
-Received: from shards.monkeyblade.net ([184.105.139.130]:46838 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993401AbcLHXPCgHtoy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2016 00:15:02 +0100
-Received: from localhost (cpe-66-108-81-97.nyc.res.rr.com [66.108.81.97])
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7A63013C12D40;
-        Thu,  8 Dec 2016 14:15:35 -0800 (PST)
-Date:   Thu, 08 Dec 2016 18:14:53 -0500 (EST)
-Message-Id: <20161208.181453.1681964885150767592.davem@davemloft.net>
-To:     Jason@zx2c4.com
-Cc:     dave.taht@gmail.com, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        wireguard@lists.zx2c4.com
-Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <CAHmME9qGoPGEFyqe0jBaZD5R51wHTEgAYb9edj+nu9nNPWSYCA@mail.gmail.com>
-References: <CAHmME9qxz6wcOZuurqahXeY6QSF=zz0gH7gY4RZujLAJPNSWBA@mail.gmail.com>
-        <20161207.193716.50344961208535056.davem@davemloft.net>
-        <CAHmME9qGoPGEFyqe0jBaZD5R51wHTEgAYb9edj+nu9nNPWSYCA@mail.gmail.com>
-X-Mailer: Mew version 6.7 on Emacs 25.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2016 00:27:21 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:19644 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993403AbcLHX1M20SjC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2016 00:27:12 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 2B46A13974C5D;
+        Thu,  8 Dec 2016 23:26:58 +0000 (GMT)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 8 Dec
+ 2016 23:27:02 +0000
+Received: from [10.20.2.61] (10.20.2.61) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 8 Dec 2016
+ 15:27:00 -0800
+Message-ID: <5849EC43.2070802@imgtec.com>
+Date:   Thu, 8 Dec 2016 15:26:59 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+MIME-Version: 1.0
+To:     Justin Chen <justinpopo6@gmail.com>, <linux-mips@linux-mips.org>
+CC:     <bcm-kernel-feedback-list@broadcom.com>, <f.fainelli@gmail.com>,
+        "Justin Chen" <justin.chen@broadcom.com>
+Subject: Re: [RFC] MIPS: Add cacheinfo support
+References: <20161208011626.20885-1-justinpopo6@gmail.com>
+In-Reply-To: <20161208011626.20885-1-justinpopo6@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 08 Dec 2016 14:15:36 -0800 (PST)
-Return-Path: <davem@davemloft.net>
+X-Originating-IP: [10.20.2.61]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55976
+X-archive-position: 55977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,21 +47,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Thu, 8 Dec 2016 23:20:04 +0100
+On 12/07/2016 05:16 PM, Justin Chen wrote:
+> From: Justin Chen <justin.chen@broadcom.com>
+>
+> Add cacheinfo support for MIPS architectures.
+>
+> Use information from the cpuinfo_mips struct to populate the
+> cacheinfo struct. This allows an architecture agnostic approach,
+> however this also means if cache information is not properly
+> populated within the cpuinfo_mips struct, there is nothing
+> we can do. (I.E. c-r3k.c)
+>
+>
 
-> Hi David,
-> 
-> On Thu, Dec 8, 2016 at 1:37 AM, David Miller <davem@davemloft.net> wrote:
->> You really have to land the IP header on a proper 4 byte boundary.
->>
->> I would suggest pushing 3 dummy garbage bytes of padding at the front
->> or the end of your header.
-> 
-> Are you sure 3 bytes to get 4 byte alignment is really the best? I was
-> thinking that adding 1 byte to get 2 byte alignment might be better,
-> since it would then ensure that the subsequent TCP header winds up
-> being 4 byte aligned. Or is this in fact not the desired trade off,
-> and so I should stick with the 3 bytes you suggested?
+Justin, for architecture agnostic approach of work with caches the 
+cpuinfo_mips lacks more information:
 
-If the IP header is 4 byte aligned, the TCP header will be as well.
+1.  L1I-L1D coherency status (is L1I coherent to L1D)
+2.  L1D-L2 coherency status (is L1D coherent to L2)
+3.  L1I-L2 coherency status (is L1I coherent to L2)
+4.  L1I refill from L1D (snoops L1D) or L2 (may require L1D flush)?
+5.  L1D cache aliasing disabled by HW
+6.  L1I cache aliasing disabled by HW
+7.  Barrier existence and it's type between various cache flushes as is 
+as between cache flush and final (completed) state.
+8.  Cache ownership (current: assumed that sibling CPUs share L1 - may 
+be shared_cpu_map?)
+9.  Is address cache flush operation global in system or pure local?
+10. Is index cache flush operation global in system or pure local?
+
+Without that the proposed cpuinfo_mips struct is basically useless.
+
+Regards,
+- Leonid

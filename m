@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Dec 2016 01:37:29 +0100 (CET)
-Received: from shards.monkeyblade.net ([184.105.139.130]:45174 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991960AbcLHAhWZ9qmc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Dec 2016 01:37:22 +0100
-Received: from localhost (cpe-66-108-81-97.nyc.res.rr.com [66.108.81.97])
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 47610136475C3;
-        Wed,  7 Dec 2016 15:37:56 -0800 (PST)
-Date:   Wed, 07 Dec 2016 19:37:16 -0500 (EST)
-Message-Id: <20161207.193716.50344961208535056.davem@davemloft.net>
-To:     Jason@zx2c4.com
-Cc:     dave.taht@gmail.com, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        wireguard@lists.zx2c4.com
-Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <CAHmME9qxz6wcOZuurqahXeY6QSF=zz0gH7gY4RZujLAJPNSWBA@mail.gmail.com>
-References: <CAHmME9oLgjDA2F0gkFzHU2Es8-XCxQHRABS18OKF0EnZgt1=LQ@mail.gmail.com>
-        <20161207.145240.1636297838792223189.davem@davemloft.net>
-        <CAHmME9qxz6wcOZuurqahXeY6QSF=zz0gH7gY4RZujLAJPNSWBA@mail.gmail.com>
-X-Mailer: Mew version 6.7 on Emacs 25.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 07 Dec 2016 15:37:56 -0800 (PST)
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Dec 2016 02:17:39 +0100 (CET)
+Received: from lpdvsmtp01.broadcom.com ([192.19.211.62]:41451 "EHLO
+        relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993397AbcLHBRcywCqc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Dec 2016 02:17:32 +0100
+Received: from mail-irv-17.broadcom.com (mail-irv-17.broadcom.com [10.15.198.34])
+        by relay.smtp.broadcom.com (Postfix) with ESMTP id 40F412803F3;
+        Wed,  7 Dec 2016 17:17:29 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 relay.smtp.broadcom.com 40F412803F3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1481159849;
+        bh=5WUogODucyNiaQB2A0nAyqk1OMr/MUjr0qN8UEvKlTU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=IOFgDqCOt9sWK79W/IPE4/Gfq5Fi+8N8J5xX2pIJWOpciVhTmTnfq+FaQxXl/YWUT
+         YZSQJI2H0wl7BiokadTDQEGOm2AbFIa7dw7K0G0vN9UuC4E5t+6NJfiM88aJ1khgBN
+         YgCzrIx/tUeHLkpwo6jlOHW2UdpQwklDryernfi8=
+Received: from stb-bld-02.irv.broadcom.com (stb-bld-02.broadcom.com [10.13.134.28])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 7A5E281F52;
+        Wed,  7 Dec 2016 17:17:28 -0800 (PST)
+From:   justinpopo6@gmail.com
+To:     linux-mips@linux-mips.org
+Cc:     bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
+        Justin Chen <justin.chen@broadcom.com>
+Subject: [RFC] MIPS: Add cacheinfo support
+Date:   Wed,  7 Dec 2016 17:16:26 -0800
+Message-Id: <20161208011626.20885-1-justinpopo6@gmail.com>
+X-Mailer: git-send-email 2.10.2
+Return-Path: <justinpopo6@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55970
+X-archive-position: 55971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: justinpopo6@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,27 +46,126 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Thu, 8 Dec 2016 01:29:42 +0100
+From: Justin Chen <justin.chen@broadcom.com>
 
-> On Wed, Dec 7, 2016 at 8:52 PM, David Miller <davem@davemloft.net> wrote:
->> The only truly difficult case to handle is GRE encapsulation.  Is
->> that the situation you are running into?
->>
->> If not, please figure out what the header configuration looks like
->> in the case that hits for you, and what the originating device is
->> just in case it is a device driver issue.
-> 
-> My case is my own driver and my own protocol, which uses a 13 byte
-> header. I can, if absolutely necessary, change the protocol to add
-> another byte of padding. Or I can choose not to decrypt in place but
-> rather use a different trick, like overwriting the header during
-> decryption, though this removes some of the scatterwalk optimizations
-> when src and dst are the same. Or something else. I wrote the top
-> email of this thread inquiring about just exactly how bad it is to
-> call netif_rx(skb) when skb->data is unaligned.
+Add cacheinfo support for MIPS architectures.
 
-You really have to land the IP header on a proper 4 byte boundary.
+Use information from the cpuinfo_mips struct to populate the
+cacheinfo struct. This allows an architecture agnostic approach,
+however this also means if cache information is not properly
+populated within the cpuinfo_mips struct, there is nothing
+we can do. (I.E. c-r3k.c)
 
-I would suggest pushing 3 dummy garbage bytes of padding at the front
-or the end of your header.
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+---
+ arch/mips/kernel/Makefile    |  2 +-
+ arch/mips/kernel/cacheinfo.c | 85 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 86 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/kernel/cacheinfo.c
+
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 4a603a3..904a9c4 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -7,7 +7,7 @@ extra-y		:= head.o vmlinux.lds
+ obj-y		+= cpu-probe.o branch.o elf.o entry.o genex.o idle.o irq.o \
+ 		   process.o prom.o ptrace.o reset.o setup.o signal.o \
+ 		   syscall.o time.o topology.o traps.o unaligned.o watch.o \
+-		   vdso.o
++		   vdso.o cacheinfo.o
+ 
+ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_ftrace.o = -pg
+diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
+new file mode 100644
+index 0000000..a92bbba
+--- /dev/null
++++ b/arch/mips/kernel/cacheinfo.c
+@@ -0,0 +1,85 @@
++/*
++ * MIPS cacheinfo support
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed "as is" WITHOUT ANY WARRANTY of any
++ * kind, whether express or implied; without even the implied warranty
++ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++#include <linux/cacheinfo.h>
++
++/* Populates leaf and increments to next leaf */
++#define populate_cache(cache, leaf, c_level, c_type)		\
++	leaf->type = c_type;					\
++	leaf->level = c_level;					\
++	leaf->coherency_line_size = c->cache.linesz;		\
++	leaf->number_of_sets = c->cache.sets;			\
++	leaf->ways_of_associativity = c->cache.ways;		\
++	leaf->size = c->cache.linesz * c->cache.sets *		\
++		c->cache.ways;					\
++	leaf++;
++
++static int __init_cache_level(unsigned int cpu)
++{
++	struct cpuinfo_mips *c = &current_cpu_data;
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
++	int levels = 0, leaves = 0;
++
++	/*
++	 * If Dcache is not set, we assume the cache structures
++	 * are not properly initialized.
++	 */
++	if (c->dcache.waysize)
++		levels += 1;
++	else
++		return -ENOENT;
++
++
++	leaves += (c->icache.waysize) ? 2 : 1;
++
++	if (c->scache.waysize) {
++		levels++;
++		leaves++;
++	}
++
++	if (c->tcache.waysize) {
++		levels++;
++		leaves++;
++	}
++
++	this_cpu_ci->num_levels = levels;
++	this_cpu_ci->num_leaves = leaves;
++	return 0;
++}
++
++static int __populate_cache_leaves(unsigned int cpu)
++{
++	struct cpuinfo_mips *c = &current_cpu_data;
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
++	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
++
++	if (c->icache.waysize) {
++		populate_cache(dcache, this_leaf, 1, CACHE_TYPE_DATA);
++		populate_cache(icache, this_leaf, 1, CACHE_TYPE_INST);
++	} else {
++		populate_cache(dcache, this_leaf, 1, CACHE_TYPE_UNIFIED);
++	}
++
++	if (c->scache.waysize)
++		populate_cache(scache, this_leaf, 2, CACHE_TYPE_UNIFIED);
++
++	if (c->tcache.waysize)
++		populate_cache(tcache, this_leaf, 3, CACHE_TYPE_UNIFIED);
++
++	return 0;
++}
++
++DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
++DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+-- 
+2.10.2

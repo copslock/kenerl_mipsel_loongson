@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Dec 2016 02:17:39 +0100 (CET)
-Received: from lpdvsmtp01.broadcom.com ([192.19.211.62]:41451 "EHLO
-        relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993397AbcLHBRcywCqc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Dec 2016 02:17:32 +0100
-Received: from mail-irv-17.broadcom.com (mail-irv-17.broadcom.com [10.15.198.34])
-        by relay.smtp.broadcom.com (Postfix) with ESMTP id 40F412803F3;
-        Wed,  7 Dec 2016 17:17:29 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 relay.smtp.broadcom.com 40F412803F3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1481159849;
-        bh=5WUogODucyNiaQB2A0nAyqk1OMr/MUjr0qN8UEvKlTU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=IOFgDqCOt9sWK79W/IPE4/Gfq5Fi+8N8J5xX2pIJWOpciVhTmTnfq+FaQxXl/YWUT
-         YZSQJI2H0wl7BiokadTDQEGOm2AbFIa7dw7K0G0vN9UuC4E5t+6NJfiM88aJ1khgBN
-         YgCzrIx/tUeHLkpwo6jlOHW2UdpQwklDryernfi8=
-Received: from stb-bld-02.irv.broadcom.com (stb-bld-02.broadcom.com [10.13.134.28])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 7A5E281F52;
-        Wed,  7 Dec 2016 17:17:28 -0800 (PST)
-From:   justinpopo6@gmail.com
-To:     linux-mips@linux-mips.org
-Cc:     bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
-        Justin Chen <justin.chen@broadcom.com>
-Subject: [RFC] MIPS: Add cacheinfo support
-Date:   Wed,  7 Dec 2016 17:16:26 -0800
-Message-Id: <20161208011626.20885-1-justinpopo6@gmail.com>
-X-Mailer: git-send-email 2.10.2
-Return-Path: <justinpopo6@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Dec 2016 06:00:41 +0100 (CET)
+Received: from che.mayfirst.org ([162.247.75.118]:53971 "EHLO che.mayfirst.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991976AbcLHFAehFkz2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Dec 2016 06:00:34 +0100
+Received: from fifthhorseman.net (pool-98-117-85-199.rcmdva.fios.verizon.net [98.117.85.199])
+        by che.mayfirst.org (Postfix) with ESMTPSA id 03B14F99A;
+        Thu,  8 Dec 2016 00:00:31 -0500 (EST)
+Received: by fifthhorseman.net (Postfix, from userid 1000)
+        id CC6AF237EB; Wed,  7 Dec 2016 23:34:21 -0500 (EST)
+From:   Daniel Kahn Gillmor <dkg@fifthhorseman.net>
+To:     Hannes Frederic Sowa <hannes@stressinduktion.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Netdev <netdev@vger.kernel.org>, linux-mips@linux-mips.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        WireGuard mailing list <wireguard@lists.zx2c4.com>
+Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
+In-Reply-To: <095cac5b-b757-6f4a-e699-8eedf9ed7221@stressinduktion.org>
+References: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com> <095cac5b-b757-6f4a-e699-8eedf9ed7221@stressinduktion.org>
+Date:   Wed, 07 Dec 2016 23:34:21 -0500
+Message-ID: <87vauvhwdu.fsf@alice.fifthhorseman.net>
+MIME-Version: 1.0
+Content-Type: text/plain
+Return-Path: <dkg@fifthhorseman.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55971
+X-archive-position: 55972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justinpopo6@gmail.com
+X-original-sender: dkg@fifthhorseman.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,126 +42,19 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Justin Chen <justin.chen@broadcom.com>
+On Wed 2016-12-07 19:30:34 -0500, Hannes Frederic Sowa wrote:
+> Your custom protocol should be designed in a way you get an aligned ip
+> header. Most protocols of the IETF follow this mantra and it is always
+> possible to e.g. pad options so you end up on aligned boundaries for the
+> next header.
 
-Add cacheinfo support for MIPS architectures.
+fwiw, i'm not convinced that "most protocols of the IETF follow this
+mantra".  we've had multiple discussions in different protocol groups
+about shaving or bloating by a few bytes here or there in different
+protocols, and i don't think anyone has brought up memory alignment as
+an argument in any of the discussions i've followed.
 
-Use information from the cpuinfo_mips struct to populate the
-cacheinfo struct. This allows an architecture agnostic approach,
-however this also means if cache information is not properly
-populated within the cpuinfo_mips struct, there is nothing
-we can do. (I.E. c-r3k.c)
+that said, it sure does sound like it would make things simpler to
+construct the protocol that way :)
 
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
----
- arch/mips/kernel/Makefile    |  2 +-
- arch/mips/kernel/cacheinfo.c | 85 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 86 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/kernel/cacheinfo.c
-
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 4a603a3..904a9c4 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -7,7 +7,7 @@ extra-y		:= head.o vmlinux.lds
- obj-y		+= cpu-probe.o branch.o elf.o entry.o genex.o idle.o irq.o \
- 		   process.o prom.o ptrace.o reset.o setup.o signal.o \
- 		   syscall.o time.o topology.o traps.o unaligned.o watch.o \
--		   vdso.o
-+		   vdso.o cacheinfo.o
- 
- ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_ftrace.o = -pg
-diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
-new file mode 100644
-index 0000000..a92bbba
---- /dev/null
-+++ b/arch/mips/kernel/cacheinfo.c
-@@ -0,0 +1,85 @@
-+/*
-+ * MIPS cacheinfo support
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * This program is distributed "as is" WITHOUT ANY WARRANTY of any
-+ * kind, whether express or implied; without even the implied warranty
-+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include <linux/cacheinfo.h>
-+
-+/* Populates leaf and increments to next leaf */
-+#define populate_cache(cache, leaf, c_level, c_type)		\
-+	leaf->type = c_type;					\
-+	leaf->level = c_level;					\
-+	leaf->coherency_line_size = c->cache.linesz;		\
-+	leaf->number_of_sets = c->cache.sets;			\
-+	leaf->ways_of_associativity = c->cache.ways;		\
-+	leaf->size = c->cache.linesz * c->cache.sets *		\
-+		c->cache.ways;					\
-+	leaf++;
-+
-+static int __init_cache_level(unsigned int cpu)
-+{
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+	int levels = 0, leaves = 0;
-+
-+	/*
-+	 * If Dcache is not set, we assume the cache structures
-+	 * are not properly initialized.
-+	 */
-+	if (c->dcache.waysize)
-+		levels += 1;
-+	else
-+		return -ENOENT;
-+
-+
-+	leaves += (c->icache.waysize) ? 2 : 1;
-+
-+	if (c->scache.waysize) {
-+		levels++;
-+		leaves++;
-+	}
-+
-+	if (c->tcache.waysize) {
-+		levels++;
-+		leaves++;
-+	}
-+
-+	this_cpu_ci->num_levels = levels;
-+	this_cpu_ci->num_leaves = leaves;
-+	return 0;
-+}
-+
-+static int __populate_cache_leaves(unsigned int cpu)
-+{
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
-+
-+	if (c->icache.waysize) {
-+		populate_cache(dcache, this_leaf, 1, CACHE_TYPE_DATA);
-+		populate_cache(icache, this_leaf, 1, CACHE_TYPE_INST);
-+	} else {
-+		populate_cache(dcache, this_leaf, 1, CACHE_TYPE_UNIFIED);
-+	}
-+
-+	if (c->scache.waysize)
-+		populate_cache(scache, this_leaf, 2, CACHE_TYPE_UNIFIED);
-+
-+	if (c->tcache.waysize)
-+		populate_cache(tcache, this_leaf, 3, CACHE_TYPE_UNIFIED);
-+
-+	return 0;
-+}
-+
-+DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
-+DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
--- 
-2.10.2
+          --dkg

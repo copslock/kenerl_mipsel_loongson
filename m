@@ -1,45 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2016 02:02:08 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55546 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991976AbcLIBCBzPaC0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2016 02:02:01 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 9C6E055FC73C4;
-        Fri,  9 Dec 2016 01:01:50 +0000 (GMT)
-Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 9 Dec 2016 01:01:55 +0000
-Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
- (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 9 Dec
- 2016 01:01:54 +0000
-Received: from [10.20.2.61] (10.20.2.61) by bamail02.ba.imgtec.org
- (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 8 Dec 2016
- 17:01:53 -0800
-Message-ID: <584A0281.3040505@imgtec.com>
-Date:   Thu, 8 Dec 2016 17:01:53 -0800
-From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2016 08:57:42 +0100 (CET)
+Received: from kirsty.vergenet.net ([202.4.237.240]:52760 "EHLO
+        kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991976AbcLIH5cf64F8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2016 08:57:32 +0100
+Received: from penelope.kanocho.kobe.vergenet.net (unknown [217.111.208.18])
+        by kirsty.vergenet.net (Postfix) with ESMTPSA id 792BA25B853;
+        Fri,  9 Dec 2016 18:57:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=verge.net.au; s=mail;
+        t=1481270247; bh=IQ1PGdGXc6BQKdPwBwAQ/9HaKEc9s0qmf+JQ5/PX7C4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RkYUJl+vjQXdMovebXAN9iXhVz9/e+QCJ3CtSsroSsq4/H8eLsfa+AK73NOk/OBYP
+         eM/lz54R11yylOTBXZ1l2Mz5LDSS1Hw/lk8svi7IZPutB3KOoqDnpesMEm6sE0Vi9i
+         1JcahC5+s47RaVrDA8/nnw1pXxtFAbq8Ab1hB3FY=
+Received: by penelope.kanocho.kobe.vergenet.net (Postfix, from userid 7100)
+        id 4DF4260623; Fri,  9 Dec 2016 08:57:23 +0100 (CET)
+Date:   Fri, 9 Dec 2016 08:57:23 +0100
+From:   Simon Horman <horms@verge.net.au>
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc:     kexec@lists.infradead.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 0/6] Kexec fixes and updates for MIPS platforms
+Message-ID: <20161209075723.GA30610@verge.net.au>
+References: <1480672151-18503-1-git-send-email-marcin.nowakowski@imgtec.com>
 MIME-Version: 1.0
-To:     Justin Chen <justinpopo6@gmail.com>
-CC:     <linux-mips@linux-mips.org>,
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Justin Chen <justin.chen@broadcom.com>
-Subject: Re: [RFC] MIPS: Add cacheinfo support
-References: <20161208011626.20885-1-justinpopo6@gmail.com> <5849EC43.2070802@imgtec.com> <CAJx26kW0e-HC0VUTObZ5Or+XjFvE9KmtOToKbFvKYvhE--Vw5A@mail.gmail.com>
-In-Reply-To: <CAJx26kW0e-HC0VUTObZ5Or+XjFvE9KmtOToKbFvKYvhE--Vw5A@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.20.2.61]
-Return-Path: <Leonid.Yegoshin@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1480672151-18503-1-git-send-email-marcin.nowakowski@imgtec.com>
+Organisation: Horms Solutions BV
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <horms@verge.net.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55979
+X-archive-position: 55980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Leonid.Yegoshin@imgtec.com
+X-original-sender: horms@verge.net.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,57 +49,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/08/2016 04:28 PM, Justin Chen wrote:
-> Thanks for the comments Leonid.
->
-> We should consider the scope of this patch. The information we are
-> trying to expose to userspace is limited to the struct cacheinfo
-> located at include/linux/cacheinfo.c (of course this can always be
-> expanded). So the question is what information would be useful to
-> expose to userspace.
-> Some justification for exposing the current information in the
-> cacheinfo struct could be: (Pulled from another email chain)
-> "Agreed. So far I have got requests from GCC, JIT and graphics guys.
-> IIUC they need this to support cache flushing for user applications like
-> gcc trampolines and JIT compilers. I am also told that having knowledge
-> of cache architecture can help optimal code strategies, though I don't
-> have much details on that."
-> https://patchwork.kernel.org/patch/5867721/
->
-> There may be justification for including the points you mentioned
-> above, but I believe that is outside the scope of this patch. The
-> cache information exposed in this patch is limited, but I do not
-> believe it is useless. The points above can be added, but it will
-> require a rework of the base cacheinfo driver. driver/base/cacheinfo.c
->
->
-Justin,
+On Fri, Dec 02, 2016 at 10:49:05AM +0100, Marcin Nowakowski wrote:
+> This patch series tries to bring the support for MIPS up to date and make it more
+> generic (fix little-endian support, simplify code for 32/64 bit handling), as well
+> as to clean up some existing incorrect code (patches 1-4).
+> 
+> Patches 5 & 6 add new functionality - passing external DTBs and initrd, especially
+> the DTB support is required for platforms that use a recently introduced generic
+> kernel infrastructure.
+> 
+> Note that patch 5 (and 6, as it depends on patch 5) require changes in the kernel
+> that are currently pending review:
+> https://patchwork.linux-mips.org/patch/14615/
+> 
+> Core dump support is currently broken on all MIPS kernels and is also pending
+> review:
+> https://patchwork.linux-mips.org/patch/14587/
+> https://patchwork.linux-mips.org/patch/14586/
+> 
+> Patches 1-4 can be safely added without waiting for kernel patches to be merged,
+> but patches 5-6 should be held until the kernel patches are accepted in case changes
+> are requested.
+> 
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
 
-CACHE instruction is not available in user space, only SYNCI on MIPS R2+ 
-for trampoline.
-Any operation with CACHE requires a syscall.
-
-As for SYNCI (trampoline from L1D->L1I) the following information in 
-user space is needed:
-
-     1. L1 line size (available via RDHWR $x, $1). It is available now 
-directly from CPU, but may be better to supply from kernel because some 
-cores has no that.
-
-     2. The flag that L1I is NOT coherent with L1D and SYNCI is needed 
-and available
-
-The knowledge about L1/L2 sizes is not needed for regular application... 
-well, if application wants to get advantage of cache sizes, well, in 
-this case it can be supplied.
-
-But it is unreliable because app may be rescheduled into different kind 
-of core which has a different L1 size (in heterogeneous system, BTW). It 
-can be fixed by setting affinity, of course (not sure - can it be 
-reliably done in BIG/LITTLE approach). But that requires in application 
-the knowledge and understanding of system CPU structure... well why we 
-can allow all that stuff besides information purpose? It corrupts the 
-all efforts and optimization in kernel about performance and powersaving.
-
-Regards,
-- Leonid.
+Thanks, applied.

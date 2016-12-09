@@ -1,95 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2016 21:06:04 +0100 (CET)
-Received: from mail-by2nam03on0078.outbound.protection.outlook.com ([104.47.42.78]:46528
-        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990644AbcLIUF5PPRBD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 9 Dec 2016 21:05:57 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=+cj/OktdiKsD6SEAtrgQ3MNgpkdJTn6MEC5kTbf6N6A=;
- b=O5YmQAeAoLy3KEVf80WU3iHkDdKP24nLiPD5UA3Ulw3xnnolKfCkrAlnym57UReQMyIUbVFzNjDOFUf5kJZaJ0+z/ji6s08KnmaeaxnzCxkD/4Cj1r4GvE+gz33UiBfb+Gb3xaNtoBjXj72HdcF6sKJtG5fWM3h3x73qFP8OIiw=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Steven.Hill@cavium.com; 
-Received: from [10.0.0.4] (173.22.239.243) by
- CY4PR07MB3207.namprd07.prod.outlook.com (10.172.115.149) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.761.9; Fri, 9 Dec 2016 20:05:44 +0000
-Subject: [PATCH v2] MIPS: OCTEON: Enable KASLR
-To:     <linux-mips@linux-mips.org>
-CC:     <ralf@linux-mips.org>
-From:   "Steven J. Hill" <Steven.Hill@cavium.com>
-Message-ID: <accb5b67-2a15-21bb-ed81-3bd463b5ff04@cavium.com>
-Date:   Fri, 9 Dec 2016 14:05:40 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2016 22:18:49 +0100 (CET)
+Received: from mail-oi0-f67.google.com ([209.85.218.67]:35948 "EHLO
+        mail-oi0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992157AbcLIVSjyUssA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2016 22:18:39 +0100
+Received: by mail-oi0-f67.google.com with SMTP id u15so3910989oie.3;
+        Fri, 09 Dec 2016 13:18:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=xBcIPbOfAGT5SXxFXrp+F15yM2pIoJh3wB+PNP9BhrQ=;
+        b=e3ZWG3oUbF+wxhg+ENP1VT30r/dU3NRc4QGy8QhlYpitGkBc6hlFdQ3xYuQGTWnnIv
+         Irjwlat2loCK4qm4iZpde7Hsb/tsN9m017ptdd+mArn6j126r1ZLLigS+Bwp66eYh/CG
+         XlaMFChIGpUGLgAk6bp1SoJiyyMx5HO+QKyUt+wOObcLP2D+ACgXP54JPDm1KjSugmB+
+         PY22f0tJcG/sUuOHxfxyNdKyM3GYz72l4MwIJsaclkGsAkuJaodE81B5PCVzlGPoxUAx
+         Cmdaqckx/ZQoazKGYU8+i85S85ExFtDtjbNx6ZrC1xVu8vKbb5JBiy6Pm7AuU2Q/SL0b
+         44Tg==
+X-Gm-Message-State: AKaTC02XFhAyEQQf4QgLz8v7e53axDhLf2GEGiOftXsUR/KAXx/NXA8PpLO0ovRXSj0SWQ==
+X-Received: by 10.202.198.23 with SMTP id w23mr45806338oif.187.1481318310072;
+        Fri, 09 Dec 2016 13:18:30 -0800 (PST)
+Received: from localhost (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
+        by smtp.gmail.com with ESMTPSA id t78sm13023086oih.19.2016.12.09.13.18.29
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 09 Dec 2016 13:18:29 -0800 (PST)
+Date:   Fri, 9 Dec 2016 15:18:28 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Nathan Sullivan <nathan.sullivan@ni.com>
+Cc:     ralf@linux-mips.org, mark.rutland@arm.com,
+        linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: NI 169445 board support
+Message-ID: <20161209211828.dykl2l4kmthqgq6e@rob-hp-laptop>
+References: <1480693329-22265-1-git-send-email-nathan.sullivan@ni.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [173.22.239.243]
-X-ClientProxiedBy: CY1PR0201CA0014.namprd02.prod.outlook.com (10.163.30.152)
- To CY4PR07MB3207.namprd07.prod.outlook.com (10.172.115.149)
-X-MS-Office365-Filtering-Correlation-Id: 7ef30a91-ef59-4e9b-098e-08d4206ec286
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:CY4PR07MB3207;
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;3:HRxN8czugimPw6Vkro8FzOH4w2jmDziFhNIlM6QdHyA8RBwHkhJnRhdLeBH2Qf+RNHTOkxQRP89mH8cBqORj7XBATXhczCc7fkCZkr0CWGAl1Wgyu2ggwx6I99gslOm/WcAQapuL9vgh4LIhJmDtxQnyTSdrdQol/5d7gMExX0nxa3ramYQrLccj4gRA6yDeCa3hOMrpjZjdAWfU1XHT5CjqlVp7Gx7lhb8dWLAAipNkKI2IFIM7IbODTOo3148qvn4PM1b497NY58ECULilVA==
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;25:9cU8TIgq6NeTFJhfbIPoa1aWPhdO2M2EylLcJkAhHhicOAADXEBQOY8SNv09mORPYS5NeWq8LgdXTQYkGCF4KcUNG6w7xydMmrt5QmTzLk47NnorF7Xb/d7Hjg6LZVvQCml5ew9BVD7+y52QqFjjoNk3e4EpNkJbr79LIEhKRZ9yS856IaSj2jPZVHwMzkNCjkghVZVKwm5YiL1ldUC8I7eW3K1BwphCUy5xrDbfItc3wZ4HdAlK3Q2A5pec6+IWPsY0Py0QuVYUbdpgBOK8WAHu76k17bdphpN88gx0IZSTC7VHlQnciq0zleBEQgc1Az1S08sPRZ/OCl9dKJXFp75bazjIE5rWwaC1UeZ2xyFL4NryuFQMuCW0OvL5alQAvAoxaGWPUncHhl4N7/H2NeqQXmUaH4/bQfyde7Tx+8k4DGLtR9ft3FuF66yvBLOE/Yk7CxIp1+wP613JcWHeTVWE/xn186UDqIHz1O10p+BDMa3UQowjBR7wV/secfm6LYQDM8y3rjZ/HlM4Rw+aq7FTShxrIxt67dwwJxoOfQmbs0mvgutzzEebEecAgqYy3jJgzhJ88zhW4JUk5MYqv5Zf7b65SDzErauTVrabjMhv6jQGAvGHpQdpqSGmTLtFUI72gNqCVbO59QrZwBiheE6Aj00EQ/9VcWTf88VyBJboWJYcAZTvpgde9F3OORaYzM52sbTEC7VaCkF8ktrV0v19oQRe2iQ9AJIcQ53u6L+0xYnR7QX3f3/xtc0K9yUg
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;31:z/tI5zy94916tP8EQM8PTVY44P2ci4eCGHpw/a8lUW4lYim577t2lgH1ZGYpecfnxGaXWxB4MDiic4vEbcSYX7aeVVEJtk5zhOSgVhsFfC3SyRRM4FW8iswY4gF/1GNG0WpX7Ubcz8/IVrSLv7HYug5F7DEnnVtyvdI0jxpgzvrJrUDbaej6nE3L4dkMBq0ndJLNiVkGmZs9fIn+uf8xpL/RB4n/UXh62Im4aZJpWtwD83I1CVrsga6aW7YsmE7thprwahSEb0tTCMyIE+yygA==;20:gthaG/1p3zQpqrW6ojFal+ffuco5W3fICmzqKhMbquIy8iQ+1AU9KWHzKaCUEWJM9iycuuDRWH9osRTpwmail4Hr+lNQefI5mfV/vUps52fSEG217J6zG1kB1jyYmXGpI9k0vF71BfpAGu0knUXD2fM5Yi5f/N5E5C8E6p+d6RvOaoRLDfhTaeArHYRUjC9a1FhkLOSd+XcxRU78A1yw88nENwFdpjH1QZxme96ANyV/eeHmlnwp+/U9HrtNz7CM19SoS3zcUINSlfPbpcFM6slIgB20eFb003oH2/D45Vds/rp2IAjx5b3Nksi/IxXTWT/00ieyD9KYtBOZaeBMlcDgj3IqOPejHsxwfxXWWDLztiX/OohQpVbbOBOQI1EbMrOviqgo/gyN4EeSoANmc8OJ13JBeTzW81sntbn5bZocpnJ6ZsdYPc5e08LG5mhQbtT4DXyAa633I0qo7kAcEig+o2k4N4oeEjjcxBG6sFqBJlfIY+8h9ZMAH87fr+HX
-X-Microsoft-Antispam-PRVS: <CY4PR07MB3207A731F80BD136FE3AF61B80870@CY4PR07MB3207.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(8121501046)(5005006)(3002001)(10201501046)(6041248)(20161123555025)(20161123560025)(20161123562025)(20161123564025)(20161123558021)(6072148);SRVR:CY4PR07MB3207;BCL:0;PCL:0;RULEID:;SRVR:CY4PR07MB3207;
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;4:IC1OmwiWAqgGGDjFUEw3gMTvE19T5XLcbHNy6eq/ozYdugPBbfEAgxCHTp38BEmRNMsYCx6r3hxa0DovYSgMWhqkjSeWztk9t+dZ8eq39j3l+WcsP8vz87SJ4eGnlwRyk5c7dFXplM/WzLft1pRvYaVgQ4wZxAV835zyikZbPsyzp9l/Mi7barE8Sf2TzVm47kqH0KNe6XPbfJzVUrJN+g3BgjULhBShfJanMgGDhmLMXApc14+lPmWKXHGIwcdMP54lAO8g+6g56+3DDFuT9oT4GCvzfhKekvUIihxG6Iwo72ZFR/CUXuCLjXjNWUVsX8/yfcuf8Q1Lsv3P3mEd0DepTgfdmlYOD9LUzqQEWv8AfAgajMuVn/Ad4lK95SWIeXGAk6bKE9oOwZU/8l9HNC3c6QsQNPmen0VEFb5Umb7CccXZiXdPTVos+o6oOGVSxWsTZvsw/mhHRbfI9LFl8PuuVc75AP8lQfflhpkY1Simc1PrdC9BeSM0ddE7Sg4pHHuiEZ8/jPex/8dwuo6t1bAOThqpFMSahp6inyP+OvwnwYBviw6ZqpoATlwBWVGDCUwgE5qPYeamN8AyIB97WqJEDpoH6te6aCXZ1qH/T8s=
-X-Forefront-PRVS: 015114592F
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6049001)(6009001)(7916002)(39450400003)(39850400002)(39410400002)(39840400002)(189002)(199003)(110136003)(6916009)(90366009)(6666003)(92566002)(97736004)(66066001)(6486002)(65826007)(83506001)(189998001)(230700001)(31686004)(38730400001)(42186005)(77096006)(31696002)(33646002)(4001350100001)(86362001)(5660300001)(23676002)(36756003)(81156014)(81166006)(4326007)(68736007)(3846002)(54356999)(64126003)(101416001)(8676002)(2906002)(65806001)(2351001)(50466002)(105586002)(450100001)(106356001)(305945005)(65956001)(7736002)(50986999)(6116002)(47776003);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3207;H:[10.0.0.4];FPR:;SPF:None;PTR:InfoNoRecords;MX:1;A:1;LANG:en;
-Received-SPF: None (protection.outlook.com: cavium.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?utf-8?B?MTtDWTRQUjA3TUIzMjA3OzIzOjVkSFplUWpZZzVHbUExSWJMWTA5MEozRzR1?=
- =?utf-8?B?L1FwVVU2b2wrdXozdnNVWW5qWUI3SUpDNDJ3STZHSDE0UmErWUdXc2tQeDU2?=
- =?utf-8?B?aWV5SXRzVVB1S25kZG9IdjZFdzFabzZJS1ZrR215UmoyaTc1UEpycXRmR25O?=
- =?utf-8?B?d3pXUFIrbWRSalBJS1hQVGRiTHVCR1cxdW1TeFVJVHF5TEJ0dGdncDdDT3NQ?=
- =?utf-8?B?b3g2cVR4M3pTVTFFVDJUQlIxWTJ5VVJXTzNTb2tIV0wrYTF3bkRyRHgvQ2t3?=
- =?utf-8?B?SkNQNndoNjYvTUErR01lSWVxa3Iyb3NSZ2s3K0hPb0pKSGt2c240MnF6VnVU?=
- =?utf-8?B?VHpWTmtzcENndWxVZWs2c2kzQzdkQkw0bVUzNkkzZ2hBMVF0ald2akdqc2JT?=
- =?utf-8?B?N2NkeFpjWFNHK1NPajRKbXdtd0dKNmhIZ0hNNE9BbzB1c2dTOFBYcGtBK2w4?=
- =?utf-8?B?LzYxbUsyM0ZDVVNlcXNDdklRY1lNWCtBT2xXUkNBYzZhQmNwWXVlbElLUWtB?=
- =?utf-8?B?S1p2WCtraEtpWWpRUFJlYWk1dXpwemZsSXlVVmFObnJxS3ljVW5Ibnl5RW5K?=
- =?utf-8?B?TDRSWEdnZmswaXhsdWNsMFBlWktxamk3ODI1Y3RsbmYzM0RCTVRuaURlaEhC?=
- =?utf-8?B?RzFvYlJSNThXaGZra2RMeWNxem1RZng5R1htR1J0aDRFUXYrSlBuWE5BMjlZ?=
- =?utf-8?B?L016bUJNYm1kVG9pNWc4cE5ZZlgrNkF5bjFZSDNVblVYcXhJdzJub2NLS1pw?=
- =?utf-8?B?a3N2VTRoNCswRGd0T2MrNUM0dlJwVkpuRFJFRWU2SzhCVlhUODhRWVpaZmQ4?=
- =?utf-8?B?MjlNczBPb25CQzNlQlFQTEhqbTF4cXJvRHpHM1FwdG5VSWFGcmxnY2ZIeWtR?=
- =?utf-8?B?aXozaUNJYnZINkZsbFFOT0pnaWFyT1E3V0pld1RYc0RiWitvK1BjUGlCcEU0?=
- =?utf-8?B?eTdrVGMvRXRzcHcwU1lDd3FlY2FaNUQ5MGJ6S0gvYk5STWluQ1dGQ1A2ZEtB?=
- =?utf-8?B?anl2TDFKczh4WHNIYlhjcm0rMDdMUkl5a3dua3JuLy9iUE5mcVhwMS9qdVJB?=
- =?utf-8?B?VXBiMWtFNW5QV3NSR3ZrM1V6MnNlNHIrbytqTlVCdUpNMytaOE1WQ2hQTEg3?=
- =?utf-8?B?RnhVUlZicGU1dkQrb3ZHbUhhY2wwM285K1dtNm9wTU81cVkvUU9TRVdQempL?=
- =?utf-8?B?OWJCUGdkTCt3RnVXQmxxNWJocmk3MHg4N1B3QmRGcElOVkZ2MGtaaHRvKzVM?=
- =?utf-8?B?U09nWUp3WmR1MW9hSHZ4WE5qVDlLVzk4Qlc3VVFmTnkzRWJCc1dPdE53NHVW?=
- =?utf-8?B?cTBNTHlJeXFzTWkwRUFnRVBCT3VUV3FqVXR1YituVjNLTXJ0Zko1WDYwa1JG?=
- =?utf-8?B?L1RvUnRld3hCWmp1RDlxZHIyYkpDZkNZOXJwS2FNbTlMZDByMytBTFRNeGth?=
- =?utf-8?B?Y3ovT0xPMFlEVnFXSm5DaC9haWtoRnB0RDQrWW45ajRZdHZYL1Nyb0tUcFJu?=
- =?utf-8?B?dzJMV3M2RzdreFppUWNkTWM5Uzc0cGNnT2p1UnVMQkRoQlVvTCtHd3B1OFBm?=
- =?utf-8?B?ZGpKVUJPdTZkaGljdk5tUWpaOTBQYWFZTkVaalNpZ1RZbW5LUzE4eUdyc0Zx?=
- =?utf-8?B?WllsRXBscURTZWFsVXZkc29MOHNwOE16TGNWNWZZN0JtRVZ4cTVnS0VtcHpM?=
- =?utf-8?B?Rko2SVpHSDMyZURPbG5TNWRBb3EwVGRmTHRranQxSFpROW1YL0tnaEZpZFZT?=
- =?utf-8?B?T2RTOENWYlJyMzl2Q2p2ci9naHVhN1ZyY01pTU13SVloa09FRmFoTm0xLzRu?=
- =?utf-8?Q?Me8bAts0CuUFg?=
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;6:MgOcWPW72HhdXexgkvqPm8CnrVuGfBK9GqZckP6q354xIJCrWt+zV+KahhbdLZk1LAe0FbpQrjJV0G0F+iJKUhu996JOaNGjqKG+snGwQnpWiQiR6fGuc9X+OHE0IrF57kRlB7kVagGg/bfTTBuOFUzY9Ub0521DYI52uf5Y8FI11k2rNiHWCh5/bMx5Gqsec05kXrF1aWuLoiX/pnd2dHZGzMEgugUhWmq+x2EZxNliwM8GW2/bhdWldDxMfSZC8P3MvVg2tXKcLEd5eed8SX9qfP6oAA6le9gg5QvzR1pFHxMUpDsy6w9wI8a6oWk4c9CwNbi/Y/k/QKdNQJY7OrSSLCMIjtpBjbAxPDRCDhcYlUFtSwY8weksaPE43UpIR6lRPfluYBcUo3BzXgei+0njRs3of8GCHh0qDaQHb04=;5:J2qBD3l6FzWOIkbZmCKAEmOAX4rTCceMi6wkT7NTFr9CTXZzTJAOmUINbGVqeAYVvGo4gQoS+AS9unWS1WgdbP3WKf7at4C7jEaolA2eSo7aKlKuPTUj6htjQnTqeLw3ansAC0raxu9CAINIJ9hMm8rfvRl3dYQ1T4cbNFo1Ggc=;24:4E+Hk3HDpUmWmJbA8ANF3m0+Wxxpwtkp8Gw6z4HkHCV1XyeaIkXkeCdjIHKTw0rL+W9kCTdyUoht9VYQwtL0RmAcZoV0IVUJFXgISc0yuA4=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;7:5F9n0pQhEzRBIGcb5y2PKsnuBM+h8MurmgmNGAh0idDW9SQhONKeQkweFgbVreCz8oS0u7lZ55JkIqWLoT8NJqCskRKaJnczb0H+IK3/EcwU7CQKrHkptE0y301ZHp5sFWE0gEj8s9JkKxv75pyBjJ2cjklqIJuTzZA7NJwU91OdPV0hUxuktCutpq0txK6ayGiOaliuuCEZA2vfjI+NRC53vd9LY+lNhGxjJX1jSAT7sYkCkVkgyBbrr26/qkyWR8yevhc4QmxJWy+6XxEgNTTtyrjqhWe5o5cGurKweQtzi7S+A7EBi7wou24yZ84N1m03ilf4Opqzjeyokjn/CaAF3iAwcMPJmF8nsH3CNyruX1Ji+VYEf8WyeLSj5MAtG+Mwen6MEWBurjrAqfavhHssHSuIz2lRkVgJUSDnABcVVbO+WuenM43fqmYK+AmFUie3Up9BH9Dv2XGQZMqevg==
-X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2016 20:05:44.5125 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3207
-Return-Path: <Steven.Hill@cavium.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1480693329-22265-1-git-send-email-nathan.sullivan@ni.com>
+User-Agent: Mutt/1.6.2-neo (2016-08-21)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55990
+X-archive-position: 55991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Steven.Hill@cavium.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,126 +58,301 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch enables KASLR for OCTEON systems. The SMP startup code is
-such that the secondaries monitor the volatile variable
-'octeon_processor_relocated_kernel_entry' for any non-zero value.
-The 'plat_post_relocation hook' is used to set that value to the
-kernel entry point of the relocated kernel. The secondary CPUs will
-then jusmp to the new kernel, perform their initialization again
-and begin waiting for the boot CPU to start them via the relocated
-loop 'octeon_spin_wait_boot'. Inspired by Steven's code from Cavium.
+On Fri, Dec 02, 2016 at 09:42:09AM -0600, Nathan Sullivan wrote:
+> Support the National Instruments 169445 board.
+> 
+> Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
+> ---
+> "gpio: mmio: add support for NI 169445 NAND GPIO" and 
+> "devicetree: add vendor prefix for National Instruments" are required for the
+> NAND on this board to work.
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
----
-Changes in v2:
-  - Add missing code to set 'octeon_processor_relocated_kernel_entry'
-    which was forgotten. Mental note, don't submit patches at 3a.m.
----
- arch/mips/Kconfig                                    |  3 ++-
- arch/mips/cavium-octeon/smp.c                        | 20 ++++++++++++++++++--
- .../asm/mach-cavium-octeon/kernel-entry-init.h       | 15 ++++++++++++++-
- 3 files changed, 34 insertions(+), 4 deletions(-)
+These should have been a series, but I already applied the first one.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b3c5bde..65d7e20 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -909,6 +909,7 @@ config CAVIUM_OCTEON_SOC
- 	select NR_CPUS_DEFAULT_16
- 	select BUILTIN_DTB
- 	select MTD_COMPLEX_MAPPINGS
-+	select SYS_SUPPORTS_RELOCATABLE
- 	help
- 	  This option supports all of the Octeon reference boards from Cavium
- 	  Networks. It builds a kernel that dynamically determines the Octeon
-@@ -2570,7 +2571,7 @@ config SYS_SUPPORTS_NUMA
+> 
+>  Documentation/devicetree/bindings/mips/ni.txt |   7 ++
+>  arch/mips/Kbuild.platforms                    |   1 +
+>  arch/mips/Kconfig                             |  26 ++++++
+>  arch/mips/boot/dts/Makefile                   |   1 +
+>  arch/mips/boot/dts/ni/169445.dts              |  99 +++++++++++++++++++++
+>  arch/mips/boot/dts/ni/Makefile                |   9 ++
+>  arch/mips/configs/ni169445_defconfig          | 120 ++++++++++++++++++++++++++
+>  arch/mips/ni169445/169445-console.c           |  38 ++++++++
+>  arch/mips/ni169445/169445-init.c              |  39 +++++++++
+>  arch/mips/ni169445/169445-int.c               |  34 ++++++++
+>  arch/mips/ni169445/169445-setup.c             |  58 +++++++++++++
+>  arch/mips/ni169445/169445-time.c              |  35 ++++++++
+>  arch/mips/ni169445/Makefile                   |   9 ++
+>  arch/mips/ni169445/Platform                   |   6 ++
+>  14 files changed, 482 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mips/ni.txt
+>  create mode 100644 arch/mips/boot/dts/ni/169445.dts
+>  create mode 100644 arch/mips/boot/dts/ni/Makefile
+>  create mode 100644 arch/mips/configs/ni169445_defconfig
+>  create mode 100644 arch/mips/ni169445/169445-console.c
+>  create mode 100644 arch/mips/ni169445/169445-init.c
+>  create mode 100644 arch/mips/ni169445/169445-int.c
+>  create mode 100644 arch/mips/ni169445/169445-setup.c
+>  create mode 100644 arch/mips/ni169445/169445-time.c
+>  create mode 100644 arch/mips/ni169445/Makefile
+>  create mode 100644 arch/mips/ni169445/Platform
+> 
+> diff --git a/Documentation/devicetree/bindings/mips/ni.txt b/Documentation/devicetree/bindings/mips/ni.txt
+> new file mode 100644
+> index 0000000..722bf2d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mips/ni.txt
+> @@ -0,0 +1,7 @@
+> +National Instruments MIPS platforms
+> +
+> +required root node properties:
+> +	- compatible: must be "ni,169445"
+> +
+> +CPU Nodes
+> +	- compatible: must be "mti,mips14KEc"
+> diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+> index f5f1bdb..f2d7b5c 100644
+> --- a/arch/mips/Kbuild.platforms
+> +++ b/arch/mips/Kbuild.platforms
+> @@ -20,6 +20,7 @@ platforms += loongson32
+>  platforms += loongson64
+>  platforms += mti-malta
+>  platforms += netlogic
+> +platforms += ni169445
+>  platforms += paravirt
+>  platforms += pic32
+>  platforms += pistachio
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index b3c5bde..d24d11f 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -574,6 +574,32 @@ config NXP_STB225
+>  	help
+>  	 Support for NXP Semiconductors STB225 Development Board.
+>  
+> +config NI_169445
+> +	bool "NI 169445 board"
+> +	select ARCH_WANT_OPTIONAL_GPIOLIB
+> +	select BOOT_ELF32
+> +	select BOOT_RAW
+> +	select BUILTIN_DTB
+> +	select CEVT_R4K
+> +	select CSRC_R4K
+> +	select CPU_MIPSR2_IRQ_VI
+> +	select CPU_MIPSR2_IRQ_EI
+> +	select DMA_NONCOHERENT
+> +	select IRQ_MIPS_CPU
+> +	select LIBFDT
+> +	select MIPS_MSC
+> +	select SYS_HAS_CPU_MIPS32_R1
+> +	select SYS_HAS_CPU_MIPS32_R2
+> +	select SYS_HAS_EARLY_PRINTK
+> +	select SYS_SUPPORTS_32BIT_KERNEL
+> +	select SYS_SUPPORTS_LITTLE_ENDIAN
+> +	select USE_OF
+> +	select COMMON_CLK
+> +	help
+> +	  This enables support for the National Instruments 169445A
+> +	  board.
+> +
+> +
+>  config PMC_MSP
+>  	bool "PMC-Sierra MSP chipsets"
+>  	select CEVT_R4K
+> diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+> index fc7a0a9..65a0ad8 100644
+> --- a/arch/mips/boot/dts/Makefile
+> +++ b/arch/mips/boot/dts/Makefile
+> @@ -3,6 +3,7 @@ dts-dirs	+= cavium-octeon
+>  dts-dirs	+= ingenic
+>  dts-dirs	+= lantiq
+>  dts-dirs	+= mti
+> +dts-dirs	+= ni
+>  dts-dirs	+= netlogic
+>  dts-dirs	+= pic32
+>  dts-dirs	+= qca
+> diff --git a/arch/mips/boot/dts/ni/169445.dts b/arch/mips/boot/dts/ni/169445.dts
+> new file mode 100644
+> index 0000000..a2b49f9
+> --- /dev/null
+> +++ b/arch/mips/boot/dts/ni/169445.dts
+> @@ -0,0 +1,99 @@
+> +/dts-v1/;
+> +
+> +/ {
+> +	#address-cells = <1>;
+> +	#size-cells = <1>;
+> +	compatible = "ni,169445";
+> +
+> +	cpus {
+> +		mips-hpt-frequency = <25000000>;
+> +
+> +		cpu@0 {
+> +			compatible = "mti,mips14KEc";
+> +		};
+> +	};
+> +
+> +	memory {
 
- config RELOCATABLE
- 	bool "Relocatable kernel"
--	depends on SYS_SUPPORTS_RELOCATABLE && (CPU_MIPS32_R2 || CPU_MIPS64_R2 || CPU_MIPS32_R6 || CPU_MIPS64_R6)
-+	depends on SYS_SUPPORTS_RELOCATABLE && (CPU_MIPS32_R2 || CPU_MIPS64_R2 || CPU_MIPS32_R6 || CPU_MIPS64_R6 || CAVIUM_OCTEON_SOC)
- 	help
- 	  This builds a kernel image that retains relocation information
- 	  so it can be loaded someplace besides the default 1MB.
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index 256fe6f..889c3f4 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -24,12 +24,17 @@
- volatile unsigned long octeon_processor_boot = 0xff;
- volatile unsigned long octeon_processor_sp;
- volatile unsigned long octeon_processor_gp;
-+#ifdef CONFIG_RELOCATABLE
-+volatile unsigned long octeon_processor_relocated_kernel_entry;
-+#endif /* CONFIG_RELOCATABLE */
+memory@0
 
- #ifdef CONFIG_HOTPLUG_CPU
- uint64_t octeon_bootloader_entry_addr;
- EXPORT_SYMBOL(octeon_bootloader_entry_addr);
- #endif
+> +		device_type = "memory";
+> +		reg = <0x0 0x08000000>;
+> +	};
+> +
+> +	clocks {
+> +		baseclk: baseclock {
+> +			compatible = "fixed-clock";
+> +			#clock-cells = <0>;
+> +			clock-frequency = <50000000>;
+> +		};
+> +	};
+> +
+> +	cpu_intc: cpu_intc {
+> +		#address-cells = <0>;
+> +		compatible = "mti,cpu-interrupt-controller";
+> +		interrupt-controller;
+> +		#interrupt-cells = <1>;
+> +	};
+> +
+> +	ahb@0 {
+> +		compatible = "simple-bus";
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges;
 
-+extern void kernel_entry(unsigned long arg1, ...);
-+
- static void octeon_icache_flush(void)
- {
- 	asm volatile ("synci 0($0)\n");
-@@ -180,6 +185,19 @@ static void __init octeon_smp_setup(void)
- 	octeon_smp_hotplug_setup();
- }
+If everything is under 0x1f3xxxxx, then add in the ranges here (and the 
+unit address).
 
-+
-+#ifdef CONFIG_RELOCATABLE
-+int plat_post_relocation(long offset)
-+{
-+	unsigned long entry = (unsigned long)kernel_entry;
-+
-+	/* Send secondaries into relocated kernel */
-+	octeon_processor_relocated_kernel_entry = entry + offset;
-+
-+	return 0;
-+}
-+#endif /* CONFIG_RELOCATABLE */
-+
- /**
-  * Firmware CPU startup hook
-  *
-@@ -333,8 +351,6 @@ void play_dead(void)
- 		;
- }
+> +
+> +		gpio1: nand-gpio-out@1f300010 {
 
--extern void kernel_entry(unsigned long arg1, ...);
--
- static void start_after_reset(void)
- {
- 	kernel_entry(0, 0, 0);	/* set a2 = 0 for secondary core */
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-index c4873e8..f69611c 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
-@@ -99,9 +99,22 @@
- 	# to begin
- 	#
+As in the binding example: gpio-controller@...
 
-+octeon_spin_wait_boot:
-+#ifdef CONFIG_RELOCATABLE
-+	PTR_LA	t0, octeon_processor_relocated_kernel_entry
-+	LONG_L	t0, (t0)
-+	beq	zero, t0, 1f
-+
-+	/* If kernel has been relocated, jump to it's new entry point */
-+	move	a0, zero
-+	move	a1, zero
-+	move	a2, zero
-+	jr	t0
-+1:
-+#endif /* CONFIG_RELOCATABLE */
-+
- 	# This is the variable where the next core to boot os stored
- 	PTR_LA	t0, octeon_processor_boot
--octeon_spin_wait_boot:
- 	# Get the core id of the next to be booted
- 	LONG_L	t1, (t0)
- 	# Keep looping if it isn't me
--- 
-1.9.1
+> +			compatible = "ni,169445-nand-gpio";
+> +			reg = <0x1f300010 0x4>;
+> +			reg-names = "dat";
+> +			gpio-controller;
+> +			#gpio-cells = <2>;
+> +			ngpios = <5>;
+> +		};
+> +
+> +		gpio2: nand-gpio-in@1f300014 {
+
+ditto
+
+> +			compatible = "ni,169445-nand-gpio";
+> +			reg = <0x1f300014 0x4>;
+> +			reg-names = "dat";
+> +			gpio-controller;
+> +			#gpio-cells = <2>;
+> +			ngpios = <1>;
+> +		};
+> +
+> +		nand@1f300000 {
+> +			compatible = "gpio-control-nand";
+> +			nand-on-flash-bbt;
+> +			nand-ecc-mode = "soft_bch";
+> +			nand-ecc-step-size = <512>;
+> +			nand-ecc-strength = <4>;
+> +			reg = <0x1f300000 4>;
+> +			gpios = <&gpio2 0 0>, /* rdy */
+> +				<&gpio1 1 0>, /* nce */
+> +				<&gpio1 2 0>, /* ale */
+> +				<&gpio1 3 0>, /* cle */
+> +				<&gpio1 4 0>; /* nwp */
+> +		};
+> +
+> +		serial@1f380000 {
+> +			compatible = "ns16550a";
+> +			reg = <0x1f380000 0x1000>;
+> +			interrupt-parent = <&cpu_intc>;
+> +			interrupts = <6>;
+> +			clocks = <&baseclk>;
+> +			reg-shift = <0>;
+> +		};
+> +
+> +		ethernet@1f340000 {
+> +			compatible = "snps,dwc-qos-ethernet-4.10";
+> +			interrupt-parent = <&cpu_intc>;
+> +			interrupts = <5>;
+> +			reg = <0x1f340000 0x2000>;
+> +			clock-names = "apb_pclk", "phy_ref_clk";
+> +			clocks = <&baseclk>, <&baseclk>;
+> +
+> +			phy-mode = "rgmii";
+> +
+> +			fixed-link {
+> +				speed = <1000>;
+> +				full-duplex;
+> +			};
+> +		};
+> +	};
+> +};
+
+[...]
+
+> diff --git a/arch/mips/ni169445/169445-setup.c b/arch/mips/ni169445/169445-setup.c
+> new file mode 100644
+> index 0000000..80a5c91
+> --- /dev/null
+> +++ b/arch/mips/ni169445/169445-setup.c
+> @@ -0,0 +1,58 @@
+> +/*  Copyright 2016 National Instruments Corporation
+> + *
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under the terms of the GNU General Public License as published by the Free
+> + *  Software Foundation; either version 2 of the License, or (at your option)
+> + *  any later version.
+> + *
+> + *  This program is distributed in the hope that it will be useful, but WITHOUT
+> + *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> + *  more details.
+> + */
+> +#include <linux/init.h>
+> +#include <linux/clk-provider.h>
+> +#include <linux/libfdt.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/of_fdt.h>
+> +
+> +#include <asm/prom.h>
+> +#include <asm/fw/fw.h>
+> +
+> +#include <asm/mips-boards/generic.h>
+> +
+> +const char *get_system_type(void)
+> +{
+> +	return "NI 169445 FPGA";
+
+Perhaps this should come from model property. There's a patch in flight 
+to add a function to get machine name.
+
+> +}
+> +
+> +void __init plat_mem_setup(void)
+> +{
+> +	/*
+> +	 * Load the builtin devicetree. This causes the chosen node to be
+> +	 * parsed resulting in our memory appearing
+> +	 */
+> +	__dt_setup_arch(__dtb_start);
+> +}
+> +
+> +void __init device_tree_init(void)
+> +{
+> +	if (!initial_boot_params)
+> +		return;
+> +
+> +	unflatten_and_copy_device_tree();
+> +}
+> +
+> +static int __init customize_machine(void)
+> +{
+> +	of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL);
+
+This should happen by default now.
+
+> +	return 0;
+> +}
+> +arch_initcall(customize_machine);

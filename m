@@ -1,57 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2016 01:28:56 +0100 (CET)
-Received: from mail-ua0-f196.google.com ([209.85.217.196]:32937 "EHLO
-        mail-ua0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993417AbcLIA2qv5yK0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2016 01:28:46 +0100
-Received: by mail-ua0-f196.google.com with SMTP id 20so249478uak.0
-        for <linux-mips@linux-mips.org>; Thu, 08 Dec 2016 16:28:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=Ol3CzxSNpd8NSExk1rfinE8NnXRv7qIdLwExKtb8lDo=;
-        b=P2a8nvWX+xcDlrs3uKXAt+89tMZyisteiF+06p4KDhLOBEfuBCa2CeeuwRRPUr/+sh
-         8JugzWlSjwjgXhN7Xk+np9KqKkJOZhhnKCJT0GwAUuozQniB3/ffGpEsRlxZAiG5b3w6
-         v10JcIL65YexNfcGm2g/H57yE/brxmNjm5AjoTPvm6TiDVriuh6fuhXEoT98dilglS9n
-         UQn6SjSpDCDb1dVhTvdcmP2rCRSYVA5/EIpQhYz7fa9Jy8lzc4tBEiUHpckUVDYGS1yr
-         h1++LZW9WCN00yDgd5sdM81dxDEIp0YrCbJ09qml9NzGlZTMZ6Esorte//8OBtiSFBbU
-         WTDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20130820;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=Ol3CzxSNpd8NSExk1rfinE8NnXRv7qIdLwExKtb8lDo=;
-        b=AXUluuqhBMigKDbx8IxgyoYVpCRH/xZ+g7tTwNT0M97cbiR32xpuAL0zFpbfGZEO/n
-         mm4FRqZFikbMAc2PMvVroOPGLWvvN4gk2zUl8BB2oictaN1KJw+fSODAPiEVTTCLrbEv
-         TYN5iKng/sdSg93AqyL68N1dD8JCOBt6gKxqpbDaF570ip9cl5di88GmIVFOUS6uE7LW
-         gCzl44N6Iu9qj9QUirlqfi1bpFuQHL3VVbNREARxzV+hqwJfkPb2GQq7FtZL3W2ZgIP8
-         UV4txSwkloxrQw0UZa1HjYqYozAl2zT2bQKC3Am2FrvjJG2F/kLM23AkeXx7XVrfJfar
-         U3WA==
-X-Gm-Message-State: AKaTC01THPHpkQ4MTBTSPLSyydLls30ftP6/QMVG0uxA6K3d3bvrRAQ1/za8DJ4DTT7ri7ltLj/bG47HadJbXQ==
-X-Received: by 10.176.86.205 with SMTP id c13mr47778923uab.151.1481243321008;
- Thu, 08 Dec 2016 16:28:41 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2016 02:02:08 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55546 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991976AbcLIBCBzPaC0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2016 02:02:01 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 9C6E055FC73C4;
+        Fri,  9 Dec 2016 01:01:50 +0000 (GMT)
+Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 9 Dec 2016 01:01:55 +0000
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by HHMAIL-X.hh.imgtec.org
+ (10.100.10.113) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 9 Dec
+ 2016 01:01:54 +0000
+Received: from [10.20.2.61] (10.20.2.61) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Thu, 8 Dec 2016
+ 17:01:53 -0800
+Message-ID: <584A0281.3040505@imgtec.com>
+Date:   Thu, 8 Dec 2016 17:01:53 -0800
+From:   Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 MIME-Version: 1.0
-Received: by 10.103.8.5 with HTTP; Thu, 8 Dec 2016 16:28:40 -0800 (PST)
-In-Reply-To: <5849EC43.2070802@imgtec.com>
-References: <20161208011626.20885-1-justinpopo6@gmail.com> <5849EC43.2070802@imgtec.com>
-From:   Justin Chen <justinpopo6@gmail.com>
-Date:   Thu, 8 Dec 2016 16:28:40 -0800
-Message-ID: <CAJx26kW0e-HC0VUTObZ5Or+XjFvE9KmtOToKbFvKYvhE--Vw5A@mail.gmail.com>
-Subject: Re: [RFC] MIPS: Add cacheinfo support
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     linux-mips@linux-mips.org, bcm-kernel-feedback-list@broadcom.com,
+To:     Justin Chen <justinpopo6@gmail.com>
+CC:     <linux-mips@linux-mips.org>,
+        <bcm-kernel-feedback-list@broadcom.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Justin Chen <justin.chen@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <justinpopo6@gmail.com>
+Subject: Re: [RFC] MIPS: Add cacheinfo support
+References: <20161208011626.20885-1-justinpopo6@gmail.com> <5849EC43.2070802@imgtec.com> <CAJx26kW0e-HC0VUTObZ5Or+XjFvE9KmtOToKbFvKYvhE--Vw5A@mail.gmail.com>
+In-Reply-To: <CAJx26kW0e-HC0VUTObZ5Or+XjFvE9KmtOToKbFvKYvhE--Vw5A@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.20.2.61]
+Return-Path: <Leonid.Yegoshin@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55978
+X-archive-position: 55979
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justinpopo6@gmail.com
+X-original-sender: Leonid.Yegoshin@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -64,64 +52,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Dec 8, 2016 at 3:26 PM, Leonid Yegoshin
-<Leonid.Yegoshin@imgtec.com> wrote:
-> On 12/07/2016 05:16 PM, Justin Chen wrote:
->>
->> From: Justin Chen <justin.chen@broadcom.com>
->>
->> Add cacheinfo support for MIPS architectures.
->>
->> Use information from the cpuinfo_mips struct to populate the
->> cacheinfo struct. This allows an architecture agnostic approach,
->> however this also means if cache information is not properly
->> populated within the cpuinfo_mips struct, there is nothing
->> we can do. (I.E. c-r3k.c)
->>
->>
+On 12/08/2016 04:28 PM, Justin Chen wrote:
+> Thanks for the comments Leonid.
 >
-> Justin, for architecture agnostic approach of work with caches the
-> cpuinfo_mips lacks more information:
+> We should consider the scope of this patch. The information we are
+> trying to expose to userspace is limited to the struct cacheinfo
+> located at include/linux/cacheinfo.c (of course this can always be
+> expanded). So the question is what information would be useful to
+> expose to userspace.
+> Some justification for exposing the current information in the
+> cacheinfo struct could be: (Pulled from another email chain)
+> "Agreed. So far I have got requests from GCC, JIT and graphics guys.
+> IIUC they need this to support cache flushing for user applications like
+> gcc trampolines and JIT compilers. I am also told that having knowledge
+> of cache architecture can help optimal code strategies, though I don't
+> have much details on that."
+> https://patchwork.kernel.org/patch/5867721/
 >
-> 1.  L1I-L1D coherency status (is L1I coherent to L1D)
-> 2.  L1D-L2 coherency status (is L1D coherent to L2)
-> 3.  L1I-L2 coherency status (is L1I coherent to L2)
-> 4.  L1I refill from L1D (snoops L1D) or L2 (may require L1D flush)?
-> 5.  L1D cache aliasing disabled by HW
-> 6.  L1I cache aliasing disabled by HW
-> 7.  Barrier existence and it's type between various cache flushes as is as
-> between cache flush and final (completed) state.
-> 8.  Cache ownership (current: assumed that sibling CPUs share L1 - may be
-> shared_cpu_map?)
-> 9.  Is address cache flush operation global in system or pure local?
-> 10. Is index cache flush operation global in system or pure local?
+> There may be justification for including the points you mentioned
+> above, but I believe that is outside the scope of this patch. The
+> cache information exposed in this patch is limited, but I do not
+> believe it is useless. The points above can be added, but it will
+> require a rework of the base cacheinfo driver. driver/base/cacheinfo.c
 >
-> Without that the proposed cpuinfo_mips struct is basically useless.
 >
-> Regards,
-> - Leonid
+Justin,
 
-Thanks for the comments Leonid.
+CACHE instruction is not available in user space, only SYNCI on MIPS R2+ 
+for trampoline.
+Any operation with CACHE requires a syscall.
 
-We should consider the scope of this patch. The information we are
-trying to expose to userspace is limited to the struct cacheinfo
-located at include/linux/cacheinfo.c (of course this can always be
-expanded). So the question is what information would be useful to
-expose to userspace.
-Some justification for exposing the current information in the
-cacheinfo struct could be: (Pulled from another email chain)
-"Agreed. So far I have got requests from GCC, JIT and graphics guys.
-IIUC they need this to support cache flushing for user applications like
-gcc trampolines and JIT compilers. I am also told that having knowledge
-of cache architecture can help optimal code strategies, though I don't
-have much details on that."
-https://patchwork.kernel.org/patch/5867721/
+As for SYNCI (trampoline from L1D->L1I) the following information in 
+user space is needed:
 
-There may be justification for including the points you mentioned
-above, but I believe that is outside the scope of this patch. The
-cache information exposed in this patch is limited, but I do not
-believe it is useless. The points above can be added, but it will
-require a rework of the base cacheinfo driver. driver/base/cacheinfo.c
+     1. L1 line size (available via RDHWR $x, $1). It is available now 
+directly from CPU, but may be better to supply from kernel because some 
+cores has no that.
 
-Thanks,
-Justin
+     2. The flag that L1I is NOT coherent with L1D and SYNCI is needed 
+and available
+
+The knowledge about L1/L2 sizes is not needed for regular application... 
+well, if application wants to get advantage of cache sizes, well, in 
+this case it can be supplied.
+
+But it is unreliable because app may be rescheduled into different kind 
+of core which has a different L1 size (in heterogeneous system, BTW). It 
+can be fixed by setting affinity, of course (not sure - can it be 
+reliably done in BIG/LITTLE approach). But that requires in application 
+the knowledge and understanding of system CPU structure... well why we 
+can allow all that stuff besides information purpose? It corrupts the 
+all efforts and optimization in kernel about performance and powersaving.
+
+Regards,
+- Leonid.

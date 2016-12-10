@@ -1,42 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Dec 2016 21:33:02 +0100 (CET)
-Received: from unicorn.mansr.com ([81.2.72.234]:43504 "EHLO unicorn.mansr.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Dec 2016 21:36:42 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:39312 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993437AbcLJUcySxhPL convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Dec 2016 21:32:54 +0100
-Received: by unicorn.mansr.com (Postfix, from userid 51770)
-        id B281E18801; Sat, 10 Dec 2016 20:32:44 +0000 (GMT)
-From:   =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To:     Felix Fietkau <nbd@nbd.name>
+        id S23991829AbcLJUgfYFRjL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 10 Dec 2016 21:36:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name; s=20160729;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=msXvWgSR0iwT+PY6f/01aEwXQsoduVZG+vo3UzQ36eo=;
+        b=lr/YJ1uvv+Z2XWHETCLYIGAsHqp1oEjj03yPkl9ln0X8VtYqO1S0P6tyV6TXdj7wFyeyLdwYWfNwqnhoEOkwKWcrc8k0Xnpl9oSP0PPqzaQ0IvihL5n96cjpz2ectID2jQvjdPpu8P2rCKOklYs1+sooIF7FrdOawRGJYJbN3iQ=;
+Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
+To:     =?UTF-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>
+References: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com>
+ <CAA93jw7hcmkcyD=t4VRrQFfHk+n+EkSVgY6KFDq0_-DGpMADYw@mail.gmail.com>
+ <20161207.135127.789629809982860453.davem@davemloft.net>
+ <CAHmME9oLgjDA2F0gkFzHU2Es8-XCxQHRABS18OKF0EnZgt1=LQ@mail.gmail.com>
+ <040bcdb2-2725-c8de-11d9-a4f77b75d9d8@nbd.name>
+ <yw1x37hvykzk.fsf@unicorn.mansr.com>
+ <7f8ba817-73ef-e1e1-4fdf-b9178e922008@nbd.name>
+ <yw1xy3znwmmr.fsf@unicorn.mansr.com>
 Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
         David Miller <davem@davemloft.net>,
         Netdev <netdev@vger.kernel.org>,
         WireGuard mailing list <wireguard@lists.zx2c4.com>,
         LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org
-Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
-References: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com>
-        <CAA93jw7hcmkcyD=t4VRrQFfHk+n+EkSVgY6KFDq0_-DGpMADYw@mail.gmail.com>
-        <20161207.135127.789629809982860453.davem@davemloft.net>
-        <CAHmME9oLgjDA2F0gkFzHU2Es8-XCxQHRABS18OKF0EnZgt1=LQ@mail.gmail.com>
-        <040bcdb2-2725-c8de-11d9-a4f77b75d9d8@nbd.name>
-        <yw1x37hvykzk.fsf@unicorn.mansr.com>
-        <7f8ba817-73ef-e1e1-4fdf-b9178e922008@nbd.name>
-Date:   Sat, 10 Dec 2016 20:32:44 +0000
-In-Reply-To: <7f8ba817-73ef-e1e1-4fdf-b9178e922008@nbd.name> (Felix Fietkau's
-        message of "Sat, 10 Dec 2016 21:09:57 +0100")
-Message-ID: <yw1xy3znwmmr.fsf@unicorn.mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+From:   Felix Fietkau <nbd@nbd.name>
+Message-ID: <07ae38aa-ffb5-f450-fbbb-001e91d4454d@nbd.name>
+Date:   Sat, 10 Dec 2016 21:36:32 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0)
+ Gecko/20100101 Thunderbird/45.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mans@mansr.com>
+In-Reply-To: <yw1xy3znwmmr.fsf@unicorn.mansr.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <nbd@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 55995
+X-archive-position: 55996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mans@mansr.com
+X-original-sender: nbd@nbd.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,51 +51,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Felix Fietkau <nbd@nbd.name> writes:
+On 2016-12-10 21:32, MÃ¥ns RullgÃ¥rd wrote:
+> Felix Fietkau <nbd@nbd.name> writes:
+> 
+>> On 2016-12-10 14:25, MÃ¥ns RullgÃ¥rd wrote:
+>>> Felix Fietkau <nbd@nbd.name> writes:
+>>> 
+>>>> On 2016-12-07 19:54, Jason A. Donenfeld wrote:
+>>>>> On Wed, Dec 7, 2016 at 7:51 PM, David Miller <davem@davemloft.net> wrote:
+>>>>>> It's so much better to analyze properly where the misalignment comes from
+>>>>>> and address it at the source, as we have for various cases that trip up
+>>>>>> Sparc too.
+>>>>> 
+>>>>> That's sort of my attitude too, hence starting this thread. Any
+>>>>> pointers you have about this would be most welcome, so as not to
+>>>>> perpetuate what already seems like an issue in other parts of the
+>>>>> stack.
+>>>> Hi Jason,
+>>>>
+>>>> I'm the author of that hackish LEDE/OpenWrt patch that works around the
+>>>> misalignment issues. Here's some context regarding that patch:
+>>>>
+>>>> I intentionally put it in the target specific patches for only one of
+>>>> our MIPS targets. There are a few ar71xx devices where the misalignment
+>>>> cannot be fixed, because the Ethernet MAC has a 4-byte DMA alignment
+>>>> requirement, and does not support inserting 2 bytes of padding to
+>>>> correct the IP header misalignment.
+>>>>
+>>>> With these limitations the choice was between this ugly network stack
+>>>> patch or inserting a very expensive memmove in the data path (which is
+>>>> better than taking the mis-alignment traps, but still hurts routing
+>>>> performance significantly).
+>>> 
+>>> I solved this problem in an Ethernet driver by copying the initial part
+>>> of the packet to an aligned skb and appending the remainder using
+>>> skb_add_rx_frag().  The kernel network stack only cares about the
+>>> headers, so the alignment of the packet payload doesn't matter.
+>>
+>> I considered that as well, but it's bad for routing performance if the
+>> ethernet MAC does not support scatter/gather for xmit.
+>> Unfortunately that limitation is quite common on embedded hardware.
+> 
+> Yes, I can see that being an issue.  However, if you're doing zero-copy
+> routing, the header part of the original buffer should still be there,
+> unused, so you could presumably copy the header of the outgoing packet
+> there and then do dma as usual.  Maybe there's something in the network
+> stack that makes this impossible though.
+That still puts more pressure on the ridiculously small dcache sizes
+that are typical for embedded MIPS routers.
 
-> On 2016-12-10 14:25, Måns Rullgård wrote:
->> Felix Fietkau <nbd@nbd.name> writes:
->> 
->>> On 2016-12-07 19:54, Jason A. Donenfeld wrote:
->>>> On Wed, Dec 7, 2016 at 7:51 PM, David Miller <davem@davemloft.net> wrote:
->>>>> It's so much better to analyze properly where the misalignment comes from
->>>>> and address it at the source, as we have for various cases that trip up
->>>>> Sparc too.
->>>> 
->>>> That's sort of my attitude too, hence starting this thread. Any
->>>> pointers you have about this would be most welcome, so as not to
->>>> perpetuate what already seems like an issue in other parts of the
->>>> stack.
->>> Hi Jason,
->>>
->>> I'm the author of that hackish LEDE/OpenWrt patch that works around the
->>> misalignment issues. Here's some context regarding that patch:
->>>
->>> I intentionally put it in the target specific patches for only one of
->>> our MIPS targets. There are a few ar71xx devices where the misalignment
->>> cannot be fixed, because the Ethernet MAC has a 4-byte DMA alignment
->>> requirement, and does not support inserting 2 bytes of padding to
->>> correct the IP header misalignment.
->>>
->>> With these limitations the choice was between this ugly network stack
->>> patch or inserting a very expensive memmove in the data path (which is
->>> better than taking the mis-alignment traps, but still hurts routing
->>> performance significantly).
->> 
->> I solved this problem in an Ethernet driver by copying the initial part
->> of the packet to an aligned skb and appending the remainder using
->> skb_add_rx_frag().  The kernel network stack only cares about the
->> headers, so the alignment of the packet payload doesn't matter.
->
-> I considered that as well, but it's bad for routing performance if the
-> ethernet MAC does not support scatter/gather for xmit.
-> Unfortunately that limitation is quite common on embedded hardware.
-
-Yes, I can see that being an issue.  However, if you're doing zero-copy
-routing, the header part of the original buffer should still be there,
-unused, so you could presumably copy the header of the outgoing packet
-there and then do dma as usual.  Maybe there's something in the network
-stack that makes this impossible though.
-
--- 
-Måns Rullgård
+- Felix

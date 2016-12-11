@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Dec 2016 17:44:28 +0100 (CET)
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:26535 "EHLO 1wt.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Dec 2016 23:01:35 +0100 (CET)
+Received: from www.zeus03.de ([194.117.254.33]:46184 "EHLO mail.zeus03.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990601AbcLKQoVxfarf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 11 Dec 2016 17:44:21 +0100
-Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id uBBGiD6q005097;
-        Sun, 11 Dec 2016 17:44:13 +0100
-Date:   Sun, 11 Dec 2016 17:44:13 +0100
-From:   Willy Tarreau <w@1wt.eu>
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     linux-mips@linux-mips.org, Netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Dan =?iso-8859-1?Q?L=FCdtke?= <mail@danrl.com>,
-        =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>,
-        Hannes Frederic Sowa <hannes@stressinduktion.org>,
-        WireGuard mailing list <wireguard@lists.zx2c4.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Felix Fietkau <nbd@nbd.name>, Jiri Benc <jbenc@redhat.com>,
-        David Miller <davem@davemloft.net>
-Subject: Re: Misalignment, MIPS, and ip_hdr(skb)->version
-Message-ID: <20161211164413.GA5090@1wt.eu>
-References: <CAHmME9o_eCNXpVztOZKW55kpRtE+1KSEQTQOjUBVn68Y2+or2g@mail.gmail.com>
- <095cac5b-b757-6f4a-e699-8eedf9ed7221@stressinduktion.org>
- <87vauvhwdu.fsf@alice.fifthhorseman.net>
- <CE942916-BF45-44CC-A5F5-3838CF9C93BC@danrl.com>
- <20161211071501.GA32621@kroah.com>
- <CAHmME9q5ifwwishXjXYE3J=sVeR4jYY9fLUgs_FHCP594EZr6g@mail.gmail.com>
+        id S23992400AbcLKWB16D4lR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 11 Dec 2016 23:01:27 +0100
+Received: (qmail 29357 invoked from network); 11 Dec 2016 23:01:27 +0100
+Received: from p54b3376b.dip0.t-ipconnect.de (HELO localhost) (l3s3148p1@84.179.55.107)
+  by mail.zeus03.de with ESMTPSA (ECDHE-RSA-AES256-GCM-SHA384 encrypted, authenticated); 11 Dec 2016 23:01:27 +0100
+Date:   Sun, 11 Dec 2016 23:01:26 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Jan Glauber <jglauber@cavium.com>
+Cc:     Wolfram Sang <wsa-dev@sang-engineering.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 1/4] i2c: octeon: thunderx: TWSI software reset in
+ recovery
+Message-ID: <20161211220126.GE2552@katana>
+References: <20161209093158.3161-1-jglauber@cavium.com>
+ <20161209093158.3161-2-jglauber@cavium.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="//IivP0gvsAy3Can"
 Content-Disposition: inline
-In-Reply-To: <CAHmME9q5ifwwishXjXYE3J=sVeR4jYY9fLUgs_FHCP594EZr6g@mail.gmail.com>
-User-Agent: Mutt/1.6.1 (2016-04-27)
-Return-Path: <w@1wt.eu>
+In-Reply-To: <20161209093158.3161-2-jglauber@cavium.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <wsa-dev@sang-engineering.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56004
+X-archive-position: 56005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: w@1wt.eu
+X-original-sender: wsa@the-dreams.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,25 +46,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Dec 11, 2016 at 03:50:31PM +0100, Jason A. Donenfeld wrote:
-> 3. Add 3 bytes of padding, set to zero, to the encrypted section just
-> before the IP header, marked for future use.
-> Pros: satisfies IETF mantras, can use those extra bits in the future
-> for interesting protocol extensions for authenticated peers.
-> Cons: lowers MTU, marginally more difficult to implement but still
-> probably just one or two lines of code.
-> 
-> Of these, I'm leaning toward (3).
 
-Or 4) add one byte to the cleartext header for future use (mostly flags
-maybe) and 2 bytes of padding to the encrypted header. This way you get
-the following benefits :
-  1) your encrypted text is at least 16-bit aligned, maybe it matters
-     in your checksum computations on during decryption
-  2) your MTU remains even, this is better for both ends
-  3) you're free to add some bits either to the encrypted or the clear
-     parts.
+--//IivP0gvsAy3Can
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Just a suggestion :-)
+On Fri, Dec 09, 2016 at 10:31:55AM +0100, Jan Glauber wrote:
+> I've seen i2c recovery reporting long loops of:
+>=20
+> [ 1035.887818] i2c i2c-4: SCL is stuck low, exit recovery
+> [ 1037.999748] i2c i2c-4: SCL is stuck low, exit recovery
+> [ 1040.111694] i2c i2c-4: SCL is stuck low, exit recovery
+> ...
+>=20
+> Add a TWSI software reset which clears the status and
+> STA,STP,IFLG in SW_TWSI_EOP_TWSI_CTL.
+>=20
+> With this the recovery works fine and above message is not seen.
+>=20
+> Signed-off-by: Jan Glauber <jglauber@cavium.com>
 
-Willy
+Applied to for-next, thanks!
+
+
+--//IivP0gvsAy3Can
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJYTcy2AAoJEBQN5MwUoCm2xQYP/R93T74Td5W0v2coTzSpZQlK
+hlrkJ8XDlfA8lZFpzRXZRnUNtLVzP2JK5QzvdrD1HCv2OoQofMHnUkEEEz4INJCb
+4U1aUz7mOSEXA3fFiaI7+Iodd4+8erBO5F/dSnP+n3L3ZdIj7+8GljXXsVubFPge
+/eNGA+bsP27ME8pNVNsHj4exrrzSuOs2GeELSdJ1RjwhL7st5bVLptYA0kpkjOqU
+d4L3HQZR2mRhxNzCOuEtiP1385asvgpP3C5pPxs6gQdSbRTD7Nf92IPUK5hd7hEz
+PZT6bjviYvJmfjjisfF1LhE8JUDHL7HZ3L9D5Ixm9ifGQhiP0Gn5B/nmBm/in+Rp
+aOMHlxgEQRz932iic7UnTu1NnuqmliN+hs+wQIt0BNLGNs518K3N8peOdNF491n3
+ySCVE2cItqEZK4YSIjkmkSzbnnQjOcE0z0NaSWGNmMq51EXtIlKFf9wYL01cwTOU
+A0wx4F2a9vWln1dfYwJfmoc0NdcWGsAolvSPN3f/NdPu2KFhD/8siPP4sS2ugSRO
+DAEnbsMRlurfxKOcXkaTi3E7oOWx5bWPW5gwidQRR6p8rimNxOfRCwwUBFquCT8q
+QzCamI46EANOwhoOtPTr89rGRWzu5F5P8urddreuP3+Upjx0ChoTayEpXGo32DIg
+HHuqJ/yYiRW0OJvCFvuF
+=0L5Q
+-----END PGP SIGNATURE-----
+
+--//IivP0gvsAy3Can--

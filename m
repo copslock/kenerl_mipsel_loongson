@@ -1,32 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Dec 2016 00:27:32 +0100 (CET)
-Received: from hauke-m.de ([5.39.93.123]:38690 "EHLO mail.hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Dec 2016 01:12:48 +0100 (CET)
+Received: from rere.qmqm.pl ([84.10.57.10]:37580 "EHLO rere.qmqm.pl"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993060AbcLLX1ZSWX1z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Dec 2016 00:27:25 +0100
-Received: from [IPv6:2003:86:2805:b100:993a:d6f0:b4f5:93fb] (p200300862805B100993AD6F0B4F593FB.dip0.t-ipconnect.de [IPv6:2003:86:2805:b100:993a:d6f0:b4f5:93fb])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 72FA510047A;
-        Tue, 13 Dec 2016 00:27:23 +0100 (CET)
-To:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        thomas.langer@intel.com,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Subject: Braking Lantiq DTS API
-Message-ID: <97d898f4-6bf5-6333-eef1-6265f2f9b081@hauke-m.de>
-Date:   Tue, 13 Dec 2016 00:27:22 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Icedove/45.4.0
+        id S23993076AbcLMAMlk4Uhz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Dec 2016 01:12:41 +0100
+Received: by rere.qmqm.pl (Postfix, from userid 1000)
+        id 4AF1B6122; Tue, 13 Dec 2016 01:12:38 +0100 (CET)
+Message-Id: <3cad1213a287755f5b6d698b45d839ca76d6d841.1481586602.git.mirq-linux@rere.qmqm.pl>
+In-Reply-To: <cover.1481586602.git.mirq-linux@rere.qmqm.pl>
+References: <cover.1481586602.git.mirq-linux@rere.qmqm.pl>
+From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+Subject: [PATCH net-next 18/27] net/skbuff: add macros for VLAN_PRESENT bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+To:     netdev@vger.kernel.org
+Cc:     Russell King <linux@armlinux.org.uk> (maintainer:ARM PORT),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
+        Ralf Baechle <ralf@linux-mips.org> (supporter:MIPS),
+        linux-mips@linux-mips.org (open list:MIPS),
+        Benjamin Herrenschmidt <benh@kernel.crashing.org> (supporter:LINUX
+        FOR POWERPC (32-BIT AND 64-BIT)),
+        Paul Mackerras <paulus@samba.org> (supporter:LINUX FOR POWERPC
+        (32-BIT AND 64-BIT)),
+        Michael Ellerman <mpe@ellerman.id.au> (supporter:LINUX FOR POWERPC
+        (32-BIT AND 64-BIT),commit_signer:2/5=40%),
+        linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND
+        64-BIT)),
+        "David S. Miller" <davem@davemloft.net> (maintainer:SPARC + UltraSPARC
+        (sparc/sparc64),commit_signer:2/4=50%),
+        sparclinux@vger.kernel.org (open list:SPARC + UltraSPARC
+        (sparc/sparc64))
+Date:   Tue, 13 Dec 2016 01:12:38 +0100 (CET)
+Return-Path: <mirq@rere.qmqm.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56017
+X-archive-position: 56018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: mirq-linux@rere.qmqm.pl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,34 +52,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+---
+ include/linux/skbuff.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-I would like to break the DTS API for Lantiq devices. ;-)
-
-The Lantiq platform uses device tree in the kernel since a long time and
-for some parts there are now better ways to implement it.
-
-Martin started here with some nice patches converting lantiq to the
-common clock framework and extracting some other parts:
-https://github.com/xdarklight/linux/commits/lantiq-clk-20160123
-(I would like to place the drivers somewhere else than arch/mips/lantiq/
-but I do not know where)
-For most of the parts some compat code is available to make it still
-work with the older device tree files.
-
-I would also like to change the IRQ and the DMA controller driver.
-
-It looks like the code in /arch/mips/lantiq/ would only contain the bare
-minimum any more after this.
-
-The SoC vendor kernel does not support loading the device tree from a
-boot loader and I am not aware of anyone doing so. The SoC vendor kernel
-always patches or appends the device tree file to the kernel. The out of
-tree vendor drivers can get adapted to the changes later.
-
-Would it be possible to change the device tree files in an incompatible
-way without proving a compat layer for older device tree files?
-I just want the general opinion on this topic, as this is considered API
-and if it would make sense to propose some patches in that direction.
-
-Hauke
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 332e767..4a85a1f 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -768,6 +768,12 @@ struct sk_buff {
+ 	__u32			priority;
+ 	int			skb_iif;
+ 	__u32			hash;
++#define PKT_VLAN_PRESENT_BIT	4	// CFI (12-th bit) in TCI
++#ifdef __BIG_ENDIAN
++#define PKT_VLAN_PRESENT_OFFSET()	offsetof(struct sk_buff, vlan_tci)
++#else
++#define PKT_VLAN_PRESENT_OFFSET()	(offsetof(struct sk_buff, vlan_tci) + 1)
++#endif
+ 	__be16			vlan_proto;
+ 	__u16			vlan_tci;
+ #if defined(CONFIG_NET_RX_BUSY_POLL) || defined(CONFIG_XPS)
+-- 
+2.10.2

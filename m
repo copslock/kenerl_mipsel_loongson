@@ -1,40 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Dec 2016 21:33:00 +0100 (CET)
-Received: from www.zeus03.de ([194.117.254.33]:49052 "EHLO mail.zeus03.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992992AbcLMUcwxLUpv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Dec 2016 21:32:52 +0100
-Received: (qmail 27395 invoked from network); 13 Dec 2016 21:32:52 +0100
-Received: from p54b33b2f.dip0.t-ipconnect.de (HELO localhost) (l3s3148p1@84.179.59.47)
-  by mail.zeus03.de with ESMTPSA (ECDHE-RSA-AES256-GCM-SHA384 encrypted, authenticated); 13 Dec 2016 21:32:52 +0100
-Date:   Tue, 13 Dec 2016 21:32:51 +0100
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Jan Glauber <jan.glauber@caviumnetworks.com>
-Cc:     Wolfram Sang <wsa-dev@sang-engineering.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "Steven J . Hill" <Steven.Hill@cavium.com>,
-        linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 3/4] i2c: octeon: thunderx: Limit register access retries
-Message-ID: <20161213203251.GA2889@katana>
-References: <20161209093158.3161-1-jglauber@cavium.com>
- <20161209093158.3161-4-jglauber@cavium.com>
- <20161211220148.GG2552@katana>
- <20161212160711.GA2766@hardcore>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Dec 2016 22:48:20 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:33360 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993080AbcLMVsNUsOSX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Dec 2016 22:48:13 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id uBDLmAbg014303;
+        Tue, 13 Dec 2016 22:48:10 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id uBDLm9Ur014302;
+        Tue, 13 Dec 2016 22:48:09 +0100
+Date:   Tue, 13 Dec 2016 22:48:09 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Cc:     Justin Chen <justinpopo6@gmail.com>, linux-mips@linux-mips.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Justin Chen <justin.chen@broadcom.com>
+Subject: Re: [RFC] MIPS: Add cacheinfo support
+Message-ID: <20161213214809.GA14262@linux-mips.org>
+References: <20161208011626.20885-1-justinpopo6@gmail.com>
+ <5849EC43.2070802@imgtec.com>
+ <CAJx26kW0e-HC0VUTObZ5Or+XjFvE9KmtOToKbFvKYvhE--Vw5A@mail.gmail.com>
+ <584A0281.3040505@imgtec.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="BXVAT5kNtrzKuDFl"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20161212160711.GA2766@hardcore>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <wsa-dev@sang-engineering.com>
+In-Reply-To: <584A0281.3040505@imgtec.com>
+User-Agent: Mutt/1.7.1 (2016-10-04)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56040
+X-archive-position: 56041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wsa@the-dreams.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,44 +48,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Thu, Dec 08, 2016 at 05:01:53PM -0800, Leonid Yegoshin wrote:
 
---BXVAT5kNtrzKuDFl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> CACHE instruction is not available in user space, only SYNCI on MIPS R2+ for
+> trampoline.
+> Any operation with CACHE requires a syscall.
 
-> >=20
-> > I can't apply this one?
-> >=20
->=20
-> Strange. Applies for me on top of 4.9 and also next-20161212.
-> I can also apply if back from the mail. Is the mail messed up on your
-> side?
+Even worse, some older CPUs allow the execution of certain CACHE operations
+from user space.  This is a feature which can be disabled by kernel.
 
-My fault, sorry for the noise. My branch missed the latest revert for
-4.9. I'll apply this patch for a second pull request during the merge
-window.
+> As for SYNCI (trampoline from L1D->L1I) the following information in user
+> space is needed:
+> 
+>     1. L1 line size (available via RDHWR $x, $1). It is available now
+> directly from CPU, but may be better to supply from kernel because some
+> cores has no that.
+> 
+>     2. The flag that L1I is NOT coherent with L1D and SYNCI is needed and
+> available
+> 
+> The knowledge about L1/L2 sizes is not needed for regular application...
+> well, if application wants to get advantage of cache sizes, well, in this
+> case it can be supplied.
+> 
+> But it is unreliable because app may be rescheduled into different kind of
+> core which has a different L1 size (in heterogeneous system, BTW). It can be
+> fixed by setting affinity, of course (not sure - can it be reliably done in
+> BIG/LITTLE approach). But that requires in application the knowledge and
+> understanding of system CPU structure... well why we can allow all that
+> stuff besides information purpose? It corrupts the all efforts and
+> optimization in kernel about performance and powersaving.
 
+Also let's not forget about CPUs like Octeons which have CPUs that don't
+quite fit in the usual scheme of doing things.
 
---BXVAT5kNtrzKuDFl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJYUFrzAAoJEBQN5MwUoCm2TCwQAKPdTWSxHF/Xbt833qvazNvg
-TkDIzaX+cCEhhfzhuJg+jbE5QvUknWqJWr/Z6i9fwqHHlh5xBYx1F2x4dYFsY+N8
-CU+GM449tnS3zRA48gEqpHK45DVNlqb3TdeIjar7kzIc0gO1DTALgy7yRFyaePfY
-xdQOTN/m+G/HvJJzXpWnnRGv7yJi4sM//CfIu17u56yJFw2hrJOxpfFDvjIvg8F/
-sycFnPmP/Jq9tPXClBKiY1FlhdH6w04scocR8B9pXy66ew+WCamBe+Z97ZCHSpmm
-ky8PIXXyfgu40Ut9yeTDp9yn4EEsYKg8m7aMGNgWNhaw6+ByUr0ycVuwjcx+sgOM
-ELPXRYdLZoDrFdVge2gUkWDdUz1FtpJVByqBDTwaUdazS1y8T8b/fSo0puSOtOFF
-HLLErq91E5w/mW0MGd14RW2EX2jdpDqqOpPhHojQT1pX/Y80vpdM3FMvY1+g3LUv
-Zb4zne7fsabJpIB9nhe6Giy3NDSVTbr9J208w2rLBkNrB7CE2ZITJHl/il2o4R6V
-J6aR/hf312K5hQqe51nvf/HwAnKoOOBp954EMoZ7gXqTVuJ4THRXlvrGipGrBGXH
-x0Uws/UGOoRXoR09SZZ97AJahOAb/M3KUdPvtkEUQTyGWp7mCwBIfEI15uwg4jsv
-76OmG6/MJdOtAVUMb1Ag
-=Knrx
------END PGP SIGNATURE-----
-
---BXVAT5kNtrzKuDFl--
+  Ralf

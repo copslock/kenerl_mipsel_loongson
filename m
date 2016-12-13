@@ -1,43 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Dec 2016 22:54:11 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:33740 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993096AbcLMVyBHhLNX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 13 Dec 2016 22:54:01 +0100
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id uBDLrxFZ014394;
-        Tue, 13 Dec 2016 22:53:59 +0100
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id uBDLrxp5014393;
-        Tue, 13 Dec 2016 22:53:59 +0100
-Date:   Tue, 13 Dec 2016 22:53:59 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Justin Chen <justinpopo6@gmail.com>, linux-mips@linux-mips.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        Justin Chen <justin.chen@broadcom.com>
-Subject: Re: [RFC] MIPS: Add cacheinfo support
-Message-ID: <20161213215359.GB14262@linux-mips.org>
-References: <20161208011626.20885-1-justinpopo6@gmail.com>
- <5849EC43.2070802@imgtec.com>
- <CAJx26kW0e-HC0VUTObZ5Or+XjFvE9KmtOToKbFvKYvhE--Vw5A@mail.gmail.com>
- <584A0281.3040505@imgtec.com>
- <3004fca6-3688-65bb-7c86-248603482088@gmail.com>
- <584F0C71.5010004@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Dec 2016 23:40:14 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:54227 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993089AbcLMWkGwY7AG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Dec 2016 23:40:06 +0100
+Subject: Re: [PATCH 1/2 v2] ralink: Introduce fw_passed_dtb to
+ arch/mips/ralink
+To:     Tobias Wolf <dev-NTEO@vplace.de>, linux-mips@linux-mips.org
+References: <3700342.djbc9u0nWG@loki> <1602859.QGKdh4otrC@loki>
+From:   John Crispin <john@phrozen.org>
+Message-ID: <73c17ed0-c1a3-3afd-755c-f4bba7556a08@phrozen.org>
+Date:   Tue, 13 Dec 2016 23:40:06 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:45.0)
+ Gecko/20100101 Thunderbird/45.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <584F0C71.5010004@imgtec.com>
-User-Agent: Mutt/1.7.1 (2016-10-04)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1602859.QGKdh4otrC@loki>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56042
+X-archive-position: 56043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: john@phrozen.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,41 +37,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Dec 12, 2016 at 12:45:37PM -0800, Leonid Yegoshin wrote:
 
-> On 12/12/2016 10:24 AM, Florian Fainelli wrote:
-> > 
-> > What Justin's patch is about is not so much about providing hints to
-> > user-space to bypass the kernel's own management of caches, (even though
-> > that has been used as an argument by the original introduction of
-> > cacheinfo), but more to provide some information to user-space about the
-> > cache topology and hierarchy.
+
+On 13/12/2016 11:46, Tobias Wolf wrote:
+> This patch adds fw_passed_dtb to arch/mips/ralink to support 
+> CONFIG_MIPS_RAW_APPENDED_DTB. Furthermore it adds a check that __dtb_start is 
+> not the same address as __dtb_end.
 > 
-> I missed that, if it is for information purpose only, then it is OK.
+> Signed-off-by: Tobias Wolf <dev-NTEO@vplace.de>
+> ---
 
-Cache information can also be used for some software optimizations though
-I think GCC at this time doesn't do this kind of trickery.
+there should be a chunk here explaining the changes between v1 and v2
+... anyhow
 
-> > Even though this is limited information this is still helpful to
-> > applications like lshw and others out there.
-> > 
-> > What would be needed from your perspective to get cacheinfo added to
-> > MIPS, shall we go back and address your initial comment about all the
-> > little details about coherency, snooping and re-filling strategy?
+Acked-by: John Crispin <john@phrozen.org>
+
+
+
+> --- a/arch/mips/ralink/of.c
+> +++ b/arch/mips/ralink/of.c
+> @@ -66,13 +66,21 @@
+>  
+>  void __init plat_mem_setup(void)
+>  {
+> +	void *dtb = NULL;
+> +
+>  	set_io_port_base(KSEG1);
+>  
+>  	/*
+>  	 * Load the builtin devicetree. This causes the chosen node to be
+> -	 * parsed resulting in our memory appearing
+> +	 * parsed resulting in our memory appearing. fw_passed_dtb is used
+> +	 * by CONFIG_MIPS_APPENDED_RAW_DTB as well.
+>  	 */
+> -	__dt_setup_arch(__dtb_start);
+> +	if (fw_passed_dtb)
+> +		dtb = (void *)fw_passed_dtb;
+> +	else if (__dtb_start != __dtb_end)
+> +		dtb = (void *)__dtb_start;
+> +
+> +	__dt_setup_arch(dtb);
+>  
+>  	of_scan_flat_dt(early_init_dt_find_memory, NULL);
+>  	if (memory_dtb)
 > 
-> It depends. Initially, I thought Justin wants to replace
-> arch/mips/mm/c-XXX.c with some universal approach and listed the missed
-> stuff for that (I actually missed some more points in that list).
+> ---
+> This version has been cleaned up based on feedback [1] of John Crispin for the 
+> LEDE Project.
 > 
-> But for information purpose I don't have any more addition to Justin's
-> patch... may be the coherency status, it has impact on performance:
-> coherency of L1D->L2, L2->memory and L1I->L1D/L2.
-
-Coherency is hard to properly describe, there are many shades of grey
-between fully coherent and not coherent at all.
-
-If we expose something to userspace which constitutes some kind of API
-then we really need to get it right because we can't change it arbitrarily
-later on.
-
-  Ralf
+> [1] https://github.com/lede-project/source/pull/582#discussion_r90778573
+> 
+> Best regards
+> Tobias
+> 

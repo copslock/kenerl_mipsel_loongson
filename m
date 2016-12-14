@@ -1,48 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Dec 2016 17:49:30 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:46412 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990513AbcLNQtWd6qaB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Dec 2016 17:49:22 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 47A9E20414;
-        Wed, 14 Dec 2016 16:49:20 +0000 (UTC)
-Received: from mail-yb0-f178.google.com (mail-yb0-f178.google.com [209.85.213.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 221F92028D;
-        Wed, 14 Dec 2016 16:49:19 +0000 (UTC)
-Received: by mail-yb0-f178.google.com with SMTP id v132so20434548yba.0;
-        Wed, 14 Dec 2016 08:49:19 -0800 (PST)
-X-Gm-Message-State: AKaTC00L1OWEpWIqwmM5bjr/7NNHJRqXd8q2sUrBM6qrzxvUf3Up7ROvCSJTB7uYvC45SA0xJFO37nqRwUUong==
-X-Received: by 10.129.93.87 with SMTP id r84mr108122556ywb.15.1481734158470;
- Wed, 14 Dec 2016 08:49:18 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Dec 2016 18:45:55 +0100 (CET)
+Received: from mezzanine.sirena.org.uk ([106.187.55.193]:34038 "EHLO
+        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990513AbcLNRpsNpfUi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Dec 2016 18:45:48 +0100
+Received: from [2001:470:1f1d:6b5::3] (helo=debutante)
+        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1cHDcc-00015t-TT; Wed, 14 Dec 2016 17:45:45 +0000
+Received: from broonie by debutante with local (Exim 4.88)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1cHDcZ-0006Yf-Tm; Wed, 14 Dec 2016 17:45:39 +0000
+Date:   Wed, 14 Dec 2016 17:45:39 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org
+Message-ID: <20161214174539.h3xsugswlq576g7b@sirena.org.uk>
+References: <58510536.04c7190a.4a2fb.ae5c@mx.google.com>
+ <20161214135214.osrlldhxvxzfwial@sirena.org.uk>
+ <20161214160609.GA15191@linux-mips.org>
 MIME-Version: 1.0
-Received: by 10.129.96.86 with HTTP; Wed, 14 Dec 2016 08:48:58 -0800 (PST)
-In-Reply-To: <20161214163253.GA25341@nathan3500-linux-VM>
-References: <1480693329-22265-1-git-send-email-nathan.sullivan@ni.com>
- <20161209211828.dykl2l4kmthqgq6e@rob-hp-laptop> <20161214163253.GA25341@nathan3500-linux-VM>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 14 Dec 2016 10:48:58 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJPkVBbvTonOADsu-uaH0bxtNDBJ3OrzE=7vP5pc92H=Q@mail.gmail.com>
-Message-ID: <CAL_JsqJPkVBbvTonOADsu-uaH0bxtNDBJ3OrzE=7vP5pc92H=Q@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: NI 169445 board support
-To:     Nathan Sullivan <nathan.sullivan@ni.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <robh@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="pme7352aoyqgs7t5"
+Content-Disposition: inline
+In-Reply-To: <20161214160609.GA15191@linux-mips.org>
+X-Cookie: I represent a sardine!!
+User-Agent: NeoMutt/20161126 (1.7.1)
+X-SA-Exim-Connect-IP: 2001:470:1f1d:6b5::3
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Re: next build: 198 builds: 4 failed, 194 passed, 7 errors, 82
+ warnings (next-20161214)
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: No (on mezzanine.sirena.org.uk); Unknown failure
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56050
+X-archive-position: 56051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,31 +53,60 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 14, 2016 at 10:32 AM, Nathan Sullivan
-<nathan.sullivan@ni.com> wrote:
-> On Fri, Dec 09, 2016 at 03:18:28PM -0600, Rob Herring wrote:
->> On Fri, Dec 02, 2016 at 09:42:09AM -0600, Nathan Sullivan wrote:
->> > Support the National Instruments 169445 board.
->> >
->> > Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
->> > ---
->> > "gpio: mmio: add support for NI 169445 NAND GPIO" and
->> > "devicetree: add vendor prefix for National Instruments" are required for the
->> > NAND on this board to work.
 
->> > +   ahb@0 {
->> > +           compatible = "simple-bus";
->> > +           #address-cells = <1>;
->> > +           #size-cells = <1>;
->> > +           ranges;
->>
->> If everything is under 0x1f3xxxxx, then add in the ranges here (and the
->> unit address).
->>
->
-> I noticed that some systems call out their axi/ahb busses, some do not.  Would
-> you prefer that I remove the bus entirely?
+--pme7352aoyqgs7t5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Definitely not. IMO, not having a bus node is an error.
+On Wed, Dec 14, 2016 at 05:06:09PM +0100, Ralf Baechle wrote:
+> On Wed, Dec 14, 2016 at 01:52:14PM +0000, Mark Brown wrote:
+> > On Wed, Dec 14, 2016 at 12:39:18AM -0800, kernelci.org bot wrote:
 
-Rob
+> > > mips:    gcc version 5.3.0 (Sourcery CodeBench Lite 2016.05-8)
+
+> > These MIPS builds have been failing in kernelci ever since MIPS was
+> > added.  This means that we've got a constant level of noise in the
+> > results which makes them less useful for everyone - people get used to
+> > ignoring errors.  Is there any plan to get these fixed?
+
+> I wonder if these are also toolchain-related issues.  allnoconfig and
+> tinyconfig do build fine for me with GCC 6.1.0 and binutils 2.26.20160125.
+
+> generic_defconfig requires mkimage of uboot-tools or it will fail like this:
+
+>   ITB     arch/mips/boot/vmlinux.gz.itb
+> "mkimage" command not found - U-Boot images will not be built
+> arch/mips/boot/Makefile:159: recipe for target 'arch/mips/boot/vmlinux.gz.itb' failed
+> make[1]: *** [arch/mips/boot/vmlinux.gz.itb] Error 1
+> arch/mips/Makefile:365: recipe for target 'vmlinux.gz.itb' failed
+> make: *** [vmlinux.gz.itb] Error 2
+
+Ah, you don't have a separate uImage target?
+
+> What binutils are you using and can you send me the build errors messages?
+
+You can see logs for all the trees we build via the web interface:
+
+   https://kernelci.org/job/
+
+I don't have access to the builders to check the binutils version
+without going and finding/downloading the CodeSourcery release.  Where
+did your toolchain come from, is there something specific recommended
+for MIPS?
+
+--pme7352aoyqgs7t5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhRhUMACgkQJNaLcl1U
+h9CPxwf8Cx5RptBgdNeguXpQjCHhKZzK2dFOhvurcs70MFUKjOeCLjWhqviWy+ry
+1wsQQWVFxiQ5vCPknhAq8yu/CmYMKB1y4BrDd3zJEcw9B3s51V04XHSZEBtoGDkg
+lt3AIG+kZoFmbPgIOzaw3X8TeSsrHMPu15sgHhMAMjLRjdu8hlDI3KnredQYaI91
+M2r1R7eBZXyx/hK0NbtD113OCIW9CLhfubj3S9MWqzFQOhMo1jCV6qgJJBRu5ACp
+i1RIf8f86cSnRKzIVjQt0BMSCCJMQebWVoZftz1P9Njm5we/0VGNUey1Fr2GPyhS
+/CIBnDQwniXXbRZqot7XhsSYuQa45g==
+=/f0M
+-----END PGP SIGNATURE-----
+
+--pme7352aoyqgs7t5--

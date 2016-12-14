@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Dec 2016 16:10:30 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7724 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992255AbcLNPJ5uwMw4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Dec 2016 16:09:57 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C572F732BF2FE;
-        Wed, 14 Dec 2016 15:09:48 +0000 (GMT)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 14 Dec 2016 15:09:51 +0000
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] MIPS: Set defconfig target to a generic system for 32r2el
-Date:   Wed, 14 Dec 2016 15:09:43 +0000
-Message-ID: <1481728183-16776-2-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1481728183-16776-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1481728183-16776-1-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Dec 2016 17:06:22 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:51706 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992155AbcLNQGOgvGQT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Dec 2016 17:06:14 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id uBEG69N5007935;
+        Wed, 14 Dec 2016 17:06:09 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id uBEG690L007934;
+        Wed, 14 Dec 2016 17:06:09 +0100
+Date:   Wed, 14 Dec 2016 17:06:09 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org
+Subject: Re: next build: 198 builds: 4 failed, 194 passed, 7 errors, 82
+ warnings (next-20161214)
+Message-ID: <20161214160609.GA15191@linux-mips.org>
+References: <58510536.04c7190a.4a2fb.ae5c@mx.google.com>
+ <20161214135214.osrlldhxvxzfwial@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20161214135214.osrlldhxvxzfwial@sirena.org.uk>
+User-Agent: Mutt/1.7.1 (2016-10-04)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56047
+X-archive-position: 56048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,30 +45,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The default system type should be a MIPS generic kernel. In order to
-include some level of board support, select a 32r2el generic defconfig
-by default. The alternative would be to use "generic_defconfig" but
-rather unintuitvely that is a bare bones configuration with no platform
-support so is not usable in practice.
+On Wed, Dec 14, 2016 at 01:52:14PM +0000, Mark Brown wrote:
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
----
+> On Wed, Dec 14, 2016 at 12:39:18AM -0800, kernelci.org bot wrote:
+> 
+> > mips:    gcc version 5.3.0 (Sourcery CodeBench Lite 2016.05-8)
+> > 
+> >     allnoconfig: FAIL
+> >     generic_defconfig: FAIL
+> >     ip27_defconfig: FAIL
+> >     tinyconfig: FAIL
+> 
+> These MIPS builds have been failing in kernelci ever since MIPS was
+> added.  This means that we've got a constant level of noise in the
+> results which makes them less useful for everyone - people get used to
+> ignoring errors.  Is there any plan to get these fixed?
 
- arch/mips/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I wonder if these are also toolchain-related issues.  allnoconfig and
+tinyconfig do build fine for me with GCC 6.1.0 and binutils 2.26.20160125.
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 1a6bac7b076f..51b0e7479f99 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -15,7 +15,7 @@
- archscripts: scripts_basic
- 	$(Q)$(MAKE) $(build)=arch/mips/boot/tools relocs
- 
--KBUILD_DEFCONFIG := ip22_defconfig
-+KBUILD_DEFCONFIG := 32r2el_defconfig
- 
- #
- # Select the object file format to substitute into the linker script.
--- 
-2.7.4
+generic_defconfig requires mkimage of uboot-tools or it will fail like this:
+
+  ITB     arch/mips/boot/vmlinux.gz.itb
+"mkimage" command not found - U-Boot images will not be built
+arch/mips/boot/Makefile:159: recipe for target 'arch/mips/boot/vmlinux.gz.itb' failed
+make[1]: *** [arch/mips/boot/vmlinux.gz.itb] Error 1
+arch/mips/Makefile:365: recipe for target 'vmlinux.gz.itb' failed
+make: *** [vmlinux.gz.itb] Error 2
+
+ip27_defconfig indeed has a build issue but it's new for 4.9 (commit
+3ffc17d8768be705e292ac4c2e3ab1f18dc06047 ("MIPS: Adjust MIPS64 CAC_BASE to
+reflect Config.K0")).  And with that patch reverted GCC 6.1.0 blows up with
+an internal compilter error:
+
+  CC [M]  drivers/net/ethernet/qlogic/qlge/qlge_main.o
+drivers/net/ethernet/qlogic/qlge/qlge_main.c: In function ‘qlge_probe’:
+drivers/net/ethernet/qlogic/qlge/qlge_main.c:4812:1: error: insn does not satisfy its constraints:
+ }
+ ^
+(insn 1373 1371 1361 79 (parallel [
+            (set (reg/f:DI 3 $3 [490])
+                (symbol_ref:DI ("delayed_work_timer_fn") [flags 0x241] <function_decl 0x7fdb8658ed20 delayed_work_timer_fn>))
+            (clobber (scratch:DI))
+        ]) drivers/net/ethernet/qlogic/qlge/qlge_main.c:4690 287 {*lea64}
+     (nil))
+drivers/net/ethernet/qlogic/qlge/qlge_main.c:4812:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
+Please submit a full bug report,
+with preprocessed source if appropriate.
+See <http://gcc.gnu.org/bugs.html> for instructions.
+
+GCC 6.2.0 dies the same way.
+
+What binutils are you using and can you send me the build errors messages?
+
+Thanks,
+
+  Ralf

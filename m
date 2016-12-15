@@ -1,39 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Dec 2016 04:22:51 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:52248 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990519AbcLODWniYSNk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 15 Dec 2016 04:22:43 +0100
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id uBF3Mg7e028683;
-        Thu, 15 Dec 2016 04:22:42 +0100
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id uBF3MfaO028682;
-        Thu, 15 Dec 2016 04:22:41 +0100
-Date:   Thu, 15 Dec 2016 04:22:41 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org
-Subject: Re: next build: 198 builds: 4 failed, 194 passed, 7 errors, 82
- warnings (next-20161214)
-Message-ID: <20161215032241.GB15191@linux-mips.org>
-References: <58510536.04c7190a.4a2fb.ae5c@mx.google.com>
- <20161214135214.osrlldhxvxzfwial@sirena.org.uk>
- <20161214160609.GA15191@linux-mips.org>
- <20161214174539.h3xsugswlq576g7b@sirena.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Dec 2016 09:02:43 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.134]:59248 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990845AbcLOICgANQX1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Dec 2016 09:02:36 +0100
+Received: from wuerfel.localnet ([78.43.21.235]) by mrelayeu.kundenserver.de
+ (mreue005 [212.227.15.129]) with ESMTPSA (Nemesis) id
+ 0LaHLm-1d2L4P1ivu-00m2up; Thu, 15 Dec 2016 09:02:19 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     kernel-build-reports@lists.linaro.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Mark Brown <broonie@kernel.org>, linux-mips@linux-mips.org
+Subject: Re: next build: 198 builds: 4 failed, 194 passed, 7 errors, 82 warnings (next-20161214)
+Date:   Thu, 15 Dec 2016 09:02:17 +0100
+Message-ID: <2139236.OXpNvTk27O@wuerfel>
+User-Agent: KMail/5.1.3 (Linux/4.4.0-34-generic; KDE/5.18.0; x86_64; ; )
+In-Reply-To: <20161215032241.GB15191@linux-mips.org>
+References: <58510536.04c7190a.4a2fb.ae5c@mx.google.com> <20161214174539.h3xsugswlq576g7b@sirena.org.uk> <20161215032241.GB15191@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20161214174539.h3xsugswlq576g7b@sirena.org.uk>
-User-Agent: Mutt/1.7.1 (2016-10-04)
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Provags-ID: V03:K0:O1s/rIRyvsuYxreX1Te3s18ugafoY/E8nn+REcan+BSXiTpnnw/
+ uGpEwYTPxLSRxqOXcF18f3QaXPm+fThpBOEotwLbFHsCgfiFgNrGa9oswEqGJsBdxxD2D5P
+ uFstcmcC5ZJKubvxrWaH8Hswer4pEBQD54VNhbeearQVJh4zR72hw2+ZXmKV3Xxk40QoqGT
+ i4YHFcNfRsDL0BNVZeE7Q==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:D2c/meqICmM=:NSpAqdJofDH8vsyExpsVRH
+ eNvN7tLtPAbxk5aaI3Wyq6hEeiWdH8XBlQLKwq2QMaFXZmoictkWkN2N/8hILrdX6udZu7ku8
+ xO22CtpiXJU0DohTFXXP8ztJ1y/PKlY/Jx8f/stm1gMPngb5hsF9v3D1jUI/YhfnCP3mEeBb+
+ wURkT4vTu+8s/VAh2SUXsMP1kX8xmAEiLryHjo/I0ZtPWY9PT6yYZdl0XOucuUiQFhg9NJgxr
+ KwX4jcPMHx7QVe5mhAVEcmMx162XkFF4QlnAhrQ3PuTONP5zMdlNxwig/offNgb4BfDb6WOV/
+ 89tlOzLwZFRcX2P3/SlM3AEoPgSDEzF2uMvE5Mq6v0ftYHEcey/tpYifWmHb/LyV3SiCa3elK
+ 4obrYw0523nWgPQvCB/dmB1PMFQvDef0XvaKOaTtNnI3D9zDNatVXt4sVsCi84+Dk7dC6AEL5
+ CB5yQKawscLrL3eEIbPvlKtitR+nLRbyRt1ZLaqMB/XGdsnfSr6NBb3x7COCqP3n325L4UyT1
+ g10GHk3tsjxP5ibyT+cZM5JXFrhnm0CH74GI84PbkVYHlclCkmPR4LVVJi8XzRVL+X6uvgE90
+ 9wCTHQ3fahi+SUbQJgUq4nZpFzdW6ksnSR6gIwPsLXLP3lNiTAgl63UQQkKsLdiv93IPmBFmc
+ iiE1oUxaWAKjn+MoKtcTpSwJchlr8U5u0bFGIx1LoLyY+mz6uywls/bGN40fksCkgrHDeIfvq
+ 6Gafn5JS/X+R5qoq
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56053
+X-archive-position: 56054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,60 +56,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Dec 14, 2016 at 05:45:39PM +0000, Mark Brown wrote:
-> Date:   Wed, 14 Dec 2016 17:45:39 +0000
-> From: Mark Brown <broonie@kernel.org>
-> To: Ralf Baechle <ralf@linux-mips.org>
-> Cc: kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org
-> Subject: Re: next build: 198 builds: 4 failed, 194 passed, 7 errors, 82
->  warnings (next-20161214)
-> Content-Type: multipart/signed; micalg=pgp-sha256;
->         protocol="application/pgp-signature"; boundary="pme7352aoyqgs7t5"
+On Thursday, December 15, 2016 4:22:41 AM CET Ralf Baechle wrote:
 > 
-> On Wed, Dec 14, 2016 at 05:06:09PM +0100, Ralf Baechle wrote:
-> > On Wed, Dec 14, 2016 at 01:52:14PM +0000, Mark Brown wrote:
-> > > On Wed, Dec 14, 2016 at 12:39:18AM -0800, kernelci.org bot wrote:
-> 
-> > > > mips:    gcc version 5.3.0 (Sourcery CodeBench Lite 2016.05-8)
-> 
-> > > These MIPS builds have been failing in kernelci ever since MIPS was
-> > > added.  This means that we've got a constant level of noise in the
-> > > results which makes them less useful for everyone - people get used to
-> > > ignoring errors.  Is there any plan to get these fixed?
-> 
-> > I wonder if these are also toolchain-related issues.  allnoconfig and
-> > tinyconfig do build fine for me with GCC 6.1.0 and binutils 2.26.20160125.
-> 
-> > generic_defconfig requires mkimage of uboot-tools or it will fail like this:
-> 
-> >   ITB     arch/mips/boot/vmlinux.gz.itb
-> > "mkimage" command not found - U-Boot images will not be built
-> > arch/mips/boot/Makefile:159: recipe for target 'arch/mips/boot/vmlinux.gz.itb' failed
-> > make[1]: *** [arch/mips/boot/vmlinux.gz.itb] Error 1
-> > arch/mips/Makefile:365: recipe for target 'vmlinux.gz.itb' failed
-> > make: *** [vmlinux.gz.itb] Error 2
-> 
-> Ah, you don't have a separate uImage target?
-> 
-> > What binutils are you using and can you send me the build errors messages?
-> 
-> You can see logs for all the trees we build via the web interface:
-> 
->    https://kernelci.org/job/
-> 
-> I don't have access to the builders to check the binutils version
-> without going and finding/downloading the CodeSourcery release.  Where
-> did your toolchain come from, is there something specific recommended
-> for MIPS?
+> Some configurations, in particular new cores or architecture variants
+> may require vendor tool- chains or patches until support makes it upstream.
+> I wonder if for the benefit of automated build testing we should tag
+> kernel configurations with a special CONFIG_ symbol to indicate they need
+> non-standard tools?  That would allow build testing to detect and
+> possibly skip such configuration.
 
-I specifically avoid non-standard toolchains, that is I stick to the
-vanilla FSF releases with no feature patches.
+I think that this ties in with a discussion we recently had about moving
+toolchain feature detection from Makefiles into Kconfig, which can
+then probably handle this better. We just need to find someone who
+can hack this up into Kconfig.
 
-Some configurations, in particular new cores or architecture variants
-may require vendor tool- chains or patches until support makes it upstream.
-I wonder if for the benefit of automated build testing we should tag
-kernel configurations with a special CONFIG_ symbol to indicate they need
-non-standard tools?  That would allow build testing to detect and
-possibly skip such configuration.
-
-  Ralf
+	Arnd

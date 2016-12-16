@@ -1,35 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Dec 2016 03:22:44 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:17145 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992186AbcLPCWgRYvTO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Dec 2016 03:22:36 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C664A81505F59;
-        Fri, 16 Dec 2016 02:22:28 +0000 (GMT)
-Received: from [10.20.78.233] (10.20.78.233) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 16 Dec 2016
- 02:22:28 +0000
-Date:   Fri, 16 Dec 2016 02:22:16 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Dec 2016 03:52:14 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:56940 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992170AbcLPCwH2pHiY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 16 Dec 2016 03:52:07 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id uBG2q6C2031194;
+        Fri, 16 Dec 2016 03:52:06 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id uBG2q6cx031193;
+        Fri, 16 Dec 2016 03:52:06 +0100
+Date:   Fri, 16 Dec 2016 03:52:06 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     linux-mips@linux-mips.org
 Subject: Re: MIPS: IP22: Fix binutils due to binutils 2.25 uselessnes.
-In-Reply-To: <S23993072AbcLOP7sNw5Hx/20161215155948Z+1597@eddie.linux-mips.org>
-Message-ID: <alpine.DEB.2.00.1612160206450.6743@tp.orcam.me.uk>
+Message-ID: <20161216025206.GE15191@linux-mips.org>
 References: <S23993072AbcLOP7sNw5Hx/20161215155948Z+1597@eddie.linux-mips.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+ <alpine.DEB.2.00.1612160206450.6743@tp.orcam.me.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.233]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1612160206450.6743@tp.orcam.me.uk>
+User-Agent: Mutt/1.7.1 (2016-10-04)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56059
+X-archive-position: 56060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,26 +43,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 15 Dec 2016, linux-mips@linux-mips.org wrote:
+On Fri, Dec 16, 2016 at 02:22:16AM +0000, Maciej W. Rozycki wrote:
 
-> Fix build with binutils 2.25 by open coding the offending
+> On Thu, 15 Dec 2016, linux-mips@linux-mips.org wrote:
 > 
-> 	dli $1, 0x9000000080000000
+> > Fix build with binutils 2.25 by open coding the offending
+> > 
+> > 	dli $1, 0x9000000080000000
+> > 
+> > as
+> > 
+> > 	li	$1, 0x9000
+> > 	dsll	$1, $1, 48
+> > 
+> > which is ugly be the only thing that will build on all binutils vintages.
 > 
-> as
+>  What about bit #31?  Shouldn't this be say:
 > 
-> 	li	$1, 0x9000
-> 	dsll	$1, $1, 48
+> 	lui	$1, 0x9000
+> 	dsll	$1, $1, 16
+> 	ori	$1, $1, 0x8000
+> 	dsll	$1, $1, 16
 > 
-> which is ugly be the only thing that will build on all binutils vintages.
+> ?
 
- What about bit #31?  Shouldn't this be say:
+Argh, didn't spot the `8' in there.  64 bit constants are way too long :)
 
-	lui	$1, 0x9000
-	dsll	$1, $1, 16
-	ori	$1, $1, 0x8000
-	dsll	$1, $1, 16
+Thanks for reporting, will fix.
 
-?
-
-  Maciej
+  Ralf

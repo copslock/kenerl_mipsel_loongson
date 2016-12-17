@@ -1,46 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Dec 2016 13:20:03 +0100 (CET)
-Received: from mezzanine.sirena.org.uk ([106.187.55.193]:37390 "EHLO
-        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992309AbcLPMT4i3ef8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Dec 2016 13:19:56 +0100
-Received: from [2001:470:1f1d:6b5::3] (helo=debutante)
-        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1cHrUM-0000d1-Lp; Fri, 16 Dec 2016 12:19:52 +0000
-Received: from broonie by debutante with local (Exim 4.88)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1cHrUJ-0005hr-KL; Fri, 16 Dec 2016 12:19:47 +0000
-Date:   Fri, 16 Dec 2016 12:19:47 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org
-Message-ID: <20161216121947.uen37mkbbqxtvtpt@sirena.org.uk>
-References: <58510536.04c7190a.4a2fb.ae5c@mx.google.com>
- <20161214135214.osrlldhxvxzfwial@sirena.org.uk>
- <20161216005606.GD15191@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Dec 2016 19:29:14 +0100 (CET)
+Received: from www.zeus03.de ([194.117.254.33]:41786 "EHLO mail.zeus03.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991940AbcLQS3GYiKWr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 17 Dec 2016 19:29:06 +0100
+Received: (qmail 20991 invoked from network); 17 Dec 2016 19:29:05 +0100
+Received: from p54b3386e.dip0.t-ipconnect.de (HELO localhost) (l3s3148p1@84.179.56.110)
+  by mail.zeus03.de with ESMTPSA (ECDHE-RSA-AES256-GCM-SHA384 encrypted, authenticated); 17 Dec 2016 19:29:05 +0100
+Date:   Sat, 17 Dec 2016 19:29:05 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Jan Glauber <jglauber@cavium.com>
+Cc:     Wolfram Sang <wsa-dev@sang-engineering.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "Steven J . Hill" <Steven.Hill@cavium.com>,
+        linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH 3/4] i2c: octeon: thunderx: Limit register access retries
+Message-ID: <20161217182904.GB27020@katana>
+References: <20161209093158.3161-1-jglauber@cavium.com>
+ <20161209093158.3161-4-jglauber@cavium.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ccmdvxsh3n6zkici"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="ZfOjI3PrQbgiZnxM"
 Content-Disposition: inline
-In-Reply-To: <20161216005606.GD15191@linux-mips.org>
-X-Cookie: I represent a sardine!!
-User-Agent: NeoMutt/20161126 (1.7.1)
-X-SA-Exim-Connect-IP: 2001:470:1f1d:6b5::3
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-Subject: Re: next build: 198 builds: 4 failed, 194 passed, 7 errors, 82
- warnings (next-20161214)
-X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
-X-SA-Exim-Scanned: No (on mezzanine.sirena.org.uk); Unknown failure
-Return-Path: <broonie@sirena.org.uk>
+In-Reply-To: <20161209093158.3161-4-jglauber@cavium.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <wsa-dev@sang-engineering.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56061
+X-archive-position: 56062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@kernel.org
+X-original-sender: wsa@the-dreams.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,53 +46,43 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
---ccmdvxsh3n6zkici
+--ZfOjI3PrQbgiZnxM
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 16, 2016 at 01:56:06AM +0100, Ralf Baechle wrote:
-> On Wed, Dec 14, 2016 at 01:52:14PM +0000, Mark Brown wrote:
+On Fri, Dec 09, 2016 at 10:31:57AM +0100, Jan Glauber wrote:
+> Do not infinitely retry register readq and writeq operations
+> in order to not lock up the CPU in case the TWSI gets stuck.
+>=20
+> Return -EIO in case of a failed data read. For all other
+> cases just return so subsequent operations will fail
+> and trigger the recovery.
+>=20
+> Signed-off-by: Jan Glauber <jglauber@cavium.com>
 
-> > These MIPS builds have been failing in kernelci ever since MIPS was
-> > added.  This means that we've got a constant level of noise in the
-> > results which makes them less useful for everyone - people get used to
-> > ignoring errors.  Is there any plan to get these fixed?
+Applied to for-current, thanks!
 
-> I had to "bisect" binutils versions to hit the allnoconfig and tinyconfig
-> build issues.  Turns out it's a problem specific to binutils 2.25 which
-> when generating 32 bit ELF does not permit the use of 64 bit constants,
-> not even when explicitly to the 64 bit instruction set, for example:
 
-> 	.set	mips3
-> 	dli	$1, 0x9000000080000000
-
-> The only fix I was able to find that will work with all binutils, is
-> open coding the dli macro instruction as
-
-> 	li	$1, 0x9000
-> 	dsll	$1, $1, 48
-
-> Which is pretty much what the assembler should have generated from the dli
-> anyway.
-
-Thanks - someone should probably tell the purpl people, it's their
-toolchain we're currently using.  We did have a bit of a look yesterday
-for other prebuilt ones but didn't come up with anything so I guess a
-lot of people are going to be using that one.
-
---ccmdvxsh3n6zkici
+--ZfOjI3PrQbgiZnxM
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-iQEzBAABCAAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlhT2+IACgkQJNaLcl1U
-h9BG7wf/ZydDsxxLdYmZn8SBf/kjxEnjIyFbeT4NQXPmoBjv/66O+nMZYZm0WKa/
-SFZWmXbt8SythcfINzoQY4BBBYBVg1id/I+ggJCc5Vk6ZoY69QYeRTLDO6vFTeqh
-cMW6+ywgVdE7irTHOr4cG1ySgyPLDIeYhkipUOfpZq970BSwevg7sZk7gxrJ5vFi
-KXDL/PvMQ0l8nheLcltuessBpsQEEPp27AESQAcvF+zQxtlGRJyIHa6qw4LBw1Vg
-Zsdxn5DfVy+217ueEywve5GHgzj3KI/bW1bm2DSHztsn1uOr10Una9x7Bs/AZwIJ
-mhK5VtCt0eQ/T+JQmPf/CCxMSqmiEw==
-=9vkL
+iQIcBAEBAgAGBQJYVYPwAAoJEBQN5MwUoCm2cGwP/2qwvzqjasvY+TXxD7Jl9JbO
+Qi0Kx0gm9TUJsISJZ68EeHIAjZwhHI+CjkUdvFKFwqcvMs7PviHAa/7PAEGGZBsg
+SSOI+o4N+gRYt/h6tJpiKC93rE3DOBrxKyXk9OYqevxA6+b30CNmSstbWFJt613W
+tDf9Pzl5U2Ay2gYZRozws1Q2e3Dmt86M3y79KNaGxiD/sh0kH1VbKG+iZ5pt9T+D
+DnUCtcRmv5vJH3kWDSLF2vLp4vJoQ65XIoUyubFwkwOB0vCouNLfjkd9SwABcfSG
+Jj6wRq99na5WLnc0teRMMWinqqV/HOmXGa2shM1Llvy9dM4vMPxUXrXXIUUMaLuP
+A2P2WifF/xcI6lQpEaR9wFoRckgawm4cwwHY/LLz6yp4aYR1Z1CNJ5d72ettnPIh
+bQmOeGanF3Q6Aow4Fw1aAyBrm7CrjhKcMaMOKdc86CWe4WnJSwqbWYPayC2QUJyX
+eREdrO5YHUk9Bh/hhFnBWKCW2Xds41mzhF4tSpi+xWTwsvfcRnnhrb43m7XcPp/P
+fzrTCSWOaD4QdmiLhF4laRz8UAl65z2MCbqo4ybar+kSHmxtTrCw/kZPiP1PbVN2
+C61eij7fG5IGIdEn9zKFSd8sT+HpulTHyI6pFZRWKqbHY194JjjvcA11Yok++98W
+uzRgxwY7Xih3vJFk1KnZ
+=fEnR
 -----END PGP SIGNATURE-----
 
---ccmdvxsh3n6zkici--
+--ZfOjI3PrQbgiZnxM--

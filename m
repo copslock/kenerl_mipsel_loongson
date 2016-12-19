@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:11:33 +0100 (CET)
-Received: from mail-lf0-f65.google.com ([209.85.215.65]:35835 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:12:02 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:36754 "EHLO
         mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992844AbcLSCIHhWmfK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:07 +0100
-Received: by mail-lf0-f65.google.com with SMTP id p100so6143987lfg.2;
-        Sun, 18 Dec 2016 18:08:07 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S23992902AbcLSCIIvar4K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:08 +0100
+Received: by mail-lf0-f65.google.com with SMTP id o20so6141500lfg.3;
+        Sun, 18 Dec 2016 18:08:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0pprW2ggFQghEokrbOvTk6VvmgCmi68QgSVnurj1mYo=;
-        b=DYJBRhIFk15fQrN8wWLdv7uIi42zRrD8OOfnqaQ0lRKPAY4jFhgQ0HIjHBURmHVaS/
-         xG+BRutA+Ogv0bFocvJ9xHSNuiPDVNJe5+ZQTtfwW4GUiPovWbk4e2Cd461OwdqwNi90
-         iJq3H6tO6Re0tRRqeVj6ua442ElfAcOZM1CMpaApPJO2YIPdyH/K33yLsUALU7SbbjBF
-         +ViR7QUnTV8190DAQDEjx05Xe2JDTUYv1fnSo7yjrDvMXnqimEIOUOEOyeok3KSGccSy
-         PuVnNtvSyM4sMNfF/C8iG60/pg1bddYRzH6na3ayBrWc9XF562Zko+sYNjL91W6WlNm4
-         BXBQ==
+        bh=0hR/61BRWFWGXf16fB2jFs0RyZmSljXhR8Aps1zXXTg=;
+        b=Sr7DvHo8tgfzhj7JnvXX2UeVunWCZ+uHXgswIQhjxCFDqWLjwVrF27NBsPUSVMz8on
+         n8liDsewOI3fU+ipdoNPouxv2lQ/0v2+akTF7ARLZO/ABJF1mZBD0sWRMQCe6CNtJvqh
+         oJ5aOig5qKzDwcQjmT4CBG1vuWOE6mPl5tc4HYujAt0b2EiOiKFSy3AqAW1jR81iS+Q2
+         71kG+ceOn3ZL3w3FYgdewnQJ4Yg9bLX1im37kqPPUjP1Ufn1JWBJgIq6I30hT6IkiFx8
+         Gl5pHcWqtIVWQRO6ksU1wzRQiC/K1llmeoXiG0NYhTdO2So31jnH/vXCdq0ZZ800Pi5A
+         QaMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=0pprW2ggFQghEokrbOvTk6VvmgCmi68QgSVnurj1mYo=;
-        b=JCCms+GTu50dG2hyJfTa0DYawSWbdG1JYJWlHcmO+ILW2+T1pcygN13qEemQMYlUoH
-         IDV8mCLszii5Tp32+Q4csswLjnw+AvXQE2cwR/i46Bn0ie9046dEs/V+7cKhjLIbYIuY
-         0ddAa8GAH2F+3cqdbOortnenhAZTPXzHfY/P1MRfT9OT/BVITWIf46PU5Jsxof96OI8x
-         SbATEmISNAfcq9n6T8HvazIGsm9gD4wHs0xsLHrwTWuItHg+qJorJ9ZuH6G38O6UZ09M
-         lJiUYp4pK4SVH5jeJi6lryvgQCOEKQZq5zQySqi7hHayM9TdytRyL4pg08wqrASOC7WM
-         zS2w==
-X-Gm-Message-State: AIkVDXIt4FKL1RdSUdq21+Gz746NnxhnkWysh7qKb/EZHN99UIDh7hPQdZMHwWFrqC1bAw==
-X-Received: by 10.46.70.26 with SMTP id t26mr3684987lja.33.1482113282129;
-        Sun, 18 Dec 2016 18:08:02 -0800 (PST)
+        bh=0hR/61BRWFWGXf16fB2jFs0RyZmSljXhR8Aps1zXXTg=;
+        b=YqZcVE+OS9AZa0ZPDf78X4YDq4cGEzekhY8jXzcJ1Vmxf4e8+q0JuNrnvZo/AfCooa
+         W+dWc9tbqbwmcd2p+utLD0QxlRRBj77TxL4hPFa4ZjDg2mwQwOb56as/BGiBQ1uTn2Ff
+         XIJbG1rx4dKRZeTJCYMqNdg5UCM7ga++WopY48+B602Pffontch239/m/a0vW2sSKCLr
+         1zrRptvfqIAeeTwRq8WhsQPX6Anlg30H6t9WM8rUIqxax7XYYVX2N6H429+A22xy53XK
+         iVOUVUg2bQGYVy1+hUKhshyOzN2nYdc5mIyHcMtiilIiG/WJawjExDJ7pWNmjSI21F94
+         9Y4w==
+X-Gm-Message-State: AIkVDXKQujHzDXRlbEW/cxxMV+Cich/CiTQ00JD8RBOB4B2WE5UJ6zyP+rpZ1K5b3CBeNw==
+X-Received: by 10.46.8.9 with SMTP id 9mr5786851lji.47.1482113283339;
+        Sun, 18 Dec 2016 18:08:03 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.01
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.02
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:08:01 -0800 (PST)
+        Sun, 18 Dec 2016 18:08:02 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 08/21] MIPS memblock: Move kernel parameters parser into individual method
-Date:   Mon, 19 Dec 2016 05:07:33 +0300
-Message-Id: <1482113266-13207-9-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 09/21] MIPS memblock: Move kernel memory reservation to individual method
+Date:   Mon, 19 Dec 2016 05:07:34 +0300
+Message-Id: <1482113266-13207-10-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56071
+X-archive-position: 56072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,133 +68,177 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Main memory initialization method looks messy with cmd line parser
-built-in. So it's better for readability to put it into a separated
-method.
+The whole kernel text/data/bss must be reserved to prevent sudden
+kernel crashes, for instance, due to unexpected non-zero default static
+variables initializations.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 87 ++++++++++++++++--------------
- 1 file changed, 48 insertions(+), 39 deletions(-)
+ arch/mips/kernel/setup.c | 117 +++++++++++++++--------------
+ 1 file changed, 59 insertions(+), 58 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 52205fb..9c1a60d 100644
+index 9c1a60d..e746793 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -231,6 +231,51 @@ static void __init print_memory_map(void)
- }
+@@ -472,6 +472,62 @@ static void __init mips_reserve_initrd_mem(void) { }
+ #endif
  
  /*
-+ * Parse passed cmdline
++ * Reserve kernel code and data within memblock allocator
 + */
-+#define USE_PROM_CMDLINE	IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER)
-+#define USE_DTB_CMDLINE		IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_DTB)
-+#define EXTEND_WITH_PROM	IS_ENABLED(CONFIG_MIPS_CMDLINE_EXTEND)
-+#define BUILTIN_EXTEND_WITH_PROM	\
-+	IS_ENABLED(CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND)
-+
-+static void __init mips_parse_param(char **cmdline_p)
++static void __init mips_reserve_kernel_mem(void)
 +{
-+#if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
-+	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
-+#else
-+	if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
-+	    (USE_DTB_CMDLINE && !boot_command_line[0]))
-+		strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
++	phys_addr_t start, size;
 +
-+	if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
-+		if (boot_command_line[0])
-+			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
-+		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
-+	}
++	/*
++	 * Add kernel _text, _data, _bss, __init*, upto __end sections to
++	 * boot_mem_map and memblock. We must reserve all of them!
++	 */
++	start = __pa_symbol(&_text);
++	size = __pa_symbol(&_end) - start;
++	add_memory_region(start, size, BOOT_MEM_RAM);
++	/*
++	 * It needs to be reserved within memblock as well. It's ok if memory
++	 * has already been reserved with previous method
++	 */
++	memblock_reserve(start, size);
 +
-+#if defined(CONFIG_CMDLINE_BOOL)
-+	if (builtin_cmdline[0]) {
-+		if (boot_command_line[0])
-+			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
-+		strlcat(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
-+	}
++	/* Reserve nosave region for hibernation */
++	start = __pa_symbol(&__nosave_begin);
++	size = __pa_symbol(&__nosave_end) - start;
++	add_memory_region(start, size, BOOT_MEM_RAM);
++	memblock_reserve(start, size);
 +
-+	if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
-+		if (boot_command_line[0])
-+			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
-+		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
++	/* Initialize some init_mm fieldis. We may not need this? */
++	init_mm.start_code = (unsigned long)&_text;
++	init_mm.end_code = (unsigned long)&_etext;
++	init_mm.end_data = (unsigned long)&_edata;
++	init_mm.brk = (unsigned long)&_end;
++
++	/*
++	 * The kernel reserves all memory below its _end symbol as bootmem,
++	 * but the kernel may now be at a much higher address. The memory
++	 * between the original and new locations may be returned to the system.
++	 */
++#ifdef CONFIG_RELOCATABLE
++	if (__pa_symbol(&_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
++		phys_addr_t offset;
++		extern void show_kernel_relocation(const char *level);
++
++		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
++		memblock_free(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
++
++#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
++		/*
++		 * This information is necessary when debugging the kernel
++		 * But is a security vulnerability otherwise!
++		 */
++		show_kernel_relocation(KERN_INFO);
++#endif
 +	}
 +#endif
-+#endif
-+	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
-+
-+	*cmdline_p = command_line;
-+
-+	parse_early_param();
 +}
 +
 +/*
-  * Parse "mem=size@start" parameter rewriting a defined memory map
-  * We look for mem=size@start, where start and size are "value[KkMm]"
+  * Reserve memory occupied by elfcorehdr
   */
-@@ -790,12 +835,6 @@ static void __init arch_mem_addpart(phys_addr_t mem, phys_addr_t end, int type)
- 	add_memory_region(mem, size, type);
+ static void __init mips_reserve_elfcorehdr(void)
+@@ -590,6 +646,9 @@ static void __init bootmem_init(void)
+ 	unsigned long bootmap_size;
+ 	int i;
+ 
++	/* Reserve kernel code/data memory */
++	mips_reserve_kernel_mem();
++
+ 	/* Check and reserve memory occupied by initrd */
+ 	mips_reserve_initrd_mem();
+ 
+@@ -766,29 +825,6 @@ static void __init bootmem_init(void)
+ 	 * Reserve the bootmap memory.
+ 	 */
+ 	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size, BOOTMEM_DEFAULT);
+-
+-#ifdef CONFIG_RELOCATABLE
+-	/*
+-	 * The kernel reserves all memory below its _end symbol as bootmem,
+-	 * but the kernel may now be at a much higher address. The memory
+-	 * between the original and new locations may be returned to the system.
+-	 */
+-	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
+-		unsigned long offset;
+-		extern void show_kernel_relocation(const char *level);
+-
+-		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
+-		free_bootmem(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
+-
+-#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
+-		/*
+-		 * This information is necessary when debugging the kernel
+-		 * But is a security vulnerability otherwise!
+-		 */
+-		show_kernel_relocation(KERN_INFO);
+-#endif
+-	}
+-#endif
  }
  
--#define USE_PROM_CMDLINE	IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER)
--#define USE_DTB_CMDLINE		IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_DTB)
--#define EXTEND_WITH_PROM	IS_ENABLED(CONFIG_MIPS_CMDLINE_DTB_EXTEND)
--#define BUILTIN_EXTEND_WITH_PROM	\
--	IS_ENABLED(CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND)
+ #endif	/* CONFIG_SGI_IP27 */
+@@ -816,25 +852,6 @@ static void __init bootmem_init(void)
+  * initialization hook for anything else was introduced.
+  */
+ 
+-static void __init arch_mem_addpart(phys_addr_t mem, phys_addr_t end, int type)
+-{
+-	phys_addr_t size;
+-	int i;
+-
+-	size = end - mem;
+-	if (!size)
+-		return;
+-
+-	/* Make sure it is in the boot_mem_map */
+-	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		if (mem >= boot_mem_map.map[i].addr &&
+-		    mem < (boot_mem_map.map[i].addr +
+-			   boot_mem_map.map[i].size))
+-			return;
+-	}
+-	add_memory_region(mem, size, type);
+-}
 -
  static void __init arch_mem_init(char **cmdline_p)
  {
  	struct memblock_region *reg;
-@@ -804,6 +843,9 @@ static void __init arch_mem_init(char **cmdline_p)
- 	/* call board setup routine */
- 	plat_mem_setup();
+@@ -846,19 +863,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	/* Parse passed parameters */
+ 	mips_parse_param(cmdline_p);
  
-+	/* Parse passed parameters */
-+	mips_parse_param(cmdline_p);
-+
- 	/*
- 	 * Make sure all kernel memory is in the maps.  The "UP" and
- 	 * "DOWN" are opposite for initdata since if it crosses over
-@@ -820,39 +862,6 @@ static void __init arch_mem_init(char **cmdline_p)
+-	/*
+-	 * Make sure all kernel memory is in the maps.  The "UP" and
+-	 * "DOWN" are opposite for initdata since if it crosses over
+-	 * into another memory section you don't want that to be
+-	 * freed when the initdata is freed.
+-	 */
+-	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
+-			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
+-			 BOOT_MEM_RAM);
+-	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
+-			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
+-			 BOOT_MEM_INIT_RAM);
+-
  	pr_info("Determined physical RAM map:\n");
  	print_memory_map();
  
--#if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
--	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
--#else
--	if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
--	    (USE_DTB_CMDLINE && !boot_command_line[0]))
--		strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+@@ -873,9 +877,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	for_each_memblock(reserved, reg)
+ 		if (reg->size != 0)
+ 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
 -
--	if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
--		if (boot_command_line[0])
--			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
--		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
--	}
--
--#if defined(CONFIG_CMDLINE_BOOL)
--	if (builtin_cmdline[0]) {
--		if (boot_command_line[0])
--			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
--		strlcat(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
--	}
--
--	if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
--		if (boot_command_line[0])
--			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
--		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
--	}
--#endif
--#endif
--	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
--
--	*cmdline_p = command_line;
--
--	parse_early_param();
--
- 	bootmem_init();
+-	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
+-			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
+ }
  
- 	device_tree_init();
+ static void __init resource_init(void)
 -- 
 2.6.6

@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:13:08 +0100 (CET)
-Received: from mail-lf0-f65.google.com ([209.85.215.65]:36757 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:13:35 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:36760 "EHLO
         mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992990AbcLSCIMGiR-K (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23993059AbcLSCIM5y67K (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:12 +0100
-Received: by mail-lf0-f65.google.com with SMTP id o20so6141524lfg.3;
-        Sun, 18 Dec 2016 18:08:11 -0800 (PST)
+Received: by mail-lf0-f65.google.com with SMTP id o20so6141549lfg.3;
+        Sun, 18 Dec 2016 18:08:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=vpcV73qrpaIirqyCwoV3DJTPAXGdQqh8p0HMVgVNjGk=;
-        b=oEAf7kl6V+xwWswnNqT71PXJZ6bKUdrSGKg/rDTAWuZ4JXFKfiwcKQYMRylgTjd6iA
-         YvTfGzV14WkNKK/ZpkTJv/NsT/D+UAVkesb1Wmv/MTOsbUkxfmqpyCgnSjG3gJ4GeVKA
-         oFPTVwIfqAl49na4UodCY2SEeA47qRvsdTNti7N/mWe4LwGCEs6KFf5zjITGDQn28P4u
-         gywQJBKoYg9GLfHm1omSiJAwTInbB0ZQ3vvM/nGn1Ncy2bu9fd66r335NGlTACxrPkIV
-         Hu6rsr40nyoRQ+4ICMc1PpnciQgaBxyzhytd/OBua5Z+/0LH0CetBU7/VTbG4aKjwQI8
-         IfPA==
+        bh=mjKmhU3mFd/9LEdwlqnynhGcnXvHkk9RMNq7Cs+NL3s=;
+        b=WcL5kcRJKrBMBT14Xvdd70hHXubF8qDF8fbctro91faKpLPlt38we8Dpl/vESbTliS
+         KFSxAFFWMAni4l1CdH4Z7r4YzDovOTM7yzjYnlYyzqVR9t+wG9jzV+9cnPUpyyGWILqW
+         Wh8jdRhmiCyFpoKilVFEiC7uf1ng0YvKvns5R2Gyr2d36t82GmPyVcNF0h6cRj9ZhgLb
+         6aqL5HELKD696+kuvxwnjQce7iA/OV3EOSi+MlTwJHGMh+4EfpeBb6fGovnbEtxlyybD
+         eqDFiaKyq/UAX8OxICyxo9yd4R5aHHojdLYZRbuE6vEnrbfOgHezqq9oVxRtyM46hFFD
+         LEVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=vpcV73qrpaIirqyCwoV3DJTPAXGdQqh8p0HMVgVNjGk=;
-        b=SbvNgydaGCdlowIY2Jdr+ftz7YZpdPT91Dm99ZrCdF/+d/Qorf3oq0+hd+7Xl1CBuz
-         V7F/NAijKfjLu5CROkrIPmnnu0kpCRIFImeWWXFv9Z7lqp9wODO5pk0LdzfQwxkHoLY9
-         Y4481771vLJZGsWCnoid/iztb+i8AyGMIBPDX3mojjwqL8lccSu/CzPO3+vzibWtOG0P
-         RWcUmVloDfaGisax1vYTM+UV7/duhWEO9ZVfQ+Vda+wh8oNSnxWkNzv33omxDsfVBob2
-         SJnhG0yifhWDfRk6OoIoxVS4t8VfCSbO0slAMZd2Tx7u7ipCC0tTqF8RQTdHLs7DLEJc
-         QiFg==
-X-Gm-Message-State: AIkVDXIywO9ql0VMQ1cAX670TOpXSKnuLCrCX9t5zSCuGXBvqrylFkZAoSCK9hi86TsSGA==
-X-Received: by 10.46.69.137 with SMTP id s131mr6255723lja.26.1482113285372;
-        Sun, 18 Dec 2016 18:08:05 -0800 (PST)
+        bh=mjKmhU3mFd/9LEdwlqnynhGcnXvHkk9RMNq7Cs+NL3s=;
+        b=DfUEyVYOkEij2cCSRYFHBrPSPSc9uyw4cKHWto4vz93PuVJenZLisIcRizD+7G8Puq
+         qArCxxegOB2T3dO3es+j1OZ2EM3tfMV7sYWMAITW3U3IeSgnnSCldUYPHrHe9T94Xhk5
+         CddUzu3vguhcr/bNJ3yk6KEiOjpQZXb2aj9EdHQ2qi1yqXDiX18asXREq9OoiW3BFSkt
+         wMOW8fOVOaNgcWgkdux7sdYbWySV8D+qXbv1Bx30DADChETTlg10Q7J47bF8tWWAo0qY
+         8HGONlqGUe6osT9C6xNBk8KP9PpdWNsqHt+xTCeExZI9fCpa5lEL+2W+sDEq+z/nJ6zi
+         zboQ==
+X-Gm-Message-State: AIkVDXL0ij5t0sc3uxKqWmF9w+rz3rDKBBJHX4O4/qIhNIEAVPHJT6Px1TG0u1glrOXqiQ==
+X-Received: by 10.46.74.26 with SMTP id x26mr5664832lja.51.1482113287431;
+        Sun, 18 Dec 2016 18:08:07 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.04
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.06
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:08:04 -0800 (PST)
+        Sun, 18 Dec 2016 18:08:06 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 11/21] MIPS memblock: Add memblock sanity check method
-Date:   Mon, 19 Dec 2016 05:07:36 +0300
-Message-Id: <1482113266-13207-12-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 13/21] MIPS memblock: Add memblock allocator initialization
+Date:   Mon, 19 Dec 2016 05:07:38 +0300
+Message-Id: <1482113266-13207-14-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56075
+X-archive-position: 56076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,117 +68,194 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Perform memory sanity check right after basic memory is added.
-It makes sure there is low memory available and there is no high
-memory if one isn't supported. Additionally low memory limit needs
-to be calculated so memblock would have a proper upper boundary for
-memory allocations.
+Initialization is done by subsequent performing of the following
+steps:
+1) Call platform-specific call adding memory regions
+2) Parse kernel parameters looking (they may change memory layout)
+3) Check whether declared memory is in sane
+4) Reserve memory for kernel, initrd, crashdump, fdt, devices and CMA
+5) Find PFN limits of the memory regions
+6) Allow memblocks resize
+7) Perform basic paging subsystem initialization: nodes, zones, page
+tables (if necessary), kernel mapping and so on.
+
+Sparse sections initialization is moved into mem_init() method
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 83 ++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ arch/mips/kernel/setup.c | 93 +++++++++++++++++++++++-------
+ 1 file changed, 71 insertions(+), 22 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 6562f55..d2f410d 100644
+index 409d23d..b18d38c 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -472,6 +472,86 @@ static void __init mips_reserve_initrd_mem(void) { }
- #endif
+@@ -9,6 +9,7 @@
+  * Copyright (C) 1996 Stoned Elipot
+  * Copyright (C) 1999 Silicon Graphics, Inc.
+  * Copyright (C) 2000, 2001, 2002, 2007	 Maciej W. Rozycki
++ * Copyright (C) 2016 T-platforms
+  */
+ #include <linux/init.h>
+ #include <linux/ioport.h>
+@@ -27,6 +28,7 @@
+ #include <linux/device.h>
+ #include <linux/dma-contiguous.h>
+ #include <linux/decompress/generic.h>
++#include <linux/of_fdt.h>
+ 
+ #include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+@@ -733,20 +735,34 @@ static void __init find_pfn_limits(void)
+ }
  
  /*
-+ * Check initialized memory.
-+ */
-+static void __init sanity_check_meminfo(void)
-+{
-+	phys_addr_t physmem_start = PFN_PHYS(ARCH_PFN_OFFSET);
-+	phys_addr_t size_limit = 0;
-+	struct memblock_region *reg;
-+	bool highmem = false;
-+	bool should_use_highmem = false;
-+
-+	/*
-+	 * Walk over all memory ranges discarding highmem if it's disabled and
-+	 * calculating the memblock allocator limit
-+	 */
-+	for_each_memblock(memory, reg) {
-+		phys_addr_t block_start = reg->base;
-+		phys_addr_t block_end = reg->base + reg->size;
-+		phys_addr_t block_size = reg->size;
-+
-+		if (block_start >= HIGHMEM_START) {
-+			highmem = true;
-+			size_limit = block_size;
-+		} else {
-+			size_limit = HIGHMEM_START - block_start;
-+		}
-+
-+		/* Discard highmem physical memory if it isn't supported */
-+		if (!IS_BUILTIN(CONFIG_HIGHMEM)) {
-+			/* Discard the whole highmem memory block */
-+			if (highmem) {
-+				pr_notice("Ignoring RAM at %pa-%pa (!CONFIG_HIGHMEM)\n",
-+					&block_start, &block_end);
-+				memblock_remove(block_start, block_size);
-+				should_use_highmem = true;
-+				continue;
-+			}
-+			/* Truncate memory block */
-+			if (block_size > size_limit) {
-+				phys_addr_t overlap_size = block_size - size_limit;
-+				phys_addr_t highmem_start = HIGHMEM_START;
-+
-+				pr_notice("Truncate highmem %pa-%pa to -%pa\n",
-+					&block_start, &block_end, &highmem_start);
-+				memblock_remove(highmem_start, overlap_size);
-+				block_end = highmem_start;
-+				should_use_highmem = true;
-+			}
-+		}
-+		/* Truncate region if it starts below ARCH_PFN_OFFSET */
-+		if (block_start < physmem_start) {
-+			phys_addr_t overlap_size = physmem_start - block_start;
-+
-+			pr_notice("Truncate lowmem %pa-%pa to %pa-\n",
-+				&block_start, &block_end, &physmem_start);
-+			memblock_remove(block_start, overlap_size);
-+		}
-+
-+		/* Calculate actual lowmem limit for memblock allocator */
-+		if (!highmem) {
-+			if (block_end > mips_lowmem_limit) {
-+				if (block_size > size_limit)
-+					mips_lowmem_limit = HIGHMEM_START;
-+				else
-+					mips_lowmem_limit = block_end;
-+			}
-+		}
-+	}
-+
-+	/* Panic if no lowmem has been determined */
-+	if (!mips_lowmem_limit)
-+		panic("Oops, where is low memory? 0_o\n");
-+
-+	if (should_use_highmem)
-+		pr_notice("Consider using HIGHMEM enabled kernel\n");
-+
-+	/* Set memblock allocator limit */
-+	memblock_set_current_limit(mips_lowmem_limit);
-+}
-+
-+/*
-  * Reserve kernel code and data within memblock allocator
+- * Initialize the bootmem allocator. It also setup initrd related data
+- * if needed.
++ * Initialize the memblock allocator
   */
- static void __init mips_reserve_kernel_mem(void)
-@@ -712,6 +792,9 @@ static void __init arch_mem_init(char **cmdline_p)
- 	/* Parse passed parameters */
- 	mips_parse_param(cmdline_p);
+ #if defined(CONFIG_SGI_IP27) || (defined(CONFIG_CPU_LOONGSON3) && defined(CONFIG_NUMA))
  
-+	/* Sanity check the specified memory */
-+	sanity_check_meminfo();
+-static void __init bootmem_init(void)
++static void __init mips_bootmem_init(void)
+ {
++	/* Reserve kernel code/data memory */
++	mips_reserve_kernel_mem();
 +
- 	pr_info("Determined physical RAM map:\n");
+ 	/* Check and reserve memory occupied by initrd */
+ 	mips_reserve_initrd_mem();
++
++	/* Reserve memory for elfcorehdr */
++	mips_reserve_elfcorehdr();
++
++	/* Parse crashkernel parameter */
++	mips_parse_crashkernel();
++
++	/* Reserve memory for DMA contiguous allocator */
++	dma_contiguous_reserve(mips_lowmem_limit);
++
++	/* Allow memblock resize from now */
++	memblock_allow_resize();
+ }
+ 
+ #else  /* !CONFIG_SGI_IP27 */
+ 
+-static void __init bootmem_init(void)
++static void __init mips_bootmem_init(void)
+ {
+ 	/* Reserve kernel code/data memory */
+ 	mips_reserve_kernel_mem();
+@@ -760,8 +776,23 @@ static void __init bootmem_init(void)
+ 	/* Parse crashkernel parameter */
+ 	mips_parse_crashkernel();
+ 
++	/*
++	 * Platform code usually copies fdt, but still lets reserve its memory
++	 * in case if it doesn't
++	 */
++	early_init_fdt_reserve_self();
++
++	/* Scan reserved-memory nodes of fdt */
++	early_init_fdt_scan_reserved_mem();
++
++	/* Reserve memory for DMA contiguous allocator */
++	dma_contiguous_reserve(mips_lowmem_limit);
++
+ 	/* Find memory PFN limits */
+ 	find_pfn_limits();
++
++	/* Allow memblock resize from now */
++	memblock_allow_resize();
+ }
+ 
+ #endif	/* CONFIG_SGI_IP27 */
+@@ -770,30 +801,51 @@ static void __init bootmem_init(void)
+  * arch_mem_init - initialize memory management subsystem
+  *
+  *  o plat_mem_setup() detects the memory configuration and will record detected
+- *    memory areas using add_memory_region.
++ *    memory areas using add_memory_region, which in addition preinitializes
++ *    memblock ranges.
+  *
+  * At this stage the memory configuration of the system is known to the
+  * kernel but generic memory management system is still entirely uninitialized.
+  *
+- *  o bootmem_init()
+- *  o sparse_init()
+- *  o paging_init()
+- *  o dma_contiguous_reserve()
++ *  o mips_parse_param() parses parameters passed to the kernel in accordance
++ *    with CMDLINE configs.
++ *  o sanity_check_meminfo() performs memory ranges sanity checks, for
++ *    example, drop high mem regions if it's not supported, set memblock limit
++ *    of low memory allocations
++ *  o mips_bootmem_init() performs memblock further initializations,
++ *    particularly reserve crucial regions, including kernel segments, initrd,
++ *    elfcorehdrm, crashkernel, fdt, DMA contiguous allocator, set PFN-related
++ *    global variables.
++ *  o print_memory_map() prints initialized and verified memory map
++ *  o device_tree_init() calls platform-specific method to perform some
++ *    device tree related operations
++ *  o plat_swiotlb_setup() - platform-specific SWIOTLB setup method
++ *
++ * Basic setup of page allocator is done in setup_arch():
++ *  o paging_init() performs initialization of paging subsystem, in particular
++ *    setup page tables (PGD, PMD, etc), kernel mapping, sparse memory segments
++ *    if supported. It performs memory test if one is enabled. Finally it
++ *    calculates memory zone limits and calls free_area_init_node()
++ *    initializing pages memory maps, nodes, nodes free areas - basis of the
++ *    buddy allocator.
+  *
+  * At this stage the bootmem allocator is ready to use.
+  *
+  * NOTE: historically plat_mem_setup did the entire platform initialization.
+- *	 This was rather impractical because it meant plat_mem_setup had to
++ *       This was rather impractical because it meant plat_mem_setup had to
+  * get away without any kind of memory allocator.  To keep old code from
+  * breaking plat_setup was just renamed to plat_mem_setup and a second platform
+  * initialization hook for anything else was introduced.
++ * Additionally boot_mem_map structure used to keep base memory layout so
++ * then ancient bootmem allocator would be properly initialized. Since memblock
++ * allocator is used for early memory management now, the boot_mem_map is
++ * conserved just for compatibility.
++ */
++/*
++ * MIPS early memory manager setup
+  */
+-
+ static void __init arch_mem_init(char **cmdline_p)
+ {
+-	struct memblock_region *reg;
+-	extern void plat_mem_setup(void);
+-
+ 	/* call board setup routine */
+ 	plat_mem_setup();
+ 
+@@ -803,20 +855,17 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	/* Sanity check the specified memory */
+ 	sanity_check_meminfo();
+ 
+-	bootmem_init();
++	/* Initialize memblock allocator */
++	mips_bootmem_init();
+ 
+ 	/* Print memory map initialized by arch-specific code and params */
  	print_memory_map();
  
++	/* Perform platform-specific device tree scanning */
+ 	device_tree_init();
+-	sparse_init();
+-	plat_swiotlb_setup();
+ 
+-	dma_contiguous_reserve(PFN_PHYS(max_low_pfn));
+-	/* Tell bootmem about cma reserved memblock section */
+-	for_each_memblock(reserved, reg)
+-		if (reg->size != 0)
+-			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
++	/* Perform platform-specific SWIOTLB setup */
++	plat_swiotlb_setup();
+ }
+ 
+ static void __init resource_init(void)
 -- 
 2.6.6

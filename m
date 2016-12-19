@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:14:50 +0100 (CET)
-Received: from mail-lf0-f65.google.com ([209.85.215.65]:33124 "EHLO
-        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993096AbcLSCITIFlcK (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:15:16 +0100 (CET)
+Received: from mail-lf0-f68.google.com ([209.85.215.68]:33121 "EHLO
+        mail-lf0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993098AbcLSCITIgKkK (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:19 +0100
-Received: by mail-lf0-f65.google.com with SMTP id y21so6157148lfa.0;
+Received: by mail-lf0-f68.google.com with SMTP id y21so6157136lfa.0;
         Sun, 18 Dec 2016 18:08:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=5xBkvVro7bKLvdj+JhtHyKzvlRYUmsN8O8j9lW4GdKA=;
-        b=W0T0glnTviIdDvqqchzulVE+2+IAD6G9ETIDf257WNXAcynXawUzZr20t5YqxVtCQf
-         WU92ABhlVeeTGMbq9hLX/xmaGwzK1pmhYzzKPOjpw9U1yCXmLMLnH34Bf8ht1nGRmYpi
-         AqAwLZMzW9AYIiESZ/mz5zNE32PcCTSEufO4f4UXW88mDtBOJQIC5rRVoYrQa/DRi8oe
-         ESiCNKjwygWnICQ0QJVVbykUjgeBEyUzoKub38ACPwsnT19OfpuVQtDFLZpNF6vkzwkk
-         5jMCajeg2nFUukdggyAHRTDBPQcpEklhbnv/Bk/GzYLI8e8No8AHp/Ii8IQoCYt79P9K
-         zR5g==
+        bh=5Z/LmrbpJCN0uUQnc2N5mjFkAzHAMQU/E4467qJgViA=;
+        b=g7CexHP1tC3y9mSktsh0UeptHS1uQHnc4mNr/bVT7hqazWojdM8u8C9lSDA+VGJf3p
+         QvIRY2lsCflMX0XBmGUqdy2r0kqMsSb0k6zpDUrXwNnkyF7WLUUkRsbjRcnMyTEfYiFz
+         TMGmLZ9ljtMRN/7Y58RVsRxQMRS4rzzEJn9H72zu1OqM08H+ZGdx5xeG7JbL6hB98+sf
+         jk6Mp7EaMQKa9TL7MwqcC+4OolZSOEKtxdlmYwKxwhjwXtu4xp7rb2bRmSbLfJ0UnYJD
+         gNTDPA+fUkzVdbbrZI7Q9tKQHayBxA72fj8hZjnnogQx8NHtht1K4AlhpCcnT1EJJlk8
+         EPIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=5xBkvVro7bKLvdj+JhtHyKzvlRYUmsN8O8j9lW4GdKA=;
-        b=IIGD5Ln1+RkR2dUKUcWj6oPkDIOWqapHSg4QmyJBl4+evy4uLaFtW6xz72Qfla2Zoa
-         c/VQ1b4kNpRXOQrAxpAo12S4tNd1NF/bfQBxanC+BnTyogC/Kx5qBM+QBg2EkiR+I/qO
-         C5kzpN8Rm4SSiiS8Ar6rjewQJT33JLJ0y5s5tX4EtSzQ4DXNjl4biGYaQpODA502aVZ+
-         z9jM01BJWwo+SXKxXusEUWlcXLhbgXL69zc4e8VvdUPwgTyxpiki2N5Csio1CJ89SAlL
-         wz1OJnZHP1QBXJJIX/pt0kLJSser/UUvVYxgMEk/4HQgRUZZYJI87va1nTLx+GK8eKhX
-         AVWw==
-X-Gm-Message-State: AIkVDXJhauMnljj/sJEfm8JRK9L/ws1YiB6E2HUbaw/nFRhjpGD6W0fM0MaK2iTWw6kHdA==
-X-Received: by 10.46.69.69 with SMTP id s66mr5823117lja.71.1482113293528;
-        Sun, 18 Dec 2016 18:08:13 -0800 (PST)
+        bh=5Z/LmrbpJCN0uUQnc2N5mjFkAzHAMQU/E4467qJgViA=;
+        b=qAgBbCHbI8luOHpBg3nc6z/Iq91xsZ9JKU6OaDAB4eiFvEVR+5cWkrDieCdPfrbx85
+         DCFtz92zvJ3E6z8DQLf+S/cEZx5/YJVPZUkaPyOjdZITViStTn0HgXdEO9weUFcFjcjy
+         bIpcp+IL7HvsgrOXe5Q0WdcQQkBz+Bgp2TnRCZs5lpIc4EGAtXTWWFh8EuvGfutBlOGb
+         7p1Vc/hV7yjsFMyMPHKUx0cBl6S0WaYrBtGik5qfLL1jsdp47u0YcwAgNMHpQW61R6B0
+         7zx6fCX2Pv1qNROB0cPbAwWwq3b6snh4cNLIrFuatQCPmtuJXaXbMyUoRuUkcCk///VX
+         oAgA==
+X-Gm-Message-State: AKaTC03cNSEmTuFp1eJozPRB7+lvHLee+TORUeNkjsUTNJSGZ1+EcUd4mmINW/zfBWKeSA==
+X-Received: by 10.25.74.85 with SMTP id x82mr4049914lfa.154.1482113292460;
+        Sun, 18 Dec 2016 18:08:12 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.12
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.11
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:08:13 -0800 (PST)
+        Sun, 18 Dec 2016 18:08:12 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 19/21] MIPS memblock: Add print out method of kernel virtual memory layout
-Date:   Mon, 19 Dec 2016 05:07:44 +0300
-Message-Id: <1482113266-13207-20-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 18/21] MIPS memblock: Slightly improve buddy allocator init method
+Date:   Mon, 19 Dec 2016 05:07:43 +0300
+Message-Id: <1482113266-13207-19-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56079
+X-archive-position: 56080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,85 +68,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It's useful to have some printed map of the kernel virtual memory,
-at least for debugging purpose.
+Just add some minor changes into buddy allocator initialization.
+After all the alterations it shall work just fine from now.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/mm/init.c | 47 +++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ arch/mips/mm/init.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
 diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 13a032f..35e7ba8 100644
+index 98680fb..13a032f 100644
 --- a/arch/mips/mm/init.c
 +++ b/arch/mips/mm/init.c
-@@ -32,6 +32,7 @@
- #include <linux/hardirq.h>
- #include <linux/gfp.h>
- #include <linux/kcore.h>
-+#include <linux/sizes.h>
- 
- #include <asm/asm-offsets.h>
- #include <asm/bootinfo.h>
-@@ -106,6 +107,49 @@ static void __init zone_sizes_init(void)
+@@ -7,6 +7,7 @@
+  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
+  * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
+  * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
++ * Copyright (C) 2016 T-Platforms. All Rights Reserved.
+  */
+ #include <linux/bug.h>
+ #include <linux/init.h>
+@@ -462,22 +463,36 @@ static inline void mem_init_free_highmem(void)
+ #endif
  }
  
- /*
-+ * Print out kernel memory layout
-+ */
-+#define MLK(b, t) b, t, ((t) - (b)) >> 10
-+#define MLM(b, t) b, t, ((t) - (b)) >> 20
-+#define MLK_ROUNDUP(b, t) b, t, DIV_ROUND_UP(((t) - (b)), SZ_1K)
-+static void __init mem_print_kmap_info(void)
-+{
-+	pr_notice("Virtual kernel memory layout:\n"
-+		  "    lowmem  : 0x%08lx - 0x%08lx   (%4ld MB)\n"
-+		  "    vmalloc : 0x%08lx - 0x%08lx   (%4ld MB)\n"
-+#ifdef CONFIG_HIGHMEM
-+		  "    pkmap   : 0x%08lx - 0x%08lx   (%4ld MB)\n"
-+#endif
-+		  "    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
-+		  "      .text : 0x%p" " - 0x%p" "   (%4td kB)\n"
-+		  "      .data : 0x%p" " - 0x%p" "   (%4td kB)\n"
-+		  "      .init : 0x%p" " - 0x%p" "   (%4td kB)\n",
-+		MLM(PAGE_OFFSET, (unsigned long)high_memory),
-+		MLM(VMALLOC_START, VMALLOC_END),
-+#ifdef CONFIG_HIGHMEM
-+		MLM(PKMAP_BASE, (PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE)),
-+#endif
-+		MLK(FIXADDR_START, FIXADDR_TOP),
-+		MLK_ROUNDUP(_text, _etext),
-+		MLK_ROUNDUP(_sdata, _edata),
-+		MLK_ROUNDUP(__init_begin, __init_end));
-+
-+	/* Check some fundamental inconsistencies. May add something else? */
-+#ifdef CONFIG_HIGHMEM
-+	BUILD_BUG_ON(VMALLOC_END < PAGE_OFFSET);
-+	BUG_ON(VMALLOC_END < (unsigned long)high_memory);
-+#endif
-+	BUILD_BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) < PAGE_OFFSET);
-+	BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) <
-+					(unsigned long)high_memory);
-+	BUILD_BUG_ON(FIXADDR_TOP < PAGE_OFFSET);
-+	BUG_ON(FIXADDR_TOP < (unsigned long)high_memory);
-+}
-+#undef MLK
-+#undef MLM
-+#undef MLK_ROUNDUP
-+
 +/*
-  * Not static inline because used by IP27 special magic initialization code
-  */
- void setup_zero_pages(void)
-@@ -492,6 +536,9 @@ void __init mem_init(void)
- 	/* Free highmemory registered in memblocks */
- 	mem_init_free_highmem();
++ * Let buddy allocator run
++ */
+ void __init mem_init(void)
+ {
++	/* Setup maximum number of pages of memory map array */
+ #ifdef CONFIG_HIGHMEM
+ #ifdef CONFIG_DISCONTIGMEM
+ #error "CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet"
+ #endif
+-	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
++	set_max_mapnr(highend_pfn);
+ #else
+-	max_mapnr = max_low_pfn;
++	set_max_mapnr(max_low_pfn);
+ #endif
+-	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
++	/* Highmem starts right after lowmem */
++	high_memory = __va(PFN_PHYS(max_low_pfn));
  
-+	/* Print out kernel memory layout */
-+	mem_print_kmap_info();
++	/* Initialize speculative access registers - MAAR */
+ 	maar_init();
 +
- 	/* Print out memory areas statistics */
++	/* Free low memory registered within memblock allocator */
+ 	free_all_bootmem();
+-	setup_zero_pages();	/* Setup zeroed pages.  */
++
++	/* Allocate zeroed pages */
++	setup_zero_pages();
++
++	/* Free highmemory registered in memblocks */
+ 	mem_init_free_highmem();
++
++	/* Print out memory areas statistics */
  	mem_init_print_info(NULL);
  
+ #ifdef CONFIG_64BIT
 -- 
 2.6.6

@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:15:39 +0100 (CET)
-Received: from mail-lf0-f66.google.com ([209.85.215.66]:34838 "EHLO
-        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993092AbcLSCITHqsmK (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:16:06 +0100 (CET)
+Received: from mail-lf0-f68.google.com ([209.85.215.68]:33125 "EHLO
+        mail-lf0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993107AbcLSCIT6kcsK (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:19 +0100
-Received: by mail-lf0-f66.google.com with SMTP id p100so6144202lfg.2;
-        Sun, 18 Dec 2016 18:08:18 -0800 (PST)
+Received: by mail-lf0-f68.google.com with SMTP id y21so6157166lfa.0;
+        Sun, 18 Dec 2016 18:08:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=d62iWTF9ESMwKUIUyARLz3OeMSOJbiq3oxejKeBEONk=;
-        b=uSq+3uYo813OklvcuyA8AgQUGey1TU7jmELm+xKgpt8F8r1Ovqnpdchj0NtxQd6U9g
-         fIKvzTvWJM9gxfgQHiXQUQuOqrSTTOEjAS7Jwl5WLccUrjeaTzRs5imYj2YIebAYQjYY
-         R8WgCbSUG1NQOdn6bqTekZinEU8+6Svj9zDf63s31QKTRltlBetlN0ln1pkES+52rXhV
-         d6lXWk1Uc4bhfK8JVAJo34OX2IddmMi0giweEDQeXOTc5icYUnfkiFNpyP3tMNXOOl1P
-         mRGsXJH2FMxetipKbKRq2yBohRU5XFMo40P1QuEWulwyNaF0uAJ1BFBu7AF97FUUXvaU
-         l9Ag==
+        bh=lIF3ALMBpp1hN06CGMMd8ZqOdBENLOJY6D6oNIdOpS8=;
+        b=htQEU8hqSl6qDfqhYcfv93QwIgTYrpSG7dlMePTGYUzLa/hafltS61XuqhLLyOT5qK
+         GQOYjfnWc3VoF07DpdpQ6F9YJSYdODvwhD/qEPqD/STmnCcxniQ1loaSUFrp6IRvBE2W
+         LecvyJQH4iTO5+ADR3l1di4qVQPBAXQxXg9alRbarotZxtOO69/rkDEkZtlzpaNX+lNZ
+         7lC8D/9bKBdlBvtBO4q9wTOqobYK6SV5k+IKISrYVNHwuf5dSHS72hbNR4U1HvAJab1Q
+         vwyfGAkSAE1qzuol+rKtteUL+Sy503aD5RQXqUbb2DNtLU5ths9EirdoHNbfyV/ILw1/
+         VueQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=d62iWTF9ESMwKUIUyARLz3OeMSOJbiq3oxejKeBEONk=;
-        b=Nu5rXCGYFGVg/tNajG8PjouT+mFgwa/FadwS/T2/RL8UN+Q8p+CCOjvvuYTTDzL9US
-         vJXP/gnRUiB7Aniy2tJizD9tcP7b3uyRBRc4Ue/W/dI4RKwlSpNozdbNMeGSVIipn6Gh
-         kbm5bmksF3y0VxsAWBCnox65WhzzZYf9I62WMdOceQk1+/pnovc6cNsKqdKIlyytBfe9
-         wci/DBAc/m58/+qGRKFdGO9TDY31tLBra2idyrQz2+PFRl+ZK7BVgnU9aJJWnNajPiHT
-         kXemQSxxsFp0pwt3TT8qPCeUxoHW7FAIVP7Hx0dHvO+EPtqkDjOcQwmApTVU6RCAlQaI
-         Etpg==
-X-Gm-Message-State: AKaTC03Blox+VMRoPdAgGcnNPS2XSAeCFZfj1W6OxwKv3V4F8srXPrVqp2S3tnG2eFnDQw==
-X-Received: by 10.25.190.79 with SMTP id o76mr4512934lff.56.1482113291457;
-        Sun, 18 Dec 2016 18:08:11 -0800 (PST)
+        bh=lIF3ALMBpp1hN06CGMMd8ZqOdBENLOJY6D6oNIdOpS8=;
+        b=S6a/db0AFKGbQ9760Dm4oB7g5/XsthVUNuTR2KDy0gCWOFYyDpHYDjti+gKrUJr4RK
+         UCzt6Z4r/zMhOIAn2Sakk6HAGMqbbQGrpmpJOI/lAqEl7vo8RkdEmV5iQ0zLVDWLhQGQ
+         nuOHlW7fwFCqfclI0X9egEUR8ZUv4C96lObCqsPVTOjKQPxHOAdsqF7673HOohbb02H9
+         A7SyoP6ym2sCwLMCznEVCaSSfsiH36HxhYalxdZ0pBmXO133GIXQwkhP3k33ve46to4t
+         9W8tRy3pjTMVSAVe+rhPJJMHM3Ze4DMUYP/ahsA3RrVqZeawXQSEdPHjV5yGK+0KmmpJ
+         eEFA==
+X-Gm-Message-State: AIkVDXIkTQX0r5FxDpowQa5xLdS94uMTb3AoOc+9U5GOm1s8gV2euFaRcjwTaTlgXprf3Q==
+X-Received: by 10.46.32.7 with SMTP id g7mr5793213ljg.35.1482113294535;
+        Sun, 18 Dec 2016 18:08:14 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.10
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.13
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:08:11 -0800 (PST)
+        Sun, 18 Dec 2016 18:08:14 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 17/21] MIPS memblock: Alter high memory freeing method
-Date:   Mon, 19 Dec 2016 05:07:42 +0300
-Message-Id: <1482113266-13207-18-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 20/21] MIPS memblock: Add free low memory test method call
+Date:   Mon, 19 Dec 2016 05:07:45 +0300
+Message-Id: <1482113266-13207-21-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56081
+X-archive-position: 56082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,90 +68,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Memblock regions are used to find all available high memory
-and to set it free into buddy allocator.
+Right after all the necessary reservations are done, free memory
+regions can be tested if it is activated with "memtest" parameter.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/mm/init.c | 54 ++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 33 deletions(-)
+ arch/mips/mm/init.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 6f186c7..98680fb 100644
+index 35e7ba8..ccc0e96 100644
 --- a/arch/mips/mm/init.c
 +++ b/arch/mips/mm/init.c
-@@ -404,32 +404,6 @@ void maar_init(void)
- }
- 
- #ifndef CONFIG_NEED_MULTIPLE_NODES
--int page_is_ram(unsigned long pagenr)
--{
--	int i;
--
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		unsigned long addr, end;
--
--		switch (boot_mem_map.map[i].type) {
--		case BOOT_MEM_RAM:
--		case BOOT_MEM_INIT_RAM:
--			break;
--		default:
--			/* not usable memory */
--			continue;
--		}
--
--		addr = PFN_UP(boot_mem_map.map[i].addr);
--		end = PFN_DOWN(boot_mem_map.map[i].addr +
--			       boot_mem_map.map[i].size);
--
--		if (pagenr >= addr && pagenr < end)
--			return 1;
--	}
--
--	return 0;
--}
+@@ -452,6 +452,12 @@ void maar_init(void)
  
  void __init paging_init(void)
  {
-@@ -458,18 +432,32 @@ static struct kcore_list kcore_kseg0;
- static inline void mem_init_free_highmem(void)
- {
- #ifdef CONFIG_HIGHMEM
--	unsigned long tmp;
-+	struct memblock_region *reg;
-+	unsigned long pfn;
- 
- 	if (cpu_has_dc_aliases)
- 		return;
- 
--	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
--		struct page *page = pfn_to_page(tmp);
-+	/* Walk through all memory regions freeing highmem pages only */
-+	for_each_memblock(memory, reg) {
-+		unsigned long start = memblock_region_memory_base_pfn(reg);
-+		unsigned long end = memblock_region_memory_end_pfn(reg);
++	/*
++	 * Test low memory registered within memblock. The method shall test
++	 * valid and free memory only
++	 */
++	early_memtest(PFN_PHYS(min_low_pfn), PFN_PHYS(max_low_pfn));
 +
-+		/* Ignore complete lowmem entries */
-+		if (end <= max_low_pfn)
-+			continue;
+ 	/* Initialize page tables */
+ 	pagetable_init();
  
--		if (!page_is_ram(tmp))
--			SetPageReserved(page);
--		else
--			free_highmem_page(page);
-+		/* Truncate partial highmem entries */
-+		if (start < max_low_pfn)
-+			start = max_low_pfn;
-+
-+		/*
-+		 * MIPS memblock allocator doesn't allocate regions from high
-+		 * memory (see mips_lowmem_limit variable initialization), so
-+		 * just set corresponding pages free
-+		 */
-+		for (pfn = start; pfn < end; pfn++)
-+			free_highmem_page(pfn_to_page(pfn));
- 	}
- #endif
- }
 -- 
 2.6.6

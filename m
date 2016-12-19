@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:14:26 +0100 (CET)
-Received: from mail-lf0-f68.google.com ([209.85.215.68]:34833 "EHLO
-        mail-lf0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993086AbcLSCIPA4EbK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:15 +0100
-Received: by mail-lf0-f68.google.com with SMTP id p100so6144162lfg.2;
-        Sun, 18 Dec 2016 18:08:14 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:14:50 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:33124 "EHLO
+        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993096AbcLSCITIFlcK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:19 +0100
+Received: by mail-lf0-f65.google.com with SMTP id y21so6157148lfa.0;
+        Sun, 18 Dec 2016 18:08:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=NnOn2wXXADV5c0qpYYXaSQSPi6L95fPl6V6tk5EK9dc=;
-        b=QEbxIoiZV+x1x2uFlsoix56vtvGbMXlJ5/SSgRocbhYyVdq3hnQesBAvWnByMvZ9sw
-         G9WQUrUllAURyTttMFTkVmfp/CTBTFLvFj/swMoVOCh59xYWUg26gV0GrDKYIRpcWwsX
-         wv0y7dQNtl+/dP8hgQKXjJ0F/3PE1qVnI3EbMcHpSeSAiygyZ1Vp4TfppsJxPkyGwKr1
-         YRQ+gnCxolb87CcMHsf3e/j+GjEmF3X60FL7EQloIXXN8GiLsrZZSXikqwk554rr5tng
-         SmXXld3ipis843mrgcRa40h7pM4adCFlGLDGBrBPFVbIzfPOFlIHUcSWhFtWelZ+v8wR
-         RfHw==
+        bh=5xBkvVro7bKLvdj+JhtHyKzvlRYUmsN8O8j9lW4GdKA=;
+        b=W0T0glnTviIdDvqqchzulVE+2+IAD6G9ETIDf257WNXAcynXawUzZr20t5YqxVtCQf
+         WU92ABhlVeeTGMbq9hLX/xmaGwzK1pmhYzzKPOjpw9U1yCXmLMLnH34Bf8ht1nGRmYpi
+         AqAwLZMzW9AYIiESZ/mz5zNE32PcCTSEufO4f4UXW88mDtBOJQIC5rRVoYrQa/DRi8oe
+         ESiCNKjwygWnICQ0QJVVbykUjgeBEyUzoKub38ACPwsnT19OfpuVQtDFLZpNF6vkzwkk
+         5jMCajeg2nFUukdggyAHRTDBPQcpEklhbnv/Bk/GzYLI8e8No8AHp/Ii8IQoCYt79P9K
+         zR5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=NnOn2wXXADV5c0qpYYXaSQSPi6L95fPl6V6tk5EK9dc=;
-        b=oUBEHptZmAVNs/51An1ZY1hZCFP15rKUMgMZoDX/quofz4iJebqdZA/chbZLpabv3S
-         39jsyQnxVHHSMqtRYe7y9OBchV/tHjsX2o+RJQqnlUxjGRh6W5Y+rJvxappjgNgTMVUF
-         VvNKVH68kb5adAIA5xrP4MF7eY6EmHyrXaF4v7vwQXCqOWkw67DwEIsHQIVxDsxR+7nl
-         E3wdRbVw3KU3Trtid50Oj64ozeDWUMlwi7a5TjxeWK/9b+6LG9faEzPxVpnWEjLkpaKi
-         bF9aSF9vDPwyKPRlqQzuK36DQaK+xGHfAWETNe4oYoWrXL7u4UdYJaeNTQMk+skgWbei
-         cApQ==
-X-Gm-Message-State: AKaTC029Oa7pTjaPCNdOZIAnkDTUJqhFjxVGZ/yEordU3zLpEdpcKooXQyxQavtSg2unGA==
-X-Received: by 10.25.16.71 with SMTP id f68mr4479367lfi.93.1482113289459;
-        Sun, 18 Dec 2016 18:08:09 -0800 (PST)
+        bh=5xBkvVro7bKLvdj+JhtHyKzvlRYUmsN8O8j9lW4GdKA=;
+        b=IIGD5Ln1+RkR2dUKUcWj6oPkDIOWqapHSg4QmyJBl4+evy4uLaFtW6xz72Qfla2Zoa
+         c/VQ1b4kNpRXOQrAxpAo12S4tNd1NF/bfQBxanC+BnTyogC/Kx5qBM+QBg2EkiR+I/qO
+         C5kzpN8Rm4SSiiS8Ar6rjewQJT33JLJ0y5s5tX4EtSzQ4DXNjl4biGYaQpODA502aVZ+
+         z9jM01BJWwo+SXKxXusEUWlcXLhbgXL69zc4e8VvdUPwgTyxpiki2N5Csio1CJ89SAlL
+         wz1OJnZHP1QBXJJIX/pt0kLJSser/UUvVYxgMEk/4HQgRUZZYJI87va1nTLx+GK8eKhX
+         AVWw==
+X-Gm-Message-State: AIkVDXJhauMnljj/sJEfm8JRK9L/ws1YiB6E2HUbaw/nFRhjpGD6W0fM0MaK2iTWw6kHdA==
+X-Received: by 10.46.69.69 with SMTP id s66mr5823117lja.71.1482113293528;
+        Sun, 18 Dec 2016 18:08:13 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.08
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.12
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:08:08 -0800 (PST)
+        Sun, 18 Dec 2016 18:08:13 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 15/21] MIPS memblock: Alter weakened MAAR initialization method
-Date:   Mon, 19 Dec 2016 05:07:40 +0300
-Message-Id: <1482113266-13207-16-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 19/21] MIPS memblock: Add print out method of kernel virtual memory layout
+Date:   Mon, 19 Dec 2016 05:07:44 +0300
+Message-Id: <1482113266-13207-20-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56078
+X-archive-position: 56079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,66 +68,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MAAR initialization method can be slightly simplified, since
-memblock allocator is fully available.
+It's useful to have some printed map of the kernel virtual memory,
+at least for debugging purpose.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/mm/init.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ arch/mips/mm/init.c | 47 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
 diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index a4f49c7..49db909 100644
+index 13a032f..35e7ba8 100644
 --- a/arch/mips/mm/init.c
 +++ b/arch/mips/mm/init.c
-@@ -22,6 +22,7 @@
- #include <linux/ptrace.h>
- #include <linux/mman.h>
- #include <linux/mm.h>
-+#include <linux/memblock.h>
- #include <linux/bootmem.h>
- #include <linux/highmem.h>
- #include <linux/swap.h>
-@@ -245,28 +246,26 @@ void __init fixrange_init(unsigned long start, unsigned long end,
- #endif
+@@ -32,6 +32,7 @@
+ #include <linux/hardirq.h>
+ #include <linux/gfp.h>
+ #include <linux/kcore.h>
++#include <linux/sizes.h>
+ 
+ #include <asm/asm-offsets.h>
+ #include <asm/bootinfo.h>
+@@ -106,6 +107,49 @@ static void __init zone_sizes_init(void)
  }
  
--unsigned __weak platform_maar_init(unsigned num_pairs)
-+/*
-+ * Platform-specific method of MAAR registers initialization
+ /*
++ * Print out kernel memory layout
 + */
-+unsigned int __weak platform_maar_init(unsigned int num_pairs)
- {
- 	struct maar_config cfg[BOOT_MEM_MAP_MAX];
--	unsigned i, num_configured, num_cfg = 0;
-+	struct memblock_region *reg;
-+	unsigned int num_configured, num_cfg = 0;
++#define MLK(b, t) b, t, ((t) - (b)) >> 10
++#define MLM(b, t) b, t, ((t) - (b)) >> 20
++#define MLK_ROUNDUP(b, t) b, t, DIV_ROUND_UP(((t) - (b)), SZ_1K)
++static void __init mem_print_kmap_info(void)
++{
++	pr_notice("Virtual kernel memory layout:\n"
++		  "    lowmem  : 0x%08lx - 0x%08lx   (%4ld MB)\n"
++		  "    vmalloc : 0x%08lx - 0x%08lx   (%4ld MB)\n"
++#ifdef CONFIG_HIGHMEM
++		  "    pkmap   : 0x%08lx - 0x%08lx   (%4ld MB)\n"
++#endif
++		  "    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
++		  "      .text : 0x%p" " - 0x%p" "   (%4td kB)\n"
++		  "      .data : 0x%p" " - 0x%p" "   (%4td kB)\n"
++		  "      .init : 0x%p" " - 0x%p" "   (%4td kB)\n",
++		MLM(PAGE_OFFSET, (unsigned long)high_memory),
++		MLM(VMALLOC_START, VMALLOC_END),
++#ifdef CONFIG_HIGHMEM
++		MLM(PKMAP_BASE, (PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE)),
++#endif
++		MLK(FIXADDR_START, FIXADDR_TOP),
++		MLK_ROUNDUP(_text, _etext),
++		MLK_ROUNDUP(_sdata, _edata),
++		MLK_ROUNDUP(__init_begin, __init_end));
++
++	/* Check some fundamental inconsistencies. May add something else? */
++#ifdef CONFIG_HIGHMEM
++	BUILD_BUG_ON(VMALLOC_END < PAGE_OFFSET);
++	BUG_ON(VMALLOC_END < (unsigned long)high_memory);
++#endif
++	BUILD_BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) < PAGE_OFFSET);
++	BUG_ON((PKMAP_BASE) + (LAST_PKMAP)*(PAGE_SIZE) <
++					(unsigned long)high_memory);
++	BUILD_BUG_ON(FIXADDR_TOP < PAGE_OFFSET);
++	BUG_ON(FIXADDR_TOP < (unsigned long)high_memory);
++}
++#undef MLK
++#undef MLM
++#undef MLK_ROUNDUP
++
++/*
+  * Not static inline because used by IP27 special magic initialization code
+  */
+ void setup_zero_pages(void)
+@@ -492,6 +536,9 @@ void __init mem_init(void)
+ 	/* Free highmemory registered in memblocks */
+ 	mem_init_free_highmem();
  
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		switch (boot_mem_map.map[i].type) {
--		case BOOT_MEM_RAM:
--		case BOOT_MEM_INIT_RAM:
-+	/* Collect RAM regions within MAAR config array */
-+	for_each_memblock(memory, reg) {
-+		if (num_cfg >= BOOT_MEM_MAP_MAX) {
-+			pr_info("Too many memory regions to init MAARs");
- 			break;
--		default:
--			continue;
- 		}
--
- 		/* Round lower up */
--		cfg[num_cfg].lower = boot_mem_map.map[i].addr;
--		cfg[num_cfg].lower = (cfg[num_cfg].lower + 0xffff) & ~0xffff;
-+		cfg[num_cfg].lower = (reg->base + 0xffff) & ~0xffff;
++	/* Print out kernel memory layout */
++	mem_print_kmap_info();
++
+ 	/* Print out memory areas statistics */
+ 	mem_init_print_info(NULL);
  
- 		/* Round upper down */
--		cfg[num_cfg].upper = boot_mem_map.map[i].addr +
--					boot_mem_map.map[i].size;
--		cfg[num_cfg].upper = (cfg[num_cfg].upper & ~0xffff) - 1;
-+		cfg[num_cfg].upper = ((reg->base + reg->size) & ~0xffff) - 1;
- 
- 		cfg[num_cfg].attrs = MIPS_MAAR_S;
- 		num_cfg++;
 -- 
 2.6.6

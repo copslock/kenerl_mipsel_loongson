@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:12:47 +0100 (CET)
-Received: from mail-lf0-f66.google.com ([209.85.215.66]:33097 "EHLO
-        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992943AbcLSCIL4P7IK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:11 +0100
-Received: by mail-lf0-f66.google.com with SMTP id y21so6156970lfa.0;
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:13:08 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:36757 "EHLO
+        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992990AbcLSCIMGiR-K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:12 +0100
+Received: by mail-lf0-f65.google.com with SMTP id o20so6141524lfg.3;
         Sun, 18 Dec 2016 18:08:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=8LDg1TTkvlgPqBPMtNZJ2j4fJU69WpTo7qb3+VC0l44=;
-        b=e6TPTH7HelHC9PSt4KpU1HHXi1ZjDuNued9/FVlNqiWI0oiJS4E2k6R3dFdZjkFTaw
-         lxWW+QCJE+NhHUaK4hsPrkXoMCLbEoRXE/wP7sFz46AE7eYhaWanlcnvQ+Ab39HL08HI
-         4unZbLfcczWFTb76ek9CMYJAtAN/Vy1jqMlAEfQh7GeiphOrqrx3JGQrjL2as8Sp/Mup
-         EveHfDXNMJ8HSBnqvhzNwj0YJ7T2/XpaBbKD38mdk+oR+rdnXIwTF2nNsyVec4tJ+01U
-         q9muBPjUYLJlExRn8hfexrYrpuu8otSNlsARNE8GzFO33YT+ujnDfQC3358uxfTLzy77
-         BHUg==
+        bh=vpcV73qrpaIirqyCwoV3DJTPAXGdQqh8p0HMVgVNjGk=;
+        b=oEAf7kl6V+xwWswnNqT71PXJZ6bKUdrSGKg/rDTAWuZ4JXFKfiwcKQYMRylgTjd6iA
+         YvTfGzV14WkNKK/ZpkTJv/NsT/D+UAVkesb1Wmv/MTOsbUkxfmqpyCgnSjG3gJ4GeVKA
+         oFPTVwIfqAl49na4UodCY2SEeA47qRvsdTNti7N/mWe4LwGCEs6KFf5zjITGDQn28P4u
+         gywQJBKoYg9GLfHm1omSiJAwTInbB0ZQ3vvM/nGn1Ncy2bu9fd66r335NGlTACxrPkIV
+         Hu6rsr40nyoRQ+4ICMc1PpnciQgaBxyzhytd/OBua5Z+/0LH0CetBU7/VTbG4aKjwQI8
+         IfPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=8LDg1TTkvlgPqBPMtNZJ2j4fJU69WpTo7qb3+VC0l44=;
-        b=LJf7ByNSP0G4ADdjqx9DUBxijyLRxqSCv95OtrdDKe5c8UtYNP7bpC+4b8iKR3Uy+g
-         RHxUo9XXwoHFP+JpWiJnsNWWP/RlnxTYdOqwf9KdasWZUGmudFQKPPJ9lf/OgcCYUnj6
-         K8ui6txEWy1CUYRwdEEua38huEpt9K2aLKWcmO+bAa9pu+cCKOSJVSIDCCngrIE83Soh
-         gN7t0ho4QFQuByGCkWcUoJPdjVid3qPOrpHp04RHXCJDOVFJlM64vBPjbM6XDHlPTwEp
-         0iZ5VZfURsApNXk5uF8kZJyNHhJ0jRgs4gkbVQtQEfIhn2IJH5JnNWvfZ2YoRjEfCL/9
-         g+8A==
-X-Gm-Message-State: AIkVDXJ7YTXjge/GQNrDL0fUZ/JAcwp9stHhBrhNIYl4HsRpHPQm42igMJruaj04GqVRRQ==
-X-Received: by 10.46.8.25 with SMTP id 25mr6135150lji.21.1482113286376;
-        Sun, 18 Dec 2016 18:08:06 -0800 (PST)
-Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        bh=vpcV73qrpaIirqyCwoV3DJTPAXGdQqh8p0HMVgVNjGk=;
+        b=SbvNgydaGCdlowIY2Jdr+ftz7YZpdPT91Dm99ZrCdF/+d/Qorf3oq0+hd+7Xl1CBuz
+         V7F/NAijKfjLu5CROkrIPmnnu0kpCRIFImeWWXFv9Z7lqp9wODO5pk0LdzfQwxkHoLY9
+         Y4481771vLJZGsWCnoid/iztb+i8AyGMIBPDX3mojjwqL8lccSu/CzPO3+vzibWtOG0P
+         RWcUmVloDfaGisax1vYTM+UV7/duhWEO9ZVfQ+Vda+wh8oNSnxWkNzv33omxDsfVBob2
+         SJnhG0yifhWDfRk6OoIoxVS4t8VfCSbO0slAMZd2Tx7u7ipCC0tTqF8RQTdHLs7DLEJc
+         QiFg==
+X-Gm-Message-State: AIkVDXIywO9ql0VMQ1cAX670TOpXSKnuLCrCX9t5zSCuGXBvqrylFkZAoSCK9hi86TsSGA==
+X-Received: by 10.46.69.137 with SMTP id s131mr6255723lja.26.1482113285372;
         Sun, 18 Dec 2016 18:08:05 -0800 (PST)
+Received: from linux.local ([95.79.144.28])
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 18 Dec 2016 18:08:04 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 12/21] MIPS memblock: Add memblock print outs in debug
-Date:   Mon, 19 Dec 2016 05:07:37 +0300
-Message-Id: <1482113266-13207-13-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 11/21] MIPS memblock: Add memblock sanity check method
+Date:   Mon, 19 Dec 2016 05:07:36 +0300
+Message-Id: <1482113266-13207-12-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56074
+X-archive-position: 56075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,60 +68,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When debugging it is useful to have a list of all memory regions
-added and reserved in the system. Ones are printed right from
-memblock if memblock_debug is enabled.
+Perform memory sanity check right after basic memory is added.
+It makes sure there is low memory available and there is no high
+memory if one isn't supported. Additionally low memory limit needs
+to be calculated so memblock would have a proper upper boundary for
+memory allocations.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/mips/kernel/setup.c | 83 ++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index d2f410d..409d23d 100644
+index 6562f55..d2f410d 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -200,11 +200,16 @@ void __init detect_memory_region(phys_addr_t start, phys_addr_t sz_min, phys_add
- 	add_memory_region(start, size, BOOT_MEM_RAM);
- }
- 
-+/*
-+ * Print declared memory layout
-+ */
- static void __init print_memory_map(void)
- {
- 	int i;
- 	const int field = 2 * sizeof(unsigned long);
- 
-+	/* Print the added memory map  */
-+	pr_info("Determined physical RAM map:\n");
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		printk(KERN_INFO " memory: %0*Lx @ %0*Lx ",
- 		       field, (unsigned long long) boot_mem_map.map[i].size,
-@@ -228,6 +233,9 @@ static void __init print_memory_map(void)
- 			break;
- 		}
- 	}
-+
-+	/* Print memblocks if memblock_debug is set */
-+	memblock_dump_all();
- }
+@@ -472,6 +472,86 @@ static void __init mips_reserve_initrd_mem(void) { }
+ #endif
  
  /*
-@@ -795,11 +803,11 @@ static void __init arch_mem_init(char **cmdline_p)
- 	/* Sanity check the specified memory */
- 	sanity_check_meminfo();
- 
--	pr_info("Determined physical RAM map:\n");
--	print_memory_map();
--
- 	bootmem_init();
- 
-+	/* Print memory map initialized by arch-specific code and params */
-+	print_memory_map();
++ * Check initialized memory.
++ */
++static void __init sanity_check_meminfo(void)
++{
++	phys_addr_t physmem_start = PFN_PHYS(ARCH_PFN_OFFSET);
++	phys_addr_t size_limit = 0;
++	struct memblock_region *reg;
++	bool highmem = false;
++	bool should_use_highmem = false;
 +
- 	device_tree_init();
- 	sparse_init();
- 	plat_swiotlb_setup();
++	/*
++	 * Walk over all memory ranges discarding highmem if it's disabled and
++	 * calculating the memblock allocator limit
++	 */
++	for_each_memblock(memory, reg) {
++		phys_addr_t block_start = reg->base;
++		phys_addr_t block_end = reg->base + reg->size;
++		phys_addr_t block_size = reg->size;
++
++		if (block_start >= HIGHMEM_START) {
++			highmem = true;
++			size_limit = block_size;
++		} else {
++			size_limit = HIGHMEM_START - block_start;
++		}
++
++		/* Discard highmem physical memory if it isn't supported */
++		if (!IS_BUILTIN(CONFIG_HIGHMEM)) {
++			/* Discard the whole highmem memory block */
++			if (highmem) {
++				pr_notice("Ignoring RAM at %pa-%pa (!CONFIG_HIGHMEM)\n",
++					&block_start, &block_end);
++				memblock_remove(block_start, block_size);
++				should_use_highmem = true;
++				continue;
++			}
++			/* Truncate memory block */
++			if (block_size > size_limit) {
++				phys_addr_t overlap_size = block_size - size_limit;
++				phys_addr_t highmem_start = HIGHMEM_START;
++
++				pr_notice("Truncate highmem %pa-%pa to -%pa\n",
++					&block_start, &block_end, &highmem_start);
++				memblock_remove(highmem_start, overlap_size);
++				block_end = highmem_start;
++				should_use_highmem = true;
++			}
++		}
++		/* Truncate region if it starts below ARCH_PFN_OFFSET */
++		if (block_start < physmem_start) {
++			phys_addr_t overlap_size = physmem_start - block_start;
++
++			pr_notice("Truncate lowmem %pa-%pa to %pa-\n",
++				&block_start, &block_end, &physmem_start);
++			memblock_remove(block_start, overlap_size);
++		}
++
++		/* Calculate actual lowmem limit for memblock allocator */
++		if (!highmem) {
++			if (block_end > mips_lowmem_limit) {
++				if (block_size > size_limit)
++					mips_lowmem_limit = HIGHMEM_START;
++				else
++					mips_lowmem_limit = block_end;
++			}
++		}
++	}
++
++	/* Panic if no lowmem has been determined */
++	if (!mips_lowmem_limit)
++		panic("Oops, where is low memory? 0_o\n");
++
++	if (should_use_highmem)
++		pr_notice("Consider using HIGHMEM enabled kernel\n");
++
++	/* Set memblock allocator limit */
++	memblock_set_current_limit(mips_lowmem_limit);
++}
++
++/*
+  * Reserve kernel code and data within memblock allocator
+  */
+ static void __init mips_reserve_kernel_mem(void)
+@@ -712,6 +792,9 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	/* Parse passed parameters */
+ 	mips_parse_param(cmdline_p);
+ 
++	/* Sanity check the specified memory */
++	sanity_check_meminfo();
++
+ 	pr_info("Determined physical RAM map:\n");
+ 	print_memory_map();
+ 
 -- 
 2.6.6

@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:11:05 +0100 (CET)
-Received: from mail-lf0-f67.google.com ([209.85.215.67]:33945 "EHLO
-        mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992836AbcLSCIHMFO7K (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:11:33 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:35835 "EHLO
+        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992844AbcLSCIHhWmfK (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:07 +0100
-Received: by mail-lf0-f67.google.com with SMTP id 30so4661491lfy.1;
-        Sun, 18 Dec 2016 18:08:06 -0800 (PST)
+Received: by mail-lf0-f65.google.com with SMTP id p100so6143987lfg.2;
+        Sun, 18 Dec 2016 18:08:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Lq7zFvdGLh7vMzOzGN1Veqkth8oaxOxcyVAOBs70pVc=;
-        b=uLRmC2FC7Uh9vkDjpxwdPPzYzwOomFut0luv4NImjkFOoluMcKqEaKIXiQEOlclRxO
-         aauYvQPhB773wDxcJTRua/9i/w4xjF76PLsy8Vgdqp+v1ounHfKrSZlPhmUt1pVwHZrx
-         TU5jDtj1p+xvCviUoc9wyEpx0i4t1n0iNWvw9xaaoKz7q9L4Z3qOHMxYIxUclZ9DrQS4
-         ymahpDJPh/qUR3SYcw8RDCVKQEU6/EybHmurSL1wJl4vFAMhKK9XJnQSjhjtFNu3f1Wt
-         dzLZV1WZbgLygZVL7ve+4C7MTgb+9tFOTNARukrySvXK8zltZzKPWICDJYJa9vPl92fy
-         nokg==
+        bh=0pprW2ggFQghEokrbOvTk6VvmgCmi68QgSVnurj1mYo=;
+        b=DYJBRhIFk15fQrN8wWLdv7uIi42zRrD8OOfnqaQ0lRKPAY4jFhgQ0HIjHBURmHVaS/
+         xG+BRutA+Ogv0bFocvJ9xHSNuiPDVNJe5+ZQTtfwW4GUiPovWbk4e2Cd461OwdqwNi90
+         iJq3H6tO6Re0tRRqeVj6ua442ElfAcOZM1CMpaApPJO2YIPdyH/K33yLsUALU7SbbjBF
+         +ViR7QUnTV8190DAQDEjx05Xe2JDTUYv1fnSo7yjrDvMXnqimEIOUOEOyeok3KSGccSy
+         PuVnNtvSyM4sMNfF/C8iG60/pg1bddYRzH6na3ayBrWc9XF562Zko+sYNjL91W6WlNm4
+         BXBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Lq7zFvdGLh7vMzOzGN1Veqkth8oaxOxcyVAOBs70pVc=;
-        b=gPhyM9HOCiu2bd0LwbKgNegBp8rIfikPxlTwRp/4NF6EdNeQaTXUezGYsuPBVjx+Yq
-         RczMU+nqgn+repqu6HLWY7os1laC/833phUEl7WS0pk5zbdlsj9gSjUpMUnrTltKDko2
-         eCRW7sQIB5EH1vwSVmkx5LJiZ8YchZ282dnD7+2hoH582OoNx39+WYo2eHoMSM8jnHtl
-         C6VXx+bwxB6o0sDwLCKQV3/7q6kE6FQT2mJt0h1ILy8IU8wSIdpkuW28eiHCLQN7vCtC
-         pppdcN/kcAVrqxHZwrkRqlveaJlsyY16nSbnv2PnhdlMp/bTplK6TECnPzzlbhtTIb8F
-         mrtg==
-X-Gm-Message-State: AIkVDXJdYWbqqNxFGwtf87Xo+9iXxvqMEoRmb8p/xbcuJykWbrTv7zTs4lieiAIaHqCZTw==
-X-Received: by 10.46.76.1 with SMTP id z1mr6070976lja.41.1482113280983;
-        Sun, 18 Dec 2016 18:08:00 -0800 (PST)
+        bh=0pprW2ggFQghEokrbOvTk6VvmgCmi68QgSVnurj1mYo=;
+        b=JCCms+GTu50dG2hyJfTa0DYawSWbdG1JYJWlHcmO+ILW2+T1pcygN13qEemQMYlUoH
+         IDV8mCLszii5Tp32+Q4csswLjnw+AvXQE2cwR/i46Bn0ie9046dEs/V+7cKhjLIbYIuY
+         0ddAa8GAH2F+3cqdbOortnenhAZTPXzHfY/P1MRfT9OT/BVITWIf46PU5Jsxof96OI8x
+         SbATEmISNAfcq9n6T8HvazIGsm9gD4wHs0xsLHrwTWuItHg+qJorJ9ZuH6G38O6UZ09M
+         lJiUYp4pK4SVH5jeJi6lryvgQCOEKQZq5zQySqi7hHayM9TdytRyL4pg08wqrASOC7WM
+         zS2w==
+X-Gm-Message-State: AIkVDXIt4FKL1RdSUdq21+Gz746NnxhnkWysh7qKb/EZHN99UIDh7hPQdZMHwWFrqC1bAw==
+X-Received: by 10.46.70.26 with SMTP id t26mr3684987lja.33.1482113282129;
+        Sun, 18 Dec 2016 18:08:02 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.07.59
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.01
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:08:00 -0800 (PST)
+        Sun, 18 Dec 2016 18:08:01 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 07/21] MIPS memblock: Alter elfcorehdr parameters parser
-Date:   Mon, 19 Dec 2016 05:07:32 +0300
-Message-Id: <1482113266-13207-8-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 08/21] MIPS memblock: Move kernel parameters parser into individual method
+Date:   Mon, 19 Dec 2016 05:07:33 +0300
+Message-Id: <1482113266-13207-9-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56070
+X-archive-position: 56071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,140 +68,133 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Memblock API can be successfully used to verify whether elfcorehdr
-memory region belongs to lowmemory, then it can be reserved within
-memblock allocator. There is also available default method for
-early parameters parser in kernel/crash_dump.c: setup_elfcorehdr(),
-so it's wise to use one instead of creating our own doing actually
-the same thing.
+Main memory initialization method looks messy with cmd line parser
+built-in. So it's better for readability to put it into a separated
+method.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 91 +++++++++++++++++-------------
- 1 file changed, 52 insertions(+), 39 deletions(-)
+ arch/mips/kernel/setup.c | 87 ++++++++++++++++--------------
+ 1 file changed, 48 insertions(+), 39 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index cc6d06b..52205fb 100644
+index 52205fb..9c1a60d 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -426,6 +426,55 @@ static void __init mips_reserve_initrd_mem(void) { }
+@@ -231,6 +231,51 @@ static void __init print_memory_map(void)
+ }
  
- #endif
- 
-+/*
-+ * Reserve memory occupied by elfcorehdr
+ /*
++ * Parse passed cmdline
 + */
-+static void __init mips_reserve_elfcorehdr(void)
++#define USE_PROM_CMDLINE	IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER)
++#define USE_DTB_CMDLINE		IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_DTB)
++#define EXTEND_WITH_PROM	IS_ENABLED(CONFIG_MIPS_CMDLINE_EXTEND)
++#define BUILTIN_EXTEND_WITH_PROM	\
++	IS_ENABLED(CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND)
++
++static void __init mips_parse_param(char **cmdline_p)
 +{
-+#ifdef CONFIG_PROC_VMCORE
-+	/*
-+	 * Don't reserve anything if kernel isn't booting after a panic and
-+	 * vmcore is usable (see linux/crash_dump.h for details)
-+	 */
-+	if (!is_vmcore_usable())
-+		return;
++#if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
++	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
++#else
++	if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
++	    (USE_DTB_CMDLINE && !boot_command_line[0]))
++		strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
 +
-+	/* Check whether the passed address belongs to low memory */
-+	if (elfcorehdr_addr + elfcorehdr_size >= mips_lowmem_limit) {
-+		pr_err("Elfcorehdr %08zx @ %pa doesn't belong to low memory",
-+			(size_t)elfcorehdr_size, &elfcorehdr_addr);
-+		return;
++	if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
++		if (boot_command_line[0])
++			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
++		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
 +	}
 +
-+	/*
-+	 * If elfcorehdr_size hasn't been specified, then try to reserve upto
-+	 * low memory limit
-+	 */
-+	if (!elfcorehdr_size)
-+		elfcorehdr_size = mips_lowmem_limit - elfcorehdr_addr;
-+
-+	/* Check the region belongs to actual memory (size can be zero) */
-+	if (!memblock_is_region_memory(elfcorehdr_addr, elfcorehdr_size)) {
-+		pr_err("Elfcorehdr %08zx @ %pa is not a memory region",
-+			(size_t)elfcorehdr_size, &elfcorehdr_addr);
-+		return;
++#if defined(CONFIG_CMDLINE_BOOL)
++	if (builtin_cmdline[0]) {
++		if (boot_command_line[0])
++			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
++		strlcat(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
 +	}
 +
-+	/* Check whether elfcorehdr region is free */
-+	if (memblock_is_region_reserved(elfcorehdr_addr, elfcorehdr_size)) {
-+		pr_err("Elfcorehdr %08zx @ %pa overlaps in-use memory",
-+			(size_t)elfcorehdr_size, &elfcorehdr_addr);
-+		return;
++	if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
++		if (boot_command_line[0])
++			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
++		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
 +	}
++#endif
++#endif
++	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
 +
-+	/* Reserve elfcorehdr within memblock */
-+	memblock_reserve(elfcorehdr_addr, PAGE_ALIGN(elfcorehdr_size));
++	*cmdline_p = command_line;
 +
-+	pr_info("Reserved memory for kdump at %08zx @ %pa\n",
-+		(size_t)elfcorehdr_size, &elfcorehdr_addr);
-+#endif /* CONFIG_PROC_VMCORE */
++	parse_early_param();
 +}
 +
- #ifdef CONFIG_KEXEC
- /*
-  * Parse passed crashkernel parameter and reserve corresponding memory
-@@ -499,6 +548,9 @@ static void __init bootmem_init(void)
- 	/* Check and reserve memory occupied by initrd */
- 	mips_reserve_initrd_mem();
- 
-+	/* Reserve memory for elfcorehdr */
-+	mips_reserve_elfcorehdr();
-+
- 	/* Parse crashkernel parameter */
- 	mips_parse_crashkernel();
- 
-@@ -719,37 +771,6 @@ static void __init bootmem_init(void)
-  * initialization hook for anything else was introduced.
++/*
+  * Parse "mem=size@start" parameter rewriting a defined memory map
+  * We look for mem=size@start, where start and size are "value[KkMm]"
   */
+@@ -790,12 +835,6 @@ static void __init arch_mem_addpart(phys_addr_t mem, phys_addr_t end, int type)
+ 	add_memory_region(mem, size, type);
+ }
  
--#ifdef CONFIG_PROC_VMCORE
--unsigned long setup_elfcorehdr, setup_elfcorehdr_size;
--static int __init early_parse_elfcorehdr(char *p)
--{
--	int i;
+-#define USE_PROM_CMDLINE	IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER)
+-#define USE_DTB_CMDLINE		IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_DTB)
+-#define EXTEND_WITH_PROM	IS_ENABLED(CONFIG_MIPS_CMDLINE_DTB_EXTEND)
+-#define BUILTIN_EXTEND_WITH_PROM	\
+-	IS_ENABLED(CONFIG_MIPS_CMDLINE_BUILTIN_EXTEND)
 -
--	setup_elfcorehdr = memparse(p, &p);
--
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		unsigned long start = boot_mem_map.map[i].addr;
--		unsigned long end = (boot_mem_map.map[i].addr +
--				     boot_mem_map.map[i].size);
--		if (setup_elfcorehdr >= start && setup_elfcorehdr < end) {
--			/*
--			 * Reserve from the elf core header to the end of
--			 * the memory segment, that should all be kdump
--			 * reserved memory.
--			 */
--			setup_elfcorehdr_size = end - setup_elfcorehdr;
--			break;
--		}
--	}
--	/*
--	 * If we don't find it in the memory map, then we shouldn't
--	 * have to worry about it, as the new kernel won't use it.
--	 */
--	return 0;
--}
--early_param("elfcorehdr", early_parse_elfcorehdr);
--#endif
--
- static void __init arch_mem_addpart(phys_addr_t mem, phys_addr_t end, int type)
+ static void __init arch_mem_init(char **cmdline_p)
  {
- 	phys_addr_t size;
-@@ -833,14 +854,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 	parse_early_param();
+ 	struct memblock_region *reg;
+@@ -804,6 +843,9 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	/* call board setup routine */
+ 	plat_mem_setup();
  
- 	bootmem_init();
--#ifdef CONFIG_PROC_VMCORE
--	if (setup_elfcorehdr && setup_elfcorehdr_size) {
--		printk(KERN_INFO "kdump reserved memory at %lx-%lx\n",
--		       setup_elfcorehdr, setup_elfcorehdr_size);
--		reserve_bootmem(setup_elfcorehdr, setup_elfcorehdr_size,
--				BOOTMEM_DEFAULT);
++	/* Parse passed parameters */
++	mips_parse_param(cmdline_p);
++
+ 	/*
+ 	 * Make sure all kernel memory is in the maps.  The "UP" and
+ 	 * "DOWN" are opposite for initdata since if it crosses over
+@@ -820,39 +862,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	pr_info("Determined physical RAM map:\n");
+ 	print_memory_map();
+ 
+-#if defined(CONFIG_CMDLINE_BOOL) && defined(CONFIG_CMDLINE_OVERRIDE)
+-	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+-#else
+-	if ((USE_PROM_CMDLINE && arcs_cmdline[0]) ||
+-	    (USE_DTB_CMDLINE && !boot_command_line[0]))
+-		strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+-
+-	if (EXTEND_WITH_PROM && arcs_cmdline[0]) {
+-		if (boot_command_line[0])
+-			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+-		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
+-	}
+-
+-#if defined(CONFIG_CMDLINE_BOOL)
+-	if (builtin_cmdline[0]) {
+-		if (boot_command_line[0])
+-			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+-		strlcat(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+-	}
+-
+-	if (BUILTIN_EXTEND_WITH_PROM && arcs_cmdline[0]) {
+-		if (boot_command_line[0])
+-			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
+-		strlcat(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
 -	}
 -#endif
+-#endif
+-	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+-
+-	*cmdline_p = command_line;
+-
+-	parse_early_param();
+-
+ 	bootmem_init();
  
  	device_tree_init();
- 	sparse_init();
 -- 
 2.6.6

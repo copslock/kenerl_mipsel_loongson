@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:08:10 +0100 (CET)
-Received: from mail-lf0-f67.google.com ([209.85.215.67]:35816 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:08:41 +0100 (CET)
+Received: from mail-lf0-f67.google.com ([209.85.215.67]:36730 "EHLO
         mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992166AbcLSCIAOs5QK (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992160AbcLSCIAOs5QK (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:00 +0100
-Received: by mail-lf0-f67.google.com with SMTP id p100so6143850lfg.2;
+Received: by mail-lf0-f67.google.com with SMTP id o20so6141330lfg.3;
         Sun, 18 Dec 2016 18:08:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=FATk822C9xBYACoaCzDoGnqyPWBbfvrtJMT+KOATsuk=;
-        b=nBjNeI+DAdNreo81qcyxsX/sQJYLH/eyVfdRl0ePhTaVF6UzJMqpMU1WMmw0FFM27b
-         sdYHSDojM2VbJA842mquiK3TOSmhGcZe7Yvj19bsa0ejsdVqJGBIQk5R1Tf4pgxNO9+h
-         E+GV91BZaq0Cf8wkPLMXEyHuNfEgQkT9mtqOSnPxoFT63FEZ+VZlN2zwtHrGQnoxHddG
-         AwLLkVzitIpKXbGhCdIiqCdhI59b6rmXZmpUrF6twiVCJCIQg5iYN00KmqfoBFPLce5z
-         Z6lsXN6wfhQ4GsGOAl5WSgW96tgAHXrDJ5Djpa922cIWnfWiKwu6lR8ROeUySxUvxiH/
-         WyRA==
+        h=from:to:cc:subject:date:message-id;
+        bh=GqY+x7+Rg+la2U5DE3HGjsQDbY4L1+TIwDas+e9x1Bo=;
+        b=kAWvphY0diurcDYlwya8SzQcDMn8ZMi9L+FqMAyXmvK8R7GmhtD9SvC9WTDLt/iVvc
+         YZssZdzlWgDVLISQCP4csCL/syzJRxqAmeJRpnRmcTyHWgVA5blf0ts7mAFQrGBZMOnw
+         U2sa7nJmtT/C7/bHjrFGqZqR747yjD7WJtejASRQnh85Rp4GhJtq654M7/DoFQZUfkZ9
+         p5NQ8rqtDXt2ypY4sFkoAN1yU7SHLyW9S3v7ZNm90o4nyuZOU2x+BfcWt8ALhVl09rPB
+         0YPr4GsiF5hrx+DEmqRk15x/BfKX6HYB2oQRdeXmz7Qp4wHMu1TL9RAlQJXIpWFWroHg
+         +XXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=FATk822C9xBYACoaCzDoGnqyPWBbfvrtJMT+KOATsuk=;
-        b=XNj3WVbv1cPzK1d7wJOFc3Ex/3ZN6DYOApYs1m+SmQSDjzqQt3J6gncjADHOorWZQI
-         PN+lAOIfLEr0B6hL3XpNh2YVIk5oNaHUad1zmAZHj1oWTZyN+FSJexMtvz7fo/OLvbIW
-         82SglPjwJJB09j2ST3tWO1QwZAI7vbq3X85ev1hnHZ6PZtn1w/KDXXLybm8BQ5QO4akd
-         6gYbcO+eFzHV1gbS04d+PmCsg7+OiIy8E6SR9HqiowOJTq/Zgz3yC7Z+C/H60xC3MaBC
-         DA/Sz56WZuQsppZdyZqcinXbLvmRjgqOgXkNyuzgY8vW96G1lw2qtJ2nmeRDwlEaupWr
-         qFHg==
-X-Gm-Message-State: AIkVDXKarddctqRu+lcYq6Ldf8Dq+2K4g8vThKWOIWYJ5I/5eWVobMqtG2w/CFVCR1kYgQ==
-X-Received: by 10.46.21.68 with SMTP id 4mr5829661ljv.11.1482113274309;
-        Sun, 18 Dec 2016 18:07:54 -0800 (PST)
-Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.07.53
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=GqY+x7+Rg+la2U5DE3HGjsQDbY4L1+TIwDas+e9x1Bo=;
+        b=GMIqpQUtgP7ctBuhPkpFbyI/8r1TV0HscFgI4BJSB0QJETEq1BMbcOjAbom271pq13
+         L7RE67FWOz6CE42Qt8BjL/Fl8gTLU1DPp8CepGOX6JcCt4As5HdFrABTIqSh6iyBuhZO
+         BiEPYbmk/cw7k3TKITDf/hcXnsTQCFOc1sbJSsiXi070Ecn4XXFveP3fUxo0P+qH/OaW
+         3Q/Qv/JqJq6KYX2bmBzIm6owGl2TA8sKSaXPHUfErX76hbimLJMR88EYItFJtn8f1/Uw
+         Hciaub82/oLlMb/03tVsBPHCGHFmhrjmou0nJEaTvF37oPsz68fFSsdL5Ba87Ns4eooU
+         6lXg==
+X-Gm-Message-State: AIkVDXILvewSSYhEwZ6ZahPmR4DuYk32ehr3TOfRwKNmw6FTAgoAPxu48u7PiG4YltYuBw==
+X-Received: by 10.46.7.26 with SMTP id 26mr6346022ljh.18.1482113273250;
         Sun, 18 Dec 2016 18:07:53 -0800 (PST)
+Received: from linux.local ([95.79.144.28])
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.07.52
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 18 Dec 2016 18:07:52 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,17 +40,15 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 01/21] MIPS memblock: Unpin dts memblock sanity check method
-Date:   Mon, 19 Dec 2016 05:07:26 +0300
-Message-Id: <1482113266-13207-2-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 00/21] MIPS memblock: Remove bootmem code and switch to NO_BOOTMEM
+Date:   Mon, 19 Dec 2016 05:07:25 +0300
+Message-Id: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
-In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
-References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56063
+X-archive-position: 56064
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,111 +65,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It's necessary to check whether retrieved from dts memory regions
-fits to page alignment and limits restrictions. Sometimes it is
-necessary to perform the same checks, but ito add the memory regions
-into a different subsystem. MIPS is going to be that case.
+Most of the modern platforms supported by linux kernel have already
+been cleaned up of old bootmem allocator by moving to nobootmem
+interface wrapping up the memblock. This patchset is the first
+attempt to do the similar improvement for MIPS for UMA systems
+only.
+
+Even though the porting was performed as much careful as possible
+there still might be problem with support of some platforms,
+especially Loonson3 or SGI IP27, which perform early memory manager
+initialization by their self.
+
+The patchset is split so individual patch being consistent in
+functional and buildable ways. But the MIPS early memory manager
+will work correctly only either with or without the whole set being
+applied. For the same reason a reviewer should not pay much attention
+to methods bootmem_init(), arch_mem_init(), paging_init() and
+mem_init() until they are fully refactored.
+
+The patchset is applied on top of kernel v4.9.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
----
- drivers/of/fdt.c       | 47 +++++++++++++++++++++++---------
- include/linux/of_fdt.h |  1 +
- 2 files changed, 35 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 1f98156..1ee958f 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -983,44 +983,65 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
- #define MAX_MEMBLOCK_ADDR	((phys_addr_t)~0)
- #endif
- 
--void __init __weak early_init_dt_add_memory_arch(u64 base, u64 size)
-+int __init sanity_check_dt_memory(phys_addr_t *out_base,
-+				  phys_addr_t *out_size)
- {
-+	phys_addr_t base = *out_base, size = *out_size;
- 	const u64 phys_offset = MIN_MEMBLOCK_ADDR;
- 
- 	if (!PAGE_ALIGNED(base)) {
- 		if (size < PAGE_SIZE - (base & ~PAGE_MASK)) {
--			pr_warn("Ignoring memory block 0x%llx - 0x%llx\n",
-+			pr_err("Memblock 0x%llx - 0x%llx isn't page aligned\n",
- 				base, base + size);
--			return;
-+			return -EINVAL;
- 		}
-+		pr_warn("Memblock 0x%llx - 0x%llx shifted to ",
-+			base, base + size);
- 		size -= PAGE_SIZE - (base & ~PAGE_MASK);
- 		base = PAGE_ALIGN(base);
-+		pr_cont("0x%llx - 0x%llx\n", base, base + size);
- 	}
- 	size &= PAGE_MASK;
- 
- 	if (base > MAX_MEMBLOCK_ADDR) {
--		pr_warning("Ignoring memory block 0x%llx - 0x%llx\n",
--				base, base + size);
--		return;
-+		pr_err("Memblock 0x%llx - 0x%llx exceeds max address\n",
-+			base, base + size);
-+		return -EINVAL;
- 	}
- 
- 	if (base + size - 1 > MAX_MEMBLOCK_ADDR) {
--		pr_warning("Ignoring memory range 0x%llx - 0x%llx\n",
--				((u64)MAX_MEMBLOCK_ADDR) + 1, base + size);
-+		pr_warn("Memblock 0x%llx - 0x%llx truncated to ",
-+			base, base + size);
- 		size = MAX_MEMBLOCK_ADDR - base + 1;
-+		pr_cont("0x%llx - 0x%llx\n", base, base + size);
- 	}
- 
- 	if (base + size < phys_offset) {
--		pr_warning("Ignoring memory block 0x%llx - 0x%llx\n",
--			   base, base + size);
--		return;
-+		pr_err("Memblock 0x%llx - 0x%llx is below phys offset\n",
-+			base, base + size);
-+		return -EINVAL;
- 	}
-+
- 	if (base < phys_offset) {
--		pr_warning("Ignoring memory range 0x%llx - 0x%llx\n",
--			   base, phys_offset);
-+		pr_warn("Memblock 0x%llx - 0x%llx truncated to ",
-+			base, base + size);
- 		size -= phys_offset - base;
- 		base = phys_offset;
-+		pr_cont("0x%llx - 0x%llx\n", base, base + size);
- 	}
-+
-+	/* Set the output base address and size */
-+	*out_base = base;
-+	*out_size = size;
-+
-+	return 0;
-+}
-+
-+void __init __weak early_init_dt_add_memory_arch(u64 base, u64 size)
-+{
-+	if (sanity_check_dt_memory(&base, &size))
-+		return;
-+
- 	memblock_add(base, size);
- }
- 
-diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
-index df9ef38..ddf93c5 100644
---- a/include/linux/of_fdt.h
-+++ b/include/linux/of_fdt.h
-@@ -84,6 +84,7 @@ extern const void *of_flat_dt_match_machine(const void *default_match,
- 		const void * (*get_next_compat)(const char * const**));
- 
- /* Other Prototypes */
-+extern int sanity_check_dt_memory(phys_addr_t *base, phys_addr_t *size);
- extern void unflatten_device_tree(void);
- extern void unflatten_and_copy_device_tree(void);
- extern void early_init_devtree(void *);
+Serge Semin (21):
+  MIPS memblock: Unpin dts memblock sanity check method
+  MIPS memblock: Add dts mem and reserved-mem callbacks
+  MIPS memblock: Alter traditional add_memory_region() method
+  MIPS memblock: Alter user-defined memory parameter parser
+  MIPS memblock: Alter initrd memory reservation method
+  MIPS memblock: Alter kexec-crashkernel parameters parser
+  MIPS memblock: Alter elfcorehdr parameters parser
+  MIPS memblock: Move kernel parameters parser into individual method
+  MIPS memblock: Move kernel memory reservation to individual method
+  MIPS memblock: Discard bootmem allocator initialization
+  MIPS memblock: Add memblock sanity check method
+  MIPS memblock: Add memblock print outs in debug
+  MIPS memblock: Add memblock allocator initialization
+  MIPS memblock: Alter IO resources initialization method
+  MIPS memblock: Alter weakened MAAR initialization method
+  MIPS memblock: Alter paging initialization method
+  MIPS memblock: Alter high memory freeing method
+  MIPS memblock: Slightly improve buddy allocator init method
+  MIPS memblock: Add print out method of kernel virtual memory layout
+  MIPS memblock: Add free low memory test method call
+  MIPS memblock: Deactivate old bootmem allocator
+
+ arch/mips/Kconfig        |   2 +-
+ arch/mips/kernel/prom.c  |  32 +-
+ arch/mips/kernel/setup.c | 958 +++++++++++++++--------------
+ arch/mips/mm/init.c      | 234 ++++---
+ drivers/of/fdt.c         |  47 +-
+ include/linux/of_fdt.h   |   1 +
+ 6 files changed, 739 insertions(+), 535 deletions(-)
+
 -- 
 2.6.6

@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:09:28 +0100 (CET)
-Received: from mail-lf0-f66.google.com ([209.85.215.66]:36736 "EHLO
-        mail-lf0-f66.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992244AbcLSCIBwE5SK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:01 +0100
-Received: by mail-lf0-f66.google.com with SMTP id o20so6141392lfg.3;
-        Sun, 18 Dec 2016 18:08:01 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:09:52 +0100 (CET)
+Received: from mail-lf0-f65.google.com ([209.85.215.65]:35823 "EHLO
+        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992562AbcLSCIC7WS2K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:02 +0100
+Received: by mail-lf0-f65.google.com with SMTP id p100so6143908lfg.2;
+        Sun, 18 Dec 2016 18:08:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=aJivAl0WCJIEGfFDNoU4GZzBim6nTlfaERlbdSYrE0M=;
-        b=I22OhYCHMpxWpO99vccQKTzG/ypDA5v5IMaRpRoMS4vuPaN2B2+rRZYNC42no/GQqR
-         06/YIVUM7LqOy+orKUy9Lij1FfPO2bXX81xJFZOOlobUUd6WWIw12neDF6gHUP9nkTPF
-         k/ILzRd0WS2orRfOEl/z453vE5qM0xAek2SlDMSAjYx2CAJG2N25DHcXt6xdHxHIYpyK
-         60DLRFTTZNeUo4Q9Ye8j7mRCkA4Uyzb1YqqXwKnul74LkRIBnjVyAWMfmXSEiaTD6DLX
-         zWFxQ2/CAYDUUzJ1TXgS83kF2NwzxJmzEBToVQFbB8+cjJBqHWXRCzg53yD39UFlNLSy
-         gH/g==
+        bh=DJ+LoA1Msu/dP9d+8cLKleSZtQLAWmKiOUEmaizwHCA=;
+        b=SNjenYGAEZR34UwE7zSLDj4BngwWqGTBroofr7DtRmKaOg2SJNSJuTr3Xxn6jqVzju
+         1PvaprMweqSzHKpsoRSfXZWzoozk7kNWRH65ixl3LHJep4IsPWsmZRplKuHnQMGwSbHM
+         QGZSpZrWT0KdOCWTkk11uo53auMsVepyPRK3p9XL2R6+Jy4udLnqqCuyUzOtY4wS9XPR
+         C6AgChj3QZciijYt5+8qBqxIo3MCxhchOP/hXBm+uBBPMefI2drbc3iUNIIG/6hWJ/uG
+         4Cs2Uvd4qlG2w0Qm3loaIZ9pJUqZAzxVVDP1/am/zpDMB9i2Y01Vo08PyEJwWVoN3mIi
+         XkdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=aJivAl0WCJIEGfFDNoU4GZzBim6nTlfaERlbdSYrE0M=;
-        b=IFPx8pI4kO8CKolptW5AZPd+KRjOKixatVPfAEdXf24NrxELoHDiz6jBxvLIsGEE2A
-         oF3BwGTbf2epHgSnPOWbK5Yu64vGMnFJ1/ABqVeX+a2BlN+hlvCIGCp2jT/Rgv7SbL18
-         U1nkgEyU8FBF+P/b77Qtjtwgw/7xvJbhKr6hxkBLUdMDf6J9BIxr6NSZqYBuNLTcfba4
-         fbwqNvRGn/3H0O6EpLsEE/3kE0iBgl/G40qXV3MheAuLn9VwTBG+NRdK3/bk3fqfiHNN
-         lwUwLosuW0I1VP3LxV3fYKKN1ecDMkHBHZjMk5kiLYpvoXgDX+NuIj1Tie2im5fIUzZq
-         OpfA==
-X-Gm-Message-State: AIkVDXKonbZeRxASzRqJnpSZdFs/CdSNYB4RtNMZUW9xggwgVG/m+fDroGZs4zrL6o30Fg==
-X-Received: by 10.46.33.165 with SMTP id h37mr6267220lji.57.1482113276376;
-        Sun, 18 Dec 2016 18:07:56 -0800 (PST)
+        bh=DJ+LoA1Msu/dP9d+8cLKleSZtQLAWmKiOUEmaizwHCA=;
+        b=fsC39vWOKkLz4EfLvH78PRuRc7tL9zE3VFJlQKVEax3E6AZVia8O9t0MDVbtCCKQ8R
+         3UOu/USKIMw/pnX6X8O2fOSyBJTtRnNACxXknRhn391hssBj7wNoVQD5mKak3S/34JHi
+         i5ASYwfknKRaXgwT2yLwZQjjzKtxfO+wpTO925F9tr7U5DmyHm9TPQs/rJdwqQNiY70o
+         JCXA2mV4y2TvIIa+PQpXQiHFGphJrlUHoceAUXGi/86mhODkSCZ9dHCfps4guuLeBbq4
+         H1m0HtYYDCE2qsbf+paEBgY1wFLgSr8AuN06lez6nK0Sf+vF3AJlIV4roHh8x2xsaCOz
+         FQhA==
+X-Gm-Message-State: AIkVDXLJ3Pk+sEAcWGUbgoE6SsRPHETEJ7ul/S6FQTEAvhdf6CkG8v1dYY5Oy9f/0hMIcw==
+X-Received: by 10.46.74.9 with SMTP id x9mr6345877lja.40.1482113277510;
+        Sun, 18 Dec 2016 18:07:57 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.07.55
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.07.56
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:07:55 -0800 (PST)
+        Sun, 18 Dec 2016 18:07:57 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 03/21] MIPS memblock: Alter traditional add_memory_region() method
-Date:   Mon, 19 Dec 2016 05:07:28 +0300
-Message-Id: <1482113266-13207-4-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 04/21] MIPS memblock: Alter user-defined memory parameter parser
+Date:   Mon, 19 Dec 2016 05:07:29 +0300
+Message-Id: <1482113266-13207-5-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56066
+X-archive-position: 56067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,98 +68,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is no safe and fast way to get rid of boot_mem_map usage in
-the wide set of platform code. But it's luck, that the architecture
-specific code doesn't make any direct changes in the boot_mem_map
-structure. Additionally the platform specific code registers the
-available memory using traditional add_memory_region() method.
-It's obvious, that one needs to be modified adding regions to both
-new memblock allocator and old boot_mem_map subsystem. In this way
-most of architecture specific code won't be broken.
+Both new memblock and boot_mem_map subsystems need to be fully
+cleared before a new memory region is added. So the early parser is
+correspondingly modified.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 51 ++++++++++++++++++++++++++++--
- 1 file changed, 48 insertions(+), 3 deletions(-)
+ arch/mips/kernel/setup.c | 67 +++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 30 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 084ba6c..9da6f8a 100644
+index 9da6f8a..789aafe 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -82,10 +82,19 @@ static struct resource data_resource = { .name = "Kernel data", };
+@@ -229,6 +229,43 @@ static void __init print_memory_map(void)
+ }
  
- static void *detect_magic __initdata = detect_memory_region;
- 
-+/*
-+ * General method to add RAM regions to the system
-+ *
-+ * NOTE Historically this method has been used to register memory blocks within
-+ *      MIPS kernel code in the boot_mem_map array. So we need to support it
-+ * up until it's discarded from platform-depended code.
-+ * On the other hand it might be good to have it, since we can check regions
-+ * before actually adding them
+ /*
++ * Parse "mem=size@start" parameter rewriting a defined memory map
++ * We look for mem=size@start, where start and size are "value[KkMm]"
 + */
- void __init add_memory_region(phys_addr_t start, phys_addr_t size, long type)
- {
- 	int x = boot_mem_map.nr_map;
--	int i;
-+	int ret, i;
- 
- 	/*
- 	 * If the region reaches the top of the physical address space, adjust
-@@ -94,15 +103,51 @@ void __init add_memory_region(phys_addr_t start, phys_addr_t size, long type)
- 	if (start + size - 1 == (phys_addr_t)ULLONG_MAX)
- 		--size;
- 
--	/* Sanity check */
-+	/* Sanity check the region */
- 	if (start + size < start) {
- 		pr_warn("Trying to add an invalid memory region, skipped\n");
- 		return;
- 	}
- 
-+	/* Make sure the type is supported */
-+	if (type != BOOT_MEM_RAM && type != BOOT_MEM_INIT_RAM &&
-+	    type != BOOT_MEM_ROM_DATA && type != BOOT_MEM_RESERVED) {
-+		pr_warn("Invalid type of memory region, skipped\n");
-+		return;
-+	}
++static int __init early_parse_mem(char *p)
++{
++	static int usermem;
++	phys_addr_t start, size;
 +
- 	/*
--	 * Try to merge with existing entry, if any.
-+	 * According to the request_resource logic RAM, INIT and ROM shouldn't
-+	 * intersect each other but being subset of one memory space
- 	 */
-+	if (type != BOOT_MEM_RESERVED && memblock_is_memory(start)) {
-+		pr_warn("Drop already added memory region %08zx @ %pa\n",
-+			(size_t)size, &start);
-+		return;
-+	}
++	start = PHYS_OFFSET;
++	size = memparse(p, &p);
++	if (*p == '@')
++		start = memparse(p + 1, &p);
 +
 +	/*
-+	 * Add the region to the memblock allocator. Reserved regions should be
-+	 * in the memory as well to be actually reserved.
++	 * If a user specifies memory size, we blow away any automatically
++	 * generated regions.
 +	 */
-+	ret = memblock_add_node(start, size, 0);
-+	if (ret < 0) {
-+		pr_err("Could't add memblock %08zx @ %pa\n",
-+			(size_t)size, &start);
-+		return;
-+	}
++	if (usermem == 0) {
++		phys_addr_t ram_start = memblock_start_of_DRAM();
++		phys_addr_t ram_end = memblock_end_of_DRAM() - ram_start;
 +
-+	/* Reserve memory region passed with the corresponding flags */
-+	if (type != BOOT_MEM_RAM) {
-+		ret = memblock_reserve(start, size);
-+		if (ret < 0) {
-+			pr_err("Could't reserve memblock %08zx @ %pa\n",
-+				(size_t)size, &start);
-+			return;
-+		}
-+	}
++		pr_notice("Discard memory layout %pa - %pa",
++			  &ram_start, &ram_end);
 +
-+	/* Try to combine with existing entry, if any. */
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		struct boot_mem_map_entry *entry = boot_mem_map.map + i;
- 		unsigned long top;
++		memblock_remove(ram_start, ram_end - ram_start);
++		boot_mem_map.nr_map = 0;
++		usermem = 1;
++	}
++	pr_notice("Add userdefined memory region %08zx @ %pa",
++		  (size_t)size, &start);
++
++	add_memory_region(start, size, BOOT_MEM_RAM);
++	return 0;
++}
++early_param("mem", early_parse_mem);
++
++/*
+  * Manage initrd
+  */
+ #ifdef CONFIG_BLK_DEV_INITRD
+@@ -613,31 +650,6 @@ static void __init bootmem_init(void)
+  * initialization hook for anything else was introduced.
+  */
+ 
+-static int usermem __initdata;
+-
+-static int __init early_parse_mem(char *p)
+-{
+-	phys_addr_t start, size;
+-
+-	/*
+-	 * If a user specifies memory size, we
+-	 * blow away any automatically generated
+-	 * size.
+-	 */
+-	if (usermem == 0) {
+-		boot_mem_map.nr_map = 0;
+-		usermem = 1;
+-	}
+-	start = 0;
+-	size = memparse(p, &p);
+-	if (*p == '@')
+-		start = memparse(p + 1, &p);
+-
+-	add_memory_region(start, size, BOOT_MEM_RAM);
+-	return 0;
+-}
+-early_param("mem", early_parse_mem);
+-
+ #ifdef CONFIG_PROC_VMCORE
+ unsigned long setup_elfcorehdr, setup_elfcorehdr_size;
+ static int __init early_parse_elfcorehdr(char *p)
+@@ -797,11 +809,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 
+ 	parse_early_param();
+ 
+-	if (usermem) {
+-		pr_info("User-defined physical RAM map:\n");
+-		print_memory_map();
+-	}
+-
+ 	bootmem_init();
+ #ifdef CONFIG_PROC_VMCORE
+ 	if (setup_elfcorehdr && setup_elfcorehdr_size) {
 -- 
 2.6.6

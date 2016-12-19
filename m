@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:12:02 +0100 (CET)
-Received: from mail-lf0-f65.google.com ([209.85.215.65]:36754 "EHLO
-        mail-lf0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992902AbcLSCIIvar4K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:08 +0100
-Received: by mail-lf0-f65.google.com with SMTP id o20so6141500lfg.3;
-        Sun, 18 Dec 2016 18:08:08 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:12:23 +0100 (CET)
+Received: from mail-lf0-f67.google.com ([209.85.215.67]:36749 "EHLO
+        mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992735AbcLSCIHLx0XK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:07 +0100
+Received: by mail-lf0-f67.google.com with SMTP id o20so6141473lfg.3;
+        Sun, 18 Dec 2016 18:08:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0hR/61BRWFWGXf16fB2jFs0RyZmSljXhR8Aps1zXXTg=;
-        b=Sr7DvHo8tgfzhj7JnvXX2UeVunWCZ+uHXgswIQhjxCFDqWLjwVrF27NBsPUSVMz8on
-         n8liDsewOI3fU+ipdoNPouxv2lQ/0v2+akTF7ARLZO/ABJF1mZBD0sWRMQCe6CNtJvqh
-         oJ5aOig5qKzDwcQjmT4CBG1vuWOE6mPl5tc4HYujAt0b2EiOiKFSy3AqAW1jR81iS+Q2
-         71kG+ceOn3ZL3w3FYgdewnQJ4Yg9bLX1im37kqPPUjP1Ufn1JWBJgIq6I30hT6IkiFx8
-         Gl5pHcWqtIVWQRO6ksU1wzRQiC/K1llmeoXiG0NYhTdO2So31jnH/vXCdq0ZZ800Pi5A
-         QaMA==
+        bh=OugcL8nPOc3dizu4uogf16Ajls8g0+zVsxTqvngmogY=;
+        b=mEVHh+vBKQZmQmEaoCT+29k/z83L6I3glJppWljLiFNU3D03reVlsMKYO4GnPB1PDG
+         PJn2VDYqaV2CUf6P7kYjpKo0wyyRNJlalcfeXZVj12Xn+xvqhWZVK7aldOGgHVU/V9Qg
+         4J+Etbb73mVxRlJYJ0HkhgQwx5A5sjYWWr8Wm92phiR2obWXuZu8CvCqizWLooCIVV/U
+         DeEYY0wgbvyvCiLPp/6dtPCkqNsfbGDynF45oFHDzJvc7rMbQy3WA5Rw1UgJqI3vzPIw
+         BbDREtUA4XFbJfOk1Cbr6SjkAF+G/nCF0mVmgJfXOBkbgSmFOjlWcrdzo551J3l9olj9
+         urDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=0hR/61BRWFWGXf16fB2jFs0RyZmSljXhR8Aps1zXXTg=;
-        b=YqZcVE+OS9AZa0ZPDf78X4YDq4cGEzekhY8jXzcJ1Vmxf4e8+q0JuNrnvZo/AfCooa
-         W+dWc9tbqbwmcd2p+utLD0QxlRRBj77TxL4hPFa4ZjDg2mwQwOb56as/BGiBQ1uTn2Ff
-         XIJbG1rx4dKRZeTJCYMqNdg5UCM7ga++WopY48+B602Pffontch239/m/a0vW2sSKCLr
-         1zrRptvfqIAeeTwRq8WhsQPX6Anlg30H6t9WM8rUIqxax7XYYVX2N6H429+A22xy53XK
-         iVOUVUg2bQGYVy1+hUKhshyOzN2nYdc5mIyHcMtiilIiG/WJawjExDJ7pWNmjSI21F94
-         9Y4w==
-X-Gm-Message-State: AIkVDXKQujHzDXRlbEW/cxxMV+Cich/CiTQ00JD8RBOB4B2WE5UJ6zyP+rpZ1K5b3CBeNw==
-X-Received: by 10.46.8.9 with SMTP id 9mr5786851lji.47.1482113283339;
-        Sun, 18 Dec 2016 18:08:03 -0800 (PST)
+        bh=OugcL8nPOc3dizu4uogf16Ajls8g0+zVsxTqvngmogY=;
+        b=DkguNJbSAWzDbteTPkJd5Sc+Zb/FKn1bbchxPbsP5CRQTtBL7dBT1yv8JfJmPgDPKl
+         JgiHC3476Hj1daOI2xNk5kMIjk/Kv9RiZtsN9kwKXO/U1uOHbKIGKvzbNJOmemFEsw2R
+         xpHFeZogeazYIwt9d/8YNzSG4iSettAiH7plk1N/RTpcEKNoPNhZxQ1mdSVYfIvUvCAw
+         MsMRHh4JEInZvvRsazFYgAQJUjQ1F06zftgRY9qJ29A5+43jIu1lK8a5g2deTych4agb
+         vD+WSc9CPVWowHsKh4TZqjCT+/GLAB8Z3L95LhCEwj4IzREuXaukNIoOEDJxnbo8tL/0
+         eoFQ==
+X-Gm-Message-State: AIkVDXLniYniVhYrGNl/q4FSiNdX8OC2kLO/zXtfwWAt1F91Vi+8BTxE+hEPRNfsIXcxdA==
+X-Received: by 10.46.9.5 with SMTP id 5mr5747566ljj.23.1482113279829;
+        Sun, 18 Dec 2016 18:07:59 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.02
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.07.58
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:08:02 -0800 (PST)
+        Sun, 18 Dec 2016 18:07:59 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 09/21] MIPS memblock: Move kernel memory reservation to individual method
-Date:   Mon, 19 Dec 2016 05:07:34 +0300
-Message-Id: <1482113266-13207-10-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 06/21] MIPS memblock: Alter kexec-crashkernel parameters parser
+Date:   Mon, 19 Dec 2016 05:07:31 +0300
+Message-Id: <1482113266-13207-7-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56072
+X-archive-position: 56073
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,177 +68,151 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The whole kernel text/data/bss must be reserved to prevent sudden
-kernel crashes, for instance, due to unexpected non-zero default static
-variables initializations.
+Memblock API can be successfully used to verify whether crashkernel
+memory region belongs to low memory, then it can be reserved within
+memblock allocator.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 117 +++++++++++++++--------------
- 1 file changed, 59 insertions(+), 58 deletions(-)
+ arch/mips/kernel/setup.c | 105 ++++++++++++++---------------
+ 1 file changed, 52 insertions(+), 53 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 9c1a60d..e746793 100644
+index d2f38ac..cc6d06b 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -472,6 +472,62 @@ static void __init mips_reserve_initrd_mem(void) { }
+@@ -426,6 +426,55 @@ static void __init mips_reserve_initrd_mem(void) { }
+ 
  #endif
  
- /*
-+ * Reserve kernel code and data within memblock allocator
++#ifdef CONFIG_KEXEC
++/*
++ * Parse passed crashkernel parameter and reserve corresponding memory
 + */
-+static void __init mips_reserve_kernel_mem(void)
++static void __init mips_parse_crashkernel(void)
 +{
-+	phys_addr_t start, size;
++	unsigned long long total_mem;
++	unsigned long long crash_size, crash_base;
++	int ret;
 +
-+	/*
-+	 * Add kernel _text, _data, _bss, __init*, upto __end sections to
-+	 * boot_mem_map and memblock. We must reserve all of them!
-+	 */
-+	start = __pa_symbol(&_text);
-+	size = __pa_symbol(&_end) - start;
-+	add_memory_region(start, size, BOOT_MEM_RAM);
-+	/*
-+	 * It needs to be reserved within memblock as well. It's ok if memory
-+	 * has already been reserved with previous method
-+	 */
-+	memblock_reserve(start, size);
++	/* Parse crachkernel parameter */
++	total_mem = memblock_phys_mem_size();
++	ret = parse_crashkernel(boot_command_line, total_mem,
++				&crash_size, &crash_base);
++	if (ret != 0 || crash_size <= 0)
++		return;
 +
-+	/* Reserve nosave region for hibernation */
-+	start = __pa_symbol(&__nosave_begin);
-+	size = __pa_symbol(&__nosave_end) - start;
-+	add_memory_region(start, size, BOOT_MEM_RAM);
-+	memblock_reserve(start, size);
++	crashk_res.start = crash_base;
++	crashk_res.end	 = crash_base + crash_size - 1;
 +
-+	/* Initialize some init_mm fieldis. We may not need this? */
-+	init_mm.start_code = (unsigned long)&_text;
-+	init_mm.end_code = (unsigned long)&_etext;
-+	init_mm.end_data = (unsigned long)&_edata;
-+	init_mm.brk = (unsigned long)&_end;
++	/* Check whether the region belogs to lowmem and valid */
++	if (!is_lowmem_and_valid("Crashkernel", crash_base, crash_size))
++		return;
 +
-+	/*
-+	 * The kernel reserves all memory below its _end symbol as bootmem,
-+	 * but the kernel may now be at a much higher address. The memory
-+	 * between the original and new locations may be returned to the system.
-+	 */
-+#ifdef CONFIG_RELOCATABLE
-+	if (__pa_symbol(&_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
-+		phys_addr_t offset;
-+		extern void show_kernel_relocation(const char *level);
-+
-+		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
-+		memblock_free(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
-+
-+#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
-+		/*
-+		 * This information is necessary when debugging the kernel
-+		 * But is a security vulnerability otherwise!
-+		 */
-+		show_kernel_relocation(KERN_INFO);
-+#endif
-+	}
-+#endif
++	/* Reserve crashkernel resource */
++	memblock_reserve(crash_base, crash_size);
 +}
 +
 +/*
-  * Reserve memory occupied by elfcorehdr
-  */
- static void __init mips_reserve_elfcorehdr(void)
-@@ -590,6 +646,9 @@ static void __init bootmem_init(void)
- 	unsigned long bootmap_size;
- 	int i;
- 
-+	/* Reserve kernel code/data memory */
-+	mips_reserve_kernel_mem();
++ * Reserve crashkernel memory within passed RAM resource
++ */
++static void __init request_crashkernel(struct resource *res)
++{
++	int ret;
 +
++	ret = request_resource(res, &crashk_res);
++	if (!ret)
++		pr_info("Reserving %ldMB of memory at %ldMB for crashkernel\n",
++			(unsigned long)((crashk_res.end -
++					 crashk_res.start + 1) >> 20),
++			(unsigned long)(crashk_res.start  >> 20));
++}
++#else /* !CONFIG_KEXEC */
++
++static void __init mips_parse_crashkernel(void) { }
++static void __init request_crashkernel(struct resource *res) { }
++
++#endif /* !CONFIG_KEXEC */
++
+ /*
+  * Initialize the bootmem allocator. It also setup initrd related data
+  * if needed.
+@@ -450,6 +499,9 @@ static void __init bootmem_init(void)
  	/* Check and reserve memory occupied by initrd */
  	mips_reserve_initrd_mem();
  
-@@ -766,29 +825,6 @@ static void __init bootmem_init(void)
- 	 * Reserve the bootmap memory.
- 	 */
- 	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size, BOOTMEM_DEFAULT);
--
--#ifdef CONFIG_RELOCATABLE
--	/*
--	 * The kernel reserves all memory below its _end symbol as bootmem,
--	 * but the kernel may now be at a much higher address. The memory
--	 * between the original and new locations may be returned to the system.
--	 */
--	if (__pa_symbol(_text) > __pa_symbol(VMLINUX_LOAD_ADDRESS)) {
--		unsigned long offset;
--		extern void show_kernel_relocation(const char *level);
--
--		offset = __pa_symbol(_text) - __pa_symbol(VMLINUX_LOAD_ADDRESS);
--		free_bootmem(__pa_symbol(VMLINUX_LOAD_ADDRESS), offset);
--
--#if defined(CONFIG_DEBUG_KERNEL) && defined(CONFIG_DEBUG_INFO)
--		/*
--		 * This information is necessary when debugging the kernel
--		 * But is a security vulnerability otherwise!
--		 */
--		show_kernel_relocation(KERN_INFO);
--#endif
--	}
--#endif
++	/* Parse crashkernel parameter */
++	mips_parse_crashkernel();
++
+ 	reserved_end = (unsigned long) PFN_UP(__pa_symbol(&_end));
+ 
+ 	/*
+@@ -717,52 +769,6 @@ static void __init arch_mem_addpart(phys_addr_t mem, phys_addr_t end, int type)
+ 	add_memory_region(mem, size, type);
  }
  
- #endif	/* CONFIG_SGI_IP27 */
-@@ -816,25 +852,6 @@ static void __init bootmem_init(void)
-  * initialization hook for anything else was introduced.
-  */
- 
--static void __init arch_mem_addpart(phys_addr_t mem, phys_addr_t end, int type)
+-#ifdef CONFIG_KEXEC
+-static inline unsigned long long get_total_mem(void)
 -{
--	phys_addr_t size;
--	int i;
+-	unsigned long long total;
 -
--	size = end - mem;
--	if (!size)
--		return;
--
--	/* Make sure it is in the boot_mem_map */
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		if (mem >= boot_mem_map.map[i].addr &&
--		    mem < (boot_mem_map.map[i].addr +
--			   boot_mem_map.map[i].size))
--			return;
--	}
--	add_memory_region(mem, size, type);
+-	total = max_pfn - min_low_pfn;
+-	return total << PAGE_SHIFT;
 -}
 -
- static void __init arch_mem_init(char **cmdline_p)
- {
- 	struct memblock_region *reg;
-@@ -846,19 +863,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 	/* Parse passed parameters */
- 	mips_parse_param(cmdline_p);
- 
--	/*
--	 * Make sure all kernel memory is in the maps.  The "UP" and
--	 * "DOWN" are opposite for initdata since if it crosses over
--	 * into another memory section you don't want that to be
--	 * freed when the initdata is freed.
--	 */
--	arch_mem_addpart(PFN_DOWN(__pa_symbol(&_text)) << PAGE_SHIFT,
--			 PFN_UP(__pa_symbol(&_edata)) << PAGE_SHIFT,
--			 BOOT_MEM_RAM);
--	arch_mem_addpart(PFN_UP(__pa_symbol(&__init_begin)) << PAGE_SHIFT,
--			 PFN_DOWN(__pa_symbol(&__init_end)) << PAGE_SHIFT,
--			 BOOT_MEM_INIT_RAM);
+-static void __init mips_parse_crashkernel(void)
+-{
+-	unsigned long long total_mem;
+-	unsigned long long crash_size, crash_base;
+-	int ret;
 -
- 	pr_info("Determined physical RAM map:\n");
- 	print_memory_map();
- 
-@@ -873,9 +877,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 	for_each_memblock(reserved, reg)
- 		if (reg->size != 0)
- 			reserve_bootmem(reg->base, reg->size, BOOTMEM_DEFAULT);
+-	total_mem = get_total_mem();
+-	ret = parse_crashkernel(boot_command_line, total_mem,
+-				&crash_size, &crash_base);
+-	if (ret != 0 || crash_size <= 0)
+-		return;
 -
--	reserve_bootmem_region(__pa_symbol(&__nosave_begin),
--			__pa_symbol(&__nosave_end)); /* Reserve for hibernation */
- }
+-	crashk_res.start = crash_base;
+-	crashk_res.end	 = crash_base + crash_size - 1;
+-}
+-
+-static void __init request_crashkernel(struct resource *res)
+-{
+-	int ret;
+-
+-	ret = request_resource(res, &crashk_res);
+-	if (!ret)
+-		pr_info("Reserving %ldMB of memory at %ldMB for crashkernel\n",
+-			(unsigned long)((crashk_res.end -
+-					 crashk_res.start + 1) >> 20),
+-			(unsigned long)(crashk_res.start  >> 20));
+-}
+-#else /* !defined(CONFIG_KEXEC)		*/
+-static void __init mips_parse_crashkernel(void)
+-{
+-}
+-
+-static void __init request_crashkernel(struct resource *res)
+-{
+-}
+-#endif /* !defined(CONFIG_KEXEC)  */
+-
+ #define USE_PROM_CMDLINE	IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER)
+ #define USE_DTB_CMDLINE		IS_ENABLED(CONFIG_MIPS_CMDLINE_FROM_DTB)
+ #define EXTEND_WITH_PROM	IS_ENABLED(CONFIG_MIPS_CMDLINE_DTB_EXTEND)
+@@ -836,13 +842,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	}
+ #endif
  
- static void __init resource_init(void)
+-	mips_parse_crashkernel();
+-#ifdef CONFIG_KEXEC
+-	if (crashk_res.start != crashk_res.end)
+-		reserve_bootmem(crashk_res.start,
+-				crashk_res.end - crashk_res.start + 1,
+-				BOOTMEM_DEFAULT);
+-#endif
+ 	device_tree_init();
+ 	sparse_init();
+ 	plat_swiotlb_setup();
 -- 
 2.6.6

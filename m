@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:10:44 +0100 (CET)
-Received: from mail-lf0-f67.google.com ([209.85.215.67]:36755 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2016 03:11:05 +0100 (CET)
+Received: from mail-lf0-f67.google.com ([209.85.215.67]:33945 "EHLO
         mail-lf0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992903AbcLSCIJywXsK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:09 +0100
-Received: by mail-lf0-f67.google.com with SMTP id o20so6141509lfg.3;
-        Sun, 18 Dec 2016 18:08:09 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S23992836AbcLSCIHMFO7K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2016 03:08:07 +0100
+Received: by mail-lf0-f67.google.com with SMTP id 30so4661491lfy.1;
+        Sun, 18 Dec 2016 18:08:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=/I7jwK1yt++9gIuaUufNufcWBatQLpu3MIg4mfYQrOQ=;
-        b=heXP1YbRXsYp0e5w0JtiVsmExyWFuf905kMSD4B9P6EwIF/zBQHDWNfwR1cgDG0faJ
-         7U9vHWrnR97WMgjzMG9eQ7V+NbEXpcmk8S/tlNxM4+mls+7+9Fgr3/lfFjGicv4a1pvX
-         VlB245xOSvfjOIMiDunTkk483qTG6gnSIy5vF/opF3pFq0xwpk3rdAO/Ti87o70qqglW
-         uk3Gs2tWMagP+QMSLQIc3vsideNkfIb8ss4o8KmKnlf8RWQ4JaPYAQzzylEHUp7QLAO1
-         AL5AL2WMP2Dd58CLQXnJEAkJhKYiaA8ORtBOVBqc5OSG5SdV/x7yPVPzlIVYSHm6+fPL
-         Bl9g==
+        bh=Lq7zFvdGLh7vMzOzGN1Veqkth8oaxOxcyVAOBs70pVc=;
+        b=uLRmC2FC7Uh9vkDjpxwdPPzYzwOomFut0luv4NImjkFOoluMcKqEaKIXiQEOlclRxO
+         aauYvQPhB773wDxcJTRua/9i/w4xjF76PLsy8Vgdqp+v1ounHfKrSZlPhmUt1pVwHZrx
+         TU5jDtj1p+xvCviUoc9wyEpx0i4t1n0iNWvw9xaaoKz7q9L4Z3qOHMxYIxUclZ9DrQS4
+         ymahpDJPh/qUR3SYcw8RDCVKQEU6/EybHmurSL1wJl4vFAMhKK9XJnQSjhjtFNu3f1Wt
+         dzLZV1WZbgLygZVL7ve+4C7MTgb+9tFOTNARukrySvXK8zltZzKPWICDJYJa9vPl92fy
+         nokg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=/I7jwK1yt++9gIuaUufNufcWBatQLpu3MIg4mfYQrOQ=;
-        b=aHQPNh1bJjwAp7ZsxCG/15RELK/SJ5ztSeCtly/pVmG75n5VVnl2D165g7kj1+piO0
-         b+xpn0ZBZBd6bPCAqrXggk7NEiVKWt9dNitTeEXXjQ+1eI3Lf8PxF2y/MVRD504qptEv
-         QDC4W57fYlJM+3JH1L9cvSrv0v+g96G6uPQU4folsZXcay/X2pZ/i3XlnTDFvrhgu+90
-         B4No24Df05PoGqnolanGCdfroht26hykyOP2YPOvE6MRiZntwkmYQYk7LhOOSyDsi/zd
-         aCYoycFHvcZAHEMK0zH0iHo+HA4mkFtbAkFunzuNkS90iOMEaIn0kPql5f2KXVEjwerI
-         0Dtw==
-X-Gm-Message-State: AKaTC007Ss/EDpe7xc08f8HkynXSpFW/ylYDWiINOYp2iHgNr5wllgnXAOtDkGN4ioQKVw==
-X-Received: by 10.46.8.17 with SMTP id 17mr6355583lji.72.1482113284368;
-        Sun, 18 Dec 2016 18:08:04 -0800 (PST)
+        bh=Lq7zFvdGLh7vMzOzGN1Veqkth8oaxOxcyVAOBs70pVc=;
+        b=gPhyM9HOCiu2bd0LwbKgNegBp8rIfikPxlTwRp/4NF6EdNeQaTXUezGYsuPBVjx+Yq
+         RczMU+nqgn+repqu6HLWY7os1laC/833phUEl7WS0pk5zbdlsj9gSjUpMUnrTltKDko2
+         eCRW7sQIB5EH1vwSVmkx5LJiZ8YchZ282dnD7+2hoH582OoNx39+WYo2eHoMSM8jnHtl
+         C6VXx+bwxB6o0sDwLCKQV3/7q6kE6FQT2mJt0h1ILy8IU8wSIdpkuW28eiHCLQN7vCtC
+         pppdcN/kcAVrqxHZwrkRqlveaJlsyY16nSbnv2PnhdlMp/bTplK6TECnPzzlbhtTIb8F
+         mrtg==
+X-Gm-Message-State: AIkVDXJdYWbqqNxFGwtf87Xo+9iXxvqMEoRmb8p/xbcuJykWbrTv7zTs4lieiAIaHqCZTw==
+X-Received: by 10.46.76.1 with SMTP id z1mr6070976lja.41.1482113280983;
+        Sun, 18 Dec 2016 18:08:00 -0800 (PST)
 Received: from linux.local ([95.79.144.28])
-        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.08.03
+        by smtp.gmail.com with ESMTPSA id 9sm3362103ljn.20.2016.12.18.18.07.59
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 18 Dec 2016 18:08:03 -0800 (PST)
+        Sun, 18 Dec 2016 18:08:00 -0800 (PST)
 From:   Serge Semin <fancer.lancer@gmail.com>
 To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
         matt.redfearn@imgtec.com, james.hogan@imgtec.com,
@@ -41,9 +41,9 @@ To:     ralf@linux-mips.org, paul.burton@imgtec.com, rabinv@axis.com,
 Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH 10/21] MIPS memblock: Discard bootmem allocator initialization
-Date:   Mon, 19 Dec 2016 05:07:35 +0300
-Message-Id: <1482113266-13207-11-git-send-email-fancer.lancer@gmail.com>
+Subject: [PATCH 07/21] MIPS memblock: Alter elfcorehdr parameters parser
+Date:   Mon, 19 Dec 2016 05:07:32 +0300
+Message-Id: <1482113266-13207-8-git-send-email-fancer.lancer@gmail.com>
 X-Mailer: git-send-email 2.6.6
 In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
@@ -51,7 +51,7 @@ Return-Path: <fancer.lancer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56069
+X-archive-position: 56070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,236 +68,140 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Bootmem allocator initialization needs to be discarded.
-PFN limit constants are still in use by some subsystems, so they
-need to be properly initialized. The initialization is moved into
-a separate method and performed with help of commonly used
-platform-specific constants. It might me too simplified, but most
-of the kernel platforms do it the same way. Moreover it's much
-easier to debug it, when it's not that complicated.
+Memblock API can be successfully used to verify whether elfcorehdr
+memory region belongs to lowmemory, then it can be reserved within
+memblock allocator. There is also available default method for
+early parameters parser in kernel/crash_dump.c: setup_elfcorehdr(),
+so it's wise to use one instead of creating our own doing actually
+the same thing.
 
 Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- arch/mips/kernel/setup.c | 193 ++++-------------------------
- 1 file changed, 21 insertions(+), 172 deletions(-)
+ arch/mips/kernel/setup.c | 91 +++++++++++++++++-------------
+ 1 file changed, 52 insertions(+), 39 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index e746793..6562f55 100644
+index cc6d06b..52205fb 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -626,6 +626,25 @@ static void __init request_crashkernel(struct resource *res) { }
- #endif /* !CONFIG_KEXEC */
+@@ -426,6 +426,55 @@ static void __init mips_reserve_initrd_mem(void) { }
  
- /*
-+ * Calcualte PFN limits with respect to the defined memory layout
+ #endif
+ 
++/*
++ * Reserve memory occupied by elfcorehdr
 + */
-+static void __init find_pfn_limits(void)
++static void __init mips_reserve_elfcorehdr(void)
 +{
-+	phys_addr_t ram_end = memblock_end_of_DRAM();
++#ifdef CONFIG_PROC_VMCORE
++	/*
++	 * Don't reserve anything if kernel isn't booting after a panic and
++	 * vmcore is usable (see linux/crash_dump.h for details)
++	 */
++	if (!is_vmcore_usable())
++		return;
 +
-+	min_low_pfn = ARCH_PFN_OFFSET;
-+	max_low_pfn = PFN_UP(HIGHMEM_START);
-+	max_pfn = PFN_UP(ram_end);
-+#ifdef CONFIG_HIGHMEM
-+	highstart_pfn = max_low_pfn;
-+	highend_pfn = max_pfn <= highstart_pfn ? highstart_pfn : max_pfn;
-+#endif
-+	pr_info("PFNs: low min %lu, low max %lu, high start %lu, high end %lu,"
-+		"max %lu\n",
-+		min_low_pfn, max_low_pfn, highstart_pfn, highend_pfn, max_pfn);
++	/* Check whether the passed address belongs to low memory */
++	if (elfcorehdr_addr + elfcorehdr_size >= mips_lowmem_limit) {
++		pr_err("Elfcorehdr %08zx @ %pa doesn't belong to low memory",
++			(size_t)elfcorehdr_size, &elfcorehdr_addr);
++		return;
++	}
++
++	/*
++	 * If elfcorehdr_size hasn't been specified, then try to reserve upto
++	 * low memory limit
++	 */
++	if (!elfcorehdr_size)
++		elfcorehdr_size = mips_lowmem_limit - elfcorehdr_addr;
++
++	/* Check the region belongs to actual memory (size can be zero) */
++	if (!memblock_is_region_memory(elfcorehdr_addr, elfcorehdr_size)) {
++		pr_err("Elfcorehdr %08zx @ %pa is not a memory region",
++			(size_t)elfcorehdr_size, &elfcorehdr_addr);
++		return;
++	}
++
++	/* Check whether elfcorehdr region is free */
++	if (memblock_is_region_reserved(elfcorehdr_addr, elfcorehdr_size)) {
++		pr_err("Elfcorehdr %08zx @ %pa overlaps in-use memory",
++			(size_t)elfcorehdr_size, &elfcorehdr_addr);
++		return;
++	}
++
++	/* Reserve elfcorehdr within memblock */
++	memblock_reserve(elfcorehdr_addr, PAGE_ALIGN(elfcorehdr_size));
++
++	pr_info("Reserved memory for kdump at %08zx @ %pa\n",
++		(size_t)elfcorehdr_size, &elfcorehdr_addr);
++#endif /* CONFIG_PROC_VMCORE */
 +}
 +
-+/*
-  * Initialize the bootmem allocator. It also setup initrd related data
-  * if needed.
-  */
-@@ -641,11 +660,6 @@ static void __init bootmem_init(void)
+ #ifdef CONFIG_KEXEC
+ /*
+  * Parse passed crashkernel parameter and reserve corresponding memory
+@@ -499,6 +548,9 @@ static void __init bootmem_init(void)
+ 	/* Check and reserve memory occupied by initrd */
+ 	mips_reserve_initrd_mem();
  
- static void __init bootmem_init(void)
- {
--	unsigned long reserved_end;
--	unsigned long mapstart = ~0UL;
--	unsigned long bootmap_size;
--	int i;
--
- 	/* Reserve kernel code/data memory */
- 	mips_reserve_kernel_mem();
- 
-@@ -658,173 +672,8 @@ static void __init bootmem_init(void)
++	/* Reserve memory for elfcorehdr */
++	mips_reserve_elfcorehdr();
++
  	/* Parse crashkernel parameter */
  	mips_parse_crashkernel();
  
--	reserved_end = (unsigned long) PFN_UP(__pa_symbol(&_end));
--
--	/*
--	 * max_low_pfn is not a number of pages. The number of pages
--	 * of the system is given by 'max_low_pfn - min_low_pfn'.
--	 */
--	min_low_pfn = ~0UL;
--	max_low_pfn = 0;
--
--	/*
--	 * Find the highest page frame number we have available.
--	 */
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		unsigned long start, end;
--
--		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
--			continue;
--
--		start = PFN_UP(boot_mem_map.map[i].addr);
--		end = PFN_DOWN(boot_mem_map.map[i].addr
--				+ boot_mem_map.map[i].size);
--
--#ifndef CONFIG_HIGHMEM
--		/*
--		 * Skip highmem here so we get an accurate max_low_pfn if low
--		 * memory stops short of high memory.
--		 * If the region overlaps HIGHMEM_START, end is clipped so
--		 * max_pfn excludes the highmem portion.
--		 */
--		if (start >= PFN_DOWN(HIGHMEM_START))
--			continue;
--		if (end > PFN_DOWN(HIGHMEM_START))
--			end = PFN_DOWN(HIGHMEM_START);
--#endif
--
--		if (end > max_low_pfn)
--			max_low_pfn = end;
--		if (start < min_low_pfn)
--			min_low_pfn = start;
--		if (end <= reserved_end)
--			continue;
--#ifdef CONFIG_BLK_DEV_INITRD
--		/* Skip zones before initrd and initrd itself */
--		if (initrd_end && end <= (unsigned long)PFN_UP(__pa(initrd_end)))
--			continue;
--#endif
--		if (start >= mapstart)
--			continue;
--		mapstart = max(reserved_end, start);
--	}
--
--	if (min_low_pfn >= max_low_pfn)
--		panic("Incorrect memory mapping !!!");
--	if (min_low_pfn > ARCH_PFN_OFFSET) {
--		pr_info("Wasting %lu bytes for tracking %lu unused pages\n",
--			(min_low_pfn - ARCH_PFN_OFFSET) * sizeof(struct page),
--			min_low_pfn - ARCH_PFN_OFFSET);
--	} else if (min_low_pfn < ARCH_PFN_OFFSET) {
--		pr_info("%lu free pages won't be used\n",
--			ARCH_PFN_OFFSET - min_low_pfn);
--	}
--	min_low_pfn = ARCH_PFN_OFFSET;
--
--	/*
--	 * Determine low and high memory ranges
--	 */
--	max_pfn = max_low_pfn;
--	if (max_low_pfn > PFN_DOWN(HIGHMEM_START)) {
--#ifdef CONFIG_HIGHMEM
--		highstart_pfn = PFN_DOWN(HIGHMEM_START);
--		highend_pfn = max_low_pfn;
--#endif
--		max_low_pfn = PFN_DOWN(HIGHMEM_START);
--	}
--
--#ifdef CONFIG_BLK_DEV_INITRD
--	/*
--	 * mapstart should be after initrd_end
--	 */
--	if (initrd_end)
--		mapstart = max(mapstart, (unsigned long)PFN_UP(__pa(initrd_end)));
--#endif
--
--	/*
--	 * Initialize the boot-time allocator with low memory only.
--	 */
--	bootmap_size = init_bootmem_node(NODE_DATA(0), mapstart,
--					 min_low_pfn, max_low_pfn);
--
--
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		unsigned long start, end;
--
--		start = PFN_UP(boot_mem_map.map[i].addr);
--		end = PFN_DOWN(boot_mem_map.map[i].addr
--				+ boot_mem_map.map[i].size);
--
--		if (start <= min_low_pfn)
--			start = min_low_pfn;
--		if (start >= end)
--			continue;
--
--#ifndef CONFIG_HIGHMEM
--		if (end > max_low_pfn)
--			end = max_low_pfn;
--
--		/*
--		 * ... finally, is the area going away?
--		 */
--		if (end <= start)
--			continue;
--#endif
--
--		memblock_add_node(PFN_PHYS(start), PFN_PHYS(end - start), 0);
--	}
--
--	/*
--	 * Register fully available low RAM pages with the bootmem allocator.
--	 */
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		unsigned long start, end, size;
--
--		start = PFN_UP(boot_mem_map.map[i].addr);
--		end   = PFN_DOWN(boot_mem_map.map[i].addr
--				    + boot_mem_map.map[i].size);
--
--		/*
--		 * Reserve usable memory.
--		 */
--		switch (boot_mem_map.map[i].type) {
--		case BOOT_MEM_RAM:
--			break;
--		case BOOT_MEM_INIT_RAM:
--			memory_present(0, start, end);
--			continue;
--		default:
--			/* Not usable memory */
--			continue;
--		}
--
--		/*
--		 * We are rounding up the start address of usable memory
--		 * and at the end of the usable range downwards.
--		 */
--		if (start >= max_low_pfn)
--			continue;
--		if (start < reserved_end)
--			start = reserved_end;
--		if (end > max_low_pfn)
--			end = max_low_pfn;
--
--		/*
--		 * ... finally, is the area going away?
--		 */
--		if (end <= start)
--			continue;
--		size = end - start;
--
--		/* Register lowmem ranges */
--		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
--		memory_present(0, start, end);
--	}
--
--	/*
--	 * Reserve the bootmap memory.
--	 */
--	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size, BOOTMEM_DEFAULT);
-+	/* Find memory PFN limits */
-+	find_pfn_limits();
- }
+@@ -719,37 +771,6 @@ static void __init bootmem_init(void)
+  * initialization hook for anything else was introduced.
+  */
  
- #endif	/* CONFIG_SGI_IP27 */
+-#ifdef CONFIG_PROC_VMCORE
+-unsigned long setup_elfcorehdr, setup_elfcorehdr_size;
+-static int __init early_parse_elfcorehdr(char *p)
+-{
+-	int i;
+-
+-	setup_elfcorehdr = memparse(p, &p);
+-
+-	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		unsigned long start = boot_mem_map.map[i].addr;
+-		unsigned long end = (boot_mem_map.map[i].addr +
+-				     boot_mem_map.map[i].size);
+-		if (setup_elfcorehdr >= start && setup_elfcorehdr < end) {
+-			/*
+-			 * Reserve from the elf core header to the end of
+-			 * the memory segment, that should all be kdump
+-			 * reserved memory.
+-			 */
+-			setup_elfcorehdr_size = end - setup_elfcorehdr;
+-			break;
+-		}
+-	}
+-	/*
+-	 * If we don't find it in the memory map, then we shouldn't
+-	 * have to worry about it, as the new kernel won't use it.
+-	 */
+-	return 0;
+-}
+-early_param("elfcorehdr", early_parse_elfcorehdr);
+-#endif
+-
+ static void __init arch_mem_addpart(phys_addr_t mem, phys_addr_t end, int type)
+ {
+ 	phys_addr_t size;
+@@ -833,14 +854,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	parse_early_param();
+ 
+ 	bootmem_init();
+-#ifdef CONFIG_PROC_VMCORE
+-	if (setup_elfcorehdr && setup_elfcorehdr_size) {
+-		printk(KERN_INFO "kdump reserved memory at %lx-%lx\n",
+-		       setup_elfcorehdr, setup_elfcorehdr_size);
+-		reserve_bootmem(setup_elfcorehdr, setup_elfcorehdr_size,
+-				BOOTMEM_DEFAULT);
+-	}
+-#endif
+ 
+ 	device_tree_init();
+ 	sparse_init();
 -- 
 2.6.6

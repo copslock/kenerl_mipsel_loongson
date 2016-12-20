@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2016 19:14:15 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:44292 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2016 19:14:36 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:44295 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993315AbcLTSMiUlGO2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993316AbcLTSMid7th2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 20 Dec 2016 19:12:38 +0100
 From:   John Crispin <john@phrozen.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH 4/7] arch: mips: ralink: fix a typo in the pinmux setup
-Date:   Tue, 20 Dec 2016 19:12:43 +0100
-Message-Id: <1482257566-61035-5-git-send-email-john@phrozen.org>
+Subject: [PATCH 5/7] arch: mips: ralink: add missing clk_round_rate()
+Date:   Tue, 20 Dec 2016 19:12:44 +0100
+Message-Id: <1482257566-61035-6-git-send-email-john@phrozen.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1482257566-61035-1-git-send-email-john@phrozen.org>
 References: <1482257566-61035-1-git-send-email-john@phrozen.org>
@@ -16,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56106
+X-archive-position: 56107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,93 +33,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-There is a typo inside the pinmux setup code. The function is really
-called utif and not util. This was recently discovered when people were
-trying to make the UTIF interface work.
+As we dont use the common clock api yet we need to add this stub to allow
+building drivers that use the API.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/ralink/mt7620.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/mips/ralink/clk.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
-index 2503878..76416b4 100644
---- a/arch/mips/ralink/mt7620.c
-+++ b/arch/mips/ralink/mt7620.c
-@@ -180,7 +180,7 @@
+diff --git a/arch/mips/ralink/clk.c b/arch/mips/ralink/clk.c
+index ebaa7cc..64c3db5 100644
+--- a/arch/mips/ralink/clk.c
++++ b/arch/mips/ralink/clk.c
+@@ -62,6 +62,12 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+ }
+ EXPORT_SYMBOL_GPL(clk_set_rate);
  
- static struct rt2880_pmx_func spis_grp_mt7628[] = {
- 	FUNC("pwm_uart2", 3, 14, 4),
--	FUNC("util", 2, 14, 4),
-+	FUNC("utif", 2, 14, 4),
- 	FUNC("gpio", 1, 14, 4),
- 	FUNC("spis", 0, 14, 4),
- };
-@@ -194,28 +194,28 @@
- 
- static struct rt2880_pmx_func p4led_kn_grp_mt7628[] = {
- 	FUNC("jtag", 3, 30, 1),
--	FUNC("util", 2, 30, 1),
-+	FUNC("utif", 2, 30, 1),
- 	FUNC("gpio", 1, 30, 1),
- 	FUNC("p4led_kn", 0, 30, 1),
- };
- 
- static struct rt2880_pmx_func p3led_kn_grp_mt7628[] = {
- 	FUNC("jtag", 3, 31, 1),
--	FUNC("util", 2, 31, 1),
-+	FUNC("utif", 2, 31, 1),
- 	FUNC("gpio", 1, 31, 1),
- 	FUNC("p3led_kn", 0, 31, 1),
- };
- 
- static struct rt2880_pmx_func p2led_kn_grp_mt7628[] = {
- 	FUNC("jtag", 3, 32, 1),
--	FUNC("util", 2, 32, 1),
-+	FUNC("utif", 2, 32, 1),
- 	FUNC("gpio", 1, 32, 1),
- 	FUNC("p2led_kn", 0, 32, 1),
- };
- 
- static struct rt2880_pmx_func p1led_kn_grp_mt7628[] = {
- 	FUNC("jtag", 3, 33, 1),
--	FUNC("util", 2, 33, 1),
-+	FUNC("utif", 2, 33, 1),
- 	FUNC("gpio", 1, 33, 1),
- 	FUNC("p1led_kn", 0, 33, 1),
- };
-@@ -236,28 +236,28 @@
- 
- static struct rt2880_pmx_func p4led_an_grp_mt7628[] = {
- 	FUNC("jtag", 3, 39, 1),
--	FUNC("util", 2, 39, 1),
-+	FUNC("utif", 2, 39, 1),
- 	FUNC("gpio", 1, 39, 1),
- 	FUNC("p4led_an", 0, 39, 1),
- };
- 
- static struct rt2880_pmx_func p3led_an_grp_mt7628[] = {
- 	FUNC("jtag", 3, 40, 1),
--	FUNC("util", 2, 40, 1),
-+	FUNC("utif", 2, 40, 1),
- 	FUNC("gpio", 1, 40, 1),
- 	FUNC("p3led_an", 0, 40, 1),
- };
- 
- static struct rt2880_pmx_func p2led_an_grp_mt7628[] = {
- 	FUNC("jtag", 3, 41, 1),
--	FUNC("util", 2, 41, 1),
-+	FUNC("utif", 2, 41, 1),
- 	FUNC("gpio", 1, 41, 1),
- 	FUNC("p2led_an", 0, 41, 1),
- };
- 
- static struct rt2880_pmx_func p1led_an_grp_mt7628[] = {
- 	FUNC("jtag", 3, 42, 1),
--	FUNC("util", 2, 42, 1),
-+	FUNC("utif", 2, 42, 1),
- 	FUNC("gpio", 1, 42, 1),
- 	FUNC("p1led_an", 0, 42, 1),
- };
++long clk_round_rate(struct clk *clk, unsigned long rate)
++{
++	return -1;
++}
++EXPORT_SYMBOL_GPL(clk_round_rate);
++
+ void __init plat_time_init(void)
+ {
+ 	struct clk *clk;
 -- 
 1.7.10.4

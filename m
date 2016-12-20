@@ -1,20 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2016 19:12:44 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:44274 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2016 19:13:06 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:44277 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993301AbcLTSMhXQ802 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993312AbcLTSMhcJVX2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 20 Dec 2016 19:12:37 +0100
 From:   John Crispin <john@phrozen.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH 0/7] arch: mips: ralink: new clocks, typos & co
-Date:   Tue, 20 Dec 2016 19:12:39 +0100
-Message-Id: <1482257566-61035-1-git-send-email-john@phrozen.org>
+Subject: [PATCH 1/7] arch: mips: ralink: MT7621 does not set its SoC type
+Date:   Tue, 20 Dec 2016 19:12:40 +0100
+Message-Id: <1482257566-61035-2-git-send-email-john@phrozen.org>
 X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1482257566-61035-1-git-send-email-john@phrozen.org>
+References: <1482257566-61035-1-git-send-email-john@phrozen.org>
 Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56102
+X-archive-position: 56103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,28 +33,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series contains a few patches that have accumulated inside the LEDE
-tree over the last year.
+The code does not set the SoC type properly. This went unnoticed until now
+as the SoC does not share any of the driver code with the other SoCs, until
+we made the mmc driver work.
 
-John Crispin (7):
-  arch: mips: ralink: MT7621 does not set its SoC type
-  arch: mips: ralink: add missing I2C and I2S clocks
-  arch: mips: ralink: add missing pinmux
-  arch: mips: ralink: fix a typo in the pinmux setup
-  arch: mips: ralink: add missing clk_round_rate()
-  arch: mips: ralink: add missing symbol for highmem support
-  arch: mips: ralink: cosmetic change to prom_init()
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+ arch/mips/ralink/mt7621.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/mips/include/asm/mach-ralink/mt7620.h |    7 ++++++-
- arch/mips/ralink/Kconfig                   |    1 +
- arch/mips/ralink/clk.c                     |    6 ++++++
- arch/mips/ralink/mt7620.c                  |   31 ++++++++++++++++++----------
- arch/mips/ralink/mt7621.c                  |    2 +-
- arch/mips/ralink/prom.c                    |    9 ++++----
- arch/mips/ralink/rt288x.c                  |    1 +
- arch/mips/ralink/rt305x.c                  |    2 ++
- arch/mips/ralink/rt3883.c                  |    2 ++
- 9 files changed, 43 insertions(+), 18 deletions(-)
-
+diff --git a/arch/mips/ralink/mt7621.c b/arch/mips/ralink/mt7621.c
+index a45bbbe..3ffa4ba 100644
+--- a/arch/mips/ralink/mt7621.c
++++ b/arch/mips/ralink/mt7621.c
+@@ -181,7 +181,7 @@ void prom_soc_init(struct ralink_soc_info *soc_info)
+ 	} else {
+ 		panic("mt7621: unknown SoC, n0:%08x n1:%08x\n", n0, n1);
+ 	}
+-
++	ralink_soc = MT762X_SOC_MT7621AT;
+ 	rev = __raw_readl(sysc + SYSC_REG_CHIP_REV);
+ 
+ 	snprintf(soc_info->sys_type, RAMIPS_SYS_TYPE_LEN,
 -- 
 1.7.10.4

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2016 19:13:50 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:44289 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2016 19:14:15 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:44292 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993313AbcLTSMiBY8v2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993315AbcLTSMiUlGO2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 20 Dec 2016 19:12:38 +0100
 From:   John Crispin <john@phrozen.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH 3/7] arch: mips: ralink: add missing pinmux
-Date:   Tue, 20 Dec 2016 19:12:42 +0100
-Message-Id: <1482257566-61035-4-git-send-email-john@phrozen.org>
+Subject: [PATCH 4/7] arch: mips: ralink: fix a typo in the pinmux setup
+Date:   Tue, 20 Dec 2016 19:12:43 +0100
+Message-Id: <1482257566-61035-5-git-send-email-john@phrozen.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1482257566-61035-1-git-send-email-john@phrozen.org>
 References: <1482257566-61035-1-git-send-email-john@phrozen.org>
@@ -16,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56105
+X-archive-position: 56106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,61 +33,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The mt7620 has a pin that can be used to generate an external reference
-clock. The pinmux setup was missing the definition of said pin. This patch
-adds it.
+There is a typo inside the pinmux setup code. The function is really
+called utif and not util. This was recently discovered when people were
+trying to make the UTIF interface work.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/include/asm/mach-ralink/mt7620.h |    7 ++++++-
- arch/mips/ralink/mt7620.c                  |    8 ++++++--
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ arch/mips/ralink/mt7620.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-ralink/mt7620.h b/arch/mips/include/asm/mach-ralink/mt7620.h
-index a73350b..66af4cc 100644
---- a/arch/mips/include/asm/mach-ralink/mt7620.h
-+++ b/arch/mips/include/asm/mach-ralink/mt7620.h
-@@ -115,9 +115,14 @@
- #define MT7620_GPIO_MODE_WDT_MASK	0x3
- #define MT7620_GPIO_MODE_WDT_SHIFT	21
- 
-+#define MT7620_GPIO_MODE_MDIO		0
-+#define MT7620_GPIO_MODE_MDIO_REFCLK	1
-+#define MT7620_GPIO_MODE_MDIO_GPIO	2
-+#define MT7620_GPIO_MODE_MDIO_MASK	0x3
-+#define MT7620_GPIO_MODE_MDIO_SHIFT	7
-+
- #define MT7620_GPIO_MODE_I2C		0
- #define MT7620_GPIO_MODE_UART1		5
--#define MT7620_GPIO_MODE_MDIO		8
- #define MT7620_GPIO_MODE_RGMII1		9
- #define MT7620_GPIO_MODE_RGMII2		10
- #define MT7620_GPIO_MODE_SPI		11
 diff --git a/arch/mips/ralink/mt7620.c b/arch/mips/ralink/mt7620.c
-index 6f0fdfd..2503878 100644
+index 2503878..76416b4 100644
 --- a/arch/mips/ralink/mt7620.c
 +++ b/arch/mips/ralink/mt7620.c
-@@ -55,7 +55,10 @@
- static struct rt2880_pmx_func i2c_grp[] =  { FUNC("i2c", 0, 1, 2) };
- static struct rt2880_pmx_func spi_grp[] = { FUNC("spi", 0, 3, 4) };
- static struct rt2880_pmx_func uartlite_grp[] = { FUNC("uartlite", 0, 15, 2) };
--static struct rt2880_pmx_func mdio_grp[] = { FUNC("mdio", 0, 22, 2) };
-+static struct rt2880_pmx_func mdio_grp[] = {
-+	FUNC("mdio", MT7620_GPIO_MODE_MDIO, 22, 2),
-+	FUNC("refclk", MT7620_GPIO_MODE_MDIO_REFCLK, 22, 2),
-+};
- static struct rt2880_pmx_func rgmii1_grp[] = { FUNC("rgmii1", 0, 24, 12) };
- static struct rt2880_pmx_func refclk_grp[] = { FUNC("spi refclk", 0, 37, 3) };
- static struct rt2880_pmx_func ephy_grp[] = { FUNC("ephy", 0, 40, 5) };
-@@ -92,7 +95,8 @@
- 	GRP("uartlite", uartlite_grp, 1, MT7620_GPIO_MODE_UART1),
- 	GRP_G("wdt", wdt_grp, MT7620_GPIO_MODE_WDT_MASK,
- 		MT7620_GPIO_MODE_WDT_GPIO, MT7620_GPIO_MODE_WDT_SHIFT),
--	GRP("mdio", mdio_grp, 1, MT7620_GPIO_MODE_MDIO),
-+	GRP_G("mdio", mdio_grp, MT7620_GPIO_MODE_MDIO_MASK,
-+		MT7620_GPIO_MODE_MDIO_GPIO, MT7620_GPIO_MODE_MDIO_SHIFT),
- 	GRP("rgmii1", rgmii1_grp, 1, MT7620_GPIO_MODE_RGMII1),
- 	GRP("spi refclk", refclk_grp, 1, MT7620_GPIO_MODE_SPI_REF_CLK),
- 	GRP_G("pcie", pcie_rst_grp, MT7620_GPIO_MODE_PCIE_MASK,
+@@ -180,7 +180,7 @@
+ 
+ static struct rt2880_pmx_func spis_grp_mt7628[] = {
+ 	FUNC("pwm_uart2", 3, 14, 4),
+-	FUNC("util", 2, 14, 4),
++	FUNC("utif", 2, 14, 4),
+ 	FUNC("gpio", 1, 14, 4),
+ 	FUNC("spis", 0, 14, 4),
+ };
+@@ -194,28 +194,28 @@
+ 
+ static struct rt2880_pmx_func p4led_kn_grp_mt7628[] = {
+ 	FUNC("jtag", 3, 30, 1),
+-	FUNC("util", 2, 30, 1),
++	FUNC("utif", 2, 30, 1),
+ 	FUNC("gpio", 1, 30, 1),
+ 	FUNC("p4led_kn", 0, 30, 1),
+ };
+ 
+ static struct rt2880_pmx_func p3led_kn_grp_mt7628[] = {
+ 	FUNC("jtag", 3, 31, 1),
+-	FUNC("util", 2, 31, 1),
++	FUNC("utif", 2, 31, 1),
+ 	FUNC("gpio", 1, 31, 1),
+ 	FUNC("p3led_kn", 0, 31, 1),
+ };
+ 
+ static struct rt2880_pmx_func p2led_kn_grp_mt7628[] = {
+ 	FUNC("jtag", 3, 32, 1),
+-	FUNC("util", 2, 32, 1),
++	FUNC("utif", 2, 32, 1),
+ 	FUNC("gpio", 1, 32, 1),
+ 	FUNC("p2led_kn", 0, 32, 1),
+ };
+ 
+ static struct rt2880_pmx_func p1led_kn_grp_mt7628[] = {
+ 	FUNC("jtag", 3, 33, 1),
+-	FUNC("util", 2, 33, 1),
++	FUNC("utif", 2, 33, 1),
+ 	FUNC("gpio", 1, 33, 1),
+ 	FUNC("p1led_kn", 0, 33, 1),
+ };
+@@ -236,28 +236,28 @@
+ 
+ static struct rt2880_pmx_func p4led_an_grp_mt7628[] = {
+ 	FUNC("jtag", 3, 39, 1),
+-	FUNC("util", 2, 39, 1),
++	FUNC("utif", 2, 39, 1),
+ 	FUNC("gpio", 1, 39, 1),
+ 	FUNC("p4led_an", 0, 39, 1),
+ };
+ 
+ static struct rt2880_pmx_func p3led_an_grp_mt7628[] = {
+ 	FUNC("jtag", 3, 40, 1),
+-	FUNC("util", 2, 40, 1),
++	FUNC("utif", 2, 40, 1),
+ 	FUNC("gpio", 1, 40, 1),
+ 	FUNC("p3led_an", 0, 40, 1),
+ };
+ 
+ static struct rt2880_pmx_func p2led_an_grp_mt7628[] = {
+ 	FUNC("jtag", 3, 41, 1),
+-	FUNC("util", 2, 41, 1),
++	FUNC("utif", 2, 41, 1),
+ 	FUNC("gpio", 1, 41, 1),
+ 	FUNC("p2led_an", 0, 41, 1),
+ };
+ 
+ static struct rt2880_pmx_func p1led_an_grp_mt7628[] = {
+ 	FUNC("jtag", 3, 42, 1),
+-	FUNC("util", 2, 42, 1),
++	FUNC("utif", 2, 42, 1),
+ 	FUNC("gpio", 1, 42, 1),
+ 	FUNC("p1led_an", 0, 42, 1),
+ };
 -- 
 1.7.10.4

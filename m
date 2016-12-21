@@ -1,41 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Dec 2016 13:13:52 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:23410 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992703AbcLUMNp5nCFz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Dec 2016 13:13:45 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 9FCD4B15B958D;
-        Wed, 21 Dec 2016 12:13:37 +0000 (GMT)
-Received: from [10.20.78.44] (10.20.78.44) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Wed, 21 Dec 2016
- 12:13:39 +0000
-Date:   Wed, 21 Dec 2016 12:13:28 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: Re: [PATCH v3 3/5] MIPS: Only change $28 to thread_info if coming
- from user mode
-In-Reply-To: <1482157260-18730-4-git-send-email-matt.redfearn@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1612211212140.6743@tp.orcam.me.uk>
-References: <1482157260-18730-1-git-send-email-matt.redfearn@imgtec.com> <1482157260-18730-4-git-send-email-matt.redfearn@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Dec 2016 18:10:24 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:57934 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993340AbcLURKRi07dB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Dec 2016 18:10:17 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id uBLHAGcx013718;
+        Wed, 21 Dec 2016 18:10:16 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id uBLHAGUD013717;
+        Wed, 21 Dec 2016 18:10:16 +0100
+Date:   Wed, 21 Dec 2016 18:10:16 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Steven J. Hill" <Steven.Hill@cavium.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/5] MIPS: FW: Make fw_init_cmdline() to be __weak.
+Message-ID: <20161221171015.GA13689@linux-mips.org>
+References: <b14ef49d-f39c-4e13-2da8-ab94804395a2@cavium.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.44]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b14ef49d-f39c-4e13-2da8-ab94804395a2@cavium.com>
+User-Agent: Mutt/1.7.1 (2016-10-04)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56111
+X-archive-position: 56112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,14 +42,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 19 Dec 2016, Matt Redfearn wrote:
+On Tue, Nov 22, 2016 at 01:43:54PM -0600, Steven J. Hill wrote:
 
-> Changes in v3:
-> Drop superfluous nop that would have been in delay slot with .set
-> noreorder but is no longer required now that the code is .set reorder.
+> Some bootloaders pass the kernel parameters in different registers.
+> Allow for platform-specific initialization of the command line.
+> 
+> Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
+> ---
+>  arch/mips/include/asm/fw/fw.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/include/asm/fw/fw.h b/arch/mips/include/asm/fw/fw.h
+> index d0ef8b4..0fcd63e 100644
+> --- a/arch/mips/include/asm/fw/fw.h
+> +++ b/arch/mips/include/asm/fw/fw.h
+> @@ -21,7 +21,7 @@
+>  #define fw_argv(index)		((char *)(long)_fw_argv[(index)])
+>  #define fw_envp(index)		((char *)(long)_fw_envp[(index)])
+> 
+> -extern void fw_init_cmdline(void);
+> +extern void __weak fw_init_cmdline(void);
+>  extern char *fw_getcmdline(void);
+>  extern void fw_meminit(void);
+>  extern char *fw_getenv(char *name);
 
-LGTM
+Nice try - expect it doesn't work.
 
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+The definition of the function needs to be marked __weak; marking the
+declaration will only kindly express your wishes to GCC and it being
+GCC will ignore them ;-)
 
-  Maciej
+  Ralf

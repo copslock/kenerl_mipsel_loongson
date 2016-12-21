@@ -1,26 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2016 19:15:21 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:44301 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Dec 2016 02:23:23 +0100 (CET)
+Received: from frisell.zx2c4.com ([192.95.5.64]:41205 "EHLO frisell.zx2c4.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993319AbcLTSMjC8I32 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 20 Dec 2016 19:12:39 +0100
-From:   John Crispin <john@phrozen.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH 7/7] arch: mips: ralink: cosmetic change to prom_init()
-Date:   Tue, 20 Dec 2016 19:12:46 +0100
-Message-Id: <1482257566-61035-8-git-send-email-john@phrozen.org>
-X-Mailer: git-send-email 1.7.10.4
-In-Reply-To: <1482257566-61035-1-git-send-email-john@phrozen.org>
-References: <1482257566-61035-1-git-send-email-john@phrozen.org>
-Return-Path: <john@phrozen.org>
+        id S23992703AbcLUBXNT6r2A (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Dec 2016 02:23:13 +0100
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 40d38f5c;
+        Wed, 21 Dec 2016 01:15:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
+        :in-reply-to:references:from:date:message-id:subject:to:cc
+        :content-type; s=mail; bh=Ik4Uf3iAfpA4cGQDDTzY3pCWo78=; b=lWyDao
+        tCUdpToN7BU6foh2fgZvbHzSdCiz85VgAkgbf9vLC7BcLIvUzTVMpV0fK3bI4fnA
+        Xs82me2Q4hn5bcARHJKIbSRVNb6u7spRxs1rqL0F+m2S00EHfoHdL7//fAHDyTut
+        0gGn5qpeVLSrZg3qz874CKrd9h1aymvD55yRTjAZDeFXGsP3jHpooKqNG9KzpsCv
+        j4Nlidjz+rO+ZI0SfnHpgXcWtSjrukAsFCpf8zoajD0BcssmoDFhCydXHxnr1vE3
+        6dSw/DRZcYz0U3jM8MwnY/PIxJ3CBT+jusd+ePdDSOSFgnnpCl0LXnht1zc11oeS
+        CcqZLAe2fg/HahVg==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ed9dbfb4 (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO);
+        Wed, 21 Dec 2016 01:15:57 +0000 (UTC)
+Received: by mail-oi0-x232.google.com with SMTP id v84so195553549oie.3;
+        Tue, 20 Dec 2016 17:23:04 -0800 (PST)
+X-Gm-Message-State: AIkVDXJuMgLYw3/DPdMEVFj+6vxa+Z4w8HI9lHK+nQDDPmthyUySYKTlHG81ZQL/BWBdA1012hVR5bBq8VuccA==
+X-Received: by 10.202.4.214 with SMTP id 205mr1181381oie.113.1482283083363;
+ Tue, 20 Dec 2016 17:18:03 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.182.97.7 with HTTP; Tue, 20 Dec 2016 17:18:02 -0800 (PST)
+In-Reply-To: <1482157260-18730-1-git-send-email-matt.redfearn@imgtec.com>
+References: <1482157260-18730-1-git-send-email-matt.redfearn@imgtec.com>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Wed, 21 Dec 2016 02:18:02 +0100
+X-Gmail-Original-Message-ID: <CAHmME9pRnCW5875vL=mr_D0Lq8nPZ69L-7gVaaHuO7EMTBp6Ew@mail.gmail.com>
+Message-ID: <CAHmME9pRnCW5875vL=mr_D0Lq8nPZ69L-7gVaaHuO7EMTBp6Ew@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] MIPS: Add per-cpu IRQ stack
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Petr Mladek <pmladek@suse.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Jiri Slaby <jslaby@suse.cz>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Aaron Tomlin <atomlin@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56109
+X-archive-position: 56110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -33,46 +67,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Over the years the code has been changed various times leading to
-argc/argv being defined in a different function to where we actually
-use the variables. Clean this up by moving them to prom_init_cmdline().
+Hi Matt,
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- arch/mips/ralink/prom.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Thanks for the v3. For the whole series:
 
-diff --git a/arch/mips/ralink/prom.c b/arch/mips/ralink/prom.c
-index 5a73c5e..23198c9 100644
---- a/arch/mips/ralink/prom.c
-+++ b/arch/mips/ralink/prom.c
-@@ -30,8 +30,10 @@ const char *get_system_type(void)
- 	return soc_info.sys_type;
- }
- 
--static __init void prom_init_cmdline(int argc, char **argv)
-+static __init void prom_init_cmdline(void)
- {
-+	int argc;
-+	char **argv;
- 	int i;
- 
- 	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
-@@ -60,14 +62,11 @@ static __init void prom_init_cmdline(int argc, char **argv)
- 
- void __init prom_init(void)
- {
--	int argc;
--	char **argv;
--
- 	prom_soc_init(&soc_info);
- 
- 	pr_info("SoC Type: %s\n", get_system_type());
- 
--	prom_init_cmdline(argc, argv);
-+	prom_init_cmdline();
- }
- 
- void __init prom_free_prom_memory(void)
--- 
-1.7.10.4
+Acked-by: Jason A. Donenfeld <jason@zx2c4.com>
+
+Jason

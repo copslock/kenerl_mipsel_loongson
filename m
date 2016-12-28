@@ -1,65 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Dec 2016 02:16:01 +0100 (CET)
-Received: from mail-pg0-f68.google.com ([74.125.83.68]:36059 "EHLO
-        mail-pg0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991129AbcL1BPx6-8-Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Dec 2016 02:15:53 +0100
-Received: by mail-pg0-f68.google.com with SMTP id n5so13957318pgh.3;
-        Tue, 27 Dec 2016 17:15:53 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Dec 2016 08:39:40 +0100 (CET)
+Received: from mail-pg0-f65.google.com ([74.125.83.65]:33819 "EHLO
+        mail-pg0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990552AbcL1HjdPJsLg convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Dec 2016 08:39:33 +0100
+Received: by mail-pg0-f65.google.com with SMTP id b1so14913587pgc.1;
+        Tue, 27 Dec 2016 23:39:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=kotmR9ZRLHWJYkUyYgKPvLXDhjWmrovYjfGiGH4gR3s=;
-        b=SGGbVfBTCDooHnhr7YYko8BlFOuT3l3HyEQKnNiiM3ha8V3Fv0tqYJCcPt6UCI65MM
-         BmTex47E01iEaeQFml4QEhmqJqEa8yFhrcuyWSeE5ldxN6nObewApjvDq/y9TEhOacLV
-         ehttxTLIpCLyoagrENBBJcXJRBxwZA/AjpT9G4/639l2pGGcWED3FWM3zPWNpf7kt854
-         eLV4OqZZloTrPRKa/PMulPU/UZfOkLqeGicwdWvCdusmJXw2caSz3MHvWM+0Gweolk7s
-         wKGtTpiaVz7O3hydJci6PioliJXNN2QirzJypIh1CVjLWTcH7lbuqs38CAfzx5Dz2xqz
-         b3jw==
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=e4G1FHv/NQsqYqrkO6EIWdCElBqeN8spQPGza3YPSwg=;
+        b=r/wHT6wRPgDYWWNZ0twiteIJGf49pWpI131sU49mYYZk9Y4XX/1WbMDhSOIB9vigiM
+         4z/VRxqggqufHOFNqALOVUlbhw7vza7WEUUxfoEmwvMJWEPLHtefVSCjlbkusIsyGDjz
+         h8iJd4qBYs525Ux5E94sQv/YGLK4/4c50C2IJEWSnUN4wCWwVssdftqwdWjbQsB409py
+         JkU8CZNqw9GL3lL/D2r8ZFQkoIcl+87uATeB3C8FpDwpac9kyZ5USybhORGS8b9n1Scz
+         URE6zhlRAXoYqLYSRqwjBNyrSVjTyU9RPADf0hv8HZkuPR2GSF0rz9XbYCMvfT4zlZVN
+         ivyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=kotmR9ZRLHWJYkUyYgKPvLXDhjWmrovYjfGiGH4gR3s=;
-        b=amGYRSFodGiV3s4k5MT0pE4Gp8F03nfbsi6pM0OEv/hyHSp+GxKj5TLx/DBjF36O97
-         X7DE2mbzEDLtOUxMvU2FbzskOmH29lGfJN6Yjmelty7YjXX1DQ8D3SbzXfNpKAvKPy/y
-         ciM6hLXuHeITQqg54XzmKIMWn8tlSwLyCglOqi8lY5EH+Yt6TLNG664U+T388e6NfspF
-         zKHdYe4+rcKuVk6YbdCGHieZbZ45Tt8l0zV56aiAraTHteU1pA4zmYM5XUQ4o5eY/9qh
-         pX4nmNAXte/E6F5kIRE8/k+NRE3Eszi7JUxa6ojMF6Df2Shk1kFkc6r0nFwFJQnjiL0E
-         scKA==
-X-Gm-Message-State: AIkVDXKLtRXQT5mms3RvVdblEh1dQ0WAyvzPh4FBTsw0/r+fZ4vt852sf+f91kWdwN34+A==
-X-Received: by 10.84.197.1 with SMTP id m1mr73210591pld.159.1482887748062;
-        Tue, 27 Dec 2016 17:15:48 -0800 (PST)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id i76sm92087963pfk.89.2016.12.27.17.15.47
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=e4G1FHv/NQsqYqrkO6EIWdCElBqeN8spQPGza3YPSwg=;
+        b=etiRBc7etcRoMO5fd67sVPafdE62TgvYeGjC3pe98MRrtAAnVOZQQxm56gjMegnxhg
+         4+cRanBPH1wxFG637NwRPFyxQp1hfgHVz/acdutjiTUIMb75X9mZvLgW+NoVbFVJdWrt
+         k/NLmT+ibKac8UWGpY/nVhzXTI0BuTyKYlqorhbXf0qPFuFzq/L4JJ4FPmjyrycIgkAk
+         9QuDG3qSt/8RqikTheiKTtG7OjD5NX6FqJ0d7PMgqw8+l5V/c+jNltLhHd0s7u8XapcL
+         r3WGWRxStkGNZNbaoc8gc3MJy1O9SNoAhMToCooCOjcrjl14VCRcJ7NRSPIg9Oewz8Iz
+         8mOg==
+X-Gm-Message-State: AIkVDXK7L3Qr3rE/YD63SoyPixHpMUh7NfH2XNVWpl3iqrJIpg7ggEEr2MEB0C3mcUPwBw==
+X-Received: by 10.99.112.66 with SMTP id a2mr65362022pgn.43.1482910765640;
+        Tue, 27 Dec 2016 23:39:25 -0800 (PST)
+Received: from [192.168.10.100] ([125.130.116.2])
+        by smtp.gmail.com with ESMTPSA id q2sm95191395pga.8.2016.12.27.23.39.23
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Dec 2016 17:15:47 -0800 (PST)
-Subject: Re: [PATCH 1/2] spi: bcm-qspi: Enable the driver on BMIPS_GENERIC
-To:     Jaedon Shin <jaedon.shin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <20161227015923.882-1-jaedon.shin@gmail.com>
- <20161227015923.882-2-jaedon.shin@gmail.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Tue, 27 Dec 2016 23:39:25 -0800 (PST)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
+Subject: Re: [PATCH 2/2] MIPS: BMIPS: Add support SPI device nodes
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+In-Reply-To: <0dffeca2-68bf-bacd-7eff-8b966c721dde@gmail.com>
+Date:   Wed, 28 Dec 2016 16:39:20 +0900
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
         Rob Herring <robh+dt@kernel.org>, linux-mips@linux-mips.org,
         devicetree@vger.kernel.org
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <57636381-e1af-cbbd-6d88-a184178ab132@gmail.com>
-Date:   Tue, 27 Dec 2016 17:15:45 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.5.1
-MIME-Version: 1.0
-In-Reply-To: <20161227015923.882-2-jaedon.shin@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <8BB6A4C9-96EF-42E1-8144-808B9C70E8EE@gmail.com>
+References: <20161227015923.882-1-jaedon.shin@gmail.com>
+ <20161227015923.882-3-jaedon.shin@gmail.com>
+ <0dffeca2-68bf-bacd-7eff-8b966c721dde@gmail.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+X-Mailer: Apple Mail (2.3259)
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56129
+X-archive-position: 56130
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,12 +73,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 12/26/2016 05:59 PM, Jaedon Shin wrote:
-> The Broadcom BCM7XXX ARM and MIPS based SoCs share a similar hardware
-> block for SPI.
-> 
-> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+> On 28 Dec 2016, at 7:12 AM, Florian Fainelli <f.fainelli@gmail.com> wrote:
+> 
+> On 12/26/2016 05:59 PM, Jaedon Shin wrote:
+>> Adds SPI device nodes to BCM7xxx MIPS based SoCs.
+>> 
+>> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+>> ---
+>> arch/mips/boot/dts/brcm/bcm7125.dtsi      | 55 +++++++++++++++++++++++++++++--
+>> arch/mips/boot/dts/brcm/bcm7346.dtsi      | 49 +++++++++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm7358.dtsi      | 49 +++++++++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm7360.dtsi      | 49 +++++++++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm7362.dtsi      | 49 +++++++++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm7420.dtsi      | 55 +++++++++++++++++++++++++++++--
+>> arch/mips/boot/dts/brcm/bcm7425.dtsi      | 49 +++++++++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm7435.dtsi      | 49 +++++++++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm97125cbmb.dts  |  4 +++
+>> arch/mips/boot/dts/brcm/bcm97346dbsmb.dts |  4 +++
+>> arch/mips/boot/dts/brcm/bcm97358svmb.dts  | 36 ++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm97360svmb.dts  | 36 ++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm97362svmb.dts  |  4 +++
+>> arch/mips/boot/dts/brcm/bcm97420c.dts     |  4 +++
+>> arch/mips/boot/dts/brcm/bcm97425svmb.dts  | 36 ++++++++++++++++++++
+>> arch/mips/boot/dts/brcm/bcm97435svmb.dts  |  4 +++
+>> 16 files changed, 526 insertions(+), 6 deletions(-)
+>> 
+>> diff --git a/arch/mips/boot/dts/brcm/bcm7125.dtsi b/arch/mips/boot/dts/brcm/bcm7125.dtsi
+>> index bbd00f65ce39..c1e19e57f64a 100644
+>> --- a/arch/mips/boot/dts/brcm/bcm7125.dtsi
+>> +++ b/arch/mips/boot/dts/brcm/bcm7125.dtsi
+>> @@ -46,6 +46,12 @@
+>> 			#clock-cells = <0>;
+>> 			clock-frequency = <27000000>;
+>> 		};
+>> +
+>> +		spi_clk: spi_clk {
+>> +			compatible = "fixed-clock";
+>> +			#clock-cells = <0>;
+>> +			clock-frequency = <27000000>;
+>> +		};
+> 
+> Nit, this should actually be upg_clk, since this is the clock that the
+> SPI controller uses, and it is a fixed-clock with a 27Mhz frequency.
+> 
+> Other than that, the rest looks good to me, thanks!
+> -- 
+> Florian
+
+I will change the qspi uses upg_clk in v2.
+
+Thanks,
+Jaedon

@@ -1,80 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Dec 2016 02:37:04 +0100 (CET)
-Received: from mail-ua0-f178.google.com ([209.85.217.178]:36434 "EHLO
-        mail-ua0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992196AbcLaBg5XENcH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Dec 2016 02:36:57 +0100
-Received: by mail-ua0-f178.google.com with SMTP id 88so259203119uaq.3
-        for <linux-mips@linux-mips.org>; Fri, 30 Dec 2016 17:36:57 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Dec 2016 19:43:07 +0100 (CET)
+Received: from mail-pg0-f68.google.com ([74.125.83.68]:35713 "EHLO
+        mail-pg0-f68.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992703AbcLaSnAR0cI7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Dec 2016 19:43:00 +0100
+Received: by mail-pg0-f68.google.com with SMTP id i5so25732949pgh.2;
+        Sat, 31 Dec 2016 10:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=nQN2sAznDhR3o/sNczZVSRotGfXbQY61Nz9XWvVQwL4=;
-        b=Cpk0+O3UGUh3byFzBZWZtONQmcjjMTFbqwaP3pqlFX361BMq+n4FedSIdnh7SQ1Gka
-         3+KUR9SWFK2llT7KPJSKTTv5I5epDlHmY91py1rPRbNZMskbKVFHtM9xTQ5BnLd+/tYT
-         WKe4DC8Yfrtf/tIItx8OQHm5liUMGc4SU8iBAVmu/irPw4+1IkX+ehFQ94dwX08fx41j
-         +oedeYIYX+xOKQ3ZcOc33KC5Z0qd5aJPoMfwaa9PSrukVzj11glqjh6mtrLTFO7Q+Hhm
-         qZ1CPCZgrX5/YAY7FkliJjC29XSF0teg/RIPWeGWx2vH6thxL0MhCbTC50D5GNHapuaN
-         B//A==
+        d=gmail.com; s=20161025;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=cw9f6QuX9sGLECVctJBYCIGltwduDIqfBlitnTbKcLY=;
+        b=ureSpNpjAe7d4AYz/rpIOS6r8aB3dPIW09+MMR0pmrV7C+fF9yvAugKh5u8j8KEeWO
+         qdT7NK+uga4fsRny2IUCfsYizp1fVW0DeWMig9q4DLHaSQQ0GgQ1qMq9iGbzGYXjWv9t
+         hdXPQiIgXBtklbDNGo6OY4MATGJICel5N1fS84cU+vEJ12UiGeWR0vRBuVZk/MC5DHQE
+         TzdNi4jS09/dmNmy0mMaVsuqxC8Hvz+KilYXHqgO5Y2C8jnZ/NAOeTKnBYQEzAxR5Rug
+         4kwvKczy0U6Fk3Yfkf4Pm40L6zIjZHv/eiKe49mBR64KdjApBt2V8Y5ekHkBe+pEBbn6
+         NlJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=nQN2sAznDhR3o/sNczZVSRotGfXbQY61Nz9XWvVQwL4=;
-        b=gWUphJpbCUxNlRKmfkf192tXKUl0a9uWAQtpKuMsf9Quxa4A8oMXt2TDR1YCrhcq2q
-         VLyVcTrowChUk/TqhdgNb4NVsUUSnGsw71lePng4GQPLzOvNItOqzACyzmnsTr4OiTHO
-         TJq0LHfHCTbaabGDTyfb4AWL4GNS0s04/illC8lgcnK9jG0LUgqvS8rHKftwhOuO2Yik
-         2bUiEQDzuKseBCM4DkPgyfrEK4dIIqjOYUJehVlK4ZmwUWTZybdylcmJ+pImSiG7YA2U
-         9E1G9o7rSvEB0d4e99rRAv9hxM4itzft92H/hCrVMRiSddby1s4CB8dIWrd8yIl+Zhpf
-         D7og==
-X-Gm-Message-State: AIkVDXJwVY5zqLNEUZku5Wr7nhCzrejS9S9jgeHab0i//6eYsXyIwnZWb45wSd0PHDRYEE3aIoLUqz07w9IsRqCU
-X-Received: by 10.176.6.74 with SMTP id f68mr37935241uaf.37.1483148211546;
- Fri, 30 Dec 2016 17:36:51 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.103.139.66 with HTTP; Fri, 30 Dec 2016 17:36:31 -0800 (PST)
-In-Reply-To: <20161230155634.8692-2-dsafonov@virtuozzo.com>
-References: <20161230155634.8692-1-dsafonov@virtuozzo.com> <20161230155634.8692-2-dsafonov@virtuozzo.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Fri, 30 Dec 2016 17:36:31 -0800
-Message-ID: <CALCETrVsjDqWpF2E4gZKMx4EEFHLYSR+AOX_3BcV3FNPe13pkg@mail.gmail.com>
-Subject: Re: [RFC 1/4] mm: remove unused TASK_SIZE_OF()
-To:     Dmitry Safonov <dsafonov@virtuozzo.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=cw9f6QuX9sGLECVctJBYCIGltwduDIqfBlitnTbKcLY=;
+        b=LLeugAj/wl4WNUBNtYTBNBhwMj/uVom6EuptyN2UkTsxw/HCU4Pwetwmuq3bFkbdAE
+         a0ZRSZ3BTraX/WSAuJIGZ5fu4p81HmX9UTNFbsmQpWwVjpiTRo/UwjvFJ2JX4pLoIbpN
+         TXiLoqRIifBhITDsZCGJgoTm8sPJA43r0smQDCjdIB0yhG2m/xV78cOeznPba/iIMNkS
+         dH/t0plm77S+kiDMc5BNEEMrkkCN48kWFVkGvR0tegpoBW5d/QkA2sVBCo3NTSO89YfH
+         QVgOCuVFulx3+DBAGllHljvuREa8IYFoRKh5CLdxW4d8qR882lJyn4DCOrHvLXa6JOBB
+         z20Q==
+X-Gm-Message-State: AIkVDXIBcMexAU/cvGkZEWH8LlaLt5+p+sza8PEg6d2aKsXqnADxO9SPppFiPVAxuRKIfQ==
+X-Received: by 10.84.167.168 with SMTP id d37mr109954404plb.71.1483209773925;
+        Sat, 31 Dec 2016 10:42:53 -0800 (PST)
+Received: from [192.168.1.156] (c-73-170-87-240.hsd1.ca.comcast.net. [73.170.87.240])
+        by smtp.gmail.com with ESMTPSA id f23sm121255781pff.59.2016.12.31.10.42.52
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 31 Dec 2016 10:42:52 -0800 (PST)
+Subject: Re: [v2 2/2] MIPS: BMIPS: Add support SPI device nodes
+To:     Jaedon Shin <jaedon.shin@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        X86 ML <x86@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+        Mark Brown <broonie@kernel.org>
+References: <20161230063001.944-1-jaedon.shin@gmail.com>
+ <20161230063001.944-3-jaedon.shin@gmail.com>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <09536633-9c81-9621-36af-665369e97a78@gmail.com>
+Date:   Sat, 31 Dec 2016 10:42:52 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.5.1
+MIME-Version: 1.0
+In-Reply-To: <20161230063001.944-3-jaedon.shin@gmail.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56137
+X-archive-position: 56138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,14 +73,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 30, 2016 at 7:56 AM, Dmitry Safonov <dsafonov@virtuozzo.com> wrote:
-> All users of TASK_SIZE_OF(tsk) have migrated to mm->task_size or
-> TASK_SIZE_MAX since:
-> commit d696ca016d57 ("x86/fsgsbase/64: Use TASK_SIZE_MAX for
-> FSBASE/GSBASE upper limits"),
-> commit a06db751c321 ("pagemap: check permissions and capabilities at
-> open time"),
+Hi Jaedon,
 
-I like this.
+On 12/29/2016 10:30 PM, Jaedon Shin wrote:
+> Adds SPI device nodes to BCM7xxx MIPS based SoCs.
+> 
+> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+> ---
 
-Reviewed-by: Andy Lutomirski <luto@kernel.org> # for x86
+> +
+> +&qspi {
+> +	status = "okay";
+> +
+> +	m25p80@0 {
+> +		compatible = "m25p80";
+> +		reg = <0>;
+> +		spi-max-frequency = <0x2625a00>;
+
+Sorry for not noticing this earlier, can we have the frequency in a
+decimal form?
+
+With that fixed, feel free to add:
+
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+
+Thanks!
+-- 
+Florian

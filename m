@@ -1,90 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jan 2017 07:57:48 +0100 (CET)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:39055 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991986AbdABG53XtGag (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Jan 2017 07:57:29 +0100
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.17/8.16.0.17) with SMTP id v026sMmr077044
-        for <linux-mips@linux-mips.org>; Mon, 2 Jan 2017 01:57:26 -0500
-Received: from e06smtp14.uk.ibm.com (e06smtp14.uk.ibm.com [195.75.94.110])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 27q407cres-1
-        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Mon, 02 Jan 2017 01:57:25 -0500
-Received: from localhost
-        by e06smtp14.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <heiko.carstens@de.ibm.com>;
-        Mon, 2 Jan 2017 06:57:23 -0000
-Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
-        by e06smtp14.uk.ibm.com (192.168.101.144) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Mon, 2 Jan 2017 06:57:16 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id AFDD22190019;
-        Mon,  2 Jan 2017 06:56:24 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id v026vGMU14614816;
-        Mon, 2 Jan 2017 06:57:16 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3853B42041;
-        Mon,  2 Jan 2017 05:55:15 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 8B0C742042;
-        Mon,  2 Jan 2017 05:55:14 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.54])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Mon,  2 Jan 2017 05:55:14 +0000 (GMT)
-Date:   Mon, 2 Jan 2017 07:57:13 +0100
-From:   Heiko Carstens <heiko.carstens@de.ibm.com>
-To:     Dmitry Safonov <dsafonov@virtuozzo.com>
-Cc:     linux-kernel@vger.kernel.org, 0x7f454c46@gmail.com,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org
-Subject: Re: [RFC 1/4] mm: remove unused TASK_SIZE_OF()
-References: <20161230155634.8692-1-dsafonov@virtuozzo.com>
- <20161230155634.8692-2-dsafonov@virtuozzo.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20161230155634.8692-2-dsafonov@virtuozzo.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 17010206-0016-0000-0000-0000036E35ED
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 17010206-0017-0000-0000-00002541C154
-Message-Id: <20170102065713.GB4779@osiris>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-01-02_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.0.1-1612050000
- definitions=main-1701020118
-Return-Path: <heiko.carstens@de.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jan 2017 10:48:55 +0100 (CET)
+Received: from mail-pg0-f67.google.com ([74.125.83.67]:32951 "EHLO
+        mail-pg0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993064AbdABJssYhdsc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Jan 2017 10:48:48 +0100
+Received: by mail-pg0-f67.google.com with SMTP id g1so30031643pgn.0;
+        Mon, 02 Jan 2017 01:48:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=B2qQ28YWEk7NhSw48mmoWn0tvENdjKC1j9mkvoLSOwk=;
+        b=ZbXZJXiy223b/U4eX4qQglcj7Gmbgotatc3OXA7gPWJzY9Ky9yi2djXeyl7sO9wx5h
+         impJZevJhPv3AE5TQ+mdKW0KGbt6dMxRGAL8qcaMyVhwzWol0i9Ay9tplSofm7oU/CEx
+         Enx6RoLzAIL5fDcfkxn/71Fnm0JG2ZExHEyGt030F0rvq+yMBXVIJtDVvzVxry9Wl0PD
+         0VqZ12ctxOfUh+mSXvWVxVZKWtigJxYgqkoiuXRa5YNHbQtEYzswWpKLZxRbtH8SO8Ty
+         ki0V5XVunLnhZsZwIkZ4P9hVNIP+twkl/zlWoupNbG5XyahGPRIObMnne2YZwHdyc1RR
+         y/Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=B2qQ28YWEk7NhSw48mmoWn0tvENdjKC1j9mkvoLSOwk=;
+        b=jkbf5K1Ezhu/bTKxOiT/nNsGDSnnlZiQUNvjr0aHmGCw6siOupx+/H2vjKB8NgjWHZ
+         /7ZTjcdmUo9XLQdTed/dN/DqmW/JZkVUUtVxUIXUciguA3YCrADKFF+B2XAi6ZENNSzO
+         QkwR4s70i9u6NWXp3NO4y5tMd6Xm7BoKf5jFmVxnEMXaomLVmKcpMxQh8tjlmBGHo28d
+         EJzr1srTHjnR+2nDJWRxCzvcPuCrLvPLsGIfiMxltX1RMXD4+/10LFyD39R8G3zTgqKw
+         3PfkhkYpCnKAkJes1qyFtT55G6meadyViexn1yXRjiFKMfbqgydBNRDDLuzF/X0Uk7am
+         /tKg==
+X-Gm-Message-State: AIkVDXKIqxT5avqLyifwnSzQFdLRtR8nCEGDE2AqBb8trakytfymYaghnbQaCoSTwrWE7A==
+X-Received: by 10.99.156.2 with SMTP id f2mr107771907pge.20.1483350522521;
+        Mon, 02 Jan 2017 01:48:42 -0800 (PST)
+Received: from symbol-HP-Z420-Workstation.zebra.lan ([223.31.70.102])
+        by smtp.googlemail.com with ESMTPSA id h185sm130768861pfg.90.2017.01.02.01.48.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 02 Jan 2017 01:48:41 -0800 (PST)
+From:   Arvind Yadav <arvind.yadav.cs@gmail.com>
+To:     ralf@linux-mips.org
+Cc:     antonynpavlov@gmail.com, albeu@free.fr, hackpascal@gmail.com,
+        sboyd@codeaurora.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [v1] mips: ath79: clock:- Unmap region obtained by of_iomap
+Date:   Mon,  2 Jan 2017 15:18:21 +0530
+Message-Id: <1483350501-7678-1-git-send-email-arvind.yadav.cs@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <arvind.yadav.cs@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56140
+X-archive-position: 56141
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: heiko.carstens@de.ibm.com
+X-original-sender: arvind.yadav.cs@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -97,35 +62,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 30, 2016 at 06:56:31PM +0300, Dmitry Safonov wrote:
-> All users of TASK_SIZE_OF(tsk) have migrated to mm->task_size or
-> TASK_SIZE_MAX since:
-> commit d696ca016d57 ("x86/fsgsbase/64: Use TASK_SIZE_MAX for
-> FSBASE/GSBASE upper limits"),
-> commit a06db751c321 ("pagemap: check permissions and capabilities at
-> open time"),
-> 
-> Signed-off-by: Dmitry Safonov <dsafonov@virtuozzo.com>
-> ---
-...
+Free memory mapping, if ath79_clocks_init_dt_ng is not successful.
 
-> diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-> index 6bca916a5ba0..c53e8e2a51ac 100644
-> --- a/arch/s390/include/asm/processor.h
-> +++ b/arch/s390/include/asm/processor.h
-> @@ -89,10 +89,9 @@ extern void execve_tail(void);
->   * User space process size: 2GB for 31 bit, 4TB or 8PT for 64 bit.
->   */
-> 
-> -#define TASK_SIZE_OF(tsk)	((tsk)->mm->context.asce_limit)
->  #define TASK_UNMAPPED_BASE	(test_thread_flag(TIF_31BIT) ? \
->  					(1UL << 30) : (1UL << 41))
-> -#define TASK_SIZE		TASK_SIZE_OF(current)
-> +#define TASK_SIZE		(current->mm->context.asce_limit)
->  #define TASK_MAX_SIZE		(1UL << 53)
-> 
->  #define STACK_TOP		(1UL << (test_thread_flag(TIF_31BIT) ? 31:42))
+Signed-off-by: Arvind Yadav <arvind.yadav.cs@gmail.com>
+---
+ arch/mips/ath79/clock.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-FWIW, for the s390 part:
-
-Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
+diff --git a/arch/mips/ath79/clock.c b/arch/mips/ath79/clock.c
+index cc3a1e3..7e2bb12 100644
+--- a/arch/mips/ath79/clock.c
++++ b/arch/mips/ath79/clock.c
+@@ -508,16 +508,19 @@ static void __init ath79_clocks_init_dt_ng(struct device_node *np)
+ 		ar9330_clk_init(ref_clk, pll_base);
+ 	else {
+ 		pr_err("%s: could not find any appropriate clk_init()\n", dnfn);
+-		goto err_clk;
++		goto err_iounmap;
+ 	}
+ 
+ 	if (of_clk_add_provider(np, of_clk_src_onecell_get, &clk_data)) {
+ 		pr_err("%s: could not register clk provider\n", dnfn);
+-		goto err_clk;
++		goto err_iounmap;
+ 	}
+ 
+ 	return;
+ 
++err_iounmap:
++	iounmap(pll_base);
++
+ err_clk:
+ 	clk_put(ref_clk);
+ 
+-- 
+1.9.1

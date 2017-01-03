@@ -1,39 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jan 2017 18:44:26 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11474 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993107AbdACRnZ6ij4T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jan 2017 18:43:25 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 324149B69DE;
-        Tue,  3 Jan 2017 17:43:16 +0000 (GMT)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 3 Jan 2017 17:43:19 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>, <stable@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 2/2] KVM: MIPS: Flush KVM entry code from icache globally
-Date:   Tue, 3 Jan 2017 17:43:01 +0000
-Message-ID: <c73b83202f6a1bbc6e34e6d748bf4e4921d634b9.1483464823.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.11.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jan 2017 21:52:49 +0100 (CET)
+Received: from rere.qmqm.pl ([84.10.57.10]:50282 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993094AbdACUwmLZgGq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Jan 2017 21:52:42 +0100
+Received: by rere.qmqm.pl (Postfix, from userid 1000)
+        id 6868E611F; Tue,  3 Jan 2017 21:52:38 +0100 (CET)
+Message-Id: <719ecd1e2cb20316daf110de4dc865593c7bed9d.1483475202.git.mirq-linux@rere.qmqm.pl>
+In-Reply-To: <cover.1483475202.git.mirq-linux@rere.qmqm.pl>
+References: <cover.1483475202.git.mirq-linux@rere.qmqm.pl>
+From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+Subject: [PATCH net-next v2 18/27] net/skbuff: add macros for VLAN_PRESENT bit
 MIME-Version: 1.0
-In-Reply-To: <cover.cdddb6fe1a787c96c57358e404931f87f547e5e5.1483464823.git-series.james.hogan@imgtec.com>
-References: <cover.cdddb6fe1a787c96c57358e404931f87f547e5e5.1483464823.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+To:     netdev@vger.kernel.org
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
+Date:   Tue,  3 Jan 2017 21:52:38 +0100 (CET)
+Return-Path: <mirq@rere.qmqm.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56147
+X-archive-position: 56148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: mirq-linux@rere.qmqm.pl
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,34 +44,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Flush the KVM entry code from the icache on all CPUs, not just the one
-that built the entry code.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Cc: <stable@vger.kernel.org> # 3.16.x-
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 ---
- arch/mips/kvm/mips.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/skbuff.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 06a60b19acfb..29ec9ab3fd55 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -360,8 +360,8 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- 	dump_handler("kvm_exit", gebase + 0x2000, vcpu->arch.vcpu_run);
- 
- 	/* Invalidate the icache for these ranges */
--	local_flush_icache_range((unsigned long)gebase,
--				(unsigned long)gebase + ALIGN(size, PAGE_SIZE));
-+	flush_icache_range((unsigned long)gebase,
-+			   (unsigned long)gebase + ALIGN(size, PAGE_SIZE));
- 
- 	/*
- 	 * Allocate comm page for guest kernel, a TLB will be reserved for
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index b53c0cfd417e..168c3e486bd4 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -768,6 +768,12 @@ struct sk_buff {
+ 	__u32			priority;
+ 	int			skb_iif;
+ 	__u32			hash;
++#define PKT_VLAN_PRESENT_BIT	4	// CFI (12-th bit) in TCI
++#ifdef __BIG_ENDIAN
++#define PKT_VLAN_PRESENT_OFFSET()	offsetof(struct sk_buff, vlan_tci)
++#else
++#define PKT_VLAN_PRESENT_OFFSET()	(offsetof(struct sk_buff, vlan_tci) + 1)
++#endif
+ 	__be16			vlan_proto;
+ 	__u16			vlan_tci;
+ #if defined(CONFIG_NET_RX_BUSY_POLL) || defined(CONFIG_XPS)
 -- 
-git-series 0.8.10
+2.11.0

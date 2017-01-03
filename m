@@ -1,84 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jan 2017 10:53:56 +0100 (CET)
-Received: from mail-wj0-f194.google.com ([209.85.210.194]:36700 "EHLO
-        mail-wj0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993064AbdABJxt2Ct6c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 Jan 2017 10:53:49 +0100
-Received: by mail-wj0-f194.google.com with SMTP id j10so68020381wjb.3
-        for <linux-mips@linux-mips.org>; Mon, 02 Jan 2017 01:53:49 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jan 2017 09:37:12 +0100 (CET)
+Received: from mail-pg0-f66.google.com ([74.125.83.66]:36725 "EHLO
+        mail-pg0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990518AbdACIhFtGpYC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 3 Jan 2017 09:37:05 +0100
+Received: by mail-pg0-f66.google.com with SMTP id n5so32892728pgh.3;
+        Tue, 03 Jan 2017 00:37:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=1qNxZjKg7pDhpiXMYnzrxs2ofOammPoo16PBcb1sz/8=;
-        b=wN9183a3Z3W4zEN/ttkTGnqvOGG0YbJawt0ilBCzUNVDoAjTpDpE/AdZsXT1HdYZMq
-         099p0qWRTcUEAoIWJKDNGnGshGjU4tS81LucSynzWnOSAIh1pcGgP5DOrdQYOuUYhhu+
-         B67l9N6rV+BbRh5DPpFykWBS8O9zbIT/gXG5SZRXxY1sfqggiGuobPf3XTvEFdIiLqYj
-         W8JnGd0ckZ1H6hNQVgU2ixSE/Pi1nU+hd/CyCx7PGGOmA6X9oFgE0oBzAvsh34dsNBBx
-         Tg3Fk+U160aTGF9Ep9s0ghUfWrfEIbsYKXjYXQzIZhqfVTOThcZmC4I3osgz9Z4RDXnt
-         KtMg==
+        d=gmail.com; s=20161025;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=yGt7aYRtQWPNvqzAPbV1RrZvoGbUV1inKM0/1wxVuvE=;
+        b=oigu0at8Ko9IVuOIc4PTYmP9ax7Iu1E6h5vFAaz4bisX2ZaNqsPqVsDPFqODt4DRzB
+         jmmpyGeVmc0tvzThGRsVoanzWv9IAQiR4c5aK64DD+Vt7hQjivfMsBI0ZvWd3I5SCNUa
+         cC8M7VWm75VXQaoEsyAkgNv5ZuNfDoJk+uR1NKJvBoHVPVI88zhag5xmECLRMwrPHtcv
+         m2/tG1VFgfoLclsqrDD2nHrx8KmiW1zjFWobxFdTJS30jBw8rrjOEXjgV4TyR45BRLIK
+         V7OTcbjGyHhog2t/IeeWeACP+hgYoYhhIRCcqN0iH0vZeY8mcWYxAAcVwid4Loiayun4
+         Sk4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1qNxZjKg7pDhpiXMYnzrxs2ofOammPoo16PBcb1sz/8=;
-        b=RFn2roLyCNWYY6vomKARy63cIO0Zp04khn26YbzMc+a24zRybY3ecyLlkRt/l90m+/
-         HtlwYD16J3qK6PP7YfVnU/0Vg7CqJkpHj9TCe3MOcKdsAnSOvadcint3IXTJMbvuVVVI
-         ahOkKUYG4PCvNr5Y56BkcGEa3wwCmf3q644PNu3cEQ9BpNqB5E10TwfKlTRRgtab2M3D
-         nvRGD/+WFb4oWE/HzChTC1AyR3/V4sbY8k3oPGhygUuzb9vDTUSZ49qo92UZAQIX/unZ
-         b5z8T2MZsRjsLaHolt94iGoYG8sb7YN6fDz/DZWlilLHEd6Jh4XEAFgco6cxmD5TI75i
-         Esvw==
-X-Gm-Message-State: AIkVDXI3I9mpNP5btZNdvo8UqSlMg31P0OApFHD1L+8si3Z4UwXzaKebWSXvm906OEt3CA==
-X-Received: by 10.194.173.228 with SMTP id bn4mr47197543wjc.161.1483350824037;
-        Mon, 02 Jan 2017 01:53:44 -0800 (PST)
-Received: from node.shutemov.name ([93.85.148.225])
-        by smtp.gmail.com with ESMTPSA id j6sm87114194wjk.25.2017.01.02.01.53.43
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=yGt7aYRtQWPNvqzAPbV1RrZvoGbUV1inKM0/1wxVuvE=;
+        b=OfOPZRQ/rmsUvsN/iAxWc/xWkvu/P0xL2P1PetAAvzEEcWEM410OffjuNwBMVIAGry
+         kBP3xLaNLwU746Oc5FBmsHtsOk0K1PTyCY4V7qfwU/Y1xkyAKQsZqYQkDEX036+gR5QS
+         qEIUphXzOmPfbYr7cKdiWKL22XTJh+9oV7qBuXOxJMtyGO10+brJhcncVRiIluvrV/yI
+         0xWi2hA+tEnlndm6mg0QUIlqE7n6GjB+chEzbvHPG/CFHVd3Gz71g+IikZcXxA6YnaZI
+         mKSHWVnJv6tgxjh7qeLfFYVHAQiQ4sE2i3JOSWcOYc7wKeMe/6jYcR5r9pqySjcXhmi0
+         sRvg==
+X-Gm-Message-State: AIkVDXLeyFTHdHbLabAj3W5pMrd+5LLttRgeAJlsqVZL8KnOA4mVSYF0/NYNQb/ymHyr6g==
+X-Received: by 10.99.171.65 with SMTP id k1mr113535620pgp.87.1483432618972;
+        Tue, 03 Jan 2017 00:36:58 -0800 (PST)
+Received: from [192.168.10.100] ([125.130.116.2])
+        by smtp.gmail.com with ESMTPSA id 72sm137946728pfw.37.2017.01.03.00.36.56
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Jan 2017 01:53:43 -0800 (PST)
-Received: by node.shutemov.name (Postfix, from userid 1000)
-        id 711DB648C170; Mon,  2 Jan 2017 12:53:42 +0300 (+03)
-Date:   Mon, 2 Jan 2017 12:53:42 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Dmitry Safonov <dsafonov@virtuozzo.com>
-Cc:     linux-kernel@vger.kernel.org, 0x7f454c46@gmail.com,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        x86@kernel.org
-Subject: Re: [RFC 1/4] mm: remove unused TASK_SIZE_OF()
-Message-ID: <20170102095342.GD30735@node.shutemov.name>
-References: <20161230155634.8692-1-dsafonov@virtuozzo.com>
- <20161230155634.8692-2-dsafonov@virtuozzo.com>
-MIME-Version: 1.0
+        Tue, 03 Jan 2017 00:36:58 -0800 (PST)
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20161230155634.8692-2-dsafonov@virtuozzo.com>
-User-Agent: Mutt/1.5.23.1 (2014-03-12)
-Return-Path: <kirill@shutemov.name>
+Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
+Subject: Re: [v2 2/2] MIPS: BMIPS: Add support SPI device nodes
+From:   Jaedon Shin <jaedon.shin@gmail.com>
+In-Reply-To: <09536633-9c81-9621-36af-665369e97a78@gmail.com>
+Date:   Tue, 3 Jan 2017 17:36:54 +0900
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Mark Brown <broonie@kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <980BB972-94D0-4466-A888-3B65FBC5C851@gmail.com>
+References: <20161230063001.944-1-jaedon.shin@gmail.com>
+ <20161230063001.944-3-jaedon.shin@gmail.com>
+ <09536633-9c81-9621-36af-665369e97a78@gmail.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+X-Mailer: Apple Mail (2.3259)
+Return-Path: <jaedon.shin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56142
+X-archive-position: 56143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kirill@shutemov.name
+X-original-sender: jaedon.shin@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -91,37 +73,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Dec 30, 2016 at 06:56:31PM +0300, Dmitry Safonov wrote:
-> All users of TASK_SIZE_OF(tsk) have migrated to mm->task_size or
-> TASK_SIZE_MAX since:
-> commit d696ca016d57 ("x86/fsgsbase/64: Use TASK_SIZE_MAX for
-> FSBASE/GSBASE upper limits"),
-> commit a06db751c321 ("pagemap: check permissions and capabilities at
-> open time"),
+Hi Florian,
+
+> On 1 Jan 2017, at 3:42 AM, Florian Fainelli <f.fainelli@gmail.com> wrote:
 > 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will.deacon@arm.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Signed-off-by: Dmitry Safonov <dsafonov@virtuozzo.com>
+> Hi Jaedon,
+> 
+> On 12/29/2016 10:30 PM, Jaedon Shin wrote:
+>> Adds SPI device nodes to BCM7xxx MIPS based SoCs.
+>> 
+>> Signed-off-by: Jaedon Shin <jaedon.shin@gmail.com>
+>> ---
+> 
+>> +
+>> +&qspi {
+>> +	status = "okay";
+>> +
+>> +	m25p80@0 {
+>> +		compatible = "m25p80";
+>> +		reg = <0>;
+>> +		spi-max-frequency = <0x2625a00>;
+> 
+> Sorry for not noticing this earlier, can we have the frequency in a
+> decimal form?
 
-I've noticed this too.
+I will change to "spi-max-frequency = <40000000>" in v3.
 
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Thanks,
+Jaedon
 
--- 
- Kirill A. Shutemov
+> 
+> With that fixed, feel free to add:
+> 
+> Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+> 
+> Thanks!
+> -- 
+> Florian

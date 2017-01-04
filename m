@@ -1,31 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jan 2017 02:19:08 +0100 (CET)
-Received: from rere.qmqm.pl ([84.10.57.10]:53708 "EHLO rere.qmqm.pl"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jan 2017 13:46:03 +0100 (CET)
+Received: from smtpbg202.qq.com ([184.105.206.29]:49735 "EHLO smtpbg202.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993097AbdADBS2LzaIY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Jan 2017 02:18:28 +0100
-Received: by rere.qmqm.pl (Postfix, from userid 1000)
-        id 55BDB610F; Wed,  4 Jan 2017 02:18:27 +0100 (CET)
-Message-Id: <8343904296ba73da321ba43df2cdba2f7ed1b045.1483492355.git.mirq-linux@rere.qmqm.pl>
-In-Reply-To: <cover.1483492355.git.mirq-linux@rere.qmqm.pl>
-References: <cover.1483492355.git.mirq-linux@rere.qmqm.pl>
-From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Subject: [PATCH net-next 3/6] net/bpf_jit: MIPS: split VLAN_PRESENT bit
- handling from VLAN_TCI
+        id S23991232AbdADMpzII-0r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Jan 2017 13:45:55 +0100
+X-QQ-mid: Xesmtp23t1483533937t86cz36yg
+Received: from Red54.com (unknown [183.39.159.125])
+        by esmtp4.qq.com (ESMTP) with SMTP id 0
+        for <linux-mips@linux-mips.org>; Wed, 04 Jan 2017 20:45:35 +0800 (CST)
+X-QQ-SSF: 00000000000000100M104F00000000U
+X-QQ-FEAT: QX/rXDl9P1ud9AqMURhkVROzV1csQyFh0973xasaYtINsRuLSaR3EFv6hDdo/
+        p1ndRVKlbQTljF/wXg7UpU3tWFP7dGaEBAThrolWuzxR6Fa1Ge/fDdb14p1bFeo8aveSGVs
+        n5xxYcuU17S40Y+vLbH5Vi/fKjmoHDIKQH3hoiw1WkD8dvGI81S04h4JD313TYcaNXcrQqw
+        iQ/PoXj1+qK6oRWQjvmVVx8gEmcRfzuGBfhg8g10+P6epkUbTF67Akm5RiEv8b33RqeKLsB
+        7yzdkzKH4GiP2F
+X-QQ-GoodBg: 0
+Received: by Red54.com (sSMTP sendmail emulation); Wed, 04 Jan 2017 20:45:35 +0800
+Date:   Wed, 4 Jan 2017 20:45:35 +0800
+From:   =?utf-8?B?6LCi6Ie06YKmIChYSUUgWmhpYmFuZyk=?= <Yeking@Red54.com>
+To:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: Loongson: Merge PRID_REV_LOONGSON1*
+Message-ID: <20170104124535.GA20567@red54.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-To:     netdev@vger.kernel.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Date:   Wed,  4 Jan 2017 02:18:27 +0100 (CET)
-Return-Path: <mirq@rere.qmqm.pl>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+X-QQ-SENDSIZE: 520
+Feedback-ID: Xesmtp:Red54.com:bgforeign:bgforeign1
+X-QQ-Bgrelay: 1
+Return-Path: <Yeking@Red54.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56151
+X-archive-position: 56152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mirq-linux@rere.qmqm.pl
+X-original-sender: Yeking@Red54.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -38,45 +49,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
----
- arch/mips/net/bpf_jit.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+Loongson 1 is a 32-bit MIPS CPU family with PRID 0x4220.
 
-diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
-index 49a2e2226fee..d06722294ede 100644
---- a/arch/mips/net/bpf_jit.c
-+++ b/arch/mips/net/bpf_jit.c
-@@ -1138,19 +1138,21 @@ static int build_body(struct jit_ctx *ctx)
- 			emit_load(r_A, r_skb, off, ctx);
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+---
+ arch/mips/include/asm/cpu.h         | 3 +--
+ arch/mips/kernel/cpu-probe.c        | 2 +-
+ arch/mips/loongson32/common/setup.c | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 9a837248..74809296 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -239,8 +239,7 @@
+ #define PRID_REV_VR4181A	0x0070	/* Same as VR4122 */
+ #define PRID_REV_VR4130		0x0080
+ #define PRID_REV_34K_V1_0_2	0x0022
+-#define PRID_REV_LOONGSON1B	0x0020
+-#define PRID_REV_LOONGSON1C	0x0020	/* Same as Loongson-1B */
++#define PRID_REV_LOONGSON1	0x0020
+ #define PRID_REV_LOONGSON2E	0x0002
+ #define PRID_REV_LOONGSON2F	0x0003
+ #define PRID_REV_LOONGSON3A_R1	0x0005
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 07718bb5..06f690eb 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1502,7 +1502,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_LOONGSON1;
+ 
+ 		switch (c->processor_id & PRID_REV_MASK) {
+-		case PRID_REV_LOONGSON1B:
++		case PRID_REV_LOONGSON1:
+ 			__cpu_name[cpu] = "Loongson 1B";
  			break;
- 		case BPF_ANC | SKF_AD_VLAN_TAG:
--		case BPF_ANC | SKF_AD_VLAN_TAG_PRESENT:
- 			ctx->flags |= SEEN_SKB | SEEN_A;
- 			BUILD_BUG_ON(FIELD_SIZEOF(struct sk_buff,
- 						  vlan_tci) != 2);
- 			off = offsetof(struct sk_buff, vlan_tci);
- 			emit_half_load(r_s0, r_skb, off, ctx);
--			if (code == (BPF_ANC | SKF_AD_VLAN_TAG)) {
--				emit_andi(r_A, r_s0, (u16)~VLAN_TAG_PRESENT, ctx);
--			} else {
--				emit_andi(r_A, r_s0, VLAN_TAG_PRESENT, ctx);
--				/* return 1 if present */
--				emit_sltu(r_A, r_zero, r_A, ctx);
--			}
-+#ifdef VLAN_TAG_PRESENT
-+			emit_andi(r_A, r_s0, (u16)~VLAN_TAG_PRESENT, ctx);
-+#endif
-+			break;
-+		case BPF_ANC | SKF_AD_VLAN_TAG_PRESENT:
-+			ctx->flags |= SEEN_SKB | SEEN_A;
-+			emit_load_byte(r_A, r_skb, PKT_VLAN_PRESENT_OFFSET(), ctx);
-+			if (PKT_VLAN_PRESENT_BIT)
-+				emit_srl(r_A, r_A, PKT_VLAN_PRESENT_BIT, ctx);
-+			emit_andi(r_A, r_s0, 1, ctx);
- 			break;
- 		case BPF_ANC | SKF_AD_PKTTYPE:
- 			ctx->flags |= SEEN_SKB;
+ 		}
+diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
+index 16407442..5f7fb52b 100644
+--- a/arch/mips/loongson32/common/setup.c
++++ b/arch/mips/loongson32/common/setup.c
+@@ -21,7 +21,7 @@ const char *get_system_type(void)
+ 	unsigned int processor_id = (&current_cpu_data)->processor_id;
+ 
+ 	switch (processor_id & PRID_REV_MASK) {
+-	case PRID_REV_LOONGSON1B:
++	case PRID_REV_LOONGSON1:
+ #if defined(CONFIG_LOONGSON1_LS1B)
+ 		return "LOONGSON LS1B";
+ #elif defined(CONFIG_LOONGSON1_LS1C)
 -- 
 2.11.0

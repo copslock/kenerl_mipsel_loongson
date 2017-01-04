@@ -1,42 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jan 2017 17:02:14 +0100 (CET)
-Received: from smtpbg329.qq.com ([14.17.43.214]:39413 "EHLO smtpbg329.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991970AbdADQCF2Sssb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 Jan 2017 17:02:05 +0100
-X-QQ-mid: Xesmtp20t1483545686tu7mhrlvo
-Received: from Red54.com (unknown [183.39.159.125])
-        by esmtp4.qq.com (ESMTP) with SMTP id 0
-        for <linux-mips@linux-mips.org>; Thu, 05 Jan 2017 00:01:24 +0800 (CST)
-X-QQ-SSF: 00000000000000100M104F00000000U
-X-QQ-FEAT: Tp2hW+Mew+dm8lBh5eAPwDvseNBd29svfKmmUiXg9GDetKEVCV0nkKuNgQHYG
-        HZJSUu/vBOWB50OjOsNxkjLLKFAzmcI5skjRMYQljrIZRoQ2Y/g/Ggzkv9xeJ4umJXmG1z9
-        ai2YpBm/j7mEgo3SMkbUOn+fFF7h+fCXQbjNjxCX+KiAvDbgNdjqcO6NbcBX0Z1S74nHjs3
-        G+NFUYqWC/U2WhYkXxcFHQgr6oNjJQoJW8T9h3b0yyLHPdRHwfc2cObKMAvzb8sHNAROJ+F
-        3/A8vCKMe4ou/1m5Pc2T3NM0w=
-X-QQ-GoodBg: 0
-Received: by Red54.com (sSMTP sendmail emulation); Thu, 05 Jan 2017 00:01:24 +0800
-Date:   Thu, 5 Jan 2017 00:01:24 +0800
-From:   =?utf-8?B?6LCi6Ie06YKmIChYSUUgWmhpYmFuZyk=?= <Yeking@Red54.com>
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Loongson: Add OSC support
-Message-ID: <20170104160124.GA22163@red54.local>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jan 2017 17:38:51 +0100 (CET)
+Received: from skprod3.natinst.com ([130.164.80.24]:35075 "EHLO ni.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991965AbdADQio7RvUM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 Jan 2017 17:38:44 +0100
+Received: from us-aus-exch1.ni.corp.natinst.com (us-aus-exch1.ni.corp.natinst.com [130.164.68.11])
+        by us-aus-skprod3.natinst.com (8.15.0.59/8.15.0.59) with ESMTPS id v04Gcamg022186
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Wed, 4 Jan 2017 10:38:36 -0600
+Received: from us-aus-exch4.ni.corp.natinst.com (130.164.68.14) by
+ us-aus-exch1.ni.corp.natinst.com (130.164.68.11) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Wed, 4 Jan 2017 10:38:36 -0600
+Received: from us-aus-exhub2.ni.corp.natinst.com (130.164.68.32) by
+ us-aus-exch4.ni.corp.natinst.com (130.164.68.14) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Wed, 4 Jan 2017 10:38:35 -0600
+Received: from nathan3500-linux-VM (130.164.49.7) by
+ us-aus-exhub2.ni.corp.natinst.com (130.164.68.32) with Microsoft SMTP Server
+ id 15.0.1156.6 via Frontend Transport; Wed, 4 Jan 2017 10:38:35 -0600
+Date:   Wed, 4 Jan 2017 10:38:36 -0600
+From:   Nathan Sullivan <nathan.sullivan@ni.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: NI 169445 board support
+Message-ID: <20170104163836.GA18069@nathan3500-linux-VM>
+References: <1480693329-22265-1-git-send-email-nathan.sullivan@ni.com>
+ <20161220163434.GA15962@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-QQ-SENDSIZE: 520
-Feedback-ID: Xesmtp:Red54.com:bgforeign:bgforeign3
-X-QQ-Bgrelay: 1
-Return-Path: <Yeking@Red54.com>
+In-Reply-To: <20161220163434.GA15962@linux-mips.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-01-04_12:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.0.1-1612050000
+ definitions=main-1701040258
+Return-Path: <nathan.sullivan@ni.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56157
+X-archive-position: 56158
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Yeking@Red54.com
+X-original-sender: nathan.sullivan@ni.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,86 +57,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson 1B can connect to 25MHz or 33MHz OSC.
+On Tue, Dec 20, 2016 at 05:34:34PM +0100, Ralf Baechle wrote:
+> On Fri, Dec 02, 2016 at 09:42:09AM -0600, Nathan Sullivan wrote:
+> > Date:   Fri, 2 Dec 2016 09:42:09 -0600
+> > From: Nathan Sullivan <nathan.sullivan@ni.com>
+> > To: ralf@linux-mips.org, mark.rutland@arm.com, robh+dt@kernel.org
+> > CC: linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+> >  linux-kernel@vger.kernel.org, Nathan Sullivan <nathan.sullivan@ni.com>
+> > Subject: [PATCH] MIPS: NI 169445 board support
+> > Content-Type: text/plain
+> > 
+> > Support the National Instruments 169445 board.
+> 
+> Nathan,
+> 
+> I assume you're going to repost the changes Rob asked for in
+> https://patchwork.linux-mips.org/patch/14641/#26924 and resubmit?
+> 
+> Thanks,
+> 
+>   Ralf
 
-Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
----
- arch/mips/loongson32/Kconfig           | 15 +++++++++++++++
- arch/mips/loongson32/common/platform.c |  8 ++++++++
- drivers/clk/loongson1/clk-loongson1b.c |  6 +++++-
- 3 files changed, 28 insertions(+), 1 deletion(-)
+Hmm, I found the issue with the generic MIPS config and dwc_eth_qos.  The NIC
+driver attempts to cache align a descriptor ring using the ___cacheline_aligned
+attribute on the descriptor struct, in combination with a "skip" feature in
+hardware.  However, the skip feature only has a three bit field, and the generic
+MIPS config selects MIPS_L1_CACHE_SHIFT_7.  So, the line size is 128, and with a
+64-bit bus, that means the NIC descriptor skip field would need to be set to
+14 to align the 16-byte descriptors...
 
-diff --git a/arch/mips/loongson32/Kconfig b/arch/mips/loongson32/Kconfig
-index 3c0c2f20..1893e08b 100644
---- a/arch/mips/loongson32/Kconfig
-+++ b/arch/mips/loongson32/Kconfig
-@@ -19,6 +19,21 @@ config LOONGSON1_LS1B
- 	select USE_GENERIC_EARLY_PRINTK_8250
- 	select COMMON_CLK
- 
-+if LOONGSON1_LS1B
-+
-+choice
-+	prompt "OSC Type"
-+	default OSC_33M
-+
-+config OSC_33M
-+	bool "33 MHz OSC"
-+
-+config OSC_25M
-+	bool "25 MHz OSC"
-+endchoice
-+
-+endif
-+
- config LOONGSON1_LS1C
- 	bool "Loongson LS1C board"
- 	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index f9d877d4..683c8469 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -83,8 +83,16 @@ void __init ls1x_rtc_set_extclk(struct platform_device *pdev)
- static struct plat_ls1x_cpufreq ls1x_cpufreq_pdata = {
- 	.clk_name	= "cpu_clk",
- 	.osc_clk_name	= "osc_clk",
-+#if defined(CONFIG_LOONGSON1_LS1C)
-+	.max_freq	= 300 * 1000,
-+	.min_freq	= 24 * 1000,
-+#elif defined(CONFIG_OSC_25M)
-+	.max_freq	= 200 * 1000,
-+	.min_freq	= 25 * 1000,
-+#else
- 	.max_freq	= 266 * 1000,
- 	.min_freq	= 33 * 1000,
-+#endif
- };
- 
- struct platform_device ls1x_cpufreq_pdev = {
-diff --git a/drivers/clk/loongson1/clk-loongson1b.c b/drivers/clk/loongson1/clk-loongson1b.c
-index f36a97e9..225b53e7 100644
---- a/drivers/clk/loongson1/clk-loongson1b.c
-+++ b/drivers/clk/loongson1/clk-loongson1b.c
-@@ -15,7 +15,11 @@
- #include <loongson1.h>
- #include "clk.h"
- 
-+#if defined(CONFIG_OSC_25M)
-+#define OSC		(25 * 1000000)
-+#else
- #define OSC		(33 * 1000000)
-+#endif
- #define DIV_APB		2
- 
- static DEFINE_SPINLOCK(_lock);
-@@ -48,7 +52,7 @@ void __init ls1x_clk_init(void)
- 	hw = clk_hw_register_fixed_rate(NULL, "osc_clk", NULL, 0, OSC);
- 	clk_hw_register_clkdev(hw, "osc_clk", NULL);
- 
--	/* clock derived from 33 MHz OSC clk */
-+	/* clock derived from OSC clk */
- 	hw = clk_hw_register_pll(NULL, "pll_clk", "osc_clk",
- 				 &ls1x_pll_clk_ops, 0);
- 	clk_hw_register_clkdev(hw, "pll_clk", NULL);
--- 
-2.11.0
+I guess it makes sense for a generic MIPS kernel to align everything for 128 byte
+cache lines, and for me to fix the dwc_eth_qos driver to handle cases where the
+line size is too big for the hardware skip feature, right?
+
+Thanks,
+
+   Nathan

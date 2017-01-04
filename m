@@ -1,54 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jan 2017 19:05:21 +0100 (CET)
-Received: from mail-wm0-f68.google.com ([74.125.82.68]:33277 "EHLO
-        mail-wm0-f68.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991965AbdADSFNnl1sB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jan 2017 19:05:13 +0100
-Received: by mail-wm0-f68.google.com with SMTP id u144so92702845wmu.0;
-        Wed, 04 Jan 2017 10:05:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=eqS2fyBAWSebsEpHn/l1gAuYA5JWieTew9DyeWbgVwM=;
-        b=Bnslp/x4mUU26MG4hHgWSVgwmvgbInD+o2o7kQbqwcdZHqA1SX+k+Efv7uVIUyWJVl
-         InpdvHFPZYPLT9ljkp8ePdsQ2H3dRq3g+wSLCuD3TVLS1EmGoNec6x3oIIKWnw15fSRp
-         lLVTJTSu7QML0m8RcexcvgFooLBibNdqk1MzdakdIytF3f/lgym3rav2LtdaOka2jrD4
-         agdxsaZxnib21ejeHjO5wm0y1vs2XnsFuf7/2E6Cb/l6LDKIloRemiNcmToSG128JBxs
-         6elbb64OUUys6w6iBxZR/PVAa8d5J3f51RZ7ay+CbVwg1zdPX+SYhV9xhtWtwwYC7+ty
-         YVqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=eqS2fyBAWSebsEpHn/l1gAuYA5JWieTew9DyeWbgVwM=;
-        b=Eshmd6dievlM4RbuRO7T5yn/QIPrhysgmFSKErlaz5gvVfRfUeY4v2qVlzjkluwchI
-         6GTFykkds76Epe8XCQXxEi1zBKrYtK7aHDIhWN8L/fFiejgmdhBU98fvWUv6bF4graSd
-         pwSAXQY/WUFsNms9YXss0rK7yQOkKDy9Wc3YUuMaB1ImlWkOZ4lQyqjwtxj5n8e74W2u
-         QJbof+vkPWkhhn/TEFsA/qVlznunhnqLITxm5f3AzpaUReuUclwERcC6US/q3deE9JNS
-         kHvRU3hdvE4REDzm7aadPECYS45afFCuHzzAhbt63JrYRsHgbkG9nU421r5AcjzDag8m
-         CUOA==
-X-Gm-Message-State: AIkVDXI+W+4gViuHFnfWdzo/1DfkBMh/mX7ObYnyCNqPXGtGCavcIbz5MoWhN1Px1cbxbg==
-X-Received: by 10.28.60.5 with SMTP id j5mr64210724wma.119.1483553103427;
-        Wed, 04 Jan 2017 10:05:03 -0800 (PST)
-Received: from localhost.localdomain (cpc101300-bagu16-2-0-cust362.1-3.cable.virginm.net. [86.21.41.107])
-        by smtp.gmail.com with ESMTPSA id g73sm96254294wme.16.2017.01.04.10.05.02
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 04 Jan 2017 10:05:02 -0800 (PST)
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH] MIPS: zboot: fix build failure
-Date:   Wed,  4 Jan 2017 18:04:58 +0000
-Message-Id: <1483553098-5013-1-git-send-email-sudipm.mukherjee@gmail.com>
-X-Mailer: git-send-email 1.9.1
-Return-Path: <sudipm.mukherjee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jan 2017 19:38:03 +0100 (CET)
+Received: from mezzanine.sirena.org.uk ([106.187.55.193]:49790 "EHLO
+        mezzanine.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992100AbdADShznq8GZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Jan 2017 19:37:55 +0100
+Received: from [2001:470:1f1d:6b5::3] (helo=debutante)
+        by mezzanine.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1cOqRY-0001Wa-NU; Wed, 04 Jan 2017 18:37:50 +0000
+Received: from broonie by debutante with local (Exim 4.88)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1cOqRW-00028h-2T; Wed, 04 Jan 2017 18:37:46 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Jaedon Shin <jaedon.shin@gmail.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+In-Reply-To:  <20161230063001.944-2-jaedon.shin@gmail.com>
+Message-Id: <E1cOqRW-00028h-2T@debutante>
+Date:   Wed, 04 Jan 2017 18:37:46 +0000
+X-SA-Exim-Connect-IP: 2001:470:1f1d:6b5::3
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+Subject: Applied "spi: bcm-qspi: Enable the driver on BMIPS_GENERIC" to the spi tree
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: No (on mezzanine.sirena.org.uk); Unknown failure
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56159
+X-archive-position: 56160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sudipm.mukherjee@gmail.com
+X-original-sender: broonie@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,35 +50,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The build of mips ar7_defconfig was failing with the error:
-arch/mips/boot/compressed/Makefile:21:
-  *** insufficient number of arguments (1) to function `filter-out'.
-	Stop.
+The patch
 
-A ',' was missing while adding filter-out.
+   spi: bcm-qspi: Enable the driver on BMIPS_GENERIC
 
-Fixes: afca036d463c ("MIPS: zboot: Consolidate compiler flag filtering.")
-Signed-off-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
----
+has been applied to the spi tree at
 
-build log is at:
-https://travis-ci.org/sudipm-mukherjee/parport/jobs/188737021
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
- arch/mips/boot/compressed/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index 608389a..c675eec 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -18,7 +18,7 @@ include $(srctree)/arch/mips/Kbuild.platforms
- BOOT_HEAP_SIZE := 0x400000
- 
- # Disable Function Tracer
--KBUILD_CFLAGS := $(filter-out -pg $(KBUILD_CFLAGS))
-+KBUILD_CFLAGS := $(filter-out -pg, $(KBUILD_CFLAGS))
- 
- KBUILD_CFLAGS := $(filter-out -fstack-protector, $(KBUILD_CFLAGS))
- 
--- 
-1.9.1
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

@@ -1,54 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2017 07:33:20 +0100 (CET)
-Received: from smtpbgau2.qq.com ([54.206.34.216]:41087 "EHLO smtpbgau2.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992028AbdAEGdMsQItz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Jan 2017 07:33:12 +0100
-X-QQ-mid: Xesmtp31t1483597978tvgu23zi3
-Received: from localhost (unknown [113.87.162.116])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 05 Jan 2017 14:32:56 +0800 (CST)
-X-QQ-SSF: 00000000000000000M104F00000000U
-X-QQ-FEAT: Tp2hW+Mew+cD1CoLxXpMia6FIR9r035SkKUk3xYMgaqALT08Gl/Rytsy/8udy
-        h8qXSy6vG2WYPZU1inDIIokWVBkvBE3ykKJlurDYL+smm0lm6FFWwv5bnshjtQuRo3GZ4Yw
-        zP3NrO1G6nw/UIwi9Bt0u35LKr5Cg/JIiQRPglCSj5hbNK3ZGQWYjHMTfD20LDL2YZAIkR3
-        GEjbbHxuvOgj/Qry2eBepIaJIpGUojAhuvmc+t57NyQ2Ud/iaBhXXaUTVg8efu8nES95jRo
-        3qV3CiKMo5Ne4JhgZur17rVKc=
-X-QQ-GoodBg: 0
-Date:   Thu, 5 Jan 2017 14:32:55 +0800
-From:   =?utf-8?B?6LCi6Ie06YKmIChYSUUgWmhpYmFuZyk=?= <Yeking@Red54.com>
-To:     linux-clk@vger.kernel.org
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Loongson: Add OSC support
-Message-ID: <20170105063237.GB14323@localhost>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Received: from Red54.com (unknown [183.39.159.125]) by esmtp4.qq.com (ESMTP)
- with SMTP id 0 for <linux-mips@linux-mips.org>; Thu, 05 Jan 2017 00:01:24
- +0800 (CST)
-X-QQ-SSF: 00000000000000100M104F00000000U
-X-QQ-FEAT: Tp2hW+Mew+dm8lBh5eAPwDvseNBd29svfKmmUiXg9GDetKEVCV0nkKuNgQHYG
- HZJSUu/vBOWB50OjOsNxkjLLKFAzmcI5skjRMYQljrIZRoQ2Y/g/Ggzkv9xeJ4umJXmG1z9
- ai2YpBm/j7mEgo3SMkbUOn+fFF7h+fCXQbjNjxCX+KiAvDbgNdjqcO6NbcBX0Z1S74nHjs3
- G+NFUYqWC/U2WhYkXxcFHQgr6oNjJQoJW8T9h3b0yyLHPdRHwfc2cObKMAvzb8sHNAROJ+F
- 3/A8vCKMe4ou/1m5Pc2T3NM0w=
-X-QQ-GoodBg: 0
-Received: by Red54.com (sSMTP sendmail emulation); Thu, 05 Jan 2017 00:01:24
- +0800
-User-Agent: Mutt/1.7.2 (2016-11-26)
-X-QQ-SENDSIZE: 520
-Feedback-ID: Xesmtp:Red54.com:bgforeign:bgforeign1
-X-QQ-Bgrelay: 1
-Return-Path: <Yeking@Red54.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2017 09:28:12 +0100 (CET)
+Received: from mail-pg0-f48.google.com ([74.125.83.48]:35352 "EHLO
+        mail-pg0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992209AbdAEI2EUrfjl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jan 2017 09:28:04 +0100
+Received: by mail-pg0-f48.google.com with SMTP id i5so172977094pgh.2
+        for <linux-mips@linux-mips.org>; Thu, 05 Jan 2017 00:28:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=QKyzuZB10ITQtkVovQIuFa1DxWel+wMAVAg+nmtIsOk=;
+        b=bodm+nQYCaAsBqinLJHyjfug/p9hd6IDYDx0x0+ob78+uY0GOTUSIMLflIjBlswfv0
+         3Xee1+r9U0GPIFZOucLxSpnevb7b6T4jZr0uCYfVhs5f1NqonkexJSioeA3p38j/ibP+
+         jqvM2buzDg3M9n0RAnR6nIA11+jr63SIr/XGw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=QKyzuZB10ITQtkVovQIuFa1DxWel+wMAVAg+nmtIsOk=;
+        b=j1+hISmqM4Ipo3a+JcrmXcabye9ipzQ5mNZQNVI7/S6YQ9u3lNdBHeUGlKz4UsFjeP
+         dRyF4P6g7E+bGiCNuClV/nhVhCvOAfOYLHV6HQef5eFHAwfo4jlB3ufirn780uWW57qD
+         NhBuP3FiJfpzprlwbLXqtA4eZRO5Qr0a+ApqQlk3T55bWmClixn6c2apP51aJmJIyaav
+         Ed4MvWL/fuj8M0idErPMetVJoxAewfNlllZESBSJ9qyv+BbUbHqkF6IquWUvX6/Ifd/g
+         HIkkgmfLb1pVpEcgMvrsUecCySklLCxd00LYCI3OjLt8wdOS+djGIKrjEC3UvFF8EnCC
+         iTUQ==
+X-Gm-Message-State: AIkVDXIvi79Vq1OA0XoVCZEF4a1Zbte1zxEMlfgDr6wtiif8HwxN7ZpdMKBcUwxDj3IQbaUY
+X-Received: by 10.99.101.65 with SMTP id z62mr132793919pgb.74.1483604875389;
+        Thu, 05 Jan 2017 00:27:55 -0800 (PST)
+Received: from localhost ([122.171.77.55])
+        by smtp.gmail.com with ESMTPSA id 64sm151873684pfu.17.2017.01.05.00.27.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 05 Jan 2017 00:27:54 -0800 (PST)
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Rafael Wysocki <rjw@rjwysocki.net>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Javier Martinez Canillas <javier@osg.samsung.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@free-electrons.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Simon Horman <horms@verge.net.au>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     linaro-kernel@lists.linaro.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        arnd.bergmann@linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
+Subject: [PATCH] cpufreq: Remove CONFIG_CPU_FREQ_STAT_DETAILS config option
+Date:   Thu,  5 Jan 2017 13:57:41 +0530
+Message-Id: <d4299228a500a889c2b4b9e305674f3d1ea9ae06.1483604760.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.7.1.410.g6faf27b
+Return-Path: <viresh.kumar@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56162
+X-archive-position: 56163
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Yeking@Red54.com
+X-original-sender: viresh.kumar@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,86 +72,241 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson 1B can connect to 25MHz or 33MHz OSC.
+This doesn't have any benefit apart from saving a small amount of memory
+when it is disabled. The ifdef hackery in the code makes it dirty
+unnecessarily.
 
-Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Clean it up by removing the Kconfig option completely. Few defconfigs
+are also updated and CONFIG_CPU_FREQ_STAT_DETAILS is replaced with
+CONFIG_CPU_FREQ_STAT now in them, as users wanted stats to be enabled.
+
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- arch/mips/loongson32/Kconfig           | 15 +++++++++++++++
- arch/mips/loongson32/common/platform.c |  8 ++++++++
- drivers/clk/loongson1/clk-loongson1b.c |  6 +++++-
- 3 files changed, 28 insertions(+), 1 deletion(-)
+ arch/arm/configs/exynos_defconfig         |  2 +-
+ arch/arm/configs/multi_v5_defconfig       |  2 +-
+ arch/arm/configs/multi_v7_defconfig       |  2 +-
+ arch/arm/configs/mvebu_v5_defconfig       |  2 +-
+ arch/arm/configs/pxa_defconfig            |  2 +-
+ arch/arm/configs/shmobile_defconfig       |  2 +-
+ arch/mips/configs/lemote2f_defconfig      |  1 -
+ arch/powerpc/configs/ppc6xx_defconfig     |  1 -
+ arch/sh/configs/sh7785lcr_32bit_defconfig |  2 +-
+ drivers/cpufreq/Kconfig                   |  8 --------
+ drivers/cpufreq/cpufreq_stats.c           | 14 --------------
+ 11 files changed, 7 insertions(+), 31 deletions(-)
 
-diff --git a/arch/mips/loongson32/Kconfig b/arch/mips/loongson32/Kconfig
-index 3c0c2f20..1893e08b 100644
---- a/arch/mips/loongson32/Kconfig
-+++ b/arch/mips/loongson32/Kconfig
-@@ -19,6 +19,21 @@ config LOONGSON1_LS1B
- 	select USE_GENERIC_EARLY_PRINTK_8250
- 	select COMMON_CLK
+diff --git a/arch/arm/configs/exynos_defconfig b/arch/arm/configs/exynos_defconfig
+index 79c415c33f69..809f0bf3042a 100644
+--- a/arch/arm/configs/exynos_defconfig
++++ b/arch/arm/configs/exynos_defconfig
+@@ -24,7 +24,7 @@ CONFIG_ARM_APPENDED_DTB=y
+ CONFIG_ARM_ATAG_DTB_COMPAT=y
+ CONFIG_CMDLINE="root=/dev/ram0 rw ramdisk=8192 initrd=0x41000000,8M console=ttySAC1,115200 init=/linuxrc mem=256M"
+ CONFIG_CPU_FREQ=y
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_CPU_FREQ_GOV_POWERSAVE=m
+ CONFIG_CPU_FREQ_GOV_USERSPACE=m
+diff --git a/arch/arm/configs/multi_v5_defconfig b/arch/arm/configs/multi_v5_defconfig
+index 361686a362f1..69a4bd13eea5 100644
+--- a/arch/arm/configs/multi_v5_defconfig
++++ b/arch/arm/configs/multi_v5_defconfig
+@@ -58,7 +58,7 @@ CONFIG_ZBOOT_ROM_BSS=0x0
+ CONFIG_ARM_APPENDED_DTB=y
+ CONFIG_ARM_ATAG_DTB_COMPAT=y
+ CONFIG_CPU_FREQ=y
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_CPU_IDLE=y
+ CONFIG_ARM_KIRKWOOD_CPUIDLE=y
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index b01a43851294..2dcac90eba01 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -132,7 +132,7 @@ CONFIG_ARM_ATAG_DTB_COMPAT=y
+ CONFIG_KEXEC=y
+ CONFIG_EFI=y
+ CONFIG_CPU_FREQ=y
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_CPU_FREQ_GOV_POWERSAVE=m
+ CONFIG_CPU_FREQ_GOV_USERSPACE=m
+diff --git a/arch/arm/configs/mvebu_v5_defconfig b/arch/arm/configs/mvebu_v5_defconfig
+index f7f6039419aa..4b598da0d086 100644
+--- a/arch/arm/configs/mvebu_v5_defconfig
++++ b/arch/arm/configs/mvebu_v5_defconfig
+@@ -44,7 +44,7 @@ CONFIG_ZBOOT_ROM_BSS=0x0
+ CONFIG_ARM_APPENDED_DTB=y
+ CONFIG_ARM_ATAG_DTB_COMPAT=y
+ CONFIG_CPU_FREQ=y
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_CPU_IDLE=y
+ CONFIG_ARM_KIRKWOOD_CPUIDLE=y
+diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+index e4314b1227a3..271dc7e78e43 100644
+--- a/arch/arm/configs/pxa_defconfig
++++ b/arch/arm/configs/pxa_defconfig
+@@ -97,7 +97,7 @@ CONFIG_ZBOOT_ROM_BSS=0x0
+ CONFIG_CMDLINE="root=/dev/ram0 ro"
+ CONFIG_KEXEC=y
+ CONFIG_CPU_FREQ=y
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_CPU_FREQ_GOV_POWERSAVE=m
+ CONFIG_CPU_FREQ_GOV_USERSPACE=m
+diff --git a/arch/arm/configs/shmobile_defconfig b/arch/arm/configs/shmobile_defconfig
+index 1b0f8ae36fb3..adeaecd831a4 100644
+--- a/arch/arm/configs/shmobile_defconfig
++++ b/arch/arm/configs/shmobile_defconfig
+@@ -38,7 +38,7 @@ CONFIG_ZBOOT_ROM_BSS=0x0
+ CONFIG_ARM_APPENDED_DTB=y
+ CONFIG_KEXEC=y
+ CONFIG_CPU_FREQ=y
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_GOV_POWERSAVE=y
+ CONFIG_CPU_FREQ_GOV_USERSPACE=y
+ CONFIG_CPU_FREQ_GOV_ONDEMAND=y
+diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
+index 5da76e0e120f..bed745596d86 100644
+--- a/arch/mips/configs/lemote2f_defconfig
++++ b/arch/mips/configs/lemote2f_defconfig
+@@ -40,7 +40,6 @@ CONFIG_PM_STD_PARTITION="/dev/hda3"
+ CONFIG_CPU_FREQ=y
+ CONFIG_CPU_FREQ_DEBUG=y
+ CONFIG_CPU_FREQ_STAT=m
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_CPU_FREQ_GOV_POWERSAVE=m
+ CONFIG_CPU_FREQ_GOV_USERSPACE=m
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index 3ce91a3df27f..1d2d69dd6409 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -62,7 +62,6 @@ CONFIG_MPC8610_HPCD=y
+ CONFIG_GEF_SBC610=y
+ CONFIG_CPU_FREQ=y
+ CONFIG_CPU_FREQ_STAT=m
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=y
+ CONFIG_CPU_FREQ_GOV_PERFORMANCE=y
+ CONFIG_CPU_FREQ_GOV_POWERSAVE=m
+diff --git a/arch/sh/configs/sh7785lcr_32bit_defconfig b/arch/sh/configs/sh7785lcr_32bit_defconfig
+index 9bdcf72ec06a..2fce54d9c388 100644
+--- a/arch/sh/configs/sh7785lcr_32bit_defconfig
++++ b/arch/sh/configs/sh7785lcr_32bit_defconfig
+@@ -25,7 +25,7 @@ CONFIG_SH_SH7785LCR=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_CPU_FREQ=y
+-CONFIG_CPU_FREQ_STAT_DETAILS=y
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_SH_CPU_FREQ=y
+ CONFIG_HEARTBEAT=y
+diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
+index d8b164a7c4e5..15adef473d42 100644
+--- a/drivers/cpufreq/Kconfig
++++ b/drivers/cpufreq/Kconfig
+@@ -37,14 +37,6 @@ config CPU_FREQ_STAT
  
-+if LOONGSON1_LS1B
-+
-+choice
-+	prompt "OSC Type"
-+	default OSC_33M
-+
-+config OSC_33M
-+	bool "33 MHz OSC"
-+
-+config OSC_25M
-+	bool "25 MHz OSC"
-+endchoice
-+
-+endif
-+
- config LOONGSON1_LS1C
- 	bool "Loongson LS1C board"
- 	select CEVT_R4K if !MIPS_EXTERNAL_TIMER
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index f9d877d4..683c8469 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -83,8 +83,16 @@ void __init ls1x_rtc_set_extclk(struct platform_device *pdev)
- static struct plat_ls1x_cpufreq ls1x_cpufreq_pdata = {
- 	.clk_name	= "cpu_clk",
- 	.osc_clk_name	= "osc_clk",
-+#if defined(CONFIG_LOONGSON1_LS1C)
-+	.max_freq	= 300 * 1000,
-+	.min_freq	= 24 * 1000,
-+#elif defined(CONFIG_OSC_25M)
-+	.max_freq	= 200 * 1000,
-+	.min_freq	= 25 * 1000,
-+#else
- 	.max_freq	= 266 * 1000,
- 	.min_freq	= 33 * 1000,
-+#endif
+ 	  If in doubt, say N.
+ 
+-config CPU_FREQ_STAT_DETAILS
+-	bool "CPU frequency transition statistics details"
+-	depends on CPU_FREQ_STAT
+-	help
+-	  Show detailed CPU frequency transition table in sysfs.
+-
+-	  If in doubt, say N.
+-
+ choice
+ 	prompt "Default CPUFreq governor"
+ 	default CPU_FREQ_DEFAULT_GOV_USERSPACE if ARM_SA1100_CPUFREQ || ARM_SA1110_CPUFREQ
+diff --git a/drivers/cpufreq/cpufreq_stats.c b/drivers/cpufreq/cpufreq_stats.c
+index ac284e66839c..18abd454da43 100644
+--- a/drivers/cpufreq/cpufreq_stats.c
++++ b/drivers/cpufreq/cpufreq_stats.c
+@@ -25,9 +25,7 @@ struct cpufreq_stats {
+ 	unsigned int last_index;
+ 	u64 *time_in_state;
+ 	unsigned int *freq_table;
+-#ifdef CONFIG_CPU_FREQ_STAT_DETAILS
+ 	unsigned int *trans_table;
+-#endif
  };
  
- struct platform_device ls1x_cpufreq_pdev = {
-diff --git a/drivers/clk/loongson1/clk-loongson1b.c b/drivers/clk/loongson1/clk-loongson1b.c
-index f36a97e9..225b53e7 100644
---- a/drivers/clk/loongson1/clk-loongson1b.c
-+++ b/drivers/clk/loongson1/clk-loongson1b.c
-@@ -15,7 +15,11 @@
- #include <loongson1.h>
- #include "clk.h"
+ static int cpufreq_stats_update(struct cpufreq_stats *stats)
+@@ -46,9 +44,7 @@ static void cpufreq_stats_clear_table(struct cpufreq_stats *stats)
+ 	unsigned int count = stats->max_state;
  
-+#if defined(CONFIG_OSC_25M)
-+#define OSC		(25 * 1000000)
-+#else
- #define OSC		(33 * 1000000)
-+#endif
- #define DIV_APB		2
+ 	memset(stats->time_in_state, 0, count * sizeof(u64));
+-#ifdef CONFIG_CPU_FREQ_STAT_DETAILS
+ 	memset(stats->trans_table, 0, count * count * sizeof(int));
+-#endif
+ 	stats->last_time = get_jiffies_64();
+ 	stats->total_trans = 0;
+ }
+@@ -84,7 +80,6 @@ static ssize_t store_reset(struct cpufreq_policy *policy, const char *buf,
+ 	return count;
+ }
  
- static DEFINE_SPINLOCK(_lock);
-@@ -48,7 +52,7 @@ void __init ls1x_clk_init(void)
- 	hw = clk_hw_register_fixed_rate(NULL, "osc_clk", NULL, 0, OSC);
- 	clk_hw_register_clkdev(hw, "osc_clk", NULL);
+-#ifdef CONFIG_CPU_FREQ_STAT_DETAILS
+ static ssize_t show_trans_table(struct cpufreq_policy *policy, char *buf)
+ {
+ 	struct cpufreq_stats *stats = policy->stats;
+@@ -129,7 +124,6 @@ static ssize_t show_trans_table(struct cpufreq_policy *policy, char *buf)
+ 	return len;
+ }
+ cpufreq_freq_attr_ro(trans_table);
+-#endif
  
--	/* clock derived from 33 MHz OSC clk */
-+	/* clock derived from OSC clk */
- 	hw = clk_hw_register_pll(NULL, "pll_clk", "osc_clk",
- 				 &ls1x_pll_clk_ops, 0);
- 	clk_hw_register_clkdev(hw, "pll_clk", NULL);
+ cpufreq_freq_attr_ro(total_trans);
+ cpufreq_freq_attr_ro(time_in_state);
+@@ -139,9 +133,7 @@ static struct attribute *default_attrs[] = {
+ 	&total_trans.attr,
+ 	&time_in_state.attr,
+ 	&reset.attr,
+-#ifdef CONFIG_CPU_FREQ_STAT_DETAILS
+ 	&trans_table.attr,
+-#endif
+ 	NULL
+ };
+ static struct attribute_group stats_attr_group = {
+@@ -200,9 +192,7 @@ void cpufreq_stats_create_table(struct cpufreq_policy *policy)
+ 
+ 	alloc_size = count * sizeof(int) + count * sizeof(u64);
+ 
+-#ifdef CONFIG_CPU_FREQ_STAT_DETAILS
+ 	alloc_size += count * count * sizeof(int);
+-#endif
+ 
+ 	/* Allocate memory for time_in_state/freq_table/trans_table in one go */
+ 	stats->time_in_state = kzalloc(alloc_size, GFP_KERNEL);
+@@ -211,9 +201,7 @@ void cpufreq_stats_create_table(struct cpufreq_policy *policy)
+ 
+ 	stats->freq_table = (unsigned int *)(stats->time_in_state + count);
+ 
+-#ifdef CONFIG_CPU_FREQ_STAT_DETAILS
+ 	stats->trans_table = stats->freq_table + count;
+-#endif
+ 
+ 	stats->max_state = count;
+ 
+@@ -259,8 +247,6 @@ void cpufreq_stats_record_transition(struct cpufreq_policy *policy,
+ 	cpufreq_stats_update(stats);
+ 
+ 	stats->last_index = new_index;
+-#ifdef CONFIG_CPU_FREQ_STAT_DETAILS
+ 	stats->trans_table[old_index * stats->max_state + new_index]++;
+-#endif
+ 	stats->total_trans++;
+ }
 -- 
-2.11.0
+2.7.1.410.g6faf27b

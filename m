@@ -1,81 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2017 18:55:03 +0100 (CET)
-Received: from mail-ua0-x230.google.com ([IPv6:2607:f8b0:400c:c08::230]:33197
-        "EHLO mail-ua0-x230.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992535AbdAERy4Q1c-u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jan 2017 18:54:56 +0100
-Received: by mail-ua0-x230.google.com with SMTP id i68so280686709uad.0
-        for <linux-mips@linux-mips.org>; Thu, 05 Jan 2017 09:54:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=2ZYgPXy1w2kZo9j4AemzbZTpBHZ8JBZp0zLb5A+zQzM=;
-        b=GVQRQ9WlQN/J15IbfCQeZG7E/9YrsNiiQheqRjex2qzcQh/vvRTNxPNQrsgeBhebZZ
-         vhquWhMuggWDh2mXQdPZpR2VWZSfzaFiu5J6E+M8RaRUJz1MuSiaTZAlyfNEU5KxA3+j
-         mRoYY4ZsU85n6qY7Z1/2AMffRSeBAaC0w5fuaZ/5G8wqa6GmwcH8VW6oPkRlS8fpcwPE
-         QbjTN2NWmXxg3ppRa2d4CVDbCt8CfiUQeRVjEFaiFcHHeMKt8WzVILUpVam0xF2Y26mQ
-         UvEMhQIz6314xnpop/lmpHhhSJq2GzWqFAXkp5p7JQXTz+BX6Jnar8TxAX8CSSJfa7Ic
-         153Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=2ZYgPXy1w2kZo9j4AemzbZTpBHZ8JBZp0zLb5A+zQzM=;
-        b=OOY1dNQtC33oep64XZOopoQg70L5lZFZc4AnSRiKRxdGbwtmv22pZBTul5UCRLIY9P
-         qltDMw34qRQwifpiUrhk6UNlIgEQDDHeKaTZeJ181iNP6y06BrsBdv1zUZT86TOYC02X
-         MJweY1YOKOSvOVtYgXUkfNqBPzZD3QIvb4mVkbwctpSOEFlCq6XBdev9hy2Ag2Mc+CZx
-         dUIoQu2V99EAv+Tpfebfkpy9gcx6JuYf9UnSHvFKGU7uEKVZA9K+pbQYZYNEtYRHg2Om
-         3h2IUaeVG5kZXDWRXP8wUHvE/lalPXEbjlb6iglusmk7zo7getiNBojuWih5veD83iFw
-         9v6Q==
-X-Gm-Message-State: AIkVDXIGO+//TZiWtSTZdD72uLsjg0+QTR2gWLNRKYPJtblKbDTgCtne4TADa06a1zrFvYhSFrTB09gs5DUkdiYu
-X-Received: by 10.176.6.231 with SMTP id g94mr54005034uag.91.1483638890507;
- Thu, 05 Jan 2017 09:54:50 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2017 19:28:41 +0100 (CET)
+Received: from bes.se.axis.com ([195.60.68.10]:53639 "EHLO bes.se.axis.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992328AbdAES2dZ-xxa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Jan 2017 19:28:33 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by bes.se.axis.com (Postfix) with ESMTP id B5FD12E6E0;
+        Thu,  5 Jan 2017 19:28:27 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bes.se.axis.com
+Received: from bes.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bes.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id Hywul1CVwbWG; Thu,  5 Jan 2017 19:28:26 +0100 (CET)
+Received: from boulder03.se.axis.com (boulder03.se.axis.com [10.0.8.17])
+        by bes.se.axis.com (Postfix) with ESMTPS id 5B4402E6DD;
+        Thu,  5 Jan 2017 19:28:26 +0100 (CET)
+Received: from boulder03.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 23EA21E074;
+        Thu,  5 Jan 2017 19:28:26 +0100 (CET)
+Received: from boulder03.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 183CF1E072;
+        Thu,  5 Jan 2017 19:28:26 +0100 (CET)
+Received: from thoth.se.axis.com (unknown [10.0.2.173])
+        by boulder03.se.axis.com (Postfix) with ESMTP;
+        Thu,  5 Jan 2017 19:28:26 +0100 (CET)
+Received: from XBOX02.axis.com (xbox02.axis.com [10.0.5.16])
+        by thoth.se.axis.com (Postfix) with ESMTP id 0B13F76E;
+        Thu,  5 Jan 2017 19:28:26 +0100 (CET)
+Received: from [10.88.4.10] (10.0.5.60) by XBOX02.axis.com (10.0.5.16) with
+ Microsoft SMTP Server (TLS) id 15.0.1210.3; Thu, 5 Jan 2017 19:28:25 +0100
+Subject: Re: Re: [PATCH] MIPS: NI 169445 board support
+To:     Nathan Sullivan <nathan.sullivan@ni.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+References: <1480693329-22265-1-git-send-email-nathan.sullivan@ni.com>
+ <20161220163434.GA15962@linux-mips.org>
+ <20170104163836.GA18069@nathan3500-linux-VM>
+CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Lars Persson <larper@axis.com>,
+        Joao Pinto <Joao.Pinto@synopsys.com>
+From:   Niklas Cassel <niklas.cassel@axis.com>
+Message-ID: <5d5a087f-68ec-e633-0232-0248edf11ee0@axis.com>
+Date:   Thu, 5 Jan 2017 19:28:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Icedove/45.5.1
 MIME-Version: 1.0
-Received: by 10.103.139.66 with HTTP; Thu, 5 Jan 2017 09:54:30 -0800 (PST)
-In-Reply-To: <063D6719AE5E284EB5DD2968C1650D6DB0258289@AcuExch.aculab.com>
-References: <20161230155634.8692-1-dsafonov@virtuozzo.com> <20161230155634.8692-2-dsafonov@virtuozzo.com>
- <063D6719AE5E284EB5DD2968C1650D6DB0258289@AcuExch.aculab.com>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Thu, 5 Jan 2017 09:54:30 -0800
-Message-ID: <CALCETrXUB8AeEzJ-WtW3kW9c189AcOe+GBq8TE7GPE+xrvXS8g@mail.gmail.com>
-Subject: Re: [RFC 1/4] mm: remove unused TASK_SIZE_OF()
-To:     David Laight <David.Laight@aculab.com>
-Cc:     Dmitry Safonov <dsafonov@virtuozzo.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Will Deacon <will.deacon@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "0x7f454c46@gmail.com" <0x7f454c46@gmail.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <luto@amacapital.net>
+In-Reply-To: <20170104163836.GA18069@nathan3500-linux-VM>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.0.5.60]
+X-ClientProxiedBy: XBOX01.axis.com (10.0.5.15) To XBOX02.axis.com (10.0.5.16)
+X-TM-AS-GCONF: 00
+Return-Path: <niklas.cassel@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56168
+X-archive-position: 56169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: niklas.cassel@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,19 +69,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 5, 2017 at 1:51 AM, David Laight <David.Laight@aculab.com> wrote:
-> From: Dmitry Safonov
->> Sent: 30 December 2016 15:57
->> All users of TASK_SIZE_OF(tsk) have migrated to mm->task_size or
->> TASK_SIZE_MAX since:
->> commit d696ca016d57 ("x86/fsgsbase/64: Use TASK_SIZE_MAX for
->> FSBASE/GSBASE upper limits"),
->> commit a06db751c321 ("pagemap: check permissions and capabilities at
->> open time"),
-> ...
->> +#define TASK_SIZE            (current->thread.task_size)
+On 01/04/2017 05:38 PM, Nathan Sullivan wrote:
+> On Tue, Dec 20, 2016 at 05:34:34PM +0100, Ralf Baechle wrote:
+>> On Fri, Dec 02, 2016 at 09:42:09AM -0600, Nathan Sullivan wrote:
+>>> Date:   Fri, 2 Dec 2016 09:42:09 -0600
+>>> From: Nathan Sullivan <nathan.sullivan@ni.com>
+>>> To: ralf@linux-mips.org, mark.rutland@arm.com, robh+dt@kernel.org
+>>> CC: linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+>>>  linux-kernel@vger.kernel.org, Nathan Sullivan <nathan.sullivan@ni.com>
+>>> Subject: [PATCH] MIPS: NI 169445 board support
+>>> Content-Type: text/plain
+>>>
+>>> Support the National Instruments 169445 board.
+>> Nathan,
+>>
+>> I assume you're going to repost the changes Rob asked for in
+>> https://patchwork.linux-mips.org/patch/14641/#26924 and resubmit?
+>>
+>> Thanks,
+>>
+>>   Ralf
+> Hmm, I found the issue with the generic MIPS config and dwc_eth_qos.  The NIC
+> driver attempts to cache align a descriptor ring using the ___cacheline_aligned
+> attribute on the descriptor struct, in combination with a "skip" feature in
+> hardware.  However, the skip feature only has a three bit field, and the generic
+> MIPS config selects MIPS_L1_CACHE_SHIFT_7.  So, the line size is 128, and with a
+> 64-bit bus, that means the NIC descriptor skip field would need to be set to
+> 14 to align the 16-byte descriptors...
 >
-> I'm not sure I like he hidden 'current' argument to an
-> apparent constant.
+> I guess it makes sense for a generic MIPS kernel to align everything for 128 byte
+> cache lines, and for me to fix the dwc_eth_qos driver to handle cases where the
+> line size is too big for the hardware skip feature, right?
 
-Me neither.  But this patch is merely changing the implementation.
+I don't know if you've been following the discussion regarding
+dwc_eth_qos on netdev, but Joao Pinto from Synopsys is
+planning on removing the driver (since the stmmac driver
+now supports the same version of the IP, together with older
+versions of the IP).
+
+Since device tree bindings are treated as an ABI,
+Joao has implemented a glue layer for stmmac that parses
+the dwc_eth_qos binding, but uses stmmac under the hood.
+
+You can use any of the bindings, but since the dwc_eth_qos
+binding will be marked as deprecated, you might want to
+consider moving to the stmmac binding.
+
+>
+> Thanks,
+>
+>    Nathan
+>
+>

@@ -1,65 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2017 19:33:01 +0100 (CET)
-Received: from mail-wm0-f65.google.com ([74.125.82.65]:34896 "EHLO
-        mail-wm0-f65.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992380AbdAEScya83ca (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jan 2017 19:32:54 +0100
-Received: by mail-wm0-f65.google.com with SMTP id l2so72825892wml.2
-        for <linux-mips@linux-mips.org>; Thu, 05 Jan 2017 10:32:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tYHjLmGh05WG3e0zxZfQGRXvxfOVjhTCdpSRFxmK5K0=;
-        b=V7tyKAnL4HEk8wX+3hlO+JtEK0arEvTlhFbvqqNHxm8OeDorYeTmZrWpXHlS1lLpfI
-         RaXWxJ2JPq5dhwFxAqDBLnlzFn1U3NvBPW6xfptukU2BpxS2mMpo1UNfH+NUJ+CyYacz
-         wEJGOlJeMx0nw2BYLvE2B5Ey10TtftTuFHhEx4qyA56uGbsThnNYb1e/mu9HWmb0AhNi
-         3Fsp9dx9WM7LDtGiRc1oJ3tKYR0lGMReowMpjvE+Ox+uD2iyWACZihEh6g0PXRrxw69W
-         phMotM+jJvcDqndhdMfRVF0DuXWFFjkj+JQF6xEmStr2LpdtQHP1MlvZo5SUCTk2qAUl
-         DB7Q==
-X-Gm-Message-State: AIkVDXKhz2ES5bq5JWH7NsAr2IiUNy6HIjHemyqq5+ZKPoeWMezodbuMqzgzBQhrRCHYWA==
-X-Received: by 10.28.24.74 with SMTP id 71mr64340036wmy.74.1483641169193;
-        Thu, 05 Jan 2017 10:32:49 -0800 (PST)
-Received: from kozik-lap ([109.66.157.170])
-        by smtp.googlemail.com with ESMTPSA id d10sm104763892wja.20.2017.01.05.10.32.45
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 05 Jan 2017 10:32:48 -0800 (PST)
-Date:   Thu, 5 Jan 2017 20:32:42 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@free-electrons.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Simon Horman <horms@verge.net.au>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        linaro-kernel@lists.linaro.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        arnd.bergmann@linaro.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: Remove CONFIG_CPU_FREQ_STAT_DETAILS config
- option
-Message-ID: <20170105183242.cwyymvr37mdqb6mj@kozik-lap>
-References: <d4299228a500a889c2b4b9e305674f3d1ea9ae06.1483604760.git.viresh.kumar@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2017 19:34:15 +0100 (CET)
+Received: from smtprelay.synopsys.com ([198.182.47.9]:42364 "EHLO
+        smtprelay.synopsys.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992380AbdAESeIdkHxa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jan 2017 19:34:08 +0100
+Received: from mailhost.synopsys.com (mailhost3.synopsys.com [10.12.238.238])
+        by smtprelay.synopsys.com (Postfix) with ESMTP id 0E51824E1415;
+        Thu,  5 Jan 2017 10:33:58 -0800 (PST)
+Received: from mailhost.synopsys.com (localhost [127.0.0.1])
+        by mailhost.synopsys.com (Postfix) with ESMTP id F011428A;
+        Thu,  5 Jan 2017 10:33:57 -0800 (PST)
+Received: from us01wehtc1.internal.synopsys.com (us01wehtc1-vip.internal.synopsys.com [10.12.239.236])
+        by mailhost.synopsys.com (Postfix) with ESMTP id A8E79289;
+        Thu,  5 Jan 2017 10:33:57 -0800 (PST)
+Received: from DE02WEHTCB.internal.synopsys.com (10.225.19.94) by
+ us01wehtc1.internal.synopsys.com (10.12.239.235) with Microsoft SMTP Server
+ (TLS) id 14.3.266.1; Thu, 5 Jan 2017 10:33:56 -0800
+Received: from DE02WEHTCA.internal.synopsys.com (10.225.19.92) by
+ DE02WEHTCB.internal.synopsys.com (10.225.19.94) with Microsoft SMTP Server
+ (TLS) id 14.3.266.1; Thu, 5 Jan 2017 19:33:54 +0100
+Received: from [10.107.19.116] (10.107.19.116) by
+ DE02WEHTCA.internal.synopsys.com (10.225.19.80) with Microsoft SMTP Server
+ (TLS) id 14.3.266.1; Thu, 5 Jan 2017 19:33:54 +0100
+Subject: Re: [PATCH] MIPS: NI 169445 board support
+To:     Niklas Cassel <niklas.cassel@axis.com>,
+        Nathan Sullivan <nathan.sullivan@ni.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+References: <1480693329-22265-1-git-send-email-nathan.sullivan@ni.com>
+ <20161220163434.GA15962@linux-mips.org>
+ <20170104163836.GA18069@nathan3500-linux-VM>
+ <5d5a087f-68ec-e633-0232-0248edf11ee0@axis.com>
+CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Lars Persson <larper@axis.com>,
+        Joao Pinto <Joao.Pinto@synopsys.com>
+From:   Joao Pinto <Joao.Pinto@synopsys.com>
+Message-ID: <8fd70ecb-36fc-7cc7-7795-cd4dccabf8b9@synopsys.com>
+Date:   Thu, 5 Jan 2017 18:33:53 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d4299228a500a889c2b4b9e305674f3d1ea9ae06.1483604760.git.viresh.kumar@linaro.org>
-User-Agent: Mutt/1.6.2-neo (2016-08-21)
-Return-Path: <k.kozlowski.k@gmail.com>
+In-Reply-To: <5d5a087f-68ec-e633-0232-0248edf11ee0@axis.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.107.19.116]
+Return-Path: <Joao.Pinto@synopsys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56170
+X-archive-position: 56171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: krzk@kernel.org
+X-original-sender: Joao.Pinto@synopsys.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,46 +63,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 05, 2017 at 01:57:41PM +0530, Viresh Kumar wrote:
-> This doesn't have any benefit apart from saving a small amount of memory
-> when it is disabled. The ifdef hackery in the code makes it dirty
-> unnecessarily.
-> 
-> Clean it up by removing the Kconfig option completely. Few defconfigs
-> are also updated and CONFIG_CPU_FREQ_STAT_DETAILS is replaced with
-> CONFIG_CPU_FREQ_STAT now in them, as users wanted stats to be enabled.
-> 
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  arch/arm/configs/exynos_defconfig         |  2 +-
->  arch/arm/configs/multi_v5_defconfig       |  2 +-
->  arch/arm/configs/multi_v7_defconfig       |  2 +-
->  arch/arm/configs/mvebu_v5_defconfig       |  2 +-
->  arch/arm/configs/pxa_defconfig            |  2 +-
->  arch/arm/configs/shmobile_defconfig       |  2 +-
->  arch/mips/configs/lemote2f_defconfig      |  1 -
->  arch/powerpc/configs/ppc6xx_defconfig     |  1 -
->  arch/sh/configs/sh7785lcr_32bit_defconfig |  2 +-
->  drivers/cpufreq/Kconfig                   |  8 --------
->  drivers/cpufreq/cpufreq_stats.c           | 14 --------------
->  11 files changed, 7 insertions(+), 31 deletions(-)
-> 
-> diff --git a/arch/arm/configs/exynos_defconfig b/arch/arm/configs/exynos_defconfig
-> index 79c415c33f69..809f0bf3042a 100644
-> --- a/arch/arm/configs/exynos_defconfig
-> +++ b/arch/arm/configs/exynos_defconfig
-> @@ -24,7 +24,7 @@ CONFIG_ARM_APPENDED_DTB=y
->  CONFIG_ARM_ATAG_DTB_COMPAT=y
->  CONFIG_CMDLINE="root=/dev/ram0 rw ramdisk=8192 initrd=0x41000000,8M console=ttySAC1,115200 init=/linuxrc mem=256M"
->  CONFIG_CPU_FREQ=y
-> -CONFIG_CPU_FREQ_STAT_DETAILS=y
-> +CONFIG_CPU_FREQ_STAT=y
->  CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
->  CONFIG_CPU_FREQ_GOV_POWERSAVE=m
->  CONFIG_CPU_FREQ_GOV_USERSPACE=m
+Hi,
 
-For Exynos:
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+Às 6:28 PM de 1/5/2017, Niklas Cassel escreveu:
+> On 01/04/2017 05:38 PM, Nathan Sullivan wrote:
+>> On Tue, Dec 20, 2016 at 05:34:34PM +0100, Ralf Baechle wrote:
+>>> On Fri, Dec 02, 2016 at 09:42:09AM -0600, Nathan Sullivan wrote:
+>>>> Date:   Fri, 2 Dec 2016 09:42:09 -0600
+>>>> From: Nathan Sullivan <nathan.sullivan@ni.com>
+>>>> To: ralf@linux-mips.org, mark.rutland@arm.com, robh+dt@kernel.org
+>>>> CC: linux-mips@linux-mips.org, devicetree@vger.kernel.org,
+>>>>  linux-kernel@vger.kernel.org, Nathan Sullivan <nathan.sullivan@ni.com>
+>>>> Subject: [PATCH] MIPS: NI 169445 board support
+>>>> Content-Type: text/plain
+>>>>
+>>>> Support the National Instruments 169445 board.
+>>> Nathan,
+>>>
+>>> I assume you're going to repost the changes Rob asked for in
+>>> https://urldefense.proofpoint.com/v2/url?u=https-3A__patchwork.linux-2Dmips.org_patch_14641_-2326924&d=DgICaQ&c=DPL6_X_6JkXFx7AXWqB0tg&r=s2fO0hii0OGNOv9qQy_HRXy-xAJUD1NNoEcc3io_kx0&m=5p7f9dIkvVVK4UFHimMpezq5NwIJfUpd08c-Zk4_c6c&s=_JwSwe4VFYtxV1tcYt6Z8r4hJX0xfoGhCixygUxlg5s&e=  and resubmit?
+>>>
+>>> Thanks,
+>>>
+>>>   Ralf
+>> Hmm, I found the issue with the generic MIPS config and dwc_eth_qos.  The NIC
+>> driver attempts to cache align a descriptor ring using the ___cacheline_aligned
+>> attribute on the descriptor struct, in combination with a "skip" feature in
+>> hardware.  However, the skip feature only has a three bit field, and the generic
+>> MIPS config selects MIPS_L1_CACHE_SHIFT_7.  So, the line size is 128, and with a
+>> 64-bit bus, that means the NIC descriptor skip field would need to be set to
+>> 14 to align the 16-byte descriptors...
+>>
+>> I guess it makes sense for a generic MIPS kernel to align everything for 128 byte
+>> cache lines, and for me to fix the dwc_eth_qos driver to handle cases where the
+>> line size is too big for the hardware skip feature, right?
+> 
+> I don't know if you've been following the discussion regarding
+> dwc_eth_qos on netdev, but Joao Pinto from Synopsys is
+> planning on removing the driver (since the stmmac driver
+> now supports the same version of the IP, together with older
+> versions of the IP).
+> 
+> Since device tree bindings are treated as an ABI,
+> Joao has implemented a glue layer for stmmac that parses
+> the dwc_eth_qos binding, but uses stmmac under the hood.
+> 
+> You can use any of the bindings, but since the dwc_eth_qos
+> binding will be marked as deprecated, you might want to
+> consider moving to the stmmac binding.
 
-Best regards,
-Krzysztof
+A patch set to port dwc_eth_qos to stmmac is at this moment under review:
+
+http://patchwork.ozlabs.org/patch/711428/
+http://patchwork.ozlabs.org/patch/711438/
+http://patchwork.ozlabs.org/patch/711439/
+
+Niklas has tested it and it works well, so after the patches are upstreamed the
+dwc_eth_qos will be removed as agreed with Lars.
+
+Thanks.
+
+> 
+>>
+>> Thanks,
+>>
+>>    Nathan
+>>
+>>
+> 

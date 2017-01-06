@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:35:22 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:55252 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:35:50 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59725 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992835AbdAFBdilBrOu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:38 +0100
+        with ESMTP id S23992990AbdAFBdmXFc5u (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:42 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C86A8F71C986C;
-        Fri,  6 Jan 2017 01:33:31 +0000 (GMT)
+        by Forcepoint Email with ESMTP id 24C9A75BA9132;
+        Fri,  6 Jan 2017 01:33:33 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 6 Jan 2017 01:33:32 +0000
+ 14.3.294.0; Fri, 6 Jan 2017 01:33:33 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 5/30] KVM: MIPS: Drop partial KVM_NMI implementation
-Date:   Fri, 6 Jan 2017 01:32:37 +0000
-Message-ID: <ecb6bdf14d7f58822d0e5e9d621e0b396c064c36.1483665879.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 7/30] KVM: MIPS: Convert get/set_regs -> vcpu_load/put
+Date:   Fri, 6 Jan 2017 01:32:39 +0000
+Message-ID: <5594e7cdb0c831ca740577e386c564c3650be2ee.1483665879.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.d6d201de414322ed2c1372e164254e6055ef7db9.1483665879.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56178
+X-archive-position: 56179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,17 +46,12 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS incompletely implements the KVM_NMI ioctl to supposedly perform a
-CPU reset, but all it actually does is invalidate the ASIDs. It doesn't
-expose the KVM_CAP_USER_NMI capability which is supposed to indicate the
-presence of the KVM_NMI ioctl, and no user software actually uses it on
-MIPS.
+Convert the get_regs() and set_regs() callbacks to vcpu_load() and
+vcpu_put(), which provide a cpu argument and more closely match the
+kvm_arch_vcpu_load() / kvm_arch_vcpu_put() that they are called by.
 
-Since this is dead code that would technically need updating for GVA
-page table handling in upcoming patches, remove it now. If we wanted to
-implement NMI injection later it can always be done properly along with
-the KVM_CAP_USER_NMI capability, and if we wanted to implement a proper
-CPU reset it would be better done with a separate ioctl.
+This is in preparation for moving ASID management into the
+implementations.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -65,42 +60,82 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/mips.c | 16 ----------------
- 1 file changed, 0 insertions(+), 16 deletions(-)
+ arch/mips/include/asm/kvm_host.h |  4 ++--
+ arch/mips/kvm/mmu.c              |  4 ++--
+ arch/mips/kvm/trap_emul.c        | 12 ++++++------
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 29ec9ab3fd55..de32ce30c78c 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -63,18 +63,6 @@ struct kvm_stats_debugfs_item debugfs_entries[] = {
- 	{NULL}
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 7cc53e44b42e..1c70b5224151 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -539,8 +539,8 @@ struct kvm_mips_callbacks {
+ 			   const struct kvm_one_reg *reg, s64 *v);
+ 	int (*set_one_reg)(struct kvm_vcpu *vcpu,
+ 			   const struct kvm_one_reg *reg, s64 v);
+-	int (*vcpu_get_regs)(struct kvm_vcpu *vcpu);
+-	int (*vcpu_set_regs)(struct kvm_vcpu *vcpu);
++	int (*vcpu_load)(struct kvm_vcpu *vcpu, int cpu);
++	int (*vcpu_put)(struct kvm_vcpu *vcpu, int cpu);
+ };
+ extern struct kvm_mips_callbacks *kvm_mips_callbacks;
+ int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks);
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index e1698a66253b..ed46528611f4 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -294,7 +294,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 	}
+ 
+ 	/* restore guest state to registers */
+-	kvm_mips_callbacks->vcpu_set_regs(vcpu);
++	kvm_mips_callbacks->vcpu_load(vcpu, cpu);
+ 
+ 	local_irq_restore(flags);
+ 
+@@ -312,7 +312,7 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.last_sched_cpu = cpu;
+ 
+ 	/* save guest state in registers */
+-	kvm_mips_callbacks->vcpu_get_regs(vcpu);
++	kvm_mips_callbacks->vcpu_put(vcpu, cpu);
+ 
+ 	if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
+ 	     asid_version_mask(cpu))) {
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 3b20441f2beb..c0ee51465913 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -633,15 +633,15 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
+ 	return ret;
+ }
+ 
+-static int kvm_trap_emul_vcpu_get_regs(struct kvm_vcpu *vcpu)
++static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ {
+-	kvm_lose_fpu(vcpu);
+-
+ 	return 0;
+ }
+ 
+-static int kvm_trap_emul_vcpu_set_regs(struct kvm_vcpu *vcpu)
++static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
+ {
++	kvm_lose_fpu(vcpu);
++
+ 	return 0;
+ }
+ 
+@@ -675,8 +675,8 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
+ 	.copy_reg_indices = kvm_trap_emul_copy_reg_indices,
+ 	.get_one_reg = kvm_trap_emul_get_one_reg,
+ 	.set_one_reg = kvm_trap_emul_set_one_reg,
+-	.vcpu_get_regs = kvm_trap_emul_vcpu_get_regs,
+-	.vcpu_set_regs = kvm_trap_emul_vcpu_set_regs,
++	.vcpu_load = kvm_trap_emul_vcpu_load,
++	.vcpu_put = kvm_trap_emul_vcpu_put,
  };
  
--static int kvm_mips_reset_vcpu(struct kvm_vcpu *vcpu)
--{
--	int i;
--
--	for_each_possible_cpu(i) {
--		vcpu->arch.guest_kernel_asid[i] = 0;
--		vcpu->arch.guest_user_asid[i] = 0;
--	}
--
--	return 0;
--}
--
- /*
-  * XXXKYMA: We are simulatoring a processor that has the WII bit set in
-  * Config7, so we are "runnable" if interrupts are pending
-@@ -1144,10 +1132,6 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
- 			return -E2BIG;
- 		return kvm_mips_copy_reg_indices(vcpu, user_list->reg);
- 	}
--	case KVM_NMI:
--		/* Treat the NMI as a CPU reset */
--		r = kvm_mips_reset_vcpu(vcpu);
--		break;
- 	case KVM_INTERRUPT:
- 		{
- 			struct kvm_mips_interrupt irq;
+ int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks)
 -- 
 git-series 0.8.10

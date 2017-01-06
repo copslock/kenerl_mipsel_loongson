@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 15:46:57 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45994 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 15:47:24 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:34666 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992328AbdAFOqIFHlGa (ORCPT
+        with ESMTP id S23992380AbdAFOqIfohPa (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 15:46:08 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 5EAD3AD7A8253;
-        Fri,  6 Jan 2017 14:45:58 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 49E7BBDFCBF49;
+        Fri,  6 Jan 2017 14:45:59 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
  14.3.294.0; Fri, 6 Jan 2017 14:46:01 +0000
@@ -15,9 +15,9 @@ CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 2/3] KVM: MIPS: Improve kvm_get_inst() error return
-Date:   Fri, 6 Jan 2017 14:44:42 +0000
-Message-ID: <7f86bbd32351ad43a8821519c2f492a5611e1f55.1483713106.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 3/3] KVM: MIPS: Use CP0_BadInstr[P] for emulation
+Date:   Fri, 6 Jan 2017 14:44:43 +0000
+Message-ID: <32b64d3b2460bffb8bad3e5ff0cd4506f8890855.1483713106.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.bf96bfd5329a1b0bbde5c97362c9284cafcc0300.1483713106.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56218
+X-archive-position: 56219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,14 +46,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Currently kvm_get_inst() returns KVM_INVALID_INST in the event of a
-fault reading the guest instruction. This has the rather arbitrary magic
-value 0xdeadbeef. This API isn't very robust, and in fact 0xdeadbeef is
-a valid MIPS64 instruction encoding, namely "ld t1,-16657(s5)".
+When exiting from the guest, store the values of the CP0_BadInstr and
+CP0_BadInstrP registers if they exist, which contain the encodings of
+the instructions which caused the last synchronous exception.
 
-Therefore change the kvm_get_inst() API to return 0 or -EFAULT, and to
-return the instruction via a u32 *out argument. We can then drop the
-KVM_INVALID_INST definition entirely.
+When the instruction is needed for emulation, kvm_get_badinstr() and
+kvm_get_badinstrp() are used instead of calling kvm_get_inst() directly,
+to decide whether to read the saved CP0_BadInstr/CP0_BadInstrP registers
+(if they exist), or read the instruction from memory (if not).
+
+The use of these registers should be more robust than using
+kvm_get_inst(), as it actually gives the instruction encoding seen by
+the hardware rather than relying on user accessors after the fact, which
+can be fooled by incoherent icache or a racing code modification. It
+will also work with VZ, where the guest virtual memory isn't directly
+accessible by the host with user accessors.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -62,282 +69,158 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h |  3 +-
- arch/mips/kvm/emulate.c          | 90 ++++++++++++++++-----------------
- arch/mips/kvm/mips.c             |  7 ++-
- arch/mips/kvm/mmu.c              |  9 +--
- 4 files changed, 56 insertions(+), 53 deletions(-)
+ arch/mips/include/asm/kvm_host.h |  4 +++-
+ arch/mips/kvm/emulate.c          | 48 ++++++++++++++++++++++++++++++---
+ arch/mips/kvm/entry.c            | 14 ++++++++++-
+ arch/mips/kvm/mips.c             |  2 +-
+ 4 files changed, 64 insertions(+), 4 deletions(-)
 
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 3c39ccd8856e..b0936a4d931a 100644
+index b0936a4d931a..ac9d41900597 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -104,7 +104,6 @@
- #define KVM_GUEST_KSEG23ADDR(a)		(KVM_GUEST_CPHYSADDR(a) | KVM_GUEST_KSEG23)
+@@ -280,6 +280,8 @@ struct kvm_vcpu_arch {
+ 	unsigned long host_cp0_badvaddr;
+ 	unsigned long host_cp0_epc;
+ 	u32 host_cp0_cause;
++	u32 host_cp0_badinstr;
++	u32 host_cp0_badinstrp;
  
- #define KVM_INVALID_PAGE		0xdeadbeef
--#define KVM_INVALID_INST		0xdeadbeef
- #define KVM_INVALID_ADDR		0xdeadbeef
- 
- /*
-@@ -637,7 +636,7 @@ void kvm_trap_emul_invalidate_gva(struct kvm_vcpu *vcpu, unsigned long addr,
- 				  bool user);
- 
+ 	/* GPRS */
+ 	unsigned long gprs[32];
+@@ -638,6 +640,8 @@ void kvm_trap_emul_invalidate_gva(struct kvm_vcpu *vcpu, unsigned long addr,
  /* Emulation */
--u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu);
-+int kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu, u32 *out);
+ int kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu, u32 *out);
  enum emulation_result update_pc(struct kvm_vcpu *vcpu, u32 cause);
++int kvm_get_badinstr(u32 *opc, struct kvm_vcpu *vcpu, u32 *out);
++int kvm_get_badinstrp(u32 *opc, struct kvm_vcpu *vcpu, u32 *out);
  
  /**
+  * kvm_is_ifetch_fault() - Find whether a TLBL exception is due to ifetch fault.
 diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 67ea39973b96..b906fc0589f3 100644
+index b906fc0589f3..b295a4a1496f 100644
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -38,23 +38,25 @@
-  * Compute the return address and do emulate branch simulation, if required.
-  * This function should be called only in branch delay slot active.
-  */
--unsigned long kvm_compute_return_epc(struct kvm_vcpu *vcpu,
--	unsigned long instpc)
-+static int kvm_compute_return_epc(struct kvm_vcpu *vcpu, unsigned long instpc,
-+				  unsigned long *out)
- {
- 	unsigned int dspcontrol;
- 	union mips_instruction insn;
- 	struct kvm_vcpu_arch *arch = &vcpu->arch;
- 	long epc = instpc;
--	long nextpc = KVM_INVALID_INST;
-+	long nextpc;
-+	int err;
- 
--	if (epc & 3)
--		goto unaligned;
-+	if (epc & 3) {
-+		kvm_err("%s: unaligned epc\n", __func__);
-+		return -EINVAL;
-+	}
- 
- 	/* Read the instruction */
--	insn.word = kvm_get_inst((u32 *) epc, vcpu);
--
--	if (insn.word == KVM_INVALID_INST)
--		return KVM_INVALID_INST;
-+	err = kvm_get_inst((u32 *)epc, vcpu, &insn.word);
-+	if (err)
-+		return err;
- 
- 	switch (insn.i_format.opcode) {
- 		/* jr and jalr are in r_format format. */
-@@ -66,6 +68,8 @@ unsigned long kvm_compute_return_epc(struct kvm_vcpu *vcpu,
- 		case jr_op:
- 			nextpc = arch->gprs[insn.r_format.rs];
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 		break;
- 
-@@ -114,8 +118,11 @@ unsigned long kvm_compute_return_epc(struct kvm_vcpu *vcpu,
- 			nextpc = epc;
- 			break;
- 		case bposge32_op:
--			if (!cpu_has_dsp)
--				goto sigill;
-+			if (!cpu_has_dsp) {
-+				kvm_err("%s: DSP branch but not DSP ASE\n",
-+					__func__);
-+				return -EINVAL;
-+			}
- 
- 			dspcontrol = rddsp(0x01);
- 
-@@ -125,6 +132,8 @@ unsigned long kvm_compute_return_epc(struct kvm_vcpu *vcpu,
- 				epc += 8;
- 			nextpc = epc;
- 			break;
-+		default:
-+			return -EINVAL;
- 		}
- 		break;
- 
-@@ -189,7 +198,7 @@ unsigned long kvm_compute_return_epc(struct kvm_vcpu *vcpu,
- 		/* And now the FPA/cp1 branch instructions. */
- 	case cop1_op:
- 		kvm_err("%s: unsupported cop1_op\n", __func__);
--		break;
-+		return -EINVAL;
- 
- #ifdef CONFIG_CPU_MIPSR6
- 	/* R6 added the following compact branches with forbidden slots */
-@@ -198,19 +207,19 @@ unsigned long kvm_compute_return_epc(struct kvm_vcpu *vcpu,
- 		/* only rt == 0 isn't compact branch */
- 		if (insn.i_format.rt != 0)
- 			goto compact_branch;
--		break;
-+		return -EINVAL;
- 	case pop10_op:
- 	case pop30_op:
- 		/* only rs == rt == 0 is reserved, rest are compact branches */
- 		if (insn.i_format.rs != 0 || insn.i_format.rt != 0)
- 			goto compact_branch;
--		break;
-+		return -EINVAL;
- 	case pop66_op:
- 	case pop76_op:
- 		/* only rs == 0 isn't compact branch */
- 		if (insn.i_format.rs != 0)
- 			goto compact_branch;
--		break;
-+		return -EINVAL;
- compact_branch:
- 		/*
- 		 * If we've hit an exception on the forbidden slot, then
-@@ -221,42 +230,32 @@ unsigned long kvm_compute_return_epc(struct kvm_vcpu *vcpu,
- 		break;
- #else
- compact_branch:
--		/* Compact branches not supported before R6 */
--		break;
-+		/* Fall through - Compact branches not supported before R6 */
- #endif
-+	default:
-+		return -EINVAL;
+@@ -54,7 +54,7 @@ static int kvm_compute_return_epc(struct kvm_vcpu *vcpu, unsigned long instpc,
  	}
  
--	return nextpc;
--
--unaligned:
--	kvm_err("%s: unaligned epc\n", __func__);
--	return nextpc;
--
--sigill:
--	kvm_err("%s: DSP branch but not DSP ASE\n", __func__);
--	return nextpc;
-+	*out = nextpc;
-+	return 0;
- }
+ 	/* Read the instruction */
+-	err = kvm_get_inst((u32 *)epc, vcpu, &insn.word);
++	err = kvm_get_badinstrp((u32 *)epc, vcpu, &insn.word);
+ 	if (err)
+ 		return err;
  
- enum emulation_result update_pc(struct kvm_vcpu *vcpu, u32 cause)
- {
--	unsigned long branch_pc;
--	enum emulation_result er = EMULATE_DONE;
-+	int err;
- 
- 	if (cause & CAUSEF_BD) {
--		branch_pc = kvm_compute_return_epc(vcpu, vcpu->arch.pc);
--		if (branch_pc == KVM_INVALID_INST) {
--			er = EMULATE_FAIL;
--		} else {
--			vcpu->arch.pc = branch_pc;
--			kvm_debug("BD update_pc(): New PC: %#lx\n",
--				  vcpu->arch.pc);
--		}
--	} else
-+		err = kvm_compute_return_epc(vcpu, vcpu->arch.pc,
-+					     &vcpu->arch.pc);
-+		if (err)
-+			return EMULATE_FAIL;
-+	} else {
- 		vcpu->arch.pc += 4;
-+	}
- 
- 	kvm_debug("update_pc(): New PC: %#lx\n", vcpu->arch.pc);
- 
--	return er;
-+	return EMULATE_DONE;
+@@ -259,6 +259,48 @@ enum emulation_result update_pc(struct kvm_vcpu *vcpu, u32 cause)
  }
  
  /**
-@@ -1835,12 +1834,14 @@ enum emulation_result kvm_mips_emulate_inst(u32 cause, u32 *opc,
- {
- 	union mips_instruction inst;
- 	enum emulation_result er = EMULATE_DONE;
-+	int err;
- 
++ * kvm_get_badinstr() - Get bad instruction encoding.
++ * @opc:	Guest pointer to faulting instruction.
++ * @vcpu:	KVM VCPU information.
++ *
++ * Gets the instruction encoding of the faulting instruction, using the saved
++ * BadInstr register value if it exists, otherwise falling back to reading guest
++ * memory at @opc.
++ *
++ * Returns:	The instruction encoding of the faulting instruction.
++ */
++int kvm_get_badinstr(u32 *opc, struct kvm_vcpu *vcpu, u32 *out)
++{
++	if (cpu_has_badinstr) {
++		*out = vcpu->arch.host_cp0_badinstr;
++		return 0;
++	} else {
++		return kvm_get_inst(opc, vcpu, out);
++	}
++}
++
++/**
++ * kvm_get_badinstrp() - Get bad prior instruction encoding.
++ * @opc:	Guest pointer to prior faulting instruction.
++ * @vcpu:	KVM VCPU information.
++ *
++ * Gets the instruction encoding of the prior faulting instruction (the branch
++ * containing the delay slot which faulted), using the saved BadInstrP register
++ * value if it exists, otherwise falling back to reading guest memory at @opc.
++ *
++ * Returns:	The instruction encoding of the prior faulting instruction.
++ */
++int kvm_get_badinstrp(u32 *opc, struct kvm_vcpu *vcpu, u32 *out)
++{
++	if (cpu_has_badinstrp) {
++		*out = vcpu->arch.host_cp0_badinstrp;
++		return 0;
++	} else {
++		return kvm_get_inst(opc, vcpu, out);
++	}
++}
++
++/**
+  * kvm_mips_count_disabled() - Find whether the CP0_Count timer is disabled.
+  * @vcpu:	Virtual CPU.
+  *
+@@ -1839,7 +1881,7 @@ enum emulation_result kvm_mips_emulate_inst(u32 cause, u32 *opc,
  	/* Fetch the instruction. */
  	if (cause & CAUSEF_BD)
  		opc += 1;
--
--	inst.word = kvm_get_inst(opc, vcpu);
-+	err = kvm_get_inst(opc, vcpu, &inst.word);
-+	if (err)
-+		return EMULATE_FAIL;
- 
- 	switch (inst.r_format.opcode) {
- 	case cop0_op:
-@@ -2419,6 +2420,7 @@ enum emulation_result kvm_mips_handle_ri(u32 cause, u32 *opc,
- 	enum emulation_result er = EMULATE_DONE;
- 	unsigned long curr_pc;
- 	union mips_instruction inst;
-+	int err;
- 
- 	/*
- 	 * Update PC and hold onto current PC in case there is
-@@ -2432,11 +2434,9 @@ enum emulation_result kvm_mips_handle_ri(u32 cause, u32 *opc,
- 	/* Fetch the instruction. */
- 	if (cause & CAUSEF_BD)
- 		opc += 1;
--
--	inst.word = kvm_get_inst(opc, vcpu);
--
--	if (inst.word == KVM_INVALID_INST) {
--		kvm_err("%s: Cannot get inst @ %p\n", __func__, opc);
-+	err = kvm_get_inst(opc, vcpu, &inst.word);
-+	if (err) {
-+		kvm_err("%s: Cannot get inst @ %p (%d)\n", __func__, opc, err);
+-	err = kvm_get_inst(opc, vcpu, &inst.word);
++	err = kvm_get_badinstr(opc, vcpu, &inst.word);
+ 	if (err)
  		return EMULATE_FAIL;
- 	}
  
+@@ -2434,7 +2476,7 @@ enum emulation_result kvm_mips_handle_ri(u32 cause, u32 *opc,
+ 	/* Fetch the instruction. */
+ 	if (cause & CAUSEF_BD)
+ 		opc += 1;
+-	err = kvm_get_inst(opc, vcpu, &inst.word);
++	err = kvm_get_badinstr(opc, vcpu, &inst.word);
+ 	if (err) {
+ 		kvm_err("%s: Cannot get inst @ %p (%d)\n", __func__, opc, err);
+ 		return EMULATE_FAIL;
+diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
+index 1ae33e0e675c..c5b254c4d0da 100644
+--- a/arch/mips/kvm/entry.c
++++ b/arch/mips/kvm/entry.c
+@@ -53,6 +53,8 @@
+ /* Some CP0 registers */
+ #define C0_HWRENA	7, 0
+ #define C0_BADVADDR	8, 0
++#define C0_BADINSTR	8, 1
++#define C0_BADINSTRP	8, 2
+ #define C0_ENTRYHI	10, 0
+ #define C0_STATUS	12, 0
+ #define C0_CAUSE	13, 0
+@@ -579,6 +581,18 @@ void *kvm_mips_build_exit(void *addr)
+ 	uasm_i_mfc0(&p, K0, C0_CAUSE);
+ 	uasm_i_sw(&p, K0, offsetof(struct kvm_vcpu_arch, host_cp0_cause), K1);
+ 
++	if (cpu_has_badinstr) {
++		uasm_i_mfc0(&p, K0, C0_BADINSTR);
++		uasm_i_sw(&p, K0, offsetof(struct kvm_vcpu_arch,
++					   host_cp0_badinstr), K1);
++	}
++
++	if (cpu_has_badinstrp) {
++		uasm_i_mfc0(&p, K0, C0_BADINSTRP);
++		uasm_i_sw(&p, K0, offsetof(struct kvm_vcpu_arch,
++					   host_cp0_badinstrp), K1);
++	}
++
+ 	/* Now restore the host state just enough to run the handlers */
+ 
+ 	/* Switch EBASE to the one used by Linux */
 diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 001349124bad..69775fb9c408 100644
+index 69775fb9c408..4dc6cf2b7c50 100644
 --- a/arch/mips/kvm/mips.c
 +++ b/arch/mips/kvm/mips.c
-@@ -1348,6 +1348,7 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
- 	unsigned long badvaddr = vcpu->arch.host_cp0_badvaddr;
- 	enum emulation_result er = EMULATE_DONE;
-+	u32 inst;
- 	int ret = RESUME_GUEST;
- 
- 	/* re-enable HTW before enabling interrupts */
-@@ -1472,8 +1473,12 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 		break;
- 
- 	default:
-+		if (cause & CAUSEF_BD)
-+			opc += 1;
-+		inst = 0;
-+		kvm_get_inst(opc, vcpu, &inst);
+@@ -1476,7 +1476,7 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 		if (cause & CAUSEF_BD)
+ 			opc += 1;
+ 		inst = 0;
+-		kvm_get_inst(opc, vcpu, &inst);
++		kvm_get_badinstr(opc, vcpu, &inst);
  		kvm_err("Exception Code: %d, not yet handled, @ PC: %p, inst: 0x%08x  BadVaddr: %#lx Status: %#lx\n",
--			exccode, opc, kvm_get_inst(opc, vcpu), badvaddr,
-+			exccode, opc, inst, badvaddr,
+ 			exccode, opc, inst, badvaddr,
  			kvm_read_c0_guest_status(vcpu->arch.cop0));
- 		kvm_arch_vcpu_dump_regs(vcpu);
- 		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
-index aab604e75d3b..6379ac1bc7b9 100644
---- a/arch/mips/kvm/mmu.c
-+++ b/arch/mips/kvm/mmu.c
-@@ -503,16 +503,15 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
- 	local_irq_restore(flags);
- }
- 
--u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu)
-+int kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu, u32 *out)
- {
--	u32 inst;
- 	int err;
- 
--	err = get_user(inst, opc);
-+	err = get_user(*out, opc);
- 	if (unlikely(err)) {
- 		kvm_err("%s: illegal address: %p\n", __func__, opc);
--		return KVM_INVALID_INST;
-+		return -EFAULT;
- 	}
- 
--	return inst;
-+	return 0;
- }
 -- 
 git-series 0.8.10

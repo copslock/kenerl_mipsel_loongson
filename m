@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:38:52 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46373 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:39:13 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:59725 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992328AbdAFBdnspxXu (ORCPT
+        with ESMTP id S23993058AbdAFBdnt1jDu (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:43 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 3208FA15EA7BF;
-        Fri,  6 Jan 2017 01:33:40 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 6A7A93D898A1C;
+        Fri,  6 Jan 2017 01:33:39 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
  14.3.294.0; Fri, 6 Jan 2017 01:33:40 +0000
@@ -15,9 +15,9 @@ CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 16/30] KVM: MIPS: Support NetLogic KScratch registers
-Date:   Fri, 6 Jan 2017 01:32:48 +0000
-Message-ID: <610a667f2bb87443b20a9f9bc1b4bddfc3ae0b09.1483665879.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 15/30] KVM: MIPS/T&E: Activate GVA page tables in guest context
+Date:   Fri, 6 Jan 2017 01:32:47 +0000
+Message-ID: <90495bc9f4861b0aa1181fbd3c9ef70f49b3f0d9.1483665879.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.d6d201de414322ed2c1372e164254e6055ef7db9.1483665879.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56186
+X-archive-position: 56187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,15 +46,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-tlbex.c uses the implementation dependent $22 CP0 register group on
-NetLogic cores, with the help of the c0_kscratch() helper. Allow these
-registers to be allocated by the KVM entry code too instead of assuming
-KScratch registers are all $31, which will also allow pgd_reg to be
-handled since it is allocated that way.
-
-We also drop the masking of kscratch_mask with 0xfc, as it is redundant
-for the standard KScratch registers (Config4.KScrExist won't have the
-low 2 bits set anyway), and apparently not necessary for NetLogic.
+Activate the GVA page tables when in guest context. This will allow the
+normal Linux TLB refill handler to fill from it when guest memory is
+read, as well as preventing accidental reading from user memory.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -63,74 +57,103 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/entry.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/mmu_context.h |  4 +++-
+ arch/mips/kvm/entry.c               | 16 +++++++++++++++-
+ arch/mips/kvm/trap_emul.c           | 10 ++++++----
+ 3 files changed, 24 insertions(+), 6 deletions(-)
 
+diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+index ddd57ade1aa8..16eb8521398e 100644
+--- a/arch/mips/include/asm/mmu_context.h
++++ b/arch/mips/include/asm/mmu_context.h
+@@ -29,9 +29,11 @@ do {									\
+ 	}								\
+ } while (0)
+ 
++extern void tlbmiss_handler_setup_pgd(unsigned long);
++
++/* Note: This is also implemented with uasm in arch/mips/kvm/entry.c */
+ #define TLBMISS_HANDLER_SETUP_PGD(pgd)					\
+ do {									\
+-	extern void tlbmiss_handler_setup_pgd(unsigned long);		\
+ 	tlbmiss_handler_setup_pgd((unsigned long)(pgd));		\
+ 	htw_set_pwbase((unsigned long)pgd);				\
+ } while (0)
 diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
-index f683d123172c..7424d3d566ff 100644
+index f81888704caa..f683d123172c 100644
 --- a/arch/mips/kvm/entry.c
 +++ b/arch/mips/kvm/entry.c
-@@ -91,6 +91,21 @@ static void *kvm_mips_build_ret_from_exit(void *addr);
- static void *kvm_mips_build_ret_to_guest(void *addr);
- static void *kvm_mips_build_ret_to_host(void *addr);
+@@ -13,6 +13,7 @@
  
-+/*
-+ * The version of this function in tlbex.c uses current_cpu_type(), but for KVM
-+ * we assume symmetry.
-+ */
-+static int c0_kscratch(void)
-+{
-+	switch (boot_cpu_type()) {
-+	case CPU_XLP:
-+	case CPU_XLR:
-+		return 22;
-+	default:
-+		return 31;
-+	}
-+}
+ #include <linux/kvm_host.h>
+ #include <linux/log2.h>
++#include <asm/mmu_context.h>
+ #include <asm/msa.h>
+ #include <asm/setup.h>
+ #include <asm/uasm.h>
+@@ -316,7 +317,20 @@ static void *kvm_mips_build_enter_guest(void *addr)
+ #else
+ 	uasm_i_andi(&p, K0, K0, MIPS_ENTRYHI_ASID);
+ #endif
+-	uasm_i_mtc0(&p, K0, C0_ENTRYHI);
 +
- /**
-  * kvm_mips_entry_setup() - Perform global setup for entry code.
-  *
-@@ -105,18 +120,18 @@ int kvm_mips_entry_setup(void)
- 	 * We prefer to use KScratchN registers if they are available over the
- 	 * defaults above, which may not work on all cores.
++	/*
++	 * Set up KVM T&E GVA pgd.
++	 * This does roughly the same as TLBMISS_HANDLER_SETUP_PGD():
++	 * - call tlbmiss_handler_setup_pgd(mm->pgd)
++	 * - but skips write into CP0_PWBase for now
++	 */
++	UASM_i_LW(&p, A0, (int)offsetof(struct mm_struct, pgd) -
++			  (int)offsetof(struct mm_struct, context.asid), T1);
++
++	UASM_i_LA(&p, T9, (unsigned long)tlbmiss_handler_setup_pgd);
++	uasm_i_jalr(&p, RA, T9);
++	 uasm_i_mtc0(&p, K0, C0_ENTRYHI);
++
+ 	uasm_i_ehb(&p);
+ 
+ 	/* Disable RDHWR access */
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 34aa9b6871fb..2c4b4ccecbcd 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -704,6 +704,7 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ {
+ 	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
+ 	struct mm_struct *user_mm = &vcpu->arch.guest_user_mm;
++	struct mm_struct *mm;
+ 
+ 	/* Allocate new kernel and user ASIDs if needed */
+ 
+@@ -733,10 +734,9 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 	 * on the mode of the Guest (Kernel/User)
  	 */
--	unsigned int kscratch_mask = cpu_data[0].kscratch_mask & 0xfc;
-+	unsigned int kscratch_mask = cpu_data[0].kscratch_mask;
+ 	if (current->flags & PF_VCPU) {
+-		if (KVM_GUEST_KERNEL_MODE(vcpu))
+-			write_c0_entryhi(cpu_asid(cpu, kern_mm));
+-		else
+-			write_c0_entryhi(cpu_asid(cpu, user_mm));
++		mm = KVM_GUEST_KERNEL_MODE(vcpu) ? kern_mm : user_mm;
++		write_c0_entryhi(cpu_asid(cpu, mm));
++		TLBMISS_HANDLER_SETUP_PGD(mm->pgd);
+ 		cpumask_clear_cpu(cpu, mm_cpumask(current->active_mm));
+ 		current->active_mm = &init_mm;
+ 		ehb();
+@@ -758,6 +758,7 @@ static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
+ 			get_new_mmu_context(current->mm, cpu);
+ 		}
+ 		write_c0_entryhi(cpu_asid(cpu, current->mm));
++		TLBMISS_HANDLER_SETUP_PGD(current->mm->pgd);
+ 		cpumask_set_cpu(cpu, mm_cpumask(current->mm));
+ 		current->active_mm = current->mm;
+ 		ehb();
+@@ -824,6 +825,7 @@ static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 	     asid_version_mask(cpu)))
+ 		get_new_mmu_context(current->mm, cpu);
+ 	write_c0_entryhi(cpu_asid(cpu, current->mm));
++	TLBMISS_HANDLER_SETUP_PGD(current->mm->pgd);
+ 	cpumask_set_cpu(cpu, mm_cpumask(current->mm));
+ 	current->active_mm = current->mm;
  
- 	/* Pick a scratch register for storing VCPU */
- 	if (kscratch_mask) {
--		scratch_vcpu[0] = 31;
-+		scratch_vcpu[0] = c0_kscratch();
- 		scratch_vcpu[1] = ffs(kscratch_mask) - 1;
- 		kscratch_mask &= ~BIT(scratch_vcpu[1]);
- 	}
- 
- 	/* Pick a scratch register to use as a temp for saving state */
- 	if (kscratch_mask) {
--		scratch_tmp[0] = 31;
-+		scratch_tmp[0] = c0_kscratch();
- 		scratch_tmp[1] = ffs(kscratch_mask) - 1;
- 		kscratch_mask &= ~BIT(scratch_tmp[1]);
- 	}
-@@ -132,7 +147,7 @@ static void kvm_mips_build_save_scratch(u32 **p, unsigned int tmp,
- 	UASM_i_SW(p, tmp, offsetof(struct pt_regs, cp0_epc), frame);
- 
- 	/* Save the temp scratch register value in cp0_cause of stack frame */
--	if (scratch_tmp[0] == 31) {
-+	if (scratch_tmp[0] == c0_kscratch()) {
- 		UASM_i_MFC0(p, tmp, scratch_tmp[0], scratch_tmp[1]);
- 		UASM_i_SW(p, tmp, offsetof(struct pt_regs, cp0_cause), frame);
- 	}
-@@ -148,7 +163,7 @@ static void kvm_mips_build_restore_scratch(u32 **p, unsigned int tmp,
- 	UASM_i_LW(p, tmp, offsetof(struct pt_regs, cp0_epc), frame);
- 	UASM_i_MTC0(p, tmp, scratch_vcpu[0], scratch_vcpu[1]);
- 
--	if (scratch_tmp[0] == 31) {
-+	if (scratch_tmp[0] == c0_kscratch()) {
- 		UASM_i_LW(p, tmp, offsetof(struct pt_regs, cp0_cause), frame);
- 		UASM_i_MTC0(p, tmp, scratch_tmp[0], scratch_tmp[1]);
- 	}
 -- 
 git-series 0.8.10

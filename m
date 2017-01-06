@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 19:30:53 +0100 (CET)
-Received: from mail-pf0-x22b.google.com ([IPv6:2607:f8b0:400e:c00::22b]:35080
-        "EHLO mail-pf0-x22b.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992437AbdAFSap23NzN convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 19:45:46 +0100 (CET)
+Received: from mail-oi0-x22d.google.com ([IPv6:2607:f8b0:4003:c06::22d]:34699
+        "EHLO mail-oi0-x22d.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990508AbdAFSpih3PGN convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 6 Jan 2017 19:30:45 +0100
-Received: by mail-pf0-x22b.google.com with SMTP id f144so5781812pfa.2
-        for <linux-mips@linux-mips.org>; Fri, 06 Jan 2017 10:30:45 -0800 (PST)
+        Fri, 6 Jan 2017 19:45:38 +0100
+Received: by mail-oi0-x22d.google.com with SMTP id 3so442042956oih.1
+        for <linux-mips@linux-mips.org>; Fri, 06 Jan 2017 10:45:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:organization:references:date:in-reply-to
-         :message-id:user-agent:mime-version:content-transfer-encoding;
-        bh=nimJDjgCzRZm+1RNY8EyupGdm6DBFArzYSkTNsp3OBI=;
-        b=pfwaTg64YNvm3L7QtxNVXItBYdVqPKVknggGfXDQldLLJ6Vpa3MT8AMFoDP9/Xo/Bt
-         GKfMYixXMhCyiBMwNSVB4jDxVVfTbmR5SdJBVp+DT2svpR/eq3u1mwk9lCpogVkJKtcs
-         YS+JkaitSbzL+XOASSkv6CUa/Q9EPv2feUYkBhOTbnI+DN6J/HgYI+AgGfBAJWW4xV9e
-         yZh1ohYrlUc8nBQqR1rLHvNH4pzn6rnnwDOif+Z79RVFaMjr2WGbC+RknkYiWkwJOvd3
-         7Vy1ji8+kwmOjTOStPsAc+bOMMFA+ACFchBmCNnSX3idly46P71WMGhs5jB0Q1qZypz7
-         02Rw==
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ngWvRMtRlZznwmRmIlvYhn6EO3EBwMtCKy3Z/rS0+Bs=;
+        b=xPrYhfk9loqThjT7fYxXjGPBQNMttgDn58FvDkVsd9Dw5pFAiPdbd0BTneZKesmxFe
+         4njwHHc/JmZU45H15Yn+YQQK1dbiW5y1ZqpZGUkWj4eYn4usP6t7JJslIeVKNHx+SI30
+         zdSMP4pC9go4i5Iqv0pCpqw9YUXEbDi5J/Df0XL+Hkhcan6ZqvQANKCfJW8DGP5xVk9T
+         et87E8whB6SgV+CJL3TPVfqiLcMgP8nylmu22RGec1E659FNpxjdQnFiOE28G5OuOdp6
+         OUYbW/2KD8vqKYWITI8KY767M+SEUZalShsjcw7PmS1L7iQEkC+2v5L976vT2R7oB0Uj
+         tFqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:organization:references:date
-         :in-reply-to:message-id:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=nimJDjgCzRZm+1RNY8EyupGdm6DBFArzYSkTNsp3OBI=;
-        b=Wz6/qo/TjCkOEJWkc2091APTmac5L1XOdxlmkT7y1m9dBx8/jCJmCyNxKZgoVSWTwL
-         z0tH9OUQkUoXGUBeiGmh9AdnVvASYlVIPOD5H2l4MSROggcPdXB4c5ieEKZAeMH/zN9c
-         SIc2s+l21iBf5nkn7w9KhRMWHe94mD62KLGE4UcgWSu2uDBWgSxzFasaoWHLIf93GxEP
-         GDMKe+mgblAz2xJPfunildDdi/jBzzP64G1CsrqmGd2O/dGJfRFfu9cuf+/mQWNfe0M1
-         Y/nfT+HqLat0sD22b+aNFKpAvIWqOwLi/nx0dCZVSOXYcpQ/PkKyUz0xN7DepONUstQx
-         zDGw==
-X-Gm-Message-State: AIkVDXJECpRTBV2BVZOeC8P44qwA1Tp/jbDkmEge9cwG3jfc5StE/Cce0tsNO7dbm6vqZi7x
-X-Received: by 10.84.217.216 with SMTP id d24mr169358844plj.101.1483727436448;
-        Fri, 06 Jan 2017 10:30:36 -0800 (PST)
-Received: from localhost (c-98-203-232-209.hsd1.wa.comcast.net. [98.203.232.209])
-        by smtp.gmail.com with ESMTPSA id h67sm16525756pfj.34.2017.01.06.10.30.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 06 Jan 2017 10:30:35 -0800 (PST)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:     kernel-build-reports@lists.linaro.org,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: mainline build: 207 builds: 2 failed, 205 passed, 4 errors, 58 warnings (v4.10-rc2-207-g88ba6cae15e3)
-Organization: BayLibre
-References: <586f741b.e8c8c20a.bd7e9.6a97@mx.google.com>
-Date:   Fri, 06 Jan 2017 10:30:35 -0800
-In-Reply-To: <586f741b.e8c8c20a.bd7e9.6a97@mx.google.com> (kernelci org bot's
-        message of "Fri, 06 Jan 2017 02:40:27 -0800 (PST)")
-Message-ID: <m2d1g0avn8.fsf@baylibre.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.1 (darwin)
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ngWvRMtRlZznwmRmIlvYhn6EO3EBwMtCKy3Z/rS0+Bs=;
+        b=i6Vj0ty8angWf+TNcUz28xcFkRrumwECjzsrKjcwCx+gekUEE+oYLATkQMgsqkzpBf
+         Vhu1Za1WX45SJ+s6eJM7FjVIFDcDOfMzNceY2rV+kTKdEnBlHPbimlCnfNsAlagDHd+N
+         7k/hwYsdXK681tIqJdUFj7UYa3yZlxh/fmQrocvYJSf3nwiQpKjTN3nigLppDnzELtOg
+         Ocb3P5jmuqFEtblBn5Y4hYCZjNve3OTeCwIg2WVl3ioqa1ShO+DLjv9uqjzAzJoiT+Ii
+         Zl4wtYnW1V6pvC02whLmzO3CVU33tX2nVm1PwdRX9DcWxHl3lHn0IR6/EyDkblmLqNn0
+         DLlw==
+X-Gm-Message-State: AIkVDXJ+XXP5Id0HiilCdQwbH6/bgKz+QnDcETwJor1eKhOaYUhrAOrTvSE4nbaoi2KaApYOA5oaa7SeooJPZvkO
+X-Received: by 10.202.52.139 with SMTP id b133mr34714988oia.75.1483728332753;
+ Fri, 06 Jan 2017 10:45:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: by 10.182.73.233 with HTTP; Fri, 6 Jan 2017 10:45:32 -0800 (PST)
+In-Reply-To: <m2d1g0avn8.fsf@baylibre.com>
+References: <586f741b.e8c8c20a.bd7e9.6a97@mx.google.com> <m2d1g0avn8.fsf@baylibre.com>
+From:   Kevin Hilman <khilman@baylibre.com>
+Date:   Fri, 6 Jan 2017 10:45:32 -0800
+Message-ID: <CAOi56cW4YxDePcOW3jo2SWFp4k_u1M4VdvceL8VFc3crMgNccw@mail.gmail.com>
+Subject: Re: mainline build: 207 builds: 2 failed, 205 passed, 4 errors, 58
+ warnings (v4.10-rc2-207-g88ba6cae15e3)
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     Kernel Build Reports Mailman List 
+        <kernel-build-reports@lists.linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
 Return-Path: <khilman@baylibre.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56220
+X-archive-position: 56221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,76 +67,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-+ Ralf, linux-mips
-
-kernelci.org bot <bot@kernelci.org> writes:
-
-> mainline build: 207 builds: 2 failed, 205 passed, 4 errors, 58 warnings (v4.10-rc2-207-g88ba6cae15e3)
+On Fri, Jan 6, 2017 at 10:30 AM, Kevin Hilman <khilman@baylibre.com> wrote:
+> + Ralf, linux-mips
 >
-> Full Build Summary: https://kernelci.org/build/mainline/kernel/v4.10-rc2-207-g88ba6cae15e3/
+> kernelci.org bot <bot@kernelci.org> writes:
 >
-> Tree: mainline
-> Branch: local/master
-> Git Describe: v4.10-rc2-207-g88ba6cae15e3
-> Git Commit: 88ba6cae15e38f609aba4f3881e1c404c432596c
-> Git URL: http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> Built: 4 unique architectures
+>> mainline build: 207 builds: 2 failed, 205 passed, 4 errors, 58 warnings (v4.10-rc2-207-g88ba6cae15e3)
+>>
+>> Full Build Summary: https://kernelci.org/build/mainline/kernel/v4.10-rc2-207-g88ba6cae15e3/
+>>
+>> Tree: mainline
+>> Branch: local/master
+>> Git Describe: v4.10-rc2-207-g88ba6cae15e3
+>> Git Commit: 88ba6cae15e38f609aba4f3881e1c404c432596c
+>> Git URL: http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>> Built: 4 unique architectures
+>>
+>> Build Failures Detected:
+>>
+>> mips:    gcc version 6.3.0 (GCC)
+>>
+>>     ip27_defconfig: FAIL
+>>     ip28_defconfig: FAIL
+>>
 >
-> Build Failures Detected:
+> [...]
 >
-> mips:    gcc version 6.3.0 (GCC)
+>> Errors summary:
+>>
+>>       2  arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE" redefined [-Werror]
+>>       1  drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
+>>       1  drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
 >
->     ip27_defconfig: FAIL
->     ip28_defconfig: FAIL
+> [...]
 >
+>> ================================================================================
+>>
+>> Detailed per-defconfig build reports:
+>
+> [...]
+>
+>> --------------------------------------------------------------------------------
+>> ip27_defconfig (mips) — FAIL, 4 errors, 1 warning, 0 section mismatches
+>>
+>> Errors:
+>>     arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE" redefined [-Werror]
+>>     arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE" redefined [-Werror]
+>>     drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
+>>     drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
+>>
+>> Warnings:
+>>     arch/mips/configs/ip27_defconfig:136:warning: symbol value 'm' invalid for SCSI_DH
+>>
+>> --------------------------------------------------------------------------------
+>> ip28_defconfig (mips) — FAIL, 0 errors, 0 warnings, 0 section mismatches
 
-[...]
+The "0 errors" count is confusing here, I know.  Our error count
+detection is not catching "gcc does not support" errors, so we need to
+fix that.  The actual error message here is:
 
-> Errors summary:
->
->       2  arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE" redefined [-Werror]
->       1  drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
->       1  drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
-
-[...]
-
-> ================================================================================
->
-> Detailed per-defconfig build reports:
-
-[...]
-
-> --------------------------------------------------------------------------------
-> ip27_defconfig (mips) — FAIL, 4 errors, 1 warning, 0 section mismatches
->
-> Errors:
->     arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE" redefined [-Werror]
->     arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE" redefined [-Werror]
->     drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
->     drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
->
-> Warnings:
->     arch/mips/configs/ip27_defconfig:136:warning: symbol value 'm' invalid for SCSI_DH
->
-> --------------------------------------------------------------------------------
-> ip28_defconfig (mips) — FAIL, 0 errors, 0 warnings, 0 section mismatches
->
-
-We finally updated the MIPS toolchain to gcc-6.3, which got rid of the
-other errors, but is now finding a few new ones, including an internal
-compiler error.  :)   Arnd also mentioned that it's unlikely that the
-qlge driver should be enabled for these defconfigs, so that's probably
-an easy one.
-
-Since it sounds so fun, I'll leave it with you MIPS folks to take care
-of. ;)
-
-Note that the same failures are happening in stable/linux-4.8.y and
-stable/linux-4.9.y, so fixes should likely be CC'd to stable.
-
-Thanks,
+../arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed
+option -mr10k-cache-barrier=store.  Stop.
 
 Kevin
-
-[1] https://kernelci.org/build/stable-rc/kernel/v4.8.16/
-[2] https://kernelci.org/build/stable-rc/kernel/v4.9.1/

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:40:50 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47222 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:41:18 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53127 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993040AbdAFBdnsx3lu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:43 +0100
+        with ESMTP id S23993107AbdAFBdoy0YIu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:44 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id DEFD9146509DD;
-        Fri,  6 Jan 2017 01:33:40 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id E283C238FD86A;
+        Fri,  6 Jan 2017 01:33:37 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 6 Jan 2017 01:33:41 +0000
+ 14.3.294.0; Fri, 6 Jan 2017 01:33:38 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 17/30] KVM: MIPS: Add fast path TLB refill handler
-Date:   Fri, 6 Jan 2017 01:32:49 +0000
-Message-ID: <a4d6b3c495b44ad34e3e2b507a6a09f7a9f109f6.1483665879.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 13/30] KVM: MIPS: Wire up vcpu uninit
+Date:   Fri, 6 Jan 2017 01:32:45 +0000
+Message-ID: <4fc8414664b81ac45fbdea2d4a5a96e4a541e40e.1483665879.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.d6d201de414322ed2c1372e164254e6055ef7db9.1483665879.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56191
+X-archive-position: 56192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,9 +46,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use functions from the general MIPS TLB exception vector generation code
-(tlbex.c) to construct a fast path TLB refill handler similar to the
-general one, but cut down and capable of preserving K0 and K1.
+Wire up a vcpu uninit implementation callback. This will be used for the
+clean up of GVA->HPA page tables.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -57,158 +56,69 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h |  1 +-
- arch/mips/kvm/entry.c            | 78 +++++++++++++++++++++++++++++++++-
- arch/mips/kvm/mips.c             |  8 +--
- 3 files changed, 84 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/kvm_host.h | 2 +-
+ arch/mips/kvm/mips.c             | 5 +++++
+ arch/mips/kvm/trap_emul.c        | 5 +++++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 8c4a33e9687d..7bf8ee8bc01d 100644
+index 9f319375835a..8c4a33e9687d 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -554,6 +554,7 @@ extern int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu);
- /* Building of entry/exception code */
- int kvm_mips_entry_setup(void);
- void *kvm_mips_build_vcpu_run(void *addr);
-+void *kvm_mips_build_tlb_refill_exception(void *addr, void *handler);
- void *kvm_mips_build_exception(void *addr, void *handler);
- void *kvm_mips_build_exit(void *addr);
- 
-diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
-index 7424d3d566ff..1ae33e0e675c 100644
---- a/arch/mips/kvm/entry.c
-+++ b/arch/mips/kvm/entry.c
-@@ -16,6 +16,7 @@
- #include <asm/mmu_context.h>
- #include <asm/msa.h>
- #include <asm/setup.h>
-+#include <asm/tlbex.h>
- #include <asm/uasm.h>
- 
- /* Register names */
-@@ -122,6 +123,9 @@ int kvm_mips_entry_setup(void)
- 	 */
- 	unsigned int kscratch_mask = cpu_data[0].kscratch_mask;
- 
-+	if (pgd_reg != -1)
-+		kscratch_mask &= ~BIT(pgd_reg);
-+
- 	/* Pick a scratch register for storing VCPU */
- 	if (kscratch_mask) {
- 		scratch_vcpu[0] = c0_kscratch();
-@@ -381,6 +385,80 @@ static void *kvm_mips_build_enter_guest(void *addr)
- }
- 
- /**
-+ * kvm_mips_build_tlb_refill_exception() - Assemble TLB refill handler.
-+ * @addr:	Address to start writing code.
-+ * @handler:	Address of common handler (within range of @addr).
-+ *
-+ * Assemble TLB refill exception fast path handler for guest execution.
-+ *
-+ * Returns:	Next address after end of written function.
-+ */
-+void *kvm_mips_build_tlb_refill_exception(void *addr, void *handler)
-+{
-+	u32 *p = addr;
-+	struct uasm_label labels[2];
-+	struct uasm_reloc relocs[2];
-+	struct uasm_label *l = labels;
-+	struct uasm_reloc *r = relocs;
-+
-+	memset(labels, 0, sizeof(labels));
-+	memset(relocs, 0, sizeof(relocs));
-+
-+	/* Save guest k1 into scratch register */
-+	UASM_i_MTC0(&p, K1, scratch_tmp[0], scratch_tmp[1]);
-+
-+	/* Get the VCPU pointer from the VCPU scratch register */
-+	UASM_i_MFC0(&p, K1, scratch_vcpu[0], scratch_vcpu[1]);
-+
-+	/* Save guest k0 into VCPU structure */
-+	UASM_i_SW(&p, K0, offsetof(struct kvm_vcpu, arch.gprs[K0]), K1);
-+
-+	/*
-+	 * Some of the common tlbex code uses current_cpu_type(). For KVM we
-+	 * assume symmetry and just disable preemption to silence the warning.
-+	 */
-+	preempt_disable();
-+
-+	/*
-+	 * Now for the actual refill bit. A lot of this can be common with the
-+	 * Linux TLB refill handler, however we don't need to handle so many
-+	 * cases. We only need to handle user mode refills, and user mode runs
-+	 * with 32-bit addressing.
-+	 *
-+	 * Therefore the branch to label_vmalloc generated by build_get_pmde64()
-+	 * that isn't resolved should never actually get taken and is harmless
-+	 * to leave in place for now.
-+	 */
-+
-+#ifdef CONFIG_64BIT
-+	build_get_pmde64(&p, &l, &r, K0, K1); /* get pmd in K1 */
-+#else
-+	build_get_pgde32(&p, K0, K1); /* get pgd in K1 */
-+#endif
-+
-+	/* we don't support huge pages yet */
-+
-+	build_get_ptep(&p, K0, K1);
-+	build_update_entries(&p, K0, K1);
-+	build_tlb_write_entry(&p, &l, &r, tlb_random);
-+
-+	preempt_enable();
-+
-+	/* Get the VCPU pointer from the VCPU scratch register again */
-+	UASM_i_MFC0(&p, K1, scratch_vcpu[0], scratch_vcpu[1]);
-+
-+	/* Restore the guest's k0/k1 registers */
-+	UASM_i_LW(&p, K0, offsetof(struct kvm_vcpu, arch.gprs[K0]), K1);
-+	uasm_i_ehb(&p);
-+	UASM_i_MFC0(&p, K1, scratch_tmp[0], scratch_tmp[1]);
-+
-+	/* Jump to guest */
-+	uasm_i_eret(&p);
-+
-+	return p;
-+}
-+
-+/**
-  * kvm_mips_build_exception() - Assemble first level guest exception handler.
-  * @addr:	Address to start writing code.
-  * @handler:	Address of common handler (within range of @addr).
+@@ -519,6 +519,7 @@ struct kvm_mips_callbacks {
+ 	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
+ 	int (*vm_init)(struct kvm *kvm);
+ 	int (*vcpu_init)(struct kvm_vcpu *vcpu);
++	void (*vcpu_uninit)(struct kvm_vcpu *vcpu);
+ 	int (*vcpu_setup)(struct kvm_vcpu *vcpu);
+ 	gpa_t (*gva_to_gpa)(gva_t gva);
+ 	void (*queue_timer_int)(struct kvm_vcpu *vcpu);
+@@ -761,7 +762,6 @@ static inline void kvm_arch_memslots_updated(struct kvm *kvm, struct kvm_memslot
+ static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
+ static inline void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+ 		struct kvm_memory_slot *slot) {}
+-static inline void kvm_arch_vcpu_uninit(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+ static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
 diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 39792ec73a6d..3cf720790ce6 100644
+index 982fe31a952e..c3f2207a37a0 100644
 --- a/arch/mips/kvm/mips.c
 +++ b/arch/mips/kvm/mips.c
-@@ -264,7 +264,7 @@ static inline void dump_handler(const char *symbol, void *start, void *end)
- struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+@@ -1350,6 +1350,11 @@ int kvm_arch_vcpu_init(struct kvm_vcpu *vcpu)
+ 	return 0;
+ }
+ 
++void kvm_arch_vcpu_uninit(struct kvm_vcpu *vcpu)
++{
++	kvm_mips_callbacks->vcpu_uninit(vcpu);
++}
++
+ int kvm_arch_vcpu_ioctl_translate(struct kvm_vcpu *vcpu,
+ 				  struct kvm_translation *tr)
  {
- 	int err, size;
--	void *gebase, *p, *handler;
-+	void *gebase, *p, *handler, *refill_start, *refill_end;
- 	int i;
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index ab3750f6a768..f3c3afd57738 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -440,6 +440,10 @@ static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
+ 	return 0;
+ }
  
- 	struct kvm_vcpu *vcpu = kzalloc(sizeof(struct kvm_vcpu), GFP_KERNEL);
-@@ -317,8 +317,9 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- 	/* Build guest exception vectors dynamically in unmapped memory */
- 	handler = gebase + 0x2000;
++static void kvm_trap_emul_vcpu_uninit(struct kvm_vcpu *vcpu)
++{
++}
++
+ static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
+ {
+ 	struct mips_coproc *cop0 = vcpu->arch.cop0;
+@@ -783,6 +787,7 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
  
--	/* TLB Refill, EXL = 0 */
--	kvm_mips_build_exception(gebase, handler);
-+	/* TLB refill */
-+	refill_start = gebase;
-+	refill_end = kvm_mips_build_tlb_refill_exception(refill_start, handler);
- 
- 	/* General Exception Entry point */
- 	kvm_mips_build_exception(gebase + 0x180, handler);
-@@ -344,6 +345,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
- 	pr_debug("#include <asm/regdef.h>\n");
- 	pr_debug("\n");
- 	dump_handler("kvm_vcpu_run", vcpu->arch.vcpu_run, p);
-+	dump_handler("kvm_tlb_refill", refill_start, refill_end);
- 	dump_handler("kvm_gen_exc", gebase + 0x180, gebase + 0x200);
- 	dump_handler("kvm_exit", gebase + 0x2000, vcpu->arch.vcpu_run);
- 
+ 	.vm_init = kvm_trap_emul_vm_init,
+ 	.vcpu_init = kvm_trap_emul_vcpu_init,
++	.vcpu_uninit = kvm_trap_emul_vcpu_uninit,
+ 	.vcpu_setup = kvm_trap_emul_vcpu_setup,
+ 	.gva_to_gpa = kvm_trap_emul_gva_to_gpa_cb,
+ 	.queue_timer_int = kvm_mips_queue_timer_int_cb,
 -- 
 git-series 0.8.10

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 10:45:37 +0100 (CET)
-Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:44808 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 10:46:05 +0100 (CET)
+Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:44840 "EHLO
         proxy.6wind.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992514AbdAFJoWC8Xi5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 10:44:22 +0100
+        with ESMTP id S23992535AbdAFJoYUpJc5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 10:44:24 +0100
 Received: from elsass.dev.6wind.com (unknown [10.16.0.149])
-        by proxy.6wind.com (Postfix) with ESMTPS id 5899D254EC;
-        Fri,  6 Jan 2017 10:44:08 +0100 (CET)
+        by proxy.6wind.com (Postfix) with ESMTPS id 37861254EE;
+        Fri,  6 Jan 2017 10:44:09 +0100 (CET)
 Received: from root by elsass.dev.6wind.com with local (Exim 4.84_2)
         (envelope-from <root@elsass.dev.6wind.com>)
-        id 1cPR49-0004sc-5e; Fri, 06 Jan 2017 10:44:05 +0100
+        id 1cPR49-0004sl-7E; Fri, 06 Jan 2017 10:44:05 +0100
 From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
 To:     arnd@arndb.de
 Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
@@ -35,9 +35,9 @@ Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
         linux-fbdev@vger.kernel.org, xen-devel@lists.xenproject.org,
         airlied@linux.ie, davem@davemloft.net,
         Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Subject: [PATCH v2 3/7] nios2: put setup.h in uapi
-Date:   Fri,  6 Jan 2017 10:43:55 +0100
-Message-Id: <1483695839-18660-4-git-send-email-nicolas.dichtel@6wind.com>
+Subject: [PATCH v2 5/7] Makefile.headersinst: cleanup input files
+Date:   Fri,  6 Jan 2017 10:43:57 +0100
+Message-Id: <1483695839-18660-6-git-send-email-nicolas.dichtel@6wind.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
 References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
@@ -46,7 +46,7 @@ Return-Path: <root@6wind.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56208
+X-archive-position: 56209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,39 +63,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This header file is exported, thus move it to uapi.
+After the last four patches, all exported headers are under uapi/, thus
+input-files2 are not needed anymore.
+The side effect is that input-files1-name is exactly header-y.
+
+Note also that unput-files3-name is genhdr-y.
 
 Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 ---
- arch/nios2/include/asm/setup.h      | 2 +-
- arch/nios2/include/uapi/asm/setup.h | 6 ++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
- create mode 100644 arch/nios2/include/uapi/asm/setup.h
+ scripts/Makefile.headersinst | 34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-diff --git a/arch/nios2/include/asm/setup.h b/arch/nios2/include/asm/setup.h
-index dcbf8cf1a344..d49e9e91bf55 100644
---- a/arch/nios2/include/asm/setup.h
-+++ b/arch/nios2/include/asm/setup.h
-@@ -19,7 +19,7 @@
- #ifndef _ASM_NIOS2_SETUP_H
- #define _ASM_NIOS2_SETUP_H
+diff --git a/scripts/Makefile.headersinst b/scripts/Makefile.headersinst
+index 1106d6ca3a38..3e20d03432d2 100644
+--- a/scripts/Makefile.headersinst
++++ b/scripts/Makefile.headersinst
+@@ -40,31 +40,20 @@ wrapper-files := $(filter $(header-y), $(generic-y))
+ srcdir        := $(srctree)/$(obj)
+ gendir        := $(objtree)/$(gen)
  
--#include <asm-generic/setup.h>
-+#include <uapi/asm/setup.h>
+-oldsrcdir     := $(srctree)/$(subst /uapi,,$(obj))
+-
+ # all headers files for this dir
+ header-y      := $(filter-out $(generic-y), $(header-y))
+ all-files     := $(header-y) $(genhdr-y) $(wrapper-files)
+ output-files  := $(addprefix $(installdir)/, $(all-files))
  
- #ifndef __ASSEMBLY__
- #ifdef __KERNEL__
-diff --git a/arch/nios2/include/uapi/asm/setup.h b/arch/nios2/include/uapi/asm/setup.h
-new file mode 100644
-index 000000000000..8d8285997ba8
---- /dev/null
-+++ b/arch/nios2/include/uapi/asm/setup.h
-@@ -0,0 +1,6 @@
-+#ifndef _UAPI_ASM_NIOS2_SETUP_H
-+#define _UAPI_ASM_NIOS2_SETUP_H
-+
-+#include <asm-generic/setup.h>
-+
-+#endif /* _UAPI_ASM_NIOS2_SETUP_H */
+-input-files1  := $(foreach hdr, $(header-y), \
+-		   $(if $(wildcard $(srcdir)/$(hdr)), \
+-			$(wildcard $(srcdir)/$(hdr))) \
+-		   )
+-input-files1-name := $(notdir $(input-files1))
+-input-files2  := $(foreach hdr, $(header-y), \
+-		   $(if  $(wildcard $(srcdir)/$(hdr)),, \
+-			$(if $(wildcard $(oldsrcdir)/$(hdr)), \
+-				$(wildcard $(oldsrcdir)/$(hdr)), \
+-				$(error Missing UAPI file $(srcdir)/$(hdr))) \
+-		   ))
+-input-files2-name := $(notdir $(input-files2))
+-input-files3  := $(foreach hdr, $(genhdr-y), \
+-		   $(if	$(wildcard $(gendir)/$(hdr)), \
+-			$(wildcard $(gendir)/$(hdr)), \
+-			$(error Missing generated UAPI file $(gendir)/$(hdr)) \
+-		   ))
+-input-files3-name := $(notdir $(input-files3))
++# Check that all expected files exist
++$(foreach hdr, $(header-y), \
++  $(if $(wildcard $(srcdir)/$(hdr)),, \
++       $(error Missing UAPI file $(srcdir)/$(hdr)) \
++   ))
++$(foreach hdr, $(genhdr-y), \
++  $(if	$(wildcard $(gendir)/$(hdr)),, \
++       $(error Missing generated UAPI file $(gendir)/$(hdr)) \
++  ))
+ 
+ # Work out what needs to be removed
+ oldheaders    := $(patsubst $(installdir)/%,%,$(wildcard $(installdir)/*.h))
+@@ -78,9 +67,8 @@ printdir = $(patsubst $(INSTALL_HDR_PATH)/%/,%,$(dir $@))
+ quiet_cmd_install = INSTALL $(printdir) ($(words $(all-files))\
+                             file$(if $(word 2, $(all-files)),s))
+       cmd_install = \
+-        $(CONFIG_SHELL) $< $(installdir) $(srcdir) $(input-files1-name); \
+-        $(CONFIG_SHELL) $< $(installdir) $(oldsrcdir) $(input-files2-name); \
+-        $(CONFIG_SHELL) $< $(installdir) $(gendir) $(input-files3-name); \
++        $(CONFIG_SHELL) $< $(installdir) $(srcdir) $(header-y); \
++        $(CONFIG_SHELL) $< $(installdir) $(gendir) $(genhdr-y); \
+         for F in $(wrapper-files); do                                   \
+                 echo "\#include <asm-generic/$$F>" > $(installdir)/$$F;    \
+         done;                                                           \
 -- 
 2.8.1

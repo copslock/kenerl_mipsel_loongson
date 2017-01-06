@@ -1,39 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:46:23 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7698 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993146AbdAFBd6WMSuu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:58 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 1B4917F0AEBD9;
-        Fri,  6 Jan 2017 01:33:51 +0000 (GMT)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 6 Jan 2017 01:33:51 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <linux-mips@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 30/30] KVM: MIPS/MMU: Drop kvm_get_new_mmu_context()
-Date:   Fri, 6 Jan 2017 01:33:02 +0000
-Message-ID: <f202859d752c9cbcc6861270f75b5102bee50076.1483665879.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.11.0
-MIME-Version: 1.0
-In-Reply-To: <cover.d6d201de414322ed2c1372e164254e6055ef7db9.1483665879.git-series.james.hogan@imgtec.com>
-References: <cover.d6d201de414322ed2c1372e164254e6055ef7db9.1483665879.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 10:44:25 +0100 (CET)
+Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:44746 "EHLO
+        proxy.6wind.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992036AbdAFJoSYdSc5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 10:44:18 +0100
+Received: from elsass.dev.6wind.com (unknown [10.16.0.149])
+        by proxy.6wind.com (Postfix) with ESMTPS id 7A7D2254DC;
+        Fri,  6 Jan 2017 10:44:06 +0100 (CET)
+Received: from root by elsass.dev.6wind.com with local (Exim 4.84_2)
+        (envelope-from <root@elsass.dev.6wind.com>)
+        id 1cPR49-0004sP-2T; Fri, 06 Jan 2017 10:44:05 +0100
+From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To:     arnd@arndb.de
+Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        netdev@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, linux-nfs@vger.kernel.org,
+        linux-raid@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-rdma@vger.kernel.org,
+        fcoe-devel@open-fcoe.org, alsa-devel@alsa-project.org,
+        linux-fbdev@vger.kernel.org, xen-devel@lists.xenproject.org,
+        airlied@linux.ie, davem@davemloft.net
+Subject: [PATCH v2 0/7] uapi: export all headers under uapi directories
+Date:   Fri,  6 Jan 2017 10:43:52 +0100
+Message-Id: <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
+X-Mailer: git-send-email 2.8.1
+In-Reply-To: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
+References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
+Return-Path: <root@6wind.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56204
+X-archive-position: 56205
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: nicolas.dichtel@6wind.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,119 +61,39 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS KVM uses its own variation of get_new_mmu_context() which takes an
-extra vcpu pointer (unused) and does exactly the same thing.
 
-Switch to just using get_new_mmu_context() directly and drop KVM's
-version of it as it doesn't really serve any purpose.
+Here is the v2 of this series. The first 5 patches are just cleanup: some
+exported headers were still under a non-uapi directory.
+The patch 6 was spotted by code review: there is no in-tree user of this
+functionality.
+The last patch remove the use of header-y. Now all files under an uapi
+directory are exported.
 
-The nearby declarations of kvm_mips_alloc_new_mmu_context(),
-kvm_mips_vcpu_load() and kvm_mips_vcpu_put() are also removed from
-kvm_host.h, as no definitions or users exist.
+asm is a bit special, most of architectures export asm/<arch>/include/uapi/asm
+only, but there is two exceptions:
+ - cris which exports arch/cris/include/uapi/arch-v[10|32];
+ - tile which exports arch/tile/include/uapi/arch.
+Because I don't know if the output of 'make headers_install_all' can be changed,
+I introduce subdir-y in Kbuild file. The headers_install_all target copies all
+asm/<arch>/include/uapi/asm to usr/include/asm-<arch> but
+arch/cris/include/uapi/arch-v[10|32] and arch/tile/include/uapi/arch are not
+prefixed (they are put asis in usr/include/). If it's acceptable to modify the
+output of 'make headers_install_all' to export asm headers in
+usr/include/asm-<arch>/asm, then I could remove this new subdir-y and exports
+everything under arch/<arch>/include/uapi/.
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
----
- arch/mips/include/asm/kvm_host.h |  5 -----
- arch/mips/kvm/emulate.c          |  3 +--
- arch/mips/kvm/mmu.c              | 19 -------------------
- arch/mips/kvm/trap_emul.c        |  6 +++---
- 4 files changed, 4 insertions(+), 29 deletions(-)
+Note also that exported files for asm are a mix of files listed by:
+ - include/uapi/asm-generic/Kbuild.asm;
+ - arch/x86/include/uapi/asm/Kbuild;
+ - arch/x86/include/asm/Kbuild.
+This complicates a lot the processing (arch/x86/include/asm/Kbuild is also
+used by scripts/Makefile.asm-generic).
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 39f0ae1ab3e3..06bdcf215a37 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -635,11 +635,6 @@ void kvm_mips_flush_gva_pt(pgd_t *pgd, enum kvm_mips_flush flags);
- void kvm_mmu_free_memory_caches(struct kvm_vcpu *vcpu);
- void kvm_trap_emul_invalidate_gva(struct kvm_vcpu *vcpu, unsigned long addr,
- 				  bool user);
--extern void kvm_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu,
--				    struct kvm_vcpu *vcpu);
--extern void kvm_mips_alloc_new_mmu_context(struct kvm_vcpu *vcpu);
--extern void kvm_mips_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
--extern void kvm_mips_vcpu_put(struct kvm_vcpu *vcpu);
- 
- /* Emulation */
- u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu);
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index cd11d787d9dc..67ea39973b96 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1198,8 +1198,7 @@ enum emulation_result kvm_mips_emulate_CP0(union mips_instruction inst,
- 					 */
- 					preempt_disable();
- 					cpu = smp_processor_id();
--					kvm_get_new_mmu_context(kern_mm,
--								cpu, vcpu);
-+					get_new_mmu_context(kern_mm, cpu);
- 					for_each_possible_cpu(i)
- 						if (i != cpu)
- 							cpu_context(i, kern_mm) = 0;
-diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
-index cf832ea963d8..aab604e75d3b 100644
---- a/arch/mips/kvm/mmu.c
-+++ b/arch/mips/kvm/mmu.c
-@@ -443,25 +443,6 @@ int kvm_mips_handle_commpage_tlb_fault(unsigned long badvaddr,
- 	return 0;
- }
- 
--void kvm_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu,
--			     struct kvm_vcpu *vcpu)
--{
--	unsigned long asid = asid_cache(cpu);
--
--	asid += cpu_asid_inc();
--	if (!(asid & cpu_asid_mask(&cpu_data[cpu]))) {
--		if (cpu_has_vtag_icache)
--			flush_icache_all();
--
--		local_flush_tlb_all();      /* start new asid cycle */
--
--		if (!asid)      /* fix version if needed */
--			asid = asid_first_version(cpu);
--	}
--
--	cpu_context(cpu, mm) = asid_cache(cpu) = asid;
--}
--
- /**
-  * kvm_mips_migrate_count() - Migrate timer.
-  * @vcpu:	Virtual CPU.
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index 7b6ccd2ce26b..17e6d9bd01cf 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -706,7 +706,7 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 
- 	if ((cpu_context(cpu, kern_mm) ^ asid_cache(cpu)) &
- 						asid_version_mask(cpu)) {
--		kvm_get_new_mmu_context(kern_mm, cpu, vcpu);
-+		get_new_mmu_context(kern_mm, cpu);
- 
- 		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
- 			  cpu_context(cpu, current->mm));
-@@ -716,7 +716,7 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 
- 	if ((cpu_context(cpu, user_mm) ^ asid_cache(cpu)) &
- 						asid_version_mask(cpu)) {
--		kvm_get_new_mmu_context(user_mm, cpu, vcpu);
-+		get_new_mmu_context(user_mm, cpu);
- 
- 		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
- 			  cpu_context(cpu, current->mm));
-@@ -781,7 +781,7 @@ static void kvm_trap_emul_vcpu_reenter(struct kvm_run *run,
- 		gasid = kvm_read_c0_guest_entryhi(cop0) & KVM_ENTRYHI_ASID;
- 		if (gasid != vcpu->arch.last_user_gasid) {
- 			kvm_mips_flush_gva_pt(user_mm->pgd, KMF_USER);
--			kvm_get_new_mmu_context(user_mm, cpu, vcpu);
-+			get_new_mmu_context(user_mm, cpu);
- 			for_each_possible_cpu(i)
- 				if (i != cpu)
- 					cpu_context(i, user_mm) = 0;
--- 
-git-series 0.8.10
+This series has been tested with a 'make headers_install' on x86 and a
+'make headers_install_all'. I've checked the result of both commands.
+
+This patch is built against linus tree. I don't know if it should be
+made against antoher tree.
+
+Comments are welcomed,
+Nicolas

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 10:45:16 +0100 (CET)
-Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:44792 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 10:45:37 +0100 (CET)
+Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:44808 "EHLO
         proxy.6wind.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992437AbdAFJoVZLQD5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 10:44:21 +0100
+        with ESMTP id S23992514AbdAFJoWC8Xi5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 10:44:22 +0100
 Received: from elsass.dev.6wind.com (unknown [10.16.0.149])
-        by proxy.6wind.com (Postfix) with ESMTPS id EF383254EA;
-        Fri,  6 Jan 2017 10:44:07 +0100 (CET)
+        by proxy.6wind.com (Postfix) with ESMTPS id 5899D254EC;
+        Fri,  6 Jan 2017 10:44:08 +0100 (CET)
 Received: from root by elsass.dev.6wind.com with local (Exim 4.84_2)
         (envelope-from <root@elsass.dev.6wind.com>)
-        id 1cPR49-0004sX-4b; Fri, 06 Jan 2017 10:44:05 +0100
+        id 1cPR49-0004sc-5e; Fri, 06 Jan 2017 10:44:05 +0100
 From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
 To:     arnd@arndb.de
 Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
@@ -35,9 +35,9 @@ Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
         linux-fbdev@vger.kernel.org, xen-devel@lists.xenproject.org,
         airlied@linux.ie, davem@davemloft.net,
         Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Subject: [PATCH v2 2/7] h8300: put bitsperlong.h in uapi
-Date:   Fri,  6 Jan 2017 10:43:54 +0100
-Message-Id: <1483695839-18660-3-git-send-email-nicolas.dichtel@6wind.com>
+Subject: [PATCH v2 3/7] nios2: put setup.h in uapi
+Date:   Fri,  6 Jan 2017 10:43:55 +0100
+Message-Id: <1483695839-18660-4-git-send-email-nicolas.dichtel@6wind.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
 References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
@@ -46,7 +46,7 @@ Return-Path: <root@6wind.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56207
+X-archive-position: 56208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,50 +67,35 @@ This header file is exported, thus move it to uapi.
 
 Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 ---
- arch/h8300/include/asm/bitsperlong.h      | 10 +---------
- arch/h8300/include/uapi/asm/bitsperlong.h | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 9 deletions(-)
- create mode 100644 arch/h8300/include/uapi/asm/bitsperlong.h
+ arch/nios2/include/asm/setup.h      | 2 +-
+ arch/nios2/include/uapi/asm/setup.h | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+ create mode 100644 arch/nios2/include/uapi/asm/setup.h
 
-diff --git a/arch/h8300/include/asm/bitsperlong.h b/arch/h8300/include/asm/bitsperlong.h
-index e140e46729ac..c0a8e2ee531e 100644
---- a/arch/h8300/include/asm/bitsperlong.h
-+++ b/arch/h8300/include/asm/bitsperlong.h
-@@ -1,14 +1,6 @@
- #ifndef __ASM_H8300_BITS_PER_LONG
- #define __ASM_H8300_BITS_PER_LONG
+diff --git a/arch/nios2/include/asm/setup.h b/arch/nios2/include/asm/setup.h
+index dcbf8cf1a344..d49e9e91bf55 100644
+--- a/arch/nios2/include/asm/setup.h
++++ b/arch/nios2/include/asm/setup.h
+@@ -19,7 +19,7 @@
+ #ifndef _ASM_NIOS2_SETUP_H
+ #define _ASM_NIOS2_SETUP_H
  
--#include <asm-generic/bitsperlong.h>
--
--#if !defined(__ASSEMBLY__)
--/* h8300-unknown-linux required long */
--#define __kernel_size_t __kernel_size_t
--typedef unsigned long	__kernel_size_t;
--typedef long		__kernel_ssize_t;
--typedef long		__kernel_ptrdiff_t;
--#endif
-+#include <uapi/asm/bitsperlong.h>
+-#include <asm-generic/setup.h>
++#include <uapi/asm/setup.h>
  
- #endif /* __ASM_H8300_BITS_PER_LONG */
-diff --git a/arch/h8300/include/uapi/asm/bitsperlong.h b/arch/h8300/include/uapi/asm/bitsperlong.h
+ #ifndef __ASSEMBLY__
+ #ifdef __KERNEL__
+diff --git a/arch/nios2/include/uapi/asm/setup.h b/arch/nios2/include/uapi/asm/setup.h
 new file mode 100644
-index 000000000000..e56cf72369b6
+index 000000000000..8d8285997ba8
 --- /dev/null
-+++ b/arch/h8300/include/uapi/asm/bitsperlong.h
-@@ -0,0 +1,14 @@
-+#ifndef _UAPI_ASM_H8300_BITS_PER_LONG
-+#define _UAPI_ASM_H8300_BITS_PER_LONG
++++ b/arch/nios2/include/uapi/asm/setup.h
+@@ -0,0 +1,6 @@
++#ifndef _UAPI_ASM_NIOS2_SETUP_H
++#define _UAPI_ASM_NIOS2_SETUP_H
 +
-+#include <asm-generic/bitsperlong.h>
++#include <asm-generic/setup.h>
 +
-+#if !defined(__ASSEMBLY__)
-+/* h8300-unknown-linux required long */
-+#define __kernel_size_t __kernel_size_t
-+typedef unsigned long	__kernel_size_t;
-+typedef long		__kernel_ssize_t;
-+typedef long		__kernel_ptrdiff_t;
-+#endif
-+
-+#endif /* _UAPI_ASM_H8300_BITS_PER_LONG */
++#endif /* _UAPI_ASM_NIOS2_SETUP_H */
 -- 
 2.8.1

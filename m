@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 10:44:48 +0100 (CET)
-Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:44770 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 10:45:16 +0100 (CET)
+Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:44792 "EHLO
         proxy.6wind.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992380AbdAFJoUPopo5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 10:44:20 +0100
+        with ESMTP id S23992437AbdAFJoVZLQD5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 10:44:21 +0100
 Received: from elsass.dev.6wind.com (unknown [10.16.0.149])
-        by proxy.6wind.com (Postfix) with ESMTPS id 2F523254E8;
+        by proxy.6wind.com (Postfix) with ESMTPS id EF383254EA;
         Fri,  6 Jan 2017 10:44:07 +0100 (CET)
 Received: from root by elsass.dev.6wind.com with local (Exim 4.84_2)
         (envelope-from <root@elsass.dev.6wind.com>)
-        id 1cPR49-0004sS-3U; Fri, 06 Jan 2017 10:44:05 +0100
+        id 1cPR49-0004sX-4b; Fri, 06 Jan 2017 10:44:05 +0100
 From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
 To:     arnd@arndb.de
 Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
@@ -35,9 +35,9 @@ Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
         linux-fbdev@vger.kernel.org, xen-devel@lists.xenproject.org,
         airlied@linux.ie, davem@davemloft.net,
         Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Subject: [PATCH v2 1/7] arm: put types.h in uapi
-Date:   Fri,  6 Jan 2017 10:43:53 +0100
-Message-Id: <1483695839-18660-2-git-send-email-nicolas.dichtel@6wind.com>
+Subject: [PATCH v2 2/7] h8300: put bitsperlong.h in uapi
+Date:   Fri,  6 Jan 2017 10:43:54 +0100
+Message-Id: <1483695839-18660-3-git-send-email-nicolas.dichtel@6wind.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
 References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
@@ -46,7 +46,7 @@ Return-Path: <root@6wind.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56206
+X-archive-position: 56207
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -67,102 +67,50 @@ This header file is exported, thus move it to uapi.
 
 Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 ---
- arch/arm/include/asm/types.h      | 36 +----------------------------------
- arch/arm/include/uapi/asm/types.h | 40 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+), 35 deletions(-)
- create mode 100644 arch/arm/include/uapi/asm/types.h
+ arch/h8300/include/asm/bitsperlong.h      | 10 +---------
+ arch/h8300/include/uapi/asm/bitsperlong.h | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+), 9 deletions(-)
+ create mode 100644 arch/h8300/include/uapi/asm/bitsperlong.h
 
-diff --git a/arch/arm/include/asm/types.h b/arch/arm/include/asm/types.h
-index a53cdb8f068c..c48fee3d7b3b 100644
---- a/arch/arm/include/asm/types.h
-+++ b/arch/arm/include/asm/types.h
-@@ -1,40 +1,6 @@
- #ifndef _ASM_TYPES_H
- #define _ASM_TYPES_H
+diff --git a/arch/h8300/include/asm/bitsperlong.h b/arch/h8300/include/asm/bitsperlong.h
+index e140e46729ac..c0a8e2ee531e 100644
+--- a/arch/h8300/include/asm/bitsperlong.h
++++ b/arch/h8300/include/asm/bitsperlong.h
+@@ -1,14 +1,6 @@
+ #ifndef __ASM_H8300_BITS_PER_LONG
+ #define __ASM_H8300_BITS_PER_LONG
  
--#include <asm-generic/int-ll64.h>
+-#include <asm-generic/bitsperlong.h>
 -
--/*
-- * The C99 types uintXX_t that are usually defined in 'stdint.h' are not as
-- * unambiguous on ARM as you would expect. For the types below, there is a
-- * difference on ARM between GCC built for bare metal ARM, GCC built for glibc
-- * and the kernel itself, which results in build errors if you try to build with
-- * -ffreestanding and include 'stdint.h' (such as when you include 'arm_neon.h'
-- * in order to use NEON intrinsics)
-- *
-- * As the typedefs for these types in 'stdint.h' are based on builtin defines
-- * supplied by GCC, we can tweak these to align with the kernel's idea of those
-- * types, so 'linux/types.h' and 'stdint.h' can be safely included from the same
-- * source file (provided that -ffreestanding is used).
-- *
-- *                    int32_t         uint32_t               uintptr_t
-- * bare metal GCC     long            unsigned long          unsigned int
-- * glibc GCC          int             unsigned int           unsigned int
-- * kernel             int             unsigned int           unsigned long
-- */
--
--#ifdef __INT32_TYPE__
--#undef __INT32_TYPE__
--#define __INT32_TYPE__		int
+-#if !defined(__ASSEMBLY__)
+-/* h8300-unknown-linux required long */
+-#define __kernel_size_t __kernel_size_t
+-typedef unsigned long	__kernel_size_t;
+-typedef long		__kernel_ssize_t;
+-typedef long		__kernel_ptrdiff_t;
 -#endif
--
--#ifdef __UINT32_TYPE__
--#undef __UINT32_TYPE__
--#define __UINT32_TYPE__	unsigned int
--#endif
--
--#ifdef __UINTPTR_TYPE__
--#undef __UINTPTR_TYPE__
--#define __UINTPTR_TYPE__	unsigned long
--#endif
-+#include <uapi/asm/types.h>
++#include <uapi/asm/bitsperlong.h>
  
- #endif /* _ASM_TYPES_H */
-diff --git a/arch/arm/include/uapi/asm/types.h b/arch/arm/include/uapi/asm/types.h
+ #endif /* __ASM_H8300_BITS_PER_LONG */
+diff --git a/arch/h8300/include/uapi/asm/bitsperlong.h b/arch/h8300/include/uapi/asm/bitsperlong.h
 new file mode 100644
-index 000000000000..9435a42f575e
+index 000000000000..e56cf72369b6
 --- /dev/null
-+++ b/arch/arm/include/uapi/asm/types.h
-@@ -0,0 +1,40 @@
-+#ifndef _UAPI_ASM_TYPES_H
-+#define _UAPI_ASM_TYPES_H
++++ b/arch/h8300/include/uapi/asm/bitsperlong.h
+@@ -0,0 +1,14 @@
++#ifndef _UAPI_ASM_H8300_BITS_PER_LONG
++#define _UAPI_ASM_H8300_BITS_PER_LONG
 +
-+#include <asm-generic/int-ll64.h>
++#include <asm-generic/bitsperlong.h>
 +
-+/*
-+ * The C99 types uintXX_t that are usually defined in 'stdint.h' are not as
-+ * unambiguous on ARM as you would expect. For the types below, there is a
-+ * difference on ARM between GCC built for bare metal ARM, GCC built for glibc
-+ * and the kernel itself, which results in build errors if you try to build with
-+ * -ffreestanding and include 'stdint.h' (such as when you include 'arm_neon.h'
-+ * in order to use NEON intrinsics)
-+ *
-+ * As the typedefs for these types in 'stdint.h' are based on builtin defines
-+ * supplied by GCC, we can tweak these to align with the kernel's idea of those
-+ * types, so 'linux/types.h' and 'stdint.h' can be safely included from the same
-+ * source file (provided that -ffreestanding is used).
-+ *
-+ *                    int32_t         uint32_t               uintptr_t
-+ * bare metal GCC     long            unsigned long          unsigned int
-+ * glibc GCC          int             unsigned int           unsigned int
-+ * kernel             int             unsigned int           unsigned long
-+ */
-+
-+#ifdef __INT32_TYPE__
-+#undef __INT32_TYPE__
-+#define __INT32_TYPE__		int
++#if !defined(__ASSEMBLY__)
++/* h8300-unknown-linux required long */
++#define __kernel_size_t __kernel_size_t
++typedef unsigned long	__kernel_size_t;
++typedef long		__kernel_ssize_t;
++typedef long		__kernel_ptrdiff_t;
 +#endif
 +
-+#ifdef __UINT32_TYPE__
-+#undef __UINT32_TYPE__
-+#define __UINT32_TYPE__	unsigned int
-+#endif
-+
-+#ifdef __UINTPTR_TYPE__
-+#undef __UINTPTR_TYPE__
-+#define __UINTPTR_TYPE__	unsigned long
-+#endif
-+
-+#endif /* _UAPI_ASM_TYPES_H */
++#endif /* _UAPI_ASM_H8300_BITS_PER_LONG */
 -- 
 2.8.1

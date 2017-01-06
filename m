@@ -1,59 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2017 19:45:44 +0100 (CET)
-Received: from us01smtprelay-2.synopsys.com ([198.182.47.9]:42596 "EHLO
-        smtprelay.synopsys.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992380AbdAESpiAP5Fa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Jan 2017 19:45:38 +0100
-Received: from mailhost.synopsys.com (mailhost3.synopsys.com [10.12.238.238])
-        by smtprelay.synopsys.com (Postfix) with ESMTP id 24B8324E169D;
-        Thu,  5 Jan 2017 10:45:31 -0800 (PST)
-Received: from mailhost.synopsys.com (localhost [127.0.0.1])
-        by mailhost.synopsys.com (Postfix) with ESMTP id DD43CE9F;
-        Thu,  5 Jan 2017 10:45:30 -0800 (PST)
-Received: from us01wehtc1.internal.synopsys.com (us01wehtc1-vip.internal.synopsys.com [10.12.239.236])
-        by mailhost.synopsys.com (Postfix) with ESMTP id B11E4E98;
-        Thu,  5 Jan 2017 10:45:30 -0800 (PST)
-Received: from DE02WEHTCB.internal.synopsys.com (10.225.19.94) by
- us01wehtc1.internal.synopsys.com (10.12.239.235) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Thu, 5 Jan 2017 10:45:30 -0800
-Received: from DE02WEHTCA.internal.synopsys.com (10.225.19.92) by
- DE02WEHTCB.internal.synopsys.com (10.225.19.94) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Thu, 5 Jan 2017 19:45:28 +0100
-Received: from [10.107.19.116] (10.107.19.116) by
- DE02WEHTCA.internal.synopsys.com (10.225.19.80) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Thu, 5 Jan 2017 19:45:27 +0100
-Subject: Re: [PATCH] MIPS: NI 169445 board support
-To:     Nathan Sullivan <nathan.sullivan@ni.com>,
-        Joao Pinto <Joao.Pinto@synopsys.com>
-References: <1480693329-22265-1-git-send-email-nathan.sullivan@ni.com>
- <20161220163434.GA15962@linux-mips.org>
- <20170104163836.GA18069@nathan3500-linux-VM>
- <5d5a087f-68ec-e633-0232-0248edf11ee0@axis.com>
- <8fd70ecb-36fc-7cc7-7795-cd4dccabf8b9@synopsys.com>
- <20170105184442.GA9424@nathan3500-linux-VM>
-CC:     Niklas Cassel <niklas.cassel@axis.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, <davem@davemloft.net>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Lars Persson <larper@axis.com>
-From:   Joao Pinto <Joao.Pinto@synopsys.com>
-Message-ID: <b9aafb16-a678-831d-8088-12f237e23bb8@synopsys.com>
-Date:   Thu, 5 Jan 2017 18:45:26 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:33:43 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44144 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992437AbdAFBdfhZClu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:35 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 06F159120B9F5;
+        Fri,  6 Jan 2017 01:33:28 +0000 (GMT)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 6 Jan 2017 01:33:28 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>,
+        <linux-mm@kvack.org>
+Subject: [PATCH 0/30] KVM: MIPS: Implement GVA page tables
+Date:   Fri, 6 Jan 2017 01:32:32 +0000
+Message-ID: <cover.d6d201de414322ed2c1372e164254e6055ef7db9.1483665879.git-series.james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-In-Reply-To: <20170105184442.GA9424@nathan3500-linux-VM>
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.107.19.116]
-Return-Path: <Joao.Pinto@synopsys.com>
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56173
+X-archive-position: 56174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Joao.Pinto@synopsys.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,82 +45,127 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-¿s 6:44 PM de 1/5/2017, Nathan Sullivan escreveu:
-> On Thu, Jan 05, 2017 at 06:33:53PM +0000, Joao Pinto wrote:
->> Hi,
->>
->> ¿s 6:28 PM de 1/5/2017, Niklas Cassel escreveu:
->>> On 01/04/2017 05:38 PM, Nathan Sullivan wrote:
->>>> On Tue, Dec 20, 2016 at 05:34:34PM +0100, Ralf Baechle wrote:
->>>>> On Fri, Dec 02, 2016 at 09:42:09AM -0600, Nathan Sullivan wrote:
->>>>>> Date:   Fri, 2 Dec 2016 09:42:09 -0600
->>>>>> From: Nathan Sullivan <nathan.sullivan@ni.com>
->>>>>> To: ralf@linux-mips.org, mark.rutland@arm.com, robh+dt@kernel.org
->>>>>> CC: linux-mips@linux-mips.org, devicetree@vger.kernel.org,
->>>>>>  linux-kernel@vger.kernel.org, Nathan Sullivan <nathan.sullivan@ni.com>
->>>>>> Subject: [PATCH] MIPS: NI 169445 board support
->>>>>> Content-Type: text/plain
->>>>>>
->>>>>> Support the National Instruments 169445 board.
->>>>> Nathan,
->>>>>
->>>>> I assume you're going to repost the changes Rob asked for in
->>>>> https://urldefense.proofpoint.com/v2/url?u=https-3A__patchwork.linux-2Dmips.org_patch_14641_-2326924&d=DgICaQ&c=DPL6_X_6JkXFx7AXWqB0tg&r=s2fO0hii0OGNOv9qQy_HRXy-xAJUD1NNoEcc3io_kx0&m=5p7f9dIkvVVK4UFHimMpezq5NwIJfUpd08c-Zk4_c6c&s=_JwSwe4VFYtxV1tcYt6Z8r4hJX0xfoGhCixygUxlg5s&e=  and resubmit?
->>>>>
->>>>> Thanks,
->>>>>
->>>>>   Ralf
->>>> Hmm, I found the issue with the generic MIPS config and dwc_eth_qos.  The NIC
->>>> driver attempts to cache align a descriptor ring using the ___cacheline_aligned
->>>> attribute on the descriptor struct, in combination with a "skip" feature in
->>>> hardware.  However, the skip feature only has a three bit field, and the generic
->>>> MIPS config selects MIPS_L1_CACHE_SHIFT_7.  So, the line size is 128, and with a
->>>> 64-bit bus, that means the NIC descriptor skip field would need to be set to
->>>> 14 to align the 16-byte descriptors...
->>>>
->>>> I guess it makes sense for a generic MIPS kernel to align everything for 128 byte
->>>> cache lines, and for me to fix the dwc_eth_qos driver to handle cases where the
->>>> line size is too big for the hardware skip feature, right?
->>>
->>> I don't know if you've been following the discussion regarding
->>> dwc_eth_qos on netdev, but Joao Pinto from Synopsys is
->>> planning on removing the driver (since the stmmac driver
->>> now supports the same version of the IP, together with older
->>> versions of the IP).
->>>
->>> Since device tree bindings are treated as an ABI,
->>> Joao has implemented a glue layer for stmmac that parses
->>> the dwc_eth_qos binding, but uses stmmac under the hood.
->>>
->>> You can use any of the bindings, but since the dwc_eth_qos
->>> binding will be marked as deprecated, you might want to
->>> consider moving to the stmmac binding.
->>
->> A patch set to port dwc_eth_qos to stmmac is at this moment under review:
->>
->> https://urldefense.proofpoint.com/v2/url?u=http-3A__patchwork.ozlabs.org_patch_711428_&d=DgIDAw&c=DPL6_X_6JkXFx7AXWqB0tg&r=s2fO0hii0OGNOv9qQy_HRXy-xAJUD1NNoEcc3io_kx0&m=E0wkLvWGNBx49Zdq7Jw5toxfcwI9r7MBBbcTea28AL0&s=P71GK8K8tyGjenB4tDVyKfCuZF9cZiFBBpdeX8PQtEM&e= 
->> https://urldefense.proofpoint.com/v2/url?u=http-3A__patchwork.ozlabs.org_patch_711438_&d=DgIDAw&c=DPL6_X_6JkXFx7AXWqB0tg&r=s2fO0hii0OGNOv9qQy_HRXy-xAJUD1NNoEcc3io_kx0&m=E0wkLvWGNBx49Zdq7Jw5toxfcwI9r7MBBbcTea28AL0&s=fj787JEefx7cddQAe7g604tMtvDlVzYj3kQKy80Gym0&e= 
->> https://urldefense.proofpoint.com/v2/url?u=http-3A__patchwork.ozlabs.org_patch_711439_&d=DgIDAw&c=DPL6_X_6JkXFx7AXWqB0tg&r=s2fO0hii0OGNOv9qQy_HRXy-xAJUD1NNoEcc3io_kx0&m=E0wkLvWGNBx49Zdq7Jw5toxfcwI9r7MBBbcTea28AL0&s=Cyy9ySM6LNgkQ07OsIYE8KnD1h1DruhCKLxH6W3_1VY&e= 
->>
->> Niklas has tested it and it works well, so after the patches are upstreamed the
->> dwc_eth_qos will be removed as agreed with Lars.
->>
->> Thanks.
->>
-> 
-> Thanks for the heads up, I'll wait, adjust my bindings and retest then.
+Note: My intention is to take this series via the MIPS KVM tree, with a
+topic branch for the MIPS architecture changes, so acks welcome for the
+relevant parts (mainly patches 1-4, 15, 28), and please don't apply yet.
 
-Great! Thanks!
+This series primarily implements GVA->HPA page tables for MIPS T&E KVM
+implementation, and a fast TLB refill handler generated at runtime using
+uasm (sharing MIPS arch code to do this), accompanied by a bunch of
+related cleanups. There are several solid advantages of this:
 
-> 
->    Nathan
-> 
->>>
->>>>
->>>> Thanks,
->>>>
->>>>    Nathan
->>>>
->>>>
->>>
->>
+- An optimised TLB refill handler will be much faster than using the
+  slow exit path through C code. It also avoids repeated guest TLB
+  lookups for guest mapped addresses that are evicted from the host TLB
+  (which are currently implemented as a linear walk through the guest
+  TLB array).
+
+- The TLB refill handler can be pretty much reused in future for VZ, to
+  fill the root TLB with GPA->HPA mappings from a soon to be implemented
+  GPA page table.
+
+- Although not enabled yet, it potentially allows page table walker
+  hardware (HTW) to be used during guest execution (both for VZ GPA
+  mappings, and potentially T&E GVA mappings) further reducing TLB
+  refill overhead.
+
+- It improves the robustness of direct access to guest memory by KVM,
+  i.e. reading guest instructions for emulation, writing guest
+  instructions for dynamic translation, and emulating CACHE
+  instructions. This is because the standard userland memory accessors
+  can be used, allowing the host kernel TLB refill handler to safely
+  fill from the GVA page table, allowing faults to be sanely detected,
+  and allowing it to work when EVA is enabled (which requires different
+  instructions to be used when accessing the user address space).
+
+The main disadvantage is a higher flushing overhead when the guest ASID
+is changed, due to the need to walk and invalidate GVA page tables
+(since we only manage a single GVA page table for each guest privilege
+mode, across all guest ASIDs).
+
+The patches are roughly grouped as follows:
+
+Patches 1-4:
+  These are generic or MIPS architecture changes needed by the later
+  patches, mainly to expose the existing MIPS TLB exception generation
+  cade to KVM. As I mentioned above I intend to combine the MIPS ones
+  into a topic branch which can be merged into both the MIPS
+  architecture tree and the MIPS KVM tree.
+
+Patches 5-13:
+  These are preliminary MIPS KVM changes and cleanups.
+
+Patches 14-25:
+  These incrementally add GVA page table support, allocating the GVA
+  page tables, adding the fast TLB refill handler, addng page table
+  invalidation, and finally converting guest fault handling (KSeg0, TLB
+  mapped, and commpage) to use the GVA page table rather than injecting
+  entries directly into the host TLB.
+
+Patches 26-27:
+  These switch to using uaccess and protected cache ops, which fixes KVM
+  on EVA enabled host kernels.
+
+Patches 28-30:
+  These make some final cleanups.
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krƒçm√°≈ô" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Cc: linux-mm@kvack.org
+
+James Hogan (30):
+  mm: Export init_mm for MIPS KVM use of pgd_alloc()
+  MIPS: Export pgd/pmd symbols for KVM
+  MIPS: uasm: Add include guards in asm/uasm.h
+  MIPS: Export some tlbex internals for KVM to use
+  KVM: MIPS: Drop partial KVM_NMI implementation
+  KVM: MIPS/MMU: Simplify ASID restoration
+  KVM: MIPS: Convert get/set_regs -> vcpu_load/put
+  KVM: MIPS/MMU: Move preempt/ASID handling to implementation
+  KVM: MIPS: Remove duplicated ASIDs from vcpu
+  KVM: MIPS: Add vcpu_run() & vcpu_reenter() callbacks
+  KVM: MIPS/T&E: Restore host asid on return to host
+  KVM: MIPS/T&E: active_mm = init_mm in guest context
+  KVM: MIPS: Wire up vcpu uninit
+  KVM: MIPS/T&E: Allocate GVA -> HPA page tables
+  KVM: MIPS/T&E: Activate GVA page tables in guest context
+  KVM: MIPS: Support NetLogic KScratch registers
+  KVM: MIPS: Add fast path TLB refill handler
+  KVM: MIPS/TLB: Fix off-by-one in TLB invalidate
+  KVM: MIPS/TLB: Generalise host TLB invalidate to kernel ASID
+  KVM: MIPS/MMU: Invalidate GVA PTs on ASID changes
+  KVM: MIPS/MMU: Invalidate stale GVA PTEs on TLBW
+  KVM: MIPS/MMU: Convert KSeg0 faults to page tables
+  KVM: MIPS/MMU: Convert TLB mapped faults to page tables
+  KVM: MIPS/MMU: Convert commpage fault handling to page tables
+  KVM: MIPS: Drop vm_init() callback
+  KVM: MIPS: Use uaccess to read/modify guest instructions
+  KVM: MIPS/Emulate: Fix CACHE emulation for EVA hosts
+  KVM: MIPS/TLB: Drop kvm_local_flush_tlb_all()
+  KVM: MIPS/Emulate: Drop redundant TLB flushes on exceptions
+  KVM: MIPS/MMU: Drop kvm_get_new_mmu_context()
+
+ arch/mips/include/asm/kvm_host.h    |  76 ++--
+ arch/mips/include/asm/mmu_context.h |   9 +-
+ arch/mips/include/asm/tlbex.h       |  26 +-
+ arch/mips/include/asm/uasm.h        |   5 +-
+ arch/mips/kvm/dyntrans.c            |  28 +-
+ arch/mips/kvm/emulate.c             |  59 +--
+ arch/mips/kvm/entry.c               | 141 +++++++-
+ arch/mips/kvm/mips.c                | 130 +------
+ arch/mips/kvm/mmu.c                 | 545 +++++++++++++++++------------
+ arch/mips/kvm/tlb.c                 | 225 +-----------
+ arch/mips/kvm/trap_emul.c           | 220 +++++++++++-
+ arch/mips/mm/init.c                 |   1 +-
+ arch/mips/mm/pgtable-32.c           |   1 +-
+ arch/mips/mm/pgtable-64.c           |   3 +-
+ arch/mips/mm/tlbex.c                |  38 +-
+ mm/init-mm.c                        |   2 +-
+ 16 files changed, 861 insertions(+), 648 deletions(-)
+ create mode 100644 arch/mips/include/asm/tlbex.h
+
+-- 
+git-series 0.8.10

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:37:58 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3735 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2017 02:38:23 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:36681 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992992AbdAFBdmZDZeu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:42 +0100
+        with ESMTP id S23993008AbdAFBdnU4Xou (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2017 02:33:43 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 1EC1C3AD5483C;
-        Fri,  6 Jan 2017 01:33:34 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 678F74B8E2568;
+        Fri,  6 Jan 2017 01:33:36 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 6 Jan 2017 01:33:34 +0000
+ 14.3.294.0; Fri, 6 Jan 2017 01:33:37 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 8/30] KVM: MIPS/MMU: Move preempt/ASID handling to implementation
-Date:   Fri, 6 Jan 2017 01:32:40 +0000
-Message-ID: <755ac46208e9f0567e608b81196de629cd9a66f7.1483665879.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 11/30] KVM: MIPS/T&E: Restore host asid on return to host
+Date:   Fri, 6 Jan 2017 01:32:43 +0000
+Message-ID: <48d15f0c804c868e5bc413fcd7052c290d8db5db.1483665879.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.d6d201de414322ed2c1372e164254e6055ef7db9.1483665879.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56184
+X-archive-position: 56185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,26 +46,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS KVM host and guest GVA ASIDs may need regenerating when
-scheduling a process in guest context, which is done from the
-kvm_arch_vcpu_load() / kvm_arch_vcpu_put() functions in mmu.c.
+We only need the guest ASID loaded while in guest context, i.e. while
+running guest code and while handling guest exits. We load the guest
+ASID when entering the guest, however we restore the host ASID later
+than necessary, when the VCPU state is saved i.e. vcpu_put() or slightly
+earlier if preempted after returning to the host.
 
-However this is a fairly implementation specific detail. VZ for example
-may use GuestIDs instead of normal ASIDs to distinguish mappings
-belonging to different guests, and even on VZ without GuestID the root
-TLB will be used differently to trap & emulate.
-
-Trap & emulate GVA ASIDs only relate to the user part of the full
-address space, so can be left active during guest exit handling (guest
-context) to allow guest instructions to be easily read and translated.
-
-VZ root ASIDs however are for GPA mappings so can't be left active
-during normal kernel code. They also aren't useful for accessing guest
-virtual memory, and we should have CP0_BadInstr[P] registers available
-to provide encodings of trapping guest instructions anyway.
-
-Therefore move the ASID preemption handling into the implementation
-callback.
+This mismatch is both unpleasant and causes redundant host ASID restores
+in kvm_trap_emul_vcpu_put(). Lets explicitly restore the host ASID when
+returning to the host, and don't bother restoring the host ASID on
+context switch in unless we're already in guest context.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -74,177 +64,61 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/mmu.c       | 51 +------------------------------------
- arch/mips/kvm/trap_emul.c | 56 ++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 54 insertions(+), 53 deletions(-)
+ arch/mips/kvm/trap_emul.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
-index ed46528611f4..df013538113f 100644
---- a/arch/mips/kvm/mmu.c
-+++ b/arch/mips/kvm/mmu.c
-@@ -235,39 +235,12 @@ static void kvm_mips_migrate_count(struct kvm_vcpu *vcpu)
- /* Restore ASID once we are scheduled back after preemption */
- void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 92734d095c94..3e1dbcbcea85 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -680,14 +680,17 @@ static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
  {
--	unsigned long asid_mask = cpu_asid_mask(&cpu_data[cpu]);
- 	unsigned long flags;
- 
- 	kvm_debug("%s: vcpu %p, cpu: %d\n", __func__, vcpu, cpu);
- 
--	/* Allocate new kernel and user ASIDs if needed */
--
- 	local_irq_save(flags);
- 
--	if ((vcpu->arch.guest_kernel_asid[cpu] ^ asid_cache(cpu)) &
--						asid_version_mask(cpu)) {
--		kvm_get_new_mmu_context(&vcpu->arch.guest_kernel_mm, cpu, vcpu);
--		vcpu->arch.guest_kernel_asid[cpu] =
--		    vcpu->arch.guest_kernel_mm.context.asid[cpu];
--
--		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
--			  cpu_context(cpu, current->mm));
--		kvm_debug("[%d]: Allocated new ASID for Guest Kernel: %#x\n",
--			  cpu, vcpu->arch.guest_kernel_asid[cpu]);
--	}
--
--	if ((vcpu->arch.guest_user_asid[cpu] ^ asid_cache(cpu)) &
--						asid_version_mask(cpu)) {
--		kvm_get_new_mmu_context(&vcpu->arch.guest_user_mm, cpu, vcpu);
--		vcpu->arch.guest_user_asid[cpu] =
--		    vcpu->arch.guest_user_mm.context.asid[cpu];
--
--		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
--			  cpu_context(cpu, current->mm));
--		kvm_debug("[%d]: Allocated new ASID for Guest User: %#x\n", cpu,
--			  vcpu->arch.guest_user_asid[cpu]);
--	}
--
- 	if (vcpu->arch.last_sched_cpu != cpu) {
- 		kvm_debug("[%d->%d]KVM VCPU[%d] switch\n",
- 			  vcpu->arch.last_sched_cpu, cpu, vcpu->vcpu_id);
-@@ -279,25 +252,10 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 		kvm_mips_migrate_count(vcpu);
- 	}
- 
--	/*
--	 * If we preempted while the guest was executing, then reload the ASID
--	 * based on the mode of the Guest (Kernel/User)
--	 */
--	if (current->flags & PF_VCPU) {
--		if (KVM_GUEST_KERNEL_MODE(vcpu))
--			write_c0_entryhi(vcpu->arch.guest_kernel_asid[cpu] &
--					 asid_mask);
--		else
--			write_c0_entryhi(vcpu->arch.guest_user_asid[cpu] &
--					 asid_mask);
--		ehb();
--	}
--
- 	/* restore guest state to registers */
- 	kvm_mips_callbacks->vcpu_load(vcpu, cpu);
- 
- 	local_irq_restore(flags);
--
- }
- 
- /* ASID can change if another task is scheduled during preemption */
-@@ -314,15 +272,6 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
- 	/* save guest state in registers */
- 	kvm_mips_callbacks->vcpu_put(vcpu, cpu);
+ 	kvm_lose_fpu(vcpu);
  
 -	if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
 -	     asid_version_mask(cpu))) {
 -		kvm_debug("%s: Dropping MMU Context:  %#lx\n", __func__,
 -			  cpu_context(cpu, current->mm));
 -		drop_mmu_context(current->mm, cpu);
--	}
++	if (current->flags & PF_VCPU) {
++		/* Restore normal Linux process memory map */
++		if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
++		     asid_version_mask(cpu))) {
++			kvm_debug("%s: Dropping MMU Context:  %#lx\n", __func__,
++				  cpu_context(cpu, current->mm));
++			get_new_mmu_context(current->mm, cpu);
++		}
++		write_c0_entryhi(cpu_asid(cpu, current->mm));
++		ehb();
+ 	}
 -	write_c0_entryhi(cpu_asid(cpu, current->mm));
 -	ehb();
--
- 	local_irq_restore(flags);
- }
  
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index c0ee51465913..494a90221b5e 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -11,9 +11,9 @@
- 
- #include <linux/errno.h>
- #include <linux/err.h>
--#include <linux/vmalloc.h>
--
- #include <linux/kvm_host.h>
-+#include <linux/vmalloc.h>
-+#include <asm/mmu_context.h>
- 
- #include "interrupt.h"
- 
-@@ -635,6 +635,49 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
- 
- static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- {
-+	unsigned long asid_mask = cpu_asid_mask(&cpu_data[cpu]);
-+
-+	/* Allocate new kernel and user ASIDs if needed */
-+
-+	if ((vcpu->arch.guest_kernel_asid[cpu] ^ asid_cache(cpu)) &
-+						asid_version_mask(cpu)) {
-+		kvm_get_new_mmu_context(&vcpu->arch.guest_kernel_mm, cpu, vcpu);
-+		vcpu->arch.guest_kernel_asid[cpu] =
-+		    vcpu->arch.guest_kernel_mm.context.asid[cpu];
-+
-+		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
-+			  cpu_context(cpu, current->mm));
-+		kvm_debug("[%d]: Allocated new ASID for Guest Kernel: %#x\n",
-+			  cpu, vcpu->arch.guest_kernel_asid[cpu]);
-+	}
-+
-+	if ((vcpu->arch.guest_user_asid[cpu] ^ asid_cache(cpu)) &
-+						asid_version_mask(cpu)) {
-+		kvm_get_new_mmu_context(&vcpu->arch.guest_user_mm, cpu, vcpu);
-+		vcpu->arch.guest_user_asid[cpu] =
-+		    vcpu->arch.guest_user_mm.context.asid[cpu];
-+
-+		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
-+			  cpu_context(cpu, current->mm));
-+		kvm_debug("[%d]: Allocated new ASID for Guest User: %#x\n", cpu,
-+			  vcpu->arch.guest_user_asid[cpu]);
-+	}
-+
-+	/*
-+	 * Were we in guest context? If so then the pre-empted ASID is
-+	 * no longer valid, we need to set it to what it should be based
-+	 * on the mode of the Guest (Kernel/User)
-+	 */
-+	if (current->flags & PF_VCPU) {
-+		if (KVM_GUEST_KERNEL_MODE(vcpu))
-+			write_c0_entryhi(vcpu->arch.guest_kernel_asid[cpu] &
-+					 asid_mask);
-+		else
-+			write_c0_entryhi(vcpu->arch.guest_user_asid[cpu] &
-+					 asid_mask);
-+		ehb();
-+	}
-+
  	return 0;
  }
+@@ -720,6 +723,7 @@ static void kvm_trap_emul_vcpu_reenter(struct kvm_run *run,
  
-@@ -642,6 +685,15 @@ static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
+ static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
  {
- 	kvm_lose_fpu(vcpu);
++	int cpu;
+ 	int r;
  
+ 	/* Check if we have any exceptions/interrupts pending */
+@@ -733,6 +737,15 @@ static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 
+ 	r = vcpu->arch.vcpu_run(run, vcpu);
+ 
++	/* We may have migrated while handling guest exits */
++	cpu = smp_processor_id();
++
++	/* Restore normal Linux process memory map */
 +	if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
-+	     asid_version_mask(cpu))) {
-+		kvm_debug("%s: Dropping MMU Context:  %#lx\n", __func__,
-+			  cpu_context(cpu, current->mm));
-+		drop_mmu_context(current->mm, cpu);
-+	}
++	     asid_version_mask(cpu)))
++		get_new_mmu_context(current->mm, cpu);
 +	write_c0_entryhi(cpu_asid(cpu, current->mm));
-+	ehb();
 +
- 	return 0;
- }
+ 	htw_start();
  
+ 	return r;
 -- 
 git-series 0.8.10

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2017 12:34:47 +0100 (CET)
-Received: from mout.kundenserver.de ([217.72.192.75]:57969 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2017 12:35:12 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.135]:57063 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992246AbdAILekCcnOc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2017 12:34:40 +0100
+        with ESMTP id S23992482AbdAILfAapBrc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2017 12:35:00 +0100
 Received: from wuerfel.localnet ([78.43.21.235]) by mrelayeu.kundenserver.de
- (mreue103 [212.227.15.145]) with ESMTPSA (Nemesis) id
- 0MIgBs-1cSl7Y3lQO-002E9r; Mon, 09 Jan 2017 12:33:13 +0100
+ (mreue001 [212.227.15.129]) with ESMTPSA (Nemesis) id
+ 0McMsh-1c99gd0xM7-00JbtL; Mon, 09 Jan 2017 12:34:00 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org
 Cc:     Nicolas Dichtel <nicolas.dichtel@6wind.com>,
@@ -30,36 +30,36 @@ Cc:     Nicolas Dichtel <nicolas.dichtel@6wind.com>,
         mmarek@suse.com, netfilter-devel@vger.kernel.org,
         linux-alpha@vger.kernel.org, nios2-dev@lists.rocketboards.org,
         davem@davemloft.net
-Subject: Re: [PATCH v2 1/7] arm: put types.h in uapi
-Date:   Mon, 09 Jan 2017 12:33:02 +0100
-Message-ID: <1990589.0aJHWbJK4F@wuerfel>
+Subject: Re: [PATCH v2 3/7] nios2: put setup.h in uapi
+Date:   Mon, 09 Jan 2017 12:33:46 +0100
+Message-ID: <3162962.COsNxdSb45@wuerfel>
 User-Agent: KMail/5.1.3 (Linux/4.4.0-34-generic; KDE/5.18.0; x86_64; ; )
-In-Reply-To: <1483695839-18660-2-git-send-email-nicolas.dichtel@6wind.com>
-References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com> <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com> <1483695839-18660-2-git-send-email-nicolas.dichtel@6wind.com>
+In-Reply-To: <1483695839-18660-4-git-send-email-nicolas.dichtel@6wind.com>
+References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com> <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com> <1483695839-18660-4-git-send-email-nicolas.dichtel@6wind.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K0:lFuqw0O+zwe8xGI5ryMwMSgw46KXWXBsddg4+RL0e4FYSDZfxgm
- 6kOGY1A4Vzl56BwTc73hDYZoeRkCvYNE/0v/R1N5GJqsV16rvxmElECduPJX3XxHL+hMezA
- OyKf98gUNbOTEcXnmh1jf1o4KsgMzAQeZj0NxkkqFo6/El8eFWh37SdIq5AgUycoFcJwEX/
- sFWkhUmE0ApwS2YqNPjqQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:ner0l3fze+0=:L+72hpZSyrdkKC3Y5nQ1sw
- pX2v6dGCO/UixFM1gDa9Q4dfLe9TfF38/NWSrSci7slFMqOJRvxciDOYO8qpRpnalzyJUBFh/
- yVlq+w/OcrfPAUtq2SmS3PmYkRAtS2eTJvlqV0LLWYc/jkLI9r7OF7TdaiWO/4f4h4u6vRkk4
- XDm1x4Uz2LlX3qPkeyaFDL7oMT75NoH0LvO472l/BPOVk00S5GBpcKtT1C8pqeNiyvxl7Yrer
- TXu/NA82AXzPgZ597QRn04LBoOetElKkKvFglvFHzFypWJ91OgQ0q7t2dO/yf+2S9w0wNm2/r
- eh3VjL8es0HM4NWU4adJXCj5Dtpi7zyihfEraBDqv6lM84alCw5XehyJ6md3/ZblyPTdcCwZG
- LCsQGkgLPYWogyScygsvBQOU9qDFtyQlbIbBfbCWEqHs54e7hcBVHC4KcdpSrxk8uRc3UHb7k
- F56qtEv1om+xUI7Yx3YhqQIY0kq26TTjLdr+WndJNgp7xFvdSY5Fz/DtUACuyvUL6s0yQSTmH
- AR32i9iTKo/OFtpW9ckFl1wUnoFu5reWnlS/nP3kF80b5ajbo39VxdDCKeqxN6v4xeoPF2Cnm
- ppBV6cNRsewJzPAgtpi5sl4Tz98uPWPlnaPF73yXZeyim1P1galyh3PioeokhtlptuQAGmpu0
- RrSnxE9yHejiP/GTjSy9rp34XHc9PynGSovROgY7EKfoVQ0k3Di43+1jikOaVFH2NB3JhfIRn
- iysnVUSai0/0M1RS
+X-Provags-ID: V03:K0:ZZnO/2hBeL/oePYR2t9fbBJzN1+JfZ2CSwbxHUb38gX1q9cIRR3
+ ZxoWH9h+tx5gFfkn22Cdce25AQmYuHg2Zi8qykg9H+b4HQq1LOUjRrA3WsU9N4xBj/mbhCp
+ Ngf9z7jVw6U+jcwcfuCprdZoKgHb2u4wSkhAcXeMEeh1tiKT9btF7FhErAucE0jVe3ivPLM
+ vjIfmw9ilHnXGrvpfq3xw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:DH1jTx2lUHQ=:M/9HvXYhmCSKgNd/YM2aUg
+ dXH5Dl4sfq5ho+/IyCsB8yaH2JxBzCjFj1ENkUZXkbRvdehF0/3dop8SIqqwxocLqEE6NCySb
+ lBv884R+2/radA3RPLZTmzGKcWMlHifwNeC7xGaOSnOqY3puUOC+Fes7SSOSkTCVcBKaCA0U1
+ /Mu0NIUvU/89JSF57iPlWKuUv4QvEJn69Zgsmy+xFJ8+pQ22fWw8ho+By8XAd56Gax5K2xbEZ
+ LnOXHA9MhLzhbULBgTwOzQm2In24Yz/7Co8jObZMJpOi2f+IUvNlizolxq8sYxmb16p7KLHCI
+ R5XV3OGlpbNGgAzcP9czpQktfFrR+jwnBPv6wd0IaIpqrgb+k1lVMO6MDYf70WJSogFmxl30H
+ /6ceFjrYsenYa0T6q/sy7uCu00K5OnB+K2zU3xJK+/6ZPVbbhd5oHv0o3fuxsHTZPo3oZVjzv
+ Ba8zyP6CBDSF6qsPhQQjrVbccwMn5q2YJ3wSL89fSoM53urm4xyTVo3gzemNIYpVg0nNgfHqM
+ oolyUQpGalinFgRtqxgVxdEA+JBVOaLiUC/nym+jcCa3nhlkPtYHYWEuz/RCJdM4S29l0FGFP
+ pqM2Pdq05kSi0oImR99CxoGpTpLzJBaaht2/u5pBa7hcFLBpe3g+/X3u/NrGri37ayXL/ZJLx
+ YUPp5bucmf87fFBtbYs8kry47L9QZvQG20m4rke+MFBI+k1FYCmCMAT2KQZ/quKfypopJrcHJ
+ i31sf89bmgym52rB
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56226
+X-archive-position: 56227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,29 +76,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday, January 6, 2017 10:43:53 AM CET Nicolas Dichtel wrote:
-> 
-> diff --git a/arch/arm/include/asm/types.h b/arch/arm/include/asm/types.h
-> index a53cdb8f068c..c48fee3d7b3b 100644
-> --- a/arch/arm/include/asm/types.h
-> +++ b/arch/arm/include/asm/types.h
-> @@ -1,40 +1,6 @@
->  #ifndef _ASM_TYPES_H
->  #define _ASM_TYPES_H
->  
-> -#include <asm-generic/int-ll64.h>
-...
-> -#define __UINTPTR_TYPE__       unsigned long
-> -#endif
-> +#include <uapi/asm/types.h>
->  
->  #endif /* _ASM_TYPES_H */
+On Friday, January 6, 2017 10:43:55 AM CET Nicolas Dichtel wrote:
+
+> diff --git a/arch/nios2/include/uapi/asm/setup.h b/arch/nios2/include/uapi/asm/setup.h
+> new file mode 100644
+> index 000000000000..8d8285997ba8
+> --- /dev/null
+> +++ b/arch/nios2/include/uapi/asm/setup.h
+> @@ -0,0 +1,6 @@
+> +#ifndef _UAPI_ASM_NIOS2_SETUP_H
+> +#define _UAPI_ASM_NIOS2_SETUP_H
+> +
+> +#include <asm-generic/setup.h>
+> +
+> +#endif /* _UAPI_ASM_NIOS2_SETUP_H */
 > 
 
-Moving the file is correct as far as I can tell, but the extra
-#include is not necessary here, as the kernel will automatically
-search both arch/arm/include/ and arch/arm/include/uapi/.
+This one is only a redirect to an asm-generic header, so it can be
+removed completely and replaced with a line in the 
+arch/nios2/include/uapi/asm/ file:
 
-The same applies to patches 2 and 4.
+generic-y += setup.h
 
 	Arnd

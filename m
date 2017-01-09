@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2017 21:55:08 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:59833 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2017 21:55:33 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44502 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993870AbdAIUxaOHP-P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2017 21:53:30 +0100
+        with ESMTP id S23993873AbdAIUxcx-SEP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2017 21:53:32 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id DD5AFF7C478FD;
-        Mon,  9 Jan 2017 20:53:19 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id CE7CD1FA3D268;
+        Mon,  9 Jan 2017 20:53:20 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Mon, 9 Jan 2017 20:53:23 +0000
+ 14.3.294.0; Mon, 9 Jan 2017 20:53:24 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 4/10] KVM: MIPS/T&E: Handle TLB invalidation requests
-Date:   Mon, 9 Jan 2017 20:51:56 +0000
-Message-ID: <96b8132c7751feaf197bf2c0cd92327070dc2062.1483993967.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 5/10] KVM: MIPS/T&E: Reduce stale ASID checks
+Date:   Mon, 9 Jan 2017 20:51:57 +0000
+Message-ID: <f8edc1cf1113316aaa81de155435bfc03b1b8158.1483993967.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.4133d2f24fd73c1889a46ea05bb8924867b33747.1483993967.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56239
+X-archive-position: 56240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,19 +46,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add handling of TLB invalidation requests before entering guest mode.
-This will allow asynchonous invalidation of the VCPU mappings when
-physical memory regions are altered. Should the CPU running the VCPU
-already be in guest mode an IPI will be sent to trigger a guest exit.
+The stale ASID checks taking place on VCPU load can be reduced:
 
-The reload_asid path will be used in a future patch for when GVA is
-about to be directly accessed by KVM.
+- Now that we check for a stale ASID on guest re-entry, there is no need
+  to do so when loading the VCPU outside of guest context, since it will
+  happen before entering the guest. Note that a lot of KVM VCPU ioctls
+  will cause the VCPU to be loaded but guest context won't be entered.
 
-In the process, the stale user ASID check in the re-entry path (for lazy
-user GVA flushing) is generalised to check the ASID for the current
-guest mode, in case a TLB invalidation request was handled. This has the
-side effect of making the ASID checks on vcpu_load too conservative,
-which will be addressed in a later patch.
+- There is no need to check for a stale kernel_mm ASID when the guest is
+  in user mode and vice versa. In fact doing so can potentially be
+  problematic since the user_mm ASID regeneration may trigger a new ASID
+  cycle, which would cause the kern_mm ASID to become stale after it has
+  been checked for staleness.
+
+Therefore only check the ASID for the mm corresponding to the current
+guest mode, and only if we're already in guest context. We drop some of
+the related kvm_debug() calls here too.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -67,107 +70,66 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/trap_emul.c | 71 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 63 insertions(+), 8 deletions(-)
+ arch/mips/kvm/trap_emul.c | 35 ++++++-----------------------------
+ 1 file changed, 6 insertions(+), 29 deletions(-)
 
 diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index a92772098294..c6a16267f084 100644
+index c6a16267f084..0cb76e1aac0e 100644
 --- a/arch/mips/kvm/trap_emul.c
 +++ b/arch/mips/kvm/trap_emul.c
-@@ -775,31 +775,86 @@ static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
- 	return 0;
- }
- 
-+static void kvm_trap_emul_check_requests(struct kvm_vcpu *vcpu, int cpu,
-+					 bool reload_asid)
-+{
-+	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
-+	struct mm_struct *user_mm = &vcpu->arch.guest_user_mm;
-+	struct mm_struct *mm;
-+	int i;
-+
-+	if (likely(!vcpu->requests))
-+		return;
-+
-+	if (kvm_check_request(KVM_REQ_TLB_FLUSH, vcpu)) {
-+		/*
-+		 * Both kernel & user GVA mappings must be invalidated. The
-+		 * caller is just about to check whether the ASID is stale
-+		 * anyway so no need to reload it here.
-+		 */
-+		kvm_mips_flush_gva_pt(kern_mm->pgd, KMF_GPA | KMF_KERN);
-+		kvm_mips_flush_gva_pt(user_mm->pgd, KMF_GPA | KMF_USER);
-+		for_each_possible_cpu(i) {
-+			cpu_context(i, kern_mm) = 0;
-+			cpu_context(i, user_mm) = 0;
-+		}
-+
-+		/* Generate new ASID for current mode */
-+		if (reload_asid) {
-+			mm = KVM_GUEST_KERNEL_MODE(vcpu) ? kern_mm : user_mm;
-+			get_new_mmu_context(mm, cpu);
-+			htw_stop();
-+			write_c0_entryhi(cpu_asid(cpu, mm));
-+			TLBMISS_HANDLER_SETUP_PGD(mm->pgd);
-+			htw_start();
-+		}
-+	}
-+}
-+
- static void kvm_trap_emul_vcpu_reenter(struct kvm_run *run,
- 				       struct kvm_vcpu *vcpu)
- {
-+	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
+@@ -714,35 +714,15 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
  	struct mm_struct *user_mm = &vcpu->arch.guest_user_mm;
-+	struct mm_struct *mm;
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
- 	int i, cpu = smp_processor_id();
- 	unsigned int gasid;
+ 	struct mm_struct *mm;
  
+-	/* Allocate new kernel and user ASIDs if needed */
+-
+-	if ((cpu_context(cpu, kern_mm) ^ asid_cache(cpu)) &
+-						asid_version_mask(cpu)) {
+-		get_new_mmu_context(kern_mm, cpu);
+-
+-		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
+-			  cpu_context(cpu, current->mm));
+-		kvm_debug("[%d]: Allocated new ASID for Guest Kernel: %#lx\n",
+-			  cpu, cpu_context(cpu, kern_mm));
+-	}
+-
+-	if ((cpu_context(cpu, user_mm) ^ asid_cache(cpu)) &
+-						asid_version_mask(cpu)) {
+-		get_new_mmu_context(user_mm, cpu);
+-
+-		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
+-			  cpu_context(cpu, current->mm));
+-		kvm_debug("[%d]: Allocated new ASID for Guest User: %#lx\n",
+-			  cpu, cpu_context(cpu, user_mm));
+-	}
+-
  	/*
--	 * Lazy host ASID regeneration / PT flush for guest user mode.
--	 * If the guest ASID has changed since the last guest usermode
--	 * execution, regenerate the host ASID so as to invalidate stale TLB
--	 * entries and flush GVA PT entries too.
-+	 * No need to reload ASID, IRQs are disabled already so there's no rush,
-+	 * and we'll check if we need to regenerate below anyway before
-+	 * re-entering the guest.
+-	 * Were we in guest context? If so then the pre-empted ASID is
+-	 * no longer valid, we need to set it to what it should be based
+-	 * on the mode of the Guest (Kernel/User)
++	 * Were we in guest context? If so, restore the appropriate ASID based
++	 * on the mode of the Guest (Kernel/User).
  	 */
--	if (!KVM_GUEST_KERNEL_MODE(vcpu)) {
-+	kvm_trap_emul_check_requests(vcpu, cpu, false);
-+
-+	if (KVM_GUEST_KERNEL_MODE(vcpu)) {
-+		mm = kern_mm;
-+	} else {
-+		mm = user_mm;
-+
-+		/*
-+		 * Lazy host ASID regeneration / PT flush for guest user mode.
-+		 * If the guest ASID has changed since the last guest usermode
-+		 * execution, invalidate the stale TLB entries and flush GVA PT
-+		 * entries too.
-+		 */
- 		gasid = kvm_read_c0_guest_entryhi(cop0) & KVM_ENTRYHI_ASID;
- 		if (gasid != vcpu->arch.last_user_gasid) {
- 			kvm_mips_flush_gva_pt(user_mm->pgd, KMF_USER);
--			get_new_mmu_context(user_mm, cpu);
- 			for_each_possible_cpu(i)
--				if (i != cpu)
--					cpu_context(i, user_mm) = 0;
-+				cpu_context(i, user_mm) = 0;
- 			vcpu->arch.last_user_gasid = gasid;
- 		}
- 	}
-+
-+	/*
-+	 * Check if ASID is stale. This may happen due to a TLB flush request or
-+	 * a lazy user MM invalidation.
-+	 */
-+	if ((cpu_context(cpu, mm) ^ asid_cache(cpu)) &
-+	    asid_version_mask(cpu))
-+		get_new_mmu_context(mm, cpu);
- }
- 
- static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 	if (current->flags & PF_VCPU) {
+ 		mm = KVM_GUEST_KERNEL_MODE(vcpu) ? kern_mm : user_mm;
++		if ((cpu_context(cpu, mm) ^ asid_cache(cpu)) &
++		    asid_version_mask(cpu))
++			get_new_mmu_context(mm, cpu);
+ 		write_c0_entryhi(cpu_asid(cpu, mm));
+ 		TLBMISS_HANDLER_SETUP_PGD(mm->pgd);
+ 		cpumask_clear_cpu(cpu, mm_cpumask(current->active_mm));
+@@ -760,11 +740,8 @@ static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
+ 	if (current->flags & PF_VCPU) {
+ 		/* Restore normal Linux process memory map */
+ 		if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
+-		     asid_version_mask(cpu))) {
+-			kvm_debug("%s: Dropping MMU Context:  %#lx\n", __func__,
+-				  cpu_context(cpu, current->mm));
++		     asid_version_mask(cpu)))
+ 			get_new_mmu_context(current->mm, cpu);
+-		}
+ 		write_c0_entryhi(cpu_asid(cpu, current->mm));
+ 		TLBMISS_HANDLER_SETUP_PGD(current->mm->pgd);
+ 		cpumask_set_cpu(cpu, mm_cpumask(current->mm));
 -- 
 git-series 0.8.10

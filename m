@@ -1,43 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2017 21:42:05 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45507 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993866AbdAIUl6cd-2P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2017 21:41:58 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5BD7041F8EC6;
-        Mon,  9 Jan 2017 21:44:13 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 09 Jan 2017 21:44:13 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 09 Jan 2017 21:44:13 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2017 21:53:34 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6378 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993179AbdAIUx1ifRlP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2017 21:53:27 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id CAA4896987FE6;
-        Mon,  9 Jan 2017 20:41:48 +0000 (GMT)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 9 Jan
- 2017 20:41:52 +0000
-Date:   Mon, 9 Jan 2017 20:41:52 +0000
+        by Forcepoint Email with ESMTPS id 3F8627C4A5E2D;
+        Mon,  9 Jan 2017 20:53:17 +0000 (GMT)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Mon, 9 Jan 2017 20:53:21 +0000
 From:   James Hogan <james.hogan@imgtec.com>
-To:     James Cowgill <James.Cowgill@imgtec.com>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: OCTEON: Fix copy_from_user fault handling for
- large buffers
-Message-ID: <20170109204152.GA30210@jhogan-linux.le.imgtec.org>
-References: <ede411ad-ee19-e4e4-e6a2-585a85c640db@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
+Subject: [PATCH 0/10] KVM: MIPS: Implement GPA page tables and shadow flushing
+Date:   Mon, 9 Jan 2017 20:51:52 +0000
+Message-ID: <cover.4133d2f24fd73c1889a46ea05bb8924867b33747.1483993967.git-series.james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="d6Gm4EdcadzBjdND"
-Content-Disposition: inline
-In-Reply-To: <ede411ad-ee19-e4e4-e6a2-585a85c640db@imgtec.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56234
+X-archive-position: 56235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,117 +44,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---d6Gm4EdcadzBjdND
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Note: My intention is to take this series via the MIPS KVM tree along
+with the others for v4.11, with a topic branch containing the MIPS
+architecture change, so an ack is welcome for patch 1 in particular.
 
-On Mon, Jan 09, 2017 at 04:52:28PM +0000, James Cowgill wrote:
-> If copy_from_user is called with a large buffer (>=3D 128 bytes) and the
-> userspace buffer refers partially to unreadable memory, then it is
-> possible for Octeon's copy_from_user to report the wrong number of bytes
-> have been copied. In the case where the buffer size is an exact multiple
-> of 128 and the fault occurs in the last 64 bytes, copy_from_user will
-> report that all the bytes were copied successfully but leave some
-> garbage in the destination buffer.
->=20
-> The bug is in the main __copy_user_common loop in octeon-memcpy.S where
-> in the middle of the loop, src and dst are incremented by 128 bytes. The
-> l_exc_copy fault handler is used after this but that assumes that
-> "src < THREAD_BUADDR($28)". This is not the case if src has already been
-> incremented.
->=20
-> Fix by adding an extra fault handler which rewinds the src and dst
-> pointers 128 bytes before falling though to l_exc_copy.
->=20
-> Thanks to the pwritev test from the strace test suite for originally
-> highlighting this bug!
->=20
+This series first converts MIPS KVM to use page tables for its GPA ->
+HPA mappings instead of a linear array. The linear array was only really
+meant to be temporary, and isn't sparse so its wasteful of memory. It
+also never handled resizing of the array for multiple or changed memory
+regions, which a sparse page table pretty much handles automatically.
 
-May I suggest adding:
-Fixes: 5b3b16880f40 ("MIPS: Add Cavium OCTEON processor support ...")
+We then go on to implement the shadow flushing architecture callbacks to
+allow the mappings (page tables and TLB entries) to be flushed in
+response to memory region changes. This is fairly straightforward for
+GPA which is shared between VCPUs as the kvm->mmu_lock can protect it,
+but GVA page tables are specific to a VCPU so are accessed locklessly.
+This would make it unsafe to directly modify any GVA page tables, so we
+wire up the TLB flush VCPU request so that we can tell a possibly
+running VCPU to flush its own GVA mappings.
 
-> Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
-> Cc: stable@vger.kernel.org
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
+Since MIPS KVM emulation code can also access GVA mappings directly, we
+use the READING_SHADOW_PAGE_TABLES VCPU mode similar to how x86 does to
+locklessly protect these accesses. This ensures that either the flush
+will take place before the GVA access, or an IPI will be sent to confirm
+receipt of the request which will be delayed until after the GVA access
+is complete.
 
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
+The patches are roughly grouped as follows:
 
-Cheers
-James
+Patch 1:
+  This is a MIPS architecture change needed for patch 9. As I mentioned
+  above I intend to combine this into a topic branch which can be merged
+  into both the MIPS architecture tree and the MIPS KVM tree.
 
-> ---
->  arch/mips/cavium-octeon/octeon-memcpy.S | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
->=20
-> diff --git a/arch/mips/cavium-octeon/octeon-memcpy.S b/arch/mips/cavium-o=
-cteon/octeon-memcpy.S
-> index 64e08df51d65..4668537b09c2 100644
-> --- a/arch/mips/cavium-octeon/octeon-memcpy.S
-> +++ b/arch/mips/cavium-octeon/octeon-memcpy.S
-> @@ -208,18 +208,18 @@ EXC(	STORE	t2, UNIT(6)(dst),	s_exc_p10u)
->  	ADD	src, src, 16*NBYTES
->  EXC(	STORE	t3, UNIT(7)(dst),	s_exc_p9u)
->  	ADD	dst, dst, 16*NBYTES
-> -EXC(	LOAD	t0, UNIT(-8)(src),	l_exc_copy)
-> -EXC(	LOAD	t1, UNIT(-7)(src),	l_exc_copy)
-> -EXC(	LOAD	t2, UNIT(-6)(src),	l_exc_copy)
-> -EXC(	LOAD	t3, UNIT(-5)(src),	l_exc_copy)
-> +EXC(	LOAD	t0, UNIT(-8)(src),	l_exc_copy_rewind16)
-> +EXC(	LOAD	t1, UNIT(-7)(src),	l_exc_copy_rewind16)
-> +EXC(	LOAD	t2, UNIT(-6)(src),	l_exc_copy_rewind16)
-> +EXC(	LOAD	t3, UNIT(-5)(src),	l_exc_copy_rewind16)
->  EXC(	STORE	t0, UNIT(-8)(dst),	s_exc_p8u)
->  EXC(	STORE	t1, UNIT(-7)(dst),	s_exc_p7u)
->  EXC(	STORE	t2, UNIT(-6)(dst),	s_exc_p6u)
->  EXC(	STORE	t3, UNIT(-5)(dst),	s_exc_p5u)
-> -EXC(	LOAD	t0, UNIT(-4)(src),	l_exc_copy)
-> -EXC(	LOAD	t1, UNIT(-3)(src),	l_exc_copy)
-> -EXC(	LOAD	t2, UNIT(-2)(src),	l_exc_copy)
-> -EXC(	LOAD	t3, UNIT(-1)(src),	l_exc_copy)
-> +EXC(	LOAD	t0, UNIT(-4)(src),	l_exc_copy_rewind16)
-> +EXC(	LOAD	t1, UNIT(-3)(src),	l_exc_copy_rewind16)
-> +EXC(	LOAD	t2, UNIT(-2)(src),	l_exc_copy_rewind16)
-> +EXC(	LOAD	t3, UNIT(-1)(src),	l_exc_copy_rewind16)
->  EXC(	STORE	t0, UNIT(-4)(dst),	s_exc_p4u)
->  EXC(	STORE	t1, UNIT(-3)(dst),	s_exc_p3u)
->  EXC(	STORE	t2, UNIT(-2)(dst),	s_exc_p2u)
-> @@ -383,6 +383,10 @@ done:
->  	 nop
->  	END(memcpy)
-> =20
-> +l_exc_copy_rewind16:
-> +	/* Rewind src and dst by 16*NBYTES for l_exc_copy */
-> +	SUB	src, src, 16*NBYTES
-> +	SUB	dst, dst, 16*NBYTES
->  l_exc_copy:
->  	/*
->  	 * Copy bytes from src until faulting load address (or until a
-> --=20
-> 2.11.0
->=20
->=20
+Patch 2:
+  This singularly converts GPA to use page tables.
 
---d6Gm4EdcadzBjdND
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Patches 3-10:
+  These implement shadow flushing, first laying the ground work to allow
+  TLB flush requests to work and to protect direct GVA access from
+  asynchronous flush requests.
 
------BEGIN PGP SIGNATURE-----
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
 
-iQIcBAEBCAAGBQJYc/WQAAoJEGwLaZPeOHZ6j/QP/joX+o0orSFL1a+ACexlQcVS
-xBqedzlg+r+i3XI7sMHzsTbuYwMsyN/8u1t7hxUrAQMNRZYVE2xOanWL/nHwT4yE
-g33tvC8uoEWx+C3SUj9V4PdZ/dpZ5IWOZ/bAElSIe20c6cPUVhjWtMMo2v29mFbW
-/DSpKBkaDSVZdIB6AwkliAfjoHJSN0xQcVoYENGug/MNSiYCbiIz9lnERIH7TQru
-OOB0DCwgT6Fwp+teBkkClER0SFDR/HLhfTJk5yuhFdfWGjQlQaN7+765B9BdzjfV
-Rpyn4Zrb8iXEipq3zsi3DrWmZx6vPUkbDxEUbPBNl3pDI3rx+onPAbl7tcayGpgx
-0zP4crAh3Hw05drs1ofsE77XNRlnW7+9n67CaoAB07fmfLEIM3cRtc7bf/msLFQA
-J+1yqEdp2jFzAojHRJoAyfDeBvk85PyDTsxoP+nwUViBZOWJcbwMRA4W46kxchb2
-TzrqGRRJmPeL4swIYRwt5RludxPRLrxW+dcLh2AZ2dWylzsvek7ry8CrZfcY1jRd
-pweBReDck4lwCIEvUBeVv64JDMbkYRsjE8lwZsHKFoahCZu9FX/p2NeC4xeilwSA
-Ov+GBeDoxLZrUouBB4m0nHB5EbAUdxe/h7PDz0OAgsB6iwiqTbxfmv9rEfyrcOF4
-dudhAVmfzds8G94KwqdG
-=dTJg
------END PGP SIGNATURE-----
+James Hogan (10):
+  MIPS: Add return errors to protected cache ops
+  KVM: MIPS/MMU: Convert guest physical map to page table
+  KVM: MIPS: Update vcpu->mode and vcpu->cpu
+  KVM: MIPS/T&E: Handle TLB invalidation requests
+  KVM: MIPS/T&E: Reduce stale ASID checks
+  KVM: MIPS/T&E: Add lockless GVA access helpers
+  KVM: MIPS/T&E: Use lockless GVA helpers for dyntrans
+  KVM: MIPS/MMU: Use lockless GVA helpers for get_inst()
+  KVM: MIPS/Emulate: Use lockless GVA helpers for cache emulation
+  KVM: MIPS: Implement kvm_arch_flush_shadow_all/memslot
 
---d6Gm4EdcadzBjdND--
+ arch/mips/include/asm/kvm_host.h |  35 ++-
+ arch/mips/include/asm/r4kcache.h |  55 +++--
+ arch/mips/kvm/dyntrans.c         |  26 +-
+ arch/mips/kvm/emulate.c          | 149 +++++--------
+ arch/mips/kvm/mips.c             |  92 +++++---
+ arch/mips/kvm/mmu.c              | 367 ++++++++++++++++++++++++++++----
+ arch/mips/kvm/tlb.c              |  35 +---
+ arch/mips/kvm/trap_emul.c        | 185 ++++++++++++----
+ 8 files changed, 690 insertions(+), 254 deletions(-)
+
+-- 
+git-series 0.8.10

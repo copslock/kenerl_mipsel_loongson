@@ -1,10 +1,10 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2017 21:53:34 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:6378 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2017 21:53:57 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6717 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993179AbdAIUx1ifRlP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2017 21:53:27 +0100
+        with ESMTP id S23993866AbdAIUx2PXW8P (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2017 21:53:28 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 3F8627C4A5E2D;
+        by Forcepoint Email with ESMTPS id E21EEC56EB078;
         Mon,  9 Jan 2017 20:53:17 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
@@ -12,14 +12,17 @@ Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 0/10] KVM: MIPS: Implement GPA page tables and shadow flushing
-Date:   Mon, 9 Jan 2017 20:51:52 +0000
-Message-ID: <cover.4133d2f24fd73c1889a46ea05bb8924867b33747.1483993967.git-series.james.hogan@imgtec.com>
+        <kvm@vger.kernel.org>
+Subject: [PATCH 1/10] MIPS: Add return errors to protected cache ops
+Date:   Mon, 9 Jan 2017 20:51:53 +0000
+Message-ID: <0e04ff4dd4267b0d9c08d44a4f535e7223a070ea.1483993967.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
+In-Reply-To: <cover.4133d2f24fd73c1889a46ea05bb8924867b33747.1483993967.git-series.james.hogan@imgtec.com>
+References: <cover.4133d2f24fd73c1889a46ea05bb8924867b33747.1483993967.git-series.james.hogan@imgtec.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [192.168.154.110]
@@ -27,7 +30,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56235
+X-archive-position: 56236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,74 +47,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Note: My intention is to take this series via the MIPS KVM tree along
-with the others for v4.11, with a topic branch containing the MIPS
-architecture change, so an ack is welcome for patch 1 in particular.
+The protected cache ops contain no out of line fixup code to return an
+error code in the event of a fault, with the cache op being skipped in
+that case. For KVM however we'd like to detect this case as page
+faulting will be disabled so it could happen during normal operation if
+the GVA page tables were flushed, and need to be handled by the caller.
 
-This series first converts MIPS KVM to use page tables for its GPA ->
-HPA mappings instead of a linear array. The linear array was only really
-meant to be temporary, and isn't sparse so its wasteful of memory. It
-also never handled resizing of the array for multiple or changed memory
-regions, which a sparse page table pretty much handles automatically.
+Add the out-of-line fixup code to load the error value -EFAULT into the
+return variable, and adapt the protected cache line functions to pass
+the error back to the caller.
 
-We then go on to implement the shadow flushing architecture callbacks to
-allow the mappings (page tables and TLB entries) to be flushed in
-response to memory region changes. This is fairly straightforward for
-GPA which is shared between VCPUs as the kvm->mmu_lock can protect it,
-but GVA page tables are specific to a VCPU so are accessed locklessly.
-This would make it unsafe to directly modify any GVA page tables, so we
-wire up the TLB flush VCPU request so that we can tell a possibly
-running VCPU to flush its own GVA mappings.
-
-Since MIPS KVM emulation code can also access GVA mappings directly, we
-use the READING_SHADOW_PAGE_TABLES VCPU mode similar to how x86 does to
-locklessly protect these accesses. This ensures that either the flush
-will take place before the GVA access, or an IPI will be sent to confirm
-receipt of the request which will be delayed until after the GVA access
-is complete.
-
-The patches are roughly grouped as follows:
-
-Patch 1:
-  This is a MIPS architecture change needed for patch 9. As I mentioned
-  above I intend to combine this into a topic branch which can be merged
-  into both the MIPS architecture tree and the MIPS KVM tree.
-
-Patch 2:
-  This singularly converts GPA to use page tables.
-
-Patches 3-10:
-  These implement shadow flushing, first laying the ground work to allow
-  TLB flush requests to work and to protect direct GVA access from
-  asynchronous flush requests.
-
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
+---
+ arch/mips/include/asm/r4kcache.h | 55 +++++++++++++++++++++------------
+ 1 file changed, 35 insertions(+), 20 deletions(-)
 
-James Hogan (10):
-  MIPS: Add return errors to protected cache ops
-  KVM: MIPS/MMU: Convert guest physical map to page table
-  KVM: MIPS: Update vcpu->mode and vcpu->cpu
-  KVM: MIPS/T&E: Handle TLB invalidation requests
-  KVM: MIPS/T&E: Reduce stale ASID checks
-  KVM: MIPS/T&E: Add lockless GVA access helpers
-  KVM: MIPS/T&E: Use lockless GVA helpers for dyntrans
-  KVM: MIPS/MMU: Use lockless GVA helpers for get_inst()
-  KVM: MIPS/Emulate: Use lockless GVA helpers for cache emulation
-  KVM: MIPS: Implement kvm_arch_flush_shadow_all/memslot
-
- arch/mips/include/asm/kvm_host.h |  35 ++-
- arch/mips/include/asm/r4kcache.h |  55 +++--
- arch/mips/kvm/dyntrans.c         |  26 +-
- arch/mips/kvm/emulate.c          | 149 +++++--------
- arch/mips/kvm/mips.c             |  92 +++++---
- arch/mips/kvm/mmu.c              | 367 ++++++++++++++++++++++++++++----
- arch/mips/kvm/tlb.c              |  35 +---
- arch/mips/kvm/trap_emul.c        | 185 ++++++++++++----
- 8 files changed, 690 insertions(+), 254 deletions(-)
-
+diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
+index b42b513007a2..7227c158cbf8 100644
+--- a/arch/mips/include/asm/r4kcache.h
++++ b/arch/mips/include/asm/r4kcache.h
+@@ -147,49 +147,64 @@ static inline void flush_scache_line(unsigned long addr)
+ }
+ 
+ #define protected_cache_op(op,addr)				\
++({								\
++	int __err = 0;						\
+ 	__asm__ __volatile__(					\
+ 	"	.set	push			\n"		\
+ 	"	.set	noreorder		\n"		\
+ 	"	.set "MIPS_ISA_ARCH_LEVEL"	\n"		\
+-	"1:	cache	%0, (%1)		\n"		\
++	"1:	cache	%1, (%2)		\n"		\
+ 	"2:	.set	pop			\n"		\
++	"	.section .fixup,\"ax\"		\n"		\
++	"3:	li	%0, %3			\n"		\
++	"	j	2b			\n"		\
++	"	.previous			\n"		\
+ 	"	.section __ex_table,\"a\"	\n"		\
+-	"	"STR(PTR)" 1b, 2b		\n"		\
++	"	"STR(PTR)" 1b, 3b		\n"		\
+ 	"	.previous"					\
+-	:							\
+-	: "i" (op), "r" (addr))
++	: "+r" (__err)						\
++	: "i" (op), "r" (addr), "i" (-EFAULT));			\
++	__err;							\
++})
++
+ 
+ #define protected_cachee_op(op,addr)				\
++({								\
++	int __err = 0;						\
+ 	__asm__ __volatile__(					\
+ 	"	.set	push			\n"		\
+ 	"	.set	noreorder		\n"		\
+ 	"	.set	mips0			\n"		\
+ 	"	.set	eva			\n"		\
+-	"1:	cachee	%0, (%1)		\n"		\
++	"1:	cachee	%1, (%2)		\n"		\
+ 	"2:	.set	pop			\n"		\
++	"	.section .fixup,\"ax\"		\n"		\
++	"3:	li	%0, %3			\n"		\
++	"	j	2b			\n"		\
++	"	.previous			\n"		\
+ 	"	.section __ex_table,\"a\"	\n"		\
+-	"	"STR(PTR)" 1b, 2b		\n"		\
++	"	"STR(PTR)" 1b, 3b		\n"		\
+ 	"	.previous"					\
+-	:							\
+-	: "i" (op), "r" (addr))
++	: "+r" (__err)						\
++	: "i" (op), "r" (addr), "i" (-EFAULT));			\
++	__err;							\
++})
+ 
+ /*
+  * The next two are for badland addresses like signal trampolines.
+  */
+-static inline void protected_flush_icache_line(unsigned long addr)
++static inline int protected_flush_icache_line(unsigned long addr)
+ {
+ 	switch (boot_cpu_type()) {
+ 	case CPU_LOONGSON2:
+-		protected_cache_op(Hit_Invalidate_I_Loongson2, addr);
+-		break;
++		return protected_cache_op(Hit_Invalidate_I_Loongson2, addr);
+ 
+ 	default:
+ #ifdef CONFIG_EVA
+-		protected_cachee_op(Hit_Invalidate_I, addr);
++		return protected_cachee_op(Hit_Invalidate_I, addr);
+ #else
+-		protected_cache_op(Hit_Invalidate_I, addr);
++		return protected_cache_op(Hit_Invalidate_I, addr);
+ #endif
+-		break;
+ 	}
+ }
+ 
+@@ -199,21 +214,21 @@ static inline void protected_flush_icache_line(unsigned long addr)
+  * caches.  We're talking about one cacheline unnecessarily getting invalidated
+  * here so the penalty isn't overly hard.
+  */
+-static inline void protected_writeback_dcache_line(unsigned long addr)
++static inline int protected_writeback_dcache_line(unsigned long addr)
+ {
+ #ifdef CONFIG_EVA
+-	protected_cachee_op(Hit_Writeback_Inv_D, addr);
++	return protected_cachee_op(Hit_Writeback_Inv_D, addr);
+ #else
+-	protected_cache_op(Hit_Writeback_Inv_D, addr);
++	return protected_cache_op(Hit_Writeback_Inv_D, addr);
+ #endif
+ }
+ 
+-static inline void protected_writeback_scache_line(unsigned long addr)
++static inline int protected_writeback_scache_line(unsigned long addr)
+ {
+ #ifdef CONFIG_EVA
+-	protected_cachee_op(Hit_Writeback_Inv_SD, addr);
++	return protected_cachee_op(Hit_Writeback_Inv_SD, addr);
+ #else
+-	protected_cache_op(Hit_Writeback_Inv_SD, addr);
++	return protected_cache_op(Hit_Writeback_Inv_SD, addr);
+ #endif
+ }
+ 
 -- 
 git-series 0.8.10

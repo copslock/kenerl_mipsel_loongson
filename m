@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jan 2017 14:42:16 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33346 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jan 2017 14:44:29 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33798 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993016AbdAJNmIbyiHS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jan 2017 14:42:08 +0100
+        by eddie.linux-mips.org with ESMTP id S23993871AbdAJNoVyjvxS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jan 2017 14:44:21 +0100
 Received: from localhost (unknown [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8C572A15;
-        Tue, 10 Jan 2017 13:42:01 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1A3B4B2F;
+        Tue, 10 Jan 2017 13:44:14 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
-        linux-mips@linux-mips.org, jason@lakedaemon.net,
-        marc.zyngier@arm.com, cernekee@gmail.com, jaedon.shin@gmail.com,
-        ralf@linux-mips.org, justinpopo6@gmail.com,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 4.4 081/101] irqchip/bcm7038-l1: Implement irq_cpu_offline() callback
-Date:   Tue, 10 Jan 2017 14:37:34 +0100
-Message-Id: <20170110131525.914901560@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+Subject: [PATCH 4.9 022/206] KVM: MIPS: Dont clobber CP0_Status.UX
+Date:   Tue, 10 Jan 2017 14:35:05 +0100
+Message-Id: <20170110131503.724412936@linuxfoundation.org>
 X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20170110131522.493717794@linuxfoundation.org>
-References: <20170110131522.493717794@linuxfoundation.org>
+In-Reply-To: <20170110131502.767555407@linuxfoundation.org>
+References: <20170110131502.767555407@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56248
+X-archive-position: 56249
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,75 +44,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 34c535793bcbf9263cf22f8a52101f796cdfab8e upstream.
+commit 4c881451d3017033597ea186cf79ae41a73e1ef8 upstream.
 
-We did not implement an irq_cpu_offline callback for our irqchip, yet we
-support setting a given IRQ's affinity. This resulted in interrupts
-whose affinity mask included CPUs being taken offline not to work
-correctly once the CPU had been put offline.
+On 64-bit kernels, MIPS KVM will clear CP0_Status.UX to prevent the
+guest (running in user mode) from accessing the 64-bit memory segments.
+However the previous value of CP0_Status.UX is never restored when
+exiting from the guest.
 
-Fixes: 5f7f0317ed28 ("IRQCHIP: Add new driver for BCM7038-style level 1 interrupt controllers")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+If the user process uses 64-bit addressing (the n64 ABI) this can result
+in address error exceptions from the kernel if it needs to deliver a
+signal before returning to user mode, as the kernel will need to write a
+sigframe to high user addresses on the user stack which are disallowed
+by CP0_Status.UX=0.
+
+This is fixed by explicitly setting SX and UX again when exiting from
+the guest, and explicitly clearing those bits when returning to the
+guest. Having the SX and UX bits set when handling guest exits (rather
+than only when exiting to userland) will be helpful when we support VZ,
+since we shouldn't need to directly read or write guest memory, so it
+will be valid for cache management IPIs to access host user addresses.
+
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: jason@lakedaemon.net
-Cc: marc.zyngier@arm.com
-Cc: cernekee@gmail.com
-Cc: jaedon.shin@gmail.com
-Cc: ralf@linux-mips.org
-Cc: justinpopo6@gmail.com
-Link: http://lkml.kernel.org/r/1477948656-12966-2-git-send-email-f.fainelli@gmail.com
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: kvm@vger.kernel.org
+Signed-off-by: Radim Krčmář <rkrcmar@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- drivers/irqchip/irq-bcm7038-l1.c |   26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/mips/kvm/entry.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-bcm7038-l1.c
-+++ b/drivers/irqchip/irq-bcm7038-l1.c
-@@ -216,6 +216,31 @@ static int bcm7038_l1_set_affinity(struc
- 	return 0;
- }
+--- a/arch/mips/kvm/entry.c
++++ b/arch/mips/kvm/entry.c
+@@ -521,6 +521,9 @@ void *kvm_mips_build_exit(void *addr)
+ 	uasm_i_and(&p, V0, V0, AT);
+ 	uasm_i_lui(&p, AT, ST0_CU0 >> 16);
+ 	uasm_i_or(&p, V0, V0, AT);
++#ifdef CONFIG_64BIT
++	uasm_i_ori(&p, V0, V0, ST0_SX | ST0_UX);
++#endif
+ 	uasm_i_mtc0(&p, V0, C0_STATUS);
+ 	uasm_i_ehb(&p);
  
-+static void bcm7038_l1_cpu_offline(struct irq_data *d)
-+{
-+	struct cpumask *mask = irq_data_get_affinity_mask(d);
-+	int cpu = smp_processor_id();
-+	cpumask_t new_affinity;
-+
-+	/* This CPU was not on the affinity mask */
-+	if (!cpumask_test_cpu(cpu, mask))
-+		return;
-+
-+	if (cpumask_weight(mask) > 1) {
-+		/*
-+		 * Multiple CPU affinity, remove this CPU from the affinity
-+		 * mask
-+		 */
-+		cpumask_copy(&new_affinity, mask);
-+		cpumask_clear_cpu(cpu, &new_affinity);
-+	} else {
-+		/* Only CPU, put on the lowest online CPU */
-+		cpumask_clear(&new_affinity);
-+		cpumask_set_cpu(cpumask_first(cpu_online_mask), &new_affinity);
-+	}
-+	irq_set_affinity_locked(d, &new_affinity, false);
-+}
-+
- static int __init bcm7038_l1_init_one(struct device_node *dn,
- 				      unsigned int idx,
- 				      struct bcm7038_l1_chip *intc)
-@@ -267,6 +292,7 @@ static struct irq_chip bcm7038_l1_irq_ch
- 	.irq_mask		= bcm7038_l1_mask,
- 	.irq_unmask		= bcm7038_l1_unmask,
- 	.irq_set_affinity	= bcm7038_l1_set_affinity,
-+	.irq_cpu_offline	= bcm7038_l1_cpu_offline,
- };
+@@ -643,7 +646,7 @@ static void *kvm_mips_build_ret_to_guest
  
- static int bcm7038_l1_map(struct irq_domain *d, unsigned int virq,
+ 	/* Setup status register for running guest in UM */
+ 	uasm_i_ori(&p, V1, V1, ST0_EXL | KSU_USER | ST0_IE);
+-	UASM_i_LA(&p, AT, ~(ST0_CU0 | ST0_MX));
++	UASM_i_LA(&p, AT, ~(ST0_CU0 | ST0_MX | ST0_SX | ST0_UX));
+ 	uasm_i_and(&p, V1, V1, AT);
+ 	uasm_i_mtc0(&p, V1, C0_STATUS);
+ 	uasm_i_ehb(&p);

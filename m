@@ -1,60 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2017 00:32:59 +0100 (CET)
-Received: from frisell.zx2c4.com ([192.95.5.64]:37567 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993869AbdAJXcxHuJg7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jan 2017 00:32:53 +0100
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id da3231dc;
-        Tue, 10 Jan 2017 23:22:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :in-reply-to:references:from:date:message-id:subject:to:cc
-        :content-type; s=mail; bh=ldXK7MO5Xl7Ewp1fOl60Z6GvN/o=; b=2WJBvB
-        BSNOtE1As/osWMZhecmqXL1dL+zt1dKt+jWFN9mHTvOUxa4W3FiiYfcPPWb32NVg
-        aA4F3IkrmqfhYFM92q0s7lTOaELRJjvfQkSXAxBc1prB2uOaFTCm+Px9SlrIBiF+
-        fYNsBnAuBTGwtHztXp0MIMhvZxFExA+8JBCJa4eWLdjN0VfEYzwopPSnSCSSJN3g
-        nAY+L+Gx8xhAtBF2b23kryY48PGuLteETMd0fl6gpBZGaFbie0kRR0VEqVs0w+Ku
-        NIkeKfUuNtZbVurSay2AA3yP8MlzA2FFD9ViEe+7h2zpbSYqLTb9IvIrYmGP69zD
-        ibrS25a/j9SmydzA==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c96586d4 (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO);
-        Tue, 10 Jan 2017 23:22:52 +0000 (UTC)
-Received: by mail-oi0-f43.google.com with SMTP id w204so68871666oiw.0;
-        Tue, 10 Jan 2017 15:32:39 -0800 (PST)
-X-Gm-Message-State: AIkVDXJmJo+BkagN5cq206AIwlO04mDq0aqGYaipYUPYm9jCxx0JUaYfSRaS02gER+ZpedqKK/x+ogowUuOY1A==
-X-Received: by 10.157.12.217 with SMTP id o25mr2584344otd.94.1484091158901;
- Tue, 10 Jan 2017 15:32:38 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.157.14.167 with HTTP; Tue, 10 Jan 2017 15:32:38 -0800 (PST)
-In-Reply-To: <CAHmME9pRnCW5875vL=mr_D0Lq8nPZ69L-7gVaaHuO7EMTBp6Ew@mail.gmail.com>
-References: <1482157260-18730-1-git-send-email-matt.redfearn@imgtec.com> <CAHmME9pRnCW5875vL=mr_D0Lq8nPZ69L-7gVaaHuO7EMTBp6Ew@mail.gmail.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Wed, 11 Jan 2017 00:32:38 +0100
-X-Gmail-Original-Message-ID: <CAHmME9ogK=NsWgks2Uarty5AeWSZuYmujjBovQO6FWAAXKsopQ@mail.gmail.com>
-Message-ID: <CAHmME9ogK=NsWgks2Uarty5AeWSZuYmujjBovQO6FWAAXKsopQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] MIPS: Add per-cpu IRQ stack
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Petr Mladek <pmladek@suse.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Aaron Tomlin <atomlin@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <Jason@zx2c4.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2017 00:38:40 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:47825 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993871AbdAJXidZ9k37 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2017 00:38:33 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=References:In-Reply-To:Message-Id:Date:Subject:
+        Cc:To:From; bh=cOQ9n6zvmGhqdotDLXYVY004DCDqQGrVIqJpG3nUhr4=; b=CvaoGcCtjN0gPf
+        LhVXjNiAXjczC5OkgysV0dP2GrEUEndKpOd2/dDaVdFNz1/o/firgtsZjRYI+scJNmnWi7kfEjbW6
+        VfOtTzOHIABRlTCaEgfuba9TGXW2TW4R5idRbFuvgxrHcMySXqlKZZS65hazGn4TaTjWM4OAWGxFq
+        uqdVf7vV6wHRPb4sU6Kh9yIRWrBprcCEF6uf3yoZqR6mnJBzqNWDJYUkYJVCAuWuW2kKv/dMRmr/7
+        V8Yrh2ICCn0jZdx8OGASRny6oCU1lKZCAYc90nQO5Ru0SB3vRu2+E/3+QtUebRkLne0vu+67u9rjS
+        LEZKVtajTfyzTr5lY7Yg==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:41140 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1cR5zm-0037f6-FM; Tue, 10 Jan 2017 23:38:26 +0000
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Wim Van Sebroeck <wim@iguana.be>
+Cc:     linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        linux-mips@linux-mips.org
+Subject: [PATCH 26/62] watchdog: loongson1_wdt: Convert to use device managed functions
+Date:   Tue, 10 Jan 2017 15:34:43 -0800
+Message-Id: <1484091325-9199-27-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1484091325-9199-1-git-send-email-linux@roeck-us.net>
+References: <1484091325-9199-1-git-send-email-linux@roeck-us.net>
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56252
+X-archive-position: 56253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,4 +60,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Was this ever picked up for 4.10 or 4.11?
+Use device managed functions to simplify error handling, reduce
+source code size, improve readability, and reduce the likelyhood of bugs.
+
+The conversion was done automatically with coccinelle using the
+following semantic patches. The semantic patches and the scripts used
+to generate this commit log are available at
+https://github.com/groeck/coccinelle-patches
+
+- Use devm_add_action_or_reset() for calls to clk_disable_unprepare
+- Replace 'goto l; ... l: return e;' with 'return e;'
+- Replace 'val = e; return val;' with 'return e;'
+- Drop assignments to otherwise unused variables
+- Replace 'if (e) { return expr; }' with 'if (e) return expr;'
+- Drop remove function
+- Drop platform_set_drvdata()
+- Use devm_watchdog_register_driver() to register watchdog device
+
+Cc: Keguang Zhang <keguang.zhang@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/watchdog/loongson1_wdt.c | 31 +++++++++----------------------
+ 1 file changed, 9 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/watchdog/loongson1_wdt.c b/drivers/watchdog/loongson1_wdt.c
+index 3aee50c64a36..36f0c7e02745 100644
+--- a/drivers/watchdog/loongson1_wdt.c
++++ b/drivers/watchdog/loongson1_wdt.c
+@@ -109,12 +109,15 @@ static int ls1x_wdt_probe(struct platform_device *pdev)
+ 		dev_err(&pdev->dev, "clk enable failed\n");
+ 		return err;
+ 	}
++	err = devm_add_action_or_reset(&pdev->dev,
++				       (void(*)(void *))clk_disable_unprepare,
++				       drvdata->clk);
++	if (err)
++		return err;
+ 
+ 	clk_rate = clk_get_rate(drvdata->clk);
+-	if (!clk_rate) {
+-		err = -EINVAL;
+-		goto err0;
+-	}
++	if (!clk_rate)
++		return -EINVAL;
+ 	drvdata->clk_rate = clk_rate;
+ 
+ 	ls1x_wdt = &drvdata->wdt;
+@@ -129,35 +132,19 @@ static int ls1x_wdt_probe(struct platform_device *pdev)
+ 	watchdog_set_nowayout(ls1x_wdt, nowayout);
+ 	watchdog_set_drvdata(ls1x_wdt, drvdata);
+ 
+-	err = watchdog_register_device(&drvdata->wdt);
++	err = devm_watchdog_register_device(&pdev->dev, &drvdata->wdt);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "failed to register watchdog device\n");
+-		goto err0;
++		return err;
+ 	}
+ 
+-	platform_set_drvdata(pdev, drvdata);
+-
+ 	dev_info(&pdev->dev, "Loongson1 Watchdog driver registered\n");
+ 
+ 	return 0;
+-err0:
+-	clk_disable_unprepare(drvdata->clk);
+-	return err;
+-}
+-
+-static int ls1x_wdt_remove(struct platform_device *pdev)
+-{
+-	struct ls1x_wdt_drvdata *drvdata = platform_get_drvdata(pdev);
+-
+-	watchdog_unregister_device(&drvdata->wdt);
+-	clk_disable_unprepare(drvdata->clk);
+-
+-	return 0;
+ }
+ 
+ static struct platform_driver ls1x_wdt_driver = {
+ 	.probe = ls1x_wdt_probe,
+-	.remove = ls1x_wdt_remove,
+ 	.driver = {
+ 		.name = "ls1x-wdt",
+ 	},
+-- 
+2.7.4

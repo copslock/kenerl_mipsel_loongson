@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2017 07:46:20 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:56366 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2017 07:47:55 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:56580 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993881AbdAKGqMV4Nym (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2017 07:46:12 +0100
+        by eddie.linux-mips.org with ESMTP id S23993883AbdAKGrtLgRdm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2017 07:47:49 +0100
 Received: from localhost (unknown [78.192.101.3])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F3431A58;
-        Wed, 11 Jan 2017 06:46:02 +0000 (UTC)
-Date:   Wed, 11 Jan 2017 07:46:24 +0100
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E3891958;
+        Wed, 11 Jan 2017 06:47:41 +0000 (UTC)
+Date:   Wed, 11 Jan 2017 07:48:03 +0100
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Bart Van Assche <bart.vanassche@sandisk.com>
 Cc:     Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
@@ -53,7 +53,7 @@ Cc:     Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
         nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
         sparclinux@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp
 Subject: Re: [PATCH 2/9] Move dma_ops from archdata into struct device
-Message-ID: <20170111064624.GA26893@kroah.com>
+Message-ID: <20170111064803.GB26893@kroah.com>
 References: <20170111005648.14988-1-bart.vanassche@sandisk.com>
  <20170111005648.14988-3-bart.vanassche@sandisk.com>
 MIME-Version: 1.0
@@ -65,7 +65,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56257
+X-archive-position: 56258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -89,85 +89,14 @@ On Tue, Jan 10, 2017 at 04:56:41PM -0800, Bart Van Assche wrote:
 > drivers transfer data. Make this possible by allowing these drivers to
 > override the dma_map_ops pointer. Additionally, introduce the function
 > set_dma_ops() that will be used by a later patch in this series.
-> 
-> Signed-off-by: Bart Van Assche <bart.vanassche@sandisk.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Aurelien Jacquiot <a-jacquiot@ti.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Chris Zankel <chris@zankel.net>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: David S. Miller <davem@davemloft.net>
-> Cc: Fenghua Yu <fenghua.yu@intel.com>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Geoff Levand <geoff@infradead.org>
-> Cc: H. Peter Anvin <hpa@zytor.com>
-> Cc: Haavard Skinnemoen <hskinnemoen@gmail.com>
-> Cc: Hans-Christian Egtvedt <egtvedt@samfundet.no>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: James E.J. Bottomley <jejb@parisc-linux.org>
-> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
-> Cc: Joerg Roedel <joro@8bytes.org>
-> Cc: Jon Mason <jdmason@kudzu.us>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Ley Foon Tan <lftan@altera.com>
-> Cc: Mark Salter <msalter@redhat.com>
-> Cc: Max Filippov <jcmvbkbc@gmail.com>
-> Cc: Mikael Starvik <starvik@axis.com>
-> Cc: Muli Ben-Yehuda <mulix@mulix.org>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Will Deacon <will.deacon@arm.com>
-> Cc: x86@kernel.org
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: adi-buildroot-devel@lists.sourceforge.net
-> Cc: iommu@lists.linux-foundation.org
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-am33-list@redhat.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-c6x-dev@linux-c6x.org
-> Cc: linux-cris-kernel@axis.com
-> Cc: linux-hexagon@vger.kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: linux-metag@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linux-pci@vger.kernel.org
-> Cc: linux-rdma@vger.kernel.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-xtensa@linux-xtensa.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: nios2-dev@lists.rocketboards.org
-> Cc: openrisc@lists.librecores.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: uclinux-h8-devel@lists.sourceforge.jp
 
-That's a crazy cc: list, you should break this up into smaller pieces,
-otherwise it's going to bounce...
+When you say things like "additionally", that's a huge flag that this
+needs to be split up into multiple patches.  No need to add
+set_dma_ops() here in this patch.
 
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 491b4c0ca633..c7cb225d36b0 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -885,6 +885,8 @@ struct dev_links_info {
->   * a higher-level representation of the device.
->   */
->  struct device {
-> +	const struct dma_map_ops *dma_ops; /* See also get_dma_ops() */
-> +
->  	struct device		*parent;
->  
->  	struct device_private	*p;
-
-Why not put this new pointer down with the other dma fields in this
-structure?  Any specific reason it needs to be first?
+And I'd argue that it should be dma_ops_set(), and dma_ops_get(), just
+to keep the namespace sane, but that's probably a different set of
+patches...
 
 thanks,
 

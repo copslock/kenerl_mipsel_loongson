@@ -1,40 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2017 15:32:05 +0100 (CET)
-Received: from mout.kundenserver.de ([217.72.192.75]:64526 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993891AbdAKOblAwJgP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2017 15:31:41 +0100
-Received: from wuerfel.lan ([78.43.21.235]) by mrelayeu.kundenserver.de
- (mreue104 [212.227.15.145]) with ESMTPA (Nemesis) id
- 0Lilwb-1d22ew3bTB-00cvya; Wed, 11 Jan 2017 15:31:27 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2017 15:45:42 +0100 (CET)
+Received: from mail-oi0-x241.google.com ([IPv6:2607:f8b0:4003:c06::241]:32961
+        "EHLO mail-oi0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993891AbdAKOpfkoLlP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2017 15:45:35 +0100
+Received: by mail-oi0-x241.google.com with SMTP id j15so22162200oih.0;
+        Wed, 11 Jan 2017 06:45:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=DOgPxh9QLdZSfeWcdt14hHX8Rhk9e9JOAuvOzLwq9ls=;
+        b=DV5H7504ZK5JijH0wxJ/eQmGt7Jnymv5jdwKveiCwaMEl0ZGM6ukZPbzOcFKFwYdVf
+         9dZNWxh0ecNvX0mGaXOKmDNlcXlYO1xQ88hKOFYKaD9Ebgwg4h+gilhi6EB35b0790/d
+         5qfJVhWJDrSkJk6LMbd5Gd1qoKGUmH4+dl2BaQPNNiFFdROXPnsHSxCov6NxsHDca5On
+         B9yQfHk3HxXaBP+Tn8ykSYjY/bbBgcwkvQHWB/QoZwS3MDgbYCWwNVMYfGt3m75tMpA9
+         ZwAJ0leCfJqO3THeIqFh2B+WxLGQB8MRJ5HQQgLl3XAcS+blMZ8oSndu85FZJyV38rOL
+         X1yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=DOgPxh9QLdZSfeWcdt14hHX8Rhk9e9JOAuvOzLwq9ls=;
+        b=C2EXhzrsFGPETnjHsY4ghCklQ/ipAf2WMxEBlvHl/LTVLV9qdd5uJGpuB6+MpkxUsp
+         o9DdQDVHNpxkjh0KMRVryvNOaCJtaShcXwdELhhsEeqUkgK3KlZm4ttlVk6RoAv7mDeR
+         +4WjHWro58fXXmXuY110bkoe35Vdb41unm2Cq3QRHWHZy8ZLU/VN+I6DPImD263HaqiT
+         rVNTeVEpepKszcLq6HPieodJY1egPJv9jC9pb4bEZlY44I1hEhQ76/Viya7u8cseXKb9
+         b8sauD7Y95oibCHMafx8FIiKsCIAUk1H2wSvjB1H1ndQaAi+fVir64wdjn3Q2dRTcbsH
+         DHMA==
+X-Gm-Message-State: AIkVDXIAhjJAWRNKIwsi2+1atqVUzV183xnwnfecC0GksyYHor/VZZgIGh3XRkJEn0DgIEz76GnPYSI4mV3R7A==
+X-Received: by 10.157.47.234 with SMTP id b39mr4798060otd.0.1484145929776;
+ Wed, 11 Jan 2017 06:45:29 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.157.6.196 with HTTP; Wed, 11 Jan 2017 06:45:29 -0800 (PST)
+In-Reply-To: <58761c54.ce941c0a.d3222.1282@mx.google.com>
+References: <58761c54.ce941c0a.d3222.1282@mx.google.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-To:     Ralf Baechle <ralf@linux-mips.org>, Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] mips: update ip27_defconfig for SCSI_DH change
-Date:   Wed, 11 Jan 2017 15:29:50 +0100
-Message-Id: <20170111143054.410084-3-arnd@arndb.de>
-X-Mailer: git-send-email 2.9.0
-In-Reply-To: <20170111143054.410084-1-arnd@arndb.de>
-References: <20170111143054.410084-1-arnd@arndb.de>
-X-Provags-ID: V03:K0:E/bbxrBv+85dTidMheNyiOXSgfwnbb6nOpinzBWKEM/6qiMcSr0
- ORHvDlWMlnJnWEGJhFVv7MyMEz7i2CvRp/gz5qtKuGADUnHiKdvJXnTNBWPM8kdS5+JpF2W
- r/71/ysZybYPuH2txahXORgVxXsE210OraxPibG6CD1oRDYhjLuxnGLRUFho/+W4e8DYadO
- 14uSGxYhB6fUDuqVzXt0g==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:33Xvq9rW+wE=:GYmU7ThLjoU/DgYPObjMS7
- +RyVhsbhsBNZpQIFHvGfXvLD2xOe9I3sJ7auPcmHuPFwngfk9R+kHt8ne+0KBSIwJjWfDosjj
- bWrshly1wQySCmkTEk+LePabFfKIS7qXZYhYGCYfuoYmoRbwrWX2DlkrkF8/JvHJfSGn48oho
- qIO0MUXkanh1s2G29Q2XY/6WcNDkmPCEkWseNY1b+dnlgFTgwDz8UzamKxtWP9fJGCm2aEOjJ
- 3RMfTcWYYei5CzQ6bj4ajdHw+Vq4mZgcRM1VDI69T8covWcB5XIBQoNIapwsVZ7sH31UNozU7
- //7EJnV7nTgJkxx6tyCZdsPrUs4FUqP776DfzyP7RnJ39w0F+rS6S/5968Mm39CGQt2DUxmhK
- FRjUfHFjAGgToStCG7L/3VLj1zL0Ga6liecrE6KPQ16kxOkad/H/f7g1L2Hcj3e4OgE8EpBqA
- 81LHamX5kvdoz7iQEbubh3saczzjreBkejkYICOSsvyBKdr+hBbc5Kb4Rv8yefE6LrKGeBr9P
- Ah6AI7oU4mwIBRQgGi447xRQSBasoXzhp4oFFtKRn0Vm3R9ft4va/9XOVTAC1WagH3UXCSnHX
- UE++HXj2tz25f2K/nmfbmvv/aO7vftl6VG23zhjmSg7KglBf9Lp0t+o0MS/S+tP3XbW7Y788A
- gqrRxFe5BjfYap0MytKn8w79mV8UnkxcSaROrobB2i6adLM4mcvPOS0WWFLPxW0dM9FQ=
-Return-Path: <arnd@arndb.de>
+Date:   Wed, 11 Jan 2017 15:45:29 +0100
+X-Google-Sender-Auth: 9w7adFmb_UDk4cQLiWhmJAX0UTk
+Message-ID: <CAK8P3a2-KdJgQ6fsHairEQKi_v4OCu8LEn8ta2aQyrD-UpUkSQ@mail.gmail.com>
+Subject: Re: next build: 207 builds: 21 failed, 186 passed, 8 errors, 11487
+ warnings (next-20170111)
+To:     "kernelci.org bot" <bot@kernelci.org>
+Cc:     kernel-build-reports@lists.linaro.org,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56263
+X-archive-position: 56264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,31 +66,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since linux-4.3, SCSI_DH is a bool symbol, causing a warning in
-kernelci.org:
+On Wed, Jan 11, 2017 at 12:51 PM, kernelci.org bot <bot@kernelci.org> wrote:
+>
+> Build Failures Detected:
+>
+> mips: gcc version 6.3.0 (GCC)
+> ar7_defconfig FAIL
+> ath79_defconfig FAIL
+> ci20_defconfig FAIL
+> db1xxx_defconfig FAIL
+> fuloong2e_defconfig FAIL
+> gpr_defconfig FAIL
+> ip27_defconfig FAIL
+> ip28_defconfig FAIL
+> lemote2f_defconfig FAIL
+> loongson1b_defconfig FAIL
+> loongson1c_defconfig FAIL
+> loongson3_defconfig FAIL
+> mtx1_defconfig FAIL
+> nlm_xlp_defconfig FAIL
+> nlm_xlr_defconfig FAIL
+> pistachio_defconfig FAIL
+> qi_lb60_defconfig FAIL
+> xilfpga_defconfig FAIL
+> xway_defconfig FAIL
 
-arch/mips/configs/ip27_defconfig:136:warning: symbol value 'm' invalid for SCSI_DH
+This is probably caused by commit
+576a2f0c5c6d ("MIPS: Export memcpy & memset functions alongside their
+definitions")
 
-This updates the defconfig to have the feature built-in.
+The reason for this being the combination of modern binutils (post
+2.26), CONFIG_MODVERSIONS and the absence of
+arch/mips/include/asm/asm-prototypes.h, which should include whichever
+files declare the symbols below.
 
-Fixes: 086b91d052eb ("scsi_dh: integrate into the core SCSI code")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/configs/ip27_defconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+    Arnd
 
-diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-index 2b74aee320a1..18f024967dcd 100644
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -133,7 +133,7 @@ CONFIG_LIBFC=m
- CONFIG_SCSI_QLOGIC_1280=y
- CONFIG_SCSI_PMCRAID=m
- CONFIG_SCSI_BFA_FC=m
--CONFIG_SCSI_DH=m
-+CONFIG_SCSI_DH=y
- CONFIG_SCSI_DH_RDAC=m
- CONFIG_SCSI_DH_HP_SW=m
- CONFIG_SCSI_DH_EMC=m
--- 
-2.9.0
+> Warnings summary:
+> 53 WARNING: "memset" [crypto/sha256_generic.ko] has no CRC!
+> 53 WARNING: "memset" [crypto/echainiv.ko] has no CRC!
+> 53 WARNING: "memset" [crypto/drbg.ko] has no CRC!
+> 53 WARNING: "memcpy" [crypto/sha256_generic.ko] has no CRC!
+> 53 WARNING: "memcpy" [crypto/jitterentropy_rng.ko] has no CRC!
+> 53 WARNING: "memcpy" [crypto/echainiv.ko] has no CRC!
+
+> 35 WARNING: "__copy_user" [fs/fat/fat.ko] has no CRC!
+> 34 WARNING: "memcpy" [lib/zlib_inflate/zlib_inflate.ko] has no CRC!
+> 32 WARNING: EXPORT symbol "memset" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "memmove" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "memcpy" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "copy_page" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "clear_page" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "_save_fp" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__strnlen_kernel_nocheck_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__strnlen_kernel_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__strncpy_from_user_nocheck_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__strncpy_from_user_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__strncpy_from_kernel_nocheck_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__strncpy_from_kernel_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__strlen_kernel_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__copy_user_inatomic" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__copy_user" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: EXPORT symbol "__bzero" [vmlinux] version generation failed, symbol will not be versioned.
+> 32 WARNING: "__copy_user" [net/ipv6/ip6_tunnel.ko] has no CRC!
+> 31 WARNING: EXPORT symbol "csum_partial_copy_nocheck" [vmlinux] version generation failed, symbol will not be versioned.
+> 31 WARNING: EXPORT symbol "csum_partial" [vmlinux] version generation failed, symbol will not be versioned.
+> 31 WARNING: EXPORT symbol "__csum_partial_copy_kernel" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "__strlen_kernel_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "__strncpy_from_kernel_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "__csum_partial_copy_from_user" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "memset" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "__csum_partial_copy_to_user" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "__csum_partial_copy_kernel" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "__strncpy_from_kernel_nocheck_asm" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "csum_partial" [vmlinux] version generation failed, symbol will not be versioned.
+> WARNING: EXPORT symbol "__strncpy_from_user_asm" [vmlinux] version generation failed, symbol will not be versioned.

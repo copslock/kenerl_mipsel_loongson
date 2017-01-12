@@ -1,62 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jan 2017 00:33:17 +0100 (CET)
-Received: from frisell.zx2c4.com ([192.95.5.64]:45430 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993911AbdAKXdJMrM7C (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 12 Jan 2017 00:33:09 +0100
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 48a145ce;
-        Wed, 11 Jan 2017 23:23:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :in-reply-to:references:from:date:message-id:subject:to:cc
-        :content-type; s=mail; bh=ecnswFMhAS9CMZjfspjrvaWycVQ=; b=EKVopB
-        GUrcZ8MFyj+6T71RdhvGXWPzzzQjfdh0myvnCOTyrKD1R6cXasn4BJ3RHtA8w0H/
-        +w8byYNCxvqW8Fsh1EtRUcemk5wcWjVAUdvV85AHKvgw9KR7m6yJombODLerkhfK
-        Y1azKKDYdzDURohHoLtntK0c4qz8mcInpmDSxVoQuFD7Vjt+Y5Z9V8EQoNN2rD5E
-        6+/CNT7wvuIz93eMlDD2hGvKpZIqNwhzvLYSxqiz1Ox2u8VoC0cXTUrjCTELDajg
-        y8lsLCMWIGXOVizQIbpS0rm7v/WQoccecLIV6+1T+THhF6OEUAhZi2/R9LjDSOa9
-        bGykiF300+R/VOjQ==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 157f9549 (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO);
-        Wed, 11 Jan 2017 23:22:59 +0000 (UTC)
-Received: by mail-oi0-f49.google.com with SMTP id w204so4345875oiw.0;
-        Wed, 11 Jan 2017 15:32:54 -0800 (PST)
-X-Gm-Message-State: AIkVDXK/MaOVUZ8HpdQ8ivZQgK/VH4yS6cOyWqCiQQ4eVDTZhlAnPV+HH255H7Zp4y4mknlBb5OZbOTGxI5tkg==
-X-Received: by 10.202.181.70 with SMTP id e67mr5029805oif.3.1484177573455;
- Wed, 11 Jan 2017 15:32:53 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jan 2017 08:35:03 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38794 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992800AbdALHe44WGWb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Jan 2017 08:34:56 +0100
+Received: from localhost (unknown [78.192.101.3])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 5AC796C;
+        Thu, 12 Jan 2017 07:34:48 +0000 (UTC)
+Date:   Thu, 12 Jan 2017 08:35:11 +0100
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     Bart Van Assche <Bart.VanAssche@sandisk.com>
+Cc:     "geert@linux-m68k.org" <geert@linux-m68k.org>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "jesper.nilsson@axis.com" <jesper.nilsson@axis.com>,
+        "mulix@mulix.org" <mulix@mulix.org>,
+        "hpa@zytor.com" <hpa@zytor.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "geoff@infradead.org" <geoff@infradead.org>,
+        "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-am33-list@redhat.com" <linux-am33-list@redhat.com>,
+        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "a-jacquiot@ti.com" <a-jacquiot@ti.com>,
+        "dalias@libc.org" <dalias@libc.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "nios2-dev@lists.rocketboards.org" <nios2-dev@lists.rocketboards.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "shorne@gmail.com" <shorne@gmail.com>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "lftan@altera.com" <lftan@altera.com>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "jdmason@kudzu.us" <jdmason@kudzu.us>,
+        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
+        "chris@zankel.net" <chris@zankel.net>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "fenghua.yu@intel.com" <fenghua.yu@intel.com>,
+        "jejb@parisc-linux.org" <jejb@parisc-linux.org>,
+        "linux-snps-arc@lists.infradead.org" 
+        <linux-snps-arc@lists.infradead.org>,
+        "msalter@redhat.com" <msalter@redhat.com>,
+        "dledford@redhat.com" <dledford@redhat.com>,
+        "adi-buildroot-devel@lists.sourceforge.net" 
+        <adi-buildroot-devel@lists.sourceforge.net>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-metag@vger.kernel.org" <linux-metag@vger.kernel.org>,
+        "ysato@users.sourceforge.jp" <ysato@users.sourceforge.jp>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "starvik@axis.com" <starvik@axis.com>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "hskinnemoen@gmail.com" <hskinnemoen@gmail.com>,
+        "tony.luck@intel.com" <tony.luck@intel.com>,
+        "uclinux-h8-devel@lists.sourceforge.jp" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stefan.kristiansson@saunalahti.fi" 
+        <stefan.kristiansson@saunalahti.fi>,
+        "jonas@southpole.se" <jonas@southpole.se>,
+        "egtvedt@samfundet.no" <egtvedt@samfundet.no>
+Subject: Re: [PATCH 2/9] Move dma_ops from archdata into struct device
+Message-ID: <20170112073511.GA23347@kroah.com>
+References: <20170111005648.14988-1-bart.vanassche@sandisk.com>
+ <20170111005648.14988-3-bart.vanassche@sandisk.com>
+ <20170111064803.GB26893@kroah.com>
+ <1484158589.2619.14.camel@sandisk.com>
+ <20170111203100.GB17895@kroah.com>
+ <1484173670.2619.28.camel@sandisk.com>
 MIME-Version: 1.0
-Received: by 10.157.14.167 with HTTP; Wed, 11 Jan 2017 15:32:52 -0800 (PST)
-In-Reply-To: <20170111012032.GE31072@linux-mips.org>
-References: <1482157260-18730-1-git-send-email-matt.redfearn@imgtec.com>
- <CAHmME9pRnCW5875vL=mr_D0Lq8nPZ69L-7gVaaHuO7EMTBp6Ew@mail.gmail.com>
- <CAHmME9ogK=NsWgks2Uarty5AeWSZuYmujjBovQO6FWAAXKsopQ@mail.gmail.com> <20170111012032.GE31072@linux-mips.org>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Thu, 12 Jan 2017 00:32:52 +0100
-X-Gmail-Original-Message-ID: <CAHmME9qXeO=qFvWXenVO6gVAftk1M2vdQt7nwABRDqvDcV3dPg@mail.gmail.com>
-Message-ID: <CAHmME9qXeO=qFvWXenVO6gVAftk1M2vdQt7nwABRDqvDcV3dPg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] MIPS: Add per-cpu IRQ stack
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Petr Mladek <pmladek@suse.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Aaron Tomlin <atomlin@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <Jason@zx2c4.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1484173670.2619.28.camel@sandisk.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56278
+X-archive-position: 56279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,19 +106,21 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 11, 2017 at 2:20 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Wed, Jan 11, 2017 at 12:32:38AM +0100, Jason A. Donenfeld wrote:
->
->> Was this ever picked up for 4.10 or 4.11?
->
-> Still sitting in -next as commit 3cc3434fd630 and its four parent commits.
+On Wed, Jan 11, 2017 at 10:28:05PM +0000, Bart Van Assche wrote:
+> On Wed, 2017-01-11 at 21:31 +0100, gregkh@linuxfoundation.org wrote:
+> > That's a big sign that your patch series needs work.  Break it up into
+> > smaller pieces, it should be possible, which will make merges easier
+> > (well, different in a way.)
+> 
+> Hello Greg,
+> 
+> Can you have a look at the attached patches? These three patches are a
+> splitup of the single patch at the start of this e-mail thread.
 
-Oh, good, so it's progressing normally. I just didn't see any
-acknowledgement on this thread so I was worried.
+Please send them in the proper format (i.e. one patch per email), and I
+will be glad to review them.  Otherwise it's really hard to do so, would
+you want to review attachments?
 
-Can this propagate to stable? A few OpenWRT MIPS people are
-complaining to me about sporadic crashes when stacking too many
-virtual network drivers (batman over gre over ppp over ...), which is
-solved by this patchset.
+thanks,
 
-Jason
+greg k-h

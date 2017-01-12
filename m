@@ -1,39 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jan 2017 10:40:11 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:51780 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992800AbdALJkDeYxS1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Jan 2017 10:40:03 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 90E70F4901D4B;
-        Thu, 12 Jan 2017 09:39:52 +0000 (GMT)
-Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 12 Jan
- 2017 09:39:54 +0000
-Subject: Re: [PATCH] MIPS: Add cacheinfo support
-To:     <justinpopo6@gmail.com>, <linux-mips@linux-mips.org>
-References: <20170111194432.24283-1-justinpopo6@gmail.com>
-CC:     <bcm-kernel-feedback-list@broadcom.com>,
-        <leonid.yegoshin@imgtec.com>, <f.fainelli@gmail.com>,
-        Justin Chen <justin.chen@broadcom.com>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <f29103b9-d215-b832-54dd-28298b6045cf@imgtec.com>
-Date:   Thu, 12 Jan 2017 09:39:54 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jan 2017 16:53:17 +0100 (CET)
+Received: from mail-lf0-x236.google.com ([IPv6:2a00:1450:4010:c07::236]:33980
+        "EHLO mail-lf0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993919AbdALPxJg0Hl6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Jan 2017 16:53:09 +0100
+Received: by mail-lf0-x236.google.com with SMTP id v186so15933393lfa.1
+        for <linux-mips@linux-mips.org>; Thu, 12 Jan 2017 07:53:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind-com.20150623.gappssmtp.com; s=20150623;
+        h=reply-to:subject:references:to:cc:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=1XRdB6+woEoPIFIzdROV46XkV3VusOtCKknGiL09tVE=;
+        b=qQiG+T9eXnUKXgRcmv1xurbYPI5bckmjW/HQqjnLycnlFZtWomM8iZPeOtq7glWUuY
+         h4RhWcyldnUhY6m//U48ndkzAqlu77EbdnZPKcgi80TWKSEx1CuKb4SsOLMm5T6/KxAr
+         4YdD/zWuleyPSLxbPjCPoodLJid/ZPgKsH2G1XyIzG5dWt6Gebuv8pX8KzdrPOsM2t4e
+         a8kJAtxWBYyCmZPYBeisRkxSpCREDxSgvH+F8YYjh33QnnavdU4szKtvpecOoXqV9GKE
+         GOTQgiCPJLHuSatc4XoPd3bqP9SrZzpgiCxkMR579Evj2EXQOqJ70tlHnx1Ih7EwuB3M
+         QpSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:reply-to:subject:references:to:cc:from
+         :organization:message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding;
+        bh=1XRdB6+woEoPIFIzdROV46XkV3VusOtCKknGiL09tVE=;
+        b=nGwfNQ3PvqkjCLHlWpKRy1+jdKHZf51+WrB+IM3qCovlUyJSplbAXLS93VqnKbLy8K
+         s8yM8OXuRqnd2PDrwSKyEv547kJDGpRpwU0QGFnoU6OivU5Jb7BeNW0gF/uED67Pq0JB
+         sHpCAgAjHtxcSaQTvDIfoIhQ6QNxE0iY55hGJq3J0YkihB/8VZbXHkXWs8WuG++3Qs6B
+         Iy5XrgXHqOUbcHYWyvSOirz4ZLds08rCc3SAGlu+VLUQ23AIO/fkQCSgbEOpw5aM2xkr
+         ykKRwtWbLSmGnxeoYNLR0LId2DC/nzr5zSHb4Xa53fieplPsWJG5QQPYYeQck7XBCwMi
+         njbQ==
+X-Gm-Message-State: AIkVDXL3Yq6E3S4ddYRnR6aog40Ao7V06f0+WxMEaqXNc/BVsbf0TK192w+K0+4sqjMIRXe+
+X-Received: by 10.25.21.142 with SMTP id 14mr1528399lfv.138.1484236384124;
+        Thu, 12 Jan 2017 07:53:04 -0800 (PST)
+Received: from ?IPv6:2a01:e35:8b63:dc30:ec62:e68a:f008:ebc2? ([2a01:e35:8b63:dc30:ec62:e68a:f008:ebc2])
+        by smtp.gmail.com with ESMTPSA id j11sm2021068lfd.23.2017.01.12.07.52.58
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Jan 2017 07:53:03 -0800 (PST)
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH v2 7/7] uapi: export all headers under uapi directories
+References: <bf83da6b-01ef-bf44-b3e1-ca6fc5636818@6wind.com>
+ <1483695839-18660-1-git-send-email-nicolas.dichtel@6wind.com>
+ <1483695839-18660-8-git-send-email-nicolas.dichtel@6wind.com>
+ <20170109125638.GA15506@infradead.org>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     arnd@arndb.de, mmarek@suse.com, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        netdev@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, linux-nfs@vger.kernel.org,
+        linux-raid@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-rdma@vger.kernel.org,
+        fcoe-devel@open-fcoe.org, alsa-devel@alsa-project.org,
+        linux-fbdev@vger.kernel.org, xen-devel@lists.xenproject.org,
+        airlied@linux.ie, davem@davemloft.net
+From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Organization: 6WIND
+Message-ID: <464a1323-4450-e563-ff59-9e6d57b75959@6wind.com>
+Date:   Thu, 12 Jan 2017 16:52:57 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+ Thunderbird/45.5.1
 MIME-Version: 1.0
-In-Reply-To: <20170111194432.24283-1-justinpopo6@gmail.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+In-Reply-To: <20170109125638.GA15506@infradead.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Return-Path: <nicolas.dichtel@6wind.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56280
+X-archive-position: 56281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: nicolas.dichtel@6wind.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,143 +96,36 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Justin,
+Le 09/01/2017 à 13:56, Christoph Hellwig a écrit :
+> On Fri, Jan 06, 2017 at 10:43:59AM +0100, Nicolas Dichtel wrote:
+>> Regularly, when a new header is created in include/uapi/, the developer
+>> forgets to add it in the corresponding Kbuild file. This error is usually
+>> detected after the release is out.
+>>
+>> In fact, all headers under uapi directories should be exported, thus it's
+>> useless to have an exhaustive list.
+>>
+>> After this patch, the following files, which were not exported, are now
+>> exported (with make headers_install_all):
+> 
+> ... snip ...
+> 
+>> linux/genwqe/.install
+>> linux/genwqe/..install.cmd
+>> linux/cifs/.install
+>> linux/cifs/..install.cmd
+> 
+> I'm pretty sure these should not be exported!
+> 
+Those files are created in every directory:
+$ find usr/include/ -name '\.\.install.cmd' | wc -l
+71
+$ find usr/include/ -name '\.install' | wc -l
+71
+
+See also
+http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/scripts/Makefile.headersinst#n32
 
 
-On 11/01/17 19:44, justinpopo6@gmail.com wrote:
-> From: Justin Chen <justin.chen@broadcom.com>
->
-> Add cacheinfo support for MIPS architectures.
->
-> Use information from the cpuinfo_mips struct to populate the
-> cacheinfo struct. This allows an architecture agnostic approach,
-> however this also means if cache information is not properly
-> populated within the cpuinfo_mips struct, there is nothing
-> we can do. (I.E. c-r3k.c)
->
-> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-> ---
->   arch/mips/kernel/Makefile    |  2 +-
->   arch/mips/kernel/cacheinfo.c | 85 ++++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 86 insertions(+), 1 deletion(-)
->   create mode 100644 arch/mips/kernel/cacheinfo.c
->
-> diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-> index 4a603a3..904a9c4 100644
-> --- a/arch/mips/kernel/Makefile
-> +++ b/arch/mips/kernel/Makefile
-> @@ -7,7 +7,7 @@ extra-y		:= head.o vmlinux.lds
->   obj-y		+= cpu-probe.o branch.o elf.o entry.o genex.o idle.o irq.o \
->   		   process.o prom.o ptrace.o reset.o setup.o signal.o \
->   		   syscall.o time.o topology.o traps.o unaligned.o watch.o \
-> -		   vdso.o
-> +		   vdso.o cacheinfo.o
-
-Please maintain alphabetical order.
-
->   
->   ifdef CONFIG_FUNCTION_TRACER
->   CFLAGS_REMOVE_ftrace.o = -pg
-> diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
-> new file mode 100644
-> index 0000000..a92bbba
-> --- /dev/null
-> +++ b/arch/mips/kernel/cacheinfo.c
-> @@ -0,0 +1,85 @@
-> +/*
-> + * MIPS cacheinfo support
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + *
-> + * This program is distributed "as is" WITHOUT ANY WARRANTY of any
-> + * kind, whether express or implied; without even the implied warranty
-> + * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-> + */
-> +#include <linux/cacheinfo.h>
-> +
-> +/* Populates leaf and increments to next leaf */
-> +#define populate_cache(cache, leaf, c_level, c_type)		\
-
-The way "cache" is used within this macro is unclear, and you don't pass 
-"c" as a parameter. I think it would be clearer to pass cache as 
-(&c->dcache) etc.
-
-> +	leaf->type = c_type;					\
-> +	leaf->level = c_level;					\
-> +	leaf->coherency_line_size = c->cache.linesz;		\
-> +	leaf->number_of_sets = c->cache.sets;			\
-> +	leaf->ways_of_associativity = c->cache.ways;		\
-> +	leaf->size = c->cache.linesz * c->cache.sets *		\
-> +		c->cache.ways;					\
-> +	leaf++;
-
-I don't like this side effect incrementing leaf - please do it when 
-invoking the macro so it is more obvious.
-
-Thanks,
-Matt
-
-> +
-> +static int __init_cache_level(unsigned int cpu)
-> +{
-> +	struct cpuinfo_mips *c = &current_cpu_data;
-> +	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-> +	int levels = 0, leaves = 0;
-> +
-> +	/*
-> +	 * If Dcache is not set, we assume the cache structures
-> +	 * are not properly initialized.
-> +	 */
-> +	if (c->dcache.waysize)
-> +		levels += 1;
-> +	else
-> +		return -ENOENT;
-> +
-> +
-> +	leaves += (c->icache.waysize) ? 2 : 1;
-> +
-> +	if (c->scache.waysize) {
-> +		levels++;
-> +		leaves++;
-> +	}
-> +
-> +	if (c->tcache.waysize) {
-> +		levels++;
-> +		leaves++;
-> +	}
-> +
-> +	this_cpu_ci->num_levels = levels;
-> +	this_cpu_ci->num_leaves = leaves;
-> +	return 0;
-> +}
-> +
-> +static int __populate_cache_leaves(unsigned int cpu)
-> +{
-> +	struct cpuinfo_mips *c = &current_cpu_data;
-> +	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-> +	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
-> +
-> +	if (c->icache.waysize) {
-> +		populate_cache(dcache, this_leaf, 1, CACHE_TYPE_DATA);
-> +		populate_cache(icache, this_leaf, 1, CACHE_TYPE_INST);
-> +	} else {
-> +		populate_cache(dcache, this_leaf, 1, CACHE_TYPE_UNIFIED);
-> +	}
-> +
-> +	if (c->scache.waysize)
-> +		populate_cache(scache, this_leaf, 2, CACHE_TYPE_UNIFIED);
-> +
-> +	if (c->tcache.waysize)
-> +		populate_cache(tcache, this_leaf, 3, CACHE_TYPE_UNIFIED);
-> +
-> +	return 0;
-> +}
-> +
-> +DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
-> +DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+Thank you,
+Nicolas

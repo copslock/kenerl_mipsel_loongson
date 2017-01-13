@@ -1,63 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 10:49:52 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41298 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992078AbdAMJtpa-0iM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 10:49:45 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id E041B41F8DB4;
-        Fri, 13 Jan 2017 10:52:09 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Fri, 13 Jan 2017 10:52:09 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Fri, 13 Jan 2017 10:52:09 +0000
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 137B26EF9F607;
-        Fri, 13 Jan 2017 09:49:37 +0000 (GMT)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 13 Jan
- 2017 09:49:39 +0000
-Date:   Fri, 13 Jan 2017 09:49:39 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-mips@linux-mips.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Petr Mladek <pmladek@suse.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Aaron Tomlin <atomlin@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v3 0/5] MIPS: Add per-cpu IRQ stack
-Message-ID: <20170113094939.GI10569@jhogan-linux.le.imgtec.org>
-References: <1482157260-18730-1-git-send-email-matt.redfearn@imgtec.com>
- <CAHmME9pRnCW5875vL=mr_D0Lq8nPZ69L-7gVaaHuO7EMTBp6Ew@mail.gmail.com>
- <CAHmME9ogK=NsWgks2Uarty5AeWSZuYmujjBovQO6FWAAXKsopQ@mail.gmail.com>
- <20170111012032.GE31072@linux-mips.org>
- <CAHmME9qXeO=qFvWXenVO6gVAftk1M2vdQt7nwABRDqvDcV3dPg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HkfZ6fDZyisrdUtK"
-Content-Disposition: inline
-In-Reply-To: <CAHmME9qXeO=qFvWXenVO6gVAftk1M2vdQt7nwABRDqvDcV3dPg@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 11:47:19 +0100 (CET)
+Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:51350 "EHLO
+        proxy.6wind.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992155AbdAMKrLHOMo- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 11:47:11 +0100
+Received: from elsass.dev.6wind.com (unknown [10.16.0.149])
+        by proxy.6wind.com (Postfix) with ESMTPS id 9204625705;
+        Fri, 13 Jan 2017 11:46:56 +0100 (CET)
+Received: from root by elsass.dev.6wind.com with local (Exim 4.84_2)
+        (envelope-from <root@elsass.dev.6wind.com>)
+        id 1cRzNl-0002qC-E3; Fri, 13 Jan 2017 11:46:53 +0100
+From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To:     arnd@arndb.de
+Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-c6x-dev@linux-c6x.org, linux-cris-kernel@axis.com,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-metag@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        netdev@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, linux-nfs@vger.kernel.org,
+        linux-raid@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-rdma@vger.kernel.org,
+        fcoe-devel@open-fcoe.org, alsa-devel@alsa-project.org,
+        linux-fbdev@vger.kernel.org, xen-devel@lists.xenproject.org,
+        airlied@linux.ie, davem@davemloft.net, linux@armlinux.org.uk,
+        bp@alien8.de, slash.tmp@free.fr, daniel.vetter@ffwll.ch,
+        rmk+kernel@armlinux.org.uk, msalter@redhat.com, jengelh@inai.de,
+        hch@infradead.org, Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Subject: [PATCH v3 5/8] Makefile.headersinst: cleanup input files
+Date:   Fri, 13 Jan 2017 11:46:43 +0100
+Message-Id: <1484304406-10820-6-git-send-email-nicolas.dichtel@6wind.com>
+X-Mailer: git-send-email 2.8.1
+In-Reply-To: <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
+References: <3131144.4Ej3KFWRbz@wuerfel>
+ <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
+Return-Path: <root@6wind.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56288
+X-archive-position: 56289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: nicolas.dichtel@6wind.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,68 +65,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---HkfZ6fDZyisrdUtK
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+After the last four patches, all exported headers are under uapi/, thus
+input-files2 are not needed anymore.
+The side effect is that input-files1-name is exactly header-y.
 
-On Thu, Jan 12, 2017 at 12:32:52AM +0100, Jason A. Donenfeld wrote:
-> On Wed, Jan 11, 2017 at 2:20 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > On Wed, Jan 11, 2017 at 12:32:38AM +0100, Jason A. Donenfeld wrote:
-> >
-> >> Was this ever picked up for 4.10 or 4.11?
-> >
-> > Still sitting in -next as commit 3cc3434fd630 and its four parent commi=
-ts.
->=20
-> Oh, good, so it's progressing normally. I just didn't see any
-> acknowledgement on this thread so I was worried.
->=20
-> Can this propagate to stable? A few OpenWRT MIPS people are
-> complaining to me about sporadic crashes when stacking too many
-> virtual network drivers (batman over gre over ppp over ...), which is
-> solved by this patchset.
->=20
-> Jason
+Note also that input-files3-name is genhdr-y.
 
-Its quite a significant change/feature, especially in terms of potential
-for further breakage. I don't think its really stable material to be
-honest.
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+---
+ scripts/Makefile.headersinst | 34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-The actual stable kernel rules are here though:
-https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Docume=
-ntation/process/stable-kernel-rules.rst
-
-Do the OpenWRT issues affect mainline kernels? (if its due to excessive
-stack frame sizes in out of tree code, then that should be fixed out of
-tree). It sounds bad if the kernel stack requirement can be made
-arbitrarily large by stacking too many drivers.
-
-Is there a simpler fix/workaround for the issue that would satisfy
-stable kernel users until they can upgrade to a kernel with irqstacks?
-
-Cheers
-James
-
---HkfZ6fDZyisrdUtK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYeKKeAAoJEGwLaZPeOHZ6UxAP/2R/TOh5d017b02J/480VvMH
-qkJIUFpW1d7GvniS2ruUDUQchtZkqoGIHHI3oXiWjvIAWnXPha1jzL3QVPFQCwpd
-+yWhG3mQbhhyTkEVDbk4ISsLUixIzxJRjBuqecnIkZfOXUrLNI5QyJ4E4ysHepYQ
-ALoPK6V3wOBqStut7dMYWCk/Py2iMpmgdyUxekHNimp6k+nrb3LMsJGnFmCsATet
-sNwsvLNlEgiLOkAauGgJAjWbHNtX7yD77Yjo5eJ+1hmViuhsOu4XIy/yAtYskdwl
-EGxhlS9xd+5xHuNEIZX7+CXgQh0UMZneKV6YMM63aByhKpkIIrLke/IH28xSgi/w
-ZfCuSu7MpPZFXLIhohc2dfhhtjN4e6Ti6XwhTFj2TmatKtU8AKK77HupXCSQI4Ic
-y/54c+NMkMVq/lBLYXPNxoM9SYDsAjBrgJaDaZPECvX0WCn6LUokFkh7dh/9DNwR
-f1ipw/cl9wex3MN6K9OXSLXObRdShZrzdarX08DtlK5tWkZb2OS1acQfbndjpxq+
-94C/lbudwrIHw5kr8J3xnfxOqdVv7R+AYuUwbkD80pHyLek3TQ1TAn1/COk3UD96
-aMMnPt7KL+dSaoD1NulEOtOftxs79BZ2iJarL4wMfJYwqaXelU4DuOGHGYzKibRq
-X+lIXy3xXe+qIkMrNAk0
-=PhbQ
------END PGP SIGNATURE-----
-
---HkfZ6fDZyisrdUtK--
+diff --git a/scripts/Makefile.headersinst b/scripts/Makefile.headersinst
+index 1106d6ca3a38..3e20d03432d2 100644
+--- a/scripts/Makefile.headersinst
++++ b/scripts/Makefile.headersinst
+@@ -40,31 +40,20 @@ wrapper-files := $(filter $(header-y), $(generic-y))
+ srcdir        := $(srctree)/$(obj)
+ gendir        := $(objtree)/$(gen)
+ 
+-oldsrcdir     := $(srctree)/$(subst /uapi,,$(obj))
+-
+ # all headers files for this dir
+ header-y      := $(filter-out $(generic-y), $(header-y))
+ all-files     := $(header-y) $(genhdr-y) $(wrapper-files)
+ output-files  := $(addprefix $(installdir)/, $(all-files))
+ 
+-input-files1  := $(foreach hdr, $(header-y), \
+-		   $(if $(wildcard $(srcdir)/$(hdr)), \
+-			$(wildcard $(srcdir)/$(hdr))) \
+-		   )
+-input-files1-name := $(notdir $(input-files1))
+-input-files2  := $(foreach hdr, $(header-y), \
+-		   $(if  $(wildcard $(srcdir)/$(hdr)),, \
+-			$(if $(wildcard $(oldsrcdir)/$(hdr)), \
+-				$(wildcard $(oldsrcdir)/$(hdr)), \
+-				$(error Missing UAPI file $(srcdir)/$(hdr))) \
+-		   ))
+-input-files2-name := $(notdir $(input-files2))
+-input-files3  := $(foreach hdr, $(genhdr-y), \
+-		   $(if	$(wildcard $(gendir)/$(hdr)), \
+-			$(wildcard $(gendir)/$(hdr)), \
+-			$(error Missing generated UAPI file $(gendir)/$(hdr)) \
+-		   ))
+-input-files3-name := $(notdir $(input-files3))
++# Check that all expected files exist
++$(foreach hdr, $(header-y), \
++  $(if $(wildcard $(srcdir)/$(hdr)),, \
++       $(error Missing UAPI file $(srcdir)/$(hdr)) \
++   ))
++$(foreach hdr, $(genhdr-y), \
++  $(if	$(wildcard $(gendir)/$(hdr)),, \
++       $(error Missing generated UAPI file $(gendir)/$(hdr)) \
++  ))
+ 
+ # Work out what needs to be removed
+ oldheaders    := $(patsubst $(installdir)/%,%,$(wildcard $(installdir)/*.h))
+@@ -78,9 +67,8 @@ printdir = $(patsubst $(INSTALL_HDR_PATH)/%/,%,$(dir $@))
+ quiet_cmd_install = INSTALL $(printdir) ($(words $(all-files))\
+                             file$(if $(word 2, $(all-files)),s))
+       cmd_install = \
+-        $(CONFIG_SHELL) $< $(installdir) $(srcdir) $(input-files1-name); \
+-        $(CONFIG_SHELL) $< $(installdir) $(oldsrcdir) $(input-files2-name); \
+-        $(CONFIG_SHELL) $< $(installdir) $(gendir) $(input-files3-name); \
++        $(CONFIG_SHELL) $< $(installdir) $(srcdir) $(header-y); \
++        $(CONFIG_SHELL) $< $(installdir) $(gendir) $(genhdr-y); \
+         for F in $(wrapper-files); do                                   \
+                 echo "\#include <asm-generic/$$F>" > $(installdir)/$$F;    \
+         done;                                                           \
+-- 
+2.8.1

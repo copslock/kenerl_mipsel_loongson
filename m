@@ -1,39 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 12:33:46 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:3110 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992267AbdAMLdeY5A6n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 12:33:34 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 12:42:38 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:34937 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993940AbdAMLmY6zZEn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 12:42:24 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id AA41641F8DB4;
+        Fri, 13 Jan 2017 12:44:49 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 13 Jan 2017 12:44:49 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 13 Jan 2017 12:44:49 +0000
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id B67F1DD4D88C5;
-        Fri, 13 Jan 2017 11:33:24 +0000 (GMT)
-Received: from [10.80.2.5] (10.80.2.5) by HHMAIL01.hh.imgtec.org
+        by Forcepoint Email with ESMTPS id 643E79A7218DB;
+        Fri, 13 Jan 2017 11:42:16 +0000 (GMT)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 13 Jan
- 2017 11:33:27 +0000
-Subject: Re: [PATCH 1/2] MIPS: ptrace: protect watchpoint handling code from
- setting watchpoints
-To:     James Hogan <james.hogan@imgtec.com>
-References: <1484293487-5770-1-git-send-email-marcin.nowakowski@imgtec.com>
- <20170113111141.GL10569@jhogan-linux.le.imgtec.org>
+ 2017 11:42:18 +0000
+Date:   Fri, 13 Jan 2017 11:42:18 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Message-ID: <272821c4-1fa3-2e85-b792-78c688f491d6@imgtec.com>
-Date:   Fri, 13 Jan 2017 12:33:26 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.5.1
+Subject: Re: [PATCH 2/2] MIPS: ptrace: disable watchpoints if hit in kernel
+ mode
+Message-ID: <20170113114218.GM10569@jhogan-linux.le.imgtec.org>
+References: <1484293487-5770-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <1484293487-5770-2-git-send-email-marcin.nowakowski@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <20170113111141.GL10569@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="HUNbJr+8XKUS5qN7"
+Content-Disposition: inline
+In-Reply-To: <1484293487-5770-2-git-send-email-marcin.nowakowski@imgtec.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56300
+X-archive-position: 56301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,192 +55,120 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi James,
+--HUNbJr+8XKUS5qN7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for your comments
+On Fri, Jan 13, 2017 at 08:44:47AM +0100, Marcin Nowakowski wrote:
+> If a watchpoint is hit when in kernel mode it is possible for the system
+> to end up in an infinite loop processing the watchpoint. This can happen
+> if a user sets a watchpoint in the kernel addess space (which is
+> possible in certain EVA configurations) or if a user sets a watchpoint
+> in a user area accessed directly by the kernel (eg. a user buffer
+> accessed via a syscall).
+>=20
+> To prevent the infinite loop ensure that the watchpoint was hit in
+> userspace, and clear the watchpoint registers otherwise.
+>=20
+> As this change could mean that a watchpoint is not hit when it should be
+> (when returning to the interrupted traced task on exception exit), the
+> resume_userspace path needs to be extended to conditionally restore the
+> watchpoint configuration. If a task switch occurs when returning to
+> userspace, the watchpoints will be restored in a typical way in the
+> switch_to() handler.
+>=20
+> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+> ---
+>  arch/mips/kernel/entry.S | 9 ++++++++-
+>  arch/mips/kernel/traps.c | 2 +-
+>  2 files changed, 9 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
+> index ef69a64..b15a9a9 100644
+> --- a/arch/mips/kernel/entry.S
+> +++ b/arch/mips/kernel/entry.S
+> @@ -55,7 +55,14 @@ resume_userspace:
+>  	LONG_L	a2, TI_FLAGS($28)	# current->work
+>  	andi	t0, a2, _TIF_WORK_MASK	# (ignoring syscall_trace)
+>  	bnez	t0, work_pending
+> -	j	restore_all
+> +#ifdef CONFIG_HARDWARE_WATCHPOINTS
+> +	li	t0, _TIF_LOAD_WATCH
+> +	and	t0, a2, t0
+> +	beqz	t0, 1f
+> +	PTR_L	a0, TI_TASK($28)
+> +	jal	mips_install_watch_registers
+> +#endif
 
-On 13.01.2017 12:11, James Hogan wrote:
-> Hi Marcin,
->
-> On Fri, Jan 13, 2017 at 08:44:46AM +0100, Marcin Nowakowski wrote:
->> With certain EVA configurations it is possible for the kernel address
->> space to overlap user address space, which allows the user to set
->> watchpoints on kernel addresses via ptrace.
->>
->> If a watchpoint is set in the watch exception handling code (after
->> exception level has been cleared) then the system will hang in an
->> infinite loop when hitting a watchpoint while trying to process it.
->>
->> To prevent that place all watch exception entry/exit code in a single
->> named section and disallow placing watchpoints in that area.
->
-> An interesting approach. If I understand correctly, any watch placed on
-> watch exception entry code up to when watchpoints are disabled in
-> do_watch and interrupts re-enabled is disallowed, as well as the code
-> after watchpoints are restored.
-
-That's the intention. In theory it could be relaxed so that we can allow 
-watchpoints to be placed _after_ watchpoint registers are cleared and 
-before they are restored, but that would bring extra complexity and no 
-benefit (at least I cannot see any).
-
-> Should mips_install_watch_registers() also move into that section?
-
-It probably should, as we may end up hitting the watchpoint as soon as 
-they are enabled again, and the same goes for the resume() method as 
-well, which is called in switch_to() after mips_install_watch_registers().
-
-
-> Should do_watch be made notrace too, so we don't get calls into
-> unprotected ftrace code?
-
-Good point.
-
->>
->> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
->> ---
->>  arch/mips/kernel/entry.S       |  2 +-
->>  arch/mips/kernel/genex.S       |  2 ++
->>  arch/mips/kernel/ptrace.c      | 14 ++++++++++++++
->>  arch/mips/kernel/traps.c       |  2 ++
->>  arch/mips/kernel/vmlinux.lds.S |  8 ++++++++
->>  5 files changed, 27 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
->> index 7791840..ef69a64 100644
->> --- a/arch/mips/kernel/entry.S
->> +++ b/arch/mips/kernel/entry.S
->> @@ -24,7 +24,7 @@
->>  #define __ret_from_irq	ret_from_exception
->>  #endif
->>
->> -	.text
->> +	.section .text..no_watch
->>  	.align	5
->>  #ifndef CONFIG_PREEMPT
->>  FEXPORT(ret_from_exception)
->> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
->> index dc0b296..102a9e8 100644
->> --- a/arch/mips/kernel/genex.S
->> +++ b/arch/mips/kernel/genex.S
->> @@ -433,6 +433,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
->>  	BUILD_HANDLER ftlb ftlb none silent		/* #16 */
->>  	BUILD_HANDLER msa msa sti silent		/* #21 */
->>  	BUILD_HANDLER mdmx mdmx sti silent		/* #22 */
->> +.section .text..no_watch
->>  #ifdef	CONFIG_HARDWARE_WATCHPOINTS
->>  	/*
->>  	 * For watch, interrupts will be enabled after the watch
->> @@ -442,6 +443,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
->>  #else
->>  	BUILD_HANDLER watch watch sti verbose		/* #23 */
->>  #endif
->> +.previous
->>  	BUILD_HANDLER mcheck mcheck cli verbose		/* #24 */
->>  	BUILD_HANDLER mt mt sti silent			/* #25 */
->>  	BUILD_HANDLER dsp dsp sti silent		/* #26 */
->> diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
->> index c8ba260..1c8d75c 100644
->> --- a/arch/mips/kernel/ptrace.c
->> +++ b/arch/mips/kernel/ptrace.c
->> @@ -235,6 +235,17 @@ int ptrace_get_watch_regs(struct task_struct *child,
->>  	return 0;
->>  }
->>
->> +static int ptrace_watch_in_watch_code_region(unsigned long addr)
->> +{
->> +	extern unsigned long __nowatch_text_start, __nowatch_text_end;
->> +	unsigned long start, end;
->> +
->> +	start = (((unsigned long)&__nowatch_text_start) & ~MIPS_WATCHLO_IRW);
->> +	end = (((unsigned long)&__nowatch_text_end) & ~MIPS_WATCHLO_IRW);
->> +
->> +	return addr >= start && addr < end;
->> +}
->> +
->>  int ptrace_set_watch_regs(struct task_struct *child,
->>  			  struct pt_watch_regs __user *addr)
->>  {
->> @@ -262,6 +273,9 @@ int ptrace_set_watch_regs(struct task_struct *child,
->>  				return -EINVAL;
->>  		}
->>  #endif
->> +		if (ptrace_watch_in_watch_code_region(lt[i]))
->> +			return -EINVAL;
->
-> This would apparently permit userland to probe for the address of the
-> kernel on EVA kernels, regardless of KASLR (assuming that works with
-> EVA). Perhaps in that case we should be more restrictive and disallow
-> any watchpoints in the same segment as the kernel.
-
-That's an unfortunate side-effect.
-
-> Actually for stable kernel purposes, it might be better to do that
-> first, i.e. disallow any to the same segments as kernel (tagged for
-> stable), then relax it as you've done here.
-
-That sounds like a good idea.
-What do you think about making my 'relaxed' approach depend on !KASLR?
-
->> +
->>  		__get_user(ht[i], &addr->WATCH_STYLE.watchhi[i]);
->>  		if (ht[i] & ~MIPS_WATCHHI_MASK)
->>  			return -EINVAL;
->> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
->> index 6c7f9d7..b86ce85 100644
->> --- a/arch/mips/kernel/traps.c
->> +++ b/arch/mips/kernel/traps.c
->> @@ -1509,6 +1509,8 @@ asmlinkage void do_mdmx(struct pt_regs *regs)
->>   * Called with interrupts disabled.
->>   */
->>  asmlinkage void do_watch(struct pt_regs *regs)
->> +	__attribute__((section(".text..no_watch")));
->
-> maybe worth a macro, especially if any other functions do need this.
-
-Will do
-
-> is a separate declaration really needed? could it go after void in the
-> definition like notrace does?
-
-I need to check that. I had always thought that when attributes are 
-added then a separate declaration is required, but if that's not the 
-case then I will happily remove it, as it doesn't look too good.
+Perhaps this should also be conditional upon EVA, otherwise the return
+to userland path would get unnecessarily slower whenever watchpoints are
+enabled.
 
 
-> Cheers
-> James
->
->> +asmlinkage void do_watch(struct pt_regs *regs)
->>  {
->>  	siginfo_t info = { .si_signo = SIGTRAP, .si_code = TRAP_HWBKPT };
->>  	enum ctx_state prev_state;
->> diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
->> index d5de675..f76f481 100644
->> --- a/arch/mips/kernel/vmlinux.lds.S
->> +++ b/arch/mips/kernel/vmlinux.lds.S
->> @@ -32,6 +32,13 @@ PHDRS {
->>  	jiffies	 = jiffies_64;
->>  #endif
->>
->> +#define NOWATCH_TEXT							\
->> +		ALIGN_FUNCTION();					\
->> +		VMLINUX_SYMBOL(__nowatch_text_start) = .;		\
->> +		*(.text..no_watch)					\
->> +		VMLINUX_SYMBOL(__nowatch_text_end) = .;
->> +
->> +
->>  SECTIONS
->>  {
->>  #ifdef CONFIG_BOOT_ELF64
->> @@ -54,6 +61,7 @@ SECTIONS
->>  	_text = .;	/* Text and read-only data */
->>  	.text : {
->>  		TEXT_TEXT
->> +		NOWATCH_TEXT
->>  		SCHED_TEXT
->>  		CPUIDLE_TEXT
->>  		LOCK_TEXT
->> --
->> 2.7.4
->>
+TBH my worry with this general approach is that it permits userland to
+mess with kernel assumptions in quite controlled and unexpected ways.
+For example, it allows userland to inject temporary enabling of
+interrupts at any point, e.g. in a spin_lock_irq() critical section
+somewhere.
+
+Perhaps that specific case can be worked around by having do_watch leave
+interrupts disabled if they were already disabled when the exception was
+taken. resume_kernel won't call preempt_schedule_irq() if IRQs are
+disabled in the context being restored.
+
+The other issue is I think it only really considers instruction watches
+(hardware breakpoints). What about if userland put a data watchpoint on
+a kernel stack address that gets hit in do_watch()'s prologue (i.e.
+after EXL=3D0)? That can't be placed in a dedicated section, and would be
+tricky to specifically exclude (would fork result in a new kernel stack
+pointer and also preserve watch points?), and doing so would potentially
+leak the process' kernel stack pointer too (regardless of KASLR),
+presumably a valuable target for an exploit.
+
+Cheers
+James
+
+> +1:	j	restore_all
+> =20
+>  #ifdef CONFIG_PREEMPT
+>  resume_kernel:
+> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> index b86ce85..d92169e 100644
+> --- a/arch/mips/kernel/traps.c
+> +++ b/arch/mips/kernel/traps.c
+> @@ -1527,7 +1527,7 @@ asmlinkage void do_watch(struct pt_regs *regs)
+>  	 * their values and send SIGTRAP.  Otherwise another thread
+>  	 * left the registers set, clear them and continue.
+>  	 */
+> -	if (test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
+> +	if (user_mode(regs) && test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
+>  		mips_read_watch_registers();
+>  		local_irq_enable();
+>  		force_sig_info(SIGTRAP, &info, current);
+> --=20
+> 2.7.4
+>=20
+
+--HUNbJr+8XKUS5qN7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYeL0aAAoJEGwLaZPeOHZ6nOUP/jD3Ak1i3d1aS73QqwWoPi40
+MZkuQHcW6WWlp8zrkr/7Rs7EEaJgXOFTOo41ojIKSQ5oUaBXMy6y4cCOlB4yNlo6
+Jvlfw7izDw/+03xifNzrDu9Kk9u3etSq2JYG/HBkGb8ixDXqbojDebmNBHKz6o5I
+ojKTpYPLbr/Jbfm8Z3F9CTZFEWizp4hCeVj3850XGSnTpGRHNVv1E9N5pMrPemZW
+6NnL6HvjuldPRLXZfweCpWJOKhUSpEYOTBEjcjDEMe2GuhIoJkdbPB4kDrReIxJZ
+uDUU6NZOT/12ZDBTwR034MAf32X/Ht7n2jHjqIkUS6tC0YmhYpiPMy8L955Wx/E/
+kDC5zQPolqzpVBB/tFvobua1F5ZRQkShDwdiCc72/RGu5mCWKeho3g+lEQqSHBnf
+Z2le2CrnY5CbMcBiXR1NfAxiq4db63za7O90WuNOra6rckfwOgua4bmjRCSmcyRx
+6WC18AZTuEAURx27iuYQEHHpiUlCdW3qf1jhxqGiAJ7veg+HRyWDpwla1eHILWK2
+bnz02feQ2JrllcERIoBpXd/XzYV+tsqAcoMjYvk1q8h48hP4bpQEAXffDLVaT/fC
+qL9BA0qICGMETG1bB4EWoFL3gQOtPLcavhFfQOqLC5Mj9h+sw2I949Wb0cYrNXE8
+9Sa+VVkkG+UPKv61/Cfd
+=uCrP
+-----END PGP SIGNATURE-----
+
+--HUNbJr+8XKUS5qN7--

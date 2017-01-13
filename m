@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 11:49:06 +0100 (CET)
-Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:51398 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 11:49:28 +0100 (CET)
+Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:51446 "EHLO
         proxy.6wind.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992183AbdAMKrQAP4P- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 11:47:16 +0100
+        with ESMTP id S23993009AbdAMKrSYc3a- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 11:47:18 +0100
 Received: from elsass.dev.6wind.com (unknown [10.16.0.149])
-        by proxy.6wind.com (Postfix) with ESMTPS id 2284C257AE;
+        by proxy.6wind.com (Postfix) with ESMTPS id 05E5925697;
         Fri, 13 Jan 2017 11:46:56 +0100 (CET)
 Received: from root by elsass.dev.6wind.com with local (Exim 4.84_2)
         (envelope-from <root@elsass.dev.6wind.com>)
-        id 1cRzNl-0002qH-Eq; Fri, 13 Jan 2017 11:46:53 +0100
+        id 1cRzNl-0002pw-BV; Fri, 13 Jan 2017 11:46:53 +0100
 From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
 To:     arnd@arndb.de
 Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
         bp@alien8.de, slash.tmp@free.fr, daniel.vetter@ffwll.ch,
         rmk+kernel@armlinux.org.uk, msalter@redhat.com, jengelh@inai.de,
         hch@infradead.org, Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Subject: [PATCH v3 6/8] Makefile.headersinst: remove destination-y option
-Date:   Fri, 13 Jan 2017 11:46:44 +0100
-Message-Id: <1484304406-10820-7-git-send-email-nicolas.dichtel@6wind.com>
+Subject: [PATCH v3 2/8] h8300: put bitsperlong.h in uapi
+Date:   Fri, 13 Jan 2017 11:46:40 +0100
+Message-Id: <1484304406-10820-3-git-send-email-nicolas.dichtel@6wind.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
 References: <3131144.4Ej3KFWRbz@wuerfel>
@@ -48,7 +48,7 @@ Return-Path: <root@6wind.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56293
+X-archive-position: 56294
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,75 +65,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This option was added in commit c7bb349e7c25 ("kbuild: introduce destination-y
-for exported headers") but never used in-tree.
+This header file is exported, thus move it to uapi.
 
 Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 ---
- Documentation/kbuild/makefiles.txt | 23 ++++-------------------
- scripts/Makefile.headersinst       |  2 +-
- 2 files changed, 5 insertions(+), 20 deletions(-)
+ arch/h8300/include/asm/bitsperlong.h      | 14 --------------
+ arch/h8300/include/uapi/asm/bitsperlong.h | 14 ++++++++++++++
+ 2 files changed, 14 insertions(+), 14 deletions(-)
+ delete mode 100644 arch/h8300/include/asm/bitsperlong.h
+ create mode 100644 arch/h8300/include/uapi/asm/bitsperlong.h
 
-diff --git a/Documentation/kbuild/makefiles.txt b/Documentation/kbuild/makefiles.txt
-index 9b9c4797fc55..37b525d329ae 100644
---- a/Documentation/kbuild/makefiles.txt
-+++ b/Documentation/kbuild/makefiles.txt
-@@ -46,9 +46,8 @@ This document describes the Linux kernel Makefiles.
- 	=== 7 Kbuild syntax for exported headers
- 		--- 7.1 header-y
- 		--- 7.2 genhdr-y
--		--- 7.3 destination-y
--		--- 7.4 generic-y
--		--- 7.5 generated-y
-+		--- 7.3 generic-y
-+		--- 7.4 generated-y
- 
- 	=== 8 Kbuild Variables
- 	=== 9 Makefile language
-@@ -1295,21 +1294,7 @@ See subsequent chapter for the syntax of the Kbuild file.
- 			#include/linux/Kbuild
- 			genhdr-y += version.h
- 
--	--- 7.3 destination-y
+diff --git a/arch/h8300/include/asm/bitsperlong.h b/arch/h8300/include/asm/bitsperlong.h
+deleted file mode 100644
+index e140e46729ac..000000000000
+--- a/arch/h8300/include/asm/bitsperlong.h
++++ /dev/null
+@@ -1,14 +0,0 @@
+-#ifndef __ASM_H8300_BITS_PER_LONG
+-#define __ASM_H8300_BITS_PER_LONG
 -
--	When an architecture has a set of exported headers that needs to be
--	exported to a different directory destination-y is used.
--	destination-y specifies the destination directory for all exported
--	headers in the file where it is present.
+-#include <asm-generic/bitsperlong.h>
 -
--		Example:
--			#arch/xtensa/platforms/s6105/include/platform/Kbuild
--			destination-y := include/linux
+-#if !defined(__ASSEMBLY__)
+-/* h8300-unknown-linux required long */
+-#define __kernel_size_t __kernel_size_t
+-typedef unsigned long	__kernel_size_t;
+-typedef long		__kernel_ssize_t;
+-typedef long		__kernel_ptrdiff_t;
+-#endif
 -
--	In the example above all exported headers in the Kbuild file
--	will be located in the directory "include/linux" when exported.
--
--	--- 7.4 generic-y
-+	--- 7.3 generic-y
- 
- 	If an architecture uses a verbatim copy of a header from
- 	include/asm-generic then this is listed in the file
-@@ -1336,7 +1321,7 @@ See subsequent chapter for the syntax of the Kbuild file.
- 		Example: termios.h
- 			#include <asm-generic/termios.h>
- 
--	--- 7.5 generated-y
-+	--- 7.4 generated-y
- 
- 	If an architecture generates other header files alongside generic-y
- 	wrappers, and not included in genhdr-y, then generated-y specifies
-diff --git a/scripts/Makefile.headersinst b/scripts/Makefile.headersinst
-index 3e20d03432d2..876b42cfede4 100644
---- a/scripts/Makefile.headersinst
-+++ b/scripts/Makefile.headersinst
-@@ -14,7 +14,7 @@ kbuild-file := $(srctree)/$(obj)/Kbuild
- include $(kbuild-file)
- 
- # called may set destination dir (when installing to asm/)
--_dst := $(if $(destination-y),$(destination-y),$(if $(dst),$(dst),$(obj)))
-+_dst := $(if $(dst),$(dst),$(obj))
- 
- old-kbuild-file := $(srctree)/$(subst uapi/,,$(obj))/Kbuild
- ifneq ($(wildcard $(old-kbuild-file)),)
+-#endif /* __ASM_H8300_BITS_PER_LONG */
+diff --git a/arch/h8300/include/uapi/asm/bitsperlong.h b/arch/h8300/include/uapi/asm/bitsperlong.h
+new file mode 100644
+index 000000000000..e56cf72369b6
+--- /dev/null
++++ b/arch/h8300/include/uapi/asm/bitsperlong.h
+@@ -0,0 +1,14 @@
++#ifndef _UAPI_ASM_H8300_BITS_PER_LONG
++#define _UAPI_ASM_H8300_BITS_PER_LONG
++
++#include <asm-generic/bitsperlong.h>
++
++#if !defined(__ASSEMBLY__)
++/* h8300-unknown-linux required long */
++#define __kernel_size_t __kernel_size_t
++typedef unsigned long	__kernel_size_t;
++typedef long		__kernel_ssize_t;
++typedef long		__kernel_ptrdiff_t;
++#endif
++
++#endif /* _UAPI_ASM_H8300_BITS_PER_LONG */
 -- 
 2.8.1

@@ -1,21 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 08:45:04 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30188 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 08:45:26 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:1432 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990519AbdAMHo5bTRFz (ORCPT
+        with ESMTP id S23991964AbdAMHo5xxOPz (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 08:44:57 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id AC471B4F7A350;
-        Fri, 13 Jan 2017 07:44:48 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 969ADB89A8099;
+        Fri, 13 Jan 2017 07:44:49 +0000 (GMT)
 Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 13 Jan 2017 07:44:50 +0000
+ 14.3.294.0; Fri, 13 Jan 2017 07:44:51 +0000
 From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
-Subject: [PATCH 1/2] MIPS: ptrace: protect watchpoint handling code from setting watchpoints
-Date:   Fri, 13 Jan 2017 08:44:46 +0100
-Message-ID: <1484293487-5770-1-git-send-email-marcin.nowakowski@imgtec.com>
+Subject: [PATCH 2/2] MIPS: ptrace: disable watchpoints if hit in kernel mode
+Date:   Fri, 13 Jan 2017 08:44:47 +0100
+Message-ID: <1484293487-5770-2-git-send-email-marcin.nowakowski@imgtec.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1484293487-5770-1-git-send-email-marcin.nowakowski@imgtec.com>
+References: <1484293487-5770-1-git-send-email-marcin.nowakowski@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.80.2.5]
@@ -23,7 +25,7 @@ Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56286
+X-archive-position: 56287
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,129 +42,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With certain EVA configurations it is possible for the kernel address
-space to overlap user address space, which allows the user to set
-watchpoints on kernel addresses via ptrace.
+If a watchpoint is hit when in kernel mode it is possible for the system
+to end up in an infinite loop processing the watchpoint. This can happen
+if a user sets a watchpoint in the kernel addess space (which is
+possible in certain EVA configurations) or if a user sets a watchpoint
+in a user area accessed directly by the kernel (eg. a user buffer
+accessed via a syscall).
 
-If a watchpoint is set in the watch exception handling code (after
-exception level has been cleared) then the system will hang in an
-infinite loop when hitting a watchpoint while trying to process it.
+To prevent the infinite loop ensure that the watchpoint was hit in
+userspace, and clear the watchpoint registers otherwise.
 
-To prevent that place all watch exception entry/exit code in a single
-named section and disallow placing watchpoints in that area.
+As this change could mean that a watchpoint is not hit when it should be
+(when returning to the interrupted traced task on exception exit), the
+resume_userspace path needs to be extended to conditionally restore the
+watchpoint configuration. If a task switch occurs when returning to
+userspace, the watchpoints will be restored in a typical way in the
+switch_to() handler.
 
 Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 ---
- arch/mips/kernel/entry.S       |  2 +-
- arch/mips/kernel/genex.S       |  2 ++
- arch/mips/kernel/ptrace.c      | 14 ++++++++++++++
- arch/mips/kernel/traps.c       |  2 ++
- arch/mips/kernel/vmlinux.lds.S |  8 ++++++++
- 5 files changed, 27 insertions(+), 1 deletion(-)
+ arch/mips/kernel/entry.S | 9 ++++++++-
+ arch/mips/kernel/traps.c | 2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
-index 7791840..ef69a64 100644
+index ef69a64..b15a9a9 100644
 --- a/arch/mips/kernel/entry.S
 +++ b/arch/mips/kernel/entry.S
-@@ -24,7 +24,7 @@
- #define __ret_from_irq	ret_from_exception
- #endif
+@@ -55,7 +55,14 @@ resume_userspace:
+ 	LONG_L	a2, TI_FLAGS($28)	# current->work
+ 	andi	t0, a2, _TIF_WORK_MASK	# (ignoring syscall_trace)
+ 	bnez	t0, work_pending
+-	j	restore_all
++#ifdef CONFIG_HARDWARE_WATCHPOINTS
++	li	t0, _TIF_LOAD_WATCH
++	and	t0, a2, t0
++	beqz	t0, 1f
++	PTR_L	a0, TI_TASK($28)
++	jal	mips_install_watch_registers
++#endif
++1:	j	restore_all
  
--	.text
-+	.section .text..no_watch
- 	.align	5
- #ifndef CONFIG_PREEMPT
- FEXPORT(ret_from_exception)
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index dc0b296..102a9e8 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -433,6 +433,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	BUILD_HANDLER ftlb ftlb none silent		/* #16 */
- 	BUILD_HANDLER msa msa sti silent		/* #21 */
- 	BUILD_HANDLER mdmx mdmx sti silent		/* #22 */
-+.section .text..no_watch
- #ifdef	CONFIG_HARDWARE_WATCHPOINTS
- 	/*
- 	 * For watch, interrupts will be enabled after the watch
-@@ -442,6 +443,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
- #else
- 	BUILD_HANDLER watch watch sti verbose		/* #23 */
- #endif
-+.previous
- 	BUILD_HANDLER mcheck mcheck cli verbose		/* #24 */
- 	BUILD_HANDLER mt mt sti silent			/* #25 */
- 	BUILD_HANDLER dsp dsp sti silent		/* #26 */
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index c8ba260..1c8d75c 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -235,6 +235,17 @@ int ptrace_get_watch_regs(struct task_struct *child,
- 	return 0;
- }
- 
-+static int ptrace_watch_in_watch_code_region(unsigned long addr)
-+{
-+	extern unsigned long __nowatch_text_start, __nowatch_text_end;
-+	unsigned long start, end;
-+
-+	start = (((unsigned long)&__nowatch_text_start) & ~MIPS_WATCHLO_IRW);
-+	end = (((unsigned long)&__nowatch_text_end) & ~MIPS_WATCHLO_IRW);
-+
-+	return addr >= start && addr < end;
-+}
-+
- int ptrace_set_watch_regs(struct task_struct *child,
- 			  struct pt_watch_regs __user *addr)
- {
-@@ -262,6 +273,9 @@ int ptrace_set_watch_regs(struct task_struct *child,
- 				return -EINVAL;
- 		}
- #endif
-+		if (ptrace_watch_in_watch_code_region(lt[i]))
-+			return -EINVAL;
-+
- 		__get_user(ht[i], &addr->WATCH_STYLE.watchhi[i]);
- 		if (ht[i] & ~MIPS_WATCHHI_MASK)
- 			return -EINVAL;
+ #ifdef CONFIG_PREEMPT
+ resume_kernel:
 diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 6c7f9d7..b86ce85 100644
+index b86ce85..d92169e 100644
 --- a/arch/mips/kernel/traps.c
 +++ b/arch/mips/kernel/traps.c
-@@ -1509,6 +1509,8 @@ asmlinkage void do_mdmx(struct pt_regs *regs)
-  * Called with interrupts disabled.
-  */
- asmlinkage void do_watch(struct pt_regs *regs)
-+	__attribute__((section(".text..no_watch")));
-+asmlinkage void do_watch(struct pt_regs *regs)
- {
- 	siginfo_t info = { .si_signo = SIGTRAP, .si_code = TRAP_HWBKPT };
- 	enum ctx_state prev_state;
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index d5de675..f76f481 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -32,6 +32,13 @@ PHDRS {
- 	jiffies	 = jiffies_64;
- #endif
- 
-+#define NOWATCH_TEXT							\
-+		ALIGN_FUNCTION();					\
-+		VMLINUX_SYMBOL(__nowatch_text_start) = .;		\
-+		*(.text..no_watch)					\
-+		VMLINUX_SYMBOL(__nowatch_text_end) = .;
-+
-+
- SECTIONS
- {
- #ifdef CONFIG_BOOT_ELF64
-@@ -54,6 +61,7 @@ SECTIONS
- 	_text = .;	/* Text and read-only data */
- 	.text : {
- 		TEXT_TEXT
-+		NOWATCH_TEXT
- 		SCHED_TEXT
- 		CPUIDLE_TEXT
- 		LOCK_TEXT
+@@ -1527,7 +1527,7 @@ asmlinkage void do_watch(struct pt_regs *regs)
+ 	 * their values and send SIGTRAP.  Otherwise another thread
+ 	 * left the registers set, clear them and continue.
+ 	 */
+-	if (test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
++	if (user_mode(regs) && test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
+ 		mips_read_watch_registers();
+ 		local_irq_enable();
+ 		force_sig_info(SIGTRAP, &info, current);
 -- 
 2.7.4

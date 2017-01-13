@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 11:48:09 +0100 (CET)
-Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:51378 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 11:48:39 +0100 (CET)
+Received: from host.76.145.23.62.rev.coltfrance.com ([62.23.145.76]:51416 "EHLO
         proxy.6wind.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992221AbdAMKrMoHbr- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 11:47:12 +0100
+        with ESMTP id S23992735AbdAMKrP4Vcg- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 11:47:15 +0100
 Received: from elsass.dev.6wind.com (unknown [10.16.0.149])
-        by proxy.6wind.com (Postfix) with ESMTPS id 1DD88256B8;
+        by proxy.6wind.com (Postfix) with ESMTPS id 0C844256B3;
         Fri, 13 Jan 2017 11:46:56 +0100 (CET)
 Received: from root by elsass.dev.6wind.com with local (Exim 4.84_2)
         (envelope-from <root@elsass.dev.6wind.com>)
-        id 1cRzNl-0002ps-AR; Fri, 13 Jan 2017 11:46:53 +0100
+        id 1cRzNl-0002pp-9Y; Fri, 13 Jan 2017 11:46:53 +0100
 From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
 To:     arnd@arndb.de
 Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
@@ -36,19 +36,18 @@ Cc:     mmarek@suse.com, linux-kbuild@vger.kernel.org,
         airlied@linux.ie, davem@davemloft.net, linux@armlinux.org.uk,
         bp@alien8.de, slash.tmp@free.fr, daniel.vetter@ffwll.ch,
         rmk+kernel@armlinux.org.uk, msalter@redhat.com, jengelh@inai.de,
-        hch@infradead.org, Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Subject: [PATCH v3 1/8] arm: put types.h in uapi
-Date:   Fri, 13 Jan 2017 11:46:39 +0100
-Message-Id: <1484304406-10820-2-git-send-email-nicolas.dichtel@6wind.com>
+        hch@infradead.org
+Subject: [PATCH v3 0/8] uapi: export all headers under uapi directories
+Date:   Fri, 13 Jan 2017 11:46:38 +0100
+Message-Id: <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
 X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
+In-Reply-To: <3131144.4Ej3KFWRbz@wuerfel>
 References: <3131144.4Ej3KFWRbz@wuerfel>
- <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
 Return-Path: <root@6wind.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56291
+X-archive-position: 56292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,107 +64,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This header file is exported, thus move it to uapi.
+Here is the v3 of this series. The first 5 patches are just cleanup: some
+exported headers were still under a non-uapi directory or (x86 case) were
+wrongly exported.
+The patch 6 was spotted by code review: there is no in-tree user of this
+functionality.
+Patches 7 and 8 remove the need to list explicitly headers. Now all files
+under an uapi directory are exported.
 
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
----
- arch/arm/include/asm/types.h      | 40 ---------------------------------------
- arch/arm/include/uapi/asm/types.h | 40 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+), 40 deletions(-)
- delete mode 100644 arch/arm/include/asm/types.h
- create mode 100644 arch/arm/include/uapi/asm/types.h
+This series has been tested with a 'make headers_install' on x86 and a
+'make headers_install_all'. I've checked the result of both commands.
 
-diff --git a/arch/arm/include/asm/types.h b/arch/arm/include/asm/types.h
-deleted file mode 100644
-index a53cdb8f068c..000000000000
---- a/arch/arm/include/asm/types.h
-+++ /dev/null
-@@ -1,40 +0,0 @@
--#ifndef _ASM_TYPES_H
--#define _ASM_TYPES_H
--
--#include <asm-generic/int-ll64.h>
--
--/*
-- * The C99 types uintXX_t that are usually defined in 'stdint.h' are not as
-- * unambiguous on ARM as you would expect. For the types below, there is a
-- * difference on ARM between GCC built for bare metal ARM, GCC built for glibc
-- * and the kernel itself, which results in build errors if you try to build with
-- * -ffreestanding and include 'stdint.h' (such as when you include 'arm_neon.h'
-- * in order to use NEON intrinsics)
-- *
-- * As the typedefs for these types in 'stdint.h' are based on builtin defines
-- * supplied by GCC, we can tweak these to align with the kernel's idea of those
-- * types, so 'linux/types.h' and 'stdint.h' can be safely included from the same
-- * source file (provided that -ffreestanding is used).
-- *
-- *                    int32_t         uint32_t               uintptr_t
-- * bare metal GCC     long            unsigned long          unsigned int
-- * glibc GCC          int             unsigned int           unsigned int
-- * kernel             int             unsigned int           unsigned long
-- */
--
--#ifdef __INT32_TYPE__
--#undef __INT32_TYPE__
--#define __INT32_TYPE__		int
--#endif
--
--#ifdef __UINT32_TYPE__
--#undef __UINT32_TYPE__
--#define __UINT32_TYPE__	unsigned int
--#endif
--
--#ifdef __UINTPTR_TYPE__
--#undef __UINTPTR_TYPE__
--#define __UINTPTR_TYPE__	unsigned long
--#endif
--
--#endif /* _ASM_TYPES_H */
-diff --git a/arch/arm/include/uapi/asm/types.h b/arch/arm/include/uapi/asm/types.h
-new file mode 100644
-index 000000000000..9435a42f575e
---- /dev/null
-+++ b/arch/arm/include/uapi/asm/types.h
-@@ -0,0 +1,40 @@
-+#ifndef _UAPI_ASM_TYPES_H
-+#define _UAPI_ASM_TYPES_H
-+
-+#include <asm-generic/int-ll64.h>
-+
-+/*
-+ * The C99 types uintXX_t that are usually defined in 'stdint.h' are not as
-+ * unambiguous on ARM as you would expect. For the types below, there is a
-+ * difference on ARM between GCC built for bare metal ARM, GCC built for glibc
-+ * and the kernel itself, which results in build errors if you try to build with
-+ * -ffreestanding and include 'stdint.h' (such as when you include 'arm_neon.h'
-+ * in order to use NEON intrinsics)
-+ *
-+ * As the typedefs for these types in 'stdint.h' are based on builtin defines
-+ * supplied by GCC, we can tweak these to align with the kernel's idea of those
-+ * types, so 'linux/types.h' and 'stdint.h' can be safely included from the same
-+ * source file (provided that -ffreestanding is used).
-+ *
-+ *                    int32_t         uint32_t               uintptr_t
-+ * bare metal GCC     long            unsigned long          unsigned int
-+ * glibc GCC          int             unsigned int           unsigned int
-+ * kernel             int             unsigned int           unsigned long
-+ */
-+
-+#ifdef __INT32_TYPE__
-+#undef __INT32_TYPE__
-+#define __INT32_TYPE__		int
-+#endif
-+
-+#ifdef __UINT32_TYPE__
-+#undef __UINT32_TYPE__
-+#define __UINT32_TYPE__	unsigned int
-+#endif
-+
-+#ifdef __UINTPTR_TYPE__
-+#undef __UINTPTR_TYPE__
-+#define __UINTPTR_TYPE__	unsigned long
-+#endif
-+
-+#endif /* _UAPI_ASM_TYPES_H */
--- 
-2.8.1
+This patch is built against linus tree. If I must rebase it against the kbuild
+tree, just tell me ;-)
+
+v2 -> v3:
+ - patch #1: remove arch/arm/include/asm/types.h
+ - patch #2: remove arch/h8300/include/asm/bitsperlong.h
+ - patch #3: remove arch/nios2/include/uapi/asm/setup.h
+ - patch #4: don't export msr-index.h
+ - patch #5: fix a typo: s/unput-files3-name/input-files3-name
+ - patch #6: no change
+ - patch #7: fix include/uapi/asm-generic/Kbuild.asm by introducing mandatory-y
+ - add patch #8
+
+v1 -> v2:
+ - add patch #1 to #6
+ - patch #7: remove use of header-y
+
+Comments are welcomed,
+Nicolas

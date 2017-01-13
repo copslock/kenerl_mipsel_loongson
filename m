@@ -1,56 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 14:14:59 +0100 (CET)
-Received: from mail-lf0-x22e.google.com ([IPv6:2a00:1450:4010:c07::22e]:34301
-        "EHLO mail-lf0-x22e.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993940AbdAMNOweS7O8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 14:14:52 +0100
-Received: by mail-lf0-x22e.google.com with SMTP id v186so37163815lfa.1
-        for <linux-mips@linux-mips.org>; Fri, 13 Jan 2017 05:14:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=fy/xJP9Omfrp4mmDXtJ1iZBSYajhhQzVn//A1Wc89Z4=;
-        b=PyArgOpZNAvTMNYNbTDrd3G3obQoy4dtQtjgvWCQD+MDnMypeMJU5oRNPCKNl8J2ZM
-         QxRTG37JuOb2rH0BsozWtqgMXbM5KJucXpS5esk9g4uhSloZl4Wx1D67+mtr52198MSe
-         9+akniSogeb+iNs5u6GSWIj98XwNsMqlzkQH4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=fy/xJP9Omfrp4mmDXtJ1iZBSYajhhQzVn//A1Wc89Z4=;
-        b=FX47YUJ1jgK7tEFTosyx6Ibmf4uWODAWi3TtkTQFSJlxfqwAjBytbNpKebGuHgosl1
-         jKt7aD/LaZBj5U0CzdYa1lAgOyOy0UdCvpXmho1LEcfa2XLM0pxmaZLFlNxX3y9DRpWo
-         0aBdLQO36klgO2IQqrRqgdAi6J5UeT5tBTQ6frAqy5qcsN9m92bBAlTmYe/4Ex5CqKAN
-         BEbsat/Qu6gcUfdGTjpjzBXUHmDZWB+c37kW5bB4FY2QQVsEVeiETeZm2lDL01QLOoB0
-         Tv9076fHIIk/P42J4AfLWkLtUf7Jg11Hp6Dw92g0XKSrhWkGCAk74t35LIm/HKHLY8pk
-         Qx5g==
-X-Gm-Message-State: AIkVDXKWC/wo+NWfLPzcjUC/KHpqiKZ3l/fRgnzRPEVoNgd4ZZkAzhOPbu0IzZtJT9v9c8lO
-X-Received: by 10.25.156.199 with SMTP id f190mr7435772lfe.166.1484313286887;
-        Fri, 13 Jan 2017 05:14:46 -0800 (PST)
-Received: from localhost.localdomain (h-155-4-221-67.na.cust.bahnhof.se. [155.4.221.67])
-        by smtp.gmail.com with ESMTPSA id l67sm2931452lfb.15.2017.01.13.05.14.42
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 13 Jan 2017 05:14:45 -0800 (PST)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: [PATCH v3 04/15] MIPS: Alchemy: Don't rely on public mmc header to include interrupt.h
-Date:   Fri, 13 Jan 2017 14:14:05 +0100
-Message-Id: <1484313256-25993-5-git-send-email-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1484313256-25993-1-git-send-email-ulf.hansson@linaro.org>
-References: <1484313256-25993-1-git-send-email-ulf.hansson@linaro.org>
-Return-Path: <ulf.hansson@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 16:37:09 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:33808 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993945AbdAMPhC63Spi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 Jan 2017 16:37:02 +0100
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 4DBC48F27A;
+        Fri, 13 Jan 2017 15:36:52 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-116-28.rdu2.redhat.com [10.10.116.28])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id v0DFailJ024694;
+        Fri, 13 Jan 2017 10:36:45 -0500
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <1484304406-10820-2-git-send-email-nicolas.dichtel@6wind.com>
+References: <1484304406-10820-2-git-send-email-nicolas.dichtel@6wind.com> <3131144.4Ej3KFWRbz@wuerfel> <1484304406-10820-1-git-send-email-nicolas.dichtel@6wind.com>
+To:     Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc:     dhowells@redhat.com, arnd@arndb.de, linux-mips@linux-mips.org,
+        linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-doc@vger.kernel.org, alsa-devel@alsa-project.org,
+        dri-devel@lists.freedesktop.org, linux-mtd@lists.infradead.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-am33-list@redhat.com,
+        linux-c6x-dev@linux-c6x.org, linux-rdma@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux@armlinux.org.uk, coreteam@netfilter.org,
+        fcoe-devel@open-fcoe.org, xen-devel@lists.xenproject.org,
+        linux-snps-arc@lists.infradead.org, linux-media@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp,
+        linux-xtensa@linux-xtensa.org, linux-kbuild@vger.kernel.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-raid@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-fbdev@vger.kernel.org, linux-metag@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-cris-kernel@axis.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, nio2-dev@lists.rocketboards.org,
+        linuxppc-dev@lists.ozlabs.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <25062.1484321803.1@warthog.procyon.org.uk>
+Date:   Fri, 13 Jan 2017 15:36:43 +0000
+Message-ID: <25063.1484321803@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Fri, 13 Jan 2017 15:36:53 +0000 (UTC)
+Return-Path: <dhowells@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56302
+X-archive-position: 56303
+Subject: (no subject)
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ulf.hansson@linaro.org
+X-original-sender: dhowells@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -63,32 +70,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS Alchemy db1300 dev board depends on interrupt.h. Explicitly
-include it instead of relying on the public mmc header host.h.
+Nicolas Dichtel <nicolas.dichtel@6wind.com> wrote:
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: <linux-mips@linux-mips.org>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
----
+> This header file is exported, thus move it to uapi.
 
-I am seeking an ack for this change as following changes for mmc in the
-series, has build-dependencies to it.
+Exported how?
 
----
- arch/mips/alchemy/devboards/db1300.c | 1 +
- 1 file changed, 1 insertion(+)
+> +#ifdef __INT32_TYPE__
+> +#undef __INT32_TYPE__
+> +#define __INT32_TYPE__		int
+> +#endif
+> +
+> +#ifdef __UINT32_TYPE__
+> +#undef __UINT32_TYPE__
+> +#define __UINT32_TYPE__	unsigned int
+> +#endif
+> +
+> +#ifdef __UINTPTR_TYPE__
+> +#undef __UINTPTR_TYPE__
+> +#define __UINTPTR_TYPE__	unsigned long
+> +#endif
 
-diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
-index d3c087f..a5504f5 100644
---- a/arch/mips/alchemy/devboards/db1300.c
-+++ b/arch/mips/alchemy/devboards/db1300.c
-@@ -13,6 +13,7 @@
- #include <linux/i2c.h>
- #include <linux/io.h>
- #include <linux/leds.h>
-+#include <linux/interrupt.h>
- #include <linux/ata_platform.h>
- #include <linux/mmc/host.h>
- #include <linux/module.h>
--- 
-1.9.1
+These weren't defined by the kernel before, so why do we need to define them
+now?
+
+Will defining __UINTPTR_TYPE__ cause problems in compiling libboost by
+changing the signature on C++ functions that use uintptr_t?
+
+David

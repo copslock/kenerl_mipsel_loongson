@@ -1,40 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2017 20:52:24 +0100 (CET)
-Received: from lpdvsmtp01.broadcom.com ([192.19.211.62]:50858 "EHLO
-        relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993888AbdAMTwQGNgIS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Jan 2017 20:52:16 +0100
-Received: from mail-irv-17.broadcom.com (smtphost.broadcom.com [10.15.198.34])
-        by relay.smtp.broadcom.com (Postfix) with ESMTP id 8A5BA28051F;
-        Fri, 13 Jan 2017 11:52:12 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 relay.smtp.broadcom.com 8A5BA28051F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1484337132;
-        bh=rFZfmrx1aOjsx/e1ucQ538LnoTZWLl2YFwCsNdu8EGc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=U8pbfz/gEyckURreiR/Hp3H7szgFMqdPg3iX/9ULLHDKOFHbAFzSXQ2uiFvc2P3YS
-         ubeew23Sv3yVztIgaDOGWxfaoo6wpFPlfTGIUAT2Oo7hG0kIMmjijdsjBvAnNOqNtj
-         DQvlrDcFE10Vo0ZQNhgTw7gkFbsDVUtB/pQspvng=
-Received: from stb-bld-02.irv.broadcom.com (stb-bld-02.broadcom.com [10.13.134.28])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id D092D82029;
-        Fri, 13 Jan 2017 11:52:11 -0800 (PST)
-From:   justinpopo6@gmail.com
-To:     linux-mips@linux-mips.org
-Cc:     bcm-kernel-feedback-list@broadcom.com, leonid.yegoshin@imgtec.com,
-        f.fainelli@gmail.com, matt.redfearn@imgtec.com,
-        Justin Chen <justin.chen@broadcom.com>
-Subject: [PATCH 1/2] MIPS: Add cacheinfo support
-Date:   Fri, 13 Jan 2017 11:51:07 -0800
-Message-Id: <20170113195107.26329-1-justinpopo6@gmail.com>
-X-Mailer: git-send-email 2.11.0
-Return-Path: <justinpopo6@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jan 2017 14:40:18 +0100 (CET)
+Received: from [192.95.5.64] ([192.95.5.64]:54345 "EHLO frisell.zx2c4.com"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990517AbdAONkKj91jF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 15 Jan 2017 14:40:10 +0100
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id c30d48d0;
+        Sun, 15 Jan 2017 13:29:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
+        :in-reply-to:references:from:date:message-id:subject:to:cc
+        :content-type; s=mail; bh=tKj+2NGYqJIUipLHHLQcxjnk5PA=; b=i383Wv
+        u/d+1fewLlG5O+Knwpsgvfry4/5gqFtSZibvj6khjF2SsusKg56HzI9gqfMzXTx4
+        I2nknfwTiO9Bvvn0//OF3gyYfq4W3dULNV5RxCY1JiX3gIf4QMEZmunKZnogP8am
+        CStXAXHMlZkOo8SKz5rNrg+G7aTWS0ArCMPPyNfNU4JYTSzYHcGMTDVL2rnTN8ZB
+        Qv2trP9X1NhmR6adP6kD2e8DjCmjWABPpVEMZOnMFKYHTDI5CvbSveAxKlePwW1w
+        rAvVQ48Aa5uIMjXZBmbq++Otx+wGoPjPeMIYfNaBAWd9MOTuMicq5KLQlzbQrkdt
+        qNJ/K40M1BJZ/+jw==
+Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id a1fc5db9 (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO);
+        Sun, 15 Jan 2017 13:29:28 +0000 (UTC)
+Received: by mail-ot0-f169.google.com with SMTP id 65so30230923otq.2;
+        Sun, 15 Jan 2017 05:39:51 -0800 (PST)
+X-Gm-Message-State: AIkVDXKj29Vzt1z0miNp66O4EGVBzkWGfygC4YPWVkbMa27UTxGDuEmAY1F0dDJR7blbqwVSzJr5vaK/i4nUzQ==
+X-Received: by 10.157.7.232 with SMTP id 95mr13346751oto.145.1484487589840;
+ Sun, 15 Jan 2017 05:39:49 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.157.14.167 with HTTP; Sun, 15 Jan 2017 05:39:49 -0800 (PST)
+In-Reply-To: <20170113094939.GI10569@jhogan-linux.le.imgtec.org>
+References: <1482157260-18730-1-git-send-email-matt.redfearn@imgtec.com>
+ <CAHmME9pRnCW5875vL=mr_D0Lq8nPZ69L-7gVaaHuO7EMTBp6Ew@mail.gmail.com>
+ <CAHmME9ogK=NsWgks2Uarty5AeWSZuYmujjBovQO6FWAAXKsopQ@mail.gmail.com>
+ <20170111012032.GE31072@linux-mips.org> <CAHmME9qXeO=qFvWXenVO6gVAftk1M2vdQt7nwABRDqvDcV3dPg@mail.gmail.com>
+ <20170113094939.GI10569@jhogan-linux.le.imgtec.org>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Sun, 15 Jan 2017 14:39:49 +0100
+X-Gmail-Original-Message-ID: <CAHmME9oG65MFwT=5m8uaeLw8uf5kS8nC9oBBLf9_v11bTsiAsg@mail.gmail.com>
+Message-ID: <CAHmME9oG65MFwT=5m8uaeLw8uf5kS8nC9oBBLf9_v11bTsiAsg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] MIPS: Add per-cpu IRQ stack
+To:     James Hogan <james.hogan@imgtec.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Petr Mladek <pmladek@suse.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Jiri Slaby <jslaby@suse.cz>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Aaron Tomlin <atomlin@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <Jason@zx2c4.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56310
+X-archive-position: 56311
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justinpopo6@gmail.com
+X-original-sender: Jason@zx2c4.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,137 +72,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Justin Chen <justin.chen@broadcom.com>
+Hi James,
 
-Add cacheinfo support for MIPS architectures.
+On Fri, Jan 13, 2017 at 10:49 AM, James Hogan <james.hogan@imgtec.com> wrote:
+> Its quite a significant change/feature, especially in terms of potential
+> for further breakage. I don't think its really stable material to be
+> honest.  It sounds bad if the kernel stack requirement can be made
+> arbitrarily large by stacking too many drivers.
 
-Use information from the cpuinfo_mips struct to populate the
-cacheinfo struct. This allows an architecture agnostic approach,
-however this also means if cache information is not properly
-populated within the cpuinfo_mips struct, there is nothing
-we can do. (I.E. c-r3k.c)
+Indeed I believe this is the case. If, say, a kthread is already using
+a bit of stack, and then a softirq chain of stacked virtual network
+drivers is called, the stack can be busted.
 
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
----
- arch/mips/kernel/Makefile    |  8 ++--
- arch/mips/kernel/cacheinfo.c | 90 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 94 insertions(+), 4 deletions(-)
- create mode 100644 arch/mips/kernel/cacheinfo.c
+> Is there a simpler fix/workaround for the issue that would satisfy
+> stable kernel users until they can upgrade to a kernel with irqstacks?
 
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 4a603a3ea657..712c1ae6afdc 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -4,10 +4,10 @@
- 
- extra-y		:= head.o vmlinux.lds
- 
--obj-y		+= cpu-probe.o branch.o elf.o entry.o genex.o idle.o irq.o \
--		   process.o prom.o ptrace.o reset.o setup.o signal.o \
--		   syscall.o time.o topology.o traps.o unaligned.o watch.o \
--		   vdso.o
-+obj-y		+= cpu-probe.o branch.o cacheinfo.o elf.o entry.o genex.o \
-+		   idle.o irq.o process.o prom.o ptrace.o reset.o setup.o \
-+		   signal.o syscall.o time.o topology.o traps.o unaligned.o \
-+		   watch.o vdso.o
- 
- ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_ftrace.o = -pg
-diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
-new file mode 100644
-index 000000000000..11e6ad7ed0d2
---- /dev/null
-+++ b/arch/mips/kernel/cacheinfo.c
-@@ -0,0 +1,90 @@
-+/*
-+ * MIPS cacheinfo support
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * This program is distributed "as is" WITHOUT ANY WARRANTY of any
-+ * kind, whether express or implied; without even the implied warranty
-+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include <linux/cacheinfo.h>
-+
-+/* Populates leaf and increments to next leaf */
-+#define populate_cache(cache, leaf, c_level, c_type)		\
-+	leaf->type = c_type;					\
-+	leaf->level = c_level;					\
-+	leaf->coherency_line_size = cache.linesz;		\
-+	leaf->number_of_sets = cache.sets;			\
-+	leaf->ways_of_associativity = cache.ways;		\
-+	leaf->size = cache.linesz * cache.sets * cache.ways;
-+
-+static int __init_cache_level(unsigned int cpu)
-+{
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+	int levels = 0, leaves = 0;
-+
-+	/*
-+	 * If Dcache is not set, we assume the cache structures
-+	 * are not properly initialized.
-+	 */
-+	if (c->dcache.waysize)
-+		levels += 1;
-+	else
-+		return -ENOENT;
-+
-+	leaves += (c->icache.waysize) ? 2 : 1;
-+
-+	if (c->scache.waysize) {
-+		levels++;
-+		leaves++;
-+	}
-+
-+	if (c->tcache.waysize) {
-+		levels++;
-+		leaves++;
-+	}
-+
-+	this_cpu_ci->num_levels = levels;
-+	this_cpu_ci->num_leaves = leaves;
-+
-+	return 0;
-+}
-+
-+static int __populate_cache_leaves(unsigned int cpu)
-+{
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
-+
-+	if (c->icache.waysize) {
-+		populate_cache(c->dcache, this_leaf, 1, CACHE_TYPE_DATA);
-+		this_leaf++;
-+		populate_cache(c->icache, this_leaf, 1, CACHE_TYPE_INST);
-+		this_leaf++;
-+	} else {
-+		populate_cache(c->dcache, this_leaf, 1, CACHE_TYPE_UNIFIED);
-+		this_leaf++;
-+	}
-+
-+	if (c->scache.waysize) {
-+		populate_cache(c->scache, this_leaf, 2, CACHE_TYPE_UNIFIED);
-+		this_leaf++;
-+	}
-+
-+	if (c->tcache.waysize) {
-+		populate_cache(c->tcache, this_leaf, 3, CACHE_TYPE_UNIFIED);
-+		this_leaf++;
-+	}
-+
-+	return 0;
-+}
-+
-+DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
-+DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
--- 
-2.11.0
+The simplest solution is probably just not stacking tons of network
+drivers. For my own out-of-tree curve25519-donna code that's in
+OpenWRT and uses a fair amount of stack, I just kmalloc on MIPS but
+not on x86, so in terms of my own stuff there's already a workaround
+in place. But this still doesn't solve things for users who have some
+interesting networking requirements and stack a few drivers.
+
+Unfortunately, most folks are only testing stuff on ARM and x86, which
+already have the separate IRQ stacks, so they aren't hitting crashes.
+
+So, in the end, I'm not quite sure. On the one hand, this fixes an
+actual problem and it'd be nice to see stable kernels have the fix. On
+the other hand, this is a rather big change. I don't know how to
+assess it, but I've copied Greg on this email, who certainly has
+better judgement about this than me.
+
+Jason

@@ -1,67 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jan 2017 19:07:23 +0100 (CET)
-Received: from frisell.zx2c4.com ([192.95.5.64]:34923 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991346AbdAOSHQ3DolH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 15 Jan 2017 19:07:16 +0100
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 653204c1;
-        Sun, 15 Jan 2017 17:56:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :in-reply-to:references:from:date:message-id:subject:to:cc
-        :content-type; s=mail; bh=DzbUH49ei9VmL1kN+Dxg9bJ4LJM=; b=Bw44u3
-        WaNkfrExy+ElfOs2MNCL+wKmRmjKEzyOu63dz1vh7zQeOl1j/7vWCOfIp83uurR0
-        cLcyacC8t28ocKH8dKk6mVCSIC4dbuZm/lZaykvn0tzZwOgIrsYgw8uc4V6DLEFK
-        j3xrp4x0dFlp1n8Kt6Ny2btpgRFxhv/FB9aZXnDTJyU+soPls2KqJMSvfexVBL5Y
-        214/Rsa8TTl0vr8i+Pf/ElzuECD+eSD04/coCjJfomsmg6gZOWZF7yZLilfVC7yl
-        bh7J5fOE/z1OTtl7PPzivJpf/AzR1EBn6ZlHC/+Y9Q9fCaFl6rKuCJ8cUhfmoHLo
-        4b/lEBJFN+oL/n2A==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id fabc018e (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128:NO);
-        Sun, 15 Jan 2017 17:56:41 +0000 (UTC)
-Received: by mail-ot0-f172.google.com with SMTP id f9so32554161otd.1;
-        Sun, 15 Jan 2017 10:07:05 -0800 (PST)
-X-Gm-Message-State: AIkVDXKOwdFu7ukWRor4dQRJQTcanJwR71bmfybJj0KSGi/VFxm9KDfyM73wFrUWqP3U7uQerri2kBmGmZ0G2w==
-X-Received: by 10.157.12.217 with SMTP id o25mr13176560otd.94.1484503624152;
- Sun, 15 Jan 2017 10:07:04 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.157.14.167 with HTTP; Sun, 15 Jan 2017 10:07:03 -0800 (PST)
-In-Reply-To: <20170115143019.GA24619@kroah.com>
-References: <1482157260-18730-1-git-send-email-matt.redfearn@imgtec.com>
- <CAHmME9pRnCW5875vL=mr_D0Lq8nPZ69L-7gVaaHuO7EMTBp6Ew@mail.gmail.com>
- <CAHmME9ogK=NsWgks2Uarty5AeWSZuYmujjBovQO6FWAAXKsopQ@mail.gmail.com>
- <20170111012032.GE31072@linux-mips.org> <CAHmME9qXeO=qFvWXenVO6gVAftk1M2vdQt7nwABRDqvDcV3dPg@mail.gmail.com>
- <20170113094939.GI10569@jhogan-linux.le.imgtec.org> <CAHmME9oG65MFwT=5m8uaeLw8uf5kS8nC9oBBLf9_v11bTsiAsg@mail.gmail.com>
- <20170115134848.GA27658@kroah.com> <CAHmME9q04CwkmorTJaGTWKS9gvJpOpyp4FGuhySKHC7CySDWHw@mail.gmail.com>
- <CAHmME9oQ-HYQktU4JDZbnvj58WW8EE_40u8Nq-PxeJWHcvXmcQ@mail.gmail.com> <20170115143019.GA24619@kroah.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Sun, 15 Jan 2017 19:07:03 +0100
-X-Gmail-Original-Message-ID: <CAHmME9o9smxMjoZj8jAxHrffRFC4As0DxHHOecT+N+DSG_MmtA@mail.gmail.com>
-Message-ID: <CAHmME9o9smxMjoZj8jAxHrffRFC4As0DxHHOecT+N+DSG_MmtA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] MIPS: Add per-cpu IRQ stack
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Petr Mladek <pmladek@suse.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Aaron Tomlin <atomlin@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <Jason@zx2c4.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2017 12:06:20 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.187]:61169 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990511AbdAPLGMsC0Fw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jan 2017 12:06:12 +0100
+Received: from wuerfel.lan ([78.43.21.235]) by mrelayeu.kundenserver.de
+ (mreue001 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 0Ldhgp-1cu8Rf0VPP-00j197; Mon, 16 Jan 2017 12:05:20 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ALSA: mips: avoid potential uninitialized variable use
+Date:   Mon, 16 Jan 2017 12:04:56 +0100
+Message-Id: <20170116110517.3833976-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.9.0
+X-Provags-ID: V03:K0:gSTcDrULYkfgWkK4eDeH5TkGbMDsdZf9rPVP0AgdaN96LdtfS1/
+ TrjA4Tma3fn+0YyHNpfpamix2Sd9UN6lYWrGuY/w5ycr35XLDbbyLjXWXW28jcIaiMvcc5c
+ UquzR/1YbOsDKDsLFsLHpW37fsloWM832xYDy7MX8bfZp638UPcALzV/TAx3U8AH50D7AS0
+ /bnxSDNMpNSlvDFZSL3Qg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:l/EKI0tLrDI=:SHghJuG5fiYRhfpkB436Gm
+ 51fYIdv4MpmGpTlNrrYfmfYu18pPDEWAr8jAyfBh9jPLUVxHx3lyWkUuYIL0vr4//lVH+/67r
+ 8ARTCXojMLu2pAjYvaK0alZd9c8nqU2Ub2i3YqDsOZWJap/kRb3j4+8M2fjRltp09NQpW3/C+
+ WgnmxjNvCB0MKAZ19oC6gNVjL55eYjcsL3r1j78ElJ+kSgEr0/OnaGn75jgvTpX5mziVuzZcc
+ AmDNNSSyDkNnovKq4aWSB5bP5P64/hvocWxO25U5tMxSjZk9tawtE+dxjR216+iwPQTkTSllx
+ igKnN6gChVs5YnSZK2OcnGczqS6rC1yhc6oiuRIhOceD+van9IpH/xYKGdn2+mCMGLacnuId4
+ x3RnG0MjxrPwA9KtSXBht19Ufd+T/F4XqU+n95vFbjFn+bKZ8OH+TDAFXQIw1YeWXyONJgH2a
+ NKpyt4Jo40xcE9c4Q5Z2GZwEj9EMMo3cVN2QwDLBLmGJLpxQG2DeABcoqRlD5nU0oXPc/q0vg
+ xEpx2WWRSaP2Fmp5UNDO4jM++2bohjy4aWnj9EjUIZFmzwOOdiyRqQjZDNFvrAVWIK9ttmzy0
+ yeCnqQKWTywCCmRO1FoU5JjPI+sJI0crr+lKoLOMHgorflX9tZfRB7ZcVH3jOlQMio2TAzhAU
+ A09wq3pxwR+QEntiO6ugyIx3zZQ3Nl/Fciv09FDz94dcsC3cXvz+/A35i17IVJzYFfEA=
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56316
+X-archive-position: 56317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Jason@zx2c4.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,5 +50,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-FYI, LEDE/OpenWRT is shipping this patchset now:
-https://github.com/lede-project/source/commit/1708644f1915eb7587a904d81da0ef0b559d1567
+MIPS allmodconfig results in this warning:
+
+sound/mips/hal2.c: In function 'hal2_gain_get':
+sound/mips/hal2.c:224:35: error: 'r' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+sound/mips/hal2.c:223:35: error: 'l' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+sound/mips/hal2.c: In function 'hal2_gain_put':
+sound/mips/hal2.c:260:13: error: 'new' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+sound/mips/hal2.c:260:13: error: 'old' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+
+It's easy enough to avoid by adding a 'default' clause to the switch
+statements here. I assume that in practice no other case can happen,
+but adding a default puts us on the safe side and shuts up the warnings.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ sound/mips/hal2.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/sound/mips/hal2.c b/sound/mips/hal2.c
+index ede449f0b50d..0af4f7a9b3e7 100644
+--- a/sound/mips/hal2.c
++++ b/sound/mips/hal2.c
+@@ -219,6 +219,9 @@ static int hal2_gain_get(struct snd_kcontrol *kcontrol,
+ 		l = (tmp >> H2I_C2_L_GAIN_SHIFT) & 15;
+ 		r = (tmp >> H2I_C2_R_GAIN_SHIFT) & 15;
+ 		break;
++	default:
++		l = 0;
++		r = 0;
+ 	}
+ 	ucontrol->value.integer.value[0] = l;
+ 	ucontrol->value.integer.value[1] = r;
+@@ -256,6 +259,9 @@ static int hal2_gain_put(struct snd_kcontrol *kcontrol,
+ 		new |= (r << H2I_C2_R_GAIN_SHIFT);
+ 		hal2_i_write32(hal2, H2I_ADC_C2, new);
+ 		break;
++	default:
++		new = 0;
++		old = 0;
+ 	}
+ 	return old != new;
+ }
+-- 
+2.9.0

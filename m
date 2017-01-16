@@ -1,54 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2017 14:26:45 +0100 (CET)
-Received: from mail-oi0-x244.google.com ([IPv6:2607:f8b0:4003:c06::244]:36267
-        "EHLO mail-oi0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991129AbdAPN0iGdIsv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jan 2017 14:26:38 +0100
-Received: by mail-oi0-x244.google.com with SMTP id u143so12449456oif.3
-        for <linux-mips@linux-mips.org>; Mon, 16 Jan 2017 05:26:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=ulbNEeCNc9Wx7BfhuN6aNL/NlbalvJc7SZYOMe3kxmo=;
-        b=q2ttdO6Nhfs6yrVjNblCat17SRVeirsYThLzUGEU0ozGYx/AYulRakj3Qe9ksE40oH
-         SkYRzShDia36Gv9bN6lG6L/4u6gxS2gyNLk4fRkTP3zWdGzESpuOAbDTuTg3L5O4/crE
-         QbwHtZQCSdbPb7o6spX/HymDepig4qWznyUuqbaHr0txUAPw8FEVRzs5PVkFGFMRDO9G
-         +g6KLaz5NAj3kPQbQaVtH4yyNa7lbbvtNtN8Cd8320yTUZmqOMOxzqMIdEJdhpqJrU4t
-         Wm7v6bOwXE9Ex5YUwJkJ23S9oKNu7zdHjhgtFQfZPWLeITP4foVT7CIbEsVVtORek4HW
-         4XUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=ulbNEeCNc9Wx7BfhuN6aNL/NlbalvJc7SZYOMe3kxmo=;
-        b=WlNtkQF6JpMW/dv+E6eXVacirM2flRwL7ogDTiJvAbY6ua3DcBHzayx0FsI17PWkhD
-         zC99yxIe3AOxz6324Jk3DW2xy+AS83UlZiJ44Ylb10SFqrOUfUDoVi8uLd3I0lSQlFtl
-         7cIagDJYlGZEg012xPpiJ/cMdjn2uY9+QZRMZGWR4IWXmL35TCWLRn9yJmxAOBI7W4jr
-         OYTs4V5UaIQFc82D370Dwi5b5n1EMfO9be6gSoJKTgwgikM65P5AQfVziO9/ee2guxpH
-         5Ir/Q6vqBlAfP/RpS/jOWOpRjlZq5jBik/Xl5sht42yqWRjf9MbDqoYSQGrmVd+rAWql
-         RF1g==
-X-Gm-Message-State: AIkVDXKSF1NJflg+fPGi2lQSlwCq8b7s4dPOjAObWq1OpJ43xxg2gaUsOsB6ccUpQMkN8x1WfugBzvuX4/4WJw==
-X-Received: by 10.202.51.8 with SMTP id z8mr15774289oiz.79.1484573192269; Mon,
- 16 Jan 2017 05:26:32 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.157.6.162 with HTTP; Mon, 16 Jan 2017 05:26:31 -0800 (PST)
-In-Reply-To: <s5hd1fnxk6v.wl-tiwai@suse.de>
-References: <20170116110517.3833976-1-arnd@arndb.de> <s5hd1fnxk6v.wl-tiwai@suse.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2017 14:27:06 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.133]:65199 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990508AbdAPN0snO-Yv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jan 2017 14:26:48 +0100
+Received: from wuerfel.lan ([78.43.21.235]) by mrelayeu.kundenserver.de
+ (mreue001 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 0MVV8g-1bvY6r08YY-00Yl5t; Mon, 16 Jan 2017 14:25:59 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 16 Jan 2017 14:26:31 +0100
-X-Google-Sender-Auth: 4aS6CskDuf8v0nRhoi1e4dDSNys
-Message-ID: <CAK8P3a21FY+4S1zONxnE28eVDmmHTcyR5ymiFJ2Y7X-CxZBAMA@mail.gmail.com>
-Subject: Re: [PATCH] ALSA: mips: avoid potential uninitialized variable use
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
-        linux-mips@linux-mips.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <arndbergmann@gmail.com>
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ALSA: mips: avoid potential uninitialized variable use
+Date:   Mon, 16 Jan 2017 14:25:47 +0100
+Message-Id: <20170116132557.2178801-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.9.0
+X-Provags-ID: V03:K0:5a/cIw+KczPQlzqJzmcg/USDlZXFsvO68/zSOrlnBP89INmJaP6
+ AbZ4M5gj4v4Yb8GfjN3z9Y4eNpMK21HwBJNCgAxrDSbZb3O4QLhYdLfarHg6lNxs5rEW+lS
+ wxAhDxjYp3yUj/ogRWK6SL9v+urFihASXLn4EnMQ76wOjV97+azRPAD9tuLkDs+3TSOI3vT
+ qztUJhq5ngRkwIdDrRHjw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:Y/RJH/ewfKo=:dyXNjNihEs8hn1xBJd05DI
+ spy7uoSfxKbWZN3oKG/+vtWinIE5CINOPcaAtWUXKuWhQsqMQFYtehn6j1qJBTxmnBvh1x/0T
+ mmzVUVREdF6jUb3bvx9Pbt863V9VoYnc6KFA6cSlOT8e9tXTCwd3CSVx/9jibL45wPt0yYVBJ
+ cd9V2j8+ScfvopyiVwNH5MrUrx/bmptOslWAPCvjF2w23p38LOf4RP61bEVskbYXsAF8HEFSd
+ vse6dOZwX6pKoGb3/pL97aPD/u17kH80h0dUTJ437Xt6Y6MvKGecM4LhC00304IOPWvudrF35
+ +nvKkfLivlVZamDXBBSmVqoDgu66vj4jNmeLq8j/hCGbhdOs13YRFmKvo+E3TI3eZhytO5Ut/
+ xIDXTo2y5Cu8KICce9WZfDlVJy86MjrvnoOEf++BKi50KVFruQz2RjQepKORdO7n51sFrmDj1
+ nYqmUgCkeJ6LFjto7kiVzFGXtpH88JjkmDgRVRrgycQE2JPYTvFadFNNmr3orlS8N9bZynrET
+ MGKpf5boPJEC/aoxV2EgMTBPMlE6fqy6siGsp4VXN30iMAS+2OU40uXJWMD4Jcxtbsik5b1fn
+ 4oI8Mq1XLHk7Ci2YqIHU3co7ahClcaARxkApL4vK04gO0BpP0jrLoX4wZUMCOclHgYefuYS7l
+ LHleEjRvIqUJFJsf9/BNxUITVD7U3K8XL6G7AhdA30v1KACXNfr1ugvf4U49UC8/5dCM=
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56333
+X-archive-position: 56334
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,16 +50,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jan 16, 2017 at 1:28 PM, Takashi Iwai <tiwai@suse.de> wrote:
-> On Mon, 16 Jan 2017 12:04:56 +0100,
-> Arnd Bergmann wrote:
->> It's easy enough to avoid by adding a 'default' clause to the switch
->> statements here. I assume that in practice no other case can happen,
->> but adding a default puts us on the safe side and shuts up the warnings.
->
-> Well, these cases are logical errors that must not happen, so
-> returning an error would be a "safer", IMO.
+MIPS allmodconfig results in this warning:
 
-Agreed. I sent out a v2 now.
+sound/mips/hal2.c: In function 'hal2_gain_get':
+sound/mips/hal2.c:224:35: error: 'r' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+sound/mips/hal2.c:223:35: error: 'l' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+sound/mips/hal2.c: In function 'hal2_gain_put':
+sound/mips/hal2.c:260:13: error: 'new' may be used uninitialized in this function [-Werror=maybe-uninitialized]
+sound/mips/hal2.c:260:13: error: 'old' may be used uninitialized in this function [-Werror=maybe-uninitialized]
 
-    Arnd
+Returning an error for all unexpected cases shuts up the warning
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+v2: return an error instead trying to handle gracefully
+---
+ sound/mips/hal2.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/sound/mips/hal2.c b/sound/mips/hal2.c
+index ede449f0b50d..0af4f7a9b3e7 100644
+--- a/sound/mips/hal2.c
++++ b/sound/mips/hal2.c
+@@ -219,6 +219,9 @@ static int hal2_gain_get(struct snd_kcontrol *kcontrol,
+ 		l = (tmp >> H2I_C2_L_GAIN_SHIFT) & 15;
+ 		r = (tmp >> H2I_C2_R_GAIN_SHIFT) & 15;
+ 		break;
++	default:
++		l = 0;
++		r = 0;
+ 	}
+ 	ucontrol->value.integer.value[0] = l;
+ 	ucontrol->value.integer.value[1] = r;
+@@ -256,6 +259,9 @@ static int hal2_gain_put(struct snd_kcontrol *kcontrol,
+ 		new |= (r << H2I_C2_R_GAIN_SHIFT);
+ 		hal2_i_write32(hal2, H2I_ADC_C2, new);
+ 		break;
++	default:
++		new = 0;
++		old = 0;
+ 	}
+ 	return old != new;
+ }
+-- 
+2.9.0

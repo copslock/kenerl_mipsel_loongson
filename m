@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2017 14:27:06 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.133]:65199 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2017 14:29:07 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.17.10]:50182 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990508AbdAPN0snO-Yv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jan 2017 14:26:48 +0100
+        with ESMTP id S23991129AbdAPN27K26Cv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Jan 2017 14:28:59 +0100
 Received: from wuerfel.lan ([78.43.21.235]) by mrelayeu.kundenserver.de
- (mreue001 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0MVV8g-1bvY6r08YY-00Yl5t; Mon, 16 Jan 2017 14:25:59 +0100
+ (mreue103 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 0MSYbs-1c1aXz2dr2-00RcUn; Mon, 16 Jan 2017 14:28:07 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
 Cc:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
         alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ALSA: mips: avoid potential uninitialized variable use
-Date:   Mon, 16 Jan 2017 14:25:47 +0100
-Message-Id: <20170116132557.2178801-1-arnd@arndb.de>
+Subject: [PATCH v3] ALSA: mips: avoid potential uninitialized variable use
+Date:   Mon, 16 Jan 2017 14:27:57 +0100
+Message-Id: <20170116132805.2207208-1-arnd@arndb.de>
 X-Mailer: git-send-email 2.9.0
-X-Provags-ID: V03:K0:5a/cIw+KczPQlzqJzmcg/USDlZXFsvO68/zSOrlnBP89INmJaP6
- AbZ4M5gj4v4Yb8GfjN3z9Y4eNpMK21HwBJNCgAxrDSbZb3O4QLhYdLfarHg6lNxs5rEW+lS
- wxAhDxjYp3yUj/ogRWK6SL9v+urFihASXLn4EnMQ76wOjV97+azRPAD9tuLkDs+3TSOI3vT
- qztUJhq5ngRkwIdDrRHjw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:Y/RJH/ewfKo=:dyXNjNihEs8hn1xBJd05DI
- spy7uoSfxKbWZN3oKG/+vtWinIE5CINOPcaAtWUXKuWhQsqMQFYtehn6j1qJBTxmnBvh1x/0T
- mmzVUVREdF6jUb3bvx9Pbt863V9VoYnc6KFA6cSlOT8e9tXTCwd3CSVx/9jibL45wPt0yYVBJ
- cd9V2j8+ScfvopyiVwNH5MrUrx/bmptOslWAPCvjF2w23p38LOf4RP61bEVskbYXsAF8HEFSd
- vse6dOZwX6pKoGb3/pL97aPD/u17kH80h0dUTJ437Xt6Y6MvKGecM4LhC00304IOPWvudrF35
- +nvKkfLivlVZamDXBBSmVqoDgu66vj4jNmeLq8j/hCGbhdOs13YRFmKvo+E3TI3eZhytO5Ut/
- xIDXTo2y5Cu8KICce9WZfDlVJy86MjrvnoOEf++BKi50KVFruQz2RjQepKORdO7n51sFrmDj1
- nYqmUgCkeJ6LFjto7kiVzFGXtpH88JjkmDgRVRrgycQE2JPYTvFadFNNmr3orlS8N9bZynrET
- MGKpf5boPJEC/aoxV2EgMTBPMlE6fqy6siGsp4VXN30iMAS+2OU40uXJWMD4Jcxtbsik5b1fn
- 4oI8Mq1XLHk7Ci2YqIHU3co7ahClcaARxkApL4vK04gO0BpP0jrLoX4wZUMCOclHgYefuYS7l
- LHleEjRvIqUJFJsf9/BNxUITVD7U3K8XL6G7AhdA30v1KACXNfr1ugvf4U49UC8/5dCM=
+X-Provags-ID: V03:K0:/CsUh4t6CBW015iU+KlVbqG1pljavBucwZ7asxq/yp58rZvCt0K
+ m4HMiCjo2bSXwl3tNz+hbZna89lfStXE4aW1ItIadbVYjQg2ontaLrXXthlMw/pDVBfiV5C
+ sY69Q6lMvwP8GUIPrekMcbkPwIB9V5TuOXRQrphBr2qXOtRz9YJg6vwPagDtQGPYhJbP1DY
+ xQ2aTLS4RS3cawyoHzT9Q==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:urySP5nxK1Y=:x1g5B5/PzwZp9qaNS9raF7
+ 7B08y+TXNuywUVXMuw1A0VLGwMMvVfI/90B+Mr3z5O5raBpZc2lkMcmY4vrT2jkzUTyaqYc0z
+ rJCA+Aoz1rqEfrj3rk3WI4E5c+6yPkq/NfRJYNSovHhq5REtkS9xyT7pqFLG1VIBXEFfmiRf4
+ U1N9YjEGbp1C1aU+XtGoY+62SK5G+PfzvNQsQw67pbYGEALMIPwJWUbRyg5AAycRCtxGVi5fL
+ CK6h1K1n0BtJ/eSh5FrbUIplfFJSeZD6h2tMG/3zYGq71e4ApRbxSLjmocO0kRT9Ltknm7OMO
+ jOZP7at7F9DLGgE9mgtYl4+1qt5ddcZ7xUgfvVHN980dgaL5eWRTcHbTITDsHuKaqYmTP5sNL
+ CTJN495eu9ioKAjdHrRfXp0ksssTz7ko+vHqud96mjXRFRDeECq58huR40rGfi6kwXhdtmITc
+ wfhsZ7mM++7M7tpXtlPgW6ofy0lrszcg1rqg8bVWS3H82I8QK3CGOXYrLeO6FqOLrr5/O/02x
+ b7Uf6pklzkUe0LUMjOArwIfkLnF51S61YsLWO6brMhVMt6s02Xezzd3sp9lPlCeP8n5JIqGin
+ XWnWfml1osGA/EivQ0C6JsbLz6qBgfwqzsrhHzozjm4ZYy3L4Sb0cq0Hky4EdZ/COmMl+Ub+2
+ K5LgmAwGtUGeXEpZSWNDTATWEaBnyvgeAb3j8++1fIVH5j6aaD2dmVn3JPclIrqmXtU8=
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56334
+X-archive-position: 56335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,32 +63,31 @@ Returning an error for all unexpected cases shuts up the warning
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
+v3: actually send the correct patch, sorry for the mixup
 v2: return an error instead trying to handle gracefully
----
- sound/mips/hal2.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+
+ sound/mips/hal2.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/sound/mips/hal2.c b/sound/mips/hal2.c
-index ede449f0b50d..0af4f7a9b3e7 100644
+index ede449f0b50d..00fc9241d266 100644
 --- a/sound/mips/hal2.c
 +++ b/sound/mips/hal2.c
-@@ -219,6 +219,9 @@ static int hal2_gain_get(struct snd_kcontrol *kcontrol,
+@@ -219,6 +219,8 @@ static int hal2_gain_get(struct snd_kcontrol *kcontrol,
  		l = (tmp >> H2I_C2_L_GAIN_SHIFT) & 15;
  		r = (tmp >> H2I_C2_R_GAIN_SHIFT) & 15;
  		break;
 +	default:
-+		l = 0;
-+		r = 0;
++		return -EINVAL;
  	}
  	ucontrol->value.integer.value[0] = l;
  	ucontrol->value.integer.value[1] = r;
-@@ -256,6 +259,9 @@ static int hal2_gain_put(struct snd_kcontrol *kcontrol,
+@@ -256,6 +258,8 @@ static int hal2_gain_put(struct snd_kcontrol *kcontrol,
  		new |= (r << H2I_C2_R_GAIN_SHIFT);
  		hal2_i_write32(hal2, H2I_ADC_C2, new);
  		break;
 +	default:
-+		new = 0;
-+		old = 0;
++		return -EINVAL;
  	}
  	return old != new;
  }

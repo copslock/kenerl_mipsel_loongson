@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 00:20:00 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:35052 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 00:20:31 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:35100 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993967AbdAQXPlkNbpA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2017 00:15:41 +0100
+        by eddie.linux-mips.org with ESMTP id S23993896AbdAQXPvFZphA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2017 00:15:51 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -20,17 +20,17 @@ Cc:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         james.hogan@imgtec.com, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH 08/13] MIPS: JZ4780: CI20: Add pinctrl configuration for several drivers
-Date:   Wed, 18 Jan 2017 00:14:16 +0100
-Message-Id: <20170117231421.16310-9-paul@crapouillou.net>
+Subject: [PATCH 12/13] pwm: jz4740: Let the pinctrl driver configure the pins
+Date:   Wed, 18 Jan 2017 00:14:20 +0100
+Message-Id: <20170117231421.16310-13-paul@crapouillou.net>
 In-Reply-To: <20170117231421.16310-1-paul@crapouillou.net>
 References: <20170117231421.16310-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1484694911; bh=Q1LyBbJWdHoGU3/Z9ivLJre+vSvkjSbdKFlVLvHAw8s=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=SAuZAdZV78aLXNHZaEnD0phzOdsVDwpRx17DnEHFWvoaQSQFHJDcEhVXnbFU7zyWM/kRjbeYjbeCqJ2iYlzJmvIHJaV8FyHBtFVKIq8Hp0MA7EaXZA7FBzMWZZJIim5T37yV+VHkXLHr+CDG/fDxPjAdVuVsws46wr2VCYXtCpw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1484694920; bh=UjYxIjBdnwpO6mFgaQWa4herVB23X4fKNGvnUzwG8xs=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=WMGhDSzQLzVgUyd/oT4jUsvvky0U5S0JSlrylA8l6n/LfvlsX6OV/oxhvKxbjPEEK61iuAQz9j5iIWwNrlO0xrxXzR+nQcneVCyBYtnSQjsgxSa2lX1ShV43RNy7fPYXUFl7pNbNCPGkwsm0vvcRMQRWcY6I2iFrFJRz2E/vSWQ=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56381
+X-archive-position: 56382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,75 +47,97 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We set the pin configuration for the jz4780-nand and jz4780-uart
-drivers.
+Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
+the pins being properly configured before the driver probes.
+
+One inherent problem of this new approach is that the pinctrl framework
+does not allow us to configure each pin on demand, when the various PWM
+channels are requested or released. For instance, the PWM channels can
+be configured from sysfs, which would require all PWM pins to be configured
+properly beforehand for the PWM function, eventually causing conflicts
+with other platform or board drivers.
+
+The proper solution here would be to modify the pwm-jz4740 driver to
+handle only one PWM channel, and create an instance of this driver
+for each one of the 8 PWM channels. Then, it could use the pinctrl
+framework to dynamically configure the PWM pin it controls.
+
+Until this can be done, the only jz4740 board supported upstream
+(Qi lb60) could configure all of its connected PWM pins in PWM function
+mode, if those are not used by other drivers nor by GPIOs on the
+board.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/boot/dts/ingenic/ci20.dts | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/pwm/pwm-jz4740.c | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index 1652d8d60b1e..e2cd3ebb7be8 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -29,18 +29,30 @@
+diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
+index 76d13150283f..a75ff3622450 100644
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -21,22 +21,10 @@
+ #include <linux/platform_device.h>
+ #include <linux/pwm.h>
  
- &uart0 {
- 	status = "okay";
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pins_uart0_data>;
- };
+-#include <asm/mach-jz4740/gpio.h>
+ #include <asm/mach-jz4740/timer.h>
  
- &uart1 {
- 	status = "okay";
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pins_uart1_data>;
- };
+ #define NUM_PWM 8
  
- &uart3 {
- 	status = "okay";
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pins_uart2_dataplusflow>;
- };
+-static const unsigned int jz4740_pwm_gpio_list[NUM_PWM] = {
+-	JZ_GPIO_PWM0,
+-	JZ_GPIO_PWM1,
+-	JZ_GPIO_PWM2,
+-	JZ_GPIO_PWM3,
+-	JZ_GPIO_PWM4,
+-	JZ_GPIO_PWM5,
+-	JZ_GPIO_PWM6,
+-	JZ_GPIO_PWM7,
+-};
+-
+ struct jz4740_pwm_chip {
+ 	struct pwm_chip chip;
+ 	struct clk *clk;
+@@ -49,9 +37,6 @@ static inline struct jz4740_pwm_chip *to_jz4740(struct pwm_chip *chip)
  
- &uart4 {
- 	status = "okay";
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pins_uart4_data>;
- };
+ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+ {
+-	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
+-	int ret;
+-
+ 	/*
+ 	 * Timers 0 and 1 are used for system tasks, so they are unavailable
+ 	 * for use as PWMs.
+@@ -59,15 +44,6 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	if (pwm->hwpwm < 2)
+ 		return -EBUSY;
  
- &nemc {
-@@ -61,6 +73,16 @@
- 		ingenic,nemc-tAW = <15>;
- 		ingenic,nemc-tSTRV = <100>;
+-	ret = gpio_request(gpio, pwm->label);
+-	if (ret) {
+-		dev_err(chip->dev, "Failed to request GPIO#%u for PWM: %d\n",
+-			gpio, ret);
+-		return ret;
+-	}
+-
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_PWM);
+-
+ 	jz4740_timer_start(pwm->hwpwm);
  
-+		/*
-+		 * Only CLE/ALE are needed for the devices that are connected, rather
-+		 * than the full address line set.
-+		 */
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pins_nemc_data
-+				 &pins_nemc_cle_ale
-+				 &pins_nemc_rd_we
-+				 &pins_nemc_frd_fwe>;
-+
- 		nand@1 {
- 			reg = <1>;
+ 	return 0;
+@@ -75,13 +51,8 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
  
-@@ -69,6 +91,9 @@
- 			nand-ecc-mode = "hw";
- 			nand-on-flash-bbt;
+ static void jz4740_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+ {
+-	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
+-
+ 	jz4740_timer_set_ctrl(pwm->hwpwm, 0);
  
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&pins_nemc_cs1>;
-+
- 			partitions {
- 				compatible = "fixed-partitions";
- 				#address-cells = <2>;
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
+-	gpio_free(gpio);
+-
+ 	jz4740_timer_stop(pwm->hwpwm);
+ }
+ 
 -- 
 2.11.0

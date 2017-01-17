@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2017 16:20:45 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.134]:65305 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2017 16:21:07 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.134]:57567 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992227AbdAQPUcGONAd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2017 16:20:32 +0100
+        with ESMTP id S23993889AbdAQPUf3820d (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2017 16:20:35 +0100
 Received: from wuerfel.lan ([78.43.21.235]) by mrelayeu.kundenserver.de
  (mreue001 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0LmT7D-1d2ZJC2P91-00aGVS; Tue, 17 Jan 2017 16:19:13 +0100
+ 0LfKWX-1cnfrH1g8f-00p6Sy; Tue, 17 Jan 2017 16:19:22 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        James Hogan <james.hogan@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 01/13] MIPS: fix modversions
-Date:   Tue, 17 Jan 2017 16:18:35 +0100
-Message-Id: <20170117151911.4109452-1-arnd@arndb.de>
+Subject: [PATCH 02/13] MIPS: VDSO: avoid duplicate CAC_BASE definition
+Date:   Tue, 17 Jan 2017 16:18:36 +0100
+Message-Id: <20170117151911.4109452-2-arnd@arndb.de>
 X-Mailer: git-send-email 2.9.0
-X-Provags-ID: V03:K0:+jYMRGu76kg18nG66AdfIp4B5NFOX48eVcEPTspO80kkUKJCyTg
- lsOSOhLacL8ISlN1b5bp1/JTMt05dtK9VkWc7qe0SzeV/avNIX0XzUY7tsHkkbfF6bQjVno
- eh4fuEFhodFvsMEiDPjSxeICGgwrMjjJGy2qxRHRNVy20Dko5siKFETOjGpoAzLc4ClEypb
- gpZB4H+VK3OyI+fkCA5jw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:mNRjf7xVJqA=:R3XUZylvfZ881Dvql1QNpD
- p3ibPXJ0hjV/6zuNEv63YVchwbe7t7+X4T01VZR7pn5jtlrv57TYZME8fgJXorNLQBz1qrcyq
- e+Kac3Lza9CejGg3lwSRasMLbMGxHNEsFLYxMf680Er6hqifpbdi+JxGVIqin0pZsZMn/YYHt
- pINjNvKndOrryDGAKEQHOKEe6ikw0VBHCSzJspiwd5xPSjSzBSIuwG5PibhFHEH5lNrHYQX9e
- Wf1gwUJy9UXPBvG6f+X0aIFLvTlCEhkr2coKZjhyRlieTY7X2fiGq7M8gHUqtli/r90hMIRwg
- BBhE2VXw3Y/iH3j+RIWpLQ57IHb9TFPbTn7fq4DS7gx8bJhGiNg3LsuMNUqoeZVnSDys1eIZ3
- dpihukTYI1WquqesamtGzNbmIFC9y5AZ5+ToBGr1Wt12SI13MC7ujZQZUv73KSA/tvzxeTTW/
- gCtNuG5PzutWAi29eqx7Fap/bWgatf4vEx3nPlhpusnI/C1JTL00rCdplZmREV7bYaA/bli2X
- unUA8GWnBLo1Te1kR1sxvHep67gT5qy4j8Aj78DMzlJvB0u1JXXIYvhA5sg5F81robqtUQHxJ
- ZbcUE9V1kgybY/bve8F+QQS7F7Mz1xdpzK75HJtW7otM5sPRXMmtquK1Yi8IDI5Eq21gd4NZg
- V8VNMwj62KGz8anuxti+GyLZDvvlCb985/UyH9b431carmNtx7D1C3P7mozUAHx6ljzE=
+In-Reply-To: <20170117151911.4109452-1-arnd@arndb.de>
+References: <20170117151911.4109452-1-arnd@arndb.de>
+X-Provags-ID: V03:K0:VX1v0OsZWCt148dFLOvpKocBdKHM73qSWnPzksuf19eZLzgtQ6Z
+ XjCzqh6tajZ39nW9mp5mNZfI5OtCBtA6HzeUiYWWw/bk5Kvu+0wK2mvdpHFmHCFfyLnls3j
+ cTQOUdilQN5c+UliRla07rmFbf8BhBXabk5YeVjWiLwileJrQSj5R/RRs2JHqcGo95AjN+Q
+ LOz20mSbiB6+9CFSNN3IQ==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:N3pG2muPFFY=:qz9W2U45bVQm48uNE83jGo
+ IwOCqUuMOb3h2XOhX64JXTbuAhsiuRNRovNkcxJn7ftl5JT6IVAunRHtUPb6Yl9RR7lcvP3Vv
+ 4RuBm6UoQWtfxKcB72DuJbv4OXaTJdK59jOwBpie3YjcvbkSy9Clntb3EIf9z5iWr3JPXv4Un
+ LiLO57TBzoAa9W16yJuad2HGYk3R0fcOA+nOceTmz1yx90GayDCkBmCf15KVjRDXQxDJ5WUzW
+ LO09kyU8cCljMdEED2ToMIEsx8LTvVcbN4gc6jAn/q0b0Q+lOzLQfF5wQ/3KC1+YO1TtqWXRg
+ Og7NYvWRotvCD5qxwgc8guw0n90tSQV8pozh/8YkuvjG67csmE1Ur230UqrBiIfkb+Zr6n3Dx
+ yZM5j2RNAKc/o2rgvN32gIq1JIm/FEMbysuR0nZ9sIJvxJAIXzAJULLYidq3nVlNu0GNUscpk
+ SGFr3tcUAEWTWhdDdxN/LsAMTB2r+QVNH0dz8Sx8ZDyjTgd+Y9yvUEuZAnCoQMpW/Gmfbb05l
+ 8R7wVRddXXOwLOw0re/qU+RNZcSHY3QfLtZhTaIlewN2rZY2vLd3JGzQV7cLwVJyTDzvVfRWT
+ 7+5A2WgDHivXKqhOCp94bksdFQhYmIThLHos3HSzPRZTl1mYHnEgHyBVHH3yWJLYwlspIftEO
+ iV9hJNJ480dOxJV8qtpOKG/XOo4unMaDy06MGfA3x6SQVEYghwbtK5PWxZMB+DqNrS8k=
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56344
+X-archive-position: 56345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,241 +53,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-kernelci.org reports tons of build warnings for linux-next:
+vdso.h includes <spaces.h> implicitly after defining CONFIG_32BITS.
+This defeats the override in mach-ip27/spaces.h, leading to
+a build error that shows up in kernelci.org:
 
-35	WARNING: "memcpy" [fs/fat/msdos.ko] has no CRC!
-35	WARNING: "__copy_user" [fs/fat/fat.ko] has no CRC!
-32	WARNING: EXPORT symbol "memset" [vmlinux] version generation failed, symbol will not be versioned.
-32	WARNING: EXPORT symbol "copy_page" [vmlinux] version generation failed, symbol will not be versioned.
-32	WARNING: EXPORT symbol "clear_page" [vmlinux] version generation failed, symbol will not be versioned.
-32	WARNING: EXPORT symbol "__strncpy_from_user_nocheck_asm" [vmlinux] version generation failed, symbol will not be versioned.
+In file included from arch/mips/include/asm/mach-ip27/spaces.h:29:0,
+                 from arch/mips/include/asm/page.h:12,
+                 from arch/mips/vdso/vdso.h:26,
+                 from arch/mips/vdso/gettimeofday.c:11:
+arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE" redefined [-Werror]
+ #define CAC_BASE  _AC(0x80000000, UL)
 
-The problem here is mainly the missing asm/asm-prototypes.h header file
-that is supposed to include the prototypes for each symbol that is exported
-from an assembler file.
+An earlier patch tried to make the second definition conditional,
+but that patch had the #ifdef in the wrong place, and would lead
+to another warning:
 
-A second problem is that the asm/uaccess.h header contains some but not
-all the necessary declarations for the user access helpers.
+arch/mips/include/asm/io.h: In function 'phys_to_virt':
+arch/mips/include/asm/io.h:138:9: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
 
-Finally, the vdso build is broken once we add asm/asm-prototypes.h, so
-we have to fix this at the same time by changing the vdso header. My
-approach here is to just not look for exported symbols in the VDSO
-assembler files, as the symbols cannot be exported anyway.
+For all I can tell, there is no other reason than vdso32 to ever
+include this file with CONFIG_32BITS set, and the vdso itself should
+never refer to the base addresses as it is running in user space,
+so adding an #ifdef here is safe.
 
-Fixes: 576a2f0c5c6d ("MIPS: Export memcpy & memset functions alongside their definitions")
+Link: https://patchwork.kernel.org/patch/9418187/
+Fixes: 3ffc17d8768b ("MIPS: Adjust MIPS64 CAC_BASE to reflect Config.K0")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/include/asm/uaccess.h | 18 ++++++++++++++++++
- arch/mips/lib/strlen_user.S     |  4 +++-
- arch/mips/lib/strncpy_user.S    | 10 ++++++----
- arch/mips/lib/strnlen_user.S    |  8 ++++++--
- arch/mips/vdso/Makefile         |  7 +++++--
- 5 files changed, 38 insertions(+), 9 deletions(-)
+ arch/mips/include/asm/mach-ip27/spaces.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-index 89fa5c0b1579..5347cfe15af2 100644
---- a/arch/mips/include/asm/uaccess.h
-+++ b/arch/mips/include/asm/uaccess.h
-@@ -1241,6 +1241,9 @@ extern size_t __copy_in_user_eva(void *__to, const void *__from, size_t __n);
- 	__cu_len;							\
- })
+diff --git a/arch/mips/include/asm/mach-ip27/spaces.h b/arch/mips/include/asm/mach-ip27/spaces.h
+index 4775a1136a5b..24d5e31bcfa6 100644
+--- a/arch/mips/include/asm/mach-ip27/spaces.h
++++ b/arch/mips/include/asm/mach-ip27/spaces.h
+@@ -12,14 +12,16 @@
  
-+extern __kernel_size_t __bzero_kernel(void __user *addr, __kernel_size_t size);
-+extern __kernel_size_t __bzero(void __user *addr, __kernel_size_t size);
-+
  /*
-  * __clear_user: - Zero a block of memory in user space, with less checking.
-  * @to:	  Destination address, in user space.
-@@ -1293,6 +1296,9 @@ __clear_user(void __user *addr, __kernel_size_t size)
- 	__cl_size;							\
- })
- 
-+extern long __strncpy_from_kernel_nocheck_asm(char *__to, const char __user *__from, long __len);
-+extern long __strncpy_from_user_nocheck_asm(char *__to, const char __user *__from, long __len);
-+
- /*
-  * __strncpy_from_user: - Copy a NUL terminated string from userspace, with less checking.
-  * @dst:   Destination address, in kernel space.  This buffer must be at
-@@ -1344,6 +1350,9 @@ __strncpy_from_user(char *__to, const char __user *__from, long __len)
- 	return res;
- }
- 
-+extern long __strncpy_from_kernel_asm(char *__to, const char __user *__from, long __len);
-+extern long __strncpy_from_user_asm(char *__to, const char __user *__from, long __len);
-+
- /*
-  * strncpy_from_user: - Copy a NUL terminated string from userspace.
-  * @dst:   Destination address, in kernel space.  This buffer must be at
-@@ -1393,6 +1402,9 @@ strncpy_from_user(char *__to, const char __user *__from, long __len)
- 	return res;
- }
- 
-+extern long __strlen_kernel_asm(const char __user *s);
-+extern long __strlen_user_asm(const char __user *s);
-+
- /*
-  * strlen_user: - Get the size of a string in user space.
-  * @str: The string to measure.
-@@ -1434,6 +1446,9 @@ static inline long strlen_user(const char __user *s)
- 	return res;
- }
- 
-+extern long __strnlen_kernel_nocheck_asm(const char __user *s, long n);
-+extern long __strnlen_user_nocheck_asm(const char __user *s, long n);
-+
- /* Returns: 0 if bad, string length+1 (memory size) of string if ok */
- static inline long __strnlen_user(const char __user *s, long n)
- {
-@@ -1463,6 +1478,9 @@ static inline long __strnlen_user(const char __user *s, long n)
- 	return res;
- }
- 
-+extern long __strnlen_kernel_asm(const char __user *s, long n);
-+extern long __strnlen_user_asm(const char __user *s, long n);
-+
- /*
-  * strnlen_user: - Get the size of a string in user space.
-  * @str: The string to measure.
-diff --git a/arch/mips/lib/strlen_user.S b/arch/mips/lib/strlen_user.S
-index c9cb7e6c59a6..40be22625bc5 100644
---- a/arch/mips/lib/strlen_user.S
-+++ b/arch/mips/lib/strlen_user.S
-@@ -25,7 +25,6 @@
+  * IP27 uses the R10000's uncached attribute feature.  Attribute 3 selects
+- * uncached memory addressing.
++ * uncached memory addressing. Hide the definitions on 32-bit compilation
++ * of the compat-vdso code.
   */
- 	.macro __BUILD_STRLEN_ASM func
- LEAF(__strlen_\func\()_asm)
--EXPORT_SYMBOL(__strlen_\func\()_asm)
- 	LONG_L		v0, TI_ADDR_LIMIT($28)	# pointer ok?
- 	and		v0, a0
- 	bnez		v0, .Lfault\@
-@@ -50,9 +49,11 @@ EXPORT_SYMBOL(__strlen_\func\()_asm)
- 	/* Set aliases */
- 	.global __strlen_user_asm
- 	.set __strlen_user_asm, __strlen_kernel_asm
-+EXPORT_SYMBOL(__strlen_user_asm)
- #endif
+-
++#ifdef CONFIG_64BIT
+ #define HSPEC_BASE		0x9000000000000000
+ #define IO_BASE			0x9200000000000000
+ #define MSPEC_BASE		0x9400000000000000
+ #define UNCAC_BASE		0x9600000000000000
+ #define CAC_BASE		0xa800000000000000
++#endif
  
- __BUILD_STRLEN_ASM kernel
-+EXPORT_SYMBOL(__strlen_kernel_asm)
- 
- #ifdef CONFIG_EVA
- 
-@@ -60,4 +61,5 @@ __BUILD_STRLEN_ASM kernel
- 	.set eva
- __BUILD_STRLEN_ASM user
- 	.set pop
-+EXPORT_SYMBOL(__strlen_user_asm)
- #endif
-diff --git a/arch/mips/lib/strncpy_user.S b/arch/mips/lib/strncpy_user.S
-index af745b1d04e3..5267ca800b84 100644
---- a/arch/mips/lib/strncpy_user.S
-+++ b/arch/mips/lib/strncpy_user.S
-@@ -31,13 +31,11 @@
- 
- 	.macro __BUILD_STRNCPY_ASM func
- LEAF(__strncpy_from_\func\()_asm)
--EXPORT_SYMBOL(__strncpy_from_\func\()_asm)
- 	LONG_L		v0, TI_ADDR_LIMIT($28)	# pointer ok?
- 	and		v0, a1
- 	bnez		v0, .Lfault\@
- 
- FEXPORT(__strncpy_from_\func\()_nocheck_asm)
--EXPORT_SYMBOL(__strncpy_from_\func\()_nocheck_asm)
- 	move		t0, zero
- 	move		v1, a1
- .ifeqs "\func","kernel"
-@@ -75,15 +73,19 @@ EXPORT_SYMBOL(__strncpy_from_\func\()_nocheck_asm)
- 	.global __strncpy_from_user_nocheck_asm
- 	.set __strncpy_from_user_asm, __strncpy_from_kernel_asm
- 	.set __strncpy_from_user_nocheck_asm, __strncpy_from_kernel_nocheck_asm
--	EXPORT_SYMBOL(__strncpy_from_user_asm)
--	EXPORT_SYMBOL(__strncpy_from_user_nocheck_asm)
-+EXPORT_SYMBOL(__strncpy_from_user_asm)
-+EXPORT_SYMBOL(__strncpy_from_user_nocheck_asm)
- #endif
- 
- __BUILD_STRNCPY_ASM kernel
-+EXPORT_SYMBOL(__strncpy_from_kernel_asm)
-+EXPORT_SYMBOL(__strncpy_from_kernel_nocheck_asm)
- 
- #ifdef CONFIG_EVA
- 	.set push
- 	.set eva
- __BUILD_STRNCPY_ASM user
- 	.set pop
-+EXPORT_SYMBOL(__strncpy_from_user_asm)
-+EXPORT_SYMBOL(__strncpy_from_user_nocheck_asm)
- #endif
-diff --git a/arch/mips/lib/strnlen_user.S b/arch/mips/lib/strnlen_user.S
-index 3ac38162d7f0..860ea99fd70c 100644
---- a/arch/mips/lib/strnlen_user.S
-+++ b/arch/mips/lib/strnlen_user.S
-@@ -28,13 +28,11 @@
-  */
- 	.macro __BUILD_STRNLEN_ASM func
- LEAF(__strnlen_\func\()_asm)
--EXPORT_SYMBOL(__strnlen_\func\()_asm)
- 	LONG_L		v0, TI_ADDR_LIMIT($28)	# pointer ok?
- 	and		v0, a0
- 	bnez		v0, .Lfault\@
- 
- FEXPORT(__strnlen_\func\()_nocheck_asm)
--EXPORT_SYMBOL(__strnlen_\func\()_nocheck_asm)
- 	move		v0, a0
- 	PTR_ADDU	a1, a0			# stop pointer
- 1:
-@@ -73,9 +71,13 @@ EXPORT_SYMBOL(__strnlen_\func\()_nocheck_asm)
- 	.global __strnlen_user_nocheck_asm
- 	.set __strnlen_user_asm, __strnlen_kernel_asm
- 	.set __strnlen_user_nocheck_asm, __strnlen_kernel_nocheck_asm
-+EXPORT_SYMBOL(__strnlen_user_asm)
-+EXPORT_SYMBOL(__strnlen_user_nocheck_asm)
- #endif
- 
- __BUILD_STRNLEN_ASM kernel
-+EXPORT_SYMBOL(__strnlen_kernel_asm)
-+EXPORT_SYMBOL(__strnlen_kernel_nocheck_asm)
- 
- #ifdef CONFIG_EVA
- 
-@@ -83,4 +85,6 @@ __BUILD_STRNLEN_ASM kernel
- 	.set eva
- __BUILD_STRNLEN_ASM user
- 	.set pop
-+EXPORT_SYMBOL(__strnlen_user_asm)
-+EXPORT_SYMBOL(__strnlen_user_nocheck_asm)
- #endif
-diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-index c3dc12a8b7d9..4f42bd213538 100644
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -50,6 +50,9 @@ quiet_cmd_vdsold = VDSO    $@
-       cmd_vdsold = $(CC) $(c_flags) $(VDSO_LDFLAGS) \
-                    -Wl,-T $(filter %.lds,$^) $(filter %.o,$^) -o $@
- 
-+quiet_cmd_vdsoas_o_S = AS       $@
-+      cmd_vdsoas_o_S = $(CC) $(a_flags) -c -o $@ $<
-+
- # Strip rule for the raw .so files
- $(obj)/%.so.raw: OBJCOPYFLAGS := -S
- $(obj)/%.so.raw: $(obj)/%.so.dbg.raw FORCE
-@@ -110,7 +113,7 @@ $(obj-vdso-o32): KBUILD_CFLAGS := $(cflags-vdso) -mabi=32
- $(obj-vdso-o32): KBUILD_AFLAGS := $(aflags-vdso) -mabi=32
- 
- $(obj)/%-o32.o: $(src)/%.S FORCE
--	$(call if_changed_dep,as_o_S)
-+	$(call if_changed_dep,vdsoas_o_S)
- 
- $(obj)/%-o32.o: $(src)/%.c FORCE
- 	$(call cmd,force_checksrc)
-@@ -150,7 +153,7 @@ $(obj-vdso-n32): KBUILD_CFLAGS := $(cflags-vdso) -mabi=n32
- $(obj-vdso-n32): KBUILD_AFLAGS := $(aflags-vdso) -mabi=n32
- 
- $(obj)/%-n32.o: $(src)/%.S FORCE
--	$(call if_changed_dep,as_o_S)
-+	$(call if_changed_dep,vdsoas_o_S)
- 
- $(obj)/%-n32.o: $(src)/%.c FORCE
- 	$(call cmd,force_checksrc)
+ #define TO_MSPEC(x)		(MSPEC_BASE | ((x) & TO_PHYS_MASK))
+ #define TO_HSPEC(x)		(HSPEC_BASE | ((x) & TO_PHYS_MASK))
 -- 
 2.9.0

@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 00:16:46 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 00:17:16 +0100 (CET)
 Received: from outils.crapouillou.net ([89.234.176.41]:32852 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993907AbdAQXPOBds2A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2017 00:15:14 +0100
+        by eddie.linux-mips.org with ESMTP id S23993908AbdAQXPRaIv8A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2017 00:15:17 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -20,17 +20,17 @@ Cc:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         james.hogan@imgtec.com, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH 09/13] mmc: jz4740: Let the pinctrl driver configure the pins
-Date:   Wed, 18 Jan 2017 00:14:17 +0100
-Message-Id: <20170117231421.16310-10-paul@crapouillou.net>
+Subject: [PATCH 10/13] mtd: nand: jz4740: Let the pinctrl driver configure the pins
+Date:   Wed, 18 Jan 2017 00:14:18 +0100
+Message-Id: <20170117231421.16310-11-paul@crapouillou.net>
 In-Reply-To: <20170117231421.16310-1-paul@crapouillou.net>
 References: <20170117231421.16310-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1484694913; bh=QN9qsUNAqRFnvPLsJSJ0l/S6ZkJeTgr5IXgsfyYKyNw=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=rYysofRzPBTUCOYLFjMTVa4ZZVpJNPN0r9aZ23qc23mRg5dmI5x+HmX2+udriAECceLTNm6b5OR0/pBe+iYn+CHUAY2UoNSP0GG+FbnnKQJ5SGXb7/3WXE2jJt4vJa/0vea8Teq5aDN9JcxY+Jc/tNb4ZGHgqUbAAj9n2Od8KuU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1484694915; bh=6l5GtAYXh3KcASmje/5TayKpipfHazDvbv/hqQdfWGM=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=c+DxuAvzwV9bgtNxIHjd++HLaMXi2rEBuH48Y4nv1pl0a7hQYLW/JE10BWXF4LIIk2odwREnFQD+FihnjgCi768bLfMLEF2ic60lzLlAkZc+IMpZSk3tw+xjtZE/Up5tt52KjOHqYJRGxr4GczeUSWCc0aTIAPiK7AlZCgn0pL0=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56374
+X-archive-position: 56375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,134 +47,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Before, this NAND driver would set itself the configuration of the
+chip-select pins for the various NAND banks.
+
 Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
 the pins being properly configured before the driver probes.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- drivers/mmc/host/jz4740_mmc.c | 59 ++-----------------------------------------
- 1 file changed, 2 insertions(+), 57 deletions(-)
+ drivers/mtd/nand/jz4740_nand.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index 819ad32964fc..28a8e0acd70a 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -27,7 +27,6 @@
+diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
+index 5551c36adbdf..0d06a1f07d82 100644
+--- a/drivers/mtd/nand/jz4740_nand.c
++++ b/drivers/mtd/nand/jz4740_nand.c
+@@ -25,7 +25,6 @@
  
- #include <linux/bitops.h>
  #include <linux/gpio.h>
+ 
 -#include <asm/mach-jz4740/gpio.h>
- #include <asm/cacheflush.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
-@@ -906,15 +905,6 @@ static const struct mmc_host_ops jz4740_mmc_ops = {
- 	.enable_sdio_irq = jz4740_mmc_enable_sdio_irq,
- };
+ #include <asm/mach-jz4740/jz4740_nand.h>
  
--static const struct jz_gpio_bulk_request jz4740_mmc_pins[] = {
--	JZ_GPIO_BULK_PIN(MSC_CMD),
--	JZ_GPIO_BULK_PIN(MSC_CLK),
--	JZ_GPIO_BULK_PIN(MSC_DATA0),
--	JZ_GPIO_BULK_PIN(MSC_DATA1),
--	JZ_GPIO_BULK_PIN(MSC_DATA2),
--	JZ_GPIO_BULK_PIN(MSC_DATA3),
--};
--
- static int jz4740_mmc_request_gpio(struct device *dev, int gpio,
- 	const char *name, bool output, int value)
- {
-@@ -978,15 +968,6 @@ static void jz4740_mmc_free_gpios(struct platform_device *pdev)
- 		gpio_free(pdata->gpio_power);
- }
- 
--static inline size_t jz4740_mmc_num_pins(struct jz4740_mmc_host *host)
--{
--	size_t num_pins = ARRAY_SIZE(jz4740_mmc_pins);
--	if (host->pdata && host->pdata->data_1bit)
--		num_pins -= 3;
--
--	return num_pins;
--}
--
- static int jz4740_mmc_probe(struct platform_device* pdev)
+ #define JZ_REG_NAND_CTRL	0x50
+@@ -310,34 +309,20 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
+ 			       uint8_t *nand_dev_id)
  {
  	int ret;
-@@ -1027,15 +1008,9 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 		goto err_free_host;
- 	}
+-	int gpio;
+-	char gpio_name[9];
+ 	char res_name[6];
+ 	uint32_t ctrl;
+ 	struct nand_chip *chip = &nand->chip;
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
  
--	ret = jz_gpio_bulk_request(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
+-	/* Request GPIO port. */
+-	gpio = JZ_GPIO_MEM_CS0 + bank - 1;
+-	sprintf(gpio_name, "NAND CS%d", bank);
+-	ret = gpio_request(gpio, gpio_name);
 -	if (ret) {
--		dev_err(&pdev->dev, "Failed to request mmc pins: %d\n", ret);
--		goto err_free_host;
+-		dev_warn(&pdev->dev,
+-			"Failed to request %s gpio %d: %d\n",
+-			gpio_name, gpio, ret);
+-		goto notfound_gpio;
 -	}
 -
- 	ret = jz4740_mmc_request_gpios(mmc, pdev);
+ 	/* Request I/O resource. */
+ 	sprintf(res_name, "bank%d", bank);
+ 	ret = jz_nand_ioremap_resource(pdev, res_name,
+ 					&nand->bank_mem[bank - 1],
+ 					&nand->bank_base[bank - 1]);
  	if (ret)
--		goto err_gpio_bulk_free;
-+		goto err_release_dma;
+-		goto notfound_resource;
++		return ret;
  
- 	mmc->ops = &jz4740_mmc_ops;
- 	mmc->f_min = JZ_MMC_CLK_RATE / 128;
-@@ -1091,10 +1066,9 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 	free_irq(host->irq, host);
- err_free_gpios:
- 	jz4740_mmc_free_gpios(pdev);
--err_gpio_bulk_free:
-+err_release_dma:
- 	if (host->use_dma)
- 		jz4740_mmc_release_dma_channels(host);
--	jz_gpio_bulk_free(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
- err_free_host:
- 	mmc_free_host(mmc);
- 
-@@ -1114,7 +1088,6 @@ static int jz4740_mmc_remove(struct platform_device *pdev)
- 	free_irq(host->irq, host);
- 
- 	jz4740_mmc_free_gpios(pdev);
--	jz_gpio_bulk_free(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
- 
- 	if (host->use_dma)
- 		jz4740_mmc_release_dma_channels(host);
-@@ -1124,39 +1097,11 @@ static int jz4740_mmc_remove(struct platform_device *pdev)
- 	return 0;
+ 	/* Enable chip in bank. */
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_MEM_CS0);
+ 	ctrl = readl(nand->base + JZ_REG_NAND_CTRL);
+ 	ctrl |= JZ_NAND_CTRL_ENABLE_CHIP(bank - 1);
+ 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
+@@ -377,12 +362,8 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
+ 	dev_info(&pdev->dev, "No chip found on bank %i\n", bank);
+ 	ctrl &= ~(JZ_NAND_CTRL_ENABLE_CHIP(bank - 1));
+ 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
+ 	jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+ 				 nand->bank_base[bank - 1]);
+-notfound_resource:
+-	gpio_free(gpio);
+-notfound_gpio:
+ 	return ret;
  }
  
--#ifdef CONFIG_PM_SLEEP
--
--static int jz4740_mmc_suspend(struct device *dev)
--{
--	struct jz4740_mmc_host *host = dev_get_drvdata(dev);
--
--	jz_gpio_bulk_suspend(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
--
--	return 0;
--}
--
--static int jz4740_mmc_resume(struct device *dev)
--{
--	struct jz4740_mmc_host *host = dev_get_drvdata(dev);
--
--	jz_gpio_bulk_resume(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
--
--	return 0;
--}
--
--static SIMPLE_DEV_PM_OPS(jz4740_mmc_pm_ops, jz4740_mmc_suspend,
--	jz4740_mmc_resume);
--#define JZ4740_MMC_PM_OPS (&jz4740_mmc_pm_ops)
--#else
--#define JZ4740_MMC_PM_OPS NULL
--#endif
--
- static struct platform_driver jz4740_mmc_driver = {
- 	.probe = jz4740_mmc_probe,
- 	.remove = jz4740_mmc_remove,
- 	.driver = {
- 		.name = "jz4740-mmc",
--		.pm = JZ4740_MMC_PM_OPS,
- 	},
- };
+@@ -503,7 +484,6 @@ static int jz_nand_probe(struct platform_device *pdev)
+ err_unclaim_banks:
+ 	while (chipnr--) {
+ 		unsigned char bank = nand->banks[chipnr];
+-		gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
+ 		jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+ 					 nand->bank_base[bank - 1]);
+ 	}
+@@ -530,7 +510,6 @@ static int jz_nand_remove(struct platform_device *pdev)
+ 		if (bank != 0) {
+ 			jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+ 						 nand->bank_base[bank - 1]);
+-			gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
+ 		}
+ 	}
  
 -- 
 2.11.0

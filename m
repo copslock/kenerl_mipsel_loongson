@@ -1,84 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2017 18:37:12 +0100 (CET)
-Received: from mail-ve1eur01on0130.outbound.protection.outlook.com ([104.47.1.130]:1444
-        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2017 18:38:02 +0100 (CET)
+Received: from mail-he1eur01on0117.outbound.protection.outlook.com ([104.47.0.117]:28255
+        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993890AbdAQRhFLmxr0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 Jan 2017 18:37:05 +0100
+        id S23993889AbdAQRhykVpY0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 Jan 2017 18:37:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.onmicrosoft.com;
  s=selector1-nokia-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=dMZRV6horAbNQ5aMCgmB99iCm8TOQR4dSIs2Ht5IllI=;
- b=UqIiI0AX+joeYEyw3bN1EkGSNEDyzuMlCRHlvTiLZyON+kk74fHpGnaxBOSzB6Ui+cslP4Nyge1X/F2Y6Fjnhh1Y0Gviw6OcUDPiZqHEpXxe9sJaQwGpryYeI3tewTlAwivvdKqxopdYjODm3B0+TrXzfdb401KNU6ITibkJqsw=
+ bh=kncj55T1jkFEotpclNeO5+m8XGTI5FExUWUF653Pv/g=;
+ b=kEACVsjXg+AsdDCjhUmxEdbJ14hjBOPB1DydxF1A5cVuAlWPFbp5A2XWdE8B3xSnIFDLR4a4idCDLpTTCVq+AwiRcrqcCjYptRydhfp2m22Hf0dk8dYH+A+NHPJj7P/D3Ali3n4SVDSA7zv4eXYzcxEbAly/6vBXjw/EO7gAa1s=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=alexander.sverdlin@nokia.com; 
 Received: from ulegcpsvdell.emea.nsn-net.net (131.228.2.9) by
- VI1PR07MB1328.eurprd07.prod.outlook.com (10.164.92.142) with Microsoft SMTP
+ VI1PR07MB1325.eurprd07.prod.outlook.com (10.164.92.139) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.860.6; Tue, 17 Jan 2017 17:36:58 +0000
+ 15.1.860.6; Tue, 17 Jan 2017 17:37:47 +0000
 From:   Alexander Sverdlin <alexander.sverdlin@nokia.com>
 CC:     Alexander Sverdlin <alexander.sverdlin@nsn.com>,
         Alexander Sverdlin <alexander.sverdlin@nokia.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
-        Aaro Koskinen <aaro.koskinen@nokia.com>,
-        "Steven J. Hill" <steven.hill@cavium.com>,
         <linux-mips@linux-mips.org>
-Subject: [PATCH] octeon: prom_putchar() must be void
-Date:   Tue, 17 Jan 2017 18:36:44 +0100
-Message-ID: <20170117173644.27984-1-alexander.sverdlin@nokia.com>
+Subject: [PATCH] mips: rapidio: Drop dependency on PCI
+Date:   Tue, 17 Jan 2017 18:37:39 +0100
+Message-ID: <20170117173739.28036-1-alexander.sverdlin@nokia.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [131.228.2.9]
-X-ClientProxiedBy: AM4PR0501CA0028.eurprd05.prod.outlook.com (10.167.83.166)
- To VI1PR07MB1328.eurprd07.prod.outlook.com (10.164.92.142)
-X-MS-Office365-Filtering-Correlation-Id: db8abcc4-9675-42e9-1e70-08d43eff706f
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:VI1PR07MB1328;
-X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1328;3:4LHYeUsIbOduCKFbxh+s/IjuxOj5690wi18dZNN4zp82DSniSJN7Xi0Fj0Enyxq8KQaxjfxU42Yl9PWGWz7tRMz7/F88TPMrz92o72v113rpwevXvb8cR1euPiVCjV4ufPoXXu4r8n0+EkgCcwdzO8Qk9sDwjNqR6+V+ukTSUwxaGz7ZQxoB25ZSdXeMW6s7OgYmhUVkRVz3y8ezRvoi0ShBJaAtQ+yCnX9iwG4o3FBqnpTm30XgjmrW4qdnvWc7N8+oxCGc+PlgwR0P6APDzg==;25:S5bG8mzCVUE5jGBLXwAfHkXSNcW6jdPm+hrwi0QSi35Y0pYqpKejjLt0VvQb3kr20kx9WcWxCwDFEdzcqOqOiRp1r7bSK8QjqBuaWyj7uyuXU/DCjDMFnZ018rJQ0FQW+fCh/m2QkTEgaBHDiFWlk7iCAmLNqApwEzuRmoS2rmFbxG4LhvknoU/DCBFFQEBDp88O83a2Iu7ApNd5cyswcoZqoR9RCewIiC6f/985Z+3/HdnJY4YsR28WE//zSvObQ4qGVdF6b5ZR5XmoTh1JO4iWOB3mV1hiaz6covEG0G7pX0ChyeqV9nlSi3TJ6u/bK6hmopRGlw7lo061+q/Csihir+ZcKmJo/bi49P7iu5ZHAA8ddIoBQgcDvC8SpFuwM5jdLjONx+9xYE/mMR23rPS8eEZjn4JjrRRprvE2VloHP6FcT6kQlc1w6q40ZcK68cAKB2Z/WYWhH8TnfkMlCQ==
-X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1328;31:NvvbvoMNkWJDH9R0gWql5T8JjRFCS4FHp5ZFWa8RN2vx5IHCTX2J0qj8Wq7gEPr5u7dok9kp3eof8b71WvyHMrRR7VAwdzpo/l9kuc5/J9M/b236hVlPouTyc0P0gQRhGxOyxU2FLN5Y84VAkXU2kh2rIPlzXsZWmowfrj5uzIDJVFWqVcXVKjpXKnp3VHISwubHuSKFNHti4E2OUWwJCKGdypiUc+JdFj0gPtQqZnlNxjHVJRRDYAPlMWk/bWYm;20:7Zu8EoBzSwFtCNdd5Edvu73BhJuqFnerH46w8uiDG+zavjbUC1sYzDq/hgd8i3Lk1NVbRw015ycIWbu4ZFW6tLRt6LS8XsLv8ot6OjKCKqgdeYWWakAxHagngD5W5iJQPCQMwzinikOq9ws63KAKKv3e8uD9vCqQY7OxgJ1RgHC4W4CCVceEycgKBIU2WEtG3KhgIBsLK3cWj3uwGgpYejhSsHCK6nXCtxp329H51bIz0AglcZbsc/prYEJFn8OA/D6lUdr9KpU4X437C3dmTc0s59V6yROca8GNA3hAcI/ET1Czv1dMTFSmPHaaWi/eoL1QkO/ktY7roD3AhiXuvPjkCUP9UAVGj7eksHdypJQWCVYFvAnM4NkIp6uwB/r9IzDa9erofJL6dBITLO1UqUEC/0qpZ9Ah75xienhk5AExCDGdO/XBz9UpKmfZ5Kcxm506LhqFYrJzyx2PL3lteFwaSxDlEZ5AgCavV1nqNIHvNx8kzlyNxXtG5h0nm7rxtjkS0o1sFrXEmAQylDtNGMCQTrYIj30F96sd8hZMbbtI9a6sLrlfdNw5BFMRxb65Nad5ylt2kPBmGZ9JyMG8bSMEM4WtiG3KMAljhEPKBOI=
-X-Microsoft-Antispam-PRVS: <VI1PR07MB13281087BBF43844D1751613887C0@VI1PR07MB1328.eurprd07.prod.outlook.com>
+X-ClientProxiedBy: HE1PR09CA0073.eurprd09.prod.outlook.com (10.174.50.145) To
+ VI1PR07MB1325.eurprd07.prod.outlook.com (10.164.92.139)
+X-MS-Office365-Filtering-Correlation-Id: 6791c8f2-663c-4d92-91b2-08d43eff8d6c
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:VI1PR07MB1325;
+X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1325;3:ACqcmPDrTz9h5Xvc+05FGODFv9nBhL12jpintYt4XqBAzhw5tyT6WTLx4ocp/omS5soZWnoP6EkxMDBvc5aVqvigJad0YeZRzcoMxOBCc5qL3rdUz1FmLZr/gH/bkN2/jMWW3mOW3c6+geFe1Y0YdqJSY1rR5SCzAzmDSiqo59gNvQt5NortaA6Wmyx6a+AECvE00C/zm6GbXqu9gWkwpUcIGKSjf9I+2kOTKxAk0kI5+QgC/etH1KTB//MfiJouCtHs6J8mlbV+opJbamx6JQ==;25:2MQRvOPd1m/4peP/MHPjdGNsLUvf09eG1fdu+SinH2rErRDs6zwpDzQPkaPodLvIIaRO0Cip67ycTIVICVoCTVKMSPY1hBtdON5Pc0d0gH68ZCUK8GnOU5fJ1XRTLEdIPQN1qHuSJSzddyc0bYiW935ZRnzQKbmkRF4WH4YJABuKfa23wKahu0lDqdTa36kBGnuMl+Thx0RY3vzcVdWj0C92+gDCoujYf27B4gQmMkt/CGScbTBGL7Ih9Yrm/X2QxZcJ1DxumTkDDMfnSwHaL6U1SACH8g1F+pxujCnqAXK9Q92Z/XnN4UnqbF7XndCcI23zOl/FkralG18jBmRhAHaKECZ4Ma9BJ2XJZU5yvNutLOmw/Fn8TmbETBnReTXDfoH56jI4bqnAOrx/f3TGP7t3w/QnUQc1CM9O5X0EG21tzyg9F4SgoSjmmapWpbQ9uS36KnMEk1sL1eZ+mJ9QwQ==
+X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1325;31:3c91MIBjrpsfmO5zgVUdtioNz3f3rw5tXNtDVo0iJQptSkawZDkHRLmx08jpg4N/2wiWpFYQ7ZLa+GiIDucxhB5//2iSJQ6CPOE95HnVtK+bw4iWixB436Bwnjb8f3K+UrWuQ9qZK52rlQG79wbrKSsjuBvSG+fTIV+x/AruFlhwsJAme9deWPtwutVgezX1eXN+43QP986ej3wXqcfzWSCZ5pzGHh258fAYUyPHF/tZEIWWwMqIbWCBgMcpXS0o;20:3InPfBUm8ljjnqbGgstedgxPlMBrEdB2i7TRwZqjqA9UOiFPYQb5JcphebQSUco4zFs/7oKOnqpy6Qtv9s82Vvyo1o3vYUch9zs54xdc3NNbCO4IUO5QOpbAgkhJM6enAQ5ejSlVtUbPtO54LAjqVmyhmmvKOSum51gfJANElo6wY3VKZ6uxqvJ5LDoroWLA3f3f1iAKdKkEBB5H4BoEeAIuEsPRcj8iuIULVf5SueOXj7HTJ93s/QxHsLwpm5DwCSwe0eBsE3rTjppO2bwlxpv19kg7hwt97Spxy2qYphpQ0okEdoNlM3s+L3cfQrtZqf+eab1OXgtijal35q/Y1VLvEG62xU187rNCngNuPp94buosy4nXJUnQdb0WaFiNJbB6erTEF0Mq/bWebCjUJoUo1LeGHxpHye0Khxi6GvBLLyBeBPu3ZudW7RiCmG9fTKBzOvqAZ1893mRb/IKxqNjb13PBVeMJyTiZ88aCdIFyc79ykdVvySRCW3N//gDHc5p48xYbDexhC1O533xm00Cq9IaqmtMGj1xHHN0LzDY8sbPBrLhfwOjGFHAe6/JZhDEjMuTLkCmVjYkocrngPxW9TRrQcnLamHvNJQHcGLQ=
+X-Microsoft-Antispam-PRVS: <VI1PR07MB13250DF82EB22ABF82C7AF7D887C0@VI1PR07MB1325.eurprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:(82608151540597);
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(5005006)(8121501046)(3002001)(10201501046)(6055026)(6041248)(20161123562025)(20161123555025)(20161123564025)(20161123560025)(6072148);SRVR:VI1PR07MB1328;BCL:0;PCL:0;RULEID:;SRVR:VI1PR07MB1328;
-X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1328;4:IG4uKaosxrTMZqFMeVBxzxgQoC7ssRK5wPUQhcAOz9i/zIqtur8/uv33UItmEt8mR/NGtARCUJJvMTeZbb/ez8JMEVPXrahRLa5KKfdo0vbqzK18YACpi1oaEIUHzT5ps2iZhNNrW28RYqpzZ76e30afR0nGc3ig4E+mdwQtTEhJ2WQ+I69Yji+5yO3QvWxNuyeo+Dx0fl28CY6DlRsVEh9h9Xd1zkxg+1K5zLy7wbsO5pbkcR8gmF06ibhj9nb5ltqRTd8M1gs7/1c4DKylnnrALdAKe/GxSXJ/SFoK0Uka3WDpu3St3lj3bf+9OqNC9iOZJB3lh62k2Xfzyh3TbRy6Ei5GfK7bdng713ao7eqSNrZ5TdgWa+EnK7nXaz/vQdwuCw2DU1/x8TXa2NFSnmByh3plDJFIrEZYxyOt0fMBtfAS4Db5g6cHrMER3E+Yd4K+NYXj40s5glo3Ahjkvd+dn0IzS7GicigMfgUjedXzBGIUsjk3ZCbe1XmlIBZouzp8owUKVfO9aclOZUwV670hRvmQUWDyRmvFUzjnvKYkLdAeEFYEhz43XYt7EURXn5sitNHjaMPrnsJ5kKK+75VHPmMQFgvxbBnHUX6Ct8EpdKI8XWP3ywliTRFgL479HkfQx0yQvGypw1nIrjPJYQ==
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(5005006)(8121501046)(3002001)(10201501046)(6055026)(6041248)(20161123560025)(20161123558021)(20161123555025)(20161123562025)(20161123564025)(6072148);SRVR:VI1PR07MB1325;BCL:0;PCL:0;RULEID:;SRVR:VI1PR07MB1325;
+X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1325;4:IweE8drEA9pqo1fYP6U4r6UuNumoC5I4S5xoi4XVaDLyIYUgjOxyFo5ktm05jx6Rm7t+nUObgBR4K5Abga7qyFARL/5kpstlR6jUS8IwFiWmCWmd8SIdTqu8td7l4DRLm5mRzyXaFhXyGEikeO14bb5VbWeurp5JgsRciqw8tH7qln1CYYSlbew+n7maNm6tu6frQ9sGT/hqWM3c/lgXIQ3Hqx4lBi769WgyYXOQnpA5fHm917uiyQzX9r40GueJSth40gPPKDOEbuG6Fq+Mb+hQJOXrr5t2wwv8U+L41KikK1EK7Z9gavECj2WX579Q8z79yvGBwIoPUG58ACgAUUdRlof9O/pTqlu0zj1QOFPGiwXmxGLzKD8GqnUFhduPSpYr4Hx/p+vnJvQNuO2Zw+kth72q6oNfle6Rc0Rh3MfPIuvyeYgKCDEkIzKWGRdCIDEVEZOf9gleXCcEwN4O7IylGDwviwbFoAtRpaczkOLG8LcMfJD8WmZhlu/46hxlD4cr3JEEJ+QNpMHtl4JBY6KiUzZ/u81qbk+ai7YVJr4sP0tppIeLdQyvsdJHSRJWa2Wx5sFppj2yC90cq5REP8B4Kl4J4njHTiPIzosrkehgul8qgKFb4/+t/GLKNFX35UvKlW1rhDrX19NmksWVskIDbQC7M0Ew6Rv32GRt/I8=
 X-Forefront-PRVS: 01901B3451
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(4630300001)(6009001)(7916002)(39450400003)(39410400002)(39850400002)(39860400002)(39840400002)(199003)(189002)(110136003)(5660300001)(81166006)(7736002)(50986999)(36756003)(5003940100001)(8676002)(81156014)(50226002)(6666003)(92566002)(4326007)(2906002)(6512007)(106356001)(109986004)(105586002)(68736007)(38730400001)(25786008)(1671002)(3846002)(50466002)(6116002)(6506006)(48376002)(1076002)(101416001)(6486002)(33646002)(305945005)(86362001)(54906002)(97736004)(42186005)(66066001)(47776003)(189998001)(266003);DIR:OUT;SFP:1102;SCL:1;SRVR:VI1PR07MB1328;H:ulegcpsvdell.emea.nsn-net.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(4630300001)(6009001)(7916002)(39860400002)(39840400002)(39450400003)(39850400002)(39410400002)(199003)(189002)(575784001)(33646002)(101416001)(48376002)(86362001)(8676002)(97736004)(81156014)(50466002)(42186005)(38730400001)(66066001)(81166006)(109986004)(36756003)(25786008)(6116002)(3846002)(105586002)(305945005)(7736002)(2906002)(6506006)(1076002)(6486002)(106356001)(54906002)(47776003)(6512007)(92566002)(4326007)(450100001)(5660300001)(1671002)(50986999)(5003940100001)(50226002)(6666003)(189998001)(110136003)(68736007)(266003);DIR:OUT;SFP:1102;SCL:1;SRVR:VI1PR07MB1325;H:ulegcpsvdell.emea.nsn-net.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
 Received-SPF: None (protection.outlook.com: nokia.com does not designate
  permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;VI1PR07MB1328;23:wUGxNYNz5kXTY0txVjpSCHrQJ8IvnqQ5r995auCPr?=
- =?us-ascii?Q?Hq/VNs2OhSdq5RzL5lxH0bGukvCFSiK/A64lHNJAFRuJUPQD3k+D35lmihCC?=
- =?us-ascii?Q?s7seVSQ79YHDiae97MKPKu2RqHti6+e60+pY7Fn11adsqnTeToXWR7w3Vl7E?=
- =?us-ascii?Q?bS7B2vnlyDCBFSAR0y6UDKq2qna7WmJikSH8b6M/xTDY/YgzZC3Q575GnrmD?=
- =?us-ascii?Q?H0HFeU0ogYU2+2bwuOJsqcnCr0Xow7sr31mSR2qJqNHDG4VaZqR2o+Dy5YMT?=
- =?us-ascii?Q?cVWZYsK5hY1UmKZ2nGKA+3yqLx8Fx59OrG+uD8FwLPeL3bY6/xxQNz0+RMt5?=
- =?us-ascii?Q?M+9xEjdoxxcYruvWfGhHLHaA0DsR1LZAfLiGI+6Rcg+134dxm3Y3gNoS6FNp?=
- =?us-ascii?Q?pWBzgbrYcNtwGO2g5Fyofupr7UOE/NzVYUZviWMGOFXDN+d2I5dfWSM8Wm7W?=
- =?us-ascii?Q?yErZPH4qzZVFh0LUNV7UUrnX0OkY/zgnVcM62JdmzBaIH4WBcDCDCsWe8756?=
- =?us-ascii?Q?Px/ak+CY4ATVSlNWq24kV3ORlqTGeM3cWE3Bqzv2MYhI6VsXIrJFy5IGMfZ1?=
- =?us-ascii?Q?mzbTPIZSVvzpb6HL4nm29fdXEHySkYBtRXUk/P0fyMmim+zD8YmjJ9fEZF4Q?=
- =?us-ascii?Q?YwqdE0okNQ4yw1fIMviPCN1SvtapCyWG39FJy8/tqN3lJweuuXYzJannHdm+?=
- =?us-ascii?Q?k51+SAzGSU/n+cdcZoju8HZCdIb0vfouccoLAwsJH/ks6wD4IG9a4XLZjMy1?=
- =?us-ascii?Q?mMQMchb4jgX6ykue7XopwZq4FavKkB4huDJZnqItXw30eULc+x5U5T/uFZnv?=
- =?us-ascii?Q?CN96crLWPHQOX20jXuFnxP2m9Pc+NDXo0EFdGC3LJHGXUQdouhVDhlTCKo9n?=
- =?us-ascii?Q?2G5SLJ7E2hYkzGvgyUGLzrdflaglOWFG3uviRY1Ia1cvcqx+oM+j5SldvN9C?=
- =?us-ascii?Q?MICWvM67kbCl51zKg6wqfGE8n9brG+psnqUAZmiz41uSxlV0XItzOT8kiQjm?=
- =?us-ascii?Q?UXOb6GVO28Mka5Wo3fNA7bEbeZkuwTUjAnDwTBoc47eMw2HAwHquJ+fatQnO?=
- =?us-ascii?Q?WpoXa3B/DPzgX2ZEwNQnnnnHZrpQDM9hnr6e94DfgduWrv6zugY4EURIaLP1?=
- =?us-ascii?Q?TEc6HkUaRrcMrYTF4pvpbzHC5gZuSSMz9kuvrWkA8JtqBRjg6X3qENf8ZMl8?=
- =?us-ascii?Q?6VqRcIeyj80d5nk3s4wgoBlfKBYdyhSiptl?=
-X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1328;6:Wlfp0U+GrrMMq4aSNmGeobtdeWF1oyi+VzhmzvWfB5SFYc59hpTeB//EBORhe5/wYcLlnE0S006Npwyuj+PB0v/hNhWoQz6iPbD/yRJCnfX5QukK1n2XjjZqJPJK4P66wn5XFERq5FNtlunLKNR9a4m5HgE3bysLBZTZZKgYhMOhr7yPq1MXFBgPx7BkL7YOVPyy4a96svqtSrRy9mDrF3ffFy8OZ2A3PASoLOhBuJY0hXiXSp7dN0F0h0HiTLxnTcPPqzZlrLjczixfoNBMhM8kdIiA8mInvUjCRVyOEO23adHHB2BBWIYMDA1Efn4qpcBY/Ue2xJs+Ob/f63uVZmChjVRefq2suKMFfnyT2NQSFLi/L3vE+U4Ahwrd95fzkhk/ccDjjkwkP00+fQ/VspV5qiOQNYh0lXfzFW2SHX2HoNTX5V6R5x4Ao0TtDXtulLyg/rPGu22WuWEoy2VxCw==;5:oA4hXOztXwjfLD46EA0jSqei/IDkOljSC4t8v1YxOn6z/9eajc+JeQ/1+s0uvCu6Tgo3dmAsOOpicaBxfQxklTqHd/LTc2LicYQUj7vK2JPwb79bAtoPoxcsZSP6hShFsIoqX6sR92nyzpS6mL1eTQ==;24:1z4NcaoTtsun+rDVcO5kujjtHS8xuoBTLVVxsg/X6MwMpm0XoyegETggEDsCFyDOEPNMiMmlf79mQEDrSKSx58WDxmq3Rz7bg4wkofhkYe4=
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;VI1PR07MB1325;23:BFJfJ8bJ9ZzBN3r4L+yCNplqM8uln+Ta+DRUmd9Q8?=
+ =?us-ascii?Q?RrVJH2qQJzBAnoLKl0UPRIMnIDkiRl3oOBmMyODkZXCei7g/cecOo6nHR9vH?=
+ =?us-ascii?Q?GesvTdmqgOIfjQIeGOt1KFNDkRsT4oLo0j1m/Ymh/NG0Mm/kiiWrmmuNpKKL?=
+ =?us-ascii?Q?zlYbnSP9xsuAN0ziAsnMajdb7PztUL0GSSHo+VSyObzfGK9XxhOGkcDlUBZY?=
+ =?us-ascii?Q?pH6g/U1cSc0PktSYyoaER5dgYamgdhmrWUGyX6aizapgH0E8teAWG0i8cRrP?=
+ =?us-ascii?Q?qAGUGn0uoJ9pL00zTorIpdVYDqnkI+JJ4ftzmaGNfWS+YPLJ0Ja/ZGUr/2My?=
+ =?us-ascii?Q?t7fd983rhYzAWBV+GnrR8Hqx/Bz0fc6A051L4O80dyhvD9PCPTjCrfkoOCaN?=
+ =?us-ascii?Q?Ei8NazYGIKMjIbDdORqxec0DIMSUpPStCqpbyFZ75KdhU6jwBbJbEFKNWd8q?=
+ =?us-ascii?Q?p4ajuu9JMCTmPZsXDv9RBjTA1Dtzp66gZ5mYI/OaXBmvWk+dtnVTHjXZJw1w?=
+ =?us-ascii?Q?kfLornKnZpgjpuiKLzugL2HsmxAA1VrJlFL9rKX26D88kBVYJGiiL/2zxIFs?=
+ =?us-ascii?Q?bgOnYf1Q1/KrSOfCsfqwTGUWT9LFr4KEtNxpli0c/yTKMDveMWW9k8NufElm?=
+ =?us-ascii?Q?+qPIN48TqDm9uQ4ZzYF76AKIsEOmznhkXw+hmARkJBFMvQC3hnQiy7w/24EE?=
+ =?us-ascii?Q?pDHXm++MipBlWoyXDIU+2SM2dc2K/pvjwiYaec+qJOoqvtOAE0CZ33INMjXm?=
+ =?us-ascii?Q?qWR4qy1JOGX+lLd/6rA14ecktc24JCmBw2Us7fizufP5aMVf84nuzKan11qT?=
+ =?us-ascii?Q?BUuaDgibu2hpvaP/BJ2wTayiYL5xs57w4JXmofO0a3UVNe0BchSxEM+VWNtC?=
+ =?us-ascii?Q?xCjA0ahYfnPjJaagzHyWQWEc9AUC/P+YkTOLVUVy4csp/jpqbDyjTy6uwqbz?=
+ =?us-ascii?Q?BKnkCsWJ122Iu/RjJgA2wiSYHfI4Dy2n9VLgQK36MNO/nlwhArgXCYsGjCIr?=
+ =?us-ascii?Q?Cu/wyEzq2O3wkSOrwQiQY6LpaBTYR/AO/0tYtA5sTytqL8Ym3DD7tCzOVFIw?=
+ =?us-ascii?Q?RxuC481+BWryRL7nuNY7isQtTyN/7t1wltaAfAnfrR+WRJqGPcL94TYm7oQH?=
+ =?us-ascii?Q?oXKx1Qz5IEerUL57jIbr2y3vJRKnyss49pj9NeiHUro3VJDzgsYM4aHC2l2j?=
+ =?us-ascii?Q?94Wd3wN205Eo1XNdEFReMzyGtAej22YFWd7To4ddNh8TEGfKSqskIFaxtz4t?=
+ =?us-ascii?Q?8C4qTXzbL1NfotY1ZPSPfg3T2kbywwAt4OkjdsB?=
+X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1325;6:QFJij6cKpqyaIyS8LcvfixV8g8zvL8OT+Ox+r4dsc79ntaHr3RBsZfIABR/QPwBkQLraui1+dqcwQLohae+XlK9WOvzOYjfYW4wrmzxNzC2/ME0Z+ihwx/UNPIcUOmbwschph22zeSA5ZspK2a7pDDjUk4wJTSthi1JK9zY2JFnwOuUjtKzTJMuFH7XrjZcBe68FJIKTyCZpCSged0vxAcjw8gZmuRNWAsNqJ8rlxfVE6apguF8/RQei+5OCjI3be0TREhJbhFU5Iy8JnLeDV/uET6dwswjyIBxuMlJIF+bP+u5LH74AHFA/3ES0jUZ1KvrajOadiK0ieit5DZU7fyAEVE9lNM2tic0nyozNzLFFLY1ysRWoDBbal3UckFCdgHvTUFeuejoGqT+AyrWWEvixNi/Flb9D6hd41JJzWJRbnb4QYpxyWchQbk0b8j7b9RIGXcLQnILwJiHcJmzTpw==;5:TACg09baHdL2gBywcpCGKtkp5Q9kdlp7X6zKvb3FSFmuf4b90/c0pEFJxiR2RPsfgc7d8lAtlK8yNSAnk//T3KD8jXuFhJIrFV2tUPjaheJIHRVMikwwgZF5iUrIzAS+Y1xWXBLAuUF66Gx7hXlHuw==;24:ipseZMNxRzc+J4ShRTXBEFbi96VdEg7xy8Fj4mZpDwYOK2BfAyHBk/rfb1p4WpT83UjChyGEoXDQXrfB6oZkzIazK/SCQj+lv+fzw3qwlfw=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1328;7:rX8SQMt2HbBzmqjUv1K4Gn3aaaUpoagFsrsAD7kKGAeEfS61vyzblWjAPfV1ytH5UmsENtK0QndtDlWPQi9xnmnKG+AI2u+yQjX4pPobpuMG37RDfqKwYhhVGvAQfMhaIcP29+G7KzuZA3EvAElKhz1JwtXcYnbIBp2mAOIDcd1KEHZTFAaIRE/SE3jmLjwDL1PGPag3OIw0ZP46DMerrY+EJKVy6WRApomvZ/g1awUUrdwRswN7MZEaKVAwWWTvNuae16wu7Jg+R9aY2TkbHp3WGeD8bcKNW3I1gx6ZASojzZdTGZstG1tiYjG35KwZJ/G9nKUDXKYEBhcOsTYcVFrDfKFDGi406UYHwvH7JCZHEYfHhCE8crOyrSYgGo2UCVu5uHcsYrTcq1xVpmkAcJ6E5S5LF2hWWHqGkIxg9lJj0pGjAglascX23utvCVEsyzkuZSHcG9EzBAirHfzCkw==
+X-Microsoft-Exchange-Diagnostics: 1;VI1PR07MB1325;7:HrRGMfJT2G12fnS3pMhaXZUS0AtLvFW/vaH/guRGpex6zEkL7/UhxRlcwfLpHXV76IYN6RrRcxVMeDce5SYJ24Eb5Nsmm0waGVjiQuQWlieY1PlcEoQLmSdVZ3Lr7zLPZZvsLeivKR182LJOmE9XeYNJIVr36l+wGB6yYq+xNABC2/9+hyk1oSxzn4MuEjc9XrqB6YYz3gWH7Lche0difqIAEwomeEDQ7FMsRdJ1k5KcMTroiK0AAFRomBYTr+6JLfR1oEVtplbeyKC9UXEaQxJODIPiCi2/YYBOzOVdMeyh8Ri+caNPyK8T+lsZUIYdjvNdqC9u+dAx3jnd3PW7wAiGC7U5sjwUgT/Cr8LtBe70PfN14BqJWUFUsbL7no0OFHF8tUk9RqJiWadjhiBw75dbnAgl2445x1I7oGwmPGcQ5kEWqLbWnUJxGrlKL5IHPyTsJh56DG05Y0n+aL1cbA==
 X-OriginatorOrg: nokia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2017 17:36:58.2569 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2017 17:37:47.2744 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR07MB1328
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR07MB1325
 To:     unlisted-recipients:; (no To-header on input)
 Return-Path: <alexander.sverdlin@nokia.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56364
+X-archive-position: 56365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -97,38 +94,26 @@ X-list: linux-mips
 
 From: Alexander Sverdlin <alexander.sverdlin@nsn.com>
 
-Correct the function return type.
+Cavium Octeon is an example of the SoC where RAPIDIO works without PCI.
+So drop the unnecessary dependency.
 
 Signed-off-by: Alexander Sverdlin <alexander.sverdlin@nokia.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: David Daney <david.daney@cavium.com>
-Cc: Aaro Koskinen <aaro.koskinen@nokia.com>
-Cc: "Steven J. Hill" <steven.hill@cavium.com>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/cavium-octeon/setup.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/mips/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index 9a2db1c013d9..bb613d3e5246 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -1095,7 +1095,7 @@ void __init plat_mem_setup(void)
-  * Emit one character to the boot UART.	 Exported for use by the
-  * watchdog timer.
-  */
--int prom_putchar(char c)
-+void prom_putchar(char c)
- {
- 	uint64_t lsrval;
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b3c5bde43d34..a97fbd6cbe0a 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -3089,7 +3089,6 @@ source "drivers/pcmcia/Kconfig"
  
-@@ -1106,7 +1106,6 @@ int prom_putchar(char c)
- 
- 	/* Write the byte */
- 	cvmx_write_csr(CVMX_MIO_UARTX_THR(octeon_uart), c & 0xffull);
--	return 1;
- }
- EXPORT_SYMBOL(prom_putchar);
- 
+ config RAPIDIO
+ 	tristate "RapidIO support"
+-	depends on PCI
+ 	default n
+ 	help
+ 	  If you say Y here, the kernel will include drivers and
 -- 
 2.11.0

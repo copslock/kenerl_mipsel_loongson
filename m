@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2017 16:23:21 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.135]:49440 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2017 16:23:43 +0100 (CET)
+Received: from mout.kundenserver.de ([212.227.126.187]:50157 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993905AbdAQPVOEQUXd (ORCPT
+        with ESMTP id S23993906AbdAQPVOHpgdd (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2017 16:21:14 +0100
 Received: from wuerfel.lan ([78.43.21.235]) by mrelayeu.kundenserver.de
  (mreue001 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0LhoIM-1cp2aa1Dxy-00nAnH; Tue, 17 Jan 2017 16:20:30 +0100
+ 0M0Y1e-1chSyQ43vK-00upn9; Tue, 17 Jan 2017 16:20:21 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
         John Crispin <john@phrozen.org>,
-        Colin Ian King <colin.king@canonical.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 09/13] MIPS: ralink: remove unused rt*_wdt_reset functions
-Date:   Tue, 17 Jan 2017 16:18:43 +0100
-Message-Id: <20170117151911.4109452-9-arnd@arndb.de>
+        Tobias Wolf <dev-NTEO@vplace.de>, linux-kernel@vger.kernel.org
+Subject: [PATCH 08/13] MIPS: ralink: fix request_mem_region error handling
+Date:   Tue, 17 Jan 2017 16:18:42 +0100
+Message-Id: <20170117151911.4109452-8-arnd@arndb.de>
 X-Mailer: git-send-email 2.9.0
 In-Reply-To: <20170117151911.4109452-1-arnd@arndb.de>
 References: <20170117151911.4109452-1-arnd@arndb.de>
-X-Provags-ID: V03:K0:KOlk6hqQZV4jsHHZk9AOF+qZh2zBTJDbA2JxVV1UoZcMxXYfVUO
- P831vBaWHDbW5b4LoSOPhelzXAs1CqSkh22e5UqCJDIGq5PznPcIjBGbG+mb6jL4RnRpmyM
- kTeQ515o6hCZmBdIuXjfRMx2yhdz4fwKIUahCBHbR7SIRJ5Gof2rHBt/ukhzyqCqtF0eXjx
- T8QGmJZVYajozHotetegQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:uFJxpLOn72A=:Lpizux2YU5PdYLV9AIUUB6
- V9YzWdDU/FCWzTArXGTq/mWKolkSuRNM9bpDs8AwoBholdfOhhhqQLrFu5WKLeKT0FbocVxcj
- 4NRalr2RgbV3jAiTmVfQS8J0tDM6K3TDz4I7En5kqGA7V2HbrUlDvb8g5HT11it+LaeNFmWJv
- EzkF1x/MEdZ+IGKOB6qT5ENe2wFZCBy1ZJUVnIVsOQYXU47iEZWmo3CU/y53ftjgWVS2cdPvc
- 08ume1SYrDsg8ls2VMLIGamLnntZ0PkOYhYO9yVFHftrfVLOyJu4xHYT+e5cgJeq6aMvnmQoa
- uWn0I8IO2CY8XDYqWFOj/g/HNaoxsUFTq41hi5I60M522uSZcX3R1uT16/mpSvMxoG9uguaBb
- gQtea7NufsKSQGHHYgIlY4R3Er464GXCsoS+uRfJb27Qb+82e3ie6PpgN5t8P/CBuHQzlRqam
- 3TourmxYwElUBG/op0QoWW6Nc2cbLzIigdyKZbI8v5Eod3pZiZo8F067QdUpub0LOZLks5mKN
- QCgoPxbpyMRk5sBxofqVk7rXLvn3MkTSB/W8j8gD7m3J/ftoclvlzmsqN3bVitFX6oBzl/5b4
- C6qEc6/4707BYoPtilm4Z1EZY1pRCnJef+hqutPDGxtKLN8gjQDDqaQ3oN6aWZDvhcULUYUJE
- fPdLjw8NAGZX+AI/wvGVZ4jTSy0O1WWDYWcv1UmdiS5rNRPBfJTJ6R1+Aeem0SS0AwTg=
+X-Provags-ID: V03:K0:xjoINC8OR0Q/0pvqU5eSELCuZNwI2rA7+AQlg9ol/lpSHeG286Z
+ MBB8L1+eK527j+Xy/ifynkc/YufW5SnXB4A07qUFOMcDLeGIWPBbZ0PHMVPYRpbpVnqI8rO
+ T8ociXorA9CkEpTSpuYDHqxy4dzf98hcXQcIvO7vM/9QyGgaUvky+qIyTh+LTlSymSW5Tub
+ LX8cGf7LWr5ZpHMObxNlw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:uKbl62U9zeI=:N1Cm94mBSWcnQFtBAmjUrI
+ 3vPXt1s7aSrGd3acfX1Mc1u/SO01sTjsgRw65CZwIOMbeto7EiAK5Nnh8hplF6JGG5WtUk7lB
+ lbtG3mEmwwmMed+w4rsmDKiVjUp5b3qytXap4fzvs/4Vr3nJVf4L3q/Q7Kez5454GW9UcX9mo
+ /m+LUNQowzQ4cCaOsumCfvJtaSUbyihifnKmRBNfXjKKsud5QgsaseMkOlT1D7CPPACHTlBIG
+ blaMkDUecBbHg6zx+jsp5B/lNToSFsRkshpil1lMY19NQhsCOyfYSdqq52B7aSHNh8BXYVawq
+ PJg7hW3tEtDIq+tKFdToSoTh8QlaPf4b2wjH9Awria4FM+Jycq1tErsfv8SJ/8lyFlpRqXJGs
+ kNd075RjHyGdIz4jzqNfkjUlICRAb4/45+YX9Pqy3TMdsVh3YSosXNP4sOen5QCl13eua4cPq
+ y6SHEi+GvKkNTWHnJKJLJMMmBbG9VDfWN9uYw8FHLpjH2eh12sllEBer7BBJGkfnkSxYyEEL+
+ enuxHUvSo1hmNcVPRJBhVIZCRupwt+LF5DzYuUmWZsybVJsDhMUD6A2RtjwVQDwtfuj05NFFc
+ AsT4BNtgh7KgHruc4wXWSl0VLTuU7RZlTzbRmHLL4kyzBFVgcu627AowbBPrzGaE7k7jQwkLb
+ xXDH+8cV0pm2TMyxBmrj7KthCRbo6cKI23e+SA7cBZZXbaDbZXWumrMSVDMfFlWpPw+U=
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56350
+X-archive-position: 56351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,85 +53,50 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-All pointers to these functions were removed, so now they produce
-warnings:
+request_mem_region returns a NULL pointer on error, comparing it
+against a number results in a warning:
 
-arch/mips/ralink/rt305x.c:92:13: error: 'rt305x_wdt_reset' defined but not used [-Werror=unused-function]
+arch/mips/ralink/of.c: In function 'plat_of_remap_node':
+arch/mips/ralink/of.c:45:15: error: ordered comparison of pointer with integer zero [-Werror=extra]
+arch/mips/ralink/irq.c: In function 'intc_of_init':
+arch/mips/ralink/irq.c:167:15: error: ordered comparison of pointer with integer zero [-Werror=extra]
 
-This removes the functions. If we need them again, the patch can be
-reverted later.
-
-Fixes: f576fb6a0700 ("MIPS: ralink: cleanup the soc specific pinmux data")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/ralink/rt288x.c | 10 ----------
- arch/mips/ralink/rt305x.c | 11 -----------
- arch/mips/ralink/rt3883.c | 10 ----------
- 3 files changed, 31 deletions(-)
+ arch/mips/ralink/irq.c | 4 ++--
+ arch/mips/ralink/of.c  | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/ralink/rt288x.c b/arch/mips/ralink/rt288x.c
-index eeabd5119891..40d3a69c7016 100644
---- a/arch/mips/ralink/rt288x.c
-+++ b/arch/mips/ralink/rt288x.c
-@@ -40,16 +40,6 @@ static struct rt2880_pmx_group rt2880_pinmux_data_act[] = {
- 	{ 0 }
- };
+diff --git a/arch/mips/ralink/irq.c b/arch/mips/ralink/irq.c
+index 4911c1445f1a..9b478c95aaf5 100644
+--- a/arch/mips/ralink/irq.c
++++ b/arch/mips/ralink/irq.c
+@@ -163,8 +163,8 @@ static int __init intc_of_init(struct device_node *node,
+ 	if (of_address_to_resource(node, 0, &res))
+ 		panic("Failed to get intc memory range");
  
--static void rt288x_wdt_reset(void)
--{
--	u32 t;
--
--	/* enable WDT reset output on pin SRAM_CS_N */
--	t = rt_sysc_r32(SYSC_REG_CLKCFG);
--	t |= CLKCFG_SRAM_CS_N_WDT;
--	rt_sysc_w32(t, SYSC_REG_CLKCFG);
--}
--
- void __init ralink_clk_init(void)
- {
- 	unsigned long cpu_rate, wmac_rate = 40000000;
-diff --git a/arch/mips/ralink/rt305x.c b/arch/mips/ralink/rt305x.c
-index f0b5ac444556..01f7cd38d631 100644
---- a/arch/mips/ralink/rt305x.c
-+++ b/arch/mips/ralink/rt305x.c
-@@ -89,17 +89,6 @@ static struct rt2880_pmx_group rt5350_pinmux_data[] = {
- 	{ 0 }
- };
+-	if (request_mem_region(res.start, resource_size(&res),
+-				res.name) < 0)
++	if (!request_mem_region(res.start, resource_size(&res),
++				res.name))
+ 		pr_err("Failed to request intc memory");
  
--static void rt305x_wdt_reset(void)
--{
--	u32 t;
--
--	/* enable WDT reset output on pin SRAM_CS_N */
--	t = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG);
--	t |= RT305X_SYSCFG_SRAM_CS0_MODE_WDT <<
--		RT305X_SYSCFG_SRAM_CS0_MODE_SHIFT;
--	rt_sysc_w32(t, SYSC_REG_SYSTEM_CONFIG);
--}
--
- static unsigned long rt5350_get_mem_size(void)
- {
- 	void __iomem *sysc = (void __iomem *) KSEG1ADDR(RT305X_SYSC_BASE);
-diff --git a/arch/mips/ralink/rt3883.c b/arch/mips/ralink/rt3883.c
-index f869052e4a0d..252b64114b48 100644
---- a/arch/mips/ralink/rt3883.c
-+++ b/arch/mips/ralink/rt3883.c
-@@ -63,16 +63,6 @@ static struct rt2880_pmx_group rt3883_pinmux_data[] = {
- 	{ 0 }
- };
+ 	rt_intc_membase = ioremap_nocache(res.start,
+diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
+index 4c843e039b96..1ada8492733b 100644
+--- a/arch/mips/ralink/of.c
++++ b/arch/mips/ralink/of.c
+@@ -40,9 +40,9 @@ __iomem void *plat_of_remap_node(const char *node)
+ 	if (of_address_to_resource(np, 0, &res))
+ 		panic("Failed to get resource for %s", node);
  
--static void rt3883_wdt_reset(void)
--{
--	u32 t;
--
--	/* enable WDT reset output on GPIO 2 */
--	t = rt_sysc_r32(RT3883_SYSC_REG_SYSCFG1);
--	t |= RT3883_SYSCFG1_GPIO2_AS_WDT_OUT;
--	rt_sysc_w32(t, RT3883_SYSC_REG_SYSCFG1);
--}
--
- void __init ralink_clk_init(void)
- {
- 	unsigned long cpu_rate, sys_rate;
+-	if ((request_mem_region(res.start,
++	if (!request_mem_region(res.start,
+ 				resource_size(&res),
+-				res.name) < 0))
++				res.name))
+ 		panic("Failed to request resources for %s", node);
+ 
+ 	return ioremap_nocache(res.start, resource_size(&res));
 -- 
 2.9.0

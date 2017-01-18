@@ -1,54 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 13:10:53 +0100 (CET)
-Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:34371
-        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991965AbdARMKmU7mfe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2017 13:10:42 +0100
-Received: by mail-wm0-x242.google.com with SMTP id c85so3648177wmi.1
-        for <linux-mips@linux-mips.org>; Wed, 18 Jan 2017 04:10:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=+yZK+udrb20r3JQLVEDlmnKB8CXSbjH/85IkOhXworE=;
-        b=jIuK8byRNZVimYmBYZyldpFxGEXBeb1vEn9DhUauzGkf1g0RngphtOA8mfZGTMKa+4
-         k6VLpkHnd1UlvHRD7zaezTxEhN4aE7JQXrHwz/SLePvxkeS0yAvCwmEWQP4FZordCjD5
-         z7UM6gfdb8Wyf91U7vfWqqgNVNlWlQOpyGeRURoafkZ8ACLupub+EMrC2O0atOYtRgYN
-         bts4WkkV8nhnnHc+kFwnDkZlFU4E3v8tCGscEJtHMeWCOQWWLwMdZMYXkO4R26EOHydl
-         9wtO+/JOHCixaWIV1uSCDKqnToD1lBG3yqcpR1nJTnXqJxJf7K5+KqJnDTRjJaI7LJXB
-         y9Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=+yZK+udrb20r3JQLVEDlmnKB8CXSbjH/85IkOhXworE=;
-        b=HIRa2USSr7jdEgbcsX4Yq0GNHYA/7V+MirtFbBy/Wy5brKiqmHzJI3pzkLNdf2/yGV
-         HVRr0rE0ZTl1HOoSjHgf35Cj1WONxPaZQzFwKGaIxqmN2Rof7G9Xuy0AoFzV2gsr6GfA
-         d1lE68rtdPAAb5vnV17QfK71Zzt4+1gJVybaBPHORQx+lU95aNOIi/+dIjymPqf9vLGO
-         3dQp1HiKgIf2HIdu4GWXP2ToqBTI4ek483Lpn7tusMA4OTX5LowAUiBc7+VX3QGzCDgw
-         o9y3kRqupI4MIhKKmUOrcezM59TiNLyQ8LoPA8kueDxOSyI1V1reYDRnEYeO5GmMLoSB
-         Ek+w==
-X-Gm-Message-State: AIkVDXLaWHzm7dYLT/aY/b0fP7ZSUrA4dPPZ5UijHdAbVNWwacEuf6DxHQf5MaRPelgHTw==
-X-Received: by 10.28.129.147 with SMTP id c141mr22078994wmd.12.1484741436901;
-        Wed, 18 Jan 2017 04:10:36 -0800 (PST)
-Received: from serveurQA.phonesystems.net ([62.39.136.157])
-        by smtp.gmail.com with ESMTPSA id c81sm4402922wmf.22.2017.01.18.04.10.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 18 Jan 2017 04:10:36 -0800 (PST)
-From:   Sebastien Decourriere <sebtx452@gmail.com>
-To:     linux-mtd@lists.infradead.org
-Cc:     linux-mips@linux-mips.org,
-        Sebastien Decourriere <sebtx452@gmail.com>
-Subject: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness swap is enabled
-Date:   Wed, 18 Jan 2017 13:10:52 +0100
-Message-Id: <1484741452-27141-1-git-send-email-sebtx452@gmail.com>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <sebtx452@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 13:12:50 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:23870 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992078AbdARMMnAmmre (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2017 13:12:43 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 4136041F8E2E;
+        Wed, 18 Jan 2017 13:15:21 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Wed, 18 Jan 2017 13:15:21 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Wed, 18 Jan 2017 13:15:21 +0000
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 41DBA70CD462B;
+        Wed, 18 Jan 2017 12:12:34 +0000 (GMT)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 18 Jan
+ 2017 12:12:36 +0000
+Date:   Wed, 18 Jan 2017 12:12:36 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <jiang.biao2@zte.com.cn>
+CC:     <linux-mips@linux-mips.org>, <pbonzini@redhat.com>,
+        <rkrcmar@redhat.com>, <ralf@linux-mips.org>, <kvm@vger.kernel.org>
+Subject: Re: [PATCH 2/13] KVM: MIPS: Pass type of fault down to
+ kvm_mips_map_page()
+Message-ID: <20170118121236.GA31545@jhogan-linux.le.imgtec.org>
+References: <201701181618464411994@zte.com.cn>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="PNTmBPCT7hxwcZjr"
+Content-Disposition: inline
+In-Reply-To: <201701181618464411994@zte.com.cn>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56390
+X-archive-position: 56391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebtx452@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,50 +55,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The purpose of this patch is to enable the software address endianness
-swapping only when the in SoC EBU endianness swapping is disabled.
-To perform this check, I look at Bit 30 of the EBU_CON_0 register.
-Actually, the driver expects that the in SoC swapping is disabled.
-This is the case with current bootloaders shuch as U-boot. But,
+--PNTmBPCT7hxwcZjr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I have a router which uses a proprietary bootloader which keeps
-the in SoC swapping enabled. The SoC in this router is a vrx200 v1.2.
-In this SoC version, I can keep the in SoC swapping without any problem.
+Hi,
 
-Signed-off-by: Sebastien Decourriere <sebtx452@gmail.com>
----
- drivers/mtd/maps/lantiq-flash.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+On Wed, Jan 18, 2017 at 04:18:46PM +0800, jiang.biao2@zte.com.cn wrote:
+> Hi,
+>=20
+> =EF=BC=9E I presume you mean from the saved host cause register in the VC=
+PU
+> =EF=BC=9E context (since intervening exceptions/interrupts will clobber t=
+he actual
+> =EF=BC=9E CP0 Cause register).
+> =EF=BC=9E=20
+> =EF=BC=9E It directly needs to know whether it can get away with a read-o=
+nly
+> =EF=BC=9E mapping, and although it directly depends on a GVA segment, it =
+doesn't
+> =EF=BC=9E necessarily relate to a memory access made by the guest.
+> =EF=BC=9E=20
+> =EF=BC=9E kvm_mips_map_page() is called via:
+> =EF=BC=9E=20
+> =EF=BC=9E - kvm_mips_handle_kseg0_tlb_fault()
+> =EF=BC=9E   for faults in guest KSeg0
+> =EF=BC=9E=20
+> =EF=BC=9E  - kvm_mips_handle_mapped_seg_tlb_fault()
+> =EF=BC=9E    for faults in guest TLB mapped segments
+> =EF=BC=9E=20
+> =EF=BC=9E From these functions:
+> =EF=BC=9E=20
+> =EF=BC=9E  - kvm_trap_emul_handle_tlb_mod() (write_fault =3D true)
+> =EF=BC=9E   in response to a write to a read-only page (exccode =3D MOD)
+> =EF=BC=9E=20
+> =EF=BC=9E - kvm_trap_emul_handle_tlb_miss() (write_fault =3D true or fals=
+e)
+> =EF=BC=9E   in response to a read or write when TLB mapping absent or inv=
+alid
+> =EF=BC=9E   (exccode =3D TLBL/TLBS)
+> =EF=BC=9E
+> =EF=BC=9E=20
+> =EF=BC=9E So there is a many:many mapping from exccode to write_fault for=
+ these
+> =EF=BC=9E exccodes:
+> =EF=BC=9E=20
+> =EF=BC=9E  - CPU (CoProcessor Unusable)
+> =EF=BC=9E    could be reading instruction or servicing a CACHE instruction
+> =EF=BC=9E    (write_fault =3D false) or replacing an instruction (write_f=
+ault =3D
+> =EF=BC=9E    true).
+>=20
+> =EF=BC=9E  - MOD, TLBS, ADES
+> =EF=BC=9E   could be the write itself (write_fault =3D true), or a read o=
+f the
+> =EF=BC=9E   instruction triggering the exception or the prior branch inst=
+ruction
+> =EF=BC=9E   (write_fault =3D false).
+> =EF=BC=9E=20
+> Thanks for the detail, it is more complicted than I thought.
+>=20
+> But there may be still bad smell from the long parameters, espacially fro=
+m=20
+>=20
+>=20
+> bool type ones. =20
 
-diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
-index c8febb3..a091efa 100644
---- a/drivers/mtd/maps/lantiq-flash.c
-+++ b/drivers/mtd/maps/lantiq-flash.c
-@@ -151,6 +151,11 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	ltq_mtd->map->copy_to = ltq_copy_to;
- 
- 	ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
-+	/* We swap the addresses only if the EBU endianness swap is disabled */
-+	if (ltq_ebu_r32(LTQ_EBU_BUSCON0) & BIT(30))
-+		ltq_mtd->map[i].map_priv_1 = LTQ_NOR_NORMAL;
-+	else
-+		ltq_mtd->map[i].map_priv_1 = LTQ_NOR_PROBING;
- 	ltq_mtd->mtd = do_map_probe("cfi_probe", ltq_mtd->map);
- 	ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
- 
-@@ -163,8 +168,11 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	mtd_set_of_node(ltq_mtd->mtd, pdev->dev.of_node);
- 
- 	cfi = ltq_mtd->map->fldrv_priv;
--	cfi->addr_unlock1 ^= 1;
--	cfi->addr_unlock2 ^= 1;
-+	/* We swap the addresses only if the EBU endianness swap is disabled */
-+	if (!(ltq_ebu_r32(LTQ_EBU_BUSCON0) & BIT(30))) {
-+		cfi->addr_unlock1 ^= 1;
-+		cfi->addr_unlock2 ^= 1;
-+	}
- 
- 	err = mtd_device_register(ltq_mtd->mtd, NULL, 0);
- 	if (err) {
--- 
-2.1.4
+Whats wrong with bool parameters?
+
+It needs a GPA mapping created, either for a read or a write depending
+on the caller. bool would seem ideally suited for just such a situation,
+and in fact its exactly what the KVM GPA fault code path does to pass
+whether the page needs to be writable:
+
+kvm_mips_map_page() -> gfn_to_pfn_prot() -> __gfn_to_pfn_memslot() ->
+hva_to_pfn() -> hva_to_pfn_slow().
+
+so all this really does is extend that pattern up the other way as
+necessary to be able to provide that information to gfn_to_pfn_prot().
+
+Cheers
+James
+
+>=20
+>=20
+> Maybe there is better way to handle that, but I can not figure it out rig=
+ht now=20
+>=20
+>=20
+> because of the complexity.
+
+--PNTmBPCT7hxwcZjr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYf1utAAoJEGwLaZPeOHZ6ftcQAL8jD4XSQweX6Ayh7FRjNyiq
+Hy7ajtlGjKvH/YuidrUvkqRxjB4XOqwVfFAaGPURiA9d7PUv8UKfbKSQsxCfysM+
+A+K6jbEPi1D2tQIpB3bhPlaYTmbrcCkhG5bppUgmYHU4X0Y+Iq8rHisQXl7jPxZH
+D0vuEp1s4GYJky2BNodgY07gKs2iDCnY9BQNRjMVa2RkMYNh8q8MLSACJsIny6kX
+eM3LtdkGU6Qz/clia7uz0yxK605FstRT5rulAwqz30jTnzJyEIzcXRAhEAWb0Lr9
+iIdhiWy3UFGVQ4EoVtDvUWdHf02WtmE/FM/WRvW0I3H+9X5/U5ed1zO8HkrqGVnY
+6mG/XZEYceNYr1VjnoAtafrcK8HSC8CHOGf2nvpmCbYIYF0kNYF2NmqhhWstLt13
+Hx1d+YnWeTu+j5d3UrC9eJU69OXf3X4r4kAH6k3Ed+yJbRYFgDT8fTQSySGmeESD
+YZDzC+lHsnev0zI8XFYeCvJOR3LzzFRu8LiiJVp8IcX/HYWY5oJ8LxXUq4WuMhwe
+c4qMhWgycYA60pATdIaQ6D2rZabgRJfXAlwsrcN1XCpX6iRt4dYotHXd93ENEgrP
+gvD9iAhF1cO6gnFXby31fjjzDfGDbu8oIGd9uwTCKNj13Bsm8wRQAon4+thfUnQm
+YcyQKm3LiQ8X+mmecf4Q
+=PrX6
+-----END PGP SIGNATURE-----
+
+--PNTmBPCT7hxwcZjr--

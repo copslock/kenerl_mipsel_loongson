@@ -1,54 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 20:53:50 +0100 (CET)
-Received: from mout.web.de ([212.227.15.3]:52633 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992267AbdARTxn2tKvv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 Jan 2017 20:53:43 +0100
-Received: from [192.168.1.2] ([78.48.198.118]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lh6bn-1cnv4s3Z15-00oZP9; Wed, 18
- Jan 2017 20:52:30 +0100
-To:     kvm@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-From:   SF Markus Elfring <elfring@users.sourceforge.net>
-Subject: [PATCH] MIPS: KVM: Return directly after a failed copy_from_user() in
- kvm_arch_vcpu_ioctl()
-Message-ID: <87aac8b8-4f30-2edd-4688-42d32d815cd1@users.sourceforge.net>
-Date:   Wed, 18 Jan 2017 20:52:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 00:45:35 +0100 (CET)
+Received: from mail-qt0-x22f.google.com ([IPv6:2607:f8b0:400d:c0d::22f]:36468
+        "EHLO mail-qt0-x22f.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993887AbdARXpZqJiQe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 00:45:25 +0100
+Received: by mail-qt0-x22f.google.com with SMTP id k15so38456848qtg.3
+        for <linux-mips@linux-mips.org>; Wed, 18 Jan 2017 15:45:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=YbXkbb3a0Vw7KEdeRoG/aAebW83Ums2CTCrZebU7vzM=;
+        b=OaxqF+Rfkb+nEnJjQ3bbPyAPffYfch0xxGAQNROwS+/VNvVwwNYj1Dyc1HO7uPdkuz
+         2cmNkLs51nOJZm+ZDxktjxbXKnyeyG1UpUK3v8mGNfl43jIJbq3LDmc4v2no+B8VxKaF
+         /Q/jz1zEBEEEci47SkNLL2hFztuqnQ1yjT4EI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=YbXkbb3a0Vw7KEdeRoG/aAebW83Ums2CTCrZebU7vzM=;
+        b=RZvCZXQ3XZrnX0Ae1Wr71VRaIj0HzLbmwDqKH7RsqjD42NAR5y94Vy99W0+Vjvkqji
+         zTDOo7kathcUU0xoJ54fT1fy41wVa00n6CDVxZxnIPb0ERKX0NUZdkoSjPKKJFniZslu
+         QX++aEXBAgxIQM/9MTaM129mwvNk+7rwrK3jy47qEyNLVm6DrAUQ/NuWKyfPBgcjxTze
+         Tm9fyRXdSvZk01gY1dVRf3aJUZwr0o4kJJNItebJPx8CBElo3ZDkmHoCYFxtNSXjcQMr
+         YL9L3JOUuo5J7mR6vFk34Rn6FbyZHv8jys0tMMf5Yn1odjaY/oVoBXAlrU423KLCEZ0m
+         wGCQ==
+X-Gm-Message-State: AIkVDXIJJ6g6woWKzkJvI/XdeWiNUsqM9ntqyFDdtI1vqzvQ63fUsVQ+6RJaGbPs2Fa3h2DF338H/iZMew0RZtmi
+X-Received: by 10.237.52.37 with SMTP id w34mr5742532qtd.173.1484783119973;
+ Wed, 18 Jan 2017 15:45:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:9qG4qTFLgp7g6dnKdZK6Nq1f7X/Ov5lZXO5uYEn/uZnZxuIKSxt
- NOHcbwH6Gwnnh0VCGwiYktgVbU2RlrXNUfFoM5AiKhl14iHE7SEvJNGVLlK9KAxBb4eGoKw
- 4kwuLJj7O/OSClS1c58ykgp/Wt0vvzd82QsYlMvornWaZOZM51NT8/aPgK6vm9Me5zLU9t2
- BdEQi65ARhoT7t6x75Qhw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:IbuY9W70Pl0=:YZv+yn/BOLK04deS1N558q
- h/bwDaSGO7PxRKJDlx+m1mjUX+XJz6cR65lhV/70W34sDpwULw7OQ5HOowJyv9WAtVeuO3OXI
- m4cZtLIkk37wtkAFQ8kxwKJRaIF41mKDjoiwvImnChF9lF/PEXUSCZYkLn8Q4LASdeDALtLA0
- 1RGHqfbKw8omrotIiWYT5mEq9CmUU+j0fOvIGMJc99C0Bdyy2MfCVVHIfGLfkJrLwc1Mv+BfB
- d2i+0dbkpQGKWmnac21woZ72m87NjgCd8fN1omq+oSjXkrbjRD6+aZPICBRXhaoRW87rkMr06
- DL3NcXubGaNj6AGlSa12s6Sa0QpAArQJ6ufQtTQEZwo1mRUCZi+VTSHfc6agMRPM13wSZAXdq
- f8e5mDWfkKN1X2f64lm0+nXT6N35wTIsnYay2bqS1N50N9ZpzpfPNMYsRDu8wwsalNDLCi+Bi
- FzgI+l0aIoR9W6f9M2xpXDHEpcItcRGj6R2wHBiaMh8CeGP3YU/R/15x8KajsWsJc/PKvw05g
- oDdfqfdnpYw6Do7YY+CCPA7SnJo0VRLv5yFBnoBuKfXr6ucSC5D/xUvkWQ7hzHl0IwmVCMDz2
- mAztQ26lhKEOA44gUy7qULLCuAbdxroe2MdY7ncYqm+9eOrPwTRmrJkRzFCuM7+sA2iRKycQi
- uKLPRECKaLoeGxy+w0UJ4p/UkvIPdxYdoY7fo3sV+I4RBk3VjJRjqLNDvq/l8d5ymhMyyoXE9
- CEXp5t9SFZTHpuD1bkeZ1Vn8DZRm5t3Y2h9DgA00S3zo1RBRDa0rHRSMTlMM49VN+Pji5cLez
- KHkEmyc
-Return-Path: <elfring@users.sourceforge.net>
+Received: by 10.12.177.145 with HTTP; Wed, 18 Jan 2017 15:45:19 -0800 (PST)
+In-Reply-To: <20170117231421.16310-2-paul@crapouillou.net>
+References: <20170117231421.16310-1-paul@crapouillou.net> <20170117231421.16310-2-paul@crapouillou.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 19 Jan 2017 00:45:19 +0100
+Message-ID: <CACRpkdZAGHHpCyR4d8dJv=hTRTS6-zkX-2-GarLXnNf_2QO2UQ@mail.gmail.com>
+Subject: Re: [PATCH 01/13] Documentation: dt/bindings: Document pinctrl-ingenic
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56402
+X-archive-position: 56403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: elfring@users.sourceforge.net
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,43 +77,141 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Jan 2017 20:43:41 +0100
+On Wed, Jan 18, 2017 at 12:14 AM, Paul Cercueil <paul@crapouillou.net> wrote:
 
-Return directly after a call of the function "copy_from_user" failed
-in a case block.
+> From: Paul Burton <paul.burton@imgtec.com>
+>
+> This commit adds documentation for the devicetree bidings of the
+> pinctrl-ingenic driver, which handles pin configuration, pin muxing
+> and GPIOs of the Ingenic SoCs currently supported by the Linux kernel.
+>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
----
- arch/mips/kvm/mips.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+(...)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 06a60b19acfb..1dad78f74e8c 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1152,10 +1152,8 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
- 		{
- 			struct kvm_mips_interrupt irq;
- 
--			r = -EFAULT;
- 			if (copy_from_user(&irq, argp, sizeof(irq)))
--				goto out;
--
-+				return -EFAULT;
- 			kvm_debug("[%d] %s: irq: %d\n", vcpu->vcpu_id, __func__,
- 				  irq.irq);
- 
-@@ -1165,9 +1163,8 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
- 	case KVM_ENABLE_CAP: {
- 		struct kvm_enable_cap cap;
- 
--		r = -EFAULT;
- 		if (copy_from_user(&cap, argp, sizeof(cap)))
--			goto out;
-+			return -EFAULT;
- 		r = kvm_vcpu_ioctl_enable_cap(vcpu, &cap);
- 		break;
- 	}
--- 
-2.11.0
+> +##### 'gpio-chips' sub-node #####
+> +
+> +The gpio-chips node will contain sub-nodes that correspond to GPIO controllers
+> +(one sub-node per GPIO controller).
+> +
+> +Required properties:
+> +- #address-cells: Should contain the integer 1.
+> +- #size-cells: Should contain the integer 1.
+> +- ranges: Should be empty.
+
+I do not see why the GPIO needs a special subnode. Can the pin controller
+and the GPIO not simply spawn from a single node?
+
+> +##### GPIO controller node #####
+> +
+> +Each subnode of the 'gpio-chips' node is a GPIO controller node.
+> +
+> +Required properties:
+> +- gpio-controller: Identifies this node as a GPIO controller.
+> +- #gpio-cells: Should contain the integer 2.
+> +- reg: Should contain the physical address and length of the GPIO controller's
+> +  configuration registers.
+> +
+> +Optional properties:
+> +- interrupt-controller: The GPIO controllers can optionally configure the
+> +  GPIOs as interrupt sources. In this case, the 'interrupt-controller'
+> +  standalone property should be supplied.
+> +- #interrupt-cells: Required if 'interrupt-controller' is also specified.
+> +  In that case, it should contain the integer 2.
+> +- interrupts: Required if 'interrupt-controller' is also specified.
+> +  In that case, it should contain the IRQ number of this GPIO controller.
+> +- ingenic,pull-ups: A bit mask identifying the pins associated with this GPIO
+> +  port which feature a pull-up resistor. The default mask is 0x0.
+> +- ingenic,pull-downs: A bit mask identifying the pins associated with this GPIO
+> +  port which feature a pull-down resistor. The default mask is 0x0.
+
+So these bits tell us which lines have a pull up and pull down resistor?
+
+Isn't that readily know from the compatible string? Then just hardcode
+that into the driver for each variant, there is no need to define that in
+the device tree.
+
+> +##### Pin function node #####
+> +
+> +Each subnode of the 'functions' node is a pin function node.
+> +
+> +These subnodes represent a functionality of the SoC which may be exposed
+> +through one or more groups of pins, represented as subnodes of the pin
+> +function node. For example a function may be uart0, which may be exposed
+> +through the group of pins PF0 to PF3.
+> +
+> +Required pin function node properties:
+> +- None.
+> +
+> +
+> +##### Pin group node #####
+> +
+> +Each subnode of a pin function node is a pin group node.
+> +
+> +Required pin group node properties:
+> +- ingenic,pins: A set of values representing the pins within this pin group and
+> +  their configuration.
+
+Look into using the standard pins property from the pinctrl bindings
+if yoy want to do this.
+
+> Four values should be provided for each pin:
+> +  - The phandle of the GPIO controller node for the GPIO port within which the
+> +    pin is found.
+> +  - The index of the pin within its GPIO port (an integer in the range 0 to 31
+> +    inclusive).
+
+This is already supported by gpio ranges, please do not reimplement
+stuff we already have.
+
+> +  - The index of the shared function port to be programmed in the GPIO port
+> +    registers for this pin.
+
+I don't see why this can not be stored in the driver.
+But some people prefer to shovel everything into the device
+tree, I don't know. Can you elaborate why this should be in the
+device tree?
+
+> +  - The phandle of a pin configuration node specifying the electrical
+> +    configuration that should be applied to the pin.
+
+Why? This is something the standard pin control states handles.
+I'm confused.
+
+> +For example the function 'msc0' may be exposed through 2 different pin groups,
+> +one in GPIO port A and one in GPIO port E:
+> +
+> +  bias-configs {
+> +    nobias: nobias {
+> +      bias-disable;
+> +    };
+> +  };
+> +
+> +  functions {
+> +    pinfunc_msc0: msc0 {
+> +      pins_msc0_pa: msc0-pa {
+> +        ingenic,pins = <&gpa  4 1 &nobias   /* d4 */
+> +                        &gpa  5 1 &nobias   /* d5 */
+> +                        &gpa  6 1 &nobias   /* d6 */
+> +                        &gpa  7 1 &nobias   /* d7 */
+> +                        &gpa 18 1 &nobias   /* clk */
+> +                        &gpa 19 1 &nobias   /* cmd */
+> +                        &gpa 20 1 &nobias   /* d0 */
+> +                        &gpa 21 1 &nobias   /* d1 */
+> +                        &gpa 22 1 &nobias   /* d2 */
+> +                        &gpa 23 1 &nobias   /* d3 */
+> +                        &gpa 24 1 &nobias>; /* rst */
+> +      };
+
+Please look at other bindings and drivers and read pinctrl.txt
+closely. This makes no sense to me compared to other
+examples.
+
+This is something that seems to cross-mix gpio ranges
+and pin config, that doesn't work for me, we can't have an
+idiomatic binding like this. I understand that it may fit your
+single usecase perfectly but it will be a maintenance nightmare
+for me.
+
+Yours,
+Linus Walleij

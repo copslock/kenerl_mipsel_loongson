@@ -1,76 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 08:28:08 +0100 (CET)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:36538
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992380AbdARH2A12mKP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2017 08:28:00 +0100
-Received: by mail-wm0-x243.google.com with SMTP id r126so1866932wmr.3;
-        Tue, 17 Jan 2017 23:28:00 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2017 10:43:45 +0100 (CET)
+Received: from mail-lf0-x231.google.com ([IPv6:2a00:1450:4010:c07::231]:35509
+        "EHLO mail-lf0-x231.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992162AbdARJngoprGA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2017 10:43:36 +0100
+Received: by mail-lf0-x231.google.com with SMTP id n124so6127444lfd.2
+        for <linux-mips@linux-mips.org>; Wed, 18 Jan 2017 01:43:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=r8/BeODMaR4mcxxc3RNS/PjS0CtEesGW0RVi6h68D5s=;
-        b=I3nTbX5ni6DlFp8F020G7nVMfwbukdO+SybWvfJglk9SRsoPzGx8pqjBfzBR5NOm1v
-         0RVEhdTm1YV2pbL/jJs5y9jPrbkHaQZ/LJ/8HcnwwPXeYMkOi/wsqeVPdhLoTARea9zY
-         KS6G+2fR6MzNxvUIs3VHkQIPkJ3ESXv9MSfaS+9WVBRolYZs6SdgrMwbO8cv672XobmR
-         7eeRhl9l1+JvlGIHWWp2yK5kVRt78ofxi9V7x8t0QkdMgFiypCiCZPck8tLizbG3vPRZ
-         JfHGj941llnY+Soym1aTQHOWzNrfRPIpaQeDH3NaTi6GcU+dHvyfWhpUoXwKN6EzAvtA
-         vXzA==
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=RAQxJS8M0mTdSHmkfdupqSXWVkaYfBwSiuJDIxvJhK4=;
+        b=LgNLdIyYKKuP2HnwdGrRBgeVNAIRYzEYn6QTf+gRdaMjlOS0202+CcDkesJbCw008a
+         Lx3b9vHj1s6J/I4x7IoxAeX6gHPhrsNY+iOqNkSqqLXpdL5ikXFn2hMISW0YCJRJCNK5
+         QpztybEDBNpYbQ9iSL4CqdRUXGISRcXQACfhaAtO97qbxuvi9/fa2Y5WbvhHwqo3BWCH
+         X0b3tNAuqsoC+hD/zKoGC/YpizY1pmQtSZgMTTdqxnV5KhVrwWOBokX46UrR1UAVvs5w
+         iiLFQ75Ocnoqn5Ap1gRxEJpvc+e0lF0Qqu+vEgVSIKilw912vkJciX2OlD7/KWqLQQMl
+         RnPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=r8/BeODMaR4mcxxc3RNS/PjS0CtEesGW0RVi6h68D5s=;
-        b=P/cNK+Nss0pocVs5mHIGh9BuJCAuotK7/Iuy8ODvJ1gZiSJeAvG6zIv+vC/UDP8Fnb
-         zFkkp1cOMkLTSFq/MPWjectfFBXsp6nEng6CF+CsQ/+YtvewAvedq250Ka2GJNzQRYZe
-         jj37uMEBbNoW+b2/Ai+Jz4AE1rk/oNdrWaWKoL1GOH7MTBHu6yxvOJuE46YVGZMs8Jt/
-         ZnvPrMzJLUM7bGPTZWak1zAA22cqkYkHx2g05hq0mDIYJu/LdEBd2vthSMaxZ050hZx/
-         8p/Dgl6Ij9xRdvavjuEuXKaDJN3hfZgeMsMvygKiHcRFzs2yBfr4JX3EUC+eYduSOZOu
-         NdJg==
-X-Gm-Message-State: AIkVDXLkT8Bp+dt/VcRt+KghOkLqHS9MCskOiMrOMLLai4ZZMjKtutZUZ025yXHoKa4z6g==
-X-Received: by 10.28.27.14 with SMTP id b14mr1471890wmb.82.1484724474290;
-        Tue, 17 Jan 2017 23:27:54 -0800 (PST)
-Received: from localhost (port-5733.pppoe.wtnet.de. [84.46.22.123])
-        by smtp.gmail.com with ESMTPSA id r6sm2768616wmd.4.2017.01.17.23.27.52
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 17 Jan 2017 23:27:52 -0800 (PST)
-Date:   Wed, 18 Jan 2017 08:27:51 +0100
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=RAQxJS8M0mTdSHmkfdupqSXWVkaYfBwSiuJDIxvJhK4=;
+        b=niincjPhmvoo8F80tSVCUJPTnh4OOhQVfnOy5PQcUZkn+h7yPFeXFXItaBUJHCp7EV
+         YfMuDbYlZE0W2NzAa9REYVkD+mMjVWKTm++Sa134q9eAsUmtamtMRGkCq+AQIucH0/zv
+         ilTk5uPMXhFsonTDmBD6ya28/hBLoozmN6O4T3WKKtqZMJoC02TbYvOLxKVf376mdCgJ
+         jUVbNlky8zHzAe/YcUbSTAVpvR+acE8ZEQWoUhqH1SQpg7brDPQtbhitYrSeMmSTtE3u
+         9HsoWsCGXkwnv67vd2xqa17MBI5lIU8sbfzPqcHKp2C5+SCxegDDf9uIA0hxL+CWo14U
+         Sq/Q==
+X-Gm-Message-State: AIkVDXIbk38FGum7cnp+hgpg/pI/OrR8a7WRIqnChV22s9er40bw2kHxON9nRv06pRJ8nA==
+X-Received: by 10.46.9.20 with SMTP id 20mr1064025ljj.0.1484732611295;
+        Wed, 18 Jan 2017 01:43:31 -0800 (PST)
+Received: from [192.168.4.126] ([31.173.81.240])
+        by smtp.gmail.com with ESMTPSA id 9sm10129710lju.28.2017.01.18.01.43.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 18 Jan 2017 01:43:30 -0800 (PST)
+Subject: Re: [PATCH 04/13] MIPS: zboot: fix 'make clean' failure
+To:     Arnd Bergmann <arnd@arndb.de>, Ralf Baechle <ralf@linux-mips.org>
+References: <20170117151911.4109452-1-arnd@arndb.de>
+ <20170117151911.4109452-4-arnd@arndb.de>
+Cc:     linux-mips@linux-mips.org, Alban Bedel <albeu@free.fr>,
+        Paul Bolle <pebolle@tiscali.nl>,
         Paul Burton <paul.burton@imgtec.com>,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        james.hogan@imgtec.com
-Subject: Re: [PATCH 13/13] MIPS: jz4740: Remove custom GPIO code
-Message-ID: <20170118072751.GC18989@ulmo.ba.sec>
-References: <20170117231421.16310-1-paul@crapouillou.net>
- <20170117231421.16310-14-paul@crapouillou.net>
+        linux-kernel@vger.kernel.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <da86f6a2-e0b6-9202-baa5-c2dde188afb6@cogentembedded.com>
+Date:   Wed, 18 Jan 2017 12:43:30 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yVhtmJPUSI46BTXb"
-Content-Disposition: inline
-In-Reply-To: <20170117231421.16310-14-paul@crapouillou.net>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <thierry.reding@gmail.com>
+In-Reply-To: <20170117151911.4109452-4-arnd@arndb.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56386
+X-archive-position: 56387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,66 +72,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Hello!
 
---yVhtmJPUSI46BTXb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 1/17/2017 6:18 PM, Arnd Bergmann wrote:
 
-On Wed, Jan 18, 2017 at 12:14:21AM +0100, Paul Cercueil wrote:
-> All the drivers for the various hardware elements of the jz4740 SoC have
-> been modified to use the pinctrl framework for their pin configuration
-> needs.
-> As such, this platform code is now unused and can be deleted.
->=20
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  arch/mips/include/asm/mach-jz4740/gpio.h | 371 ----------------------
->  arch/mips/jz4740/Makefile                |   2 -
->  arch/mips/jz4740/gpio.c                  | 519 -------------------------=
-------
->  3 files changed, 892 deletions(-)
->  delete mode 100644 arch/mips/jz4740/gpio.c
+> The filter-out macro needs two arguments, passing only one is
+> clearly the result of a typo that leads to 'make clean' failing
+> on MIPS:
+>
+> arch/mips/boot/compressed/Makefile:21: *** insufficient number of arguments (1) to function 'filter-out'.  Stop.
+>
+> Fixes: afca036d463c ("MIPS: zboot: Consolidate compiler flag filtering.")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+[...]
+> diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+> index 5347cfe15af2..c66db8169af9 100644
+> --- a/arch/mips/include/asm/uaccess.h
+> +++ b/arch/mips/include/asm/uaccess.h
+> @@ -80,6 +80,9 @@ extern u64 __ua_limit;
+>
+>  #define segment_eq(a, b)	((a).seg == (b).seg)
+>
+> +extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
+> +extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+> +
+>  /*
+>   * eva_kernel_access() - determine whether kernel memory access on an EVA system
+>   *
 
-Have you considered how this could best be merged? It's probably easiest
-to take all of this through the MIPS tree because we have an addition of
-the pinctrl that would be a replacement for the GPIO code, while at the
-same time a bunch of drivers rely on the JZ4740 GPIO code for successful
-compilation.
+    Unrelated change?
 
-That's slightly complicated by the number of drivers, so needs a lot of
-coordination, but it's not the worst I've seen.
-
-Maybe one other solution that would make the transition easier would be
-to stub out the GPIO functions if the pinctrl driver is enabled, and do
-the removal of the mach-jz4740/gpio.h after all drivers have been merged
-through their corresponding subsystem trees. That way all drivers should
-remain compilable and functional at runtime, while still having the
-possibility to merge through the subsystem trees.
-
-That said, the whole series is fairly simple, so merging everything
-through the MIPS tree sounds like the easiest way to go.
-
-Thierry
-
---yVhtmJPUSI46BTXb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAlh/GPcACgkQ3SOs138+
-s6HJuA/8DBbCWXiobPupHIJkfkobmKLcWcDTCHrFnZvAFle+RTPeoANQQYkJ75pW
-qHYVgHTL0x3n4NBLFvYl1Twl+fGLQNxEKbg87WBSj5jeAyTK3y4KA0P79OAfnkee
-nSWeP8v+TluNV7gWSnFpUgFffHif24BbwtIsuLYxxn/awM2ZPQEx3CxDr5jvJD4E
-2lTp4sYoRLmgHQb7Q7YH6b8JSibxXFEafzIfuSC42ySLXThDqY2TiMcQproKxfXl
-/lruvG7w89INCAQOlXHG81sX0XGcbFYW0Cv1M5c0E3hk7DkbgFL3A5Q6IpnHjHdO
-tOXg+DMjByeZMy9H3PP2vVnVva+fg5oMCWJHIP2Ih3d+CIBJdo6YlI/TvGH+Gh4h
-4HKGiO83F+JljR5/ver0BBue9gyxCGs9sUO3B3TVAiunrS+hgfw/Wv+hcQ1IsubU
-wnxXDrj54QxeP9O1T84yPD98e75O4tD1DHltfPZOI+bkxiQmvOGFYarcATKS0Edk
-uJdWdEbfV/gB+1ckUpq0QEoTDdx7YEwuQCVn7dcS2hwyD4qEEc86j9Z+hkvk2+zg
-cGHxOJ54wGqgIUMQM9/ohreFUPpifTWo6afe4tlos4V9BhA+1/dj29d0EmBJ2gON
-TmNKjvYGHnilhT2uGMYDx6xfaXLGq8QG8o1kVlfRhCBWnGEyqzc=
-=/Oal
------END PGP SIGNATURE-----
-
---yVhtmJPUSI46BTXb--
+MBR, Sergei

@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 00:50:46 +0100 (CET)
-Received: from mail-qt0-x22b.google.com ([IPv6:2607:f8b0:400d:c0d::22b]:36863
-        "EHLO mail-qt0-x22b.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993904AbdARXuffXIve (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 00:50:35 +0100
-Received: by mail-qt0-x22b.google.com with SMTP id k15so38651001qtg.3
-        for <linux-mips@linux-mips.org>; Wed, 18 Jan 2017 15:50:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 07:39:10 +0100 (CET)
+Received: from mail-qt0-x234.google.com ([IPv6:2607:f8b0:400d:c0d::234]:34982
+        "EHLO mail-qt0-x234.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992903AbdASGjEBX26I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 07:39:04 +0100
+Received: by mail-qt0-x234.google.com with SMTP id x49so51715174qtc.2
+        for <linux-mips@linux-mips.org>; Wed, 18 Jan 2017 22:39:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=Q/TVNCyjSc/eLWfngR+wRq64ekXVIRlwMJofznd9htc=;
-        b=AjOnRn0Bx90PnAexGvAIYDBFizrRkygUcWSEctsB0ETiJ2foo2VTf62+NZcj2MMXV+
-         hs9sNF8KebmIb6G6RZfilirLHF6c8/XV59xfCl55usU02fJO9kcRmHh4zBlixnDkGabb
-         aizHTBIk8Qi8ma1kW+blPVyYERw/ivhHK7OZw=
+        bh=5Jz4pj3a1uqg0Xiith9F/TmQ7vwzTk+YpBdimMrlG50=;
+        b=IAo5HmC00ic5jnEUYH7+ssjF9Q8ALYFlM1HhJeDb8uMCRsZrcscMqvOn+AuAw7I6TU
+         fotIG0lqXjSF7W9Ifrw1/re1KeHsnVuQUQBsEauApzgx+aAnuepGbNEZYQvKy1FUtkar
+         VYuADr4ooJ3ySALV3Qxwsu1XODOeoZaSAGkkw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=Q/TVNCyjSc/eLWfngR+wRq64ekXVIRlwMJofznd9htc=;
-        b=SI01Gv+xdi5FJLWIWDaVHqi0fS10ICOuMdO+CQwCZT3bocL2OL7njT7uqHgiyC9FkG
-         GnS6Fp/GL6Pamhrf1RLQeMc5VO7UTfP6w+pXPSvW0C92wMLwRAeC7ASet+VeEA7quO0D
-         AHi2YNZ/5044gber2+QzwxHadjSrubHfKRslavZPiPGe4rCfr1ieVPYGme1DcVAGO3/u
-         6S6jVeUNtOeWJNJppyTwj/nivj+xZczthIV1lRQzL64UjanooVn5A0tUJg2k+1n25Fr1
-         U2kyBKGY/9e9B5Q4aY7D3iJO9S1Hc1ZBIgbmN/2369wVTwWHBq4VOondf+woAFTyJMab
-         cqrA==
-X-Gm-Message-State: AIkVDXJ92eAU+edOR5DmqXo2QShUuXgANgnMR/BJh8iowgnmzAgMjBCt7uWE/iDafXCRZ+SsKiq4t8mJC5GQR1Vf
-X-Received: by 10.237.33.185 with SMTP id l54mr5795849qtc.111.1484783430016;
- Wed, 18 Jan 2017 15:50:30 -0800 (PST)
+        bh=5Jz4pj3a1uqg0Xiith9F/TmQ7vwzTk+YpBdimMrlG50=;
+        b=S+S74sNHzIPgZB7geaIKQiEUBid32kPb4irD2Bsh0HrRUICp5/9MHYh2g3771Qy1s8
+         UqBjqtwiNZAOEaOCoP110PiuOu1Mt67XxyzbJvzkRm7OogcTd8YiCisMsopXeYmC66FK
+         PLNtv34ALvNkADEeHs2oHQkfGK9nKlwuWrYkVaN1yZls7pWam4Jj6dznWdoEU4fFTD6z
+         bb35ouWShi2SBawcv0Cu2TF0plV8mAsImmxjRudvucky2ayr4CZKHrv4SyTZg6TkQMc8
+         tA44m5HZmPCAtgyxHYn5wiSMjPx2qq16YJ9TAKgHxb478EU7HZYn8SrCQMa46khLXjj3
+         B0TA==
+X-Gm-Message-State: AIkVDXL4HPmVF6hcd/TQ09ZtidTaQXKo6wBovSW+AU6qX6R+nhuumoELeAzFNqkFJY85wW04ninmvFIfY6BWcc1v
+X-Received: by 10.55.207.197 with SMTP id v66mr1117172qkl.116.1484807938181;
+ Wed, 18 Jan 2017 22:38:58 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.12.177.145 with HTTP; Wed, 18 Jan 2017 15:50:29 -0800 (PST)
-In-Reply-To: <20170117231421.16310-6-paul@crapouillou.net>
-References: <20170117231421.16310-1-paul@crapouillou.net> <20170117231421.16310-6-paul@crapouillou.net>
+Received: by 10.12.177.145 with HTTP; Wed, 18 Jan 2017 22:38:57 -0800 (PST)
+In-Reply-To: <20170117231421.16310-1-paul@crapouillou.net>
+References: <20170117231421.16310-1-paul@crapouillou.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 19 Jan 2017 00:50:29 +0100
-Message-ID: <CACRpkdZ-2-mOiEwiRUoMU+X4RG1jik7edPK0nsu_kYy5Pi7N1g@mail.gmail.com>
-Subject: Re: [PATCH 05/13] MIPS: jz4740: DTS: Add node for the jz4740-pinctrl driver
+Date:   Thu, 19 Jan 2017 07:38:57 +0100
+Message-ID: <CACRpkdYJFsgVN4Q+7XbMcNC1topUan7+o6PCBWBC4aifM8sq-g@mail.gmail.com>
+Subject: Re: [PATCH 00/13] Ingenic JZ4740 / JZ4780 pinctrl driver
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -60,7 +60,7 @@ Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56404
+X-archive-position: 56405
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -79,99 +79,22 @@ X-list: linux-mips
 
 On Wed, Jan 18, 2017 at 12:14 AM, Paul Cercueil <paul@crapouillou.net> wrote:
 
-> For a description of the devicetree node, please read
-> Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> One problem still unresolved: the pinctrl framework does not allow us to
+> configure each pin on demand (someone please prove me wrong), when the
+> various PWM channels are requested or released. For instance, the PWM
+> channels can be configured from sysfs, which would require all PWM pins
+> to be configured properly beforehand for the PWM function, eventually
+> causing conflicts with other platform or board drivers.
 
-(...)
+Why do you think this?
 
-> +       pinctrl: ingenic-pinctrl@10010000 {
-> +               compatible = "ingenic,jz4740-pinctrl";
-> +               #address-cells = <1>;
-> +               #size-cells = <1>;
-> +               ranges;
-> +
-> +               gpio-chips {
-> +                       #address-cells = <1>;
-> +                       #size-cells = <1>;
-> +                       ranges;
-> +
-> +                       gpa: gpa {
-> +                               reg = <0x10010000 0x100>;
-> +
-> +                               gpio-controller;
-> +                               #gpio-cells = <2>;
-> +
-> +                               interrupt-controller;
-> +                               #interrupt-cells = <2>;
-> +
-> +                               interrupt-parent = <&intc>;
-> +                               interrupts = <28>;
-> +
-> +                               ingenic,pull-ups = <0xffffffff>;
-> +                       };
-> +
-> +                       gpb: gpb {
-> +                               reg = <0x10010100 0x100>;
-> +
-> +                               gpio-controller;
-> +                               #gpio-cells = <2>;
-> +
-> +                               interrupt-controller;
-> +                               #interrupt-cells = <2>;
-> +
-> +                               interrupt-parent = <&intc>;
-> +                               interrupts = <27>;
-> +
-> +                               ingenic,pull-ups = <0xffffffff>;
-> +                       };
-> +
-> +                       gpc: gpc {
-> +                               reg = <0x10010200 0x100>;
-> +
-> +                               gpio-controller;
-> +                               #gpio-cells = <2>;
-> +
-> +                               interrupt-controller;
-> +                               #interrupt-cells = <2>;
-> +
-> +                               interrupt-parent = <&intc>;
-> +                               interrupts = <26>;
-> +
-> +                               ingenic,pull-ups = <0xffffffff>;
-> +                       };
-> +
-> +                       gpd: gpd {
-> +                               reg = <0x10010300 0x100>;
-> +
-> +                               gpio-controller;
-> +                               #gpio-cells = <2>;
-> +
-> +                               interrupt-controller;
-> +                               #interrupt-cells = <2>;
-> +
-> +                               interrupt-parent = <&intc>;
-> +                               interrupts = <25>;
-> +
-> +                               ingenic,pull-ups = <0xdfffffff>;
-> +                       };
-> +               };
+- Pincontrol handles can be obtained at runtime.
+- Pincontrol states can be changed at runtime.
 
-Just pull all these down two levels and make them one device
-each instead of having them inside the pin controller node
-like this.
+The fact that a the handle is retrived by the device core and set to
+the states named "init" or "default" during boot is just a convenience.
 
-Then make a pin controller node separately, it can reference the
-pin controller by phandles if necessary, and use the standard
-gpio-ranges property to cross make GPIO and pin control.
+You can have as many and as fine-grained states as you want. They
+can pertain to just one pin too.
 
-It seems you driver is similar to for example the
-drivers/pinctrl/nomadik/* pin controller.
-
-Look in arch/arm/boot/dts/ste-dbx500.dtsi for examples,
-NB: I'm not fully using standard bindings in it, because they
-were not invented at the time.
-
-Yours,
 Linus Walleij

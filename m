@@ -1,55 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 13:08:52 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45719 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993179AbdASMIpXQnuB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 13:08:45 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 243AF41F8E6A;
-        Thu, 19 Jan 2017 13:11:26 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 19 Jan 2017 13:11:26 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 19 Jan 2017 13:11:26 +0000
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 20EC3DB1070D2;
-        Thu, 19 Jan 2017 12:08:36 +0000 (GMT)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 19 Jan
- 2017 12:08:39 +0000
-Date:   Thu, 19 Jan 2017 12:08:38 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     SF Markus Elfring <elfring@users.sourceforge.net>,
-        <kvm@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf =?utf-8?Q?B=C3=A4chle?= <ralf@linux-mips.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2] MIPS: KVM: Return directly after a failed
- copy_from_user() in kvm_arch_vcpu_ioctl()
-Message-ID: <20170119120838.GF31545@jhogan-linux.le.imgtec.org>
-References: <87aac8b8-4f30-2edd-4688-42d32d815cd1@users.sourceforge.net>
- <88b008c5-552b-7314-94d8-02214f38a456@redhat.com>
- <7a6b5858-9137-9d20-78fe-6b466081920f@users.sourceforge.net>
- <a1af7ad2-4f3c-36c8-37e8-940e96810cd2@redhat.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="uTRFFR9qmiCqR05s"
-Content-Disposition: inline
-In-Reply-To: <a1af7ad2-4f3c-36c8-37e8-940e96810cd2@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 14:20:20 +0100 (CET)
+Received: from nbd.name ([IPv6:2a01:4f8:131:30e2::2]:42571 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993014AbdASNUMsGRlO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Jan 2017 14:20:12 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name; s=20160729;
+        h=Message-Id:Date:Subject:Cc:To:From; bh=R77K+yEagKUOimRfKnmkbWH0LS2zEviz/Rvc2cGcef8=;
+        b=VS6LCPttwkGPjRRX3fy7PhZtn2Paan3DkssoDSzDARgWTpRnhwbLBKfNe+BC6JHsdNlKG8A0JtjB47lallJfcCXlpq/z65eZ0PO4TBA2/xOpqzaBdX+Yah8ge2qxQr0lrfGxoggqC2dntgHPJrBIviesVEN3ehkon/OmJv3Ts08=;
+Received: by nf-4.local (Postfix, from userid 501)
+        id 4D051185F7CB6; Thu, 19 Jan 2017 14:20:09 +0100 (CET)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, john@phrozen.org, hauke.mehrtens@lantiq.com
+Subject: [PATCH] MIPS: Lantiq: Keep ethernet enabled during boot
+Date:   Thu, 19 Jan 2017 14:20:09 +0100
+Message-Id: <20170119132009.55709-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <nbd@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56418
+X-archive-position: 56419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: nbd@nbd.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,100 +36,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---uTRFFR9qmiCqR05s
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Disabling ethernet during reboot (only to enable it again when the
+ethernet driver attaches) can put the chip into a faulty state where it
+corrupts the header of all incoming packets.
 
-On Thu, Jan 19, 2017 at 11:27:52AM +0100, Paolo Bonzini wrote:
->=20
->=20
-> On 19/01/2017 11:20, SF Markus Elfring wrote:
-> > From: Markus Elfring <elfring@users.sourceforge.net>
-> > Date: Thu, 19 Jan 2017 11:10:26 +0100
-> >=20
-> > * Return directly after a call of the function "copy_from_user" failed
-> >   in a case block.
-> >=20
-> > * Delete the jump label "out" which became unnecessary with
-> >   this refactoring.
-> >=20
-> > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> > ---
-> >=20
-> > V2:
-> > A label was also removed at the end.
-> >=20
-> >  arch/mips/kvm/mips.c | 9 ++-------
-> >  1 file changed, 2 insertions(+), 7 deletions(-)
-> >=20
-> > diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> > index 06a60b19acfb..3534a0b9efed 100644
-> > --- a/arch/mips/kvm/mips.c
-> > +++ b/arch/mips/kvm/mips.c
-> > @@ -1152,10 +1152,8 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsi=
-gned int ioctl,
-> >  		{
-> >  			struct kvm_mips_interrupt irq;
-> > =20
-> > -			r =3D -EFAULT;
-> >  			if (copy_from_user(&irq, argp, sizeof(irq)))
-> > -				goto out;
-> > -
-> > +				return -EFAULT;
-> >  			kvm_debug("[%d] %s: irq: %d\n", vcpu->vcpu_id, __func__,
-> >  				  irq.irq);
-> > =20
-> > @@ -1165,17 +1163,14 @@ long kvm_arch_vcpu_ioctl(struct file *filp, uns=
-igned int ioctl,
-> >  	case KVM_ENABLE_CAP: {
-> >  		struct kvm_enable_cap cap;
-> > =20
-> > -		r =3D -EFAULT;
-> >  		if (copy_from_user(&cap, argp, sizeof(cap)))
-> > -			goto out;
-> > +			return -EFAULT;
-> >  		r =3D kvm_vcpu_ioctl_enable_cap(vcpu, &cap);
-> >  		break;
-> >  	}
-> >  	default:
-> >  		r =3D -ENOIOCTLCMD;
-> >  	}
-> > -
-> > -out:
-> >  	return r;
-> >  }
-> > =20
-> >=20
->=20
-> Removing the label makes the patch worthwhile.
->=20
-> Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+This happens if packets arrive during the time window where the core is
+disabled, and it can be easily reproduced by rebooting while sending a
+flood ping to the broadcast address.
 
-Thanks Markus & Paolo. Looks better now. I'll apply for 4.11.
+Cc: john@phrozen.org
+Cc: hauke.mehrtens@lantiq.com
+Cc: stable@vger.kernel.org
+Fixes: 95135bfa7ead ("MIPS: Lantiq: Deactivate most of the devices by default")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ arch/mips/lantiq/xway/sysctrl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Cheers
-James
-
---uTRFFR9qmiCqR05s
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYgKw9AAoJEGwLaZPeOHZ6D4AQAJQdEBH6ZT270B+aHG6nr8tK
-ewVWMWaAqBvaErWIBKqbvvQ9sGWLcCZDLa/b1bUC0vJjLzEHfqa70ngncTg0PDji
-ryCmg4PjnMb96eFhRbVZb9geL9wBDTqQDEz2sLbPOExfxpyKGv1kelddSzfepsR7
-qY3Gfc1o0i2N+vKtn+Q8aZu1FwArkMx9uilqUqf1j2ty+wN2OKhi4hSNAkfRCWtv
-/GrPbpB+SyDJI3N87/ecn3uWfNWN0kaxZk6q1/FKrCvdb5PNfgiXNdQt8rzJSHM+
-5T13smShdIv7NT14Uj/puT/Xr8nVZxdqCZu8ZTX7crq6wkXos4luPjBJTi+p660m
-LsimiM51NdMMl3jQCy4EnLmnum4q5yEkDMEQv8CMTjOsvwvJgmoYKtswPgISjMeT
-DuYKlNXplTbThtBwr1sU/FfoVSso1Zjx7jSmU5fHvyYWB3IYBH3RpVB1LjRGdxgS
-x7v1WTku8juklW1zXbJdEfu0pg8UBiMw1RJq+cyMokUbg8vs4Glci4BBsFCY1nfz
-SYhIaAsX30Egzr8BXb1QQWh8ldx7XwNHX1XXimJv4+6ubBcmuIG7v8kztsS3USdp
-EdRlBnr4PASOoUjWqz/MlkDhmlaOfZHCPwJyqN4akHxUaxoCsp7R/xE/4L159bzs
-n+jWCIWkTECxGJmhsxVi
-=xVVV
------END PGP SIGNATURE-----
-
---uTRFFR9qmiCqR05s--
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 236193b5210b..9a61671c00a7 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -545,7 +545,7 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu("1a800000.pcie", "msi", 1, 1, PMU1_PCIE2_MSI);
+ 		clkdev_add_pmu("1a800000.pcie", "pdi", 1, 1, PMU1_PCIE2_PDI);
+ 		clkdev_add_pmu("1a800000.pcie", "ctl", 1, 1, PMU1_PCIE2_CTL);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0, PMU_SWITCH | PMU_PPE_DP);
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH | PMU_PPE_DP);
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+ 	} else if (of_machine_is_compatible("lantiq,ar10")) {
+@@ -553,7 +553,7 @@ void __init ltq_soc_init(void)
+ 				  ltq_ar10_fpi_hz(), ltq_ar10_pp32_hz());
+ 		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+ 		clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0, PMU_SWITCH |
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH |
+ 			       PMU_PPE_DP | PMU_PPE_TC);
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+ 		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
+@@ -575,11 +575,11 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu(NULL, "ahb", 1, 0, PMU_AHBM | PMU_AHBS);
+ 
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0,
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0,
+ 				PMU_SWITCH | PMU_PPE_DPLUS | PMU_PPE_DPLUM |
+ 				PMU_PPE_EMA | PMU_PPE_TC | PMU_PPE_SLL01 |
+ 				PMU_PPE_QSB | PMU_PPE_TOP);
+-		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
++		clkdev_add_pmu("1f203000.rcu", "gphy", 0, 0, PMU_GPHY);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+ 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+-- 
+2.11.0

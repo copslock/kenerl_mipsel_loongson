@@ -1,41 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 21:53:17 +0100 (CET)
-Received: from fudo.makrotopia.org ([IPv6:2a07:2ec0:3002::71]:41004 "EHLO
-        fudo.makrotopia.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992178AbdASUxJ3lVHm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 21:53:09 +0100
-Received: from local
-        by fudo.makrotopia.org with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-         (Exim 4.88)
-        (envelope-from <daniel@makrotopia.org>)
-        id 1cUJhf-0005J6-6Z; Thu, 19 Jan 2017 21:53:03 +0100
-Date:   Thu, 19 Jan 2017 21:52:56 +0100
-From:   Daniel Golle <daniel@makrotopia.org>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        michel.stempin@wanadoo.fr, Kalle Valo <kvalo@codeaurora.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: Re: [PATCH v2 13/14] rt2x00: rt2800lib: add support for RT3352 with
- 20MHz crystal
-Message-ID: <20170119205256.GB21298@makrotopia.org>
-References: <874m114lwq.fsf@codeaurora.org>
- <20170116031541.GA32313@makrotopia.org>
- <20170118142958.GA14573@redhat.com>
- <20170119133010.GH1798@makrotopia.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2017 00:50:51 +0100 (CET)
+Received: from mga04.intel.com ([192.55.52.120]:45331 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993910AbdASXuoI9ikS convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2017 00:50:44 +0100
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP; 19 Jan 2017 15:50:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.33,256,1477983600"; 
+   d="scan'208";a="215473946"
+Received: from irsmsx106.ger.corp.intel.com ([163.33.3.31])
+  by fmsmga004.fm.intel.com with ESMTP; 19 Jan 2017 15:50:40 -0800
+Received: from irsmsx101.ger.corp.intel.com ([169.254.1.112]) by
+ IRSMSX106.ger.corp.intel.com ([169.254.8.197]) with mapi id 14.03.0248.002;
+ Thu, 19 Jan 2017 23:50:40 +0000
+From:   "Langer, Thomas" <thomas.langer@intel.com>
+To:     Sebastien Decourriere <sebtx452@gmail.com>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness
+ swap is enabled
+Thread-Topic: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness
+ swap is enabled
+Thread-Index: AQHScjvq6G8Bb2pm102U3YvjlpsRaKFAWHWw
+Date:   Thu, 19 Jan 2017 23:50:39 +0000
+Message-ID: <0DAF21CFE1B20740AE23D6AF6E54843F1E6E2999@IRSMSX101.ger.corp.intel.com>
+References: <1484820415-12439-1-git-send-email-sebtx452@gmail.com>
+In-Reply-To: <1484820415-12439-1-git-send-email-sebtx452@gmail.com>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [163.33.239.180]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170119133010.GH1798@makrotopia.org>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <daniel@makrotopia.org>
+Return-Path: <thomas.langer@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56426
+X-archive-position: 56427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@makrotopia.org
+X-original-sender: thomas.langer@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,76 +55,113 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 19, 2017 at 02:30:14PM +0100, Daniel Golle wrote:
-> Hi Stanislaw,
+Hello Sebastien,
+
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org [mailto:linux-mips-bounce@linux-
+> mips.org] On Behalf Of Sebastien Decourriere
+> Sent: Thursday, January 19, 2017 11:07 AM
+> To: linux-mtd@lists.infradead.org
+> Cc: linux-mips@linux-mips.org; Sebastien Decourriere <sebtx452@gmail.com>
+> Subject: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness swap
+> is enabled
 > 
-> On Wed, Jan 18, 2017 at 03:30:02PM +0100, Stanislaw Gruszka wrote:
-> > On Mon, Jan 16, 2017 at 04:15:56AM +0100, Daniel Golle wrote:
-> > > Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-> > > Signed-off-by: Mathias Kresin <dev@kresin.me>
-> > > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> > > ---
-> > >  drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 50 +++++++++++++++++++++++++-
-> > >  drivers/net/wireless/ralink/rt2x00/rt2x00.h    |  2 ++
-> > >  2 files changed, 51 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > > index 93c97eade334..cb1457595f05 100644
-> > > --- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > > +++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > > @@ -36,6 +36,7 @@
-> > >  #include <linux/kernel.h>
-> > >  #include <linux/module.h>
-> > >  #include <linux/slab.h>
-> > > +#include <linux/clk.h>
-> > >  
-> > >  #include "rt2x00.h"
-> > >  #include "rt2800lib.h"
-> > > @@ -7675,6 +7676,27 @@ static const struct rf_channel rf_vals_5592_xtal40[] = {
-> > >  	{196, 83, 0, 12, 1},
-> > >  };
-> > >  
-> > > +/*
-> > > + * RF value list for rt3xxx with Xtal20MHz
-> > > + * Supports: 2.4 GHz (all) (RF3322)
-> > > + */
-> > > +static const struct rf_channel rf_vals_xtal20mhz_3x[] = {
-> > Please locate this values in alphabetical order (i.e. after _3x and 
-> > before _5592 ).
+> The purpose of this patch is to enable the software address endianness
+> swapping only when the in SoC EBU endianness swapping is disabled.
+> To perform this check, I look at Bit 30 of the EBU_CON_0 register.
+> Actually, the driver expects that the in SoC swapping is disabled.
+> This is the case with current bootloaders shuch as U-boot.
 > 
-> Sure, sorry, that ended up in the wrong order when rebase the patches.
+> This applies only to vr9 (xrx200) rev 1.2 and ar10 (xrx300).
 > 
-> > 
-> > >  	struct hw_mode_spec *spec = &rt2x00dev->spec;
-> > > @@ -7764,7 +7786,10 @@ static int rt2800_probe_hw_mode(struct rt2x00_dev *rt2x00dev)
-> > >  	case RF5390:
-> > >  	case RF5392:
-> > >  		spec->num_channels = 14;
-> > > -		spec->channels = rf_vals_3x;
-> > > +		if (spec->clk_is_20mhz)
-> > > +			spec->channels = rf_vals_xtal20mhz_3x;
-> > > +		else
-> > > +			spec->channels = rf_vals_3x;
-> > >  		break;
-> > 
-> > How does vendor drivers recognize xtal (I assume rf_vals_xtal20mhz_3x 
-> > values were taken from vendor driver) ? It should be possible to get
-> > clock frequency from device register like is is done on RF5592, without
-> > adding additional clock recognition code. But if such code is needed
-> > I prefer that low level board/platform routines do it and place clock
-> > frequency for rt2x00 in rt2x00dev->dev->platform_data.
+> I have a router which uses a proprietary bootloader which keeps
+> the in SoC swapping enabled. The SoC in this router is a vrx200 v1.2.
+> In this SoC version, I can keep the in SoC swapping without any problem.
+> 
+> This patch replaces my previous broken patch.
+> 
+> Signed-off-by: Sebastien Decourriere <sebtx452@gmail.com>
+> ---
+>  drivers/mtd/maps/lantiq-flash.c | 27 ++++++++++++++++++++++++---
+>  1 file changed, 24 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-
+> flash.c
+> index c8febb3..1cbbdcb 100644
+> --- a/drivers/mtd/maps/lantiq-flash.c
+> +++ b/drivers/mtd/maps/lantiq-flash.c
+> @@ -38,6 +38,8 @@ enum {
+>  	LTQ_NOR_NORMAL
+>  };
+> 
+> +#define EBU_ENDIAN_SWAP		BIT(30)
+> +
+>  struct ltq_mtd {
+>  	struct resource *res;
+>  	struct mtd_info *mtd;
+> @@ -113,6 +115,20 @@ ltq_mtd_probe(struct platform_device *pdev)
+>  	struct ltq_mtd *ltq_mtd;
+>  	struct cfi_private *cfi;
+>  	int err;
+> +	bool mtd_addr_swap;
+> +
+> +	/* If SoC is vr9 >= 1.2 or ar10 and EBU endian swap
+> +	   is enabled, we don't need to do software address swap */
+> +	if ( ltq_ebu_r32(LTQ_EBU_BUSCON0) & EBU_ENDIAN_SWAP ) {
 
-I researched and found this has already been implemented in the ramips
-platform code, see
+This register does not exist for all Lantiq SoCs, even the definition
+is only in "arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h", but
+not in "arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h"
 
-https://git.kernel.org/cgit/linux/kernel/git/kvalo/wireless-drivers-next.git/tree/arch/mips/ralink/rt305x.c#n194
+Please add at least a compile check for the define.
 
-The patch submitted uses this existing infrastructure which *does*
-auto-probe the clock from the SoC's SYSCTRL register.
-I'll re-submit a v3 with the alphabetic order above fixed, ok?
+> +		switch (ltq_soc_type()) {
+> +			case SOC_TYPE_VR9_2 :
+> +			case SOC_TYPE_AR10 :
+> +				mtd_addr_swap = false;
+> +				break;
+> +			default :
+> +				mtd_addr_swap = true;
+Missing break
 
+> +		}
+> +	} else mtd_addr_swap = true;
 
-Cheers
+Has this been checked with checkpatch.pl?
+This line results in message "ERROR: trailing statements should be on next line",
+some other warning about spaces are also in this patch.
 
+> 
+>  	if (of_machine_is_compatible("lantiq,falcon") &&
+>  			(ltq_boot_select() != BS_FLASH)) {
+> @@ -150,7 +166,10 @@ ltq_mtd_probe(struct platform_device *pdev)
+>  	ltq_mtd->map->copy_from = ltq_copy_from;
+>  	ltq_mtd->map->copy_to = ltq_copy_to;
+> 
+> -	ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
+> +	if (mtd_addr_swap)
+> +		ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
+> +	else
+> +		ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
+>  	ltq_mtd->mtd = do_map_probe("cfi_probe", ltq_mtd->map);
+>  	ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
+> 
+> @@ -163,8 +182,10 @@ ltq_mtd_probe(struct platform_device *pdev)
+>  	mtd_set_of_node(ltq_mtd->mtd, pdev->dev.of_node);
+> 
+>  	cfi = ltq_mtd->map->fldrv_priv;
+> -	cfi->addr_unlock1 ^= 1;
+> -	cfi->addr_unlock2 ^= 1;
+> +	if (mtd_addr_swap) {
+> +		cfi->addr_unlock1 ^= 1;
+> +		cfi->addr_unlock2 ^= 1;
+> +	}
+> 
+>  	err = mtd_device_register(ltq_mtd->mtd, NULL, 0);
+>  	if (err) {
+> --
+> 2.1.4
+> 
 
-Daniel
+Regards,
+Thomas

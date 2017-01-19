@@ -1,46 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 12:25:35 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:56658 "EHLO
-        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993014AbdASLZYyMciU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 12:25:24 +0100
-To:     Thierry Reding <thierry.reding@gmail.com>
-Subject: Re: [PATCH 13/13] MIPS: jz4740: Remove custom GPIO code
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Thu, 19 Jan 2017 12:24:54 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        james.hogan@imgtec.com
-In-Reply-To: <20170118072751.GC18989@ulmo.ba.sec>
-References: <20170117231421.16310-1-paul@crapouillou.net>
- <20170117231421.16310-14-paul@crapouillou.net>
- <20170118072751.GC18989@ulmo.ba.sec>
-Message-ID: <b88d4818b42ae6b0853e5c01d4121c47@mail.crapouillou.net>
-X-Sender: paul@crapouillou.net
-Return-Path: <paul@outils.crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 12:28:32 +0100 (CET)
+Received: from nbd.name ([IPv6:2a01:4f8:131:30e2::2]:40314 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993014AbdASL2ZujkVB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 Jan 2017 12:28:25 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name; s=20160729;
+        h=Message-Id:Date:Subject:Cc:To:From; bh=Tri6NYnIB+XTgXiqg0fRt4AxKo2s1ZUoj+KLVuxLFsY=;
+        b=RJAh5lIwvMQ2s7s9Hd+7YwJnR3kMWjjGxhumRkwW4kbYoyKq9tTAmNSuUW9HMUfsFBQjwhNe9fwnvVACYmKISy8xWbgUsKKfkrPQk9apqsaB2lxfHkjRDFsyeUWq8xzDew7jaLdey7YjHGpGTV76k+PDpX7k+mWLh08pm5tWryc=;
+Received: by nf-4.local (Postfix, from userid 501)
+        id 6F7EB185706E9; Thu, 19 Jan 2017 12:28:22 +0100 (CET)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, john@phrozen.org
+Subject: [PATCH] MIPS: Lantiq: Fix cascaded IRQ setup
+Date:   Thu, 19 Jan 2017 12:28:22 +0100
+Message-Id: <20170119112822.59445-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <nbd@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56415
+X-archive-position: 56416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: nbd@nbd.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,49 +36,93 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 2017-01-18 08:27, Thierry Reding a écrit :
+With the IRQ stack changes integrated, the XRX200 devices started
+emitting a constant stream of kernel messages like this:
 
-> On Wed, Jan 18, 2017 at 12:14:21AM +0100, Paul Cercueil wrote:
-> 
->> All the drivers for the various hardware elements of the jz4740 SoC 
->> have been modified to use the pinctrl framework for their pin 
->> configuration needs. As such, this platform code is now unused and can 
->> be deleted. Signed-off-by: Paul Cercueil <paul@crapouillou.net> --- 
->> arch/mips/include/asm/mach-jz4740/gpio.h | 371 ---------------------- 
->> arch/mips/jz4740/Makefile | 2 - arch/mips/jz4740/gpio.c | 519 
->> ------------------------------- 3 files changed, 892 deletions(-) 
->> delete mode 100644 arch/mips/jz4740/gpio.c
-> 
-> Have you considered how this could best be merged? It's probably 
-> easiest
-> to take all of this through the MIPS tree because we have an addition 
-> of
-> the pinctrl that would be a replacement for the GPIO code, while at the
-> same time a bunch of drivers rely on the JZ4740 GPIO code for 
-> successful
-> compilation.
-> 
-> That's slightly complicated by the number of drivers, so needs a lot of
-> coordination, but it's not the worst I've seen.
-> 
-> Maybe one other solution that would make the transition easier would be
-> to stub out the GPIO functions if the pinctrl driver is enabled, and do
-> the removal of the mach-jz4740/gpio.h after all drivers have been 
-> merged
-> through their corresponding subsystem trees. That way all drivers 
-> should
-> remain compilable and functional at runtime, while still having the
-> possibility to merge through the subsystem trees.
-> 
-> That said, the whole series is fairly simple, so merging everything
-> through the MIPS tree sounds like the easiest way to go.
-> 
-> Thierry
+[  565.415310] Spurious IRQ: CAUSE=0x1100c300
 
-I think it would make sense to merge it through the MIPS tree, yes,
-considering that the patches for the drivers in the other subsystems are
-quite small, and that they just remove code (well, except the pinctrl
-driver itself). Besides, the files modified are not touched very often
-so the chances of breakage are pretty low.
+This appears to be caused by IP0 firing for some reason without being
+handled. Fix this by setting up IP2-6 as a proper chained IRQ handler and
+calling do_IRQ for all MIPS CPU interrupts.
 
--Paul
+Cc: john@phrozen.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ arch/mips/lantiq/irq.c | 38 +++++++++++++++++---------------------
+ 1 file changed, 17 insertions(+), 21 deletions(-)
+
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index 8ac0e5994ed2..0ddf3698b85d 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -269,6 +269,11 @@ static void ltq_hw5_irqdispatch(void)
+ DEFINE_HWx_IRQDISPATCH(5)
+ #endif
+ 
++static void ltq_hw_irq_handler(struct irq_desc *desc)
++{
++	ltq_hw_irqdispatch(irq_desc_get_irq(desc) - 2);
++}
++
+ #ifdef CONFIG_MIPS_MT_SMP
+ void __init arch_init_ipiirq(int irq, struct irqaction *action)
+ {
+@@ -313,23 +318,19 @@ static struct irqaction irq_call = {
+ asmlinkage void plat_irq_dispatch(void)
+ {
+ 	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
+-	unsigned int i;
+-
+-	if ((MIPS_CPU_TIMER_IRQ == 7) && (pending & CAUSEF_IP7)) {
+-		do_IRQ(MIPS_CPU_TIMER_IRQ);
+-		goto out;
+-	} else {
+-		for (i = 0; i < MAX_IM; i++) {
+-			if (pending & (CAUSEF_IP2 << i)) {
+-				ltq_hw_irqdispatch(i);
+-				goto out;
+-			}
+-		}
++	int irq;
++
++	if (!pending) {
++		spurious_interrupt();
++		return;
+ 	}
+-	pr_alert("Spurious IRQ: CAUSE=0x%08x\n", read_c0_status());
+ 
+-out:
+-	return;
++	pending >>= CAUSEB_IP;
++	while (pending) {
++		irq = fls(pending) - 1;
++		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
++		pending &= ~BIT(irq);
++	}
+ }
+ 
+ static int icu_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+@@ -354,11 +355,6 @@ static const struct irq_domain_ops irq_domain_ops = {
+ 	.map = icu_map,
+ };
+ 
+-static struct irqaction cascade = {
+-	.handler = no_action,
+-	.name = "cascade",
+-};
+-
+ int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ {
+ 	struct device_node *eiu_node;
+@@ -390,7 +386,7 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ 	mips_cpu_irq_init();
+ 
+ 	for (i = 0; i < MAX_IM; i++)
+-		setup_irq(i + 2, &cascade);
++		irq_set_chained_handler(i + 2, ltq_hw_irq_handler);
+ 
+ 	if (cpu_has_vint) {
+ 		pr_info("Setting up vectored interrupts\n");
+-- 
+2.11.0

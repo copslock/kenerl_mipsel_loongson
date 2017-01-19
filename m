@@ -1,70 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 10:07:18 +0100 (CET)
-Received: from mail-qt0-x235.google.com ([IPv6:2607:f8b0:400d:c0d::235]:34915
-        "EHLO mail-qt0-x235.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993014AbdASJHJMiTQ0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 10:07:09 +0100
-Received: by mail-qt0-x235.google.com with SMTP id x49so57027580qtc.2
-        for <linux-mips@linux-mips.org>; Thu, 19 Jan 2017 01:07:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=vRkkNs0bx1+GRaFuFtdb30BwJCqY4I5zn/YkN0drvIE=;
-        b=YiEySPQE0LBt66oszSOkuqkjJM0k463VkLr4/Nd23qFUFczF5HzhDu8JMif8lzkLwN
-         055xfo680UsLqLAE59VMigCd9RGyPpYi5hkw6XDhJSyOiniR08Ozg6QUIHCmfrwpPdOy
-         XamOqVUWLSclhtde+Vi0bRV1/fDDdMhGbm4AA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=vRkkNs0bx1+GRaFuFtdb30BwJCqY4I5zn/YkN0drvIE=;
-        b=TujEEjLWhBzgxJ9swqmH30q/GagWkPFAERFOwJMI6nr4eGY/DkSBV8yZCKYV8Wwe9j
-         tID0K/wdzfyw98nXMTIdIsbrZgYvFsSTSk/RA02kXM6tJaUyEhkrn+NgYXIS6Mp8Y8Ns
-         HOM2W2scYneWYnczLS19GU8EkWRpiWEwHOLYGrqutV7EB3e1xY/TaR/VBXhrAxl7iBiR
-         S+qRHyr2Nip+IXcEZpMiYAxmF2oNPfX/WQR2Fb+zDBoxU0xGJ7W2BiUgJMEl085y/ThN
-         2Qry1DqQcfUxT80jmn+QQd3sJvLVupZavRESCA+z6kuQP1wRye9YKu6kBQ1tFNyYKaIP
-         uJLQ==
-X-Gm-Message-State: AIkVDXK5bPE54HvcGitsQMv5lEfX1s0uRbqdiiY0ABrv6ZRpwJmHmbHzniY/jW6Kt+7kTrU7nbxV02ZgfA9tw5r1
-X-Received: by 10.237.33.185 with SMTP id l54mr7296566qtc.111.1484816823455;
- Thu, 19 Jan 2017 01:07:03 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 10:08:16 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:28827 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993014AbdASJIJnpgm0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 10:08:09 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5E9A241F8E6A;
+        Thu, 19 Jan 2017 10:10:50 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 19 Jan 2017 10:10:50 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 19 Jan 2017 10:10:50 +0000
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 2DA2F140EDEB7;
+        Thu, 19 Jan 2017 09:08:01 +0000 (GMT)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 19 Jan
+ 2017 09:08:03 +0000
+Date:   Thu, 19 Jan 2017 09:08:03 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <jiang.biao2@zte.com.cn>
+CC:     <linux-mips@linux-mips.org>, <pbonzini@redhat.com>,
+        <rkrcmar@redhat.com>, <ralf@linux-mips.org>, <kvm@vger.kernel.org>
+Subject: Re: [PATCH 2/13] KVM: MIPS: Pass type of fault down to
+ kvm_mips_map_page()
+Message-ID: <20170119090803.GE31545@jhogan-linux.le.imgtec.org>
+References: <201701191629518310684@zte.com.cn>
 MIME-Version: 1.0
-Received: by 10.12.177.145 with HTTP; Thu, 19 Jan 2017 01:07:03 -0800 (PST)
-In-Reply-To: <20170117231421.16310-14-paul@crapouillou.net>
-References: <20170117231421.16310-1-paul@crapouillou.net> <20170117231421.16310-14-paul@crapouillou.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 19 Jan 2017 10:07:03 +0100
-Message-ID: <CACRpkdYMm0iWxmEGyQyEz4JfWukXNyGXO1rqw1dSiABgHdA1tQ@mail.gmail.com>
-Subject: Re: [PATCH 13/13] MIPS: jz4740: Remove custom GPIO code
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="r7U+bLA8boMOj+mD"
+Content-Disposition: inline
+In-Reply-To: <201701191629518310684@zte.com.cn>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56406
+X-archive-position: 56407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,30 +55,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Jan 18, 2017 at 12:14 AM, Paul Cercueil <paul@crapouillou.net> wrote:
+--r7U+bLA8boMOj+mD
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> All the drivers for the various hardware elements of the jz4740 SoC have
-> been modified to use the pinctrl framework for their pin configuration
-> needs.
-> As such, this platform code is now unused and can be deleted.
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Hi,
 
-I feel I might have come across as a bit harsh in the previous review of the
-patches leading up to this one. In that case I'm sorry.
+On Thu, Jan 19, 2017 at 04:29:51PM +0800, jiang.biao2@zte.com.cn wrote:
+> Hi, James
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+> =EF=BC=9E Whats wrong with bool parameters?
+> =EF=BC=9E=20
+> =EF=BC=9E It needs a GPA mapping created, either for a read or a write de=
+pending
+> =EF=BC=9E on the caller. bool would seem ideally suited for just such a s=
+ituation,
+> =EF=BC=9E and in fact its exactly what the KVM GPA fault code path does t=
+o pass
+> =EF=BC=9E whether the page needs to be writable:
+> =EF=BC=9E=20
+> =EF=BC=9E kvm_mips_map_page() -=EF=BC=9E gfn_to_pfn_prot() -=EF=BC=9E __g=
+fn_to_pfn_memslot() -=EF=BC=9E
+> =EF=BC=9E hva_to_pfn() -=EF=BC=9E hva_to_pfn_slow().
+> =EF=BC=9E=20
+> =EF=BC=9E so all this really does is extend that pattern up the other way=
+ as
+> =EF=BC=9E necessary to be able to provide that information to gfn_to_pfn_=
+prot().
+> Bool parameter may make the code less readable.  :-)
+>=20
+>=20
+> The way used is indeed consistent with the exist pattern, but the tramp d=
+ata=20
+>=20
+>=20
+> passed around and long parameters list maybe code smell(not for sure for=
+=20
+>=20
+>=20
+> the kernel :-) ),  which may be improved by some means.
+>=20
+> No offense,  just personal opinion. :-)
 
-I can clearly see that the intent of the series is to remove this hopelessly
-idiomatic code from the MIPS hurdle, and move these systems over
-to standard frameworks.
+No offense taken :-)
 
-In a way, if I look at the kernel as a whole, it would likely look better
-after these patches were merged, than before. Even with the
-shortcomings I painted out in the previous review comments.
+Thanks again for reviewing,
 
-A very complicated piece of messy code is cut from MIPS.
+Cheers
+James
 
-I think this is very valuable work and well worth persuing, so please
-go ahead and work with the series, your effort is very much appreciated!
+--r7U+bLA8boMOj+mD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Yours,
-Linus Walleij
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYgIHNAAoJEGwLaZPeOHZ6IyQP/jllVPA7nALx5P8aUJgaGv+4
+AOhW44B+iNtVkPyPZfgpf+m2EKAmx7E8UXdlkZpRQN0Mqbe6Xd/qD+xd/XDhZjow
+/HaFmJBZpbbsFmyBlQAA9r/Kgxl0G/u+8oToJ476LHu4y8zf18w6EuZpSgsf9x0S
+MwrZ/ZfvExssY9FnYyUivLnL0nZ0v7b1by7hk4MfT0q42OC098pjOImuqap67me4
+hBC8cVO9e0R6OaKQWCb20NRLRV0DqalU7dd0h+ZbFkkb79JW4yHSdqGGrBCT76PY
+EDSWu3huhsq3q5aZp84MKAFx5ZiaU/WazKSTYeE0AdzehEfQ4R8YbkCJU/egzHRc
+Nn0z6ZyaCgB49YELO3GeQfIWm6wOHSGvxchI/3w8a3KfSnWcabR/XcuxBGcSuNNh
+G1kpxBc2M4oE9L4aNNfUvD4l24+wCq4Xhlm09b1XOfrJ9O3q4a63bGiW8Rne1o5J
+WHwV90wzU0kqKwWSwt3l9rhXL0vsB5nUWFLvcCRshjlW1EspvvYMGeP/BkwpoiAE
+mt3d+19uQ6fjsDGOtWhMrLTVq4UsD2nqtsKerHLfjiDpiwhSEQuDEfXlqRCmS0Ak
+VhwuiVKVdbVUSEVvS2aoZd5dqNDmz3hzuA6zzDBY8mmBKEXov/Ok9+B+Wo/vshLX
+ZFJr/+506JixbFaKiLEm
+=22k9
+-----END PGP SIGNATURE-----
+
+--r7U+bLA8boMOj+mD--

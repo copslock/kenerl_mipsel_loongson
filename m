@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 10:50:19 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:33190 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993179AbdASJuMVkhr0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 19 Jan 2017 10:50:12 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D4F147F368;
-        Thu, 19 Jan 2017 09:50:04 +0000 (UTC)
-Received: from [10.36.116.242] (ovpn-116-242.ams2.redhat.com [10.36.116.242])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id v0J9o000006645
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 19 Jan 2017 04:50:02 -0500
-Subject: Re: [PATCH] MIPS: KVM: Return directly after a failed
- copy_from_user() in kvm_arch_vcpu_ioctl()
-To:     SF Markus Elfring <elfring@users.sourceforge.net>,
-        kvm@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>
-References: <87aac8b8-4f30-2edd-4688-42d32d815cd1@users.sourceforge.net>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <88b008c5-552b-7314-94d8-02214f38a456@redhat.com>
-Date:   Thu, 19 Jan 2017 10:50:00 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.5.1
-MIME-Version: 1.0
-In-Reply-To: <87aac8b8-4f30-2edd-4688-42d32d815cd1@users.sourceforge.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Thu, 19 Jan 2017 09:50:04 +0000 (UTC)
-Return-Path: <pbonzini@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 11:06:55 +0100 (CET)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:34564
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993014AbdASKGrevkw0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 11:06:47 +0100
+Received: by mail-wm0-x243.google.com with SMTP id c85so10780754wmi.1
+        for <linux-mips@linux-mips.org>; Thu, 19 Jan 2017 02:06:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=tj5d2XouYLne72FHHi2RCi9x37sURE6kZuCAQYuUZcs=;
+        b=SrxvoEuCZeDTL7wFN/Z9zM2ltiso+YTHe0gxl93Fi+dexOsGb3iDMHGUgvfPc1gymP
+         u2IrKfqjcwXfc0etUXEvhNRVtBlpPhq2zOl92soP7cVBgy8QKf8wuaFiiYlcwyDli36l
+         3gx/nMA22VibcShp/QxVXOo2d5ijGFfPjFiFG7Zd9O0oHvF5DjTFa7vlOJ4lKIipN3xX
+         ptbhOI9MchsGDKyJE9hCYPNhXUyMSFCLYQkrIGPc5TCoChnkzYOZm2eVprVaZcXSBis0
+         uUAdfQnq3Xki2OHd9Bj/yW/ZlrqQ4UMQh+Ipgl5C4ajIj1XoNVgYnFERLl7hInsT188J
+         W0uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=tj5d2XouYLne72FHHi2RCi9x37sURE6kZuCAQYuUZcs=;
+        b=oGuqw/TCwNTqNalLbBYYW5PKf/oNnUyqDCsQeWpCDaysqKeDkP0OLNURQ8kM9D/IBE
+         pkd5c+ndfcz+QyPH0v0YTx3E9oKjMTJ9FCEPpMtXQmMZK6BNYm83QpPL2RIogT0aL24i
+         4erefxDVhAaq2hdKTO2JAxcMabfFpuYpe0wqvC+z7fjbZWMfMkPI6v0JbIsFJdwtGFGN
+         a34YfdUlUiHorjrvODQ6nCbeyRtDVI0+iQsB4mXlkcr3zkKXyJt+9PCsFxlukdJ/E4nD
+         vLM0ilA1/bRA03Bg4sVxJSGmPLQxiVbyYIkesUOARocid+YD52Qev5jXdaMAKhq3YWsa
+         Fkgw==
+X-Gm-Message-State: AIkVDXK0SzR6TdpOMf90DeU53+fBeIri6HAfA943uZMxZB7uuNSdODTAAIWXZ2zPJrJR0A==
+X-Received: by 10.28.163.3 with SMTP id m3mr7000298wme.85.1484820402221;
+        Thu, 19 Jan 2017 02:06:42 -0800 (PST)
+Received: from serveurQA.phonesystems.net ([62.39.136.157])
+        by smtp.gmail.com with ESMTPSA id w126sm4611345wmw.0.2017.01.19.02.06.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 19 Jan 2017 02:06:41 -0800 (PST)
+From:   Sebastien Decourriere <sebtx452@gmail.com>
+To:     linux-mtd@lists.infradead.org
+Cc:     linux-mips@linux-mips.org,
+        Sebastien Decourriere <sebtx452@gmail.com>
+Subject: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness swap is enabled
+Date:   Thu, 19 Jan 2017 11:06:55 +0100
+Message-Id: <1484820415-12439-1-git-send-email-sebtx452@gmail.com>
+X-Mailer: git-send-email 2.1.4
+Return-Path: <sebtx452@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56408
+X-archive-position: 56409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: sebtx452@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,50 +61,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+The purpose of this patch is to enable the software address endianness
+swapping only when the in SoC EBU endianness swapping is disabled.
+To perform this check, I look at Bit 30 of the EBU_CON_0 register.
+Actually, the driver expects that the in SoC swapping is disabled.
+This is the case with current bootloaders shuch as U-boot.
 
+This applies only to vr9 (xrx200) rev 1.2 and ar10 (xrx300).
 
-On 18/01/2017 20:52, SF Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Wed, 18 Jan 2017 20:43:41 +0100
-> 
-> Return directly after a call of the function "copy_from_user" failed
-> in a case block.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+I have a router which uses a proprietary bootloader which keeps
+the in SoC swapping enabled. The SoC in this router is a vrx200 v1.2.
+In this SoC version, I can keep the in SoC swapping without any problem.
 
-The "out" label is now unused, so you should remove it.
+This patch replaces my previous broken patch.
 
-Paolo
+Signed-off-by: Sebastien Decourriere <sebtx452@gmail.com>
+---
+ drivers/mtd/maps/lantiq-flash.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-> ---
->  arch/mips/kvm/mips.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index 06a60b19acfb..1dad78f74e8c 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-> @@ -1152,10 +1152,8 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
->  		{
->  			struct kvm_mips_interrupt irq;
->  
-> -			r = -EFAULT;
->  			if (copy_from_user(&irq, argp, sizeof(irq)))
-> -				goto out;
-> -
-> +				return -EFAULT;
->  			kvm_debug("[%d] %s: irq: %d\n", vcpu->vcpu_id, __func__,
->  				  irq.irq);
->  
-> @@ -1165,9 +1163,8 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
->  	case KVM_ENABLE_CAP: {
->  		struct kvm_enable_cap cap;
->  
-> -		r = -EFAULT;
->  		if (copy_from_user(&cap, argp, sizeof(cap)))
-> -			goto out;
-> +			return -EFAULT;
->  		r = kvm_vcpu_ioctl_enable_cap(vcpu, &cap);
->  		break;
->  	}
-> 
+diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
+index c8febb3..1cbbdcb 100644
+--- a/drivers/mtd/maps/lantiq-flash.c
++++ b/drivers/mtd/maps/lantiq-flash.c
+@@ -38,6 +38,8 @@ enum {
+ 	LTQ_NOR_NORMAL
+ };
+ 
++#define EBU_ENDIAN_SWAP		BIT(30)
++
+ struct ltq_mtd {
+ 	struct resource *res;
+ 	struct mtd_info *mtd;
+@@ -113,6 +115,20 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	struct ltq_mtd *ltq_mtd;
+ 	struct cfi_private *cfi;
+ 	int err;
++	bool mtd_addr_swap;
++
++	/* If SoC is vr9 >= 1.2 or ar10 and EBU endian swap
++	   is enabled, we don't need to do software address swap */
++	if ( ltq_ebu_r32(LTQ_EBU_BUSCON0) & EBU_ENDIAN_SWAP ) {
++		switch (ltq_soc_type()) {
++			case SOC_TYPE_VR9_2 :
++			case SOC_TYPE_AR10 :
++				mtd_addr_swap = false;
++				break;
++			default :
++				mtd_addr_swap = true;
++		}
++	} else mtd_addr_swap = true;
+ 
+ 	if (of_machine_is_compatible("lantiq,falcon") &&
+ 			(ltq_boot_select() != BS_FLASH)) {
+@@ -150,7 +166,10 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	ltq_mtd->map->copy_from = ltq_copy_from;
+ 	ltq_mtd->map->copy_to = ltq_copy_to;
+ 
+-	ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
++	if (mtd_addr_swap)
++		ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
++	else
++		ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
+ 	ltq_mtd->mtd = do_map_probe("cfi_probe", ltq_mtd->map);
+ 	ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
+ 
+@@ -163,8 +182,10 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	mtd_set_of_node(ltq_mtd->mtd, pdev->dev.of_node);
+ 
+ 	cfi = ltq_mtd->map->fldrv_priv;
+-	cfi->addr_unlock1 ^= 1;
+-	cfi->addr_unlock2 ^= 1;
++	if (mtd_addr_swap) {
++		cfi->addr_unlock1 ^= 1;
++		cfi->addr_unlock2 ^= 1;
++	}
+ 
+ 	err = mtd_device_register(ltq_mtd->mtd, NULL, 0);
+ 	if (err) {
+-- 
+2.1.4

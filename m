@@ -1,49 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 11:28:08 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:48198 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993022AbdASK2BgkqLn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 19 Jan 2017 11:28:01 +0100
-Received: from int-mx14.intmail.prod.int.phx2.redhat.com (int-mx14.intmail.prod.int.phx2.redhat.com [10.5.11.27])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id CE457C04BD40;
-        Thu, 19 Jan 2017 10:27:55 +0000 (UTC)
-Received: from [10.36.116.242] (ovpn-116-242.ams2.redhat.com [10.36.116.242])
-        by int-mx14.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id v0JARqQY029225
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 19 Jan 2017 05:27:53 -0500
-Subject: Re: [PATCH v2] MIPS: KVM: Return directly after a failed
- copy_from_user() in kvm_arch_vcpu_ioctl()
-To:     SF Markus Elfring <elfring@users.sourceforge.net>,
-        kvm@vger.kernel.org, linux-mips@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>
-References: <87aac8b8-4f30-2edd-4688-42d32d815cd1@users.sourceforge.net>
- <88b008c5-552b-7314-94d8-02214f38a456@redhat.com>
- <7a6b5858-9137-9d20-78fe-6b466081920f@users.sourceforge.net>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <a1af7ad2-4f3c-36c8-37e8-940e96810cd2@redhat.com>
-Date:   Thu, 19 Jan 2017 11:27:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2017 11:55:55 +0100 (CET)
+Received: from mail-wm0-x234.google.com ([IPv6:2a00:1450:400c:c09::234]:38729
+        "EHLO mail-wm0-x234.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993014AbdASKzrd0qhn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2017 11:55:47 +0100
+Received: by mail-wm0-x234.google.com with SMTP id r144so71014237wme.1
+        for <linux-mips@linux-mips.org>; Thu, 19 Jan 2017 02:55:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=rlAt0DX2AO1UB/vHMjMYJ8sL1KIrq0JqdB0WuFTgx70=;
+        b=B8cIC6arcAR1dCgwDP1m108GV+nVaYJyxehwrAYOT/zMGQtrEzRa981RdPn6qaF8xg
+         neSqLLH0yWffdyx6fAc8t6c/ox1JKyJ3o6GK4GJhBDsqkbIPScCcNjfDyaqj0AMcjTUv
+         UoAFyvbtKWRmGrJLudhlMPA7MQRjNNGYXC2Mk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=rlAt0DX2AO1UB/vHMjMYJ8sL1KIrq0JqdB0WuFTgx70=;
+        b=R7z0vjXF/BpdxhBDeCBx/fBwP86/qMLdD7zXCF4kJv4ODlbRlS+cTbBtwNLITqe2wy
+         v91Z//haQRfc6wHpXVH6MQAAGcbToiOeaqXZy/05Y+3qdSDIihSQ/A2yVZB3iTz0Vrii
+         FyLORlNhW4nbsQtTjvHMWkbf1Z4us12shZO8bXEGuaeNNmot5bKyUi4dLmq3xdElGPJo
+         4iw7z9PGvCMAu0MioX6rH965W+UHkBv9GkLKfomDb6ua16BjZm2buvaFdhXo32+Gu8Kl
+         JE7EiZXnqCRVermI4eygCQKHXv661b+k4aYD1nK2KU7W+8X9WvtqCVuVIJwBQrvcBWN8
+         Io6w==
+X-Gm-Message-State: AIkVDXLWG5Cw0lZMWDsSAPhIo6Rj7RXMJJx/Rtey49HQj4ub4XUcCCOXPcMN5mArzx34JTEVr0WGvVAxAfMHOVjW
+X-Received: by 10.28.62.144 with SMTP id l138mr6235652wma.50.1484823342211;
+ Thu, 19 Jan 2017 02:55:42 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <7a6b5858-9137-9d20-78fe-6b466081920f@users.sourceforge.net>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.27
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Thu, 19 Jan 2017 10:27:55 +0000 (UTC)
-Return-Path: <pbonzini@redhat.com>
+Received: by 10.194.185.107 with HTTP; Thu, 19 Jan 2017 02:55:41 -0800 (PST)
+In-Reply-To: <20170117231421.16310-10-paul@crapouillou.net>
+References: <20170117231421.16310-1-paul@crapouillou.net> <20170117231421.16310-10-paul@crapouillou.net>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 19 Jan 2017 11:55:41 +0100
+Message-ID: <CAPDyKFp4idZx+ynQByz22zwsiK+reBcvt3OdHm1kR2QUy+sUhw@mail.gmail.com>
+Subject: Re: [PATCH 09/13] mmc: jz4740: Let the pinctrl driver configure the pins
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-mips@linux-mips.org,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-mtd@lists.infradead.org, linux-pwm@vger.kernel.org,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <ulf.hansson@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56411
+X-archive-position: 56412
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: ulf.hansson@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,64 +76,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+[...]
 
-
-On 19/01/2017 11:20, SF Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Thu, 19 Jan 2017 11:10:26 +0100
-> 
-> * Return directly after a call of the function "copy_from_user" failed
->   in a case block.
-> 
-> * Delete the jump label "out" which became unnecessary with
->   this refactoring.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
-> 
-> V2:
-> A label was also removed at the end.
-> 
->  arch/mips/kvm/mips.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index 06a60b19acfb..3534a0b9efed 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-> @@ -1152,10 +1152,8 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
->  		{
->  			struct kvm_mips_interrupt irq;
->  
-> -			r = -EFAULT;
->  			if (copy_from_user(&irq, argp, sizeof(irq)))
-> -				goto out;
+>
+> -#ifdef CONFIG_PM_SLEEP
 > -
-> +				return -EFAULT;
->  			kvm_debug("[%d] %s: irq: %d\n", vcpu->vcpu_id, __func__,
->  				  irq.irq);
->  
-> @@ -1165,17 +1163,14 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
->  	case KVM_ENABLE_CAP: {
->  		struct kvm_enable_cap cap;
->  
-> -		r = -EFAULT;
->  		if (copy_from_user(&cap, argp, sizeof(cap)))
-> -			goto out;
-> +			return -EFAULT;
->  		r = kvm_vcpu_ioctl_enable_cap(vcpu, &cap);
->  		break;
->  	}
->  	default:
->  		r = -ENOIOCTLCMD;
->  	}
+> -static int jz4740_mmc_suspend(struct device *dev)
+> -{
+> -       struct jz4740_mmc_host *host = dev_get_drvdata(dev);
 > -
-> -out:
->  	return r;
->  }
->  
-> 
+> -       jz_gpio_bulk_suspend(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
+> -
 
-Removing the label makes the patch worthwhile.
+Shouldn't this be replaced with a call to:
+pinctrl_pm_select_sleep_state();
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+> -       return 0;
+> -}
+> -
+> -static int jz4740_mmc_resume(struct device *dev)
+> -{
+> -       struct jz4740_mmc_host *host = dev_get_drvdata(dev);
+> -
+> -       jz_gpio_bulk_resume(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
+
+Shouldn't this be replaced with a call to:
+pinctrl_pm_select_default_state();
+
+[...]
+
+Kind regards
+Uffe

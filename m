@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2017 11:02:14 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:45080 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2017 11:18:06 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:46620 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993543AbdATKCGprXgn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2017 11:02:06 +0100
+        by eddie.linux-mips.org with ESMTP id S23993014AbdATKR7dsjTn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2017 11:17:59 +0100
 To:     Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH 13/13] MIPS: jz4740: Remove custom GPIO code
+Subject: Re: [PATCH 00/13] Ingenic JZ4740 / JZ4780 pinctrl driver
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8;
  format=flowed
 Content-Transfer-Encoding: 8bit
-Date:   Fri, 20 Jan 2017 11:01:35 +0100
+Date:   Fri, 20 Jan 2017 11:17:28 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
-Cc:     Rob Herring <robh+dt@kernel.org>,
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -27,17 +27,18 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         James Hogan <james.hogan@imgtec.com>
-In-Reply-To: <CACRpkdYMm0iWxmEGyQyEz4JfWukXNyGXO1rqw1dSiABgHdA1tQ@mail.gmail.com>
+In-Reply-To: <CACRpkdaeu9OxaSPeOrkKtKNQGUQh4puCFw8A2h=xhqVdDWgoow@mail.gmail.com>
 References: <20170117231421.16310-1-paul@crapouillou.net>
- <20170117231421.16310-14-paul@crapouillou.net>
- <CACRpkdYMm0iWxmEGyQyEz4JfWukXNyGXO1rqw1dSiABgHdA1tQ@mail.gmail.com>
-Message-ID: <8944dd20e8ae6ed705dcf69e9f0ed4fd@mail.crapouillou.net>
+ <20170118071530.GA18989@ulmo.ba.sec>
+ <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
+ <CACRpkdaeu9OxaSPeOrkKtKNQGUQh4puCFw8A2h=xhqVdDWgoow@mail.gmail.com>
+Message-ID: <775b4a87768de7263ce6ff9a38659334@mail.crapouillou.net>
 X-Sender: paul@crapouillou.net
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56430
+X-archive-position: 56431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,42 +55,35 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 2017-01-19 10:07, Linus Walleij a écrit :
+Le 2017-01-20 09:40, Linus Walleij a écrit :
 
-> On Wed, Jan 18, 2017 at 12:14 AM, Paul Cercueil <paul@crapouillou.net> 
+> On Thu, Jan 19, 2017 at 12:19 PM, Paul Cercueil <paul@crapouillou.net> 
 > wrote:
 > 
->> All the drivers for the various hardware elements of the jz4740 SoC 
->> have been modified to use the pinctrl framework for their pin 
->> configuration needs. As such, this platform code is now unused and can 
->> be deleted. Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>> The problem with pinctrl and PWM, is that the pinctrl API works by 
+>> "states". A default state, sleep state, and basically any custom state 
+>> that the devicetree provides. This works well until you need to 
+>> control individually each pin; with 8 pins, you would need 2^8 states, 
+>> each one corresponding to a given configuration.
 > 
-> I feel I might have come across as a bit harsh in the previous review 
-> of the
-> patches leading up to this one. In that case I'm sorry.
+> I do not really understand, do you really use all 2^8 states in a given
+> system?
 > 
-> I can clearly see that the intent of the series is to remove this 
-> hopelessly
-> idiomatic code from the MIPS hurdle, and move these systems over
-> to standard frameworks.
+> The pin control states are to be used for practical situations, not
+> for all theoretical situations.
 > 
-> In a way, if I look at the kernel as a whole, it would likely look 
-> better
-> after these patches were merged, than before. Even with the
-> shortcomings I painted out in the previous review comments.
+> You should define in your device tree the states that your
+> particular system will use. Not all possible states on all possible
+> systems.
 > 
-> A very complicated piece of messy code is cut from MIPS.
-> 
-> I think this is very valuable work and well worth persuing, so please
-> go ahead and work with the series, your effort is very much 
-> appreciated!
-> 
-> Yours,
-> Linus Walleij
 
-Well thank you for your very constructive criticism ;) And for your 
-review.
-I'll submit a v2 very soon - I don't want to miss the 4.11 merge.
+Well, that was if I wanted to dynamically set/unset the pin mux and
+configuration when requesting/freeing a PWM. Then I'd need 2^x states
+for X PWM pins.
+
+Anyway, a static configuration works for me too. If at some point I
+want dynamic configuration of the pins then I'll make the PWM driver
+handle only one PWM pin and create one driver instance for each pin.
 
 Regards,
 -Paul

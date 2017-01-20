@@ -1,71 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2017 09:40:43 +0100 (CET)
-Received: from mail-it0-x235.google.com ([IPv6:2607:f8b0:4001:c0b::235]:36318
-        "EHLO mail-it0-x235.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993014AbdATIkhJAEb- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2017 09:40:37 +0100
-Received: by mail-it0-x235.google.com with SMTP id c7so14705645itd.1
-        for <linux-mips@linux-mips.org>; Fri, 20 Jan 2017 00:40:37 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2017 10:33:49 +0100 (CET)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:34891
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993014AbdATJdljxpln (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2017 10:33:41 +0100
+Received: by mail-wm0-x244.google.com with SMTP id d140so5322054wmd.2
+        for <linux-mips@linux-mips.org>; Fri, 20 Jan 2017 01:33:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=ZEifAQkp528gHRg4iQrwCp1BjT1q40TeSWF9LgBaDiY=;
-        b=Gnxkm5Hp30hwbnSr/FPavb02rVcOLCz4DG2apRJ+MHSRwQAay8zCik64PND4Zh6ID3
-         hFiahyhcFbBIWobzSUsnwreSR/7LC7TjwXHmZehZ4xCkvMD/MmjhpHaIMPDr0AnQnNOz
-         du+zOgJOrfYnUbOpHHl88XiTmftM5YE9/tkBM=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Cf6Wqyl+kdIu/IyuyIA2qGz7TzyBnmtCuQV0nUFww1M=;
+        b=EJLiFvWuPggElFOclS9u2kTC0uZlONiBhOQ0wVPqnxDlAGxJPQjE33bvZ/9x0kr88/
+         5M5EJcV+pQs8rCeNCk5e//f4T4g2xTuTVhZs43kbHoeWgQit4NDnlVPHA9VGA1cdyAca
+         CKXYCy4wqa3Lg1ny+ljdMjul8PFEGgmza02SJmAFjgNVWjtYisxveJHjnTewnkE2Q1Ml
+         qmJl2pYigDd3l8G5DBqqvce6dtiQS/iFM6MrWNy3pfzCad3KEh6hWNqo0MyAZ+mf4t2H
+         grOpJnDTeGSRGgUOPTljUHBWesSKLHPFPJ7P1zDHLGUWDzgi0Dt+vC0V9vzdRFCUCyg7
+         CVqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=ZEifAQkp528gHRg4iQrwCp1BjT1q40TeSWF9LgBaDiY=;
-        b=RVfrJz15lQpreRVmHpIyUX69yKbm5RuqA31PIjuenZUOXIzOhsezp17jhpAwgX4p+f
-         DU47ylESyje3KhPWOb6cYeVEIH95buwGXQQgSKLz/ZNTbZ4pkIv5NnHpn7bU/fznF6oR
-         1nHW9ajNtAJ0HY/omKmie2Gjv8x1iT1ZFdBStPRPUPvby8HIAGcs8Hy6P+DB46JjKogD
-         +2dZjV29cOOo8tdZw2DhYgpTwWfDCkm+PIwSYyAqZs+deBHF69EBIA7ixWU/Us0FBk+w
-         9avbk1xFK4r6KyQ5s0as6EBEdYYUQH88rED5kHtgRNxf5Bk5Uw6DeBfEqKjCp17vdN7a
-         CjLA==
-X-Gm-Message-State: AIkVDXLaCbkavxgniUW+C2tOfI/b8LNkablV0fOv4FPZ3oj77PG9vpjYO1OXPTJ3lABRwkAQw3KIaiGn/pDY5F5k
-X-Received: by 10.36.88.20 with SMTP id f20mr2438017itb.9.1484901631345; Fri,
- 20 Jan 2017 00:40:31 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.79.169.75 with HTTP; Fri, 20 Jan 2017 00:40:30 -0800 (PST)
-In-Reply-To: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
-References: <20170117231421.16310-1-paul@crapouillou.net> <20170118071530.GA18989@ulmo.ba.sec>
- <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 20 Jan 2017 09:40:30 +0100
-Message-ID: <CACRpkdaeu9OxaSPeOrkKtKNQGUQh4puCFw8A2h=xhqVdDWgoow@mail.gmail.com>
-Subject: Re: [PATCH 00/13] Ingenic JZ4740 / JZ4780 pinctrl driver
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Cf6Wqyl+kdIu/IyuyIA2qGz7TzyBnmtCuQV0nUFww1M=;
+        b=Gm7cVBiCHR9+KQJY7ZL1h7HVDGoSllp5SPkwLkTVgVFuEVoLXnIscWajSLDU581txf
+         KGoQ9OfOKDsXSMYH1o6yDf4zGfXAN8f6k7typ3Rzb1rZyCYTcZRVki3h7j8OHxFcFM2X
+         3viq3P3NMizc+yiiCbR1QsRA9TmiKBbUCLVgVsjynFqf2fbq19yl3xiDLxljYUUQaLMR
+         EMlGv3GH/G51dPMgSgtEUPSIb4V0pwxgauN3EtGdnlhGSpgGXFeac5pBVK3JLyEN9YZ2
+         8L9pfTNEC5XcFoZmBjUGx5ET0ILfLNoZOJ3ljE7S+3sLX9KR6bxB6Apni3BKZH6a+lzo
+         shpg==
+X-Gm-Message-State: AIkVDXITvHitnfe7FD6r+qwMhGoBqdbtwwy+DHJPt7JzDdtaHsplQGOozaehkbv+86AWsQ==
+X-Received: by 10.223.143.45 with SMTP id p42mr10578653wrb.120.1484904816097;
+        Fri, 20 Jan 2017 01:33:36 -0800 (PST)
+Received: from serveurQA.phonesystems.net ([62.39.136.157])
+        by smtp.gmail.com with ESMTPSA id z134sm4786325wmc.20.2017.01.20.01.33.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 20 Jan 2017 01:33:35 -0800 (PST)
+From:   Sebastien Decourriere <sebtx452@gmail.com>
+To:     linux-mtd@lists.infradead.org
+Cc:     linux-mips@linux-mips.org,
+        Sebastien Decourriere <sebtx452@gmail.com>
+Subject: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness swap is enabled
+Date:   Fri, 20 Jan 2017 10:33:54 +0100
+Message-Id: <1484904834-14980-1-git-send-email-sebtx452@gmail.com>
+X-Mailer: git-send-email 2.1.4
+Return-Path: <sebtx452@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56428
+X-archive-position: 56429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: sebtx452@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,25 +61,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 19, 2017 at 12:19 PM, Paul Cercueil <paul@crapouillou.net> wrote:
+The purpose of this patch is to enable the software address endianness
+swapping only when the in SoC EBU endianness swapping is disabled.
+To perform this check, I look at Bit 30 of the EBU_CON_0 register.
+Actually, the driver expects that the in SoC swapping is disabled.
+This is the case with current bootloaders shuch as U-boot.
 
-> The problem with pinctrl and PWM, is that the pinctrl API works by "states".
-> A default state, sleep state, and basically any custom state that the
-> devicetree
-> provides. This works well until you need to control individually each pin;
-> with
-> 8 pins, you would need 2^8 states, each one corresponding to a given
-> configuration.
+This applies only to vr9 (xrx200) rev 1.2 and ar10 (xrx300).
 
-I do not really understand, do you really use all 2^8 states in a given
-system?
+I have a router which uses a proprietary bootloader which keeps
+the in SoC swapping enabled. The SoC in this router is a vrx200 v1.2.
+In this SoC version, I can keep the in SoC swapping without any problem.
 
-The pin control states are to be used for practical situations, not
-for all theoretical situations.
+This patch replaces my previous broken patch.
 
-You should define in your device tree the states that your
-particular system will use. Not all possible states on all possible
-systems.
+Signed-off-by: Sebastien Decourriere <sebtx452@gmail.com>
+---
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |  1 +
+ drivers/mtd/maps/lantiq-flash.c                    | 29 +++++++++++++++++++---
+ 2 files changed, 27 insertions(+), 3 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+index 17b41bb..0ed0896 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+@@ -87,6 +87,7 @@ extern __iomem void *ltq_cgu_membase;
+ #define LTQ_EBU_PCC_ISTAT	0x00A0
+ #define LTQ_EBU_BUSCON1		0x0064
+ #define LTQ_EBU_ADDRSEL1	0x0024
++#define EBU_FLASH_ENDIAN_SWAP	0x40000000
+ #define EBU_WRDIS		0x80000000
+ 
+ /* WDT */
+diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
+index c8febb3..8d628d2 100644
+--- a/drivers/mtd/maps/lantiq-flash.c
++++ b/drivers/mtd/maps/lantiq-flash.c
+@@ -113,6 +113,24 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	struct ltq_mtd *ltq_mtd;
+ 	struct cfi_private *cfi;
+ 	int err;
++	bool mtd_addr_swap = true;
++
++#ifdef CONFIG_SOC_TYPE_XWAY
++	/* If SoC is vr9 rev 1.2 or ar10 and EBU endian swap
++	 *  is enabled, we don't need to do software address swap
++	 */
++	if (ltq_ebu_r32(LTQ_EBU_BUSCON0) & EBU_FLASH_ENDIAN_SWAP) {
++		switch (ltq_soc_type()) {
++		case SOC_TYPE_VR9_2:
++		case SOC_TYPE_AR10:
++			mtd_addr_swap = false;
++			break;
++		default:
++			mtd_addr_swap = true;
++			break;
++		}
++	}
++#endif
+ 
+ 	if (of_machine_is_compatible("lantiq,falcon") &&
+ 			(ltq_boot_select() != BS_FLASH)) {
+@@ -150,7 +168,10 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	ltq_mtd->map->copy_from = ltq_copy_from;
+ 	ltq_mtd->map->copy_to = ltq_copy_to;
+ 
+-	ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
++	if (mtd_addr_swap)
++		ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
++	else
++		ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
+ 	ltq_mtd->mtd = do_map_probe("cfi_probe", ltq_mtd->map);
+ 	ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
+ 
+@@ -163,8 +184,10 @@ ltq_mtd_probe(struct platform_device *pdev)
+ 	mtd_set_of_node(ltq_mtd->mtd, pdev->dev.of_node);
+ 
+ 	cfi = ltq_mtd->map->fldrv_priv;
+-	cfi->addr_unlock1 ^= 1;
+-	cfi->addr_unlock2 ^= 1;
++	if (mtd_addr_swap) {
++		cfi->addr_unlock1 ^= 1;
++		cfi->addr_unlock2 ^= 1;
++	}
+ 
+ 	err = mtd_device_register(ltq_mtd->mtd, NULL, 0);
+ 	if (err) {
+-- 
+2.1.4

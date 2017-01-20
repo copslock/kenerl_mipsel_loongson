@@ -1,54 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2017 10:33:49 +0100 (CET)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:34891
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993014AbdATJdljxpln (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2017 10:33:41 +0100
-Received: by mail-wm0-x244.google.com with SMTP id d140so5322054wmd.2
-        for <linux-mips@linux-mips.org>; Fri, 20 Jan 2017 01:33:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Cf6Wqyl+kdIu/IyuyIA2qGz7TzyBnmtCuQV0nUFww1M=;
-        b=EJLiFvWuPggElFOclS9u2kTC0uZlONiBhOQ0wVPqnxDlAGxJPQjE33bvZ/9x0kr88/
-         5M5EJcV+pQs8rCeNCk5e//f4T4g2xTuTVhZs43kbHoeWgQit4NDnlVPHA9VGA1cdyAca
-         CKXYCy4wqa3Lg1ny+ljdMjul8PFEGgmza02SJmAFjgNVWjtYisxveJHjnTewnkE2Q1Ml
-         qmJl2pYigDd3l8G5DBqqvce6dtiQS/iFM6MrWNy3pfzCad3KEh6hWNqo0MyAZ+mf4t2H
-         grOpJnDTeGSRGgUOPTljUHBWesSKLHPFPJ7P1zDHLGUWDzgi0Dt+vC0V9vzdRFCUCyg7
-         CVqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Cf6Wqyl+kdIu/IyuyIA2qGz7TzyBnmtCuQV0nUFww1M=;
-        b=Gm7cVBiCHR9+KQJY7ZL1h7HVDGoSllp5SPkwLkTVgVFuEVoLXnIscWajSLDU581txf
-         KGoQ9OfOKDsXSMYH1o6yDf4zGfXAN8f6k7typ3Rzb1rZyCYTcZRVki3h7j8OHxFcFM2X
-         3viq3P3NMizc+yiiCbR1QsRA9TmiKBbUCLVgVsjynFqf2fbq19yl3xiDLxljYUUQaLMR
-         EMlGv3GH/G51dPMgSgtEUPSIb4V0pwxgauN3EtGdnlhGSpgGXFeac5pBVK3JLyEN9YZ2
-         8L9pfTNEC5XcFoZmBjUGx5ET0ILfLNoZOJ3ljE7S+3sLX9KR6bxB6Apni3BKZH6a+lzo
-         shpg==
-X-Gm-Message-State: AIkVDXITvHitnfe7FD6r+qwMhGoBqdbtwwy+DHJPt7JzDdtaHsplQGOozaehkbv+86AWsQ==
-X-Received: by 10.223.143.45 with SMTP id p42mr10578653wrb.120.1484904816097;
-        Fri, 20 Jan 2017 01:33:36 -0800 (PST)
-Received: from serveurQA.phonesystems.net ([62.39.136.157])
-        by smtp.gmail.com with ESMTPSA id z134sm4786325wmc.20.2017.01.20.01.33.34
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 20 Jan 2017 01:33:35 -0800 (PST)
-From:   Sebastien Decourriere <sebtx452@gmail.com>
-To:     linux-mtd@lists.infradead.org
-Cc:     linux-mips@linux-mips.org,
-        Sebastien Decourriere <sebtx452@gmail.com>
-Subject: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness swap is enabled
-Date:   Fri, 20 Jan 2017 10:33:54 +0100
-Message-Id: <1484904834-14980-1-git-send-email-sebtx452@gmail.com>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <sebtx452@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2017 11:02:14 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:45080 "EHLO
+        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993543AbdATKCGprXgn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2017 11:02:06 +0100
+To:     Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 13/13] MIPS: jz4740: Remove custom GPIO code
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Fri, 20 Jan 2017 11:01:35 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        James Hogan <james.hogan@imgtec.com>
+In-Reply-To: <CACRpkdYMm0iWxmEGyQyEz4JfWukXNyGXO1rqw1dSiABgHdA1tQ@mail.gmail.com>
+References: <20170117231421.16310-1-paul@crapouillou.net>
+ <20170117231421.16310-14-paul@crapouillou.net>
+ <CACRpkdYMm0iWxmEGyQyEz4JfWukXNyGXO1rqw1dSiABgHdA1tQ@mail.gmail.com>
+Message-ID: <8944dd20e8ae6ed705dcf69e9f0ed4fd@mail.crapouillou.net>
+X-Sender: paul@crapouillou.net
+Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56429
+X-archive-position: 56430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebtx452@gmail.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,91 +54,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The purpose of this patch is to enable the software address endianness
-swapping only when the in SoC EBU endianness swapping is disabled.
-To perform this check, I look at Bit 30 of the EBU_CON_0 register.
-Actually, the driver expects that the in SoC swapping is disabled.
-This is the case with current bootloaders shuch as U-boot.
+Le 2017-01-19 10:07, Linus Walleij a écrit :
 
-This applies only to vr9 (xrx200) rev 1.2 and ar10 (xrx300).
+> On Wed, Jan 18, 2017 at 12:14 AM, Paul Cercueil <paul@crapouillou.net> 
+> wrote:
+> 
+>> All the drivers for the various hardware elements of the jz4740 SoC 
+>> have been modified to use the pinctrl framework for their pin 
+>> configuration needs. As such, this platform code is now unused and can 
+>> be deleted. Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> 
+> I feel I might have come across as a bit harsh in the previous review 
+> of the
+> patches leading up to this one. In that case I'm sorry.
+> 
+> I can clearly see that the intent of the series is to remove this 
+> hopelessly
+> idiomatic code from the MIPS hurdle, and move these systems over
+> to standard frameworks.
+> 
+> In a way, if I look at the kernel as a whole, it would likely look 
+> better
+> after these patches were merged, than before. Even with the
+> shortcomings I painted out in the previous review comments.
+> 
+> A very complicated piece of messy code is cut from MIPS.
+> 
+> I think this is very valuable work and well worth persuing, so please
+> go ahead and work with the series, your effort is very much 
+> appreciated!
+> 
+> Yours,
+> Linus Walleij
 
-I have a router which uses a proprietary bootloader which keeps
-the in SoC swapping enabled. The SoC in this router is a vrx200 v1.2.
-In this SoC version, I can keep the in SoC swapping without any problem.
+Well thank you for your very constructive criticism ;) And for your 
+review.
+I'll submit a v2 very soon - I don't want to miss the 4.11 merge.
 
-This patch replaces my previous broken patch.
-
-Signed-off-by: Sebastien Decourriere <sebtx452@gmail.com>
----
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |  1 +
- drivers/mtd/maps/lantiq-flash.c                    | 29 +++++++++++++++++++---
- 2 files changed, 27 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index 17b41bb..0ed0896 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -87,6 +87,7 @@ extern __iomem void *ltq_cgu_membase;
- #define LTQ_EBU_PCC_ISTAT	0x00A0
- #define LTQ_EBU_BUSCON1		0x0064
- #define LTQ_EBU_ADDRSEL1	0x0024
-+#define EBU_FLASH_ENDIAN_SWAP	0x40000000
- #define EBU_WRDIS		0x80000000
- 
- /* WDT */
-diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
-index c8febb3..8d628d2 100644
---- a/drivers/mtd/maps/lantiq-flash.c
-+++ b/drivers/mtd/maps/lantiq-flash.c
-@@ -113,6 +113,24 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	struct ltq_mtd *ltq_mtd;
- 	struct cfi_private *cfi;
- 	int err;
-+	bool mtd_addr_swap = true;
-+
-+#ifdef CONFIG_SOC_TYPE_XWAY
-+	/* If SoC is vr9 rev 1.2 or ar10 and EBU endian swap
-+	 *  is enabled, we don't need to do software address swap
-+	 */
-+	if (ltq_ebu_r32(LTQ_EBU_BUSCON0) & EBU_FLASH_ENDIAN_SWAP) {
-+		switch (ltq_soc_type()) {
-+		case SOC_TYPE_VR9_2:
-+		case SOC_TYPE_AR10:
-+			mtd_addr_swap = false;
-+			break;
-+		default:
-+			mtd_addr_swap = true;
-+			break;
-+		}
-+	}
-+#endif
- 
- 	if (of_machine_is_compatible("lantiq,falcon") &&
- 			(ltq_boot_select() != BS_FLASH)) {
-@@ -150,7 +168,10 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	ltq_mtd->map->copy_from = ltq_copy_from;
- 	ltq_mtd->map->copy_to = ltq_copy_to;
- 
--	ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
-+	if (mtd_addr_swap)
-+		ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
-+	else
-+		ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
- 	ltq_mtd->mtd = do_map_probe("cfi_probe", ltq_mtd->map);
- 	ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
- 
-@@ -163,8 +184,10 @@ ltq_mtd_probe(struct platform_device *pdev)
- 	mtd_set_of_node(ltq_mtd->mtd, pdev->dev.of_node);
- 
- 	cfi = ltq_mtd->map->fldrv_priv;
--	cfi->addr_unlock1 ^= 1;
--	cfi->addr_unlock2 ^= 1;
-+	if (mtd_addr_swap) {
-+		cfi->addr_unlock1 ^= 1;
-+		cfi->addr_unlock2 ^= 1;
-+	}
- 
- 	err = mtd_device_register(ltq_mtd->mtd, NULL, 0);
- 	if (err) {
--- 
-2.1.4
+Regards,
+-Paul

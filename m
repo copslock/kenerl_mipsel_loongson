@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2017 15:54:59 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:53166 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2017 15:55:25 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:53212 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993880AbdAVOvBdQSeb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Jan 2017 15:51:01 +0100
+        by eddie.linux-mips.org with ESMTP id S23993888AbdAVOvI0VuOb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Jan 2017 15:51:08 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -20,18 +20,18 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         james.hogan@imgtec.com, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 06/14] MIPS: jz4740: DTS: Add nodes for ingenic pinctrl and gpio drivers
-Date:   Sun, 22 Jan 2017 15:49:39 +0100
-Message-Id: <20170122144947.16158-7-paul@crapouillou.net>
+Subject: [PATCH v2 09/14] MIPS: JZ4780: CI20: Add pinctrl configuration for several drivers
+Date:   Sun, 22 Jan 2017 15:49:42 +0100
+Message-Id: <20170122144947.16158-10-paul@crapouillou.net>
 In-Reply-To: <20170122144947.16158-1-paul@crapouillou.net>
 References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
  <20170122144947.16158-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485096630; bh=wNm51VX/pI6DfKiwlBZ7g4K0p5uMQYN682aDKlnMaVk=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Plofo9LDhmTlsPOjxTQivbFOHKuc1ReB2QcsBg8Wy8f8xl/Atek1v7tdAW6BqL0Mptn12sp0Ga8YiEp8/yKMcsAAmrvQ4C+420OaXZcnlMEio2RjHPpcJUmn/bSyB5mmpT5JKVqq6b23BlLXZK472amznIytuyX5xPB6Do5oULY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485096637; bh=o+Ff4olmVlqDmBnrX8T6Jj+ZpQWvvg8Q/HEkYFuwZ0Y=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=nlrWb6UsYuYBUart63NGyIBeckpqPZV8dzFQ9UjzwtpksmBw0QaVX50KhFepV+iWbH+VzIyLiPJR7Mu6U/zB2IGFdRW0vItRKyCf2umP8B7CshTjublk+6B8YA7lfFe2GcYU6i1baAkmUNpHIRahaRM+72k/23qVconM3VF0boA=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56452
+X-archive-position: 56453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,223 +48,116 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For a description of the pinctrl devicetree node, please read
-Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
-
-For a description of the gpio devicetree nodes, please read
-Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+We set the pin configuration for the jz4780-nand and jz4780-uart
+drivers.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/boot/dts/ingenic/jz4740.dtsi | 194 +++++++++++++++++++++++++++++++++
- 1 file changed, 194 insertions(+)
+ arch/mips/boot/dts/ingenic/ci20.dts | 60 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
 v2: Changed the devicetree bindings to match the new driver
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index 3e1587f1f77a..960e060eb725 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -55,6 +55,200 @@
- 		clock-names = "rtc";
- 	};
+diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+index 1652d8d60b1e..fd138d9978c1 100644
+--- a/arch/mips/boot/dts/ingenic/ci20.dts
++++ b/arch/mips/boot/dts/ingenic/ci20.dts
+@@ -29,18 +29,30 @@
  
-+	pinctrl: ingenic-pinctrl@10010000 {
-+		compatible = "ingenic,jz4740-pinctrl";
-+		reg = <0x10010000 0x400>;
+ &uart0 {
+ 	status = "okay";
 +
-+		ingenic,pull-ups   = <0xffffffff 0xffffffff 0xffffffff 0xdfffffff>;
-+		ingenic,pull-downs = <0x00000000 0x00000000 0x00000000 0x00000000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pins_uart0>;
+ };
+ 
+ &uart1 {
+ 	status = "okay";
 +
-+		functions {
-+			mmc {
-+				mmc-1bit {
-+					/* CLK, CMD, D0 */
-+					ingenic,pins = <0x69 0 0x68 0 0x6a 0>;
-+				};
++	pinctrl-names = "default";
++	pinctrl-0 = <&pins_uart1>;
+ };
+ 
+ &uart3 {
+ 	status = "okay";
 +
-+				mmc-4bit {
-+					/* D1, D2, D3 */
-+					ingenic,pins = <0x6b 0 0x6c 0 0x6d 0>;
-+				};
-+			};
++	pinctrl-names = "default";
++	pinctrl-0 = <&pins_uart2>;
+ };
+ 
+ &uart4 {
+ 	status = "okay";
 +
-+			uart0 {
-+				uart0-data {
-+					/* RXD, TXD */
-+					ingenic,pins = <0x7a 1 0x79 1>;
-+				};
++	pinctrl-names = "default";
++	pinctrl-0 = <&pins_uart4>;
+ };
+ 
+ &nemc {
+@@ -61,6 +73,13 @@
+ 		ingenic,nemc-tAW = <15>;
+ 		ingenic,nemc-tSTRV = <100>;
+ 
++		/*
++		 * Only CLE/ALE are needed for the devices that are connected, rather
++		 * than the full address line set.
++		 */
++		pinctrl-names = "default";
++		pinctrl-0 = <&pins_nemc>;
 +
-+				uart0-hwflow {
-+					/* CTS, RTS */
-+					ingenic,pins = <0x7e 1 0x7f 1>;
-+				};
-+			};
+ 		nand@1 {
+ 			reg = <1>;
+ 
+@@ -69,6 +88,9 @@
+ 			nand-ecc-mode = "hw";
+ 			nand-on-flash-bbt;
+ 
++			pinctrl-names = "default";
++			pinctrl-0 = <&pins_nemc_cs1>;
 +
-+			uart1 {
-+				uart1-data {
-+					/* RXD, TXD */
-+					ingenic,pins = <0x7e 2 0x7f 2>;
-+				};
-+			};
+ 			partitions {
+ 				compatible = "fixed-partitions";
+ 				#address-cells = <2>;
+@@ -106,3 +128,41 @@
+ &bch {
+ 	status = "okay";
+ };
 +
-+			lcd {
-+				lcd-8bit {
-+					/* LCD_DATA0 ... LCD_DATA7, PCLK, HSYNC, VSYNC */
-+					ingenic,pins = <0x40 0 0x41 0 0x42 0 0x43 0
-+									0x44 0 0x45 0 0x46 0 0x47 0
-+									0x52 0 0x53 0 0x54 0>;
-+				};
-+
-+				lcd-16bit {
-+					/* LCD_DATA8 ... LCD_DATA15, DE */
-+					ingenic,pins = <0x48 0 0x49 0 0x4a 0 0x4b 0
-+									0x4c 0 0x4d 0 0x4e 0 0x4f 0
-+									0x55 0>;
-+				};
-+
-+				lcd-18bit {
-+					/* LCD_DATA16, LCD_DATA17 */
-+					ingenic,pins = <0x50 0 0x51 0>;
-+				};
-+
-+				lcd-18bit-tft {
-+					/* PS, REV, CLS, SPL */
-+					ingenic,pins = <0x56 0 0x57 0 0x31 0 0x32 0>;
-+				};
-+
-+				lcd-no-pins {
-+					ingenic,pins = <>;
-+				};
-+			};
-+
-+			nand {
-+				nand {
-+					/* CS1, CS2, CS3, CS4 */
-+					ingenic,pins = <0x39 0 0x3a 0 0x3b 0 0x3c 0>;
-+				};
-+			};
-+
-+			pwm0 {
-+				pwm0 {
-+					ingenic,pins = <0x77 0>;
-+				};
-+			};
-+
-+			pwm1 {
-+				pwm1 {
-+					ingenic,pins = <0x78 0>;
-+				};
-+			};
-+
-+			pwm2 {
-+				pwm2 {
-+					ingenic,pins = <0x79 0>;
-+				};
-+			};
-+
-+			pwm3 {
-+				pwm3 {
-+					ingenic,pins = <0x7a 0>;
-+				};
-+			};
-+
-+			pwm4 {
-+				pwm4 {
-+					ingenic,pins = <0x7b 0>;
-+				};
-+			};
-+
-+			pwm5 {
-+				pwm5 {
-+					ingenic,pins = <0x7c 0>;
-+				};
-+			};
-+
-+			pwm6 {
-+				pwm6 {
-+					ingenic,pins = <0x7e 0>;
-+				};
-+			};
-+
-+			pwm7 {
-+				pwm7 {
-+					ingenic,pins = <0x7f 0>;
-+				};
-+			};
-+		};
++&pinctrl {
++	pins_uart0: uart0 {
++		function = "uart0";
++		groups = "uart0-data";
++		bias-disable;
 +	};
 +
-+	gpa: gpio-controller@10010000 {
-+		compatible = "ingenic,jz4740-gpio";
-+		reg = <0x10010000 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 0 32>;
-+		#gpio-cells = <2>;
-+
-+		base = <0x00>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <28>;
++	pins_uart1: uart1 {
++		function = "uart1";
++		groups = "uart1-data";
++		bias-disable;
 +	};
 +
-+	gpb: gpio-controller@10010100 {
-+		compatible = "ingenic,jz4740-gpio";
-+		reg = <0x10010100 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 32 32>;
-+		#gpio-cells = <2>;
-+
-+		base = <0x20>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <27>;
++	pins_uart2: uart2 {
++		function = "uart2";
++		groups = "uart2-data", "uart2-hwflow";
++		bias-disable;
 +	};
 +
-+	gpc: gpio-controller@10010200 {
-+		compatible = "ingenic,jz4740-gpio";
-+		reg = <0x10010200 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 64 32>;
-+		#gpio-cells = <2>;
-+
-+		base = <0x40>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <26>;
++	pins_uart4: uart4 {
++		function = "uart4";
++		groups = "uart4-data";
++		bias-disable;
 +	};
 +
-+	gpd: gpio-controller@10010300 {
-+		compatible = "ingenic,jz4740-gpio";
-+		reg = <0x10010300 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 96 32>;
-+		#gpio-cells = <2>;
-+
-+		base = <0x60>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <25>;
++	pins_nemc: nemc {
++		function = "nemc";
++		groups = "nemc-data", "nemc-cle-ale", "nemc-rd-we", "nemc-frd-fwe";
++		bias-disable;
 +	};
 +
- 	uart0: serial@10030000 {
- 		compatible = "ingenic,jz4740-uart";
- 		reg = <0x10030000 0x100>;
++	pins_nemc_cs1: nemc-cs1 {
++		function = "nemc-cs1";
++		groups = "nemc-cs1";
++		bias-disable;
++	};
++};
 -- 
 2.11.0

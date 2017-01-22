@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2017 15:52:54 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:50940 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2017 15:53:18 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:52010 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993876AbdAVOumrQrhb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Jan 2017 15:50:42 +0100
+        by eddie.linux-mips.org with ESMTP id S23991970AbdAVOupNZ-pb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Jan 2017 15:50:45 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -20,18 +20,18 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         james.hogan@imgtec.com, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 11/14] mtd: nand: jz4740: Let the pinctrl driver configure the pins
-Date:   Sun, 22 Jan 2017 15:49:44 +0100
-Message-Id: <20170122144947.16158-12-paul@crapouillou.net>
+Subject: [PATCH v2 12/14] fbdev: jz4740-fb: Let the pinctrl driver configure the pins
+Date:   Sun, 22 Jan 2017 15:49:45 +0100
+Message-Id: <20170122144947.16158-13-paul@crapouillou.net>
 In-Reply-To: <20170122144947.16158-1-paul@crapouillou.net>
 References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
  <20170122144947.16158-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485096642; bh=VNH/f+vBG588VjGWQJJnE4SIG90Fp1hHTcKCVLdfo6Y=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=w9BzLmV+34WmhcN0Akb2O7s2yFrgrIV3WC4WNle7qpEAkd+y9wbYVxM2yGOE9vA1euoTszUu5AHxS5dMp3ImQDegk7nYvnMs08tvH6VpC7QmzlksEdr+zNGblE+554sp96GOOn5blqc9p0glALuYl1mSZsrw75UdY/hyTRmlHZg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485096644; bh=Bmr+/HlSE09KfTUQdvPjrzlDb9/673H/K0B4/95nX0Q=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=c7E1v6S7zyV3+IYXx43oWLXexXm0dCLOiSfJ4Vujec8COO9vJn91fbmJlJHnNqlaEm/k+B5fyOY5XmsPzZzdcyN2OMg+5S8YWMKNwT+sqlOI2koo9GU7XK5zXNu5CDGmwnTgnabHYGB+Ya7C2DakbjXHFILewcKUCJ1bHIXTZbo=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56447
+X-archive-position: 56448
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,95 +48,179 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Before, this NAND driver would set itself the configuration of the
-chip-select pins for the various NAND banks.
-
 Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
 the pins being properly configured before the driver probes.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- drivers/mtd/nand/jz4740_nand.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+ drivers/video/fbdev/jz4740_fb.c | 104 ++--------------------------------------
+ 1 file changed, 3 insertions(+), 101 deletions(-)
 
 v2: No changes
 
-diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
-index 5551c36adbdf..0d06a1f07d82 100644
---- a/drivers/mtd/nand/jz4740_nand.c
-+++ b/drivers/mtd/nand/jz4740_nand.c
-@@ -25,7 +25,6 @@
+diff --git a/drivers/video/fbdev/jz4740_fb.c b/drivers/video/fbdev/jz4740_fb.c
+index 87790e9644d0..b57df83fdbd3 100644
+--- a/drivers/video/fbdev/jz4740_fb.c
++++ b/drivers/video/fbdev/jz4740_fb.c
+@@ -17,6 +17,7 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/platform_device.h>
++#include <linux/pinctrl/consumer.h>
  
- #include <linux/gpio.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+@@ -27,7 +28,6 @@
+ #include <linux/dma-mapping.h>
  
+ #include <asm/mach-jz4740/jz4740_fb.h>
 -#include <asm/mach-jz4740/gpio.h>
- #include <asm/mach-jz4740/jz4740_nand.h>
  
- #define JZ_REG_NAND_CTRL	0x50
-@@ -310,34 +309,20 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
- 			       uint8_t *nand_dev_id)
- {
- 	int ret;
--	int gpio;
--	char gpio_name[9];
- 	char res_name[6];
- 	uint32_t ctrl;
- 	struct nand_chip *chip = &nand->chip;
- 	struct mtd_info *mtd = nand_to_mtd(chip);
+ #define JZ_REG_LCD_CFG		0x00
+ #define JZ_REG_LCD_VSYNC	0x04
+@@ -146,93 +146,6 @@ static const struct fb_fix_screeninfo jzfb_fix = {
+ 	.accel		= FB_ACCEL_NONE,
+ };
  
--	/* Request GPIO port. */
--	gpio = JZ_GPIO_MEM_CS0 + bank - 1;
--	sprintf(gpio_name, "NAND CS%d", bank);
--	ret = gpio_request(gpio, gpio_name);
--	if (ret) {
--		dev_warn(&pdev->dev,
--			"Failed to request %s gpio %d: %d\n",
--			gpio_name, gpio, ret);
--		goto notfound_gpio;
--	}
+-static const struct jz_gpio_bulk_request jz_lcd_ctrl_pins[] = {
+-	JZ_GPIO_BULK_PIN(LCD_PCLK),
+-	JZ_GPIO_BULK_PIN(LCD_HSYNC),
+-	JZ_GPIO_BULK_PIN(LCD_VSYNC),
+-	JZ_GPIO_BULK_PIN(LCD_DE),
+-	JZ_GPIO_BULK_PIN(LCD_PS),
+-	JZ_GPIO_BULK_PIN(LCD_REV),
+-	JZ_GPIO_BULK_PIN(LCD_CLS),
+-	JZ_GPIO_BULK_PIN(LCD_SPL),
+-};
 -
- 	/* Request I/O resource. */
- 	sprintf(res_name, "bank%d", bank);
- 	ret = jz_nand_ioremap_resource(pdev, res_name,
- 					&nand->bank_mem[bank - 1],
- 					&nand->bank_base[bank - 1]);
- 	if (ret)
--		goto notfound_resource;
-+		return ret;
+-static const struct jz_gpio_bulk_request jz_lcd_data_pins[] = {
+-	JZ_GPIO_BULK_PIN(LCD_DATA0),
+-	JZ_GPIO_BULK_PIN(LCD_DATA1),
+-	JZ_GPIO_BULK_PIN(LCD_DATA2),
+-	JZ_GPIO_BULK_PIN(LCD_DATA3),
+-	JZ_GPIO_BULK_PIN(LCD_DATA4),
+-	JZ_GPIO_BULK_PIN(LCD_DATA5),
+-	JZ_GPIO_BULK_PIN(LCD_DATA6),
+-	JZ_GPIO_BULK_PIN(LCD_DATA7),
+-	JZ_GPIO_BULK_PIN(LCD_DATA8),
+-	JZ_GPIO_BULK_PIN(LCD_DATA9),
+-	JZ_GPIO_BULK_PIN(LCD_DATA10),
+-	JZ_GPIO_BULK_PIN(LCD_DATA11),
+-	JZ_GPIO_BULK_PIN(LCD_DATA12),
+-	JZ_GPIO_BULK_PIN(LCD_DATA13),
+-	JZ_GPIO_BULK_PIN(LCD_DATA14),
+-	JZ_GPIO_BULK_PIN(LCD_DATA15),
+-	JZ_GPIO_BULK_PIN(LCD_DATA16),
+-	JZ_GPIO_BULK_PIN(LCD_DATA17),
+-};
+-
+-static unsigned int jzfb_num_ctrl_pins(struct jzfb *jzfb)
+-{
+-	unsigned int num;
+-
+-	switch (jzfb->pdata->lcd_type) {
+-	case JZ_LCD_TYPE_GENERIC_16_BIT:
+-		num = 4;
+-		break;
+-	case JZ_LCD_TYPE_GENERIC_18_BIT:
+-		num = 4;
+-		break;
+-	case JZ_LCD_TYPE_8BIT_SERIAL:
+-		num = 3;
+-		break;
+-	case JZ_LCD_TYPE_SPECIAL_TFT_1:
+-	case JZ_LCD_TYPE_SPECIAL_TFT_2:
+-	case JZ_LCD_TYPE_SPECIAL_TFT_3:
+-		num = 8;
+-		break;
+-	default:
+-		num = 0;
+-		break;
+-	}
+-	return num;
+-}
+-
+-static unsigned int jzfb_num_data_pins(struct jzfb *jzfb)
+-{
+-	unsigned int num;
+-
+-	switch (jzfb->pdata->lcd_type) {
+-	case JZ_LCD_TYPE_GENERIC_16_BIT:
+-		num = 16;
+-		break;
+-	case JZ_LCD_TYPE_GENERIC_18_BIT:
+-		num = 18;
+-		break;
+-	case JZ_LCD_TYPE_8BIT_SERIAL:
+-		num = 8;
+-		break;
+-	case JZ_LCD_TYPE_SPECIAL_TFT_1:
+-	case JZ_LCD_TYPE_SPECIAL_TFT_2:
+-	case JZ_LCD_TYPE_SPECIAL_TFT_3:
+-		if (jzfb->pdata->bpp == 18)
+-			num = 18;
+-		else
+-			num = 16;
+-		break;
+-	default:
+-		num = 0;
+-		break;
+-	}
+-	return num;
+-}
+-
+ /* Based on CNVT_TOHW macro from skeletonfb.c */
+ static inline uint32_t jzfb_convert_color_to_hw(unsigned val,
+ 	struct fb_bitfield *bf)
+@@ -487,8 +400,7 @@ static void jzfb_enable(struct jzfb *jzfb)
  
- 	/* Enable chip in bank. */
--	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_MEM_CS0);
- 	ctrl = readl(nand->base + JZ_REG_NAND_CTRL);
- 	ctrl |= JZ_NAND_CTRL_ENABLE_CHIP(bank - 1);
- 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
-@@ -377,12 +362,8 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
- 	dev_info(&pdev->dev, "No chip found on bank %i\n", bank);
- 	ctrl &= ~(JZ_NAND_CTRL_ENABLE_CHIP(bank - 1));
- 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
--	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
- 	jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 				 nand->bank_base[bank - 1]);
--notfound_resource:
--	gpio_free(gpio);
--notfound_gpio:
- 	return ret;
+ 	clk_prepare_enable(jzfb->ldclk);
+ 
+-	jz_gpio_bulk_resume(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
+-	jz_gpio_bulk_resume(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
++	pinctrl_pm_select_default_state(&jzfb->pdev->dev);
+ 
+ 	writel(0, jzfb->base + JZ_REG_LCD_STATE);
+ 
+@@ -511,8 +423,7 @@ static void jzfb_disable(struct jzfb *jzfb)
+ 		ctrl = readl(jzfb->base + JZ_REG_LCD_STATE);
+ 	} while (!(ctrl & JZ_LCD_STATE_DISABLED));
+ 
+-	jz_gpio_bulk_suspend(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
+-	jz_gpio_bulk_suspend(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
++	pinctrl_pm_select_sleep_state(&jzfb->pdev->dev);
+ 
+ 	clk_disable_unprepare(jzfb->ldclk);
  }
+@@ -701,9 +612,6 @@ static int jzfb_probe(struct platform_device *pdev)
+ 	fb->mode = NULL;
+ 	jzfb_set_par(fb);
  
-@@ -503,7 +484,6 @@ static int jz_nand_probe(struct platform_device *pdev)
- err_unclaim_banks:
- 	while (chipnr--) {
- 		unsigned char bank = nand->banks[chipnr];
--		gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
- 		jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 					 nand->bank_base[bank - 1]);
- 	}
-@@ -530,7 +510,6 @@ static int jz_nand_remove(struct platform_device *pdev)
- 		if (bank != 0) {
- 			jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 						 nand->bank_base[bank - 1]);
--			gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
- 		}
- 	}
+-	jz_gpio_bulk_request(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
+-	jz_gpio_bulk_request(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
+-
+ 	ret = register_framebuffer(fb);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to register framebuffer: %d\n", ret);
+@@ -715,9 +623,6 @@ static int jzfb_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ err_free_devmem:
+-	jz_gpio_bulk_free(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
+-	jz_gpio_bulk_free(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
+-
+ 	fb_dealloc_cmap(&fb->cmap);
+ 	jzfb_free_devmem(jzfb);
+ err_framebuffer_release:
+@@ -731,9 +636,6 @@ static int jzfb_remove(struct platform_device *pdev)
+ 
+ 	jzfb_blank(FB_BLANK_POWERDOWN, jzfb->fb);
+ 
+-	jz_gpio_bulk_free(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
+-	jz_gpio_bulk_free(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
+-
+ 	fb_dealloc_cmap(&jzfb->fb->cmap);
+ 	jzfb_free_devmem(jzfb);
  
 -- 
 2.11.0

@@ -1,45 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2017 20:50:34 +0100 (CET)
-Received: from s15-gw102.mycloudmailbox.com ([207.126.101.39]:38676 "EHLO
-        S15-GW102.mycloudmailbox.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992136AbdAWTu1RMDDN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2017 20:50:27 +0100
-Received: from relay301.mycloudmailbox.com (unknown [207.126.101.249])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by S15-GW102.mycloudmailbox.com (Postfix) with ESMTPS id 3v6hk86mlQz2SX03;
-        Mon, 23 Jan 2017 14:50:24 -0500 (EST)
-Received: from S12-MBX11-14.S12.local (10.40.128.43) by S15-MBX102.S15.local
- (10.40.140.12) with Microsoft SMTP Server (TLS) id 15.1.466.34; Mon, 23 Jan
- 2017 14:50:24 -0500
-Received: from localhost.localdomain (10.40.130.245) by S12-MBX11-14.S12.local
- (10.40.128.43) with Microsoft SMTP Server (TLS) id 15.0.1236.3; Mon, 23 Jan
- 2017 14:50:23 -0500
-From:   Dan Haab <dhaab@luxul.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        <linux-mips@linux-mips.org>, Dan Haab <dhaab@luxul.com>
-Subject: [PATCH] MIPS: BCM47XX: Add Luxul devices to the database
-Date:   Mon, 23 Jan 2017 12:50:38 -0700
-Message-ID: <1485201038-15834-1-git-send-email-dhaab@luxul.com>
-X-Mailer: git-send-email 1.7.9.5
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.40.130.245]
-X-ClientProxiedBy: S12-CAS101.S12.local (10.40.128.90) To
- S12-MBX11-14.S12.local (10.40.128.43)
-X-RoutingAgent: Treated
-X-CrossPremisesHeadersFilteredBySendConnector: S15-MBX102.S15.local
-X-OrganizationHeadersPreserved: S15-MBX102.S15.local
-Return-Path: <dhaab@luxul.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2017 23:26:24 +0100 (CET)
+Received: from lpdvsmtp01.broadcom.com ([192.19.211.62]:56872 "EHLO
+        relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992186AbdAWW0QI0Jee (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2017 23:26:16 +0100
+Received: from mail-irv-17.broadcom.com (mail-irv-17.broadcom.com [10.15.198.34])
+        by relay.smtp.broadcom.com (Postfix) with ESMTP id 2AE5128059A;
+        Mon, 23 Jan 2017 14:26:12 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 relay.smtp.broadcom.com 2AE5128059A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1485210372;
+        bh=1TLWAuF9pl8djETsX3nhJyYriuN4+vypOoOoOm+cSOo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KI8riUwPYt2JeW+4RhT15dOxcaIiuTaCkugyy5LxqwbjVg1b3n76QfZKgas6Fy7JD
+         X4RNCGC5KFkhzC+3cjRJMnj2psbTys+M/OTC89umTpFihEF0COVSH7SoRTKF6FyP88
+         Dd0sO0rp1cjWPliCeorqxq74KgIrDq0J8O8PhsCc=
+Received: from stb-bld-02.irv.broadcom.com (stb-bld-02.broadcom.com [10.13.134.28])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 77D1E81F52;
+        Mon, 23 Jan 2017 14:26:11 -0800 (PST)
+From:   justinpopo6@gmail.com
+To:     linux-mips@linux-mips.org
+Cc:     bcm-kernel-feedback-list@broadcom.com, leonid.yegoshin@imgtec.com,
+        f.fainelli@gmail.com, mattredfearn@imgtec.com,
+        Justin Chen <justinpopo6@gmail.com>
+Subject: [PATCH] MIPS: Add cacheinfo support
+Date:   Mon, 23 Jan 2017 14:26:00 -0800
+Message-Id: <20170123222600.31953-1-justinpopo6@gmail.com>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <justinpopo6@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56472
+X-archive-position: 56473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhaab@luxul.com
+X-original-sender: justinpopo6@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,246 +47,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-So far only Luxul XWR-1750 router was supported. This adds a set of
-other Luxul devices based on BCM47XX. It's a standard support for LEDs
-and buttons.
+From: Justin Chen <justinpopo6@gmail.com>
 
-Signed-off-by: Dan Haab <dhaab@luxul.com>
+Add cacheinfo support for MIPS architectures.
+
+Use information from the cpuinfo_mips struct to populate the
+cacheinfo struct. This allows an architecture agnostic approach,
+however this also means if cache information is not properly
+populated within the cpuinfo_mips struct, there is nothing
+we can do. (I.E. c-r3k.c)
+
+Signed-off-by: Justin Chen <justinpopo6@gmail.com>
 ---
- arch/mips/bcm47xx/board.c                          |    9 +++
- arch/mips/bcm47xx/buttons.c                        |   72 +++++++++++++++++
- arch/mips/bcm47xx/leds.c                           |   81 ++++++++++++++++++++
- arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h |    9 +++
- 4 files changed, 171 insertions(+)
+ arch/mips/kernel/Makefile    |  8 ++--
+ arch/mips/kernel/cacheinfo.c | 90 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 94 insertions(+), 4 deletions(-)
+ create mode 100644 arch/mips/kernel/cacheinfo.c
 
-diff --git a/arch/mips/bcm47xx/board.c b/arch/mips/bcm47xx/board.c
-index a88975a..8cbe60c 100644
---- a/arch/mips/bcm47xx/board.c
-+++ b/arch/mips/bcm47xx/board.c
-@@ -149,6 +149,15 @@ struct bcm47xx_board_type_list2 bcm47xx_board_list_boot_hw[] __initconst = {
- /* board_id */
- static const
- struct bcm47xx_board_type_list1 bcm47xx_board_list_board_id[] __initconst = {
-+	{{BCM47XX_BOARD_LUXUL_ABR_4400_V1, "Luxul ABR-4400 V1"}, "luxul_abr4400_v1"},
-+	{{BCM47XX_BOARD_LUXUL_XAP_310_V1, "Luxul XAP-310 V1"}, "luxul_xap310_v1"},
-+	{{BCM47XX_BOARD_LUXUL_XAP_1210_V1, "Luxul XAP-1210 V1"}, "luxul_xap1210_v1"},
-+	{{BCM47XX_BOARD_LUXUL_XAP_1230_V1, "Luxul XAP-1230 V1"}, "luxul_xap1230_v1"},
-+	{{BCM47XX_BOARD_LUXUL_XAP_1240_V1, "Luxul XAP-1240 V1"}, "luxul_xap1240_v1"},
-+	{{BCM47XX_BOARD_LUXUL_XAP_1500_V1, "Luxul XAP-1500 V1"}, "luxul_xap1500_v1"},
-+	{{BCM47XX_BOARD_LUXUL_XBR_4400_V1, "Luxul XBR-4400 V1"}, "luxul_xbr4400_v1"},
-+	{{BCM47XX_BOARD_LUXUL_XVW_P30_V1, "Luxul XVW-P30 V1"}, "luxul_xvwp30_v1"},
-+	{{BCM47XX_BOARD_LUXUL_XWR_600_V1, "Luxul XWR-600 V1"}, "luxul_xwr600_v1"},
- 	{{BCM47XX_BOARD_LUXUL_XWR_1750_V1, "Luxul XWR-1750 V1"}, "luxul_xwr1750_v1"},
- 	{{BCM47XX_BOARD_NETGEAR_WGR614V8, "Netgear WGR614 V8"}, "U12H072T00_NETGEAR"},
- 	{{BCM47XX_BOARD_NETGEAR_WGR614V9, "Netgear WGR614 V9"}, "U12H094T00_NETGEAR"},
-diff --git a/arch/mips/bcm47xx/buttons.c b/arch/mips/bcm47xx/buttons.c
-index 52caa75..7d58227 100644
---- a/arch/mips/bcm47xx/buttons.c
-+++ b/arch/mips/bcm47xx/buttons.c
-@@ -302,6 +302,51 @@
- /* Luxul */
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 4a603a3ea657..712c1ae6afdc 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -4,10 +4,10 @@
  
- static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_abr_4400_v1[] = {
-+	BCM47XX_GPIO_KEY(14, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_xap_310_v1[] = {
-+	BCM47XX_GPIO_KEY(20, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_xap_1210_v1[] = {
-+	BCM47XX_GPIO_KEY(8, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_xap_1230_v1[] = {
-+	BCM47XX_GPIO_KEY(8, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_xap_1240_v1[] = {
-+	BCM47XX_GPIO_KEY(8, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_xap_1500_v1[] = {
-+	BCM47XX_GPIO_KEY(14, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_xbr_4400_v1[] = {
-+	BCM47XX_GPIO_KEY(14, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_xvw_p30_v1[] = {
-+	BCM47XX_GPIO_KEY(20, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
-+bcm47xx_buttons_luxul_xwr_600_v1[] = {
-+	BCM47XX_GPIO_KEY(8, KEY_RESTART),
-+};
-+
-+static const struct gpio_keys_button
- bcm47xx_buttons_luxul_xwr_1750_v1[] = {
- 	BCM47XX_GPIO_KEY(14, BTN_TASK),
- };
-@@ -561,6 +606,33 @@ int __init bcm47xx_buttons_register(void)
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_linksys_wrtsl54gs);
- 		break;
+ extra-y		:= head.o vmlinux.lds
  
-+	case BCM47XX_BOARD_LUXUL_ABR_4400_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_abr_4400_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_310_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xap_310_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_1210_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xap_1210_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_1230_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xap_1230_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_1240_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xap_1240_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_1500_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xap_1500_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XBR_4400_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xbr_4400_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XVW_P30_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xvw_p30_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XWR_600_V1:
-+		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xwr_600_v1);
-+		break;
- 	case BCM47XX_BOARD_LUXUL_XWR_1750_V1:
- 		err = bcm47xx_copy_bdata(bcm47xx_buttons_luxul_xwr_1750_v1);
- 		break;
-diff --git a/arch/mips/bcm47xx/leds.c b/arch/mips/bcm47xx/leds.c
-index d20ae63..a35f1d5 100644
---- a/arch/mips/bcm47xx/leds.c
-+++ b/arch/mips/bcm47xx/leds.c
-@@ -373,6 +373,60 @@
- /* Luxul */
+-obj-y		+= cpu-probe.o branch.o elf.o entry.o genex.o idle.o irq.o \
+-		   process.o prom.o ptrace.o reset.o setup.o signal.o \
+-		   syscall.o time.o topology.o traps.o unaligned.o watch.o \
+-		   vdso.o
++obj-y		+= cpu-probe.o branch.o cacheinfo.o elf.o entry.o genex.o \
++		   idle.o irq.o process.o prom.o ptrace.o reset.o setup.o \
++		   signal.o syscall.o time.o topology.o traps.o unaligned.o \
++		   watch.o vdso.o
  
- static const struct gpio_led
-+bcm47xx_leds_luxul_abr_4400_v1[] __initconst = {
-+	BCM47XX_GPIO_LED(12, "green", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED_TRIGGER(15, "green", "status", 0, "timer"),
-+};
+ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_ftrace.o = -pg
+diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
+new file mode 100644
+index 000000000000..11e6ad7ed0d2
+--- /dev/null
++++ b/arch/mips/kernel/cacheinfo.c
+@@ -0,0 +1,90 @@
++/*
++ * MIPS cacheinfo support
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed "as is" WITHOUT ANY WARRANTY of any
++ * kind, whether express or implied; without even the implied warranty
++ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++#include <linux/cacheinfo.h>
 +
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xap_310_v1[] __initconst = {
-+	BCM47XX_GPIO_LED_TRIGGER(6, "green", "status", 1, "timer"),
-+};
++/* Populates leaf and increments to next leaf */
++#define populate_cache(cache, leaf, c_level, c_type)		\
++	leaf->type = c_type;					\
++	leaf->level = c_level;					\
++	leaf->coherency_line_size = cache.linesz;		\
++	leaf->number_of_sets = cache.sets;			\
++	leaf->ways_of_associativity = cache.ways;		\
++	leaf->size = cache.linesz * cache.sets * cache.ways;
 +
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xap_1210_v1[] __initconst = {
-+	BCM47XX_GPIO_LED_TRIGGER(6, "green", "status", 1, "timer"),
-+};
++static int __init_cache_level(unsigned int cpu)
++{
++	struct cpuinfo_mips *c = &current_cpu_data;
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
++	int levels = 0, leaves = 0;
 +
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xap_1230_v1[] __initconst = {
-+	BCM47XX_GPIO_LED(3, "blue", "2ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(4, "green", "bridge", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED_TRIGGER(6, "green", "status", 1, "timer"),
-+};
++	/*
++	 * If Dcache is not set, we assume the cache structures
++	 * are not properly initialized.
++	 */
++	if (c->dcache.waysize)
++		levels += 1;
++	else
++		return -ENOENT;
 +
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xap_1240_v1[] __initconst = {
-+	BCM47XX_GPIO_LED(3, "blue", "2ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED(4, "green", "bridge", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED_TRIGGER(6, "green", "status", 1, "timer"),
-+};
++	leaves += (c->icache.waysize) ? 2 : 1;
 +
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xap_1500_v1[] __initconst = {
-+	BCM47XX_GPIO_LED_TRIGGER(13, "green", "status", 1, "timer"),
-+};
++	if (c->scache.waysize) {
++		levels++;
++		leaves++;
++	}
 +
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xbr_4400_v1[] __initconst = {
-+	BCM47XX_GPIO_LED(12, "green", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED_TRIGGER(15, "green", "status", 0, "timer"),
-+};
++	if (c->tcache.waysize) {
++		levels++;
++		leaves++;
++	}
 +
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xvw_p30_v1[] __initconst = {
-+	BCM47XX_GPIO_LED_TRIGGER(0, "blue", "status", 1, "timer"),
-+	BCM47XX_GPIO_LED(1, "green", "link", 1, LEDS_GPIO_DEFSTATE_OFF),
-+};
++	this_cpu_ci->num_levels = levels;
++	this_cpu_ci->num_leaves = leaves;
 +
-+static const struct gpio_led
-+bcm47xx_leds_luxul_xwr_600_v1[] __initconst = {
-+	BCM47XX_GPIO_LED(3, "green", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
-+	BCM47XX_GPIO_LED_TRIGGER(6, "green", "status", 1, "timer"),
-+	BCM47XX_GPIO_LED(9, "green", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
-+};
++	return 0;
++}
 +
-+static const struct gpio_led
- bcm47xx_leds_luxul_xwr_1750_v1[] __initconst = {
- 	BCM47XX_GPIO_LED(5, "green", "5ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
- 	BCM47XX_GPIO_LED(12, "green", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
-@@ -633,6 +687,33 @@ void __init bcm47xx_leds_register(void)
- 		bcm47xx_set_pdata(bcm47xx_leds_linksys_wrtsl54gs);
- 		break;
- 
-+	case BCM47XX_BOARD_LUXUL_ABR_4400_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_abr_4400_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_310_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_xap_310_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_1210_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_xap_1210_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_1230_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_xap_1230_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_1240_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_xap_1240_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XAP_1500_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_xap_1500_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XBR_4400_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_xbr_4400_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XVW_P30_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_xvw_p30_v1);
-+		break;
-+	case BCM47XX_BOARD_LUXUL_XWR_600_V1:
-+		bcm47xx_set_pdata(bcm47xx_leds_luxul_xwr_600_v1);
-+		break;
- 	case BCM47XX_BOARD_LUXUL_XWR_1750_V1:
- 		bcm47xx_set_pdata(bcm47xx_leds_luxul_xwr_1750_v1);
- 		break;
-diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-index 2afb840..ee3d4fe 100644
---- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
-@@ -80,6 +80,15 @@ enum bcm47xx_board {
- 	BCM47XX_BOARD_LINKSYS_WRT610NV2,
- 	BCM47XX_BOARD_LINKSYS_WRTSL54GS,
- 
-+	BCM47XX_BOARD_LUXUL_ABR_4400_V1,
-+	BCM47XX_BOARD_LUXUL_XAP_310_V1,
-+	BCM47XX_BOARD_LUXUL_XAP_1210_V1,
-+	BCM47XX_BOARD_LUXUL_XAP_1230_V1,
-+	BCM47XX_BOARD_LUXUL_XAP_1240_V1,
-+	BCM47XX_BOARD_LUXUL_XAP_1500_V1,
-+	BCM47XX_BOARD_LUXUL_XBR_4400_V1,
-+	BCM47XX_BOARD_LUXUL_XVW_P30_V1,
-+	BCM47XX_BOARD_LUXUL_XWR_600_V1,
- 	BCM47XX_BOARD_LUXUL_XWR_1750_V1,
- 
- 	BCM47XX_BOARD_MICROSOFT_MN700,
++static int __populate_cache_leaves(unsigned int cpu)
++{
++	struct cpuinfo_mips *c = &current_cpu_data;
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
++	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
++
++	if (c->icache.waysize) {
++		populate_cache(c->dcache, this_leaf, 1, CACHE_TYPE_DATA);
++		this_leaf++;
++		populate_cache(c->icache, this_leaf, 1, CACHE_TYPE_INST);
++		this_leaf++;
++	} else {
++		populate_cache(c->dcache, this_leaf, 1, CACHE_TYPE_UNIFIED);
++		this_leaf++;
++	}
++
++	if (c->scache.waysize) {
++		populate_cache(c->scache, this_leaf, 2, CACHE_TYPE_UNIFIED);
++		this_leaf++;
++	}
++
++	if (c->tcache.waysize) {
++		populate_cache(c->tcache, this_leaf, 3, CACHE_TYPE_UNIFIED);
++		this_leaf++;
++	}
++
++	return 0;
++}
++
++DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
++DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
 -- 
-1.7.9.5
+2.11.0

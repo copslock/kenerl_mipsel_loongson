@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2017 08:55:23 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44204 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2017 08:55:57 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:4823 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990506AbdAWHzLJCnzi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2017 08:55:11 +0100
+        with ESMTP id S23991957AbdAWHzXfB5Li (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2017 08:55:23 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 6A1869B6B9501;
-        Mon, 23 Jan 2017 07:55:01 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 00B66100E3C39;
+        Mon, 23 Jan 2017 07:55:15 +0000 (GMT)
 Received: from [10.80.2.5] (10.80.2.5) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 23 Jan
- 2017 07:55:03 +0000
-Subject: Re: [PATCH 00/21] MIPS memblock: Remove bootmem code and switch to
- NO_BOOTMEM
+ 2017 07:55:16 +0000
+Subject: Re: [PATCH 04/21] MIPS memblock: Alter user-defined memory parameter
+ parser
 To:     Serge Semin <fancer.lancer@gmail.com>, <ralf@linux-mips.org>,
         <paul.burton@imgtec.com>, <rabinv@axis.com>,
         <matt.redfearn@imgtec.com>, <james.hogan@imgtec.com>,
         <alexander.sverdlin@nokia.com>, <robh+dt@kernel.org>,
         <frowand.list@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
+ <1482113266-13207-5-git-send-email-fancer.lancer@gmail.com>
 CC:     <Sergey.Semin@t-platforms.ru>, <linux-mips@linux-mips.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Message-ID: <7c333d34-fda6-9302-b84e-c0785c23733e@imgtec.com>
-Date:   Mon, 23 Jan 2017 08:55:02 +0100
+Message-ID: <756b9060-7a21-ad23-9e74-50670f42753e@imgtec.com>
+Date:   Mon, 23 Jan 2017 08:55:16 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.5.1
 MIME-Version: 1.0
-In-Reply-To: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
+In-Reply-To: <1482113266-13207-5-git-send-email-fancer.lancer@gmail.com>
 Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.2.5]
@@ -33,7 +34,7 @@ Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56462
+X-archive-position: 56463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,79 +53,117 @@ X-list: linux-mips
 
 Hi Serge,
 
-Thanks for this patch series, it's really useful. I've tested it on 
-Malta and Ci40 and it seems to work well (I've posted a few small 
-comments separately).
-
-
 On 19.12.2016 03:07, Serge Semin wrote:
-> Most of the modern platforms supported by linux kernel have already
-> been cleaned up of old bootmem allocator by moving to nobootmem
-> interface wrapping up the memblock. This patchset is the first
-> attempt to do the similar improvement for MIPS for UMA systems
-> only.
+> Both new memblock and boot_mem_map subsystems need to be fully
+> cleared before a new memory region is added. So the early parser is
+> correspondingly modified.
 >
-> Even though the porting was performed as much careful as possible
-> there still might be problem with support of some platforms,
-> especially Loonson3 or SGI IP27, which perform early memory manager
-> initialization by their self.
-
-> The patchset is split so individual patch being consistent in
-> functional and buildable ways. But the MIPS early memory manager
-> will work correctly only either with or without the whole set being
-> applied. For the same reason a reviewer should not pay much attention
-> to methods bootmem_init(), arch_mem_init(), paging_init() and
-> mem_init() until they are fully refactored.
-
-I'm not sure this can be merged that way? It would be up to Ralf to 
-decide, but it is generally expected that all intermediate patches not 
-only build, but also work correctly. I understand that this might be 
-difficult to achieve given the scale of changes required here.
-
-> The patchset is applied on top of kernel v4.9.
-
-Can you please work on cleaning up the issues discussed in the comments 
-so far as well as rebasing (and updating) the changes onto linux-next? 
-There are a few patches I made related to kexec and kernel relocation 
-that will force changes in your code (although I admit that the changes 
-I did for kexec/relocation were in some places unnecessarily complex 
-because of the mess in the bootmem handling in MIPS that you are now 
-trying to clean up).
-
-
-Thanks,
-Marcin
-
 > Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+> ---
+>  arch/mips/kernel/setup.c | 67 +++++++++++++++++-------------
+>  1 file changed, 37 insertions(+), 30 deletions(-)
 >
-> Serge Semin (21):
->   MIPS memblock: Unpin dts memblock sanity check method
->   MIPS memblock: Add dts mem and reserved-mem callbacks
->   MIPS memblock: Alter traditional add_memory_region() method
->   MIPS memblock: Alter user-defined memory parameter parser
->   MIPS memblock: Alter initrd memory reservation method
->   MIPS memblock: Alter kexec-crashkernel parameters parser
->   MIPS memblock: Alter elfcorehdr parameters parser
->   MIPS memblock: Move kernel parameters parser into individual method
->   MIPS memblock: Move kernel memory reservation to individual method
->   MIPS memblock: Discard bootmem allocator initialization
->   MIPS memblock: Add memblock sanity check method
->   MIPS memblock: Add memblock print outs in debug
->   MIPS memblock: Add memblock allocator initialization
->   MIPS memblock: Alter IO resources initialization method
->   MIPS memblock: Alter weakened MAAR initialization method
->   MIPS memblock: Alter paging initialization method
->   MIPS memblock: Alter high memory freeing method
->   MIPS memblock: Slightly improve buddy allocator init method
->   MIPS memblock: Add print out method of kernel virtual memory layout
->   MIPS memblock: Add free low memory test method call
->   MIPS memblock: Deactivate old bootmem allocator
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 9da6f8a..789aafe 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -229,6 +229,43 @@ static void __init print_memory_map(void)
+>  }
 >
->  arch/mips/Kconfig        |   2 +-
->  arch/mips/kernel/prom.c  |  32 +-
->  arch/mips/kernel/setup.c | 958 +++++++++++++++--------------
->  arch/mips/mm/init.c      | 234 ++++---
->  drivers/of/fdt.c         |  47 +-
->  include/linux/of_fdt.h   |   1 +
->  6 files changed, 739 insertions(+), 535 deletions(-)
+>  /*
+> + * Parse "mem=size@start" parameter rewriting a defined memory map
+> + * We look for mem=size@start, where start and size are "value[KkMm]"
+> + */
+> +static int __init early_parse_mem(char *p)
+> +{
+> +	static int usermem;
+
+usermem variable seems unnecessary now and could easily be removed?
+
+> +	phys_addr_t start, size;
+> +
+> +	start = PHYS_OFFSET;
+> +	size = memparse(p, &p);
+> +	if (*p == '@')
+> +		start = memparse(p + 1, &p);
+> +
+> +	/*
+> +	 * If a user specifies memory size, we blow away any automatically
+> +	 * generated regions.
+> +	 */
+> +	if (usermem == 0) {
+> +		phys_addr_t ram_start = memblock_start_of_DRAM();
+> +		phys_addr_t ram_end = memblock_end_of_DRAM() - ram_start;
+> +
+> +		pr_notice("Discard memory layout %pa - %pa",
+> +			  &ram_start, &ram_end);
+
+missing \n in printk
+
+> +		memblock_remove(ram_start, ram_end - ram_start);
+> +		boot_mem_map.nr_map = 0;
+> +		usermem = 1;
+> +	}
+> +	pr_notice("Add userdefined memory region %08zx @ %pa",
+> +		  (size_t)size, &start);
+
+ditto
+
+> +	add_memory_region(start, size, BOOT_MEM_RAM);
+> +	return 0;
+> +}
+> +early_param("mem", early_parse_mem);
+> +
+> +/*
+>   * Manage initrd
+>   */
+>  #ifdef CONFIG_BLK_DEV_INITRD
+> @@ -613,31 +650,6 @@ static void __init bootmem_init(void)
+>   * initialization hook for anything else was introduced.
+>   */
 >
+> -static int usermem __initdata;
+> -
+> -static int __init early_parse_mem(char *p)
+> -{
+> -	phys_addr_t start, size;
+> -
+> -	/*
+> -	 * If a user specifies memory size, we
+> -	 * blow away any automatically generated
+> -	 * size.
+> -	 */
+> -	if (usermem == 0) {
+> -		boot_mem_map.nr_map = 0;
+> -		usermem = 1;
+> -	}
+> -	start = 0;
+> -	size = memparse(p, &p);
+> -	if (*p == '@')
+> -		start = memparse(p + 1, &p);
+> -
+> -	add_memory_region(start, size, BOOT_MEM_RAM);
+> -	return 0;
+> -}
+> -early_param("mem", early_parse_mem);
+> -
+>  #ifdef CONFIG_PROC_VMCORE
+>  unsigned long setup_elfcorehdr, setup_elfcorehdr_size;
+>  static int __init early_parse_elfcorehdr(char *p)
+> @@ -797,11 +809,6 @@ static void __init arch_mem_init(char **cmdline_p)
+>
+>  	parse_early_param();
+>
+> -	if (usermem) {
+> -		pr_info("User-defined physical RAM map:\n");
+> -		print_memory_map();
+> -	}
+> -
+>  	bootmem_init();
+>  #ifdef CONFIG_PROC_VMCORE
+>  	if (setup_elfcorehdr && setup_elfcorehdr_size) {
+>
+
+
+Regards,
+Marcin

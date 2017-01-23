@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2017 08:55:57 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:4823 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2017 08:56:19 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:7597 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991957AbdAWHzXfB5Li (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2017 08:55:23 +0100
+        with ESMTP id S23991232AbdAWHze0kBWi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2017 08:55:34 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 00B66100E3C39;
-        Mon, 23 Jan 2017 07:55:15 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 039F27B425174;
+        Mon, 23 Jan 2017 07:55:26 +0000 (GMT)
 Received: from [10.80.2.5] (10.80.2.5) by HHMAIL01.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 23 Jan
- 2017 07:55:16 +0000
-Subject: Re: [PATCH 04/21] MIPS memblock: Alter user-defined memory parameter
- parser
+ 2017 07:55:27 +0000
+Subject: Re: [PATCH 10/21] MIPS memblock: Discard bootmem allocator
+ initialization
 To:     Serge Semin <fancer.lancer@gmail.com>, <ralf@linux-mips.org>,
         <paul.burton@imgtec.com>, <rabinv@axis.com>,
         <matt.redfearn@imgtec.com>, <james.hogan@imgtec.com>,
         <alexander.sverdlin@nokia.com>, <robh+dt@kernel.org>,
         <frowand.list@gmail.com>
 References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
- <1482113266-13207-5-git-send-email-fancer.lancer@gmail.com>
+ <1482113266-13207-11-git-send-email-fancer.lancer@gmail.com>
 CC:     <Sergey.Semin@t-platforms.ru>, <linux-mips@linux-mips.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Message-ID: <756b9060-7a21-ad23-9e74-50670f42753e@imgtec.com>
-Date:   Mon, 23 Jan 2017 08:55:16 +0100
+Message-ID: <780ca27f-d582-4911-a1a6-bd5c8792c587@imgtec.com>
+Date:   Mon, 23 Jan 2017 08:55:27 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.5.1
 MIME-Version: 1.0
-In-Reply-To: <1482113266-13207-5-git-send-email-fancer.lancer@gmail.com>
+In-Reply-To: <1482113266-13207-11-git-send-email-fancer.lancer@gmail.com>
 Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.2.5]
@@ -34,7 +34,7 @@ Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56463
+X-archive-position: 56464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,116 +54,63 @@ X-list: linux-mips
 Hi Serge,
 
 On 19.12.2016 03:07, Serge Semin wrote:
-> Both new memblock and boot_mem_map subsystems need to be fully
-> cleared before a new memory region is added. So the early parser is
-> correspondingly modified.
+> Bootmem allocator initialization needs to be discarded.
+> PFN limit constants are still in use by some subsystems, so they
+> need to be properly initialized. The initialization is moved into
+> a separate method and performed with help of commonly used
+> platform-specific constants. It might me too simplified, but most
+> of the kernel platforms do it the same way. Moreover it's much
+> easier to debug it, when it's not that complicated.
 >
 > Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 > ---
->  arch/mips/kernel/setup.c | 67 +++++++++++++++++-------------
->  1 file changed, 37 insertions(+), 30 deletions(-)
+>  arch/mips/kernel/setup.c | 193 ++++-------------------------
+>  1 file changed, 21 insertions(+), 172 deletions(-)
 >
 > diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 9da6f8a..789aafe 100644
+> index e746793..6562f55 100644
 > --- a/arch/mips/kernel/setup.c
 > +++ b/arch/mips/kernel/setup.c
-> @@ -229,6 +229,43 @@ static void __init print_memory_map(void)
->  }
+> @@ -626,6 +626,25 @@ static void __init request_crashkernel(struct resource *res) { }
+>  #endif /* !CONFIG_KEXEC */
 >
 >  /*
-> + * Parse "mem=size@start" parameter rewriting a defined memory map
-> + * We look for mem=size@start, where start and size are "value[KkMm]"
+> + * Calcualte PFN limits with respect to the defined memory layout
 > + */
-> +static int __init early_parse_mem(char *p)
+> +static void __init find_pfn_limits(void)
 > +{
-> +	static int usermem;
-
-usermem variable seems unnecessary now and could easily be removed?
-
-> +	phys_addr_t start, size;
+> +	phys_addr_t ram_end = memblock_end_of_DRAM();
 > +
-> +	start = PHYS_OFFSET;
-> +	size = memparse(p, &p);
-> +	if (*p == '@')
-> +		start = memparse(p + 1, &p);
-> +
-> +	/*
-> +	 * If a user specifies memory size, we blow away any automatically
-> +	 * generated regions.
-> +	 */
-> +	if (usermem == 0) {
-> +		phys_addr_t ram_start = memblock_start_of_DRAM();
-> +		phys_addr_t ram_end = memblock_end_of_DRAM() - ram_start;
-> +
-> +		pr_notice("Discard memory layout %pa - %pa",
-> +			  &ram_start, &ram_end);
+> +	min_low_pfn = ARCH_PFN_OFFSET;
+> +	max_low_pfn = PFN_UP(HIGHMEM_START);
 
-missing \n in printk
+This doesn't look right - as this may set max_low_pfn to more than the 
+actual physical memory size. In some cases this might be a serious 
+problem and it doesn't look like any other platform does that.
+Even in MIPS code you can find uses of max_low_pfn that would be 
+seriously affected by this change (vpe loader with 
+CONFIG_MIPS_VPE_LOADER_TOM).
 
-> +		memblock_remove(ram_start, ram_end - ram_start);
-> +		boot_mem_map.nr_map = 0;
-> +		usermem = 1;
-> +	}
-> +	pr_notice("Add userdefined memory region %08zx @ %pa",
-> +		  (size_t)size, &start);
-
-ditto
-
-> +	add_memory_region(start, size, BOOT_MEM_RAM);
-> +	return 0;
+> +	max_pfn = PFN_UP(ram_end);
+> +#ifdef CONFIG_HIGHMEM
+> +	highstart_pfn = max_low_pfn;
+> +	highend_pfn = max_pfn <= highstart_pfn ? highstart_pfn : max_pfn;
+> +#endif
+> +	pr_info("PFNs: low min %lu, low max %lu, high start %lu, high end %lu,"
+> +		"max %lu\n",
+> +		min_low_pfn, max_low_pfn, highstart_pfn, highend_pfn, max_pfn);
 > +}
-> +early_param("mem", early_parse_mem);
 > +
 > +/*
->   * Manage initrd
+>   * Initialize the bootmem allocator. It also setup initrd related data
+>   * if needed.
 >   */
->  #ifdef CONFIG_BLK_DEV_INITRD
-> @@ -613,31 +650,6 @@ static void __init bootmem_init(void)
->   * initialization hook for anything else was introduced.
->   */
->
-> -static int usermem __initdata;
-> -
-> -static int __init early_parse_mem(char *p)
-> -{
-> -	phys_addr_t start, size;
-> -
-> -	/*
-> -	 * If a user specifies memory size, we
-> -	 * blow away any automatically generated
-> -	 * size.
-> -	 */
-> -	if (usermem == 0) {
-> -		boot_mem_map.nr_map = 0;
-> -		usermem = 1;
-> -	}
-> -	start = 0;
-> -	size = memparse(p, &p);
-> -	if (*p == '@')
-> -		start = memparse(p + 1, &p);
-> -
-> -	add_memory_region(start, size, BOOT_MEM_RAM);
-> -	return 0;
-> -}
-> -early_param("mem", early_parse_mem);
-> -
->  #ifdef CONFIG_PROC_VMCORE
->  unsigned long setup_elfcorehdr, setup_elfcorehdr_size;
->  static int __init early_parse_elfcorehdr(char *p)
-> @@ -797,11 +809,6 @@ static void __init arch_mem_init(char **cmdline_p)
->
->  	parse_early_param();
->
-> -	if (usermem) {
-> -		pr_info("User-defined physical RAM map:\n");
-> -		print_memory_map();
-> -	}
-> -
->  	bootmem_init();
->  #ifdef CONFIG_PROC_VMCORE
->  	if (setup_elfcorehdr && setup_elfcorehdr_size) {
->
 
+
+
+I fully agree with you that the current initialisation code is really 
+complex and difficult to debug, but the modified one seems a bit too 
+simplified.
 
 Regards,
 Marcin

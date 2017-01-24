@@ -1,38 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2017 18:09:55 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:9152 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993934AbdAXRJsm0CTT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jan 2017 18:09:48 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 8F3723928F09F;
-        Tue, 24 Jan 2017 17:09:38 +0000 (GMT)
-Received: from [10.20.78.238] (10.20.78.238) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 24 Jan 2017
- 17:09:41 +0000
-Date:   Tue, 24 Jan 2017 17:09:32 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 1/2] MIPS: ptrace: disallow setting watchpoints in
- kernel address space
-In-Reply-To: <1485163113-21780-1-git-send-email-marcin.nowakowski@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1701232258380.13564@tp.orcam.me.uk>
-References: <1485163113-21780-1-git-send-email-marcin.nowakowski@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2017 19:16:32 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:40072 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993938AbdAXSQZT2eJw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 24 Jan 2017 19:16:25 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v0OIGOE7029567;
+        Tue, 24 Jan 2017 19:16:24 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v0OIGOXH029566;
+        Tue, 24 Jan 2017 19:16:24 +0100
+Date:   Tue, 24 Jan 2017 19:16:24 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     linux-mips@linux-mips.org, john@phrozen.org
+Subject: Re: [PATCH] MIPS: lantiq: lock DMA register accesses for SMP
+Message-ID: <20170124181624.GA29473@linux-mips.org>
+References: <1483096707-21711-1-git-send-email-hauke@hauke-m.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.238]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1483096707-21711-1-git-send-email-hauke@hauke-m.de>
+User-Agent: Mutt/1.7.1 (2016-10-04)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56476
+X-archive-position: 56477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,38 +42,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 23 Jan 2017, Marcin Nowakowski wrote:
+On Fri, Dec 30, 2016 at 12:18:27PM +0100, Hauke Mehrtens wrote:
 
-> With certain EVA configurations it is possible for the kernel address
-> space to overlap user address space, which allows the user to set
-> watchpoints on kernel addresses via ptrace.
-> 
-> If a watchpoint is set in the watch exception handling code (after
-> exception level has been cleared) then the system will hang in an
-> infinite loop when hitting a watchpoint while trying to process it.
-> 
-> To prevent that simply disallow placing any watchpoints at addresses
-> above start of kernel that overlap userspace.
+> The DMA controller channel and port configuration is changed by
+> selecting the port or channel in one register and then update the
+> configuration in other registers. This has to be done in an atomic
+> operation. Previously only the local interrupts were deactivated which
+> works for single CPU systems. If the system supports SMP a better
+> locking is needed, use spinlocks instead.
+> On more recent SoCs (at least xrx200 and later) there are two memory
+> regions to change the configuration, there we could use one area for
+> each CPU and do not have to synchronize between the CPUs and more.
 
- This can be severely crippling for user debugging.  Is there no better 
-way?
+You should always use proper locking, not interrupt fiddlery for proper
+serialization.  On UP kernels the spinlocks will expand to call just
+the local_irq_* so no overhead.
 
- Can't for example the low-level exception handling entry/exit code be 
-moved out of the way of the EVA overlap range and then all watchpoints 
-masked for the duration of kernel mode execution?  This would be quite 
-expensive, however it could only be executed if a task flag indicates 
-watchpoints are being used.  Alternatively perhaps we could clobber 
-CP0.EntryHi.ASID, at least temporarily; that would be cheaper.
+Applied,
 
- Overall I think this situation is asking for a watchpoint flag to be 
-added to inhibit hits in the kernel mode in hardware; for completeness 
-this probably actually ought to be a field to cover the kernel, supervisor 
-and user modes separately -- either a plain bitmask for arbitrary control 
-or an encoded value similar to CP0.Status.KSU which would indicate the 
-most privileged mode to accept a watchpoint in.
-
- I had a recollection of such a facility already being available for JTAG 
-debugging, but I can't track it down in the specification, so perhaps it 
-was for another architecture and it would be completely new for ours.
-
-  Maciej
+  Ralf

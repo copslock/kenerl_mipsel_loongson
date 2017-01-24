@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2017 21:52:49 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:18033 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993939AbdAXUwl1q7kS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jan 2017 21:52:41 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 09EC2116625B8;
-        Tue, 24 Jan 2017 20:52:29 +0000 (GMT)
-Received: from [10.20.78.238] (10.20.78.238) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 24 Jan 2017
- 20:52:32 +0000
-Date:   Tue, 24 Jan 2017 20:52:22 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 1/2] MIPS: ptrace: disallow setting watchpoints in
- kernel address space
-In-Reply-To: <20170124185452.GL29015@jhogan-linux.le.imgtec.org>
-Message-ID: <alpine.DEB.2.00.1701241909540.13564@tp.orcam.me.uk>
-References: <1485163113-21780-1-git-send-email-marcin.nowakowski@imgtec.com> <alpine.DEB.2.00.1701232258380.13564@tp.orcam.me.uk> <20170124185452.GL29015@jhogan-linux.le.imgtec.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2017 22:33:08 +0100 (CET)
+Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:45700 "EHLO
+        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992183AbdAXVdAskHdH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jan 2017 22:33:00 +0100
+Received: from [IPv6:2003:86:280b:8100:4a51:b7ff:fed3:ec08] (p20030086280B81004A51B7FFFED3EC08.dip0.t-ipconnect.de [IPv6:2003:86:280b:8100:4a51:b7ff:fed3:ec08])
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 237F010002C;
+        Tue, 24 Jan 2017 22:33:00 +0100 (CET)
+Subject: Re: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness swap
+ is enabled
+To:     Sebastien Decourriere <sebtx452@gmail.com>,
+        linux-mtd@lists.infradead.org
+References: <1484904834-14980-1-git-send-email-sebtx452@gmail.com>
+Cc:     linux-mips@linux-mips.org
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <3304d64f-38aa-1a3c-0b5d-edb493abd61a@hauke-m.de>
+Date:   Tue, 24 Jan 2017 22:32:59 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Icedove/45.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.238]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+In-Reply-To: <1484904834-14980-1-git-send-email-sebtx452@gmail.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56480
+X-archive-position: 56481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,84 +42,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 24 Jan 2017, James Hogan wrote:
-
-> >  Can't for example the low-level exception handling entry/exit code be 
-> > moved out of the way of the EVA overlap range and then all watchpoints 
-> > masked for the duration of kernel mode execution?  This would be quite 
-> > expensive, however it could only be executed if a task flag indicates 
-> > watchpoints are being used.
+On 01/20/2017 10:33 AM, Sebastien Decourriere wrote:
+> The purpose of this patch is to enable the software address endianness
+> swapping only when the in SoC EBU endianness swapping is disabled.
+> To perform this check, I look at Bit 30 of the EBU_CON_0 register.
+> Actually, the driver expects that the in SoC swapping is disabled.
+> This is the case with current bootloaders shuch as U-boot.
 > 
-> That doesn't cover data watches. RAM would still need accessing, e.g. to
-> save/restore the watch state from the thread context, or even to read
-> the task flag, and stack accesses in C code.
-
- All the critical data structures would have to be outside the EVA 
-overlap.
-
-> The only safe way for it to work would be to somehow disable or inhibit 
-> watchpoints before clearing EXL, and re-enable them after setting EXL, 
-> though you'd still get a loop of deferred watchpoints if it hit on the 
-> way out to user mode unless cleared at the last moment before ERET.
-
- Ah, I forgot about CP0.Cause.WP -- is it not enough to clear the bit to 
-have any pending exception cancelled?  If so (and the architecture manual 
-is actually clear that it is) then it looks like we have a solution and we 
-don't have to place any code or data specially, although it'll have to be 
-carefully coded.
-
-> > Alternatively perhaps we could clobber 
-> > CP0.EntryHi.ASID, at least temporarily; that would be cheaper.
+> This applies only to vr9 (xrx200) rev 1.2 and ar10 (xrx300).
 > 
-> Kernel mode still needs to access the user address space.
+> I have a router which uses a proprietary bootloader which keeps
+> the in SoC swapping enabled. The SoC in this router is a vrx200 v1.2.
+> In this SoC version, I can keep the in SoC swapping without any problem.
+> 
+> This patch replaces my previous broken patch.
+> 
+> Signed-off-by: Sebastien Decourriere <sebtx452@gmail.com>
+> ---
+>  .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |  1 +
+>  drivers/mtd/maps/lantiq-flash.c                    | 29 +++++++++++++++++++---
+>  2 files changed, 27 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+> index 17b41bb..0ed0896 100644
+> --- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+> +++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+> @@ -87,6 +87,7 @@ extern __iomem void *ltq_cgu_membase;
+>  #define LTQ_EBU_PCC_ISTAT	0x00A0
+>  #define LTQ_EBU_BUSCON1		0x0064
+>  #define LTQ_EBU_ADDRSEL1	0x0024
+> +#define EBU_FLASH_ENDIAN_SWAP	0x40000000
+>  #define EBU_WRDIS		0x80000000
+>  
+>  /* WDT */
+> diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
+> index c8febb3..8d628d2 100644
+> --- a/drivers/mtd/maps/lantiq-flash.c
+> +++ b/drivers/mtd/maps/lantiq-flash.c
+> @@ -113,6 +113,24 @@ ltq_mtd_probe(struct platform_device *pdev)
+>  	struct ltq_mtd *ltq_mtd;
+>  	struct cfi_private *cfi;
+>  	int err;
+> +	bool mtd_addr_swap = true;
+> +
+> +#ifdef CONFIG_SOC_TYPE_XWAY
+> +	/* If SoC is vr9 rev 1.2 or ar10 and EBU endian swap
+> +	 *  is enabled, we don't need to do software address swap
+> +	 */
+> +	if (ltq_ebu_r32(LTQ_EBU_BUSCON0) & EBU_FLASH_ENDIAN_SWAP) {
+> +		switch (ltq_soc_type()) {
 
- Sure, that's why it would have to be temporary.  Low-level exception 
-entry/exit code is not supposed to have a need to access user memory.
+I would like to get rid of the calls to ltq_soc_type(). This list also
+has to get extended for more recent SoCs which are not yet supported by
+mainline kernel like xrx500 (GRX350/550), grx300/330.
 
- So we can put aside a certain ASID value, say 0 (for easy pasting with 
-INS from $0), and never use it for a real context.  Then it can be cleared 
-right away at the general exception entry point if EVA is in use, say:
+This EBU register also does not exits on falcon, this SoC uses a
+different EBU.
 
-	<d>mfc0	$k0, $10
-	<d>ins	$k0, $zero, 0, 10
-	<d>mtc0	$k0, $10
+I would prefer to use a device tree option to activate this check and
+only access LTQ_EBU_BUSCON0 when this property is set.
 
-(there'll be a hazard here, but we can clear it later on if needed).  
-There is no neeed to save the old ASID as we can retrieve the original 
-from our data structures.
-
- Then we can proceed with the usual switch to the kernel mode, switching 
-stacks, saving registers, etc.  We can then check CP0.Cause.WP and stash 
-it away for further processing if needed (though discarding it would I 
-think be the usual if not only choice) and clear, with a hazard barrier, 
-right before CP0.Status.EXL is cleared.
-
- Now that we're in the regular kernel mode, with ASID still set to 0, we 
-can check if process tracing has been enabled and if so, then iterate over 
-the watchpoints registers masking them all.  At this point we can restore 
-the correct ASID in CP0.EntryHi and proceed with the exception handler.
-
- And then we'd do the reverse in the exception epilogue, only restoring 
-the ASID as the last instruction before final ERET.
-
-> Alternatively we could set WatchHi.ASID to a reserved one, and only
-> clear/set the WatchHi.G bit (to bypass the ASID match) at the first/last
-> moment while EXL=1. It still wouldn't protect against code watches
-> around there exposing the kernel address of that code by the resulting
-> hang though, so would need to move the ebase out of the overlap range
-> too (which would have to be platform specific).
-
- You'd still have to iterate over all WatchHi registers, a variable number 
-up to 8 architecturally, which I think would be too expensive for the 
-common exception path.
-
- Poking at ASID as I described above is just a couple of instructions at 
-entry and exit, and the rest would only be done if tracing is active.  
-Plus you don't actually have to move anything away, except from the final 
-ERET, though likely not even that, owing to the delayed nature of an ASID 
-update.
-
- So can you find a flaw in my proposal so far?  We'll have to think about 
-the TLB refill handler yet though.
-
-  Maciej
+> +		case SOC_TYPE_VR9_2:
+> +		case SOC_TYPE_AR10:
+> +			mtd_addr_swap = false;
+> +			break;
+> +		default:
+> +			mtd_addr_swap = true;
+> +			break;
+> +		}
+> +	}
+> +#endif
+>  
+>  	if (of_machine_is_compatible("lantiq,falcon") &&
+>  			(ltq_boot_select() != BS_FLASH)) {
+> @@ -150,7 +168,10 @@ ltq_mtd_probe(struct platform_device *pdev)
+>  	ltq_mtd->map->copy_from = ltq_copy_from;
+>  	ltq_mtd->map->copy_to = ltq_copy_to;
+>  
+> -	ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
+> +	if (mtd_addr_swap)
+> +		ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
+> +	else
+> +		ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
+>  	ltq_mtd->mtd = do_map_probe("cfi_probe", ltq_mtd->map);
+>  	ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
+>  
+> @@ -163,8 +184,10 @@ ltq_mtd_probe(struct platform_device *pdev)
+>  	mtd_set_of_node(ltq_mtd->mtd, pdev->dev.of_node);
+>  
+>  	cfi = ltq_mtd->map->fldrv_priv;
+> -	cfi->addr_unlock1 ^= 1;
+> -	cfi->addr_unlock2 ^= 1;
+> +	if (mtd_addr_swap) {
+> +		cfi->addr_unlock1 ^= 1;
+> +		cfi->addr_unlock2 ^= 1;
+> +	}
+>  
+>  	err = mtd_device_register(ltq_mtd->mtd, NULL, 0);
+>  	if (err) {
+> 

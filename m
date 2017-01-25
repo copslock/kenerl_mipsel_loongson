@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2017 19:54:34 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:53698 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2017 19:54:58 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:55832 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993946AbdAYSwpP089w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2017 19:52:45 +0100
+        by eddie.linux-mips.org with ESMTP id S23993874AbdAYSwwRNZLw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2017 19:52:52 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -20,18 +20,18 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         james.hogan@imgtec.com, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v3 10/14] mmc: jz4740: Let the pinctrl driver configure the pins
-Date:   Wed, 25 Jan 2017 19:52:03 +0100
-Message-Id: <20170125185207.23902-11-paul@crapouillou.net>
+Subject: [PATCH v3 13/14] pwm: jz4740: Let the pinctrl driver configure the pins
+Date:   Wed, 25 Jan 2017 19:52:06 +0100
+Message-Id: <20170125185207.23902-14-paul@crapouillou.net>
 In-Reply-To: <20170125185207.23902-1-paul@crapouillou.net>
 References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
  <20170125185207.23902-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485370364; bh=KMYMiQ4WPXtY+uM9GdsNrCy8KLIHghg0Pg75Zu8HlRk=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=H1LaYWGv7Ab4rTn1Kam8mTXi/Mwq5pO8g8nFPH0ygA0/d16JHQ2X5H2VwggN7XtFCIsBzpmw3axyffIwK/Pt4R3O0l1fsgAOda4i3dBsll4QLqYO6RiBgXoLWOnpJ1NeoUTG2fHENdyRmgGuBNgNQorhBKyhhv+8dgu/L/VHa68=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485370371; bh=kBAg8hNCb+FFp+clYkFjgIfEo2H66eGI9RiaIwRmeQ4=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=lk4Dq+6LIRMzyxH77Uj4dqzn1AryfJc9ZQ5wsVTCTA3V3PjdVEjGc+PoHkgIqG6DRkXxwuSx1YxsELkayHUF2kGrVq8BewxM3IKrlPfWaz+9OIO05x/jrph1THXdSJEeqG7CRRl6lp9L0fqiiPG4hbHERLmj1baOKB2TAlSEd4M=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56497
+X-archive-position: 56498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,126 +51,97 @@ X-list: linux-mips
 Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
 the pins being properly configured before the driver probes.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/mmc/host/jz4740_mmc.c | 45 +++++--------------------------------------
- 1 file changed, 5 insertions(+), 40 deletions(-)
+One inherent problem of this new approach is that the pinctrl framework
+does not allow us to configure each pin on demand, when the various PWM
+channels are requested or released. For instance, the PWM channels can
+be configured from sysfs, which would require all PWM pins to be configured
+properly beforehand for the PWM function, eventually causing conflicts
+with other platform or board drivers.
 
-v2: Set pin sleep/default state in suspend/resume callbacks
+The proper solution here would be to modify the pwm-jz4740 driver to
+handle only one PWM channel, and create an instance of this driver
+for each one of the 8 PWM channels. Then, it could use the pinctrl
+framework to dynamically configure the PWM pin it controls.
+
+Until this can be done, the only jz4740 board supported upstream
+(Qi lb60) can configure all of its connected PWM pins in PWM function
+mode, since those are not used by other drivers nor by GPIOs on the
+board.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+---
+ drivers/pwm/pwm-jz4740.c | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
+
+v2: No changes
 v3: No changes
 
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index 819ad32964fc..b5fec5b7ee7b 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -20,14 +20,13 @@
- #include <linux/irq.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-+#include <linux/pinctrl/consumer.h>
+diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
+index 76d13150283f..a75ff3622450 100644
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -21,22 +21,10 @@
  #include <linux/platform_device.h>
- #include <linux/delay.h>
- #include <linux/scatterlist.h>
- #include <linux/clk.h>
+ #include <linux/pwm.h>
  
- #include <linux/bitops.h>
--#include <linux/gpio.h>
 -#include <asm/mach-jz4740/gpio.h>
- #include <asm/cacheflush.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
-@@ -906,15 +905,6 @@ static const struct mmc_host_ops jz4740_mmc_ops = {
- 	.enable_sdio_irq = jz4740_mmc_enable_sdio_irq,
- };
+ #include <asm/mach-jz4740/timer.h>
  
--static const struct jz_gpio_bulk_request jz4740_mmc_pins[] = {
--	JZ_GPIO_BULK_PIN(MSC_CMD),
--	JZ_GPIO_BULK_PIN(MSC_CLK),
--	JZ_GPIO_BULK_PIN(MSC_DATA0),
--	JZ_GPIO_BULK_PIN(MSC_DATA1),
--	JZ_GPIO_BULK_PIN(MSC_DATA2),
--	JZ_GPIO_BULK_PIN(MSC_DATA3),
+ #define NUM_PWM 8
+ 
+-static const unsigned int jz4740_pwm_gpio_list[NUM_PWM] = {
+-	JZ_GPIO_PWM0,
+-	JZ_GPIO_PWM1,
+-	JZ_GPIO_PWM2,
+-	JZ_GPIO_PWM3,
+-	JZ_GPIO_PWM4,
+-	JZ_GPIO_PWM5,
+-	JZ_GPIO_PWM6,
+-	JZ_GPIO_PWM7,
 -};
 -
- static int jz4740_mmc_request_gpio(struct device *dev, int gpio,
- 	const char *name, bool output, int value)
- {
-@@ -978,15 +968,6 @@ static void jz4740_mmc_free_gpios(struct platform_device *pdev)
- 		gpio_free(pdata->gpio_power);
- }
+ struct jz4740_pwm_chip {
+ 	struct pwm_chip chip;
+ 	struct clk *clk;
+@@ -49,9 +37,6 @@ static inline struct jz4740_pwm_chip *to_jz4740(struct pwm_chip *chip)
  
--static inline size_t jz4740_mmc_num_pins(struct jz4740_mmc_host *host)
--{
--	size_t num_pins = ARRAY_SIZE(jz4740_mmc_pins);
--	if (host->pdata && host->pdata->data_1bit)
--		num_pins -= 3;
--
--	return num_pins;
--}
--
- static int jz4740_mmc_probe(struct platform_device* pdev)
+ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
  {
- 	int ret;
-@@ -1027,15 +1008,9 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 		goto err_free_host;
- 	}
+-	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
+-	int ret;
+-
+ 	/*
+ 	 * Timers 0 and 1 are used for system tasks, so they are unavailable
+ 	 * for use as PWMs.
+@@ -59,15 +44,6 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	if (pwm->hwpwm < 2)
+ 		return -EBUSY;
  
--	ret = jz_gpio_bulk_request(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
+-	ret = gpio_request(gpio, pwm->label);
 -	if (ret) {
--		dev_err(&pdev->dev, "Failed to request mmc pins: %d\n", ret);
--		goto err_free_host;
+-		dev_err(chip->dev, "Failed to request GPIO#%u for PWM: %d\n",
+-			gpio, ret);
+-		return ret;
 -	}
 -
- 	ret = jz4740_mmc_request_gpios(mmc, pdev);
- 	if (ret)
--		goto err_gpio_bulk_free;
-+		goto err_release_dma;
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_PWM);
+-
+ 	jz4740_timer_start(pwm->hwpwm);
  
- 	mmc->ops = &jz4740_mmc_ops;
- 	mmc->f_min = JZ_MMC_CLK_RATE / 128;
-@@ -1091,10 +1066,9 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 	free_irq(host->irq, host);
- err_free_gpios:
- 	jz4740_mmc_free_gpios(pdev);
--err_gpio_bulk_free:
-+err_release_dma:
- 	if (host->use_dma)
- 		jz4740_mmc_release_dma_channels(host);
--	jz_gpio_bulk_free(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
- err_free_host:
- 	mmc_free_host(mmc);
+ 	return 0;
+@@ -75,13 +51,8 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
  
-@@ -1114,7 +1088,6 @@ static int jz4740_mmc_remove(struct platform_device *pdev)
- 	free_irq(host->irq, host);
- 
- 	jz4740_mmc_free_gpios(pdev);
--	jz_gpio_bulk_free(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
- 
- 	if (host->use_dma)
- 		jz4740_mmc_release_dma_channels(host);
-@@ -1128,20 +1101,12 @@ static int jz4740_mmc_remove(struct platform_device *pdev)
- 
- static int jz4740_mmc_suspend(struct device *dev)
+ static void jz4740_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
  {
--	struct jz4740_mmc_host *host = dev_get_drvdata(dev);
+-	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
 -
--	jz_gpio_bulk_suspend(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
+ 	jz4740_timer_set_ctrl(pwm->hwpwm, 0);
+ 
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
+-	gpio_free(gpio);
 -
--	return 0;
-+	return pinctrl_pm_select_sleep_state(dev);
+ 	jz4740_timer_stop(pwm->hwpwm);
  }
  
- static int jz4740_mmc_resume(struct device *dev)
- {
--	struct jz4740_mmc_host *host = dev_get_drvdata(dev);
--
--	jz_gpio_bulk_resume(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
--
--	return 0;
-+	return pinctrl_pm_select_default_state(dev);
- }
- 
- static SIMPLE_DEV_PM_OPS(jz4740_mmc_pm_ops, jz4740_mmc_suspend,
 -- 
 2.11.0

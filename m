@@ -1,38 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2017 15:39:59 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:62674 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993874AbdAYOjwSw9Sy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2017 15:39:52 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id AAD3836AD826D;
-        Wed, 25 Jan 2017 14:39:42 +0000 (GMT)
-Received: from [10.20.78.25] (10.20.78.25) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Wed, 25 Jan 2017
- 14:39:44 +0000
-Date:   Wed, 25 Jan 2017 14:39:36 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     James Hogan <james.hogan@imgtec.com>
-CC:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 1/2] MIPS: ptrace: disallow setting watchpoints in
- kernel address space
-In-Reply-To: <alpine.DEB.2.00.1701242229480.13564@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1701251427190.13564@tp.orcam.me.uk>
-References: <1485163113-21780-1-git-send-email-marcin.nowakowski@imgtec.com> <alpine.DEB.2.00.1701232258380.13564@tp.orcam.me.uk> <20170124185452.GL29015@jhogan-linux.le.imgtec.org> <alpine.DEB.2.00.1701241909540.13564@tp.orcam.me.uk>
- <20170124220554.GM29015@jhogan-linux.le.imgtec.org> <alpine.DEB.2.00.1701242229480.13564@tp.orcam.me.uk>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2017 17:58:54 +0100 (CET)
+Received: from mga05.intel.com ([192.55.52.43]:42660 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993874AbdAYQ6sIME4k (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Jan 2017 17:58:48 +0100
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP; 25 Jan 2017 08:58:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.33,284,1477983600"; 
+   d="scan'208";a="1117728651"
+Received: from irsmsx110.ger.corp.intel.com ([163.33.3.25])
+  by fmsmga002.fm.intel.com with ESMTP; 25 Jan 2017 08:58:45 -0800
+Received: from irsmsx101.ger.corp.intel.com ([169.254.1.112]) by
+ irsmsx110.ger.corp.intel.com ([169.254.15.101]) with mapi id 14.03.0248.002;
+ Wed, 25 Jan 2017 16:58:45 +0000
+From:   "Langer, Thomas" <thomas.langer@intel.com>
+To:     Seb <sebtx452@gmail.com>, Hauke Mehrtens <hauke@hauke-m.de>
+CC:     "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness
+ swap is enabled
+Thread-Topic: [PATCH] mtd: maps: lantiq-flash: Check if the EBU endianness
+ swap is enabled
+Thread-Index: AQHScwBrHfwN+0YKQEuSGTTzK941nKFILNyAgADBPoCAAAnf4A==
+Date:   Wed, 25 Jan 2017 16:58:44 +0000
+Message-ID: <0DAF21CFE1B20740AE23D6AF6E54843F1E6F607C@IRSMSX101.ger.corp.intel.com>
+References: <1484904834-14980-1-git-send-email-sebtx452@gmail.com>
+ <3304d64f-38aa-1a3c-0b5d-edb493abd61a@hauke-m.de>
+ <CA+hF=GdKLEN2ue=Q7KpBp+W+bTnj5O_OAoPjuDOScga2efnjPA@mail.gmail.com>
+In-Reply-To: <CA+hF=GdKLEN2ue=Q7KpBp+W+bTnj5O_OAoPjuDOScga2efnjPA@mail.gmail.com>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [163.33.239.181]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.25]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Return-Path: <thomas.langer@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56488
+X-archive-position: 56489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: thomas.langer@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,37 +57,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 24 Jan 2017, Maciej W. Rozycki wrote:
-
-> However if we can prove that we won't need the IP[1:0] bits in scenarios 
-> that involve a TLB refill, then we could just quickly do a short sequence, 
-> say:
-> 
-> 	lui	$k0, 1 << 23
-
- Umm, thinko here, this obviously has to be:
-
-	li	$k0, 1 << 23
-
-or alternatively:
-
-	lui	$k0, 1 << (23 - 16)
-
-(GAS will emit a single LUI instruction in either case).
-
-> 	mtc0	$13, $k0
-> 	eret
-> 
-> Otherwise we'll have to do a full RMW sequence; fortunately a single INS 
-> from $0 will do here again to clear CP0.Cause.WP and keep the remaining 
-> bits.  Maybe we could do just the same in the regular exception epilogue 
-> to avoid the dependency on a hazard (and consequently an issue with QEMU).
-
- Of course a similar hazard is still there, so the same precautions apply.  
-
- Also I think we do need to clear CP0.Cause.WP in all cases before ERET, 
-including the various exception fast paths, such as in the TLBL/TLBS/TLBM 
-handlers, which also means we don't have to fiddle with CP0.EntryHi.ASID 
-in handler execution paths that run at EXL entirely to completion.
-
-  Maciej
+PiBIZWxsbywNCg0KSGkgU2ViYXN0aWFuDQoNCj4gDQo+IA0KPiA+IEkgd291bGQgcHJlZmVyIHRv
+IHVzZSBhIGRldmljZSB0cmVlIG9wdGlvbiB0byBhY3RpdmF0ZSB0aGlzIGNoZWNrIGFuZA0KPiA+
+IG9ubHkgYWNjZXNzIExUUV9FQlVfQlVTQ09OMCB3aGVuIHRoaXMgcHJvcGVydHkgaXMgc2V0Lg0K
+PiANCj4gSWYgSSB1bmRlcnN0YW5kIGNvcnJlY3RseSwgSSBoYXZlIHRvIG1ha2Ugc29tZXRoaW5n
+IGxpa2UgdGhpcyA6DQo+IA0KPiAtLS0NCj4gDQo+IGJvb2wgbXRkX2FkZHJfc3dhcD10cnVlOw0K
+PiANCj4gICAgICAgICBpZiAoIW9mX21hY2hpbmVfaXNfY29tcGF0aWJsZSgibGFudGlxLGZhbGNv
+biIpICYmDQo+ICAgICAgICAgICAgICAgICBvZl9maW5kX3Byb3BlcnR5KHBkZXYtPmRldi5vZl9u
+b2RlLA0KPiAibGFudGlxLGVidV9zd2FwX2NoZWNrIiwgTlVMTCkpDQo+ICAgICAgICAgICAgICAg
+ICBpZiAobHRxX2VidV9yMzIoTFRRX0VCVV9CVVNDT04wKSAmIEVCVV9GTEFTSF9FTkRJQU5fU1dB
+UCkNCj4gICAgICAgICAgICAgICAgICAgICAgICAgbXRkX2FkZHJfc3dhcCA9IGZhbHNlOw0KPiAN
+Cg0KTm8sIHBsZWFzZSBhdm9pZCAib2ZfbWFjaGluZV9pc19jb21wYXRpYmxlIiBpbiBkcml2ZXJz
+Lg0KDQo+IC0tLQ0KPiANCj4gQW5kIHRoZW4gc2V0IHRoaXMgcHJvcGVydHkgZGlyZWN0bHkgb24g
+bXkgZGV2aWNlLXNwZWNpZmljIGR0cyBmaWxlID8NCg0KV2Ugc2hvdWxkIGludHJvZHVjZSBzcGVj
+aWZpYyBjb21wYXRpYmxlIHN0cmluZ3MgZm9yIHRoaXMgZHJpdmVyLCB3aGljaCB0cmlnZ2VyIHRo
+aXMsDQplLmcuICJsYW50aXEsbm9yLXZyOSIgb3IgImxhbnRpcSxub3ItYXIxMCIgKG9yIGJldHRl
+ciB1c2luZyBmYW1pbHkgbmFtZXMgInhyeDIwMCIgYW5kICJ4cngzMDAiKQ0KDQpSZWdhcmRzLA0K
+VGhvbWFzDQo=

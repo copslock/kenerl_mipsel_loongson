@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2017 19:55:22 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:56384 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2017 19:55:45 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:56394 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993949AbdAYSwzDn3Qw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2017 19:52:55 +0100
+        by eddie.linux-mips.org with ESMTP id S23993950AbdAYSw5NZQLw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2017 19:52:57 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -20,18 +20,18 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         james.hogan@imgtec.com, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v3 01/14] Documentation: dt/bindings: Document pinctrl-ingenic
-Date:   Wed, 25 Jan 2017 19:51:54 +0100
-Message-Id: <20170125185207.23902-2-paul@crapouillou.net>
+Subject: [PATCH v3 02/14] Documentation: dt/bindings: Document pinctrl-gpio
+Date:   Wed, 25 Jan 2017 19:51:55 +0100
+Message-Id: <20170125185207.23902-3-paul@crapouillou.net>
 In-Reply-To: <20170125185207.23902-1-paul@crapouillou.net>
 References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
  <20170125185207.23902-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485370344; bh=wsAjVD9Aaa6RrL7OJVJY4ZrdbtdJf5VbUGrh/8bAwMo=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=VVx1IwTRU8gXJlHfOBdpl+l6KpddJ8zHe/6BoVurq7Q/wyE4aZcIQrXx3Ihg7tEgVXtkcGQaZjEbuAaCgsVgK2wrQn1+n+N19DcrF7Uv7u0B5HUzwi8qw8kbQYNPiqUuuZKuMsObypvkWfCKhtj4bucbSsn1hpKfjvSfJ43IMbY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485370346; bh=12rkR7GRnwhoUeUkuBz2EGVCLEuZrVkwZp/hNn5B+g8=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=axK9kz8tKIhhmJRAXdlWoZ7rlZxXSgHvS6PhHlvq4NFQB1OpMWQwqONX89mjSzvrZGKHXFI/cBTePw16tVO8gbHFRZnWmtiUzczB6hZEmbLNWIJlJ52UHAiLSASSfaJOcdq+z7vh+z0GMNhUnZaRqJRg/o4XYjt+pI6HHI3F/Xk=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56499
+X-archive-position: 56500
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,100 +49,68 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 This commit adds documentation for the devicetree bidings of the
-pinctrl-ingenic driver, which handles pin configuration and pin
-muxing of the Ingenic SoCs currently supported by the Linux kernel.
+pinctrl-gpio driver, which handles GPIOs of the Ingenic SoCs
+currently supported by the Linux kernel.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- .../bindings/pinctrl/ingenic,pinctrl.txt           | 77 ++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
+ .../devicetree/bindings/gpio/ingenic,gpio.txt      | 45 ++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
 
-v2: Rewrote the documentation for the new pinctrl-ingenic driver
+v2: New patch
 v3: No changes
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
+diff --git a/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt b/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
 new file mode 100644
-index 000000000000..ead5b01ad471
+index 000000000000..b2eb20494365
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
-@@ -0,0 +1,77 @@
-+Ingenic jz47xx pin controller
-+
-+Please refer to pinctrl-bindings.txt in this directory for details of the
-+common pinctrl bindings used by client devices, including the meaning of the
-+phrase "pin configuration node".
-+
-+For the jz47xx SoCs, pin control is tightly bound with GPIO ports. All pins may
-+be used as GPIOs, multiplexed device functions are configured within the
-+GPIO port configuration registers and it is typical to refer to pins using the
-+naming scheme "PxN" where x is a character identifying the GPIO port with
-+which the pin is associated and N is an integer from 0 to 31 identifying the
-+pin within that GPIO port. For example PA0 is the first pin in GPIO port A, and
-+PB31 is the last pin in GPIO port B. The jz4740 contains 4 GPIO ports, PA to
-+PD, for a total of 128 pins. The jz4780 contains 6 GPIO ports, PA to PF, for a
-+total of 192 pins.
-+
-+
-+Pin controller node
-+===================
++++ b/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+@@ -0,0 +1,45 @@
++Ingenic jz47xx GPIO controller
 +
 +Required properties:
-+- compatible: One of:
-+  - "ingenic,jz4740-pinctrl"
-+  - "ingenic,jz4780-pinctrl"
++  - compatible:
++    - "ingenic,jz4740-gpio" for the JZ4740 SoC
++    - "ingenic,jz4780-gpio" for the JZ4780 SoC
++
++  - reg: Base address and length of each memory resource used by the GPIO
++    controller hardware module.
++
++  - gpio-controller: Marks the device node as a GPIO controller.
++  - #gpio-cells: Should be 2. The first cell is the GPIO number and the second
++    cell specifies GPIO flags, as defined in <dt-bindings/gpio/gpio.h>. Only the
++    GPIO_ACTIVE_HIGH and GPIO_ACTIVE_LOW flags are supported.
++  - gpio-ranges: Range of pins managed by the GPIO controller.
 +
 +Optional properties:
-+- ingenic,pull-ups: A list of 32-bit bit fields, where each bit set tells the
-+  driver that a pull-up resistor is available for this pin.
-+  By default, the driver considers that all pins feature a pull-up resistor.
-+- ingenic,pull-downs: A list of 32-bit bit fields, where each bit set tells
-+  the driver that a pull-down resistor is available for this pin.
-+  By default, the driver considers that all pins feature a pull-down
-+  resistor.
++  - base: The GPIO number to use as the base for this driver.
++  - interrupt-controller: Marks the device node as an interrupt controller.
++  - interrupts: Interrupt specifier for the controllers interrupt.
++    Required if 'interrupt-controller' is specified.
 +
++Please refer to gpio.txt in this directory for details of gpio-ranges property
++and the common GPIO bindings used by client devices.
 +
-+'functions' sub-node
-+====================
-+
-+The 'functions' node will contain sub-nodes that correspond to pin function
-+nodes, and no properties. Pin function nodes will contain sub-nodes that
-+correspond to pin groups, and no properties.
-+
-+The names of the pin function nodes will end up being the available functions
-+provided by the pinctrl driver.
-+The names of the pin group nodes will end up being the available groups
-+provided by the pinctrl driver.
-+
-+Required properties for pin groups:
-+- ingenic,pins: <pin mode [pin mode ...]>;
-+  where 'pin' is the number of the pin, and 'mode' is the function mode of the
-+  pin that should be enabled for this group.
-+
++The GPIO controller also acts as an interrupt controller. It uses the default
++two cells specifier as described in Documentation/devicetree/bindings/
++interrupt-controller/interrupts.txt.
 +
 +Example:
-+=======
 +
-+pinctrl: ingenic-pinctrl@10010000 {
-+	compatible = "ingenic,jz4740-pinctrl";
-+	reg = <0x10010000 0x400>;
++gpa: gpio-controller@10010000 {
++	compatible = "ingenic,jz4740-gpio";
++	reg = <0x10010000 0x100>;
 +
-+	ingenic,pull-ups   = <0xffffffff 0xffffffff 0xffffffff 0xdfffffff>;
-+	ingenic,pull-downs = <0x00000000 0x00000000 0x00000000 0x00000000>;
++	gpio-controller;
++	gpio-ranges = <&pinctrl 0 0 32>;
++	#gpio-cells = <2>;
 +
-+	functions {
-+		mmc {
-+			mmc-1bit {
-+				/* CLK, CMD, D0 */
-+				ingenic,pins = <0x69 0 0x68 0 0x6a 0>;
-+			};
++	interrupt-controller;
++	#interrupt-cells = <2>;
 +
-+			mmc-4bit {
-+				/* D1, D2, D3 */
-+				ingenic,pins = <0x6b 0 0x6c 0 0x6d 0>;
-+			};
-+		};
-+	};
++	interrupt-parent = <&intc>;
++	interrupts = <28>;
 +};
 -- 
 2.11.0

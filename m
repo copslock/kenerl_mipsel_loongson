@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2017 19:53:45 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:52640 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2017 19:54:08 +0100 (CET)
+Received: from outils.crapouillou.net ([89.234.176.41]:53698 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993943AbdAYSwimTYYw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2017 19:52:38 +0100
+        by eddie.linux-mips.org with ESMTP id S23993945AbdAYSwoF4i3w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2017 19:52:44 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -20,18 +20,18 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         james.hogan@imgtec.com, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v3 07/14] MIPS: jz4780: DTS: Add nodes for ingenic pinctrl and gpio drivers
-Date:   Wed, 25 Jan 2017 19:52:00 +0100
-Message-Id: <20170125185207.23902-8-paul@crapouillou.net>
+Subject: [PATCH v3 09/14] MIPS: JZ4780: CI20: Add pinctrl configuration for several drivers
+Date:   Wed, 25 Jan 2017 19:52:02 +0100
+Message-Id: <20170125185207.23902-10-paul@crapouillou.net>
 In-Reply-To: <20170125185207.23902-1-paul@crapouillou.net>
 References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
  <20170125185207.23902-1-paul@crapouillou.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485370358; bh=HtmgS1N9FQTGji/kn7mwx5mobeEpEK3Khy4oeGv5ZsQ=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=ZeREOfrmBJvEu/g61VYunrgqKmSUfpLz5jSI3Y+xyzXM4U2KAAIiHgwXQh1yWQId7LnNf2c26xsYEOUyJgPoRx8jMlh6WVHzvy+ECcZ+Yl//8n+/8G2wwCwTpx8cswgPkSucPPMoGj1liv19nAdEdTqyLEmV9c+lZEWYV5c/pog=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net; s=mail; t=1485370362; bh=+3NCaoUaUgVnQ8rvgn/NyjELzfkGHIu3FXdSYUbUrKo=; h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=x9JD3d0DTA00KO1UhaDrC7paeKwcaoPo5us/VH83Qo2945d80rbtSp027VQrkdbSHIOef0t2Q3Igx9J54qUEkg8hiKbjLSvfZPc8r5OZuOKvVpQaPCHoB5GgB8ECdRq51MD83LlOXz7nz6EiwsN+OAYBnasrcY3Q/k6t5AcoVts=
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56495
+X-archive-position: 56496
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,327 +48,117 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For a description of the devicetree node, please read
-Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
-
-For a description of the gpio devicetree nodes, please read
-Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+We set the pin configuration for the jz4780-nand and jz4780-uart
+drivers.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/boot/dts/ingenic/jz4780.dtsi | 297 +++++++++++++++++++++++++++++++++
- 1 file changed, 297 insertions(+)
+ arch/mips/boot/dts/ingenic/ci20.dts | 60 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
 v2: Changed the devicetree bindings to match the new driver
 v3: No changes
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4780.dtsi b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-index b868b429add2..47e079e9236e 100644
---- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
-@@ -44,6 +44,303 @@
- 		#clock-cells = <1>;
- 	};
+diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
+index 1652d8d60b1e..fd138d9978c1 100644
+--- a/arch/mips/boot/dts/ingenic/ci20.dts
++++ b/arch/mips/boot/dts/ingenic/ci20.dts
+@@ -29,18 +29,30 @@
  
-+	pinctrl: ingenic-pinctrl@10010000 {
-+		compatible = "ingenic,jz4780-pinctrl";
-+		reg = <0x10010000 0x600>;
+ &uart0 {
+ 	status = "okay";
 +
-+		ingenic,pull-ups   = <0x3fffffff 0xfff0030c 0xffffffff
-+							  0xffff4fff 0xfffffb7c 0xffa7f00f>;
-+		ingenic,pull-downs = <0x00000000 0x000f0c03 0x00000000
-+							  0x0000b000 0x00000483 0x00580ff0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pins_uart0>;
+ };
+ 
+ &uart1 {
+ 	status = "okay";
 +
-+		functions {
-+			uart0 {
-+				uart0-data {
-+					/* RXD, TXD */
-+					ingenic,pins = <0xa0 0 0xa3 0>;
-+				};
++	pinctrl-names = "default";
++	pinctrl-0 = <&pins_uart1>;
+ };
+ 
+ &uart3 {
+ 	status = "okay";
 +
-+				uart0-hwflow {
-+					/* CTS, RTS */
-+					ingenic,pins = <0xa1 0 0xa2 0>;
-+				};
-+			};
++	pinctrl-names = "default";
++	pinctrl-0 = <&pins_uart2>;
+ };
+ 
+ &uart4 {
+ 	status = "okay";
 +
-+			uart1 {
-+				uart1-data {
-+					/* RXD, TXD */
-+					ingenic,pins = <0x7a 0 0x7c 0>;
-+				};
++	pinctrl-names = "default";
++	pinctrl-0 = <&pins_uart4>;
+ };
+ 
+ &nemc {
+@@ -61,6 +73,13 @@
+ 		ingenic,nemc-tAW = <15>;
+ 		ingenic,nemc-tSTRV = <100>;
+ 
++		/*
++		 * Only CLE/ALE are needed for the devices that are connected, rather
++		 * than the full address line set.
++		 */
++		pinctrl-names = "default";
++		pinctrl-0 = <&pins_nemc>;
 +
-+				uart1-hwflow {
-+					/* CTS, RTS */
-+					ingenic,pins = <0x7b 0 0x7d 0>;
-+				};
-+			};
+ 		nand@1 {
+ 			reg = <1>;
+ 
+@@ -69,6 +88,9 @@
+ 			nand-ecc-mode = "hw";
+ 			nand-on-flash-bbt;
+ 
++			pinctrl-names = "default";
++			pinctrl-0 = <&pins_nemc_cs1>;
 +
-+			uart2 {
-+				uart2-data {
-+					/* RXD, TXD */
-+					ingenic,pins = <0x66 1 0x67 1>;
-+				};
+ 			partitions {
+ 				compatible = "fixed-partitions";
+ 				#address-cells = <2>;
+@@ -106,3 +128,41 @@
+ &bch {
+ 	status = "okay";
+ };
 +
-+				uart2-hwflow {
-+					/* CTS, RTS */
-+					ingenic,pins = <0x65 1 0x64 1>;
-+				};
-+			};
-+
-+			uart3 {
-+				uart3-data {
-+					/* RXD, TXD */
-+					ingenic,pins = <0x6c 0 0x85 1>;
-+				};
-+
-+				uart3-hwflow {
-+					/* CTS, RTS */
-+					ingenic,pins = <0x88 0 0x89 0>;
-+				};
-+			};
-+
-+			uart4 {
-+				uart4-data {
-+					/* RXD, TXD */
-+					ingenic,pins = <0x54 2 0x4a 2>;
-+				};
-+			};
-+
-+			msc0 {
-+				msc0-8bit-a {
-+					/* D4, D5, D6, D7, RST */
-+					ingenic,pins = <0x04 1 0x05 1 0x06 1 0x07 1
-+									0x18 1>;
-+				};
-+
-+				msc0-4bit-a {
-+					/* D1, D2, D3 */
-+					ingenic,pins = <0x15 1 0x16 1 0x17 1>;
-+				};
-+
-+				msc0-1bit-a {
-+					/* CLK, CMD, D0 */
-+					ingenic,pins = <0x12 1 0x13 1 0x14 1>;
-+				};
-+
-+				msc0-1bit-e {
-+					/* CLK, CMD, D0 */
-+					ingenic,pins = <0x9c 0 0x9d 0 0x94 0>;
-+				};
-+
-+				msc0-4bit-e {
-+					/* D1, D2, D3 */
-+					ingenic,pins = <0x95 0 0x96 0 0x97 0>;
-+				};
-+			};
-+
-+			msc1 {
-+				msc1-1bit-d {
-+					/* CLK, CMD, D0 */
-+					ingenic,pins = <0x78 0 0x79 0 0x74 0>;
-+				};
-+
-+				msc1-4bit-d {
-+					/* D1, D2, D3 */
-+					ingenic,pins = <0x75 0 0x76 0 0x77 0>;
-+				};
-+
-+				msc1-1bit-e {
-+					/* CLK, CMD, D0 */
-+					ingenic,pins = <0x9c 1 0x9d 1 0x94 1>;
-+				};
-+
-+				msc1-4bit-e {
-+					/* D1, D2, D3 */
-+					ingenic,pins = <0x95 1 0x96 1 0x97 1>;
-+				};
-+			};
-+
-+			nemc {
-+				nemc-data {
-+					/* SD0, SD1, SD2, SD3, SD4, SD5, SD6, SD7 */
-+					ingenic,pins = <0x00 0 0x01 0 0x02 0 0x03 0
-+									0x04 0 0x05 0 0x06 0 0x07 0>;
-+				};
-+
-+				nemc-cle-ale {
-+					/* SA0_CL, SA1_AL */
-+					ingenic,pins = <0x20 0 0x21 0>;
-+				};
-+
-+				nemc-addr {
-+					/* SA2, SA3, SA4, SA5 */
-+					ingenic,pins = <0x22 0 0x23 0 0x24 0 0x25 0>;
-+				};
-+
-+				nemc-rd-we {
-+					/* RD, WE */
-+					ingenic,pins = <0x10 0 0x11 0>;
-+				};
-+
-+				nemc-frd-fwe {
-+					/* RD, WE */
-+					ingenic,pins = <0x12 0 0x13 0>;
-+				};
-+			};
-+
-+			nemc-cs1 {
-+				nemc-cs1 {
-+					/* CS1 */
-+					ingenic,pins = <0x15 0>;
-+				};
-+			};
-+
-+			nemc-cs6 {
-+				nemc-cs6 {
-+					/* CS6 */
-+					ingenic,pins = <0x1a 0>;
-+				};
-+			};
-+
-+			i2c0 {
-+				i2c0-data {
-+					/* SDA, SCL */
-+					ingenic,pins = <0x6e 0 0x6f 0>;
-+				};
-+			};
-+
-+			i2c1 {
-+				i2c1-data {
-+					/* SDA, SCL */
-+					ingenic,pins = <0x8e 0 0x8f 0>;
-+				};
-+			};
-+
-+			i2c2 {
-+				i2c2-data {
-+					/* SDA, SCL */
-+					ingenic,pins = <0xb0 2 0xb1 2>;
-+				};
-+			};
-+
-+			i2c3 {
-+				i2c3-data {
-+					/* SDA, SCL */
-+					ingenic,pins = <0x6a 1 0x6b 1>;
-+				};
-+			};
-+
-+			i2c4 {
-+				i2c4-data-pe {
-+					/* SDA, SCL */
-+					ingenic,pins = <0x8c 1 0x8d 1>;
-+				};
-+
-+				i2c4-data-pf {
-+					/* HDMI_SDA, HDMI_SCL */
-+					ingenic,pins = <0xb9 1 0xb8 1>;
-+				};
-+			};
-+
-+			cim {
-+				cim-pb {
-+					ingenic,pins = <0x26 0 0x27 0 0x28 0 0x29 0
-+									0x2a 0 0x2b 0 0x2c 0 0x2d 0
-+									0x2e 0 0x2f 0 0x30 0 0x31 0>;
-+				};
-+			};
-+		};
++&pinctrl {
++	pins_uart0: uart0 {
++		function = "uart0";
++		groups = "uart0-data";
++		bias-disable;
 +	};
 +
-+	gpa: gpio-controller@10010000 {
-+		compatible = "ingenic,jz4780-gpio";
-+		reg = <0x10010000 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 0 32>;
-+		#gpio-cells = <2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <17>;
++	pins_uart1: uart1 {
++		function = "uart1";
++		groups = "uart1-data";
++		bias-disable;
 +	};
 +
-+	gpb: gpio-controller@10010100 {
-+		compatible = "ingenic,jz4780-gpio";
-+		reg = <0x10010100 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 32 32>;
-+		#gpio-cells = <2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <16>;
++	pins_uart2: uart2 {
++		function = "uart2";
++		groups = "uart2-data", "uart2-hwflow";
++		bias-disable;
 +	};
 +
-+	gpc: gpio-controller@10010200 {
-+		compatible = "ingenic,jz4780-gpio";
-+		reg = <0x10010200 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 64 32>;
-+		#gpio-cells = <2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <15>;
++	pins_uart4: uart4 {
++		function = "uart4";
++		groups = "uart4-data";
++		bias-disable;
 +	};
 +
-+	gpd: gpio-controller@10010300 {
-+		compatible = "ingenic,jz4780-gpio";
-+		reg = <0x10010300 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 96 32>;
-+		#gpio-cells = <2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <14>;
++	pins_nemc: nemc {
++		function = "nemc";
++		groups = "nemc-data", "nemc-cle-ale", "nemc-rd-we", "nemc-frd-fwe";
++		bias-disable;
 +	};
 +
-+	gpe: gpio-controller@10010400 {
-+		compatible = "ingenic,jz4780-gpio";
-+		reg = <0x10010400 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 128 32>;
-+		#gpio-cells = <2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <13>;
++	pins_nemc_cs1: nemc-cs1 {
++		function = "nemc-cs1";
++		groups = "nemc-cs1";
++		bias-disable;
 +	};
-+
-+	gpf: gpio-controller@10010500 {
-+		compatible = "ingenic,jz4780-gpio";
-+		reg = <0x10010500 0x100>;
-+
-+		gpio-controller;
-+		gpio-ranges = <&pinctrl 0 160 32>;
-+		#gpio-cells = <2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <12>;
-+	};
-+
- 	uart0: serial@10030000 {
- 		compatible = "ingenic,jz4780-uart";
- 		reg = <0x10030000 0x100>;
++};
 -- 
 2.11.0

@@ -1,42 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2017 17:11:16 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:44754 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993894AbdAZQLHs1rrJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Jan 2017 17:11:07 +0100
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v0QGB3Hm015823;
-        Thu, 26 Jan 2017 17:11:03 +0100
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v0QGB0gt015821;
-        Thu, 26 Jan 2017 17:11:00 +0100
-Date:   Thu, 26 Jan 2017 17:11:00 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Alexander Duyck <alexander.duyck@gmail.com>
-Cc:     Mark Zhang <bomb.zhang@gmail.com>,
-        David Miller <davem@davemloft.net>,
-        Alexander Duyck <aduyck@mirantis.com>,
-        linux-mips@linux-mips.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [Bug fix]mips 64bits checksum error -- csum_tcpudp_nofold
-Message-ID: <20170126161100.GJ21568@linux-mips.org>
-References: <CAEbrdOCo9DeOa=rXYBxCEERNu_Cq=7N+5dDOwLwuZy87D3M6bA@mail.gmail.com>
- <CAKgT0UdBkqsUmp5y2d4fbi4MopW=6rxge_YzAwVvaKCqLj11_Q@mail.gmail.com>
- <CAEbrdOB4AQx6frAZr=_u4hutzfXS9R5TOtpdJox=9Tmw4WN0sA@mail.gmail.com>
- <CAKgT0UdNMH89JD95f7qmMLe32W3R6pupOOG_mSn=_ZkpUASBJw@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2017 17:17:56 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:20657 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993894AbdAZQRuTs4GJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2017 17:17:50 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 89E63600E8AE4;
+        Thu, 26 Jan 2017 16:17:40 +0000 (GMT)
+Received: from [10.20.78.21] (10.20.78.21) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Thu, 26 Jan 2017
+ 16:17:43 +0000
+Date:   Thu, 26 Jan 2017 16:17:34 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Joshua Kinard <kumba@gentoo.org>
+CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
+Subject: Re: gcc-6.3.x miscompiling code for IP27?
+In-Reply-To: <addded89-4410-f818-9eb8-c1428f561795@gentoo.org>
+Message-ID: <alpine.DEB.2.00.1701261612230.13564@tp.orcam.me.uk>
+References: <ee417407-6877-f49c-5893-f3b3dbc2d103@gentoo.org> <44d9e9df-2d77-df23-266b-9cb90b0db4c9@gentoo.org> <1cbb8434-d7ef-36e2-1f3e-ccbb5c52ce85@gentoo.org> <62c49213-812b-a9c2-b1a6-797ecdfa2829@gentoo.org> <20170124154536.GK29015@jhogan-linux.le.imgtec.org>
+ <addded89-4410-f818-9eb8-c1428f561795@gentoo.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKgT0UdNMH89JD95f7qmMLe32W3R6pupOOG_mSn=_ZkpUASBJw@mail.gmail.com>
-User-Agent: Mutt/1.7.1 (2016-10-04)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.21]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56520
+X-archive-position: 56521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,60 +43,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jan 26, 2017 at 07:57:49AM -0800, Alexander Duyck wrote:
-> Date:   Thu, 26 Jan 2017 07:57:49 -0800
-> From: Alexander Duyck <alexander.duyck@gmail.com>
-> To: Mark Zhang <bomb.zhang@gmail.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>, David Miller <davem@davemloft.net>,
->  Alexander Duyck <aduyck@mirantis.com>, linux-mips@linux-mips.org,
->  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-> Subject: Re: [Bug fix]mips 64bits checksum error -- csum_tcpudp_nofold
-> Content-Type: text/plain; charset=UTF-8
-> 
-> On Wed, Jan 25, 2017 at 6:33 PM, Mark Zhang <bomb.zhang@gmail.com> wrote:
-> > Hi Alex,
-> >
-> >     Thanks for your reply.
-> >     I tested your correction. The result is correct.
-> >     The C language will cause this function(csum_tcpudp_nofold) become
-> > 176 MIPS instructions. The assemble code is 150 MIPS instruction.
-> >     If the MIPS CPU is running as 1GHz, C language cause more 60 nano
-> > seconds during send/receive each tcp/udp packet. I'm not sure whether
-> > it will cause any negative result if the frequency of CPU was lower.
-> > MIPS arch is usually used in networking equipments.
-> >     I think Ralf's correction is better.
-> >
-> >     - Mark
-> >
-> > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> >
-> >  arch/mips/include/asm/checksum.h | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
-> > index 5c585c5..08b6ba3 100644
-> > --- a/arch/mips/include/asm/checksum.h
-> > +++ b/arch/mips/include/asm/checksum.h
-> > @@ -186,7 +186,9 @@ static inline __wsum csum_tcpudp_nofold(__be32 saddr,
-> >         "       daddu   %0, %4          \n"
-> >         "       dsll32  $1, %0, 0       \n"
-> >         "       daddu   %0, $1          \n"
-> > +       "       sltu    $1, %0, $1      \n"
-> >         "       dsra32  %0, %0, 0       \n"
-> > +       "       daddu   %0, $1          \n"
-> >  #endif
-> >         "       .set    pop"
-> >         : "=r" (sum)
-> >
-> 
-> This looks good to me.
-> 
-> Acked-by: Alexander Duyck <alexander.h.duyck@intel.com>
+On Wed, 25 Jan 2017, Joshua Kinard wrote:
 
-I've actually checked in a slightly different version that this which
-uses an ADDU rather than a DADDU for the second instruction added.  This
-is because the DSRA32 ensures the 32 bit result in %0 is properly
-signed extended to 64 bit as required by the MIPS architecture and the
-ADDU then simply operates on that 32 bit %0.
+> Instead of making -fno-stack-check IP27-only, I can do a patch for the main
+> arch/mips/Makefile instead to turn it off globally.  It looks like this option
+> has been available in gcc as far back as at least 3.0.4, so would any kind of
+> compatibility/version check for gcc be needed?  I'm not sure what the oldest
+> gcc supported by the MIPS code currently is.
 
-  Ralf
+ Wrapping a compiler option into `$(call cc-option,...)' is always safe to 
+do if unsure.  In this case however Documentation/Changes states 3.2 as 
+the minimum GCC version so it looks to me like no such check is required.
+
+  Maciej

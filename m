@@ -1,52 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2017 18:24:28 +0100 (CET)
-Received: from metis.ext.pengutronix.de ([IPv6:2001:67c:670:201:290:27ff:fe1d:cc33]:53265
-        "EHLO metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992155AbdA0RXeaiNo5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jan 2017 18:23:34 +0100
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7] helo=dude.pengutronix.de.)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.84_2)
-        (envelope-from <l.stach@pengutronix.de>)
-        id 1cXAFJ-0002a1-LF; Fri, 27 Jan 2017 18:23:33 +0100
-From:   Lucas Stach <l.stach@pengutronix.de>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-mips@linux-mips.org, Michal Hocko <mhocko@suse.com>,
-        kvm@vger.kernel.org,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        "H . Peter Anvin" <hpa@zytor.com>, Joerg Roedel <joro@8bytes.org>,
-        Russell King <linux@armlinux.org.uk>,
-        patchwork-lst@pengutronix.de, Ingo Molnar <mingo@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        linux-xtensa@linux-xtensa.org, kvm-ppc@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Chris Zankel <chris@zankel.net>, linux-mm@kvack.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2017 18:33:24 +0100 (CET)
+Received: from mail.free-electrons.com ([62.4.15.54]:40656 "EHLO
+        mail.free-electrons.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992127AbdA0RdRRqQc3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jan 2017 18:33:17 +0100
+Received: by mail.free-electrons.com (Postfix, from userid 110)
+        id 172BD20DE9; Fri, 27 Jan 2017 18:33:16 +0100 (CET)
+Received: from bbrezillon (LStLambert-657-1-97-87.w90-63.abo.wanadoo.fr [90.63.216.87])
+        by mail.free-electrons.com (Postfix) with ESMTPSA id 9A79820DE5;
+        Fri, 27 Jan 2017 18:33:15 +0100 (CET)
+Date:   Fri, 27 Jan 2017 18:33:11 +0100
+From:   Boris Brezillon <boris.brezillon@free-electrons.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        iommu@lists.linux-foundation.org, kernel@pengutronix.de,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Alexander Graf <agraf@suse.com>
-Subject: [PATCH v2 2/3] mm: cma_alloc: allow to specify GFP mask
-Date:   Fri, 27 Jan 2017 18:23:27 +0100
-Message-Id: <20170127172328.18574-2-l.stach@pengutronix.de>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20170127172328.18574-1-l.stach@pengutronix.de>
-References: <20170127172328.18574-1-l.stach@pengutronix.de>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <l.stach@pengutronix.de>
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        james.hogan@imgtec.com
+Subject: Re: [PATCH 10/13] mtd: nand: jz4740: Let the pinctrl driver
+ configure the pins
+Message-ID: <20170127183311.132b5661@bbrezillon>
+In-Reply-To: <20170117231421.16310-11-paul@crapouillou.net>
+References: <20170117231421.16310-1-paul@crapouillou.net>
+        <20170117231421.16310-11-paul@crapouillou.net>
+X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <boris.brezillon@free-electrons.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56529
+X-archive-position: 56530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: l.stach@pengutronix.de
+X-original-sender: boris.brezillon@free-electrons.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,99 +57,97 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Most users of this interface just want to use it with the default
-GFP_KERNEL flags, but for cases where DMA memory is allocated it may
-be called from a different context.
+On Wed, 18 Jan 2017 00:14:18 +0100
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-No functional change yet, just passing through the flag to the
-underlying alloc_contig_range function.
+> Before, this NAND driver would set itself the configuration of the
+> chip-select pins for the various NAND banks.
+> 
+> Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
+> the pins being properly configured before the driver probes.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Michal Hocko <mhocko@suse.com>
----
- arch/powerpc/kvm/book3s_hv_builtin.c | 3 ++-
- drivers/base/dma-contiguous.c        | 2 +-
- include/linux/cma.h                  | 3 ++-
- mm/cma.c                             | 5 +++--
- mm/cma_debug.c                       | 2 +-
- 5 files changed, 9 insertions(+), 6 deletions(-)
+Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 
-diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-index 5bb24be0b346..56a62d97ab2d 100644
---- a/arch/powerpc/kvm/book3s_hv_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-@@ -56,7 +56,8 @@ struct page *kvm_alloc_hpt(unsigned long nr_pages)
- {
- 	VM_BUG_ON(order_base_2(nr_pages) < KVM_CMA_CHUNK_ORDER - PAGE_SHIFT);
- 
--	return cma_alloc(kvm_cma, nr_pages, order_base_2(HPT_ALIGN_PAGES));
-+	return cma_alloc(kvm_cma, nr_pages, order_base_2(HPT_ALIGN_PAGES),
-+			 GFP_KERNEL);
- }
- EXPORT_SYMBOL_GPL(kvm_alloc_hpt);
- 
-diff --git a/drivers/base/dma-contiguous.c b/drivers/base/dma-contiguous.c
-index e167a1e1bccb..d1a9cbabc627 100644
---- a/drivers/base/dma-contiguous.c
-+++ b/drivers/base/dma-contiguous.c
-@@ -193,7 +193,7 @@ struct page *dma_alloc_from_contiguous(struct device *dev, size_t count,
- 	if (align > CONFIG_CMA_ALIGNMENT)
- 		align = CONFIG_CMA_ALIGNMENT;
- 
--	return cma_alloc(dev_get_cma_area(dev), count, align);
-+	return cma_alloc(dev_get_cma_area(dev), count, align, GFP_KERNEL);
- }
- 
- /**
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 6f0a91b37f68..03f32d0bd1d8 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -29,6 +29,7 @@ extern int __init cma_declare_contiguous(phys_addr_t base,
- extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
- 					unsigned int order_per_bit,
- 					struct cma **res_cma);
--extern struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align);
-+extern struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
-+			      gfp_t gfp_mask);
- extern bool cma_release(struct cma *cma, const struct page *pages, unsigned int count);
- #endif
-diff --git a/mm/cma.c b/mm/cma.c
-index fbd67d866f67..a33ddfde315d 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -362,7 +362,8 @@ int __init cma_declare_contiguous(phys_addr_t base,
-  * This function allocates part of contiguous memory on specific
-  * contiguous memory area.
-  */
--struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align)
-+struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align,
-+		       gfp_t gfp_mask)
- {
- 	unsigned long mask, offset;
- 	unsigned long pfn = -1;
-@@ -408,7 +409,7 @@ struct page *cma_alloc(struct cma *cma, size_t count, unsigned int align)
- 		pfn = cma->base_pfn + (bitmap_no << cma->order_per_bit);
- 		mutex_lock(&cma_mutex);
- 		ret = alloc_contig_range(pfn, pfn + count, MIGRATE_CMA,
--					 GFP_KERNEL);
-+					 gfp_mask);
- 		mutex_unlock(&cma_mutex);
- 		if (ret == 0) {
- 			page = pfn_to_page(pfn);
-diff --git a/mm/cma_debug.c b/mm/cma_debug.c
-index f8e4b60db167..ffc0c3d0ae64 100644
---- a/mm/cma_debug.c
-+++ b/mm/cma_debug.c
-@@ -138,7 +138,7 @@ static int cma_alloc_mem(struct cma *cma, int count)
- 	if (!mem)
- 		return -ENOMEM;
- 
--	p = cma_alloc(cma, count, 0);
-+	p = cma_alloc(cma, count, 0, GFP_KERNEL);
- 	if (!p) {
- 		kfree(mem);
- 		return -ENOMEM;
--- 
-2.11.0
+> ---
+>  drivers/mtd/nand/jz4740_nand.c | 23 +----------------------
+>  1 file changed, 1 insertion(+), 22 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
+> index 5551c36adbdf..0d06a1f07d82 100644
+> --- a/drivers/mtd/nand/jz4740_nand.c
+> +++ b/drivers/mtd/nand/jz4740_nand.c
+> @@ -25,7 +25,6 @@
+>  
+>  #include <linux/gpio.h>
+>  
+> -#include <asm/mach-jz4740/gpio.h>
+>  #include <asm/mach-jz4740/jz4740_nand.h>
+>  
+>  #define JZ_REG_NAND_CTRL	0x50
+> @@ -310,34 +309,20 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
+>  			       uint8_t *nand_dev_id)
+>  {
+>  	int ret;
+> -	int gpio;
+> -	char gpio_name[9];
+>  	char res_name[6];
+>  	uint32_t ctrl;
+>  	struct nand_chip *chip = &nand->chip;
+>  	struct mtd_info *mtd = nand_to_mtd(chip);
+>  
+> -	/* Request GPIO port. */
+> -	gpio = JZ_GPIO_MEM_CS0 + bank - 1;
+> -	sprintf(gpio_name, "NAND CS%d", bank);
+> -	ret = gpio_request(gpio, gpio_name);
+> -	if (ret) {
+> -		dev_warn(&pdev->dev,
+> -			"Failed to request %s gpio %d: %d\n",
+> -			gpio_name, gpio, ret);
+> -		goto notfound_gpio;
+> -	}
+> -
+>  	/* Request I/O resource. */
+>  	sprintf(res_name, "bank%d", bank);
+>  	ret = jz_nand_ioremap_resource(pdev, res_name,
+>  					&nand->bank_mem[bank - 1],
+>  					&nand->bank_base[bank - 1]);
+>  	if (ret)
+> -		goto notfound_resource;
+> +		return ret;
+>  
+>  	/* Enable chip in bank. */
+> -	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_MEM_CS0);
+>  	ctrl = readl(nand->base + JZ_REG_NAND_CTRL);
+>  	ctrl |= JZ_NAND_CTRL_ENABLE_CHIP(bank - 1);
+>  	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
+> @@ -377,12 +362,8 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
+>  	dev_info(&pdev->dev, "No chip found on bank %i\n", bank);
+>  	ctrl &= ~(JZ_NAND_CTRL_ENABLE_CHIP(bank - 1));
+>  	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
+> -	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
+>  	jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+>  				 nand->bank_base[bank - 1]);
+> -notfound_resource:
+> -	gpio_free(gpio);
+> -notfound_gpio:
+>  	return ret;
+>  }
+>  
+> @@ -503,7 +484,6 @@ static int jz_nand_probe(struct platform_device *pdev)
+>  err_unclaim_banks:
+>  	while (chipnr--) {
+>  		unsigned char bank = nand->banks[chipnr];
+> -		gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
+>  		jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+>  					 nand->bank_base[bank - 1]);
+>  	}
+> @@ -530,7 +510,6 @@ static int jz_nand_remove(struct platform_device *pdev)
+>  		if (bank != 0) {
+>  			jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+>  						 nand->bank_base[bank - 1]);
+> -			gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
+>  		}
+>  	}
+>  

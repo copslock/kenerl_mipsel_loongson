@@ -1,36 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2017 17:17:56 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:20657 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993894AbdAZQRuTs4GJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2017 17:17:50 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 89E63600E8AE4;
-        Thu, 26 Jan 2017 16:17:40 +0000 (GMT)
-Received: from [10.20.78.21] (10.20.78.21) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Thu, 26 Jan 2017
- 16:17:43 +0000
-Date:   Thu, 26 Jan 2017 16:17:34 +0000
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Joshua Kinard <kumba@gentoo.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
-Subject: Re: gcc-6.3.x miscompiling code for IP27?
-In-Reply-To: <addded89-4410-f818-9eb8-c1428f561795@gentoo.org>
-Message-ID: <alpine.DEB.2.00.1701261612230.13564@tp.orcam.me.uk>
-References: <ee417407-6877-f49c-5893-f3b3dbc2d103@gentoo.org> <44d9e9df-2d77-df23-266b-9cb90b0db4c9@gentoo.org> <1cbb8434-d7ef-36e2-1f3e-ccbb5c52ce85@gentoo.org> <62c49213-812b-a9c2-b1a6-797ecdfa2829@gentoo.org> <20170124154536.GK29015@jhogan-linux.le.imgtec.org>
- <addded89-4410-f818-9eb8-c1428f561795@gentoo.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2017 12:18:54 +0100 (CET)
+Received: from mail-it0-x22a.google.com ([IPv6:2607:f8b0:4001:c0b::22a]:38079
+        "EHLO mail-it0-x22a.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992127AbdA0LSpsNblI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jan 2017 12:18:45 +0100
+Received: by mail-it0-x22a.google.com with SMTP id c7so53622143itd.1
+        for <linux-mips@linux-mips.org>; Fri, 27 Jan 2017 03:18:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=pqR2/HFXheLVkK04Qhv0YwnP51UUGiTZz2Pq7MBhNK8=;
+        b=Im9pYB0KcHk+HC+6Pn1FN0pIkJJ+Rt6I4fKGfvYf8AP4/CJsEiZNaEcGmqua22UJNG
+         cZppmbI49VAFXHoU/sM2zuZu4Y2AGEIBkKjMCQOV3uyRhd9EXQxGi8yQdftFq3Q1avI8
+         Ax79lZSC4bhudBel65CDEco7m9ku33hrikMKw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=pqR2/HFXheLVkK04Qhv0YwnP51UUGiTZz2Pq7MBhNK8=;
+        b=Hx0QzX1IgP9gv0jsEtkCHncAVEQgLWLAbI9MwhjsxS5S52uIDSpiNH7ez4enyClr93
+         J5ZGBYZ/GmEB6/o7cJwMQ7AKuuPUzvOSBmOShxDArR7FKVJNlysChgTCRatnfDaYfswT
+         KlDt6Sj4u4jY/4v3YglZiT6+r8f15CMQUBXX7/8I7L5sL7Vu6ujkFRMeH2yZTLQ8198Q
+         oRDABcGUZq0Xg0R1G8JgpZ4FEarTf6NW3r+Rn8PSgEkuTROzh1Qjub2AcXrZ350qdF5+
+         shYIAYwvTY1ilT/z+w4HMyEeSYPJu81SYfEQ1icMER0aWQLrSHOAcK0gGuVnCFMY7f5f
+         grqQ==
+X-Gm-Message-State: AIkVDXJps/4azccHAZ3Bgo43SjkAM1oqSRVts7CW96K2lxidpN2+oYtjYx8z0eVVaMeGGNgOz5xOAVcxPWhFk5aT
+X-Received: by 10.36.33.135 with SMTP id e129mr2514900ita.9.1485515919962;
+ Fri, 27 Jan 2017 03:18:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.21]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: by 10.79.169.75 with HTTP; Fri, 27 Jan 2017 03:18:39 -0800 (PST)
+In-Reply-To: <20170122144947.16158-2-paul@crapouillou.net>
+References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
+ <20170122144947.16158-1-paul@crapouillou.net> <20170122144947.16158-2-paul@crapouillou.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 27 Jan 2017 12:18:39 +0100
+Message-ID: <CACRpkdZFRH84c4x7HBwgmY3fH+=Qq4q167c9oPhvrJ70MQkjaA@mail.gmail.com>
+Subject: Re: [PATCH v2 01/14] Documentation: dt/bindings: Document pinctrl-ingenic
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        James Hogan <james.hogan@imgtec.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56521
+X-archive-position: 56522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,16 +78,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 25 Jan 2017, Joshua Kinard wrote:
+On Sun, Jan 22, 2017 at 3:49 PM, Paul Cercueil <paul@crapouillou.net> wrote:
 
-> Instead of making -fno-stack-check IP27-only, I can do a patch for the main
-> arch/mips/Makefile instead to turn it off globally.  It looks like this option
-> has been available in gcc as far back as at least 3.0.4, so would any kind of
-> compatibility/version check for gcc be needed?  I'm not sure what the oldest
-> gcc supported by the MIPS code currently is.
 
- Wrapping a compiler option into `$(call cc-option,...)' is always safe to 
-do if unsure.  In this case however Documentation/Changes states 3.2 as 
-the minimum GCC version so it looks to me like no such check is required.
+> +Required properties:
+> +- compatible: One of:
+> +  - "ingenic,jz4740-pinctrl"
+> +  - "ingenic,jz4780-pinctrl"
+> +
+> +Optional properties:
+> +- ingenic,pull-ups: A list of 32-bit bit fields, where each bit set tells the
+> +  driver that a pull-up resistor is available for this pin.
+> +  By default, the driver considers that all pins feature a pull-up resistor.
+> +- ingenic,pull-downs: A list of 32-bit bit fields, where each bit set tells
+> +  the driver that a pull-down resistor is available for this pin.
+> +  By default, the driver considers that all pins feature a pull-down
+> +  resistor.
 
-  Maciej
+So I still don't understand these properties.
+
+Does this mean that there is a pull-up *inside* the SoC or *outside*
+on the board where it is mounted?
+
+If it is *outside* the SoC, on the board, the pulls should be set on
+the consumers, not on the controller.
+
+In the former case, if this pertains to the *inside* of the SoC:
+is it just different between jz4740 and jz4780?
+In that case, just code this into the driver as .data to the .compatible
+in the DT match. No special DT properties needed.
+
+If it is different between e.g. different versions of jz4740, why not
+make different compatible-properties? If there are different versions
+of the circuit, with different hard-wired hardware configuration, they
+are different devices and should have different compatible strings.
+
+> +                               /* CLK, CMD, D0 */
+> +                               ingenic,pins = <0x69 0 0x68 0 0x6a 0>;
+
+Standard bindings use just "pins". Why the custom ingenic,
+prefix?
+
+Yours,
+Linus Walleij

@@ -1,48 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2017 16:28:04 +0100 (CET)
-Received: from outils.crapouillou.net ([89.234.176.41]:54332 "EHLO
-        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992078AbdA0P15JPB0E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Jan 2017 16:27:57 +0100
-To:     Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v2 01/14] Documentation: dt/bindings: Document  pinctrl-ingenic
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 27 Jan 2017 16:27:56 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2017 17:19:17 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:51424 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992121AbdA0QTKIscSE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Jan 2017 17:19:10 +0100
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 42CA0AAA3;
+        Fri, 27 Jan 2017 16:19:06 +0000 (UTC)
+Date:   Fri, 27 Jan 2017 17:19:04 +0100
+From:   Michal Hocko <mhocko@kernel.org>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     Lucas Stach <l.stach@pengutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        James Hogan <james.hogan@imgtec.com>
-In-Reply-To: <CACRpkdZFRH84c4x7HBwgmY3fH+=Qq4q167c9oPhvrJ70MQkjaA@mail.gmail.com>
-References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
- <20170122144947.16158-1-paul@crapouillou.net>
- <20170122144947.16158-2-paul@crapouillou.net>
- <CACRpkdZFRH84c4x7HBwgmY3fH+=Qq4q167c9oPhvrJ70MQkjaA@mail.gmail.com>
-Message-ID: <08e9505d2d366557950f8e6a4e81f57a@mail.crapouillou.net>
-X-Sender: paul@crapouillou.net
-Return-Path: <paul@outils.crapouillou.net>
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Alexander Graf <agraf@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, iommu@lists.linux-foundation.org,
+        linux-mm@kvack.org, kernel@pengutronix.de,
+        patchwork-lst@pengutronix.de
+Subject: Re: [PATCH 1/3] mm: alloc_contig_range: allow to specify GFP mask
+Message-ID: <20170127161904.GA6357@dhcp22.suse.cz>
+References: <20170119170707.31741-1-l.stach@pengutronix.de>
+ <81849c0d-b7aa-faf2-484c-66b0ea0a7e95@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81849c0d-b7aa-faf2-484c-66b0ea0a7e95@suse.cz>
+User-Agent: Mutt/1.6.0 (2016-04-01)
+Return-Path: <mhocko@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56523
+X-archive-position: 56524
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: mhocko@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,33 +60,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
-
-> So I still don't understand these properties.
+On Fri 20-01-17 13:35:40, Vlastimil Babka wrote:
+> On 01/19/2017 06:07 PM, Lucas Stach wrote:
+[...]
+> > @@ -7255,7 +7256,7 @@ int alloc_contig_range(unsigned long start, unsigned long end,
+> >  		.zone = page_zone(pfn_to_page(start)),
+> >  		.mode = MIGRATE_SYNC,
+> >  		.ignore_skip_hint = true,
+> > -		.gfp_mask = GFP_KERNEL,
+> > +		.gfp_mask = gfp_mask,
 > 
-> Does this mean that there is a pull-up *inside* the SoC or *outside*
-> on the board where it is mounted?
+> I think you should apply memalloc_noio_flags() here (and Michal should
+> then convert it to the new name in his scoped gfp_nofs series). Note
+> that then it's technically a functional change, but it's needed.
+> Otherwise looks good.
 
-The pull-up resistors are inside the SoCs.
+yes, with that added, feel free to add
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-> In the former case, if this pertains to the *inside* of the SoC:
-> is it just different between jz4740 and jz4780?
-> In that case, just code this into the driver as .data to the 
-> .compatible
-> in the DT match. No special DT properties needed.
+> 
+> >  	};
+> >  	INIT_LIST_HEAD(&cc.migratepages);
+> >  
+> > 
 
-Well, I've been taught that devicetree is for describing the hardware, 
-and
-the driver code is for functionality. So that's why I put it in 
-devicetree.
-
-That's also the reason why I put the list of functions and groups in
-devicetree and not in the driver code.
-
-> Standard bindings use just "pins". Why the custom ingenic,
-> prefix?
-
-I can change that.
-
-Regards,
--Paul
+-- 
+Michal Hocko
+SUSE Labs

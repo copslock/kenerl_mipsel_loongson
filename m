@@ -1,42 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2017 17:11:19 +0100 (CET)
-Received: from mailout2.samsung.com ([203.254.224.25]:59295 "EHLO
-        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993869AbdA3QLKKR2Ag (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2017 17:11:10 +0100
-Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
- by mailout2.samsung.com
- (Oracle Communications Messaging Server 7.0.5.31.0 64bit (built May  5 2014))
- with ESMTP id <0OKL020MHOYEDB90@mailout2.samsung.com>; Tue,
- 31 Jan 2017 01:11:02 +0900 (KST)
-Received: from epsmges1p1.samsung.com (unknown [182.195.42.53])
- by     epcas1p1.samsung.com (KnoxPortal)
- with ESMTP id  20170130161101epcas1p13dfa908b806b2d9fbc1bece37ad40cb8~emI3NlQ7L0372503725epcas1p1k;
-        Mon, 30 Jan 2017 16:11:01 +0000 (GMT)
-Received: from epcas1p1.samsung.com ( [182.195.41.45])
- by     epsmges1p1.samsung.com (Symantec Messaging Gateway)
- with SMTP id   EC.B2.06731.5956F885; Tue, 31 Jan 2017 01:11:01 +0900 (KST)
-Received: from epcpsbgm1new.samsung.com
- (u26.gpu120.samsung.co.kr      [203.254.230.26])
- by epcas1p4.samsung.com (KnoxPortal)
- with ESMTP id  20170130161101epcas1p412e5363692ad7413b76f6fdfc628b01a~emI2223AT1119911199epcas1p4a;
-        Mon, 30 Jan 2017 16:11:01 +0000 (GMT)
-X-AuditID: b6c32a35-f79166d000001a4b-c1-588f659535ac
-Received: from epmmp1.local.host ( [203.254.227.16])
- by     epcpsbgm1new.samsung.com (EPCPMTA) with SMTP id 70.79.06487.5956F885; Tue,
-        31 Jan 2017 01:11:01 +0900 (KST)
-Received: from amdc3058.localnet ([106.120.53.102])
- by mmp1.samsung.com    (Oracle Communications Messaging Server 7.0.5.31.0 64bit
- (built May  5  2014)) with ESMTPA id <0OKL00F3SOYCKS90@mmp1.samsung.com>; Tue,
- 31 Jan 2017    01:11:01 +0900 (KST)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2017 21:33:28 +0100 (CET)
+Received: from mail-ot0-f194.google.com ([74.125.82.194]:36863 "EHLO
+        mail-ot0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993877AbdA3UdUj4Y1y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2017 21:33:20 +0100
+Received: by mail-ot0-f194.google.com with SMTP id 36so39624556otx.3;
+        Mon, 30 Jan 2017 12:33:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=cLOU9HaeSs7o6SRj25vv4dIYKmEEFMYOa/+f48gr7xs=;
+        b=Q1/6CkdBVnFx57D+WtsYRSeCcND/p8zkdt0kWlpLknrWWyLzxOEu2A1Zq6l6xU4yh0
+         PYi4enxLQ3cjix+kzzizDzRBRzwROdkexzxW5ae0NMWuF/721PozbCRv38ny40r4MpWl
+         Feht74IILSkogl7lCal/K0M1eqMsSFddPGYc5RlkJxif2GXk9uNGk8jOA7K200nyqipz
+         a54TNT/nYsOVws2Q8sWndvTz7LrfpTsr2VqMkoKUwG08HKoA0x/58qSnDkVgg8CH491A
+         8SAx17eC6chhhgpike8TYiyVu8/60zUZecsPBJc1shJEw4dxUettLdHYGgUPgcFWI3/p
+         hY8A==
+X-Gm-Message-State: AIkVDXK2uiyyRFzoKX846UoNDN/FWOeGZVaskwM5/l8xLE0ZtPnJPKN7HL0Cuic3QLhlIw==
+X-Received: by 10.157.6.46 with SMTP id 43mr10646166otn.143.1485808393901;
+        Mon, 30 Jan 2017 12:33:13 -0800 (PST)
+Received: from localhost (72-48-98-129.dyn.grandenetworks.net. [72.48.98.129])
+        by smtp.gmail.com with ESMTPSA id t8sm7811717oib.23.2017.01.30.12.33.13
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 30 Jan 2017 12:33:13 -0800 (PST)
+Date:   Mon, 30 Jan 2017 14:33:12 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Boris Brezillon <boris.brezillon@free-electrons.com>,
         Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Paul Burton <paul.burton@imgtec.com>,
@@ -45,71 +41,26 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         james.hogan@imgtec.com
-Subject: Re: [PATCH v3 12/14] fbdev: jz4740-fb: Let the pinctrl driver
- configure the pins
-Date:   Mon, 30 Jan 2017 17:10:59 +0100
-Message-id: <4646116.fubHeuC3Nm@amdc3058>
-User-Agent: KMail/4.13.3 (Linux/3.13.0-96-generic; KDE/4.13.3; x86_64; ; )
-In-reply-to: <20170125185207.23902-13-paul@crapouillou.net>
-MIME-version: 1.0
-Content-transfer-encoding: 7Bit
-Content-type: text/plain; charset=us-ascii
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRTH+d3XrsPFbZqd1JKGPS1Le/BDIyoqLr0oCpLKdNVFJR9jV8Uk
-        UntZIk3LIY1wqcvH0qJpNSstpqlYRq4yCGcGFfZS0axsZrXdCf73Oef3Pd/z4MeSymHan01I
-        ThW0yepEFSOn7jQvWrpUL+iilp+uWoEf9ZdS2NjyjMYDJf0kNl0y0rhovJLA7ReGaFxnHEf4
-        xb0rDC7QX5Thlr86hO+frJBhh8OM8EjVoAxfe91F4LdNt2RYV26nsP1BMD7T2CLDY/dKKNxW
-        u3edL19TUoP46/Zchn9v6UJ8g8Eh4/MbniLeYj7P8D3dDxj+cXUtwdeZsnjTVxvN6791k/yI
-        Zc5O733yNUeExIR0Qbtsbaw8Xm8pZjR9IRnfTDHZSBech7xY4FZCZf8EktgPnvfeZPKQnFVy
-        VgTNf1o9QS4BL+uuM5MVPbYflIuVXCWClg5a4lEEb+wLXcxwEVCYa3a7+nILwfSp0V1LchU0
-        GEoSXOzD7YeB8Rx3LcXNgxpnqVuj4BaB/fZzd34GtwXqm3IJF3txkfCy+iEtaabDr0u9lOQZ
-        BE0P9bTES6Cz9QZyDQ2clYWyDgeZh9j/wWywPCKl+TdCUcU7D/vA57Z6mcQBYJ54Q0hcjOCu
-        EySfOgTm+wUeUSQ0t3V5mk2DgdF8WvJXwLmzSknCQ0d1leei6+HcxzFCOmI7govjZ4gCFGSY
-        soNhyg6GKTtcRaQZ+QkaMSlOEMM0YaGiOklMS44LPZySZEHun7h4lRUVPdtmQxyLVN6Kvs26
-        KCWtThePJdkQsKTKV8Ec/p9SHFEfyxS0KTHatERBtKEAllLNVJTnREYpuTh1qnBUEDSCdvKV
-        YL38s9HOypwIqzE9qPRDeuHddseefO/dafP7llsWnLKEDy8JPx3t3BSgidU/iUarW4O3rz7k
-        a6y+PG2Xs1PuM/wF+4V0/hysrbhzIDgmsIDNGtp69Ld3fN7xg5syRofq5+KIssGJKmZmbOCH
-        kFmHMkM/NuyY9z7V6oxu/H6iZkNxqvjqWvccFSXGq8MWk1pR/Q9aNENvhQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGKsWRmVeSWpSXmKPExsVy+t9jAd2pqf0RBlP3SFsceLGQxWL+kXOs
-        Fu/mvWC2WDJ5PqvFlD/LmSxO9H1gtdg8/w+jxeVdc9gsJkydxG5x5H8/o8XupmXsFnfvrmK0
-        +LziPbvF0usXmSzu79vIbtG/+BKLxaU9Khate4+wW/zcNY/F4vjacAcRjzXz1jB6rL7Uzubx
-        ZNNFRo+ds+6ye/TsPMPosWlVJ5vHnWt72DyOrlzL5LF5Sb3HkjeHWD2mvr3G7PF5k1wAT5Sb
-        TUZqYkpqkUJqXnJ+SmZeuq1SaIibroWSQl5ibqqtUoSub0iQkkJZYk4pkGdkgAYcnAPcg5X0
-        7RLcMqZums5W8EC74u2S+AbGfpUuRk4OCQETiTuHvrFA2GISF+6tZ+ti5OIQEljKKPHh5B1m
-        COcro8ThpVtYQarYBKwkJravYgSxRQQ0JJa83AvWwSywjFVi0+bTYAlhgWiJd38awRpYBFQl
-        1vxeyAZi8wpoSlzaegEsLirgJbFlXzsTiM0pYC1xZeV+sLiQwAlGiZsfVCHqBSV+TL4Hdh6z
-        gLzEvv1TWSFsLYn1O48zTWAUmIWkbBaSsllIyhYwMq9ilEgtSC4oTkrPNcxLLdcrTswtLs1L
-        10vOz93ECE4Tz6R2MB7c5X6IUYCDUYmHNwKYPoRYE8uKK3MPMUpwMCuJ8LIlA4V4UxIrq1KL
-        8uOLSnNSiw8xmgI9OJFZSjQ5H5jC8kriDU3MTcyNDSzMLS1NjJTEeRtnPwsXEkhPLEnNTk0t
-        SC2C6WPi4JRqYGyaG33lYtPvZed32zgtyG9QfPu07WRv9lLPSoOIlbKNMdtPP94oudXOcfP7
-        NlHeuc9PFc1hsjXN37fwnOexB9u3/LzR6xwaHX8yz3varTnCpZ835XK0WFwXetYV1Pq1S64k
-        U3VlcMHMB2/uyEwvMzzJLPnqZPnhnOWtWUu03Lb6xCnt8F7snK3EUpyRaKjFXFScCAC6stLu
-        KQMAAA==
-X-MTR:  20000000000000000@CPGS
-X-CMS-MailID: 20170130161101epcas1p412e5363692ad7413b76f6fdfc628b01a
-X-Msg-Generator: CA
-X-Sender-IP: 203.254.230.26
-X-Local-Sender: =?UTF-8?B?QmFydGxvbWllaiBab2xuaWVya2lld2ljehtTUlBPTC1LZXJu?=
-        =?UTF-8?B?ZWwgKFRQKRvsgrzshLHsoITsnpAbU2VuaW9yIFNvZnR3YXJlIEVuZ2luZWVy?=
-X-Global-Sender: =?UTF-8?B?QmFydGxvbWllaiBab2xuaWVya2lld2ljehtTUlBPTC1LZXJu?=
-        =?UTF-8?B?ZWwgKFRQKRtTYW1zdW5nIEVsZWN0cm9uaWNzG1NlbmlvciBTb2Z0d2FyZSBF?=
-        =?UTF-8?B?bmdpbmVlcg==?=
-X-Sender-Code: =?UTF-8?B?QzEwG0VIURtDMTBDRDAyQ0QwMjczOTI=?=
-CMS-TYPE: 101P
-X-HopCount: 7
-X-CMS-RootMailID: 20170125185254epcas5p15b40cad57649dc77afe8d2fd316687ff
-X-RootMTR: 20170125185254epcas5p15b40cad57649dc77afe8d2fd316687ff
+Subject: Re: [PATCH v3 02/14] Documentation: dt/bindings: Document
+ pinctrl-gpio
+Message-ID: <20170130203312.xsvu6rk2sz66m43a@rob-hp-laptop>
 References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
- <CGME20170125185254epcas5p15b40cad57649dc77afe8d2fd316687ff@epcas5p1.samsung.com>
- <20170125185207.23902-13-paul@crapouillou.net>
-Return-Path: <b.zolnierkie@samsung.com>
+ <20170125185207.23902-1-paul@crapouillou.net>
+ <20170125185207.23902-3-paul@crapouillou.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170125185207.23902-3-paul@crapouillou.net>
+User-Agent: Mutt/1.6.2-neo (2016-08-21)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56539
+X-archive-position: 56540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: b.zolnierkie@samsung.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -122,190 +73,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Wed, Jan 25, 2017 at 07:51:55PM +0100, Paul Cercueil wrote:
+> This commit adds documentation for the devicetree bidings of the
 
-Hi,
+s/biding/bindings/
 
-On Wednesday, January 25, 2017 07:52:05 PM Paul Cercueil wrote:
-> Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
-> the pins being properly configured before the driver probes.
+> pinctrl-gpio driver, which handles GPIOs of the Ingenic SoCs
+> currently supported by the Linux kernel.
+
+The subject makes no reference that this binding is for Ingenic GPIO. 
+Also, drop the "Documentation: " part. It's redundant.
+
 > 
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
-
 > ---
->  drivers/video/fbdev/jz4740_fb.c | 104 ++--------------------------------------
->  1 file changed, 3 insertions(+), 101 deletions(-)
+>  .../devicetree/bindings/gpio/ingenic,gpio.txt      | 45 ++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
 > 
-> v2: No changes
+> v2: New patch
 > v3: No changes
 > 
-> diff --git a/drivers/video/fbdev/jz4740_fb.c b/drivers/video/fbdev/jz4740_fb.c
-> index 87790e9644d0..b57df83fdbd3 100644
-> --- a/drivers/video/fbdev/jz4740_fb.c
-> +++ b/drivers/video/fbdev/jz4740_fb.c
-> @@ -17,6 +17,7 @@
->  #include <linux/module.h>
->  #include <linux/mutex.h>
->  #include <linux/platform_device.h>
-> +#include <linux/pinctrl/consumer.h>
->  
->  #include <linux/clk.h>
->  #include <linux/delay.h>
-> @@ -27,7 +28,6 @@
->  #include <linux/dma-mapping.h>
->  
->  #include <asm/mach-jz4740/jz4740_fb.h>
-> -#include <asm/mach-jz4740/gpio.h>
->  
->  #define JZ_REG_LCD_CFG		0x00
->  #define JZ_REG_LCD_VSYNC	0x04
-> @@ -146,93 +146,6 @@ static const struct fb_fix_screeninfo jzfb_fix = {
->  	.accel		= FB_ACCEL_NONE,
->  };
->  
-> -static const struct jz_gpio_bulk_request jz_lcd_ctrl_pins[] = {
-> -	JZ_GPIO_BULK_PIN(LCD_PCLK),
-> -	JZ_GPIO_BULK_PIN(LCD_HSYNC),
-> -	JZ_GPIO_BULK_PIN(LCD_VSYNC),
-> -	JZ_GPIO_BULK_PIN(LCD_DE),
-> -	JZ_GPIO_BULK_PIN(LCD_PS),
-> -	JZ_GPIO_BULK_PIN(LCD_REV),
-> -	JZ_GPIO_BULK_PIN(LCD_CLS),
-> -	JZ_GPIO_BULK_PIN(LCD_SPL),
-> -};
-> -
-> -static const struct jz_gpio_bulk_request jz_lcd_data_pins[] = {
-> -	JZ_GPIO_BULK_PIN(LCD_DATA0),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA1),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA2),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA3),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA4),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA5),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA6),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA7),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA8),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA9),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA10),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA11),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA12),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA13),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA14),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA15),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA16),
-> -	JZ_GPIO_BULK_PIN(LCD_DATA17),
-> -};
-> -
-> -static unsigned int jzfb_num_ctrl_pins(struct jzfb *jzfb)
-> -{
-> -	unsigned int num;
-> -
-> -	switch (jzfb->pdata->lcd_type) {
-> -	case JZ_LCD_TYPE_GENERIC_16_BIT:
-> -		num = 4;
-> -		break;
-> -	case JZ_LCD_TYPE_GENERIC_18_BIT:
-> -		num = 4;
-> -		break;
-> -	case JZ_LCD_TYPE_8BIT_SERIAL:
-> -		num = 3;
-> -		break;
-> -	case JZ_LCD_TYPE_SPECIAL_TFT_1:
-> -	case JZ_LCD_TYPE_SPECIAL_TFT_2:
-> -	case JZ_LCD_TYPE_SPECIAL_TFT_3:
-> -		num = 8;
-> -		break;
-> -	default:
-> -		num = 0;
-> -		break;
-> -	}
-> -	return num;
-> -}
-> -
-> -static unsigned int jzfb_num_data_pins(struct jzfb *jzfb)
-> -{
-> -	unsigned int num;
-> -
-> -	switch (jzfb->pdata->lcd_type) {
-> -	case JZ_LCD_TYPE_GENERIC_16_BIT:
-> -		num = 16;
-> -		break;
-> -	case JZ_LCD_TYPE_GENERIC_18_BIT:
-> -		num = 18;
-> -		break;
-> -	case JZ_LCD_TYPE_8BIT_SERIAL:
-> -		num = 8;
-> -		break;
-> -	case JZ_LCD_TYPE_SPECIAL_TFT_1:
-> -	case JZ_LCD_TYPE_SPECIAL_TFT_2:
-> -	case JZ_LCD_TYPE_SPECIAL_TFT_3:
-> -		if (jzfb->pdata->bpp == 18)
-> -			num = 18;
-> -		else
-> -			num = 16;
-> -		break;
-> -	default:
-> -		num = 0;
-> -		break;
-> -	}
-> -	return num;
-> -}
-> -
->  /* Based on CNVT_TOHW macro from skeletonfb.c */
->  static inline uint32_t jzfb_convert_color_to_hw(unsigned val,
->  	struct fb_bitfield *bf)
-> @@ -487,8 +400,7 @@ static void jzfb_enable(struct jzfb *jzfb)
->  
->  	clk_prepare_enable(jzfb->ldclk);
->  
-> -	jz_gpio_bulk_resume(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
-> -	jz_gpio_bulk_resume(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
-> +	pinctrl_pm_select_default_state(&jzfb->pdev->dev);
->  
->  	writel(0, jzfb->base + JZ_REG_LCD_STATE);
->  
-> @@ -511,8 +423,7 @@ static void jzfb_disable(struct jzfb *jzfb)
->  		ctrl = readl(jzfb->base + JZ_REG_LCD_STATE);
->  	} while (!(ctrl & JZ_LCD_STATE_DISABLED));
->  
-> -	jz_gpio_bulk_suspend(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
-> -	jz_gpio_bulk_suspend(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
-> +	pinctrl_pm_select_sleep_state(&jzfb->pdev->dev);
->  
->  	clk_disable_unprepare(jzfb->ldclk);
->  }
-> @@ -701,9 +612,6 @@ static int jzfb_probe(struct platform_device *pdev)
->  	fb->mode = NULL;
->  	jzfb_set_par(fb);
->  
-> -	jz_gpio_bulk_request(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
-> -	jz_gpio_bulk_request(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
-> -
->  	ret = register_framebuffer(fb);
->  	if (ret) {
->  		dev_err(&pdev->dev, "Failed to register framebuffer: %d\n", ret);
-> @@ -715,9 +623,6 @@ static int jzfb_probe(struct platform_device *pdev)
->  	return 0;
->  
->  err_free_devmem:
-> -	jz_gpio_bulk_free(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
-> -	jz_gpio_bulk_free(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
-> -
->  	fb_dealloc_cmap(&fb->cmap);
->  	jzfb_free_devmem(jzfb);
->  err_framebuffer_release:
-> @@ -731,9 +636,6 @@ static int jzfb_remove(struct platform_device *pdev)
->  
->  	jzfb_blank(FB_BLANK_POWERDOWN, jzfb->fb);
->  
-> -	jz_gpio_bulk_free(jz_lcd_ctrl_pins, jzfb_num_ctrl_pins(jzfb));
-> -	jz_gpio_bulk_free(jz_lcd_data_pins, jzfb_num_data_pins(jzfb));
-> -
->  	fb_dealloc_cmap(&jzfb->fb->cmap);
->  	jzfb_free_devmem(jzfb);
+> diff --git a/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt b/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+> new file mode 100644
+> index 000000000000..b2eb20494365
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+> @@ -0,0 +1,45 @@
+> +Ingenic jz47xx GPIO controller
+> +
+> +Required properties:
+> +  - compatible:
+> +    - "ingenic,jz4740-gpio" for the JZ4740 SoC
+> +    - "ingenic,jz4780-gpio" for the JZ4780 SoC
+> +
+> +  - reg: Base address and length of each memory resource used by the GPIO
+> +    controller hardware module.
+> +
+> +  - gpio-controller: Marks the device node as a GPIO controller.
+> +  - #gpio-cells: Should be 2. The first cell is the GPIO number and the second
+> +    cell specifies GPIO flags, as defined in <dt-bindings/gpio/gpio.h>. Only the
+> +    GPIO_ACTIVE_HIGH and GPIO_ACTIVE_LOW flags are supported.
+> +  - gpio-ranges: Range of pins managed by the GPIO controller.
+> +
+> +Optional properties:
+> +  - base: The GPIO number to use as the base for this driver.
+
+Drop this please. This is a Linuxism.
+
+> +  - interrupt-controller: Marks the device node as an interrupt controller.
+> +  - interrupts: Interrupt specifier for the controllers interrupt.
+> +    Required if 'interrupt-controller' is specified.
+
+Some h/w doesn't have interrupt capability? If not, this should not be 
+optional.
+
+> +
+> +Please refer to gpio.txt in this directory for details of gpio-ranges property
+> +and the common GPIO bindings used by client devices.
+> +
+> +The GPIO controller also acts as an interrupt controller. It uses the default
+> +two cells specifier as described in Documentation/devicetree/bindings/
+> +interrupt-controller/interrupts.txt.
+
+Just document #interrupt-cells and its value and drop this paragraph.
+
+> +
+> +Example:
+> +
+> +gpa: gpio-controller@10010000 {
+> +	compatible = "ingenic,jz4740-gpio";
+> +	reg = <0x10010000 0x100>;
+> +
+> +	gpio-controller;
+> +	gpio-ranges = <&pinctrl 0 0 32>;
+> +	#gpio-cells = <2>;
+> +
+> +	interrupt-controller;
+> +	#interrupt-cells = <2>;
+> +
+> +	interrupt-parent = <&intc>;
+> +	interrupts = <28>;
+> +};
+> -- 
+> 2.11.0
+> 

@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2017 13:59:51 +0100 (CET)
-Received: from mail-it0-x232.google.com ([IPv6:2607:f8b0:4001:c0b::232]:36529
-        "EHLO mail-it0-x232.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993878AbdAaM7oOTwBq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jan 2017 13:59:44 +0100
-Received: by mail-it0-x232.google.com with SMTP id c7so215233462itd.1
-        for <linux-mips@linux-mips.org>; Tue, 31 Jan 2017 04:59:44 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2017 14:10:08 +0100 (CET)
+Received: from mail-it0-x22f.google.com ([IPv6:2607:f8b0:4001:c0b::22f]:35310
+        "EHLO mail-it0-x22f.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993878AbdAaNKB1t7vq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jan 2017 14:10:01 +0100
+Received: by mail-it0-x22f.google.com with SMTP id 203so216116523ith.0
+        for <linux-mips@linux-mips.org>; Tue, 31 Jan 2017 05:10:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=yd/Jj4+IKAF0rsZKhinpf1FZ6/vnDpQ8qKLoE1uY6zg=;
-        b=hGNJYtL1gGWEzxBBW84uDS3J8w31w0dDZ4Kc3xl1+lYNxVibufAv3eeDeDgF/ZBcxZ
-         Lus0Ytem4o/P/h6/YUIsRYCa/s3/RUivak+WLSuyJyPd58iwLMYPBUy9NoVItgiDzx6m
-         NIZJDVDp3LRAT1bsnCo9eOvz3HKrfVAM1372Q=
+        bh=fo0K65OHtHFhXWPezA18XGVy0RNw0D4JUjdwkt0DR5w=;
+        b=FlAdzuTN7F1xP3mWEYGIxgS9BU8bSOXnn5Vxg2wP9maqKYg5rtn8jVicioXLQ2luo5
+         KEwrZDEjVyHnPnqsFbpyKbBa/NEu8e7Up5b3NO9RIRArdUmk8ZPqwEdoR+glm4awEZpQ
+         D3PBi+/2cQxIgJZ/9mHkuvNA9/64FEHSbcaDE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=yd/Jj4+IKAF0rsZKhinpf1FZ6/vnDpQ8qKLoE1uY6zg=;
-        b=g/rsCJyLO1+QwUph98kD+poP4MEB46IhUXv1yD6hl8xucEY9sUMhCLQDgQb3ryhehz
-         AxA3v1nAup+jbbjILmLzc0ONViw/02oTF0RIZc2++HN61A61GZQMV7rZ38eZ+ENLWY88
-         rYyslL973pHlwQR2OQAJkAZ+d1O+1YAYvFCWN4jy9Lk7Z0pDcMK8i7C8H+4emggHeoUt
-         dWvMCQGtQA871LZ9WP410XQ4wZWWEeGTh3+rgKP8LEfHTZ7OzTIEdFDiewUtDda8KCfy
-         Kjx292//mY/On7GsxOpRMiEZp3v5g4dZW6kokxEcidLf7fSHepdYSgxSgCxl1M8BXYyJ
-         I8CA==
-X-Gm-Message-State: AIkVDXK9KyzNCg2Ly1vbyUjgMdirSRjkdsCLZIx+FxW+ZMmh/yiovepPW9tyqh39t4EZoJPZmIKP8T6tcnht3U51
-X-Received: by 10.36.26.9 with SMTP id 9mr19890633iti.25.1485867578405; Tue,
- 31 Jan 2017 04:59:38 -0800 (PST)
+        bh=fo0K65OHtHFhXWPezA18XGVy0RNw0D4JUjdwkt0DR5w=;
+        b=O3pFm6Jem0xIQGp3HmyitcY5YPyZZkPVK7MS5/pasdW4Ajek/LBMI2TrRMvpqZqTNU
+         lLc0EiZvyzt00+FJ+8AbsdKPRPRXOKbi/qC5sd/QQ7DSMl8TIhpT2lUu9jhPRZH9G/z8
+         /YtVCKbVKXEZh0rFpiRe53lvz2plahMXeV623qyiDXO80th5jL7FFHYBi99qxkC0s6N6
+         wbweBin5yeXvzZHX/A/LOtdErCAF9L9cdfzmzZKetIZurNnOEnJmuTIOjpyvswEsqKcp
+         bgzwT5zQQTu3EGJNsy7+wkv1Im86r1Fev//2cYdQ5t9COyKs2UyKhZ5ECNiHc0VS1454
+         xj1g==
+X-Gm-Message-State: AIkVDXL+EA3xuCOB1bYiRqAn0hIBi/FbJJTAi1S33ozBdayRL494IXB8BrzLQkDstlQQO803GT1S3sHeTvSqMfPu
+X-Received: by 10.36.26.9 with SMTP id 9mr19935780iti.25.1485868195647; Tue,
+ 31 Jan 2017 05:09:55 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.79.169.75 with HTTP; Tue, 31 Jan 2017 04:59:37 -0800 (PST)
-In-Reply-To: <08e9505d2d366557950f8e6a4e81f57a@mail.crapouillou.net>
+Received: by 10.79.169.75 with HTTP; Tue, 31 Jan 2017 05:09:54 -0800 (PST)
+In-Reply-To: <12dc62a7255bd453ff4e5e89f93ebc58@mail.crapouillou.net>
 References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
- <20170122144947.16158-1-paul@crapouillou.net> <20170122144947.16158-2-paul@crapouillou.net>
- <CACRpkdZFRH84c4x7HBwgmY3fH+=Qq4q167c9oPhvrJ70MQkjaA@mail.gmail.com> <08e9505d2d366557950f8e6a4e81f57a@mail.crapouillou.net>
+ <20170125185207.23902-1-paul@crapouillou.net> <20170125185207.23902-2-paul@crapouillou.net>
+ <20170130203617.hpljtcmzava3rq2n@rob-hp-laptop> <12dc62a7255bd453ff4e5e89f93ebc58@mail.crapouillou.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 31 Jan 2017 13:59:37 +0100
-Message-ID: <CACRpkda+2tnuO=AcN=HAD+YoaM4eEgnyjju7ioJL1op7+jFtqA@mail.gmail.com>
-Subject: Re: [PATCH v2 01/14] Documentation: dt/bindings: Document pinctrl-ingenic
+Date:   Tue, 31 Jan 2017 14:09:54 +0100
+Message-ID: <CACRpkdbAgy4sh6NT5DdQD6EQtOZEwevohEA6OGRcVz98yqS52Q@mail.gmail.com>
+Subject: Re: [PATCH v3 01/14] Documentation: dt/bindings: Document pinctrl-ingenic
 To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+Cc:     Rob Herring <robh@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Boris Brezillon <boris.brezillon@free-electrons.com>,
@@ -62,7 +61,7 @@ Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56543
+X-archive-position: 56544
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -79,48 +78,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jan 27, 2017 at 4:27 PM, Paul Cercueil <paul@crapouillou.net> wrote:
-> [Me]:
->> In the former case, if this pertains to the *inside* of the SoC:
->> is it just different between jz4740 and jz4780?
->> In that case, just code this into the driver as .data to the .compatible
->> in the DT match. No special DT properties needed.
+On Tue, Jan 31, 2017 at 11:31 AM, Paul Cercueil <paul@crapouillou.net> wrote:
+> [Rob]:
+>> From the overlapping register addresses in the examples and this
+>> description, it looks like the pinctrlr and gpio controller are 1 block.
+>> If so, then there should only be 1 node.
 >
-> Well, I've been taught that devicetree is for describing the hardware, and
-> the driver code is for functionality. So that's why I put it in devicetree.
+> Well, that's what I had until Linus W. just told me to do the opposite:
+>
+>> Just pull all these down two levels and make them one device
+>> each instead of having them inside the pin controller node
+>> like this.
 
-This is a gray area.
+I guess the argument is that they are in the same coherent memory
+range so they should be one device node. That is how we handle
+e.g. system controllers so it makes some sense.
 
-But as GPIO maintainer I'm not happy about encoding information
-about the hardware, that can be deducted from the compatible-string,
-into the devicetree.
+So can the two GPIO controllers be modeled as two subnodes of
+the pin controller then?
 
-I prefer to encode per-compatible hardware information tables into
-the driver, as structs, and pick the right table based on the compatible
-string as .data in the of match entry.
+Subnodes are certainly OK, we have that for many other devices
+such as interrupt controllers on PCI bridges and what not.
 
-It's simple to retrieve into the driver using of_device_get_match_data()
-these days.
+So when the probing of the pin controller is ready it can just
+walk down and populate the GPIO subdevices with
+of_platform_default_populate() or simply by registering the
+device directly with platform_device_add_data() just like an
+MFD device does?
 
-> That's also the reason why I put the list of functions and groups in
-> devicetree and not in the driver code.
+This is nice because we want to use the standard gpio ranges
+to map pins to GPIO lines.
 
-I'm not super-happy about that either, and it's not the way I would
-have done it but the argument has been made
-that it is a lot of opaque data and people prefer to maintain it
-in the device tree.
+I'm sorry about the unclarities here, but it's essentially an intrinsic
+problem with GPIO that has been with us for years: do we model
+each "bank" as a device or do we just register each bank as a
+gpiochip, or do we even make one gpiochip to cover all the banks.
+All solutions can be found in the kernel... also the different DT bindings:
+one node for a whole slew of GPIO controllers, or seveal nodes
+and I bet also several nodes for memory ranges in close proximity.
 
-I accept it for functions and groups, but I don't like it.
-
-I will not fold to any consistency arguments of the type "now
-you allowed this one thing, so you must allow this other thing
-so you are consistent", just no. I didn't like it the first time, so I'm
-not liking it anymore the second time.
-
-I guess if the DT people tell me it has to be done this way I would
-accept it. After a lot of discussion. But noone has.
-
-Please make it a table and put it in the driver instead.
+I don't know for sure what is the most elegant solution, we might
+need to build some consensus here for the future so it doesn't
+get to heterogeneous.
 
 Yours,
 Linus Walleij

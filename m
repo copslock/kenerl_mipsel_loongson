@@ -1,88 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2017 03:42:43 +0100 (CET)
-Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:35519
-        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993920AbdBACmgA2UaG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2017 03:42:36 +0100
-Received: by mail-pg0-x244.google.com with SMTP id 204so32689474pge.2;
-        Tue, 31 Jan 2017 18:42:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=JXRbVUlc1enZwOV2cxef4Ots7xV6DDQmuOMSsxIgZtM=;
-        b=oGPaQndq14aBNKkov964UfG1egttdGOfsNi37o+sRI8Qq29YXRAO++lZ+tbB43CDbr
-         1ORi0YXjrzJ7PYFyKA93MgIacTn7hZMpt5hXlrjnKJcCyHQU/lv0/FNXPtJ69PoapqkD
-         wFsWw1LjnJR0bJev7UjOY7Wmh0qYPF30R9XEfwHlKiMeNrxWFDrOXnrLe8u2xJTcD0qP
-         CnvNBFd/9ZQsNqHWVstp4+/fB6+eclVd2A4KI6I54g6eQSQQaOgzzsdhG0SIBuG87XxD
-         zfQmP5rzC+Re+nzVMkGBkryDNtpmh/7itMkpCHccAxb88n3z+uxquvCLQmHKRInTfClM
-         xMqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=JXRbVUlc1enZwOV2cxef4Ots7xV6DDQmuOMSsxIgZtM=;
-        b=BoOLAnCGAiEXNtAKwcsmALGqRS7J+kTEqhbpIEqnbS+jZu/I6UmDOYRKP/Lp8vZ1zy
-         TbdWN93ULRMr1/fYUSExYtEhqHl8A+Fr4AOAW7tbSjdCWXQ91rR2y4CSMSD1KhaXPxq4
-         zz9dzV5NcjHwoDgPXqkCmkjsZDeVeXeQnKUH4wLOc8L12yqkBuMbH8OKlbX1kUgGxuzm
-         KBE7ZbIz2Ydg+cPBogt5CCHYJrSaIA1qdNsp8G0zpavqcNI3RV1EqQaEzZf99Z4VBN3W
-         UoiJg68aHp6x/a53lH3LgJm/aXOLtRkty4rFDF/7Dr9I8upWQuAoDQy5VF/+pTdWpiDW
-         aCPA==
-X-Gm-Message-State: AIkVDXIxYu4lcUTw5aznCA19u+HEqgLLAnze04KmEyY5POfQQMuZ0hePvXEbjKuZ8tPrIA==
-X-Received: by 10.99.164.18 with SMTP id c18mr769516pgf.40.1485916950054;
-        Tue, 31 Jan 2017 18:42:30 -0800 (PST)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id w25sm44655859pge.9.2017.01.31.18.42.27
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 31 Jan 2017 18:42:29 -0800 (PST)
-Subject: Re: [PATCH 4.10-rc3 00/13] net: dsa: remove unnecessary phy.h include
-To:     Russell King - ARM Linux <linux@armlinux.org.uk>,
-        linux-mips@linux-mips.org, linux-nfs@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2017 06:34:34 +0100 (CET)
+Received: from smtp.codeaurora.org ([198.145.29.96]:54710 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991976AbdBAFe1Rk657 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2017 06:34:27 +0100
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 90FE2609FB; Wed,  1 Feb 2017 05:34:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1485927265;
+        bh=F3Nc6h0hce7z8qtZJME+lv5njButKawToi5yn7X5tKQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bXh5eZl3T+2ZA2SR6eDLuY4mt3FgSCd4gsNHbgvYYBcbZ3Mu4DgzKBFr0WqTtJKe6
+         9OtMKObA2fsk5eEQhb4PWDYTBNZ+OBZyh6M5OL5hFcgqDlv/WPq4UmuVOoGUfcy2h8
+         +maadTOw7K05z/TfmBtrAgU6vMUH+jCCYmoWl1Ss=
+Received: from x230.qca.qualcomm.com (a88-115-187-87.elisa-laajakaista.fi [88.115.187.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EB837609C6;
+        Wed,  1 Feb 2017 05:34:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1485927264;
+        bh=F3Nc6h0hce7z8qtZJME+lv5njButKawToi5yn7X5tKQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Lh0lEr/nOh9C53+2OYyhO2P8N2YylgA2JND/WcU08q5EcqFlkUiLq/R1297RiVhO6
+         HuutpNRReTJH3lv/kDl976C50TZ+190aaz7VZKz6wijfTxHzQnhL9KjpUvjDFfM3iS
+         6IVB4MEImWEGEqfJLfqXIHylwV9UkZ5wWcMYIswk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EB837609C6
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Russell King <rmk+kernel@armlinux.org.uk>
+Cc:     linux-mips@linux-mips.org, linux-nfs@vger.kernel.org,
         linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        target-devel@vger.kernel.org
-References: <20170118001403.GJ27312@n2100.armlinux.org.uk>
- <20170131191704.GA8281@n2100.armlinux.org.uk>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Anna Schumaker <anna.schumaker@netapp.com>,
+        target-devel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
-        Derek Chickles <derek.chickles@caviumnetworks.com>,
-        Felix Manlunas <felix.manlunas@caviumnetworks.com>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Jeff Layton <jlayton@poochiereds.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Jiri Slaby <jirislaby@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        "Nicholas A. Bellinger" <nab@linux-iscsi.org>,
         Nick Kossifidis <mickflemm@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Raghu Vatsavayi <raghu.vatsavayi@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Satanand Burla <satananda.burla@caviumnetworks.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Timur Tabi <timur@codeaurora.org>,
-        Trond Myklebust <trond.myklebust@primarydata.com>,
-        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
-        Woojung Huh <woojung.huh@microchip.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <cf02354e-bec8-4429-9db4-bb20e262a2e8@gmail.com>
-Date:   Tue, 31 Jan 2017 18:42:25 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.5.1
+        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
+Subject: Re: [PATCH 4.10-rc3 12/13] net: ath5k: fix build errors when linux/phy*.h is removed from net/dsa.h
+References: <20170131191704.GA8281@n2100.armlinux.org.uk>
+        <E1cYdxc-0000XC-N6@rmk-PC.armlinux.org.uk>
+Date:   Wed, 01 Feb 2017 07:34:19 +0200
+In-Reply-To: <E1cYdxc-0000XC-N6@rmk-PC.armlinux.org.uk> (Russell King's
+        message of "Tue, 31 Jan 2017 19:19:24 +0000")
+Message-ID: <87r33ibhk4.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20170131191704.GA8281@n2100.armlinux.org.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain
+Return-Path: <kvalo@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56568
+X-archive-position: 56569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: kvalo@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -95,56 +70,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 01/31/2017 11:17 AM, Russell King - ARM Linux wrote:
-> Including phy.h and phy_fixed.h into net/dsa.h causes phy*.h to be an
-> unnecessary dependency for quite a large amount of the kernel.  There's
-> very little which actually requires definitions from phy.h in net/dsa.h
-> - the include itself only wants the declaration of a couple of
-> structures and IFNAMSIZ.
-> 
-> Add linux/if.h for IFNAMSIZ, declarations for the structures, phy.h to
-> mv88e6xxx.h as it needs it for phy_interface_t, and remove both phy.h
-> and phy_fixed.h from net/dsa.h.
-> 
-> This patch reduces from around 800 files rebuilt to around 40 - even
-> with ccache, the time difference is noticable.
-> 
-> In order to make this change, several drivers need to be updated to
-> include necessary headers that they were picking up through this
-> include.  This has resulted in a much larger patch series.
-> 
-> I'm assuming the 0-day builder has had 24 hours with this series, and
-> hasn't reported any further issues with it - the last issue was two
-> weeks ago (before I became ill) which I fixed over the last weekend.
-> 
-> I'm hoping this doesn't conflict with what's already in net-next...
+Russell King <rmk+kernel@armlinux.org.uk> writes:
 
-For the entire series:
+> Fix these errors reported by the 0-day builder by replacing the
+> linux/export.h include with linux/module.h.
+>
+> In file included from include/linux/platform_device.h:14:0,
+>                  from drivers/net/wireless/ath/ath5k/ahb.c:20:
+> include/linux/device.h:1463:1: warning: data definition has no type or storage class
+>  module_init(__driver##_init); \
+>  ^
+> include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
+>   module_driver(__platform_driver, platform_driver_register, \
+>   ^~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
+>  module_platform_driver(ath_ahb_driver);
+>  ^~~~~~~~~~~~~~~~~~~~~~
+> include/linux/device.h:1463:1: error: type defaults to 'int' in declaration of 'module_init' [-Werror=implicit-int]
+>  module_init(__driver##_init); \
+>  ^
+> include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
+>   module_driver(__platform_driver, platform_driver_register, \
+>   ^~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
+>  module_platform_driver(ath_ahb_driver);
+>  ^~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:1: warning: parameter names (without types) in function declaration
+> In file included from include/linux/platform_device.h:14:0,
+>                  from drivers/net/wireless/ath/ath5k/ahb.c:20:
+> include/linux/device.h:1468:1: warning: data definition has no type or storage class
+>  module_exit(__driver##_exit);
+>  ^
+> include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
+>   module_driver(__platform_driver, platform_driver_register, \
+>   ^~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
+>  module_platform_driver(ath_ahb_driver);
+>  ^~~~~~~~~~~~~~~~~~~~~~
+> include/linux/device.h:1468:1: error: type defaults to 'int' in declaration of 'module_exit' [-Werror=implicit-int]
+>  module_exit(__driver##_exit);
+>  ^
+> include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
+>   module_driver(__platform_driver, platform_driver_register, \
+>   ^~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
+>  module_platform_driver(ath_ahb_driver);
+>  ^~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:1: warning: parameter names (without types) in function declaration
+> In file included from include/linux/platform_device.h:14:0,
+>                  from drivers/net/wireless/ath/ath5k/ahb.c:20:
+> drivers/net/wireless/ath/ath5k/ahb.c:233:24: warning: 'ath_ahb_driver_exit' defined but not used [-Wunused-function]
+>  module_platform_driver(ath_ahb_driver);
+>                         ^
+> include/linux/device.h:1464:20: note: in definition of macro 'module_driver'
+>  static void __exit __driver##_exit(void) \
+>                     ^~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
+>  module_platform_driver(ath_ahb_driver);
+>  ^~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:24: warning: 'ath_ahb_driver_init' defined but not used [-Wunused-function]
+>  module_platform_driver(ath_ahb_driver);
+>                         ^
+> include/linux/device.h:1459:19: note: in definition of macro 'module_driver'
+>  static int __init __driver##_init(void) \
+>                    ^~~~~~~~
+> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
+>  module_platform_driver(ath_ahb_driver);
+>  ^~~~~~~~~~~~~~~~~~~~~~
+>
+> Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Looks good to me:
 
-Thanks a lot for doing that.
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
-> 
->  arch/mips/cavium-octeon/octeon-platform.c             | 4 ----
->  drivers/net/dsa/mv88e6xxx/mv88e6xxx.h                 | 1 +
->  drivers/net/ethernet/broadcom/bgmac.c                 | 2 ++
->  drivers/net/ethernet/cadence/macb.h                   | 2 ++
->  drivers/net/ethernet/cavium/liquidio/lio_main.c       | 1 +
->  drivers/net/ethernet/cavium/liquidio/lio_vf_main.c    | 1 +
->  drivers/net/ethernet/cavium/liquidio/octeon_console.c | 1 +
->  drivers/net/ethernet/freescale/fman/fman_memac.c      | 1 +
->  drivers/net/ethernet/marvell/mvneta.c                 | 1 +
->  drivers/net/ethernet/qualcomm/emac/emac-sgmii.c       | 1 +
->  drivers/net/usb/lan78xx.c                             | 1 +
->  drivers/net/wireless/ath/ath5k/ahb.c                  | 2 +-
->  drivers/target/iscsi/iscsi_target_login.c             | 1 +
->  include/net/dsa.h                                     | 6 ++++--
->  net/core/netprio_cgroup.c                             | 1 +
->  net/sunrpc/xprtrdma/svc_rdma_backchannel.c            | 1 +
->  16 files changed, 20 insertions(+), 7 deletions(-)
-> 
-
+I assume Dave will take this so I'll drop the patch from my queue.
 
 -- 
-Florian
+Kalle Valo

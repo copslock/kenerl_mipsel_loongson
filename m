@@ -1,63 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2017 06:34:34 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:54710 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991976AbdBAFe1Rk657 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2017 06:34:27 +0100
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 90FE2609FB; Wed,  1 Feb 2017 05:34:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1485927265;
-        bh=F3Nc6h0hce7z8qtZJME+lv5njButKawToi5yn7X5tKQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=bXh5eZl3T+2ZA2SR6eDLuY4mt3FgSCd4gsNHbgvYYBcbZ3Mu4DgzKBFr0WqTtJKe6
-         9OtMKObA2fsk5eEQhb4PWDYTBNZ+OBZyh6M5OL5hFcgqDlv/WPq4UmuVOoGUfcy2h8
-         +maadTOw7K05z/TfmBtrAgU6vMUH+jCCYmoWl1Ss=
-Received: from x230.qca.qualcomm.com (a88-115-187-87.elisa-laajakaista.fi [88.115.187.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EB837609C6;
-        Wed,  1 Feb 2017 05:34:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1485927264;
-        bh=F3Nc6h0hce7z8qtZJME+lv5njButKawToi5yn7X5tKQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Lh0lEr/nOh9C53+2OYyhO2P8N2YylgA2JND/WcU08q5EcqFlkUiLq/R1297RiVhO6
-         HuutpNRReTJH3lv/kDl976C50TZ+190aaz7VZKz6wijfTxHzQnhL9KjpUvjDFfM3iS
-         6IVB4MEImWEGEqfJLfqXIHylwV9UkZ5wWcMYIswk=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EB837609C6
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Russell King <rmk+kernel@armlinux.org.uk>
-Cc:     linux-mips@linux-mips.org, linux-nfs@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        target-devel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>
-Subject: Re: [PATCH 4.10-rc3 12/13] net: ath5k: fix build errors when linux/phy*.h is removed from net/dsa.h
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2017 10:40:47 +0100 (CET)
+Received: from smtpout.microchip.com ([198.175.253.82]:10728 "EHLO
+        email.microchip.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992186AbdBAJkkAmj1p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2017 10:40:40 +0100
+Received: from [10.159.245.112] (10.10.76.4) by chn-sv-exch06.mchp-main.com
+ (10.10.76.107) with Microsoft SMTP Server id 14.3.181.6; Wed, 1 Feb 2017
+ 02:40:31 -0700
+Subject: Re: [PATCH 4.10-rc3 03/13] net: macb: fix build errors when
+ linux/phy*.h is removed from net/dsa.h
+To:     Russell King <rmk+kernel@armlinux.org.uk>,
+        <linux-mips@linux-mips.org>, <linux-nfs@vger.kernel.org>,
+        <linux-scsi@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <target-devel@vger.kernel.org>
 References: <20170131191704.GA8281@n2100.armlinux.org.uk>
-        <E1cYdxc-0000XC-N6@rmk-PC.armlinux.org.uk>
-Date:   Wed, 01 Feb 2017 07:34:19 +0200
-In-Reply-To: <E1cYdxc-0000XC-N6@rmk-PC.armlinux.org.uk> (Russell King's
-        message of "Tue, 31 Jan 2017 19:19:24 +0000")
-Message-ID: <87r33ibhk4.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+ <E1cYdws-0000W9-GV@rmk-PC.armlinux.org.uk>
+CC:     "David S. Miller" <davem@davemloft.net>,
+        Florian Fainelli <f.fainelli@gmail.com>
+From:   Nicolas Ferre <nicolas.ferre@atmel.com>
+Organization: atmel
+Message-ID: <0a75edf8-df17-fb7f-294f-8c1e04479a3b@atmel.com>
+Date:   Wed, 1 Feb 2017 10:40:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.5.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <kvalo@codeaurora.org>
+In-Reply-To: <E1cYdws-0000W9-GV@rmk-PC.armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: =?utf-8?B?SDRzSUFBQUFBQUFBQytOZ0ZuckRLc1dSV2xHU1dwU1htS1BFeHNYQ3hlWERv?=
+ =?utf-8?B?c3UvZG1LRVFlZjNtWnY1TGVhY2IyR3grUFh1Q0x2RmhLbVQyQzB1SERqTmF0?=
+ =?utf-8?B?RjlmUWVieGFKbHJjd1diMWJjWWJjNHRrRE00bEwvUkNhTDFxVnZtUnk0UEM1?=
+ =?utf-8?B?ZnU4anNzV1hsVFNhUG5iUHVzbnNjWGJtV3llUHpKcmtBMWlqV3pMeWsvSW9F?=
+ =?utf-8?B?MW93N0w3SUtubkZWZkpyMWw3R0JjUkpuRnlNWGg1REFja2FKcFgrZU0zVXhj?=
+ =?utf-8?B?bklJQytSSzdINitrQjBrSVNMd2pWSGk3c2FMckNBSklZRTBpZjdYZThGc1pv?=
+ =?utf-8?B?RXdpYnNMbXRoQmJEWUJYWW16RTU2d2RURnljUEFMQ0V1Y21Sb1BFdVlWc0pF?=
+ =?utf-8?B?NHVQOExJNGpOSXFBaU1XUCtkVmFRRWxHQkNJbUd3K2tRSllJU0oyYytZUUd4?=
+ =?utf-8?B?T1FYTUpRN3N2QUpXd2l5Z0tiRitsejdFSW5tSjVxMnptU0VPVUpIb2U5OFB0?=
+ =?utf-8?B?bFJDSUZCaStjUjlMQkMyazhUL2xUT2g0bllTaDZkZmhMSWRKTzdmbjhFR1Uz?=
+ =?utf-8?B?Tnc2M01vVzF0aSs2dDlyQkMyanNTMmcvMVFjMndsOXN5WXlBUmh1MHM4ZUxR?=
+ =?utf-8?B?Y3l2YVZtUFd3QWFvbVN1SlUvMmZXQ1l4U3M1QjhNQXZoNmxsSXJsN0F5THlL?=
+ =?utf-8?B?VWRyWncwODNPRXpYTmNMWnc4Qk1MemM1bzBBM056RXpUeTg1UDNjVEl5VGVz?=
+ =?utf-8?B?M2N3SHBrZmNZaFJrb05KU1pRM3ZXTkNoQkJmVW41S1pVWmljVVo4VVdsT2F2?=
+ =?utf-8?B?RWhSaGtPRGlVSjNoK3JKMFlJQ1JhbHBxZFdwR1htQUJNUFRKcUpnL01Rb3dR?=
+ =?utf-8?B?SGo1SUk3ejZRR3Q3aWdzVGM0c3gwaVB3cFJra3BjZDZ6SUFrQmtFUkdhUjVj?=
+ =?utf-8?B?N3lWR1VTbGhYdVdsUURtZWd0U2kzTXdTaVBndFJqR09oMHdjajVtRVdQTHk4?=
+ =?utf-8?B?MUtsZ0U1bEFBSUR4bGVNNGh5TVNzSzhyU0RqZURMelN1RFd2QUs2Z0Fub0F2?=
+ =?utf-8?B?ZFhmU0FYbENRaXBLUWFHR05tYVYveVhKUlZtT1Y5NHFXc1UvZjY0by9mTjgr?=
+ =?utf-8?B?YTd6M2xSMCtNNXdwVjI5Y2ZMMld1VG5SaDlKbSs2OWFEQzZkZUxieDM2NnZM?=
+ =?utf-8?B?NHJrVGxwU3FOcHZ0MVE4emZOR3pZTm4wV1NzcTEzU3Bya2t2ZTk3RS8yMysz?=
+ =?utf-8?B?TmwzUHY4VGVaelhvZnk0M3VIK1pLL3JIMFVYK0J4NXpzTnc3bU9CMVhyZnh1?=
+ =?utf-8?B?QWREOHRkMW1mK3k2bTZFMzVVaWFVNEk5RlFpN21vT0JFQXV5MDNyWDhEQUFB?=
+ =?utf-8?Q?=3D?=
+Return-Path: <nicolas.ferre@atmel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56569
+X-archive-position: 56570
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: nicolas.ferre@atmel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,81 +72,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Russell King <rmk+kernel@armlinux.org.uk> writes:
-
-> Fix these errors reported by the 0-day builder by replacing the
-> linux/export.h include with linux/module.h.
->
-> In file included from include/linux/platform_device.h:14:0,
->                  from drivers/net/wireless/ath/ath5k/ahb.c:20:
-> include/linux/device.h:1463:1: warning: data definition has no type or storage class
->  module_init(__driver##_init); \
->  ^
-> include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
->   module_driver(__platform_driver, platform_driver_register, \
->   ^~~~~~~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
->  module_platform_driver(ath_ahb_driver);
->  ^~~~~~~~~~~~~~~~~~~~~~
-> include/linux/device.h:1463:1: error: type defaults to 'int' in declaration of 'module_init' [-Werror=implicit-int]
->  module_init(__driver##_init); \
->  ^
-> include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
->   module_driver(__platform_driver, platform_driver_register, \
->   ^~~~~~~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
->  module_platform_driver(ath_ahb_driver);
->  ^~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:1: warning: parameter names (without types) in function declaration
-> In file included from include/linux/platform_device.h:14:0,
->                  from drivers/net/wireless/ath/ath5k/ahb.c:20:
-> include/linux/device.h:1468:1: warning: data definition has no type or storage class
->  module_exit(__driver##_exit);
->  ^
-> include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
->   module_driver(__platform_driver, platform_driver_register, \
->   ^~~~~~~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
->  module_platform_driver(ath_ahb_driver);
->  ^~~~~~~~~~~~~~~~~~~~~~
-> include/linux/device.h:1468:1: error: type defaults to 'int' in declaration of 'module_exit' [-Werror=implicit-int]
->  module_exit(__driver##_exit);
->  ^
-> include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
->   module_driver(__platform_driver, platform_driver_register, \
->   ^~~~~~~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
->  module_platform_driver(ath_ahb_driver);
->  ^~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:1: warning: parameter names (without types) in function declaration
-> In file included from include/linux/platform_device.h:14:0,
->                  from drivers/net/wireless/ath/ath5k/ahb.c:20:
-> drivers/net/wireless/ath/ath5k/ahb.c:233:24: warning: 'ath_ahb_driver_exit' defined but not used [-Wunused-function]
->  module_platform_driver(ath_ahb_driver);
->                         ^
-> include/linux/device.h:1464:20: note: in definition of macro 'module_driver'
->  static void __exit __driver##_exit(void) \
->                     ^~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
->  module_platform_driver(ath_ahb_driver);
->  ^~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:24: warning: 'ath_ahb_driver_init' defined but not used [-Wunused-function]
->  module_platform_driver(ath_ahb_driver);
->                         ^
-> include/linux/device.h:1459:19: note: in definition of macro 'module_driver'
->  static int __init __driver##_init(void) \
->                    ^~~~~~~~
-> drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
->  module_platform_driver(ath_ahb_driver);
->  ^~~~~~~~~~~~~~~~~~~~~~
->
+Le 31/01/2017 à 20:18, Russell King a écrit :
+> drivers/net/ethernet/cadence/macb.h:862:33: sparse: expected ; at end of declaration
+> drivers/net/ethernet/cadence/macb.h:862:33: sparse: Expected } at end of struct-union-enum-specifier
+> drivers/net/ethernet/cadence/macb.h:862:33: sparse: got phy_interface
+> drivers/net/ethernet/cadence/macb.h:877:1: sparse: Expected ; at the end of type declaration
+> drivers/net/ethernet/cadence/macb.h:877:1: sparse: got }
+> In file included from drivers/net/ethernet/cadence/macb_pci.c:29:0:
+> drivers/net/ethernet/cadence/macb.h:862:2: error: unknown type name 'phy_interface_t'
+>      phy_interface_t  phy_interface;
+>      ^~~~~~~~~~~~~~~
+> 
+> Add linux/phy.h to macb.h
+> 
 > Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 
-Looks good to me:
+Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+> ---
+>  drivers/net/ethernet/cadence/macb.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+> index d67adad67be1..383da8cf5f6d 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -10,6 +10,8 @@
+>  #ifndef _MACB_H
+>  #define _MACB_H
+>  
+> +#include <linux/phy.h>
+> +
+>  #define MACB_GREGS_NBR 16
+>  #define MACB_GREGS_VERSION 2
+>  #define MACB_MAX_QUEUES 8
+> 
 
-I assume Dave will take this so I'll drop the patch from my queue.
 
 -- 
-Kalle Valo
+Nicolas Ferre

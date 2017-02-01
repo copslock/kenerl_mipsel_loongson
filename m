@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2017 15:20:56 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:26901 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2017 15:21:26 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:54537 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992244AbdBAOTnSra7g (ORCPT
+        with ESMTP id S23993877AbdBAOTnS67Wg (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2017 15:19:43 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id EB2A0CEAD8479;
-        Wed,  1 Feb 2017 14:19:30 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id A053322F66C64;
+        Wed,  1 Feb 2017 14:19:31 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
  14.3.294.0; Wed, 1 Feb 2017 14:19:34 +0000
@@ -15,9 +15,9 @@ CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH 1/5] KVM: MIPS/T&E: Move CP0 register access into T&E
-Date:   Wed, 1 Feb 2017 14:19:23 +0000
-Message-ID: <5b75b2f581d6b2162cb2fad00056f4bf033ab760.1485958267.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 2/5] KVM: MIPS/T&E: Implement CP0_EBase register
+Date:   Wed, 1 Feb 2017 14:19:24 +0000
+Message-ID: <182d76ad26dec5e9e3d9bf89d21668588f195af9.1485958267.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.7aeb0f08d03b5d18b5332cdb1b38a8f057d310ac.1485958267.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56576
+X-archive-position: 56577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,10 +46,18 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Access to various CP0 registers via the KVM register access API needs to
-be implementation specific to allow restrictions to be made on changes,
-for example when VZ guest registers aren't present, so move them all
-into trap_emul.c in preparation for VZ.
+The CP0_EBase register is a standard feature of MIPS32r2, so we should
+always have been implementing it properly. However the register value
+was ignored and wasn't exposed to userland.
+
+Fix the emulation of exceptions and interrupts to use the value stored
+in guest CP0_EBase, and fix the masks so that the top 3 bits (rather
+than the standard 2) are fixed, so that it is always in the guest KSeg0
+segment.
+
+Also add CP0_EBASE to the KVM one_reg interface so it can be accessed by
+userland, also allowing the CPU number field to be written (which isn't
+permitted by the guest).
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -58,515 +66,314 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h |   1 +-
- arch/mips/kvm/emulate.c          |   2 +-
- arch/mips/kvm/mips.c             | 198 +--------------------------------
- arch/mips/kvm/trap_emul.c        | 181 ++++++++++++++++++++++++++++-
- 4 files changed, 179 insertions(+), 203 deletions(-)
+ Documentation/virtual/kvm/api.txt |  1 +-
+ arch/mips/include/asm/kvm_host.h  |  3 +-
+ arch/mips/kvm/emulate.c           | 73 ++++++++++++++++++--------------
+ arch/mips/kvm/interrupt.c         |  5 +-
+ arch/mips/kvm/trap_emul.c         | 12 +++++-
+ 5 files changed, 61 insertions(+), 33 deletions(-)
 
+diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
+index 03145b7cafaa..8d52d0f990ae 100644
+--- a/Documentation/virtual/kvm/api.txt
++++ b/Documentation/virtual/kvm/api.txt
+@@ -2074,6 +2074,7 @@ registers, find a list below:
+   MIPS  | KVM_REG_MIPS_CP0_CAUSE        | 32
+   MIPS  | KVM_REG_MIPS_CP0_EPC          | 64
+   MIPS  | KVM_REG_MIPS_CP0_PRID         | 32
++  MIPS  | KVM_REG_MIPS_CP0_EBASE        | 64
+   MIPS  | KVM_REG_MIPS_CP0_CONFIG       | 32
+   MIPS  | KVM_REG_MIPS_CP0_CONFIG1      | 32
+   MIPS  | KVM_REG_MIPS_CP0_CONFIG2      | 32
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 31e7f3797f52..c6922762ff1a 100644
+index c6922762ff1a..72bb2d777ab8 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -345,7 +345,6 @@ struct kvm_vcpu_arch {
+@@ -88,6 +88,7 @@
  
- 	u8 fpu_enabled;
- 	u8 msa_enabled;
--	u8 kscratch_enabled;
- };
+ #define KVM_GUEST_KUSEG			0x00000000UL
+ #define KVM_GUEST_KSEG0			0x40000000UL
++#define KVM_GUEST_KSEG1			0x40000000UL
+ #define KVM_GUEST_KSEG23		0x60000000UL
+ #define KVM_GUEST_KSEGX(a)		((_ACAST32_(a)) & 0xe0000000)
+ #define KVM_GUEST_CPHYSADDR(a)		((_ACAST32_(a)) & 0x1fffffff)
+@@ -710,6 +711,8 @@ extern enum emulation_result kvm_mips_emulate_inst(u32 cause,
+ 						   struct kvm_run *run,
+ 						   struct kvm_vcpu *vcpu);
  
- 
++long kvm_mips_guest_exception_base(struct kvm_vcpu *vcpu);
++
+ extern enum emulation_result kvm_mips_emulate_syscall(u32 cause,
+ 						      u32 *opc,
+ 						      struct kvm_run *run,
 diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index b6cafb0a9df4..f2b054b80bca 100644
+index f2b054b80bca..d40cfaad4529 100644
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -1066,7 +1066,7 @@ unsigned int kvm_mips_config4_wrmask(struct kvm_vcpu *vcpu)
- 	unsigned int mask = MIPS_CONF_M;
- 
- 	/* KScrExist */
--	mask |= (unsigned int)vcpu->arch.kscratch_enabled << 16;
-+	mask |= 0xfc << MIPS_CONF4_KSCREXIST_SHIFT;
- 
- 	return mask;
- }
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index cf501a5a0dfe..d95b36c1e710 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -520,33 +520,6 @@ static u64 kvm_mips_get_one_regs[] = {
- 	KVM_REG_MIPS_LO,
- #endif
- 	KVM_REG_MIPS_PC,
--
--	KVM_REG_MIPS_CP0_INDEX,
--	KVM_REG_MIPS_CP0_CONTEXT,
--	KVM_REG_MIPS_CP0_USERLOCAL,
--	KVM_REG_MIPS_CP0_PAGEMASK,
--	KVM_REG_MIPS_CP0_WIRED,
--	KVM_REG_MIPS_CP0_HWRENA,
--	KVM_REG_MIPS_CP0_BADVADDR,
--	KVM_REG_MIPS_CP0_COUNT,
--	KVM_REG_MIPS_CP0_ENTRYHI,
--	KVM_REG_MIPS_CP0_COMPARE,
--	KVM_REG_MIPS_CP0_STATUS,
--	KVM_REG_MIPS_CP0_CAUSE,
--	KVM_REG_MIPS_CP0_EPC,
--	KVM_REG_MIPS_CP0_PRID,
--	KVM_REG_MIPS_CP0_CONFIG,
--	KVM_REG_MIPS_CP0_CONFIG1,
--	KVM_REG_MIPS_CP0_CONFIG2,
--	KVM_REG_MIPS_CP0_CONFIG3,
--	KVM_REG_MIPS_CP0_CONFIG4,
--	KVM_REG_MIPS_CP0_CONFIG5,
--	KVM_REG_MIPS_CP0_CONFIG7,
--	KVM_REG_MIPS_CP0_ERROREPC,
--
--	KVM_REG_MIPS_COUNT_CTL,
--	KVM_REG_MIPS_COUNT_RESUME,
--	KVM_REG_MIPS_COUNT_HZ,
- };
- 
- static u64 kvm_mips_get_one_regs_fpu[] = {
-@@ -559,15 +532,6 @@ static u64 kvm_mips_get_one_regs_msa[] = {
- 	KVM_REG_MIPS_MSA_CSR,
- };
- 
--static u64 kvm_mips_get_one_regs_kscratch[] = {
--	KVM_REG_MIPS_CP0_KSCRATCH1,
--	KVM_REG_MIPS_CP0_KSCRATCH2,
--	KVM_REG_MIPS_CP0_KSCRATCH3,
--	KVM_REG_MIPS_CP0_KSCRATCH4,
--	KVM_REG_MIPS_CP0_KSCRATCH5,
--	KVM_REG_MIPS_CP0_KSCRATCH6,
--};
--
- static unsigned long kvm_mips_num_regs(struct kvm_vcpu *vcpu)
- {
- 	unsigned long ret;
-@@ -581,7 +545,6 @@ static unsigned long kvm_mips_num_regs(struct kvm_vcpu *vcpu)
- 	}
- 	if (kvm_mips_guest_can_have_msa(&vcpu->arch))
- 		ret += ARRAY_SIZE(kvm_mips_get_one_regs_msa) + 32;
--	ret += __arch_hweight8(vcpu->arch.kscratch_enabled);
- 	ret += kvm_mips_callbacks->num_regs(vcpu);
- 
- 	return ret;
-@@ -634,16 +597,6 @@ static int kvm_mips_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *indices)
- 		}
- 	}
- 
--	for (i = 0; i < 6; ++i) {
--		if (!(vcpu->arch.kscratch_enabled & BIT(i + 2)))
--			continue;
--
--		if (copy_to_user(indices, &kvm_mips_get_one_regs_kscratch[i],
--				 sizeof(kvm_mips_get_one_regs_kscratch[i])))
--			return -EFAULT;
--		++indices;
--	}
--
- 	return kvm_mips_callbacks->copy_reg_indices(vcpu, indices);
+@@ -1200,14 +1200,13 @@ enum emulation_result kvm_mips_emulate_CP0(union mips_instruction inst,
+ 				er = EMULATE_FAIL;
+ 				break;
+ 			}
+-#define C0_EBASE_CORE_MASK 0xff
+ 			if ((rd == MIPS_CP0_PRID) && (sel == 1)) {
+-				/* Preserve CORE number */
+-				kvm_change_c0_guest_ebase(cop0,
+-							  ~(C0_EBASE_CORE_MASK),
++				/*
++				 * Preserve core number, and keep the exception
++				 * base in guest KSeg0.
++				 */
++				kvm_change_c0_guest_ebase(cop0, 0x1ffff000,
+ 							  vcpu->arch.gprs[rt]);
+-				kvm_err("MTCz, cop0->reg[EBASE]: %#lx\n",
+-					kvm_read_c0_guest_ebase(cop0));
+ 			} else if (rd == MIPS_CP0_TLB_HI && sel == 0) {
+ 				u32 nasid =
+ 					vcpu->arch.gprs[rt] & KVM_ENTRYHI_ASID;
+@@ -1917,6 +1916,22 @@ enum emulation_result kvm_mips_emulate_inst(u32 cause, u32 *opc,
+ 	return er;
  }
  
-@@ -734,95 +687,6 @@ static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
- 		v = fpu->msacsr;
- 		break;
- 
--	/* Co-processor 0 registers */
--	case KVM_REG_MIPS_CP0_INDEX:
--		v = (long)kvm_read_c0_guest_index(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CONTEXT:
--		v = (long)kvm_read_c0_guest_context(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_USERLOCAL:
--		v = (long)kvm_read_c0_guest_userlocal(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_PAGEMASK:
--		v = (long)kvm_read_c0_guest_pagemask(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_WIRED:
--		v = (long)kvm_read_c0_guest_wired(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_HWRENA:
--		v = (long)kvm_read_c0_guest_hwrena(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_BADVADDR:
--		v = (long)kvm_read_c0_guest_badvaddr(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_ENTRYHI:
--		v = (long)kvm_read_c0_guest_entryhi(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_COMPARE:
--		v = (long)kvm_read_c0_guest_compare(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_STATUS:
--		v = (long)kvm_read_c0_guest_status(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CAUSE:
--		v = (long)kvm_read_c0_guest_cause(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_EPC:
--		v = (long)kvm_read_c0_guest_epc(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_PRID:
--		v = (long)kvm_read_c0_guest_prid(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CONFIG:
--		v = (long)kvm_read_c0_guest_config(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CONFIG1:
--		v = (long)kvm_read_c0_guest_config1(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CONFIG2:
--		v = (long)kvm_read_c0_guest_config2(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CONFIG3:
--		v = (long)kvm_read_c0_guest_config3(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CONFIG4:
--		v = (long)kvm_read_c0_guest_config4(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CONFIG5:
--		v = (long)kvm_read_c0_guest_config5(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_CONFIG7:
--		v = (long)kvm_read_c0_guest_config7(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_ERROREPC:
--		v = (long)kvm_read_c0_guest_errorepc(cop0);
--		break;
--	case KVM_REG_MIPS_CP0_KSCRATCH1 ... KVM_REG_MIPS_CP0_KSCRATCH6:
--		idx = reg->id - KVM_REG_MIPS_CP0_KSCRATCH1 + 2;
--		if (!(vcpu->arch.kscratch_enabled & BIT(idx)))
--			return -EINVAL;
--		switch (idx) {
--		case 2:
--			v = (long)kvm_read_c0_guest_kscratch1(cop0);
--			break;
--		case 3:
--			v = (long)kvm_read_c0_guest_kscratch2(cop0);
--			break;
--		case 4:
--			v = (long)kvm_read_c0_guest_kscratch3(cop0);
--			break;
--		case 5:
--			v = (long)kvm_read_c0_guest_kscratch4(cop0);
--			break;
--		case 6:
--			v = (long)kvm_read_c0_guest_kscratch5(cop0);
--			break;
--		case 7:
--			v = (long)kvm_read_c0_guest_kscratch6(cop0);
--			break;
--		}
--		break;
- 	/* registers to be handled specially */
- 	default:
- 		ret = kvm_mips_callbacks->get_one_reg(vcpu, reg, &v);
-@@ -954,68 +818,6 @@ static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
- 		fpu->msacsr = v;
- 		break;
- 
--	/* Co-processor 0 registers */
--	case KVM_REG_MIPS_CP0_INDEX:
--		kvm_write_c0_guest_index(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_CONTEXT:
--		kvm_write_c0_guest_context(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_USERLOCAL:
--		kvm_write_c0_guest_userlocal(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_PAGEMASK:
--		kvm_write_c0_guest_pagemask(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_WIRED:
--		kvm_write_c0_guest_wired(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_HWRENA:
--		kvm_write_c0_guest_hwrena(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_BADVADDR:
--		kvm_write_c0_guest_badvaddr(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_ENTRYHI:
--		kvm_write_c0_guest_entryhi(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_STATUS:
--		kvm_write_c0_guest_status(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_EPC:
--		kvm_write_c0_guest_epc(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_PRID:
--		kvm_write_c0_guest_prid(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_ERROREPC:
--		kvm_write_c0_guest_errorepc(cop0, v);
--		break;
--	case KVM_REG_MIPS_CP0_KSCRATCH1 ... KVM_REG_MIPS_CP0_KSCRATCH6:
--		idx = reg->id - KVM_REG_MIPS_CP0_KSCRATCH1 + 2;
--		if (!(vcpu->arch.kscratch_enabled & BIT(idx)))
--			return -EINVAL;
--		switch (idx) {
--		case 2:
--			kvm_write_c0_guest_kscratch1(cop0, v);
--			break;
--		case 3:
--			kvm_write_c0_guest_kscratch2(cop0, v);
--			break;
--		case 4:
--			kvm_write_c0_guest_kscratch3(cop0, v);
--			break;
--		case 5:
--			kvm_write_c0_guest_kscratch4(cop0, v);
--			break;
--		case 6:
--			kvm_write_c0_guest_kscratch5(cop0, v);
--			break;
--		case 7:
--			kvm_write_c0_guest_kscratch6(cop0, v);
--			break;
--		}
--		break;
- 	/* registers to be handled specially */
- 	default:
- 		return kvm_mips_callbacks->set_one_reg(vcpu, reg, v);
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index da5acd0ac005..653d03aa7e0b 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -489,8 +489,6 @@ static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
- 	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
- 	struct mm_struct *user_mm = &vcpu->arch.guest_user_mm;
- 
--	vcpu->arch.kscratch_enabled = 0xfc;
--
- 	/*
- 	 * Allocate GVA -> HPA page tables.
- 	 * MIPS doesn't use the mm_struct pointer argument.
-@@ -640,14 +638,54 @@ static void kvm_trap_emul_flush_shadow_memslot(struct kvm *kvm,
- 	kvm_trap_emul_flush_shadow_all(kvm);
- }
- 
-+static u64 kvm_trap_emul_get_one_regs[] = {
-+	KVM_REG_MIPS_CP0_INDEX,
-+	KVM_REG_MIPS_CP0_CONTEXT,
-+	KVM_REG_MIPS_CP0_USERLOCAL,
-+	KVM_REG_MIPS_CP0_PAGEMASK,
-+	KVM_REG_MIPS_CP0_WIRED,
-+	KVM_REG_MIPS_CP0_HWRENA,
-+	KVM_REG_MIPS_CP0_BADVADDR,
-+	KVM_REG_MIPS_CP0_COUNT,
-+	KVM_REG_MIPS_CP0_ENTRYHI,
-+	KVM_REG_MIPS_CP0_COMPARE,
-+	KVM_REG_MIPS_CP0_STATUS,
-+	KVM_REG_MIPS_CP0_CAUSE,
-+	KVM_REG_MIPS_CP0_EPC,
-+	KVM_REG_MIPS_CP0_PRID,
-+	KVM_REG_MIPS_CP0_CONFIG,
-+	KVM_REG_MIPS_CP0_CONFIG1,
-+	KVM_REG_MIPS_CP0_CONFIG2,
-+	KVM_REG_MIPS_CP0_CONFIG3,
-+	KVM_REG_MIPS_CP0_CONFIG4,
-+	KVM_REG_MIPS_CP0_CONFIG5,
-+	KVM_REG_MIPS_CP0_CONFIG7,
-+	KVM_REG_MIPS_CP0_ERROREPC,
-+	KVM_REG_MIPS_CP0_KSCRATCH1,
-+	KVM_REG_MIPS_CP0_KSCRATCH2,
-+	KVM_REG_MIPS_CP0_KSCRATCH3,
-+	KVM_REG_MIPS_CP0_KSCRATCH4,
-+	KVM_REG_MIPS_CP0_KSCRATCH5,
-+	KVM_REG_MIPS_CP0_KSCRATCH6,
-+
-+	KVM_REG_MIPS_COUNT_CTL,
-+	KVM_REG_MIPS_COUNT_RESUME,
-+	KVM_REG_MIPS_COUNT_HZ,
-+};
-+
- static unsigned long kvm_trap_emul_num_regs(struct kvm_vcpu *vcpu)
- {
--	return 0;
-+	return ARRAY_SIZE(kvm_trap_emul_get_one_regs);
- }
- 
- static int kvm_trap_emul_copy_reg_indices(struct kvm_vcpu *vcpu,
- 					  u64 __user *indices)
- {
-+	if (copy_to_user(indices, kvm_trap_emul_get_one_regs,
-+			 sizeof(kvm_trap_emul_get_one_regs)))
-+		return -EFAULT;
-+	indices += ARRAY_SIZE(kvm_trap_emul_get_one_regs);
-+
- 	return 0;
- }
- 
-@@ -655,7 +693,69 @@ static int kvm_trap_emul_get_one_reg(struct kvm_vcpu *vcpu,
- 				     const struct kvm_one_reg *reg,
- 				     s64 *v)
- {
++/**
++ * kvm_mips_guest_exception_base() - Find guest exception vector base address.
++ *
++ * Returns:	The base address of the current guest exception vector, taking
++ *		both Guest.CP0_Status.BEV and Guest.CP0_EBase into account.
++ */
++long kvm_mips_guest_exception_base(struct kvm_vcpu *vcpu)
++{
 +	struct mips_coproc *cop0 = vcpu->arch.cop0;
 +
- 	switch (reg->id) {
-+	case KVM_REG_MIPS_CP0_INDEX:
-+		*v = (long)kvm_read_c0_guest_index(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONTEXT:
-+		*v = (long)kvm_read_c0_guest_context(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_USERLOCAL:
-+		*v = (long)kvm_read_c0_guest_userlocal(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_PAGEMASK:
-+		*v = (long)kvm_read_c0_guest_pagemask(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_WIRED:
-+		*v = (long)kvm_read_c0_guest_wired(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_HWRENA:
-+		*v = (long)kvm_read_c0_guest_hwrena(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_BADVADDR:
-+		*v = (long)kvm_read_c0_guest_badvaddr(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_ENTRYHI:
-+		*v = (long)kvm_read_c0_guest_entryhi(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_COMPARE:
-+		*v = (long)kvm_read_c0_guest_compare(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_STATUS:
-+		*v = (long)kvm_read_c0_guest_status(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CAUSE:
-+		*v = (long)kvm_read_c0_guest_cause(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_EPC:
-+		*v = (long)kvm_read_c0_guest_epc(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_PRID:
-+		*v = (long)kvm_read_c0_guest_prid(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG:
-+		*v = (long)kvm_read_c0_guest_config(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG1:
-+		*v = (long)kvm_read_c0_guest_config1(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG2:
-+		*v = (long)kvm_read_c0_guest_config2(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG3:
-+		*v = (long)kvm_read_c0_guest_config3(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG4:
-+		*v = (long)kvm_read_c0_guest_config4(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG5:
-+		*v = (long)kvm_read_c0_guest_config5(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_CONFIG7:
-+		*v = (long)kvm_read_c0_guest_config7(cop0);
-+		break;
- 	case KVM_REG_MIPS_CP0_COUNT:
- 		*v = kvm_mips_read_count(vcpu);
- 		break;
-@@ -668,6 +768,27 @@ static int kvm_trap_emul_get_one_reg(struct kvm_vcpu *vcpu,
- 	case KVM_REG_MIPS_COUNT_HZ:
- 		*v = vcpu->arch.count_hz;
- 		break;
-+	case KVM_REG_MIPS_CP0_ERROREPC:
-+		*v = (long)kvm_read_c0_guest_errorepc(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH1:
-+		*v = (long)kvm_read_c0_guest_kscratch1(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH2:
-+		*v = (long)kvm_read_c0_guest_kscratch2(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH3:
-+		*v = (long)kvm_read_c0_guest_kscratch3(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH4:
-+		*v = (long)kvm_read_c0_guest_kscratch4(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH5:
-+		*v = (long)kvm_read_c0_guest_kscratch5(cop0);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH6:
-+		*v = (long)kvm_read_c0_guest_kscratch6(cop0);
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -683,6 +804,39 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
- 	unsigned int cur, change;
++	if (kvm_read_c0_guest_status(cop0) & ST0_BEV)
++		return KVM_GUEST_CKSEG1ADDR(0x1fc00200);
++	else
++		return kvm_read_c0_guest_ebase(cop0) & MIPS_EBASE_BASE;
++}
++
+ enum emulation_result kvm_mips_emulate_syscall(u32 cause,
+ 					       u32 *opc,
+ 					       struct kvm_run *run,
+@@ -1942,7 +1957,7 @@ enum emulation_result kvm_mips_emulate_syscall(u32 cause,
+ 					  (EXCCODE_SYS << CAUSEB_EXCCODE));
  
- 	switch (reg->id) {
-+	case KVM_REG_MIPS_CP0_INDEX:
-+		kvm_write_c0_guest_index(cop0, v);
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 
+ 	} else {
+ 		kvm_err("Trying to deliver SYSCALL when EXL is already set\n");
+@@ -1976,13 +1991,13 @@ enum emulation_result kvm_mips_emulate_tlbmiss_ld(u32 cause,
+ 			  arch->pc);
+ 
+ 		/* set pc to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x0;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x0;
+ 
+ 	} else {
+ 		kvm_debug("[EXL == 1] delivering TLB MISS @ pc %#lx\n",
+ 			  arch->pc);
+ 
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 	}
+ 
+ 	kvm_change_c0_guest_cause(cop0, (0xff),
+@@ -2019,16 +2034,14 @@ enum emulation_result kvm_mips_emulate_tlbinv_ld(u32 cause,
+ 
+ 		kvm_debug("[EXL == 0] delivering TLB INV @ pc %#lx\n",
+ 			  arch->pc);
+-
+-		/* set pc to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
+-
+ 	} else {
+ 		kvm_debug("[EXL == 1] delivering TLB MISS @ pc %#lx\n",
+ 			  arch->pc);
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
+ 	}
+ 
++	/* set pc to the exception entry point */
++	arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
++
+ 	kvm_change_c0_guest_cause(cop0, (0xff),
+ 				  (EXCCODE_TLBL << CAUSEB_EXCCODE));
+ 
+@@ -2064,11 +2077,11 @@ enum emulation_result kvm_mips_emulate_tlbmiss_st(u32 cause,
+ 			  arch->pc);
+ 
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x0;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x0;
+ 	} else {
+ 		kvm_debug("[EXL == 1] Delivering TLB MISS @ pc %#lx\n",
+ 			  arch->pc);
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 	}
+ 
+ 	kvm_change_c0_guest_cause(cop0, (0xff),
+@@ -2104,15 +2117,14 @@ enum emulation_result kvm_mips_emulate_tlbinv_st(u32 cause,
+ 
+ 		kvm_debug("[EXL == 0] Delivering TLB MISS @ pc %#lx\n",
+ 			  arch->pc);
+-
+-		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
+ 	} else {
+ 		kvm_debug("[EXL == 1] Delivering TLB MISS @ pc %#lx\n",
+ 			  arch->pc);
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
+ 	}
+ 
++	/* Set PC to the exception entry point */
++	arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
++
+ 	kvm_change_c0_guest_cause(cop0, (0xff),
+ 				  (EXCCODE_TLBS << CAUSEB_EXCCODE));
+ 
+@@ -2146,14 +2158,13 @@ enum emulation_result kvm_mips_emulate_tlbmod(u32 cause,
+ 
+ 		kvm_debug("[EXL == 0] Delivering TLB MOD @ pc %#lx\n",
+ 			  arch->pc);
+-
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
+ 	} else {
+ 		kvm_debug("[EXL == 1] Delivering TLB MOD @ pc %#lx\n",
+ 			  arch->pc);
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
+ 	}
+ 
++	arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
++
+ 	kvm_change_c0_guest_cause(cop0, (0xff),
+ 				  (EXCCODE_MOD << CAUSEB_EXCCODE));
+ 
+@@ -2185,7 +2196,7 @@ enum emulation_result kvm_mips_emulate_fpu_exc(u32 cause,
+ 
+ 	}
+ 
+-	arch->pc = KVM_GUEST_KSEG0 + 0x180;
++	arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 
+ 	kvm_change_c0_guest_cause(cop0, (0xff),
+ 				  (EXCCODE_CPU << CAUSEB_EXCCODE));
+@@ -2219,7 +2230,7 @@ enum emulation_result kvm_mips_emulate_ri_exc(u32 cause,
+ 					  (EXCCODE_RI << CAUSEB_EXCCODE));
+ 
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 
+ 	} else {
+ 		kvm_err("Trying to deliver RI when EXL is already set\n");
+@@ -2254,7 +2265,7 @@ enum emulation_result kvm_mips_emulate_bp_exc(u32 cause,
+ 					  (EXCCODE_BP << CAUSEB_EXCCODE));
+ 
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 
+ 	} else {
+ 		kvm_err("Trying to deliver BP when EXL is already set\n");
+@@ -2289,7 +2300,7 @@ enum emulation_result kvm_mips_emulate_trap_exc(u32 cause,
+ 					  (EXCCODE_TR << CAUSEB_EXCCODE));
+ 
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 
+ 	} else {
+ 		kvm_err("Trying to deliver TRAP when EXL is already set\n");
+@@ -2324,7 +2335,7 @@ enum emulation_result kvm_mips_emulate_msafpe_exc(u32 cause,
+ 					  (EXCCODE_MSAFPE << CAUSEB_EXCCODE));
+ 
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 
+ 	} else {
+ 		kvm_err("Trying to deliver MSAFPE when EXL is already set\n");
+@@ -2359,7 +2370,7 @@ enum emulation_result kvm_mips_emulate_fpe_exc(u32 cause,
+ 					  (EXCCODE_FPE << CAUSEB_EXCCODE));
+ 
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 
+ 	} else {
+ 		kvm_err("Trying to deliver FPE when EXL is already set\n");
+@@ -2394,7 +2405,7 @@ enum emulation_result kvm_mips_emulate_msadis_exc(u32 cause,
+ 					  (EXCCODE_MSADIS << CAUSEB_EXCCODE));
+ 
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 
+ 	} else {
+ 		kvm_err("Trying to deliver MSADIS when EXL is already set\n");
+@@ -2560,7 +2571,7 @@ static enum emulation_result kvm_mips_emulate_exc(u32 cause,
+ 					  (exccode << CAUSEB_EXCCODE));
+ 
+ 		/* Set PC to the exception entry point */
+-		arch->pc = KVM_GUEST_KSEG0 + 0x180;
++		arch->pc = kvm_mips_guest_exception_base(vcpu) + 0x180;
+ 		kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
+ 
+ 		kvm_debug("Delivering EXC %d @ pc %#lx, badVaddr: %#lx\n",
+diff --git a/arch/mips/kvm/interrupt.c b/arch/mips/kvm/interrupt.c
+index e88403b3dcdd..aa0a1a00faf6 100644
+--- a/arch/mips/kvm/interrupt.c
++++ b/arch/mips/kvm/interrupt.c
+@@ -183,10 +183,11 @@ int kvm_mips_irq_deliver_cb(struct kvm_vcpu *vcpu, unsigned int priority,
+ 					  (exccode << CAUSEB_EXCCODE));
+ 
+ 		/* XXXSL Set PC to the interrupt exception entry point */
++		arch->pc = kvm_mips_guest_exception_base(vcpu);
+ 		if (kvm_read_c0_guest_cause(cop0) & CAUSEF_IV)
+-			arch->pc = KVM_GUEST_KSEG0 + 0x200;
++			arch->pc += 0x200;
+ 		else
+-			arch->pc = KVM_GUEST_KSEG0 + 0x180;
++			arch->pc += 0x180;
+ 
+ 		clear_bit(priority, &vcpu->arch.pending_exceptions);
+ 	}
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 653d03aa7e0b..27082994e07d 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -653,6 +653,7 @@ static u64 kvm_trap_emul_get_one_regs[] = {
+ 	KVM_REG_MIPS_CP0_CAUSE,
+ 	KVM_REG_MIPS_CP0_EPC,
+ 	KVM_REG_MIPS_CP0_PRID,
++	KVM_REG_MIPS_CP0_EBASE,
+ 	KVM_REG_MIPS_CP0_CONFIG,
+ 	KVM_REG_MIPS_CP0_CONFIG1,
+ 	KVM_REG_MIPS_CP0_CONFIG2,
+@@ -735,6 +736,9 @@ static int kvm_trap_emul_get_one_reg(struct kvm_vcpu *vcpu,
+ 	case KVM_REG_MIPS_CP0_PRID:
+ 		*v = (long)kvm_read_c0_guest_prid(cop0);
+ 		break;
++	case KVM_REG_MIPS_CP0_EBASE:
++		*v = (long)kvm_read_c0_guest_ebase(cop0);
 +		break;
-+	case KVM_REG_MIPS_CP0_CONTEXT:
-+		kvm_write_c0_guest_context(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_USERLOCAL:
-+		kvm_write_c0_guest_userlocal(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_PAGEMASK:
-+		kvm_write_c0_guest_pagemask(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_WIRED:
-+		kvm_write_c0_guest_wired(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_HWRENA:
-+		kvm_write_c0_guest_hwrena(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_BADVADDR:
-+		kvm_write_c0_guest_badvaddr(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_ENTRYHI:
-+		kvm_write_c0_guest_entryhi(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_STATUS:
-+		kvm_write_c0_guest_status(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_EPC:
-+		kvm_write_c0_guest_epc(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_PRID:
-+		kvm_write_c0_guest_prid(cop0, v);
+ 	case KVM_REG_MIPS_CP0_CONFIG:
+ 		*v = (long)kvm_read_c0_guest_config(cop0);
+ 		break;
+@@ -837,6 +841,14 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
+ 	case KVM_REG_MIPS_CP0_PRID:
+ 		kvm_write_c0_guest_prid(cop0, v);
+ 		break;
++	case KVM_REG_MIPS_CP0_EBASE:
++		/*
++		 * Allow core number to be written, but the exception base must
++		 * remain in guest KSeg0.
++		 */
++		kvm_change_c0_guest_ebase(cop0, 0x1ffff000 | MIPS_EBASE_CPUNUM,
++					  v);
 +		break;
  	case KVM_REG_MIPS_CP0_COUNT:
  		kvm_mips_write_count(vcpu, v);
  		break;
-@@ -759,6 +913,27 @@ static int kvm_trap_emul_set_one_reg(struct kvm_vcpu *vcpu,
- 	case KVM_REG_MIPS_COUNT_HZ:
- 		ret = kvm_mips_set_count_hz(vcpu, v);
- 		break;
-+	case KVM_REG_MIPS_CP0_ERROREPC:
-+		kvm_write_c0_guest_errorepc(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH1:
-+		kvm_write_c0_guest_kscratch1(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH2:
-+		kvm_write_c0_guest_kscratch2(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH3:
-+		kvm_write_c0_guest_kscratch3(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH4:
-+		kvm_write_c0_guest_kscratch4(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH5:
-+		kvm_write_c0_guest_kscratch5(cop0, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_KSCRATCH6:
-+		kvm_write_c0_guest_kscratch6(cop0, v);
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
 -- 
 git-series 0.8.10

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:17:09 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:17:33 +0100 (CET)
 Received: from mailapp01.imgtec.com ([195.59.15.196]:1215 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993942AbdBBMFSBN3Jv (ORCPT
+        with ESMTP id S23993944AbdBBMFSqoE2v (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:18 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 6490155B5C0D9;
-        Thu,  2 Feb 2017 12:05:13 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 55AEA344E3014;
+        Thu,  2 Feb 2017 12:05:14 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Feb 2017 12:05:16 +0000
+ 14.3.294.0; Thu, 2 Feb 2017 12:05:17 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v2 29/30] KVM: MIPS/Emulate: Drop redundant TLB flushes on exceptions
-Date:   Thu, 2 Feb 2017 12:04:42 +0000
-Message-ID: <e201f182f06eba29036973ff79d99715e9f2f8fc.1486036366.git-series.james.hogan@imgtec.com>
+Subject: [PATCH v2 30/30] KVM: MIPS/MMU: Drop kvm_get_new_mmu_context()
+Date:   Thu, 2 Feb 2017 12:04:43 +0000
+Message-ID: <09a2f35ab6e2bd807d2541ff3c3aaae1c9527e8f.1486036366.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56617
+X-archive-position: 56618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,28 +46,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When exceptions are injected into the MIPS KVM guest, the whole host TLB
-is flushed (except any entries in the guest KSeg0 range). This is
-certainly not mandated by the architecture when exceptions are taken
-(userland can't directly change TLB mappings anyway), and is a pretty
-heavyweight operation:
+MIPS KVM uses its own variation of get_new_mmu_context() which takes an
+extra vcpu pointer (unused) and does exactly the same thing.
 
- - There may be hundreds of TLB entries especially when a 512 entry FTLB
-   is present. These are walked and read and conditionally invalidated,
-   so the TLBINV feature can't be used either.
+Switch to just using get_new_mmu_context() directly and drop KVM's
+version of it as it doesn't really serve any purpose.
 
- - It'll indiscriminately wipe out entries belonging to other memory
-   spaces. A simple ASID regeneration would be much faster to perform,
-   although it'd wipe out the guest KSeg0 mappings too.
-
-My suspicion is that this was simply to plaster over the fact that
-kvm_mips_host_tlb_inv() incorrectly only invalidated TLB entries in the
-ASID for guest usermode, and not the ASID for guest kernelmode.
-
-Now that the recent commit "KVM: MIPS/TLB: Flush host TLB entry in
-kernel ASID" fixes kvm_mips_host_tlb_inv() to flush TLB entries in the
-kernelmode ASID when the guest TLB changes, lets drop these calls and
-the otherwise unused kvm_mips_flush_host_tlb().
+The nearby declarations of kvm_mips_alloc_new_mmu_context(),
+kvm_mips_vcpu_load() and kvm_mips_vcpu_put() are also removed from
+kvm_host.h, as no definitions or users exist.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -76,131 +63,102 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h |  1 +-
- arch/mips/kvm/emulate.c          | 10 +-------
- arch/mips/kvm/tlb.c              | 49 +---------------------------------
- 3 files changed, 0 insertions(+), 60 deletions(-)
+ arch/mips/include/asm/kvm_host.h |  5 -----
+ arch/mips/kvm/emulate.c          |  3 +--
+ arch/mips/kvm/mmu.c              | 19 -------------------
+ arch/mips/kvm/trap_emul.c        |  6 +++---
+ 4 files changed, 4 insertions(+), 29 deletions(-)
 
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 1a83b6f85de2..174857f146b1 100644
+index 174857f146b1..1337abb18e2b 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -608,7 +608,6 @@ extern enum emulation_result kvm_mips_handle_tlbmod(u32 cause,
+@@ -638,11 +638,6 @@ void kvm_mips_flush_gva_pt(pgd_t *pgd, enum kvm_mips_flush flags);
+ void kvm_mmu_free_memory_caches(struct kvm_vcpu *vcpu);
+ void kvm_trap_emul_invalidate_gva(struct kvm_vcpu *vcpu, unsigned long addr,
+ 				  bool user);
+-extern void kvm_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu,
+-				    struct kvm_vcpu *vcpu);
+-extern void kvm_mips_alloc_new_mmu_context(struct kvm_vcpu *vcpu);
+-extern void kvm_mips_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
+-extern void kvm_mips_vcpu_put(struct kvm_vcpu *vcpu);
  
- extern void kvm_mips_dump_host_tlbs(void);
- extern void kvm_mips_dump_guest_tlbs(struct kvm_vcpu *vcpu);
--extern void kvm_mips_flush_host_tlb(int skip_kseg0);
- extern int kvm_mips_host_tlb_inv(struct kvm_vcpu *vcpu, unsigned long entryhi,
- 				 bool user, bool kernel);
- 
+ /* Emulation */
+ u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu);
 diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 9ac8e45017ce..cd11d787d9dc 100644
+index cd11d787d9dc..67ea39973b96 100644
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -1968,8 +1968,6 @@ enum emulation_result kvm_mips_emulate_tlbmiss_ld(u32 cause,
- 	kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
- 	/* XXXKYMA: is the context register used by linux??? */
- 	kvm_write_c0_guest_entryhi(cop0, entryhi);
--	/* Blow away the shadow host TLBs */
--	kvm_mips_flush_host_tlb(1);
- 
- 	return EMULATE_DONE;
+@@ -1198,8 +1198,7 @@ enum emulation_result kvm_mips_emulate_CP0(union mips_instruction inst,
+ 					 */
+ 					preempt_disable();
+ 					cpu = smp_processor_id();
+-					kvm_get_new_mmu_context(kern_mm,
+-								cpu, vcpu);
++					get_new_mmu_context(kern_mm, cpu);
+ 					for_each_possible_cpu(i)
+ 						if (i != cpu)
+ 							cpu_context(i, kern_mm) = 0;
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index cf832ea963d8..aab604e75d3b 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -443,25 +443,6 @@ int kvm_mips_handle_commpage_tlb_fault(unsigned long badvaddr,
+ 	return 0;
  }
-@@ -2014,8 +2012,6 @@ enum emulation_result kvm_mips_emulate_tlbinv_ld(u32 cause,
- 	kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
- 	/* XXXKYMA: is the context register used by linux??? */
- 	kvm_write_c0_guest_entryhi(cop0, entryhi);
--	/* Blow away the shadow host TLBs */
--	kvm_mips_flush_host_tlb(1);
  
- 	return EMULATE_DONE;
- }
-@@ -2058,8 +2054,6 @@ enum emulation_result kvm_mips_emulate_tlbmiss_st(u32 cause,
- 	kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
- 	/* XXXKYMA: is the context register used by linux??? */
- 	kvm_write_c0_guest_entryhi(cop0, entryhi);
--	/* Blow away the shadow host TLBs */
--	kvm_mips_flush_host_tlb(1);
- 
- 	return EMULATE_DONE;
- }
-@@ -2102,8 +2096,6 @@ enum emulation_result kvm_mips_emulate_tlbinv_st(u32 cause,
- 	kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
- 	/* XXXKYMA: is the context register used by linux??? */
- 	kvm_write_c0_guest_entryhi(cop0, entryhi);
--	/* Blow away the shadow host TLBs */
--	kvm_mips_flush_host_tlb(1);
- 
- 	return EMULATE_DONE;
- }
-@@ -2176,8 +2168,6 @@ enum emulation_result kvm_mips_emulate_tlbmod(u32 cause,
- 	kvm_write_c0_guest_badvaddr(cop0, vcpu->arch.host_cp0_badvaddr);
- 	/* XXXKYMA: is the context register used by linux??? */
- 	kvm_write_c0_guest_entryhi(cop0, entryhi);
--	/* Blow away the shadow host TLBs */
--	kvm_mips_flush_host_tlb(1);
- 
- 	return EMULATE_DONE;
- }
-diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
-index 51f4aee717e7..cee2e9feb942 100644
---- a/arch/mips/kvm/tlb.c
-+++ b/arch/mips/kvm/tlb.c
-@@ -214,55 +214,6 @@ int kvm_mips_host_tlb_inv(struct kvm_vcpu *vcpu, unsigned long va,
- }
- EXPORT_SYMBOL_GPL(kvm_mips_host_tlb_inv);
- 
--void kvm_mips_flush_host_tlb(int skip_kseg0)
+-void kvm_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu,
+-			     struct kvm_vcpu *vcpu)
 -{
--	unsigned long flags;
--	unsigned long old_entryhi, entryhi;
--	unsigned long old_pagemask;
--	int entry = 0;
--	int maxentry = current_cpu_data.tlbsize;
+-	unsigned long asid = asid_cache(cpu);
 -
--	local_irq_save(flags);
+-	asid += cpu_asid_inc();
+-	if (!(asid & cpu_asid_mask(&cpu_data[cpu]))) {
+-		if (cpu_has_vtag_icache)
+-			flush_icache_all();
 -
--	old_entryhi = read_c0_entryhi();
--	old_pagemask = read_c0_pagemask();
+-		local_flush_tlb_all();      /* start new asid cycle */
 -
--	/* Blast 'em all away. */
--	for (entry = 0; entry < maxentry; entry++) {
--		write_c0_index(entry);
--
--		if (skip_kseg0) {
--			mtc0_tlbr_hazard();
--			tlb_read();
--			tlb_read_hazard();
--
--			entryhi = read_c0_entryhi();
--
--			/* Don't blow away guest kernel entries */
--			if (KVM_GUEST_KSEGX(entryhi) == KVM_GUEST_KSEG0)
--				continue;
--
--			write_c0_pagemask(old_pagemask);
--		}
--
--		/* Make sure all entries differ. */
--		write_c0_entryhi(UNIQUE_ENTRYHI(entry));
--		write_c0_entrylo0(0);
--		write_c0_entrylo1(0);
--		mtc0_tlbw_hazard();
--
--		tlb_write_indexed();
--		tlbw_use_hazard();
+-		if (!asid)      /* fix version if needed */
+-			asid = asid_first_version(cpu);
 -	}
 -
--	write_c0_entryhi(old_entryhi);
--	write_c0_pagemask(old_pagemask);
--	mtc0_tlbw_hazard();
--
--	local_irq_restore(flags);
+-	cpu_context(cpu, mm) = asid_cache(cpu) = asid;
 -}
--EXPORT_SYMBOL_GPL(kvm_mips_flush_host_tlb);
 -
  /**
-  * kvm_mips_suspend_mm() - Suspend the active mm.
-  * @cpu		The CPU we're running on.
+  * kvm_mips_migrate_count() - Migrate timer.
+  * @vcpu:	Virtual CPU.
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index ee8b5ad8c7c5..653850c05b33 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -706,7 +706,7 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 
+ 	if ((cpu_context(cpu, kern_mm) ^ asid_cache(cpu)) &
+ 						asid_version_mask(cpu)) {
+-		kvm_get_new_mmu_context(kern_mm, cpu, vcpu);
++		get_new_mmu_context(kern_mm, cpu);
+ 
+ 		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
+ 			  cpu_context(cpu, current->mm));
+@@ -716,7 +716,7 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 
+ 	if ((cpu_context(cpu, user_mm) ^ asid_cache(cpu)) &
+ 						asid_version_mask(cpu)) {
+-		kvm_get_new_mmu_context(user_mm, cpu, vcpu);
++		get_new_mmu_context(user_mm, cpu);
+ 
+ 		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
+ 			  cpu_context(cpu, current->mm));
+@@ -779,7 +779,7 @@ static void kvm_trap_emul_vcpu_reenter(struct kvm_run *run,
+ 		gasid = kvm_read_c0_guest_entryhi(cop0) & KVM_ENTRYHI_ASID;
+ 		if (gasid != vcpu->arch.last_user_gasid) {
+ 			kvm_mips_flush_gva_pt(user_mm->pgd, KMF_USER);
+-			kvm_get_new_mmu_context(user_mm, cpu, vcpu);
++			get_new_mmu_context(user_mm, cpu);
+ 			for_each_possible_cpu(i)
+ 				if (i != cpu)
+ 					cpu_context(i, user_mm) = 0;
 -- 
 git-series 0.8.10

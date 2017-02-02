@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:10:15 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:13017 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:10:37 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:7924 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993908AbdBBMFHkfJ9v (ORCPT
+        with ESMTP id S23993912AbdBBMFHku0dv (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:07 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 95CF93AAD1179;
-        Thu,  2 Feb 2017 12:04:53 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 45090B596C029;
+        Thu,  2 Feb 2017 12:04:58 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Feb 2017 12:04:56 +0000
+ 14.3.294.0; Thu, 2 Feb 2017 12:05:01 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v2 5/30] KVM: MIPS: Drop partial KVM_NMI implementation
-Date:   Thu, 2 Feb 2017 12:04:18 +0000
-Message-ID: <073fb44876edb446b54c1375d4d5a31007ea339b.1486036366.git-series.james.hogan@imgtec.com>
+Subject: [PATCH v2 11/30] KVM: MIPS/T&E: Restore host asid on return to host
+Date:   Thu, 2 Feb 2017 12:04:24 +0000
+Message-ID: <081bc7401b80f423d78d8113e974c13ffa5582ab.1486036366.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56600
+X-archive-position: 56601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,17 +46,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS incompletely implements the KVM_NMI ioctl to supposedly perform a
-CPU reset, but all it actually does is invalidate the ASIDs. It doesn't
-expose the KVM_CAP_USER_NMI capability which is supposed to indicate the
-presence of the KVM_NMI ioctl, and no user software actually uses it on
-MIPS.
+We only need the guest ASID loaded while in guest context, i.e. while
+running guest code and while handling guest exits. We load the guest
+ASID when entering the guest, however we restore the host ASID later
+than necessary, when the VCPU state is saved i.e. vcpu_put() or slightly
+earlier if preempted after returning to the host.
 
-Since this is dead code that would technically need updating for GVA
-page table handling in upcoming patches, remove it now. If we wanted to
-implement NMI injection later it can always be done properly along with
-the KVM_CAP_USER_NMI capability, and if we wanted to implement a proper
-CPU reset it would be better done with a separate ioctl.
+This mismatch is both unpleasant and causes redundant host ASID restores
+in kvm_trap_emul_vcpu_put(). Lets explicitly restore the host ASID when
+returning to the host, and don't bother restoring the host ASID on
+context switch in unless we're already in guest context.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -65,42 +64,61 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/mips.c | 16 ----------------
- 1 file changed, 0 insertions(+), 16 deletions(-)
+ arch/mips/kvm/trap_emul.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 29ec9ab3fd55..de32ce30c78c 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -63,18 +63,6 @@ struct kvm_stats_debugfs_item debugfs_entries[] = {
- 	{NULL}
- };
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 92734d095c94..3e1dbcbcea85 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -680,14 +680,17 @@ static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
+ {
+ 	kvm_lose_fpu(vcpu);
  
--static int kvm_mips_reset_vcpu(struct kvm_vcpu *vcpu)
--{
--	int i;
--
--	for_each_possible_cpu(i) {
--		vcpu->arch.guest_kernel_asid[i] = 0;
--		vcpu->arch.guest_user_asid[i] = 0;
--	}
--
--	return 0;
--}
--
- /*
-  * XXXKYMA: We are simulatoring a processor that has the WII bit set in
-  * Config7, so we are "runnable" if interrupts are pending
-@@ -1144,10 +1132,6 @@ long kvm_arch_vcpu_ioctl(struct file *filp, unsigned int ioctl,
- 			return -E2BIG;
- 		return kvm_mips_copy_reg_indices(vcpu, user_list->reg);
+-	if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
+-	     asid_version_mask(cpu))) {
+-		kvm_debug("%s: Dropping MMU Context:  %#lx\n", __func__,
+-			  cpu_context(cpu, current->mm));
+-		drop_mmu_context(current->mm, cpu);
++	if (current->flags & PF_VCPU) {
++		/* Restore normal Linux process memory map */
++		if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
++		     asid_version_mask(cpu))) {
++			kvm_debug("%s: Dropping MMU Context:  %#lx\n", __func__,
++				  cpu_context(cpu, current->mm));
++			get_new_mmu_context(current->mm, cpu);
++		}
++		write_c0_entryhi(cpu_asid(cpu, current->mm));
++		ehb();
  	}
--	case KVM_NMI:
--		/* Treat the NMI as a CPU reset */
--		r = kvm_mips_reset_vcpu(vcpu);
--		break;
- 	case KVM_INTERRUPT:
- 		{
- 			struct kvm_mips_interrupt irq;
+-	write_c0_entryhi(cpu_asid(cpu, current->mm));
+-	ehb();
+ 
+ 	return 0;
+ }
+@@ -720,6 +723,7 @@ static void kvm_trap_emul_vcpu_reenter(struct kvm_run *run,
+ 
+ static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ {
++	int cpu;
+ 	int r;
+ 
+ 	/* Check if we have any exceptions/interrupts pending */
+@@ -733,6 +737,15 @@ static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 
+ 	r = vcpu->arch.vcpu_run(run, vcpu);
+ 
++	/* We may have migrated while handling guest exits */
++	cpu = smp_processor_id();
++
++	/* Restore normal Linux process memory map */
++	if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
++	     asid_version_mask(cpu)))
++		get_new_mmu_context(current->mm, cpu);
++	write_c0_entryhi(cpu_asid(cpu, current->mm));
++
+ 	htw_start();
+ 
+ 	return r;
 -- 
 git-series 0.8.10

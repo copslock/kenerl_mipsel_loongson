@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:13:15 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8230 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:13:37 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44884 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993928AbdBBMFLjTDAv (ORCPT
+        with ESMTP id S23993927AbdBBMFLisprv (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:11 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 7843BFC2092F;
-        Thu,  2 Feb 2017 12:05:00 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 9CC979FF6647E;
+        Thu,  2 Feb 2017 12:04:59 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Feb 2017 12:05:03 +0000
+ 14.3.294.0; Thu, 2 Feb 2017 12:05:02 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v2 14/30] KVM: MIPS/T&E: Allocate GVA -> HPA page tables
-Date:   Thu, 2 Feb 2017 12:04:27 +0000
-Message-ID: <b8ce98af2cfacbbfb55a03367c6047749741a721.1486036366.git-series.james.hogan@imgtec.com>
+Subject: [PATCH v2 13/30] KVM: MIPS: Wire up vcpu uninit
+Date:   Thu, 2 Feb 2017 12:04:26 +0000
+Message-ID: <696660627a590a654d897934f98455a325948b28.1486036366.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56607
+X-archive-position: 56608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,11 +46,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Allocate GVA -> HPA page tables for guest kernel and guest user mode on
-each VCPU, to allow for fast path TLB refill handling to be added later.
-
-In the process kvm_arch_vcpu_init() needs updating to pass on any error
-from the vcpu_init() callback.
+Wire up a vcpu uninit implementation callback. This will be used for the
+clean up of GVA->HPA page tables.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -59,115 +56,69 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/mips.c      |  7 +++-
- arch/mips/kvm/trap_emul.c | 63 ++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 69 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/kvm_host.h | 2 +-
+ arch/mips/kvm/mips.c             | 5 +++++
+ arch/mips/kvm/trap_emul.c        | 5 +++++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 95320b7964a6..fea538fc5331 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -519,6 +519,7 @@ struct kvm_mips_callbacks {
+ 	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
+ 	int (*vm_init)(struct kvm *kvm);
+ 	int (*vcpu_init)(struct kvm_vcpu *vcpu);
++	void (*vcpu_uninit)(struct kvm_vcpu *vcpu);
+ 	int (*vcpu_setup)(struct kvm_vcpu *vcpu);
+ 	gpa_t (*gva_to_gpa)(gva_t gva);
+ 	void (*queue_timer_int)(struct kvm_vcpu *vcpu);
+@@ -765,7 +766,6 @@ static inline void kvm_arch_memslots_updated(struct kvm *kvm, struct kvm_memslot
+ static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
+ static inline void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+ 		struct kvm_memory_slot *slot) {}
+-static inline void kvm_arch_vcpu_uninit(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+ static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
 diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index c3f2207a37a0..39792ec73a6d 100644
+index 982fe31a952e..c3f2207a37a0 100644
 --- a/arch/mips/kvm/mips.c
 +++ b/arch/mips/kvm/mips.c
-@@ -1343,7 +1343,12 @@ static enum hrtimer_restart kvm_mips_comparecount_wakeup(struct hrtimer *timer)
- 
- int kvm_arch_vcpu_init(struct kvm_vcpu *vcpu)
- {
--	kvm_mips_callbacks->vcpu_init(vcpu);
-+	int err;
-+
-+	err = kvm_mips_callbacks->vcpu_init(vcpu);
-+	if (err)
-+		return err;
-+
- 	hrtimer_init(&vcpu->arch.comparecount_timer, CLOCK_MONOTONIC,
- 		     HRTIMER_MODE_REL);
- 	vcpu->arch.comparecount_timer.function = kvm_mips_comparecount_wakeup;
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index 07540cf2b557..183150a963ec 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -14,6 +14,7 @@
- #include <linux/kvm_host.h>
- #include <linux/vmalloc.h>
- #include <asm/mmu_context.h>
-+#include <asm/pgalloc.h>
- 
- #include "interrupt.h"
- 
-@@ -435,13 +436,75 @@ static int kvm_trap_emul_vm_init(struct kvm *kvm)
- 
- static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
- {
-+	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
-+	struct mm_struct *user_mm = &vcpu->arch.guest_user_mm;
-+
- 	vcpu->arch.kscratch_enabled = 0xfc;
- 
-+	/*
-+	 * Allocate GVA -> HPA page tables.
-+	 * MIPS doesn't use the mm_struct pointer argument.
-+	 */
-+	kern_mm->pgd = pgd_alloc(kern_mm);
-+	if (!kern_mm->pgd)
-+		return -ENOMEM;
-+
-+	user_mm->pgd = pgd_alloc(user_mm);
-+	if (!user_mm->pgd) {
-+		pgd_free(kern_mm, kern_mm->pgd);
-+		return -ENOMEM;
-+	}
-+
+@@ -1350,6 +1350,11 @@ int kvm_arch_vcpu_init(struct kvm_vcpu *vcpu)
  	return 0;
  }
  
-+static void kvm_mips_emul_free_gva_pt(pgd_t *pgd)
++void kvm_arch_vcpu_uninit(struct kvm_vcpu *vcpu)
 +{
-+	/* Don't free host kernel page tables copied from init_mm.pgd */
-+	const unsigned long end = 0x80000000;
-+	unsigned long pgd_va, pud_va, pmd_va;
-+	pud_t *pud;
-+	pmd_t *pmd;
-+	pte_t *pte;
-+	int i, j, k;
-+
-+	for (i = 0; i < USER_PTRS_PER_PGD; i++) {
-+		if (pgd_none(pgd[i]))
-+			continue;
-+
-+		pgd_va = (unsigned long)i << PGDIR_SHIFT;
-+		if (pgd_va >= end)
-+			break;
-+		pud = pud_offset(pgd + i, 0);
-+		for (j = 0; j < PTRS_PER_PUD; j++) {
-+			if (pud_none(pud[j]))
-+				continue;
-+
-+			pud_va = pgd_va | ((unsigned long)j << PUD_SHIFT);
-+			if (pud_va >= end)
-+				break;
-+			pmd = pmd_offset(pud + j, 0);
-+			for (k = 0; k < PTRS_PER_PMD; k++) {
-+				if (pmd_none(pmd[k]))
-+					continue;
-+
-+				pmd_va = pud_va | (k << PMD_SHIFT);
-+				if (pmd_va >= end)
-+					break;
-+				pte = pte_offset(pmd + k, 0);
-+				pte_free_kernel(NULL, pte);
-+			}
-+			pmd_free(NULL, pmd);
-+		}
-+		pud_free(NULL, pud);
-+	}
-+	pgd_free(NULL, pgd);
++	kvm_mips_callbacks->vcpu_uninit(vcpu);
 +}
 +
- static void kvm_trap_emul_vcpu_uninit(struct kvm_vcpu *vcpu)
+ int kvm_arch_vcpu_ioctl_translate(struct kvm_vcpu *vcpu,
+ 				  struct kvm_translation *tr)
  {
-+	kvm_mips_emul_free_gva_pt(vcpu->arch.guest_kernel_mm.pgd);
-+	kvm_mips_emul_free_gva_pt(vcpu->arch.guest_user_mm.pgd);
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 9cfe4d2a283c..07540cf2b557 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -440,6 +440,10 @@ static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
+ 	return 0;
  }
  
++static void kvm_trap_emul_vcpu_uninit(struct kvm_vcpu *vcpu)
++{
++}
++
  static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
+ {
+ 	struct mips_coproc *cop0 = vcpu->arch.cop0;
+@@ -779,6 +783,7 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
+ 
+ 	.vm_init = kvm_trap_emul_vm_init,
+ 	.vcpu_init = kvm_trap_emul_vcpu_init,
++	.vcpu_uninit = kvm_trap_emul_vcpu_uninit,
+ 	.vcpu_setup = kvm_trap_emul_vcpu_setup,
+ 	.gva_to_gpa = kvm_trap_emul_gva_to_gpa_cb,
+ 	.queue_timer_int = kvm_mips_queue_timer_int_cb,
 -- 
 git-series 0.8.10

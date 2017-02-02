@@ -1,47 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 11:49:04 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7478 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993883AbdBBKs4cwO2L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 11:48:56 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 6FA6A41F8E9C;
-        Thu,  2 Feb 2017 11:52:15 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 02 Feb 2017 11:52:15 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 02 Feb 2017 11:52:15 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:05:07 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6867 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993883AbdBBME7zCIIv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:04:59 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id EA98F51BCBB97;
-        Thu,  2 Feb 2017 10:48:47 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 2 Feb
- 2017 10:48:50 +0000
-Date:   Thu, 2 Feb 2017 10:48:50 +0000
+        by Forcepoint Email with ESMTPS id 7EA86FDCDB833;
+        Thu,  2 Feb 2017 12:04:50 +0000 (GMT)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 2 Feb 2017 12:04:53 +0000
 From:   James Hogan <james.hogan@imgtec.com>
-To:     Joshua Kinard <kumba@gentoo.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Linux/MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Replace printk calls in cpu-bugs64.c with
- pr_info/pr_cont
-Message-ID: <20170202104850.GI13049@jhogan-linux.le.imgtec.org>
-References: <29b7fc69-97f4-6a3a-0e65-2678f9c30cef@gentoo.org>
- <20170202100041.GA13058@jhogan-linux.le.imgtec.org>
- <f0edc411-178c-7f18-9be6-9d40892c54b5@gentoo.org>
+To:     <linux-mips@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        <kvm@vger.kernel.org>
+Subject: [PATCH v2 1/30] MIPS: Move pgd_alloc() out of header
+Date:   Thu, 2 Feb 2017 12:04:14 +0000
+Message-ID: <21f45e82ab0d734ea1ef614551639f2e8d900557.1486036366.git-series.james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/8E7gjuj425jZz9t"
-Content-Disposition: inline
-In-Reply-To: <f0edc411-178c-7f18-9be6-9d40892c54b5@gentoo.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
+References: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56588
+X-archive-position: 56589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,75 +47,97 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---/8E7gjuj425jZz9t
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+pgd_alloc() references init_mm which is not exported to modules. In
+order for KVM to be able to use pgd_alloc() to allocate GVA page tables,
+move pgd_alloc() into a new pgtable.c file and export it to modules.
 
-On Thu, Feb 02, 2017 at 05:41:48AM -0500, Joshua Kinard wrote:
-> On 02/02/2017 05:00, James Hogan wrote:
-> > Hi Joshua,
-> >=20
-> > On Thu, Feb 02, 2017 at 03:56:26AM -0500, Joshua Kinard wrote:
-> >> From: Joshua Kinard <kumba@gentoo.org>
-> >>
-> >> In arch/mips/kernel/cpu-bugs64.c, replace initial printk's in three
-> >> bug-checking functions with pr_info and replace several continuation
-> >> printk's with pr_info/pr_cont calls to avoid kernel log output like
-> >> this:
-> >>
-> >>     [    0.899065] Checking for the daddi bug...
-> >>     [    0.899098] no.
-> >>
-> >> This makes the output appear correctly:
-> >>
-> >>     [    0.898643] Checking for the daddi bug... no.
-> >>
-> >> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
-> >=20
-> > A variation of this patch is already applied, but without the change of
-> > printk -> pr_info:
-> >=20
-> > https://patchwork.linux-mips.org/patch/14916/
-> >=20
-> > https://git.linux-mips.org/cgit/ralf/upstream-sfr.git/commit/?id=3D35e7=
-f7885e1b1b272a73c0de3227fc9a3e95a7e3
->=20
-> Oh, thanks for that.  I keep forgetting to go look at the upstream git qu=
-eue.
-> I noticed the issue when trying to boot my Onyx2 back up and only checked=
- the
-> main tree to see if it was fixed.
->=20
-> Shouldn't the printk's have a log level, though?  I thought that was the
-> motivation behind using the various pr_* calls.
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+---
+Changes in v2:
+- Move pgd_alloc() into C code rather than exporting init_mm itself
+  (feedback from Arjan van de Ven).
+---
+ arch/mips/include/asm/pgalloc.h | 16 +---------------
+ arch/mips/mm/Makefile           |  2 +-
+ arch/mips/mm/pgtable.c          | 25 +++++++++++++++++++++++++
+ 3 files changed, 27 insertions(+), 16 deletions(-)
+ create mode 100644 arch/mips/mm/pgtable.c
 
-Yes probably. I'd consider that a separate change to fixing the
-continuations though (according to a quick git grep there are 422
-printks without log levels remaining in mips-for-linux-next arch/mips).
-
-Cheers
-James
-
---/8E7gjuj425jZz9t
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYkw57AAoJEGwLaZPeOHZ6I5cQALdnN0SbZFsSB1NchVO9Ttpm
-EfduLlBen4yPn6e8SqXT9NsoXhaxhT+oZAjtqoB/xo8jIxLzMHQO71zskClVsHBs
-60higEXnrNr89+LJfX+E9xQspJ4H0GKHBldkaPoLu8rvQ7MxT/BEksa9lj8EQeoK
-oflD8VWBX/STJ/scTL73K3mYX03U+jFcl1PxCt1WFAvp3ydWvN1rK/JEHEWjHTk+
-R2JYfJx1Jdj7h+Xo3HuqP/33Io6EGRNyu1g4FAJhNEI7NNmodT55h6me3VPEIMGJ
-DLakfe3LY1EWySGIJDPwrNsHcpsJ/Wwp2X/jhkdrME31uDibsgwbGwVEn16HC8nb
-K3n3CC8KQdSJiUV2RziSn8h6XXMFuVoSC2SgJXJePklePlp+sY+9MjuD6O/x/jMX
-89joUtEQIjTG65CCRwgeoRngSxIAF0uLerBo1PHc5ifbiqVCUu1blSRF1VVR8Gaj
-OO7qQk39+z9EQHAOKN1jU/4+bFeqyf+0jsP/ah8882cEPgUc4jsShCsuDgUVkG9A
-pLegYBaqDMj7+BfeKCu4/xQOxfFFL5da5lvnqf174IeX3QRHMEn3hEqj3k9GHnsk
-RtDkr/DPtj3FMR66c5fiIRdjFV/SJXjZ5RL/+q1BI5rurU4y8VrYgHjO8at0/sQH
-1M1nvKsz3O1LAQ0vcIIC
-=6iFY
------END PGP SIGNATURE-----
-
---/8E7gjuj425jZz9t--
+diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
+index a03e86969f78..a8705f6c8180 100644
+--- a/arch/mips/include/asm/pgalloc.h
++++ b/arch/mips/include/asm/pgalloc.h
+@@ -43,21 +43,7 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
+  * Initialize a new pgd / pmd table with invalid pointers.
+  */
+ extern void pgd_init(unsigned long page);
+-
+-static inline pgd_t *pgd_alloc(struct mm_struct *mm)
+-{
+-	pgd_t *ret, *init;
+-
+-	ret = (pgd_t *) __get_free_pages(GFP_KERNEL, PGD_ORDER);
+-	if (ret) {
+-		init = pgd_offset(&init_mm, 0UL);
+-		pgd_init((unsigned long)ret);
+-		memcpy(ret + USER_PTRS_PER_PGD, init + USER_PTRS_PER_PGD,
+-		       (PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
+-	}
+-
+-	return ret;
+-}
++extern pgd_t *pgd_alloc(struct mm_struct *mm);
+ 
+ static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+ {
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index b4c64bd3f723..b4cc8811a664 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -4,7 +4,7 @@
+ 
+ obj-y				+= cache.o dma-default.o extable.o fault.o \
+ 				   gup.o init.o mmap.o page.o page-funcs.o \
+-				   tlbex.o tlbex-fault.o tlb-funcs.o
++				   pgtable.o tlbex.o tlbex-fault.o tlb-funcs.o
+ 
+ ifdef CONFIG_CPU_MICROMIPS
+ obj-y				+= uasm-micromips.o
+diff --git a/arch/mips/mm/pgtable.c b/arch/mips/mm/pgtable.c
+new file mode 100644
+index 000000000000..05560b042d82
+--- /dev/null
++++ b/arch/mips/mm/pgtable.c
+@@ -0,0 +1,25 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++#include <linux/export.h>
++#include <linux/mm.h>
++#include <linux/string.h>
++#include <asm/pgalloc.h>
++
++pgd_t *pgd_alloc(struct mm_struct *mm)
++{
++	pgd_t *ret, *init;
++
++	ret = (pgd_t *) __get_free_pages(GFP_KERNEL, PGD_ORDER);
++	if (ret) {
++		init = pgd_offset(&init_mm, 0UL);
++		pgd_init((unsigned long)ret);
++		memcpy(ret + USER_PTRS_PER_PGD, init + USER_PTRS_PER_PGD,
++		       (PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(pgd_alloc);
+-- 
+git-series 0.8.10

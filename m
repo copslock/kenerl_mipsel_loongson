@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:13:37 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:44884 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:14:02 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:63927 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993927AbdBBMFLisprv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:11 +0100
+        with ESMTP id S23993930AbdBBMFNwd6Ov (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:13 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 9CC979FF6647E;
-        Thu,  2 Feb 2017 12:04:59 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 2206189E17E55;
+        Thu,  2 Feb 2017 12:05:02 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Feb 2017 12:05:02 +0000
+ 14.3.294.0; Thu, 2 Feb 2017 12:05:04 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v2 13/30] KVM: MIPS: Wire up vcpu uninit
-Date:   Thu, 2 Feb 2017 12:04:26 +0000
-Message-ID: <696660627a590a654d897934f98455a325948b28.1486036366.git-series.james.hogan@imgtec.com>
+Subject: [PATCH v2 16/30] KVM: MIPS: Support NetLogic KScratch registers
+Date:   Thu, 2 Feb 2017 12:04:29 +0000
+Message-ID: <5fe937752ad0ab244fc4dc6f4f1da8b23b654760.1486036366.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56608
+X-archive-position: 56609
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,8 +46,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Wire up a vcpu uninit implementation callback. This will be used for the
-clean up of GVA->HPA page tables.
+tlbex.c uses the implementation dependent $22 CP0 register group on
+NetLogic cores, with the help of the c0_kscratch() helper. Allow these
+registers to be allocated by the KVM entry code too instead of assuming
+KScratch registers are all $31, which will also allow pgd_reg to be
+handled since it is allocated that way.
+
+We also drop the masking of kscratch_mask with 0xfc, as it is redundant
+for the standard KScratch registers (Config4.KScrExist won't have the
+low 2 bits set anyway), and apparently not necessary for NetLogic.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -56,69 +63,74 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h | 2 +-
- arch/mips/kvm/mips.c             | 5 +++++
- arch/mips/kvm/trap_emul.c        | 5 +++++
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ arch/mips/kvm/entry.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 95320b7964a6..fea538fc5331 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -519,6 +519,7 @@ struct kvm_mips_callbacks {
- 	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
- 	int (*vm_init)(struct kvm *kvm);
- 	int (*vcpu_init)(struct kvm_vcpu *vcpu);
-+	void (*vcpu_uninit)(struct kvm_vcpu *vcpu);
- 	int (*vcpu_setup)(struct kvm_vcpu *vcpu);
- 	gpa_t (*gva_to_gpa)(gva_t gva);
- 	void (*queue_timer_int)(struct kvm_vcpu *vcpu);
-@@ -765,7 +766,6 @@ static inline void kvm_arch_memslots_updated(struct kvm *kvm, struct kvm_memslot
- static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
- static inline void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
- 		struct kvm_memory_slot *slot) {}
--static inline void kvm_arch_vcpu_uninit(struct kvm_vcpu *vcpu) {}
- static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
- static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
- static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 982fe31a952e..c3f2207a37a0 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1350,6 +1350,11 @@ int kvm_arch_vcpu_init(struct kvm_vcpu *vcpu)
- 	return 0;
- }
+diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
+index f683d123172c..7424d3d566ff 100644
+--- a/arch/mips/kvm/entry.c
++++ b/arch/mips/kvm/entry.c
+@@ -91,6 +91,21 @@ static void *kvm_mips_build_ret_from_exit(void *addr);
+ static void *kvm_mips_build_ret_to_guest(void *addr);
+ static void *kvm_mips_build_ret_to_host(void *addr);
  
-+void kvm_arch_vcpu_uninit(struct kvm_vcpu *vcpu)
++/*
++ * The version of this function in tlbex.c uses current_cpu_type(), but for KVM
++ * we assume symmetry.
++ */
++static int c0_kscratch(void)
 +{
-+	kvm_mips_callbacks->vcpu_uninit(vcpu);
++	switch (boot_cpu_type()) {
++	case CPU_XLP:
++	case CPU_XLR:
++		return 22;
++	default:
++		return 31;
++	}
 +}
 +
- int kvm_arch_vcpu_ioctl_translate(struct kvm_vcpu *vcpu,
- 				  struct kvm_translation *tr)
- {
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index 9cfe4d2a283c..07540cf2b557 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -440,6 +440,10 @@ static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
- 	return 0;
- }
+ /**
+  * kvm_mips_entry_setup() - Perform global setup for entry code.
+  *
+@@ -105,18 +120,18 @@ int kvm_mips_entry_setup(void)
+ 	 * We prefer to use KScratchN registers if they are available over the
+ 	 * defaults above, which may not work on all cores.
+ 	 */
+-	unsigned int kscratch_mask = cpu_data[0].kscratch_mask & 0xfc;
++	unsigned int kscratch_mask = cpu_data[0].kscratch_mask;
  
-+static void kvm_trap_emul_vcpu_uninit(struct kvm_vcpu *vcpu)
-+{
-+}
-+
- static int kvm_trap_emul_vcpu_setup(struct kvm_vcpu *vcpu)
- {
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
-@@ -779,6 +783,7 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
+ 	/* Pick a scratch register for storing VCPU */
+ 	if (kscratch_mask) {
+-		scratch_vcpu[0] = 31;
++		scratch_vcpu[0] = c0_kscratch();
+ 		scratch_vcpu[1] = ffs(kscratch_mask) - 1;
+ 		kscratch_mask &= ~BIT(scratch_vcpu[1]);
+ 	}
  
- 	.vm_init = kvm_trap_emul_vm_init,
- 	.vcpu_init = kvm_trap_emul_vcpu_init,
-+	.vcpu_uninit = kvm_trap_emul_vcpu_uninit,
- 	.vcpu_setup = kvm_trap_emul_vcpu_setup,
- 	.gva_to_gpa = kvm_trap_emul_gva_to_gpa_cb,
- 	.queue_timer_int = kvm_mips_queue_timer_int_cb,
+ 	/* Pick a scratch register to use as a temp for saving state */
+ 	if (kscratch_mask) {
+-		scratch_tmp[0] = 31;
++		scratch_tmp[0] = c0_kscratch();
+ 		scratch_tmp[1] = ffs(kscratch_mask) - 1;
+ 		kscratch_mask &= ~BIT(scratch_tmp[1]);
+ 	}
+@@ -132,7 +147,7 @@ static void kvm_mips_build_save_scratch(u32 **p, unsigned int tmp,
+ 	UASM_i_SW(p, tmp, offsetof(struct pt_regs, cp0_epc), frame);
+ 
+ 	/* Save the temp scratch register value in cp0_cause of stack frame */
+-	if (scratch_tmp[0] == 31) {
++	if (scratch_tmp[0] == c0_kscratch()) {
+ 		UASM_i_MFC0(p, tmp, scratch_tmp[0], scratch_tmp[1]);
+ 		UASM_i_SW(p, tmp, offsetof(struct pt_regs, cp0_cause), frame);
+ 	}
+@@ -148,7 +163,7 @@ static void kvm_mips_build_restore_scratch(u32 **p, unsigned int tmp,
+ 	UASM_i_LW(p, tmp, offsetof(struct pt_regs, cp0_epc), frame);
+ 	UASM_i_MTC0(p, tmp, scratch_vcpu[0], scratch_vcpu[1]);
+ 
+-	if (scratch_tmp[0] == 31) {
++	if (scratch_tmp[0] == c0_kscratch()) {
+ 		UASM_i_LW(p, tmp, offsetof(struct pt_regs, cp0_cause), frame);
+ 		UASM_i_MTC0(p, tmp, scratch_tmp[0], scratch_tmp[1]);
+ 	}
 -- 
 git-series 0.8.10

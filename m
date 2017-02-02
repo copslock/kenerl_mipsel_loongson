@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 02:06:22 +0100 (CET)
-Received: from smtp-out-so.shaw.ca ([64.59.136.137]:52364 "EHLO
-        smtp-out-so.shaw.ca" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993883AbdBBBGPjYPsl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 02:06:15 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 02:06:43 +0100 (CET)
+Received: from smtp-out-no.shaw.ca ([64.59.134.9]:36897 "EHLO
+        smtp-out-no.shaw.ca" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993900AbdBBBG10npvl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 02:06:27 +0100
 Received: from triton.mmayer.net ([70.71.160.251])
         by shaw.ca with SMTP
-        id Z5qfcu5GRsa1kZ5qhcJ3vM; Wed, 01 Feb 2017 18:06:08 -0700
-X-Authority-Analysis: v=2.2 cv=W+NIbVek c=1 sm=1 tr=0
+        id Z5qscVsuNVQuxZ5qtc0uy0; Wed, 01 Feb 2017 18:06:21 -0700
+X-Authority-Analysis: v=2.2 cv=BNTDlBYG c=1 sm=1 tr=0
  a=6xzog4CasRozao6qlzTIAw==:117 a=6xzog4CasRozao6qlzTIAw==:17
- a=n2v9WMKugxEA:10 a=Q-fNiiVtAAAA:8 a=rvSBo0zzLkEVHouOQ7EA:9
+ a=n2v9WMKugxEA:10 a=Q-fNiiVtAAAA:8 a=yG1wFZ-RLMJnsVyPFoEA:9
  a=Fp8MccfUoT0GBdDC_Lng:22
 Received: by triton.mmayer.net (Postfix, from userid 501)
-        id CC3ED337850D; Wed,  1 Feb 2017 17:06:05 -0800 (PST)
+        id 2950F337850F; Wed,  1 Feb 2017 17:06:18 -0800 (PST)
 From:   Markus Mayer <code@mmayer.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Viresh Kumar <viresh.kumar@linaro.org>,
@@ -20,19 +20,21 @@ Cc:     Markus Mayer <mmayer@broadcom.com>,
         MIPS Linux Kernel List <linux-mips@linux-mips.org>,
         Power Management List <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: [PATCH 0/3] cpufreq: bmips-cpufreq: CPUfreq driver for Broadcom's BMIPS SoCs
-Date:   Wed,  1 Feb 2017 17:05:58 -0800
-Message-Id: <20170202010601.75995-1-code@mmayer.net>
+Subject: [PATCH 1/3] BMIPS: Enable prerequisites for CPUfreq in MIPS Kconfig.
+Date:   Wed,  1 Feb 2017 17:05:59 -0800
+Message-Id: <20170202010601.75995-2-code@mmayer.net>
 X-Mailer: git-send-email 2.10.2
-X-CMAE-Envelope: MS4wfH5yQ3LjYcc+LBVjCgtMrpW14T+cXpwEC5WnpMmcksL1yK/xSa6L6zJtx+a+DK8Yfwig002KOW70zvbBAMcjo3uvcAKaYdfPf7rnoJl2habbTpwmcEHe
- 8Ab7/O2tNcZeznPBVsexOokyZSHttJDx6i3ln149WGmc0FubxpzxfJc/e1Mdb4E+/nPA/CDrGGdjyK2YbfQ8lS0MVI/xlmefqegWJI1vnjbZkuaxnxZhB7B2
- /K3BJGJroBXT12T9adEPTYH2Gj+kvLDbxPiERAU6oCDnxD1y/jX0AeFPA9lBRoLl0FjJxazpBCQdhtwiuxzIKypOXaPkL5QATuYdF+1YKegP644lPaCHyYQ+
- R9s04MuN/mzewLexGI8Pm24t0cL+Gw==
+In-Reply-To: <20170202010601.75995-1-code@mmayer.net>
+References: <20170202010601.75995-1-code@mmayer.net>
+X-CMAE-Envelope: MS4wfBm3V/xllhwPYFeCbbdnQoyTHaMgZmpL47ZhRGCNqJeNZZKb3L+Ta2Ek/2zFrPrXGKQq55pxDBS+cVeVWvzYOjuQtTDU64L3uaK/xnJ2KGO3ZQHzECob
+ 57v1zqozKmOguaMYS4Yg0do0nWKlKgzbPExLFdohr/nO9CdTmOX5b9ikHLjCIJs5503bPKLdgXZWhwpcI0G2n43slgiQO1TUK1iP5KUypAtnDcPLoiOX1+Yt
+ NdZIftUH5YKDW9VAYop4qkYxH5pKtXkB+tZC3i7syj2Kjc78Fh2qSSYLH9D91nnOo8Zta1C6UsPAFwHRb0n7p5gYRMkek7fW5h2aiTa3GkVp7hfWR7BEbD/7
+ CA/cZsWK6Drxg/2XbpTbIw9S6zN8Hg==
 Return-Path: <mmayer@mmayer.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56581
+X-archive-position: 56582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,23 +53,25 @@ X-list: linux-mips
 
 From: Markus Mayer <mmayer@broadcom.com>
 
-This series adds a CPUfreq driver for the BMIPS SoCs. In the first
-iteration only BMIPS5xxx SoCs are supported.
+Turn on CPU_SUPPORTS_CPUFREQ and MIPS_EXTERNAL_TIMER for BMIPS.
 
-This series is based on 4.10-rc1.
+Signed-off-by: Markus Mayer <mmayer@broadcom.com>
+---
+ arch/mips/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Markus Mayer (3):
-  BMIPS: Enable prerequisites for CPUfreq in MIPS Kconfig.
-  cpufreq: bmips-cpufreq: CPUfreq driver for Broadcom's BMIPS SoCs
-  MIPS: BMIPS: enable CPUfreq
-
- arch/mips/Kconfig                     |   2 +
- arch/mips/configs/bmips_stb_defconfig |  10 ++
- drivers/cpufreq/Kconfig               |  10 ++
- drivers/cpufreq/Makefile              |   1 +
- drivers/cpufreq/bmips-cpufreq.c       | 205 ++++++++++++++++++++++++++++++++++
- 5 files changed, 228 insertions(+)
- create mode 100644 drivers/cpufreq/bmips-cpufreq.c
-
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b3c5bde..e137eed 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1703,6 +1703,8 @@ config CPU_BMIPS
+ 	select WEAK_ORDERING
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_HAS_PREFETCH
++	select CPU_SUPPORTS_CPUFREQ
++	select MIPS_EXTERNAL_TIMER
+ 	help
+ 	  Support for BMIPS32/3300/4350/4380 and BMIPS5000 processors.
+ 
 -- 
 2.7.4

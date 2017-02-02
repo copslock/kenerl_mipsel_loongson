@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:10:37 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7924 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:11:08 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:38546 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993912AbdBBMFHku0dv (ORCPT
+        with ESMTP id S23993911AbdBBMFHkqiYv (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:07 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 45090B596C029;
-        Thu,  2 Feb 2017 12:04:58 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 6F05652167473;
+        Thu,  2 Feb 2017 12:04:57 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Feb 2017 12:05:01 +0000
+ 14.3.294.0; Thu, 2 Feb 2017 12:05:00 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v2 11/30] KVM: MIPS/T&E: Restore host asid on return to host
-Date:   Thu, 2 Feb 2017 12:04:24 +0000
-Message-ID: <081bc7401b80f423d78d8113e974c13ffa5582ab.1486036366.git-series.james.hogan@imgtec.com>
+Subject: [PATCH v2 10/30] KVM: MIPS: Add vcpu_run() & vcpu_reenter() callbacks
+Date:   Thu, 2 Feb 2017 12:04:23 +0000
+Message-ID: <ea1a1aad333fab307775c922a01815f212fb35c6.1486036366.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56601
+X-archive-position: 56602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,16 +46,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We only need the guest ASID loaded while in guest context, i.e. while
-running guest code and while handling guest exits. We load the guest
-ASID when entering the guest, however we restore the host ASID later
-than necessary, when the VCPU state is saved i.e. vcpu_put() or slightly
-earlier if preempted after returning to the host.
+Add implementation callbacks for entering the guest (vcpu_run()) and
+reentering the guest (vcpu_reenter()), allowing implementation specific
+operations to be performed before entering the guest or after returning
+to the host without cluttering kvm_arch_vcpu_ioctl_run().
 
-This mismatch is both unpleasant and causes redundant host ASID restores
-in kvm_trap_emul_vcpu_put(). Lets explicitly restore the host ASID when
-returning to the host, and don't bother restoring the host ASID on
-context switch in unless we're already in guest context.
+This allows the T&E specific lazy user GVA flush to be moved into
+trap_emul.c, along with disabling of the HTW. We also move
+kvm_mips_deliver_interrupts() as VZ will need to restore the guest timer
+state prior to delivering interrupts.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -64,61 +63,162 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/trap_emul.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ arch/mips/include/asm/kvm_host.h |  2 +-
+ arch/mips/kvm/mips.c             | 43 +-----------------------------
+ arch/mips/kvm/trap_emul.c        | 48 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 52 insertions(+), 41 deletions(-)
 
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 923f81dc6115..9f319375835a 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -539,6 +539,8 @@ struct kvm_mips_callbacks {
+ 			   const struct kvm_one_reg *reg, s64 v);
+ 	int (*vcpu_load)(struct kvm_vcpu *vcpu, int cpu);
+ 	int (*vcpu_put)(struct kvm_vcpu *vcpu, int cpu);
++	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
++	void (*vcpu_reenter)(struct kvm_run *run, struct kvm_vcpu *vcpu);
+ };
+ extern struct kvm_mips_callbacks *kvm_mips_callbacks;
+ int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks);
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index 155e1b36e87e..982fe31a952e 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -410,32 +410,6 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
+ 	return -ENOIOCTLCMD;
+ }
+ 
+-/* Must be called with preemption disabled, just before entering guest */
+-static void kvm_mips_check_asids(struct kvm_vcpu *vcpu)
+-{
+-	struct mm_struct *user_mm = &vcpu->arch.guest_user_mm;
+-	struct mips_coproc *cop0 = vcpu->arch.cop0;
+-	int i, cpu = smp_processor_id();
+-	unsigned int gasid;
+-
+-	/*
+-	 * Lazy host ASID regeneration for guest user mode.
+-	 * If the guest ASID has changed since the last guest usermode
+-	 * execution, regenerate the host ASID so as to invalidate stale TLB
+-	 * entries.
+-	 */
+-	if (!KVM_GUEST_KERNEL_MODE(vcpu)) {
+-		gasid = kvm_read_c0_guest_entryhi(cop0) & KVM_ENTRYHI_ASID;
+-		if (gasid != vcpu->arch.last_user_gasid) {
+-			kvm_get_new_mmu_context(user_mm, cpu, vcpu);
+-			for_each_possible_cpu(i)
+-				if (i != cpu)
+-					cpu_context(i, user_mm) = 0;
+-			vcpu->arch.last_user_gasid = gasid;
+-		}
+-	}
+-}
+-
+ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ {
+ 	int r = 0;
+@@ -453,25 +427,12 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 	lose_fpu(1);
+ 
+ 	local_irq_disable();
+-	/* Check if we have any exceptions/interrupts pending */
+-	kvm_mips_deliver_interrupts(vcpu,
+-				    kvm_read_c0_guest_cause(vcpu->arch.cop0));
+-
+ 	guest_enter_irqoff();
+-
+-	/* Disable hardware page table walking while in guest */
+-	htw_stop();
+-
+ 	trace_kvm_enter(vcpu);
+ 
+-	kvm_mips_check_asids(vcpu);
++	r = kvm_mips_callbacks->vcpu_run(run, vcpu);
+ 
+-	r = vcpu->arch.vcpu_run(run, vcpu);
+ 	trace_kvm_out(vcpu);
+-
+-	/* Re-enable HTW before enabling interrupts */
+-	htw_start();
+-
+ 	guest_exit_irqoff();
+ 	local_irq_enable();
+ 
+@@ -1575,7 +1536,7 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 	if (ret == RESUME_GUEST) {
+ 		trace_kvm_reenter(vcpu);
+ 
+-		kvm_mips_check_asids(vcpu);
++		kvm_mips_callbacks->vcpu_reenter(run, vcpu);
+ 
+ 		/*
+ 		 * If FPU / MSA are enabled (i.e. the guest's FPU / MSA context
 diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index 92734d095c94..3e1dbcbcea85 100644
+index c7854d32fd64..92734d095c94 100644
 --- a/arch/mips/kvm/trap_emul.c
 +++ b/arch/mips/kvm/trap_emul.c
-@@ -680,14 +680,17 @@ static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
- {
- 	kvm_lose_fpu(vcpu);
- 
--	if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
--	     asid_version_mask(cpu))) {
--		kvm_debug("%s: Dropping MMU Context:  %#lx\n", __func__,
--			  cpu_context(cpu, current->mm));
--		drop_mmu_context(current->mm, cpu);
-+	if (current->flags & PF_VCPU) {
-+		/* Restore normal Linux process memory map */
-+		if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
-+		     asid_version_mask(cpu))) {
-+			kvm_debug("%s: Dropping MMU Context:  %#lx\n", __func__,
-+				  cpu_context(cpu, current->mm));
-+			get_new_mmu_context(current->mm, cpu);
-+		}
-+		write_c0_entryhi(cpu_asid(cpu, current->mm));
-+		ehb();
- 	}
--	write_c0_entryhi(cpu_asid(cpu, current->mm));
--	ehb();
- 
+@@ -692,6 +692,52 @@ static int kvm_trap_emul_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
  	return 0;
  }
-@@ -720,6 +723,7 @@ static void kvm_trap_emul_vcpu_reenter(struct kvm_run *run,
  
- static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
- {
-+	int cpu;
- 	int r;
- 
- 	/* Check if we have any exceptions/interrupts pending */
-@@ -733,6 +737,15 @@ static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 
- 	r = vcpu->arch.vcpu_run(run, vcpu);
- 
-+	/* We may have migrated while handling guest exits */
-+	cpu = smp_processor_id();
++static void kvm_trap_emul_vcpu_reenter(struct kvm_run *run,
++				       struct kvm_vcpu *vcpu)
++{
++	struct mm_struct *user_mm = &vcpu->arch.guest_user_mm;
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	int i, cpu = smp_processor_id();
++	unsigned int gasid;
 +
-+	/* Restore normal Linux process memory map */
-+	if (((cpu_context(cpu, current->mm) ^ asid_cache(cpu)) &
-+	     asid_version_mask(cpu)))
-+		get_new_mmu_context(current->mm, cpu);
-+	write_c0_entryhi(cpu_asid(cpu, current->mm));
++	/*
++	 * Lazy host ASID regeneration for guest user mode.
++	 * If the guest ASID has changed since the last guest usermode
++	 * execution, regenerate the host ASID so as to invalidate stale TLB
++	 * entries.
++	 */
++	if (!KVM_GUEST_KERNEL_MODE(vcpu)) {
++		gasid = kvm_read_c0_guest_entryhi(cop0) & KVM_ENTRYHI_ASID;
++		if (gasid != vcpu->arch.last_user_gasid) {
++			kvm_get_new_mmu_context(user_mm, cpu, vcpu);
++			for_each_possible_cpu(i)
++				if (i != cpu)
++					cpu_context(i, user_mm) = 0;
++			vcpu->arch.last_user_gasid = gasid;
++		}
++	}
++}
 +
- 	htw_start();
++static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
++{
++	int r;
++
++	/* Check if we have any exceptions/interrupts pending */
++	kvm_mips_deliver_interrupts(vcpu,
++				    kvm_read_c0_guest_cause(vcpu->arch.cop0));
++
++	kvm_trap_emul_vcpu_reenter(run, vcpu);
++
++	/* Disable hardware page table walking while in guest */
++	htw_stop();
++
++	r = vcpu->arch.vcpu_run(run, vcpu);
++
++	htw_start();
++
++	return r;
++}
++
+ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
+ 	/* exit handlers */
+ 	.handle_cop_unusable = kvm_trap_emul_handle_cop_unusable,
+@@ -724,6 +770,8 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
+ 	.set_one_reg = kvm_trap_emul_set_one_reg,
+ 	.vcpu_load = kvm_trap_emul_vcpu_load,
+ 	.vcpu_put = kvm_trap_emul_vcpu_put,
++	.vcpu_run = kvm_trap_emul_vcpu_run,
++	.vcpu_reenter = kvm_trap_emul_vcpu_reenter,
+ };
  
- 	return r;
+ int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks)
 -- 
 git-series 0.8.10

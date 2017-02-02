@@ -1,44 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 02:07:46 +0100 (CET)
-Received: from smtp-out-so.shaw.ca ([64.59.136.137]:52364 "EHLO
-        smtp-out-so.shaw.ca" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993903AbdBBBGo5b6cl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 02:06:44 +0100
-Received: from triton.mmayer.net ([70.71.160.251])
-        by shaw.ca with SMTP
-        id Z5rGcu5aQsa1kZ5rHcJ48D; Wed, 01 Feb 2017 18:06:44 -0700
-X-Authority-Analysis: v=2.2 cv=W+NIbVek c=1 sm=1 tr=0
- a=6xzog4CasRozao6qlzTIAw==:117 a=6xzog4CasRozao6qlzTIAw==:17
- a=n2v9WMKugxEA:10 a=Q-fNiiVtAAAA:8 a=11j9IE0nUPRNsVqZ2AoA:9
- a=Fp8MccfUoT0GBdDC_Lng:22
-Received: by triton.mmayer.net (Postfix, from userid 501)
-        id ABF1C3378516; Wed,  1 Feb 2017 17:06:42 -0800 (PST)
-From:   Markus Mayer <code@mmayer.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 09:56:51 +0100 (CET)
+Received: from resqmta-ch2-01v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:33]:32774
+        "EHLO resqmta-ch2-01v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992942AbdBBI4nElUDB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 09:56:43 +0100
+Received: from resomta-ch2-07v.sys.comcast.net ([69.252.207.103])
+        by resqmta-ch2-01v.sys.comcast.net with SMTP
+        id ZDC5cSTI7dAFEZDC5c1w96; Thu, 02 Feb 2017 08:56:41 +0000
+Received: from [192.168.1.13] ([73.201.78.97])
+        by resomta-ch2-07v.sys.comcast.net with SMTP
+        id ZDC3cxZlwwPVHZDC4cKY1w; Thu, 02 Feb 2017 08:56:41 +0000
 To:     Ralf Baechle <ralf@linux-mips.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Cc:     Markus Mayer <mmayer@broadcom.com>,
-        MIPS Linux Kernel List <linux-mips@linux-mips.org>,
-        Power Management List <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: [PATCH 3/3] MIPS: BMIPS: enable CPUfreq
-Date:   Wed,  1 Feb 2017 17:06:01 -0800
-Message-Id: <20170202010601.75995-4-code@mmayer.net>
-X-Mailer: git-send-email 2.10.2
-In-Reply-To: <20170202010601.75995-1-code@mmayer.net>
-References: <20170202010601.75995-1-code@mmayer.net>
-X-CMAE-Envelope: MS4wfPNei28lr/vlhlgBUAytNpxMCU7DvrrZSQhB3XrgGYRW0odzXrCoLBYNWMmZ+GKHM1uIhSkvbhm+E8vz1YhbKIJ0MwGt9Y0MpORcYJwc0tLco9sSZSAq
- +bU5RYFBd/3RMuETw22GNloutHF8W4ihh8669q2oYsKi6iOcZnNXAN+wc9jGQmPCEx3r4Np3kKy/+1cIceA0ngJrXYQmSq7Sku8cp9HdTxzdDqTCqWGBUvGU
- ZZPwYNjF5CW64dZc9DGCopkS3QnWbARNinxP7Ju4IyHzXXxQ6svzIc+jBetOKVNXdGj3cLpz3noKpaKiNZrAaaIrujvMwFzX94iO7SR8Op5E/6kZZgymsJuq
- s4MH9z1Y626xFOGf22cRYqDw+F13fA==
-Return-Path: <mmayer@mmayer.net>
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Linux/MIPS <linux-mips@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Subject: [PATCH] MIPS: Replace printk calls in cpu-bugs64.c with
+ pr_info/pr_cont
+Message-ID: <29b7fc69-97f4-6a3a-0e65-2678f9c30cef@gentoo.org>
+Date:   Thu, 2 Feb 2017 03:56:26 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.5.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfEav9dPs/6rIFevsKgOAr/H8KGc9ew5mxBngYSTQ/VzmLy+JhsfXh0WS7BptgM0kOaAqEzYJ6uxuc79VKQFyZW2RYgnJ9JCtYeKdb+/RxV1nwAXMR9ze
+ xNxPCJsTAWUfW11BZRO0/FXeKqhoMq0vRogiFnmgFqWBtUpKKJotdYS7eXhB6cXLstX/fGKteUUL66QTzpo5RsQLKolvVE+gO25nIaX2bDSvH1i0wXQ4xIuR
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56584
+X-archive-position: 56585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: code@mmayer.net
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,35 +45,137 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markus Mayer <mmayer@broadcom.com>
+From: Joshua Kinard <kumba@gentoo.org>
 
-Enable all applicable CPUfreq options.
+In arch/mips/kernel/cpu-bugs64.c, replace initial printk's in three
+bug-checking functions with pr_info and replace several continuation
+printk's with pr_info/pr_cont calls to avoid kernel log output like
+this:
 
-Signed-off-by: Markus Mayer <mmayer@broadcom.com>
+    [    0.899065] Checking for the daddi bug...
+    [    0.899098] no.
+
+This makes the output appear correctly:
+
+    [    0.898643] Checking for the daddi bug... no.
+
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
 ---
- arch/mips/configs/bmips_stb_defconfig | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/kernel/cpu-bugs64.c |   30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/configs/bmips_stb_defconfig b/arch/mips/configs/bmips_stb_defconfig
-index 4eb5d6e..6fda604 100644
---- a/arch/mips/configs/bmips_stb_defconfig
-+++ b/arch/mips/configs/bmips_stb_defconfig
-@@ -26,6 +26,16 @@ CONFIG_INET=y
- # CONFIG_INET_XFRM_MODE_BEET is not set
- # CONFIG_INET_LRO is not set
- # CONFIG_INET_DIAG is not set
-+CONFIG_CPU_FREQ=y
-+CONFIG_CPU_FREQ_STAT=y
-+CONFIG_CPU_FREQ_STAT_DETAILS=y
-+CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y
-+CONFIG_CPU_FREQ_GOV_PERFORMANCE=y
-+CONFIG_CPU_FREQ_GOV_ONDEMAND=y
-+CONFIG_CPU_FREQ_GOV_POWERSAVE=y
-+CONFIG_CPU_FREQ_GOV_USERSPACE=y
-+CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
-+CONFIG_BMIPS_CPUFREQ=y
- CONFIG_CFG80211=y
- CONFIG_NL80211_TESTMODE=y
- CONFIG_MAC80211=y
--- 
-2.7.4
+diff --git a/arch/mips/kernel/cpu-bugs64.c b/arch/mips/kernel/cpu-bugs64.c
+index a378e44688f5..d4483551a926 100644
+--- a/arch/mips/kernel/cpu-bugs64.c
++++ b/arch/mips/kernel/cpu-bugs64.c
+@@ -122,7 +122,7 @@ static inline void check_mult_sh(void)
+ 	long v1[8], v2[8], w[8];
+ 	int bug, fix, i;
+ 
+-	printk("Checking for the multiply/shift bug... ");
++	pr_info("Checking for the multiply/shift bug... ");
+ 
+ 	/*
+ 	 * Testing discovered false negatives for certain code offsets
+@@ -148,11 +148,11 @@ static inline void check_mult_sh(void)
+ 			bug = 1;
+ 
+ 	if (bug == 0) {
+-		printk("no.\n");
++		pr_cont("no.\n");
+ 		return;
+ 	}
+ 
+-	printk("yes, workaround... ");
++	pr_cont("yes, workaround... ");
+ 
+ 	fix = 1;
+ 	for (i = 0; i < 8; i++)
+@@ -160,11 +160,11 @@ static inline void check_mult_sh(void)
+ 			fix = 0;
+ 
+ 	if (fix == 1) {
+-		printk("yes.\n");
++		pr_cont("yes.\n");
+ 		return;
+ 	}
+ 
+-	printk("no.\n");
++	pr_cont("no.\n");
+ 	panic(bug64hit, !R4000_WAR ? r4kwar : nowar);
+ }
+ 
+@@ -187,7 +187,7 @@ static inline void check_daddi(void)
+ 	void *handler;
+ 	long v, tmp;
+ 
+-	printk("Checking for the daddi bug... ");
++	pr_info("Checking for the daddi bug... ");
+ 
+ 	local_irq_save(flags);
+ 	handler = set_except_vector(EXCCODE_OV, handle_daddi_ov);
+@@ -218,11 +218,11 @@ static inline void check_daddi(void)
+ 	local_irq_restore(flags);
+ 
+ 	if (daddi_ov) {
+-		printk("no.\n");
++		pr_cont("no.\n");
+ 		return;
+ 	}
+ 
+-	printk("yes, workaround... ");
++	pr_cont("yes, workaround... ");
+ 
+ 	local_irq_save(flags);
+ 	handler = set_except_vector(EXCCODE_OV, handle_daddi_ov);
+@@ -236,11 +236,11 @@ static inline void check_daddi(void)
+ 	local_irq_restore(flags);
+ 
+ 	if (daddi_ov) {
+-		printk("yes.\n");
++		pr_cont("yes.\n");
+ 		return;
+ 	}
+ 
+-	printk("no.\n");
++	pr_cont("no.\n");
+ 	panic(bug64hit, !DADDI_WAR ? daddiwar : nowar);
+ }
+ 
+@@ -250,7 +250,7 @@ static inline void check_daddiu(void)
+ {
+ 	long v, w, tmp;
+ 
+-	printk("Checking for the daddiu bug... ");
++	pr_info("Checking for the daddiu bug... ");
+ 
+ 	/*
+ 	 * The following code leads to a wrong result of daddiu when
+@@ -288,11 +288,11 @@ static inline void check_daddiu(void)
+ 	daddiu_bug = v != w;
+ 
+ 	if (!daddiu_bug) {
+-		printk("no.\n");
++		pr_cont("no.\n");
+ 		return;
+ 	}
+ 
+-	printk("yes, workaround... ");
++	pr_cont("yes, workaround... ");
+ 
+ 	asm volatile(
+ 		"addiu	%2, $0, %3\n\t"
+@@ -304,11 +304,11 @@ static inline void check_daddiu(void)
+ 		: "I" (0xffffffffffffdb9aUL), "I" (0x1234));
+ 
+ 	if (v == w) {
+-		printk("yes.\n");
++		pr_cont("yes.\n");
+ 		return;
+ 	}
+ 
+-	printk("no.\n");
++	pr_cont("no.\n");
+ 	panic(bug64hit, !DADDI_WAR ? daddiwar : nowar);
+ }
+ 

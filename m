@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:17:33 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:1215 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:17:55 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30681 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993944AbdBBMFSqoE2v (ORCPT
+        with ESMTP id S23993946AbdBBMFS44Ybv (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:18 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 55AEA344E3014;
-        Thu,  2 Feb 2017 12:05:14 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 4CCBC80C42B84;
+        Thu,  2 Feb 2017 12:05:08 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Feb 2017 12:05:17 +0000
+ 14.3.294.0; Thu, 2 Feb 2017 12:05:11 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v2 30/30] KVM: MIPS/MMU: Drop kvm_get_new_mmu_context()
-Date:   Thu, 2 Feb 2017 12:04:43 +0000
-Message-ID: <09a2f35ab6e2bd807d2541ff3c3aaae1c9527e8f.1486036366.git-series.james.hogan@imgtec.com>
+Subject: [PATCH v2 22/30] KVM: MIPS/MMU: Convert KSeg0 faults to page tables
+Date:   Thu, 2 Feb 2017 12:04:35 +0000
+Message-ID: <a9411989d9230885f1e0a4f21f73c7e7d9036972.1486036366.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56618
+X-archive-position: 56619
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,15 +46,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-MIPS KVM uses its own variation of get_new_mmu_context() which takes an
-extra vcpu pointer (unused) and does exactly the same thing.
-
-Switch to just using get_new_mmu_context() directly and drop KVM's
-version of it as it doesn't really serve any purpose.
-
-The nearby declarations of kvm_mips_alloc_new_mmu_context(),
-kvm_mips_vcpu_load() and kvm_mips_vcpu_put() are also removed from
-kvm_host.h, as no definitions or users exist.
+Now that we have GVA page tables and an optimised TLB refill handler in
+place, convert the handling of KSeg0 page faults from the guest to fill
+the GVA page tables and invalidate the TLB entry, rather than filling a
+TLB entry directly.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -63,102 +58,129 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h |  5 -----
- arch/mips/kvm/emulate.c          |  3 +--
- arch/mips/kvm/mmu.c              | 19 -------------------
- arch/mips/kvm/trap_emul.c        |  6 +++---
- 4 files changed, 4 insertions(+), 29 deletions(-)
+ arch/mips/kvm/mmu.c | 79 +++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 64 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 174857f146b1..1337abb18e2b 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -638,11 +638,6 @@ void kvm_mips_flush_gva_pt(pgd_t *pgd, enum kvm_mips_flush flags);
- void kvm_mmu_free_memory_caches(struct kvm_vcpu *vcpu);
- void kvm_trap_emul_invalidate_gva(struct kvm_vcpu *vcpu, unsigned long addr,
- 				  bool user);
--extern void kvm_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu,
--				    struct kvm_vcpu *vcpu);
--extern void kvm_mips_alloc_new_mmu_context(struct kvm_vcpu *vcpu);
--extern void kvm_mips_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
--extern void kvm_mips_vcpu_put(struct kvm_vcpu *vcpu);
- 
- /* Emulation */
- u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu);
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index cd11d787d9dc..67ea39973b96 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1198,8 +1198,7 @@ enum emulation_result kvm_mips_emulate_CP0(union mips_instruction inst,
- 					 */
- 					preempt_disable();
- 					cpu = smp_processor_id();
--					kvm_get_new_mmu_context(kern_mm,
--								cpu, vcpu);
-+					get_new_mmu_context(kern_mm, cpu);
- 					for_each_possible_cpu(i)
- 						if (i != cpu)
- 							cpu_context(i, kern_mm) = 0;
 diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
-index cf832ea963d8..aab604e75d3b 100644
+index dbf2b55ee874..afb47f21d8bc 100644
 --- a/arch/mips/kvm/mmu.c
 +++ b/arch/mips/kvm/mmu.c
-@@ -443,25 +443,6 @@ int kvm_mips_handle_commpage_tlb_fault(unsigned long badvaddr,
- 	return 0;
+@@ -14,6 +14,33 @@
+ #include <asm/mmu_context.h>
+ #include <asm/pgalloc.h>
+ 
++/*
++ * KVM_MMU_CACHE_MIN_PAGES is the number of GPA page table translation levels
++ * for which pages need to be cached.
++ */
++#if defined(__PAGETABLE_PMD_FOLDED)
++#define KVM_MMU_CACHE_MIN_PAGES 1
++#else
++#define KVM_MMU_CACHE_MIN_PAGES 2
++#endif
++
++static int mmu_topup_memory_cache(struct kvm_mmu_memory_cache *cache,
++				  int min, int max)
++{
++	void *page;
++
++	BUG_ON(max > KVM_NR_MEM_OBJS);
++	if (cache->nobjs >= min)
++		return 0;
++	while (cache->nobjs < max) {
++		page = (void *)__get_free_page(GFP_KERNEL);
++		if (!page)
++			return -ENOMEM;
++		cache->objects[cache->nobjs++] = page;
++	}
++	return 0;
++}
++
+ static void mmu_free_memory_cache(struct kvm_mmu_memory_cache *mc)
+ {
+ 	while (mc->nobjs)
+@@ -151,6 +178,27 @@ unsigned long kvm_mips_translate_guest_kseg0_to_hpa(struct kvm_vcpu *vcpu,
+ 	return (kvm->arch.guest_pmap[gfn] << PAGE_SHIFT) + offset;
  }
  
--void kvm_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu,
--			     struct kvm_vcpu *vcpu)
--{
--	unsigned long asid = asid_cache(cpu);
--
--	asid += cpu_asid_inc();
--	if (!(asid & cpu_asid_mask(&cpu_data[cpu]))) {
--		if (cpu_has_vtag_icache)
--			flush_icache_all();
--
--		local_flush_tlb_all();      /* start new asid cycle */
--
--		if (!asid)      /* fix version if needed */
--			asid = asid_first_version(cpu);
--	}
--
--	cpu_context(cpu, mm) = asid_cache(cpu) = asid;
--}
--
- /**
-  * kvm_mips_migrate_count() - Migrate timer.
-  * @vcpu:	Virtual CPU.
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index ee8b5ad8c7c5..653850c05b33 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -706,7 +706,7 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
++static pte_t *kvm_trap_emul_pte_for_gva(struct kvm_vcpu *vcpu,
++					unsigned long addr)
++{
++	struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
++	pgd_t *pgdp;
++	int ret;
++
++	/* We need a minimum of cached pages ready for page table creation */
++	ret = mmu_topup_memory_cache(memcache, KVM_MMU_CACHE_MIN_PAGES,
++				     KVM_NR_MEM_OBJS);
++	if (ret)
++		return NULL;
++
++	if (KVM_GUEST_KERNEL_MODE(vcpu))
++		pgdp = vcpu->arch.guest_kernel_mm.pgd;
++	else
++		pgdp = vcpu->arch.guest_user_mm.pgd;
++
++	return kvm_mips_walk_pgd(pgdp, memcache, addr);
++}
++
+ void kvm_trap_emul_invalidate_gva(struct kvm_vcpu *vcpu, unsigned long addr,
+ 				  bool user)
+ {
+@@ -316,10 +364,8 @@ int kvm_mips_handle_kseg0_tlb_fault(unsigned long badvaddr,
+ 	gfn_t gfn;
+ 	kvm_pfn_t pfn0, pfn1;
+ 	unsigned long vaddr = 0;
+-	unsigned long entryhi = 0, entrylo0 = 0, entrylo1 = 0;
+ 	struct kvm *kvm = vcpu->kvm;
+-	const int flush_dcache_mask = 0;
+-	int ret;
++	pte_t *ptep_gva;
  
- 	if ((cpu_context(cpu, kern_mm) ^ asid_cache(cpu)) &
- 						asid_version_mask(cpu)) {
--		kvm_get_new_mmu_context(kern_mm, cpu, vcpu);
-+		get_new_mmu_context(kern_mm, cpu);
+ 	if (KVM_GUEST_KSEGX(badvaddr) != KVM_GUEST_KSEG0) {
+ 		kvm_err("%s: Invalid BadVaddr: %#lx\n", __func__, badvaddr);
+@@ -327,6 +373,8 @@ int kvm_mips_handle_kseg0_tlb_fault(unsigned long badvaddr,
+ 		return -1;
+ 	}
  
- 		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
- 			  cpu_context(cpu, current->mm));
-@@ -716,7 +716,7 @@ static int kvm_trap_emul_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
++	/* Find host PFNs */
++
+ 	gfn = (KVM_GUEST_CPHYSADDR(badvaddr) >> PAGE_SHIFT);
+ 	if ((gfn | 1) >= kvm->arch.guest_pmap_npages) {
+ 		kvm_err("%s: Invalid gfn: %#llx, BadVaddr: %#lx\n", __func__,
+@@ -345,20 +393,21 @@ int kvm_mips_handle_kseg0_tlb_fault(unsigned long badvaddr,
+ 	pfn0 = kvm->arch.guest_pmap[gfn & ~0x1];
+ 	pfn1 = kvm->arch.guest_pmap[gfn | 0x1];
  
- 	if ((cpu_context(cpu, user_mm) ^ asid_cache(cpu)) &
- 						asid_version_mask(cpu)) {
--		kvm_get_new_mmu_context(user_mm, cpu, vcpu);
-+		get_new_mmu_context(user_mm, cpu);
+-	entrylo0 = mips3_paddr_to_tlbpfn(pfn0 << PAGE_SHIFT) |
+-		((_page_cachable_default >> _CACHE_SHIFT) << ENTRYLO_C_SHIFT) |
+-		ENTRYLO_D | ENTRYLO_V;
+-	entrylo1 = mips3_paddr_to_tlbpfn(pfn1 << PAGE_SHIFT) |
+-		((_page_cachable_default >> _CACHE_SHIFT) << ENTRYLO_C_SHIFT) |
+-		ENTRYLO_D | ENTRYLO_V;
++	/* Find GVA page table entry */
  
- 		kvm_debug("[%d]: cpu_context: %#lx\n", cpu,
- 			  cpu_context(cpu, current->mm));
-@@ -779,7 +779,7 @@ static void kvm_trap_emul_vcpu_reenter(struct kvm_run *run,
- 		gasid = kvm_read_c0_guest_entryhi(cop0) & KVM_ENTRYHI_ASID;
- 		if (gasid != vcpu->arch.last_user_gasid) {
- 			kvm_mips_flush_gva_pt(user_mm->pgd, KMF_USER);
--			kvm_get_new_mmu_context(user_mm, cpu, vcpu);
-+			get_new_mmu_context(user_mm, cpu);
- 			for_each_possible_cpu(i)
- 				if (i != cpu)
- 					cpu_context(i, user_mm) = 0;
+-	preempt_disable();
+-	entryhi = (vaddr | kvm_mips_get_kernel_asid(vcpu));
+-	ret = kvm_mips_host_tlb_write(vcpu, entryhi, entrylo0, entrylo1,
+-				      flush_dcache_mask);
+-	preempt_enable();
++	ptep_gva = kvm_trap_emul_pte_for_gva(vcpu, vaddr);
++	if (!ptep_gva) {
++		kvm_err("No ptep for gva %lx\n", vaddr);
++		return -1;
++	}
+ 
+-	return ret;
++	/* Write host PFNs into GVA page table */
++	ptep_gva[0] = pte_mkyoung(pte_mkdirty(pfn_pte(pfn0, PAGE_SHARED)));
++	ptep_gva[1] = pte_mkyoung(pte_mkdirty(pfn_pte(pfn1, PAGE_SHARED)));
++
++	/* Invalidate this entry in the TLB, guest kernel ASID only */
++	kvm_mips_host_tlb_inv(vcpu, vaddr, false, true);
++	return 0;
+ }
+ 
+ int kvm_mips_handle_mapped_seg_tlb_fault(struct kvm_vcpu *vcpu,
 -- 
 git-series 0.8.10

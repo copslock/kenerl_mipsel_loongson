@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:15:13 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:63927 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2017 13:15:37 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44884 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993934AbdBBMFOq7VAv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:14 +0100
+        with ESMTP id S23993935AbdBBMFP7YiZv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2017 13:05:15 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id AF82E86FA4EBB;
-        Thu,  2 Feb 2017 12:05:10 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 6841B3AEDF176;
+        Thu,  2 Feb 2017 12:05:11 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Feb 2017 12:05:13 +0000
+ 14.3.294.0; Thu, 2 Feb 2017 12:05:14 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>, <kvm@vger.kernel.org>
-Subject: [PATCH v2 25/30] KVM: MIPS: Drop vm_init() callback
-Date:   Thu, 2 Feb 2017 12:04:38 +0000
-Message-ID: <f8d01f8e3d629dfc7c9f744fe4546d84dfb84520.1486036366.git-series.james.hogan@imgtec.com>
+Subject: [PATCH v2 26/30] KVM: MIPS: Use uaccess to read/modify guest instructions
+Date:   Thu, 2 Feb 2017 12:04:39 +0000
+Message-ID: <4465e27f914bd2858f066c2d96bb4de21d4523b3.1486036366.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.e37f86dece46fc3ed00a075d68119cab361cda8e.1486036366.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56612
+X-archive-position: 56613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,16 +46,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now that the commpage doesn't use wired TLB entries, the per-CPU
-vm_init() callback is the only work done by kvm_mips_init_vm_percpu().
+Now that we have GVA page tables, use standard user accesses with page
+faults disabled to read & modify guest instructions. This should be more
+robust (than the rather dodgy method of accessing guest mapped segments
+by just directly addressing them) and will also work with Enhanced
+Virtual Addressing (EVA) host kernel configurations where dedicated
+instructions are needed for accessing user mode memory.
 
-The trap & emulate implementation doesn't actually need to do anything
-from vm_init(), and the future VZ implementation would be better served
-by a kvm_arch_hardware_enable callback anyway.
-
-Therefore drop the vm_init() callback entirely, allowing the
-kvm_mips_init_vm_percpu() function to also be dropped, along with the
-kvm_mips_instance atomic counter.
+For simplicity and speed we do this regardless of the guest segment the
+address resides in, rather than handling guest KSeg0 specially with
+kmap_atomic() as before.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -64,106 +64,209 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/include/asm/kvm_host.h |  3 ---
- arch/mips/kvm/mips.c             | 16 ----------------
- arch/mips/kvm/tlb.c              |  3 ---
- arch/mips/kvm/trap_emul.c        |  6 ------
- 4 files changed, 0 insertions(+), 28 deletions(-)
+ arch/mips/include/asm/kvm_host.h |  2 +-
+ arch/mips/kvm/dyntrans.c         | 28 +++---------
+ arch/mips/kvm/mmu.c              | 77 ++-------------------------------
+ arch/mips/kvm/trap_emul.c        |  9 ++++-
+ 4 files changed, 22 insertions(+), 94 deletions(-)
 
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index e38e11184c1c..95c86dab9b1b 100644
+index 95c86dab9b1b..a26504bee21c 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -121,8 +121,6 @@ static inline bool kvm_is_error_hva(unsigned long addr)
- 	return IS_ERR_VALUE(addr);
- }
- 
--extern atomic_t kvm_mips_instance;
--
- struct kvm_vm_stat {
- 	ulong remote_tlb_flush;
- };
-@@ -528,7 +526,6 @@ struct kvm_mips_callbacks {
- 	int (*handle_msa_fpe)(struct kvm_vcpu *vcpu);
- 	int (*handle_fpe)(struct kvm_vcpu *vcpu);
- 	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
--	int (*vm_init)(struct kvm *kvm);
- 	int (*vcpu_init)(struct kvm_vcpu *vcpu);
- 	void (*vcpu_uninit)(struct kvm_vcpu *vcpu);
- 	int (*vcpu_setup)(struct kvm_vcpu *vcpu);
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 09fcfde0a9db..001349124bad 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -92,22 +92,8 @@ void kvm_arch_check_processor_compat(void *rtn)
- 	*(int *)rtn = 0;
- }
- 
--static void kvm_mips_init_vm_percpu(void *arg)
--{
--	struct kvm *kvm = (struct kvm *)arg;
--
--	kvm_mips_callbacks->vm_init(kvm);
--
--}
--
- int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+@@ -639,8 +639,6 @@ void kvm_mips_flush_gva_pt(pgd_t *pgd, enum kvm_mips_flush flags);
+ void kvm_mmu_free_memory_caches(struct kvm_vcpu *vcpu);
+ void kvm_trap_emul_invalidate_gva(struct kvm_vcpu *vcpu, unsigned long addr,
+ 				  bool user);
+-extern unsigned long kvm_mips_translate_guest_kseg0_to_hpa(struct kvm_vcpu *vcpu,
+-						   unsigned long gva);
+ extern void kvm_get_new_mmu_context(struct mm_struct *mm, unsigned long cpu,
+ 				    struct kvm_vcpu *vcpu);
+ extern void kvm_local_flush_tlb_all(void);
+diff --git a/arch/mips/kvm/dyntrans.c b/arch/mips/kvm/dyntrans.c
+index 010cef240688..60ebf5862d2b 100644
+--- a/arch/mips/kvm/dyntrans.c
++++ b/arch/mips/kvm/dyntrans.c
+@@ -13,6 +13,7 @@
+ #include <linux/err.h>
+ #include <linux/highmem.h>
+ #include <linux/kvm_host.h>
++#include <linux/uaccess.h>
+ #include <linux/vmalloc.h>
+ #include <linux/fs.h>
+ #include <linux/bootmem.h>
+@@ -29,28 +30,15 @@
+ static int kvm_mips_trans_replace(struct kvm_vcpu *vcpu, u32 *opc,
+ 				  union mips_instruction replace)
  {
--	if (atomic_inc_return(&kvm_mips_instance) == 1) {
--		kvm_debug("%s: 1st KVM instance, setup host TLB parameters\n",
--			  __func__);
--		on_each_cpu(kvm_mips_init_vm_percpu, kvm, 1);
--	}
+-	unsigned long paddr, flags;
+-	void *vaddr;
 -
+-	if (KVM_GUEST_KSEGX((unsigned long)opc) == KVM_GUEST_KSEG0) {
+-		paddr = kvm_mips_translate_guest_kseg0_to_hpa(vcpu,
+-							    (unsigned long)opc);
+-		vaddr = kmap_atomic(pfn_to_page(PHYS_PFN(paddr)));
+-		vaddr += paddr & ~PAGE_MASK;
+-		memcpy(vaddr, (void *)&replace, sizeof(u32));
+-		local_flush_icache_range((unsigned long)vaddr,
+-					 (unsigned long)vaddr + 32);
+-		kunmap_atomic(vaddr);
+-	} else if (KVM_GUEST_KSEGX((unsigned long) opc) == KVM_GUEST_KSEG23) {
+-		local_irq_save(flags);
+-		memcpy((void *)opc, (void *)&replace, sizeof(u32));
+-		__local_flush_icache_user_range((unsigned long)opc,
+-						(unsigned long)opc + 32);
+-		local_irq_restore(flags);
+-	} else {
++	unsigned long vaddr = (unsigned long)opc;
++	int err;
++
++	err = put_user(replace.word, opc);
++	if (unlikely(err)) {
+ 		kvm_err("%s: Invalid address: %p\n", __func__, opc);
+-		return -EFAULT;
++		return err;
+ 	}
++	__local_flush_icache_user_range(vaddr, vaddr + 4);
+ 
  	return 0;
  }
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index 98f1a7715a68..c4e9c65065ea 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -11,6 +11,7 @@
  
-@@ -150,8 +136,6 @@ void kvm_mips_free_vcpus(struct kvm *kvm)
- void kvm_arch_destroy_vm(struct kvm *kvm)
- {
- 	kvm_mips_free_vcpus(kvm);
--
--	atomic_dec(&kvm_mips_instance);
+ #include <linux/highmem.h>
+ #include <linux/kvm_host.h>
++#include <linux/uaccess.h>
+ #include <asm/mmu_context.h>
+ #include <asm/pgalloc.h>
+ 
+@@ -134,34 +135,6 @@ static int kvm_mips_map_page(struct kvm *kvm, gfn_t gfn)
+ 	return err;
  }
  
- long kvm_arch_dev_ioctl(struct file *filp, unsigned int ioctl,
-diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
-index 919252662d5a..8af5fd2cb107 100644
---- a/arch/mips/kvm/tlb.c
-+++ b/arch/mips/kvm/tlb.c
-@@ -33,9 +33,6 @@
- #define KVM_GUEST_PC_TLB    0
- #define KVM_GUEST_SP_TLB    1
- 
--atomic_t kvm_mips_instance;
--EXPORT_SYMBOL_GPL(kvm_mips_instance);
--
- static u32 kvm_mips_get_kernel_asid(struct kvm_vcpu *vcpu)
- {
- 	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index 6a56e48f4bfa..8bb82eaa4c91 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -429,11 +429,6 @@ static int kvm_trap_emul_handle_msa_disabled(struct kvm_vcpu *vcpu)
- 	return ret;
- }
- 
--static int kvm_trap_emul_vm_init(struct kvm *kvm)
+-/* Translate guest KSEG0 addresses to Host PA */
+-unsigned long kvm_mips_translate_guest_kseg0_to_hpa(struct kvm_vcpu *vcpu,
+-						    unsigned long gva)
 -{
--	return 0;
+-	gfn_t gfn;
+-	unsigned long offset = gva & ~PAGE_MASK;
+-	struct kvm *kvm = vcpu->kvm;
+-
+-	if (KVM_GUEST_KSEGX(gva) != KVM_GUEST_KSEG0) {
+-		kvm_err("%s/%p: Invalid gva: %#lx\n", __func__,
+-			__builtin_return_address(0), gva);
+-		return KVM_INVALID_PAGE;
+-	}
+-
+-	gfn = (KVM_GUEST_CPHYSADDR(gva) >> PAGE_SHIFT);
+-
+-	if (gfn >= kvm->arch.guest_pmap_npages) {
+-		kvm_err("%s: Invalid gfn: %#llx, GVA: %#lx\n", __func__, gfn,
+-			gva);
+-		return KVM_INVALID_PAGE;
+-	}
+-
+-	if (kvm_mips_map_page(vcpu->kvm, gfn) < 0)
+-		return KVM_INVALID_ADDR;
+-
+-	return (kvm->arch.guest_pmap[gfn] << PAGE_SHIFT) + offset;
 -}
 -
- static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
+ static pte_t *kvm_trap_emul_pte_for_gva(struct kvm_vcpu *vcpu,
+ 					unsigned long addr)
  {
- 	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
-@@ -847,7 +842,6 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
- 	.handle_fpe = kvm_trap_emul_handle_fpe,
- 	.handle_msa_disabled = kvm_trap_emul_handle_msa_disabled,
+@@ -551,51 +524,11 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
  
--	.vm_init = kvm_trap_emul_vm_init,
- 	.vcpu_init = kvm_trap_emul_vcpu_init,
- 	.vcpu_uninit = kvm_trap_emul_vcpu_uninit,
- 	.vcpu_setup = kvm_trap_emul_vcpu_setup,
+ u32 kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu)
+ {
+-	struct mips_coproc *cop0 = vcpu->arch.cop0;
+-	unsigned long paddr, flags, vpn2, asid;
+-	unsigned long va = (unsigned long)opc;
+-	void *vaddr;
+ 	u32 inst;
+-	int index;
+-
+-	if (KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0 ||
+-	    KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
+-		local_irq_save(flags);
+-		index = kvm_mips_host_tlb_lookup(vcpu, va);
+-		if (index >= 0) {
+-			inst = *(opc);
+-		} else {
+-			vpn2 = va & VPN2_MASK;
+-			asid = kvm_read_c0_guest_entryhi(cop0) &
+-						KVM_ENTRYHI_ASID;
+-			index = kvm_mips_guest_tlb_lookup(vcpu, vpn2 | asid);
+-			if (index < 0) {
+-				kvm_err("%s: get_user_failed for %p, vcpu: %p, ASID: %#lx\n",
+-					__func__, opc, vcpu, read_c0_entryhi());
+-				kvm_mips_dump_host_tlbs();
+-				kvm_mips_dump_guest_tlbs(vcpu);
+-				local_irq_restore(flags);
+-				return KVM_INVALID_INST;
+-			}
+-			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu,
+-					&vcpu->arch.guest_tlb[index], va)) {
+-				kvm_err("%s: handling mapped seg tlb fault failed for %p, index: %u, vcpu: %p, ASID: %#lx\n",
+-					__func__, opc, index, vcpu,
+-					read_c0_entryhi());
+-				kvm_mips_dump_guest_tlbs(vcpu);
+-				local_irq_restore(flags);
+-				return KVM_INVALID_INST;
+-			}
+-			inst = *(opc);
+-		}
+-		local_irq_restore(flags);
+-	} else if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
+-		paddr = kvm_mips_translate_guest_kseg0_to_hpa(vcpu, va);
+-		vaddr = kmap_atomic(pfn_to_page(PHYS_PFN(paddr)));
+-		vaddr += paddr & ~PAGE_MASK;
+-		inst = *(u32 *)vaddr;
+-		kunmap_atomic(vaddr);
+-	} else {
++	int err;
++
++	err = get_user(inst, opc);
++	if (unlikely(err)) {
+ 		kvm_err("%s: illegal address: %p\n", __func__, opc);
+ 		return KVM_INVALID_INST;
+ 	}
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 8bb82eaa4c91..ee8b5ad8c7c5 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -12,6 +12,7 @@
+ #include <linux/errno.h>
+ #include <linux/err.h>
+ #include <linux/kvm_host.h>
++#include <linux/uaccess.h>
+ #include <linux/vmalloc.h>
+ #include <asm/mmu_context.h>
+ #include <asm/pgalloc.h>
+@@ -798,6 +799,12 @@ static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 
+ 	kvm_trap_emul_vcpu_reenter(run, vcpu);
+ 
++	/*
++	 * We use user accessors to access guest memory, but we don't want to
++	 * invoke Linux page faulting.
++	 */
++	pagefault_disable();
++
+ 	/* Disable hardware page table walking while in guest */
+ 	htw_stop();
+ 
+@@ -823,6 +830,8 @@ static int kvm_trap_emul_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
+ 
+ 	htw_start();
+ 
++	pagefault_enable();
++
+ 	return r;
+ }
+ 
 -- 
 git-series 0.8.10

@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Feb 2017 20:26:19 +0100 (CET)
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:28230 "EHLO 1wt.eu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992735AbdBET0NIITwB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 5 Feb 2017 20:26:13 +0100
-Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id v15JLj16008168;
-        Sun, 5 Feb 2017 20:21:45 +0100
-From:   Willy Tarreau <w@1wt.eu>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux@roeck-us.net
-Cc:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Willy Tarreau <w@1wt.eu>
-Subject: [PATCH 3.10 063/319] MIPS: ptrace: Fix regs_return_value for kernel context
-Date:   Sun,  5 Feb 2017 20:20:50 +0100
-Message-Id: <1486322486-8024-34-git-send-email-w@1wt.eu>
-X-Mailer: git-send-email 2.8.0.rc2.1.gbe9624a
-In-Reply-To: <1486322486-8024-1-git-send-email-w@1wt.eu>
-References: <1486322486-8024-1-git-send-email-w@1wt.eu>
-Return-Path: <w@1wt.eu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Feb 2017 20:54:27 +0100 (CET)
+Received: from smtp3-g21.free.fr ([IPv6:2a01:e0c:1:1599::12]:42822 "EHLO
+        smtp3-g21.free.fr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991532AbdBETyPcn9sB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Feb 2017 20:54:15 +0100
+Received: from localhost.localdomain (unknown [78.50.169.77])
+        (Authenticated sender: albeu)
+        by smtp3-g21.free.fr (Postfix) with ESMTPA id C0F5513F8D8;
+        Sun,  5 Feb 2017 20:53:57 +0100 (CET)
+From:   Alban <albeu@free.fr>
+To:     linux-kernel@vger.kernel.org
+Cc:     Alban Bedel <albeu@free.fr>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH v4 3/3] MIPS: ath79: Fix the USB PHY reset names
+Date:   Sun,  5 Feb 2017 20:52:32 +0100
+Message-Id: <1486324352-15188-3-git-send-email-albeu@free.fr>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1486324352-15188-1-git-send-email-albeu@free.fr>
+References: <1486324352-15188-1-git-send-email-albeu@free.fr>
+Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56643
+X-archive-position: 56644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: w@1wt.eu
+X-original-sender: albeu@free.fr
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,38 +41,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+From: Alban Bedel <albeu@free.fr>
 
-commit 74f1077b5b783e7bf4fa3007cefdc8dbd6c07518 upstream.
+The binding for the USB PHY went thru before the driver. However the
+new version of the driver now use the PHY core support for reset, and
+this expect the reset to be named "phy". So remove the "usb-" prefix
+from the the reset names.
 
-Currently regs_return_value always negates reg[2] if it determines
-the syscall has failed, but when called in kernel context this check is
-invalid and may result in returning a wrong value.
-
-This fixes errors reported by CONFIG_KPROBES_SANITY_TEST
-
-Fixes: d7e7528bcd45 ("Audit: push audit success and retcode into arch ptrace.h")
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14381/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Willy Tarreau <w@1wt.eu>
+Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
- arch/mips/include/asm/ptrace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/phy/phy-ath79-usb.txt | 4 ++--
+ arch/mips/boot/dts/qca/ar9132.dtsi                      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
-index 5e6cd09..a288de2 100644
---- a/arch/mips/include/asm/ptrace.h
-+++ b/arch/mips/include/asm/ptrace.h
-@@ -73,7 +73,7 @@ static inline int is_syscall_success(struct pt_regs *regs)
+diff --git a/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt b/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+index cafe219..c3a29c5 100644
+--- a/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
++++ b/Documentation/devicetree/bindings/phy/phy-ath79-usb.txt
+@@ -3,7 +3,7 @@
+ Required properties:
+ - compatible: "qca,ar7100-usb-phy"
+ - #phys-cells: should be 0
+-- reset-names: "usb-phy"[, "usb-suspend-override"]
++- reset-names: "phy"[, "suspend-override"]
+ - resets: references to the reset controllers
  
- static inline long regs_return_value(struct pt_regs *regs)
- {
--	if (is_syscall_success(regs))
-+	if (is_syscall_success(regs) || !user_mode(regs))
- 		return regs->regs[2];
- 	else
- 		return -regs->regs[2];
+ Example:
+@@ -11,7 +11,7 @@ Example:
+ 	usb-phy {
+ 		compatible = "qca,ar7100-usb-phy";
+ 
+-		reset-names = "usb-phy", "usb-suspend-override";
++		reset-names = "phy", "suspend-override";
+ 		resets = <&rst 4>, <&rst 3>;
+ 
+ 		#phy-cells = <0>;
+diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
+index 302f0a8..808c2bb 100644
+--- a/arch/mips/boot/dts/qca/ar9132.dtsi
++++ b/arch/mips/boot/dts/qca/ar9132.dtsi
+@@ -160,7 +160,7 @@
+ 	usb_phy: usb-phy {
+ 		compatible = "qca,ar7100-usb-phy";
+ 
+-		reset-names = "usb-phy", "usb-suspend-override";
++		reset-names = "phy", "suspend-override";
+ 		resets = <&rst 4>, <&rst 3>;
+ 
+ 		#phy-cells = <0>;
 -- 
-2.8.0.rc2.1.gbe9624a
+2.7.4

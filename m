@@ -1,33 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Feb 2017 20:24:32 +0100 (CET)
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:27863 "EHLO 1wt.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Feb 2017 20:26:19 +0100 (CET)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:28230 "EHLO 1wt.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992121AbdBETYZru-42 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 5 Feb 2017 20:24:25 +0100
+        id S23992735AbdBET0NIITwB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 5 Feb 2017 20:26:13 +0100
 Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id v15JLAr5008019;
-        Sun, 5 Feb 2017 20:21:10 +0100
+        by pcw.home.local (8.15.2/8.15.2/Submit) id v15JLj16008168;
+        Sun, 5 Feb 2017 20:21:45 +0100
 From:   Willy Tarreau <w@1wt.eu>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         linux@roeck-us.net
-Cc:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org, Willy Tarreau <w@1wt.eu>
-Subject: [PATCH 3.10 026/319] KVM: MIPS: Make ERET handle ERL before EXL
-Date:   Sun,  5 Feb 2017 20:21:04 +0100
-Message-Id: <1486322467-7968-4-git-send-email-w@1wt.eu>
+Cc:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 3.10 063/319] MIPS: ptrace: Fix regs_return_value for kernel context
+Date:   Sun,  5 Feb 2017 20:20:50 +0100
+Message-Id: <1486322486-8024-34-git-send-email-w@1wt.eu>
 X-Mailer: git-send-email 2.8.0.rc2.1.gbe9624a
-In-Reply-To: <1486322467-7968-1-git-send-email-w@1wt.eu>
-References: <1486322467-7968-1-git-send-email-w@1wt.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=latin1
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1486322486-8024-1-git-send-email-w@1wt.eu>
+References: <1486322486-8024-1-git-send-email-w@1wt.eu>
 Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56642
+X-archive-position: 56643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,55 +39,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: James Hogan <james.hogan@imgtec.com>
+From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 
-commit ede5f3e7b54a4347be4d8525269eae50902bd7cd upstream.
+commit 74f1077b5b783e7bf4fa3007cefdc8dbd6c07518 upstream.
 
-The ERET instruction to return from exception is used for returning from
-exception level (Status.EXL) and error level (Status.ERL). If both bits
-are set however we should be returning from ERL first, as ERL can
-interrupt EXL, for example when an NMI is taken. KVM however checks EXL
-first.
+Currently regs_return_value always negates reg[2] if it determines
+the syscall has failed, but when called in kernel context this check is
+invalid and may result in returning a wrong value.
 
-Fix the order of the checks to match the pseudocode in the instruction
-set manual.
+This fixes errors reported by CONFIG_KPROBES_SANITY_TEST
 
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Fixes: d7e7528bcd45 ("Audit: push audit success and retcode into arch ptrace.h")
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Patchwork: https://patchwork.linux-mips.org/patch/14381/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Willy Tarreau <w@1wt.eu>
 ---
- arch/mips/kvm/kvm_mips_emul.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/ptrace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
-index 4cfb5bd..7162854 100644
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -254,15 +254,15 @@ enum emulation_result kvm_mips_emul_eret(struct kvm_vcpu *vcpu)
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
- 	enum emulation_result er = EMULATE_DONE;
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index 5e6cd09..a288de2 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -73,7 +73,7 @@ static inline int is_syscall_success(struct pt_regs *regs)
  
--	if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
-+	if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
-+		kvm_clear_c0_guest_status(cop0, ST0_ERL);
-+		vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
-+	} else if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
- 		kvm_debug("[%#lx] ERET to %#lx\n", vcpu->arch.pc,
- 			  kvm_read_c0_guest_epc(cop0));
- 		kvm_clear_c0_guest_status(cop0, ST0_EXL);
- 		vcpu->arch.pc = kvm_read_c0_guest_epc(cop0);
- 
--	} else if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
--		kvm_clear_c0_guest_status(cop0, ST0_ERL);
--		vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
- 	} else {
- 		printk("[%#lx] ERET when MIPS_SR_EXL|MIPS_SR_ERL == 0\n",
- 		       vcpu->arch.pc);
+ static inline long regs_return_value(struct pt_regs *regs)
+ {
+-	if (is_syscall_success(regs))
++	if (is_syscall_success(regs) || !user_mode(regs))
+ 		return regs->regs[2];
+ 	else
+ 		return -regs->regs[2];
 -- 
 2.8.0.rc2.1.gbe9624a

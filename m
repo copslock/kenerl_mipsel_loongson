@@ -1,30 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Feb 2017 20:22:37 +0100 (CET)
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:27407 "EHLO 1wt.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Feb 2017 20:24:32 +0100 (CET)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:27863 "EHLO 1wt.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992735AbdBETW3bXsJJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 5 Feb 2017 20:22:29 +0100
+        id S23992121AbdBETYZru-42 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 5 Feb 2017 20:24:25 +0100
 Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id v15JLiRd008167;
-        Sun, 5 Feb 2017 20:21:44 +0100
+        by pcw.home.local (8.15.2/8.15.2/Submit) id v15JLAr5008019;
+        Sun, 5 Feb 2017 20:21:10 +0100
 From:   Willy Tarreau <w@1wt.eu>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         linux@roeck-us.net
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>, Willy Tarreau <w@1wt.eu>
-Subject: [PATCH 3.10 062/319] MIPS: Malta: Fix IOCU disable switch read for MIPS64
-Date:   Sun,  5 Feb 2017 20:20:49 +0100
-Message-Id: <1486322486-8024-33-git-send-email-w@1wt.eu>
+Cc:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 3.10 026/319] KVM: MIPS: Make ERET handle ERL before EXL
+Date:   Sun,  5 Feb 2017 20:21:04 +0100
+Message-Id: <1486322467-7968-4-git-send-email-w@1wt.eu>
 X-Mailer: git-send-email 2.8.0.rc2.1.gbe9624a
-In-Reply-To: <1486322486-8024-1-git-send-email-w@1wt.eu>
-References: <1486322486-8024-1-git-send-email-w@1wt.eu>
+In-Reply-To: <1486322467-7968-1-git-send-email-w@1wt.eu>
+References: <1486322467-7968-1-git-send-email-w@1wt.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=latin1
+Content-Transfer-Encoding: 8bit
 Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56641
+X-archive-position: 56642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,75 +44,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 305723ab439e14debc1d339aa04e835d488b8253 upstream.
+commit ede5f3e7b54a4347be4d8525269eae50902bd7cd upstream.
 
-Malta boards used with CPU emulators feature a switch to disable use of
-an IOCU. Software has to check this switch & ignore any present IOCU if
-the switch is closed. The read used to do this was unsafe for 64 bit
-kernels, as it simply casted the address 0xbf403000 to a pointer &
-dereferenced it. Whilst in a 32 bit kernel this would access kseg1, in a
-64 bit kernel this attempts to access xuseg & results in an address
-error exception.
+The ERET instruction to return from exception is used for returning from
+exception level (Status.EXL) and error level (Status.ERL). If both bits
+are set however we should be returning from ERL first, as ERL can
+interrupt EXL, for example when an NMI is taken. KVM however checks EXL
+first.
 
-Fix by accessing a correctly formed ckseg1 address generated using the
-CKSEG1ADDR macro.
+Fix the order of the checks to match the pseudocode in the instruction
+set manual.
 
-Whilst modifying this code, define the name of the register and the bit
-we care about within it, which indicates whether PCI DMA is routed to
-the IOCU or straight to DRAM. The code previously checked that bit 0 was
-also set, but the least significant 7 bits of the CONFIG_GEN0 register
-contain the value of the MReqInfo signal provided to the IOCU OCP bus,
-so singling out bit 0 makes little sense & that part of the check is
-dropped.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: b6d92b4a6bdb ("MIPS: Add option to disable software I/O coherency.")
-Cc: Matt Redfearn <matt.redfearn@imgtec.com>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Kees Cook <keescook@chromium.org>
+Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14187/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: kvm@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Willy Tarreau <w@1wt.eu>
 ---
- arch/mips/mti-malta/malta-setup.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/kvm/kvm_mips_emul.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-index c72a069..2046e1c 100644
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -36,6 +36,9 @@
- #include <linux/console.h>
- #endif
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 4cfb5bd..7162854 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -254,15 +254,15 @@ enum emulation_result kvm_mips_emul_eret(struct kvm_vcpu *vcpu)
+ 	struct mips_coproc *cop0 = vcpu->arch.cop0;
+ 	enum emulation_result er = EMULATE_DONE;
  
-+#define ROCIT_CONFIG_GEN0		0x1f403000
-+#define  ROCIT_CONFIG_GEN0_PCI_IOCU	BIT(7)
-+
- extern void malta_be_init(void);
- extern int malta_be_handler(struct pt_regs *regs, int is_fixup);
+-	if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
++	if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
++		kvm_clear_c0_guest_status(cop0, ST0_ERL);
++		vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
++	} else if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
+ 		kvm_debug("[%#lx] ERET to %#lx\n", vcpu->arch.pc,
+ 			  kvm_read_c0_guest_epc(cop0));
+ 		kvm_clear_c0_guest_status(cop0, ST0_EXL);
+ 		vcpu->arch.pc = kvm_read_c0_guest_epc(cop0);
  
-@@ -108,6 +111,8 @@ static void __init fd_activate(void)
- static int __init plat_enable_iocoherency(void)
- {
- 	int supported = 0;
-+	u32 cfg;
-+
- 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO) {
- 		if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
- 			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
-@@ -130,7 +135,8 @@ static int __init plat_enable_iocoherency(void)
- 	} else if (gcmp_niocu() != 0) {
- 		/* Nothing special needs to be done to enable coherency */
- 		pr_info("CMP IOCU detected\n");
--		if ((*(unsigned int *)0xbf403000 & 0x81) != 0x81) {
-+		cfg = __raw_readl((u32 *)CKSEG1ADDR(ROCIT_CONFIG_GEN0));
-+		if (!(cfg & ROCIT_CONFIG_GEN0_PCI_IOCU)) {
- 			pr_crit("IOCU OPERATION DISABLED BY SWITCH - DEFAULTING TO SW IO COHERENCY\n");
- 			return 0;
- 		}
+-	} else if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
+-		kvm_clear_c0_guest_status(cop0, ST0_ERL);
+-		vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
+ 	} else {
+ 		printk("[%#lx] ERET when MIPS_SR_EXL|MIPS_SR_ERL == 0\n",
+ 		       vcpu->arch.pc);
 -- 
 2.8.0.rc2.1.gbe9624a

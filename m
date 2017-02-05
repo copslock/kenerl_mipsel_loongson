@@ -1,41 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Feb 2017 09:08:25 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57248 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990508AbdBDIITOBDLf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Feb 2017 09:08:19 +0100
-Received: from localhost (unknown [151.216.128.149])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id ED5602C;
-        Sat,  4 Feb 2017 08:08:11 +0000 (UTC)
-Date:   Sat, 4 Feb 2017 09:08:15 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Joe Perches <joe@perches.com>,
-        "Jayachandran C." <c.jayachandran@gmail.com>,
-        devel@driverdev.osuosl.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: Is it time to move drivers/staging/netlogic/ out of staging?
-Message-ID: <20170204080815.GA15555@kroah.com>
-References: <1486147623.22276.70.camel@perches.com>
- <e160890d-ed79-4e63-57af-1489064d49cb@gmail.com>
- <1486148236.22276.72.camel@perches.com>
- <20170203203609.GA14271@kroah.com>
- <50640771-abc2-dd9a-7418-7393afe23cd5@gmail.com>
- <20170203204427.GA14959@kroah.com>
- <5eb18f9b-d27c-3f35-9748-81e4ea2d2d70@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Feb 2017 20:14:45 +0100 (CET)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:27187 "EHLO 1wt.eu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990522AbdBETOit1isJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 5 Feb 2017 20:14:38 +0100
+Received: (from willy@localhost)
+        by pcw.home.local (8.15.2/8.15.2/Submit) id v15JEYAt007944;
+        Sun, 5 Feb 2017 20:14:34 +0100
+From:   Willy Tarreau <w@1wt.eu>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux@roeck-us.net
+Cc:     James Hogan <james.hogan@imgtec.com>, Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?=20Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org,
+        "stable@vger.kernel.org#3.10.x-3.16.x":5f508c43a764:MIPS:KVM:Fixunusedvariablebuildwarning@pcw.home.local,
+        stable@vger.kernel.org#3.10.x-3.16.x, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 3.10 023/319] KVM: MIPS: Precalculate MMIO load resume PC
+Date:   Sun,  5 Feb 2017 20:09:27 +0100
+Message-Id: <1486322063-7558-24-git-send-email-w@1wt.eu>
+X-Mailer: git-send-email 2.8.0.rc2.1.gbe9624a
+In-Reply-To: <1486322063-7558-1-git-send-email-w@1wt.eu>
+References: <1486322063-7558-1-git-send-email-w@1wt.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5eb18f9b-d27c-3f35-9748-81e4ea2d2d70@gmail.com>
-User-Agent: Mutt/1.7.2 (2016-11-26)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=latin1
+Content-Transfer-Encoding: 8bit
+Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56636
+X-archive-position: 56637
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: w@1wt.eu
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,41 +45,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Feb 03, 2017 at 06:37:02PM -0800, Florian Fainelli wrote:
-> 
-> 
-> On 02/03/2017 12:44 PM, Greg KH wrote:
-> > On Fri, Feb 03, 2017 at 12:38:45PM -0800, Florian Fainelli wrote:
-> >> On 02/03/2017 12:36 PM, Greg KH wrote:
-> >>> On Fri, Feb 03, 2017 at 10:57:16AM -0800, Joe Perches wrote:
-> >>>> On Fri, 2017-02-03 at 10:50 -0800, Florian Fainelli wrote:
-> >>>>> (with JC's other email)
-> >>>>
-> >>>> And now with Greg's proper email too
-> >>>>
-> >>>>> On 02/03/2017 10:47 AM, Joe Perches wrote:
-> >>>>>> 64 bit stats isn't implemented, but is that really necessary?
-> >>>>>> Anything else?
-> >>>>>
-> >>>>> Joe, do you have such hardware that you are interested in getting
-> >>>>> supported, or was that just to reduce the amount of drivers in staging?
-> >>>>> I am really not clear about what happened to that entire product line,
-> >>>>> and whether there is any interest in having anything supported these days...
-> >>>>
-> >>>> No hardware.  Just to reduce staging driver count.
-> >>>
-> >>> Without hardware or a "real" maintainer, it shouldn't be moved.
-> >>>
-> >>> Heck, if no one has the hardware, let's just delete the thing.
-> >>
-> >> I do have one, and other colleagues have some too, but I am not heavily
-> >> using it, nor do I have many cycles to spend on that... sounds like we
-> >> could keep it in staging for another 6 months and see what happens then?
-> > 
-> > Well, if it works for you, want to maintain it?  :)
-> 
-> I'd have to locate the documentation first, and you would have to reply
-> to my patch series about DSA ;)
+From: James Hogan <james.hogan@imgtec.com>
 
-I don't have any patch series in my queue, sorry, so I have no idea what
-you are talking about...
+commit e1e575f6b026734be3b1f075e780e91ab08ca541 upstream.
+
+The advancing of the PC when completing an MMIO load is done before
+re-entering the guest, i.e. before restoring the guest ASID. However if
+the load is in a branch delay slot it may need to access guest code to
+read the prior branch instruction. This isn't safe in TLB mapped code at
+the moment, nor in the future when we'll access unmapped guest segments
+using direct user accessors too, as it could read the branch from host
+user memory instead.
+
+Therefore calculate the resume PC in advance while we're still in the
+right context and save it in the new vcpu->arch.io_pc (replacing the no
+longer needed vcpu->arch.pending_load_cause), and restore it on MMIO
+completion.
+
+Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Cc: <stable@vger.kernel.org> # 3.10.x-3.16.x: 5f508c43a764: MIPS: KVM: Fix unused variable build warning
+Cc: <stable@vger.kernel.org> # 3.10.x-3.16.x
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[james.hogan@imgtec.com: Backport to 3.10..3.16]
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Willy Tarreau <w@1wt.eu>
+---
+ arch/mips/include/asm/kvm_host.h |  7 ++++---
+ arch/mips/kvm/kvm_mips_emul.c    | 25 +++++++++++++++----------
+ 2 files changed, 19 insertions(+), 13 deletions(-)
+
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 883a162..05863e3 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -375,7 +375,10 @@ struct kvm_vcpu_arch {
+ 	/* Host KSEG0 address of the EI/DI offset */
+ 	void *kseg0_commpage;
+ 
+-	u32 io_gpr;		/* GPR used as IO source/target */
++	/* Resume PC after MMIO completion */
++	unsigned long io_pc;
++	/* GPR used as IO source/target */
++	u32 io_gpr;
+ 
+ 	/* Used to calibrate the virutal count register for the guest */
+ 	int32_t host_cp0_count;
+@@ -386,8 +389,6 @@ struct kvm_vcpu_arch {
+ 	/* Bitmask of pending exceptions to be cleared */
+ 	unsigned long pending_exceptions_clr;
+ 
+-	unsigned long pending_load_cause;
+-
+ 	/* Save/Restore the entryhi register when are are preempted/scheduled back in */
+ 	unsigned long preempt_entryhi;
+ 
+diff --git a/arch/mips/kvm/kvm_mips_emul.c b/arch/mips/kvm/kvm_mips_emul.c
+index 5c2d70b..e5977f2 100644
+--- a/arch/mips/kvm/kvm_mips_emul.c
++++ b/arch/mips/kvm/kvm_mips_emul.c
+@@ -773,6 +773,7 @@ kvm_mips_emulate_load(uint32_t inst, uint32_t cause,
+ 		      struct kvm_run *run, struct kvm_vcpu *vcpu)
+ {
+ 	enum emulation_result er = EMULATE_DO_MMIO;
++	unsigned long curr_pc;
+ 	int32_t op, base, rt, offset;
+ 	uint32_t bytes;
+ 
+@@ -781,7 +782,18 @@ kvm_mips_emulate_load(uint32_t inst, uint32_t cause,
+ 	offset = inst & 0xffff;
+ 	op = (inst >> 26) & 0x3f;
+ 
+-	vcpu->arch.pending_load_cause = cause;
++	/*
++	 * Find the resume PC now while we have safe and easy access to the
++	 * prior branch instruction, and save it for
++	 * kvm_mips_complete_mmio_load() to restore later.
++	 */
++	curr_pc = vcpu->arch.pc;
++	er = update_pc(vcpu, cause);
++	if (er == EMULATE_FAIL)
++		return er;
++	vcpu->arch.io_pc = vcpu->arch.pc;
++	vcpu->arch.pc = curr_pc;
++
+ 	vcpu->arch.io_gpr = rt;
+ 
+ 	switch (op) {
+@@ -1617,9 +1629,8 @@ kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 		goto done;
+ 	}
+ 
+-	er = update_pc(vcpu, vcpu->arch.pending_load_cause);
+-	if (er == EMULATE_FAIL)
+-		return er;
++	/* Restore saved resume PC */
++	vcpu->arch.pc = vcpu->arch.io_pc;
+ 
+ 	switch (run->mmio.len) {
+ 	case 4:
+@@ -1641,12 +1652,6 @@ kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 		break;
+ 	}
+ 
+-	if (vcpu->arch.pending_load_cause & CAUSEF_BD)
+-		kvm_debug
+-		    ("[%#lx] Completing %d byte BD Load to gpr %d (0x%08lx) type %d\n",
+-		     vcpu->arch.pc, run->mmio.len, vcpu->arch.io_gpr, *gpr,
+-		     vcpu->mmio_needed);
+-
+ done:
+ 	return er;
+ }
+-- 
+2.8.0.rc2.1.gbe9624a

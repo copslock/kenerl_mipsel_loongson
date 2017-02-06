@@ -1,63 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2017 09:52:29 +0100 (CET)
-Received: from mail-lf0-x22a.google.com ([IPv6:2a00:1450:4010:c07::22a]:35542
-        "EHLO mail-lf0-x22a.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991955AbdBFIwUQioR2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Feb 2017 09:52:20 +0100
-Received: by mail-lf0-x22a.google.com with SMTP id n124so40676214lfd.2
-        for <linux-mips@linux-mips.org>; Mon, 06 Feb 2017 00:52:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=wjSbXd0jmyDZ5CRydRObMEzbtAziv42q+/O2rp4LNwo=;
-        b=kvjd8rpmrUAx7JESS25LmpsPuOKG+XADPod6BaQeeZWnHiequv8SoBPlEe3170bIsF
-         MjFk0i7I0rGrad82EJTbydznvUu7r5bc8R/OO5yN+73SF7HUEGxJgmO6YAzxFrd8hUVa
-         4iKMkfU1J7uIMI3F1Ln3m9pg+8oOGANj35dlYuRqNoWKv48tiP8Be0BTqW9rAq1wcEkO
-         pHUcxn4wFMa23ucsso8gX4mNLDSY+NnhAgNPaWibDTpoJcBgccUpUB6bvU9rE1qUs12V
-         m9zNbh68y/RxhbJu+FRZe4wK2Xd2Bpq+Bc2+3eUNoQWtcltmcy1wx4l+pki8qyvVcbBu
-         Ub2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=wjSbXd0jmyDZ5CRydRObMEzbtAziv42q+/O2rp4LNwo=;
-        b=fOecUbKyo67D2cS5Y6NC+1zG83/gifRjk7RPF0K91PlInU+a7UcVD2CBfPhwhwVzTS
-         bIg935wKnUwEX1EF0i81XknXfe+arUn1ySXeOo7GwDz7TmfiIfLHZ3VpdiIuuCRvh/GV
-         uLcI1rtqXzt+2K/RdNT/a4Zuu6TH3jAFmzvZRqFZp/JhN4LOmlHkuETS8ByZNmVupMVO
-         L6iCGOkKWJhB08dqVsIlEcqAoxbLjGyPYYvd0cr7a8QhemrXGxF+RD/FCw9bqN4K37WP
-         SZpCG+92PksCH7txyAM5Wc7fxpC2FunElpnaVkA/thj6Ao7UKBMcRve1IRV39+vay+MZ
-         dwcg==
-X-Gm-Message-State: AMke39kBoq8x8k2tWnmqb4+UYHE7EUwc79JnoWYq0CxERQ56Zrh34z59NJGw6R40bzu5aA==
-X-Received: by 10.25.80.66 with SMTP id z2mr2790734lfj.157.1486371130308;
-        Mon, 06 Feb 2017 00:52:10 -0800 (PST)
-Received: from [192.168.4.126] ([31.173.83.189])
-        by smtp.gmail.com with ESMTPSA id s63sm16773lja.49.2017.02.06.00.52.08
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 Feb 2017 00:52:09 -0800 (PST)
-Subject: Re: [PATCH] MIPS: Allow compressed images to be loaded at the usual
- address
-To:     Alban <albeu@free.fr>, linux-mips@linux-mips.org
-References: <1486326077-17091-1-git-send-email-albeu@free.fr>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Gorski <jogo@openwrt.org>, linux-kernel@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <1762cdb0-c0f1-f667-e136-cfb40205aa88@cogentembedded.com>
-Date:   Mon, 6 Feb 2017 11:52:09 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2017 10:49:09 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:55700 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990600AbdBFJtDTruD0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Feb 2017 10:49:03 +0100
+Received: from localhost (unknown [78.192.101.3])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 20E572C;
+        Mon,  6 Feb 2017 09:48:52 +0000 (UTC)
+Date:   Mon, 6 Feb 2017 10:48:54 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Joe Perches <joe@perches.com>,
+        "Jayachandran C." <c.jayachandran@gmail.com>,
+        devel@driverdev.osuosl.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Is it time to move drivers/staging/netlogic/ out of staging?
+Message-ID: <20170206094854.GB8780@kroah.com>
+References: <1486147623.22276.70.camel@perches.com>
+ <e160890d-ed79-4e63-57af-1489064d49cb@gmail.com>
+ <1486148236.22276.72.camel@perches.com>
+ <20170203203609.GA14271@kroah.com>
+ <50640771-abc2-dd9a-7418-7393afe23cd5@gmail.com>
+ <20170203204427.GA14959@kroah.com>
+ <5eb18f9b-d27c-3f35-9748-81e4ea2d2d70@gmail.com>
+ <20170204080815.GA15555@kroah.com>
+ <4ffd9c56-48b0-7e8d-c83a-6a335deeecb4@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1486326077-17091-1-git-send-email-albeu@free.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4ffd9c56-48b0-7e8d-c83a-6a335deeecb4@gmail.com>
+User-Agent: Mutt/1.7.2 (2016-11-26)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56649
+X-archive-position: 56650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,38 +51,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
+On Sun, Feb 05, 2017 at 07:21:17PM -0800, Florian Fainelli wrote:
+> Le 02/04/17 à 00:08, Greg KH a écrit :
+> > On Fri, Feb 03, 2017 at 06:37:02PM -0800, Florian Fainelli wrote:
+> >>
+> >>
+> >> On 02/03/2017 12:44 PM, Greg KH wrote:
+> >>> On Fri, Feb 03, 2017 at 12:38:45PM -0800, Florian Fainelli wrote:
+> >>>> On 02/03/2017 12:36 PM, Greg KH wrote:
+> >>>>> On Fri, Feb 03, 2017 at 10:57:16AM -0800, Joe Perches wrote:
+> >>>>>> On Fri, 2017-02-03 at 10:50 -0800, Florian Fainelli wrote:
+> >>>>>>> (with JC's other email)
+> >>>>>>
+> >>>>>> And now with Greg's proper email too
+> >>>>>>
+> >>>>>>> On 02/03/2017 10:47 AM, Joe Perches wrote:
+> >>>>>>>> 64 bit stats isn't implemented, but is that really necessary?
+> >>>>>>>> Anything else?
+> >>>>>>>
+> >>>>>>> Joe, do you have such hardware that you are interested in getting
+> >>>>>>> supported, or was that just to reduce the amount of drivers in staging?
+> >>>>>>> I am really not clear about what happened to that entire product line,
+> >>>>>>> and whether there is any interest in having anything supported these days...
+> >>>>>>
+> >>>>>> No hardware.  Just to reduce staging driver count.
+> >>>>>
+> >>>>> Without hardware or a "real" maintainer, it shouldn't be moved.
+> >>>>>
+> >>>>> Heck, if no one has the hardware, let's just delete the thing.
+> >>>>
+> >>>> I do have one, and other colleagues have some too, but I am not heavily
+> >>>> using it, nor do I have many cycles to spend on that... sounds like we
+> >>>> could keep it in staging for another 6 months and see what happens then?
+> >>>
+> >>> Well, if it works for you, want to maintain it?  :)
+> >>
+> >> I'd have to locate the documentation first, and you would have to reply
+> >> to my patch series about DSA ;)
+> > 
+> > I don't have any patch series in my queue, sorry, so I have no idea what
+> > you are talking about...
+> 
+> You don't really? How about this patch series:
+> 
+> https://www.mail-archive.com/netdev@vger.kernel.org/msg147917.html
+> 
+> and me asking you another time to provide feedback:
+> 
+> https://www.mail-archive.com/netdev@vger.kernel.org/msg150885.html
 
-On 2/5/2017 11:21 PM, Alban wrote:
+Argh, that stuff, yeah, that's in a different review queue, and is going
+to take "real work" on my side to get through, which is why it hasn't
+happened yet, sorry...
 
-> From: Alban Bedel <albeu@free.fr>
->
-> Normally compressed images have to be loaded at a different address to
-> allow the decompressor to run. This add an option to let vmlinuz copy
-> itself to the correct address from the normal vmlinux address.
->
-> Signed-off-by: Alban Bedel <albeu@free.fr>
-[...]
+it's not lost.
 
-    Just some grammar nitpicking...
-
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index b3c5bde..8074fc5 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -2961,6 +2961,14 @@ choice
->  		bool "Extend builtin kernel arguments with bootloader arguments"
->  endchoice
->
-> +config ZBOOT_VMLINUZ_AT_VMLINUX_LOAD_ADDRESS
-> +	bool "Load compressed images at the same address as uncompressed"
-> +	depends on SYS_SUPPORTS_ZBOOT
-> +	help
-> +	  vmlinux and vmlinuz normally have different load addresses, with
-> +	  this option vmlinuz expect to be loaded at the same address as
-
-    Expects.
-
-[...]
-
-MBR, Sergei
+greg k-h

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2017 11:48:26 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:6869 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2017 11:48:48 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:51089 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991955AbdBFKrNz-E2l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Feb 2017 11:47:13 +0100
+        with ESMTP id S23992078AbdBFKrPOJJql (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Feb 2017 11:47:15 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 142224C9F949E;
+        by Forcepoint Email with ESMTPS id F00B4FA77CD11;
         Mon,  6 Feb 2017 10:47:05 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Mon, 6 Feb 2017 10:47:07 +0000
+ 14.3.294.0; Mon, 6 Feb 2017 10:47:08 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
@@ -19,9 +19,9 @@ CC:     James Hogan <james.hogan@imgtec.com>,
         David Daney <david.daney@cavium.com>,
         Jonathan Corbet <corbet@lwn.net>, <kvm@vger.kernel.org>,
         <linux-doc@vger.kernel.org>
-Subject: [PATCH 3/4] KVM: MIPS: Implement EXIT_VM hypercall
-Date:   Mon, 6 Feb 2017 10:46:48 +0000
-Message-ID: <0cdae923b50fc9ea8355e7520a935b7a6705c095.1486377433.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 4/4] KVM: MIPS: Implement console output hypercall
+Date:   Mon, 6 Feb 2017 10:46:49 +0000
+Message-ID: <7ae3d49bf9ce153a5460a393bfa513a585930487.1486377433.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 In-Reply-To: <cover.3a9aba89648ae37be335c79cc2b18cf6bf57ef08.1486377433.git-series.james.hogan@imgtec.com>
@@ -33,7 +33,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56654
+X-archive-position: 56655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,13 +50,11 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Implement the MIPS EXIT_VM hypercall used by paravirtual guest kernels.
-When the guest performs this hypercall, the request is passed to
-userland in the form of a KVM_EXIT_SYSTEM_EVENT exit reason with system
-event type KVM_SYSTEM_EVENT_SHUTDOWN.
+Implement console output hypercall by exiting back to userland with
+KVM_EXIT_HYPERCALL, and setting the return value on next KVM_RUN.
 
 We also document the hypercall along with the others as the
-documentation was never added.
+documentation was never added
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -69,43 +67,113 @@ Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 Cc: linux-doc@vger.kernel.org
 ---
- Documentation/virtual/kvm/hypercalls.txt |  6 ++++++
- arch/mips/kvm/hypcall.c                  |  9 +++++++++
- 2 files changed, 15 insertions(+), 0 deletions(-)
+Documentation/virtual/kvm/api.txt seems to suggest that
+KVM_EXIT_HYPERCALL is obsolete. When it suggests using KVM_EXIT_MMIO,
+does it simply mean the guest should use MMIO to some virtio device of
+some sort rather than using hypercalls, or that the hypercall should
+somehow be munged into the mmio exit information?
+---
+ Documentation/virtual/kvm/hypercalls.txt | 10 ++++++++++
+ arch/mips/include/asm/kvm_host.h         |  4 ++++
+ arch/mips/kvm/hypcall.c                  | 20 ++++++++++++++++++++
+ arch/mips/kvm/mips.c                     |  3 +++
+ 4 files changed, 37 insertions(+), 0 deletions(-)
 
 diff --git a/Documentation/virtual/kvm/hypercalls.txt b/Documentation/virtual/kvm/hypercalls.txt
-index e9f1c9d3da98..f8108c84c46b 100644
+index f8108c84c46b..4e6e57026bfe 100644
 --- a/Documentation/virtual/kvm/hypercalls.txt
 +++ b/Documentation/virtual/kvm/hypercalls.txt
-@@ -92,3 +92,9 @@ is used in the hypercall for future use.
+@@ -98,3 +98,13 @@ Purpose: Return the frequency of CP0_Count in HZ.
  Architecture: mips
  Status: active
- Purpose: Return the frequency of CP0_Count in HZ.
+ Purpose: Shut down the virtual machine.
 +
-+7. KVM_HC_MIPS_EXIT_VM
++8. KVM_HC_MIPS_CONSOLE_OUTPUT
 +------------------------
 +Architecture: mips
 +Status: active
-+Purpose: Shut down the virtual machine.
++Purpose: Output a string to a console.
++Argument 1 contains the virtual terminal number to write to.
++Argument 2 contains a guest virtual address pointer to the string, which must
++be in an unmapped virtual memory segment (e.g. KSeg0, KSeg1 or XKPhys).
++Argument 3 contains the number of bytes to write.
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 0d308d4f2429..e0f1da0c35e9 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -309,6 +309,9 @@ struct kvm_vcpu_arch {
+ 	/* GPR used as IO source/target */
+ 	u32 io_gpr;
+ 
++	/* Whether a hypercall needs completing */
++	int hypercall_needed;
++
+ 	struct hrtimer comparecount_timer;
+ 	/* Count timer control KVM register */
+ 	u32 count_ctl;
+@@ -838,6 +841,7 @@ unsigned int kvm_mips_config5_wrmask(struct kvm_vcpu *vcpu);
+ enum emulation_result kvm_mips_emul_hypcall(struct kvm_vcpu *vcpu,
+ 					    union mips_instruction inst);
+ int kvm_mips_handle_hypcall(struct kvm_vcpu *vcpu);
++void kvm_mips_complete_hypercall(struct kvm_vcpu *vcpu, struct kvm_run *run);
+ 
+ /* Dynamic binary translation */
+ extern int kvm_mips_trans_cache_index(union mips_instruction inst,
 diff --git a/arch/mips/kvm/hypcall.c b/arch/mips/kvm/hypcall.c
-index 7c74ec25f2b9..c3345e5eec02 100644
+index c3345e5eec02..9cb8f37ca43a 100644
 --- a/arch/mips/kvm/hypcall.c
 +++ b/arch/mips/kvm/hypcall.c
-@@ -40,6 +40,15 @@ static int kvm_mips_hypercall(struct kvm_vcpu *vcpu, unsigned long num,
- 		*hret = (s32)vcpu->arch.count_hz;
+@@ -33,6 +33,7 @@ static int kvm_mips_hypercall(struct kvm_vcpu *vcpu, unsigned long num,
+ 			      const unsigned long *args, unsigned long *hret)
+ {
+ 	int ret = RESUME_GUEST;
++	int i;
+ 
+ 	switch (num) {
+ 	case KVM_HC_MIPS_GET_CLOCK_FREQ:
+@@ -49,6 +50,19 @@ static int kvm_mips_hypercall(struct kvm_vcpu *vcpu, unsigned long num,
+ 		ret = RESUME_HOST;
  		break;
  
-+	case KVM_HC_MIPS_EXIT_VM:
-+		/* Pass shutdown system event to userland */
-+		memset(&vcpu->run->system_event, 0,
-+		       sizeof(vcpu->run->system_event));
-+		vcpu->run->system_event.type = KVM_SYSTEM_EVENT_SHUTDOWN;
-+		vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
++	/* Hypercalls passed to userland to handle */
++	case KVM_HC_MIPS_CONSOLE_OUTPUT:
++		/* Pass to userland via KVM_EXIT_HYPERCALL */
++		memset(&vcpu->run->hypercall, 0, sizeof(vcpu->run->hypercall));
++		vcpu->run->hypercall.nr = num;
++		for (i = 0; i < MAX_HYPCALL_ARGS; ++i)
++			vcpu->run->hypercall.args[i] = args[i];
++		vcpu->run->hypercall.ret = -KVM_ENOSYS; /* default */
++		vcpu->run->exit_reason = KVM_EXIT_HYPERCALL;
++		vcpu->arch.hypercall_needed = 1;
 +		ret = RESUME_HOST;
 +		break;
 +
  	default:
  		/* Report unimplemented hypercall to guest */
  		*hret = -KVM_ENOSYS;
+@@ -72,3 +86,9 @@ int kvm_mips_handle_hypcall(struct kvm_vcpu *vcpu)
+ 	return kvm_mips_hypercall(vcpu, num,
+ 				  args, &vcpu->arch.gprs[2] /* v0 */);
+ }
++
++void kvm_mips_complete_hypercall(struct kvm_vcpu *vcpu, struct kvm_run *run)
++{
++	vcpu->arch.gprs[2] = run->hypercall.ret;	/* v0 */
++	vcpu->arch.hypercall_needed = 0;
++}
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index 31ee5ee0010b..1c23dc29db5d 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -409,6 +409,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 		vcpu->mmio_needed = 0;
+ 	}
+ 
++	if (vcpu->arch.hypercall_needed)
++		kvm_mips_complete_hypercall(vcpu, run);
++
+ 	lose_fpu(1);
+ 
+ 	local_irq_disable();
 -- 
 git-series 0.8.10

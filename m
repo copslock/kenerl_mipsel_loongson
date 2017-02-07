@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:08:41 +0100 (CET)
-Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:35051
-        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992209AbdBGXFPj5O1I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:05:15 +0100
-Received: by mail-wr0-x244.google.com with SMTP id o16so6866708wra.2;
-        Tue, 07 Feb 2017 15:05:15 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:09:06 +0100 (CET)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:34259
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993016AbdBGXFWIXQCI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:05:22 +0100
+Received: by mail-wm0-x243.google.com with SMTP id c85so30982367wmi.1;
+        Tue, 07 Feb 2017 15:05:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ejdNYuW5XU/gpF6n/x7JeRHJ7pm+/YFSwYWMnOLMCL8=;
-        b=uYHvWvNk7aLKWr7pCT4kGmlgSPdqF8rZQi+EdwBWEk3C3OIh6eHn7jUpLEW0ldTHqm
-         YqMhVo9YyEafY7qtjk5tTQwM0tH+8uEihTL3lIz2uaGdQKLSilcdnLaoWhfEW7xBA7go
-         hO0aihqg5BGrBY9YGUiUnnfdQkneB3vcv/+EpqMuz6r9cL1vg4sBr7za7puEVwWShwMl
-         lw99CCfYXbO6kA/7A/aeP4JEJrWUqgbKrhYUp6WaueRTZU7OyXod4/rWWhuRWaeMvef9
-         Y4Knm3J+3atfhHaiH+2SSdsoYxl4W77IfFy2efSp5EK/70mIy4Tol2gDrrNpB5w0N1/F
-         jIvg==
+        bh=n/tgnjFydSER7FEIkvl5mqyQQKRRMyd8WvoKZUFmtUI=;
+        b=bGy9SoinlTl9TO73X05R6p/6+AtQsIrDkiRLVcbNUU+RXKmP7/mM0D+QoDnEJpWBRH
+         B25va6qCW36WdQ3EefVH9oGpEXiOq68QhGcZAVY9tES73MXh12vBQ+t5ym34zacKBnSY
+         fp6Rx0AiqpG6edqbLz+8PUuuusfJ3oDV15RO9bGcnLpXnuPuBvfoVKGMJq5Q91vnjaug
+         TwOQMo85OQFSLG1Rd5njFIxU4yaH4jjDSjNOqs0yPNHjDlHAWrF58LxKZS7Xw0EBlcwC
+         WWmx1uNHYwN+B24syvX7qS/GLpH95uQMSYPAeqoJyJVVuODVPLpsi4eCkM1VlWV5tBvi
+         52lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=ejdNYuW5XU/gpF6n/x7JeRHJ7pm+/YFSwYWMnOLMCL8=;
-        b=MIUi+nnvcWEX3sEF6QH4GoBMGFwQWenJZnDDcyboC+Q+P+UIWsBGGAJwlftd7/oc4x
-         uQrn1lFtX8FzbHQBRi6XHgg56ce8S4N0euJC4/JH4O5c8pVDeyx77Kj2TNjN2w34faR2
-         gFznBeeQHzPPLTDDxcawc4Rx8zktHqlNzv6D8kJ2quzUWWiheNNC5SA7wGqV7ErODZNS
-         EN+0brkzOexmE8elH4Bx2LVSEF7AZeTeykNSdMaA/JGW7OmdZiy09/GHbSTvK/SlWx2K
-         u5VQZuvMLclVKKtmLic75XJoqkdeRPraEySXo6bihcEewR9/f4L8lP60ZsjSMapdTSkJ
-         v4lA==
-X-Gm-Message-State: AIkVDXLmHHvrF6a2xZ5TMZzdF0ZFjPLip3Cs1Mtstknkk63fzba32GnFuLm9GxfgKmJKEA==
-X-Received: by 10.223.164.207 with SMTP id h15mr15778302wrb.142.1486508710260;
-        Tue, 07 Feb 2017 15:05:10 -0800 (PST)
+        bh=n/tgnjFydSER7FEIkvl5mqyQQKRRMyd8WvoKZUFmtUI=;
+        b=pcsCtaOsYbyfbLb7JTHoJk7Ffy/Fd4NhwQVaxvXAARM+p6w7JPsPX7xcRVxjPrqQmT
+         IRBL+dErUrrqyw0jFx4bC9xozmxRkEgs3is20KcMloJqqS6CvMc0lZRdwPuuJqWUErPR
+         VUw3XUZq2luIBYzP8tR4cqf1gNDQko0XARanICXgCdqd7zmAdf3rl+xGntxq9rjOMryf
+         NjaJqMTCCZopRt9P6v6gHMrmhuhVYdMl3lAvxvhtDRE4zdYlMh7xTNwM66Djf45rZgwt
+         VreSTv+S8qRiFNq2uBLI/L8HkOqm4K6jT20nKJ7YO63s++AhV7vMIaCkxvZ8l/ATsBLW
+         1anQ==
+X-Gm-Message-State: AMke39neqVBjIP6qtN6kt1c47e79StTgoNcUgMkp4/2FByHY8JMudTZ26BPTuUVrtnQm1w==
+X-Received: by 10.28.127.13 with SMTP id a13mr14329084wmd.96.1486508716813;
+        Tue, 07 Feb 2017 15:05:16 -0800 (PST)
 Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.05.04
+        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.05.10
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Feb 2017 15:05:09 -0800 (PST)
+        Tue, 07 Feb 2017 15:05:16 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
         linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
@@ -63,9 +63,9 @@ Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
         Trond Myklebust <trond.myklebust@primarydata.com>,
         Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
         Woojung Huh <woojung.huh@microchip.com>
-Subject: [PATCH net-next v2 11/12] net: ath5k: fix build errors when linux/phy*.h is removed from net/dsa.h
-Date:   Tue,  7 Feb 2017 15:03:04 -0800
-Message-Id: <20170207230305.18222-12-f.fainelli@gmail.com>
+Subject: [PATCH net-next v2 12/12] net: dsa: remove unnecessary phy*.h includes
+Date:   Tue,  7 Feb 2017 15:03:05 -0800
+Message-Id: <20170207230305.18222-13-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20170207230305.18222-1-f.fainelli@gmail.com>
 References: <20170207230305.18222-1-f.fainelli@gmail.com>
@@ -73,7 +73,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56716
+X-archive-position: 56717
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,93 +92,63 @@ X-list: linux-mips
 
 From: Russell King <rmk+kernel@armlinux.org.uk>
 
-Fix these errors reported by the 0-day builder by replacing the
-linux/export.h include with linux/module.h.
+Including phy.h and phy_fixed.h into net/dsa.h causes phy*.h to be an
+unnecessary dependency for quite a large amount of the kernel.  There's
+very little which actually requires definitions from phy.h in net/dsa.h
+- the include itself only wants the declaration of a couple of
+structures and IFNAMSIZ.
 
-In file included from include/linux/platform_device.h:14:0,
-                 from drivers/net/wireless/ath/ath5k/ahb.c:20:
-include/linux/device.h:1463:1: warning: data definition has no type or storage class
- module_init(__driver##_init); \
- ^
-include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
-  module_driver(__platform_driver, platform_driver_register, \
-  ^~~~~~~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
- module_platform_driver(ath_ahb_driver);
- ^~~~~~~~~~~~~~~~~~~~~~
-include/linux/device.h:1463:1: error: type defaults to 'int' in declaration of 'module_init' [-Werror=implicit-int]
- module_init(__driver##_init); \
- ^
-include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
-  module_driver(__platform_driver, platform_driver_register, \
-  ^~~~~~~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
- module_platform_driver(ath_ahb_driver);
- ^~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:1: warning: parameter names (without types) in function declaration
-In file included from include/linux/platform_device.h:14:0,
-                 from drivers/net/wireless/ath/ath5k/ahb.c:20:
-include/linux/device.h:1468:1: warning: data definition has no type or storage class
- module_exit(__driver##_exit);
- ^
-include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
-  module_driver(__platform_driver, platform_driver_register, \
-  ^~~~~~~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
- module_platform_driver(ath_ahb_driver);
- ^~~~~~~~~~~~~~~~~~~~~~
-include/linux/device.h:1468:1: error: type defaults to 'int' in declaration of 'module_exit' [-Werror=implicit-int]
- module_exit(__driver##_exit);
- ^
-include/linux/platform_device.h:228:2: note: in expansion of macro 'module_driver'
-  module_driver(__platform_driver, platform_driver_register, \
-  ^~~~~~~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
- module_platform_driver(ath_ahb_driver);
- ^~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:1: warning: parameter names (without types) in function declaration
-In file included from include/linux/platform_device.h:14:0,
-                 from drivers/net/wireless/ath/ath5k/ahb.c:20:
-drivers/net/wireless/ath/ath5k/ahb.c:233:24: warning: 'ath_ahb_driver_exit' defined but not used [-Wunused-function]
- module_platform_driver(ath_ahb_driver);
-                        ^
-include/linux/device.h:1464:20: note: in definition of macro 'module_driver'
- static void __exit __driver##_exit(void) \
-                    ^~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
- module_platform_driver(ath_ahb_driver);
- ^~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:24: warning: 'ath_ahb_driver_init' defined but not used [-Wunused-function]
- module_platform_driver(ath_ahb_driver);
-                        ^
-include/linux/device.h:1459:19: note: in definition of macro 'module_driver'
- static int __init __driver##_init(void) \
-                   ^~~~~~~~
-drivers/net/wireless/ath/ath5k/ahb.c:233:1: note: in expansion of macro 'module_platform_driver'
- module_platform_driver(ath_ahb_driver);
- ^~~~~~~~~~~~~~~~~~~~~~
+Add linux/if.h for IFNAMSIZ, declarations for the structures, phy.h to
+mv88e6xxx.h as it needs it for phy_interface_t, and remove both phy.h
+and phy_fixed.h from net/dsa.h.
 
+This patch reduces from around 800 files rebuilt to around 40 - even
+with ccache, the time difference is noticable.
+
+Tested-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath5k/ahb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/mv88e6xxx.h | 1 +
+ include/net/dsa.h                     | 5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-index 2ca88b593e4c..c0794f5988b3 100644
---- a/drivers/net/wireless/ath/ath5k/ahb.c
-+++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -16,10 +16,10 @@
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-  */
+diff --git a/drivers/net/dsa/mv88e6xxx/mv88e6xxx.h b/drivers/net/dsa/mv88e6xxx/mv88e6xxx.h
+index 8a21800374f3..91c4dd25c2d3 100644
+--- a/drivers/net/dsa/mv88e6xxx/mv88e6xxx.h
++++ b/drivers/net/dsa/mv88e6xxx/mv88e6xxx.h
+@@ -15,6 +15,7 @@
+ #include <linux/if_vlan.h>
+ #include <linux/irq.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/phy.h>
  
-+#include <linux/module.h>
- #include <linux/nl80211.h>
- #include <linux/platform_device.h>
- #include <linux/etherdevice.h>
--#include <linux/export.h>
- #include <ath25_platform.h>
- #include "ath5k.h"
- #include "debug.h"
+ #ifndef UINT64_MAX
+ #define UINT64_MAX		(u64)(~((u64)0))
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index b49b2004891e..4e13e695f025 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -11,17 +11,18 @@
+ #ifndef __LINUX_NET_DSA_H
+ #define __LINUX_NET_DSA_H
+ 
++#include <linux/if.h>
+ #include <linux/if_ether.h>
+ #include <linux/list.h>
+ #include <linux/notifier.h>
+ #include <linux/timer.h>
+ #include <linux/workqueue.h>
+ #include <linux/of.h>
+-#include <linux/phy.h>
+-#include <linux/phy_fixed.h>
+ #include <linux/ethtool.h>
+ 
+ struct tc_action;
++struct phy_device;
++struct fixed_phy_status;
+ 
+ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NONE = 0,
 -- 
 2.9.3

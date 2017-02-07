@@ -1,45 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 18:18:58 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:54420 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992160AbdBGRSvWojUX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Feb 2017 18:18:51 +0100
-Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 7E5EAC05AA42;
-        Tue,  7 Feb 2017 17:18:43 +0000 (UTC)
-Received: from [10.36.116.62] (ovpn-116-62.ams2.redhat.com [10.36.116.62])
-        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id v17HIdKE024143
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Tue, 7 Feb 2017 12:18:41 -0500
-Subject: Re: [GIT PULL] KVM: MIPS: GVA/GPA page tables, dirty logging,
- SYNC_MMU etc
-To:     James Hogan <james.hogan@imgtec.com>,
-        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>
-References: <20170203160643.GS13049@jhogan-linux.le.imgtec.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kvm@vger.kernel.org
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <c2ce5eb4-f4f6-cdb9-76c7-a4217df1a98c@redhat.com>
-Date:   Tue, 7 Feb 2017 18:18:34 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 19:30:33 +0100 (CET)
+Received: from mail-it0-x22c.google.com ([IPv6:2607:f8b0:4001:c0b::22c]:38239
+        "EHLO mail-it0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992178AbdBGSaZtb1GV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Feb 2017 19:30:25 +0100
+Received: by mail-it0-x22c.google.com with SMTP id c7so85724267itd.1
+        for <linux-mips@linux-mips.org>; Tue, 07 Feb 2017 10:30:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=9APAum9Qam6ST13VBG1+pjx7gaHJGJrMLCEeuxlEuD0=;
+        b=b+gnD0PvmKcqNdYCwU4Jbq9kbptFlXnRaq9YbAEgV7clCh1gzuHLNns7Kkp8GJAq5t
+         7kt3dFMedszPpfJccxcZjm1tBDqbUvIZjFyB9vmAfS2Uvp25TRlfpidcGMhVJ0JrjI7h
+         4YwMkkp8NOK5MLrWAPx57E7Nmkpz8HWWStH+IPbBhrU+Z+ggRAoQOCZRTHtplllZR99N
+         HPNWhSESS0npJSguZwWRQH9482waWVZeXW9ic6TV6pqpQq8RrBBCTMalDaX8R1Kkfyyi
+         sc4dx6FwkzkKyyhOm2di4dTi6KU7cpcmha/e6rQhQSCqhtbS/yp+n1B8ZlN0NrUP8Pgm
+         buSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=9APAum9Qam6ST13VBG1+pjx7gaHJGJrMLCEeuxlEuD0=;
+        b=iVnBn2aSqh0EWW3WrDPQoPEDnS75Qmwa6vuM3tGDTEuOEfcWX7azs8ThTfxfn7P+kh
+         jaf/jeBKFcnBodK9yDZHJvFyaJvZWUgRKq9Su77Bx/wOUD6aOTcF7hZReG+wqHCqiz+Z
+         zryfHDbUWfv9H5ZD0fOapRD4EuQ6Jk6tEEuMQRpsUHrUv8YtbkLVESog4G07Uujo8i3Z
+         an3iFVFa9AkLvTTTOwAZrMpv4vYLJIIlNxbPkkhZg2DFK/Y6gLJcRW9QVq8KaxjTzFg1
+         UUy7y2pz8OEvR5iaivX5ht0u+63+KmaGDz7K49TyPHemXTmOBBxcFXCNpqA97054s199
+         mVJg==
+X-Gm-Message-State: AIkVDXIpre9wZLmlbSZWR3x9ED+tO5nmCqG+1ETRnNOdJe5wdFDpJj+iOeRMgI5/pE0KDZG/A0CBflXQnGPX/YHB
+X-Received: by 10.36.25.83 with SMTP id b80mr13197712itb.98.1486492219959;
+ Tue, 07 Feb 2017 10:30:19 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20170203160643.GS13049@jhogan-linux.le.imgtec.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="D9gctFWg6vPqf7ltSgsvsBD31pMPFUFpK"
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Tue, 07 Feb 2017 17:18:43 +0000 (UTC)
-Return-Path: <pbonzini@redhat.com>
+Received: by 10.107.153.66 with HTTP; Tue, 7 Feb 2017 10:29:59 -0800 (PST)
+In-Reply-To: <20170207061356.8270-13-kumba@gentoo.org>
+References: <20170207061356.8270-1-kumba@gentoo.org> <20170207061356.8270-13-kumba@gentoo.org>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Tue, 7 Feb 2017 12:29:59 -0600
+Message-ID: <CAErSpo6yKAE1_c1eZJapnjD1g0pocyOxed3_Eumdp_026uhDuA@mail.gmail.com>
+Subject: Re: [PATCH 12/12] MIPS: PCI: Fix IP27 for the PCI_PROBE_ONLY case
+To:     Joshua Kinard <kumba@gentoo.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "Linux/MIPS" <linux-mips@linux-mips.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <bhelgaas@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56698
+X-archive-position: 56699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pbonzini@redhat.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,215 +65,126 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---D9gctFWg6vPqf7ltSgsvsBD31pMPFUFpK
-Content-Type: multipart/mixed; boundary="0eI5H6R2KQftTjRhfiG3f04wuSbdaLPgU";
- protected-headers="v1"
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: James Hogan <james.hogan@imgtec.com>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?=
- <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
- kvm@vger.kernel.org
-Message-ID: <c2ce5eb4-f4f6-cdb9-76c7-a4217df1a98c@redhat.com>
-Subject: Re: [GIT PULL] KVM: MIPS: GVA/GPA page tables, dirty logging,
- SYNC_MMU etc
-References: <20170203160643.GS13049@jhogan-linux.le.imgtec.org>
-In-Reply-To: <20170203160643.GS13049@jhogan-linux.le.imgtec.org>
+Hi Joshua,
 
---0eI5H6R2KQftTjRhfiG3f04wuSbdaLPgU
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+First of all, apologies for breaking IP27 and the inconvenience this
+caused you.  And thanks a lot for tracking down the problem and
+proposing a solution!
 
+On Tue, Feb 7, 2017 at 12:13 AM, Joshua Kinard <kumba@gentoo.org> wrote:
+> From: Joshua Kinard <kumba@gentoo.org>
+>
+> Commit 046136170a56 changed things such that setting PCI_PROBE_ONLY
+> will now explicitly claim PCI resources instead of skipping the sizing
+> of the bridges and assigning resources.  This is okay for IP30's PCI
+> code, which doesn't use physical address space to access I/O resources.
+>
+> However, IP27 is completely different in this regard.  Instead of using
+> ioremapped addresses for I/O, IP27 has a dedicated address range,
+> 0x92xxxxxxxxxxxxxx, that is used for all I/O access.  Since this is
+> uncached physical address space, the generic MIPS PCI code will not
+> probe it correctly and thus, the original behavior of PCI_PROBE_ONLY
+> needs to be restored only for the IP27 platform to bypass this logic
+> and have working PCI, at least for the IO6/IO6G board that houses the
+> base devices, until a better solution is found.
 
+It sounds like there's something different about how ioremap() works
+on these platforms and PCI probing is tripping over that.  I'd really
+like to understand more about this difference to see if we can
+converge that instead of adding back the PCI_PROBE_ONLY usage.
 
-On 03/02/2017 17:06, James Hogan wrote:
-> Hi Paolo, Radim,
->=20
-> The following changes since commit 0b4c208d443ba2af82b4c70f99ca8df31e9a=
-0020:
->=20
->   Revert "KVM: nested VMX: disable perf cpuid reporting" (2017-01-20 22=
-:18:55 +0100)
->=20
-> are available in the git repository at:
->=20
->   git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/kvm-mips.git tag=
-s/kvm_mips_4.11_1
->=20
-> for you to fetch changes up to 12ed1faece3f141c2604b5b3a8377ba71d23ec9d=
-:
->=20
->   KVM: MIPS: Allow multiple VCPUs to be created (2017-02-03 15:21:34 +0=
-000)
->=20
-> It is already included in linux-next (though I did tweak one of the
-> commit messages just now to remove a patch changelog I had accidentally=
+Drivers shouldn't know whether they're running on IP27 or IP30, and
+they should be using ioremap() in both cases.  Does ioremap() work
+differently on IP27 and IP30?  Does this have something to do with
+plat_ioremap() or fixup_bigphys_addr()?
 
-> left in, with no changes to the code).
->=20
-> It includes a merge of my mips branch in the same repo, which is based
-> on v4.10-rc2 and contains the general MIPS changes in the GVA/GPA page
-> tables series, for Ralf to also merge if he likes.
->=20
-> Cheers
-> James
->=20
-> ----------------------------------------------------------------
-> KVM: MIPS: GVA/GPA page tables, dirty logging, SYNC_MMU etc
->=20
-> Numerous MIPS KVM fixes, improvements, and features for 4.11, many of
-> which continue to pave the way for VZ support, the most interesting of
-> which are:
->=20
->  - Add GVA->HPA page tables for T&E, to cache GVA mappings.
->  - Generate fast-path TLB refill exception handler which loads host TLB=
+Is there any chance you can collect complete dmesg logs and
+/proc/iomem contents from IP27 and IP30?  Maybe "lspci -vv" output,
+too?  I'm not sure where to look to understand the ioremap() behavior.
 
->    entries from GVA page table, avoiding repeated guest memory
->    translation and guest TLB lookups.
->  - Use uaccess macros when T&E needs to access guest memory, which with=
+What exactly is the PCI probe failure without this patch?  If you have
+a console log (with "ignore_loglevel") it might have a clue, too.
 
->    GVA page tables and the Linux TLB refill handler improves robustness=
+> Fixes: 046136170a56 ("MIPS/PCI: Claim bus resources on PCI_PROBE_ONLY set-ups")
+> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> ---
+>  arch/mips/pci/pci-bridge.c | 15 +++++++++++++++
+>  arch/mips/pci/pci-legacy.c | 15 +++++++++++++++
+>  2 files changed, 30 insertions(+)
+>
+> diff --git a/arch/mips/pci/pci-bridge.c b/arch/mips/pci/pci-bridge.c
+> index 9df13ce313b5..af7073dba36b 100644
+> --- a/arch/mips/pci/pci-bridge.c
+> +++ b/arch/mips/pci/pci-bridge.c
+> @@ -62,6 +62,21 @@ bridge_probe(nasid_t nasid, int widget_id, int masterwid)
+>         unsigned long offset = NODE_OFFSET(nasid);
+>         struct bridge_controller *bc;
+>
+> +#ifdef CONFIG_SGI_IP27
 
->    against TLB faults and fixes EVA hosts.
->  - Use BadInstr/BadInstrP registers when available to obtain instructio=
-n
->    encodings after a synchronous trap.
->  - Add GPA->HPA page tables to replace the inflexible linear array,
->    allowing for multiple sparsely arranged memory regions.
->  - Properly implement dirty page logging.
->  - Add KVM_CAP_SYNC_MMU support so that changes in GPA mappings become
->    effective in guests even if they are already running, allowing for
->    copy-on-write, KSM, idle page tracking, swapping, and guest memory
->    ballooning.
->  - Add KVM_CAP_READONLY_MEM support, so writes to specified memory
->    regions are treated as MMIO.
->  - Implement proper CP0_EBase support in T&E.
->  - Expose a few more missing CP0 registers to userland.
->  - Add KVM_CAP_NR_VCPUS and KVM_CAP_MAX_VCPUS support, and allow up to =
-8
->    VCPUs to be created in a VM.
->  - Various cleanups and dropping of dead and duplicated code.
->=20
-> ----------------------------------------------------------------
-> James Hogan (63):
->       MIPS: Move pgd_alloc() out of header
->       MIPS: Export pgd/pmd symbols for KVM
->       MIPS: uasm: Add include guards in asm/uasm.h
->       MIPS: Export some tlbex internals for KVM to use
->       MIPS: Add return errors to protected cache ops
->       Merge MIPS prerequisites
->       KVM: MIPS: Drop partial KVM_NMI implementation
->       KVM: MIPS/MMU: Simplify ASID restoration
->       KVM: MIPS: Convert get/set_regs -> vcpu_load/put
->       KVM: MIPS/MMU: Move preempt/ASID handling to implementation
->       KVM: MIPS: Remove duplicated ASIDs from vcpu
->       KVM: MIPS: Add vcpu_run() & vcpu_reenter() callbacks
->       KVM: MIPS/T&E: Restore host asid on return to host
->       KVM: MIPS/T&E: active_mm =3D init_mm in guest context
->       KVM: MIPS: Wire up vcpu uninit
->       KVM: MIPS/T&E: Allocate GVA -> HPA page tables
->       KVM: MIPS/T&E: Activate GVA page tables in guest context
->       KVM: MIPS: Support NetLogic KScratch registers
->       KVM: MIPS: Add fast path TLB refill handler
->       KVM: MIPS/TLB: Fix off-by-one in TLB invalidate
->       KVM: MIPS/TLB: Generalise host TLB invalidate to kernel ASID
->       KVM: MIPS/MMU: Invalidate GVA PTs on ASID changes
->       KVM: MIPS/MMU: Invalidate stale GVA PTEs on TLBW
->       KVM: MIPS/MMU: Convert KSeg0 faults to page tables
->       KVM: MIPS/MMU: Convert TLB mapped faults to page tables
->       KVM: MIPS/MMU: Convert commpage fault handling to page tables
->       KVM: MIPS: Drop vm_init() callback
->       KVM: MIPS: Use uaccess to read/modify guest instructions
->       KVM: MIPS/Emulate: Fix CACHE emulation for EVA hosts
->       KVM: MIPS/TLB: Drop kvm_local_flush_tlb_all()
->       KVM: MIPS/Emulate: Drop redundant TLB flushes on exceptions
->       KVM: MIPS/MMU: Drop kvm_get_new_mmu_context()
->       KVM: MIPS/T&E: Don't treat code fetch faults as MMIO
->       KVM: MIPS: Improve kvm_get_inst() error return
->       KVM: MIPS: Use CP0_BadInstr[P] for emulation
->       KVM: MIPS/MMU: Convert guest physical map to page table
->       KVM: MIPS: Update vcpu->mode and vcpu->cpu
->       KVM: MIPS/T&E: Handle TLB invalidation requests
->       KVM: MIPS/T&E: Reduce stale ASID checks
->       KVM: MIPS/T&E: Add lockless GVA access helpers
->       KVM: MIPS/T&E: Use lockless GVA helpers for dyntrans
->       KVM: MIPS/MMU: Use lockless GVA helpers for get_inst()
->       KVM: MIPS/Emulate: Use lockless GVA helpers for cache emulation
->       KVM: MIPS: Implement kvm_arch_flush_shadow_all/memslot
->       KVM: MIPS/T&E: Ignore user writes to CP0_Config7
->       KVM: MIPS: Pass type of fault down to kvm_mips_map_page()
->       KVM: MIPS/T&E: Abstract bad access handling
->       KVM: MIPS/T&E: Treat unhandled guest KSeg0 as MMIO
->       KVM: MIPS/T&E: Handle read only GPA in TLB mod
->       KVM: MIPS/MMU: Add GPA PT mkclean helper
->       KVM: MIPS/MMU: Use generic dirty log & protect helper
->       KVM: MIPS: Clean & flush on dirty page logging enable
->       KVM: MIPS/MMU: Handle dirty logging on GPA faults
->       KVM: MIPS/MMU: Pass GPA PTE bits to KSeg0 GVA PTEs
->       KVM: MIPS/MMU: Pass GPA PTE bits to mapped GVA PTEs
->       KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU
->       KVM: MIPS: Claim KVM_CAP_READONLY_MEM support
->       KVM: MIPS/T&E: Move CP0 register access into T&E
->       KVM: MIPS/T&E: Implement CP0_EBase register
->       KVM: MIPS/T&E: Default to reset vector
->       KVM: MIPS/T&E: Expose CP0_EntryLo0/1 registers
->       KVM: MIPS/T&E: Expose read-only CP0_IntCtl register
->       KVM: MIPS: Allow multiple VCPUs to be created
->=20
-> Markus Elfring (1):
->       MIPS: KVM: Return directly after a failed copy_from_user() in kvm=
-_arch_vcpu_ioctl()
->=20
->  Documentation/virtual/kvm/api.txt   |   10 +
->  arch/mips/include/asm/kvm_host.h    |  183 +++--
->  arch/mips/include/asm/mmu_context.h |    9 +-
->  arch/mips/include/asm/pgalloc.h     |   16 +-
->  arch/mips/include/asm/r4kcache.h    |   55 +-
->  arch/mips/include/asm/tlbex.h       |   26 +
->  arch/mips/include/asm/uasm.h        |    5 +
->  arch/mips/include/uapi/asm/kvm.h    |    2 +
->  arch/mips/kvm/Kconfig               |    2 +
->  arch/mips/kvm/dyntrans.c            |   50 +-
->  arch/mips/kvm/emulate.c             |  432 ++++++------
->  arch/mips/kvm/entry.c               |  155 +++-
->  arch/mips/kvm/interrupt.c           |    5 +-
->  arch/mips/kvm/mips.c                |  496 ++++---------
->  arch/mips/kvm/mmu.c                 | 1335 +++++++++++++++++++++++++++=
-+-------
->  arch/mips/kvm/tlb.c                 |  299 ++------
->  arch/mips/kvm/trap_emul.c           |  740 ++++++++++++++++---
->  arch/mips/mm/Makefile               |    2 +-
->  arch/mips/mm/init.c                 |    1 +
->  arch/mips/mm/pgtable-64.c           |    2 +
->  arch/mips/mm/pgtable.c              |   25 +
->  arch/mips/mm/tlbex.c                |   38 +-
->  22 files changed, 2611 insertions(+), 1277 deletions(-)
->  create mode 100644 arch/mips/include/asm/tlbex.h
->  create mode 100644 arch/mips/mm/pgtable.c
->=20
+I don't know how MIPS multi-platform support works.  If you enable
+CONFIG_SGI_IP27, does that mean the resulting kernel will *only* run
+on IP27?  Or can you enable several platforms, e.g., SGI_IP22,
+SGI_IP27, SGI_IP28, SGI_IP32, etc., and end up with a kernel that will
+boot on any of those platforms?  From Kconfig, it looks like these
+options are not mutually exclusive, so my guess is maybe the latter?
 
-Pulled, thanks.
+If so, I would think whatever we do should be based on a run-time test
+for SGI_IP27 instead of a compile-time test.
 
-Paolo
-
-
---0eI5H6R2KQftTjRhfiG3f04wuSbdaLPgU--
-
---D9gctFWg6vPqf7ltSgsvsBD31pMPFUFpK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJYmgFrAAoJEL/70l94x66DU6YIAJSZ55tczmwz/54u4N1ajmq+
-ypF5xtss4fhWyYXSahRdH+qKL0STIVJ7QNfhIRsRT8d3nvz5nFKWlxJ5PoT68JMi
-dAWOGnUVmhcUwZGwUvVcIzY4iuOvEjJqsNSs5sQxLgvtoe7YkXPAflzAf3WmgeH+
-eUoO7nfL5RRC6cgwEjgK9/N3ja2X/q91F7px1L6PPkQ2A/+82BwODBT9sB0urB8d
-P+Egvd0OE+Ga07P6+e0YeDCnq5XBH/+Ys4fecLCbS+I06ze6BDTyvGCYgnx8M970
-pTxf3ZJwTNrwTn0aWeUrfAKr7cpUslRor5LSExnz4KXAUxr39qfF53Xuz2MZi4I=
-=vfG7
------END PGP SIGNATURE-----
-
---D9gctFWg6vPqf7ltSgsvsBD31pMPFUFpK--
+> +       /*
+> +        * Commit 046136170a56 changed things such that setting PCI_PROBE_ONLY
+> +        * will now explicitly claim PCI resources instead of skipping the
+> +        * sizing of the bridges and assigning resources.  This is okay for
+> +        * the IP30's PCI code, which uses normal, ioremapped addresses to
+> +        * do I/O.  IP27, however, is different and uses a hardware-specific
+> +        * address range of 0x92xxxxxxxxxxxxxx for all I/O access.  As such,
+> +        * the generic MIPS PCI code will not probe correctly and thus make
+> +        * PCI on IP27 completely unusable.  Thus, we must restore the
+> +        * original logic only for IP27 until a better solution can be found.
+> +        */
+> +       pci_set_flags(PCI_PROBE_ONLY);
+> +#endif
+> +
+>         /* XXX: Temporary until the IP27 "mega update". */
+>         bc = &bridges[num_bridges];
+>         if (!num_bridges)
+> diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
+> index 68268bbb15b8..5590af4f367f 100644
+> --- a/arch/mips/pci/pci-legacy.c
+> +++ b/arch/mips/pci/pci-legacy.c
+> @@ -107,6 +107,20 @@ static void pcibios_scanbus(struct pci_controller *hose)
+>                 need_domain_info = 1;
+>         }
+>
+> +#ifdef CONFIG_SGI_IP27
+> +       /*
+> +        * Commit 046136170a56 changed things such that setting PCI_PROBE_ONLY
+> +        * will now explicitly claim PCI resources instead of skipping the
+> +        * sizing of the bridges and assigning resources.  This is okay for
+> +        * the IP30's PCI code, which uses normal, ioremapped addresses to
+> +        * do I/O.  IP27, however, is different and uses a hardware-specific
+> +        * address range of 0x92xxxxxxxxxxxxxx for all I/O access.  As such,
+> +        * the generic MIPS PCI code will not probe correctly and thus make
+> +        * PCI on IP27 completely unusable.  Thus, we must restore the
+> +        * original logic only for IP27 until a better solution can be found.
+> +        */
+> +       if (!pci_has_flag(PCI_PROBE_ONLY)) {
+> +#else
+>         /*
+>          * We insert PCI resources into the iomem_resource and
+>          * ioport_resource trees in either pci_bus_claim_resources()
+> @@ -115,6 +129,7 @@ static void pcibios_scanbus(struct pci_controller *hose)
+>         if (pci_has_flag(PCI_PROBE_ONLY)) {
+>                 pci_bus_claim_resources(bus);
+>         } else {
+> +#endif
+>                 pci_bus_size_bridges(bus);
+>                 pci_bus_assign_resources(bus);
+>         }
+> --
+> 2.11.1
+>

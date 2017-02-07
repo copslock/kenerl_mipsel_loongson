@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 22:59:25 +0100 (CET)
-Received: from smtp-out-so.shaw.ca ([64.59.136.139]:59284 "EHLO
-        smtp-out-so.shaw.ca" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992127AbdBGV7S1njXC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Feb 2017 22:59:18 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 22:59:48 +0100 (CET)
+Received: from smtp-out-no.shaw.ca ([64.59.134.13]:35183 "EHLO
+        smtp-out-no.shaw.ca" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992178AbdBGV72dC8BC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Feb 2017 22:59:28 +0100
 Received: from triton.mmayer.net ([70.71.160.251])
         by shaw.ca with SMTP
-        id bDn2coAAUsa1kbDn3clLZy; Tue, 07 Feb 2017 14:59:11 -0700
-X-Authority-Analysis: v=2.2 cv=W+NIbVek c=1 sm=1 tr=0
+        id bDnCcMntQVQuxbDnDcVskQ; Tue, 07 Feb 2017 14:59:22 -0700
+X-Authority-Analysis: v=2.2 cv=BNTDlBYG c=1 sm=1 tr=0
  a=6xzog4CasRozao6qlzTIAw==:117 a=6xzog4CasRozao6qlzTIAw==:17
- a=n2v9WMKugxEA:10 a=Q-fNiiVtAAAA:8 a=NEAV23lmAAAA:8 a=R7i0YIe9GHvLfq0SDbgA:9
- a=Fp8MccfUoT0GBdDC_Lng:22 a=Bn2pgwyD2vrAyMmN8A2t:22
+ a=n2v9WMKugxEA:10 a=Q-fNiiVtAAAA:8 a=KKAkSRfTAAAA:8 a=1vzQUOBs5t2bzyhwSnoA:9
+ a=Fp8MccfUoT0GBdDC_Lng:22 a=cvBusfyB2V15izCimMoJ:22
 Received: by triton.mmayer.net (Postfix, from userid 501)
-        id 510FA33B35ED; Tue,  7 Feb 2017 13:59:07 -0800 (PST)
+        id 5D70E33B35EF; Tue,  7 Feb 2017 13:59:18 -0800 (PST)
 From:   Markus Mayer <code@mmayer.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Viresh Kumar <viresh.kumar@linaro.org>,
@@ -20,19 +20,21 @@ Cc:     Markus Mayer <mmayer@broadcom.com>,
         MIPS Linux Kernel List <linux-mips@linux-mips.org>,
         Power Management List <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 0/4] cpufreq: bmips-cpufreq: Add CPUfreq driver for Broadcom's BMIPS SoCs
-Date:   Tue,  7 Feb 2017 13:58:52 -0800
-Message-Id: <20170207215856.8999-1-code@mmayer.net>
+Subject: [PATCH v3 1/4] MIPS: BMIPS: Update defconfig
+Date:   Tue,  7 Feb 2017 13:58:53 -0800
+Message-Id: <20170207215856.8999-2-code@mmayer.net>
 X-Mailer: git-send-email 2.10.2
-X-CMAE-Envelope: MS4wfDTv+g/a9d+2qIbByAWCI5tfd6dxGwn8+R6LL/Cj1nI8pQI7gU0ZMlaWhVh5TacOzwkyx63onHWOm4SxObsLWr44PCRWiiyhdAwbFspX8v+GcOWpNLlf
- SJUW6HpGQxJzjdaDyx/Y1Kkzv+/s8dcFJzgwjBplUE+mKYvdxam0UftxkXaZ7GUtL/hSjZNLWylZaytiG4HGI5s4cE0P66WiMKRmhJEYcxE6xaYCNwkC/78X
- U7oTEVQPDAw6VMvvwDvbU0F8KNDedq+PYO2g5q9/wlbU3mzeUnZ0zf/WaJ4CfRa5hCkr4OgsDCy+EngBeic0xNo28k6FTDTXKF3LReaZ7JmUthoqEAVZpzhr
- IWn3ZP1IWPvogAKJjhsfX8S8aCjahQ==
+In-Reply-To: <20170207215856.8999-1-code@mmayer.net>
+References: <20170207215856.8999-1-code@mmayer.net>
+X-CMAE-Envelope: MS4wfHnpUM9uhIArC74nViaZhDqpp52+ooJdym3PLqe+LOkaWys3Hnhk4Qrkq/T48ndRSIDuKqT0ZLFAHuZbIp3pdfYINOp2BQ9dotk13c2XKc/PJKAuX48j
+ cfe0yrOiEhNpt+5ofOJ7+EU4azPKmNFGkWc9z3dTcMfRIf/ZuwvLxj1VksUeJdpIQWAY7fd3KIK24EHgVQadEGpus/B+lX3wfKGtwmB5a4Z2mGKVyDuRyO7b
+ EG02cMGuHPilrc6c+Q8QlH91LAA4sUivuC06l0zoMGraO0h76OCdBGqxE3iQr3zDd37UlhN7t3nOptOb5bN12EHqGLFaHIkXPU9OOeq4Gsq9nHvYcByJF2zp
+ XV2CiXc9dcGjnoMcV8Qm0lsBT/6yug==
 Return-Path: <mmayer@mmayer.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56700
+X-archive-position: 56701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,46 +53,68 @@ X-list: linux-mips
 
 From: Markus Mayer <mmayer@broadcom.com>
 
-Sorry for the new iteration. I found two more simplifications, so here
-goes. Only patch 3/4 has changed.
+Ran "make savedefconfig" to bring bmips_stb_defconfig up to date.
 
-This series adds a CPUfreq driver for the BMIPS SoCs. In the first
-iteration only BMIPS5xxx SoCs are supported.
+Signed-off-by: Markus Mayer <mmayer@broadcom.com>
+Reviewed-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ arch/mips/configs/bmips_stb_defconfig | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-This series is based on pm/linux-next.
-
-The series is also available at
-https://github.com/mmayer/linux/tree/bmips-cpufreq-v3
-
-Changes since v2:
-  - remove local variables freq and cpu_freq in bmips_cpufreq_get()
-  - assign global variable "priv" directly in bmips_cpufreq_probe()
-    rather than setting driver_data and then retrieving it from there
-    to set priv in bmips_cpufreq_init()
-
-Changes since v1:
-  - based on pm/linux-next rather than 4.10-rc1
-  - sanitized bmips_stb_defconfig by running "make savedefconfig"; this
-    also lead to an additional patch (1/4), which contains non-CPUfreq
-    related updates that "make savedefconfig" performed
-  - use gobal variable to store driver data rather than policy->driver_data
-  - got rid of some code as a result of using said global variable
-  - kzalloc -> kmalloc
-  - removed policy->freq_table = NULL;
-
-Markus Mayer (4):
-  MIPS: BMIPS: Update defconfig
-  BMIPS: Enable prerequisites for CPUfreq in MIPS Kconfig.
-  cpufreq: bmips-cpufreq: CPUfreq driver for Broadcom's BMIPS SoCs
-  MIPS: BMIPS: enable CPUfreq
-
- arch/mips/Kconfig                     |   2 +
- arch/mips/configs/bmips_stb_defconfig |  16 +--
- drivers/cpufreq/Kconfig               |  10 ++
- drivers/cpufreq/Makefile              |   1 +
- drivers/cpufreq/bmips-cpufreq.c       | 188 ++++++++++++++++++++++++++++++++++
- 5 files changed, 211 insertions(+), 6 deletions(-)
- create mode 100644 drivers/cpufreq/bmips-cpufreq.c
-
+diff --git a/arch/mips/configs/bmips_stb_defconfig b/arch/mips/configs/bmips_stb_defconfig
+index 4eb5d6e..3be15cb 100644
+--- a/arch/mips/configs/bmips_stb_defconfig
++++ b/arch/mips/configs/bmips_stb_defconfig
+@@ -9,7 +9,6 @@ CONFIG_MIPS_O32_FP64_SUPPORT=y
+ # CONFIG_SWAP is not set
+ CONFIG_NO_HZ=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_RD_GZIP=y
+ CONFIG_EXPERT=y
+ # CONFIG_VM_EVENT_COUNTERS is not set
+ # CONFIG_SLUB_DEBUG is not set
+@@ -24,7 +23,6 @@ CONFIG_INET=y
+ # CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+ # CONFIG_INET_XFRM_MODE_TUNNEL is not set
+ # CONFIG_INET_XFRM_MODE_BEET is not set
+-# CONFIG_INET_LRO is not set
+ # CONFIG_INET_DIAG is not set
+ CONFIG_CFG80211=y
+ CONFIG_NL80211_TESTMODE=y
+@@ -34,8 +32,6 @@ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
+ # CONFIG_STANDALONE is not set
+ # CONFIG_PREVENT_FIRMWARE_BUILD is not set
+-CONFIG_PRINTK_TIME=y
+-CONFIG_BRCMSTB_GISB_ARB=y
+ CONFIG_MTD=y
+ CONFIG_MTD_CFI=y
+ CONFIG_MTD_CFI_INTELEXT=y
+@@ -51,16 +47,15 @@ CONFIG_USB_USBNET=y
+ # CONFIG_INPUT is not set
+ # CONFIG_SERIO is not set
+ # CONFIG_VT is not set
+-# CONFIG_DEVKMEM is not set
+ CONFIG_SERIAL_8250=y
+ # CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
+ CONFIG_SERIAL_8250_CONSOLE=y
+ CONFIG_SERIAL_OF_PLATFORM=y
+ # CONFIG_HW_RANDOM is not set
+-CONFIG_POWER_SUPPLY=y
+ CONFIG_POWER_RESET=y
+ CONFIG_POWER_RESET_BRCMSTB=y
+ CONFIG_POWER_RESET_SYSCON=y
++CONFIG_POWER_SUPPLY=y
+ # CONFIG_HWMON is not set
+ CONFIG_USB=y
+ CONFIG_USB_EHCI_HCD=y
+@@ -82,6 +77,7 @@ CONFIG_CIFS=y
+ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ASCII=y
+ CONFIG_NLS_ISO8859_1=y
++CONFIG_PRINTK_TIME=y
+ CONFIG_DEBUG_FS=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_CMDLINE_BOOL=y
 -- 
 2.7.4

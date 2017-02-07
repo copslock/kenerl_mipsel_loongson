@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:04:49 +0100 (CET)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:34885
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992209AbdBGXENXf-5I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:04:13 +0100
-Received: by mail-wm0-x244.google.com with SMTP id u63so30969465wmu.2;
-        Tue, 07 Feb 2017 15:04:13 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:05:17 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:34196
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992214AbdBGXEUFQ4qI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:04:20 +0100
+Received: by mail-wm0-x241.google.com with SMTP id c85so30979053wmi.1;
+        Tue, 07 Feb 2017 15:04:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=vlOYoSRaitoUSGk6yP1ryaXFWuinzKAK2fe5kHRvsAA=;
-        b=D/FiGqBkM4WpjdGn93cliOWVjnA7B7ccj0yUK7j0g8syNG7IuEa7+hvlqRxqfrCMsK
-         kqadORmX/MDYLT6Zkuqcr/tpAePGC1WQdVUnIObBJolrXPAtwZ7E+uczXC375dY4o7qL
-         y1betD06kMnCnPEtKhDWFjHDLiAfbuz6zFbPwpbMbqGmfAlxgdGnFmttSvdko43JXYn2
-         CmfBVcqkYFj6nQ+fIJJ6CDnDOVAhxTksERk2weU0nkCJyaXh45zoYl4klPrTKQ8jIxUS
-         Z552pBy1yqEao0ivTTDrG7KWszHCm2p2HtDfeTD7xDRhJv4u1JEg8ACdyE/mSdknfWd8
-         yAYg==
+        bh=lYhuQ4v0P99O+R7Th3fGSiwYdECJb1HWLx02D9ibDOY=;
+        b=exgsBOvRVyw/sRZtZc67X5A6Mgsq8b50aI9nIQDkamcY2P2q1Ipvl+ARVYpCN/ajBp
+         hK9tG+G2EwtApdRglKLuPSY1pAcxDpPM/zGFxgepWQSZd236MSb4eWnRMwgDvRWrw0PA
+         lsTytzU3IJ5ekaQHtZey/FaflJQgPpnHFgsAqXYvoOYarRhAl9hIfJ3psECC4IUHqdSm
+         cLdaU7wINf0aLbDRkQG6e1CnXYF8qqONT6ih5BWVLQ7+fZxH9ti11I4k7KKkgWS01OND
+         qPeh8bNd99+B/ZlpS85OqmgNULMGYUXqw02d2dYBZ4FElvmqR90PgSgs/Ybq6rl0TiAd
+         V8ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=vlOYoSRaitoUSGk6yP1ryaXFWuinzKAK2fe5kHRvsAA=;
-        b=U1kJ74rt7fIt4JhmQGPJ3okweldyh7pQ7NaOUlYQ41W/TQ2oytppf36cDXyemB5CxU
-         fZZkPyhtqong1xYDAwu4alCr5uImpvAwgRn9FJTXrrt/3aiOP1+IKocq4FMM6OecCBaT
-         kvA8TPoAxy238MucYk/m7mCpuqRf7TNJFcmoz8kxMkFrxiWxgSkDeGn9FCFnSk0fasxS
-         o8uVSvXhQo3tKCB8LQD/fzvovgTT+JcbKC480P6TXHa3lb3tNILugOlvCEJtXF4EVlvp
-         T+bTuRKIk+CsdZ0cz84PrrGf9082NpPPDGvcpIk6Ju7v6qW+EziXRsbYO/VnQZiJEMZ3
-         geIA==
-X-Gm-Message-State: AMke39lRzVwEu+sk9H1PFwHIFiznzswat7pJIi6KL3QOteqnx0NJtbeo09mxYeWUWK5sWg==
-X-Received: by 10.28.17.20 with SMTP id 20mr15776238wmr.106.1486508647575;
-        Tue, 07 Feb 2017 15:04:07 -0800 (PST)
+        bh=lYhuQ4v0P99O+R7Th3fGSiwYdECJb1HWLx02D9ibDOY=;
+        b=lXH4SrWZfsV5+BbOGE9o7ssv/w6DhHn2N/VClkrs9tLQIGiJPNAMTVn/p93jyuE5bO
+         N4ISKJw1SUZcy+FElzYpiErXtHisMfbwb1B79AY+gxumupqgONafUhYFD06bUDBcQD1e
+         UQ75cXzPp5wq7IhLy5nMx86ZmTZ5n5QpPXNRnXBdfH253pRGbCcY8rXwAToCU+l1RJ/q
+         j91rRk6ncsjKzuG04HMU2upNTVKMX3+MlDmLKiDWVM+OPDjDf0WQhQtwoGee1p1w50c3
+         wGDQD2luPE0NJ4YQe2feGGKCbKE2YvwcZJDyGYvYa62FeiWs7uV6HDSTTksu6OfiYmDa
+         qqxw==
+X-Gm-Message-State: AMke39mux08JBBFwf7hwjdkFM8IJt+fYSlfeMi1U4MvqI4IXCUylWUKmPptwGb3tndolYA==
+X-Received: by 10.28.215.200 with SMTP id o191mr14612330wmg.118.1486508654771;
+        Tue, 07 Feb 2017 15:04:14 -0800 (PST)
 Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.03.59
+        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.04.07
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Feb 2017 15:04:06 -0800 (PST)
+        Tue, 07 Feb 2017 15:04:14 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
         linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
@@ -63,9 +63,9 @@ Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
         Trond Myklebust <trond.myklebust@primarydata.com>,
         Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
         Woojung Huh <woojung.huh@microchip.com>
-Subject: [PATCH net-next v2 02/12] net: cgroups: fix build errors when linux/phy*.h is removed from net/dsa.h
-Date:   Tue,  7 Feb 2017 15:02:55 -0800
-Message-Id: <20170207230305.18222-3-f.fainelli@gmail.com>
+Subject: [PATCH net-next v2 03/12] net: macb: fix build errors when linux/phy*.h is removed from net/dsa.h
+Date:   Tue,  7 Feb 2017 15:02:56 -0800
+Message-Id: <20170207230305.18222-4-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20170207230305.18222-1-f.fainelli@gmail.com>
 References: <20170207230305.18222-1-f.fainelli@gmail.com>
@@ -73,7 +73,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56707
+X-archive-position: 56708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,28 +92,36 @@ X-list: linux-mips
 
 From: Russell King <rmk+kernel@armlinux.org.uk>
 
-net/core/netprio_cgroup.c:303:16: error: expected declaration specifiers or '...' before string constant
-    MODULE_LICENSE("GPL v2");
-                   ^~~~~~~~
+drivers/net/ethernet/cadence/macb.h:862:33: sparse: expected ; at end of declaration
+drivers/net/ethernet/cadence/macb.h:862:33: sparse: Expected } at end of struct-union-enum-specifier
+drivers/net/ethernet/cadence/macb.h:862:33: sparse: got phy_interface
+drivers/net/ethernet/cadence/macb.h:877:1: sparse: Expected ; at the end of type declaration
+drivers/net/ethernet/cadence/macb.h:877:1: sparse: got }
+In file included from drivers/net/ethernet/cadence/macb_pci.c:29:0:
+drivers/net/ethernet/cadence/macb.h:862:2: error: unknown type name 'phy_interface_t'
+     phy_interface_t  phy_interface;
+     ^~~~~~~~~~~~~~~
 
-Add linux/module.h to fix this.
+Add linux/phy.h to macb.h
 
 Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 ---
- net/core/netprio_cgroup.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/cadence/macb.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/netprio_cgroup.c b/net/core/netprio_cgroup.c
-index 2ec86fc552df..756637dc7a57 100644
---- a/net/core/netprio_cgroup.c
-+++ b/net/core/netprio_cgroup.c
-@@ -13,6 +13,7 @@
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index a2cf91223003..234a49eaccfd 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -10,6 +10,8 @@
+ #ifndef _MACB_H
+ #define _MACB_H
  
- #include <linux/slab.h>
- #include <linux/types.h>
-+#include <linux/module.h>
- #include <linux/string.h>
- #include <linux/errno.h>
- #include <linux/skbuff.h>
++#include <linux/phy.h>
++
+ #define MACB_GREGS_NBR 16
+ #define MACB_GREGS_VERSION 2
+ #define MACB_MAX_QUEUES 8
 -- 
 2.9.3

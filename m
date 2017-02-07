@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 08:31:26 +0100 (CET)
-Received: from SMTPBG179.QQ.COM ([119.147.194.222]:47100 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 08:31:47 +0100 (CET)
+Received: from SMTPBG179.QQ.COM ([119.147.194.222]:36607 "EHLO
         smtpbg179.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992160AbdBGH373PdIm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Feb 2017 08:29:59 +0100
-X-QQ-mid: bizesmtp16t1486452570t16hdj55
+        with ESMTP id S23992209AbdBGHaZtJkGm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Feb 2017 08:30:25 +0100
+X-QQ-mid: bizesmtp16t1486452577t1w4lho0
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 07 Feb 2017 15:29:29 +0800 (CST)
+        id ; Tue, 07 Feb 2017 15:29:36 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FG61B00A0000000
-X-QQ-FEAT: /A5Igf99+LQwOdRa3PDIu2uge/Rb2Z2l1lbKBJqwtxEj4PrTsE4gkIcA4UqOC
-        Frdhqb6Qw8VbNi8zwtT8RS6mBw7cDd/lMxzSQyPAIhXbFkEKMWlMLkGgrVRrcd8p34baNGq
-        Ffujpds8hXouxhZ9YzfkUqEPqr0iYfEoQCH4j5gGMKzcs6iO/rOxey8KBJQs7lyeANYpWpB
-        btpSuiI6WwKEZDUhdMPBVB5lw4DY6KzAYOnnKanO7FTc3ntzY+znPfJomRenXNyRGS11Hhv
-        f//ByKsjpgxudy526MaR2kKp1beQwifOXAWg==
+X-QQ-FEAT: r8geFCKg7nY0NwDSPbifet9TJaATWP8fHA3Cm6kX0GHzuJ+gbvJAp20dlAiWj
+        r5Jeb7Y5uy7VZiYZiIOCON3slJS9AS8LrSCda99H4nxgzSnl1XH15grQAXLMlKFaEnvaCmQ
+        6feo65P2hUylPnRcSkUOnmzY26LHhdw4SDIhznkP3FrXy5rdNZvJ+uITtsORh47ehqMsFmC
+        GInxCYJJsDbo+JAbQDAqc/a0Lh8roKzNWDKzO180TqtJ3+m8VXmWyPMZuWZ+XnSdTyu3gU7
+        T5SeAS2gCBla7P8EiyRVnHMKEBCDTQZCTfmw==
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -24,9 +24,9 @@ Cc:     John Crispin <john@phrozen.org>,
         Yang Ling <gnaygnil@gmail.com>,
         Binbin Zhou <zhoubb@lemote.com>,
         HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH v4 3/8] MIPS: Loongson: Add basic Loongson-1A CPU support
-Date:   Tue,  7 Feb 2017 15:29:05 +0800
-Message-Id: <1486452550-10721-4-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH v4 6/8] MIPS: Loongson: Add Loongson-1A board support
+Date:   Tue,  7 Feb 2017 15:29:08 +0800
+Message-Id: <1486452550-10721-7-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1486452550-10721-1-git-send-email-zhoubb@lemote.com>
 References: <1486452550-10721-1-git-send-email-zhoubb@lemote.com>
@@ -35,7 +35,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56690
+X-archive-position: 56691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,94 +52,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Loongson 1A is similar with Loongson 1B/1C, which is a 32-bit SoC.
-It implements the MIPS32 release 2 instruction set.
+Register basic devices for Loongson-1A, and setup clk for UART.
 
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: HuaCai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/cpu-type.h    |  3 ++-
- arch/mips/kernel/cpu-probe.c        |  4 +++-
- arch/mips/loongson32/Platform       |  1 +
- arch/mips/loongson32/common/setup.c |  4 +++-
- arch/mips/mm/c-r4k.c                | 10 ++++++++++
- 5 files changed, 19 insertions(+), 3 deletions(-)
+ arch/mips/loongson32/Makefile      |  6 ++++++
+ arch/mips/loongson32/ls1a/Makefile |  5 +++++
+ arch/mips/loongson32/ls1a/board.c  | 31 +++++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+)
+ create mode 100644 arch/mips/loongson32/ls1a/Makefile
+ create mode 100644 arch/mips/loongson32/ls1a/board.c
 
-diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-index bdd6dc1..13ea1ea5 100644
---- a/arch/mips/include/asm/cpu-type.h
-+++ b/arch/mips/include/asm/cpu-type.h
-@@ -24,7 +24,8 @@ static inline int __pure __get_cpu_type(const int cpu_type)
- 	case CPU_LOONGSON3:
- #endif
+diff --git a/arch/mips/loongson32/Makefile b/arch/mips/loongson32/Makefile
+index 1ab2c5b..cd1f597 100644
+--- a/arch/mips/loongson32/Makefile
++++ b/arch/mips/loongson32/Makefile
+@@ -5,6 +5,12 @@
+ obj-$(CONFIG_MACH_LOONGSON32) += common/
  
--#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1B) || \
-+#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1A) || \
-+    defined(CONFIG_SYS_HAS_CPU_LOONGSON1B) || \
-     defined(CONFIG_SYS_HAS_CPU_LOONGSON1C)
- 	case CPU_LOONGSON1:
- #endif
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 657d65d..59ad3b7 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1503,7 +1503,9 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 
- 		switch (c->processor_id & PRID_REV_MASK) {
- 		case PRID_REV_LOONGSON1ABC:
--#ifdef CONFIG_CPU_LOONGSON1B
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+			__cpu_name[cpu] = "Loongson 1A";
-+#elif defined(CONFIG_CPU_LOONGSON1B)
- 			__cpu_name[cpu] = "Loongson 1B";
- #endif
- 			break;
-diff --git a/arch/mips/loongson32/Platform b/arch/mips/loongson32/Platform
-index ffe01c6..a9e0fa7 100644
---- a/arch/mips/loongson32/Platform
-+++ b/arch/mips/loongson32/Platform
-@@ -4,5 +4,6 @@ cflags-$(CONFIG_CPU_LOONGSON1)	+= \
- 
- platform-$(CONFIG_MACH_LOONGSON32)	+= loongson32/
- cflags-$(CONFIG_MACH_LOONGSON32)	+= -I$(srctree)/arch/mips/include/asm/mach-loongson32
-+load-$(CONFIG_LOONGSON1_LS1A)		+= 0xffffffff80200000
- load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80100000
- load-$(CONFIG_LOONGSON1_LS1C)		+= 0xffffffff80100000
-diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
-index c8e8b3e..1c3324a 100644
---- a/arch/mips/loongson32/common/setup.c
-+++ b/arch/mips/loongson32/common/setup.c
-@@ -22,7 +22,9 @@ const char *get_system_type(void)
- 
- 	switch (processor_id & PRID_REV_MASK) {
- 	case PRID_REV_LOONGSON1ABC:
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+		return "LOONGSON LS1A";
-+#elif defined(CONFIG_LOONGSON1_LS1B)
- 		return "LOONGSON LS1B";
- #elif defined(CONFIG_LOONGSON1_LS1C)
- 		return "LOONGSON LS1C";
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index e7f798d..44c4088 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1366,6 +1366,16 @@ static void probe_pcache(void)
- 		c->options |= MIPS_CPU_PREFETCH;
- 		break;
- 
-+	case CPU_LOONGSON1:
-+		if (read_c0_config7() & MIPS_CONF7_AR) {
-+			/*
-+			 * effectively physically indexed dcache,
-+			 * thus no virtual aliases.
-+			 */
-+			c->dcache.flags |= MIPS_CACHE_PINDEX;
-+			break;
-+		}
+ #
++# Loongson LS1A board
++#
 +
- 	default:
- 		if (!(config & MIPS_CONF_M))
- 			panic("Don't know how to probe P-caches on this cpu.");
++obj-$(CONFIG_LOONGSON1_LS1A)  += ls1a/
++
++#
+ # Loongson LS1B board
+ #
+ 
+diff --git a/arch/mips/loongson32/ls1a/Makefile b/arch/mips/loongson32/ls1a/Makefile
+new file mode 100644
+index 0000000..dc23a9a
+--- /dev/null
++++ b/arch/mips/loongson32/ls1a/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for loongson1A based machines.
++#
++
++obj-y += board.o
+diff --git a/arch/mips/loongson32/ls1a/board.c b/arch/mips/loongson32/ls1a/board.c
+new file mode 100644
+index 0000000..7993f6c
+--- /dev/null
++++ b/arch/mips/loongson32/ls1a/board.c
+@@ -0,0 +1,31 @@
++/*
++ * Copyright (c) 2016 Binbin Zhou <zhoubb@lemote.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ */
++
++#include <platform.h>
++
++static struct platform_device *ls1a_platform_devices[] __initdata = {
++	&ls1x_uart_pdev,
++	&ls1x_eth0_pdev,
++	&ls1x_eth1_pdev,
++	&ls1x_rtc_pdev,
++	&ls1x_wdt_pdev,
++	&ls1x_ahci_pdev,
++	&ls1x_ohci_pdev,
++};
++
++static int __init ls1a_platform_init(void)
++{
++	ls1x_serial_set_uartclk(&ls1x_uart_pdev);
++	ls1x_rtc_set_extclk(&ls1x_rtc_pdev);
++
++	return platform_add_devices(ls1a_platform_devices,
++				   ARRAY_SIZE(ls1a_platform_devices));
++}
++
++arch_initcall(ls1a_platform_init);
 -- 
 2.9.3

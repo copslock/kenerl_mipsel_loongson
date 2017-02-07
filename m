@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:06:34 +0100 (CET)
-Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:35025
-        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992267AbdBGXEmKJoQI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:04:42 +0100
-Received: by mail-wr0-x244.google.com with SMTP id o16so6865890wra.2;
-        Tue, 07 Feb 2017 15:04:42 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:06:59 +0100 (CET)
+Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:35032
+        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992178AbdBGXEszvr0I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:04:48 +0100
+Received: by mail-wr0-x242.google.com with SMTP id o16so6866102wra.2;
+        Tue, 07 Feb 2017 15:04:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Fq5YDQRnfYdiR70kAxqjIuPzTf++t/xYs3DHOBXrckI=;
-        b=mCfZBGHWxeXlncOskOZmwcuAZYgjYRgRK1ydXx3mp+TcfdbF9hvRFubl5kzKd3rMYC
-         3GbaKoB6GQmKiSpv77uWuBYaUdTlBm40cbF81YXAXPEfVYJ/GgN/4/+en6sGFFcInVsN
-         VRhTT3T9B4KQcnO4CFP1NuZEaJlxM+iFdL31+6EAN1gqZcxx1ea6bdQMStNujAGv+g/i
-         qYcjPUsr4upuYCPS6CoQTAarT8y8W//u/xIeeSCYsSTGHhyQNht1fiC8WHHiIdRozpFs
-         OPLwaAkP9nf1u5fU5/l4hw4BI5YnIe0kOB4f/HXy2xsBGig27uI0eWSKTOwhI8pL6mNo
-         7eZg==
+        bh=aJWEtj6OKYNDdbrWDSCsS/b3FQY3VNv8YNYUaficLPY=;
+        b=KFE3HZh41HYcgbouG9L64IVq22ZZ/jsuSoE4ikndJHOedTFiW9k+rTdPHhpjOdZQh1
+         o6ypByf5ai/gO7kSu2FSgMPK2nNt1pxRVXvcWpPaWtBjvM6ZA0/h5Ly7AHffFg5cCrqR
+         3jkriKm8fThZvzl+lEdKDxV8/Az9T+DRquihym0fnxJBVk9sM5g+68UwQ7ncyrwEhqtB
+         nejn770aBDVYBQicE6p4hIq5oVvkMdyXUDt0acgWSilxm4XzVJhzMfsgSV6ESJxKnbxg
+         auElX4zV2xPJdHHNSnzC+/BeoEC8T8xYYTV2PvH7pI1CXHH5Cnl6ZwL9aBNpBKsbgyqg
+         kE8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Fq5YDQRnfYdiR70kAxqjIuPzTf++t/xYs3DHOBXrckI=;
-        b=sVz4f9U5s29M8xiN80B6qheRoUSOHKPTAqpByfZ2XYA321Ok0a9P6naGahHuVjxvGX
-         8Z97DWMIlIxgn3tZI8q5fX6ek5L9wPBFjvl3YyUj3n2zM3gaPrYat/MXqz4XcXBofDFL
-         sFeeJ/YpIL3W6b1Wd3eyl8AecgursR8EKKTRdM/Rm9aAG7K/RXDQ7JdaXpuX6Y98q9NN
-         ynFzrGxktQ8p0AWCj9RfGi2mpTIi9uom3ynKJ386LKNJM5Ia9kzzxK/oS0VCMZoacnBq
-         xUlMdoc7wYZvjhjrTb4lg03xc5Z5tY0513hjNTeHZrBRBALCNmrLwM1A3sFX+PaTJz/Y
-         f8CA==
-X-Gm-Message-State: AMke39l6VKoVA11aPylvi21LFqb97Hq+gwD6sNMXt/8753VjY9qytu8Qla1xQgabQtghXQ==
-X-Received: by 10.223.146.228 with SMTP id 91mr16167050wrn.203.1486508676870;
-        Tue, 07 Feb 2017 15:04:36 -0800 (PST)
+        bh=aJWEtj6OKYNDdbrWDSCsS/b3FQY3VNv8YNYUaficLPY=;
+        b=rh/aMJP9L8GGQ+YlFPVHtZV8a/T5mbpw+qNFy+DEHuUDZRAUNdkNGTkUUTNkE92eHI
+         te26Mo6I4ic7Jxga+TE5nPE94MfUGqWfjrZY7oFhiK7YcgpkdODBr9JhK69knKtFuf0W
+         pSCXgAVvr8ZSoJtLT6EtP3kbW0jBwA1yJYTmbrnJdoC1wACzQ7E0kY59IYvtsYBWrQmG
+         gJYXDGX1aatm46fz6QhogHvzw6Er3c/hpjNaiI1WiLE7Hs5TzQKBqReRvrhx/2LTPKeb
+         byfao2MxFiXGq0a4601tYvO8+2/RWZNVZYJQCn9+0uSyul9Zt9jC8o4XKdtnz+Tx1XgL
+         3iaQ==
+X-Gm-Message-State: AIkVDXJ4RwgR9UkK97X7FrTfLC1/0HZYXbDhS7AqmE0ppuSbcv75wsoPam6hpeKA+L4yvA==
+X-Received: by 10.223.135.80 with SMTP id 16mr15296846wrz.182.1486508683590;
+        Tue, 07 Feb 2017 15:04:43 -0800 (PST)
 Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.04.30
+        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.04.37
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Feb 2017 15:04:36 -0800 (PST)
+        Tue, 07 Feb 2017 15:04:42 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
         linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
@@ -63,9 +63,9 @@ Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
         Trond Myklebust <trond.myklebust@primarydata.com>,
         Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
         Woojung Huh <woojung.huh@microchip.com>
-Subject: [PATCH net-next v2 06/12] net: fman: fix build errors when linux/phy*.h is removed from net/dsa.h
-Date:   Tue,  7 Feb 2017 15:02:59 -0800
-Message-Id: <20170207230305.18222-7-f.fainelli@gmail.com>
+Subject: [PATCH net-next v2 07/12] net: mvneta: fix build errors when linux/phy*.h is removed from net/dsa.h
+Date:   Tue,  7 Feb 2017 15:03:00 -0800
+Message-Id: <20170207230305.18222-8-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20170207230305.18222-1-f.fainelli@gmail.com>
 References: <20170207230305.18222-1-f.fainelli@gmail.com>
@@ -73,7 +73,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56711
+X-archive-position: 56712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,26 +92,30 @@ X-list: linux-mips
 
 From: Russell King <rmk+kernel@armlinux.org.uk>
 
-drivers/net/ethernet/freescale/fman/fman_memac.c:519:21: error: dereferencing pointer to incomplete type 'struct fixed_phy_status'
+drivers/net/ethernet/marvell/mvneta.c:2694:26: error: storage size of 'status' isn't known
+drivers/net/ethernet/marvell/mvneta.c:2695:26: error: storage size of 'changed' isn't known
+drivers/net/ethernet/marvell/mvneta.c:2695:9: error: variable 'changed' has initializer but incomplete type
+drivers/net/ethernet/marvell/mvneta.c:2709:2: error: implicit declaration of function 'fixed_phy_update_state' [-Werror=implicit-function-declaration]
 
-Add linux/phy_fixed.h to fman_memac.c
+Add linux/phy_fixed.h to mvneta.c
 
 Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Acked-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- drivers/net/ethernet/freescale/fman/fman_memac.c | 1 +
+ drivers/net/ethernet/marvell/mvneta.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/freescale/fman/fman_memac.c b/drivers/net/ethernet/freescale/fman/fman_memac.c
-index 71a5ded9d1de..cd6a53eaf161 100644
---- a/drivers/net/ethernet/freescale/fman/fman_memac.c
-+++ b/drivers/net/ethernet/freescale/fman/fman_memac.c
-@@ -38,6 +38,7 @@
- #include <linux/slab.h>
- #include <linux/io.h>
+diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+index 0f4d1697be46..fdf71720e707 100644
+--- a/drivers/net/ethernet/marvell/mvneta.c
++++ b/drivers/net/ethernet/marvell/mvneta.c
+@@ -28,6 +28,7 @@
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
  #include <linux/phy.h>
 +#include <linux/phy_fixed.h>
- #include <linux/of_mdio.h>
- 
- /* PCS registers */
+ #include <linux/platform_device.h>
+ #include <linux/skbuff.h>
+ #include <net/hwbm.h>
 -- 
 2.9.3

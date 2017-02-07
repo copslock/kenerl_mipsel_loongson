@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 07:14:42 +0100 (CET)
-Received: from smtp.gentoo.org ([140.211.166.183]:34044 "EHLO smtp.gentoo.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992036AbdBGGOLRSt7r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Feb 2017 07:14:11 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 07:15:04 +0100 (CET)
+Received: from dev.gentoo.org ([IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4]:51857
+        "EHLO smtp.gentoo.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992078AbdBGGOLZGcWr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Feb 2017 07:14:11 +0100
 Received: from helcaraxe.arda (c-73-201-78-97.hsd1.md.comcast.net [73.201.78.97])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kumba)
-        by smtp.gentoo.org (Postfix) with ESMTPSA id 9C61A341699;
-        Tue,  7 Feb 2017 06:14:04 +0000 (UTC)
+        by smtp.gentoo.org (Postfix) with ESMTPSA id 37B1D34169B;
+        Tue,  7 Feb 2017 06:14:05 +0000 (UTC)
 From:   Joshua Kinard <kumba@gentoo.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linux/MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH 01/12] MIPS: BRIDGE: Rename pci-ip27.c to pci-bridge.c
-Date:   Tue,  7 Feb 2017 01:13:45 -0500
-Message-Id: <20170207061356.8270-2-kumba@gentoo.org>
+Subject: [PATCH 02/12] MIPS: IP27: Add pcibr.h header for IP27
+Date:   Tue,  7 Feb 2017 01:13:46 -0500
+Message-Id: <20170207061356.8270-3-kumba@gentoo.org>
 X-Mailer: git-send-email 2.11.1
 In-Reply-To: <20170207061356.8270-1-kumba@gentoo.org>
 References: <20170207061356.8270-1-kumba@gentoo.org>
@@ -22,7 +22,7 @@ Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56675
+X-archive-position: 56676
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,32 +41,70 @@ X-list: linux-mips
 
 From: Joshua Kinard <kumba@gentoo.org>
 
-Rename arch/mips/pci/pci-ip27.c to arch/mips/pci/pci-bridge.c so that
-it can become a generic driver for all BRIDGE/XBRIDGE-based systems
-and update the Makefile for this change.
+Add a new header 'pcibr.h' to arch/mips/include/asm/mach-ip27 which
+contains IP27-specific definitions for the BRIDGE ASIC used to connect
+PCI devices to the Crosstalk bus.
 
 Signed-off-by: Joshua Kinard <kumba@gentoo.org>
 ---
- arch/mips/pci/Makefile                     | 2 +-
- arch/mips/pci/{pci-ip27.c => pci-bridge.c} | 0
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/mach-ip27/pcibr.h | 50 +++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index 4b821481dd44..7ff66cce2cf7 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -37,7 +37,7 @@ obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o pci-malta.o
- obj-$(CONFIG_PMC_MSP7120_GW)	+= fixup-pmcmsp.o ops-pmcmsp.o
- obj-$(CONFIG_PMC_MSP7120_EVAL)	+= fixup-pmcmsp.o ops-pmcmsp.o
- obj-$(CONFIG_PMC_MSP7120_FPGA)	+= fixup-pmcmsp.o ops-pmcmsp.o
--obj-$(CONFIG_SGI_IP27)		+= ops-bridge.o pci-ip27.o
-+obj-$(CONFIG_SGI_IP27)		+= ops-bridge.o pci-bridge.o
- obj-$(CONFIG_SGI_IP32)		+= fixup-ip32.o ops-mace.o pci-ip32.o
- obj-$(CONFIG_SIBYTE_SB1250)	+= fixup-sb1250.o pci-sb1250.o
- obj-$(CONFIG_SIBYTE_BCM112X)	+= fixup-sb1250.o pci-sb1250.o
-diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-bridge.c
-similarity index 100%
-rename from arch/mips/pci/pci-ip27.c
-rename to arch/mips/pci/pci-bridge.c
+diff --git a/arch/mips/include/asm/mach-ip27/pcibr.h b/arch/mips/include/asm/mach-ip27/pcibr.h
+new file mode 100644
+index 000000000000..6664843c30f9
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ip27/pcibr.h
+@@ -0,0 +1,50 @@
++/*
++ * Definitions for PCI bridges in IP27.  Derived from pcibr.h in the
++ * IP30 port.
++ *
++ * Copyright (C) 2004-2007 Stanislaw Skowronek <skylark@unaligned.org>
++ * Copyright (C) 2015-2016 Joshua Kinard <kumba@gentoo.org>
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++
++#ifndef __ASM_MACH_IP27_PCIBR_H
++#define __ASM_MACH_IP27_PCIBR_H
++
++#include <asm/pci/bridge.h>
++#include <asm/mach-ip27/irq.h>
++
++/* Xtalk */
++#define PCIBR_OFFSET_MEM	0x200000
++#define PCIBR_OFFSET_IO		0xa00000
++#define PCIBR_OFFSET_END	0xc00000
++
++/*
++ * This is how XIO sees HUB's PI_INT_PEND_MOD register.
++ */
++#define PCIBR_XIO_SEES_HUB	0x01800090
++
++/*
++ * Max # of PCI buses we can handle; ie, max #PCI bridges.
++ */
++#define PCIBR_MAX_NUM_PCIBUS	40
++
++/*
++ * Max # of PCI devices (like scsi controllers) we handle on a bus.
++ */
++#define PCIBR_MAX_DEV_PCIBUS	8
++
++/*
++ * Used by ip27-bridge.c and ip27-irq.c.
++ */
++#define PCIBR_MAX_BUS_X_DEV	(PCIBR_MAX_NUM_PCIBUS * PCIBR_MAX_DEV_PCIBUS)
++extern struct bridge_controller *irq_to_bridge[PCIBR_MAX_BUS_X_DEV];
++extern u32 irq_to_slot[PCIBR_MAX_BUS_X_DEV];
++
++/* XXX: Temporary until IP27 "mega update". */
++extern int request_bridge_irq(struct bridge_controller *bc);
++
++#endif /* __ASM_MACH_IP27_PCIBR_H */
++
 -- 
 2.11.1

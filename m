@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 08:32:41 +0100 (CET)
-Received: from smtpbg339.qq.com ([14.17.44.34]:34592 "EHLO smtpbg339.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 08:33:02 +0100 (CET)
+Received: from smtpbg340.qq.com ([14.17.44.35]:58233 "EHLO smtpbg340.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992221AbdBGHadyC1km (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 7 Feb 2017 08:30:33 +0100
-X-QQ-mid: bizesmtp16t1486452574t0nn1r4l
+        id S23992240AbdBGHahW2lGm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Feb 2017 08:30:37 +0100
+X-QQ-mid: bizesmtp16t1486452582tweewd6g
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 07 Feb 2017 15:29:33 +0800 (CST)
+        id ; Tue, 07 Feb 2017 15:29:41 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FG61B00A0000000
-X-QQ-FEAT: azVybbNp5hDIt14xN2U1r0zP6gW1JCEF9DjewAwDWe/fBHtmraGdBVZYcvYrl
-        jx9q4JP4HLZct8vc0mVV0sVWQx48fv1iMkaVfM6mSuKKGtXr/hQAYqK6GnaMGC+0yLPRfZH
-        1ZFyiYLHH2C+TQJ3tIeBKjpDo8NyM3UTC59qIDTxrZNS0nm7EVP/CigIPtjduiYDamZO7rj
-        17o13Ui5QDbGaZNAQpZTXrpaA9+mdA+QUho8fh6Iu+mzeP8OgR/4eKs8dx2XSbbE79gbZwF
-        ntXWBtC7ciFEpQ2w5Tg+o3PleHPGtVXW6VJw==
+X-QQ-FEAT: 6dXuswn9i1XIALQShABanONB7mxL7YidXOgI1jNcxCdUZKP9kzAx3cVBGUa2h
+        mAxbtVJPpMpQ0zGm/JSOByCO1NIwBIqlTqVwKA5aPsOL/khJOCrjYrdyDHRJ9OzqUaXnFFN
+        sI5hWmLZKWkxXDXPUnjS2uPicWVORVtTfyhTf30f0qbIWRMdDmZ+zeZu/Dtq2X3GtOOVUAG
+        ZJo1Q3vGBXZenwnhVCeL5cHoGwkvTuJymAQwlW0cDF5D5cIOJna2xg9rRBMRYFUba205W9y
+        p7VzWaTcug9uUHu8/tHBbnGv/lVAL2JDAhzQ==
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -24,9 +24,9 @@ Cc:     John Crispin <john@phrozen.org>,
         Yang Ling <gnaygnil@gmail.com>,
         Binbin Zhou <zhoubb@lemote.com>,
         HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH v4 5/8] MIPS: Loongson: Add platform devices for Loongson-1A
-Date:   Tue,  7 Feb 2017 15:29:07 +0800
-Message-Id: <1486452550-10721-6-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH v4 8/8] MIPS: Loongson: Add Loongson-1A default config file
+Date:   Tue,  7 Feb 2017 15:29:10 +0800
+Message-Id: <1486452550-10721-9-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1486452550-10721-1-git-send-email-zhoubb@lemote.com>
 References: <1486452550-10721-1-git-send-email-zhoubb@lemote.com>
@@ -35,7 +35,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56693
+X-archive-position: 56694
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,289 +52,149 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Added basic platform devices for Loongson-1A, including serial port,
-ethernet, AHCI, USB, RTC Frambuffer and so on.
-
-As we known, Most of them are shared with Loongson 1B/1C,
-like serial port, ethernet and so on.
-
-Specially, something like AHCI is only used in Loonson 1A.
-
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: HuaCai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/mach-loongson32/irq.h       | 16 ++++--
- arch/mips/include/asm/mach-loongson32/loongson1.h |  2 +-
- arch/mips/include/asm/mach-loongson32/platform.h  |  2 +
- arch/mips/include/asm/mach-loongson32/regs-mux.h  | 36 +++++++++++-
- arch/mips/loongson32/common/irq.c                 |  2 +-
- arch/mips/loongson32/common/platform.c            | 67 +++++++++++++++++++++--
- 6 files changed, 111 insertions(+), 14 deletions(-)
+ arch/mips/configs/loongson1a_defconfig | 131 +++++++++++++++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
+ create mode 100644 arch/mips/configs/loongson1a_defconfig
 
-diff --git a/arch/mips/include/asm/mach-loongson32/irq.h b/arch/mips/include/asm/mach-loongson32/irq.h
-index 8c01b30..e790957 100644
---- a/arch/mips/include/asm/mach-loongson32/irq.h
-+++ b/arch/mips/include/asm/mach-loongson32/irq.h
-@@ -36,7 +36,7 @@
- #define LS1X_IRQ(n, x)			(LS1X_IRQ_BASE + (n << 5) + (x))
- 
- #define LS1X_UART0_IRQ			LS1X_IRQ(0, 2)
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A) || defined(CONFIG_LOONGSON1_LS1B)
- #define LS1X_UART1_IRQ			LS1X_IRQ(0, 3)
- #define LS1X_UART2_IRQ			LS1X_IRQ(0, 4)
- #define LS1X_UART3_IRQ			LS1X_IRQ(0, 5)
-@@ -52,7 +52,9 @@
- #define LS1X_DMA0_IRQ			LS1X_IRQ(0, 13)
- #define LS1X_DMA1_IRQ			LS1X_IRQ(0, 14)
- #define LS1X_DMA2_IRQ			LS1X_IRQ(0, 15)
--#if defined(CONFIG_LOONGSON1_LS1C)
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+#define LS1X_LPC_IRQ			LS1X_IRQ(0, 16)
-+#elif defined(CONFIG_LOONGSON1_LS1C)
- #define LS1X_NAND_IRQ			LS1X_IRQ(0, 16)
- #endif
- #define LS1X_PWM0_IRQ			LS1X_IRQ(0, 17)
-@@ -62,7 +64,7 @@
- #define LS1X_RTC_INT0_IRQ		LS1X_IRQ(0, 21)
- #define LS1X_RTC_INT1_IRQ		LS1X_IRQ(0, 22)
- #define LS1X_RTC_INT2_IRQ		LS1X_IRQ(0, 23)
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A) || defined(CONFIG_LOONGSON1_LS1B)
- #define LS1X_TOY_INT0_IRQ		LS1X_IRQ(0, 24)
- #define LS1X_TOY_INT1_IRQ		LS1X_IRQ(0, 25)
- #define LS1X_TOY_INT2_IRQ		LS1X_IRQ(0, 26)
-@@ -78,7 +80,11 @@
- 
- #define LS1X_EHCI_IRQ			LS1X_IRQ(1, 0)
- #define LS1X_OHCI_IRQ			LS1X_IRQ(1, 1)
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+#define LS1X_GMAC0_IRQ			LS1X_IRQ(1, 2)
-+#define LS1X_GMAC1_IRQ			LS1X_IRQ(1, 3)
-+#define LS1X_SATA_IRQ			LS1X_IRQ(1, 4)
-+#elif defined(CONFIG_LOONGSON1_LS1B)
- #define LS1X_GMAC0_IRQ			LS1X_IRQ(1, 2)
- #define LS1X_GMAC1_IRQ			LS1X_IRQ(1, 3)
- #elif defined(CONFIG_LOONGSON1_LS1C)
-@@ -100,7 +106,7 @@
- 
- #if defined(CONFIG_LOONGSON1_LS1B)
- #define INTN	4
--#elif defined(CONFIG_LOONGSON1_LS1C)
-+#elif defined(CONFIG_LOONGSON1_LS1A) || defined(CONFIG_LOONGSON1_LS1C)
- #define INTN	5
- #endif
- 
-diff --git a/arch/mips/include/asm/mach-loongson32/loongson1.h b/arch/mips/include/asm/mach-loongson32/loongson1.h
-index 8cfd4ba..029b3b7 100644
---- a/arch/mips/include/asm/mach-loongson32/loongson1.h
-+++ b/arch/mips/include/asm/mach-loongson32/loongson1.h
-@@ -12,7 +12,7 @@
- #ifndef __ASM_MACH_LOONGSON32_LOONGSON1_H
- #define __ASM_MACH_LOONGSON32_LOONGSON1_H
- 
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A) || defined(CONFIG_LOONGSON1_LS1B)
- #define DEFAULT_MEMSIZE			64	/* If no memsize provided */
- #elif defined(CONFIG_LOONGSON1_LS1C)
- #define DEFAULT_MEMSIZE			32
-diff --git a/arch/mips/include/asm/mach-loongson32/platform.h b/arch/mips/include/asm/mach-loongson32/platform.h
-index 8f8fa43..f28f814 100644
---- a/arch/mips/include/asm/mach-loongson32/platform.h
-+++ b/arch/mips/include/asm/mach-loongson32/platform.h
-@@ -26,6 +26,8 @@ extern struct platform_device ls1x_gpio1_pdev;
- extern struct platform_device ls1x_nand_pdev;
- extern struct platform_device ls1x_rtc_pdev;
- extern struct platform_device ls1x_wdt_pdev;
-+extern struct platform_device ls1x_ahci_pdev;
-+extern struct platform_device ls1x_ohci_pdev;
- 
- void __init ls1x_clk_init(void);
- void __init ls1x_dma_set_platdata(struct plat_ls1x_dma *pdata);
-diff --git a/arch/mips/include/asm/mach-loongson32/regs-mux.h b/arch/mips/include/asm/mach-loongson32/regs-mux.h
-index 4a0bdeb..2c22603 100644
---- a/arch/mips/include/asm/mach-loongson32/regs-mux.h
-+++ b/arch/mips/include/asm/mach-loongson32/regs-mux.h
-@@ -18,7 +18,41 @@
- #define LS1X_MUX_CTRL0			LS1X_MUX_REG(0x0)
- #define LS1X_MUX_CTRL1			LS1X_MUX_REG(0x4)
- 
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+/* GPIO CTRL0 Register Bits */
-+#define NAND3_USE_CAN1			BIT(31)
-+#define NAND2_USE_MS			BIT(30)
-+#define NAND1_USE_PWM01			BIT(29)
-+#define NAND3_D45_USE_PWM23		BIT(28)
-+#define NAND3_D45_USE_LPC		BIT(27)
-+#define NAND3_D03_USE_SPI1		BIT(26)
-+#define NAND3_D03_USE_LPC		BIT(25)
-+#define GMAC1_SHUT			BIT(24)
-+#define GMAC0_SHUT			BIT(23)
-+#define SATA_SHUT			BIT(22)
-+#define USB_SHUT			BIT(21)
-+#define GPU_SHUT			BIT(20)
-+#define DDR2_SHUT			BIT(19)
-+#define VGA_USE_PCI			BIT(18)
-+#define I2C3_USE_CAN0			BIT(17)
-+#define I2C2_USE_CAN1			BIT(16)
-+#define SPI0_USE_CAN0_TX		BIT(15)
-+#define SPI0_USE_CAN0_RX		BIT(14)
-+#define SPI1_USE_CAN1_TX		BIT(13)
-+#define SPI1_USE_CAN1_RX		BIT(12)
-+#define GMAC1_USE_TXCLK			BIT(11)
-+#define GMAC0_USE_TXCLK			BIT(10)
-+#define GMAC1_USE_PWM23			BIT(9)
-+#define GMAC0_USE_PWM01			BIT(8)
-+#define GMAC1_USE_UART1			BIT(7)
-+#define GMAC1_USE_UART0			BIT(6)
-+#define GMAC1_USE_SPI1			BIT(5)
-+#define GMAC1_USE_NAND			BIT(4)
-+#define PCI_REQ2_USE_GMAC1		BIT(2)
-+#define DISABLE_DDR2_CONFSPACE		BIT(1)
-+#define DDE32TO16EN			BIT(0)
-+
-+#elif defined(CONFIG_LOONGSON1_LS1B)
- /* MUX CTRL0 Register Bits */
- #define UART0_USE_PWM23			BIT(28)
- #define UART0_USE_PWM01			BIT(27)
-diff --git a/arch/mips/loongson32/common/irq.c b/arch/mips/loongson32/common/irq.c
-index 635a4ab..b414eca 100644
---- a/arch/mips/loongson32/common/irq.c
-+++ b/arch/mips/loongson32/common/irq.c
-@@ -184,7 +184,7 @@ static void __init ls1x_irq_init(int base)
- 	setup_irq(INT1_IRQ, &cascade_irqaction);
- 	setup_irq(INT2_IRQ, &cascade_irqaction);
- 	setup_irq(INT3_IRQ, &cascade_irqaction);
--#if defined(CONFIG_LOONGSON1_LS1C)
-+#if defined(CONFIG_LOONGSON1_LS1A) || defined(CONFIG_LOONGSON1_LS1C)
- 	setup_irq(INT4_IRQ, &cascade_irqaction);
- #endif
- }
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index f71392f..6b83fcf 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -16,6 +16,7 @@
- #include <linux/serial_8250.h>
- #include <linux/stmmac.h>
- #include <linux/usb/ehci_pdriver.h>
-+#include <linux/usb/ohci_pdriver.h>
- 
- #include <platform.h>
- #include <loongson1.h>
-@@ -133,7 +134,7 @@ int ls1x_eth_mux_init(struct platform_device *pdev, void *priv)
- 
- 	val = __raw_readl(LS1X_MUX_CTRL1);
- 
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A) || defined(CONFIG_LOONGSON1_LS1B)
- 	plat_dat = dev_get_platdata(&pdev->dev);
- 	if (plat_dat->bus_id) {
- 		__raw_writel(__raw_readl(LS1X_MUX_CTRL0) | GMAC1_USE_UART1 |
-@@ -185,7 +186,7 @@ int ls1x_eth_mux_init(struct platform_device *pdev, void *priv)
- static struct plat_stmmacenet_data ls1x_eth0_pdata = {
- 	.bus_id		= 0,
- 	.phy_addr	= -1,
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A) || defined(CONFIG_LOONGSON1_LS1B)
- 	.interface	= PHY_INTERFACE_MODE_MII,
- #elif defined(CONFIG_LOONGSON1_LS1C)
- 	.interface	= PHY_INTERFACE_MODE_RMII,
-@@ -220,7 +221,7 @@ struct platform_device ls1x_eth0_pdev = {
- 	},
- };
- 
--#ifdef CONFIG_LOONGSON1_LS1B
-+#if defined(CONFIG_LOONGSON1_LS1A) || defined(CONFIG_LOONGSON1_LS1B)
- static struct plat_stmmacenet_data ls1x_eth1_pdata = {
- 	.bus_id		= 1,
- 	.phy_addr	= -1,
-@@ -254,7 +255,7 @@ struct platform_device ls1x_eth1_pdev = {
- 		.platform_data = &ls1x_eth1_pdata,
- 	},
- };
--#endif	/* CONFIG_LOONGSON1_LS1B */
-+#endif	/* CONFIG_LOONGSON1_LS1A || CONFIG_LOONGSON1_LS1B */
- 
- /* GPIO */
- static struct resource ls1x_gpio0_resources[] = {
-@@ -315,7 +316,7 @@ void __init ls1x_nand_set_platdata(struct plat_ls1x_nand *pdata)
- }
- 
- /* USB EHCI */
--static u64 ls1x_ehci_dmamask = DMA_BIT_MASK(32);
-+static u64 ls1x_platform_dmamask = DMA_BIT_MASK(32);
- 
- static struct resource ls1x_ehci_resources[] = {
- 	[0] = {
-@@ -338,11 +339,65 @@ struct platform_device ls1x_ehci_pdev = {
- 	.num_resources	= ARRAY_SIZE(ls1x_ehci_resources),
- 	.resource	= ls1x_ehci_resources,
- 	.dev		= {
--		.dma_mask = &ls1x_ehci_dmamask,
-+		.dma_mask = &ls1x_platform_dmamask,
- 		.platform_data = &ls1x_ehci_pdata,
- 	},
- };
- 
-+/* USB OHCI */
-+static struct resource ls1x_ohci_resources[] = {
-+	[0] = {
-+		.start	= LS1X_OHCI_BASE,
-+		.end	= LS1X_OHCI_BASE + SZ_32K - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= LS1X_OHCI_IRQ,
-+		.end	= LS1X_OHCI_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct usb_ohci_pdata ls1x_ohci_data = {
-+};
-+
-+struct platform_device ls1x_ohci_pdev = {
-+	.name		= "ohci-platform",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_ohci_resources),
-+	.resource	= ls1x_ohci_resources,
-+	.dev = {
-+		.dma_mask	= &ls1x_platform_dmamask,
-+		.platform_data	= &ls1x_ohci_data,
-+	},
-+};
-+
-+#ifdef CONFIG_LOONGSON1_LS1A
-+/* AHCI */
-+static struct resource ls1x_ahci_resources[] = {
-+	[0] = {
-+		.start	= LS1X_AHCI_BASE,
-+		.end	= LS1X_AHCI_BASE + SZ_64K - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= LS1X_SATA_IRQ,
-+		.end	= LS1X_SATA_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+struct platform_device ls1x_ahci_pdev = {
-+	.name		= "ahci",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(ls1x_ahci_resources),
-+	.resource	= ls1x_ahci_resources,
-+	.dev		= {
-+		.dma_mask = &ls1x_platform_dmamask,
-+	},
-+};
-+#endif
-+
- /* Real Time Clock */
- void __init ls1x_rtc_set_extclk(struct platform_device *pdev)
- {
+diff --git a/arch/mips/configs/loongson1a_defconfig b/arch/mips/configs/loongson1a_defconfig
+new file mode 100644
+index 0000000..be9a0cc
+--- /dev/null
++++ b/arch/mips/configs/loongson1a_defconfig
+@@ -0,0 +1,131 @@
++CONFIG_MACH_LOONGSON32=y
++CONFIG_ZONE_DMA=y
++CONFIG_PAGE_SIZE_16KB=y
++CONFIG_HIGHMEM=y
++CONFIG_HZ_1000=y
++CONFIG_PREEMPT_VOLUNTARY=y
++# CONFIG_SECCOMP is not set
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_BSD_PROCESS_ACCT=y
++CONFIG_BSD_PROCESS_ACCT_V3=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_CGROUPS=y
++CONFIG_BLK_CGROUP=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_CGROUP_FREEZER=y
++CONFIG_CPUSETS=y
++CONFIG_CGROUP_DEVICE=y
++CONFIG_EXPERT=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_SUSPEND is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_SYN_COOKIES=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_DIAG is not set
++# CONFIG_IPV6 is not set
++CONFIG_BRIDGE=y
++# CONFIG_BRIDGE_IGMP_SNOOPING is not set
++# CONFIG_WIRELESS is not set
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++CONFIG_MTD=y
++CONFIG_MTD_CMDLINE_PARTS=y
++CONFIG_MTD_BLOCK=y
++CONFIG_NFTL=y
++CONFIG_NFTL_RW=y
++CONFIG_MTD_NAND=y
++CONFIG_MTD_SPI_NOR=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_RAM=y
++# CONFIG_SCSI_PROC_FS is not set
++CONFIG_BLK_DEV_SD=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_ATA=y
++# CONFIG_SATA_PMP is not set
++CONFIG_SATA_AHCI_PLATFORM=y
++# CONFIG_ATA_SFF is not set
++CONFIG_NETDEVICES=y
++CONFIG_NETCONSOLE=y
++# CONFIG_NET_VENDOR_ARC is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_SAMSUNG is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++CONFIG_STMMAC_ETH=y
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_NET_VENDOR_WIZNET is not set
++CONFIG_REALTEK_PHY=y
++# CONFIG_USB_NET_DRIVERS is not set
++# CONFIG_WLAN is not set
++# CONFIG_INPUT_MOUSEDEV is not set
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_SERIO is not set
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_LEGACY_PTY_COUNT=8
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++# CONFIG_HW_RANDOM is not set
++CONFIG_I2C=y
++CONFIG_SPI=y
++# CONFIG_HWMON is not set
++CONFIG_WATCHDOG=y
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_USB=y
++CONFIG_USB_MON=y
++CONFIG_USB_XHCI_HCD=m
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_HCD_PLATFORM=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_HCD_PLATFORM=y
++CONFIG_USB_STORAGE=m
++CONFIG_USB_GADGET=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_PCF8563=y
++# CONFIG_IOMMU_SUPPORT is not set
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_VFAT_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++# CONFIG_MISC_FILESYSTEMS is not set
++# CONFIG_NETWORK_FILESYSTEMS is not set
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_PRINTK_TIME=y
++# CONFIG_ENABLE_WARN_DEPRECATED is not set
++# CONFIG_ENABLE_MUST_CHECK is not set
++CONFIG_MAGIC_SYSRQ=y
++# CONFIG_SCHED_DEBUG is not set
++# CONFIG_FTRACE is not set
++CONFIG_XZ_DEC=y
 -- 
 2.9.3

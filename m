@@ -1,26 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 07:14:17 +0100 (CET)
-Received: from mail.gentoo.org ([IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4]:57843
-        "EHLO smtp.gentoo.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991965AbdBGGOLF9-Nr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Feb 2017 07:14:11 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2017 07:14:42 +0100 (CET)
+Received: from smtp.gentoo.org ([140.211.166.183]:34044 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992036AbdBGGOLRSt7r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Feb 2017 07:14:11 +0100
 Received: from helcaraxe.arda (c-73-201-78-97.hsd1.md.comcast.net [73.201.78.97])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kumba)
-        by smtp.gentoo.org (Postfix) with ESMTPSA id 06ACA341698;
-        Tue,  7 Feb 2017 06:14:03 +0000 (UTC)
+        by smtp.gentoo.org (Postfix) with ESMTPSA id 9C61A341699;
+        Tue,  7 Feb 2017 06:14:04 +0000 (UTC)
 From:   Joshua Kinard <kumba@gentoo.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linux/MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH 00/12] MIPS: BRIDGE Updates
-Date:   Tue,  7 Feb 2017 01:13:44 -0500
-Message-Id: <20170207061356.8270-1-kumba@gentoo.org>
+Subject: [PATCH 01/12] MIPS: BRIDGE: Rename pci-ip27.c to pci-bridge.c
+Date:   Tue,  7 Feb 2017 01:13:45 -0500
+Message-Id: <20170207061356.8270-2-kumba@gentoo.org>
 X-Mailer: git-send-email 2.11.1
+In-Reply-To: <20170207061356.8270-1-kumba@gentoo.org>
+References: <20170207061356.8270-1-kumba@gentoo.org>
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56674
+X-archive-position: 56675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,44 +41,32 @@ X-list: linux-mips
 
 From: Joshua Kinard <kumba@gentoo.org>
 
-This series performs a number of clean-ups on the code for the BRIDGE
-ASIC found in several SGI platforms.  It must be applied after the
-Xtalk clean-up patch series is applied.
+Rename arch/mips/pci/pci-ip27.c to arch/mips/pci/pci-bridge.c so that
+it can become a generic driver for all BRIDGE/XBRIDGE-based systems
+and update the Makefile for this change.
 
-Notable changes include:
- - Genericize the IP27 BRIDGE driver so future platforms can use it
- - Prepare the generic BRIDGE driver to become a platform_driver
- - Clean-up/replace IRIX-era structures and macros in bridge.h
- - Fix the recent PCI_PROBE_ONLY change to work for IP27 again.
+Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+---
+ arch/mips/pci/Makefile                     | 2 +-
+ arch/mips/pci/{pci-ip27.c => pci-bridge.c} | 0
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-Joshua Kinard (12):
-  MIPS: BRIDGE: Rename pci-ip27.c to pci-bridge.c
-  MIPS: IP27: Add pcibr.h header for IP27
-  MIPS: PCI: Minor clean-ups to pci-legacy.c
-  MIPS: PCI: Add BRIDGE 'pre_enable' hook
-  MIPS: BRIDGE: Clean-up bridge.h header file
-  MIPS: BRIDGE: Overhaul bridge.h header file
-  MIPS: BRIDGE: Add XBRIDGE revs and SWAP bit
-  MIPS: BRIDGE: Update ops-bridge.c
-  MIPS: BRIDGE: Use !pci_is_root_bus(bus) to check for bus->number > 0
-  MIPS: BRIDGE: Overhaul pci-bridge.c driver
-  MIPS: IP27: Update IRQ code to work with the new BRIDGE code
-  MIPS: PCI: Fix IP27 for the PCI_PROBE_ONLY case
-
- arch/mips/include/asm/mach-ip27/pcibr.h |   50 +
- arch/mips/include/asm/pci.h             |    3 +
- arch/mips/include/asm/pci/bridge.h      | 1353 ++++++++++++---------
- arch/mips/pci/Makefile                  |    2 +-
- arch/mips/pci/ops-bridge.c              |  129 +-
- arch/mips/pci/pci-bridge.c              |  321 +++++
- arch/mips/pci/pci-ip27.c                |  230 ----
- arch/mips/pci/pci-legacy.c              |   74 +-
- arch/mips/sgi-ip27/ip27-irq-pci.c       |   72 +-
- arch/mips/sgi-ip27/ip27-irq.c           |    5 +
- 10 files changed, 1313 insertions(+), 926 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-ip27/pcibr.h
- create mode 100644 arch/mips/pci/pci-bridge.c
- delete mode 100644 arch/mips/pci/pci-ip27.c
-
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index 4b821481dd44..7ff66cce2cf7 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -37,7 +37,7 @@ obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o pci-malta.o
+ obj-$(CONFIG_PMC_MSP7120_GW)	+= fixup-pmcmsp.o ops-pmcmsp.o
+ obj-$(CONFIG_PMC_MSP7120_EVAL)	+= fixup-pmcmsp.o ops-pmcmsp.o
+ obj-$(CONFIG_PMC_MSP7120_FPGA)	+= fixup-pmcmsp.o ops-pmcmsp.o
+-obj-$(CONFIG_SGI_IP27)		+= ops-bridge.o pci-ip27.o
++obj-$(CONFIG_SGI_IP27)		+= ops-bridge.o pci-bridge.o
+ obj-$(CONFIG_SGI_IP32)		+= fixup-ip32.o ops-mace.o pci-ip32.o
+ obj-$(CONFIG_SIBYTE_SB1250)	+= fixup-sb1250.o pci-sb1250.o
+ obj-$(CONFIG_SIBYTE_BCM112X)	+= fixup-sb1250.o pci-sb1250.o
+diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-bridge.c
+similarity index 100%
+rename from arch/mips/pci/pci-ip27.c
+rename to arch/mips/pci/pci-bridge.c
 -- 
 2.11.1

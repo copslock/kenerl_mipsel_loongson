@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:05:42 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:34909
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:06:06 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:36396
         "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992221AbdBGXE15W7kI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:04:27 +0100
-Received: by mail-wm0-x241.google.com with SMTP id u63so30970420wmu.2;
-        Tue, 07 Feb 2017 15:04:27 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S23992255AbdBGXEfWXpFI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:04:35 +0100
+Received: by mail-wm0-x241.google.com with SMTP id r18so31048175wmd.3;
+        Tue, 07 Feb 2017 15:04:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=eAlv0osZZgDfTGDafZZFb+oSqqLYKb7P1DLSJNZRuTw=;
-        b=cX8rU3eCxkjm1SvNdvgqH6LzrlI+CelWMnGkB3dTn/+jk826+/oGOtRTaLrGO/AHOq
-         WXRJbxa2e4j8KqcP/nSMnpyiCLPgV9578WLYNS5HSpzXtRlz38Ggzg6Zvj8tuKT9yVf2
-         TdaabuJozZipjGDy7P6GI7eTwRKmt9P1PylLUsP2MUiFm714BGXXyMlam0xbgWlcAF4Q
-         L6TuDzVyK0ABlvL9ExX3YjkxEVwedf9NihFtmM5JGuxW0VLKRHL4HjRnb2wyR9OObPJX
-         3Tz74FGyrjt89XdAqWAOkYIUaBELK9Q2RZTd4SLbWlcjdZm6IKn33xK8YCDsoTHf9Qth
-         tSOA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=v2DT88GYZmkkNL1RIA734rORBYb38no/svhgaIiaxho=;
+        b=uA7Vn0rxOZe2kg4HWjQH2AP1wi8VgNFDa4tvxNtcIsk2D/mt8wfxvUgG0RThWgzqnZ
+         p1He4xh6E/rifAsc92YJ3+NIw3o4Om2eZAF/87LPscS9pmdolnvpT8sMITJeX4ga8YJr
+         ITGbZLexmHf8IrVV8xeo8wFh//50aodQpPUS0GGOjqqTmyuxyvT5MO1RHnzMSbHxY71N
+         QfZ7Pry/Q3BiorXN+DUj3/ToiCNcb+2b3jvMbqm8OKXJ2P2DJQxygbPAXbnkSJ1P0k2c
+         HRUVEtiLkozhGL2FD6SqVDfqsldnd1xhJXTiIHq4vj+HD+o2gKAJxhXZxZUmm/T/SgkJ
+         2TWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=eAlv0osZZgDfTGDafZZFb+oSqqLYKb7P1DLSJNZRuTw=;
-        b=lUM9LN/jizZuaJJp5Nzsx09UsPHIh6gCOH7735J22xksyq3Xdmiomst2tybdW1WDDJ
-         32y929aiekxhQis5Gxr/oEgVVrEerq1Qo1sP53vxwSV8lHpmj63L1RKw0vXiHh0eCDmt
-         KB+N+OkF30fcZgDiAAFe6ijnmNNWz/78f0h26hS026hiYC9OlfMIwKiw0h4yjprjlKIw
-         pwP5Svs21B6atpRdFZEKLIDsJs6aiQbeT1Tq/Y+/lCFEGDjvuA/q2nAXj4kY/EoNQx3n
-         bDPOqQltkM20gZymSQYx08QqKvLtd2HTAkvvRfK1FqCCHTuk9fA6d9lmk9F0cf6UGZ04
-         fdEA==
-X-Gm-Message-State: AMke39my5UMre+rbuP7Uzc7td7TcYe1eobJ0eTfA35N1Qa38yrL47+2hcemGEWE42XezcQ==
-X-Received: by 10.28.217.83 with SMTP id q80mr14073721wmg.58.1486508662658;
-        Tue, 07 Feb 2017 15:04:22 -0800 (PST)
+         :references:mime-version:content-transfer-encoding;
+        bh=v2DT88GYZmkkNL1RIA734rORBYb38no/svhgaIiaxho=;
+        b=UO9fyPydQasW0+Du+gk6XCX6MWO9FeZkbouH2zFtdNlsWTSjmV2B47oiaemd6jc6vd
+         0EBTIcao5gSykHSCzmNdFY1fgZUEM5O1npaMPaVcKmyB6e0XO5m0D5ObhyLd5Kg/apn9
+         52Cg0KVwJ/f0+xV9JXwAX7MBYyTSi7W/B2V+XcdSIbwY0BWbQ3y0TxVCt8GZLHGQdojk
+         ktStoCmAv6j/HmG05NhP4GBRjU4wajEEoNMPAUJXjF/cNWR1me4CEsces10246+g1cR7
+         4RlYIbeq06aY/1T7cbd23y4kFsyipTfit7nph2Fzz8vOwAZrJIvxIzFR11gxWsy/nOkt
+         +J4A==
+X-Gm-Message-State: AIkVDXJcZawxkPNJo5UaiJcbt2D+NLAyWBiPSQnJkYEM0+0mGcp+QfvkoaZF89CFH6ICPQ==
+X-Received: by 10.223.172.17 with SMTP id v17mr16142837wrc.115.1486508670051;
+        Tue, 07 Feb 2017 15:04:30 -0800 (PST)
 Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.04.14
+        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.04.22
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Feb 2017 15:04:22 -0800 (PST)
+        Tue, 07 Feb 2017 15:04:29 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
         linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
@@ -63,17 +64,20 @@ Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
         Trond Myklebust <trond.myklebust@primarydata.com>,
         Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
         Woojung Huh <woojung.huh@microchip.com>
-Subject: [PATCH net-next v2 04/12] net: lan78xx: fix build errors when linux/phy*.h is removed from net/dsa.h
-Date:   Tue,  7 Feb 2017 15:02:57 -0800
-Message-Id: <20170207230305.18222-5-f.fainelli@gmail.com>
+Subject: [PATCH net-next v2 05/12] net: bgmac: fix build errors when linux/phy*.h is removed from net/dsa.h
+Date:   Tue,  7 Feb 2017 15:02:58 -0800
+Message-Id: <20170207230305.18222-6-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20170207230305.18222-1-f.fainelli@gmail.com>
 References: <20170207230305.18222-1-f.fainelli@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56709
+X-archive-position: 56710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,30 +96,49 @@ X-list: linux-mips
 
 From: Russell King <rmk+kernel@armlinux.org.uk>
 
-drivers/net/usb/lan78xx.c:394:33: sparse: expected ; at end of declaration
-drivers/net/usb/lan78xx.c:394:33: sparse: Expected } at end of struct-union-enum-specifier
-drivers/net/usb/lan78xx.c:394:33: sparse: got interface
-drivers/net/usb/lan78xx.c:403:1: sparse: Expected ; at the end of type declaration
-drivers/net/usb/lan78xx.c:403:1: sparse: got }
+drivers/net/ethernet/broadcom/bgmac.c:1015:17: error: dereferencing pointer to incomplete type 'struct mii_bus'
+drivers/net/ethernet/broadcom/bgmac.c:1185:2: error: implicit declaration of function 'phy_start' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/broadcom/bgmac.c:1198:2: error: implicit declaration of function 'phy_stop' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/broadcom/bgmac.c:1239:9: error: implicit declaration of function 'phy_mii_ioctl' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/broadcom/bgmac.c:1389:28: error: 'phy_ethtool_get_link_ksettings' undeclared here (not in a function)
+drivers/net/ethernet/broadcom/bgmac.c:1390:28: error: 'phy_ethtool_set_link_ksettings' undeclared here (not in a function)
+drivers/net/ethernet/broadcom/bgmac.c:1403:13: error: dereferencing pointer to incomplete type 'struct phy_device'
+drivers/net/ethernet/broadcom/bgmac.c:1417:3: error: implicit declaration of function 'phy_print_status' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/broadcom/bgmac.c:1424:26: error: storage size of 'fphy_status' isn't known
+drivers/net/ethernet/broadcom/bgmac.c:1424:9: error: variable 'fphy_status' has initializer but incomplete type
+drivers/net/ethernet/broadcom/bgmac.c:1425:11: warning: excess elements in struct initializer
+drivers/net/ethernet/broadcom/bgmac.c:1425:3: error: unknown field 'link' specified in initializer
+drivers/net/ethernet/broadcom/bgmac.c:1426:12: note: in expansion of macro 'SPEED_1000'
+drivers/net/ethernet/broadcom/bgmac.c:1426:3: error: unknown field 'speed' specified in initializer
+drivers/net/ethernet/broadcom/bgmac.c:1427:13: note: in expansion of macro 'DUPLEX_FULL'
+drivers/net/ethernet/broadcom/bgmac.c:1427:3: error: unknown field 'duplex' specified in initializer
+drivers/net/ethernet/broadcom/bgmac.c:1432:12: error: implicit declaration of function 'fixed_phy_register' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/broadcom/bgmac.c:1432:31: error: 'PHY_POLL' undeclared (first use in this function)
+drivers/net/ethernet/broadcom/bgmac.c:1438:8: error: implicit declaration of function 'phy_connect_direct' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/broadcom/bgmac.c:1439:6: error: 'PHY_INTERFACE_MODE_MII' undeclared (first use in this function)
+drivers/net/ethernet/broadcom/bgmac.c:1521:2: error: implicit declaration of function 'phy_disconnect' [-Werror=implicit-function-declaration]
+drivers/net/ethernet/broadcom/bgmac.c:1541:15: error: expected declaration specifiers or '...' before string constant
 
-Add linux/phy.h to lan78xx.c
+Add linux/phy.h to bgmac.c
 
 Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Acked-by: Rafał Miłecki <rafal@milecki.pl>
 ---
- drivers/net/usb/lan78xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/broadcom/bgmac.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 08f8703e4d54..9889a70ff4f6 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -35,6 +35,7 @@
- #include <linux/irq.h>
- #include <linux/irqchip/chained_irq.h>
- #include <linux/microchipphy.h>
+diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+index fe88126b1e0c..20fe2520da42 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.c
++++ b/drivers/net/ethernet/broadcom/bgmac.c
+@@ -12,6 +12,8 @@
+ #include <linux/bcma/bcma.h>
+ #include <linux/etherdevice.h>
+ #include <linux/bcm47xx_nvram.h>
 +#include <linux/phy.h>
- #include "lan78xx.h"
++#include <linux/phy_fixed.h>
+ #include "bgmac.h"
  
- #define DRIVER_AUTHOR	"WOOJUNG HUH <woojung.huh@microchip.com>"
+ static bool bgmac_wait_value(struct bgmac *bgmac, u16 reg, u32 mask,
 -- 
 2.9.3

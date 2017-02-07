@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:04:28 +0100 (CET)
-Received: from mail-wr0-x243.google.com ([IPv6:2a00:1450:400c:c0c::243]:35002
-        "EHLO mail-wr0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992178AbdBGXEEyYMiI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:04:04 +0100
-Received: by mail-wr0-x243.google.com with SMTP id o16so6865201wra.2;
-        Tue, 07 Feb 2017 15:04:04 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:04:49 +0100 (CET)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:34885
+        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992209AbdBGXENXf-5I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:04:13 +0100
+Received: by mail-wm0-x244.google.com with SMTP id u63so30969465wmu.2;
+        Tue, 07 Feb 2017 15:04:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=qcCEqxiAtxxa646/dehPwT3HNIWCrvNAncVvkN3FZS4=;
-        b=dFBScKQSgf/RKD/uJKOI7DjKgCCYUhOPee+SHJ+NrHaT3Kn9zDDoDqx11Vw8MFdG0p
-         v6pbSfTQwkxbfGu/pHGkJ8IDuA3owY2JeB7lbPcy8JirdZgVnxHIJfyrGno6MfwpYY8b
-         1OU45mvFantFBqKbk5h8gD84JY1TGFLQqOO0UXmZxAINGMuUI7c1CV5Kv89F/oQv/Bwv
-         8CuscZuQCSBpmTV/mJwiB1JeZIMRfQZqJHaF19d4aYl/iMQWyvB5ITP1bfF3/mU7e+9Y
-         tt1imroI6skhSxN8yBvmkKXe7U9S+PZMyUGPt4m1iTf69zYQ3TM4qhfF0VojAKjnjUR2
-         pRJw==
+        bh=vlOYoSRaitoUSGk6yP1ryaXFWuinzKAK2fe5kHRvsAA=;
+        b=D/FiGqBkM4WpjdGn93cliOWVjnA7B7ccj0yUK7j0g8syNG7IuEa7+hvlqRxqfrCMsK
+         kqadORmX/MDYLT6Zkuqcr/tpAePGC1WQdVUnIObBJolrXPAtwZ7E+uczXC375dY4o7qL
+         y1betD06kMnCnPEtKhDWFjHDLiAfbuz6zFbPwpbMbqGmfAlxgdGnFmttSvdko43JXYn2
+         CmfBVcqkYFj6nQ+fIJJ6CDnDOVAhxTksERk2weU0nkCJyaXh45zoYl4klPrTKQ8jIxUS
+         Z552pBy1yqEao0ivTTDrG7KWszHCm2p2HtDfeTD7xDRhJv4u1JEg8ACdyE/mSdknfWd8
+         yAYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=qcCEqxiAtxxa646/dehPwT3HNIWCrvNAncVvkN3FZS4=;
-        b=gbwIbbiRhOBSRA1k5LLwEieOEp2b6R+MHFKvhLF9nTfMiwJcPLdu9c/1UaLUJILkzA
-         FVfJVJGatHdUJEW9GjOduae2QJJ4KwrkyJN3HxxAo2OIV9AHRMrycJ9GCqGfRgsfA5Ku
-         2W7wc7ih5/nCi9z336fLcCjfd5PJHvrsYlth/R7jtQyeXN+4TI+LdWpG7/RV8lNGlY5e
-         aK00gXwb0DBvtggcw1djQ0Pzo59zF8pxxs0rT7KPiC/63OC944zk/D6dDFNZa0pZkLIN
-         T4JGLtLTsJawYSUox0bV/F3G0M1g8OeRJvQ6Ii/SmVSlGz4eWzOqG9twgm4aZUxNoY4Z
-         AdZw==
-X-Gm-Message-State: AIkVDXKwXDmnwJPtP7SRX37SVLn5dG/HOoltJXR4ANz/qUeHer84y8XG35TG1yp/lILtlA==
-X-Received: by 10.223.160.246 with SMTP id n51mr15607218wrn.158.1486508639609;
-        Tue, 07 Feb 2017 15:03:59 -0800 (PST)
+        bh=vlOYoSRaitoUSGk6yP1ryaXFWuinzKAK2fe5kHRvsAA=;
+        b=U1kJ74rt7fIt4JhmQGPJ3okweldyh7pQ7NaOUlYQ41W/TQ2oytppf36cDXyemB5CxU
+         fZZkPyhtqong1xYDAwu4alCr5uImpvAwgRn9FJTXrrt/3aiOP1+IKocq4FMM6OecCBaT
+         kvA8TPoAxy238MucYk/m7mCpuqRf7TNJFcmoz8kxMkFrxiWxgSkDeGn9FCFnSk0fasxS
+         o8uVSvXhQo3tKCB8LQD/fzvovgTT+JcbKC480P6TXHa3lb3tNILugOlvCEJtXF4EVlvp
+         T+bTuRKIk+CsdZ0cz84PrrGf9082NpPPDGvcpIk6Ju7v6qW+EziXRsbYO/VnQZiJEMZ3
+         geIA==
+X-Gm-Message-State: AMke39lRzVwEu+sk9H1PFwHIFiznzswat7pJIi6KL3QOteqnx0NJtbeo09mxYeWUWK5sWg==
+X-Received: by 10.28.17.20 with SMTP id 20mr15776238wmr.106.1486508647575;
+        Tue, 07 Feb 2017 15:04:07 -0800 (PST)
 Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.03.52
+        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.03.59
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Feb 2017 15:03:59 -0800 (PST)
+        Tue, 07 Feb 2017 15:04:06 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
         linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
@@ -63,9 +63,9 @@ Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
         Trond Myklebust <trond.myklebust@primarydata.com>,
         Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
         Woojung Huh <woojung.huh@microchip.com>
-Subject: [PATCH net-next v2 01/12] net: sunrpc: fix build errors when linux/phy*.h is removed from net/dsa.h
-Date:   Tue,  7 Feb 2017 15:02:54 -0800
-Message-Id: <20170207230305.18222-2-f.fainelli@gmail.com>
+Subject: [PATCH net-next v2 02/12] net: cgroups: fix build errors when linux/phy*.h is removed from net/dsa.h
+Date:   Tue,  7 Feb 2017 15:02:55 -0800
+Message-Id: <20170207230305.18222-3-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20170207230305.18222-1-f.fainelli@gmail.com>
 References: <20170207230305.18222-1-f.fainelli@gmail.com>
@@ -73,7 +73,7 @@ Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56706
+X-archive-position: 56707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -92,33 +92,28 @@ X-list: linux-mips
 
 From: Russell King <rmk+kernel@armlinux.org.uk>
 
-Removing linux/phy.h from net/dsa.h reveals a build error in the sunrpc
-code:
+net/core/netprio_cgroup.c:303:16: error: expected declaration specifiers or '...' before string constant
+    MODULE_LICENSE("GPL v2");
+                   ^~~~~~~~
 
-net/sunrpc/xprtrdma/svc_rdma_backchannel.c: In function 'xprt_rdma_bc_put':
-net/sunrpc/xprtrdma/svc_rdma_backchannel.c:277:2: error: implicit declaration of function 'module_put' [-Werror=implicit-function-declaration]
-net/sunrpc/xprtrdma/svc_rdma_backchannel.c: In function 'xprt_setup_rdma_bc':
-net/sunrpc/xprtrdma/svc_rdma_backchannel.c:348:7: error: implicit declaration of function 'try_module_get' [-Werror=implicit-function-declaration]
-
-Fix this by adding linux/module.h to svc_rdma_backchannel.c
+Add linux/module.h to fix this.
 
 Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
-Acked-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 ---
- net/sunrpc/xprtrdma/svc_rdma_backchannel.c | 1 +
+ net/core/netprio_cgroup.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_backchannel.c b/net/sunrpc/xprtrdma/svc_rdma_backchannel.c
-index 288e35c2d8f4..cb1e48e54eb1 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_backchannel.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_backchannel.c
-@@ -4,6 +4,7 @@
-  * Support for backward direction RPCs on RPC/RDMA (server-side).
-  */
+diff --git a/net/core/netprio_cgroup.c b/net/core/netprio_cgroup.c
+index 2ec86fc552df..756637dc7a57 100644
+--- a/net/core/netprio_cgroup.c
++++ b/net/core/netprio_cgroup.c
+@@ -13,6 +13,7 @@
  
+ #include <linux/slab.h>
+ #include <linux/types.h>
 +#include <linux/module.h>
- #include <linux/sunrpc/svc_rdma.h>
- #include "xprt_rdma.h"
- 
+ #include <linux/string.h>
+ #include <linux/errno.h>
+ #include <linux/skbuff.h>
 -- 
 2.9.3

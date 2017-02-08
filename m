@@ -1,64 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 04:31:49 +0100 (CET)
-Received: from mail-pg0-x234.google.com ([IPv6:2607:f8b0:400e:c05::234]:33253
-        "EHLO mail-pg0-x234.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990720AbdBHDbmJ3nhM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 04:31:42 +0100
-Received: by mail-pg0-x234.google.com with SMTP id 204so44548338pge.0
-        for <linux-mips@linux-mips.org>; Tue, 07 Feb 2017 19:31:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=VYKdLF6mxuoTAZiJgIggFDLLigv/2jza1TutY7JqHZI=;
-        b=RRsPeNKfD1e6e+QlpHLZr7mTKp+RygbePUXVsFDqrQJKvOLBmOl1oq2c92IjM525o5
-         RBmtBEG2u5Mg6T4NuTj9RnKqUPM+HZtny9YGSlXQTDuYJBCYlSO2I194jMTGNcP8ndAz
-         tD2F8T+mIDeo9k10RIxee6mwfc2ZP2Ph6Bkjw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=VYKdLF6mxuoTAZiJgIggFDLLigv/2jza1TutY7JqHZI=;
-        b=kXQfVjgN7DZX2onjlKleOv1nHsuNpY5FEro493seBLCFnqwNCVQDtQc8sPQyxrRZh5
-         QFWOnBr21IIe2RyGSCyzAt4rLoNZkQibr6a5LBDTN2bevut7VJFxqDjOcJOWr/KQqLve
-         eNUFIz3gATcEgbJN3LgQuE4iy1xm6yy9wXRyKux3nSSHZYQoVHUXfaMJ2LWrFcmx7V+p
-         8b88oT2aJSwiLsVccYTs7w3VigS/MGEazRVAei8Pm8XhwMv4hPz1c7rpjBO1WlgD4B+h
-         lDx40rIAyNeEtwB9z3ybvQKBmxIF6tyvbnLH3WN9KQjsXgBn6+LC/o1kl9VheTjJIqaY
-         3K4w==
-X-Gm-Message-State: AIkVDXIBcsv3TJUcqPUQrpGhORGU7NCmM8fDpjslVjokjywpq3e9qsPFoB1K5I3eiVGyk8hV
-X-Received: by 10.84.231.142 with SMTP id g14mr30973186plk.13.1486524696280;
-        Tue, 07 Feb 2017 19:31:36 -0800 (PST)
-Received: from localhost ([122.172.165.189])
-        by smtp.gmail.com with ESMTPSA id e127sm14840991pfh.89.2017.02.07.19.31.34
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Feb 2017 19:31:35 -0800 (PST)
-Date:   Wed, 8 Feb 2017 09:01:30 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Markus Mayer <code@mmayer.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Markus Mayer <mmayer@broadcom.com>,
-        MIPS Linux Kernel List <linux-mips@linux-mips.org>,
-        Power Management List <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 3/4] cpufreq: bmips-cpufreq: CPUfreq driver for
- Broadcom's BMIPS SoCs
-Message-ID: <20170208033130.GD14503@vireshk-i7>
-References: <20170207215856.8999-1-code@mmayer.net>
- <20170207215856.8999-4-code@mmayer.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170207215856.8999-4-code@mmayer.net>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <viresh.kumar@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 05:53:41 +0100 (CET)
+Received: from mail.linux-iscsi.org ([67.23.28.174]:46214 "EHLO
+        linux-iscsi.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990552AbdBHExdsXhkl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 05:53:33 +0100
+Received: from [192.168.1.66] (75-37-194-224.lightspeed.lsatca.sbcglobal.net [75.37.194.224])
+        (using SSLv3 with cipher AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: nab)
+        by linux-iscsi.org (Postfix) with ESMTPSA id A4C2140B05;
+        Wed,  8 Feb 2017 04:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=linux-iscsi.org;
+        s=default.private; t=1486529634; bh=DLH8IJQuKKfR1JnQSR4phlbWvFbNJTm
+        LDDCq5/OuXaM=; h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+         References:Content-Type:Mime-Version:Content-Transfer-Encoding;
+        b=SF3zO8UgMpYNAMwWBLsy/a/iLvtGo/EtQCVwx/N+G4Vt6rwMNteuOwXlpt/45sKyz
+        QYSTEs/9TrVx8YriIyATY6dLBQVFDnO1fRr5b7CTUmBQazimvj89N5N8CSxbzgaMCSW
+        o6Y7egk3VbFb729Z1PEhyqPEQj3PKastS0EE3oY=
+Message-ID: <1486529606.13263.29.camel@haakon3.risingtidesystems.com>
+Subject: Re: [PATCH net-next v2 08/12] iscsi: fix build errors when
+ linux/phy*.h is removed from net/dsa.h
+From:   "Nicholas A. Bellinger" <nab@linux-iscsi.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        target-devel@vger.kernel.org,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Anna Schumaker <anna.schumaker@netapp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Derek Chickles <derek.chickles@caviumnetworks.com>,
+        Felix Manlunas <felix.manlunas@caviumnetworks.com>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Jeff Layton <jlayton@poochiereds.net>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        Raghu Vatsavayi <raghu.vatsavayi@caviumnetworks.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Satanand Burla <satananda.burla@caviumnetworks.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        Timur Tabi <timur@codeaurora.org>,
+        Trond Myklebust <trond.myklebust@primarydata.com>,
+        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+        Woojung Huh <woojung.huh@microchip.com>
+Date:   Tue, 07 Feb 2017 20:53:26 -0800
+In-Reply-To: <20170207230305.18222-9-f.fainelli@gmail.com>
+References: <20170207230305.18222-1-f.fainelli@gmail.com>
+         <20170207230305.18222-9-f.fainelli@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.4.4-1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Return-Path: <nab@linux-iscsi.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56729
+X-archive-position: 56730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: viresh.kumar@linaro.org
+X-original-sender: nab@linux-iscsi.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,21 +77,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 07-02-17, 13:58, Markus Mayer wrote:
-> From: Markus Mayer <mmayer@broadcom.com>
+Hi Florian,
+
+On Tue, 2017-02-07 at 15:03 -0800, Florian Fainelli wrote:
+> From: Russell King <rmk+kernel@armlinux.org.uk>
 > 
-> Add the MIPS CPUfreq driver. This driver currently supports CPUfreq on
-> BMIPS5xxx-based SoCs.
+> drivers/target/iscsi/iscsi_target_login.c:1135:7: error: implicit declaration of function 'try_module_get' [-Werror=implicit-function-declaration]
 > 
-> Signed-off-by: Markus Mayer <mmayer@broadcom.com>
+> Add linux/module.h to iscsi_target_login.c.
+> 
+> Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+> Reviewed-by: Bart Van Assche <bart.vanassche@sandisk.com>
 > ---
->  drivers/cpufreq/Kconfig         |  10 +++
->  drivers/cpufreq/Makefile        |   1 +
->  drivers/cpufreq/bmips-cpufreq.c | 188 ++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 199 insertions(+)
->  create mode 100644 drivers/cpufreq/bmips-cpufreq.c
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-
--- 
-viresh
+Acked-by: Nicholas Bellinger <nab@linux-iscsi.org>

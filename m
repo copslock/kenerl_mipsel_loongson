@@ -1,64 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 03:07:17 +0100 (CET)
-Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:35510
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 03:07:44 +0100 (CET)
+Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:35525
         "EHLO mail-qt0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992160AbdBHCHKDL702 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 03:07:10 +0100
-Received: by mail-qt0-x241.google.com with SMTP id s58so21531531qtc.2;
-        Tue, 07 Feb 2017 18:07:09 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S23992221AbdBHCHbUxFC2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 03:07:31 +0100
+Received: by mail-qt0-x241.google.com with SMTP id s58so21532479qtc.2;
+        Tue, 07 Feb 2017 18:07:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=NRAw4YTi4KAnU7J88YIhR2QBTPo9FHmI1B+gBrz2XTU=;
-        b=sZW16EmLM1CgD977dRUKAawlHKzEaCuXIzcVhl84oPNvvkMqYUkSBm1meeihkxM0I6
-         QuF5ZDtGjHRs4uTN63P9z7tV245b7Nbmvw9ZLYWWMN5Xa65Jm5p2X6dn9kX3evWz6c7V
-         y+dA/a8s+i9LiO1jSIDR6TQeBwrnGI8D2nfvix0qtTwJBbAkgCW6A3sbj/xQg1fTsRH8
-         CcuEfV6XiypYfIu1mBz7z2lQrVFXegIS9WpRGn09kQ5o+wbqkLRv5sw3K8JFv6BKTf5g
-         0zX9wEhkX9QCyY2f5RWoVf9vAnI4ScJKgFnpPXKU0Ra4HiOTzgbK+3a8U1JBbjSPwPlh
-         PjEQ==
+        bh=O1xMhZTVR6Xmghd1x2zaZLBD1WXer2IbYlQtTnLzLjo=;
+        b=HOcnjgBOQDnm0tGLJYqL/UfgrRiTcxw8zW+4vPmwtlC7QB+yN0JVRTqlH6VQ9NG22z
+         qPil+Dfi5DPo/hAFPJg+kXqzV9Wg0wlsuuOWW3XSPrI56SCkBo0B1d77veIpIzC1gsqi
+         bgVdfvnD1gLus3pC4zhzDIQXlvR1GimpxpKB2TcK0w2cKJe+SkyYJzbE49PJmZ5JbAmj
+         BMh7FX4rBwVia6qOArfWpxBfskYkgc9IVYVVAsJlJd14rWnc7JMG8oYY6RUV91cd4x3I
+         OLDyeZ/uUBPxa+54tSUlX6JXI3d+40JD7MSvxhXGoAZwjWxoX0NXWnXZiDrh42nws85R
+         Xh9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=NRAw4YTi4KAnU7J88YIhR2QBTPo9FHmI1B+gBrz2XTU=;
-        b=gYdpOSLJEgE8CbrAIWYrsbO+jCimUp+JKC8tVmJu8zEPpjEleRzq1vqdUloMUp8sOh
-         8daKnP6on5iIEr+k77qeAHJPhUW0XibtGvA/N5ufcdn2UrRLh6VVI+tay4ruNrsfBNr1
-         gYcEbSAau8Y8dspxdXTl8JA07BhV21834ItB7/C86fjc/aFS2Lph3w5bSSbhmyHaxJnV
-         sTiykOkK/rdt3AHHxyfTwTuCbq1JpzxKQOQU84W2f8tm06+xQpfxBEtKZ5o68tq0obU5
-         6SD3hz2HxUp2GA8F4S48HcTvuw2iEa/sp0LyWCmFPILlDwP5DUcTHZVuuoXB7q5IQNP5
-         pBeQ==
-X-Gm-Message-State: AMke39m+JJGf9VnCbaH7P7nvfhoknE1p409rL5S/Eg35ZSMX/9IOWy6Pm9wi2L1YLyPH0Q==
-X-Received: by 10.237.50.193 with SMTP id z59mr19075768qtd.102.1486519624143;
-        Tue, 07 Feb 2017 18:07:04 -0800 (PST)
+        bh=O1xMhZTVR6Xmghd1x2zaZLBD1WXer2IbYlQtTnLzLjo=;
+        b=tWsdmx6Dxo0fKbvsNC/1DsdIn5oIG/D7A+2vcqL92Zi43u9z4FZy59cjbYHn3BKXJZ
+         aS+LZUNiOeTE5HUcQAjftFx37rSaNINPDVrorWvhXQJ5eIiUPgT86LPA45iKxYiEXedF
+         uZcjnMaQswuyThCJ8Vf85wwPK/HEhULXhCKBzCRHPj5Bo8OUZigI5h9LdvOvszzbLvEG
+         xdXvVM9OAkurGxcpKhwA2EDA6AGWDBvTetmS/XNsDylOSe7KOGTqXDksHAJEANxk7Ujj
+         rGdEdmxS0pPgMzMWzrNfw4C3S6eC6QDOEc/ul5cVZMyJrVp+obz/zg9GXsUW6QdWJlWd
+         B77w==
+X-Gm-Message-State: AMke39mZVgqMX0jUans6PfBrebFFM9fQmO3S92jl5Ww3y4zwFmAiYNlBRIZ7YrQvpAna/Q==
+X-Received: by 10.200.3.103 with SMTP id w39mr17242354qtg.181.1486519645700;
+        Tue, 07 Feb 2017 18:07:25 -0800 (PST)
 Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id r57sm4975416qtr.27.2017.02.07.18.07.02
+        by smtp.googlemail.com with ESMTPSA id q145sm4985042qke.37.2017.02.07.18.07.22
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Feb 2017 18:07:03 -0800 (PST)
-Subject: Re: [PATCH v3 2/4] BMIPS: Enable prerequisites for CPUfreq in MIPS
- Kconfig.
+        Tue, 07 Feb 2017 18:07:25 -0800 (PST)
+Subject: Re: [PATCH v3 3/4] cpufreq: bmips-cpufreq: CPUfreq driver for
+ Broadcom's BMIPS SoCs
 To:     Markus Mayer <code@mmayer.net>, Ralf Baechle <ralf@linux-mips.org>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>
 References: <20170207215856.8999-1-code@mmayer.net>
- <20170207215856.8999-3-code@mmayer.net>
+ <20170207215856.8999-4-code@mmayer.net>
 Cc:     Markus Mayer <mmayer@broadcom.com>,
         MIPS Linux Kernel List <linux-mips@linux-mips.org>,
         Power Management List <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <185c2261-069f-1ce4-5c81-7ba2fed7ebcf@gmail.com>
-Date:   Tue, 7 Feb 2017 18:07:00 -0800
+Message-ID: <ffce8d46-0f9c-5145-82ef-a62920b55f0e@gmail.com>
+Date:   Tue, 7 Feb 2017 18:07:22 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.7.0
 MIME-Version: 1.0
-In-Reply-To: <20170207215856.8999-3-code@mmayer.net>
+In-Reply-To: <20170207215856.8999-4-code@mmayer.net>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56727
+X-archive-position: 56728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,7 +78,8 @@ X-list: linux-mips
 On 02/07/2017 01:58 PM, Markus Mayer wrote:
 > From: Markus Mayer <mmayer@broadcom.com>
 > 
-> Turn on CPU_SUPPORTS_CPUFREQ and MIPS_EXTERNAL_TIMER for BMIPS.
+> Add the MIPS CPUfreq driver. This driver currently supports CPUfreq on
+> BMIPS5xxx-based SoCs.
 > 
 > Signed-off-by: Markus Mayer <mmayer@broadcom.com>
 

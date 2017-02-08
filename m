@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 03:00:53 +0100 (CET)
-Received: from smtpbg291.qq.com ([113.108.11.223]:48967 "EHLO smtpbg291.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 03:01:14 +0100 (CET)
+Received: from smtpbg328.qq.com ([14.17.43.160]:39695 "EHLO smtpbg328.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992255AbdBHB7BvwqK2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Feb 2017 02:59:01 +0100
-X-QQ-mid: bizesmtp3t1486519093tqanhgsaj
+        id S23992267AbdBHB7FGZ7A2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Feb 2017 02:59:05 +0100
+X-QQ-mid: bizesmtp3t1486519101tzq4d79cm
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 08 Feb 2017 09:58:13 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FH61B00A0000000
-X-QQ-FEAT: r8geFCKg7nY4xCgZ6e/UXeEMIascK3zPsVeYb96asxI1GSs9pmbcCqLehVxim
-        2LIfFoorNdXS+pB93nX6vHOeKBnP/Li1Za4wpYRhyVgA31UEE9GFMWTxrpQRtSSwUWRrTEA
-        qXanAn/F2IXivKCZbN19HyEfDDaN9BDDBDNgctUz4z0Erf1T2R0qXwBw3xlmraiZUPZsaDl
-        yQWLKgfxvmdK8F74oeQjyrVI650RPRlZqKmqIs36MXzGe6cYAE9243Jhzf8jYscG1opNeNb
-        ubHCaUGaKJ2xGZXgS1MOxk4MGFrm5Ka6hVkg==
+        id ; Wed, 08 Feb 2017 09:58:21 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FH71B00A0000000
+X-QQ-FEAT: r8geFCKg7nbO+9E9YchGZwgRvychUXzxjCu7iyghztoBxEWIV83pUS0lnZkuq
+        IqNE4iUoBzljWp0U9kJU5QUAUNstjMWI20xhlhEKa9LeorL6URGr12mJL09P5O+meP5JTSr
+        lBTVljFPWkrKiAyHCSE2+mWCVdeimUvRjuIp92p4JNpuWj+X2zGR5e8NbdJCp3ZapEJjaWD
+        pwsNb25gXt9Vu/x8tiXM+D6ZXrX3Z5B8NshL5WhR6fQS7C8jn0DKN3z0pxW5PYoR42UeQ81
+        BerbgdA8eKpIuK2OZ3WWnWuB5d5kyG65Hv2w==
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -24,9 +24,9 @@ Cc:     John Crispin <john@phrozen.org>,
         Yang Ling <gnaygnil@gmail.com>,
         Binbin Zhou <zhoubb@lemote.com>,
         HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH v5 3/8] MIPS: Loongson: Add basic Loongson-1A CPU support
-Date:   Wed,  8 Feb 2017 09:57:44 +0800
-Message-Id: <1486519069-9364-4-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH v5 8/8] MIPS: Loongson: Add Loongson-1A default config file
+Date:   Wed,  8 Feb 2017 09:57:49 +0800
+Message-Id: <1486519069-9364-9-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1486519069-9364-1-git-send-email-zhoubb@lemote.com>
 References: <1486519069-9364-1-git-send-email-zhoubb@lemote.com>
@@ -35,7 +35,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56722
+X-archive-position: 56723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,97 +52,149 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Loongson-1A CPU is similar with Loongson-1B/1C, which is a 32-bit SoC.
-It implements the MIPS32 release 2 instruction set.
-
-It is a cost-effective single chip system based on LS232 processor core,
-and is applicable to fields such as industrial control, and security applications.
-
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: HuaCai Chen <chenhc@lemote.com>
 ---
- arch/mips/include/asm/cpu-type.h    |  3 ++-
- arch/mips/kernel/cpu-probe.c        |  4 +++-
- arch/mips/loongson32/Platform       |  1 +
- arch/mips/loongson32/common/setup.c |  4 +++-
- arch/mips/mm/c-r4k.c                | 10 ++++++++++
- 5 files changed, 19 insertions(+), 3 deletions(-)
+ arch/mips/configs/loongson1a_defconfig | 131 +++++++++++++++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
+ create mode 100644 arch/mips/configs/loongson1a_defconfig
 
-diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-index bdd6dc1..13ea1ea5 100644
---- a/arch/mips/include/asm/cpu-type.h
-+++ b/arch/mips/include/asm/cpu-type.h
-@@ -24,7 +24,8 @@ static inline int __pure __get_cpu_type(const int cpu_type)
- 	case CPU_LOONGSON3:
- #endif
- 
--#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1B) || \
-+#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1A) || \
-+    defined(CONFIG_SYS_HAS_CPU_LOONGSON1B) || \
-     defined(CONFIG_SYS_HAS_CPU_LOONGSON1C)
- 	case CPU_LOONGSON1:
- #endif
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 657d65d..59ad3b7 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1503,7 +1503,9 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 
- 		switch (c->processor_id & PRID_REV_MASK) {
- 		case PRID_REV_LOONGSON1ABC:
--#ifdef CONFIG_CPU_LOONGSON1B
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+			__cpu_name[cpu] = "Loongson 1A";
-+#elif defined(CONFIG_CPU_LOONGSON1B)
- 			__cpu_name[cpu] = "Loongson 1B";
- #endif
- 			break;
-diff --git a/arch/mips/loongson32/Platform b/arch/mips/loongson32/Platform
-index ffe01c6..a9e0fa7 100644
---- a/arch/mips/loongson32/Platform
-+++ b/arch/mips/loongson32/Platform
-@@ -4,5 +4,6 @@ cflags-$(CONFIG_CPU_LOONGSON1)	+= \
- 
- platform-$(CONFIG_MACH_LOONGSON32)	+= loongson32/
- cflags-$(CONFIG_MACH_LOONGSON32)	+= -I$(srctree)/arch/mips/include/asm/mach-loongson32
-+load-$(CONFIG_LOONGSON1_LS1A)		+= 0xffffffff80200000
- load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80100000
- load-$(CONFIG_LOONGSON1_LS1C)		+= 0xffffffff80100000
-diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
-index c8e8b3e..1c3324a 100644
---- a/arch/mips/loongson32/common/setup.c
-+++ b/arch/mips/loongson32/common/setup.c
-@@ -22,7 +22,9 @@ const char *get_system_type(void)
- 
- 	switch (processor_id & PRID_REV_MASK) {
- 	case PRID_REV_LOONGSON1ABC:
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+		return "LOONGSON LS1A";
-+#elif defined(CONFIG_LOONGSON1_LS1B)
- 		return "LOONGSON LS1B";
- #elif defined(CONFIG_LOONGSON1_LS1C)
- 		return "LOONGSON LS1C";
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index e7f798d..44c4088 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1366,6 +1366,16 @@ static void probe_pcache(void)
- 		c->options |= MIPS_CPU_PREFETCH;
- 		break;
- 
-+	case CPU_LOONGSON1:
-+		if (read_c0_config7() & MIPS_CONF7_AR) {
-+			/*
-+			 * effectively physically indexed dcache,
-+			 * thus no virtual aliases.
-+			 */
-+			c->dcache.flags |= MIPS_CACHE_PINDEX;
-+			break;
-+		}
-+
- 	default:
- 		if (!(config & MIPS_CONF_M))
- 			panic("Don't know how to probe P-caches on this cpu.");
+diff --git a/arch/mips/configs/loongson1a_defconfig b/arch/mips/configs/loongson1a_defconfig
+new file mode 100644
+index 0000000..be9a0cc
+--- /dev/null
++++ b/arch/mips/configs/loongson1a_defconfig
+@@ -0,0 +1,131 @@
++CONFIG_MACH_LOONGSON32=y
++CONFIG_ZONE_DMA=y
++CONFIG_PAGE_SIZE_16KB=y
++CONFIG_HIGHMEM=y
++CONFIG_HZ_1000=y
++CONFIG_PREEMPT_VOLUNTARY=y
++# CONFIG_SECCOMP is not set
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_BSD_PROCESS_ACCT=y
++CONFIG_BSD_PROCESS_ACCT_V3=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_CGROUPS=y
++CONFIG_BLK_CGROUP=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_CGROUP_FREEZER=y
++CONFIG_CPUSETS=y
++CONFIG_CGROUP_DEVICE=y
++CONFIG_EXPERT=y
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_SUSPEND is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_SYN_COOKIES=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_DIAG is not set
++# CONFIG_IPV6 is not set
++CONFIG_BRIDGE=y
++# CONFIG_BRIDGE_IGMP_SNOOPING is not set
++# CONFIG_WIRELESS is not set
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++CONFIG_MTD=y
++CONFIG_MTD_CMDLINE_PARTS=y
++CONFIG_MTD_BLOCK=y
++CONFIG_NFTL=y
++CONFIG_NFTL_RW=y
++CONFIG_MTD_NAND=y
++CONFIG_MTD_SPI_NOR=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_RAM=y
++# CONFIG_SCSI_PROC_FS is not set
++CONFIG_BLK_DEV_SD=y
++# CONFIG_SCSI_LOWLEVEL is not set
++CONFIG_ATA=y
++# CONFIG_SATA_PMP is not set
++CONFIG_SATA_AHCI_PLATFORM=y
++# CONFIG_ATA_SFF is not set
++CONFIG_NETDEVICES=y
++CONFIG_NETCONSOLE=y
++# CONFIG_NET_VENDOR_ARC is not set
++# CONFIG_NET_VENDOR_BROADCOM is not set
++# CONFIG_NET_VENDOR_INTEL is not set
++# CONFIG_NET_VENDOR_MARVELL is not set
++# CONFIG_NET_VENDOR_MICREL is not set
++# CONFIG_NET_VENDOR_NATSEMI is not set
++# CONFIG_NET_VENDOR_SAMSUNG is not set
++# CONFIG_NET_VENDOR_SEEQ is not set
++# CONFIG_NET_VENDOR_SMSC is not set
++CONFIG_STMMAC_ETH=y
++# CONFIG_NET_VENDOR_VIA is not set
++# CONFIG_NET_VENDOR_WIZNET is not set
++CONFIG_REALTEK_PHY=y
++# CONFIG_USB_NET_DRIVERS is not set
++# CONFIG_WLAN is not set
++# CONFIG_INPUT_MOUSEDEV is not set
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_SERIO is not set
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_LEGACY_PTY_COUNT=8
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++# CONFIG_HW_RANDOM is not set
++CONFIG_I2C=y
++CONFIG_SPI=y
++# CONFIG_HWMON is not set
++CONFIG_WATCHDOG=y
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_USB=y
++CONFIG_USB_MON=y
++CONFIG_USB_XHCI_HCD=m
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_HCD_PLATFORM=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_OHCI_HCD_PLATFORM=y
++CONFIG_USB_STORAGE=m
++CONFIG_USB_GADGET=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_PCF8563=y
++# CONFIG_IOMMU_SUPPORT is not set
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_VFAT_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++# CONFIG_MISC_FILESYSTEMS is not set
++# CONFIG_NETWORK_FILESYSTEMS is not set
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_PRINTK_TIME=y
++# CONFIG_ENABLE_WARN_DEPRECATED is not set
++# CONFIG_ENABLE_MUST_CHECK is not set
++CONFIG_MAGIC_SYSRQ=y
++# CONFIG_SCHED_DEBUG is not set
++# CONFIG_FTRACE is not set
++CONFIG_XZ_DEC=y
 -- 
 2.9.3

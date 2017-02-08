@@ -1,41 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 17:12:41 +0100 (CET)
-Received: from smtp.codeaurora.org ([198.145.29.96]:49544 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991359AbdBHQMdPwtho convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 17:12:33 +0100
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 808E560A7F; Wed,  8 Feb 2017 16:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1486570351;
-        bh=9+SoAxT2j2IpWuVIHYHQpMj0t1B6IIEWE/G+MdhaShY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ApZdnnasP1N/IE7D1fZl1fivfQqLKpWmrDO1/o9knwFU/om/YHgsPwN8r3Wio9G8T
-         XCPcFAYwQ1VHMfmcfWgbu7hvzsDXxMXdYOYcz4N1TAyhbGbcXF9dp8ULvO3TyK67rL
-         kiDyMu4FbJLx0sLHX+j9a23vs0r4ERIuZpzr9igg=
-Received: from potku.adurom.net (a88-115-187-87.elisa-laajakaista.fi [88.115.187.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CDFFB60A0B;
-        Wed,  8 Feb 2017 16:12:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1486570349;
-        bh=9+SoAxT2j2IpWuVIHYHQpMj0t1B6IIEWE/G+MdhaShY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZQmmwDq/PXB5BhM4eNvZViz6UULQ8mZhH8mU3j1pYKQNrJRGRZtXupYxzo/DKjus+
-         hJRCJkbwacHJ4Wh4qHd9Eu1IepYD0F6Dys70VM9GJU0sfwuMySQfBL2+pf6SuC/gir
-         /K/V8FA8qDw5Hwkbormwb74rOtSDufoy23gJcNWE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CDFFB60A0B
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     David Miller <davem@davemloft.net>
-Cc:     f.fainelli@gmail.com, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-nfs@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, target-devel@vger.kernel.org,
-        andrew@lunn.ch, anna.schumaker@netapp.com,
-        derek.chickles@caviumnetworks.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 20:45:29 +0100 (CET)
+Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:36316
+        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992209AbdBHTpXEmg4Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 20:45:23 +0100
+Received: by mail-qk0-x244.google.com with SMTP id i34so19282318qkh.3;
+        Wed, 08 Feb 2017 11:45:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=yb+fntn2yTlI/TMPuoumya2O4Cp9kTaZrB/acDElYxI=;
+        b=G5M+ztWaJhzjn3MiKmQskfVrytisBeaUDJ5XHH8fj4jCyUq9Hkhn0BMQTIqGk39Ci9
+         UkM9Pvew6QyUPuDuYkW/IrzqmFo5ArO3IIXR4tTtw+RPvAnZBQsuRlDn4uAQASUg7y1J
+         NcNI5GKASy374AReRMZ5EPaKs38o3q0aAiJBd+q9SEJ5oc6qZ2YYQuBGxZRKjS3hmguG
+         yOfJcznyHVF9tv4LaIGb2mMmozPe4r1+3OpVpq5Xy9As8e/yFxkJpJX0SsfuB1W5qAlv
+         J0yzlClZg9gHkz4K8FwNhQhzcWAm5s7/g29x0GXMVTbCuBL78Mh/D1ZSwkBY8Kzlxk+A
+         QiUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=yb+fntn2yTlI/TMPuoumya2O4Cp9kTaZrB/acDElYxI=;
+        b=i71ba8cRr6aJs5AznLOFX354Yd3cuxABTPSnpCwupJz8oKF3jZxm2g4YRG1rwyFF0k
+         o0E/qYEcLW0QlQ8k4Vbffu6lfvD5994V3tqbpEYx500tTkLqSKw6c6uww+S6VkN8sD9j
+         bmMkaNe/yjwAPxyCB37JmG4aqXRy59otKH8p+jA32SCIc9SMgtG4PMG6IGFNBIkX8HPD
+         j+UkFxE89g7eiSR8tvpgscgiuvbJ8pUnb9gJdZYQgifh+4VY4sBWuj4JzG0fQfdTrWY4
+         jijFG1lIBw7jYR7MwdkAI1YqR/aZbUto0+so7XCwLLMqvgaDl0pjvoZVrb+6PZcBgT7q
+         hOSw==
+X-Gm-Message-State: AMke39lpy34xVm8z0ztypn3Y9NiCR9mhdf1S49yncCmGk/uuMh1WfM4+v+ybBCyHzVOnPw==
+X-Received: by 10.55.79.146 with SMTP id d140mr20714453qkb.69.1486583117336;
+        Wed, 08 Feb 2017 11:45:17 -0800 (PST)
+Received: from [10.112.156.244] ([192.19.255.250])
+        by smtp.googlemail.com with ESMTPSA id q145sm7030486qke.37.2017.02.08.11.45.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Feb 2017 11:45:16 -0800 (PST)
+Subject: Re: [PATCH net-next v2 00/12] net: dsa: remove unnecessary phy.h
+ include
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        David Miller <davem@davemloft.net>
+References: <20170207230305.18222-1-f.fainelli@gmail.com>
+ <20170208.110626.346978547122180233.davem@davemloft.net>
+ <87h944ll0w.fsf@kamboji.qca.qualcomm.com>
+Cc:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        target-devel@vger.kernel.org, andrew@lunn.ch,
+        anna.schumaker@netapp.com, derek.chickles@caviumnetworks.com,
         felix.manlunas@caviumnetworks.com, bfields@fieldses.org,
         jlayton@poochiereds.net, jirislaby@gmail.com,
         mcgrof@do-not-panic.com, madalin.bucur@nxp.com,
@@ -46,26 +56,24 @@ Cc:     f.fainelli@gmail.com, netdev@vger.kernel.org,
         thomas.petazzoni@free-electrons.com, timur@codeaurora.org,
         trond.myklebust@primarydata.com,
         vivien.didelot@savoirfairelinux.com, woojung.huh@microchip.com
-Subject: Re: [PATCH net-next v2 00/12] net: dsa: remove unnecessary phy.h include
-References: <20170207230305.18222-1-f.fainelli@gmail.com>
-        <20170208.110626.346978547122180233.davem@davemloft.net>
-Date:   Wed, 08 Feb 2017 18:11:59 +0200
-In-Reply-To: <20170208.110626.346978547122180233.davem@davemloft.net> (David
-        Miller's message of "Wed, 08 Feb 2017 11:06:26 -0500 (EST)")
-Message-ID: <87h944ll0w.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <5fe312c8-e59e-669c-cd29-f6773adcd8e5@gmail.com>
+Date:   Wed, 8 Feb 2017 11:45:11 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
 MIME-Version: 1.0
+In-Reply-To: <87h944ll0w.fsf@kamboji.qca.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <kvalo@codeaurora.org>
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56735
+X-archive-position: 56736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@codeaurora.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,34 +86,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-David Miller <davem@davemloft.net> writes:
+On 02/08/2017 08:11 AM, Kalle Valo wrote:
+> David Miller <davem@davemloft.net> writes:
+> 
+>> From: Florian Fainelli <f.fainelli@gmail.com>
+>> Date: Tue,  7 Feb 2017 15:02:53 -0800
+>>
+>>> I'm hoping this doesn't conflict with what's already in net-next...
+>>>
+>>> David, this should probably go via your tree considering the diffstat.
+>>
+>> I think you need one more respin.  Are you doing an allmodconfig build?
 
-> From: Florian Fainelli <f.fainelli@gmail.com>
-> Date: Tue,  7 Feb 2017 15:02:53 -0800
->
->> I'm hoping this doesn't conflict with what's already in net-next...
->> 
->> David, this should probably go via your tree considering the diffstat.
->
-> I think you need one more respin.  Are you doing an allmodconfig build?
-> If not, for something like this it's a must:
->
-> drivers/net/wireless/ath/wil6210/cfg80211.c:24:30: error: expected ‘)’ before ‘bool’
->  module_param(disable_ap_sme, bool, 0444);
->                               ^
-> drivers/net/wireless/ath/wil6210/cfg80211.c:25:34: error: expected ‘)’ before string constant
->  MODULE_PARM_DESC(disable_ap_sme, " let user space handle AP mode SME");
->                                   ^
-> Like like that file needs linux/module.h included.
+I did not, instead tried to test each driver individually in different
+configurations...
 
-Johannes already fixed a similar (or same) problem in my tree:
+>> If not, for something like this it's a must:
+>>
+>> drivers/net/wireless/ath/wil6210/cfg80211.c:24:30: error: expected ‘)’ before ‘bool’
+>>  module_param(disable_ap_sme, bool, 0444);
+>>                               ^
+>> drivers/net/wireless/ath/wil6210/cfg80211.c:25:34: error: expected ‘)’ before string constant
+>>  MODULE_PARM_DESC(disable_ap_sme, " let user space handle AP mode SME");
+>>                                   ^
+>> Like like that file needs linux/module.h included.
+> 
+> Johannes already fixed a similar (or same) problem in my tree:
+> 
+> wil6210: include moduleparam.h
+> 
+> https://git.kernel.org/cgit/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=949c2d0096753d518ef6e0bd8418c8086747196b
+> 
+> I'm planning to send you a pull request tomorrow which contains that
+> one.
 
-wil6210: include moduleparam.h
+Thanks Kalle!
 
-https://git.kernel.org/cgit/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=949c2d0096753d518ef6e0bd8418c8086747196b
-
-I'm planning to send you a pull request tomorrow which contains that
-one.
-
+David, can you hold on this series until Kalle's pull request gets
+submitted? Past this error, allmodconfig builds fine with this patch
+series (just tested). Thanks!
 -- 
-Kalle Valo
+Florian

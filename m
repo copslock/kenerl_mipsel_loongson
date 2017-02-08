@@ -1,83 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 00:09:06 +0100 (CET)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:34259
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993016AbdBGXFWIXQCI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 00:05:22 +0100
-Received: by mail-wm0-x243.google.com with SMTP id c85so30982367wmi.1;
-        Tue, 07 Feb 2017 15:05:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=n/tgnjFydSER7FEIkvl5mqyQQKRRMyd8WvoKZUFmtUI=;
-        b=bGy9SoinlTl9TO73X05R6p/6+AtQsIrDkiRLVcbNUU+RXKmP7/mM0D+QoDnEJpWBRH
-         B25va6qCW36WdQ3EefVH9oGpEXiOq68QhGcZAVY9tES73MXh12vBQ+t5ym34zacKBnSY
-         fp6Rx0AiqpG6edqbLz+8PUuuusfJ3oDV15RO9bGcnLpXnuPuBvfoVKGMJq5Q91vnjaug
-         TwOQMo85OQFSLG1Rd5njFIxU4yaH4jjDSjNOqs0yPNHjDlHAWrF58LxKZS7Xw0EBlcwC
-         WWmx1uNHYwN+B24syvX7qS/GLpH95uQMSYPAeqoJyJVVuODVPLpsi4eCkM1VlWV5tBvi
-         52lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=n/tgnjFydSER7FEIkvl5mqyQQKRRMyd8WvoKZUFmtUI=;
-        b=pcsCtaOsYbyfbLb7JTHoJk7Ffy/Fd4NhwQVaxvXAARM+p6w7JPsPX7xcRVxjPrqQmT
-         IRBL+dErUrrqyw0jFx4bC9xozmxRkEgs3is20KcMloJqqS6CvMc0lZRdwPuuJqWUErPR
-         VUw3XUZq2luIBYzP8tR4cqf1gNDQko0XARanICXgCdqd7zmAdf3rl+xGntxq9rjOMryf
-         NjaJqMTCCZopRt9P6v6gHMrmhuhVYdMl3lAvxvhtDRE4zdYlMh7xTNwM66Djf45rZgwt
-         VreSTv+S8qRiFNq2uBLI/L8HkOqm4K6jT20nKJ7YO63s++AhV7vMIaCkxvZ8l/ATsBLW
-         1anQ==
-X-Gm-Message-State: AMke39neqVBjIP6qtN6kt1c47e79StTgoNcUgMkp4/2FByHY8JMudTZ26BPTuUVrtnQm1w==
-X-Received: by 10.28.127.13 with SMTP id a13mr14329084wmd.96.1486508716813;
-        Tue, 07 Feb 2017 15:05:16 -0800 (PST)
-Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id b15sm9742283wra.4.2017.02.07.15.05.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Feb 2017 15:05:16 -0800 (PST)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        target-devel@vger.kernel.org
-Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Derek Chickles <derek.chickles@caviumnetworks.com>,
-        Felix Manlunas <felix.manlunas@caviumnetworks.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Jeff Layton <jlayton@poochiereds.net>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "Luis R. Rodriguez" <mcgrof@do-not-panic.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        "Nicholas A. Bellinger" <nab@linux-iscsi.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Raghu Vatsavayi <raghu.vatsavayi@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Satanand Burla <satananda.burla@caviumnetworks.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Timur Tabi <timur@codeaurora.org>,
-        Trond Myklebust <trond.myklebust@primarydata.com>,
-        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
-        Woojung Huh <woojung.huh@microchip.com>
-Subject: [PATCH net-next v2 12/12] net: dsa: remove unnecessary phy*.h includes
-Date:   Tue,  7 Feb 2017 15:03:05 -0800
-Message-Id: <20170207230305.18222-13-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20170207230305.18222-1-f.fainelli@gmail.com>
-References: <20170207230305.18222-1-f.fainelli@gmail.com>
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 02:59:07 +0100 (CET)
+Received: from SMTPBG352.QQ.COM ([183.57.50.167]:57212 "EHLO smtpbg352.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992178AbdBHB6yN6gq2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Feb 2017 02:58:54 +0100
+X-QQ-mid: bizesmtp3t1486519098tymr0p7la
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Wed, 08 Feb 2017 09:58:18 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FH71B00A0000000
+X-QQ-FEAT: r8geFCKg7naO2iaZt/cP9SI3Zp3X79feZJJvHnTBth7BI9ufBC1NrXZp2FB2P
+        +YCzFns3Ygig9Hn7DC45G6n7BnAIS+CPpfFhawpE1uYzPJUarZWgx+XutngEL9adQkYQsGh
+        v327DA6S0yU4lJgERFxMBk0fvChxTBDUhM4oV4Ekgealz7oigIM9zaRauS9ysZSY/r+y3HL
+        3ORJRG79pkIrNsNnzOi3z6RPJJflewReaWX7qfc8gG9CVY10N0HCazB1MXGh6wao07XYeEK
+        bAoxDC4xf01k4wGe7+sJXgZQwzIg3TOCIqng==
+X-QQ-GoodBg: 0
+From:   Binbin Zhou <zhoubb@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Yang Ling <gnaygnil@gmail.com>,
+        Binbin Zhou <zhoubb@lemote.com>,
+        HuaCai Chen <chenhc@lemote.com>
+Subject: [PATCH v5 6/8] MIPS: Loongson: Add Loongson-1A board support
+Date:   Wed,  8 Feb 2017 09:57:47 +0800
+Message-Id: <1486519069-9364-7-git-send-email-zhoubb@lemote.com>
+X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1486519069-9364-1-git-send-email-zhoubb@lemote.com>
+References: <1486519069-9364-1-git-send-email-zhoubb@lemote.com>
+X-QQ-SENDSIZE: 520
+Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56717
+X-archive-position: 56718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: zhoubb@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -90,65 +52,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Russell King <rmk+kernel@armlinux.org.uk>
+Register basic devices for Loongson-1A, and setup clk for UART.
 
-Including phy.h and phy_fixed.h into net/dsa.h causes phy*.h to be an
-unnecessary dependency for quite a large amount of the kernel.  There's
-very little which actually requires definitions from phy.h in net/dsa.h
-- the include itself only wants the declaration of a couple of
-structures and IFNAMSIZ.
-
-Add linux/if.h for IFNAMSIZ, declarations for the structures, phy.h to
-mv88e6xxx.h as it needs it for phy_interface_t, and remove both phy.h
-and phy_fixed.h from net/dsa.h.
-
-This patch reduces from around 800 files rebuilt to around 40 - even
-with ccache, the time difference is noticable.
-
-Tested-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+Signed-off-by: HuaCai Chen <chenhc@lemote.com>
 ---
- drivers/net/dsa/mv88e6xxx/mv88e6xxx.h | 1 +
- include/net/dsa.h                     | 5 +++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/loongson32/Makefile      |  6 ++++++
+ arch/mips/loongson32/ls1a/Makefile |  5 +++++
+ arch/mips/loongson32/ls1a/board.c  | 31 +++++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+)
+ create mode 100644 arch/mips/loongson32/ls1a/Makefile
+ create mode 100644 arch/mips/loongson32/ls1a/board.c
 
-diff --git a/drivers/net/dsa/mv88e6xxx/mv88e6xxx.h b/drivers/net/dsa/mv88e6xxx/mv88e6xxx.h
-index 8a21800374f3..91c4dd25c2d3 100644
---- a/drivers/net/dsa/mv88e6xxx/mv88e6xxx.h
-+++ b/drivers/net/dsa/mv88e6xxx/mv88e6xxx.h
-@@ -15,6 +15,7 @@
- #include <linux/if_vlan.h>
- #include <linux/irq.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/phy.h>
+diff --git a/arch/mips/loongson32/Makefile b/arch/mips/loongson32/Makefile
+index 1ab2c5b..cd1f597 100644
+--- a/arch/mips/loongson32/Makefile
++++ b/arch/mips/loongson32/Makefile
+@@ -5,6 +5,12 @@
+ obj-$(CONFIG_MACH_LOONGSON32) += common/
  
- #ifndef UINT64_MAX
- #define UINT64_MAX		(u64)(~((u64)0))
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index b49b2004891e..4e13e695f025 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -11,17 +11,18 @@
- #ifndef __LINUX_NET_DSA_H
- #define __LINUX_NET_DSA_H
+ #
++# Loongson LS1A board
++#
++
++obj-$(CONFIG_LOONGSON1_LS1A)  += ls1a/
++
++#
+ # Loongson LS1B board
+ #
  
-+#include <linux/if.h>
- #include <linux/if_ether.h>
- #include <linux/list.h>
- #include <linux/notifier.h>
- #include <linux/timer.h>
- #include <linux/workqueue.h>
- #include <linux/of.h>
--#include <linux/phy.h>
--#include <linux/phy_fixed.h>
- #include <linux/ethtool.h>
- 
- struct tc_action;
-+struct phy_device;
-+struct fixed_phy_status;
- 
- enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NONE = 0,
+diff --git a/arch/mips/loongson32/ls1a/Makefile b/arch/mips/loongson32/ls1a/Makefile
+new file mode 100644
+index 0000000..dc23a9a
+--- /dev/null
++++ b/arch/mips/loongson32/ls1a/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for loongson1A based machines.
++#
++
++obj-y += board.o
+diff --git a/arch/mips/loongson32/ls1a/board.c b/arch/mips/loongson32/ls1a/board.c
+new file mode 100644
+index 0000000..7993f6c
+--- /dev/null
++++ b/arch/mips/loongson32/ls1a/board.c
+@@ -0,0 +1,31 @@
++/*
++ * Copyright (c) 2016 Binbin Zhou <zhoubb@lemote.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ */
++
++#include <platform.h>
++
++static struct platform_device *ls1a_platform_devices[] __initdata = {
++	&ls1x_uart_pdev,
++	&ls1x_eth0_pdev,
++	&ls1x_eth1_pdev,
++	&ls1x_rtc_pdev,
++	&ls1x_wdt_pdev,
++	&ls1x_ahci_pdev,
++	&ls1x_ohci_pdev,
++};
++
++static int __init ls1a_platform_init(void)
++{
++	ls1x_serial_set_uartclk(&ls1x_uart_pdev);
++	ls1x_rtc_set_extclk(&ls1x_rtc_pdev);
++
++	return platform_add_devices(ls1a_platform_devices,
++				   ARRAY_SIZE(ls1a_platform_devices));
++}
++
++arch_initcall(ls1a_platform_init);
 -- 
 2.9.3

@@ -1,79 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 20:45:29 +0100 (CET)
-Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:36316
-        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992209AbdBHTpXEmg4Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 20:45:23 +0100
-Received: by mail-qk0-x244.google.com with SMTP id i34so19282318qkh.3;
-        Wed, 08 Feb 2017 11:45:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=yb+fntn2yTlI/TMPuoumya2O4Cp9kTaZrB/acDElYxI=;
-        b=G5M+ztWaJhzjn3MiKmQskfVrytisBeaUDJ5XHH8fj4jCyUq9Hkhn0BMQTIqGk39Ci9
-         UkM9Pvew6QyUPuDuYkW/IrzqmFo5ArO3IIXR4tTtw+RPvAnZBQsuRlDn4uAQASUg7y1J
-         NcNI5GKASy374AReRMZ5EPaKs38o3q0aAiJBd+q9SEJ5oc6qZ2YYQuBGxZRKjS3hmguG
-         yOfJcznyHVF9tv4LaIGb2mMmozPe4r1+3OpVpq5Xy9As8e/yFxkJpJX0SsfuB1W5qAlv
-         J0yzlClZg9gHkz4K8FwNhQhzcWAm5s7/g29x0GXMVTbCuBL78Mh/D1ZSwkBY8Kzlxk+A
-         QiUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=yb+fntn2yTlI/TMPuoumya2O4Cp9kTaZrB/acDElYxI=;
-        b=i71ba8cRr6aJs5AznLOFX354Yd3cuxABTPSnpCwupJz8oKF3jZxm2g4YRG1rwyFF0k
-         o0E/qYEcLW0QlQ8k4Vbffu6lfvD5994V3tqbpEYx500tTkLqSKw6c6uww+S6VkN8sD9j
-         bmMkaNe/yjwAPxyCB37JmG4aqXRy59otKH8p+jA32SCIc9SMgtG4PMG6IGFNBIkX8HPD
-         j+UkFxE89g7eiSR8tvpgscgiuvbJ8pUnb9gJdZYQgifh+4VY4sBWuj4JzG0fQfdTrWY4
-         jijFG1lIBw7jYR7MwdkAI1YqR/aZbUto0+so7XCwLLMqvgaDl0pjvoZVrb+6PZcBgT7q
-         hOSw==
-X-Gm-Message-State: AMke39lpy34xVm8z0ztypn3Y9NiCR9mhdf1S49yncCmGk/uuMh1WfM4+v+ybBCyHzVOnPw==
-X-Received: by 10.55.79.146 with SMTP id d140mr20714453qkb.69.1486583117336;
-        Wed, 08 Feb 2017 11:45:17 -0800 (PST)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id q145sm7030486qke.37.2017.02.08.11.45.13
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 08 Feb 2017 11:45:16 -0800 (PST)
-Subject: Re: [PATCH net-next v2 00/12] net: dsa: remove unnecessary phy.h
- include
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>
-References: <20170207230305.18222-1-f.fainelli@gmail.com>
- <20170208.110626.346978547122180233.davem@davemloft.net>
- <87h944ll0w.fsf@kamboji.qca.qualcomm.com>
-Cc:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        target-devel@vger.kernel.org, andrew@lunn.ch,
-        anna.schumaker@netapp.com, derek.chickles@caviumnetworks.com,
-        felix.manlunas@caviumnetworks.com, bfields@fieldses.org,
-        jlayton@poochiereds.net, jirislaby@gmail.com,
-        mcgrof@do-not-panic.com, madalin.bucur@nxp.com,
-        UNGLinuxDriver@microchip.com, nab@linux-iscsi.org,
-        mickflemm@gmail.com, nicolas.ferre@atmel.com,
-        raghu.vatsavayi@caviumnetworks.com, ralf@linux-mips.org,
-        satananda.burla@caviumnetworks.com,
-        thomas.petazzoni@free-electrons.com, timur@codeaurora.org,
-        trond.myklebust@primarydata.com,
-        vivien.didelot@savoirfairelinux.com, woojung.huh@microchip.com
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <5fe312c8-e59e-669c-cd29-f6773adcd8e5@gmail.com>
-Date:   Wed, 8 Feb 2017 11:45:11 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 22:56:42 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18530 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992221AbdBHV4fMyQL3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 22:56:35 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTP id 66E2B8644E278;
+        Wed,  8 Feb 2017 21:56:21 +0000 (GMT)
+Received: from [10.20.78.134] (10.20.78.134) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Wed, 8 Feb 2017
+ 21:56:24 +0000
+Date:   Wed, 8 Feb 2017 21:56:14 +0000
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     James Hogan <james.hogan@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Fix protected_cache(e)_op() for microMIPS
+In-Reply-To: <20170208103547.22560-1-james.hogan@imgtec.com>
+Message-ID: <alpine.DEB.2.00.1702082127060.26999@tp.orcam.me.uk>
+References: <20170208103547.22560-1-james.hogan@imgtec.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <87h944ll0w.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.134]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56736
+X-archive-position: 56737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -86,44 +44,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/08/2017 08:11 AM, Kalle Valo wrote:
-> David Miller <davem@davemloft.net> writes:
-> 
->> From: Florian Fainelli <f.fainelli@gmail.com>
->> Date: Tue,  7 Feb 2017 15:02:53 -0800
->>
->>> I'm hoping this doesn't conflict with what's already in net-next...
->>>
->>> David, this should probably go via your tree considering the diffstat.
->>
->> I think you need one more respin.  Are you doing an allmodconfig build?
+On Wed, 8 Feb 2017, James Hogan wrote:
 
-I did not, instead tried to test each driver individually in different
-configurations...
+> When building for microMIPS we need to ensure that the assembler always
+> knows that there is code at the target of a branch or jump. Commit
+> 7170bdc77755 ("MIPS: Add return errors to protected cache ops")
+> introduced a fixup path to protected_cache(e)_op() which does not meet
+> this requirement. The fixup path jumps to the "2" label but we don't
+> know what will be placed at that label since it's at the end of the
+> inline asm. If the inline asm happens to be followed by an instruction
+> manually encoded with .word or similar then the toolchain will not know
+> that "2" labels code and linking will fail with:
+> 
+>   mips-img-linux-gnu-ld: arch/mips/mm/c-r4k.o: .fixup+0x0: Unsupported
+>   jump between ISA modes; consider recompiling with interlinking
+>   enabled.
 
->> If not, for something like this it's a must:
->>
->> drivers/net/wireless/ath/wil6210/cfg80211.c:24:30: error: expected ‘)’ before ‘bool’
->>  module_param(disable_ap_sme, bool, 0444);
->>                               ^
->> drivers/net/wireless/ath/wil6210/cfg80211.c:25:34: error: expected ‘)’ before string constant
->>  MODULE_PARM_DESC(disable_ap_sme, " let user space handle AP mode SME");
->>                                   ^
->> Like like that file needs linux/module.h included.
-> 
-> Johannes already fixed a similar (or same) problem in my tree:
-> 
-> wil6210: include moduleparam.h
-> 
-> https://git.kernel.org/cgit/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=949c2d0096753d518ef6e0bd8418c8086747196b
-> 
-> I'm planning to send you a pull request tomorrow which contains that
-> one.
+ That is not really the cause.  The cause is the `.section' pseudo-op that 
+immediately physically follows, and which causes GAS to fix its current 
+state.  Since by this point it hasn't seen an instruction any outstanding 
+labels that haven't been finalised will be marked as `object' (i.e. data).  
+So it doesn't really matter what follows the inline asm, an ISA mode 
+mismatch will always happen here.
 
-Thanks Kalle!
+ The amount of infrastructure that would be required to have state saved 
+and then restored where applicable to "see through section switches" is 
+substantial enough for no one to have tried implementing it so far. 
 
-David, can you hold on this series until Kalle's pull request gets
-submitted? Past this error, allmodconfig builds fine with this patch
-series (just tested). Thanks!
--- 
-Florian
+ Consequently all places where a code label is immediately followed by one 
+of the section switch directives (technically, by the syntax rules of the 
+assembly language, such a label is attached to the directive), such as 
+`.section', `.previous', `.popsection', etc., need to have `.insn' added 
+to be treated correctly (arguably we could make them mark labels as 
+`function' instead, however I fear it may break something out there in a 
+subtler way as you won't get a similar error for data accesses and the 
+semantics has been like this since the introduction of MIPS16 support back 
+in 1996).
+
+ I suggest that you send an update with the description amended so as not 
+to confuse people about the actual cause.  Overall, unless you have done 
+that already, I think it would be the best if our sources were reviewed 
+for any remaining places across the MIPS port where a code label is 
+followed by a section switch and `.insn' added there right away.  It will 
+prevent people sneaking in new bad code by copying and pasting from the 
+wrong place.
+
+ I'll be happy to ack a patch with an updated description.
+
+  Maciej

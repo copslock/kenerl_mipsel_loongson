@@ -1,45 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 03:02:35 +0100 (CET)
-Received: from smtpbg320.qq.com ([14.17.32.29]:55667 "EHLO smtpbg320.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992903AbdBHCAAuGGF2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Feb 2017 03:00:00 +0100
-X-QQ-mid: bizesmtp3t1486519099tyj9qxvx4
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Wed, 08 Feb 2017 09:58:19 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FH71B00A0000000
-X-QQ-FEAT: PML9g4LxpBq3Ln+9NAci1+eTwkfT6gJNpBNMyaWnXzt7Wgw/TM8n9QHHYYEb2
-        Pl/3ubiwiLNArmi5Fog6gvpG/YWihCoSsFPD9elj5xBd1PqhXVhLfXjSd1tVFpWE52fgjFK
-        mmQMtuUsCrj5npK3CYO1q6KxPXgFMPNYd1cvJ6H3MZxR6vbrhsbYuKEJWmBS/IFjMZ/CT3u
-        jc2KD8us1EvXio1cvWHgDMVGBqjoqE8goRnAS+Q+g4mYYGPvQLXa36Zgge3kyhHHVkPihOR
-        utewLjzFe3wogCS6dzs7J2+IlkIUVnCKvFPIoatN4Kq+q2
-X-QQ-GoodBg: 0
-From:   Binbin Zhou <zhoubb@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Kelvin Cheung <keguang.zhang@gmail.com>,
-        Yang Ling <gnaygnil@gmail.com>,
-        Binbin Zhou <zhoubb@lemote.com>,
-        HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH v5 7/8] clk: Loongson: Add Loongson-1A clock support
-Date:   Wed,  8 Feb 2017 09:57:48 +0800
-Message-Id: <1486519069-9364-8-git-send-email-zhoubb@lemote.com>
-X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1486519069-9364-1-git-send-email-zhoubb@lemote.com>
-References: <1486519069-9364-1-git-send-email-zhoubb@lemote.com>
-X-QQ-SENDSIZE: 520
-Return-Path: <zhoubb@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2017 03:07:17 +0100 (CET)
+Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:35510
+        "EHLO mail-qt0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992160AbdBHCHKDL702 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Feb 2017 03:07:10 +0100
+Received: by mail-qt0-x241.google.com with SMTP id s58so21531531qtc.2;
+        Tue, 07 Feb 2017 18:07:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=NRAw4YTi4KAnU7J88YIhR2QBTPo9FHmI1B+gBrz2XTU=;
+        b=sZW16EmLM1CgD977dRUKAawlHKzEaCuXIzcVhl84oPNvvkMqYUkSBm1meeihkxM0I6
+         QuF5ZDtGjHRs4uTN63P9z7tV245b7Nbmvw9ZLYWWMN5Xa65Jm5p2X6dn9kX3evWz6c7V
+         y+dA/a8s+i9LiO1jSIDR6TQeBwrnGI8D2nfvix0qtTwJBbAkgCW6A3sbj/xQg1fTsRH8
+         CcuEfV6XiypYfIu1mBz7z2lQrVFXegIS9WpRGn09kQ5o+wbqkLRv5sw3K8JFv6BKTf5g
+         0zX9wEhkX9QCyY2f5RWoVf9vAnI4ScJKgFnpPXKU0Ra4HiOTzgbK+3a8U1JBbjSPwPlh
+         PjEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=NRAw4YTi4KAnU7J88YIhR2QBTPo9FHmI1B+gBrz2XTU=;
+        b=gYdpOSLJEgE8CbrAIWYrsbO+jCimUp+JKC8tVmJu8zEPpjEleRzq1vqdUloMUp8sOh
+         8daKnP6on5iIEr+k77qeAHJPhUW0XibtGvA/N5ufcdn2UrRLh6VVI+tay4ruNrsfBNr1
+         gYcEbSAau8Y8dspxdXTl8JA07BhV21834ItB7/C86fjc/aFS2Lph3w5bSSbhmyHaxJnV
+         sTiykOkK/rdt3AHHxyfTwTuCbq1JpzxKQOQU84W2f8tm06+xQpfxBEtKZ5o68tq0obU5
+         6SD3hz2HxUp2GA8F4S48HcTvuw2iEa/sp0LyWCmFPILlDwP5DUcTHZVuuoXB7q5IQNP5
+         pBeQ==
+X-Gm-Message-State: AMke39m+JJGf9VnCbaH7P7nvfhoknE1p409rL5S/Eg35ZSMX/9IOWy6Pm9wi2L1YLyPH0Q==
+X-Received: by 10.237.50.193 with SMTP id z59mr19075768qtd.102.1486519624143;
+        Tue, 07 Feb 2017 18:07:04 -0800 (PST)
+Received: from [10.112.156.244] ([192.19.255.250])
+        by smtp.googlemail.com with ESMTPSA id r57sm4975416qtr.27.2017.02.07.18.07.02
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 Feb 2017 18:07:03 -0800 (PST)
+Subject: Re: [PATCH v3 2/4] BMIPS: Enable prerequisites for CPUfreq in MIPS
+ Kconfig.
+To:     Markus Mayer <code@mmayer.net>, Ralf Baechle <ralf@linux-mips.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>
+References: <20170207215856.8999-1-code@mmayer.net>
+ <20170207215856.8999-3-code@mmayer.net>
+Cc:     Markus Mayer <mmayer@broadcom.com>,
+        MIPS Linux Kernel List <linux-mips@linux-mips.org>,
+        Power Management List <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <185c2261-069f-1ce4-5c81-7ba2fed7ebcf@gmail.com>
+Date:   Tue, 7 Feb 2017 18:07:00 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
+MIME-Version: 1.0
+In-Reply-To: <20170207215856.8999-3-code@mmayer.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56726
+X-archive-position: 56727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhoubb@lemote.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -52,150 +75,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This patch adds clock support to Loongson-1A SoC
+On 02/07/2017 01:58 PM, Markus Mayer wrote:
+> From: Markus Mayer <mmayer@broadcom.com>
+> 
+> Turn on CPU_SUPPORTS_CPUFREQ and MIPS_EXTERNAL_TIMER for BMIPS.
+> 
+> Signed-off-by: Markus Mayer <mmayer@broadcom.com>
 
-There is a workaround that Loongson-1A's PLL register is written only,
-so we just set it with a fixed value.
-
-Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
-Signed-off-by: HuaCai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/mach-loongson32/regs-clk.h | 30 +++++++++-
- drivers/clk/loongson1/Makefile                   |  1 +
- drivers/clk/loongson1/clk-loongson1a.c           | 75 ++++++++++++++++++++++++
- 3 files changed, 105 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/loongson1/clk-loongson1a.c
-
-diff --git a/arch/mips/include/asm/mach-loongson32/regs-clk.h b/arch/mips/include/asm/mach-loongson32/regs-clk.h
-index e5e8f11..d8278a4 100644
---- a/arch/mips/include/asm/mach-loongson32/regs-clk.h
-+++ b/arch/mips/include/asm/mach-loongson32/regs-clk.h
-@@ -18,7 +18,35 @@
- #define LS1X_CLK_PLL_FREQ		LS1X_CLK_REG(0x0)
- #define LS1X_CLK_PLL_DIV		LS1X_CLK_REG(0x4)
- 
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+/* write only */
-+#define CORE_PLL_CFG		0x1fe78030
-+#define CPU_MUL			GENMASK(2, 0)
-+#define CPU_CFG_EN		BIT(3)
-+#define DDR_MUL			GENMASK(6, 4)
-+#define DDR_CFG_EN		BIT(7)
-+#define CPU_CFG_W_EN		BIT(11)
-+#define DDR_CFG_W_EN		BIT(15)
-+
-+#define VGA_PLL_CFG		0x1fd00410
-+#define VGA_M			GENMASK(7, 0)
-+#define VGA_N			GENMASK(11, 8)
-+#define VGA_OD			GENMASK(13, 12)
-+#define VGA_FRAC		GENMASK(31, 14)
-+
-+#define LCD_PLL_CFG		0x1fd00410
-+#define LCD_M			GENMASK(7, 0)
-+#define LCD_N			GENMASK(11, 8)
-+#define LCD_OD			GENMASK(13, 12)
-+#define LCD_FRAC		GENMASK(31, 14)
-+
-+#define GPU_PLL_CFG		0x1fd00414
-+#define GPU_M			GENMASK(7, 0)
-+#define GPU_N			GENMASK(11, 8)
-+#define GPU_OD			GENMASK(13, 12)
-+#define GPU_FRAC		GENMASK(31, 14)
-+
-+#elif defined(CONFIG_LOONGSON1_LS1B)
- /* Clock PLL Divisor Register Bits */
- #define DIV_DC_EN			BIT(31)
- #define DIV_DC_RST			BIT(30)
-diff --git a/drivers/clk/loongson1/Makefile b/drivers/clk/loongson1/Makefile
-index b7f6a16..da7b2dd 100644
---- a/drivers/clk/loongson1/Makefile
-+++ b/drivers/clk/loongson1/Makefile
-@@ -1,3 +1,4 @@
- obj-y				+= clk.o
-+obj-$(CONFIG_LOONGSON1_LS1A)	+= clk-loongson1a.o
- obj-$(CONFIG_LOONGSON1_LS1B)	+= clk-loongson1b.o
- obj-$(CONFIG_LOONGSON1_LS1C)	+= clk-loongson1c.o
-diff --git a/drivers/clk/loongson1/clk-loongson1a.c b/drivers/clk/loongson1/clk-loongson1a.c
-new file mode 100644
-index 0000000..263a82c
---- /dev/null
-+++ b/drivers/clk/loongson1/clk-loongson1a.c
-@@ -0,0 +1,75 @@
-+/*
-+ * Copyright (c) 2012-2016 Binbin Zhou <zhoubb@lemote.com>
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/clkdev.h>
-+#include <linux/clk-provider.h>
-+#include <linux/io.h>
-+#include <linux/err.h>
-+
-+#include <loongson1.h>
-+#include "clk.h"
-+
-+#define OSC		(33 * 1000000)
-+#define DIV_APB		2
-+
-+static DEFINE_SPINLOCK(_lock);
-+
-+static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
-+					  unsigned long parent_rate)
-+{
-+	/* Workaround, loongson-1A pll register is written only */
-+	return OSC * 8;
-+}
-+
-+static const struct clk_ops ls1x_pll_clk_ops = {
-+	.recalc_rate = ls1x_pll_recalc_rate,
-+};
-+
-+void __init ls1x_clk_init(void)
-+{
-+	struct clk_hw *hw;
-+
-+	hw = clk_hw_register_fixed_rate(NULL, "osc_clk", NULL, 0, OSC);
-+	clk_hw_register_clkdev(hw, "osc_clk", NULL);
-+
-+	/* clock from 33 MHz OSC clk */
-+	hw = clk_hw_register_pll(NULL, "pll_clk", "osc_clk",
-+				&ls1x_pll_clk_ops, 0);
-+	clk_hw_register_clkdev(hw, "pll_clk", NULL);
-+
-+	/* cpu clk */
-+	hw = clk_hw_register_fixed_factor(NULL, "cpu_clk", "pll_clk",
-+					0, 1, 1);
-+	clk_hw_register_clkdev(hw, "cpu_clk", NULL);
-+
-+	/* dc clk */
-+	hw = clk_hw_register_fixed_factor(NULL, "ddr_clk", "pll_clk",
-+					0, 1, 1);
-+	clk_hw_register_clkdev(hw, "ddr_clk", NULL);
-+
-+	/* ahb clk */
-+	hw = clk_hw_register_fixed_factor(NULL, "ahb_clk", "pll_clk",
-+					0, 1, 2);
-+	clk_hw_register_clkdev(hw, "ahb_clk", NULL);
-+	clk_hw_register_clkdev(hw, "ls1x-dma", NULL);
-+	clk_hw_register_clkdev(hw, "stmmaceth", NULL);
-+
-+	/* clock derived from AHB clk */
-+	/* APB clk is always half of the AHB clk */
-+	hw = clk_hw_register_fixed_factor(NULL, "apb_clk", "ahb_clk",
-+					0, 1, DIV_APB);
-+	clk_hw_register_clkdev(hw, "apb_clk", NULL);
-+	clk_hw_register_clkdev(hw, "ls1x-ac97", NULL);
-+	clk_hw_register_clkdev(hw, "ls1x-i2c", NULL);
-+	clk_hw_register_clkdev(hw, "ls1x-nand", NULL);
-+	clk_hw_register_clkdev(hw, "ls1x-pwmtimer", NULL);
-+	clk_hw_register_clkdev(hw, "ls1x-spi", NULL);
-+	clk_hw_register_clkdev(hw, "ls1x-wdt", NULL);
-+	clk_hw_register_clkdev(hw, "serial8250", NULL);
-+}
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
-2.9.3
+Florian

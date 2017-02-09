@@ -1,49 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Feb 2017 19:34:48 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14908 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993177AbdBISejT8bFY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Feb 2017 19:34:39 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 2B1C641F8E7D;
-        Thu,  9 Feb 2017 19:38:18 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 09 Feb 2017 19:38:18 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 09 Feb 2017 19:38:18 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id EB05CACC8502B;
-        Thu,  9 Feb 2017 18:34:29 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 9 Feb
- 2017 18:34:33 +0000
-Date:   Thu, 9 Feb 2017 18:34:33 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     "Maciej W. Rozycki" <macro@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2] MIPS: Fix protected_cache(e)_op() for microMIPS
-Message-ID: <20170209183433.GA24226@jhogan-linux.le.imgtec.org>
-References: <20170209140453.26188-1-james.hogan@imgtec.com>
- <alpine.DEB.2.00.1702091724300.26999@tp.orcam.me.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Feb 2017 19:37:30 +0100 (CET)
+Received: from resqmta-po-09v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:168]:58168
+        "EHLO resqmta-po-09v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993133AbdBIShXSwA0Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Feb 2017 19:37:23 +0100
+Received: from resomta-po-12v.sys.comcast.net ([96.114.154.236])
+        by resqmta-po-09v.sys.comcast.net with SMTP
+        id btZ3cczsIODBvbtarcE9Ly; Thu, 09 Feb 2017 18:37:21 +0000
+Received: from [192.168.1.13] ([73.201.78.97])
+        by resomta-po-12v.sys.comcast.net with SMTP
+        id btaocqr2nL4A9btapcm0FH; Thu, 09 Feb 2017 18:37:21 +0000
+Subject: Re: [PATCH 12/12] MIPS: PCI: Fix IP27 for the PCI_PROBE_ONLY case
+To:     Bjorn Helgaas <bhelgaas@google.com>
+References: <20170207061356.8270-1-kumba@gentoo.org>
+ <20170207061356.8270-13-kumba@gentoo.org>
+ <CAErSpo6yKAE1_c1eZJapnjD1g0pocyOxed3_Eumdp_026uhDuA@mail.gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux/MIPS <linux-mips@linux-mips.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <bb0e51d8-ce27-0b12-3963-1a5e3d1eaa57@gentoo.org>
+Date:   Thu, 9 Feb 2017 13:36:59 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.5.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jRHKVT23PllUwdXP"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.00.1702091724300.26999@tp.orcam.me.uk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <CAErSpo6yKAE1_c1eZJapnjD1g0pocyOxed3_Eumdp_026uhDuA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfB6ykqqpBOEKuj4QpSS3rihFP26kVuxikwHXSr7vOGf7Xzzr8t6RCWom9cfr4gjZvqx23zsZE4cIQ25njRYSxgebL4j8TCVXh3vW18PNuPoMa9KU3Qkf
+ 6vV0zAprZwgHutk6AGeiJHOTQOD+wBHjkupS2StsXlfPPaKBytdGASf/zpXDhgzXp1tJzicejEIlXSDk6RH48l8urTCon4iUve8BggHB/nI7/6tAaz3wym01
+ W3Y3kG7RMOuVy4rndeqq84BRK3e1syGUriOq1BFB/8Zg4+YxiprS7jjsCB8QnRg7DHgILfTp5TCRp5o4XuBbJw==
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56747
+X-archive-position: 56748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,49 +51,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---jRHKVT23PllUwdXP
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 02/07/2017 13:29, Bjorn Helgaas wrote:
 
-On Thu, Feb 09, 2017 at 05:28:39PM +0000, Maciej W. Rozycki wrote:
-> On Thu, 9 Feb 2017, James Hogan wrote:
->=20
-> > Ralf: This fixes microMIPS build since a patch that is already merged
-> > into kvm/next. I was going to send you a pull request for those patches
-> > anyway, so it probably makes sense if I just append to that branch first
-> > and let the fix get upstream via the MIPS tree.
-> >=20
-> > Changes in v2:
-> > - Correct description, its the .section, not any following assembly
-> >   which triggers the issue (Maciej)
->=20
-> Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
+[snip]
 
-Thanks Maciej,
+>>
+>> However, IP27 is completely different in this regard.  Instead of using
+>> ioremapped addresses for I/O, IP27 has a dedicated address range,
+>> 0x92xxxxxxxxxxxxxx, that is used for all I/O access.  Since this is
+>> uncached physical address space, the generic MIPS PCI code will not
+>> probe it correctly and thus, the original behavior of PCI_PROBE_ONLY
+>> needs to be restored only for the IP27 platform to bypass this logic
+>> and have working PCI, at least for the IO6/IO6G board that houses the
+>> base devices, until a better solution is found.
+> 
+> It sounds like there's something different about how ioremap() works
+> on these platforms and PCI probing is tripping over that.  I'd really
+> like to understand more about this difference to see if we can
+> converge that instead of adding back the PCI_PROBE_ONLY usage.
+> 
+> Drivers shouldn't know whether they're running on IP27 or IP30, and
+> they should be using ioremap() in both cases.  Does ioremap() work
+> differently on IP27 and IP30?  Does this have something to do with
+> plat_ioremap() or fixup_bigphys_addr()?
 
-Cheers
-James
+Okay, I think I have a rough idea on the differences with the I/O addresses on
+IP27 and IP30.  It all boils down to the return value of a macro called
+NODE_SWIN_BASE, which operates differently on each platform.
 
---jRHKVT23PllUwdXP
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+I don't fuilly understand //why// SGI did it a certain way, but HUB in IP27
+gives you two sets of "windows" into Crosstalk space, "Big" (BWIN) and "Little"
+(LWIN).  IP30's HEART chip has three sets of these windows (as I recall now
+from and appendix in the BRIDGE docs), Big (BWIN), medium (MWIN) and small (SWIN).
 
------BEGIN PGP SIGNATURE-----
+So on IP27, HUB has seven BWIN spaces at 512MB each, and one LWIN space at
+256MB (with a second LWIN that's aliased to the first).  The LWIN is broken
+into sixteen 16MB spaces, which, I think, is what we're calling "Small windows"
+or SWIN's (Ralf, correct me if wrong).
 
-iQIcBAEBCAAGBQJYnLYPAAoJEGwLaZPeOHZ6TIIP/RuwYq88jlHyms971J5D1FXo
-bAsae8GNPYK7iWi0rGNNQGlEdcccGCXRbSzcYTGc/XVT6/ZnuabNczxVZEd1HDt9
-/Fk9Walkp+FJsq1GA/z8Sd/aQa2KfPqLzYFx5BmoBBNIOLSDRyaq8H4ivZ4bP6RU
-6wRD5DTY08M2gvk3OBC2lAXOEVN5ykM+wW1J1hPgdiyJ0KbD1+odHKV8tQJTlFv/
-h74S6nnhmeUnsEeABwX7oNeXfmUk2YIZMKazQYAwYJIhpdD4J1auZdiRGySABQiT
-qKkAXGWLgXwsRbt3lLGLtcBFmBQKw6ZHeTENm4wRb14sHjSv4HW7UjR1WpDFapke
-+m7tsmtfUwCXwSPtJl3GFfjqotdsISnQqfvppoGJ8QPGZZyZDw3e7f63bgrVZsJs
-jgizZpOOVbGowg0VL2mw9Yan2CxgU3umVFyihWEP2ThaY/B9qtBYyI0txNzhamWX
-ZMCBlbSQm2WPR137ES9S8aWFw4gBVhMaxI0bKX+eWa5DB+hSbhrkWIkiWrltJ6DU
-UYC9I6ktvtx+sCvTX6nootLKWrPQu54AKd4XX2QfTO1Tgw+tPo9QS2Nc03rPMRDb
-MeV860gDbK5wdozw424O+Bu0XB8ycrO3b5C0UpBMKp4acNvSRVzmg9dlAK0LKtiK
-m4bOLqS0+gDTwH0oBCL2
-=Z6lw
------END PGP SIGNATURE-----
+IP30's HEART allocates 64G of space per Xtalk widget for BWIN, 2G/widget for
+MWIN, and 16MB/widget for SWIN.  As such, since HUB doesn't have an MWIN, you
+only find definitions of NODE_BWIN_BASE and NODE_SWIN_BASE in either IP27 or
+IP30's sources.  Specifically, our focus is really only on NODE_SWIN_BASE,
+because the BWIN spaces need to be mapped into translation tables somewhere,
+and Linux lacks that capability.  There is also a corresponding
+RAW_NODE_SWIN_BASE for both platforms that gives back the full address in
+uncached physical address space.
 
---jRHKVT23PllUwdXP--
+IP30's definition of NODE_SWIN_BASE is:
+#define NODE_SWIN_BASE(nasid, widget) \
+	(0x0000000010000000 | (((unsigned long)(widget)) << 24))
+
+And IP30's RAW_NODE_SWIN_BASE:
+#define RAW_NODE_SWIN_BASE(nasid, widget) \
+	(0x9000000010000000 | (((unsigned long)(widget)) << 24))
+
+
+Contrast that to IP27's NODE_SWIN_BASE (for the __ASSEMBLY__ case)
+in arch/mips/include/asm/sn/sn0/addrs.h:
+#define NODE_SWIN_BASE(nasid, widget) \
+	(NODE_IO_BASE(nasid) + (UINT64_CAST(widget) << SWIN_SIZE_BITS))
+
+(IP27's RAW_NODE_SWIN_BASE is the same as above)
+
+SWIN_SIZE_BITS is '24', so it matches IP30's.  The difference is the value of
+NODE_IO_BASE that takes a nasid (NUMA address space identifier or node id) and
+returns the correct address in IP27's memory space to get to a specific node's
+I/O Base, which is 0x9200000000000000 plus the node ID.  Merged with the widget
+ID shifted by 24 bits, and that's why we're getting the 0x92xx addresses.
+
+Basically, IP30 is returning the widget offset //without// the I/O base
+factored in, and that's why RAW_NODE_SWIN_BASE is provided to get the widget
+address in uncached physical address space.  Whereas IP27's NODE_SWIN_BASE is
+an alias to its RAW_NODE_SWIN_BASE definition and turning 0x92xxx addresses.
+
+---
+
+Then we look in arch/mips/include/asm/io.h at the function __ioremap_mode and
+see this construct near the top:
+
+        if (cpu_has_64bit_addresses) {
+                u64 base = UNCAC_BASE;
+
+                /*
+                 * R10000 supports a 2 bit uncached attribute therefore
+                 * UNCAC_BASE may not equal IO_BASE.
+                 */
+                if (flags == _CACHE_UNCACHED)
+                        base = (u64) IO_BASE;
+                return (void __iomem *) (unsigned long) (base + offset);
+
+For IP30, when we set up the BRIDGE parameters, we use NODE_SWIN_BASE to set
+the BRIDGE's MEM and IO start/end ranges and thus get back an address where the
+upper bits are all zero's.  Which the PCI layer then fiddles with to yield an
+address like 0x000000f100000000.  When that gets run through ioremap() by a
+driver's probe, we should be getting something like 0x900000f100000000, because
+IP30 uses the generic definition of IO_BASE defined in MIPS
+asm-generic/spaces.h.  And the devices probe correctly.
+
+For IP27, I program BRIDGE the same way, but because IP27's NODE_SWIN_BASE is
+returning the 0x92xxx addresses in uncached space, my guess is ioremap(), as
+called by the drivers, is doubling that, yielding addresses like 0x24xxx, which
+unprotected, should generate an unhandled kernel unaligned access or such.
+Properly protected, attempts to access such an address probably just fail outright.
+
+---
+
+So my thinking, which I'll test out over the weekend, is whether we can change
+IP27's NODE_SWIN_BASE to behave more like IP30's and just return the widget id
+shifted by 24 bits, then let ioremap() calls actually do the conversion to the
+0x92xxx IO_BASE address space.  There's only a handful of places in IP27's code
+and headers where NODE_SWIN_BASE is actually used, so I'll have to see which
+ones need to become RAW_NODE_SWIN_BASE (e.g., for direct HUB or XBOW access),
+and which can stay as NODE_SWIN_BASE.
+
+That would then allow the correct operation of ioremap() to return the 0x92xxx
+address space for drivers and I guess PCI to probe correctly.  We'll find out!
+
+--J

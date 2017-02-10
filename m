@@ -1,66 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2017 20:15:47 +0100 (CET)
-Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:33515
-        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992110AbdBJTPkGA4p0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Feb 2017 20:15:40 +0100
-Received: by mail-qk0-x244.google.com with SMTP id 11so6333972qkl.0;
-        Fri, 10 Feb 2017 11:15:40 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2017 20:45:09 +0100 (CET)
+Received: from mail-qt0-x241.google.com ([IPv6:2607:f8b0:400d:c0d::241]:35466
+        "EHLO mail-qt0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992110AbdBJTpARfetX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Feb 2017 20:45:00 +0100
+Received: by mail-qt0-x241.google.com with SMTP id s58so5799033qtc.2;
+        Fri, 10 Feb 2017 11:45:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:references:cc:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding;
-        bh=byET5jzKCEf0VxNT/OHeLavmhqNDBvUbtFYqpTn/yDg=;
-        b=d0cKSML1mBXj7UHUwxfxJn3nyFW6TW4zn7uW+xpYiAETSa2w5iA0PLZRz8bU3VwJRe
-         QUuTt5ZXUlgc/CIidSqIsC8kPrcrVo+40zQxp+4OKuI0VhvFDtwB/DCGUWvUSmISD8Js
-         j5mandg+Tg88NxeJ+SC6oVtsNXlsjcprxFVEkvxFQBPF0X/NNoggNdKhQVXgKFSC558h
-         3RsTLJXYT8Jmty+287/qterZFmccvOIhx1VxIIzXUjXGtKZy1g/1qf5EHYxP21S0ybAp
-         PyY/prUz+fT9PEawNmIoyrsMIkzcYr+OZNyOJCJVZNr9vPVSj5ezBvDMNrUlxoMRUwC7
-         UhHA==
+        bh=ZZHlTqjERK50H5JjsyUbRVAdBhCWlDVGhFsTEHZw9Mg=;
+        b=M6yGyGpRuFAjtlKj5cYkgrXLBAIBIvvcxbYGAhkLUxi+gtV/ha4GqpyvaAwqnt2BsE
+         zMUwnVzzw/Xk4UTMmcuCtiXzplv6/kDsM4R2hMIAmInA+Dwry700jdKzVBCc9dC4z6Y+
+         KSZcgTm3QLJi/JyFVIYkadiUoshHLdca57nfuGe/x374orrnDamRccjKieH0s8ia74Rg
+         KfQ486NOw3xIdd1KtCVTt1tAdkRNjwwwYRs5xwaRGPa91mq22bzQGC1mIqLmwJSi64oW
+         UyA85e7WW3Ik7nsyRsy7LmgxOJHrgsjV703H/5WaS321eHJOkLQf8n7Ua5YeCQ0S36QZ
+         pNYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:references:cc:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=byET5jzKCEf0VxNT/OHeLavmhqNDBvUbtFYqpTn/yDg=;
-        b=p+JhC4oEk0fysXREUPf7mmEmbeWpAkRBagERNiNL3kGpyXkNsBE4c9VwS1vz7tvqeN
-         2OsKWR7sVtmmetyJhY15dmqpq+XyosWbtKMPCSrvlrZvUWHFM3GCOnLH0JHTAPfRD75v
-         lpXlAhFRCC6YFUD/zQ5MrALVpcyqq9FKEby+dxY3eWbd04RumWDUoB87jAP/RNdUlEGa
-         KXBRHzQYawILZ7/bPXbQJQwvMl4M9OgeqWTv0iWqDcHFzDgmLtL4CtumCWrmrJ66xcRx
-         vjmI2knP2ZB/K1Yra4BYSABtMlbu6XUOS1KXilYZ9k25A9v4yiYQbCazvubGOs97M0aJ
-         WC5A==
-X-Gm-Message-State: AMke39kmnefVDtPQn37Mj5PpOiWVCyshcnSHSwsXbyUREaTDvH+BBmar5r1K6Dg1zBx2HA==
-X-Received: by 10.55.76.18 with SMTP id z18mr9111717qka.263.1486754134305;
-        Fri, 10 Feb 2017 11:15:34 -0800 (PST)
+        bh=ZZHlTqjERK50H5JjsyUbRVAdBhCWlDVGhFsTEHZw9Mg=;
+        b=mFd14lDWkD5OKZ1OurnNhPmBHIuciyG54nh/A+oFSDnMO2wensROrEGudFQTvmy5M7
+         8LhvmDnuWlVgheB44300gxEepMCZvxwMpr5bfBgfnxKPhPT7gy/VFBrevpoByIeOfhhu
+         BHsOHntadzR1M49PgQV/L0xghGDcGE9TPqzfZu/C2aDfHAUV0oFAzSVep2b+slTbDppo
+         vd3St9HuuopUa9AUn0T6eI7YllGT1+rgExKwZ8NkHVY1VqDUegmSAWAV6hWXGew/by9O
+         9Dd4AIYoGJMoQXPvDEFdaugX42mN+IfCB7h4xHw7+8ydWVBwWVDkp8E2CVDtRNnL4jYr
+         lw4w==
+X-Gm-Message-State: AMke39liTBx0e7T3n5bJZ2E80mdBbBvegORJ/otuuL0cIiDxAJU/b10XfJ0WFsDz2+KY+Q==
+X-Received: by 10.200.38.142 with SMTP id 14mr9492354qto.190.1486755894500;
+        Fri, 10 Feb 2017 11:44:54 -0800 (PST)
 Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id u49sm2184582qtc.44.2017.02.10.11.15.32
+        by smtp.googlemail.com with ESMTPSA id c82sm522655qka.69.2017.02.10.11.44.50
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 10 Feb 2017 11:15:33 -0800 (PST)
-Subject: Re: Crash in -next due to 'MIPS: Add cacheinfo support'
-To:     Guenter Roeck <linux@roeck-us.net>,
-        James Hogan <james.hogan@imgtec.com>
-References: <20170208234523.GA13263@roeck-us.net>
- <CAJx26kWDuH2AbibrOdHi7yh9YG314T7J5Zz7CwgTrZCfwDGuYw@mail.gmail.com>
- <eee97bba-5386-9d78-1c82-9e9753a28920@roeck-us.net>
- <20170210094011.GB24226@jhogan-linux.le.imgtec.org>
- <20170210103952.GC24226@jhogan-linux.le.imgtec.org>
- <20170210174644.GA15372@roeck-us.net>
-Cc:     Justin Chen <justinpopo6@gmail.com>,
-        Justin Chen <justin.chen@broadcom.com>,
-        linux-mips@linux-mips.org, bcm-kernel-feedback-list@broadcom.com,
-        Ralf Baechle <ralf@linux-mips.org>
+        Fri, 10 Feb 2017 11:44:53 -0800 (PST)
+Subject: Re: [PATCH net-next v2 00/12] net: dsa: remove unnecessary phy.h
+ include
+To:     David Miller <davem@davemloft.net>, kvalo@codeaurora.org
+References: <87h944ll0w.fsf@kamboji.qca.qualcomm.com>
+ <5fe312c8-e59e-669c-cd29-f6773adcd8e5@gmail.com>
+ <877f4zjw01.fsf@kamboji.qca.qualcomm.com>
+ <20170210.135138.2084086346069765205.davem@davemloft.net>
+Cc:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-nfs@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        target-devel@vger.kernel.org, andrew@lunn.ch,
+        anna.schumaker@netapp.com, derek.chickles@caviumnetworks.com,
+        felix.manlunas@caviumnetworks.com, bfields@fieldses.org,
+        jlayton@poochiereds.net, jirislaby@gmail.com,
+        mcgrof@do-not-panic.com, madalin.bucur@nxp.com,
+        UNGLinuxDriver@microchip.com, nab@linux-iscsi.org,
+        mickflemm@gmail.com, nicolas.ferre@atmel.com,
+        raghu.vatsavayi@caviumnetworks.com, ralf@linux-mips.org,
+        satananda.burla@caviumnetworks.com,
+        thomas.petazzoni@free-electrons.com, timur@codeaurora.org,
+        trond.myklebust@primarydata.com,
+        vivien.didelot@savoirfairelinux.com, woojung.huh@microchip.com
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <6360d767-39f9-ad9b-6ca4-cb16c617e3cc@gmail.com>
-Date:   Fri, 10 Feb 2017 11:15:31 -0800
+Message-ID: <68d8c792-5d09-7cdc-4a94-8437bfb0299e@gmail.com>
+Date:   Fri, 10 Feb 2017 11:44:49 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
  Thunderbird/45.7.0
 MIME-Version: 1.0
-In-Reply-To: <20170210174644.GA15372@roeck-us.net>
+In-Reply-To: <20170210.135138.2084086346069765205.davem@davemloft.net>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56761
+X-archive-position: 56762
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -77,44 +86,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/10/2017 09:46 AM, Guenter Roeck wrote:
-> On Fri, Feb 10, 2017 at 10:39:52AM +0000, James Hogan wrote:
->> On Fri, Feb 10, 2017 at 09:40:11AM +0000, James Hogan wrote:
->>> Hi Guenter,
->>>
->>> On Thu, Feb 09, 2017 at 08:50:04PM -0800, Guenter Roeck wrote:
->>>> On 02/09/2017 04:01 PM, Justin Chen wrote:
->>>>> Hello Guenter,
->>>>>
->>>>> I am unable to reproduce the problem. May you give me more details?
->>>>>
->>>> The scripts I am using are available at
->>>>
->>>> https://github.com/groeck/linux-build-test/tree/master/rootfs
->>>>
->>>> in the mips and mipsel subdirectories (both crash). Individual
->>>> build logs are always available at kerneltests.org/builders,
->>>> in the 'next' column.
->>>
->>> Did you find it 100% reproducible? I was trying to reproduce yesterday
->>> evening, and did hit it a few times, but then it stopped happening
->>> before I could try and figure out what was going wrong.
+On 02/10/2017 10:51 AM, David Miller wrote:
+> From: Kalle Valo <kvalo@codeaurora.org>
+> Date: Thu, 09 Feb 2017 16:10:06 +0200
+> 
+>> Florian Fainelli <f.fainelli@gmail.com> writes:
 >>
->> I switched to gcc 5.2 (buildroot toolchain) for building kernel, and now
->> it reproduces every time :)
+>>>>> If not, for something like this it's a must:
+>>>>>
+>>>>> drivers/net/wireless/ath/wil6210/cfg80211.c:24:30: error: expected ‘)’ before ‘bool’
+>>>>>  module_param(disable_ap_sme, bool, 0444);
+>>>>>                               ^
+>>>>> drivers/net/wireless/ath/wil6210/cfg80211.c:25:34: error: expected ‘)’ before string constant
+>>>>>  MODULE_PARM_DESC(disable_ap_sme, " let user space handle AP mode SME");
+>>>>>                                   ^
+>>>>> Like like that file needs linux/module.h included.
+>>>>
+>>>> Johannes already fixed a similar (or same) problem in my tree:
+>>>>
+>>>> wil6210: include moduleparam.h
+>>>>
+>>>> https://git.kernel.org/cgit/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=949c2d0096753d518ef6e0bd8418c8086747196b
+>>>>
+>>>> I'm planning to send you a pull request tomorrow which contains that
+>>>> one.
+>>>
+>>> Thanks Kalle!
+>>>
+>>> David, can you hold on this series until Kalle's pull request gets
+>>> submitted? Past this error, allmodconfig builds fine with this patch
+>>> series (just tested). Thanks!
 >>
-> gcc 5.4.0 (binutils 2.26.1) also reliably crashes. The exact crash depends on
-> the kernel (-next is different to ToT + offending patch, qemu command line
-> makes a difference, qemu version makes a difference), but the crash is easy
-> to reproduce, at least for me.
+>> Just submitted the pull request:
+>>
+>> https://patchwork.ozlabs.org/patch/726133/
+> 
+> I've retried this patch series, and will push it out assuming the build
+> completes properly.
 
-Just to clarify here, is the crash a combination of:
-
-- the kernel image, based on different trees/branches
-- different GCC versions
-- different ways of invoking QEMU/QEMU version?
-
-and essentially Justin's commit just made problem 1) to occur, but is
-not the root cause of the crash you are seeing?
+I see it merged in net-next/master, thanks a lot this is going to save a
+lot of cycles in the future, thanks David!
 -- 
 Florian

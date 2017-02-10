@@ -1,42 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2017 23:44:10 +0100 (CET)
-Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:34841
-        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992236AbdBJWoDei2Tt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Feb 2017 23:44:03 +0100
-Received: by mail-wr0-x241.google.com with SMTP id o16so16548719wra.2;
-        Fri, 10 Feb 2017 14:44:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=E9HanZaswFeBrNzyB1XkzvxNRiWX5LB2nT43Xo81XO4=;
-        b=skBoKceFyOazoJLrfwqHyE9Cr/hn+LjELWB3qXkIJg3NA142+5h2IZkq9oTYXZQGqR
-         +c33eCEkJuyrLpYaGo+cEva1yrKFlJEQ+9ytuMubn9hCjv7cJoZtBKYdJ8RvOagCOi5j
-         SLq/mJ0M3C9iRJO8d0Au4o9f1zLZd+pAji6B6VyXncjtEgx/5qe7RX2HiC3see3WAKi+
-         g0RN4by7otLUZ6/kKxGoGJewpl/plykyMlzajQ6FWwKq6iTpxvOZQ+I4gFgRb3NKveYr
-         WCQkpG9rdj1mKZHrJGjoYzruhptTbWRY3juUidffge5ZiUrG7z96i7TQRH5iw++hBK/R
-         I8NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=E9HanZaswFeBrNzyB1XkzvxNRiWX5LB2nT43Xo81XO4=;
-        b=oQnNe9hVBSNh7PHesrWDwP0eQ9l8aqjW/w9BLZyoqckjkczBBIraFV1+bADaLB1Vmt
-         bqt5j0RV402L47L6NO3Jf2r2uKHGWeGmMpZA1PPLzZNaoN2a7WO+jPS7XKLcPGwXz3lk
-         IyJaozLfDsMJo4wfyeoiZXOcs8VsE5YJf+Ij6+cNx6Ar0Gj/U+DpmcPyRYY2hpAWXCun
-         giVETTo9mmFR9/b7d0DpRaO9u+uQQX8C30QIQbNXGLlJNxaIBhYlmWPJZ7PlXvxkZb8N
-         BYLqA5i87KJpYPKhNM7LZ2M6jMmNcMBYu5ECPGR2VQJbAVXguE5x1otXFhyhNunU2eJj
-         eQ2g==
-X-Gm-Message-State: AMke39lkxfU/ev1QCSTLCAByhe0R2TrlRhegbBPz57ZT7N5iQkew9fhh1cRMEYaVcfZBEw==
-X-Received: by 10.223.134.218 with SMTP id 26mr9460698wry.104.1486766635336;
-        Fri, 10 Feb 2017 14:43:55 -0800 (PST)
-Received: from [10.112.156.244] ([192.19.255.250])
-        by smtp.googlemail.com with ESMTPSA id o143sm3173988wmd.3.2017.02.10.14.43.52
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 10 Feb 2017 14:43:54 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2017 23:48:33 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:59712 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992123AbdBJWs04iEMt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Feb 2017 23:48:26 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
+        :Message-ID:Subject:Cc:To:From:Date;
+        bh=ysE0EvnEYXZrtanBtXqYPxjjZtLPy1QdHCDif9qoBRE=; b=PYpaZ3tiVPaRYpvypF8sUA4JDT
+        /jNDWue3vXUk+SfRvrDpiKWQZ1RVV/Iwl7jEGKsORcQhZGazaE1RQ4wB6zAei8JHVzQTQcuzVdWZb
+        9Znt6fwU6T0qGb205ctUDs7DGJxNLop6eXhf0K5YtRgA4kzD/PUIFSq+dDahfYLXQlfAhKiwBsOVm
+        gcOercYeZCV+9KDPy+dOgyVQmqIbAY3hDnVa1NT4bkK4tkn/OblnqxGMgZT/89UlOPUX2j85CK7Yg
+        r07R0KMM/OTFfEIr7Bujh+1plUJSqRk6RnMNVqA8eGuN9puhj7SLN+gQy+Wl781EhsorU0t2Kg9Tk
+        tunVrT6A==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:44328 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1ccJzH-000HK8-SN; Fri, 10 Feb 2017 22:48:20 +0000
+Date:   Fri, 10 Feb 2017 14:48:19 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Justin Chen <justinpopo6@gmail.com>,
+        Justin Chen <justin.chen@broadcom.com>,
+        linux-mips@linux-mips.org, bcm-kernel-feedback-list@broadcom.com,
+        Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: Crash in -next due to 'MIPS: Add cacheinfo support'
-To:     James Hogan <james.hogan@imgtec.com>,
-        Guenter Roeck <linux@roeck-us.net>
+Message-ID: <20170210224819.GA6552@roeck-us.net>
 References: <20170208234523.GA13263@roeck-us.net>
  <CAJx26kWDuH2AbibrOdHi7yh9YG314T7J5Zz7CwgTrZCfwDGuYw@mail.gmail.com>
  <eee97bba-5386-9d78-1c82-9e9753a28920@roeck-us.net>
@@ -46,29 +35,32 @@ References: <20170208234523.GA13263@roeck-us.net>
  <6360d767-39f9-ad9b-6ca4-cb16c617e3cc@gmail.com>
  <20170210221152.GA20435@roeck-us.net>
  <20170210223932.GA9246@jhogan-linux.le.imgtec.org>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Justin Chen <justinpopo6@gmail.com>,
-        Justin Chen <justin.chen@broadcom.com>,
-        linux-mips@linux-mips.org, bcm-kernel-feedback-list@broadcom.com,
-        Ralf Baechle <ralf@linux-mips.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <15bd90f8-5481-0540-7ae8-30f199587d5b@gmail.com>
-Date:   Fri, 10 Feb 2017 14:43:49 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20170210223932.GA9246@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56765
+X-archive-position: 56766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,82 +73,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/10/2017 02:39 PM, James Hogan wrote:
-> On Fri, Feb 10, 2017 at 02:11:52PM -0800, Guenter Roeck wrote:
->> On Fri, Feb 10, 2017 at 11:15:31AM -0800, Florian Fainelli wrote:
->>> On 02/10/2017 09:46 AM, Guenter Roeck wrote:
->>>> On Fri, Feb 10, 2017 at 10:39:52AM +0000, James Hogan wrote:
->>>>> On Fri, Feb 10, 2017 at 09:40:11AM +0000, James Hogan wrote:
->>>>>> Hi Guenter,
->>>>>>
->>>>>> On Thu, Feb 09, 2017 at 08:50:04PM -0800, Guenter Roeck wrote:
->>>>>>> On 02/09/2017 04:01 PM, Justin Chen wrote:
->>>>>>>> Hello Guenter,
->>>>>>>>
->>>>>>>> I am unable to reproduce the problem. May you give me more details?
->>>>>>>>
->>>>>>> The scripts I am using are available at
->>>>>>>
->>>>>>> https://github.com/groeck/linux-build-test/tree/master/rootfs
->>>>>>>
->>>>>>> in the mips and mipsel subdirectories (both crash). Individual
->>>>>>> build logs are always available at kerneltests.org/builders,
->>>>>>> in the 'next' column.
->>>>>>
->>>>>> Did you find it 100% reproducible? I was trying to reproduce yesterday
->>>>>> evening, and did hit it a few times, but then it stopped happening
->>>>>> before I could try and figure out what was going wrong.
->>>>>
->>>>> I switched to gcc 5.2 (buildroot toolchain) for building kernel, and now
->>>>> it reproduces every time :)
->>>>>
->>>> gcc 5.4.0 (binutils 2.26.1) also reliably crashes. The exact crash depends on
->>>> the kernel (-next is different to ToT + offending patch, qemu command line
->>>> makes a difference, qemu version makes a difference), but the crash is easy
->>>> to reproduce, at least for me.
->>>
->>> Just to clarify here, is the crash a combination of:
->>>
->>> - the kernel image, based on different trees/branches
->>
->> I tried with linux-next, and I tried with ToT with the offending patch
->> applied. Both fail reliably. Without the patch, both pass reliably.
->>
->>> - different GCC versions
->>
->> I can only say that I see it crashes with both gcc 5.2.0 and gcc 5.4.0.
->>
->>> - different ways of invoking QEMU/QEMU version?
->>>
->> Yes and no. One way of _not_ (or maybe not always) seeing this crash
->> is to use the bare-bone command line with qemu 2.7 or 2.8 (with no
->> root file system provided). This crashes because there is no root file
->> system, but not as described earlier. It does crash, though, when
->> providing a more comprehensive command line. All kernel versions
->> without this patch do not crash.
->>
->> On the other side, blaming this on the qemu command line is akin to
->> saying that a crash only seen if a mouse is connected would be caused
->> by the mouse, so I am not entirely sure if that helps too much.
->> Also see below, regarding heisenbug.
->>
->>> and essentially Justin's commit just made problem 1) to occur, but is
->>> not the root cause of the crash you are seeing?
->>
->> That would not necessarily be my conclusion. Of course, the code appears
->> to be heavily SMP related, so it may well be that it exposes some
->> problem associated with cache handling or support in non-SMP configurations.
->>
->> Of course, it might also be possible that there is a qemu problem somewhere
->> which only manifests itself on non-SMP mips images with Justin's commit
->> applied. That appears to be somewhat unlikely, though I have no hard data
->> supporting this guess.
->>
->> I'll do some more testing and try to find the actual crash location.
->> Tricky though since it almost looks like there is a not completely
->> initialized workqueue. Making things worse, the problem "goes away"
->> if I add some debug log into process_one_work(), meaning there may
->> be a heisenbug.
+On Fri, Feb 10, 2017 at 10:39:32PM +0000, James Hogan wrote:
+> > 
+> > > and essentially Justin's commit just made problem 1) to occur, but is
+> > > not the root cause of the crash you are seeing?
+> > 
+> > That would not necessarily be my conclusion. Of course, the code appears
+> > to be heavily SMP related, so it may well be that it exposes some
+> > problem associated with cache handling or support in non-SMP configurations.
+> > 
+> > Of course, it might also be possible that there is a qemu problem somewhere
+> > which only manifests itself on non-SMP mips images with Justin's commit
+> > applied. That appears to be somewhat unlikely, though I have no hard data
+> > supporting this guess.
+> > 
+> > I'll do some more testing and try to find the actual crash location.
+> > Tricky though since it almost looks like there is a not completely
+> > initialized workqueue. Making things worse, the problem "goes away"
+> > if I add some debug log into process_one_work(), meaning there may
+> > be a heisenbug.
 > 
 > cracked it by moving around an early return error. populate_cache()
 > macro has multiple statements with no do while (0) around it. The
@@ -164,19 +99,14 @@ On 02/10/2017 02:39 PM, James Hogan wrote:
 > conditionalises the first statement in the macro and in absense of l2
 > (or l3 for that matter) it'll continue to write beyond the end of the
 > array allocated in detect_cache_attributes(). Badness ensues.
-
-Good catch, thanks James!
-
 > 
+Outch. Yes, after you mention it, the problem is easy to see.
+
 > The SMP calls in arch/mips/kernel/cacheinfo.c file are pretty redundant
 > too since all the cache info is read from the cpu info structures.
 > 
 > I'll write a patch. Thanks for reporting Guenter!
 > 
-> Cheers
-> James
-> 
+Thank you for tracking it down!
 
-
--- 
-Florian
+Guenter

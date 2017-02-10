@@ -1,62 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Feb 2017 00:11:03 +0100 (CET)
-Received: from mail-pf0-x231.google.com ([IPv6:2607:f8b0:400e:c00::231]:34980
-        "EHLO mail-pf0-x231.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992236AbdBJXKzqZsJt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Feb 2017 00:10:55 +0100
-Received: by mail-pf0-x231.google.com with SMTP id 202so9357665pfx.2
-        for <linux-mips@linux-mips.org>; Fri, 10 Feb 2017 15:10:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=Tihn8EgCaEZWq/qqZLXQo2ksqGwfVZbJvgtogyxCM+M=;
-        b=fceXba3wMhMAXgU8hQLyGTHwGyyDmRQkN3EFad5GxVK6Nb7m0E7pfRjSYBUoeIe43o
-         6CKocPxqytyHvbfRBab8F6Jj7s76fu5eWuhZU47OCefj6/f4YJ9ErTlY+makDmMsAgm5
-         G+LAaDknmC7qEaTYebQxncue01jUssg0iEojo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=Tihn8EgCaEZWq/qqZLXQo2ksqGwfVZbJvgtogyxCM+M=;
-        b=oHBu4/tNkWNnCNA6MJYjmkpQLecG2MqLRXak6I/AQlO3kRgkgtYUYYuhfg0YZUzTnR
-         826e4nmQDHYDyylsseDFgRYOfg/ybaOz/tYhc8mAg+fhPYTR40BWSJlGc2NrXjf6dSXI
-         +/XssQVw05h8L7fCOOevZ+c/+VjJ74MWCxhFFI5Q5qyoYHJ5gZJZAuIiuDebAhsAjaKq
-         yfkOT4jyGjzo3n786snl1R6Qp+Bw18EBGOl4Hnap+BIjDbZWiLteH9Gyxfcs/9tvbjVS
-         K7CoEKjtPU0UKrEk0Em5psLmeyVAt05vIPVnil4nbsBJIRV4EbKMYW51K9/EKM7ZOKp4
-         sIpw==
-X-Gm-Message-State: AMke39n/EuGn2U1Rplt5JxWO3j6Yl5lRddbE3tJns3+T6JlGU2tBDc59c+t2iQ7J4XlY+r/I
-X-Received: by 10.99.5.15 with SMTP id 15mr13582366pgf.109.1486768249626;
-        Fri, 10 Feb 2017 15:10:49 -0800 (PST)
-Received: from [10.13.138.212] ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id z70sm7540287pff.26.2017.02.10.15.10.48
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 10 Feb 2017 15:10:49 -0800 (PST)
-Subject: Re: [PATCH] MIPS: Fix cacheinfo overflow
-To:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
-References: <20170208234523.GA13263@roeck-us.net>
- <20170210230120.21588-1-james.hogan@imgtec.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Feb 2017 00:44:52 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:56368 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992123AbdBJXonqKRHW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Feb 2017 00:44:43 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 996C541F8D9E;
+        Sat, 11 Feb 2017 00:48:25 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Sat, 11 Feb 2017 00:48:25 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Sat, 11 Feb 2017 00:48:25 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id EC8B72553EDB4;
+        Fri, 10 Feb 2017 23:44:32 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 10 Feb
+ 2017 23:44:37 +0000
+Date:   Fri, 10 Feb 2017 23:44:37 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Justin Chen <justin.chen@broadcom.com>
+CC:     <linux-mips@linux-mips.org>, Guenter Roeck <linux@roeck-us.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com
-From:   Justin Chen <justin.chen@broadcom.com>
-Message-ID: <d63e0019-5861-ccca-7959-631916e6c882@broadcom.com>
-Date:   Fri, 10 Feb 2017 15:10:47 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
+        <bcm-kernel-feedback-list@broadcom.com>
+Subject: Re: [PATCH] MIPS: Fix cacheinfo overflow
+Message-ID: <20170210234437.GB9246@jhogan-linux.le.imgtec.org>
+References: <20170208234523.GA13263@roeck-us.net>
+ <20170210230120.21588-1-james.hogan@imgtec.com>
+ <d63e0019-5861-ccca-7959-631916e6c882@broadcom.com>
 MIME-Version: 1.0
-In-Reply-To: <20170210230120.21588-1-james.hogan@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <justin.chen@broadcom.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="gj572EiMnwbLXET9"
+Content-Disposition: inline
+In-Reply-To: <d63e0019-5861-ccca-7959-631916e6c882@broadcom.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56768
+X-archive-position: 56769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justin.chen@broadcom.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,70 +58,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello,
+--gj572EiMnwbLXET9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the catch!
+Hi Justin,
 
-I actually submitted a v2 of the patch sometime back located here:
-https://patchwork.linux-mips.org/patch/15107/
+On Fri, Feb 10, 2017 at 03:10:47PM -0800, Justin Chen wrote:
+> I actually submitted a v2 of the patch sometime back located here:
+> https://patchwork.linux-mips.org/patch/15107/
+>=20
+> The v2 had some code review changes from Matt Redfearn. These changes=20
+> indirectly got rid of the error, which was why I wasn't running into the=
+=20
+> crash.
 
-The v2 had some code review changes from Matt Redfearn. These changes 
-indirectly got rid of the error, which was why I wasn't running into the 
-crash.
+Ah yes. It looks like Ralf applied the original patch on January 3rd,
+before the last 3 submissions of the patch.
 
-Either way, whatever makes more sense, we can drop the other v1 patch 
-and add v2 or just add this patch on top.
+Incidentally, in future I'd recommend incrementing the patch version
+number each time you submit a new version, and mentioning what has
+changed in a comment at the bottom of the commit message (anything after
+"---" gets dropped when the patch is applied).
 
-Thanks,
-Justin
+A random example:
+https://patchwork.linux-mips.org/patch/15134/
 
-On 02/10/2017 03:01 PM, James Hogan wrote:
-> The recently added MIPS cacheinfo support used a macro populate_cache()
-> to populate the cacheinfo structures depending on which caches are
-> present. However the macro contains multiple statements without
-> enclosing them in a do {} while (0) loop, so the L2 and L3 cache
-> conditionals in populate_cache_leaves() only conditionalised the first
-> statement in the macro.
->
-> This overflows the buffer allocated by detect_cache_attributes(),
-> resulting in boot failures under QEMU where neither the L2 or L2 caches
-> are present.
->
-> Enclose the macro statements in a do {} while (0) block to keep the
-> whole macro inside the conditionals.
->
-> Fixes: ef462f3b64e9 ("MIPS: Add cacheinfo support")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Justin Chen <justin.chen@broadcom.com>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> ---
->  arch/mips/kernel/cacheinfo.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
-> index a92bbbae969b..97d5239ca47b 100644
-> --- a/arch/mips/kernel/cacheinfo.c
-> +++ b/arch/mips/kernel/cacheinfo.c
-> @@ -17,6 +17,7 @@
->
->  /* Populates leaf and increments to next leaf */
->  #define populate_cache(cache, leaf, c_level, c_type)		\
-> +do {								\
->  	leaf->type = c_type;					\
->  	leaf->level = c_level;					\
->  	leaf->coherency_line_size = c->cache.linesz;		\
-> @@ -24,7 +25,8 @@
->  	leaf->ways_of_associativity = c->cache.ways;		\
->  	leaf->size = c->cache.linesz * c->cache.sets *		\
->  		c->cache.ways;					\
-> -	leaf++;
-> +	leaf++;							\
-> +} while (0)
->
->  static int __init_cache_level(unsigned int cpu)
->  {
->
+>=20
+> Either way, whatever makes more sense, we can drop the other v1 patch=20
+> and add v2 or just add this patch on top.
+
+Since the patch has already been applied for a while and the merge
+window is imminent, I think its best to make do with fixup patches on
+top this time around.
+
+Thanks
+James
+
+--gj572EiMnwbLXET9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYnlBdAAoJEGwLaZPeOHZ69lQP/A9Dok74IIjpdhVC1Ju6IoPx
+X2lsxKLFcCS6D3kqzctzxEXTGvn7sHJ7SjBeUzmpSyWj4cKGzax9ZEySyefYLJrK
+io9Ddf77cEfqmyDxAGxYe5wHYwQk2i3FuBLJIOqI8BZKR6BVyzQj9fx29aPW3hT/
+n7AjHquo+//gPvwUHcLV5ctjCQDkyn9CKQTyzDb1Sjm7ixvUg6T5iqFc5oODH8PG
+07OheCN3WvhI0d6sEg3DQ4g+PsX821sTtduimDy2kj2v13IvoayLubvbwaj7ptsp
+pc4/8wo6Ridl75I+qtg8+bX7lVx0Z5DbHgkELL/5GJsxks9QgHBychsmcGuTd5ZE
+zpo3uCcQkxh4qz7BIRBRJqsXU3pgf6o/H7O9YAyDob2kYiVjDKZAmQXh6P1JKiuS
+2COrjUjKPWLC1ZkjKrtWLyspBdp0uFpMTvt4fnzOP1t2a+HoQPMPxqFVoxk26zpz
+ainjoNdavE8qIkg32QzzPDIkbvCxg5TDix/fa3IbTfX1YTnLNfn9NEwWJydAOYCg
+cknnXjlHCkGwkgPcqAnxHNgP1xii+GFr22w0Y7yCLqEtQtHqFsXWD2uf7E8BlrR2
+p+LgJCkgvMR2eAmpWpqoW4P7MzdDzx0cNtz0SkLxzJ3771iDaDXoRXrQ4PhwtVOM
+k7+iMP4C974nDMTPpZDU
+=+G3H
+-----END PGP SIGNATURE-----
+
+--gj572EiMnwbLXET9--

@@ -1,36 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Feb 2017 22:49:55 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:15171 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Feb 2017 23:01:42 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:2208 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992213AbdBKVtsJmXf6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Feb 2017 22:49:48 +0100
+        by eddie.linux-mips.org with ESMTP id S23992942AbdBKWBfivsU6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Feb 2017 23:01:35 +0100
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 98A5541F8DDF;
-        Sat, 11 Feb 2017 22:53:32 +0000 (GMT)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 4546041F8DDF;
+        Sat, 11 Feb 2017 23:05:20 +0000 (GMT)
 Received: from mailapp01.imgtec.com ([10.100.180.241])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Sat, 11 Feb 2017 22:53:32 +0000
+  Sat, 11 Feb 2017 23:05:20 +0000
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Sat, 11 Feb 2017 22:53:32 +0000
+        by imgpgp01.kl.imgtec.org on Sat, 11 Feb 2017 23:05:20 +0000
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 830FAA1E605FF;
-        Sat, 11 Feb 2017 21:49:37 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 244C311C25B54;
+        Sat, 11 Feb 2017 22:01:25 +0000 (GMT)
 Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 11 Feb
- 2017 21:49:41 +0000
-Date:   Sat, 11 Feb 2017 21:49:41 +0000
+ 2017 22:01:29 +0000
+Date:   Sat, 11 Feb 2017 22:01:29 +0000
 From:   James Hogan <james.hogan@imgtec.com>
-To:     Matt Redfearn <matt.redfearn@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: Re: [PATCH] MIPS: IRQ Stack: Fix erroneous jal to plat_irq_dispatch
-Message-ID: <20170211214941.GC9246@jhogan-linux.le.imgtec.org>
-References: <1485363625-10789-1-git-send-email-matt.redfearn@imgtec.com>
+To:     Alban <albeu@free.fr>
+CC:     <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Antony Pavlov <antonynpavlov@gmail.com>,
+        <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>
+Subject: Re: [PATCH v4 3/3] MIPS: ath79: Fix the USB PHY reset names
+Message-ID: <20170211220129.GG24226@jhogan-linux.le.imgtec.org>
+References: <1486324352-15188-1-git-send-email-albeu@free.fr>
+ <1486324352-15188-3-git-send-email-albeu@free.fr>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="4jXrM3lyYWu4nBt5"
+        protocol="application/pgp-signature"; boundary="Cgrdyab2wu3Akvjd"
 Content-Disposition: inline
-In-Reply-To: <1485363625-10789-1-git-send-email-matt.redfearn@imgtec.com>
+In-Reply-To: <1486324352-15188-3-git-send-email-albeu@free.fr>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: 1b7d744b
@@ -38,7 +41,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56774
+X-archive-position: 56775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,72 +58,64 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---4jXrM3lyYWu4nBt5
+--Cgrdyab2wu3Akvjd
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 25, 2017 at 05:00:25PM +0000, Matt Redfearn wrote:
-> Commit dda45f701c9d ("MIPS: Switch to the irq_stack in interrupts")
-> changed both the normal and vectored interrupt handlers. Unfortunately
-> the vectored version, "except_vec_vi_handler", was incorrectly modified
-> to unconditionally jal to plat_irq_dispatch, rather than doing a jalr to
-> the vectored handler that has been set up. This is ok for many platforms
-> which set the vectored handler to plat_irq_dispatch anyway, but will
-> cause problems with platforms that use other handlers.
+Hi Alban,
+
+On Sun, Feb 05, 2017 at 08:52:32PM +0100, Alban wrote:
+> From: Alban Bedel <albeu@free.fr>
 >=20
-> Fixes: dda45f701c9d ("MIPS: Switch to the irq_stack in interrupts")
-> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> The binding for the USB PHY went thru before the driver. However the
+> new version of the driver now use the PHY core support for reset, and
+> this expect the reset to be named "phy". So remove the "usb-" prefix
+> from the the reset names.
+>=20
+> Signed-off-by: Alban Bedel <albeu@free.fr>
+> ---
+>  Documentation/devicetree/bindings/phy/phy-ath79-usb.txt | 4 ++--
+>  arch/mips/boot/dts/qca/ar9132.dtsi                      | 2 +-
 
-Applied
+<snip>
 
-Thanks
+> diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/=
+ar9132.dtsi
+> index 302f0a8..808c2bb 100644
+> --- a/arch/mips/boot/dts/qca/ar9132.dtsi
+> +++ b/arch/mips/boot/dts/qca/ar9132.dtsi
+> @@ -160,7 +160,7 @@
+>  	usb_phy: usb-phy {
+>  		compatible =3D "qca,ar7100-usb-phy";
+> =20
+> -		reset-names =3D "usb-phy", "usb-suspend-override";
+> +		reset-names =3D "phy", "suspend-override";
+
+Does arch/mips/boot/dts/qca/ar9331.dtsi need updating too?
+
+Cheers
 James
 
-> ---
->=20
-> Ralf, if possible please could you squash this?
->=20
-> ---
->  arch/mips/kernel/genex.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-> index 0a7ba4b2f687..7ec9612cb007 100644
-> --- a/arch/mips/kernel/genex.S
-> +++ b/arch/mips/kernel/genex.S
-> @@ -329,7 +329,7 @@ NESTED(except_vec_vi_handler, 0, sp)
->  	PTR_ADD sp, t0, t1
-> =20
->  2:
-> -	jal	plat_irq_dispatch
-> +	jalr	v0
-> =20
->  	/* Restore sp */
->  	move	sp, s1
-> --=20
-> 2.7.4
->=20
-
---4jXrM3lyYWu4nBt5
+--Cgrdyab2wu3Akvjd
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIcBAEBCAAGBQJYn4b1AAoJEGwLaZPeOHZ6i3AP/1ASsU4NZz9u6U48uY+ho0bw
-ozVQkklVC+dst/X+vDK1k89oGgYJwtnwg4FY6Je8VBfs+89tBs2jqflqGLfONGV+
-g4nkxbXXnmSRuHGVkBQBo+Zid3tvxc1sS6JyHAS8a/KOgnZ/2B4M83gTC5Wuyd9v
-VuZbdjZW8lgUHrBCIkVmyqrrfFXiMx0LgMVwXhEfbM4INauLghBcLo67dYEhkIfE
-9EV9y7RcNblqqFiIxFl6O4KaQrY73v4YEebl66epYnnnbt2udqfvE9fnNpnefVsd
-98JFEomVa3jTRcLxaa7AL37HkU7B3/8GvdK1VtU4pY7bAynRDlrWF4zDtfQ9VNj9
-XQTFKYDed2LmZQo2yuteoRP7sPNBGZp61Y5ELsk5tRKd1cISRiujU2siF/33fmjY
-D7N3Pb5SokrScdZCKqFnZ/+yqHx8jBII3Z2shRK6up5vCWWunDGle3Aaxw2qbYWL
-I+o0Ghh0YeRyn3qAIgPfOlZeijPgtV6szmP4oyBxtRGeZJ1+kphhQ6zb1P1XjFS+
-0f9HBH5U0n8pKmn+HstN+/Bv/TnPmApHqWFFIMaZvFnwj0TvnwXK8WsXBS2fxfcT
-WPbC3DBtmIgx+IBMDk1QNcVc4ZMnIurFAAXhAYtT00ssCFBCQxFWlH0ErP+5ohEY
-/fG0FXRcnGL/dEPKDP4k
-=YV1k
+iQIcBAEBCAAGBQJYn4m5AAoJEGwLaZPeOHZ6XkYP/3a3EJjcO6KRWAcUXp4vm5wR
+yCmBsyBfzKJUWqbHO/XmHir5ERVrySuE5iDDEHzqWjgD9E/o1VF0m9N4/BlHdiy+
+OUhGm5j88wN6S99tXUrIaJGy93kIrMnQT1gxrYqIcDB+/kywfKUUH5exWAlFfXW0
+mcN6YWrPSkw8At65pml2an5JmJRX0ROIhwTonBO+18WX6UyUg3CyoxESNcnkb6Hi
+fWUi6em8cOYFTZF3jgSvBMe/PGIBxDGHvzJsre4TzzguP6a4OSe28lC+IJda08d7
+jIek8Tcc1Nyvu64Lc4uomdcBMzHPrThW35DfuvtjEDf/fYgSGH5/7qpt2FXvDOVN
+ofPAgzB7eRzayi8HjDx1F1CUbEkkjK7G90xN72onDMBhVYlxQUvOW8lKJevVMA5U
+Dq2L0eHfVzkZVrJNbz8lE18d4BtsMCfwCYpeIdmaVEUTfU6e+H9U22j/2NagnaiK
+8mvhFOZISDWukUnxoxgbpwFp4i1TSCAmx97FaGeakO8lNwrX77ltH9mODf2gmThh
+V7qZDcLE/e3M0g9S7vuN+/IK+ERQlx6qWA3WIbGKC236CPRHvpv4Hbl6iWoDs6T4
+3sZ88YRsKwio4ONQKqY4cbrlzXVt6cFjdSHdw2Mm0c5LTPVQ51WQlIsce1yowMDT
+JqM7QnZznw/MPUU5Wbtf
+=RsVl
 -----END PGP SIGNATURE-----
 
---4jXrM3lyYWu4nBt5--
+--Cgrdyab2wu3Akvjd--

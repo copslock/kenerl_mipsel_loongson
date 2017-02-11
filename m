@@ -1,60 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Feb 2017 02:25:25 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:42281 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992136AbdBKBZRhTH4M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Feb 2017 02:25:17 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
-        bh=xJgjh4y3V/cBClvsInUl06QuGXCgLRcsP3kjAnsLHvU=; b=BcGrLc/6URpDxQNhyB4M5yU6AT
-        +Z9xZ9pJQuJWXVDYl+stgWL1DABtpouLCEXDnNbmcMKQ9VVAjjDWBHYlnrCd0JjFqOmaQMvdX+p9A
-        A/k4D4IuFiJbNZECpJUa7NdRwacwYw7pVRlpC+u3sfGya0KzH9Ufk6NGUC/EPLJrOn1/c2HsrweBH
-        jy5OEL1fD6C7KgiZMTr4+wJZYJEsGF1Sj3pDSMiF0aN5zJ4Aum3z3IbKebf9dh8qqoJwdxi/IGYzL
-        H0u3J16jnJ2z9Eo14lZHVXtt/3sBGob9iA+2d+syhyWncNYxdfhyBj1oudk5p5IE+022kF9ll6YVa
-        kozxgWfw==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:45200 helo=server.roeck-us.net)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
-        (Exim 4.86_1)
-        (envelope-from <linux@roeck-us.net>)
-        id 1ccMR2-00379s-T8; Sat, 11 Feb 2017 01:25:09 +0000
-Subject: Re: [PATCH] MIPS: Fix cacheinfo overflow
-To:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
-References: <20170208234523.GA13263@roeck-us.net>
- <20170210230120.21588-1-james.hogan@imgtec.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Justin Chen <justin.chen@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <83acf9d3-ea54-13a0-d4d5-26e44c788fc0@roeck-us.net>
-Date:   Fri, 10 Feb 2017 17:25:07 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.5.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Feb 2017 22:28:00 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:55806 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992213AbdBKV1vlmzE6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Feb 2017 22:27:51 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 4344B41F8DDF;
+        Sat, 11 Feb 2017 22:31:36 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Sat, 11 Feb 2017 22:31:36 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Sat, 11 Feb 2017 22:31:36 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 451C6792DDB3F;
+        Sat, 11 Feb 2017 21:27:41 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 11 Feb
+ 2017 21:27:45 +0000
+Date:   Sat, 11 Feb 2017 21:27:45 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Fix distclean with Makefile.postlink
+Message-ID: <20170211212745.GE24226@jhogan-linux.le.imgtec.org>
+References: <1485770314-29891-1-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <20170210230120.21588-1-james.hogan@imgtec.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated_sender: linux@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="//IivP0gvsAy3Can"
+Content-Disposition: inline
+In-Reply-To: <1485770314-29891-1-git-send-email-matt.redfearn@imgtec.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56771
+X-archive-position: 56772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,56 +54,76 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/10/2017 03:01 PM, James Hogan wrote:
-> The recently added MIPS cacheinfo support used a macro populate_cache()
-> to populate the cacheinfo structures depending on which caches are
-> present. However the macro contains multiple statements without
-> enclosing them in a do {} while (0) loop, so the L2 and L3 cache
-> conditionals in populate_cache_leaves() only conditionalised the first
-> statement in the macro.
->
-> This overflows the buffer allocated by detect_cache_attributes(),
-> resulting in boot failures under QEMU where neither the L2 or L2 caches
-> are present.
->
-> Enclose the macro statements in a do {} while (0) block to keep the
-> whole macro inside the conditionals.
->
-> Fixes: ef462f3b64e9 ("MIPS: Add cacheinfo support")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
+--//IivP0gvsAy3Can
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+On Mon, Jan 30, 2017 at 09:58:34AM +0000, Matt Redfearn wrote:
+> The postlink Makefile must include include/config/auto.conf to get the
+> kernel configuration variables. But in a clean kernel directory this
+> file does not exist, causing make to bail with the error:
+>=20
+> arch/mips/Makefile.postlink:10:
+> include/config/auto.conf: No such file or directory
+> make[1]: *** No rule to make target
+> 'include/config/auto.conf'.  Stop.
+> Makefile:1290: recipe for target 'vmlinuxclean' failed
+>=20
+> Fix this by using "-include" to not cause a Make error when the file
+> does not exist.
+>=20
+> Fixes: 44079d3509ae ("MIPS: Use Makefile.postlink to insert relocations i=
+nto vmlinux")
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Justin Chen <justin.chen@broadcom.com>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: bcm-kernel-feedback-list@broadcom.com
+Applied
+
+Thanks
+James
+
 > ---
->  arch/mips/kernel/cacheinfo.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
-> index a92bbbae969b..97d5239ca47b 100644
-> --- a/arch/mips/kernel/cacheinfo.c
-> +++ b/arch/mips/kernel/cacheinfo.c
-> @@ -17,6 +17,7 @@
->
->  /* Populates leaf and increments to next leaf */
->  #define populate_cache(cache, leaf, c_level, c_type)		\
-> +do {								\
->  	leaf->type = c_type;					\
->  	leaf->level = c_level;					\
->  	leaf->coherency_line_size = c->cache.linesz;		\
-> @@ -24,7 +25,8 @@
->  	leaf->ways_of_associativity = c->cache.ways;		\
->  	leaf->size = c->cache.linesz * c->cache.sets *		\
->  		c->cache.ways;					\
-> -	leaf++;
-> +	leaf++;							\
-> +} while (0)
->
->  static int __init_cache_level(unsigned int cpu)
->  {
->
+>=20
+>  arch/mips/Makefile.postlink | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/mips/Makefile.postlink b/arch/mips/Makefile.postlink
+> index b0ddf0701a31..4b7f5a648c79 100644
+> --- a/arch/mips/Makefile.postlink
+> +++ b/arch/mips/Makefile.postlink
+> @@ -7,7 +7,7 @@
+>  PHONY :=3D __archpost
+>  __archpost:
+> =20
+> -include include/config/auto.conf
+> +-include include/config/auto.conf
+>  include scripts/Kbuild.include
+> =20
+>  CMD_RELOCS =3D arch/mips/boot/tools/relocs
+> --=20
+> 2.7.4
+>=20
+>=20
+
+--//IivP0gvsAy3Can
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYn4HKAAoJEGwLaZPeOHZ6ClEP/A2OA6Ilc65ApLvpBzwRjndZ
+Ux/rkY62f3JonBUwFPdX1ogmYdfbe61w6uFR/fPZEVPkJ51qqUZujFANhrvs++aM
+SImT6aupFdiBi9iVszccqL1VDZgZSV5eBfbhtjBiKLajIfyzr4qIpZKhZspxzWi1
+qYFqgPEmTOylZLL5BjFdR2GC/3CIKJgD8mqmJyWUPHLKhJPamMKw5zTTA/RJVSeK
+NjkjWFcvUY3gEEXz+l1UJ9j+/cXOFnoi0HkPXZ8ZQDnmK5NWOpL08o9n4WgYVAU6
+FPZrZvJTzGaGEKzk4thaJ5+3pK4zTavGjsV7JK5766eWYyN6C82jjxDbmK6S+i5D
+2JhXv2KPZtga0oVEMx7PP4ugAXBgieoGx94ocWCnbrru1B2SPPD60aZcm410J9+u
+U5zdDRkqwYXIyRkQbUofxcOCvXO3lSTgAOXMO7fIAqUcuKfmBWeZmPmd+EeY9MQ1
+ZkeO7cFMC67NqiBdtqfk+4YSbdwTntMQGu5mDMhyDHbGkKBDt8REqZ2chV1AQ5f/
+E6mwL8zNA1YVNMaZ4Hjr1bE2kuBH4S+3TbCpo1Bx4FC3k44hcnWkET8uiEUcYT1b
+/egJFxZf18QVOMGLkFsdtpG0F5cu03T7SMmkA6o7Qtged/2/ejnNlghTP1llk5St
+pjcue+Y8yNh3Iokv3kzo
+=R99h
+-----END PGP SIGNATURE-----
+
+--//IivP0gvsAy3Can--

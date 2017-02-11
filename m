@@ -1,64 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Feb 2017 00:48:19 +0100 (CET)
-Received: from mail-pg0-x235.google.com ([IPv6:2607:f8b0:400e:c05::235]:33983
-        "EHLO mail-pg0-x235.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992236AbdBJXsMG8MhW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Feb 2017 00:48:12 +0100
-Received: by mail-pg0-x235.google.com with SMTP id 14so14436291pgg.1
-        for <linux-mips@linux-mips.org>; Fri, 10 Feb 2017 15:48:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=nI2KL/3JjvyQmKwwRCR4uslIF/2mEGxohVpR3hjjjoE=;
-        b=VocU+jayxVDWelbqvT7Dv5B/ZIWnV+MqHXWQazgwqleN2LXrjIel34K4+lM926yf+A
-         0YasPfUQ69IRQ2p169Z6OyMsX6rrljVGTdi7yAOcfQ7afBtGm/lyDdRl5Af/6KLMM6iD
-         Nftdht1/Ql1UOdJtK2pT7zo0v5q7av2zjOpdY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=nI2KL/3JjvyQmKwwRCR4uslIF/2mEGxohVpR3hjjjoE=;
-        b=hOqwE4IU+2kQQqfyERKhMig7lqS+aM5HBzOhTiJHBHLkyJ64+I/sIFcjPl5WbWkz0Y
-         4IojkFyHN/uMSUZQbr29PKDEyVag13o50rB19hVlcqkJlGU9O92C/M9kPLE54MY2pzdt
-         eogK/bXjTwRsh0iu1NWLjW2oTFbs6RdHcEv8XOhplCUqI/qaRoChAabBwqnJIp3V0zSC
-         QLxnbSbtedxtRCltsSt2HZtgM+LLR3mfZmMZnhZ/sA85XJTFoRizYvnqPFu7boC5KFKm
-         BL1sVqq3Uvi8uHUAnE2DlD+957KC3QDkHANqCGAO16oxosvGNYjgZbF3BQJnTR8By3i4
-         JwxA==
-X-Gm-Message-State: AMke39n7Pu9opu2cmod/uDYZJyAR1jm2pIpl28LvwLNOkNNSf9isBYqnV4hpPKnslH6hUIpl
-X-Received: by 10.98.133.202 with SMTP id m71mr13416695pfk.102.1486770486064;
-        Fri, 10 Feb 2017 15:48:06 -0800 (PST)
-Received: from [10.13.138.212] ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id w89sm1281869pfk.133.2017.02.10.15.48.04
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 10 Feb 2017 15:48:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Feb 2017 02:25:25 +0100 (CET)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:42281 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992136AbdBKBZRhTH4M (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Feb 2017 02:25:17 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject;
+        bh=xJgjh4y3V/cBClvsInUl06QuGXCgLRcsP3kjAnsLHvU=; b=BcGrLc/6URpDxQNhyB4M5yU6AT
+        +Z9xZ9pJQuJWXVDYl+stgWL1DABtpouLCEXDnNbmcMKQ9VVAjjDWBHYlnrCd0JjFqOmaQMvdX+p9A
+        A/k4D4IuFiJbNZECpJUa7NdRwacwYw7pVRlpC+u3sfGya0KzH9Ufk6NGUC/EPLJrOn1/c2HsrweBH
+        jy5OEL1fD6C7KgiZMTr4+wJZYJEsGF1Sj3pDSMiF0aN5zJ4Aum3z3IbKebf9dh8qqoJwdxi/IGYzL
+        H0u3J16jnJ2z9Eo14lZHVXtt/3sBGob9iA+2d+syhyWncNYxdfhyBj1oudk5p5IE+022kF9ll6YVa
+        kozxgWfw==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:45200 helo=server.roeck-us.net)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1:DHE-RSA-AES128-SHA:128)
+        (Exim 4.86_1)
+        (envelope-from <linux@roeck-us.net>)
+        id 1ccMR2-00379s-T8; Sat, 11 Feb 2017 01:25:09 +0000
 Subject: Re: [PATCH] MIPS: Fix cacheinfo overflow
-To:     James Hogan <james.hogan@imgtec.com>
+To:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org
 References: <20170208234523.GA13263@roeck-us.net>
  <20170210230120.21588-1-james.hogan@imgtec.com>
- <d63e0019-5861-ccca-7959-631916e6c882@broadcom.com>
- <20170210234437.GB9246@jhogan-linux.le.imgtec.org>
-Cc:     linux-mips@linux-mips.org, Guenter Roeck <linux@roeck-us.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Justin Chen <justin.chen@broadcom.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com
-From:   Justin Chen <justin.chen@broadcom.com>
-Message-ID: <23127a9b-cd2e-93be-0d1b-994890d1cb60@broadcom.com>
-Date:   Fri, 10 Feb 2017 15:48:04 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <83acf9d3-ea54-13a0-d4d5-26e44c788fc0@roeck-us.net>
+Date:   Fri, 10 Feb 2017 17:25:07 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
+ Thunderbird/45.5.1
 MIME-Version: 1.0
-In-Reply-To: <20170210234437.GB9246@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20170210230120.21588-1-james.hogan@imgtec.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <justin.chen@broadcom.com>
+X-Authenticated_sender: linux@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: linux@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: linux@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56770
+X-archive-position: 56771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: justin.chen@broadcom.com
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,40 +67,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On 02/10/2017 03:01 PM, James Hogan wrote:
+> The recently added MIPS cacheinfo support used a macro populate_cache()
+> to populate the cacheinfo structures depending on which caches are
+> present. However the macro contains multiple statements without
+> enclosing them in a do {} while (0) loop, so the L2 and L3 cache
+> conditionals in populate_cache_leaves() only conditionalised the first
+> statement in the macro.
+>
+> This overflows the buffer allocated by detect_cache_attributes(),
+> resulting in boot failures under QEMU where neither the L2 or L2 caches
+> are present.
+>
+> Enclose the macro statements in a do {} while (0) block to keep the
+> whole macro inside the conditionals.
+>
+> Fixes: ef462f3b64e9 ("MIPS: Add cacheinfo support")
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: James Hogan <james.hogan@imgtec.com>
 
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-On 02/10/2017 03:44 PM, James Hogan wrote:
-> Hi Justin,
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Justin Chen <justin.chen@broadcom.com>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: bcm-kernel-feedback-list@broadcom.com
+> ---
+>  arch/mips/kernel/cacheinfo.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> On Fri, Feb 10, 2017 at 03:10:47PM -0800, Justin Chen wrote:
->> I actually submitted a v2 of the patch sometime back located here:
->> https://patchwork.linux-mips.org/patch/15107/
->>
->> The v2 had some code review changes from Matt Redfearn. These changes
->> indirectly got rid of the error, which was why I wasn't running into the
->> crash.
+> diff --git a/arch/mips/kernel/cacheinfo.c b/arch/mips/kernel/cacheinfo.c
+> index a92bbbae969b..97d5239ca47b 100644
+> --- a/arch/mips/kernel/cacheinfo.c
+> +++ b/arch/mips/kernel/cacheinfo.c
+> @@ -17,6 +17,7 @@
 >
-> Ah yes. It looks like Ralf applied the original patch on January 3rd,
-> before the last 3 submissions of the patch.
+>  /* Populates leaf and increments to next leaf */
+>  #define populate_cache(cache, leaf, c_level, c_type)		\
+> +do {								\
+>  	leaf->type = c_type;					\
+>  	leaf->level = c_level;					\
+>  	leaf->coherency_line_size = c->cache.linesz;		\
+> @@ -24,7 +25,8 @@
+>  	leaf->ways_of_associativity = c->cache.ways;		\
+>  	leaf->size = c->cache.linesz * c->cache.sets *		\
+>  		c->cache.ways;					\
+> -	leaf++;
+> +	leaf++;							\
+> +} while (0)
 >
-> Incidentally, in future I'd recommend incrementing the patch version
-> number each time you submit a new version, and mentioning what has
-> changed in a comment at the bottom of the commit message (anything after
-> "---" gets dropped when the patch is applied).
->
-> A random example:
-> https://patchwork.linux-mips.org/patch/15134/
-Got it. Sorry, will do next time!
->
->>
->> Either way, whatever makes more sense, we can drop the other v1 patch
->> and add v2 or just add this patch on top.
->
-> Since the patch has already been applied for a while and the merge
-> window is imminent, I think its best to make do with fixup patches on
-> top this time around.
-Sounds good to me.
->
-> Thanks
-> James
+>  static int __init_cache_level(unsigned int cpu)
+>  {
 >

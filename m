@@ -1,30 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Feb 2017 09:03:55 +0100 (CET)
-Received: from nbd.name ([IPv6:2a01:4f8:131:30e2::2]:34901 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Feb 2017 12:05:20 +0100 (CET)
+Received: from nbd.name ([IPv6:2a01:4f8:131:30e2::2]:38193 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990511AbdBLIDsbZ5RS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 12 Feb 2017 09:03:48 +0100
-Subject: Re: [PATCH] MIPS: Lantiq: Keep ethernet enabled during boot
-To:     Felix Fietkau <nbd@nbd.name>, linux-mips@linux-mips.org
-References: <20170119132009.55709-1-nbd@nbd.name>
-Cc:     ralf@linux-mips.org, hauke.mehrtens@lantiq.com
-From:   John Crispin <john@phrozen.org>
-Message-ID: <6c7672fc-4acb-98a9-b6e3-3387d33ba69f@phrozen.org>
-Date:   Sun, 12 Feb 2017 09:03:42 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:45.0)
+        id S23990511AbdBLLFNDX0HD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 12 Feb 2017 12:05:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name; s=20160729;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject; bh=LlfJnjyl9qGaq5+81a5VIXx3QkEr9D9n8NMXrJ+Ctvw=;
+        b=DqJXcsrghmimooQ+K3RWVLUdqPLGWQRV/mu07XwTZkbay05MKMvsc+3bnBHlYODmVmqb8Y2ozweIjLQcxCBmpdbRMjBQmTiMuH/yBViwpAOVSze9dSlrVHdzvh1g8N2MMkg/zf5aTJ1tsh8H1x2W1oi33mvfH3lV01+Hp0gw9Bk=;
+Subject: Re: [PATCH] MIPS: Lantiq: Fix cascaded IRQ setup
+To:     Hauke Mehrtens <hauke@hauke-m.de>,
+        James Hogan <james.hogan@imgtec.com>
+References: <20170119112822.59445-1-nbd@nbd.name>
+ <20170211231906.GI24226@jhogan-linux.le.imgtec.org>
+ <073628a4-9c45-b3c3-6caa-c88bea138aa9@hauke-m.de>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org, john@phrozen.org
+From:   Felix Fietkau <nbd@nbd.name>
+Message-ID: <54159608-3adb-071b-9555-f48e2fb3dd22@nbd.name>
+Date:   Sun, 12 Feb 2017 12:05:08 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:45.0)
  Gecko/20100101 Thunderbird/45.7.1
 MIME-Version: 1.0
-In-Reply-To: <20170119132009.55709-1-nbd@nbd.name>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <073628a4-9c45-b3c3-6caa-c88bea138aa9@hauke-m.de>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+Return-Path: <nbd@nbd.name>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56780
+X-archive-position: 56781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: nbd@nbd.name
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -37,63 +43,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-
-
-On 19/01/2017 14:20, Felix Fietkau wrote:
-> Disabling ethernet during reboot (only to enable it again when the
-> ethernet driver attaches) can put the chip into a faulty state where it
-> corrupts the header of all incoming packets.
+On 2017-02-12 00:50, Hauke Mehrtens wrote:
+> On 02/12/2017 12:19 AM, James Hogan wrote:
+>> Hi Felix,
+>> 
+>> On Thu, Jan 19, 2017 at 12:28:22PM +0100, Felix Fietkau wrote:
+>>> With the IRQ stack changes integrated, the XRX200 devices started
+>>> emitting a constant stream of kernel messages like this:
+>>>
+>>> [  565.415310] Spurious IRQ: CAUSE=0x1100c300
+>>>
+>>> This appears to be caused by IP0 firing for some reason without being
+>>> handled. Fix this by setting up IP2-6 as a proper chained IRQ handler and
+>>> calling do_IRQ for all MIPS CPU interrupts.
+>>>
+>>> Cc: john@phrozen.org
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>> 
+>> Is this still applicable after Matt's fix is applied?
+>> https://patchwork.linux-mips.org/patch/15110/
 > 
-> This happens if packets arrive during the time window where the core is
-> disabled, and it can be easily reproduced by rebooting while sending a
-> flood ping to the broadcast address.
+> Hi,
 > 
-> Cc: john@phrozen.org
-> Cc: hauke.mehrtens@lantiq.com
-> Cc: stable@vger.kernel.org
-> Fixes: 95135bfa7ead ("MIPS: Lantiq: Deactivate most of the devices by default")
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> I just tried it without Matt's and Felix's fix and I saw the problem,
+> then I applied Matt's fix and the problem was gone.
+I still think it should be applied, since it replaces some hacks with
+cleaner code.
 
-Acked-by: John Crispin <john@phrozen.org>
-
-> ---
->  arch/mips/lantiq/xway/sysctrl.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-> index 236193b5210b..9a61671c00a7 100644
-> --- a/arch/mips/lantiq/xway/sysctrl.c
-> +++ b/arch/mips/lantiq/xway/sysctrl.c
-> @@ -545,7 +545,7 @@ void __init ltq_soc_init(void)
->  		clkdev_add_pmu("1a800000.pcie", "msi", 1, 1, PMU1_PCIE2_MSI);
->  		clkdev_add_pmu("1a800000.pcie", "pdi", 1, 1, PMU1_PCIE2_PDI);
->  		clkdev_add_pmu("1a800000.pcie", "ctl", 1, 1, PMU1_PCIE2_CTL);
-> -		clkdev_add_pmu("1e108000.eth", NULL, 1, 0, PMU_SWITCH | PMU_PPE_DP);
-> +		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH | PMU_PPE_DP);
->  		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
->  		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
->  	} else if (of_machine_is_compatible("lantiq,ar10")) {
-> @@ -553,7 +553,7 @@ void __init ltq_soc_init(void)
->  				  ltq_ar10_fpi_hz(), ltq_ar10_pp32_hz());
->  		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
->  		clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1);
-> -		clkdev_add_pmu("1e108000.eth", NULL, 1, 0, PMU_SWITCH |
-> +		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH |
->  			       PMU_PPE_DP | PMU_PPE_TC);
->  		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
->  		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
-> @@ -575,11 +575,11 @@ void __init ltq_soc_init(void)
->  		clkdev_add_pmu(NULL, "ahb", 1, 0, PMU_AHBM | PMU_AHBS);
->  
->  		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
-> -		clkdev_add_pmu("1e108000.eth", NULL, 1, 0,
-> +		clkdev_add_pmu("1e108000.eth", NULL, 0, 0,
->  				PMU_SWITCH | PMU_PPE_DPLUS | PMU_PPE_DPLUM |
->  				PMU_PPE_EMA | PMU_PPE_TC | PMU_PPE_SLL01 |
->  				PMU_PPE_QSB | PMU_PPE_TOP);
-> -		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
-> +		clkdev_add_pmu("1f203000.rcu", "gphy", 0, 0, PMU_GPHY);
->  		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
->  		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
->  		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
-> 
+- Felix

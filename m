@@ -1,58 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Feb 2017 11:53:02 +0100 (CET)
-Received: from mail-vk0-x243.google.com ([IPv6:2607:f8b0:400c:c05::243]:33851
-        "EHLO mail-vk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993419AbdBMKwzUhsHq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Feb 2017 11:52:55 +0100
-Received: by mail-vk0-x243.google.com with SMTP id r136so7487645vke.1;
-        Mon, 13 Feb 2017 02:52:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=uZ6PniQpfSZgOeLcsrSnsls7R+T8+13NnD9paj4GZf4=;
-        b=U5ZoWZGM5WYQ0ASMkoxy5zdmUXfOvSEDQDZibs8zTcTVR8brPc5z0AKRkCLwzi3dm4
-         /baOGfUrc5acDT2FDWGAsWAyb3JSi2wSH6BnfKOi0gkyguScz05HjPGvkbRU+I9M7ZAk
-         vtws+u6mdUhPoL69nLUooB0Cn322kJgMaOxzsPj7j4CktmwcgTxlH+P564JmL8ZOiC7J
-         XMyTJ6iTnYPSe53pSn7TkKmKv3gFRF2f+PdgbvqgfCWG12UyXMKh5oAuI5/S2OjLvcFc
-         hHY1MDbsxVAWsYQtewk9MVDGQZr0v2IhnJ8ubs8Tvx5J+CEN/PvoJo0Q3TgBzL79d7JN
-         JTTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=uZ6PniQpfSZgOeLcsrSnsls7R+T8+13NnD9paj4GZf4=;
-        b=SfCEagvMfLHaDG/JZ/h504b+IQ1lyiWjUlUZeYX8E/6SkhaRrd2IzAPgVRmEkxoaAl
-         gE9twlGviMdB25v4wuAAg4mKOzBXdJt/UVxXrYPxmxv3PJiLCPKUb9znVhpiGPdyks0N
-         p9ewpjsKXNaNpLyBQ4CIZVf7LSod78TemrGArN/+UdrPqOuE+/txDeQvWOyWMeo8AxQd
-         5Mla/FHx5AaZgSGrM3nurUZKKYEMe9OGsltwbsHxxL0xY/4jZrWY1FtP3ovfvG1poesk
-         UXdNCK0bMuUFMk56JWY1P90moQfJ3ZVkX7VGSJzwh2rYRKZXISFv8nbuq+jzV2gobXlz
-         sr6g==
-X-Gm-Message-State: AMke39m52JirI0wP5rf7tnPi8bait7Y2nopRy/bIPO3912jTvQSCEl+EnmtVh9NEcN8QWz1LErCT/9BR37datg==
-X-Received: by 10.31.208.133 with SMTP id h127mr11323192vkg.96.1486983169522;
- Mon, 13 Feb 2017 02:52:49 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Feb 2017 12:12:24 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57247 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993417AbdBMLMQnxa9q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Feb 2017 12:12:16 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 26E7641F8E9B;
+        Mon, 13 Feb 2017 12:16:05 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Mon, 13 Feb 2017 12:16:05 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Mon, 13 Feb 2017 12:16:05 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 45CDFD8522014;
+        Mon, 13 Feb 2017 11:12:08 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 13 Feb
+ 2017 11:12:10 +0000
+Date:   Mon, 13 Feb 2017 11:12:10 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Hauke Mehrtens <hauke@hauke-m.de>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>, <john@phrozen.org>
+Subject: Re: [PATCH] MIPS: Lantiq: Fix cascaded IRQ setup
+Message-ID: <20170213111209.GJ24226@jhogan-linux.le.imgtec.org>
+References: <20170119112822.59445-1-nbd@nbd.name>
+ <20170211231906.GI24226@jhogan-linux.le.imgtec.org>
+ <073628a4-9c45-b3c3-6caa-c88bea138aa9@hauke-m.de>
+ <54159608-3adb-071b-9555-f48e2fb3dd22@nbd.name>
 MIME-Version: 1.0
-Received: by 10.176.3.17 with HTTP; Mon, 13 Feb 2017 02:52:29 -0800 (PST)
-In-Reply-To: <20170213093736.1ee183f3@tock>
-References: <1486326077-17091-1-git-send-email-albeu@free.fr>
- <CAOiHx=nwBgVnZp1x2TcDVNx1hA2KYwwQnYSbCsCOJpNo-SLJPg@mail.gmail.com> <20170213093736.1ee183f3@tock>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Mon, 13 Feb 2017 11:52:29 +0100
-Message-ID: <CAOiHx=kkE2z9z83ctukh4XpOUpRqRo=mXqia417ABt9jymgCtQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Allow compressed images to be loaded at the usual address
-To:     Alban <albeu@free.fr>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jonas.gorski@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="JsihDCElWRmQcbOr"
+Content-Disposition: inline
+In-Reply-To: <54159608-3adb-071b-9555-f48e2fb3dd22@nbd.name>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56787
+X-archive-position: 56788
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,106 +57,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+--JsihDCElWRmQcbOr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 13 February 2017 at 09:37, Alban <albeu@free.fr> wrote:
-> On Thu, 9 Feb 2017 13:22:37 +0100
-> Jonas Gorski <jonas.gorski@gmail.com> wrote:
+On Sun, Feb 12, 2017 at 12:05:08PM +0100, Felix Fietkau wrote:
+> On 2017-02-12 00:50, Hauke Mehrtens wrote:
+> > On 02/12/2017 12:19 AM, James Hogan wrote:
+> >> On Thu, Jan 19, 2017 at 12:28:22PM +0100, Felix Fietkau wrote:
+> >>> With the IRQ stack changes integrated, the XRX200 devices started
+> >>> emitting a constant stream of kernel messages like this:
+> >>>
+> >>> [  565.415310] Spurious IRQ: CAUSE=3D0x1100c300
+> >>>
+> >>> This appears to be caused by IP0 firing for some reason without being
+> >>> handled. Fix this by setting up IP2-6 as a proper chained IRQ handler=
+ and
+> >>> calling do_IRQ for all MIPS CPU interrupts.
+> >>>
+> >>> Cc: john@phrozen.org
+> >>> Cc: stable@vger.kernel.org
+> >>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> >>=20
+> >> Is this still applicable after Matt's fix is applied?
+> >> https://patchwork.linux-mips.org/patch/15110/
+> >=20
+
+> > I just tried it without Matt's and Felix's fix and I saw the problem,
+> > then I applied Matt's fix and the problem was gone.
+> I still think it should be applied, since it replaces some hacks with
+> cleaner code.
+
+Okay, I'll drop cc stable (since cpu_has_vint is hardwired to 1 on
+lantiq platform), and change the last paragraph of the commit message to
+say:
+
+> This is caused by IP0 getting handled by plat_irq_dispatch() rather than
+> its vectored interrupt handler, which is fixed by commit de856416e714
+> ("MIPS: IRQ Stack: Fix erroneous jal to plat_irq_dispatch").
 >
->> Hi,
->>
->> On 5 February 2017 at 21:21, Alban <albeu@free.fr> wrote:
->> > From: Alban Bedel <albeu@free.fr>
->> >
->> > Normally compressed images have to be loaded at a different address to
->> > allow the decompressor to run. This add an option to let vmlinuz copy
->> > itself to the correct address from the normal vmlinux address.
->> >
->> > Signed-off-by: Alban Bedel <albeu@free.fr>
->> > ---
->> >  arch/mips/Kconfig                |  8 ++++++++
->> >  arch/mips/boot/compressed/head.S | 13 +++++++++++++
->> >  2 files changed, 21 insertions(+)
->> >
->> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> > index b3c5bde..8074fc5 100644
->> > --- a/arch/mips/Kconfig
->> > +++ b/arch/mips/Kconfig
->> > @@ -2961,6 +2961,14 @@ choice
->> >                 bool "Extend builtin kernel arguments with bootloader arguments"
->> >  endchoice
->> >
->> > +config ZBOOT_VMLINUZ_AT_VMLINUX_LOAD_ADDRESS
->> > +       bool "Load compressed images at the same address as uncompressed"
->> > +       depends on SYS_SUPPORTS_ZBOOT
->> > +       help
->> > +         vmlinux and vmlinuz normally have different load addresses, with
->> > +         this option vmlinuz expect to be loaded at the same address as
->> > +         vmlinux.
->> > +
->> >  endmenu
->>
->> Okay, it took me a while to understand the intention of this change. I
->> thought it was for supporting the case that VMLINUZ_LOAD_ADDRESS ==
->> VMLINUX_LOAD_ADDRESS, but it is indented for  VMLINUZ_LOAD_ADDRESS !=
->> VMLINUX_LOAD_ADDRESS, but still being loaded at VMLINUX_LOAD_ADDRESS.
->>
->> So I guess that this can only happen with vmlinuz.bin, as vmlinux's
->> ELF header will cause it to be loaded at the expected address (for
->> sane bootloaders at least).
->
-> Yes, this is for bootloaders that use raw images. Having to configure
-> different load addresses for compressed and uncompressed images was just
-> too annoying.
->
->> >  config LOCKDEP_SUPPORT
->> > diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed/head.S
->> > index 409cb48..a215171 100644
->> > --- a/arch/mips/boot/compressed/head.S
->> > +++ b/arch/mips/boot/compressed/head.S
->> > @@ -25,6 +25,19 @@ start:
->> >         move    s2, a2
->> >         move    s3, a3
->> >
->> > +#ifdef CONFIG_ZBOOT_VMLINUZ_AT_VMLINUX_LOAD_ADDRESS
->>
->> With a bit of BAL trickery you could easily detect this at runtime and
->> then conditionally copy without requiring any additional config
->> symbols. Then you aren't limited to being executed from
->> VMLINUX_LOAD_ADDRESS.
->
-> Could you expand a bit on what you mean with "BAL trickery"? I hoped
-> that it would be possible to auto detect the current running address,
-> but as I know very little about MIPS assembly I didn't found how that
-> could be done.
+> Fix plat_irq_dispatch() to handle non-vectored IPI interrupts correctly
+> by setting up IP2-6 as proper chained IRQ handlers and calling do_IRQ
+> for all MIPS CPU interrupts.
 
-With BAL (branch and link) you can do a pc-relative jump, and the
-current address will be stored in $ra. comparing it with the expected
-address will give you the offset by which you were loaded. To quote
-the lzma-loader from OpenWrt/Lede[1]:
+I think thats accurate, but let me know if you want it changed.
 
-        la      t0, __reloc_label       # get linked address of label
-        bal     __reloc_label           # branch and link to label to
-        nop                             # get actual address
-__reloc_label:
-        subu    t0, ra, t0              # get reloc_delta
-        beqz    t0, __reloc_done         # if delta is 0 we are in the
-right place
-        nop
+Thanks
+James
 
-        /* Copy our code to the right place */
-        la      t1, _code_start         # get linked address of _code_start
-        la      t2, _code_end           # get linked address of _code_end
-        addu    t0, t0, t1              # calculate actual address of
-_code_start
+--JsihDCElWRmQcbOr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-__reloc_copy:
-...
-__reloc_done:
-...
+-----BEGIN PGP SIGNATURE-----
 
+iQIcBAEBCAAGBQJYoZSAAAoJEGwLaZPeOHZ64dUQALEIa7JmOyaDCfAbroTM+Pp0
+xCFbxnT/t8MV17U3zwzRTr3DiwEY3zWdR+4CDGk1eaaes/4TD7OipYE8K8UoUQ6Y
+DePHODpZpz1YnK5u5/WCqDitkx3tIRYqIFlAGqrhVhtvvccqhPpoMytGVXFUrq5C
+NDMufAb/P3EheiJq2lrHlhG6qQhCEGcgcGtD1+BpMQhF5srCclVLkpGadyf74LCJ
+oTur2bj+AXFduZm5950MkmXpUMbzWkm7Ya2UTYJzlhgquV/fR5Zty2HxSuzMi0qo
+sxz0V9Jq4tIJpw39wO63JZ2tvFWbvirdAt5P8l7ssrZcIGFFjedK9TiACL8w65jE
+t3gpXa/3ciVq1ygRxw4R/TtufKO3oVNCly+6JVNpMxOJwtdzdhQu4fixmlEvadM2
+rNENuqL/zDZDJ+d4r3oOowHVAEbAxCLvjysGvWNoMj8UGrfI3Dh4GG+v4ghxjuyW
+tz/mAOgxnoeteOV2y0ITiXj0Yl3BOHJPHMU16IFjqpLPEBb9cuQ1yUXtpUiozjnq
+gZbRI0peiyLfVvHNoSxnF/IVEmk1gJ6knN43ly2x6BdJX38kEn/Z4emlUB5Q5JtS
+0aBAViW5xkdx61ffeq3RAPDnAzaT4CGj+DevLcWGU8Z1+mOPVNbhWL2m3vS4Hb1f
+z9SN1W351FZ4KFKqvOZZ
+=g9Fq
+-----END PGP SIGNATURE-----
 
-Regards
-Jonas
-
-[1] https://git.lede-project.org/?p=source.git;a=blob;f=target/linux/ar71xx/image/lzma-loader/src/head.S;h=47a7c9bd6300ad92e6a0d426c5f44bc0f3e7e85f;hb=HEAD#l49
+--JsihDCElWRmQcbOr--

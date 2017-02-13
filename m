@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Feb 2017 09:30:46 +0100 (CET)
-Received: from smtp5-g21.free.fr ([IPv6:2a01:e0c:1:1599::14]:59212 "EHLO
-        smtp5-g21.free.fr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993331AbdBMIaiztOVQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Feb 2017 09:30:38 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Feb 2017 09:37:57 +0100 (CET)
+Received: from smtp5-g21.free.fr ([212.27.42.5]:26582 "EHLO smtp5-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993331AbdBMIhuNcikQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 13 Feb 2017 09:37:50 +0100
 Received: from tock (unknown [2.247.253.223])
         (Authenticated sender: albeu)
-        by smtp5-g21.free.fr (Postfix) with ESMTPSA id 1AD565FFD9;
-        Mon, 13 Feb 2017 09:30:18 +0100 (CET)
-Date:   Mon, 13 Feb 2017 09:30:07 +0100
+        by smtp5-g21.free.fr (Postfix) with ESMTPSA id DD23F5FFCC;
+        Mon, 13 Feb 2017 09:37:39 +0100 (CET)
+Date:   Mon, 13 Feb 2017 09:37:36 +0100
 From:   Alban <albeu@free.fr>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Aban Bedel <albeu@free.fr>, <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     Aban Bedel <albeu@free.fr>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Antony Pavlov <antonynpavlov@gmail.com>,
-        <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v4 3/3] MIPS: ath79: Fix the USB PHY reset names
-Message-ID: <20170213093007.7b76fd7c@tock>
-In-Reply-To: <20170211220129.GG24226@jhogan-linux.le.imgtec.org>
-References: <1486324352-15188-1-git-send-email-albeu@free.fr>
-        <1486324352-15188-3-git-send-email-albeu@free.fr>
-        <20170211220129.GG24226@jhogan-linux.le.imgtec.org>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Allow compressed images to be loaded at the usual
+ address
+Message-ID: <20170213093736.1ee183f3@tock>
+In-Reply-To: <CAOiHx=nwBgVnZp1x2TcDVNx1hA2KYwwQnYSbCsCOJpNo-SLJPg@mail.gmail.com>
+References: <1486326077-17091-1-git-send-email-albeu@free.fr>
+        <CAOiHx=nwBgVnZp1x2TcDVNx1hA2KYwwQnYSbCsCOJpNo-SLJPg@mail.gmail.com>
 X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/3VoXh3x+sdCmcgfQ3sw6haQ"; protocol="application/pgp-signature"
+ boundary="Sig_/4ILNor26cixMDxa7eSjnB/t"; protocol="application/pgp-signature"
 Return-Path: <albeu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56783
+X-archive-position: 56784
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,70 +45,106 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---Sig_/3VoXh3x+sdCmcgfQ3sw6haQ
+--Sig_/4ILNor26cixMDxa7eSjnB/t
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 11 Feb 2017 22:01:29 +0000
-James Hogan <james.hogan@imgtec.com> wrote:
+On Thu, 9 Feb 2017 13:22:37 +0100
+Jonas Gorski <jonas.gorski@gmail.com> wrote:
 
-> Hi Alban,
+> Hi,
 >=20
-> On Sun, Feb 05, 2017 at 08:52:32PM +0100, Alban wrote:
+> On 5 February 2017 at 21:21, Alban <albeu@free.fr> wrote:
 > > From: Alban Bedel <albeu@free.fr>
-> >=20
-> > The binding for the USB PHY went thru before the driver. However the
-> > new version of the driver now use the PHY core support for reset, and
-> > this expect the reset to be named "phy". So remove the "usb-" prefix
-> > from the the reset names.
-> >=20
+> >
+> > Normally compressed images have to be loaded at a different address to
+> > allow the decompressor to run. This add an option to let vmlinuz copy
+> > itself to the correct address from the normal vmlinux address.
+> >
 > > Signed-off-by: Alban Bedel <albeu@free.fr>
 > > ---
-> >  Documentation/devicetree/bindings/phy/phy-ath79-usb.txt | 4 ++--
-> >  arch/mips/boot/dts/qca/ar9132.dtsi                      | 2 +- =20
+> >  arch/mips/Kconfig                |  8 ++++++++
+> >  arch/mips/boot/compressed/head.S | 13 +++++++++++++
+> >  2 files changed, 21 insertions(+)
+> >
+> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> > index b3c5bde..8074fc5 100644
+> > --- a/arch/mips/Kconfig
+> > +++ b/arch/mips/Kconfig
+> > @@ -2961,6 +2961,14 @@ choice
+> >                 bool "Extend builtin kernel arguments with bootloader a=
+rguments"
+> >  endchoice
+> >
+> > +config ZBOOT_VMLINUZ_AT_VMLINUX_LOAD_ADDRESS
+> > +       bool "Load compressed images at the same address as uncompresse=
+d"
+> > +       depends on SYS_SUPPORTS_ZBOOT
+> > +       help
+> > +         vmlinux and vmlinuz normally have different load addresses, w=
+ith
+> > +         this option vmlinuz expect to be loaded at the same address as
+> > +         vmlinux.
+> > +
+> >  endmenu =20
 >=20
-> <snip>
+> Okay, it took me a while to understand the intention of this change. I
+> thought it was for supporting the case that VMLINUZ_LOAD_ADDRESS =3D=3D
+> VMLINUX_LOAD_ADDRESS, but it is indented for  VMLINUZ_LOAD_ADDRESS !=3D
+> VMLINUX_LOAD_ADDRESS, but still being loaded at VMLINUX_LOAD_ADDRESS.
 >=20
-> > diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qc=
-a/ar9132.dtsi
-> > index 302f0a8..808c2bb 100644
-> > --- a/arch/mips/boot/dts/qca/ar9132.dtsi
-> > +++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-> > @@ -160,7 +160,7 @@
-> >  	usb_phy: usb-phy {
-> >  		compatible =3D "qca,ar7100-usb-phy";
-> > =20
-> > -		reset-names =3D "usb-phy", "usb-suspend-override";
-> > +		reset-names =3D "phy", "suspend-override"; =20
->=20
-> Does arch/mips/boot/dts/qca/ar9331.dtsi need updating too?
+> So I guess that this can only happen with vmlinuz.bin, as vmlinux's
+> ELF header will cause it to be loaded at the expected address (for
+> sane bootloaders at least).
 
-Right, I forgot the AR9331 had been added since then, I'll send a new
-series.
+Yes, this is for bootloaders that use raw images. Having to configure
+different load addresses for compressed and uncompressed images was just
+too annoying.
+
+> >  config LOCKDEP_SUPPORT
+> > diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compress=
+ed/head.S
+> > index 409cb48..a215171 100644
+> > --- a/arch/mips/boot/compressed/head.S
+> > +++ b/arch/mips/boot/compressed/head.S
+> > @@ -25,6 +25,19 @@ start:
+> >         move    s2, a2
+> >         move    s3, a3
+> >
+> > +#ifdef CONFIG_ZBOOT_VMLINUZ_AT_VMLINUX_LOAD_ADDRESS =20
+>=20
+> With a bit of BAL trickery you could easily detect this at runtime and
+> then conditionally copy without requiring any additional config
+> symbols. Then you aren't limited to being executed from
+> VMLINUX_LOAD_ADDRESS.
+
+Could you expand a bit on what you mean with "BAL trickery"? I hoped
+that it would be possible to auto detect the current running address,
+but as I know very little about MIPS assembly I didn't found how that
+could be done.
 
 Alban
 
-
---Sig_/3VoXh3x+sdCmcgfQ3sw6haQ
+--Sig_/4ILNor26cixMDxa7eSjnB/t
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYoW6PAAoJEHSUmkuduC280acQAIT2+u5HojN3Bw2JIrqUp3XZ
-49QEccjGIhhHpO30tp0qhqa0C6fLWoF0SQ7Vb2i0ECPGpEjezUMg5ri2FWUMTcyi
-oDA92ZG9AA0jBG0U58TgolECPGlommEi5Qr+2dWHuoNdKgleXel8v72KKVRfIgqZ
-zBfHjGyG4yRZQ6EoXg/fcSFAcy2BlkJgOX3ez88sedAQNGcPFjZV8216LsHWKiMM
-yiuiHegxXsultB0O8GHc9lp2Vqb16O2zfCyk5eMTryeiIdpW+yzEYaC5rejDDVE2
-tY/03adHFWZG7msU3/ZfYMs9DaKhsG4u+Pzrq33W9zrZGe45EhypHNVXVSY8YB4g
-2nRddep4srCufKfHC5yfBq1XFAentMxqMwu1/+WEgVJPZu70yO9JlCBkmb2s4tD/
-ZxRR3qtf66BlhomYJftwxEU5p1YOE8QNDcB/mv9prqVfm5n/B5ro4jhkOo3JQaxI
-vOudSdIYHr2px+TGs3+TUzKBC7ee143261c/zQ2gEdtAxIXjS1tiW/SD/vuP71dz
-4AtyEdKj1A8MXCnauiqnkppk+SGkVOoTJHW2g7bVSsQzcJqLF4DzVo7xjd2j48p2
-1qoGkQB8nd9r+18Dc4qEt+HMFue13YcqaFEGOA8BmkOvfEc7O3x5YPibauYL0avT
-/4D2ZpAiHeMbYsD5yFB/
-=0uzD
+iQIcBAEBCAAGBQJYoXBQAAoJEHSUmkuduC28KSYP/RdK2Rg5l+PjzXo5AOU7969+
+wfQzFZEcK+i4134/SBFPHEvSEeE/nU+bq5zXm/rpT9LYj/PE2BVwRlQ7LG/RlUS0
+eNJKEfM8KGHY7VlndH502xnAHvhuaEOu7Ipbjchoop7ElBdjgFmYdinrZeRaWMJO
+fQs3PucHfDG+5hU+Cjz+URx6P2P31K3b2domW4Cza2TqD+lZfVWaOM+wXyu3RLsW
+mQ0y56CuFnza7rZU12C2PzvD4+lmE21E+/guIBV+6ocDlLw62tma3y0bQTgaSsmR
+XV3FzmbVEHQAUZNawenX80IIjfP8noXQmLX42f1EA3QSaTwwSmgucUYG1XrqxDI/
+rFOQYIFGGKEilYeUjWSoatv8b5BXjDJ02mxmQDWdT1whYmcL+ZwtZ4CjC49W3exA
+0NCXvY6QUPi6JZJtlDDaOevZZkJgFDY8An7wXN1dhFbDTuQcWk/d+e39gx2F4PCo
+IWQVKu+gj3j+8zA2C13VDANHewnwH2eXYHo1fHtNMoArhQcGrKqkb65S9znNrpTD
+n4beG8YJIAzpIioL7BeJTPzW7FyfwjstQYs/1JzrJER0OstEAvIyPYRjPXoNcs/M
+pQl9ahhPiERUf1GSRIeY0r5R9yulnifMnknMfGoPr50FKKpJvq4yTlbbeGbAis/o
+9EBMtdAXGkDc/sMfIiL4
+=SAkT
 -----END PGP SIGNATURE-----
 
---Sig_/3VoXh3x+sdCmcgfQ3sw6haQ--
+--Sig_/4ILNor26cixMDxa7eSjnB/t--

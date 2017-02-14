@@ -1,39 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2017 15:55:00 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11892 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993866AbdBNOywI04XI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Feb 2017 15:54:52 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 11F0BE502D61E;
-        Tue, 14 Feb 2017 14:54:42 +0000 (GMT)
-Received: from [10.80.2.5] (10.80.2.5) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 14 Feb
- 2017 14:54:44 +0000
-Subject: Re: [PATCH 1/2] pwm: loongson1: Add PWM driver for Loongson1 SoC
-To:     Yang Ling <gnaygnil@gmail.com>, <thierry.reding@gmail.com>,
-        <keguang.zhang@gmail.com>
-References: <20170213152801.GA32019@ubuntu>
-CC:     <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
-        <linux-mips@linux-mips.org>
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Message-ID: <f27d34d4-b0ac-2fd6-bc75-89a6c913ba3c@imgtec.com>
-Date:   Tue, 14 Feb 2017 15:54:44 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2017 15:56:42 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:43960 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993866AbdBNO4fPp8QI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Feb 2017 15:56:35 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 181F3202F2;
+        Tue, 14 Feb 2017 14:56:32 +0000 (UTC)
+Received: from localhost (173-27-161-33.client.mchsi.com [173.27.161.33])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3D05D202F0;
+        Tue, 14 Feb 2017 14:56:30 +0000 (UTC)
+Date:   Tue, 14 Feb 2017 08:56:28 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Joshua Kinard <kumba@gentoo.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Linux/MIPS <linux-mips@linux-mips.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH 12/12] MIPS: PCI: Fix IP27 for the PCI_PROBE_ONLY case
+Message-ID: <20170214145628.GA10418@bhelgaas-glaptop.roam.corp.google.com>
+References: <20170207061356.8270-1-kumba@gentoo.org>
+ <20170207061356.8270-13-kumba@gentoo.org>
+ <CAErSpo6yKAE1_c1eZJapnjD1g0pocyOxed3_Eumdp_026uhDuA@mail.gmail.com>
+ <eafc94c6-1931-e2ce-7e03-d84d8e181e81@gentoo.org>
+ <CAErSpo4LsrPCtdZwp6CyT0jKhXLt3j=fGSiFjpRRTPUjFoKHtQ@mail.gmail.com>
+ <c7ed6a1d-f625-d294-8910-dd2d93d34292@gentoo.org>
+ <20170213224512.GA8080@bhelgaas-glaptop.roam.corp.google.com>
+ <8ec2a0bf-6bd7-1366-38bc-7f7ba9a29971@gentoo.org>
 MIME-Version: 1.0
-In-Reply-To: <20170213152801.GA32019@ubuntu>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8ec2a0bf-6bd7-1366-38bc-7f7ba9a29971@gentoo.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <helgaas@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56815
+X-archive-position: 56816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: helgaas@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,246 +58,141 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Yang,
+On Tue, Feb 14, 2017 at 02:39:45AM -0500, Joshua Kinard wrote:
+> On 02/13/2017 17:45, Bjorn Helgaas wrote:
+> > It looks like IP30 is using some code that's not upstream yet, so I'll
+> > just point out some things that don't look right.  I'm ignoring the
+> > IP27 stuff here in case that has different issues.
+> 
+> Sorry about that.  It's an external set of patches I've been maintaining for
+> the last decade (I'm not the original author).  Being that I do this for a
+> hobby, sometimes I get waylaid by other priorities.  I've spent some time
+> re-organizing my patch collection lately so that I can start sending these
+> things in.  This series and an earlier one to the Linux/MIPS list are the
+> beginnings of that, as time permits.  However, I've got a ways to go before
+> getting to the IP30 patches.  E.g., IP27 comes before IP30, so that's where my
+> focus has been lately.
+> 
+> I've put an 4.10-rc7 tree with all patches applied here (including the IOC3,
+> IP27, and IP30 patches):
+> http://dev.gentoo.org/~kumba/mips/ip30/linux-4.10_rc7-20170208.ip30/
+> 
+> The patchset itself, if interested:
+> http://dev.gentoo.org/~kumba/mips/ip30/mips-patches-4.10.0/
 
+Thanks for the pointers.
 
-On 13.02.2017 16:28, Yang Ling wrote:
-> Add support for the PWM controller present in Loongson1 family of SoCs.
->
-> Signed-off-by: Yang Ling <gnaygnil@gmail.com>
-> ---
->  drivers/pwm/Kconfig         |   9 +++
->  drivers/pwm/Makefile        |   1 +
->  drivers/pwm/pwm-loongson1.c | 169 ++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 179 insertions(+)
->  create mode 100644 drivers/pwm/pwm-loongson1.c
->
-> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-> index f92dd41..985f2fe 100644
-> --- a/drivers/pwm/Kconfig
-> +++ b/drivers/pwm/Kconfig
-> @@ -216,6 +216,15 @@ config PWM_JZ4740
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called pwm-jz4740.
->
-> +config PWM_LOONGSON1
-> +	tristate "Loongson1 PWM support"
-> +	depends on MACH_LOONGSON32
-> +	help
-> +	  Generic PWM framework driver for Loongson1 based machines.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called pwm-loongson1.
-> +
->  config PWM_LP3943
->  	tristate "TI/National Semiconductor LP3943 PWM support"
->  	depends on MFD_LP3943
-> diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-> index a48bdb5..1979453 100644
-> --- a/drivers/pwm/Makefile
-> +++ b/drivers/pwm/Makefile
-> @@ -19,6 +19,7 @@ obj-$(CONFIG_PWM_HIBVT)		+= pwm-hibvt.o
->  obj-$(CONFIG_PWM_IMG)		+= pwm-img.o
->  obj-$(CONFIG_PWM_IMX)		+= pwm-imx.o
->  obj-$(CONFIG_PWM_JZ4740)	+= pwm-jz4740.o
-> +obj-$(CONFIG_PWM_LOONGSON1)	+= pwm-loongson1.o
->  obj-$(CONFIG_PWM_LP3943)	+= pwm-lp3943.o
->  obj-$(CONFIG_PWM_LPC18XX_SCT)	+= pwm-lpc18xx-sct.o
->  obj-$(CONFIG_PWM_LPC32XX)	+= pwm-lpc32xx.o
-> diff --git a/drivers/pwm/pwm-loongson1.c b/drivers/pwm/pwm-loongson1.c
-> new file mode 100644
-> index 0000000..72e3fe3
-> --- /dev/null
-> +++ b/drivers/pwm/pwm-loongson1.c
-> @@ -0,0 +1,169 @@
-> +/*
-> + * Copyright (c) 2017 Yang Ling <gnaygnil@gmail.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms of the GNU General Public License as published by the
-> + * Free Software Foundation; either version 2 of the License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pwm.h>
-> +#include <loongson1.h>
-> +
-> +struct ls1x_pwm_chip {
-> +	struct clk *clk;
-> +	void __iomem *base;
-> +	struct pwm_chip chip;
-> +};
-> +
-> +struct ls1x_pwm_channel {
-> +	u32 period_ns;
-> +	u32 duty_ns;
-> +};
-> +static inline struct ls1x_pwm_chip *to_ls1x_pwm_chip(struct pwm_chip *chip)
-> +{
-> +	return container_of(chip, struct ls1x_pwm_chip, chip);
-> +}
-> +
-> +static int ls1x_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
-> +{
-> +	struct ls1x_pwm_channel *chan = NULL;
-> +
-> +	chan = devm_kzalloc(chip->dev, sizeof(*chan), GFP_KERNEL);
-> +	if (!chan)
-> +		return -ENOMEM;
-> +
-> +	pwm_set_chip_data(pwm, chan);
-> +
-> +	return 0;
-> +}
-> +
-> +static void ls1x_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
-> +{
-> +	devm_kfree(chip->dev, pwm_get_chip_data(pwm));
-> +	pwm_set_chip_data(pwm, NULL);
-> +}
-> +
+> > All the resources under the bridge to 0000:00 are wrong, too:
+> > 
+> >   1f200000-1f9fffff : Bridge MEM
+> >     f080100000-f0801fffff : 0000:00:02.0
+> >     f080010000-f08001ffff : 0000:00:00.0
+> >     f080030000-f08003ffff : 0000:00:01.0
+> >     f080000000-f080000fff : 0000:00:00.0
+> >     f080020000-f080020fff : 0000:00:01.0
+> 
+> Actually, that's not wrong.  It took me a long time to figure this out, too,
+> but once I stumbled upon the BRIDGE ASIC specification on an anonymous FTP
+> site, via Google, by complete accident (hint), it finally made sense.
+> 
+> BRIDGE is what SGI calls the chip that interfaces the Crosstalk (Xtalk) bus to
+> a PCI bus.  Most known "XIO" (Xtalk I/O) boards contain a BRIDGE chip under a
+> heatsink at the edge of the board, next to a "compression connector".  Octane
+> can hold up to four XIO boards, with a fifth slot dedicated to an optional "PCI
+> Shoebox" (literally a metal box that can hold up to three PCI or PCI-X cards).
+> One exception to this are the two graphics boards, Impact/MGRAS and
+> Odyssey/VPro, which are "pure" XIO devices, as far as anyone's figured out.
+> 
+> Each BRIDGE chip can address up to eight different PCI devices.
+> 
+> Crosstalk on IP30 is managed by the Crossbow (XBOW) ASIC.  It implements a
+> crossbar switch that's not totally unlike a networking switch.  A single XBOW
+> supports up to 16 XIO widgets, numbered 0x0 to 0xf.  Widgets 0x1 to 0x7 are for
+> internal use or unused.  XBOW itself is widget 0x0.  HEART, Octane's system
+> controller, is widget 0x8.  The four standard XIO slots are numbered (I think)
+> as 0x9 to 0xc.  I think widget 0xe is unused.
+> 
+> The system board has a BRIDGE chip on it to provide the "BaseIO" devices, such
+> as two SCSI (QL1040B), IOC3 Ethernet, KB/Mouse, Serial/Parallel, Audio, and an
+> RTC.  This BaseIO BRIDGE is widget 0xf, which is what you're seeing with the
+> first set of addresses starting with 0x1fxxx.  The second BRIDGE that you're
+> seeing is the PCI Shoebox I have installed.  It's widget 0xd, and has addresses
+> starting with 0x1dxxx (second nibble from left is the widget), with three
+> random PCI cards I found in a storage bin plugged into it.  The Xtalk scan
+> happens in reverse order, starting at widget 0xf down to 0x0.
+> 
+> Both 0x1fxxx and 0x1dxxx addresses are "small window" addresses.  The HEART
+> system controller gives you three "windows" into Xtalk space, which uses 48-bit
+> addressing:
+> 
+> 0x0000_1000_0000 - 0x0000_1fff_ffff - Small windows, x16 @ 16MB each
+> 0x0008_0000_0000 - 0x000f_ffff_ffff - Medium windows, x16 @ 2GB each
+> 0x0010_0000_0000 - 0x00ff_ffff_ffff - Big windows, x15 @ 64GB each
+> 
+> So a device on widget 0xf mapped into a small window at 0x0000_1fxx_xxxx could
+> also be referred to by a big window at address 0x00f0_8xxx_xxxx.  The only
+> difference is the big window gives you a larger address space to play around
+> with.  Medium windows are not currently used on the IP30 platform in Linux.
+> Widget 0x0 (XBOW) is only accessible via small or medium windows.
+> 
+> As such, this layout in /proc/iomem is oddly correct:
+> 
+> >   1f200000-1f9fffff : Bridge MEM
+> >     f080100000-f0801fffff : 0000:00:02.0
+> >     f080010000-f08001ffff : 0000:00:00.0
+> >     f080030000-f08003ffff : 0000:00:01.0
+> >     f080000000-f080000fff : 0000:00:00.0
+> >     f080020000-f080020fff : 0000:00:01.0
+> 
+> My bug is probably that I do the initial BRIDGE scan with small windows in the
+> main BRIDGE driver (arch/mips/pci/pci-bridge.c), and then IP30's BRIDGE glue
+> driver (arch/mips/sgi-ip30/ip30-bridge.c) is switching to big windows to probe
+> each device.  So, yes, different address ranges, but still looking at the same
+> device.  I'll look into fixing that.  It's partially tied to how I was kludging
+> the IP27 to also start doing PCI correctly within its own BRIDGE glue driver
+> (ip27-bridge.c), but I just learned over the weekend that there's missing
+> functionality I have to port over from old 2.5.x-era IA64 code.  In IP30, big
+> windows are available by default, but on IP27, what it calls "big windows" need
+> to go through some kind of translation table, and I'm trying to figure out how
+> to set that up.
 
-Period and duty are stored in the pwm_device already, so you're just 
-duplicating the same data here. If you remove ls1x_pwm_channel then all 
-of the code above becomes unnecessary ...
+I agree, it sounds like the problem is the switch from small windows
+to big ones.  In order for the PCI core to work correctly, the host
+bridge window ("1f200000-1f9fffff : Bridge MEM") must enclose the BARs
+of the devices below the bridge.
 
-> +static int ls1x_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
-> +			int duty_ns, int period_ns)
-> +{
-> +	struct ls1x_pwm_chip *pc = to_ls1x_pwm_chip(chip);
-> +	struct ls1x_pwm_channel *chan = pwm_get_chip_data(pwm);
-> +	unsigned long long tmp;
-> +	unsigned long period, duty;
-> +
-> +	if (period_ns == chan->period_ns && duty_ns == chan->duty_ns)
-> +		return 0;
-> +
+If you use the big windows for the device BARs, you should use big
+windows for the host bridge windows.  I think we're talking about
+widget 0xf here, so the 0xf big window would be 0xf0_0000_0000 -
+0xff_ffff_ffff.  This should all be set up *before* calling
+pci_scan_root_bus() instead of after, as it seems to be today.
 
-above check is already handled in pwm core
+The scan would look like this:
 
-> +	tmp = (unsigned long long)clk_get_rate(pc->clk) * period_ns;
-> +	do_div(tmp, 1000000000);
-> +	period = tmp;
-> +
-> +	tmp = (unsigned long long)period * duty_ns;
-> +	do_div(tmp, period_ns);
-> +	duty = period - tmp;
-> +
-> +	if (duty >= period)
-> +		duty = period - 1;
-> +
-> +	if (duty >> 24 || period >> 24)
-> +		return -EINVAL;
-> +
-> +	chan->period_ns = period_ns;
-> +	chan->duty_ns = duty_ns;
-> +
-> +	writel(duty, pc->base + PWM_HRC(pwm->hwpwm));
-> +	writel(period, pc->base + PWM_LRC(pwm->hwpwm));
-> +	writel(0x00, pc->base + PWM_CNT(pwm->hwpwm));
-> +
+  pci_bus 0000:00: root bus resource [mem 0xf000000000-0xffffffffff] (bus addresses [0x00000000-0xfffffffff])
+  pci 0000:00:00.0: reg 0x14: [mem 0xf000200000-0xf000200fff]
+  pci 0000:00:00.0: reg 0x30: [mem 0xf000210000-0xf00021ffff pref]
+  pci 0000:00:01.0: reg 0x14: [mem 0xf000400000-0xf000400fff]
+  pci 0000:00:01.0: reg 0x30: [mem 0xf000410000-0xf00041ffff pref]
+  pci 0000:00:02.0: reg 0x10: [mem 0xf000500000-0xf0005fffff]
+  pci 0000:00:03.0: reg 0x10: [mem 0xf000600000-0xf000601fff]
 
-PWM_HRC and PWM_LRC names suggest that you're using high/low state 
-counters here rather than duty/period - but with no documentation I'm 
-just guessing here.
+This would make /proc/iomem look like this:
 
-> +	return 0;
-> +}
-> +
-> +static int ls1x_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
-> +{
-> +	struct ls1x_pwm_chip *pc = to_ls1x_pwm_chip(chip);
-> +
-> +	writel(CNT_RST, pc->base + PWM_CTRL(pwm->hwpwm));
-> +	writel(CNT_EN, pc->base + PWM_CTRL(pwm->hwpwm));
-> +
-> +	return 0;
-> +}
-> +
-> +static void ls1x_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
-> +{
-> +	struct ls1x_pwm_chip *pc = to_ls1x_pwm_chip(chip);
-> +
-> +	writel(PWM_OE, pc->base + PWM_CTRL(pwm->hwpwm));
-> +}
-> +
-> +static const struct pwm_ops ls1x_pwm_ops = {
-> +	.request = ls1x_pwm_request,
-> +	.free = ls1x_pwm_free,
-> +	.config = ls1x_pwm_config,
-> +	.enable = ls1x_pwm_enable,
-> +	.disable = ls1x_pwm_disable,
-> +	.owner = THIS_MODULE,
-> +};
-> +
-> +static int ls1x_pwm_probe(struct platform_device *pdev)
-> +{
-> +	struct ls1x_pwm_chip *pc = NULL;
-> +	struct resource *res = NULL;
-> +
-> +	pc = devm_kzalloc(&pdev->dev, sizeof(*pc), GFP_KERNEL);
-> +	if (!pc)
-> +		return -ENOMEM;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	pc->base = devm_ioremap_resource(&pdev->dev, res);
-> +	if (IS_ERR(pc->base))
-> +		return PTR_ERR(pc->base);
-> +
-> +	pc->clk = devm_clk_get(&pdev->dev, "ls1x-pwmtimer");
-> +	if (IS_ERR(pc->clk)) {
-> +		dev_err(&pdev->dev, "failed to get %s clock\n", pdev->name);
-> +		return PTR_ERR(pc->clk);
-> +	}
-> +	clk_prepare_enable(pc->clk);
+  f000000000-ffffffffff : Bridge MEM
+    f000500000-f0005fffff : 0000:00:02.0
+    f000210000-f00021ffff : 0000:00:00.0
+    f000410000-f00041ffff : 0000:00:01.0
+    f000200000-f000200fff : 0000:00:00.0
+    f000400000-f000400fff : 0000:00:01.0
 
-Should check for errors here
+This doesn't match the device BARs in your /proc/iomem, so there must
+be some other transformation going on as well.
 
-> +	pc->chip.ops = &ls1x_pwm_ops;
-> +	pc->chip.dev = &pdev->dev;
-> +	pc->chip.base = -1;
-> +	pc->chip.npwm = 4;
-> +
-> +	platform_set_drvdata(pdev, pc);
-> +
-> +	return pwmchip_add(&pc->chip);
+As long as you tell the PCI core about the host bridge windows you're
+going to use, along with offsets that include *all* these
+transformations, the core should just work, and /proc/iomem should
+also make sense.  The details of small/medium/big windows, widgets,
+etc., are immaterial to the core.
 
-Should check for errors (and disable clk appropriately)
-
-> +}
-> +
-> +static int ls1x_pwm_remove(struct platform_device *pdev)
-> +{
-> +	struct ls1x_pwm_chip *pc = platform_get_drvdata(pdev);
-> +	int ret;
-> +
-> +	ret = pwmchip_remove(&pc->chip);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	clk_disable_unprepare(pc->clk);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver ls1x_pwm_driver = {
-> +	.driver = {
-> +		.name = "ls1x-pwm",
-> +	},
-> +	.probe = ls1x_pwm_probe,
-> +	.remove = ls1x_pwm_remove,
-> +};
-> +module_platform_driver(ls1x_pwm_driver);
-> +
-> +MODULE_AUTHOR("Yang Ling <gnaygnil@gmail.com>");
-> +MODULE_DESCRIPTION("Loongson1 PWM driver");
-> +MODULE_ALIAS("platform:loongson1-pwm");
-> +MODULE_LICENSE("GPL");
->
-
-
-Best regards,
-Marcin
+Bjorn

@@ -1,37 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Feb 2017 14:14:04 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:47615 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993877AbdBONNzsT1pE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Feb 2017 14:13:55 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 022D9420137B4;
-        Wed, 15 Feb 2017 13:13:45 +0000 (GMT)
-Received: from [10.150.130.83] (10.150.130.83) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 15 Feb
- 2017 13:13:47 +0000
-Subject: Re: [PATCH 1/4] MIPS: SMP: Constify smp ops
-To:     Ralf Baechle <ralf@linux-mips.org>
-References: <1487083028-19724-1-git-send-email-matt.redfearn@imgtec.com>
-CC:     <linux-mips@linux-mips.org>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <29523659-7c89-027b-f4a0-b04f06e75c05@imgtec.com>
-Date:   Wed, 15 Feb 2017 13:13:47 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Feb 2017 15:45:53 +0100 (CET)
+Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:34419
+        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993882AbdBOOpr2WzVj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Feb 2017 15:45:47 +0100
+Received: by mail-pf0-x242.google.com with SMTP id o64so7949730pfb.1
+        for <linux-mips@linux-mips.org>; Wed, 15 Feb 2017 06:45:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=G0DufN/frCu1s6IEUPSofDib51Si+qNK0+QfeKeQijQ=;
+        b=D1RGo9noVLeu7DlI4Bx0oarOA3HjKUprIrPP46ZiqOdtRuF79C9/9aaIs4yIrdhBvD
+         LYk6opEzb+S0rcdXUS3b+UqF0quckByCXUOKJXDw+h/S2w6pEVB63qcokWqOD56RMP4i
+         KGLJgC084VPRdPEi+YeQYpWW75yqa28anZ9gvSc53zvBc63UnVFecNGDeGZVVwCr9RXN
+         lvUhX1n3MkQnmRbbGG/FqOhI0QfCpTBzQvL3W9EYlaNLnRoBivPotW8lgTarwwVYRc87
+         dVvMEXmoF9468SFAnhR0e1lb9R+dAGp8N3cMwmud46w+CnwZ1F+T6wV+rXyhxByF/wn+
+         EP6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=G0DufN/frCu1s6IEUPSofDib51Si+qNK0+QfeKeQijQ=;
+        b=is67uKRAUvHxDh7ZzUCnjeV5Hw897RVuf6/Jnf57Lj3ht/hrnVEE5uPe7dD6izLjrl
+         ANQYyncSGGoBkQ/PAHxvtdfaHLGDGnFrMiStglGc1Y0h1NxJ3AAUhsO2j3eKm80rkrKz
+         GvOyCuPyGNEaTIbQa8Fp1GXjf7siWIA74+baFjP6AWk3OYz2IvYL5mLw0ALhjObPEXBl
+         GCe4oJsTQUCoOQyVMEBUQmTC3sVQ0B6uZmtaNIQoLUju0XtU6+Fqo4kxCzMN8qyfzVvm
+         NsQOQ0qtHenk7i8i8cz0X5p70dY4B7PeBjdx1e7fcFjQZkPU1v9YWwqk/XALjGOtctJq
+         lkBQ==
+X-Gm-Message-State: AMke39m1VPLQ4BNvBd65/1gPgzQtthlb51pE+WBqGYlYr0OBWvqikkoUtoezbyTdbpQXVg==
+X-Received: by 10.99.110.74 with SMTP id j71mr38697875pgc.134.1487169941416;
+        Wed, 15 Feb 2017 06:45:41 -0800 (PST)
+Received: from ubuntu ([180.102.123.175])
+        by smtp.gmail.com with ESMTPSA id m6sm8075063pgn.58.2017.02.15.06.45.38
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Wed, 15 Feb 2017 06:45:40 -0800 (PST)
+Date:   Wed, 15 Feb 2017 22:45:31 +0800
+From:   Yang Ling <gnaygnil@gmail.com>
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Keguang Zhang <keguang.zhang@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-mips@linux-mips.org, Yang Ling <gnaygnil@gmail.com>
+Subject: [PATCH v2 1/2] pwm: loongson1: Add PWM driver for Loongson1 SoC
+Message-ID: <20170215144531.GA39000@ubuntu>
 MIME-Version: 1.0
-In-Reply-To: <1487083028-19724-1-git-send-email-matt.redfearn@imgtec.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <gnaygnil@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56828
+X-archive-position: 56829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: gnaygnil@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,192 +68,207 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Add support for the PWM controller present in Loongson1 family of SoCs.
 
+Signed-off-by: Yang Ling <gnaygnil@gmail.com>
 
-On 14/02/17 14:37, Matt Redfearn wrote:
-> smp_ops providers do not modify their ops structures, so they may be
-> made const.
->
-> This change saves 128 bytes of kernel text on a pistachio_defconfig.
-> Before:
->     text	   data	    bss	    dec	    hex	filename
-> 7187239	1772752	 470224	9430215	 8fe4c7	vmlinux
-> After:
->     text	   data	    bss	    dec	    hex	filename
-> 7187111	1772752	 470224	9430087	 8fe447	vmlinux
->
-> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+---
+V2:
+  Remove ls1x_pwm_channel.
+  Remove period_ns/duty_ns check.
+  Add return values check.
+---
+ drivers/pwm/Kconfig         |   9 +++
+ drivers/pwm/Makefile        |   1 +
+ drivers/pwm/pwm-loongson1.c | 148 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 158 insertions(+)
+ create mode 100644 drivers/pwm/pwm-loongson1.c
 
-Forget this one, it misses a whole bunch of smp_ops providers. I'll send 
-a v2 after the merge window.
-
-Thanks,
-Matt
-
-> ---
->
->   arch/mips/include/asm/smp-ops.h | 10 +++++-----
->   arch/mips/include/asm/smp.h     | 10 +++++-----
->   arch/mips/kernel/smp-cps.c      |  4 ++--
->   arch/mips/kernel/smp-mt.c       |  2 +-
->   arch/mips/kernel/smp-up.c       |  2 +-
->   arch/mips/kernel/smp.c          |  4 ++--
->   6 files changed, 16 insertions(+), 16 deletions(-)
->
-> diff --git a/arch/mips/include/asm/smp-ops.h b/arch/mips/include/asm/smp-ops.h
-> index db7c322f057f..cf12bde3aa78 100644
-> --- a/arch/mips/include/asm/smp-ops.h
-> +++ b/arch/mips/include/asm/smp-ops.h
-> @@ -35,11 +35,11 @@ struct plat_smp_ops {
->   #endif
->   };
->   
-> -extern void register_smp_ops(struct plat_smp_ops *ops);
-> +extern void register_smp_ops(const struct plat_smp_ops *ops);
->   
->   static inline void plat_smp_setup(void)
->   {
-> -	extern struct plat_smp_ops *mp_ops;	/* private */
-> +	extern const struct plat_smp_ops *mp_ops;	/* private */
->   
->   	mp_ops->smp_setup();
->   }
-> @@ -66,7 +66,7 @@ static inline void register_smp_ops(struct plat_smp_ops *ops)
->   static inline int register_up_smp_ops(void)
->   {
->   #ifdef CONFIG_SMP_UP
-> -	extern struct plat_smp_ops up_smp_ops;
-> +	extern const struct plat_smp_ops up_smp_ops;
->   
->   	register_smp_ops(&up_smp_ops);
->   
-> @@ -79,7 +79,7 @@ static inline int register_up_smp_ops(void)
->   static inline int register_cmp_smp_ops(void)
->   {
->   #ifdef CONFIG_MIPS_CMP
-> -	extern struct plat_smp_ops cmp_smp_ops;
-> +	extern const struct plat_smp_ops cmp_smp_ops;
->   
->   	if (!mips_cm_present())
->   		return -ENODEV;
-> @@ -95,7 +95,7 @@ static inline int register_cmp_smp_ops(void)
->   static inline int register_vsmp_smp_ops(void)
->   {
->   #ifdef CONFIG_MIPS_MT_SMP
-> -	extern struct plat_smp_ops vsmp_smp_ops;
-> +	extern const struct plat_smp_ops vsmp_smp_ops;
->   
->   	register_smp_ops(&vsmp_smp_ops);
->   
-> diff --git a/arch/mips/include/asm/smp.h b/arch/mips/include/asm/smp.h
-> index 98a117a05fbc..572191ac2961 100644
-> --- a/arch/mips/include/asm/smp.h
-> +++ b/arch/mips/include/asm/smp.h
-> @@ -58,7 +58,7 @@ extern void calculate_cpu_foreign_map(void);
->    */
->   static inline void smp_send_reschedule(int cpu)
->   {
-> -	extern struct plat_smp_ops *mp_ops;	/* private */
-> +	extern const struct plat_smp_ops *mp_ops;	/* private */
->   
->   	mp_ops->send_ipi_single(cpu, SMP_RESCHEDULE_YOURSELF);
->   }
-> @@ -66,14 +66,14 @@ static inline void smp_send_reschedule(int cpu)
->   #ifdef CONFIG_HOTPLUG_CPU
->   static inline int __cpu_disable(void)
->   {
-> -	extern struct plat_smp_ops *mp_ops;	/* private */
-> +	extern const struct plat_smp_ops *mp_ops;	/* private */
->   
->   	return mp_ops->cpu_disable();
->   }
->   
->   static inline void __cpu_die(unsigned int cpu)
->   {
-> -	extern struct plat_smp_ops *mp_ops;	/* private */
-> +	extern const struct plat_smp_ops *mp_ops;	/* private */
->   
->   	mp_ops->cpu_die(cpu);
->   }
-> @@ -97,14 +97,14 @@ int mips_smp_ipi_free(const struct cpumask *mask);
->   
->   static inline void arch_send_call_function_single_ipi(int cpu)
->   {
-> -	extern struct plat_smp_ops *mp_ops;	/* private */
-> +	extern const struct plat_smp_ops *mp_ops;	/* private */
->   
->   	mp_ops->send_ipi_mask(cpumask_of(cpu), SMP_CALL_FUNCTION);
->   }
->   
->   static inline void arch_send_call_function_ipi_mask(const struct cpumask *mask)
->   {
-> -	extern struct plat_smp_ops *mp_ops;	/* private */
-> +	extern const struct plat_smp_ops *mp_ops;	/* private */
->   
->   	mp_ops->send_ipi_mask(mask, SMP_CALL_FUNCTION);
->   }
-> diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-> index a2544c2394e4..77c0db4d46e2 100644
-> --- a/arch/mips/kernel/smp-cps.c
-> +++ b/arch/mips/kernel/smp-cps.c
-> @@ -549,7 +549,7 @@ static void cps_cpu_die(unsigned int cpu)
->   
->   #endif /* CONFIG_HOTPLUG_CPU */
->   
-> -static struct plat_smp_ops cps_smp_ops = {
-> +static const struct plat_smp_ops cps_smp_ops = {
->   	.smp_setup		= cps_smp_setup,
->   	.prepare_cpus		= cps_prepare_cpus,
->   	.boot_secondary		= cps_boot_secondary,
-> @@ -565,7 +565,7 @@ static struct plat_smp_ops cps_smp_ops = {
->   
->   bool mips_cps_smp_in_use(void)
->   {
-> -	extern struct plat_smp_ops *mp_ops;
-> +	extern const struct plat_smp_ops *mp_ops;
->   	return mp_ops == &cps_smp_ops;
->   }
->   
-> diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
-> index e077ea3e11fb..22db83be8349 100644
-> --- a/arch/mips/kernel/smp-mt.c
-> +++ b/arch/mips/kernel/smp-mt.c
-> @@ -279,7 +279,7 @@ static void __init vsmp_prepare_cpus(unsigned int max_cpus)
->   	mips_mt_set_cpuoptions();
->   }
->   
-> -struct plat_smp_ops vsmp_smp_ops = {
-> +const struct plat_smp_ops vsmp_smp_ops = {
->   	.send_ipi_single	= vsmp_send_ipi_single,
->   	.send_ipi_mask		= vsmp_send_ipi_mask,
->   	.init_secondary		= vsmp_init_secondary,
-> diff --git a/arch/mips/kernel/smp-up.c b/arch/mips/kernel/smp-up.c
-> index 17878d71ef2b..4cf015a624d1 100644
-> --- a/arch/mips/kernel/smp-up.c
-> +++ b/arch/mips/kernel/smp-up.c
-> @@ -63,7 +63,7 @@ static void up_cpu_die(unsigned int cpu)
->   }
->   #endif
->   
-> -struct plat_smp_ops up_smp_ops = {
-> +const struct plat_smp_ops up_smp_ops = {
->   	.send_ipi_single	= up_send_ipi_single,
->   	.send_ipi_mask		= up_send_ipi_mask,
->   	.init_secondary		= up_init_secondary,
-> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-> index 8c60a296294c..9f01a6f28f49 100644
-> --- a/arch/mips/kernel/smp.c
-> +++ b/arch/mips/kernel/smp.c
-> @@ -146,10 +146,10 @@ void calculate_cpu_foreign_map(void)
->   			       &temp_foreign_map, &cpu_sibling_map[i]);
->   }
->   
-> -struct plat_smp_ops *mp_ops;
-> +const struct plat_smp_ops *mp_ops;
->   EXPORT_SYMBOL(mp_ops);
->   
-> -void register_smp_ops(struct plat_smp_ops *ops)
-> +void register_smp_ops(const struct plat_smp_ops *ops)
->   {
->   	if (mp_ops)
->   		printk(KERN_WARNING "Overriding previously set SMP ops\n");
+diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+index f92dd41..985f2fe 100644
+--- a/drivers/pwm/Kconfig
++++ b/drivers/pwm/Kconfig
+@@ -216,6 +216,15 @@ config PWM_JZ4740
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called pwm-jz4740.
+ 
++config PWM_LOONGSON1
++	tristate "Loongson1 PWM support"
++	depends on MACH_LOONGSON32
++	help
++	  Generic PWM framework driver for Loongson1 based machines.
++
++	  To compile this driver as a module, choose M here: the module
++	  will be called pwm-loongson1.
++
+ config PWM_LP3943
+ 	tristate "TI/National Semiconductor LP3943 PWM support"
+ 	depends on MFD_LP3943
+diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
+index a48bdb5..1979453 100644
+--- a/drivers/pwm/Makefile
++++ b/drivers/pwm/Makefile
+@@ -19,6 +19,7 @@ obj-$(CONFIG_PWM_HIBVT)		+= pwm-hibvt.o
+ obj-$(CONFIG_PWM_IMG)		+= pwm-img.o
+ obj-$(CONFIG_PWM_IMX)		+= pwm-imx.o
+ obj-$(CONFIG_PWM_JZ4740)	+= pwm-jz4740.o
++obj-$(CONFIG_PWM_LOONGSON1)	+= pwm-loongson1.o
+ obj-$(CONFIG_PWM_LP3943)	+= pwm-lp3943.o
+ obj-$(CONFIG_PWM_LPC18XX_SCT)	+= pwm-lpc18xx-sct.o
+ obj-$(CONFIG_PWM_LPC32XX)	+= pwm-lpc32xx.o
+diff --git a/drivers/pwm/pwm-loongson1.c b/drivers/pwm/pwm-loongson1.c
+new file mode 100644
+index 0000000..6c2d06d
+--- /dev/null
++++ b/drivers/pwm/pwm-loongson1.c
+@@ -0,0 +1,148 @@
++/*
++ * Copyright (c) 2017 Yang Ling <gnaygnil@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/clk.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/pwm.h>
++#include <loongson1.h>
++
++struct ls1x_pwm_chip {
++	struct clk *clk;
++	void __iomem *base;
++	struct pwm_chip chip;
++};
++
++static inline struct ls1x_pwm_chip *to_ls1x_pwm_chip(struct pwm_chip *chip)
++{
++	return container_of(chip, struct ls1x_pwm_chip, chip);
++}
++
++static int ls1x_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
++			int duty_ns, int period_ns)
++{
++	unsigned long long tmp;
++	unsigned long period_cnt, duty_cnt;
++	struct ls1x_pwm_chip *pc = to_ls1x_pwm_chip(chip);
++
++	tmp = (unsigned long long)clk_get_rate(pc->clk) * period_ns;
++	do_div(tmp, 1000000000);
++	period_cnt = tmp;
++
++	tmp = (unsigned long long)period_cnt * duty_ns;
++	do_div(tmp, period_ns);
++	duty_cnt = period_cnt - tmp;
++
++	if (duty_cnt >= period_cnt)
++		duty_cnt = period_cnt - 1;
++
++	if (duty_cnt >> 24 || period_cnt >> 24)
++		return -EINVAL;
++
++	writel(duty_cnt, pc->base + PWM_HRC(pwm->hwpwm));
++	writel(period_cnt, pc->base + PWM_LRC(pwm->hwpwm));
++	writel(0, pc->base + PWM_CNT(pwm->hwpwm));
++
++	return 0;
++}
++
++static int ls1x_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct ls1x_pwm_chip *pc = to_ls1x_pwm_chip(chip);
++
++	writel(CNT_RST, pc->base + PWM_CTRL(pwm->hwpwm));
++	writel(CNT_EN, pc->base + PWM_CTRL(pwm->hwpwm));
++
++	return 0;
++}
++
++static void ls1x_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
++{
++	struct ls1x_pwm_chip *pc = to_ls1x_pwm_chip(chip);
++
++	writel(PWM_OE, pc->base + PWM_CTRL(pwm->hwpwm));
++}
++
++static const struct pwm_ops ls1x_pwm_ops = {
++	.config = ls1x_pwm_config,
++	.enable = ls1x_pwm_enable,
++	.disable = ls1x_pwm_disable,
++	.owner = THIS_MODULE,
++};
++
++static int ls1x_pwm_probe(struct platform_device *pdev)
++{
++	int ret;
++	struct ls1x_pwm_chip *pc = NULL;
++	struct resource *res = NULL;
++
++	pc = devm_kzalloc(&pdev->dev, sizeof(*pc), GFP_KERNEL);
++	if (!pc)
++		return -ENOMEM;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	pc->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(pc->base))
++		return PTR_ERR(pc->base);
++
++	pc->clk = devm_clk_get(&pdev->dev, "ls1x-pwmtimer");
++	if (IS_ERR(pc->clk)) {
++		dev_err(&pdev->dev, "failed to get %s clock\n", pdev->name);
++		return PTR_ERR(pc->clk);
++	}
++
++	ret = clk_prepare_enable(pc->clk);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "failed to enable clock: %d\n", ret);
++		return ret;
++	}
++
++	pc->chip.ops = &ls1x_pwm_ops;
++	pc->chip.dev = &pdev->dev;
++	pc->chip.base = -1;
++	pc->chip.npwm = 4;
++
++	platform_set_drvdata(pdev, pc);
++
++	ret = pwmchip_add(&pc->chip);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "failed to add PWM chip: %d\n", ret);
++		clk_disable_unprepare(pc->clk);
++	}
++
++	return ret;
++}
++
++static int ls1x_pwm_remove(struct platform_device *pdev)
++{
++	struct ls1x_pwm_chip *pc = platform_get_drvdata(pdev);
++	int ret;
++
++	ret = pwmchip_remove(&pc->chip);
++	if (ret < 0)
++		return ret;
++
++	clk_disable_unprepare(pc->clk);
++
++	return 0;
++}
++
++static struct platform_driver ls1x_pwm_driver = {
++	.driver = {
++		.name = "ls1x-pwm",
++	},
++	.probe = ls1x_pwm_probe,
++	.remove = ls1x_pwm_remove,
++};
++module_platform_driver(ls1x_pwm_driver);
++
++MODULE_AUTHOR("Yang Ling <gnaygnil@gmail.com>");
++MODULE_DESCRIPTION("Loongson1 PWM driver");
++MODULE_ALIAS("platform:loongson1-pwm");
++MODULE_LICENSE("GPL");
+-- 
+1.9.1

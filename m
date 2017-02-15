@@ -1,41 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2017 20:46:50 +0100 (CET)
-Received: from resqmta-ch2-08v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:40]:53864
-        "EHLO resqmta-ch2-08v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993866AbdBNTqmsqbGk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Feb 2017 20:46:42 +0100
-Received: from resomta-ch2-16v.sys.comcast.net ([69.252.207.112])
-        by resqmta-ch2-08v.sys.comcast.net with SMTP
-        id dj3McHoCxy4bMdj3hcZcuC; Tue, 14 Feb 2017 19:46:41 +0000
-Received: from [192.168.1.13] ([73.201.78.97])
-        by resomta-ch2-16v.sys.comcast.net with SMTP
-        id dj3ec78A6KnqCdj3fcRHxg; Tue, 14 Feb 2017 19:46:41 +0000
-Subject: Re: [PATCH 2/3] MIPS: Xtalk: Clean-up xtalk.h macros
-To:     James Hogan <james.hogan@imgtec.com>
-References: <20170207055751.8134-1-kumba@gentoo.org>
- <20170207055751.8134-3-kumba@gentoo.org>
- <20170214131632.GU24226@jhogan-linux.le.imgtec.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux/MIPS <linux-mips@linux-mips.org>
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <12fc37ba-8888-34c9-df84-9653da2bba18@gentoo.org>
-Date:   Tue, 14 Feb 2017 14:46:25 -0500
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
-MIME-Version: 1.0
-In-Reply-To: <20170214131632.GU24226@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfOcdmwqQ2QfKntUtT1X7ADrObYGrocHwAGrJ5CEnneLhP+0elNfWt4fGDdSTSbDDgHZubWr4OkprAzCHJ4A09QnaRzbhGNBnVT25x3RZUwDodECJMwcL
- 0UXd30nGDle6txsEcmBqFjYlWRtv5qQtac0AdkGGY0daZ5DrswTtsc/tU5XkhCSxax8enB1fxcpB93e8SSsr63hccFIl1pBdUEP/JpAVF2d9k6k2iyZ9i77W
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Feb 2017 01:42:15 +0100 (CET)
+Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:33440
+        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993875AbdBOAmIo5j4W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Feb 2017 01:42:08 +0100
+Received: by mail-qk0-x243.google.com with SMTP id 11so21308787qkl.0
+        for <linux-mips@linux-mips.org>; Tue, 14 Feb 2017 16:42:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=M13fm6qZCGsrBy+G44jsQlu040gNNGlyfN8M9f2qFsQ=;
+        b=vGunmmEtf+dcBIBOj2BZsBt9e/djhmpS/be1HfWasX5Qx+BPOyRB4HnITYNIBuDI5o
+         qJCEcBDIM1J5ouGop+eBNI9syFAggwfGe7WBAi04N/WKo4xJVsJEf4l3ZMrRYZhjWLyb
+         PnvbdXQRslJ6fPpOOfWaoSWrS2eRnUPrJVUGqHkEyqFZWpA7WiQyeywHe1+4adFcvUZH
+         txh2DJZfeNOBCQyMQ6FQyAWYac9LzKpkpIybRdMEdpJns/CQYIoaKQhmekBNYi4sy6im
+         2CwIXzIdj+wtAJD60HpfXDZflSJ2F3uFngC/XQGpiHr0CMemKOQY1t8Lmgp08pLn3Y8M
+         08RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=M13fm6qZCGsrBy+G44jsQlu040gNNGlyfN8M9f2qFsQ=;
+        b=uG2KDjJ7j0vuJwYfnFR3FPE/xBa2JPiDZ/fKAHzFMKBXFi2NvOwmbC8VFWhVZ7hEqx
+         XzFBI8fwZnnZ9lJKHOorJzcuSLE35p7dFYI54wdI60/QWeaiWievUFRymq7iuc1HIt1A
+         KKh0d4U77cv+DzYXRB4Viq6kkVSYYtw405ncpUKPWuQvxJVLMii4a81mI3oCvQzStpSj
+         dfin6Wik24fdk+LvLT/MTN/TPXakUi9e9SBJUYCYwtzWt+ZCT62AN6uLhL1nrBQFZNzC
+         IgwjG7pPDSHH9M0+tOVVT+0O1E322SYsQPNQhbQ3Ul18EGyW5wHa6iPWrPADduhR1bo1
+         +hVQ==
+X-Gm-Message-State: AMke39kvjrXH0/NDpnT6kjNA11LvILPyrOx5oC4hTkRTqjD0s2irHTiImH38xnAgcY8V1g==
+X-Received: by 10.55.75.143 with SMTP id y137mr29116330qka.39.1487119323009;
+        Tue, 14 Feb 2017 16:42:03 -0800 (PST)
+Received: from stb-bld-03.irv.broadcom.com ([192.19.255.250])
+        by smtp.gmail.com with ESMTPSA id n68sm1340608qkn.11.2017.02.14.16.42.01
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 14 Feb 2017 16:42:02 -0800 (PST)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+X-Google-Original-From: Florian Fainelli <florian.fainelli@broadcom.com>
+To:     linux-mips@linux-mips.org
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com (maintainer:BROADCOM BCM7XXX ARM
+        ARCHITECTURE), Justin Chen <justin.chen@broadcom.com>,
+        Scott Branden <scott.branden@broadcom.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org (moderated list:BROADCOM BCM7XXX
+        ARM ARCHITECTURE), linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] soc: bcm: brcmstb: Match additional compatible strings
+Date:   Tue, 14 Feb 2017 16:41:57 -0800
+Message-Id: <20170215004159.11096-1-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56819
+X-archive-position: 56821
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,67 +69,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/14/2017 08:16, James Hogan wrote:
-> Hi Joshua,
-> 
-> On Tue, Feb 07, 2017 at 12:57:50AM -0500, Joshua Kinard wrote:
->> From: Joshua Kinard <kumba@gentoo.org>
->>
->> Clean-up several macros in arch/mips/include/asm/xtalk/xtalk.h:
->>  - Hex addresses are lowercased.
->>  - Added whitespace around several operators.
->>  - Removed bridge_probe declaration.
->>
->> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
->> ---
->>  arch/mips/include/asm/xtalk/xtalk.h | 23 +++++++----------------
->>  1 file changed, 7 insertions(+), 16 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/xtalk/xtalk.h b/arch/mips/include/asm/xtalk/xtalk.h
->> index 9125bd85514d..627ed91b2880 100644
->> --- a/arch/mips/include/asm/xtalk/xtalk.h
->> +++ b/arch/mips/include/asm/xtalk/xtalk.h
->> @@ -21,24 +21,15 @@
->>  #define XWIDGET_MFG_NUM_NONE	-1
->>  
->>  /* It is often convenient to fold the XIO target port */
->> -#define XIO_NOWHERE	(0xFFFFFFFFFFFFFFFFull)
->> -#define XIO_ADDR_BITS	(0x0000FFFFFFFFFFFFull)
->> -#define XIO_PORT_BITS	(0xF000000000000000ull)
->> +#define XIO_NOWHERE	(0xffffffffffffffffULL)
->> +#define XIO_ADDR_BITS	(0x0000ffffffffffffULL)
->> +#define XIO_PORT_BITS	(0xf000000000000000ULL)
->>  #define XIO_PORT_SHIFT	(60)
->>  
->> -#define XIO_PACKED(x)	(((x)&XIO_PORT_BITS) != 0)
->> -#define XIO_ADDR(x)	((x)&XIO_ADDR_BITS)
->> -#define XIO_PORT(x)	((s8)(((x)&XIO_PORT_BITS) >> XIO_PORT_SHIFT))
->> -#define XIO_PACK(p, o)	((((uint64_t)(p))<<XIO_PORT_SHIFT) | ((o)&XIO_ADDR_BITS))
->> -
->> -#ifdef CONFIG_PCI
->> -extern int bridge_probe(nasid_t nasid, int widget, int masterwid);
->> -#else
->> -static inline int bridge_probe(nasid_t nasid, int widget, int masterwid)
->> -{
->> -	return 0;
->> -}
->> -#endif
-> 
-> Won't this break the build when CONFIG_PCI=n?
-> 
-> Cheers
-> James
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-It might, though I believe my BRIDGE updates addressed that.  Though, these
-machines are pretty unusable without PCI anyways.
+Match all known sun-top-ctrl compatible strings from our MIPS chips
+counterparts. This allows us to properly report the SoC information to
+user-space through our SoC driver.
 
-Hold on these patches for now (same for the BRIDGE series).  I need to re-spin
-them once I tackle fixing the PCI Bridge window bits this weekend.  I think
-I'll make the window selection a platform_data parameter and have a built-in
-default for small windows, since those are usually fixed by hardware, with each
-BRIDGE-capable platform passing in its own big window range.
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+Ralf, James,
 
-Then, IP27 is going to require porting additional code from Linux-2.5.70/IA64
-to get its big windows to work...
+I usually take patches touching this file through an ARM SoC pull request,
+posting to linux-mips for people working on BMIPS STB to get a chance to review
+this.
 
---J
+Thanks!
+
+ drivers/soc/bcm/brcmstb/common.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/soc/bcm/brcmstb/common.c b/drivers/soc/bcm/brcmstb/common.c
+index 94e7335553f4..b6195fdf0d00 100644
+--- a/drivers/soc/bcm/brcmstb/common.c
++++ b/drivers/soc/bcm/brcmstb/common.c
+@@ -41,6 +41,15 @@ bool soc_is_brcmstb(void)
+ }
+ 
+ static const struct of_device_id sun_top_ctrl_match[] = {
++	{ .compatible = "brcm,bcm7125-sun-top-ctrl", },
++	{ .compatible = "brcm,bcm7346-sun-top-ctrl", },
++	{ .compatible = "brcm,bcm7358-sun-top-ctrl", },
++	{ .compatible = "brcm,bcm7360-sun-top-ctrl", },
++	{ .compatible = "brcm,bcm7362-sun-top-ctrl", },
++	{ .compatible = "brcm,bcm7420-sun-top-ctrl", },
++	{ .compatible = "brcm,bcm7425-sun-top-ctrl", },
++	{ .compatible = "brcm,bcm7429-sun-top-ctrl", },
++	{ .compatible = "brcm,bcm7425-sun-top-ctrl", },
+ 	{ .compatible = "brcm,brcmstb-sun-top-ctrl", },
+ 	{ }
+ };
+-- 
+2.11.0

@@ -1,31 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2017 13:39:23 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:24811 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993899AbdBPMjQvwFF4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Feb 2017 13:39:16 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2017 14:07:00 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:3398 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993896AbdBPNGuHlY44 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Feb 2017 14:06:50 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 43D6741F8E6C;
+        Thu, 16 Feb 2017 14:10:47 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 16 Feb 2017 14:10:47 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 16 Feb 2017 14:10:47 +0000
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 96AEA83BF8B0;
-        Thu, 16 Feb 2017 12:39:07 +0000 (GMT)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 16 Feb 2017 12:39:10 +0000
+        by Forcepoint Email with ESMTPS id DF1EE10D9AFFD;
+        Thu, 16 Feb 2017 13:06:40 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 16 Feb
+ 2017 13:06:44 +0000
+Date:   Thu, 16 Feb 2017 13:06:43 +0000
 From:   James Hogan <james.hogan@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, <stable@vger.kernel.org>,
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH] MIPS: Force o32 fp64 support on 32bit MIPS64r6 kernels
-Date:   Thu, 16 Feb 2017 12:39:01 +0000
-Message-ID: <01a9d2344224e76ea17ff62ffa7b75717f6f1100.1487248664.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.11.0
+Subject: [GIT PULL] MIPS fixes for 4.10
+Message-ID: <20170216130643.GV9246@jhogan-linux.le.imgtec.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="wfgmFf0LjPE7xkRl"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
 Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56850
+X-archive-position: 56851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,40 +52,113 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When a 32-bit kernel is configured to support MIPS64r6 (CPU_MIPS64_R6),
-MIPS_O32_FP64_SUPPORT won't be selected as it should be because
-MIPS32_O32 is disabled (o32 is already the default ABI available on
-32-bit kernels).
+--wfgmFf0LjPE7xkRl
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This results in userland FP breakage as CP0_Status.FR is read-only 1
-since r6 (when an FPU is present) but CP0_Config5.FRE won't be set to
-emulate FR=0.
+Hi Linus,
 
-Force o32 fp64 support in this case by also selecting
-MIPS_O32_FP64_SUPPORT from CPU_MIPS64_R6 if 32BIT.
+Ralf is travelling for a couple of weeks, and has asked me to take care
+of maintainer duties and the main MIPS 4.11 pull request while he's not
+around [1].=20
 
-Fixes: 4e9d324d4288 ("MIPS: Require O32 FP64 support for MIPS64 with O32 compat")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Cc: <stable@vger.kernel.org> # 4.0.x-
----
- arch/mips/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I've gathered together some of the more important fixes that it'd be
+good to get into 4.10. They're mostly build fixes, with a few runtime
+fixes too.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b969522feb97..e2890002d6d1 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1531,7 +1531,7 @@ config CPU_MIPS64_R6
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_MSA
- 	select GENERIC_CSUM
--	select MIPS_O32_FP64_SUPPORT if MIPS32_O32
-+	select MIPS_O32_FP64_SUPPORT if 32BIT || MIPS32_O32
- 	select HAVE_KVM
- 	help
- 	  Choose this option to build a kernel for release 6 or later of the
--- 
-git-series 0.8.10
+Please consider pulling,
+
+Thanks
+James
+
+[1] https://www.linux-mips.org/archives/linux-mips/2017-02/msg00188.html
+
+The following changes since commit 566cf877a1fcb6d6dc0126b076aad062054c2637:
+
+  Linux 4.10-rc6 (2017-01-29 14:25:17 -0800)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jhogan/mips.git tags/mips_f=
+ixes_4.10
+
+for you to fetch changes up to c3ea245e2a92d9107e8690b9b1958b9a8f87a598:
+
+  MIPS: ip27: Disable qlge driver in defconfig (2017-02-15 10:22:02 +0000)
+
+----------------------------------------------------------------
+MIPS fixes for 4.10
+
+A selection of MIPS build and runtime fixes for 4.10:
+
+- fix longstanding 64-bit IP checksum carry bug
+- fix Octeon large copy_from_user corner case
+- fix xway ethernet packet header corruption over reboot
+- fix various build errors, in ip27, xway, ralink, and pic32mzda
+  platforms
+- fix generic (multiplatform) big endian kernels
+- fix weak uprobes function that should have been strong
+
+----------------------------------------------------------------
+Arnd Bergmann (5):
+      MIPS: VDSO: avoid duplicate CAC_BASE definition
+      MIPS: Lantiq: Fix another request_mem_region() return code check
+      MIPS: ralink: Remove unused timer functions
+      MIPS: ralink: Remove unused rt*_wdt_reset functions
+      MIPS: ip27: Disable qlge driver in defconfig
+
+Felix Fietkau (1):
+      MIPS: Lantiq: Keep ethernet enabled during boot
+
+James Cowgill (1):
+      MIPS: OCTEON: Fix copy_from_user fault handling for large buffers
+
+Marcin Nowakowski (1):
+      MIPS: uprobes: Remove __weak attribute from arch_uprobe_copy_ixol.
+
+Matt Redfearn (1):
+      MIPS: Generic: Fix big endian CPUs on generic machine
+
+Purna Chandra Mandal (1):
+      MIPS: pic32mzda: Fix linker error for pic32_get_pbclk()
+
+Ralf Baechle (1):
+      MIPS: Fix special case in 64 bit IP checksumming.
+
+ arch/mips/Kconfig                        |  1 +
+ arch/mips/cavium-octeon/octeon-memcpy.S  | 20 ++++++++++++--------
+ arch/mips/configs/ip27_defconfig         |  1 -
+ arch/mips/include/asm/checksum.h         |  2 ++
+ arch/mips/include/asm/mach-ip27/spaces.h |  6 ++++--
+ arch/mips/kernel/uprobes.c               |  2 +-
+ arch/mips/lantiq/xway/sysctrl.c          | 12 ++++++------
+ arch/mips/pic32/pic32mzda/Makefile       |  5 ++---
+ arch/mips/ralink/rt288x.c                | 10 ----------
+ arch/mips/ralink/rt305x.c                | 11 -----------
+ arch/mips/ralink/rt3883.c                | 10 ----------
+ arch/mips/ralink/timer.c                 | 14 --------------
+ 12 files changed, 28 insertions(+), 66 deletions(-)
+
+--wfgmFf0LjPE7xkRl
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYpaPdAAoJEGwLaZPeOHZ63i8P/3h0/KvhauR6odEh7pc3SCco
+hRLb3nkLCuK9nNbmMjOYWw+K/40dvg1R/cM6iUq5u62rKfyLeKutgnVf6QCxB9+B
+hFI/oNEqH/2XitLyzjKBIAi9TV9IedJNF0kYREXC2FWmkvpuZG8rTysum564LgcK
+t5La0wgdGlEdtV4o+9L0yYdig4A6r/myRYf5SIKsQ9UpHKvN7qY+eRxIyyau+6Df
+21peC7tSxTR5AtIbZ/pvPng9O701TDh8+Cgg+8wseTBrJz05tnwUlkK8sDnMPjas
+FTL2qXeoJ1VRUJ/rfkLGEjElsEbil4vB+dbtLIdB92vPednVOr/92yOJhvZXXkwt
+EnUsErrru0K0cEBQqOYNKHi1OCBbRQ4DIfHgSdFhl2mmWVmfrzpMGL6PaMuLgkUP
+fCny7Tz5xLRmetgWn5BOOGa+XEscS2rD42OliYySLMLNx/zsAAKmzDIVbrigsh5M
+qB0o9gzsquQ5gQ+lwLMPp8JkhZxAv91bCAaM51S+opAS2cPqWUyG2G+rTx81Admy
+yRwR0Ajt1W6AajwPDkQApb53SgrR8q04bGgq4AIQbC79/yJhSP87TV5eYnzU99fD
+chctVRYIwfj44v3Fwb3XC5yRkeBMU908lGSw2SuMFjy8dd2gZh3NA292WqDEHMbb
+EjWatmy+krG9cMyUVw1/
+=eLN8
+-----END PGP SIGNATURE-----
+
+--wfgmFf0LjPE7xkRl--

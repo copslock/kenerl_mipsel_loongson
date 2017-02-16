@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2017 00:44:16 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:36045 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993893AbdBOXngbwSoO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Feb 2017 00:43:36 +0100
-Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1ce8U1-0002J4-9E; Wed, 15 Feb 2017 22:55:33 +0000
-Received: from ben by deadeye with local (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1ce8Tl-00035q-DT; Wed, 15 Feb 2017 22:55:17 +0000
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org,
- "Ralf Baechle" <ralf@linux-mips.org>,
- linux-mips@linux-mips.org,
- "James Hogan" <james.hogan@imgtec.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>,
- kvm@vger.kernel.org,
- ""Radim
- =?UTF-8?Q?Kr=C4=8Dm=C3=A1=C5=99?=" <rkrcmar@redhat.com>
-Date:   Wed, 15 Feb 2017 22:41:40 +0000
-Message-ID: <lsq.1487198500.549032511@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 163/306] KVM: MIPS: Make ERET handle ERL before EXL
-In-Reply-To: <lsq.1487198498.99718322@decadent.org.uk>
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2017 10:13:53 +0100 (CET)
+Received: from smtpbg320.qq.com ([14.17.32.29]:58920 "EHLO smtpbg320.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991867AbdBPJNmk64xN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Feb 2017 10:13:42 +0100
+X-QQ-mid: bizesmtp1t1487236387trgs2i5si
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Thu, 16 Feb 2017 17:13:00 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FH71B00A0000000
+X-QQ-FEAT: DW7AxydIg/tDsBnWQYGsF+UXWEgiO+vh7P/a49mpNJ+RCMrBpeEp9xs23A56k
+        F7PkboA2S9o5R/VRUwO7GfipCEKy8x3gKKeu3rAndWNH38qfhR8h1P5m+D5OL+YsHAMxW6b
+        RQ09BHAsTiSd/Z8XUQRdtgi7stZRnXo/wHbxcD4SrmlYLhfs+X4pJZ+GHtEKcDMg0sgSuFu
+        +pW0CU7SpiHZ3KPH57AQAXNrHUJC1Ht2C7JulUaAKY4ZUgW8FeLAnWC0HLwrkiJFOUruCGp
+        st3Kh6D7QztwsA0lSsysfmjPeLuk2AAuCfOZuXlUnVLnQ4E25N8AJablg=
+X-QQ-GoodBg: 0
+From:   Binbin Zhou <zhoubb@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Kelvin Cheung <keguang.zhang@gmail.com>,
+        Yang Ling <gnaygnil@gmail.com>,
+        =?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6?= <Yeking@Red54.com>,
+        linux-mips@linux-mips.org, Binbin Zhou <zhoubb@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH RESEND v5 0/8] MIPS: Loongson: Add the Loongson-1A processor support
+Date:   Thu, 16 Feb 2017 17:13:13 +0800
+Message-Id: <1487236401-3071-1-git-send-email-zhoubb@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56837
+X-archive-position: 56838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: zhoubb@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,56 +53,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.40-rc1 review patch.  If anyone has any objections, please let me know.
+The Loongson-1A CPU is similar to Loongson-1B/1C, which is a 32-bit SoC.
 
-------------------
+It is a cost-effective single chip system based on LS232 processor core,
+and is applicable to fields such as industrial control, and security applications.
 
-From: James Hogan <james.hogan@imgtec.com>
+It implements the MIPS32 release 2 instruction set.
 
-commit ede5f3e7b54a4347be4d8525269eae50902bd7cd upstream.
+They share the same PRID, so we rewrite them into PRID_REV_LOONGSON1ABC,
+and use their CPU macros to distinguish.
 
-The ERET instruction to return from exception is used for returning from
-exception level (Status.EXL) and error level (Status.ERL). If both bits
-are set however we should be returning from ERL first, as ERL can
-interrupt EXL, for example when an NMI is taken. KVM however checks EXL
-first.
+Changes since v1:
 
-Fix the order of the checks to match the pseudocode in the instruction
-set manual.
+1. According commit c908656a7531771ae7642990a7c5f3c7307bd612
+   (MIPS: Loongson: Naming style cleanup and rework) to fix the naming style.
 
-Fixes: e685c689f3a8 ("KVM/MIPS32: Privileged instruction/target branch emulation.")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[bwh: Backported to 3.16: adjust filename]
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/kvm/kvm_mips_emul.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Changes since v2:
 
---- a/arch/mips/kvm/kvm_mips_emul.c
-+++ b/arch/mips/kvm/kvm_mips_emul.c
-@@ -761,15 +761,15 @@ enum emulation_result kvm_mips_emul_eret
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
- 	enum emulation_result er = EMULATE_DONE;
- 
--	if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
-+	if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
-+		kvm_clear_c0_guest_status(cop0, ST0_ERL);
-+		vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
-+	} else if (kvm_read_c0_guest_status(cop0) & ST0_EXL) {
- 		kvm_debug("[%#lx] ERET to %#lx\n", vcpu->arch.pc,
- 			  kvm_read_c0_guest_epc(cop0));
- 		kvm_clear_c0_guest_status(cop0, ST0_EXL);
- 		vcpu->arch.pc = kvm_read_c0_guest_epc(cop0);
- 
--	} else if (kvm_read_c0_guest_status(cop0) & ST0_ERL) {
--		kvm_clear_c0_guest_status(cop0, ST0_ERL);
--		vcpu->arch.pc = kvm_read_c0_guest_errorepc(cop0);
- 	} else {
- 		printk("[%#lx] ERET when MIPS_SR_EXL|MIPS_SR_ERL == 0\n",
- 		       vcpu->arch.pc);
+1. Remove __irq_set_handler_locked()
+2. Rebases on top of v4.5-rc5.
+
+Changes since v3:
+
+1. Rename the Loongson-1 series's PRID name
+2. Rewite Loongson-1A's clk driver
+2. Rebases on top of v4.10-rc2.
+
+Changes since v4:
+
+1. Fix comment's spelling error
+
+Binbin Zhou(8):
+ MIPS: Loongson: Merge PRID macro for Loongson-1A/1B/1C
+ MIPS: Loongson: Expand Loongson-1's register definition
+ MIPS: Loongson: Add basic Loongson-1A CPU support
+ MIPS: Loongson: Add Loongson-1A Kconfig options
+ MIPS: Loongson: Add platform devices for Loongson-1A
+ MIPS: Loongson: Add Loongson-1A board support
+ clk: Loongson: Add Loongson-1A clock support
+ MIPS: Loongson: Add Loongson-1A default config file
+
+Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+-- 
+ arch/mips/Kconfig                                 |  12 +++++++++
+ arch/mips/configs/loongson1a_defconfig            | 131 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/cpu-type.h                  |   3 ++-
+ arch/mips/include/asm/cpu.h                       |   3 +--
+ arch/mips/include/asm/mach-loongson32/irq.h       |  16 ++++++++----
+ arch/mips/include/asm/mach-loongson32/loongson1.h | 172 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------
+ arch/mips/include/asm/mach-loongson32/platform.h  |   2 ++
+ arch/mips/include/asm/mach-loongson32/regs-clk.h  |  30 ++++++++++++++++++++-
+ arch/mips/include/asm/mach-loongson32/regs-mux.h  |  36 ++++++++++++++++++++++++-
+ arch/mips/kernel/cpu-probe.c                      |   6 ++++-
+ arch/mips/loongson32/Kconfig                      |  20 ++++++++++++++
+ arch/mips/loongson32/Makefile                     |   6 +++++
+ arch/mips/loongson32/Platform                     |   1 +
+ arch/mips/loongson32/common/irq.c                 |   2 +-
+ arch/mips/loongson32/common/platform.c            |  83 ++++++++++++++++++++++++++++++++++++++++++++++++----------
+ arch/mips/loongson32/common/setup.c               |   6 +++--
+ arch/mips/loongson32/ls1a/Makefile                |   5 ++++
+ arch/mips/loongson32/ls1a/board.c                 |  31 ++++++++++++++++++++++
+ arch/mips/mm/c-r4k.c                              |  10 +++++++
+ drivers/clk/loongson1/Makefile                    |   1 +
+ drivers/clk/loongson1/clk-loongson1a.c            |  75 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 21 files changed, 593 insertions(+), 58 deletions(-)
+ create mode 100644 arch/mips/configs/loongson1a_defconfig
+ create mode 100644 arch/mips/loongson32/ls1a/Makefile
+ create mode 100644 arch/mips/loongson32/ls1a/board.c
+ create mode 100644 drivers/clk/loongson1/clk-loongson1a.c
+--
+1.9.0

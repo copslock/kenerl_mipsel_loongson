@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2017 10:16:42 +0100 (CET)
-Received: from smtpbg328.qq.com ([14.17.43.160]:37460 "EHLO smtpbg328.qq.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2017 10:17:09 +0100 (CET)
+Received: from SMTPBG181.QQ.COM ([119.147.193.88]:48375 "EHLO smtpbg181.qq.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992036AbdBPJPYoFESN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Feb 2017 10:15:24 +0100
-X-QQ-mid: bizesmtp1t1487236405tuf4b9x96
+        id S23993890AbdBPJPjTGpXN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Feb 2017 10:15:39 +0100
+X-QQ-mid: bizesmtp1t1487236394tu61eshva
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 16 Feb 2017 17:13:25 +0800 (CST)
+        id ; Thu, 16 Feb 2017 17:13:14 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FH61B00A0000000
-X-QQ-FEAT: mAJfWfDYrJNQB7/pzQKODmhUILJbFiQ7stNhlTo6RQdAMu+UKemboR/Huh6ch
-        zo/bwD1Z8Oky6byqYx8lqk22ko9N8+SUiPSKO1kcla+vQuI93CTKuUJbpzibX/MtvkGkBwG
-        6pknUekeC03Ox7ufB9QAYv6ZPGLyo7PBzUMcUEabrpFuYVAL3oJM6AbxsK0SQDB8vMwAnMM
-        E4cmU6xIg1u14WcSagZYJ65NyAmlJhQZo8S+yXYxuy8oNXuJeFIY6F46Ta/Mjm0fzcM6nU3
-        kPiX31CHECB8YsPfscj4/ppswDF8P0Vfp24yW87xFO1FaHiVba33lbD3g=
+X-QQ-FEAT: X/bTw5V+V7X+3Tj9SwtX8A7ZrQ7P8EbiCO0iKxQ3joMydBjhxUglAGh0pWcWS
+        Gzq+a3X2W9W98Qn7iEemyKZ4oeIKnG11gDBSFyxgGc6mBd+gM+2dIQGqJGzFLD+o+4Jl3aH
+        wTrsjrflYVCxEaeEhc9zA+Fv1OIhtk1kftMp9LPAv0hkCv4Y6Wjkoa83s22XaTfGZ/qqAPd
+        Mj16cJAyd/DTl1FLDAAODWDHHyv/nERWy11hB9NDKtZBhi3RoZ7Gd96eOo4LbnVJcoBJds2
+        V8c4k6/xT3UcI+Ctu56xzNg+mE68sgGAzpG6aHytbC1RZQ/Vjd0HuMuzE=
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -27,9 +27,9 @@ Cc:     John Crispin <john@phrozen.org>,
         =?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6?= <Yeking@Red54.com>,
         linux-mips@linux-mips.org, Binbin Zhou <zhoubb@lemote.com>,
         HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH RESEND v5 8/8] MIPS: Loongson: Add Loongson-1A default config file
-Date:   Thu, 16 Feb 2017 17:13:21 +0800
-Message-Id: <1487236401-3071-9-git-send-email-zhoubb@lemote.com>
+Subject: [PATCH RESEND v5 2/8] MIPS: Loongson: Expand Loongson-1's register definition
+Date:   Thu, 16 Feb 2017 17:13:15 +0800
+Message-Id: <1487236401-3071-3-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1487236401-3071-1-git-send-email-zhoubb@lemote.com>
 References: <1487236401-3071-1-git-send-email-zhoubb@lemote.com>
@@ -38,7 +38,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56845
+X-archive-position: 56846
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,149 +55,243 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Rewrite their names for more readable
+
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: HuaCai Chen <chenhc@lemote.com>
 ---
- arch/mips/configs/loongson1a_defconfig | 131 +++++++++++++++++++++++++++++++++
- 1 file changed, 131 insertions(+)
- create mode 100644 arch/mips/configs/loongson1a_defconfig
+ arch/mips/include/asm/mach-loongson32/loongson1.h | 170 ++++++++++++++++++----
+ arch/mips/loongson32/common/platform.c            |  16 +-
+ 2 files changed, 149 insertions(+), 37 deletions(-)
 
-diff --git a/arch/mips/configs/loongson1a_defconfig b/arch/mips/configs/loongson1a_defconfig
-new file mode 100644
-index 0000000..be9a0cc
---- /dev/null
-+++ b/arch/mips/configs/loongson1a_defconfig
-@@ -0,0 +1,131 @@
-+CONFIG_MACH_LOONGSON32=y
-+CONFIG_ZONE_DMA=y
-+CONFIG_PAGE_SIZE_16KB=y
-+CONFIG_HIGHMEM=y
-+CONFIG_HZ_1000=y
-+CONFIG_PREEMPT_VOLUNTARY=y
-+# CONFIG_SECCOMP is not set
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=16
-+CONFIG_CGROUPS=y
-+CONFIG_BLK_CGROUP=y
-+CONFIG_CGROUP_SCHED=y
-+CONFIG_CGROUP_FREEZER=y
-+CONFIG_CPUSETS=y
-+CONFIG_CGROUP_DEVICE=y
-+CONFIG_EXPERT=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_IOSCHED_DEADLINE is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_SYN_COOKIES=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+CONFIG_BRIDGE=y
-+# CONFIG_BRIDGE_IGMP_SNOOPING is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+# CONFIG_STANDALONE is not set
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_NFTL=y
-+CONFIG_NFTL_RW=y
-+CONFIG_MTD_NAND=y
-+CONFIG_MTD_SPI_NOR=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_RAM=y
-+# CONFIG_SCSI_PROC_FS is not set
-+CONFIG_BLK_DEV_SD=y
-+# CONFIG_SCSI_LOWLEVEL is not set
-+CONFIG_ATA=y
-+# CONFIG_SATA_PMP is not set
-+CONFIG_SATA_AHCI_PLATFORM=y
-+# CONFIG_ATA_SFF is not set
-+CONFIG_NETDEVICES=y
-+CONFIG_NETCONSOLE=y
-+# CONFIG_NET_VENDOR_ARC is not set
-+# CONFIG_NET_VENDOR_BROADCOM is not set
-+# CONFIG_NET_VENDOR_INTEL is not set
-+# CONFIG_NET_VENDOR_MARVELL is not set
-+# CONFIG_NET_VENDOR_MICREL is not set
-+# CONFIG_NET_VENDOR_NATSEMI is not set
-+# CONFIG_NET_VENDOR_SAMSUNG is not set
-+# CONFIG_NET_VENDOR_SEEQ is not set
-+# CONFIG_NET_VENDOR_SMSC is not set
-+CONFIG_STMMAC_ETH=y
-+# CONFIG_NET_VENDOR_VIA is not set
-+# CONFIG_NET_VENDOR_WIZNET is not set
-+CONFIG_REALTEK_PHY=y
-+# CONFIG_USB_NET_DRIVERS is not set
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=8
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_I2C=y
-+CONFIG_SPI=y
-+# CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_USB=y
-+CONFIG_USB_MON=y
-+CONFIG_USB_XHCI_HCD=m
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_HCD_PLATFORM=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_HCD_PLATFORM=y
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_GADGET=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_PCF8563=y
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_VFAT_FS=y
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_ISO8859_1=y
-+CONFIG_PRINTK_TIME=y
-+# CONFIG_ENABLE_WARN_DEPRECATED is not set
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+# CONFIG_FTRACE is not set
-+CONFIG_XZ_DEC=y
+diff --git a/arch/mips/include/asm/mach-loongson32/loongson1.h b/arch/mips/include/asm/mach-loongson32/loongson1.h
+index 84c28a8..8cfd4ba 100644
+--- a/arch/mips/include/asm/mach-loongson32/loongson1.h
++++ b/arch/mips/include/asm/mach-loongson32/loongson1.h
+@@ -19,35 +19,147 @@
+ #endif
+ 
+ /* Loongson 1 Register Bases */
+-#define LS1X_MUX_BASE			0x1fd00420
+-#define LS1X_INTC_BASE			0x1fd01040
+-#define LS1X_GPIO0_BASE			0x1fd010c0
+-#define LS1X_GPIO1_BASE			0x1fd010c4
+-#define LS1X_DMAC_BASE			0x1fd01160
+-#define LS1X_CBUS_BASE			0x1fd011c0
+-#define LS1X_EHCI_BASE			0x1fe00000
+-#define LS1X_OHCI_BASE			0x1fe08000
+-#define LS1X_GMAC0_BASE			0x1fe10000
+-#define LS1X_GMAC1_BASE			0x1fe20000
+-
+-#define LS1X_UART0_BASE			0x1fe40000
+-#define LS1X_UART1_BASE			0x1fe44000
+-#define LS1X_UART2_BASE			0x1fe48000
+-#define LS1X_UART3_BASE			0x1fe4c000
+-#define LS1X_CAN0_BASE			0x1fe50000
+-#define LS1X_CAN1_BASE			0x1fe54000
+-#define LS1X_I2C0_BASE			0x1fe58000
+-#define LS1X_I2C1_BASE			0x1fe68000
+-#define LS1X_I2C2_BASE			0x1fe70000
+-#define LS1X_PWM0_BASE			0x1fe5c000
+-#define LS1X_PWM1_BASE			0x1fe5c010
+-#define LS1X_PWM2_BASE			0x1fe5c020
+-#define LS1X_PWM3_BASE			0x1fe5c030
+-#define LS1X_WDT_BASE			0x1fe5c060
+-#define LS1X_RTC_BASE			0x1fe64000
+-#define LS1X_AC97_BASE			0x1fe74000
+-#define LS1X_NAND_BASE			0x1fe78000
+-#define LS1X_CLK_BASE			0x1fe78030
++#define LS1X_DC_REG_BASE		0x1c200000
++#define LS1X_MUX_REG_BASE		0x1f000000
++
++#define LS1X_CFG_REG_BASE		(LS1X_MUX_REG_BASE + 0x00d00000)
++
++#define LS1X_INTC_BASE			(LS1X_CFG_REG_BASE + 0x1040)
++
++/* GPIO regs */
++#define LS1X_GPIO_REG_BASE		(LS1X_CFG_REG_BASE + 0x1000)
++#define LS1X_GPIO_CFG0_REG		(LS1X_GPIO_REG_BASE + 0xc0)
++#define LS1X_GPIO_CFG1_REG		(LS1X_GPIO_REG_BASE + 0xc4)
++#define LS1X_GPIO_CFG2_REG		(LS1X_GPIO_REG_BASE + 0xc8)
++#define LS1X_GPIO_OE0_REG		(LS1X_GPIO_REG_BASE + 0xd0)
++#define LS1X_GPIO_OE1_REG		(LS1X_GPIO_REG_BASE + 0xd4)
++#define LS1X_GPIO_OE2_REG		(LS1X_GPIO_REG_BASE + 0xd8)
++#define LS1X_GPIO_IN0_REG		(LS1X_GPIO_REG_BASE + 0xe0)
++#define LS1X_GPIO_IN1_REG		(LS1X_GPIO_REG_BASE + 0xe4)
++#define LS1X_GPIO_IN2_REG		(LS1X_GPIO_REG_BASE + 0xe8)
++#define LS1X_GPIO_OUT0_REG		(LS1X_GPIO_REG_BASE + 0xf0)
++#define LS1X_GPIO_OUT1_REG		(LS1X_GPIO_REG_BASE + 0xf4)
++#define LS1X_GPIO_OUT2_REG		(LS1X_GPIO_REG_BASE + 0xf8)
++
++#define LS1X_DMA_ORDER_REG		(LS1X_CFG_REG_BASE + 0x1160)
++
++#define LS1X_MUX_BASE			(LS1X_CFG_REG_BASE + 0x0420)
++
++/* USB regs */
++#define LS1X_EHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e00000)
++#define LS1X_OHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e08000)
++
++/* GMAC regs */
++#define LS1X_GMAC0_BASE			(LS1X_MUX_REG_BASE + 0x00e10000)
++#define LS1X_GMAC0_DMA_REG		(LS1X_GMAC0_BASE + 0x1000)
++#define LS1X_GMAC1_BASE			(LS1X_MUX_REG_BASE + 0x00e20000)
++#define LS1X_GMAC1_DMA_REG		(LS1X_GMAC1_BASE + 0x1000)
++
++/* SATA regs */
++#define LS1X_AHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e30000)
++
++/* APB regs */
++#define LS1X_APB_REG_BASE		(LS1X_MUX_REG_BASE + 0x00e40000)
++
++/* UART regs */
++#define LS1X_UART0_BASE			(LS1X_APB_REG_BASE + 0x0000)
++#define LS1X_UART1_BASE			(LS1X_APB_REG_BASE + 0x4000)
++#define LS1X_UART2_BASE			(LS1X_APB_REG_BASE + 0x8000)
++#define LS1X_UART3_BASE			(LS1X_APB_REG_BASE + 0xc000)
++
++/* CAN regs */
++#define LS1X_CAN0_BASE			(LS1X_APB_REG_BASE + 0x10000)
++#define LS1X_CAN1_BASE			(LS1X_APB_REG_BASE + 0x14000)
++
++#define LS1X_I2C0_BASE			(LS1X_APB_REG_BASE + 0x18000)
++#define LS1X_I2C0_PRER_LO_REG		(LS1X_I2C0_BASE + 0x0)
++#define LS1X_I2C0_PRER_HI_REG		(LS1X_I2C0_BASE + 0x1)
++#define LS1X_I2C0_CTR_REG		(LS1X_I2C0_BASE + 0x2)
++#define LS1X_I2C0_TXR_REG		(LS1X_I2C0_BASE + 0x3)
++#define LS1X_I2C0_RXR_REG		(LS1X_I2C0_BASE + 0x3)
++#define LS1X_I2C0_CR_REG		(LS1X_I2C0_BASE + 0x4)
++#define LS1X_I2C0_SR_REG		(LS1X_I2C0_BASE + 0x4)
++
++#define LS1X_I2C1_BASE			(LS1X_APB_REG_BASE + 0x28000)
++#define LS1X_I2C1_PRER_LO_REG		(LS1X_I2C1_BASE + 0x0)
++#define LS1X_I2C1_PRER_HI_REG		(LS1X_I2C1_BASE + 0x1)
++#define LS1X_I2C1_CTR_REG		(LS1X_I2C1_BASE + 0x2)
++#define LS1X_I2C1_TXR_REG		(LS1X_I2C1_BASE + 0x3)
++#define LS1X_I2C1_RXR_REG		(LS1X_I2C1_BASE + 0x3)
++#define LS1X_I2C1_CR_REG		(LS1X_I2C1_BASE + 0x4)
++#define LS1X_I2C1_SR_REG		(LS1X_I2C1_BASE + 0x4)
++
++#define LS1X_I2C2_BASE			(LS1X_APB_REG_BASE + 0x30000)
++#define LS1X_I2C2_PRER_LO_REG		(LS1X_I2C2_BASE + 0x0)
++#define LS1X_I2C2_PRER_HI_REG		(LS1X_I2C2_BASE + 0x1)
++#define LS1X_I2C2_CTR_REG		(LS1X_I2C2_BASE + 0x2)
++#define LS1X_I2C2_TXR_REG		(LS1X_I2C2_BASE + 0x3)
++#define LS1X_I2C2_RXR_REG		(LS1X_I2C2_BASE + 0x3)
++#define LS1X_I2C2_CR_REG		(LS1X_I2C2_BASE + 0x4)
++#define LS1X_I2C2_SR_REG		(LS1X_I2C2_BASE + 0x4)
++
++#define LS1X_PWM_REG_BASE		(LS1X_APB_REG_BASE + 0x1c000)
++#define LS1X_PWM0_BASE			(LS1X_PWM_REG_BASE + 0x00)
++#define LS1X_PWM1_BASE			(LS1X_PWM_REG_BASE + 0x10)
++#define LS1X_PWM2_BASE			(LS1X_PWM_REG_BASE + 0x20)
++#define LS1X_PWM3_BASE			(LS1X_PWM_REG_BASE + 0x30)
++
++/* RTC regs */
++#define LS1X_RTC_BASE			(LS1X_APB_REG_BASE + 0x24000)
++
++/* AC97 regs */
++#define LS1X_AC97_BASE			(LS1X_APB_REG_BASE + 0x34000)
++
++/* Watchdog regs */
++#ifdef CONFIG_CPU_LOONGSON1A
++#define LS1X_WDT_BASE			(LS1X_MUX_REG_BASE + 0x00e7c060)
++#else
++#define LS1X_WDT_BASE			(LS1X_MUX_REG_BASE + 0x00e5c060)
++#endif
++
++/* CLK regs */
++#define LS1X_CLK_BASE			(LS1X_MUX_REG_BASE + 0x00e78030)
++
++/* NAND regs */
++#define LS1X_NAND_REG_BASE		(LS1X_APB_REG_BASE + 0x38000)
++#define LS1X_NAND_CMD_REG		(LS1X_NAND_REG_BASE + 0x0000)
++#define LS1X_NAND_ADDR_C_REG		(LS1X_NAND_REG_BASE + 0x0004)
++#define LS1X_NAND_ADDR_R_REG		(LS1X_NAND_REG_BASE + 0x0008)
++#define LS1X_NAND_TIMING_REG		(LS1X_NAND_REG_BASE + 0x000c)
++#define LS1X_NAND_IDL_REG		(LS1X_NAND_REG_BASE + 0x0010)
++#define LS1X_NAND_STA_IDH_REG		(LS1X_NAND_REG_BASE + 0x0014)
++#define LS1X_NAND_PARAM_REG		(LS1X_NAND_REG_BASE + 0x0018)
++#define LS1X_NAND_OP_NUM_REG		(LS1X_NAND_REG_BASE + 0x001c)
++#define LS1X_NAND_CSRDY_MAP_REG		(LS1X_NAND_REG_BASE + 0x0020)
++#define LS1X_NAND_DMA_ACC_REG		(LS1X_NAND_REG_BASE + 0x0040)
++
++/* ACPI regs for ls1a */
++#define LS1X_ACPI_REG_BASE		(LS1X_APB_REG_BASE + 0x3c000)
++#define LS1X_PM1_STS_REG		(LS1X_ACPI_REG_BASE + 0x0000)
++#define LS1X_PM1_EN_REG			(LS1X_ACPI_REG_BASE + 0x0004)
++#define LS1X_PM1_CNT_REG		(LS1X_ACPI_REG_BASE + 0x0008)
++#define LS1X_PM1_TMR_REG		(LS1X_ACPI_REG_BASE + 0x000c)
++#define LS1X_P_CNT_REG			(LS1X_ACPI_REG_BASE + 0x0010)
++#define LS1X_P_LVL2_REG			(LS1X_ACPI_REG_BASE + 0x0014)
++#define LS1X_P_LVL3_REG			(LS1X_ACPI_REG_BASE + 0x0018)
++#define LS1X_GPE0_STS_REG		(LS1X_ACPI_REG_BASE + 0x0020)
++#define LS1X_GPE0_EN_REG		(LS1X_ACPI_REG_BASE + 0x0024)
++#define LS1X_PM_CONF1_REG		(LS1X_ACPI_REG_BASE + 0x0030)
++#define LS1X_PM_CONF2_REG		(LS1X_ACPI_REG_BASE + 0x0034)
++#define LS1X_PM_CONF3_REG		(LS1X_ACPI_REG_BASE + 0x0038)
++#define LS1X_RST_CNT_REG		(LS1X_ACPI_REG_BASE + 0x0044)
++#define LS1X_CPU_INIT_REG		(LS1X_ACPI_REG_BASE + 0x0050)
++
++#define LS1X_SPI0_REG_BASE		(LS1X_MUX_REG_BASE + 0x00e80000)
++#define LS1X_SPI1_REG_BASE		(LS1X_MUX_REG_BASE + 0x00ec0000)
++
++/* LPC regs */
++#define LS1X_LPC_IO_BASE		(LS1X_MUX_REG_BASE + 0x00f00000)
++#define LS1X_LPC_REG_BASE		(LS1X_MUX_REG_BASE + 0x00f10200)
++#define LS1X_LPC_CFG0_REG		(LS1X_LPC_REG_BASE + 0x0)
++#define LS1X_LPC_CFG1_REG		(LS1X_LPC_REG_BASE + 0x4)
++#define LS1X_LPC_CFG2_REG		(LS1X_LPC_REG_BASE + 0x8)
++#define LS1X_LPC_CFG3_REG		(LS1X_LPC_REG_BASE + 0xc)
+ 
+ #include <regs-clk.h>
+ #include <regs-mux.h>
+diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
+index 100f23d..f71392f 100644
+--- a/arch/mips/loongson32/common/platform.c
++++ b/arch/mips/loongson32/common/platform.c
+@@ -84,8 +84,8 @@ struct platform_device ls1x_cpufreq_pdev = {
+ /* DMA */
+ static struct resource ls1x_dma_resources[] = {
+ 	[0] = {
+-		.start = LS1X_DMAC_BASE,
+-		.end = LS1X_DMAC_BASE + SZ_4 - 1,
++		.start = LS1X_DMA_ORDER_REG,
++		.end = LS1X_DMA_ORDER_REG + SZ_4 - 1,
+ 		.flags = IORESOURCE_MEM,
+ 	},
+ 	[1] = {
+@@ -259,8 +259,8 @@ struct platform_device ls1x_eth1_pdev = {
+ /* GPIO */
+ static struct resource ls1x_gpio0_resources[] = {
+ 	[0] = {
+-		.start	= LS1X_GPIO0_BASE,
+-		.end	= LS1X_GPIO0_BASE + SZ_4 - 1,
++		.start	= LS1X_GPIO_CFG0_REG,
++		.end	= LS1X_GPIO_CFG0_REG + SZ_4 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	},
+ };
+@@ -274,8 +274,8 @@ struct platform_device ls1x_gpio0_pdev = {
+ 
+ static struct resource ls1x_gpio1_resources[] = {
+ 	[0] = {
+-		.start	= LS1X_GPIO1_BASE,
+-		.end	= LS1X_GPIO1_BASE + SZ_4 - 1,
++		.start	= LS1X_GPIO_CFG1_REG,
++		.end	= LS1X_GPIO_CFG1_REG + SZ_4 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	},
+ };
+@@ -290,8 +290,8 @@ struct platform_device ls1x_gpio1_pdev = {
+ /* NAND Flash */
+ static struct resource ls1x_nand_resources[] = {
+ 	[0] = {
+-		.start	= LS1X_NAND_BASE,
+-		.end	= LS1X_NAND_BASE + SZ_32 - 1,
++		.start	= LS1X_NAND_REG_BASE,
++		.end	= LS1X_NAND_REG_BASE + SZ_32 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	},
+ 	[1] = {
 -- 
 2.9.3

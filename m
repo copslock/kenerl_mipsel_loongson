@@ -1,37 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Feb 2017 02:42:49 +0100 (CET)
-Received: from cloudserver094114.home.net.pl ([79.96.170.134]:61084 "EHLO
-        cloudserver094114.home.net.pl" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992209AbdBRBmlIqaJY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Feb 2017 02:42:41 +0100
-Received: from adku1.ipv4.supernova.orange.pl (79.184.254.1) (HELO aspire.rjw.lan)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.81.2)
- id 9d3a2edc38cb3c58; Sat, 18 Feb 2017 02:42:38 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Markus Mayer <code@mmayer.net>, Ralf Baechle <ralf@linux-mips.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Markus Mayer <mmayer@broadcom.com>,
-        MIPS Linux Kernel List <linux-mips@linux-mips.org>,
-        Power Management List <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: cpufreq: add bmips-cpufreq.c
-Date:   Sat, 18 Feb 2017 02:37:36 +0100
-Message-ID: <3581335.dhZe3gFEt9@aspire.rjw.lan>
-User-Agent: KMail/4.14.10 (Linux/4.10.0-rc3+; KDE/4.14.9; x86_64; ; )
-In-Reply-To: <3d7ecb19-f181-fe32-908e-b69906bea941@gmail.com>
-References: <20170217183050.31889-1-code@mmayer.net> <2370147.zGx6MqB346@aspire.rjw.lan> <3d7ecb19-f181-fe32-908e-b69906bea941@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Return-Path: <rjw@rjwysocki.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2017 23:37:29 +0100 (CET)
+Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:35559
+        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993891AbdBSWhXL60hX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Feb 2017 23:37:23 +0100
+Received: by mail-wm0-x243.google.com with SMTP id u63so11446370wmu.2;
+        Sun, 19 Feb 2017 14:37:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=32EQQ3eSEnuVeOtd/pZ8GiHQ375HccTRNTGA7ouAYbE=;
+        b=V2dZKmFWwkPH3FEP+jmKKxV0Gn91A5JY49EBEhjFb0tmY+N/CyIrfMdn45h/bE6V4m
+         ORQIzwa/+DYflej7pc5dqNDYY6iHaBkx0c8WB2vzYcSE7uFh8Dlxg3+6vTtHB79tFUNc
+         lZl13fk9YSQ0VpE3bDQvi75lpAXfvckwi+oekTfo0KM1joWBYp5p/ZNtWgZ1/W4eG+lK
+         U/NsdXx7ryZDp7/dyLoEm7BfNJ+IVC4kOitC0i7gYMPBoiNb6ZbSti3v5wxCtY6WqOwA
+         RQxsoKO7S912hlU85t+48QXiWkf6oEYhRmLQSthJltU72KNnh/04RV4bW/9jjqREzUup
+         fpEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=32EQQ3eSEnuVeOtd/pZ8GiHQ375HccTRNTGA7ouAYbE=;
+        b=g2Xd1jtSo4S6p0bshRSGjGHS49PEs1yR90VZv0c61mvPudx9cKzmF94Z8Vi3waRxOh
+         GPPR6NoIQqNKeOkSigyfEXNgVyp5kAReVMG0NFNznnP5J5lRCOriu2r47dTQUtiX0uzI
+         mzVcMF2vBwxqbr5JugfrBeEsvQCgCXJwsQrjAS72HgUw4jL5JKYaAnwmDjQAyGs6qqkv
+         A1KELYMg/QZX/4rRmR4B3yElaSvnKQQlXXe/Gf6cfyn6VjkAGcRlIgBKUKvrjhdKSjqB
+         KWivh7YFOg9isGPH2fkRPQSaocbmA2paUfeIgw+UMHpf6jOH+P2JOtKac0GruTzrL4+k
+         Qz3w==
+X-Gm-Message-State: AMke39nUoKvIDf8s7CNunuTG4jJri0tMWff1Muwr62YTFSIgCcb4ll3xutGaX/94IrvyBA==
+X-Received: by 10.28.109.218 with SMTP id b87mr8518275wmi.52.1487543836685;
+        Sun, 19 Feb 2017 14:37:16 -0800 (PST)
+Received: from localhost.localdomain ([2001:470:9e39::48e])
+        by smtp.gmail.com with ESMTPSA id 65sm22302808wri.53.2017.02.19.14.37.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 19 Feb 2017 14:37:16 -0800 (PST)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com
+Subject: [PATCH] MIPS: BCM63XX: fix ENETDMA_6345_MAXBURST_REG offset
+Date:   Sun, 19 Feb 2017 23:37:07 +0100
+Message-Id: <20170219223707.3999-1-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <jonas.gorski@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56868
+X-archive-position: 56869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rjw@rjwysocki.net
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,55 +62,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Friday, February 17, 2017 05:26:59 PM Florian Fainelli wrote:
-> 
-> On 02/17/2017 05:20 PM, Rafael J. Wysocki wrote:
-> > On Friday, February 17, 2017 11:24:56 AM Florian Fainelli wrote:
-> >> On 02/17/2017 10:30 AM, Markus Mayer wrote:
-> >>> From: Markus Mayer <mmayer@broadcom.com>
-> >>>
-> >>> Add maintainer information for bmips-cpufreq.c.
-> >>>
-> >>> Signed-off-by: Markus Mayer <mmayer@broadcom.com>
-> >>
-> >> Looks great, thanks for adding this, one nit below:
-> >>
-> >>> ---
-> >>>
-> >>> This is based on PM's linux-next from today (February 17).
-> >>>
-> >>> This patch could be squashed into patch 3/4 of the original series if that
-> >>> is acceptable (see [1]) or it can remain separate.
-> >>>
-> >>> [1] https://lkml.org/lkml/2017/2/7/775
-> >>>
-> >>>  MAINTAINERS | 6 ++++++
-> >>>  1 file changed, 6 insertions(+)
-> >>>
-> >>> diff --git a/MAINTAINERS b/MAINTAINERS
-> >>> index 107c10e..db251c0 100644
-> >>> --- a/MAINTAINERS
-> >>> +++ b/MAINTAINERS
-> >>> @@ -2692,6 +2692,12 @@ F:	drivers/irqchip/irq-brcmstb*
-> >>>  F:	include/linux/bcm963xx_nvram.h
-> >>>  F:	include/linux/bcm963xx_tag.h
-> >>>  
-> >>> +BROADCOM BMIPS CPUFREQ DRIVER
-> >>> +M:	Markus Mayer <mmayer@broadcom.com>
-> >>> +L:	linux-pm@vger.kernel.org
-> >>
-> >> Please also include bcm-kernel-feedback-list@broadcom.com here
-> >>
-> >> With that:
-> >>
-> >> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-> >>
-> > 
-> > Patch applied.
-> 
-> There was a v2 submitted shortly after.
+The channels are only 0x40 bytes large, so 0x40 would be the next one's
+CHANCFG_REG. Also the position makes it clear that this was intended to
+be 0x04. So clearly a typo.
 
-I took the v2 actually, sorry for the confusion.
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+---
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Rafael
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+index 5035f09c5427..24080af570f9 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+@@ -710,7 +710,7 @@
+ /* Broadcom 6345 ENET DMA definitions */
+ #define ENETDMA_6345_CHANCFG_REG	(0x00)
+ 
+-#define ENETDMA_6345_MAXBURST_REG	(0x40)
++#define ENETDMA_6345_MAXBURST_REG	(0x04)
+ 
+ #define ENETDMA_6345_RSTART_REG		(0x08)
+ 
+-- 
+2.11.0

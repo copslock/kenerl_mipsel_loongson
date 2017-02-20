@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2017 10:30:14 +0100 (CET)
-Received: from nbd.name ([IPv6:2a01:4f8:131:30e2::2]:56146 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2017 10:30:41 +0100 (CET)
+Received: from nbd.name ([IPv6:2a01:4f8:131:30e2::2]:56149 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992942AbdBTJ3rJa0z4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993201AbdBTJ3r1uGC4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 20 Feb 2017 10:29:47 +0100
 From:   John Crispin <john@phrozen.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>
-Subject: [PATCH 1/3] arch: mips: pci: remove duplicate define in mt7620 driver
-Date:   Mon, 20 Feb 2017 10:29:42 +0100
-Message-Id: <1487582984-40143-2-git-send-email-john@phrozen.org>
+Subject: [PATCH 2/3] arch: mips: pci: remove KERN_WARN instance inside the mt7620 driver
+Date:   Mon, 20 Feb 2017 10:29:43 +0100
+Message-Id: <1487582984-40143-3-git-send-email-john@phrozen.org>
 X-Mailer: git-send-email 1.7.10.4
 In-Reply-To: <1487582984-40143-1-git-send-email-john@phrozen.org>
 References: <1487582984-40143-1-git-send-email-john@phrozen.org>
@@ -16,7 +16,7 @@ Return-Path: <john@phrozen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56875
+X-archive-position: 56876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,25 +33,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-An invalid and duplicate define has gone unnoticed for some time. lets
-remove it. The correct define is 3 lines below.
+Switch the printk() call to the prefered pr_warn() api.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- arch/mips/pci/pci-mt7620.c |    1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/pci/pci-mt7620.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/mips/pci/pci-mt7620.c b/arch/mips/pci/pci-mt7620.c
-index 628c513..3fdaf7c 100644
+index 3fdaf7c..902fa61 100644
 --- a/arch/mips/pci/pci-mt7620.c
 +++ b/arch/mips/pci/pci-mt7620.c
-@@ -33,7 +33,6 @@
- #define RALINK_GPIOMODE			0x60
- 
- #define PPLL_CFG1			0x9c
--#define PDRV_SW_SET			BIT(23)
- 
- #define PPLL_DRV			0xa0
- #define PDRV_SW_SET			(1<<31)
+@@ -120,7 +120,7 @@ static int wait_pciephy_busy(void)
+ 		else
+ 			break;
+ 		if (retry++ > WAITRETRY_MAX) {
+-			printk(KERN_WARN "PCIE-PHY retry failed.\n");
++			pr_warn("PCIE-PHY retry failed.\n");
+ 			return -1;
+ 		}
+ 	}
 -- 
 1.7.10.4

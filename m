@@ -1,59 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2017 12:28:52 +0100 (CET)
-Received: from mail-yb0-x231.google.com ([IPv6:2607:f8b0:4002:c09::231]:33578
-        "EHLO mail-yb0-x231.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992289AbdBTL2p2ORLH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2017 12:28:45 +0100
-Received: by mail-yb0-x231.google.com with SMTP id u130so8476749ybb.0;
-        Mon, 20 Feb 2017 03:28:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=FVknD1LsjlkR5G+tzOFJ3MvN+kQrXrGbtlQWuQZ5bmI=;
-        b=q943ieSeU0qAKWpj7e5zKz8qgqm+t0C65n2v2E9o339b+cL0cjD+d0dGTZcsiMsWJx
-         MqXLJPBAYscFg9kAfLIlEPj98I8Dkdg/k81e2RDg21CQVJeD9DP/KDFW+zQ7klzSSgY9
-         OOX6JD98PN6I1qQhLse++zTw4PqzmuHMQUbY2TUHjST7fOkzgMe/953EDGW+evfQHO2D
-         8qn/8JVXKU2XQ/adM3pft6zGKsagi0jDD3Vu0H3tKCTH+iLHbc64zz4AMUkOMFjZa8Ng
-         /W0ojmPm7a3JZA/0VsWvrsBZTmlex6cwxdkl8Wi5VV4R4c/D+604ZOvL44S3pRQLFhvl
-         fXUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=FVknD1LsjlkR5G+tzOFJ3MvN+kQrXrGbtlQWuQZ5bmI=;
-        b=ORpIs08uPrfOJ46MxVw9ODYK1GiymIoLwY9v7C1y6jvmTuMDpXzbsaAI/W2sKP71HO
-         vye5wXJp+PUMyho1ykIqnTWuCQTCqfiTP6A+1RtXRtkaO4FSZ5/S2KS6/qnzQL6xJeH8
-         FbTJyN6DRj8KcqWwd0HEYaBbXPTsSsUTcGY8SFA4SUkxTEjfLGHLyjC1h3qDo8RLGeuc
-         8ARy+/Iwl62xrdRUtYzVbQhnty1UAa8FH258D1cVG6d/g351ZsyGDlfNfSqmAPZwmTcg
-         4rt4JisNUasMVP4C39TZ6t1yeIfbB0++T5zA04F9gupTfBMLexFG+xZtkooJxSV4g2pH
-         HjTg==
-X-Gm-Message-State: AMke39kLlqIO8wN0IKNjJur1gKCBttRg3zrjOQpZ7oMIfw3wJKm/O6Ob3w9mBYEgyriZ8P/p1I0Sn0wB8sAMKw==
-X-Received: by 10.37.50.211 with SMTP id y202mr2571916yby.49.1487590119718;
- Mon, 20 Feb 2017 03:28:39 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2017 12:53:46 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:48146 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992289AbdBTLxhuGQuH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2017 12:53:37 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id BF79D41F8E7D;
+        Mon, 20 Feb 2017 12:57:45 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Mon, 20 Feb 2017 12:57:45 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Mon, 20 Feb 2017 12:57:45 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 40DBCE283F7BE;
+        Mon, 20 Feb 2017 11:53:29 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 20 Feb
+ 2017 11:53:31 +0000
+Date:   Mon, 20 Feb 2017 11:53:31 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     jianchao.wang <jianchao.wan9@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] MIPS:wrong usage of l_exc_copy in octeon-memcpy.S
+Message-ID: <20170220115331.GA24226@jhogan-linux.le.imgtec.org>
+References: <1487562178-2901-1-git-send-email-jianchao.wan9@gmail.com>
 MIME-Version: 1.0
-Received: by 10.83.32.5 with HTTP; Mon, 20 Feb 2017 03:28:39 -0800 (PST)
-In-Reply-To: <50640771-abc2-dd9a-7418-7393afe23cd5@gmail.com>
-References: <1486147623.22276.70.camel@perches.com> <e160890d-ed79-4e63-57af-1489064d49cb@gmail.com>
- <1486148236.22276.72.camel@perches.com> <20170203203609.GA14271@kroah.com> <50640771-abc2-dd9a-7418-7393afe23cd5@gmail.com>
-From:   "Jayachandran C." <c.jayachandran@gmail.com>
-Date:   Mon, 20 Feb 2017 16:58:39 +0530
-Message-ID: <CA+7sy7BpkOS1zGo17NkrQtukT5jKh3+EB9BXQLGnunV1HSs9oA@mail.gmail.com>
-Subject: Re: Is it time to move drivers/staging/netlogic/ out of staging?
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Joe Perches <joe@perches.com>, devel@driverdev.osuosl.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <c.jayachandran@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="CxIGHgfcyU0Ip7+W"
+Content-Disposition: inline
+In-Reply-To: <1487562178-2901-1-git-send-email-jianchao.wan9@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56878
+X-archive-position: 56879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: c.jayachandran@gmail.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,37 +54,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, Feb 4, 2017 at 2:08 AM, Florian Fainelli <f.fainelli@gmail.com> wrote:
-> On 02/03/2017 12:36 PM, Greg KH wrote:
->> On Fri, Feb 03, 2017 at 10:57:16AM -0800, Joe Perches wrote:
->>> On Fri, 2017-02-03 at 10:50 -0800, Florian Fainelli wrote:
->>>> (with JC's other email)
->>>
->>> And now with Greg's proper email too
->>>
->>>> On 02/03/2017 10:47 AM, Joe Perches wrote:
->>>>> 64 bit stats isn't implemented, but is that really necessary?
->>>>> Anything else?
->>>>
->>>> Joe, do you have such hardware that you are interested in getting
->>>> supported, or was that just to reduce the amount of drivers in staging?
->>>> I am really not clear about what happened to that entire product line,
->>>> and whether there is any interest in having anything supported these days...
->>>
->>> No hardware.  Just to reduce staging driver count.
->>
->> Without hardware or a "real" maintainer, it shouldn't be moved.
->>
->> Heck, if no one has the hardware, let's just delete the thing.
->
-> I do have one, and other colleagues have some too, but I am not heavily
-> using it, nor do I have many cycles to spend on that... sounds like we
-> could keep it in staging for another 6 months and see what happens then?
+--CxIGHgfcyU0Ip7+W
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Unfortunately, I am no longer with Broadcom and don't have access to these
-boards anymore. This driver is for XLR, the next generation SoC called XLP
-has a different on-chip network accelerator - and that driver is not available
-publicly other than in FreeBSD[1]
+Hi,
 
-JC.
-[1] https://svnweb.freebsd.org/base/head/sys/mips/nlm/dev/net/
+On Mon, Feb 20, 2017 at 11:42:58AM +0800, jianchao.wang wrote:
+> l_exc_copy() is usually to be used like this:
+> 1 EXC(	LOAD	t0, UNIT(0)(src),	l_exc)
+> 2 EXC(	LOAD	t1, UNIT(1)(src),	l_exc_copy)
+> 3 EXC(	LOAD	t2, UNIT(2)(src),	l_exc_copy)
+> 4 EXC(	LOAD	t3, UNIT(3)(src),	l_exc_copy)
+> When the fault occurs on row 4, l_exc_copy will get the bad
+> addr through THREAD_BUADDR(), complete the copy of row
+> 1,2 and 3, and then return the len that has not been copied.
+> l_exc_copy assumes the src is smaller thann the bad addr.It will
+> increase src by 1 until reach the bad addr.
+>=20
+> octeon-memcpy.S use the l_exc_copy with wrong way which make src
+> could be greater than bad addr. We will fix it in this patch.
+> We add the max offset of LOAD to 15 here to fix the issue without
+> adding new commands . Howerver, the side effect is that, when LOAD
+> fails in few case, l_exc_copy has to copy more.
+
+Is this trying to fix the same issue as the following patch?
+
+https://patchwork.linux-mips.org/patch/14978/
+
+Thanks
+James
+
+--CxIGHgfcyU0Ip7+W
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYqti0AAoJEGwLaZPeOHZ6EdAQAJtpCNK4tdtcFrEOzJ7B59WV
+9s+xxGGxJAYm6XwtybxX8AAFwnOmUaFX+rA8Tec+GO7q8Km4vgbiC4UMMFd4vV3O
+bwn/iQgYLr9vJOhUlUybCMXezCT1vcB9bg22oDWHJkw27vz7f9/x3c1jZvOloPdb
+XhKK7x5NYA9HpnLHNx3zeS6mcBEhp1nDHGXAeq23ZVK++K1on1Nic9N385DnzlHP
+HIi9/zNF4LjR2dAcrBl2YyV2KAjRyEbDDqmexml1e1rwRlZNr1sEXALti29IHngZ
+nB3ame+Yxmi8fQpu0Y5GQKTe1WhO9MIYd1G0KReIq7gSXp9/mRGP3OrOQ+y5g3YO
+TSA1SN45u35uK+qXwsvsEC6pyke4p7Zueo8VDZ/je7aEAm+1wOBRkOUTweINTIR1
+K75tFtcyNvSRaYK5fOsd+D2LZtCFnIvhuUszajNigBeNOHVrGP9SFYsdRcLz+SEG
+PZXJRiwhMMDCjd+C8dkrdVGw5wU/TqyrJFoOzLxirUkaIRCX99m59nIRLOpQ091v
+noIeBIZeApZWUmE5876OGLLc4I9uzb8ejQ/MuiBDOH9MAd/YkrXcGt9yuEqIFgX/
+NxOaUOqHn03n7H2iyUMYc61Vrv/zyudaB8WWZJ91GXrOZ/AaaEUa693Gxz/XAlU0
+E83mVvIeGYz45AayIQxL
+=ys3w
+-----END PGP SIGNATURE-----
+
+--CxIGHgfcyU0Ip7+W--

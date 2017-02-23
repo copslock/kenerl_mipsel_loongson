@@ -1,76 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2017 10:59:27 +0100 (CET)
-Received: from mail-it0-x235.google.com ([IPv6:2607:f8b0:4001:c0b::235]:37356
-        "EHLO mail-it0-x235.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990522AbdBWJ7VN9zrL convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Feb 2017 10:59:21 +0100
-Received: by mail-it0-x235.google.com with SMTP id 203so10466664ith.0
-        for <linux-mips@linux-mips.org>; Thu, 23 Feb 2017 01:59:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=QUnAuXxngTdmOElBbZkGU9HZBXH4Q7RWftvWWNiNYBY=;
-        b=KQfxytJQhHcz46XHUhD81UQ+9kgGmyRrF7UVlU1S8LEOFjp1byifWThDEnddzydaM+
-         37EmQPpeATQXK3FEakIu/BMLpQdgoMKfdbpX9BoUNZLx8BRYiv11UFiVVA18Eu/Z3oo0
-         C/to20Bff8zqtNQAxuvHBPSSHJ+xHBFHsEhqM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=QUnAuXxngTdmOElBbZkGU9HZBXH4Q7RWftvWWNiNYBY=;
-        b=e9u9BInC6RG3eNlx4qi+uZsNxt2Pc2MWTtl+ptQaT46dMoeGOAn35xiHlIc49t6sWp
-         /0rDUZ0pZ/ZaYUnpUyheyFt6iyLhScJFPs8IUSCGF30FODeLNrBxHyBC2BAn9q3LRCFv
-         UQLZz7UhfIEkbnKLzADdhAdgw3jGOFueVIvuntQFk9rJMFqPt9wGgi4i/lmmNXZoajWV
-         Uc5uqyoZGP/RkNaTFFN0owr8Ehz3EPOeDT++Kv0r6CBSaw0Mv2c97oPuFSR7dNllzjZP
-         DCX6P/Oddc/y61G/+HnPHtHta2X+4vupjhR6GP/12VcqioiW2fybReAJt5PraWUhmC1C
-         jeug==
-X-Gm-Message-State: AMke39mptj9rXoTdVlRbsXawwAGjAJjXVdFHKkkpKT8Hvm9URGazO1AtsJptzEDJSSaHy7/Dxu/U0LSqFau9U5EY
-X-Received: by 10.36.33.135 with SMTP id e129mr1878914ita.9.1487843955399;
- Thu, 23 Feb 2017 01:59:15 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2017 13:52:51 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29207 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990519AbdBWMwn65IaY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Feb 2017 13:52:43 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id CA9AB41F8E7D;
+        Thu, 23 Feb 2017 13:56:58 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 23 Feb 2017 13:56:58 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 23 Feb 2017 13:56:58 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 108C47DEC82DF;
+        Thu, 23 Feb 2017 12:52:34 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 23 Feb
+ 2017 12:52:36 +0000
+Date:   Thu, 23 Feb 2017 12:52:36 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Paul Burton <paul.burton@imgtec.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Force o32 fp64 support on 32bit MIPS64r6 kernels
+Message-ID: <20170223125236.GC996@jhogan-linux.le.imgtec.org>
+References: <01a9d2344224e76ea17ff62ffa7b75717f6f1100.1487248664.git-series.james.hogan@imgtec.com>
+ <1648905.7UokBy1sI6@np-p-burton>
 MIME-Version: 1.0
-Received: by 10.79.169.75 with HTTP; Thu, 23 Feb 2017 01:59:14 -0800 (PST)
-In-Reply-To: <f19fea79c2616455f5f08070923428cc@crapouillou.net>
-References: <27071da2f01d48141e8ac3dfaa13255d@mail.crapouillou.net>
- <20170125185207.23902-1-paul@crapouillou.net> <20170125185207.23902-2-paul@crapouillou.net>
- <20170130203617.hpljtcmzava3rq2n@rob-hp-laptop> <12dc62a7255bd453ff4e5e89f93ebc58@mail.crapouillou.net>
- <CACRpkdbAgy4sh6NT5DdQD6EQtOZEwevohEA6OGRcVz98yqS52Q@mail.gmail.com>
- <fd3c507484a9ee34a08c9f92e60624db@mail.crapouillou.net> <CACRpkdbAA33FFrMgx-eZPmpBBfQ_hF+=dSu0hANVthdbadicDg@mail.gmail.com>
- <f19fea79c2616455f5f08070923428cc@crapouillou.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 23 Feb 2017 10:59:14 +0100
-Message-ID: <CACRpkdYiA157afJW2hnJzRgWOT02pCuU5rPCdHC-G5qb-FrxQA@mail.gmail.com>
-Subject: Re: [PATCH v3 01/14] Documentation: dt/bindings: Document pinctrl-ingenic
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Rob Herring <robh@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="qlTNgmc+xy1dBmNv"
+Content-Disposition: inline
+In-Reply-To: <1648905.7UokBy1sI6@np-p-burton>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56886
+X-archive-position: 56887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -83,74 +55,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Feb 21, 2017 at 12:20 PM, Paul Cercueil <paul@crapouillou.net> wrote:
-> Le 2017-02-20 14:56, Linus Walleij a écrit :
->>
->> On Thu, Feb 9, 2017 at 6:28 PM, Paul Cercueil <paul@crapouillou.net>
->> wrote:
->>
->>> I was thinking that instead of having one pinctrl-ingenic instance
->>> covering
->>> 0x600 of register space, and 6 instances of gpio-ingenic having 0x100
->>> each,
->>> I could just have 6 instances of pinctrl-ingenic, each one with an
->>> instance
->>> of gpio-ingenic declared as a sub-node, each handling just 0x100 of
->>> memory
->>> space.
->>
->>
->> My head is spinning,  but I think I get it. What is wrong with the
->> solution
->> I proposed with one pin control instance covering the whole 0x600 and with
->> 6
->> subnodes of GPIO?
->>
->> The GPIO nodes do not even have to have an address range associated with
->> them you know, that can be distributed out with regmap code accessing
->> the parent regmap.
->
->
-> OK, but then each GPIO chip 'X' still need to know its offset in the
-> register
-> area, which is (pinctrl_base + X * 0x100).
-> What's the best way to pass that info to the driver? (I assume it's not with
-> a custom DT binding...).
+--qlTNgmc+xy1dBmNv
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I do not really understand what driver you are referring to.
+Hi Paul,
 
-If the pin controller node is overarching and spawning children for
-the gpiochips, you use the design pattern from MFD to pass data
-from parents to children, e.g.:
+On Fri, Feb 17, 2017 at 10:29:11AM -0800, Paul Burton wrote:
+> > This results in userland FP breakage as CP0_Status.FR is read-only 1
+> > since r6 (when an FPU is present) but CP0_Config5.FRE won't be set to
+> > emulate FR=3D0.
+>=20
+> Perhaps it would be worth clarifying that what it breaks is FPU emulation=
+ or=20
+> pre-r6 FP code running atop MIPS32r6 kernels. Since FR=3D1 context switch=
+ing=20
+> should work fine for r6 user code, and it would only be impacted if it=20
+> requires emulation for some reason (which is probably why we haven't hit =
+this=20
+> earlier in our CI testing).
 
-#include <linux/regmap.h>
+Thanks Paul, it does indeed invoke the FPU emulator as it fails to set
+FR=3D0. I'll update that paragraph to say this:
+> This results in userland FP breakage as CP0_Status.FR is read-only 1
+> since r6 (when an FPU is present) so __enable_fpu() will fail to clear
+> FR. This causes the FPU emulator to get used which will incorrectly
+> emulate 32-bit FPU registers.
 
-pinctrl driver:
-     struct regmap_config mapconf = {
-                .reg_bits = 32,
-                .val_bits = 32,
-                .reg_stride = 4,
-     };
-    struct regmap *map;
 
-    map = regmap_init_mmio(dev, base, &mapconf);
-    if (IS_ERR(map))
-          ....
-    dev_set_drvdata(dev, map);
-    of_populate_children(dev,)..
-    (can also use platform_device_add_data() or "simple-bus" etc)
+> Besides possibly clarifying the commit message above this looks good to m=
+e so:
+>=20
+>     Reviewed-by: Paul Burton <paul.burton@imgtec.com>
 
-gpio subdrivers:
-     struct regmap *map;
+Thanks
+James
 
-     map = dev_get_drvdata(dev->parent);
+--qlTNgmc+xy1dBmNv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-There are examples of drivers passing more complex things to
-their children than a regmap, just put some struct in a <linux/*/*.h>
-file and pass it with drvdata as per above.
+-----BEGIN PGP SIGNATURE-----
 
-PS i2c_set_drvdata(), platform_set_drvdata() are just aliases
-for dev_set_drvdata().
+iQIcBAEBCAAGBQJYrtsUAAoJEGwLaZPeOHZ6tucQAKc8XZK4UEKztvOsnGcWUq4Q
+yQAFNviHOf3y4Iz+5IVl/qHBXd96btaaRGmg/k7iPyk2ATzZJc/+nVV5aS7A/GNM
+mFnyfeuT+1KLJMQ59VY+qzxzhknVmOTcrp9cS+vH72ri6GN/aeNR/WKgxuVRRccI
+ag7kK7XnYdjNBuHnM00XajL3ympdyKp+qhmymbTw9tMcJV53XclLOt3bH6DDTsLv
+TEcLXrOgENq1Kjgrqawl8/xJXhClxZTW5QzAmkubs9GA4BZ2BZrfHsxSNcxDQSWr
+jb0sK/C02Axt/hEUlqy5wU4Euqs9NlY6M+LRFp0Lyp+U9J3K+tki2nCnoQQAnJ01
+jV+G73dibBbSsI2C+z6gQ3y2FGkCdBTyM2vdHfghPRB80bXsu5qJTlWh+oPspeQy
+JbJD1TfqeruVo+YUqiidq/TM8HgvggVs+bY9xX0nL4nAJCJjBLp6AwMaUST+q8od
+wKJ6KSlnWNHc2aHgS9NFHdxGSG6ppOS2jWc8WeIfJnYnbkwSMsLvdnZYZEHQAXPO
+hScP8XQgXoB0GvGLBP2we8AylVdJLsjVaNzkSbG4uDiN8wUX0wZ0inN7na4kvYhc
+f2H7LHACQchXX2PsLi1YWk96T1yHUGW/4o82K4OqtEtUKY94aZ388FwAzZOIC0JP
+fZJLxEU9hzgNtle5yi6A
+=LNac
+-----END PGP SIGNATURE-----
 
-Yours,
-Linus Walleij
+--qlTNgmc+xy1dBmNv--

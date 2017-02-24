@@ -1,81 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2017 22:50:19 +0100 (CET)
-Received: from mail-bn3nam01on0052.outbound.protection.outlook.com ([104.47.33.52]:37996
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992111AbdBWVuKGhQtH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Feb 2017 22:50:10 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=ij9sFvGb0nla9Ne86RYIUxbi0yWSyxQZNmWOWtNrFqs=;
- b=XTrL01Rh5H5JktI0qo8OppD2K4Hdw145H45fH72Y8Ax7N0HPjhlaw0jk0Np/HHwFiAUXkfK6hJuV7qhTev+bGzPfL0JfatKw5bglqkUHBMrtTV7UCNjCJUA55Z6brZAhyZHvOpSa8lW8R0XPWENx4/PqwUz0KHOQI4SGOQkAVAg=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Steven.Hill@cavium.com; 
-Received: from white.inter.net (173.22.239.243) by
- CY4PR07MB3206.namprd07.prod.outlook.com (10.172.115.148) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.919.13; Thu, 23 Feb 2017 21:50:02 +0000
-From:   "Steven J. Hill" <steven.hill@cavium.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: [PATCH] MIPS: Octeon: Cleanup of core PCIe file.
-Date:   Thu, 23 Feb 2017 15:49:54 -0600
-Message-Id: <1487886594-2161-1-git-send-email-steven.hill@cavium.com>
-X-Mailer: git-send-email 1.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2017 09:50:59 +0100 (CET)
+Received: from resqmta-po-01v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:160]:45698
+        "EHLO resqmta-po-01v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991061AbdBXIuwf5OuM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Feb 2017 09:50:52 +0100
+Received: from resomta-po-02v.sys.comcast.net ([96.114.154.226])
+        by resqmta-po-01v.sys.comcast.net with SMTP
+        id hBaOcv1lBEkHphBaTcA1sb; Fri, 24 Feb 2017 08:50:49 +0000
+Received: from [192.168.1.13] ([73.201.78.97])
+        by resomta-po-02v.sys.comcast.net with SMTP
+        id hBaPcBrp4k3bxhBaQcDLqv; Fri, 24 Feb 2017 08:50:49 +0000
+Subject: Re: [PATCH 12/12] MIPS: PCI: Fix IP27 for the PCI_PROBE_ONLY case
+To:     Bjorn Helgaas <helgaas@kernel.org>
+References: <20170207061356.8270-1-kumba@gentoo.org>
+ <20170207061356.8270-13-kumba@gentoo.org>
+ <CAErSpo6yKAE1_c1eZJapnjD1g0pocyOxed3_Eumdp_026uhDuA@mail.gmail.com>
+ <eafc94c6-1931-e2ce-7e03-d84d8e181e81@gentoo.org>
+ <CAErSpo4LsrPCtdZwp6CyT0jKhXLt3j=fGSiFjpRRTPUjFoKHtQ@mail.gmail.com>
+ <c7ed6a1d-f625-d294-8910-dd2d93d34292@gentoo.org>
+ <20170213224512.GA8080@bhelgaas-glaptop.roam.corp.google.com>
+ <8ec2a0bf-6bd7-1366-38bc-7f7ba9a29971@gentoo.org>
+ <20170214145628.GA10418@bhelgaas-glaptop.roam.corp.google.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Linux/MIPS <linux-mips@linux-mips.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <926cfb3a-085f-164b-4ec3-76dc9db3298b@gentoo.org>
+Date:   Fri, 24 Feb 2017 03:50:26 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [173.22.239.243]
-X-ClientProxiedBy: BN1PR07CA0047.namprd07.prod.outlook.com (10.255.193.22) To
- CY4PR07MB3206.namprd07.prod.outlook.com (10.172.115.148)
-X-MS-Office365-Filtering-Correlation-Id: b1ccebc5-de8d-4665-fc1d-08d45c35ec38
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:CY4PR07MB3206;
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;3:+N0ryF6mKg4oEl/n8+qrZAtSBRG57GfXtlR7r0ihUsarotCPpU09eFpo0GSIepOa+NDKEWb9G5Sb0psDb2q0UE+iVr0wIKu8+cpREYQDjQRciVIm+iFHqWENQHVomV2xbvw1/SAJNHqVdqjSN67W/KKWMM9VaMfW4Ew30aL3CT8wowcwI7b7BaKpuCpNKSg0Wnh9vHrMmL2ePCrkpoXSgzD7JDwBDPLJLp0m/yVZEXzdp2G4nJYhrgI8xofAKnLlSdvAws0aXOWIiLk/DSQX3A==;25:yVskzKAMQVGEZOzAQ4KVKC4KkCz4uS3NjrahMPEcbuVkrLMtH6KQlyHvchlxeHJe/aJW87aY1nu5YRNQ0KIF2IxLNSb4VJWt93TIDaq7bYJtAeJnyXv3nAUyLbEyflOmvl/crDOJxOJOJgHXj79aPuWJEqHu3pVh2AB6c6Kj8e42Z7JR26EhjnBHA12hCOePOLZi4GTq1X02W7ARAZNvZrPiNg/u4X4R0gtUtrTXl6LSTDCEd/DzMxEtOQk0rJi72iB2VQlGf2/TW/UYztMSkd1fXLALBQ+cdrr64fROCsKyKm3v/UC2YSKwJpkRJ/shnoSVqRWU2O1dAo1O6iscOGDyW+StrWe7VAt8yTUQLwnuac80dtjPJPcwLDffrgLt8zk8T9B/rWxJLC2cJo0n3ighWr5qCrM67utAZQYj0BUvOuO5szME8ih5DTUQR1EaVHPXGTdg/MlmBvkgd8zoJQ==
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;31:6VK3GvwyKy1UL84d09l+5esWazqE2jY4w8NUgIARcToP6cl2GXO/jMaTyytS2I3FBF/cCsm38w96wACdGyhlS8hoLpz+cjuNqeVtN9/wz9Ly+7cz8VhkkmPwJewjnvSZSKvYDoKguY6svFddH6JOBLc0csdH4PZZuSnu6E0aQNI2RzlE9xDb8bsF4MGDWeWZIzFigS473aYVDpgtb3goRZAsv+DgfXNkaJCjr6c8pdFpcNfbEJJQdAQWS+bZB/aoOlHTrZxUtmoip8J5daVrOQ==;20:b4Xgzxu1GQzN8k+7HzU4JAAWlmQd7l77rZo6rT2kCGOj1ikv6N8wCkWiCJFK7LxlanR+9IBlK4LqBxJN6c8VLgGHf6WZQLPIDjVU348/FlXjfvUrXEPMSm5UFFvVV1dNTsL3Ts7xP/FzSxofF6uRLxmh/c68D/bRXQbHgCCdZp+s3sl6ZHDXI7ikSiJoWqS7PDSMJmzQplBLAiCMNI73lCET+OC2cA9gZTvDkK8aNG/XQQBl7aYcxg757BEmEEpMneWEKmLoMVspd++AC7+/INevdFA7uwcFoZBghhGSZVBzw1DehnxSoOu1N5TjWZV4zne2DpTEOTzepxGA09BI/MjdSOsI5nXjvvetagFOtjH33PxxmTExIRd8Bz0l1y+E22G5E/F+xqMRguGgl7YP7l4zU7u5SNfdhkN+TdiVfahqlmmoiV7GuoDigGlyhj2WA6MfYPbnpJjtjFg2lIc6KfEX1vagZVXQhSy/I3WS0vH62M4McmtayOKwQdi5g2Bg
-X-Microsoft-Antispam-PRVS: <CY4PR07MB3206B7C434631A68D9566C7780530@CY4PR07MB3206.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:;
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(8121501046)(5005006)(10201501046)(3002001)(6041248)(20161123558025)(20161123564025)(20161123562025)(20161123555025)(20161123560025)(6072148);SRVR:CY4PR07MB3206;BCL:0;PCL:0;RULEID:;SRVR:CY4PR07MB3206;
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;4:4CcLCKRfRL6AZxMeL0fz03I6jIaJejUGfZ+MhwUnfJQFOSJwDHepWNw28aEcBLMNvVabDOwiREB1yRkL7KNjIN6SV5cLxCcKkPJYKp44QG9rv7sJenHUe7Xjh7MRmCiwl36s/ri+CMGZidGV2r0BoMyfwnD11hZrvIiO6ktJDQ/Pai8xXJRID1531iU4e/LjOj7JTHx3SYr+A/xOHMu0w0JuoQP6x/H8qPZywBTaz0lImTVsV5ZaeGQK5ZMU8HMxsfi2M5Tw718sNuJO5lTBNC68eOCAocsuw1INL2koPVY1TQ/wU+rwXo8SQiiL/Thrq/REq6c5x+zENdQZh7FovAOdhqqrawMiMNn3cw7pPGhw1zFsh3nu0hPSknkhgRIysaPi6DcgJjNbIbaMWmmUYSvWzzDDlUlE6z0PWICmssnu8N22jjGqD+56W8t+4hGlqoXVAkTjdhBPTYYQf5LYZ5ABuuOoVX2KOgSYl2gDKK9AMjRdPzBsEe7LVx5pbh2CFrvsC3/5pDFBXs3lAuR/zmRkHuDCMm3SQn2GFXFmc40XvSj+lGaUfuXefMJxiE1WBff6iXnr/r/zm4eGJOHgSU71t8IulnOSRVwNOg7zgY8=
-X-Forefront-PRVS: 02272225C5
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(7916002)(39450400003)(199003)(189002)(6116002)(66066001)(33646002)(7736002)(53416004)(105586002)(3846002)(50986999)(6506006)(2361001)(6512007)(450100001)(47776003)(6486002)(106356001)(86362001)(92566002)(2906002)(25786008)(2351001)(101416001)(189998001)(42186005)(68736007)(48376002)(97736004)(305945005)(36756003)(50466002)(38730400002)(5003940100001)(6666003)(6916009)(8676002)(110136004)(81156014)(50226002)(5660300001)(53936002)(69596002)(81166006);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3206;H:white.inter.net;FPR:;SPF:None;PTR:InfoNoRecords;A:1;MX:1;LANG:en;
-Received-SPF: None (protection.outlook.com: cavium.com does not designate
- permitted sender hosts)
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY4PR07MB3206;23:458UWAr1kbXYRta+6+L9WclExdhVbOwPJar00kP1p?=
- =?us-ascii?Q?S/H0GCWkG4MqtpdREO/2hcYU+j3ZboSwWsELVBvz0/CT6A8gz1ySbcn810Y7?=
- =?us-ascii?Q?IGtcJRezb0KesHAAO9aAbR7Q4k+vT1Ehyg4xKFbahs0CulMn89YNqY+RZSsC?=
- =?us-ascii?Q?0HgLH87nWHvrFTmqyrX4W3cXLmSeJX2AV2NxH+z8vEU5zJeKtf5ndgtfWOvW?=
- =?us-ascii?Q?aInIsbHfHJEjFBJpc2iKh3thxIn3z7oIOzcKxqMvUakroMJL+ko78z4jmp2M?=
- =?us-ascii?Q?lhaTClTq6ob/SkzChPFz+CqkpYRCtUckXN0u0oVpOzzVS0NGBfTvkrBObmCj?=
- =?us-ascii?Q?iSCb+8HuNWsTn4DcgWTR9PiuQKzdvwGM7yCcv7GJ7KbV3qYLYj7Xeqe+25ra?=
- =?us-ascii?Q?wUEqIJUubWb3Dkxc0kwwnCOiopQtXR69A7PUuYFHxcu2CFFzi5l8F8jqscCY?=
- =?us-ascii?Q?N9P3NeXRuhuB7C9NL6FSk41T5UDwBC8xEKb4+tz8kDVCzKvJ/68P+8z+/++H?=
- =?us-ascii?Q?ywENBBdVRxd+MrLoepkVoMRSI2vq3gh1yA+PRdnIm9uxUXLOzANaBYi6URdn?=
- =?us-ascii?Q?ZN/xGw4125y7ePEPmdsn3X1bMUEnltbZIS4dJc9NsP8lZdTVjdsVHfyxgFIL?=
- =?us-ascii?Q?wxU304lTQrSsUNBMzaWP9vmJBchnrXPJG0lIhdDLj3lwUH/Mx3HYx9sbH9Tp?=
- =?us-ascii?Q?dKE3/giAHkWJZrjoIi7f1jYUxdnPm7GyBYfMKXa5pmfIfOp0pJq5wuO/uXAk?=
- =?us-ascii?Q?vQb8L3ER1j7KVLTHSiH8fKInHlH5KCk5sT9FB9aWIiAC2Lnh8YOHLwQvhALx?=
- =?us-ascii?Q?BNAoIQpJOqLtPZYx4PI9kRGguhq0Qib7orEH3RjAd9kFAvZ09qf2D+JWfu6u?=
- =?us-ascii?Q?Vr+CPg7o0qca8sb7N2zv5iwNagsONDsEvKDgmpf1dT++Lyy8FC2jebo/3b7A?=
- =?us-ascii?Q?g/66a09JNdEtZ+q7701F8NJjONqDoDXO8a8m0DTPoJhzxGOB4w9MEPqmOut1?=
- =?us-ascii?Q?YUVuMPQI3sPvtso1A/SFzyu0rMLBnxb3Jk5wnt2GJImu2J5c/WcyCFyhdHN/?=
- =?us-ascii?Q?LaA7yhqPDJAavbam/Dk+0FTv9sISGUj59g8iZQ/Y2drM0Hxgzz1RaiiJUqXZ?=
- =?us-ascii?Q?28IArRMxAWbNQ8/Cz8DrAZTBapZ1G/6?=
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;6:FBudjzXrCg7Tt0kXz45qbutnIyBkYCh9buRW30S4PeXE5uqh7x20krFPYzhUS5AgqmLGBG6VpbzR0Fk9qA5AcWIe4c+OgbR/ClelcPGlRU6uVmG2NdVtl0WldnHeJlq+CPxVVWVMLxuQwMtfg9860+aQxonYm4Q+eaaK6bXrnAtDJFuERQKpz0GxO1ldcj0IFAD2WLQnTNRF9UUbgC/8vYteC5hrVHNVV+LVMNYasqvfyEACgma7IKjkhYnGK6vz9G+4GjfAGlE/k5b2ES3cdFE/HyqH3h6EO7vE8areCB5wMiueI7PT6i5Rw7oJdfIJ0HG4DDCsEiktMN/4z16S5v8RVfDb079yZ+MiEuAW+m/BVUE8Ob7stVhg6RGCBwj/ynbJNiHffBS2NI+rsEbvAg==;5:Q+OTTiQ140TGl8LpxZNiiKP9vTSVRepj7vZoorCEj4CksiOiitFcW/wtbDrTfgeevL7NmvcM7wOy8CkcsZgfF19reLBj4dQJCkfEKl94wMLoQkMemhogtSSyUJfidEMEPuQ0qfevuCqbrTMrt9LKAw==;24:NVLWg/66QqX1w5E2XJTtUjH8dZmNiQrSgR9RUsuglADsDGD3MP2WX9zH0V5MYflbejMM40HRSecW/+kqQR8B4eHyLL0rnOIVxdlr+JgRSHc=
-SpamDiagnosticOutput: 1:99
-SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;7:mZ1H4ciddD++9cZhdQzuoor/cj75i51I3TzAn6cIllXCI4IpqvqtGs0dOB9UhM/nNBG/vy5z+OwcXyCtSnP/QxywRLZ/G+8EM6hcLKgNuIh2I/twuJk0bHA2Pzth3rt4YorsEwXkSKqh2FLeQxQEL0SaolEpcRZaXOUoM6i5uA2EQktmuSwem/eDtsjUTl7xuKcMbNeV0HiD/B1wxPNpYU7Dmg+oVmdDcvXa/nR2oPeu84NPdZxP5XXx51fGzLBeg6NGufi7JYcFsxJO9ggHvwmJrnzlgfIsp1uyEGB4nkupof6/s4c6Aq62fMn6ez1rajTqcFQN+YkBczhXfaJ9zQ==
-X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2017 21:50:02.7878 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3206
-Return-Path: <Steven.Hill@cavium.com>
+In-Reply-To: <20170214145628.GA10418@bhelgaas-glaptop.roam.corp.google.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfNTd+6B7V9HHFpaMwwMnz6+70KBBEndnRxXJaYlmfnd/28YUa8n8+LjE1nPleu8i+JN7zIsU7GKEoFEdFCcOV2XA806oCjOLAkBEw1xEW1Dxy+uVYOHS
+ gHQ1nHrNkalRhdb+O0OKf6wGrvGbOgBQaQT3KGMDWeTsn+nHMT96OkcnRuxHpMNXmUdHLMQWDix/n83iL8wQyvd0Uml1Jo85Bswb7ih6cikRY+mdZ6PIRViV
+ qlFy5ysVKT2ZRYU5lb0PX6bobzIzMSVe0BmWOgSPBtIfV/SM863qPjwtsOBEzEwIx2L3djI01BZcl91BrAMWEDTb6Bf68wE84rjXH7CtOHs7vySy8IjJfmf7
+ 9/OuAs686jv9Zygjtiy3ZTiXBE12ii8w5lJ6ozjNYuPJz8XBamAlLmU+9G3l82HlgOPz2JAS
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56893
+X-archive-position: 56894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: steven.hill@cavium.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -88,149 +61,322 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Steven J. Hill" <Steven.Hill@cavium.com>
+On 02/14/2017 09:56, Bjorn Helgaas wrote:
+> On Tue, Feb 14, 2017 at 02:39:45AM -0500, Joshua Kinard wrote:
+>> On 02/13/2017 17:45, Bjorn Helgaas wrote:
+>>> It looks like IP30 is using some code that's not upstream yet, so I'll
+>>> just point out some things that don't look right.  I'm ignoring the
+>>> IP27 stuff here in case that has different issues.
+>>
+>> Sorry about that.  It's an external set of patches I've been maintaining for
+>> the last decade (I'm not the original author).  Being that I do this for a
+>> hobby, sometimes I get waylaid by other priorities.  I've spent some time
+>> re-organizing my patch collection lately so that I can start sending these
+>> things in.  This series and an earlier one to the Linux/MIPS list are the
+>> beginnings of that, as time permits.  However, I've got a ways to go before
+>> getting to the IP30 patches.  E.g., IP27 comes before IP30, so that's where my
+>> focus has been lately.
+>>
+>> I've put an 4.10-rc7 tree with all patches applied here (including the IOC3,
+>> IP27, and IP30 patches):
+>> http://dev.gentoo.org/~kumba/mips/ip30/linux-4.10_rc7-20170208.ip30/
+>>
+>> The patchset itself, if interested:
+>> http://dev.gentoo.org/~kumba/mips/ip30/mips-patches-4.10.0/
+> 
+> Thanks for the pointers.
+> 
+>>> All the resources under the bridge to 0000:00 are wrong, too:
+>>>
+>>>   1f200000-1f9fffff : Bridge MEM
+>>>     f080100000-f0801fffff : 0000:00:02.0
+>>>     f080010000-f08001ffff : 0000:00:00.0
+>>>     f080030000-f08003ffff : 0000:00:01.0
+>>>     f080000000-f080000fff : 0000:00:00.0
+>>>     f080020000-f080020fff : 0000:00:01.0
+>>
+>> Actually, that's not wrong.  It took me a long time to figure this out, too,
+>> but once I stumbled upon the BRIDGE ASIC specification on an anonymous FTP
+>> site, via Google, by complete accident (hint), it finally made sense.
+>>
+>> BRIDGE is what SGI calls the chip that interfaces the Crosstalk (Xtalk) bus to
+>> a PCI bus.  Most known "XIO" (Xtalk I/O) boards contain a BRIDGE chip under a
+>> heatsink at the edge of the board, next to a "compression connector".  Octane
+>> can hold up to four XIO boards, with a fifth slot dedicated to an optional "PCI
+>> Shoebox" (literally a metal box that can hold up to three PCI or PCI-X cards).
+>> One exception to this are the two graphics boards, Impact/MGRAS and
+>> Odyssey/VPro, which are "pure" XIO devices, as far as anyone's figured out.
+>>
+>> Each BRIDGE chip can address up to eight different PCI devices.
+>>
+>> Crosstalk on IP30 is managed by the Crossbow (XBOW) ASIC.  It implements a
+>> crossbar switch that's not totally unlike a networking switch.  A single XBOW
+>> supports up to 16 XIO widgets, numbered 0x0 to 0xf.  Widgets 0x1 to 0x7 are for
+>> internal use or unused.  XBOW itself is widget 0x0.  HEART, Octane's system
+>> controller, is widget 0x8.  The four standard XIO slots are numbered (I think)
+>> as 0x9 to 0xc.  I think widget 0xe is unused.
+>>
+>> The system board has a BRIDGE chip on it to provide the "BaseIO" devices, such
+>> as two SCSI (QL1040B), IOC3 Ethernet, KB/Mouse, Serial/Parallel, Audio, and an
+>> RTC.  This BaseIO BRIDGE is widget 0xf, which is what you're seeing with the
+>> first set of addresses starting with 0x1fxxx.  The second BRIDGE that you're
+>> seeing is the PCI Shoebox I have installed.  It's widget 0xd, and has addresses
+>> starting with 0x1dxxx (second nibble from left is the widget), with three
+>> random PCI cards I found in a storage bin plugged into it.  The Xtalk scan
+>> happens in reverse order, starting at widget 0xf down to 0x0.
+>>
+>> Both 0x1fxxx and 0x1dxxx addresses are "small window" addresses.  The HEART
+>> system controller gives you three "windows" into Xtalk space, which uses 48-bit
+>> addressing:
+>>
+>> 0x0000_1000_0000 - 0x0000_1fff_ffff - Small windows, x16 @ 16MB each
+>> 0x0008_0000_0000 - 0x000f_ffff_ffff - Medium windows, x16 @ 2GB each
+>> 0x0010_0000_0000 - 0x00ff_ffff_ffff - Big windows, x15 @ 64GB each
+>>
+>> So a device on widget 0xf mapped into a small window at 0x0000_1fxx_xxxx could
+>> also be referred to by a big window at address 0x00f0_8xxx_xxxx.  The only
+>> difference is the big window gives you a larger address space to play around
+>> with.  Medium windows are not currently used on the IP30 platform in Linux.
+>> Widget 0x0 (XBOW) is only accessible via small or medium windows.
+>>
+>> As such, this layout in /proc/iomem is oddly correct:
+>>
+>>>   1f200000-1f9fffff : Bridge MEM
+>>>     f080100000-f0801fffff : 0000:00:02.0
+>>>     f080010000-f08001ffff : 0000:00:00.0
+>>>     f080030000-f08003ffff : 0000:00:01.0
+>>>     f080000000-f080000fff : 0000:00:00.0
+>>>     f080020000-f080020fff : 0000:00:01.0
+>>
+>> My bug is probably that I do the initial BRIDGE scan with small windows in the
+>> main BRIDGE driver (arch/mips/pci/pci-bridge.c), and then IP30's BRIDGE glue
+>> driver (arch/mips/sgi-ip30/ip30-bridge.c) is switching to big windows to probe
+>> each device.  So, yes, different address ranges, but still looking at the same
+>> device.  I'll look into fixing that.  It's partially tied to how I was kludging
+>> the IP27 to also start doing PCI correctly within its own BRIDGE glue driver
+>> (ip27-bridge.c), but I just learned over the weekend that there's missing
+>> functionality I have to port over from old 2.5.x-era IA64 code.  In IP30, big
+>> windows are available by default, but on IP27, what it calls "big windows" need
+>> to go through some kind of translation table, and I'm trying to figure out how
+>> to set that up.
+> 
+> I agree, it sounds like the problem is the switch from small windows
+> to big ones.  In order for the PCI core to work correctly, the host
+> bridge window ("1f200000-1f9fffff : Bridge MEM") must enclose the BARs
+> of the devices below the bridge.
+> 
+> If you use the big windows for the device BARs, you should use big
+> windows for the host bridge windows.  I think we're talking about
+> widget 0xf here, so the 0xf big window would be 0xf0_0000_0000 -
+> 0xff_ffff_ffff.  This should all be set up *before* calling
+> pci_scan_root_bus() instead of after, as it seems to be today.
 
- * Remove unused header files and sort them by filename.
- * Convert 'union cvmx_pcie_address' to a bitfield.
- * Update copyright date.
+Okay, so after a week of downtime due to hardware failure on another machine, I
+started looking at this again, and it looks like it's more than just getting
+the windows wrong.  The existing BRIDGE code (pci-bridge.c) is limiting the PCI
+window to the first five devices on BaseIO in the small window (my fault), and
+the IP30 glue code (ip30-bridge.c) is re-writing the PCI BARs to access the
+BRIDGE PCI Memory and PCI I/O spaces via big windows, without updating the
+original mapping.  We're not teaching the Linux PCI core at all, I think, about
+how to generically access PCI Memory Space and PCI I/O Space on the BRIDGE.
+The fact this actually works appears to be pure luck.
 
-Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/pci/pcie-octeon.c | 84 ++++++++++++++++++++++++---------------------
- 1 file changed, 44 insertions(+), 40 deletions(-)
+Quoting from the BRIDGE docs somewhat, from the point of view of generic
+Crosstalk space and not specific to IP30 or IP27, there are several views into
+PCI space.  Each address is 48-bits, the size of a Crosstalk address.
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-index 9f672ce..8f267bf 100644
---- a/arch/mips/pci/pcie-octeon.c
-+++ b/arch/mips/pci/pcie-octeon.c
-@@ -3,27 +3,24 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 2007, 2008, 2009, 2010, 2011 Cavium Networks
-+ * Copyright (C) 2007, 2008, 2009, 2010, 2017 Cavium Networks
-  */
--#include <linux/kernel.h>
--#include <linux/init.h>
- #include <linux/pci.h>
- #include <linux/interrupt.h>
--#include <linux/time.h>
- #include <linux/delay.h>
- #include <linux/moduleparam.h>
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/pci-octeon.h>
-+#include <asm/octeon/cvmx-dpi-defs.h>
-+#include <asm/octeon/cvmx-helper-errata.h>
- #include <asm/octeon/cvmx-npei-defs.h>
- #include <asm/octeon/cvmx-pciercx-defs.h>
-+#include <asm/octeon/cvmx-pemx-defs.h>
- #include <asm/octeon/cvmx-pescx-defs.h>
- #include <asm/octeon/cvmx-pexp-defs.h>
--#include <asm/octeon/cvmx-pemx-defs.h>
--#include <asm/octeon/cvmx-dpi-defs.h>
- #include <asm/octeon/cvmx-sli-defs.h>
- #include <asm/octeon/cvmx-sriox-defs.h>
--#include <asm/octeon/cvmx-helper-errata.h>
--#include <asm/octeon/pci-octeon.h>
- 
- #define MRRS_CN5XXX 0 /* 128 byte Max Read Request Size */
- #define MPS_CN5XXX  0 /* 128 byte Max Packet Size (Limit of most PCs) */
-@@ -40,55 +37,62 @@
- union cvmx_pcie_address {
- 	uint64_t u64;
- 	struct {
--		uint64_t upper:2;	/* Normally 2 for XKPHYS */
--		uint64_t reserved_49_61:13;	/* Must be zero */
--		uint64_t io:1;	/* 1 for IO space access */
--		uint64_t did:5; /* PCIe DID = 3 */
--		uint64_t subdid:3;	/* PCIe SubDID = 1 */
--		uint64_t reserved_36_39:4;	/* Must be zero */
--		uint64_t es:2;	/* Endian swap = 1 */
--		uint64_t port:2;	/* PCIe port 0,1 */
--		uint64_t reserved_29_31:3;	/* Must be zero */
-+		__BITFIELD_FIELD(uint64_t upper:2,  /* Normally 2 for XKPHYS */
-+		__BITFIELD_FIELD(uint64_t reserved_49_61:13,  /* Must be zero */
-+		__BITFIELD_FIELD(uint64_t io:1, /* 1 for IO space access */
-+		__BITFIELD_FIELD(uint64_t did:5,  /* PCIe DID = 3 */
-+		__BITFIELD_FIELD(uint64_t subdid:3,  /* PCIe SubDID = 1 */
-+		__BITFIELD_FIELD(uint64_t reserved_36_39:4,  /* Must be zero */
-+		__BITFIELD_FIELD(uint64_t es:2,  /* Endian swap = 1 */
-+		__BITFIELD_FIELD(uint64_t port:2,  /* PCIe port 0,1 */
-+		__BITFIELD_FIELD(uint64_t reserved_29_31:3,  /* Must be zero */
- 		/*
- 		 * Selects the type of the configuration request (0 = type 0,
- 		 * 1 = type 1).
- 		 */
--		uint64_t ty:1;
--		/* Target bus number sent in the ID in the request. */
--		uint64_t bus:8;
-+		__BITFIELD_FIELD(uint64_t ty:1,
-+		/*
-+		 * Target bus number sent in the ID in the request.
-+		 */
-+		__BITFIELD_FIELD(uint64_t bus:8,
- 		/*
- 		 * Target device number sent in the ID in the
- 		 * request. Note that Dev must be zero for type 0
- 		 * configuration requests.
- 		 */
--		uint64_t dev:5;
--		/* Target function number sent in the ID in the request. */
--		uint64_t func:3;
-+		__BITFIELD_FIELD(uint64_t dev:5,
-+		/*
-+		 * Target function number sent in the ID in the request.
-+		 */
-+		__BITFIELD_FIELD(uint64_t func:3,
- 		/*
- 		 * Selects a register in the configuration space of
- 		 * the target.
- 		 */
--		uint64_t reg:12;
-+		__BITFIELD_FIELD(uint64_t reg:12,
-+		;))))))))))))))
- 	} config;
- 	struct {
--		uint64_t upper:2;	/* Normally 2 for XKPHYS */
--		uint64_t reserved_49_61:13;	/* Must be zero */
--		uint64_t io:1;	/* 1 for IO space access */
--		uint64_t did:5; /* PCIe DID = 3 */
--		uint64_t subdid:3;	/* PCIe SubDID = 2 */
--		uint64_t reserved_36_39:4;	/* Must be zero */
--		uint64_t es:2;	/* Endian swap = 1 */
--		uint64_t port:2;	/* PCIe port 0,1 */
--		uint64_t address:32;	/* PCIe IO address */
-+		__BITFIELD_FIELD(uint64_t upper:2,  /* Normally 2 for XKPHYS */
-+		__BITFIELD_FIELD(uint64_t reserved_49_61:13,  /* Must be zero */
-+		__BITFIELD_FIELD(uint64_t io:1,  /* 1 for IO space access */
-+		__BITFIELD_FIELD(uint64_t did:5,  /* PCIe DID = 3 */
-+		__BITFIELD_FIELD(uint64_t subdid:3,  /* PCIe SubDID = 2 */
-+		__BITFIELD_FIELD(uint64_t reserved_36_39:4,  /* Must be zero */
-+		__BITFIELD_FIELD(uint64_t es:2,  /* Endian swap = 1 */
-+		__BITFIELD_FIELD(uint64_t port:2,  /* PCIe port 0,1 */
-+		__BITFIELD_FIELD(uint64_t address:32,  /* PCIe IO address */
-+		;)))))))))
- 	} io;
- 	struct {
--		uint64_t upper:2;	/* Normally 2 for XKPHYS */
--		uint64_t reserved_49_61:13;	/* Must be zero */
--		uint64_t io:1;	/* 1 for IO space access */
--		uint64_t did:5; /* PCIe DID = 3 */
--		uint64_t subdid:3;	/* PCIe SubDID = 3-6 */
--		uint64_t reserved_36_39:4;	/* Must be zero */
--		uint64_t address:36;	/* PCIe Mem address */
-+		__BITFIELD_FIELD(uint64_t upper:2,  /* Normally 2 for XKPHYS */
-+		__BITFIELD_FIELD(uint64_t reserved_49_61:13,  /* Must be zero */
-+		__BITFIELD_FIELD(uint64_t io:1,  /* 1 for IO space access */
-+		__BITFIELD_FIELD(uint64_t did:5,  /* PCIe DID = 3 */
-+		__BITFIELD_FIELD(uint64_t subdid:3,  /* PCIe SubDID = 3-6 */
-+		__BITFIELD_FIELD(uint64_t reserved_36_39:4,  /* Must be zero */
-+		__BITFIELD_FIELD(uint64_t address:36,  /* PCIe Mem address */
-+		;)))))))
- 	} mem;
- };
- 
--- 
-1.9.1
+    0000_0000_0000 to 0000_00ff_ffff is "Widget space".  It seems the BRIDGE
+    docs use the term "widget" here to refer to the eight possible PCI devices
+    addressable by a single BRIDGE ASIC.  This plus the small windows is how
+    the code is currently getting things to work.  I think.
+
+    0000_4000_0000 to 0000_7fff_ffff is BRIDGE's view into PCI Memory Space
+    for direct-mapped 32-bit devices.  It is 1GB in size.  My take is this is
+    normally a 4GB space?  Can the Linux PCI core be taught that only 1GB
+    is usable?
+
+    0000_8000_0000 to 0000_bfff_ffff is an alias view by BRIDGE into PCI
+    Memory space for 64-bit PCI devices, immediately after the 32-bit space.
+    It is also 1GB in size.
+
+    0000_c000_0000 to 0000_ffff_ffff is 2GB adjacent to PCI Memory space, but
+    is either unused or used for Crosstalk/BRIDGE DMA operations
+    (the docs aren't very clear on this point or I am simply not
+    understanding).
+
+    0001_0000_0000 to 0001_ffff_ffff is BRIDGE's view into PCI I/O Space.
+    It has the entire 4GB range available to use.
+
+
+I suspect the existing BRIDGE driver is mapping through "widget space" first to
+probe the PCI device slots, then the ip30-bridge.c code is re-writing the PCI
+BARs to go through the big window on IP30, but it never updates the original
+BRIDGE setup (if that's even possible).  As such, as you pointed out, there's
+some kind of logic in the generic PCI core that's re-assigning space from the
+window and we're just getting lucky and everything still works.
+
+I dug up some old debugging code given to me by the original author of the IP30
+port and built up a set of macros that get me to the PCI Configuration Space on
+Widget 0xf (BaseIO Bridge), Device #0 (the first QLA1040B SCSI controller).
+All three addresses access the same PCI device and return the same config space
+info.
+
+    Small window:  0x900000001f02xxxx
+    Medium window: 0x9000000f8002xxxx
+    Big window:    0x900000f00002xxxx
+
+
+Each additional device's configuration space is offset 0x1000, which gives me
+the following addresses (dev's 4 to 7 are special-cased for IRQ trickery, so
+can't probe them):
+
+    - Dev #0: scsi0/qla1040b: 0x90xxxxxxxxx20000
+    - Dev #1: scsi1/qla1040b: 0x90xxxxxxxxx21000
+    - Dev #2: io/ioc3       : 0x90xxxxxxxxx22000
+    - Dev #3: audio/rad1    : 0x90xxxxxxxxx23000
+
+
+If I probe and dump the config space data for each, I get the following:
+
+    PCI slot 0 information:
+        vendor ID :              0x1077
+        device ID :              0x1020
+        command :                0x0006
+        status :                 0x0200
+        revision :               0x05
+        prog if :                0x00
+        class :                  0x0100
+        cache line :             0x40
+        latency :                0x40
+        hdr type :               0x00
+        BIST :                   0x00
+        region 0 :               0x00200001
+        region 1 :               0x00200000
+        region 2 :               0x00000000
+        region 3 :               0x00000000
+        region 4 :               0x00000000
+        region 5 :               0x00000000
+        IRQ line :               0x00
+        IRQ pin :                0x01
+
+    PCI slot 1 information:
+        vendor ID :              0x1077
+        device ID :              0x1020
+        command :                0x0006
+        status :                 0x0200
+        revision :               0x05
+        prog if :                0x00
+        class :                  0x0100
+        cache line :             0x40
+        latency :                0x40
+        hdr type :               0x00
+        BIST :                   0x00
+        region 0 :               0x00400001
+        region 1 :               0x00400000
+        region 2 :               0x00000000
+        region 3 :               0x00000000
+        region 4 :               0x00000000
+        region 5 :               0x00000000
+        IRQ line :               0x00
+        IRQ pin :                0x01
+
+    PCI slot 2 information:
+        vendor ID :              0x10a9
+        device ID :              0x0003
+        command :                0x0146
+        status :                 0x0280
+        revision :               0x01
+        prog if :                0x00
+        class :                  0xff00
+        cache line :             0x00
+        latency :                0x28
+        hdr type :               0x00
+        BIST :                   0x00
+        region 0 :               0x00500000
+        region 1 :               0x00000000
+        region 2 :               0x00000000
+        region 3 :               0x00500000
+        region 4 :               0x000310a9
+        region 5 :               0x02800146
+        IRQ line :               0x00
+        IRQ pin :                0x00
+
+    PCI slot 3 information:
+        vendor ID :              0x10a9
+        device ID :              0x0005
+        command :                0x0006
+        status :                 0x0480
+        revision :               0xc0
+        prog if :                0x00
+        class :                  0x0000
+        cache line :             0x00
+        latency :                0xff
+        hdr type :               0x00
+        BIST :                   0x00
+        region 0 :               0x00600000
+        region 1 :               0x00000000
+        region 2 :               0x00000000
+        region 3 :               0x00000000
+        region 4 :               0x00000000
+        region 5 :               0x00000000
+        IRQ line :               0x00
+        IRQ pin :                0x00
+
+This is where my knowledge runs short -- I'm not fluent in PCI device
+programming, so I'm not sure what is really supposed to be going on with these
+different BAR regions.  I dug up a copy of the PCI Spec 2.2, but it's 322 pages
+and I'm not sure where I should start reading from.  Are these regions
+device-specific?  E.g., do I need the QLA1040B programming manual to understand
+why region 0 is 0x00200001 and region 1 is 0x00200000?
+
+I am also not yet considering how PCI views Crosstalk space for DMA operations
+-- BRIDGE has several mechanisms for that, depending on if the PCI device is a
+32-bit device or a 64-bit device.  It can do direct-mapping for 32-bit or
+64-bit, or built-in page-mapping hardware is available (but apparently to be
+avoided due to numerous hardware quirks/bugs that would make the driver
+overly-complicated).
+
+There's a good write-up in the OpenBSD "xbridge" driver, which handles BRIDGE
+(IP27/IP30), XBRIDGE (IP35), and PIC (IP35/IA64 Altix):
+
+http://bxr.su/OpenBSD/sys/arch/sgi/xbow/xbridge.c
+
+It's starting to make some sense to me, but I am still uncertain how to work
+with the 32-bit and 64-bit 1GB PCI memory spaces on BRIDGE as well as the 4GB
+PCI I/O space from a Linux point of view.  Do they only matter when dealing
+with DMA?
+
+--J
+
+
+
+> The scan would look like this:
+> 
+>   pci_bus 0000:00: root bus resource [mem 0xf000000000-0xffffffffff] (bus addresses [0x00000000-0xfffffffff])
+>   pci 0000:00:00.0: reg 0x14: [mem 0xf000200000-0xf000200fff]
+>   pci 0000:00:00.0: reg 0x30: [mem 0xf000210000-0xf00021ffff pref]
+>   pci 0000:00:01.0: reg 0x14: [mem 0xf000400000-0xf000400fff]
+>   pci 0000:00:01.0: reg 0x30: [mem 0xf000410000-0xf00041ffff pref]
+>   pci 0000:00:02.0: reg 0x10: [mem 0xf000500000-0xf0005fffff]
+>   pci 0000:00:03.0: reg 0x10: [mem 0xf000600000-0xf000601fff]
+> 
+> This would make /proc/iomem look like this:
+> 
+>   f000000000-ffffffffff : Bridge MEM
+>     f000500000-f0005fffff : 0000:00:02.0
+>     f000210000-f00021ffff : 0000:00:00.0
+>     f000410000-f00041ffff : 0000:00:01.0
+>     f000200000-f000200fff : 0000:00:00.0
+>     f000400000-f000400fff : 0000:00:01.0
+> 
+> This doesn't match the device BARs in your /proc/iomem, so there must
+> be some other transformation going on as well.
+> 
+> As long as you tell the PCI core about the host bridge windows you're
+> going to use, along with offsets that include *all* these
+> transformations, the core should just work, and /proc/iomem should
+> also make sense.  The details of small/medium/big windows, widgets,
+> etc., are immaterial to the core.
+> 
+> Bjorn
+> 

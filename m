@@ -1,61 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Feb 2017 02:02:10 +0100 (CET)
-Received: from vmicros1.altlinux.org ([194.107.17.57]:37752 "EHLO
-        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993009AbdBZBCDb7bOY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Feb 2017 02:02:03 +0100
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-        by vmicros1.altlinux.org (Postfix) with ESMTP id 2D50072EF79;
-        Sun, 26 Feb 2017 04:01:57 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-        id 015847CCC18; Sun, 26 Feb 2017 04:01:56 +0300 (MSK)
-Date:   Sun, 26 Feb 2017 04:01:56 +0300
-From:   "Dmitry V. Levin" <ldv@altlinux.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Howells <dhowells@redhat.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, linux-arch@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-cris-kernel@axis.com, uclinux-h8-devel@lists.sourceforge.jp,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] uapi: fix asm/signal.h userspace compilation errors
-Message-ID: <20170226010156.GA28831@altlinux.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <ldv@altlinux.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Feb 2017 22:49:18 +0100 (CET)
+Received: from mail-wm0-x242.google.com ([IPv6:2a00:1450:400c:c09::242]:34271
+        "EHLO mail-wm0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991965AbdBZVtMQN8h0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Feb 2017 22:49:12 +0100
+Received: by mail-wm0-x242.google.com with SMTP id m70so10787277wma.1;
+        Sun, 26 Feb 2017 13:49:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Zg07hfdU3QmuSCMjDVVzfQqvlvyiNN34i4FidKmhHXI=;
+        b=D+k09WgmbrpvSQ0D9GW8Uzg8AsMhgLNfOVpsO87jxbuU2BETEKz5vgvw+YTv7GTwcc
+         P3Mn5q5CZdhHtFH8PzOmbAXgq/R5ULEsDBLmx/FZImSlYgzwvb0DoVSHDClD7uWSSxel
+         P6vPWMdkzKXZ07P/XdSymAIMJlrHb5+i0Bic9UrDpk4qHbfXIP+2MNAha2Z+IDXfAhuP
+         molx6FkuTMsu3wZaA/IZ0rIfNR2+zs29/wv2SxVfnzf7UhUgs8GAXsNCFW0CuWuQ+kzv
+         duRKq0urVsiG6wmwAXdbnkCzYRl6jCdizhkpYApRJAK+5FPaKE+IVKY7rvbNzoGGXnTe
+         CTVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Zg07hfdU3QmuSCMjDVVzfQqvlvyiNN34i4FidKmhHXI=;
+        b=eF8+OnY2MC8fuHOcprX844JLGBTS/rj9SKQmaoNXE6F/ShsjYxTLp0lDmKBiW2FMJW
+         P37ueesRanZ7RLzc2lr8bnm+ckjv0WcVAxY7uNzVo/M6ilJyDhbBM3EXltid4Uyt+WI/
+         1Xi4zq34id28BQlwiBgWvUqUB07w41nPg4ghRqtleWaOly6L/N9WQX0bg8HqmMQVAYQy
+         JWFprBMqKHc53qrciWb17HP6JSE0/odxUDHHrTQGJABTchoCsWOo4f0Ra6OBEABu5qC8
+         bD7Nbyl1tqx6v7ts7Q1nreDQzpqusIGyard2+/gV0q9MFV050kXpzanlkGy7Y55H04qo
+         9SgA==
+X-Gm-Message-State: AMke39nuvlvrXGXdGKk8QEUNxOtRfv97QbEADs/CD8LeTb9HXtj1uuwLVc3j6Qp4UHhQIw==
+X-Received: by 10.28.8.213 with SMTP id 204mr11264326wmi.100.1488145745671;
+        Sun, 26 Feb 2017 13:49:05 -0800 (PST)
+Received: from localhost.localdomain (bny93-7-88-161-33-221.fbx.proxad.net. [88.161.33.221])
+        by smtp.gmail.com with ESMTPSA id t195sm3438969wmt.20.2017.02.26.13.49.04
+        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 26 Feb 2017 13:49:04 -0800 (PST)
+From:   Philippe Reynes <tremyfr@gmail.com>
+To:     ralf@linux-mips.org, davem@davemloft.net
+Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Philippe Reynes <tremyfr@gmail.com>
+Subject: [PATCH] net: sgi: ioc3-eth: use new api ethtool_{get|set}_link_ksettings
+Date:   Sun, 26 Feb 2017 22:48:59 +0100
+Message-Id: <1488145739-30614-1-git-send-email-tremyfr@gmail.com>
+X-Mailer: git-send-email 1.7.4.4
+Return-Path: <tremyfr@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56899
+X-archive-position: 56900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ldv@altlinux.org
+X-original-sender: tremyfr@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,283 +61,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Include <stddef.h> (guarded by #ifndef __KERNEL__) to fix asm/signal.h
-userspace compilation errors like this:
+The ethtool api {get|set}_settings is deprecated.
+We move this driver to new api {get|set}_link_ksettings.
 
-/usr/include/asm/signal.h:126:2: error: unknown type name 'size_t'
-  size_t ss_size;
+As I don't have the hardware, I'd be very pleased if
+someone may test this patch.
 
-As no uapi header provides a definition of size_t, inclusion
-of <stddef.h> seems to be the most conservative fix available.
-
-On the kernel side size_t is typedef'ed to __kernel_size_t, so
-an alternative fix would be to change the type of sigaltstack.ss_size
-from size_t to __kernel_size_t for all architectures except those where
-sizeof(size_t) < sizeof(__kernel_size_t), namely, x32 and mips n32.
-
-On x32 and mips n32, however, #include <stddef.h> seems to be the most
-straightforward way to obtain the definition for sigaltstack.ss_size's
-type.
-
-Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
+Signed-off-by: Philippe Reynes <tremyfr@gmail.com>
 ---
- include/uapi/asm-generic/signal.h      | 3 +++
- arch/alpha/include/uapi/asm/signal.h   | 3 +++
- arch/arm/include/uapi/asm/signal.h     | 3 +++
- arch/avr32/include/uapi/asm/signal.h   | 3 +++
- arch/cris/include/uapi/asm/signal.h    | 3 +++
- arch/h8300/include/uapi/asm/signal.h   | 3 +++
- arch/ia64/include/uapi/asm/signal.h    | 4 ++++
- arch/m32r/include/uapi/asm/signal.h    | 3 +++
- arch/m68k/include/uapi/asm/signal.h    | 3 +++
- arch/mips/include/uapi/asm/signal.h    | 3 +++
- arch/mn10300/include/uapi/asm/signal.h | 3 +++
- arch/parisc/include/uapi/asm/signal.h  | 4 ++++
- arch/powerpc/include/uapi/asm/signal.h | 3 +++
- arch/s390/include/uapi/asm/signal.h    | 3 +++
- arch/sparc/include/uapi/asm/signal.h   | 3 +++
- arch/x86/include/uapi/asm/signal.h     | 3 +++
- arch/xtensa/include/uapi/asm/signal.h  | 2 ++
- 17 files changed, 52 insertions(+)
+ drivers/net/ethernet/sgi/ioc3-eth.c |   14 ++++++++------
+ 1 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/include/uapi/asm-generic/signal.h b/include/uapi/asm-generic/signal.h
-index 3094618..e618eab 100644
---- a/include/uapi/asm-generic/signal.h
-+++ b/include/uapi/asm-generic/signal.h
-@@ -100,6 +100,9 @@ typedef unsigned long old_sigset_t;
- #endif
+diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
+index 57e6cef..52ead55 100644
+--- a/drivers/net/ethernet/sgi/ioc3-eth.c
++++ b/drivers/net/ethernet/sgi/ioc3-eth.c
+@@ -1558,25 +1558,27 @@ static void ioc3_get_drvinfo (struct net_device *dev,
+ 	strlcpy(info->bus_info, pci_name(ip->pdev), sizeof(info->bus_info));
+ }
  
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- struct sigaction {
- 	__sighandler_t sa_handler;
- 	unsigned long sa_flags;
-diff --git a/arch/alpha/include/uapi/asm/signal.h b/arch/alpha/include/uapi/asm/signal.h
-index dd4ca4bc..74e09f6 100644
---- a/arch/alpha/include/uapi/asm/signal.h
-+++ b/arch/alpha/include/uapi/asm/signal.h
-@@ -94,6 +94,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
+-static int ioc3_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
++static int ioc3_get_link_ksettings(struct net_device *dev,
++				   struct ethtool_link_ksettings *cmd)
+ {
+ 	struct ioc3_private *ip = netdev_priv(dev);
+ 	int rc;
  
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
+ 	spin_lock_irq(&ip->ioc3_lock);
+-	rc = mii_ethtool_gset(&ip->mii, cmd);
++	rc = mii_ethtool_get_link_ksettings(&ip->mii, cmd);
+ 	spin_unlock_irq(&ip->ioc3_lock);
  
- struct sigaction {
-diff --git a/arch/arm/include/uapi/asm/signal.h b/arch/arm/include/uapi/asm/signal.h
-index 33073bd..a7b0012 100644
---- a/arch/arm/include/uapi/asm/signal.h
-+++ b/arch/arm/include/uapi/asm/signal.h
-@@ -93,6 +93,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
+ 	return rc;
+ }
  
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
+-static int ioc3_set_settings(struct net_device *dev, struct ethtool_cmd *cmd)
++static int ioc3_set_link_ksettings(struct net_device *dev,
++				   const struct ethtool_link_ksettings *cmd)
+ {
+ 	struct ioc3_private *ip = netdev_priv(dev);
+ 	int rc;
  
- struct sigaction {
-diff --git a/arch/avr32/include/uapi/asm/signal.h b/arch/avr32/include/uapi/asm/signal.h
-index ffe8c77..62f3b88 100644
---- a/arch/avr32/include/uapi/asm/signal.h
-+++ b/arch/avr32/include/uapi/asm/signal.h
-@@ -95,6 +95,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
+ 	spin_lock_irq(&ip->ioc3_lock);
+-	rc = mii_ethtool_sset(&ip->mii, cmd);
++	rc = mii_ethtool_set_link_ksettings(&ip->mii, cmd);
+ 	spin_unlock_irq(&ip->ioc3_lock);
  
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
+ 	return rc;
+@@ -1608,10 +1610,10 @@ static u32 ioc3_get_link(struct net_device *dev)
  
- struct sigaction {
-diff --git a/arch/cris/include/uapi/asm/signal.h b/arch/cris/include/uapi/asm/signal.h
-index ce42fa7..bedff78 100644
---- a/arch/cris/include/uapi/asm/signal.h
-+++ b/arch/cris/include/uapi/asm/signal.h
-@@ -89,6 +89,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
+ static const struct ethtool_ops ioc3_ethtool_ops = {
+ 	.get_drvinfo		= ioc3_get_drvinfo,
+-	.get_settings		= ioc3_get_settings,
+-	.set_settings		= ioc3_set_settings,
+ 	.nway_reset		= ioc3_nway_reset,
+ 	.get_link		= ioc3_get_link,
++	.get_link_ksettings	= ioc3_get_link_ksettings,
++	.set_link_ksettings	= ioc3_set_link_ksettings,
+ };
  
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
- 
- struct sigaction {
-diff --git a/arch/h8300/include/uapi/asm/signal.h b/arch/h8300/include/uapi/asm/signal.h
-index af3a6c3..361e2e5 100644
---- a/arch/h8300/include/uapi/asm/signal.h
-+++ b/arch/h8300/include/uapi/asm/signal.h
-@@ -88,6 +88,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
- 
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
- 
- struct sigaction {
-diff --git a/arch/ia64/include/uapi/asm/signal.h b/arch/ia64/include/uapi/asm/signal.h
-index c0ea285..b089bfc 100644
---- a/arch/ia64/include/uapi/asm/signal.h
-+++ b/arch/ia64/include/uapi/asm/signal.h
-@@ -107,6 +107,10 @@
- 
- #  include <linux/types.h>
- 
-+#  ifndef __KERNEL__
-+#   include <stddef.h>	/* For size_t. */
-+#  endif
-+
- /* Avoid too many header ordering problems.  */
- struct siginfo;
- 
-diff --git a/arch/m32r/include/uapi/asm/signal.h b/arch/m32r/include/uapi/asm/signal.h
-index 54acacb..269ec39 100644
---- a/arch/m32r/include/uapi/asm/signal.h
-+++ b/arch/m32r/include/uapi/asm/signal.h
-@@ -90,6 +90,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
- 
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
- 
- struct sigaction {
-diff --git a/arch/m68k/include/uapi/asm/signal.h b/arch/m68k/include/uapi/asm/signal.h
-index cba6f85..f6a409e 100644
---- a/arch/m68k/include/uapi/asm/signal.h
-+++ b/arch/m68k/include/uapi/asm/signal.h
-@@ -86,6 +86,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
- 
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
- 
- struct sigaction {
-diff --git a/arch/mips/include/uapi/asm/signal.h b/arch/mips/include/uapi/asm/signal.h
-index addb9f5..744fd71 100644
---- a/arch/mips/include/uapi/asm/signal.h
-+++ b/arch/mips/include/uapi/asm/signal.h
-@@ -101,6 +101,9 @@ typedef unsigned long old_sigset_t;		/* at least 32 bits */
- #include <asm-generic/signal-defs.h>
- 
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- struct sigaction {
- 	unsigned int	sa_flags;
- 	__sighandler_t	sa_handler;
-diff --git a/arch/mn10300/include/uapi/asm/signal.h b/arch/mn10300/include/uapi/asm/signal.h
-index f423a08..2e79c71 100644
---- a/arch/mn10300/include/uapi/asm/signal.h
-+++ b/arch/mn10300/include/uapi/asm/signal.h
-@@ -98,6 +98,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
- 
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
- 
- struct sigaction {
-diff --git a/arch/parisc/include/uapi/asm/signal.h b/arch/parisc/include/uapi/asm/signal.h
-index e26043b..6c6c979 100644
---- a/arch/parisc/include/uapi/asm/signal.h
-+++ b/arch/parisc/include/uapi/asm/signal.h
-@@ -81,6 +81,10 @@
- 
- #  include <linux/types.h>
- 
-+#  ifndef __KERNEL__
-+#   include <stddef.h>	/* For size_t. */
-+#  endif
-+
- /* Avoid too many header ordering problems.  */
- struct siginfo;
- 
-diff --git a/arch/powerpc/include/uapi/asm/signal.h b/arch/powerpc/include/uapi/asm/signal.h
-index 6c69ee9..fba7738 100644
---- a/arch/powerpc/include/uapi/asm/signal.h
-+++ b/arch/powerpc/include/uapi/asm/signal.h
-@@ -91,6 +91,9 @@ typedef struct {
- #include <asm-generic/signal-defs.h>
- 
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- struct old_sigaction {
- 	__sighandler_t sa_handler;
- 	old_sigset_t sa_mask;
-diff --git a/arch/s390/include/uapi/asm/signal.h b/arch/s390/include/uapi/asm/signal.h
-index 2f43cfb..306373b6a 100644
---- a/arch/s390/include/uapi/asm/signal.h
-+++ b/arch/s390/include/uapi/asm/signal.h
-@@ -96,6 +96,9 @@ typedef unsigned long sigset_t;
- #include <asm-generic/signal-defs.h>
- 
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
- 
- struct sigaction {
-diff --git a/arch/sparc/include/uapi/asm/signal.h b/arch/sparc/include/uapi/asm/signal.h
-index f387400..3b4664c 100644
---- a/arch/sparc/include/uapi/asm/signal.h
-+++ b/arch/sparc/include/uapi/asm/signal.h
-@@ -154,6 +154,9 @@ struct sigstack {
- #include <asm-generic/signal-defs.h>
- 
- #ifndef __KERNEL__
-+
-+#include <stddef.h>	/* For size_t. */
-+
- struct __new_sigaction {
- 	__sighandler_t		sa_handler;
- 	unsigned long		sa_flags;
-diff --git a/arch/x86/include/uapi/asm/signal.h b/arch/x86/include/uapi/asm/signal.h
-index 8264f47..2d6db1d 100644
---- a/arch/x86/include/uapi/asm/signal.h
-+++ b/arch/x86/include/uapi/asm/signal.h
-@@ -96,6 +96,9 @@ typedef unsigned long sigset_t;
- 
- 
- # ifndef __KERNEL__
-+
-+#  include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
- #ifdef __i386__
- 
-diff --git a/arch/xtensa/include/uapi/asm/signal.h b/arch/xtensa/include/uapi/asm/signal.h
-index 586756e..bbc9b14 100644
---- a/arch/xtensa/include/uapi/asm/signal.h
-+++ b/arch/xtensa/include/uapi/asm/signal.h
-@@ -106,6 +106,8 @@ typedef struct {
- 
- #ifndef __KERNEL__
- 
-+#include <stddef.h>	/* For size_t. */
-+
- /* Here we must cater to libcs that poke about in kernel headers.  */
- 
- struct sigaction {
+ static int ioc3_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 -- 
-ldv
+1.7.4.4

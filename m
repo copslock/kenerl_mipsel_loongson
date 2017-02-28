@@ -1,25 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2017 16:40:00 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30091 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2017 16:40:28 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53760 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993869AbdB1PjQujixK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Feb 2017 16:39:16 +0100
+        with ESMTP id S23992267AbdB1PjTkirNK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Feb 2017 16:39:19 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id ADD8F626C5870;
-        Tue, 28 Feb 2017 15:39:06 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 2E27552E1ABFC;
+        Tue, 28 Feb 2017 15:39:10 +0000 (GMT)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 28 Feb 2017 15:39:09 +0000
+ 14.3.294.0; Tue, 28 Feb 2017 15:39:13 +0000
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
         Matt Redfearn <matt.redfearn@imgtec.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 2/4] MIPS: microMIPS: Fix decoding of addiusp instruction
-Date:   Tue, 28 Feb 2017 15:37:56 +0000
-Message-ID: <1488296279-23057-3-git-send-email-matt.redfearn@imgtec.com>
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 3/4] MIPS: Stacktrace: Fix __usermode() of uninitialised regs
+Date:   Tue, 28 Feb 2017 15:37:57 +0000
+Message-ID: <1488296279-23057-4-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1488296279-23057-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1488296279-23057-1-git-send-email-matt.redfearn@imgtec.com>
@@ -30,7 +27,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56923
+X-archive-position: 56924
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,46 +44,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
-added handling of microMIPS instructions to manipulate the stack
-pointer. Unfortunately the decoding of the addiusp instruction was
-incorrect, and performed a left shift by 2 bits to the raw immediate,
-rather than decoding the immediate and then performing the shift, as
-documented in the ISA.
+Commit 81a76d7119f6 ("MIPS: Avoid using unwind_stack() with usermode")
+added a check if the passed regs are from user mode, and perform a raw
+backtrace if so.
+When WARN() is invoked, __dump_stack calls show_stack()
+with NULL task and stack pointers. This leads show_stack to create a
+pt_regs struct on the stack, and initialise it via prepare_frametrace().
+When show_backtrace() examines the regs, the value of the status
+register checked by user_mode() is unpredictable, depending on the
+uninitialised content of the stack. This leads to show_backtrace()
+sometimes showing raw backtraces instead of correctly walking the kernel
+stack.
 
-This led to incomplete stack traces, due to incorrect frame sizes being
-calculated. For example the instruction:
-801faee0 <do_sys_poll>:
-801faee0:       4e25            addiu   sp,sp,-952
+Fix this by initialising the contents of the saved status register in
+prepare_frametrace().
 
-As decoded by objdump, would be interpreted by the existing code as
-having manipulated the stack pointer by +1096.
-
-Fix this by changing the order of decoding the immediate and applying
-the left shift.
-
-Fixes: 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
+Fixes: 81a76d7119f6 ("MIPS: Avoid using unwind_stack() with usermode")
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 ---
 
- arch/mips/kernel/process.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/stacktrace.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 5b1e932ae973..6ba5b775579c 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -386,8 +386,9 @@ static int get_frame_info(struct mips_frame_info *info)
+diff --git a/arch/mips/include/asm/stacktrace.h b/arch/mips/include/asm/stacktrace.h
+index 780ee2c2a2ac..4845945d02a5 100644
+--- a/arch/mips/include/asm/stacktrace.h
++++ b/arch/mips/include/asm/stacktrace.h
+@@ -1,6 +1,7 @@
+ #ifndef _ASM_STACKTRACE_H
+ #define _ASM_STACKTRACE_H
  
- 					if (ip->halfword[0] & mm_addiusp_func)
- 					{
--						tmp = (((ip->halfword[0] >> 1) & 0x1ff) << 2);
--						info->frame_size = -(signed short)(tmp | ((tmp & 0x100) ? 0xfe00 : 0));
-+						tmp = (ip->halfword[0] >> 1) & 0x1ff;
-+						tmp = tmp | ((tmp & 0x100) ? 0xfe00 : 0);
-+						info->frame_size = -(signed short)(tmp << 2);
- 					} else {
- 						tmp = (ip->halfword[0] >> 1);
- 						info->frame_size = -(signed short)(tmp & 0xf);
++#include <asm/asm.h>
+ #include <asm/ptrace.h>
+ 
+ #ifdef CONFIG_KALLSYMS
+@@ -47,6 +48,8 @@ static __always_inline void prepare_frametrace(struct pt_regs *regs)
+ 		: "=m" (regs->cp0_epc),
+ 		"=m" (regs->regs[29]), "=m" (regs->regs[31])
+ 		: : "memory");
++	/* show_backtrace behaviour depends on user_mode(regs) */
++	regs->cp0_status = read_c0_status();
+ }
+ 
+ #endif /* _ASM_STACKTRACE_H */
 -- 
 2.7.4

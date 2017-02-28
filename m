@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2017 16:39:40 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:41646 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2017 16:40:00 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:30091 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993637AbdB1PjOqcZIK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Feb 2017 16:39:14 +0100
+        with ESMTP id S23993869AbdB1PjQujixK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Feb 2017 16:39:16 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 2CB56ACDF5892;
-        Tue, 28 Feb 2017 15:39:05 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id ADD8F626C5870;
+        Tue, 28 Feb 2017 15:39:06 +0000 (GMT)
 Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 28 Feb 2017 15:39:08 +0000
+ 14.3.294.0; Tue, 28 Feb 2017 15:39:09 +0000
 From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
@@ -17,9 +17,9 @@ CC:     <linux-mips@linux-mips.org>,
         <linux-kernel@vger.kernel.org>,
         "Maciej W. Rozycki" <macro@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 1/4] MIPS: Handle non word sized instructions when examining frame
-Date:   Tue, 28 Feb 2017 15:37:55 +0000
-Message-ID: <1488296279-23057-2-git-send-email-matt.redfearn@imgtec.com>
+Subject: [PATCH 2/4] MIPS: microMIPS: Fix decoding of addiusp instruction
+Date:   Tue, 28 Feb 2017 15:37:56 +0000
+Message-ID: <1488296279-23057-3-git-send-email-matt.redfearn@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1488296279-23057-1-git-send-email-matt.redfearn@imgtec.com>
 References: <1488296279-23057-1-git-send-email-matt.redfearn@imgtec.com>
@@ -30,7 +30,7 @@ Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56922
+X-archive-position: 56923
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,64 +47,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit b6c7a324df37 ("MIPS: Fix get_frame_info() handling of microMIPS
-function size") goes some way to fixing get_frame_info() to iterate over
-microMIPS instuctions, but increments the instruction pointer using a
-postincrement of the instruction pointer, which is of union
-mips_instruction type. Since the union is sized to the largest member (a
-word), but microMIPS instructions are a mix of halfword and word sizes,
-the function does not always iterate correctly, ending up misaligned
-with the instruction stream and interpreting it incorrectly.
+Commit 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
+added handling of microMIPS instructions to manipulate the stack
+pointer. Unfortunately the decoding of the addiusp instruction was
+incorrect, and performed a left shift by 2 bits to the raw immediate,
+rather than decoding the immediate and then performing the shift, as
+documented in the ISA.
 
-Since the instruction modifying the stack pointer is usually the first
-in the function, that one is ususally handled correctly. But the
-instruction which saves the return address to the sp is some variable
-number of instructions into the frame and is frequently missed due to
-not being on a word boundary, leading to incomplete walking of the
-stack.
+This led to incomplete stack traces, due to incorrect frame sizes being
+calculated. For example the instruction:
+801faee0 <do_sys_poll>:
+801faee0:       4e25            addiu   sp,sp,-952
 
-Fix this by incrementing the instruction pointer based on the size of
-the previously decoded instruction.
+As decoded by objdump, would be interpreted by the existing code as
+having manipulated the stack pointer by +1096.
 
-Fixes: b6c7a324df37 ("MIPS: Fix get_frame_info() handling of microMIPS function size")
+Fix this by changing the order of decoding the immediate and applying
+the left shift.
+
+Fixes: 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 ---
 
- arch/mips/kernel/process.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/kernel/process.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 803e255b6fc3..5b1e932ae973 100644
+index 5b1e932ae973..6ba5b775579c 100644
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -347,6 +347,7 @@ static int get_frame_info(struct mips_frame_info *info)
- 	union mips_instruction insn, *ip, *ip_end;
- 	const unsigned int max_insns = 128;
- 	unsigned int i;
-+	unsigned int last_insn_size = 0;
+@@ -386,8 +386,9 @@ static int get_frame_info(struct mips_frame_info *info)
  
- 	info->pc_offset = -1;
- 	info->frame_size = 0;
-@@ -357,15 +358,19 @@ static int get_frame_info(struct mips_frame_info *info)
- 
- 	ip_end = (void *)ip + info->func_size;
- 
--	for (i = 0; i < max_insns && ip < ip_end; i++, ip++) {
-+	for (i = 0; i < max_insns && ip < ip_end; i++) {
-+		ip = (void *)ip + last_insn_size;
- 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
- 			insn.halfword[0] = 0;
- 			insn.halfword[1] = ip->halfword[0];
-+			last_insn_size = sizeof(unsigned short);
- 		} else if (is_mmips) {
- 			insn.halfword[0] = ip->halfword[1];
- 			insn.halfword[1] = ip->halfword[0];
-+			last_insn_size = sizeof(unsigned int);
- 		} else {
- 			insn.word = ip->word;
-+			last_insn_size = sizeof(unsigned int);
- 		}
- 
- 		if (is_jump_ins(&insn))
+ 					if (ip->halfword[0] & mm_addiusp_func)
+ 					{
+-						tmp = (((ip->halfword[0] >> 1) & 0x1ff) << 2);
+-						info->frame_size = -(signed short)(tmp | ((tmp & 0x100) ? 0xfe00 : 0));
++						tmp = (ip->halfword[0] >> 1) & 0x1ff;
++						tmp = tmp | ((tmp & 0x100) ? 0xfe00 : 0);
++						info->frame_size = -(signed short)(tmp << 2);
+ 					} else {
+ 						tmp = (ip->halfword[0] >> 1);
+ 						info->frame_size = -(signed short)(tmp & 0xf);
 -- 
 2.7.4

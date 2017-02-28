@@ -1,43 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2017 16:40:55 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42642 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993870AbdB1PjVRe2uK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Feb 2017 16:39:21 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id B8B3F4B421C8D;
-        Tue, 28 Feb 2017 15:39:11 +0000 (GMT)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 28 Feb 2017 15:39:15 +0000
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        <linux-kernel@vger.kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH 4/4] MIPS: microMIPS: Fix decoding of swsp16 instruction
-Date:   Tue, 28 Feb 2017 15:37:58 +0000
-Message-ID: <1488296279-23057-5-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1488296279-23057-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1488296279-23057-1-git-send-email-matt.redfearn@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2017 17:22:00 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:39252 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993870AbdB1QVu4OMDK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Feb 2017 17:21:50 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 6E6772021B;
+        Tue, 28 Feb 2017 16:21:48 +0000 (UTC)
+Received: from gandalf.local.home (cpe-67-246-153-56.stny.res.rr.com [67.246.153.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EB6182024D;
+        Tue, 28 Feb 2017 16:21:45 +0000 (UTC)
+Date:   Tue, 28 Feb 2017 11:21:44 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Sachin Sant <sachinp@linux.vnet.ibm.com>
+Cc:     Jason Baron <jbaron@akamai.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, Chris Metcalf <cmetcalf@mellanox.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Rabin Vincent <rabin@rab.in>,
+        Paul Mackerras <paulus@samba.org>,
+        Anton Blanchard <anton@samba.org>,
+        linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, Zhigang Lu <zlu@ezchip.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] jump_label: align jump_entry table to at least 4-bytes
+Message-ID: <20170228112144.65455de5@gandalf.local.home>
+In-Reply-To: <510FF566-011D-4199-86F7-2BB4DBF36434@linux.vnet.ibm.com>
+References: <1488221364-13905-1-git-send-email-jbaron@akamai.com>
+        <f7532548-7007-1a32-f669-4520792805b3@caviumnetworks.com>
+        <93219edf-0f6d-5cc7-309c-c998f16fe7ac@akamai.com>
+        <aa139c18-1b04-2c20-2e22-89d74503b3cf@caviumnetworks.com>
+        <20170227160601.5b79a1fe@gandalf.local.home>
+        <6db89a8d-6053-51d1-5fd4-bae0179a5ebd@caviumnetworks.com>
+        <20170227170911.2280ca3e@gandalf.local.home>
+        <7fa95eea-20be-611c-2b63-fca600779465@caviumnetworks.com>
+        <20170227173630.57fff459@gandalf.local.home>
+        <7bd72716-feea-073f-741c-04212ebd0802@caviumnetworks.com>
+        <68fe24ea-7795-24d8-211b-9d8a50affe9f@akamai.com>
+        <510FF566-011D-4199-86F7-2BB4DBF36434@linux.vnet.ibm.com>
+X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <SRS0=Vz7S=2J=goodmis.org=rostedt@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56925
+X-archive-position: 56926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,54 +67,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When the immediate encoded in the instruction is accessed, it is sign
-extended due to being a signed value being assigned to a signed integer.
-The ISA specifies that this operation is an unsigned operation.
-The sign extension leads us to incorrectly decode:
+On Tue, 28 Feb 2017 10:25:46 +0530
+Sachin Sant <sachinp@linux.vnet.ibm.com> wrote:
 
-801e9c8e:       cbf1            sw      ra,68(sp)
+> File: ./net/ipv4/xfrm4_input.o
+>   [12] __jump_table      PROGBITS        0000000000000000 000639 000018 18 WAM  0   0  1
+> File: ./net/ipv4/udplite.o
+> File: ./net/ipv4/xfrm4_output.o
+>   [ 9] __jump_table      PROGBITS        0000000000000000 000481 000018 18 WAM  0   0  1
 
-As having an immediate of 1073741809.
+Looks like there's some issues right there.
 
-Since the instruction format does not specify signed/unsigned, and this
-is currently the only location to use this instuction format, change it
-to an unsigned immediate.
-
-Fixes: bb9bc4689b9c ("MIPS: Calculate microMIPS ra properly when unwinding the stack")
-Suggested-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-
----
-
- arch/mips/include/uapi/asm/inst.h | 2 +-
- arch/mips/kernel/process.c        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 77429d1622b3..711d9b8465b8 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -964,7 +964,7 @@ struct mm16_r3_format {		/* Load from global pointer format */
- struct mm16_r5_format {		/* Load/store from stack pointer format */
- 	__BITFIELD_FIELD(unsigned int opcode : 6,
- 	__BITFIELD_FIELD(unsigned int rt : 5,
--	__BITFIELD_FIELD(signed int simmediate : 5,
-+	__BITFIELD_FIELD(unsigned int imm : 5,
- 	__BITFIELD_FIELD(unsigned int : 16, /* Ignored */
- 	;))))
- };
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 6ba5b775579c..67182baaf719 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -212,7 +212,7 @@ static inline int is_ra_save_ins(union mips_instruction *ip, int *poff)
- 			if (ip->mm16_r5_format.rt != 31)
- 				return 0;
- 
--			*poff = ip->mm16_r5_format.simmediate;
-+			*poff = ip->mm16_r5_format.imm;
- 			*poff = (*poff << 2) / sizeof(ulong);
- 			return 1;
- 
--- 
-2.7.4
+-- Steve

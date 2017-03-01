@@ -1,53 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2017 16:39:48 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:42630 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993884AbdCAPjk7ZmUz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Mar 2017 16:39:40 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 6A0F32034F;
-        Wed,  1 Mar 2017 15:39:32 +0000 (UTC)
-Received: from localhost (173-26-10-104.client.mchsi.com [173.26.10.104])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BA8C52034C;
-        Wed,  1 Mar 2017 15:39:28 +0000 (UTC)
-Date:   Wed, 1 Mar 2017 09:39:19 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Linux/MIPS <linux-mips@linux-mips.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH 12/12] MIPS: PCI: Fix IP27 for the PCI_PROBE_ONLY case
-Message-ID: <20170301153919.GA13171@bhelgaas-glaptop.roam.corp.google.com>
-References: <CAErSpo4LsrPCtdZwp6CyT0jKhXLt3j=fGSiFjpRRTPUjFoKHtQ@mail.gmail.com>
- <c7ed6a1d-f625-d294-8910-dd2d93d34292@gentoo.org>
- <20170213224512.GA8080@bhelgaas-glaptop.roam.corp.google.com>
- <8ec2a0bf-6bd7-1366-38bc-7f7ba9a29971@gentoo.org>
- <20170214145628.GA10418@bhelgaas-glaptop.roam.corp.google.com>
- <926cfb3a-085f-164b-4ec3-76dc9db3298b@gentoo.org>
- <20170224183803.GB15547@bhelgaas-glaptop.roam.corp.google.com>
- <eefac3de-c857-4bc9-72cb-dec4d2b3a756@gentoo.org>
- <20170227163609.GA11162@bhelgaas-glaptop.roam.corp.google.com>
- <8caa732f-cbfe-1c91-4b00-be8693c653ed@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2017 17:21:05 +0100 (CET)
+Received: from mail-ot0-x241.google.com ([IPv6:2607:f8b0:4003:c0f::241]:35159
+        "EHLO mail-ot0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991532AbdCAQU5ULhuz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Mar 2017 17:20:57 +0100
+Received: by mail-ot0-x241.google.com with SMTP id a12so2588471ota.2;
+        Wed, 01 Mar 2017 08:20:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=J/sszfdzPEcWuilL0+phRX3xYbZMLodKzJ48kUz3dvY=;
+        b=n5rrMZWzvnqUflt1XRJz8juFk6sea5pr5ZWi+JhrqtnZCsgEOtbBZceaOyB8XmB+6x
+         H8IxuIUqpjc1nrj1wg6Syh/RTlaFIzT5gWxVNAuzviqvZyeoT/S/xTwBnLUai4hp+vr1
+         O2kK+DPP65i5YnEsxFKuPcZvj3J9pSRKOBI16J83+qn1zFvh0yuZd/vCgkAbno46TaZl
+         xp78VvcnZiAGRHyZmsZJgSvsT380lQTgjqwkm+vZS5RQycCfdGH/BEZ4i+NRP1qRqFC5
+         CF4nB4gjJcF3coF4Mm71vO3IzBdCWXfKFLjGxV/JtneuzknZ4xOKm1bZvDjzYw9oN0Yo
+         qMfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=J/sszfdzPEcWuilL0+phRX3xYbZMLodKzJ48kUz3dvY=;
+        b=NsIYyPLNma0KrKs/ft6J4uYPLUe/mPQXEWr9GbDFaQpZmpVp9BJ3m9+9ss+1q+HkQn
+         XROVdVaHILCVHp2ncZR/f6WZXuR7MB15NnVrsZtw8bKpwJJtVCF2Q4rT+hXKcIV9L/H1
+         jcPlyNMDNvlH9skTqdGPE0PJhpyImdGuwq35Q2n/shZvW6dwwfiyCLIRLSHXpe1aYMh1
+         b9sgtZZlH4A3fxqLKmfqCfCR81dtKeeQDAejMC1MGzyFvd0MiNFxHJ0274WwgdPkmx8n
+         3uXKyd8fIAMiT+iEqh93+cmiw9GdnTVPxyL6pqm5Z9+hnRSqM4ntp2Sqr8MyPLuG3/BM
+         k5Kg==
+X-Gm-Message-State: AMke39nUTNBTj/INi3+avaTmroKYvopkyq95UKh1M00zkms2+8Oybmlk8Yg8SmXAKq4QHBtwHEv8S25zKCtQyQ==
+X-Received: by 10.157.37.203 with SMTP id q69mr4457164ota.255.1488385251414;
+ Wed, 01 Mar 2017 08:20:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8caa732f-cbfe-1c91-4b00-be8693c653ed@gentoo.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <helgaas@kernel.org>
+Received: by 10.157.6.42 with HTTP; Wed, 1 Mar 2017 08:20:50 -0800 (PST)
+In-Reply-To: <20170226010156.GA28831@altlinux.org>
+References: <20170226010156.GA28831@altlinux.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 1 Mar 2017 17:20:50 +0100
+X-Google-Sender-Auth: mQhZmx3s1HeDQmSgqeZm6KoZNKU
+Message-ID: <CAK8P3a0YX3RGAqWN0mwUJtBsqUX0C+QRtJLrT_UA=wX6Z+q0DA@mail.gmail.com>
+Subject: Re: [PATCH] uapi: fix asm/signal.h userspace compilation errors
+To:     "Dmitry V. Levin" <ldv@altlinux.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-alpha@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-cris-kernel@axis.com, uclinux-h8-devel@lists.sourceforge.jp,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56947
+X-archive-position: 56948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: helgaas@kernel.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,75 +96,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Feb 27, 2017 at 07:25:58PM -0500, Joshua Kinard wrote:
-> On 02/27/2017 11:36, Bjorn Helgaas wrote:
-> > On Sat, Feb 25, 2017 at 04:34:12AM -0500, Joshua Kinard wrote:
-> >> On 02/24/2017 13:38, Bjorn Helgaas wrote:
-> >>> On Fri, Feb 24, 2017 at 03:50:26AM -0500, Joshua Kinard wrote:
+On Sun, Feb 26, 2017 at 2:01 AM, Dmitry V. Levin <ldv@altlinux.org> wrote:
+> Include <stddef.h> (guarded by #ifndef __KERNEL__) to fix asm/signal.h
+> userspace compilation errors like this:
+>
+> /usr/include/asm/signal.h:126:2: error: unknown type name 'size_t'
+>   size_t ss_size;
+>
+> As no uapi header provides a definition of size_t, inclusion
+> of <stddef.h> seems to be the most conservative fix available.
+>
+> On the kernel side size_t is typedef'ed to __kernel_size_t, so
+> an alternative fix would be to change the type of sigaltstack.ss_size
+> from size_t to __kernel_size_t for all architectures except those where
+> sizeof(size_t) < sizeof(__kernel_size_t), namely, x32 and mips n32.
+>
+> On x32 and mips n32, however, #include <stddef.h> seems to be the most
+> straightforward way to obtain the definition for sigaltstack.ss_size's
+> type.
+>
+> Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
 
-> So the logic used to read the vendor/dev IDs can probably be
-> extended to poke the BARs via the ~0 trick OR read out the
-> pre-defined mappings from ARCS firmware, then use that info to size
-> out the BRIDGE windows into Crosstalk space and then set up our
-> IORESOURCE_MEM and IORESOURCE_IO structs with the right information
-> to pass into register_pci_controller().
+I'm not sure if this is the best fix. We generally should not include one
+standard header from another standard header. Would it be possible
+to use __kernel_size_t instead of size_t?
 
-As you probably know, you can determine the size of a BAR regardless of
-whether it has been assigned.  So it doesn't matter whether ARCS has
-already assigned anything.  See __pci_read_base().
-
-> I dunno, I'll probably try reading the ARCS mappings idea first, as
-> that seems easier.  I won't have a lot of time to play with things
-> in March, so getting something to work, even if it is sub-optimal,
-> is better than nothing working at all.
-
-The simplest possible thing is to enable some pre-defined set of
-windows and accept that this may lead to configuration restrictions,
-e.g., a device with large BARs may work only in certain slots.
-
-> Each window, at least on Octane, lives at distinct addresses in
-> Crosstalk space.  A specific address within each window can point to
-> the same device on a subordinate PCI bus, but I think that will be
-> transparent to the Linux PCI core.  My thinking is, if I setup
-> IORESOURCE_MEM structs for each window for each BRIDGE widget, then
-> the PCI code will check each struct to see which one contains the
-> address range that the PCI device's BAR wants.
-> 
-> E.g., Using widget 0xd as an example for readability, if I know my
-> three windows in Crosstalk space are:
->     Small:  0x0000_1d00_0000 - 0x0000_1dff_ffff
->     Medium: 0x000e_8000_0000 - 0x000e_ffff_ffff
->     Large:  0x00d0_0000_0000 - 0x00df_ffff_ffff
-> 
-> And for that specific BRIDGE, if I pass those three ranges as
-> IORESOURCE_MEM structs, then shouldn't the PCI core, if it is told
-> that a specific devices BAR wants range 1d200000 to 1d203fff, select
-> the small window mapping?  E,g., is it going to try to find the
-> smallest possible window to fit first?  Or will it instead try to
-> match using the large window?
-
-No, when matching a BAR value to a host bridge window, the PCI core
-will definitely not look for the smallest (or largest) window that
-contains the BAR.  
-
-The core reads the BAR value (a bus address), then searches the host
-bridge windows for one that maps to a region that contains the bus
-address.  This happens in pcibios_bus_to_resource(), which is called
-by __pci_read_base().
-
-The search order is undefined because the core assumes the windows do
-not overlap in PCI bus address space.  It can't deal with two windows
-that map to the same PCI space because when we allocate space when
-assigning a BAR, we search for available CPU address space, not for
-available PCI bus address space.
-
-If window A and window B both map to PCI bus address X, we may assign
-space from window A to PCI BAR 1 and space from window B to PCI BAR 2.
-Then we have two BARs at the same PCI bus address, which will cause
-conflicts.
-
-I don't think we currently check in the PCI core for host bridge
-windows that map to overlapping PCI bus space.  Maybe we should, and
-just reject anything that overlaps.
-
-Bjorn
+     Arnd

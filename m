@@ -1,43 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2017 15:43:58 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:13563 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993882AbdCAOlozUAdI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Mar 2017 15:41:44 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id F3389F60FE6F4;
-        Wed,  1 Mar 2017 14:41:35 +0000 (GMT)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
- hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Wed, 1 Mar 2017 14:41:38 +0000
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Huacai Chen <chenhc@lemote.com>,
-        <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2017 16:39:48 +0100 (CET)
+Received: from mail.kernel.org ([198.145.29.136]:42630 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993884AbdCAPjk7ZmUz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Mar 2017 16:39:40 +0100
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 6A0F32034F;
+        Wed,  1 Mar 2017 15:39:32 +0000 (UTC)
+Received: from localhost (173-26-10-104.client.mchsi.com [173.26.10.104])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BA8C52034C;
+        Wed,  1 Mar 2017 15:39:28 +0000 (UTC)
+Date:   Wed, 1 Mar 2017 09:39:19 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Joshua Kinard <kumba@gentoo.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v2 5/5] MIPS: microMIPS: Fix decoding of swsp16 instruction
-Date:   Wed, 1 Mar 2017 14:41:20 +0000
-Message-ID: <1488379280-2954-6-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1488379280-2954-1-git-send-email-matt.redfearn@imgtec.com>
-References: <1488379280-2954-1-git-send-email-matt.redfearn@imgtec.com>
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Linux/MIPS <linux-mips@linux-mips.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH 12/12] MIPS: PCI: Fix IP27 for the PCI_PROBE_ONLY case
+Message-ID: <20170301153919.GA13171@bhelgaas-glaptop.roam.corp.google.com>
+References: <CAErSpo4LsrPCtdZwp6CyT0jKhXLt3j=fGSiFjpRRTPUjFoKHtQ@mail.gmail.com>
+ <c7ed6a1d-f625-d294-8910-dd2d93d34292@gentoo.org>
+ <20170213224512.GA8080@bhelgaas-glaptop.roam.corp.google.com>
+ <8ec2a0bf-6bd7-1366-38bc-7f7ba9a29971@gentoo.org>
+ <20170214145628.GA10418@bhelgaas-glaptop.roam.corp.google.com>
+ <926cfb3a-085f-164b-4ec3-76dc9db3298b@gentoo.org>
+ <20170224183803.GB15547@bhelgaas-glaptop.roam.corp.google.com>
+ <eefac3de-c857-4bc9-72cb-dec4d2b3a756@gentoo.org>
+ <20170227163609.GA11162@bhelgaas-glaptop.roam.corp.google.com>
+ <8caa732f-cbfe-1c91-4b00-be8693c653ed@gentoo.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8caa732f-cbfe-1c91-4b00-be8693c653ed@gentoo.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <helgaas@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56946
+X-archive-position: 56947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: helgaas@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,56 +60,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When the immediate encoded in the instruction is accessed, it is sign
-extended due to being a signed value being assigned to a signed integer.
-The ISA specifies that this operation is an unsigned operation.
-The sign extension leads us to incorrectly decode:
+On Mon, Feb 27, 2017 at 07:25:58PM -0500, Joshua Kinard wrote:
+> On 02/27/2017 11:36, Bjorn Helgaas wrote:
+> > On Sat, Feb 25, 2017 at 04:34:12AM -0500, Joshua Kinard wrote:
+> >> On 02/24/2017 13:38, Bjorn Helgaas wrote:
+> >>> On Fri, Feb 24, 2017 at 03:50:26AM -0500, Joshua Kinard wrote:
 
-801e9c8e:       cbf1            sw      ra,68(sp)
+> So the logic used to read the vendor/dev IDs can probably be
+> extended to poke the BARs via the ~0 trick OR read out the
+> pre-defined mappings from ARCS firmware, then use that info to size
+> out the BRIDGE windows into Crosstalk space and then set up our
+> IORESOURCE_MEM and IORESOURCE_IO structs with the right information
+> to pass into register_pci_controller().
 
-As having an immediate of 1073741809.
+As you probably know, you can determine the size of a BAR regardless of
+whether it has been assigned.  So it doesn't matter whether ARCS has
+already assigned anything.  See __pci_read_base().
 
-Since the instruction format does not specify signed/unsigned, and this
-is currently the only location to use this instuction format, change it
-to an unsigned immediate.
+> I dunno, I'll probably try reading the ARCS mappings idea first, as
+> that seems easier.  I won't have a lot of time to play with things
+> in March, so getting something to work, even if it is sub-optimal,
+> is better than nothing working at all.
 
-Fixes: bb9bc4689b9c ("MIPS: Calculate microMIPS ra properly when unwinding the stack")
-Suggested-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+The simplest possible thing is to enable some pre-defined set of
+windows and accept that this may lead to configuration restrictions,
+e.g., a device with large BARs may work only in certain slots.
 
----
+> Each window, at least on Octane, lives at distinct addresses in
+> Crosstalk space.  A specific address within each window can point to
+> the same device on a subordinate PCI bus, but I think that will be
+> transparent to the Linux PCI core.  My thinking is, if I setup
+> IORESOURCE_MEM structs for each window for each BRIDGE widget, then
+> the PCI code will check each struct to see which one contains the
+> address range that the PCI device's BAR wants.
+> 
+> E.g., Using widget 0xd as an example for readability, if I know my
+> three windows in Crosstalk space are:
+>     Small:  0x0000_1d00_0000 - 0x0000_1dff_ffff
+>     Medium: 0x000e_8000_0000 - 0x000e_ffff_ffff
+>     Large:  0x00d0_0000_0000 - 0x00df_ffff_ffff
+> 
+> And for that specific BRIDGE, if I pass those three ranges as
+> IORESOURCE_MEM structs, then shouldn't the PCI core, if it is told
+> that a specific devices BAR wants range 1d200000 to 1d203fff, select
+> the small window mapping?  E,g., is it going to try to find the
+> smallest possible window to fit first?  Or will it instead try to
+> match using the large window?
 
-Changes in v2: None
+No, when matching a BAR value to a host bridge window, the PCI core
+will definitely not look for the smallest (or largest) window that
+contains the BAR.  
 
- arch/mips/include/uapi/asm/inst.h | 2 +-
- arch/mips/kernel/process.c        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+The core reads the BAR value (a bus address), then searches the host
+bridge windows for one that maps to a region that contains the bus
+address.  This happens in pcibios_bus_to_resource(), which is called
+by __pci_read_base().
 
-diff --git a/arch/mips/include/uapi/asm/inst.h b/arch/mips/include/uapi/asm/inst.h
-index 77429d1622b3..711d9b8465b8 100644
---- a/arch/mips/include/uapi/asm/inst.h
-+++ b/arch/mips/include/uapi/asm/inst.h
-@@ -964,7 +964,7 @@ struct mm16_r3_format {		/* Load from global pointer format */
- struct mm16_r5_format {		/* Load/store from stack pointer format */
- 	__BITFIELD_FIELD(unsigned int opcode : 6,
- 	__BITFIELD_FIELD(unsigned int rt : 5,
--	__BITFIELD_FIELD(signed int simmediate : 5,
-+	__BITFIELD_FIELD(unsigned int imm : 5,
- 	__BITFIELD_FIELD(unsigned int : 16, /* Ignored */
- 	;))))
- };
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 1113f1f15bc1..0f4c0b3769ca 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -212,7 +212,7 @@ static inline int is_ra_save_ins(union mips_instruction *ip, int *poff)
- 			if (ip->mm16_r5_format.rt != 31)
- 				return 0;
- 
--			*poff = ip->mm16_r5_format.simmediate;
-+			*poff = ip->mm16_r5_format.imm;
- 			*poff = (*poff << 2) / sizeof(ulong);
- 			return 1;
- 
--- 
-2.7.4
+The search order is undefined because the core assumes the windows do
+not overlap in PCI bus address space.  It can't deal with two windows
+that map to the same PCI space because when we allocate space when
+assigning a BAR, we search for available CPU address space, not for
+available PCI bus address space.
+
+If window A and window B both map to PCI bus address X, we may assign
+space from window A to PCI BAR 1 and space from window B to PCI BAR 2.
+Then we have two BARs at the same PCI bus address, which will cause
+conflicts.
+
+I don't think we currently check in the PCI core for host bridge
+windows that map to overlapping PCI bus space.  Maybe we should, and
+just reject anything that overlaps.
+
+Bjorn

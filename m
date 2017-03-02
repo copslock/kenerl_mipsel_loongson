@@ -1,42 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:50:58 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:19741 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993904AbdCBJhsrnqAt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2017 10:37:48 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 57F04BBD2AD25;
-        Thu,  2 Mar 2017 09:37:39 +0000 (GMT)
-Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
- hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Mar 2017 09:37:41 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
-CC:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonathan Corbet <corbet@lwn.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 11:47:23 +0100 (CET)
+Received: from ozlabs.org ([IPv6:2401:3900:2:1::2]:54443 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992213AbdCBKrPbNUfE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 Mar 2017 11:47:15 +0100
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.org (Postfix) with ESMTPSA id 3vYpsm00CJz9s7Z;
+        Thu,  2 Mar 2017 21:47:07 +1100 (AEDT)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     David Daney <david.daney@cavium.com>,
+        Jason Baron <jbaron@akamai.com>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, <linux-doc@vger.kernel.org>
-Subject: [PATCH 30/32] KVM: MIPS/VZ: Emulate MAARs when necessary
-Date:   Thu, 2 Mar 2017 09:36:57 +0000
-Message-ID: <5a654608c6b78f79ba2a26797bf86a7f24d1f45d.1488447004.git-series.james.hogan@imgtec.com>
-X-Mailer: git-send-email 2.11.1
+        Sachin Sant <sachinp@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Rabin Vincent <rabin@rab.in>,
+        Paul Mackerras <paulus@samba.org>,
+        Anton Blanchard <anton@samba.org>,
+        Ingo Molnar <mingo@kernel.org>, Zhigang Lu <zlu@ezchip.com>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH] module: set __jump_table alignment to 8
+In-Reply-To: <20170301220453.4756-1-david.daney@cavium.com>
+References: <20170301220453.4756-1-david.daney@cavium.com>
+User-Agent: Notmuch/0.21 (https://notmuchmail.org)
+Date:   Thu, 02 Mar 2017 21:47:07 +1100
+Message-ID: <87varsj6qc.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
-References: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.154.110]
-Return-Path: <James.Hogan@imgtec.com>
+Content-Type: text/plain
+Return-Path: <mpe@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56992
+X-archive-position: 56993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: mpe@ellerman.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,316 +53,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add emulation of Memory Accessibility Attribute Registers (MAARs) when
-necessary. We can't actually do anything with whatever the guest
-provides, but it may not be possible to clear Guest.Config5.MRP so we
-have to emulate at least a pair of MAARs.
+David Daney <david.daney@cavium.com> writes:
 
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: linux-mips@linux-mips.org
-Cc: kvm@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
----
- Documentation/virtual/kvm/api.txt |   5 +-
- arch/mips/include/asm/kvm_host.h  |   5 +-
- arch/mips/include/uapi/asm/kvm.h  |  20 +++++-
- arch/mips/kvm/trace.h             |   2 +-
- arch/mips/kvm/vz.c                | 110 ++++++++++++++++++++++++++++++-
- 5 files changed, 137 insertions(+), 5 deletions(-)
+> For powerpc the __jump_table section in modules is not aligned, this
+> causes a WARN_ON() splat when loading a module containing a __jump_table.
 
-diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
-index a0430186dbd4..c4e43aeadb10 100644
---- a/Documentation/virtual/kvm/api.txt
-+++ b/Documentation/virtual/kvm/api.txt
-@@ -2114,6 +2114,7 @@ registers, find a list below:
-   MIPS  | KVM_REG_MIPS_CP0_KSCRATCH4    | 64
-   MIPS  | KVM_REG_MIPS_CP0_KSCRATCH5    | 64
-   MIPS  | KVM_REG_MIPS_CP0_KSCRATCH6    | 64
-+  MIPS  | KVM_REG_MIPS_CP0_MAAR(0..63)  | 64
-   MIPS  | KVM_REG_MIPS_COUNT_CTL        | 64
-   MIPS  | KVM_REG_MIPS_COUNT_RESUME     | 64
-   MIPS  | KVM_REG_MIPS_COUNT_HZ         | 64
-@@ -2180,6 +2181,10 @@ hardware, host kernel, guest, and whether XPA is present in the guest, i.e.
- with the RI and XI bits (if they exist) in bits 63 and 62 respectively, and
- the PFNX field starting at bit 30.
- 
-+MIPS MAARs (see KVM_REG_MIPS_CP0_MAAR(*) above) have the following id bit
-+patterns:
-+  0x7030 0000 0001 01 <reg:8>
-+
- MIPS KVM control registers (see above) have the following id bit patterns:
-   0x7030 0000 0002 <reg:16>
- 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 6b7d131565cd..3b381b52fd6c 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -67,6 +67,7 @@
- #define KVM_REG_MIPS_CP0_CONFIG4	MIPS_CP0_32(16, 4)
- #define KVM_REG_MIPS_CP0_CONFIG5	MIPS_CP0_32(16, 5)
- #define KVM_REG_MIPS_CP0_CONFIG7	MIPS_CP0_32(16, 7)
-+#define KVM_REG_MIPS_CP0_MAARI		MIPS_CP0_64(17, 2)
- #define KVM_REG_MIPS_CP0_XCONTEXT	MIPS_CP0_64(20, 0)
- #define KVM_REG_MIPS_CP0_ERROREPC	MIPS_CP0_64(30, 0)
- #define KVM_REG_MIPS_CP0_KSCRATCH1	MIPS_CP0_64(31, 2)
-@@ -391,6 +392,9 @@ struct kvm_vcpu_arch {
- 	struct kvm_mips_tlb *wired_tlb;
- 	unsigned int wired_tlb_limit;
- 	unsigned int wired_tlb_used;
-+
-+	/* emulated guest MAAR registers */
-+	unsigned long maar[6];
- #endif
- 
- 	/* Last CPU the VCPU state was loaded on */
-@@ -711,6 +715,7 @@ __BUILD_KVM_RW_HW(config4,        32, MIPS_CP0_CONFIG,       4)
- __BUILD_KVM_RW_HW(config5,        32, MIPS_CP0_CONFIG,       5)
- __BUILD_KVM_RW_HW(config6,        32, MIPS_CP0_CONFIG,       6)
- __BUILD_KVM_RW_HW(config7,        32, MIPS_CP0_CONFIG,       7)
-+__BUILD_KVM_RW_SW(maari,          l,  MIPS_CP0_LLADDR,       2)
- __BUILD_KVM_RW_HW(xcontext,       l,  MIPS_CP0_TLB_XCONTEXT, 0)
- __BUILD_KVM_RW_HW(errorepc,       l,  MIPS_CP0_ERROR_PC,     0)
- __BUILD_KVM_RW_HW(kscratch1,      l,  MIPS_CP0_DESAVE,       2)
-diff --git a/arch/mips/include/uapi/asm/kvm.h b/arch/mips/include/uapi/asm/kvm.h
-index a8a0199bf760..3107095d7f0a 100644
---- a/arch/mips/include/uapi/asm/kvm.h
-+++ b/arch/mips/include/uapi/asm/kvm.h
-@@ -54,9 +54,14 @@ struct kvm_fpu {
-  * Register set = 0: GP registers from kvm_regs (see definitions below).
-  *
-  * Register set = 1: CP0 registers.
-- *  bits[15..8]  - Must be zero.
-- *  bits[7..3]   - Register 'rd'  index.
-- *  bits[2..0]   - Register 'sel' index.
-+ *  bits[15..8]  - COP0 register set.
-+ *
-+ *  COP0 register set = 0: Main CP0 registers.
-+ *   bits[7..3]   - Register 'rd'  index.
-+ *   bits[2..0]   - Register 'sel' index.
-+ *
-+ *  COP0 register set = 1: MAARs.
-+ *   bits[7..0]   - MAAR index.
-  *
-  * Register set = 2: KVM specific registers (see definitions below).
-  *
-@@ -115,6 +120,15 @@ struct kvm_fpu {
- 
- 
- /*
-+ * KVM_REG_MIPS_CP0 - Coprocessor 0 registers.
-+ */
-+
-+#define KVM_REG_MIPS_MAAR	(KVM_REG_MIPS_CP0 | (1 << 8))
-+#define KVM_REG_MIPS_CP0_MAAR(n)	(KVM_REG_MIPS_MAAR | \
-+					 KVM_REG_SIZE_U64 | (n))
-+
-+
-+/*
-  * KVM_REG_MIPS_KVM - KVM specific control registers.
-  */
- 
-diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-index d80d37a1b82e..affde8a2c584 100644
---- a/arch/mips/kvm/trace.h
-+++ b/arch/mips/kvm/trace.h
-@@ -176,6 +176,8 @@ TRACE_EVENT(kvm_exit,
- 	{ KVM_TRACE_COP0(16, 4),	"Config4" },		\
- 	{ KVM_TRACE_COP0(16, 5),	"Config5" },		\
- 	{ KVM_TRACE_COP0(16, 7),	"Config7" },		\
-+	{ KVM_TRACE_COP0(17, 1),	"MAAR" },		\
-+	{ KVM_TRACE_COP0(17, 2),	"MAARI" },		\
- 	{ KVM_TRACE_COP0(26, 0),	"ECC" },		\
- 	{ KVM_TRACE_COP0(30, 0),	"ErrorEPC" },		\
- 	{ KVM_TRACE_COP0(31, 2),	"KScratch1" },		\
-diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
-index 1a7f15222d6f..c859295c0526 100644
---- a/arch/mips/kvm/vz.c
-+++ b/arch/mips/kvm/vz.c
-@@ -134,7 +134,7 @@ static inline unsigned int kvm_vz_config5_guest_wrmask(struct kvm_vcpu *vcpu)
-  * Config3:	M, MSAP, [BPG], ULRI, [DSP2P, DSPP], CTXTC, [ITL, LPA, VEIC,
-  *		VInt, SP, CDMM, MT, SM, TL]
-  * Config4:	M, [VTLBSizeExt, MMUSizeExt]
-- * Config5:	[MRP]
-+ * Config5:	MRP
-  */
- 
- static inline unsigned int kvm_vz_config_user_wrmask(struct kvm_vcpu *vcpu)
-@@ -177,7 +177,7 @@ static inline unsigned int kvm_vz_config4_user_wrmask(struct kvm_vcpu *vcpu)
- 
- static inline unsigned int kvm_vz_config5_user_wrmask(struct kvm_vcpu *vcpu)
- {
--	return kvm_vz_config5_guest_wrmask(vcpu);
-+	return kvm_vz_config5_guest_wrmask(vcpu) | MIPS_CONF5_MRP;
- }
- 
- static gpa_t kvm_vz_gva_to_gpa_cb(gva_t gva)
-@@ -685,6 +685,41 @@ static int kvm_trap_vz_no_handler(struct kvm_vcpu *vcpu)
- 	return RESUME_HOST;
- }
- 
-+static unsigned long mips_process_maar(unsigned int op, unsigned long val)
-+{
-+	/* Mask off unused bits */
-+	unsigned long mask = 0xfffff000 | MIPS_MAAR_S | MIPS_MAAR_VL;
-+
-+	if (read_gc0_pagegrain() & PG_ELPA)
-+		mask |= 0x00ffffff00000000ull;
-+	if (cpu_guest_has_mvh)
-+		mask |= MIPS_MAAR_VH;
-+
-+	/* Set or clear VH */
-+	if (op == mtc_op) {
-+		/* clear VH */
-+		val &= ~MIPS_MAAR_VH;
-+	} else if (op == dmtc_op) {
-+		/* set VH to match VL */
-+		val &= ~MIPS_MAAR_VH;
-+		if (val & MIPS_MAAR_VL)
-+			val |= MIPS_MAAR_VH;
-+	}
-+
-+	return val & mask;
-+}
-+
-+static void kvm_write_maari(struct kvm_vcpu *vcpu, unsigned long val)
-+{
-+	struct mips_coproc *cop0 = vcpu->arch.cop0;
-+
-+	val &= MIPS_MAARI_INDEX;
-+	if (val == MIPS_MAARI_INDEX)
-+		kvm_write_sw_gc0_maari(cop0, ARRAY_SIZE(vcpu->arch.maar) - 1);
-+	else if (val < ARRAY_SIZE(vcpu->arch.maar))
-+		kvm_write_sw_gc0_maari(cop0, val);
-+}
-+
- static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
- 					      u32 *opc, u32 cause,
- 					      struct kvm_run *run,
-@@ -737,6 +772,15 @@ static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
- 						MIPS_LLADDR_LLB;
- 				else
- 					val = 0;
-+			} else if (rd == MIPS_CP0_LLADDR &&
-+				   sel == 1 &&		/* MAAR */
-+				   cpu_guest_has_maar &&
-+				   !cpu_guest_has_dyn_maar) {
-+				/* MAARI must be in range */
-+				BUG_ON(kvm_read_sw_gc0_maari(cop0) >=
-+						ARRAY_SIZE(vcpu->arch.maar));
-+				val = vcpu->arch.maar[
-+					kvm_read_sw_gc0_maari(cop0)];
- 			} else if ((rd == MIPS_CP0_PRID &&
- 				    (sel == 0 ||	/* PRid */
- 				     sel == 2 ||	/* CDMMBase */
-@@ -746,6 +790,10 @@ static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
- 				     sel == 3)) ||	/* SRSMap */
- 				   (rd == MIPS_CP0_CONFIG &&
- 				    (sel == 7)) ||	/* Config7 */
-+				   (rd == MIPS_CP0_LLADDR &&
-+				    (sel == 2) &&	/* MAARI */
-+				    cpu_guest_has_maar &&
-+				    !cpu_guest_has_dyn_maar) ||
- 				   (rd == MIPS_CP0_ERRCTL &&
- 				    (sel == 0))) {	/* ErrCtl */
- 				val = cop0->reg[rd][sel];
-@@ -793,6 +841,23 @@ static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
- 				if (cpu_guest_has_rw_llb &&
- 				    !(val & MIPS_LLADDR_LLB))
- 					write_gc0_lladdr(0);
-+			} else if (rd == MIPS_CP0_LLADDR &&
-+				   sel == 1 &&		/* MAAR */
-+				   cpu_guest_has_maar &&
-+				   !cpu_guest_has_dyn_maar) {
-+				val = mips_process_maar(inst.c0r_format.rs,
-+							val);
-+
-+				/* MAARI must be in range */
-+				BUG_ON(kvm_read_sw_gc0_maari(cop0) >=
-+						ARRAY_SIZE(vcpu->arch.maar));
-+				vcpu->arch.maar[kvm_read_sw_gc0_maari(cop0)] =
-+									val;
-+			} else if (rd == MIPS_CP0_LLADDR &&
-+				   (sel == 2) &&	/* MAARI */
-+				   cpu_guest_has_maar &&
-+				   !cpu_guest_has_dyn_maar) {
-+				kvm_write_maari(vcpu, val);
- 			} else if (rd == MIPS_CP0_ERRCTL &&
- 				   (sel == 0)) {	/* ErrCtl */
- 				/* ignore the written value */
-@@ -1440,6 +1505,8 @@ static unsigned long kvm_vz_num_regs(struct kvm_vcpu *vcpu)
- 		ret += ARRAY_SIZE(kvm_vz_get_one_regs_segments);
- 	if (cpu_guest_has_htw)
- 		ret += ARRAY_SIZE(kvm_vz_get_one_regs_htw);
-+	if (cpu_guest_has_maar && !cpu_guest_has_dyn_maar)
-+		ret += 1 + ARRAY_SIZE(vcpu->arch.maar);
- 	ret += __arch_hweight8(cpu_data[0].guest.kscratch_mask);
- 
- 	return ret;
-@@ -1491,6 +1558,19 @@ static int kvm_vz_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *indices)
- 			return -EFAULT;
- 		indices += ARRAY_SIZE(kvm_vz_get_one_regs_htw);
- 	}
-+	if (cpu_guest_has_maar && !cpu_guest_has_dyn_maar) {
-+		for (i = 0; i < ARRAY_SIZE(vcpu->arch.maar); ++i) {
-+			index = KVM_REG_MIPS_CP0_MAAR(i);
-+			if (copy_to_user(indices, &index, sizeof(index)))
-+				return -EFAULT;
-+			++indices;
-+		}
-+
-+		index = KVM_REG_MIPS_CP0_MAARI;
-+		if (copy_to_user(indices, &index, sizeof(index)))
-+			return -EFAULT;
-+		++indices;
-+	}
- 	for (i = 0; i < 6; ++i) {
- 		if (!cpu_guest_has_kscr(i + 2))
- 			continue;
-@@ -1688,6 +1768,19 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *vcpu,
- 			return -EINVAL;
- 		*v = read_gc0_config5();
- 		break;
-+	case KVM_REG_MIPS_CP0_MAAR(0) ... KVM_REG_MIPS_CP0_MAAR(0x3f):
-+		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
-+			return -EINVAL;
-+		idx = reg->id - KVM_REG_MIPS_CP0_MAAR(0);
-+		if (idx >= ARRAY_SIZE(vcpu->arch.maar))
-+			return -EINVAL;
-+		*v = vcpu->arch.maar[idx];
-+		break;
-+	case KVM_REG_MIPS_CP0_MAARI:
-+		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
-+			return -EINVAL;
-+		*v = kvm_read_sw_gc0_maari(vcpu->arch.cop0);
-+		break;
- #ifdef CONFIG_64BIT
- 	case KVM_REG_MIPS_CP0_XCONTEXT:
- 		*v = read_gc0_xcontext();
-@@ -1937,6 +2030,19 @@ static int kvm_vz_set_one_reg(struct kvm_vcpu *vcpu,
- 			write_gc0_config5(v);
- 		}
- 		break;
-+	case KVM_REG_MIPS_CP0_MAAR(0) ... KVM_REG_MIPS_CP0_MAAR(0x3f):
-+		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
-+			return -EINVAL;
-+		idx = reg->id - KVM_REG_MIPS_CP0_MAAR(0);
-+		if (idx >= ARRAY_SIZE(vcpu->arch.maar))
-+			return -EINVAL;
-+		vcpu->arch.maar[idx] = mips_process_maar(dmtc_op, v);
-+		break;
-+	case KVM_REG_MIPS_CP0_MAARI:
-+		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
-+			return -EINVAL;
-+		kvm_write_maari(vcpu, v);
-+		break;
- #ifdef CONFIG_64BIT
- 	case KVM_REG_MIPS_CP0_XCONTEXT:
- 		write_gc0_xcontext(v);
--- 
-git-series 0.8.10
+Thanks for doing the patch.
+
+If it helps:
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+> Strict alignment became necessary with commit 3821fd35b58d
+> ("jump_label: Reduce the size of struct static_key"), currently in
+> linux-next, which uses the two least significant bits of pointers to
+> __jump_table elements.
+
+It would obviously be nice if this could go in before the commit that
+exposes the breakage, but I guess that's problematic because Steve
+doesn't want to rebase the tracing tree.
+
+Steve I think you've already sent your pull request for this cycle? So I
+guess if this can go in your first batch of fixes?
+
+Or we could just send it directly to Linus?
+
+cheers
+
+> Fix by forcing __jump_table to 8, which is the same alignment used for
+> this section in the kernel proper.
+>
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> ---
+>  scripts/module-common.lds | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/scripts/module-common.lds b/scripts/module-common.lds
+> index 73a2c7d..53234e8 100644
+> --- a/scripts/module-common.lds
+> +++ b/scripts/module-common.lds
+> @@ -19,4 +19,6 @@ SECTIONS {
+>  
+>  	. = ALIGN(8);
+>  	.init_array		0 : { *(SORT(.init_array.*)) *(.init_array) }
+> +
+> +	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
+>  }
+> -- 
+> 2.9.3

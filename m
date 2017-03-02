@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:47:24 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:46371 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:47:48 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18617 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993895AbdCBJhoA0mbt (ORCPT
+        with ESMTP id S23993894AbdCBJhoAaakt (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2017 10:37:44 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id BF9E7D594D798;
-        Thu,  2 Mar 2017 09:37:32 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 9CD4C68AD572A;
+        Thu,  2 Mar 2017 09:37:34 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Mar 2017 09:37:34 +0000
+ 14.3.294.0; Thu, 2 Mar 2017 09:37:36 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 22/32] KVM: MIPS: Update exit handler for VZ
-Date:   Thu, 2 Mar 2017 09:36:49 +0000
-Message-ID: <128e5ec64384890c18af3c7f37f49a20212bdb29.1488447004.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 24/32] KVM: MIPS: Add VZ support to build system
+Date:   Thu, 2 Mar 2017 09:36:51 +0000
+Message-ID: <8dfa12af83db31905a5707b9ea2a48af5850e831.1488447004.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
 In-Reply-To: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56983
+X-archive-position: 56984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,16 +46,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The general guest exit handler needs a few tweaks for VZ compared to
-trap & emulate, which for now are made directly depending on
-CONFIG_KVM_MIPS_VZ:
+Add support for the MIPS Virtualization (VZ) ASE to the MIPS KVM build
+system. For now KVM can only be configured for T&E or VZ and not both,
+but the design of the user facing APIs support the possibility of having
+both available, so this could change in future.
 
-- There is no need to re-enable the hardware page table walker (HTW), as
-  it can be left enabled during guest mode operation with VZ.
-
-- There is no need to perform a privilege check, as any guest privilege
-  violations should have already been detected by the hardware and
-  triggered the appropriate guest exception.
+Note that support for various optional guest features (some of which
+can't be turned off) are implemented in immediately following commits,
+so although it should now be possible to build VZ support, it may not
+work yet on your hardware.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -64,64 +63,79 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/mips.c | 31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ arch/mips/kvm/Kconfig  | 28 ++++++++++++++++++++++++++--
+ arch/mips/kvm/Makefile |  8 +++++++-
+ 2 files changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index efb406455229..3eff6a6c82b6 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1232,7 +1232,8 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 	vcpu->mode = OUTSIDE_GUEST_MODE;
+diff --git a/arch/mips/kvm/Kconfig b/arch/mips/kvm/Kconfig
+index 65067327db12..81bf5bf1d5e1 100644
+--- a/arch/mips/kvm/Kconfig
++++ b/arch/mips/kvm/Kconfig
+@@ -5,6 +5,7 @@ source "virt/kvm/Kconfig"
  
- 	/* re-enable HTW before enabling interrupts */
--	htw_start();
-+	if (!IS_ENABLED(CONFIG_KVM_MIPS_VZ))
-+		htw_start();
+ menuconfig VIRTUALIZATION
+ 	bool "Virtualization"
++	depends on HAVE_KVM
+ 	---help---
+ 	  Say Y here to get to see options for using your Linux host to run
+ 	  other operating systems inside virtual machines (guests).
+@@ -26,11 +27,34 @@ config KVM
+ 	select SRCU
+ 	---help---
+ 	  Support for hosting Guest kernels.
+-	  Currently supported on MIPS32 processors.
++
++choice
++	prompt "Virtualization mode"
++	depends on KVM
++	default KVM_MIPS_TE
++
++config KVM_MIPS_TE
++	bool "Trap & Emulate"
++	---help---
++	  Use trap and emulate to virtualize 32-bit guests in user mode. This
++	  does not require any special hardware Virtualization support beyond
++	  standard MIPS32/64 r2 or later, but it does require the guest kernel
++	  to be configured with CONFIG_KVM_GUEST=y so that it resides in the
++	  user address segment.
++
++config KVM_MIPS_VZ
++	bool "MIPS Virtualization (VZ) ASE"
++	---help---
++	  Use the MIPS Virtualization (VZ) ASE to virtualize guests. This
++	  supports running unmodified guest kernels (with CONFIG_KVM_GUEST=n),
++	  but requires hardware support.
++
++endchoice
  
- 	/* Set a default exit reason */
- 	run->exit_reason = KVM_EXIT_UNKNOWN;
-@@ -1250,17 +1251,20 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 			cause, opc, run, vcpu);
- 	trace_kvm_exit(vcpu, exccode);
+ config KVM_MIPS_DYN_TRANS
+ 	bool "KVM/MIPS: Dynamic binary translation to reduce traps"
+-	depends on KVM
++	depends on KVM_MIPS_TE
++	default y
+ 	---help---
+ 	  When running in Trap & Emulate mode patch privileged
+ 	  instructions to reduce the number of traps.
+diff --git a/arch/mips/kvm/Makefile b/arch/mips/kvm/Makefile
+index e56403c8a3f5..45d90f5d5177 100644
+--- a/arch/mips/kvm/Makefile
++++ b/arch/mips/kvm/Makefile
+@@ -9,9 +9,15 @@ common-objs-$(CONFIG_CPU_HAS_MSA) += msa.o
  
--	/*
--	 * Do a privilege check, if in UM most of these exit conditions end up
--	 * causing an exception to be delivered to the Guest Kernel
--	 */
--	er = kvm_mips_check_privilege(cause, opc, run, vcpu);
--	if (er == EMULATE_PRIV_FAIL) {
--		goto skip_emul;
--	} else if (er == EMULATE_FAIL) {
--		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
--		ret = RESUME_HOST;
--		goto skip_emul;
-+	if (!IS_ENABLED(CONFIG_KVM_MIPS_VZ)) {
-+		/*
-+		 * Do a privilege check, if in UM most of these exit conditions
-+		 * end up causing an exception to be delivered to the Guest
-+		 * Kernel
-+		 */
-+		er = kvm_mips_check_privilege(cause, opc, run, vcpu);
-+		if (er == EMULATE_PRIV_FAIL) {
-+			goto skip_emul;
-+		} else if (er == EMULATE_FAIL) {
-+			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-+			ret = RESUME_HOST;
-+			goto skip_emul;
-+		}
- 	}
+ kvm-objs := $(common-objs-y) mips.o emulate.o entry.o \
+ 	    interrupt.o stats.o commpage.o \
+-	    dyntrans.o trap_emul.o fpu.o
++	    fpu.o
+ kvm-objs += hypcall.o
+ kvm-objs += mmu.o
  
- 	switch (exccode) {
-@@ -1420,7 +1424,8 @@ int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
- 	}
- 
- 	/* Disable HTW before returning to guest or host */
--	htw_stop();
-+	if (!IS_ENABLED(CONFIG_KVM_MIPS_VZ))
-+		htw_stop();
- 
- 	return ret;
- }
++ifdef CONFIG_KVM_MIPS_VZ
++kvm-objs		+= vz.o
++else
++kvm-objs		+= dyntrans.o
++kvm-objs		+= trap_emul.o
++endif
+ obj-$(CONFIG_KVM)	+= kvm.o
+ obj-y			+= callback.o tlb.o
 -- 
 git-series 0.8.10

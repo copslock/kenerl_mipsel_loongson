@@ -1,23 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:47:48 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:18617 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:48:16 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24258 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993894AbdCBJhoAaakt (ORCPT
+        with ESMTP id S23993896AbdCBJhoIhRst (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2017 10:37:44 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 9CD4C68AD572A;
-        Thu,  2 Mar 2017 09:37:34 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id A9104FAA0B0EB;
+        Thu,  2 Mar 2017 09:37:33 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Mar 2017 09:37:36 +0000
+ 14.3.294.0; Thu, 2 Mar 2017 09:37:35 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 24/32] KVM: MIPS: Add VZ support to build system
-Date:   Thu, 2 Mar 2017 09:36:51 +0000
-Message-ID: <8dfa12af83db31905a5707b9ea2a48af5850e831.1488447004.git-series.james.hogan@imgtec.com>
+        Ralf Baechle <ralf@linux-mips.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>, <linux-doc@vger.kernel.org>
+Subject: [PATCH 23/32] KVM: MIPS: Implement VZ support
+Date:   Thu, 2 Mar 2017 09:36:50 +0000
+Message-ID: <efa291481ffa43a22037316e47dcc3e2ce2083e7.1488447004.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
 In-Reply-To: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
@@ -29,7 +32,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56984
+X-archive-position: 56985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,96 +49,2702 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for the MIPS Virtualization (VZ) ASE to the MIPS KVM build
-system. For now KVM can only be configured for T&E or VZ and not both,
-but the design of the user facing APIs support the possibility of having
-both available, so this could change in future.
+Add the main support for the MIPS Virtualization ASE (A.K.A. VZ) to MIPS
+KVM. The bulk of this work is in vz.c, with various new state and
+definitions elsewhere.
 
-Note that support for various optional guest features (some of which
-can't be turned off) are implemented in immediately following commits,
-so although it should now be possible to build VZ support, it may not
-work yet on your hardware.
+Enough is implemented to be able to run on a minimal VZ core. Further
+patches will fill out support for guest features which are optional or
+can be disabled.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: "Radim Krčmář" <rkrcmar@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
 ---
- arch/mips/kvm/Kconfig  | 28 ++++++++++++++++++++++++++--
- arch/mips/kvm/Makefile |  8 +++++++-
- 2 files changed, 33 insertions(+), 3 deletions(-)
+ Documentation/virtual/kvm/api.txt |    2 +-
+ arch/mips/include/asm/cpu-info.h  |    1 +-
+ arch/mips/include/asm/kvm_host.h  |   42 +-
+ arch/mips/kernel/time.c           |    1 +-
+ arch/mips/kvm/interrupt.h         |    5 +-
+ arch/mips/kvm/mips.c              |    6 +-
+ arch/mips/kvm/mmu.c               |   20 +-
+ arch/mips/kvm/tlb.c               |    7 +-
+ arch/mips/kvm/trace.h             |   15 +-
+ arch/mips/kvm/vz.c                | 2380 ++++++++++++++++++++++++++++++-
+ 10 files changed, 2479 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/kvm/vz.c
 
-diff --git a/arch/mips/kvm/Kconfig b/arch/mips/kvm/Kconfig
-index 65067327db12..81bf5bf1d5e1 100644
---- a/arch/mips/kvm/Kconfig
-+++ b/arch/mips/kvm/Kconfig
-@@ -5,6 +5,7 @@ source "virt/kvm/Kconfig"
+diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
+index cfe9f8b04b5e..996a388f05c5 100644
+--- a/Documentation/virtual/kvm/api.txt
++++ b/Documentation/virtual/kvm/api.txt
+@@ -2075,6 +2075,7 @@ registers, find a list below:
+   MIPS  | KVM_REG_MIPS_CP0_CONTEXT      | 64
+   MIPS  | KVM_REG_MIPS_CP0_USERLOCAL    | 64
+   MIPS  | KVM_REG_MIPS_CP0_PAGEMASK     | 32
++  MIPS  | KVM_REG_MIPS_CP0_PAGEGRAIN    | 32
+   MIPS  | KVM_REG_MIPS_CP0_WIRED        | 32
+   MIPS  | KVM_REG_MIPS_CP0_HWRENA       | 32
+   MIPS  | KVM_REG_MIPS_CP0_BADVADDR     | 64
+@@ -2094,6 +2095,7 @@ registers, find a list below:
+   MIPS  | KVM_REG_MIPS_CP0_CONFIG4      | 32
+   MIPS  | KVM_REG_MIPS_CP0_CONFIG5      | 32
+   MIPS  | KVM_REG_MIPS_CP0_CONFIG7      | 32
++  MIPS  | KVM_REG_MIPS_CP0_XCONTEXT     | 64
+   MIPS  | KVM_REG_MIPS_CP0_ERROREPC     | 64
+   MIPS  | KVM_REG_MIPS_CP0_KSCRATCH1    | 64
+   MIPS  | KVM_REG_MIPS_CP0_KSCRATCH2    | 64
+diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
+index 4113796e0ef4..be3b4c25f335 100644
+--- a/arch/mips/include/asm/cpu-info.h
++++ b/arch/mips/include/asm/cpu-info.h
+@@ -110,6 +110,7 @@ struct cpuinfo_mips {
+ 	struct guest_info	guest;
+ 	unsigned int		gtoffset_mask;
+ 	unsigned int		guestid_mask;
++	unsigned int		guestid_cache;
+ } __attribute__((aligned(SMP_CACHE_BYTES)));
  
- menuconfig VIRTUALIZATION
- 	bool "Virtualization"
-+	depends on HAVE_KVM
- 	---help---
- 	  Say Y here to get to see options for using your Linux host to run
- 	  other operating systems inside virtual machines (guests).
-@@ -26,11 +27,34 @@ config KVM
- 	select SRCU
- 	---help---
- 	  Support for hosting Guest kernels.
--	  Currently supported on MIPS32 processors.
-+
-+choice
-+	prompt "Virtualization mode"
-+	depends on KVM
-+	default KVM_MIPS_TE
-+
-+config KVM_MIPS_TE
-+	bool "Trap & Emulate"
-+	---help---
-+	  Use trap and emulate to virtualize 32-bit guests in user mode. This
-+	  does not require any special hardware Virtualization support beyond
-+	  standard MIPS32/64 r2 or later, but it does require the guest kernel
-+	  to be configured with CONFIG_KVM_GUEST=y so that it resides in the
-+	  user address segment.
-+
-+config KVM_MIPS_VZ
-+	bool "MIPS Virtualization (VZ) ASE"
-+	---help---
-+	  Use the MIPS Virtualization (VZ) ASE to virtualize guests. This
-+	  supports running unmodified guest kernels (with CONFIG_KVM_GUEST=n),
-+	  but requires hardware support.
-+
-+endchoice
+ extern struct cpuinfo_mips cpu_data[];
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index 6c1b5bedf7e9..41d8abc1d6fa 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -10,6 +10,7 @@
+ #ifndef __MIPS_KVM_HOST_H__
+ #define __MIPS_KVM_HOST_H__
  
- config KVM_MIPS_DYN_TRANS
- 	bool "KVM/MIPS: Dynamic binary translation to reduce traps"
--	depends on KVM
-+	depends on KVM_MIPS_TE
-+	default y
- 	---help---
- 	  When running in Trap & Emulate mode patch privileged
- 	  instructions to reduce the number of traps.
-diff --git a/arch/mips/kvm/Makefile b/arch/mips/kvm/Makefile
-index e56403c8a3f5..45d90f5d5177 100644
---- a/arch/mips/kvm/Makefile
-+++ b/arch/mips/kvm/Makefile
-@@ -9,9 +9,15 @@ common-objs-$(CONFIG_CPU_HAS_MSA) += msa.o
++#include <linux/cpumask.h>
+ #include <linux/mutex.h>
+ #include <linux/hrtimer.h>
+ #include <linux/interrupt.h>
+@@ -73,6 +74,11 @@
+ #define KVM_COALESCED_MMIO_PAGE_OFFSET 1
+ #define KVM_HALT_POLL_NS_DEFAULT 500000
  
- kvm-objs := $(common-objs-y) mips.o emulate.o entry.o \
- 	    interrupt.o stats.o commpage.o \
--	    dyntrans.o trap_emul.o fpu.o
-+	    fpu.o
- kvm-objs += hypcall.o
- kvm-objs += mmu.o
++#ifdef CONFIG_KVM_MIPS_VZ
++extern unsigned long GUESTID_MASK;
++extern unsigned long GUESTID_FIRST_VERSION;
++extern unsigned long GUESTID_VERSION_MASK;
++#endif
  
-+ifdef CONFIG_KVM_MIPS_VZ
-+kvm-objs		+= vz.o
-+else
-+kvm-objs		+= dyntrans.o
-+kvm-objs		+= trap_emul.o
-+endif
- obj-$(CONFIG_KVM)	+= kvm.o
- obj-y			+= callback.o tlb.o
+ 
+ /*
+@@ -167,6 +173,8 @@ struct kvm_arch_memory_slot {
+ struct kvm_arch {
+ 	/* Guest physical mm */
+ 	struct mm_struct gpa_mm;
++	/* Mask of CPUs needing GPA ASID flush */
++	cpumask_t asid_flush_mask;
+ };
+ 
+ #define N_MIPS_COPROC_REGS	32
+@@ -224,6 +232,11 @@ struct mips_coproc {
+ #define MIPS_CP0_CONFIG4_SEL	4
+ #define MIPS_CP0_CONFIG5_SEL	5
+ 
++#define MIPS_CP0_GUESTCTL2	10
++#define MIPS_CP0_GUESTCTL2_SEL	5
++#define MIPS_CP0_GTOFFSET	12
++#define MIPS_CP0_GTOFFSET_SEL	7
++
+ /* Resume Flags */
+ #define RESUME_FLAG_DR		(1<<0)	/* Reload guest nonvolatile state? */
+ #define RESUME_FLAG_HOST	(1<<1)	/* Resume host? */
+@@ -359,7 +372,20 @@ struct kvm_vcpu_arch {
+ 	/* Cache some mmu pages needed inside spinlock regions */
+ 	struct kvm_mmu_memory_cache mmu_page_cache;
+ 
++#ifdef CONFIG_KVM_MIPS_VZ
++	/* vcpu's vzguestid is different on each host cpu in an smp system */
++	u32 vzguestid[NR_CPUS];
++
++	/* wired guest TLB entries */
++	struct kvm_mips_tlb *wired_tlb;
++	unsigned int wired_tlb_limit;
++	unsigned int wired_tlb_used;
++#endif
++
++	/* Last CPU the VCPU state was loaded on */
+ 	int last_sched_cpu;
++	/* Last CPU the VCPU actually executed guest code on */
++	int last_exec_cpu;
+ 
+ 	/* WAIT executed */
+ 	int wait;
+@@ -663,6 +689,7 @@ __BUILD_KVM_RW_HW(config4,        32, MIPS_CP0_CONFIG,       4)
+ __BUILD_KVM_RW_HW(config5,        32, MIPS_CP0_CONFIG,       5)
+ __BUILD_KVM_RW_HW(config6,        32, MIPS_CP0_CONFIG,       6)
+ __BUILD_KVM_RW_HW(config7,        32, MIPS_CP0_CONFIG,       7)
++__BUILD_KVM_RW_HW(xcontext,       l,  MIPS_CP0_TLB_XCONTEXT, 0)
+ __BUILD_KVM_RW_HW(errorepc,       l,  MIPS_CP0_ERROR_PC,     0)
+ __BUILD_KVM_RW_HW(kscratch1,      l,  MIPS_CP0_DESAVE,       2)
+ __BUILD_KVM_RW_HW(kscratch2,      l,  MIPS_CP0_DESAVE,       3)
+@@ -677,6 +704,14 @@ __BUILD_KVM_SET_HW(status,        32, MIPS_CP0_STATUS,       0)
+ __BUILD_KVM_ATOMIC_HW(cause,      32, MIPS_CP0_CAUSE,        0)
+ __BUILD_KVM_SET_HW(ebase,         l,  MIPS_CP0_PRID,         1)
+ 
++/* Bitwise operations (on saved state) */
++__BUILD_KVM_SET_SAVED(config,     32, MIPS_CP0_CONFIG,       0)
++__BUILD_KVM_SET_SAVED(config1,    32, MIPS_CP0_CONFIG,       1)
++__BUILD_KVM_SET_SAVED(config2,    32, MIPS_CP0_CONFIG,       2)
++__BUILD_KVM_SET_SAVED(config3,    32, MIPS_CP0_CONFIG,       3)
++__BUILD_KVM_SET_SAVED(config4,    32, MIPS_CP0_CONFIG,       4)
++__BUILD_KVM_SET_SAVED(config5,    32, MIPS_CP0_CONFIG,       5)
++
+ /* Helpers */
+ 
+ static inline bool kvm_mips_guest_can_have_fpu(struct kvm_vcpu_arch *vcpu)
+@@ -789,6 +824,10 @@ u32 kvm_get_user_asid(struct kvm_vcpu *vcpu);
+ 
+ u32 kvm_get_commpage_asid (struct kvm_vcpu *vcpu);
+ 
++#ifdef CONFIG_KVM_MIPS_VZ
++int kvm_mips_handle_vz_root_tlb_fault(unsigned long badvaddr,
++				      struct kvm_vcpu *vcpu, bool write_fault);
++#endif
+ extern int kvm_mips_handle_kseg0_tlb_fault(unsigned long badbaddr,
+ 					   struct kvm_vcpu *vcpu,
+ 					   bool write_fault);
+@@ -1029,6 +1068,9 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
+ 					    struct kvm_run *run,
+ 					    struct kvm_vcpu *vcpu);
+ 
++/* COP0 */
++enum emulation_result kvm_mips_emul_wait(struct kvm_vcpu *vcpu);
++
+ unsigned int kvm_mips_config1_wrmask(struct kvm_vcpu *vcpu);
+ unsigned int kvm_mips_config3_wrmask(struct kvm_vcpu *vcpu);
+ unsigned int kvm_mips_config4_wrmask(struct kvm_vcpu *vcpu);
+diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
+index a7f81261c781..c036157fb891 100644
+--- a/arch/mips/kernel/time.c
++++ b/arch/mips/kernel/time.c
+@@ -70,6 +70,7 @@ EXPORT_SYMBOL(perf_irq);
+  */
+ 
+ unsigned int mips_hpt_frequency;
++EXPORT_SYMBOL_GPL(mips_hpt_frequency);
+ 
+ /*
+  * This function exists in order to cause an error due to a duplicate
+diff --git a/arch/mips/kvm/interrupt.h b/arch/mips/kvm/interrupt.h
+index fb118a2c8379..3bf0a49725e8 100644
+--- a/arch/mips/kvm/interrupt.h
++++ b/arch/mips/kvm/interrupt.h
+@@ -30,8 +30,13 @@
+ 
+ #define C_TI        (_ULCAST_(1) << 30)
+ 
++#ifdef CONFIG_KVM_MIPS_VZ
++#define KVM_MIPS_IRQ_DELIVER_ALL_AT_ONCE (1)
++#define KVM_MIPS_IRQ_CLEAR_ALL_AT_ONCE   (1)
++#else
+ #define KVM_MIPS_IRQ_DELIVER_ALL_AT_ONCE (0)
+ #define KVM_MIPS_IRQ_CLEAR_ALL_AT_ONCE   (0)
++#endif
+ 
+ void kvm_mips_queue_irq(struct kvm_vcpu *vcpu, unsigned int priority);
+ void kvm_mips_dequeue_irq(struct kvm_vcpu *vcpu, unsigned int priority);
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index 3eff6a6c82b6..4296eba6f630 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -112,7 +112,12 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ {
+ 	switch (type) {
+ 	case KVM_VM_MIPS_DEFAULT:
++		/* fall-through to default type */
++#ifdef CONFIG_KVM_MIPS_VZ
++	case KVM_VM_MIPS_VZ:
++#else
+ 	case KVM_VM_MIPS_TE:
++#endif
+ 		break;
+ 	default:
+ 		/* Unsupported KVM type */
+@@ -377,6 +382,7 @@ struct kvm_vcpu *kvm_arch_vcpu_create(struct kvm *kvm, unsigned int id)
+ 
+ 	/* Init */
+ 	vcpu->arch.last_sched_cpu = -1;
++	vcpu->arch.last_exec_cpu = -1;
+ 
+ 	return vcpu;
+ 
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index cb0faade311e..ee64db032793 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -992,6 +992,22 @@ static pte_t kvm_mips_gpa_pte_to_gva_mapped(pte_t pte, long entrylo)
+ 	return kvm_mips_gpa_pte_to_gva_unmapped(pte);
+ }
+ 
++#ifdef CONFIG_KVM_MIPS_VZ
++int kvm_mips_handle_vz_root_tlb_fault(unsigned long badvaddr,
++				      struct kvm_vcpu *vcpu,
++				      bool write_fault)
++{
++	int ret;
++
++	ret = kvm_mips_map_page(vcpu, badvaddr, write_fault, NULL, NULL);
++	if (ret)
++		return ret;
++
++	/* Invalidate this entry in the TLB */
++	return kvm_vz_host_tlb_inv(vcpu, badvaddr);
++}
++#endif
++
+ /* XXXKYMA: Must be called with interrupts disabled */
+ int kvm_mips_handle_kseg0_tlb_fault(unsigned long badvaddr,
+ 				    struct kvm_vcpu *vcpu,
+@@ -1225,6 +1241,10 @@ int kvm_get_inst(u32 *opc, struct kvm_vcpu *vcpu, u32 *out)
+ {
+ 	int err;
+ 
++	if (WARN(IS_ENABLED(CONFIG_KVM_MIPS_VZ),
++		 "Expect BadInstr/BadInstrP registers to be used with VZ\n"))
++		return -EINVAL;
++
+ retry:
+ 	kvm_trap_emul_gva_lockless_begin(vcpu);
+ 	err = get_user(*out, opc);
+diff --git a/arch/mips/kvm/tlb.c b/arch/mips/kvm/tlb.c
+index a28fcb1e5072..c215470fdcb0 100644
+--- a/arch/mips/kvm/tlb.c
++++ b/arch/mips/kvm/tlb.c
+@@ -34,6 +34,13 @@
+ #define KVM_GUEST_SP_TLB    1
+ 
+ #ifdef CONFIG_KVM_MIPS_VZ
++unsigned long GUESTID_MASK;
++EXPORT_SYMBOL_GPL(GUESTID_MASK);
++unsigned long GUESTID_FIRST_VERSION;
++EXPORT_SYMBOL_GPL(GUESTID_FIRST_VERSION);
++unsigned long GUESTID_VERSION_MASK;
++EXPORT_SYMBOL_GPL(GUESTID_VERSION_MASK);
++
+ static u32 kvm_mips_get_root_asid(struct kvm_vcpu *vcpu)
+ {
+ 	struct mm_struct *gpa_mm = &vcpu->kvm->arch.gpa_mm;
+diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
+index 0c59282a2f7d..d80d37a1b82e 100644
+--- a/arch/mips/kvm/trace.h
++++ b/arch/mips/kvm/trace.h
+@@ -286,6 +286,21 @@ TRACE_EVENT(kvm_asid_change,
+ 		      __entry->new_asid)
+ );
+ 
++TRACE_EVENT(kvm_guestid_change,
++	    TP_PROTO(struct kvm_vcpu *vcpu, unsigned int guestid),
++	    TP_ARGS(vcpu, guestid),
++	    TP_STRUCT__entry(
++			__field(unsigned int, guestid)
++	    ),
++
++	    TP_fast_assign(
++			__entry->guestid = guestid;
++	    ),
++
++	    TP_printk("GuestID: 0x%02x",
++		      __entry->guestid)
++);
++
+ #endif /* _TRACE_KVM_H */
+ 
+ /* This part must be outside protection */
+diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
+new file mode 100644
+index 000000000000..30c3550926b0
+--- /dev/null
++++ b/arch/mips/kvm/vz.c
+@@ -0,0 +1,2380 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * KVM/MIPS: Support for hardware virtualization extensions
++ *
++ * Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
++ * Authors: Yann Le Du <ledu@kymasys.com>
++ */
++
++#include <linux/errno.h>
++#include <linux/err.h>
++#include <linux/module.h>
++#include <linux/preempt.h>
++#include <linux/vmalloc.h>
++#include <asm/cacheflush.h>
++#include <asm/cacheops.h>
++#include <asm/cmpxchg.h>
++#include <asm/fpu.h>
++#include <asm/hazards.h>
++#include <asm/inst.h>
++#include <asm/mmu_context.h>
++#include <asm/r4kcache.h>
++#include <asm/time.h>
++#include <asm/tlb.h>
++#include <asm/tlbex.h>
++
++#include <linux/kvm_host.h>
++
++#include "interrupt.h"
++
++#include "trace.h"
++
++/* Pointers to last VCPU loaded on each physical CPU */
++static struct kvm_vcpu *last_vcpu[NR_CPUS];
++/* Pointers to last VCPU executed on each physical CPU */
++static struct kvm_vcpu *last_exec_vcpu[NR_CPUS];
++
++/*
++ * Number of guest VTLB entries to use, so we can catch inconsistency between
++ * CPUs.
++ */
++static unsigned int kvm_vz_guest_vtlb_size;
++
++static inline long kvm_vz_read_gc0_ebase(void)
++{
++	if (sizeof(long) == 8 && cpu_has_ebase_wg)
++		return read_gc0_ebase_64();
++	else
++		return read_gc0_ebase();
++}
++
++static inline void kvm_vz_write_gc0_ebase(long v)
++{
++	/*
++	 * First write with WG=1 to write upper bits, then write again in case
++	 * WG should be left at 0.
++	 * write_gc0_ebase_64() is no longer UNDEFINED since R6.
++	 */
++	if (sizeof(long) == 8 &&
++	    (cpu_has_mips64r6 || cpu_has_ebase_wg)) {
++		write_gc0_ebase_64(v | MIPS_EBASE_WG);
++		write_gc0_ebase_64(v);
++	} else {
++		write_gc0_ebase(v | MIPS_EBASE_WG);
++		write_gc0_ebase(v);
++	}
++}
++
++/*
++ * These Config bits may be writable by the guest:
++ * Config:	[K23, KU] (!TLB), K0
++ * Config1:	(none)
++ * Config2:	[TU, SU] (impl)
++ * Config3:	ISAOnExc
++ * Config4:	FTLBPageSize
++ * Config5:	K, CV, MSAEn, UFE, FRE, SBRI, UFR
++ */
++
++static inline unsigned int kvm_vz_config_guest_wrmask(struct kvm_vcpu *vcpu)
++{
++	return CONF_CM_CMASK;
++}
++
++static inline unsigned int kvm_vz_config1_guest_wrmask(struct kvm_vcpu *vcpu)
++{
++	return 0;
++}
++
++static inline unsigned int kvm_vz_config2_guest_wrmask(struct kvm_vcpu *vcpu)
++{
++	return 0;
++}
++
++static inline unsigned int kvm_vz_config3_guest_wrmask(struct kvm_vcpu *vcpu)
++{
++	return MIPS_CONF3_ISA_OE;
++}
++
++static inline unsigned int kvm_vz_config4_guest_wrmask(struct kvm_vcpu *vcpu)
++{
++	/* no need to be exact */
++	return MIPS_CONF4_VFTLBPAGESIZE;
++}
++
++static inline unsigned int kvm_vz_config5_guest_wrmask(struct kvm_vcpu *vcpu)
++{
++	unsigned int mask = MIPS_CONF5_K | MIPS_CONF5_CV | MIPS_CONF5_SBRI;
++
++	/* Permit MSAEn changes if MSA supported and enabled */
++	if (kvm_mips_guest_has_msa(&vcpu->arch))
++		mask |= MIPS_CONF5_MSAEN;
++
++	/*
++	 * Permit guest FPU mode changes if FPU is enabled and the relevant
++	 * feature exists according to FIR register.
++	 */
++	if (kvm_mips_guest_has_fpu(&vcpu->arch)) {
++		if (cpu_has_ufr)
++			mask |= MIPS_CONF5_UFR;
++		if (cpu_has_fre)
++			mask |= MIPS_CONF5_FRE | MIPS_CONF5_UFE;
++	}
++
++	return mask;
++}
++
++/*
++ * VZ optionally allows these additional Config bits to be written by root:
++ * Config:	M, [MT]
++ * Config1:	M, [MMUSize-1, C2, MD, PC, WR, CA], FP
++ * Config2:	M
++ * Config3:	M, MSAP, [BPG], ULRI, [DSP2P, DSPP, CTXTC, ITL, LPA, VEIC,
++ *		VInt, SP, CDMM, MT, SM, TL]
++ * Config4:	M, [VTLBSizeExt, MMUSizeExt]
++ * Config5:	[MRP]
++ */
++
++static inline unsigned int kvm_vz_config_user_wrmask(struct kvm_vcpu *vcpu)
++{
++	return kvm_vz_config_guest_wrmask(vcpu) | MIPS_CONF_M;
++}
++
++static inline unsigned int kvm_vz_config1_user_wrmask(struct kvm_vcpu *vcpu)
++{
++	unsigned int mask = kvm_vz_config1_guest_wrmask(vcpu) | MIPS_CONF_M;
++
++	/* Permit FPU to be present if FPU is supported */
++	if (kvm_mips_guest_can_have_fpu(&vcpu->arch))
++		mask |= MIPS_CONF1_FP;
++
++	return mask;
++}
++
++static inline unsigned int kvm_vz_config2_user_wrmask(struct kvm_vcpu *vcpu)
++{
++	return kvm_vz_config2_guest_wrmask(vcpu) | MIPS_CONF_M;
++}
++
++static inline unsigned int kvm_vz_config3_user_wrmask(struct kvm_vcpu *vcpu)
++{
++	unsigned int mask = kvm_vz_config3_guest_wrmask(vcpu) | MIPS_CONF_M |
++		MIPS_CONF3_ULRI;
++
++	/* Permit MSA to be present if MSA is supported */
++	if (kvm_mips_guest_can_have_msa(&vcpu->arch))
++		mask |= MIPS_CONF3_MSA;
++
++	return mask;
++}
++
++static inline unsigned int kvm_vz_config4_user_wrmask(struct kvm_vcpu *vcpu)
++{
++	return kvm_vz_config4_guest_wrmask(vcpu) | MIPS_CONF_M;
++}
++
++static inline unsigned int kvm_vz_config5_user_wrmask(struct kvm_vcpu *vcpu)
++{
++	return kvm_vz_config5_guest_wrmask(vcpu);
++}
++
++static gpa_t kvm_vz_gva_to_gpa_cb(gva_t gva)
++{
++	/* VZ guest has already converted gva to gpa */
++	return gva;
++}
++
++void kvm_vz_queue_irq(struct kvm_vcpu *vcpu, unsigned int priority)
++{
++	set_bit(priority, &vcpu->arch.pending_exceptions);
++	clear_bit(priority, &vcpu->arch.pending_exceptions_clr);
++}
++
++void kvm_vz_dequeue_irq(struct kvm_vcpu *vcpu, unsigned int priority)
++{
++	clear_bit(priority, &vcpu->arch.pending_exceptions);
++	set_bit(priority, &vcpu->arch.pending_exceptions_clr);
++}
++
++void kvm_vz_queue_timer_int_cb(struct kvm_vcpu *vcpu)
++{
++	/*
++	 * timer expiry is asynchronous to vcpu execution therefore defer guest
++	 * cp0 accesses
++	 */
++	kvm_vz_queue_irq(vcpu, MIPS_EXC_INT_TIMER);
++}
++
++void kvm_vz_dequeue_timer_int_cb(struct kvm_vcpu *vcpu)
++{
++	/*
++	 * timer expiry is asynchronous to vcpu execution therefore defer guest
++	 * cp0 accesses
++	 */
++	kvm_vz_dequeue_irq(vcpu, MIPS_EXC_INT_TIMER);
++}
++
++void
++kvm_vz_queue_io_int_cb(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq)
++{
++	int intr = (int)irq->irq;
++
++	/*
++	 * interrupts are asynchronous to vcpu execution therefore defer guest
++	 * cp0 accesses
++	 */
++	switch (intr) {
++	case 2:
++		kvm_vz_queue_irq(vcpu, MIPS_EXC_INT_IO);
++		break;
++
++	case 3:
++		kvm_vz_queue_irq(vcpu, MIPS_EXC_INT_IPI_1);
++		break;
++
++	case 4:
++		kvm_vz_queue_irq(vcpu, MIPS_EXC_INT_IPI_2);
++		break;
++
++	default:
++		break;
++	}
++
++}
++
++void
++kvm_vz_dequeue_io_int_cb(struct kvm_vcpu *vcpu, struct kvm_mips_interrupt *irq)
++{
++	int intr = (int)irq->irq;
++
++	/*
++	 * interrupts are asynchronous to vcpu execution therefore defer guest
++	 * cp0 accesses
++	 */
++	switch (intr) {
++	case -2:
++		kvm_vz_dequeue_irq(vcpu, MIPS_EXC_INT_IO);
++		break;
++
++	case -3:
++		kvm_vz_dequeue_irq(vcpu, MIPS_EXC_INT_IPI_1);
++		break;
++
++	case -4:
++		kvm_vz_dequeue_irq(vcpu, MIPS_EXC_INT_IPI_2);
++		break;
++
++	default:
++		break;
++	}
++
++}
++
++static u32 kvm_vz_priority_to_irq[MIPS_EXC_MAX] = {
++	[MIPS_EXC_INT_TIMER] = C_IRQ5,
++	[MIPS_EXC_INT_IO]    = C_IRQ0,
++	[MIPS_EXC_INT_IPI_1] = C_IRQ1,
++	[MIPS_EXC_INT_IPI_2] = C_IRQ2,
++};
++
++static int
++kvm_vz_irq_deliver_cb(struct kvm_vcpu *vcpu, unsigned int priority, u32 cause)
++{
++	u32 irq = (priority < MIPS_EXC_MAX) ?
++		kvm_vz_priority_to_irq[priority] : 0;
++
++	switch (priority) {
++	case MIPS_EXC_INT_TIMER:
++		set_gc0_cause(C_TI);
++		break;
++
++	case MIPS_EXC_INT_IO:
++	case MIPS_EXC_INT_IPI_1:
++	case MIPS_EXC_INT_IPI_2:
++		if (cpu_has_guestctl2)
++			set_c0_guestctl2(irq);
++		else
++			set_gc0_cause(irq);
++		break;
++
++	default:
++		break;
++	}
++
++	clear_bit(priority, &vcpu->arch.pending_exceptions);
++	return 1;
++}
++
++static int
++kvm_vz_irq_clear_cb(struct kvm_vcpu *vcpu, unsigned int priority, u32 cause)
++{
++	u32 irq = (priority < MIPS_EXC_MAX) ?
++		kvm_vz_priority_to_irq[priority] : 0;
++
++	switch (priority) {
++	case MIPS_EXC_INT_TIMER:
++		/*
++		 * Call to kvm_write_c0_guest_compare() clears Cause.TI in
++		 * kvm_mips_emulate_CP0(). Explicitly clear irq associated with
++		 * Cause.IP[IPTI] if GuestCtl2 virtual interrupt register not
++		 * supported or if not using GuestCtl2 Hardware Clear.
++		 */
++		if (cpu_has_guestctl2) {
++			if (!(read_c0_guestctl2() & (irq << 14)))
++				clear_c0_guestctl2(irq);
++		} else {
++			clear_gc0_cause(irq);
++		}
++		break;
++
++	case MIPS_EXC_INT_IO:
++	case MIPS_EXC_INT_IPI_1:
++	case MIPS_EXC_INT_IPI_2:
++		/* Clear GuestCtl2.VIP irq if not using Hardware Clear */
++		if (cpu_has_guestctl2) {
++			if (!(read_c0_guestctl2() & (irq << 14)))
++				clear_c0_guestctl2(irq);
++		} else {
++			clear_gc0_cause(irq);
++		}
++		break;
++
++	default:
++		break;
++	}
++
++	clear_bit(priority, &vcpu->arch.pending_exceptions_clr);
++	return 1;
++}
++
++/*
++ * VZ guest timer handling.
++ */
++
++/**
++ * _kvm_vz_restore_stimer() - Restore soft timer state.
++ * @vcpu:	Virtual CPU.
++ * @compare:	CP0_Compare register value, restored by caller.
++ * @cause:	CP0_Cause register to restore.
++ *
++ * Restore VZ state relating to the soft timer.
++ */
++static void _kvm_vz_restore_stimer(struct kvm_vcpu *vcpu, u32 compare,
++				   u32 cause)
++{
++	/*
++	 * Avoid spurious counter interrupts by setting Guest CP0_Count to just
++	 * after Guest CP0_Compare.
++	 */
++	write_c0_gtoffset(compare - read_c0_count());
++
++	back_to_back_c0_hazard();
++	write_gc0_cause(cause);
++}
++
++/**
++ * kvm_vz_restore_timer() - Restore guest timer state.
++ * @vcpu:	Virtual CPU.
++ *
++ * Restore soft timer state from saved context.
++ */
++static void kvm_vz_restore_timer(struct kvm_vcpu *vcpu)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	u32 cause, compare;
++
++	compare = kvm_read_sw_gc0_compare(cop0);
++	cause = kvm_read_sw_gc0_cause(cop0);
++
++	write_gc0_compare(compare);
++	_kvm_vz_restore_stimer(vcpu, compare, cause);
++}
++
++/**
++ * kvm_vz_save_timer() - Save guest timer state.
++ * @vcpu:	Virtual CPU.
++ *
++ * Save VZ guest timer state.
++ */
++static void kvm_vz_save_timer(struct kvm_vcpu *vcpu)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	u32 compare, cause;
++
++	compare = read_gc0_compare();
++	cause = read_gc0_cause();
++
++	/* save timer-related state to VCPU context */
++	kvm_write_sw_gc0_cause(cop0, cause);
++	kvm_write_sw_gc0_compare(cop0, compare);
++}
++
++/**
++ * kvm_vz_gva_to_gpa() - Convert valid GVA to GPA.
++ * @vcpu:	KVM VCPU state.
++ * @gva:	Guest virtual address to convert.
++ * @gpa:	Output guest physical address.
++ *
++ * Convert a guest virtual address (GVA) which is valid according to the guest
++ * context, to a guest physical address (GPA).
++ *
++ * Returns:	0 on success.
++ *		-errno on failure.
++ */
++static int kvm_vz_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
++			     unsigned long *gpa)
++{
++	u32 gva32 = gva;
++
++	if ((long)gva == (s32)gva32) {
++		/* Handle canonical 32-bit virtual address */
++		if ((s32)gva32 < (s32)0xc0000000) {
++			/* legacy unmapped KSeg0 or KSeg1 */
++			*gpa = gva32 & 0x1fffffff;
++			return 0;
++		}
++#ifdef CONFIG_64BIT
++	} else if ((gva & 0xc000000000000000) == 0x8000000000000000) {
++		/* XKPHYS */
++		/*
++		 * Traditionally fully unmapped.
++		 * Bits 61:59 specify the CCA, which we can just mask off here.
++		 * Bits 58:PABITS should be zero, but we shouldn't have got here
++		 * if it wasn't.
++		 */
++		*gpa = gva & 0x07ffffffffffffff;
++		return 0;
++#endif
++	}
++
++	return kvm_vz_guest_tlb_lookup(vcpu, gva, gpa);
++}
++
++/**
++ * kvm_vz_badvaddr_to_gpa() - Convert GVA BadVAddr from root exception to GPA.
++ * @vcpu:	KVM VCPU state.
++ * @badvaddr:	Root BadVAddr.
++ * @gpa:	Output guest physical address.
++ *
++ * VZ implementations are permitted to report guest virtual addresses (GVA) in
++ * BadVAddr on a root exception during guest execution, instead of the more
++ * convenient guest physical addresses (GPA). When we get a GVA, this function
++ * converts it to a GPA, taking into account guest segmentation and guest TLB
++ * state.
++ *
++ * Returns:	0 on success.
++ *		-errno on failure.
++ */
++static int kvm_vz_badvaddr_to_gpa(struct kvm_vcpu *vcpu, unsigned long badvaddr,
++				  unsigned long *gpa)
++{
++	unsigned int gexccode = (vcpu->arch.host_cp0_guestctl0 &
++				 MIPS_GCTL0_GEXC) >> MIPS_GCTL0_GEXC_SHIFT;
++
++	/* If BadVAddr is GPA, then all is well in the world */
++	if (likely(gexccode == MIPS_GCTL0_GEXC_GPA)) {
++		*gpa = badvaddr;
++		return 0;
++	}
++
++	/* Otherwise we'd expect it to be GVA ... */
++	if (WARN(gexccode != MIPS_GCTL0_GEXC_GVA,
++		 "Unexpected gexccode %#x\n", gexccode))
++		return -EINVAL;
++
++	/* ... and we need to perform the GVA->GPA translation in software */
++	return kvm_vz_gva_to_gpa(vcpu, badvaddr, gpa);
++}
++
++static int kvm_trap_vz_no_handler(struct kvm_vcpu *vcpu)
++{
++	u32 *opc = (u32 *) vcpu->arch.pc;
++	u32 cause = vcpu->arch.host_cp0_cause;
++	u32 exccode = (cause & CAUSEF_EXCCODE) >> CAUSEB_EXCCODE;
++	unsigned long badvaddr = vcpu->arch.host_cp0_badvaddr;
++	u32 inst = 0;
++
++	/*
++	 *  Fetch the instruction.
++	 */
++	if (cause & CAUSEF_BD)
++		opc += 1;
++	kvm_get_badinstr(opc, vcpu, &inst);
++
++	kvm_err("Exception Code: %d not handled @ PC: %p, inst: 0x%08x BadVaddr: %#lx Status: %#x\n",
++		exccode, opc, inst, badvaddr,
++		read_gc0_status());
++	kvm_arch_vcpu_dump_regs(vcpu);
++	vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++	return RESUME_HOST;
++}
++
++static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
++					      u32 *opc, u32 cause,
++					      struct kvm_run *run,
++					      struct kvm_vcpu *vcpu)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	enum emulation_result er = EMULATE_DONE;
++	u32 rt, rd, sel;
++	unsigned long curr_pc;
++	unsigned long val;
++
++	/*
++	 * Update PC and hold onto current PC in case there is
++	 * an error and we want to rollback the PC
++	 */
++	curr_pc = vcpu->arch.pc;
++	er = update_pc(vcpu, cause);
++	if (er == EMULATE_FAIL)
++		return er;
++
++	if (inst.co_format.co) {
++		switch (inst.co_format.func) {
++		case wait_op:
++			er = kvm_mips_emul_wait(vcpu);
++			break;
++		default:
++			er = EMULATE_FAIL;
++		}
++	} else {
++		rt = inst.c0r_format.rt;
++		rd = inst.c0r_format.rd;
++		sel = inst.c0r_format.sel;
++
++		switch (inst.c0r_format.rs) {
++		case dmfc_op:
++		case mfc_op:
++#ifdef CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS
++			cop0->stat[rd][sel]++;
++#endif
++			if (rd == MIPS_CP0_COUNT &&
++			    sel == 0) {			/* Count */
++				val = kvm_mips_read_count(vcpu);
++			} else if (rd == MIPS_CP0_COMPARE &&
++				   sel == 0) {		/* Compare */
++				val = read_gc0_compare();
++			} else if ((rd == MIPS_CP0_PRID &&
++				    (sel == 0 ||	/* PRid */
++				     sel == 2 ||	/* CDMMBase */
++				     sel == 3)) ||	/* CMGCRBase */
++				   (rd == MIPS_CP0_STATUS &&
++				    (sel == 2 ||	/* SRSCtl */
++				     sel == 3)) ||	/* SRSMap */
++				   (rd == MIPS_CP0_CONFIG &&
++				    (sel == 7)) ||	/* Config7 */
++				   (rd == MIPS_CP0_ERRCTL &&
++				    (sel == 0))) {	/* ErrCtl */
++				val = cop0->reg[rd][sel];
++			} else {
++				val = 0;
++				er = EMULATE_FAIL;
++			}
++
++			if (er != EMULATE_FAIL) {
++				/* Sign extend */
++				if (inst.c0r_format.rs == mfc_op)
++					val = (int)val;
++				vcpu->arch.gprs[rt] = val;
++			}
++
++			trace_kvm_hwr(vcpu, (inst.c0r_format.rs == mfc_op) ?
++					KVM_TRACE_MFC0 : KVM_TRACE_DMFC0,
++				      KVM_TRACE_COP0(rd, sel), val);
++			break;
++
++		case dmtc_op:
++		case mtc_op:
++#ifdef CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS
++			cop0->stat[rd][sel]++;
++#endif
++			val = vcpu->arch.gprs[rt];
++			trace_kvm_hwr(vcpu, (inst.c0r_format.rs == mtc_op) ?
++					KVM_TRACE_MTC0 : KVM_TRACE_DMTC0,
++				      KVM_TRACE_COP0(rd, sel), val);
++
++			if (rd == MIPS_CP0_COUNT &&
++			    sel == 0) {			/* Count */
++				kvm_mips_write_count(vcpu, vcpu->arch.gprs[rt]);
++			} else if (rd == MIPS_CP0_COMPARE &&
++				   sel == 0) {		/* Compare */
++				kvm_mips_write_compare(vcpu,
++						       vcpu->arch.gprs[rt],
++						       true);
++			} else if (rd == MIPS_CP0_ERRCTL &&
++				   (sel == 0)) {	/* ErrCtl */
++				/* ignore the written value */
++			} else {
++				er = EMULATE_FAIL;
++			}
++			break;
++
++		default:
++			er = EMULATE_FAIL;
++			break;
++		}
++	}
++	/* Rollback PC only if emulation was unsuccessful */
++	if (er == EMULATE_FAIL) {
++		kvm_err("[%#lx]%s: unsupported cop0 instruction 0x%08x\n",
++			curr_pc, __func__, inst.word);
++
++		vcpu->arch.pc = curr_pc;
++	}
++
++	return er;
++}
++
++static enum emulation_result kvm_vz_gpsi_cache(union mips_instruction inst,
++					       u32 *opc, u32 cause,
++					       struct kvm_run *run,
++					       struct kvm_vcpu *vcpu)
++{
++	enum emulation_result er = EMULATE_DONE;
++	u32 cache, op_inst, op, base;
++	s16 offset;
++	struct kvm_vcpu_arch *arch = &vcpu->arch;
++	unsigned long va, curr_pc;
++
++	/*
++	 * Update PC and hold onto current PC in case there is
++	 * an error and we want to rollback the PC
++	 */
++	curr_pc = vcpu->arch.pc;
++	er = update_pc(vcpu, cause);
++	if (er == EMULATE_FAIL)
++		return er;
++
++	base = inst.i_format.rs;
++	op_inst = inst.i_format.rt;
++	if (cpu_has_mips_r6)
++		offset = inst.spec3_format.simmediate;
++	else
++		offset = inst.i_format.simmediate;
++	cache = op_inst & CacheOp_Cache;
++	op = op_inst & CacheOp_Op;
++
++	va = arch->gprs[base] + offset;
++
++	kvm_debug("CACHE (cache: %#x, op: %#x, base[%d]: %#lx, offset: %#x\n",
++		  cache, op, base, arch->gprs[base], offset);
++
++	/* Secondary or tirtiary cache ops ignored */
++	if (cache != Cache_I && cache != Cache_D)
++		return EMULATE_DONE;
++
++	switch (op_inst) {
++	case Index_Invalidate_I:
++		flush_icache_line_indexed(va);
++		return EMULATE_DONE;
++	case Index_Writeback_Inv_D:
++		flush_dcache_line_indexed(va);
++		return EMULATE_DONE;
++	default:
++		break;
++	};
++
++	kvm_err("@ %#lx/%#lx CACHE (cache: %#x, op: %#x, base[%d]: %#lx, offset: %#x\n",
++		curr_pc, vcpu->arch.gprs[31], cache, op, base, arch->gprs[base],
++		offset);
++	/* Rollback PC */
++	vcpu->arch.pc = curr_pc;
++
++	return EMULATE_FAIL;
++}
++
++enum emulation_result kvm_trap_vz_handle_gpsi(u32 cause, u32 *opc,
++					      struct kvm_vcpu *vcpu)
++{
++	enum emulation_result er = EMULATE_DONE;
++	struct kvm_vcpu_arch *arch = &vcpu->arch;
++	struct kvm_run *run = vcpu->run;
++	union mips_instruction inst;
++	int rd, rt, sel;
++	int err;
++
++	/*
++	 *  Fetch the instruction.
++	 */
++	if (cause & CAUSEF_BD)
++		opc += 1;
++	err = kvm_get_badinstr(opc, vcpu, &inst.word);
++	if (err)
++		return EMULATE_FAIL;
++
++	switch (inst.r_format.opcode) {
++	case cop0_op:
++		er = kvm_vz_gpsi_cop0(inst, opc, cause, run, vcpu);
++		break;
++#ifndef CONFIG_CPU_MIPSR6
++	case cache_op:
++		trace_kvm_exit(vcpu, KVM_TRACE_EXIT_CACHE);
++		er = kvm_vz_gpsi_cache(inst, opc, cause, run, vcpu);
++		break;
++#endif
++	case spec3_op:
++		switch (inst.spec3_format.func) {
++#ifdef CONFIG_CPU_MIPSR6
++		case cache6_op:
++			trace_kvm_exit(vcpu, KVM_TRACE_EXIT_CACHE);
++			er = kvm_vz_gpsi_cache(inst, opc, cause, run, vcpu);
++			break;
++#endif
++		case rdhwr_op:
++			if (inst.r_format.rs || (inst.r_format.re >> 3))
++				goto unknown;
++
++			rd = inst.r_format.rd;
++			rt = inst.r_format.rt;
++			sel = inst.r_format.re & 0x7;
++
++			switch (rd) {
++			case MIPS_HWR_CC:	/* Read count register */
++				arch->gprs[rt] =
++					(long)(int)kvm_mips_read_count(vcpu);
++				break;
++			default:
++				trace_kvm_hwr(vcpu, KVM_TRACE_RDHWR,
++					      KVM_TRACE_HWR(rd, sel), 0);
++				goto unknown;
++			};
++
++			trace_kvm_hwr(vcpu, KVM_TRACE_RDHWR,
++				      KVM_TRACE_HWR(rd, sel), arch->gprs[rt]);
++
++			er = update_pc(vcpu, cause);
++			break;
++		default:
++			goto unknown;
++		};
++		break;
++unknown:
++
++	default:
++		kvm_err("GPSI exception not supported (%p/%#x)\n",
++				opc, inst.word);
++		kvm_arch_vcpu_dump_regs(vcpu);
++		er = EMULATE_FAIL;
++		break;
++	}
++
++	return er;
++}
++
++enum emulation_result kvm_trap_vz_handle_gsfc(u32 cause, u32 *opc,
++					      struct kvm_vcpu *vcpu)
++{
++	enum emulation_result er = EMULATE_DONE;
++	struct kvm_vcpu_arch *arch = &vcpu->arch;
++	union mips_instruction inst;
++	int err;
++
++	/*
++	 *  Fetch the instruction.
++	 */
++	if (cause & CAUSEF_BD)
++		opc += 1;
++	err = kvm_get_badinstr(opc, vcpu, &inst.word);
++	if (err)
++		return EMULATE_FAIL;
++
++	/* complete MTC0 on behalf of guest and advance EPC */
++	if (inst.c0r_format.opcode == cop0_op &&
++	    inst.c0r_format.rs == mtc_op &&
++	    inst.c0r_format.z == 0) {
++		int rt = inst.c0r_format.rt;
++		int rd = inst.c0r_format.rd;
++		int sel = inst.c0r_format.sel;
++		unsigned int val = arch->gprs[rt];
++		unsigned int old_val, change;
++
++		trace_kvm_hwr(vcpu, KVM_TRACE_MTC0, KVM_TRACE_COP0(rd, sel),
++			      val);
++
++		if ((rd == MIPS_CP0_STATUS) && (sel == 0)) {
++			/* FR bit should read as zero if no FPU */
++			if (!kvm_mips_guest_has_fpu(&vcpu->arch))
++				val &= ~(ST0_CU1 | ST0_FR);
++
++			/*
++			 * Also don't allow FR to be set if host doesn't support
++			 * it.
++			 */
++			if (!(boot_cpu_data.fpu_id & MIPS_FPIR_F64))
++				val &= ~ST0_FR;
++
++			old_val = read_gc0_status();
++			change = val ^ old_val;
++
++			if (change & ST0_FR) {
++				/*
++				 * FPU and Vector register state is made
++				 * UNPREDICTABLE by a change of FR, so don't
++				 * even bother saving it.
++				 */
++				kvm_drop_fpu(vcpu);
++			}
++
++			/*
++			 * If MSA state is already live, it is undefined how it
++			 * interacts with FR=0 FPU state, and we don't want to
++			 * hit reserved instruction exceptions trying to save
++			 * the MSA state later when CU=1 && FR=1, so play it
++			 * safe and save it first.
++			 */
++			if (change & ST0_CU1 && !(val & ST0_FR) &&
++			    vcpu->arch.aux_inuse & KVM_MIPS_AUX_MSA)
++				kvm_lose_fpu(vcpu);
++
++			write_gc0_status(val);
++		} else if ((rd == MIPS_CP0_CAUSE) && (sel == 0)) {
++			u32 old_cause = read_gc0_cause();
++			u32 change = old_cause ^ val;
++
++			/* DC bit enabling/disabling timer? */
++			if (change & CAUSEF_DC) {
++				if (val & CAUSEF_DC)
++					kvm_mips_count_disable_cause(vcpu);
++				else
++					kvm_mips_count_enable_cause(vcpu);
++			}
++
++			/* Only certain bits are RW to the guest */
++			change &= (CAUSEF_DC | CAUSEF_IV | CAUSEF_WP |
++				   CAUSEF_IP0 | CAUSEF_IP1);
++
++			/* WP can only be cleared */
++			change &= ~CAUSEF_WP | old_cause;
++
++			write_gc0_cause(old_cause ^ change);
++		} else if ((rd == MIPS_CP0_STATUS) && (sel == 1)) { /* IntCtl */
++			write_gc0_intctl(val);
++		} else if ((rd == MIPS_CP0_CONFIG) && (sel == 5)) {
++			old_val = read_gc0_config5();
++			change = val ^ old_val;
++			/* Handle changes in FPU/MSA modes */
++			preempt_disable();
++
++			/*
++			 * Propagate FRE changes immediately if the FPU
++			 * context is already loaded.
++			 */
++			if (change & MIPS_CONF5_FRE &&
++			    vcpu->arch.aux_inuse & KVM_MIPS_AUX_FPU)
++				change_c0_config5(MIPS_CONF5_FRE, val);
++
++			preempt_enable();
++
++			val = old_val ^
++				(change & kvm_vz_config5_guest_wrmask(vcpu));
++			write_gc0_config5(val);
++		} else {
++			kvm_err("Handle GSFC, unsupported field change @ %p: %#x\n",
++			    opc, inst.word);
++			er = EMULATE_FAIL;
++		}
++
++		if (er != EMULATE_FAIL)
++			er = update_pc(vcpu, cause);
++	} else {
++		kvm_err("Handle GSFC, unrecognized instruction @ %p: %#x\n",
++			opc, inst.word);
++		er = EMULATE_FAIL;
++	}
++
++	return er;
++}
++
++enum emulation_result kvm_trap_vz_handle_hc(u32 cause, u32 *opc,
++					    struct kvm_vcpu *vcpu)
++{
++	enum emulation_result er;
++	union mips_instruction inst;
++	unsigned long curr_pc;
++	int err;
++
++	if (cause & CAUSEF_BD)
++		opc += 1;
++	err = kvm_get_badinstr(opc, vcpu, &inst.word);
++	if (err)
++		return EMULATE_FAIL;
++
++	/*
++	 * Update PC and hold onto current PC in case there is
++	 * an error and we want to rollback the PC
++	 */
++	curr_pc = vcpu->arch.pc;
++	er = update_pc(vcpu, cause);
++	if (er == EMULATE_FAIL)
++		return er;
++
++	er = kvm_mips_emul_hypcall(vcpu, inst);
++	if (er == EMULATE_FAIL)
++		vcpu->arch.pc = curr_pc;
++
++	return er;
++}
++
++enum emulation_result kvm_trap_vz_no_handler_guest_exit(u32 gexccode, u32 cause,
++							u32 *opc,
++							struct kvm_vcpu *vcpu)
++{
++	u32 inst;
++
++	/*
++	 *  Fetch the instruction.
++	 */
++	if (cause & CAUSEF_BD)
++		opc += 1;
++	kvm_get_badinstr(opc, vcpu, &inst);
++
++	kvm_err("Guest Exception Code: %d not yet handled @ PC: %p, inst: 0x%08x  Status: %#x\n",
++		gexccode, opc, inst, read_gc0_status());
++
++	return EMULATE_FAIL;
++}
++
++static int kvm_trap_vz_handle_guest_exit(struct kvm_vcpu *vcpu)
++{
++	u32 *opc = (u32 *) vcpu->arch.pc;
++	u32 cause = vcpu->arch.host_cp0_cause;
++	enum emulation_result er = EMULATE_DONE;
++	u32 gexccode = (vcpu->arch.host_cp0_guestctl0 &
++			MIPS_GCTL0_GEXC) >> MIPS_GCTL0_GEXC_SHIFT;
++	int ret = RESUME_GUEST;
++
++	trace_kvm_exit(vcpu, KVM_TRACE_EXIT_GEXCCODE_BASE + gexccode);
++	switch (gexccode) {
++	case MIPS_GCTL0_GEXC_GPSI:
++		++vcpu->stat.vz_gpsi_exits;
++		er = kvm_trap_vz_handle_gpsi(cause, opc, vcpu);
++		break;
++	case MIPS_GCTL0_GEXC_GSFC:
++		++vcpu->stat.vz_gsfc_exits;
++		er = kvm_trap_vz_handle_gsfc(cause, opc, vcpu);
++		break;
++	case MIPS_GCTL0_GEXC_HC:
++		++vcpu->stat.vz_hc_exits;
++		er = kvm_trap_vz_handle_hc(cause, opc, vcpu);
++		break;
++	case MIPS_GCTL0_GEXC_GRR:
++		++vcpu->stat.vz_grr_exits;
++		er = kvm_trap_vz_no_handler_guest_exit(gexccode, cause, opc,
++						       vcpu);
++		break;
++	case MIPS_GCTL0_GEXC_GVA:
++		++vcpu->stat.vz_gva_exits;
++		er = kvm_trap_vz_no_handler_guest_exit(gexccode, cause, opc,
++						       vcpu);
++		break;
++	case MIPS_GCTL0_GEXC_GHFC:
++		++vcpu->stat.vz_ghfc_exits;
++		er = kvm_trap_vz_no_handler_guest_exit(gexccode, cause, opc,
++						       vcpu);
++		break;
++	case MIPS_GCTL0_GEXC_GPA:
++		++vcpu->stat.vz_gpa_exits;
++		er = kvm_trap_vz_no_handler_guest_exit(gexccode, cause, opc,
++						       vcpu);
++		break;
++	default:
++		++vcpu->stat.vz_resvd_exits;
++		er = kvm_trap_vz_no_handler_guest_exit(gexccode, cause, opc,
++						       vcpu);
++		break;
++
++	}
++
++	if (er == EMULATE_DONE) {
++		ret = RESUME_GUEST;
++	} else if (er == EMULATE_HYPERCALL) {
++		ret = kvm_mips_handle_hypcall(vcpu);
++	} else {
++		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		ret = RESUME_HOST;
++	}
++	return ret;
++}
++
++/**
++ * kvm_trap_vz_handle_cop_unusuable() - Guest used unusable coprocessor.
++ * @vcpu:	Virtual CPU context.
++ *
++ * Handle when the guest attempts to use a coprocessor which hasn't been allowed
++ * by the root context.
++ */
++static int kvm_trap_vz_handle_cop_unusable(struct kvm_vcpu *vcpu)
++{
++	struct kvm_run *run = vcpu->run;
++	u32 cause = vcpu->arch.host_cp0_cause;
++	enum emulation_result er = EMULATE_FAIL;
++	int ret = RESUME_GUEST;
++
++	if (((cause & CAUSEF_CE) >> CAUSEB_CE) == 1) {
++		/*
++		 * If guest FPU not present, the FPU operation should have been
++		 * treated as a reserved instruction!
++		 * If FPU already in use, we shouldn't get this at all.
++		 */
++		if (WARN_ON(!kvm_mips_guest_has_fpu(&vcpu->arch) ||
++			    vcpu->arch.aux_inuse & KVM_MIPS_AUX_FPU)) {
++			preempt_enable();
++			return EMULATE_FAIL;
++		}
++
++		kvm_own_fpu(vcpu);
++		er = EMULATE_DONE;
++	}
++	/* other coprocessors not handled */
++
++	switch (er) {
++	case EMULATE_DONE:
++		ret = RESUME_GUEST;
++		break;
++
++	case EMULATE_FAIL:
++		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		ret = RESUME_HOST;
++		break;
++
++	default:
++		BUG();
++	}
++	return ret;
++}
++
++/**
++ * kvm_trap_vz_handle_msa_disabled() - Guest used MSA while disabled in root.
++ * @vcpu:	Virtual CPU context.
++ *
++ * Handle when the guest attempts to use MSA when it is disabled in the root
++ * context.
++ */
++static int kvm_trap_vz_handle_msa_disabled(struct kvm_vcpu *vcpu)
++{
++	struct kvm_run *run = vcpu->run;
++
++	/*
++	 * If MSA not present or not exposed to guest or FR=0, the MSA operation
++	 * should have been treated as a reserved instruction!
++	 * Same if CU1=1, FR=0.
++	 * If MSA already in use, we shouldn't get this at all.
++	 */
++	if (!kvm_mips_guest_has_msa(&vcpu->arch) ||
++	    (read_gc0_status() & (ST0_CU1 | ST0_FR)) == ST0_CU1 ||
++	    !(read_gc0_config5() & MIPS_CONF5_MSAEN) ||
++	    vcpu->arch.aux_inuse & KVM_MIPS_AUX_MSA) {
++		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		return RESUME_HOST;
++	}
++
++	kvm_own_msa(vcpu);
++
++	return RESUME_GUEST;
++}
++
++static int kvm_trap_vz_handle_tlb_ld_miss(struct kvm_vcpu *vcpu)
++{
++	struct kvm_run *run = vcpu->run;
++	u32 *opc = (u32 *) vcpu->arch.pc;
++	u32 cause = vcpu->arch.host_cp0_cause;
++	ulong badvaddr = vcpu->arch.host_cp0_badvaddr;
++	union mips_instruction inst;
++	enum emulation_result er = EMULATE_DONE;
++	int err, ret = RESUME_GUEST;
++
++	if (kvm_mips_handle_vz_root_tlb_fault(badvaddr, vcpu, false)) {
++		/* A code fetch fault doesn't count as an MMIO */
++		if (kvm_is_ifetch_fault(&vcpu->arch)) {
++			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++			return RESUME_HOST;
++		}
++
++		/* Fetch the instruction */
++		if (cause & CAUSEF_BD)
++			opc += 1;
++		err = kvm_get_badinstr(opc, vcpu, &inst.word);
++		if (err) {
++			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++			return RESUME_HOST;
++		}
++
++		/* Treat as MMIO */
++		er = kvm_mips_emulate_load(inst, cause, run, vcpu);
++		if (er == EMULATE_FAIL) {
++			kvm_err("Guest Emulate Load from MMIO space failed: PC: %p, BadVaddr: %#lx\n",
++				opc, badvaddr);
++			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		}
++	}
++
++	if (er == EMULATE_DONE) {
++		ret = RESUME_GUEST;
++	} else if (er == EMULATE_DO_MMIO) {
++		run->exit_reason = KVM_EXIT_MMIO;
++		ret = RESUME_HOST;
++	} else {
++		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		ret = RESUME_HOST;
++	}
++	return ret;
++}
++
++static int kvm_trap_vz_handle_tlb_st_miss(struct kvm_vcpu *vcpu)
++{
++	struct kvm_run *run = vcpu->run;
++	u32 *opc = (u32 *) vcpu->arch.pc;
++	u32 cause = vcpu->arch.host_cp0_cause;
++	ulong badvaddr = vcpu->arch.host_cp0_badvaddr;
++	union mips_instruction inst;
++	enum emulation_result er = EMULATE_DONE;
++	int err;
++	int ret = RESUME_GUEST;
++
++	/* Just try the access again if we couldn't do the translation */
++	if (kvm_vz_badvaddr_to_gpa(vcpu, badvaddr, &badvaddr))
++		return RESUME_GUEST;
++	vcpu->arch.host_cp0_badvaddr = badvaddr;
++
++	if (kvm_mips_handle_vz_root_tlb_fault(badvaddr, vcpu, true)) {
++		/* Fetch the instruction */
++		if (cause & CAUSEF_BD)
++			opc += 1;
++		err = kvm_get_badinstr(opc, vcpu, &inst.word);
++		if (err) {
++			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++			return RESUME_HOST;
++		}
++
++		/* Treat as MMIO */
++		er = kvm_mips_emulate_store(inst, cause, run, vcpu);
++		if (er == EMULATE_FAIL) {
++			kvm_err("Guest Emulate Store to MMIO space failed: PC: %p, BadVaddr: %#lx\n",
++				opc, badvaddr);
++			run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		}
++	}
++
++	if (er == EMULATE_DONE) {
++		ret = RESUME_GUEST;
++	} else if (er == EMULATE_DO_MMIO) {
++		run->exit_reason = KVM_EXIT_MMIO;
++		ret = RESUME_HOST;
++	} else {
++		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
++		ret = RESUME_HOST;
++	}
++	return ret;
++}
++
++static u64 kvm_vz_get_one_regs[] = {
++	KVM_REG_MIPS_CP0_INDEX,
++	KVM_REG_MIPS_CP0_ENTRYLO0,
++	KVM_REG_MIPS_CP0_ENTRYLO1,
++	KVM_REG_MIPS_CP0_CONTEXT,
++	KVM_REG_MIPS_CP0_PAGEMASK,
++	KVM_REG_MIPS_CP0_PAGEGRAIN,
++	KVM_REG_MIPS_CP0_WIRED,
++	KVM_REG_MIPS_CP0_HWRENA,
++	KVM_REG_MIPS_CP0_BADVADDR,
++	KVM_REG_MIPS_CP0_COUNT,
++	KVM_REG_MIPS_CP0_ENTRYHI,
++	KVM_REG_MIPS_CP0_COMPARE,
++	KVM_REG_MIPS_CP0_STATUS,
++	KVM_REG_MIPS_CP0_INTCTL,
++	KVM_REG_MIPS_CP0_CAUSE,
++	KVM_REG_MIPS_CP0_EPC,
++	KVM_REG_MIPS_CP0_PRID,
++	KVM_REG_MIPS_CP0_EBASE,
++	KVM_REG_MIPS_CP0_CONFIG,
++	KVM_REG_MIPS_CP0_CONFIG1,
++	KVM_REG_MIPS_CP0_CONFIG2,
++	KVM_REG_MIPS_CP0_CONFIG3,
++	KVM_REG_MIPS_CP0_CONFIG4,
++	KVM_REG_MIPS_CP0_CONFIG5,
++#ifdef CONFIG_64BIT
++	KVM_REG_MIPS_CP0_XCONTEXT,
++#endif
++	KVM_REG_MIPS_CP0_ERROREPC,
++
++	KVM_REG_MIPS_COUNT_CTL,
++	KVM_REG_MIPS_COUNT_RESUME,
++	KVM_REG_MIPS_COUNT_HZ,
++};
++
++static u64 kvm_vz_get_one_regs_kscratch[] = {
++	KVM_REG_MIPS_CP0_KSCRATCH1,
++	KVM_REG_MIPS_CP0_KSCRATCH2,
++	KVM_REG_MIPS_CP0_KSCRATCH3,
++	KVM_REG_MIPS_CP0_KSCRATCH4,
++	KVM_REG_MIPS_CP0_KSCRATCH5,
++	KVM_REG_MIPS_CP0_KSCRATCH6,
++};
++
++static unsigned long kvm_vz_num_regs(struct kvm_vcpu *vcpu)
++{
++	unsigned long ret;
++
++	ret = ARRAY_SIZE(kvm_vz_get_one_regs);
++	if (cpu_guest_has_userlocal)
++		++ret;
++	ret += __arch_hweight8(cpu_data[0].guest.kscratch_mask);
++
++	return ret;
++}
++
++static int kvm_vz_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *indices)
++{
++	u64 index;
++	unsigned int i;
++
++	if (copy_to_user(indices, kvm_vz_get_one_regs,
++			 sizeof(kvm_vz_get_one_regs)))
++		return -EFAULT;
++	indices += ARRAY_SIZE(kvm_vz_get_one_regs);
++
++	if (cpu_guest_has_userlocal) {
++		index = KVM_REG_MIPS_CP0_USERLOCAL;
++		if (copy_to_user(indices, &index, sizeof(index)))
++			return -EFAULT;
++		++indices;
++	}
++	for (i = 0; i < 6; ++i) {
++		if (!cpu_guest_has_kscr(i + 2))
++			continue;
++
++		if (copy_to_user(indices, &kvm_vz_get_one_regs_kscratch[i],
++				 sizeof(kvm_vz_get_one_regs_kscratch[i])))
++			return -EFAULT;
++		++indices;
++	}
++
++	return 0;
++}
++
++static inline s64 entrylo_kvm_to_user(unsigned long v)
++{
++	s64 mask, ret = v;
++
++	if (BITS_PER_LONG == 32) {
++		/*
++		 * KVM API exposes 64-bit version of the register, so move the
++		 * RI/XI bits up into place.
++		 */
++		mask = MIPS_ENTRYLO_RI | MIPS_ENTRYLO_XI;
++		ret &= ~mask;
++		ret |= ((s64)v & mask) << 32;
++	}
++	return ret;
++}
++
++static inline unsigned long entrylo_user_to_kvm(s64 v)
++{
++	unsigned long mask, ret = v;
++
++	if (BITS_PER_LONG == 32) {
++		/*
++		 * KVM API exposes 64-bit versiono of the register, so move the
++		 * RI/XI bits down into place.
++		 */
++		mask = MIPS_ENTRYLO_RI | MIPS_ENTRYLO_XI;
++		ret &= ~mask;
++		ret |= (v >> 32) & mask;
++	}
++	return ret;
++}
++
++static int kvm_vz_get_one_reg(struct kvm_vcpu *vcpu,
++			      const struct kvm_one_reg *reg,
++			      s64 *v)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	unsigned int idx;
++
++	switch (reg->id) {
++	case KVM_REG_MIPS_CP0_INDEX:
++		*v = (long)read_gc0_index();
++		break;
++	case KVM_REG_MIPS_CP0_ENTRYLO0:
++		*v = entrylo_kvm_to_user(read_gc0_entrylo0());
++		break;
++	case KVM_REG_MIPS_CP0_ENTRYLO1:
++		*v = entrylo_kvm_to_user(read_gc0_entrylo1());
++		break;
++	case KVM_REG_MIPS_CP0_CONTEXT:
++		*v = (long)read_gc0_context();
++		break;
++	case KVM_REG_MIPS_CP0_USERLOCAL:
++		if (!cpu_guest_has_userlocal)
++			return -EINVAL;
++		*v = read_gc0_userlocal();
++		break;
++	case KVM_REG_MIPS_CP0_PAGEMASK:
++		*v = (long)read_gc0_pagemask();
++		break;
++	case KVM_REG_MIPS_CP0_PAGEGRAIN:
++		*v = (long)read_gc0_pagegrain();
++		break;
++	case KVM_REG_MIPS_CP0_WIRED:
++		*v = (long)read_gc0_wired();
++		break;
++	case KVM_REG_MIPS_CP0_HWRENA:
++		*v = (long)read_gc0_hwrena();
++		break;
++	case KVM_REG_MIPS_CP0_BADVADDR:
++		*v = (long)read_gc0_badvaddr();
++		break;
++	case KVM_REG_MIPS_CP0_COUNT:
++		*v = kvm_mips_read_count(vcpu);
++		break;
++	case KVM_REG_MIPS_CP0_ENTRYHI:
++		*v = (long)read_gc0_entryhi();
++		break;
++	case KVM_REG_MIPS_CP0_COMPARE:
++		*v = (long)read_gc0_compare();
++		break;
++	case KVM_REG_MIPS_CP0_STATUS:
++		*v = (long)read_gc0_status();
++		break;
++	case KVM_REG_MIPS_CP0_INTCTL:
++		*v = read_gc0_intctl();
++		break;
++	case KVM_REG_MIPS_CP0_CAUSE:
++		*v = (long)read_gc0_cause();
++		break;
++	case KVM_REG_MIPS_CP0_EPC:
++		*v = (long)read_gc0_epc();
++		break;
++	case KVM_REG_MIPS_CP0_PRID:
++		*v = (long)kvm_read_c0_guest_prid(cop0);
++		break;
++	case KVM_REG_MIPS_CP0_EBASE:
++		*v = kvm_vz_read_gc0_ebase();
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG:
++		*v = read_gc0_config();
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG1:
++		if (!cpu_guest_has_conf1)
++			return -EINVAL;
++		*v = read_gc0_config1();
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG2:
++		if (!cpu_guest_has_conf2)
++			return -EINVAL;
++		*v = read_gc0_config2();
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG3:
++		if (!cpu_guest_has_conf3)
++			return -EINVAL;
++		*v = read_gc0_config3();
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG4:
++		if (!cpu_guest_has_conf4)
++			return -EINVAL;
++		*v = read_gc0_config4();
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG5:
++		if (!cpu_guest_has_conf5)
++			return -EINVAL;
++		*v = read_gc0_config5();
++		break;
++#ifdef CONFIG_64BIT
++	case KVM_REG_MIPS_CP0_XCONTEXT:
++		*v = read_gc0_xcontext();
++		break;
++#endif
++	case KVM_REG_MIPS_CP0_ERROREPC:
++		*v = (long)read_gc0_errorepc();
++		break;
++	case KVM_REG_MIPS_CP0_KSCRATCH1 ... KVM_REG_MIPS_CP0_KSCRATCH6:
++		idx = reg->id - KVM_REG_MIPS_CP0_KSCRATCH1 + 2;
++		if (!cpu_guest_has_kscr(idx))
++			return -EINVAL;
++		switch (idx) {
++		case 2:
++			*v = (long)read_gc0_kscratch1();
++			break;
++		case 3:
++			*v = (long)read_gc0_kscratch2();
++			break;
++		case 4:
++			*v = (long)read_gc0_kscratch3();
++			break;
++		case 5:
++			*v = (long)read_gc0_kscratch4();
++			break;
++		case 6:
++			*v = (long)read_gc0_kscratch5();
++			break;
++		case 7:
++			*v = (long)read_gc0_kscratch6();
++			break;
++		}
++		break;
++	case KVM_REG_MIPS_COUNT_CTL:
++		*v = vcpu->arch.count_ctl;
++		break;
++	case KVM_REG_MIPS_COUNT_RESUME:
++		*v = ktime_to_ns(vcpu->arch.count_resume);
++		break;
++	case KVM_REG_MIPS_COUNT_HZ:
++		*v = vcpu->arch.count_hz;
++		break;
++	default:
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static int kvm_vz_set_one_reg(struct kvm_vcpu *vcpu,
++			      const struct kvm_one_reg *reg,
++			      s64 v)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	unsigned int idx;
++	int ret = 0;
++	unsigned int cur, change;
++
++	switch (reg->id) {
++	case KVM_REG_MIPS_CP0_INDEX:
++		write_gc0_index(v);
++		break;
++	case KVM_REG_MIPS_CP0_ENTRYLO0:
++		write_gc0_entrylo0(entrylo_user_to_kvm(v));
++		break;
++	case KVM_REG_MIPS_CP0_ENTRYLO1:
++		write_gc0_entrylo1(entrylo_user_to_kvm(v));
++		break;
++	case KVM_REG_MIPS_CP0_CONTEXT:
++		write_gc0_context(v);
++		break;
++	case KVM_REG_MIPS_CP0_USERLOCAL:
++		if (!cpu_guest_has_userlocal)
++			return -EINVAL;
++		write_gc0_userlocal(v);
++		break;
++	case KVM_REG_MIPS_CP0_PAGEMASK:
++		write_gc0_pagemask(v);
++		break;
++	case KVM_REG_MIPS_CP0_PAGEGRAIN:
++		write_gc0_pagegrain(v);
++		break;
++	case KVM_REG_MIPS_CP0_WIRED:
++		change_gc0_wired(MIPSR6_WIRED_WIRED, v);
++		break;
++	case KVM_REG_MIPS_CP0_HWRENA:
++		write_gc0_hwrena(v);
++		break;
++	case KVM_REG_MIPS_CP0_BADVADDR:
++		write_gc0_badvaddr(v);
++		break;
++	case KVM_REG_MIPS_CP0_COUNT:
++		kvm_mips_write_count(vcpu, v);
++		break;
++	case KVM_REG_MIPS_CP0_ENTRYHI:
++		write_gc0_entryhi(v);
++		break;
++	case KVM_REG_MIPS_CP0_COMPARE:
++		kvm_mips_write_compare(vcpu, v, false);
++		break;
++	case KVM_REG_MIPS_CP0_STATUS:
++		write_gc0_status(v);
++		break;
++	case KVM_REG_MIPS_CP0_INTCTL:
++		write_gc0_intctl(v);
++		break;
++	case KVM_REG_MIPS_CP0_CAUSE:
++		/*
++		 * If the timer is stopped or started (DC bit) it must look
++		 * atomic with changes to the timer interrupt pending bit (TI).
++		 * A timer interrupt should not happen in between.
++		 */
++		if ((read_gc0_cause() ^ v) & CAUSEF_DC) {
++			if (v & CAUSEF_DC) {
++				/* disable timer first */
++				kvm_mips_count_disable_cause(vcpu);
++				change_gc0_cause((u32)~CAUSEF_DC, v);
++			} else {
++				/* enable timer last */
++				change_gc0_cause((u32)~CAUSEF_DC, v);
++				kvm_mips_count_enable_cause(vcpu);
++			}
++		} else {
++			write_gc0_cause(v);
++		}
++		break;
++	case KVM_REG_MIPS_CP0_EPC:
++		write_gc0_epc(v);
++		break;
++	case KVM_REG_MIPS_CP0_PRID:
++		kvm_write_c0_guest_prid(cop0, v);
++		break;
++	case KVM_REG_MIPS_CP0_EBASE:
++		kvm_vz_write_gc0_ebase(v);
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG:
++		cur = read_gc0_config();
++		change = (cur ^ v) & kvm_vz_config_user_wrmask(vcpu);
++		if (change) {
++			v = cur ^ change;
++			write_gc0_config(v);
++		}
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG1:
++		if (!cpu_guest_has_conf1)
++			break;
++		cur = read_gc0_config1();
++		change = (cur ^ v) & kvm_vz_config1_user_wrmask(vcpu);
++		if (change) {
++			v = cur ^ change;
++			write_gc0_config1(v);
++		}
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG2:
++		if (!cpu_guest_has_conf2)
++			break;
++		cur = read_gc0_config2();
++		change = (cur ^ v) & kvm_vz_config2_user_wrmask(vcpu);
++		if (change) {
++			v = cur ^ change;
++			write_gc0_config2(v);
++		}
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG3:
++		if (!cpu_guest_has_conf3)
++			break;
++		cur = read_gc0_config3();
++		change = (cur ^ v) & kvm_vz_config3_user_wrmask(vcpu);
++		if (change) {
++			v = cur ^ change;
++			write_gc0_config3(v);
++		}
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG4:
++		if (!cpu_guest_has_conf4)
++			break;
++		cur = read_gc0_config4();
++		change = (cur ^ v) & kvm_vz_config4_user_wrmask(vcpu);
++		if (change) {
++			v = cur ^ change;
++			write_gc0_config4(v);
++		}
++		break;
++	case KVM_REG_MIPS_CP0_CONFIG5:
++		if (!cpu_guest_has_conf5)
++			break;
++		cur = read_gc0_config5();
++		change = (cur ^ v) & kvm_vz_config5_user_wrmask(vcpu);
++		if (change) {
++			v = cur ^ change;
++			write_gc0_config5(v);
++		}
++		break;
++#ifdef CONFIG_64BIT
++	case KVM_REG_MIPS_CP0_XCONTEXT:
++		write_gc0_xcontext(v);
++		break;
++#endif
++	case KVM_REG_MIPS_CP0_ERROREPC:
++		write_gc0_errorepc(v);
++		break;
++	case KVM_REG_MIPS_CP0_KSCRATCH1 ... KVM_REG_MIPS_CP0_KSCRATCH6:
++		idx = reg->id - KVM_REG_MIPS_CP0_KSCRATCH1 + 2;
++		if (!cpu_guest_has_kscr(idx))
++			return -EINVAL;
++		switch (idx) {
++		case 2:
++			write_gc0_kscratch1(v);
++			break;
++		case 3:
++			write_gc0_kscratch2(v);
++			break;
++		case 4:
++			write_gc0_kscratch3(v);
++			break;
++		case 5:
++			write_gc0_kscratch4(v);
++			break;
++		case 6:
++			write_gc0_kscratch5(v);
++			break;
++		case 7:
++			write_gc0_kscratch6(v);
++			break;
++		}
++		break;
++	case KVM_REG_MIPS_COUNT_CTL:
++		ret = kvm_mips_set_count_ctl(vcpu, v);
++		break;
++	case KVM_REG_MIPS_COUNT_RESUME:
++		ret = kvm_mips_set_count_resume(vcpu, v);
++		break;
++	case KVM_REG_MIPS_COUNT_HZ:
++		ret = kvm_mips_set_count_hz(vcpu, v);
++		break;
++	default:
++		return -EINVAL;
++	}
++	return ret;
++}
++
++#define guestid_cache(cpu)	(cpu_data[cpu].guestid_cache)
++static void kvm_vz_get_new_guestid(unsigned long cpu, struct kvm_vcpu *vcpu)
++{
++	unsigned long guestid = guestid_cache(cpu);
++
++	if (!(++guestid & GUESTID_MASK)) {
++		if (cpu_has_vtag_icache)
++			flush_icache_all();
++
++		if (!guestid)		/* fix version if needed */
++			guestid = GUESTID_FIRST_VERSION;
++
++		++guestid;		/* guestid 0 reserved for root */
++
++		/* start new guestid cycle */
++		kvm_vz_local_flush_roottlb_all_guests();
++		kvm_vz_local_flush_guesttlb_all();
++	}
++
++	guestid_cache(cpu) = guestid;
++}
++
++/* Returns 1 if the guest TLB may be clobbered */
++static int kvm_vz_check_requests(struct kvm_vcpu *vcpu, int cpu)
++{
++	int ret = 0;
++	int i;
++
++	if (!vcpu->requests)
++		return 0;
++
++	if (kvm_check_request(KVM_REQ_TLB_FLUSH, vcpu)) {
++		if (cpu_has_guestid) {
++			/* Drop all GuestIDs for this VCPU */
++			for_each_possible_cpu(i)
++				vcpu->arch.vzguestid[i] = 0;
++			/* This will clobber guest TLB contents too */
++			ret = 1;
++		}
++		/*
++		 * For Root ASID Dealias (RAD) we don't do anything here, but we
++		 * still need the request to ensure we recheck asid_flush_mask.
++		 * We can still return 0 as only the root TLB will be affected
++		 * by a root ASID flush.
++		 */
++	}
++
++	return ret;
++}
++
++static void kvm_vz_vcpu_save_wired(struct kvm_vcpu *vcpu)
++{
++	unsigned int wired = read_gc0_wired();
++	struct kvm_mips_tlb *tlbs;
++	int i;
++
++	/* Expand the wired TLB array if necessary */
++	wired &= MIPSR6_WIRED_WIRED;
++	if (wired > vcpu->arch.wired_tlb_limit) {
++		tlbs = krealloc(vcpu->arch.wired_tlb, wired *
++				sizeof(*vcpu->arch.wired_tlb), GFP_ATOMIC);
++		if (WARN_ON(!tlbs)) {
++			/* Save whatever we can */
++			wired = vcpu->arch.wired_tlb_limit;
++		} else {
++			vcpu->arch.wired_tlb = tlbs;
++			vcpu->arch.wired_tlb_limit = wired;
++		}
++	}
++
++	if (wired)
++		/* Save wired entries from the guest TLB */
++		kvm_vz_save_guesttlb(vcpu->arch.wired_tlb, 0, wired);
++	/* Invalidate any dropped entries since last time */
++	for (i = wired; i < vcpu->arch.wired_tlb_used; ++i) {
++		vcpu->arch.wired_tlb[i].tlb_hi = UNIQUE_GUEST_ENTRYHI(i);
++		vcpu->arch.wired_tlb[i].tlb_lo[0] = 0;
++		vcpu->arch.wired_tlb[i].tlb_lo[1] = 0;
++		vcpu->arch.wired_tlb[i].tlb_mask = 0;
++	}
++	vcpu->arch.wired_tlb_used = wired;
++}
++
++static void kvm_vz_vcpu_load_wired(struct kvm_vcpu *vcpu)
++{
++	/* Load wired entries into the guest TLB */
++	if (vcpu->arch.wired_tlb)
++		kvm_vz_load_guesttlb(vcpu->arch.wired_tlb, 0,
++				     vcpu->arch.wired_tlb_used);
++}
++
++static void kvm_vz_vcpu_load_tlb(struct kvm_vcpu *vcpu, int cpu)
++{
++	struct kvm *kvm = vcpu->kvm;
++	struct mm_struct *gpa_mm = &kvm->arch.gpa_mm;
++	bool migrated;
++
++	/*
++	 * Are we entering guest context on a different CPU to last time?
++	 * If so, the VCPU's guest TLB state on this CPU may be stale.
++	 */
++	migrated = (vcpu->arch.last_exec_cpu != cpu);
++	vcpu->arch.last_exec_cpu = cpu;
++
++	/*
++	 * A vcpu's GuestID is set in GuestCtl1.ID when the vcpu is loaded and
++	 * remains set until another vcpu is loaded in.  As a rule GuestRID
++	 * remains zeroed when in root context unless the kernel is busy
++	 * manipulating guest tlb entries.
++	 */
++	if (cpu_has_guestid) {
++		/*
++		 * Check if our GuestID is of an older version and thus invalid.
++		 *
++		 * We also discard the stored GuestID if we've executed on
++		 * another CPU, as the guest mappings may have changed without
++		 * hypervisor knowledge.
++		 */
++		if (migrated ||
++		    (vcpu->arch.vzguestid[cpu] ^ guestid_cache(cpu)) &
++					GUESTID_VERSION_MASK) {
++			kvm_vz_get_new_guestid(cpu, vcpu);
++			vcpu->arch.vzguestid[cpu] = guestid_cache(cpu);
++			trace_kvm_guestid_change(vcpu,
++						 vcpu->arch.vzguestid[cpu]);
++		}
++
++		/* Restore GuestID */
++		change_c0_guestctl1(GUESTID_MASK, vcpu->arch.vzguestid[cpu]);
++	} else {
++		/*
++		 * The Guest TLB only stores a single guest's TLB state, so
++		 * flush it if another VCPU has executed on this CPU.
++		 *
++		 * We also flush if we've executed on another CPU, as the guest
++		 * mappings may have changed without hypervisor knowledge.
++		 */
++		if (migrated || last_exec_vcpu[cpu] != vcpu)
++			kvm_vz_local_flush_guesttlb_all();
++		last_exec_vcpu[cpu] = vcpu;
++
++		/*
++		 * Root ASID dealiases guest GPA mappings in the root TLB.
++		 * Allocate new root ASID if needed.
++		 */
++		if (cpumask_test_and_clear_cpu(cpu, &kvm->arch.asid_flush_mask)
++		    || (cpu_context(cpu, gpa_mm) ^ asid_cache(cpu)) &
++						asid_version_mask(cpu))
++			get_new_mmu_context(gpa_mm, cpu);
++	}
++}
++
++static int kvm_vz_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	bool migrated, all;
++
++	/*
++	 * Have we migrated to a different CPU?
++	 * If so, any old guest TLB state may be stale.
++	 */
++	migrated = (vcpu->arch.last_sched_cpu != cpu);
++
++	/*
++	 * Was this the last VCPU to run on this CPU?
++	 * If not, any old guest state from this VCPU will have been clobbered.
++	 */
++	all = migrated || (last_vcpu[cpu] != vcpu);
++	last_vcpu[cpu] = vcpu;
++
++	/*
++	 * Restore CP0_Wired unconditionally as we clear it after use, and
++	 * restore wired guest TLB entries (while in guest context).
++	 */
++	kvm_restore_gc0_wired(cop0);
++	if (current->flags & PF_VCPU) {
++		tlbw_use_hazard();
++		kvm_vz_vcpu_load_tlb(vcpu, cpu);
++		kvm_vz_vcpu_load_wired(vcpu);
++	}
++
++	/*
++	 * Restore timer state regardless, as e.g. Cause.TI can change over time
++	 * if left unmaintained.
++	 */
++	kvm_vz_restore_timer(vcpu);
++
++	/* Don't bother restoring registers multiple times unless necessary */
++	if (!all)
++		return 0;
++
++	/*
++	 * Restore config registers first, as some implementations restrict
++	 * writes to other registers when the corresponding feature bits aren't
++	 * set. For example Status.CU1 cannot be set unless Config1.FP is set.
++	 */
++	kvm_restore_gc0_config(cop0);
++	if (cpu_guest_has_conf1)
++		kvm_restore_gc0_config1(cop0);
++	if (cpu_guest_has_conf2)
++		kvm_restore_gc0_config2(cop0);
++	if (cpu_guest_has_conf3)
++		kvm_restore_gc0_config3(cop0);
++	if (cpu_guest_has_conf4)
++		kvm_restore_gc0_config4(cop0);
++	if (cpu_guest_has_conf5)
++		kvm_restore_gc0_config5(cop0);
++	if (cpu_guest_has_conf6)
++		kvm_restore_gc0_config6(cop0);
++	if (cpu_guest_has_conf7)
++		kvm_restore_gc0_config7(cop0);
++
++	kvm_restore_gc0_index(cop0);
++	kvm_restore_gc0_entrylo0(cop0);
++	kvm_restore_gc0_entrylo1(cop0);
++	kvm_restore_gc0_context(cop0);
++#ifdef CONFIG_64BIT
++	kvm_restore_gc0_xcontext(cop0);
++#endif
++	kvm_restore_gc0_pagemask(cop0);
++	kvm_restore_gc0_pagegrain(cop0);
++	kvm_restore_gc0_hwrena(cop0);
++	kvm_restore_gc0_badvaddr(cop0);
++	kvm_restore_gc0_entryhi(cop0);
++	kvm_restore_gc0_status(cop0);
++	kvm_restore_gc0_intctl(cop0);
++	kvm_restore_gc0_epc(cop0);
++	kvm_vz_write_gc0_ebase(kvm_read_sw_gc0_ebase(cop0));
++	if (cpu_guest_has_userlocal)
++		kvm_restore_gc0_userlocal(cop0);
++
++	kvm_restore_gc0_errorepc(cop0);
++
++	/* restore KScratch registers if enabled in guest */
++	if (cpu_guest_has_conf4) {
++		if (cpu_guest_has_kscr(2))
++			kvm_restore_gc0_kscratch1(cop0);
++		if (cpu_guest_has_kscr(3))
++			kvm_restore_gc0_kscratch2(cop0);
++		if (cpu_guest_has_kscr(4))
++			kvm_restore_gc0_kscratch3(cop0);
++		if (cpu_guest_has_kscr(5))
++			kvm_restore_gc0_kscratch4(cop0);
++		if (cpu_guest_has_kscr(6))
++			kvm_restore_gc0_kscratch5(cop0);
++		if (cpu_guest_has_kscr(7))
++			kvm_restore_gc0_kscratch6(cop0);
++	}
++
++	/* restore Root.GuestCtl2 from unused Guest guestctl2 register */
++	if (cpu_has_guestctl2)
++		write_c0_guestctl2(
++			cop0->reg[MIPS_CP0_GUESTCTL2][MIPS_CP0_GUESTCTL2_SEL]);
++
++	return 0;
++}
++
++static int kvm_vz_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++
++	if (current->flags & PF_VCPU)
++		kvm_vz_vcpu_save_wired(vcpu);
++
++	kvm_lose_fpu(vcpu);
++
++	kvm_save_gc0_index(cop0);
++	kvm_save_gc0_entrylo0(cop0);
++	kvm_save_gc0_entrylo1(cop0);
++	kvm_save_gc0_context(cop0);
++#ifdef CONFIG_64BIT
++	kvm_save_gc0_xcontext(cop0);
++#endif
++	kvm_save_gc0_pagemask(cop0);
++	kvm_save_gc0_pagegrain(cop0);
++	kvm_save_gc0_wired(cop0);
++	/* allow wired TLB entries to be overwritten */
++	clear_gc0_wired(MIPSR6_WIRED_WIRED);
++	kvm_save_gc0_hwrena(cop0);
++	kvm_save_gc0_badvaddr(cop0);
++	kvm_save_gc0_entryhi(cop0);
++	kvm_save_gc0_status(cop0);
++	kvm_save_gc0_intctl(cop0);
++	kvm_save_gc0_epc(cop0);
++	kvm_write_sw_gc0_ebase(cop0, kvm_vz_read_gc0_ebase());
++	if (cpu_guest_has_userlocal)
++		kvm_save_gc0_userlocal(cop0);
++
++	/* only save implemented config registers */
++	kvm_save_gc0_config(cop0);
++	if (cpu_guest_has_conf1)
++		kvm_save_gc0_config1(cop0);
++	if (cpu_guest_has_conf2)
++		kvm_save_gc0_config2(cop0);
++	if (cpu_guest_has_conf3)
++		kvm_save_gc0_config3(cop0);
++	if (cpu_guest_has_conf4)
++		kvm_save_gc0_config4(cop0);
++	if (cpu_guest_has_conf5)
++		kvm_save_gc0_config5(cop0);
++	if (cpu_guest_has_conf6)
++		kvm_save_gc0_config6(cop0);
++	if (cpu_guest_has_conf7)
++		kvm_save_gc0_config7(cop0);
++
++	kvm_save_gc0_errorepc(cop0);
++
++	/* save KScratch registers if enabled in guest */
++	if (cpu_guest_has_conf4) {
++		if (cpu_guest_has_kscr(2))
++			kvm_save_gc0_kscratch1(cop0);
++		if (cpu_guest_has_kscr(3))
++			kvm_save_gc0_kscratch2(cop0);
++		if (cpu_guest_has_kscr(4))
++			kvm_save_gc0_kscratch3(cop0);
++		if (cpu_guest_has_kscr(5))
++			kvm_save_gc0_kscratch4(cop0);
++		if (cpu_guest_has_kscr(6))
++			kvm_save_gc0_kscratch5(cop0);
++		if (cpu_guest_has_kscr(7))
++			kvm_save_gc0_kscratch6(cop0);
++	}
++
++	kvm_vz_save_timer(vcpu);
++
++	/* save Root.GuestCtl2 in unused Guest guestctl2 register */
++	if (cpu_has_guestctl2)
++		cop0->reg[MIPS_CP0_GUESTCTL2][MIPS_CP0_GUESTCTL2_SEL] =
++			read_c0_guestctl2();
++
++	return 0;
++}
++
++/**
++ * kvm_vz_resize_guest_vtlb() - Attempt to resize guest VTLB.
++ * @size:	Number of guest VTLB entries (0 < @size <= root VTLB entries).
++ *
++ * Attempt to resize the guest VTLB by writing guest Config registers. This is
++ * necessary for cores with a shared root/guest TLB to avoid overlap with wired
++ * entries in the root VTLB.
++ *
++ * Returns:	The resulting guest VTLB size.
++ */
++static unsigned int kvm_vz_resize_guest_vtlb(unsigned int size)
++{
++	unsigned int config4 = 0, ret = 0, limit;
++
++	/* Write MMUSize - 1 into guest Config registers */
++	if (cpu_guest_has_conf1)
++		change_gc0_config1(MIPS_CONF1_TLBS,
++				   (size - 1) << MIPS_CONF1_TLBS_SHIFT);
++	if (cpu_guest_has_conf4) {
++		config4 = read_gc0_config4();
++		if (cpu_has_mips_r6 || (config4 & MIPS_CONF4_MMUEXTDEF) ==
++		    MIPS_CONF4_MMUEXTDEF_VTLBSIZEEXT) {
++			config4 &= ~MIPS_CONF4_VTLBSIZEEXT;
++			config4 |= ((size - 1) >> MIPS_CONF1_TLBS_SIZE) <<
++				MIPS_CONF4_VTLBSIZEEXT_SHIFT;
++		} else if ((config4 & MIPS_CONF4_MMUEXTDEF) ==
++			   MIPS_CONF4_MMUEXTDEF_MMUSIZEEXT) {
++			config4 &= ~MIPS_CONF4_MMUSIZEEXT;
++			config4 |= ((size - 1) >> MIPS_CONF1_TLBS_SIZE) <<
++				MIPS_CONF4_MMUSIZEEXT_SHIFT;
++		}
++		write_gc0_config4(config4);
++	}
++
++	/*
++	 * Set Guest.Wired.Limit = 0 (no limit up to Guest.MMUSize-1), unless it
++	 * would exceed Root.Wired.Limit (clearing Guest.Wired.Wired so write
++	 * not dropped)
++	 */
++	if (cpu_has_mips_r6) {
++		limit = (read_c0_wired() & MIPSR6_WIRED_LIMIT) >>
++						MIPSR6_WIRED_LIMIT_SHIFT;
++		if (size - 1 <= limit)
++			limit = 0;
++		write_gc0_wired(limit << MIPSR6_WIRED_LIMIT_SHIFT);
++	}
++
++	/* Read back MMUSize - 1 */
++	back_to_back_c0_hazard();
++	if (cpu_guest_has_conf1)
++		ret = (read_gc0_config1() & MIPS_CONF1_TLBS) >>
++						MIPS_CONF1_TLBS_SHIFT;
++	if (config4) {
++		if (cpu_has_mips_r6 || (config4 & MIPS_CONF4_MMUEXTDEF) ==
++		    MIPS_CONF4_MMUEXTDEF_VTLBSIZEEXT)
++			ret |= ((config4 & MIPS_CONF4_VTLBSIZEEXT) >>
++				MIPS_CONF4_VTLBSIZEEXT_SHIFT) <<
++				MIPS_CONF1_TLBS_SIZE;
++		else if ((config4 & MIPS_CONF4_MMUEXTDEF) ==
++			 MIPS_CONF4_MMUEXTDEF_MMUSIZEEXT)
++			ret |= ((config4 & MIPS_CONF4_MMUSIZEEXT) >>
++				MIPS_CONF4_MMUSIZEEXT_SHIFT) <<
++				MIPS_CONF1_TLBS_SIZE;
++	}
++	return ret + 1;
++}
++
++static int kvm_vz_hardware_enable(void)
++{
++	unsigned int mmu_size, guest_mmu_size, ftlb_size;
++
++	/*
++	 * ImgTec cores tend to use a shared root/guest TLB. To avoid overlap of
++	 * root wired and guest entries, the guest TLB may need resizing.
++	 */
++	mmu_size = current_cpu_data.tlbsizevtlb;
++	ftlb_size = current_cpu_data.tlbsize - mmu_size;
++
++	/* Try switching to maximum guest VTLB size for flush */
++	guest_mmu_size = kvm_vz_resize_guest_vtlb(mmu_size);
++	current_cpu_data.guest.tlbsize = guest_mmu_size + ftlb_size;
++	kvm_vz_local_flush_guesttlb_all();
++
++	/*
++	 * Reduce to make space for root wired entries and at least 2 root
++	 * non-wired entries. This does assume that long-term wired entries
++	 * won't be added later.
++	 */
++	guest_mmu_size = mmu_size - num_wired_entries() - 2;
++	guest_mmu_size = kvm_vz_resize_guest_vtlb(guest_mmu_size);
++	current_cpu_data.guest.tlbsize = guest_mmu_size + ftlb_size;
++
++	/*
++	 * Write the VTLB size, but if another CPU has already written, check it
++	 * matches or we won't provide a consistent view to the guest. If this
++	 * ever happens it suggests an asymmetric number of wired entries.
++	 */
++	if (cmpxchg(&kvm_vz_guest_vtlb_size, 0, guest_mmu_size) &&
++	    WARN(guest_mmu_size != kvm_vz_guest_vtlb_size,
++		 "Available guest VTLB size mismatch"))
++		return -EINVAL;
++
++	/*
++	 * Enable virtualization features granting guest direct control of
++	 * certain features:
++	 * CP0=1:	Guest coprocessor 0 context.
++	 * AT=Guest:	Guest MMU.
++	 * CG=1:	Hit (virtual address) CACHE operations (optional).
++	 * CF=1:	Guest Config registers.
++	 * CGI=1:	Indexed flush CACHE operations (optional).
++	 */
++	write_c0_guestctl0(MIPS_GCTL0_CP0 |
++			   (MIPS_GCTL0_AT_GUEST << MIPS_GCTL0_AT_SHIFT) |
++			   MIPS_GCTL0_CG | MIPS_GCTL0_CF);
++	if (cpu_has_guestctl0ext)
++		set_c0_guestctl0ext(MIPS_GCTL0EXT_CGI);
++
++	if (cpu_has_guestid) {
++		write_c0_guestctl1(0);
++		kvm_vz_local_flush_roottlb_all_guests();
++
++		GUESTID_MASK = current_cpu_data.guestid_mask;
++		GUESTID_FIRST_VERSION = GUESTID_MASK + 1;
++		GUESTID_VERSION_MASK = ~GUESTID_MASK;
++
++		current_cpu_data.guestid_cache = GUESTID_FIRST_VERSION;
++	}
++
++	/* clear any pending injected virtual guest interrupts */
++	if (cpu_has_guestctl2)
++		clear_c0_guestctl2(0x3f << 10);
++
++	return 0;
++}
++
++static void kvm_vz_hardware_disable(void)
++{
++	kvm_vz_local_flush_guesttlb_all();
++
++	if (cpu_has_guestid) {
++		write_c0_guestctl1(0);
++		kvm_vz_local_flush_roottlb_all_guests();
++	}
++}
++
++static int kvm_vz_check_extension(struct kvm *kvm, long ext)
++{
++	int r;
++
++	switch (ext) {
++	case KVM_CAP_MIPS_VZ:
++		/* we wouldn't be here unless cpu_has_vz */
++		r = 1;
++		break;
++#ifdef CONFIG_64BIT
++	case KVM_CAP_MIPS_64BIT:
++		/* We support 64-bit registers/operations and addresses */
++		r = 2;
++		break;
++#endif
++	default:
++		r = 0;
++		break;
++	}
++
++	return r;
++}
++
++static int kvm_vz_vcpu_init(struct kvm_vcpu *vcpu)
++{
++	int i;
++
++	for_each_possible_cpu(i)
++		vcpu->arch.vzguestid[i] = 0;
++
++	return 0;
++}
++
++static void kvm_vz_vcpu_uninit(struct kvm_vcpu *vcpu)
++{
++	int cpu;
++
++	/*
++	 * If the VCPU is freed and reused as another VCPU, we don't want the
++	 * matching pointer wrongly hanging around in last_vcpu[] or
++	 * last_exec_vcpu[].
++	 */
++	for_each_possible_cpu(cpu) {
++		if (last_vcpu[cpu] == vcpu)
++			last_vcpu[cpu] = NULL;
++		if (last_exec_vcpu[cpu] == vcpu)
++			last_exec_vcpu[cpu] = NULL;
++	}
++}
++
++static int kvm_vz_vcpu_setup(struct kvm_vcpu *vcpu)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++	unsigned long count_hz = 100*1000*1000; /* default to 100 MHz */
++
++	/*
++	 * Start off the timer at the same frequency as the host timer, but the
++	 * soft timer doesn't handle frequencies greater than 1GHz yet.
++	 */
++	if (mips_hpt_frequency && mips_hpt_frequency <= NSEC_PER_SEC)
++		count_hz = mips_hpt_frequency;
++	kvm_mips_init_count(vcpu, count_hz);
++
++	/*
++	 * Initialize guest register state to valid architectural reset state.
++	 */
++
++	/* PageGrain */
++	if (cpu_has_mips_r6)
++		kvm_write_sw_gc0_pagegrain(cop0, PG_RIE | PG_XIE | PG_IEC);
++	/* Wired */
++	if (cpu_has_mips_r6)
++		kvm_write_sw_gc0_wired(cop0,
++				       read_gc0_wired() & MIPSR6_WIRED_LIMIT);
++	/* Status */
++	kvm_write_sw_gc0_status(cop0, ST0_BEV | ST0_ERL);
++	if (cpu_has_mips_r6)
++		kvm_change_sw_gc0_status(cop0, ST0_FR, read_gc0_status());
++	/* IntCtl */
++	kvm_write_sw_gc0_intctl(cop0, read_gc0_intctl() &
++				(INTCTLF_IPFDC | INTCTLF_IPPCI | INTCTLF_IPTI));
++	/* PRId */
++	kvm_write_sw_gc0_prid(cop0, boot_cpu_data.processor_id);
++	/* EBase */
++	kvm_write_sw_gc0_ebase(cop0, (s32)0x80000000 | vcpu->vcpu_id);
++	/* Config */
++	kvm_save_gc0_config(cop0);
++	/* architecturally writable (e.g. from guest) */
++	kvm_change_sw_gc0_config(cop0, CONF_CM_CMASK,
++				 _page_cachable_default >> _CACHE_SHIFT);
++	/* architecturally read only, but maybe writable from root */
++	kvm_change_sw_gc0_config(cop0, MIPS_CONF_MT, read_c0_config());
++	if (cpu_guest_has_conf1) {
++		kvm_set_sw_gc0_config(cop0, MIPS_CONF_M);
++		/* Config1 */
++		kvm_save_gc0_config1(cop0);
++		/* architecturally read only, but maybe writable from root */
++		kvm_clear_sw_gc0_config1(cop0, MIPS_CONF1_C2	|
++					       MIPS_CONF1_MD	|
++					       MIPS_CONF1_PC	|
++					       MIPS_CONF1_WR	|
++					       MIPS_CONF1_CA	|
++					       MIPS_CONF1_FP);
++	}
++	if (cpu_guest_has_conf2) {
++		kvm_set_sw_gc0_config1(cop0, MIPS_CONF_M);
++		/* Config2 */
++		kvm_save_gc0_config2(cop0);
++	}
++	if (cpu_guest_has_conf3) {
++		kvm_set_sw_gc0_config2(cop0, MIPS_CONF_M);
++		/* Config3 */
++		kvm_save_gc0_config3(cop0);
++		/* architecturally writable (e.g. from guest) */
++		kvm_clear_sw_gc0_config3(cop0, MIPS_CONF3_ISA_OE);
++		/* architecturally read only, but maybe writable from root */
++		kvm_clear_sw_gc0_config3(cop0, MIPS_CONF3_MSA	|
++					       MIPS_CONF3_BPG	|
++					       MIPS_CONF3_ULRI	|
++					       MIPS_CONF3_DSP	|
++					       MIPS_CONF3_CTXTC	|
++					       MIPS_CONF3_ITL	|
++					       MIPS_CONF3_LPA	|
++					       MIPS_CONF3_VEIC	|
++					       MIPS_CONF3_VINT	|
++					       MIPS_CONF3_SP	|
++					       MIPS_CONF3_CDMM	|
++					       MIPS_CONF3_MT	|
++					       MIPS_CONF3_SM	|
++					       MIPS_CONF3_TL);
++	}
++	if (cpu_guest_has_conf4) {
++		kvm_set_sw_gc0_config3(cop0, MIPS_CONF_M);
++		/* Config4 */
++		kvm_save_gc0_config4(cop0);
++	}
++	if (cpu_guest_has_conf5) {
++		kvm_set_sw_gc0_config4(cop0, MIPS_CONF_M);
++		/* Config5 */
++		kvm_save_gc0_config5(cop0);
++		/* architecturally writable (e.g. from guest) */
++		kvm_clear_sw_gc0_config5(cop0, MIPS_CONF5_K	|
++					       MIPS_CONF5_CV	|
++					       MIPS_CONF5_MSAEN	|
++					       MIPS_CONF5_UFE	|
++					       MIPS_CONF5_FRE	|
++					       MIPS_CONF5_SBRI	|
++					       MIPS_CONF5_UFR);
++		/* architecturally read only, but maybe writable from root */
++		kvm_clear_sw_gc0_config5(cop0, MIPS_CONF5_MRP);
++	}
++
++	/* start with no pending virtual guest interrupts */
++	if (cpu_has_guestctl2)
++		cop0->reg[MIPS_CP0_GUESTCTL2][MIPS_CP0_GUESTCTL2_SEL] = 0;
++
++	/* Put PC at reset vector */
++	vcpu->arch.pc = CKSEG1ADDR(0x1fc00000);
++
++	return 0;
++}
++
++static void kvm_vz_flush_shadow_all(struct kvm *kvm)
++{
++	if (cpu_has_guestid) {
++		/* Flush GuestID for each VCPU individually */
++		kvm_flush_remote_tlbs(kvm);
++	} else {
++		/*
++		 * For each CPU there is a single GPA ASID used by all VCPUs in
++		 * the VM, so it doesn't make sense for the VCPUs to handle
++		 * invalidation of these ASIDs individually.
++		 *
++		 * Instead mark all CPUs as needing ASID invalidation in
++		 * asid_flush_mask, and just use kvm_flush_remote_tlbs(kvm) to
++		 * kick any running VCPUs so they check asid_flush_mask.
++		 */
++		cpumask_setall(&kvm->arch.asid_flush_mask);
++		kvm_flush_remote_tlbs(kvm);
++	}
++}
++
++static void kvm_vz_flush_shadow_memslot(struct kvm *kvm,
++					const struct kvm_memory_slot *slot)
++{
++	kvm_vz_flush_shadow_all(kvm);
++}
++
++static void kvm_vz_vcpu_reenter(struct kvm_run *run, struct kvm_vcpu *vcpu)
++{
++	int cpu = smp_processor_id();
++	int preserve_guest_tlb;
++
++	preserve_guest_tlb = kvm_vz_check_requests(vcpu, cpu);
++
++	if (preserve_guest_tlb)
++		kvm_vz_vcpu_save_wired(vcpu);
++
++	kvm_vz_vcpu_load_tlb(vcpu, cpu);
++
++	if (preserve_guest_tlb)
++		kvm_vz_vcpu_load_wired(vcpu);
++}
++
++static int kvm_vz_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu)
++{
++	int cpu = smp_processor_id();
++	int r;
++
++	/* Check if we have any exceptions/interrupts pending */
++	kvm_mips_deliver_interrupts(vcpu, read_gc0_cause());
++
++	kvm_vz_check_requests(vcpu, cpu);
++	kvm_vz_vcpu_load_tlb(vcpu, cpu);
++	kvm_vz_vcpu_load_wired(vcpu);
++
++	r = vcpu->arch.vcpu_run(run, vcpu);
++
++	kvm_vz_vcpu_save_wired(vcpu);
++
++	return r;
++}
++
++static struct kvm_mips_callbacks kvm_vz_callbacks = {
++	.handle_cop_unusable = kvm_trap_vz_handle_cop_unusable,
++	.handle_tlb_mod = kvm_trap_vz_handle_tlb_st_miss,
++	.handle_tlb_ld_miss = kvm_trap_vz_handle_tlb_ld_miss,
++	.handle_tlb_st_miss = kvm_trap_vz_handle_tlb_st_miss,
++	.handle_addr_err_st = kvm_trap_vz_no_handler,
++	.handle_addr_err_ld = kvm_trap_vz_no_handler,
++	.handle_syscall = kvm_trap_vz_no_handler,
++	.handle_res_inst = kvm_trap_vz_no_handler,
++	.handle_break = kvm_trap_vz_no_handler,
++	.handle_msa_disabled = kvm_trap_vz_handle_msa_disabled,
++	.handle_guest_exit = kvm_trap_vz_handle_guest_exit,
++
++	.hardware_enable = kvm_vz_hardware_enable,
++	.hardware_disable = kvm_vz_hardware_disable,
++	.check_extension = kvm_vz_check_extension,
++	.vcpu_init = kvm_vz_vcpu_init,
++	.vcpu_uninit = kvm_vz_vcpu_uninit,
++	.vcpu_setup = kvm_vz_vcpu_setup,
++	.flush_shadow_all = kvm_vz_flush_shadow_all,
++	.flush_shadow_memslot = kvm_vz_flush_shadow_memslot,
++	.gva_to_gpa = kvm_vz_gva_to_gpa_cb,
++	.queue_timer_int = kvm_vz_queue_timer_int_cb,
++	.dequeue_timer_int = kvm_vz_dequeue_timer_int_cb,
++	.queue_io_int = kvm_vz_queue_io_int_cb,
++	.dequeue_io_int = kvm_vz_dequeue_io_int_cb,
++	.irq_deliver = kvm_vz_irq_deliver_cb,
++	.irq_clear = kvm_vz_irq_clear_cb,
++	.num_regs = kvm_vz_num_regs,
++	.copy_reg_indices = kvm_vz_copy_reg_indices,
++	.get_one_reg = kvm_vz_get_one_reg,
++	.set_one_reg = kvm_vz_set_one_reg,
++	.vcpu_load = kvm_vz_vcpu_load,
++	.vcpu_put = kvm_vz_vcpu_put,
++	.vcpu_run = kvm_vz_vcpu_run,
++	.vcpu_reenter = kvm_vz_vcpu_reenter,
++};
++
++int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks)
++{
++	if (!cpu_has_vz)
++		return -ENODEV;
++
++	/*
++	 * VZ requires at least 2 KScratch registers, so it should have been
++	 * possible to allocate pgd_reg.
++	 */
++	if (WARN(pgd_reg == -1,
++		 "pgd_reg not allocated even though cpu_has_vz\n"))
++		return -ENODEV;
++
++	pr_info("Starting KVM with MIPS VZ extensions\n");
++
++	*install_callbacks = &kvm_vz_callbacks;
++	return 0;
++}
 -- 
 git-series 0.8.10

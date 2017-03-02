@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:43:00 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:25287 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:43:24 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:35620 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993876AbdCBJha0KjPt (ORCPT
+        with ESMTP id S23993879AbdCBJhaadFct (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2017 10:37:30 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 4E433A53BDEE9;
-        Thu,  2 Mar 2017 09:37:20 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 88AB6B2BEA1A3;
+        Thu,  2 Mar 2017 09:37:25 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Thu, 2 Mar 2017 09:37:21 +0000
+ 14.3.294.0; Thu, 2 Mar 2017 09:37:27 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 7/32] KVM: MIPS/Emulate: De-duplicate MMIO emulation
-Date:   Thu, 2 Mar 2017 09:36:34 +0000
-Message-ID: <4d4ab4801b9a0b2de6706046ab8321b24fdf3a51.1488447004.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 14/32] KVM: MIPS: Add callback to check extension
+Date:   Thu, 2 Mar 2017 09:36:41 +0000
+Message-ID: <ab4f5be3925bde03844d9a180030711e0387a6cd.1488447004.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
 In-Reply-To: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56972
+X-archive-position: 56973
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,15 +46,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Refactor MIPS KVM MMIO load/store emulation to reduce code duplication.
-Each duplicate differed slightly anyway, and it will simplify adding
-64-bit MMIO support for VZ.
-
-kvm_mips_emulate_store() and kvm_mips_emulate_load() can now return
-EMULATE_DO_MMIO (as possibly originally intended). We therefore stop
-calling either of these from kvm_mips_emulate_inst(), which is now only
-used by kvm_trap_emul_handle_cop_unusable() which is picky about return
-values.
+Add an implementation callback for checking presence of KVM extensions.
+This allows implementation specific extensions to be provided without
+ifdefs in mips.c.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -63,290 +57,59 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/emulate.c | 206 +++++++++--------------------------------
- 1 file changed, 50 insertions(+), 156 deletions(-)
+ arch/mips/include/asm/kvm_host.h | 1 +
+ arch/mips/kvm/mips.c             | 2 +-
+ arch/mips/kvm/trap_emul.c        | 6 ++++++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 637753ea0a00..e0f74ee2aad8 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -1477,9 +1477,8 @@ enum emulation_result kvm_mips_emulate_store(union mips_instruction inst,
- 					     struct kvm_run *run,
- 					     struct kvm_vcpu *vcpu)
- {
--	enum emulation_result er = EMULATE_DO_MMIO;
-+	enum emulation_result er;
- 	u32 rt;
--	u32 bytes;
- 	void *data = run->mmio.data;
- 	unsigned long curr_pc;
- 
-@@ -1494,103 +1493,63 @@ enum emulation_result kvm_mips_emulate_store(union mips_instruction inst,
- 
- 	rt = inst.i_format.rt;
- 
--	switch (inst.i_format.opcode) {
--	case sb_op:
--		bytes = 1;
--		if (bytes > sizeof(run->mmio.data)) {
--			kvm_err("%s: bad MMIO length: %d\n", __func__,
--			       run->mmio.len);
--		}
--		run->mmio.phys_addr =
--		    kvm_mips_callbacks->gva_to_gpa(vcpu->arch.
--						   host_cp0_badvaddr);
--		if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
--			er = EMULATE_FAIL;
--			break;
--		}
--		run->mmio.len = bytes;
--		run->mmio.is_write = 1;
--		vcpu->mmio_needed = 1;
--		vcpu->mmio_is_write = 1;
--		*(u8 *) data = vcpu->arch.gprs[rt];
--		kvm_debug("OP_SB: eaddr: %#lx, gpr: %#lx, data: %#x\n",
--			  vcpu->arch.host_cp0_badvaddr, vcpu->arch.gprs[rt],
--			  *(u8 *) data);
--
--		break;
-+	run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(
-+						vcpu->arch.host_cp0_badvaddr);
-+	if (run->mmio.phys_addr == KVM_INVALID_ADDR)
-+		goto out_fail;
- 
-+	switch (inst.i_format.opcode) {
- 	case sw_op:
--		bytes = 4;
--		if (bytes > sizeof(run->mmio.data)) {
--			kvm_err("%s: bad MMIO length: %d\n", __func__,
--			       run->mmio.len);
--		}
--		run->mmio.phys_addr =
--		    kvm_mips_callbacks->gva_to_gpa(vcpu->arch.
--						   host_cp0_badvaddr);
--		if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
--			er = EMULATE_FAIL;
--			break;
--		}
--
--		run->mmio.len = bytes;
--		run->mmio.is_write = 1;
--		vcpu->mmio_needed = 1;
--		vcpu->mmio_is_write = 1;
--		*(u32 *) data = vcpu->arch.gprs[rt];
-+		run->mmio.len = 4;
-+		*(u32 *)data = vcpu->arch.gprs[rt];
- 
- 		kvm_debug("[%#lx] OP_SW: eaddr: %#lx, gpr: %#lx, data: %#x\n",
- 			  vcpu->arch.pc, vcpu->arch.host_cp0_badvaddr,
--			  vcpu->arch.gprs[rt], *(u32 *) data);
-+			  vcpu->arch.gprs[rt], *(u32 *)data);
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index d92275e8524c..e9248da4e9ed 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -545,6 +545,7 @@ struct kvm_mips_callbacks {
+ 	int (*handle_msa_fpe)(struct kvm_vcpu *vcpu);
+ 	int (*handle_fpe)(struct kvm_vcpu *vcpu);
+ 	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
++	int (*check_extension)(struct kvm *kvm, long ext);
+ 	int (*vcpu_init)(struct kvm_vcpu *vcpu);
+ 	void (*vcpu_uninit)(struct kvm_vcpu *vcpu);
+ 	int (*vcpu_setup)(struct kvm_vcpu *vcpu);
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index 272c660a6cd3..472cea5efd3a 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -1076,7 +1076,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 		r = cpu_has_msa && !(boot_cpu_data.msa_id & MSA_IR_WRPF);
  		break;
- 
- 	case sh_op:
--		bytes = 2;
--		if (bytes > sizeof(run->mmio.data)) {
--			kvm_err("%s: bad MMIO length: %d\n", __func__,
--			       run->mmio.len);
--		}
--		run->mmio.phys_addr =
--		    kvm_mips_callbacks->gva_to_gpa(vcpu->arch.
--						   host_cp0_badvaddr);
--		if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
--			er = EMULATE_FAIL;
--			break;
--		}
--
--		run->mmio.len = bytes;
--		run->mmio.is_write = 1;
--		vcpu->mmio_needed = 1;
--		vcpu->mmio_is_write = 1;
--		*(u16 *) data = vcpu->arch.gprs[rt];
-+		run->mmio.len = 2;
-+		*(u16 *)data = vcpu->arch.gprs[rt];
- 
- 		kvm_debug("[%#lx] OP_SH: eaddr: %#lx, gpr: %#lx, data: %#x\n",
- 			  vcpu->arch.pc, vcpu->arch.host_cp0_badvaddr,
--			  vcpu->arch.gprs[rt], *(u32 *) data);
-+			  vcpu->arch.gprs[rt], *(u16 *)data);
-+		break;
-+
-+	case sb_op:
-+		run->mmio.len = 1;
-+		*(u8 *)data = vcpu->arch.gprs[rt];
-+
-+		kvm_debug("[%#lx] OP_SB: eaddr: %#lx, gpr: %#lx, data: %#x\n",
-+			  vcpu->arch.pc, vcpu->arch.host_cp0_badvaddr,
-+			  vcpu->arch.gprs[rt], *(u8 *)data);
- 		break;
- 
  	default:
- 		kvm_err("Store not yet supported (inst=0x%08x)\n",
- 			inst.word);
--		er = EMULATE_FAIL;
--		break;
-+		goto out_fail;
+-		r = 0;
++		r = kvm_mips_callbacks->check_extension(kvm, ext);
+ 		break;
  	}
- 
--	/* Rollback PC if emulation was unsuccessful */
--	if (er == EMULATE_FAIL)
--		vcpu->arch.pc = curr_pc;
-+	run->mmio.is_write = 1;
-+	vcpu->mmio_needed = 1;
-+	vcpu->mmio_is_write = 1;
-+	return EMULATE_DO_MMIO;
- 
--	return er;
-+out_fail:
-+	/* Rollback PC if emulation was unsuccessful */
-+	vcpu->arch.pc = curr_pc;
-+	return EMULATE_FAIL;
+ 	return r;
+diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
+index 0e3d260aafcb..254a641ff913 100644
+--- a/arch/mips/kvm/trap_emul.c
++++ b/arch/mips/kvm/trap_emul.c
+@@ -488,6 +488,11 @@ static int kvm_trap_emul_handle_msa_disabled(struct kvm_vcpu *vcpu)
+ 	return ret;
  }
  
- enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
- 					    u32 cause, struct kvm_run *run,
- 					    struct kvm_vcpu *vcpu)
- {
--	enum emulation_result er = EMULATE_DO_MMIO;
-+	enum emulation_result er;
- 	unsigned long curr_pc;
- 	u32 op, rt;
--	u32 bytes;
- 
- 	rt = inst.i_format.rt;
- 	op = inst.i_format.opcode;
-@@ -1609,94 +1568,41 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
- 
- 	vcpu->arch.io_gpr = rt;
- 
-+	run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(
-+						vcpu->arch.host_cp0_badvaddr);
-+	if (run->mmio.phys_addr == KVM_INVALID_ADDR)
-+		return EMULATE_FAIL;
++static int kvm_trap_emul_check_extension(struct kvm *kvm, long ext)
++{
++	return 0;
++}
 +
-+	vcpu->mmio_needed = 2;	/* signed */
- 	switch (op) {
- 	case lw_op:
--		bytes = 4;
--		if (bytes > sizeof(run->mmio.data)) {
--			kvm_err("%s: bad MMIO length: %d\n", __func__,
--			       run->mmio.len);
--			er = EMULATE_FAIL;
--			break;
--		}
--		run->mmio.phys_addr =
--		    kvm_mips_callbacks->gva_to_gpa(vcpu->arch.
--						   host_cp0_badvaddr);
--		if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
--			er = EMULATE_FAIL;
--			break;
--		}
--
--		run->mmio.len = bytes;
--		run->mmio.is_write = 0;
--		vcpu->mmio_needed = 1;
--		vcpu->mmio_is_write = 0;
-+		run->mmio.len = 4;
- 		break;
+ static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
+ {
+ 	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
+@@ -1238,6 +1243,7 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
+ 	.handle_fpe = kvm_trap_emul_handle_fpe,
+ 	.handle_msa_disabled = kvm_trap_emul_handle_msa_disabled,
  
--	case lh_op:
- 	case lhu_op:
--		bytes = 2;
--		if (bytes > sizeof(run->mmio.data)) {
--			kvm_err("%s: bad MMIO length: %d\n", __func__,
--			       run->mmio.len);
--			er = EMULATE_FAIL;
--			break;
--		}
--		run->mmio.phys_addr =
--		    kvm_mips_callbacks->gva_to_gpa(vcpu->arch.
--						   host_cp0_badvaddr);
--		if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
--			er = EMULATE_FAIL;
--			break;
--		}
--
--		run->mmio.len = bytes;
--		run->mmio.is_write = 0;
--		vcpu->mmio_needed = 1;
--		vcpu->mmio_is_write = 0;
--
--		if (op == lh_op)
--			vcpu->mmio_needed = 2;
--		else
--			vcpu->mmio_needed = 1;
--
-+		vcpu->mmio_needed = 1;	/* unsigned */
-+		/* fall through */
-+	case lh_op:
-+		run->mmio.len = 2;
- 		break;
- 
- 	case lbu_op:
-+		vcpu->mmio_needed = 1;	/* unsigned */
-+		/* fall through */
- 	case lb_op:
--		bytes = 1;
--		if (bytes > sizeof(run->mmio.data)) {
--			kvm_err("%s: bad MMIO length: %d\n", __func__,
--			       run->mmio.len);
--			er = EMULATE_FAIL;
--			break;
--		}
--		run->mmio.phys_addr =
--		    kvm_mips_callbacks->gva_to_gpa(vcpu->arch.
--						   host_cp0_badvaddr);
--		if (run->mmio.phys_addr == KVM_INVALID_ADDR) {
--			er = EMULATE_FAIL;
--			break;
--		}
--
--		run->mmio.len = bytes;
--		run->mmio.is_write = 0;
--		vcpu->mmio_is_write = 0;
--
--		if (op == lb_op)
--			vcpu->mmio_needed = 2;
--		else
--			vcpu->mmio_needed = 1;
--
-+		run->mmio.len = 1;
- 		break;
- 
- 	default:
- 		kvm_err("Load not yet supported (inst=0x%08x)\n",
- 			inst.word);
--		er = EMULATE_FAIL;
--		break;
-+		vcpu->mmio_needed = 0;
-+		return EMULATE_FAIL;
- 	}
- 
--	return er;
-+	run->mmio.is_write = 0;
-+	vcpu->mmio_is_write = 0;
-+	return EMULATE_DO_MMIO;
- }
- 
- static enum emulation_result kvm_mips_guest_cache_op(int (*fn)(unsigned long),
-@@ -1873,18 +1779,6 @@ enum emulation_result kvm_mips_emulate_inst(u32 cause, u32 *opc,
- 	case cop0_op:
- 		er = kvm_mips_emulate_CP0(inst, opc, cause, run, vcpu);
- 		break;
--	case sb_op:
--	case sh_op:
--	case sw_op:
--		er = kvm_mips_emulate_store(inst, cause, run, vcpu);
--		break;
--	case lb_op:
--	case lbu_op:
--	case lhu_op:
--	case lh_op:
--	case lw_op:
--		er = kvm_mips_emulate_load(inst, cause, run, vcpu);
--		break;
- 
- #ifndef CONFIG_CPU_MIPSR6
- 	case cache_op:
++	.check_extension = kvm_trap_emul_check_extension,
+ 	.vcpu_init = kvm_trap_emul_vcpu_init,
+ 	.vcpu_uninit = kvm_trap_emul_vcpu_uninit,
+ 	.vcpu_setup = kvm_trap_emul_vcpu_setup,
 -- 
 git-series 0.8.10

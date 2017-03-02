@@ -1,51 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 12:39:40 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:12247 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992213AbdCBLjcTzGFG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2017 12:39:32 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 70D0741F8DED;
-        Thu,  2 Mar 2017 12:44:04 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 02 Mar 2017 12:44:04 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 02 Mar 2017 12:44:04 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 2CC5DD9627D79;
-        Thu,  2 Mar 2017 11:39:21 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 2 Mar
- 2017 11:39:23 +0000
-Date:   Thu, 2 Mar 2017 11:39:23 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonathan Corbet <corbet@lwn.net>, <linux-doc@vger.kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 13:20:29 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:37230 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992213AbdCBMUTxiNnG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 Mar 2017 13:20:19 +0100
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 4DF333A7698;
+        Thu,  2 Mar 2017 12:20:14 +0000 (UTC)
+Received: from [10.36.116.174] (ovpn-116-174.ams2.redhat.com [10.36.116.174])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id v22CKBZn005692
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 2 Mar 2017 07:20:12 -0500
 Subject: Re: [PATCH 11/32] KVM: MIPS: Add VZ capability
-Message-ID: <20170302113923.GC2878@jhogan-linux.le.imgtec.org>
+To:     James Hogan <james.hogan@imgtec.com>
 References: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
  <17827db14f848b69e8184ae80b5d63ba01b4b106.1488447004.git-series.james.hogan@imgtec.com>
  <bb40a6bb-e6b3-a37b-a08e-daccbf52bbef@redhat.com>
+ <20170302113923.GC2878@jhogan-linux.le.imgtec.org>
+Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <1a071956-a897-a2f9-4523-e6da074568b6@redhat.com>
+Date:   Thu, 2 Mar 2017 13:20:05 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
 MIME-Version: 1.0
+In-Reply-To: <20170302113923.GC2878@jhogan-linux.le.imgtec.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="gr/z0/N6AeWAPJVB"
-Content-Disposition: inline
-In-Reply-To: <bb40a6bb-e6b3-a37b-a08e-daccbf52bbef@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+ protocol="application/pgp-signature";
+ boundary="06Gh7a8OILQhg5HkRNwjo8eNQON0ga4g3"
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Thu, 02 Mar 2017 12:20:14 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56996
+X-archive-position: 56997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,74 +55,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---gr/z0/N6AeWAPJVB
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--06Gh7a8OILQhg5HkRNwjo8eNQON0ga4g3
+Content-Type: multipart/mixed; boundary="pmV4VIo2HTjmEO4XLR0BrtjpPiMOuv0ml";
+ protected-headers="v1"
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org, kvm@vger.kernel.org,
+ =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ Ralf Baechle <ralf@linux-mips.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org
+Message-ID: <1a071956-a897-a2f9-4523-e6da074568b6@redhat.com>
+Subject: Re: [PATCH 11/32] KVM: MIPS: Add VZ capability
+References: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
+ <17827db14f848b69e8184ae80b5d63ba01b4b106.1488447004.git-series.james.hogan@imgtec.com>
+ <bb40a6bb-e6b3-a37b-a08e-daccbf52bbef@redhat.com>
+ <20170302113923.GC2878@jhogan-linux.le.imgtec.org>
+In-Reply-To: <20170302113923.GC2878@jhogan-linux.le.imgtec.org>
+
+--pmV4VIo2HTjmEO4XLR0BrtjpPiMOuv0ml
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Paolo,
 
-On Thu, Mar 02, 2017 at 11:59:28AM +0100, Paolo Bonzini wrote:
-> On 02/03/2017 10:36, James Hogan wrote:
-> >  - KVM_VM_MIPS_DEFAULT =3D 2
-> >=20
-> >    This will provide the best available KVM implementation (even on
-> >    older kernels), preferring hardware assisted virtualization over trap
-> >    & emulate. The KVM_CAP_MIPS_VZ capability should always be checked
-> >    against known values to determine what type of implementation was
-> >    chosen.
-> >=20
-> > This is designed to allow the desired implementation (T&E vs VZ) to be
-> > potentially chosen at runtime rather than being fixed in the kernel
-> > configuration.
+
+On 02/03/2017 12:39, James Hogan wrote:
+> It can't right now, though with relocation of the kernel now implemente=
+d
+> in MIPS Linux for KASLR, and hopes for a more generic EVA implementatio=
+n
+> (which can require the kernel to be linked in a completely different
+> segment) it isn't completely infeasible.
+
+What about the other way round, sticking a minimal T&E stub in kernel
+space and running the kernel in userspace?  Would it be feasible or
+would it be as complex as KVM itself?
+
+> 1) QEMU, which I've implemented using the kvm_type machine callback.
+> This allows the KVM type to be specified with e.g.
+>   "-machine malta,accel=3Dkvm,kvm-type=3DTE"
+> Otherwise it defaults to using KVM_VM_MIPS_DEFAULT.
 >=20
-> Can the same kernel run on both TE and VZ?  If not, I'm not sure that
-> KVM_VM_MIPS_DEFAULT is a good idea.
+> When you try and load a kernel (which happens after kvm_init() has
+> already passed the kvm type into KVM_CREATE_VM) it will check that it
+> supports the current kernel type.
+>
+> 2) My kvm test application, which uses KVM_VM_MIPS_DEFAULT by default
+> and hackily maps itself into the guest physical address space to run C
+> code test cases.
 
-It can't right now, though with relocation of the kernel now implemented
-in MIPS Linux for KASLR, and hopes for a more generic EVA implementation
-(which can require the kernel to be linked in a completely different
-segment) it isn't completely infeasible.
+So this one would work for both TE and VZ because the guest is not a
+Linux kernel.
 
-Currently the two uses of this I've implemented are:
+I don't know...  Instinctively I would think that it's easy to get
+KVM_VM_MIPS_DEFAULT wrong and place the VZ-and-fall-back-to-TE policy in
+userspace, but I can be convinced otherwise if the failure mode is good
+enough.  For example, what happens if you use KVM_SET_USER_MEMORY_REGION
+for a kernel address in TE mode?
 
-1) QEMU, which I've implemented using the kvm_type machine callback.
-This allows the KVM type to be specified with e.g.
-  "-machine malta,accel=3Dkvm,kvm-type=3DTE"
-Otherwise it defaults to using KVM_VM_MIPS_DEFAULT.
+Paolo
 
-When you try and load a kernel (which happens after kvm_init() has
-already passed the kvm type into KVM_CREATE_VM) it will check that it
-supports the current kernel type.
 
-2) My kvm test application, which uses KVM_VM_MIPS_DEFAULT by default
-and hackily maps itself into the guest physical address space to run C
-code test cases.
+--pmV4VIo2HTjmEO4XLR0BrtjpPiMOuv0ml--
 
-Does that justification sound reasonable?
-
-Cheers
-James
-
---gr/z0/N6AeWAPJVB
+--06Gh7a8OILQhg5HkRNwjo8eNQON0ga4g3
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYuARkAAoJEGwLaZPeOHZ6ZV4QAJgv+ixjGxsQTcr4COdm+fJd
-cfj2OOZvccHVpT2ooAyImFlKH2wyR0Y3lnD6nj5OsoVQ1KC+vHtEXLNzcffm5+5V
-J9DCFUQzNvrBuvkUzxug1IkPmXQdnCn+jKeIKH+6e+WTm+Zk8nSSM9mXIGbWWP2v
-4z/cXVyhfuXR+ToLjrO2xPfcbx8h2rherRjKpuavFwf2ZgFGZB9XTbevDRMrn6Zl
-lIv+y1WsrqDxHtWmFS/VeU7FW0oE2qv9qU1cyEbr2kl49TOYT4pkHNF4ikZiFAv5
-ZtSBOcxZemgAbZ1TsMOF1OwT9eLb8ujcaMQMM6S3dc6aQo7jjLb5JTNNmE7WwdaK
-6XbmcXZ+wJYTqQU9YlBvr5G+wXnxBkINytZcQQbWvkBw4MH2ncqrEMAf5tqtXf0z
-vwqdMS6S0MtbIfmxsnTzZ3J6iM1P3BhpOuMaN/mTRfDgg8NGvrkbFkksP6VxkJES
-SW2OpBUDRl7qgpi3REZJhBTba2Y3k8htA0TCyGjHqgkinxGdRyKwxU+/Pe7IcFT5
-/N+yLbvxsZCBAkj4nKNCseixUt5qr2Rtnpoe+tFbyBz1REPM6scTsDfzmuQkcIS1
-xcOKObZD8mImgYaYUeKnqQPgEl+qS52+jH8vqkvk9kp+9ASUkJ1wr/6JMP34hHHd
-uC3N+isYMXXKFlLS8Oe2
-=hH9/
+iQEcBAEBCAAGBQJYuA33AAoJEL/70l94x66DGK0H/2Nm/wYcZA01x4vSQ6oOUr/O
+Zw7ftHIJ1RmD96/+t06JmBQUuAwOj9JC+OaVB3A5oWG+XXvJP3inVRehLxqxHycs
+2rTj5/N9864Pc5ankQdNluWP77fNxYbedjCExfqqoFCr+Fh81E0OWfIJpVoRC6Bm
+j0IJJR4+d5cER/4eColhOgQGp/oczaKfMh++MdVK1r0f6vYsM9h4wAvblTHpnEzl
+s6na7DAU+qj8xdSNqy8yvxJTBCDH/cH7c+AWTqdv0ZmvJb6Isxeec6KCBYtdbnGJ
+hHuYwiNdWa4Feycobr99kD2D0u7rWIoFWym3309JVYwNsENOSYwMaPbfmyeSsqc=
+=rldd
 -----END PGP SIGNATURE-----
 
---gr/z0/N6AeWAPJVB--
+--06Gh7a8OILQhg5HkRNwjo8eNQON0ga4g3--

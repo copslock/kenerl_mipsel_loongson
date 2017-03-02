@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 11:47:23 +0100 (CET)
-Received: from ozlabs.org ([IPv6:2401:3900:2:1::2]:54443 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 11:59:45 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:40066 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992213AbdCBKrPbNUfE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Mar 2017 11:47:15 +0100
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S23992213AbdCBK7iN2elE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 2 Mar 2017 11:59:38 +0100
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 3vYpsm00CJz9s7Z;
-        Thu,  2 Mar 2017 21:47:07 +1100 (AEDT)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     David Daney <david.daney@cavium.com>,
-        Jason Baron <jbaron@akamai.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sachin Sant <sachinp@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org,
-        Chris Metcalf <cmetcalf@mellanox.com>,
+        by mx1.redhat.com (Postfix) with ESMTPS id 3472E3B720;
+        Thu,  2 Mar 2017 10:59:32 +0000 (UTC)
+Received: from [10.36.116.174] (ovpn-116-174.ams2.redhat.com [10.36.116.174])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id v22AxTHM021970
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 2 Mar 2017 05:59:30 -0500
+Subject: Re: [PATCH 11/32] KVM: MIPS: Add VZ capability
+To:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        kvm@vger.kernel.org
+References: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
+ <17827db14f848b69e8184ae80b5d63ba01b4b106.1488447004.git-series.james.hogan@imgtec.com>
+Cc:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Rabin Vincent <rabin@rab.in>,
-        Paul Mackerras <paulus@samba.org>,
-        Anton Blanchard <anton@samba.org>,
-        Ingo Molnar <mingo@kernel.org>, Zhigang Lu <zlu@ezchip.com>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH] module: set __jump_table alignment to 8
-In-Reply-To: <20170301220453.4756-1-david.daney@cavium.com>
-References: <20170301220453.4756-1-david.daney@cavium.com>
-User-Agent: Notmuch/0.21 (https://notmuchmail.org)
-Date:   Thu, 02 Mar 2017 21:47:07 +1100
-Message-ID: <87varsj6qc.fsf@concordia.ellerman.id.au>
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <bb40a6bb-e6b3-a37b-a08e-daccbf52bbef@redhat.com>
+Date:   Thu, 2 Mar 2017 11:59:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <mpe@ellerman.id.au>
+In-Reply-To: <17827db14f848b69e8184ae80b5d63ba01b4b106.1488447004.git-series.james.hogan@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.30]); Thu, 02 Mar 2017 10:59:32 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56993
+X-archive-position: 56994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,52 +52,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-David Daney <david.daney@cavium.com> writes:
 
-> For powerpc the __jump_table section in modules is not aligned, this
-> causes a WARN_ON() splat when loading a module containing a __jump_table.
 
-Thanks for doing the patch.
+On 02/03/2017 10:36, James Hogan wrote:
+>  - KVM_VM_MIPS_DEFAULT = 2
+> 
+>    This will provide the best available KVM implementation (even on
+>    older kernels), preferring hardware assisted virtualization over trap
+>    & emulate. The KVM_CAP_MIPS_VZ capability should always be checked
+>    against known values to determine what type of implementation was
+>    chosen.
+> 
+> This is designed to allow the desired implementation (T&E vs VZ) to be
+> potentially chosen at runtime rather than being fixed in the kernel
+> configuration.
 
-If it helps:
+Can the same kernel run on both TE and VZ?  If not, I'm not sure that
+KVM_VM_MIPS_DEFAULT is a good idea.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-> Strict alignment became necessary with commit 3821fd35b58d
-> ("jump_label: Reduce the size of struct static_key"), currently in
-> linux-next, which uses the two least significant bits of pointers to
-> __jump_table elements.
-
-It would obviously be nice if this could go in before the commit that
-exposes the breakage, but I guess that's problematic because Steve
-doesn't want to rebase the tracing tree.
-
-Steve I think you've already sent your pull request for this cycle? So I
-guess if this can go in your first batch of fixes?
-
-Or we could just send it directly to Linus?
-
-cheers
-
-> Fix by forcing __jump_table to 8, which is the same alignment used for
-> this section in the kernel proper.
->
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> ---
->  scripts/module-common.lds | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/scripts/module-common.lds b/scripts/module-common.lds
-> index 73a2c7d..53234e8 100644
-> --- a/scripts/module-common.lds
-> +++ b/scripts/module-common.lds
-> @@ -19,4 +19,6 @@ SECTIONS {
->  
->  	. = ALIGN(8);
->  	.init_array		0 : { *(SORT(.init_array.*)) *(.init_array) }
-> +
-> +	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
->  }
-> -- 
-> 2.9.3
+Paolo

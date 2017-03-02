@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:46:12 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32753 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 10:46:34 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29073 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993889AbdCBJhjeNiOt (ORCPT
+        with ESMTP id S23993892AbdCBJhj6aL3t (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2017 10:37:39 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 4B06841527596;
-        Thu,  2 Mar 2017 09:37:31 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 0CD95C75187CC;
+        Thu,  2 Mar 2017 09:37:32 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
  14.3.294.0; Thu, 2 Mar 2017 09:37:33 +0000
@@ -15,9 +15,9 @@ CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 20/32] KVM: MIPS/Emulate: Update CP0_Compare emulation for VZ
-Date:   Thu, 2 Mar 2017 09:36:47 +0000
-Message-ID: <a673bc6b87f22e9c7a15ce24ec2ac4aad3ce32bd.1488447004.git-series.james.hogan@imgtec.com>
+Subject: [PATCH 21/32] KVM: MIPS/Emulate: Drop CACHE emulation for VZ
+Date:   Thu, 2 Mar 2017 09:36:48 +0000
+Message-ID: <4f7b200564d7f1b417d5e9060e76725a5a20423a.1488447004.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
 In-Reply-To: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56980
+X-archive-position: 56981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,19 +46,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Update emulation of guest writes to CP0_Compare for VZ. There are two
-main differences compared to trap & emulate:
-
- - Writing to CP0_Compare in the VZ hardware guest context acks any
-   pending timer, clearing CP0_Cause.TI. If we don't want an ack to take
-   place we must carefully restore the TI bit if it was previously set.
-
- - Even with guest timer access disabled in CP0_GuestCtl0.GT, if the
-   guest CP0_Count reaches the guest CP0_Compare the timer interrupt
-   will assert. To prevent this we must set CP0_GTOffset to move the
-   guest CP0_Count out of the way of the new guest CP0_Compare, either
-   before or after depending on whether it is a forwards or backwards
-   change.
+Ifdef out the trap & emulate CACHE instruction emulation functions for
+VZ. We will provide separate CACHE instruction emulation in vz.c, and we
+need to avoid linker errors due to the use of T&E specific MMU helpers.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -67,82 +57,28 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
- arch/mips/kvm/emulate.c | 43 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
+ arch/mips/kvm/emulate.c | 2 ++
+ 1 file changed, 2 insertions(+), 0 deletions(-)
 
 diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index e6fce30eb440..42424822898c 100644
+index 42424822898c..bb0449296cd6 100644
 --- a/arch/mips/kvm/emulate.c
 +++ b/arch/mips/kvm/emulate.c
-@@ -621,7 +621,9 @@ void kvm_mips_write_compare(struct kvm_vcpu *vcpu, u32 compare, bool ack)
- 	struct mips_coproc *cop0 = vcpu->arch.cop0;
- 	int dc;
- 	u32 old_compare = kvm_read_c0_guest_compare(cop0);
--	ktime_t now;
-+	s32 delta = compare - old_compare;
-+	u32 cause;
-+	ktime_t now = ktime_set(0, 0); /* silence bogus GCC warning */
- 	u32 count;
- 
- 	/* if unchanged, must just be an ack */
-@@ -633,6 +635,21 @@ void kvm_mips_write_compare(struct kvm_vcpu *vcpu, u32 compare, bool ack)
- 		return;
- 	}
- 
-+	/*
-+	 * If guest CP0_Compare moves forward, CP0_GTOffset should be adjusted
-+	 * too to prevent guest CP0_Count hitting guest CP0_Compare.
-+	 *
-+	 * The new GTOffset corresponds to the new value of CP0_Compare, and is
-+	 * set prior to it being written into the guest context. We disable
-+	 * preemption until the new value is written to prevent restore of a
-+	 * GTOffset corresponding to the old CP0_Compare value.
-+	 */
-+	if (IS_ENABLED(CONFIG_KVM_MIPS_VZ) && delta > 0) {
-+		preempt_disable();
-+		write_c0_gtoffset(compare - read_c0_count());
-+		back_to_back_c0_hazard();
-+	}
-+
- 	/* freeze_hrtimer() takes care of timer interrupts <= count */
- 	dc = kvm_mips_count_disabled(vcpu);
- 	if (!dc)
-@@ -640,12 +657,36 @@ void kvm_mips_write_compare(struct kvm_vcpu *vcpu, u32 compare, bool ack)
- 
- 	if (ack)
- 		kvm_mips_callbacks->dequeue_timer_int(vcpu);
-+	else if (IS_ENABLED(CONFIG_KVM_MIPS_VZ))
-+		/*
-+		 * With VZ, writing CP0_Compare acks (clears) CP0_Cause.TI, so
-+		 * preserve guest CP0_Cause.TI if we don't want to ack it.
-+		 */
-+		cause = kvm_read_c0_guest_cause(cop0);
- 
- 	kvm_write_c0_guest_compare(cop0, compare);
- 
-+	if (IS_ENABLED(CONFIG_KVM_MIPS_VZ)) {
-+		if (delta > 0)
-+			preempt_enable();
-+
-+		back_to_back_c0_hazard();
-+
-+		if (!ack && cause & CAUSEF_TI)
-+			kvm_write_c0_guest_cause(cop0, cause);
-+	}
-+
- 	/* resume_hrtimer() takes care of timer interrupts > count */
- 	if (!dc)
- 		kvm_mips_resume_hrtimer(vcpu, now, count);
-+
-+	/*
-+	 * If guest CP0_Compare is moving backward, we delay CP0_GTOffset change
-+	 * until after the new CP0_Compare is written, otherwise new guest
-+	 * CP0_Count could hit new guest CP0_Compare.
-+	 */
-+	if (IS_ENABLED(CONFIG_KVM_MIPS_VZ) && delta <= 0)
-+		write_c0_gtoffset(compare - read_c0_count());
+@@ -1665,6 +1665,7 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
+ 	return EMULATE_DO_MMIO;
  }
  
++#ifndef CONFIG_KVM_MIPS_VZ
+ static enum emulation_result kvm_mips_guest_cache_op(int (*fn)(unsigned long),
+ 						     unsigned long curr_pc,
+ 						     unsigned long addr,
+@@ -1872,6 +1873,7 @@ enum emulation_result kvm_mips_emulate_inst(u32 cause, u32 *opc,
+ 
+ 	return er;
+ }
++#endif /* CONFIG_KVM_MIPS_VZ */
+ 
  /**
+  * kvm_mips_guest_exception_base() - Find guest exception vector base address.
 -- 
 git-series 0.8.10

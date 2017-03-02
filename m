@@ -1,52 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 01:46:20 +0100 (CET)
-Received: from vmicros1.altlinux.org ([194.107.17.57]:36552 "EHLO
-        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992289AbdCBAqNAXcw9 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2017 01:46:13 +0100
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-        by vmicros1.altlinux.org (Postfix) with ESMTP id 71F4F72EF7A;
-        Thu,  2 Mar 2017 03:46:07 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-        id 646DD7CCE22; Thu,  2 Mar 2017 03:46:07 +0300 (MSK)
-Date:   Thu, 2 Mar 2017 03:46:07 +0300
-From:   "Dmitry V. Levin" <ldv@altlinux.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Howells <dhowells@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, linux-arch@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] uapi: fix another asm/shmbuf.h userspace compilation error
-Message-ID: <20170302004607.GE27132@altlinux.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <ldv@altlinux.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 04:07:11 +0100 (CET)
+Received: from mail-ot0-x244.google.com ([IPv6:2607:f8b0:4003:c0f::244]:36235
+        "EHLO mail-ot0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990511AbdCBDHEM5lMl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2017 04:07:04 +0100
+Received: by mail-ot0-x244.google.com with SMTP id i1so6188903ota.3;
+        Wed, 01 Mar 2017 19:07:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=jMRzYvVGInzL5TuZsuPlRib1uI4Tg0tZdPgdNf043h8=;
+        b=IrWPEO6bqkA62fLdGH3kEEz+Z2nKfecBuX8MojpHyC4gXjU1YiBYF18Z0V32YEZ3R2
+         Uk6Yp/k0NKf23EzsCvXR6HGHoJWkY2+ke+GRmS5cjbVeB8Ao6zgrpxRPiAud38BIyqti
+         aeKddDhsYetaRCy4b49G8gdIkbD9GX49ijLVBzz/YClVSvLhLptMPXeNwsSfTyNkRDr2
+         OT4k4REdr9THSTGBYpJ5AsC4tjpiokFTLMKe6UHxPCw8rVYZFGp7hCgbQ8nQ1Ah+/1C4
+         Ixk5ZqJ4rvzSPE54kcCj4RaE1DAJhIANrA/Cvcqfuor8Dx1DnPjFHfpwg+ED87POhe43
+         fLDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=jMRzYvVGInzL5TuZsuPlRib1uI4Tg0tZdPgdNf043h8=;
+        b=MuVwwugLDB+lh+JwMU9DsCfsX4EF7wuyspXFtZ1rI3ilPcKE8bmQ+MAIH3fRXmvyr0
+         HV8ix0x0nqFuyWz/SZbgEjB+jdzfFaEhJwLm8JJ4GZ4/b9kO8VVYg/CP/XbDlKcbMOSf
+         06F1u5y1Rq2+VY/k4EjUVoTRS4HlEs1S/FwJ99gXq0kOlKB8oauOZHzHARIKYWGXsWOO
+         6xLE/ZMUDPKteBLmbUhQW8c0sn0bZMoK3lVbx9rHpvQsCr9TPnnIS7ZxUOqFEQnkS1T0
+         zSiQ1ZzGL6bJ+4zhgU8DYzHhHG20UbwctHD0y9a+9bhlLymmsCGrW1tlTUtOezdM5lcA
+         +8BA==
+X-Gm-Message-State: AMke39l+GuFehSSFkustq4qynZVUegyIEV5TENwE/Ba3OCGbKd+LGHO3TOA2iAmPOeLkRA==
+X-Received: by 10.157.36.85 with SMTP id p79mr6686238ota.84.1488424018011;
+        Wed, 01 Mar 2017 19:06:58 -0800 (PST)
+Received: from ?IPv6:2001:470:d:73f:a116:863b:e34d:e904? ([2001:470:d:73f:a116:863b:e34d:e904])
+        by smtp.gmail.com with ESMTPSA id 61sm2882480otf.28.2017.03.01.19.06.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 Mar 2017 19:06:57 -0800 (PST)
+Subject: Re: [PATCH 00/21] MIPS memblock: Remove bootmem code and switch to
+ NO_BOOTMEM
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Serge Semin <fancer.lancer@gmail.com>, ralf@linux-mips.org,
+        paul.burton@imgtec.com, rabinv@axis.com, matt.redfearn@imgtec.com,
+        james.hogan@imgtec.com, alexander.sverdlin@nokia.com,
+        robh+dt@kernel.org, frowand.list@gmail.com
+References: <1482113266-13207-1-git-send-email-fancer.lancer@gmail.com>
+ <7c333d34-fda6-9302-b84e-c0785c23733e@imgtec.com>
+Cc:     Sergey.Semin@t-platforms.ru, linux-mips@linux-mips.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <a40b3b32-ba86-66d7-a5bb-4df42eb5cd62@gmail.com>
+Date:   Wed, 1 Mar 2017 19:06:54 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
+MIME-Version: 1.0
+In-Reply-To: <7c333d34-fda6-9302-b84e-c0785c23733e@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 56958
+X-archive-position: 56959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ldv@altlinux.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,199 +75,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace size_t with __kernel_size_t to fix asm/shmbuf.h userspace
-compilation errors like this:
 
-/usr/include/asm-generic/shmbuf.h:28:2: error: unknown type name 'size_t'
-  size_t   shm_segsz; /* size of segment (bytes) */
 
-x32 is the only architecture where sizeof(size_t) is less than
-sizeof(__kernel_size_t), but as the kernel treats shm_segsz field as
-__kernel_size_t anyway, UAPI should follow.  Thanks to little-endiannes
-of x32 and 64-bit alignment of the field following shm_segsz, this
-change doesn't break ABI, and the difference doesn't manifest itself
-easily.
+On 01/22/2017 11:55 PM, Marcin Nowakowski wrote:
+> Hi Serge,
+> 
+> Thanks for this patch series, it's really useful. I've tested it on
+> Malta and Ci40 and it seems to work well (I've posted a few small
+> comments separately).
 
-Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
----
- include/uapi/asm-generic/shmbuf.h      | 2 +-
- arch/alpha/include/uapi/asm/shmbuf.h   | 2 +-
- arch/avr32/include/uapi/asm/shmbuf.h   | 2 +-
- arch/frv/include/uapi/asm/shmbuf.h     | 2 +-
- arch/ia64/include/uapi/asm/shmbuf.h    | 2 +-
- arch/m32r/include/uapi/asm/shmbuf.h    | 2 +-
- arch/mips/include/uapi/asm/shmbuf.h    | 2 +-
- arch/mn10300/include/uapi/asm/shmbuf.h | 2 +-
- arch/powerpc/include/uapi/asm/shmbuf.h | 2 +-
- arch/s390/include/uapi/asm/shmbuf.h    | 2 +-
- arch/sparc/include/uapi/asm/shmbuf.h   | 2 +-
- arch/xtensa/include/uapi/asm/shmbuf.h  | 4 ++--
- 12 files changed, 13 insertions(+), 13 deletions(-)
+I have not tested this yet, but this is definitively a very useful patch
+series, thanks a lot for doing this Serge!
 
-diff --git a/include/uapi/asm-generic/shmbuf.h b/include/uapi/asm-generic/shmbuf.h
-index 2a6d508..0756934 100644
---- a/include/uapi/asm-generic/shmbuf.h
-+++ b/include/uapi/asm-generic/shmbuf.h
-@@ -25,7 +25,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- #if __BITS_PER_LONG != 64
- 	unsigned long		__unused1;
-diff --git a/arch/alpha/include/uapi/asm/shmbuf.h b/arch/alpha/include/uapi/asm/shmbuf.h
-index 6156099..e32ed1f 100644
---- a/arch/alpha/include/uapi/asm/shmbuf.h
-+++ b/arch/alpha/include/uapi/asm/shmbuf.h
-@@ -14,7 +14,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	__kernel_time_t		shm_dtime;	/* last detach time */
- 	__kernel_time_t		shm_ctime;	/* last change time */
-diff --git a/arch/avr32/include/uapi/asm/shmbuf.h b/arch/avr32/include/uapi/asm/shmbuf.h
-index c8e5234..2804f25 100644
---- a/arch/avr32/include/uapi/asm/shmbuf.h
-+++ b/arch/avr32/include/uapi/asm/shmbuf.h
-@@ -15,7 +15,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	unsigned long		__unused1;
- 	__kernel_time_t		shm_dtime;	/* last detach time */
-diff --git a/arch/frv/include/uapi/asm/shmbuf.h b/arch/frv/include/uapi/asm/shmbuf.h
-index 943746c..2af199f 100644
---- a/arch/frv/include/uapi/asm/shmbuf.h
-+++ b/arch/frv/include/uapi/asm/shmbuf.h
-@@ -15,7 +15,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	unsigned long		__unused1;
- 	__kernel_time_t		shm_dtime;	/* last detach time */
-diff --git a/arch/ia64/include/uapi/asm/shmbuf.h b/arch/ia64/include/uapi/asm/shmbuf.h
-index ca81d77e..8e35495 100644
---- a/arch/ia64/include/uapi/asm/shmbuf.h
-+++ b/arch/ia64/include/uapi/asm/shmbuf.h
-@@ -14,7 +14,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	__kernel_time_t		shm_dtime;	/* last detach time */
- 	__kernel_time_t		shm_ctime;	/* last change time */
-diff --git a/arch/m32r/include/uapi/asm/shmbuf.h b/arch/m32r/include/uapi/asm/shmbuf.h
-index 714de6e..fa36b9e 100644
---- a/arch/m32r/include/uapi/asm/shmbuf.h
-+++ b/arch/m32r/include/uapi/asm/shmbuf.h
-@@ -15,7 +15,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	unsigned long		__unused1;
- 	__kernel_time_t		shm_dtime;	/* last detach time */
-diff --git a/arch/mips/include/uapi/asm/shmbuf.h b/arch/mips/include/uapi/asm/shmbuf.h
-index f47d193..95c53ff 100644
---- a/arch/mips/include/uapi/asm/shmbuf.h
-+++ b/arch/mips/include/uapi/asm/shmbuf.h
-@@ -14,7 +14,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	__kernel_time_t		shm_dtime;	/* last detach time */
- 	__kernel_time_t		shm_ctime;	/* last change time */
-diff --git a/arch/mn10300/include/uapi/asm/shmbuf.h b/arch/mn10300/include/uapi/asm/shmbuf.h
-index 71df684..e156878 100644
---- a/arch/mn10300/include/uapi/asm/shmbuf.h
-+++ b/arch/mn10300/include/uapi/asm/shmbuf.h
-@@ -15,7 +15,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	unsigned long		__unused1;
- 	__kernel_time_t		shm_dtime;	/* last detach time */
-diff --git a/arch/powerpc/include/uapi/asm/shmbuf.h b/arch/powerpc/include/uapi/asm/shmbuf.h
-index 7937289..a2425e5 100644
---- a/arch/powerpc/include/uapi/asm/shmbuf.h
-+++ b/arch/powerpc/include/uapi/asm/shmbuf.h
-@@ -38,7 +38,7 @@ struct shmid64_ds {
- #ifndef __powerpc64__
- 	unsigned long		__unused4;
- #endif
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_pid_t		shm_cpid;	/* pid of creator */
- 	__kernel_pid_t		shm_lpid;	/* pid of last operator */
- 	unsigned long		shm_nattch;	/* no. of current attaches */
-diff --git a/arch/s390/include/uapi/asm/shmbuf.h b/arch/s390/include/uapi/asm/shmbuf.h
-index 9ce1d9f..9ddf9e0 100644
---- a/arch/s390/include/uapi/asm/shmbuf.h
-+++ b/arch/s390/include/uapi/asm/shmbuf.h
-@@ -15,7 +15,7 @@
- 
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- #ifndef __s390x__
- 	unsigned long		__unused1;
-diff --git a/arch/sparc/include/uapi/asm/shmbuf.h b/arch/sparc/include/uapi/asm/shmbuf.h
-index f651952..ed72656 100644
---- a/arch/sparc/include/uapi/asm/shmbuf.h
-+++ b/arch/sparc/include/uapi/asm/shmbuf.h
-@@ -27,7 +27,7 @@ struct shmid64_ds {
- 	__kernel_time_t		shm_dtime;	/* last detach time */
- 	PADDING(__pad3)
- 	__kernel_time_t		shm_ctime;	/* last change time */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_pid_t		shm_cpid;	/* pid of creator */
- 	__kernel_pid_t		shm_lpid;	/* pid of last operator */
- 	unsigned long		shm_nattch;	/* no. of current attaches */
-diff --git a/arch/xtensa/include/uapi/asm/shmbuf.h b/arch/xtensa/include/uapi/asm/shmbuf.h
-index ad90d05..8d9206e 100644
---- a/arch/xtensa/include/uapi/asm/shmbuf.h
-+++ b/arch/xtensa/include/uapi/asm/shmbuf.h
-@@ -24,7 +24,7 @@
- #if defined (__XTENSA_EL__)
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	unsigned long		__unused1;
- 	__kernel_time_t		shm_dtime;	/* last detach time */
-@@ -40,7 +40,7 @@ struct shmid64_ds {
- #elif defined (__XTENSA_EB__)
- struct shmid64_ds {
- 	struct ipc64_perm	shm_perm;	/* operation perms */
--	size_t			shm_segsz;	/* size of segment (bytes) */
-+	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */
- 	__kernel_time_t		shm_atime;	/* last attach time */
- 	unsigned long		__unused1;
- 	__kernel_time_t		shm_dtime;	/* last detach time */
+One thing that was not obvious to me is that you may have to take care
+of the "NOMAP" memblock type and avoid mapping these regions, which may
+or may not be relevant on MIPS due to the different virtual memory
+model. On ARM it's done in arch/arm/mm/mmu.c::map_lowmem.
+
+Please respin, this is very helpful!
+
+> 
+> 
+> On 19.12.2016 03:07, Serge Semin wrote:
+>> Most of the modern platforms supported by linux kernel have already
+>> been cleaned up of old bootmem allocator by moving to nobootmem
+>> interface wrapping up the memblock. This patchset is the first
+>> attempt to do the similar improvement for MIPS for UMA systems
+>> only.
+>>
+>> Even though the porting was performed as much careful as possible
+>> there still might be problem with support of some platforms,
+>> especially Loonson3 or SGI IP27, which perform early memory manager
+>> initialization by their self.
+> 
+>> The patchset is split so individual patch being consistent in
+>> functional and buildable ways. But the MIPS early memory manager
+>> will work correctly only either with or without the whole set being
+>> applied. For the same reason a reviewer should not pay much attention
+>> to methods bootmem_init(), arch_mem_init(), paging_init() and
+>> mem_init() until they are fully refactored.
+> 
+> I'm not sure this can be merged that way? It would be up to Ralf to
+> decide, but it is generally expected that all intermediate patches not
+> only build, but also work correctly. I understand that this might be
+> difficult to achieve given the scale of changes required here.
+> 
+>> The patchset is applied on top of kernel v4.9.
+> 
+> Can you please work on cleaning up the issues discussed in the comments
+> so far as well as rebasing (and updating) the changes onto linux-next?
+> There are a few patches I made related to kexec and kernel relocation
+> that will force changes in your code (although I admit that the changes
+> I did for kexec/relocation were in some places unnecessarily complex
+> because of the mess in the bootmem handling in MIPS that you are now
+> trying to clean up).
+> 
+> 
+> Thanks,
+> Marcin
+> 
+>> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+>>
+>> Serge Semin (21):
+>>   MIPS memblock: Unpin dts memblock sanity check method
+>>   MIPS memblock: Add dts mem and reserved-mem callbacks
+>>   MIPS memblock: Alter traditional add_memory_region() method
+>>   MIPS memblock: Alter user-defined memory parameter parser
+>>   MIPS memblock: Alter initrd memory reservation method
+>>   MIPS memblock: Alter kexec-crashkernel parameters parser
+>>   MIPS memblock: Alter elfcorehdr parameters parser
+>>   MIPS memblock: Move kernel parameters parser into individual method
+>>   MIPS memblock: Move kernel memory reservation to individual method
+>>   MIPS memblock: Discard bootmem allocator initialization
+>>   MIPS memblock: Add memblock sanity check method
+>>   MIPS memblock: Add memblock print outs in debug
+>>   MIPS memblock: Add memblock allocator initialization
+>>   MIPS memblock: Alter IO resources initialization method
+>>   MIPS memblock: Alter weakened MAAR initialization method
+>>   MIPS memblock: Alter paging initialization method
+>>   MIPS memblock: Alter high memory freeing method
+>>   MIPS memblock: Slightly improve buddy allocator init method
+>>   MIPS memblock: Add print out method of kernel virtual memory layout
+>>   MIPS memblock: Add free low memory test method call
+>>   MIPS memblock: Deactivate old bootmem allocator
+>>
+>>  arch/mips/Kconfig        |   2 +-
+>>  arch/mips/kernel/prom.c  |  32 +-
+>>  arch/mips/kernel/setup.c | 958 +++++++++++++++--------------
+>>  arch/mips/mm/init.c      | 234 ++++---
+>>  drivers/of/fdt.c         |  47 +-
+>>  include/linux/of_fdt.h   |   1 +
+>>  6 files changed, 739 insertions(+), 535 deletions(-)
+>>
+> 
+
 -- 
-ldv
+Florian

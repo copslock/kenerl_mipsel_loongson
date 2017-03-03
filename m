@@ -1,54 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Mar 2017 13:37:37 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45776 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993411AbdCCMhax33-M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Mar 2017 13:37:30 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id D7F1F41F8E32;
-        Fri,  3 Mar 2017 13:42:08 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Fri, 03 Mar 2017 13:42:08 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Fri, 03 Mar 2017 13:42:08 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id DC20013C45713;
-        Fri,  3 Mar 2017 12:37:21 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 3 Mar
- 2017 12:37:24 +0000
-Date:   Fri, 3 Mar 2017 12:37:24 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Paolo Bonzini <pbonzini@redhat.com>
-CC:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonathan Corbet <corbet@lwn.net>, <linux-doc@vger.kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Mar 2017 13:42:15 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:50960 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993418AbdCCMmJK9hqM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 3 Mar 2017 13:42:09 +0100
+Received: from int-mx11.intmail.prod.int.phx2.redhat.com (int-mx11.intmail.prod.int.phx2.redhat.com [10.5.11.24])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id E849080494;
+        Fri,  3 Mar 2017 12:42:02 +0000 (UTC)
+Received: from [10.36.117.102] (ovpn-117-102.ams2.redhat.com [10.36.117.102])
+        by int-mx11.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id v23CfxD9027203
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Fri, 3 Mar 2017 07:42:00 -0500
 Subject: Re: [PATCH 11/32] KVM: MIPS: Add VZ capability
-Message-ID: <20170303123724.GD2878@jhogan-linux.le.imgtec.org>
+To:     James Hogan <james.hogan@imgtec.com>
 References: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
  <17827db14f848b69e8184ae80b5d63ba01b4b106.1488447004.git-series.james.hogan@imgtec.com>
  <bb40a6bb-e6b3-a37b-a08e-daccbf52bbef@redhat.com>
  <20170302113923.GC2878@jhogan-linux.le.imgtec.org>
  <1a071956-a897-a2f9-4523-e6da074568b6@redhat.com>
  <20170302223407.GQ996@jhogan-linux.le.imgtec.org>
+ <20170303123724.GD2878@jhogan-linux.le.imgtec.org>
+Cc:     linux-mips@linux-mips.org, kvm@vger.kernel.org,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <6163bc41-b5a1-0b71-be57-3e6b71b7db06@redhat.com>
+Date:   Fri, 3 Mar 2017 13:41:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
 MIME-Version: 1.0
+In-Reply-To: <20170303123724.GD2878@jhogan-linux.le.imgtec.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fOHHtNG4YXGJ0yqR"
-Content-Disposition: inline
-In-Reply-To: <20170302223407.GQ996@jhogan-linux.le.imgtec.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+ protocol="application/pgp-signature";
+ boundary="iFgiwHrXxsHnIG252GxUURfGANOQacWG0"
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.24
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Fri, 03 Mar 2017 12:42:03 +0000 (UTC)
+Return-Path: <pbonzini@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57015
+X-archive-position: 57016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: pbonzini@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -61,66 +58,75 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---fOHHtNG4YXGJ0yqR
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--iFgiwHrXxsHnIG252GxUURfGANOQacWG0
+Content-Type: multipart/mixed; boundary="Xvs45SpCTrJroEuVpnuO3MhSeWkxkM5C8";
+ protected-headers="v1"
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: James Hogan <james.hogan@imgtec.com>
+Cc: linux-mips@linux-mips.org, kvm@vger.kernel.org,
+ =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ Ralf Baechle <ralf@linux-mips.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org
+Message-ID: <6163bc41-b5a1-0b71-be57-3e6b71b7db06@redhat.com>
+Subject: Re: [PATCH 11/32] KVM: MIPS: Add VZ capability
+References: <cover.5cfb5298ebc2f5308f4f56aaac7fa31c39a8ab58.1488447004.git-series.james.hogan@imgtec.com>
+ <17827db14f848b69e8184ae80b5d63ba01b4b106.1488447004.git-series.james.hogan@imgtec.com>
+ <bb40a6bb-e6b3-a37b-a08e-daccbf52bbef@redhat.com>
+ <20170302113923.GC2878@jhogan-linux.le.imgtec.org>
+ <1a071956-a897-a2f9-4523-e6da074568b6@redhat.com>
+ <20170302223407.GQ996@jhogan-linux.le.imgtec.org>
+ <20170303123724.GD2878@jhogan-linux.le.imgtec.org>
+In-Reply-To: <20170303123724.GD2878@jhogan-linux.le.imgtec.org>
+
+--Xvs45SpCTrJroEuVpnuO3MhSeWkxkM5C8
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 02, 2017 at 10:34:07PM +0000, James Hogan wrote:
-> I suppose the exception is T&E. It shouldn't assume that just because VZ
-> is available that T&E isn't (even if that is the case right now). It
-> could always just try KVM_CREATE_VM with kvm type 0 and detect the error
-> I suppose, but capabilities are nicer.
+
+
+On 03/03/2017 13:37, James Hogan wrote:
+> Actually I think the way I had designed KVM_CAP_MIPS_VZ is fine. I had
+> defined it as an enumeration rather than a mask because it isn't
+> expected you'd have more than one hardware virtualisation type able to
+> run on a particular core.
 >=20
-> Maybe I'll redefine KVM_CAP_MIPS_VZ a bit, such that the value returned
-> + 1 is a bitmask of supported kvm types:
-> has T&E =3D !!( (v + 1) & BIT(KVM_VM_MIPS_TE) )
-> has VZ  =3D !!( (v + 1) & BIT(KVM_VM_MIPS_VZ) )
+> Whether T&E is still supported is I think better exposed by a new
+> KVM_CAP_MIPS_TE capability, indicating whether T&E is exposed when
+> KVM_CAP_MIPS_VZ is also set.
 >=20
-> That way old kernels which return 0 are consistent, and other
-> implementations could be added if really necessary without confusing
-> userland (but fingers crossed it'll never ever be necessary).
+> It would be set to 1 on new kernels whenever T&E is supported.
+>=20
+> For compatibility with older kernels, userland would be expected to
+> determine whether T&E is present by:
+> check(KVM_CAP_MIPS_VZ) =3D=3D 0 || check(KVM_CAP_MIPS_TE) !=3D 0
+>=20
+> Old userland that doesn't check KVM_CAP_MIPS_TE would just hit an EINVA=
+L
+> from KVM_CREATE_VM if T&E isn't supported.
 
-Actually I think the way I had designed KVM_CAP_MIPS_VZ is fine. I had
-defined it as an enumeration rather than a mask because it isn't
-expected you'd have more than one hardware virtualisation type able to
-run on a particular core.
+That's okay.
 
-Whether T&E is still supported is I think better exposed by a new
-KVM_CAP_MIPS_TE capability, indicating whether T&E is exposed when
-KVM_CAP_MIPS_VZ is also set.
+Paolo
 
-It would be set to 1 on new kernels whenever T&E is supported.
 
-For compatibility with older kernels, userland would be expected to
-determine whether T&E is present by:
-check(KVM_CAP_MIPS_VZ) =3D=3D 0 || check(KVM_CAP_MIPS_TE) !=3D 0
+--Xvs45SpCTrJroEuVpnuO3MhSeWkxkM5C8--
 
-Old userland that doesn't check KVM_CAP_MIPS_TE would just hit an EINVAL
-=66rom KVM_CREATE_VM if T&E isn't supported.
-
-Cheers
-James
-
---fOHHtNG4YXGJ0yqR
+--iFgiwHrXxsHnIG252GxUURfGANOQacWG0
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-iQIcBAEBCAAGBQJYuWN9AAoJEGwLaZPeOHZ66QQP/2h5QTmXXCNWhX56jpnNxgg5
-ThVsfufExbMt/LNU8IMTNcPbApYLbq8eLOtAxP8dC0F3Mhhq4C1paFvcQBf9xe+K
-hbBfkQMC+AgclCozgOssMLsq3l+/UImmQkd9U6oLp30a6KMrqDdyMXQzWAqDDmB/
-esdPsHkIo2nxDaWq3RVZfvxeI8dbtqkkOtF8NVLKg6kTUCUPLXAk5xc7sed8fpKQ
-rUXbb9NSmFTypuRimkh7hG4CuOh7lhHCNjAA+3jHtI4RNFIIA1NxgK2hozEudB/2
-1wJabu9QuH/AgHxI5Y8UqdZeE8yM75gVnkFzHKBNOEnh+vkqOwimHhlNglsML1aC
-yltiUixi/ocY+z4F6QU9dfbYQ3+HHN0xgoz0+Q2ztKVvaF4SVYT70EBa/5+ae8op
-EoXumZcr5R0d+i++P1XYgBbZ9zckFWpChLK7BcsWhmKg+qwa4f1+2PoAuP9ihpzh
-FvxtZere4Z6H0aj9Zr7aqLvo84WP0slEzfNUL3Y/2XV7NUnG9TtMjoLeDOUJrroj
-Re0h0Du44YT7LIZbABCRHMTVtOlPRdOGc8aI4AEYDgNE/bRfkjCvvUJ5xWV0+2vx
-u2q2PcwIZ6BLlwDSMRWSyRPINOeLLH0ymWHQUgF7D1yu6T+pJZ74Bp6Fgf9I9BjF
-p6xtOqPMWYmS3X6Ji2Mr
-=lkZI
+iQEcBAEBCAAGBQJYuWSUAAoJEL/70l94x66DEoIH+wbIf9macI+lgE+eiJ2ZzxO9
+S6nUlc1AW4hmSNSQRVp/yj/1uZfJttL77TPVUVN8ZotGqSiL3Z00sgNJyCaQ8Llo
+i85lh+jtF269GMoRp48P7OCzKbmJC4gD61Ob152SZSQrl/7euSB7079xC4WKlt1W
+r2gZf6r315Sw1JOC/uem8kZR+On6DG1HtrizUGTZqS3VEZJ22z3JQX76di4pIASQ
+dw/4iOaXIeLMUE+AP63EZGoD1qGnAlke3OF8/tkvapUp9M4ixNXCguk0a5pGQQoQ
+WizXlKh05kj1AwihClShl+17hJqlnHg+W7+PGqTQlwYUKCTGioanLIjPz2lLJ3k=
+=M9N6
 -----END PGP SIGNATURE-----
 
---fOHHtNG4YXGJ0yqR--
+--iFgiwHrXxsHnIG252GxUURfGANOQacWG0--

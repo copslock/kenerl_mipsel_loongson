@@ -1,55 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Mar 2017 14:32:51 +0100 (CET)
-Received: from mga05.intel.com ([192.55.52.43]:64674 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993417AbdCCNcnkDRQL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 3 Mar 2017 14:32:43 +0100
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP; 03 Mar 2017 05:32:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.35,237,1484035200"; 
-   d="scan'208";a="55484742"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
-  by orsmga002.jf.intel.com with ESMTP; 03 Mar 2017 05:32:36 -0800
-Message-ID: <1488547866.20145.74.camel@linux.intel.com>
-Subject: Re: [PATCH v2 1/1] serial: 8250_dw: Allow hardware flow control to
- be used
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     James Hogan <james.hogan@imgtec.com>,
-        Heiko Stuebner <heiko@sntech.de>
-Cc:     Jason Uy <jason.uy@broadcom.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Noam Camus <noamc@ezchip.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Wang Hongcheng <annie.wang@amd.com>,
-        linux-serial@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        David Daney <david.daney@cavium.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Mar 2017 15:09:13 +0100 (CET)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:35375 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993418AbdCCOJFlLr7L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Mar 2017 15:09:05 +0100
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.20/8.16.0.20) with SMTP id v23E4ASZ055993
+        for <linux-mips@linux-mips.org>; Fri, 3 Mar 2017 09:09:02 -0500
+Received: from e06smtp09.uk.ibm.com (e06smtp09.uk.ibm.com [195.75.94.105])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 28xs8et4fr-1
+        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Fri, 03 Mar 2017 09:09:02 -0500
+Received: from localhost
+        by e06smtp09.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <heiko.carstens@de.ibm.com>;
+        Fri, 3 Mar 2017 14:08:52 -0000
+Received: from d06dlp02.portsmouth.uk.ibm.com (9.149.20.14)
+        by e06smtp09.uk.ibm.com (192.168.101.139) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Fri, 3 Mar 2017 14:08:40 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by d06dlp02.portsmouth.uk.ibm.com (Postfix) with ESMTP id F1B3C2190023;
+        Fri,  3 Mar 2017 14:07:40 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id v23E8ewe2163016;
+        Fri, 3 Mar 2017 14:08:40 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6765B4C04E;
+        Fri,  3 Mar 2017 14:08:38 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 47D0E4C044;
+        Fri,  3 Mar 2017 14:08:37 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.211])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Fri,  3 Mar 2017 14:08:37 +0000 (GMT)
+Date:   Fri, 3 Mar 2017 15:08:37 +0100
+From:   Heiko Carstens <heiko.carstens@de.ibm.com>
+To:     Jiri Slaby <jslaby@suse.cz>
+Cc:     akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
         Russell King <linux@armlinux.org.uk>,
-        linux-clk@vger.kernel.org, Viresh Kumar <viresh.kumar@st.com>
-Date:   Fri, 03 Mar 2017 15:31:06 +0200
-In-Reply-To: <20170303002129.GS996@jhogan-linux.le.imgtec.org>
-References: <1484164100-9805-1-git-send-email-jason.uy@broadcom.com>
-         <1484164100-9805-2-git-send-email-jason.uy@broadcom.com>
-         <CAAG0J9-n0toSJL8Ze8Esq81dYnpfrTd42bMiR94zw_btBLjsww@mail.gmail.com>
-         <1488394220.20145.68.camel@linux.intel.com>
-         <20170303002129.GS996@jhogan-linux.le.imgtec.org>
-Organization: Intel Finland Oy
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.5-1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Return-Path: <andriy.shevchenko@linux.intel.com>
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/3] futex: remove duplicated code
+References: <20170303122712.13353-1-jslaby@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170303122712.13353-1-jslaby@suse.cz>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 17030314-0036-0000-0000-0000037974A8
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 17030314-0037-0000-0000-00001551A0F9
+Message-Id: <20170303140837.GF5319@osiris>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-03-03_12:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.0.1-1702020001
+ definitions=main-1703030134
+Return-Path: <heiko.carstens@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57017
+X-archive-position: 57018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andriy.shevchenko@linux.intel.com
+X-original-sender: heiko.carstens@de.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,83 +114,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Heiko, you might be interested in this as well.
-
-On Fri, 2017-03-03 at 00:21 +0000, James Hogan wrote:
-> On Wed, Mar 01, 2017 at 08:50:20PM +0200, Andy Shevchenko wrote:
-> > On Wed, 2017-03-01 at 18:02 +0000, James Hogan wrote:
-> > > On 11 January 2017 at 19:48, Jason Uy <jason.uy@broadcom.com>
-> > > wrote:
-> > > > In the most common use case, the Synopsys DW UART driver does
-> > > > not
-> > > > set the set_termios callback function.  This prevents
-> > > > UPSTAT_AUTOCTS
-> > > > from being set when the UART flag CRTSCTS is set.  As a result,
-> > > > the
-> > > > driver will use software flow control as opposed to hardware
-> > > > flow
-> > > > control.
-> > > > 
-> > > > To fix the problem, the set_termios callback function is set to
-> > > > the
-> > > > DW specific function.  The logic to set UPSTAT_AUTOCTS is moved
-> > > > so
-> > > > that any clock error will not affect setting the hardware flow
-> > > > control.
-> > > Bisection shows that this patch, commit
-> > > 6a171b29937984a5e0bf29d6577b055998f03edb, has broken boot of the
-> > > Cavium Octeon III based UTM-8 board (MIPS architecture).
-> > > 
-> > > I now get the following warning:
-> > > [<ffffffff8149c2e4>] uart_get_baud_rate+0xfc/0x1f0
-> > > [<ffffffff814a5098>] serial8250_do_set_termios+0xb0/0x440
-> > > [<ffffffff8149c710>] uart_set_options+0xe8/0x190
-> > > [<ffffffff814a6cdc>] serial8250_console_setup+0x84/0x158
-> > > [<ffffffff814a11ec>] univ8250_console_setup+0x54/0x70
-> > > [<ffffffff811901a0>] register_console+0x1c8/0x418
-> > > [<ffffffff8149f004>] uart_add_one_port+0x434/0x4b0
-> > > [<ffffffff814a1af8>] serial8250_register_8250_port+0x2d8/0x440
-> > > [<ffffffff814aa620>] dw8250_probe+0x388/0x5e8
-> > > Then it hangs and the watchdog restarts the machine.
-> > > 
-> > > Any ideas?
-> > 
-> > 1. Does it use clock on that platform?
-
-> I've now dug a little deeper. Essentially what is going on is:
+On Fri, Mar 03, 2017 at 01:27:10PM +0100, Jiri Slaby wrote:
+> There is code duplicated over all architecture's headers for
+> futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
+> and comparison of the result.
 > 
-> 1) CONFIG_HAVE_CLK=n (Octeon doesn't select it)
-> 2) The CONFIG_HAVE_CLK=n implementation of devm_clk_get() returns NULL
-> 3) The "if (IS_ERR(d->clk) || !old) {" check in dw8250_set_termios()
->    doesn't match, since !IS_ERR(NULL)
-> 4) The CONFIG_HAVE_CLK=n implementation of clk_round_rate() returns 0
-> 5) The CONFIG_HAVE_CLK=n implementation of clk_set_rate(d->clk, 0)
->    returns 0
-> 6) dw8250_set_termios() thinks the frequency for that baud rate has
-> been
->    set successfully and writes 0 into uartclk
-> 7) it all goes wrong from there...
-
-So, it means we have need special care of NULL case here, and honestly,
-I don't like it. But it seems the only feasible (quick) fix right now.
-
-> The CONFIG_HAVE_CLK=n implementation of devm_clk_get() in particular
-> seems highly questionable to me, given that commit 93abe8e4b13a ("clk:
-> add non CONFIG_HAVE_CLK routines") which added it 5 years ago says:
+> Remove this duplication and leave up to the arches only the needed
+> assembly which is now in arch_futex_atomic_op_inuser.
 > 
-> > These calls will return error for platforms that don't select
-> > HAVE_CLK
+> Note that s390 removed access_ok check in d12a29703 ("s390/uaccess:
+> remove pointless access_ok() checks") as access_ok there returns true.
+> We introduce it back to the helper for the sake of simplicity (it gets
+> optimized away anyway).
 > 
-> And NULL isn't an error in this API.
+> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+> ---
+>  arch/s390/include/asm/futex.h       | 23 ++++-------------
+>  include/asm-generic/futex.h         | 50 +++++++------------------------------
+>  kernel/futex.c                      | 36 ++++++++++++++++++++++++++
 
-Which is okay. I dunno what should be returned from clk_round_rate() if
-clk is NULL. I would fix CLK framework, though I would like to gather
-more details.
+Looks good to me and still boots on s390. Therefore for the s390 bits:
+Acked-by: Heiko Carstens <heiko.carstens@de.ibm.com>
 
-Btw, I hope you also noticed this one:
-
-http://www.spinics.net/lists/linux-serial/msg25314.html
-
--- 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Intel Finland Oy
+Thanks!

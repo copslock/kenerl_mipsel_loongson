@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2017 23:50:13 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:52260 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993876AbdCBWuFKMZS5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Mar 2017 23:50:05 +0100
-Received: from smtp.corp.redhat.com (int-mx16.intmail.prod.int.phx2.redhat.com [10.5.11.28])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 42A89C073D55;
-        Thu,  2 Mar 2017 22:49:59 +0000 (UTC)
-Received: from packer-debian-8-amd64.digitalocean.com (vpn-234-230.phx2.redhat.com [10.3.234.230])
-        by smtp.corp.redhat.com (Postfix) with SMTP id ED7A02D5C2;
-        Thu,  2 Mar 2017 22:49:57 +0000 (UTC)
-Date:   Thu, 2 Mar 2017 17:49:57 -0500
-From:   Jessica Yu <jeyu@redhat.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Rusty Russell <rusty@rustcorp.com.au>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Mar 2017 01:21:46 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24313 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993876AbdCCAVfd13C8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Mar 2017 01:21:35 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 1633F41F8D9A;
+        Fri,  3 Mar 2017 01:26:12 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Fri, 03 Mar 2017 01:26:12 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Fri, 03 Mar 2017 01:26:12 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 60C245737FDED;
+        Fri,  3 Mar 2017 00:21:25 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 3 Mar
+ 2017 00:21:29 +0000
+Date:   Fri, 3 Mar 2017 00:21:29 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     Jason Uy <jason.uy@broadcom.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Noam Camus <noamc@ezchip.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Wang Hongcheng <annie.wang@amd.com>,
+        <linux-serial@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
         David Daney <david.daney@cavium.com>,
-        Jason Baron <jbaron@akamai.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sachin Sant <sachinp@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
         Russell King <linux@armlinux.org.uk>,
-        Rabin Vincent <rabin@rab.in>,
-        Paul Mackerras <paulus@samba.org>,
-        Anton Blanchard <anton@samba.org>,
-        Ingo Molnar <mingo@kernel.org>, Zhigang Lu <zlu@ezchip.com>
-Subject: Re: [PATCH] module: set __jump_table alignment to 8
-Message-ID: <20170302224957.GC13268@packer-debian-8-amd64.digitalocean.com>
-References: <20170301220453.4756-1-david.daney@cavium.com>
- <20170302131119.6f52203f@gandalf.local.home>
- <20170302182625.GB13268@packer-debian-8-amd64.digitalocean.com>
- <f38431ab-ad33-ac14-03b5-7cb4a172be64@caviumnetworks.com>
+        <linux-clk@vger.kernel.org>, Viresh Kumar <viresh.kumar@st.com>
+Subject: Re: [PATCH v2 1/1] serial: 8250_dw: Allow hardware flow control to
+ be used
+Message-ID: <20170303002129.GS996@jhogan-linux.le.imgtec.org>
+References: <1484164100-9805-1-git-send-email-jason.uy@broadcom.com>
+ <1484164100-9805-2-git-send-email-jason.uy@broadcom.com>
+ <CAAG0J9-n0toSJL8Ze8Esq81dYnpfrTd42bMiR94zw_btBLjsww@mail.gmail.com>
+ <1488394220.20145.68.camel@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="+bDoS+V4AJZnUgoC"
 Content-Disposition: inline
-In-Reply-To: <f38431ab-ad33-ac14-03b5-7cb4a172be64@caviumnetworks.com>
-X-OS:   Linux eisen.io 3.16.0-4-amd64 x86_64
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Scanned-By: MIMEDefang 2.74 on 10.5.11.28
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Thu, 02 Mar 2017 22:49:59 +0000 (UTC)
-Return-Path: <jeyu@redhat.com>
+In-Reply-To: <1488394220.20145.68.camel@linux.intel.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57011
+X-archive-position: 57012
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeyu@redhat.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,59 +70,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-+++ David Daney [02/03/17 11:24 -0800]:
->On 03/02/2017 10:26 AM, Jessica Yu wrote:
->>+++ Steven Rostedt [02/03/17 13:11 -0500]:
->>>
->>>Can I get an Ack from a module maintainer?
->>
->>Acked-by: Jessica Yu <jeyu@redhat.com>
->>
->>Thanks!
->>
->>Jessica
->
->Thanks Jessica,
->
->Can you also add scripts/module-common.lds to MAINTAINERS so that 
->get_maintainers.pl will indicate that Jessica Yu and Rusty Russell be 
->CCed on things like this in the future?
+--+bDoS+V4AJZnUgoC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sure thing. Thanks for the heads up!
+On Wed, Mar 01, 2017 at 08:50:20PM +0200, Andy Shevchenko wrote:
+> On Wed, 2017-03-01 at 18:02 +0000, James Hogan wrote:
+> > On 11 January 2017 at 19:48, Jason Uy <jason.uy@broadcom.com> wrote:
+> > > In the most common use case, the Synopsys DW UART driver does not
+> > > set the set_termios callback function.=C2=A0 This prevents UPSTAT_AUT=
+OCTS
+> > > from being set when the UART flag CRTSCTS is set.=C2=A0 As a result, =
+the
+> > > driver will use software flow control as opposed to hardware flow
+> > > control.
+> > >=20
+> > > To fix the problem, the set_termios callback function is set to the
+> > > DW specific function.=C2=A0 The logic to set UPSTAT_AUTOCTS is moved =
+so
+> > > that any clock error will not affect setting the hardware flow
+> > > control.
+>=20
+> > Bisection shows that this patch, commit
+> > 6a171b29937984a5e0bf29d6577b055998f03edb, has broken boot of the
+> > Cavium Octeon III based UTM-8 board (MIPS architecture).
+> >=20
+> > I now get the following warning:
+>=20
+> > [<ffffffff8149c2e4>] uart_get_baud_rate+0xfc/0x1f0
+> > [<ffffffff814a5098>] serial8250_do_set_termios+0xb0/0x440
+> > [<ffffffff8149c710>] uart_set_options+0xe8/0x190
+> > [<ffffffff814a6cdc>] serial8250_console_setup+0x84/0x158
+> > [<ffffffff814a11ec>] univ8250_console_setup+0x54/0x70
+> > [<ffffffff811901a0>] register_console+0x1c8/0x418
+> > [<ffffffff8149f004>] uart_add_one_port+0x434/0x4b0
+> > [<ffffffff814a1af8>] serial8250_register_8250_port+0x2d8/0x440
+> > [<ffffffff814aa620>] dw8250_probe+0x388/0x5e8
+>=20
+> > Then it hangs and the watchdog restarts the machine.
+> >=20
+> > Any ideas?
+>=20
+> 1. Does it use clock on that platform?
 
-Jessica
+btw, sorry for HTML email blocked from lists, gmail tricked me into it
+:-(
 
->>>On Wed,  1 Mar 2017 14:04:53 -0800
->>>David Daney <david.daney@cavium.com> wrote:
->>>
->>>>For powerpc the __jump_table section in modules is not aligned, this
->>>>causes a WARN_ON() splat when loading a module containing a
->>>>__jump_table.
->>>>
->>>>Strict alignment became necessary with commit 3821fd35b58d
->>>>("jump_label: Reduce the size of struct static_key"), currently in
->>>>linux-next, which uses the two least significant bits of pointers to
->>>>__jump_table elements.
->>>>
->>>>Fix by forcing __jump_table to 8, which is the same alignment used for
->>>>this section in the kernel proper.
->>>>
->>>>Signed-off-by: David Daney <david.daney@cavium.com>
->>>>Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
->>>>---
->>>> scripts/module-common.lds | 2 ++
->>>> 1 file changed, 2 insertions(+)
->>>>
->>>>diff --git a/scripts/module-common.lds b/scripts/module-common.lds
->>>>index 73a2c7d..53234e8 100644
->>>>--- a/scripts/module-common.lds
->>>>+++ b/scripts/module-common.lds
->>>>@@ -19,4 +19,6 @@ SECTIONS {
->>>>
->>>>     . = ALIGN(8);
->>>>     .init_array        0 : { *(SORT(.init_array.*)) *(.init_array) }
->>>>+
->>>>+    __jump_table        0 : ALIGN(8) { KEEP(*(__jump_table)) }
->>>> }
->>>
->
+I've now dug a little deeper. Essentially what is going on is:
+
+1) CONFIG_HAVE_CLK=3Dn (Octeon doesn't select it)
+2) The CONFIG_HAVE_CLK=3Dn implementation of devm_clk_get() returns NULL
+3) The "if (IS_ERR(d->clk) || !old) {" check in dw8250_set_termios()
+   doesn't match, since !IS_ERR(NULL)
+4) The CONFIG_HAVE_CLK=3Dn implementation of clk_round_rate() returns 0
+5) The CONFIG_HAVE_CLK=3Dn implementation of clk_set_rate(d->clk, 0)
+   returns 0
+6) dw8250_set_termios() thinks the frequency for that baud rate has been
+   set successfully and writes 0 into uartclk
+7) it all goes wrong from there...
+
+The CONFIG_HAVE_CLK=3Dn implementation of devm_clk_get() in particular
+seems highly questionable to me, given that commit 93abe8e4b13a ("clk:
+add non CONFIG_HAVE_CLK routines") which added it 5 years ago says:
+
+> These calls will return error for platforms that don't select HAVE_CLK
+
+And NULL isn't an error in this API.
+
+Cc'ing some clk folk.
+
+Cheers
+James
+
+--+bDoS+V4AJZnUgoC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYuLcJAAoJEGwLaZPeOHZ6cDkP/3mvQE+yaNnKdwh4G/K0ezr8
+zWYFYPAhQWH/gvGkgN6jetBBz7Ffxt51754pBAoXQQk5TddtzDqCGOlZQBpIBTJB
+GEqnq3hf/i9KBwIvWodveOT13U8EIydeQquXRrsVx6SwIln/YlcszzQrDcB4ZRxr
+AL93SMFr+ko79ZgSWvCOt2+aEtmeL2apVuQaWeEq6cCcOfStdv4hPlO4kPQTTbB/
+/YNWvx3s33vWzlwxQ9Npm1/38xPiPWrkVzv25LbyC4lg1Wtg8a0xWrh866UAj8+S
+eaqnm0czRo8NV0fOXjVjDZ0NKtmyV5CScnU0Xmw/dW7lyfsLilKraOw8x8qVBc1K
+ZTnOcnif2+mdKNflK3AWTfU+b+MTte0w7s29LbFuSy3j6coKyMfEAcBaEs36xuJ6
+c8J4cwz5juwq4FIDmSNKOPZxlC+5i1xbJesrbfk20Z0JmM57kSbz1bqFZKOVs9KP
+ovqiZy0FG3McoF1+e4bFnr3+07MsbIBby/gNQDQd/HgTtEHXAwvJ8oZPOw1AuJ47
+yl6YQO+t2k5MOeLemLdxcUcat63YlYNUbMnNx3sOO0gNJ+fDp+aPtg/R79ftKMN9
+0axOINy9M42PAHWK4uSLddVTh9JuEE+vgGh8hk8BDeZovfT6xqaf80ni2dq9htys
+UljKoCl2yxuzgP1pDeWo
+=OgmA
+-----END PGP SIGNATURE-----
+
+--+bDoS+V4AJZnUgoC--

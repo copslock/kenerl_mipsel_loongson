@@ -1,35 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Mar 2017 16:18:14 +0100 (CET)
-Received: from resqmta-po-12v.sys.comcast.net ([IPv6:2001:558:fe16:19:96:114:154:171]:58978
-        "EHLO resqmta-po-12v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992111AbdCDPSHXBGSX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Mar 2017 16:18:07 +0100
-Received: from resomta-po-02v.sys.comcast.net ([96.114.154.226])
-        by resqmta-po-12v.sys.comcast.net with SMTP
-        id kBREctKruCGpRkBRdcIQgY; Sat, 04 Mar 2017 15:18:05 +0000
-Received: from [192.168.1.13] ([73.201.78.97])
-        by resomta-po-02v.sys.comcast.net with SMTP
-        id kBRccnT9qntHNkBRccdGiH; Sat, 04 Mar 2017 15:18:05 +0000
-From:   Joshua Kinard <kumba@gentoo.org>
-Subject: RFC: Proper locking tips for IRQ handlers?
-To:     Linux/MIPS <linux-mips@linux-mips.org>
-Message-ID: <2c6f8c8d-6380-2f0b-69be-72115e2012c7@gentoo.org>
-Date:   Sat, 4 Mar 2017 10:17:41 -0500
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Mar 2017 20:18:56 +0100 (CET)
+Received: from [IPv6:2001:1868:a000:17::138] ([IPv6:2001:1868:a000:17::138]:35582
+        "EHLO mail.zytor.com" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993423AbdCDTSsfqjc0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Mar 2017 20:18:48 +0100
+Received: from hanvin-mobl2.amr.corp.intel.com (jfdmzpr06-ext.jf.intel.com [134.134.137.75])
+        (authenticated bits=0)
+        by mail.zytor.com (8.15.2/8.14.5) with ESMTPSA id v24JFK24002726
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Sat, 4 Mar 2017 11:15:22 -0800
+Subject: Re: [PATCH 1/3] futex: remove duplicated code
+To:     Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Jiri Slaby <jslaby@suse.cz>
+References: <20170303122712.13353-1-jslaby@suse.cz>
+ <20170304130550.GT21222@n2100.armlinux.org.uk>
+Cc:     akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org
+From:   "H. Peter Anvin" <hpa@zytor.com>
+Message-ID: <3994975e-89a5-d2b5-60be-a8633ddc3733@zytor.com>
+Date:   Sat, 4 Mar 2017 11:15:17 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
 MIME-Version: 1.0
+In-Reply-To: <20170304130550.GT21222@n2100.armlinux.org.uk>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfIvy/VBQ6fle9RzqHmljtTLgkE3+lQMQdo6Xk9sGmCbPPmv/d5kUxreAAAWNDxF9FjuBs3zpURvFL+ZV0tp7Pxl+kLM5QAWuAz/LNBTYR6OMHeYNzd9O
- Nr+kBdXjW9ImVaKQ5AQN//fu6a3ipQwjJPHACWd7R8B6OQN27vDax8J0
-Return-Path: <kumba@gentoo.org>
+Return-Path: <hpa@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57035
+X-archive-position: 57036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,41 +82,56 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+On 03/04/17 05:05, Russell King - ARM Linux wrote:
+>>  
+>> +static int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+>> +{
+>> +	int op = (encoded_op >> 28) & 7;
+>> +	int cmp = (encoded_op >> 24) & 15;
+>> +	int oparg = (encoded_op << 8) >> 20;
+>> +	int cmparg = (encoded_op << 20) >> 20;
+> 
+> Hmm.  oparg and cmparg look like they're doing these shifts to get sign
+> extension of the 12-bit values by assuming that "int" is 32-bit -
+> probably worth a comment, or for safety, they should be "s32" so it's
+> not dependent on the bit-width of "int".
+> 
 
-I am looking for some feedback on how to improve IRQ handlers on IP30 (SGI
-Octane).  Since switching to the use of per_cpu data structures, I've
-apparently not needed to do any locking when handling IRQs.  However, it looks
-like around ~Linux-4.8.x, there's some noticeable contention going on with
-heavy disk I/O, and it's worse in 4.9 and 4.10.  Under 4.8, untar'ing a basic
-Linux kernel source tarball completed fine, but as of 4.9/4.10, there's a
-chance to trigger either an oops or oom killer.  While the untar operation
-happens, I can watch the graphics console and the blinking cursor will
-sometimes pause momentarily, which suggests contention somewhere.
+For readability, perhaps we should make sign- and zero-extension an
+explicit facility?
 
-So my question is in struct irq_chip accessors like irq_ack, irq_mask,
-irq_mask_ack, etc, should spinlocks be used prior to accessing the HEART ASIC?
-And if so, normal spinlocks, raw spinlocks, or the irq save/restore variants?
+/*
+ * Truncate an integer x to n bits, using sign- or
+ * zero-extension, respectively.
+ */
+static inline __const_func__ s32 sex32(s32 x, int n)
+{
+  return (x << (32-n)) >> (32-n);
+}
 
-I've looked at the IRQ implementations for a few other MIPS boards, but because
-each system is so unique, there's no clear consensus on the right way to do it.
- Octeon, uses irq_bus_lock and irq_bus_sync_unlock, along with a mutex, for
-locking, while netlogic uses locking only during irq_enable or irq_disable, and
-loongsoon-3 doesn't appear to employ any locking at all.  Other archs appear to
-be a mix as well, and I'm even seeing newer constructs like the use of
-irq_data_get_irq_chip_data() to fetch a common data structure where the
-spinlock variable is defined.  Other systems use a global spinlock.
+static inline __const_func__ s64 sex64(s64 x, int n)
+{
+  return (x << (64-n)) >> (64-n);
+}
 
-Any advice would be greatly appreciated.  Thanks!
+#define sex(x,y)						\
+	((__typeof__(x))					\
+	 (((__builtin_constant_p(y) && ((y) <= 32)) ||		\
+	   (sizeof(x) <= sizeof(s32)))				\
+	  ? sex32((x),(y)) : sex64((x),(y))))
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+static inline __const_func__ u32 zex32(u32 x, int n)
+{
+  return (x << (32-n)) >> (32-n);
+}
 
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
+static inline __const_func__ u64 zex64(u64 x, int n)
+{
+  return (x << (64-n)) >> (64-n);
+}
 
---Emperor Turhan, Centauri Republic
+#define zex(x,y)						\
+	((__typeof__(x))					\
+	 (((__builtin_constant_p(y) && ((y) <= 32)) ||		\
+	   (sizeof(x) <= sizeof(u32)))				\
+	  ? zex32((x),(y)) : zex64((x),(y))))

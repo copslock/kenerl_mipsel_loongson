@@ -1,90 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Mar 2017 02:23:37 +0100 (CET)
-Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:35929
-        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993420AbdCDBX0ngs0W (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Mar 2017 02:23:26 +0100
-Received: by mail-qk0-x243.google.com with SMTP id n141so7661772qke.3
-        for <linux-mips@linux-mips.org>; Fri, 03 Mar 2017 17:23:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Mar 2017 03:57:11 +0100 (CET)
+Received: from mail-qk0-x242.google.com ([IPv6:2607:f8b0:400d:c09::242]:34020
+        "EHLO mail-qk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993420AbdCDC44fWWul (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Mar 2017 03:56:56 +0100
+Received: by mail-qk0-x242.google.com with SMTP id g129so3413084qkd.1
+        for <linux-mips@linux-mips.org>; Fri, 03 Mar 2017 18:56:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=systemhalted.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=WATg6wghVwQqK8lIVmzN45OxVBaaUPjfgpkkdfwxork=;
-        b=Gm+dMj4ch8A5wx/SS2vA+iegMUCl4qN8LhDpuz2JF1eH6ZV0t3jdk27ZnTatilD645
-         3V8ccBbjhAh7pjECzmoNlfkrzjIcl9UisOBEWXyuFAoK2fhsemEvAowxyRwjPBjBgslr
-         ufuLEDqpXYnzmhpA4lQa99CvUkYKIdzeimYQc=
+        bh=xiUllCDuNWp17g3WYn0ox5lBn+ARoOnfgCEjZHoWH6k=;
+        b=SS/AaaF8SkURqbk7GkEjOA4lAQugGfNdnfUrbYPWqD/z1a8S/mWm9m3NPHqlQLw5cR
+         yyNFC9Ue+Y+4UE/PHHwmyHdc4coDcv1zG9YcewVthrR8KhLRGZZuXomAfA/0W/nfRjjt
+         Oz4Os3mqdOZJUwsH5GETcIPBtJzuolkuKToipYIZBLisib4njbs+1+uPv4VvAmMNKKiP
+         DjuHZri9wAic8gVnyxwLVu8TpR0RfhtXPZYACfGaJeB7gBaHsDHknqzXxvk7SljV2U/q
+         Hr2q0uGQaNJd/f2wbZ0QtqIkJri8KjlOvgnDuJWtS/AnNwjSjU3euU9C/YXCAiHEHmab
+         LK2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=WATg6wghVwQqK8lIVmzN45OxVBaaUPjfgpkkdfwxork=;
-        b=hIZRCJCMYbX9p/8hw9xUlvm9ZkHZWhG3xft6Tp0etEI3Qvw03F1pQ6a7wye3Gk4SNQ
-         dAuI0CBAOHVrfLdYxSzn+FobsGJcZfFN4mjA7pUQlLPPyNjycXunPnJi1GiABZ177MJs
-         /B0ohye/IlbCq921Q7Zu5ItZCfzkPOxCFB07yHT10qz59+PY35Gp3YD4+2zDe5jNIpKb
-         ksCREcMS3A7YhhNXPDVOVgudmXtyXNUTl6TASYTGcQfXk7eXvL/rDGYbT7OC+BB+IgOI
-         m/vTY1EsWCIuUMpdRsr1M8t/Ac1A9vW7UQnBIGP45t/lwaMu6WXmIjzJeTWYvz8puH23
-         /ekw==
-X-Gm-Message-State: AMke39l+yQyeAvvQRK7fYeA0MHVxnvSaLWZBEZjGdtImZ2azGc9AS6W9rFASJZH9kTDYUFR3Of6YH4k4QGn1sQ==
-X-Received: by 10.237.36.116 with SMTP id s49mr5835114qtc.128.1488590600809;
- Fri, 03 Mar 2017 17:23:20 -0800 (PST)
+        bh=xiUllCDuNWp17g3WYn0ox5lBn+ARoOnfgCEjZHoWH6k=;
+        b=Z723NAY3RyNClUWQRpxkIyM40gKlOu9bCf3wlK6TOM0Z9jea4CPIAZAsS0xuAGI67A
+         rPshtMLkxrOOYcmWykOwejQkIry5lG1WV7XvogNcZ+Dyn6GdMSV0GgVpfXG3wc0o1YEu
+         YOWGdjTs+flynmR6lp9nAPuVLBw0JSeKVOyCbfMcuufZ6XtB/wuC5ptDJesm+k227bjz
+         cuTlka9rIi4UFKn76Ntfzawwatjtvk9CfDcpjWUUY8C2MAA+YxAj9t3Iz+TW95AMpTL1
+         yj5MDMVjdq3zMrlhCoCYHzDWRJRBJOBSIQzFjrZ20h0O1aKsyuA5alVyYF1MHUup5vgh
+         W0ug==
+X-Gm-Message-State: AMke39mCHwm0JUk/BZsFNxEjSKOC9BiNEL3u6BxY7/6Yw8h1Wukgd/9xPL02nm2lyMgtgSbI1rhWKdzca2Lgwg==
+X-Received: by 10.55.212.199 with SMTP id s68mr5810571qks.245.1488596209145;
+ Fri, 03 Mar 2017 18:56:49 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.237.61.167 with HTTP; Fri, 3 Mar 2017 17:23:20 -0800 (PST)
-X-Originating-IP: [184.145.137.27]
-In-Reply-To: <20170302154845.GB3503@altlinux.org>
-References: <20170226010156.GA28831@altlinux.org> <CAK8P3a0YX3RGAqWN0mwUJtBsqUX0C+QRtJLrT_UA=wX6Z+q0DA@mail.gmail.com>
- <CAE2sS1h9QNV+31GMSv8aahJYOb9hFtFp5Aj-yVOfg7cjBHr_kg@mail.gmail.com> <20170302154845.GB3503@altlinux.org>
-From:   "Carlos O'Donell" <carlos@systemhalted.org>
-Date:   Fri, 3 Mar 2017 20:23:20 -0500
-Message-ID: <CAE2sS1i-xezJu2hHfzOxpCMZHc2J+dsturtqFPMRWHa6mm6ccQ@mail.gmail.com>
-Subject: Re: [PATCH] uapi: fix asm/signal.h userspace compilation errors
-To:     "Dmitry V. Levin" <ldv@altlinux.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
+Received: by 10.12.153.113 with HTTP; Fri, 3 Mar 2017 18:56:48 -0800 (PST)
+In-Reply-To: <20170303232305.GU996@jhogan-linux.le.imgtec.org>
+References: <1484164100-9805-1-git-send-email-jason.uy@broadcom.com>
+ <1484164100-9805-2-git-send-email-jason.uy@broadcom.com> <CAAG0J9-n0toSJL8Ze8Esq81dYnpfrTd42bMiR94zw_btBLjsww@mail.gmail.com>
+ <1488394220.20145.68.camel@linux.intel.com> <20170303002129.GS996@jhogan-linux.le.imgtec.org>
+ <1488547866.20145.74.camel@linux.intel.com> <20170303232305.GU996@jhogan-linux.le.imgtec.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 4 Mar 2017 04:56:48 +0200
+Message-ID: <CAHp75Ved2h2WyWBokEOsDmAyB3w3iM=uh-9Bq01mU1ST4FapWQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] serial: 8250_dw: Allow hardware flow control to be used
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Jason Uy <jason.uy@broadcom.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Noam Camus <noamc@ezchip.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Wang Hongcheng <annie.wang@amd.com>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        David Daney <david.daney@cavium.com>,
         Russell King <linux@armlinux.org.uk>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Howells <dhowells@redhat.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-cris-kernel@axis.com, uclinux-h8-devel@lists.sourceforge.jp,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        linux-am33-list@redhat.com,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        linux-clk@vger.kernel.org, Viresh Kumar <viresh.kumar@st.com>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <carlos@systemhalted.org>
+Return-Path: <andy.shevchenko@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57029
+X-archive-position: 57030
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: carlos@systemhalted.org
+X-original-sender: andy.shevchenko@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -97,55 +80,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 2, 2017 at 10:48 AM, Dmitry V. Levin <ldv@altlinux.org> wrote:
-> On Thu, Mar 02, 2017 at 10:22:18AM -0500, Carlos O'Donell wrote:
->> On Wed, Mar 1, 2017 at 11:20 AM, Arnd Bergmann <arnd@arndb.de> wrote:
->> > On Sun, Feb 26, 2017 at 2:01 AM, Dmitry V. Levin <ldv@altlinux.org> wrote:
->> >> Include <stddef.h> (guarded by #ifndef __KERNEL__) to fix asm/signal.h
->> >> userspace compilation errors like this:
->> >>
->> >> /usr/include/asm/signal.h:126:2: error: unknown type name 'size_t'
->> >>   size_t ss_size;
->> >>
->> >> As no uapi header provides a definition of size_t, inclusion
->> >> of <stddef.h> seems to be the most conservative fix available.
-> [...]
->> > I'm not sure if this is the best fix. We generally should not include one
->> > standard header from another standard header. Would it be possible
->> > to use __kernel_size_t instead of size_t?
+On Sat, Mar 4, 2017 at 1:23 AM, James Hogan <james.hogan@imgtec.com> wrote:
+> On Fri, Mar 03, 2017 at 03:31:06PM +0200, Andy Shevchenko wrote:
+>> On Fri, 2017-03-03 at 00:21 +0000, James Hogan wrote:
+>> > The CONFIG_HAVE_CLK=n implementation of devm_clk_get() in particular
+>> > seems highly questionable to me, given that commit 93abe8e4b13a ("clk:
+>> > add non CONFIG_HAVE_CLK routines") which added it 5 years ago says:
+
+>> Btw, I hope you also noticed this one:
 >>
->> In glibc we handle this with special use of __need_size_t with GCC's
->> provided stddef.h.
->>
->> For example glibc's signal.h does this:
->>
->> # define __need_size_t
->> # include <stddef.h>
+>> http://www.spinics.net/lists/linux-serial/msg25314.html
 >
-> Just to make it clear, do you suggest this approach for asm/signal.h as well?
+> Interesting.
+>
+> Following Russel's past advise[1], the following patch on top of Heiko's
+> patch also fixes things for me on Octeon:
+>
+> [1] https://lists.gt.net/linux/kernel/2102623
+>
+> If thats an acceptable fix I'll post it properly. Thoughts?
 
-The kernel is duplicating userspace headers in the UAPI implementation
-and running into exactly the same problems we have already solved in
-userspace. We currently have no better solution than the "__need_*"
-interface for avoiding the duplication of the type definitions and the
-problems that come with that.
+Fine by me. Looks definitely better than IS_ERR_OR_NULL().
 
-I am taking this up with senior glibc developers on libc-alpha to see
-if we have a better suggestion. If you give me 72 hours I'll either
-have a better suggestion or the acknowledgement that my suggestion is
-the best practical solution we have.
+Please, submit as usual with your SoB tag.
 
-Note that in a GNU userspace stddef.h here comes from gcc, which
-completes the implementation of the C development environment that
-provides the types you need. The use of "__need_size_t" is a collusion
-between the components of the implementation and use by the Linux
-kernel would mean expecting something specific to a GNU
-implementation.
+> diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+> index 223ac234ddb2..e65808c482f1 100644
+> --- a/drivers/tty/serial/8250/8250_dw.c
+> +++ b/drivers/tty/serial/8250/8250_dw.c
+> @@ -267,6 +267,8 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
+>         rate = clk_round_rate(d->clk, baud * 16);
+>         if (rate < 0)
+>                 ret = rate;
+> +       else if (rate == 0)
+> +               ret = -ENOENT;
+>         else
+>                 ret = clk_set_rate(d->clk, rate);
+>         clk_prepare_enable(d->clk);
 
-I might suggest you use include/uapi/linux/libc-compat.h in an attempt
-to abstract away the GNU-specific magic for getting just size_t from
-stddef.h. That way you have documented the places that other runtime
-authors need to fill out for things to work.
-
-Cheers,
-Carlos.
+-- 
+With Best Regards,
+Andy Shevchenko

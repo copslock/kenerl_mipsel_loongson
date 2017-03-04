@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Mar 2017 00:07:34 +0100 (CET)
-Received: from [IPv6:2001:1868:a000:17::138] ([IPv6:2001:1868:a000:17::138]:41128
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Mar 2017 00:11:56 +0100 (CET)
+Received: from [IPv6:2001:1868:a000:17::138] ([IPv6:2001:1868:a000:17::138]:41334
         "EHLO mail.zytor.com" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993457AbdCDXH0qeOD0 convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S23993457AbdCDXLt00-70 convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 5 Mar 2017 00:07:26 +0100
-Received: from [IPv6:2607:fb90:a52c:6f95:e53a:dba2:f79c:fb99] ([172.58.33.172])
+        Sun, 5 Mar 2017 00:11:49 +0100
+Received: from nexus6.hos.anvin.org (c-24-5-245-234.hsd1.ca.comcast.net [24.5.245.234] (may be forged))
         (authenticated bits=0)
-        by mail.zytor.com (8.15.2/8.14.5) with ESMTPSA id v24N4Afu010968
+        by mail.zytor.com (8.15.2/8.14.5) with ESMTPSA id v24N8wvh012716
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Sat, 4 Mar 2017 15:04:12 -0800
+        Sat, 4 Mar 2017 15:08:59 -0800
 From:   "H. Peter Anvin" <hpa@zytor.com>
-Message-Id: <201703042304.v24N4Afu010968@mail.zytor.com>
-Date:   Sat, 04 Mar 2017 15:03:50 -0800
+Message-Id: <201703042308.v24N8wvh012716@mail.zytor.com>
+Date:   Sat, 04 Mar 2017 15:08:50 -0800
 User-Agent: K-9 Mail for Android
 In-Reply-To: <20170304213805.GA2449@lianli.shorne-pla.net>
 References: <20170303122712.13353-1-jslaby@suse.cz> <20170304130550.GT21222@n2100.armlinux.org.uk> <3994975e-89a5-d2b5-60be-a8633ddc3733@zytor.com> <20170304213805.GA2449@lianli.shorne-pla.net>
@@ -49,7 +49,7 @@ Return-Path: <hpa@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57038
+X-archive-position: 57039
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,7 +68,7 @@ X-list: linux-mips
 
 <davem@davemloft.net>,Chris Metcalf <cmetcalf@mellanox.com>,Thomas Gleixner <tglx@linutronix.de>,Ingo Molnar <mingo@redhat.com>,Chris Zankel <chris@zankel.net>,Max Filippov <jcmvbkbc@gmail.com>,Arnd Bergmann <arnd@arndb.de>,x86@kernel.org,linux-alpha@vger.kernel.org,linux-snps-arc@lists.infradead.org,linux-arm-kernel@lists.infradead.org,linux-hexagon@vger.kernel.org,linux-ia64@vger.kernel.org,linux-mips@linux-mips.org,openrisc@lists.librecores.org,linux-parisc@vger.kernel.org,linuxppc-dev@lists.ozlabs.org,linux-s390@vger.kernel.org,linux-sh@vger.kernel.org,sparclinux@vger.kernel.org,linux-xtensa@linux-xtensa.org,linux-arch@vger.kernel.org
 From: hpa@zytor.com
-Message-ID: <9B46AFA6-C422-41FD-8E8A-356E44A6DCD2@zytor.com>
+Message-ID: <CF18535E-39E7-44D3-88D0-80B9961E6681@zytor.com>
 
 On March 4, 2017 1:38:05 PM PST, Stafford Horne <shorne@gmail.com> wrote:
 >On Sat, Mar 04, 2017 at 11:15:17AM -0800, H. Peter Anvin wrote:
@@ -144,6 +144,6 @@ On March 4, 2017 1:38:05 PM PST, Stafford Horne <shorne@gmail.com> wrote:
 >> 	  ? zex32((x),(y)) : zex64((x),(y))))
 >> 
 
-Signed versus unsigned...
+Also, i strongly believe that making it syntactically cumbersome encodes people to open-code it which is bad...
 -- 
 Sent from my Android device with K-9 Mail. Please excuse my brevity.

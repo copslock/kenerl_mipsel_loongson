@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Mar 2017 01:32:23 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:30824 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Mar 2017 01:42:27 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39602 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993420AbdCDAcPhRwjk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Mar 2017 01:32:15 +0100
+        with ESMTP id S23993420AbdCDAmSYGtek (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Mar 2017 01:42:18 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 778B7CD5C4E03;
-        Sat,  4 Mar 2017 00:32:04 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 99130768FAA31;
+        Sat,  4 Mar 2017 00:42:06 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Sat, 4 Mar 2017 00:32:09 +0000
+ 14.3.294.0; Sat, 4 Mar 2017 00:42:11 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH] MIPS: Include asm/ptrace.h now linux/sched.h doesn't
-Date:   Sat, 4 Mar 2017 00:32:03 +0000
-Message-ID: <0cd2d2c571afea9658428ee251ae5d3325bfe01b.1488587471.git-series.james.hogan@imgtec.com>
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] MIPS: Wire up statx system call
+Date:   Sat, 4 Mar 2017 00:41:25 +0000
+Message-ID: <20170304004125.6447-1-james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -25,7 +24,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57027
+X-archive-position: 57028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,42 +41,123 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Use of the task_pt_regs() based macros in MIPS' asm/processor.h for
-accessing the user context on the kernel stack need the definition of
-struct pt_regs from asm/ptrace.h. __own_fpu() in asm/fpu.h uses these
-macros but implicitly depended on linux/sched.h to include asm/ptrace.h.
+Wire up the statx system call for MIPS, which was introduced in commit
+a528d35e8bfc ("statx: Add a system call to make enhanced file info
+available").
 
-Since commit f780d89a0e82 ("sched/headers: Remove <asm/ptrace.h> from
-<linux/sched.h>") however linux/sched.h no longer includes asm/ptrace.h,
-so include it explicitly from asm/fpu.h where it is needed instead.
-
-This fixes build errors such as:
-
-./arch/mips/include/asm/fpu.h: In function '__own_fpu':
-./arch/mips/include/asm/processor.h:385:31: error: invalid application of 'sizeof' to incomplete type 'struct pt_regs'
-     THREAD_SIZE - 32 - sizeof(struct pt_regs))
-                               ^
-
-Fixes: f780d89a0e82 ("sched/headers: Remove <asm/ptrace.h> from <linux/sched.h>")
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Ingo Molnar <mingo@kernel.org>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/include/asm/fpu.h | 1 +
- 1 file changed, 1 insertion(+), 0 deletions(-)
+ arch/mips/include/uapi/asm/unistd.h | 15 +++++++++------
+ arch/mips/kernel/scall32-o32.S      |  1 +
+ arch/mips/kernel/scall64-64.S       |  1 +
+ arch/mips/kernel/scall64-n32.S      |  1 +
+ arch/mips/kernel/scall64-o32.S      |  1 +
+ 5 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-index 321752bcbab6..1527efaf4af4 100644
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -20,6 +20,7 @@
- #include <asm/cpu-features.h>
- #include <asm/fpu_emulator.h>
- #include <asm/hazards.h>
-+#include <asm/ptrace.h>
- #include <asm/processor.h>
- #include <asm/current.h>
- #include <asm/msa.h>
+diff --git a/arch/mips/include/uapi/asm/unistd.h b/arch/mips/include/uapi/asm/unistd.h
+index 3e940dbe0262..78faf4292e90 100644
+--- a/arch/mips/include/uapi/asm/unistd.h
++++ b/arch/mips/include/uapi/asm/unistd.h
+@@ -386,17 +386,18 @@
+ #define __NR_pkey_mprotect		(__NR_Linux + 363)
+ #define __NR_pkey_alloc			(__NR_Linux + 364)
+ #define __NR_pkey_free			(__NR_Linux + 365)
++#define __NR_statx			(__NR_Linux + 366)
+ 
+ 
+ /*
+  * Offset of the last Linux o32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		365
++#define __NR_Linux_syscalls		366
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+ 
+ #define __NR_O32_Linux			4000
+-#define __NR_O32_Linux_syscalls		365
++#define __NR_O32_Linux_syscalls		366
+ 
+ #if _MIPS_SIM == _MIPS_SIM_ABI64
+ 
+@@ -730,16 +731,17 @@
+ #define __NR_pkey_mprotect		(__NR_Linux + 323)
+ #define __NR_pkey_alloc			(__NR_Linux + 324)
+ #define __NR_pkey_free			(__NR_Linux + 325)
++#define __NR_statx			(__NR_Linux + 326)
+ 
+ /*
+  * Offset of the last Linux 64-bit flavoured syscall
+  */
+-#define __NR_Linux_syscalls		325
++#define __NR_Linux_syscalls		326
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+ 
+ #define __NR_64_Linux			5000
+-#define __NR_64_Linux_syscalls		325
++#define __NR_64_Linux_syscalls		326
+ 
+ #if _MIPS_SIM == _MIPS_SIM_NABI32
+ 
+@@ -1077,15 +1079,16 @@
+ #define __NR_pkey_mprotect		(__NR_Linux + 327)
+ #define __NR_pkey_alloc			(__NR_Linux + 328)
+ #define __NR_pkey_free			(__NR_Linux + 329)
++#define __NR_statx			(__NR_Linux + 330)
+ 
+ /*
+  * Offset of the last N32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		329
++#define __NR_Linux_syscalls		330
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+ 
+ #define __NR_N32_Linux			6000
+-#define __NR_N32_Linux_syscalls		329
++#define __NR_N32_Linux_syscalls		330
+ 
+ #endif /* _UAPI_ASM_UNISTD_H */
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index c29d397eee86..80ed68b2c95e 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -600,3 +600,4 @@ EXPORT(sys_call_table)
+ 	PTR	sys_pkey_mprotect
+ 	PTR	sys_pkey_alloc
+ 	PTR	sys_pkey_free			/* 4365 */
++	PTR	sys_statx
+diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
+index 0687f96ee912..49765b44aa9b 100644
+--- a/arch/mips/kernel/scall64-64.S
++++ b/arch/mips/kernel/scall64-64.S
+@@ -438,4 +438,5 @@ EXPORT(sys_call_table)
+ 	PTR	sys_pkey_mprotect
+ 	PTR	sys_pkey_alloc
+ 	PTR	sys_pkey_free			/* 5325 */
++	PTR	sys_statx
+ 	.size	sys_call_table,.-sys_call_table
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index 0331ba39a065..90bad2d1b2d3 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -433,4 +433,5 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_pkey_mprotect
+ 	PTR	sys_pkey_alloc
+ 	PTR	sys_pkey_free
++	PTR	sys_statx			/* 6330 */
+ 	.size	sysn32_call_table,.-sysn32_call_table
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index 5a47042dd25f..2dd70bd104e1 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -588,4 +588,5 @@ EXPORT(sys32_call_table)
+ 	PTR	sys_pkey_mprotect
+ 	PTR	sys_pkey_alloc
+ 	PTR	sys_pkey_free			/* 4365 */
++	PTR	sys_statx
+ 	.size	sys32_call_table,.-sys32_call_table
 -- 
-git-series 0.8.10
+2.11.1

@@ -1,21 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Mar 2017 13:50:03 +0100 (CET)
-Received: from ozlabs.org ([103.22.144.67]:56635 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23990513AbdCDMtyXh2YM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 4 Mar 2017 13:49:54 +0100
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ozlabs.org (Postfix) with ESMTPSA id 3vb5VQ1nphz9s7x;
-        Sat,  4 Mar 2017 23:49:50 +1100 (AEDT)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Jiri Slaby <jslaby@suse.cz>, akpm@linux-foundation.org
-Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Mar 2017 14:08:19 +0100 (CET)
+Received: from pandora.armlinux.org.uk ([IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6]:57926
+        "EHLO pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990522AbdCDNIL201tM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Mar 2017 14:08:11 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=armlinux.org.uk; s=pandora-2014;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=oveH2gO74WZptAa3+CnoPbxuVdRNwrMLxnvaThBLFMs=;
+        b=dSBysVZsY5C27ceUL3AwTFpFWBJU5Ihk9Wgy4Bzk2S/vODp7z+VteJoOR/3xtC0h9Sthud0VFZiL0GnyG27hDZDgsMnY7YiyzztBB7UhnytIWiwH39rYjcMdEV5sRZVhQ2tFtFEbA13r5qxFn4VmluVU3t54t1h6KTepeJnnvNI=;
+Received: from n2100.armlinux.org.uk ([2001:4d48:ad52:3201:214:fdff:fe10:4f86]:36416)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
+        (Exim 4.82_1-5b7a7c0-XX)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1ck9Ni-0000bk-Or; Sat, 04 Mar 2017 13:05:55 +0000
+Received: from linux by n2100.armlinux.org.uk with local (Exim 4.76)
+        (envelope-from <linux@n2100.armlinux.org.uk>)
+        id 1ck9Ne-00029C-MP; Sat, 04 Mar 2017 13:05:50 +0000
+Date:   Sat, 4 Mar 2017 13:05:50 +0000
+From:   Russell King - ARM Linux <linux@armlinux.org.uk>
+To:     Jiri Slaby <jslaby@suse.cz>
+Cc:     akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
         Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
         Richard Kuo <rkuo@codeaurora.org>,
@@ -30,12 +36,13 @@ Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
         Helge Deller <deller@gmx.de>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
-        C hris Metcalf <cmetcalf@mellanox.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
@@ -50,22 +57,22 @@ Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-arch@vger.kernel.org
 Subject: Re: [PATCH 1/3] futex: remove duplicated code
-In-Reply-To: <20170303122712.13353-1-jslaby@suse.cz>
+Message-ID: <20170304130550.GT21222@n2100.armlinux.org.uk>
 References: <20170303122712.13353-1-jslaby@suse.cz>
-User-Agent: Notmuch/0.21 (https://notmuchmail.org)
-Date:   Sat, 04 Mar 2017 23:49:44 +1100
-Message-ID: <877f45cil2.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-Return-Path: <mpe@ellerman.id.au>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170303122712.13353-1-jslaby@suse.cz>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+Return-Path: <linux+linux-mips=linux-mips.org@armlinux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57031
+X-archive-position: 57032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpe@ellerman.id.au
+X-original-sender: linux@armlinux.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -78,18 +85,120 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Jiri Slaby <jslaby@suse.cz> writes:
+On Fri, Mar 03, 2017 at 01:27:10PM +0100, Jiri Slaby wrote:
+> diff --git a/arch/arm/include/asm/futex.h b/arch/arm/include/asm/futex.h
+> index 6795368ad023..cc414382dab4 100644
+> --- a/arch/arm/include/asm/futex.h
+> +++ b/arch/arm/include/asm/futex.h
+> @@ -128,20 +128,10 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+>  #endif /* !SMP */
+>  
+>  static inline int
+> -futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
+> +arch_futex_atomic_op_inuser(int op, int oparg, int *oval, u32 __user *uaddr)
+>  {
+> -	int op = (encoded_op >> 28) & 7;
+> -	int cmp = (encoded_op >> 24) & 15;
+> -	int oparg = (encoded_op << 8) >> 20;
+> -	int cmparg = (encoded_op << 20) >> 20;
+>  	int oldval = 0, ret, tmp;
+>  
+> -	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+> -		oparg = 1 << oparg;
+> -
+> -	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+> -		return -EFAULT;
+> -
+>  #ifndef CONFIG_SMP
+>  	preempt_disable();
+>  #endif
+> @@ -172,17 +162,9 @@ futex_atomic_op_inuser (int encoded_op, u32 __user *uaddr)
+>  	preempt_enable();
+>  #endif
+>  
+> -	if (!ret) {
+> -		switch (cmp) {
+> -		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
+> -		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
+> -		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
+> -		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
+> -		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
+> -		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
+> -		default: ret = -ENOSYS;
+> -		}
+> -	}
+> +	if (!ret)
+> +		*oval = oldval;
+> +
+>  	return ret;
+>  }
+>  
+> diff --git a/kernel/futex.c b/kernel/futex.c
+> index b687cb22301c..c5ff9850952f 100644
+> --- a/kernel/futex.c
+> +++ b/kernel/futex.c
+> @@ -1457,6 +1457,42 @@ futex_wake(u32 __user *uaddr, unsigned int flags, int nr_wake, u32 bitset)
+>  	return ret;
+>  }
+>  
+> +static int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
+> +{
+> +	int op = (encoded_op >> 28) & 7;
+> +	int cmp = (encoded_op >> 24) & 15;
+> +	int oparg = (encoded_op << 8) >> 20;
+> +	int cmparg = (encoded_op << 20) >> 20;
 
-> There is code duplicated over all architecture's headers for
-> futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
-> and comparison of the result.
->
-> Remove this duplication and leave up to the arches only the needed
-> assembly which is now in arch_futex_atomic_op_inuser.
+Hmm.  oparg and cmparg look like they're doing these shifts to get sign
+extension of the 12-bit values by assuming that "int" is 32-bit -
+probably worth a comment, or for safety, they should be "s32" so it's
+not dependent on the bit-width of "int".
 
-Looks OK and boots on powerpc. But I don't think anything's actually
-calling those futex ops. Is there a test suite I should run?
+> +	int oldval, ret;
+> +
+> +	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28))
+> +		oparg = 1 << oparg;
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+I guess it doesn't matter that oparg can be >= the bit size of oparg
+(so large values produce an undefined result) as it's no different
+from userspace trying to do the same with large shifts.
 
-cheers
+> +
+> +	if (!access_ok(VERIFY_WRITE, uaddr, sizeof(u32)))
+> +		return -EFAULT;
+> +
+> +	ret = arch_futex_atomic_op_inuser(op, oparg, &oldval, uaddr);
+> +	if (ret)
+> +		return ret;
+> +
+> +	switch (cmp) {
+> +	case FUTEX_OP_CMP_EQ:
+> +		return oldval == cmparg;
+> +	case FUTEX_OP_CMP_NE:
+> +		return oldval != cmparg;
+> +	case FUTEX_OP_CMP_LT:
+> +		return oldval < cmparg;
+> +	case FUTEX_OP_CMP_GE:
+> +		return oldval >= cmparg;
+> +	case FUTEX_OP_CMP_LE:
+> +		return oldval <= cmparg;
+> +	case FUTEX_OP_CMP_GT:
+> +		return oldval > cmparg;
+> +	default:
+> +		return -ENOSYS;
+> +	}
+> +}
+> +
+>  /*
+>   * Wake up all waiters hashed on the physical page that is mapped
+>   * to this virtual address:
+
+As it's no worse than our existing code, for the above,
+
+Acked-by: Russell King <rmk+kernel@armlinux.org.uk>
+
+Thanks.
+
+-- 
+RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
+according to speedtest.net.

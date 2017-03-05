@@ -1,43 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Mar 2017 01:45:21 +0100 (CET)
-Received: from gloria.sntech.de ([95.129.55.99]:33292 "EHLO gloria.sntech.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Mar 2017 04:23:53 +0100 (CET)
+Received: from mail5.windriver.com ([192.103.53.11]:57350 "EHLO mail5.wrs.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993457AbdCEApIqUrxX convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Mar 2017 01:45:08 +0100
-Received: from [88.128.80.109] (helo=phil.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.1:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <heiko@sntech.de>)
-        id 1ckKI5-0005O1-Fn; Sun, 05 Mar 2017 01:44:50 +0100
-From:   Heiko Stuebner <heiko@sntech.de>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jason Uy <jason.uy@broadcom.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        David Daney <david.daney@cavium.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-serial@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-mips@linux-mips.org, bcm-kernel-feedback-list@broadcom.com
-Subject: Re: [PATCH] serial: 8250_dw: Fix breakage when HAVE_CLK=n
-Date:   Sun, 05 Mar 2017 01:44:33 +0100
-Message-ID: <3772321.GSmxWtfp6p@phil>
-User-Agent: KMail/5.2.3 (Linux/4.9.0-1-amd64; KDE/5.27.0; x86_64; ; )
-In-Reply-To: <20170304130958.23655-1-james.hogan@imgtec.com>
-References: <CAHp75Ved2h2WyWBokEOsDmAyB3w3iM=uh-9Bq01mU1ST4FapWQ@mail.gmail.com> <20170304130958.23655-1-james.hogan@imgtec.com>
+        id S23990600AbdCEDXp4sFmt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 5 Mar 2017 04:23:45 +0100
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
+        by mail5.wrs.com (8.15.2/8.15.2) with ESMTPS id v253NXng019871
+        (version=TLSv1 cipher=AES128-SHA bits=128 verify=OK);
+        Sat, 4 Mar 2017 19:23:34 -0800
+Received: from pek-jsun4-d1.corp.ad.wrs.com (128.224.155.85) by
+ ALA-HCA.corp.ad.wrs.com (147.11.189.50) with Microsoft SMTP Server id
+ 14.3.294.0; Sat, 4 Mar 2017 19:23:33 -0800
+From:   Jiwei Sun <jiwei.sun@windriver.com>
+To:     <ralf@linux-mips.org>, <paul.burton@imgtec.com>,
+        <james.hogan@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <jiwei.sun.bj@qq.com>
+Subject: [PATCH] MIPS: reset all task's asid to 0 after asid_cache(cpu) overflows
+Date:   Sun, 5 Mar 2017 11:24:20 +0800
+Message-ID: <1488684260-18867-1-git-send-email-jiwei.sun@windriver.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="iso-8859-1"
-Return-Path: <heiko@sntech.de>
+Content-Type: text/plain
+Return-Path: <Jiwei.Sun@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57040
+X-archive-position: 57041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: heiko@sntech.de
+X-original-sender: jiwei.sun@windriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,68 +42,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am Samstag, 4. März 2017, 13:09:58 CET schrieb James Hogan:
-> Commit 6a171b299379 ("serial: 8250_dw: Allow hardware flow control to be
-> used") recently broke the 8250_dw driver on platforms which don't select
-> HAVE_CLK, as dw8250_set_termios() gets confused by the behaviour of the
-> fallback HAVE_CLK=n clock API in linux/clk.h which pretends everything
-> is fine but returns (valid) NULL clocks and 0 HZ clock rates.
-> 
-> That 0 rate is written into the uartclk resulting in a crash at boot,
-> e.g. on Cavium Octeon III based UTM-8 we get something like this:
-> 
-> 1180000000800.serial: ttyS0 at MMIO 0x1180000000800 (irq = 41, base_baud =
-> 25000000) is a OCTEON ------------[ cut here ]------------
-> WARNING: CPU: 2 PID: 1 at drivers/tty/serial/serial_core.c:441
-> uart_get_baud_rate+0xfc/0x1f0 ...
-> Call Trace:
-> ...
-> [<ffffffff8149c2e4>] uart_get_baud_rate+0xfc/0x1f0
-> [<ffffffff814a5098>] serial8250_do_set_termios+0xb0/0x440
-> [<ffffffff8149c710>] uart_set_options+0xe8/0x190
-> [<ffffffff814a6cdc>] serial8250_console_setup+0x84/0x158
-> [<ffffffff814a11ec>] univ8250_console_setup+0x54/0x70
-> [<ffffffff811901a0>] register_console+0x1c8/0x418
-> [<ffffffff8149f004>] uart_add_one_port+0x434/0x4b0
-> [<ffffffff814a1af8>] serial8250_register_8250_port+0x2d8/0x440
-> [<ffffffff814aa620>] dw8250_probe+0x388/0x5e8
-> ...
-> 
-> The clock API is defined such that NULL is a valid clock handle so it
-> wouldn't be right to check explicitly for NULL. Instead treat a
-> clk_round_rate() return value of 0 as an error which prevents uartclk
-> being overwritten.
-> 
-> Fixes: 6a171b299379 ("serial: 8250_dw: Allow hardware flow control to be
-> used") Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: Jason Uy <jason.uy@broadcom.com>
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Heiko Stuebner <heiko@sntech.de>
-> Cc: David Daney <david.daney@cavium.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: linux-serial@vger.kernel.org
-> Cc: linux-clk@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> ---
->  drivers/tty/serial/8250/8250_dw.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_dw.c
-> b/drivers/tty/serial/8250/8250_dw.c index 223ac234ddb2..e65808c482f1 100644
-> --- a/drivers/tty/serial/8250/8250_dw.c
-> +++ b/drivers/tty/serial/8250/8250_dw.c
-> @@ -267,6 +267,8 @@ static void dw8250_set_termios(struct uart_port *p,
-> struct ktermios *termios, rate = clk_round_rate(d->clk, baud * 16);
->  	if (rate < 0)
->  		ret = rate;
-> +	else if (rate == 0)
-> +		ret = -ENOENT;
->  	else
->  		ret = clk_set_rate(d->clk, rate);
->  	clk_prepare_enable(d->clk);
+If asid_cache(cpu) overflows, there may be two tasks with the same
+asid. It is a risk that the two different tasks may have the same
+address space.
 
-Looks good
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+A process will update its asid to newer version only when switch_mm()
+is called and matches the following condition:
+    if ((cpu_context(cpu, next) ^ asid_cache(cpu))
+                    & asid_version_mask(cpu))
+            get_new_mmu_context(next, cpu);
+If asid_cache(cpu) overflows, cpu_context(cpu,next) and asid_cache(cpu)
+will be reset to asid_first_version(cpu), and start a new cycle. It
+can result in two tasks that have the same ASID in the process list.
+
+For example, in CONFIG_CPU_MIPS32_R2, task named A's asid on CPU1 is
+0x100, and has been sleeping and been not scheduled. After a long period
+of time, another running task named B's asid on CPU1 is 0xffffffff, and
+asid cached in the CPU1 is 0xffffffff too, next task named C is forked,
+when schedule from B to C on CPU1, asid_cache(cpu) will overflow, so C's
+asid on CPU1 will be 0x100 according to get_new_mmu_context(). A's asid
+is the same as C, if now A is rescheduled on CPU1, A's asid is not able
+to renew according to 'if' clause, and the local TLB entry can't be
+flushed too, A's address space will be the same as C.
+
+If asid_cache(cpu) overflows, all of user space task's asid on this CPU
+are able to set a invalid value (such as 0), it will avoid the risk.
+
+Signed-off-by: Jiwei Sun <jiwei.sun@windriver.com>
+---
+ arch/mips/include/asm/mmu_context.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+index ddd57ad..1f60efc 100644
+--- a/arch/mips/include/asm/mmu_context.h
++++ b/arch/mips/include/asm/mmu_context.h
+@@ -108,8 +108,15 @@ static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
+ #else
+ 		local_flush_tlb_all();	/* start new asid cycle */
+ #endif
+-		if (!asid)		/* fix version if needed */
++		if (!asid) {		/* fix version if needed */
++			struct task_struct *p;
++
++			for_each_process(p) {
++				if ((p->mm))
++					cpu_context(cpu, p->mm) = 0;
++			}
+ 			asid = asid_first_version(cpu);
++		}
+ 	}
+ 
+ 	cpu_context(cpu, mm) = asid_cache(cpu) = asid;
+-- 
+1.9.1

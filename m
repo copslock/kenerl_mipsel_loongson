@@ -1,59 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Mar 2017 00:11:56 +0100 (CET)
-Received: from [IPv6:2001:1868:a000:17::138] ([IPv6:2001:1868:a000:17::138]:41334
-        "EHLO mail.zytor.com" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993457AbdCDXLt00-70 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 5 Mar 2017 00:11:49 +0100
-Received: from nexus6.hos.anvin.org (c-24-5-245-234.hsd1.ca.comcast.net [24.5.245.234] (may be forged))
-        (authenticated bits=0)
-        by mail.zytor.com (8.15.2/8.14.5) with ESMTPSA id v24N8wvh012716
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Sat, 4 Mar 2017 15:08:59 -0800
-From:   "H. Peter Anvin" <hpa@zytor.com>
-Message-Id: <201703042308.v24N8wvh012716@mail.zytor.com>
-Date:   Sat, 04 Mar 2017 15:08:50 -0800
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20170304213805.GA2449@lianli.shorne-pla.net>
-References: <20170303122712.13353-1-jslaby@suse.cz> <20170304130550.GT21222@n2100.armlinux.org.uk> <3994975e-89a5-d2b5-60be-a8633ddc3733@zytor.com> <20170304213805.GA2449@lianli.shorne-pla.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Mar 2017 01:45:21 +0100 (CET)
+Received: from gloria.sntech.de ([95.129.55.99]:33292 "EHLO gloria.sntech.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993457AbdCEApIqUrxX convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Mar 2017 01:45:08 +0100
+Received: from [88.128.80.109] (helo=phil.localnet)
+        by gloria.sntech.de with esmtpsa (TLS1.1:DHE_RSA_AES_256_CBC_SHA1:256)
+        (Exim 4.80)
+        (envelope-from <heiko@sntech.de>)
+        id 1ckKI5-0005O1-Fn; Sun, 05 Mar 2017 01:44:50 +0100
+From:   Heiko Stuebner <heiko@sntech.de>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jason Uy <jason.uy@broadcom.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        David Daney <david.daney@cavium.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-serial@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-mips@linux-mips.org, bcm-kernel-feedback-list@broadcom.com
+Subject: Re: [PATCH] serial: 8250_dw: Fix breakage when HAVE_CLK=n
+Date:   Sun, 05 Mar 2017 01:44:33 +0100
+Message-ID: <3772321.GSmxWtfp6p@phil>
+User-Agent: KMail/5.2.3 (Linux/4.9.0-1-amd64; KDE/5.27.0; x86_64; ; )
+In-Reply-To: <20170304130958.23655-1-james.hogan@imgtec.com>
+References: <CAHp75Ved2h2WyWBokEOsDmAyB3w3iM=uh-9Bq01mU1ST4FapWQ@mail.gmail.com> <20170304130958.23655-1-james.hogan@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
 Content-Transfer-Encoding: 8BIT
-Subject: Re: [PATCH 1/3] futex: remove duplicated code
-To:     Stafford Horne <shorne@gmail.com>
-CC:     Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Jiri Slaby <jslaby@suse.cz>, akpm@linux-foundation.org,
-        linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, "David S. Miller"@zytor.com
-Return-Path: <hpa@zytor.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Return-Path: <heiko@sntech.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57039
+X-archive-position: 57040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hpa@zytor.com
+X-original-sender: heiko@sntech.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -66,84 +50,68 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-<davem@davemloft.net>,Chris Metcalf <cmetcalf@mellanox.com>,Thomas Gleixner <tglx@linutronix.de>,Ingo Molnar <mingo@redhat.com>,Chris Zankel <chris@zankel.net>,Max Filippov <jcmvbkbc@gmail.com>,Arnd Bergmann <arnd@arndb.de>,x86@kernel.org,linux-alpha@vger.kernel.org,linux-snps-arc@lists.infradead.org,linux-arm-kernel@lists.infradead.org,linux-hexagon@vger.kernel.org,linux-ia64@vger.kernel.org,linux-mips@linux-mips.org,openrisc@lists.librecores.org,linux-parisc@vger.kernel.org,linuxppc-dev@lists.ozlabs.org,linux-s390@vger.kernel.org,linux-sh@vger.kernel.org,sparclinux@vger.kernel.org,linux-xtensa@linux-xtensa.org,linux-arch@vger.kernel.org
-From: hpa@zytor.com
-Message-ID: <CF18535E-39E7-44D3-88D0-80B9961E6681@zytor.com>
+Am Samstag, 4. März 2017, 13:09:58 CET schrieb James Hogan:
+> Commit 6a171b299379 ("serial: 8250_dw: Allow hardware flow control to be
+> used") recently broke the 8250_dw driver on platforms which don't select
+> HAVE_CLK, as dw8250_set_termios() gets confused by the behaviour of the
+> fallback HAVE_CLK=n clock API in linux/clk.h which pretends everything
+> is fine but returns (valid) NULL clocks and 0 HZ clock rates.
+> 
+> That 0 rate is written into the uartclk resulting in a crash at boot,
+> e.g. on Cavium Octeon III based UTM-8 we get something like this:
+> 
+> 1180000000800.serial: ttyS0 at MMIO 0x1180000000800 (irq = 41, base_baud =
+> 25000000) is a OCTEON ------------[ cut here ]------------
+> WARNING: CPU: 2 PID: 1 at drivers/tty/serial/serial_core.c:441
+> uart_get_baud_rate+0xfc/0x1f0 ...
+> Call Trace:
+> ...
+> [<ffffffff8149c2e4>] uart_get_baud_rate+0xfc/0x1f0
+> [<ffffffff814a5098>] serial8250_do_set_termios+0xb0/0x440
+> [<ffffffff8149c710>] uart_set_options+0xe8/0x190
+> [<ffffffff814a6cdc>] serial8250_console_setup+0x84/0x158
+> [<ffffffff814a11ec>] univ8250_console_setup+0x54/0x70
+> [<ffffffff811901a0>] register_console+0x1c8/0x418
+> [<ffffffff8149f004>] uart_add_one_port+0x434/0x4b0
+> [<ffffffff814a1af8>] serial8250_register_8250_port+0x2d8/0x440
+> [<ffffffff814aa620>] dw8250_probe+0x388/0x5e8
+> ...
+> 
+> The clock API is defined such that NULL is a valid clock handle so it
+> wouldn't be right to check explicitly for NULL. Instead treat a
+> clk_round_rate() return value of 0 as an error which prevents uartclk
+> being overwritten.
+> 
+> Fixes: 6a171b299379 ("serial: 8250_dw: Allow hardware flow control to be
+> used") Signed-off-by: James Hogan <james.hogan@imgtec.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Jason Uy <jason.uy@broadcom.com>
+> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: Heiko Stuebner <heiko@sntech.de>
+> Cc: David Daney <david.daney@cavium.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: linux-serial@vger.kernel.org
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-mips@linux-mips.org
+> Cc: bcm-kernel-feedback-list@broadcom.com
+> ---
+>  drivers/tty/serial/8250/8250_dw.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_dw.c
+> b/drivers/tty/serial/8250/8250_dw.c index 223ac234ddb2..e65808c482f1 100644
+> --- a/drivers/tty/serial/8250/8250_dw.c
+> +++ b/drivers/tty/serial/8250/8250_dw.c
+> @@ -267,6 +267,8 @@ static void dw8250_set_termios(struct uart_port *p,
+> struct ktermios *termios, rate = clk_round_rate(d->clk, baud * 16);
+>  	if (rate < 0)
+>  		ret = rate;
+> +	else if (rate == 0)
+> +		ret = -ENOENT;
+>  	else
+>  		ret = clk_set_rate(d->clk, rate);
+>  	clk_prepare_enable(d->clk);
 
-On March 4, 2017 1:38:05 PM PST, Stafford Horne <shorne@gmail.com> wrote:
->On Sat, Mar 04, 2017 at 11:15:17AM -0800, H. Peter Anvin wrote:
->> On 03/04/17 05:05, Russell King - ARM Linux wrote:
->> >>  
->> >> +static int futex_atomic_op_inuser(int encoded_op, u32 __user
->*uaddr)
->> >> +{
->> >> +	int op = (encoded_op >> 28) & 7;
->> >> +	int cmp = (encoded_op >> 24) & 15;
->> >> +	int oparg = (encoded_op << 8) >> 20;
->> >> +	int cmparg = (encoded_op << 20) >> 20;
->> > 
->> > Hmm.  oparg and cmparg look like they're doing these shifts to get
->sign
->> > extension of the 12-bit values by assuming that "int" is 32-bit -
->> > probably worth a comment, or for safety, they should be "s32" so
->it's
->> > not dependent on the bit-width of "int".
->> > 
->> 
->> For readability, perhaps we should make sign- and zero-extension an
->> explicit facility?
->
->There is some of this in already here, 32 and 64 bit versions:
->
->  include/linux/bitops.h
->
->Do we really need zero extension? It seems the same.
->
->Example implementation from bitops.h
->
->static inline __s32 sign_extend32(__u32 value, int index)
->{
->        __u8 shift = 31 - index;
->        return (__s32)(value << shift) >> shift;
->}
->
->> /*
->>  * Truncate an integer x to n bits, using sign- or
->>  * zero-extension, respectively.
->>  */
->> static inline __const_func__ s32 sex32(s32 x, int n)
->> {
->>   return (x << (32-n)) >> (32-n);
->> }
->> 
->> static inline __const_func__ s64 sex64(s64 x, int n)
->> {
->>   return (x << (64-n)) >> (64-n);
->> }
->> 
->> #define sex(x,y)						\
->> 	((__typeof__(x))					\
->> 	 (((__builtin_constant_p(y) && ((y) <= 32)) ||		\
->> 	   (sizeof(x) <= sizeof(s32)))				\
->> 	  ? sex32((x),(y)) : sex64((x),(y))))
->> 
->> static inline __const_func__ u32 zex32(u32 x, int n)
->> {
->>   return (x << (32-n)) >> (32-n);
->> }
->> 
->> static inline __const_func__ u64 zex64(u64 x, int n)
->> {
->>   return (x << (64-n)) >> (64-n);
->> }
->> 
->> #define zex(x,y)						\
->> 	((__typeof__(x))					\
->> 	 (((__builtin_constant_p(y) && ((y) <= 32)) ||		\
->> 	   (sizeof(x) <= sizeof(u32)))				\
->> 	  ? zex32((x),(y)) : zex64((x),(y))))
->> 
-
-Also, i strongly believe that making it syntactically cumbersome encodes people to open-code it which is bad...
--- 
-Sent from my Android device with K-9 Mail. Please excuse my brevity.
+Looks good
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>

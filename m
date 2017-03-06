@@ -1,51 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 00:04:28 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:48998 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993886AbdCFXETi0NOr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 00:04:19 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id B62A241F8D5F;
-        Tue,  7 Mar 2017 00:09:06 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 07 Mar 2017 00:09:06 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 07 Mar 2017 00:09:06 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id CFE8CB9A566B4;
-        Mon,  6 Mar 2017 23:04:08 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 6 Mar
- 2017 23:04:13 +0000
-Date:   Mon, 6 Mar 2017 23:04:13 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Nathan Sullivan <nathan.sullivan@ni.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 00:14:45 +0100 (CET)
+Received: from mx0a-00010702.pphosted.com ([148.163.156.75]:34447 "EHLO
+        mx0b-00010702.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993886AbdCFXOhTsNNr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 00:14:37 +0100
+Received: from pps.filterd (m0098780.ppops.net [127.0.0.1])
+        by mx0a-00010702.pphosted.com (8.16.0.20/8.16.0.20) with SMTP id v26NAUSE031721;
+        Mon, 6 Mar 2017 17:14:26 -0600
+Received: from ni.com (skprod3.natinst.com [130.164.80.24])
+        by mx0a-00010702.pphosted.com with ESMTP id 291abe9mrq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Mar 2017 17:14:25 -0600
+Received: from us-aus-exch1.ni.corp.natinst.com (us-aus-exch1.ni.corp.natinst.com [130.164.68.11])
+        by us-aus-skprod3.natinst.com (8.16.0.17/8.16.0.17) with ESMTPS id v26NEOIn009693
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Mon, 6 Mar 2017 17:14:24 -0600
+Received: from us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) by
+ us-aus-exch1.ni.corp.natinst.com (130.164.68.11) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Mon, 6 Mar 2017 17:14:24 -0600
+Received: from nathan3500-linux-VM (130.164.49.7) by
+ us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) with Microsoft SMTP Server
+ id 15.0.1156.6 via Frontend Transport; Mon, 6 Mar 2017 17:14:24 -0600
+Date:   Mon, 6 Mar 2017 17:14:24 -0600
+From:   Nathan Sullivan <nathan.sullivan@ni.com>
+To:     James Hogan <james.hogan@imgtec.com>
 CC:     <linus.walleij@linaro.org>, <gnurou@gmail.com>,
         <mark.rutland@arm.com>, <devicetree@vger.kernel.org>,
         <robh+dt@kernel.org>, <ralf@linux-mips.org>,
         <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
         <linux-mips@linux-mips.org>
 Subject: Re: [PATCH 2/2] MIPS: NI 169445 board support
-Message-ID: <20170306230413.GF2878@jhogan-linux.le.imgtec.org>
+Message-ID: <20170306231424.GA1503@nathan3500-linux-VM>
 References: <1488830761-681-1-git-send-email-nathan.sullivan@ni.com>
  <1488830761-681-3-git-send-email-nathan.sullivan@ni.com>
+ <20170306230413.GF2878@jhogan-linux.le.imgtec.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="SxgehGEc6vB0cZwN"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <1488830761-681-3-git-send-email-nathan.sullivan@ni.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <20170306230413.GF2878@jhogan-linux.le.imgtec.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-03-06_23:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.0.1-1702020001
+ definitions=main-1703060185
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-03-06_23:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=30 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 impostorscore=0 adultscore=0 classifier=spam adjust=30
+ reason=mlx scancount=1 engine=8.0.1-1702020001 definitions=main-1703060185
+Return-Path: <nathan.sullivan@ni.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57059
+X-archive-position: 57060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: nathan.sullivan@ni.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,198 +71,176 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---SxgehGEc6vB0cZwN
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, Mar 06, 2017 at 11:04:13PM +0000, James Hogan wrote:
+> Hi Nathan,
+> 
+> On Mon, Mar 06, 2017 at 02:06:01PM -0600, Nathan Sullivan wrote:
+> > Support the National Instruments 169445 board.
+> > 
+> > Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
+> > ---
+> >  Documentation/devicetree/bindings/mips/ni.txt   |   7 ++
+> >  arch/mips/boot/dts/Makefile                     |   1 +
+> >  arch/mips/boot/dts/ni/169445.dts                | 101 ++++++++++++++++++++
+> >  arch/mips/boot/dts/ni/Makefile                  |   7 ++
+> >  arch/mips/configs/generic/board-ni169445.config | 117 ++++++++++++++++++++++++
+> >  arch/mips/generic/Kconfig                       |   6 ++
+> >  arch/mips/generic/vmlinux.its.S                 |  25 +++++
+> >  7 files changed, 264 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/mips/ni.txt
+> >  create mode 100644 arch/mips/boot/dts/ni/169445.dts
+> >  create mode 100644 arch/mips/boot/dts/ni/Makefile
+> >  create mode 100644 arch/mips/configs/generic/board-ni169445.config
+> > 
+> 
+> nice :)
+> 
+> I reckon an entry in MAINTAINERS listing the board specific
+> files/directories would probably be worthwhile too.
+> 
 
-Hi Nathan,
+OK, will do.
 
-On Mon, Mar 06, 2017 at 02:06:01PM -0600, Nathan Sullivan wrote:
-> Support the National Instruments 169445 board.
->=20
-> Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
-> ---
->  Documentation/devicetree/bindings/mips/ni.txt   |   7 ++
->  arch/mips/boot/dts/Makefile                     |   1 +
->  arch/mips/boot/dts/ni/169445.dts                | 101 ++++++++++++++++++=
-++
->  arch/mips/boot/dts/ni/Makefile                  |   7 ++
->  arch/mips/configs/generic/board-ni169445.config | 117 ++++++++++++++++++=
-++++++
->  arch/mips/generic/Kconfig                       |   6 ++
->  arch/mips/generic/vmlinux.its.S                 |  25 +++++
->  7 files changed, 264 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mips/ni.txt
->  create mode 100644 arch/mips/boot/dts/ni/169445.dts
->  create mode 100644 arch/mips/boot/dts/ni/Makefile
->  create mode 100644 arch/mips/configs/generic/board-ni169445.config
->=20
+> > diff --git a/arch/mips/configs/generic/board-ni169445.config b/arch/mips/configs/generic/board-ni169445.config
+> > new file mode 100644
+> > index 0000000..2c950a8
+> > --- /dev/null
+> > +++ b/arch/mips/configs/generic/board-ni169445.config
+> > @@ -0,0 +1,117 @@
+> > +CONFIG_MIPS_GENERIC=y
+> > +CONFIG_FIT_IMAGE_FDT_NI169445=y
+> > +CONFIG_CPU_LITTLE_ENDIAN=y
+> > +CONFIG_CPU_MIPS32_R2=y
+> > +CONFIG_HZ_100=y
+> > +CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=y
+> > +# CONFIG_SWAP is not set
+> > +CONFIG_SYSVIPC=y
+> > +CONFIG_HZ_PERIODIC=y
+> > +CONFIG_NO_HZ=y
+> > +CONFIG_HIGH_RES_TIMERS=y
+> > +CONFIG_IKCONFIG=y
+> > +CONFIG_IKCONFIG_PROC=y
+> > +CONFIG_LOG_BUF_SHIFT=15
+> > +CONFIG_BPF_SYSCALL=y
+> > +# CONFIG_SHMEM is not set
+> > +CONFIG_USERFAULTFD=y
+> > +CONFIG_EMBEDDED=y
+> > +# CONFIG_COMPAT_BRK is not set
+> > +CONFIG_SLAB=y
+> > +CONFIG_PROFILING=y
+> > +CONFIG_CC_STACKPROTECTOR_REGULAR=y
+> > +# CONFIG_LBDAF is not set
+> > +# CONFIG_BLK_DEV_BSG is not set
+> > +# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
+> > +# CONFIG_SUSPEND is not set
+> > +CONFIG_NET=y
+> > +CONFIG_PACKET=y
+> > +CONFIG_UNIX=y
+> > +CONFIG_INET=y
+> > +# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+> > +# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+> > +# CONFIG_INET_XFRM_MODE_BEET is not set
+> > +# CONFIG_INET_DIAG is not set
+> > +# CONFIG_INET6_XFRM_MODE_TRANSPORT is not set
+> > +# CONFIG_INET6_XFRM_MODE_TUNNEL is not set
+> > +CONFIG_NETFILTER=y
+> > +CONFIG_NETFILTER_XT_MATCH_MULTIPORT=y
+> > +CONFIG_IP_NF_IPTABLES=y
+> > +CONFIG_IP_NF_FILTER=y
+> > +CONFIG_IP6_NF_IPTABLES=y
+> > +CONFIG_IP6_NF_FILTER=y
+> > +# CONFIG_WIRELESS is not set
+> > +CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+> > +CONFIG_DEVTMPFS=y
+> > +CONFIG_DEVTMPFS_MOUNT=y
+> > +CONFIG_MTD=y
+> > +CONFIG_MTD_CMDLINE_PARTS=y
+> > +CONFIG_MTD_BLOCK_RO=y
+> > +CONFIG_MTD_NAND=y
+> > +CONFIG_MTD_NAND_ECC_BCH=y
+> > +CONFIG_MTD_NAND_GPIO=y
+> > +CONFIG_MTD_UBI=y
+> > +CONFIG_MTD_UBI_BLOCK=y
+> > +# CONFIG_BLK_DEV is not set
+> > +CONFIG_NETDEVICES=y
+> > +# CONFIG_NET_VENDOR_ALACRITECH is not set
+> > +# CONFIG_NET_VENDOR_AMAZON is not set
+> > +# CONFIG_NET_VENDOR_AQUANTIA is not set
+> > +# CONFIG_NET_VENDOR_ARC is not set
+> > +# CONFIG_NET_CADENCE is not set
+> > +# CONFIG_NET_VENDOR_BROADCOM is not set
+> > +# CONFIG_NET_VENDOR_EZCHIP is not set
+> > +# CONFIG_NET_VENDOR_INTEL is not set
+> > +# CONFIG_NET_VENDOR_MARVELL is not set
+> > +# CONFIG_NET_VENDOR_MICREL is not set
+> > +# CONFIG_NET_VENDOR_NATSEMI is not set
+> > +# CONFIG_NET_VENDOR_NETRONOME is not set
+> > +# CONFIG_NET_VENDOR_QUALCOMM is not set
+> > +# CONFIG_NET_VENDOR_RENESAS is not set
+> > +# CONFIG_NET_VENDOR_ROCKER is not set
+> > +# CONFIG_NET_VENDOR_SAMSUNG is not set
+> > +# CONFIG_NET_VENDOR_SEEQ is not set
+> > +# CONFIG_NET_VENDOR_SOLARFLARE is not set
+> > +# CONFIG_NET_VENDOR_SMSC is not set
+> > +CONFIG_STMMAC_ETH=y
+> > +CONFIG_DWMAC_DWC_QOS_ETH=y
+> > +# CONFIG_NET_VENDOR_VIA is not set
+> > +# CONFIG_NET_VENDOR_WIZNET is not set
+> > +# CONFIG_NET_VENDOR_XILINX is not set
+> > +# CONFIG_WLAN is not set
+> > +# CONFIG_INPUT_KEYBOARD is not set
+> > +# CONFIG_INPUT_MOUSE is not set
+> > +# CONFIG_SERIO is not set
+> > +# CONFIG_VT is not set
+> > +CONFIG_LEGACY_PTY_COUNT=32
+> > +CONFIG_SERIAL_8250=y
+> > +# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
+> > +CONFIG_SERIAL_8250_CONSOLE=y
+> > +CONFIG_SERIAL_8250_NR_UARTS=2
+> > +CONFIG_SERIAL_8250_RUNTIME_UARTS=2
+> > +CONFIG_SERIAL_OF_PLATFORM=y
+> > +# CONFIG_PTP_1588_CLOCK is not set
+> > +CONFIG_GPIOLIB=y
+> > +CONFIG_GPIO_SYSFS=y
+> > +CONFIG_GPIO_GENERIC_PLATFORM=y
+> > +# CONFIG_HWMON is not set
+> > +# CONFIG_HID is not set
+> > +# CONFIG_USB_SUPPORT is not set
+> > +# CONFIG_MIPS_PLATFORM_DEVICES is not set
+> > +# CONFIG_IOMMU_SUPPORT is not set
+> > +CONFIG_FANOTIFY=y
+> > +CONFIG_UBIFS_FS=y
+> > +CONFIG_SQUASHFS=y
+> > +CONFIG_SQUASHFS_XATTR=y
+> > +# CONFIG_SQUASHFS_ZLIB is not set
+> > +CONFIG_SQUASHFS_LZO=y
+> > +# CONFIG_NETWORK_FILESYSTEMS is not set
+> > +CONFIG_PRINTK_TIME=y
+> > +CONFIG_DEBUG_INFO=y
+> > +CONFIG_DEBUG_INFO_REDUCED=y
+> > +CONFIG_DEBUG_FS=y
+> > +# CONFIG_SCHED_DEBUG is not set
+> > +CONFIG_RCU_TRACE=y
+> > +# CONFIG_FTRACE is not set
+> > +# CONFIG_CRYPTO_ECHAINIV is not set
+> > +# CONFIG_CRYPTO_HW is not set
+> 
+> I think this file is intended to be more minimal than a normal
+> defconfig, only enabling hardware device drivers (and related options)
+> and FIT IMAGE on top of the generic_defconfig and other snippets in this
+> directory, e.g. have you seen the other board config examples here?
+> 
+> https://git.linux-mips.org/cgit/linux-mti.git/tree/arch/mips/configs/generic?h=eng
+> 
+> If specific generic kernel features are desired we should probably
+> consider whether it makes sense to add them to the generic_defconfig so
+> other generic boards can benefit.
+> 
+> Cheers
+> James
 
-nice :)
+I was a little confused here, I'll rewrite this by hand for v3 and follow the
+examples. I see the intent now.
 
-I reckon an entry in MAINTAINERS listing the board specific
-files/directories would probably be worthwhile too.
-
-> diff --git a/arch/mips/configs/generic/board-ni169445.config b/arch/mips/=
-configs/generic/board-ni169445.config
-> new file mode 100644
-> index 0000000..2c950a8
-> --- /dev/null
-> +++ b/arch/mips/configs/generic/board-ni169445.config
-> @@ -0,0 +1,117 @@
-> +CONFIG_MIPS_GENERIC=3Dy
-> +CONFIG_FIT_IMAGE_FDT_NI169445=3Dy
-> +CONFIG_CPU_LITTLE_ENDIAN=3Dy
-> +CONFIG_CPU_MIPS32_R2=3Dy
-> +CONFIG_HZ_100=3Dy
-> +CONFIG_MIPS_CMDLINE_FROM_BOOTLOADER=3Dy
-> +# CONFIG_SWAP is not set
-> +CONFIG_SYSVIPC=3Dy
-> +CONFIG_HZ_PERIODIC=3Dy
-> +CONFIG_NO_HZ=3Dy
-> +CONFIG_HIGH_RES_TIMERS=3Dy
-> +CONFIG_IKCONFIG=3Dy
-> +CONFIG_IKCONFIG_PROC=3Dy
-> +CONFIG_LOG_BUF_SHIFT=3D15
-> +CONFIG_BPF_SYSCALL=3Dy
-> +# CONFIG_SHMEM is not set
-> +CONFIG_USERFAULTFD=3Dy
-> +CONFIG_EMBEDDED=3Dy
-> +# CONFIG_COMPAT_BRK is not set
-> +CONFIG_SLAB=3Dy
-> +CONFIG_PROFILING=3Dy
-> +CONFIG_CC_STACKPROTECTOR_REGULAR=3Dy
-> +# CONFIG_LBDAF is not set
-> +# CONFIG_BLK_DEV_BSG is not set
-> +# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-> +# CONFIG_SUSPEND is not set
-> +CONFIG_NET=3Dy
-> +CONFIG_PACKET=3Dy
-> +CONFIG_UNIX=3Dy
-> +CONFIG_INET=3Dy
-> +# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-> +# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-> +# CONFIG_INET_XFRM_MODE_BEET is not set
-> +# CONFIG_INET_DIAG is not set
-> +# CONFIG_INET6_XFRM_MODE_TRANSPORT is not set
-> +# CONFIG_INET6_XFRM_MODE_TUNNEL is not set
-> +CONFIG_NETFILTER=3Dy
-> +CONFIG_NETFILTER_XT_MATCH_MULTIPORT=3Dy
-> +CONFIG_IP_NF_IPTABLES=3Dy
-> +CONFIG_IP_NF_FILTER=3Dy
-> +CONFIG_IP6_NF_IPTABLES=3Dy
-> +CONFIG_IP6_NF_FILTER=3Dy
-> +# CONFIG_WIRELESS is not set
-> +CONFIG_UEVENT_HELPER_PATH=3D"/sbin/hotplug"
-> +CONFIG_DEVTMPFS=3Dy
-> +CONFIG_DEVTMPFS_MOUNT=3Dy
-> +CONFIG_MTD=3Dy
-> +CONFIG_MTD_CMDLINE_PARTS=3Dy
-> +CONFIG_MTD_BLOCK_RO=3Dy
-> +CONFIG_MTD_NAND=3Dy
-> +CONFIG_MTD_NAND_ECC_BCH=3Dy
-> +CONFIG_MTD_NAND_GPIO=3Dy
-> +CONFIG_MTD_UBI=3Dy
-> +CONFIG_MTD_UBI_BLOCK=3Dy
-> +# CONFIG_BLK_DEV is not set
-> +CONFIG_NETDEVICES=3Dy
-> +# CONFIG_NET_VENDOR_ALACRITECH is not set
-> +# CONFIG_NET_VENDOR_AMAZON is not set
-> +# CONFIG_NET_VENDOR_AQUANTIA is not set
-> +# CONFIG_NET_VENDOR_ARC is not set
-> +# CONFIG_NET_CADENCE is not set
-> +# CONFIG_NET_VENDOR_BROADCOM is not set
-> +# CONFIG_NET_VENDOR_EZCHIP is not set
-> +# CONFIG_NET_VENDOR_INTEL is not set
-> +# CONFIG_NET_VENDOR_MARVELL is not set
-> +# CONFIG_NET_VENDOR_MICREL is not set
-> +# CONFIG_NET_VENDOR_NATSEMI is not set
-> +# CONFIG_NET_VENDOR_NETRONOME is not set
-> +# CONFIG_NET_VENDOR_QUALCOMM is not set
-> +# CONFIG_NET_VENDOR_RENESAS is not set
-> +# CONFIG_NET_VENDOR_ROCKER is not set
-> +# CONFIG_NET_VENDOR_SAMSUNG is not set
-> +# CONFIG_NET_VENDOR_SEEQ is not set
-> +# CONFIG_NET_VENDOR_SOLARFLARE is not set
-> +# CONFIG_NET_VENDOR_SMSC is not set
-> +CONFIG_STMMAC_ETH=3Dy
-> +CONFIG_DWMAC_DWC_QOS_ETH=3Dy
-> +# CONFIG_NET_VENDOR_VIA is not set
-> +# CONFIG_NET_VENDOR_WIZNET is not set
-> +# CONFIG_NET_VENDOR_XILINX is not set
-> +# CONFIG_WLAN is not set
-> +# CONFIG_INPUT_KEYBOARD is not set
-> +# CONFIG_INPUT_MOUSE is not set
-> +# CONFIG_SERIO is not set
-> +# CONFIG_VT is not set
-> +CONFIG_LEGACY_PTY_COUNT=3D32
-> +CONFIG_SERIAL_8250=3Dy
-> +# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
-> +CONFIG_SERIAL_8250_CONSOLE=3Dy
-> +CONFIG_SERIAL_8250_NR_UARTS=3D2
-> +CONFIG_SERIAL_8250_RUNTIME_UARTS=3D2
-> +CONFIG_SERIAL_OF_PLATFORM=3Dy
-> +# CONFIG_PTP_1588_CLOCK is not set
-> +CONFIG_GPIOLIB=3Dy
-> +CONFIG_GPIO_SYSFS=3Dy
-> +CONFIG_GPIO_GENERIC_PLATFORM=3Dy
-> +# CONFIG_HWMON is not set
-> +# CONFIG_HID is not set
-> +# CONFIG_USB_SUPPORT is not set
-> +# CONFIG_MIPS_PLATFORM_DEVICES is not set
-> +# CONFIG_IOMMU_SUPPORT is not set
-> +CONFIG_FANOTIFY=3Dy
-> +CONFIG_UBIFS_FS=3Dy
-> +CONFIG_SQUASHFS=3Dy
-> +CONFIG_SQUASHFS_XATTR=3Dy
-> +# CONFIG_SQUASHFS_ZLIB is not set
-> +CONFIG_SQUASHFS_LZO=3Dy
-> +# CONFIG_NETWORK_FILESYSTEMS is not set
-> +CONFIG_PRINTK_TIME=3Dy
-> +CONFIG_DEBUG_INFO=3Dy
-> +CONFIG_DEBUG_INFO_REDUCED=3Dy
-> +CONFIG_DEBUG_FS=3Dy
-> +# CONFIG_SCHED_DEBUG is not set
-> +CONFIG_RCU_TRACE=3Dy
-> +# CONFIG_FTRACE is not set
-> +# CONFIG_CRYPTO_ECHAINIV is not set
-> +# CONFIG_CRYPTO_HW is not set
-
-I think this file is intended to be more minimal than a normal
-defconfig, only enabling hardware device drivers (and related options)
-and FIT IMAGE on top of the generic_defconfig and other snippets in this
-directory, e.g. have you seen the other board config examples here?
-
-https://git.linux-mips.org/cgit/linux-mti.git/tree/arch/mips/configs/generi=
-c?h=3Deng
-
-If specific generic kernel features are desired we should probably
-consider whether it makes sense to add them to the generic_defconfig so
-other generic boards can benefit.
-
-Cheers
-James
-
---SxgehGEc6vB0cZwN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYvertAAoJEGwLaZPeOHZ6q6kQAK1J3jlhxSFgWg+ZTagsHc6V
-RkXig+3u/0ed4c/DBGPwejNSt5GcredDMBkOJhONLDYbiliVGpjZldeJzd1RU5kw
-nJhziq0Jr7KLJg+qGnMN5c57o/afcp4AkgTxAmqqS78HRRw4VrNQlWg12KwNyvdP
-RbqsLfrDGhMzO6290KXHkVmNIjiSubVsn1W3ZqciwFOODpRlYdNUAt+3EwYk1YV2
-SGenzN1/NcoBuEJ3zNbynVu+ABNFt1ClF1nwHE1jFF3o+0WheZ7qk+fzA2Hw9pRC
-gGsas8o7rrWN03Xtwb/UlWtRvLwsXa2cgK+H1o0wPn3RVga7V2luG1maW2TiGEut
-zgBOOiB3AI7TND3H3Rn9EuA2cdMdA0pd0hLDRJdirhrOP1QRAypQtSTtyeP247xx
-Ezszjt2wYZ9Kk9NbIPKmytuYWBbLLyYcmRhyTVovFK+itd11hsaKYOTuAit9k6yj
-pVgSjhq2driiouD4LgU1Q9bOYm1lLiKclBaVgnVlLbE+g35irA4mCGCW1YY2p2qU
-cT+c8EsEWCAd85fs58sY3iy9bRmMsoHCg++KRj2v6NM4PZo9ErKc4o+lS9SzZJbq
-NeEK1neVzITRomqxrpU5SWNaesrLFf8M2a0oSxveJ+Ek84KbqAFdNWKvYkekNIQz
-Xz2eYIuVpdnYqvR7pBwq
-=UILz
------END PGP SIGNATURE-----
-
---SxgehGEc6vB0cZwN--
+Thanks,
+Nathan

@@ -1,46 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Mar 2017 12:40:51 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:32451 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990514AbdCFLkoXQ3d4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Mar 2017 12:40:44 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 66E2441F8D8A;
-        Mon,  6 Mar 2017 12:45:30 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 06 Mar 2017 12:45:30 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 06 Mar 2017 12:45:30 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 922EDE945A642;
-        Mon,  6 Mar 2017 11:40:35 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 6 Mar
- 2017 11:40:38 +0000
-Date:   Mon, 6 Mar 2017 11:40:38 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Joshua Kinard <kumba@gentoo.org>
-CC:     Linux/MIPS <linux-mips@linux-mips.org>
-Subject: Re: RFC: Proper locking tips for IRQ handlers?
-Message-ID: <20170306114038.GE2878@jhogan-linux.le.imgtec.org>
-References: <2c6f8c8d-6380-2f0b-69be-72115e2012c7@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Mar 2017 16:10:31 +0100 (CET)
+Received: from mail-qk0-x230.google.com ([IPv6:2607:f8b0:400d:c09::230]:33020
+        "EHLO mail-qk0-x230.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992036AbdCFPKYaoSCh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Mar 2017 16:10:24 +0100
+Received: by mail-qk0-x230.google.com with SMTP id y76so26877250qkb.0
+        for <linux-mips@linux-mips.org>; Mon, 06 Mar 2017 07:10:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=systemhalted.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=WWJmdPZ9NWttrCdNFQI1XbK+HgGRSgTz2XdblaMohlU=;
+        b=FvnK+FdKN9EWyJsk4swpZCJq3DnDKeZlc+QWXRjwyuwpMJDHl9Sh53BLppRGVZEgZF
+         9/uGCvL3/xxC8VeD1v3H402rA0TjD0MNqWwyvKoo70qaVi3gjbIwY+69/RqBDhx6W2in
+         5xIxc8dsDCmmkgTyOluyvft8qBpNSO4azv7xY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=WWJmdPZ9NWttrCdNFQI1XbK+HgGRSgTz2XdblaMohlU=;
+        b=a25ZaWdV15KQATwA+OOnXSDzmUW7asUsIZlNPH2/LULuUUCzW8IPlpLm+3yUrjW4Qc
+         pC2b8MpCa9t3B1NnzQ9AwRGnIvbR3Xye/qzXi+u386OzeX4bP+VE3QwkOL+OoT2Sdpof
+         hu2qP5TcdKHUm2kzSusS4OYQDVcPwRof+hc7IcHlCkvJoRCJTN2j+tMK0L8tyD7zuSX9
+         nzcwYCU9jSpRQuzMZ7vHvpKFtcLz+hNJgKu7ohpXbjOpSxlEuSwQ4RxgHMNzw2wJNsEO
+         EWw+n4+yVxlvo9AGjWbamVdYPfsGWDMCjIyeq+7wtKV/4q9Rs4FQGxG19WB+/7ty0ok7
+         s3SA==
+X-Gm-Message-State: AMke39no5GO1b5GjU+NO1VFoEFVMgCJ6spboWd5nePJ21H1xCSy0n1ULDh3/8KQgmtTkXkn3e92EzHv0ljQ6Iw==
+X-Received: by 10.55.19.10 with SMTP id d10mr14843619qkh.312.1488813018688;
+ Mon, 06 Mar 2017 07:10:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="u5E4XgoOPWr4PD9E"
-Content-Disposition: inline
-In-Reply-To: <2c6f8c8d-6380-2f0b-69be-72115e2012c7@gentoo.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+Received: by 10.237.61.167 with HTTP; Mon, 6 Mar 2017 07:10:18 -0800 (PST)
+X-Originating-IP: [184.145.137.27]
+In-Reply-To: <CAE2sS1i-xezJu2hHfzOxpCMZHc2J+dsturtqFPMRWHa6mm6ccQ@mail.gmail.com>
+References: <20170226010156.GA28831@altlinux.org> <CAK8P3a0YX3RGAqWN0mwUJtBsqUX0C+QRtJLrT_UA=wX6Z+q0DA@mail.gmail.com>
+ <CAE2sS1h9QNV+31GMSv8aahJYOb9hFtFp5Aj-yVOfg7cjBHr_kg@mail.gmail.com>
+ <20170302154845.GB3503@altlinux.org> <CAE2sS1i-xezJu2hHfzOxpCMZHc2J+dsturtqFPMRWHa6mm6ccQ@mail.gmail.com>
+From:   "Carlos O'Donell" <carlos@systemhalted.org>
+Date:   Mon, 6 Mar 2017 10:10:18 -0500
+Message-ID: <CAE2sS1jTyENymA-fSAk4dt29rYgX50zYqubVYnGVGnFrH=-1nA@mail.gmail.com>
+Subject: Re: [PATCH] uapi: fix asm/signal.h userspace compilation errors
+To:     "Dmitry V. Levin" <ldv@altlinux.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Haavard Skinnemoen <hskinnemoen@gmail.com>,
+        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-cris-kernel@axis.com, uclinux-h8-devel@lists.sourceforge.jp,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        linux-am33-list@redhat.com,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <carlos@systemhalted.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57052
+X-archive-position: 57053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: carlos@systemhalted.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -53,114 +98,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---u5E4XgoOPWr4PD9E
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, Mar 3, 2017 at 8:23 PM, Carlos O'Donell <carlos@systemhalted.org> wrote:
+> On Thu, Mar 2, 2017 at 10:48 AM, Dmitry V. Levin <ldv@altlinux.org> wrote:
+>> On Thu, Mar 02, 2017 at 10:22:18AM -0500, Carlos O'Donell wrote:
+>>> On Wed, Mar 1, 2017 at 11:20 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+>>> > On Sun, Feb 26, 2017 at 2:01 AM, Dmitry V. Levin <ldv@altlinux.org> wrote:
+>>> >> Include <stddef.h> (guarded by #ifndef __KERNEL__) to fix asm/signal.h
+>>> >> userspace compilation errors like this:
+>>> >>
+>>> >> /usr/include/asm/signal.h:126:2: error: unknown type name 'size_t'
+>>> >>   size_t ss_size;
+>>> >>
+>>> >> As no uapi header provides a definition of size_t, inclusion
+>>> >> of <stddef.h> seems to be the most conservative fix available.
+>> [...]
+>>> > I'm not sure if this is the best fix. We generally should not include one
+>>> > standard header from another standard header. Would it be possible
+>>> > to use __kernel_size_t instead of size_t?
+>>>
+>>> In glibc we handle this with special use of __need_size_t with GCC's
+>>> provided stddef.h.
+>>>
+>>> For example glibc's signal.h does this:
+>>>
+>>> # define __need_size_t
+>>> # include <stddef.h>
+>>
+>> Just to make it clear, do you suggest this approach for asm/signal.h as well?
 
-Hi Joshua,
+The best practice from the glibc community looks like this:
 
-On Sat, Mar 04, 2017 at 10:17:41AM -0500, Joshua Kinard wrote:
-> I am looking for some feedback on how to improve IRQ handlers on IP30 (SGI
-> Octane).  Since switching to the use of per_cpu data structures, I've
-> apparently not needed to do any locking when handling IRQs.  However, it =
-looks
-> like around ~Linux-4.8.x, there's some noticeable contention going on with
-> heavy disk I/O, and it's worse in 4.9 and 4.10.  Under 4.8, untar'ing a b=
-asic
-> Linux kernel source tarball completed fine, but as of 4.9/4.10, there's a
-> chance to trigger either an oops or oom killer.  While the untar operation
-> happens, I can watch the graphics console and the blinking cursor will
-> sometimes pause momentarily, which suggests contention somewhere.
->=20
-> So my question is in struct irq_chip accessors like irq_ack, irq_mask,
-> irq_mask_ack, etc, should spinlocks be used prior to accessing the HEART =
-ASIC?
-> And if so, normal spinlocks, raw spinlocks, or the irq save/restore varia=
-nts?
+(a) Create a bits/types/*.h header for the type you need.
 
-On RT kernels spinlock_t becomes a mutex and won't work correctly with
-IRQs actually disabled for the IRQ callbacks, so raw spinlocks would be
-needed instead.
+e.g.
+./time/bits/types/struct_timeval.h
+./time/bits/types/struct_itimerspec.h
+./time/bits/types/time_t.h
+./time/bits/types/struct_timespec.h
+./time/bits/types/struct_tm.h
+./time/bits/types/clockid_t.h
+./time/bits/types/clock_t.h
+./time/bits/types/timer_t.h
 
-To decide which variant, a good reference is:
-https://www.kernel.org/pub/linux/kernel/people/rusty/kernel-locking/index.h=
-tml
-in particular the cheat sheet for locking:
-https://www.kernel.org/pub/linux/kernel/people/rusty/kernel-locking/c214.ht=
-ml
+(b) If neccessary the bits/types/*.h header is a wrapper:
+~~~
+#define __need_size_t
+#include <stddef.h>
+~~~
+to get access to the compiler provided type.
 
-(I don't know OTOH which contexts these callbacks are called from,
-definitely hard IRQ, but possibly others when registering IRQs etc).
+This way all of the code you need simplifies to includes for the types you need.
 
-If its only protecting access to per-CPU structures though you shouldn't
-need the spinlock part of the locks (but does it not access hardware
-registers too, or are those accesses atomic in hardware rather than
-software doing read-modify-write?). In that case you could choose to use
-the following instead of locks depending on the contexts its used in:
+e.g.
 
-- spin_lock_irqsave/restore -> local_irq_save/restore +
-				preempt_disable/enable
-- spin_lock_irq -> local_irq_disable/enable +
-				preempt_disable/enable
-- spin_lock_bh -> local_bh_disable/enable
-- spin_lock -> preempt_disable/enable
+time/sys/time.h:
+...
+#include <bits/types.h>
+#include <bits/types/time_t.h>
+#include <bits/types/struct_timeval.h>
+...
 
-Hope that helps a bit
+This is what we've been doing in glibc starting last September as we
+cleaned up all the convoluted conditional logic to get the types we
+needed in the headers that needed them.
 
-Cheers
-James
-
-> I've looked at the IRQ implementations for a few other MIPS boards, but b=
-ecause
-> each system is so unique, there's no clear consensus on the right way to =
-do it.
->  Octeon, uses irq_bus_lock and irq_bus_sync_unlock, along with a mutex, f=
-or
-> locking, while netlogic uses locking only during irq_enable or irq_disabl=
-e, and
-> loongsoon-3 doesn't appear to employ any locking at all.  Other archs app=
-ear to
-> be a mix as well, and I'm even seeing newer constructs like the use of
-> irq_data_get_irq_chip_data() to fetch a common data structure where the
-> spinlock variable is defined.  Other systems use a global spinlock.
->=20
-> Any advice would be greatly appreciated.  Thanks!
->=20
-> --=20
-> Joshua Kinard
-> Gentoo/MIPS
-> kumba@gentoo.org
-> 6144R/F5C6C943 2015-04-27
-> 177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
->=20
-> "The past tempts us, the present confuses us, the future frightens us.  A=
-nd our
-> lives slip away, moment by moment, lost in that vast, terrible in-between=
-=2E"
->=20
-> --Emperor Turhan, Centauri Republic
->=20
-
---u5E4XgoOPWr4PD9E
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYvUq1AAoJEGwLaZPeOHZ69dgQALvB88McFpz9crKLzE8EZTml
-pQVE+nILFX/uHYR68CY7Pv0gnrKgijV0kHHhTWETJyKpHAkEvghcccy3JMrnBmZf
-wRAOsWCehBxUuhalqrRxzq2bew6feUAkCmXZfqmYIBnvqxBsa3ShgnWz7Btc8L9M
-8oNxLSFH2rEltZRrIhbFvkM2nPpkbEyrQ/DfP2qA/chYNWLjjkiqrwiTctOowFPi
-ReO+RF51izkeZZj81CsfmCMo5rInIEW8nuDwS5C6PwzwDtlAdoIkJdsV1TapXh4N
-1NTWoiAE8IZ3UpwQAO6ann8U+Gn16ZKFoCcjmGeXXomJa1Km4847c5Ss30FZGGMq
-Ysvm7w4BkxyhWhrp6GnXTEyXlmTWN7ydT5xun9sMknsyVHSWMzK2NPMedrYt1smA
-+FEF6w0AlRvvvlzGIbLdHrjYTz7J8Mnc69EDOkr98Bkge/pET5/2VxVudgghjl0b
-h0YRFRWkgObIdZh00WFnLTP8I0FPQv50w7byYQ7UFUm1z6wLi1tPm5qkekt9MPvR
-MNmxXqoQ7CrSH/wnvK2IDSFe+8GHyIWgPul5KaRZvwWJkLiP9hD90dc6y1d4E4uX
-O7bDkH1ZZYD9LF1XNvh/QiJ3xfk45asK01eQXFUZ+cYTpoLXI6fQYZhJhiJa/lw4
-NmWaBVZfzF+O3CiZXRsq
-=Zqq2
------END PGP SIGNATURE-----
-
---u5E4XgoOPWr4PD9E--
+Cheers,
+Carlos.

@@ -1,66 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Mar 2017 09:34:23 +0100 (CET)
-Received: from mail-lf0-x235.google.com ([IPv6:2a00:1450:4010:c07::235]:33186
-        "EHLO mail-lf0-x235.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990517AbdCFIePpzgJB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Mar 2017 09:34:15 +0100
-Received: by mail-lf0-x235.google.com with SMTP id a6so68986289lfa.0
-        for <linux-mips@linux-mips.org>; Mon, 06 Mar 2017 00:34:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=UM8S3pD7EzxOg3gW1H4bxvR5grpaeHPINKB4wFI82y4=;
-        b=1yak+4xsqRxSmm95kZYjHlDWD+R7DhgazsUJzGIluM6PmLMehtPdr3Jks1eeFYPmFV
-         mIN1TKoSI5FPWq+4bDEIN4HhqYIDNcpUQiMNe4MMfCZm2IkFSR4o8HEQfSrKmS4IXEiu
-         90G8a/wjJmuoOu7ketZAdO0E430ESjWFdzy+/AXTKnFDNVE/vYy4n//kGcITo9yRt3Ih
-         u7aswXnAs2VTKlYmuCPsP6Mr+tYJx+nKd+s0MgKO6LxqYfWrSw/CUnK4W79nH4h6ZJmp
-         NvuxBdhcqrqhDtqOGzS+dcSXHDrfSi3oZPbylHk85eD8BWc8TrOSJnWOrjRL5Ymoaf+a
-         qVlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=UM8S3pD7EzxOg3gW1H4bxvR5grpaeHPINKB4wFI82y4=;
-        b=YETv+PDZMuf7rLNW/iSpcPEfZxMDP0yHhI0KiqBacb5gzLNkOoVW17jRAGXwFALLPQ
-         0y8IkZxKwQxeqUP0TeB9cBvsRkH1aiZ0ySH+zjLdB5Uk+5TP+kjT2ekS6oeputlA0+pc
-         FUVN6D2OSsYCfBt4Dud4IqYGOaUVpnGL416eHOM7Pdih61MLIuu1gLU4BXrTORPLU85B
-         gjMXzx5yN8wZVAnSO9V5dTEHguwj1KaQDYw3pfkmSEvUIuBIGhoVfQxysItWDGT3zf41
-         s7E27shcFaWUhOI3KGC+wBuw4SjYbl7lqFcYQA04dEQ/d53ZvaNxQYWRpLMELpizbqAf
-         uWYg==
-X-Gm-Message-State: AMke39k3W9HRU0mMlhGu+Z7zVlot61JbNu2/iuDoiLyrrOfbtHHFGzj6grmElDHN36rITw==
-X-Received: by 10.46.82.66 with SMTP id g63mr4782581ljb.113.1488789248033;
-        Mon, 06 Mar 2017 00:34:08 -0800 (PST)
-Received: from [192.168.4.126] ([31.173.84.13])
-        by smtp.gmail.com with ESMTPSA id a63sm1230166lfa.22.2017.03.06.00.34.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 Mar 2017 00:34:07 -0800 (PST)
-Subject: Re: [PATCH] MIPS: reset all task's asid to 0 after asid_cache(cpu)
- overflows
-To:     jsun4 <Jiwei.Sun@windriver.com>, ralf@linux-mips.org,
-        paul.burton@imgtec.com, james.hogan@imgtec.com
-References: <1488684260-18867-1-git-send-email-jiwei.sun@windriver.com>
- <6054d364-5095-d13b-ebf8-a7b6bf8b2024@cogentembedded.com>
- <58BD0E0A.9000402@windriver.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        jiwei.sun.bj@qq.com
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <702ff6e3-9bc7-755b-56ec-86394d959230@cogentembedded.com>
-Date:   Mon, 6 Mar 2017 11:34:03 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Mar 2017 11:16:16 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:48175 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990517AbdCFKQK2woT0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Mar 2017 11:16:10 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 2EC0F41F8D8A;
+        Mon,  6 Mar 2017 11:20:56 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Mon, 06 Mar 2017 11:20:56 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Mon, 06 Mar 2017 11:20:56 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id B1A1DADEA550;
+        Mon,  6 Mar 2017 10:16:01 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 6 Mar
+ 2017 10:16:04 +0000
+Date:   Mon, 6 Mar 2017 10:16:04 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jason Uy <jason.uy@broadcom.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        David Daney <david.daney@cavium.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>
+Subject: Re: [PATCH] serial: 8250_dw: Fix breakage when HAVE_CLK=n
+Message-ID: <20170306101603.GW996@jhogan-linux.le.imgtec.org>
+References: <CAHp75Ved2h2WyWBokEOsDmAyB3w3iM=uh-9Bq01mU1ST4FapWQ@mail.gmail.com>
+ <20170304130958.23655-1-james.hogan@imgtec.com>
+ <CAHp75Vc=VmxvkqjP7nY6K4CKXBJC-NND0CUMbzwjV2nmQ-5OTw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <58BD0E0A.9000402@windriver.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="6h64vBu9tReNbGLX"
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vc=VmxvkqjP7nY6K4CKXBJC-NND0CUMbzwjV2nmQ-5OTw@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57050
+X-archive-position: 57051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,69 +65,81 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 3/6/2017 10:21 AM, jsun4 wrote:
+--6h64vBu9tReNbGLX
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->>> If asid_cache(cpu) overflows, there may be two tasks with the same
->>> asid. It is a risk that the two different tasks may have the same
->>> address space.
->>>
->>> A process will update its asid to newer version only when switch_mm()
->>> is called and matches the following condition:
->>>     if ((cpu_context(cpu, next) ^ asid_cache(cpu))
->>>                     & asid_version_mask(cpu))
->>>             get_new_mmu_context(next, cpu);
->>> If asid_cache(cpu) overflows, cpu_context(cpu,next) and asid_cache(cpu)
->>> will be reset to asid_first_version(cpu), and start a new cycle. It
->>> can result in two tasks that have the same ASID in the process list.
->>>
->>> For example, in CONFIG_CPU_MIPS32_R2, task named A's asid on CPU1 is
->>> 0x100, and has been sleeping and been not scheduled. After a long period
->>> of time, another running task named B's asid on CPU1 is 0xffffffff, and
->>> asid cached in the CPU1 is 0xffffffff too, next task named C is forked,
->>> when schedule from B to C on CPU1, asid_cache(cpu) will overflow, so C's
->>> asid on CPU1 will be 0x100 according to get_new_mmu_context(). A's asid
->>> is the same as C, if now A is rescheduled on CPU1, A's asid is not able
->>> to renew according to 'if' clause, and the local TLB entry can't be
->>> flushed too, A's address space will be the same as C.
->>>
->>> If asid_cache(cpu) overflows, all of user space task's asid on this CPU
->>> are able to set a invalid value (such as 0), it will avoid the risk.
->>>
->>> Signed-off-by: Jiwei Sun <jiwei.sun@windriver.com>
->>> ---
->>>  arch/mips/include/asm/mmu_context.h | 9 ++++++++-
->>>  1 file changed, 8 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
->>> index ddd57ad..1f60efc 100644
->>> --- a/arch/mips/include/asm/mmu_context.h
->>> +++ b/arch/mips/include/asm/mmu_context.h
->>> @@ -108,8 +108,15 @@ static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
->>>  #else
->>>          local_flush_tlb_all();    /* start new asid cycle */
->>>  #endif
->>> -        if (!asid)        /* fix version if needed */
->>> +        if (!asid) {        /* fix version if needed */
->>> +            struct task_struct *p;
->>> +
->>> +            for_each_process(p) {
->>> +                if ((p->mm))
->>
->>    Why double parens?
->
-> At the beginning, the code was written as following
-> 	if ((p->mm) && (p->mm != mm))
-> 		cpu_context(cpu, p->mm) = 0;
->
-> Because cpu_context(cpu,mm) will be changed to asid_first_version(cpu) after 'for' loop,
-> and in order to improve the efficiency of the loop, I deleted "&& (p->mm != mm)",
-> but I forgot to delete the redundant parentheses.
+On Sat, Mar 04, 2017 at 04:37:17PM +0200, Andy Shevchenko wrote:
+> On Sat, Mar 4, 2017 at 3:09 PM, James Hogan <james.hogan@imgtec.com> wrot=
+e:
+> > Commit 6a171b299379 ("serial: 8250_dw: Allow hardware flow control to be
+> > used") recently broke the 8250_dw driver on platforms which don't select
+> > HAVE_CLK, as dw8250_set_termios() gets confused by the behaviour of the
+> > fallback HAVE_CLK=3Dn clock API in linux/clk.h which pretends everything
+> > is fine but returns (valid) NULL clocks and 0 HZ clock rates.
+> >
+> > That 0 rate is written into the uartclk resulting in a crash at boot,
+> > e.g. on Cavium Octeon III based UTM-8 we get something like this:
+> >
+> > 1180000000800.serial: ttyS0 at MMIO 0x1180000000800 (irq =3D 41, base_b=
+aud =3D 25000000) is a OCTEON
+> > ------------[ cut here ]------------
+> > WARNING: CPU: 2 PID: 1 at drivers/tty/serial/serial_core.c:441 uart_get=
+_baud_rate+0xfc/0x1f0
+> > ...
+> > Call Trace:
+> > ...
+> > [<ffffffff8149c2e4>] uart_get_baud_rate+0xfc/0x1f0
+> > [<ffffffff814a5098>] serial8250_do_set_termios+0xb0/0x440
+> > [<ffffffff8149c710>] uart_set_options+0xe8/0x190
+> > [<ffffffff814a6cdc>] serial8250_console_setup+0x84/0x158
+> > [<ffffffff814a11ec>] univ8250_console_setup+0x54/0x70
+> > [<ffffffff811901a0>] register_console+0x1c8/0x418
+> > [<ffffffff8149f004>] uart_add_one_port+0x434/0x4b0
+> > [<ffffffff814a1af8>] serial8250_register_8250_port+0x2d8/0x440
+> > [<ffffffff814aa620>] dw8250_probe+0x388/0x5e8
+> > ...
+> >
+> > The clock API is defined such that NULL is a valid clock handle so it
+> > wouldn't be right to check explicitly for NULL. Instead treat a
+> > clk_round_rate() return value of 0 as an error which prevents uartclk
+> > being overwritten.
+> >
+>=20
+> You forgot to add that it is dependent to Heiko's patch
+> http://www.spinics.net/lists/linux-serial/msg25314.html
 
-    Note that parens around 'p->mm' were never needed. And neither around the 
-right operand of &&.
+Indeed I did. Sorry about that.
 
-> Thanks,
-> Best regards,
-> Jiwei
+>=20
+> Patch looks good to me and shouldn't bring any regression to Intel
+> hardware (x86 is using clock framework).
+>=20
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-MBR, Sergei
+Thanks
+James
+
+--6h64vBu9tReNbGLX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYvTbQAAoJEGwLaZPeOHZ6PR0P/Ri3CSMyjhXUgiu1LIRrGyyp
+QZIEbmylYFH5egbu1IFmK7J0+h8hT0PikUDtcEGxsVVXqS8EL7CkIuoo1IMJcVeV
+Zsbb2B/qxiezbjwyFOjucyE7ilxxu37fmsDBKMOUoZFvTrfc9HMfHKZBIEAGlNc3
+93pEEdv9f6gKk8B8wGLLuRDkCdTxyQv3RoCp6TNo7X+qJMnmYpk/RRTPBFd/aUft
+s/ziHb5WIJWTiY4bwVBI2Atr51inx61IU8uUDJahAJClFYOhMb2OgOfaO1jofPBP
+c14bDcbDUlvGisfvBOLxMB2/MTO4mtRrksEQ7TlqA4NacRncR6yjjndmfgbKvuU1
+IlamLaknN667/7Aefb5OuiLdArRH+Wy0+DTlAXEnQYG1jKYPg3h5xYiR1ynUFmux
+CaJFa0zwjf6O2cIt8qlJpzObfs7E6i3jUkXxiqLJjfyOrL8intPFgf9ckYQIadNG
+IpGk1V9gJwe99EjpQNndI8GApYSDHuehffA2Hzjvc7IRCl5eiC3m/AD2mMYp82h9
+300ufzUcZYu0nnHLh0bM30CohxNp3gA5GP75n5JnvIflid7+EB5gFGPohhCiUMqw
+/i8fWPQXIYxNG9Q1tfRSM7oDQ4qDpBp4Ri4VPdloIzioqg7HFKr/STcCfbaWca0I
+zWohi2YkPlD6NQ3Abe8H
+=ebpd
+-----END PGP SIGNATURE-----
+
+--6h64vBu9tReNbGLX--

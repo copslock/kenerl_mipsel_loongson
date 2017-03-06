@@ -1,49 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 00:20:38 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:28196 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993886AbdCFXU12Vd3r (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 00:20:27 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id B5B4041F8D7A;
-        Tue,  7 Mar 2017 00:25:14 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Tue, 07 Mar 2017 00:25:14 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Tue, 07 Mar 2017 00:25:14 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id BFB8A5F12DC61;
-        Mon,  6 Mar 2017 23:20:16 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 6 Mar
- 2017 23:20:21 +0000
-Date:   Mon, 6 Mar 2017 23:20:20 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
-        <linux-crypto@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>
-Subject: Re: [PATCH v3] MIPS: Fix build breakage caused by header file changes
-Message-ID: <20170306232019.GG2878@jhogan-linux.le.imgtec.org>
-References: <1488827635-7708-1-git-send-email-linux@roeck-us.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 00:39:03 +0100 (CET)
+Received: from mail-oi0-x22d.google.com ([IPv6:2607:f8b0:4003:c06::22d]:36511
+        "EHLO mail-oi0-x22d.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993887AbdCFXi5D0UEi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 00:38:57 +0100
+Received: by mail-oi0-x22d.google.com with SMTP id 126so42273397oig.3
+        for <linux-mips@linux-mips.org>; Mon, 06 Mar 2017 15:38:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=from:references:in-reply-to:mime-version:thread-index:date
+         :message-id:subject:to:cc;
+        bh=nHQts+SkyPXx3/UuaGXVUUcs8tv6ALsZua2vAcTNmog=;
+        b=f7dgnoOuUsKMhRa//zM1CuAdBvt6ADN4krBCnHZJ3x9yA29gcsXHWSkt+FhcxS1+oF
+         /oZ4C+jFIijV7DpRqmPvZSj8V83ljIMN/L5tgynZWi1KkZV5qY7cCvTDaVuVGuZqrgoY
+         lWuqarhN/aKvLrPvy/b6UUQ+agpOuvZyNCp3I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:references:in-reply-to:mime-version
+         :thread-index:date:message-id:subject:to:cc;
+        bh=nHQts+SkyPXx3/UuaGXVUUcs8tv6ALsZua2vAcTNmog=;
+        b=qPtMd3dfLH/Ib0AlduLEMpyjwVo3YyiqQdMXhflbw9gm21W39hqk7nNvql1QTc5AbN
+         lItrn4WUsa5PYL1mpSYNUAko0GUBmTjADICW2Aw8hxFKzBKA9QXwdGZqKx8p8upmgLsp
+         o3MejPs9p8XQWxx5jHbuq+Bwb6LkVhC4/FGN6Koo2ewIYQ7ucxwjDI8IW0oglfgBkgYq
+         rxKZlKQb0vNHsehNKPYT9fxwgRbvAVSMQPuD4fm8oEs9XzppO3kg77QW3NiB+OAzDBMo
+         rVUiF8GizDfxBOhUvH8W0hmKXCMSfYdUJXMWwd11clpXDBSXnC67KUdMPe6Qk+uKGgyl
+         o1og==
+X-Gm-Message-State: AMke39lMNZZGNEuGQbCUj1Ccvt/rZd1NBEZ0+mlYte3AYWh/83vO5W4vfOjDaRLNuBLCp3XgXJKsi7diFPX59OmF
+X-Received: by 10.202.74.213 with SMTP id x204mr2825809oia.159.1488843529462;
+ Mon, 06 Mar 2017 15:38:49 -0800 (PST)
+From:   Jason Uy <jason.uy@broadcom.com>
+References: <CAHp75Ved2h2WyWBokEOsDmAyB3w3iM=uh-9Bq01mU1ST4FapWQ@mail.gmail.com>
+ <20170304130958.23655-1-james.hogan@imgtec.com> <CAHp75Vc=VmxvkqjP7nY6K4CKXBJC-NND0CUMbzwjV2nmQ-5OTw@mail.gmail.com>
+ <20170306101603.GW996@jhogan-linux.le.imgtec.org>
+In-Reply-To: <20170306101603.GW996@jhogan-linux.le.imgtec.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yZnyZsPjQYjG7xG7"
-Content-Disposition: inline
-In-Reply-To: <1488827635-7708-1-git-send-email-linux@roeck-us.net>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: AQLIZbgW9Bvy6eKawokZdQ+hem2wcAHBgSYUAtxZ/WwBGOEh459vJBGw
+Date:   Mon, 6 Mar 2017 15:38:47 -0800
+Message-ID: <18720dd546d32a1455fb17ad46ee73e4@mail.gmail.com>
+Subject: RE: [PATCH] serial: 8250_dw: Fix breakage when HAVE_CLK=n
+To:     James Hogan <james.hogan@imgtec.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        David Daney <david.daney@cavium.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-serial@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <jason.uy@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57061
+X-archive-position: 57062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: jason.uy@broadcom.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,196 +72,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---yZnyZsPjQYjG7xG7
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Looks good
+Reviewed-by: Jason Uy <jason.uy@broadcom.com>
 
-Hi Guenter,
+-----Original Message-----
+From: James Hogan [mailto:james.hogan@imgtec.com]
+Sent: March-06-17 2:16 AM
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: linux-kernel@vger.kernel.org; Greg Kroah-Hartman
+<gregkh@linuxfoundation.org>; Andy Shevchenko
+<andriy.shevchenko@linux.intel.com>; Jason Uy <jason.uy@broadcom.com>;
+Kefeng Wang <wangkefeng.wang@huawei.com>; Heiko Stuebner <heiko@sntech.de>;
+David Daney <david.daney@cavium.com>; Russell King <linux@armlinux.org.uk>;
+linux-serial@vger.kernel.org; linux-clk@vger.kernel.org;
+linux-mips@linux-mips.org; bcm-kernel-feedback-list
+<bcm-kernel-feedback-list@broadcom.com>
+Subject: Re: [PATCH] serial: 8250_dw: Fix breakage when HAVE_CLK=n
 
-On Mon, Mar 06, 2017 at 11:13:55AM -0800, Guenter Roeck wrote:
-> Since commit f3ac60671954 ("sched/headers: Move task-stack related
-> APIs from <linux/sched.h> to <linux/sched/task_stack.h>") and commit
-> f780d89a0e82 ("sched/headers: Remove <asm/ptrace.h> from
-> <linux/sched.h>"), various mips builds fail as follows.
->=20
-> arch/mips/kernel/smp-mt.c: In function =E2=80=98vsmp_boot_secondary=E2=80=
-=99:
-> arch/mips/include/asm/processor.h:384:41: error:
-> 	implicit declaration of function =E2=80=98task_stack_page=E2=80=99
->=20
-> In file included from
-> 	/opt/buildbot/slave/hwmon-testing/build/arch/mips/kernel/pm.c:
-> arch/mips/include/asm/fpu.h: In function '__own_fpu':
-> arch/mips/include/asm/processor.h:385:31: error:
-> 	invalid application of 'sizeof' to incomplete type 'struct pt_regs'
+On Sat, Mar 04, 2017 at 04:37:17PM +0200, Andy Shevchenko wrote:
+> On Sat, Mar 4, 2017 at 3:09 PM, James Hogan <james.hogan@imgtec.com>
+> wrote:
+> > Commit 6a171b299379 ("serial: 8250_dw: Allow hardware flow control
+> > to be
+> > used") recently broke the 8250_dw driver on platforms which don't
+> > select HAVE_CLK, as dw8250_set_termios() gets confused by the
+> > behaviour of the fallback HAVE_CLK=n clock API in linux/clk.h which
+> > pretends everything is fine but returns (valid) NULL clocks and 0 HZ
+> > clock rates.
+> >
+> > That 0 rate is written into the uartclk resulting in a crash at
+> > boot, e.g. on Cavium Octeon III based UTM-8 we get something like this:
+> >
+> > 1180000000800.serial: ttyS0 at MMIO 0x1180000000800 (irq = 41,
+> > base_baud = 25000000) is a OCTEON ------------[ cut here
+> > ]------------
+> > WARNING: CPU: 2 PID: 1 at drivers/tty/serial/serial_core.c:441
+> > uart_get_baud_rate+0xfc/0x1f0 ...
+> > Call Trace:
+> > ...
+> > [<ffffffff8149c2e4>] uart_get_baud_rate+0xfc/0x1f0
+> > [<ffffffff814a5098>] serial8250_do_set_termios+0xb0/0x440
+> > [<ffffffff8149c710>] uart_set_options+0xe8/0x190
+> > [<ffffffff814a6cdc>] serial8250_console_setup+0x84/0x158
+> > [<ffffffff814a11ec>] univ8250_console_setup+0x54/0x70
+> > [<ffffffff811901a0>] register_console+0x1c8/0x418
+> > [<ffffffff8149f004>] uart_add_one_port+0x434/0x4b0
+> > [<ffffffff814a1af8>] serial8250_register_8250_port+0x2d8/0x440
+> > [<ffffffff814aa620>] dw8250_probe+0x388/0x5e8 ...
+> >
+> > The clock API is defined such that NULL is a valid clock handle so
+> > it wouldn't be right to check explicitly for NULL. Instead treat a
+> > clk_round_rate() return value of 0 as an error which prevents
+> > uartclk being overwritten.
+> >
+>
+> You forgot to add that it is dependent to Heiko's patch
+> http://www.spinics.net/lists/linux-serial/msg25314.html
 
-This one is in an inline function, so I think it'd affect multiple
-includes of <asm/fpu.h> even if __own_fpu isn't used, so I think the
-following patch which adds the include ptrace.h in fpu.h is more robust
-than adding to the individual c files affected:
-https://patchwork.linux-mips.org/patch/15386/
+Indeed I did. Sorry about that.
 
-Admitedly it could probably have a more specific subject line since
-there are more similar errors.
+>
+> Patch looks good to me and shouldn't bring any regression to Intel
+> hardware (x86 is using clock framework).
+>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Cheers
+Thanks
 James
-
->=20
-> arch/mips/netlogic/common/smp.c: In function 'nlm_boot_secondary':
-> arch/mips/netlogic/common/smp.c:157:2: error:
-> 	implicit declaration of function 'task_stack_page'
->=20
-> and more similar errors.
->=20
-> Fixes: f3ac60671954 ("sched/headers: Move task-stack related APIs ...")
-> Fixes: f780d89a0e82 ("sched/headers: Remove <asm/ptrace.h> from ...")
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
-> v3: Catch more build errors
->=20
->  arch/mips/cavium-octeon/cpu.c                  | 3 ++-
->  arch/mips/cavium-octeon/crypto/octeon-crypto.c | 1 +
->  arch/mips/cavium-octeon/smp.c                  | 2 +-
->  arch/mips/kernel/pm.c                          | 1 +
->  arch/mips/kernel/smp-mt.c                      | 2 +-
->  arch/mips/netlogic/common/smp.c                | 1 +
->  arch/mips/netlogic/xlp/cop2-ex.c               | 3 ++-
->  arch/mips/power/cpu.c                          | 1 +
->  8 files changed, 10 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/mips/cavium-octeon/cpu.c b/arch/mips/cavium-octeon/cpu.c
-> index a5b427909b5c..b826b7a87c57 100644
-> --- a/arch/mips/cavium-octeon/cpu.c
-> +++ b/arch/mips/cavium-octeon/cpu.c
-> @@ -10,7 +10,8 @@
->  #include <linux/irqflags.h>
->  #include <linux/notifier.h>
->  #include <linux/prefetch.h>
-> -#include <linux/sched.h>
-> +#include <linux/ptrace.h>
-> +#include <linux/sched/task_stack.h>
-> =20
->  #include <asm/cop2.h>
->  #include <asm/current.h>
-> diff --git a/arch/mips/cavium-octeon/crypto/octeon-crypto.c b/arch/mips/c=
-avium-octeon/crypto/octeon-crypto.c
-> index 4d22365844af..cfb4a146cf17 100644
-> --- a/arch/mips/cavium-octeon/crypto/octeon-crypto.c
-> +++ b/arch/mips/cavium-octeon/crypto/octeon-crypto.c
-> @@ -9,6 +9,7 @@
->  #include <asm/cop2.h>
->  #include <linux/export.h>
->  #include <linux/interrupt.h>
-> +#include <linux/sched/task_stack.h>
-> =20
->  #include "octeon-crypto.h"
-> =20
-> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-> index 4b94b7fbafa3..d475c0146347 100644
-> --- a/arch/mips/cavium-octeon/smp.c
-> +++ b/arch/mips/cavium-octeon/smp.c
-> @@ -10,8 +10,8 @@
->  #include <linux/smp.h>
->  #include <linux/interrupt.h>
->  #include <linux/kernel_stat.h>
-> -#include <linux/sched.h>
->  #include <linux/sched/hotplug.h>
-> +#include <linux/sched/task_stack.h>
->  #include <linux/init.h>
->  #include <linux/export.h>
-> =20
-> diff --git a/arch/mips/kernel/pm.c b/arch/mips/kernel/pm.c
-> index dc814892133c..fab05022ab39 100644
-> --- a/arch/mips/kernel/pm.c
-> +++ b/arch/mips/kernel/pm.c
-> @@ -11,6 +11,7 @@
-> =20
->  #include <linux/cpu_pm.h>
->  #include <linux/init.h>
-> +#include <linux/ptrace.h>
-> =20
->  #include <asm/dsp.h>
->  #include <asm/fpu.h>
-> diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
-> index e077ea3e11fb..effc1ed18954 100644
-> --- a/arch/mips/kernel/smp-mt.c
-> +++ b/arch/mips/kernel/smp-mt.c
-> @@ -18,7 +18,7 @@
->   * Copyright (C) 2006 Ralf Baechle (ralf@linux-mips.org)
->   */
->  #include <linux/kernel.h>
-> -#include <linux/sched.h>
-> +#include <linux/sched/task_stack.h>
->  #include <linux/cpumask.h>
->  #include <linux/interrupt.h>
->  #include <linux/irqchip/mips-gic.h>
-> diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/=
-smp.c
-> index 10d86d54880a..9035558920c1 100644
-> --- a/arch/mips/netlogic/common/smp.c
-> +++ b/arch/mips/netlogic/common/smp.c
-> @@ -37,6 +37,7 @@
->  #include <linux/init.h>
->  #include <linux/smp.h>
->  #include <linux/irq.h>
-> +#include <linux/sched/task_stack.h>
-> =20
->  #include <asm/mmu_context.h>
-> =20
-> diff --git a/arch/mips/netlogic/xlp/cop2-ex.c b/arch/mips/netlogic/xlp/co=
-p2-ex.c
-> index 52bc5de42005..d990b7fc84aa 100644
-> --- a/arch/mips/netlogic/xlp/cop2-ex.c
-> +++ b/arch/mips/netlogic/xlp/cop2-ex.c
-> @@ -13,7 +13,8 @@
->  #include <linux/irqflags.h>
->  #include <linux/notifier.h>
->  #include <linux/prefetch.h>
-> -#include <linux/sched.h>
-> +#include <linux/ptrace.h>
-> +#include <linux/sched/task_stack.h>
-> =20
->  #include <asm/cop2.h>
->  #include <asm/current.h>
-> diff --git a/arch/mips/power/cpu.c b/arch/mips/power/cpu.c
-> index 2129e67723ff..6ecccc26bf7f 100644
-> --- a/arch/mips/power/cpu.c
-> +++ b/arch/mips/power/cpu.c
-> @@ -7,6 +7,7 @@
->   * Author: Hu Hongbing <huhb@lemote.com>
->   *	   Wu Zhangjin <wuzhangjin@gmail.com>
->   */
-> +#include <linux/ptrace.h>
->  #include <asm/sections.h>
->  #include <asm/fpu.h>
->  #include <asm/dsp.h>
-> --=20
-> 2.7.4
->=20
->=20
-
---yZnyZsPjQYjG7xG7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYve6zAAoJEGwLaZPeOHZ6oNwQALQSrLL6zvv8KKSmyGrPAwmj
-/saYz2fpM85GmGQILkTUM3aAs9NSEXHhImk0584nwWHw8INnckNvEqEqdRqDuRcT
-PAZQGdCrvXh5rL65LPWpU66G+c/ZxWJNGfJl7yPFpNJOhe8IY5Vpsp+VvOXg1uGY
-awu2ufZkQ3nZ/0pOd+/IwE8s+oji7U/d91aBnKsiRhbuL/CZtk9RhTzjyII31DjM
-meEt478vn7GkEgDweQlKy4UiHaE6Odm+ag1q2UWBORMHpHF6lI+9krTv7it5D98V
-fQljMD6cXmfl8ERMaTbnpgme0HIXX4jRayoZJXUKtmNz0Jub5WPfO0qL4+KRoUYN
-HG/Ca9v7UYvFXV9CkfDAl6cxYM5+RNWljblD7Q1/cmPiGpfQl+0IOKjHznWYQ5vB
-rNTsgULIyfoIi6KfI7TrU5opLqGznBTf4pki07JQM0lhKLd0hkVLLnNIL+DSumZM
-xBu3C4omo6E0rP8AzdPPysW7BX0+8cxv/0DYW9Y2ziueDsCzFL/L3pImG0hb+Y+0
-9Gu3UPC+EYxzMBV8/dCaIHUx9FjC6bMObtoJpRfhdHcP5PhZs11N8GffEFSxfojW
-HOSH/zZMWfDc2r5TYjjEtszpEDLnPUzAV6XR+snbQvkUkfE1llm+rY6d3xTjVNHw
-41e9XEeVI0EG4LT2kCse
-=tVu/
------END PGP SIGNATURE-----
-
---yZnyZsPjQYjG7xG7--

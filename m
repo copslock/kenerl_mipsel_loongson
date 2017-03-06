@@ -1,58 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Mar 2017 19:26:26 +0100 (CET)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:38618 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990600AbdCES0T6Zmnp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 5 Mar 2017 19:26:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=KjrWd1gII6//eDFCjC7x5s4oIC4WfJ27UOOyDlSw4s8=; b=s6NtDgcyMHYxoxhEPgX/QA1A/2
-        ueyTD/gRbQ++Cb8/dusbXFYtBgQWYocLO8rDBMFGROMfxcoeNZCuVWO/xacqGqb06bq9dLSxHy+c5
-        RRk6+GXW7Zud9DsIGif4VDachldRRb5DQseOoz8oQ5G2MJEevnmStWJ2PY2UtAo56boSa5U8igk5k
-        s7TygDP6PWtwDjPZsiuNEd4PTYM9KzTGYTmCBO05wY147loeRcr84zLHDulc3vyjlGodF1lLx128m
-        Vd2p/MEO2NpIpUzYAvlwWqFVkxXMeryqYuRYcMh0WgM57Apt8IdAMdVzRLHILFwcziR2cZtkkpE9b
-        6sxebU0g==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:41994 helo=localhost)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.87)
-        (envelope-from <linux@roeck-us.net>)
-        id 1ckarF-000cx9-JZ; Sun, 05 Mar 2017 18:26:14 +0000
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH] MIPS: Fix build breakage caused by header file change
-Date:   Sun,  5 Mar 2017 10:26:09 -0800
-Message-Id: <1488738369-24186-1-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 2.7.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Mar 2017 02:52:50 +0100 (CET)
+Received: from 216-197-64-233.tingfiber.com ([216.197.64.233]:32996 "EHLO
+        brightrain.aerifal.cx" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993876AbdCFBwnaNrOt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Mar 2017 02:52:43 +0100
+Received: from dalias by brightrain.aerifal.cx with local (Exim 3.15 #2)
+        id 1ckhol-0002PB-00; Mon, 06 Mar 2017 01:52:07 +0000
+Date:   Sun, 5 Mar 2017 20:52:07 -0500
+From:   Rich Felker <dalias@libc.org>
+To:     Jiri Slaby <jslaby@suse.cz>
+Cc:     akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/3] futex: remove duplicated code
+Message-ID: <20170306015207.GN1520@brightrain.aerifal.cx>
+References: <20170303122712.13353-1-jslaby@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170303122712.13353-1-jslaby@suse.cz>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <dalias@aerifal.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57043
+X-archive-position: 57044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: dalias@libc.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,33 +76,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since commit f3ac60671954 ("sched/headers: Move task-stack related APIs
-from <linux/sched.h> to <linux/sched/task_stack.h>"), various mips builds
-fail as follows.
+On Fri, Mar 03, 2017 at 01:27:10PM +0100, Jiri Slaby wrote:
+> There is code duplicated over all architecture's headers for
+> futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
+> and comparison of the result.
+> 
+> Remove this duplication and leave up to the arches only the needed
+> assembly which is now in arch_futex_atomic_op_inuser.
+> 
+> Note that s390 removed access_ok check in d12a29703 ("s390/uaccess:
+> remove pointless access_ok() checks") as access_ok there returns true.
+> We introduce it back to the helper for the sake of simplicity (it gets
+> optimized away anyway).
 
-arch/mips/kernel/smp-mt.c: In function ‘vsmp_boot_secondary’:
-arch/mips/include/asm/processor.h:384:41: error:
-	implicit declaration of function ‘task_stack_page’
+Overall I'm in favor of this patch, and it's close to what I had in
+mind in the commit message for
+00b73d8d1b7131da03aec73011a7286f566fe87f. But I'd actually like to see
+it go further. These ops are mainly (only?) used for the (almost never
+used) FUTEX_WAKE_OP operation, and there's very little sense in trying
+to optimize them with dedicated arch-specific forms like "lock xadd".
+Instead the entire logic should be in an arch-generic file, and all
+the arch should need to provide is a cmpxchg-on-user-memory primitive
+for it to use. On most archs, the same cmpxchg used in kernelspace
+should also work for user addresses, meaning a huge amount of
+unmaintained, largely untested, junk code can be removed.
 
-Fixes: f3ac60671954 ("sched/headers: Move task-stack related APIs ...")
-Cc: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- arch/mips/kernel/smp-mt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
-index e077ea3e11fb..effc1ed18954 100644
---- a/arch/mips/kernel/smp-mt.c
-+++ b/arch/mips/kernel/smp-mt.c
-@@ -18,7 +18,7 @@
-  * Copyright (C) 2006 Ralf Baechle (ralf@linux-mips.org)
-  */
- #include <linux/kernel.h>
--#include <linux/sched.h>
-+#include <linux/sched/task_stack.h>
- #include <linux/cpumask.h>
- #include <linux/interrupt.h>
- #include <linux/irqchip/mips-gic.h>
--- 
-2.7.4
+Rich

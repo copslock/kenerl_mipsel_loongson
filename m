@@ -1,60 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 08:45:06 +0100 (CET)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:34462
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990720AbdCGHo71HzdW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 08:44:59 +0100
-Received: by mail-wm0-x243.google.com with SMTP id u132so9271983wmg.1;
-        Mon, 06 Mar 2017 23:44:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=kkVJbLOfzXP4t7sDfxLa7kVB51eV5UGIDWkSVwge4vc=;
-        b=SPKF1tPoKEoNVf+VClD9KYUkZ26kFzR80pi9IMzMs5w6tAZzMia/UucO8FVvhaHojK
-         nQwI4iWW+QRZ744/gch+UCfzH8tYRTk69TxxX4Rng5egE5Y8LUMi8UBVt5A4VisMw+SW
-         vRZkwG/1YK9oweLKSRb/9rByC4GlrdL6brtDuh451BZQhctASWySc+yO2xplZuKaJPiK
-         wEZw8aBDznpuJt790ARbYltEwru/+LAfiy7YTq6MVnfUrGo5OssWo786bQR5A/bBGEj0
-         grdB7xMJ3QOi4r62KlgQpPmB7DVfOUua/ipVnjPzh/3feaNum6g5Y5AZQYMExblUpX4j
-         0WVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=kkVJbLOfzXP4t7sDfxLa7kVB51eV5UGIDWkSVwge4vc=;
-        b=Oxo71bdD3Aqb4E0pVW1OhAqbfq/qtZGtcajbK4MuWpbznRvi+26DFbrNA1F4szRt4G
-         3PTwJcvXguVTJKi/brfXYXUVgyTLpfAtDhA55T9q4nX0nstWSCNNQHlvwA06SmOOS6l/
-         1a3DeIJHU6YakBp7SXb//AnG/NxKz7kmIODZY9AGRI+pQLJoEY+3l5mvyIu0VIfZuX2H
-         nWRNe4UqJM/IMnn8yAJ3Px/xWSl73i4ik8G516lzjhyn3R9R361llWZZAEDKJ/xoMTGQ
-         YhzIGMXIPiZEC5xt+H/xP82I8cgfMe1z5+rReNeNLmuvU5r5WBP9DnYVCNt68tbWMINv
-         3ZNg==
-X-Gm-Message-State: AMke39lL9tSHUxQ9PXJPuUkZX/ZU84RDal6sdsLpVMCOAIvMPf+s0Km1YVsUlKlATX3m3Q==
-X-Received: by 10.28.136.13 with SMTP id k13mr16940999wmd.94.1488872694226;
-        Mon, 06 Mar 2017 23:44:54 -0800 (PST)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id 61sm29873254wrs.29.2017.03.06.23.44.53
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 Mar 2017 23:44:53 -0800 (PST)
-Date:   Tue, 7 Mar 2017 08:44:51 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Include asm/ptrace.h now linux/sched.h doesn't
-Message-ID: <20170307074451.GB24782@gmail.com>
-References: <0cd2d2c571afea9658428ee251ae5d3325bfe01b.1488587471.git-series.james.hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 10:33:56 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:2421 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990720AbdCGJdtikMbH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 10:33:49 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 99E0741F8E09;
+        Tue,  7 Mar 2017 10:38:35 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 07 Mar 2017 10:38:35 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 07 Mar 2017 10:38:35 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 326F9F73EB441;
+        Tue,  7 Mar 2017 09:33:39 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 7 Mar
+ 2017 09:33:40 +0000
+Date:   Tue, 7 Mar 2017 09:33:40 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH v3] MIPS: Fix build breakage caused by header file changes
+Message-ID: <20170307093339.GC996@jhogan-linux.le.imgtec.org>
+References: <1488827635-7708-1-git-send-email-linux@roeck-us.net>
+ <20170306232019.GG2878@jhogan-linux.le.imgtec.org>
+ <146eef7a-44dd-48ff-3f09-0b342d844bd6@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ITEy4z2kE7rjCDPK"
 Content-Disposition: inline
-In-Reply-To: <0cd2d2c571afea9658428ee251ae5d3325bfe01b.1488587471.git-series.james.hogan@imgtec.com>
+In-Reply-To: <146eef7a-44dd-48ff-3f09-0b342d844bd6@roeck-us.net>
 User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <mingo.kernel.org@gmail.com>
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57066
+X-archive-position: 57067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,33 +58,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+--ITEy4z2kE7rjCDPK
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-* James Hogan <james.hogan@imgtec.com> wrote:
+On Mon, Mar 06, 2017 at 07:30:05PM -0800, Guenter Roeck wrote:
+> On 03/06/2017 03:20 PM, James Hogan wrote:
+> > On Mon, Mar 06, 2017 at 11:13:55AM -0800, Guenter Roeck wrote:
+> >> Since commit f3ac60671954 ("sched/headers: Move task-stack related
+> >> APIs from <linux/sched.h> to <linux/sched/task_stack.h>") and commit
+> >> f780d89a0e82 ("sched/headers: Remove <asm/ptrace.h> from
+> >> <linux/sched.h>"), various mips builds fail as follows.
+> >>
+> >> arch/mips/kernel/smp-mt.c: In function =E2=80=98vsmp_boot_secondary=E2=
+=80=99:
+> >> arch/mips/include/asm/processor.h:384:41: error:
+> >> 	implicit declaration of function =E2=80=98task_stack_page=E2=80=99
+> >>
+> >> In file included from
+> >> 	/opt/buildbot/slave/hwmon-testing/build/arch/mips/kernel/pm.c:
+> >> arch/mips/include/asm/fpu.h: In function '__own_fpu':
+> >> arch/mips/include/asm/processor.h:385:31: error:
+> >> 	invalid application of 'sizeof' to incomplete type 'struct pt_regs'
+> >
+> > This one is in an inline function, so I think it'd affect multiple
+> > includes of <asm/fpu.h> even if __own_fpu isn't used, so I think the
+> > following patch which adds the include ptrace.h in fpu.h is more robust
+> > than adding to the individual c files affected:
+> > https://patchwork.linux-mips.org/patch/15386/
+> >
+> Agreed.
+>=20
+> > Admitedly it could probably have a more specific subject line since
+> > there are more similar errors.
+>=20
+> Does that fix all compile problems ? Seems to me that we'll still need
+>=20
+> -#include <linux/sched.h>
+> +#include <linux/sched/task_stack.h>
+>=20
+> or did you prepare a patch for this as well ?
 
-> Use of the task_pt_regs() based macros in MIPS' asm/processor.h for
-> accessing the user context on the kernel stack need the definition of
-> struct pt_regs from asm/ptrace.h. __own_fpu() in asm/fpu.h uses these
-> macros but implicitly depended on linux/sched.h to include asm/ptrace.h.
-> 
-> Since commit f780d89a0e82 ("sched/headers: Remove <asm/ptrace.h> from
-> <linux/sched.h>") however linux/sched.h no longer includes asm/ptrace.h,
-> so include it explicitly from asm/fpu.h where it is needed instead.
-> 
-> This fixes build errors such as:
-> 
-> ./arch/mips/include/asm/fpu.h: In function '__own_fpu':
-> ./arch/mips/include/asm/processor.h:385:31: error: invalid application of 'sizeof' to incomplete type 'struct pt_regs'
->      THREAD_SIZE - 32 - sizeof(struct pt_regs))
->                                ^
-> 
-> Fixes: f780d89a0e82 ("sched/headers: Remove <asm/ptrace.h> from <linux/sched.h>")
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: linux-mips@linux-mips.org
+It fixed the config I was using at the time. I didn't do a full build
+test of all configs at the time so didn't fix the above.
 
-My build tests missed this bug, thanks James!
+Cheers
+James
 
-Acked-by: Ingo Molnar <mingo@kernel.org>
+--ITEy4z2kE7rjCDPK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-	Ingo
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYvn5zAAoJEGwLaZPeOHZ6OIYQAIjfncWCgMZcVUAwzUhZRsRe
+BTDF2GVodln+VQ/bTNgA/vOarAHbJ0rYiPrlVWCgXmqpuKHSNkKN6vd+lgtxCAE8
+K36XMfhaS+4dCB1Vzec0CVZVAEXNbkz33oQXi1F9+5crKZ+KTbjEqQdedVCXUOiK
+D3bjvQ/dY1KRMwgvoZdjY2auS1cZYhiHb0Ojskbc3/H7xXAS0IXRMT9d3FHsq9TU
+y214UFld//wgrqpcWjUxlN1FbxvHTFYcPN77DE9LfY/dTxlYpwJX9XFip5Dxi3EJ
+uLx4raQmk55g7/bhpnYQusoN4xk1bUhl//FOQ0zo1Yd83UASAplwSTvhTcreJFSI
+1XcxVwWoZnHxxPBwlNdK0jTdv8phwaaJVnHCY5zOQ/cuf3ocsmdiQ+hRiJxKo+PH
+L8XdP5z7XnwvIucKrKV7iURCM6qoVl6qe7LmJtmBwhsMW2u15hgFDUdrE8GLRxng
+DEkjQuKygLssZNIovoszVVKImjCs5jokmGHz1tFAJSdM+8zanhJfU8L0Elv/BsWi
+iMayyB2k1SHtgk/LdT2Ahxwlace8reNjbBZgC5CfWjZ3HSZIO1OIydBwPQ4QTs9F
+ibQFsJPmGRtft7M3rXNLS5VYCrosM6kP1NBsq0X5vt3LtnJxxmmTFDlwIR8TXWJU
+DpEcmpoBs9OU6D8kxWF4
+=mM3q
+-----END PGP SIGNATURE-----
+
+--ITEy4z2kE7rjCDPK--

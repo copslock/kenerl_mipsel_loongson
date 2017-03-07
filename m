@@ -1,39 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 17:57:03 +0100 (CET)
-Received: from resqmta-ch2-10v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:42]:41586
-        "EHLO resqmta-ch2-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993894AbdCGQ4xSed9M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 17:56:53 +0100
-Received: from resomta-ch2-19v.sys.comcast.net ([69.252.207.115])
-        by resqmta-ch2-10v.sys.comcast.net with SMTP
-        id lIMecXDEeILPAlIPrcjZi4; Tue, 07 Mar 2017 16:56:51 +0000
-Received: from [192.168.1.13] ([73.201.78.97])
-        by resomta-ch2-19v.sys.comcast.net with SMTP
-        id lIPpcGbaWa1xFlIPqc1QYt; Tue, 07 Mar 2017 16:56:51 +0000
-Subject: Re: RFC: Proper locking tips for IRQ handlers?
-To:     James Hogan <james.hogan@imgtec.com>
-References: <2c6f8c8d-6380-2f0b-69be-72115e2012c7@gentoo.org>
- <20170306114038.GE2878@jhogan-linux.le.imgtec.org>
-Cc:     Linux/MIPS <linux-mips@linux-mips.org>
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <f9134263-c100-d817-6634-e52d8bacb510@gentoo.org>
-Date:   Tue, 7 Mar 2017 11:56:43 -0500
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 19:07:44 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:42279 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993896AbdCGSHh3UXsL convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 19:07:37 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id A1689C4722E91;
+        Tue,  7 Mar 2017 18:07:27 +0000 (GMT)
+Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Tue, 7 Mar 2017 18:07:31 +0000
+Received: from hhmail02.hh.imgtec.org ([fe80::5400:d33e:81a4:f775]) by
+ HHMAIL-X.hh.imgtec.org ([fe80::3509:b0ce:371:2b%18]) with mapi id
+ 14.03.0294.000; Tue, 7 Mar 2017 18:07:30 +0000
+From:   Bryan O'Donoghue <Bryan.ODonoghue@imgtec.com>
+To:     Paul Burton <Paul.Burton@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "stable # v3 . 16+" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] MIPS: pm-cps: Drop manual cache-line alignment of
+ ready_count
+Thread-Topic: [PATCH v2] MIPS: pm-cps: Drop manual cache-line alignment of
+ ready_count
+Thread-Index: AQHSk6EcaUS8fE8370G9xrHl/kG8HqGJtHOA
+Date:   Tue, 7 Mar 2017 18:07:29 +0000
+Message-ID: <18ee93a8-8349-c3eb-116b-71dd0703e3a5@imgtec.com>
+References: <20170302183128.22883-1-paul.burton@imgtec.com>
+ <20170302220240.17615-1-paul.burton@imgtec.com>
+In-Reply-To: <20170302220240.17615-1-paul.burton@imgtec.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.31.0.240]
+Content-Type: text/plain; charset="Windows-1252"
+Content-ID: <3FABAD576F88D049B648ADDCC0B0F8CE@imgtec.com>
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-In-Reply-To: <20170306114038.GE2878@jhogan-linux.le.imgtec.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfK3gVpyEdzqTeFBt5wWMemtR9BU/A47ErPmeIUiSPfwyctIWTisUVU6q8jb3rogKhRjiIDUARff0RMfsUb+jTz3V/igGw5WaZzm6BCn59wAwJdye6EHi
- 4SEz6lVb91G5YaBIMNMik4Qu59V+Ob6V+6QKcMDdET7qVZsNTdv6yGf2i6Cq5bn7/CiCGs341OkuxHC4WN80tbZx1mCzTuHb3JU=
-Return-Path: <kumba@gentoo.org>
+Return-Path: <Bryan.ODonoghue@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57074
+X-archive-position: 57075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: Bryan.ODonoghue@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,100 +57,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/06/2017 06:40, James Hogan wrote:
-> Hi Joshua,
-> 
-> On Sat, Mar 04, 2017 at 10:17:41AM -0500, Joshua Kinard wrote:
->> I am looking for some feedback on how to improve IRQ handlers on IP30 (SGI
->> Octane).  Since switching to the use of per_cpu data structures, I've
->> apparently not needed to do any locking when handling IRQs.  However, it looks
->> like around ~Linux-4.8.x, there's some noticeable contention going on with
->> heavy disk I/O, and it's worse in 4.9 and 4.10.  Under 4.8, untar'ing a basic
->> Linux kernel source tarball completed fine, but as of 4.9/4.10, there's a
->> chance to trigger either an oops or oom killer.  While the untar operation
->> happens, I can watch the graphics console and the blinking cursor will
->> sometimes pause momentarily, which suggests contention somewhere.
->>
->> So my question is in struct irq_chip accessors like irq_ack, irq_mask,
->> irq_mask_ack, etc, should spinlocks be used prior to accessing the HEART ASIC?
->> And if so, normal spinlocks, raw spinlocks, or the irq save/restore variants?
-> 
-> On RT kernels spinlock_t becomes a mutex and won't work correctly with
-> IRQs actually disabled for the IRQ callbacks, so raw spinlocks would be
-> needed instead.
+On 02/03/17 22:02, Paul Burton wrote:
+> We allocate memory for a ready_count variable per-CPU, which is accessed
+> via a cached non-coherent TLB mapping to perform synchronisation between
+> threads within the core using LL/SC instructions. In order to ensure
+> that the variable is contained within its own data cache line we
+> allocate 2 lines worth of memory & align the resulting pointer to a line
+> boundary. This is however unnecessary, since kmalloc is guaranteed to
+> return memory which is at least cache-line aligned (see
+> ARCH_DMA_MINALIGN). Stop the redundant manual alignment.
+>
+> Besides cleaning up the code & avoiding needless work, this has the side
+> effect of avoiding an arithmetic error found by Bryan on 64 bit systems
+> due to the 32 bit size of the former dlinesz. This led the ready_count
+> variable to have its upper 32b cleared erroneously for MIPS64 kernels,
+> causing problems when ready_count was later used on MIPS64 via cpuidle.
+>
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Fixes: 3179d37ee1ed ("MIPS: pm-cps: add PM state entry code for CPS systems")
+> Reported-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
+> Tested-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
+> Cc: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
+> Cc: linux-mips@linux-mips.org
+> Cc: ralf@linux-mips.org
+> Cc: stable <stable@vger.kernel.org> # v3.16+
+> ---
+> Changes in v2:
+>   - Change kmalloc size to the 4 bytes we use with LL/SC.
+>   - Fix mis-spelling of Bryan's name.
 
-Okay, that's a really good data point to be aware of.  I haven't tried RT
-kernels on any SGI systems, so I wasn't aware of that.
+For the recored on v2, with this patch and the other patch I've posted 
+we appear to boot correctly in SMP* mode on IASIM/I6400
 
-
-> To decide which variant, a good reference is:
-> https://www.kernel.org/pub/linux/kernel/people/rusty/kernel-locking/index.html
-> in particular the cheat sheet for locking:
-> https://www.kernel.org/pub/linux/kernel/people/rusty/kernel-locking/c214.html
-
-I have always found that cheat sheet table difficult to decipher.  Probably
-from a lack of understanding of all the intricate ways locks can be utilized.
-
-
-> (I don't know OTOH which contexts these callbacks are called from,
-> definitely hard IRQ, but possibly others when registering IRQs etc).
-> 
-> If its only protecting access to per-CPU structures though you shouldn't
-> need the spinlock part of the locks (but does it not access hardware
-> registers too, or are those accesses atomic in hardware rather than
-> software doing read-modify-write?). In that case you could choose to use
-> the following instead of locks depending on the contexts its used in:
-> 
-> - spin_lock_irqsave/restore -> local_irq_save/restore +
-> 				preempt_disable/enable
-> - spin_lock_irq -> local_irq_disable/enable +
-> 				preempt_disable/enable
-> - spin_lock_bh -> local_bh_disable/enable
-> - spin_lock -> preempt_disable/enable
-
-I dumped a lot of the older locking code after learning about per_cpu and
-following some of the header comments on how to properly do per_cpu reads and
-writes to avoid preemption issues....not that I've tested preemption out on
-these systems either.
-
-Access to HEART is done using simple aliases to ____raw_readq (as heart_read)
-and ____raw_writeq (as heart_write).  As far as I can tell, these don't do any
-IRQ enabling/disabling since they're used in the places where I *think* the
-local IRQs are already disabled (is there a way to check this?), however,
-documentation on these versions of readq/writeq is somewhat scant, and the only
-real hit on them is from 2004:
-
-https://www.linux-mips.org/archives/linux-mips/2004-01/msg00288.html
-
-I got rid of a lot of the direct pointer access methods like *foo |= bar; when
-writing stuff back to HEART, replacing with the aliased heart_read/heart_write
-methods, so that should avoid RMW issues.
-
-That said, I'm not even 100% sure locking is the cause of this recent issue
-(assuming for a moment it's not tied to my known BRIDGE/PCI issues).
-CONFIG_DEBUG_LOCK_ALLOC can't be used on these platforms because the resultant
-kernel is apparently too large for ARCS to stick into a "FreeMemory" area.
-However, I've stripped kernels down to ~9MB with CONFIG_DEBUG_LOCK_ALLOC set
-and ARCS still refuses to load it, so I suspect it's a specific section of the
-ELF binary that ARCS can't load properly with that option enabled.  Even
-arcload (ARCS bootloader written by Stan) can't get around it.  That's been a
-major reason why I can't fully verify that I'm doing locking correctly.
-
---J
-
-
-> Hope that helps a bit
-> 
-> Cheers
-> James
-> 
->> I've looked at the IRQ implementations for a few other MIPS boards, but because
->> each system is so unique, there's no clear consensus on the right way to do it.
->>  Octeon, uses irq_bus_lock and irq_bus_sync_unlock, along with a mutex, for
->> locking, while netlogic uses locking only during irq_enable or irq_disable, and
->> loongsoon-3 doesn't appear to employ any locking at all.  Other archs appear to
->> be a mix as well, and I'm even seeing newer constructs like the use of
->> irq_data_get_irq_chip_data() to fetch a common data structure where the
->> spinlock variable is defined.  Other systems use a global spinlock.
->>
->> Any advice would be greatly appreciated.  Thanks!
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>

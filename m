@@ -1,68 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 11:35:10 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:36572
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991672AbdCGKfBhAHh2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 11:35:01 +0100
-Received: by mail-wm0-x241.google.com with SMTP id v190so161181wme.3;
-        Tue, 07 Mar 2017 02:35:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=7BuFg3CAUCFyiHArt9VgRn/AHhWRmUKwW+HJ1BnPWUo=;
-        b=Wilm2fvJ29Pk8gkgvb30nyeJaoC09ysg5/9O+CynCwUDXBnoJHacBdfo7ubJO6iJ37
-         2hct+zF9/ZZ1P7zIgXRZaAsIllfTdyxEj4g+xyq19WiKoQDc9NtlhNGCSmfyhiG+m/dC
-         EAZ5yULvyBhY2JazL8woiYZHGwU0BfvCtraHB9USv9Ug8eFI0lB1LQPKdwRerGq57omu
-         HsCQSmWzlQwF4LAn6llAvKRuB+JxPdNoPAGnxoBkukTj5rkih1ixSZtB+2gjOQ0/tNlb
-         yGcrUYb4E3uZSCrQJl2OoIdcpLY39J6InJ2bU+UUwVX4D03PkxWd8+DAFkIgX9/jHfbJ
-         9MjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7BuFg3CAUCFyiHArt9VgRn/AHhWRmUKwW+HJ1BnPWUo=;
-        b=nCfG4sIph+AlUPbKIQFkxT6RzB0Xr3TIIvZZXykksszn73TFumQKslXO6ahhCQV4Ft
-         WOB+xVqT/fvdh4h79uSQUb1fKoZb8phzkpmiU3tp50d/P1kWpoDogNKS4/VuRael8WMt
-         ewH7Tbrlvqvm2yduVqgnXgzqxgLDXgQm4sp7KRftt0swTDf0mbKWZ2u+j/wv+7maNybI
-         n/M76Wc1B83xnCA9iU/Hzc76nyo0Zv+5uzRRmlWZS3cgob3Li79aFSDvamYq+0pxT+29
-         OMhdJpg076VV+rOWW9z3EMrXi/CRQJcBGOvGSOhJRMAbByySw49bblSYP8MLScMrhYvP
-         TsGA==
-X-Gm-Message-State: AMke39kN8/pVsDyclwgy/J/VIsIoSvCYkMvx3TAPBPUySrVdxYId97JUqN/T3Jbf5zid5w==
-X-Received: by 10.28.169.199 with SMTP id s190mr17390382wme.2.1488882896333;
-        Tue, 07 Mar 2017 02:34:56 -0800 (PST)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
-        by smtp.gmail.com with ESMTPSA id w16sm18402610wmd.4.2017.03.07.02.34.54
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Mar 2017 02:34:55 -0800 (PST)
-Date:   Tue, 7 Mar 2017 11:34:52 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v3] MIPS: Fix build breakage caused by header file changes
-Message-ID: <20170307103452.GA13056@gmail.com>
-References: <1488827635-7708-1-git-send-email-linux@roeck-us.net>
- <20170306232019.GG2878@jhogan-linux.le.imgtec.org>
- <20170307073805.GB15693@gmail.com>
- <20170307093850.GD996@jhogan-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 13:06:15 +0100 (CET)
+Received: from mail.windriver.com ([147.11.1.11]:43824 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991359AbdCGMGHhJyPd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 13:06:07 +0100
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
+        by mail.windriver.com (8.15.2/8.15.1) with ESMTPS id v27C5uoZ020840
+        (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
+        Tue, 7 Mar 2017 04:05:56 -0800 (PST)
+Received: from [128.224.155.85] (128.224.155.85) by ALA-HCA.corp.ad.wrs.com
+ (147.11.189.50) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 7 Mar
+ 2017 04:05:55 -0800
+Subject: Re: [PATCH] MIPS: reset all task's asid to 0 after asid_cache(cpu)
+ overflows
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+References: <1488684260-18867-1-git-send-email-jiwei.sun@windriver.com>
+ <6054d364-5095-d13b-ebf8-a7b6bf8b2024@cogentembedded.com>
+ <58BD0E0A.9000402@windriver.com>
+ <702ff6e3-9bc7-755b-56ec-86394d959230@cogentembedded.com>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        <jiwei.sun.bj@qq.com>
+From:   Jiwei Sun <Jiwei.Sun@windriver.com>
+Message-ID: <58BEA251.9070200@windriver.com>
+Date:   Tue, 7 Mar 2017 20:06:41 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170307093850.GD996@jhogan-linux.le.imgtec.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <mingo.kernel.org@gmail.com>
+In-Reply-To: <702ff6e3-9bc7-755b-56ec-86394d959230@cogentembedded.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [128.224.155.85]
+Return-Path: <Jiwei.Sun@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57070
+X-archive-position: 57071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@kernel.org
+X-original-sender: Jiwei.Sun@windriver.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,36 +51,78 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 
-* James Hogan <james.hogan@imgtec.com> wrote:
 
-> Hi Ingo,
+On 03/06/2017 04:34 PM, Sergei Shtylyov wrote:
+> On 3/6/2017 10:21 AM, jsun4 wrote:
 > 
-> On Tue, Mar 07, 2017 at 08:38:05AM +0100, Ingo Molnar wrote:
-> > Just a quick question: is your MIPS build fix going to be merged and sent to 
-> > Linus? I can apply it too, and send it to Linus later today, together with a few 
-> > other sched.h header related build fixes.
+>>>> If asid_cache(cpu) overflows, there may be two tasks with the same
+>>>> asid. It is a risk that the two different tasks may have the same
+>>>> address space.
+>>>>
+>>>> A process will update its asid to newer version only when switch_mm()
+>>>> is called and matches the following condition:
+>>>>     if ((cpu_context(cpu, next) ^ asid_cache(cpu))
+>>>>                     & asid_version_mask(cpu))
+>>>>             get_new_mmu_context(next, cpu);
+>>>> If asid_cache(cpu) overflows, cpu_context(cpu,next) and asid_cache(cpu)
+>>>> will be reset to asid_first_version(cpu), and start a new cycle. It
+>>>> can result in two tasks that have the same ASID in the process list.
+>>>>
+>>>> For example, in CONFIG_CPU_MIPS32_R2, task named A's asid on CPU1 is
+>>>> 0x100, and has been sleeping and been not scheduled. After a long period
+>>>> of time, another running task named B's asid on CPU1 is 0xffffffff, and
+>>>> asid cached in the CPU1 is 0xffffffff too, next task named C is forked,
+>>>> when schedule from B to C on CPU1, asid_cache(cpu) will overflow, so C's
+>>>> asid on CPU1 will be 0x100 according to get_new_mmu_context(). A's asid
+>>>> is the same as C, if now A is rescheduled on CPU1, A's asid is not able
+>>>> to renew according to 'if' clause, and the local TLB entry can't be
+>>>> flushed too, A's address space will be the same as C.
+>>>>
+>>>> If asid_cache(cpu) overflows, all of user space task's asid on this CPU
+>>>> are able to set a invalid value (such as 0), it will avoid the risk.
+>>>>
+>>>> Signed-off-by: Jiwei Sun <jiwei.sun@windriver.com>
+>>>> ---
+>>>>  arch/mips/include/asm/mmu_context.h | 9 ++++++++-
+>>>>  1 file changed, 8 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+>>>> index ddd57ad..1f60efc 100644
+>>>> --- a/arch/mips/include/asm/mmu_context.h
+>>>> +++ b/arch/mips/include/asm/mmu_context.h
+>>>> @@ -108,8 +108,15 @@ static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
+>>>>  #else
+>>>>          local_flush_tlb_all();    /* start new asid cycle */
+>>>>  #endif
+>>>> -        if (!asid)        /* fix version if needed */
+>>>> +        if (!asid) {        /* fix version if needed */
+>>>> +            struct task_struct *p;
+>>>> +
+>>>> +            for_each_process(p) {
+>>>> +                if ((p->mm))
+>>>
+>>>    Why double parens?
+>>
+>> At the beginning, the code was written as following
+>>     if ((p->mm) && (p->mm != mm))
+>>         cpu_context(cpu, p->mm) = 0;
+>>
+>> Because cpu_context(cpu,mm) will be changed to asid_first_version(cpu) after 'for' loop,
+>> and in order to improve the efficiency of the loop, I deleted "&& (p->mm != mm)",
+>> but I forgot to delete the redundant parentheses.
 > 
-> One for Ralf...
+>    Note that parens around 'p->mm' were never needed. And neither around the right operand of &&.
 
-Ralf, what's your preference?
+You are right, I will pay attention to similar problems next time.
+Thanks for your reminder.
 
-> > Assuming it's all properly tested - my limited MIPS defconfig builds worked fine - 
-> > but MIPS has a lot of build variations.
+Best regards,
+Jiwei
+
 > 
-> If you have a branch with other generic fixes I'm happy to push it to
-> our MIPS buildbot too to double check.
-
-So I have not applied your patch yet (can do it with ack from Ralf), but all the 
-other fixes that are pending can be found in:
-
-  git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git core/urgent
-
-It's these commits:
-
- bb35e4515411 drivers/char/nwbutton: Fix build breakage caused by include file reshuffling
- 80aa1a54f054 h8300: Fix build breakage caused by header file changes
- 1fbdbcea8005 avr32: Fix build error caused by include file reshuffling
-
-Thanks,
-
-	Ingo
+>> Thanks,
+>> Best regards,
+>> Jiwei
+> 
+> MBR, Sergei
+> 

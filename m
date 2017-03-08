@@ -1,50 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2017 19:07:44 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42279 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993896AbdCGSHh3UXsL convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2017 19:07:37 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id A1689C4722E91;
-        Tue,  7 Mar 2017 18:07:27 +0000 (GMT)
-Received: from HHMAIL-X.hh.imgtec.org (10.100.10.113) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 7 Mar 2017 18:07:31 +0000
-Received: from hhmail02.hh.imgtec.org ([fe80::5400:d33e:81a4:f775]) by
- HHMAIL-X.hh.imgtec.org ([fe80::3509:b0ce:371:2b%18]) with mapi id
- 14.03.0294.000; Tue, 7 Mar 2017 18:07:30 +0000
-From:   Bryan O'Donoghue <Bryan.ODonoghue@imgtec.com>
-To:     Paul Burton <Paul.Burton@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:     "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "stable # v3 . 16+" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] MIPS: pm-cps: Drop manual cache-line alignment of
- ready_count
-Thread-Topic: [PATCH v2] MIPS: pm-cps: Drop manual cache-line alignment of
- ready_count
-Thread-Index: AQHSk6EcaUS8fE8370G9xrHl/kG8HqGJtHOA
-Date:   Tue, 7 Mar 2017 18:07:29 +0000
-Message-ID: <18ee93a8-8349-c3eb-116b-71dd0703e3a5@imgtec.com>
-References: <20170302183128.22883-1-paul.burton@imgtec.com>
- <20170302220240.17615-1-paul.burton@imgtec.com>
-In-Reply-To: <20170302220240.17615-1-paul.burton@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.31.0.240]
-Content-Type: text/plain; charset="Windows-1252"
-Content-ID: <3FABAD576F88D049B648ADDCC0B0F8CE@imgtec.com>
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-Return-Path: <Bryan.ODonoghue@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Mar 2017 02:47:01 +0100 (CET)
+Received: from mail-qk0-x242.google.com ([IPv6:2607:f8b0:400d:c09::242]:36111
+        "EHLO mail-qk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993897AbdCHBqyHhYEG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Mar 2017 02:46:54 +0100
+Received: by mail-qk0-x242.google.com with SMTP id n141so6581448qke.3;
+        Tue, 07 Mar 2017 17:46:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=9iseGk7bFC6VaqB+IO1zuB4T6M6pnmBOTZLp6OmDmyk=;
+        b=dJVaP6ZETQAwE0bFj7HkjA/nx5uvOJuCmQldNNnd8g/hdIDCTIuc6gcdHRkrp0+6/s
+         /mCrL4eG5kWG3fM9HM3B2E340+ZaustrdYD9UJdPtyobEOtLx4STvRhv50rvZMb/shEZ
+         gdkRa+zYOzjzdC/ksRM+tI16pwE/QZM9/Zik2+rbL+fa04r4etcBl8tTMIo0y+F0X751
+         tSeVYik2Zi+EVCySRd0z7K+IllRplC7quwSyCozJWre8pDt0o2iy9cHkrouXNr1TECLx
+         Joc/O/v8Teaz8gjmwc0oec6efPZwgiMh23yKJYGgP/3rV8MDj2V2ecWNy/7ZUQPYKWih
+         Hy3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=9iseGk7bFC6VaqB+IO1zuB4T6M6pnmBOTZLp6OmDmyk=;
+        b=IqfL3xqpAuU+lxUNIfHg9y3jNQPlKRdQv/HYneexPwOCNMhCWFJWWQQcCs/htS4LYU
+         kM510JvaxrJMYHF6hi33MmKyGkOLIBioq3lZ6BViYzdExXJp1Y8KojjOGqP0vnFkqR10
+         nbmWADBaFPWPlnjOYGjzoT7bG4EikYYBt9xMA0n8/7UH1RaiSKKCHHwwBzj4Z0EcZOay
+         BW0qdg/k5+QiW6t/4cw7LgnJC7MS2Wc3hTkXnFE19H9DqZnMmj2ID1Mq65F4nyj0zRRK
+         1T/DkxWLx0NK10TFbf+Ff6B35vjPM7WbS6G0F9bD6/mHjGt5alZ9KcsHyn/mlfNfT+zd
+         kQhA==
+X-Gm-Message-State: AFeK/H3l+a+QF/Q09gikI4P9MNIs85fwAXImwOK3uHsp/EaWDM0tDAiGaqo9RsPpNEVGRQ==
+X-Received: by 10.233.239.140 with SMTP id d134mr4170031qkg.313.1488937608028;
+        Tue, 07 Mar 2017 17:46:48 -0800 (PST)
+Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
+        by smtp.gmail.com with ESMTPSA id h27sm1198892qtf.24.2017.03.07.17.46.46
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 Mar 2017 17:46:47 -0800 (PST)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, james.hogan@imgtec.com,
+        paul.burton@imgtec.com, marcin.nowakowski@imgtec.com,
+        justinpopo6@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH 0/2] MIPS: Couple kexec related fixes
+Date:   Tue,  7 Mar 2017 17:46:39 -0800
+Message-Id: <20170308014641.16267-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.9.3
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57075
+X-archive-position: 57076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Bryan.ODonoghue@imgtec.com
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,38 +63,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 02/03/17 22:02, Paul Burton wrote:
-> We allocate memory for a ready_count variable per-CPU, which is accessed
-> via a cached non-coherent TLB mapping to perform synchronisation between
-> threads within the core using LL/SC instructions. In order to ensure
-> that the variable is contained within its own data cache line we
-> allocate 2 lines worth of memory & align the resulting pointer to a line
-> boundary. This is however unnecessary, since kmalloc is guaranteed to
-> return memory which is at least cache-line aligned (see
-> ARCH_DMA_MINALIGN). Stop the redundant manual alignment.
->
-> Besides cleaning up the code & avoiding needless work, this has the side
-> effect of avoiding an arithmetic error found by Bryan on 64 bit systems
-> due to the 32 bit size of the former dlinesz. This led the ready_count
-> variable to have its upper 32b cleared erroneously for MIPS64 kernels,
-> causing problems when ready_count was later used on MIPS64 via cpuidle.
->
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-> Fixes: 3179d37ee1ed ("MIPS: pm-cps: add PM state entry code for CPS systems")
-> Reported-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
-> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
-> Tested-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
-> Cc: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: ralf@linux-mips.org
-> Cc: stable <stable@vger.kernel.org> # v3.16+
-> ---
-> Changes in v2:
->   - Change kmalloc size to the 4 bytes we use with LL/SC.
->   - Fix mis-spelling of Bryan's name.
+Hi all,
 
-For the recored on v2, with this patch and the other patch I've posted 
-we appear to boot correctly in SMP* mode on IASIM/I6400
+This small patch series fixes two obvious issues encountered on a R4k-style
+system (BMIPS) where attemping a system kexec was just not going to work
+without these two fixes.
 
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@imgtec.com>
+This really makes me wonder if there is anybody really using kexec besides
+octeon?
+
+Florian Fainelli (2):
+  MIPS: kexec: Provide bootloader arguments by default
+  MIPS: c-r4k: Do not SMP function call during kexec
+
+ arch/mips/kernel/machine_kexec.c | 9 ++++++++-
+ arch/mips/mm/c-r4k.c             | 6 +++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
+-- 
+2.9.3

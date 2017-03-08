@@ -1,52 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Mar 2017 02:47:01 +0100 (CET)
-Received: from mail-qk0-x242.google.com ([IPv6:2607:f8b0:400d:c09::242]:36111
-        "EHLO mail-qk0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993897AbdCHBqyHhYEG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Mar 2017 02:46:54 +0100
-Received: by mail-qk0-x242.google.com with SMTP id n141so6581448qke.3;
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Mar 2017 02:47:27 +0100 (CET)
+Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:35773
+        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993899AbdCHBqzC-lPG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Mar 2017 02:46:55 +0100
+Received: by mail-qk0-x243.google.com with SMTP id o135so6600789qke.2;
         Tue, 07 Mar 2017 17:46:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=9iseGk7bFC6VaqB+IO1zuB4T6M6pnmBOTZLp6OmDmyk=;
-        b=dJVaP6ZETQAwE0bFj7HkjA/nx5uvOJuCmQldNNnd8g/hdIDCTIuc6gcdHRkrp0+6/s
-         /mCrL4eG5kWG3fM9HM3B2E340+ZaustrdYD9UJdPtyobEOtLx4STvRhv50rvZMb/shEZ
-         gdkRa+zYOzjzdC/ksRM+tI16pwE/QZM9/Zik2+rbL+fa04r4etcBl8tTMIo0y+F0X751
-         tSeVYik2Zi+EVCySRd0z7K+IllRplC7quwSyCozJWre8pDt0o2iy9cHkrouXNr1TECLx
-         Joc/O/v8Teaz8gjmwc0oec6efPZwgiMh23yKJYGgP/3rV8MDj2V2ecWNy/7ZUQPYKWih
-         Hy3w==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=OZTzgef7MA6U/jvdZkNWPsdqsiWJoq509KYI5FmDrTQ=;
+        b=o4nBOEP2ywBrAnVm3Oib1I8vmevif6aYsmbEaxSlnMHGIsi0H0/9LnbOpI/RRe5PMT
+         7NrvIZJ+OlY7otmb1+b7Rpr+8OhcpzlL7g+gvf3NtU/rXoxADIPM4KmptiFFvb1galJP
+         GEnGjMroTu/vJnhBHHdf70p3FWxTKxAj/VK8ZSykcVNlnl5a4gXzMZtYtQcRiTuvGZGN
+         LPPONsaJTlfXWhASBFzpKjkP1xA3DHT+gvmnoxvVh/kavLwEj1ORfh8aGwLcKRtvyY7q
+         4WckIzMnR3iFzSnbKZgzvkRvAWlPMz6smikOaOE/hMxDtrG63cvRN1mflqe7S5rSOsDe
+         h5bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=9iseGk7bFC6VaqB+IO1zuB4T6M6pnmBOTZLp6OmDmyk=;
-        b=IqfL3xqpAuU+lxUNIfHg9y3jNQPlKRdQv/HYneexPwOCNMhCWFJWWQQcCs/htS4LYU
-         kM510JvaxrJMYHF6hi33MmKyGkOLIBioq3lZ6BViYzdExXJp1Y8KojjOGqP0vnFkqR10
-         nbmWADBaFPWPlnjOYGjzoT7bG4EikYYBt9xMA0n8/7UH1RaiSKKCHHwwBzj4Z0EcZOay
-         BW0qdg/k5+QiW6t/4cw7LgnJC7MS2Wc3hTkXnFE19H9DqZnMmj2ID1Mq65F4nyj0zRRK
-         1T/DkxWLx0NK10TFbf+Ff6B35vjPM7WbS6G0F9bD6/mHjGt5alZ9KcsHyn/mlfNfT+zd
-         kQhA==
-X-Gm-Message-State: AFeK/H3l+a+QF/Q09gikI4P9MNIs85fwAXImwOK3uHsp/EaWDM0tDAiGaqo9RsPpNEVGRQ==
-X-Received: by 10.233.239.140 with SMTP id d134mr4170031qkg.313.1488937608028;
-        Tue, 07 Mar 2017 17:46:48 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=OZTzgef7MA6U/jvdZkNWPsdqsiWJoq509KYI5FmDrTQ=;
+        b=sE50/Rmsi9UfifNPwTCKKoLiWbV2Q9Iafy1IslITkfy1Ql7mOtQTm1aLa2sDKPU5PT
+         YCNTnriaqHdMZ3VR1KrUXKWoRByXNZPVe2Hp6XhTKlnOtnUw1uMOVWpG94HEX5TJBieg
+         8DhNouDIN5sNmUSTurGxpO9E/tBkqGtt4jxe5ZioC9C+nUyv8uJp3S9vXTSNDp/MIEEw
+         q+/HENxVwPef6B/luupjrgF7G3WPn6DGuEViCQXm8JY2CmUD+VOOYswxxl4SaSsxNQUP
+         IQrRvoQ7X/6NUVFryhNpxgYfTUBXXnVk42AoWRXCWY4YBNXnYQBt+IUOUwfKCLXHgjOc
+         I6rA==
+X-Gm-Message-State: AMke39m4A0RulFBBSW9qg7llpvsPLnAqYMYf6Ri2BEN1eL9k4/uPXi558jhTi1IPKtHyjg==
+X-Received: by 10.55.148.71 with SMTP id w68mr4458105qkd.268.1488937609421;
+        Tue, 07 Mar 2017 17:46:49 -0800 (PST)
 Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id h27sm1198892qtf.24.2017.03.07.17.46.46
+        by smtp.gmail.com with ESMTPSA id h27sm1198892qtf.24.2017.03.07.17.46.48
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Mar 2017 17:46:47 -0800 (PST)
+        Tue, 07 Mar 2017 17:46:48 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org, james.hogan@imgtec.com,
         paul.burton@imgtec.com, marcin.nowakowski@imgtec.com,
         justinpopo6@gmail.com, bcm-kernel-feedback-list@broadcom.com,
         Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH 0/2] MIPS: Couple kexec related fixes
-Date:   Tue,  7 Mar 2017 17:46:39 -0800
-Message-Id: <20170308014641.16267-1-f.fainelli@gmail.com>
+Subject: [PATCH 1/2] MIPS: kexec: Provide bootloader arguments by default
+Date:   Tue,  7 Mar 2017 17:46:40 -0800
+Message-Id: <20170308014641.16267-2-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.9.3
+In-Reply-To: <20170308014641.16267-1-f.fainelli@gmail.com>
+References: <20170308014641.16267-1-f.fainelli@gmail.com>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57076
+X-archive-position: 57077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,22 +66,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+In case we do not implement a _machine_kexec_shutdown callback to do
+platform specific kexec shutdown operations, the most sensible thing to
+do is to provide the kexec'd kernel with the same arguments we initially
+booted with.
 
-This small patch series fixes two obvious issues encountered on a R4k-style
-system (BMIPS) where attemping a system kexec was just not going to work
-without these two fixes.
-
-This really makes me wonder if there is anybody really using kexec besides
-octeon?
-
-Florian Fainelli (2):
-  MIPS: kexec: Provide bootloader arguments by default
-  MIPS: c-r4k: Do not SMP function call during kexec
-
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
  arch/mips/kernel/machine_kexec.c | 9 ++++++++-
- arch/mips/mm/c-r4k.c             | 6 +++++-
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
+diff --git a/arch/mips/kernel/machine_kexec.c b/arch/mips/kernel/machine_kexec.c
+index 8b574bcd39ba..8c5bbf302ab1 100644
+--- a/arch/mips/kernel/machine_kexec.c
++++ b/arch/mips/kernel/machine_kexec.c
+@@ -11,6 +11,7 @@
+ #include <linux/delay.h>
+ 
+ #include <asm/cacheflush.h>
++#include <asm/bootinfo.h>
+ #include <asm/page.h>
+ 
+ extern const unsigned char relocate_new_kernel[];
+@@ -66,8 +67,14 @@ machine_kexec_cleanup(struct kimage *kimage)
+ void
+ machine_shutdown(void)
+ {
+-	if (_machine_kexec_shutdown)
++	if (_machine_kexec_shutdown) {
+ 		_machine_kexec_shutdown();
++	} else {
++		kexec_args[0] = fw_arg0;
++		kexec_args[1] = fw_arg1;
++		kexec_args[2] = fw_arg2;
++		kexec_args[3] = fw_arg3;
++	}
+ }
+ 
+ void
 -- 
 2.9.3

@@ -1,39 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Mar 2017 08:31:04 +0100 (CET)
-Received: from mout.kundenserver.de ([212.227.126.135]:58827 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991960AbdCHHa52hYaD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Mar 2017 08:30:57 +0100
-Received: from wuerfel.lan ([78.42.17.5]) by mrelayeu.kundenserver.de
- (mreue003 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0MAilT-1cZfGM0hUx-00Bq1X; Wed, 08 Mar 2017 08:29:45 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Mar 2017 09:24:14 +0100 (CET)
+Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:36174
+        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991960AbdCHIYHmEAqK convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 8 Mar 2017 09:24:07 +0100
+Received: by mail-qk0-x244.google.com with SMTP id n141so8716173qke.3
+        for <linux-mips@linux-mips.org>; Wed, 08 Mar 2017 00:24:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-transfer-encoding;
+        bh=tVmo+mVTMXETQ9UF2+zW0JR4iSoG3E0hJPvJnf9n6zM=;
+        b=FdRqotQf1teSdIYHBCPv3kDAri0TdQzyuF8IOKJpTTLd8MVPATrcYBl7/DqO0CeLo9
+         37sIMAhmJ7MiKi4uLIf+znne6STRDf2d1bmECSiVynTor6jxauAmUnkzRlobJaC/zERx
+         kjMMReZ53rDGdDxSGQkuB6jUwSqJfuTBa9nK6yyYD3i2CfM8X89Y/VDOJSHwtX01OmSa
+         M7ZRbMETBGz/wZYXVJnDbm8tYYN/yLvqaoL+gGYQE0zpqQq7ZJWY04spW79Wn+JGoT/6
+         1JEaL+h3oLu927ylM+uJ0FcTzDLaqoScPYiYMwLNe6BUeFxDq/vuucYUpQgoVwKZyONJ
+         owww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc:content-transfer-encoding;
+        bh=tVmo+mVTMXETQ9UF2+zW0JR4iSoG3E0hJPvJnf9n6zM=;
+        b=G2KmqDP8kRqrQ8PSyaH1w8VzriENHDogdZrpUdgzwiCk6KhgnWsu9y8uxXC9Kh7hW4
+         s2HG27f5smSabgKL49P5n5J1ZvIuGQwAXF0RkxXUHpUQPgxzhXYPmjwk6nhpltCugbnK
+         l6zb1vUG5TrsU9IXEhCdjAPkROlJzFsIJqXxo4qBTEqV1ondN6Byp7pPItqIHz6N9Mvk
+         nV+WPRtdqoLDrIwdVdPIaJY90SVSXTxLnYsbN/iQKGK2YXUgKfDVcDDbF6coxsNqOlfb
+         Vshh3u0q2HQ5kGBx/18h3mWD7ZSPMszVkkbiHONLHgjA63U+ZsOq2PDFkBB/0NkxZEWs
+         2E+g==
+X-Gm-Message-State: AMke39nGWfdUNXW96wrbQOGFw/rzGQewvx3/TV1ycV7WKzQcXDVlKO7HOy2XiYHHReVlg3VfKcDUGb2afHM/pg==
+X-Received: by 10.55.123.5 with SMTP id w5mr6325756qkc.76.1488961441977; Wed,
+ 08 Mar 2017 00:24:01 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.237.58.165 with HTTP; Wed, 8 Mar 2017 00:24:01 -0800 (PST)
+In-Reply-To: <58bf7d43.8173190a.8d21e.1fde@mx.google.com>
+References: <58bf7d43.8173190a.8d21e.1fde@mx.google.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-To:     ralf@linux-mips.org
-Cc:     mingo@redhat.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] mips: add missing include files
-Date:   Wed,  8 Mar 2017 08:29:31 +0100
-Message-Id: <20170308072931.3836696-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.9.0
-X-Provags-ID: V03:K0:a28YYja7m3O7JUpj51SSnbwzezXwiTwitPqWF29lg0bowTLNfzT
- qnqKiIbnSeGZ/FuGfV9cZtfm4WbHZ1sNJj9WjAFjEaUl4E4y0Q0V+yE3bxzILKQWNncJyo8
- bp3/xUGAJCVxj+muU3S3ea48qaiFCT0OFDz3veFPe/ZyuBEf+AeQgBTs2IWQ0bZ0dT20Xbi
- by6ITSPRc4XzmlwQhRxIA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:tF1KVUsbIZ4=:CI+vddAkzZ4K6g+yiGjuXb
- 1Auz4XgYFp7mcZTaZmVazTuxkb0ePrLBsw/K631JAvMFRXa9v78PY5/t9aNHH5diwOvSbVWAJ
- r3Mi5G0xAv+rJ9fFtFUFxyJF+hkhVCjhGkbJu93cCelBORuPAU080fRzWcaaKmeEA533JDlUf
- GHav7OinRsDGq85/cM2qsYHwTjUa828cZzA4aRfuuKqhYGUaiiK+3xzKjxy8MUsr5cN/SGKCJ
- YGvmZLe88r+i2mSIS7vHo2PZaI8Pp5wDAH13HzotUeLX/77xxerFvGmDarkHMn3YBdPZdyd19
- 7a7v9s6yO5lTa/0eNqU5vl0bIsDH5s54xX6hYLDaqhr8h2P+qo1/X4K3zH5Xm/7co5R6K8Udb
- Qita9QrpQKDJVDIWHPTVh3GrYFHwmCI2RACNyQI2qRXo+6leEW3775HRslnsT2/IvXcTM8Lon
- 1gmkLMdp1HxuNwX9Z/NHHWE7wfSp0u/BLU3+TwQtFL6iasepnL4sZk34izu+B2B4rfMKODwE8
- 5phuOULySTsyD+nMtJ8i4iQ3sFojw/jwOhlfO0JyvzSx4Q/6sGbVG9Ix+A719F/BA8MEQz7nd
- BbktPB97Es88MGxGOzE0nxR7M2bGJnet61nWenfY8GOxVfJC3hjMcysYk9TfGN2SV/aqmQqpG
- cWCU8LEcwidYKyeHGo+/YahuJ0SmY3T/7hDnmgwrhDE0p4HSffQPdBWl7RPaq8I7dFvo=
-Return-Path: <arnd@arndb.de>
+Date:   Wed, 8 Mar 2017 09:24:01 +0100
+X-Google-Sender-Auth: mfXewlnuc2bMIiV0ZNLYO4bQI4Q
+Message-ID: <CAK8P3a16cpvK3_a0Rxx+XqRw_d97LtVgpzcpvpzmH6U4Ty-fXQ@mail.gmail.com>
+Subject: Re: next build: 208 builds: 21 failed, 187 passed, 53 errors, 406
+ warnings (next-20170308)
+To:     "kernelci.org bot" <bot@kernelci.org>
+Cc:     kernel-build-reports@lists.linaro.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        gregkh <gregkh@linuxfoundation.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-mips@linux-mips.org, Ingo Molnar <mingo@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57081
+X-archive-position: 57082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,217 +70,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-After the split of linux/sched.h, several platforms in arch/mips stopped building,
-This add the respective additional #include statements to fix the problem I first
-tried adding these into asm/processor.h, but ran into circular header dependencies
-with that which I could not figure out.
+On Wed, Mar 8, 2017 at 4:40 AM, kernelci.org bot <bot@kernelci.org> wrote:
+> next build: 208 builds: 21 failed, 187 passed, 53 errors, 406 warnings
+>
+> allmodconfig (arm) — PASS, 0 errors, 6 warnings, 0 section mismatches
+>
+> Warnings:
+> :1325:2: warning: #warning syscall statx not implemented [-Wcpp]
 
-The commit I listed as causing the problem is the branch merge, as there is
-likely a combination of multiple patches in that branch.
+The syscall was added to 4.11, and the warning will be resolved as soon
+as all architectures add it to their tables.
 
-Fixes: 1827adb11ad2 ("Merge branch 'WIP.sched-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/cavium-octeon/cpu.c                  | 2 ++
- arch/mips/cavium-octeon/crypto/octeon-crypto.c | 1 +
- arch/mips/cavium-octeon/smp.c                  | 1 +
- arch/mips/include/asm/fpu.h                    | 1 +
- arch/mips/kernel/smp-bmips.c                   | 1 +
- arch/mips/kernel/smp-mt.c                      | 1 +
- arch/mips/loongson64/loongson-3/cop2-ex.c      | 1 +
- arch/mips/netlogic/common/smp.c                | 1 +
- arch/mips/netlogic/xlp/cop2-ex.c               | 3 +++
- arch/mips/sgi-ip22/ip28-berr.c                 | 1 +
- arch/mips/sgi-ip27/ip27-berr.c                 | 2 ++
- arch/mips/sgi-ip27/ip27-smp.c                  | 3 +++
- arch/mips/sgi-ip32/ip32-berr.c                 | 1 +
- arch/mips/sgi-ip32/ip32-reset.c                | 1 +
- 14 files changed, 20 insertions(+)
+> drivers/usb/gadget/udc/atmel_usba_udc.c:632:554: warning: 'ept_cfg' may be
+> used uninitialized in this function [-Wmaybe-uninitialized]
 
-diff --git a/arch/mips/cavium-octeon/cpu.c b/arch/mips/cavium-octeon/cpu.c
-index a5b427909b5c..036d56cc4591 100644
---- a/arch/mips/cavium-octeon/cpu.c
-+++ b/arch/mips/cavium-octeon/cpu.c
-@@ -10,7 +10,9 @@
- #include <linux/irqflags.h>
- #include <linux/notifier.h>
- #include <linux/prefetch.h>
-+#include <linux/ptrace.h>
- #include <linux/sched.h>
-+#include <linux/sched/task_stack.h>
- 
- #include <asm/cop2.h>
- #include <asm/current.h>
-diff --git a/arch/mips/cavium-octeon/crypto/octeon-crypto.c b/arch/mips/cavium-octeon/crypto/octeon-crypto.c
-index 4d22365844af..cfb4a146cf17 100644
---- a/arch/mips/cavium-octeon/crypto/octeon-crypto.c
-+++ b/arch/mips/cavium-octeon/crypto/octeon-crypto.c
-@@ -9,6 +9,7 @@
- #include <asm/cop2.h>
- #include <linux/export.h>
- #include <linux/interrupt.h>
-+#include <linux/sched/task_stack.h>
- 
- #include "octeon-crypto.h"
- 
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index 4b94b7fbafa3..3de786545ded 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel_stat.h>
- #include <linux/sched.h>
- #include <linux/sched/hotplug.h>
-+#include <linux/sched/task_stack.h>
- #include <linux/init.h>
- #include <linux/export.h>
- 
-diff --git a/arch/mips/include/asm/fpu.h b/arch/mips/include/asm/fpu.h
-index 321752bcbab6..f94455f964ec 100644
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -12,6 +12,7 @@
- 
- #include <linux/sched.h>
- #include <linux/sched/task_stack.h>
-+#include <linux/ptrace.h>
- #include <linux/thread_info.h>
- #include <linux/bitops.h>
- 
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index 3daa2cae50b0..1b070a76fcdd 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -11,6 +11,7 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/sched/hotplug.h>
-+#include <linux/sched/task_stack.h>
- #include <linux/mm.h>
- #include <linux/delay.h>
- #include <linux/smp.h>
-diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
-index e077ea3e11fb..e398cbc3d776 100644
---- a/arch/mips/kernel/smp-mt.c
-+++ b/arch/mips/kernel/smp-mt.c
-@@ -23,6 +23,7 @@
- #include <linux/interrupt.h>
- #include <linux/irqchip/mips-gic.h>
- #include <linux/compiler.h>
-+#include <linux/sched/task_stack.h>
- #include <linux/smp.h>
- 
- #include <linux/atomic.h>
-diff --git a/arch/mips/loongson64/loongson-3/cop2-ex.c b/arch/mips/loongson64/loongson-3/cop2-ex.c
-index ea13764d0a03..621d6af5f6eb 100644
---- a/arch/mips/loongson64/loongson-3/cop2-ex.c
-+++ b/arch/mips/loongson64/loongson-3/cop2-ex.c
-@@ -13,6 +13,7 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/notifier.h>
-+#include <linux/ptrace.h>
- 
- #include <asm/fpu.h>
- #include <asm/cop2.h>
-diff --git a/arch/mips/netlogic/common/smp.c b/arch/mips/netlogic/common/smp.c
-index 10d86d54880a..bddf1ef553a4 100644
---- a/arch/mips/netlogic/common/smp.c
-+++ b/arch/mips/netlogic/common/smp.c
-@@ -35,6 +35,7 @@
- #include <linux/kernel.h>
- #include <linux/delay.h>
- #include <linux/init.h>
-+#include <linux/sched/task_stack.h>
- #include <linux/smp.h>
- #include <linux/irq.h>
- 
-diff --git a/arch/mips/netlogic/xlp/cop2-ex.c b/arch/mips/netlogic/xlp/cop2-ex.c
-index 52bc5de42005..21e439b3db70 100644
---- a/arch/mips/netlogic/xlp/cop2-ex.c
-+++ b/arch/mips/netlogic/xlp/cop2-ex.c
-@@ -9,11 +9,14 @@
-  * Copyright (C) 2009 Wind River Systems,
-  *   written by Ralf Baechle <ralf@linux-mips.org>
-  */
-+#include <linux/capability.h>
- #include <linux/init.h>
- #include <linux/irqflags.h>
- #include <linux/notifier.h>
- #include <linux/prefetch.h>
-+#include <linux/ptrace.h>
- #include <linux/sched.h>
-+#include <linux/sched/task_stack.h>
- 
- #include <asm/cop2.h>
- #include <asm/current.h>
-diff --git a/arch/mips/sgi-ip22/ip28-berr.c b/arch/mips/sgi-ip22/ip28-berr.c
-index 1f2a5bc4779e..75460e1e106b 100644
---- a/arch/mips/sgi-ip22/ip28-berr.c
-+++ b/arch/mips/sgi-ip22/ip28-berr.c
-@@ -9,6 +9,7 @@
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/sched/debug.h>
-+#include <linux/sched/signal.h>
- #include <linux/seq_file.h>
- 
- #include <asm/addrspace.h>
-diff --git a/arch/mips/sgi-ip27/ip27-berr.c b/arch/mips/sgi-ip27/ip27-berr.c
-index d12879eb2b1f..83efe03d5c60 100644
---- a/arch/mips/sgi-ip27/ip27-berr.c
-+++ b/arch/mips/sgi-ip27/ip27-berr.c
-@@ -12,7 +12,9 @@
- #include <linux/signal.h>	/* for SIGBUS */
- #include <linux/sched.h>	/* schow_regs(), force_sig() */
- #include <linux/sched/debug.h>
-+#include <linux/sched/signal.h>
- 
-+#include <asm/ptrace.h>
- #include <asm/sn/addrs.h>
- #include <asm/sn/arch.h>
- #include <asm/sn/sn0/hub.h>
-diff --git a/arch/mips/sgi-ip27/ip27-smp.c b/arch/mips/sgi-ip27/ip27-smp.c
-index f5ed45e8f442..4cd47d23d81a 100644
---- a/arch/mips/sgi-ip27/ip27-smp.c
-+++ b/arch/mips/sgi-ip27/ip27-smp.c
-@@ -8,10 +8,13 @@
-  */
- #include <linux/init.h>
- #include <linux/sched.h>
-+#include <linux/sched/task_stack.h>
- #include <linux/topology.h>
- #include <linux/nodemask.h>
-+
- #include <asm/page.h>
- #include <asm/processor.h>
-+#include <asm/ptrace.h>
- #include <asm/sn/arch.h>
- #include <asm/sn/gda.h>
- #include <asm/sn/intr.h>
-diff --git a/arch/mips/sgi-ip32/ip32-berr.c b/arch/mips/sgi-ip32/ip32-berr.c
-index 57d8c7486fe6..c1f12a9cf305 100644
---- a/arch/mips/sgi-ip32/ip32-berr.c
-+++ b/arch/mips/sgi-ip32/ip32-berr.c
-@@ -11,6 +11,7 @@
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/sched/debug.h>
-+#include <linux/sched/signal.h>
- #include <asm/traps.h>
- #include <linux/uaccess.h>
- #include <asm/addrspace.h>
-diff --git a/arch/mips/sgi-ip32/ip32-reset.c b/arch/mips/sgi-ip32/ip32-reset.c
-index 8bd415c8729f..b3b442def423 100644
---- a/arch/mips/sgi-ip32/ip32-reset.c
-+++ b/arch/mips/sgi-ip32/ip32-reset.c
-@@ -13,6 +13,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/sched.h>
-+#include <linux/sched/signal.h>
- #include <linux/notifier.h>
- #include <linux/delay.h>
- #include <linux/rtc/ds1685.h>
--- 
-2.9.0
+I just resent my fix for the second time
+
+> drivers/staging/vc04_services/bcm2835-camera/bcm2835-camera.c:743:178:
+> warning: the address of '__func__' will always evaluate as 'true'
+> [-Waddress]
+
+A new regresssion as of today, won't be able to look myself, but this
+should be trivial to address.
+
+> bmips_be_defconfig (mips) — FAIL, 1 error, 1 warning, 0 section mismatches
+>
+> Errors:
+> arch/mips/kernel/smp-bmips.c:183:38: error: implicit declaration of function
+> 'task_stack_page' [-Werror=implicit-function-declaration]
+
+A new regression from the end of the merge window, also present in mainline.
+I sent a fix yesterday, addressing various mips build failures.
+
+> cavium_octeon_defconfig (mips) — FAIL, 4 errors, 4 warnings, 0 section
+> mismatches
+> Warnings:
+> drivers/staging/octeon/ethernet-rx.c:339:28: warning: unused variable 'priv'
+> [-Wunused-variable]
+
+I sent the patch on Feb 17, resent the same one today
+
+> defconfig (arm64) — PASS, 0 errors, 4 warnings, 0 section mismatches
+>
+> Warnings:
+> :1325:2: warning: #warning syscall statx not implemented [-Wcpp]
+> fs/overlayfs/inode.c:322:30: warning: 'ovl_i_mutex_key' defined but not used
+> [-Wunused-variable]
+> fs/overlayfs/inode.c:323:30: warning: 'ovl_i_mutex_dir_key' defined but not
+> used [-Wunused-variable]
+
+New regression as of today, haven't looked but seems trivial
+
+> defconfig+CONFIG_KASAN=y (x86) — PASS, 0 errors, 5 warnings, 0 section
+> mismatches
+>
+> Warnings:
+> net/wireless/nl80211.c:1415:1: warning: the frame size of 2232 bytes is
+> larger than 2048 bytes [-Wframe-larger-than=]
+> net/wireless/nl80211.c:4443:1: warning: the frame size of 2232 bytes is
+> larger than 2048 bytes [-Wframe-larger-than=]
+> net/wireless/nl80211.c:5743:1: warning: the frame size of 2064 bytes is
+> larger than 2048 bytes [-Wframe-larger-than=]
+> net/wireless/nl80211.c:1904:1: warning: the frame size of 3784 bytes is
+> larger than 2048 bytes [-Wframe-larger-than=]
+> drivers/tty/vt/keyboard.c:1472:1: warning: the frame size of 2344 bytes is
+> larger than 2048 bytes [-Wframe-larger-than=]
+
+This is an old bug, I sent a first version of a longer patch series last
+week, will need to be updated next week, but I hope to get this into v4.11.
+
+    Arnd

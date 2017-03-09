@@ -1,55 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2017 22:12:17 +0100 (CET)
-Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:33196
-        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992123AbdCIVMKSeW7A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Mar 2017 22:12:10 +0100
-Received: by mail-wm0-x241.google.com with SMTP id n11so12883406wma.0;
-        Thu, 09 Mar 2017 13:12:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=3EB3HIMFy8ckJUbOvh0Yho8bUItUM6f0GLS+Dt2GZao=;
-        b=XzprBMoi9Z41iefDnF8bLKWChNgi1qIhpQIGV9nDKe6QUMWbJVUBi4Im4p/4x/sYOu
-         8jHXE/K1VzPhf7E20DweFfX1YYX3Mo+L5sj4SaMqfEqksLxtYs84xdOBpxSV2T0OUMSH
-         N5bhnvn8CHdZy517ADtaELJs2ye9pZk7iSB0m7HacMwsWo6vLweD9kBUXjQIc+mB+f24
-         kgTe5QAFame5CHlsZ3zFoG+trc1DKkhmZyUqRs8ZDITkaYFRNZWNEwPAMbIATq2BJAkg
-         aeYTT1Xq1Tie/uguAlU9StwNzWTl4URbJxSYwLhxf1IIUq/JaJbRUUy7iElLE5iFqgtP
-         bpbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=3EB3HIMFy8ckJUbOvh0Yho8bUItUM6f0GLS+Dt2GZao=;
-        b=aWqbwNGnAzcloIvbn7V4wZuMbg08ICcgaALj23yu298qlwLPs/l0Jp3llceshz7bDk
-         bCDxIEE282e2m+LJw/kWs4S6ulWFAs4TLVmaIpy7iulxxJJVLJR8+WKvFZg/zYHM07bo
-         dvB6VQSjQzShiWhuSNj3oPQobAEmSwzHgwRKtlTJDnVI/PD+GSc8WgfhvVH9WVf4Hqpv
-         vVxifR4JPDcgmk2H/DULcH9uyYMrINOWHB1VtpDzPibDmJgAesB+/Mcslest4gDEQ81U
-         yE9Dr66Tfw1GsKGAFXevoKA6PCBkJ3IURAYU7Jd/7zf1Sbb8Bc5LgNyT6x2EgsG78jFq
-         vP6Q==
-X-Gm-Message-State: AMke39kBEcP4gbuWE71KxFc//SqA7q/C8nUWC+Dkgsiv+aMrHKLxo9Z77KnZzLBooHvpzg==
-X-Received: by 10.28.4.10 with SMTP id 10mr31304595wme.142.1489093924947;
-        Thu, 09 Mar 2017 13:12:04 -0800 (PST)
-Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id m188sm128813wma.27.2017.03.09.13.12.02
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 Mar 2017 13:12:04 -0800 (PST)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, james.hogan@imgtec.com,
-        paul.burton@imgtec.com, macro@linux-mips.org,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH] MIPS: page.h: define virt_to_pfn()
-Date:   Thu,  9 Mar 2017 13:11:49 -0800
-Message-Id: <20170309211149.8339-1-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.9.3
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2017 22:28:52 +0100 (CET)
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:51219 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992123AbdCIV2pMcClb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Mar 2017 22:28:45 +0100
+Received: from raspberrypi-3.musicnaut.iki.fi (85-76-82-11-nat.elisa-mobile.fi [85.76.82.11])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id CC3861A268D;
+        Thu,  9 Mar 2017 23:28:44 +0200 (EET)
+Date:   Thu, 9 Mar 2017 23:28:44 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     "Steven J. Hill" <steven.hill@cavium.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] MIPS: Octeon: Clean up platform code.
+Message-ID: <20170309212844.c44inv7ukb3mgpjo@raspberrypi-3.musicnaut.iki.fi>
+References: <1489068963-9836-1-git-send-email-steven.hill@cavium.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1489068963-9836-1-git-send-email-steven.hill@cavium.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57099
+X-archive-position: 57100
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,28 +39,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Based on the existing definition of virt_to_page() which already does a
-PFN_DOWN(vir_to_phys(kaddr)).
+On Thu, Mar 09, 2017 at 08:16:03AM -0600, Steven J. Hill wrote:
+> From: "Steven J. Hill" <Steven.Hill@cavium.com>
+> 
+> Remove unused headers and fix warnings from checkpatch.
+> 
+> Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
+> Acked-by: David Daney <david.daney@cavium.com>
+> ---
+>  arch/mips/cavium-octeon/octeon-platform.c | 16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+> index 72d2a5e..1a1e11f 100644
+> --- a/arch/mips/cavium-octeon/octeon-platform.c
+> +++ b/arch/mips/cavium-octeon/octeon-platform.c
+> @@ -7,8 +7,6 @@
+>   * Copyright (C) 2008 Wind River Systems
+>   */
+>  
+> -#include <linux/init.h>
+> -#include <linux/delay.h>
+>  #include <linux/etherdevice.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/of_fdt.h>
+> @@ -440,7 +438,7 @@ static int __init octeon_rng_device_init(void)
+>  }
+>  device_initcall(octeon_rng_device_init);
+>  
+> -static struct of_device_id __initdata octeon_ids[] = {
+> +const struct of_device_id octeon_ids[] __initconst = {
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/mips/include/asm/page.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I think it should static const.
 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 5f987598054f..ad461216b5a1 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -240,8 +240,8 @@ static inline int pfn_valid(unsigned long pfn)
- 
- #endif
- 
--#define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys((void *)     \
--								  (kaddr))))
-+#define virt_to_pfn(kaddr)   	PFN_DOWN(virt_to_phys((void *)(kaddr)))
-+#define virt_to_page(kaddr)	pfn_to_page(virt_to_pfn(kaddr))
- 
- extern int __virt_addr_valid(const volatile void *kaddr);
- #define virt_addr_valid(kaddr)						\
--- 
-2.9.3
+A.

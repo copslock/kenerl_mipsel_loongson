@@ -1,74 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2017 15:14:57 +0100 (CET)
-Received: from mail-bn3nam01on0054.outbound.protection.outlook.com ([104.47.33.54]:19547
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2017 15:15:38 +0100 (CET)
+Received: from mail-sn1nam02on0057.outbound.protection.outlook.com ([104.47.36.57]:40096
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991976AbdCIOOdWnxtT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 9 Mar 2017 15:14:33 +0100
+        id S23992236AbdCIOPB6caST (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Mar 2017 15:15:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=DZUVfQQfI+/8hjKALZg2K7WI/ofLmrECmeiMFhfKVmY=;
- b=E2VaJPTThAaPXBpj0D5M0lxl5t8KD6azVat5dhxwkn8KTor/+3hbqWjOC+XLRX5nqIMV4wcip02ht+npc+V2WkIAViaElq7PjW7a9pV64nIKizrUxMKrpIE7cilf6YtkbFoEJanOJI3zYpTYuwcTzDHd5/aAqv/l0iZ5WSGXiG8=
+ bh=OpQbb+UkZqVq8zO3hfh3Of0sWbTl9obUCx9WGFdSW8w=;
+ b=YQkYK7Y5mpG8KIvu6fy/6SNbusMCoIGNhXwdDp7dR6Kt3wERYlLU7tUtRG5cORkTptuhjJgFfsFOaadULYbV8WX9q+EoL4uDEFD7Pv3hrOb4CF3ZJOEg9NY+2Fp615f7sEkXvXSg1GGGqyMrFQmKCv2j+GYzQaIZOyU5FGq82F4=
 Authentication-Results: linux-mips.org; dkim=none (message not signed)
  header.d=none;linux-mips.org; dmarc=none action=none header.from=cavium.com;
 Received: from white.inter.net (173.22.239.243) by
- BN6PR07MB3203.namprd07.prod.outlook.com (10.172.105.149) with Microsoft SMTP
+ CY4PR07MB3207.namprd07.prod.outlook.com (10.172.115.149) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.947.12; Thu, 9 Mar 2017 14:14:22 +0000
+ 15.1.947.12; Thu, 9 Mar 2017 14:14:52 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     linux-mips@linux-mips.org
 Cc:     ralf@linux-mips.org
-Subject: [PATCH] MIPS: Octeon: Remove unused L2C types and macros.
-Date:   Thu,  9 Mar 2017 08:14:15 -0600
-Message-Id: <1489068855-9670-1-git-send-email-steven.hill@cavium.com>
+Subject: [PATCH] MIPS: Octeon: Remove unused MIO types and macros.
+Date:   Thu,  9 Mar 2017 08:14:45 -0600
+Message-Id: <1489068885-9711-1-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [173.22.239.243]
-X-ClientProxiedBy: SN1PR0701CA0040.namprd07.prod.outlook.com (10.162.96.50) To
- BN6PR07MB3203.namprd07.prod.outlook.com (10.172.105.149)
-X-MS-Office365-Filtering-Correlation-Id: d18f8159-58a7-43ea-c98e-08d466f695ad
-X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:BN6PR07MB3203;
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3203;3:8PNKG+xWJGkbOBFmNPggSdvsvTd4p05sVP/Iplh2zqkQrFu22vqQ3j+xvb6lCGzoXU2msS4Z0b9dV/oSj9dzblEeQhhc+gS9HjRe4hUftOcOkW4S8LABSiZVZ8hB4XYzSuq1UvE1j4TgO60K3rrTV01etc44JpLnHaC+1AmUaFltNUy1QI472SOvx2V95svLLnk1SgypnyedSKpyrwF1Wqx7JmKzHP5xBgruhWjIs/uISlU8kQDZFjkSyJvdzcnuot8zE1RSOfGxxQMiGMnnxQ==;25:RDWdNkSJ/m73Mp43FlAgCafhXUKryQXrKwmaym3cC6YOR20jt9rki3efPQJ1pdFsMewGf5F6jd3Oqaz67o+WCUFACpLN6LXZH+eau2qRQCw+RLfqwdH51Fh2fg5PJMy497rKlRwbPyKaQKSorrTnfkeKlOp7Ck8PfoI9z/PoIuneSfdg4GrLPs5pxPNergkszDQgh+vqnU182rX5fkrLKym+82Z166Sm3Ld8Ukpy1yt+tNPhcw0TdzhJBwRoxvS75aJBasf1BONwmPmDeJYBveG4Z+tfYMvpi0ixCD3DDcbvQuMqHYMcUkE7cgRnekomneyGjUSuluDYa2O2tcZP7PnKm4iJj+bgx5xJGkJQu1/4DKeq7nxU80GuIh8d/24qu9Z9/6lOxCbZR+mu9uuz65/bRBTdAyixFmZk64gxoZV3FiSVJsoFVSS2BZpfBihedqlraOY4ZjtHkiXX9TV9WA==
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3203;31:KE8RMSZ5UlRIawT2vX9QQ/dmxMAiJ5PWcW4EpEv7wbMkZUhb5g4I7kgWmCGx3R99G4nuCi2/BSAInz0/PzFjOENIHgH7jcqDjJU11vIT2If2K8BYCzs5PBkrO8YL2z9YhuxryhlBcRdYhQMfLZgLZZKOSAylaewIH2oEkz66AWjLsUIPqwrQRuIhf8ODXBKdhuwmd9ZdUGhoWXQX1fXBoH7rJumeZbAoDZtHrfhSQf3PItw2bZWjfFgY+Idv3zyhoYSGlPviYLoaBauF2lwK+Q==;20:awa8Pnrnec7znIZ3mGC2nWfE8o4WksCYjTlvArUn0eFZQE6kFVIfh+GXhaGzNc+h8ty7yed7c5+2dk+VnVDUtXz8GLBbgn61GGqYnjQxjowqGkgVAZTbe+PjqreCfQ06BiwJ24O3r2SRmfY1ZuNuwTKjJHFVsSeA989l8cczcKhqxiFWP1sFkALdL1J33wFCfLkEK9st6QwbESPJSL788qwxdOM8ZF3kWFr+/nN9Vd2E41KhRX2xmlWJTVCj27ZiTMdiOMJRobIL7A1But3CQ1aA2EWZ4BEHTy4m4AoTlnyw4H6CerYYKTY6b6+0tb7Oe0UcAozO5lmy83r5k/MZSJylnk6/XBvY1+ZOsKrVMRLlPTE/+92hpJbVDc5YkM83EwHPTyGc1bGTuSfT4mFzVtN/T/BrTHy7CoAHVCKob8JNu2SCrFtcYeZHo4e83k4Z0qL+KRUHKHEMKoln3TSIKT2r94l+tsn23VnQNFs3HT1ES8KY++8n2emnQjKR+1C/
-X-Microsoft-Antispam-PRVS: <BN6PR07MB320345833BC933F4F7950ACE80210@BN6PR07MB3203.namprd07.prod.outlook.com>
-X-Exchange-Antispam-Report-Test: UriScan:(250305191791016)(22074186197030);
-X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(8121501046)(5005006)(10201501046)(3002001)(6041248)(20161123558025)(20161123555025)(20161123564025)(20161123562025)(20161123560025)(6072148);SRVR:BN6PR07MB3203;BCL:0;PCL:0;RULEID:;SRVR:BN6PR07MB3203;
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3203;4:5Z0MD4TQ1VcB+lFws5AX1R3S92VeeHxGk8I2Clwbz2JRCfisdhFgR67JVDdwhysvhZbfKSfMY2uG+56TBHp7w+owpzOtzMP+1ZPyd/Tcy4mHjdZOkp+DSgiCtw0dPwGPqHHfmZLdluzznzJrrnVunwlp66Jyg+R9TlZtlaawYP7VHa1lb55Cj/rNhzLhR4WfNJKC+zQf4qnnukf8YmrMnaxusbeYIi0ipfudGlSPn+r+kiatTxK16VkOmS04XsPIebgm2HN2zl8D0F+XCpoleJkmuncAEApC8AHyiZlN+9CVrMctXtFifXhn8C29PqrYv/Vm6ZQOKdu770mDd05w4tVCUAbyiAiHUxF6HngVq0OJCKOudnW6fxoiwjEvoaUJBBLKS83Tm0wgRHFSgclx46Bqjr8bCUlon4+AOZGzry9aS1ZH+EdV09v7h/mAWNZd54RHVGQgcWMqQx2atT8+60V2+EHhuJjoMFJQWstCtnO4Cjw5sBlewWit51reyeg1DLxr/RJhmQgBQDe1IH/nD/w0riVDSN+FccOqZ5DQMTwGHhGq9LUmGTGxI5exbzEPgZN0JWGZ5Ev3K25+HF+qatU479vwfVIIprPVvQLJsLQ0vmd8R2D6uWJOW7vkWi6NZ+CqjPxoTMUapfFcYgRnDA6eYUweV1ioXwl7Vr2E9wh9ipCDOQOHddNNxyfoAsHG
+X-ClientProxiedBy: BN1PR07CA0072.namprd07.prod.outlook.com (10.255.193.47) To
+ CY4PR07MB3207.namprd07.prod.outlook.com (10.172.115.149)
+X-MS-Office365-Filtering-Correlation-Id: fde7514b-cd70-4d93-0ad0-08d466f6a7b9
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:CY4PR07MB3207;
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;3:GWLC0BQu6psirzVu1HrTdW1QGMa91WaiXR8iPuaoO0Kvzu89G88mZq+4m0iyuXd4nUC1npRjy4i9yO1hkbblvO2hVBRsQ8/SZgnzAq/Zz9LQrZF4DI9qu5T6Of9Q6wLHkiH1zrVLYj6dRHvpXMn/xYS1kTx/JRc4mKhLEbDdgkqPn4uLcZV1VujfbvAj7H9ZKQmPpF5sinRzhCMnb3ML0rhlTukelyBvRmkVRK0cZxmCsbn4asfXXECQdNOfdwyPHwtZoyInQsNbEPXIDfpwCw==;25:FZ8Qc1DtT4triMkuZRYy7VXsa8MlGUmlDLpZrEMa6thptz74yIgOEbIm64nq8cuPdHbyuawNWojDDKyxYilVsZW6tk07Z01yYQilRWDJqAjerkMq03/0muHvELwS7kDuZRfC94/Xer0L+DGVCO9vxwjylZwVPDGqp9LatnCjRisyhsZFHVNShssZ6zvXD6zYi5iLBbALi52YqldwR/r8GueJoByd62BxB1s0CaWw3hU6OvTqg75FOh2K0XmlG0EBMGxMrjie6dYyyPNJwvHClicVn1UwBjjMcPcsUskVjxYSWXkm1Coaqj30wyedt8Lufj5jIAoZI1vDtycn/irGtQW65TX4VLcT7a17hT3RH3dTWZMe3f9KwROrlx5WrEX8zQ41n+KOmDZ7dfNTfd1GJGe6B9Siu5MRG/T3oPfKEEwzQWP63ICJxWNratIS5PMT
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;31:BDq/2Ci+zBWr5CScRsPWZL6SH9YjzusLPxbPVzBQKbpbPuSxSONGv+5gOBUx/TM5L7jcTA1xPWLCvtEQbMTj2wuaMBloqDo34OdnaE8aXeHNohDfk6K4Qvpm7KmFQZZ/eIU315Lv+NdRA2+Md8SiSBxlutPmwKKl8Y/AqNPDZInd7zZ429nym04C0cTVOuCJHsXkVUaWYC8Ag0SmTaGiNMFXpGFD0fmJ4SfbYABft33FKCOD7y9qokavuaDkDTshx2qLU4fQ2e1UHpJ9Gfvshg==;20:Bctn+Asc+VEN35e6bYZSB2fLn6Xu5P8DQvahXJNKcNUubrwyj8fx5oRQ6iBfY4+MCiRSkUOVRHY6zB5FUxbf3yvkyuNSx/7qGMWvg04HBDgNe+nBwVW8WFRGftCq6YyG8xFkHMOhhACeoga0dV0kEU4y2jLgYrJT4UQLQqNoyQkddpQDpwpN5oRmNOUtMdv6CxHHhh/8Q7U8E93dzuY+d7ciZMSvn5jqtEFbDcSIXlTMuDptDgMUXnBfUpKtoXjEdqmwt67wgZxYeJBJAu2Gy4ZBtfMAngPygNUTBK2iQCG+D8TBOj9H6FTOpGJL1sABoBWV5BqCkJQKB8MDSd9bhprH5vznuj4ASipkC6Arel1WiqDxqSjUDQhfOCdhybK5ELcGh8boZhQCSNJXRaUi6fdzjXymKU/ZYLl3WnYCFSnjhYfO9m7hBK4olqX7JRY/L1ZvAzNJK2f1wIGVXhrn8rTuVRVPhR0T+ioXfrlZjFahCHMXExEEDeOgX03BqpYK
+X-Microsoft-Antispam-PRVS: <CY4PR07MB320728C895A6B53E5A3BBC1280210@CY4PR07MB3207.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(8121501046)(5005006)(10201501046)(3002001)(6041248)(20161123560025)(20161123564025)(20161123555025)(20161123562025)(20161123558025)(6072148);SRVR:CY4PR07MB3207;BCL:0;PCL:0;RULEID:;SRVR:CY4PR07MB3207;
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;4:LkLRUv7QFjl1mbxg9QkzEVIIYEnndcWb696XE9xseuErg/LPr/j6KUC1zrw6CgBbJJYSXarMyALFzSY5dxc0n3Zg28urGSxqBb88KIqJ190n6sWwHXST8sNzVDDp6DQMFU/ePDKCnPtpsNU8LHZIpEPODmef9Tz3bqhnf9k92NyY+2qERi0fF1APOaK1YekYxphBqBJ7yby/5UqiJHRLUCdiN6FdWwFTGqnS9xkjmPgMUU4HwRc+AvKvcm6sFut6EWFi+OSB26UJTE8Xow3Td2C7tBuKVHYQMqD6kp7QAZHHNe/4dA999q1Zg86yUCr1ybGuyhLLed+g9AhV30fG8KUthmlsg7k9e74NbfYKFxRdJAW2DcdTd6hlkIjYiiw/GoCTjGOWnk+KD9rzkbEFNOLd/nbDd+U90ajp9NiHv7UhIxDQ5H64U1a6ie97lbHqISlOMnT/eU+qfR9mZ0Rug0QessUfbPpe5WUdGuoaQzwAAZ2lksQNBQQdkZe9/dh3Tq00vk9I48w5u/5agLonQb/KYpcqQAnuken5X6bVlH3j8o3GDEfcEJo5CPPIqfNpP+Zt1Mc1QBC0HtCKdiDE2N27YxrbyGrSlY/mzFq+P6k=
 X-Forefront-PRVS: 0241D5F98C
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(39450400003)(3846002)(575784001)(6116002)(2351001)(33646002)(47776003)(50466002)(6916009)(7736002)(48376002)(66066001)(36756003)(189998001)(2361001)(53416004)(81166006)(966004)(86362001)(6666003)(305945005)(6486002)(42186005)(38730400002)(53946003)(4326008)(5660300001)(53936002)(50226002)(50986999)(2906002)(25786008)(450100002)(110136004)(6506006)(8676002)(6306002)(5003940100001)(6512007)(2004002)(559001)(579004);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR07MB3203;H:white.inter.net;FPR:;SPF:None;MLV:sfv;LANG:en;
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;BN6PR07MB3203;23:FHUiwB/HnIYuCU5cIMpuZ9eOwfXrCGyTXUwa/Sgs5?=
- =?us-ascii?Q?5KHZmSxMKgS4UR8PcZJUsXKTkrjhoKe8dnxpIPhfuHtWX1iAe6cbTbP37SmD?=
- =?us-ascii?Q?2JTkfyqyeDiZkPnH0FuBc5IdVLLLZW8yZsmxAsNd7/P8cDSEongcwf438fHJ?=
- =?us-ascii?Q?GHRuuBuYjqB5fXETnlIo8x8a115naJ40+Xqvas4EIdjZNonkSMz/EWFWLpzU?=
- =?us-ascii?Q?uWfdHEop4KMZSlNyMKAAAHA0UzYXpSK+q2N0EVOyKD3OO/ptYzPv3DqjnV7a?=
- =?us-ascii?Q?117SzWJftmt68pspTKYG0wQKOXzVCyS+qrt5n6fkgTlx9KWwtGPxxzfaIklI?=
- =?us-ascii?Q?/OxNtpxu8Zrl5Fv7ny/z9LP+Z5y2v2/J5sT6J7BFBNI6yF6xcVmcmr7HU6kU?=
- =?us-ascii?Q?0mQ5tV3X8I7QLdPfl//E3GpLq++NLWivPUU2R9dRM1sft6X+TIDiLF6Y1Ob2?=
- =?us-ascii?Q?l/ER2EE8nfiW9EJoGfVGq3NkUwpxlKw4FS9N/vN411qbQccJWWXVCBcLRCiC?=
- =?us-ascii?Q?oyCaF5B/jmuukaIlaGBK7j6mSWn18rexCHD/vD7oV3dvlyjgPwXacwIFwp8y?=
- =?us-ascii?Q?gJ8A2lXvD/nW0Gq1VgDdsg+1KyK0DFiOXsPOhiBLIHyng5mswMeq9RaDmaiX?=
- =?us-ascii?Q?4E6IzM1EcbKCf6aisg/NSb9PXs37SDiXXeJ46OQYYmHhADgVOr46pvkWT7bw?=
- =?us-ascii?Q?ARjIhNfV4OGFcEl6pMW8wVaHzyu4avjScUh4yyv8gu/1PmIym8rQS5C7r/Ac?=
- =?us-ascii?Q?AFO/yFpnEYOv/OOkSxKzbrC/ZUlvZ2HT48A40BOt88eMkRTl3lACcY/vkesL?=
- =?us-ascii?Q?wi2ZB5A2vxh49nDVDpb6gqwP7mo52Tloj93Zi95F3dxQ7ITA8bV0Sv0uSerU?=
- =?us-ascii?Q?rP+NqpMubWjnkCksXHJLIqbJvFm7BP4s0PFb1/uEL2t6tmpTsee/Yzx5g5Xt?=
- =?us-ascii?Q?sJJUFIYKrIhfU4maR5aPQfMYyayH5Ol9m8XQIdxAuJUDw9dt7sbS7vhea0tw?=
- =?us-ascii?Q?59+E6omlpXAIOgvgWyDjVyb7t0KTKD/bDDK1bFGSwq7OAqGn6BNZWysW1RXo?=
- =?us-ascii?Q?ilUrwc=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3203;6:CV2SxuZzxBE6o9cahOkrr2Ews6KJMt+qmo/CGn7olHy5FjSxnMGQQoscLzfz8tC5F82r1nLAVJWvhAVm+v6LvKSoWy3DFXwlDA0qu/tCI/nT8b2xSawWEj8hWYWL/DreTSxvs9vxqXGhGVqLiRzWALk0Jyk0ePNcBzsRAM4BZ5+RlvHAeHU5Uw3qumZgqmtt52qPiOWVN2ZeAnWVVpiOdwg5mavwUi6ErCKMHKUUsu1PChqEmn8rHSWMpKKnQ+G7CD5zo0I2mRSFETmo9rAnjn8F+7xwZxp1tn4gQJStj+VwwiEBBtABsGBZAhAKPwUf016ZQObQnhGYvULqIeR8exh//7F2gd6sCi3jnOzS2nYbUDSsAWjAR+WmOiikhAo3FXPCxbsfTedtjgDLXy7d7Q==;5:bj5UYiJAiAWwUEbrS655fGeuLRkQ4A+R/ZMyqEZeaHrHQrSj0vplwao1qkb9qTqxPFbb3gtzgxBYtPakCNoWBQf0AKidJdBOGTbqcRYpfyJCoKedrUric3i8zNBzGn7oqaJJhUFyNR3LQb6TqYju9Q==;24:OCDfsNqEJggHc5NZdjqX5pnmWt6b5IF/z/AP5srI6H6td25/uv2q1mGGghnJcKmBXfdYVwaXpmL5HoerEsc5fCotf/Umwi6s+iImGTNXHm8=
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(39450400003)(305945005)(110136004)(50466002)(38730400002)(2906002)(42186005)(7736002)(53936002)(36756003)(6916009)(8676002)(81166006)(47776003)(66066001)(33646002)(53416004)(5003940100001)(48376002)(4326008)(50986999)(3846002)(2361001)(6116002)(189998001)(2351001)(6512007)(6486002)(86362001)(575784001)(25786008)(53946003)(6506006)(5660300001)(450100002)(6666003)(50226002)(2004002)(579004)(559001);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3207;H:white.inter.net;FPR:;SPF:None;MLV:sfv;LANG:en;
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY4PR07MB3207;23:t5uWL+lBbb46kQ+h5syJgfom++NLWRGpAwBkvS6Q7?=
+ =?us-ascii?Q?bBvrZ2TYvKjy10V3x08JdfeRztaRWtxtRO3C35w/FLnvWYG0uzAEQdwqS0ZD?=
+ =?us-ascii?Q?5t9oQ+WH5/L5SqDglcoEjKlAZFiFGnHMeHB9oN9pPEg1s0HLYkcbSdg+Umr3?=
+ =?us-ascii?Q?Qg3oLOgrRCEk7d3Iyj1Qz3RPWWcnYVpIhr+J99DxpqelECy7cpXEWifd0Foa?=
+ =?us-ascii?Q?0F0P77vZecTq42+DE+jNQOyuxltpbaAfZIl8pcv2+qEIYUM5Jj1Fb3nbsXLf?=
+ =?us-ascii?Q?iXKDgUR+VvB7oNc0pMj/K7IAYyZP6Wpp3XPD9C+47AfmFVkBCuFYebzlCAM4?=
+ =?us-ascii?Q?riURlfEJVScnsyr8ozjfL3ml9QyHoiEVOkNkVChpJHLrOHgTc1GITbBBfT3o?=
+ =?us-ascii?Q?jUL/4pEhJyZ/tNZdCaniy1TfX1aZc2dbUL6nvXtp08i4YMWFHDpXadF+fMty?=
+ =?us-ascii?Q?NfEa9scXBX1aKhmAnUJUA5NbtH9n3H4/ggiv/nxkC2XzscPyBTqPm2gMyvE/?=
+ =?us-ascii?Q?Ik6j5d+5YFHnhrqwI8ftdvQKlsBgIaCnxrkTM0/gJIcNIRumZ4PZbtQrgW6F?=
+ =?us-ascii?Q?fZvvcFtEbzZRPL3GKLn/Cstv3I9MgM3ZQbiZwbZ3sm0/wlZQHsptG/1Sqr6L?=
+ =?us-ascii?Q?9C4/6U/0/ti6qPdsNu/RHg0yuzY4J8ffq7528ls6h0BquMQQgr/0+4tZERah?=
+ =?us-ascii?Q?moZldwui+EkGTdExLMj3Bd6qZyuP66kLBTeemtbipxj+m2HIit/kJajDJo0y?=
+ =?us-ascii?Q?Y5AQkCDCxqX4k1y5ZErjvgLR7gnSWVw2/jHIwCzA6YJ2rYc0K7L+3wx5jlNc?=
+ =?us-ascii?Q?eYIdtSaTMFxTyWm4NWAE+TxNuhZ3dumUFiGuxzqiT3JeXSruSGRZY7KGwfFI?=
+ =?us-ascii?Q?WAqjeaC7bpjwLLS1gDS9qeHKT/X+M3oQKpwPkgJsIN4f80+34c3Yw9zZ2/WY?=
+ =?us-ascii?Q?nAeRn6Pn+u9IPfw9/wBE5Pi0uAQqrvpht8dFYolAKsnnjBKYift1paAs11SX?=
+ =?us-ascii?Q?t++fXkCFOZX/RUFGxpicWrbjpplx4KmgrB6wx0XuySf7A=3D=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;6:59wnuGgQAphA4Y00+jODTQ6wjssJV8hAM9gmQ10tzacXaXq8zy3zOKIDOh1murMkHxLukdQT8rCbK6VwfOIbmm5KOdadQEf2xRDzjkmO5g3UUjEqdSEpL5bZOVHJ6B6+NP3PlYH/p+f7t0T9XPkg6J0cPrPaSraEkmFtwMEZGtD8kz/3yJJGMlwyKcLtrEKWjO4P76WGFBqwt7xtexBdOuj+MwcQ1KVBGC4TY4pWsz4Fxg09G38A8MMX1wRQRb2N2EH/pXTuhQhq0Dzfrcw0+U4eaV0JqyDlJdTdTS6uapqGH/DabR3pmATNU+v2JL9gnNTATwYZYP4SN0S6JKq+bQ7NLyVp4XuCi41Vc0bQjB5sM+YSV3riLFjUcZxwnAqKQ/yJud4MHoq72xAGokc1Vw==;5:gj4ftBRsZjpzfoFz/po0Q3Ht6LoH/CqRPe2ssP1amusC4lpQIZ92TnDvEJ94vPUb6nmZrtrcBlfhj9fQt/KMjQ+nSSPM6ipdWIJpIAzsEu1t4EavSvU8TmgogCgde2pvCFbKfTgaG+JDTOguV9aWBg==;24:vBfzvuaC/Rbu4jADtLQv6hiaxyga+yYCwUN53uz9wHDxjeqAIJ8O5bXe7MDGSipuoJmbaq141YrkRblNJOwTadeA8u7IaQbYDyaQzUBLLIg=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BN6PR07MB3203;7:22O/L0F9FNsGBP34oDjtB57aomKV9lEFPG6j2vkM4fdW10zRES8aL6JNtrUvm4KmcNpbJwXrG0W6LnSmDCbI7zc6VgoRlAfh54YccVxDxSW08P5jRQdjxNXm1jEcfH3hGKbJtC/mhuObUfi5jqCVI+MeYhqwrC5BEov5p9L0kMCRpSH9I8yobQyQhud88924RVb4zhzzqaqypDV5XLzj664iAyegrFtDfOTwaNhO7JMt+Z9/q2Pql+ZBV7S3Col482NGE4GQ1pdvFNPTnm2/56MjHtnuhY2Qq5RqnGdy4uydZSkTNpJatlUWSa6PGPtKCyKcmHTlcbWSLZlovqyLgw==
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3207;7:QVidYMpzaQLBrsRinJ154gnfr0/mYwXkVT7fJbuk5OXQUXR4hk6p0ZriqjWMEyNkrTkxB/xFdcntwVCVLWrFo9YP+6rLqt0bqbDJyf+Fi49hNfXfLyDIbnoZH5Puc0wys+s+z5ps5k1GYgfc7S6seaMD03I47CM9ZtKUFMmSKaS4QD2xneocG/ZxYoT5wWNnG0A/ic4zIyjhV1sd+MLcH3YaE9Z/+p321KcyaPAk1eisR3OOAAt54pM7ey4GFj0W42qGAwOUf1bI1JLf+EmhzL4UJ59mYTYQ4I8UXHn9LrNPAGUNsGpI++IQoR8p8hOxOzMtI1qRoYs7X1e+9bebkw==
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2017 14:14:22.0360 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2017 14:14:52.2507 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR07MB3203
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3207
 Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57093
+X-archive-position: 57094
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -93,391 +92,13 @@ bitfields to use __BITFIELD_FIELD instead of #ifdef.
 Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
 Acked-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/cavium-octeon/executive/cvmx-l2c.c     |  139 +-
- arch/mips/cavium-octeon/executive/octeon-model.c |   21 +-
- arch/mips/include/asm/octeon/cvmx-l2c-defs.h     | 3191 +---------------------
- arch/mips/include/asm/octeon/cvmx-l2c.h          |   59 +-
- arch/mips/include/asm/octeon/cvmx-l2d-defs.h     |  526 ----
- arch/mips/include/asm/octeon/cvmx-l2t-defs.h     |  284 +-
- arch/mips/include/asm/octeon/cvmx.h              |    3 +-
- 7 files changed, 300 insertions(+), 3923 deletions(-)
- delete mode 100644 arch/mips/include/asm/octeon/cvmx-l2d-defs.h
+ arch/mips/include/asm/octeon/cvmx-mio-defs.h | 5746 ++------------------------
+ 1 file changed, 264 insertions(+), 5482 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-l2c.c b/arch/mips/cavium-octeon/executive/cvmx-l2c.c
-index 89b5273..f091c9b 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-l2c.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-l2c.c
-@@ -4,7 +4,7 @@
-  * Contact: support@caviumnetworks.com
-  * This file is part of the OCTEON SDK
-  *
-- * Copyright (c) 2003-2010 Cavium Networks
-+ * Copyright (c) 2003-2017 Cavium, Inc.
-  *
-  * This file is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License, Version 2, as
-@@ -239,6 +239,7 @@ uint64_t cvmx_l2c_read_perf(uint32_t counter)
- 		else {
- 			uint64_t counter = 0;
- 			int tad;
-+
- 			for (tad = 0; tad < CVMX_L2C_TADS; tad++)
- 				counter += cvmx_read_csr(CVMX_L2C_TADX_PFC0(tad));
- 			return counter;
-@@ -249,6 +250,7 @@ uint64_t cvmx_l2c_read_perf(uint32_t counter)
- 		else {
- 			uint64_t counter = 0;
- 			int tad;
-+
- 			for (tad = 0; tad < CVMX_L2C_TADS; tad++)
- 				counter += cvmx_read_csr(CVMX_L2C_TADX_PFC1(tad));
- 			return counter;
-@@ -259,6 +261,7 @@ uint64_t cvmx_l2c_read_perf(uint32_t counter)
- 		else {
- 			uint64_t counter = 0;
- 			int tad;
-+
- 			for (tad = 0; tad < CVMX_L2C_TADS; tad++)
- 				counter += cvmx_read_csr(CVMX_L2C_TADX_PFC2(tad));
- 			return counter;
-@@ -270,6 +273,7 @@ uint64_t cvmx_l2c_read_perf(uint32_t counter)
- 		else {
- 			uint64_t counter = 0;
- 			int tad;
-+
- 			for (tad = 0; tad < CVMX_L2C_TADS; tad++)
- 				counter += cvmx_read_csr(CVMX_L2C_TADX_PFC3(tad));
- 			return counter;
-@@ -301,7 +305,7 @@ static void fault_in(uint64_t addr, int len)
- 	 */
- 	CVMX_DCACHE_INVALIDATE;
- 	while (len > 0) {
--		ACCESS_ONCE(*ptr);
-+		READ_ONCE(*ptr);
- 		len -= CVMX_CACHE_LINE_SIZE;
- 		ptr += CVMX_CACHE_LINE_SIZE;
- 	}
-@@ -375,7 +379,9 @@ int cvmx_l2c_lock_line(uint64_t addr)
- 		if (((union cvmx_l2c_cfg)(cvmx_read_csr(CVMX_L2C_CFG))).s.idxalias) {
- 			int alias_shift = CVMX_L2C_IDX_ADDR_SHIFT + 2 * CVMX_L2_SET_BITS - 1;
- 			uint64_t addr_tmp = addr ^ (addr & ((1 << alias_shift) - 1)) >> CVMX_L2_SET_BITS;
-+
- 			lckbase.s.lck_base = addr_tmp >> 7;
-+
- 		} else {
- 			lckbase.s.lck_base = addr >> 7;
- 		}
-@@ -435,6 +441,7 @@ void cvmx_l2c_flush(void)
- 		/* These may look like constants, but they aren't... */
- 		int assoc_shift = CVMX_L2C_TAG_ADDR_ALIAS_SHIFT;
- 		int set_shift = CVMX_L2C_IDX_ADDR_SHIFT;
-+
- 		for (set = 0; set < n_set; set++) {
- 			for (assoc = 0; assoc < n_assoc; assoc++) {
- 				address = CVMX_ADD_SEG(CVMX_MIPS_SPACE_XKPHYS,
-@@ -519,89 +526,49 @@ int cvmx_l2c_unlock_mem_region(uint64_t start, uint64_t len)
- union __cvmx_l2c_tag {
- 	uint64_t u64;
- 	struct cvmx_l2c_tag_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved:40;
--		uint64_t V:1;		/* Line valid */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t L:1;		/* Line locked */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t addr:20;	/* Phys mem addr (33..14) */
--#else
--		uint64_t addr:20;	/* Phys mem addr (33..14) */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t L:1;		/* Line locked */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t V:1;		/* Line valid */
--		uint64_t reserved:40;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved:40,
-+		__BITFIELD_FIELD(uint64_t V:1,		/* Line valid */
-+		__BITFIELD_FIELD(uint64_t D:1,		/* Line dirty */
-+		__BITFIELD_FIELD(uint64_t L:1,		/* Line locked */
-+		__BITFIELD_FIELD(uint64_t U:1,		/* Use, LRU eviction */
-+		__BITFIELD_FIELD(uint64_t addr:20,	/* Phys addr (33..14) */
-+		;))))))
- 	} cn50xx;
- 	struct cvmx_l2c_tag_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved:41;
--		uint64_t V:1;		/* Line valid */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t L:1;		/* Line locked */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t addr:19;	/* Phys mem addr (33..15) */
--#else
--		uint64_t addr:19;	/* Phys mem addr (33..15) */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t L:1;		/* Line locked */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t V:1;		/* Line valid */
--		uint64_t reserved:41;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved:41,
-+		__BITFIELD_FIELD(uint64_t V:1,		/* Line valid */
-+		__BITFIELD_FIELD(uint64_t D:1,		/* Line dirty */
-+		__BITFIELD_FIELD(uint64_t L:1,		/* Line locked */
-+		__BITFIELD_FIELD(uint64_t U:1,		/* Use, LRU eviction */
-+		__BITFIELD_FIELD(uint64_t addr:19,	/* Phys addr (33..15) */
-+		;))))))
- 	} cn30xx;
- 	struct cvmx_l2c_tag_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved:42;
--		uint64_t V:1;		/* Line valid */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t L:1;		/* Line locked */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t addr:18;	/* Phys mem addr (33..16) */
--#else
--		uint64_t addr:18;	/* Phys mem addr (33..16) */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t L:1;		/* Line locked */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t V:1;		/* Line valid */
--		uint64_t reserved:42;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved:42,
-+		__BITFIELD_FIELD(uint64_t V:1,		/* Line valid */
-+		__BITFIELD_FIELD(uint64_t D:1,		/* Line dirty */
-+		__BITFIELD_FIELD(uint64_t L:1,		/* Line locked */
-+		__BITFIELD_FIELD(uint64_t U:1,		/* Use, LRU eviction */
-+		__BITFIELD_FIELD(uint64_t addr:18,	/* Phys addr (33..16) */
-+		;))))))
- 	} cn31xx;
- 	struct cvmx_l2c_tag_cn38xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved:43;
--		uint64_t V:1;		/* Line valid */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t L:1;		/* Line locked */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t addr:17;	/* Phys mem addr (33..17) */
--#else
--		uint64_t addr:17;	/* Phys mem addr (33..17) */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t L:1;		/* Line locked */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t V:1;		/* Line valid */
--		uint64_t reserved:43;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved:43,
-+		__BITFIELD_FIELD(uint64_t V:1,		/* Line valid */
-+		__BITFIELD_FIELD(uint64_t D:1,		/* Line dirty */
-+		__BITFIELD_FIELD(uint64_t L:1,		/* Line locked */
-+		__BITFIELD_FIELD(uint64_t U:1,		/* Use, LRU eviction */
-+		__BITFIELD_FIELD(uint64_t addr:17,	/* Phys addr (33..17) */
-+		;))))))
- 	} cn38xx;
- 	struct cvmx_l2c_tag_cn58xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved:44;
--		uint64_t V:1;		/* Line valid */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t L:1;		/* Line locked */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t addr:16;	/* Phys mem addr (33..18) */
--#else
--		uint64_t addr:16;	/* Phys mem addr (33..18) */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t L:1;		/* Line locked */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t V:1;		/* Line valid */
--		uint64_t reserved:44;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved:44,
-+		__BITFIELD_FIELD(uint64_t V:1,		/* Line valid */
-+		__BITFIELD_FIELD(uint64_t D:1,		/* Line dirty */
-+		__BITFIELD_FIELD(uint64_t L:1,		/* Line locked */
-+		__BITFIELD_FIELD(uint64_t U:1,		/* Use, LRU eviction */
-+		__BITFIELD_FIELD(uint64_t addr:16,	/* Phys addr (33..18) */
-+		;))))))
- 	} cn58xx;
- 	struct cvmx_l2c_tag_cn58xx cn56xx;	/* 2048 sets */
- 	struct cvmx_l2c_tag_cn31xx cn52xx;	/* 512 sets */
-@@ -629,8 +596,8 @@ static union __cvmx_l2c_tag __read_l2_tag(uint64_t assoc, uint64_t index)
- 	union __cvmx_l2c_tag tag_val;
- 	uint64_t dbg_addr = CVMX_L2C_DBG;
- 	unsigned long flags;
--
- 	union cvmx_l2c_dbg debug_val;
-+
- 	debug_val.u64 = 0;
- 	/*
- 	 * For low core count parts, the core number is always small
-@@ -683,8 +650,8 @@ static union __cvmx_l2c_tag __read_l2_tag(uint64_t assoc, uint64_t index)
- union cvmx_l2c_tag cvmx_l2c_get_tag(uint32_t association, uint32_t index)
- {
- 	union cvmx_l2c_tag tag;
--	tag.u64 = 0;
- 
-+	tag.u64 = 0;
- 	if ((int)association >= cvmx_l2c_get_num_assoc()) {
- 		cvmx_dprintf("ERROR: cvmx_l2c_get_tag association out of range\n");
- 		return tag;
-@@ -767,10 +734,12 @@ uint32_t cvmx_l2c_address_to_index(uint64_t addr)
- 
- 	if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
- 		union cvmx_l2c_ctl l2c_ctl;
-+
- 		l2c_ctl.u64 = cvmx_read_csr(CVMX_L2C_CTL);
- 		indxalias = !l2c_ctl.s.disidxalias;
- 	} else {
- 		union cvmx_l2c_cfg l2c_cfg;
-+
- 		l2c_cfg.u64 = cvmx_read_csr(CVMX_L2C_CFG);
- 		indxalias = l2c_cfg.s.idxalias;
- 	}
-@@ -778,6 +747,7 @@ uint32_t cvmx_l2c_address_to_index(uint64_t addr)
- 	if (indxalias) {
- 		if (OCTEON_IS_MODEL(OCTEON_CN63XX)) {
- 			uint32_t a_14_12 = (idx / (CVMX_L2C_MEMBANK_SELECT_SIZE/(1<<CVMX_L2C_IDX_ADDR_SHIFT))) & 0x7;
-+
- 			idx ^= idx / cvmx_l2c_get_num_sets();
- 			idx ^= a_14_12;
- 		} else {
-@@ -801,6 +771,7 @@ int cvmx_l2c_get_cache_size_bytes(void)
- int cvmx_l2c_get_set_bits(void)
- {
- 	int l2_set_bits;
-+
- 	if (OCTEON_IS_MODEL(OCTEON_CN56XX) || OCTEON_IS_MODEL(OCTEON_CN58XX))
- 		l2_set_bits = 11;	/* 2048 sets */
- 	else if (OCTEON_IS_MODEL(OCTEON_CN38XX) || OCTEON_IS_MODEL(OCTEON_CN63XX))
-@@ -828,6 +799,7 @@ int cvmx_l2c_get_num_sets(void)
- int cvmx_l2c_get_num_assoc(void)
- {
- 	int l2_assoc;
-+
- 	if (OCTEON_IS_MODEL(OCTEON_CN56XX) ||
- 	    OCTEON_IS_MODEL(OCTEON_CN52XX) ||
- 	    OCTEON_IS_MODEL(OCTEON_CN58XX) ||
-@@ -869,16 +841,17 @@ int cvmx_l2c_get_num_assoc(void)
- 		else if (mio_fus_dat3.s.l2c_crip == 1)
- 			l2_assoc = 12;
- 	} else {
--		union cvmx_l2d_fus3 val;
--		val.u64 = cvmx_read_csr(CVMX_L2D_FUS3);
-+		uint64_t l2d_fus3;
-+
-+		l2d_fus3 = cvmx_read_csr(CVMX_L2D_FUS3);
- 		/*
- 		 * Using shifts here, as bit position names are
- 		 * different for each model but they all mean the
- 		 * same.
- 		 */
--		if ((val.u64 >> 35) & 0x1)
-+		if ((l2d_fus3 >> 35) & 0x1)
- 			l2_assoc = l2_assoc >> 2;
--		else if ((val.u64 >> 34) & 0x1)
-+		else if ((l2d_fus3 >> 34) & 0x1)
- 			l2_assoc = l2_assoc >> 1;
- 	}
- 	return l2_assoc;
-diff --git a/arch/mips/cavium-octeon/executive/octeon-model.c b/arch/mips/cavium-octeon/executive/octeon-model.c
-index d08a2bc..3410523 100644
---- a/arch/mips/cavium-octeon/executive/octeon-model.c
-+++ b/arch/mips/cavium-octeon/executive/octeon-model.c
-@@ -4,7 +4,7 @@
-  * Contact: support@caviumnetworks.com
-  * This file is part of the OCTEON SDK
-  *
-- * Copyright (c) 2003-2010 Cavium Networks
-+ * Copyright (c) 2003-2017 Cavium, Inc.
-  *
-  * This file is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License, Version 2, as
-@@ -63,16 +63,15 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
- 	char pass[4];
- 	int clock_mhz;
- 	const char *suffix;
--	union cvmx_l2d_fus3 fus3;
- 	int num_cores;
- 	union cvmx_mio_fus_dat2 fus_dat2;
- 	union cvmx_mio_fus_dat3 fus_dat3;
- 	char fuse_model[10];
- 	uint32_t fuse_data = 0;
-+	uint64_t l2d_fus3 = 0;
- 
--	fus3.u64 = 0;
- 	if (OCTEON_IS_MODEL(OCTEON_CN3XXX) || OCTEON_IS_MODEL(OCTEON_CN5XXX))
--		fus3.u64 = cvmx_read_csr(CVMX_L2D_FUS3);
-+		l2d_fus3 = (cvmx_read_csr(CVMX_L2D_FUS3) >> 34) & 0x3;
- 	fus_dat2.u64 = cvmx_read_csr(CVMX_MIO_FUS_DAT2);
- 	fus_dat3.u64 = cvmx_read_csr(CVMX_MIO_FUS_DAT3);
- 	num_cores = cvmx_octeon_num_cores();
-@@ -192,7 +191,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
- 	/* Now figure out the family, the first two digits */
- 	switch ((chip_id >> 8) & 0xff) {
- 	case 0:		/* CN38XX, CN37XX or CN36XX */
--		if (fus3.cn38xx.crip_512k) {
-+		if (l2d_fus3) {
- 			/*
- 			 * For some unknown reason, the 16 core one is
- 			 * called 37 instead of 36.
-@@ -223,7 +222,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
- 		}
- 		break;
- 	case 1:		/* CN31XX or CN3020 */
--		if ((chip_id & 0x10) || fus3.cn31xx.crip_128k)
-+		if ((chip_id & 0x10) || l2d_fus3)
- 			family = "30";
- 		else
- 			family = "31";
-@@ -246,7 +245,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
- 	case 2:		/* CN3010 or CN3005 */
- 		family = "30";
- 		/* A chip with half cache is an 05 */
--		if (fus3.cn30xx.crip_64k)
-+		if (l2d_fus3)
- 			core_model = "05";
- 		/*
- 		 * This series of chips didn't follow the standard
-@@ -267,7 +266,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
- 	case 3:		/* CN58XX */
- 		family = "58";
- 		/* Special case. 4 core, half cache (CP with half cache) */
--		if ((num_cores == 4) && fus3.cn58xx.crip_1024k && !strncmp(suffix, "CP", 2))
-+		if ((num_cores == 4) && l2d_fus3 && !strncmp(suffix, "CP", 2))
- 			core_model = "29";
- 
- 		/* Pass 1 uses different encodings for pass numbers */
-@@ -290,7 +289,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
- 		break;
- 	case 4:		/* CN57XX, CN56XX, CN55XX, CN54XX */
- 		if (fus_dat2.cn56xx.raid_en) {
--			if (fus3.cn56xx.crip_1024k)
-+			if (l2d_fus3)
- 				family = "55";
- 			else
- 				family = "57";
-@@ -309,7 +308,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
- 				if (fus_dat3.cn56xx.bar2_en)
- 					suffix = "NSPB2";
- 			}
--			if (fus3.cn56xx.crip_1024k)
-+			if (l2d_fus3)
- 				family = "54";
- 			else
- 				family = "56";
-@@ -319,7 +318,7 @@ static const char *__init octeon_model_get_string_buffer(uint32_t chip_id,
- 		family = "50";
- 		break;
- 	case 7:		/* CN52XX */
--		if (fus3.cn52xx.crip_256k)
-+		if (l2d_fus3)
- 			family = "51";
- 		else
- 			family = "52";
-diff --git a/arch/mips/include/asm/octeon/cvmx-l2c-defs.h b/arch/mips/include/asm/octeon/cvmx-l2c-defs.h
-index 10262cb..9346798 100644
---- a/arch/mips/include/asm/octeon/cvmx-l2c-defs.h
-+++ b/arch/mips/include/asm/octeon/cvmx-l2c-defs.h
+diff --git a/arch/mips/include/asm/octeon/cvmx-mio-defs.h b/arch/mips/include/asm/octeon/cvmx-mio-defs.h
+index 5196c04..934bd26 100644
+--- a/arch/mips/include/asm/octeon/cvmx-mio-defs.h
++++ b/arch/mips/include/asm/octeon/cvmx-mio-defs.h
 @@ -4,7 +4,7 @@
   * Contact: support@caviumnetworks.com
   * This file is part of the OCTEON SDK
@@ -487,4232 +108,5834 @@ index 10262cb..9346798 100644
   *
   * This file is free software; you can redistribute it and/or modify
   * it under the terms of the GNU General Public License, Version 2, as
-@@ -28,3140 +28,175 @@
- #ifndef __CVMX_L2C_DEFS_H__
- #define __CVMX_L2C_DEFS_H__
+@@ -29,5565 +29,347 @@
+ #define __CVMX_MIO_DEFS_H__
  
--#define CVMX_L2C_BIG_CTL (CVMX_ADD_IO_SEG(0x0001180080800030ull))
--#define CVMX_L2C_BST (CVMX_ADD_IO_SEG(0x00011800808007F8ull))
--#define CVMX_L2C_BST0 (CVMX_ADD_IO_SEG(0x00011800800007F8ull))
--#define CVMX_L2C_BST1 (CVMX_ADD_IO_SEG(0x00011800800007F0ull))
--#define CVMX_L2C_BST2 (CVMX_ADD_IO_SEG(0x00011800800007E8ull))
--#define CVMX_L2C_BST_MEMX(block_id) (CVMX_ADD_IO_SEG(0x0001180080C007F8ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_BST_TDTX(block_id) (CVMX_ADD_IO_SEG(0x0001180080A007F0ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_BST_TTGX(block_id) (CVMX_ADD_IO_SEG(0x0001180080A007F8ull) + ((block_id) & 3) * 0x40000ull)
-+#define CVMX_L2C_DBG (CVMX_ADD_IO_SEG(0x0001180080000030ull))
- #define CVMX_L2C_CFG (CVMX_ADD_IO_SEG(0x0001180080000000ull))
--#define CVMX_L2C_COP0_MAPX(offset) (CVMX_ADD_IO_SEG(0x0001180080940000ull) + ((offset) & 16383) * 8)
- #define CVMX_L2C_CTL (CVMX_ADD_IO_SEG(0x0001180080800000ull))
--#define CVMX_L2C_DBG (CVMX_ADD_IO_SEG(0x0001180080000030ull))
--#define CVMX_L2C_DUT (CVMX_ADD_IO_SEG(0x0001180080000050ull))
--#define CVMX_L2C_DUT_MAPX(offset) (CVMX_ADD_IO_SEG(0x0001180080E00000ull) + ((offset) & 8191) * 8)
--#define CVMX_L2C_ERR_TDTX(block_id) (CVMX_ADD_IO_SEG(0x0001180080A007E0ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_ERR_TTGX(block_id) (CVMX_ADD_IO_SEG(0x0001180080A007E8ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_ERR_VBFX(block_id) (CVMX_ADD_IO_SEG(0x0001180080C007F0ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_ERR_XMC (CVMX_ADD_IO_SEG(0x00011800808007D8ull))
--#define CVMX_L2C_GRPWRR0 (CVMX_ADD_IO_SEG(0x00011800800000C8ull))
--#define CVMX_L2C_GRPWRR1 (CVMX_ADD_IO_SEG(0x00011800800000D0ull))
--#define CVMX_L2C_INT_EN (CVMX_ADD_IO_SEG(0x0001180080000100ull))
--#define CVMX_L2C_INT_ENA (CVMX_ADD_IO_SEG(0x0001180080800020ull))
--#define CVMX_L2C_INT_REG (CVMX_ADD_IO_SEG(0x0001180080800018ull))
--#define CVMX_L2C_INT_STAT (CVMX_ADD_IO_SEG(0x00011800800000F8ull))
--#define CVMX_L2C_IOCX_PFC(block_id) (CVMX_ADD_IO_SEG(0x0001180080800420ull))
--#define CVMX_L2C_IORX_PFC(block_id) (CVMX_ADD_IO_SEG(0x0001180080800428ull))
- #define CVMX_L2C_LCKBASE (CVMX_ADD_IO_SEG(0x0001180080000058ull))
- #define CVMX_L2C_LCKOFF (CVMX_ADD_IO_SEG(0x0001180080000060ull))
--#define CVMX_L2C_LFB0 (CVMX_ADD_IO_SEG(0x0001180080000038ull))
--#define CVMX_L2C_LFB1 (CVMX_ADD_IO_SEG(0x0001180080000040ull))
--#define CVMX_L2C_LFB2 (CVMX_ADD_IO_SEG(0x0001180080000048ull))
--#define CVMX_L2C_LFB3 (CVMX_ADD_IO_SEG(0x00011800800000B8ull))
--#define CVMX_L2C_OOB (CVMX_ADD_IO_SEG(0x00011800800000D8ull))
--#define CVMX_L2C_OOB1 (CVMX_ADD_IO_SEG(0x00011800800000E0ull))
--#define CVMX_L2C_OOB2 (CVMX_ADD_IO_SEG(0x00011800800000E8ull))
--#define CVMX_L2C_OOB3 (CVMX_ADD_IO_SEG(0x00011800800000F0ull))
-+#define CVMX_L2C_PFCTL (CVMX_ADD_IO_SEG(0x0001180080000090ull))
-+#define CVMX_L2C_PFCX(offset) (CVMX_ADD_IO_SEG(0x0001180080000098ull) +	       \
-+		((offset) & 3) * 8)
- #define CVMX_L2C_PFC0 CVMX_L2C_PFCX(0)
- #define CVMX_L2C_PFC1 CVMX_L2C_PFCX(1)
- #define CVMX_L2C_PFC2 CVMX_L2C_PFCX(2)
- #define CVMX_L2C_PFC3 CVMX_L2C_PFCX(3)
--#define CVMX_L2C_PFCTL (CVMX_ADD_IO_SEG(0x0001180080000090ull))
--#define CVMX_L2C_PFCX(offset) (CVMX_ADD_IO_SEG(0x0001180080000098ull) + ((offset) & 3) * 8)
--#define CVMX_L2C_PPGRP (CVMX_ADD_IO_SEG(0x00011800800000C0ull))
--#define CVMX_L2C_QOS_IOBX(offset) (CVMX_ADD_IO_SEG(0x0001180080880200ull) + ((offset) & 1) * 8)
--#define CVMX_L2C_QOS_PPX(offset) (CVMX_ADD_IO_SEG(0x0001180080880000ull) + ((offset) & 31) * 8)
--#define CVMX_L2C_QOS_WGT (CVMX_ADD_IO_SEG(0x0001180080800008ull))
--#define CVMX_L2C_RSCX_PFC(offset) (CVMX_ADD_IO_SEG(0x0001180080800410ull) + ((offset) & 3) * 64)
--#define CVMX_L2C_RSDX_PFC(offset) (CVMX_ADD_IO_SEG(0x0001180080800418ull) + ((offset) & 3) * 64)
- #define CVMX_L2C_SPAR0 (CVMX_ADD_IO_SEG(0x0001180080000068ull))
- #define CVMX_L2C_SPAR1 (CVMX_ADD_IO_SEG(0x0001180080000070ull))
- #define CVMX_L2C_SPAR2 (CVMX_ADD_IO_SEG(0x0001180080000078ull))
- #define CVMX_L2C_SPAR3 (CVMX_ADD_IO_SEG(0x0001180080000080ull))
- #define CVMX_L2C_SPAR4 (CVMX_ADD_IO_SEG(0x0001180080000088ull))
--#define CVMX_L2C_TADX_ECC0(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00018ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_ECC1(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00020ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_IEN(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00000ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_INT(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00028ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_PFC0(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00400ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_PFC1(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00408ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_PFC2(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00410ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_PFC3(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00418ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_PRF(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00008ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_TADX_TAG(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00010ull) + ((block_id) & 3) * 0x40000ull)
--#define CVMX_L2C_VER_ID (CVMX_ADD_IO_SEG(0x00011800808007E0ull))
--#define CVMX_L2C_VER_IOB (CVMX_ADD_IO_SEG(0x00011800808007F0ull))
--#define CVMX_L2C_VER_MSC (CVMX_ADD_IO_SEG(0x00011800808007D0ull))
--#define CVMX_L2C_VER_PP (CVMX_ADD_IO_SEG(0x00011800808007E8ull))
--#define CVMX_L2C_VIRTID_IOBX(offset) (CVMX_ADD_IO_SEG(0x00011800808C0200ull) + ((offset) & 1) * 8)
--#define CVMX_L2C_VIRTID_PPX(offset) (CVMX_ADD_IO_SEG(0x00011800808C0000ull) + ((offset) & 31) * 8)
--#define CVMX_L2C_VRT_CTL (CVMX_ADD_IO_SEG(0x0001180080800010ull))
--#define CVMX_L2C_VRT_MEMX(offset) (CVMX_ADD_IO_SEG(0x0001180080900000ull) + ((offset) & 1023) * 8)
--#define CVMX_L2C_WPAR_IOBX(offset) (CVMX_ADD_IO_SEG(0x0001180080840200ull) + ((offset) & 1) * 8)
--#define CVMX_L2C_WPAR_PPX(offset) (CVMX_ADD_IO_SEG(0x0001180080840000ull) + ((offset) & 31) * 8)
--#define CVMX_L2C_XMCX_PFC(offset) (CVMX_ADD_IO_SEG(0x0001180080800400ull) + ((offset) & 3) * 64)
--#define CVMX_L2C_XMC_CMD (CVMX_ADD_IO_SEG(0x0001180080800028ull))
--#define CVMX_L2C_XMDX_PFC(offset) (CVMX_ADD_IO_SEG(0x0001180080800408ull) + ((offset) & 3) * 64)
--
--union cvmx_l2c_big_ctl {
+ #define CVMX_MIO_BOOT_BIST_STAT (CVMX_ADD_IO_SEG(0x00011800000000F8ull))
+-#define CVMX_MIO_BOOT_COMP (CVMX_ADD_IO_SEG(0x00011800000000B8ull))
+-#define CVMX_MIO_BOOT_DMA_CFGX(offset) (CVMX_ADD_IO_SEG(0x0001180000000100ull) + ((offset) & 3) * 8)
+-#define CVMX_MIO_BOOT_DMA_INTX(offset) (CVMX_ADD_IO_SEG(0x0001180000000138ull) + ((offset) & 3) * 8)
+-#define CVMX_MIO_BOOT_DMA_INT_ENX(offset) (CVMX_ADD_IO_SEG(0x0001180000000150ull) + ((offset) & 3) * 8)
+-#define CVMX_MIO_BOOT_DMA_TIMX(offset) (CVMX_ADD_IO_SEG(0x0001180000000120ull) + ((offset) & 3) * 8)
+-#define CVMX_MIO_BOOT_ERR (CVMX_ADD_IO_SEG(0x00011800000000A0ull))
+-#define CVMX_MIO_BOOT_INT (CVMX_ADD_IO_SEG(0x00011800000000A8ull))
+-#define CVMX_MIO_BOOT_LOC_ADR (CVMX_ADD_IO_SEG(0x0001180000000090ull))
+-#define CVMX_MIO_BOOT_LOC_CFGX(offset) (CVMX_ADD_IO_SEG(0x0001180000000080ull) + ((offset) & 1) * 8)
+-#define CVMX_MIO_BOOT_LOC_DAT (CVMX_ADD_IO_SEG(0x0001180000000098ull))
+ #define CVMX_MIO_BOOT_PIN_DEFS (CVMX_ADD_IO_SEG(0x00011800000000C0ull))
+-#define CVMX_MIO_BOOT_REG_CFGX(offset) (CVMX_ADD_IO_SEG(0x0001180000000000ull) + ((offset) & 7) * 8)
+-#define CVMX_MIO_BOOT_REG_TIMX(offset) (CVMX_ADD_IO_SEG(0x0001180000000040ull) + ((offset) & 7) * 8)
+-#define CVMX_MIO_BOOT_THR (CVMX_ADD_IO_SEG(0x00011800000000B0ull))
+-#define CVMX_MIO_EMM_BUF_DAT (CVMX_ADD_IO_SEG(0x00011800000020E8ull))
+-#define CVMX_MIO_EMM_BUF_IDX (CVMX_ADD_IO_SEG(0x00011800000020E0ull))
+-#define CVMX_MIO_EMM_CFG (CVMX_ADD_IO_SEG(0x0001180000002000ull))
+-#define CVMX_MIO_EMM_CMD (CVMX_ADD_IO_SEG(0x0001180000002058ull))
+-#define CVMX_MIO_EMM_DMA (CVMX_ADD_IO_SEG(0x0001180000002050ull))
+-#define CVMX_MIO_EMM_INT (CVMX_ADD_IO_SEG(0x0001180000002078ull))
+-#define CVMX_MIO_EMM_INT_EN (CVMX_ADD_IO_SEG(0x0001180000002080ull))
+-#define CVMX_MIO_EMM_MODEX(offset) (CVMX_ADD_IO_SEG(0x0001180000002008ull) + ((offset) & 3) * 8)
+-#define CVMX_MIO_EMM_RCA (CVMX_ADD_IO_SEG(0x00011800000020A0ull))
+-#define CVMX_MIO_EMM_RSP_HI (CVMX_ADD_IO_SEG(0x0001180000002070ull))
+-#define CVMX_MIO_EMM_RSP_LO (CVMX_ADD_IO_SEG(0x0001180000002068ull))
+-#define CVMX_MIO_EMM_RSP_STS (CVMX_ADD_IO_SEG(0x0001180000002060ull))
+-#define CVMX_MIO_EMM_SAMPLE (CVMX_ADD_IO_SEG(0x0001180000002090ull))
+-#define CVMX_MIO_EMM_STS_MASK (CVMX_ADD_IO_SEG(0x0001180000002098ull))
+-#define CVMX_MIO_EMM_SWITCH (CVMX_ADD_IO_SEG(0x0001180000002048ull))
+-#define CVMX_MIO_EMM_WDOG (CVMX_ADD_IO_SEG(0x0001180000002088ull))
+-#define CVMX_MIO_FUS_BNK_DATX(offset) (CVMX_ADD_IO_SEG(0x0001180000001520ull) + ((offset) & 3) * 8)
+-#define CVMX_MIO_FUS_DAT0 (CVMX_ADD_IO_SEG(0x0001180000001400ull))
+-#define CVMX_MIO_FUS_DAT1 (CVMX_ADD_IO_SEG(0x0001180000001408ull))
++#define CVMX_MIO_BOOT_REG_CFGX(offset)					       \
++		(CVMX_ADD_IO_SEG(0x0001180000000000ull) + ((offset) & 7) * 8)
++#define CVMX_MIO_BOOT_REG_TIMX(offset)					       \
++		(CVMX_ADD_IO_SEG(0x0001180000000040ull) + ((offset) & 7) * 8)
+ #define CVMX_MIO_FUS_DAT2 (CVMX_ADD_IO_SEG(0x0001180000001410ull))
+ #define CVMX_MIO_FUS_DAT3 (CVMX_ADD_IO_SEG(0x0001180000001418ull))
+-#define CVMX_MIO_FUS_EMA (CVMX_ADD_IO_SEG(0x0001180000001550ull))
+-#define CVMX_MIO_FUS_PDF (CVMX_ADD_IO_SEG(0x0001180000001420ull))
+-#define CVMX_MIO_FUS_PLL (CVMX_ADD_IO_SEG(0x0001180000001580ull))
+-#define CVMX_MIO_FUS_PROG (CVMX_ADD_IO_SEG(0x0001180000001510ull))
+-#define CVMX_MIO_FUS_PROG_TIMES (CVMX_ADD_IO_SEG(0x0001180000001518ull))
+ #define CVMX_MIO_FUS_RCMD (CVMX_ADD_IO_SEG(0x0001180000001500ull))
+-#define CVMX_MIO_FUS_READ_TIMES (CVMX_ADD_IO_SEG(0x0001180000001570ull))
+-#define CVMX_MIO_FUS_REPAIR_RES0 (CVMX_ADD_IO_SEG(0x0001180000001558ull))
+-#define CVMX_MIO_FUS_REPAIR_RES1 (CVMX_ADD_IO_SEG(0x0001180000001560ull))
+-#define CVMX_MIO_FUS_REPAIR_RES2 (CVMX_ADD_IO_SEG(0x0001180000001568ull))
+-#define CVMX_MIO_FUS_SPR_REPAIR_RES (CVMX_ADD_IO_SEG(0x0001180000001548ull))
+-#define CVMX_MIO_FUS_SPR_REPAIR_SUM (CVMX_ADD_IO_SEG(0x0001180000001540ull))
+-#define CVMX_MIO_FUS_TGG (CVMX_ADD_IO_SEG(0x0001180000001428ull))
+-#define CVMX_MIO_FUS_UNLOCK (CVMX_ADD_IO_SEG(0x0001180000001578ull))
+-#define CVMX_MIO_FUS_WADR (CVMX_ADD_IO_SEG(0x0001180000001508ull))
+-#define CVMX_MIO_GPIO_COMP (CVMX_ADD_IO_SEG(0x00011800000000C8ull))
+-#define CVMX_MIO_NDF_DMA_CFG (CVMX_ADD_IO_SEG(0x0001180000000168ull))
+-#define CVMX_MIO_NDF_DMA_INT (CVMX_ADD_IO_SEG(0x0001180000000170ull))
+-#define CVMX_MIO_NDF_DMA_INT_EN (CVMX_ADD_IO_SEG(0x0001180000000178ull))
+-#define CVMX_MIO_PLL_CTL (CVMX_ADD_IO_SEG(0x0001180000001448ull))
+-#define CVMX_MIO_PLL_SETTING (CVMX_ADD_IO_SEG(0x0001180000001440ull))
+-#define CVMX_MIO_PTP_CKOUT_HI_INCR (CVMX_ADD_IO_SEG(0x0001070000000F40ull))
+-#define CVMX_MIO_PTP_CKOUT_LO_INCR (CVMX_ADD_IO_SEG(0x0001070000000F48ull))
+-#define CVMX_MIO_PTP_CKOUT_THRESH_HI (CVMX_ADD_IO_SEG(0x0001070000000F38ull))
+-#define CVMX_MIO_PTP_CKOUT_THRESH_LO (CVMX_ADD_IO_SEG(0x0001070000000F30ull))
+ #define CVMX_MIO_PTP_CLOCK_CFG (CVMX_ADD_IO_SEG(0x0001070000000F00ull))
+-#define CVMX_MIO_PTP_CLOCK_COMP (CVMX_ADD_IO_SEG(0x0001070000000F18ull))
+-#define CVMX_MIO_PTP_CLOCK_HI (CVMX_ADD_IO_SEG(0x0001070000000F10ull))
+-#define CVMX_MIO_PTP_CLOCK_LO (CVMX_ADD_IO_SEG(0x0001070000000F08ull))
+ #define CVMX_MIO_PTP_EVT_CNT (CVMX_ADD_IO_SEG(0x0001070000000F28ull))
+-#define CVMX_MIO_PTP_PHY_1PPS_IN (CVMX_ADD_IO_SEG(0x0001070000000F70ull))
+-#define CVMX_MIO_PTP_PPS_HI_INCR (CVMX_ADD_IO_SEG(0x0001070000000F60ull))
+-#define CVMX_MIO_PTP_PPS_LO_INCR (CVMX_ADD_IO_SEG(0x0001070000000F68ull))
+-#define CVMX_MIO_PTP_PPS_THRESH_HI (CVMX_ADD_IO_SEG(0x0001070000000F58ull))
+-#define CVMX_MIO_PTP_PPS_THRESH_LO (CVMX_ADD_IO_SEG(0x0001070000000F50ull))
+-#define CVMX_MIO_PTP_TIMESTAMP (CVMX_ADD_IO_SEG(0x0001070000000F20ull))
+-#define CVMX_MIO_QLMX_CFG(offset) (CVMX_ADD_IO_SEG(0x0001180000001590ull) + ((offset) & 7) * 8)
+ #define CVMX_MIO_RST_BOOT (CVMX_ADD_IO_SEG(0x0001180000001600ull))
+-#define CVMX_MIO_RST_CFG (CVMX_ADD_IO_SEG(0x0001180000001610ull))
+-#define CVMX_MIO_RST_CKILL (CVMX_ADD_IO_SEG(0x0001180000001638ull))
+-#define CVMX_MIO_RST_CNTLX(offset) (CVMX_ADD_IO_SEG(0x0001180000001648ull) + ((offset) & 3) * 8)
+-#define CVMX_MIO_RST_CTLX(offset) (CVMX_ADD_IO_SEG(0x0001180000001618ull) + ((offset) & 1) * 8)
+-#define CVMX_MIO_RST_DELAY (CVMX_ADD_IO_SEG(0x0001180000001608ull))
+-#define CVMX_MIO_RST_INT (CVMX_ADD_IO_SEG(0x0001180000001628ull))
+-#define CVMX_MIO_RST_INT_EN (CVMX_ADD_IO_SEG(0x0001180000001630ull))
+-#define CVMX_MIO_TWSX_INT(offset) (CVMX_ADD_IO_SEG(0x0001180000001010ull) + ((offset) & 1) * 512)
+-#define CVMX_MIO_TWSX_SW_TWSI(offset) (CVMX_ADD_IO_SEG(0x0001180000001000ull) + ((offset) & 1) * 512)
+-#define CVMX_MIO_TWSX_SW_TWSI_EXT(offset) (CVMX_ADD_IO_SEG(0x0001180000001018ull) + ((offset) & 1) * 512)
+-#define CVMX_MIO_TWSX_TWSI_SW(offset) (CVMX_ADD_IO_SEG(0x0001180000001008ull) + ((offset) & 1) * 512)
+-#define CVMX_MIO_UART2_DLH (CVMX_ADD_IO_SEG(0x0001180000000488ull))
+-#define CVMX_MIO_UART2_DLL (CVMX_ADD_IO_SEG(0x0001180000000480ull))
+-#define CVMX_MIO_UART2_FAR (CVMX_ADD_IO_SEG(0x0001180000000520ull))
+-#define CVMX_MIO_UART2_FCR (CVMX_ADD_IO_SEG(0x0001180000000450ull))
+-#define CVMX_MIO_UART2_HTX (CVMX_ADD_IO_SEG(0x0001180000000708ull))
+-#define CVMX_MIO_UART2_IER (CVMX_ADD_IO_SEG(0x0001180000000408ull))
+-#define CVMX_MIO_UART2_IIR (CVMX_ADD_IO_SEG(0x0001180000000410ull))
+-#define CVMX_MIO_UART2_LCR (CVMX_ADD_IO_SEG(0x0001180000000418ull))
+-#define CVMX_MIO_UART2_LSR (CVMX_ADD_IO_SEG(0x0001180000000428ull))
+-#define CVMX_MIO_UART2_MCR (CVMX_ADD_IO_SEG(0x0001180000000420ull))
+-#define CVMX_MIO_UART2_MSR (CVMX_ADD_IO_SEG(0x0001180000000430ull))
+-#define CVMX_MIO_UART2_RBR (CVMX_ADD_IO_SEG(0x0001180000000400ull))
+-#define CVMX_MIO_UART2_RFL (CVMX_ADD_IO_SEG(0x0001180000000608ull))
+-#define CVMX_MIO_UART2_RFW (CVMX_ADD_IO_SEG(0x0001180000000530ull))
+-#define CVMX_MIO_UART2_SBCR (CVMX_ADD_IO_SEG(0x0001180000000620ull))
+-#define CVMX_MIO_UART2_SCR (CVMX_ADD_IO_SEG(0x0001180000000438ull))
+-#define CVMX_MIO_UART2_SFE (CVMX_ADD_IO_SEG(0x0001180000000630ull))
+-#define CVMX_MIO_UART2_SRR (CVMX_ADD_IO_SEG(0x0001180000000610ull))
+-#define CVMX_MIO_UART2_SRT (CVMX_ADD_IO_SEG(0x0001180000000638ull))
+-#define CVMX_MIO_UART2_SRTS (CVMX_ADD_IO_SEG(0x0001180000000618ull))
+-#define CVMX_MIO_UART2_STT (CVMX_ADD_IO_SEG(0x0001180000000700ull))
+-#define CVMX_MIO_UART2_TFL (CVMX_ADD_IO_SEG(0x0001180000000600ull))
+-#define CVMX_MIO_UART2_TFR (CVMX_ADD_IO_SEG(0x0001180000000528ull))
+-#define CVMX_MIO_UART2_THR (CVMX_ADD_IO_SEG(0x0001180000000440ull))
+-#define CVMX_MIO_UART2_USR (CVMX_ADD_IO_SEG(0x0001180000000538ull))
+-#define CVMX_MIO_UARTX_DLH(offset) (CVMX_ADD_IO_SEG(0x0001180000000888ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_DLL(offset) (CVMX_ADD_IO_SEG(0x0001180000000880ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_FAR(offset) (CVMX_ADD_IO_SEG(0x0001180000000920ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_FCR(offset) (CVMX_ADD_IO_SEG(0x0001180000000850ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_HTX(offset) (CVMX_ADD_IO_SEG(0x0001180000000B08ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_IER(offset) (CVMX_ADD_IO_SEG(0x0001180000000808ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_IIR(offset) (CVMX_ADD_IO_SEG(0x0001180000000810ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_LCR(offset) (CVMX_ADD_IO_SEG(0x0001180000000818ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_LSR(offset) (CVMX_ADD_IO_SEG(0x0001180000000828ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_MCR(offset) (CVMX_ADD_IO_SEG(0x0001180000000820ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_MSR(offset) (CVMX_ADD_IO_SEG(0x0001180000000830ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_RBR(offset) (CVMX_ADD_IO_SEG(0x0001180000000800ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_RFL(offset) (CVMX_ADD_IO_SEG(0x0001180000000A08ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_RFW(offset) (CVMX_ADD_IO_SEG(0x0001180000000930ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_SBCR(offset) (CVMX_ADD_IO_SEG(0x0001180000000A20ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_SCR(offset) (CVMX_ADD_IO_SEG(0x0001180000000838ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_SFE(offset) (CVMX_ADD_IO_SEG(0x0001180000000A30ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_SRR(offset) (CVMX_ADD_IO_SEG(0x0001180000000A10ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_SRT(offset) (CVMX_ADD_IO_SEG(0x0001180000000A38ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_SRTS(offset) (CVMX_ADD_IO_SEG(0x0001180000000A18ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_STT(offset) (CVMX_ADD_IO_SEG(0x0001180000000B00ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_TFL(offset) (CVMX_ADD_IO_SEG(0x0001180000000A00ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_TFR(offset) (CVMX_ADD_IO_SEG(0x0001180000000928ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_THR(offset) (CVMX_ADD_IO_SEG(0x0001180000000840ull) + ((offset) & 1) * 1024)
+-#define CVMX_MIO_UARTX_USR(offset) (CVMX_ADD_IO_SEG(0x0001180000000938ull) + ((offset) & 1) * 1024)
++#define CVMX_MIO_RST_CTLX(offset)					       \
++		(CVMX_ADD_IO_SEG(0x0001180000001618ull) + ((offset) & 1) * 8)
++#define CVMX_MIO_QLMX_CFG(offset)					       \
++		(CVMX_ADD_IO_SEG(0x0001180000001590ull) + ((offset) & 7) * 8)
++#define CVMX_MIO_UARTX_LSR(offset)					       \
++		(CVMX_ADD_IO_SEG(0x0001180000000828ull) + ((offset) & 1) * 1024)
++#define CVMX_MIO_UARTX_THR(offset)					       \
++		(CVMX_ADD_IO_SEG(0x0001180000000840ull) + ((offset) & 1) * 1024)
++#define CVMX_MIO_FUS_PDF CVMX_MIO_FUS_PDF_FUNC()
++static inline uint64_t CVMX_MIO_FUS_PDF_FUNC(void)
++{
++	switch (cvmx_get_octeon_family()) {
++	case OCTEON_CNF71XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN50XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN52XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN56XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN58XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN61XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN63XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN66XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN68XX & OCTEON_FAMILY_MASK:
++		return CVMX_ADD_IO_SEG(0x0001180000001420ull);
++	case OCTEON_CNF75XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN70XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN73XX & OCTEON_FAMILY_MASK:
++	case OCTEON_CN78XX & OCTEON_FAMILY_MASK:
++	default:
++		return CVMX_ADD_IO_SEG(0x0001180000001428ull);
++	}
++}
+ 
+-union cvmx_mio_boot_bist_stat {
 -	uint64_t u64;
--	struct cvmx_l2c_big_ctl_s {
+-	struct cvmx_mio_boot_bist_stat_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_8_63:56;
--		uint64_t maxdram:4;
--		uint64_t reserved_1_3:3;
--		uint64_t disable:1;
+-		uint64_t reserved_0_63:64;
 -#else
--		uint64_t disable:1;
--		uint64_t reserved_1_3:3;
--		uint64_t maxdram:4;
--		uint64_t reserved_8_63:56;
+-		uint64_t reserved_0_63:64;
 -#endif
 -	} s;
--	struct cvmx_l2c_big_ctl_s cn61xx;
--	struct cvmx_l2c_big_ctl_s cn63xx;
--	struct cvmx_l2c_big_ctl_s cn66xx;
--	struct cvmx_l2c_big_ctl_s cn68xx;
--	struct cvmx_l2c_big_ctl_s cn68xxp1;
--	struct cvmx_l2c_big_ctl_s cnf71xx;
--};
--
--union cvmx_l2c_bst {
--	uint64_t u64;
--	struct cvmx_l2c_bst_s {
+-	struct cvmx_mio_boot_bist_stat_cn30xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t dutfl:32;
--		uint64_t rbffl:4;
--		uint64_t xbffl:4;
--		uint64_t tdpfl:4;
--		uint64_t ioccmdfl:4;
--		uint64_t iocdatfl:4;
--		uint64_t dutresfl:4;
--		uint64_t vrtfl:4;
--		uint64_t tdffl:4;
+-		uint64_t reserved_4_63:60;
+-		uint64_t ncbo_1:1;
+-		uint64_t ncbo_0:1;
+-		uint64_t loc:1;
+-		uint64_t ncbi:1;
 -#else
--		uint64_t tdffl:4;
--		uint64_t vrtfl:4;
--		uint64_t dutresfl:4;
--		uint64_t iocdatfl:4;
--		uint64_t ioccmdfl:4;
--		uint64_t tdpfl:4;
--		uint64_t xbffl:4;
--		uint64_t rbffl:4;
--		uint64_t dutfl:32;
--#endif
--	} s;
--	struct cvmx_l2c_bst_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_36_63:28;
--		uint64_t dutfl:4;
--		uint64_t reserved_17_31:15;
--		uint64_t ioccmdfl:1;
--		uint64_t reserved_13_15:3;
--		uint64_t iocdatfl:1;
--		uint64_t reserved_9_11:3;
--		uint64_t dutresfl:1;
--		uint64_t reserved_5_7:3;
--		uint64_t vrtfl:1;
--		uint64_t reserved_1_3:3;
--		uint64_t tdffl:1;
--#else
--		uint64_t tdffl:1;
--		uint64_t reserved_1_3:3;
--		uint64_t vrtfl:1;
--		uint64_t reserved_5_7:3;
--		uint64_t dutresfl:1;
--		uint64_t reserved_9_11:3;
--		uint64_t iocdatfl:1;
--		uint64_t reserved_13_15:3;
--		uint64_t ioccmdfl:1;
--		uint64_t reserved_17_31:15;
--		uint64_t dutfl:4;
--		uint64_t reserved_36_63:28;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_bst_cn63xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_38_63:26;
--		uint64_t dutfl:6;
--		uint64_t reserved_17_31:15;
--		uint64_t ioccmdfl:1;
--		uint64_t reserved_13_15:3;
--		uint64_t iocdatfl:1;
--		uint64_t reserved_9_11:3;
--		uint64_t dutresfl:1;
--		uint64_t reserved_5_7:3;
--		uint64_t vrtfl:1;
--		uint64_t reserved_1_3:3;
--		uint64_t tdffl:1;
--#else
--		uint64_t tdffl:1;
--		uint64_t reserved_1_3:3;
--		uint64_t vrtfl:1;
--		uint64_t reserved_5_7:3;
--		uint64_t dutresfl:1;
--		uint64_t reserved_9_11:3;
--		uint64_t iocdatfl:1;
--		uint64_t reserved_13_15:3;
--		uint64_t ioccmdfl:1;
--		uint64_t reserved_17_31:15;
--		uint64_t dutfl:6;
--		uint64_t reserved_38_63:26;
--#endif
--	} cn63xx;
--	struct cvmx_l2c_bst_cn63xx cn63xxp1;
--	struct cvmx_l2c_bst_cn66xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_42_63:22;
--		uint64_t dutfl:10;
--		uint64_t reserved_17_31:15;
--		uint64_t ioccmdfl:1;
--		uint64_t reserved_13_15:3;
--		uint64_t iocdatfl:1;
--		uint64_t reserved_9_11:3;
--		uint64_t dutresfl:1;
--		uint64_t reserved_5_7:3;
--		uint64_t vrtfl:1;
--		uint64_t reserved_1_3:3;
--		uint64_t tdffl:1;
--#else
--		uint64_t tdffl:1;
--		uint64_t reserved_1_3:3;
--		uint64_t vrtfl:1;
--		uint64_t reserved_5_7:3;
--		uint64_t dutresfl:1;
--		uint64_t reserved_9_11:3;
--		uint64_t iocdatfl:1;
--		uint64_t reserved_13_15:3;
--		uint64_t ioccmdfl:1;
--		uint64_t reserved_17_31:15;
--		uint64_t dutfl:10;
--		uint64_t reserved_42_63:22;
--#endif
--	} cn66xx;
--	struct cvmx_l2c_bst_s cn68xx;
--	struct cvmx_l2c_bst_s cn68xxp1;
--	struct cvmx_l2c_bst_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_bst0 {
--	uint64_t u64;
--	struct cvmx_l2c_bst0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_24_63:40;
--		uint64_t dtbnk:1;
--		uint64_t wlb_msk:4;
--		uint64_t dtcnt:13;
--		uint64_t dt:1;
--		uint64_t stin_msk:1;
--		uint64_t wlb_dat:4;
--#else
--		uint64_t wlb_dat:4;
--		uint64_t stin_msk:1;
--		uint64_t dt:1;
--		uint64_t dtcnt:13;
--		uint64_t wlb_msk:4;
--		uint64_t dtbnk:1;
--		uint64_t reserved_24_63:40;
--#endif
--	} s;
--	struct cvmx_l2c_bst0_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_23_63:41;
--		uint64_t wlb_msk:4;
--		uint64_t reserved_15_18:4;
--		uint64_t dtcnt:9;
--		uint64_t dt:1;
--		uint64_t reserved_4_4:1;
--		uint64_t wlb_dat:4;
--#else
--		uint64_t wlb_dat:4;
--		uint64_t reserved_4_4:1;
--		uint64_t dt:1;
--		uint64_t dtcnt:9;
--		uint64_t reserved_15_18:4;
--		uint64_t wlb_msk:4;
--		uint64_t reserved_23_63:41;
+-		uint64_t ncbi:1;
+-		uint64_t loc:1;
+-		uint64_t ncbo_0:1;
+-		uint64_t ncbo_1:1;
+-		uint64_t reserved_4_63:60;
 -#endif
 -	} cn30xx;
--	struct cvmx_l2c_bst0_cn31xx {
+-	struct cvmx_mio_boot_bist_stat_cn30xx cn31xx;
+-	struct cvmx_mio_boot_bist_stat_cn38xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_23_63:41;
--		uint64_t wlb_msk:4;
--		uint64_t reserved_16_18:3;
--		uint64_t dtcnt:10;
--		uint64_t dt:1;
--		uint64_t stin_msk:1;
--		uint64_t wlb_dat:4;
+-		uint64_t reserved_3_63:61;
+-		uint64_t ncbo_0:1;
+-		uint64_t loc:1;
+-		uint64_t ncbi:1;
 -#else
--		uint64_t wlb_dat:4;
--		uint64_t stin_msk:1;
--		uint64_t dt:1;
--		uint64_t dtcnt:10;
--		uint64_t reserved_16_18:3;
--		uint64_t wlb_msk:4;
--		uint64_t reserved_23_63:41;
--#endif
--	} cn31xx;
--	struct cvmx_l2c_bst0_cn38xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_19_63:45;
--		uint64_t dtcnt:13;
--		uint64_t dt:1;
--		uint64_t stin_msk:1;
--		uint64_t wlb_dat:4;
--#else
--		uint64_t wlb_dat:4;
--		uint64_t stin_msk:1;
--		uint64_t dt:1;
--		uint64_t dtcnt:13;
--		uint64_t reserved_19_63:45;
+-		uint64_t ncbi:1;
+-		uint64_t loc:1;
+-		uint64_t ncbo_0:1;
+-		uint64_t reserved_3_63:61;
 -#endif
 -	} cn38xx;
--	struct cvmx_l2c_bst0_cn38xx cn38xxp2;
--	struct cvmx_l2c_bst0_cn50xx {
+-	struct cvmx_mio_boot_bist_stat_cn38xx cn38xxp2;
+-	struct cvmx_mio_boot_bist_stat_cn50xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_24_63:40;
--		uint64_t dtbnk:1;
--		uint64_t wlb_msk:4;
--		uint64_t reserved_16_18:3;
--		uint64_t dtcnt:10;
--		uint64_t dt:1;
--		uint64_t stin_msk:1;
--		uint64_t wlb_dat:4;
+-		uint64_t reserved_6_63:58;
+-		uint64_t pcm_1:1;
+-		uint64_t pcm_0:1;
+-		uint64_t ncbo_1:1;
+-		uint64_t ncbo_0:1;
+-		uint64_t loc:1;
+-		uint64_t ncbi:1;
 -#else
--		uint64_t wlb_dat:4;
--		uint64_t stin_msk:1;
--		uint64_t dt:1;
--		uint64_t dtcnt:10;
--		uint64_t reserved_16_18:3;
--		uint64_t wlb_msk:4;
--		uint64_t dtbnk:1;
--		uint64_t reserved_24_63:40;
+-		uint64_t ncbi:1;
+-		uint64_t loc:1;
+-		uint64_t ncbo_0:1;
+-		uint64_t ncbo_1:1;
+-		uint64_t pcm_0:1;
+-		uint64_t pcm_1:1;
+-		uint64_t reserved_6_63:58;
 -#endif
 -	} cn50xx;
--	struct cvmx_l2c_bst0_cn50xx cn52xx;
--	struct cvmx_l2c_bst0_cn50xx cn52xxp1;
--	struct cvmx_l2c_bst0_s cn56xx;
--	struct cvmx_l2c_bst0_s cn56xxp1;
--	struct cvmx_l2c_bst0_s cn58xx;
--	struct cvmx_l2c_bst0_s cn58xxp1;
--};
--
--union cvmx_l2c_bst1 {
--	uint64_t u64;
--	struct cvmx_l2c_bst1_s {
+-	struct cvmx_mio_boot_bist_stat_cn52xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_9_63:55;
--		uint64_t l2t:9;
+-		uint64_t reserved_6_63:58;
+-		uint64_t ndf:2;
+-		uint64_t ncbo_0:1;
+-		uint64_t dma:1;
+-		uint64_t loc:1;
+-		uint64_t ncbi:1;
 -#else
--		uint64_t l2t:9;
--		uint64_t reserved_9_63:55;
--#endif
--	} s;
--	struct cvmx_l2c_bst1_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t vwdf:4;
--		uint64_t lrf:2;
--		uint64_t vab_vwcf:1;
--		uint64_t reserved_5_8:4;
--		uint64_t l2t:5;
--#else
--		uint64_t l2t:5;
--		uint64_t reserved_5_8:4;
--		uint64_t vab_vwcf:1;
--		uint64_t lrf:2;
--		uint64_t vwdf:4;
--		uint64_t reserved_16_63:48;
--#endif
--	} cn30xx;
--	struct cvmx_l2c_bst1_cn30xx cn31xx;
--	struct cvmx_l2c_bst1_cn38xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t vwdf:4;
--		uint64_t lrf:2;
--		uint64_t vab_vwcf:1;
--		uint64_t l2t:9;
--#else
--		uint64_t l2t:9;
--		uint64_t vab_vwcf:1;
--		uint64_t lrf:2;
--		uint64_t vwdf:4;
--		uint64_t reserved_16_63:48;
--#endif
--	} cn38xx;
--	struct cvmx_l2c_bst1_cn38xx cn38xxp2;
--	struct cvmx_l2c_bst1_cn38xx cn50xx;
--	struct cvmx_l2c_bst1_cn52xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_19_63:45;
--		uint64_t plc2:1;
--		uint64_t plc1:1;
--		uint64_t plc0:1;
--		uint64_t vwdf:4;
--		uint64_t reserved_11_11:1;
--		uint64_t ilc:1;
--		uint64_t vab_vwcf:1;
--		uint64_t l2t:9;
--#else
--		uint64_t l2t:9;
--		uint64_t vab_vwcf:1;
--		uint64_t ilc:1;
--		uint64_t reserved_11_11:1;
--		uint64_t vwdf:4;
--		uint64_t plc0:1;
--		uint64_t plc1:1;
--		uint64_t plc2:1;
--		uint64_t reserved_19_63:45;
+-		uint64_t ncbi:1;
+-		uint64_t loc:1;
+-		uint64_t dma:1;
+-		uint64_t ncbo_0:1;
+-		uint64_t ndf:2;
+-		uint64_t reserved_6_63:58;
 -#endif
 -	} cn52xx;
--	struct cvmx_l2c_bst1_cn52xx cn52xxp1;
--	struct cvmx_l2c_bst1_cn56xx {
+-	struct cvmx_mio_boot_bist_stat_cn52xxp1 {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_24_63:40;
--		uint64_t plc2:1;
--		uint64_t plc1:1;
--		uint64_t plc0:1;
--		uint64_t ilc:1;
--		uint64_t vwdf1:4;
--		uint64_t vwdf0:4;
--		uint64_t vab_vwcf1:1;
--		uint64_t reserved_10_10:1;
--		uint64_t vab_vwcf0:1;
--		uint64_t l2t:9;
+-		uint64_t reserved_4_63:60;
+-		uint64_t ncbo_0:1;
+-		uint64_t dma:1;
+-		uint64_t loc:1;
+-		uint64_t ncbi:1;
 -#else
--		uint64_t l2t:9;
--		uint64_t vab_vwcf0:1;
--		uint64_t reserved_10_10:1;
--		uint64_t vab_vwcf1:1;
--		uint64_t vwdf0:4;
--		uint64_t vwdf1:4;
--		uint64_t ilc:1;
--		uint64_t plc0:1;
--		uint64_t plc1:1;
--		uint64_t plc2:1;
--		uint64_t reserved_24_63:40;
+-		uint64_t ncbi:1;
+-		uint64_t loc:1;
+-		uint64_t dma:1;
+-		uint64_t ncbo_0:1;
+-		uint64_t reserved_4_63:60;
 -#endif
--	} cn56xx;
--	struct cvmx_l2c_bst1_cn56xx cn56xxp1;
--	struct cvmx_l2c_bst1_cn38xx cn58xx;
--	struct cvmx_l2c_bst1_cn38xx cn58xxp1;
+-	} cn52xxp1;
+-	struct cvmx_mio_boot_bist_stat_cn52xxp1 cn56xx;
+-	struct cvmx_mio_boot_bist_stat_cn52xxp1 cn56xxp1;
+-	struct cvmx_mio_boot_bist_stat_cn38xx cn58xx;
+-	struct cvmx_mio_boot_bist_stat_cn38xx cn58xxp1;
+-	struct cvmx_mio_boot_bist_stat_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t stat:12;
+-#else
+-		uint64_t stat:12;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_boot_bist_stat_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_9_63:55;
+-		uint64_t stat:9;
+-#else
+-		uint64_t stat:9;
+-		uint64_t reserved_9_63:55;
+-#endif
+-	} cn63xx;
+-	struct cvmx_mio_boot_bist_stat_cn63xx cn63xxp1;
+-	struct cvmx_mio_boot_bist_stat_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t stat:10;
+-#else
+-		uint64_t stat:10;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn66xx;
+-	struct cvmx_mio_boot_bist_stat_cn66xx cn68xx;
+-	struct cvmx_mio_boot_bist_stat_cn66xx cn68xxp1;
+-	struct cvmx_mio_boot_bist_stat_cn61xx cnf71xx;
 -};
 -
--union cvmx_l2c_bst2 {
+-union cvmx_mio_boot_comp {
 -	uint64_t u64;
--	struct cvmx_l2c_bst2_s {
+-	struct cvmx_mio_boot_comp_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t mrb:4;
--		uint64_t reserved_4_11:8;
--		uint64_t ipcbst:1;
--		uint64_t picbst:1;
--		uint64_t xrdmsk:1;
--		uint64_t xrddat:1;
+-		uint64_t reserved_0_63:64;
 -#else
--		uint64_t xrddat:1;
--		uint64_t xrdmsk:1;
--		uint64_t picbst:1;
--		uint64_t ipcbst:1;
--		uint64_t reserved_4_11:8;
--		uint64_t mrb:4;
--		uint64_t reserved_16_63:48;
+-		uint64_t reserved_0_63:64;
 -#endif
 -	} s;
--	struct cvmx_l2c_bst2_cn30xx {
+-	struct cvmx_mio_boot_comp_cn50xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t mrb:4;
--		uint64_t rmdf:4;
--		uint64_t reserved_4_7:4;
--		uint64_t ipcbst:1;
--		uint64_t reserved_2_2:1;
--		uint64_t xrdmsk:1;
--		uint64_t xrddat:1;
+-		uint64_t reserved_10_63:54;
+-		uint64_t pctl:5;
+-		uint64_t nctl:5;
 -#else
--		uint64_t xrddat:1;
--		uint64_t xrdmsk:1;
--		uint64_t reserved_2_2:1;
--		uint64_t ipcbst:1;
--		uint64_t reserved_4_7:4;
--		uint64_t rmdf:4;
--		uint64_t mrb:4;
--		uint64_t reserved_16_63:48;
+-		uint64_t nctl:5;
+-		uint64_t pctl:5;
+-		uint64_t reserved_10_63:54;
 -#endif
--	} cn30xx;
--	struct cvmx_l2c_bst2_cn30xx cn31xx;
--	struct cvmx_l2c_bst2_cn38xx {
+-	} cn50xx;
+-	struct cvmx_mio_boot_comp_cn50xx cn52xx;
+-	struct cvmx_mio_boot_comp_cn50xx cn52xxp1;
+-	struct cvmx_mio_boot_comp_cn50xx cn56xx;
+-	struct cvmx_mio_boot_comp_cn50xx cn56xxp1;
+-	struct cvmx_mio_boot_comp_cn61xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t mrb:4;
--		uint64_t rmdf:4;
--		uint64_t rhdf:4;
--		uint64_t ipcbst:1;
--		uint64_t picbst:1;
--		uint64_t xrdmsk:1;
--		uint64_t xrddat:1;
+-		uint64_t reserved_12_63:52;
+-		uint64_t pctl:6;
+-		uint64_t nctl:6;
 -#else
--		uint64_t xrddat:1;
--		uint64_t xrdmsk:1;
--		uint64_t picbst:1;
--		uint64_t ipcbst:1;
--		uint64_t rhdf:4;
--		uint64_t rmdf:4;
--		uint64_t mrb:4;
--		uint64_t reserved_16_63:48;
+-		uint64_t nctl:6;
+-		uint64_t pctl:6;
+-		uint64_t reserved_12_63:52;
 -#endif
--	} cn38xx;
--	struct cvmx_l2c_bst2_cn38xx cn38xxp2;
--	struct cvmx_l2c_bst2_cn30xx cn50xx;
--	struct cvmx_l2c_bst2_cn30xx cn52xx;
--	struct cvmx_l2c_bst2_cn30xx cn52xxp1;
--	struct cvmx_l2c_bst2_cn56xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t mrb:4;
--		uint64_t rmdb:4;
--		uint64_t rhdb:4;
--		uint64_t ipcbst:1;
--		uint64_t picbst:1;
--		uint64_t xrdmsk:1;
--		uint64_t xrddat:1;
--#else
--		uint64_t xrddat:1;
--		uint64_t xrdmsk:1;
--		uint64_t picbst:1;
--		uint64_t ipcbst:1;
--		uint64_t rhdb:4;
--		uint64_t rmdb:4;
--		uint64_t mrb:4;
--		uint64_t reserved_16_63:48;
--#endif
--	} cn56xx;
--	struct cvmx_l2c_bst2_cn56xx cn56xxp1;
--	struct cvmx_l2c_bst2_cn56xx cn58xx;
--	struct cvmx_l2c_bst2_cn56xx cn58xxp1;
--};
--
--union cvmx_l2c_bst_memx {
--	uint64_t u64;
--	struct cvmx_l2c_bst_memx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t start_bist:1;
--		uint64_t clear_bist:1;
--		uint64_t reserved_5_61:57;
--		uint64_t rdffl:1;
--		uint64_t vbffl:4;
--#else
--		uint64_t vbffl:4;
--		uint64_t rdffl:1;
--		uint64_t reserved_5_61:57;
--		uint64_t clear_bist:1;
--		uint64_t start_bist:1;
--#endif
--	} s;
--	struct cvmx_l2c_bst_memx_s cn61xx;
--	struct cvmx_l2c_bst_memx_s cn63xx;
--	struct cvmx_l2c_bst_memx_s cn63xxp1;
--	struct cvmx_l2c_bst_memx_s cn66xx;
--	struct cvmx_l2c_bst_memx_s cn68xx;
--	struct cvmx_l2c_bst_memx_s cn68xxp1;
--	struct cvmx_l2c_bst_memx_s cnf71xx;
--};
--
--union cvmx_l2c_bst_tdtx {
--	uint64_t u64;
--	struct cvmx_l2c_bst_tdtx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t fbfrspfl:8;
--		uint64_t sbffl:8;
--		uint64_t fbffl:8;
--		uint64_t l2dfl:8;
--#else
--		uint64_t l2dfl:8;
--		uint64_t fbffl:8;
--		uint64_t sbffl:8;
--		uint64_t fbfrspfl:8;
--		uint64_t reserved_32_63:32;
--#endif
--	} s;
--	struct cvmx_l2c_bst_tdtx_s cn61xx;
--	struct cvmx_l2c_bst_tdtx_s cn63xx;
--	struct cvmx_l2c_bst_tdtx_cn63xxp1 {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_24_63:40;
--		uint64_t sbffl:8;
--		uint64_t fbffl:8;
--		uint64_t l2dfl:8;
--#else
--		uint64_t l2dfl:8;
--		uint64_t fbffl:8;
--		uint64_t sbffl:8;
--		uint64_t reserved_24_63:40;
--#endif
--	} cn63xxp1;
--	struct cvmx_l2c_bst_tdtx_s cn66xx;
--	struct cvmx_l2c_bst_tdtx_s cn68xx;
--	struct cvmx_l2c_bst_tdtx_s cn68xxp1;
--	struct cvmx_l2c_bst_tdtx_s cnf71xx;
--};
-+#define CVMX_L2C_TADX_PFCX(offset, block_id)				       \
-+		(CVMX_ADD_IO_SEG(0x0001180080A00400ull) + (((offset) & 3) +    \
-+		((block_id) & 7) * 0x8000ull) * 8)
-+#define CVMX_L2C_TADX_PFC0(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00400ull) + \
-+		((block_id) & 3) * 0x40000ull)
-+#define CVMX_L2C_TADX_PFC1(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00408ull) + \
-+		((block_id) & 3) * 0x40000ull)
-+#define CVMX_L2C_TADX_PFC2(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00410ull) + \
-+		((block_id) & 3) * 0x40000ull)
-+#define CVMX_L2C_TADX_PFC3(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00418ull) + \
-+		((block_id) & 3) * 0x40000ull)
-+#define CVMX_L2C_TADX_PRF(offset) (CVMX_ADD_IO_SEG(0x0001180080A00008ull)    + \
-+		((offset) & 7) * 0x40000ull)
-+#define CVMX_L2C_TADX_TAG(block_id) (CVMX_ADD_IO_SEG(0x0001180080A00010ull)  + \
-+		((block_id) & 3) * 0x40000ull)
-+#define CVMX_L2C_WPAR_IOBX(offset) (CVMX_ADD_IO_SEG(0x0001180080840200ull)   + \
-+		((offset) & 1) * 8)
-+#define CVMX_L2C_WPAR_PPX(offset) (CVMX_ADD_IO_SEG(0x0001180080840000ull)    + \
-+		((offset) & 31) * 8)
-+#define CVMX_L2D_FUS3 (CVMX_ADD_IO_SEG(0x00011800800007B8ull))
- 
--union cvmx_l2c_bst_ttgx {
--	uint64_t u64;
--	struct cvmx_l2c_bst_ttgx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_17_63:47;
--		uint64_t lrufl:1;
--		uint64_t tagfl:16;
--#else
--		uint64_t tagfl:16;
--		uint64_t lrufl:1;
--		uint64_t reserved_17_63:47;
--#endif
--	} s;
--	struct cvmx_l2c_bst_ttgx_s cn61xx;
--	struct cvmx_l2c_bst_ttgx_s cn63xx;
--	struct cvmx_l2c_bst_ttgx_s cn63xxp1;
--	struct cvmx_l2c_bst_ttgx_s cn66xx;
--	struct cvmx_l2c_bst_ttgx_s cn68xx;
--	struct cvmx_l2c_bst_ttgx_s cn68xxp1;
--	struct cvmx_l2c_bst_ttgx_s cnf71xx;
+-	} cn61xx;
+-	struct cvmx_mio_boot_comp_cn61xx cn63xx;
+-	struct cvmx_mio_boot_comp_cn61xx cn63xxp1;
+-	struct cvmx_mio_boot_comp_cn61xx cn66xx;
+-	struct cvmx_mio_boot_comp_cn61xx cn68xx;
+-	struct cvmx_mio_boot_comp_cn61xx cn68xxp1;
+-	struct cvmx_mio_boot_comp_cn61xx cnf71xx;
 -};
  
- union cvmx_l2c_cfg {
+ union cvmx_mio_boot_dma_cfgx {
  	uint64_t u64;
- 	struct cvmx_l2c_cfg_s {
+ 	struct cvmx_mio_boot_dma_cfgx_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_20_63:44;
--		uint64_t bstrun:1;
--		uint64_t lbist:1;
--		uint64_t xor_bank:1;
--		uint64_t dpres1:1;
--		uint64_t dpres0:1;
--		uint64_t dfill_dis:1;
--		uint64_t fpexp:4;
--		uint64_t fpempty:1;
--		uint64_t fpen:1;
--		uint64_t idxalias:1;
--		uint64_t mwf_crd:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t lrf_arb_mode:1;
+-		uint64_t en:1;
+-		uint64_t rw:1;
+-		uint64_t clr:1;
+-		uint64_t reserved_60_60:1;
+-		uint64_t swap32:1;
+-		uint64_t swap16:1;
+-		uint64_t swap8:1;
+-		uint64_t endian:1;
+-		uint64_t size:20;
+-		uint64_t adr:36;
 -#else
--		uint64_t lrf_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t mwf_crd:4;
--		uint64_t idxalias:1;
--		uint64_t fpen:1;
--		uint64_t fpempty:1;
--		uint64_t fpexp:4;
--		uint64_t dfill_dis:1;
--		uint64_t dpres0:1;
--		uint64_t dpres1:1;
--		uint64_t xor_bank:1;
--		uint64_t lbist:1;
--		uint64_t bstrun:1;
--		uint64_t reserved_20_63:44;
+-		uint64_t adr:36;
+-		uint64_t size:20;
+-		uint64_t endian:1;
+-		uint64_t swap8:1;
+-		uint64_t swap16:1;
+-		uint64_t swap32:1;
+-		uint64_t reserved_60_60:1;
+-		uint64_t clr:1;
+-		uint64_t rw:1;
+-		uint64_t en:1;
 -#endif
-+		__BITFIELD_FIELD(uint64_t reserved_20_63:44,
-+		__BITFIELD_FIELD(uint64_t bstrun:1,
-+		__BITFIELD_FIELD(uint64_t lbist:1,
-+		__BITFIELD_FIELD(uint64_t xor_bank:1,
-+		__BITFIELD_FIELD(uint64_t dpres1:1,
-+		__BITFIELD_FIELD(uint64_t dpres0:1,
-+		__BITFIELD_FIELD(uint64_t dfill_dis:1,
-+		__BITFIELD_FIELD(uint64_t fpexp:4,
-+		__BITFIELD_FIELD(uint64_t fpempty:1,
-+		__BITFIELD_FIELD(uint64_t fpen:1,
-+		__BITFIELD_FIELD(uint64_t idxalias:1,
-+		__BITFIELD_FIELD(uint64_t mwf_crd:4,
-+		__BITFIELD_FIELD(uint64_t rsp_arb_mode:1,
-+		__BITFIELD_FIELD(uint64_t rfb_arb_mode:1,
-+		__BITFIELD_FIELD(uint64_t lrf_arb_mode:1,
++		__BITFIELD_FIELD(uint64_t en:1,
++		__BITFIELD_FIELD(uint64_t rw:1,
++		__BITFIELD_FIELD(uint64_t clr:1,
++		__BITFIELD_FIELD(uint64_t reserved_60_60:1,
++		__BITFIELD_FIELD(uint64_t swap32:1,
++		__BITFIELD_FIELD(uint64_t swap16:1,
++		__BITFIELD_FIELD(uint64_t swap8:1,
++		__BITFIELD_FIELD(uint64_t endian:1,
++		__BITFIELD_FIELD(uint64_t size:20,
++		__BITFIELD_FIELD(uint64_t adr:36,
++		;))))))))))
+ 	} s;
+-	struct cvmx_mio_boot_dma_cfgx_s cn52xx;
+-	struct cvmx_mio_boot_dma_cfgx_s cn52xxp1;
+-	struct cvmx_mio_boot_dma_cfgx_s cn56xx;
+-	struct cvmx_mio_boot_dma_cfgx_s cn56xxp1;
+-	struct cvmx_mio_boot_dma_cfgx_s cn61xx;
+-	struct cvmx_mio_boot_dma_cfgx_s cn63xx;
+-	struct cvmx_mio_boot_dma_cfgx_s cn63xxp1;
+-	struct cvmx_mio_boot_dma_cfgx_s cn66xx;
+-	struct cvmx_mio_boot_dma_cfgx_s cn68xx;
+-	struct cvmx_mio_boot_dma_cfgx_s cn68xxp1;
+-	struct cvmx_mio_boot_dma_cfgx_s cnf71xx;
+ };
+ 
+ union cvmx_mio_boot_dma_intx {
+ 	uint64_t u64;
+ 	struct cvmx_mio_boot_dma_intx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t dmarq:1;
+-		uint64_t done:1;
+-#else
+-		uint64_t done:1;
+-		uint64_t dmarq:1;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} s;
+-	struct cvmx_mio_boot_dma_intx_s cn52xx;
+-	struct cvmx_mio_boot_dma_intx_s cn52xxp1;
+-	struct cvmx_mio_boot_dma_intx_s cn56xx;
+-	struct cvmx_mio_boot_dma_intx_s cn56xxp1;
+-	struct cvmx_mio_boot_dma_intx_s cn61xx;
+-	struct cvmx_mio_boot_dma_intx_s cn63xx;
+-	struct cvmx_mio_boot_dma_intx_s cn63xxp1;
+-	struct cvmx_mio_boot_dma_intx_s cn66xx;
+-	struct cvmx_mio_boot_dma_intx_s cn68xx;
+-	struct cvmx_mio_boot_dma_intx_s cn68xxp1;
+-	struct cvmx_mio_boot_dma_intx_s cnf71xx;
+-};
+-
+-union cvmx_mio_boot_dma_int_enx {
+-	uint64_t u64;
+-	struct cvmx_mio_boot_dma_int_enx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t dmarq:1;
+-		uint64_t done:1;
+-#else
+-		uint64_t done:1;
+-		uint64_t dmarq:1;
+-		uint64_t reserved_2_63:62;
+-#endif
++		__BITFIELD_FIELD(uint64_t reserved_2_63:62,
++		__BITFIELD_FIELD(uint64_t dmarq:1,
++		__BITFIELD_FIELD(uint64_t done:1,
++		;)))
+ 	} s;
+-	struct cvmx_mio_boot_dma_int_enx_s cn52xx;
+-	struct cvmx_mio_boot_dma_int_enx_s cn52xxp1;
+-	struct cvmx_mio_boot_dma_int_enx_s cn56xx;
+-	struct cvmx_mio_boot_dma_int_enx_s cn56xxp1;
+-	struct cvmx_mio_boot_dma_int_enx_s cn61xx;
+-	struct cvmx_mio_boot_dma_int_enx_s cn63xx;
+-	struct cvmx_mio_boot_dma_int_enx_s cn63xxp1;
+-	struct cvmx_mio_boot_dma_int_enx_s cn66xx;
+-	struct cvmx_mio_boot_dma_int_enx_s cn68xx;
+-	struct cvmx_mio_boot_dma_int_enx_s cn68xxp1;
+-	struct cvmx_mio_boot_dma_int_enx_s cnf71xx;
+ };
+ 
+ union cvmx_mio_boot_dma_timx {
+ 	uint64_t u64;
+ 	struct cvmx_mio_boot_dma_timx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t dmack_pi:1;
+-		uint64_t dmarq_pi:1;
+-		uint64_t tim_mult:2;
+-		uint64_t rd_dly:3;
+-		uint64_t ddr:1;
+-		uint64_t width:1;
+-		uint64_t reserved_48_54:7;
+-		uint64_t pause:6;
+-		uint64_t dmack_h:6;
+-		uint64_t we_n:6;
+-		uint64_t we_a:6;
+-		uint64_t oe_n:6;
+-		uint64_t oe_a:6;
+-		uint64_t dmack_s:6;
+-		uint64_t dmarq:6;
+-#else
+-		uint64_t dmarq:6;
+-		uint64_t dmack_s:6;
+-		uint64_t oe_a:6;
+-		uint64_t oe_n:6;
+-		uint64_t we_a:6;
+-		uint64_t we_n:6;
+-		uint64_t dmack_h:6;
+-		uint64_t pause:6;
+-		uint64_t reserved_48_54:7;
+-		uint64_t width:1;
+-		uint64_t ddr:1;
+-		uint64_t rd_dly:3;
+-		uint64_t tim_mult:2;
+-		uint64_t dmarq_pi:1;
+-		uint64_t dmack_pi:1;
+-#endif
+-	} s;
+-	struct cvmx_mio_boot_dma_timx_s cn52xx;
+-	struct cvmx_mio_boot_dma_timx_s cn52xxp1;
+-	struct cvmx_mio_boot_dma_timx_s cn56xx;
+-	struct cvmx_mio_boot_dma_timx_s cn56xxp1;
+-	struct cvmx_mio_boot_dma_timx_s cn61xx;
+-	struct cvmx_mio_boot_dma_timx_s cn63xx;
+-	struct cvmx_mio_boot_dma_timx_s cn63xxp1;
+-	struct cvmx_mio_boot_dma_timx_s cn66xx;
+-	struct cvmx_mio_boot_dma_timx_s cn68xx;
+-	struct cvmx_mio_boot_dma_timx_s cn68xxp1;
+-	struct cvmx_mio_boot_dma_timx_s cnf71xx;
+-};
+-
+-union cvmx_mio_boot_err {
+-	uint64_t u64;
+-	struct cvmx_mio_boot_err_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t wait_err:1;
+-		uint64_t adr_err:1;
+-#else
+-		uint64_t adr_err:1;
+-		uint64_t wait_err:1;
+-		uint64_t reserved_2_63:62;
+-#endif
++		__BITFIELD_FIELD(uint64_t dmack_pi:1,
++		__BITFIELD_FIELD(uint64_t dmarq_pi:1,
++		__BITFIELD_FIELD(uint64_t tim_mult:2,
++		__BITFIELD_FIELD(uint64_t rd_dly:3,
++		__BITFIELD_FIELD(uint64_t ddr:1,
++		__BITFIELD_FIELD(uint64_t width:1,
++		__BITFIELD_FIELD(uint64_t reserved_48_54:7,
++		__BITFIELD_FIELD(uint64_t pause:6,
++		__BITFIELD_FIELD(uint64_t dmack_h:6,
++		__BITFIELD_FIELD(uint64_t we_n:6,
++		__BITFIELD_FIELD(uint64_t we_a:6,
++		__BITFIELD_FIELD(uint64_t oe_n:6,
++		__BITFIELD_FIELD(uint64_t oe_a:6,
++		__BITFIELD_FIELD(uint64_t dmack_s:6,
++		__BITFIELD_FIELD(uint64_t dmarq:6,
 +		;)))))))))))))))
  	} s;
--	struct cvmx_l2c_cfg_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_14_63:50;
--		uint64_t fpexp:4;
--		uint64_t fpempty:1;
--		uint64_t fpen:1;
--		uint64_t idxalias:1;
--		uint64_t mwf_crd:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t lrf_arb_mode:1;
--#else
--		uint64_t lrf_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t mwf_crd:4;
--		uint64_t idxalias:1;
--		uint64_t fpen:1;
--		uint64_t fpempty:1;
--		uint64_t fpexp:4;
--		uint64_t reserved_14_63:50;
--#endif
--	} cn30xx;
--	struct cvmx_l2c_cfg_cn30xx cn31xx;
--	struct cvmx_l2c_cfg_cn30xx cn38xx;
--	struct cvmx_l2c_cfg_cn30xx cn38xxp2;
--	struct cvmx_l2c_cfg_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_20_63:44;
--		uint64_t bstrun:1;
--		uint64_t lbist:1;
--		uint64_t reserved_14_17:4;
--		uint64_t fpexp:4;
--		uint64_t fpempty:1;
--		uint64_t fpen:1;
--		uint64_t idxalias:1;
--		uint64_t mwf_crd:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t lrf_arb_mode:1;
--#else
--		uint64_t lrf_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t mwf_crd:4;
--		uint64_t idxalias:1;
--		uint64_t fpen:1;
--		uint64_t fpempty:1;
--		uint64_t fpexp:4;
--		uint64_t reserved_14_17:4;
--		uint64_t lbist:1;
--		uint64_t bstrun:1;
--		uint64_t reserved_20_63:44;
--#endif
--	} cn50xx;
--	struct cvmx_l2c_cfg_cn50xx cn52xx;
--	struct cvmx_l2c_cfg_cn50xx cn52xxp1;
--	struct cvmx_l2c_cfg_s cn56xx;
--	struct cvmx_l2c_cfg_s cn56xxp1;
--	struct cvmx_l2c_cfg_cn58xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_20_63:44;
--		uint64_t bstrun:1;
--		uint64_t lbist:1;
--		uint64_t reserved_15_17:3;
--		uint64_t dfill_dis:1;
--		uint64_t fpexp:4;
--		uint64_t fpempty:1;
--		uint64_t fpen:1;
--		uint64_t idxalias:1;
--		uint64_t mwf_crd:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t lrf_arb_mode:1;
--#else
--		uint64_t lrf_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t mwf_crd:4;
--		uint64_t idxalias:1;
--		uint64_t fpen:1;
--		uint64_t fpempty:1;
--		uint64_t fpexp:4;
--		uint64_t dfill_dis:1;
--		uint64_t reserved_15_17:3;
--		uint64_t lbist:1;
--		uint64_t bstrun:1;
--		uint64_t reserved_20_63:44;
--#endif
--	} cn58xx;
--	struct cvmx_l2c_cfg_cn58xxp1 {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_15_63:49;
--		uint64_t dfill_dis:1;
--		uint64_t fpexp:4;
--		uint64_t fpempty:1;
--		uint64_t fpen:1;
--		uint64_t idxalias:1;
--		uint64_t mwf_crd:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t lrf_arb_mode:1;
--#else
--		uint64_t lrf_arb_mode:1;
--		uint64_t rfb_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t mwf_crd:4;
--		uint64_t idxalias:1;
--		uint64_t fpen:1;
--		uint64_t fpempty:1;
--		uint64_t fpexp:4;
--		uint64_t dfill_dis:1;
--		uint64_t reserved_15_63:49;
--#endif
--	} cn58xxp1;
+-	struct cvmx_mio_boot_err_s cn30xx;
+-	struct cvmx_mio_boot_err_s cn31xx;
+-	struct cvmx_mio_boot_err_s cn38xx;
+-	struct cvmx_mio_boot_err_s cn38xxp2;
+-	struct cvmx_mio_boot_err_s cn50xx;
+-	struct cvmx_mio_boot_err_s cn52xx;
+-	struct cvmx_mio_boot_err_s cn52xxp1;
+-	struct cvmx_mio_boot_err_s cn56xx;
+-	struct cvmx_mio_boot_err_s cn56xxp1;
+-	struct cvmx_mio_boot_err_s cn58xx;
+-	struct cvmx_mio_boot_err_s cn58xxp1;
+-	struct cvmx_mio_boot_err_s cn61xx;
+-	struct cvmx_mio_boot_err_s cn63xx;
+-	struct cvmx_mio_boot_err_s cn63xxp1;
+-	struct cvmx_mio_boot_err_s cn66xx;
+-	struct cvmx_mio_boot_err_s cn68xx;
+-	struct cvmx_mio_boot_err_s cn68xxp1;
+-	struct cvmx_mio_boot_err_s cnf71xx;
 -};
 -
--union cvmx_l2c_cop0_mapx {
+-union cvmx_mio_boot_int {
 -	uint64_t u64;
--	struct cvmx_l2c_cop0_mapx_s {
+-	struct cvmx_mio_boot_int_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t wait_int:1;
+-		uint64_t adr_int:1;
+-#else
+-		uint64_t adr_int:1;
+-		uint64_t wait_int:1;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} s;
+-	struct cvmx_mio_boot_int_s cn30xx;
+-	struct cvmx_mio_boot_int_s cn31xx;
+-	struct cvmx_mio_boot_int_s cn38xx;
+-	struct cvmx_mio_boot_int_s cn38xxp2;
+-	struct cvmx_mio_boot_int_s cn50xx;
+-	struct cvmx_mio_boot_int_s cn52xx;
+-	struct cvmx_mio_boot_int_s cn52xxp1;
+-	struct cvmx_mio_boot_int_s cn56xx;
+-	struct cvmx_mio_boot_int_s cn56xxp1;
+-	struct cvmx_mio_boot_int_s cn58xx;
+-	struct cvmx_mio_boot_int_s cn58xxp1;
+-	struct cvmx_mio_boot_int_s cn61xx;
+-	struct cvmx_mio_boot_int_s cn63xx;
+-	struct cvmx_mio_boot_int_s cn63xxp1;
+-	struct cvmx_mio_boot_int_s cn66xx;
+-	struct cvmx_mio_boot_int_s cn68xx;
+-	struct cvmx_mio_boot_int_s cn68xxp1;
+-	struct cvmx_mio_boot_int_s cnf71xx;
+-};
+-
+-union cvmx_mio_boot_loc_adr {
+-	uint64_t u64;
+-	struct cvmx_mio_boot_loc_adr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t adr:5;
+-		uint64_t reserved_0_2:3;
+-#else
+-		uint64_t reserved_0_2:3;
+-		uint64_t adr:5;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_boot_loc_adr_s cn30xx;
+-	struct cvmx_mio_boot_loc_adr_s cn31xx;
+-	struct cvmx_mio_boot_loc_adr_s cn38xx;
+-	struct cvmx_mio_boot_loc_adr_s cn38xxp2;
+-	struct cvmx_mio_boot_loc_adr_s cn50xx;
+-	struct cvmx_mio_boot_loc_adr_s cn52xx;
+-	struct cvmx_mio_boot_loc_adr_s cn52xxp1;
+-	struct cvmx_mio_boot_loc_adr_s cn56xx;
+-	struct cvmx_mio_boot_loc_adr_s cn56xxp1;
+-	struct cvmx_mio_boot_loc_adr_s cn58xx;
+-	struct cvmx_mio_boot_loc_adr_s cn58xxp1;
+-	struct cvmx_mio_boot_loc_adr_s cn61xx;
+-	struct cvmx_mio_boot_loc_adr_s cn63xx;
+-	struct cvmx_mio_boot_loc_adr_s cn63xxp1;
+-	struct cvmx_mio_boot_loc_adr_s cn66xx;
+-	struct cvmx_mio_boot_loc_adr_s cn68xx;
+-	struct cvmx_mio_boot_loc_adr_s cn68xxp1;
+-	struct cvmx_mio_boot_loc_adr_s cnf71xx;
+-};
+-
+-union cvmx_mio_boot_loc_cfgx {
+-	uint64_t u64;
+-	struct cvmx_mio_boot_loc_cfgx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t en:1;
+-		uint64_t reserved_28_30:3;
+-		uint64_t base:25;
+-		uint64_t reserved_0_2:3;
+-#else
+-		uint64_t reserved_0_2:3;
+-		uint64_t base:25;
+-		uint64_t reserved_28_30:3;
+-		uint64_t en:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_boot_loc_cfgx_s cn30xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn31xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn38xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn38xxp2;
+-	struct cvmx_mio_boot_loc_cfgx_s cn50xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn52xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn52xxp1;
+-	struct cvmx_mio_boot_loc_cfgx_s cn56xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn56xxp1;
+-	struct cvmx_mio_boot_loc_cfgx_s cn58xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn58xxp1;
+-	struct cvmx_mio_boot_loc_cfgx_s cn61xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn63xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn63xxp1;
+-	struct cvmx_mio_boot_loc_cfgx_s cn66xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn68xx;
+-	struct cvmx_mio_boot_loc_cfgx_s cn68xxp1;
+-	struct cvmx_mio_boot_loc_cfgx_s cnf71xx;
+-};
+-
+-union cvmx_mio_boot_loc_dat {
+-	uint64_t u64;
+-	struct cvmx_mio_boot_loc_dat_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t data:64;
 -#else
 -		uint64_t data:64;
 -#endif
 -	} s;
--	struct cvmx_l2c_cop0_mapx_s cn61xx;
--	struct cvmx_l2c_cop0_mapx_s cn63xx;
--	struct cvmx_l2c_cop0_mapx_s cn63xxp1;
--	struct cvmx_l2c_cop0_mapx_s cn66xx;
--	struct cvmx_l2c_cop0_mapx_s cn68xx;
--	struct cvmx_l2c_cop0_mapx_s cn68xxp1;
--	struct cvmx_l2c_cop0_mapx_s cnf71xx;
+-	struct cvmx_mio_boot_loc_dat_s cn30xx;
+-	struct cvmx_mio_boot_loc_dat_s cn31xx;
+-	struct cvmx_mio_boot_loc_dat_s cn38xx;
+-	struct cvmx_mio_boot_loc_dat_s cn38xxp2;
+-	struct cvmx_mio_boot_loc_dat_s cn50xx;
+-	struct cvmx_mio_boot_loc_dat_s cn52xx;
+-	struct cvmx_mio_boot_loc_dat_s cn52xxp1;
+-	struct cvmx_mio_boot_loc_dat_s cn56xx;
+-	struct cvmx_mio_boot_loc_dat_s cn56xxp1;
+-	struct cvmx_mio_boot_loc_dat_s cn58xx;
+-	struct cvmx_mio_boot_loc_dat_s cn58xxp1;
+-	struct cvmx_mio_boot_loc_dat_s cn61xx;
+-	struct cvmx_mio_boot_loc_dat_s cn63xx;
+-	struct cvmx_mio_boot_loc_dat_s cn63xxp1;
+-	struct cvmx_mio_boot_loc_dat_s cn66xx;
+-	struct cvmx_mio_boot_loc_dat_s cn68xx;
+-	struct cvmx_mio_boot_loc_dat_s cn68xxp1;
+-	struct cvmx_mio_boot_loc_dat_s cnf71xx;
  };
  
- union cvmx_l2c_ctl {
+ union cvmx_mio_boot_pin_defs {
  	uint64_t u64;
- 	struct cvmx_l2c_ctl_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_30_63:34;
--		uint64_t sepcmt:1;
--		uint64_t rdf_fast:1;
--		uint64_t disstgl2i:1;
--		uint64_t l2dfsbe:1;
--		uint64_t l2dfdbe:1;
--		uint64_t discclk:1;
--		uint64_t maxvab:4;
--		uint64_t maxlfb:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t xmc_arb_mode:1;
--		uint64_t ef_ena:1;
--		uint64_t ef_cnt:7;
--		uint64_t vab_thresh:4;
--		uint64_t disecc:1;
--		uint64_t disidxalias:1;
--#else
--		uint64_t disidxalias:1;
--		uint64_t disecc:1;
--		uint64_t vab_thresh:4;
--		uint64_t ef_cnt:7;
--		uint64_t ef_ena:1;
--		uint64_t xmc_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t maxlfb:4;
--		uint64_t maxvab:4;
--		uint64_t discclk:1;
--		uint64_t l2dfdbe:1;
--		uint64_t l2dfsbe:1;
--		uint64_t disstgl2i:1;
--		uint64_t rdf_fast:1;
--		uint64_t sepcmt:1;
--		uint64_t reserved_30_63:34;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_30_63:34,
-+		__BITFIELD_FIELD(uint64_t sepcmt:1,
-+		__BITFIELD_FIELD(uint64_t rdf_fast:1,
-+		__BITFIELD_FIELD(uint64_t disstgl2i:1,
-+		__BITFIELD_FIELD(uint64_t l2dfsbe:1,
-+		__BITFIELD_FIELD(uint64_t l2dfdbe:1,
-+		__BITFIELD_FIELD(uint64_t discclk:1,
-+		__BITFIELD_FIELD(uint64_t maxvab:4,
-+		__BITFIELD_FIELD(uint64_t maxlfb:4,
-+		__BITFIELD_FIELD(uint64_t rsp_arb_mode:1,
-+		__BITFIELD_FIELD(uint64_t xmc_arb_mode:1,
-+		__BITFIELD_FIELD(uint64_t ef_ena:1,
-+		__BITFIELD_FIELD(uint64_t ef_cnt:7,
-+		__BITFIELD_FIELD(uint64_t vab_thresh:4,
-+		__BITFIELD_FIELD(uint64_t disecc:1,
-+		__BITFIELD_FIELD(uint64_t disidxalias:1,
-+		;))))))))))))))))
- 	} s;
--	struct cvmx_l2c_ctl_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_29_63:35;
--		uint64_t rdf_fast:1;
--		uint64_t disstgl2i:1;
--		uint64_t l2dfsbe:1;
--		uint64_t l2dfdbe:1;
--		uint64_t discclk:1;
--		uint64_t maxvab:4;
--		uint64_t maxlfb:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t xmc_arb_mode:1;
--		uint64_t ef_ena:1;
--		uint64_t ef_cnt:7;
--		uint64_t vab_thresh:4;
--		uint64_t disecc:1;
--		uint64_t disidxalias:1;
--#else
--		uint64_t disidxalias:1;
--		uint64_t disecc:1;
--		uint64_t vab_thresh:4;
--		uint64_t ef_cnt:7;
--		uint64_t ef_ena:1;
--		uint64_t xmc_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t maxlfb:4;
--		uint64_t maxvab:4;
--		uint64_t discclk:1;
--		uint64_t l2dfdbe:1;
--		uint64_t l2dfsbe:1;
--		uint64_t disstgl2i:1;
--		uint64_t rdf_fast:1;
--		uint64_t reserved_29_63:35;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_ctl_cn63xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_28_63:36;
--		uint64_t disstgl2i:1;
--		uint64_t l2dfsbe:1;
--		uint64_t l2dfdbe:1;
--		uint64_t discclk:1;
--		uint64_t maxvab:4;
--		uint64_t maxlfb:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t xmc_arb_mode:1;
--		uint64_t ef_ena:1;
--		uint64_t ef_cnt:7;
--		uint64_t vab_thresh:4;
--		uint64_t disecc:1;
--		uint64_t disidxalias:1;
--#else
--		uint64_t disidxalias:1;
--		uint64_t disecc:1;
--		uint64_t vab_thresh:4;
--		uint64_t ef_cnt:7;
--		uint64_t ef_ena:1;
--		uint64_t xmc_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t maxlfb:4;
--		uint64_t maxvab:4;
--		uint64_t discclk:1;
--		uint64_t l2dfdbe:1;
--		uint64_t l2dfsbe:1;
--		uint64_t disstgl2i:1;
--		uint64_t reserved_28_63:36;
--#endif
--	} cn63xx;
--	struct cvmx_l2c_ctl_cn63xxp1 {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_25_63:39;
--		uint64_t discclk:1;
--		uint64_t maxvab:4;
--		uint64_t maxlfb:4;
--		uint64_t rsp_arb_mode:1;
--		uint64_t xmc_arb_mode:1;
--		uint64_t ef_ena:1;
--		uint64_t ef_cnt:7;
--		uint64_t vab_thresh:4;
--		uint64_t disecc:1;
--		uint64_t disidxalias:1;
--#else
--		uint64_t disidxalias:1;
--		uint64_t disecc:1;
--		uint64_t vab_thresh:4;
--		uint64_t ef_cnt:7;
--		uint64_t ef_ena:1;
--		uint64_t xmc_arb_mode:1;
--		uint64_t rsp_arb_mode:1;
--		uint64_t maxlfb:4;
--		uint64_t maxvab:4;
--		uint64_t discclk:1;
--		uint64_t reserved_25_63:39;
--#endif
--	} cn63xxp1;
--	struct cvmx_l2c_ctl_cn61xx cn66xx;
--	struct cvmx_l2c_ctl_s cn68xx;
--	struct cvmx_l2c_ctl_cn63xx cn68xxp1;
--	struct cvmx_l2c_ctl_cn61xx cnf71xx;
- };
- 
- union cvmx_l2c_dbg {
- 	uint64_t u64;
- 	struct cvmx_l2c_dbg_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_15_63:49;
--		uint64_t lfb_enum:4;
--		uint64_t lfb_dmp:1;
--		uint64_t ppnum:4;
--		uint64_t set:3;
--		uint64_t finv:1;
--		uint64_t l2d:1;
--		uint64_t l2t:1;
--#else
--		uint64_t l2t:1;
--		uint64_t l2d:1;
--		uint64_t finv:1;
--		uint64_t set:3;
--		uint64_t ppnum:4;
--		uint64_t lfb_dmp:1;
--		uint64_t lfb_enum:4;
--		uint64_t reserved_15_63:49;
--#endif
--	} s;
--	struct cvmx_l2c_dbg_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_13_63:51;
--		uint64_t lfb_enum:2;
--		uint64_t lfb_dmp:1;
--		uint64_t reserved_7_9:3;
--		uint64_t ppnum:1;
--		uint64_t reserved_5_5:1;
--		uint64_t set:2;
--		uint64_t finv:1;
--		uint64_t l2d:1;
--		uint64_t l2t:1;
--#else
--		uint64_t l2t:1;
--		uint64_t l2d:1;
--		uint64_t finv:1;
--		uint64_t set:2;
--		uint64_t reserved_5_5:1;
--		uint64_t ppnum:1;
--		uint64_t reserved_7_9:3;
--		uint64_t lfb_dmp:1;
--		uint64_t lfb_enum:2;
--		uint64_t reserved_13_63:51;
--#endif
--	} cn30xx;
--	struct cvmx_l2c_dbg_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_14_63:50;
--		uint64_t lfb_enum:3;
--		uint64_t lfb_dmp:1;
--		uint64_t reserved_7_9:3;
--		uint64_t ppnum:1;
--		uint64_t reserved_5_5:1;
--		uint64_t set:2;
--		uint64_t finv:1;
--		uint64_t l2d:1;
--		uint64_t l2t:1;
--#else
--		uint64_t l2t:1;
--		uint64_t l2d:1;
--		uint64_t finv:1;
--		uint64_t set:2;
--		uint64_t reserved_5_5:1;
--		uint64_t ppnum:1;
--		uint64_t reserved_7_9:3;
--		uint64_t lfb_dmp:1;
--		uint64_t lfb_enum:3;
--		uint64_t reserved_14_63:50;
--#endif
--	} cn31xx;
--	struct cvmx_l2c_dbg_s cn38xx;
--	struct cvmx_l2c_dbg_s cn38xxp2;
--	struct cvmx_l2c_dbg_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_14_63:50;
--		uint64_t lfb_enum:3;
--		uint64_t lfb_dmp:1;
--		uint64_t reserved_7_9:3;
--		uint64_t ppnum:1;
--		uint64_t set:3;
--		uint64_t finv:1;
--		uint64_t l2d:1;
--		uint64_t l2t:1;
--#else
--		uint64_t l2t:1;
--		uint64_t l2d:1;
--		uint64_t finv:1;
--		uint64_t set:3;
--		uint64_t ppnum:1;
--		uint64_t reserved_7_9:3;
--		uint64_t lfb_dmp:1;
--		uint64_t lfb_enum:3;
--		uint64_t reserved_14_63:50;
--#endif
--	} cn50xx;
--	struct cvmx_l2c_dbg_cn52xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_14_63:50;
--		uint64_t lfb_enum:3;
--		uint64_t lfb_dmp:1;
--		uint64_t reserved_8_9:2;
--		uint64_t ppnum:2;
--		uint64_t set:3;
--		uint64_t finv:1;
--		uint64_t l2d:1;
--		uint64_t l2t:1;
--#else
--		uint64_t l2t:1;
--		uint64_t l2d:1;
--		uint64_t finv:1;
--		uint64_t set:3;
--		uint64_t ppnum:2;
--		uint64_t reserved_8_9:2;
--		uint64_t lfb_dmp:1;
--		uint64_t lfb_enum:3;
--		uint64_t reserved_14_63:50;
--#endif
--	} cn52xx;
--	struct cvmx_l2c_dbg_cn52xx cn52xxp1;
--	struct cvmx_l2c_dbg_s cn56xx;
--	struct cvmx_l2c_dbg_s cn56xxp1;
--	struct cvmx_l2c_dbg_s cn58xx;
--	struct cvmx_l2c_dbg_s cn58xxp1;
--};
--
--union cvmx_l2c_dut {
--	uint64_t u64;
--	struct cvmx_l2c_dut_s {
+ 	struct cvmx_mio_boot_pin_defs_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t reserved_32_63:32;
--		uint64_t dtena:1;
--		uint64_t reserved_30_30:1;
--		uint64_t dt_vld:1;
--		uint64_t dt_tag:29;
--#else
--		uint64_t dt_tag:29;
--		uint64_t dt_vld:1;
--		uint64_t reserved_30_30:1;
--		uint64_t dtena:1;
--		uint64_t reserved_32_63:32;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_15_63:49,
-+		__BITFIELD_FIELD(uint64_t lfb_enum:4,
-+		__BITFIELD_FIELD(uint64_t lfb_dmp:1,
-+		__BITFIELD_FIELD(uint64_t ppnum:4,
-+		__BITFIELD_FIELD(uint64_t set:3,
-+		__BITFIELD_FIELD(uint64_t finv:1,
-+		__BITFIELD_FIELD(uint64_t l2d:1,
-+		__BITFIELD_FIELD(uint64_t l2t:1,
-+		;))))))))
- 	} s;
--	struct cvmx_l2c_dut_s cn30xx;
--	struct cvmx_l2c_dut_s cn31xx;
--	struct cvmx_l2c_dut_s cn38xx;
--	struct cvmx_l2c_dut_s cn38xxp2;
--	struct cvmx_l2c_dut_s cn50xx;
--	struct cvmx_l2c_dut_s cn52xx;
--	struct cvmx_l2c_dut_s cn52xxp1;
--	struct cvmx_l2c_dut_s cn56xx;
--	struct cvmx_l2c_dut_s cn56xxp1;
--	struct cvmx_l2c_dut_s cn58xx;
--	struct cvmx_l2c_dut_s cn58xxp1;
--};
--
--union cvmx_l2c_dut_mapx {
--	uint64_t u64;
--	struct cvmx_l2c_dut_mapx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_38_63:26;
--		uint64_t tag:28;
--		uint64_t reserved_1_9:9;
--		uint64_t valid:1;
--#else
--		uint64_t valid:1;
--		uint64_t reserved_1_9:9;
--		uint64_t tag:28;
--		uint64_t reserved_38_63:26;
--#endif
--	} s;
--	struct cvmx_l2c_dut_mapx_s cn61xx;
--	struct cvmx_l2c_dut_mapx_s cn63xx;
--	struct cvmx_l2c_dut_mapx_s cn63xxp1;
--	struct cvmx_l2c_dut_mapx_s cn66xx;
--	struct cvmx_l2c_dut_mapx_s cn68xx;
--	struct cvmx_l2c_dut_mapx_s cn68xxp1;
--	struct cvmx_l2c_dut_mapx_s cnf71xx;
--};
--
--union cvmx_l2c_err_tdtx {
--	uint64_t u64;
--	struct cvmx_l2c_err_tdtx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t dbe:1;
--		uint64_t sbe:1;
--		uint64_t vdbe:1;
--		uint64_t vsbe:1;
--		uint64_t syn:10;
--		uint64_t reserved_22_49:28;
--		uint64_t wayidx:18;
--		uint64_t reserved_2_3:2;
--		uint64_t type:2;
--#else
--		uint64_t type:2;
--		uint64_t reserved_2_3:2;
--		uint64_t wayidx:18;
--		uint64_t reserved_22_49:28;
--		uint64_t syn:10;
--		uint64_t vsbe:1;
--		uint64_t vdbe:1;
--		uint64_t sbe:1;
--		uint64_t dbe:1;
--#endif
--	} s;
--	struct cvmx_l2c_err_tdtx_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t dbe:1;
--		uint64_t sbe:1;
--		uint64_t vdbe:1;
--		uint64_t vsbe:1;
--		uint64_t syn:10;
--		uint64_t reserved_20_49:30;
--		uint64_t wayidx:16;
--		uint64_t reserved_2_3:2;
--		uint64_t type:2;
--#else
--		uint64_t type:2;
--		uint64_t reserved_2_3:2;
--		uint64_t wayidx:16;
--		uint64_t reserved_20_49:30;
--		uint64_t syn:10;
--		uint64_t vsbe:1;
--		uint64_t vdbe:1;
--		uint64_t sbe:1;
--		uint64_t dbe:1;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_err_tdtx_cn63xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t dbe:1;
--		uint64_t sbe:1;
--		uint64_t vdbe:1;
--		uint64_t vsbe:1;
--		uint64_t syn:10;
--		uint64_t reserved_21_49:29;
--		uint64_t wayidx:17;
--		uint64_t reserved_2_3:2;
--		uint64_t type:2;
--#else
--		uint64_t type:2;
--		uint64_t reserved_2_3:2;
--		uint64_t wayidx:17;
--		uint64_t reserved_21_49:29;
--		uint64_t syn:10;
--		uint64_t vsbe:1;
--		uint64_t vdbe:1;
--		uint64_t sbe:1;
--		uint64_t dbe:1;
--#endif
--	} cn63xx;
--	struct cvmx_l2c_err_tdtx_cn63xx cn63xxp1;
--	struct cvmx_l2c_err_tdtx_cn63xx cn66xx;
--	struct cvmx_l2c_err_tdtx_s cn68xx;
--	struct cvmx_l2c_err_tdtx_s cn68xxp1;
--	struct cvmx_l2c_err_tdtx_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_err_ttgx {
--	uint64_t u64;
--	struct cvmx_l2c_err_ttgx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t dbe:1;
--		uint64_t sbe:1;
--		uint64_t noway:1;
--		uint64_t reserved_56_60:5;
--		uint64_t syn:6;
--		uint64_t reserved_22_49:28;
--		uint64_t wayidx:15;
--		uint64_t reserved_2_6:5;
--		uint64_t type:2;
--#else
--		uint64_t type:2;
--		uint64_t reserved_2_6:5;
--		uint64_t wayidx:15;
--		uint64_t reserved_22_49:28;
--		uint64_t syn:6;
--		uint64_t reserved_56_60:5;
--		uint64_t noway:1;
--		uint64_t sbe:1;
--		uint64_t dbe:1;
--#endif
--	} s;
--	struct cvmx_l2c_err_ttgx_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t dbe:1;
--		uint64_t sbe:1;
--		uint64_t noway:1;
--		uint64_t reserved_56_60:5;
--		uint64_t syn:6;
--		uint64_t reserved_20_49:30;
--		uint64_t wayidx:13;
--		uint64_t reserved_2_6:5;
--		uint64_t type:2;
--#else
--		uint64_t type:2;
--		uint64_t reserved_2_6:5;
--		uint64_t wayidx:13;
--		uint64_t reserved_20_49:30;
--		uint64_t syn:6;
--		uint64_t reserved_56_60:5;
--		uint64_t noway:1;
--		uint64_t sbe:1;
--		uint64_t dbe:1;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_err_ttgx_cn63xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t dbe:1;
--		uint64_t sbe:1;
--		uint64_t noway:1;
--		uint64_t reserved_56_60:5;
--		uint64_t syn:6;
--		uint64_t reserved_21_49:29;
--		uint64_t wayidx:14;
--		uint64_t reserved_2_6:5;
--		uint64_t type:2;
--#else
--		uint64_t type:2;
--		uint64_t reserved_2_6:5;
--		uint64_t wayidx:14;
--		uint64_t reserved_21_49:29;
--		uint64_t syn:6;
--		uint64_t reserved_56_60:5;
--		uint64_t noway:1;
--		uint64_t sbe:1;
--		uint64_t dbe:1;
--#endif
--	} cn63xx;
--	struct cvmx_l2c_err_ttgx_cn63xx cn63xxp1;
--	struct cvmx_l2c_err_ttgx_cn63xx cn66xx;
--	struct cvmx_l2c_err_ttgx_s cn68xx;
--	struct cvmx_l2c_err_ttgx_s cn68xxp1;
--	struct cvmx_l2c_err_ttgx_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_err_vbfx {
--	uint64_t u64;
--	struct cvmx_l2c_err_vbfx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_62_63:2;
--		uint64_t vdbe:1;
--		uint64_t vsbe:1;
--		uint64_t vsyn:10;
--		uint64_t reserved_2_49:48;
--		uint64_t type:2;
--#else
--		uint64_t type:2;
--		uint64_t reserved_2_49:48;
--		uint64_t vsyn:10;
--		uint64_t vsbe:1;
--		uint64_t vdbe:1;
--		uint64_t reserved_62_63:2;
--#endif
--	} s;
--	struct cvmx_l2c_err_vbfx_s cn61xx;
--	struct cvmx_l2c_err_vbfx_s cn63xx;
--	struct cvmx_l2c_err_vbfx_s cn63xxp1;
--	struct cvmx_l2c_err_vbfx_s cn66xx;
--	struct cvmx_l2c_err_vbfx_s cn68xx;
--	struct cvmx_l2c_err_vbfx_s cn68xxp1;
--	struct cvmx_l2c_err_vbfx_s cnf71xx;
--};
--
--union cvmx_l2c_err_xmc {
--	uint64_t u64;
--	struct cvmx_l2c_err_xmc_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t cmd:6;
--		uint64_t reserved_54_57:4;
--		uint64_t sid:6;
--		uint64_t reserved_38_47:10;
--		uint64_t addr:38;
--#else
--		uint64_t addr:38;
--		uint64_t reserved_38_47:10;
--		uint64_t sid:6;
--		uint64_t reserved_54_57:4;
--		uint64_t cmd:6;
--#endif
--	} s;
--	struct cvmx_l2c_err_xmc_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t cmd:6;
--		uint64_t reserved_52_57:6;
--		uint64_t sid:4;
--		uint64_t reserved_38_47:10;
--		uint64_t addr:38;
--#else
--		uint64_t addr:38;
--		uint64_t reserved_38_47:10;
--		uint64_t sid:4;
--		uint64_t reserved_52_57:6;
--		uint64_t cmd:6;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_err_xmc_cn61xx cn63xx;
--	struct cvmx_l2c_err_xmc_cn61xx cn63xxp1;
--	struct cvmx_l2c_err_xmc_cn66xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t cmd:6;
--		uint64_t reserved_53_57:5;
--		uint64_t sid:5;
--		uint64_t reserved_38_47:10;
--		uint64_t addr:38;
--#else
--		uint64_t addr:38;
--		uint64_t reserved_38_47:10;
--		uint64_t sid:5;
--		uint64_t reserved_53_57:5;
--		uint64_t cmd:6;
--#endif
--	} cn66xx;
--	struct cvmx_l2c_err_xmc_s cn68xx;
--	struct cvmx_l2c_err_xmc_s cn68xxp1;
--	struct cvmx_l2c_err_xmc_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_grpwrr0 {
--	uint64_t u64;
--	struct cvmx_l2c_grpwrr0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t plc1rmsk:32;
--		uint64_t plc0rmsk:32;
--#else
--		uint64_t plc0rmsk:32;
--		uint64_t plc1rmsk:32;
--#endif
--	} s;
--	struct cvmx_l2c_grpwrr0_s cn52xx;
--	struct cvmx_l2c_grpwrr0_s cn52xxp1;
--	struct cvmx_l2c_grpwrr0_s cn56xx;
--	struct cvmx_l2c_grpwrr0_s cn56xxp1;
--};
--
--union cvmx_l2c_grpwrr1 {
--	uint64_t u64;
--	struct cvmx_l2c_grpwrr1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t ilcrmsk:32;
--		uint64_t plc2rmsk:32;
--#else
--		uint64_t plc2rmsk:32;
--		uint64_t ilcrmsk:32;
--#endif
--	} s;
--	struct cvmx_l2c_grpwrr1_s cn52xx;
--	struct cvmx_l2c_grpwrr1_s cn52xxp1;
--	struct cvmx_l2c_grpwrr1_s cn56xx;
--	struct cvmx_l2c_grpwrr1_s cn56xxp1;
--};
--
--union cvmx_l2c_int_en {
--	uint64_t u64;
--	struct cvmx_l2c_int_en_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_9_63:55;
--		uint64_t lck2ena:1;
--		uint64_t lckena:1;
--		uint64_t l2ddeden:1;
--		uint64_t l2dsecen:1;
--		uint64_t l2tdeden:1;
--		uint64_t l2tsecen:1;
--		uint64_t oob3en:1;
--		uint64_t oob2en:1;
--		uint64_t oob1en:1;
--#else
--		uint64_t oob1en:1;
--		uint64_t oob2en:1;
--		uint64_t oob3en:1;
--		uint64_t l2tsecen:1;
--		uint64_t l2tdeden:1;
--		uint64_t l2dsecen:1;
--		uint64_t l2ddeden:1;
--		uint64_t lckena:1;
--		uint64_t lck2ena:1;
--		uint64_t reserved_9_63:55;
--#endif
--	} s;
--	struct cvmx_l2c_int_en_s cn52xx;
--	struct cvmx_l2c_int_en_s cn52xxp1;
--	struct cvmx_l2c_int_en_s cn56xx;
--	struct cvmx_l2c_int_en_s cn56xxp1;
--};
--
--union cvmx_l2c_int_ena {
--	uint64_t u64;
--	struct cvmx_l2c_int_ena_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_8_63:56;
--		uint64_t bigrd:1;
--		uint64_t bigwr:1;
--		uint64_t vrtpe:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtwr:1;
--		uint64_t holewr:1;
--		uint64_t holerd:1;
--#else
--		uint64_t holerd:1;
--		uint64_t holewr:1;
--		uint64_t vrtwr:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtpe:1;
--		uint64_t bigwr:1;
--		uint64_t bigrd:1;
--		uint64_t reserved_8_63:56;
--#endif
--	} s;
--	struct cvmx_l2c_int_ena_s cn61xx;
--	struct cvmx_l2c_int_ena_s cn63xx;
--	struct cvmx_l2c_int_ena_cn63xxp1 {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_6_63:58;
--		uint64_t vrtpe:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtwr:1;
--		uint64_t holewr:1;
--		uint64_t holerd:1;
--#else
--		uint64_t holerd:1;
--		uint64_t holewr:1;
--		uint64_t vrtwr:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtpe:1;
--		uint64_t reserved_6_63:58;
--#endif
--	} cn63xxp1;
--	struct cvmx_l2c_int_ena_s cn66xx;
--	struct cvmx_l2c_int_ena_s cn68xx;
--	struct cvmx_l2c_int_ena_s cn68xxp1;
--	struct cvmx_l2c_int_ena_s cnf71xx;
--};
--
--union cvmx_l2c_int_reg {
--	uint64_t u64;
--	struct cvmx_l2c_int_reg_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_20_63:44;
--		uint64_t tad3:1;
--		uint64_t tad2:1;
--		uint64_t tad1:1;
--		uint64_t tad0:1;
--		uint64_t reserved_8_15:8;
--		uint64_t bigrd:1;
--		uint64_t bigwr:1;
--		uint64_t vrtpe:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtwr:1;
--		uint64_t holewr:1;
--		uint64_t holerd:1;
--#else
--		uint64_t holerd:1;
--		uint64_t holewr:1;
--		uint64_t vrtwr:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtpe:1;
--		uint64_t bigwr:1;
--		uint64_t bigrd:1;
--		uint64_t reserved_8_15:8;
--		uint64_t tad0:1;
--		uint64_t tad1:1;
--		uint64_t tad2:1;
--		uint64_t tad3:1;
--		uint64_t reserved_20_63:44;
--#endif
--	} s;
--	struct cvmx_l2c_int_reg_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_17_63:47;
--		uint64_t tad0:1;
--		uint64_t reserved_8_15:8;
--		uint64_t bigrd:1;
--		uint64_t bigwr:1;
--		uint64_t vrtpe:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtwr:1;
--		uint64_t holewr:1;
--		uint64_t holerd:1;
--#else
--		uint64_t holerd:1;
--		uint64_t holewr:1;
--		uint64_t vrtwr:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtpe:1;
--		uint64_t bigwr:1;
--		uint64_t bigrd:1;
--		uint64_t reserved_8_15:8;
--		uint64_t tad0:1;
--		uint64_t reserved_17_63:47;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_int_reg_cn61xx cn63xx;
--	struct cvmx_l2c_int_reg_cn63xxp1 {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_17_63:47;
--		uint64_t tad0:1;
--		uint64_t reserved_6_15:10;
--		uint64_t vrtpe:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtwr:1;
--		uint64_t holewr:1;
--		uint64_t holerd:1;
--#else
--		uint64_t holerd:1;
--		uint64_t holewr:1;
--		uint64_t vrtwr:1;
--		uint64_t vrtidrng:1;
--		uint64_t vrtadrng:1;
--		uint64_t vrtpe:1;
--		uint64_t reserved_6_15:10;
--		uint64_t tad0:1;
--		uint64_t reserved_17_63:47;
--#endif
--	} cn63xxp1;
--	struct cvmx_l2c_int_reg_cn61xx cn66xx;
--	struct cvmx_l2c_int_reg_s cn68xx;
--	struct cvmx_l2c_int_reg_s cn68xxp1;
--	struct cvmx_l2c_int_reg_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_int_stat {
--	uint64_t u64;
--	struct cvmx_l2c_int_stat_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_9_63:55;
--		uint64_t lck2:1;
--		uint64_t lck:1;
--		uint64_t l2dded:1;
--		uint64_t l2dsec:1;
--		uint64_t l2tded:1;
--		uint64_t l2tsec:1;
--		uint64_t oob3:1;
--		uint64_t oob2:1;
--		uint64_t oob1:1;
--#else
--		uint64_t oob1:1;
--		uint64_t oob2:1;
--		uint64_t oob3:1;
--		uint64_t l2tsec:1;
--		uint64_t l2tded:1;
--		uint64_t l2dsec:1;
--		uint64_t l2dded:1;
--		uint64_t lck:1;
--		uint64_t lck2:1;
--		uint64_t reserved_9_63:55;
--#endif
--	} s;
--	struct cvmx_l2c_int_stat_s cn52xx;
--	struct cvmx_l2c_int_stat_s cn52xxp1;
--	struct cvmx_l2c_int_stat_s cn56xx;
--	struct cvmx_l2c_int_stat_s cn56xxp1;
--};
--
--union cvmx_l2c_iocx_pfc {
--	uint64_t u64;
--	struct cvmx_l2c_iocx_pfc_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
--	} s;
--	struct cvmx_l2c_iocx_pfc_s cn61xx;
--	struct cvmx_l2c_iocx_pfc_s cn63xx;
--	struct cvmx_l2c_iocx_pfc_s cn63xxp1;
--	struct cvmx_l2c_iocx_pfc_s cn66xx;
--	struct cvmx_l2c_iocx_pfc_s cn68xx;
--	struct cvmx_l2c_iocx_pfc_s cn68xxp1;
--	struct cvmx_l2c_iocx_pfc_s cnf71xx;
--};
--
--union cvmx_l2c_iorx_pfc {
--	uint64_t u64;
--	struct cvmx_l2c_iorx_pfc_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
--	} s;
--	struct cvmx_l2c_iorx_pfc_s cn61xx;
--	struct cvmx_l2c_iorx_pfc_s cn63xx;
--	struct cvmx_l2c_iorx_pfc_s cn63xxp1;
--	struct cvmx_l2c_iorx_pfc_s cn66xx;
--	struct cvmx_l2c_iorx_pfc_s cn68xx;
--	struct cvmx_l2c_iorx_pfc_s cn68xxp1;
--	struct cvmx_l2c_iorx_pfc_s cnf71xx;
--};
--
--union cvmx_l2c_lckbase {
--	uint64_t u64;
--	struct cvmx_l2c_lckbase_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_31_63:33;
--		uint64_t lck_base:27;
--		uint64_t reserved_1_3:3;
--		uint64_t lck_ena:1;
--#else
--		uint64_t lck_ena:1;
--		uint64_t reserved_1_3:3;
--		uint64_t lck_base:27;
--		uint64_t reserved_31_63:33;
--#endif
--	} s;
--	struct cvmx_l2c_lckbase_s cn30xx;
--	struct cvmx_l2c_lckbase_s cn31xx;
--	struct cvmx_l2c_lckbase_s cn38xx;
--	struct cvmx_l2c_lckbase_s cn38xxp2;
--	struct cvmx_l2c_lckbase_s cn50xx;
--	struct cvmx_l2c_lckbase_s cn52xx;
--	struct cvmx_l2c_lckbase_s cn52xxp1;
--	struct cvmx_l2c_lckbase_s cn56xx;
--	struct cvmx_l2c_lckbase_s cn56xxp1;
--	struct cvmx_l2c_lckbase_s cn58xx;
--	struct cvmx_l2c_lckbase_s cn58xxp1;
--};
--
--union cvmx_l2c_lckoff {
--	uint64_t u64;
--	struct cvmx_l2c_lckoff_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_10_63:54;
--		uint64_t lck_offset:10;
--#else
--		uint64_t lck_offset:10;
--		uint64_t reserved_10_63:54;
--#endif
--	} s;
--	struct cvmx_l2c_lckoff_s cn30xx;
--	struct cvmx_l2c_lckoff_s cn31xx;
--	struct cvmx_l2c_lckoff_s cn38xx;
--	struct cvmx_l2c_lckoff_s cn38xxp2;
--	struct cvmx_l2c_lckoff_s cn50xx;
--	struct cvmx_l2c_lckoff_s cn52xx;
--	struct cvmx_l2c_lckoff_s cn52xxp1;
--	struct cvmx_l2c_lckoff_s cn56xx;
--	struct cvmx_l2c_lckoff_s cn56xxp1;
--	struct cvmx_l2c_lckoff_s cn58xx;
--	struct cvmx_l2c_lckoff_s cn58xxp1;
--};
--
--union cvmx_l2c_lfb0 {
--	uint64_t u64;
--	struct cvmx_l2c_lfb0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t stcpnd:1;
--		uint64_t stpnd:1;
--		uint64_t stinv:1;
--		uint64_t stcfl:1;
--		uint64_t vam:1;
--		uint64_t inxt:4;
--		uint64_t itl:1;
--		uint64_t ihd:1;
--		uint64_t set:3;
--		uint64_t vabnum:4;
--		uint64_t sid:9;
--		uint64_t cmd:4;
--		uint64_t vld:1;
--#else
--		uint64_t vld:1;
--		uint64_t cmd:4;
--		uint64_t sid:9;
--		uint64_t vabnum:4;
--		uint64_t set:3;
--		uint64_t ihd:1;
--		uint64_t itl:1;
--		uint64_t inxt:4;
--		uint64_t vam:1;
--		uint64_t stcfl:1;
--		uint64_t stinv:1;
--		uint64_t stpnd:1;
--		uint64_t stcpnd:1;
--		uint64_t reserved_32_63:32;
--#endif
--	} s;
--	struct cvmx_l2c_lfb0_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t stcpnd:1;
--		uint64_t stpnd:1;
--		uint64_t stinv:1;
--		uint64_t stcfl:1;
--		uint64_t vam:1;
--		uint64_t reserved_25_26:2;
--		uint64_t inxt:2;
--		uint64_t itl:1;
--		uint64_t ihd:1;
--		uint64_t reserved_20_20:1;
--		uint64_t set:2;
--		uint64_t reserved_16_17:2;
--		uint64_t vabnum:2;
--		uint64_t sid:9;
--		uint64_t cmd:4;
--		uint64_t vld:1;
--#else
--		uint64_t vld:1;
--		uint64_t cmd:4;
--		uint64_t sid:9;
--		uint64_t vabnum:2;
--		uint64_t reserved_16_17:2;
--		uint64_t set:2;
--		uint64_t reserved_20_20:1;
--		uint64_t ihd:1;
--		uint64_t itl:1;
--		uint64_t inxt:2;
--		uint64_t reserved_25_26:2;
--		uint64_t vam:1;
--		uint64_t stcfl:1;
--		uint64_t stinv:1;
--		uint64_t stpnd:1;
--		uint64_t stcpnd:1;
--		uint64_t reserved_32_63:32;
--#endif
--	} cn30xx;
--	struct cvmx_l2c_lfb0_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t stcpnd:1;
--		uint64_t stpnd:1;
--		uint64_t stinv:1;
--		uint64_t stcfl:1;
--		uint64_t vam:1;
--		uint64_t reserved_26_26:1;
--		uint64_t inxt:3;
--		uint64_t itl:1;
--		uint64_t ihd:1;
--		uint64_t reserved_20_20:1;
--		uint64_t set:2;
--		uint64_t reserved_17_17:1;
--		uint64_t vabnum:3;
--		uint64_t sid:9;
--		uint64_t cmd:4;
--		uint64_t vld:1;
--#else
--		uint64_t vld:1;
--		uint64_t cmd:4;
--		uint64_t sid:9;
--		uint64_t vabnum:3;
--		uint64_t reserved_17_17:1;
--		uint64_t set:2;
--		uint64_t reserved_20_20:1;
--		uint64_t ihd:1;
--		uint64_t itl:1;
--		uint64_t inxt:3;
--		uint64_t reserved_26_26:1;
--		uint64_t vam:1;
--		uint64_t stcfl:1;
--		uint64_t stinv:1;
--		uint64_t stpnd:1;
--		uint64_t stcpnd:1;
--		uint64_t reserved_32_63:32;
--#endif
--	} cn31xx;
--	struct cvmx_l2c_lfb0_s cn38xx;
--	struct cvmx_l2c_lfb0_s cn38xxp2;
--	struct cvmx_l2c_lfb0_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t stcpnd:1;
--		uint64_t stpnd:1;
--		uint64_t stinv:1;
--		uint64_t stcfl:1;
--		uint64_t vam:1;
--		uint64_t reserved_26_26:1;
--		uint64_t inxt:3;
--		uint64_t itl:1;
--		uint64_t ihd:1;
--		uint64_t set:3;
--		uint64_t reserved_17_17:1;
--		uint64_t vabnum:3;
--		uint64_t sid:9;
--		uint64_t cmd:4;
--		uint64_t vld:1;
--#else
--		uint64_t vld:1;
--		uint64_t cmd:4;
--		uint64_t sid:9;
--		uint64_t vabnum:3;
--		uint64_t reserved_17_17:1;
--		uint64_t set:3;
--		uint64_t ihd:1;
--		uint64_t itl:1;
--		uint64_t inxt:3;
--		uint64_t reserved_26_26:1;
--		uint64_t vam:1;
--		uint64_t stcfl:1;
--		uint64_t stinv:1;
--		uint64_t stpnd:1;
--		uint64_t stcpnd:1;
--		uint64_t reserved_32_63:32;
--#endif
--	} cn50xx;
--	struct cvmx_l2c_lfb0_cn50xx cn52xx;
--	struct cvmx_l2c_lfb0_cn50xx cn52xxp1;
--	struct cvmx_l2c_lfb0_s cn56xx;
--	struct cvmx_l2c_lfb0_s cn56xxp1;
--	struct cvmx_l2c_lfb0_s cn58xx;
--	struct cvmx_l2c_lfb0_s cn58xxp1;
--};
--
--union cvmx_l2c_lfb1 {
--	uint64_t u64;
--	struct cvmx_l2c_lfb1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_19_63:45;
--		uint64_t dsgoing:1;
--		uint64_t bid:2;
--		uint64_t wtrsp:1;
--		uint64_t wtdw:1;
--		uint64_t wtdq:1;
--		uint64_t wtwhp:1;
--		uint64_t wtwhf:1;
--		uint64_t wtwrm:1;
--		uint64_t wtstm:1;
--		uint64_t wtrda:1;
--		uint64_t wtstdt:1;
--		uint64_t wtstrsp:1;
--		uint64_t wtstrsc:1;
--		uint64_t wtvtm:1;
--		uint64_t wtmfl:1;
--		uint64_t prbrty:1;
--		uint64_t wtprb:1;
--		uint64_t vld:1;
--#else
--		uint64_t vld:1;
--		uint64_t wtprb:1;
--		uint64_t prbrty:1;
--		uint64_t wtmfl:1;
--		uint64_t wtvtm:1;
--		uint64_t wtstrsc:1;
--		uint64_t wtstrsp:1;
--		uint64_t wtstdt:1;
--		uint64_t wtrda:1;
--		uint64_t wtstm:1;
--		uint64_t wtwrm:1;
--		uint64_t wtwhf:1;
--		uint64_t wtwhp:1;
--		uint64_t wtdq:1;
--		uint64_t wtdw:1;
--		uint64_t wtrsp:1;
--		uint64_t bid:2;
--		uint64_t dsgoing:1;
--		uint64_t reserved_19_63:45;
--#endif
--	} s;
--	struct cvmx_l2c_lfb1_s cn30xx;
--	struct cvmx_l2c_lfb1_s cn31xx;
--	struct cvmx_l2c_lfb1_s cn38xx;
--	struct cvmx_l2c_lfb1_s cn38xxp2;
--	struct cvmx_l2c_lfb1_s cn50xx;
--	struct cvmx_l2c_lfb1_s cn52xx;
--	struct cvmx_l2c_lfb1_s cn52xxp1;
--	struct cvmx_l2c_lfb1_s cn56xx;
--	struct cvmx_l2c_lfb1_s cn56xxp1;
--	struct cvmx_l2c_lfb1_s cn58xx;
--	struct cvmx_l2c_lfb1_s cn58xxp1;
--};
--
--union cvmx_l2c_lfb2 {
--	uint64_t u64;
--	struct cvmx_l2c_lfb2_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_0_63:64;
--#else
--		uint64_t reserved_0_63:64;
--#endif
--	} s;
--	struct cvmx_l2c_lfb2_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_27_63:37;
--		uint64_t lfb_tag:19;
--		uint64_t lfb_idx:8;
--#else
--		uint64_t lfb_idx:8;
--		uint64_t lfb_tag:19;
--		uint64_t reserved_27_63:37;
--#endif
--	} cn30xx;
--	struct cvmx_l2c_lfb2_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_27_63:37;
--		uint64_t lfb_tag:17;
--		uint64_t lfb_idx:10;
--#else
--		uint64_t lfb_idx:10;
--		uint64_t lfb_tag:17;
--		uint64_t reserved_27_63:37;
--#endif
--	} cn31xx;
--	struct cvmx_l2c_lfb2_cn31xx cn38xx;
--	struct cvmx_l2c_lfb2_cn31xx cn38xxp2;
--	struct cvmx_l2c_lfb2_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_27_63:37;
--		uint64_t lfb_tag:20;
--		uint64_t lfb_idx:7;
--#else
--		uint64_t lfb_idx:7;
--		uint64_t lfb_tag:20;
--		uint64_t reserved_27_63:37;
--#endif
--	} cn50xx;
--	struct cvmx_l2c_lfb2_cn52xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_27_63:37;
--		uint64_t lfb_tag:18;
--		uint64_t lfb_idx:9;
--#else
--		uint64_t lfb_idx:9;
--		uint64_t lfb_tag:18;
--		uint64_t reserved_27_63:37;
--#endif
--	} cn52xx;
--	struct cvmx_l2c_lfb2_cn52xx cn52xxp1;
--	struct cvmx_l2c_lfb2_cn56xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_27_63:37;
--		uint64_t lfb_tag:16;
--		uint64_t lfb_idx:11;
--#else
--		uint64_t lfb_idx:11;
--		uint64_t lfb_tag:16;
--		uint64_t reserved_27_63:37;
--#endif
--	} cn56xx;
--	struct cvmx_l2c_lfb2_cn56xx cn56xxp1;
--	struct cvmx_l2c_lfb2_cn56xx cn58xx;
--	struct cvmx_l2c_lfb2_cn56xx cn58xxp1;
--};
--
--union cvmx_l2c_lfb3 {
--	uint64_t u64;
--	struct cvmx_l2c_lfb3_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_5_63:59;
--		uint64_t stpartdis:1;
--		uint64_t lfb_hwm:4;
--#else
--		uint64_t lfb_hwm:4;
--		uint64_t stpartdis:1;
--		uint64_t reserved_5_63:59;
--#endif
--	} s;
--	struct cvmx_l2c_lfb3_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_5_63:59;
--		uint64_t stpartdis:1;
--		uint64_t reserved_2_3:2;
--		uint64_t lfb_hwm:2;
--#else
--		uint64_t lfb_hwm:2;
--		uint64_t reserved_2_3:2;
--		uint64_t stpartdis:1;
--		uint64_t reserved_5_63:59;
--#endif
--	} cn30xx;
--	struct cvmx_l2c_lfb3_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_5_63:59;
--		uint64_t stpartdis:1;
--		uint64_t reserved_3_3:1;
--		uint64_t lfb_hwm:3;
--#else
--		uint64_t lfb_hwm:3;
--		uint64_t reserved_3_3:1;
--		uint64_t stpartdis:1;
--		uint64_t reserved_5_63:59;
--#endif
--	} cn31xx;
--	struct cvmx_l2c_lfb3_s cn38xx;
--	struct cvmx_l2c_lfb3_s cn38xxp2;
--	struct cvmx_l2c_lfb3_cn31xx cn50xx;
--	struct cvmx_l2c_lfb3_cn31xx cn52xx;
--	struct cvmx_l2c_lfb3_cn31xx cn52xxp1;
--	struct cvmx_l2c_lfb3_s cn56xx;
--	struct cvmx_l2c_lfb3_s cn56xxp1;
--	struct cvmx_l2c_lfb3_s cn58xx;
--	struct cvmx_l2c_lfb3_s cn58xxp1;
--};
--
--union cvmx_l2c_oob {
--	uint64_t u64;
--	struct cvmx_l2c_oob_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_2_63:62;
--		uint64_t dwbena:1;
--		uint64_t stena:1;
--#else
--		uint64_t stena:1;
--		uint64_t dwbena:1;
--		uint64_t reserved_2_63:62;
--#endif
--	} s;
--	struct cvmx_l2c_oob_s cn52xx;
--	struct cvmx_l2c_oob_s cn52xxp1;
--	struct cvmx_l2c_oob_s cn56xx;
--	struct cvmx_l2c_oob_s cn56xxp1;
--};
--
--union cvmx_l2c_oob1 {
--	uint64_t u64;
--	struct cvmx_l2c_oob1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t fadr:27;
--		uint64_t fsrc:1;
--		uint64_t reserved_34_35:2;
--		uint64_t sadr:14;
--		uint64_t reserved_14_19:6;
--		uint64_t size:14;
--#else
--		uint64_t size:14;
--		uint64_t reserved_14_19:6;
--		uint64_t sadr:14;
--		uint64_t reserved_34_35:2;
--		uint64_t fsrc:1;
--		uint64_t fadr:27;
--#endif
--	} s;
--	struct cvmx_l2c_oob1_s cn52xx;
--	struct cvmx_l2c_oob1_s cn52xxp1;
--	struct cvmx_l2c_oob1_s cn56xx;
--	struct cvmx_l2c_oob1_s cn56xxp1;
--};
--
--union cvmx_l2c_oob2 {
--	uint64_t u64;
--	struct cvmx_l2c_oob2_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t fadr:27;
--		uint64_t fsrc:1;
--		uint64_t reserved_34_35:2;
--		uint64_t sadr:14;
--		uint64_t reserved_14_19:6;
--		uint64_t size:14;
--#else
--		uint64_t size:14;
--		uint64_t reserved_14_19:6;
--		uint64_t sadr:14;
--		uint64_t reserved_34_35:2;
--		uint64_t fsrc:1;
--		uint64_t fadr:27;
--#endif
--	} s;
--	struct cvmx_l2c_oob2_s cn52xx;
--	struct cvmx_l2c_oob2_s cn52xxp1;
--	struct cvmx_l2c_oob2_s cn56xx;
--	struct cvmx_l2c_oob2_s cn56xxp1;
--};
--
--union cvmx_l2c_oob3 {
--	uint64_t u64;
--	struct cvmx_l2c_oob3_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t fadr:27;
--		uint64_t fsrc:1;
--		uint64_t reserved_34_35:2;
--		uint64_t sadr:14;
--		uint64_t reserved_14_19:6;
--		uint64_t size:14;
--#else
--		uint64_t size:14;
--		uint64_t reserved_14_19:6;
--		uint64_t sadr:14;
--		uint64_t reserved_34_35:2;
--		uint64_t fsrc:1;
--		uint64_t fadr:27;
--#endif
--	} s;
--	struct cvmx_l2c_oob3_s cn52xx;
--	struct cvmx_l2c_oob3_s cn52xxp1;
--	struct cvmx_l2c_oob3_s cn56xx;
--	struct cvmx_l2c_oob3_s cn56xxp1;
--};
--
--union cvmx_l2c_pfcx {
--	uint64_t u64;
--	struct cvmx_l2c_pfcx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_36_63:28;
--		uint64_t pfcnt0:36;
--#else
--		uint64_t pfcnt0:36;
--		uint64_t reserved_36_63:28;
--#endif
--	} s;
--	struct cvmx_l2c_pfcx_s cn30xx;
--	struct cvmx_l2c_pfcx_s cn31xx;
--	struct cvmx_l2c_pfcx_s cn38xx;
--	struct cvmx_l2c_pfcx_s cn38xxp2;
--	struct cvmx_l2c_pfcx_s cn50xx;
--	struct cvmx_l2c_pfcx_s cn52xx;
--	struct cvmx_l2c_pfcx_s cn52xxp1;
--	struct cvmx_l2c_pfcx_s cn56xx;
--	struct cvmx_l2c_pfcx_s cn56xxp1;
--	struct cvmx_l2c_pfcx_s cn58xx;
--	struct cvmx_l2c_pfcx_s cn58xxp1;
- };
- 
- union cvmx_l2c_pfctl {
- 	uint64_t u64;
- 	struct cvmx_l2c_pfctl_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_36_63:28;
--		uint64_t cnt3rdclr:1;
--		uint64_t cnt2rdclr:1;
--		uint64_t cnt1rdclr:1;
--		uint64_t cnt0rdclr:1;
--		uint64_t cnt3ena:1;
--		uint64_t cnt3clr:1;
--		uint64_t cnt3sel:6;
--		uint64_t cnt2ena:1;
--		uint64_t cnt2clr:1;
--		uint64_t cnt2sel:6;
--		uint64_t cnt1ena:1;
--		uint64_t cnt1clr:1;
--		uint64_t cnt1sel:6;
--		uint64_t cnt0ena:1;
--		uint64_t cnt0clr:1;
--		uint64_t cnt0sel:6;
--#else
--		uint64_t cnt0sel:6;
--		uint64_t cnt0clr:1;
--		uint64_t cnt0ena:1;
--		uint64_t cnt1sel:6;
--		uint64_t cnt1clr:1;
--		uint64_t cnt1ena:1;
--		uint64_t cnt2sel:6;
--		uint64_t cnt2clr:1;
--		uint64_t cnt2ena:1;
--		uint64_t cnt3sel:6;
--		uint64_t cnt3clr:1;
--		uint64_t cnt3ena:1;
--		uint64_t cnt0rdclr:1;
--		uint64_t cnt1rdclr:1;
--		uint64_t cnt2rdclr:1;
--		uint64_t cnt3rdclr:1;
--		uint64_t reserved_36_63:28;
--#endif
--	} s;
--	struct cvmx_l2c_pfctl_s cn30xx;
--	struct cvmx_l2c_pfctl_s cn31xx;
--	struct cvmx_l2c_pfctl_s cn38xx;
--	struct cvmx_l2c_pfctl_s cn38xxp2;
--	struct cvmx_l2c_pfctl_s cn50xx;
--	struct cvmx_l2c_pfctl_s cn52xx;
--	struct cvmx_l2c_pfctl_s cn52xxp1;
--	struct cvmx_l2c_pfctl_s cn56xx;
--	struct cvmx_l2c_pfctl_s cn56xxp1;
--	struct cvmx_l2c_pfctl_s cn58xx;
--	struct cvmx_l2c_pfctl_s cn58xxp1;
--};
--
--union cvmx_l2c_ppgrp {
--	uint64_t u64;
--	struct cvmx_l2c_ppgrp_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_24_63:40;
--		uint64_t pp11grp:2;
--		uint64_t pp10grp:2;
--		uint64_t pp9grp:2;
--		uint64_t pp8grp:2;
--		uint64_t pp7grp:2;
--		uint64_t pp6grp:2;
--		uint64_t pp5grp:2;
--		uint64_t pp4grp:2;
--		uint64_t pp3grp:2;
--		uint64_t pp2grp:2;
--		uint64_t pp1grp:2;
--		uint64_t pp0grp:2;
--#else
--		uint64_t pp0grp:2;
--		uint64_t pp1grp:2;
--		uint64_t pp2grp:2;
--		uint64_t pp3grp:2;
--		uint64_t pp4grp:2;
--		uint64_t pp5grp:2;
--		uint64_t pp6grp:2;
--		uint64_t pp7grp:2;
--		uint64_t pp8grp:2;
--		uint64_t pp9grp:2;
--		uint64_t pp10grp:2;
--		uint64_t pp11grp:2;
--		uint64_t reserved_24_63:40;
--#endif
--	} s;
--	struct cvmx_l2c_ppgrp_cn52xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_8_63:56;
--		uint64_t pp3grp:2;
--		uint64_t pp2grp:2;
--		uint64_t pp1grp:2;
--		uint64_t pp0grp:2;
--#else
--		uint64_t pp0grp:2;
--		uint64_t pp1grp:2;
--		uint64_t pp2grp:2;
--		uint64_t pp3grp:2;
--		uint64_t reserved_8_63:56;
--#endif
--	} cn52xx;
--	struct cvmx_l2c_ppgrp_cn52xx cn52xxp1;
--	struct cvmx_l2c_ppgrp_s cn56xx;
--	struct cvmx_l2c_ppgrp_s cn56xxp1;
--};
--
--union cvmx_l2c_qos_iobx {
--	uint64_t u64;
--	struct cvmx_l2c_qos_iobx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_7_63:57;
--		uint64_t dwblvl:3;
--		uint64_t reserved_3_3:1;
--		uint64_t lvl:3;
--#else
--		uint64_t lvl:3;
--		uint64_t reserved_3_3:1;
--		uint64_t dwblvl:3;
--		uint64_t reserved_7_63:57;
--#endif
--	} s;
--	struct cvmx_l2c_qos_iobx_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_6_63:58;
--		uint64_t dwblvl:2;
--		uint64_t reserved_2_3:2;
--		uint64_t lvl:2;
--#else
--		uint64_t lvl:2;
--		uint64_t reserved_2_3:2;
--		uint64_t dwblvl:2;
--		uint64_t reserved_6_63:58;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_qos_iobx_cn61xx cn63xx;
--	struct cvmx_l2c_qos_iobx_cn61xx cn63xxp1;
--	struct cvmx_l2c_qos_iobx_cn61xx cn66xx;
--	struct cvmx_l2c_qos_iobx_s cn68xx;
--	struct cvmx_l2c_qos_iobx_s cn68xxp1;
--	struct cvmx_l2c_qos_iobx_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_qos_ppx {
--	uint64_t u64;
--	struct cvmx_l2c_qos_ppx_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_3_63:61;
--		uint64_t lvl:3;
--#else
--		uint64_t lvl:3;
--		uint64_t reserved_3_63:61;
--#endif
--	} s;
--	struct cvmx_l2c_qos_ppx_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_2_63:62;
--		uint64_t lvl:2;
--#else
--		uint64_t lvl:2;
--		uint64_t reserved_2_63:62;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_qos_ppx_cn61xx cn63xx;
--	struct cvmx_l2c_qos_ppx_cn61xx cn63xxp1;
--	struct cvmx_l2c_qos_ppx_cn61xx cn66xx;
--	struct cvmx_l2c_qos_ppx_s cn68xx;
--	struct cvmx_l2c_qos_ppx_s cn68xxp1;
--	struct cvmx_l2c_qos_ppx_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_qos_wgt {
--	uint64_t u64;
--	struct cvmx_l2c_qos_wgt_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t wgt7:8;
--		uint64_t wgt6:8;
--		uint64_t wgt5:8;
--		uint64_t wgt4:8;
--		uint64_t wgt3:8;
--		uint64_t wgt2:8;
--		uint64_t wgt1:8;
--		uint64_t wgt0:8;
--#else
--		uint64_t wgt0:8;
--		uint64_t wgt1:8;
--		uint64_t wgt2:8;
--		uint64_t wgt3:8;
--		uint64_t wgt4:8;
--		uint64_t wgt5:8;
--		uint64_t wgt6:8;
--		uint64_t wgt7:8;
--#endif
--	} s;
--	struct cvmx_l2c_qos_wgt_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t wgt3:8;
--		uint64_t wgt2:8;
--		uint64_t wgt1:8;
--		uint64_t wgt0:8;
--#else
--		uint64_t wgt0:8;
--		uint64_t wgt1:8;
--		uint64_t wgt2:8;
--		uint64_t wgt3:8;
--		uint64_t reserved_32_63:32;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_qos_wgt_cn61xx cn63xx;
--	struct cvmx_l2c_qos_wgt_cn61xx cn63xxp1;
--	struct cvmx_l2c_qos_wgt_cn61xx cn66xx;
--	struct cvmx_l2c_qos_wgt_s cn68xx;
--	struct cvmx_l2c_qos_wgt_s cn68xxp1;
--	struct cvmx_l2c_qos_wgt_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_rscx_pfc {
--	uint64_t u64;
--	struct cvmx_l2c_rscx_pfc_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
--	} s;
--	struct cvmx_l2c_rscx_pfc_s cn61xx;
--	struct cvmx_l2c_rscx_pfc_s cn63xx;
--	struct cvmx_l2c_rscx_pfc_s cn63xxp1;
--	struct cvmx_l2c_rscx_pfc_s cn66xx;
--	struct cvmx_l2c_rscx_pfc_s cn68xx;
--	struct cvmx_l2c_rscx_pfc_s cn68xxp1;
--	struct cvmx_l2c_rscx_pfc_s cnf71xx;
--};
--
--union cvmx_l2c_rsdx_pfc {
--	uint64_t u64;
--	struct cvmx_l2c_rsdx_pfc_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
--	} s;
--	struct cvmx_l2c_rsdx_pfc_s cn61xx;
--	struct cvmx_l2c_rsdx_pfc_s cn63xx;
--	struct cvmx_l2c_rsdx_pfc_s cn63xxp1;
--	struct cvmx_l2c_rsdx_pfc_s cn66xx;
--	struct cvmx_l2c_rsdx_pfc_s cn68xx;
--	struct cvmx_l2c_rsdx_pfc_s cn68xxp1;
--	struct cvmx_l2c_rsdx_pfc_s cnf71xx;
--};
--
--union cvmx_l2c_spar0 {
--	uint64_t u64;
--	struct cvmx_l2c_spar0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t umsk3:8;
--		uint64_t umsk2:8;
--		uint64_t umsk1:8;
--		uint64_t umsk0:8;
--#else
--		uint64_t umsk0:8;
--		uint64_t umsk1:8;
--		uint64_t umsk2:8;
--		uint64_t umsk3:8;
--		uint64_t reserved_32_63:32;
--#endif
--	} s;
--	struct cvmx_l2c_spar0_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_4_63:60;
--		uint64_t umsk0:4;
--#else
--		uint64_t umsk0:4;
--		uint64_t reserved_4_63:60;
--#endif
--	} cn30xx;
--	struct cvmx_l2c_spar0_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_12_63:52;
--		uint64_t umsk1:4;
--		uint64_t reserved_4_7:4;
--		uint64_t umsk0:4;
--#else
--		uint64_t umsk0:4;
--		uint64_t reserved_4_7:4;
--		uint64_t umsk1:4;
--		uint64_t reserved_12_63:52;
--#endif
--	} cn31xx;
--	struct cvmx_l2c_spar0_s cn38xx;
--	struct cvmx_l2c_spar0_s cn38xxp2;
--	struct cvmx_l2c_spar0_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t umsk1:8;
--		uint64_t umsk0:8;
--#else
--		uint64_t umsk0:8;
--		uint64_t umsk1:8;
--		uint64_t reserved_16_63:48;
--#endif
--	} cn50xx;
--	struct cvmx_l2c_spar0_s cn52xx;
--	struct cvmx_l2c_spar0_s cn52xxp1;
--	struct cvmx_l2c_spar0_s cn56xx;
--	struct cvmx_l2c_spar0_s cn56xxp1;
--	struct cvmx_l2c_spar0_s cn58xx;
--	struct cvmx_l2c_spar0_s cn58xxp1;
--};
--
--union cvmx_l2c_spar1 {
--	uint64_t u64;
--	struct cvmx_l2c_spar1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t umsk7:8;
--		uint64_t umsk6:8;
--		uint64_t umsk5:8;
--		uint64_t umsk4:8;
--#else
--		uint64_t umsk4:8;
--		uint64_t umsk5:8;
--		uint64_t umsk6:8;
--		uint64_t umsk7:8;
--		uint64_t reserved_32_63:32;
--#endif
--	} s;
--	struct cvmx_l2c_spar1_s cn38xx;
--	struct cvmx_l2c_spar1_s cn38xxp2;
--	struct cvmx_l2c_spar1_s cn56xx;
--	struct cvmx_l2c_spar1_s cn56xxp1;
--	struct cvmx_l2c_spar1_s cn58xx;
--	struct cvmx_l2c_spar1_s cn58xxp1;
--};
--
--union cvmx_l2c_spar2 {
--	uint64_t u64;
--	struct cvmx_l2c_spar2_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t umsk11:8;
--		uint64_t umsk10:8;
--		uint64_t umsk9:8;
--		uint64_t umsk8:8;
--#else
--		uint64_t umsk8:8;
--		uint64_t umsk9:8;
--		uint64_t umsk10:8;
--		uint64_t umsk11:8;
--		uint64_t reserved_32_63:32;
--#endif
--	} s;
--	struct cvmx_l2c_spar2_s cn38xx;
--	struct cvmx_l2c_spar2_s cn38xxp2;
--	struct cvmx_l2c_spar2_s cn56xx;
--	struct cvmx_l2c_spar2_s cn56xxp1;
--	struct cvmx_l2c_spar2_s cn58xx;
--	struct cvmx_l2c_spar2_s cn58xxp1;
--};
--
--union cvmx_l2c_spar3 {
--	uint64_t u64;
--	struct cvmx_l2c_spar3_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t umsk15:8;
--		uint64_t umsk14:8;
--		uint64_t umsk13:8;
--		uint64_t umsk12:8;
--#else
--		uint64_t umsk12:8;
--		uint64_t umsk13:8;
--		uint64_t umsk14:8;
--		uint64_t umsk15:8;
--		uint64_t reserved_32_63:32;
--#endif
--	} s;
--	struct cvmx_l2c_spar3_s cn38xx;
--	struct cvmx_l2c_spar3_s cn38xxp2;
--	struct cvmx_l2c_spar3_s cn58xx;
--	struct cvmx_l2c_spar3_s cn58xxp1;
--};
--
--union cvmx_l2c_spar4 {
--	uint64_t u64;
--	struct cvmx_l2c_spar4_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_8_63:56;
--		uint64_t umskiob:8;
--#else
--		uint64_t umskiob:8;
--		uint64_t reserved_8_63:56;
--#endif
--	} s;
--	struct cvmx_l2c_spar4_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_4_63:60;
--		uint64_t umskiob:4;
--#else
--		uint64_t umskiob:4;
--		uint64_t reserved_4_63:60;
--#endif
--	} cn30xx;
--	struct cvmx_l2c_spar4_cn30xx cn31xx;
--	struct cvmx_l2c_spar4_s cn38xx;
--	struct cvmx_l2c_spar4_s cn38xxp2;
--	struct cvmx_l2c_spar4_s cn50xx;
--	struct cvmx_l2c_spar4_s cn52xx;
--	struct cvmx_l2c_spar4_s cn52xxp1;
--	struct cvmx_l2c_spar4_s cn56xx;
--	struct cvmx_l2c_spar4_s cn56xxp1;
--	struct cvmx_l2c_spar4_s cn58xx;
--	struct cvmx_l2c_spar4_s cn58xxp1;
--};
--
--union cvmx_l2c_tadx_ecc0 {
--	uint64_t u64;
--	struct cvmx_l2c_tadx_ecc0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_58_63:6;
--		uint64_t ow3ecc:10;
--		uint64_t reserved_42_47:6;
--		uint64_t ow2ecc:10;
--		uint64_t reserved_26_31:6;
--		uint64_t ow1ecc:10;
--		uint64_t reserved_10_15:6;
--		uint64_t ow0ecc:10;
--#else
--		uint64_t ow0ecc:10;
--		uint64_t reserved_10_15:6;
--		uint64_t ow1ecc:10;
--		uint64_t reserved_26_31:6;
--		uint64_t ow2ecc:10;
--		uint64_t reserved_42_47:6;
--		uint64_t ow3ecc:10;
--		uint64_t reserved_58_63:6;
--#endif
--	} s;
--	struct cvmx_l2c_tadx_ecc0_s cn61xx;
--	struct cvmx_l2c_tadx_ecc0_s cn63xx;
--	struct cvmx_l2c_tadx_ecc0_s cn63xxp1;
--	struct cvmx_l2c_tadx_ecc0_s cn66xx;
--	struct cvmx_l2c_tadx_ecc0_s cn68xx;
--	struct cvmx_l2c_tadx_ecc0_s cn68xxp1;
--	struct cvmx_l2c_tadx_ecc0_s cnf71xx;
--};
--
--union cvmx_l2c_tadx_ecc1 {
--	uint64_t u64;
--	struct cvmx_l2c_tadx_ecc1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_58_63:6;
--		uint64_t ow7ecc:10;
--		uint64_t reserved_42_47:6;
--		uint64_t ow6ecc:10;
--		uint64_t reserved_26_31:6;
--		uint64_t ow5ecc:10;
--		uint64_t reserved_10_15:6;
--		uint64_t ow4ecc:10;
--#else
--		uint64_t ow4ecc:10;
--		uint64_t reserved_10_15:6;
--		uint64_t ow5ecc:10;
--		uint64_t reserved_26_31:6;
--		uint64_t ow6ecc:10;
--		uint64_t reserved_42_47:6;
--		uint64_t ow7ecc:10;
--		uint64_t reserved_58_63:6;
--#endif
--	} s;
--	struct cvmx_l2c_tadx_ecc1_s cn61xx;
--	struct cvmx_l2c_tadx_ecc1_s cn63xx;
--	struct cvmx_l2c_tadx_ecc1_s cn63xxp1;
--	struct cvmx_l2c_tadx_ecc1_s cn66xx;
--	struct cvmx_l2c_tadx_ecc1_s cn68xx;
--	struct cvmx_l2c_tadx_ecc1_s cn68xxp1;
--	struct cvmx_l2c_tadx_ecc1_s cnf71xx;
--};
--
--union cvmx_l2c_tadx_ien {
--	uint64_t u64;
--	struct cvmx_l2c_tadx_ien_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_9_63:55;
--		uint64_t wrdislmc:1;
--		uint64_t rddislmc:1;
--		uint64_t noway:1;
--		uint64_t vbfdbe:1;
--		uint64_t vbfsbe:1;
--		uint64_t tagdbe:1;
--		uint64_t tagsbe:1;
--		uint64_t l2ddbe:1;
--		uint64_t l2dsbe:1;
--#else
--		uint64_t l2dsbe:1;
--		uint64_t l2ddbe:1;
--		uint64_t tagsbe:1;
--		uint64_t tagdbe:1;
--		uint64_t vbfsbe:1;
--		uint64_t vbfdbe:1;
--		uint64_t noway:1;
--		uint64_t rddislmc:1;
--		uint64_t wrdislmc:1;
--		uint64_t reserved_9_63:55;
--#endif
--	} s;
--	struct cvmx_l2c_tadx_ien_s cn61xx;
--	struct cvmx_l2c_tadx_ien_s cn63xx;
--	struct cvmx_l2c_tadx_ien_cn63xxp1 {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_7_63:57;
--		uint64_t noway:1;
--		uint64_t vbfdbe:1;
--		uint64_t vbfsbe:1;
--		uint64_t tagdbe:1;
--		uint64_t tagsbe:1;
--		uint64_t l2ddbe:1;
--		uint64_t l2dsbe:1;
--#else
--		uint64_t l2dsbe:1;
--		uint64_t l2ddbe:1;
--		uint64_t tagsbe:1;
--		uint64_t tagdbe:1;
--		uint64_t vbfsbe:1;
--		uint64_t vbfdbe:1;
--		uint64_t noway:1;
--		uint64_t reserved_7_63:57;
--#endif
--	} cn63xxp1;
--	struct cvmx_l2c_tadx_ien_s cn66xx;
--	struct cvmx_l2c_tadx_ien_s cn68xx;
--	struct cvmx_l2c_tadx_ien_s cn68xxp1;
--	struct cvmx_l2c_tadx_ien_s cnf71xx;
--};
--
--union cvmx_l2c_tadx_int {
--	uint64_t u64;
--	struct cvmx_l2c_tadx_int_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_9_63:55;
--		uint64_t wrdislmc:1;
--		uint64_t rddislmc:1;
--		uint64_t noway:1;
--		uint64_t vbfdbe:1;
--		uint64_t vbfsbe:1;
--		uint64_t tagdbe:1;
--		uint64_t tagsbe:1;
--		uint64_t l2ddbe:1;
--		uint64_t l2dsbe:1;
--#else
--		uint64_t l2dsbe:1;
--		uint64_t l2ddbe:1;
--		uint64_t tagsbe:1;
--		uint64_t tagdbe:1;
--		uint64_t vbfsbe:1;
--		uint64_t vbfdbe:1;
--		uint64_t noway:1;
--		uint64_t rddislmc:1;
--		uint64_t wrdislmc:1;
--		uint64_t reserved_9_63:55;
--#endif
--	} s;
--	struct cvmx_l2c_tadx_int_s cn61xx;
--	struct cvmx_l2c_tadx_int_s cn63xx;
--	struct cvmx_l2c_tadx_int_s cn66xx;
--	struct cvmx_l2c_tadx_int_s cn68xx;
--	struct cvmx_l2c_tadx_int_s cn68xxp1;
--	struct cvmx_l2c_tadx_int_s cnf71xx;
--};
--
--union cvmx_l2c_tadx_pfc0 {
--	uint64_t u64;
--	struct cvmx_l2c_tadx_pfc0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
--	} s;
--	struct cvmx_l2c_tadx_pfc0_s cn61xx;
--	struct cvmx_l2c_tadx_pfc0_s cn63xx;
--	struct cvmx_l2c_tadx_pfc0_s cn63xxp1;
--	struct cvmx_l2c_tadx_pfc0_s cn66xx;
--	struct cvmx_l2c_tadx_pfc0_s cn68xx;
--	struct cvmx_l2c_tadx_pfc0_s cn68xxp1;
--	struct cvmx_l2c_tadx_pfc0_s cnf71xx;
--};
--
--union cvmx_l2c_tadx_pfc1 {
--	uint64_t u64;
--	struct cvmx_l2c_tadx_pfc1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
--	} s;
--	struct cvmx_l2c_tadx_pfc1_s cn61xx;
--	struct cvmx_l2c_tadx_pfc1_s cn63xx;
--	struct cvmx_l2c_tadx_pfc1_s cn63xxp1;
--	struct cvmx_l2c_tadx_pfc1_s cn66xx;
--	struct cvmx_l2c_tadx_pfc1_s cn68xx;
--	struct cvmx_l2c_tadx_pfc1_s cn68xxp1;
--	struct cvmx_l2c_tadx_pfc1_s cnf71xx;
--};
--
--union cvmx_l2c_tadx_pfc2 {
--	uint64_t u64;
--	struct cvmx_l2c_tadx_pfc2_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
--	} s;
--	struct cvmx_l2c_tadx_pfc2_s cn61xx;
--	struct cvmx_l2c_tadx_pfc2_s cn63xx;
--	struct cvmx_l2c_tadx_pfc2_s cn63xxp1;
--	struct cvmx_l2c_tadx_pfc2_s cn66xx;
--	struct cvmx_l2c_tadx_pfc2_s cn68xx;
--	struct cvmx_l2c_tadx_pfc2_s cn68xxp1;
--	struct cvmx_l2c_tadx_pfc2_s cnf71xx;
--};
--
--union cvmx_l2c_tadx_pfc3 {
--	uint64_t u64;
--	struct cvmx_l2c_tadx_pfc3_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_36_63:28,
-+		__BITFIELD_FIELD(uint64_t cnt3rdclr:1,
-+		__BITFIELD_FIELD(uint64_t cnt2rdclr:1,
-+		__BITFIELD_FIELD(uint64_t cnt1rdclr:1,
-+		__BITFIELD_FIELD(uint64_t cnt0rdclr:1,
-+		__BITFIELD_FIELD(uint64_t cnt3ena:1,
-+		__BITFIELD_FIELD(uint64_t cnt3clr:1,
-+		__BITFIELD_FIELD(uint64_t cnt3sel:6,
-+		__BITFIELD_FIELD(uint64_t cnt2ena:1,
-+		__BITFIELD_FIELD(uint64_t cnt2clr:1,
-+		__BITFIELD_FIELD(uint64_t cnt2sel:6,
-+		__BITFIELD_FIELD(uint64_t cnt1ena:1,
-+		__BITFIELD_FIELD(uint64_t cnt1clr:1,
-+		__BITFIELD_FIELD(uint64_t cnt1sel:6,
-+		__BITFIELD_FIELD(uint64_t cnt0ena:1,
-+		__BITFIELD_FIELD(uint64_t cnt0clr:1,
-+		__BITFIELD_FIELD(uint64_t cnt0sel:6,
-+		;)))))))))))))))))
- 	} s;
--	struct cvmx_l2c_tadx_pfc3_s cn61xx;
--	struct cvmx_l2c_tadx_pfc3_s cn63xx;
--	struct cvmx_l2c_tadx_pfc3_s cn63xxp1;
--	struct cvmx_l2c_tadx_pfc3_s cn66xx;
--	struct cvmx_l2c_tadx_pfc3_s cn68xx;
--	struct cvmx_l2c_tadx_pfc3_s cn68xxp1;
--	struct cvmx_l2c_tadx_pfc3_s cnf71xx;
- };
- 
- union cvmx_l2c_tadx_prf {
- 	uint64_t u64;
- 	struct cvmx_l2c_tadx_prf_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_32_63:32;
--		uint64_t cnt3sel:8;
--		uint64_t cnt2sel:8;
--		uint64_t cnt1sel:8;
--		uint64_t cnt0sel:8;
--#else
--		uint64_t cnt0sel:8;
--		uint64_t cnt1sel:8;
--		uint64_t cnt2sel:8;
--		uint64_t cnt3sel:8;
+-		uint64_t user1:16;
+-		uint64_t ale:1;
+-		uint64_t width:1;
+-		uint64_t dmack_p2:1;
+-		uint64_t dmack_p1:1;
+-		uint64_t dmack_p0:1;
+-		uint64_t term:2;
+-		uint64_t nand:1;
+-		uint64_t user0:8;
+-#else
+-		uint64_t user0:8;
+-		uint64_t nand:1;
+-		uint64_t term:2;
+-		uint64_t dmack_p0:1;
+-		uint64_t dmack_p1:1;
+-		uint64_t dmack_p2:1;
+-		uint64_t width:1;
+-		uint64_t ale:1;
+-		uint64_t user1:16;
 -		uint64_t reserved_32_63:32;
 -#endif
 +		__BITFIELD_FIELD(uint64_t reserved_32_63:32,
-+		__BITFIELD_FIELD(uint64_t cnt3sel:8,
-+		__BITFIELD_FIELD(uint64_t cnt2sel:8,
-+		__BITFIELD_FIELD(uint64_t cnt1sel:8,
-+		__BITFIELD_FIELD(uint64_t cnt0sel:8,
-+		;)))))
++		__BITFIELD_FIELD(uint64_t user1:16,
++		__BITFIELD_FIELD(uint64_t ale:1,
++		__BITFIELD_FIELD(uint64_t width:1,
++		__BITFIELD_FIELD(uint64_t dmack_p2:1,
++		__BITFIELD_FIELD(uint64_t dmack_p1:1,
++		__BITFIELD_FIELD(uint64_t dmack_p0:1,
++		__BITFIELD_FIELD(uint64_t term:2,
++		__BITFIELD_FIELD(uint64_t nand:1,
++		__BITFIELD_FIELD(uint64_t user0:8,
++		;))))))))))
  	} s;
--	struct cvmx_l2c_tadx_prf_s cn61xx;
--	struct cvmx_l2c_tadx_prf_s cn63xx;
--	struct cvmx_l2c_tadx_prf_s cn63xxp1;
--	struct cvmx_l2c_tadx_prf_s cn66xx;
--	struct cvmx_l2c_tadx_prf_s cn68xx;
--	struct cvmx_l2c_tadx_prf_s cn68xxp1;
--	struct cvmx_l2c_tadx_prf_s cnf71xx;
+-	struct cvmx_mio_boot_pin_defs_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t ale:1;
+-		uint64_t width:1;
+-		uint64_t reserved_13_13:1;
+-		uint64_t dmack_p1:1;
+-		uint64_t dmack_p0:1;
+-		uint64_t term:2;
+-		uint64_t nand:1;
+-		uint64_t reserved_0_7:8;
+-#else
+-		uint64_t reserved_0_7:8;
+-		uint64_t nand:1;
+-		uint64_t term:2;
+-		uint64_t dmack_p0:1;
+-		uint64_t dmack_p1:1;
+-		uint64_t reserved_13_13:1;
+-		uint64_t width:1;
+-		uint64_t ale:1;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn52xx;
+-	struct cvmx_mio_boot_pin_defs_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t ale:1;
+-		uint64_t width:1;
+-		uint64_t dmack_p2:1;
+-		uint64_t dmack_p1:1;
+-		uint64_t dmack_p0:1;
+-		uint64_t term:2;
+-		uint64_t reserved_0_8:9;
+-#else
+-		uint64_t reserved_0_8:9;
+-		uint64_t term:2;
+-		uint64_t dmack_p0:1;
+-		uint64_t dmack_p1:1;
+-		uint64_t dmack_p2:1;
+-		uint64_t width:1;
+-		uint64_t ale:1;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} cn56xx;
+-	struct cvmx_mio_boot_pin_defs_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t user1:16;
+-		uint64_t ale:1;
+-		uint64_t width:1;
+-		uint64_t reserved_13_13:1;
+-		uint64_t dmack_p1:1;
+-		uint64_t dmack_p0:1;
+-		uint64_t term:2;
+-		uint64_t nand:1;
+-		uint64_t user0:8;
+-#else
+-		uint64_t user0:8;
+-		uint64_t nand:1;
+-		uint64_t term:2;
+-		uint64_t dmack_p0:1;
+-		uint64_t dmack_p1:1;
+-		uint64_t reserved_13_13:1;
+-		uint64_t width:1;
+-		uint64_t ale:1;
+-		uint64_t user1:16;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_boot_pin_defs_cn52xx cn63xx;
+-	struct cvmx_mio_boot_pin_defs_cn52xx cn63xxp1;
+-	struct cvmx_mio_boot_pin_defs_cn52xx cn66xx;
+-	struct cvmx_mio_boot_pin_defs_cn52xx cn68xx;
+-	struct cvmx_mio_boot_pin_defs_cn52xx cn68xxp1;
+-	struct cvmx_mio_boot_pin_defs_cn61xx cnf71xx;
  };
  
- union cvmx_l2c_tadx_tag {
+ union cvmx_mio_boot_reg_cfgx {
  	uint64_t u64;
- 	struct cvmx_l2c_tadx_tag_s {
+ 	struct cvmx_mio_boot_reg_cfgx_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_46_63:18;
--		uint64_t ecc:6;
--		uint64_t reserved_36_39:4;
--		uint64_t tag:19;
--		uint64_t reserved_4_16:13;
--		uint64_t use:1;
--		uint64_t valid:1;
--		uint64_t dirty:1;
--		uint64_t lock:1;
+-		uint64_t reserved_44_63:20;
+-		uint64_t dmack:2;
+-		uint64_t tim_mult:2;
+-		uint64_t rd_dly:3;
+-		uint64_t sam:1;
+-		uint64_t we_ext:2;
+-		uint64_t oe_ext:2;
+-		uint64_t en:1;
+-		uint64_t orbit:1;
+-		uint64_t ale:1;
+-		uint64_t width:1;
+-		uint64_t size:12;
+-		uint64_t base:16;
 -#else
--		uint64_t lock:1;
--		uint64_t dirty:1;
--		uint64_t valid:1;
--		uint64_t use:1;
--		uint64_t reserved_4_16:13;
--		uint64_t tag:19;
--		uint64_t reserved_36_39:4;
--		uint64_t ecc:6;
--		uint64_t reserved_46_63:18;
+-		uint64_t base:16;
+-		uint64_t size:12;
+-		uint64_t width:1;
+-		uint64_t ale:1;
+-		uint64_t orbit:1;
+-		uint64_t en:1;
+-		uint64_t oe_ext:2;
+-		uint64_t we_ext:2;
+-		uint64_t sam:1;
+-		uint64_t rd_dly:3;
+-		uint64_t tim_mult:2;
+-		uint64_t dmack:2;
+-		uint64_t reserved_44_63:20;
 -#endif
--	} s;
--	struct cvmx_l2c_tadx_tag_s cn61xx;
--	struct cvmx_l2c_tadx_tag_s cn63xx;
--	struct cvmx_l2c_tadx_tag_s cn63xxp1;
--	struct cvmx_l2c_tadx_tag_s cn66xx;
--	struct cvmx_l2c_tadx_tag_s cn68xx;
--	struct cvmx_l2c_tadx_tag_s cn68xxp1;
--	struct cvmx_l2c_tadx_tag_s cnf71xx;
--};
--
--union cvmx_l2c_ver_id {
--	uint64_t u64;
--	struct cvmx_l2c_ver_id_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t mask:64;
--#else
--		uint64_t mask:64;
--#endif
--	} s;
--	struct cvmx_l2c_ver_id_s cn61xx;
--	struct cvmx_l2c_ver_id_s cn63xx;
--	struct cvmx_l2c_ver_id_s cn63xxp1;
--	struct cvmx_l2c_ver_id_s cn66xx;
--	struct cvmx_l2c_ver_id_s cn68xx;
--	struct cvmx_l2c_ver_id_s cn68xxp1;
--	struct cvmx_l2c_ver_id_s cnf71xx;
--};
--
--union cvmx_l2c_ver_iob {
--	uint64_t u64;
--	struct cvmx_l2c_ver_iob_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_2_63:62;
--		uint64_t mask:2;
--#else
--		uint64_t mask:2;
--		uint64_t reserved_2_63:62;
--#endif
--	} s;
--	struct cvmx_l2c_ver_iob_cn61xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_1_63:63;
--		uint64_t mask:1;
--#else
--		uint64_t mask:1;
--		uint64_t reserved_1_63:63;
--#endif
--	} cn61xx;
--	struct cvmx_l2c_ver_iob_cn61xx cn63xx;
--	struct cvmx_l2c_ver_iob_cn61xx cn63xxp1;
--	struct cvmx_l2c_ver_iob_cn61xx cn66xx;
--	struct cvmx_l2c_ver_iob_s cn68xx;
--	struct cvmx_l2c_ver_iob_s cn68xxp1;
--	struct cvmx_l2c_ver_iob_cn61xx cnf71xx;
--};
--
--union cvmx_l2c_ver_msc {
--	uint64_t u64;
--	struct cvmx_l2c_ver_msc_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_2_63:62;
--		uint64_t invl2:1;
--		uint64_t dwb:1;
--#else
--		uint64_t dwb:1;
--		uint64_t invl2:1;
--		uint64_t reserved_2_63:62;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_46_63:18,
-+		__BITFIELD_FIELD(uint64_t ecc:6,
-+		__BITFIELD_FIELD(uint64_t reserved_36_39:4,
-+		__BITFIELD_FIELD(uint64_t tag:19,
-+		__BITFIELD_FIELD(uint64_t reserved_4_16:13,
-+		__BITFIELD_FIELD(uint64_t use:1,
-+		__BITFIELD_FIELD(uint64_t valid:1,
-+		__BITFIELD_FIELD(uint64_t dirty:1,
-+		__BITFIELD_FIELD(uint64_t lock:1,
-+		;)))))))))
++		__BITFIELD_FIELD(uint64_t reserved_44_63:20,
++		__BITFIELD_FIELD(uint64_t dmack:2,
++		__BITFIELD_FIELD(uint64_t tim_mult:2,
++		__BITFIELD_FIELD(uint64_t rd_dly:3,
++		__BITFIELD_FIELD(uint64_t sam:1,
++		__BITFIELD_FIELD(uint64_t we_ext:2,
++		__BITFIELD_FIELD(uint64_t oe_ext:2,
++		__BITFIELD_FIELD(uint64_t en:1,
++		__BITFIELD_FIELD(uint64_t orbit:1,
++		__BITFIELD_FIELD(uint64_t ale:1,
++		__BITFIELD_FIELD(uint64_t width:1,
++		__BITFIELD_FIELD(uint64_t size:12,
++		__BITFIELD_FIELD(uint64_t base:16,
++		;)))))))))))))
  	} s;
--	struct cvmx_l2c_ver_msc_s cn61xx;
--	struct cvmx_l2c_ver_msc_s cn63xx;
--	struct cvmx_l2c_ver_msc_s cn66xx;
--	struct cvmx_l2c_ver_msc_s cn68xx;
--	struct cvmx_l2c_ver_msc_s cn68xxp1;
--	struct cvmx_l2c_ver_msc_s cnf71xx;
+-	struct cvmx_mio_boot_reg_cfgx_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_37_63:27;
+-		uint64_t sam:1;
+-		uint64_t we_ext:2;
+-		uint64_t oe_ext:2;
+-		uint64_t en:1;
+-		uint64_t orbit:1;
+-		uint64_t ale:1;
+-		uint64_t width:1;
+-		uint64_t size:12;
+-		uint64_t base:16;
+-#else
+-		uint64_t base:16;
+-		uint64_t size:12;
+-		uint64_t width:1;
+-		uint64_t ale:1;
+-		uint64_t orbit:1;
+-		uint64_t en:1;
+-		uint64_t oe_ext:2;
+-		uint64_t we_ext:2;
+-		uint64_t sam:1;
+-		uint64_t reserved_37_63:27;
+-#endif
+-	} cn30xx;
+-	struct cvmx_mio_boot_reg_cfgx_cn30xx cn31xx;
+-	struct cvmx_mio_boot_reg_cfgx_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t en:1;
+-		uint64_t orbit:1;
+-		uint64_t reserved_28_29:2;
+-		uint64_t size:12;
+-		uint64_t base:16;
+-#else
+-		uint64_t base:16;
+-		uint64_t size:12;
+-		uint64_t reserved_28_29:2;
+-		uint64_t orbit:1;
+-		uint64_t en:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn38xx;
+-	struct cvmx_mio_boot_reg_cfgx_cn38xx cn38xxp2;
+-	struct cvmx_mio_boot_reg_cfgx_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_42_63:22;
+-		uint64_t tim_mult:2;
+-		uint64_t rd_dly:3;
+-		uint64_t sam:1;
+-		uint64_t we_ext:2;
+-		uint64_t oe_ext:2;
+-		uint64_t en:1;
+-		uint64_t orbit:1;
+-		uint64_t ale:1;
+-		uint64_t width:1;
+-		uint64_t size:12;
+-		uint64_t base:16;
+-#else
+-		uint64_t base:16;
+-		uint64_t size:12;
+-		uint64_t width:1;
+-		uint64_t ale:1;
+-		uint64_t orbit:1;
+-		uint64_t en:1;
+-		uint64_t oe_ext:2;
+-		uint64_t we_ext:2;
+-		uint64_t sam:1;
+-		uint64_t rd_dly:3;
+-		uint64_t tim_mult:2;
+-		uint64_t reserved_42_63:22;
+-#endif
+-	} cn50xx;
+-	struct cvmx_mio_boot_reg_cfgx_s cn52xx;
+-	struct cvmx_mio_boot_reg_cfgx_s cn52xxp1;
+-	struct cvmx_mio_boot_reg_cfgx_s cn56xx;
+-	struct cvmx_mio_boot_reg_cfgx_s cn56xxp1;
+-	struct cvmx_mio_boot_reg_cfgx_cn30xx cn58xx;
+-	struct cvmx_mio_boot_reg_cfgx_cn30xx cn58xxp1;
+-	struct cvmx_mio_boot_reg_cfgx_s cn61xx;
+-	struct cvmx_mio_boot_reg_cfgx_s cn63xx;
+-	struct cvmx_mio_boot_reg_cfgx_s cn63xxp1;
+-	struct cvmx_mio_boot_reg_cfgx_s cn66xx;
+-	struct cvmx_mio_boot_reg_cfgx_s cn68xx;
+-	struct cvmx_mio_boot_reg_cfgx_s cn68xxp1;
+-	struct cvmx_mio_boot_reg_cfgx_s cnf71xx;
  };
  
--union cvmx_l2c_ver_pp {
+ union cvmx_mio_boot_reg_timx {
+ 	uint64_t u64;
+ 	struct cvmx_mio_boot_reg_timx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t pagem:1;
+-		uint64_t waitm:1;
+-		uint64_t pages:2;
+-		uint64_t ale:6;
+-		uint64_t page:6;
+-		uint64_t wait:6;
+-		uint64_t pause:6;
+-		uint64_t wr_hld:6;
+-		uint64_t rd_hld:6;
+-		uint64_t we:6;
+-		uint64_t oe:6;
+-		uint64_t ce:6;
+-		uint64_t adr:6;
+-#else
+-		uint64_t adr:6;
+-		uint64_t ce:6;
+-		uint64_t oe:6;
+-		uint64_t we:6;
+-		uint64_t rd_hld:6;
+-		uint64_t wr_hld:6;
+-		uint64_t pause:6;
+-		uint64_t wait:6;
+-		uint64_t page:6;
+-		uint64_t ale:6;
+-		uint64_t pages:2;
+-		uint64_t waitm:1;
+-		uint64_t pagem:1;
+-#endif
+-	} s;
+-	struct cvmx_mio_boot_reg_timx_s cn30xx;
+-	struct cvmx_mio_boot_reg_timx_s cn31xx;
+-	struct cvmx_mio_boot_reg_timx_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t pagem:1;
+-		uint64_t waitm:1;
+-		uint64_t pages:2;
+-		uint64_t reserved_54_59:6;
+-		uint64_t page:6;
+-		uint64_t wait:6;
+-		uint64_t pause:6;
+-		uint64_t wr_hld:6;
+-		uint64_t rd_hld:6;
+-		uint64_t we:6;
+-		uint64_t oe:6;
+-		uint64_t ce:6;
+-		uint64_t adr:6;
+-#else
+-		uint64_t adr:6;
+-		uint64_t ce:6;
+-		uint64_t oe:6;
+-		uint64_t we:6;
+-		uint64_t rd_hld:6;
+-		uint64_t wr_hld:6;
+-		uint64_t pause:6;
+-		uint64_t wait:6;
+-		uint64_t page:6;
+-		uint64_t reserved_54_59:6;
+-		uint64_t pages:2;
+-		uint64_t waitm:1;
+-		uint64_t pagem:1;
+-#endif
+-	} cn38xx;
+-	struct cvmx_mio_boot_reg_timx_cn38xx cn38xxp2;
+-	struct cvmx_mio_boot_reg_timx_s cn50xx;
+-	struct cvmx_mio_boot_reg_timx_s cn52xx;
+-	struct cvmx_mio_boot_reg_timx_s cn52xxp1;
+-	struct cvmx_mio_boot_reg_timx_s cn56xx;
+-	struct cvmx_mio_boot_reg_timx_s cn56xxp1;
+-	struct cvmx_mio_boot_reg_timx_s cn58xx;
+-	struct cvmx_mio_boot_reg_timx_s cn58xxp1;
+-	struct cvmx_mio_boot_reg_timx_s cn61xx;
+-	struct cvmx_mio_boot_reg_timx_s cn63xx;
+-	struct cvmx_mio_boot_reg_timx_s cn63xxp1;
+-	struct cvmx_mio_boot_reg_timx_s cn66xx;
+-	struct cvmx_mio_boot_reg_timx_s cn68xx;
+-	struct cvmx_mio_boot_reg_timx_s cn68xxp1;
+-	struct cvmx_mio_boot_reg_timx_s cnf71xx;
+-};
+-
+-union cvmx_mio_boot_thr {
 -	uint64_t u64;
--	struct cvmx_l2c_ver_pp_s {
+-	struct cvmx_mio_boot_thr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_22_63:42;
+-		uint64_t dma_thr:6;
+-		uint64_t reserved_14_15:2;
+-		uint64_t fif_cnt:6;
+-		uint64_t reserved_6_7:2;
+-		uint64_t fif_thr:6;
+-#else
+-		uint64_t fif_thr:6;
+-		uint64_t reserved_6_7:2;
+-		uint64_t fif_cnt:6;
+-		uint64_t reserved_14_15:2;
+-		uint64_t dma_thr:6;
+-		uint64_t reserved_22_63:42;
+-#endif
+-	} s;
+-	struct cvmx_mio_boot_thr_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_14_63:50;
+-		uint64_t fif_cnt:6;
+-		uint64_t reserved_6_7:2;
+-		uint64_t fif_thr:6;
+-#else
+-		uint64_t fif_thr:6;
+-		uint64_t reserved_6_7:2;
+-		uint64_t fif_cnt:6;
+-		uint64_t reserved_14_63:50;
+-#endif
+-	} cn30xx;
+-	struct cvmx_mio_boot_thr_cn30xx cn31xx;
+-	struct cvmx_mio_boot_thr_cn30xx cn38xx;
+-	struct cvmx_mio_boot_thr_cn30xx cn38xxp2;
+-	struct cvmx_mio_boot_thr_cn30xx cn50xx;
+-	struct cvmx_mio_boot_thr_s cn52xx;
+-	struct cvmx_mio_boot_thr_s cn52xxp1;
+-	struct cvmx_mio_boot_thr_s cn56xx;
+-	struct cvmx_mio_boot_thr_s cn56xxp1;
+-	struct cvmx_mio_boot_thr_cn30xx cn58xx;
+-	struct cvmx_mio_boot_thr_cn30xx cn58xxp1;
+-	struct cvmx_mio_boot_thr_s cn61xx;
+-	struct cvmx_mio_boot_thr_s cn63xx;
+-	struct cvmx_mio_boot_thr_s cn63xxp1;
+-	struct cvmx_mio_boot_thr_s cn66xx;
+-	struct cvmx_mio_boot_thr_s cn68xx;
+-	struct cvmx_mio_boot_thr_s cn68xxp1;
+-	struct cvmx_mio_boot_thr_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_buf_dat {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_buf_dat_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t dat:64;
+-#else
+-		uint64_t dat:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_buf_dat_s cn61xx;
+-	struct cvmx_mio_emm_buf_dat_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_buf_idx {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_buf_idx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_17_63:47;
+-		uint64_t inc:1;
+-		uint64_t reserved_7_15:9;
+-		uint64_t buf_num:1;
+-		uint64_t offset:6;
+-#else
+-		uint64_t offset:6;
+-		uint64_t buf_num:1;
+-		uint64_t reserved_7_15:9;
+-		uint64_t inc:1;
+-		uint64_t reserved_17_63:47;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_buf_idx_s cn61xx;
+-	struct cvmx_mio_emm_buf_idx_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_cfg {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_cfg_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_17_63:47;
+-		uint64_t boot_fail:1;
+-		uint64_t reserved_4_15:12;
+-		uint64_t bus_ena:4;
+-#else
+-		uint64_t bus_ena:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t boot_fail:1;
+-		uint64_t reserved_17_63:47;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_cfg_s cn61xx;
+-	struct cvmx_mio_emm_cfg_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_cmd {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_cmd_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_62_63:2;
+-		uint64_t bus_id:2;
+-		uint64_t cmd_val:1;
+-		uint64_t reserved_56_58:3;
+-		uint64_t dbuf:1;
+-		uint64_t offset:6;
+-		uint64_t reserved_43_48:6;
+-		uint64_t ctype_xor:2;
+-		uint64_t rtype_xor:3;
+-		uint64_t cmd_idx:6;
+-		uint64_t arg:32;
+-#else
+-		uint64_t arg:32;
+-		uint64_t cmd_idx:6;
+-		uint64_t rtype_xor:3;
+-		uint64_t ctype_xor:2;
+-		uint64_t reserved_43_48:6;
+-		uint64_t offset:6;
+-		uint64_t dbuf:1;
+-		uint64_t reserved_56_58:3;
+-		uint64_t cmd_val:1;
+-		uint64_t bus_id:2;
+-		uint64_t reserved_62_63:2;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_cmd_s cn61xx;
+-	struct cvmx_mio_emm_cmd_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_dma {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_dma_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_62_63:2;
+-		uint64_t bus_id:2;
+-		uint64_t dma_val:1;
+-		uint64_t sector:1;
+-		uint64_t dat_null:1;
+-		uint64_t thres:6;
+-		uint64_t rel_wr:1;
+-		uint64_t rw:1;
+-		uint64_t multi:1;
+-		uint64_t block_cnt:16;
+-		uint64_t card_addr:32;
+-#else
+-		uint64_t card_addr:32;
+-		uint64_t block_cnt:16;
+-		uint64_t multi:1;
+-		uint64_t rw:1;
+-		uint64_t rel_wr:1;
+-		uint64_t thres:6;
+-		uint64_t dat_null:1;
+-		uint64_t sector:1;
+-		uint64_t dma_val:1;
+-		uint64_t bus_id:2;
+-		uint64_t reserved_62_63:2;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_dma_s cn61xx;
+-	struct cvmx_mio_emm_dma_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_int {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_int_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t switch_err:1;
+-		uint64_t switch_done:1;
+-		uint64_t dma_err:1;
+-		uint64_t cmd_err:1;
+-		uint64_t dma_done:1;
+-		uint64_t cmd_done:1;
+-		uint64_t buf_done:1;
+-#else
+-		uint64_t buf_done:1;
+-		uint64_t cmd_done:1;
+-		uint64_t dma_done:1;
+-		uint64_t cmd_err:1;
+-		uint64_t dma_err:1;
+-		uint64_t switch_done:1;
+-		uint64_t switch_err:1;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_int_s cn61xx;
+-	struct cvmx_mio_emm_int_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_int_en {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_int_en_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t switch_err:1;
+-		uint64_t switch_done:1;
+-		uint64_t dma_err:1;
+-		uint64_t cmd_err:1;
+-		uint64_t dma_done:1;
+-		uint64_t cmd_done:1;
+-		uint64_t buf_done:1;
+-#else
+-		uint64_t buf_done:1;
+-		uint64_t cmd_done:1;
+-		uint64_t dma_done:1;
+-		uint64_t cmd_err:1;
+-		uint64_t dma_err:1;
+-		uint64_t switch_done:1;
+-		uint64_t switch_err:1;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_int_en_s cn61xx;
+-	struct cvmx_mio_emm_int_en_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_modex {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_modex_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_49_63:15;
+-		uint64_t hs_timing:1;
+-		uint64_t reserved_43_47:5;
+-		uint64_t bus_width:3;
+-		uint64_t reserved_36_39:4;
+-		uint64_t power_class:4;
+-		uint64_t clk_hi:16;
+-		uint64_t clk_lo:16;
+-#else
+-		uint64_t clk_lo:16;
+-		uint64_t clk_hi:16;
+-		uint64_t power_class:4;
+-		uint64_t reserved_36_39:4;
+-		uint64_t bus_width:3;
+-		uint64_t reserved_43_47:5;
+-		uint64_t hs_timing:1;
+-		uint64_t reserved_49_63:15;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_modex_s cn61xx;
+-	struct cvmx_mio_emm_modex_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_rca {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_rca_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_16_63:48;
+-		uint64_t card_rca:16;
+-#else
+-		uint64_t card_rca:16;
+-		uint64_t reserved_16_63:48;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_rca_s cn61xx;
+-	struct cvmx_mio_emm_rca_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_rsp_hi {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_rsp_hi_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t dat:64;
+-#else
+-		uint64_t dat:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_rsp_hi_s cn61xx;
+-	struct cvmx_mio_emm_rsp_hi_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_rsp_lo {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_rsp_lo_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t dat:64;
+-#else
+-		uint64_t dat:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_rsp_lo_s cn61xx;
+-	struct cvmx_mio_emm_rsp_lo_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_rsp_sts {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_rsp_sts_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_62_63:2;
+-		uint64_t bus_id:2;
+-		uint64_t cmd_val:1;
+-		uint64_t switch_val:1;
+-		uint64_t dma_val:1;
+-		uint64_t dma_pend:1;
+-		uint64_t reserved_29_55:27;
+-		uint64_t dbuf_err:1;
+-		uint64_t reserved_24_27:4;
+-		uint64_t dbuf:1;
+-		uint64_t blk_timeout:1;
+-		uint64_t blk_crc_err:1;
+-		uint64_t rsp_busybit:1;
+-		uint64_t stp_timeout:1;
+-		uint64_t stp_crc_err:1;
+-		uint64_t stp_bad_sts:1;
+-		uint64_t stp_val:1;
+-		uint64_t rsp_timeout:1;
+-		uint64_t rsp_crc_err:1;
+-		uint64_t rsp_bad_sts:1;
+-		uint64_t rsp_val:1;
+-		uint64_t rsp_type:3;
+-		uint64_t cmd_type:2;
+-		uint64_t cmd_idx:6;
+-		uint64_t cmd_done:1;
+-#else
+-		uint64_t cmd_done:1;
+-		uint64_t cmd_idx:6;
+-		uint64_t cmd_type:2;
+-		uint64_t rsp_type:3;
+-		uint64_t rsp_val:1;
+-		uint64_t rsp_bad_sts:1;
+-		uint64_t rsp_crc_err:1;
+-		uint64_t rsp_timeout:1;
+-		uint64_t stp_val:1;
+-		uint64_t stp_bad_sts:1;
+-		uint64_t stp_crc_err:1;
+-		uint64_t stp_timeout:1;
+-		uint64_t rsp_busybit:1;
+-		uint64_t blk_crc_err:1;
+-		uint64_t blk_timeout:1;
+-		uint64_t dbuf:1;
+-		uint64_t reserved_24_27:4;
+-		uint64_t dbuf_err:1;
+-		uint64_t reserved_29_55:27;
+-		uint64_t dma_pend:1;
+-		uint64_t dma_val:1;
+-		uint64_t switch_val:1;
+-		uint64_t cmd_val:1;
+-		uint64_t bus_id:2;
+-		uint64_t reserved_62_63:2;
+-#endif
++		__BITFIELD_FIELD(uint64_t pagem:1,
++		__BITFIELD_FIELD(uint64_t waitm:1,
++		__BITFIELD_FIELD(uint64_t pages:2,
++		__BITFIELD_FIELD(uint64_t ale:6,
++		__BITFIELD_FIELD(uint64_t page:6,
++		__BITFIELD_FIELD(uint64_t wait:6,
++		__BITFIELD_FIELD(uint64_t pause:6,
++		__BITFIELD_FIELD(uint64_t wr_hld:6,
++		__BITFIELD_FIELD(uint64_t rd_hld:6,
++		__BITFIELD_FIELD(uint64_t we:6,
++		__BITFIELD_FIELD(uint64_t oe:6,
++		__BITFIELD_FIELD(uint64_t ce:6,
++		__BITFIELD_FIELD(uint64_t adr:6,
++		;)))))))))))))
+ 	} s;
+-	struct cvmx_mio_emm_rsp_sts_s cn61xx;
+-	struct cvmx_mio_emm_rsp_sts_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_sample {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_sample_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_26_63:38;
+-		uint64_t cmd_cnt:10;
+-		uint64_t reserved_10_15:6;
+-		uint64_t dat_cnt:10;
+-#else
+-		uint64_t dat_cnt:10;
+-		uint64_t reserved_10_15:6;
+-		uint64_t cmd_cnt:10;
+-		uint64_t reserved_26_63:38;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_sample_s cn61xx;
+-	struct cvmx_mio_emm_sample_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_sts_mask {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_sts_mask_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t reserved_32_63:32;
--		uint64_t mask:32;
+-		uint64_t sts_msk:32;
 -#else
--		uint64_t mask:32;
+-		uint64_t sts_msk:32;
 -		uint64_t reserved_32_63:32;
 -#endif
 -	} s;
--	struct cvmx_l2c_ver_pp_cn61xx {
+-	struct cvmx_mio_emm_sts_mask_s cn61xx;
+-	struct cvmx_mio_emm_sts_mask_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_switch {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_switch_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_4_63:60;
--		uint64_t mask:4;
+-		uint64_t reserved_62_63:2;
+-		uint64_t bus_id:2;
+-		uint64_t switch_exe:1;
+-		uint64_t switch_err0:1;
+-		uint64_t switch_err1:1;
+-		uint64_t switch_err2:1;
+-		uint64_t reserved_49_55:7;
+-		uint64_t hs_timing:1;
+-		uint64_t reserved_43_47:5;
+-		uint64_t bus_width:3;
+-		uint64_t reserved_36_39:4;
+-		uint64_t power_class:4;
+-		uint64_t clk_hi:16;
+-		uint64_t clk_lo:16;
 -#else
--		uint64_t mask:4;
--		uint64_t reserved_4_63:60;
+-		uint64_t clk_lo:16;
+-		uint64_t clk_hi:16;
+-		uint64_t power_class:4;
+-		uint64_t reserved_36_39:4;
+-		uint64_t bus_width:3;
+-		uint64_t reserved_43_47:5;
+-		uint64_t hs_timing:1;
+-		uint64_t reserved_49_55:7;
+-		uint64_t switch_err2:1;
+-		uint64_t switch_err1:1;
+-		uint64_t switch_err0:1;
+-		uint64_t switch_exe:1;
+-		uint64_t bus_id:2;
+-		uint64_t reserved_62_63:2;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_switch_s cn61xx;
+-	struct cvmx_mio_emm_switch_s cnf71xx;
+-};
+-
+-union cvmx_mio_emm_wdog {
+-	uint64_t u64;
+-	struct cvmx_mio_emm_wdog_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_26_63:38;
+-		uint64_t clk_cnt:26;
+-#else
+-		uint64_t clk_cnt:26;
+-		uint64_t reserved_26_63:38;
+-#endif
+-	} s;
+-	struct cvmx_mio_emm_wdog_s cn61xx;
+-	struct cvmx_mio_emm_wdog_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_bnk_datx {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_bnk_datx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t dat:64;
+-#else
+-		uint64_t dat:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_bnk_datx_s cn50xx;
+-	struct cvmx_mio_fus_bnk_datx_s cn52xx;
+-	struct cvmx_mio_fus_bnk_datx_s cn52xxp1;
+-	struct cvmx_mio_fus_bnk_datx_s cn56xx;
+-	struct cvmx_mio_fus_bnk_datx_s cn56xxp1;
+-	struct cvmx_mio_fus_bnk_datx_s cn58xx;
+-	struct cvmx_mio_fus_bnk_datx_s cn58xxp1;
+-	struct cvmx_mio_fus_bnk_datx_s cn61xx;
+-	struct cvmx_mio_fus_bnk_datx_s cn63xx;
+-	struct cvmx_mio_fus_bnk_datx_s cn63xxp1;
+-	struct cvmx_mio_fus_bnk_datx_s cn66xx;
+-	struct cvmx_mio_fus_bnk_datx_s cn68xx;
+-	struct cvmx_mio_fus_bnk_datx_s cn68xxp1;
+-	struct cvmx_mio_fus_bnk_datx_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_dat0 {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_dat0_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t man_info:32;
+-#else
+-		uint64_t man_info:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_dat0_s cn30xx;
+-	struct cvmx_mio_fus_dat0_s cn31xx;
+-	struct cvmx_mio_fus_dat0_s cn38xx;
+-	struct cvmx_mio_fus_dat0_s cn38xxp2;
+-	struct cvmx_mio_fus_dat0_s cn50xx;
+-	struct cvmx_mio_fus_dat0_s cn52xx;
+-	struct cvmx_mio_fus_dat0_s cn52xxp1;
+-	struct cvmx_mio_fus_dat0_s cn56xx;
+-	struct cvmx_mio_fus_dat0_s cn56xxp1;
+-	struct cvmx_mio_fus_dat0_s cn58xx;
+-	struct cvmx_mio_fus_dat0_s cn58xxp1;
+-	struct cvmx_mio_fus_dat0_s cn61xx;
+-	struct cvmx_mio_fus_dat0_s cn63xx;
+-	struct cvmx_mio_fus_dat0_s cn63xxp1;
+-	struct cvmx_mio_fus_dat0_s cn66xx;
+-	struct cvmx_mio_fus_dat0_s cn68xx;
+-	struct cvmx_mio_fus_dat0_s cn68xxp1;
+-	struct cvmx_mio_fus_dat0_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_dat1 {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_dat1_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t man_info:32;
+-#else
+-		uint64_t man_info:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_dat1_s cn30xx;
+-	struct cvmx_mio_fus_dat1_s cn31xx;
+-	struct cvmx_mio_fus_dat1_s cn38xx;
+-	struct cvmx_mio_fus_dat1_s cn38xxp2;
+-	struct cvmx_mio_fus_dat1_s cn50xx;
+-	struct cvmx_mio_fus_dat1_s cn52xx;
+-	struct cvmx_mio_fus_dat1_s cn52xxp1;
+-	struct cvmx_mio_fus_dat1_s cn56xx;
+-	struct cvmx_mio_fus_dat1_s cn56xxp1;
+-	struct cvmx_mio_fus_dat1_s cn58xx;
+-	struct cvmx_mio_fus_dat1_s cn58xxp1;
+-	struct cvmx_mio_fus_dat1_s cn61xx;
+-	struct cvmx_mio_fus_dat1_s cn63xx;
+-	struct cvmx_mio_fus_dat1_s cn63xxp1;
+-	struct cvmx_mio_fus_dat1_s cn66xx;
+-	struct cvmx_mio_fus_dat1_s cn68xx;
+-	struct cvmx_mio_fus_dat1_s cn68xxp1;
+-	struct cvmx_mio_fus_dat1_s cnf71xx;
+ };
+ 
+ union cvmx_mio_fus_dat2 {
+ 	uint64_t u64;
+ 	struct cvmx_mio_fus_dat2_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t run_platform:3;
+-		uint64_t gbl_pwr_throttle:8;
+-		uint64_t fus118:1;
+-		uint64_t rom_info:10;
+-		uint64_t power_limit:2;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_30_31:2;
+-		uint64_t nokasu:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t rst_sht:1;
+-		uint64_t bist_dis:1;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_0_15:16;
+-#else
+-		uint64_t reserved_0_15:16;
+-		uint64_t chip_id:8;
+-		uint64_t bist_dis:1;
+-		uint64_t rst_sht:1;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nokasu:1;
+-		uint64_t reserved_30_31:2;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t power_limit:2;
+-		uint64_t rom_info:10;
+-		uint64_t fus118:1;
+-		uint64_t gbl_pwr_throttle:8;
+-		uint64_t run_platform:3;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_dat2_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_29_63:35;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t rst_sht:1;
+-		uint64_t bist_dis:1;
+-		uint64_t chip_id:8;
+-		uint64_t pll_off:4;
+-		uint64_t reserved_1_11:11;
+-		uint64_t pp_dis:1;
+-#else
+-		uint64_t pp_dis:1;
+-		uint64_t reserved_1_11:11;
+-		uint64_t pll_off:4;
+-		uint64_t chip_id:8;
+-		uint64_t bist_dis:1;
+-		uint64_t rst_sht:1;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_29_63:35;
+-#endif
+-	} cn30xx;
+-	struct cvmx_mio_fus_dat2_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_29_63:35;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t rst_sht:1;
+-		uint64_t bist_dis:1;
+-		uint64_t chip_id:8;
+-		uint64_t pll_off:4;
+-		uint64_t reserved_2_11:10;
+-		uint64_t pp_dis:2;
+-#else
+-		uint64_t pp_dis:2;
+-		uint64_t reserved_2_11:10;
+-		uint64_t pll_off:4;
+-		uint64_t chip_id:8;
+-		uint64_t bist_dis:1;
+-		uint64_t rst_sht:1;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_29_63:35;
+-#endif
+-	} cn31xx;
+-	struct cvmx_mio_fus_dat2_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_29_63:35;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t rst_sht:1;
+-		uint64_t bist_dis:1;
+-		uint64_t chip_id:8;
+-		uint64_t pp_dis:16;
+-#else
+-		uint64_t pp_dis:16;
+-		uint64_t chip_id:8;
+-		uint64_t bist_dis:1;
+-		uint64_t rst_sht:1;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_29_63:35;
+-#endif
+-	} cn38xx;
+-	struct cvmx_mio_fus_dat2_cn38xx cn38xxp2;
+-	struct cvmx_mio_fus_dat2_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_34_63:30;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_30_31:2;
+-		uint64_t nokasu:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t rst_sht:1;
+-		uint64_t bist_dis:1;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_2_15:14;
+-		uint64_t pp_dis:2;
+-#else
+-		uint64_t pp_dis:2;
+-		uint64_t reserved_2_15:14;
+-		uint64_t chip_id:8;
+-		uint64_t bist_dis:1;
+-		uint64_t rst_sht:1;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nokasu:1;
+-		uint64_t reserved_30_31:2;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t reserved_34_63:30;
+-#endif
+-	} cn50xx;
+-	struct cvmx_mio_fus_dat2_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_34_63:30;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_30_31:2;
+-		uint64_t nokasu:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t rst_sht:1;
+-		uint64_t bist_dis:1;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_4_15:12;
+-		uint64_t pp_dis:4;
+-#else
+-		uint64_t pp_dis:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t chip_id:8;
+-		uint64_t bist_dis:1;
+-		uint64_t rst_sht:1;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nokasu:1;
+-		uint64_t reserved_30_31:2;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t reserved_34_63:30;
+-#endif
+-	} cn52xx;
+-	struct cvmx_mio_fus_dat2_cn52xx cn52xxp1;
+-	struct cvmx_mio_fus_dat2_cn56xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_34_63:30;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_30_31:2;
+-		uint64_t nokasu:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t rst_sht:1;
+-		uint64_t bist_dis:1;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_12_15:4;
+-		uint64_t pp_dis:12;
+-#else
+-		uint64_t pp_dis:12;
+-		uint64_t reserved_12_15:4;
+-		uint64_t chip_id:8;
+-		uint64_t bist_dis:1;
+-		uint64_t rst_sht:1;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nokasu:1;
+-		uint64_t reserved_30_31:2;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t reserved_34_63:30;
+-#endif
+-	} cn56xx;
+-	struct cvmx_mio_fus_dat2_cn56xx cn56xxp1;
+-	struct cvmx_mio_fus_dat2_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_30_63:34;
+-		uint64_t nokasu:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t rst_sht:1;
+-		uint64_t bist_dis:1;
+-		uint64_t chip_id:8;
+-		uint64_t pp_dis:16;
+-#else
+-		uint64_t pp_dis:16;
+-		uint64_t chip_id:8;
+-		uint64_t bist_dis:1;
+-		uint64_t rst_sht:1;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nokasu:1;
+-		uint64_t reserved_30_63:34;
+-#endif
+-	} cn58xx;
+-	struct cvmx_mio_fus_dat2_cn58xx cn58xxp1;
+-	struct cvmx_mio_fus_dat2_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_48_63:16;
+-		uint64_t fus118:1;
+-		uint64_t rom_info:10;
+-		uint64_t power_limit:2;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_29_31:3;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t reserved_24_25:2;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_4_15:12;
+-		uint64_t pp_dis:4;
+-#else
+-		uint64_t pp_dis:4;
+-		uint64_t reserved_4_15:12;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_24_25:2;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_29_31:3;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t power_limit:2;
+-		uint64_t rom_info:10;
+-		uint64_t fus118:1;
+-		uint64_t reserved_48_63:16;
 -#endif
 -	} cn61xx;
--	struct cvmx_l2c_ver_pp_cn63xx {
+-	struct cvmx_mio_fus_dat2_cn63xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_6_63:58;
--		uint64_t mask:6;
+-		uint64_t reserved_35_63:29;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_29_31:3;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t reserved_24_25:2;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_6_15:10;
+-		uint64_t pp_dis:6;
 -#else
--		uint64_t mask:6;
--		uint64_t reserved_6_63:58;
+-		uint64_t pp_dis:6;
+-		uint64_t reserved_6_15:10;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_24_25:2;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_29_31:3;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t reserved_35_63:29;
 -#endif
 -	} cn63xx;
--	struct cvmx_l2c_ver_pp_cn63xx cn63xxp1;
--	struct cvmx_l2c_ver_pp_cn66xx {
+-	struct cvmx_mio_fus_dat2_cn63xx cn63xxp1;
+-	struct cvmx_mio_fus_dat2_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_48_63:16;
+-		uint64_t fus118:1;
+-		uint64_t rom_info:10;
+-		uint64_t power_limit:2;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_29_31:3;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t reserved_24_25:2;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_10_15:6;
+-		uint64_t pp_dis:10;
+-#else
+-		uint64_t pp_dis:10;
+-		uint64_t reserved_10_15:6;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_24_25:2;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_29_31:3;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t power_limit:2;
+-		uint64_t rom_info:10;
+-		uint64_t fus118:1;
+-		uint64_t reserved_48_63:16;
+-#endif
+-	} cn66xx;
+-	struct cvmx_mio_fus_dat2_cn68xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_37_63:27;
+-		uint64_t power_limit:2;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_29_31:3;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t reserved_24_25:2;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_0_15:16;
+-#else
+-		uint64_t reserved_0_15:16;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_24_25:2;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_29_31:3;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t power_limit:2;
+-		uint64_t reserved_37_63:27;
+-#endif
+-	} cn68xx;
+-	struct cvmx_mio_fus_dat2_cn68xx cn68xxp1;
+-	struct cvmx_mio_fus_dat2_cn70xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_48_63:16;
+-		uint64_t fus118:1;
+-		uint64_t rom_info:10;
+-		uint64_t power_limit:2;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_31_29:3;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t reserved_25_24:2;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_15_0:16;
+-#else
+-		uint64_t reserved_15_0:16;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_25_24:2;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_31_29:3;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t power_limit:2;
+-		uint64_t rom_info:10;
+-		uint64_t fus118:1;
+-		uint64_t reserved_48_63:16;
+-#endif
+-	} cn70xx;
+-	struct cvmx_mio_fus_dat2_cn70xx cn70xxp1;
+-	struct cvmx_mio_fus_dat2_cn73xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t run_platform:3;
+-		uint64_t gbl_pwr_throttle:8;
+-		uint64_t fus118:1;
+-		uint64_t rom_info:10;
+-		uint64_t power_limit:2;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_31_29:3;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t reserved_25_24:2;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_15_0:16;
+-#else
+-		uint64_t reserved_15_0:16;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_25_24:2;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_31_29:3;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t power_limit:2;
+-		uint64_t rom_info:10;
+-		uint64_t fus118:1;
+-		uint64_t gbl_pwr_throttle:8;
+-		uint64_t run_platform:3;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn73xx;
+-	struct cvmx_mio_fus_dat2_cn78xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t run_platform:3;
+-		uint64_t reserved_48_55:8;
+-		uint64_t fus118:1;
+-		uint64_t rom_info:10;
+-		uint64_t power_limit:2;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_31_29:3;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t reserved_25_24:2;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_0_15:16;
+-#else
+-		uint64_t reserved_0_15:16;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_25_24:2;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_31_29:3;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t power_limit:2;
+-		uint64_t rom_info:10;
+-		uint64_t fus118:1;
+-		uint64_t reserved_48_55:8;
+-		uint64_t run_platform:3;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn78xx;
+-	struct cvmx_mio_fus_dat2_cn78xxp2 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t run_platform:3;
+-		uint64_t gbl_pwr_throttle:8;
+-		uint64_t fus118:1;
+-		uint64_t rom_info:10;
+-		uint64_t power_limit:2;
+-		uint64_t dorm_crypto:1;
+-		uint64_t fus318:1;
+-		uint64_t raid_en:1;
+-		uint64_t reserved_31_29:3;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t nomul:1;
+-		uint64_t nocrypto:1;
+-		uint64_t reserved_25_24:2;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_0_15:16;
+-#else
+-		uint64_t reserved_0_15:16;
+-		uint64_t chip_id:8;
+-		uint64_t reserved_25_24:2;
+-		uint64_t nocrypto:1;
+-		uint64_t nomul:1;
+-		uint64_t nodfa_cp2:1;
+-		uint64_t reserved_31_29:3;
+-		uint64_t raid_en:1;
+-		uint64_t fus318:1;
+-		uint64_t dorm_crypto:1;
+-		uint64_t power_limit:2;
+-		uint64_t rom_info:10;
+-		uint64_t fus118:1;
+-		uint64_t gbl_pwr_throttle:8;
+-		uint64_t run_platform:3;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn78xxp2;
+-	struct cvmx_mio_fus_dat2_cn61xx cnf71xx;
+-	struct cvmx_mio_fus_dat2_cn73xx cnf75xx;
++		__BITFIELD_FIELD(uint64_t reserved_59_63:5,
++		__BITFIELD_FIELD(uint64_t run_platform:3,
++		__BITFIELD_FIELD(uint64_t gbl_pwr_throttle:8,
++		__BITFIELD_FIELD(uint64_t fus118:1,
++		__BITFIELD_FIELD(uint64_t rom_info:10,
++		__BITFIELD_FIELD(uint64_t power_limit:2,
++		__BITFIELD_FIELD(uint64_t dorm_crypto:1,
++		__BITFIELD_FIELD(uint64_t fus318:1,
++		__BITFIELD_FIELD(uint64_t raid_en:1,
++		__BITFIELD_FIELD(uint64_t reserved_30_31:2,
++		__BITFIELD_FIELD(uint64_t nokasu:1,
++		__BITFIELD_FIELD(uint64_t nodfa_cp2:1,
++		__BITFIELD_FIELD(uint64_t nomul:1,
++		__BITFIELD_FIELD(uint64_t nocrypto:1,
++		__BITFIELD_FIELD(uint64_t rst_sht:1,
++		__BITFIELD_FIELD(uint64_t bist_dis:1,
++		__BITFIELD_FIELD(uint64_t chip_id:8,
++		__BITFIELD_FIELD(uint64_t reserved_0_15:16,
++		;))))))))))))))))))
++	} s;
++	struct cvmx_mio_fus_dat2_s cn56xx;
++	struct cvmx_mio_fus_dat2_s cn58xx;
++	struct cvmx_mio_fus_dat2_s cn61xx;
++	struct cvmx_mio_fus_dat2_s cn63xx;
++	struct cvmx_mio_fus_dat2_s cn66xx;
++	struct cvmx_mio_fus_dat2_s cn68xx;
++	struct cvmx_mio_fus_dat2_s cn70xx;
++	struct cvmx_mio_fus_dat2_s cn73xx;
++	struct cvmx_mio_fus_dat2_s cn78xx;
+ };
+ 
+ union cvmx_mio_fus_dat3 {
+ 	uint64_t u64;
+ 	struct cvmx_mio_fus_dat3_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t ema0:6;
+-		uint64_t pll_ctl:10;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t pll_alt_matrix:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t pll_half_dis:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t reserved_28_31:4;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t reserved_0_23:24;
+-#else
+-		uint64_t reserved_0_23:24;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t reserved_28_31:4;
+-		uint64_t l2c_crip:3;
+-		uint64_t pll_half_dis:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t reserved_38_39:2;
+-		uint64_t pll_alt_matrix:1;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t pll_ctl:10;
+-		uint64_t ema0:6;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_dat3_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t pll_div4:1;
+-		uint64_t reserved_29_30:2;
+-		uint64_t bar2_en:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t icache:24;
+-#else
+-		uint64_t icache:24;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_en:1;
+-		uint64_t reserved_29_30:2;
+-		uint64_t pll_div4:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn30xx;
+-	struct cvmx_mio_fus_dat3_cn31xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t pll_div4:1;
+-		uint64_t zip_crip:2;
+-		uint64_t bar2_en:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t icache:24;
+-#else
+-		uint64_t icache:24;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_en:1;
+-		uint64_t zip_crip:2;
+-		uint64_t pll_div4:1;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} cn31xx;
+-	struct cvmx_mio_fus_dat3_cn38xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_31_63:33;
+-		uint64_t zip_crip:2;
+-		uint64_t bar2_en:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t icache:24;
+-#else
+-		uint64_t icache:24;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_en:1;
+-		uint64_t zip_crip:2;
+-		uint64_t reserved_31_63:33;
+-#endif
+-	} cn38xx;
+-	struct cvmx_mio_fus_dat3_cn38xxp2 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_29_63:35;
+-		uint64_t bar2_en:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t icache:24;
+-#else
+-		uint64_t icache:24;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_en:1;
+-		uint64_t reserved_29_63:35;
+-#endif
+-	} cn38xxp2;
+-	struct cvmx_mio_fus_dat3_cn38xx cn50xx;
+-	struct cvmx_mio_fus_dat3_cn38xx cn52xx;
+-	struct cvmx_mio_fus_dat3_cn38xx cn52xxp1;
+-	struct cvmx_mio_fus_dat3_cn38xx cn56xx;
+-	struct cvmx_mio_fus_dat3_cn38xx cn56xxp1;
+-	struct cvmx_mio_fus_dat3_cn38xx cn58xx;
+-	struct cvmx_mio_fus_dat3_cn38xx cn58xxp1;
+-	struct cvmx_mio_fus_dat3_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_58_63:6;
+-		uint64_t pll_ctl:10;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t reserved_40_40:1;
+-		uint64_t ema:2;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t pll_half_dis:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t reserved_31_31:1;
+-		uint64_t zip_info:2;
+-		uint64_t bar2_en:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t reserved_0_23:24;
+-#else
+-		uint64_t reserved_0_23:24;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_en:1;
+-		uint64_t zip_info:2;
+-		uint64_t reserved_31_31:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t pll_half_dis:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t ema:2;
+-		uint64_t reserved_40_40:1;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t pll_ctl:10;
+-		uint64_t reserved_58_63:6;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_fus_dat3_cn61xx cn63xx;
+-	struct cvmx_mio_fus_dat3_cn61xx cn63xxp1;
+-	struct cvmx_mio_fus_dat3_cn61xx cn66xx;
+-	struct cvmx_mio_fus_dat3_cn61xx cn68xx;
+-	struct cvmx_mio_fus_dat3_cn61xx cn68xxp1;
+-	struct cvmx_mio_fus_dat3_cn70xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t ema0:6;
+-		uint64_t pll_ctl:10;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t pll_alt_matrix:1;
+-		uint64_t pll_bwadj_denom:2;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t pll_half_dis:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t use_int_refclk:1;
+-		uint64_t zip_info:2;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t ema1:6;
+-		uint64_t reserved_0_17:18;
+-#else
+-		uint64_t reserved_0_17:18;
+-		uint64_t ema1:6;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t zip_info:2;
+-		uint64_t use_int_refclk:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t pll_half_dis:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t pll_bwadj_denom:2;
+-		uint64_t pll_alt_matrix:1;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t pll_ctl:10;
+-		uint64_t ema0:6;
+-#endif
+-	} cn70xx;
+-	struct cvmx_mio_fus_dat3_cn70xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t ema0:6;
+-		uint64_t pll_ctl:10;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t reserved_38_40:3;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t pll_half_dis:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t reserved_31_31:1;
+-		uint64_t zip_info:2;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t ema1:6;
+-		uint64_t reserved_0_17:18;
+-#else
+-		uint64_t reserved_0_17:18;
+-		uint64_t ema1:6;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t zip_info:2;
+-		uint64_t reserved_31_31:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t pll_half_dis:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t reserved_38_40:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t pll_ctl:10;
+-		uint64_t ema0:6;
+-#endif
+-	} cn70xxp1;
++		__BITFIELD_FIELD(uint64_t reserved_59_63:6,
++		__BITFIELD_FIELD(uint64_t pll_ctl:10,
++		__BITFIELD_FIELD(uint64_t dfa_info_dte:3,
++		__BITFIELD_FIELD(uint64_t dfa_info_clm:4,
++		__BITFIELD_FIELD(uint64_t pll_alt_matrix:1,
++		__BITFIELD_FIELD(uint64_t reserved_39_40:2,
++		__BITFIELD_FIELD(uint64_t efus_lck_rsv:1,
++		__BITFIELD_FIELD(uint64_t efus_lck_man:1,
++		__BITFIELD_FIELD(uint64_t pll_half_dis:1,
++		__BITFIELD_FIELD(uint64_t l2c_crip:3,
++		__BITFIELD_FIELD(uint64_t use_int_refclk:1,
++		__BITFIELD_FIELD(uint64_t zip_info:2,
++		__BITFIELD_FIELD(uint64_t bar2_en:1,
++		__BITFIELD_FIELD(uint64_t efus_lck:1,
++		__BITFIELD_FIELD(uint64_t efus_ign:1,
++		__BITFIELD_FIELD(uint64_t nozip:1,
++		__BITFIELD_FIELD(uint64_t nodfa_dte:1,
++		__BITFIELD_FIELD(uint64_t icache:24,
++		;))))))))))))))))))
++	} s;
++	struct cvmx_mio_fus_dat3_s cn56xx;
++	struct cvmx_mio_fus_dat3_s cn61xx;
++	struct cvmx_mio_fus_dat3_s cn63xx;
++	struct cvmx_mio_fus_dat3_s cn66xx;
++	struct cvmx_mio_fus_dat3_s cn68xx;
++	struct cvmx_mio_fus_dat3_s cn70xx;
+ 	struct cvmx_mio_fus_dat3_cn73xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t ema0:6;
+-		uint64_t pll_ctl:10;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t pll_alt_matrix:1;
+-		uint64_t pll_bwadj_denom:2;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t pll_half_dis:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t use_int_refclk:1;
+-		uint64_t zip_info:2;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t ema1:6;
+-		uint64_t nohna_dte:1;
+-		uint64_t hna_info_dte:3;
+-		uint64_t hna_info_clm:4;
+-		uint64_t reserved_9_9:1;
+-		uint64_t core_pll_mul:5;
+-		uint64_t pnr_pll_mul:4;
+-#else
+-		uint64_t pnr_pll_mul:4;
+-		uint64_t core_pll_mul:5;
+-		uint64_t reserved_9_9:1;
+-		uint64_t hna_info_clm:4;
+-		uint64_t hna_info_dte:3;
+-		uint64_t nohna_dte:1;
+-		uint64_t ema1:6;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t zip_info:2;
+-		uint64_t use_int_refclk:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t pll_half_dis:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t pll_bwadj_denom:2;
+-		uint64_t pll_alt_matrix:1;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t pll_ctl:10;
+-		uint64_t ema0:6;
+-#endif
++		__BITFIELD_FIELD(uint64_t reserved_59_63:6,
++		__BITFIELD_FIELD(uint64_t pll_ctl:10,
++		__BITFIELD_FIELD(uint64_t dfa_info_dte:3,
++		__BITFIELD_FIELD(uint64_t dfa_info_clm:4,
++		__BITFIELD_FIELD(uint64_t pll_alt_matrix:1,
++		__BITFIELD_FIELD(uint64_t reserved_39_40:2,
++		__BITFIELD_FIELD(uint64_t efus_lck_rsv:1,
++		__BITFIELD_FIELD(uint64_t efus_lck_man:1,
++		__BITFIELD_FIELD(uint64_t pll_half_dis:1,
++		__BITFIELD_FIELD(uint64_t l2c_crip:3,
++		__BITFIELD_FIELD(uint64_t use_int_refclk:1,
++		__BITFIELD_FIELD(uint64_t zip_info:2,
++		__BITFIELD_FIELD(uint64_t bar2_en:1,
++		__BITFIELD_FIELD(uint64_t efus_lck:1,
++		__BITFIELD_FIELD(uint64_t efus_ign:1,
++		__BITFIELD_FIELD(uint64_t nozip:1,
++		__BITFIELD_FIELD(uint64_t nodfa_dte:1,
++		__BITFIELD_FIELD(uint64_t reserved_19_23:6,
++		__BITFIELD_FIELD(uint64_t nohna_dte:1,
++		__BITFIELD_FIELD(uint64_t hna_info_dte:3,
++		__BITFIELD_FIELD(uint64_t hna_info_clm:4,
++		__BITFIELD_FIELD(uint64_t reserved_9_9:1,
++		__BITFIELD_FIELD(uint64_t core_pll_mul:5,
++		__BITFIELD_FIELD(uint64_t pnr_pll_mul:4,
++		;))))))))))))))))))))))))
+ 	} cn73xx;
+-	struct cvmx_mio_fus_dat3_cn78xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t ema0:6;
+-		uint64_t pll_ctl:10;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t reserved_38_40:3;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t pll_half_dis:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t reserved_31_31:1;
+-		uint64_t zip_info:2;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t ema1:6;
+-		uint64_t nohna_dte:1;
+-		uint64_t hna_info_dte:3;
+-		uint64_t hna_info_clm:4;
+-		uint64_t reserved_0_9:10;
+-#else
+-		uint64_t reserved_0_9:10;
+-		uint64_t hna_info_clm:4;
+-		uint64_t hna_info_dte:3;
+-		uint64_t nohna_dte:1;
+-		uint64_t ema1:6;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t zip_info:2;
+-		uint64_t reserved_31_31:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t pll_half_dis:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t reserved_38_40:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t pll_ctl:10;
+-		uint64_t ema0:6;
+-#endif
+-	} cn78xx;
+-	struct cvmx_mio_fus_dat3_cn73xx cn78xxp2;
+-	struct cvmx_mio_fus_dat3_cn61xx cnf71xx;
+-	struct cvmx_mio_fus_dat3_cnf75xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t ema0:6;
+-		uint64_t pll_ctl:10;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t pll_alt_matrix:1;
+-		uint64_t pll_bwadj_denom:2;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t pll_half_dis:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t use_int_refclk:1;
+-		uint64_t zip_info:2;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t efus_lck:1;
+-		uint64_t efus_ign:1;
+-		uint64_t nozip:1;
+-		uint64_t nodfa_dte:1;
+-		uint64_t ema1:6;
+-		uint64_t reserved_9_17:9;
+-		uint64_t core_pll_mul:5;
+-		uint64_t pnr_pll_mul:4;
+-#else
+-		uint64_t pnr_pll_mul:4;
+-		uint64_t core_pll_mul:5;
+-		uint64_t reserved_9_17:9;
+-		uint64_t ema1:6;
+-		uint64_t nodfa_dte:1;
+-		uint64_t nozip:1;
+-		uint64_t efus_ign:1;
+-		uint64_t efus_lck:1;
+-		uint64_t bar2_sz_conf:1;
+-		uint64_t zip_info:2;
+-		uint64_t use_int_refclk:1;
+-		uint64_t l2c_crip:3;
+-		uint64_t pll_half_dis:1;
+-		uint64_t efus_lck_man:1;
+-		uint64_t efus_lck_rsv:1;
+-		uint64_t pll_bwadj_denom:2;
+-		uint64_t pll_alt_matrix:1;
+-		uint64_t dfa_info_clm:4;
+-		uint64_t dfa_info_dte:3;
+-		uint64_t pll_ctl:10;
+-		uint64_t ema0:6;
+-#endif
+-	} cnf75xx;
+-};
+-
+-union cvmx_mio_fus_ema {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_ema_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t eff_ema:3;
+-		uint64_t reserved_3_3:1;
+-		uint64_t ema:3;
+-#else
+-		uint64_t ema:3;
+-		uint64_t reserved_3_3:1;
+-		uint64_t eff_ema:3;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_ema_s cn50xx;
+-	struct cvmx_mio_fus_ema_s cn52xx;
+-	struct cvmx_mio_fus_ema_s cn52xxp1;
+-	struct cvmx_mio_fus_ema_s cn56xx;
+-	struct cvmx_mio_fus_ema_s cn56xxp1;
+-	struct cvmx_mio_fus_ema_cn58xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t ema:2;
+-#else
+-		uint64_t ema:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn58xx;
+-	struct cvmx_mio_fus_ema_cn58xx cn58xxp1;
+-	struct cvmx_mio_fus_ema_s cn61xx;
+-	struct cvmx_mio_fus_ema_s cn63xx;
+-	struct cvmx_mio_fus_ema_s cn63xxp1;
+-	struct cvmx_mio_fus_ema_s cn66xx;
+-	struct cvmx_mio_fus_ema_s cn68xx;
+-	struct cvmx_mio_fus_ema_s cn68xxp1;
+-	struct cvmx_mio_fus_ema_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_pdf {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_pdf_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t pdf:64;
+-#else
+-		uint64_t pdf:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_pdf_s cn50xx;
+-	struct cvmx_mio_fus_pdf_s cn52xx;
+-	struct cvmx_mio_fus_pdf_s cn52xxp1;
+-	struct cvmx_mio_fus_pdf_s cn56xx;
+-	struct cvmx_mio_fus_pdf_s cn56xxp1;
+-	struct cvmx_mio_fus_pdf_s cn58xx;
+-	struct cvmx_mio_fus_pdf_s cn61xx;
+-	struct cvmx_mio_fus_pdf_s cn63xx;
+-	struct cvmx_mio_fus_pdf_s cn63xxp1;
+-	struct cvmx_mio_fus_pdf_s cn66xx;
+-	struct cvmx_mio_fus_pdf_s cn68xx;
+-	struct cvmx_mio_fus_pdf_s cn68xxp1;
+-	struct cvmx_mio_fus_pdf_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_pll {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_pll_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_48_63:16;
+-		uint64_t rclk_align_r:8;
+-		uint64_t rclk_align_l:8;
+-		uint64_t reserved_8_31:24;
+-		uint64_t c_cout_rst:1;
+-		uint64_t c_cout_sel:2;
+-		uint64_t pnr_cout_rst:1;
+-		uint64_t pnr_cout_sel:2;
+-		uint64_t rfslip:1;
+-		uint64_t fbslip:1;
+-#else
+-		uint64_t fbslip:1;
+-		uint64_t rfslip:1;
+-		uint64_t pnr_cout_sel:2;
+-		uint64_t pnr_cout_rst:1;
+-		uint64_t c_cout_sel:2;
+-		uint64_t c_cout_rst:1;
+-		uint64_t reserved_8_31:24;
+-		uint64_t rclk_align_l:8;
+-		uint64_t rclk_align_r:8;
+-		uint64_t reserved_48_63:16;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_pll_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t rfslip:1;
+-		uint64_t fbslip:1;
+-#else
+-		uint64_t fbslip:1;
+-		uint64_t rfslip:1;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn50xx;
+-	struct cvmx_mio_fus_pll_cn50xx cn52xx;
+-	struct cvmx_mio_fus_pll_cn50xx cn52xxp1;
+-	struct cvmx_mio_fus_pll_cn50xx cn56xx;
+-	struct cvmx_mio_fus_pll_cn50xx cn56xxp1;
+-	struct cvmx_mio_fus_pll_cn50xx cn58xx;
+-	struct cvmx_mio_fus_pll_cn50xx cn58xxp1;
+-	struct cvmx_mio_fus_pll_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t c_cout_rst:1;
+-		uint64_t c_cout_sel:2;
+-		uint64_t pnr_cout_rst:1;
+-		uint64_t pnr_cout_sel:2;
+-		uint64_t rfslip:1;
+-		uint64_t fbslip:1;
+-#else
+-		uint64_t fbslip:1;
+-		uint64_t rfslip:1;
+-		uint64_t pnr_cout_sel:2;
+-		uint64_t pnr_cout_rst:1;
+-		uint64_t c_cout_sel:2;
+-		uint64_t c_cout_rst:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_fus_pll_cn61xx cn63xx;
+-	struct cvmx_mio_fus_pll_cn61xx cn63xxp1;
+-	struct cvmx_mio_fus_pll_cn61xx cn66xx;
+-	struct cvmx_mio_fus_pll_s cn68xx;
+-	struct cvmx_mio_fus_pll_s cn68xxp1;
+-	struct cvmx_mio_fus_pll_cn61xx cnf71xx;
+-};
+-
+-union cvmx_mio_fus_prog {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_prog_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t soft:1;
+-		uint64_t prog:1;
+-#else
+-		uint64_t prog:1;
+-		uint64_t soft:1;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_prog_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t prog:1;
+-#else
+-		uint64_t prog:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} cn30xx;
+-	struct cvmx_mio_fus_prog_cn30xx cn31xx;
+-	struct cvmx_mio_fus_prog_cn30xx cn38xx;
+-	struct cvmx_mio_fus_prog_cn30xx cn38xxp2;
+-	struct cvmx_mio_fus_prog_cn30xx cn50xx;
+-	struct cvmx_mio_fus_prog_cn30xx cn52xx;
+-	struct cvmx_mio_fus_prog_cn30xx cn52xxp1;
+-	struct cvmx_mio_fus_prog_cn30xx cn56xx;
+-	struct cvmx_mio_fus_prog_cn30xx cn56xxp1;
+-	struct cvmx_mio_fus_prog_cn30xx cn58xx;
+-	struct cvmx_mio_fus_prog_cn30xx cn58xxp1;
+-	struct cvmx_mio_fus_prog_s cn61xx;
+-	struct cvmx_mio_fus_prog_s cn63xx;
+-	struct cvmx_mio_fus_prog_s cn63xxp1;
+-	struct cvmx_mio_fus_prog_s cn66xx;
+-	struct cvmx_mio_fus_prog_s cn68xx;
+-	struct cvmx_mio_fus_prog_s cn68xxp1;
+-	struct cvmx_mio_fus_prog_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_prog_times {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_prog_times_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_35_63:29;
+-		uint64_t vgate_pin:1;
+-		uint64_t fsrc_pin:1;
+-		uint64_t prog_pin:1;
+-		uint64_t reserved_6_31:26;
+-		uint64_t setup:6;
+-#else
+-		uint64_t setup:6;
+-		uint64_t reserved_6_31:26;
+-		uint64_t prog_pin:1;
+-		uint64_t fsrc_pin:1;
+-		uint64_t vgate_pin:1;
+-		uint64_t reserved_35_63:29;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_prog_times_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_33_63:31;
+-		uint64_t prog_pin:1;
+-		uint64_t out:8;
+-		uint64_t sclk_lo:4;
+-		uint64_t sclk_hi:12;
+-		uint64_t setup:8;
+-#else
+-		uint64_t setup:8;
+-		uint64_t sclk_hi:12;
+-		uint64_t sclk_lo:4;
+-		uint64_t out:8;
+-		uint64_t prog_pin:1;
+-		uint64_t reserved_33_63:31;
+-#endif
+-	} cn50xx;
+-	struct cvmx_mio_fus_prog_times_cn50xx cn52xx;
+-	struct cvmx_mio_fus_prog_times_cn50xx cn52xxp1;
+-	struct cvmx_mio_fus_prog_times_cn50xx cn56xx;
+-	struct cvmx_mio_fus_prog_times_cn50xx cn56xxp1;
+-	struct cvmx_mio_fus_prog_times_cn50xx cn58xx;
+-	struct cvmx_mio_fus_prog_times_cn50xx cn58xxp1;
+-	struct cvmx_mio_fus_prog_times_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_35_63:29;
+-		uint64_t vgate_pin:1;
+-		uint64_t fsrc_pin:1;
+-		uint64_t prog_pin:1;
+-		uint64_t out:7;
+-		uint64_t sclk_lo:4;
+-		uint64_t sclk_hi:15;
+-		uint64_t setup:6;
+-#else
+-		uint64_t setup:6;
+-		uint64_t sclk_hi:15;
+-		uint64_t sclk_lo:4;
+-		uint64_t out:7;
+-		uint64_t prog_pin:1;
+-		uint64_t fsrc_pin:1;
+-		uint64_t vgate_pin:1;
+-		uint64_t reserved_35_63:29;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_fus_prog_times_cn61xx cn63xx;
+-	struct cvmx_mio_fus_prog_times_cn61xx cn63xxp1;
+-	struct cvmx_mio_fus_prog_times_cn61xx cn66xx;
+-	struct cvmx_mio_fus_prog_times_cn61xx cn68xx;
+-	struct cvmx_mio_fus_prog_times_cn61xx cn68xxp1;
+-	struct cvmx_mio_fus_prog_times_cn61xx cnf71xx;
++	struct cvmx_mio_fus_dat3_cn73xx cn78xx;
++	struct cvmx_mio_fus_dat3_s cnf71xx;
+ };
+ 
+ union cvmx_mio_fus_rcmd {
+ 	uint64_t u64;
+ 	struct cvmx_mio_fus_rcmd_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_24_63:40;
+-		uint64_t dat:8;
+-		uint64_t reserved_13_15:3;
+-		uint64_t pend:1;
+-		uint64_t reserved_9_11:3;
+-		uint64_t efuse:1;
+-		uint64_t addr:8;
+-#else
+-		uint64_t addr:8;
+-		uint64_t efuse:1;
+-		uint64_t reserved_9_11:3;
+-		uint64_t pend:1;
+-		uint64_t reserved_13_15:3;
+-		uint64_t dat:8;
+-		uint64_t reserved_24_63:40;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_rcmd_cn30xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_24_63:40;
+-		uint64_t dat:8;
+-		uint64_t reserved_13_15:3;
+-		uint64_t pend:1;
+-		uint64_t reserved_9_11:3;
+-		uint64_t efuse:1;
+-		uint64_t reserved_7_7:1;
+-		uint64_t addr:7;
+-#else
+-		uint64_t addr:7;
+-		uint64_t reserved_7_7:1;
+-		uint64_t efuse:1;
+-		uint64_t reserved_9_11:3;
+-		uint64_t pend:1;
+-		uint64_t reserved_13_15:3;
+-		uint64_t dat:8;
+-		uint64_t reserved_24_63:40;
+-#endif
+-	} cn30xx;
+-	struct cvmx_mio_fus_rcmd_cn30xx cn31xx;
+-	struct cvmx_mio_fus_rcmd_cn30xx cn38xx;
+-	struct cvmx_mio_fus_rcmd_cn30xx cn38xxp2;
+-	struct cvmx_mio_fus_rcmd_cn30xx cn50xx;
+-	struct cvmx_mio_fus_rcmd_s cn52xx;
+-	struct cvmx_mio_fus_rcmd_s cn52xxp1;
+-	struct cvmx_mio_fus_rcmd_s cn56xx;
+-	struct cvmx_mio_fus_rcmd_s cn56xxp1;
+-	struct cvmx_mio_fus_rcmd_cn30xx cn58xx;
+-	struct cvmx_mio_fus_rcmd_cn30xx cn58xxp1;
+-	struct cvmx_mio_fus_rcmd_s cn61xx;
+-	struct cvmx_mio_fus_rcmd_s cn63xx;
+-	struct cvmx_mio_fus_rcmd_s cn63xxp1;
+-	struct cvmx_mio_fus_rcmd_s cn66xx;
+-	struct cvmx_mio_fus_rcmd_s cn68xx;
+-	struct cvmx_mio_fus_rcmd_s cn68xxp1;
+-	struct cvmx_mio_fus_rcmd_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_read_times {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_read_times_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_26_63:38;
+-		uint64_t sch:4;
+-		uint64_t fsh:4;
+-		uint64_t prh:4;
+-		uint64_t sdh:4;
+-		uint64_t setup:10;
+-#else
+-		uint64_t setup:10;
+-		uint64_t sdh:4;
+-		uint64_t prh:4;
+-		uint64_t fsh:4;
+-		uint64_t sch:4;
+-		uint64_t reserved_26_63:38;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_read_times_s cn61xx;
+-	struct cvmx_mio_fus_read_times_s cn63xx;
+-	struct cvmx_mio_fus_read_times_s cn63xxp1;
+-	struct cvmx_mio_fus_read_times_s cn66xx;
+-	struct cvmx_mio_fus_read_times_s cn68xx;
+-	struct cvmx_mio_fus_read_times_s cn68xxp1;
+-	struct cvmx_mio_fus_read_times_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_repair_res0 {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_repair_res0_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_55_63:9;
+-		uint64_t too_many:1;
+-		uint64_t repair2:18;
+-		uint64_t repair1:18;
+-		uint64_t repair0:18;
+-#else
+-		uint64_t repair0:18;
+-		uint64_t repair1:18;
+-		uint64_t repair2:18;
+-		uint64_t too_many:1;
+-		uint64_t reserved_55_63:9;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_repair_res0_s cn61xx;
+-	struct cvmx_mio_fus_repair_res0_s cn63xx;
+-	struct cvmx_mio_fus_repair_res0_s cn63xxp1;
+-	struct cvmx_mio_fus_repair_res0_s cn66xx;
+-	struct cvmx_mio_fus_repair_res0_s cn68xx;
+-	struct cvmx_mio_fus_repair_res0_s cn68xxp1;
+-	struct cvmx_mio_fus_repair_res0_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_repair_res1 {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_repair_res1_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_54_63:10;
+-		uint64_t repair5:18;
+-		uint64_t repair4:18;
+-		uint64_t repair3:18;
+-#else
+-		uint64_t repair3:18;
+-		uint64_t repair4:18;
+-		uint64_t repair5:18;
+-		uint64_t reserved_54_63:10;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_repair_res1_s cn61xx;
+-	struct cvmx_mio_fus_repair_res1_s cn63xx;
+-	struct cvmx_mio_fus_repair_res1_s cn63xxp1;
+-	struct cvmx_mio_fus_repair_res1_s cn66xx;
+-	struct cvmx_mio_fus_repair_res1_s cn68xx;
+-	struct cvmx_mio_fus_repair_res1_s cn68xxp1;
+-	struct cvmx_mio_fus_repair_res1_s cnf71xx;
+-};
+-
+-union cvmx_mio_fus_repair_res2 {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_repair_res2_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_18_63:46;
+-		uint64_t repair6:18;
+-#else
+-		uint64_t repair6:18;
+-		uint64_t reserved_18_63:46;
+-#endif
++		__BITFIELD_FIELD(uint64_t reserved_24_63:40,
++		__BITFIELD_FIELD(uint64_t dat:8,
++		__BITFIELD_FIELD(uint64_t reserved_13_15:3,
++		__BITFIELD_FIELD(uint64_t pend:1,
++		__BITFIELD_FIELD(uint64_t reserved_9_11:3,
++		__BITFIELD_FIELD(uint64_t efuse:1,
++		__BITFIELD_FIELD(uint64_t addr:8,
++		;)))))))
+ 	} s;
+-	struct cvmx_mio_fus_repair_res2_s cn61xx;
+-	struct cvmx_mio_fus_repair_res2_s cn63xx;
+-	struct cvmx_mio_fus_repair_res2_s cn63xxp1;
+-	struct cvmx_mio_fus_repair_res2_s cn66xx;
+-	struct cvmx_mio_fus_repair_res2_s cn68xx;
+-	struct cvmx_mio_fus_repair_res2_s cn68xxp1;
+-	struct cvmx_mio_fus_repair_res2_s cnf71xx;
+ };
+ 
+-union cvmx_mio_fus_spr_repair_res {
++union cvmx_mio_ptp_clock_cfg {
+ 	uint64_t u64;
+-	struct cvmx_mio_fus_spr_repair_res_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_42_63:22;
+-		uint64_t repair2:14;
+-		uint64_t repair1:14;
+-		uint64_t repair0:14;
+-#else
+-		uint64_t repair0:14;
+-		uint64_t repair1:14;
+-		uint64_t repair2:14;
+-		uint64_t reserved_42_63:22;
+-#endif
++	struct cvmx_mio_ptp_clock_cfg_s {
++		__BITFIELD_FIELD(uint64_t reserved_42_63:22,
++		__BITFIELD_FIELD(uint64_t pps:1,
++		__BITFIELD_FIELD(uint64_t ckout:1,
++		__BITFIELD_FIELD(uint64_t ext_clk_edge:2,
++		__BITFIELD_FIELD(uint64_t ckout_out4:1,
++		__BITFIELD_FIELD(uint64_t pps_out:5,
++		__BITFIELD_FIELD(uint64_t pps_inv:1,
++		__BITFIELD_FIELD(uint64_t pps_en:1,
++		__BITFIELD_FIELD(uint64_t ckout_out:4,
++		__BITFIELD_FIELD(uint64_t ckout_inv:1,
++		__BITFIELD_FIELD(uint64_t ckout_en:1,
++		__BITFIELD_FIELD(uint64_t evcnt_in:6,
++		__BITFIELD_FIELD(uint64_t evcnt_edge:1,
++		__BITFIELD_FIELD(uint64_t evcnt_en:1,
++		__BITFIELD_FIELD(uint64_t tstmp_in:6,
++		__BITFIELD_FIELD(uint64_t tstmp_edge:1,
++		__BITFIELD_FIELD(uint64_t tstmp_en:1,
++		__BITFIELD_FIELD(uint64_t ext_clk_in:6,
++		__BITFIELD_FIELD(uint64_t ext_clk_en:1,
++		__BITFIELD_FIELD(uint64_t ptp_en:1,
++		;))))))))))))))))))))
+ 	} s;
+-	struct cvmx_mio_fus_spr_repair_res_s cn30xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn31xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn38xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn50xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn52xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn52xxp1;
+-	struct cvmx_mio_fus_spr_repair_res_s cn56xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn56xxp1;
+-	struct cvmx_mio_fus_spr_repair_res_s cn58xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn58xxp1;
+-	struct cvmx_mio_fus_spr_repair_res_s cn61xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn63xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn63xxp1;
+-	struct cvmx_mio_fus_spr_repair_res_s cn66xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn68xx;
+-	struct cvmx_mio_fus_spr_repair_res_s cn68xxp1;
+-	struct cvmx_mio_fus_spr_repair_res_s cnf71xx;
+ };
+ 
+-union cvmx_mio_fus_spr_repair_sum {
++union cvmx_mio_qlmx_cfg {
+ 	uint64_t u64;
+-	struct cvmx_mio_fus_spr_repair_sum_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t too_many:1;
+-#else
+-		uint64_t too_many:1;
+-		uint64_t reserved_1_63:63;
+-#endif
++	struct cvmx_mio_qlmx_cfg_s {
++		__BITFIELD_FIELD(uint64_t reserved_15_63:49,
++		__BITFIELD_FIELD(uint64_t prtmode:1,
++		__BITFIELD_FIELD(uint64_t reserved_12_13:2,
++		__BITFIELD_FIELD(uint64_t qlm_spd:4,
++		__BITFIELD_FIELD(uint64_t reserved_4_7:4,
++		__BITFIELD_FIELD(uint64_t qlm_cfg:4,
++		;))))))
+ 	} s;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn30xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn31xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn38xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn50xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn52xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn52xxp1;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn56xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn56xxp1;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn58xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn58xxp1;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn61xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn63xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn63xxp1;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn66xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn68xx;
+-	struct cvmx_mio_fus_spr_repair_sum_s cn68xxp1;
+-	struct cvmx_mio_fus_spr_repair_sum_s cnf71xx;
+ };
+ 
+-union cvmx_mio_fus_tgg {
++union cvmx_mio_rst_boot {
+ 	uint64_t u64;
+-	struct cvmx_mio_fus_tgg_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t val:1;
+-		uint64_t dat:63;
+-#else
+-		uint64_t dat:63;
+-		uint64_t val:1;
+-#endif
++	struct cvmx_mio_rst_boot_s {
++		__BITFIELD_FIELD(uint64_t chipkill:1,
++		__BITFIELD_FIELD(uint64_t jtcsrdis:1,
++		__BITFIELD_FIELD(uint64_t ejtagdis:1,
++		__BITFIELD_FIELD(uint64_t romen:1,
++		__BITFIELD_FIELD(uint64_t ckill_ppdis:1,
++		__BITFIELD_FIELD(uint64_t jt_tstmode:1,
++		__BITFIELD_FIELD(uint64_t reserved_50_57:8,
++		__BITFIELD_FIELD(uint64_t lboot_ext:2,
++		__BITFIELD_FIELD(uint64_t reserved_44_47:4,
++		__BITFIELD_FIELD(uint64_t qlm4_spd:4,
++		__BITFIELD_FIELD(uint64_t qlm3_spd:4,
++		__BITFIELD_FIELD(uint64_t c_mul:6,
++		__BITFIELD_FIELD(uint64_t pnr_mul:6,
++		__BITFIELD_FIELD(uint64_t qlm2_spd:4,
++		__BITFIELD_FIELD(uint64_t qlm1_spd:4,
++		__BITFIELD_FIELD(uint64_t qlm0_spd:4,
++		__BITFIELD_FIELD(uint64_t lboot:10,
++		__BITFIELD_FIELD(uint64_t rboot:1,
++		__BITFIELD_FIELD(uint64_t rboot_pin:1,
++		;)))))))))))))))))))
+ 	} s;
+-	struct cvmx_mio_fus_tgg_s cn61xx;
+-	struct cvmx_mio_fus_tgg_s cn66xx;
+-	struct cvmx_mio_fus_tgg_s cnf71xx;
+ };
+ 
+-union cvmx_mio_fus_unlock {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_unlock_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_24_63:40;
+-		uint64_t key:24;
+-#else
+-		uint64_t key:24;
+-		uint64_t reserved_24_63:40;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_unlock_s cn30xx;
+-	struct cvmx_mio_fus_unlock_s cn31xx;
+-};
+-
+-union cvmx_mio_fus_wadr {
+-	uint64_t u64;
+-	struct cvmx_mio_fus_wadr_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t reserved_10_63:54;
--		uint64_t mask:10;
+-		uint64_t addr:10;
 -#else
--		uint64_t mask:10;
+-		uint64_t addr:10;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} s;
+-	struct cvmx_mio_fus_wadr_s cn30xx;
+-	struct cvmx_mio_fus_wadr_s cn31xx;
+-	struct cvmx_mio_fus_wadr_s cn38xx;
+-	struct cvmx_mio_fus_wadr_s cn38xxp2;
+-	struct cvmx_mio_fus_wadr_cn50xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t addr:2;
+-#else
+-		uint64_t addr:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} cn50xx;
+-	struct cvmx_mio_fus_wadr_cn52xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_3_63:61;
+-		uint64_t addr:3;
+-#else
+-		uint64_t addr:3;
+-		uint64_t reserved_3_63:61;
+-#endif
+-	} cn52xx;
+-	struct cvmx_mio_fus_wadr_cn52xx cn52xxp1;
+-	struct cvmx_mio_fus_wadr_cn52xx cn56xx;
+-	struct cvmx_mio_fus_wadr_cn52xx cn56xxp1;
+-	struct cvmx_mio_fus_wadr_cn50xx cn58xx;
+-	struct cvmx_mio_fus_wadr_cn50xx cn58xxp1;
+-	struct cvmx_mio_fus_wadr_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_4_63:60;
+-		uint64_t addr:4;
+-#else
+-		uint64_t addr:4;
+-		uint64_t reserved_4_63:60;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_fus_wadr_cn61xx cn63xx;
+-	struct cvmx_mio_fus_wadr_cn61xx cn63xxp1;
+-	struct cvmx_mio_fus_wadr_cn61xx cn66xx;
+-	struct cvmx_mio_fus_wadr_cn61xx cn68xx;
+-	struct cvmx_mio_fus_wadr_cn61xx cn68xxp1;
+-	struct cvmx_mio_fus_wadr_cn61xx cnf71xx;
+-};
+-
+-union cvmx_mio_gpio_comp {
+-	uint64_t u64;
+-	struct cvmx_mio_gpio_comp_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t pctl:6;
+-		uint64_t nctl:6;
+-#else
+-		uint64_t nctl:6;
+-		uint64_t pctl:6;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} s;
+-	struct cvmx_mio_gpio_comp_s cn61xx;
+-	struct cvmx_mio_gpio_comp_s cn63xx;
+-	struct cvmx_mio_gpio_comp_s cn63xxp1;
+-	struct cvmx_mio_gpio_comp_s cn66xx;
+-	struct cvmx_mio_gpio_comp_s cn68xx;
+-	struct cvmx_mio_gpio_comp_s cn68xxp1;
+-	struct cvmx_mio_gpio_comp_s cnf71xx;
+-};
+-
+-union cvmx_mio_ndf_dma_cfg {
+-	uint64_t u64;
+-	struct cvmx_mio_ndf_dma_cfg_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t en:1;
+-		uint64_t rw:1;
+-		uint64_t clr:1;
+-		uint64_t reserved_60_60:1;
+-		uint64_t swap32:1;
+-		uint64_t swap16:1;
+-		uint64_t swap8:1;
+-		uint64_t endian:1;
+-		uint64_t size:20;
+-		uint64_t adr:36;
+-#else
+-		uint64_t adr:36;
+-		uint64_t size:20;
+-		uint64_t endian:1;
+-		uint64_t swap8:1;
+-		uint64_t swap16:1;
+-		uint64_t swap32:1;
+-		uint64_t reserved_60_60:1;
+-		uint64_t clr:1;
+-		uint64_t rw:1;
+-		uint64_t en:1;
+-#endif
+-	} s;
+-	struct cvmx_mio_ndf_dma_cfg_s cn52xx;
+-	struct cvmx_mio_ndf_dma_cfg_s cn61xx;
+-	struct cvmx_mio_ndf_dma_cfg_s cn63xx;
+-	struct cvmx_mio_ndf_dma_cfg_s cn63xxp1;
+-	struct cvmx_mio_ndf_dma_cfg_s cn66xx;
+-	struct cvmx_mio_ndf_dma_cfg_s cn68xx;
+-	struct cvmx_mio_ndf_dma_cfg_s cn68xxp1;
+-	struct cvmx_mio_ndf_dma_cfg_s cnf71xx;
+-};
+-
+-union cvmx_mio_ndf_dma_int {
+-	uint64_t u64;
+-	struct cvmx_mio_ndf_dma_int_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t done:1;
+-#else
+-		uint64_t done:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_ndf_dma_int_s cn52xx;
+-	struct cvmx_mio_ndf_dma_int_s cn61xx;
+-	struct cvmx_mio_ndf_dma_int_s cn63xx;
+-	struct cvmx_mio_ndf_dma_int_s cn63xxp1;
+-	struct cvmx_mio_ndf_dma_int_s cn66xx;
+-	struct cvmx_mio_ndf_dma_int_s cn68xx;
+-	struct cvmx_mio_ndf_dma_int_s cn68xxp1;
+-	struct cvmx_mio_ndf_dma_int_s cnf71xx;
+-};
+-
+-union cvmx_mio_ndf_dma_int_en {
+-	uint64_t u64;
+-	struct cvmx_mio_ndf_dma_int_en_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t done:1;
+-#else
+-		uint64_t done:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_ndf_dma_int_en_s cn52xx;
+-	struct cvmx_mio_ndf_dma_int_en_s cn61xx;
+-	struct cvmx_mio_ndf_dma_int_en_s cn63xx;
+-	struct cvmx_mio_ndf_dma_int_en_s cn63xxp1;
+-	struct cvmx_mio_ndf_dma_int_en_s cn66xx;
+-	struct cvmx_mio_ndf_dma_int_en_s cn68xx;
+-	struct cvmx_mio_ndf_dma_int_en_s cn68xxp1;
+-	struct cvmx_mio_ndf_dma_int_en_s cnf71xx;
+-};
+-
+-union cvmx_mio_pll_ctl {
+-	uint64_t u64;
+-	struct cvmx_mio_pll_ctl_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_5_63:59;
+-		uint64_t bw_ctl:5;
+-#else
+-		uint64_t bw_ctl:5;
+-		uint64_t reserved_5_63:59;
+-#endif
+-	} s;
+-	struct cvmx_mio_pll_ctl_s cn30xx;
+-	struct cvmx_mio_pll_ctl_s cn31xx;
+-};
+-
+-union cvmx_mio_pll_setting {
+-	uint64_t u64;
+-	struct cvmx_mio_pll_setting_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_17_63:47;
+-		uint64_t setting:17;
+-#else
+-		uint64_t setting:17;
+-		uint64_t reserved_17_63:47;
+-#endif
+-	} s;
+-	struct cvmx_mio_pll_setting_s cn30xx;
+-	struct cvmx_mio_pll_setting_s cn31xx;
+-};
+-
+-union cvmx_mio_ptp_ckout_hi_incr {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_ckout_hi_incr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:32;
+-		uint64_t frnanosec:32;
+-#else
+-		uint64_t frnanosec:32;
+-		uint64_t nanosec:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_ckout_hi_incr_s cn61xx;
+-	struct cvmx_mio_ptp_ckout_hi_incr_s cn66xx;
+-	struct cvmx_mio_ptp_ckout_hi_incr_s cn68xx;
+-	struct cvmx_mio_ptp_ckout_hi_incr_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_ckout_lo_incr {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_ckout_lo_incr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:32;
+-		uint64_t frnanosec:32;
+-#else
+-		uint64_t frnanosec:32;
+-		uint64_t nanosec:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_ckout_lo_incr_s cn61xx;
+-	struct cvmx_mio_ptp_ckout_lo_incr_s cn66xx;
+-	struct cvmx_mio_ptp_ckout_lo_incr_s cn68xx;
+-	struct cvmx_mio_ptp_ckout_lo_incr_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_ckout_thresh_hi {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_ckout_thresh_hi_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:64;
+-#else
+-		uint64_t nanosec:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_ckout_thresh_hi_s cn61xx;
+-	struct cvmx_mio_ptp_ckout_thresh_hi_s cn66xx;
+-	struct cvmx_mio_ptp_ckout_thresh_hi_s cn68xx;
+-	struct cvmx_mio_ptp_ckout_thresh_hi_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_ckout_thresh_lo {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_ckout_thresh_lo_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t frnanosec:32;
+-#else
+-		uint64_t frnanosec:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_ckout_thresh_lo_s cn61xx;
+-	struct cvmx_mio_ptp_ckout_thresh_lo_s cn66xx;
+-	struct cvmx_mio_ptp_ckout_thresh_lo_s cn68xx;
+-	struct cvmx_mio_ptp_ckout_thresh_lo_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_clock_cfg {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_clock_cfg_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_42_63:22;
+-		uint64_t pps:1;
+-		uint64_t ckout:1;
+-		uint64_t ext_clk_edge:2;
+-		uint64_t ckout_out4:1;
+-		uint64_t pps_out:5;
+-		uint64_t pps_inv:1;
+-		uint64_t pps_en:1;
+-		uint64_t ckout_out:4;
+-		uint64_t ckout_inv:1;
+-		uint64_t ckout_en:1;
+-		uint64_t evcnt_in:6;
+-		uint64_t evcnt_edge:1;
+-		uint64_t evcnt_en:1;
+-		uint64_t tstmp_in:6;
+-		uint64_t tstmp_edge:1;
+-		uint64_t tstmp_en:1;
+-		uint64_t ext_clk_in:6;
+-		uint64_t ext_clk_en:1;
+-		uint64_t ptp_en:1;
+-#else
+-		uint64_t ptp_en:1;
+-		uint64_t ext_clk_en:1;
+-		uint64_t ext_clk_in:6;
+-		uint64_t tstmp_en:1;
+-		uint64_t tstmp_edge:1;
+-		uint64_t tstmp_in:6;
+-		uint64_t evcnt_en:1;
+-		uint64_t evcnt_edge:1;
+-		uint64_t evcnt_in:6;
+-		uint64_t ckout_en:1;
+-		uint64_t ckout_inv:1;
+-		uint64_t ckout_out:4;
+-		uint64_t pps_en:1;
+-		uint64_t pps_inv:1;
+-		uint64_t pps_out:5;
+-		uint64_t ckout_out4:1;
+-		uint64_t ext_clk_edge:2;
+-		uint64_t ckout:1;
+-		uint64_t pps:1;
+-		uint64_t reserved_42_63:22;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_clock_cfg_s cn61xx;
+-	struct cvmx_mio_ptp_clock_cfg_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_24_63:40;
+-		uint64_t evcnt_in:6;
+-		uint64_t evcnt_edge:1;
+-		uint64_t evcnt_en:1;
+-		uint64_t tstmp_in:6;
+-		uint64_t tstmp_edge:1;
+-		uint64_t tstmp_en:1;
+-		uint64_t ext_clk_in:6;
+-		uint64_t ext_clk_en:1;
+-		uint64_t ptp_en:1;
+-#else
+-		uint64_t ptp_en:1;
+-		uint64_t ext_clk_en:1;
+-		uint64_t ext_clk_in:6;
+-		uint64_t tstmp_en:1;
+-		uint64_t tstmp_edge:1;
+-		uint64_t tstmp_in:6;
+-		uint64_t evcnt_en:1;
+-		uint64_t evcnt_edge:1;
+-		uint64_t evcnt_in:6;
+-		uint64_t reserved_24_63:40;
+-#endif
+-	} cn63xx;
+-	struct cvmx_mio_ptp_clock_cfg_cn63xx cn63xxp1;
+-	struct cvmx_mio_ptp_clock_cfg_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_40_63:24;
+-		uint64_t ext_clk_edge:2;
+-		uint64_t ckout_out4:1;
+-		uint64_t pps_out:5;
+-		uint64_t pps_inv:1;
+-		uint64_t pps_en:1;
+-		uint64_t ckout_out:4;
+-		uint64_t ckout_inv:1;
+-		uint64_t ckout_en:1;
+-		uint64_t evcnt_in:6;
+-		uint64_t evcnt_edge:1;
+-		uint64_t evcnt_en:1;
+-		uint64_t tstmp_in:6;
+-		uint64_t tstmp_edge:1;
+-		uint64_t tstmp_en:1;
+-		uint64_t ext_clk_in:6;
+-		uint64_t ext_clk_en:1;
+-		uint64_t ptp_en:1;
+-#else
+-		uint64_t ptp_en:1;
+-		uint64_t ext_clk_en:1;
+-		uint64_t ext_clk_in:6;
+-		uint64_t tstmp_en:1;
+-		uint64_t tstmp_edge:1;
+-		uint64_t tstmp_in:6;
+-		uint64_t evcnt_en:1;
+-		uint64_t evcnt_edge:1;
+-		uint64_t evcnt_in:6;
+-		uint64_t ckout_en:1;
+-		uint64_t ckout_inv:1;
+-		uint64_t ckout_out:4;
+-		uint64_t pps_en:1;
+-		uint64_t pps_inv:1;
+-		uint64_t pps_out:5;
+-		uint64_t ckout_out4:1;
+-		uint64_t ext_clk_edge:2;
+-		uint64_t reserved_40_63:24;
+-#endif
+-	} cn66xx;
+-	struct cvmx_mio_ptp_clock_cfg_s cn68xx;
+-	struct cvmx_mio_ptp_clock_cfg_cn63xx cn68xxp1;
+-	struct cvmx_mio_ptp_clock_cfg_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_clock_comp {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_clock_comp_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:32;
+-		uint64_t frnanosec:32;
+-#else
+-		uint64_t frnanosec:32;
+-		uint64_t nanosec:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_clock_comp_s cn61xx;
+-	struct cvmx_mio_ptp_clock_comp_s cn63xx;
+-	struct cvmx_mio_ptp_clock_comp_s cn63xxp1;
+-	struct cvmx_mio_ptp_clock_comp_s cn66xx;
+-	struct cvmx_mio_ptp_clock_comp_s cn68xx;
+-	struct cvmx_mio_ptp_clock_comp_s cn68xxp1;
+-	struct cvmx_mio_ptp_clock_comp_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_clock_hi {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_clock_hi_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:64;
+-#else
+-		uint64_t nanosec:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_clock_hi_s cn61xx;
+-	struct cvmx_mio_ptp_clock_hi_s cn63xx;
+-	struct cvmx_mio_ptp_clock_hi_s cn63xxp1;
+-	struct cvmx_mio_ptp_clock_hi_s cn66xx;
+-	struct cvmx_mio_ptp_clock_hi_s cn68xx;
+-	struct cvmx_mio_ptp_clock_hi_s cn68xxp1;
+-	struct cvmx_mio_ptp_clock_hi_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_clock_lo {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_clock_lo_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t frnanosec:32;
+-#else
+-		uint64_t frnanosec:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_clock_lo_s cn61xx;
+-	struct cvmx_mio_ptp_clock_lo_s cn63xx;
+-	struct cvmx_mio_ptp_clock_lo_s cn63xxp1;
+-	struct cvmx_mio_ptp_clock_lo_s cn66xx;
+-	struct cvmx_mio_ptp_clock_lo_s cn68xx;
+-	struct cvmx_mio_ptp_clock_lo_s cn68xxp1;
+-	struct cvmx_mio_ptp_clock_lo_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_evt_cnt {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_evt_cnt_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t cntr:64;
+-#else
+-		uint64_t cntr:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_evt_cnt_s cn61xx;
+-	struct cvmx_mio_ptp_evt_cnt_s cn63xx;
+-	struct cvmx_mio_ptp_evt_cnt_s cn63xxp1;
+-	struct cvmx_mio_ptp_evt_cnt_s cn66xx;
+-	struct cvmx_mio_ptp_evt_cnt_s cn68xx;
+-	struct cvmx_mio_ptp_evt_cnt_s cn68xxp1;
+-	struct cvmx_mio_ptp_evt_cnt_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_phy_1pps_in {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_phy_1pps_in_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_5_63:59;
+-		uint64_t sel:5;
+-#else
+-		uint64_t sel:5;
+-		uint64_t reserved_5_63:59;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_phy_1pps_in_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_pps_hi_incr {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_pps_hi_incr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:32;
+-		uint64_t frnanosec:32;
+-#else
+-		uint64_t frnanosec:32;
+-		uint64_t nanosec:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_pps_hi_incr_s cn61xx;
+-	struct cvmx_mio_ptp_pps_hi_incr_s cn66xx;
+-	struct cvmx_mio_ptp_pps_hi_incr_s cn68xx;
+-	struct cvmx_mio_ptp_pps_hi_incr_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_pps_lo_incr {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_pps_lo_incr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:32;
+-		uint64_t frnanosec:32;
+-#else
+-		uint64_t frnanosec:32;
+-		uint64_t nanosec:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_pps_lo_incr_s cn61xx;
+-	struct cvmx_mio_ptp_pps_lo_incr_s cn66xx;
+-	struct cvmx_mio_ptp_pps_lo_incr_s cn68xx;
+-	struct cvmx_mio_ptp_pps_lo_incr_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_pps_thresh_hi {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_pps_thresh_hi_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:64;
+-#else
+-		uint64_t nanosec:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_pps_thresh_hi_s cn61xx;
+-	struct cvmx_mio_ptp_pps_thresh_hi_s cn66xx;
+-	struct cvmx_mio_ptp_pps_thresh_hi_s cn68xx;
+-	struct cvmx_mio_ptp_pps_thresh_hi_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_pps_thresh_lo {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_pps_thresh_lo_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_32_63:32;
+-		uint64_t frnanosec:32;
+-#else
+-		uint64_t frnanosec:32;
+-		uint64_t reserved_32_63:32;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_pps_thresh_lo_s cn61xx;
+-	struct cvmx_mio_ptp_pps_thresh_lo_s cn66xx;
+-	struct cvmx_mio_ptp_pps_thresh_lo_s cn68xx;
+-	struct cvmx_mio_ptp_pps_thresh_lo_s cnf71xx;
+-};
+-
+-union cvmx_mio_ptp_timestamp {
+-	uint64_t u64;
+-	struct cvmx_mio_ptp_timestamp_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t nanosec:64;
+-#else
+-		uint64_t nanosec:64;
+-#endif
+-	} s;
+-	struct cvmx_mio_ptp_timestamp_s cn61xx;
+-	struct cvmx_mio_ptp_timestamp_s cn63xx;
+-	struct cvmx_mio_ptp_timestamp_s cn63xxp1;
+-	struct cvmx_mio_ptp_timestamp_s cn66xx;
+-	struct cvmx_mio_ptp_timestamp_s cn68xx;
+-	struct cvmx_mio_ptp_timestamp_s cn68xxp1;
+-	struct cvmx_mio_ptp_timestamp_s cnf71xx;
+-};
+-
+-union cvmx_mio_qlmx_cfg {
+-	uint64_t u64;
+-	struct cvmx_mio_qlmx_cfg_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t prtmode:1;
+-		uint64_t reserved_12_13:2;
+-		uint64_t qlm_spd:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t qlm_cfg:4;
+-#else
+-		uint64_t qlm_cfg:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t qlm_spd:4;
+-		uint64_t reserved_12_13:2;
+-		uint64_t prtmode:1;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} s;
+-	struct cvmx_mio_qlmx_cfg_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_15_63:49;
+-		uint64_t prtmode:1;
+-		uint64_t reserved_12_13:2;
+-		uint64_t qlm_spd:4;
+-		uint64_t reserved_2_7:6;
+-		uint64_t qlm_cfg:2;
+-#else
+-		uint64_t qlm_cfg:2;
+-		uint64_t reserved_2_7:6;
+-		uint64_t qlm_spd:4;
+-		uint64_t reserved_12_13:2;
+-		uint64_t prtmode:1;
+-		uint64_t reserved_15_63:49;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_qlmx_cfg_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t qlm_spd:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t qlm_cfg:4;
+-#else
+-		uint64_t qlm_cfg:4;
+-		uint64_t reserved_4_7:4;
+-		uint64_t qlm_spd:4;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn66xx;
+-	struct cvmx_mio_qlmx_cfg_cn68xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_12_63:52;
+-		uint64_t qlm_spd:4;
+-		uint64_t reserved_3_7:5;
+-		uint64_t qlm_cfg:3;
+-#else
+-		uint64_t qlm_cfg:3;
+-		uint64_t reserved_3_7:5;
+-		uint64_t qlm_spd:4;
+-		uint64_t reserved_12_63:52;
+-#endif
+-	} cn68xx;
+-	struct cvmx_mio_qlmx_cfg_cn68xx cn68xxp1;
+-	struct cvmx_mio_qlmx_cfg_cn61xx cnf71xx;
+-};
+-
+-union cvmx_mio_rst_boot {
+-	uint64_t u64;
+-	struct cvmx_mio_rst_boot_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t chipkill:1;
+-		uint64_t jtcsrdis:1;
+-		uint64_t ejtagdis:1;
+-		uint64_t romen:1;
+-		uint64_t ckill_ppdis:1;
+-		uint64_t jt_tstmode:1;
+-		uint64_t reserved_50_57:8;
+-		uint64_t lboot_ext:2;
+-		uint64_t reserved_44_47:4;
+-		uint64_t qlm4_spd:4;
+-		uint64_t qlm3_spd:4;
+-		uint64_t c_mul:6;
+-		uint64_t pnr_mul:6;
+-		uint64_t qlm2_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm0_spd:4;
+-		uint64_t lboot:10;
+-		uint64_t rboot:1;
+-		uint64_t rboot_pin:1;
+-#else
+-		uint64_t rboot_pin:1;
+-		uint64_t rboot:1;
+-		uint64_t lboot:10;
+-		uint64_t qlm0_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm2_spd:4;
+-		uint64_t pnr_mul:6;
+-		uint64_t c_mul:6;
+-		uint64_t qlm3_spd:4;
+-		uint64_t qlm4_spd:4;
+-		uint64_t reserved_44_47:4;
+-		uint64_t lboot_ext:2;
+-		uint64_t reserved_50_57:8;
+-		uint64_t jt_tstmode:1;
+-		uint64_t ckill_ppdis:1;
+-		uint64_t romen:1;
+-		uint64_t ejtagdis:1;
+-		uint64_t jtcsrdis:1;
+-		uint64_t chipkill:1;
+-#endif
+-	} s;
+-	struct cvmx_mio_rst_boot_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t chipkill:1;
+-		uint64_t jtcsrdis:1;
+-		uint64_t ejtagdis:1;
+-		uint64_t romen:1;
+-		uint64_t ckill_ppdis:1;
+-		uint64_t jt_tstmode:1;
+-		uint64_t reserved_50_57:8;
+-		uint64_t lboot_ext:2;
+-		uint64_t reserved_36_47:12;
+-		uint64_t c_mul:6;
+-		uint64_t pnr_mul:6;
+-		uint64_t qlm2_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm0_spd:4;
+-		uint64_t lboot:10;
+-		uint64_t rboot:1;
+-		uint64_t rboot_pin:1;
+-#else
+-		uint64_t rboot_pin:1;
+-		uint64_t rboot:1;
+-		uint64_t lboot:10;
+-		uint64_t qlm0_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm2_spd:4;
+-		uint64_t pnr_mul:6;
+-		uint64_t c_mul:6;
+-		uint64_t reserved_36_47:12;
+-		uint64_t lboot_ext:2;
+-		uint64_t reserved_50_57:8;
+-		uint64_t jt_tstmode:1;
+-		uint64_t ckill_ppdis:1;
+-		uint64_t romen:1;
+-		uint64_t ejtagdis:1;
+-		uint64_t jtcsrdis:1;
+-		uint64_t chipkill:1;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_rst_boot_cn63xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_36_63:28;
+-		uint64_t c_mul:6;
+-		uint64_t pnr_mul:6;
+-		uint64_t qlm2_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm0_spd:4;
+-		uint64_t lboot:10;
+-		uint64_t rboot:1;
+-		uint64_t rboot_pin:1;
+-#else
+-		uint64_t rboot_pin:1;
+-		uint64_t rboot:1;
+-		uint64_t lboot:10;
+-		uint64_t qlm0_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm2_spd:4;
+-		uint64_t pnr_mul:6;
+-		uint64_t c_mul:6;
+-		uint64_t reserved_36_63:28;
+-#endif
+-	} cn63xx;
+-	struct cvmx_mio_rst_boot_cn63xx cn63xxp1;
+-	struct cvmx_mio_rst_boot_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t chipkill:1;
+-		uint64_t jtcsrdis:1;
+-		uint64_t ejtagdis:1;
+-		uint64_t romen:1;
+-		uint64_t ckill_ppdis:1;
+-		uint64_t reserved_50_58:9;
+-		uint64_t lboot_ext:2;
+-		uint64_t reserved_36_47:12;
+-		uint64_t c_mul:6;
+-		uint64_t pnr_mul:6;
+-		uint64_t qlm2_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm0_spd:4;
+-		uint64_t lboot:10;
+-		uint64_t rboot:1;
+-		uint64_t rboot_pin:1;
+-#else
+-		uint64_t rboot_pin:1;
+-		uint64_t rboot:1;
+-		uint64_t lboot:10;
+-		uint64_t qlm0_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm2_spd:4;
+-		uint64_t pnr_mul:6;
+-		uint64_t c_mul:6;
+-		uint64_t reserved_36_47:12;
+-		uint64_t lboot_ext:2;
+-		uint64_t reserved_50_58:9;
+-		uint64_t ckill_ppdis:1;
+-		uint64_t romen:1;
+-		uint64_t ejtagdis:1;
+-		uint64_t jtcsrdis:1;
+-		uint64_t chipkill:1;
+-#endif
+-	} cn66xx;
+-	struct cvmx_mio_rst_boot_cn68xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_59_63:5;
+-		uint64_t jt_tstmode:1;
+-		uint64_t reserved_44_57:14;
+-		uint64_t qlm4_spd:4;
+-		uint64_t qlm3_spd:4;
+-		uint64_t c_mul:6;
+-		uint64_t pnr_mul:6;
+-		uint64_t qlm2_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm0_spd:4;
+-		uint64_t lboot:10;
+-		uint64_t rboot:1;
+-		uint64_t rboot_pin:1;
+-#else
+-		uint64_t rboot_pin:1;
+-		uint64_t rboot:1;
+-		uint64_t lboot:10;
+-		uint64_t qlm0_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm2_spd:4;
+-		uint64_t pnr_mul:6;
+-		uint64_t c_mul:6;
+-		uint64_t qlm3_spd:4;
+-		uint64_t qlm4_spd:4;
+-		uint64_t reserved_44_57:14;
+-		uint64_t jt_tstmode:1;
+-		uint64_t reserved_59_63:5;
+-#endif
+-	} cn68xx;
+-	struct cvmx_mio_rst_boot_cn68xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_44_63:20;
+-		uint64_t qlm4_spd:4;
+-		uint64_t qlm3_spd:4;
+-		uint64_t c_mul:6;
+-		uint64_t pnr_mul:6;
+-		uint64_t qlm2_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm0_spd:4;
+-		uint64_t lboot:10;
+-		uint64_t rboot:1;
+-		uint64_t rboot_pin:1;
+-#else
+-		uint64_t rboot_pin:1;
+-		uint64_t rboot:1;
+-		uint64_t lboot:10;
+-		uint64_t qlm0_spd:4;
+-		uint64_t qlm1_spd:4;
+-		uint64_t qlm2_spd:4;
+-		uint64_t pnr_mul:6;
+-		uint64_t c_mul:6;
+-		uint64_t qlm3_spd:4;
+-		uint64_t qlm4_spd:4;
+-		uint64_t reserved_44_63:20;
+-#endif
+-	} cn68xxp1;
+-	struct cvmx_mio_rst_boot_cn61xx cnf71xx;
+-};
+-
+-union cvmx_mio_rst_cfg {
+-	uint64_t u64;
+-	struct cvmx_mio_rst_cfg_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_3_63:61;
+-		uint64_t cntl_clr_bist:1;
+-		uint64_t warm_clr_bist:1;
+-		uint64_t soft_clr_bist:1;
+-#else
+-		uint64_t soft_clr_bist:1;
+-		uint64_t warm_clr_bist:1;
+-		uint64_t cntl_clr_bist:1;
+-		uint64_t reserved_3_63:61;
+-#endif
+-	} s;
+-	struct cvmx_mio_rst_cfg_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bist_delay:58;
+-		uint64_t reserved_3_5:3;
+-		uint64_t cntl_clr_bist:1;
+-		uint64_t warm_clr_bist:1;
+-		uint64_t soft_clr_bist:1;
+-#else
+-		uint64_t soft_clr_bist:1;
+-		uint64_t warm_clr_bist:1;
+-		uint64_t cntl_clr_bist:1;
+-		uint64_t reserved_3_5:3;
+-		uint64_t bist_delay:58;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_rst_cfg_cn61xx cn63xx;
+-	struct cvmx_mio_rst_cfg_cn63xxp1 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bist_delay:58;
+-		uint64_t reserved_2_5:4;
+-		uint64_t warm_clr_bist:1;
+-		uint64_t soft_clr_bist:1;
+-#else
+-		uint64_t soft_clr_bist:1;
+-		uint64_t warm_clr_bist:1;
+-		uint64_t reserved_2_5:4;
+-		uint64_t bist_delay:58;
+-#endif
+-	} cn63xxp1;
+-	struct cvmx_mio_rst_cfg_cn61xx cn66xx;
+-	struct cvmx_mio_rst_cfg_cn68xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t bist_delay:56;
+-		uint64_t reserved_3_7:5;
+-		uint64_t cntl_clr_bist:1;
+-		uint64_t warm_clr_bist:1;
+-		uint64_t soft_clr_bist:1;
+-#else
+-		uint64_t soft_clr_bist:1;
+-		uint64_t warm_clr_bist:1;
+-		uint64_t cntl_clr_bist:1;
+-		uint64_t reserved_3_7:5;
+-		uint64_t bist_delay:56;
+-#endif
+-	} cn68xx;
+-	struct cvmx_mio_rst_cfg_cn68xx cn68xxp1;
+-	struct cvmx_mio_rst_cfg_cn61xx cnf71xx;
+-};
+-
+-union cvmx_mio_rst_ckill {
+-	uint64_t u64;
+-	struct cvmx_mio_rst_ckill_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_47_63:17;
+-		uint64_t timer:47;
+-#else
+-		uint64_t timer:47;
+-		uint64_t reserved_47_63:17;
+-#endif
+-	} s;
+-	struct cvmx_mio_rst_ckill_s cn61xx;
+-	struct cvmx_mio_rst_ckill_s cn66xx;
+-	struct cvmx_mio_rst_ckill_s cnf71xx;
+-};
+-
+-union cvmx_mio_rst_cntlx {
+-	uint64_t u64;
+-	struct cvmx_mio_rst_cntlx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_13_63:51;
+-		uint64_t in_rev_ln:1;
+-		uint64_t rev_lanes:1;
+-		uint64_t gen1_only:1;
+-		uint64_t prst_link:1;
+-		uint64_t rst_done:1;
+-		uint64_t rst_link:1;
+-		uint64_t host_mode:1;
+-		uint64_t prtmode:2;
+-		uint64_t rst_drv:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_val:1;
+-#else
+-		uint64_t rst_val:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_drv:1;
+-		uint64_t prtmode:2;
+-		uint64_t host_mode:1;
+-		uint64_t rst_link:1;
+-		uint64_t rst_done:1;
+-		uint64_t prst_link:1;
+-		uint64_t gen1_only:1;
+-		uint64_t rev_lanes:1;
+-		uint64_t in_rev_ln:1;
+-		uint64_t reserved_13_63:51;
+-#endif
+-	} s;
+-	struct cvmx_mio_rst_cntlx_s cn61xx;
+-	struct cvmx_mio_rst_cntlx_cn66xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t prst_link:1;
+-		uint64_t rst_done:1;
+-		uint64_t rst_link:1;
+-		uint64_t host_mode:1;
+-		uint64_t prtmode:2;
+-		uint64_t rst_drv:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_val:1;
+-#else
+-		uint64_t rst_val:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_drv:1;
+-		uint64_t prtmode:2;
+-		uint64_t host_mode:1;
+-		uint64_t rst_link:1;
+-		uint64_t rst_done:1;
+-		uint64_t prst_link:1;
 -		uint64_t reserved_10_63:54;
 -#endif
 -	} cn66xx;
--	struct cvmx_l2c_ver_pp_s cn68xx;
--	struct cvmx_l2c_ver_pp_s cn68xxp1;
--	struct cvmx_l2c_ver_pp_cn61xx cnf71xx;
+-	struct cvmx_mio_rst_cntlx_cn66xx cn68xx;
+-	struct cvmx_mio_rst_cntlx_s cnf71xx;
 -};
 -
--union cvmx_l2c_virtid_iobx {
--	uint64_t u64;
--	struct cvmx_l2c_virtid_iobx_s {
+-union cvmx_mio_rst_ctlx {
++union cvmx_mio_rst_ctlx {
+ 	uint64_t u64;
+ 	struct cvmx_mio_rst_ctlx_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_14_63:50;
--		uint64_t dwbid:6;
--		uint64_t reserved_6_7:2;
--		uint64_t id:6;
+-		uint64_t reserved_13_63:51;
+-		uint64_t in_rev_ln:1;
+-		uint64_t rev_lanes:1;
+-		uint64_t gen1_only:1;
+-		uint64_t prst_link:1;
+-		uint64_t rst_done:1;
+-		uint64_t rst_link:1;
+-		uint64_t host_mode:1;
+-		uint64_t prtmode:2;
+-		uint64_t rst_drv:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_val:1;
 -#else
--		uint64_t id:6;
--		uint64_t reserved_6_7:2;
--		uint64_t dwbid:6;
--		uint64_t reserved_14_63:50;
+-		uint64_t rst_val:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_drv:1;
+-		uint64_t prtmode:2;
+-		uint64_t host_mode:1;
+-		uint64_t rst_link:1;
+-		uint64_t rst_done:1;
+-		uint64_t prst_link:1;
+-		uint64_t gen1_only:1;
+-		uint64_t rev_lanes:1;
+-		uint64_t in_rev_ln:1;
+-		uint64_t reserved_13_63:51;
 -#endif
 -	} s;
--	struct cvmx_l2c_virtid_iobx_s cn61xx;
--	struct cvmx_l2c_virtid_iobx_s cn63xx;
--	struct cvmx_l2c_virtid_iobx_s cn63xxp1;
--	struct cvmx_l2c_virtid_iobx_s cn66xx;
--	struct cvmx_l2c_virtid_iobx_s cn68xx;
--	struct cvmx_l2c_virtid_iobx_s cn68xxp1;
--	struct cvmx_l2c_virtid_iobx_s cnf71xx;
--};
--
--union cvmx_l2c_virtid_ppx {
--	uint64_t u64;
--	struct cvmx_l2c_virtid_ppx_s {
+-	struct cvmx_mio_rst_ctlx_s cn61xx;
+-	struct cvmx_mio_rst_ctlx_cn63xx {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_6_63:58;
--		uint64_t id:6;
+-		uint64_t reserved_10_63:54;
+-		uint64_t prst_link:1;
+-		uint64_t rst_done:1;
+-		uint64_t rst_link:1;
+-		uint64_t host_mode:1;
+-		uint64_t prtmode:2;
+-		uint64_t rst_drv:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_val:1;
 -#else
--		uint64_t id:6;
--		uint64_t reserved_6_63:58;
+-		uint64_t rst_val:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_drv:1;
+-		uint64_t prtmode:2;
+-		uint64_t host_mode:1;
+-		uint64_t rst_link:1;
+-		uint64_t rst_done:1;
+-		uint64_t prst_link:1;
+-		uint64_t reserved_10_63:54;
 -#endif
--	} s;
--	struct cvmx_l2c_virtid_ppx_s cn61xx;
--	struct cvmx_l2c_virtid_ppx_s cn63xx;
--	struct cvmx_l2c_virtid_ppx_s cn63xxp1;
--	struct cvmx_l2c_virtid_ppx_s cn66xx;
--	struct cvmx_l2c_virtid_ppx_s cn68xx;
--	struct cvmx_l2c_virtid_ppx_s cn68xxp1;
--	struct cvmx_l2c_virtid_ppx_s cnf71xx;
--};
--
--union cvmx_l2c_vrt_ctl {
--	uint64_t u64;
--	struct cvmx_l2c_vrt_ctl_s {
+-	} cn63xx;
+-	struct cvmx_mio_rst_ctlx_cn63xxp1 {
 -#ifdef __BIG_ENDIAN_BITFIELD
 -		uint64_t reserved_9_63:55;
--		uint64_t ooberr:1;
--		uint64_t reserved_7_7:1;
--		uint64_t memsz:3;
--		uint64_t numid:3;
--		uint64_t enable:1;
+-		uint64_t rst_done:1;
+-		uint64_t rst_link:1;
+-		uint64_t host_mode:1;
+-		uint64_t prtmode:2;
+-		uint64_t rst_drv:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_val:1;
 -#else
--		uint64_t enable:1;
--		uint64_t numid:3;
--		uint64_t memsz:3;
--		uint64_t reserved_7_7:1;
--		uint64_t ooberr:1;
+-		uint64_t rst_val:1;
+-		uint64_t rst_chip:1;
+-		uint64_t rst_rcv:1;
+-		uint64_t rst_drv:1;
+-		uint64_t prtmode:2;
+-		uint64_t host_mode:1;
+-		uint64_t rst_link:1;
+-		uint64_t rst_done:1;
 -		uint64_t reserved_9_63:55;
 -#endif
--	} s;
--	struct cvmx_l2c_vrt_ctl_s cn61xx;
--	struct cvmx_l2c_vrt_ctl_s cn63xx;
--	struct cvmx_l2c_vrt_ctl_s cn63xxp1;
--	struct cvmx_l2c_vrt_ctl_s cn66xx;
--	struct cvmx_l2c_vrt_ctl_s cn68xx;
--	struct cvmx_l2c_vrt_ctl_s cn68xxp1;
--	struct cvmx_l2c_vrt_ctl_s cnf71xx;
+-	} cn63xxp1;
+-	struct cvmx_mio_rst_ctlx_cn63xx cn66xx;
+-	struct cvmx_mio_rst_ctlx_cn63xx cn68xx;
+-	struct cvmx_mio_rst_ctlx_cn63xx cn68xxp1;
+-	struct cvmx_mio_rst_ctlx_s cnf71xx;
 -};
 -
--union cvmx_l2c_vrt_memx {
+-union cvmx_mio_rst_delay {
 -	uint64_t u64;
--	struct cvmx_l2c_vrt_memx_s {
+-	struct cvmx_mio_rst_delay_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_36_63:28;
--		uint64_t parity:4;
--		uint64_t data:32;
+-		uint64_t reserved_32_63:32;
+-		uint64_t warm_rst_dly:16;
+-		uint64_t soft_rst_dly:16;
 -#else
--		uint64_t data:32;
--		uint64_t parity:4;
--		uint64_t reserved_36_63:28;
+-		uint64_t soft_rst_dly:16;
+-		uint64_t warm_rst_dly:16;
+-		uint64_t reserved_32_63:32;
 -#endif
 -	} s;
--	struct cvmx_l2c_vrt_memx_s cn61xx;
--	struct cvmx_l2c_vrt_memx_s cn63xx;
--	struct cvmx_l2c_vrt_memx_s cn63xxp1;
--	struct cvmx_l2c_vrt_memx_s cn66xx;
--	struct cvmx_l2c_vrt_memx_s cn68xx;
--	struct cvmx_l2c_vrt_memx_s cn68xxp1;
--	struct cvmx_l2c_vrt_memx_s cnf71xx;
+-	struct cvmx_mio_rst_delay_s cn61xx;
+-	struct cvmx_mio_rst_delay_s cn63xx;
+-	struct cvmx_mio_rst_delay_s cn63xxp1;
+-	struct cvmx_mio_rst_delay_s cn66xx;
+-	struct cvmx_mio_rst_delay_s cn68xx;
+-	struct cvmx_mio_rst_delay_s cn68xxp1;
+-	struct cvmx_mio_rst_delay_s cnf71xx;
 -};
 -
--union cvmx_l2c_wpar_iobx {
+-union cvmx_mio_rst_int {
 -	uint64_t u64;
--	struct cvmx_l2c_wpar_iobx_s {
+-	struct cvmx_mio_rst_int_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t mask:16;
+-		uint64_t reserved_10_63:54;
+-		uint64_t perst1:1;
+-		uint64_t perst0:1;
+-		uint64_t reserved_4_7:4;
+-		uint64_t rst_link3:1;
+-		uint64_t rst_link2:1;
+-		uint64_t rst_link1:1;
+-		uint64_t rst_link0:1;
 -#else
--		uint64_t mask:16;
--		uint64_t reserved_16_63:48;
+-		uint64_t rst_link0:1;
+-		uint64_t rst_link1:1;
+-		uint64_t rst_link2:1;
+-		uint64_t rst_link3:1;
+-		uint64_t reserved_4_7:4;
+-		uint64_t perst0:1;
+-		uint64_t perst1:1;
+-		uint64_t reserved_10_63:54;
 -#endif
 -	} s;
--	struct cvmx_l2c_wpar_iobx_s cn61xx;
--	struct cvmx_l2c_wpar_iobx_s cn63xx;
--	struct cvmx_l2c_wpar_iobx_s cn63xxp1;
--	struct cvmx_l2c_wpar_iobx_s cn66xx;
--	struct cvmx_l2c_wpar_iobx_s cn68xx;
--	struct cvmx_l2c_wpar_iobx_s cn68xxp1;
--	struct cvmx_l2c_wpar_iobx_s cnf71xx;
+-	struct cvmx_mio_rst_int_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t perst1:1;
+-		uint64_t perst0:1;
+-		uint64_t reserved_2_7:6;
+-		uint64_t rst_link1:1;
+-		uint64_t rst_link0:1;
+-#else
+-		uint64_t rst_link0:1;
+-		uint64_t rst_link1:1;
+-		uint64_t reserved_2_7:6;
+-		uint64_t perst0:1;
+-		uint64_t perst1:1;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_rst_int_cn61xx cn63xx;
+-	struct cvmx_mio_rst_int_cn61xx cn63xxp1;
+-	struct cvmx_mio_rst_int_s cn66xx;
+-	struct cvmx_mio_rst_int_cn61xx cn68xx;
+-	struct cvmx_mio_rst_int_cn61xx cn68xxp1;
+-	struct cvmx_mio_rst_int_cn61xx cnf71xx;
 -};
 -
--union cvmx_l2c_wpar_ppx {
+-union cvmx_mio_rst_int_en {
 -	uint64_t u64;
--	struct cvmx_l2c_wpar_ppx_s {
+-	struct cvmx_mio_rst_int_en_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_16_63:48;
--		uint64_t mask:16;
+-		uint64_t reserved_10_63:54;
+-		uint64_t perst1:1;
+-		uint64_t perst0:1;
+-		uint64_t reserved_4_7:4;
+-		uint64_t rst_link3:1;
+-		uint64_t rst_link2:1;
+-		uint64_t rst_link1:1;
+-		uint64_t rst_link0:1;
 -#else
--		uint64_t mask:16;
--		uint64_t reserved_16_63:48;
+-		uint64_t rst_link0:1;
+-		uint64_t rst_link1:1;
+-		uint64_t rst_link2:1;
+-		uint64_t rst_link3:1;
+-		uint64_t reserved_4_7:4;
+-		uint64_t perst0:1;
+-		uint64_t perst1:1;
+-		uint64_t reserved_10_63:54;
 -#endif
 -	} s;
--	struct cvmx_l2c_wpar_ppx_s cn61xx;
--	struct cvmx_l2c_wpar_ppx_s cn63xx;
--	struct cvmx_l2c_wpar_ppx_s cn63xxp1;
--	struct cvmx_l2c_wpar_ppx_s cn66xx;
--	struct cvmx_l2c_wpar_ppx_s cn68xx;
--	struct cvmx_l2c_wpar_ppx_s cn68xxp1;
--	struct cvmx_l2c_wpar_ppx_s cnf71xx;
+-	struct cvmx_mio_rst_int_en_cn61xx {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t perst1:1;
+-		uint64_t perst0:1;
+-		uint64_t reserved_2_7:6;
+-		uint64_t rst_link1:1;
+-		uint64_t rst_link0:1;
+-#else
+-		uint64_t rst_link0:1;
+-		uint64_t rst_link1:1;
+-		uint64_t reserved_2_7:6;
+-		uint64_t perst0:1;
+-		uint64_t perst1:1;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} cn61xx;
+-	struct cvmx_mio_rst_int_en_cn61xx cn63xx;
+-	struct cvmx_mio_rst_int_en_cn61xx cn63xxp1;
+-	struct cvmx_mio_rst_int_en_s cn66xx;
+-	struct cvmx_mio_rst_int_en_cn61xx cn68xx;
+-	struct cvmx_mio_rst_int_en_cn61xx cn68xxp1;
+-	struct cvmx_mio_rst_int_en_cn61xx cnf71xx;
 -};
 -
--union cvmx_l2c_xmcx_pfc {
+-union cvmx_mio_twsx_int {
 -	uint64_t u64;
--	struct cvmx_l2c_xmcx_pfc_s {
+-	struct cvmx_mio_twsx_int_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
+-		uint64_t reserved_12_63:52;
+-		uint64_t scl:1;
+-		uint64_t sda:1;
+-		uint64_t scl_ovr:1;
+-		uint64_t sda_ovr:1;
+-		uint64_t reserved_7_7:1;
+-		uint64_t core_en:1;
+-		uint64_t ts_en:1;
+-		uint64_t st_en:1;
+-		uint64_t reserved_3_3:1;
+-		uint64_t core_int:1;
+-		uint64_t ts_int:1;
+-		uint64_t st_int:1;
 -#else
--		uint64_t count:64;
+-		uint64_t st_int:1;
+-		uint64_t ts_int:1;
+-		uint64_t core_int:1;
+-		uint64_t reserved_3_3:1;
+-		uint64_t st_en:1;
+-		uint64_t ts_en:1;
+-		uint64_t core_en:1;
+-		uint64_t reserved_7_7:1;
+-		uint64_t sda_ovr:1;
+-		uint64_t scl_ovr:1;
+-		uint64_t sda:1;
+-		uint64_t scl:1;
+-		uint64_t reserved_12_63:52;
 -#endif
 -	} s;
--	struct cvmx_l2c_xmcx_pfc_s cn61xx;
--	struct cvmx_l2c_xmcx_pfc_s cn63xx;
--	struct cvmx_l2c_xmcx_pfc_s cn63xxp1;
--	struct cvmx_l2c_xmcx_pfc_s cn66xx;
--	struct cvmx_l2c_xmcx_pfc_s cn68xx;
--	struct cvmx_l2c_xmcx_pfc_s cn68xxp1;
--	struct cvmx_l2c_xmcx_pfc_s cnf71xx;
+-	struct cvmx_mio_twsx_int_s cn30xx;
+-	struct cvmx_mio_twsx_int_s cn31xx;
+-	struct cvmx_mio_twsx_int_s cn38xx;
+-	struct cvmx_mio_twsx_int_cn38xxp2 {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t core_en:1;
+-		uint64_t ts_en:1;
+-		uint64_t st_en:1;
+-		uint64_t reserved_3_3:1;
+-		uint64_t core_int:1;
+-		uint64_t ts_int:1;
+-		uint64_t st_int:1;
+-#else
+-		uint64_t st_int:1;
+-		uint64_t ts_int:1;
+-		uint64_t core_int:1;
+-		uint64_t reserved_3_3:1;
+-		uint64_t st_en:1;
+-		uint64_t ts_en:1;
+-		uint64_t core_en:1;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} cn38xxp2;
+-	struct cvmx_mio_twsx_int_s cn50xx;
+-	struct cvmx_mio_twsx_int_s cn52xx;
+-	struct cvmx_mio_twsx_int_s cn52xxp1;
+-	struct cvmx_mio_twsx_int_s cn56xx;
+-	struct cvmx_mio_twsx_int_s cn56xxp1;
+-	struct cvmx_mio_twsx_int_s cn58xx;
+-	struct cvmx_mio_twsx_int_s cn58xxp1;
+-	struct cvmx_mio_twsx_int_s cn61xx;
+-	struct cvmx_mio_twsx_int_s cn63xx;
+-	struct cvmx_mio_twsx_int_s cn63xxp1;
+-	struct cvmx_mio_twsx_int_s cn66xx;
+-	struct cvmx_mio_twsx_int_s cn68xx;
+-	struct cvmx_mio_twsx_int_s cn68xxp1;
+-	struct cvmx_mio_twsx_int_s cnf71xx;
 -};
 -
--union cvmx_l2c_xmc_cmd {
-+union cvmx_l2c_lckbase {
- 	uint64_t u64;
--	struct cvmx_l2c_xmc_cmd_s {
+-union cvmx_mio_twsx_sw_twsi {
+-	uint64_t u64;
+-	struct cvmx_mio_twsx_sw_twsi_s {
 -#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t inuse:1;
--		uint64_t cmd:6;
--		uint64_t reserved_38_56:19;
--		uint64_t addr:38;
+-		uint64_t v:1;
+-		uint64_t slonly:1;
+-		uint64_t eia:1;
+-		uint64_t op:4;
+-		uint64_t r:1;
+-		uint64_t sovr:1;
+-		uint64_t size:3;
+-		uint64_t scr:2;
+-		uint64_t a:10;
+-		uint64_t ia:5;
+-		uint64_t eop_ia:3;
+-		uint64_t d:32;
 -#else
--		uint64_t addr:38;
--		uint64_t reserved_38_56:19;
--		uint64_t cmd:6;
--		uint64_t inuse:1;
+-		uint64_t d:32;
+-		uint64_t eop_ia:3;
+-		uint64_t ia:5;
+-		uint64_t a:10;
+-		uint64_t scr:2;
+-		uint64_t size:3;
+-		uint64_t sovr:1;
+-		uint64_t r:1;
+-		uint64_t op:4;
+-		uint64_t eia:1;
+-		uint64_t slonly:1;
+-		uint64_t v:1;
 -#endif
-+	struct cvmx_l2c_lckbase_s {
-+		__BITFIELD_FIELD(uint64_t reserved_31_63:33,
-+		__BITFIELD_FIELD(uint64_t lck_base:27,
-+		__BITFIELD_FIELD(uint64_t reserved_1_3:3,
-+		__BITFIELD_FIELD(uint64_t lck_ena:1,
-+		;))))
+-	} s;
+-	struct cvmx_mio_twsx_sw_twsi_s cn30xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn31xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn38xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn38xxp2;
+-	struct cvmx_mio_twsx_sw_twsi_s cn50xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn52xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn52xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_s cn56xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn56xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_s cn58xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn58xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_s cn61xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn63xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn63xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_s cn66xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn68xx;
+-	struct cvmx_mio_twsx_sw_twsi_s cn68xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_s cnf71xx;
+-};
+-
+-union cvmx_mio_twsx_sw_twsi_ext {
+-	uint64_t u64;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_40_63:24;
+-		uint64_t ia:8;
+-		uint64_t d:32;
+-#else
+-		uint64_t d:32;
+-		uint64_t ia:8;
+-		uint64_t reserved_40_63:24;
+-#endif
+-	} s;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn30xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn31xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn38xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn38xxp2;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn50xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn52xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn52xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn56xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn56xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn58xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn58xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn61xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn63xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn63xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn66xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn68xx;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cn68xxp1;
+-	struct cvmx_mio_twsx_sw_twsi_ext_s cnf71xx;
+-};
+-
+-union cvmx_mio_twsx_twsi_sw {
+-	uint64_t u64;
+-	struct cvmx_mio_twsx_twsi_sw_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t v:2;
+-		uint64_t reserved_32_61:30;
+-		uint64_t d:32;
+-#else
+-		uint64_t d:32;
+-		uint64_t reserved_32_61:30;
+-		uint64_t v:2;
+-#endif
+-	} s;
+-	struct cvmx_mio_twsx_twsi_sw_s cn30xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn31xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn38xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn38xxp2;
+-	struct cvmx_mio_twsx_twsi_sw_s cn50xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn52xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn52xxp1;
+-	struct cvmx_mio_twsx_twsi_sw_s cn56xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn56xxp1;
+-	struct cvmx_mio_twsx_twsi_sw_s cn58xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn58xxp1;
+-	struct cvmx_mio_twsx_twsi_sw_s cn61xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn63xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn63xxp1;
+-	struct cvmx_mio_twsx_twsi_sw_s cn66xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn68xx;
+-	struct cvmx_mio_twsx_twsi_sw_s cn68xxp1;
+-	struct cvmx_mio_twsx_twsi_sw_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_dlh {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_dlh_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t dlh:8;
+-#else
+-		uint64_t dlh:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_dlh_s cn30xx;
+-	struct cvmx_mio_uartx_dlh_s cn31xx;
+-	struct cvmx_mio_uartx_dlh_s cn38xx;
+-	struct cvmx_mio_uartx_dlh_s cn38xxp2;
+-	struct cvmx_mio_uartx_dlh_s cn50xx;
+-	struct cvmx_mio_uartx_dlh_s cn52xx;
+-	struct cvmx_mio_uartx_dlh_s cn52xxp1;
+-	struct cvmx_mio_uartx_dlh_s cn56xx;
+-	struct cvmx_mio_uartx_dlh_s cn56xxp1;
+-	struct cvmx_mio_uartx_dlh_s cn58xx;
+-	struct cvmx_mio_uartx_dlh_s cn58xxp1;
+-	struct cvmx_mio_uartx_dlh_s cn61xx;
+-	struct cvmx_mio_uartx_dlh_s cn63xx;
+-	struct cvmx_mio_uartx_dlh_s cn63xxp1;
+-	struct cvmx_mio_uartx_dlh_s cn66xx;
+-	struct cvmx_mio_uartx_dlh_s cn68xx;
+-	struct cvmx_mio_uartx_dlh_s cn68xxp1;
+-	struct cvmx_mio_uartx_dlh_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_dll {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_dll_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t dll:8;
+-#else
+-		uint64_t dll:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_dll_s cn30xx;
+-	struct cvmx_mio_uartx_dll_s cn31xx;
+-	struct cvmx_mio_uartx_dll_s cn38xx;
+-	struct cvmx_mio_uartx_dll_s cn38xxp2;
+-	struct cvmx_mio_uartx_dll_s cn50xx;
+-	struct cvmx_mio_uartx_dll_s cn52xx;
+-	struct cvmx_mio_uartx_dll_s cn52xxp1;
+-	struct cvmx_mio_uartx_dll_s cn56xx;
+-	struct cvmx_mio_uartx_dll_s cn56xxp1;
+-	struct cvmx_mio_uartx_dll_s cn58xx;
+-	struct cvmx_mio_uartx_dll_s cn58xxp1;
+-	struct cvmx_mio_uartx_dll_s cn61xx;
+-	struct cvmx_mio_uartx_dll_s cn63xx;
+-	struct cvmx_mio_uartx_dll_s cn63xxp1;
+-	struct cvmx_mio_uartx_dll_s cn66xx;
+-	struct cvmx_mio_uartx_dll_s cn68xx;
+-	struct cvmx_mio_uartx_dll_s cn68xxp1;
+-	struct cvmx_mio_uartx_dll_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_far {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_far_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t far:1;
+-#else
+-		uint64_t far:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_far_s cn30xx;
+-	struct cvmx_mio_uartx_far_s cn31xx;
+-	struct cvmx_mio_uartx_far_s cn38xx;
+-	struct cvmx_mio_uartx_far_s cn38xxp2;
+-	struct cvmx_mio_uartx_far_s cn50xx;
+-	struct cvmx_mio_uartx_far_s cn52xx;
+-	struct cvmx_mio_uartx_far_s cn52xxp1;
+-	struct cvmx_mio_uartx_far_s cn56xx;
+-	struct cvmx_mio_uartx_far_s cn56xxp1;
+-	struct cvmx_mio_uartx_far_s cn58xx;
+-	struct cvmx_mio_uartx_far_s cn58xxp1;
+-	struct cvmx_mio_uartx_far_s cn61xx;
+-	struct cvmx_mio_uartx_far_s cn63xx;
+-	struct cvmx_mio_uartx_far_s cn63xxp1;
+-	struct cvmx_mio_uartx_far_s cn66xx;
+-	struct cvmx_mio_uartx_far_s cn68xx;
+-	struct cvmx_mio_uartx_far_s cn68xxp1;
+-	struct cvmx_mio_uartx_far_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_fcr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_fcr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t rxtrig:2;
+-		uint64_t txtrig:2;
+-		uint64_t reserved_3_3:1;
+-		uint64_t txfr:1;
+-		uint64_t rxfr:1;
+-		uint64_t en:1;
+-#else
+-		uint64_t en:1;
+-		uint64_t rxfr:1;
+-		uint64_t txfr:1;
+-		uint64_t reserved_3_3:1;
+-		uint64_t txtrig:2;
+-		uint64_t rxtrig:2;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_fcr_s cn30xx;
+-	struct cvmx_mio_uartx_fcr_s cn31xx;
+-	struct cvmx_mio_uartx_fcr_s cn38xx;
+-	struct cvmx_mio_uartx_fcr_s cn38xxp2;
+-	struct cvmx_mio_uartx_fcr_s cn50xx;
+-	struct cvmx_mio_uartx_fcr_s cn52xx;
+-	struct cvmx_mio_uartx_fcr_s cn52xxp1;
+-	struct cvmx_mio_uartx_fcr_s cn56xx;
+-	struct cvmx_mio_uartx_fcr_s cn56xxp1;
+-	struct cvmx_mio_uartx_fcr_s cn58xx;
+-	struct cvmx_mio_uartx_fcr_s cn58xxp1;
+-	struct cvmx_mio_uartx_fcr_s cn61xx;
+-	struct cvmx_mio_uartx_fcr_s cn63xx;
+-	struct cvmx_mio_uartx_fcr_s cn63xxp1;
+-	struct cvmx_mio_uartx_fcr_s cn66xx;
+-	struct cvmx_mio_uartx_fcr_s cn68xx;
+-	struct cvmx_mio_uartx_fcr_s cn68xxp1;
+-	struct cvmx_mio_uartx_fcr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_htx {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_htx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t htx:1;
+-#else
+-		uint64_t htx:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_htx_s cn30xx;
+-	struct cvmx_mio_uartx_htx_s cn31xx;
+-	struct cvmx_mio_uartx_htx_s cn38xx;
+-	struct cvmx_mio_uartx_htx_s cn38xxp2;
+-	struct cvmx_mio_uartx_htx_s cn50xx;
+-	struct cvmx_mio_uartx_htx_s cn52xx;
+-	struct cvmx_mio_uartx_htx_s cn52xxp1;
+-	struct cvmx_mio_uartx_htx_s cn56xx;
+-	struct cvmx_mio_uartx_htx_s cn56xxp1;
+-	struct cvmx_mio_uartx_htx_s cn58xx;
+-	struct cvmx_mio_uartx_htx_s cn58xxp1;
+-	struct cvmx_mio_uartx_htx_s cn61xx;
+-	struct cvmx_mio_uartx_htx_s cn63xx;
+-	struct cvmx_mio_uartx_htx_s cn63xxp1;
+-	struct cvmx_mio_uartx_htx_s cn66xx;
+-	struct cvmx_mio_uartx_htx_s cn68xx;
+-	struct cvmx_mio_uartx_htx_s cn68xxp1;
+-	struct cvmx_mio_uartx_htx_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_ier {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_ier_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t ptime:1;
+-		uint64_t reserved_4_6:3;
+-		uint64_t edssi:1;
+-		uint64_t elsi:1;
+-		uint64_t etbei:1;
+-		uint64_t erbfi:1;
+-#else
+-		uint64_t erbfi:1;
+-		uint64_t etbei:1;
+-		uint64_t elsi:1;
+-		uint64_t edssi:1;
+-		uint64_t reserved_4_6:3;
+-		uint64_t ptime:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_ier_s cn30xx;
+-	struct cvmx_mio_uartx_ier_s cn31xx;
+-	struct cvmx_mio_uartx_ier_s cn38xx;
+-	struct cvmx_mio_uartx_ier_s cn38xxp2;
+-	struct cvmx_mio_uartx_ier_s cn50xx;
+-	struct cvmx_mio_uartx_ier_s cn52xx;
+-	struct cvmx_mio_uartx_ier_s cn52xxp1;
+-	struct cvmx_mio_uartx_ier_s cn56xx;
+-	struct cvmx_mio_uartx_ier_s cn56xxp1;
+-	struct cvmx_mio_uartx_ier_s cn58xx;
+-	struct cvmx_mio_uartx_ier_s cn58xxp1;
+-	struct cvmx_mio_uartx_ier_s cn61xx;
+-	struct cvmx_mio_uartx_ier_s cn63xx;
+-	struct cvmx_mio_uartx_ier_s cn63xxp1;
+-	struct cvmx_mio_uartx_ier_s cn66xx;
+-	struct cvmx_mio_uartx_ier_s cn68xx;
+-	struct cvmx_mio_uartx_ier_s cn68xxp1;
+-	struct cvmx_mio_uartx_ier_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_iir {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_iir_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t fen:2;
+-		uint64_t reserved_4_5:2;
+-		uint64_t iid:4;
+-#else
+-		uint64_t iid:4;
+-		uint64_t reserved_4_5:2;
+-		uint64_t fen:2;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_iir_s cn30xx;
+-	struct cvmx_mio_uartx_iir_s cn31xx;
+-	struct cvmx_mio_uartx_iir_s cn38xx;
+-	struct cvmx_mio_uartx_iir_s cn38xxp2;
+-	struct cvmx_mio_uartx_iir_s cn50xx;
+-	struct cvmx_mio_uartx_iir_s cn52xx;
+-	struct cvmx_mio_uartx_iir_s cn52xxp1;
+-	struct cvmx_mio_uartx_iir_s cn56xx;
+-	struct cvmx_mio_uartx_iir_s cn56xxp1;
+-	struct cvmx_mio_uartx_iir_s cn58xx;
+-	struct cvmx_mio_uartx_iir_s cn58xxp1;
+-	struct cvmx_mio_uartx_iir_s cn61xx;
+-	struct cvmx_mio_uartx_iir_s cn63xx;
+-	struct cvmx_mio_uartx_iir_s cn63xxp1;
+-	struct cvmx_mio_uartx_iir_s cn66xx;
+-	struct cvmx_mio_uartx_iir_s cn68xx;
+-	struct cvmx_mio_uartx_iir_s cn68xxp1;
+-	struct cvmx_mio_uartx_iir_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_lcr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_lcr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t dlab:1;
+-		uint64_t brk:1;
+-		uint64_t reserved_5_5:1;
+-		uint64_t eps:1;
+-		uint64_t pen:1;
+-		uint64_t stop:1;
+-		uint64_t cls:2;
+-#else
+-		uint64_t cls:2;
+-		uint64_t stop:1;
+-		uint64_t pen:1;
+-		uint64_t eps:1;
+-		uint64_t reserved_5_5:1;
+-		uint64_t brk:1;
+-		uint64_t dlab:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_lcr_s cn30xx;
+-	struct cvmx_mio_uartx_lcr_s cn31xx;
+-	struct cvmx_mio_uartx_lcr_s cn38xx;
+-	struct cvmx_mio_uartx_lcr_s cn38xxp2;
+-	struct cvmx_mio_uartx_lcr_s cn50xx;
+-	struct cvmx_mio_uartx_lcr_s cn52xx;
+-	struct cvmx_mio_uartx_lcr_s cn52xxp1;
+-	struct cvmx_mio_uartx_lcr_s cn56xx;
+-	struct cvmx_mio_uartx_lcr_s cn56xxp1;
+-	struct cvmx_mio_uartx_lcr_s cn58xx;
+-	struct cvmx_mio_uartx_lcr_s cn58xxp1;
+-	struct cvmx_mio_uartx_lcr_s cn61xx;
+-	struct cvmx_mio_uartx_lcr_s cn63xx;
+-	struct cvmx_mio_uartx_lcr_s cn63xxp1;
+-	struct cvmx_mio_uartx_lcr_s cn66xx;
+-	struct cvmx_mio_uartx_lcr_s cn68xx;
+-	struct cvmx_mio_uartx_lcr_s cn68xxp1;
+-	struct cvmx_mio_uartx_lcr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_lsr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_lsr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t ferr:1;
+-		uint64_t temt:1;
+-		uint64_t thre:1;
+-		uint64_t bi:1;
+-		uint64_t fe:1;
+-		uint64_t pe:1;
+-		uint64_t oe:1;
+-		uint64_t dr:1;
+-#else
+-		uint64_t dr:1;
+-		uint64_t oe:1;
+-		uint64_t pe:1;
+-		uint64_t fe:1;
+-		uint64_t bi:1;
+-		uint64_t thre:1;
+-		uint64_t temt:1;
+-		uint64_t ferr:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_lsr_s cn30xx;
+-	struct cvmx_mio_uartx_lsr_s cn31xx;
+-	struct cvmx_mio_uartx_lsr_s cn38xx;
+-	struct cvmx_mio_uartx_lsr_s cn38xxp2;
+-	struct cvmx_mio_uartx_lsr_s cn50xx;
+-	struct cvmx_mio_uartx_lsr_s cn52xx;
+-	struct cvmx_mio_uartx_lsr_s cn52xxp1;
+-	struct cvmx_mio_uartx_lsr_s cn56xx;
+-	struct cvmx_mio_uartx_lsr_s cn56xxp1;
+-	struct cvmx_mio_uartx_lsr_s cn58xx;
+-	struct cvmx_mio_uartx_lsr_s cn58xxp1;
+-	struct cvmx_mio_uartx_lsr_s cn61xx;
+-	struct cvmx_mio_uartx_lsr_s cn63xx;
+-	struct cvmx_mio_uartx_lsr_s cn63xxp1;
+-	struct cvmx_mio_uartx_lsr_s cn66xx;
+-	struct cvmx_mio_uartx_lsr_s cn68xx;
+-	struct cvmx_mio_uartx_lsr_s cn68xxp1;
+-	struct cvmx_mio_uartx_lsr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_mcr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_mcr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_6_63:58;
+-		uint64_t afce:1;
+-		uint64_t loop:1;
+-		uint64_t out2:1;
+-		uint64_t out1:1;
+-		uint64_t rts:1;
+-		uint64_t dtr:1;
+-#else
+-		uint64_t dtr:1;
+-		uint64_t rts:1;
+-		uint64_t out1:1;
+-		uint64_t out2:1;
+-		uint64_t loop:1;
+-		uint64_t afce:1;
+-		uint64_t reserved_6_63:58;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_mcr_s cn30xx;
+-	struct cvmx_mio_uartx_mcr_s cn31xx;
+-	struct cvmx_mio_uartx_mcr_s cn38xx;
+-	struct cvmx_mio_uartx_mcr_s cn38xxp2;
+-	struct cvmx_mio_uartx_mcr_s cn50xx;
+-	struct cvmx_mio_uartx_mcr_s cn52xx;
+-	struct cvmx_mio_uartx_mcr_s cn52xxp1;
+-	struct cvmx_mio_uartx_mcr_s cn56xx;
+-	struct cvmx_mio_uartx_mcr_s cn56xxp1;
+-	struct cvmx_mio_uartx_mcr_s cn58xx;
+-	struct cvmx_mio_uartx_mcr_s cn58xxp1;
+-	struct cvmx_mio_uartx_mcr_s cn61xx;
+-	struct cvmx_mio_uartx_mcr_s cn63xx;
+-	struct cvmx_mio_uartx_mcr_s cn63xxp1;
+-	struct cvmx_mio_uartx_mcr_s cn66xx;
+-	struct cvmx_mio_uartx_mcr_s cn68xx;
+-	struct cvmx_mio_uartx_mcr_s cn68xxp1;
+-	struct cvmx_mio_uartx_mcr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_msr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_msr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t dcd:1;
+-		uint64_t ri:1;
+-		uint64_t dsr:1;
+-		uint64_t cts:1;
+-		uint64_t ddcd:1;
+-		uint64_t teri:1;
+-		uint64_t ddsr:1;
+-		uint64_t dcts:1;
+-#else
+-		uint64_t dcts:1;
+-		uint64_t ddsr:1;
+-		uint64_t teri:1;
+-		uint64_t ddcd:1;
+-		uint64_t cts:1;
+-		uint64_t dsr:1;
+-		uint64_t ri:1;
+-		uint64_t dcd:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_msr_s cn30xx;
+-	struct cvmx_mio_uartx_msr_s cn31xx;
+-	struct cvmx_mio_uartx_msr_s cn38xx;
+-	struct cvmx_mio_uartx_msr_s cn38xxp2;
+-	struct cvmx_mio_uartx_msr_s cn50xx;
+-	struct cvmx_mio_uartx_msr_s cn52xx;
+-	struct cvmx_mio_uartx_msr_s cn52xxp1;
+-	struct cvmx_mio_uartx_msr_s cn56xx;
+-	struct cvmx_mio_uartx_msr_s cn56xxp1;
+-	struct cvmx_mio_uartx_msr_s cn58xx;
+-	struct cvmx_mio_uartx_msr_s cn58xxp1;
+-	struct cvmx_mio_uartx_msr_s cn61xx;
+-	struct cvmx_mio_uartx_msr_s cn63xx;
+-	struct cvmx_mio_uartx_msr_s cn63xxp1;
+-	struct cvmx_mio_uartx_msr_s cn66xx;
+-	struct cvmx_mio_uartx_msr_s cn68xx;
+-	struct cvmx_mio_uartx_msr_s cn68xxp1;
+-	struct cvmx_mio_uartx_msr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_rbr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_rbr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t rbr:8;
+-#else
+-		uint64_t rbr:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_rbr_s cn30xx;
+-	struct cvmx_mio_uartx_rbr_s cn31xx;
+-	struct cvmx_mio_uartx_rbr_s cn38xx;
+-	struct cvmx_mio_uartx_rbr_s cn38xxp2;
+-	struct cvmx_mio_uartx_rbr_s cn50xx;
+-	struct cvmx_mio_uartx_rbr_s cn52xx;
+-	struct cvmx_mio_uartx_rbr_s cn52xxp1;
+-	struct cvmx_mio_uartx_rbr_s cn56xx;
+-	struct cvmx_mio_uartx_rbr_s cn56xxp1;
+-	struct cvmx_mio_uartx_rbr_s cn58xx;
+-	struct cvmx_mio_uartx_rbr_s cn58xxp1;
+-	struct cvmx_mio_uartx_rbr_s cn61xx;
+-	struct cvmx_mio_uartx_rbr_s cn63xx;
+-	struct cvmx_mio_uartx_rbr_s cn63xxp1;
+-	struct cvmx_mio_uartx_rbr_s cn66xx;
+-	struct cvmx_mio_uartx_rbr_s cn68xx;
+-	struct cvmx_mio_uartx_rbr_s cn68xxp1;
+-	struct cvmx_mio_uartx_rbr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_rfl {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_rfl_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t rfl:7;
+-#else
+-		uint64_t rfl:7;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_rfl_s cn30xx;
+-	struct cvmx_mio_uartx_rfl_s cn31xx;
+-	struct cvmx_mio_uartx_rfl_s cn38xx;
+-	struct cvmx_mio_uartx_rfl_s cn38xxp2;
+-	struct cvmx_mio_uartx_rfl_s cn50xx;
+-	struct cvmx_mio_uartx_rfl_s cn52xx;
+-	struct cvmx_mio_uartx_rfl_s cn52xxp1;
+-	struct cvmx_mio_uartx_rfl_s cn56xx;
+-	struct cvmx_mio_uartx_rfl_s cn56xxp1;
+-	struct cvmx_mio_uartx_rfl_s cn58xx;
+-	struct cvmx_mio_uartx_rfl_s cn58xxp1;
+-	struct cvmx_mio_uartx_rfl_s cn61xx;
+-	struct cvmx_mio_uartx_rfl_s cn63xx;
+-	struct cvmx_mio_uartx_rfl_s cn63xxp1;
+-	struct cvmx_mio_uartx_rfl_s cn66xx;
+-	struct cvmx_mio_uartx_rfl_s cn68xx;
+-	struct cvmx_mio_uartx_rfl_s cn68xxp1;
+-	struct cvmx_mio_uartx_rfl_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_rfw {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_rfw_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t rffe:1;
+-		uint64_t rfpe:1;
+-		uint64_t rfwd:8;
+-#else
+-		uint64_t rfwd:8;
+-		uint64_t rfpe:1;
+-		uint64_t rffe:1;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_rfw_s cn30xx;
+-	struct cvmx_mio_uartx_rfw_s cn31xx;
+-	struct cvmx_mio_uartx_rfw_s cn38xx;
+-	struct cvmx_mio_uartx_rfw_s cn38xxp2;
+-	struct cvmx_mio_uartx_rfw_s cn50xx;
+-	struct cvmx_mio_uartx_rfw_s cn52xx;
+-	struct cvmx_mio_uartx_rfw_s cn52xxp1;
+-	struct cvmx_mio_uartx_rfw_s cn56xx;
+-	struct cvmx_mio_uartx_rfw_s cn56xxp1;
+-	struct cvmx_mio_uartx_rfw_s cn58xx;
+-	struct cvmx_mio_uartx_rfw_s cn58xxp1;
+-	struct cvmx_mio_uartx_rfw_s cn61xx;
+-	struct cvmx_mio_uartx_rfw_s cn63xx;
+-	struct cvmx_mio_uartx_rfw_s cn63xxp1;
+-	struct cvmx_mio_uartx_rfw_s cn66xx;
+-	struct cvmx_mio_uartx_rfw_s cn68xx;
+-	struct cvmx_mio_uartx_rfw_s cn68xxp1;
+-	struct cvmx_mio_uartx_rfw_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_sbcr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_sbcr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t sbcr:1;
+-#else
+-		uint64_t sbcr:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_sbcr_s cn30xx;
+-	struct cvmx_mio_uartx_sbcr_s cn31xx;
+-	struct cvmx_mio_uartx_sbcr_s cn38xx;
+-	struct cvmx_mio_uartx_sbcr_s cn38xxp2;
+-	struct cvmx_mio_uartx_sbcr_s cn50xx;
+-	struct cvmx_mio_uartx_sbcr_s cn52xx;
+-	struct cvmx_mio_uartx_sbcr_s cn52xxp1;
+-	struct cvmx_mio_uartx_sbcr_s cn56xx;
+-	struct cvmx_mio_uartx_sbcr_s cn56xxp1;
+-	struct cvmx_mio_uartx_sbcr_s cn58xx;
+-	struct cvmx_mio_uartx_sbcr_s cn58xxp1;
+-	struct cvmx_mio_uartx_sbcr_s cn61xx;
+-	struct cvmx_mio_uartx_sbcr_s cn63xx;
+-	struct cvmx_mio_uartx_sbcr_s cn63xxp1;
+-	struct cvmx_mio_uartx_sbcr_s cn66xx;
+-	struct cvmx_mio_uartx_sbcr_s cn68xx;
+-	struct cvmx_mio_uartx_sbcr_s cn68xxp1;
+-	struct cvmx_mio_uartx_sbcr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_scr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_scr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t scr:8;
+-#else
+-		uint64_t scr:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_scr_s cn30xx;
+-	struct cvmx_mio_uartx_scr_s cn31xx;
+-	struct cvmx_mio_uartx_scr_s cn38xx;
+-	struct cvmx_mio_uartx_scr_s cn38xxp2;
+-	struct cvmx_mio_uartx_scr_s cn50xx;
+-	struct cvmx_mio_uartx_scr_s cn52xx;
+-	struct cvmx_mio_uartx_scr_s cn52xxp1;
+-	struct cvmx_mio_uartx_scr_s cn56xx;
+-	struct cvmx_mio_uartx_scr_s cn56xxp1;
+-	struct cvmx_mio_uartx_scr_s cn58xx;
+-	struct cvmx_mio_uartx_scr_s cn58xxp1;
+-	struct cvmx_mio_uartx_scr_s cn61xx;
+-	struct cvmx_mio_uartx_scr_s cn63xx;
+-	struct cvmx_mio_uartx_scr_s cn63xxp1;
+-	struct cvmx_mio_uartx_scr_s cn66xx;
+-	struct cvmx_mio_uartx_scr_s cn68xx;
+-	struct cvmx_mio_uartx_scr_s cn68xxp1;
+-	struct cvmx_mio_uartx_scr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_sfe {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_sfe_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t sfe:1;
+-#else
+-		uint64_t sfe:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_sfe_s cn30xx;
+-	struct cvmx_mio_uartx_sfe_s cn31xx;
+-	struct cvmx_mio_uartx_sfe_s cn38xx;
+-	struct cvmx_mio_uartx_sfe_s cn38xxp2;
+-	struct cvmx_mio_uartx_sfe_s cn50xx;
+-	struct cvmx_mio_uartx_sfe_s cn52xx;
+-	struct cvmx_mio_uartx_sfe_s cn52xxp1;
+-	struct cvmx_mio_uartx_sfe_s cn56xx;
+-	struct cvmx_mio_uartx_sfe_s cn56xxp1;
+-	struct cvmx_mio_uartx_sfe_s cn58xx;
+-	struct cvmx_mio_uartx_sfe_s cn58xxp1;
+-	struct cvmx_mio_uartx_sfe_s cn61xx;
+-	struct cvmx_mio_uartx_sfe_s cn63xx;
+-	struct cvmx_mio_uartx_sfe_s cn63xxp1;
+-	struct cvmx_mio_uartx_sfe_s cn66xx;
+-	struct cvmx_mio_uartx_sfe_s cn68xx;
+-	struct cvmx_mio_uartx_sfe_s cn68xxp1;
+-	struct cvmx_mio_uartx_sfe_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_srr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_srr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_3_63:61;
+-		uint64_t stfr:1;
+-		uint64_t srfr:1;
+-		uint64_t usr:1;
+-#else
+-		uint64_t usr:1;
+-		uint64_t srfr:1;
+-		uint64_t stfr:1;
+-		uint64_t reserved_3_63:61;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_srr_s cn30xx;
+-	struct cvmx_mio_uartx_srr_s cn31xx;
+-	struct cvmx_mio_uartx_srr_s cn38xx;
+-	struct cvmx_mio_uartx_srr_s cn38xxp2;
+-	struct cvmx_mio_uartx_srr_s cn50xx;
+-	struct cvmx_mio_uartx_srr_s cn52xx;
+-	struct cvmx_mio_uartx_srr_s cn52xxp1;
+-	struct cvmx_mio_uartx_srr_s cn56xx;
+-	struct cvmx_mio_uartx_srr_s cn56xxp1;
+-	struct cvmx_mio_uartx_srr_s cn58xx;
+-	struct cvmx_mio_uartx_srr_s cn58xxp1;
+-	struct cvmx_mio_uartx_srr_s cn61xx;
+-	struct cvmx_mio_uartx_srr_s cn63xx;
+-	struct cvmx_mio_uartx_srr_s cn63xxp1;
+-	struct cvmx_mio_uartx_srr_s cn66xx;
+-	struct cvmx_mio_uartx_srr_s cn68xx;
+-	struct cvmx_mio_uartx_srr_s cn68xxp1;
+-	struct cvmx_mio_uartx_srr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_srt {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_srt_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t srt:2;
+-#else
+-		uint64_t srt:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_srt_s cn30xx;
+-	struct cvmx_mio_uartx_srt_s cn31xx;
+-	struct cvmx_mio_uartx_srt_s cn38xx;
+-	struct cvmx_mio_uartx_srt_s cn38xxp2;
+-	struct cvmx_mio_uartx_srt_s cn50xx;
+-	struct cvmx_mio_uartx_srt_s cn52xx;
+-	struct cvmx_mio_uartx_srt_s cn52xxp1;
+-	struct cvmx_mio_uartx_srt_s cn56xx;
+-	struct cvmx_mio_uartx_srt_s cn56xxp1;
+-	struct cvmx_mio_uartx_srt_s cn58xx;
+-	struct cvmx_mio_uartx_srt_s cn58xxp1;
+-	struct cvmx_mio_uartx_srt_s cn61xx;
+-	struct cvmx_mio_uartx_srt_s cn63xx;
+-	struct cvmx_mio_uartx_srt_s cn63xxp1;
+-	struct cvmx_mio_uartx_srt_s cn66xx;
+-	struct cvmx_mio_uartx_srt_s cn68xx;
+-	struct cvmx_mio_uartx_srt_s cn68xxp1;
+-	struct cvmx_mio_uartx_srt_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_srts {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_srts_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t srts:1;
+-#else
+-		uint64_t srts:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_srts_s cn30xx;
+-	struct cvmx_mio_uartx_srts_s cn31xx;
+-	struct cvmx_mio_uartx_srts_s cn38xx;
+-	struct cvmx_mio_uartx_srts_s cn38xxp2;
+-	struct cvmx_mio_uartx_srts_s cn50xx;
+-	struct cvmx_mio_uartx_srts_s cn52xx;
+-	struct cvmx_mio_uartx_srts_s cn52xxp1;
+-	struct cvmx_mio_uartx_srts_s cn56xx;
+-	struct cvmx_mio_uartx_srts_s cn56xxp1;
+-	struct cvmx_mio_uartx_srts_s cn58xx;
+-	struct cvmx_mio_uartx_srts_s cn58xxp1;
+-	struct cvmx_mio_uartx_srts_s cn61xx;
+-	struct cvmx_mio_uartx_srts_s cn63xx;
+-	struct cvmx_mio_uartx_srts_s cn63xxp1;
+-	struct cvmx_mio_uartx_srts_s cn66xx;
+-	struct cvmx_mio_uartx_srts_s cn68xx;
+-	struct cvmx_mio_uartx_srts_s cn68xxp1;
+-	struct cvmx_mio_uartx_srts_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_stt {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_stt_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t stt:2;
+-#else
+-		uint64_t stt:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_stt_s cn30xx;
+-	struct cvmx_mio_uartx_stt_s cn31xx;
+-	struct cvmx_mio_uartx_stt_s cn38xx;
+-	struct cvmx_mio_uartx_stt_s cn38xxp2;
+-	struct cvmx_mio_uartx_stt_s cn50xx;
+-	struct cvmx_mio_uartx_stt_s cn52xx;
+-	struct cvmx_mio_uartx_stt_s cn52xxp1;
+-	struct cvmx_mio_uartx_stt_s cn56xx;
+-	struct cvmx_mio_uartx_stt_s cn56xxp1;
+-	struct cvmx_mio_uartx_stt_s cn58xx;
+-	struct cvmx_mio_uartx_stt_s cn58xxp1;
+-	struct cvmx_mio_uartx_stt_s cn61xx;
+-	struct cvmx_mio_uartx_stt_s cn63xx;
+-	struct cvmx_mio_uartx_stt_s cn63xxp1;
+-	struct cvmx_mio_uartx_stt_s cn66xx;
+-	struct cvmx_mio_uartx_stt_s cn68xx;
+-	struct cvmx_mio_uartx_stt_s cn68xxp1;
+-	struct cvmx_mio_uartx_stt_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_tfl {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_tfl_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t tfl:7;
+-#else
+-		uint64_t tfl:7;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_tfl_s cn30xx;
+-	struct cvmx_mio_uartx_tfl_s cn31xx;
+-	struct cvmx_mio_uartx_tfl_s cn38xx;
+-	struct cvmx_mio_uartx_tfl_s cn38xxp2;
+-	struct cvmx_mio_uartx_tfl_s cn50xx;
+-	struct cvmx_mio_uartx_tfl_s cn52xx;
+-	struct cvmx_mio_uartx_tfl_s cn52xxp1;
+-	struct cvmx_mio_uartx_tfl_s cn56xx;
+-	struct cvmx_mio_uartx_tfl_s cn56xxp1;
+-	struct cvmx_mio_uartx_tfl_s cn58xx;
+-	struct cvmx_mio_uartx_tfl_s cn58xxp1;
+-	struct cvmx_mio_uartx_tfl_s cn61xx;
+-	struct cvmx_mio_uartx_tfl_s cn63xx;
+-	struct cvmx_mio_uartx_tfl_s cn63xxp1;
+-	struct cvmx_mio_uartx_tfl_s cn66xx;
+-	struct cvmx_mio_uartx_tfl_s cn68xx;
+-	struct cvmx_mio_uartx_tfl_s cn68xxp1;
+-	struct cvmx_mio_uartx_tfl_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_tfr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_tfr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t tfr:8;
+-#else
+-		uint64_t tfr:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_tfr_s cn30xx;
+-	struct cvmx_mio_uartx_tfr_s cn31xx;
+-	struct cvmx_mio_uartx_tfr_s cn38xx;
+-	struct cvmx_mio_uartx_tfr_s cn38xxp2;
+-	struct cvmx_mio_uartx_tfr_s cn50xx;
+-	struct cvmx_mio_uartx_tfr_s cn52xx;
+-	struct cvmx_mio_uartx_tfr_s cn52xxp1;
+-	struct cvmx_mio_uartx_tfr_s cn56xx;
+-	struct cvmx_mio_uartx_tfr_s cn56xxp1;
+-	struct cvmx_mio_uartx_tfr_s cn58xx;
+-	struct cvmx_mio_uartx_tfr_s cn58xxp1;
+-	struct cvmx_mio_uartx_tfr_s cn61xx;
+-	struct cvmx_mio_uartx_tfr_s cn63xx;
+-	struct cvmx_mio_uartx_tfr_s cn63xxp1;
+-	struct cvmx_mio_uartx_tfr_s cn66xx;
+-	struct cvmx_mio_uartx_tfr_s cn68xx;
+-	struct cvmx_mio_uartx_tfr_s cn68xxp1;
+-	struct cvmx_mio_uartx_tfr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_thr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_thr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t thr:8;
+-#else
+-		uint64_t thr:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_thr_s cn30xx;
+-	struct cvmx_mio_uartx_thr_s cn31xx;
+-	struct cvmx_mio_uartx_thr_s cn38xx;
+-	struct cvmx_mio_uartx_thr_s cn38xxp2;
+-	struct cvmx_mio_uartx_thr_s cn50xx;
+-	struct cvmx_mio_uartx_thr_s cn52xx;
+-	struct cvmx_mio_uartx_thr_s cn52xxp1;
+-	struct cvmx_mio_uartx_thr_s cn56xx;
+-	struct cvmx_mio_uartx_thr_s cn56xxp1;
+-	struct cvmx_mio_uartx_thr_s cn58xx;
+-	struct cvmx_mio_uartx_thr_s cn58xxp1;
+-	struct cvmx_mio_uartx_thr_s cn61xx;
+-	struct cvmx_mio_uartx_thr_s cn63xx;
+-	struct cvmx_mio_uartx_thr_s cn63xxp1;
+-	struct cvmx_mio_uartx_thr_s cn66xx;
+-	struct cvmx_mio_uartx_thr_s cn68xx;
+-	struct cvmx_mio_uartx_thr_s cn68xxp1;
+-	struct cvmx_mio_uartx_thr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uartx_usr {
+-	uint64_t u64;
+-	struct cvmx_mio_uartx_usr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_5_63:59;
+-		uint64_t rff:1;
+-		uint64_t rfne:1;
+-		uint64_t tfe:1;
+-		uint64_t tfnf:1;
+-		uint64_t busy:1;
+-#else
+-		uint64_t busy:1;
+-		uint64_t tfnf:1;
+-		uint64_t tfe:1;
+-		uint64_t rfne:1;
+-		uint64_t rff:1;
+-		uint64_t reserved_5_63:59;
+-#endif
+-	} s;
+-	struct cvmx_mio_uartx_usr_s cn30xx;
+-	struct cvmx_mio_uartx_usr_s cn31xx;
+-	struct cvmx_mio_uartx_usr_s cn38xx;
+-	struct cvmx_mio_uartx_usr_s cn38xxp2;
+-	struct cvmx_mio_uartx_usr_s cn50xx;
+-	struct cvmx_mio_uartx_usr_s cn52xx;
+-	struct cvmx_mio_uartx_usr_s cn52xxp1;
+-	struct cvmx_mio_uartx_usr_s cn56xx;
+-	struct cvmx_mio_uartx_usr_s cn56xxp1;
+-	struct cvmx_mio_uartx_usr_s cn58xx;
+-	struct cvmx_mio_uartx_usr_s cn58xxp1;
+-	struct cvmx_mio_uartx_usr_s cn61xx;
+-	struct cvmx_mio_uartx_usr_s cn63xx;
+-	struct cvmx_mio_uartx_usr_s cn63xxp1;
+-	struct cvmx_mio_uartx_usr_s cn66xx;
+-	struct cvmx_mio_uartx_usr_s cn68xx;
+-	struct cvmx_mio_uartx_usr_s cn68xxp1;
+-	struct cvmx_mio_uartx_usr_s cnf71xx;
+-};
+-
+-union cvmx_mio_uart2_dlh {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_dlh_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t dlh:8;
+-#else
+-		uint64_t dlh:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_dlh_s cn52xx;
+-	struct cvmx_mio_uart2_dlh_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_dll {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_dll_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t dll:8;
+-#else
+-		uint64_t dll:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_dll_s cn52xx;
+-	struct cvmx_mio_uart2_dll_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_far {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_far_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t far:1;
+-#else
+-		uint64_t far:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_far_s cn52xx;
+-	struct cvmx_mio_uart2_far_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_fcr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_fcr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t rxtrig:2;
+-		uint64_t txtrig:2;
+-		uint64_t reserved_3_3:1;
+-		uint64_t txfr:1;
+-		uint64_t rxfr:1;
+-		uint64_t en:1;
+-#else
+-		uint64_t en:1;
+-		uint64_t rxfr:1;
+-		uint64_t txfr:1;
+-		uint64_t reserved_3_3:1;
+-		uint64_t txtrig:2;
+-		uint64_t rxtrig:2;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_fcr_s cn52xx;
+-	struct cvmx_mio_uart2_fcr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_htx {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_htx_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t htx:1;
+-#else
+-		uint64_t htx:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_htx_s cn52xx;
+-	struct cvmx_mio_uart2_htx_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_ier {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_ier_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t ptime:1;
+-		uint64_t reserved_4_6:3;
+-		uint64_t edssi:1;
+-		uint64_t elsi:1;
+-		uint64_t etbei:1;
+-		uint64_t erbfi:1;
+-#else
+-		uint64_t erbfi:1;
+-		uint64_t etbei:1;
+-		uint64_t elsi:1;
+-		uint64_t edssi:1;
+-		uint64_t reserved_4_6:3;
+-		uint64_t ptime:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_ier_s cn52xx;
+-	struct cvmx_mio_uart2_ier_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_iir {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_iir_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t fen:2;
+-		uint64_t reserved_4_5:2;
+-		uint64_t iid:4;
+-#else
+-		uint64_t iid:4;
+-		uint64_t reserved_4_5:2;
+-		uint64_t fen:2;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_iir_s cn52xx;
+-	struct cvmx_mio_uart2_iir_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_lcr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_lcr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t dlab:1;
+-		uint64_t brk:1;
+-		uint64_t reserved_5_5:1;
+-		uint64_t eps:1;
+-		uint64_t pen:1;
+-		uint64_t stop:1;
+-		uint64_t cls:2;
+-#else
+-		uint64_t cls:2;
+-		uint64_t stop:1;
+-		uint64_t pen:1;
+-		uint64_t eps:1;
+-		uint64_t reserved_5_5:1;
+-		uint64_t brk:1;
+-		uint64_t dlab:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_lcr_s cn52xx;
+-	struct cvmx_mio_uart2_lcr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_lsr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_lsr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t ferr:1;
+-		uint64_t temt:1;
+-		uint64_t thre:1;
+-		uint64_t bi:1;
+-		uint64_t fe:1;
+-		uint64_t pe:1;
+-		uint64_t oe:1;
+-		uint64_t dr:1;
+-#else
+-		uint64_t dr:1;
+-		uint64_t oe:1;
+-		uint64_t pe:1;
+-		uint64_t fe:1;
+-		uint64_t bi:1;
+-		uint64_t thre:1;
+-		uint64_t temt:1;
+-		uint64_t ferr:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_lsr_s cn52xx;
+-	struct cvmx_mio_uart2_lsr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_mcr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_mcr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_6_63:58;
+-		uint64_t afce:1;
+-		uint64_t loop:1;
+-		uint64_t out2:1;
+-		uint64_t out1:1;
+-		uint64_t rts:1;
+-		uint64_t dtr:1;
+-#else
+-		uint64_t dtr:1;
+-		uint64_t rts:1;
+-		uint64_t out1:1;
+-		uint64_t out2:1;
+-		uint64_t loop:1;
+-		uint64_t afce:1;
+-		uint64_t reserved_6_63:58;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_mcr_s cn52xx;
+-	struct cvmx_mio_uart2_mcr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_msr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_msr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t dcd:1;
+-		uint64_t ri:1;
+-		uint64_t dsr:1;
+-		uint64_t cts:1;
+-		uint64_t ddcd:1;
+-		uint64_t teri:1;
+-		uint64_t ddsr:1;
+-		uint64_t dcts:1;
+-#else
+-		uint64_t dcts:1;
+-		uint64_t ddsr:1;
+-		uint64_t teri:1;
+-		uint64_t ddcd:1;
+-		uint64_t cts:1;
+-		uint64_t dsr:1;
+-		uint64_t ri:1;
+-		uint64_t dcd:1;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_msr_s cn52xx;
+-	struct cvmx_mio_uart2_msr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_rbr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_rbr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t rbr:8;
+-#else
+-		uint64_t rbr:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_rbr_s cn52xx;
+-	struct cvmx_mio_uart2_rbr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_rfl {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_rfl_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t rfl:7;
+-#else
+-		uint64_t rfl:7;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_rfl_s cn52xx;
+-	struct cvmx_mio_uart2_rfl_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_rfw {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_rfw_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_10_63:54;
+-		uint64_t rffe:1;
+-		uint64_t rfpe:1;
+-		uint64_t rfwd:8;
+-#else
+-		uint64_t rfwd:8;
+-		uint64_t rfpe:1;
+-		uint64_t rffe:1;
+-		uint64_t reserved_10_63:54;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_rfw_s cn52xx;
+-	struct cvmx_mio_uart2_rfw_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_sbcr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_sbcr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t sbcr:1;
+-#else
+-		uint64_t sbcr:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_sbcr_s cn52xx;
+-	struct cvmx_mio_uart2_sbcr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_scr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_scr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t scr:8;
+-#else
+-		uint64_t scr:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_scr_s cn52xx;
+-	struct cvmx_mio_uart2_scr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_sfe {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_sfe_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t sfe:1;
+-#else
+-		uint64_t sfe:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_sfe_s cn52xx;
+-	struct cvmx_mio_uart2_sfe_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_srr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_srr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_3_63:61;
+-		uint64_t stfr:1;
+-		uint64_t srfr:1;
+-		uint64_t usr:1;
+-#else
+-		uint64_t usr:1;
+-		uint64_t srfr:1;
+-		uint64_t stfr:1;
+-		uint64_t reserved_3_63:61;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_srr_s cn52xx;
+-	struct cvmx_mio_uart2_srr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_srt {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_srt_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t srt:2;
+-#else
+-		uint64_t srt:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_srt_s cn52xx;
+-	struct cvmx_mio_uart2_srt_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_srts {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_srts_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_1_63:63;
+-		uint64_t srts:1;
+-#else
+-		uint64_t srts:1;
+-		uint64_t reserved_1_63:63;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_srts_s cn52xx;
+-	struct cvmx_mio_uart2_srts_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_stt {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_stt_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_2_63:62;
+-		uint64_t stt:2;
+-#else
+-		uint64_t stt:2;
+-		uint64_t reserved_2_63:62;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_stt_s cn52xx;
+-	struct cvmx_mio_uart2_stt_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_tfl {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_tfl_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_7_63:57;
+-		uint64_t tfl:7;
+-#else
+-		uint64_t tfl:7;
+-		uint64_t reserved_7_63:57;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_tfl_s cn52xx;
+-	struct cvmx_mio_uart2_tfl_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_tfr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_tfr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t tfr:8;
+-#else
+-		uint64_t tfr:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_tfr_s cn52xx;
+-	struct cvmx_mio_uart2_tfr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_thr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_thr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_8_63:56;
+-		uint64_t thr:8;
+-#else
+-		uint64_t thr:8;
+-		uint64_t reserved_8_63:56;
+-#endif
+-	} s;
+-	struct cvmx_mio_uart2_thr_s cn52xx;
+-	struct cvmx_mio_uart2_thr_s cn52xxp1;
+-};
+-
+-union cvmx_mio_uart2_usr {
+-	uint64_t u64;
+-	struct cvmx_mio_uart2_usr_s {
+-#ifdef __BIG_ENDIAN_BITFIELD
+-		uint64_t reserved_5_63:59;
+-		uint64_t rff:1;
+-		uint64_t rfne:1;
+-		uint64_t tfe:1;
+-		uint64_t tfnf:1;
+-		uint64_t busy:1;
+-#else
+-		uint64_t busy:1;
+-		uint64_t tfnf:1;
+-		uint64_t tfe:1;
+-		uint64_t rfne:1;
+-		uint64_t rff:1;
+-		uint64_t reserved_5_63:59;
+-#endif
++		__BITFIELD_FIELD(uint64_t reserved_13_63:51,
++		__BITFIELD_FIELD(uint64_t in_rev_ln:1,
++		__BITFIELD_FIELD(uint64_t rev_lanes:1,
++		__BITFIELD_FIELD(uint64_t gen1_only:1,
++		__BITFIELD_FIELD(uint64_t prst_link:1,
++		__BITFIELD_FIELD(uint64_t rst_done:1,
++		__BITFIELD_FIELD(uint64_t rst_link:1,
++		__BITFIELD_FIELD(uint64_t host_mode:1,
++		__BITFIELD_FIELD(uint64_t prtmode:2,
++		__BITFIELD_FIELD(uint64_t rst_drv:1,
++		__BITFIELD_FIELD(uint64_t rst_rcv:1,
++		__BITFIELD_FIELD(uint64_t rst_chip:1,
++		__BITFIELD_FIELD(uint64_t rst_val:1,
++		;)))))))))))))
  	} s;
--	struct cvmx_l2c_xmc_cmd_s cn61xx;
--	struct cvmx_l2c_xmc_cmd_s cn63xx;
--	struct cvmx_l2c_xmc_cmd_s cn63xxp1;
--	struct cvmx_l2c_xmc_cmd_s cn66xx;
--	struct cvmx_l2c_xmc_cmd_s cn68xx;
--	struct cvmx_l2c_xmc_cmd_s cn68xxp1;
--	struct cvmx_l2c_xmc_cmd_s cnf71xx;
- };
- 
--union cvmx_l2c_xmdx_pfc {
-+union cvmx_l2c_lckoff {
- 	uint64_t u64;
--	struct cvmx_l2c_xmdx_pfc_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t count:64;
--#else
--		uint64_t count:64;
--#endif
-+	struct cvmx_l2c_lckoff_s {
-+		__BITFIELD_FIELD(uint64_t reserved_10_63:54,
-+		__BITFIELD_FIELD(uint64_t lck_offset:10,
-+		;))
- 	} s;
--	struct cvmx_l2c_xmdx_pfc_s cn61xx;
--	struct cvmx_l2c_xmdx_pfc_s cn63xx;
--	struct cvmx_l2c_xmdx_pfc_s cn63xxp1;
--	struct cvmx_l2c_xmdx_pfc_s cn66xx;
--	struct cvmx_l2c_xmdx_pfc_s cn68xx;
--	struct cvmx_l2c_xmdx_pfc_s cn68xxp1;
--	struct cvmx_l2c_xmdx_pfc_s cnf71xx;
+-	struct cvmx_mio_uart2_usr_s cn52xx;
+-	struct cvmx_mio_uart2_usr_s cn52xxp1;
  };
  
  #endif
-diff --git a/arch/mips/include/asm/octeon/cvmx-l2c.h b/arch/mips/include/asm/octeon/cvmx-l2c.h
-index ddb4292..d9e4873 100644
---- a/arch/mips/include/asm/octeon/cvmx-l2c.h
-+++ b/arch/mips/include/asm/octeon/cvmx-l2c.h
-@@ -4,7 +4,7 @@
-  * Contact: support@caviumnetworks.com
-  * This file is part of the OCTEON SDK
-  *
-- * Copyright (c) 2003-2010 Cavium Networks
-+ * Copyright (c) 2003-2017 Cavium, Inc.
-  *
-  * This file is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License, Version 2, as
-@@ -33,48 +33,37 @@
- #ifndef __CVMX_L2C_H__
- #define __CVMX_L2C_H__
- 
--#define CVMX_L2_ASSOC	  cvmx_l2c_get_num_assoc()   /* Deprecated macro, use function */
--#define CVMX_L2_SET_BITS  cvmx_l2c_get_set_bits()    /* Deprecated macro, use function */
--#define CVMX_L2_SETS	  cvmx_l2c_get_num_sets()    /* Deprecated macro, use function */
-+#define CVMX_L2_ASSOC	 cvmx_l2c_get_num_assoc()	/* Deprecated macro */
-+#define CVMX_L2_SET_BITS cvmx_l2c_get_set_bits()	/* Deprecated macro */
-+#define CVMX_L2_SETS	 cvmx_l2c_get_num_sets()	/* Deprecated macro */
- 
--
--#define CVMX_L2C_IDX_ADDR_SHIFT 7  /* based on 128 byte cache line size */
-+/* Based on 128 byte cache line size */
-+#define CVMX_L2C_IDX_ADDR_SHIFT	7
- #define CVMX_L2C_IDX_MASK	(cvmx_l2c_get_num_sets() - 1)
- 
- /* Defines for index aliasing computations */
--#define CVMX_L2C_TAG_ADDR_ALIAS_SHIFT (CVMX_L2C_IDX_ADDR_SHIFT + cvmx_l2c_get_set_bits())
-+#define CVMX_L2C_TAG_ADDR_ALIAS_SHIFT (CVMX_L2C_IDX_ADDR_SHIFT +	       \
-+		cvmx_l2c_get_set_bits())
- #define CVMX_L2C_ALIAS_MASK (CVMX_L2C_IDX_MASK << CVMX_L2C_TAG_ADDR_ALIAS_SHIFT)
--#define CVMX_L2C_MEMBANK_SELECT_SIZE  4096
-+#define CVMX_L2C_MEMBANK_SELECT_SIZE 4096
- 
--/* Defines for Virtualizations, valid only from Octeon II onwards. */
--#define CVMX_L2C_VRT_MAX_VIRTID_ALLOWED ((OCTEON_IS_MODEL(OCTEON_CN63XX)) ? 64 : 0)
--#define CVMX_L2C_VRT_MAX_MEMSZ_ALLOWED ((OCTEON_IS_MODEL(OCTEON_CN63XX)) ? 32 : 0)
-+/* Number of L2C Tag-and-data sections (TADs) that are connected to LMC. */
-+#define CVMX_L2C_TADS  1
- 
- union cvmx_l2c_tag {
- 	uint64_t u64;
- 	struct {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved:28;
--		uint64_t V:1;		/* Line valid */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t L:1;		/* Line locked */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t addr:32;	/* Phys mem (not all bits valid) */
--#else
--		uint64_t addr:32;	/* Phys mem (not all bits valid) */
--		uint64_t U:1;		/* Use, LRU eviction */
--		uint64_t L:1;		/* Line locked */
--		uint64_t D:1;		/* Line dirty */
--		uint64_t V:1;		/* Line valid */
--		uint64_t reserved:28;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved:28,
-+		__BITFIELD_FIELD(uint64_t V:1,
-+		__BITFIELD_FIELD(uint64_t D:1,
-+		__BITFIELD_FIELD(uint64_t L:1,
-+		__BITFIELD_FIELD(uint64_t U:1,
-+		__BITFIELD_FIELD(uint64_t addr:32,
-+		;))))))
- 	} s;
- };
- 
--/* Number of L2C Tag-and-data sections (TADs) that are connected to LMC. */
--#define CVMX_L2C_TADS  1
--
--  /* L2C Performance Counter events. */
-+/* L2C Performance Counter events. */
- enum cvmx_l2c_event {
- 	CVMX_L2C_EVENT_CYCLES		=  0,
- 	CVMX_L2C_EVENT_INSTRUCTION_MISS =  1,
-@@ -175,7 +164,8 @@ enum cvmx_l2c_tad_event {
-  *
-  * @note The routine does not clear the counter.
-  */
--void cvmx_l2c_config_perf(uint32_t counter, enum cvmx_l2c_event event, uint32_t clear_on_read);
-+void cvmx_l2c_config_perf(uint32_t counter, enum cvmx_l2c_event event,
-+			  uint32_t clear_on_read);
- 
- /**
-  * Read the given L2 Cache performance counter. The counter must be configured
-@@ -307,8 +297,11 @@ enum cvmx_l2c_tad_event {
- union cvmx_l2c_tag cvmx_l2c_get_tag(uint32_t association, uint32_t index);
- 
- /* Wrapper providing a deprecated old function name */
--static inline union cvmx_l2c_tag cvmx_get_l2c_tag(uint32_t association, uint32_t index) __attribute__((deprecated));
--static inline union cvmx_l2c_tag cvmx_get_l2c_tag(uint32_t association, uint32_t index)
-+static inline union cvmx_l2c_tag cvmx_get_l2c_tag(uint32_t association,
-+						  uint32_t index)
-+						  __attribute__((deprecated));
-+static inline union cvmx_l2c_tag cvmx_get_l2c_tag(uint32_t association,
-+						  uint32_t index)
- {
- 	return cvmx_l2c_get_tag(association, index);
- }
-diff --git a/arch/mips/include/asm/octeon/cvmx-l2d-defs.h b/arch/mips/include/asm/octeon/cvmx-l2d-defs.h
-deleted file mode 100644
-index 11a4562..0000000
---- a/arch/mips/include/asm/octeon/cvmx-l2d-defs.h
-+++ /dev/null
-@@ -1,526 +0,0 @@
--/***********************license start***************
-- * Author: Cavium Networks
-- *
-- * Contact: support@caviumnetworks.com
-- * This file is part of the OCTEON SDK
-- *
-- * Copyright (c) 2003-2012 Cavium Networks
-- *
-- * This file is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License, Version 2, as
-- * published by the Free Software Foundation.
-- *
-- * This file is distributed in the hope that it will be useful, but
-- * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
-- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
-- * NONINFRINGEMENT.  See the GNU General Public License for more
-- * details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this file; if not, write to the Free Software
-- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-- * or visit http://www.gnu.org/licenses/.
-- *
-- * This file may also be available under a different license from Cavium.
-- * Contact Cavium Networks for more information
-- ***********************license end**************************************/
--
--#ifndef __CVMX_L2D_DEFS_H__
--#define __CVMX_L2D_DEFS_H__
--
--#define CVMX_L2D_BST0 (CVMX_ADD_IO_SEG(0x0001180080000780ull))
--#define CVMX_L2D_BST1 (CVMX_ADD_IO_SEG(0x0001180080000788ull))
--#define CVMX_L2D_BST2 (CVMX_ADD_IO_SEG(0x0001180080000790ull))
--#define CVMX_L2D_BST3 (CVMX_ADD_IO_SEG(0x0001180080000798ull))
--#define CVMX_L2D_ERR (CVMX_ADD_IO_SEG(0x0001180080000010ull))
--#define CVMX_L2D_FADR (CVMX_ADD_IO_SEG(0x0001180080000018ull))
--#define CVMX_L2D_FSYN0 (CVMX_ADD_IO_SEG(0x0001180080000020ull))
--#define CVMX_L2D_FSYN1 (CVMX_ADD_IO_SEG(0x0001180080000028ull))
--#define CVMX_L2D_FUS0 (CVMX_ADD_IO_SEG(0x00011800800007A0ull))
--#define CVMX_L2D_FUS1 (CVMX_ADD_IO_SEG(0x00011800800007A8ull))
--#define CVMX_L2D_FUS2 (CVMX_ADD_IO_SEG(0x00011800800007B0ull))
--#define CVMX_L2D_FUS3 (CVMX_ADD_IO_SEG(0x00011800800007B8ull))
--
--union cvmx_l2d_bst0 {
--	uint64_t u64;
--	struct cvmx_l2d_bst0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_35_63:29;
--		uint64_t ftl:1;
--		uint64_t q0stat:34;
--#else
--		uint64_t q0stat:34;
--		uint64_t ftl:1;
--		uint64_t reserved_35_63:29;
--#endif
--	} s;
--	struct cvmx_l2d_bst0_s cn30xx;
--	struct cvmx_l2d_bst0_s cn31xx;
--	struct cvmx_l2d_bst0_s cn38xx;
--	struct cvmx_l2d_bst0_s cn38xxp2;
--	struct cvmx_l2d_bst0_s cn50xx;
--	struct cvmx_l2d_bst0_s cn52xx;
--	struct cvmx_l2d_bst0_s cn52xxp1;
--	struct cvmx_l2d_bst0_s cn56xx;
--	struct cvmx_l2d_bst0_s cn56xxp1;
--	struct cvmx_l2d_bst0_s cn58xx;
--	struct cvmx_l2d_bst0_s cn58xxp1;
--};
--
--union cvmx_l2d_bst1 {
--	uint64_t u64;
--	struct cvmx_l2d_bst1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_34_63:30;
--		uint64_t q1stat:34;
--#else
--		uint64_t q1stat:34;
--		uint64_t reserved_34_63:30;
--#endif
--	} s;
--	struct cvmx_l2d_bst1_s cn30xx;
--	struct cvmx_l2d_bst1_s cn31xx;
--	struct cvmx_l2d_bst1_s cn38xx;
--	struct cvmx_l2d_bst1_s cn38xxp2;
--	struct cvmx_l2d_bst1_s cn50xx;
--	struct cvmx_l2d_bst1_s cn52xx;
--	struct cvmx_l2d_bst1_s cn52xxp1;
--	struct cvmx_l2d_bst1_s cn56xx;
--	struct cvmx_l2d_bst1_s cn56xxp1;
--	struct cvmx_l2d_bst1_s cn58xx;
--	struct cvmx_l2d_bst1_s cn58xxp1;
--};
--
--union cvmx_l2d_bst2 {
--	uint64_t u64;
--	struct cvmx_l2d_bst2_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_34_63:30;
--		uint64_t q2stat:34;
--#else
--		uint64_t q2stat:34;
--		uint64_t reserved_34_63:30;
--#endif
--	} s;
--	struct cvmx_l2d_bst2_s cn30xx;
--	struct cvmx_l2d_bst2_s cn31xx;
--	struct cvmx_l2d_bst2_s cn38xx;
--	struct cvmx_l2d_bst2_s cn38xxp2;
--	struct cvmx_l2d_bst2_s cn50xx;
--	struct cvmx_l2d_bst2_s cn52xx;
--	struct cvmx_l2d_bst2_s cn52xxp1;
--	struct cvmx_l2d_bst2_s cn56xx;
--	struct cvmx_l2d_bst2_s cn56xxp1;
--	struct cvmx_l2d_bst2_s cn58xx;
--	struct cvmx_l2d_bst2_s cn58xxp1;
--};
--
--union cvmx_l2d_bst3 {
--	uint64_t u64;
--	struct cvmx_l2d_bst3_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_34_63:30;
--		uint64_t q3stat:34;
--#else
--		uint64_t q3stat:34;
--		uint64_t reserved_34_63:30;
--#endif
--	} s;
--	struct cvmx_l2d_bst3_s cn30xx;
--	struct cvmx_l2d_bst3_s cn31xx;
--	struct cvmx_l2d_bst3_s cn38xx;
--	struct cvmx_l2d_bst3_s cn38xxp2;
--	struct cvmx_l2d_bst3_s cn50xx;
--	struct cvmx_l2d_bst3_s cn52xx;
--	struct cvmx_l2d_bst3_s cn52xxp1;
--	struct cvmx_l2d_bst3_s cn56xx;
--	struct cvmx_l2d_bst3_s cn56xxp1;
--	struct cvmx_l2d_bst3_s cn58xx;
--	struct cvmx_l2d_bst3_s cn58xxp1;
--};
--
--union cvmx_l2d_err {
--	uint64_t u64;
--	struct cvmx_l2d_err_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_6_63:58;
--		uint64_t bmhclsel:1;
--		uint64_t ded_err:1;
--		uint64_t sec_err:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_intena:1;
--		uint64_t ecc_ena:1;
--#else
--		uint64_t ecc_ena:1;
--		uint64_t sec_intena:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_err:1;
--		uint64_t ded_err:1;
--		uint64_t bmhclsel:1;
--		uint64_t reserved_6_63:58;
--#endif
--	} s;
--	struct cvmx_l2d_err_s cn30xx;
--	struct cvmx_l2d_err_s cn31xx;
--	struct cvmx_l2d_err_s cn38xx;
--	struct cvmx_l2d_err_s cn38xxp2;
--	struct cvmx_l2d_err_s cn50xx;
--	struct cvmx_l2d_err_s cn52xx;
--	struct cvmx_l2d_err_s cn52xxp1;
--	struct cvmx_l2d_err_s cn56xx;
--	struct cvmx_l2d_err_s cn56xxp1;
--	struct cvmx_l2d_err_s cn58xx;
--	struct cvmx_l2d_err_s cn58xxp1;
--};
--
--union cvmx_l2d_fadr {
--	uint64_t u64;
--	struct cvmx_l2d_fadr_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_19_63:45;
--		uint64_t fadru:1;
--		uint64_t fowmsk:4;
--		uint64_t fset:3;
--		uint64_t fadr:11;
--#else
--		uint64_t fadr:11;
--		uint64_t fset:3;
--		uint64_t fowmsk:4;
--		uint64_t fadru:1;
--		uint64_t reserved_19_63:45;
--#endif
--	} s;
--	struct cvmx_l2d_fadr_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_18_63:46;
--		uint64_t fowmsk:4;
--		uint64_t reserved_13_13:1;
--		uint64_t fset:2;
--		uint64_t reserved_9_10:2;
--		uint64_t fadr:9;
--#else
--		uint64_t fadr:9;
--		uint64_t reserved_9_10:2;
--		uint64_t fset:2;
--		uint64_t reserved_13_13:1;
--		uint64_t fowmsk:4;
--		uint64_t reserved_18_63:46;
--#endif
--	} cn30xx;
--	struct cvmx_l2d_fadr_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_18_63:46;
--		uint64_t fowmsk:4;
--		uint64_t reserved_13_13:1;
--		uint64_t fset:2;
--		uint64_t reserved_10_10:1;
--		uint64_t fadr:10;
--#else
--		uint64_t fadr:10;
--		uint64_t reserved_10_10:1;
--		uint64_t fset:2;
--		uint64_t reserved_13_13:1;
--		uint64_t fowmsk:4;
--		uint64_t reserved_18_63:46;
--#endif
--	} cn31xx;
--	struct cvmx_l2d_fadr_cn38xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_18_63:46;
--		uint64_t fowmsk:4;
--		uint64_t fset:3;
--		uint64_t fadr:11;
--#else
--		uint64_t fadr:11;
--		uint64_t fset:3;
--		uint64_t fowmsk:4;
--		uint64_t reserved_18_63:46;
--#endif
--	} cn38xx;
--	struct cvmx_l2d_fadr_cn38xx cn38xxp2;
--	struct cvmx_l2d_fadr_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_18_63:46;
--		uint64_t fowmsk:4;
--		uint64_t fset:3;
--		uint64_t reserved_8_10:3;
--		uint64_t fadr:8;
--#else
--		uint64_t fadr:8;
--		uint64_t reserved_8_10:3;
--		uint64_t fset:3;
--		uint64_t fowmsk:4;
--		uint64_t reserved_18_63:46;
--#endif
--	} cn50xx;
--	struct cvmx_l2d_fadr_cn52xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_18_63:46;
--		uint64_t fowmsk:4;
--		uint64_t fset:3;
--		uint64_t reserved_10_10:1;
--		uint64_t fadr:10;
--#else
--		uint64_t fadr:10;
--		uint64_t reserved_10_10:1;
--		uint64_t fset:3;
--		uint64_t fowmsk:4;
--		uint64_t reserved_18_63:46;
--#endif
--	} cn52xx;
--	struct cvmx_l2d_fadr_cn52xx cn52xxp1;
--	struct cvmx_l2d_fadr_s cn56xx;
--	struct cvmx_l2d_fadr_s cn56xxp1;
--	struct cvmx_l2d_fadr_s cn58xx;
--	struct cvmx_l2d_fadr_s cn58xxp1;
--};
--
--union cvmx_l2d_fsyn0 {
--	uint64_t u64;
--	struct cvmx_l2d_fsyn0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_20_63:44;
--		uint64_t fsyn_ow1:10;
--		uint64_t fsyn_ow0:10;
--#else
--		uint64_t fsyn_ow0:10;
--		uint64_t fsyn_ow1:10;
--		uint64_t reserved_20_63:44;
--#endif
--	} s;
--	struct cvmx_l2d_fsyn0_s cn30xx;
--	struct cvmx_l2d_fsyn0_s cn31xx;
--	struct cvmx_l2d_fsyn0_s cn38xx;
--	struct cvmx_l2d_fsyn0_s cn38xxp2;
--	struct cvmx_l2d_fsyn0_s cn50xx;
--	struct cvmx_l2d_fsyn0_s cn52xx;
--	struct cvmx_l2d_fsyn0_s cn52xxp1;
--	struct cvmx_l2d_fsyn0_s cn56xx;
--	struct cvmx_l2d_fsyn0_s cn56xxp1;
--	struct cvmx_l2d_fsyn0_s cn58xx;
--	struct cvmx_l2d_fsyn0_s cn58xxp1;
--};
--
--union cvmx_l2d_fsyn1 {
--	uint64_t u64;
--	struct cvmx_l2d_fsyn1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_20_63:44;
--		uint64_t fsyn_ow3:10;
--		uint64_t fsyn_ow2:10;
--#else
--		uint64_t fsyn_ow2:10;
--		uint64_t fsyn_ow3:10;
--		uint64_t reserved_20_63:44;
--#endif
--	} s;
--	struct cvmx_l2d_fsyn1_s cn30xx;
--	struct cvmx_l2d_fsyn1_s cn31xx;
--	struct cvmx_l2d_fsyn1_s cn38xx;
--	struct cvmx_l2d_fsyn1_s cn38xxp2;
--	struct cvmx_l2d_fsyn1_s cn50xx;
--	struct cvmx_l2d_fsyn1_s cn52xx;
--	struct cvmx_l2d_fsyn1_s cn52xxp1;
--	struct cvmx_l2d_fsyn1_s cn56xx;
--	struct cvmx_l2d_fsyn1_s cn56xxp1;
--	struct cvmx_l2d_fsyn1_s cn58xx;
--	struct cvmx_l2d_fsyn1_s cn58xxp1;
--};
--
--union cvmx_l2d_fus0 {
--	uint64_t u64;
--	struct cvmx_l2d_fus0_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_34_63:30;
--		uint64_t q0fus:34;
--#else
--		uint64_t q0fus:34;
--		uint64_t reserved_34_63:30;
--#endif
--	} s;
--	struct cvmx_l2d_fus0_s cn30xx;
--	struct cvmx_l2d_fus0_s cn31xx;
--	struct cvmx_l2d_fus0_s cn38xx;
--	struct cvmx_l2d_fus0_s cn38xxp2;
--	struct cvmx_l2d_fus0_s cn50xx;
--	struct cvmx_l2d_fus0_s cn52xx;
--	struct cvmx_l2d_fus0_s cn52xxp1;
--	struct cvmx_l2d_fus0_s cn56xx;
--	struct cvmx_l2d_fus0_s cn56xxp1;
--	struct cvmx_l2d_fus0_s cn58xx;
--	struct cvmx_l2d_fus0_s cn58xxp1;
--};
--
--union cvmx_l2d_fus1 {
--	uint64_t u64;
--	struct cvmx_l2d_fus1_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_34_63:30;
--		uint64_t q1fus:34;
--#else
--		uint64_t q1fus:34;
--		uint64_t reserved_34_63:30;
--#endif
--	} s;
--	struct cvmx_l2d_fus1_s cn30xx;
--	struct cvmx_l2d_fus1_s cn31xx;
--	struct cvmx_l2d_fus1_s cn38xx;
--	struct cvmx_l2d_fus1_s cn38xxp2;
--	struct cvmx_l2d_fus1_s cn50xx;
--	struct cvmx_l2d_fus1_s cn52xx;
--	struct cvmx_l2d_fus1_s cn52xxp1;
--	struct cvmx_l2d_fus1_s cn56xx;
--	struct cvmx_l2d_fus1_s cn56xxp1;
--	struct cvmx_l2d_fus1_s cn58xx;
--	struct cvmx_l2d_fus1_s cn58xxp1;
--};
--
--union cvmx_l2d_fus2 {
--	uint64_t u64;
--	struct cvmx_l2d_fus2_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_34_63:30;
--		uint64_t q2fus:34;
--#else
--		uint64_t q2fus:34;
--		uint64_t reserved_34_63:30;
--#endif
--	} s;
--	struct cvmx_l2d_fus2_s cn30xx;
--	struct cvmx_l2d_fus2_s cn31xx;
--	struct cvmx_l2d_fus2_s cn38xx;
--	struct cvmx_l2d_fus2_s cn38xxp2;
--	struct cvmx_l2d_fus2_s cn50xx;
--	struct cvmx_l2d_fus2_s cn52xx;
--	struct cvmx_l2d_fus2_s cn52xxp1;
--	struct cvmx_l2d_fus2_s cn56xx;
--	struct cvmx_l2d_fus2_s cn56xxp1;
--	struct cvmx_l2d_fus2_s cn58xx;
--	struct cvmx_l2d_fus2_s cn58xxp1;
--};
--
--union cvmx_l2d_fus3 {
--	uint64_t u64;
--	struct cvmx_l2d_fus3_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_40_63:24;
--		uint64_t ema_ctl:3;
--		uint64_t reserved_34_36:3;
--		uint64_t q3fus:34;
--#else
--		uint64_t q3fus:34;
--		uint64_t reserved_34_36:3;
--		uint64_t ema_ctl:3;
--		uint64_t reserved_40_63:24;
--#endif
--	} s;
--	struct cvmx_l2d_fus3_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_35_63:29;
--		uint64_t crip_64k:1;
--		uint64_t q3fus:34;
--#else
--		uint64_t q3fus:34;
--		uint64_t crip_64k:1;
--		uint64_t reserved_35_63:29;
--#endif
--	} cn30xx;
--	struct cvmx_l2d_fus3_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_35_63:29;
--		uint64_t crip_128k:1;
--		uint64_t q3fus:34;
--#else
--		uint64_t q3fus:34;
--		uint64_t crip_128k:1;
--		uint64_t reserved_35_63:29;
--#endif
--	} cn31xx;
--	struct cvmx_l2d_fus3_cn38xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_36_63:28;
--		uint64_t crip_256k:1;
--		uint64_t crip_512k:1;
--		uint64_t q3fus:34;
--#else
--		uint64_t q3fus:34;
--		uint64_t crip_512k:1;
--		uint64_t crip_256k:1;
--		uint64_t reserved_36_63:28;
--#endif
--	} cn38xx;
--	struct cvmx_l2d_fus3_cn38xx cn38xxp2;
--	struct cvmx_l2d_fus3_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_40_63:24;
--		uint64_t ema_ctl:3;
--		uint64_t reserved_36_36:1;
--		uint64_t crip_32k:1;
--		uint64_t crip_64k:1;
--		uint64_t q3fus:34;
--#else
--		uint64_t q3fus:34;
--		uint64_t crip_64k:1;
--		uint64_t crip_32k:1;
--		uint64_t reserved_36_36:1;
--		uint64_t ema_ctl:3;
--		uint64_t reserved_40_63:24;
--#endif
--	} cn50xx;
--	struct cvmx_l2d_fus3_cn52xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_40_63:24;
--		uint64_t ema_ctl:3;
--		uint64_t reserved_36_36:1;
--		uint64_t crip_128k:1;
--		uint64_t crip_256k:1;
--		uint64_t q3fus:34;
--#else
--		uint64_t q3fus:34;
--		uint64_t crip_256k:1;
--		uint64_t crip_128k:1;
--		uint64_t reserved_36_36:1;
--		uint64_t ema_ctl:3;
--		uint64_t reserved_40_63:24;
--#endif
--	} cn52xx;
--	struct cvmx_l2d_fus3_cn52xx cn52xxp1;
--	struct cvmx_l2d_fus3_cn56xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_40_63:24;
--		uint64_t ema_ctl:3;
--		uint64_t reserved_36_36:1;
--		uint64_t crip_512k:1;
--		uint64_t crip_1024k:1;
--		uint64_t q3fus:34;
--#else
--		uint64_t q3fus:34;
--		uint64_t crip_1024k:1;
--		uint64_t crip_512k:1;
--		uint64_t reserved_36_36:1;
--		uint64_t ema_ctl:3;
--		uint64_t reserved_40_63:24;
--#endif
--	} cn56xx;
--	struct cvmx_l2d_fus3_cn56xx cn56xxp1;
--	struct cvmx_l2d_fus3_cn58xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_39_63:25;
--		uint64_t ema_ctl:2;
--		uint64_t reserved_36_36:1;
--		uint64_t crip_512k:1;
--		uint64_t crip_1024k:1;
--		uint64_t q3fus:34;
--#else
--		uint64_t q3fus:34;
--		uint64_t crip_1024k:1;
--		uint64_t crip_512k:1;
--		uint64_t reserved_36_36:1;
--		uint64_t ema_ctl:2;
--		uint64_t reserved_39_63:25;
--#endif
--	} cn58xx;
--	struct cvmx_l2d_fus3_cn58xx cn58xxp1;
--};
--
--#endif
-diff --git a/arch/mips/include/asm/octeon/cvmx-l2t-defs.h b/arch/mips/include/asm/octeon/cvmx-l2t-defs.h
-index 83ce22c..5af3b0c 100644
---- a/arch/mips/include/asm/octeon/cvmx-l2t-defs.h
-+++ b/arch/mips/include/asm/octeon/cvmx-l2t-defs.h
-@@ -4,7 +4,7 @@
-  * Contact: support@caviumnetworks.com
-  * This file is part of the OCTEON SDK
-  *
-- * Copyright (c) 2003-2012 Cavium Networks
-+ * Copyright (c) 2003-2017 Cavium, Inc.
-  *
-  * This file is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License, Version 2, as
-@@ -28,210 +28,114 @@
- #ifndef __CVMX_L2T_DEFS_H__
- #define __CVMX_L2T_DEFS_H__
- 
--#define CVMX_L2T_ERR (CVMX_ADD_IO_SEG(0x0001180080000008ull))
-+#define CVMX_L2T_ERR	(CVMX_ADD_IO_SEG(0x0001180080000008ull))
-+
- 
- union cvmx_l2t_err {
- 	uint64_t u64;
- 	struct cvmx_l2t_err_s {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_29_63:35;
--		uint64_t fadru:1;
--		uint64_t lck_intena2:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr:1;
--		uint64_t fset:3;
--		uint64_t fadr:10;
--		uint64_t fsyn:6;
--		uint64_t ded_err:1;
--		uint64_t sec_err:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_intena:1;
--		uint64_t ecc_ena:1;
--#else
--		uint64_t ecc_ena:1;
--		uint64_t sec_intena:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_err:1;
--		uint64_t ded_err:1;
--		uint64_t fsyn:6;
--		uint64_t fadr:10;
--		uint64_t fset:3;
--		uint64_t lckerr:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena2:1;
--		uint64_t fadru:1;
--		uint64_t reserved_29_63:35;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_29_63:35,
-+		__BITFIELD_FIELD(uint64_t fadru:1,
-+		__BITFIELD_FIELD(uint64_t lck_intena2:1,
-+		__BITFIELD_FIELD(uint64_t lckerr2:1,
-+		__BITFIELD_FIELD(uint64_t lck_intena:1,
-+		__BITFIELD_FIELD(uint64_t lckerr:1,
-+		__BITFIELD_FIELD(uint64_t fset:3,
-+		__BITFIELD_FIELD(uint64_t fadr:10,
-+		__BITFIELD_FIELD(uint64_t fsyn:6,
-+		__BITFIELD_FIELD(uint64_t ded_err:1,
-+		__BITFIELD_FIELD(uint64_t sec_err:1,
-+		__BITFIELD_FIELD(uint64_t ded_intena:1,
-+		__BITFIELD_FIELD(uint64_t sec_intena:1,
-+		__BITFIELD_FIELD(uint64_t ecc_ena:1,
-+		;))))))))))))))
- 	} s;
- 	struct cvmx_l2t_err_cn30xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_28_63:36;
--		uint64_t lck_intena2:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr:1;
--		uint64_t reserved_23_23:1;
--		uint64_t fset:2;
--		uint64_t reserved_19_20:2;
--		uint64_t fadr:8;
--		uint64_t fsyn:6;
--		uint64_t ded_err:1;
--		uint64_t sec_err:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_intena:1;
--		uint64_t ecc_ena:1;
--#else
--		uint64_t ecc_ena:1;
--		uint64_t sec_intena:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_err:1;
--		uint64_t ded_err:1;
--		uint64_t fsyn:6;
--		uint64_t fadr:8;
--		uint64_t reserved_19_20:2;
--		uint64_t fset:2;
--		uint64_t reserved_23_23:1;
--		uint64_t lckerr:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena2:1;
--		uint64_t reserved_28_63:36;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_28_63:36,
-+		__BITFIELD_FIELD(uint64_t lck_intena2:1,
-+		__BITFIELD_FIELD(uint64_t lckerr2:1,
-+		__BITFIELD_FIELD(uint64_t lck_intena:1,
-+		__BITFIELD_FIELD(uint64_t lckerr:1,
-+		__BITFIELD_FIELD(uint64_t reserved_23_23:1,
-+		__BITFIELD_FIELD(uint64_t fset:2,
-+		__BITFIELD_FIELD(uint64_t reserved_19_20:2,
-+		__BITFIELD_FIELD(uint64_t fadr:8,
-+		__BITFIELD_FIELD(uint64_t fsyn:6,
-+		__BITFIELD_FIELD(uint64_t ded_err:1,
-+		__BITFIELD_FIELD(uint64_t sec_err:1,
-+		__BITFIELD_FIELD(uint64_t ded_intena:1,
-+		__BITFIELD_FIELD(uint64_t sec_intena:1,
-+		__BITFIELD_FIELD(uint64_t ecc_ena:1,
-+		;)))))))))))))))
- 	} cn30xx;
- 	struct cvmx_l2t_err_cn31xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_28_63:36;
--		uint64_t lck_intena2:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr:1;
--		uint64_t reserved_23_23:1;
--		uint64_t fset:2;
--		uint64_t reserved_20_20:1;
--		uint64_t fadr:9;
--		uint64_t fsyn:6;
--		uint64_t ded_err:1;
--		uint64_t sec_err:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_intena:1;
--		uint64_t ecc_ena:1;
--#else
--		uint64_t ecc_ena:1;
--		uint64_t sec_intena:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_err:1;
--		uint64_t ded_err:1;
--		uint64_t fsyn:6;
--		uint64_t fadr:9;
--		uint64_t reserved_20_20:1;
--		uint64_t fset:2;
--		uint64_t reserved_23_23:1;
--		uint64_t lckerr:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena2:1;
--		uint64_t reserved_28_63:36;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_28_63:36,
-+		__BITFIELD_FIELD(uint64_t lck_intena2:1,
-+		__BITFIELD_FIELD(uint64_t lckerr2:1,
-+		__BITFIELD_FIELD(uint64_t lck_intena:1,
-+		__BITFIELD_FIELD(uint64_t lckerr:1,
-+		__BITFIELD_FIELD(uint64_t reserved_23_23:1,
-+		__BITFIELD_FIELD(uint64_t fset:2,
-+		__BITFIELD_FIELD(uint64_t reserved_20_20:1,
-+		__BITFIELD_FIELD(uint64_t fadr:9,
-+		__BITFIELD_FIELD(uint64_t fsyn:6,
-+		__BITFIELD_FIELD(uint64_t ded_err:1,
-+		__BITFIELD_FIELD(uint64_t sec_err:1,
-+		__BITFIELD_FIELD(uint64_t ded_intena:1,
-+		__BITFIELD_FIELD(uint64_t sec_intena:1,
-+		__BITFIELD_FIELD(uint64_t ecc_ena:1,
-+		;)))))))))))))))
- 	} cn31xx;
- 	struct cvmx_l2t_err_cn38xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_28_63:36;
--		uint64_t lck_intena2:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr:1;
--		uint64_t fset:3;
--		uint64_t fadr:10;
--		uint64_t fsyn:6;
--		uint64_t ded_err:1;
--		uint64_t sec_err:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_intena:1;
--		uint64_t ecc_ena:1;
--#else
--		uint64_t ecc_ena:1;
--		uint64_t sec_intena:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_err:1;
--		uint64_t ded_err:1;
--		uint64_t fsyn:6;
--		uint64_t fadr:10;
--		uint64_t fset:3;
--		uint64_t lckerr:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena2:1;
--		uint64_t reserved_28_63:36;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_28_63:36,
-+		__BITFIELD_FIELD(uint64_t lck_intena2:1,
-+		__BITFIELD_FIELD(uint64_t lckerr2:1,
-+		__BITFIELD_FIELD(uint64_t lck_intena:1,
-+		__BITFIELD_FIELD(uint64_t lckerr:1,
-+		__BITFIELD_FIELD(uint64_t fset:3,
-+		__BITFIELD_FIELD(uint64_t fadr:10,
-+		__BITFIELD_FIELD(uint64_t fsyn:6,
-+		__BITFIELD_FIELD(uint64_t ded_err:1,
-+		__BITFIELD_FIELD(uint64_t sec_err:1,
-+		__BITFIELD_FIELD(uint64_t ded_intena:1,
-+		__BITFIELD_FIELD(uint64_t sec_intena:1,
-+		__BITFIELD_FIELD(uint64_t ecc_ena:1,
-+		;)))))))))))))
- 	} cn38xx;
- 	struct cvmx_l2t_err_cn38xx cn38xxp2;
- 	struct cvmx_l2t_err_cn50xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_28_63:36;
--		uint64_t lck_intena2:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr:1;
--		uint64_t fset:3;
--		uint64_t reserved_18_20:3;
--		uint64_t fadr:7;
--		uint64_t fsyn:6;
--		uint64_t ded_err:1;
--		uint64_t sec_err:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_intena:1;
--		uint64_t ecc_ena:1;
--#else
--		uint64_t ecc_ena:1;
--		uint64_t sec_intena:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_err:1;
--		uint64_t ded_err:1;
--		uint64_t fsyn:6;
--		uint64_t fadr:7;
--		uint64_t reserved_18_20:3;
--		uint64_t fset:3;
--		uint64_t lckerr:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena2:1;
--		uint64_t reserved_28_63:36;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_28_63:36,
-+		__BITFIELD_FIELD(uint64_t lck_intena2:1,
-+		__BITFIELD_FIELD(uint64_t lckerr2:1,
-+		__BITFIELD_FIELD(uint64_t lck_intena:1,
-+		__BITFIELD_FIELD(uint64_t lckerr:1,
-+		__BITFIELD_FIELD(uint64_t fset:3,
-+		__BITFIELD_FIELD(uint64_t reserved_18_20:3,
-+		__BITFIELD_FIELD(uint64_t fadr:7,
-+		__BITFIELD_FIELD(uint64_t fsyn:6,
-+		__BITFIELD_FIELD(uint64_t ded_err:1,
-+		__BITFIELD_FIELD(uint64_t sec_err:1,
-+		__BITFIELD_FIELD(uint64_t ded_intena:1,
-+		__BITFIELD_FIELD(uint64_t sec_intena:1,
-+		__BITFIELD_FIELD(uint64_t ecc_ena:1,
-+		;))))))))))))))
- 	} cn50xx;
- 	struct cvmx_l2t_err_cn52xx {
--#ifdef __BIG_ENDIAN_BITFIELD
--		uint64_t reserved_28_63:36;
--		uint64_t lck_intena2:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr:1;
--		uint64_t fset:3;
--		uint64_t reserved_20_20:1;
--		uint64_t fadr:9;
--		uint64_t fsyn:6;
--		uint64_t ded_err:1;
--		uint64_t sec_err:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_intena:1;
--		uint64_t ecc_ena:1;
--#else
--		uint64_t ecc_ena:1;
--		uint64_t sec_intena:1;
--		uint64_t ded_intena:1;
--		uint64_t sec_err:1;
--		uint64_t ded_err:1;
--		uint64_t fsyn:6;
--		uint64_t fadr:9;
--		uint64_t reserved_20_20:1;
--		uint64_t fset:3;
--		uint64_t lckerr:1;
--		uint64_t lck_intena:1;
--		uint64_t lckerr2:1;
--		uint64_t lck_intena2:1;
--		uint64_t reserved_28_63:36;
--#endif
-+		__BITFIELD_FIELD(uint64_t reserved_28_63:36,
-+		__BITFIELD_FIELD(uint64_t lck_intena2:1,
-+		__BITFIELD_FIELD(uint64_t lckerr2:1,
-+		__BITFIELD_FIELD(uint64_t lck_intena:1,
-+		__BITFIELD_FIELD(uint64_t lckerr:1,
-+		__BITFIELD_FIELD(uint64_t fset:3,
-+		__BITFIELD_FIELD(uint64_t reserved_20_20:1,
-+		__BITFIELD_FIELD(uint64_t fadr:9,
-+		__BITFIELD_FIELD(uint64_t fsyn:6,
-+		__BITFIELD_FIELD(uint64_t ded_err:1,
-+		__BITFIELD_FIELD(uint64_t sec_err:1,
-+		__BITFIELD_FIELD(uint64_t ded_intena:1,
-+		__BITFIELD_FIELD(uint64_t sec_intena:1,
-+		__BITFIELD_FIELD(uint64_t ecc_ena:1,
-+		;))))))))))))))
- 	} cn52xx;
- 	struct cvmx_l2t_err_cn52xx cn52xxp1;
- 	struct cvmx_l2t_err_s cn56xx;
-diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
-index 2530e87..9742202 100644
---- a/arch/mips/include/asm/octeon/cvmx.h
-+++ b/arch/mips/include/asm/octeon/cvmx.h
-@@ -4,7 +4,7 @@
-  * Contact: support@caviumnetworks.com
-  * This file is part of the OCTEON SDK
-  *
-- * Copyright (c) 2003-2008 Cavium Networks
-+ * Copyright (c) 2003-2017 Cavium, Inc.
-  *
-  * This file is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License, Version 2, as
-@@ -62,7 +62,6 @@ enum cvmx_mips_space {
- #include <asm/octeon/cvmx-iob-defs.h>
- #include <asm/octeon/cvmx-ipd-defs.h>
- #include <asm/octeon/cvmx-l2c-defs.h>
--#include <asm/octeon/cvmx-l2d-defs.h>
- #include <asm/octeon/cvmx-l2t-defs.h>
- #include <asm/octeon/cvmx-led-defs.h>
- #include <asm/octeon/cvmx-mio-defs.h>
 -- 
 1.9.1

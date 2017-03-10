@@ -1,32 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2017 22:28:52 +0100 (CET)
-Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:51219 "EHLO
-        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992123AbdCIV2pMcClb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Mar 2017 22:28:45 +0100
-Received: from raspberrypi-3.musicnaut.iki.fi (85-76-82-11-nat.elisa-mobile.fi [85.76.82.11])
-        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id CC3861A268D;
-        Thu,  9 Mar 2017 23:28:44 +0200 (EET)
-Date:   Thu, 9 Mar 2017 23:28:44 +0200
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     "Steven J. Hill" <steven.hill@cavium.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] MIPS: Octeon: Clean up platform code.
-Message-ID: <20170309212844.c44inv7ukb3mgpjo@raspberrypi-3.musicnaut.iki.fi>
-References: <1489068963-9836-1-git-send-email-steven.hill@cavium.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:11:06 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37026 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992214AbdCJJK5u0gKm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:10:57 +0100
+Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 36966958;
+        Fri, 10 Mar 2017 09:10:51 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
+        Tony Wu <tung7970@gmail.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 10/91] MIPS: Handle microMIPS jumps in the same way as MIPS32/MIPS64 jumps
+Date:   Fri, 10 Mar 2017 10:08:09 +0100
+Message-Id: <20170310083901.244542169@linuxfoundation.org>
+X-Mailer: git-send-email 2.12.0
+In-Reply-To: <20170310083900.730556986@linuxfoundation.org>
+References: <20170310083900.730556986@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1489068963-9836-1-git-send-email-steven.hill@cavium.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <aaro.koskinen@iki.fi>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57100
+X-archive-position: 57101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aaro.koskinen@iki.fi
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,37 +42,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 09, 2017 at 08:16:03AM -0600, Steven J. Hill wrote:
-> From: "Steven J. Hill" <Steven.Hill@cavium.com>
-> 
-> Remove unused headers and fix warnings from checkpatch.
-> 
-> Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
-> Acked-by: David Daney <david.daney@cavium.com>
-> ---
->  arch/mips/cavium-octeon/octeon-platform.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-> index 72d2a5e..1a1e11f 100644
-> --- a/arch/mips/cavium-octeon/octeon-platform.c
-> +++ b/arch/mips/cavium-octeon/octeon-platform.c
-> @@ -7,8 +7,6 @@
->   * Copyright (C) 2008 Wind River Systems
->   */
->  
-> -#include <linux/init.h>
-> -#include <linux/delay.h>
->  #include <linux/etherdevice.h>
->  #include <linux/of_platform.h>
->  #include <linux/of_fdt.h>
-> @@ -440,7 +438,7 @@ static int __init octeon_rng_device_init(void)
->  }
->  device_initcall(octeon_rng_device_init);
->  
-> -static struct of_device_id __initdata octeon_ids[] = {
-> +const struct of_device_id octeon_ids[] __initconst = {
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-I think it should static const.
+------------------
 
-A.
+From: Paul Burton <paul.burton@imgtec.com>
+
+commit 096a0de427ea333f56f0ee00328cff2a2731bcf1 upstream.
+
+is_jump_ins() checks for plain jump ("j") instructions since commit
+e7438c4b893e ("MIPS: Fix sibling call handling in get_frame_info") but
+that commit didn't make the same change to the microMIPS code, leaving
+it inconsistent with the MIPS32/MIPS64 code. Handle the microMIPS
+encoding of the jump instruction too such that it behaves consistently.
+
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Fixes: e7438c4b893e ("MIPS: Fix sibling call handling in get_frame_info")
+Cc: Tony Wu <tung7970@gmail.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/14533/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/process.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -289,6 +289,8 @@ static inline int is_jump_ins(union mips
+ 		return 0;
+ 	}
+ 
++	if (ip->j_format.opcode == mm_j32_op)
++		return 1;
+ 	if (ip->j_format.opcode == mm_jal32_op)
+ 		return 1;
+ 	if (ip->r_format.opcode != mm_pool32a_op ||

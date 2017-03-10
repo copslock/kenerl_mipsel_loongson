@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:28:02 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:40760 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:28:28 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:40818 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993941AbdCJJ1HdhHgY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:27:07 +0100
+        by eddie.linux-mips.org with ESMTP id S23992214AbdCJJ112gnsY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:27:27 +0100
 Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1D911B0B;
-        Fri, 10 Mar 2017 09:27:00 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 26D25258;
+        Fri, 10 Mar 2017 09:27:18 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Tony Wu <tung7970@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.10 011/167] MIPS: Handle microMIPS jumps in the same way as MIPS32/MIPS64 jumps
-Date:   Fri, 10 Mar 2017 10:07:34 +0100
-Message-Id: <20170310083957.592346756@linuxfoundation.org>
+        stable@vger.kernel.org, Mirko Parthey <mirko.parthey@web.de>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Hauke Mehrtens <hauke@hauke-m.de>, linux-mips@linux-mips.org,
+        James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 4.10 003/167] MIPS: BCM47XX: Fix button inversion for Asus WL-500W
+Date:   Fri, 10 Mar 2017 10:07:26 +0100
+Message-Id: <20170310083957.009145945@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170310083956.767605269@linuxfoundation.org>
 References: <20170310083956.767605269@linuxfoundation.org>
@@ -25,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57122
+X-archive-position: 57123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,36 +47,49 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Mirko Parthey <mirko.parthey@web.de>
 
-commit 096a0de427ea333f56f0ee00328cff2a2731bcf1 upstream.
+commit bdfdaf1a016ef09cb941f2edad485a713510b8d5 upstream.
 
-is_jump_ins() checks for plain jump ("j") instructions since commit
-e7438c4b893e ("MIPS: Fix sibling call handling in get_frame_info") but
-that commit didn't make the same change to the microMIPS code, leaving
-it inconsistent with the MIPS32/MIPS64 code. Handle the microMIPS
-encoding of the jump instruction too such that it behaves consistently.
+The Asus WL-500W buttons are active high, but the software treats them
+as active low. Fix the inverted logic.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: e7438c4b893e ("MIPS: Fix sibling call handling in get_frame_info")
-Cc: Tony Wu <tung7970@gmail.com>
+Fixes: 3be972556fa1 ("MIPS: BCM47XX: Import buttons database from OpenWrt")
+Signed-off-by: Mirko Parthey <mirko.parthey@web.de>
+Acked-by: Rafał Miłecki <rafal@milecki.pl>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14533/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/15295/
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/bcm47xx/buttons.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -293,6 +293,8 @@ static inline int is_jump_ins(union mips
- 		return 0;
+--- a/arch/mips/bcm47xx/buttons.c
++++ b/arch/mips/bcm47xx/buttons.c
+@@ -17,6 +17,12 @@
+ 		.active_low	= 1,					\
  	}
  
-+	if (ip->j_format.opcode == mm_j32_op)
-+		return 1;
- 	if (ip->j_format.opcode == mm_jal32_op)
- 		return 1;
- 	if (ip->r_format.opcode != mm_pool32a_op ||
++#define BCM47XX_GPIO_KEY_H(_gpio, _code)				\
++	{								\
++		.code		= _code,				\
++		.gpio		= _gpio,				\
++	}
++
+ /* Asus */
+ 
+ static const struct gpio_keys_button
+@@ -79,8 +85,8 @@ bcm47xx_buttons_asus_wl500gpv2[] __initc
+ 
+ static const struct gpio_keys_button
+ bcm47xx_buttons_asus_wl500w[] __initconst = {
+-	BCM47XX_GPIO_KEY(6, KEY_RESTART),
+-	BCM47XX_GPIO_KEY(7, KEY_WPS_BUTTON),
++	BCM47XX_GPIO_KEY_H(6, KEY_RESTART),
++	BCM47XX_GPIO_KEY_H(7, KEY_WPS_BUTTON),
+ };
+ 
+ static const struct gpio_keys_button

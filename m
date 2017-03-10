@@ -1,23 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:21:26 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38432 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:27:07 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:40740 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993925AbdCJJR6VtXQm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:17:58 +0100
+        by eddie.linux-mips.org with ESMTP id S23993942AbdCJJ06yjpNY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:26:58 +0100
 Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 91AC598C;
-        Fri, 10 Mar 2017 09:17:49 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A0A42B0B;
+        Fri, 10 Mar 2017 09:26:52 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 009/153] MIPS: Fix is_jump_ins() handling of 16b microMIPS instructions
-Date:   Fri, 10 Mar 2017 10:07:22 +0100
-Message-Id: <20170310083947.687493716@linuxfoundation.org>
+        stable@vger.kernel.org, Harvey Hunt <harvey.hunt@imgtec.com>,
+        Purna Chandra Mandal <purna.mandal@microchip.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Joshua Henderson <digitalpeer@digitalpeer.com>,
+        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 4.10 001/167] MIPS: pic32mzda: Fix linker error for pic32_get_pbclk()
+Date:   Fri, 10 Mar 2017 10:07:24 +0100
+Message-Id: <20170310083956.875407591@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
-In-Reply-To: <20170310083947.108106897@linuxfoundation.org>
-References: <20170310083947.108106897@linuxfoundation.org>
+In-Reply-To: <20170310083956.767605269@linuxfoundation.org>
+References: <20170310083956.767605269@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -25,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57119
+X-archive-position: 57120
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,47 +44,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Purna Chandra Mandal <purna.mandal@microchip.com>
 
-commit 67c75057709a6d85c681c78b9b2f9b71191f01a2 upstream.
+commit a726f1d2dd4fee179aa4513176d688ad309de6cc upstream.
 
-is_jump_ins() checks 16b instruction fields without verifying that the
-instruction is indeed 16b, as is done by is_ra_save_ins() &
-is_sp_move_ins(). Add the appropriate check.
+Early clock API pic32_get_pbclk() is defined in early_clk.c and used by
+time.c and early_console.c. When CONFIG_EARLY_PRINTK isn't set,
+early_clk.c isn't compiled and time.c fails to link.
 
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Fix it by compiling early_clk.c always. Also sort files in alphabetical
+order.
+
+Fixes: 6e4ad1b41360 ("MIPS: pic32mzda: fix getting timer clock rate.")
+Reported-by: Harvey Hunt <harvey.hunt@imgtec.com>
+Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+Reviewed-by: Harvey Hunt <harvey.hunt@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Joshua Henderson <digitalpeer@digitalpeer.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14531/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/13383/
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/mips/pic32/pic32mzda/Makefile |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -241,9 +241,14 @@ static inline int is_jump_ins(union mips
- 	 *
- 	 * microMIPS is kind of more fun...
- 	 */
--	if ((ip->mm16_r5_format.opcode == mm_pool16c_op &&
--	    (ip->mm16_r5_format.rt & mm_jr16_op) == mm_jr16_op) ||
--	    ip->j_format.opcode == mm_jal32_op)
-+	if (mm_insn_16bit(ip->halfword[1])) {
-+		if ((ip->mm16_r5_format.opcode == mm_pool16c_op &&
-+		    (ip->mm16_r5_format.rt & mm_jr16_op) == mm_jr16_op))
-+			return 1;
-+		return 0;
-+	}
-+
-+	if (ip->j_format.opcode == mm_jal32_op)
- 		return 1;
- 	if (ip->r_format.opcode != mm_pool32a_op ||
- 			ip->r_format.func != mm_pool32axf_op)
+--- a/arch/mips/pic32/pic32mzda/Makefile
++++ b/arch/mips/pic32/pic32mzda/Makefile
+@@ -2,8 +2,7 @@
+ # Joshua Henderson, <joshua.henderson@microchip.com>
+ # Copyright (C) 2015 Microchip Technology, Inc.  All rights reserved.
+ #
+-obj-y			:= init.o time.o config.o
++obj-y			:= config.o early_clk.o init.o time.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK)	+= early_console.o      \
+-				   early_pin.o		\
+-				   early_clk.o
++				   early_pin.o

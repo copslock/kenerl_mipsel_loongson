@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:28:28 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:40818 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:28:59 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:40844 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992214AbdCJJ112gnsY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:27:27 +0100
+        by eddie.linux-mips.org with ESMTP id S23992267AbdCJJ1flRNpY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:27:35 +0100
 Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 26D25258;
-        Fri, 10 Mar 2017 09:27:18 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0A7919B9;
+        Fri, 10 Mar 2017 09:27:27 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Mirko Parthey <mirko.parthey@web.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Hauke Mehrtens <hauke@hauke-m.de>, linux-mips@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 4.10 003/167] MIPS: BCM47XX: Fix button inversion for Asus WL-500W
-Date:   Fri, 10 Mar 2017 10:07:26 +0100
-Message-Id: <20170310083957.009145945@linuxfoundation.org>
+        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        John Crispin <john@phrozen.org>, hauke.mehrtens@lantiq.com,
+        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 4.10 005/167] MIPS: Lantiq: Keep ethernet enabled during boot
+Date:   Fri, 10 Mar 2017 10:07:28 +0100
+Message-Id: <20170310083957.179189079@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170310083956.767605269@linuxfoundation.org>
 References: <20170310083956.767605269@linuxfoundation.org>
@@ -26,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57123
+X-archive-position: 57124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,49 +46,62 @@ X-list: linux-mips
 
 ------------------
 
-From: Mirko Parthey <mirko.parthey@web.de>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit bdfdaf1a016ef09cb941f2edad485a713510b8d5 upstream.
+commit 774f0c6419bb8f9d83901d33582c7fe3ba6a6cb3 upstream.
 
-The Asus WL-500W buttons are active high, but the software treats them
-as active low. Fix the inverted logic.
+Disabling ethernet during reboot (only to enable it again when the
+ethernet driver attaches) can put the chip into a faulty state where it
+corrupts the header of all incoming packets.
 
-Fixes: 3be972556fa1 ("MIPS: BCM47XX: Import buttons database from OpenWrt")
-Signed-off-by: Mirko Parthey <mirko.parthey@web.de>
-Acked-by: Rafał Miłecki <rafal@milecki.pl>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
+This happens if packets arrive during the time window where the core is
+disabled, and it can be easily reproduced by rebooting while sending a
+flood ping to the broadcast address.
+
+Fixes: 95135bfa7ead ("MIPS: Lantiq: Deactivate most of the devices by default")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Acked-by: John Crispin <john@phrozen.org>
+Cc: hauke.mehrtens@lantiq.com
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15295/
+Patchwork: https://patchwork.linux-mips.org/patch/15078/
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/bcm47xx/buttons.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/mips/lantiq/xway/sysctrl.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/bcm47xx/buttons.c
-+++ b/arch/mips/bcm47xx/buttons.c
-@@ -17,6 +17,12 @@
- 		.active_low	= 1,					\
- 	}
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -545,7 +545,7 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu("1a800000.pcie", "msi", 1, 1, PMU1_PCIE2_MSI);
+ 		clkdev_add_pmu("1a800000.pcie", "pdi", 1, 1, PMU1_PCIE2_PDI);
+ 		clkdev_add_pmu("1a800000.pcie", "ctl", 1, 1, PMU1_PCIE2_CTL);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0, PMU_SWITCH | PMU_PPE_DP);
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH | PMU_PPE_DP);
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+ 	} else if (of_machine_is_compatible("lantiq,ar10")) {
+@@ -553,7 +553,7 @@ void __init ltq_soc_init(void)
+ 				  ltq_ar10_fpi_hz(), ltq_ar10_pp32_hz());
+ 		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+ 		clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0, PMU_SWITCH |
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH |
+ 			       PMU_PPE_DP | PMU_PPE_TC);
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+ 		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
+@@ -575,11 +575,11 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu(NULL, "ahb", 1, 0, PMU_AHBM | PMU_AHBS);
  
-+#define BCM47XX_GPIO_KEY_H(_gpio, _code)				\
-+	{								\
-+		.code		= _code,				\
-+		.gpio		= _gpio,				\
-+	}
-+
- /* Asus */
- 
- static const struct gpio_keys_button
-@@ -79,8 +85,8 @@ bcm47xx_buttons_asus_wl500gpv2[] __initc
- 
- static const struct gpio_keys_button
- bcm47xx_buttons_asus_wl500w[] __initconst = {
--	BCM47XX_GPIO_KEY(6, KEY_RESTART),
--	BCM47XX_GPIO_KEY(7, KEY_WPS_BUTTON),
-+	BCM47XX_GPIO_KEY_H(6, KEY_RESTART),
-+	BCM47XX_GPIO_KEY_H(7, KEY_WPS_BUTTON),
- };
- 
- static const struct gpio_keys_button
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0,
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0,
+ 				PMU_SWITCH | PMU_PPE_DPLUS | PMU_PPE_DPLUM |
+ 				PMU_PPE_EMA | PMU_PPE_TC | PMU_PPE_SLL01 |
+ 				PMU_PPE_QSB | PMU_PPE_TOP);
+-		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
++		clkdev_add_pmu("1f203000.rcu", "gphy", 0, 0, PMU_GPHY);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+ 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);

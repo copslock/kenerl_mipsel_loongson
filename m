@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:17:30 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38256 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:17:55 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38266 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993905AbdCJJQ4BU7Bm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:16:56 +0100
+        by eddie.linux-mips.org with ESMTP id S23992123AbdCJJQ6208Rm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:16:58 +0100
 Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6AA00958;
-        Fri, 10 Mar 2017 09:16:49 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2ADC798C;
+        Fri, 10 Mar 2017 09:16:52 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 010/153] MIPS: Calculate microMIPS ra properly when unwinding the stack
-Date:   Fri, 10 Mar 2017 10:07:23 +0100
-Message-Id: <20170310083947.756064977@linuxfoundation.org>
+        Tony Wu <tung7970@gmail.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.9 011/153] MIPS: Handle microMIPS jumps in the same way as MIPS32/MIPS64 jumps
+Date:   Fri, 10 Mar 2017 10:07:24 +0100
+Message-Id: <20170310083947.812447330@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170310083947.108106897@linuxfoundation.org>
 References: <20170310083947.108106897@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57111
+X-archive-position: 57112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,165 +48,34 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@imgtec.com>
 
-commit bb9bc4689b9c635714fbcd5d335bad9934a7ebfc upstream.
+commit 096a0de427ea333f56f0ee00328cff2a2731bcf1 upstream.
 
-get_frame_info() calculates the offset of the return address within a
-stack frame simply by dividing a the bottom 16 bits of the instruction,
-treated as a signed integer, by the size of a long. Whilst this works
-for MIPS32 & MIPS64 ISAs where the sw or sd instructions are used, it's
-incorrect for microMIPS where encodings differ. The result is that we
-typically completely fail to unwind the stack on microMIPS.
-
-Fix this by adjusting is_ra_save_ins() to calculate the return address
-offset, and take into account the various different encodings there in
-the same place as we consider whether an instruction is storing the
-ra/$31 register.
-
-With this we are now able to unwind the stack for kernels targetting the
-microMIPS ISA, for example we can produce:
-
-    Call Trace:
-    [<80109e1f>] show_stack+0x63/0x7c
-    [<8011ea17>] __warn+0x9b/0xac
-    [<8011ea45>] warn_slowpath_fmt+0x1d/0x20
-    [<8013fe53>] register_console+0x43/0x314
-    [<8067c58d>] of_setup_earlycon+0x1dd/0x1ec
-    [<8067f63f>] early_init_dt_scan_chosen_stdout+0xe7/0xf8
-    [<8066c115>] do_early_param+0x75/0xac
-    [<801302f9>] parse_args+0x1dd/0x308
-    [<8066c459>] parse_early_options+0x25/0x28
-    [<8066c48b>] parse_early_param+0x2f/0x38
-    [<8066e8cf>] setup_arch+0x113/0x488
-    [<8066c4f3>] start_kernel+0x57/0x328
-    ---[ end trace 0000000000000000 ]---
-
-Whereas previously we only produced:
-
-    Call Trace:
-    [<80109e1f>] show_stack+0x63/0x7c
-    ---[ end trace 0000000000000000 ]---
+is_jump_ins() checks for plain jump ("j") instructions since commit
+e7438c4b893e ("MIPS: Fix sibling call handling in get_frame_info") but
+that commit didn't make the same change to the microMIPS code, leaving
+it inconsistent with the MIPS32/MIPS64 code. Handle the microMIPS
+encoding of the jump instruction too such that it behaves consistently.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Fixes: e7438c4b893e ("MIPS: Fix sibling call handling in get_frame_info")
+Cc: Tony Wu <tung7970@gmail.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14532/
+Patchwork: https://patchwork.linux-mips.org/patch/14533/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/process.c |   85 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 64 insertions(+), 21 deletions(-)
+ arch/mips/kernel/process.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -195,7 +195,7 @@ struct mips_frame_info {
- #define J_TARGET(pc,target)	\
- 		(((unsigned long)(pc) & 0xf0000000) | ((target) << 2))
- 
--static inline int is_ra_save_ins(union mips_instruction *ip)
-+static inline int is_ra_save_ins(union mips_instruction *ip, int *poff)
- {
- #ifdef CONFIG_CPU_MICROMIPS
- 	/*
-@@ -208,25 +208,70 @@ static inline int is_ra_save_ins(union m
- 	 * microMIPS is way more fun...
- 	 */
- 	if (mm_insn_16bit(ip->halfword[1])) {
--		return (ip->mm16_r5_format.opcode == mm_swsp16_op &&
--			ip->mm16_r5_format.rt == 31) ||
--		       (ip->mm16_m_format.opcode == mm_pool16c_op &&
--			ip->mm16_m_format.func == mm_swm16_op);
--	}
--	else {
--		return (ip->mm_m_format.opcode == mm_pool32b_op &&
--			ip->mm_m_format.rd > 9 &&
--			ip->mm_m_format.base == 29 &&
--			ip->mm_m_format.func == mm_swm32_func) ||
--		       (ip->i_format.opcode == mm_sw32_op &&
--			ip->i_format.rs == 29 &&
--			ip->i_format.rt == 31);
-+		switch (ip->mm16_r5_format.opcode) {
-+		case mm_swsp16_op:
-+			if (ip->mm16_r5_format.rt != 31)
-+				return 0;
-+
-+			*poff = ip->mm16_r5_format.simmediate;
-+			*poff = (*poff << 2) / sizeof(ulong);
-+			return 1;
-+
-+		case mm_pool16c_op:
-+			switch (ip->mm16_m_format.func) {
-+			case mm_swm16_op:
-+				*poff = ip->mm16_m_format.imm;
-+				*poff += 1 + ip->mm16_m_format.rlist;
-+				*poff = (*poff << 2) / sizeof(ulong);
-+				return 1;
-+
-+			default:
-+				return 0;
-+			}
-+
-+		default:
-+			return 0;
-+		}
-+	}
-+
-+	switch (ip->i_format.opcode) {
-+	case mm_sw32_op:
-+		if (ip->i_format.rs != 29)
-+			return 0;
-+		if (ip->i_format.rt != 31)
-+			return 0;
-+
-+		*poff = ip->i_format.simmediate / sizeof(ulong);
-+		return 1;
-+
-+	case mm_pool32b_op:
-+		switch (ip->mm_m_format.func) {
-+		case mm_swm32_func:
-+			if (ip->mm_m_format.rd < 0x10)
-+				return 0;
-+			if (ip->mm_m_format.base != 29)
-+				return 0;
-+
-+			*poff = ip->mm_m_format.simmediate;
-+			*poff += (ip->mm_m_format.rd & 0xf) * sizeof(u32);
-+			*poff /= sizeof(ulong);
-+			return 1;
-+		default:
-+			return 0;
-+		}
-+
-+	default:
-+		return 0;
- 	}
- #else
- 	/* sw / sd $ra, offset($sp) */
--	return (ip->i_format.opcode == sw_op || ip->i_format.opcode == sd_op) &&
--		ip->i_format.rs == 29 &&
--		ip->i_format.rt == 31;
-+	if ((ip->i_format.opcode == sw_op || ip->i_format.opcode == sd_op) &&
-+		ip->i_format.rs == 29 && ip->i_format.rt == 31) {
-+		*poff = ip->i_format.simmediate / sizeof(ulong);
-+		return 1;
-+	}
-+
-+	return 0;
- #endif
- }
- 
-@@ -349,11 +394,9 @@ static int get_frame_info(struct mips_fr
- 			}
- 			continue;
- 		}
--		if (info->pc_offset == -1 && is_ra_save_ins(&insn)) {
--			info->pc_offset =
--				ip->i_format.simmediate / sizeof(long);
-+		if (info->pc_offset == -1 &&
-+		    is_ra_save_ins(&insn, &info->pc_offset))
- 			break;
--		}
- 	}
- 	if (info->frame_size && info->pc_offset >= 0) /* nested */
+@@ -293,6 +293,8 @@ static inline int is_jump_ins(union mips
  		return 0;
+ 	}
+ 
++	if (ip->j_format.opcode == mm_j32_op)
++		return 1;
+ 	if (ip->j_format.opcode == mm_jal32_op)
+ 		return 1;
+ 	if (ip->r_format.opcode != mm_pool32a_op ||

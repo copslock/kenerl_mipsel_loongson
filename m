@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:18:54 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:38388 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2017 10:19:20 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:38404 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993909AbdCJJRjmZP6m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:17:39 +0100
+        by eddie.linux-mips.org with ESMTP id S23993918AbdCJJRmm-ZUm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2017 10:17:42 +0100
 Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4D8EEB0B;
-        Fri, 10 Mar 2017 09:17:32 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EC3DA958;
+        Fri, 10 Mar 2017 09:17:35 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Cowgill <James.Cowgill@imgtec.com>,
-        David Daney <david.daney@cavium.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.9 004/153] MIPS: OCTEON: Fix copy_from_user fault handling for large buffers
-Date:   Fri, 10 Mar 2017 10:07:17 +0100
-Message-Id: <20170310083947.382281437@linuxfoundation.org>
+        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        John Crispin <john@phrozen.org>, hauke.mehrtens@lantiq.com,
+        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 4.9 005/153] MIPS: Lantiq: Keep ethernet enabled during boot
+Date:   Fri, 10 Mar 2017 10:07:18 +0100
+Message-Id: <20170310083947.444047815@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170310083947.108106897@linuxfoundation.org>
 References: <20170310083947.108106897@linuxfoundation.org>
@@ -26,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57114
+X-archive-position: 57115
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,81 +46,62 @@ X-list: linux-mips
 
 ------------------
 
-From: James Cowgill <James.Cowgill@imgtec.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 884b426917e4b3c85f33b382c792a94305dfdd62 upstream.
+commit 774f0c6419bb8f9d83901d33582c7fe3ba6a6cb3 upstream.
 
-If copy_from_user is called with a large buffer (>= 128 bytes) and the
-userspace buffer refers partially to unreadable memory, then it is
-possible for Octeon's copy_from_user to report the wrong number of bytes
-have been copied. In the case where the buffer size is an exact multiple
-of 128 and the fault occurs in the last 64 bytes, copy_from_user will
-report that all the bytes were copied successfully but leave some
-garbage in the destination buffer.
+Disabling ethernet during reboot (only to enable it again when the
+ethernet driver attaches) can put the chip into a faulty state where it
+corrupts the header of all incoming packets.
 
-The bug is in the main __copy_user_common loop in octeon-memcpy.S where
-in the middle of the loop, src and dst are incremented by 128 bytes. The
-l_exc_copy fault handler is used after this but that assumes that
-"src < THREAD_BUADDR($28)". This is not the case if src has already been
-incremented.
+This happens if packets arrive during the time window where the core is
+disabled, and it can be easily reproduced by rebooting while sending a
+flood ping to the broadcast address.
 
-Fix by adding an extra fault handler which rewinds the src and dst
-pointers 128 bytes before falling though to l_exc_copy.
-
-Thanks to the pwritev test from the strace test suite for originally
-highlighting this bug!
-
-Fixes: 5b3b16880f40 ("MIPS: Add Cavium OCTEON processor support ...")
-Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
-Acked-by: David Daney <david.daney@cavium.com>
-Reviewed-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Fixes: 95135bfa7ead ("MIPS: Lantiq: Deactivate most of the devices by default")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Acked-by: John Crispin <john@phrozen.org>
+Cc: hauke.mehrtens@lantiq.com
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14978/
+Patchwork: https://patchwork.linux-mips.org/patch/15078/
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/cavium-octeon/octeon-memcpy.S |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/mips/lantiq/xway/sysctrl.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/cavium-octeon/octeon-memcpy.S
-+++ b/arch/mips/cavium-octeon/octeon-memcpy.S
-@@ -208,18 +208,18 @@ EXC(	STORE	t2, UNIT(6)(dst),	s_exc_p10u)
- 	ADD	src, src, 16*NBYTES
- EXC(	STORE	t3, UNIT(7)(dst),	s_exc_p9u)
- 	ADD	dst, dst, 16*NBYTES
--EXC(	LOAD	t0, UNIT(-8)(src),	l_exc_copy)
--EXC(	LOAD	t1, UNIT(-7)(src),	l_exc_copy)
--EXC(	LOAD	t2, UNIT(-6)(src),	l_exc_copy)
--EXC(	LOAD	t3, UNIT(-5)(src),	l_exc_copy)
-+EXC(	LOAD	t0, UNIT(-8)(src),	l_exc_copy_rewind16)
-+EXC(	LOAD	t1, UNIT(-7)(src),	l_exc_copy_rewind16)
-+EXC(	LOAD	t2, UNIT(-6)(src),	l_exc_copy_rewind16)
-+EXC(	LOAD	t3, UNIT(-5)(src),	l_exc_copy_rewind16)
- EXC(	STORE	t0, UNIT(-8)(dst),	s_exc_p8u)
- EXC(	STORE	t1, UNIT(-7)(dst),	s_exc_p7u)
- EXC(	STORE	t2, UNIT(-6)(dst),	s_exc_p6u)
- EXC(	STORE	t3, UNIT(-5)(dst),	s_exc_p5u)
--EXC(	LOAD	t0, UNIT(-4)(src),	l_exc_copy)
--EXC(	LOAD	t1, UNIT(-3)(src),	l_exc_copy)
--EXC(	LOAD	t2, UNIT(-2)(src),	l_exc_copy)
--EXC(	LOAD	t3, UNIT(-1)(src),	l_exc_copy)
-+EXC(	LOAD	t0, UNIT(-4)(src),	l_exc_copy_rewind16)
-+EXC(	LOAD	t1, UNIT(-3)(src),	l_exc_copy_rewind16)
-+EXC(	LOAD	t2, UNIT(-2)(src),	l_exc_copy_rewind16)
-+EXC(	LOAD	t3, UNIT(-1)(src),	l_exc_copy_rewind16)
- EXC(	STORE	t0, UNIT(-4)(dst),	s_exc_p4u)
- EXC(	STORE	t1, UNIT(-3)(dst),	s_exc_p3u)
- EXC(	STORE	t2, UNIT(-2)(dst),	s_exc_p2u)
-@@ -383,6 +383,10 @@ done:
- 	 nop
- 	END(memcpy)
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -545,7 +545,7 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu("1a800000.pcie", "msi", 1, 1, PMU1_PCIE2_MSI);
+ 		clkdev_add_pmu("1a800000.pcie", "pdi", 1, 1, PMU1_PCIE2_PDI);
+ 		clkdev_add_pmu("1a800000.pcie", "ctl", 1, 1, PMU1_PCIE2_CTL);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0, PMU_SWITCH | PMU_PPE_DP);
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH | PMU_PPE_DP);
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+ 	} else if (of_machine_is_compatible("lantiq,ar10")) {
+@@ -553,7 +553,7 @@ void __init ltq_soc_init(void)
+ 				  ltq_ar10_fpi_hz(), ltq_ar10_pp32_hz());
+ 		clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
+ 		clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0, PMU_SWITCH |
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH |
+ 			       PMU_PPE_DP | PMU_PPE_TC);
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+ 		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
+@@ -575,11 +575,11 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu(NULL, "ahb", 1, 0, PMU_AHBM | PMU_AHBS);
  
-+l_exc_copy_rewind16:
-+	/* Rewind src and dst by 16*NBYTES for l_exc_copy */
-+	SUB	src, src, 16*NBYTES
-+	SUB	dst, dst, 16*NBYTES
- l_exc_copy:
- 	/*
- 	 * Copy bytes from src until faulting load address (or until a
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
+-		clkdev_add_pmu("1e108000.eth", NULL, 1, 0,
++		clkdev_add_pmu("1e108000.eth", NULL, 0, 0,
+ 				PMU_SWITCH | PMU_PPE_DPLUS | PMU_PPE_DPLUM |
+ 				PMU_PPE_EMA | PMU_PPE_TC | PMU_PPE_SLL01 |
+ 				PMU_PPE_QSB | PMU_PPE_TOP);
+-		clkdev_add_pmu("1f203000.rcu", "gphy", 1, 0, PMU_GPHY);
++		clkdev_add_pmu("1f203000.rcu", "gphy", 0, 0, PMU_GPHY);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+ 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);

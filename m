@@ -1,43 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Mar 2017 06:21:54 +0100 (CET)
-Received: from SMTPBG252.QQ.COM ([183.60.52.105]:52860 "EHLO smtpbg252.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993868AbdCKFUQURxDF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 11 Mar 2017 06:20:16 +0100
-X-QQ-mid: bizesmtp8t1489209560txqs8d78x
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Sat, 11 Mar 2017 13:19:17 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FK82B00A0000000
-X-QQ-FEAT: EcrU/iQvn3tl6jSve8jZFVDs2QkbBtprBwSlcaGKi0vFa2IUDoiNPtIhtyZ/p
-        EILju8xv/SfSBtRk6sYMcJ+/d+/WwkncSEm3F4On6Tt6zdjopAZfyG1oVXKKsoheGEk+qU1
-        zMQePp4sbaaUm66FBTB7zQxQUvplc2dPGeaNH2R2mnShoIZLpatNf46uEo++tJxBggeG677
-        bf1kmtvQrjkj44etkbfeRHcfpNPKmVG553wx765J8YI/0ROlclsgTkAEFe8MlQyEKOq4A7b
-        82VcUSb8fuX2Q5TFL6bBTUtARWlNI+ceB9Ng==
-X-QQ-GoodBg: 0
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
-Subject: [PATCH V2 5/7] MIPS: c-r4k: Fix Loongson-3's vcache/scache waysize calculation
-Date:   Sat, 11 Mar 2017 13:19:56 +0800
-Message-Id: <1489209598-30312-5-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1489209598-30312-1-git-send-email-chenhc@lemote.com>
-References: <1489209598-30312-1-git-send-email-chenhc@lemote.com>
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Mar 2017 19:16:16 +0100 (CET)
+Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:60792 "EHLO
+        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993948AbdCLSQJeuiUF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Mar 2017 19:16:09 +0100
+Received: from hauke-desktop.lan (p20030086281B7F001E80E46CAF8E5409.dip0.t-ipconnect.de [IPv6:2003:86:281b:7f00:1e80:e46c:af8e:5409])
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 7730D10026B;
+        Sun, 12 Mar 2017 19:16:08 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org, james.hogan@imgtec.com
+Cc:     linux-mips@linux-mips.org, mingo@kernel.org,
+        linux-kernel@vger.kernel.org, tglx@linutronix.de,
+        peterz@infradead.org, efault@gmx.de,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH] MIPS: smp-mt: fix missing task_stack_page compile error
+Date:   Sun, 12 Mar 2017 19:15:51 +0100
+Message-Id: <20170312181551.22378-1-hauke@hauke-m.de>
+X-Mailer: git-send-email 2.11.0
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57141
+X-archive-position: 57142
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,35 +37,53 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-If scache.waysize is 0, r4k___flush_cache_all() will do nothing and
-then cause bugs. BTW, though vcache.waysize isn't being used by now,
-we also fix its calculation.
+arch/mips/include/asm/processor.h references task_stack_page, but it is
+not defined anywhere. Including linux/sched/task_stack.h directly in
+asm/processor.h caused a different compile warning.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
+This fixes the folowing compile error in kernel 4.11-rc1:
+  CC      arch/mips/kernel/smp-mt.o
+In file included from ./arch/mips/include/asm/irq.h:16:0,
+                 from ./include/linux/irq.h:26,
+                 from ./include/asm-generic/hardirq.h:12,
+                 from ./arch/mips/include/asm/hardirq.h:16,
+                 from ./include/linux/hardirq.h:8,
+                 from ./include/linux/interrupt.h:12,
+                 from arch/mips/kernel/smp-mt.c:23:
+arch/mips/kernel/smp-mt.c: In function 'vsmp_boot_secondary':
+./arch/mips/include/asm/processor.h:384:41: error: implicit declaration of function 'task_stack_page' [-Werror=implicit-function-declaration]
+ #define __KSTK_TOS(tsk) ((unsigned long)task_stack_page(tsk) + \
+                                         ^
+./arch/mips/include/asm/mipsmtregs.h:339:11: note: in definition of macro 'mttgpr'
+  : : "r" (v));       \
+           ^
+arch/mips/kernel/smp-mt.c:215:2: note: in expansion of macro 'write_tc_gpr_sp'
+  write_tc_gpr_sp( __KSTK_TOS(idle));
+  ^
+arch/mips/kernel/smp-mt.c:215:19: note: in expansion of macro '__KSTK_TOS'
+  write_tc_gpr_sp( __KSTK_TOS(idle));
+                   ^
+cc1: all warnings being treated as errors
+scripts/Makefile.build:294: recipe for target 'arch/mips/kernel/smp-mt.o' failed
+
+Fixes: f3ac60671954 ("sched/headers: Move task-stack related APIs from <linux/sched.h> to <linux/sched/task_stack.h>")
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/mm/c-r4k.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/kernel/smp-mt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index e7f798d..3fe99cb 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1562,6 +1562,7 @@ static void probe_vcache(void)
- 	vcache_size = c->vcache.sets * c->vcache.ways * c->vcache.linesz;
- 
- 	c->vcache.waybit = 0;
-+	c->vcache.waysize = vcache_size / c->vcache.ways;
- 
- 	pr_info("Unified victim cache %ldkB %s, linesize %d bytes.\n",
- 		vcache_size >> 10, way_string[c->vcache.ways], c->vcache.linesz);
-@@ -1664,6 +1665,7 @@ static void __init loongson3_sc_init(void)
- 	/* Loongson-3 has 4 cores, 1MB scache for each. scaches are shared */
- 	scache_size *= 4;
- 	c->scache.waybit = 0;
-+	c->scache.waysize = scache_size / c->scache.ways;
- 	pr_info("Unified secondary cache %ldkB %s, linesize %d bytes.\n",
- 	       scache_size >> 10, way_string[c->scache.ways], c->scache.linesz);
- 	if (scache_size)
+diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
+index e077ea3e11fb..effc1ed18954 100644
+--- a/arch/mips/kernel/smp-mt.c
++++ b/arch/mips/kernel/smp-mt.c
+@@ -18,7 +18,7 @@
+  * Copyright (C) 2006 Ralf Baechle (ralf@linux-mips.org)
+  */
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
++#include <linux/sched/task_stack.h>
+ #include <linux/cpumask.h>
+ #include <linux/interrupt.h>
+ #include <linux/irqchip/mips-gic.h>
 -- 
-2.7.0
+2.11.0

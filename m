@@ -1,21 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2017 14:34:45 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:48736 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2017 15:57:31 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:64222 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993962AbdCMNdwT5rST (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2017 14:33:52 +0100
+        with ESMTP id S23993962AbdCMO5Yk4Bad (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2017 15:57:24 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id F264966C94ECA;
-        Mon, 13 Mar 2017 13:33:38 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 12FEAC96C2E5B;
+        Mon, 13 Mar 2017 14:57:15 +0000 (GMT)
 Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Mon, 13 Mar 2017 13:33:41 +0000
+ 14.3.294.0; Mon, 13 Mar 2017 14:57:18 +0000
 From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 To:     <ralf@linux-mips.org>
 CC:     <linux-mips@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Subject: [PATCH 0/2] cpu-features.h rename
-Date:   Mon, 13 Mar 2017 14:33:36 +0100
-Message-ID: <1489412018-30387-1-git-send-email-marcin.nowakowski@imgtec.com>
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH] MIPS: generic: fix out-of-tree defconfig target builds
+Date:   Mon, 13 Mar 2017 15:57:14 +0100
+Message-ID: <1489417034-12258-1-git-send-email-marcin.nowakowski@imgtec.com>
 X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -24,7 +25,7 @@ Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57152
+X-archive-position: 57153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,113 +42,69 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Since the introduction of GENERIC_CPU_AUTOPROBE
-(https://patchwork.linux-mips.org/patch/15395/) we've got 2 very similarily
-named headers: cpu-features.h and cpufeature.h.
-Since the latter is used by all platforms that implement
-GENERIC_CPU_AUTOPROBE functionality, it's better to rename the MIPS-specific
-cpu-features.h.
+When specifying a generic defconfig target with O=... option set, make
+is invoked in the output location before a target makefile wrapper is
+created. Ensure that the correct makefile is used by specifying the
+kernel source makefile during make invocation.
 
-Marcin Nowakowski (2):
-  MIPS: mach-rm: Remove recursive include of cpu-feature-overrides.h
-  MIPS: rename cpu-features.h -> cpucaps.h
+This fixes the either of the following errors:
 
- arch/mips/dec/setup.c                                             | 2 +-
- arch/mips/dec/time.c                                              | 2 +-
- arch/mips/include/asm/atomic.h                                    | 2 +-
- arch/mips/include/asm/bitops.h                                    | 2 +-
- arch/mips/include/asm/branch.h                                    | 2 +-
- arch/mips/include/asm/cacheflush.h                                | 2 +-
- arch/mips/include/asm/{cpu-features.h => cpucaps.h}               | 8 ++++----
- arch/mips/include/asm/dsp.h                                       | 2 +-
- arch/mips/include/asm/fpu.h                                       | 2 +-
- arch/mips/include/asm/highmem.h                                   | 2 +-
- arch/mips/include/asm/io.h                                        | 2 +-
- .../mach-ath25/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 8 ++++----
- .../mach-ath79/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 8 ++++----
- .../mach-au1x00/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 6 +++---
- .../mach-bcm47xx/{cpu-feature-overrides.h => cpucaps-overrides.h} | 6 +++---
- .../mach-bcm63xx/{cpu-feature-overrides.h => cpucaps-overrides.h} | 6 +++---
- .../mach-bmips/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 6 +++---
- .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 4 ++--
- .../mach-cobalt/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 6 +++---
- .../asm/mach-dec/{cpu-feature-overrides.h => cpucaps-overrides.h} | 6 +++---
- .../mach-generic/{cpu-feature-overrides.h => cpucaps-overrides.h} | 6 +++---
- .../mach-ip22/{cpu-feature-overrides.h => cpucaps-overrides.h}    | 6 +++---
- .../mach-ip27/{cpu-feature-overrides.h => cpucaps-overrides.h}    | 6 +++---
- .../mach-ip28/{cpu-feature-overrides.h => cpucaps-overrides.h}    | 6 +++---
- .../mach-ip32/{cpu-feature-overrides.h => cpucaps-overrides.h}    | 6 +++---
- .../mach-jz4740/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 4 ++--
- .../falcon/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
- .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 6 +++---
- .../mach-malta/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 6 +++---
- .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 6 +++---
- .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 6 +++---
- .../mach-pic32/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 6 +++---
- .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 6 +++---
- .../mt7620/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
- .../mt7621/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
- .../rt288x/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
- .../rt305x/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
- .../rt3883/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
- .../mach-rc32434/{cpu-feature-overrides.h => cpucaps-overrides.h} | 8 ++++----
- .../asm/mach-rm/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 8 +++-----
- .../mach-sibyte/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 6 +++---
- .../mach-tx49xx/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 6 +++---
- arch/mips/include/asm/r4kcache.h                                  | 2 +-
- arch/mips/include/asm/switch_to.h                                 | 2 +-
- arch/mips/include/asm/timex.h                                     | 2 +-
- arch/mips/include/asm/tlb.h                                       | 2 +-
- arch/mips/kernel/branch.c                                         | 2 +-
- arch/mips/kernel/cpu-probe.c                                      | 2 +-
- arch/mips/kernel/elf.c                                            | 2 +-
- arch/mips/kernel/proc.c                                           | 2 +-
- arch/mips/kernel/signal.c                                         | 2 +-
- arch/mips/kernel/signal_n32.c                                     | 2 +-
- arch/mips/kernel/smp-bmips.c                                      | 2 +-
- arch/mips/kernel/sysrq.c                                          | 2 +-
- arch/mips/kernel/time.c                                           | 2 +-
- arch/mips/kernel/uprobes.c                                        | 2 +-
- arch/mips/mm/c-octeon.c                                           | 2 +-
- arch/mips/mm/c-r4k.c                                              | 2 +-
- arch/mips/mm/cache.c                                              | 2 +-
- arch/mips/mm/gup.c                                                | 2 +-
- arch/mips/net/bpf_jit.c                                           | 2 +-
- arch/mips/netlogic/common/time.c                                  | 2 +-
- arch/mips/pistachio/irq.c                                         | 2 +-
- 63 files changed, 135 insertions(+), 137 deletions(-)
- rename arch/mips/include/asm/{cpu-features.h => cpucaps.h} (99%)
- rename arch/mips/include/asm/mach-ath25/{cpu-feature-overrides.h => cpucaps-overrides.h} (86%)
- rename arch/mips/include/asm/mach-ath79/{cpu-feature-overrides.h => cpucaps-overrides.h} (85%)
- rename arch/mips/include/asm/mach-au1x00/{cpu-feature-overrides.h => cpucaps-overrides.h} (91%)
- rename arch/mips/include/asm/mach-bcm47xx/{cpu-feature-overrides.h => cpucaps-overrides.h} (93%)
- rename arch/mips/include/asm/mach-bcm63xx/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
- rename arch/mips/include/asm/mach-bmips/{cpu-feature-overrides.h => cpucaps-overrides.h} (64%)
- rename arch/mips/include/asm/mach-cavium-octeon/{cpu-feature-overrides.h => cpucaps-overrides.h} (94%)
- rename arch/mips/include/asm/mach-cobalt/{cpu-feature-overrides.h => cpucaps-overrides.h} (90%)
- rename arch/mips/include/asm/mach-dec/{cpu-feature-overrides.h => cpucaps-overrides.h} (95%)
- rename arch/mips/include/asm/mach-generic/{cpu-feature-overrides.h => cpucaps-overrides.h} (61%)
- rename arch/mips/include/asm/mach-ip22/{cpu-feature-overrides.h => cpucaps-overrides.h} (88%)
- rename arch/mips/include/asm/mach-ip27/{cpu-feature-overrides.h => cpucaps-overrides.h} (92%)
- rename arch/mips/include/asm/mach-ip28/{cpu-feature-overrides.h => cpucaps-overrides.h} (88%)
- rename arch/mips/include/asm/mach-ip32/{cpu-feature-overrides.h => cpucaps-overrides.h} (89%)
- rename arch/mips/include/asm/mach-jz4740/{cpu-feature-overrides.h => cpucaps-overrides.h} (92%)
- rename arch/mips/include/asm/mach-lantiq/falcon/{cpu-feature-overrides.h => cpucaps-overrides.h} (85%)
- rename arch/mips/include/asm/mach-loongson64/{cpu-feature-overrides.h => cpucaps-overrides.h} (89%)
- rename arch/mips/include/asm/mach-malta/{cpu-feature-overrides.h => cpucaps-overrides.h} (92%)
- rename arch/mips/include/asm/mach-netlogic/{cpu-feature-overrides.h => cpucaps-overrides.h} (88%)
- rename arch/mips/include/asm/mach-paravirt/{cpu-feature-overrides.h => cpucaps-overrides.h} (83%)
- rename arch/mips/include/asm/mach-pic32/{cpu-feature-overrides.h => cpucaps-overrides.h} (82%)
- rename arch/mips/include/asm/mach-pmcs-msp71xx/{cpu-feature-overrides.h => cpucaps-overrides.h} (76%)
- rename arch/mips/include/asm/mach-ralink/mt7620/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
- rename arch/mips/include/asm/mach-ralink/mt7621/{cpu-feature-overrides.h => cpucaps-overrides.h} (88%)
- rename arch/mips/include/asm/mach-ralink/rt288x/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
- rename arch/mips/include/asm/mach-ralink/rt305x/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
- rename arch/mips/include/asm/mach-ralink/rt3883/{cpu-feature-overrides.h => cpucaps-overrides.h} (86%)
- rename arch/mips/include/asm/mach-rc32434/{cpu-feature-overrides.h => cpucaps-overrides.h} (90%)
- rename arch/mips/include/asm/mach-rm/{cpu-feature-overrides.h => cpucaps-overrides.h} (84%)
- rename arch/mips/include/asm/mach-sibyte/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
- rename arch/mips/include/asm/mach-tx49xx/{cpu-feature-overrides.h => cpucaps-overrides.h} (74%)
+$ make sead3_defoncifg ARCH=mips O=test
+make[1]: Entering directory '/mnt/ssd/MIPS/linux-next/test'
+make[2]: *** No rule to make target '32r2el_defconfig'.  Stop.
+arch/mips/Makefile:506: recipe for target 'sead3_defconfig' failed
+make[1]: *** [sead3_defconfig] Error 2
+make[1]: Leaving directory '/mnt/ssd/MIPS/linux-next/test'
+Makefile:152: recipe for target 'sub-make' failed
+make: *** [sub-make] Error 2
 
+$ make 32r2el_defconfig ARCH=mips O=test
+make[1]: Entering directory '/mnt/ssd/MIPS/linux-next/test'
+Using ../arch/mips/configs/generic_defconfig as base
+Merging ../arch/mips/configs/generic/32r2.config
+Merging ../arch/mips/configs/generic/el.config
+Merging ../arch/mips/configs/generic/board-sead-3.config
+!
+! merged configuration written to .config (needs make)
+!
+make[2]: *** No rule to make target 'olddefconfig'.  Stop.
+arch/mips/Makefile:489: recipe for target '32r2el_defconfig' failed
+make[1]: *** [32r2el_defconfig] Error 2
+make[1]: Leaving directory '/mnt/ssd/MIPS/linux-next/test'
+Makefile:152: recipe for target 'sub-make' failed
+make: *** [sub-make] Error 2
+
+Fixes: eed0eabd12ef ('MIPS: generic: Introduce generic DT-based board support')
+Fixes: 3f5f0a4475e1 ('MIPS: generic: Convert SEAD-3 to a generic board')
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+---
+ arch/mips/Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 8ef9c02..02a1787 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -489,7 +489,7 @@ $(generic_defconfigs):
+ 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
+ 		-m -O $(objtree) $(srctree)/arch/$(ARCH)/configs/generic_defconfig $^ \
+ 		$(foreach board,$(BOARDS),$(generic_config_dir)/board-$(board).config)
+-	$(Q)$(MAKE) olddefconfig
++	$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+ 
+ #
+ # Prevent generic merge_config rules attempting to merge single fragments
+@@ -503,8 +503,8 @@ $(generic_config_dir)/%.config: ;
+ #
+ .PHONY: sead3_defconfig
+ sead3_defconfig:
+-	$(Q)$(MAKE) 32r2el_defconfig BOARDS=sead-3
++	$(Q)$(MAKE) -f $(srctree)/Makefile 32r2el_defconfig BOARDS=sead-3
+ 
+ .PHONY: sead3micro_defconfig
+ sead3micro_defconfig:
+-	$(Q)$(MAKE) micro32r2el_defconfig BOARDS=sead-3
++	$(Q)$(MAKE) -f $(srctree)/Makefile micro32r2el_defconfig BOARDS=sead-3
 -- 
 2.7.4

@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2017 23:15:21 +0100 (CET)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:36280
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2017 23:15:47 +0100 (CET)
+Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:36284
         "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993990AbdCMWOcGR41m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2017 23:14:32 +0100
-Received: by mail-wm0-x244.google.com with SMTP id v190so12125941wme.3;
-        Mon, 13 Mar 2017 15:14:32 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23994030AbdCMWOhChXpm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2017 23:14:37 +0100
+Received: by mail-wm0-x244.google.com with SMTP id v190so12126090wme.3;
+        Mon, 13 Mar 2017 15:14:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=S0upfSdZufs1E8OQBrpOcxd5FLskulElvUhgO1Wl3wU=;
-        b=jCXgItCCNfcmySMt1lzfCoLn7OmnJyWkm3cFsRYC2K8Ij9+56VoOhMDBHnNudHZFb+
-         FM31o9mmQYMtWqyjd5aF2lz1B83kwkUc57uo2NqTlMRN2gmxZKyT1AX8wmomL8DHu+gQ
-         wKLtXB4/StVo+nbdmgFrVt5lLwHCdEDFtPxLbZu5km46xqrUGcpp2cGVDxWEXbnQ7/1V
-         DihZ8qpJw8yC4a6ixN4YTJYq5p4Ifc2uhLSMcgW5+xL5FIkwn8I8oeCHwyNntS1CWqtH
-         rZqPvsyyF4ZTAgdVhzqFWfbSuc5uNI9/FSsIUsbc0l4fnDTjlTywa3JrI9SwT9jdTeXc
-         DWtQ==
+        bh=MuWNNuk3vxLpp54L6i+g8NdgOGb/dhWpwMswypTTuV0=;
+        b=Sbc5FX0fwRxSmjxoI2AYNY6jCdAlnKBBPQIIh7vJluPM2Z7sK4GhVIGpo9pUxLeZt0
+         OVKcYUC6U+H2P6UbB5ANhubIcMw3ArLged7kMbVeNjh+WDxAgwUPJfGwwWXl3Ikmdk4R
+         kTg2mxRBFdRwY3dIYJLpWQof2BSOkNj27QvdCo12cFVyynWAXKqduDbfj+bx8xRNLkvy
+         29Z7+X9HETkiZZrcW0x1bXRyXT+rctMYlunEj6i9JmqizEad4uSemTvMH7aZ2s4JsFPj
+         bDb6Hb5+4sWXl/kZY6rR3pBmdrg6Fv43BPkDaMJ/plzzzwtA0HqA+eJKX1m3NsBmB+Ix
+         HqZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=S0upfSdZufs1E8OQBrpOcxd5FLskulElvUhgO1Wl3wU=;
-        b=RUKh81vnsbiNNswWOzlRiuTryzaFb6TP4pyVesTxrgwbHJ1Y2FpVjADMwMhl5kFhsl
-         VN0pTk4YkSgxfX/A5eNfieQ1pzQL8cYQ/huCqPo0Gvm9g4v86etxldlz9sTQs1N42FCj
-         JBZ67rzQXPHLAoiWvYoRYJ4FxF/Kcbv9m+LbgAtER2jAR3MBC/HUP3ZCPcU8wBnGFQkA
-         whQnll+qhu6wkTAHvSJeKH/EwN3stt5r8fe8OWbBW/N5uVUta4yfiraBH2N3RB6ikyx+
-         WE9xSaH+hL7GdGMxqkOb5oDfrP6F22dAxH5aynKHjh0YsA8JH6I9GJpA7YPsCa7m2BsR
-         i+bQ==
-X-Gm-Message-State: AFeK/H05D4jiEnKBFbrxQ2+AeT/aME6S6SS1bzhPU56ecUB0CLAXYel6JTl0LBeHZ+Nyhw==
-X-Received: by 10.28.203.204 with SMTP id b195mr12636968wmg.51.1489443266680;
-        Mon, 13 Mar 2017 15:14:26 -0700 (PDT)
+        bh=MuWNNuk3vxLpp54L6i+g8NdgOGb/dhWpwMswypTTuV0=;
+        b=XgyEyeO5yCzHDWd+CJproymr3XLMRaIZZ0Jifflwr2uR2TxvyyFY/P61jY8K0Aim4v
+         YdlEvaAxASwzppPYg1Q4QHmzdllZENuZ6rEv2G8yVSfR4myMzO3VY21napmza2CCajzT
+         RsOTvY1iKRD/2OvNIpPHTm3mhrUpFr3I3/xNnRaSz2DovauYYmDH1ixdmcQk6mwTjdBU
+         YvbM0CDeP5xdOj9m/8Ohd7Rw6o3Rik/AqGCVddqF/FJAVkSLStH0pd/mlyH4h9H2mgtZ
+         iucCnaNMvBszDw0cWvOHRzzEJ58HPAJ0Qd81iNf2SKaXFj2veFL8K5/B+92kmu58XlJL
+         3RRw==
+X-Gm-Message-State: AFeK/H2FsuE+GolEWj3NPTCZVSlVlwgDj0Q231EzL38wtGz3UlfyRilOECMvqLWWbGsLuQ==
+X-Received: by 10.28.69.202 with SMTP id l71mr12714512wmi.68.1489443270117;
+        Mon, 13 Mar 2017 15:14:30 -0700 (PDT)
 Received: from localhost (login1.zih.tu-dresden.de. [141.76.16.140])
-        by smtp.googlemail.com with ESMTPSA id k8sm26453956wre.19.2017.03.13.15.14.25
+        by smtp.googlemail.com with ESMTPSA id z88sm26694011wrb.26.2017.03.13.15.14.28
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 13 Mar 2017 15:14:26 -0700 (PDT)
+        Mon, 13 Mar 2017 15:14:29 -0700 (PDT)
 From:   Till Smejkal <till.smejkal@googlemail.com>
 X-Google-Original-From: Till Smejkal <till.smejkal@gmail.com>
 To:     Richard Henderson <rth@twiddle.net>,
@@ -102,9 +102,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
         linux-usb@vger.kernel.org, linux-fsdevel@vger.kernel.org,
         linux-aio@kvack.org, linux-mm@kvack.org, linux-api@vger.kernel.org,
         linux-arch@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: [RFC PATCH 02/13] mm: Add mm_struct argument to 'do_mmap' and 'do_mmap_pgoff'
-Date:   Mon, 13 Mar 2017 15:14:04 -0700
-Message-Id: <20170313221415.9375-3-till.smejkal@gmail.com>
+Subject: [RFC PATCH 03/13] mm: Rename 'unmap_region' and add mm_struct argument
+Date:   Mon, 13 Mar 2017 15:14:05 -0700
+Message-Id: <20170313221415.9375-4-till.smejkal@gmail.com>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170313221415.9375-1-till.smejkal@gmail.com>
 References: <20170313221415.9375-1-till.smejkal@gmail.com>
@@ -112,7 +112,7 @@ Return-Path: <till.smejkal@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57170
+X-archive-position: 57171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -129,171 +129,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add to the 'do_mmap' and 'do_mmap_pgoff' functions the mm_struct they
-should operate on as additional argument. Before, both functions simply
-used the memory map of the current task. However, with the introduction of
-first class virtual address spaces, these functions also need to be usable
-for other memory maps than just the one of the current process. Hence,
-explicitly define during the function call which memory map to use.
+Rename the 'unmap_region' function to 'munmap_region' so that it uses the
+same naming pattern as the do_mmap <-> mmap_region couple. In addition
+also make the new 'munmap_region' function publicly available to all other
+kernel sources.
+
+In addition, also add to the function the mm_struct it should operate on
+as additional argument. Before, the function simply used the memory map of
+the current task. However, with the introduction of first class virtual
+address spaces, munmap_region need also be able to operate on other memory
+maps than just the current task's one. Accordingly, add a new argument to
+the function so that one can define explicitly which memory map should be
+used.
 
 Signed-off-by: Till Smejkal <till.smejkal@gmail.com>
 ---
- arch/x86/mm/mpx.c  |  4 ++--
- fs/aio.c           |  4 ++--
- include/linux/mm.h | 11 ++++++-----
- ipc/shm.c          |  3 ++-
- mm/mmap.c          | 16 ++++++++--------
- mm/nommu.c         |  7 ++++---
- mm/util.c          |  2 +-
- 7 files changed, 25 insertions(+), 22 deletions(-)
+ include/linux/mm.h |  4 ++++
+ mm/mmap.c          | 14 +++++---------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/mm/mpx.c b/arch/x86/mm/mpx.c
-index af59f808742f..99c664a97c35 100644
---- a/arch/x86/mm/mpx.c
-+++ b/arch/x86/mm/mpx.c
-@@ -50,8 +50,8 @@ static unsigned long mpx_mmap(unsigned long len)
- 		return -EINVAL;
- 
- 	down_write(&mm->mmap_sem);
--	addr = do_mmap(NULL, 0, len, PROT_READ | PROT_WRITE,
--			MAP_ANONYMOUS | MAP_PRIVATE, VM_MPX, 0, &populate);
-+	addr = do_mmap(mm, NULL, 0, len, PROT_READ | PROT_WRITE,
-+		       MAP_ANONYMOUS | MAP_PRIVATE, VM_MPX, 0, &populate);
- 	up_write(&mm->mmap_sem);
- 	if (populate)
- 		mm_populate(addr, populate);
-diff --git a/fs/aio.c b/fs/aio.c
-index 873b4ca82ccb..df9bba5a2aff 100644
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -510,8 +510,8 @@ static int aio_setup_ring(struct kioctx *ctx)
- 		return -EINTR;
- 	}
- 
--	ctx->mmap_base = do_mmap_pgoff(ctx->aio_ring_file, 0, ctx->mmap_size,
--				       PROT_READ | PROT_WRITE,
-+	ctx->mmap_base = do_mmap_pgoff(current->mm, ctx->aio_ring_file, 0,
-+				       ctx->mmap_size, PROT_READ | PROT_WRITE,
- 				       MAP_SHARED, 0, &unused);
- 	up_write(&mm->mmap_sem);
- 	if (IS_ERR((void *)ctx->mmap_base)) {
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index fa483d2ff3eb..fb11be77545f 100644
+index fb11be77545f..71a90604d21f 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2019,17 +2019,18 @@ extern unsigned long get_unmapped_area(struct file *, unsigned long, unsigned lo
- extern unsigned long mmap_region(struct mm_struct *mm, struct file *file,
- 				 unsigned long addr, unsigned long len,
- 				 vm_flags_t vm_flags, unsigned long pgoff);
--extern unsigned long do_mmap(struct file *file, unsigned long addr,
--	unsigned long len, unsigned long prot, unsigned long flags,
--	vm_flags_t vm_flags, unsigned long pgoff, unsigned long *populate);
-+extern unsigned long do_mmap(struct mm_struct *mm, struct file *file,
-+	unsigned long addr, unsigned long len, unsigned long prot,
-+	unsigned long flags, vm_flags_t vm_flags, unsigned long pgoff,
-+	unsigned long *populate);
+@@ -2023,6 +2023,10 @@ extern unsigned long do_mmap(struct mm_struct *mm, struct file *file,
+ 	unsigned long addr, unsigned long len, unsigned long prot,
+ 	unsigned long flags, vm_flags_t vm_flags, unsigned long pgoff,
+ 	unsigned long *populate);
++
++extern void munmap_region(struct mm_struct *mm, struct vm_area_struct *vma,
++			  struct vm_area_struct *prev, unsigned long start,
++			  unsigned long end);
  extern int do_munmap(struct mm_struct *, unsigned long, size_t);
  
  static inline unsigned long
--do_mmap_pgoff(struct file *file, unsigned long addr,
-+do_mmap_pgoff(struct mm_struct *mm, struct file *file, unsigned long addr,
- 	unsigned long len, unsigned long prot, unsigned long flags,
- 	unsigned long pgoff, unsigned long *populate)
- {
--	return do_mmap(file, addr, len, prot, flags, 0, pgoff, populate);
-+	return do_mmap(mm, file, addr, len, prot, flags, 0, pgoff, populate);
- }
- 
- #ifdef CONFIG_MMU
-diff --git a/ipc/shm.c b/ipc/shm.c
-index 81203e8ba013..64c21fb32ca9 100644
---- a/ipc/shm.c
-+++ b/ipc/shm.c
-@@ -1222,7 +1222,8 @@ long do_shmat(int shmid, char __user *shmaddr, int shmflg, ulong *raddr,
- 			goto invalid;
- 	}
- 
--	addr = do_mmap_pgoff(file, addr, size, prot, flags, 0, &populate);
-+	addr = do_mmap_pgoff(mm, file, addr, size, prot, flags, 0,
-+			     &populate);
- 	*raddr = addr;
- 	err = 0;
- 	if (IS_ERR_VALUE(addr))
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 5ac276ac9807..70028bf7b58d 100644
+index 70028bf7b58d..ea79bc4da5b7 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -1299,14 +1299,14 @@ static inline int mlock_future_check(struct mm_struct *mm,
- }
+@@ -70,10 +70,6 @@ int mmap_rnd_compat_bits __read_mostly = CONFIG_ARCH_MMAP_RND_COMPAT_BITS;
+ static bool ignore_rlimit_data;
+ core_param(ignore_rlimit_data, ignore_rlimit_data, bool, 0644);
  
- /*
-- * The caller must hold down_write(&current->mm->mmap_sem).
-+ * The caller must hold down_write(&mm->mmap_sem).
-  */
--unsigned long do_mmap(struct file *file, unsigned long addr,
--			unsigned long len, unsigned long prot,
--			unsigned long flags, vm_flags_t vm_flags,
--			unsigned long pgoff, unsigned long *populate)
-+unsigned long do_mmap(struct mm_struct *mm, struct file *file,
-+		      unsigned long addr, unsigned long len,
-+		      unsigned long prot, unsigned long flags,
-+		      vm_flags_t vm_flags, unsigned long pgoff,
-+		      unsigned long *populate)
- {
--	struct mm_struct *mm = current->mm;
- 	int pkey = 0;
- 
- 	*populate = 0;
-@@ -2779,8 +2779,8 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	}
- 
- 	file = get_file(vma->vm_file);
--	ret = do_mmap_pgoff(vma->vm_file, start, size,
--			prot, flags, pgoff, &populate);
-+	ret = do_mmap_pgoff(mm, vma->vm_file, start, size,
-+			    prot, flags, pgoff, &populate);
+-static void unmap_region(struct mm_struct *mm,
+-		struct vm_area_struct *vma, struct vm_area_struct *prev,
+-		unsigned long start, unsigned long end);
+-
+ /* description of effects of mapping type and prot in current implementation.
+  * this is due to the limited x86 page protection hardware.  The expected
+  * behavior is in parens:
+@@ -1731,7 +1727,7 @@ unsigned long mmap_region(struct mm_struct *mm, struct file *file,
  	fput(file);
- out:
- 	up_write(&mm->mmap_sem);
-diff --git a/mm/nommu.c b/mm/nommu.c
-index 24f9f5f39145..54825d29f50b 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -1198,7 +1198,8 @@ static int do_mmap_private(struct vm_area_struct *vma,
- /*
-  * handle mapping creation for uClinux
+ 
+ 	/* Undo any partial mapping done by a device driver. */
+-	unmap_region(mm, vma, prev, vma->vm_start, vma->vm_end);
++	munmap_region(mm, vma, prev, vma->vm_start, vma->vm_end);
+ 	charged = 0;
+ 	if (vm_flags & VM_SHARED)
+ 		mapping_unmap_writable(file->f_mapping);
+@@ -2447,9 +2443,9 @@ static void remove_vma_list(struct mm_struct *mm, struct vm_area_struct *vma)
+  *
+  * Called with the mm semaphore held.
   */
--unsigned long do_mmap(struct file *file,
-+unsigned long do_mmap(struct mm_struct *mm,
-+			struct file *file,
- 			unsigned long addr,
- 			unsigned long len,
- 			unsigned long prot,
-@@ -1375,10 +1376,10 @@ unsigned long do_mmap(struct file *file,
- 	/* okay... we have a mapping; now we have to register it */
- 	result = vma->vm_start;
+-static void unmap_region(struct mm_struct *mm,
+-		struct vm_area_struct *vma, struct vm_area_struct *prev,
+-		unsigned long start, unsigned long end)
++void munmap_region(struct mm_struct *mm, struct vm_area_struct *vma,
++		struct vm_area_struct *prev, unsigned long start,
++		unsigned long end)
+ {
+ 	struct vm_area_struct *next = prev ? prev->vm_next : mm->mmap;
+ 	struct mmu_gather tlb;
+@@ -2654,7 +2650,7 @@ int do_munmap(struct mm_struct *mm, unsigned long start, size_t len)
+ 	 * Remove the vma's, and unmap the actual pages
+ 	 */
+ 	detach_vmas_to_be_unmapped(mm, vma, prev, end);
+-	unmap_region(mm, vma, prev, start, end);
++	munmap_region(mm, vma, prev, start, end);
  
--	current->mm->total_vm += len >> PAGE_SHIFT;
-+	mm->total_vm += len >> PAGE_SHIFT;
+ 	arch_unmap(mm, vma, start, end);
  
- share:
--	add_vma_to_mm(current->mm, vma);
-+	add_vma_to_mm(mm, vma);
- 
- 	/* we flush the region from the icache only when the first executable
- 	 * mapping of it is made  */
-diff --git a/mm/util.c b/mm/util.c
-index 3cb2164f4099..46d05eef9a6b 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -302,7 +302,7 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
- 	if (!ret) {
- 		if (down_write_killable(&mm->mmap_sem))
- 			return -EINTR;
--		ret = do_mmap_pgoff(file, addr, len, prot, flag, pgoff,
-+		ret = do_mmap_pgoff(mm, file, addr, len, prot, flag, pgoff,
- 				    &populate);
- 		up_write(&mm->mmap_sem);
- 		if (populate)
 -- 
 2.12.0

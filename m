@@ -1,63 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2017 09:57:52 +0100 (CET)
-Received: from mail-lf0-x232.google.com ([IPv6:2a00:1450:4010:c07::232]:36557
-        "EHLO mail-lf0-x232.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990522AbdCMI5lZHl0O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2017 09:57:41 +0100
-Received: by mail-lf0-x232.google.com with SMTP id y193so60624890lfd.3
-        for <linux-mips@linux-mips.org>; Mon, 13 Mar 2017 01:57:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=EkJ5Q9ruPgDar66BVWtK5D8zEnCLOAxvgRjvoecoAI4=;
-        b=lhhIHcm6QRmEIUmTvHzXOboVqk/zENxzG/JlkFA7HFvxrG4HVPmAADYAfYZmQ7re5v
-         8YRPulV7B9RRaNJDdUFMCOhnFujiFUxl0F6NEUmU9VwOFkFg1wO1A5hPNH7Sz8g/ID63
-         V+GlCi4sQFqHJSumhCc2dqsI1/wywBs0vWOgimfb+WC7qXb4xKaT0UU+9S+rCHRQS68e
-         xrLLCdScvU4QEmkq5E+ScMxLAD1GCQfCrOxRcEC6+7/TzM5UD+cCrgnsEAK9xP1+G8hZ
-         NIxRGslaa3v+ADI2esEd8L5QkGoDY+Smzl5mB55URQcwc3R+jrxFuf4GEslkJj1B6UUh
-         MzVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=EkJ5Q9ruPgDar66BVWtK5D8zEnCLOAxvgRjvoecoAI4=;
-        b=I4B63ytVKnNDkiMRa/bN1e0sG/Vzs8H9xeTne6JhWsKheMtq9ZyzMUgtKBCiBwCWbj
-         V2RPuHceWpyZa5mohCyuhuLEtJY9IRt7Cb0fxncQ6PWnEbPhk1ZOTD7pVrjUuKAqWX7n
-         Fvf9vHztkpg7rTKh60+ZCLWr7l8lUyR3kwOSkTgKWaQIQ6OJkMcFY7jr3ta6BbPH1mJt
-         wqla+brZoQGVnxJ/sO4TJdIb1qX4WGcbAvSLtSh2+Cj/kjX/oRJZOoBv+jGgErje2bHF
-         gczcQIvRLsF5WZHUn+aFWhJFQRpG3eEdPvzGA8HsZN6fvDz0bMIF6mGcQLTL25/Sqbn1
-         OvHQ==
-X-Gm-Message-State: AMke39mTfD4cthRGoAo956aCcUySt47qgC+vJp9nlFQo2OK956suGNd0IlwsZsdP1+eXhQ==
-X-Received: by 10.46.9.75 with SMTP id 72mr9492802ljj.10.1489395456012;
-        Mon, 13 Mar 2017 01:57:36 -0700 (PDT)
-Received: from [192.168.4.126] ([31.173.81.64])
-        by smtp.gmail.com with ESMTPSA id d77sm3506054lfd.26.2017.03.13.01.57.34
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 Mar 2017 01:57:35 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: Lantiq: fix missing xbar kernel panic
-To:     Hauke Mehrtens <hauke@hauke-m.de>, ralf@linux-mips.org,
-        james.hogan@imgtec.com
-References: <20170312181633.23453-1-hauke@hauke-m.de>
-Cc:     linux-mips@linux-mips.org, "# 4 . 4 . x-" <stable@vger.kernel.org>,
-        John Crispin <john@phrozen.org>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <b43e6a66-872b-38ca-3197-7327a155096a@cogentembedded.com>
-Date:   Mon, 13 Mar 2017 11:57:36 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2017 10:48:10 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39595 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23990519AbdCMJsENECJU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2017 10:48:04 +0100
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id F20E741F8E65;
+        Mon, 13 Mar 2017 10:53:08 +0000 (GMT)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Mon, 13 Mar 2017 10:53:08 +0000
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Mon, 13 Mar 2017 10:53:08 +0000
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id DE0A1285F082D;
+        Mon, 13 Mar 2017 09:47:55 +0000 (GMT)
+Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 13 Mar
+ 2017 09:47:58 +0000
+Date:   Mon, 13 Mar 2017 09:47:57 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Matt Turner <mattst88@gmail.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        <linux-nfs@vger.kernel.org>, Manuel Lauss <manuel.lauss@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: NFS corruption, fixed by echo 1 > /proc/sys/vm/drop_caches --
+ next debugging steps?
+Message-ID: <20170313094757.GI2878@jhogan-linux.le.imgtec.org>
+References: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20170312181633.23453-1-hauke@hauke-m.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ev7mvGV+3JQuI2Eo"
+Content-Disposition: inline
+In-Reply-To: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57146
+X-archive-position: 57147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,33 +56,88 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
+--ev7mvGV+3JQuI2Eo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 3/12/2017 9:16 PM, Hauke Mehrtens wrote:
+On Sun, Mar 12, 2017 at 06:43:47PM -0700, Matt Turner wrote:
+> On a Broadcom BCM91250a MIPS system I can reliably trigger NFS
+> corruption on the first file read.
+>=20
+> To demonstrate, I downloaded five identical copies of the gcc-5.4.0
+> source tarball. On the NFS server, they hash to the same value:
+>=20
+> server distfiles # md5sum gcc-5.4.0.tar.bz2*
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
+>=20
+> On the MIPS system (the NFS client):
+>=20
+> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2.2
+> 35346975989954df8a8db2b034da610d  gcc-5.4.0.tar.bz2.2
+> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2*
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
+> 35346975989954df8a8db2b034da610d  gcc-5.4.0.tar.bz2.2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
+>=20
+> The first file read will contain some corruption, and it is persistent un=
+til...
+>=20
+> bcm91250a-le distfiles # echo 1 > /proc/sys/vm/drop_caches
+> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2*
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.2
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
+> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
+>=20
+> the caches are dropped, at which point it reads back properly.
+>=20
+> Note that the corruption is different across reboots, both in the size
+> of the corruption and the location. I saw 1900~ and 1400~ byte
+> sequences corrupted on separate occasions, which don't correspond to
+> the system's 16kB page size.
+>=20
+> I've tested kernels from v3.19 to 4.11-rc1+ (master branch from
+> today). All exhibit this behavior with differing frequencies. Earlier
+> kernels seem to reproduce the issue less often, while more recent
+> kernels reliably exhibit the problem every boot.
+>=20
+> How can I further debug this?
 
-> Commit 08b3c894e5 "MIPS: lantiq: Disable xbar fpi burst mode"
+It smells a bit like a DMA / caching issue.
 
-    Also need parens around the commit summary. And 12 hex digits for the 
-commit ID.
+Can you provide a full kernel log. That might provide some information
+about caching that might be relevant (e.g. does dcache have aliases?).
 
-> accidentally requested the resources from the pmu address region
-> instead of the xbar registers region, but the check for the returns
+Cheers
+James
 
-    s/returns/return/?
+--ev7mvGV+3JQuI2Eo
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-> value of request_mem_region() was wrong. Commit 98ea51cb0c8 "MIPS:
-> Lantiq: Fix another request_mem_region() return code check" fixed the
+-----BEGIN PGP SIGNATURE-----
 
-    Same here...
+iQIcBAEBCAAGBQJYxmrGAAoJEGwLaZPeOHZ6f3IP/Am5NSzZnkBChs3z0bpCai5V
+e7HoDsZaZl57hxeuMgs2YMUvqVKqZHKwug2ZtTPeJXdrkzKmc29HhphoDdjAchb8
+eqtXsobKSXTorr4WF7OfFR7udNgLQPR013+QaUyErH6ffP5eBiuUgwJSjeFv+RZF
+jN4NbU23W/FkrB7IFGQM4+dyeBH6QfXysNmFLvCvs3T16vOtJlIvQmPMG3LG4KwL
+QTGP2eLf09PnBoh6b1W/ZMnvpF+zxazXsSPtH1MOOLtCNdKJ4OStABfjVUBdMLKu
+qs9AN2k5Jvk4icEE0r4TOJW9qbj8lsBYHsbprkUM1J2CSKT/NHpKpflxf1zyih0L
+BFnRc8XtTTzHVW3URgVU43g/18TJnC55CTwSTgLfcxDH4hS74pOzZtNh2E8oSwBr
+oKp03H6nKrHssAdsWjCGXwR0fE0cYXw4spAwoPVwt8DiTrIHtC1iYGTu8UlIcJYU
+8mmT/r/d1YvfYnY3Ewd3Sxmv4MQypYA4qftfL7a6JEWnxWZr1yytJ+Uj1iyZqStk
+Vmys90Iu/X4G8jvRs5s8ZDiHYt+s/HQEAdZp9lmAWTWviWmwT8n0W2GTDION/QCC
+YNQAO37ef4fXX8j/wqK/92GwCj0PPt+p7gp9djG4Eiy4+CQsQY12j7vF9QxDP361
+/cDqMwMqg3O+eXuM3GIn
+=UVuQ
+-----END PGP SIGNATURE-----
 
-> check of the return value of request_mem_region() which made the kernel
-> panics.
-> This patch now makes use of the correct memory region for the cross bar.
->
-> Fixes: 08b3c894e5 ("MIPS: lantiq: Disable xbar fpi burst mode")
-> Cc: <stable@vger.kernel.org> # 4.4.x-
-> Cc: John Crispin <john@phrozen.org>
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-[...]
-
-MBR, Sergei
+--ev7mvGV+3JQuI2Eo--

@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2017 10:48:10 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39595 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2017 11:57:14 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:9211 "EHLO
         imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990519AbdCMJsENECJU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2017 10:48:04 +0100
+        by eddie.linux-mips.org with ESMTP id S23990522AbdCMK5GBf9Bx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2017 11:57:06 +0100
 Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id F20E741F8E65;
-        Mon, 13 Mar 2017 10:53:08 +0000 (GMT)
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id A857841F8E85;
+        Mon, 13 Mar 2017 12:02:10 +0000 (GMT)
 Received: from mailapp01.imgtec.com ([10.100.180.241])
   by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Mon, 13 Mar 2017 10:53:08 +0000
+  Mon, 13 Mar 2017 12:02:10 +0000
 X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Mon, 13 Mar 2017 10:53:08 +0000
+        by imgpgp01.kl.imgtec.org on Mon, 13 Mar 2017 12:02:10 +0000
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id DE0A1285F082D;
-        Mon, 13 Mar 2017 09:47:55 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 4710C5424E93E;
+        Mon, 13 Mar 2017 10:56:57 +0000 (GMT)
 Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
  (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 13 Mar
- 2017 09:47:58 +0000
-Date:   Mon, 13 Mar 2017 09:47:57 +0000
+ 2017 10:56:59 +0000
+Date:   Mon, 13 Mar 2017 10:56:59 +0000
 From:   James Hogan <james.hogan@imgtec.com>
-To:     Matt Turner <mattst88@gmail.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        <linux-nfs@vger.kernel.org>, Manuel Lauss <manuel.lauss@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: NFS corruption, fixed by echo 1 > /proc/sys/vm/drop_caches --
- next debugging steps?
-Message-ID: <20170313094757.GI2878@jhogan-linux.le.imgtec.org>
-References: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
+To:     David Daney <david.daney@cavium.com>
+CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Steven J. Hill" <steven.hill@cavium.com>,
+        Alexei Starovoitov <ast@kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: BPF: Add support for SKF_AD_HATYPE
+Message-ID: <20170313105659.GJ996@jhogan-linux.le.imgtec.org>
+References: <20170310221405.30648-1-david.daney@cavium.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ev7mvGV+3JQuI2Eo"
+        protocol="application/pgp-signature"; boundary="FWLu4iDmFxBfQb5/"
 Content-Disposition: inline
-In-Reply-To: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
+In-Reply-To: <20170310221405.30648-1-david.daney@cavium.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-Originating-IP: [192.168.154.110]
 X-ESG-ENCRYPT-TAG: 1b7d744b
@@ -39,7 +39,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57147
+X-archive-position: 57148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,88 +56,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---ev7mvGV+3JQuI2Eo
+--FWLu4iDmFxBfQb5/
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 12, 2017 at 06:43:47PM -0700, Matt Turner wrote:
-> On a Broadcom BCM91250a MIPS system I can reliably trigger NFS
-> corruption on the first file read.
+On Fri, Mar 10, 2017 at 02:14:05PM -0800, David Daney wrote:
+> This let's us pass some additional "modprobe test-bpf" tests.
 >=20
-> To demonstrate, I downloaded five identical copies of the gcc-5.4.0
-> source tarball. On the NFS server, they hash to the same value:
+> Reuse the code for SKF_AD_IFINDEX, but substitute the offset and size
+> of the "type" field.
 >=20
-> server distfiles # md5sum gcc-5.4.0.tar.bz2*
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.2
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
->=20
-> On the MIPS system (the NFS client):
->=20
-> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2.2
-> 35346975989954df8a8db2b034da610d  gcc-5.4.0.tar.bz2.2
-> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2*
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
-> 35346975989954df8a8db2b034da610d  gcc-5.4.0.tar.bz2.2
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
->=20
-> The first file read will contain some corruption, and it is persistent un=
-til...
->=20
-> bcm91250a-le distfiles # echo 1 > /proc/sys/vm/drop_caches
-> bcm91250a-le distfiles # md5sum gcc-5.4.0.tar.bz2*
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.1
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.2
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.3
-> 4c626ac2a83ef30dfb9260e6f59c2b30  gcc-5.4.0.tar.bz2.4
->=20
-> the caches are dropped, at which point it reads back properly.
->=20
-> Note that the corruption is different across reboots, both in the size
-> of the corruption and the location. I saw 1900~ and 1400~ byte
-> sequences corrupted on separate occasions, which don't correspond to
-> the system's 16kB page size.
->=20
-> I've tested kernels from v3.19 to 4.11-rc1+ (master branch from
-> today). All exhibit this behavior with differing frequencies. Earlier
-> kernels seem to reproduce the issue less often, while more recent
-> kernels reliably exhibit the problem every boot.
->=20
-> How can I further debug this?
+> Signed-off-by: David Daney <david.daney@cavium.com>
 
-It smells a bit like a DMA / caching issue.
+I think the BPF maintainers should probably be Cc'd on this patch.
+Cc'ing now.
 
-Can you provide a full kernel log. That might provide some information
-about caching that might be relevant (e.g. does dcache have aliases?).
+> ---
+>  arch/mips/net/bpf_jit.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+> index 49a2e22..f613708 100644
+> --- a/arch/mips/net/bpf_jit.c
+> +++ b/arch/mips/net/bpf_jit.c
+> @@ -1111,6 +1111,7 @@ static int build_body(struct jit_ctx *ctx)
+>  			emit_load(r_A, 28, off, ctx);
+>  			break;
+>  		case BPF_ANC | SKF_AD_IFINDEX:
+> +		case BPF_ANC | SKF_AD_HATYPE:
+>  			/* A =3D skb->dev->ifindex */
+
+this comment should probably be updated.
+
+>  			ctx->flags |=3D SEEN_SKB | SEEN_A;
+>  			off =3D offsetof(struct sk_buff, dev);
+> @@ -1120,10 +1121,15 @@ static int build_body(struct jit_ctx *ctx)
+>  			emit_bcond(MIPS_COND_EQ, r_s0, r_zero,
+>  				   b_imm(prog->len, ctx), ctx);
+>  			emit_reg_move(r_ret, r_zero, ctx);
+> -			BUILD_BUG_ON(FIELD_SIZEOF(struct net_device,
+> -						  ifindex) !=3D 4);
+> -			off =3D offsetof(struct net_device, ifindex);
+> -			emit_load(r_A, r_s0, off, ctx);
+> +			if (code =3D=3D (BPF_ANC | SKF_AD_IFINDEX)) {
+> +				BUILD_BUG_ON(FIELD_SIZEOF(struct net_device, ifindex) !=3D 4);
+> +				off =3D offsetof(struct net_device, ifindex);
+> +				emit_load(r_A, r_s0, off, ctx);
+> +			} else { /* (code =3D=3D (BPF_ANC | SKF_AD_HATYPE) */
+> +				BUILD_BUG_ON(FIELD_SIZEOF(struct net_device, type) !=3D 2);
+> +				off =3D offsetof(struct net_device, type);
+> +				emit_half_load(r_A, r_s0, off, ctx);
+
+Technically net_device::type is unsigned, and emit_half_load uses LH
+which sign extends. Does that matter in practice.
 
 Cheers
 James
 
---ev7mvGV+3JQuI2Eo
+--FWLu4iDmFxBfQb5/
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIcBAEBCAAGBQJYxmrGAAoJEGwLaZPeOHZ6f3IP/Am5NSzZnkBChs3z0bpCai5V
-e7HoDsZaZl57hxeuMgs2YMUvqVKqZHKwug2ZtTPeJXdrkzKmc29HhphoDdjAchb8
-eqtXsobKSXTorr4WF7OfFR7udNgLQPR013+QaUyErH6ffP5eBiuUgwJSjeFv+RZF
-jN4NbU23W/FkrB7IFGQM4+dyeBH6QfXysNmFLvCvs3T16vOtJlIvQmPMG3LG4KwL
-QTGP2eLf09PnBoh6b1W/ZMnvpF+zxazXsSPtH1MOOLtCNdKJ4OStABfjVUBdMLKu
-qs9AN2k5Jvk4icEE0r4TOJW9qbj8lsBYHsbprkUM1J2CSKT/NHpKpflxf1zyih0L
-BFnRc8XtTTzHVW3URgVU43g/18TJnC55CTwSTgLfcxDH4hS74pOzZtNh2E8oSwBr
-oKp03H6nKrHssAdsWjCGXwR0fE0cYXw4spAwoPVwt8DiTrIHtC1iYGTu8UlIcJYU
-8mmT/r/d1YvfYnY3Ewd3Sxmv4MQypYA4qftfL7a6JEWnxWZr1yytJ+Uj1iyZqStk
-Vmys90Iu/X4G8jvRs5s8ZDiHYt+s/HQEAdZp9lmAWTWviWmwT8n0W2GTDION/QCC
-YNQAO37ef4fXX8j/wqK/92GwCj0PPt+p7gp9djG4Eiy4+CQsQY12j7vF9QxDP361
-/cDqMwMqg3O+eXuM3GIn
-=UVuQ
+iQIcBAEBCAAGBQJYxnr7AAoJEGwLaZPeOHZ6vB8P/1qhDWJcOqciOWz85vMKYT1w
+hrhyru4B9V2QX+XC85oacYVVR14fcHTQ+CvlmJcRdCx3/HyFfnfD6NNEifdff5Y2
+JMMWqoZzk/vE7I4LpS+4Nn0LmJ65IVsU4fWf8ETA8G57Rut0Asn0hH3puTiRAmbX
+9m93egf2KRHfcuvwRDX1lAumKmPm21J5tul8yYgClZ6efYS4fSE2KOEHgtY7Tce6
+0zrBh6HZm+OLVMaoYci+3H9l/sCRrbFGEgdBvVZi7vQacxkbYu0Ik5VdRO89n8Z/
+BTpzxWdsKNjFMntp5D0YgIkpAmvcJImvihU36b6uI7HNYe+fxOHdAWmPTr9y7N/n
++tT6hzQuqyyxNAHBIZ9GwQiKZ85i9NVrDEcp9UNdo/KySpc3HRxehPDSmn/jWdzy
+PjWB1GYBWjTuIlcltAUiW3zzfn8G8n4Px+FyABlvVv3ttBFe5LOMtRtFFSGvD8jK
+zi6UNBPWZfZcW7g1wPMc7z8D5m71mkbPEBLx6rmkQrpQPukSb/XY31XNYQGTXmhP
+UD4jEzoNn8yhX6RM2Z3UnJPTzO0IrD0FR3U8Kiqh3kK+gmjvHz0IHjnIroyLTU7w
+aoSTYhKYpnx7LBRJl7b9Clrp+8VULiC4Anxvx1aJ/YFymZHf+o6ZqrWYrwTQvcFL
+pzziJNpHlH1yPd6ABlGr
+=YBJk
 -----END PGP SIGNATURE-----
 
---ev7mvGV+3JQuI2Eo--
+--FWLu4iDmFxBfQb5/--

@@ -1,32 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 01:58:48 +0100 (CET)
-Received: from mail.kernel.org ([198.145.29.136]:55218 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994627AbdCNA6lOZguc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Mar 2017 01:58:41 +0100
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id E07AC2047C
-        for <linux-mips@linux-mips.org>; Tue, 14 Mar 2017 00:58:36 +0000 (UTC)
-Received: from mail-ua0-f181.google.com (mail-ua0-f181.google.com [209.85.217.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E69AB2043C
-        for <linux-mips@linux-mips.org>; Tue, 14 Mar 2017 00:58:33 +0000 (UTC)
-Received: by mail-ua0-f181.google.com with SMTP id q7so146035941uaf.2
-        for <linux-mips@linux-mips.org>; Mon, 13 Mar 2017 17:58:33 -0700 (PDT)
-X-Gm-Message-State: AMke39lDUv3wDEcMCTkcIwrxGjtOznhmLK0Un2KuJFXgUIAyYilTRG1KnskinPRCLBkcKOxw+YfUWpDDlX2qDreu
-X-Received: by 10.176.1.167 with SMTP id 36mr17478386ual.92.1489453101697;
- Mon, 13 Mar 2017 17:58:21 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.103.88.135 with HTTP; Mon, 13 Mar 2017 17:58:01 -0700 (PDT)
-In-Reply-To: <20170313221415.9375-1-till.smejkal@gmail.com>
-References: <20170313221415.9375-1-till.smejkal@gmail.com>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Mon, 13 Mar 2017 17:58:01 -0700
-X-Gmail-Original-Message-ID: <CALCETrWe8uOi3m8qXUbMA4017+rxbi1C8hzZ0bwjVHmfdE4FnQ@mail.gmail.com>
-Message-ID: <CALCETrWe8uOi3m8qXUbMA4017+rxbi1C8hzZ0bwjVHmfdE4FnQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 02:03:28 +0100 (CET)
+Received: from mail-qk0-x243.google.com ([IPv6:2607:f8b0:400d:c09::243]:36851
+        "EHLO mail-qk0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994766AbdCNBDVcVvHc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 02:03:21 +0100
+Received: by mail-qk0-x243.google.com with SMTP id n141so39416428qke.3;
+        Mon, 13 Mar 2017 18:03:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=tFFS1QSYmRlRAVXFgf95c3VU6d8CI9QDkSqeMaufsjM=;
+        b=TAXzVH5ltYIQS/LLmzA80vH5xmOq1HzZ/kjU0ICsN3TgbRjnPu0WONQKTYRpTA1WKX
+         we3oZBkUgJXakehyFBCc7zhvNMJ0qkw0UcmUsHSFuPBs415oNzBuEnZ+4ubD/dLarCtJ
+         LYj4FrK6x5ubpArz7kzs1HDJ4O5s56CJ2yqpyjHgZ/B7cluS/Pi2jEsYNU4iz3IdnLz2
+         xP+go6eoNi5kFf+5t0r0700e6ea9HaUVcoZEouMErSkCkzMTKswZCUBmaF5V6SiDakQr
+         TiYAxU9RaFbif5lmZ9C3lTYzDaQmwYLr/BmiWrJipA49PI8shpm08G6jaeTtgwiFZ7J7
+         yK1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=tFFS1QSYmRlRAVXFgf95c3VU6d8CI9QDkSqeMaufsjM=;
+        b=iBG5c4Br17CKQvPamt+wgzTXCD40lS6oFDxoD4C5YJp87/dXmbH36ZXcoqMWaT3HYl
+         /khA2fMKOLov6jNc9lxzo90WPEnwnr7vJEA6diFlZwWhSbAGc6T7PBfBg0oC+3R7UuEM
+         xPedBP5ZQpmdPeoZL6kQMExVSdHPPujAQq0zdFZuNU8dRmwklbwHuo3W574vZuW1HZ1C
+         jmV3tHdH8xgQVL9VBPfcbxmpnPPTPRVmO+ld8whLK+TMV/21f29eJ+vlTu+QNxjR/mEu
+         0JS7wT3APwauJvo8cKsiAMUDbTtvzUujiVoqNQe4KgUVnKiIMWq43zkcI04/qXZ/E9k/
+         escA==
+X-Gm-Message-State: AFeK/H0zavFFyy1KX967K0/sRoeex5j8C5UcSTqQle78+0ndQDapn3hMaGaVVKETYaEq7w==
+X-Received: by 10.55.209.28 with SMTP id s28mr33116763qki.178.1489453395867;
+        Mon, 13 Mar 2017 18:03:15 -0700 (PDT)
+Received: from bigtime.twiddle.net ([220.240.225.200])
+        by smtp.googlemail.com with ESMTPSA id f66sm13359286qkj.13.2017.03.13.18.02.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 13 Mar 2017 18:03:14 -0700 (PDT)
 Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
-To:     Till Smejkal <till.smejkal@googlemail.com>
-Cc:     Richard Henderson <rth@twiddle.net>,
+To:     Till Smejkal <till.smejkal@googlemail.com>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
         Vineet Gupta <vgupta@synopsys.com>,
@@ -52,7 +61,8 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         Chris Metcalf <cmetcalf@mellanox.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Andy Lutomirski <luto@amacapital.net>,
         Chris Zankel <chris@zankel.net>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -79,41 +89,38 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         Arnaldo Carvalho de Melo <acme@kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-alpha@vger.kernel.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
+        Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
         adi-buildroot-devel@lists.sourceforge.net,
-        linux-hexagon@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-metag@vger.kernel.org,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-metag@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mtd@lists.infradead.org,
-        USB list <linux-usb@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-aio@kvack.org, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        ALSA development <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset=UTF-8
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <luto@kernel.org>
+        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-usb@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-aio@kvack.org, linux-mm@kvack.org, linux-api@vger.kernel.org,
+        linux-arch@vger.kernel.org, alsa-devel@alsa-project.org
+References: <20170314003935.2jwycgajo7eojmvm@arch-dev>
+From:   Richard Henderson <rth@twiddle.net>
+Message-ID: <fa60d132-0eef-4350-3c88-1558f447a48f@twiddle.net>
+Date:   Tue, 14 Mar 2017 11:02:37 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
+MIME-Version: 1.0
+In-Reply-To: <20170314003935.2jwycgajo7eojmvm@arch-dev>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <rth7680@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57189
+X-archive-position: 57190
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@kernel.org
+X-original-sender: rth@twiddle.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -126,52 +133,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 13, 2017 at 3:14 PM, Till Smejkal
-<till.smejkal@googlemail.com> wrote:
-> This patchset extends the kernel memory management subsystem with a new
-> type of address spaces (called VAS) which can be created and destroyed
-> independently of processes by a user in the system. During its lifetime
-> such a VAS can be attached to processes by the user which allows a process
-> to have multiple address spaces and thereby multiple, potentially
-> different, views on the system's main memory. During its execution the
-> threads belonging to the process are able to switch freely between the
-> different attached VAS and the process' original AS enabling them to
-> utilize the different available views on the memory.
-
-Sounds like the old SKAS feature for UML.
-
-> In addition to the concept of first class virtual address spaces, this
-> patchset introduces yet another feature called VAS segments. VAS segments
-> are memory regions which have a fixed size and position in the virtual
-> address space and can be shared between multiple first class virtual
-> address spaces. Such shareable memory regions are especially useful for
-> in-memory pointer-based data structures or other pure in-memory data.
-
-This sounds rather complicated.  Getting TLB flushing right seems
-tricky.  Why not just map the same thing into multiple mms?
-
+On 03/14/2017 10:39 AM, Till Smejkal wrote:
+>> Is this an indication that full virtual address spaces are useless?  It
+>> would seem like if you only use virtual address segments then you avoid all
+>> of the problems with executing code, active stacks, and brk.
 >
->             |     VAS     |  processes  |
->     -------------------------------------
->     switch  |       468ns |      1944ns |
+> What do you mean with *virtual address segments*? The nice part of first class
+> virtual address spaces is that one can share/reuse collections of address space
+> segments easily.
 
-The solution here is IMO to fix the scheduler.
+What do *I* mean?  You introduced the term, didn't you?
+Rereading your original I see you called them "VAS segments".
 
-Also, FWIW, I have patches (that need a little work) that will make
-switch_mm() waaaay faster on x86.
+Anyway, whatever they are called, it would seem that these segments do not 
+require any of the syncing mechanisms that are causing you problems.
 
-> At the current state of the development, first class virtual address spaces
-> have one limitation, that we haven't been able to solve so far. The feature
-> allows, that different threads of the same process can execute in different
-> AS at the same time. This is possible, because the VAS-switch operation
-> only changes the active mm_struct for the task_struct of the calling
-> thread. However, when a thread switches into a first class virtual address
-> space, some parts of its original AS are duplicated into the new one to
-> allow the thread to continue its execution at its current state.
 
-Ick.  Please don't do this.  Can we please keep an mm as just an mm
-and not make it look magically different depending on which process
-maps it?  If you need a trampoline (which you do, of course), just
-write a trampoline in regular user code and map it manually.
-
---Andy
+r~

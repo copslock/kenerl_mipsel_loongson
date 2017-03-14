@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 11:23:31 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:42947 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 11:24:03 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58075 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994805AbdCNKSP0EEhU (ORCPT
+        with ESMTP id S23994806AbdCNKSPwl1TU (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 11:18:15 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 641F5FD857B07;
-        Tue, 14 Mar 2017 10:18:11 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id E96434BC65019;
+        Tue, 14 Mar 2017 10:18:06 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 14 Mar 2017 10:18:14 +0000
+ 14.3.294.0; Tue, 14 Mar 2017 10:18:09 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2 15/33] KVM: MIPS: Add callback to check extension
-Date:   Tue, 14 Mar 2017 10:15:22 +0000
-Message-ID: <9304808d5904b7c48d6646478bc647528cec6d3d.1489485940.git-series.james.hogan@imgtec.com>
+Subject: [PATCH v2 9/33] KVM: MIPS/Emulate: Implement 64-bit MMIO emulation
+Date:   Tue, 14 Mar 2017 10:15:16 +0000
+Message-ID: <2614a4ae7831484a25251b765799b854234519b1.1489485940.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
 In-Reply-To: <cover.26e10ec77a4ed0d3177ccf4fabf57bc95ea030f8.1489485940.git-series.james.hogan@imgtec.com>
@@ -29,7 +29,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57213
+X-archive-position: 57214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,9 +46,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add an implementation callback for checking presence of KVM extensions.
-This allows implementation specific extensions to be provided without
-ifdefs in mips.c.
+Implement additional MMIO emulation for MIPS64, including 64-bit
+loads/stores, and 32-bit unsigned loads. These are only exposed on
+64-bit VZ hosts.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
@@ -57,81 +57,63 @@ Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 ---
-Changes in v2:
-- Move new KVM_CAP_MIPS_TE into trap_emul.c too.
----
- arch/mips/include/asm/kvm_host.h |  1 +
- arch/mips/kvm/mips.c             |  3 +--
- arch/mips/kvm/trap_emul.c        | 17 +++++++++++++++++
- 3 files changed, 19 insertions(+), 2 deletions(-)
+ arch/mips/kvm/emulate.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index f0227c0d2780..3a52a6f0573b 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -542,6 +542,7 @@ struct kvm_mips_callbacks {
- 	int (*handle_msa_fpe)(struct kvm_vcpu *vcpu);
- 	int (*handle_fpe)(struct kvm_vcpu *vcpu);
- 	int (*handle_msa_disabled)(struct kvm_vcpu *vcpu);
-+	int (*check_extension)(struct kvm *kvm, long ext);
- 	int (*vcpu_init)(struct kvm_vcpu *vcpu);
- 	void (*vcpu_uninit)(struct kvm_vcpu *vcpu);
- 	int (*vcpu_setup)(struct kvm_vcpu *vcpu);
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 36561df8a7a7..78d58c2528a9 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1043,7 +1043,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_READONLY_MEM:
- 	case KVM_CAP_SYNC_MMU:
- 	case KVM_CAP_IMMEDIATE_EXIT:
--	case KVM_CAP_MIPS_TE:
- 		r = 1;
- 		break;
- 	case KVM_CAP_COALESCED_MMIO:
-@@ -1075,7 +1074,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 		r = cpu_has_msa && !(boot_cpu_data.msa_id & MSA_IR_WRPF);
- 		break;
- 	default:
--		r = 0;
-+		r = kvm_mips_callbacks->check_extension(kvm, ext);
- 		break;
- 	}
- 	return r;
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index 0e3d260aafcb..db3c48634eda 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -488,6 +488,22 @@ static int kvm_trap_emul_handle_msa_disabled(struct kvm_vcpu *vcpu)
- 	return ret;
- }
+diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
+index e0f74ee2aad8..d75ab8940e1f 100644
+--- a/arch/mips/kvm/emulate.c
++++ b/arch/mips/kvm/emulate.c
+@@ -1499,6 +1499,17 @@ enum emulation_result kvm_mips_emulate_store(union mips_instruction inst,
+ 		goto out_fail;
  
-+static int kvm_trap_emul_check_extension(struct kvm *kvm, long ext)
-+{
-+	int r;
+ 	switch (inst.i_format.opcode) {
++#if defined(CONFIG_64BIT) && defined(CONFIG_KVM_MIPS_VZ)
++	case sd_op:
++		run->mmio.len = 8;
++		*(u64 *)data = vcpu->arch.gprs[rt];
 +
-+	switch (ext) {
-+	case KVM_CAP_MIPS_TE:
-+		r = 1;
++		kvm_debug("[%#lx] OP_SD: eaddr: %#lx, gpr: %#lx, data: %#llx\n",
++			  vcpu->arch.pc, vcpu->arch.host_cp0_badvaddr,
++			  vcpu->arch.gprs[rt], *(u64 *)data);
 +		break;
-+	default:
-+		r = 0;
-+		break;
-+	}
++#endif
 +
-+	return r;
-+}
-+
- static int kvm_trap_emul_vcpu_init(struct kvm_vcpu *vcpu)
- {
- 	struct mm_struct *kern_mm = &vcpu->arch.guest_kernel_mm;
-@@ -1238,6 +1254,7 @@ static struct kvm_mips_callbacks kvm_trap_emul_callbacks = {
- 	.handle_fpe = kvm_trap_emul_handle_fpe,
- 	.handle_msa_disabled = kvm_trap_emul_handle_msa_disabled,
+ 	case sw_op:
+ 		run->mmio.len = 4;
+ 		*(u32 *)data = vcpu->arch.gprs[rt];
+@@ -1575,6 +1586,15 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
  
-+	.check_extension = kvm_trap_emul_check_extension,
- 	.vcpu_init = kvm_trap_emul_vcpu_init,
- 	.vcpu_uninit = kvm_trap_emul_vcpu_uninit,
- 	.vcpu_setup = kvm_trap_emul_vcpu_setup,
+ 	vcpu->mmio_needed = 2;	/* signed */
+ 	switch (op) {
++#if defined(CONFIG_64BIT) && defined(CONFIG_KVM_MIPS_VZ)
++	case ld_op:
++		run->mmio.len = 8;
++		break;
++
++	case lwu_op:
++		vcpu->mmio_needed = 1;	/* unsigned */
++		/* fall through */
++#endif
+ 	case lw_op:
+ 		run->mmio.len = 4;
+ 		break;
+@@ -2421,8 +2441,15 @@ enum emulation_result kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu,
+ 	vcpu->arch.pc = vcpu->arch.io_pc;
+ 
+ 	switch (run->mmio.len) {
++	case 8:
++		*gpr = *(s64 *)run->mmio.data;
++		break;
++
+ 	case 4:
+-		*gpr = *(s32 *) run->mmio.data;
++		if (vcpu->mmio_needed == 2)
++			*gpr = *(s32 *)run->mmio.data;
++		else
++			*gpr = *(u32 *)run->mmio.data;
+ 		break;
+ 
+ 	case 2:
 -- 
 git-series 0.8.10

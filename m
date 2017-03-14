@@ -1,212 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 22:14:45 +0100 (CET)
-Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:35926
-        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991129AbdCNVOgkQYIP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 22:14:36 +0100
-Received: by mail-wr0-x244.google.com with SMTP id l37so25352121wrc.3;
-        Tue, 14 Mar 2017 14:14:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 22:22:04 +0100 (CET)
+Received: from mail-sn1nam01on0057.outbound.protection.outlook.com ([104.47.32.57]:38383
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991129AbdCNVV52J-hP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Mar 2017 22:21:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:mail-followup-to:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=JafwRDcxtOSTwUrOJIR9EQWOJzc7PxCMBJ3odtqpSl0=;
-        b=RfS3kbOuxCUbirZFYxoIaVis23qjTJu4sIFjSlRZ4KYaq+HJs3KHq3j/k3L569PmZO
-         naPb4+29q91U+wP9s+v0dxrIAUK2nbh+dOsqLFzRE2kNctBWg0x0QqrqdUfkeDQ9tcrN
-         eluP2cD5tfjzQ+VVUAYS1eiTNwyYuZIXg4atPlHdDBrpCSo09GJV0vtj8LrmyfbVlx+w
-         bB806MuC7ec0tS7QQr/fvlco8kLvpgaPwj4P1UHcCikrB8ZMPVzY5EuI6njx0c2davRz
-         N2ur1dsjM4n7oC3Q21+x0qJW7ESvS3U2d06OCSaK1uEtPWn/yXMTTJ2D04/3QQbv6tXs
-         DRdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id
-         :mail-followup-to:mime-version:content-disposition:in-reply-to
-         :user-agent;
-        bh=JafwRDcxtOSTwUrOJIR9EQWOJzc7PxCMBJ3odtqpSl0=;
-        b=niFo3fBuSMlp/+ThPro79zJIjl68hrUwXxVAPCF7vd2J0tdosLBQrz6Ks8IN1SMLq3
-         QKCX+G4oTKD1NoBqXLocYdCURaZq208lCTeg2hJXCjJISEfK690Ciwj/+xGD1Hyk3ueK
-         gPee50trIasixqGY62ZGWIaZ1y6AZtteiiQD2snPMR63+dnK7hYly94P13YWQryQQi40
-         qHGVm31HQt9D2DD6oDXtaonfYXrv1tRr6UFYryUj2nHZkGWA1RzHRtOoC5x1U96YmjOF
-         EJycPs3riXRK23ie8DUg5rBK80XxmW+zmD5Xi4ATwOpMWSuzKnLVBoBHiJHbcDQLU1Vc
-         FdhQ==
-X-Gm-Message-State: AMke39mX8sL5L+5YEgeOmNxo3p32sbII9iVyqJret2MvsD0sLGfgI7AeiByxxe7HIMxDrg==
-X-Received: by 10.223.162.205 with SMTP id t13mr37545937wra.155.1489526071261;
-        Tue, 14 Mar 2017 14:14:31 -0700 (PDT)
-Received: from localhost (login1.zih.tu-dresden.de. [141.76.16.140])
-        by smtp.googlemail.com with ESMTPSA id c9sm1232473wmf.18.2017.03.14.14.14.29
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 Mar 2017 14:14:30 -0700 (PDT)
-From:   Till Smejkal <till.smejkal@googlemail.com>
-X-Google-Original-From: Till Smejkal <till.smejkal@gmail.com>
-Date:   Tue, 14 Mar 2017 14:14:27 -0700
-To:     Chris Metcalf <cmetcalf@mellanox.com>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Till Smejkal <till.smejkal@googlemail.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Steven Miao <realmz6@gmail.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
+ d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=bEz8syaWIXqFcZES7BD7Bz5VHyT60XzAYUZvent5DWE=;
+ b=g+jlCKQCOaN/gvsJy0oz6fuWkIeh08C75/WXY7ACRVzCxb7G5agOVQYlMXQygPmjcJ1ideVbVvOVaqTxInyRr0a0wzbsFGEfQ8g11uWssu592qhfwUBzFhQtNQ6FP58woLHaCsvfAeH53HEOCuiF43pzQpydGKS+tFITGdBJue4=
+Authentication-Results: linux-mips.org; dkim=none (message not signed)
+ header.d=none;linux-mips.org; dmarc=none action=none header.from=cavium.com;
+Received: from ddl.caveonetworks.com (50.233.148.156) by
+ BL2PR07MB2420.namprd07.prod.outlook.com (10.167.101.144) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.947.12; Tue, 14 Mar 2017 21:21:48 +0000
+From:   David Daney <david.daney@cavium.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Benjamin LaHaise <bcrl@kvack.org>,
-        Nadia Yvette Chambers <nyc@holomorphy.com>,
-        Jeff Layton <jlayton@poochiereds.net>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-alpha@vger.kernel.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-hexagon@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-metag@vger.kernel.org,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mtd@lists.infradead.org,
-        USB list <linux-usb@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-aio@kvack.org, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        ALSA development <alsa-devel@alsa-project.org>
-Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
-Message-ID: <20170314211427.7wxdyrholi3mgle5@arch-dev>
-Mail-Followup-To: Chris Metcalf <cmetcalf@mellanox.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Till Smejkal <till.smejkal@googlemail.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>, Steven Miao <realmz6@gmail.com>,
-        Richard Kuo <rkuo@codeaurora.org>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        X86 ML <x86@kernel.org>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Benjamin LaHaise <bcrl@kvack.org>,
-        Nadia Yvette Chambers <nyc@holomorphy.com>,
-        Jeff Layton <jlayton@poochiereds.net>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-alpha@vger.kernel.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-hexagon@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-metag@vger.kernel.org,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mtd@lists.infradead.org, USB list <linux-usb@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>, linux-aio@kvack.org,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        ALSA development <alsa-devel@alsa-project.org>
+        Alexei Starovoitov <ast@kernel.org>, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        "Steven J. Hill" <steven.hill@cavium.com>,
+        David Daney <david.daney@cavium.com>
+Subject: [PATCH v2 0/5] MIPS: BPF: JIT fixes and improvements.
+Date:   Tue, 14 Mar 2017 14:21:39 -0700
+Message-Id: <20170314212144.29988-1-david.daney@cavium.com>
+X-Mailer: git-send-email 2.9.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d9333d6-2f81-a9de-484e-e1d655e1d3c3@mellanox.com>
-User-Agent: NeoMutt/20170306 (1.8.0)
-Return-Path: <till.smejkal@googlemail.com>
+Content-Type: text/plain
+X-Originating-IP: [50.233.148.156]
+X-ClientProxiedBy: SN1PR0701CA0003.namprd07.prod.outlook.com (10.162.96.13) To
+ BL2PR07MB2420.namprd07.prod.outlook.com (10.167.101.144)
+X-MS-Office365-Filtering-Correlation-Id: 764170ce-1aaf-4a72-b652-08d46b202034
+X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:BL2PR07MB2420;
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;3:0hFQYjrAmms3IS4xW/2OZvTTtnaaSRZI2LSN4OdWJyxPfIP47dSQaiKFSfA81U8jjOC3KWHNeHbIxWqeW+jLRhjRI1lZ2ozuWkIMAwuv/H1KCBRcmzThsqQJcyhz4sP4Ki0yKhsfEZsVuYp4TPhUcj7EBWaVHhKKvUprf2QJ+r8WUv/DZHRHF5Dl4enfs1+lXl7AdI+GTFmXRgC1fgcnryjyvn6ZGmshGCfO9n86ifrMcnoZpc0c8Z3eLftXkunZa7rN3n1hZDMypyZ4az89sg==;25:YwvfVFZxd02+spxVORSASpzlqn/iqqfU/VHNyN8ncRK0mEAkYrZ1NaEDEUSkEs5mRMPq1ujxWditZ3VbPCddY777Ciw2oT3nHD0mK1ONptH4vrWF2Kp/LJAi1YtCBqRYRZXSDByjj8ZIi6tK6imRqvJtTTgvm1HH2gGcursTzFQ1lpJvFD9UmEQS2daDo0QIKRUn0MGBHwYM+MFMCg2RU1r2ss5bSbLYC4QF6jFFPsZQrgFBVaMuV9wqko5JAyptExQVIAxmrUIFc5Jo3lcG3yI4iKfGEsckaLgfCnbUVFx52HtoqdQPWIkKxlu0MkNmSGKmUjo/XMMp86jTQXDOrfGpmgpNQMUWuG8gF6dP5f6MncDgymQzxkqABahX631yaA7JDQIkSxm/J+cnZDWLwVbeNIS2zqOCv3vkF4G4f2FEswvtuUwzFDZAhWBxgL8qLJMSpFYIAZl1GLOqxcAxOw==
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;31:rw8MP+YqK7Ll5XisH4Syontl1dX+xa6uv65t7LUccFMpf+eUs25VFPY11xYtCfZN20MIv7H+gq9T3IQzuhq0itBco92xa6AiNXIuR8RlJXWhlUXn7s8/vqN9qRp0IrhVKWLSojx2vxGFLrNBNzNriCQgw5P+E8LV2CzKMAMABUgkOge045b6l1YIJK4HpkjZX6nJMhEQSTKTiHkyZxmxaLBJIccGS+wDQqyixyjIZ+2w5KFJKKUacroX9btzmLQv;20:eV+o0hfPvrctH3dyDZuXK638giGBoX/bqLESmO5+tWZCDxMa5L0TTb0ZouCmAWTQo55edlJ7y3BhuU2W2d/w0l7sp/DnWO7HHdOz4vIaaVpUZGquDKOof9bKLNq8ObYyyQPEI0o/76hKydy1BU2HUcwihBJZ2e+9CX7gN1HPMJiqVfF0IFzH7CTYbySlnTZoejo/XuCYt6wec7Hp12o9mUKlH0VJIn8gp/ZmV7KevQFsW+AdiSjD0b7UIKp1ATBTDXMkaYq/qVXIHz/ziDdaTDC75/s4VzFOipZNOhK3rBVuPU4sgqQMqZJiTjBZOL4M0pzvonRsN57wCYGb7L5NgnmZaJl2/gB1kRSju0nVdeE8AcQY32XxaDd7x8tVArJFacMFTijOnGYVwTcGupPFw37m3DrV5VQHXj/IS8ropNBopGfZcNUTeffH6cSXkRlkWIfKrzj6LJjajFtYdsen/gCMxrrVlHxV84eUOiHjGttmsn85qnGxgIXN73zny5dO
+X-Microsoft-Antispam-PRVS: <BL2PR07MB24203706288DF63940BA46EB97240@BL2PR07MB2420.namprd07.prod.outlook.com>
+X-Exchange-Antispam-Report-Test: UriScan:;
+X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(5005006)(8121501046)(10201501046)(3002001)(6041248)(20161123558025)(20161123562025)(20161123560025)(20161123555025)(20161123564025)(6072148);SRVR:BL2PR07MB2420;BCL:0;PCL:0;RULEID:;SRVR:BL2PR07MB2420;
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;4:DnzY0+QmV89ADH2aBDX9OD0u/4NS17RgdDQME8bSNEZheQzun7H4E42QiLEjOIprbOF3OZHEXL2w2lqQhGpC8xrSg952hGJ+tazDcCyBjpsd8ybGd0cnQjuQ2gQCe68PWjv/WZ779iTlA1V+oP5Yj4SUcOtpgOjVZDh7vgq2nsECptikJnoYj8moX1NJrnwngI00pt7KeueCDqWVvAqXpjc7Ve36a0W93rScxQ0VJfUDK8RzgBH1SxUQO0SV3aAHcp7Dmzz/XD+ld3eX0j/hVbdKylWUQAe8fwOajuKtpHw1SxVRvy+L1E7sZK12Za6PFD/xYlYc6m6CmmVFmYYDdWZ5SBkszi6AY+7dsHUfSP50rVA1cgc3o1OpgGFsbUMBrOX6lgqIkqiptro1Xr/q0zNkNePTfGqv3583Zdy5BK9dSQojG989oUfSqWeCKZ3LknCiJvhjdYlDvLX6LmSWt0vvcdZAVW0kjHXHkpaU1mXFiNjpdPt70I+EDrOHEqHQ6CHqwcVIYYgxcwJLLyc5jdVZPCVQIzVzZqK1M1oM0DYaY1hQJE5RmRHBh5Pka1Ja27qCXU61XFdALkV7DambHbp2Gs12/5V4gyjg55UOE+w=
+X-Forefront-PRVS: 02462830BE
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(39450400003)(305945005)(50986999)(4326008)(36756003)(7736002)(6116002)(50226002)(3846002)(8676002)(50466002)(81166006)(5003940100001)(48376002)(54906002)(6506006)(42186005)(107886003)(38730400002)(1076002)(86362001)(25786008)(53416004)(6512007)(6486002)(33646002)(47776003)(66066001)(53936002)(2906002)(5660300001)(189998001)(6666003);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR07MB2420;H:ddl.caveonetworks.com;FPR:;SPF:None;MLV:sfv;LANG:en;
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;23:wuzxwAvtCaD8gx8X76gD7LlSqslBj8TOZurHH6XuTGvIPIXs2DIM0MgNtSfL+hiF5kLh+aQoTAliKpEM6JJHPvcw5NaIrqWhFEHfHMZwPV1LG6/Bem72igiHl50kPzXciVicdsTztBIPkR8R+Z/IwGjwik5mVKd04yLZbG5WXzYn5WAl7dNk6ygyJUj9m7iP8WWRe6e/OoaScL7Y+C5qFUMVBoeojVLGz19VEm1izBPhHDpOahRowCcCYXZ2CrjxsFjUBtruGNKL/MnTXUCaaEOBV24TMWYGAjpX+hRjyj5Fq0X3LiIdIayzFDGcTkLIKw3hKJwor4vwpfESiE0wdonvocUi3GP4PXctLzImKvhenAmLs4VyS9u+ilSon9Ut4b7qPu5AK2Hp65P5sSQZRYXM7ayWZhZ51+zi33ov+pEMycLogzxARCqusc1/oIqntEzGOZGJUAOKQpTsCnEEfZkTeEGnvZBqIrJG4piB460Hgm3b+2X90ww+biMH5/Eg2zMTxcR1++lYpbjxGtv9pi80xrgUjp6PInnnNy/D4rC16iCliHFykmPeOkl/U2FZPVwUpC9v3tHFc1/kAN/lzgVQYq36hQPRXeGM+ODDsRELyGaRegQgY1hX14j6yV0nKckt+Ab86lBj5p9zCuszXPs7BvgS8Zug/dar8mmumdVvjnGJecMPibDiw9GQAPkQv3uJSnOZj8GBNYFh3TVcdZ1HYGQVVpm5jd6qxJh6irsoyBiO2VNn20bbUyA/P1Itb2Q7dDbTJy03c5xJdXgGKsNKLrhazf/t+CmdDG7BSNqXP9nXwW3QggAtILBSRx9Tu12WO1JBtBObT/fno4Ku9CJr/eL6reYZrVBqhXYXFhrvhwVpWY3T57deby2jHc2j
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;6:4gQ/qKjY03NQoDnylkt1PrktJzNOH5tVUJLxq6UqmWkILkgEHHGjrdCeAeXOQ9Alg1JQ16iYVCtHafKP2E4P8+ZIBUXezeKL461mUN/9Zs64IY1yPfVUwx+jI5byfKvJeQH0dxqLl8zYZzFzzbNdPiR2ixZfZVfYzJMXazE68b5zYuvs+j2e/prSSj+CV8h4UzRIoT3o9DZfD60fgKfCDlrHlQFy1bI6/EfE27YaSfFXMzAF4jK/iRjC6gSgkRlHC8mefz7zFfa9bv+5+6QCZ7UYQBzJLb47za1eQI0DQSjxIdR38bpr19dGPtdF8ilOAwzkkQRkIEnn3lIrxeGvUZsPwzqhhSSmTqCWW4q2YHiio+zQQfU4RH30IhpyAPde364NqnKf5AR2T51nmrO4Cw==;5:vOEBW1LNWz0vQq94ug3b25v/y4+dzw/0yS5P2HN9ScvVvdl6cSQFdrVFDkKvYUG5Fj0rCI7EYEl2q0hUZe2ZHjT91p0JDevFGilLQoBiXRVcviJPWDJX4yzkp3Pcs/Jk5f0MDvk5EyPYrHnLXM+esg==;24:pDtDxdSyTkb1EHQWM8l1E+wr329g4jvf6cMmZMNQThL8V0OPZoJIb3np9m/Y9vd+8EHuSp59kXM3kw+Rr3iljc0/NFikB719hszrP76eBR4=
+SpamDiagnosticOutput: 1:99
+SpamDiagnosticMetadata: NSPM
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;7:DqPHVYIxZ6xTR6Rtnz9ffCaT2KJvRgGPFnxEyh7g13APzd4ussVBjvJ8rFqc8Nk4YMOYlhlDQgRE4yULdxL60o4gTjyc16DxSb1ZKLz1h2z/el4Y6foL9IXH9BQsRYB1oJDBbo6cJkz7rc2PWwJfPfW9ctkKKHei/NXxtEEU0CNHEgegRFdEoNYy9IwKQY3pelJfXcYEKSoNissDN9tAjQe8SNrMY+mEz+pduEedpvK+WdUMWk9aZkKLKOzHtmC61tu6ttaUSLm8LDKV3SZ4kiKzjVNj87yGZoLq1H/8F3SlOf3PoiMHipEKnhFWfgeDKas4P+AbBS2wW36UR86q9Q==
+X-OriginatorOrg: cavium.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2017 21:21:48.2345 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR07MB2420
+Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57261
+X-archive-position: 57262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: till.smejkal@googlemail.com
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -219,66 +71,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 14 Mar 2017, Chris Metcalf wrote:
-> On 3/14/2017 12:12 PM, Till Smejkal wrote:
-> > On Mon, 13 Mar 2017, Andy Lutomirski wrote:
-> > > On Mon, Mar 13, 2017 at 7:07 PM, Till Smejkal
-> > > <till.smejkal@googlemail.com> wrote:
-> > > > On Mon, 13 Mar 2017, Andy Lutomirski wrote:
-> > > > > This sounds rather complicated.  Getting TLB flushing right seems
-> > > > > tricky.  Why not just map the same thing into multiple mms?
-> > > > This is exactly what happens at the end. The memory region that is described by the
-> > > > VAS segment will be mapped in the ASes that use the segment.
-> > > So why is this kernel feature better than just doing MAP_SHARED
-> > > manually in userspace?
-> > One advantage of VAS segments is that they can be globally queried by user programs
-> > which means that VAS segments can be shared by applications that not necessarily have
-> > to be related. If I am not mistaken, MAP_SHARED of pure in memory data will only work
-> > if the tasks that share the memory region are related (aka. have a common parent that
-> > initialized the shared mapping). Otherwise, the shared mapping have to be backed by a
-> > file.
-> 
-> True, but why is this bad?  The shared mapping will be memory resident
-> regardless, even if backed by a file (unless swapped out under heavy
-> memory pressure, but arguably that's a feature anyway).  More importantly,
-> having a file name is a simple and consistent way of identifying such
-> shared memory segments.
-> 
-> With a little work, you can also arrange to map such files into memory
-> at a fixed address in all participating processes, thus making internal
-> pointers work correctly.
+Changes from v1:
 
-I don't want to say that the interface provided by MAP_SHARED is bad. I am only
-arguing that VAS segments and the interface that they provide have an advantage over
-the existing ones in my opinion. However, Matthew Wilcox also suggested in some
-earlier mail that VAS segments could be exported to user space via a special purpose
-filesystem. This would enable users of VAS segments to also just use some special
-files to setup the shared memory regions. But since the VAS segment itself already
-knows where at has to be mapped in the virtual address space of the process, the
-establishing of the shared memory region would be very easy for the user.
+  - Use unsigned access for SKF_AD_HATYPE
 
-> > VAS segments on the other side allow sharing of pure in memory data by
-> > arbitrary related tasks without the need of a file. This becomes especially
-> > interesting if one combines VAS segments with non-volatile memory since one can keep
-> > data structures in the NVM and still be able to share them between multiple tasks.
-> 
-> I am not fully up to speed on NV/pmem stuff, but isn't that exactly what
-> the DAX mode is supposed to allow you to do?  If so, isn't sharing a
-> mapped file on a DAX filesystem on top of pmem equivalent to what
-> you're proposing?
+  - Added three more patches for other problems found.
 
-If I read the documentation to DAX filesystems correctly, it is indeed possible to us
-them to create files that life purely in NVM. I wasn't fully aware of this feature.
-Thanks for the pointer.
 
-However, the main contribution of this patchset is actually the idea of first class
-virtual address spaces and that they can be used to allow processes to have multiple
-different views on the system's main memory. For us, VAS segments were another logic
-step in the same direction (from first class virtual address spaces to first class
-address space segments). However, if there is already functionality in the Linux
-kernel to achieve the exact same behavior, there is no real need to add VAS segments.
-I will continue thinking about them and either find a different situation where the
-currently available interface is not sufficient/too complicated or drop VAS segments
-from future version of the patch set.
+Testing the BPF JIT on Cavium OCTEON (mips64) with the test-bpf module
+identified some failures and unimplemented features.
 
-Till
+With this patch set we get:
+
+     test_bpf: Summary: 305 PASSED, 0 FAILED, [85/297 JIT'ed]
+
+Both big and little endian tested.
+
+We still lack eBPF support, but this is better than nothing.
+
+David Daney (5):
+  MIPS: uasm:  Add support for LHU.
+  MIPS: BPF: Add JIT support for SKF_AD_HATYPE.
+  MIPS: BPF: Use unsigned access for unsigned SKB fields.
+  MIPS: BPF: Quit clobbering callee saved registers in JIT code.
+  MIPS: BPF: Fix multiple problems in JIT skb access helpers.
+
+ arch/mips/include/asm/uasm.h |  1 +
+ arch/mips/mm/uasm-mips.c     |  1 +
+ arch/mips/mm/uasm.c          |  3 ++-
+ arch/mips/net/bpf_jit.c      | 41 +++++++++++++++++++++++++++++++----------
+ arch/mips/net/bpf_jit_asm.S  | 23 ++++++++++++-----------
+ 5 files changed, 47 insertions(+), 22 deletions(-)
+
+-- 
+2.9.3

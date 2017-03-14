@@ -1,135 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 06:38:01 +0100 (CET)
-Received: from mail-ua0-x22d.google.com ([IPv6:2607:f8b0:400c:c08::22d]:33721
-        "EHLO mail-ua0-x22d.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992143AbdCNFhyP-ixf convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Mar 2017 06:37:54 +0100
-Received: by mail-ua0-x22d.google.com with SMTP id u30so165944606uau.0
-        for <linux-mips@linux-mips.org>; Mon, 13 Mar 2017 22:37:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=V61u0mVG8z+a9EVkkUT8GQguRS5d5+WmjBQzo5aedbQ=;
-        b=e+7ZWA2mSF/fLdty7Vjl7a5k9rrgI7BP0N/uKSqR+9bZcbVTzpg3s2Ojn0PrTTkMu6
-         mXYFwcIjF0T0xESHIgiP9SbkLxE064xBBnhqgliqTEXocKJ9esClxEfq5BFFjd9ubcSn
-         ahfIHBsEOe3MdqLlh2E4OGnEcZKDKI2ERFl6/Vd5zXsl9KWPlEnTgd22c5s+KM2rdfMy
-         sFteKIeIsBOurBFizdFAJyw45iM9PcIR1HxMWfMuM5DxdgPPnalvhcRkzm5gosfU4VOi
-         GT2gkBZKp4SGXJgT2x6AI+9tbrKHC8yrf8jPkOQJhBGQr2Wc0PfsrDyBiwcN+MSFGhFM
-         w6Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=V61u0mVG8z+a9EVkkUT8GQguRS5d5+WmjBQzo5aedbQ=;
-        b=E6DxSB97iuz0uFKvQTAtMSDzb1Wi3Ygylqkr+SitE46lc+HhNrxqJij5XeKyGGZY9s
-         LOS+o7qn/Q2FjWMXDkifj+fOItA4RHz+aOFWF8TBT+efObAfzduzPJJdSlLb2nRHzLYb
-         hRxaX4NtnHEenCtI0ZdP5S/9Y1NSvGQsebth+yNvL3yVk9LB3+yE/wE+Auh4L/m+xzlY
-         /3FUYc9vEQzwcxN+5RPBqpJoohofpDwtHVM55hh8hfcV+UQaxrcL2HAEWSKs4YXxyFpn
-         hoUaiSSftVBXQ9RksJ34LydCt3J3mzfp+QtXMBMxdoVsD8ka0PBK1IThjzirCcjah3PP
-         0oEA==
-X-Gm-Message-State: AMke39lDG6RHi7IyXROru11o0flFQgQCPOqXpIuyN6aWRrj+ehCy8PX02pMsEbAt2W65DIpeX6Gp0AIp2skEarCK
-X-Received: by 10.176.76.108 with SMTP id d44mr17525686uag.140.1489469868219;
- Mon, 13 Mar 2017 22:37:48 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 08:40:36 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:29430 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993543AbdCNHk3scmBJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 08:40:29 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 0E91FE94CDC93;
+        Tue, 14 Mar 2017 07:40:20 +0000 (GMT)
+Received: from [10.80.2.5] (10.80.2.5) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 14 Mar
+ 2017 07:40:22 +0000
+Subject: Re: [PATCH 0/2] cpu-features.h rename
+To:     Florian Fainelli <f.fainelli@gmail.com>, <ralf@linux-mips.org>
+References: <1489412018-30387-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <f5870aae-0974-6213-2499-bbfb365cf063@gmail.com>
+CC:     <linux-mips@linux-mips.org>
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Message-ID: <be773311-fb5b-949e-378e-09db2baa8cd4@imgtec.com>
+Date:   Tue, 14 Mar 2017 08:40:21 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
 MIME-Version: 1.0
-Received: by 10.103.88.135 with HTTP; Mon, 13 Mar 2017 22:37:27 -0700 (PDT)
-In-Reply-To: <20170314020709.vxeglus54k76i7rn@arch-dev>
-References: <CALCETrWe8uOi3m8qXUbMA4017+rxbi1C8hzZ0bwjVHmfdE4FnQ@mail.gmail.com>
- <20170314020709.vxeglus54k76i7rn@arch-dev>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Mon, 13 Mar 2017 22:37:27 -0700
-Message-ID: <CALCETrXKvNWv1OtoSo_HWf5ZHSvyGS1NsuQod6Zt+tEg3MT5Sg@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
-To:     Andy Lutomirski <luto@kernel.org>,
-        Till Smejkal <till.smejkal@googlemail.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Steven Miao <realmz6@gmail.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Benjamin LaHaise <bcrl@kvack.org>,
-        Nadia Yvette Chambers <nyc@holomorphy.com>,
-        Jeff Layton <jlayton@poochiereds.net>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-alpha@vger.kernel.org,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-hexagon@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-metag@vger.kernel.org,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        linux-parisc@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mtd@lists.infradead.org,
-        USB list <linux-usb@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-aio@kvack.org, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        ALSA development <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <luto@amacapital.net>
+In-Reply-To: <f5870aae-0974-6213-2499-bbfb365cf063@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57196
+X-archive-position: 57197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -142,38 +45,136 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 13, 2017 at 7:07 PM, Till Smejkal
-<till.smejkal@googlemail.com> wrote:
-> On Mon, 13 Mar 2017, Andy Lutomirski wrote:
->> This sounds rather complicated.  Getting TLB flushing right seems
->> tricky.  Why not just map the same thing into multiple mms?
+Hi Florian,
+
+On 13.03.2017 18:08, Florian Fainelli wrote:
+> On 03/13/2017 06:33 AM, Marcin Nowakowski wrote:
+>> Since the introduction of GENERIC_CPU_AUTOPROBE
+>> (https://patchwork.linux-mips.org/patch/15395/) we've got 2 very similarily
+>> named headers: cpu-features.h and cpufeature.h.
+>> Since the latter is used by all platforms that implement
+>> GENERIC_CPU_AUTOPROBE functionality, it's better to rename the MIPS-specific
+>> cpu-features.h.
+>>
+>> Marcin Nowakowski (2):
+>>   MIPS: mach-rm: Remove recursive include of cpu-feature-overrides.h
+>>   MIPS: rename cpu-features.h -> cpucaps.h
 >
-> This is exactly what happens at the end. The memory region that is described by the
-> VAS segment will be mapped in the ASes that use the segment.
-
-So why is this kernel feature better than just doing MAP_SHARED
-manually in userspace?
-
-
->> Ick.  Please don't do this.  Can we please keep an mm as just an mm
->> and not make it look magically different depending on which process
->> maps it?  If you need a trampoline (which you do, of course), just
->> write a trampoline in regular user code and map it manually.
+> That's a lot of churn that could cause some good headaches in
+> backporting stable changes affecting cpu-feature-overrides.h.
 >
-> Did I understand you correctly that you are proposing that the switching thread
-> should make sure by itself that its code, stack, … memory regions are properly setup
-> in the new AS before/after switching into it? I think, this would make using first
-> class virtual address spaces much more difficult for user applications to the extend
-> that I am not even sure if they can be used at all. At the moment, switching into a
-> VAS is a very simple operation for an application because the kernel will just simply
-> do the right thing.
+> Can we just do the cpu-features.h -> cpucaps.h rename and keep
+> cpu-feature-overrides.h around?
 
-Yes.  I think that having the same mm_struct look different from
-different tasks is problematic.  Getting it right in the arch code is
-going to be nasty.  The heuristics of what to share are also tough --
-why would text + data + stack or whatever you're doing be adequate?
-What if you're in a thread?  What if two tasks have their stacks in
-the same place?
+That's of course possible, but I think it would make the naming quite 
+confusing as well, as it would be very unclear for any reader as to why 
+a 'cpu-feature-overrides' overrides 'cpucaps'.
 
-I could imagine something like a sigaltstack() mode that lets you set
-a signal up to also switch mm could be useful.
+I've looked at the change history of these files and most receive very 
+little updates (which is hardly surprising given the changes are done 
+mostly during initial integration of a new cpu or soon after), and none 
+of the changes in those files were marked for stable. I think it's safe 
+to assume that this pattern is not likely to change, would you agree?
+
+Marcin
+
+>>
+>>  arch/mips/dec/setup.c                                             | 2 +-
+>>  arch/mips/dec/time.c                                              | 2 +-
+>>  arch/mips/include/asm/atomic.h                                    | 2 +-
+>>  arch/mips/include/asm/bitops.h                                    | 2 +-
+>>  arch/mips/include/asm/branch.h                                    | 2 +-
+>>  arch/mips/include/asm/cacheflush.h                                | 2 +-
+>>  arch/mips/include/asm/{cpu-features.h => cpucaps.h}               | 8 ++++----
+>>  arch/mips/include/asm/dsp.h                                       | 2 +-
+>>  arch/mips/include/asm/fpu.h                                       | 2 +-
+>>  arch/mips/include/asm/highmem.h                                   | 2 +-
+>>  arch/mips/include/asm/io.h                                        | 2 +-
+>>  .../mach-ath25/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 8 ++++----
+>>  .../mach-ath79/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 8 ++++----
+>>  .../mach-au1x00/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 6 +++---
+>>  .../mach-bcm47xx/{cpu-feature-overrides.h => cpucaps-overrides.h} | 6 +++---
+>>  .../mach-bcm63xx/{cpu-feature-overrides.h => cpucaps-overrides.h} | 6 +++---
+>>  .../mach-bmips/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 6 +++---
+>>  .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 4 ++--
+>>  .../mach-cobalt/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 6 +++---
+>>  .../asm/mach-dec/{cpu-feature-overrides.h => cpucaps-overrides.h} | 6 +++---
+>>  .../mach-generic/{cpu-feature-overrides.h => cpucaps-overrides.h} | 6 +++---
+>>  .../mach-ip22/{cpu-feature-overrides.h => cpucaps-overrides.h}    | 6 +++---
+>>  .../mach-ip27/{cpu-feature-overrides.h => cpucaps-overrides.h}    | 6 +++---
+>>  .../mach-ip28/{cpu-feature-overrides.h => cpucaps-overrides.h}    | 6 +++---
+>>  .../mach-ip32/{cpu-feature-overrides.h => cpucaps-overrides.h}    | 6 +++---
+>>  .../mach-jz4740/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 4 ++--
+>>  .../falcon/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
+>>  .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 6 +++---
+>>  .../mach-malta/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 6 +++---
+>>  .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 6 +++---
+>>  .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 6 +++---
+>>  .../mach-pic32/{cpu-feature-overrides.h => cpucaps-overrides.h}   | 6 +++---
+>>  .../{cpu-feature-overrides.h => cpucaps-overrides.h}              | 6 +++---
+>>  .../mt7620/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
+>>  .../mt7621/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
+>>  .../rt288x/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
+>>  .../rt305x/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
+>>  .../rt3883/{cpu-feature-overrides.h => cpucaps-overrides.h}       | 8 ++++----
+>>  .../mach-rc32434/{cpu-feature-overrides.h => cpucaps-overrides.h} | 8 ++++----
+>>  .../asm/mach-rm/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 8 +++-----
+>>  .../mach-sibyte/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 6 +++---
+>>  .../mach-tx49xx/{cpu-feature-overrides.h => cpucaps-overrides.h}  | 6 +++---
+>>  arch/mips/include/asm/r4kcache.h                                  | 2 +-
+>>  arch/mips/include/asm/switch_to.h                                 | 2 +-
+>>  arch/mips/include/asm/timex.h                                     | 2 +-
+>>  arch/mips/include/asm/tlb.h                                       | 2 +-
+>>  arch/mips/kernel/branch.c                                         | 2 +-
+>>  arch/mips/kernel/cpu-probe.c                                      | 2 +-
+>>  arch/mips/kernel/elf.c                                            | 2 +-
+>>  arch/mips/kernel/proc.c                                           | 2 +-
+>>  arch/mips/kernel/signal.c                                         | 2 +-
+>>  arch/mips/kernel/signal_n32.c                                     | 2 +-
+>>  arch/mips/kernel/smp-bmips.c                                      | 2 +-
+>>  arch/mips/kernel/sysrq.c                                          | 2 +-
+>>  arch/mips/kernel/time.c                                           | 2 +-
+>>  arch/mips/kernel/uprobes.c                                        | 2 +-
+>>  arch/mips/mm/c-octeon.c                                           | 2 +-
+>>  arch/mips/mm/c-r4k.c                                              | 2 +-
+>>  arch/mips/mm/cache.c                                              | 2 +-
+>>  arch/mips/mm/gup.c                                                | 2 +-
+>>  arch/mips/net/bpf_jit.c                                           | 2 +-
+>>  arch/mips/netlogic/common/time.c                                  | 2 +-
+>>  arch/mips/pistachio/irq.c                                         | 2 +-
+>>  63 files changed, 135 insertions(+), 137 deletions(-)
+>>  rename arch/mips/include/asm/{cpu-features.h => cpucaps.h} (99%)
+>>  rename arch/mips/include/asm/mach-ath25/{cpu-feature-overrides.h => cpucaps-overrides.h} (86%)
+>>  rename arch/mips/include/asm/mach-ath79/{cpu-feature-overrides.h => cpucaps-overrides.h} (85%)
+>>  rename arch/mips/include/asm/mach-au1x00/{cpu-feature-overrides.h => cpucaps-overrides.h} (91%)
+>>  rename arch/mips/include/asm/mach-bcm47xx/{cpu-feature-overrides.h => cpucaps-overrides.h} (93%)
+>>  rename arch/mips/include/asm/mach-bcm63xx/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
+>>  rename arch/mips/include/asm/mach-bmips/{cpu-feature-overrides.h => cpucaps-overrides.h} (64%)
+>>  rename arch/mips/include/asm/mach-cavium-octeon/{cpu-feature-overrides.h => cpucaps-overrides.h} (94%)
+>>  rename arch/mips/include/asm/mach-cobalt/{cpu-feature-overrides.h => cpucaps-overrides.h} (90%)
+>>  rename arch/mips/include/asm/mach-dec/{cpu-feature-overrides.h => cpucaps-overrides.h} (95%)
+>>  rename arch/mips/include/asm/mach-generic/{cpu-feature-overrides.h => cpucaps-overrides.h} (61%)
+>>  rename arch/mips/include/asm/mach-ip22/{cpu-feature-overrides.h => cpucaps-overrides.h} (88%)
+>>  rename arch/mips/include/asm/mach-ip27/{cpu-feature-overrides.h => cpucaps-overrides.h} (92%)
+>>  rename arch/mips/include/asm/mach-ip28/{cpu-feature-overrides.h => cpucaps-overrides.h} (88%)
+>>  rename arch/mips/include/asm/mach-ip32/{cpu-feature-overrides.h => cpucaps-overrides.h} (89%)
+>>  rename arch/mips/include/asm/mach-jz4740/{cpu-feature-overrides.h => cpucaps-overrides.h} (92%)
+>>  rename arch/mips/include/asm/mach-lantiq/falcon/{cpu-feature-overrides.h => cpucaps-overrides.h} (85%)
+>>  rename arch/mips/include/asm/mach-loongson64/{cpu-feature-overrides.h => cpucaps-overrides.h} (89%)
+>>  rename arch/mips/include/asm/mach-malta/{cpu-feature-overrides.h => cpucaps-overrides.h} (92%)
+>>  rename arch/mips/include/asm/mach-netlogic/{cpu-feature-overrides.h => cpucaps-overrides.h} (88%)
+>>  rename arch/mips/include/asm/mach-paravirt/{cpu-feature-overrides.h => cpucaps-overrides.h} (83%)
+>>  rename arch/mips/include/asm/mach-pic32/{cpu-feature-overrides.h => cpucaps-overrides.h} (82%)
+>>  rename arch/mips/include/asm/mach-pmcs-msp71xx/{cpu-feature-overrides.h => cpucaps-overrides.h} (76%)
+>>  rename arch/mips/include/asm/mach-ralink/mt7620/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
+>>  rename arch/mips/include/asm/mach-ralink/mt7621/{cpu-feature-overrides.h => cpucaps-overrides.h} (88%)
+>>  rename arch/mips/include/asm/mach-ralink/rt288x/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
+>>  rename arch/mips/include/asm/mach-ralink/rt305x/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
+>>  rename arch/mips/include/asm/mach-ralink/rt3883/{cpu-feature-overrides.h => cpucaps-overrides.h} (86%)
+>>  rename arch/mips/include/asm/mach-rc32434/{cpu-feature-overrides.h => cpucaps-overrides.h} (90%)
+>>  rename arch/mips/include/asm/mach-rm/{cpu-feature-overrides.h => cpucaps-overrides.h} (84%)
+>>  rename arch/mips/include/asm/mach-sibyte/{cpu-feature-overrides.h => cpucaps-overrides.h} (87%)
+>>  rename arch/mips/include/asm/mach-tx49xx/{cpu-feature-overrides.h => cpucaps-overrides.h} (74%)
+>>
+>
+>

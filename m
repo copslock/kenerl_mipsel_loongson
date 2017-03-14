@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 14:16:54 +0100 (CET)
-Received: from mx2.suse.de ([195.135.220.15]:45773 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 14:17:29 +0100 (CET)
+Received: from mx2.suse.de ([195.135.220.15]:45780 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991232AbdCNNP51fLkN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23991948AbdCNNP57BV4N (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 14 Mar 2017 14:15:57 +0100
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
 Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 406C2AD70;
+        by mx2.suse.de (Postfix) with ESMTP id C6D85AD79;
         Tue, 14 Mar 2017 13:15:57 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
@@ -14,9 +14,9 @@ Cc:     linux-kernel@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
         Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 08/60] MIPS: Prevent unaligned accesses during stack unwinding
-Date:   Tue, 14 Mar 2017 14:14:59 +0100
-Message-Id: <50ef9df8672655f3bb111223045ab5ce45d5655e.1489497268.git.jslaby@suse.cz>
+Subject: [PATCH 3.12 09/60] MIPS: Fix get_frame_info() handling of microMIPS function size
+Date:   Tue, 14 Mar 2017 14:15:00 +0100
+Message-Id: <aae839a7f81cf4311a5276f22fea654fd2e0ad7e.1489497268.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <d93cf67053e241539a1ef7c30ee8583022bc0e89.1489497268.git.jslaby@suse.cz>
 References: <d93cf67053e241539a1ef7c30ee8583022bc0e89.1489497268.git.jslaby@suse.cz>
@@ -26,7 +26,7 @@ Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57246
+X-archive-position: 57247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,163 +49,60 @@ From: Paul Burton <paul.burton@imgtec.com>
 
 ===============
 
-commit a3552dace7d1d0cabf573e88fc3025cb90c4a601 upstream.
+commit b6c7a324df37bf05ef7a2c1580683cf10d082d97 upstream.
 
-During stack unwinding we call a number of functions to determine what
-type of instruction we're looking at. The union mips_instruction pointer
-provided to them may be pointing at a 2 byte, but not 4 byte, aligned
-address & we thus cannot directly access the 4 byte wide members of the
-union mips_instruction. To avoid this is_ra_save_ins() copies the
-required half-words of the microMIPS instruction to a correctly aligned
-union mips_instruction on the stack, which it can then access safely.
-The is_jump_ins() & is_sp_move_ins() functions do not correctly perform
-this temporary copy, and instead attempt to directly dereference 4 byte
-fields which may be misaligned and lead to an address exception.
+get_frame_info() is meant to iterate over up to the first 128
+instructions within a function, but for microMIPS kernels it will not
+reach that many instructions unless the function is 512 bytes long since
+we calculate the maximum number of instructions to check by dividing the
+function length by the 4 byte size of a union mips_instruction. In
+microMIPS kernels this won't do since instructions are variable length.
 
-Fix this by copying the instruction halfwords to a temporary union
-mips_instruction in get_frame_info() such that we can provide a 4 byte
-aligned union mips_instruction to the is_*_ins() functions and they do
-not need to deal with misalignment themselves.
+Fix this by instead checking whether the pointer to the current
+instruction has reached the end of the function, and use max_insns as a
+simple constant to check the number of iterations against.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Fixes: 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
 Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14529/
+Patchwork: https://patchwork.linux-mips.org/patch/14530/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/kernel/process.c | 70 +++++++++++++++++++++++-----------------------
- 1 file changed, 35 insertions(+), 35 deletions(-)
+ arch/mips/kernel/process.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index c5880a894a25..5b91c4d88f46 100644
+index 5b91c4d88f46..664e61ef690b 100644
 --- a/arch/mips/kernel/process.c
 +++ b/arch/mips/kernel/process.c
-@@ -220,8 +220,6 @@ struct mips_frame_info {
- static inline int is_ra_save_ins(union mips_instruction *ip)
- {
- #ifdef CONFIG_CPU_MICROMIPS
--	union mips_instruction mmi;
--
- 	/*
- 	 * swsp ra,offset
- 	 * swm16 reglist,offset(sp)
-@@ -231,23 +229,20 @@ static inline int is_ra_save_ins(union mips_instruction *ip)
- 	 *
- 	 * microMIPS is way more fun...
- 	 */
--	if (mm_insn_16bit(ip->halfword[0])) {
--		mmi.word = (ip->halfword[0] << 16);
--		return ((mmi.mm16_r5_format.opcode == mm_swsp16_op &&
--			 mmi.mm16_r5_format.rt == 31) ||
--			(mmi.mm16_m_format.opcode == mm_pool16c_op &&
--			 mmi.mm16_m_format.func == mm_swm16_op));
-+	if (mm_insn_16bit(ip->halfword[1])) {
-+		return (ip->mm16_r5_format.opcode == mm_swsp16_op &&
-+			ip->mm16_r5_format.rt == 31) ||
-+		       (ip->mm16_m_format.opcode == mm_pool16c_op &&
-+			ip->mm16_m_format.func == mm_swm16_op);
- 	}
- 	else {
--		mmi.halfword[0] = ip->halfword[1];
--		mmi.halfword[1] = ip->halfword[0];
--		return ((mmi.mm_m_format.opcode == mm_pool32b_op &&
--			 mmi.mm_m_format.rd > 9 &&
--			 mmi.mm_m_format.base == 29 &&
--			 mmi.mm_m_format.func == mm_swm32_func) ||
--			(mmi.i_format.opcode == mm_sw32_op &&
--			 mmi.i_format.rs == 29 &&
--			 mmi.i_format.rt == 31));
-+		return (ip->mm_m_format.opcode == mm_pool32b_op &&
-+			ip->mm_m_format.rd > 9 &&
-+			ip->mm_m_format.base == 29 &&
-+			ip->mm_m_format.func == mm_swm32_func) ||
-+		       (ip->i_format.opcode == mm_sw32_op &&
-+			ip->i_format.rs == 29 &&
-+			ip->i_format.rt == 31);
- 	}
- #else
- 	/* sw / sd $ra, offset($sp) */
-@@ -268,12 +263,8 @@ static inline int is_jump_ins(union mips_instruction *ip)
- 	 *
- 	 * microMIPS is kind of more fun...
- 	 */
--	union mips_instruction mmi;
--
--	mmi.word = (ip->halfword[0] << 16);
--
--	if ((mmi.mm16_r5_format.opcode == mm_pool16c_op &&
--	    (mmi.mm16_r5_format.rt & mm_jr16_op) == mm_jr16_op) ||
-+	if ((ip->mm16_r5_format.opcode == mm_pool16c_op &&
-+	    (ip->mm16_r5_format.rt & mm_jr16_op) == mm_jr16_op) ||
- 	    ip->j_format.opcode == mm_jal32_op)
- 		return 1;
- 	if (ip->r_format.opcode != mm_pool32a_op ||
-@@ -302,15 +293,13 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
- 	 *
- 	 * microMIPS is not more fun...
- 	 */
--	if (mm_insn_16bit(ip->halfword[0])) {
--		union mips_instruction mmi;
--
--		mmi.word = (ip->halfword[0] << 16);
--		return ((mmi.mm16_r3_format.opcode == mm_pool16d_op &&
--			 mmi.mm16_r3_format.simmediate && mm_addiusp_func) ||
--			(mmi.mm16_r5_format.opcode == mm_pool16d_op &&
--			 mmi.mm16_r5_format.rt == 29));
-+	if (mm_insn_16bit(ip->halfword[1])) {
-+		return (ip->mm16_r3_format.opcode == mm_pool16d_op &&
-+			ip->mm16_r3_format.simmediate && mm_addiusp_func) ||
-+		       (ip->mm16_r5_format.opcode == mm_pool16d_op &&
-+			ip->mm16_r5_format.rt == 29);
- 	}
-+
- 	return (ip->mm_i_format.opcode == mm_addiu32_op &&
- 		 ip->mm_i_format.rt == 29 && ip->mm_i_format.rs == 29);
- #else
-@@ -325,7 +314,8 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
- 
+@@ -315,9 +315,9 @@ static inline int is_sp_move_ins(union mips_instruction *ip)
  static int get_frame_info(struct mips_frame_info *info)
  {
--	union mips_instruction *ip;
-+	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
-+	union mips_instruction insn, *ip;
- 	unsigned max_insns = info->func_size / sizeof(union mips_instruction);
- 	unsigned i;
+ 	bool is_mmips = IS_ENABLED(CONFIG_CPU_MICROMIPS);
+-	union mips_instruction insn, *ip;
+-	unsigned max_insns = info->func_size / sizeof(union mips_instruction);
+-	unsigned i;
++	union mips_instruction insn, *ip, *ip_end;
++	const unsigned int max_insns = 128;
++	unsigned int i;
  
-@@ -341,11 +331,21 @@ static int get_frame_info(struct mips_frame_info *info)
- 	max_insns = min(128U, max_insns);
+ 	info->pc_offset = -1;
+ 	info->frame_size = 0;
+@@ -326,11 +326,9 @@ static int get_frame_info(struct mips_frame_info *info)
+ 	if (!ip)
+ 		goto err;
  
- 	for (i = 0; i < max_insns; i++, ip++) {
-+		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
-+			insn.halfword[0] = 0;
-+			insn.halfword[1] = ip->halfword[0];
-+		} else if (is_mmips) {
-+			insn.halfword[0] = ip->halfword[1];
-+			insn.halfword[1] = ip->halfword[0];
-+		} else {
-+			insn.word = ip->word;
-+		}
+-	if (max_insns == 0)
+-		max_insns = 128U;	/* unknown function size */
+-	max_insns = min(128U, max_insns);
++	ip_end = (void *)ip + info->func_size;
  
--		if (is_jump_ins(ip))
-+		if (is_jump_ins(&insn))
- 			break;
-+
- 		if (!info->frame_size) {
--			if (is_sp_move_ins(ip))
-+			if (is_sp_move_ins(&insn))
- 			{
- #ifdef CONFIG_CPU_MICROMIPS
- 				if (mm_insn_16bit(ip->halfword[0]))
-@@ -368,7 +368,7 @@ static int get_frame_info(struct mips_frame_info *info)
- 			}
- 			continue;
- 		}
--		if (info->pc_offset == -1 && is_ra_save_ins(ip)) {
-+		if (info->pc_offset == -1 && is_ra_save_ins(&insn)) {
- 			info->pc_offset =
- 				ip->i_format.simmediate / sizeof(long);
- 			break;
+-	for (i = 0; i < max_insns; i++, ip++) {
++	for (i = 0; i < max_insns && ip < ip_end; i++, ip++) {
+ 		if (is_mmips && mm_insn_16bit(ip->halfword[0])) {
+ 			insn.halfword[0] = 0;
+ 			insn.halfword[1] = ip->halfword[0];
 -- 
 2.12.0

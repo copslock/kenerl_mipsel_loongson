@@ -1,27 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 11:32:55 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:31137 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 11:33:22 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:26377 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994790AbdCNK0BeTdIH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 11:26:01 +0100
+        with ESMTP id S23994910AbdCNK0CSNfKH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 11:26:02 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 84A7EAEAA5A36;
-        Tue, 14 Mar 2017 10:25:52 +0000 (GMT)
+        by Forcepoint Email with ESMTP id 38AC4D7F0EFD5;
+        Tue, 14 Mar 2017 10:25:53 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
  14.3.294.0; Tue, 14 Mar 2017 10:25:55 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         David Daney <david.daney@cavium.com>,
-        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
-Subject: [PATCH 0/8] KVM: MIPS: Add Cavium Octeon III support
-Date:   Tue, 14 Mar 2017 10:25:43 +0000
-Message-ID: <cover.79b3feae3a98cb166c2d40a7bd4e854a5faedc89.1489486985.git-series.james.hogan@imgtec.com>
+        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>
+Subject: [PATCH 1/8] MIPS: Add Octeon III register accessors & definitions
+Date:   Tue, 14 Mar 2017 10:25:44 +0000
+Message-ID: <306f747a0743b91bbfbc321572d28d0e42f9bbb8.1489486985.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
+In-Reply-To: <cover.79b3feae3a98cb166c2d40a7bd4e854a5faedc89.1489486985.git-series.james.hogan@imgtec.com>
+References: <cover.79b3feae3a98cb166c2d40a7bd4e854a5faedc89.1489486985.git-series.james.hogan@imgtec.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [192.168.154.110]
@@ -29,7 +31,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57235
+X-archive-position: 57236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,49 +48,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This series is based on my recent VZ series.
-My hope is to take this series via the MIPS KVM tree for 4.12.
+Add accessors for some VZ related Cavium Octeon III specific COP0
+registers, along with field definitions. These will mostly be used by
+KVM to set up interrupt routing and partition the TLB between root and
+guest.
 
-This series implements support for Cavium Octeon III CPUs in KVM
-(primarily for VZ hardware, but trap & emulate should also work).
-
-Patch 1 adds register accesses and definitions for the virtualization
-related Cavium specific COP0 registers, which will be used by later
-patches.
-
-Patches 2-7 make various changes to allow KVM to work on Cavium Octeon
-III, with Patch 5 doing the all important Cavium specific partitioning
-of the TLB between root and guest and guest IRQ setup.
-
-Finally patch 8 selects HAVE_KVM from CPU_CAVIUM_OCTEON to allow KVM to
-be enabled.
-
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: David Daney <david.daney@cavium.com>
 Cc: Andreas Herrmann <andreas.herrmann@caviumnetworks.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
+---
+ arch/mips/include/asm/mipsregs.h | 36 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 0 deletions(-)
 
-James Hogan (8):
-  MIPS: Add Octeon III register accessors & definitions
-  KVM: MIPS/Emulate: Adapt T&E CACHE emulation for Octeon
-  KVM: MIPS/TLB: Handle virtually tagged icaches
-  KVM: MIPS/T&E: Report correct dcache line size
-  KVM: MIPS/VZ: VZ hardware setup for Octeon III
-  KVM: MIPS/VZ: Emulate hit CACHE ops for Octeon III
-  KVM: MIPS/VZ: Handle Octeon III guest.PRid register
-  MIPS: Allow KVM to be enabled on Octeon CPUs
-
- arch/mips/Kconfig                |   1 +-
- arch/mips/include/asm/mipsregs.h |  38 ++++++++-
- arch/mips/kvm/emulate.c          |  30 +++++-
- arch/mips/kvm/tlb.c              |  30 ++++++-
- arch/mips/kvm/trap_emul.c        |   8 ++-
- arch/mips/kvm/vz.c               | 150 +++++++++++++++++++++++++-------
- arch/mips/mm/cache.c             |   1 +-
- 7 files changed, 225 insertions(+), 33 deletions(-)
-
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index c6b8f96b80f9..ebe608d21d7e 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -974,6 +974,22 @@
+ /* Flush FTLB */
+ #define LOONGSON_DIAG_FTLB	(_ULCAST_(1) << 13)
+ 
++/* CvmCtl register field definitions */
++#define CVMCTL_IPPCI_SHIFT	7
++#define CVMCTL_IPPCI		(_U64CAST_(0x7) << CVMCTL_IPPCI_SHIFT)
++#define CVMCTL_IPTI_SHIFT	4
++#define CVMCTL_IPTI		(_U64CAST_(0x7) << CVMCTL_IPTI_SHIFT)
++
++/* CvmMemCtl2 register field definitions */
++#define CVMMEMCTL2_INHIBITTS	(_U64CAST_(1) << 17)
++
++/* CvmVMConfig register field definitions */
++#define CVMVMCONF_DGHT		(_U64CAST_(1) << 60)
++#define CVMVMCONF_MMUSIZEM1_S	12
++#define CVMVMCONF_MMUSIZEM1	(_U64CAST_(0xff) << CVMVMCONF_MMUSIZEM1_S)
++#define CVMVMCONF_RMMUSIZEM1_S	0
++#define CVMVMCONF_RMMUSIZEM1	(_U64CAST_(0xff) << CVMVMCONF_RMMUSIZEM1_S)
++
+ /*
+  * Coprocessor 1 (FPU) register names
+  */
+@@ -1733,6 +1749,13 @@ do {									\
+ 
+ #define read_c0_cvmmemctl()	__read_64bit_c0_register($11, 7)
+ #define write_c0_cvmmemctl(val) __write_64bit_c0_register($11, 7, val)
++
++#define read_c0_cvmmemctl2()	__read_64bit_c0_register($16, 6)
++#define write_c0_cvmmemctl2(val) __write_64bit_c0_register($16, 6, val)
++
++#define read_c0_cvmvmconfig()	__read_64bit_c0_register($16, 7)
++#define write_c0_cvmvmconfig(val) __write_64bit_c0_register($16, 7, val)
++
+ /*
+  * The cacheerr registers are not standardized.	 On OCTEON, they are
+  * 64 bits wide.
+@@ -2106,6 +2129,19 @@ do {									\
+ #define write_gc0_kscratch5(val)	__write_ulong_gc0_register(31, 6, val)
+ #define write_gc0_kscratch6(val)	__write_ulong_gc0_register(31, 7, val)
+ 
++/* Cavium OCTEON (cnMIPS) */
++#define read_gc0_cvmcount()		__read_ulong_gc0_register(9, 6)
++#define write_gc0_cvmcount(val)		__write_ulong_gc0_register(9, 6, val)
++
++#define read_gc0_cvmctl()		__read_64bit_gc0_register(9, 7)
++#define write_gc0_cvmctl(val)		__write_64bit_gc0_register(9, 7, val)
++
++#define read_gc0_cvmmemctl()		__read_64bit_gc0_register(11, 7)
++#define write_gc0_cvmmemctl(val)	__write_64bit_gc0_register(11, 7, val)
++
++#define read_gc0_cvmmemctl2()		__read_64bit_gc0_register(16, 6)
++#define write_gc0_cvmmemctl2(val)	__write_64bit_gc0_register(16, 6, val)
++
+ /*
+  * Macros to access the floating point coprocessor control registers
+  */
 -- 
 git-series 0.8.10

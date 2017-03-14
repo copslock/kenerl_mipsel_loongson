@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 22:22:04 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 22:22:25 +0100 (CET)
 Received: from mail-sn1nam01on0057.outbound.protection.outlook.com ([104.47.32.57]:38383
         "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991129AbdCNVV52J-hP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23992111AbdCNVV5vhKyP (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 14 Mar 2017 22:21:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=bEz8syaWIXqFcZES7BD7Bz5VHyT60XzAYUZvent5DWE=;
- b=g+jlCKQCOaN/gvsJy0oz6fuWkIeh08C75/WXY7ACRVzCxb7G5agOVQYlMXQygPmjcJ1ideVbVvOVaqTxInyRr0a0wzbsFGEfQ8g11uWssu592qhfwUBzFhQtNQ6FP58woLHaCsvfAeH53HEOCuiF43pzQpydGKS+tFITGdBJue4=
+ bh=jERgHMNeo5Z9Eb05xyXzSiprJY+YuNkJ7EtIzkl0S3A=;
+ b=DdKcQ/ZQBcn3C9k655aQytU5oTU+KKyM2KJeX9YX3HOMFudptKGNTwEBPrzUz9OPPwjaSlzjh7tVN22d2LOcGJUGk2IZEGCtBv1TzGM49pU5wx37Xz0unMUx+xEMO77KY3elLojz73w2dWf3l64lW7YFHPt+cRU+XwtWnrG8FAY=
 Authentication-Results: linux-mips.org; dkim=none (message not signed)
  header.d=none;linux-mips.org; dmarc=none action=none header.from=cavium.com;
 Received: from ddl.caveonetworks.com (50.233.148.156) by
  BL2PR07MB2420.namprd07.prod.outlook.com (10.167.101.144) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.947.12; Tue, 14 Mar 2017 21:21:48 +0000
+ 15.1.947.12; Tue, 14 Mar 2017 21:21:50 +0000
 From:   David Daney <david.daney@cavium.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         James Hogan <james.hogan@imgtec.com>,
@@ -22,39 +22,41 @@ To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
 Cc:     linux-kernel@vger.kernel.org,
         "Steven J. Hill" <steven.hill@cavium.com>,
         David Daney <david.daney@cavium.com>
-Subject: [PATCH v2 0/5] MIPS: BPF: JIT fixes and improvements.
-Date:   Tue, 14 Mar 2017 14:21:39 -0700
-Message-Id: <20170314212144.29988-1-david.daney@cavium.com>
+Subject: [PATCH v2 1/5] MIPS: uasm:  Add support for LHU.
+Date:   Tue, 14 Mar 2017 14:21:40 -0700
+Message-Id: <20170314212144.29988-2-david.daney@cavium.com>
 X-Mailer: git-send-email 2.9.3
+In-Reply-To: <20170314212144.29988-1-david.daney@cavium.com>
+References: <20170314212144.29988-1-david.daney@cavium.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [50.233.148.156]
 X-ClientProxiedBy: SN1PR0701CA0003.namprd07.prod.outlook.com (10.162.96.13) To
  BL2PR07MB2420.namprd07.prod.outlook.com (10.167.101.144)
-X-MS-Office365-Filtering-Correlation-Id: 764170ce-1aaf-4a72-b652-08d46b202034
+X-MS-Office365-Filtering-Correlation-Id: 66ca49a8-a76a-4cba-0dc4-08d46b20214e
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:BL2PR07MB2420;
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;3:0hFQYjrAmms3IS4xW/2OZvTTtnaaSRZI2LSN4OdWJyxPfIP47dSQaiKFSfA81U8jjOC3KWHNeHbIxWqeW+jLRhjRI1lZ2ozuWkIMAwuv/H1KCBRcmzThsqQJcyhz4sP4Ki0yKhsfEZsVuYp4TPhUcj7EBWaVHhKKvUprf2QJ+r8WUv/DZHRHF5Dl4enfs1+lXl7AdI+GTFmXRgC1fgcnryjyvn6ZGmshGCfO9n86ifrMcnoZpc0c8Z3eLftXkunZa7rN3n1hZDMypyZ4az89sg==;25:YwvfVFZxd02+spxVORSASpzlqn/iqqfU/VHNyN8ncRK0mEAkYrZ1NaEDEUSkEs5mRMPq1ujxWditZ3VbPCddY777Ciw2oT3nHD0mK1ONptH4vrWF2Kp/LJAi1YtCBqRYRZXSDByjj8ZIi6tK6imRqvJtTTgvm1HH2gGcursTzFQ1lpJvFD9UmEQS2daDo0QIKRUn0MGBHwYM+MFMCg2RU1r2ss5bSbLYC4QF6jFFPsZQrgFBVaMuV9wqko5JAyptExQVIAxmrUIFc5Jo3lcG3yI4iKfGEsckaLgfCnbUVFx52HtoqdQPWIkKxlu0MkNmSGKmUjo/XMMp86jTQXDOrfGpmgpNQMUWuG8gF6dP5f6MncDgymQzxkqABahX631yaA7JDQIkSxm/J+cnZDWLwVbeNIS2zqOCv3vkF4G4f2FEswvtuUwzFDZAhWBxgL8qLJMSpFYIAZl1GLOqxcAxOw==
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;31:rw8MP+YqK7Ll5XisH4Syontl1dX+xa6uv65t7LUccFMpf+eUs25VFPY11xYtCfZN20MIv7H+gq9T3IQzuhq0itBco92xa6AiNXIuR8RlJXWhlUXn7s8/vqN9qRp0IrhVKWLSojx2vxGFLrNBNzNriCQgw5P+E8LV2CzKMAMABUgkOge045b6l1YIJK4HpkjZX6nJMhEQSTKTiHkyZxmxaLBJIccGS+wDQqyixyjIZ+2w5KFJKKUacroX9btzmLQv;20:eV+o0hfPvrctH3dyDZuXK638giGBoX/bqLESmO5+tWZCDxMa5L0TTb0ZouCmAWTQo55edlJ7y3BhuU2W2d/w0l7sp/DnWO7HHdOz4vIaaVpUZGquDKOof9bKLNq8ObYyyQPEI0o/76hKydy1BU2HUcwihBJZ2e+9CX7gN1HPMJiqVfF0IFzH7CTYbySlnTZoejo/XuCYt6wec7Hp12o9mUKlH0VJIn8gp/ZmV7KevQFsW+AdiSjD0b7UIKp1ATBTDXMkaYq/qVXIHz/ziDdaTDC75/s4VzFOipZNOhK3rBVuPU4sgqQMqZJiTjBZOL4M0pzvonRsN57wCYGb7L5NgnmZaJl2/gB1kRSju0nVdeE8AcQY32XxaDd7x8tVArJFacMFTijOnGYVwTcGupPFw37m3DrV5VQHXj/IS8ropNBopGfZcNUTeffH6cSXkRlkWIfKrzj6LJjajFtYdsen/gCMxrrVlHxV84eUOiHjGttmsn85qnGxgIXN73zny5dO
-X-Microsoft-Antispam-PRVS: <BL2PR07MB24203706288DF63940BA46EB97240@BL2PR07MB2420.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;3:Twfb1WW4vOnejWEVbpxBlUaJi51duft8/KGYPm9U2Licfqq2tuanjW5AAlnGWrp29aQ/yUzQ2SJqJRXfgu/FrFgNUu3/oDlk1uEg15k+GYfAunUeDX80RZdevicfMOHzZQTPC59WBYZZXTzVilflL7EFCbynS1IzDRqE7GASykm3EkSn3DTSiFBOEKwRN1I8FKOgSkSd4Us7FRF8dhXF+Zfhcfv148nBR3cUzScRL3PoY2K2I3mI+9FLFxM3QFubFKhIidvGMd6MZeG1Pd9K8g==;25:UnE49Jqp1I+WgT25aiHls8bkRupx+QeDmg2D5cmUz49U6ucR1ZDV1cs3usPA7yEhmCzxz1tk8bHpwpZ2p/2pRFWjV6efMy7t5uylLRyeGDLwBjGNDNGmf+7S76mA1vH0w2c1LRqD0TR4AQefXmfVKdtydnffclS9tTleALm/n35bc8Y8/IA5Ga7SvHgukX2zMiYlWQHftzaJBG4y51KnOaCBdNdp7/wBEmtfH7Zr5hXOZLq9IWQMEnQR11O8gCnByFJx/S3ZeMSr6dgIS4BfutMBrT+wNJth8L/8iPDf52y0mbw7rfhFX/G0KOByor40w4w4dBgQWjL5mM75dkOqtXfd6+0rT4XWkcDV5omQBEAPHwf9efslGtOSiaER4mIj6r3tVHXeWnmEmgmHiJbxNlmrNAfrL4qVxVlEiBGghFL3RFOWL+thPdTjRGqoCHPSMfxJ2nEl/RElqDWEuEnjbQ==
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;31:SSGwPFrjG9Uke/0oxGeU7kag/fOx+OR0UyKare3Qocc5ZU7Mgy6siR+VPB8JUoWzo70rSzcqYNlEkwVHEmJdveIYropd8lNzzgSoJTVdyDwJN4IN5j20l8fomBVPsRQkWOhqpLA6LS2G5g7X5SwYNfQ9isuQdO5U2OrkDPFMeW9KO/URXQotsRAN7lhpE3vyjqGLDjvq0bMVqnFYapiTZmnifMFGsCAduSCuJQQE3g0=;20:jKWW4y6vzNsx0mOpQ6Skm1UVnSD/W+9sXx91dQGaIyc+/3cO2Rg9rv833QKtM0gkgx4bbC0a242bsgEAz+6vGTayCkOysga9B5hPlQXkQR8K5XgOywJtLnaIMwJQIFF12CXamk0nlbG6e+EKSoxV5+e7iuc+R/yZdKtRizXmcu85/J7DHtSsN2MpO3qRAQUmvRm+Kix/dGZjjicPS/fFOWnvU2ZU9WEp2ZrccOvSQtWIPQ1UcX3IdS2ya8yzUMc310DeyDi2dSGrMyNOLwAqT24okE/35BBR1FxcsUclM5pqnANttL1qpqHUfsszS5VchLvYmC6JUGxBtfwLoOxkPXOp2FiFQayQkB2hiTMj3933lnDwGDG5ij58teu+QeTfj+qomi4t/6yYa19rfV57sbXmAqRS8f6kwtGGhPhWQoL2fGavEzXFSdl1A5q2aw6bUnU2pqrcvRArdEL9/gGl/dbF4SGGfHwcSzNw7F6w+q/8vKBfQ90ivsC4kxoYntZx
+X-Microsoft-Antispam-PRVS: <BL2PR07MB24207BC357A95C5C69C3456A97240@BL2PR07MB2420.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(5005006)(8121501046)(10201501046)(3002001)(6041248)(20161123558025)(20161123562025)(20161123560025)(20161123555025)(20161123564025)(6072148);SRVR:BL2PR07MB2420;BCL:0;PCL:0;RULEID:;SRVR:BL2PR07MB2420;
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;4:DnzY0+QmV89ADH2aBDX9OD0u/4NS17RgdDQME8bSNEZheQzun7H4E42QiLEjOIprbOF3OZHEXL2w2lqQhGpC8xrSg952hGJ+tazDcCyBjpsd8ybGd0cnQjuQ2gQCe68PWjv/WZ779iTlA1V+oP5Yj4SUcOtpgOjVZDh7vgq2nsECptikJnoYj8moX1NJrnwngI00pt7KeueCDqWVvAqXpjc7Ve36a0W93rScxQ0VJfUDK8RzgBH1SxUQO0SV3aAHcp7Dmzz/XD+ld3eX0j/hVbdKylWUQAe8fwOajuKtpHw1SxVRvy+L1E7sZK12Za6PFD/xYlYc6m6CmmVFmYYDdWZ5SBkszi6AY+7dsHUfSP50rVA1cgc3o1OpgGFsbUMBrOX6lgqIkqiptro1Xr/q0zNkNePTfGqv3583Zdy5BK9dSQojG989oUfSqWeCKZ3LknCiJvhjdYlDvLX6LmSWt0vvcdZAVW0kjHXHkpaU1mXFiNjpdPt70I+EDrOHEqHQ6CHqwcVIYYgxcwJLLyc5jdVZPCVQIzVzZqK1M1oM0DYaY1hQJE5RmRHBh5Pka1Ja27qCXU61XFdALkV7DambHbp2Gs12/5V4gyjg55UOE+w=
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;4:S9UqwJB8L2FqS/YqZymeq5k3piGwJychyu9wAiMBIz0qoNh3A8bOj4mNLHhvpYteRtscQkfzuC0wuzWXlKNOf+pZ/IInBWyJu9tLlWpYnQLBa9B0PRXyhly0bA5mXRLFYeYPVQB5ysEdjlmVzbfbr3tXpvoEd1v2GUXjrbXBDc94Z6ttMdMK83RSUtAxyEAmgsULRrkm+7gXUMRtxfIwSOM02QQtx8UjWfodtT6SZnnzkGths3RXC0eRoeHnflVrG7j1KXFJj5s7I/FkcWGptfJ5gpr5PhcGGyJSeHs5BI8/GpOAqh8Nd+xp0hDkoyiTPfRTxJq3hRnmEEeqWzQlu8PZCgGf6Olmd6V+yOx3hpdBF1BEeoptdarHaiRH4G5EcBi2Gxc8AtxK/6PZ/wX1qQ/bYpuYooxuiNfuY6pasaZ7lj0/3ZvLI/t8owFgOlWW3gIvdAOc30Z9ssB0LLta+/cCbee94Aq8o9S4mMVife43ZSRLVpTfFEU+xooVd7Y5U6ELYVXlZJw9l1tUt7t6HAcnh3oKgpGciPqvKgbr0uS72vRIx7WrM3S4c1dvia+ytCeLKG9RTgx0fLf574USP4J5/kocU09nz5r8Vrhv9vg=
 X-Forefront-PRVS: 02462830BE
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(39450400003)(305945005)(50986999)(4326008)(36756003)(7736002)(6116002)(50226002)(3846002)(8676002)(50466002)(81166006)(5003940100001)(48376002)(54906002)(6506006)(42186005)(107886003)(38730400002)(1076002)(86362001)(25786008)(53416004)(6512007)(6486002)(33646002)(47776003)(66066001)(53936002)(2906002)(5660300001)(189998001)(6666003);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR07MB2420;H:ddl.caveonetworks.com;FPR:;SPF:None;MLV:sfv;LANG:en;
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;23:wuzxwAvtCaD8gx8X76gD7LlSqslBj8TOZurHH6XuTGvIPIXs2DIM0MgNtSfL+hiF5kLh+aQoTAliKpEM6JJHPvcw5NaIrqWhFEHfHMZwPV1LG6/Bem72igiHl50kPzXciVicdsTztBIPkR8R+Z/IwGjwik5mVKd04yLZbG5WXzYn5WAl7dNk6ygyJUj9m7iP8WWRe6e/OoaScL7Y+C5qFUMVBoeojVLGz19VEm1izBPhHDpOahRowCcCYXZ2CrjxsFjUBtruGNKL/MnTXUCaaEOBV24TMWYGAjpX+hRjyj5Fq0X3LiIdIayzFDGcTkLIKw3hKJwor4vwpfESiE0wdonvocUi3GP4PXctLzImKvhenAmLs4VyS9u+ilSon9Ut4b7qPu5AK2Hp65P5sSQZRYXM7ayWZhZ51+zi33ov+pEMycLogzxARCqusc1/oIqntEzGOZGJUAOKQpTsCnEEfZkTeEGnvZBqIrJG4piB460Hgm3b+2X90ww+biMH5/Eg2zMTxcR1++lYpbjxGtv9pi80xrgUjp6PInnnNy/D4rC16iCliHFykmPeOkl/U2FZPVwUpC9v3tHFc1/kAN/lzgVQYq36hQPRXeGM+ODDsRELyGaRegQgY1hX14j6yV0nKckt+Ab86lBj5p9zCuszXPs7BvgS8Zug/dar8mmumdVvjnGJecMPibDiw9GQAPkQv3uJSnOZj8GBNYFh3TVcdZ1HYGQVVpm5jd6qxJh6irsoyBiO2VNn20bbUyA/P1Itb2Q7dDbTJy03c5xJdXgGKsNKLrhazf/t+CmdDG7BSNqXP9nXwW3QggAtILBSRx9Tu12WO1JBtBObT/fno4Ku9CJr/eL6reYZrVBqhXYXFhrvhwVpWY3T57deby2jHc2j
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;6:4gQ/qKjY03NQoDnylkt1PrktJzNOH5tVUJLxq6UqmWkILkgEHHGjrdCeAeXOQ9Alg1JQ16iYVCtHafKP2E4P8+ZIBUXezeKL461mUN/9Zs64IY1yPfVUwx+jI5byfKvJeQH0dxqLl8zYZzFzzbNdPiR2ixZfZVfYzJMXazE68b5zYuvs+j2e/prSSj+CV8h4UzRIoT3o9DZfD60fgKfCDlrHlQFy1bI6/EfE27YaSfFXMzAF4jK/iRjC6gSgkRlHC8mefz7zFfa9bv+5+6QCZ7UYQBzJLb47za1eQI0DQSjxIdR38bpr19dGPtdF8ilOAwzkkQRkIEnn3lIrxeGvUZsPwzqhhSSmTqCWW4q2YHiio+zQQfU4RH30IhpyAPde364NqnKf5AR2T51nmrO4Cw==;5:vOEBW1LNWz0vQq94ug3b25v/y4+dzw/0yS5P2HN9ScvVvdl6cSQFdrVFDkKvYUG5Fj0rCI7EYEl2q0hUZe2ZHjT91p0JDevFGilLQoBiXRVcviJPWDJX4yzkp3Pcs/Jk5f0MDvk5EyPYrHnLXM+esg==;24:pDtDxdSyTkb1EHQWM8l1E+wr329g4jvf6cMmZMNQThL8V0OPZoJIb3np9m/Y9vd+8EHuSp59kXM3kw+Rr3iljc0/NFikB719hszrP76eBR4=
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(39450400003)(305945005)(50986999)(4326008)(36756003)(7736002)(6116002)(50226002)(3846002)(8676002)(50466002)(81166006)(5003940100001)(48376002)(54906002)(76176999)(6506006)(42186005)(107886003)(38730400002)(1076002)(86362001)(25786008)(53416004)(6512007)(6486002)(33646002)(47776003)(66066001)(53936002)(2906002)(5660300001)(189998001)(6666003)(2950100002);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR07MB2420;H:ddl.caveonetworks.com;FPR:;SPF:None;MLV:sfv;LANG:en;
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;23:3UsiwFbscRlr2EuPBG2rPB1UEYqkmr6mnK3SAxtwxGlS1l9kDem/oNWPcW6E1nvVEjQjsEdVg400IQdjzTak7olq5HpHPQoHxl+W2FZgHObbbzklz2JSxZvan5APUQif0hSAVqAcu0OIgrNE5xLKIiPlpci0VzthFcdWPSPM4oaPbzQQ4/zbLiKGiQ9qQXGlXz9ACkN1/q1by4Uf/I1UfIEyKJB4CsNLtkKFcuLxmoTbUlJxVbj2EC7YwrZVczgYafcWvQB9BCV9mxEKsRTYdX10RmyLxuhnYzt5Cuj9+1asOYEZsg440/tlJAkyg/6A6Z2z8VeFVq63eHePHjL/jUzfKJZqwByspLhAIIxzb4dOmccIaXT2jQKBBE8rws7UuwjQ8ESBTkdy5YUN5Dp4BZBRSRZo6fJ8GHFrvYo5DDENvv1cwtG3jZbLoIyqaUtkd5tWVHRCL9/P1LsijAgXON3K+QujCClZTaB0Wup+D/Wkm6wrkVF8lXoww7rNv7yK0bYBHCut7sRETvobdcJslVAJG93GUl9m4tvom1kcDiC0ttkcG/8c3t1aRutXdtEp3Z///G9GKAa5KgC0CCHHZJa8qvHnVBjV1luFINvs/NneKOQ8SGJ06Kgae1OBKIYReFVQmeaZhLPgZZodDlHu6nUItS63nPm0JE6C1yoWXYc05rKGcKhS+aT66hh0IjF+Mt89bAJMvzStnd5qzapjt259v0J59VvtuisRpukfbHcoX/YOAtnqwhlx36jkhhH1/wgehLBd9on5NlPaFmu8G32dNT6epzsrBIki3SwwChWFa0wn4qguAiQWUXGip9LNh9PIm1ipU5f1wB1dA3FJE75VSKQ6CE31+MD58W0TndT/23n2PYz3GXoxa4Mrt1PYV+6NIcawpI+P4baw5+z6UQjFRb/8+MLjZ/8MTQ7LmoJLAjVBs8AqjSdLf9B5gNGo
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;6:Q2tfyF04zfwQKstTmoJXoj5oMABZox/hn1myp0U/9ldSkHCu0jyjcBPQVAEbPAZcW01VTSMSvRExT6cVK5O1RtN3qEf+shETcex/IZzTj2p4xb2xA/YLhRlq/CPlXqi1qEJfV5Z42yO7sOwvly2xQsz/hiVbFyzZY9JoiOvfUbe+c8lpvWoBFG3EuP4J2YBnSXXCrAd3U8EuTd3eGIy+V8WXIm/67IaEBXM+Vbmw19aw9iAmkZXybAfHQLgAMhTzCfm4EH0OLJOD8oGANmoBY/BvF6+8YeKZgoRq60k/6AO1IubPnko2EvH500jGWKWWJ5eSzCfkDPuVnbfWcaf6579TZ6kUGiioPpbkPZvKkdbJDb47eitkuDy7jRIjBhlNis/kOPolQ1LoY/gGu/ys3g==;5:A4ZplZCd4+jInuNV7sEwe7Wm3rpEwUUhk86GNWKzNJqYUn8T00ordf902YGsfCNoEKDgBabLNaocRvPAWH6C+wvuWQh+zvi0C4hjORf7uMpRPz4zTf7xCY0PBZpiCaWOtYJ0jxrW5/jA1j8Phzpy8A==;24:caXse7TyJIg/E1MnprY29thd6V1BTHl/88Aa5ce0pCSai+Cp3H+IU7+vSYWvyEOKTQdI+rN4x4C9SWjspJhfdVW8mslCRRxUBJKo44AaRLA=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;7:DqPHVYIxZ6xTR6Rtnz9ffCaT2KJvRgGPFnxEyh7g13APzd4ussVBjvJ8rFqc8Nk4YMOYlhlDQgRE4yULdxL60o4gTjyc16DxSb1ZKLz1h2z/el4Y6foL9IXH9BQsRYB1oJDBbo6cJkz7rc2PWwJfPfW9ctkKKHei/NXxtEEU0CNHEgegRFdEoNYy9IwKQY3pelJfXcYEKSoNissDN9tAjQe8SNrMY+mEz+pduEedpvK+WdUMWk9aZkKLKOzHtmC61tu6ttaUSLm8LDKV3SZ4kiKzjVNj87yGZoLq1H/8F3SlOf3PoiMHipEKnhFWfgeDKas4P+AbBS2wW36UR86q9Q==
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;7:3oS2YekIEsN3iirrbC3bEGKohtPXXH9aZmbNbNc11t9A8DiTAjrTPQm+6S576t8ogsNQy2q6V8Omzvk6LU7N7UqL2Q1wVgOeHV0yF6NVRXcDZ0v/g12ojSp2wbDiVS4w7U5ynsU7JR8aZ7AI1y80ciwU3hCRxTFikRqvwCeDqDSVTrIRfomyBNs7fSxYayHTQ5ccE+yczcPigD89WwqWUNiJb0Fg7O/ySBco+QZZF9Bq82hX8zkCUvuPDDMdMKy7MErxT6qn1dJ7EgOZ9YtCBKyatZsoIpAmF5UE/pxQGxBFIMMNnR+mOA/Ya+6o+s4+8MqJyaGsSiITR4cih0BNVg==
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2017 21:21:48.2345 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2017 21:21:50.0783 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR07MB2420
 Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57262
+X-archive-position: 57263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,37 +73,59 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Changes from v1:
+The follow-on BPF JIT patches use the LHU instruction, so add it.
 
-  - Use unsigned access for SKF_AD_HATYPE
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/include/asm/uasm.h | 1 +
+ arch/mips/mm/uasm-mips.c     | 1 +
+ arch/mips/mm/uasm.c          | 3 ++-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-  - Added three more patches for other problems found.
-
-
-Testing the BPF JIT on Cavium OCTEON (mips64) with the test-bpf module
-identified some failures and unimplemented features.
-
-With this patch set we get:
-
-     test_bpf: Summary: 305 PASSED, 0 FAILED, [85/297 JIT'ed]
-
-Both big and little endian tested.
-
-We still lack eBPF support, but this is better than nothing.
-
-David Daney (5):
-  MIPS: uasm:  Add support for LHU.
-  MIPS: BPF: Add JIT support for SKF_AD_HATYPE.
-  MIPS: BPF: Use unsigned access for unsigned SKB fields.
-  MIPS: BPF: Quit clobbering callee saved registers in JIT code.
-  MIPS: BPF: Fix multiple problems in JIT skb access helpers.
-
- arch/mips/include/asm/uasm.h |  1 +
- arch/mips/mm/uasm-mips.c     |  1 +
- arch/mips/mm/uasm.c          |  3 ++-
- arch/mips/net/bpf_jit.c      | 41 +++++++++++++++++++++++++++++++----------
- arch/mips/net/bpf_jit_asm.S  | 23 ++++++++++++-----------
- 5 files changed, 47 insertions(+), 22 deletions(-)
-
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index f7929f6..d7e84f1 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -135,6 +135,7 @@ Ip_u2s3u1(_lb);
+ Ip_u2s3u1(_ld);
+ Ip_u3u1u2(_ldx);
+ Ip_u2s3u1(_lh);
++Ip_u2s3u1(_lhu);
+ Ip_u2s3u1(_ll);
+ Ip_u2s3u1(_lld);
+ Ip_u1s2(_lui);
+diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
+index 763d3f1..2277499 100644
+--- a/arch/mips/mm/uasm-mips.c
++++ b/arch/mips/mm/uasm-mips.c
+@@ -103,6 +103,7 @@ static struct insn insn_table[] = {
+ 	{ insn_ld,  M(ld_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+ 	{ insn_ldx, M(spec3_op, 0, 0, 0, ldx_op, lx_op), RS | RT | RD },
+ 	{ insn_lh,  M(lh_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
++	{ insn_lhu,  M(lhu_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+ #ifndef CONFIG_CPU_MIPSR6
+ 	{ insn_lld,  M(lld_op, 0, 0, 0, 0, 0),	RS | RT | SIMM },
+ 	{ insn_ll,  M(ll_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index a829704..7f400c8 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -61,7 +61,7 @@ enum opcode {
+ 	insn_sllv, insn_slt, insn_sltiu, insn_sltu, insn_sra, insn_srl,
+ 	insn_srlv, insn_subu, insn_sw, insn_sync, insn_syscall, insn_tlbp,
+ 	insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait, insn_wsbh, insn_xor,
+-	insn_xori, insn_yield, insn_lddir, insn_ldpte,
++	insn_xori, insn_yield, insn_lddir, insn_ldpte, insn_lhu,
+ };
+ 
+ struct insn {
+@@ -297,6 +297,7 @@ I_u1(_jr)
+ I_u2s3u1(_lb)
+ I_u2s3u1(_ld)
+ I_u2s3u1(_lh)
++I_u2s3u1(_lhu)
+ I_u2s3u1(_ll)
+ I_u2s3u1(_lld)
+ I_u1s2(_lui)
 -- 
 2.9.3

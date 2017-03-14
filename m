@@ -1,24 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 11:31:56 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:10185 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 11:32:25 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:51118 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994828AbdCNKSb7f7jU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 11:18:31 +0100
+        with ESMTP id S23994829AbdCNKSdUk7uU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 11:18:33 +0100
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 60692254E6404;
-        Tue, 14 Mar 2017 10:18:21 +0000 (GMT)
+        by Forcepoint Email with ESMTPS id 67EC39F44FE70;
+        Tue, 14 Mar 2017 10:18:23 +0000 (GMT)
 Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
  hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Tue, 14 Mar 2017 10:18:23 +0000
+ 14.3.294.0; Tue, 14 Mar 2017 10:18:26 +0000
 From:   James Hogan <james.hogan@imgtec.com>
 To:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
 CC:     James Hogan <james.hogan@imgtec.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Jonathan Corbet <corbet@lwn.net>, <linux-doc@vger.kernel.org>
-Subject: [PATCH v2 28/33] KVM: MIPS/VZ: Support guest segmentation control
-Date:   Tue, 14 Mar 2017 10:15:35 +0000
-Message-ID: <0b0a077b78df261dd2e2a186fd975acce2bc8af0.1489485940.git-series.james.hogan@imgtec.com>
+        Jonathan Corbet <corbet@lwn.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, <linux-doc@vger.kernel.org>
+Subject: [PATCH v2 31/33] KVM: MIPS/VZ: Emulate MAARs when necessary
+Date:   Tue, 14 Mar 2017 10:15:38 +0000
+Message-ID: <d1e761ea99d3268a8c4ce395ca595d05b298e39f.1489485940.git-series.james.hogan@imgtec.com>
 X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
 In-Reply-To: <cover.26e10ec77a4ed0d3177ccf4fabf57bc95ea030f8.1489485940.git-series.james.hogan@imgtec.com>
@@ -30,7 +32,7 @@ Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57233
+X-archive-position: 57234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,400 +49,316 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for VZ guest CP0_SegCtl0, CP0_SegCtl1, and CP0_SegCtl2
-registers, as found on P5600 and P6600 cores. These guest registers need
-initialising, context switching, and exposing via the KVM ioctl API when
-they are present.
-
-They also require the GVA -> GPA translation code for handling a GVA
-root exception to be updated to interpret the segmentation registers and
-decode the faulting instruction enough to detect EVA memory access
-instructions.
+Add emulation of Memory Accessibility Attribute Registers (MAARs) when
+necessary. We can't actually do anything with whatever the guest
+provides, but it may not be possible to clear Guest.Config5.MRP so we
+have to emulate at least a pair of MAARs.
 
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: "Radim Krčmář" <rkrcmar@redhat.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ingo Molnar <mingo@redhat.com>
 Cc: linux-mips@linux-mips.org
 Cc: kvm@vger.kernel.org
 Cc: linux-doc@vger.kernel.org
 ---
- Documentation/virtual/kvm/api.txt |   3 +-
- arch/mips/include/asm/kvm_host.h  |   6 +-
- arch/mips/kvm/vz.c                | 242 ++++++++++++++++++++++++++++++-
- 3 files changed, 250 insertions(+), 1 deletion(-)
+ Documentation/virtual/kvm/api.txt |   5 +-
+ arch/mips/include/asm/kvm_host.h  |   5 +-
+ arch/mips/include/uapi/asm/kvm.h  |  20 +++++-
+ arch/mips/kvm/trace.h             |   2 +-
+ arch/mips/kvm/vz.c                | 110 ++++++++++++++++++++++++++++++-
+ 5 files changed, 137 insertions(+), 5 deletions(-)
 
 diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
-index 5f53bfdc0d84..45194363a160 100644
+index b108238dc9dc..e601c8f01fd9 100644
 --- a/Documentation/virtual/kvm/api.txt
 +++ b/Documentation/virtual/kvm/api.txt
-@@ -2078,6 +2078,9 @@ registers, find a list below:
-   MIPS  | KVM_REG_MIPS_CP0_XCONTEXTCONFIG| 64
-   MIPS  | KVM_REG_MIPS_CP0_PAGEMASK     | 32
-   MIPS  | KVM_REG_MIPS_CP0_PAGEGRAIN    | 32
-+  MIPS  | KVM_REG_MIPS_CP0_SEGCTL0      | 64
-+  MIPS  | KVM_REG_MIPS_CP0_SEGCTL1      | 64
-+  MIPS  | KVM_REG_MIPS_CP0_SEGCTL2      | 64
-   MIPS  | KVM_REG_MIPS_CP0_WIRED        | 32
-   MIPS  | KVM_REG_MIPS_CP0_HWRENA       | 32
-   MIPS  | KVM_REG_MIPS_CP0_BADVADDR     | 64
+@@ -2114,6 +2114,7 @@ registers, find a list below:
+   MIPS  | KVM_REG_MIPS_CP0_KSCRATCH4    | 64
+   MIPS  | KVM_REG_MIPS_CP0_KSCRATCH5    | 64
+   MIPS  | KVM_REG_MIPS_CP0_KSCRATCH6    | 64
++  MIPS  | KVM_REG_MIPS_CP0_MAAR(0..63)  | 64
+   MIPS  | KVM_REG_MIPS_COUNT_CTL        | 64
+   MIPS  | KVM_REG_MIPS_COUNT_RESUME     | 64
+   MIPS  | KVM_REG_MIPS_COUNT_HZ         | 64
+@@ -2180,6 +2181,10 @@ hardware, host kernel, guest, and whether XPA is present in the guest, i.e.
+ with the RI and XI bits (if they exist) in bits 63 and 62 respectively, and
+ the PFNX field starting at bit 30.
+ 
++MIPS MAARs (see KVM_REG_MIPS_CP0_MAAR(*) above) have the following id bit
++patterns:
++  0x7030 0000 0001 01 <reg:8>
++
+ MIPS KVM control registers (see above) have the following id bit patterns:
+   0x7030 0000 0002 <reg:16>
+ 
 diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 5066d89f2227..b2129c031df7 100644
+index 8d016ab3a8b9..a662a80152b1 100644
 --- a/arch/mips/include/asm/kvm_host.h
 +++ b/arch/mips/include/asm/kvm_host.h
-@@ -39,6 +39,9 @@
- #define KVM_REG_MIPS_CP0_XCONTEXTCONFIG	MIPS_CP0_64(4, 3)
- #define KVM_REG_MIPS_CP0_PAGEMASK	MIPS_CP0_32(5, 0)
- #define KVM_REG_MIPS_CP0_PAGEGRAIN	MIPS_CP0_32(5, 1)
-+#define KVM_REG_MIPS_CP0_SEGCTL0	MIPS_CP0_64(5, 2)
-+#define KVM_REG_MIPS_CP0_SEGCTL1	MIPS_CP0_64(5, 3)
-+#define KVM_REG_MIPS_CP0_SEGCTL2	MIPS_CP0_64(5, 4)
- #define KVM_REG_MIPS_CP0_WIRED		MIPS_CP0_32(6, 0)
- #define KVM_REG_MIPS_CP0_HWRENA		MIPS_CP0_32(7, 0)
- #define KVM_REG_MIPS_CP0_BADVADDR	MIPS_CP0_64(8, 0)
-@@ -672,6 +675,9 @@ __BUILD_KVM_RW_HW(userlocal,      l,  MIPS_CP0_TLB_CONTEXT,  2)
- __BUILD_KVM_RW_HW(xcontextconfig, l,  MIPS_CP0_TLB_CONTEXT,  3)
- __BUILD_KVM_RW_HW(pagemask,       l,  MIPS_CP0_TLB_PG_MASK,  0)
- __BUILD_KVM_RW_HW(pagegrain,      32, MIPS_CP0_TLB_PG_MASK,  1)
-+__BUILD_KVM_RW_HW(segctl0,        l,  MIPS_CP0_TLB_PG_MASK,  2)
-+__BUILD_KVM_RW_HW(segctl1,        l,  MIPS_CP0_TLB_PG_MASK,  3)
-+__BUILD_KVM_RW_HW(segctl2,        l,  MIPS_CP0_TLB_PG_MASK,  4)
- __BUILD_KVM_RW_HW(wired,          32, MIPS_CP0_TLB_WIRED,    0)
- __BUILD_KVM_RW_HW(hwrena,         32, MIPS_CP0_HWRENA,       0)
- __BUILD_KVM_RW_HW(badvaddr,       l,  MIPS_CP0_BAD_VADDR,    0)
+@@ -67,6 +67,7 @@
+ #define KVM_REG_MIPS_CP0_CONFIG4	MIPS_CP0_32(16, 4)
+ #define KVM_REG_MIPS_CP0_CONFIG5	MIPS_CP0_32(16, 5)
+ #define KVM_REG_MIPS_CP0_CONFIG7	MIPS_CP0_32(16, 7)
++#define KVM_REG_MIPS_CP0_MAARI		MIPS_CP0_64(17, 2)
+ #define KVM_REG_MIPS_CP0_XCONTEXT	MIPS_CP0_64(20, 0)
+ #define KVM_REG_MIPS_CP0_ERROREPC	MIPS_CP0_64(30, 0)
+ #define KVM_REG_MIPS_CP0_KSCRATCH1	MIPS_CP0_64(31, 2)
+@@ -388,6 +389,9 @@ struct kvm_vcpu_arch {
+ 	struct kvm_mips_tlb *wired_tlb;
+ 	unsigned int wired_tlb_limit;
+ 	unsigned int wired_tlb_used;
++
++	/* emulated guest MAAR registers */
++	unsigned long maar[6];
+ #endif
+ 
+ 	/* Last CPU the VCPU state was loaded on */
+@@ -708,6 +712,7 @@ __BUILD_KVM_RW_HW(config4,        32, MIPS_CP0_CONFIG,       4)
+ __BUILD_KVM_RW_HW(config5,        32, MIPS_CP0_CONFIG,       5)
+ __BUILD_KVM_RW_HW(config6,        32, MIPS_CP0_CONFIG,       6)
+ __BUILD_KVM_RW_HW(config7,        32, MIPS_CP0_CONFIG,       7)
++__BUILD_KVM_RW_SW(maari,          l,  MIPS_CP0_LLADDR,       2)
+ __BUILD_KVM_RW_HW(xcontext,       l,  MIPS_CP0_TLB_XCONTEXT, 0)
+ __BUILD_KVM_RW_HW(errorepc,       l,  MIPS_CP0_ERROR_PC,     0)
+ __BUILD_KVM_RW_HW(kscratch1,      l,  MIPS_CP0_DESAVE,       2)
+diff --git a/arch/mips/include/uapi/asm/kvm.h b/arch/mips/include/uapi/asm/kvm.h
+index a8a0199bf760..3107095d7f0a 100644
+--- a/arch/mips/include/uapi/asm/kvm.h
++++ b/arch/mips/include/uapi/asm/kvm.h
+@@ -54,9 +54,14 @@ struct kvm_fpu {
+  * Register set = 0: GP registers from kvm_regs (see definitions below).
+  *
+  * Register set = 1: CP0 registers.
+- *  bits[15..8]  - Must be zero.
+- *  bits[7..3]   - Register 'rd'  index.
+- *  bits[2..0]   - Register 'sel' index.
++ *  bits[15..8]  - COP0 register set.
++ *
++ *  COP0 register set = 0: Main CP0 registers.
++ *   bits[7..3]   - Register 'rd'  index.
++ *   bits[2..0]   - Register 'sel' index.
++ *
++ *  COP0 register set = 1: MAARs.
++ *   bits[7..0]   - MAAR index.
+  *
+  * Register set = 2: KVM specific registers (see definitions below).
+  *
+@@ -115,6 +120,15 @@ struct kvm_fpu {
+ 
+ 
+ /*
++ * KVM_REG_MIPS_CP0 - Coprocessor 0 registers.
++ */
++
++#define KVM_REG_MIPS_MAAR	(KVM_REG_MIPS_CP0 | (1 << 8))
++#define KVM_REG_MIPS_CP0_MAAR(n)	(KVM_REG_MIPS_MAAR | \
++					 KVM_REG_SIZE_U64 | (n))
++
++
++/*
+  * KVM_REG_MIPS_KVM - KVM specific control registers.
+  */
+ 
+diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
+index d80d37a1b82e..affde8a2c584 100644
+--- a/arch/mips/kvm/trace.h
++++ b/arch/mips/kvm/trace.h
+@@ -176,6 +176,8 @@ TRACE_EVENT(kvm_exit,
+ 	{ KVM_TRACE_COP0(16, 4),	"Config4" },		\
+ 	{ KVM_TRACE_COP0(16, 5),	"Config5" },		\
+ 	{ KVM_TRACE_COP0(16, 7),	"Config7" },		\
++	{ KVM_TRACE_COP0(17, 1),	"MAAR" },		\
++	{ KVM_TRACE_COP0(17, 2),	"MAARI" },		\
+ 	{ KVM_TRACE_COP0(26, 0),	"ECC" },		\
+ 	{ KVM_TRACE_COP0(30, 0),	"ErrorEPC" },		\
+ 	{ KVM_TRACE_COP0(31, 2),	"KScratch1" },		\
 diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
-index 97e7a788bf4a..f32c1ab3f724 100644
+index 450f946358ae..cbc6850cff02 100644
 --- a/arch/mips/kvm/vz.c
 +++ b/arch/mips/kvm/vz.c
-@@ -412,6 +412,117 @@ static void kvm_vz_save_timer(struct kvm_vcpu *vcpu)
- }
+@@ -134,7 +134,7 @@ static inline unsigned int kvm_vz_config5_guest_wrmask(struct kvm_vcpu *vcpu)
+  * Config3:	M, MSAP, [BPG], ULRI, [DSP2P, DSPP], CTXTC, [ITL, LPA, VEIC,
+  *		VInt, SP, CDMM, MT, SM, TL]
+  * Config4:	M, [VTLBSizeExt, MMUSizeExt]
+- * Config5:	[MRP]
++ * Config5:	MRP
+  */
  
- /**
-+ * is_eva_access() - Find whether an instruction is an EVA memory accessor.
-+ * @inst:	32-bit instruction encoding.
-+ *
-+ * Finds whether @inst encodes an EVA memory access instruction, which would
-+ * indicate that emulation of it should access the user mode address space
-+ * instead of the kernel mode address space. This matters for MUSUK segments
-+ * which are TLB mapped for user mode but unmapped for kernel mode.
-+ *
-+ * Returns:	Whether @inst encodes an EVA accessor instruction.
-+ */
-+static bool is_eva_access(union mips_instruction inst)
-+{
-+	if (inst.spec3_format.opcode != spec3_op)
-+		return false;
-+
-+	switch (inst.spec3_format.func) {
-+	case lwle_op:
-+	case lwre_op:
-+	case cachee_op:
-+	case sbe_op:
-+	case she_op:
-+	case sce_op:
-+	case swe_op:
-+	case swle_op:
-+	case swre_op:
-+	case prefe_op:
-+	case lbue_op:
-+	case lhue_op:
-+	case lbe_op:
-+	case lhe_op:
-+	case lle_op:
-+	case lwe_op:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+/**
-+ * is_eva_am_mapped() - Find whether an access mode is mapped.
-+ * @vcpu:	KVM VCPU state.
-+ * @am:		3-bit encoded access mode.
-+ * @eu:		Segment becomes unmapped and uncached when Status.ERL=1.
-+ *
-+ * Decode @am to find whether it encodes a mapped segment for the current VCPU
-+ * state. Where necessary @eu and the actual instruction causing the fault are
-+ * taken into account to make the decision.
-+ *
-+ * Returns:	Whether the VCPU faulted on a TLB mapped address.
-+ */
-+static bool is_eva_am_mapped(struct kvm_vcpu *vcpu, unsigned int am, bool eu)
-+{
-+	u32 am_lookup;
-+	int err;
-+
-+	/*
-+	 * Interpret access control mode. We assume address errors will already
-+	 * have been caught by the guest, leaving us with:
-+	 *      AM      UM  SM  KM  31..24 23..16
-+	 * UK    0 000          Unm   0      0
-+	 * MK    1 001          TLB   1
-+	 * MSK   2 010      TLB TLB   1
-+	 * MUSK  3 011  TLB TLB TLB   1
-+	 * MUSUK 4 100  TLB TLB Unm   0      1
-+	 * USK   5 101      Unm Unm   0      0
-+	 * -     6 110                0      0
-+	 * UUSK  7 111  Unm Unm Unm   0      0
-+	 *
-+	 * We shift a magic value by AM across the sign bit to find if always
-+	 * TLB mapped, and if not shift by 8 again to find if it depends on KM.
-+	 */
-+	am_lookup = 0x70080000 << am;
-+	if ((s32)am_lookup < 0) {
-+		/*
-+		 * MK, MSK, MUSK
-+		 * Always TLB mapped, unless SegCtl.EU && ERL
-+		 */
-+		if (!eu || !(read_gc0_status() & ST0_ERL))
-+			return true;
-+	} else {
-+		am_lookup <<= 8;
-+		if ((s32)am_lookup < 0) {
-+			union mips_instruction inst;
-+			unsigned int status;
-+			u32 *opc;
-+
-+			/*
-+			 * MUSUK
-+			 * TLB mapped if not in kernel mode
-+			 */
-+			status = read_gc0_status();
-+			if (!(status & (ST0_EXL | ST0_ERL)) &&
-+			    (status & ST0_KSU))
-+				return true;
-+			/*
-+			 * EVA access instructions in kernel
-+			 * mode access user address space.
-+			 */
-+			opc = (u32 *)vcpu->arch.pc;
-+			if (vcpu->arch.host_cp0_cause & CAUSEF_BD)
-+				opc += 1;
-+			err = kvm_get_badinstr(opc, vcpu, &inst.word);
-+			if (!err && is_eva_access(inst))
-+				return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
-+/**
-  * kvm_vz_gva_to_gpa() - Convert valid GVA to GPA.
-  * @vcpu:	KVM VCPU state.
-  * @gva:	Guest virtual address to convert.
-@@ -427,10 +538,58 @@ static int kvm_vz_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
- 			     unsigned long *gpa)
+ static inline unsigned int kvm_vz_config_user_wrmask(struct kvm_vcpu *vcpu)
+@@ -177,7 +177,7 @@ static inline unsigned int kvm_vz_config4_user_wrmask(struct kvm_vcpu *vcpu)
+ 
+ static inline unsigned int kvm_vz_config5_user_wrmask(struct kvm_vcpu *vcpu)
  {
- 	u32 gva32 = gva;
-+	unsigned long segctl;
- 
- 	if ((long)gva == (s32)gva32) {
- 		/* Handle canonical 32-bit virtual address */
--		if ((s32)gva32 < (s32)0xc0000000) {
-+		if (cpu_guest_has_segments) {
-+			unsigned long mask, pa;
-+
-+			switch (gva32 >> 29) {
-+			case 0:
-+			case 1: /* CFG5 (1GB) */
-+				segctl = read_gc0_segctl2() >> 16;
-+				mask = (unsigned long)0xfc0000000ull;
-+				break;
-+			case 2:
-+			case 3: /* CFG4 (1GB) */
-+				segctl = read_gc0_segctl2();
-+				mask = (unsigned long)0xfc0000000ull;
-+				break;
-+			case 4: /* CFG3 (512MB) */
-+				segctl = read_gc0_segctl1() >> 16;
-+				mask = (unsigned long)0xfe0000000ull;
-+				break;
-+			case 5: /* CFG2 (512MB) */
-+				segctl = read_gc0_segctl1();
-+				mask = (unsigned long)0xfe0000000ull;
-+				break;
-+			case 6: /* CFG1 (512MB) */
-+				segctl = read_gc0_segctl0() >> 16;
-+				mask = (unsigned long)0xfe0000000ull;
-+				break;
-+			case 7: /* CFG0 (512MB) */
-+				segctl = read_gc0_segctl0();
-+				mask = (unsigned long)0xfe0000000ull;
-+				break;
-+			default:
-+				/*
-+				 * GCC 4.9 isn't smart enough to figure out that
-+				 * segctl and mask are always initialised.
-+				 */
-+				unreachable();
-+			}
-+
-+			if (is_eva_am_mapped(vcpu, (segctl >> 4) & 0x7,
-+					     segctl & 0x0008))
-+				goto tlb_mapped;
-+
-+			/* Unmapped, find guest physical address */
-+			pa = (segctl << 20) & mask;
-+			pa |= gva32 & ~mask;
-+			*gpa = pa;
-+			return 0;
-+		} else if ((s32)gva32 < (s32)0xc0000000) {
- 			/* legacy unmapped KSeg0 or KSeg1 */
- 			*gpa = gva32 & 0x1fffffff;
- 			return 0;
-@@ -438,6 +597,20 @@ static int kvm_vz_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
- #ifdef CONFIG_64BIT
- 	} else if ((gva & 0xc000000000000000) == 0x8000000000000000) {
- 		/* XKPHYS */
-+		if (cpu_guest_has_segments) {
-+			/*
-+			 * Each of the 8 regions can be overridden by SegCtl2.XR
-+			 * to use SegCtl1.XAM.
-+			 */
-+			segctl = read_gc0_segctl2();
-+			if (segctl & (1ull << (56 + ((gva >> 59) & 0x7)))) {
-+				segctl = read_gc0_segctl1();
-+				if (is_eva_am_mapped(vcpu, (segctl >> 59) & 0x7,
-+						     0))
-+					goto tlb_mapped;
-+			}
-+
-+		}
- 		/*
- 		 * Traditionally fully unmapped.
- 		 * Bits 61:59 specify the CCA, which we can just mask off here.
-@@ -449,6 +622,7 @@ static int kvm_vz_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
- #endif
- 	}
- 
-+tlb_mapped:
- 	return kvm_vz_guest_tlb_lookup(vcpu, gva, gpa);
+-	return kvm_vz_config5_guest_wrmask(vcpu);
++	return kvm_vz_config5_guest_wrmask(vcpu) | MIPS_CONF5_MRP;
  }
  
-@@ -1212,6 +1386,12 @@ static u64 kvm_vz_get_one_regs_contextconfig[] = {
- #endif
- };
+ static gpa_t kvm_vz_gva_to_gpa_cb(gva_t gva)
+@@ -685,6 +685,41 @@ static int kvm_trap_vz_no_handler(struct kvm_vcpu *vcpu)
+ 	return RESUME_HOST;
+ }
  
-+static u64 kvm_vz_get_one_regs_segments[] = {
-+	KVM_REG_MIPS_CP0_SEGCTL0,
-+	KVM_REG_MIPS_CP0_SEGCTL1,
-+	KVM_REG_MIPS_CP0_SEGCTL2,
-+};
++static unsigned long mips_process_maar(unsigned int op, unsigned long val)
++{
++	/* Mask off unused bits */
++	unsigned long mask = 0xfffff000 | MIPS_MAAR_S | MIPS_MAAR_VL;
 +
- static u64 kvm_vz_get_one_regs_kscratch[] = {
- 	KVM_REG_MIPS_CP0_KSCRATCH1,
- 	KVM_REG_MIPS_CP0_KSCRATCH2,
-@@ -1234,6 +1414,8 @@ static unsigned long kvm_vz_num_regs(struct kvm_vcpu *vcpu)
- 		++ret;
- 	if (cpu_guest_has_contextconfig)
- 		ret += ARRAY_SIZE(kvm_vz_get_one_regs_contextconfig);
-+	if (cpu_guest_has_segments)
-+		ret += ARRAY_SIZE(kvm_vz_get_one_regs_segments);
++	if (read_gc0_pagegrain() & PG_ELPA)
++		mask |= 0x00ffffff00000000ull;
++	if (cpu_guest_has_mvh)
++		mask |= MIPS_MAAR_VH;
++
++	/* Set or clear VH */
++	if (op == mtc_op) {
++		/* clear VH */
++		val &= ~MIPS_MAAR_VH;
++	} else if (op == dmtc_op) {
++		/* set VH to match VL */
++		val &= ~MIPS_MAAR_VH;
++		if (val & MIPS_MAAR_VL)
++			val |= MIPS_MAAR_VH;
++	}
++
++	return val & mask;
++}
++
++static void kvm_write_maari(struct kvm_vcpu *vcpu, unsigned long val)
++{
++	struct mips_coproc *cop0 = vcpu->arch.cop0;
++
++	val &= MIPS_MAARI_INDEX;
++	if (val == MIPS_MAARI_INDEX)
++		kvm_write_sw_gc0_maari(cop0, ARRAY_SIZE(vcpu->arch.maar) - 1);
++	else if (val < ARRAY_SIZE(vcpu->arch.maar))
++		kvm_write_sw_gc0_maari(cop0, val);
++}
++
+ static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
+ 					      u32 *opc, u32 cause,
+ 					      struct kvm_run *run,
+@@ -737,6 +772,15 @@ static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
+ 						MIPS_LLADDR_LLB;
+ 				else
+ 					val = 0;
++			} else if (rd == MIPS_CP0_LLADDR &&
++				   sel == 1 &&		/* MAAR */
++				   cpu_guest_has_maar &&
++				   !cpu_guest_has_dyn_maar) {
++				/* MAARI must be in range */
++				BUG_ON(kvm_read_sw_gc0_maari(cop0) >=
++						ARRAY_SIZE(vcpu->arch.maar));
++				val = vcpu->arch.maar[
++					kvm_read_sw_gc0_maari(cop0)];
+ 			} else if ((rd == MIPS_CP0_PRID &&
+ 				    (sel == 0 ||	/* PRid */
+ 				     sel == 2 ||	/* CDMMBase */
+@@ -746,6 +790,10 @@ static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
+ 				     sel == 3)) ||	/* SRSMap */
+ 				   (rd == MIPS_CP0_CONFIG &&
+ 				    (sel == 7)) ||	/* Config7 */
++				   (rd == MIPS_CP0_LLADDR &&
++				    (sel == 2) &&	/* MAARI */
++				    cpu_guest_has_maar &&
++				    !cpu_guest_has_dyn_maar) ||
+ 				   (rd == MIPS_CP0_ERRCTL &&
+ 				    (sel == 0))) {	/* ErrCtl */
+ 				val = cop0->reg[rd][sel];
+@@ -793,6 +841,23 @@ static enum emulation_result kvm_vz_gpsi_cop0(union mips_instruction inst,
+ 				if (cpu_guest_has_rw_llb &&
+ 				    !(val & MIPS_LLADDR_LLB))
+ 					write_gc0_lladdr(0);
++			} else if (rd == MIPS_CP0_LLADDR &&
++				   sel == 1 &&		/* MAAR */
++				   cpu_guest_has_maar &&
++				   !cpu_guest_has_dyn_maar) {
++				val = mips_process_maar(inst.c0r_format.rs,
++							val);
++
++				/* MAARI must be in range */
++				BUG_ON(kvm_read_sw_gc0_maari(cop0) >=
++						ARRAY_SIZE(vcpu->arch.maar));
++				vcpu->arch.maar[kvm_read_sw_gc0_maari(cop0)] =
++									val;
++			} else if (rd == MIPS_CP0_LLADDR &&
++				   (sel == 2) &&	/* MAARI */
++				   cpu_guest_has_maar &&
++				   !cpu_guest_has_dyn_maar) {
++				kvm_write_maari(vcpu, val);
+ 			} else if (rd == MIPS_CP0_ERRCTL &&
+ 				   (sel == 0)) {	/* ErrCtl */
+ 				/* ignore the written value */
+@@ -1441,6 +1506,8 @@ static unsigned long kvm_vz_num_regs(struct kvm_vcpu *vcpu)
+ 		ret += ARRAY_SIZE(kvm_vz_get_one_regs_segments);
+ 	if (cpu_guest_has_htw)
+ 		ret += ARRAY_SIZE(kvm_vz_get_one_regs_htw);
++	if (cpu_guest_has_maar && !cpu_guest_has_dyn_maar)
++		ret += 1 + ARRAY_SIZE(vcpu->arch.maar);
  	ret += __arch_hweight8(cpu_data[0].guest.kscratch_mask);
  
  	return ret;
-@@ -1273,6 +1455,12 @@ static int kvm_vz_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *indices)
+@@ -1492,6 +1559,19 @@ static int kvm_vz_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *indices)
  			return -EFAULT;
- 		indices += ARRAY_SIZE(kvm_vz_get_one_regs_contextconfig);
+ 		indices += ARRAY_SIZE(kvm_vz_get_one_regs_htw);
  	}
-+	if (cpu_guest_has_segments) {
-+		if (copy_to_user(indices, kvm_vz_get_one_regs_segments,
-+				 sizeof(kvm_vz_get_one_regs_segments)))
++	if (cpu_guest_has_maar && !cpu_guest_has_dyn_maar) {
++		for (i = 0; i < ARRAY_SIZE(vcpu->arch.maar); ++i) {
++			index = KVM_REG_MIPS_CP0_MAAR(i);
++			if (copy_to_user(indices, &index, sizeof(index)))
++				return -EFAULT;
++			++indices;
++		}
++
++		index = KVM_REG_MIPS_CP0_MAARI;
++		if (copy_to_user(indices, &index, sizeof(index)))
 +			return -EFAULT;
-+		indices += ARRAY_SIZE(kvm_vz_get_one_regs_segments);
++		++indices;
 +	}
  	for (i = 0; i < 6; ++i) {
  		if (!cpu_guest_has_kscr(i + 2))
  			continue;
-@@ -1361,6 +1549,21 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *vcpu,
- 	case KVM_REG_MIPS_CP0_PAGEGRAIN:
- 		*v = (long)read_gc0_pagegrain();
+@@ -1689,6 +1769,19 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *vcpu,
+ 			return -EINVAL;
+ 		*v = read_gc0_config5();
  		break;
-+	case KVM_REG_MIPS_CP0_SEGCTL0:
-+		if (!cpu_guest_has_segments)
++	case KVM_REG_MIPS_CP0_MAAR(0) ... KVM_REG_MIPS_CP0_MAAR(0x3f):
++		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
 +			return -EINVAL;
-+		*v = read_gc0_segctl0();
-+		break;
-+	case KVM_REG_MIPS_CP0_SEGCTL1:
-+		if (!cpu_guest_has_segments)
++		idx = reg->id - KVM_REG_MIPS_CP0_MAAR(0);
++		if (idx >= ARRAY_SIZE(vcpu->arch.maar))
 +			return -EINVAL;
-+		*v = read_gc0_segctl1();
++		*v = vcpu->arch.maar[idx];
 +		break;
-+	case KVM_REG_MIPS_CP0_SEGCTL2:
-+		if (!cpu_guest_has_segments)
++	case KVM_REG_MIPS_CP0_MAARI:
++		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
 +			return -EINVAL;
-+		*v = read_gc0_segctl2();
++		*v = kvm_read_sw_gc0_maari(vcpu->arch.cop0);
 +		break;
- 	case KVM_REG_MIPS_CP0_WIRED:
- 		*v = (long)read_gc0_wired();
+ #ifdef CONFIG_64BIT
+ 	case KVM_REG_MIPS_CP0_XCONTEXT:
+ 		*v = read_gc0_xcontext();
+@@ -1938,6 +2031,19 @@ static int kvm_vz_set_one_reg(struct kvm_vcpu *vcpu,
+ 			write_gc0_config5(v);
+ 		}
  		break;
-@@ -1528,6 +1731,21 @@ static int kvm_vz_set_one_reg(struct kvm_vcpu *vcpu,
- 	case KVM_REG_MIPS_CP0_PAGEGRAIN:
- 		write_gc0_pagegrain(v);
- 		break;
-+	case KVM_REG_MIPS_CP0_SEGCTL0:
-+		if (!cpu_guest_has_segments)
++	case KVM_REG_MIPS_CP0_MAAR(0) ... KVM_REG_MIPS_CP0_MAAR(0x3f):
++		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
 +			return -EINVAL;
-+		write_gc0_segctl0(v);
-+		break;
-+	case KVM_REG_MIPS_CP0_SEGCTL1:
-+		if (!cpu_guest_has_segments)
++		idx = reg->id - KVM_REG_MIPS_CP0_MAAR(0);
++		if (idx >= ARRAY_SIZE(vcpu->arch.maar))
 +			return -EINVAL;
-+		write_gc0_segctl1(v);
++		vcpu->arch.maar[idx] = mips_process_maar(dmtc_op, v);
 +		break;
-+	case KVM_REG_MIPS_CP0_SEGCTL2:
-+		if (!cpu_guest_has_segments)
++	case KVM_REG_MIPS_CP0_MAARI:
++		if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
 +			return -EINVAL;
-+		write_gc0_segctl2(v);
++		kvm_write_maari(vcpu, v);
 +		break;
- 	case KVM_REG_MIPS_CP0_WIRED:
- 		change_gc0_wired(MIPSR6_WIRED_WIRED, v);
- 		break;
-@@ -1955,6 +2173,12 @@ static int kvm_vz_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 	if (cpu_guest_has_badinstrp)
- 		kvm_restore_gc0_badinstrp(cop0);
- 
-+	if (cpu_guest_has_segments) {
-+		kvm_restore_gc0_segctl0(cop0);
-+		kvm_restore_gc0_segctl1(cop0);
-+		kvm_restore_gc0_segctl2(cop0);
-+	}
-+
- 	/* restore Root.GuestCtl2 from unused Guest guestctl2 register */
- 	if (cpu_has_guestctl2)
- 		write_c0_guestctl2(
-@@ -2038,6 +2262,12 @@ static int kvm_vz_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
- 	if (cpu_guest_has_badinstrp)
- 		kvm_save_gc0_badinstrp(cop0);
- 
-+	if (cpu_guest_has_segments) {
-+		kvm_save_gc0_segctl0(cop0);
-+		kvm_save_gc0_segctl1(cop0);
-+		kvm_save_gc0_segctl2(cop0);
-+	}
-+
- 	kvm_vz_save_timer(vcpu);
- 
- 	/* save Root.GuestCtl2 in unused Guest guestctl2 register */
-@@ -2356,6 +2586,16 @@ static int kvm_vz_vcpu_setup(struct kvm_vcpu *vcpu)
- #endif
- 	}
- 
-+	/* Implementation dependent, use the legacy layout */
-+	if (cpu_guest_has_segments) {
-+		/* SegCtl0, SegCtl1, SegCtl2 */
-+		kvm_write_sw_gc0_segctl0(cop0, 0x00200010);
-+		kvm_write_sw_gc0_segctl1(cop0, 0x00000002 |
-+				(_page_cachable_default >> _CACHE_SHIFT) <<
-+						(16 + MIPS_SEGCFG_C_SHIFT));
-+		kvm_write_sw_gc0_segctl2(cop0, 0x00380438);
-+	}
-+
- 	/* start with no pending virtual guest interrupts */
- 	if (cpu_has_guestctl2)
- 		cop0->reg[MIPS_CP0_GUESTCTL2][MIPS_CP0_GUESTCTL2_SEL] = 0;
+ #ifdef CONFIG_64BIT
+ 	case KVM_REG_MIPS_CP0_XCONTEXT:
+ 		write_gc0_xcontext(v);
 -- 
 git-series 0.8.10

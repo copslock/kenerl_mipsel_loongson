@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 22:22:25 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 22:22:51 +0100 (CET)
 Received: from mail-sn1nam01on0057.outbound.protection.outlook.com ([104.47.32.57]:38383
         "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992111AbdCNVV5vhKyP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Mar 2017 22:21:57 +0100
+        id S23992126AbdCNVV6Oc1YP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 14 Mar 2017 22:21:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=jERgHMNeo5Z9Eb05xyXzSiprJY+YuNkJ7EtIzkl0S3A=;
- b=DdKcQ/ZQBcn3C9k655aQytU5oTU+KKyM2KJeX9YX3HOMFudptKGNTwEBPrzUz9OPPwjaSlzjh7tVN22d2LOcGJUGk2IZEGCtBv1TzGM49pU5wx37Xz0unMUx+xEMO77KY3elLojz73w2dWf3l64lW7YFHPt+cRU+XwtWnrG8FAY=
+ bh=svA6RirY5AeSj5yurFPAGVEyaes0Fp+JNZjMZiiT3Io=;
+ b=KZcf2OgbtPgPXZAMIadIWF8J8tCqNjjfxI1AjqkjHKDXJmQ8rgZBZ6NQc5Bwc9vNu8g+eOvAIY9bqSGnOgEkjVb3oq6+BOxyAqua+2AfGMyrLJBH0BiUAjPsP3b4+65C8HlLGfz0sxMNxtAtHeDsL/tFf3vsna9yyGu6J2D3yGg=
 Authentication-Results: linux-mips.org; dkim=none (message not signed)
  header.d=none;linux-mips.org; dmarc=none action=none header.from=cavium.com;
 Received: from ddl.caveonetworks.com (50.233.148.156) by
  BL2PR07MB2420.namprd07.prod.outlook.com (10.167.101.144) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.947.12; Tue, 14 Mar 2017 21:21:50 +0000
+ 15.1.947.12; Tue, 14 Mar 2017 21:21:51 +0000
 From:   David Daney <david.daney@cavium.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         James Hogan <james.hogan@imgtec.com>,
@@ -22,9 +22,9 @@ To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
 Cc:     linux-kernel@vger.kernel.org,
         "Steven J. Hill" <steven.hill@cavium.com>,
         David Daney <david.daney@cavium.com>
-Subject: [PATCH v2 1/5] MIPS: uasm:  Add support for LHU.
-Date:   Tue, 14 Mar 2017 14:21:40 -0700
-Message-Id: <20170314212144.29988-2-david.daney@cavium.com>
+Subject: [PATCH v2 2/5] MIPS: BPF: Add JIT support for SKF_AD_HATYPE.
+Date:   Tue, 14 Mar 2017 14:21:41 -0700
+Message-Id: <20170314212144.29988-3-david.daney@cavium.com>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20170314212144.29988-1-david.daney@cavium.com>
 References: <20170314212144.29988-1-david.daney@cavium.com>
@@ -33,30 +33,30 @@ Content-Type: text/plain
 X-Originating-IP: [50.233.148.156]
 X-ClientProxiedBy: SN1PR0701CA0003.namprd07.prod.outlook.com (10.162.96.13) To
  BL2PR07MB2420.namprd07.prod.outlook.com (10.167.101.144)
-X-MS-Office365-Filtering-Correlation-Id: 66ca49a8-a76a-4cba-0dc4-08d46b20214e
+X-MS-Office365-Filtering-Correlation-Id: 6edfa107-5790-42dd-cc62-08d46b2021ed
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001);SRVR:BL2PR07MB2420;
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;3:Twfb1WW4vOnejWEVbpxBlUaJi51duft8/KGYPm9U2Licfqq2tuanjW5AAlnGWrp29aQ/yUzQ2SJqJRXfgu/FrFgNUu3/oDlk1uEg15k+GYfAunUeDX80RZdevicfMOHzZQTPC59WBYZZXTzVilflL7EFCbynS1IzDRqE7GASykm3EkSn3DTSiFBOEKwRN1I8FKOgSkSd4Us7FRF8dhXF+Zfhcfv148nBR3cUzScRL3PoY2K2I3mI+9FLFxM3QFubFKhIidvGMd6MZeG1Pd9K8g==;25:UnE49Jqp1I+WgT25aiHls8bkRupx+QeDmg2D5cmUz49U6ucR1ZDV1cs3usPA7yEhmCzxz1tk8bHpwpZ2p/2pRFWjV6efMy7t5uylLRyeGDLwBjGNDNGmf+7S76mA1vH0w2c1LRqD0TR4AQefXmfVKdtydnffclS9tTleALm/n35bc8Y8/IA5Ga7SvHgukX2zMiYlWQHftzaJBG4y51KnOaCBdNdp7/wBEmtfH7Zr5hXOZLq9IWQMEnQR11O8gCnByFJx/S3ZeMSr6dgIS4BfutMBrT+wNJth8L/8iPDf52y0mbw7rfhFX/G0KOByor40w4w4dBgQWjL5mM75dkOqtXfd6+0rT4XWkcDV5omQBEAPHwf9efslGtOSiaER4mIj6r3tVHXeWnmEmgmHiJbxNlmrNAfrL4qVxVlEiBGghFL3RFOWL+thPdTjRGqoCHPSMfxJ2nEl/RElqDWEuEnjbQ==
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;31:SSGwPFrjG9Uke/0oxGeU7kag/fOx+OR0UyKare3Qocc5ZU7Mgy6siR+VPB8JUoWzo70rSzcqYNlEkwVHEmJdveIYropd8lNzzgSoJTVdyDwJN4IN5j20l8fomBVPsRQkWOhqpLA6LS2G5g7X5SwYNfQ9isuQdO5U2OrkDPFMeW9KO/URXQotsRAN7lhpE3vyjqGLDjvq0bMVqnFYapiTZmnifMFGsCAduSCuJQQE3g0=;20:jKWW4y6vzNsx0mOpQ6Skm1UVnSD/W+9sXx91dQGaIyc+/3cO2Rg9rv833QKtM0gkgx4bbC0a242bsgEAz+6vGTayCkOysga9B5hPlQXkQR8K5XgOywJtLnaIMwJQIFF12CXamk0nlbG6e+EKSoxV5+e7iuc+R/yZdKtRizXmcu85/J7DHtSsN2MpO3qRAQUmvRm+Kix/dGZjjicPS/fFOWnvU2ZU9WEp2ZrccOvSQtWIPQ1UcX3IdS2ya8yzUMc310DeyDi2dSGrMyNOLwAqT24okE/35BBR1FxcsUclM5pqnANttL1qpqHUfsszS5VchLvYmC6JUGxBtfwLoOxkPXOp2FiFQayQkB2hiTMj3933lnDwGDG5ij58teu+QeTfj+qomi4t/6yYa19rfV57sbXmAqRS8f6kwtGGhPhWQoL2fGavEzXFSdl1A5q2aw6bUnU2pqrcvRArdEL9/gGl/dbF4SGGfHwcSzNw7F6w+q/8vKBfQ90ivsC4kxoYntZx
-X-Microsoft-Antispam-PRVS: <BL2PR07MB24207BC357A95C5C69C3456A97240@BL2PR07MB2420.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;3:jixbVfyppxF3zwAEWj3B+i1GdOZZcLqKKu2TTdI5U9inNNFSYidl6RlMMFCl2N8GnV2HlE/pk0455G8eQSrpS1iM+2IPc242AJgmjD5iZC1VO6fmIvRfpPFvq01jT+OBxFDSU0sVZI/4tokexq0bWPvhmJrlTcegI0ai4k0qiBTDexLRB8kZ10OWTctO6vz8sKCUOo3UsUeMiJEPWQuhxM3hQCXpWfzDN8qGIGP3INPfmNjOqdnDZyWpEq8A1/W69KH68zVVF6ZZDMUg79pXtQ==;25:06efpDMsHx5BwnZCKaIyBFlHJsS58NuTWnECjp4uGPgO2vgNW0TOK2yyaLDD3Ha5UXPW1NNoH06EgkmvrPPyaexSh7yro+5oK32zB9q3pYk0vkzPgDh3gLrupT+pcuUtDHCL7b8HNbetTDH2M7yeFm681OQUWdNhhqyIko6wWs7SQqcNxo88FMgIc2oNluF6D7LrQJzJ6IIpc/PX91mZGjzBvdyZzr1IKMaoIhXRQJb98crKJaMna9C+wTY1fDYuQiIHd1Imnuy0FpjJZsDOaADDn8XEutgq1jVNHrqK5yMSghs704CIVJFcNvv9pkmPBtiJxFokz9MuokbaTztByrtrR1utMNwt/bQiomsrwRKUOeB2bla2k/gQ8JPwntlgN1GlBrQ9in1Ef4dRh1lGtPbIgLbfEzEEpXKqB5BcDRTZQblHv2bEAVh04qK2S9maM5eLWmgwSEHx9YJmsurCeQ==
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;31:jrdFAvK/EGNmEy4sUpNVL/7b179QNO/CyDlygrWZ4bwcDVD5Oegz9rXb5Ug10pRZP5GmsfK9IXj8mmGvS1lC1GpTebzlG/wrIVUTQzL68SYJJRcUlqlrzhvRKmv+oZqeYoqBSN4B+F9UgGbguGeLwL97qxZiwPiI3htzRth5o/zk1T+0bjs+wjla3sbjl5mkJes0mQaXtNsq+egGESAKVDGqDmTBWb2b+1ojXwzoMVU5IisRN1wCpGdc95HBJ3Fw;20:/Y3/a04Wlocv4jVQlmRBBu3ktiTlgzxu0hY4XyBRvmwzJg5pAuZ3vEn2ClaRcRG/QCA/m9WpTCjUh/P3jPwjptb8bpTBzqT69NZhpprssxyjYmzp+5fmDKv4iGTfG4Jb1RgXhFWK1WU8Qea0rCDwopfp9HMAjP4C/VizEdkPNTUKLSs5OIxVUODZF7917+IaawOYxwo3tiSWT3GMP+h6OamSGCqp1ksIS87Sr0xu6VGMIyj1ZNdCokoLzQQBd9W2nmPH/x9fo6qZJRkzrCtQPHAhCD3i3wuWtE8pXmYa/5f39DtCV0eYn5fXH46RzEMyKQp1OFTSdbHzUEjFLxGRlkAS0Eq3qox6w/WR9Y+WRrOCF7HnM+bw6Cx6gXs0UDQtJibc5VsHSo24ru/BiVks6+g29rpiHQJfOG910jT4ZysTAgltZEGMQuSARDOv/1PLyGsFNuqIWx+ICu0CIpRL96jeZh/UQDbSgMdH8L2A6Wwi7tn85W4uuFHPxQlMvO0m
+X-Microsoft-Antispam-PRVS: <BL2PR07MB24208935BF8784748AB2934297240@BL2PR07MB2420.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(5005006)(8121501046)(10201501046)(3002001)(6041248)(20161123558025)(20161123562025)(20161123560025)(20161123555025)(20161123564025)(6072148);SRVR:BL2PR07MB2420;BCL:0;PCL:0;RULEID:;SRVR:BL2PR07MB2420;
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;4:S9UqwJB8L2FqS/YqZymeq5k3piGwJychyu9wAiMBIz0qoNh3A8bOj4mNLHhvpYteRtscQkfzuC0wuzWXlKNOf+pZ/IInBWyJu9tLlWpYnQLBa9B0PRXyhly0bA5mXRLFYeYPVQB5ysEdjlmVzbfbr3tXpvoEd1v2GUXjrbXBDc94Z6ttMdMK83RSUtAxyEAmgsULRrkm+7gXUMRtxfIwSOM02QQtx8UjWfodtT6SZnnzkGths3RXC0eRoeHnflVrG7j1KXFJj5s7I/FkcWGptfJ5gpr5PhcGGyJSeHs5BI8/GpOAqh8Nd+xp0hDkoyiTPfRTxJq3hRnmEEeqWzQlu8PZCgGf6Olmd6V+yOx3hpdBF1BEeoptdarHaiRH4G5EcBi2Gxc8AtxK/6PZ/wX1qQ/bYpuYooxuiNfuY6pasaZ7lj0/3ZvLI/t8owFgOlWW3gIvdAOc30Z9ssB0LLta+/cCbee94Aq8o9S4mMVife43ZSRLVpTfFEU+xooVd7Y5U6ELYVXlZJw9l1tUt7t6HAcnh3oKgpGciPqvKgbr0uS72vRIx7WrM3S4c1dvia+ytCeLKG9RTgx0fLf574USP4J5/kocU09nz5r8Vrhv9vg=
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;4:LpY08AjBxVYywlV7OtHwNKEBNR+Y2RODKPYrtnIUlwKIioZm8YOdLlzB4vA6IH3BJgLBxK1+acxILddr8mnISKLBNonVqwiW7RVc5djbWRogGlye8KjrWcOgwSnjj5AQXww44qCCIv94Opl8tS9FDAVN9TzFHlTQw5huEVFPW5Kiws9KErIcPNCNLGJnLd2zyxZZylJSmjqSDf8HYtkmBXLDa2BDEy/0XKbs+IxVhaYM0ytkHsEauBETO8kX6/Hw9G+kjn8DnA6TLjUBtkDEDMjKplym9ZJnXrkzeM3yg1kXZbu/eTqCOygI2fegcUC6eelc5onHDTLWTONLX4yIkyd7y8VgAyULjOrgh1vn0j5N9RJGSPtNZLfz7znQ7lLByHebhjANn0Tvm7yeaQ1sdDhtI4CVq4TgEAumoiT+M4Q0J4c3J+QO0NmEIGC4rz77rDvHOmPPBOBGWSpgd5YuoToRRtJQ+penc1T9ktYwglhIWeIj1OrRIPt8zmKfzCKGoQwFq7VoEbQvuxHCjHXjCHtdzWoStW1X7iSf/JjuDPnMq5ud7YM4Cbb9F/A094bx5gfp2XVtvALMZ9EzDOpSNbvrOHwY4l2/MQ1hGK9RV0Y=
 X-Forefront-PRVS: 02462830BE
 X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(39450400003)(305945005)(50986999)(4326008)(36756003)(7736002)(6116002)(50226002)(3846002)(8676002)(50466002)(81166006)(5003940100001)(48376002)(54906002)(76176999)(6506006)(42186005)(107886003)(38730400002)(1076002)(86362001)(25786008)(53416004)(6512007)(6486002)(33646002)(47776003)(66066001)(53936002)(2906002)(5660300001)(189998001)(6666003)(2950100002);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR07MB2420;H:ddl.caveonetworks.com;FPR:;SPF:None;MLV:sfv;LANG:en;
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;23:3UsiwFbscRlr2EuPBG2rPB1UEYqkmr6mnK3SAxtwxGlS1l9kDem/oNWPcW6E1nvVEjQjsEdVg400IQdjzTak7olq5HpHPQoHxl+W2FZgHObbbzklz2JSxZvan5APUQif0hSAVqAcu0OIgrNE5xLKIiPlpci0VzthFcdWPSPM4oaPbzQQ4/zbLiKGiQ9qQXGlXz9ACkN1/q1by4Uf/I1UfIEyKJB4CsNLtkKFcuLxmoTbUlJxVbj2EC7YwrZVczgYafcWvQB9BCV9mxEKsRTYdX10RmyLxuhnYzt5Cuj9+1asOYEZsg440/tlJAkyg/6A6Z2z8VeFVq63eHePHjL/jUzfKJZqwByspLhAIIxzb4dOmccIaXT2jQKBBE8rws7UuwjQ8ESBTkdy5YUN5Dp4BZBRSRZo6fJ8GHFrvYo5DDENvv1cwtG3jZbLoIyqaUtkd5tWVHRCL9/P1LsijAgXON3K+QujCClZTaB0Wup+D/Wkm6wrkVF8lXoww7rNv7yK0bYBHCut7sRETvobdcJslVAJG93GUl9m4tvom1kcDiC0ttkcG/8c3t1aRutXdtEp3Z///G9GKAa5KgC0CCHHZJa8qvHnVBjV1luFINvs/NneKOQ8SGJ06Kgae1OBKIYReFVQmeaZhLPgZZodDlHu6nUItS63nPm0JE6C1yoWXYc05rKGcKhS+aT66hh0IjF+Mt89bAJMvzStnd5qzapjt259v0J59VvtuisRpukfbHcoX/YOAtnqwhlx36jkhhH1/wgehLBd9on5NlPaFmu8G32dNT6epzsrBIki3SwwChWFa0wn4qguAiQWUXGip9LNh9PIm1ipU5f1wB1dA3FJE75VSKQ6CE31+MD58W0TndT/23n2PYz3GXoxa4Mrt1PYV+6NIcawpI+P4baw5+z6UQjFRb/8+MLjZ/8MTQ7LmoJLAjVBs8AqjSdLf9B5gNGo
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;6:Q2tfyF04zfwQKstTmoJXoj5oMABZox/hn1myp0U/9ldSkHCu0jyjcBPQVAEbPAZcW01VTSMSvRExT6cVK5O1RtN3qEf+shETcex/IZzTj2p4xb2xA/YLhRlq/CPlXqi1qEJfV5Z42yO7sOwvly2xQsz/hiVbFyzZY9JoiOvfUbe+c8lpvWoBFG3EuP4J2YBnSXXCrAd3U8EuTd3eGIy+V8WXIm/67IaEBXM+Vbmw19aw9iAmkZXybAfHQLgAMhTzCfm4EH0OLJOD8oGANmoBY/BvF6+8YeKZgoRq60k/6AO1IubPnko2EvH500jGWKWWJ5eSzCfkDPuVnbfWcaf6579TZ6kUGiioPpbkPZvKkdbJDb47eitkuDy7jRIjBhlNis/kOPolQ1LoY/gGu/ys3g==;5:A4ZplZCd4+jInuNV7sEwe7Wm3rpEwUUhk86GNWKzNJqYUn8T00ordf902YGsfCNoEKDgBabLNaocRvPAWH6C+wvuWQh+zvi0C4hjORf7uMpRPz4zTf7xCY0PBZpiCaWOtYJ0jxrW5/jA1j8Phzpy8A==;24:caXse7TyJIg/E1MnprY29thd6V1BTHl/88Aa5ce0pCSai+Cp3H+IU7+vSYWvyEOKTQdI+rN4x4C9SWjspJhfdVW8mslCRRxUBJKo44AaRLA=
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;23:35TYlYupGpHrb/nasgvE/SOLklYo5QdWT/dW3WNL6lveGHETqnA/Jpm3zWOZCHoiQWtWk78UygEsWY3uD8QVpKDMT7IfbrKS9nU6uR0dIAcZ6/ptFUr4x5KyMRYGP04fM2pdIQ+qk0lBt3MqZNsr3dfJsDvpxtwfWdRb1XCz2mePicZG9HZqrLWhtYNnbr3jTCQvzSkzxHwgEuZ7Mmt54pjWRBDhWaE53XhaB3oIrR8b/e/djwnlA+WdBD6zVGx6NglQ7eeal0fPNYsKveWfkzXrdqXEgq3EQXA9SJ1LZIXVrOTDCT6yUmBL1XnvGFll5c7yABt1txWc4f1+bKgWryOAlQbOO1kpxyNxXnf8r3OfXnEP+PWRdRj1ZjsiaEr1a6dASqwynQo0PQe8ZeukTjfx4aSw73GKJBQpxLptReeAdWWhx4EeBea1mkUW+OJXYqO5PKwIIvHYTwUx0toazoyATpMAZtMIe6EGdHi5MXfiirRi2OBKHuxNRm362RNKE9JfW4AXop5ZkeuqC1NNRKdjrZSSXtHVQPL1ePCvCE38XYPvQTFEFuPkvmiLbc2uhaYu+WMiqmU+rKBzc3jIH00xyFd5lJxNMJZ+5aVZr7VptS0ARoq5Qk6gQsYaBrRKNidjiZHXhOKaW8FpiXvFHaN22Ga6RLYsC/PAUEupIG+buGTg2yDtc8a5+zllCHEJWREGVg0/u3IdbVmYCgPcMTBKfT8LTgiiUb4agJ1b+0PGPP0KDk8MoJMpyIKzDitM50VtLVJEEScp5GiTFPX+vgI3d25mazhf5Gruv4/WG+mBGrIUQeBrbWC9m2dwWcTfntQONny12fU7gOOjU3lK2jgsFGv7fBfYNy9NY/nP1MtaZc+84te+reJPsZt0ycOqv8l3qQ4tzYKRR4AKyOnghteLJgOdhIxCcowIhgioegwTgZ8+u5buiGMFuWKvu1HY
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;6:xzJ2FYbHImZILmP7m/gHW0NaSi0/S0JRF84/Y6g5+UETcUdzoi2Tek3Xl77RI/H2Pxe5nEa/jas2JpY+P2tBtztVL/6QOFS2xn8glUtByU33jEMEpZ3rmaQIZfiDOsfe2JexTV3euAnE32eIARRv4/9FYpuEMq62Z7UE1DV/7WRNFyOViqNQ64zz7RcvaMrlQHSCYY+h0YtTn67APghtuEZJGsq7buikKGtqoTP23FxfA3Yn6vorDZlbyqubb121TbPCLjBurM5OJcp5Nlh/AsHb5evhwSl5rn64+FivwQ0vtt6MTgVeOClVV0OvU9YGSni7LIPE8DT6Qrm8fLn5vw+l8Gq9ZeNo2aPHw54uGQR6uczrpdbQLQfsbNrjgL0zx9aFdRa3GiJUOUCSJbPDGw==;5:fnoeRQ1cV6QTIaGc82Rt13bNonRMULD6CMrrVfSAhOcVQLRHIYn98yDcQpIbDtutM+y1bUhZ2BHsdPamw0nCTg9ezYgCPUTD05D29ZPeqJI0yUIIPuSqg6WgUH4NBQ4nYL3zAKpRGDiX2z7eo80RUg==;24:iHZc1ynPv33PiZ0z9Inbi90dXHp42o+pog5lIMG5+OCrQUCJUw6GJDh/MKrE2e9IsrHEDpfCtnpK2CqvGtRh2NaVh+RftqD5kYqc8PUGFCQ=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;7:3oS2YekIEsN3iirrbC3bEGKohtPXXH9aZmbNbNc11t9A8DiTAjrTPQm+6S576t8ogsNQy2q6V8Omzvk6LU7N7UqL2Q1wVgOeHV0yF6NVRXcDZ0v/g12ojSp2wbDiVS4w7U5ynsU7JR8aZ7AI1y80ciwU3hCRxTFikRqvwCeDqDSVTrIRfomyBNs7fSxYayHTQ5ccE+yczcPigD89WwqWUNiJb0Fg7O/ySBco+QZZF9Bq82hX8zkCUvuPDDMdMKy7MErxT6qn1dJ7EgOZ9YtCBKyatZsoIpAmF5UE/pxQGxBFIMMNnR+mOA/Ya+6o+s4+8MqJyaGsSiITR4cih0BNVg==
+X-Microsoft-Exchange-Diagnostics: 1;BL2PR07MB2420;7:ztVKRdVt0Ai+csF77N8H7KGUPoSwbELzkCnqrO2ImfKJL4+qHeAjPP27EFB4VkprOrNasSpm2/LklG+s5iqrr8D62aq2GctHMTKCMp/GYq3MKrqxnrAOq5CAcTjOQNAxEjkni4S5O7N2sbE2KLd6Ew9/vnfEPZkDovojO/93iaNK4584xv3AnSKSfwfguZZS6AaTo26+CedU9+4cU3wa06yqGUYFsDYWAQt5rVuNj9J0+sR3GL1LgXbTQDMr9MGCZ7ROyfHIk1+iET9obMF6PvRY1ssVJzkiIjpVqGxWUlyNkPGVBWqH8ZGo8vyxxGtQW0/ldEFH3Hd6GbOw2fAq4g==
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2017 21:21:50.0783 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2017 21:21:51.1252 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR07MB2420
 Return-Path: <David.Daney@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57263
+X-archive-position: 57264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,59 +73,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The follow-on BPF JIT patches use the LHU instruction, so add it.
+This let's us pass some additional "modprobe test-bpf" tests with JIT
+enabled.
+
+Reuse the code for SKF_AD_IFINDEX, but substitute the offset and size
+of the "type" field.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/include/asm/uasm.h | 1 +
- arch/mips/mm/uasm-mips.c     | 1 +
- arch/mips/mm/uasm.c          | 3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/net/bpf_jit.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-index f7929f6..d7e84f1 100644
---- a/arch/mips/include/asm/uasm.h
-+++ b/arch/mips/include/asm/uasm.h
-@@ -135,6 +135,7 @@ Ip_u2s3u1(_lb);
- Ip_u2s3u1(_ld);
- Ip_u3u1u2(_ldx);
- Ip_u2s3u1(_lh);
-+Ip_u2s3u1(_lhu);
- Ip_u2s3u1(_ll);
- Ip_u2s3u1(_lld);
- Ip_u1s2(_lui);
-diff --git a/arch/mips/mm/uasm-mips.c b/arch/mips/mm/uasm-mips.c
-index 763d3f1..2277499 100644
---- a/arch/mips/mm/uasm-mips.c
-+++ b/arch/mips/mm/uasm-mips.c
-@@ -103,6 +103,7 @@ static struct insn insn_table[] = {
- 	{ insn_ld,  M(ld_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
- 	{ insn_ldx, M(spec3_op, 0, 0, 0, ldx_op, lx_op), RS | RT | RD },
- 	{ insn_lh,  M(lh_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
-+	{ insn_lhu,  M(lhu_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
- #ifndef CONFIG_CPU_MIPSR6
- 	{ insn_lld,  M(lld_op, 0, 0, 0, 0, 0),	RS | RT | SIMM },
- 	{ insn_ll,  M(ll_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
-diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-index a829704..7f400c8 100644
---- a/arch/mips/mm/uasm.c
-+++ b/arch/mips/mm/uasm.c
-@@ -61,7 +61,7 @@ enum opcode {
- 	insn_sllv, insn_slt, insn_sltiu, insn_sltu, insn_sra, insn_srl,
- 	insn_srlv, insn_subu, insn_sw, insn_sync, insn_syscall, insn_tlbp,
- 	insn_tlbr, insn_tlbwi, insn_tlbwr, insn_wait, insn_wsbh, insn_xor,
--	insn_xori, insn_yield, insn_lddir, insn_ldpte,
-+	insn_xori, insn_yield, insn_lddir, insn_ldpte, insn_lhu,
- };
+diff --git a/arch/mips/net/bpf_jit.c b/arch/mips/net/bpf_jit.c
+index 49a2e22..880e329 100644
+--- a/arch/mips/net/bpf_jit.c
++++ b/arch/mips/net/bpf_jit.c
+@@ -365,6 +365,12 @@ static inline void emit_half_load(unsigned int reg, unsigned int base,
+ 	emit_instr(ctx, lh, reg, offset, base);
+ }
  
- struct insn {
-@@ -297,6 +297,7 @@ I_u1(_jr)
- I_u2s3u1(_lb)
- I_u2s3u1(_ld)
- I_u2s3u1(_lh)
-+I_u2s3u1(_lhu)
- I_u2s3u1(_ll)
- I_u2s3u1(_lld)
- I_u1s2(_lui)
++static inline void emit_half_load_unsigned(unsigned int reg, unsigned int base,
++					   unsigned int offset, struct jit_ctx *ctx)
++{
++	emit_instr(ctx, lhu, reg, offset, base);
++}
++
+ static inline void emit_mul(unsigned int dst, unsigned int src1,
+ 			    unsigned int src2, struct jit_ctx *ctx)
+ {
+@@ -1112,6 +1118,8 @@ static int build_body(struct jit_ctx *ctx)
+ 			break;
+ 		case BPF_ANC | SKF_AD_IFINDEX:
+ 			/* A = skb->dev->ifindex */
++		case BPF_ANC | SKF_AD_HATYPE:
++			/* A = skb->dev->type */
+ 			ctx->flags |= SEEN_SKB | SEEN_A;
+ 			off = offsetof(struct sk_buff, dev);
+ 			/* Load *dev pointer */
+@@ -1120,10 +1128,15 @@ static int build_body(struct jit_ctx *ctx)
+ 			emit_bcond(MIPS_COND_EQ, r_s0, r_zero,
+ 				   b_imm(prog->len, ctx), ctx);
+ 			emit_reg_move(r_ret, r_zero, ctx);
+-			BUILD_BUG_ON(FIELD_SIZEOF(struct net_device,
+-						  ifindex) != 4);
+-			off = offsetof(struct net_device, ifindex);
+-			emit_load(r_A, r_s0, off, ctx);
++			if (code == (BPF_ANC | SKF_AD_IFINDEX)) {
++				BUILD_BUG_ON(FIELD_SIZEOF(struct net_device, ifindex) != 4);
++				off = offsetof(struct net_device, ifindex);
++				emit_load(r_A, r_s0, off, ctx);
++			} else { /* (code == (BPF_ANC | SKF_AD_HATYPE) */
++				BUILD_BUG_ON(FIELD_SIZEOF(struct net_device, type) != 2);
++				off = offsetof(struct net_device, type);
++				emit_half_load_unsigned(r_A, r_s0, off, ctx);
++			}
+ 			break;
+ 		case BPF_ANC | SKF_AD_MARK:
+ 			ctx->flags |= SEEN_SKB | SEEN_A;
 -- 
 2.9.3

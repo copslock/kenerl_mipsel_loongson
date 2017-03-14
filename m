@@ -1,140 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 11:29:03 +0100 (CET)
-Received: from smtp-out4.electric.net ([192.162.216.182]:50335 "EHLO
-        smtp-out4.electric.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994822AbdCNKS2rdXNU convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Mar 2017 11:18:28 +0100
-Received: from 1cnjWn-0002zE-WE by out4b.electric.net with emc1-ok (Exim 4.87)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1cnjWx-0003kL-W6; Tue, 14 Mar 2017 03:18:15 -0700
-Received: by emcmailer; Tue, 14 Mar 2017 03:18:15 -0700
-Received: from [213.249.233.130] (helo=AcuExch.aculab.com)
-        by out4b.electric.net with esmtps (TLSv1:AES128-SHA:128)
-        (Exim 4.87)
-        (envelope-from <David.Laight@ACULAB.COM>)
-        id 1cnjWn-0002zE-WE; Tue, 14 Mar 2017 03:18:06 -0700
-Received: from ACUEXCH.Aculab.com ([::1]) by AcuExch.aculab.com ([::1]) with
- mapi id 14.03.0123.003; Tue, 14 Mar 2017 10:18:03 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Till Smejkal' <till.smejkal@googlemail.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Will Deacon" <will.deacon@arm.com>,
-        Steven Miao <realmz6@gmail.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        James Hogan <james.hogan@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2017 11:29:28 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:21038 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994766AbdCNKS3RAPNU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2017 11:18:29 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id D5DB552008AEE;
+        Tue, 14 Mar 2017 10:18:19 +0000 (GMT)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ hhmail02.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Tue, 14 Mar 2017 10:18:22 +0000
+From:   James Hogan <james.hogan@imgtec.com>
+To:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "Andy Lutomirski" <luto@amacapital.net>,
-        Chris Zankel <chris@zankel.net>,
-        "Max Filippov" <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Benjamin LaHaise <bcrl@kvack.org>,
-        "Nadia Yvette Chambers" <nyc@holomorphy.com>,
-        Jeff Layton <jlayton@poochiereds.net>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Hugh Dickins <hughd@google.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-aio@kvack.org" <linux-aio@kvack.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-        "adi-buildroot-devel@lists.sourceforge.net" 
-        <adi-buildroot-devel@lists.sourceforge.net>,
-        "linux-metag@vger.kernel.org" <linux-metag@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: RE: [RFC PATCH 07/13] kernel/fork: Split and export 'mm_alloc' and
- 'mm_init'
-Thread-Topic: [RFC PATCH 07/13] kernel/fork: Split and export 'mm_alloc' and
- 'mm_init'
-Thread-Index: AQHSnFlKbsEtMBhPwUWh6YpYbq3c0aGUH2sg
-Date:   Tue, 14 Mar 2017 10:18:03 +0000
-Message-ID: <063D6719AE5E284EB5DD2968C1650D6DCFFB03F4@AcuExch.aculab.com>
-References: <20170313221415.9375-1-till.smejkal@gmail.com>
- <20170313221415.9375-8-till.smejkal@gmail.com>
-In-Reply-To: <20170313221415.9375-8-till.smejkal@gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.99.200]
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: 8BIT
+        Jonathan Corbet <corbet@lwn.net>, <linux-doc@vger.kernel.org>
+Subject: [PATCH v2 26/33] KVM: MIPS/VZ: Support guest CP0_BadInstr[P]
+Date:   Tue, 14 Mar 2017 10:15:33 +0000
+Message-ID: <646e1b70fcaa70e8fc2d31d107c3cc44555002b4.1489485940.git-series.james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
-X-Outbound-IP: 213.249.233.130
-X-Env-From: David.Laight@ACULAB.COM
-X-Proto: esmtps
-X-Revdns: 
-X-HELO: AcuExch.aculab.com
-X-TLS:  TLSv1:AES128-SHA:128
-X-Authenticated_ID: 
-X-PolicySMART: 3396946, 3397078
-X-Virus-Status: Scanned by VirusSMART (c)
-X-Virus-Status: Scanned by VirusSMART (s)
-Return-Path: <David.Laight@ACULAB.COM>
+In-Reply-To: <cover.26e10ec77a4ed0d3177ccf4fabf57bc95ea030f8.1489485940.git-series.james.hogan@imgtec.com>
+References: <cover.26e10ec77a4ed0d3177ccf4fabf57bc95ea030f8.1489485940.git-series.james.hogan@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57226
+X-archive-position: 57227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -147,28 +47,150 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Linuxppc-dev Till Smejkal
-> Sent: 13 March 2017 22:14
-> The only way until now to create a new memory map was via the exported
-> function 'mm_alloc'. Unfortunately, this function not only allocates a new
-> memory map, but also completely initializes it. However, with the
-> introduction of first class virtual address spaces, some initialization
-> steps done in 'mm_alloc' are not applicable to the memory maps needed for
-> this feature and hence would lead to errors in the kernel code.
-> 
-> Instead of introducing a new function that can allocate and initialize
-> memory maps for first class virtual address spaces and potentially
-> duplicate some code, I decided to split the mm_alloc function as well as
-> the 'mm_init' function that it uses.
-> 
-> Now there are four functions exported instead of only one. The new
-> 'mm_alloc' function only allocates a new mm_struct and zeros it out. If one
-> want to have the old behavior of mm_alloc one can use the newly introduced
-> function 'mm_alloc_and_setup' which not only allocates a new mm_struct but
-> also fully initializes it.
-...
+Add support for VZ guest CP0_BadInstr and CP0_BadInstrP registers, as
+found on most VZ capable cores. These guest registers need context
+switching, and exposing via the KVM ioctl API when they are present.
 
-That looks like bugs waiting to happen.
-You need unchanged code to fail to compile.
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Radim Krčmář" <rkrcmar@redhat.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mips@linux-mips.org
+Cc: kvm@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+---
+ Documentation/virtual/kvm/api.txt |  2 +-
+ arch/mips/include/asm/kvm_host.h  |  4 +++-
+ arch/mips/kvm/vz.c                | 46 ++++++++++++++++++++++++++++++++-
+ 3 files changed, 52 insertions(+), 0 deletions(-)
 
-	David
+diff --git a/Documentation/virtual/kvm/api.txt b/Documentation/virtual/kvm/api.txt
+index d2827864827f..5ef4fa1de7d4 100644
+--- a/Documentation/virtual/kvm/api.txt
++++ b/Documentation/virtual/kvm/api.txt
+@@ -2079,6 +2079,8 @@ registers, find a list below:
+   MIPS  | KVM_REG_MIPS_CP0_WIRED        | 32
+   MIPS  | KVM_REG_MIPS_CP0_HWRENA       | 32
+   MIPS  | KVM_REG_MIPS_CP0_BADVADDR     | 64
++  MIPS  | KVM_REG_MIPS_CP0_BADINSTR     | 32
++  MIPS  | KVM_REG_MIPS_CP0_BADINSTRP    | 32
+   MIPS  | KVM_REG_MIPS_CP0_COUNT        | 32
+   MIPS  | KVM_REG_MIPS_CP0_ENTRYHI      | 64
+   MIPS  | KVM_REG_MIPS_CP0_COMPARE      | 32
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index bc3f9dedaac8..3a9ca3326315 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -40,6 +40,8 @@
+ #define KVM_REG_MIPS_CP0_WIRED		MIPS_CP0_32(6, 0)
+ #define KVM_REG_MIPS_CP0_HWRENA		MIPS_CP0_32(7, 0)
+ #define KVM_REG_MIPS_CP0_BADVADDR	MIPS_CP0_64(8, 0)
++#define KVM_REG_MIPS_CP0_BADINSTR	MIPS_CP0_32(8, 1)
++#define KVM_REG_MIPS_CP0_BADINSTRP	MIPS_CP0_32(8, 2)
+ #define KVM_REG_MIPS_CP0_COUNT		MIPS_CP0_32(9, 0)
+ #define KVM_REG_MIPS_CP0_ENTRYHI	MIPS_CP0_64(10, 0)
+ #define KVM_REG_MIPS_CP0_COMPARE	MIPS_CP0_32(11, 0)
+@@ -669,6 +671,8 @@ __BUILD_KVM_RW_HW(pagegrain,      32, MIPS_CP0_TLB_PG_MASK,  1)
+ __BUILD_KVM_RW_HW(wired,          32, MIPS_CP0_TLB_WIRED,    0)
+ __BUILD_KVM_RW_HW(hwrena,         32, MIPS_CP0_HWRENA,       0)
+ __BUILD_KVM_RW_HW(badvaddr,       l,  MIPS_CP0_BAD_VADDR,    0)
++__BUILD_KVM_RW_HW(badinstr,       32, MIPS_CP0_BAD_VADDR,    1)
++__BUILD_KVM_RW_HW(badinstrp,      32, MIPS_CP0_BAD_VADDR,    2)
+ __BUILD_KVM_RW_SW(count,          32, MIPS_CP0_COUNT,        0)
+ __BUILD_KVM_RW_HW(entryhi,        l,  MIPS_CP0_TLB_HI,       0)
+ __BUILD_KVM_RW_HW(compare,        32, MIPS_CP0_COMPARE,      0)
+diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
+index cfed234be1e3..ec909fcd08ce 100644
+--- a/arch/mips/kvm/vz.c
++++ b/arch/mips/kvm/vz.c
+@@ -1221,6 +1221,10 @@ static unsigned long kvm_vz_num_regs(struct kvm_vcpu *vcpu)
+ 	ret = ARRAY_SIZE(kvm_vz_get_one_regs);
+ 	if (cpu_guest_has_userlocal)
+ 		++ret;
++	if (cpu_guest_has_badinstr)
++		++ret;
++	if (cpu_guest_has_badinstrp)
++		++ret;
+ 	ret += __arch_hweight8(cpu_data[0].guest.kscratch_mask);
+ 
+ 	return ret;
+@@ -1242,6 +1246,18 @@ static int kvm_vz_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *indices)
+ 			return -EFAULT;
+ 		++indices;
+ 	}
++	if (cpu_guest_has_badinstr) {
++		index = KVM_REG_MIPS_CP0_BADINSTR;
++		if (copy_to_user(indices, &index, sizeof(index)))
++			return -EFAULT;
++		++indices;
++	}
++	if (cpu_guest_has_badinstrp) {
++		index = KVM_REG_MIPS_CP0_BADINSTRP;
++		if (copy_to_user(indices, &index, sizeof(index)))
++			return -EFAULT;
++		++indices;
++	}
+ 	for (i = 0; i < 6; ++i) {
+ 		if (!cpu_guest_has_kscr(i + 2))
+ 			continue;
+@@ -1327,6 +1343,16 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *vcpu,
+ 	case KVM_REG_MIPS_CP0_BADVADDR:
+ 		*v = (long)read_gc0_badvaddr();
+ 		break;
++	case KVM_REG_MIPS_CP0_BADINSTR:
++		if (!cpu_guest_has_badinstr)
++			return -EINVAL;
++		*v = read_gc0_badinstr();
++		break;
++	case KVM_REG_MIPS_CP0_BADINSTRP:
++		if (!cpu_guest_has_badinstrp)
++			return -EINVAL;
++		*v = read_gc0_badinstrp();
++		break;
+ 	case KVM_REG_MIPS_CP0_COUNT:
+ 		*v = kvm_mips_read_count(vcpu);
+ 		break;
+@@ -1472,6 +1498,16 @@ static int kvm_vz_set_one_reg(struct kvm_vcpu *vcpu,
+ 	case KVM_REG_MIPS_CP0_BADVADDR:
+ 		write_gc0_badvaddr(v);
+ 		break;
++	case KVM_REG_MIPS_CP0_BADINSTR:
++		if (!cpu_guest_has_badinstr)
++			return -EINVAL;
++		write_gc0_badinstr(v);
++		break;
++	case KVM_REG_MIPS_CP0_BADINSTRP:
++		if (!cpu_guest_has_badinstrp)
++			return -EINVAL;
++		write_gc0_badinstrp(v);
++		break;
+ 	case KVM_REG_MIPS_CP0_COUNT:
+ 		kvm_mips_write_count(vcpu, v);
+ 		break;
+@@ -1871,6 +1907,11 @@ static int kvm_vz_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 			kvm_restore_gc0_kscratch6(cop0);
+ 	}
+ 
++	if (cpu_guest_has_badinstr)
++		kvm_restore_gc0_badinstr(cop0);
++	if (cpu_guest_has_badinstrp)
++		kvm_restore_gc0_badinstrp(cop0);
++
+ 	/* restore Root.GuestCtl2 from unused Guest guestctl2 register */
+ 	if (cpu_has_guestctl2)
+ 		write_c0_guestctl2(
+@@ -1945,6 +1986,11 @@ static int kvm_vz_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
+ 			kvm_save_gc0_kscratch6(cop0);
+ 	}
+ 
++	if (cpu_guest_has_badinstr)
++		kvm_save_gc0_badinstr(cop0);
++	if (cpu_guest_has_badinstrp)
++		kvm_save_gc0_badinstrp(cop0);
++
+ 	kvm_vz_save_timer(vcpu);
+ 
+ 	/* save Root.GuestCtl2 in unused Guest guestctl2 register */
+-- 
+git-series 0.8.10

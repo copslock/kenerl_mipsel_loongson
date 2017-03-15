@@ -1,47 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 17:46:28 +0100 (CET)
-Received: from resqmta-ch2-05v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:37]:58144
-        "EHLO resqmta-ch2-05v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990514AbdCOQqV0SwDJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 17:46:21 +0100
-Received: from resomta-ch2-04v.sys.comcast.net ([69.252.207.100])
-        by resqmta-ch2-05v.sys.comcast.net with SMTP
-        id oC2pcfcJC4CjQoC44cALiS; Wed, 15 Mar 2017 16:46:20 +0000
-Received: from [192.168.1.13] ([73.201.78.97])
-        by resomta-ch2-04v.sys.comcast.net with SMTP
-        id oC42cUGKbk0LeoC42crEes; Wed, 15 Mar 2017 16:46:19 +0000
-Subject: Re: NFS corruption, fixed by echo 1 > /proc/sys/vm/drop_caches --
- next debugging steps?
-To:     Matt Turner <mattst88@gmail.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-References: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
- <20170313094757.GI2878@jhogan-linux.le.imgtec.org>
- <20170315092536.GC22089@linux-mips.org>
- <CAOLZvyGRn5JgeRoiHv0AH8LVwLF5MtXF2KwS5Yr5N8QOK6eYnw@mail.gmail.com>
- <CAEdQ38FU6H7ThmP2MgUY-uLhf9feZ6US2JwhEQsCuPw9AeV3nQ@mail.gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <2d13de51-e757-b283-1e7f-f4a54f87965a@gentoo.org>
-Date:   Wed, 15 Mar 2017 12:46:03 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 17:52:10 +0100 (CET)
+Received: from mail-vk0-x236.google.com ([IPv6:2607:f8b0:400c:c05::236]:33094
+        "EHLO mail-vk0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991867AbdCOQwArCU-J convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Mar 2017 17:52:00 +0100
+Received: by mail-vk0-x236.google.com with SMTP id d188so11835639vka.0
+        for <linux-mips@linux-mips.org>; Wed, 15 Mar 2017 09:52:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=LteANNsru7YLqURl3GZx8rYiHwwCxzbEI1x1MIRwrE4=;
+        b=TjN2Q0A9qhZRlVkr4TRWkxpUqKt7qLQVchXLy/FPGCkn1v+U6FU/tz4/jNHFOVMunQ
+         PgWtLlYe/+4pazbG2vcQJ3klj8yR3euEZhczmPDntqC2FXr5jGTS5jRSUZdVShK9v5gt
+         VjIczqC3fRjR17LaVGAxiQ5BBwcvV5irEvPynUl1nVi3nMWC0DXeZLcD1DpyxdyNNn98
+         NGdZRw78Nh/JgMPgplYznzaJhyCQAnxcU7zs2Ofy/seGYunqSpEbnncQBhNYyLTR/ysk
+         t+g3cqw7sevuTYLrW3PUgiuNopU82aDBp7eiwa4mah/hKVBwXTSU3kuYng2H722lLLTD
+         MUIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=LteANNsru7YLqURl3GZx8rYiHwwCxzbEI1x1MIRwrE4=;
+        b=o6wFp1svX633UZsRyn1IqEF4N4kivpc+7/Q9ANetwwR+EFBtWOWr974t9mjcR5YHim
+         4Q69nxLjVt/+PCAYPuwdTsVqTZj+clVgWeRnj3hdj37ozc66aNw6Ds/XIKl5UeEvLAOh
+         BmoWulUqu5a1HniL9ka88Y5uBu9UPFNp6CVF6h7QTvhkh1WUXqlUoVkTyPalJuPer+2b
+         XFx9rZ+8uy6Si6aVoN0+y+SStINfx3zlKM2vPFcBEDzL0RJQLgTc3gBMOYEFgRvAOd6o
+         5JAfBkR6hej9O18TVmb9PSem5EI2ajBQEX3DqmXLI5LlB35EGLVcd/iP/L46OWftWXor
+         A+sg==
+X-Gm-Message-State: AFeK/H3ytj942pQcztpvKMpuj57p7ZA5BM40XVL02IUpfU23eLIO3IHg6syTR0ve6mNqf4NRhQ3r1k2nJI/BGfER
+X-Received: by 10.31.75.67 with SMTP id y64mr1290492vka.51.1489596712500; Wed,
+ 15 Mar 2017 09:51:52 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAEdQ38FU6H7ThmP2MgUY-uLhf9feZ6US2JwhEQsCuPw9AeV3nQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfGWMbGhARuwuwFp9+vfCgT/TEcTEDoMmUX4VSE7nDU6IxuUS56hoYWmRdEm92RubDCF0qXnGBxqtUB7YW4A7pH+wfB4zx4iyV3S9pIJATclLuqIZcjSd
- iWA1rqZ8AgzsciBNaBhF2kURNz65zsO8BBmcCuLENsJAhca3vGtLx0E2ZZmhjaqL3Cy7KWXY9q96WbSur1ojGc1IBFTaWVNiPybmmCS7H52xv5dxGtuQay1z
- Rk8UbJC9a/7b3qqYMwXs0F/0Bk1ukQwfbyPni1DfpoR6Cx3lW5n6tzSDJFp2ijfI
-Return-Path: <kumba@gentoo.org>
+Received: by 10.103.88.135 with HTTP; Wed, 15 Mar 2017 09:51:31 -0700 (PDT)
+In-Reply-To: <20170314161229.tl6hsmian2gdep47@arch-dev>
+References: <CALCETrXKvNWv1OtoSo_HWf5ZHSvyGS1NsuQod6Zt+tEg3MT5Sg@mail.gmail.com>
+ <20170314161229.tl6hsmian2gdep47@arch-dev>
+From:   Andy Lutomirski <luto@amacapital.net>
+Date:   Wed, 15 Mar 2017 09:51:31 -0700
+Message-ID: <CALCETrX5gv+zdhOYro4-u3wGWjVCab28DFHPSm5=BVG_hKxy3A@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
+To:     Andy Lutomirski <luto@amacapital.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Till Smejkal <till.smejkal@googlemail.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Steven Miao <realmz6@gmail.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Benjamin LaHaise <bcrl@kvack.org>,
+        Nadia Yvette Chambers <nyc@holomorphy.com>,
+        Jeff Layton <jlayton@poochiereds.net>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Hugh Dickins <hughd@google.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-alpha@vger.kernel.org,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-hexagon@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-metag@vger.kernel.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mtd@lists.infradead.org,
+        USB list <linux-usb@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        linux-aio@kvack.org, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        ALSA development <alsa-devel@alsa-project.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <luto@amacapital.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57300
+X-archive-position: 57301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: luto@amacapital.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,78 +143,79 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/15/2017 11:31, Matt Turner wrote:
-> On Wed, Mar 15, 2017 at 7:00 AM, Manuel Lauss <manuel.lauss@gmail.com> wrote:
+On Tue, Mar 14, 2017 at 9:12 AM, Till Smejkal
+<till.smejkal@googlemail.com> wrote:
+> On Mon, 13 Mar 2017, Andy Lutomirski wrote:
+>> On Mon, Mar 13, 2017 at 7:07 PM, Till Smejkal
+>> <till.smejkal@googlemail.com> wrote:
+>> > On Mon, 13 Mar 2017, Andy Lutomirski wrote:
+>> >> This sounds rather complicated.  Getting TLB flushing right seems
+>> >> tricky.  Why not just map the same thing into multiple mms?
+>> >
+>> > This is exactly what happens at the end. The memory region that is described by the
+>> > VAS segment will be mapped in the ASes that use the segment.
 >>
->> On Wed, Mar 15, 2017 at 10:25 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
->>>
->>> On Mon, Mar 13, 2017 at 09:47:57AM +0000, James Hogan wrote:
->>>
->>>>>
->>>>> Note that the corruption is different across reboots, both in the size
->>>>> of the corruption and the location. I saw 1900~ and 1400~ byte
->>>>> sequences corrupted on separate occasions, which don't correspond to
->>>>> the system's 16kB page size.
->>>>>
->>>>> I've tested kernels from v3.19 to 4.11-rc1+ (master branch from
->>>>> today). All exhibit this behavior with differing frequencies. Earlier
->>>>> kernels seem to reproduce the issue less often, while more recent
->>>>> kernels reliably exhibit the problem every boot.
->>>>>
->>>>> How can I further debug this?
->>>>
->>>> It smells a bit like a DMA / caching issue.
->>>>
->>>> Can you provide a full kernel log. That might provide some information
->>>> about caching that might be relevant (e.g. does dcache have aliases?).
->>>
->>> The architecture of the BCM1250 SOC used for the BCM91250 boards are
->>> fully coherent, S-cache and D-cache are physically indexed and tagged.
->>> Only the VIVT (plus the usual ASID tagging) I-cache leaves space for
->>> software to screw up cache management but that shouldn't matter for this
->>> case, so I suggest to start looking into this from the NFS side.
+>> So why is this kernel feature better than just doing MAP_SHARED
+>> manually in userspace?
+>
+> One advantage of VAS segments is that they can be globally queried by user programs
+> which means that VAS segments can be shared by applications that not necessarily have
+> to be related. If I am not mistaken, MAP_SHARED of pure in memory data will only work
+> if the tasks that share the memory region are related (aka. have a common parent that
+> initialized the shared mapping). Otherwise, the shared mapping have to be backed by a
+> file.
+
+What's wrong with memfd_create()?
+
+> VAS segments on the other side allow sharing of pure in memory data by
+> arbitrary related tasks without the need of a file. This becomes especially
+> interesting if one combines VAS segments with non-volatile memory since one can keep
+> data structures in the NVM and still be able to share them between multiple tasks.
+
+What's wrong with regular mmap?
+
+>
+>> >> Ick.  Please don't do this.  Can we please keep an mm as just an mm
+>> >> and not make it look magically different depending on which process
+>> >> maps it?  If you need a trampoline (which you do, of course), just
+>> >> write a trampoline in regular user code and map it manually.
+>> >
+>> > Did I understand you correctly that you are proposing that the switching thread
+>> > should make sure by itself that its code, stack, … memory regions are properly setup
+>> > in the new AS before/after switching into it? I think, this would make using first
+>> > class virtual address spaces much more difficult for user applications to the extend
+>> > that I am not even sure if they can be used at all. At the moment, switching into a
+>> > VAS is a very simple operation for an application because the kernel will just simply
+>> > do the right thing.
 >>
->>
->> I did Matt's tests on Alchemy (VIPT caches) with kernels 3.18 to 4.11-rc
->> against
->> an x86 4.9.15 host, and did not see any problems.   Given Ralf's comment
->> about the BCM1250 caches, maybe you have bad hardware (BCM board or
->> network) ?
-> 
-> I certainly cannot rule that possibility out. If that is the case, I
-> would like to be sure of it -- see a failure in memtester or something
-> for instance. Any suggestions? (I have run memtester and never found
-> anything)
-> 
-> For what its worth, did you determine the cause of the NFS corruption
-> you reported [1]?
-> 
-> [1] https://www.spinics.net/lists/mips/msg44006.html
+>> Yes.  I think that having the same mm_struct look different from
+>> different tasks is problematic.  Getting it right in the arch code is
+>> going to be nasty.  The heuristics of what to share are also tough --
+>> why would text + data + stack or whatever you're doing be adequate?
+>> What if you're in a thread?  What if two tasks have their stacks in
+>> the same place?
+>
+> The different ASes that a task now can have when it uses first class virtual address
+> spaces are not realized in the kernel by using only one mm_struct per task that just
+> looks differently but by using multiple mm_structs - one for each AS that the task
+> can execute in. When a task attaches a first class virtual address space to itself to
+> be able to use another AS, the kernel adds a temporary mm_struct to this task that
+> contains the mappings of the first class virtual address space and the one shared
+> with the task's original AS. If a thread now wants to switch into this attached first
+> class virtual address space the kernel only changes the 'mm' and 'active_mm' pointers
+> in the task_struct of the thread to the temporary mm_struct and performs the
+> corresponding mm_switch operation. The original mm_struct of the thread will not be
+> changed.
+>
+> Accordingly, I do not magically make mm_structs look differently depending on the
+> task that uses it, but create temporary mm_structs that only contain mappings to the
+> same memory regions.
 
-I'm using NFSv4 between my SGI Octane and Intel box with no noticeable issues.
-I used both rsync and cp to move a large, ~845MB file between both and
-md5summed them both and get the same md5sum back.  What NFS versions and
-protocols have you tried?  v4 is TCP-only, but v3 can do both UDP and TCP.
+This sounds complicated and fragile.  What happens if a heuristically
+shared region coincides with a region in the "first class address
+space" being selected?
 
-That said, I doubt this'll affect you, but, if you're running the XFS
-filesystem, version 5 (crc=1, finobt=1), Do you notice any oddities with
-untarring a really large tarball, like a Gentoo stage or such on that BCM
-machine?  That's revealed a couple of curious issues that may be
-Octane-specific that I haven't tried to trace down yet.  Would be interesting
-if you saw them as well.  Specifically, if you get a non-fatal Oops in dmesg
-from the above or a message from xfsaild about a possible deadlock in
-kmem_alloc(), I'd love to know.
+I think the right solution is "you're a user program playing virtual
+address games -- make sure you do it right".
 
-
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+--Andy

@@ -1,47 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 17:52:10 +0100 (CET)
-Received: from mail-vk0-x236.google.com ([IPv6:2607:f8b0:400c:c05::236]:33094
-        "EHLO mail-vk0-x236.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991867AbdCOQwArCU-J convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Mar 2017 17:52:00 +0100
-Received: by mail-vk0-x236.google.com with SMTP id d188so11835639vka.0
-        for <linux-mips@linux-mips.org>; Wed, 15 Mar 2017 09:52:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=LteANNsru7YLqURl3GZx8rYiHwwCxzbEI1x1MIRwrE4=;
-        b=TjN2Q0A9qhZRlVkr4TRWkxpUqKt7qLQVchXLy/FPGCkn1v+U6FU/tz4/jNHFOVMunQ
-         PgWtLlYe/+4pazbG2vcQJ3klj8yR3euEZhczmPDntqC2FXr5jGTS5jRSUZdVShK9v5gt
-         VjIczqC3fRjR17LaVGAxiQ5BBwcvV5irEvPynUl1nVi3nMWC0DXeZLcD1DpyxdyNNn98
-         NGdZRw78Nh/JgMPgplYznzaJhyCQAnxcU7zs2Ofy/seGYunqSpEbnncQBhNYyLTR/ysk
-         t+g3cqw7sevuTYLrW3PUgiuNopU82aDBp7eiwa4mah/hKVBwXTSU3kuYng2H722lLLTD
-         MUIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=LteANNsru7YLqURl3GZx8rYiHwwCxzbEI1x1MIRwrE4=;
-        b=o6wFp1svX633UZsRyn1IqEF4N4kivpc+7/Q9ANetwwR+EFBtWOWr974t9mjcR5YHim
-         4Q69nxLjVt/+PCAYPuwdTsVqTZj+clVgWeRnj3hdj37ozc66aNw6Ds/XIKl5UeEvLAOh
-         BmoWulUqu5a1HniL9ka88Y5uBu9UPFNp6CVF6h7QTvhkh1WUXqlUoVkTyPalJuPer+2b
-         XFx9rZ+8uy6Si6aVoN0+y+SStINfx3zlKM2vPFcBEDzL0RJQLgTc3gBMOYEFgRvAOd6o
-         5JAfBkR6hej9O18TVmb9PSem5EI2ajBQEX3DqmXLI5LlB35EGLVcd/iP/L46OWftWXor
-         A+sg==
-X-Gm-Message-State: AFeK/H3ytj942pQcztpvKMpuj57p7ZA5BM40XVL02IUpfU23eLIO3IHg6syTR0ve6mNqf4NRhQ3r1k2nJI/BGfER
-X-Received: by 10.31.75.67 with SMTP id y64mr1290492vka.51.1489596712500; Wed,
- 15 Mar 2017 09:51:52 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.103.88.135 with HTTP; Wed, 15 Mar 2017 09:51:31 -0700 (PDT)
-In-Reply-To: <20170314161229.tl6hsmian2gdep47@arch-dev>
-References: <CALCETrXKvNWv1OtoSo_HWf5ZHSvyGS1NsuQod6Zt+tEg3MT5Sg@mail.gmail.com>
- <20170314161229.tl6hsmian2gdep47@arch-dev>
-From:   Andy Lutomirski <luto@amacapital.net>
-Date:   Wed, 15 Mar 2017 09:51:31 -0700
-Message-ID: <CALCETrX5gv+zdhOYro4-u3wGWjVCab28DFHPSm5=BVG_hKxy3A@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
-To:     Andy Lutomirski <luto@amacapital.net>,
-        Andy Lutomirski <luto@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 17:58:34 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:44618 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991129AbdCOQ61u0GRJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 17:58:27 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=aEHWIEy5G4AOoKgP+7JrmgQGGcf7Uz8mbSBylOLlW2k=; b=qmbfftnWbQ6rm5mf0U8IpZ4E4
+        DUN4W1VM7T7k1iSMeyl8ZPbs5cnH8Hi4LNMSqwQsGKMwA9bCPspGUFeKkbGhvuBNI9wCY/NB+NkIe
+        yyZ2oRNDO6xI33eShjN166dOs4UK343pGOMKj8RsVrYXyf+t2hTQltD6DfEdcnA8E22ED086UjdN7
+        c2WkQ//RRh2IN4M3z8GJIhHIrFf2ZdR6AoJ7H2DydZ7EZAxw2lhhD4kel9gOKf3kyrJgNhaHNOXyT
+        7HORVhPIMJ8wkBiiNEvrOJTwuQK0AdcTXyOc5e4kUBEWR5Yi4deO/A8BVerH9RQXPBO12ep60S2a+
+        GcU9xNLUA==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.87 #1 (Red Hat Linux))
+        id 1coCEy-00067n-VU; Wed, 15 Mar 2017 16:57:36 +0000
+Date:   Wed, 15 Mar 2017 09:57:36 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Andy Lutomirski <luto@amacapital.net>
+Cc:     Andy Lutomirski <luto@kernel.org>,
         Till Smejkal <till.smejkal@googlemail.com>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -120,17 +99,25 @@ To:     Andy Lutomirski <luto@amacapital.net>,
         Linux API <linux-api@vger.kernel.org>,
         linux-arch <linux-arch@vger.kernel.org>,
         ALSA development <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <luto@amacapital.net>
+Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
+Message-ID: <20170315165736.GE4033@bombadil.infradead.org>
+References: <CALCETrXKvNWv1OtoSo_HWf5ZHSvyGS1NsuQod6Zt+tEg3MT5Sg@mail.gmail.com>
+ <20170314161229.tl6hsmian2gdep47@arch-dev>
+ <CALCETrX5gv+zdhOYro4-u3wGWjVCab28DFHPSm5=BVG_hKxy3A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALCETrX5gv+zdhOYro4-u3wGWjVCab28DFHPSm5=BVG_hKxy3A@mail.gmail.com>
+User-Agent: Mutt/1.7.1 (2016-10-04)
+Return-Path: <willy@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57301
+X-archive-position: 57302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luto@amacapital.net
+X-original-sender: willy@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -143,79 +130,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Mar 14, 2017 at 9:12 AM, Till Smejkal
-<till.smejkal@googlemail.com> wrote:
-> On Mon, 13 Mar 2017, Andy Lutomirski wrote:
->> On Mon, Mar 13, 2017 at 7:07 PM, Till Smejkal
->> <till.smejkal@googlemail.com> wrote:
->> > On Mon, 13 Mar 2017, Andy Lutomirski wrote:
->> >> This sounds rather complicated.  Getting TLB flushing right seems
->> >> tricky.  Why not just map the same thing into multiple mms?
->> >
->> > This is exactly what happens at the end. The memory region that is described by the
->> > VAS segment will be mapped in the ASes that use the segment.
->>
->> So why is this kernel feature better than just doing MAP_SHARED
->> manually in userspace?
->
-> One advantage of VAS segments is that they can be globally queried by user programs
-> which means that VAS segments can be shared by applications that not necessarily have
-> to be related. If I am not mistaken, MAP_SHARED of pure in memory data will only work
-> if the tasks that share the memory region are related (aka. have a common parent that
-> initialized the shared mapping). Otherwise, the shared mapping have to be backed by a
-> file.
+On Wed, Mar 15, 2017 at 09:51:31AM -0700, Andy Lutomirski wrote:
+> > VAS segments on the other side allow sharing of pure in memory data by
+> > arbitrary related tasks without the need of a file. This becomes especially
+> > interesting if one combines VAS segments with non-volatile memory since one can keep
+> > data structures in the NVM and still be able to share them between multiple tasks.
+> 
+> What's wrong with regular mmap?
 
-What's wrong with memfd_create()?
+I think it's the usual misunderstandings about how to use mmap.
+From the paper:
 
-> VAS segments on the other side allow sharing of pure in memory data by
-> arbitrary related tasks without the need of a file. This becomes especially
-> interesting if one combines VAS segments with non-volatile memory since one can keep
-> data structures in the NVM and still be able to share them between multiple tasks.
+   Memory-centric computing demands careful organization of the
+   virtual address space, but interfaces such as mmap only give limited
+   control. Some systems do not support creation of address regions at
+   specific offsets. In Linux, for example, mmap does not safely abort if
+   a request is made to open a region of memory over an existing region;
+   it simply writes over it.
 
-What's wrong with regular mmap?
-
->
->> >> Ick.  Please don't do this.  Can we please keep an mm as just an mm
->> >> and not make it look magically different depending on which process
->> >> maps it?  If you need a trampoline (which you do, of course), just
->> >> write a trampoline in regular user code and map it manually.
->> >
->> > Did I understand you correctly that you are proposing that the switching thread
->> > should make sure by itself that its code, stack, … memory regions are properly setup
->> > in the new AS before/after switching into it? I think, this would make using first
->> > class virtual address spaces much more difficult for user applications to the extend
->> > that I am not even sure if they can be used at all. At the moment, switching into a
->> > VAS is a very simple operation for an application because the kernel will just simply
->> > do the right thing.
->>
->> Yes.  I think that having the same mm_struct look different from
->> different tasks is problematic.  Getting it right in the arch code is
->> going to be nasty.  The heuristics of what to share are also tough --
->> why would text + data + stack or whatever you're doing be adequate?
->> What if you're in a thread?  What if two tasks have their stacks in
->> the same place?
->
-> The different ASes that a task now can have when it uses first class virtual address
-> spaces are not realized in the kernel by using only one mm_struct per task that just
-> looks differently but by using multiple mm_structs - one for each AS that the task
-> can execute in. When a task attaches a first class virtual address space to itself to
-> be able to use another AS, the kernel adds a temporary mm_struct to this task that
-> contains the mappings of the first class virtual address space and the one shared
-> with the task's original AS. If a thread now wants to switch into this attached first
-> class virtual address space the kernel only changes the 'mm' and 'active_mm' pointers
-> in the task_struct of the thread to the temporary mm_struct and performs the
-> corresponding mm_switch operation. The original mm_struct of the thread will not be
-> changed.
->
-> Accordingly, I do not magically make mm_structs look differently depending on the
-> task that uses it, but create temporary mm_structs that only contain mappings to the
-> same memory regions.
-
-This sounds complicated and fragile.  What happens if a heuristically
-shared region coincides with a region in the "first class address
-space" being selected?
-
-I think the right solution is "you're a user program playing virtual
-address games -- make sure you do it right".
-
---Andy
+The correct answer of course, is "Don't specify MAP_FIXED".  Specify the
+'hint' address, and if you don't get it, either fix up your data structure
+pointers, or just abort and complain noisily.

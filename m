@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 08:06:32 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:37345 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990514AbdCOHGZccyNH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 08:06:25 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 3F3974CEE5587;
-        Wed, 15 Mar 2017 07:06:17 +0000 (GMT)
-Received: from [10.80.2.5] (10.80.2.5) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 15 Mar
- 2017 07:06:18 +0000
-Subject: Re: [PATCH 0/2] cpu-features.h rename
-To:     Joshua Kinard <kumba@gentoo.org>,
-        Florian Fainelli <f.fainelli@gmail.com>, <ralf@linux-mips.org>
-References: <1489412018-30387-1-git-send-email-marcin.nowakowski@imgtec.com>
- <f5870aae-0974-6213-2499-bbfb365cf063@gmail.com>
- <a868cad2-a129-167b-69ad-8fb1163f4fc2@gentoo.org>
-CC:     <linux-mips@linux-mips.org>
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Message-ID: <8d824e13-3ffe-b57e-f500-e18f41c50071@imgtec.com>
-Date:   Wed, 15 Mar 2017 08:06:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 08:22:31 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:48872 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990517AbdCOHWY4LSCH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 08:22:24 +0100
+Received: from localhost (unknown [104.132.150.97])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B2205514;
+        Wed, 15 Mar 2017 07:22:17 +0000 (UTC)
+Date:   Wed, 15 Mar 2017 15:22:04 +0800
+From:   gregkh <gregkh@linuxfoundation.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "kernelci.org bot" <bot@kernelci.org>,
+        kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>
+Subject: Re: stable build: 203 builds: 4 failed, 199 passed, 5 errors, 41
+ warnings (v4.10.1)
+Message-ID: <20170315072204.GB26837@kroah.com>
+References: <58b2dc6f.cf4d2e0a.f521.74b3@mx.google.com>
+ <CAK8P3a32nbd6Wv9wCjmUX+E3gpnWkAWwKurP9dkuwyf_oegCgg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <a868cad2-a129-167b-69ad-8fb1163f4fc2@gentoo.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK8P3a32nbd6Wv9wCjmUX+E3gpnWkAWwKurP9dkuwyf_oegCgg@mail.gmail.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57277
+X-archive-position: 57278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,46 +46,118 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Joshua,
+On Tue, Feb 28, 2017 at 02:31:51PM +0100, Arnd Bergmann wrote:
+> On Sun, Feb 26, 2017 at 2:47 PM, kernelci.org bot <bot@kernelci.org> wrote:
+> > stable build: 203 builds: 4 failed, 199 passed, 5 errors, 41 warnings
+> 
+> A lot of fixes for these build problems have now landed in mainline, and
+> we could backport them as soon as they are considered stable enough.
+> If all of these make it into stable, we should have a clean build on MIPS and
+> ARM, and only the KASAN warnings remaining x86 and arm64.
+> 
+> > capcella_defconfig (mips) — PASS, 0 errors, 1 warning, 0 section mismatches
+> >
+> > Warnings:
+> > crypto/wp512.c:987:1: warning: the frame size of 1112 bytes is larger than
+> > 1024 bytes [-Wframe-larger-than=]
+> 
+> 7d6e91050267 ("crypto: improve gcc optimization flags for serpent and wp512")
+> 
+> > defconfig+CONFIG_KASAN=y (x86) — PASS, 0 errors, 5 warnings, 0 section
+> > mismatches
+> >
+> > Warnings:
+> > drivers/tty/vt/keyboard.c:1470:1: warning: the frame size of 2344 bytes is
+> > larger than 2048 bytes [-Wframe-larger-than=]
+> > net/wireless/nl80211.c:1410:1: warning: the frame size of 2232 bytes is
+> > larger than 2048 bytes [-Wframe-larger-than=]
+> > net/wireless/nl80211.c:4389:1: warning: the frame size of 2232 bytes is
+> > larger than 2048 bytes [-Wframe-larger-than=]
+> > net/wireless/nl80211.c:5689:1: warning: the frame size of 2064 bytes is
+> > larger than 2048 bytes [-Wframe-larger-than=]
+> > net/wireless/nl80211.c:1895:1: warning: the frame size of 3720 bytes is
+> > larger than 2048 bytes [-Wframe-larger-than=]
+> 
+> I'm still working on the fix, the same thing happens in mainline.
+> 
+> > Warnings:
+> > arch/mips/configs/ip22_defconfig:70:warning: symbol value 'm' invalid for
+> > NF_CT_PROTO_DCCP
+> > arch/mips/configs/ip22_defconfig:71:warning: symbol value 'm' invalid for
+> > NF_CT_PROTO_UDPLITE
+> 
+> 9ddc16ad8e0b ("MIPS: Update defconfigs for NF_CT_PROTO_DCCP/UDPLITE change")
+> 
+> > ip27_defconfig (mips) — FAIL, 4 errors, 1 warning, 0 section mismatches
+> >
+> > Errors:
+> > arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE"
+> > redefined [-Werror]
+> > arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE"
+> > redefined [-Werror]
+> 
+> 1742ac265046 ("MIPS: VDSO: avoid duplicate CAC_BASE definition")
+> 
+> > drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not
+> > satisfy its constraints:
+> > drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler
+> > error: in extract_constrain_insn, at recog.c:2190
+> > Warnings:
+> 
+> b61764946839 ("MIPS: ip27: Disable qlge driver in defconfig")
+> 
+> > arch/mips/configs/ip27_defconfig:136:warning: symbol value 'm' invalid for
+> > SCSI_DH
+> 
+> ea58fca1842a ("MIPS: Update ip27_defconfig for SCSI_DH change")
+> 
+> > ip28_defconfig (mips) — FAIL, 1 error, 0 warnings, 0 section mismatches
+> >
+> > Errors:
+> > arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed option
+> > -mr10k-cache-barrier=store. Stop.
+> 
+> 23ca9b522383 ("MIPS: ip22: Fix ip28 build for modern gcc")
+> 
+> > lemote2f_defconfig (mips) — PASS, 0 errors, 2 warnings, 0 section mismatches
+> >
+> > Warnings:
+> > arch/mips/configs/lemote2f_defconfig:42:warning: symbol value 'm' invalid
+> > for CPU_FREQ_STAT
+> 
+> b3f6046186ef ("MIPS: Update lemote2f_defconfig for CPU_FREQ_STAT change")
+> 
+> > msp71xx_defconfig (mips) — PASS, 0 errors, 1 warning, 0 section mismatches
+> >
+> > Warnings:
+> > drivers/mtd/maps/pmcmsp-flash.c:149:30: warning: passing argument 1 of
+> > 'strncpy' discards 'const' qualifier from pointer target type
+> > [-Wdiscarded-qualifiers]
+> 
+> 906b268477bc ("mtd: pmcmsp: use kstrndup instead of kmalloc+strncpy")
+> 
+> > rt305x_defconfig (mips) — PASS, 0 errors, 5 warnings, 0 section mismatches
+> >
+> > Warnings:
+> > arch/mips/ralink/prom.c:70:2: warning: 'argc' is used uninitialized in this
+> > function [-Wuninitialized]
+> > arch/mips/ralink/prom.c:70:2: warning: 'argv' is used uninitialized in this
+> > function [-Wuninitialized]
+> 
+> 9c48568b3692 ("MIPS: ralink: Cosmetic change to prom_init().")
+> 
+> > arch/mips/ralink/timer.c:104:13: warning: 'rt_timer_disable' defined but not
+> > used [-Wunused-function]
+> > arch/mips/ralink/timer.c:74:13: warning: 'rt_timer_free' defined but not
+> > used [-Wunused-function]
+> 
+> d92240d12a9c ("MIPS: ralink: Remove unused timer functions")
+> 
+> > arch/mips/ralink/rt305x.c:92:13: warning: 'rt305x_wdt_reset' defined but not
+> > used [-Wunused-function]
+> 
+> 886f9c69fc68 ("MIPS: ralink: Remove unused rt*_wdt_reset functions")
 
-On 14.03.2017 21:22, Joshua Kinard wrote:
-> On 03/13/2017 13:08, Florian Fainelli wrote:
->> On 03/13/2017 06:33 AM, Marcin Nowakowski wrote:
->>> Since the introduction of GENERIC_CPU_AUTOPROBE
->>> (https://patchwork.linux-mips.org/patch/15395/) we've got 2 very similarily
->>> named headers: cpu-features.h and cpufeature.h.
->>> Since the latter is used by all platforms that implement
->>> GENERIC_CPU_AUTOPROBE functionality, it's better to rename the MIPS-specific
->>> cpu-features.h.
->>>
->>> Marcin Nowakowski (2):
->>>   MIPS: mach-rm: Remove recursive include of cpu-feature-overrides.h
->>>   MIPS: rename cpu-features.h -> cpucaps.h
->>
->> That's a lot of churn that could cause some good headaches in
->> backporting stable changes affecting cpu-feature-overrides.h.
->>
->> Can we just do the cpu-features.h -> cpucaps.h rename and keep
->> cpu-feature-overrides.h around?
->
-> Instead of "cpucaps.h", which is somewhat short of a filename and doesn't
-> clearly convey its purpose, can we instead go with something more descriptive
-> like "cpu-capabilities.h"?  This would, however, make the overrides file have a
-> bit of a long name at "cpu-capabilities-overrides.h".
->
+All now queued up in the stable trees, thanks.
 
-There are currently a few '*caps.[ch]' files in the kernel and no file 
-named '*capabilities.[ch]'.
-
-caps and capabilities are interchangeably used in variable and type 
-declarations, so both are common and I think should be clear enough to 
-most users ...
-
-grep -RIn " .*capabilities.*" | wc -l  -> 3823
-grep -RIn " .*caps.*" | wc -l -> 11356
-
-The latter seems to be more prevailing as well (especially that 
-'capabilities' much more often appears in documentation and comments).
-
-
-Marcin
+greg k-h

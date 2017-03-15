@@ -1,35 +1,212 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 21:12:04 +0100 (CET)
-Received: from resqmta-ch2-04v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:36]:39080
-        "EHLO resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992111AbdCOUL5vZVJL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 21:11:57 +0100
-Received: from resomta-ch2-05v.sys.comcast.net ([69.252.207.101])
-        by resqmta-ch2-04v.sys.comcast.net with SMTP
-        id oFDEcI7ciE5a6oFH2cxl4b; Wed, 15 Mar 2017 20:11:56 +0000
-Received: from [192.168.1.13] ([73.201.78.97])
-        by resomta-ch2-05v.sys.comcast.net with SMTP
-        id oFH0c6THllSbroFH1cD7mm; Wed, 15 Mar 2017 20:11:56 +0000
-To:     Linux/MIPS <linux-mips@linux-mips.org>
-From:   Joshua Kinard <kumba@gentoo.org>
-Subject: ARCS can't load CONFIG_DEBUG_LOCK_ALLOC kernel
-Message-ID: <8b2d7473-ba4d-f2c9-27e7-b1a30b95c4f8@gentoo.org>
-Date:   Wed, 15 Mar 2017 16:11:42 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 22:30:58 +0100 (CET)
+Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:33121
+        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992111AbdCOVawFkzb4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 22:30:52 +0100
+Received: by mail-wr0-x241.google.com with SMTP id g10so3602132wrg.0;
+        Wed, 15 Mar 2017 14:30:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:mail-followup-to:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=1+M/lApnImxxd201Kj3J/Twbmk6raMaTIn7GKmQAQ/I=;
+        b=cvUJBdexXS4lUo8eGmr/vJO0QBXQBjia8M5cRstba8gBLzglcXb14w3ZL5BrVZkrol
+         Gsxt6qtDKUHZ2dV22CE7jkYHHXIgxwPFLDAUV8/N+KFF7k1ScNA1o2fb+/cDt2RBvj08
+         y/OgwCOMYTaFn7LiqITptz4NbT3+F4sdD2iFxJgufR7pRg0JGCKyIZrvo1C4Vvx3Eh4V
+         gO7S7bqHyBmgRCLG6wuXva3NKZgPaj/LJSh7NC0TxOWI8kKiXnOnW6uQ9HJfuJ2/dP20
+         74PWFAmFSLfbA9ZDitBfRqdA03o+0y9VlUqOQifeSdPNk2bS+GVQXr7WPyReoDzw5uw6
+         a3pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id
+         :mail-followup-to:mime-version:content-disposition:in-reply-to
+         :user-agent;
+        bh=1+M/lApnImxxd201Kj3J/Twbmk6raMaTIn7GKmQAQ/I=;
+        b=osKRJnCH2PBH6aE6rBJRuP8FCs1VEgvVgXYN9dqGUoIC1qy9lOo2zs9rEeAP5H1T7J
+         EsdUk3/uYUBiazn982ZVL6CodalDtxMLNV2RSPg6ZA2kFYvcMd01p6LBA2QEVVUGg6VY
+         HOTo/UmHex99+eu3yGzmnyiHbWG09sylyXPv4i8xtPwAnfJMH8iVGI50gOQAhoilF4kz
+         ItG/vAzWv1RF2szfrqaK/6+2Z3/WAC7dAgdQ4tV5Unpqvxz5A56roZRNb5wFt51rT7Qi
+         0kAbJN4H2MDisgSdXK7fmwwLJiE7RyR394hWq8poHi2JVwdVGmUjohr6CjM50A4/Wk2F
+         MJXw==
+X-Gm-Message-State: AFeK/H07ID9UZRG1U33VddZghSlnawtkAw6eV1pwLmKX6iaR0Xt9c80YGtxuFSaM+9kKNw==
+X-Received: by 10.223.130.144 with SMTP id 16mr5385217wrc.32.1489613446772;
+        Wed, 15 Mar 2017 14:30:46 -0700 (PDT)
+Received: from localhost (login1.zih.tu-dresden.de. [141.76.16.140])
+        by smtp.googlemail.com with ESMTPSA id k43sm3740776wrk.42.2017.03.15.14.30.44
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 15 Mar 2017 14:30:45 -0700 (PDT)
+From:   Till Smejkal <till.smejkal@googlemail.com>
+X-Google-Original-From: Till Smejkal <till.smejkal@gmail.com>
+Date:   Wed, 15 Mar 2017 14:30:43 -0700
+To:     Rich Felker <dalias@libc.org>
+Cc:     Andy Lutomirski <luto@amacapital.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Till Smejkal <till.smejkal@googlemail.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Steven Miao <realmz6@gmail.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Benjamin LaHaise <bcrl@kvack.org>,
+        Nadia Yvette Chambers <nyc@holomorphy.com>,
+        Jeff Layton <jlayton@poochiereds.net>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Hugh Dickins <hughd@google.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-alpha@vger.kernel.org,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-hexagon@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-metag@vger.kernel.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mtd@lists.infradead.org,
+        USB list <linux-usb@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        linux-aio@kvack.org, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        ALSA development <alsa-devel@alsa-project.org>
+Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
+Message-ID: <20170315213042.e5q6daqkqoam2iun@arch-dev>
+Mail-Followup-To: Rich Felker <dalias@libc.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Till Smejkal <till.smejkal@googlemail.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>, Steven Miao <realmz6@gmail.com>,
+        Richard Kuo <rkuo@codeaurora.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        X86 ML <x86@kernel.org>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Benjamin LaHaise <bcrl@kvack.org>,
+        Nadia Yvette Chambers <nyc@holomorphy.com>,
+        Jeff Layton <jlayton@poochiereds.net>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Hugh Dickins <hughd@google.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-alpha@vger.kernel.org,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-hexagon@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-metag@vger.kernel.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mtd@lists.infradead.org, USB list <linux-usb@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>, linux-aio@kvack.org,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        ALSA development <alsa-devel@alsa-project.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfOX9vOnotQ5XcN9ZZHszMTaCZnNb8tR08ri2mRoJuvF/ACQNowFosuaBndtBqUDz7w8kavl/0AJv++gkma1vdLjME8cPGJm93WkJTyvC1LcBV+3VgBrn
- nLB8o9mXVZkKA9oetseHY8lrPoZ45I0XgDNJYUkEwHKmKjmS/laj9NEB
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170315194723.GJ1693@brightrain.aerifal.cx>
+User-Agent: NeoMutt/20170306 (1.8.0)
+Return-Path: <till.smejkal@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57309
+X-archive-position: 57310
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: till.smejkal@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,98 +219,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-I've reported in the past that turning on CONFIG_DEBUG_LOCK_ALLOC produces a
-kernel that can't boot on several SGI platforms.  It turns out that using
-arcload (Stan's bootloader originally written for IP30), I can get some
-debugging out on why.  I am still puzzled, but maybe this information can be
-interpreted by someone else into something meaningful?
+On Wed, 15 Mar 2017, Rich Felker wrote:
+> On Wed, Mar 15, 2017 at 12:44:47PM -0700, Till Smejkal wrote:
+> > On Wed, 15 Mar 2017, Andy Lutomirski wrote:
+> > > > One advantage of VAS segments is that they can be globally queried by user programs
+> > > > which means that VAS segments can be shared by applications that not necessarily have
+> > > > to be related. If I am not mistaken, MAP_SHARED of pure in memory data will only work
+> > > > if the tasks that share the memory region are related (aka. have a common parent that
+> > > > initialized the shared mapping). Otherwise, the shared mapping have to be backed by a
+> > > > file.
+> > > 
+> > > What's wrong with memfd_create()?
+> > > 
+> > > > VAS segments on the other side allow sharing of pure in memory data by
+> > > > arbitrary related tasks without the need of a file. This becomes especially
+> > > > interesting if one combines VAS segments with non-volatile memory since one can keep
+> > > > data structures in the NVM and still be able to share them between multiple tasks.
+> > > 
+> > > What's wrong with regular mmap?
+> > 
+> > I never wanted to say that there is something wrong with regular mmap. We just
+> > figured that with VAS segments you could remove the need to mmap your shared data but
+> > instead can keep everything purely in memory.
+> > 
+> > Unfortunately, I am not at full speed with memfds. Is my understanding correct that
+> > if the last user of such a file descriptor closes it, the corresponding memory is
+> > freed? Accordingly, memfd cannot be used to keep data in memory while no program is
+> > currently using it, can it? To be able to do this you need again some representation
+> 
+> I have a name for application-allocated kernel resources that persist
+> without a process holding a reference to them or a node in the
+> filesystem: a bug. See: sysvipc.
 
-All addresses printed out of arcload are physical address.
+VAS segments are first class citizens of the OS similar to processes. Accordingly, I
+would not see this behavior as a bug. VAS segments are a kernel handle to
+"persistent" memory (in the sense that they are independent of the lifetime of the
+application that created them). That means the memory that is described by VAS
+segments can be reused by other applications even if the VAS segment was not used by
+any application in between. It is very much like a pure in-memory file. An
+application creates a VAS segment, fills it with content and if it does not delete it
+again, can reuse/open it again later. This also means, that if you know that you
+never want to use this memory again you have to remove it explicitly, like you have
+to remove a file, if you don't want to use it anymore.
 
-ARCS Memory Map as printed by some debugging I added to the arcload binary:
+I think it really might be better to implement VAS segments (if I should keep this
+feature at all) with a special purpose filesystem. The way I've designed it seams to
+be very misleading.
 
-0x00000000 - 0x00001000 ExceptionBlock
-0x00001000 - 0x00002000 SystemParameterBlock
-0x00002000 - 0x00004000 FirmwarePermanent
-0x20004000 - 0x20f00000 FreeMemory***
-0x20f00000 - 0x21000000 FirmwareTemporary
-0x21000000 - 0x5fff0000 FreeMemory
-0x5fff0000 - 0x5ffff000 LoadedProgram
-0x5ffff000 - 0x60000000 FreeMemory
-0x60000000 - 0xa0000000 FirmwarePermanent
-
-The ***'ed FreeMemory segment is where the kernel is supposed to load.  Here's
-the debugging for a kernel WITHOUT CONFIG_DEBUG_LOCK_ALLOC enabled (4102norm):
-
-ELF Start: 0x20004000
-Elf End  : 0x20a6fdd0
-Size     : 0x00a6bdd0 (~10MB?)
-
-# ls -l 4102norm
--rwxr-xr-x 1 root root 28M Mar 15 15:12 4102norm*
-
-
-And the debugging kernel compiled with CONFIG_DEBUG_LOCK_ALLOC=y (no other
-config changes from above):
-
-ELF Start: 0x20004000
-Elf End  : 0x2148bf80
-Size     : 0x01487f80 (~20MB?)
-
-# ls -l 4102dbg
--rwxr-xr-x 1 root root 29M Mar 15 15:21 4102dbg*
-
-
-I am only using the traditional "vmlinux" make target, so there shouldn't be
-any compression involved here.  Yet, it looks like, according to ARCS anyways,
-that CONFIG_DEBUG_LOCK_ALLOC is adding an additional 10MB of "something", yet
-the vmlinux file only grows by roughly 1MB.
-
-If I examine both kernels with readelf and dump the program headers, I can see
-these two sizes reflected under "MemSiz":
-
-# mips64-unknown-linux-gnu-readelf -l 4102norm
-
-Elf file type is EXEC (Executable file)
-Entry point 0xa800000020700450
-There are 2 program headers, starting at offset 64
-
-Program Headers:
-  Type           Offset             VirtAddr           PhysAddr
-                 FileSiz            MemSiz              Flags  Align
-  LOAD           0x0000000000004000 0xa800000020004000 0xa800000020004000
-                 0x00000000009a5030 0x0000000000a6bdd0  RWE    10000
-  NOTE           0x0000000000714bb0 0xa800000020714bb0 0xa800000020714bb0
-                 0x0000000000000024 0x0000000000000024  R      4
-
-# mips64-unknown-linux-gnu-readelf -l 4102dbg
-
-Elf file type is EXEC (Executable file)
-Entry point 0xa800000020749c80
-There are 2 program headers, starting at offset 64
-
-Program Headers:
-  Type           Offset             VirtAddr           PhysAddr
-                 FileSiz            MemSiz              Flags  Align
-  LOAD           0x0000000000004000 0xa800000020004000 0xa800000020004000
-                 0x0000000000a05850 0x0000000001487f80  RWE    10000
-  NOTE           0x000000000075e330 0xa80000002075e330 0xa80000002075e330
-                 0x0000000000000024 0x0000000000000024  R      4
-
-
-So I'm not quite certain why ARCS or arcload dislike kernels with
-CONFIG_DEBUG_LOCK_ALLOC=y.  This issue is known about on at least IP27 and IP30
-platforms for the past few years, and it's been quite a hindrance in doing any
-debugging of locks.
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
-
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Till

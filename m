@@ -1,65 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 14:15:35 +0100 (CET)
-Received: from mail-ot0-x241.google.com ([IPv6:2607:f8b0:4003:c0f::241]:36793
-        "EHLO mail-ot0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990514AbdCONP2zyjZn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 14:15:28 +0100
-Received: by mail-ot0-x241.google.com with SMTP id i1so2585066ota.3;
-        Wed, 15 Mar 2017 06:15:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=ekR+iZzCwGZhj0iNd0SWlun9z5HZ+6ehN1S+8WV7QfI=;
-        b=AicWjpnvA/1CmVUTBk0C3RK+sr+WLBYdhoQObjqPaDdwg32mPKYIGpFSkP8Q/ttI+a
-         2HwxEgSxFunr+jWyReRXyQgublgSSsseMxu2fvzzh71xgZbcxNCOYoYusrOkNea6Bmox
-         vPAWB8iWE3J6jSccJ06dr4n08tS3W+AFzGFy55QYNLUjeUW7uv5PDjS/3R/iaYSpMfLR
-         Nlxo2DmOYZTjmsFQA7VhfVlEcCMt9ZJsL1abgJOzNz7CKhe1EyCjNnWj5FlNcXgHltup
-         uKQkol2bSUgV2DJyZGBeQ5YWGlLgzan14I6LLrEkUZ7ekaLzIruX6b8InmP3g4ec2N80
-         tgTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=ekR+iZzCwGZhj0iNd0SWlun9z5HZ+6ehN1S+8WV7QfI=;
-        b=OkO5wedWbc616JRdBTi4uEjQq3JnX15Rdhatxzqt4QOXKTiFiJKf0nQzJh4WlHfdX9
-         /NOM6/1Wk3CHKXdwJjUIBxbUIIn6J+qfBINzLhs4W1nfoy4iM52RX7G5+eY4mIhEVR67
-         PbutI8c9Me2HXjmP6FcFeqaARaahaxv/9pFpBr3nIa5EFc7bxMKbbekaeL5Lct86ygMT
-         jy0scMtQi1GjNOWpymuZIVSSI4ya2zr7XqEVk+7JQtZOhtYprBpkRnTc+Cm8pC4PG/4b
-         NejU1c8as56B5zfDyVImJr4AR31r8tZiN564wjqf/Gl+2BbKmIzaWKXteNzpHNKdJouR
-         2ajQ==
-X-Gm-Message-State: AFeK/H3oophC+Qmdj6UXoI1zIY8V881fheuN7Nt8LP5IyQloCU7N9OzoBUE/lIVFTH4PvW2x+yUiXjvD3721sA==
-X-Received: by 10.157.1.171 with SMTP id e40mr1944491ote.41.1489583723131;
- Wed, 15 Mar 2017 06:15:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 16:27:58 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:39160 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991867AbdCOP1uhziTV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Mar 2017 16:27:50 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2FDYlj5007671;
+        Wed, 15 Mar 2017 14:34:47 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2FDYlqI007670;
+        Wed, 15 Mar 2017 14:34:47 +0100
+Date:   Wed, 15 Mar 2017 14:34:46 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <david.daney@cavium.com>
+Cc:     linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
+        linux-kernel@vger.kernel.org, Alex Belits <alex.belits@cavium.com>
+Subject: Re: [PATCH] MIPS: Add 48-bit VA space (and 4-level page tables) for
+ 4K pages.
+Message-ID: <20170315133446.GD5512@linux-mips.org>
+References: <20170217012734.19256-1-david.daney@cavium.com>
 MIME-Version: 1.0
-Received: by 10.157.6.42 with HTTP; Wed, 15 Mar 2017 06:15:22 -0700 (PDT)
-In-Reply-To: <20170315072204.GB26837@kroah.com>
-References: <58b2dc6f.cf4d2e0a.f521.74b3@mx.google.com> <CAK8P3a32nbd6Wv9wCjmUX+E3gpnWkAWwKurP9dkuwyf_oegCgg@mail.gmail.com>
- <20170315072204.GB26837@kroah.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 15 Mar 2017 14:15:22 +0100
-X-Google-Sender-Auth: PCqiucIeXmh9jeZnF4AaY0kcovM
-Message-ID: <CAK8P3a2hmA_f8YZKB=fqpcmeP0wRaq9aEORhVF1kLUWtd0nx6Q@mail.gmail.com>
-Subject: Re: stable build: 203 builds: 4 failed, 199 passed, 5 errors, 41
- warnings (v4.10.1)
-To:     gregkh <gregkh@linuxfoundation.org>
-Cc:     "kernelci.org bot" <bot@kernelci.org>,
-        kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170217012734.19256-1-david.daney@cavium.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57291
+X-archive-position: 57292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,33 +44,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Mar 15, 2017 at 8:22 AM, gregkh <gregkh@linuxfoundation.org> wrote:
->
-> All now queued up in the stable trees, thanks.
+On Thu, Feb 16, 2017 at 05:27:34PM -0800, David Daney wrote:
 
-Like 4.9.y it builds clean except for a couple of stack frame size warnings
-and this one that continues to puzzle me.
+> From: Alex Belits <alex.belits@cavium.com>
+> 
+> Some users must have 4K pages while needing a 48-bit VA space size.
+> The cleanest way do do this is to go to a 4-level page table for this
+> case.  Each page table level using order-0 pages adds 9 bits to the
+> VA size (at 4K pages, so for four levels we get 9 * 4 + 12 == 48-bits.
+> 
+> For the 4K page size case only we add support functions for the PUD
+> level of the page table tree, also the TLB exception handlers get an
+> extra level of tree walk.
+> 
+> Signed-off-by: Alex Belits <alex.belits@cavium.com>
+> [david.daney@cavium.com] Forward port to v4.10
+> Signed-off-by: David Daney <david.daney@cavium.com>
 
-/bin/sh: 1: /home/buildslave/workspace/kernel-builder/arch/x86/defconfig/allmodconfig+CONFIG_OF=n/label/builder/next/build-x86/tools/objtool//fixdep:
-Permission denied
+Thanks folks, queued for 4.12.
 
-https://storage.kernelci.org/next/next-20170309/x86-allmodconfig+CONFIG_OF=n/build.log
+While the need for 48-bit address space is not so surprising, the need
+for the combination of 4K pages and 48-bit address space is!
 
-The same warning is referenced in this email:
-http://lkml.iu.edu/hypermail/linux/kernel/1612.0/04384.html
+I had some minor merge conflicts so it would be good if you could take
+a look if https://git.linux-mips.org/cgit/ralf/upstream-sfr.git/commit/?id=afba1896993a0b74aa2ad3076d594e455b3af301
+looks good.
 
-but I can't figure out what patch is supposed to address it, or if that
-patch made it into mainline.
-
-Curiously, only allmodconfig+CONFIG_OF=n seems to be broken, not
-plain allmodconfig, maybe this could be related to rebuilding in the same
-object tree without "make clean". Also, all recent kernels (since December)
-until next-20170309 seem to be affected, but it does not show up on
-the latest linux-next (next-20170310). I don't seen anything in next-20170310
-that could have addressed it, so it may also be a coincidence that we don't
-hit a certain race condition during build this time.
-
-Adding Ingo, Arnaldo and Stephen to Cc, maybe they know what is going
-on here.
-
-      Arnd
+  Ralf

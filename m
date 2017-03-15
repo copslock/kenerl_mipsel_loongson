@@ -1,60 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 13:44:21 +0100 (CET)
-Received: from mail-ot0-x22b.google.com ([IPv6:2607:f8b0:4003:c0f::22b]:32876
-        "EHLO mail-ot0-x22b.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991867AbdCOMoOrkL-n convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Mar 2017 13:44:14 +0100
-Received: by mail-ot0-x22b.google.com with SMTP id 19so16863778oti.0;
-        Wed, 15 Mar 2017 05:44:14 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 14:15:35 +0100 (CET)
+Received: from mail-ot0-x241.google.com ([IPv6:2607:f8b0:4003:c0f::241]:36793
+        "EHLO mail-ot0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990514AbdCONP2zyjZn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 14:15:28 +0100
+Received: by mail-ot0-x241.google.com with SMTP id i1so2585066ota.3;
+        Wed, 15 Mar 2017 06:15:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=loDDV3IVQ6mkO+CfdItbdK5z702yjO9e2rcfOihlA0w=;
-        b=bAAmR9T/ueMh0KP0SGDeUuruPOVQMBUXZAhw7sQf0LbIeny4ZP2w6Q6TA8PwsuSzm5
-         1OWIFWMxoU5qj/1zR13KxJYsoX+43NA7TQ+XKgbIfcjrJh+eAEkfzLZH5+5hDUCSmWL3
-         lNhNMmJ601j6rhVni0y005Xw0AuYRdi0Buaao8edYCODDkdaDV/zTq/60CtG4Nom2H7N
-         GzudGzNTfHPNQM4m0M6WWDXT3+PgSyseUlVVtCY7RLZxLrjNzuMn8U06QOraQ6/CVJI4
-         Wjgzc/EqjQleI0nlxtXLR0Y34hCHMgYzlr2e9y61RC0DD1L2+co1MvCCN2gmfNyVZ3N4
-         HbJA==
+         :subject:to:cc;
+        bh=ekR+iZzCwGZhj0iNd0SWlun9z5HZ+6ehN1S+8WV7QfI=;
+        b=AicWjpnvA/1CmVUTBk0C3RK+sr+WLBYdhoQObjqPaDdwg32mPKYIGpFSkP8Q/ttI+a
+         2HwxEgSxFunr+jWyReRXyQgublgSSsseMxu2fvzzh71xgZbcxNCOYoYusrOkNea6Bmox
+         vPAWB8iWE3J6jSccJ06dr4n08tS3W+AFzGFy55QYNLUjeUW7uv5PDjS/3R/iaYSpMfLR
+         Nlxo2DmOYZTjmsFQA7VhfVlEcCMt9ZJsL1abgJOzNz7CKhe1EyCjNnWj5FlNcXgHltup
+         uKQkol2bSUgV2DJyZGBeQ5YWGlLgzan14I6LLrEkUZ7ekaLzIruX6b8InmP3g4ec2N80
+         tgTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=loDDV3IVQ6mkO+CfdItbdK5z702yjO9e2rcfOihlA0w=;
-        b=PZ0vf68WAenjImosnULmb9+pTrQCOapAS8yv4rVsMRLZSlEuCl+kY62dO1xaWeSmo4
-         J2WkA2lo8N2RdvAS78zhoKlE5gasMgbxKLRkBFl9mIIS2DTC34Y454cr1iX8Pu2Gozbj
-         x5+5PqAG0ky1nWCU8TXjC9g5HvbmtesrrHd46yBOr9bxdif49NfL9yh7W55bo8s+0fS8
-         YqljUVWX9cP8UahmEguP7yD0qQvgIQDJ3DySlTwFzTFCuSD180ehTExwYSzUVyMik5i7
-         BivTGNXAFEuB3ih7Nl3nmbE7m2MnYvxblGx4fijPVp4Dl+It/PDEs/FeCSTmelq3ljI1
-         flYQ==
-X-Gm-Message-State: AFeK/H2yFIk0w52Gkge78zpAQ8AqxD8GPr/F0AfXGBxUls3E+dzSIwrj/vODMn93phw/0v2sXdGU13lbQUVy+A==
-X-Received: by 10.202.228.17 with SMTP id b17mr1609569oih.212.1489581849086;
- Wed, 15 Mar 2017 05:44:09 -0700 (PDT)
+         :date:message-id:subject:to:cc;
+        bh=ekR+iZzCwGZhj0iNd0SWlun9z5HZ+6ehN1S+8WV7QfI=;
+        b=OkO5wedWbc616JRdBTi4uEjQq3JnX15Rdhatxzqt4QOXKTiFiJKf0nQzJh4WlHfdX9
+         /NOM6/1Wk3CHKXdwJjUIBxbUIIn6J+qfBINzLhs4W1nfoy4iM52RX7G5+eY4mIhEVR67
+         PbutI8c9Me2HXjmP6FcFeqaARaahaxv/9pFpBr3nIa5EFc7bxMKbbekaeL5Lct86ygMT
+         jy0scMtQi1GjNOWpymuZIVSSI4ya2zr7XqEVk+7JQtZOhtYprBpkRnTc+Cm8pC4PG/4b
+         NejU1c8as56B5zfDyVImJr4AR31r8tZiN564wjqf/Gl+2BbKmIzaWKXteNzpHNKdJouR
+         2ajQ==
+X-Gm-Message-State: AFeK/H3oophC+Qmdj6UXoI1zIY8V881fheuN7Nt8LP5IyQloCU7N9OzoBUE/lIVFTH4PvW2x+yUiXjvD3721sA==
+X-Received: by 10.157.1.171 with SMTP id e40mr1944491ote.41.1489583723131;
+ Wed, 15 Mar 2017 06:15:23 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.157.6.42 with HTTP; Wed, 15 Mar 2017 05:44:08 -0700 (PDT)
-In-Reply-To: <20170315072213.GC26837@kroah.com>
-References: <58b2dd95.18532e0a.7645f.aec1@mx.google.com> <CAK8P3a2nhoxgCT3467=+CLe9zeWqJa1oKFtcPoCut-1z5jacqw@mail.gmail.com>
- <20170315072213.GC26837@kroah.com>
+Received: by 10.157.6.42 with HTTP; Wed, 15 Mar 2017 06:15:22 -0700 (PDT)
+In-Reply-To: <20170315072204.GB26837@kroah.com>
+References: <58b2dc6f.cf4d2e0a.f521.74b3@mx.google.com> <CAK8P3a32nbd6Wv9wCjmUX+E3gpnWkAWwKurP9dkuwyf_oegCgg@mail.gmail.com>
+ <20170315072204.GB26837@kroah.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 15 Mar 2017 13:44:08 +0100
-X-Google-Sender-Auth: kkTY6rz6KUlktPwZfR6k8COky3Y
-Message-ID: <CAK8P3a3T6y=JiutqCm16eD-48Eh1itzfZCbQxwmFL=a44s7YPA@mail.gmail.com>
-Subject: Re: stable build: 203 builds: 3 failed, 200 passed, 5 errors, 28
- warnings (v4.9.13)
+Date:   Wed, 15 Mar 2017 14:15:22 +0100
+X-Google-Sender-Auth: PCqiucIeXmh9jeZnF4AaY0kcovM
+Message-ID: <CAK8P3a2hmA_f8YZKB=fqpcmeP0wRaq9aEORhVF1kLUWtd0nx6Q@mail.gmail.com>
+Subject: Re: stable build: 203 builds: 4 failed, 199 passed, 5 errors, 41
+ warnings (v4.10.1)
 To:     gregkh <gregkh@linuxfoundation.org>
-Cc:     kernel-build-reports@lists.linaro.org,
-        "kernelci.org bot" <bot@kernelci.org>, stable@vger.kernel.org,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+Cc:     "kernelci.org bot" <bot@kernelci.org>,
+        kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
 Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57290
+X-archive-position: 57291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,33 +73,32 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 On Wed, Mar 15, 2017 at 8:22 AM, gregkh <gregkh@linuxfoundation.org> wrote:
-> On Tue, Feb 28, 2017 at 02:50:03PM +0100, Arnd Bergmann wrote:
->> On Sun, Feb 26, 2017 at 2:52 PM, kernelci.org bot <bot@kernelci.org> wrote:
->> >
->> > stable build: 203 builds: 3 failed, 200 passed, 5 errors, 28 warnings (v4.9.13)
->>
->> Only one warning that doesn't also show up in v4.10-stable
->>
->> > bcm63xx_defconfig (mips) — PASS, 0 errors, 1 warning, 0 section mismatches
->> >
->> > Warnings:
->> > drivers/net/ethernet/broadcom/bcm63xx_enet.c:1130:3: warning: 'phydev' may be used uninitialized in this function [-Wmaybe-uninitialized]
->>
->> df384d435a5c ("bcm63xx_enet: avoid uninitialized variable warning")
 >
-> Also added, thanks.
+> All now queued up in the stable trees, thanks.
 
-The build is clean now except for these warnings I'm still working on:
+Like 4.9.y it builds clean except for a couple of stack frame size warnings
+and this one that continues to puzzle me.
 
-1 net/wireless/nl80211.c:5647:1: warning: the frame size of 2064 bytes
-is larger than 2048 bytes [-Wframe-larger-than=]
-1 net/wireless/nl80211.c:4362:1: warning: the frame size of 2232 bytes
-is larger than 2048 bytes [-Wframe-larger-than=]
-1 net/wireless/nl80211.c:1879:1: warning: the frame size of 5704 bytes
-is larger than 2048 bytes [-Wframe-larger-than=]
-1 drivers/tty/vt/keyboard.c:1470:1: warning: the frame size of 2344
-bytes is larger than 2048 bytes [-Wframe-larger-than=]
+/bin/sh: 1: /home/buildslave/workspace/kernel-builder/arch/x86/defconfig/allmodconfig+CONFIG_OF=n/label/builder/next/build-x86/tools/objtool//fixdep:
+Permission denied
 
-Thanks!
+https://storage.kernelci.org/next/next-20170309/x86-allmodconfig+CONFIG_OF=n/build.log
+
+The same warning is referenced in this email:
+http://lkml.iu.edu/hypermail/linux/kernel/1612.0/04384.html
+
+but I can't figure out what patch is supposed to address it, or if that
+patch made it into mainline.
+
+Curiously, only allmodconfig+CONFIG_OF=n seems to be broken, not
+plain allmodconfig, maybe this could be related to rebuilding in the same
+object tree without "make clean". Also, all recent kernels (since December)
+until next-20170309 seem to be affected, but it does not show up on
+the latest linux-next (next-20170310). I don't seen anything in next-20170310
+that could have addressed it, so it may also be a coincidence that we don't
+hit a certain race condition during build this time.
+
+Adding Ingo, Arnaldo and Stephen to Cc, maybe they know what is going
+on here.
 
       Arnd

@@ -1,61 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 10:04:26 +0100 (CET)
-Received: from mail-lf0-x233.google.com ([IPv6:2a00:1450:4010:c07::233]:36027
-        "EHLO mail-lf0-x233.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990514AbdCOJESSaxGy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 10:04:18 +0100
-Received: by mail-lf0-x233.google.com with SMTP id y193so4069399lfd.3
-        for <linux-mips@linux-mips.org>; Wed, 15 Mar 2017 02:04:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 10:33:54 +0100 (CET)
+Received: from mail-io0-x234.google.com ([IPv6:2607:f8b0:4001:c06::234]:34433
+        "EHLO mail-io0-x234.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991932AbdCOJdqD8CvG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 10:33:46 +0100
+Received: by mail-io0-x234.google.com with SMTP id b140so16307911iof.1
+        for <linux-mips@linux-mips.org>; Wed, 15 Mar 2017 02:33:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=FW2o8K6fXXPrg3a1JaBQMaT2gpKhtVDvBiYZ/D/asuI=;
-        b=SWto5+XUs3VzazoEeBAlLjiJcdd7VsdbYzBXjarsDCbUGh3ss3NoQsT4vvyczFKEYf
-         WRxv8BoaBdE5H9ZlePwjNHdlTLGHYKaFJ6ScThLqp+gZjL5Krvr7raEphPUskcfVEAJH
-         fjqTEF7SRI0Bzjkxe0hGas+fsTKZ7cH9SK9T4f9/mM5KUHphlOBahxVROd1iucmcg3xa
-         li0Li3avOjZyoaeUtwSXa+GR0nPLIIe3fp/0psCArpIoeb4OwZs43lrKrm8Tr7oNqC+B
-         aD91N6pR37O9vvsNOgnXkkh7iEZoFi/V6zkTXcPAKvChMtkddaYNsLiwsQZVPqHgrZe7
-         qA+A==
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=9XteiJQvqeJu5SZ/dDrM03UOL9JAY1aRxrlM7kn9v9c=;
+        b=LuPo4lLFWjvvqhpj8KemJslZxD6QfHYzS7Ziv3EJzN1vyzxYPt/v+QyI5Ee50F/c8e
+         ay66TbqUrMVT49ZiFyD5ym+mZJ0ew2boW7vEriP2Huq7f2HymzwZepNYnKZO6aJ/INTv
+         jni334JnftC760mF9IKdWk38ORr5ghX8GQHkA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=FW2o8K6fXXPrg3a1JaBQMaT2gpKhtVDvBiYZ/D/asuI=;
-        b=lkTOGiBpoJMV4c4EpSk0BXrFJ69EcR5C5yJ6gzlkXHZryB1KdWe/b+Gj9t8138R35L
-         C6R+DVKbl+6X+rc0hWsvUntdbTJQyYjEjjQt7uvFlpL1T0wNCgzbkQ7mYwc10/duuXag
-         k0o8HCIV1GBTolVWYl4FfB/NJ9Pg+Z8Kb1eFCIrf5nLZ3N0wpLFUdhpYctIUKGaJaYf0
-         kEyxNb9K+Y6TNtJVlNzYDB74FbzQg75/k6bLBZ7tnrXfz4r9HCLw0i8JAGJUDcYyHy/a
-         fbVksEK3lI69D6KiCXy1plo8DSd0iZZBrdvM0URRbe2oIenFELbxS0+Q5AKS2iD3eke9
-         vaIA==
-X-Gm-Message-State: AFeK/H07FSHLzyR6JfLHrpvIBQAZTwnCEcOaxIp+sO/git2rOv98p75c1XJNJaOUSYhprg==
-X-Received: by 10.46.77.149 with SMTP id c21mr490176ljd.80.1489568652773;
-        Wed, 15 Mar 2017 02:04:12 -0700 (PDT)
-Received: from [192.168.4.126] ([31.173.87.59])
-        by smtp.gmail.com with ESMTPSA id q71sm221968lfe.40.2017.03.15.02.04.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 15 Mar 2017 02:04:12 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: PCI: scan PCI controllers in reverse order
-To:     Mathias Kresin <dev@kresin.me>, ralf@linux-mips.org
-References: <1489565039-2621-1-git-send-email-dev@kresin.me>
-Cc:     linux-mips@linux-mips.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <a676692b-5bca-7d3a-0360-f4cb99dc6676@cogentembedded.com>
-Date:   Wed, 15 Mar 2017 12:04:11 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=9XteiJQvqeJu5SZ/dDrM03UOL9JAY1aRxrlM7kn9v9c=;
+        b=o9kBo7MWDJK7I3+Xeae6a7AD4k+GZ2RKjOhSF/EK/kwWhx2BNWuMZTRDxjxTOlEBgt
+         n/4MzM5k0PgHB/ITaOTrRhjiO45gQLAlRsk5u10Sq18/ZAdPJda2Qp/4dsfjECyBaDas
+         GtHW2+65/V39Z7B88Gd6IuJr+5ikwfZv2dSzhzyZi9CXhxJPp8OLelyTjFZha5H/qB4D
+         ffWC9ec27qqE+n1xdRJJxhkYsTHgsJpSf4e/voWKyKxvmloE6XZvYu6iFxe9LP9u3TCI
+         PX5xhL88du/sPwapEbQVrxmPs9fkT3qneSdIyojbjRHIUAZUlvoSmB2pL9IqbCS95FS3
+         p62Q==
+X-Gm-Message-State: AFeK/H3yUyeLrdSTHU09TBpfqeiQVv4mJLR7vTkRcAVIgJsgxUSUo9uFOP3RxdYT5lzPMPFqI5xAkxRjOFM56Af1
+X-Received: by 10.107.20.193 with SMTP id 184mr3895256iou.61.1489570420267;
+ Wed, 15 Mar 2017 02:33:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1489565039-2621-1-git-send-email-dev@kresin.me>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Received: by 10.79.134.193 with HTTP; Wed, 15 Mar 2017 02:33:39 -0700 (PDT)
+In-Reply-To: <1488830761-681-2-git-send-email-nathan.sullivan@ni.com>
+References: <1488830761-681-1-git-send-email-nathan.sullivan@ni.com> <1488830761-681-2-git-send-email-nathan.sullivan@ni.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 15 Mar 2017 10:33:39 +0100
+Message-ID: <CACRpkdZm1B=ohBp4eOh8j++SWUwa9dU0-PErdj3P0u-+kvrYzg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] gpio: mmio: add support for NI 169445 NAND GPIO
+To:     Nathan Sullivan <nathan.sullivan@ni.com>
+Cc:     Alexandre Courbot <gnurou@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57283
+X-archive-position: 57284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,28 +66,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
+On Mon, Mar 6, 2017 at 9:06 PM, Nathan Sullivan <nathan.sullivan@ni.com> wrote:
 
-On 3/15/2017 11:03 AM, Mathias Kresin wrote:
-
-> Commit 23dac14d05 "MIPS: PCI: Use struct list_head lists" changed the
-
-    Need 12 digits and () around "<summary>".
-
-> controller list from reverse to straight order without taking care of
-> the changed order for the scan of the recorded PCI controllers.
+> The GPIO-based NAND controller on National Instruments 169445 hardware
+> exposes a set of simple lines for the control signals.
 >
-> Traverse the list in reverse order to restore the former behaviour.
->
-> This patches fixes the following PCI error on lantiq:
->
->   pci 0000:01:00.0: BAR 0: error updating (0x1c000004 != 0x000000)
->
-> Fixes: 23dac14d05 ("MIPS: PCI: Use struct list_head lists")
+> Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
 
-    Need 12 digits.
+Totally standard ans simple patch, applied.
 
-> Signed-off-by: Mathias Kresin <dev@kresin.me>
-[...]
+Hint: it's probably nice to use the gpio-line-names attribute
+on these boards to name the lines.
 
-MBR, Sergei
+Yours,
+Linus Walleij

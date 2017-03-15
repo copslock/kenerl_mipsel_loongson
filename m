@@ -1,43 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 08:24:25 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:45761 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992028AbdCOHYSrHuJF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 08:24:18 +0100
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 2BE8BB13655EB;
-        Wed, 15 Mar 2017 07:24:10 +0000 (GMT)
-Received: from [10.80.2.5] (10.80.2.5) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 15 Mar
- 2017 07:24:11 +0000
-Subject: Re: [PATCH 0/2] cpu-features.h rename
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <1489412018-30387-1-git-send-email-marcin.nowakowski@imgtec.com>
- <f5870aae-0974-6213-2499-bbfb365cf063@gmail.com>
- <be773311-fb5b-949e-378e-09db2baa8cd4@imgtec.com>
- <20170314082906.GG26432@linux-mips.org>
- <d1b970e6-f87e-3e35-7c74-7fc0a6a4c0f2@imgtec.com>
- <80d2de6c-2196-5851-ebd6-308be40ea78f@gmail.com>
-CC:     <linux-mips@linux-mips.org>
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Message-ID: <bf7bb5eb-abeb-7ac5-3610-2a9ce6ad3f66@imgtec.com>
-Date:   Wed, 15 Mar 2017 08:24:11 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
-MIME-Version: 1.0
-In-Reply-To: <80d2de6c-2196-5851-ebd6-308be40ea78f@gmail.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 09:04:28 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:33716
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990514AbdCOIEVw2E6O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 09:04:21 +0100
+Received: by mail-wm0-x241.google.com with SMTP id n11so3320464wma.0
+        for <linux-mips@linux-mips.org>; Wed, 15 Mar 2017 01:04:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kresin-me.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=0nk75GQJSM75wt18IVUhUYxorsj+Tn69CURqQ0HRdto=;
+        b=hkEgATP2pxLTo8dVpbSx9SR7r+7doXhMxf2+BLk+y27G8UgN4Uv0s8zHh2K0trlgxz
+         g5Z5AQzdL+bO3fk7nP+bcsaVQQX9OVDWtJ0PaJ990mibQkbHH+T0X06ThKGJL+6hiOnD
+         9JnugeLMo/8FFQdCqdegt+zkCAsg2CIEDq2G5RjOhFhaA4teWFl9i296iTiMnYB2IFoY
+         hX1NxhkJdCgujaZAFyMh+YsNBR3cMdfu9D8JFF+vh/jyWPCm6jEOJ2XTCZzy8Fw+7DY5
+         dJoDgBViif4NgCCyRmJiBcnD9IiGvPekflagHd7fCJq60aR7h7Gm6bjKtDelf3KeQRA+
+         tOYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=0nk75GQJSM75wt18IVUhUYxorsj+Tn69CURqQ0HRdto=;
+        b=sm1gvWwQ0Aex/V+cknfYuYw7+Y6jx+6Nkwdm9xrSh2RxY/7KXtnCBjWggf66rvMgbj
+         7sKfeMnkd3VtjGHXP8ye1cxvr1fsMauDhjAjSziYzKSH1d3LPV7NvLuKdjnxR5kErR4N
+         VnuGySS1Coj5RZrY+sBOGBurHKQV1CjTf+Vz/gtuZO9rhsShftvGmSlj4liAtYpD1Qix
+         DJY6vFitvmncncQisCxBy2uDoamfVSdIdCd5h6W17gy94aUy4rQDgmJHA+WPOHXl+Q77
+         eidQS29ZgJlwExXD2tV5zteblQsrmFppsGsBZ/aWZT0d2Mxha5X4XkbsM7bRpvQh3UOo
+         nIZw==
+X-Gm-Message-State: AFeK/H2qCZNPp5lbefN7uk3CD0MwKhgXVXxi3WyLZQTKW6IzZJixcHZe/KTu0jOHzYOLXg==
+X-Received: by 10.28.35.151 with SMTP id j145mr17963629wmj.50.1489565056484;
+        Wed, 15 Mar 2017 01:04:16 -0700 (PDT)
+Received: from desktop.wvd.kresin.me (p2003008C2F134E007425DF58C90881F4.dip0.t-ipconnect.de. [2003:8c:2f13:4e00:7425:df58:c908:81f4])
+        by smtp.gmail.com with ESMTPSA id r8sm1336082wrb.33.2017.03.15.01.04.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 15 Mar 2017 01:04:16 -0700 (PDT)
+From:   Mathias Kresin <dev@kresin.me>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: PCI: scan PCI controllers in reverse order
+Date:   Wed, 15 Mar 2017 09:03:59 +0100
+Message-Id: <1489565039-2621-1-git-send-email-dev@kresin.me>
+X-Mailer: git-send-email 2.7.4
+Return-Path: <dev@kresin.me>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57281
+X-archive-position: 57282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: dev@kresin.me
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,99 +60,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Florian,
+Commit 23dac14d05 "MIPS: PCI: Use struct list_head lists" changed the
+controller list from reverse to straight order without taking care of
+the changed order for the scan of the recorded PCI controllers.
 
-On 15.03.2017 03:04, Florian Fainelli wrote:
->
->
-> On 03/14/2017 01:45 AM, Marcin Nowakowski wrote:
->> Hi Ralf,
->>
->> On 14.03.2017 09:29, Ralf Baechle wrote:
->>> On Tue, Mar 14, 2017 at 08:40:21AM +0100, Marcin Nowakowski wrote:
->>>
->>>> On 13.03.2017 18:08, Florian Fainelli wrote:
->>>>> On 03/13/2017 06:33 AM, Marcin Nowakowski wrote:
->>>>>> Since the introduction of GENERIC_CPU_AUTOPROBE
->>>>>> (https://patchwork.linux-mips.org/patch/15395/) we've got 2 very
->>>>>> similarily
->>>>>> named headers: cpu-features.h and cpufeature.h.
->>>>>> Since the latter is used by all platforms that implement
->>>>>> GENERIC_CPU_AUTOPROBE functionality, it's better to rename the
->>>>>> MIPS-specific
->>>>>> cpu-features.h.
->>>>>>
->>>>>> Marcin Nowakowski (2):
->>>>>>   MIPS: mach-rm: Remove recursive include of cpu-feature-overrides.h
->>>>>>   MIPS: rename cpu-features.h -> cpucaps.h
->>>>>
->>>>> That's a lot of churn that could cause some good headaches in
->>>>> backporting stable changes affecting cpu-feature-overrides.h.
->>>>>
->>>>> Can we just do the cpu-features.h -> cpucaps.h rename and keep
->>>>> cpu-feature-overrides.h around?
->>>>
->>>> That's of course possible, but I think it would make the naming quite
->>>> confusing as well, as it would be very unclear for any reader as to
->>>> why a
->>>> 'cpu-feature-overrides' overrides 'cpucaps'.
->>>>
->>>> I've looked at the change history of these files and most receive very
->>>> little updates (which is hardly surprising given the changes are done
->>>> mostly
->>>> during initial integration of a new cpu or soon after), and none of the
->>>> changes in those files were marked for stable. I think it's safe to
->>>> assume
->>>> that this pattern is not likely to change, would you agree?
->>>
->>> I've noticed the same pattern - and it's a little concerning.  Not adding
->>> values for later features means the'll probably be runtime detected
->>> resulting in a bigger, slower kernel.
->>
->> But that is a type of optimisation that may (should?) be done when new
->> features are added, which in most cases doesn't make it a candidate for
->> backporting to stable.
->
-> You may be fixing actual bugs by patching this file, e.g: selecting the
-> correct value for e.g: cpu_has_dc_aliases, cpu_has_ic_fills_ic,
-> cpu_dcache_line_size() and so on. Ideally every feature in there has
-> been properly set/cleared in arch/mips/kernel/cpu-probe.c but there
-> could be platform relying exclusively on cpu-feature-overrides.h to
-> provide the correct value.
+Traverse the list in reverse order to restore the former behaviour.
 
-Yes, of course that is possible and I'm not dismissing that fact.
-I've only stated that looking at the git history of these files (which 
-dates back to 2008 when they were moved from a different location), 
-there have been only a few changes to them and most of the changes were 
-not bugfixes for specific cores but general code changes applied 
-throughout the tree.
-So in an unlikely case that a bug is discovered that will be fixed by 
-updating a specific cpu(caps|feature)-override.h, there would be a 
-slightly increased effort required to backport the patch due to a 
-filename difference, but IMO that's hardly a reason to prevent any 
-changes and to keep the filenames inconsistent?
-It's not like I'm changing the whole logic behind cpu_has functionality ...
+This patches fixes the following PCI error on lantiq:
 
+  pci 0000:01:00.0: BAR 0: error updating (0x1c000004 != 0x000000)
 
-> If not about the backport argument, just changing that many files at
-> once (have they actually been build tested at least?)
+Fixes: 23dac14d05 ("MIPS: PCI: Use struct list_head lists")
+Signed-off-by: Mathias Kresin <dev@kresin.me>
+---
+ arch/mips/pci/pci-legacy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I have build-tested this with some defconfigs affected.
-
-> just does not seem
-> practical nor worth it to me.
-
-I think having a sensible file naming scheme is worth the change and 
-you seem to see this change as a much bigger one than I do. From my 
-perspective this change is a really trivial one.
-
-
-> Just put a big fat disclaimer: this is not
-> to be conflated with cpucaps.h (and vice versa).
-
-But I'm not in any way changing the behaviour or meaning of these files. 
-They are exactly as they have been for the past 10 (or more) years ... 
-it's just a change of name.
-
-
-Marcin
+diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
+index 014649b..76a7ccc 100644
+--- a/arch/mips/pci/pci-legacy.c
++++ b/arch/mips/pci/pci-legacy.c
+@@ -222,7 +222,7 @@ static int __init pcibios_init(void)
+ 	struct pci_controller *hose;
+ 
+ 	/* Scan all of the recorded PCI controllers.  */
+-	list_for_each_entry(hose, &controllers, list)
++	list_for_each_entry_reverse(hose, &controllers, list)
+ 		pcibios_scanbus(hose);
+ 
+ 	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
+-- 
+2.7.4

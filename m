@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 22:30:58 +0100 (CET)
-Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:33121
-        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992111AbdCOVawFkzb4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 22:30:52 +0100
-Received: by mail-wr0-x241.google.com with SMTP id g10so3602132wrg.0;
-        Wed, 15 Mar 2017 14:30:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 23:02:51 +0100 (CET)
+Received: from mail-wr0-x243.google.com ([IPv6:2a00:1450:400c:c0c::243]:33950
+        "EHLO mail-wr0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992111AbdCOWCopGMh4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 23:02:44 +0100
+Received: by mail-wr0-x243.google.com with SMTP id u48so3679246wrc.1;
+        Wed, 15 Mar 2017 15:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:date:to:cc:subject:message-id:mail-followup-to:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=1+M/lApnImxxd201Kj3J/Twbmk6raMaTIn7GKmQAQ/I=;
-        b=cvUJBdexXS4lUo8eGmr/vJO0QBXQBjia8M5cRstba8gBLzglcXb14w3ZL5BrVZkrol
-         Gsxt6qtDKUHZ2dV22CE7jkYHHXIgxwPFLDAUV8/N+KFF7k1ScNA1o2fb+/cDt2RBvj08
-         y/OgwCOMYTaFn7LiqITptz4NbT3+F4sdD2iFxJgufR7pRg0JGCKyIZrvo1C4Vvx3Eh4V
-         gO7S7bqHyBmgRCLG6wuXva3NKZgPaj/LJSh7NC0TxOWI8kKiXnOnW6uQ9HJfuJ2/dP20
-         74PWFAmFSLfbA9ZDitBfRqdA03o+0y9VlUqOQifeSdPNk2bS+GVQXr7WPyReoDzw5uw6
-         a3pA==
+        bh=SbA76JK6O+LKZN4psyTwoOuC866e0HHdXY9Ocr2eOvk=;
+        b=YA8qj6/SaieXwMNTtnYfU3R+/sZLFDBpp3kFz652y9yVUsDxLprgm0gNvbKzo/Sv/Y
+         3FNeTnNUHNuOE11al6+wsOTMDxZ6d7OnVCE8aW0FtasWA2h0vLTqXyQ01RKp+wRcsZs8
+         mIaxoYzkUHcXMV4ttBPeXGXiqhIfGpwmISOR4Nwc7zlqBeGRYwYWRC6iz5E6rFbDFO+q
+         F1m9JCw5C8cOiEOOwKfj87/iV+T5n+yVgEN9FRdLUzTd4IP3ne+zDS3wqMSAwdJJKe6a
+         wc7n0sRxNBtd2tj3KjeMTBeG8LfQXHavemz0CjTJQCPm+7rmlPT0GSspHqNx+QDS7OmU
+         6LRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:date:to:cc:subject:message-id
          :mail-followup-to:mime-version:content-disposition:in-reply-to
          :user-agent;
-        bh=1+M/lApnImxxd201Kj3J/Twbmk6raMaTIn7GKmQAQ/I=;
-        b=osKRJnCH2PBH6aE6rBJRuP8FCs1VEgvVgXYN9dqGUoIC1qy9lOo2zs9rEeAP5H1T7J
-         EsdUk3/uYUBiazn982ZVL6CodalDtxMLNV2RSPg6ZA2kFYvcMd01p6LBA2QEVVUGg6VY
-         HOTo/UmHex99+eu3yGzmnyiHbWG09sylyXPv4i8xtPwAnfJMH8iVGI50gOQAhoilF4kz
-         ItG/vAzWv1RF2szfrqaK/6+2Z3/WAC7dAgdQ4tV5Unpqvxz5A56roZRNb5wFt51rT7Qi
-         0kAbJN4H2MDisgSdXK7fmwwLJiE7RyR394hWq8poHi2JVwdVGmUjohr6CjM50A4/Wk2F
-         MJXw==
-X-Gm-Message-State: AFeK/H07ID9UZRG1U33VddZghSlnawtkAw6eV1pwLmKX6iaR0Xt9c80YGtxuFSaM+9kKNw==
-X-Received: by 10.223.130.144 with SMTP id 16mr5385217wrc.32.1489613446772;
-        Wed, 15 Mar 2017 14:30:46 -0700 (PDT)
+        bh=SbA76JK6O+LKZN4psyTwoOuC866e0HHdXY9Ocr2eOvk=;
+        b=DNYxlYRXlJSsJg3wBTrRy1tx3XZRmD6LN/QbxS8neb82XG6+NXB5+pqAaq4wJVM87k
+         zcuGFDArlcKVQxtHE8RcGPRW8TvaWpKKb/SqD0FAGGaCSO3fFYtYQaAogJkFxHNXa1bz
+         IQy6jTs3Oqg76VS2M0Ks1rbOo7qML7hXnBJDnS5F04N/r0nY+g9fQgpIpl9cNbbgFoZK
+         ATGTEG2o5uGzsnznAp9dXHtUWhmpPlh+xAxjb9UrINW+8CKCWg2UnHcEMCNI4NncHLno
+         jVSSeV1J/SxFtDK56I9n75t+rPF0R+XL7M6V82BP84rDb0zam7DseKtm8yCn0prfNi/4
+         AD9w==
+X-Gm-Message-State: AFeK/H1SL+SJsijgFI5honaut55Sm5j4whhYrhscrcCKWd8PwrXbYaO6PU7wlJ8/GR6ubw==
+X-Received: by 10.223.163.206 with SMTP id m14mr5600713wrb.34.1489615357666;
+        Wed, 15 Mar 2017 15:02:37 -0700 (PDT)
 Received: from localhost (login1.zih.tu-dresden.de. [141.76.16.140])
-        by smtp.googlemail.com with ESMTPSA id k43sm3740776wrk.42.2017.03.15.14.30.44
+        by smtp.googlemail.com with ESMTPSA id d1sm3815421wrb.62.2017.03.15.15.02.36
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 15 Mar 2017 14:30:45 -0700 (PDT)
+        Wed, 15 Mar 2017 15:02:36 -0700 (PDT)
 From:   Till Smejkal <till.smejkal@googlemail.com>
 X-Google-Original-From: Till Smejkal <till.smejkal@gmail.com>
-Date:   Wed, 15 Mar 2017 14:30:43 -0700
-To:     Rich Felker <dalias@libc.org>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Andy Lutomirski <luto@kernel.org>,
+Date:   Wed, 15 Mar 2017 15:02:34 -0700
+To:     Andy Lutomirski <luto@amacapital.net>
+Cc:     Andy Lutomirski <luto@kernel.org>,
         Till Smejkal <till.smejkal@googlemail.com>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -63,6 +62,7 @@ Cc:     Andy Lutomirski <luto@amacapital.net>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
         Chris Metcalf <cmetcalf@mellanox.com>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -119,9 +119,8 @@ Cc:     Andy Lutomirski <luto@amacapital.net>,
         linux-arch <linux-arch@vger.kernel.org>,
         ALSA development <alsa-devel@alsa-project.org>
 Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
-Message-ID: <20170315213042.e5q6daqkqoam2iun@arch-dev>
-Mail-Followup-To: Rich Felker <dalias@libc.org>,
-        Andy Lutomirski <luto@amacapital.net>,
+Message-ID: <20170315220234.mooiyrzqdsglo4lp@arch-dev>
+Mail-Followup-To: Andy Lutomirski <luto@amacapital.net>,
         Andy Lutomirski <luto@kernel.org>,
         Till Smejkal <till.smejkal@googlemail.com>,
         Richard Henderson <rth@twiddle.net>,
@@ -143,6 +142,7 @@ Mail-Followup-To: Rich Felker <dalias@libc.org>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         "David S. Miller" <davem@davemloft.net>,
         Chris Metcalf <cmetcalf@mellanox.com>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -196,13 +196,13 @@ Mail-Followup-To: Rich Felker <dalias@libc.org>,
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170315194723.GJ1693@brightrain.aerifal.cx>
+In-Reply-To: <CALCETrXfGgxaLivhci0VL=wUaWAnBiUXC47P7TUaEuOYV_-X_g@mail.gmail.com>
 User-Agent: NeoMutt/20170306 (1.8.0)
 Return-Path: <till.smejkal@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57310
+X-archive-position: 57311
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -219,51 +219,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, 15 Mar 2017, Rich Felker wrote:
-> On Wed, Mar 15, 2017 at 12:44:47PM -0700, Till Smejkal wrote:
+On Wed, 15 Mar 2017, Andy Lutomirski wrote:
+> On Wed, Mar 15, 2017 at 12:44 PM, Till Smejkal
+> <till.smejkal@googlemail.com> wrote:
 > > On Wed, 15 Mar 2017, Andy Lutomirski wrote:
-> > > > One advantage of VAS segments is that they can be globally queried by user programs
-> > > > which means that VAS segments can be shared by applications that not necessarily have
-> > > > to be related. If I am not mistaken, MAP_SHARED of pure in memory data will only work
-> > > > if the tasks that share the memory region are related (aka. have a common parent that
-> > > > initialized the shared mapping). Otherwise, the shared mapping have to be backed by a
-> > > > file.
-> > > 
-> > > What's wrong with memfd_create()?
-> > > 
-> > > > VAS segments on the other side allow sharing of pure in memory data by
-> > > > arbitrary related tasks without the need of a file. This becomes especially
-> > > > interesting if one combines VAS segments with non-volatile memory since one can keep
-> > > > data structures in the NVM and still be able to share them between multiple tasks.
-> > > 
-> > > What's wrong with regular mmap?
-> > 
+> >> > One advantage of VAS segments is that they can be globally queried by user programs
+> >> > which means that VAS segments can be shared by applications that not necessarily have
+> >> > to be related. If I am not mistaken, MAP_SHARED of pure in memory data will only work
+> >> > if the tasks that share the memory region are related (aka. have a common parent that
+> >> > initialized the shared mapping). Otherwise, the shared mapping have to be backed by a
+> >> > file.
+> >>
+> >> What's wrong with memfd_create()?
+> >>
+> >> > VAS segments on the other side allow sharing of pure in memory data by
+> >> > arbitrary related tasks without the need of a file. This becomes especially
+> >> > interesting if one combines VAS segments with non-volatile memory since one can keep
+> >> > data structures in the NVM and still be able to share them between multiple tasks.
+> >>
+> >> What's wrong with regular mmap?
+> >
 > > I never wanted to say that there is something wrong with regular mmap. We just
 > > figured that with VAS segments you could remove the need to mmap your shared data but
 > > instead can keep everything purely in memory.
-> > 
-> > Unfortunately, I am not at full speed with memfds. Is my understanding correct that
-> > if the last user of such a file descriptor closes it, the corresponding memory is
-> > freed? Accordingly, memfd cannot be used to keep data in memory while no program is
-> > currently using it, can it? To be able to do this you need again some representation
 > 
-> I have a name for application-allocated kernel resources that persist
-> without a process holding a reference to them or a node in the
-> filesystem: a bug. See: sysvipc.
+> memfd does that.
 
-VAS segments are first class citizens of the OS similar to processes. Accordingly, I
-would not see this behavior as a bug. VAS segments are a kernel handle to
-"persistent" memory (in the sense that they are independent of the lifetime of the
-application that created them). That means the memory that is described by VAS
-segments can be reused by other applications even if the VAS segment was not used by
-any application in between. It is very much like a pure in-memory file. An
-application creates a VAS segment, fills it with content and if it does not delete it
-again, can reuse/open it again later. This also means, that if you know that you
-never want to use this memory again you have to remove it explicitly, like you have
-to remove a file, if you don't want to use it anymore.
+Yes, that's right. Thanks for giving me the pointer to this. I should have researched
+more carefully before starting to work at VAS segments.
 
-I think it really might be better to implement VAS segments (if I should keep this
-feature at all) with a special purpose filesystem. The way I've designed it seams to
-be very misleading.
+> > VAS segments on the other side would provide a functionality to
+> > achieve the same without the need of any mounted filesystem. However, I agree, that
+> > this is just a small advantage compared to what can already be achieved with the
+> > existing functionality provided by the Linux kernel.
+> 
+> I see this "small advantage" as "resource leak and security problem".
+
+I don't agree here. VAS segments are basically in-memory files that are handled by
+the kernel directly without using a file system. Hence, if an application uses a VAS
+segment to store data the same rules apply as if it uses a file. Everything that it
+saves in the VAS segment might be accessible by other applications. An application
+using VAS segments should be aware of this fact. In addition, the resources that are
+represented by a VAS segment are not leaked. As I said, VAS segments are much like
+files. Hence, if you don't want to use them any more, delete them. But as with files,
+the kernel will not delete them for you (although something like this can be added).
+
+> >> This sounds complicated and fragile.  What happens if a heuristically
+> >> shared region coincides with a region in the "first class address
+> >> space" being selected?
+> >
+> > If such a conflict happens, the task cannot use the first class address space and the
+> > corresponding system call will return an error. However, with the current available
+> > virtual address space size that programs can use, such conflicts are probably rare.
+> 
+> A bug that hits 1% of the time is often worse than one that hits 100%
+> of the time because debugging it is miserable.
+
+I don't agree that this is a bug at all. If there is a conflict in the memory layout
+of the ASes the application simply cannot use this first class virtual address space.
+Every application that wants to use first class virtual address spaces should check
+for error return values and handle them.
+
+This situation is similar to mapping a file at some special address in memory because
+the file contains pointer based data structures and the application wants to use
+them, but the kernel cannot map the file at this particular position in the
+application's AS because there is already a different conflicting mapping. If an
+application wants to do such things, it should also handle all the errors that can
+occur.
 
 Till

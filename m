@@ -1,40 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 10:52:52 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:57310 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990514AbdCOJwUzrBAG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Mar 2017 10:52:20 +0100
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2F9PbDt008691;
-        Wed, 15 Mar 2017 10:25:37 +0100
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2F9PamM008690;
-        Wed, 15 Mar 2017 10:25:36 +0100
-Date:   Wed, 15 Mar 2017 10:25:36 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Matt Turner <mattst88@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        linux-nfs@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: NFS corruption, fixed by echo 1 > /proc/sys/vm/drop_caches --
- next debugging steps?
-Message-ID: <20170315092536.GC22089@linux-mips.org>
-References: <CAEdQ38HcOgAT6wJWWKY3P0hzYwkBGSQkRSQ2a=eaGmD6c6rwXA@mail.gmail.com>
- <20170313094757.GI2878@jhogan-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 11:16:13 +0100 (CET)
+Received: from mail-it0-x22c.google.com ([IPv6:2607:f8b0:4001:c0b::22c]:38300
+        "EHLO mail-it0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992289AbdCOKQDegvFG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 11:16:03 +0100
+Received: by mail-it0-x22c.google.com with SMTP id m27so16123240iti.1
+        for <linux-mips@linux-mips.org>; Wed, 15 Mar 2017 03:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=fH2HIWl9VeNxHlgCmQdSYSLtnZ8l66zMKX9CEtpGduw=;
+        b=YRiVSLwTwTHqoCwxl63vCB/ObO+U1JxIxiQpfzsQWcvwosdknx/T3EWYsaoLoqDEx3
+         vY+sgyzkr9+a2rc/tTgv/BAr2lZ184bTITJWdCg0DAWtmdKG6VyTHaK9ace1aCMDonsU
+         3QuN9VdiSJYUUgp6uLHnq4YSiiBnwH3/5A2t8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=fH2HIWl9VeNxHlgCmQdSYSLtnZ8l66zMKX9CEtpGduw=;
+        b=IbxyPFOdeF9QCR0BiEvx/o4xMYT2AOmYZOaIY7MMOL7PzQwmwSuvlL7eghQp/nW9qe
+         dMpXqZfVp8PdHo/kIKmILSyF+0Pk2RWnjLX6QkaRYsv4L5rNvU4y5/5LliyCIOktFEJI
+         aosRAt8Kyvnvxh0KWzKh80ThDznxI64ukxEeeLC/ReCOI8jxDFoliqxQ7a112aBVtkKl
+         b2fMDRVIaqE2TAaD++MU2hcVqO/8u41KfPKC4UxGuNXGKwo1ybi2oyOgsTkx5W1w/zIR
+         QsVP7mlvyJtjOHrx7TnDPVRmvmKuSJYE/Zu52fY8Kf8cZxN4v2jnnA4/Lj8MS5rhQrSg
+         iatA==
+X-Gm-Message-State: AFeK/H34bJZLnd2sF+82UsWLqTyfKw2hS8oyOwevZjUcrhCm082FdOhZU2ndt6nJrBhEaOhD4adwg9w/Z5du48va
+X-Received: by 10.36.181.3 with SMTP id v3mr1894917ite.25.1489572957782; Wed,
+ 15 Mar 2017 03:15:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170313094757.GI2878@jhogan-linux.le.imgtec.org>
-User-Agent: Mutt/1.7.1 (2016-10-04)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.79.134.193 with HTTP; Wed, 15 Mar 2017 03:15:56 -0700 (PDT)
+In-Reply-To: <1489001744-26545-2-git-send-email-nathan.sullivan@ni.com>
+References: <1489001744-26545-1-git-send-email-nathan.sullivan@ni.com> <1489001744-26545-2-git-send-email-nathan.sullivan@ni.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 15 Mar 2017 11:15:56 +0100
+Message-ID: <CACRpkdYfaigjtzcp6aeiQS5BCLyEQqOuHFzDP52Wmie+cu=fiw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] gpio: mmio: add support for NI 169445 NAND GPIO
+To:     Nathan Sullivan <nathan.sullivan@ni.com>
+Cc:     Alexandre Courbot <gnurou@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57287
+X-archive-position: 57288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,30 +66,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 13, 2017 at 09:47:57AM +0000, James Hogan wrote:
+On Wed, Mar 8, 2017 at 8:35 PM, Nathan Sullivan <nathan.sullivan@ni.com> wrote:
 
-> > 
-> > Note that the corruption is different across reboots, both in the size
-> > of the corruption and the location. I saw 1900~ and 1400~ byte
-> > sequences corrupted on separate occasions, which don't correspond to
-> > the system's 16kB page size.
-> > 
-> > I've tested kernels from v3.19 to 4.11-rc1+ (master branch from
-> > today). All exhibit this behavior with differing frequencies. Earlier
-> > kernels seem to reproduce the issue less often, while more recent
-> > kernels reliably exhibit the problem every boot.
-> > 
-> > How can I further debug this?
-> 
-> It smells a bit like a DMA / caching issue.
-> 
-> Can you provide a full kernel log. That might provide some information
-> about caching that might be relevant (e.g. does dcache have aliases?).
+> The GPIO-based NAND controller on National Instruments 169445 hardware
+> exposes a set of simple lines for the control signals.
+>
+> Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
 
-The architecture of the BCM1250 SOC used for the BCM91250 boards are
-fully coherent, S-cache and D-cache are physically indexed and tagged.
-Only the VIVT (plus the usual ASID tagging) I-cache leaves space for
-software to screw up cache management but that shouldn't matter for this
-case, so I suggest to start looking into this from the NFS side.
+Oh a newer patch with comments exist. I take out the other patch then
+and wait for v3.
 
-  Ralf
+Yours,
+Linus Walleij

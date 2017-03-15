@@ -1,53 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 21:09:19 +0100 (CET)
-Received: from mail-wr0-x241.google.com ([IPv6:2a00:1450:400c:c0c::241]:36251
-        "EHLO mail-wr0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992111AbdCOUJMaDmvL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 21:09:12 +0100
-Received: by mail-wr0-x241.google.com with SMTP id l37so3362779wrc.3
-        for <linux-mips@linux-mips.org>; Wed, 15 Mar 2017 13:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kresin-me.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=miAADLHqCKlc5RQc+546JUaWFbxre2kxor0RiyCtamY=;
-        b=mX7JO2bWkKWi2IbCBftIUXJDmDEsUHfWYJ762CFd4ExByz3eErGxKQJWv458Urb1rK
-         QlfIvxRFprNZkGGufACkntqLLF91OoT26Ri5mGyYh9yEaNnrOmRdSV3E/pd0mdwolvBC
-         4u6kzBmC06zrS1b+0HhnLUBcK1gZV1nObQdhCdcH3lbUfzthSU/DbOXPWeFljdr31t7M
-         Z1lA4PgO88rpgzmFgQYMD362FNKi4Cs0HpO7ts+N5BV7Bl59Pd3074Zpiki8/cuKABG1
-         bN4gGKMIHtkGh4qmz2Z2fZIEHbLSBPQDWcTJLGWn5y/vSKkKIoJbhtv0IHI3y8CbOuDv
-         iFig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=miAADLHqCKlc5RQc+546JUaWFbxre2kxor0RiyCtamY=;
-        b=lBBS2TMEnsSruyX2e4sKGi5CGHpTHSx6x8S70HCmkqwkbG/Lq9JYLLZfH4p4vnRNiZ
-         TGUsQtaJ3RUmQ5ZL3p7w21C/8Ky1SV7wMBN8OOh9Qp0WHK5X7FmWTVHjN6zVaTdyGG/t
-         7yK6t/3HjLLq1J1dRaazSB4BFE0OyI+/0Qi7nL9JAnB1jhm9gkQxttOAJ1+GEqfapJJb
-         rxFT5rlQyhg5R5x7R/ntQUwi3ZfS33g7O+K5OZZSMYoJD3w1O8CO2kpe5NUjSnou1HiI
-         HRbZ0/Dez05ACSunEXQUK6pUqlmPOub0fh3kqbljCRVFvlq+5wqt1E3CKgqU8zm88b+E
-         w81w==
-X-Gm-Message-State: AFeK/H2y5nPxgbcALG5e0vo/e43y9Sm4tMXg1xbbqx/Cb01KEIIwb2X7DVy+U07iGQwYvQ==
-X-Received: by 10.223.136.182 with SMTP id f51mr4411692wrf.90.1489608546424;
-        Wed, 15 Mar 2017 13:09:06 -0700 (PDT)
-Received: from desktop.wvd.kresin.me (p2003008C2F134E009DA448A58F84DC9C.dip0.t-ipconnect.de. [2003:8c:2f13:4e00:9da4:48a5:8f84:dc9c])
-        by smtp.gmail.com with ESMTPSA id v3sm3568993wrb.39.2017.03.15.13.09.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 15 Mar 2017 13:09:06 -0700 (PDT)
-From:   Mathias Kresin <dev@kresin.me>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH v2] MIPS: PCI: scan PCI controllers in reverse order
-Date:   Wed, 15 Mar 2017 21:08:58 +0100
-Message-Id: <1489608538-8035-1-git-send-email-dev@kresin.me>
-X-Mailer: git-send-email 2.7.4
-Return-Path: <dev@kresin.me>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Mar 2017 21:12:04 +0100 (CET)
+Received: from resqmta-ch2-04v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:36]:39080
+        "EHLO resqmta-ch2-04v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992111AbdCOUL5vZVJL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Mar 2017 21:11:57 +0100
+Received: from resomta-ch2-05v.sys.comcast.net ([69.252.207.101])
+        by resqmta-ch2-04v.sys.comcast.net with SMTP
+        id oFDEcI7ciE5a6oFH2cxl4b; Wed, 15 Mar 2017 20:11:56 +0000
+Received: from [192.168.1.13] ([73.201.78.97])
+        by resomta-ch2-05v.sys.comcast.net with SMTP
+        id oFH0c6THllSbroFH1cD7mm; Wed, 15 Mar 2017 20:11:56 +0000
+To:     Linux/MIPS <linux-mips@linux-mips.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Subject: ARCS can't load CONFIG_DEBUG_LOCK_ALLOC kernel
+Message-ID: <8b2d7473-ba4d-f2c9-27e7-b1a30b95c4f8@gentoo.org>
+Date:   Wed, 15 Mar 2017 16:11:42 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfOX9vOnotQ5XcN9ZZHszMTaCZnNb8tR08ri2mRoJuvF/ACQNowFosuaBndtBqUDz7w8kavl/0AJv++gkma1vdLjME8cPGJm93WkJTyvC1LcBV+3VgBrn
+ nLB8o9mXVZkKA9oetseHY8lrPoZ45I0XgDNJYUkEwHKmKjmS/laj9NEB
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57308
+X-archive-position: 57309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dev@kresin.me
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,38 +42,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Commit 23dac14d058f ("MIPS: PCI: Use struct list_head lists") changed
-the controller list from reverse to straight order without taking care
-of the changed order for the scan of the recorded PCI controllers.
+I've reported in the past that turning on CONFIG_DEBUG_LOCK_ALLOC produces a
+kernel that can't boot on several SGI platforms.  It turns out that using
+arcload (Stan's bootloader originally written for IP30), I can get some
+debugging out on why.  I am still puzzled, but maybe this information can be
+interpreted by someone else into something meaningful?
 
-Traverse the list in reverse order to restore the former behaviour.
+All addresses printed out of arcload are physical address.
 
-This patches fixes the following PCI error on lantiq:
+ARCS Memory Map as printed by some debugging I added to the arcload binary:
 
-  pci 0000:01:00.0: BAR 0: error updating (0x1c000004 != 0x000000)
+0x00000000 - 0x00001000 ExceptionBlock
+0x00001000 - 0x00002000 SystemParameterBlock
+0x00002000 - 0x00004000 FirmwarePermanent
+0x20004000 - 0x20f00000 FreeMemory***
+0x20f00000 - 0x21000000 FirmwareTemporary
+0x21000000 - 0x5fff0000 FreeMemory
+0x5fff0000 - 0x5ffff000 LoadedProgram
+0x5ffff000 - 0x60000000 FreeMemory
+0x60000000 - 0xa0000000 FirmwarePermanent
 
-Fixes: 23dac14d058f ("MIPS: PCI: Use struct list_head lists")
-Signed-off-by: Mathias Kresin <dev@kresin.me>
----
+The ***'ed FreeMemory segment is where the kernel is supposed to load.  Here's
+the debugging for a kernel WITHOUT CONFIG_DEBUG_LOCK_ALLOC enabled (4102norm):
 
-Changes in v2:
-- fix formal issues in commit message (Sergei Shtylyov)
+ELF Start: 0x20004000
+Elf End  : 0x20a6fdd0
+Size     : 0x00a6bdd0 (~10MB?)
 
- arch/mips/pci/pci-legacy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+# ls -l 4102norm
+-rwxr-xr-x 1 root root 28M Mar 15 15:12 4102norm*
 
-diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
-index 014649b..76a7ccc 100644
---- a/arch/mips/pci/pci-legacy.c
-+++ b/arch/mips/pci/pci-legacy.c
-@@ -222,7 +222,7 @@ static int __init pcibios_init(void)
- 	struct pci_controller *hose;
- 
- 	/* Scan all of the recorded PCI controllers.  */
--	list_for_each_entry(hose, &controllers, list)
-+	list_for_each_entry_reverse(hose, &controllers, list)
- 		pcibios_scanbus(hose);
- 
- 	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
+
+And the debugging kernel compiled with CONFIG_DEBUG_LOCK_ALLOC=y (no other
+config changes from above):
+
+ELF Start: 0x20004000
+Elf End  : 0x2148bf80
+Size     : 0x01487f80 (~20MB?)
+
+# ls -l 4102dbg
+-rwxr-xr-x 1 root root 29M Mar 15 15:21 4102dbg*
+
+
+I am only using the traditional "vmlinux" make target, so there shouldn't be
+any compression involved here.  Yet, it looks like, according to ARCS anyways,
+that CONFIG_DEBUG_LOCK_ALLOC is adding an additional 10MB of "something", yet
+the vmlinux file only grows by roughly 1MB.
+
+If I examine both kernels with readelf and dump the program headers, I can see
+these two sizes reflected under "MemSiz":
+
+# mips64-unknown-linux-gnu-readelf -l 4102norm
+
+Elf file type is EXEC (Executable file)
+Entry point 0xa800000020700450
+There are 2 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+  LOAD           0x0000000000004000 0xa800000020004000 0xa800000020004000
+                 0x00000000009a5030 0x0000000000a6bdd0  RWE    10000
+  NOTE           0x0000000000714bb0 0xa800000020714bb0 0xa800000020714bb0
+                 0x0000000000000024 0x0000000000000024  R      4
+
+# mips64-unknown-linux-gnu-readelf -l 4102dbg
+
+Elf file type is EXEC (Executable file)
+Entry point 0xa800000020749c80
+There are 2 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+  LOAD           0x0000000000004000 0xa800000020004000 0xa800000020004000
+                 0x0000000000a05850 0x0000000001487f80  RWE    10000
+  NOTE           0x000000000075e330 0xa80000002075e330 0xa80000002075e330
+                 0x0000000000000024 0x0000000000000024  R      4
+
+
+So I'm not quite certain why ARCS or arcload dislike kernels with
+CONFIG_DEBUG_LOCK_ALLOC=y.  This issue is known about on at least IP27 and IP30
+platforms for the past few years, and it's been quite a hindrance in doing any
+debugging of locks.
+
 -- 
-2.7.4
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

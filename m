@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:38:38 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34070 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:39:04 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34072 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992214AbdCPOekUTGO0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:40 +0100
+        by eddie.linux-mips.org with ESMTP id S23993418AbdCPOenIQdw0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:43 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BBDFBB59;
-        Thu, 16 Mar 2017 14:34:33 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B4308B5A;
+        Thu, 16 Mar 2017 14:34:36 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.10 10/48] MIPS: ip22: Fix ip28 build for modern gcc
-Date:   Thu, 16 Mar 2017 23:29:54 +0900
-Message-Id: <20170316142921.306302744@linuxfoundation.org>
+Subject: [PATCH 4.10 11/48] MIPS: Update lemote2f_defconfig for CPU_FREQ_STAT change
+Date:   Thu, 16 Mar 2017 23:29:55 +0900
+Message-Id: <20170316142921.353969196@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142920.761502205@linuxfoundation.org>
 References: <20170316142920.761502205@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57351
+X-archive-position: 57352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,37 +47,35 @@ X-list: linux-mips
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-commit 23ca9b522383d3b9b7991d8586db30118992af4a upstream.
+commit b3f6046186ef45acfeebc5a59c9fb45cefc685e7 upstream.
 
-kernelci reports a failure of the ip28_defconfig build after upgrading its
-gcc version:
+Since linux-4.8, CPU_FREQ_STAT is a bool symbol, causing a warning in
+kernelci.org:
 
-arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed option -mr10k-cache-barrier=store.  Stop.
+arch/mips/configs/lemote2f_defconfig:42:warning: symbol value 'm' invalid for CPU_FREQ_STAT
 
-The problem apparently is that the -mr10k-cache-barrier=store option is now
-rejected for CPUs other than r10k. Explicitly including the CPU in the
-check fixes this and is safe because both options were introduced in
-gcc-4.4.
+This updates the defconfig to have the feature built-in.
 
+Fixes: 1aefc75b2449 ("cpufreq: stats: Make the stats code non-modular")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15049/
+Patchwork: https://patchwork.linux-mips.org/patch/15000/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/sgi-ip22/Platform |    2 +-
+ arch/mips/configs/lemote2f_defconfig |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/sgi-ip22/Platform
-+++ b/arch/mips/sgi-ip22/Platform
-@@ -25,7 +25,7 @@ endif
- # Simplified: what IP22 does at 128MB+ in ksegN, IP28 does at 512MB+ in xkphys
- #
- ifdef CONFIG_SGI_IP28
--  ifeq ($(call cc-option-yn,-mr10k-cache-barrier=store), n)
-+  ifeq ($(call cc-option-yn,-march=r10000 -mr10k-cache-barrier=store), n)
-       $(error gcc doesn't support needed option -mr10k-cache-barrier=store)
-   endif
- endif
+--- a/arch/mips/configs/lemote2f_defconfig
++++ b/arch/mips/configs/lemote2f_defconfig
+@@ -39,7 +39,7 @@ CONFIG_HIBERNATION=y
+ CONFIG_PM_STD_PARTITION="/dev/hda3"
+ CONFIG_CPU_FREQ=y
+ CONFIG_CPU_FREQ_DEBUG=y
+-CONFIG_CPU_FREQ_STAT=m
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_STAT_DETAILS=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_CPU_FREQ_GOV_POWERSAVE=m

@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:32:30 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33520 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:33:00 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33514 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992126AbdCPOcTRMq60 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:32:19 +0100
+        by eddie.linux-mips.org with ESMTP id S23992111AbdCPOcR7Clk0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:32:17 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id BA2A5B7E;
-        Thu, 16 Mar 2017 14:32:12 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D562BB2F;
+        Thu, 16 Mar 2017 14:32:09 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 4.4 05/35] MIPS: ip27: Disable qlge driver in defconfig
-Date:   Thu, 16 Mar 2017 23:29:24 +0900
-Message-Id: <20170316142907.034868314@linuxfoundation.org>
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 04/35] MIPS: Update defconfigs for NF_CT_PROTO_DCCP/UDPLITE change
+Date:   Thu, 16 Mar 2017 23:29:23 +0900
+Message-Id: <20170316142906.994447562@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142906.685052998@linuxfoundation.org>
 References: <20170316142906.685052998@linuxfoundation.org>
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57337
+X-archive-position: 57338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,41 +47,124 @@ X-list: linux-mips
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-commit b617649468390713db1515ea79fc772d2eb897a8 upstream.
+commit 9ddc16ad8e0bc7742fc96d5aaabc5b8698512cd1 upstream.
 
-One of the last remaining failures in kernelci.org is for a gcc bug:
+In linux-4.10-rc, NF_CT_PROTO_UDPLITE and NF_CT_PROTO_DCCP are bool
+symbols instead of tristate, and kernelci.org reports a bunch of
+warnings for this, like:
 
-drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
-drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
+arch/mips/configs/malta_kvm_guest_defconfig:63:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
+arch/mips/configs/malta_defconfig:62:warning: symbol value 'm' invalid for NF_CT_PROTO_DCCP
+arch/mips/configs/malta_defconfig:63:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
+arch/mips/configs/ip22_defconfig:70:warning: symbol value 'm' invalid for NF_CT_PROTO_DCCP
+arch/mips/configs/ip22_defconfig:71:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
 
-This is apparently broken in gcc-6 but fixed in gcc-7, and I cannot
-reproduce the problem here. However, it is clear that ip27_defconfig
-does not actually need this driver as the platform has only PCI-X but
-not PCIe, and the qlge adapter in turn is PCIe-only.
+This changes all the MIPS defconfigs with these symbols to have them
+built-in.
 
-The driver was originally enabled in 2010 along with lots of other
-drivers.
-
-Fixes: 59d302b342e5 ("MIPS: IP27: Make defconfig useful again.")
+Fixes: 9b91c96c5d1f ("netfilter: conntrack: built-in support for UDPlite")
+Fixes: c51d39010a1b ("netfilter: conntrack: built-in support for DCCP")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15197/
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/14999/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/configs/ip27_defconfig |    1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/configs/ip22_defconfig            |    4 ++--
+ arch/mips/configs/malta_defconfig           |    4 ++--
+ arch/mips/configs/malta_kvm_defconfig       |    4 ++--
+ arch/mips/configs/malta_kvm_guest_defconfig |    4 ++--
+ arch/mips/configs/maltaup_xpa_defconfig     |    4 ++--
+ arch/mips/configs/nlm_xlp_defconfig         |    2 +-
+ arch/mips/configs/nlm_xlr_defconfig         |    2 +-
+ 7 files changed, 12 insertions(+), 12 deletions(-)
 
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -206,7 +206,6 @@ CONFIG_MLX4_EN=m
- # CONFIG_MLX4_DEBUG is not set
- CONFIG_TEHUTI=m
- CONFIG_BNX2X=m
--CONFIG_QLGE=m
- CONFIG_SFC=m
- CONFIG_BE2NET=m
- CONFIG_LIBERTAS_THINFIRM=m
+--- a/arch/mips/configs/ip22_defconfig
++++ b/arch/mips/configs/ip22_defconfig
+@@ -68,8 +68,8 @@ CONFIG_NETFILTER_NETLINK_QUEUE=m
+ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_SECMARK=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_DCCP=m
+-CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CT_PROTO_DCCP=y
++CONFIG_NF_CT_PROTO_UDPLITE=y
+ CONFIG_NF_CONNTRACK_AMANDA=m
+ CONFIG_NF_CONNTRACK_FTP=m
+ CONFIG_NF_CONNTRACK_H323=m
+--- a/arch/mips/configs/malta_defconfig
++++ b/arch/mips/configs/malta_defconfig
+@@ -59,8 +59,8 @@ CONFIG_NETFILTER=y
+ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_SECMARK=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_DCCP=m
+-CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CT_PROTO_DCCP=y
++CONFIG_NF_CT_PROTO_UDPLITE=y
+ CONFIG_NF_CONNTRACK_AMANDA=m
+ CONFIG_NF_CONNTRACK_FTP=m
+ CONFIG_NF_CONNTRACK_H323=m
+--- a/arch/mips/configs/malta_kvm_defconfig
++++ b/arch/mips/configs/malta_kvm_defconfig
+@@ -60,8 +60,8 @@ CONFIG_NETFILTER=y
+ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_SECMARK=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_DCCP=m
+-CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CT_PROTO_DCCP=y
++CONFIG_NF_CT_PROTO_UDPLITE=y
+ CONFIG_NF_CONNTRACK_AMANDA=m
+ CONFIG_NF_CONNTRACK_FTP=m
+ CONFIG_NF_CONNTRACK_H323=m
+--- a/arch/mips/configs/malta_kvm_guest_defconfig
++++ b/arch/mips/configs/malta_kvm_guest_defconfig
+@@ -59,8 +59,8 @@ CONFIG_NETFILTER=y
+ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_SECMARK=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_DCCP=m
+-CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CT_PROTO_DCCP=y
++CONFIG_NF_CT_PROTO_UDPLITE=y
+ CONFIG_NF_CONNTRACK_AMANDA=m
+ CONFIG_NF_CONNTRACK_FTP=m
+ CONFIG_NF_CONNTRACK_H323=m
+--- a/arch/mips/configs/maltaup_xpa_defconfig
++++ b/arch/mips/configs/maltaup_xpa_defconfig
+@@ -61,8 +61,8 @@ CONFIG_NETFILTER=y
+ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_SECMARK=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_DCCP=m
+-CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CT_PROTO_DCCP=y
++CONFIG_NF_CT_PROTO_UDPLITE=y
+ CONFIG_NF_CONNTRACK_AMANDA=m
+ CONFIG_NF_CONNTRACK_FTP=m
+ CONFIG_NF_CONNTRACK_H323=m
+--- a/arch/mips/configs/nlm_xlp_defconfig
++++ b/arch/mips/configs/nlm_xlp_defconfig
+@@ -111,7 +111,7 @@ CONFIG_NETFILTER=y
+ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_SECMARK=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CT_PROTO_UDPLITE=y
+ CONFIG_NF_CONNTRACK_AMANDA=m
+ CONFIG_NF_CONNTRACK_FTP=m
+ CONFIG_NF_CONNTRACK_H323=m
+--- a/arch/mips/configs/nlm_xlr_defconfig
++++ b/arch/mips/configs/nlm_xlr_defconfig
+@@ -91,7 +91,7 @@ CONFIG_NETFILTER=y
+ CONFIG_NF_CONNTRACK=m
+ CONFIG_NF_CONNTRACK_SECMARK=y
+ CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CT_PROTO_UDPLITE=y
+ CONFIG_NF_CONNTRACK_AMANDA=m
+ CONFIG_NF_CONNTRACK_FTP=m
+ CONFIG_NF_CONNTRACK_H323=m

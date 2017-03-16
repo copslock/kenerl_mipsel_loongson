@@ -1,19 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:36:08 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33934 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:36:35 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33948 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991172AbdCPOeGN0rU0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:06 +0100
+        by eddie.linux-mips.org with ESMTP id S23992366AbdCPOeIYD1F0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:08 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A665BB4B;
-        Thu, 16 Mar 2017 14:33:59 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 32F96A88;
+        Thu, 16 Mar 2017 14:34:01 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Paul Burton <paul.burton@imgtec.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 04/44] MIPS: Update defconfigs for NF_CT_PROTO_DCCP/UDPLITE change
-Date:   Thu, 16 Mar 2017 23:29:29 +0900
-Message-Id: <20170316142926.167107824@linuxfoundation.org>
+Subject: [PATCH 4.9 05/44] MIPS: VDSO: avoid duplicate CAC_BASE definition
+Date:   Thu, 16 Mar 2017 23:29:30 +0900
+Message-Id: <20170316142926.204977634@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142925.994282609@linuxfoundation.org>
 References: <20170316142925.994282609@linuxfoundation.org>
@@ -24,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57345
+X-archive-position: 57346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,124 +48,63 @@ X-list: linux-mips
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9ddc16ad8e0bc7742fc96d5aaabc5b8698512cd1 upstream.
+commit 1742ac265046f34223e06d5d283496f0291be259 upstream.
 
-In linux-4.10-rc, NF_CT_PROTO_UDPLITE and NF_CT_PROTO_DCCP are bool
-symbols instead of tristate, and kernelci.org reports a bunch of
-warnings for this, like:
+vdso.h includes <spaces.h> implicitly after defining CONFIG_32BITS.
+This defeats the override in mach-ip27/spaces.h, leading to
+a build error that shows up in kernelci.org:
 
-arch/mips/configs/malta_kvm_guest_defconfig:63:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
-arch/mips/configs/malta_defconfig:62:warning: symbol value 'm' invalid for NF_CT_PROTO_DCCP
-arch/mips/configs/malta_defconfig:63:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
-arch/mips/configs/ip22_defconfig:70:warning: symbol value 'm' invalid for NF_CT_PROTO_DCCP
-arch/mips/configs/ip22_defconfig:71:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
+In file included from arch/mips/include/asm/mach-ip27/spaces.h:29:0,
+                 from arch/mips/include/asm/page.h:12,
+                 from arch/mips/vdso/vdso.h:26,
+                 from arch/mips/vdso/gettimeofday.c:11:
+arch/mips/include/asm/mach-generic/spaces.h:28:0: error: "CAC_BASE" redefined [-Werror]
+ #define CAC_BASE  _AC(0x80000000, UL)
 
-This changes all the MIPS defconfigs with these symbols to have them
-built-in.
+An earlier patch tried to make the second definition conditional,
+but that patch had the #ifdef in the wrong place, and would lead
+to another warning:
 
-Fixes: 9b91c96c5d1f ("netfilter: conntrack: built-in support for UDPlite")
-Fixes: c51d39010a1b ("netfilter: conntrack: built-in support for DCCP")
+arch/mips/include/asm/io.h: In function 'phys_to_virt':
+arch/mips/include/asm/io.h:138:9: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+
+For all I can tell, there is no other reason than vdso32 to ever
+include this file with CONFIG_32BITS set, and the vdso itself should
+never refer to the base addresses as it is running in user space,
+so adding an #ifdef here is safe.
+
+Link: https://patchwork.kernel.org/patch/9418187/
+Fixes: 3ffc17d8768b ("MIPS: Adjust MIPS64 CAC_BASE to reflect Config.K0")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14999/
+Patchwork: https://patchwork.linux-mips.org/patch/15039/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/configs/ip22_defconfig            |    4 ++--
- arch/mips/configs/malta_defconfig           |    4 ++--
- arch/mips/configs/malta_kvm_defconfig       |    4 ++--
- arch/mips/configs/malta_kvm_guest_defconfig |    4 ++--
- arch/mips/configs/maltaup_xpa_defconfig     |    4 ++--
- arch/mips/configs/nlm_xlp_defconfig         |    2 +-
- arch/mips/configs/nlm_xlr_defconfig         |    2 +-
- 7 files changed, 12 insertions(+), 12 deletions(-)
+ arch/mips/include/asm/mach-ip27/spaces.h |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/mips/configs/ip22_defconfig
-+++ b/arch/mips/configs/ip22_defconfig
-@@ -67,8 +67,8 @@ CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=m
--CONFIG_NF_CT_PROTO_UDPLITE=m
-+CONFIG_NF_CT_PROTO_DCCP=y
-+CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
---- a/arch/mips/configs/malta_defconfig
-+++ b/arch/mips/configs/malta_defconfig
-@@ -59,8 +59,8 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=m
--CONFIG_NF_CT_PROTO_UDPLITE=m
-+CONFIG_NF_CT_PROTO_DCCP=y
-+CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
---- a/arch/mips/configs/malta_kvm_defconfig
-+++ b/arch/mips/configs/malta_kvm_defconfig
-@@ -60,8 +60,8 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=m
--CONFIG_NF_CT_PROTO_UDPLITE=m
-+CONFIG_NF_CT_PROTO_DCCP=y
-+CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
---- a/arch/mips/configs/malta_kvm_guest_defconfig
-+++ b/arch/mips/configs/malta_kvm_guest_defconfig
-@@ -59,8 +59,8 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=m
--CONFIG_NF_CT_PROTO_UDPLITE=m
-+CONFIG_NF_CT_PROTO_DCCP=y
-+CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
---- a/arch/mips/configs/maltaup_xpa_defconfig
-+++ b/arch/mips/configs/maltaup_xpa_defconfig
-@@ -61,8 +61,8 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_DCCP=m
--CONFIG_NF_CT_PROTO_UDPLITE=m
-+CONFIG_NF_CT_PROTO_DCCP=y
-+CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
---- a/arch/mips/configs/nlm_xlp_defconfig
-+++ b/arch/mips/configs/nlm_xlp_defconfig
-@@ -110,7 +110,7 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_UDPLITE=m
-+CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
---- a/arch/mips/configs/nlm_xlr_defconfig
-+++ b/arch/mips/configs/nlm_xlr_defconfig
-@@ -90,7 +90,7 @@ CONFIG_NETFILTER=y
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_SECMARK=y
- CONFIG_NF_CONNTRACK_EVENTS=y
--CONFIG_NF_CT_PROTO_UDPLITE=m
-+CONFIG_NF_CT_PROTO_UDPLITE=y
- CONFIG_NF_CONNTRACK_AMANDA=m
- CONFIG_NF_CONNTRACK_FTP=m
- CONFIG_NF_CONNTRACK_H323=m
+--- a/arch/mips/include/asm/mach-ip27/spaces.h
++++ b/arch/mips/include/asm/mach-ip27/spaces.h
+@@ -12,14 +12,16 @@
+ 
+ /*
+  * IP27 uses the R10000's uncached attribute feature.  Attribute 3 selects
+- * uncached memory addressing.
++ * uncached memory addressing. Hide the definitions on 32-bit compilation
++ * of the compat-vdso code.
+  */
+-
++#ifdef CONFIG_64BIT
+ #define HSPEC_BASE		0x9000000000000000
+ #define IO_BASE			0x9200000000000000
+ #define MSPEC_BASE		0x9400000000000000
+ #define UNCAC_BASE		0x9600000000000000
+ #define CAC_BASE		0xa800000000000000
++#endif
+ 
+ #define TO_MSPEC(x)		(MSPEC_BASE | ((x) & TO_PHYS_MASK))
+ #define TO_HSPEC(x)		(HSPEC_BASE | ((x) & TO_PHYS_MASK))

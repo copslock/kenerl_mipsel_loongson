@@ -1,35 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 17:04:00 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:38310 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993179AbdCPQDgHso3H (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Mar 2017 17:03:36 +0100
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2GG3YQW029899;
-        Thu, 16 Mar 2017 17:03:34 +0100
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2GG3YxL029898;
-        Thu, 16 Mar 2017 17:03:34 +0100
-Date:   Thu, 16 Mar 2017 17:03:34 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Steven J. Hill" <steven.hill@cavium.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Octeon: Remove unused PCIERCX types and macros.
-Message-ID: <20170316160334.GO5512@linux-mips.org>
-References: <1489069890-14569-1-git-send-email-steven.hill@cavium.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 17:44:31 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:53276 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991786AbdCPQoXxtJyd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Mar 2017 17:44:23 +0100
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id C38A864D8A;
+        Thu, 16 Mar 2017 16:44:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com C38A864D8A
+Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
+Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; spf=pass smtp.mailfrom=jolsa@redhat.com
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.redhat.com C38A864D8A
+Received: from krava (dhcp-1-124.brq.redhat.com [10.34.1.124])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 0A96A6031D;
+        Thu, 16 Mar 2017 16:44:14 +0000 (UTC)
+Date:   Thu, 16 Mar 2017 17:44:13 +0100
+From:   Jiri Olsa <jolsa@redhat.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        gregkh <gregkh@linuxfoundation.org>,
+        "kernelci.org bot" <bot@kernelci.org>,
+        kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: stable build: 203 builds: 4 failed, 199 passed, 5 errors, 41
+ warnings (v4.10.1)
+Message-ID: <20170316164413.GC20999@krava>
+References: <58b2dc6f.cf4d2e0a.f521.74b3@mx.google.com>
+ <CAK8P3a32nbd6Wv9wCjmUX+E3gpnWkAWwKurP9dkuwyf_oegCgg@mail.gmail.com>
+ <20170315072204.GB26837@kroah.com>
+ <CAK8P3a2hmA_f8YZKB=fqpcmeP0wRaq9aEORhVF1kLUWtd0nx6Q@mail.gmail.com>
+ <20170316122907.GS12825@kernel.org>
+ <20170316124958.GA3620@krava>
+ <CAK8P3a1a3uUCQu=FX5n_cLG+wL-LhreNF8fUyavTn5a-87gXLQ@mail.gmail.com>
+ <20170316135959.GC3620@krava>
+ <CAK8P3a0VCjbVp2Aynq0madWyJ8GCNQD93Fi-M_oy6SkADqKNfQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1489069890-14569-1-git-send-email-steven.hill@cavium.com>
+In-Reply-To: <CAK8P3a0VCjbVp2Aynq0madWyJ8GCNQD93Fi-M_oy6SkADqKNfQ@mail.gmail.com>
 User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <ralf@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 16 Mar 2017 16:44:18 +0000 (UTC)
+Return-Path: <jolsa@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57370
+X-archive-position: 57371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jolsa@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,6 +69,183 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Thanks, queued for 4.12.
+On Thu, Mar 16, 2017 at 03:39:36PM +0100, Arnd Bergmann wrote:
+> On Thu, Mar 16, 2017 at 2:59 PM, Jiri Olsa <jolsa@redhat.com> wrote:
+> > On Thu, Mar 16, 2017 at 02:44:45PM +0100, Arnd Bergmann wrote:
+> >> On Thu, Mar 16, 2017 at 1:49 PM, Jiri Olsa <jolsa@redhat.com> wrote:
+> >> > On Thu, Mar 16, 2017 at 09:29:07AM -0300, Arnaldo Carvalho de Melo wrote:
+> >> >> Em Wed, Mar 15, 2017 at 02:15:22PM +0100, Arnd Bergmann escreveu:
+> >> >> > On Wed, Mar 15, 2017 at 8:22 AM, gregkh <gregkh@linuxfoundation.org> wrote:
+> >> >> > >
+> >> >> > > All now queued up in the stable trees, thanks.
+> >> >> >
+> >> >> > Like 4.9.y it builds clean except for a couple of stack frame size warnings
+> >> >> > and this one that continues to puzzle me.
+> >> >> >
+> >> >> > /bin/sh: 1: /home/buildslave/workspace/kernel-builder/arch/x86/defconfig/allmodconfig+CONFIG_OF=n/label/builder/next/build-x86/tools/objtool//fixdep:
+> >> >> > Permission denied
+> >> >>
+> >> >> Jiri? Josh?
+> >> >
+> >> > hum, looks like it imight be related to this fix we did for perf:
+> >> >   abb26210a395 perf tools: Force fixdep compilation at the start of the build
+> >> >
+> >> > it's forcing fixdep to be build as first.. having it as a simple dependency
+> >> > (which AFAICS is objtool case), the make -jX occasionaly raced on high cpu
+> >> > servers, and executed unfinished binary, hence the permission fail
+> >>
+> >> It's probably another variation of this bug, but the commit you cite got merged
+> >> into 4.10-rc1, while the problem still persists in mainline (4.11-rc2+).
+> >
+> > the problem is in objtool build right? the fix was for perf build
+> 
+> Ah, got it. Yes, that must be it then. I supposed we coul duplicate what you
+> did for perf in objtool, but a cleaner way would be to generalize it for all of
+> tools/, right?
+> 
+>       Arnd
 
-  Ralf
+i came up quickly with attached change.. not too much tested,
+but basically it's the idea applied to objtool
+
+looks like we could generalize some of those pieces, I'll try
+to look at it next week if nobody beats me to it ;-)
+
+thanks,
+jirka
+
+
+---
+diff --git a/tools/lib/subcmd/Makefile b/tools/lib/subcmd/Makefile
+index 3d1c3b5b5150..a00942fbe43b 100644
+--- a/tools/lib/subcmd/Makefile
++++ b/tools/lib/subcmd/Makefile
+@@ -1,6 +1,18 @@
+ include ../../scripts/Makefile.include
+ include ../../scripts/utilities.mak		# QUIET_CLEAN
+ 
++all:
++
++config := 1
++
++NON_CONFIG_TARGETS := clean
++
++ifdef MAKECMDGOALS
++ifeq ($(filter-out $(NON_CONFIG_TARGETS),$(MAKECMDGOALS)),)
++  config := 0
++endif
++endif
++
+ ifeq ($(srctree),)
+ srctree := $(patsubst %/,%,$(dir $(CURDIR)))
+ srctree := $(patsubst %/,%,$(dir $(srctree)))
+@@ -45,7 +57,24 @@ all:
+ export srctree OUTPUT CC LD CFLAGS V
+ include $(srctree)/tools/build/Makefile.include
+ 
+-all: fixdep $(LIBFILE)
++ifdef FIXDEP
++  force_fixdep := 0
++else
++  force_fixdep := $(config)
++endif
++
++ifeq ($(force_fixdep),1)
++goals := $(filter-out all sub-make, $(MAKECMDGOALS))
++
++$(goals) all: sub-make
++
++sub-make: fixdep
++	$(Q)$(MAKE) FIXDEP=1 -f Makefile $(goals)
++
++else # force_fixdep
++
++
++all: $(LIBFILE)
+ 
+ $(SUBCMD_IN): FORCE
+ 	@$(MAKE) $(build)=libsubcmd
+@@ -59,4 +88,6 @@ clean:
+ 
+ FORCE:
+ 
+-.PHONY: clean FORCE
++endif # force_fixdep
++
++.PHONY: clean FORCE sub-make
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 27e019c09bd2..8c78a9114ab5 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -1,6 +1,18 @@
+ include ../scripts/Makefile.include
+ include ../scripts/Makefile.arch
+ 
++all:
++
++config := 1
++
++NON_CONFIG_TARGETS := clean
++
++ifdef MAKECMDGOALS
++ifeq ($(filter-out $(NON_CONFIG_TARGETS),$(MAKECMDGOALS)),)
++  config := 0
++endif
++endif
++
+ ifeq ($(ARCH),x86_64)
+ ARCH := x86
+ endif
+@@ -22,8 +34,6 @@ LIBSUBCMD		= $(LIBSUBCMD_OUTPUT)libsubcmd.a
+ OBJTOOL    := $(OUTPUT)objtool
+ OBJTOOL_IN := $(OBJTOOL)-in.o
+ 
+-all: $(OBJTOOL)
+-
+ INCLUDES := -I$(srctree)/tools/include -I$(srctree)/tools/arch/$(HOSTARCH)/include/uapi
+ CFLAGS   += -Wall -Werror $(EXTRA_WARNINGS) -fomit-frame-pointer -O2 -g $(INCLUDES)
+ LDFLAGS  += -lelf $(LIBSUBCMD)
+@@ -36,7 +46,25 @@ AWK = awk
+ export srctree OUTPUT CFLAGS SRCARCH AWK
+ include $(srctree)/tools/build/Makefile.include
+ 
+-$(OBJTOOL_IN): fixdep FORCE
++ifdef FIXDEP
++  force_fixdep := 0
++else
++  force_fixdep := $(config)
++endif
++
++ifeq ($(force_fixdep),1)
++goals := $(filter-out all sub-make, $(MAKECMDGOALS))
++
++$(goals) all: sub-make
++
++sub-make: fixdep
++	$(Q)$(MAKE) FIXDEP=1 -f Makefile $(goals)
++
++else # force_fixdep
++
++all: $(OBJTOOL)
++
++$(OBJTOOL_IN): FORCE
+ 	@$(MAKE) $(build)=objtool
+ 
+ # Busybox's diff doesn't have -I, avoid warning in that case
+@@ -55,7 +83,7 @@ $(OBJTOOL): $(LIBSUBCMD) $(OBJTOOL_IN)
+ 	$(QUIET_LINK)$(CC) $(OBJTOOL_IN) $(LDFLAGS) -o $@
+ 
+ 
+-$(LIBSUBCMD): fixdep FORCE
++$(LIBSUBCMD): FORCE
+ 	$(Q)$(MAKE) -C $(SUBCMD_SRCDIR) OUTPUT=$(LIBSUBCMD_OUTPUT)
+ 
+ clean:
+@@ -65,4 +93,6 @@ clean:
+ 
+ FORCE:
+ 
+-.PHONY: clean FORCE
++endif # force_fixdep
++
++.PHONY: clean FORCE sub-make

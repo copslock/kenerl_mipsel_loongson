@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 17:44:31 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:53276 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 18:04:01 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:46742 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991786AbdCPQoXxtJyd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Mar 2017 17:44:23 +0100
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        id S23991955AbdCPRDyZwD5d (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Mar 2017 18:03:54 +0100
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C38A864D8A;
-        Thu, 16 Mar 2017 16:44:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com C38A864D8A
-Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
-Authentication-Results: ext-mx09.extmail.prod.ext.phx2.redhat.com; spf=pass smtp.mailfrom=jolsa@redhat.com
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.redhat.com C38A864D8A
-Received: from krava (dhcp-1-124.brq.redhat.com [10.34.1.124])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 0A96A6031D;
-        Thu, 16 Mar 2017 16:44:14 +0000 (UTC)
-Date:   Thu, 16 Mar 2017 17:44:13 +0100
-From:   Jiri Olsa <jolsa@redhat.com>
+        by mx1.redhat.com (Postfix) with ESMTPS id EA7FFC00AFC4;
+        Thu, 16 Mar 2017 17:03:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com EA7FFC00AFC4
+Authentication-Results: ext-mx08.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
+Authentication-Results: ext-mx08.extmail.prod.ext.phx2.redhat.com; spf=pass smtp.mailfrom=jpoimboe@redhat.com
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.redhat.com EA7FFC00AFC4
+Received: from treble (unknown [10.10.123.104])
+        by smtp.corp.redhat.com (Postfix) with SMTP id 1641C183A6;
+        Thu, 16 Mar 2017 17:03:43 +0000 (UTC)
+Date:   Thu, 16 Mar 2017 12:03:41 -0500
+From:   Josh Poimboeuf <jpoimboe@redhat.com>
 To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+Cc:     Jiri Olsa <jolsa@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
         Jiri Olsa <jolsa@kernel.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
         gregkh <gregkh@linuxfoundation.org>,
         "kernelci.org bot" <bot@kernelci.org>,
         kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org,
@@ -31,7 +31,7 @@ Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
         Stephen Rothwell <sfr@canb.auug.org.au>
 Subject: Re: stable build: 203 builds: 4 failed, 199 passed, 5 errors, 41
  warnings (v4.10.1)
-Message-ID: <20170316164413.GC20999@krava>
+Message-ID: <20170316170341.5df43ajebu3habr6@treble>
 References: <58b2dc6f.cf4d2e0a.f521.74b3@mx.google.com>
  <CAK8P3a32nbd6Wv9wCjmUX+E3gpnWkAWwKurP9dkuwyf_oegCgg@mail.gmail.com>
  <20170315072204.GB26837@kroah.com>
@@ -42,21 +42,21 @@ References: <58b2dc6f.cf4d2e0a.f521.74b3@mx.google.com>
  <20170316135959.GC3620@krava>
  <CAK8P3a0VCjbVp2Aynq0madWyJ8GCNQD93Fi-M_oy6SkADqKNfQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <CAK8P3a0VCjbVp2Aynq0madWyJ8GCNQD93Fi-M_oy6SkADqKNfQ@mail.gmail.com>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 16 Mar 2017 16:44:18 +0000 (UTC)
-Return-Path: <jolsa@redhat.com>
+User-Agent: Mutt/1.6.0.1 (2016-04-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Thu, 16 Mar 2017 17:03:49 +0000 (UTC)
+Return-Path: <jpoimboe@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57371
+X-archive-position: 57372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jolsa@redhat.com
+X-original-sender: jpoimboe@redhat.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -102,150 +102,23 @@ On Thu, Mar 16, 2017 at 03:39:36PM +0100, Arnd Bergmann wrote:
 > Ah, got it. Yes, that must be it then. I supposed we coul duplicate what you
 > did for perf in objtool, but a cleaner way would be to generalize it for all of
 > tools/, right?
-> 
->       Arnd
 
-i came up quickly with attached change.. not too much tested,
-but basically it's the idea applied to objtool
-
-looks like we could generalize some of those pieces, I'll try
-to look at it next week if nobody beats me to it ;-)
-
-thanks,
-jirka
+This is a shot in the dark, since I don't have a way to recreate, but
+can you try the following patch?  This should make sure that objtool
+only tries to build fixdep once.
 
 
----
-diff --git a/tools/lib/subcmd/Makefile b/tools/lib/subcmd/Makefile
-index 3d1c3b5b5150..a00942fbe43b 100644
---- a/tools/lib/subcmd/Makefile
-+++ b/tools/lib/subcmd/Makefile
-@@ -1,6 +1,18 @@
- include ../../scripts/Makefile.include
- include ../../scripts/utilities.mak		# QUIET_CLEAN
+diff --git a/tools/build/Makefile.include b/tools/build/Makefile.include
+index ad22e4e..179f4f0 100644
+--- a/tools/build/Makefile.include
++++ b/tools/build/Makefile.include
+@@ -1,6 +1,8 @@
+ build := -f $(srctree)/tools/build/Makefile.build dir=. obj
  
-+all:
+-fixdep:
++fixdep: $(OUTPUT)fixdep
 +
-+config := 1
-+
-+NON_CONFIG_TARGETS := clean
-+
-+ifdef MAKECMDGOALS
-+ifeq ($(filter-out $(NON_CONFIG_TARGETS),$(MAKECMDGOALS)),)
-+  config := 0
-+endif
-+endif
-+
- ifeq ($(srctree),)
- srctree := $(patsubst %/,%,$(dir $(CURDIR)))
- srctree := $(patsubst %/,%,$(dir $(srctree)))
-@@ -45,7 +57,24 @@ all:
- export srctree OUTPUT CC LD CFLAGS V
- include $(srctree)/tools/build/Makefile.include
++$(OUTPUT)fixdep:
+ 	$(Q)$(MAKE) -C $(srctree)/tools/build CFLAGS= LDFLAGS= $(OUTPUT)fixdep
  
--all: fixdep $(LIBFILE)
-+ifdef FIXDEP
-+  force_fixdep := 0
-+else
-+  force_fixdep := $(config)
-+endif
-+
-+ifeq ($(force_fixdep),1)
-+goals := $(filter-out all sub-make, $(MAKECMDGOALS))
-+
-+$(goals) all: sub-make
-+
-+sub-make: fixdep
-+	$(Q)$(MAKE) FIXDEP=1 -f Makefile $(goals)
-+
-+else # force_fixdep
-+
-+
-+all: $(LIBFILE)
- 
- $(SUBCMD_IN): FORCE
- 	@$(MAKE) $(build)=libsubcmd
-@@ -59,4 +88,6 @@ clean:
- 
- FORCE:
- 
--.PHONY: clean FORCE
-+endif # force_fixdep
-+
-+.PHONY: clean FORCE sub-make
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index 27e019c09bd2..8c78a9114ab5 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -1,6 +1,18 @@
- include ../scripts/Makefile.include
- include ../scripts/Makefile.arch
- 
-+all:
-+
-+config := 1
-+
-+NON_CONFIG_TARGETS := clean
-+
-+ifdef MAKECMDGOALS
-+ifeq ($(filter-out $(NON_CONFIG_TARGETS),$(MAKECMDGOALS)),)
-+  config := 0
-+endif
-+endif
-+
- ifeq ($(ARCH),x86_64)
- ARCH := x86
- endif
-@@ -22,8 +34,6 @@ LIBSUBCMD		= $(LIBSUBCMD_OUTPUT)libsubcmd.a
- OBJTOOL    := $(OUTPUT)objtool
- OBJTOOL_IN := $(OBJTOOL)-in.o
- 
--all: $(OBJTOOL)
--
- INCLUDES := -I$(srctree)/tools/include -I$(srctree)/tools/arch/$(HOSTARCH)/include/uapi
- CFLAGS   += -Wall -Werror $(EXTRA_WARNINGS) -fomit-frame-pointer -O2 -g $(INCLUDES)
- LDFLAGS  += -lelf $(LIBSUBCMD)
-@@ -36,7 +46,25 @@ AWK = awk
- export srctree OUTPUT CFLAGS SRCARCH AWK
- include $(srctree)/tools/build/Makefile.include
- 
--$(OBJTOOL_IN): fixdep FORCE
-+ifdef FIXDEP
-+  force_fixdep := 0
-+else
-+  force_fixdep := $(config)
-+endif
-+
-+ifeq ($(force_fixdep),1)
-+goals := $(filter-out all sub-make, $(MAKECMDGOALS))
-+
-+$(goals) all: sub-make
-+
-+sub-make: fixdep
-+	$(Q)$(MAKE) FIXDEP=1 -f Makefile $(goals)
-+
-+else # force_fixdep
-+
-+all: $(OBJTOOL)
-+
-+$(OBJTOOL_IN): FORCE
- 	@$(MAKE) $(build)=objtool
- 
- # Busybox's diff doesn't have -I, avoid warning in that case
-@@ -55,7 +83,7 @@ $(OBJTOOL): $(LIBSUBCMD) $(OBJTOOL_IN)
- 	$(QUIET_LINK)$(CC) $(OBJTOOL_IN) $(LDFLAGS) -o $@
- 
- 
--$(LIBSUBCMD): fixdep FORCE
-+$(LIBSUBCMD): FORCE
- 	$(Q)$(MAKE) -C $(SUBCMD_SRCDIR) OUTPUT=$(LIBSUBCMD_OUTPUT)
- 
- clean:
-@@ -65,4 +93,6 @@ clean:
- 
- FORCE:
- 
--.PHONY: clean FORCE
-+endif # force_fixdep
-+
-+.PHONY: clean FORCE sub-make
+ .PHONY: fixdep

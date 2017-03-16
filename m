@@ -1,52 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 14:12:10 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:50983 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23992155AbdCPNMBSwdZ- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 14:12:01 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id A462E41F8EC8;
-        Thu, 16 Mar 2017 14:17:14 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 16 Mar 2017 14:17:14 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 16 Mar 2017 14:17:14 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id DCAB76A3F365C;
-        Thu, 16 Mar 2017 13:11:52 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 16 Mar
- 2017 13:11:55 +0000
-Date:   Thu, 16 Mar 2017 13:11:55 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>, <kvm@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Andreas Herrmann <andreas.herrmann@caviumnetworks.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>
-Subject: Re: [PATCH 1/8] MIPS: Add Octeon III register accessors & definitions
-Message-ID: <20170316131155.GE996@jhogan-linux.le.imgtec.org>
-References: <cover.79b3feae3a98cb166c2d40a7bd4e854a5faedc89.1489486985.git-series.james.hogan@imgtec.com>
- <306f747a0743b91bbfbc321572d28d0e42f9bbb8.1489486985.git-series.james.hogan@imgtec.com>
- <20170315134132.GE5512@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 14:44:58 +0100 (CET)
+Received: from mail-ot0-x241.google.com ([IPv6:2607:f8b0:4003:c0f::241]:35308
+        "EHLO mail-ot0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991359AbdCPNoviTZUc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 14:44:51 +0100
+Received: by mail-ot0-x241.google.com with SMTP id a12so7787208ota.2;
+        Thu, 16 Mar 2017 06:44:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=+afuIc9dT3EMbwicmjg3kY5Rg9iRwVEditOBIX7f/Lg=;
+        b=fnI0kf9aMoXryInNwtqQDHGk//2fhYKNvAsdxQ2XwI26J8mGb9ev5W0RKOwfE3iFPH
+         PP7UOhBV9OnW4EKGGUsP9f6Nyeh7LfQSy2ir9XuR9KDSfH0TGkJJwhi6Y+l+EM2/g8jI
+         VXpiQTeo4IFxoEyK9zYAIS0rc/PmKL+3Z8MvrukZNAjPE0ADKDWlXwdT3o7kqp5ENNS5
+         giuqyyxyol88+olmvSeKvWjPg4FAwM5ussNdMi/Yd7YybqDBerpps6eOprAKF792RfrU
+         T0BsaEtiRKMojTI0BXF/tM5Wg6WnXfSV2QErQztvGCp/bn3Gf4aeNAsDbZkNB+M1wPA1
+         jKSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=+afuIc9dT3EMbwicmjg3kY5Rg9iRwVEditOBIX7f/Lg=;
+        b=th4sNMAIEYm7wpko7P5NoYeeklWtOzlaUBmt0hZhDBcCDKv3ERfTB/qri8NRNeMrrt
+         ot1zFCoxlphW3kaeEJNVjEFjuPCgXKCqXH8DXqyBWGcviR+lkqIrsOe6ottKA/7jlCmn
+         NUzlirUahRre5ekAVCwlDS1kiZf4slEcpQB8LlOL7nDiEPRQAT+Pfehwt+gnl9ULuVh1
+         RcycbPEaJp67l2zYixq+glvUowvbWj0CyGh0S6EUasTysLLUasmS/378DzcOc51Syr74
+         YJfVAZwfQ7xY6ATDwHwG6uDkG3jLFgJ2fPahXulzGEz2xs+uj/nLKV3V4FfGjEDliDuH
+         c6eQ==
+X-Gm-Message-State: AFeK/H2/CNctLEP72xiOd/90iBMZJLA6hN3EHQlfEzI6XQAiZkQpuraT6Do4OMpCQ5xc8M2prbrXUMbrGSZAZQ==
+X-Received: by 10.202.86.82 with SMTP id k79mr4297295oib.150.1489671885747;
+ Thu, 16 Mar 2017 06:44:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WZxEPQZByX0ieXff"
-Content-Disposition: inline
-In-Reply-To: <20170315134132.GE5512@linux-mips.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+Received: by 10.157.6.42 with HTTP; Thu, 16 Mar 2017 06:44:45 -0700 (PDT)
+In-Reply-To: <20170316124958.GA3620@krava>
+References: <58b2dc6f.cf4d2e0a.f521.74b3@mx.google.com> <CAK8P3a32nbd6Wv9wCjmUX+E3gpnWkAWwKurP9dkuwyf_oegCgg@mail.gmail.com>
+ <20170315072204.GB26837@kroah.com> <CAK8P3a2hmA_f8YZKB=fqpcmeP0wRaq9aEORhVF1kLUWtd0nx6Q@mail.gmail.com>
+ <20170316122907.GS12825@kernel.org> <20170316124958.GA3620@krava>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 16 Mar 2017 14:44:45 +0100
+X-Google-Sender-Auth: zJa-2w1k0qFphpT0KQSUCkwPO48
+Message-ID: <CAK8P3a1a3uUCQu=FX5n_cLG+wL-LhreNF8fUyavTn5a-87gXLQ@mail.gmail.com>
+Subject: Re: stable build: 203 builds: 4 failed, 199 passed, 5 errors, 41
+ warnings (v4.10.1)
+To:     Jiri Olsa <jolsa@redhat.com>
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        gregkh <gregkh@linuxfoundation.org>,
+        "kernelci.org bot" <bot@kernelci.org>,
+        kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57330
+X-archive-position: 57331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,59 +76,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---WZxEPQZByX0ieXff
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Mar 16, 2017 at 1:49 PM, Jiri Olsa <jolsa@redhat.com> wrote:
+> On Thu, Mar 16, 2017 at 09:29:07AM -0300, Arnaldo Carvalho de Melo wrote:
+>> Em Wed, Mar 15, 2017 at 02:15:22PM +0100, Arnd Bergmann escreveu:
+>> > On Wed, Mar 15, 2017 at 8:22 AM, gregkh <gregkh@linuxfoundation.org> wrote:
+>> > >
+>> > > All now queued up in the stable trees, thanks.
+>> >
+>> > Like 4.9.y it builds clean except for a couple of stack frame size warnings
+>> > and this one that continues to puzzle me.
+>> >
+>> > /bin/sh: 1: /home/buildslave/workspace/kernel-builder/arch/x86/defconfig/allmodconfig+CONFIG_OF=n/label/builder/next/build-x86/tools/objtool//fixdep:
+>> > Permission denied
+>>
+>> Jiri? Josh?
+>
+> hum, looks like it imight be related to this fix we did for perf:
+>   abb26210a395 perf tools: Force fixdep compilation at the start of the build
+>
+> it's forcing fixdep to be build as first.. having it as a simple dependency
+> (which AFAICS is objtool case), the make -jX occasionaly raced on high cpu
+> servers, and executed unfinished binary, hence the permission fail
 
-On Wed, Mar 15, 2017 at 02:41:32PM +0100, Ralf Baechle wrote:
-> On Tue, Mar 14, 2017 at 10:25:44AM +0000, James Hogan wrote:
->=20
-> > Add accessors for some VZ related Cavium Octeon III specific COP0
-> > registers, along with field definitions. These will mostly be used by
-> > KVM to set up interrupt routing and partition the TLB between root and
-> > guest.
->=20
-> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+It's probably another variation of this bug, but the commit you cite got merged
+into 4.10-rc1, while the problem still persists in mainline (4.11-rc2+).
 
-Thanks!
-
->=20
-> Btw, asm/mipsregs.h is growing towards 3000 lines making it a candiate
-> for splitting.
-
-Yes, it already contains:
-1) CP0 register numbers (~80 lines)
-2) CP0/CP1 register field definitions (~1000 lines)
-3) Various thin MIPS assembly wrappers (~900 lines)
-4) CP0/CP1 [guest] register accessors & modifiers (~700 lines)
-
-Maybe it makes sense to start by splitting out all those assembly
-wrappers (3) into an asm/mipsops.h, which asm/mipsregs.h includes and
-uses for defining the register accessors.
-
-Cheers
-James
-
---WZxEPQZByX0ieXff
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYyo8aAAoJEGwLaZPeOHZ6n9sP/RtHEDNC/Z/Bint0jbTwJVV1
-+wtjctDD5tqvErR9skJ7TcBwpMFHFgOVlnNYGk5nqofLdQBpJaMdUd6KJ/524yDV
-fj21yz8brWBUWU/K8XmlLSYRsUTI1zVle3jaUWXU+MCMpZSemEUAX2i9lsPzSpQg
-3G1EmfyWPFNJC7thyJIZ12IRJU+3B5xBkPYRO0O96R0SmtNhCbm/SMduH6VManTF
-R82LJksxVm2CuWVRA3SqzleDo23plzexP5ymbmez0neoGhRYXT86bxANQWHsUJ0a
-ISlGrxJNqIsEYFYGUsV8saOiCuKapNy7ADJTlx+8vPV0JZkyKsBew8bWOX6/m+2t
-uBR2d1MiWYRkRpojRHUuNUJT70xSFLF2MMW30675THlRDhGvNukHHln/SEts1Izs
-gDeC3/QnGT3SOUbWXyC03C+AoG/jNgpPYq9ZLDbDdBkwBZCE4qZwCqr0l1CJpXKv
-lEZPOmi61wCcTeRfcZMf9Gu0bB5w1rIE2l420ExptHmK3UwRuKe8DgX2qmikLqZg
-IAJz/Jw7EyYE++1sqayKp90olx4D4LJC5BqqeJhfE5YTV3LRUbveD5xw/JfYpFV8
-N91dQ3OmuNxW8sQUDsfXzQiKbAKwR1zp6uTLwtcO2XOLEeFk4MsDgcqEZ/rpBebd
-J5Xj2XjyF1+U+6jcd1zQ
-=YMNe
------END PGP SIGNATURE-----
-
---WZxEPQZByX0ieXff--
+      Arnd

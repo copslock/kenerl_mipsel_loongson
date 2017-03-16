@@ -1,62 +1,212 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 18:04:01 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:46742 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991955AbdCPRDyZwD5d (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Mar 2017 18:03:54 +0100
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id EA7FFC00AFC4;
-        Thu, 16 Mar 2017 17:03:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mx1.redhat.com EA7FFC00AFC4
-Authentication-Results: ext-mx08.extmail.prod.ext.phx2.redhat.com; dmarc=none (p=none dis=none) header.from=redhat.com
-Authentication-Results: ext-mx08.extmail.prod.ext.phx2.redhat.com; spf=pass smtp.mailfrom=jpoimboe@redhat.com
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.redhat.com EA7FFC00AFC4
-Received: from treble (unknown [10.10.123.104])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 1641C183A6;
-        Thu, 16 Mar 2017 17:03:43 +0000 (UTC)
-Date:   Thu, 16 Mar 2017 12:03:41 -0500
-From:   Josh Poimboeuf <jpoimboe@redhat.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Jiri Olsa <jolsa@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        gregkh <gregkh@linuxfoundation.org>,
-        "kernelci.org bot" <bot@kernelci.org>,
-        kernel-build-reports@lists.linaro.org, linux-mips@linux-mips.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 18:29:26 +0100 (CET)
+Received: from mail-wm0-x241.google.com ([IPv6:2a00:1450:400c:c09::241]:35277
+        "EHLO mail-wm0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992111AbdCPR3TlcwTu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 18:29:19 +0100
+Received: by mail-wm0-x241.google.com with SMTP id z133so4046545wmb.2;
+        Thu, 16 Mar 2017 10:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:mail-followup-to:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=gFEgMmPQHT9SAn8aKum+zi+SGTWozSYLWm3iiX1PNE0=;
+        b=RwZpuAScxswH7vMiFB7ncnY8v2Cj76lyMHgWVIl45khV/2WgR1TQzdxB0z3Ro5kyxV
+         qMsNoxk2RsmKpsFN2JEZdrdPe/9O4knf74VbZS2TtKSVew+FYfxSXxglKLgPmfuMSmQA
+         VSpUdmEgW769vWi0dmPu9L+eFRA4TpQVt7T9K5lBawGX19ChKT2JPmi9WrVZ+A5aM7jL
+         MaNfGkkx4lUMOD+X0tOKPXoU+VkNrX9lhhES0Ja19a1QrWck9uLROJ10I7lawztVAjq+
+         qT9nr5blcc8fc2FOKIODvrPCFS7L+j11964pxSvK5YPkGPaLCUWsE/+o/jDFgw8LTxwk
+         /XcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id
+         :mail-followup-to:mime-version:content-disposition:in-reply-to
+         :user-agent;
+        bh=gFEgMmPQHT9SAn8aKum+zi+SGTWozSYLWm3iiX1PNE0=;
+        b=EWUC4/zN45MYi5gAPGhmJgrlW/bERYrIWop9BxUByoUEYV+CjTz3UHLSnjDN3ODvYl
+         Mmuayd05rvkTrmEeK/7i3THV3tFMFzjbBm12XJBFNiWelIsxGMJ4KrYPOOIfe+XFVN9P
+         Bm3iL5wVVgohOpBFCrsvIwRicj4OfhyIgiqAOyJWXLoB5xAzKhhfEKUT7yvgDflZIU6I
+         nxj7+UZ649wk5aMIgIJQXPJ5EpnRET9NZHcqs0a+pQn+uVFGBpsSEcUdX9PYB+nmLhMZ
+         r2KCKoFFSVcAqHYaAeZNniC3UJHqEDvLSGLHtjRXvBhSEzMauvCzwlf5UCOx1ITzGBKz
+         l7ow==
+X-Gm-Message-State: AFeK/H3hDPOhHPiu4RO6DXcw/OGi0WJ/dmx8eGh7/64ZUaLxyNM0nUvwjtFZcnmGg/njVg==
+X-Received: by 10.28.35.151 with SMTP id j145mr25086837wmj.50.1489685354351;
+        Thu, 16 Mar 2017 10:29:14 -0700 (PDT)
+Received: from localhost (login1.zih.tu-dresden.de. [141.76.16.140])
+        by smtp.googlemail.com with ESMTPSA id i203sm5059463wmf.12.2017.03.16.10.29.12
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 16 Mar 2017 10:29:13 -0700 (PDT)
+From:   Till Smejkal <till.smejkal@googlemail.com>
+X-Google-Original-From: Till Smejkal <till.smejkal@gmail.com>
+Date:   Thu, 16 Mar 2017 10:29:09 -0700
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Till Smejkal <till.smejkal@googlemail.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Steven Miao <realmz6@gmail.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
         James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: stable build: 203 builds: 4 failed, 199 passed, 5 errors, 41
- warnings (v4.10.1)
-Message-ID: <20170316170341.5df43ajebu3habr6@treble>
-References: <58b2dc6f.cf4d2e0a.f521.74b3@mx.google.com>
- <CAK8P3a32nbd6Wv9wCjmUX+E3gpnWkAWwKurP9dkuwyf_oegCgg@mail.gmail.com>
- <20170315072204.GB26837@kroah.com>
- <CAK8P3a2hmA_f8YZKB=fqpcmeP0wRaq9aEORhVF1kLUWtd0nx6Q@mail.gmail.com>
- <20170316122907.GS12825@kernel.org>
- <20170316124958.GA3620@krava>
- <CAK8P3a1a3uUCQu=FX5n_cLG+wL-LhreNF8fUyavTn5a-87gXLQ@mail.gmail.com>
- <20170316135959.GC3620@krava>
- <CAK8P3a0VCjbVp2Aynq0madWyJ8GCNQD93Fi-M_oy6SkADqKNfQ@mail.gmail.com>
+        "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Benjamin LaHaise <bcrl@kvack.org>,
+        Nadia Yvette Chambers <nyc@holomorphy.com>,
+        Jeff Layton <jlayton@poochiereds.net>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Hugh Dickins <hughd@google.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-alpha@vger.kernel.org,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-hexagon@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-metag@vger.kernel.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mtd@lists.infradead.org,
+        USB list <linux-usb@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        linux-aio@kvack.org, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        ALSA development <alsa-devel@alsa-project.org>
+Subject: Re: [RFC PATCH 00/13] Introduce first class virtual address spaces
+Message-ID: <20170316172909.ux4u7dbspwlynsce@arch-dev>
+Mail-Followup-To: Thomas Gleixner <tglx@linutronix.de>,
+        Till Smejkal <till.smejkal@googlemail.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>, Steven Miao <realmz6@gmail.com>,
+        Richard Kuo <rkuo@codeaurora.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        X86 ML <x86@kernel.org>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Benjamin LaHaise <bcrl@kvack.org>,
+        Nadia Yvette Chambers <nyc@holomorphy.com>,
+        Jeff Layton <jlayton@poochiereds.net>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Hugh Dickins <hughd@google.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-alpha@vger.kernel.org,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-hexagon@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-metag@vger.kernel.org,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mtd@lists.infradead.org, USB list <linux-usb@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>, linux-aio@kvack.org,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        ALSA development <alsa-devel@alsa-project.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a0VCjbVp2Aynq0madWyJ8GCNQD93Fi-M_oy6SkADqKNfQ@mail.gmail.com>
-User-Agent: Mutt/1.6.0.1 (2016-04-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Thu, 16 Mar 2017 17:03:49 +0000 (UTC)
-Return-Path: <jpoimboe@redhat.com>
+In-Reply-To: <alpine.DEB.2.20.1703160919170.3586@nanos>
+User-Agent: NeoMutt/20170306 (1.8.0)
+Return-Path: <till.smejkal@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57372
+X-archive-position: 57373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jpoimboe@redhat.com
+X-original-sender: till.smejkal@googlemail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,56 +219,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 16, 2017 at 03:39:36PM +0100, Arnd Bergmann wrote:
-> On Thu, Mar 16, 2017 at 2:59 PM, Jiri Olsa <jolsa@redhat.com> wrote:
-> > On Thu, Mar 16, 2017 at 02:44:45PM +0100, Arnd Bergmann wrote:
-> >> On Thu, Mar 16, 2017 at 1:49 PM, Jiri Olsa <jolsa@redhat.com> wrote:
-> >> > On Thu, Mar 16, 2017 at 09:29:07AM -0300, Arnaldo Carvalho de Melo wrote:
-> >> >> Em Wed, Mar 15, 2017 at 02:15:22PM +0100, Arnd Bergmann escreveu:
-> >> >> > On Wed, Mar 15, 2017 at 8:22 AM, gregkh <gregkh@linuxfoundation.org> wrote:
-> >> >> > >
-> >> >> > > All now queued up in the stable trees, thanks.
-> >> >> >
-> >> >> > Like 4.9.y it builds clean except for a couple of stack frame size warnings
-> >> >> > and this one that continues to puzzle me.
-> >> >> >
-> >> >> > /bin/sh: 1: /home/buildslave/workspace/kernel-builder/arch/x86/defconfig/allmodconfig+CONFIG_OF=n/label/builder/next/build-x86/tools/objtool//fixdep:
-> >> >> > Permission denied
-> >> >>
-> >> >> Jiri? Josh?
-> >> >
-> >> > hum, looks like it imight be related to this fix we did for perf:
-> >> >   abb26210a395 perf tools: Force fixdep compilation at the start of the build
-> >> >
-> >> > it's forcing fixdep to be build as first.. having it as a simple dependency
-> >> > (which AFAICS is objtool case), the make -jX occasionaly raced on high cpu
-> >> > servers, and executed unfinished binary, hence the permission fail
-> >>
-> >> It's probably another variation of this bug, but the commit you cite got merged
-> >> into 4.10-rc1, while the problem still persists in mainline (4.11-rc2+).
-> >
-> > the problem is in objtool build right? the fix was for perf build
-> 
-> Ah, got it. Yes, that must be it then. I supposed we coul duplicate what you
-> did for perf in objtool, but a cleaner way would be to generalize it for all of
-> tools/, right?
+On Thu, 16 Mar 2017, Thomas Gleixner wrote:
+> Why do we need yet another mechanism to represent something which looks
+> like a file instead of simply using existing mechanisms and extend them?
 
-This is a shot in the dark, since I don't have a way to recreate, but
-can you try the following patch?  This should make sure that objtool
-only tries to build fixdep once.
+You are right. I also recognized during the discussion with Andy, Chris, Matthew,
+Luck, Rich and the others that there are already other techniques in the Linux kernel
+that can achieve the same functionality when combined. As I said also to the others,
+I will drop the VAS segments for future versions. The first class virtual address
+space feature was the more interesting part of the patchset anyways.
 
-
-diff --git a/tools/build/Makefile.include b/tools/build/Makefile.include
-index ad22e4e..179f4f0 100644
---- a/tools/build/Makefile.include
-+++ b/tools/build/Makefile.include
-@@ -1,6 +1,8 @@
- build := -f $(srctree)/tools/build/Makefile.build dir=. obj
- 
--fixdep:
-+fixdep: $(OUTPUT)fixdep
-+
-+$(OUTPUT)fixdep:
- 	$(Q)$(MAKE) -C $(srctree)/tools/build CFLAGS= LDFLAGS= $(OUTPUT)fixdep
- 
- .PHONY: fixdep
+Thanks
+Till

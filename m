@@ -1,19 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:31:10 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33316 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:31:32 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33322 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991172AbdCPObCSoG10 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:31:02 +0100
+        by eddie.linux-mips.org with ESMTP id S23991359AbdCPObG4mEA0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:31:06 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6A838B30;
-        Thu, 16 Mar 2017 14:30:55 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4DB74B37;
+        Thu, 16 Mar 2017 14:30:58 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, John Crispin <john@phrozen.org>,
+        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        John Crispin <john@phrozen.org>,
+        Colin Ian King <colin.king@canonical.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 10/35] MIPS: ralink: Cosmetic change to prom_init().
-Date:   Thu, 16 Mar 2017 23:29:29 +0900
-Message-Id: <20170316142907.399079691@linuxfoundation.org>
+Subject: [PATCH 4.4 11/35] MIPS: ralink: Remove unused rt*_wdt_reset functions
+Date:   Thu, 16 Mar 2017 23:29:30 +0900
+Message-Id: <20170316142907.444461987@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142906.685052998@linuxfoundation.org>
 References: <20170316142906.685052998@linuxfoundation.org>
@@ -24,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57334
+X-archive-position: 57335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,51 +47,89 @@ X-list: linux-mips
 
 ------------------
 
-From: John Crispin <john@phrozen.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9c48568b3692f1a56cbf1935e4eea835e6b185b1 upstream.
+commit 886f9c69fc68f56ddea34d3de51ac1fc2ac8dfbc upstream.
 
-Over the years the code has been changed various times leading to
-argc/argv being defined in a different function to where we actually
-use the variables. Clean this up by moving them to prom_init_cmdline().
+All pointers to these functions were removed, so now they produce
+warnings:
 
-Signed-off-by: John Crispin <john@phrozen.org>
+arch/mips/ralink/rt305x.c:92:13: error: 'rt305x_wdt_reset' defined but not used [-Werror=unused-function]
+
+This removes the functions. If we need them again, the patch can be
+reverted later.
+
+Fixes: f576fb6a0700 ("MIPS: ralink: cleanup the soc specific pinmux data")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: John Crispin <john@phrozen.org>
+Cc: Colin Ian King <colin.king@canonical.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14902/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/15044/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ralink/prom.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/mips/ralink/rt288x.c |   10 ----------
+ arch/mips/ralink/rt305x.c |   11 -----------
+ arch/mips/ralink/rt3883.c |   10 ----------
+ 3 files changed, 31 deletions(-)
 
---- a/arch/mips/ralink/prom.c
-+++ b/arch/mips/ralink/prom.c
-@@ -30,8 +30,10 @@ const char *get_system_type(void)
- 	return soc_info.sys_type;
- }
+--- a/arch/mips/ralink/rt288x.c
++++ b/arch/mips/ralink/rt288x.c
+@@ -40,16 +40,6 @@ static struct rt2880_pmx_group rt2880_pi
+ 	{ 0 }
+ };
  
--static __init void prom_init_cmdline(int argc, char **argv)
-+static __init void prom_init_cmdline(void)
- {
-+	int argc;
-+	char **argv;
- 	int i;
- 
- 	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
-@@ -60,14 +62,11 @@ static __init void prom_init_cmdline(int
- 
- void __init prom_init(void)
- {
--	int argc;
--	char **argv;
+-static void rt288x_wdt_reset(void)
+-{
+-	u32 t;
 -
- 	prom_soc_init(&soc_info);
+-	/* enable WDT reset output on pin SRAM_CS_N */
+-	t = rt_sysc_r32(SYSC_REG_CLKCFG);
+-	t |= CLKCFG_SRAM_CS_N_WDT;
+-	rt_sysc_w32(t, SYSC_REG_CLKCFG);
+-}
+-
+ void __init ralink_clk_init(void)
+ {
+ 	unsigned long cpu_rate, wmac_rate = 40000000;
+--- a/arch/mips/ralink/rt305x.c
++++ b/arch/mips/ralink/rt305x.c
+@@ -89,17 +89,6 @@ static struct rt2880_pmx_group rt5350_pi
+ 	{ 0 }
+ };
  
- 	pr_info("SoC Type: %s\n", get_system_type());
+-static void rt305x_wdt_reset(void)
+-{
+-	u32 t;
+-
+-	/* enable WDT reset output on pin SRAM_CS_N */
+-	t = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG);
+-	t |= RT305X_SYSCFG_SRAM_CS0_MODE_WDT <<
+-		RT305X_SYSCFG_SRAM_CS0_MODE_SHIFT;
+-	rt_sysc_w32(t, SYSC_REG_SYSTEM_CONFIG);
+-}
+-
+ static unsigned long rt5350_get_mem_size(void)
+ {
+ 	void __iomem *sysc = (void __iomem *) KSEG1ADDR(RT305X_SYSC_BASE);
+--- a/arch/mips/ralink/rt3883.c
++++ b/arch/mips/ralink/rt3883.c
+@@ -63,16 +63,6 @@ static struct rt2880_pmx_group rt3883_pi
+ 	{ 0 }
+ };
  
--	prom_init_cmdline(argc, argv);
-+	prom_init_cmdline();
- }
- 
- void __init prom_free_prom_memory(void)
+-static void rt3883_wdt_reset(void)
+-{
+-	u32 t;
+-
+-	/* enable WDT reset output on GPIO 2 */
+-	t = rt_sysc_r32(RT3883_SYSC_REG_SYSCFG1);
+-	t |= RT3883_SYSCFG1_GPIO2_AS_WDT_OUT;
+-	rt_sysc_w32(t, RT3883_SYSC_REG_SYSCFG1);
+-}
+-
+ void __init ralink_clk_init(void)
+ {
+ 	unsigned long cpu_rate, sys_rate;

@@ -1,41 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 02:38:21 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:42162 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992111AbdCPBiOqVDG5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 02:38:14 +0100
-Received: from localhost (unknown [104.132.152.98])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7DDC5BEB;
-        Thu, 16 Mar 2017 01:38:07 +0000 (UTC)
-Date:   Thu, 16 Mar 2017 10:37:54 +0900
-From:   gregkh <gregkh@linuxfoundation.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     kernel-build-reports@lists.linaro.org,
-        "kernelci.org bot" <bot@kernelci.org>, stable@vger.kernel.org,
-        linux-mips@linux-mips.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>
-Subject: Re: stable build: 199 builds: 1 failed, 198 passed, 1 error, 31
- warnings (v4.4.52)
-Message-ID: <20170316013754.GB442@kroah.com>
-References: <58b2e1b1.16502e0a.696c.aa4e@mx.google.com>
- <CAK8P3a2YDcM3t2aJHNEv8C6EFN2P4hN1hKsqJ8K--_XEC12b5A@mail.gmail.com>
- <20170315072223.GD26837@kroah.com>
- <CAK8P3a19darucxTU4rm6ApFB4CjPXqAkuVBx7M3btkaT5=f2YA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 04:51:07 +0100 (CET)
+Received: from resqmta-ch2-03v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:35]:44454
+        "EHLO resqmta-ch2-03v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990720AbdCPDvBMyxVt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 04:51:01 +0100
+Received: from resomta-ch2-02v.sys.comcast.net ([69.252.207.98])
+        by resqmta-ch2-03v.sys.comcast.net with SMTP
+        id oMRGcVp89dEjjoMRGckB45; Thu, 16 Mar 2017 03:50:58 +0000
+Received: from [192.168.1.13] ([73.201.78.97])
+        by resomta-ch2-02v.sys.comcast.net with SMTP
+        id oMRFcx9GGnnYZoMRFcmaFJ; Thu, 16 Mar 2017 03:50:58 +0000
+Subject: Re: ARCS can't load CONFIG_DEBUG_LOCK_ALLOC kernel
+To:     linux-mips@linux-mips.org
+References: <8b2d7473-ba4d-f2c9-27e7-b1a30b95c4f8@gentoo.org>
+From:   Joshua Kinard <kumba@gentoo.org>
+Message-ID: <a639551b-4338-e1fb-0cc7-e6ea34b94c2c@gentoo.org>
+Date:   Wed, 15 Mar 2017 23:50:44 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a19darucxTU4rm6ApFB4CjPXqAkuVBx7M3btkaT5=f2YA@mail.gmail.com>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <gregkh@linuxfoundation.org>
+In-Reply-To: <8b2d7473-ba4d-f2c9-27e7-b1a30b95c4f8@gentoo.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfPTatjufJiTbtH7DpjN9UJFbI2qxoSqDANs//6GmPVyox3tEpNiyopwdzJhhkO/eF1Ab2YUjSifk2Xq1/RQQHoILx7ogdKz9uTDsxb6itbX/z4ab8eWJ
+ TphgBNDZlaVPnVZ5hVUzS0Z4f1davVJ7rSAHYGOdXM8ke7Sr4j3BFGNb
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57315
+X-archive-position: 57316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,62 +44,46 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Mar 15, 2017 at 01:42:21PM +0100, Arnd Bergmann wrote:
-> On Wed, Mar 15, 2017 at 8:22 AM, gregkh <gregkh@linuxfoundation.org> wrote:
-> > On Tue, Feb 28, 2017 at 02:55:42PM +0100, Arnd Bergmann wrote:
-> >> On Sun, Feb 26, 2017 at 3:09 PM, kernelci.org bot <bot@kernelci.org> wrote:
-> >> > stable build: 199 builds: 1 failed, 198 passed, 1 error, 31 warnings
-> >>
+On 03/15/2017 16:11, Joshua Kinard wrote:
+> I've reported in the past that turning on CONFIG_DEBUG_LOCK_ALLOC produces a
+> kernel that can't boot on several SGI platforms.  It turns out that using
+> arcload (Stan's bootloader originally written for IP30), I can get some
+> debugging out on why.  I am still puzzled, but maybe this information can be
+> interpreted by someone else into something meaningful?
 > 
-> >> d43e6fb4ac4a ("cpmac: remove hopeless #warning")
+> All addresses printed out of arcload are physical address.
 > 
-> >> 358c07fcc3b6 ("mm: memcontrol: avoid unused function warning")
-> >>
+> ARCS Memory Map as printed by some debugging I added to the arcload binary:
 > 
-> >> 3021773c7c3e ("MIPS: DEC: Avoid la pseudo-instruction in delay slots")
-> 
-> >> 32eb6e8bee14 ("MIPS: Netlogic: Fix CP0_EBASE redefinition warnings")
-> >
-> > And I've added these as well, thanks.
-> 
-> Thanks! Here are the latest results from
-> 
-> https://kernelci.org/build/stable-rc/kernel/v4.4.54-31-gfe326ea3fc88/
-> 
-> | Errors Summary
-> |
-> | 1 arch/mips/ralink/timer.c:146:2: error: implicit declaration of
-> function 'rt_timer_free' [-Werror=implicit-function-declaration]
-> | 1 arch/mips/ralink/timer.c:145:2: error: implicit declaration of
-> function 'rt_timer_disable' [-Werror=implicit-function-declaration]
-> 
-> d92240d12a got backported to 4.4.55-rc1 but should have only been
-> in v4.9 or higher (which contains 62ee73d284e7). Please revert that
-> one.
+> 0x00000000 - 0x00001000 ExceptionBlock
+> 0x00001000 - 0x00002000 SystemParameterBlock
+> 0x00002000 - 0x00004000 FirmwarePermanent
+> 0x20004000 - 0x20f00000 FreeMemory***
+> 0x20f00000 - 0x21000000 FirmwareTemporary
+> 0x21000000 - 0x5fff0000 FreeMemory
+> 0x5fff0000 - 0x5ffff000 LoadedProgram
+> 0x5ffff000 - 0x60000000 FreeMemory
+> 0x60000000 - 0xa0000000 FirmwarePermanent
 
-Oops, now dropped.
+So it turns out I can get away, on Octane at least, by changing the load
+address from 0x20004000 to an arbitrary value in the other FreeMemory segment
+from 0x21000000 - 0x5fff0000.  Specifically, using 0x21004000 appears to work
+without any ill effects.
 
-> | Warnings Summary
-> | 1 net/wireless/nl80211.c:5109:1: warning: the frame size of 2064
-> bytes is larger than 2048 bytes [-Wframe-larger-than=]
-> | 1 net/wireless/nl80211.c:3875:1: warning: the frame size of 2168
-> bytes is larger than 2048 bytes [-Wframe-larger-than=]
-> | 1 net/wireless/nl80211.c:1744:1: warning: the frame size of 5640
-> bytes is larger than 2048 bytes [-Wframe-larger-than=]
-> | 1 drivers/tty/vt/keyboard.c:1470:1: warning: the frame size of 2344
-> bytes is larger than 2048 bytes [-Wframe-larger-than=]
-> 
-> Still broken on mainline, will get back to this in a few days.
-> 
-> | 1 drivers/scsi/mvsas/mv_sas.c:736:3: warning: this 'else' clause
-> does not guard... [-Wmisleading-indentation]
-> 
-> Harmless warning that was fixed by
-> 7789cd39274c ("mvsas: fix misleading indentation")
-> 
-> which got merged into v4.5. Caused by 0b15fb1fdfd4 ("[SCSI] mvsas:
-> add support for Task collector mode and fixed relative bugs") in v3.0.
+The 0x20004000 value is the address used by IRIX to load (with symon, it
+becomes 0x200800000 instead).  I'll have to try this on the IP27 later on as
+well.  On Octane, CONFIG_DEBUG_LOCK_ALLOC didn't toss up any major locking
+issues yet.  Probably need to hammer the disks with bonnie++ or such.  At least
+I can get back to the BRIDGE/PCI mess now...
 
-Now queued up, thanks.
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
 
-greg k-h
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

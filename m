@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:39:04 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34072 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:39:35 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34098 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993418AbdCPOenIQdw0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:43 +0100
+        by eddie.linux-mips.org with ESMTP id S23993543AbdCPOesUael0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:48 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B4308B5A;
-        Thu, 16 Mar 2017 14:34:36 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E611FA88;
+        Thu, 16 Mar 2017 14:34:41 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        stable@vger.kernel.org, John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.10 11/48] MIPS: Update lemote2f_defconfig for CPU_FREQ_STAT change
-Date:   Thu, 16 Mar 2017 23:29:55 +0900
-Message-Id: <20170316142921.353969196@linuxfoundation.org>
+Subject: [PATCH 4.10 13/48] MIPS: ralink: Cosmetic change to prom_init().
+Date:   Thu, 16 Mar 2017 23:29:57 +0900
+Message-Id: <20170316142921.462086374@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142920.761502205@linuxfoundation.org>
 References: <20170316142920.761502205@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57352
+X-archive-position: 57353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,37 +45,51 @@ X-list: linux-mips
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: John Crispin <john@phrozen.org>
 
-commit b3f6046186ef45acfeebc5a59c9fb45cefc685e7 upstream.
+commit 9c48568b3692f1a56cbf1935e4eea835e6b185b1 upstream.
 
-Since linux-4.8, CPU_FREQ_STAT is a bool symbol, causing a warning in
-kernelci.org:
+Over the years the code has been changed various times leading to
+argc/argv being defined in a different function to where we actually
+use the variables. Clean this up by moving them to prom_init_cmdline().
 
-arch/mips/configs/lemote2f_defconfig:42:warning: symbol value 'm' invalid for CPU_FREQ_STAT
-
-This updates the defconfig to have the feature built-in.
-
-Fixes: 1aefc75b2449 ("cpufreq: stats: Make the stats code non-modular")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: John Crispin <john@phrozen.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15000/
+Patchwork: https://patchwork.linux-mips.org/patch/14902/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/configs/lemote2f_defconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ralink/prom.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/arch/mips/configs/lemote2f_defconfig
-+++ b/arch/mips/configs/lemote2f_defconfig
-@@ -39,7 +39,7 @@ CONFIG_HIBERNATION=y
- CONFIG_PM_STD_PARTITION="/dev/hda3"
- CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_DEBUG=y
--CONFIG_CPU_FREQ_STAT=m
-+CONFIG_CPU_FREQ_STAT=y
- CONFIG_CPU_FREQ_STAT_DETAILS=y
- CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
- CONFIG_CPU_FREQ_GOV_POWERSAVE=m
+--- a/arch/mips/ralink/prom.c
++++ b/arch/mips/ralink/prom.c
+@@ -30,8 +30,10 @@ const char *get_system_type(void)
+ 	return soc_info.sys_type;
+ }
+ 
+-static __init void prom_init_cmdline(int argc, char **argv)
++static __init void prom_init_cmdline(void)
+ {
++	int argc;
++	char **argv;
+ 	int i;
+ 
+ 	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
+@@ -60,14 +62,11 @@ static __init void prom_init_cmdline(int
+ 
+ void __init prom_init(void)
+ {
+-	int argc;
+-	char **argv;
+-
+ 	prom_soc_init(&soc_info);
+ 
+ 	pr_info("SoC Type: %s\n", get_system_type());
+ 
+-	prom_init_cmdline(argc, argv);
++	prom_init_cmdline();
+ }
+ 
+ void __init prom_free_prom_memory(void)

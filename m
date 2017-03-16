@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 14:01:51 +0100 (CET)
-Received: from smtpbguseast2.qq.com ([54.204.34.130]:43802 "EHLO
-        smtpbguseast2.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991955AbdCPNBnhL2p- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 14:01:43 +0100
-X-QQ-mid: bizesmtp3t1489669273tpubs2qpj
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 14:03:37 +0100 (CET)
+Received: from smtpbg65.qq.com ([103.7.28.233]:60921 "EHLO smtpbg65.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991955AbdCPNDav5n2- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Mar 2017 14:03:30 +0100
+X-QQ-mid: bizesmtp3t1489669358t1ga5q7u3
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 16 Mar 2017 20:59:34 +0800 (CST)
+        id ; Thu, 16 Mar 2017 21:01:15 +0800 (CST)
 X-QQ-SSF: 01100000002000F0FK82B00A0000000
-X-QQ-FEAT: 6dXuswn9i1XkKQy+x6LHQhr6m86ZsqaYMT4wsuUbfvNbb4B1lGjQwn0dL4S5M
-        EjLvmgW6oiMHz1jTQTSEFcylyGrWcsyWzYEPD/ekt186msFJNFWVevJCl/K+7Yz8cztRJUN
-        KMVgb/iJvBgAe6qeiaXZHk6tokQgamRqPooeILQnx3zLg4ZncFPpG8nS4tUkHEtJvIS8SZU
-        +w+6ZAw6KyZRJwBoAadca1/XjwL2jEjPFpZlgm5PLxdCWWQlbySPQTsz1eFzxU4pP7sBzS1
-        F/ehrafvzs0oZmC42cyqxoJyo9p1rl4IqwQT3an2zi2kRP
+X-QQ-FEAT: dwWm0sMBT79717n+x4m76UnOvfMbjbDiKC9m7/APC9d5tFzY3OHo0K2wcJYq8
+        CGWyGyQlVBXelLC5E0zyly9enjNUCrBmEm8TU+XlxN7wyQUnIvJZCjg6O2ciiyz9lFWUkNL
+        71VDHoOMq/OBVQnAYi7/lWjSml0dMqB6o7ld6oWjO8Cukrpb2O6tgGnLNoUmErpv78mLX8H
+        Q2k4ul3KLIcAcuG9HBa/+YiuT2kzCERjnnMocpbB3PdNUITmd3RitsGZleVV9ia4ooNIuyM
+        NsZ+JP5G1LRAYBgtz174Ci/RNKX8oH8UF42LXY8yW4fCCV
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -22,9 +22,9 @@ Cc:     John Crispin <john@phrozen.org>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org,
         Rui Wang <wangr@lemote.com>
-Subject: [PATCH RESEND V2 2/7] MIPS: Check TLB before handle_ri_rdhwr() for Loongson-3
-Date:   Thu, 16 Mar 2017 21:00:26 +0800
-Message-Id: <1489669231-28162-2-git-send-email-chenhc@lemote.com>
+Subject: [PATCH RESEND V2 3/7] MIPS: Flush wrong invalid FTLB entry for huge page
+Date:   Thu, 16 Mar 2017 21:00:27 +0800
+Message-Id: <1489669231-28162-3-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1489669231-28162-1-git-send-email-chenhc@lemote.com>
 References: <1489669231-28162-1-git-send-email-chenhc@lemote.com>
@@ -34,7 +34,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57324
+X-archive-position: 57325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,89 +51,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Loongson-3's micro TLB (ITLB) is not strictly a subset of JTLB. That
-means: when a JTLB entry is replaced by hardware, there may be an old
-valid entry exists in ITLB. So, a TLB miss exception may occur while
-handle_ri_rdhwr() is running because it try to access EPC's content.
-However, handle_ri_rdhwr() doesn't clear EXL, which makes a TLB Refill
-exception be treated as a TLB Invalid exception and tlbp may fail. In
-this case, if FTLB (which is usually set-associative instead of set-
-associative) is enabled, a tlbp failure will cause an invalid tlbwi,
-which will hang the whole system.
+On VTLB+FTLB platforms (such as Loongson-3A R2), FTLB's pagesize is
+usually configured the same as PAGE_SIZE. In such a case, Huge page
+entry is not suitable to write in FTLB.
 
-This patch rename handle_ri_rdhwr_vivt to handle_ri_rdhwr_tlbp and use
-it for Loongson-3. It try to solve the same problem described as below,
-but more straightforwards.
+Unfortunately, when a huge page is created, its page table entries
+haven't created immediately. Then the TLB refill handler will fetch an
+invalid page table entry which has no "HUGE" bit, and this entry may be
+written to FTLB. Since it is invalid, TLB load/store handler will then
+use tlbwi to write the valid entry at the same place. However, the
+valid entry is a huge page entry which isn't suitable for FTLB.
 
-https://patchwork.linux-mips.org/patch/12591/
+Our solution is to modify build_huge_handler_tail. Flush the invalid
+old entry (whether it is in FTLB or VTLB, this is in order to reduce
+branches) and use tlbwr to write the valid new entry.
 
-I think Loongson-2 has the same problem, but it has no FTLB, so we just
-keep it as is.
-
-Cc: <stable@vger.kernel.org>
-Cc: Rui Wang <wangr@lemote.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Rui Wang <wangr@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/kernel/genex.S |  4 ++--
- arch/mips/kernel/traps.c | 17 +++++++++++++----
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ arch/mips/mm/tlbex.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index 7ec9612..2ac6c26 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -519,7 +519,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	BUILD_HANDLER reserved reserved sti verbose	/* others */
- 
- 	.align	5
--	LEAF(handle_ri_rdhwr_vivt)
-+	LEAF(handle_ri_rdhwr_tlbp)
- 	.set	push
- 	.set	noat
- 	.set	noreorder
-@@ -538,7 +538,7 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	.set	pop
- 	bltz	k1, handle_ri	/* slow path */
- 	/* fall thru */
--	END(handle_ri_rdhwr_vivt)
-+	END(handle_ri_rdhwr_tlbp)
- 
- 	LEAF(handle_ri_rdhwr)
- 	.set	push
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index c7d17cf..b49e7bf 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -83,7 +83,7 @@ extern asmlinkage void handle_dbe(void);
- extern asmlinkage void handle_sys(void);
- extern asmlinkage void handle_bp(void);
- extern asmlinkage void handle_ri(void);
--extern asmlinkage void handle_ri_rdhwr_vivt(void);
-+extern asmlinkage void handle_ri_rdhwr_tlbp(void);
- extern asmlinkage void handle_ri_rdhwr(void);
- extern asmlinkage void handle_cpu(void);
- extern asmlinkage void handle_ov(void);
-@@ -2408,9 +2408,18 @@ void __init trap_init(void)
- 
- 	set_except_vector(EXCCODE_SYS, handle_sys);
- 	set_except_vector(EXCCODE_BP, handle_bp);
--	set_except_vector(EXCCODE_RI, rdhwr_noopt ? handle_ri :
--			  (cpu_has_vtag_icache ?
--			   handle_ri_rdhwr_vivt : handle_ri_rdhwr));
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 9bfee89..4f642e0 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -760,7 +760,8 @@ static void build_huge_update_entries(u32 **p, unsigned int pte,
+ static void build_huge_handler_tail(u32 **p, struct uasm_reloc **r,
+ 				    struct uasm_label **l,
+ 				    unsigned int pte,
+-				    unsigned int ptr)
++				    unsigned int ptr,
++				    unsigned int flush)
+ {
+ #ifdef CONFIG_SMP
+ 	UASM_i_SC(p, pte, 0, ptr);
+@@ -769,6 +770,22 @@ static void build_huge_handler_tail(u32 **p, struct uasm_reloc **r,
+ #else
+ 	UASM_i_SW(p, pte, 0, ptr);
+ #endif
++	if (cpu_has_ftlb && flush) {
++		BUG_ON(!cpu_has_tlbinv);
 +
-+	if (rdhwr_noopt)
-+		set_except_vector(EXCCODE_RI, handle_ri);
-+	else {
-+		if (cpu_has_vtag_icache)
-+			set_except_vector(EXCCODE_RI, handle_ri_rdhwr_tlbp);
-+		else if (current_cpu_type() == CPU_LOONGSON3)
-+			set_except_vector(EXCCODE_RI, handle_ri_rdhwr_tlbp);
-+		else
-+			set_except_vector(EXCCODE_RI, handle_ri_rdhwr);
++		UASM_i_MFC0(p, ptr, C0_ENTRYHI);
++		uasm_i_ori(p, ptr, ptr, MIPS_ENTRYHI_EHINV);
++		UASM_i_MTC0(p, ptr, C0_ENTRYHI);
++		build_tlb_write_entry(p, l, r, tlb_indexed);
++
++		uasm_i_xori(p, ptr, ptr, MIPS_ENTRYHI_EHINV);
++		UASM_i_MTC0(p, ptr, C0_ENTRYHI);
++		build_huge_update_entries(p, pte, ptr);
++		build_huge_tlb_write_entry(p, l, r, pte, tlb_random, 0);
++
++		return;
 +	}
 +
- 	set_except_vector(EXCCODE_CPU, handle_cpu);
- 	set_except_vector(EXCCODE_OV, handle_ov);
- 	set_except_vector(EXCCODE_TR, handle_tr);
+ 	build_huge_update_entries(p, pte, ptr);
+ 	build_huge_tlb_write_entry(p, l, r, pte, tlb_indexed, 0);
+ }
+@@ -2199,7 +2216,7 @@ static void build_r4000_tlb_load_handler(void)
+ 		uasm_l_tlbl_goaround2(&l, p);
+ 	}
+ 	uasm_i_ori(&p, wr.r1, wr.r1, (_PAGE_ACCESSED | _PAGE_VALID));
+-	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
++	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 1);
+ #endif
+ 
+ 	uasm_l_nopage_tlbl(&l, p);
+@@ -2254,7 +2271,7 @@ static void build_r4000_tlb_store_handler(void)
+ 	build_tlb_probe_entry(&p);
+ 	uasm_i_ori(&p, wr.r1, wr.r1,
+ 		   _PAGE_ACCESSED | _PAGE_MODIFIED | _PAGE_VALID | _PAGE_DIRTY);
+-	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
++	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 1);
+ #endif
+ 
+ 	uasm_l_nopage_tlbs(&l, p);
+@@ -2310,7 +2327,7 @@ static void build_r4000_tlb_modify_handler(void)
+ 	build_tlb_probe_entry(&p);
+ 	uasm_i_ori(&p, wr.r1, wr.r1,
+ 		   _PAGE_ACCESSED | _PAGE_MODIFIED | _PAGE_VALID | _PAGE_DIRTY);
+-	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
++	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 0);
+ #endif
+ 
+ 	uasm_l_nopage_tlbm(&l, p);
 -- 
 2.7.0

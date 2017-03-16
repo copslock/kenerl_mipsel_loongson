@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:37:21 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33986 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:37:49 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34002 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993331AbdCPOeOgcoa0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:14 +0100
+        by eddie.linux-mips.org with ESMTP id S23993882AbdCPOeTJ2wk0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:19 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7448BB49;
-        Thu, 16 Mar 2017 14:34:07 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id EFDD0B4B;
+        Thu, 16 Mar 2017 14:34:12 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 07/44] MIPS: Update ip27_defconfig for SCSI_DH change
-Date:   Thu, 16 Mar 2017 23:29:32 +0900
-Message-Id: <20170316142926.290494351@linuxfoundation.org>
+Subject: [PATCH 4.9 09/44] MIPS: Update lemote2f_defconfig for CPU_FREQ_STAT change
+Date:   Thu, 16 Mar 2017 23:29:34 +0900
+Message-Id: <20170316142926.370692272@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142925.994282609@linuxfoundation.org>
 References: <20170316142925.994282609@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57348
+X-archive-position: 57349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,35 +47,35 @@ X-list: linux-mips
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-commit ea58fca1842a5dc410cae4167b01643db971a4e2 upstream.
+commit b3f6046186ef45acfeebc5a59c9fb45cefc685e7 upstream.
 
-Since linux-4.3, SCSI_DH is a bool symbol, causing a warning in
+Since linux-4.8, CPU_FREQ_STAT is a bool symbol, causing a warning in
 kernelci.org:
 
-arch/mips/configs/ip27_defconfig:136:warning: symbol value 'm' invalid for SCSI_DH
+arch/mips/configs/lemote2f_defconfig:42:warning: symbol value 'm' invalid for CPU_FREQ_STAT
 
 This updates the defconfig to have the feature built-in.
 
-Fixes: 086b91d052eb ("scsi_dh: integrate into the core SCSI code")
+Fixes: 1aefc75b2449 ("cpufreq: stats: Make the stats code non-modular")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15001/
+Patchwork: https://patchwork.linux-mips.org/patch/15000/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/configs/ip27_defconfig |    2 +-
+ arch/mips/configs/lemote2f_defconfig |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -133,7 +133,7 @@ CONFIG_LIBFC=m
- CONFIG_SCSI_QLOGIC_1280=y
- CONFIG_SCSI_PMCRAID=m
- CONFIG_SCSI_BFA_FC=m
--CONFIG_SCSI_DH=m
-+CONFIG_SCSI_DH=y
- CONFIG_SCSI_DH_RDAC=m
- CONFIG_SCSI_DH_HP_SW=m
- CONFIG_SCSI_DH_EMC=m
+--- a/arch/mips/configs/lemote2f_defconfig
++++ b/arch/mips/configs/lemote2f_defconfig
+@@ -39,7 +39,7 @@ CONFIG_HIBERNATION=y
+ CONFIG_PM_STD_PARTITION="/dev/hda3"
+ CONFIG_CPU_FREQ=y
+ CONFIG_CPU_FREQ_DEBUG=y
+-CONFIG_CPU_FREQ_STAT=m
++CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_STAT_DETAILS=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+ CONFIG_CPU_FREQ_GOV_POWERSAVE=m

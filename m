@@ -1,19 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:39:35 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34098 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:40:01 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34110 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993543AbdCPOesUael0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:48 +0100
+        by eddie.linux-mips.org with ESMTP id S23993891AbdCPOevIYKG0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:34:51 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E611FA88;
-        Thu, 16 Mar 2017 14:34:41 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id E3199B2F;
+        Thu, 16 Mar 2017 14:34:44 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, John Crispin <john@phrozen.org>,
+        stable@vger.kernel.org,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Arnd Bergmann <arnd@arndb.de>, John Crispin <john@phrozen.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.10 13/48] MIPS: ralink: Cosmetic change to prom_init().
-Date:   Thu, 16 Mar 2017 23:29:57 +0900
-Message-Id: <20170316142921.462086374@linuxfoundation.org>
+Subject: [PATCH 4.10 14/48] MIPS: ralink: Remove unused timer functions
+Date:   Thu, 16 Mar 2017 23:29:58 +0900
+Message-Id: <20170316142921.505355129@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142920.761502205@linuxfoundation.org>
 References: <20170316142920.761502205@linuxfoundation.org>
@@ -24,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57353
+X-archive-position: 57354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,51 +47,58 @@ X-list: linux-mips
 
 ------------------
 
-From: John Crispin <john@phrozen.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9c48568b3692f1a56cbf1935e4eea835e6b185b1 upstream.
+commit d92240d12a9c010e0094bbc9280aae4a6be9a2d5 upstream.
 
-Over the years the code has been changed various times leading to
-argc/argv being defined in a different function to where we actually
-use the variables. Clean this up by moving them to prom_init_cmdline().
+The functions were originally used for the module unload path,
+but are not referenced any more and just cause warnings:
 
-Signed-off-by: John Crispin <john@phrozen.org>
+arch/mips/ralink/timer.c:104:13: error: 'rt_timer_disable' defined but not used [-Werror=unused-function]
+arch/mips/ralink/timer.c:74:13: error: 'rt_timer_free' defined but not used [-Werror=unused-function]
+
+Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
+Fixes: 62ee73d284e7 ("MIPS: ralink: Make timer explicitly non-modular")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc: John Crispin <john@phrozen.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14902/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/15041/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ralink/prom.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/mips/ralink/timer.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/arch/mips/ralink/prom.c
-+++ b/arch/mips/ralink/prom.c
-@@ -30,8 +30,10 @@ const char *get_system_type(void)
- 	return soc_info.sys_type;
+--- a/arch/mips/ralink/timer.c
++++ b/arch/mips/ralink/timer.c
+@@ -71,11 +71,6 @@ static int rt_timer_request(struct rt_ti
+ 	return err;
  }
  
--static __init void prom_init_cmdline(int argc, char **argv)
-+static __init void prom_init_cmdline(void)
- {
-+	int argc;
-+	char **argv;
- 	int i;
- 
- 	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
-@@ -60,14 +62,11 @@ static __init void prom_init_cmdline(int
- 
- void __init prom_init(void)
- {
--	int argc;
--	char **argv;
+-static void rt_timer_free(struct rt_timer *rt)
+-{
+-	free_irq(rt->irq, rt);
+-}
 -
- 	prom_soc_init(&soc_info);
- 
- 	pr_info("SoC Type: %s\n", get_system_type());
- 
--	prom_init_cmdline(argc, argv);
-+	prom_init_cmdline();
+ static int rt_timer_config(struct rt_timer *rt, unsigned long divisor)
+ {
+ 	if (rt->timer_freq < divisor)
+@@ -101,15 +96,6 @@ static int rt_timer_enable(struct rt_tim
+ 	return 0;
  }
  
- void __init prom_free_prom_memory(void)
+-static void rt_timer_disable(struct rt_timer *rt)
+-{
+-	u32 t;
+-
+-	t = rt_timer_r32(rt, TIMER_REG_TMR0CTL);
+-	t &= ~TMR0CTL_ENABLE;
+-	rt_timer_w32(rt, TIMER_REG_TMR0CTL, t);
+-}
+-
+ static int rt_timer_probe(struct platform_device *pdev)
+ {
+ 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);

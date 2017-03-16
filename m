@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:41:19 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:34190 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:41:42 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:34200 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993420AbdCPOfJPtLe0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:35:09 +0100
+        by eddie.linux-mips.org with ESMTP id S23993898AbdCPOfLsMYC0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:35:11 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D4DEAB44;
-        Thu, 16 Mar 2017 14:35:02 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7E5E4A88;
+        Thu, 16 Mar 2017 14:35:05 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 4.10 08/48] MIPS: ip27: Disable qlge driver in defconfig
-Date:   Thu, 16 Mar 2017 23:29:52 +0900
-Message-Id: <20170316142921.203976244@linuxfoundation.org>
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.10 09/48] MIPS: Update ip27_defconfig for SCSI_DH change
+Date:   Thu, 16 Mar 2017 23:29:53 +0900
+Message-Id: <20170316142921.259468158@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142920.761502205@linuxfoundation.org>
 References: <20170316142920.761502205@linuxfoundation.org>
@@ -25,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57357
+X-archive-position: 57358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,41 +47,35 @@ X-list: linux-mips
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-commit b617649468390713db1515ea79fc772d2eb897a8 upstream.
+commit ea58fca1842a5dc410cae4167b01643db971a4e2 upstream.
 
-One of the last remaining failures in kernelci.org is for a gcc bug:
+Since linux-4.3, SCSI_DH is a bool symbol, causing a warning in
+kernelci.org:
 
-drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
-drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
+arch/mips/configs/ip27_defconfig:136:warning: symbol value 'm' invalid for SCSI_DH
 
-This is apparently broken in gcc-6 but fixed in gcc-7, and I cannot
-reproduce the problem here. However, it is clear that ip27_defconfig
-does not actually need this driver as the platform has only PCI-X but
-not PCIe, and the qlge adapter in turn is PCIe-only.
+This updates the defconfig to have the feature built-in.
 
-The driver was originally enabled in 2010 along with lots of other
-drivers.
-
-Fixes: 59d302b342e5 ("MIPS: IP27: Make defconfig useful again.")
+Fixes: 086b91d052eb ("scsi_dh: integrate into the core SCSI code")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15197/
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/15001/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/configs/ip27_defconfig |    1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/configs/ip27_defconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/arch/mips/configs/ip27_defconfig
 +++ b/arch/mips/configs/ip27_defconfig
-@@ -205,7 +205,6 @@ CONFIG_MLX4_EN=m
- # CONFIG_MLX4_DEBUG is not set
- CONFIG_TEHUTI=m
- CONFIG_BNX2X=m
--CONFIG_QLGE=m
- CONFIG_SFC=m
- CONFIG_BE2NET=m
- CONFIG_LIBERTAS_THINFIRM=m
+@@ -133,7 +133,7 @@ CONFIG_LIBFC=m
+ CONFIG_SCSI_QLOGIC_1280=y
+ CONFIG_SCSI_PMCRAID=m
+ CONFIG_SCSI_BFA_FC=m
+-CONFIG_SCSI_DH=m
++CONFIG_SCSI_DH=y
+ CONFIG_SCSI_DH_RDAC=m
+ CONFIG_SCSI_DH_HP_SW=m
+ CONFIG_SCSI_DH_EMC=m

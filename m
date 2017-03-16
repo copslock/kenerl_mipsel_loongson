@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:09:31 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:49952 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991359AbdCPOJXS-1sc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Mar 2017 15:09:23 +0100
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2GE9JWl023909;
-        Thu, 16 Mar 2017 15:09:19 +0100
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2GE9I9b023908;
-        Thu, 16 Mar 2017 15:09:18 +0100
-Date:   Thu, 16 Mar 2017 15:09:18 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: ARCS can't load CONFIG_DEBUG_LOCK_ALLOC kernel
-Message-ID: <20170316140918.GH5512@linux-mips.org>
-References: <8b2d7473-ba4d-f2c9-27e7-b1a30b95c4f8@gentoo.org>
- <a639551b-4338-e1fb-0cc7-e6ea34b94c2c@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:31:10 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33316 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991172AbdCPObCSoG10 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:31:02 +0100
+Received: from localhost (unknown [183.98.136.252])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 6A838B30;
+        Thu, 16 Mar 2017 14:30:55 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, John Crispin <john@phrozen.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 10/35] MIPS: ralink: Cosmetic change to prom_init().
+Date:   Thu, 16 Mar 2017 23:29:29 +0900
+Message-Id: <20170316142907.399079691@linuxfoundation.org>
+X-Mailer: git-send-email 2.12.0
+In-Reply-To: <20170316142906.685052998@linuxfoundation.org>
+References: <20170316142906.685052998@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a639551b-4338-e1fb-0cc7-e6ea34b94c2c@gentoo.org>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57333
+X-archive-position: 57334
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,47 +41,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Mar 15, 2017 at 11:50:44PM -0400, Joshua Kinard wrote:
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-> On 03/15/2017 16:11, Joshua Kinard wrote:
-> > I've reported in the past that turning on CONFIG_DEBUG_LOCK_ALLOC produces a
-> > kernel that can't boot on several SGI platforms.  It turns out that using
-> > arcload (Stan's bootloader originally written for IP30), I can get some
-> > debugging out on why.  I am still puzzled, but maybe this information can be
-> > interpreted by someone else into something meaningful?
-> > 
-> > All addresses printed out of arcload are physical address.
-> > 
-> > ARCS Memory Map as printed by some debugging I added to the arcload binary:
-> > 
-> > 0x00000000 - 0x00001000 ExceptionBlock
-> > 0x00001000 - 0x00002000 SystemParameterBlock
-> > 0x00002000 - 0x00004000 FirmwarePermanent
-> > 0x20004000 - 0x20f00000 FreeMemory***
-> > 0x20f00000 - 0x21000000 FirmwareTemporary
-> > 0x21000000 - 0x5fff0000 FreeMemory
-> > 0x5fff0000 - 0x5ffff000 LoadedProgram
-> > 0x5ffff000 - 0x60000000 FreeMemory
-> > 0x60000000 - 0xa0000000 FirmwarePermanent
-> 
-> So it turns out I can get away, on Octane at least, by changing the load
-> address from 0x20004000 to an arbitrary value in the other FreeMemory segment
-> from 0x21000000 - 0x5fff0000.  Specifically, using 0x21004000 appears to work
-> without any ill effects.
-> 
-> The 0x20004000 value is the address used by IRIX to load (with symon, it
-> becomes 0x200800000 instead).  I'll have to try this on the IP27 later on as
-> well.  On Octane, CONFIG_DEBUG_LOCK_ALLOC didn't toss up any major locking
-> issues yet.  Probably need to hammer the disks with bonnie++ or such.  At least
-> I can get back to the BRIDGE/PCI mess now...
+------------------
 
-I'm wondering where the ARC stack is on kernel entry if maybe the
-ARC stack has corrupted the kernel?  If possible, can you get your
-kernel or a test program to compute a checksum over itself to see
-if it has been corrupted?
+From: John Crispin <john@phrozen.org>
 
-Let me repeat my ARC(S) mantra again, ARC(S) is broken, ARC(S) lies.
-Trust is futile.  Even if ARC(S) claims something is free I'd rather
-not rely on it.
+commit 9c48568b3692f1a56cbf1935e4eea835e6b185b1 upstream.
 
-  Ralf
+Over the years the code has been changed various times leading to
+argc/argv being defined in a different function to where we actually
+use the variables. Clean this up by moving them to prom_init_cmdline().
+
+Signed-off-by: John Crispin <john@phrozen.org>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/14902/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/ralink/prom.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+--- a/arch/mips/ralink/prom.c
++++ b/arch/mips/ralink/prom.c
+@@ -30,8 +30,10 @@ const char *get_system_type(void)
+ 	return soc_info.sys_type;
+ }
+ 
+-static __init void prom_init_cmdline(int argc, char **argv)
++static __init void prom_init_cmdline(void)
+ {
++	int argc;
++	char **argv;
+ 	int i;
+ 
+ 	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
+@@ -60,14 +62,11 @@ static __init void prom_init_cmdline(int
+ 
+ void __init prom_init(void)
+ {
+-	int argc;
+-	char **argv;
+-
+ 	prom_soc_init(&soc_info);
+ 
+ 	pr_info("SoC Type: %s\n", get_system_type());
+ 
+-	prom_init_cmdline(argc, argv);
++	prom_init_cmdline();
+ }
+ 
+ void __init prom_free_prom_memory(void)

@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:33:23 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33524 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:33:50 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33530 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992155AbdCPOcVdd920 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:32:21 +0100
+        by eddie.linux-mips.org with ESMTP id S23991172AbdCPOcYCWz50 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:32:24 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 63004B7F;
-        Thu, 16 Mar 2017 14:32:15 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D2631B80;
+        Thu, 16 Mar 2017 14:32:17 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 06/35] MIPS: Update ip27_defconfig for SCSI_DH change
-Date:   Thu, 16 Mar 2017 23:29:25 +0900
-Message-Id: <20170316142907.103767456@linuxfoundation.org>
+Subject: [PATCH 4.4 07/35] MIPS: ip22: Fix ip28 build for modern gcc
+Date:   Thu, 16 Mar 2017 23:29:26 +0900
+Message-Id: <20170316142907.174464472@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142906.685052998@linuxfoundation.org>
 References: <20170316142906.685052998@linuxfoundation.org>
@@ -24,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57339
+X-archive-position: 57340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,35 +47,37 @@ X-list: linux-mips
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-commit ea58fca1842a5dc410cae4167b01643db971a4e2 upstream.
+commit 23ca9b522383d3b9b7991d8586db30118992af4a upstream.
 
-Since linux-4.3, SCSI_DH is a bool symbol, causing a warning in
-kernelci.org:
+kernelci reports a failure of the ip28_defconfig build after upgrading its
+gcc version:
 
-arch/mips/configs/ip27_defconfig:136:warning: symbol value 'm' invalid for SCSI_DH
+arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed option -mr10k-cache-barrier=store.  Stop.
 
-This updates the defconfig to have the feature built-in.
+The problem apparently is that the -mr10k-cache-barrier=store option is now
+rejected for CPUs other than r10k. Explicitly including the CPU in the
+check fixes this and is safe because both options were introduced in
+gcc-4.4.
 
-Fixes: 086b91d052eb ("scsi_dh: integrate into the core SCSI code")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15001/
+Patchwork: https://patchwork.linux-mips.org/patch/15049/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/configs/ip27_defconfig |    2 +-
+ arch/mips/sgi-ip22/Platform |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -134,7 +134,7 @@ CONFIG_LIBFC=m
- CONFIG_SCSI_QLOGIC_1280=y
- CONFIG_SCSI_PMCRAID=m
- CONFIG_SCSI_BFA_FC=m
--CONFIG_SCSI_DH=m
-+CONFIG_SCSI_DH=y
- CONFIG_SCSI_DH_RDAC=m
- CONFIG_SCSI_DH_HP_SW=m
- CONFIG_SCSI_DH_EMC=m
+--- a/arch/mips/sgi-ip22/Platform
++++ b/arch/mips/sgi-ip22/Platform
+@@ -25,7 +25,7 @@ endif
+ # Simplified: what IP22 does at 128MB+ in ksegN, IP28 does at 512MB+ in xkphys
+ #
+ ifdef CONFIG_SGI_IP28
+-  ifeq ($(call cc-option-yn,-mr10k-cache-barrier=store), n)
++  ifeq ($(call cc-option-yn,-march=r10000 -mr10k-cache-barrier=store), n)
+       $(error gcc doesn't support needed option -mr10k-cache-barrier=store)
+   endif
+ endif

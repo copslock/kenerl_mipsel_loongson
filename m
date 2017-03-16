@@ -1,50 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 13:51:04 +0100 (CET)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:48762 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23991955AbdCPMu5XaEX- (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 13:50:57 +0100
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 99D1F41F8EC8;
-        Thu, 16 Mar 2017 13:56:10 +0000 (GMT)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 16 Mar 2017 13:56:10 +0000
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 16 Mar 2017 13:56:10 +0000
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id EEE93E107962F;
-        Thu, 16 Mar 2017 12:50:48 +0000 (GMT)
-Received: from localhost (192.168.154.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 16 Mar
- 2017 12:50:51 +0000
-Date:   Thu, 16 Mar 2017 12:50:51 +0000
-From:   James Hogan <james.hogan@imgtec.com>
-To:     kbuild test robot <lkp@intel.com>
-CC:     <kbuild-all@01.org>, <linux-mips@linux-mips.org>,
-        <kvm@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v2 25/33] KVM: MIPS: Add VZ support to build system
-Message-ID: <20170316125051.GD996@jhogan-linux.le.imgtec.org>
-References: <2fd6fb9c03bac22f06697e07e794071bf18b7c83.1489485940.git-series.james.hogan@imgtec.com>
- <201703161904.ueBudWmA%fengguang.wu@intel.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="lUWNHpMBvmChTRKs"
-Content-Disposition: inline
-In-Reply-To: <201703161904.ueBudWmA%fengguang.wu@intel.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 14:00:31 +0100 (CET)
+Received: from smtpproxy19.qq.com ([184.105.206.84]:43449 "EHLO
+        smtpproxy19.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991955AbdCPNAPVcLq- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 14:00:15 +0100
+X-QQ-mid: bizesmtp3t1489669173tepg7l0ul
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Thu, 16 Mar 2017 20:59:16 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK82B00A0000000
+X-QQ-FEAT: YSSoAXAEBlFIW5G79t3aGXQHbqQ3NJ39M9YI5e6EwcZRZjCuuSpJJorS/DS2q
+        6xtgZ7eiYqFpiwRN5AiAwcPzX2lh1W9iSZCJCnuJJxaZArwQ4FTvPYCzmTgrlizJ9imW5xR
+        OraO85XVlCcFhundhCNhcQoJ0lLOujdZxKbpXjg1WFSfJpqDUm5aagXm7CJSk4IJfQ1QGlQ
+        1e58qq1Erb1P+7ZiF3tVcsaXl/dAbSiqyU2PvX4/EbGB59pOdkbxSNqr6jBjdUOHijvZ3Ky
+        /xA5Yh1heCpRbbommTSz845aod06m/gtwjgg==
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
+Subject: [PATCH RESEND V2 1/7] MIPS: Add MIPS_CPU_FTLB for Loongson-3A R2
+Date:   Thu, 16 Mar 2017 21:00:25 +0800
+Message-Id: <1489669231-28162-1-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57322
+X-archive-position: 57323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -57,59 +48,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---lUWNHpMBvmChTRKs
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Loongson-3A R2 and newer CPU have FTLB, but Config0.MT is 1, so add
+MIPS_CPU_FTLB to the CPU options.
 
-On Thu, Mar 16, 2017 at 07:40:44PM +0800, kbuild test robot wrote:
-> [auto build test WARNING on kvm/linux-next]
-> [also build test WARNING on v4.11-rc2 next-20170310]
-> [if your patch is applied to the wrong git tree, please drop us a note to=
- help improve the system]
->=20
-> url:    https://github.com/0day-ci/linux/commits/James-Hogan/KVM-MIPS-Add=
--VZ-support/20170316-161027
-> base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git linux-next
-> config: mips-allmodconfig (attached as .config)
-> compiler: mips-linux-gnu-gcc (Debian 6.1.1-9) 6.1.1 20160705
-> reproduce:
->         wget https://raw.githubusercontent.com/01org/lkp-tests/master/sbi=
-n/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         make.cross ARCH=3Dmips=20
->=20
-> All warnings (new ones prefixed by >>):
->=20
-> warning: (REMOTEPROC && RPMSG_VIRTIO) selects VIRTUALIZATION which has un=
-met direct dependencies (HAVE_KVM)
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/kernel/cpu-probe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes, the new "depends on HAVE_KVM" is unnecessary anyway so I'll just
-drop that.
-
-Thanks!
-James
-
---lUWNHpMBvmChTRKs
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJYyookAAoJEGwLaZPeOHZ6IwkQAL+CzMeara1Sg2c71babol/w
-Yh460qBsuQLBaLqJ61+6nPWMbaoY2tYZTGXde/uKizKUyCqfB6caZcdmnG41VkKK
-fMnqFvQM6c411OdlbZhS7EYrPsqwO+ZZfLDrAMEfK0uDw/fzvHzOGaVwO/I/JE5K
-CddhPLqtgc8sEMhqr1m1en9EmPtpcgbcypmDbs6Edri0NnU+NbtsjKyBWZSR7wq7
-dQ6gVxwgIH+0dNwdWnqXL0935Mqbx52ZRhd+7FNlCZeKF9iagbl8grBmqZBemuG5
-pSgr5UZLEDKI2KlWwr8V6zZI1XwkU//jqHqQ4epPpo/KBlgbuQbL3IC+XokMHLe4
-QXKYeZVGHaKgrvlPb+7VJKWtUGYc1jhtUqforo0mqkqwu1LCDyQEkRpdeLx9fgXI
-BWQjtWum2qsuhAuCDwIUw3qjqOS1MxOezA7ij2lFslOYe6/pYkevcBWc1qlnHWIy
-UTRDmlcqoefE+7WaM4Qk2E+XD9YYhYHV+pdaTd5yreceNGGcEa/I8YBZwvrd/6Gh
-e8WDcNZfqmwSHkbcI6p8icX//DjZL56097mO9ZHG5jFrn6IxBkWr5lg7zU2knz9c
-BjtZ3+Fohl2IiNLB03O4Rj1v8qodyjSx/ecgOffw6DPioCvCC9QoGVZJqP3a33Bu
-317h2GCz/nanMB+JDKnj
-=RuoE
------END PGP SIGNATURE-----
-
---lUWNHpMBvmChTRKs--
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 07718bb..12422fd 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1824,7 +1824,7 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ 		}
+ 
+ 		decode_configs(c);
+-		c->options |= MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
++		c->options |= MIPS_CPU_FTLB | MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
+ 		c->writecombine = _CACHE_UNCACHED_ACCELERATED;
+ 		break;
+ 	default:
+-- 
+2.7.0

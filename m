@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 14:03:37 +0100 (CET)
-Received: from smtpbg65.qq.com ([103.7.28.233]:60921 "EHLO smtpbg65.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991955AbdCPNDav5n2- (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Mar 2017 14:03:30 +0100
-X-QQ-mid: bizesmtp3t1489669358t1ga5q7u3
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 14:05:17 +0100 (CET)
+Received: from SMTPBG19.QQ.COM ([183.60.61.236]:36485 "EHLO smtpbg320.qq.com"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991955AbdCPNFKYxvi- (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Mar 2017 14:05:10 +0100
+X-QQ-mid: bizesmtp3t1489669437txn9ig22c
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 16 Mar 2017 21:01:15 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FK82B00A0000000
-X-QQ-FEAT: dwWm0sMBT79717n+x4m76UnOvfMbjbDiKC9m7/APC9d5tFzY3OHo0K2wcJYq8
-        CGWyGyQlVBXelLC5E0zyly9enjNUCrBmEm8TU+XlxN7wyQUnIvJZCjg6O2ciiyz9lFWUkNL
-        71VDHoOMq/OBVQnAYi7/lWjSml0dMqB6o7ld6oWjO8Cukrpb2O6tgGnLNoUmErpv78mLX8H
-        Q2k4ul3KLIcAcuG9HBa/+YiuT2kzCERjnnMocpbB3PdNUITmd3RitsGZleVV9ia4ooNIuyM
-        NsZ+JP5G1LRAYBgtz174Ci/RNKX8oH8UF42LXY8yW4fCCV
+        id ; Thu, 16 Mar 2017 21:02:38 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK82000A0000000
+X-QQ-FEAT: HqsAE+iGIGhe1RY4ndo1pKTRmOpmZfSlqoc7yGvDKBGItkUQOrHAY5RB7qvRk
+        1t9ZzSwZsuVLhc4om+1ex2pCJiMtpTmVMs29KrPFXpHAKysKS8pIQUcoSJcgFlcvd7v2DIp
+        8VJ7sCvfUEeC6RiZqf9LXorpqo/7mhr7T41M9oNQFqU1sOQnVt6VwfT/ej5qZSFbgwbSHuW
+        RPV21zumI0XtBy6Wb0tceEQgs0g6qfJGOfCS4neq5OgKzFT12zs6g4aJbz6O+UrmcZTJeh1
+        ku041XDokQQgbEG7xEl7V1TvRaTWhXnbS5Ng==
 X-QQ-GoodBg: 0
 From:   Huacai Chen <chenhc@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -20,11 +20,10 @@ Cc:     John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@imgtec.com>,
         linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org,
-        Rui Wang <wangr@lemote.com>
-Subject: [PATCH RESEND V2 3/7] MIPS: Flush wrong invalid FTLB entry for huge page
-Date:   Thu, 16 Mar 2017 21:00:27 +0800
-Message-Id: <1489669231-28162-3-git-send-email-chenhc@lemote.com>
+        Huacai Chen <chenhc@lemote.com>, stable@vger.kernel.org
+Subject: [PATCH RESEND V2 4/7] MIPS: Loongson-3: Select MIPS_L1_CACHE_SHIFT_6
+Date:   Thu, 16 Mar 2017 21:00:28 +0800
+Message-Id: <1489669231-28162-4-git-send-email-chenhc@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1489669231-28162-1-git-send-email-chenhc@lemote.com>
 References: <1489669231-28162-1-git-send-email-chenhc@lemote.com>
@@ -34,7 +33,7 @@ Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57325
+X-archive-position: 57326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,91 +50,29 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On VTLB+FTLB platforms (such as Loongson-3A R2), FTLB's pagesize is
-usually configured the same as PAGE_SIZE. In such a case, Huge page
-entry is not suitable to write in FTLB.
-
-Unfortunately, when a huge page is created, its page table entries
-haven't created immediately. Then the TLB refill handler will fetch an
-invalid page table entry which has no "HUGE" bit, and this entry may be
-written to FTLB. Since it is invalid, TLB load/store handler will then
-use tlbwi to write the valid entry at the same place. However, the
-valid entry is a huge page entry which isn't suitable for FTLB.
-
-Our solution is to modify build_huge_handler_tail. Flush the invalid
-old entry (whether it is in FTLB or VTLB, this is in order to reduce
-branches) and use tlbwr to write the valid new entry.
+Some newer Loongson-3 has 64 bytes cache line size, so we select
+MIPS_L1_CACHE_SHIFT_6.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Rui Wang <wangr@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 ---
- arch/mips/mm/tlbex.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 9bfee89..4f642e0 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -760,7 +760,8 @@ static void build_huge_update_entries(u32 **p, unsigned int pte,
- static void build_huge_handler_tail(u32 **p, struct uasm_reloc **r,
- 				    struct uasm_label **l,
- 				    unsigned int pte,
--				    unsigned int ptr)
-+				    unsigned int ptr,
-+				    unsigned int flush)
- {
- #ifdef CONFIG_SMP
- 	UASM_i_SC(p, pte, 0, ptr);
-@@ -769,6 +770,22 @@ static void build_huge_handler_tail(u32 **p, struct uasm_reloc **r,
- #else
- 	UASM_i_SW(p, pte, 0, ptr);
- #endif
-+	if (cpu_has_ftlb && flush) {
-+		BUG_ON(!cpu_has_tlbinv);
-+
-+		UASM_i_MFC0(p, ptr, C0_ENTRYHI);
-+		uasm_i_ori(p, ptr, ptr, MIPS_ENTRYHI_EHINV);
-+		UASM_i_MTC0(p, ptr, C0_ENTRYHI);
-+		build_tlb_write_entry(p, l, r, tlb_indexed);
-+
-+		uasm_i_xori(p, ptr, ptr, MIPS_ENTRYHI_EHINV);
-+		UASM_i_MTC0(p, ptr, C0_ENTRYHI);
-+		build_huge_update_entries(p, pte, ptr);
-+		build_huge_tlb_write_entry(p, l, r, pte, tlb_random, 0);
-+
-+		return;
-+	}
-+
- 	build_huge_update_entries(p, pte, ptr);
- 	build_huge_tlb_write_entry(p, l, r, pte, tlb_indexed, 0);
- }
-@@ -2199,7 +2216,7 @@ static void build_r4000_tlb_load_handler(void)
- 		uasm_l_tlbl_goaround2(&l, p);
- 	}
- 	uasm_i_ori(&p, wr.r1, wr.r1, (_PAGE_ACCESSED | _PAGE_VALID));
--	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
-+	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 1);
- #endif
- 
- 	uasm_l_nopage_tlbl(&l, p);
-@@ -2254,7 +2271,7 @@ static void build_r4000_tlb_store_handler(void)
- 	build_tlb_probe_entry(&p);
- 	uasm_i_ori(&p, wr.r1, wr.r1,
- 		   _PAGE_ACCESSED | _PAGE_MODIFIED | _PAGE_VALID | _PAGE_DIRTY);
--	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
-+	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 1);
- #endif
- 
- 	uasm_l_nopage_tlbs(&l, p);
-@@ -2310,7 +2327,7 @@ static void build_r4000_tlb_modify_handler(void)
- 	build_tlb_probe_entry(&p);
- 	uasm_i_ori(&p, wr.r1, wr.r1,
- 		   _PAGE_ACCESSED | _PAGE_MODIFIED | _PAGE_VALID | _PAGE_DIRTY);
--	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
-+	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 0);
- #endif
- 
- 	uasm_l_nopage_tlbm(&l, p);
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e0bb576..c3c7d8a 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1373,6 +1373,7 @@ config CPU_LOONGSON3
+ 	select WEAK_ORDERING
+ 	select WEAK_REORDERING_BEYOND_LLSC
+ 	select MIPS_PGD_C0_CONTEXT
++	select MIPS_L1_CACHE_SHIFT_6
+ 	select GPIOLIB
+ 	help
+ 		The Loongson 3 processor implements the MIPS64R2 instruction
 -- 
 2.7.0
+
+
+	

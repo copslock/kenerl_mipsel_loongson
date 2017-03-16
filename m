@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 17:03:36 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:37696 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 17:04:00 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:38310 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23992155AbdCPQCysWcOH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Mar 2017 17:02:54 +0100
+        id S23993179AbdCPQDgHso3H (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Mar 2017 17:03:36 +0100
 Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2GG2r18029872;
-        Thu, 16 Mar 2017 17:02:53 +0100
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2GG3YQW029899;
+        Thu, 16 Mar 2017 17:03:34 +0100
 Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2GG2rn1029871;
-        Thu, 16 Mar 2017 17:02:53 +0100
-Date:   Thu, 16 Mar 2017 17:02:53 +0100
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2GG3YxL029898;
+        Thu, 16 Mar 2017 17:03:34 +0100
+Date:   Thu, 16 Mar 2017 17:03:34 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     "Steven J. Hill" <steven.hill@cavium.com>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Octeon: Fix compile error when USB is not enabled.
-Message-ID: <20170316160253.GN5512@linux-mips.org>
-References: <1489068938-9795-1-git-send-email-steven.hill@cavium.com>
+Subject: Re: [PATCH] MIPS: Octeon: Remove unused PCIERCX types and macros.
+Message-ID: <20170316160334.GO5512@linux-mips.org>
+References: <1489069890-14569-1-git-send-email-steven.hill@cavium.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1489068938-9795-1-git-send-email-steven.hill@cavium.com>
+In-Reply-To: <1489069890-14569-1-git-send-email-steven.hill@cavium.com>
 User-Agent: Mutt/1.8.0 (2017-02-23)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57369
+X-archive-position: 57370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

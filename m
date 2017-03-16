@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:31:32 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:33322 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2017 15:31:59 +0100 (CET)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:33356 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991359AbdCPObG4mEA0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:31:06 +0100
+        by eddie.linux-mips.org with ESMTP id S23992111AbdCPObPNnmj0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 16 Mar 2017 15:31:15 +0100
 Received: from localhost (unknown [183.98.136.252])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 4DB74B37;
-        Thu, 16 Mar 2017 14:30:58 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D37ACB50;
+        Thu, 16 Mar 2017 14:31:08 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        John Crispin <john@phrozen.org>,
-        Colin Ian King <colin.king@canonical.com>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Jayachandran C <jchandra@broadcom.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 11/35] MIPS: ralink: Remove unused rt*_wdt_reset functions
-Date:   Thu, 16 Mar 2017 23:29:30 +0900
-Message-Id: <20170316142907.444461987@linuxfoundation.org>
+Subject: [PATCH 4.4 15/35] MIPS: Netlogic: Fix CP0_EBASE redefinition warnings
+Date:   Thu, 16 Mar 2017 23:29:34 +0900
+Message-Id: <20170316142907.729850853@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.0
 In-Reply-To: <20170316142906.685052998@linuxfoundation.org>
 References: <20170316142906.685052998@linuxfoundation.org>
@@ -26,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57335
+X-archive-position: 57336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,89 +46,106 @@ X-list: linux-mips
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 886f9c69fc68f56ddea34d3de51ac1fc2ac8dfbc upstream.
+commit 32eb6e8bee147b45e5e59230630d59541ccbb6e5 upstream.
 
-All pointers to these functions were removed, so now they produce
-warnings:
+A couple of netlogic assembly files define CP0_EBASE to $15, the same as
+CP0_PRID in mipsregs.h, and use it for accessing both CP0_PRId and
+CP0_EBase registers. However commit 609cf6f2291a ("MIPS: CPS: Early
+debug using an ns16550-compatible UART") added a different definition of
+CP0_EBASE to mipsregs.h, which included a register select of 1. This
+causes harmless build warnings like the following:
 
-arch/mips/ralink/rt305x.c:92:13: error: 'rt305x_wdt_reset' defined but not used [-Werror=unused-function]
+  arch/mips/netlogic/common/reset.S:53:0: warning: "CP0_EBASE" redefined
+  #define CP0_EBASE $15
+  ^
+  In file included from arch/mips/netlogic/common/reset.S:41:0:
+  ./arch/mips/include/asm/mipsregs.h:63:0: note: this is the location of the previous definition
+  #define CP0_EBASE $15, 1
+  ^
 
-This removes the functions. If we need them again, the patch can be
-reverted later.
+Update the code to use the definitions from mipsregs.h for accessing
+both registers.
 
-Fixes: f576fb6a0700 ("MIPS: ralink: cleanup the soc specific pinmux data")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Cc: John Crispin <john@phrozen.org>
-Cc: Colin Ian King <colin.king@canonical.com>
+Fixes: 609cf6f2291a ("MIPS: CPS: Early debug using an ns16550-compatible UART")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Acked-by: Jayachandran C <jchandra@broadcom.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15044/
+Patchwork: https://patchwork.linux-mips.org/patch/13183/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ralink/rt288x.c |   10 ----------
- arch/mips/ralink/rt305x.c |   11 -----------
- arch/mips/ralink/rt3883.c |   10 ----------
- 3 files changed, 31 deletions(-)
+ arch/mips/netlogic/common/reset.S   |   11 +++++------
+ arch/mips/netlogic/common/smpboot.S |    4 +---
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
---- a/arch/mips/ralink/rt288x.c
-+++ b/arch/mips/ralink/rt288x.c
-@@ -40,16 +40,6 @@ static struct rt2880_pmx_group rt2880_pi
- 	{ 0 }
- };
+--- a/arch/mips/netlogic/common/reset.S
++++ b/arch/mips/netlogic/common/reset.S
+@@ -50,7 +50,6 @@
+ #include <asm/netlogic/xlp-hal/sys.h>
+ #include <asm/netlogic/xlp-hal/cpucontrol.h>
  
--static void rt288x_wdt_reset(void)
--{
--	u32 t;
--
--	/* enable WDT reset output on pin SRAM_CS_N */
--	t = rt_sysc_r32(SYSC_REG_CLKCFG);
--	t |= CLKCFG_SRAM_CS_N_WDT;
--	rt_sysc_w32(t, SYSC_REG_CLKCFG);
--}
--
- void __init ralink_clk_init(void)
- {
- 	unsigned long cpu_rate, wmac_rate = 40000000;
---- a/arch/mips/ralink/rt305x.c
-+++ b/arch/mips/ralink/rt305x.c
-@@ -89,17 +89,6 @@ static struct rt2880_pmx_group rt5350_pi
- 	{ 0 }
- };
+-#define CP0_EBASE	$15
+ #define SYS_CPU_COHERENT_BASE	CKSEG1ADDR(XLP_DEFAULT_IO_BASE) + \
+ 			XLP_IO_SYS_OFFSET(0) + XLP_IO_PCI_HDRSZ + \
+ 			SYS_CPU_NONCOHERENT_MODE * 4
+@@ -92,7 +91,7 @@
+  * registers. On XLPII CPUs, usual cache instructions work.
+  */
+ .macro	xlp_flush_l1_dcache
+-	mfc0	t0, CP0_EBASE, 0
++	mfc0	t0, CP0_PRID
+ 	andi	t0, t0, PRID_IMP_MASK
+ 	slt	t1, t0, 0x1200
+ 	beqz	t1, 15f
+@@ -171,7 +170,7 @@ FEXPORT(nlm_reset_entry)
+ 	nop
  
--static void rt305x_wdt_reset(void)
--{
--	u32 t;
--
--	/* enable WDT reset output on pin SRAM_CS_N */
--	t = rt_sysc_r32(SYSC_REG_SYSTEM_CONFIG);
--	t |= RT305X_SYSCFG_SRAM_CS0_MODE_WDT <<
--		RT305X_SYSCFG_SRAM_CS0_MODE_SHIFT;
--	rt_sysc_w32(t, SYSC_REG_SYSTEM_CONFIG);
--}
--
- static unsigned long rt5350_get_mem_size(void)
- {
- 	void __iomem *sysc = (void __iomem *) KSEG1ADDR(RT305X_SYSC_BASE);
---- a/arch/mips/ralink/rt3883.c
-+++ b/arch/mips/ralink/rt3883.c
-@@ -63,16 +63,6 @@ static struct rt2880_pmx_group rt3883_pi
- 	{ 0 }
- };
+ 1:	/* Entry point on core wakeup */
+-	mfc0	t0, CP0_EBASE, 0	/* processor ID */
++	mfc0	t0, CP0_PRID		/* processor ID */
+ 	andi	t0, PRID_IMP_MASK
+ 	li	t1, 0x1500		/* XLP 9xx */
+ 	beq	t0, t1, 2f		/* does not need to set coherent */
+@@ -182,8 +181,8 @@ FEXPORT(nlm_reset_entry)
+ 	nop
  
--static void rt3883_wdt_reset(void)
--{
--	u32 t;
+ 	/* set bit in SYS coherent register for the core */
+-	mfc0	t0, CP0_EBASE, 1
+-	mfc0	t1, CP0_EBASE, 1
++	mfc0	t0, CP0_EBASE
++	mfc0	t1, CP0_EBASE
+ 	srl	t1, 5
+ 	andi	t1, 0x3			/* t1 <- node */
+ 	li	t2, 0x40000
+@@ -232,7 +231,7 @@ EXPORT(nlm_boot_siblings)
+ 
+ 	 * NOTE: All GPR contents are lost after the mtcr above!
+ 	 */
+-	mfc0	v0, CP0_EBASE, 1
++	mfc0	v0, CP0_EBASE
+ 	andi	v0, 0x3ff		/* v0 <- node/core */
+ 
+ 	/*
+--- a/arch/mips/netlogic/common/smpboot.S
++++ b/arch/mips/netlogic/common/smpboot.S
+@@ -48,8 +48,6 @@
+ #include <asm/netlogic/xlp-hal/sys.h>
+ #include <asm/netlogic/xlp-hal/cpucontrol.h>
+ 
+-#define CP0_EBASE	$15
 -
--	/* enable WDT reset output on GPIO 2 */
--	t = rt_sysc_r32(RT3883_SYSC_REG_SYSCFG1);
--	t |= RT3883_SYSCFG1_GPIO2_AS_WDT_OUT;
--	rt_sysc_w32(t, RT3883_SYSC_REG_SYSCFG1);
--}
--
- void __init ralink_clk_init(void)
- {
- 	unsigned long cpu_rate, sys_rate;
+ 	.set	noreorder
+ 	.set	noat
+ 	.set	arch=xlr		/* for mfcr/mtcr, XLR is sufficient */
+@@ -86,7 +84,7 @@ NESTED(nlm_boot_secondary_cpus, 16, sp)
+ 	PTR_L	gp, 0(t1)
+ 
+ 	/* a0 has the processor id */
+-	mfc0	a0, CP0_EBASE, 1
++	mfc0	a0, CP0_EBASE
+ 	andi	a0, 0x3ff		/* a0 <- node/core */
+ 	PTR_LA	t0, nlm_early_init_secondary
+ 	jalr	t0

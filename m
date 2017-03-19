@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Mar 2017 09:55:16 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:51294 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991976AbdCSIzHDaufA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 19 Mar 2017 09:55:07 +0100
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2J8t4ZU003769;
-        Sun, 19 Mar 2017 09:55:05 +0100
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2J8t443003766;
-        Sun, 19 Mar 2017 09:55:04 +0100
-Date:   Sun, 19 Mar 2017 09:55:04 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: ARCS can't load CONFIG_DEBUG_LOCK_ALLOC kernel
-Message-ID: <20170319085504.GB14919@linux-mips.org>
-References: <8b2d7473-ba4d-f2c9-27e7-b1a30b95c4f8@gentoo.org>
- <a639551b-4338-e1fb-0cc7-e6ea34b94c2c@gentoo.org>
- <20170316140918.GH5512@linux-mips.org>
- <86da6dd2-7b02-cd0d-f152-00dfb134a3ec@gentoo.org>
- <20170316190629.GP5512@linux-mips.org>
- <13b0221d-c17a-7e5b-6bb5-702ee7d896c1@gentoo.org>
- <20170316205006.GE10914@linux-mips.org>
- <c969ac8f-2915-6d9c-cc59-0da77199b3a1@gentoo.org>
- <23538ffb-4ab5-22b5-d740-fbe5fadf8aa0@gentoo.org>
- <680b861f-c60f-441a-53ff-f79edb0ce044@gentoo.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <680b861f-c60f-441a-53ff-f79edb0ce044@gentoo.org>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Mar 2017 17:05:34 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37412 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992881AbdCSQFYgHRGm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Mar 2017 17:05:24 +0100
+Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1cpdKb-0007Qx-I6; Sun, 19 Mar 2017 16:05:21 +0000
+Received: from ben by deadeye with local (Exim 4.89)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1cpdKa-00059u-N2; Sun, 19 Mar 2017 16:05:20 +0000
+Message-ID: <1489939516.2852.71.camel@decadent.org.uk>
+Subject: Re: [PATCH 4.4 04/35] MIPS: Update defconfigs for
+ NF_CT_PROTO_DCCP/UDPLITE change
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org
+Cc:     stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Date:   Sun, 19 Mar 2017 16:05:16 +0000
+In-Reply-To: <20170316142906.994447562@linuxfoundation.org>
+References: <20170316142906.685052998@linuxfoundation.org>
+         <20170316142906.994447562@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-AwAI9QrjXVRk/IPasf40"
+X-Mailer: Evolution 3.22.5-1 
+Mime-Version: 1.0
+X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57388
+X-archive-position: 57389
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,57 +51,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Mar 19, 2017 at 03:23:39AM -0400, Joshua Kinard wrote:
 
-> The closest I've gotten to extracting info on the state of the machine is to
-> set the MSC debug switches to 0x1018 and then issue an immediate reset to have
-> it drop into POD dirty-exclusive as soon as possible.  Then running "why"
-> sometimes nets me a valid kernel address in EPC that tells me where the POD CPU
-> was last at.  Downside, I have four CPUs and MSC POD locks up if I try
-> switching to any of the other CPUs.  So I can't get a register dump off of the
-> other three.
+--=-AwAI9QrjXVRk/IPasf40
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Have you tried to send an NMI fro the MSC?  The PoD debugger is actually
-a fairly handy tool in such cases.
+On Thu, 2017-03-16 at 23:29 +0900, Greg Kroah-Hartman wrote:
+> 4.4-stable review patch.=C2=A0=C2=A0If anyone has any objections, please =
+let me know.
+>=20
+> ------------------
+>=20
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> commit 9ddc16ad8e0bc7742fc96d5aaabc5b8698512cd1 upstream.
+>=20
+> In linux-4.10-rc, NF_CT_PROTO_UDPLITE and NF_CT_PROTO_DCCP are bool
+> symbols instead of tristate, and kernelci.org reports a bunch of
+> warnings for this, like:
+>=20
+> arch/mips/configs/malta_kvm_guest_defconfig:63:warning: symbol value 'm' =
+invalid for NF_CT_PROTO_UDPLITE
+> arch/mips/configs/malta_defconfig:62:warning: symbol value 'm' invalid fo=
+r NF_CT_PROTO_DCCP
+> arch/mips/configs/malta_defconfig:63:warning: symbol value 'm' invalid fo=
+r NF_CT_PROTO_UDPLITE
+> arch/mips/configs/ip22_defconfig:70:warning: symbol value 'm' invalid for=
+ NF_CT_PROTO_DCCP
+> arch/mips/configs/ip22_defconfig:71:warning: symbol value 'm' invalid for=
+ NF_CT_PROTO_UDPLITE
+>=20
+> This changes all the MIPS defconfigs with these symbols to have them
+> built-in.
+>=20
+> Fixes: 9b91c96c5d1f ("netfilter: conntrack: built-in support for UDPlite"=
+)
+> Fixes: c51d39010a1b ("netfilter: conntrack: built-in support for DCCP")
+[...]
 
-> 2A 000: Done initializing klconfig.
-> 2A 000: Discovering NUMAlink connectivity .........             DONE
-> 2A 000: Found 2 objects (2 hubs, 0 routers) in 511413 usec
-> 1B 000: Testing/Initializing memory ...............             DONE
-> 2A 000: Waiting for peers to complete discovery....             Reading link 0
-> (addr 0x92000000
-> 2A 000: 00000004) failed
-> 1B 000: CPU B switching to UALIAS
-> 1B 000: CPU B now running out of UALIAS
-> 2A 000: Reading link 0 (addr 0x9200000000000004) failed
-> 1B 000: Skipping secondary cache diags
-> 1B 000: CPU B switching stack into UALIAS and invalidating D-cache
-> 1B 000: CPU B switching into node 0 cached RAM
-> 1B 000: CPU B running cached
-> 2A 000: Reading link 0 (addr 0x9200000000000004) failed
-> 2A 000: Reading link 0 (addr 0x9200000000000004) failed
+I don't think this was needed for 4.4 or 4.9, as those symbols were
+still tristate type.
 
-I thought that kind of messages was indicating a hardware issue.
+Ben.
 
-> Then it gets a general exception and drops to POD Dex:
-> 1B 000: Local Slave : Waiting for my NASID ...
-> 1B 000: CPU B switching to UALIAS
-> 1B 000: CPU B running in UALIAS
-> 1B 000: CPU B Flushing and invalidating caches
-> 1B 000: CPU B switching to node 0 cached RAM
-> 1B 000: CPU B running cached
-> 1A 000:
-> 1A 000: *** General Exception on node 0
-> 1A 000: *** EPC: 0xc00000001fc473dc (0xc00000001fc473dc)
-> 1A 000: *** Press ENTER to continue.
-> 1A 000: POD MSC Dex>
-> 
-> If this is a hardware lock up, that might explain why kgdb isn't useful at that
-> point.  POD lets me dump the CRBs and PI error spool, but I'm not sure how
-> useful that information is w/o SGI's internal documents.
+--=20
+Ben Hutchings
+Power corrupts.=C2=A0=C2=A0Absolute power is kind of neat.
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0- John Lehman, Secretary of the US Navy
+1981-1987
 
-I still haven't forgotten everything (I hope) so maybe you could post that
-information anyway just to use the small chance there ight be something
-useful in there?
 
-  Ralf
+--=-AwAI9QrjXVRk/IPasf40
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAljOrDwACgkQ57/I7JWG
+EQk+MQ/+Ljo+iMVN+U5Uon4qv/b/DyVFhgiVnBI5uZLFd2ts6M4j5TvtzlUnyTZR
+u2Czrf5slrwsTbriiZ9+5qGB3ZEBEyt8UHP7+wY6VLnMQRcpMowptZeRamzPzIeN
+/PKP8dsmJCmr/PqsAJ0wmj/fY47Ljip9H27JZ5xj68IYT/T9oFD5+LuQ50wfdwlY
+JOINNl2Q54q8p3owbDAci9EkpRWLk7MDlKYm1XRt8ZPucOL5+NpDhZ3qiTC1OyxG
+5ZeTx1tdhtXTsZnVZmJ0ctjIXNvMw/LxVaujy8UyfIpX/DhAH12bji+R2O+6FJ9i
++r4t7vAnjrwotvUBQp2Bd2zeqZlmzPq/O9pZEOzp0snoCnto6oEGhZKpOVIU8xUZ
+T4YEj+7x6jdIEeqgtYyo67NQl2qMyIhor9lUWW5SLEmywfxM6hDg1LOZoiWwxRBc
+SDn5AFRBzAlkNYBsomTHgoJd1nPECbAkXZHRyn2+aQAyAiCOZ9YjEDsIEAaC+Wvm
+LFeJ6Se3jd6RpxZL5z4Otkn8xCxpuHZErpeuMucZgxCoCzfn6sQANuw5GBrID1bY
+OwbUjagSx6uP6X85c/SwoxPYWZez+p2OmisUwubjAL58H+1GnVX4IoDpYg/sLBHx
+r8pmNAcSUtIBNZE0DUw2po4EUDx/tiDaxtPQjboCGvGY3goDato=
+=s7xs
+-----END PGP SIGNATURE-----
+
+--=-AwAI9QrjXVRk/IPasf40--

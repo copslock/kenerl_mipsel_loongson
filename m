@@ -1,44 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Mar 2017 17:06:31 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37420 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993417AbdCSQGWPjAqm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Mar 2017 17:06:22 +0100
-Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1cpdLZ-0007Ru-1P; Sun, 19 Mar 2017 16:06:21 +0000
-Received: from ben by deadeye with local (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1cpdLY-0005AP-6f; Sun, 19 Mar 2017 16:06:20 +0000
-Message-ID: <1489939579.2852.72.camel@decadent.org.uk>
-Subject: Re: [PATCH 4.4 08/35] MIPS: Update lemote2f_defconfig for
- CPU_FREQ_STAT change
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Date:   Sun, 19 Mar 2017 16:06:19 +0000
-In-Reply-To: <20170316142907.261390617@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Mar 2017 11:04:10 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:43790 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23992881AbdCTKDzMx2PR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 20 Mar 2017 11:03:55 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2KA3rs4000402;
+        Mon, 20 Mar 2017 11:03:54 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2KA3r3X000401;
+        Mon, 20 Mar 2017 11:03:53 +0100
+Date:   Mon, 20 Mar 2017 11:03:53 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 4.4 04/35] MIPS: Update defconfigs for
+ NF_CT_PROTO_DCCP/UDPLITE change
+Message-ID: <20170320100353.GC14919@linux-mips.org>
 References: <20170316142906.685052998@linuxfoundation.org>
-         <20170316142907.261390617@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-+x+bc76ugfGLc/BR+66R"
-X-Mailer: Evolution 3.22.5-1 
-Mime-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+ <20170316142906.994447562@linuxfoundation.org>
+ <1489939516.2852.71.camel@decadent.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1489939516.2852.71.camel@decadent.org.uk>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57390
+X-archive-position: 57391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,64 +48,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+On Sun, Mar 19, 2017 at 04:05:16PM +0000, Ben Hutchings wrote:
+> Date:   Sun, 19 Mar 2017 16:05:16 +0000
+> From: Ben Hutchings <ben@decadent.org.uk>
+> To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+>  linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+>  linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+> Subject: Re: [PATCH 4.4 04/35] MIPS: Update defconfigs for
+>  NF_CT_PROTO_DCCP/UDPLITE change
+> Content-Type: multipart/signed; micalg="pgp-sha512";
+>         protocol="application/pgp-signature";
+>  boundary="=-AwAI9QrjXVRk/IPasf40"
+> 
+> On Thu, 2017-03-16 at 23:29 +0900, Greg Kroah-Hartman wrote:
+> > 4.4-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > commit 9ddc16ad8e0bc7742fc96d5aaabc5b8698512cd1 upstream.
+> > 
+> > In linux-4.10-rc, NF_CT_PROTO_UDPLITE and NF_CT_PROTO_DCCP are bool
+> > symbols instead of tristate, and kernelci.org reports a bunch of
+> > warnings for this, like:
+> > 
+> > arch/mips/configs/malta_kvm_guest_defconfig:63:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
+> > arch/mips/configs/malta_defconfig:62:warning: symbol value 'm' invalid for NF_CT_PROTO_DCCP
+> > arch/mips/configs/malta_defconfig:63:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
+> > arch/mips/configs/ip22_defconfig:70:warning: symbol value 'm' invalid for NF_CT_PROTO_DCCP
+> > arch/mips/configs/ip22_defconfig:71:warning: symbol value 'm' invalid for NF_CT_PROTO_UDPLITE
+> > 
+> > This changes all the MIPS defconfigs with these symbols to have them
+> > built-in.
+> > 
+> > Fixes: 9b91c96c5d1f ("netfilter: conntrack: built-in support for UDPlite")
+> > Fixes: c51d39010a1b ("netfilter: conntrack: built-in support for DCCP")
+> [...]
+> 
+> I don't think this was needed for 4.4 or 4.9, as those symbols were
+> still tristate type.
 
---=-+x+bc76ugfGLc/BR+66R
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Indeed, there's no waring for "make ARCH=mips malta_kvm_guest_defconfig".
 
-On Thu, 2017-03-16 at 23:29 +0900, Greg Kroah-Hartman wrote:
-> 4.4-stable review patch.=C2=A0=C2=A0If anyone has any objections, please =
-let me know.
->=20
-> ------------------
->=20
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> commit b3f6046186ef45acfeebc5a59c9fb45cefc685e7 upstream.
->=20
-> Since linux-4.8, CPU_FREQ_STAT is a bool symbol, causing a warning in
-> kernelci.org:
->=20
-> arch/mips/configs/lemote2f_defconfig:42:warning: symbol value 'm' invalid=
- for CPU_FREQ_STAT
->=20
-> This updates the defconfig to have the feature built-in.
->=20
-> Fixes: 1aefc75b2449 ("cpufreq: stats: Make the stats code non-modular")
-[...]
-
-So not needed for 4.4?
-
-Ben.
-
---=20
-Ben Hutchings
-Power corrupts.=C2=A0=C2=A0Absolute power is kind of neat.
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0- John Lehman, Secretary of the US Navy
-1981-1987
-
-
---=-+x+bc76ugfGLc/BR+66R
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAljOrHwACgkQ57/I7JWG
-EQkZ5Q/9ENYycYTpAIvdqcAPbpphrRgd68B4G4RcZVRWHDr+0nQ7k7tNGGUhIupy
-5HAo+Cki1LJbUK+Zq+WszdkPjc1thh1g78W6KTA4ooG/J8LVg2zPfbyNOuwg8yg1
-eX1a+G3Skgu9keqpyBuvmeunu4IkziRs5izVPbTKx7nQYcjl3EHTnQi3ox6aGRhR
-vEJmSKvd8LTJjU6wu9jphSQ9/DGETfVLwvbNTJto3z9gOJ+k487h0x7h+CX5DsoW
-9FrU4pBHYKlDukqlJZ3CkYsltG1TcNbPG+9VvRGphkF/OhyHBZV7ccpmQNfoW/AJ
-so6D470PjazWZdSD4yme+KtHMWGX7rYJcFVgfdLAAE9K71mY1TS9uxW0VpUl6aWX
-dwAsGc/CSJJy8NM9vKdoBK0JpcGJKuFKt/Gs3Iz3aHWul1QpG0PsS0atHZXIze5A
-GVEArYAtWS6nFYgQPSv+l0I9vh/T9ArhixmE6X/ReRKZvjjFHsFojJgpZ0PHeB3y
-WKNODlBrMqcKp0vIaFU2Ch5n2rrM9usPTVilvbRJjowxRMNAbhkMAtN09G+zG8jU
-rcqO0ffnxjeypp5ydXnh+L6BbTjPbzGtR3Yft9nWDZyemYtsOXVmYJ3a8B1Jueul
-f5O7EpJjr/mcOw9O9mjBQpnsG2j7mXOe5mhchP4S7qGfQUdoF6Y=
-=5xww
------END PGP SIGNATURE-----
-
---=-+x+bc76ugfGLc/BR+66R--
+  Ralf

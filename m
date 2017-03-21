@@ -1,40 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Mar 2017 18:35:08 +0100 (CET)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37256 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993875AbdCTRfAyNmBJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Mar 2017 18:35:00 +0100
-Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 210FFB80;
-        Mon, 20 Mar 2017 17:34:53 +0000 (UTC)
-Date:   Mon, 20 Mar 2017 18:34:32 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Mar 2017 15:39:41 +0100 (CET)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:44599 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993883AbdCUOjedVCe6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Mar 2017 15:39:34 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id C0A56CA5BF75B;
+        Tue, 21 Mar 2017 14:39:24 +0000 (GMT)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Tue, 21 Mar 2017 14:39:27 +0000
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Ben Hutchings <ben@decadent.org.uk>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 4.4 08/35] MIPS: Update lemote2f_defconfig for
- CPU_FREQ_STAT change
-Message-ID: <20170320173432.GA20708@kroah.com>
-References: <20170316142906.685052998@linuxfoundation.org>
- <20170316142907.261390617@linuxfoundation.org>
- <1489939579.2852.72.camel@decadent.org.uk>
- <20170320101530.GD14919@linux-mips.org>
- <20170320162957.GB23463@kroah.com>
- <20170320165049.GH14919@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH] MIPS: smp-cps: Fix retrieval of VPE mask on big endian CPUs
+Date:   Tue, 21 Mar 2017 14:39:19 +0000
+Message-ID: <1490107159-2659-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170320165049.GH14919@linux-mips.org>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57401
+X-archive-position: 57402
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,16 +43,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 20, 2017 at 05:50:49PM +0100, Ralf Baechle wrote:
-> On Mon, Mar 20, 2017 at 05:29:57PM +0100, Greg Kroah-Hartman wrote:
-> 
-> > > I don't think so, I don't get warnings for "make ARCH=mips lemote2f_defconfig"
-> > 
-> > Ok, is it worth reverting as this is an issue on later kernels?
-> 
-> Same answer as for the other patch - I can't imagine it's going to cause
-> any problems.
+The vpe_mask member of struct core_boot_config is of type atomic_t,
+which is a 32bit type. In cps-vec.S this member was being retrieved by a
+PTR_L macro, which on 64bit systems is a 64bit load. On little endian
+systems this is OK, since the double word that is retrieved will have
+the required less significant word in the correct position. However, on
+big endian systems the less significant word of the load is retrieved
+from address+4, and the more significant from address+0. The destination
+register therefore ends up with the required word in the more
+significant word
+e.g. when starting the second VP of a big endian 64bit system, the load
 
-Thanks for the response, will leave these as-is.
+PTR_L    ta2, COREBOOTCFG_VPEMASK(a0)
 
-greg k-h
+ends up setting register ta2 to 0x0000000300000000
+
+When this value is written to the CPC it is ignored, since it is
+invalid to write anything larger than 4 bits. This results in any VP
+other than VP0 in a core failing to start in 64bit big endian systems.
+
+Change the load to a 32bit load word instruction to fix the bug.
+
+Fixes: f12401d7219f ("MIPS: smp-cps: Pull boot config retrieval out of mips_cps_boot_vpes")
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+
+---
+
+ arch/mips/kernel/cps-vec.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/kernel/cps-vec.S b/arch/mips/kernel/cps-vec.S
+index 59476a607add..a00e87b0256d 100644
+--- a/arch/mips/kernel/cps-vec.S
++++ b/arch/mips/kernel/cps-vec.S
+@@ -361,7 +361,7 @@ LEAF(mips_cps_get_bootcfg)
+ 	END(mips_cps_get_bootcfg)
+ 
+ LEAF(mips_cps_boot_vpes)
+-	PTR_L	ta2, COREBOOTCFG_VPEMASK(a0)
++	lw	ta2, COREBOOTCFG_VPEMASK(a0)
+ 	PTR_L	ta3, COREBOOTCFG_VPECONFIG(a0)
+ 
+ #if defined(CONFIG_CPU_MIPSR6)
+-- 
+2.7.4

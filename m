@@ -1,44 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Mar 2017 10:10:00 +0100 (CET)
-Received: from foss.arm.com ([217.140.101.70]:41538 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993892AbdCVJJsdNusU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Mar 2017 10:09:48 +0100
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BCD62B16;
-        Wed, 22 Mar 2017 02:09:41 -0700 (PDT)
-Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 15F253F575;
-        Wed, 22 Mar 2017 02:09:39 -0700 (PDT)
-Subject: Re: [PATCH] Add initial SX3000b platform code to MIPS arch
-To:     Amit Kama IL <Amit.Kama@satixfy.com>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>
-References: <AM4PR0201MB2179B0EE9D0C00461C999697E43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Mar 2017 13:36:51 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:56680 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993901AbdCVMgoBUaWj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Mar 2017 13:36:44 +0100
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2MCagKM014784;
+        Wed, 22 Mar 2017 13:36:42 +0100
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2MCaf4n014783;
+        Wed, 22 Mar 2017 13:36:41 +0100
+Date:   Wed, 22 Mar 2017 13:36:41 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Amit Kama IL <Amit.Kama@satixfy.com>
 Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "tglx@linutronix.de" <tglx@linutronix.de>,
         "jason@lakedaemon.net" <jason@lakedaemon.net>,
+        "marc.zyngier@arm.com" <marc.zyngier@arm.com>,
         "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
         "corbet@lwn.net" <corbet@lwn.net>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <68b3b5ff-f03d-61ca-ddb9-0f6038360a88@arm.com>
-Date:   Wed, 22 Mar 2017 09:09:38 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Icedove/45.6.0
+Subject: Re: [PATCH] Add initial SX3000b platform code to MIPS arch
+Message-ID: <20170322123641.GN14919@linux-mips.org>
+References: <AM4PR0201MB2179B0EE9D0C00461C999697E43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <AM4PR0201MB2179B0EE9D0C00461C999697E43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57413
+X-archive-position: 57414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,9 +49,8 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Amit,
+On Wed, Mar 22, 2017 at 05:38:09AM +0000, Amit Kama IL wrote:
 
-On 22/03/17 05:38, Amit Kama IL wrote:
 > Add initial support for boards based on Satixfy's SX3000b (Catniss) SoC.
 > The SoC includes a MIPS interAptiv dual core 4 VPE processor and boots 
 > using device-tree.
@@ -63,15 +60,29 @@ On 22/03/17 05:38, Amit Kama IL wrote:
 > The irqchip file (irq-sx3000b.c) is pertinent to the platform. 
 > IRQCHIP maintainers - is it possible to merge this through MIPS tree? 
 
-Can you please send something that is the result of "git format-patch"?
-You should have a diff-stat before the patch itself...
 
-Also, this file (irq-sx3000b.c) doesn't seem to be in this huge patch,
-which doesn't seem to concern the irqchip subsystem (it all looks
-platform code to me). Wrong patch?
+First thig, run your patch through scripts/checkpatch.pl and fix the
+resulting pile of errors and warnings.
 
-Thanks,
+sx3000_machine_halt() will consume plenty of power if implemented as a
+empty loop:
 
-	M.
--- 
-Jazz is not dead. It just smells funny...
++static void sx3000_machine_halt(void)
++{
++       while (true);
++}
+
+Something like:
+
+static void sx3000_machine_halt(void)
+{
+	local_irq_disable();
+	while (1) {
+		if (cpu_wait)
+			cpu_wait();
+	}
+}
+
+will make the function much "greener".
+
+  Ralf

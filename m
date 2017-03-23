@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Mar 2017 15:24:02 +0100 (CET)
-Received: from mail-eopbgr40078.outbound.protection.outlook.com ([40.107.4.78]:56083
-        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Mar 2017 15:50:35 +0100 (CET)
+Received: from mail-he1eur01on0047.outbound.protection.outlook.com ([104.47.0.47]:12016
+        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23990778AbdCWOXqnRZJ- convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Mar 2017 15:23:46 +0100
+        id S23990845AbdCWOu02s9rw convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Mar 2017 15:50:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=satixfy.com;
  s=selector1; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=d1SZgIWX9HQDmu1DofHvLaqyvT7MJ3YP43o6bKBYmZA=;
- b=w5yl8tnIliMxrKngW5cjLtKanotiIWfWnQQ+SfauPNHuU+hp4+TuFUaWFRn9Cx+19/nQ6xrqNq0ZHADStF2z1AhAtGHAX5NCerHOY0aB1YVk9QUlcjVc0/kNtsed6NZLig/ugT2DiVyIbGf5i9SBEoHXMW15ZKOwBdxwdr4vQA8=
+ bh=iZqnWbBvHX7HxDddviOaQWnlefY+tYw9sJdAmx9QYV0=;
+ b=veHNV1c7UC6IARGMyzv2VH82m7/Vw2n59e5buiUz7CyDdgd/0IYdtrk16SmEQGS9sTvdj3/Gkl9fZ2OTDT/KFGiqE7HfwlIED6ye+YciN1OLkPMmc2ArEEt8EdqPUhQBjcv6hC1R0tT/nIob3AYZBQ17UR9pC4dU4wwyevAlyXY=
 Received: from VI1PR0201MB2190.eurprd02.prod.outlook.com (10.169.131.152) by
  VI1PR0201MB2191.eurprd02.prod.outlook.com (10.169.131.150) with Microsoft
  SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.947.12; Thu, 23
- Mar 2017 14:23:39 +0000
+ Mar 2017 14:50:18 +0000
 Received: from VI1PR0201MB2190.eurprd02.prod.outlook.com ([10.169.131.152]) by
  VI1PR0201MB2190.eurprd02.prod.outlook.com ([10.169.131.152]) with mapi id
- 15.01.0947.025; Thu, 23 Mar 2017 14:23:39 +0000
+ 15.01.0947.025; Thu, 23 Mar 2017 14:50:18 +0000
 From:   Amit Kama IL <Amit.Kama@satixfy.com>
 To:     "ralf@linux-mips.org" <ralf@linux-mips.org>
 CC:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
@@ -26,11 +26,13 @@ CC:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "marc.zyngier@arm.com" <marc.zyngier@arm.com>,
         "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
         "corbet@lwn.net" <corbet@lwn.net>
-Subject: [PATCH v2] Add initial SX3000b platform code to MIPS arch
-Thread-Topic: [PATCH v2] Add initial SX3000b platform code to MIPS arch
-Thread-Index: AdKj3pgK8vs4paWcTzqfgbIzUpVHDw==
-Date:   Thu, 23 Mar 2017 14:23:38 +0000
-Message-ID: <VI1PR0201MB219070E88CD26FBB5D8153E5E43F0@VI1PR0201MB2190.eurprd02.prod.outlook.com>
+Subject: RE: [PATCH] Add initial SX3000b platform code to MIPS arch
+Thread-Topic: [PATCH] Add initial SX3000b platform code to MIPS arch
+Thread-Index: AdKixekUbQFPjDVgTrSY9bXmSe8bMwBHqrtg
+Date:   Thu, 23 Mar 2017 14:50:18 +0000
+Message-ID: <VI1PR0201MB2190A52FE719D00FBACEBD15E43F0@VI1PR0201MB2190.eurprd02.prod.outlook.com>
+References: <AM4PR0201MB2179B0EE9D0C00461C999697E43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
+In-Reply-To: <AM4PR0201MB2179B0EE9D0C00461C999697E43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -38,21 +40,21 @@ X-MS-TNEF-Correlator:
 authentication-results: linux-mips.org; dkim=none (message not signed)
  header.d=none;linux-mips.org; dmarc=none action=none header.from=satixfy.com;
 x-originating-ip: [82.80.19.234]
-x-ms-office365-filtering-correlation-id: 629b6046-9715-49bf-9921-08d471f8333d
+x-ms-office365-filtering-correlation-id: 2dc2076c-97ef-43f5-ca12-08d471fbecac
 x-microsoft-antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001)(2017030254075);SRVR:VI1PR0201MB2191;
-x-microsoft-exchange-diagnostics: 1;VI1PR0201MB2191;7:xKIsW39HASoJmcbx7yRQ80zFZ7ubSf1tDz5121eEW3a3oX+NwOVVh1T3KRs7GjyeW2fwOBu/rhlSxrAjvVI4iGsj0WAKKOHqm5HnlpOE74OaeMubqTi4AujADTRHl98kmNoEZoIXceU4wgW1HLSqbbYTH7Pe+yHmktosHEht2rK7Es7KY784VVgtm0vNO1S2J2DjVqE+5NGPCXtJ8BEFTShP+DbRXHxgLsuRaLatyCna6tqL3wxMUcjkBkkSa0miK5bwgvaSEvZadGGxhaaQk9nGVtp1LtEfavL+5iaospBoql5TyTAa9wC6uq3tPcbj1Xg5Ca6O/P6FofaprSRsYw==
-x-microsoft-antispam-prvs: <VI1PR0201MB21914DD18292ECFF8EE1DB84E43F0@VI1PR0201MB2191.eurprd02.prod.outlook.com>
-x-exchange-antispam-report-test: UriScan:(192374486261705);
+x-microsoft-exchange-diagnostics: 1;VI1PR0201MB2191;7:4mE9Ry5OdBh/dHCiDP7yAQq+f/F9GOr/w/MHs2FBmXm9rt1ZFuskZiq6NkLQ7KVUAH1IbopZM/W6YZMEeYkrSljfdhHGqmJtnC5GiPdU5XXUiVoHBiu88nOlj6LKhdWurLSM0o5QxL9U6/PqlIbNQvFOEK9KMF9PSXQ+fq8+4zym+rL4pHj22iAQz6i0ZSaN6V2SrqNTNqQCIII5GLG9309SzMXxXDmak9LL8mJZFg6SR27iE+DfG3lcqo2UnnIZAIFOS+oym21Z6MIK3kDGkKKKzJFT8IA7BE33gSzigECsyP8ZB+gSglTmJb0GREGIvoNdqI2dDZXZ9rn8njZDxw==
+x-microsoft-antispam-prvs: <VI1PR0201MB2191CF2E763625DDE500919CE43F0@VI1PR0201MB2191.eurprd02.prod.outlook.com>
+x-exchange-antispam-report-test: UriScan:(180628864354917)(192374486261705)(9452136761055);
 x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(6040375)(601004)(2401047)(5005006)(8121501046)(10201501046)(3002001)(6041248)(20161123562025)(20161123560025)(20161123555025)(20161123564025)(20161123558025)(6072148);SRVR:VI1PR0201MB2191;BCL:0;PCL:0;RULEID:;SRVR:VI1PR0201MB2191;
 x-forefront-prvs: 0255DF69B9
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(6009001)(39450400003)(54356999)(3280700002)(2351001)(54906002)(53946003)(7696004)(7736002)(6116002)(6916009)(2906002)(122556002)(50986999)(189998001)(1730700003)(2900100001)(2501003)(66066001)(305945005)(8936002)(25786009)(9686003)(4326008)(77096006)(38730400002)(575784001)(8676002)(99286003)(6436002)(102836003)(86362001)(74316002)(5640700003)(81166006)(55016002)(6506006)(5660300001)(53936002)(3846002)(110136004)(3660700001)(33656002)(5890100001)(2004002)(579004)(559001);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR0201MB2191;H:VI1PR0201MB2190.eurprd02.prod.outlook.com;FPR:;SPF:None;MLV:sfv;LANG:en;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(6009001)(39450400003)(13464003)(377454003)(3280700002)(54356999)(2351001)(2950100002)(53546009)(54906002)(53946003)(7696004)(6116002)(7736002)(6916009)(2906002)(50986999)(122556002)(189998001)(1730700003)(2900100001)(2501003)(66066001)(76176999)(305945005)(8936002)(6246003)(25786009)(9686003)(4326008)(77096006)(38730400002)(575784001)(8676002)(229853002)(99286003)(102836003)(6436002)(86362001)(74316002)(5640700003)(81166006)(55016002)(6506006)(53936002)(5660300001)(3846002)(110136004)(3660700001)(33656002)(5890100001)(2004002)(579004)(559001);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR0201MB2191;H:VI1PR0201MB2190.eurprd02.prod.outlook.com;FPR:;SPF:None;MLV:sfv;LANG:en;
 spamdiagnosticoutput: 1:99
 spamdiagnosticmetadata: NSPM
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-OriginatorOrg: satixfy.com
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2017 14:23:38.4849
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2017 14:50:18.5167
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: b7ec8c62-61c4-41e4-9993-e34196916505
@@ -61,7 +63,7 @@ Return-Path: <Amit.Kama@satixfy.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57422
+X-archive-position: 57423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,43 +80,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Add support for interrupt controller unit.
-Use cpu_wait instead of endless loop in cpu_halt.
-Make coding style changes and documentation additions to platform 
-configuration options.
+Will be sending a revised version splitting the irqchip related code to a different patch and using a generic platform code...
+
+-----Original Message-----
+From: Amit Kama IL 
+Sent: Wednesday, March 22, 2017 7:38 AM
+To: 'ralf@linux-mips.org' <ralf@linux-mips.org>
+Cc: 'devicetree@vger.kernel.org' <devicetree@vger.kernel.org>; 'linux-kernel@vger.kernel.org' <linux-kernel@vger.kernel.org>; 'linux-mips@linux-mips.org' <linux-mips@linux-mips.org>; 'tglx@linutronix.de' <tglx@linutronix.de>; 'jason@lakedaemon.net' <jason@lakedaemon.net>; 'marc.zyngier@arm.com' <marc.zyngier@arm.com>; 'linux-doc@vger.kernel.org' <linux-doc@vger.kernel.org>; 'corbet@lwn.net' <corbet@lwn.net>
+Subject: [PATCH] Add initial SX3000b platform code to MIPS arch
+
+Add initial support for boards based on Satixfy's SX3000b (Catniss) SoC.
+The SoC includes a MIPS interAptiv dual core 4 VPE processor and boots 
+using device-tree.
 
 Signed-off-by: Amit Kama <amit.kama@staixfy.com>
 
- arch/mips/Kconfig                                     |   29 
- arch/mips/boot/dts/sx3000/Makefile                    |   13 
- arch/mips/boot/dts/sx3000/sx3000.dtsi                 |  141 +
- arch/mips/boot/dts/sx3000/sx3000_bbb.dts              |  110 
- arch/mips/boot/dts/sx3000/sx3000_devboard.dts         |  175 +
- arch/mips/boot/dts/sx3000/sx3000_idu3.dts             |  150 +
- arch/mips/boot/dts/sx3000/sx3000_idu4.dts             |  134 +
- arch/mips/configs/sx3000b_defconfig                   | 2365 ++++++++++++++++++
- arch/mips/include/asm/mach-sx3000/irq.h               |   18 
- arch/mips/include/asm/mach-sx3000/kernel-entry-init.h |   54 
- arch/mips/sx3000/Kconfig                              |   18 
- arch/mips/sx3000/Makefile                             |    1 
- arch/mips/sx3000/Platform                             |    3 
- arch/mips/sx3000/init.c                               |  123 
- arch/mips/sx3000/irq.c                                |   35 
- arch/mips/sx3000/sx3000-reset.c                       |   54 
- arch/mips/sx3000/time.c                               |   59 
- drivers/irqchip/irq-sx3000b.c                         |  303 ++
- 18 files changed, 3785 insertions(+)
+The irqchip file (irq-sx3000b.c) is pertinent to the platform. 
+IRQCHIP maintainers - is it possible to merge this through MIPS tree? 
+ 
+
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+old mode 100666
+new mode 100666
 index a008a9f..1bcb300
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
 @@ -551,6 +551,31 @@ config MACH_PIC32
- 	  Microchip PIC32 is a family of general-purpose 32 bit MIPS core
- 	  microcontrollers.
- 
+	  Microchip PIC32 is a family of general-purpose 32 bit MIPS core
+	  microcontrollers.
+
 +config MACH_SX3000
-+	bool "Satixfy SX3000b based boards"
++	bool "Satixfy SX3000 based boards"
 +	select SYS_SUPPORTS_32BIT_KERNEL
 +	select SYS_SUPPORTS_LITTLE_ENDIAN
 +	select SYS_SUPPORTS_MIPS_CPS
@@ -136,14 +133,11 @@ index a008a9f..1bcb300
 +	select COMMON_CLK
 +	select BOOT_RAW
 +	help
-+	  This enables support for Satixfy's SX3000b SoC
-+	  platforms.
-+	  The properties herein are basic CPU subsystem
-+	  configurations only.
++	  This enables support for the Satixfy SX3000 SoC.
 +
  config NEC_MARKEINS
- 	bool "NEC EMMA2RH Mark-eins board"
- 	select SOC_EMMA2RH
+	bool "NEC EMMA2RH Mark-eins board"
+	select SOC_EMMA2RH
 @@ -1022,6 +1047,7 @@ source "arch/mips/pmcs-msp71xx/Kconfig"
  source "arch/mips/ralink/Kconfig"
  source "arch/mips/sgi-ip27/Kconfig"
@@ -153,7 +147,9 @@ index a008a9f..1bcb300
  source "arch/mips/vr41xx/Kconfig"
  source "arch/mips/cavium-octeon/Kconfig"
 diff --git a/arch/mips/boot/dts/sx3000/Makefile b/arch/mips/boot/dts/sx3000/Makefile
+new file mode 100666
 index 0000000..8b73c39
+--- /dev/null
 +++ b/arch/mips/boot/dts/sx3000/Makefile
 @@ -0,0 +1,13 @@
 +dtb-$(CONFIG_SX3000_DEVBOARD)	+= sx3000_devboard.dtb
@@ -170,7 +166,9 @@ index 0000000..8b73c39
 +always				:= $(dtb-y)
 +clean-files	:= *.dtb *.dtb.S
 diff --git a/arch/mips/boot/dts/sx3000/sx3000.dtsi b/arch/mips/boot/dts/sx3000/sx3000.dtsi
+new file mode 100666
 index 0000000..8557282
+--- /dev/null
 +++ b/arch/mips/boot/dts/sx3000/sx3000.dtsi
 @@ -0,0 +1,141 @@
 +/*
@@ -216,7 +214,7 @@ index 0000000..8557282
 +	};
 +
 +	icu: interrupt-controller@1d4d0000 {
-+		compatible = "satixfy,icu";
++		compatible = "sx,icu";
 +		reg = <0x1D4D0000 0x1C0>;
 +
 +		interrupt-controller;
@@ -314,10 +312,11 @@ index 0000000..8557282
 +		#clock-cells = <0>;
 +	};
 +};
-+
 \ No newline at end of file
 diff --git a/arch/mips/boot/dts/sx3000/sx3000_bbb.dts b/arch/mips/boot/dts/sx3000/sx3000_bbb.dts
+new file mode 100666
 index 0000000..75c6751
+--- /dev/null
 +++ b/arch/mips/boot/dts/sx3000/sx3000_bbb.dts
 @@ -0,0 +1,110 @@
 +/*
@@ -431,7 +430,9 @@ index 0000000..75c6751
 +	clock-frequency = <32813000>;
 +};
 diff --git a/arch/mips/boot/dts/sx3000/sx3000_devboard.dts b/arch/mips/boot/dts/sx3000/sx3000_devboard.dts
+new file mode 100666
 index 0000000..f124cbf
+--- /dev/null
 +++ b/arch/mips/boot/dts/sx3000/sx3000_devboard.dts
 @@ -0,0 +1,175 @@
 +/*
@@ -587,7 +588,7 @@ index 0000000..f124cbf
 +		num-slots = <1>;
 +		#address-cells = <1>;
 +		#size-cells = <0>;
-+	};
++    	};
 +
 +
 +};
@@ -610,7 +611,9 @@ index 0000000..f124cbf
 +	clock-frequency = <32813000>;
 +};
 diff --git a/arch/mips/boot/dts/sx3000/sx3000_idu3.dts b/arch/mips/boot/dts/sx3000/sx3000_idu3.dts
+new file mode 100755
 index 0000000..7ebaa40
+--- /dev/null
 +++ b/arch/mips/boot/dts/sx3000/sx3000_idu3.dts
 @@ -0,0 +1,150 @@
 +/*
@@ -741,7 +744,7 @@ index 0000000..7ebaa40
 +		num-slots = <1>;
 +		#address-cells = <1>;
 +		#size-cells = <0>;
-+	};
++    	};
 +
 +
 +};
@@ -764,7 +767,9 @@ index 0000000..7ebaa40
 +	clock-frequency = <32813000>;
 +};
 diff --git a/arch/mips/boot/dts/sx3000/sx3000_idu4.dts b/arch/mips/boot/dts/sx3000/sx3000_idu4.dts
+new file mode 100755
 index 0000000..457dc76
+--- /dev/null
 +++ b/arch/mips/boot/dts/sx3000/sx3000_idu4.dts
 @@ -0,0 +1,134 @@
 +/*
@@ -902,7 +907,9 @@ index 0000000..457dc76
 +	clock-frequency = <32813000>;
 +};
 diff --git a/arch/mips/configs/sx3000b_defconfig b/arch/mips/configs/sx3000b_defconfig
+new file mode 100755
 index 0000000..521630a
+--- /dev/null
 +++ b/arch/mips/configs/sx3000b_defconfig
 @@ -0,0 +1,2365 @@
 +#
@@ -3271,7 +3278,9 @@ index 0000000..521630a
 +CONFIG_HAVE_KVM=y
 +# CONFIG_VIRTUALIZATION is not set
 diff --git a/arch/mips/include/asm/mach-sx3000/irq.h b/arch/mips/include/asm/mach-sx3000/irq.h
+new file mode 100755
 index 0000000..2018718
+--- /dev/null
 +++ b/arch/mips/include/asm/mach-sx3000/irq.h
 @@ -0,0 +1,18 @@
 +/*
@@ -3293,7 +3302,9 @@ index 0000000..2018718
 +
 +#endif /* __MIPS_ASM_MACH_SX3000_IRQ_H__ */
 diff --git a/arch/mips/include/asm/mach-sx3000/kernel-entry-init.h b/arch/mips/include/asm/mach-sx3000/kernel-entry-init.h
+new file mode 100755
 index 0000000..63e7b04
+--- /dev/null
 +++ b/arch/mips/include/asm/mach-sx3000/kernel-entry-init.h
 @@ -0,0 +1,54 @@
 +/*
@@ -3310,48 +3321,50 @@ index 0000000..63e7b04
 +#include <asm/regdef.h>
 +#include <asm/mipsregs.h>
 +
-+/*
++ /*
 + * Prepare segments for EVA boot:
 + */
-+.macro platform_eva_init
++ .macro platform_eva_init
 +
-+.endm
++ .endm
 +
-+.macro kernel_entry_setup
++ .macro kernel_entry_setup
 +
 +#ifdef CONFIG_EVA
-+sync
-+ehb
++ sync
++ ehb
 +
-+mfc0    t1, CP0_CONFIG
-+bgez    t1, 9f
-+mfc0 t0, CP0_CONFIG, 1
-+bgez t0, 9f
-+mfc0 t0, CP0_CONFIG, 2
-+bgez t0, 9f
-+mfc0 t0, CP0_CONFIG, 3
-+sll     t0, t0, 6   /* SC bit */
-+bgez    t0, 9f
++ mfc0    t1, CP0_CONFIG
++ bgez    t1, 9f
++ mfc0 t0, CP0_CONFIG, 1
++ bgez t0, 9f
++ mfc0 t0, CP0_CONFIG, 2
++ bgez t0, 9f
++ mfc0 t0, CP0_CONFIG, 3
++ sll     t0, t0, 6   /* SC bit */
++ bgez    t0, 9f
 +
-+platform_eva_init
++ platform_eva_init
 +#endif /* CONFIG_EVA */
-+9 :
-+.endm
++9 : 
++ .endm
 +
 +/*
 + * Do SMP slave processor setup necessary before we can safely execute C code.
 + */
-+.macro smp_slave_setup
++ .macro smp_slave_setup
 +#ifdef CONFIG_EVA
-+sync
-+ehb
-+platform_eva_init
++ sync
++ ehb
++ platform_eva_init
 +#endif
-+.endm
++ .endm
 +
 +#endif /* __ASM_MACH_MIPS_KERNEL_ENTRY_INIT_H */
 diff --git a/arch/mips/sx3000/Kconfig b/arch/mips/sx3000/Kconfig
+new file mode 100755
 index 0000000..f20d88a
+--- /dev/null
 +++ b/arch/mips/sx3000/Kconfig
 @@ -0,0 +1,18 @@
 +choice
@@ -3361,8 +3374,6 @@ index 0000000..f20d88a
 +
 +config SX3000_DEVBOARD
 +	bool "SX3000 Development board"
-+	help
-+	  Satixfy's Development board (Bring Up Board)
 +
 +config SX3000_BBB
 +	bool "SX3000 BBB board"
@@ -3375,19 +3386,25 @@ index 0000000..f20d88a
 +
 +endchoice
 diff --git a/arch/mips/sx3000/Makefile b/arch/mips/sx3000/Makefile
+new file mode 100755
 index 0000000..ac3c5d2
+--- /dev/null
 +++ b/arch/mips/sx3000/Makefile
 @@ -0,0 +1 @@
 +obj-y += init.o irq.o time.o sx3000-reset.o
 diff --git a/arch/mips/sx3000/Platform b/arch/mips/sx3000/Platform
+new file mode 100755
 index 0000000..d6a55d5
+--- /dev/null
 +++ b/arch/mips/sx3000/Platform
 @@ -0,0 +1,3 @@
 +platform-$(CONFIG_MACH_SX3000) += sx3000/
 +cflags-$(CONFIG_MACH_SX3000) += -I$(srctree)/arch/mips/include/asm/mach-sx3000
 +load-$(CONFIG_MACH_SX3000) += 0xffffffff80400000
 diff --git a/arch/mips/sx3000/init.c b/arch/mips/sx3000/init.c
+new file mode 100755
 index 0000000..5245d06
+--- /dev/null
 +++ b/arch/mips/sx3000/init.c
 @@ -0,0 +1,123 @@
 +/*
@@ -3417,7 +3434,7 @@ index 0000000..5245d06
 +#include <asm/traps.h>
 +
 +/* Uncached (KSEG1) virtual address of console UART */
-+#define SX3000_UART0_BASE	0xBD4D09C0 //(0xA0000000 for kseg1+0x1D4D09C0)
++#define SX3000_UART0_BASE	0xBD4D09C0 // (0xA000_0000 for kseg1 + 0x1D4D09C0)
 +
 +/* Physical addresses where the CPC and CDMM regions can be mapped to */
 +#define DEFAULT_CPC_BASE_ADDR	0x1DA00000
@@ -3514,7 +3531,9 @@ index 0000000..5245d06
 +}
 +arch_initcall(plat_of_setup);
 diff --git a/arch/mips/sx3000/irq.c b/arch/mips/sx3000/irq.c
+new file mode 100755
 index 0000000..76c4301
+--- /dev/null
 +++ b/arch/mips/sx3000/irq.c
 @@ -0,0 +1,35 @@
 +/*
@@ -3542,9 +3561,9 @@ index 0000000..76c4301
 +	pr_info("EIC is %s\n", cpu_has_veic ? "on" : "off");
 +	pr_info("VINT is %s\n", cpu_has_vint ? "on" : "off");
 +
-+	pr_info("IRQ base: %d GIC: %d\n", MIPS_CPU_IRQ_BASE, MIPS_GIC_IRQ_BASE);
++	pr_info("IRQ base, CPU: %d GIC: %d\n", MIPS_CPU_IRQ_BASE, MIPS_GIC_IRQ_BASE);
 +
-+	// Clear the status register IPL field to have minimum int level 0
++	// Clear the IPL field in the status register to have minimum int level 0
 +	clear_c0_status(ST0_IM);
 +
 +	if (!cpu_has_veic)
@@ -3553,7 +3572,9 @@ index 0000000..76c4301
 +	irqchip_init();
 +}
 diff --git a/arch/mips/sx3000/sx3000-reset.c b/arch/mips/sx3000/sx3000-reset.c
+new file mode 100755
 index 0000000..82c5bb3
+--- /dev/null
 +++ b/arch/mips/sx3000/sx3000-reset.c
 @@ -0,0 +1,54 @@
 +/*
@@ -3598,11 +3619,7 @@ index 0000000..82c5bb3
 +
 +static void sx3000_machine_halt(void)
 +{
-+	local_irq_disable();
-+	while (1) {
-+		if (cpu_wait)
-+			cpu_wait();
-+	}
++	while (true);
 +}
 +
 +static int __init sx3000_reboot_setup(void)
@@ -3615,7 +3632,9 @@ index 0000000..82c5bb3
 +
 +arch_initcall(sx3000_reboot_setup);
 diff --git a/arch/mips/sx3000/time.c b/arch/mips/sx3000/time.c
+new file mode 100755
 index 0000000..e1d974e
+--- /dev/null
 +++ b/arch/mips/sx3000/time.c
 @@ -0,0 +1,59 @@
 +/*
@@ -3677,311 +3696,3 @@ index 0000000..e1d974e
 +	mips_hpt_frequency = clk_get_rate(clk) / 2;
 +	clk_put(clk);
 +}
-diff --git a/drivers/irqchip/irq-sx3000b.c b/drivers/irqchip/irq-sx3000b.c
-index 0000000..87d26ce
---- /dev/null
-+++ b/drivers/irqchip/irq-sx3000b.c
-@@ -0,0 +1,303 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * SX3000B Interconnect fabric interrupt handler and IRQ chip
-+ *
-+ * Copyright (C) 2016 Amit Kama (amit.kama@satixfy.com)
-+ * Copyright (C) 2016 Satixfy, Ltd.  All rights reserved.
-+ */
-+#include <linux/bitmap.h>
-+#include <linux/clocksource.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/of_irq.h>
-+#include <linux/irq.h>
-+#include <linux/irqchip.h>
-+#include <linux/irqchip/mips-gic.h>
-+#include <linux/of_address.h>
-+#include <linux/sched.h>
-+#include <linux/smp.h>
-+
-+#include <asm/mips-cm.h>
-+#include <asm/setup.h>
-+#include <asm/traps.h>
-+
-+#include <dt-bindings/interrupt-controller/mips-gic.h>
-+
-+#define SX_3000B_ICU_PHYS_BASE	0x1D4D0000
-+
-+#define SX_3000B_ICU_BASE (SX_3000B_ICU_PHYS_BASE + SX_3000B_ICU_PHYS_BASE)
-+
-+#define SX_3000B_ICU_SIZE		0x1C0
-+
-+#define SX_3000B_ICU_NUM_INTR	36
-+
-+
-+#define SX_3000B_HOST_TARGET	(0x3 << 9)
-+
-+#define SX_3000B_LP_MSGID_OFF	0x70
-+
-+#define SX_3000B_LP_IRQ_MSK_OFF	0x38
-+
-+#define SX_3000B_LP_IRQ_CLEAR_OFF	0x40
-+
-+#define SX_3000B_LP_IRQ_CAUSE_OFF	0x48
-+
-+#define SX_3000B_LP_IRQ_CAUSE_WIDTH 0x2
-+
-+#define SX_3000B_MAX_LP_REG			(SX_3000B_ICU_NUM_INTR - 1)
-+
-+static void *__iomem icu_base;
-+struct irq_domain *icu_irq_domain;
-+static DEFINE_SPINLOCK(icu_lock);
-+
-+/* The GIC HW IRQ associated with the ICU */
-+static unsigned char icu_gic_hwirq;
-+static unsigned int icu_enabled_ints[SX_3000B_LP_IRQ_CAUSE_WIDTH];
-+
-+/* Read 32 bit ICU register */
-+static inline unsigned int icu_read(unsigned int reg)
-+{
-+	return __raw_readl(icu_base + reg);
-+}
-+
-+/* Write 32 bit ICU register */
-+static inline void icu_write(unsigned int reg, unsigned int  val)
-+{
-+	__raw_writel(val, icu_base + reg);
-+}
-+
-+/* Read, modify write 32 bit ICU register with mask */
-+static inline void icu_rmw(unsigned int reg, unsigned long mask,
-+		unsigned long val)
-+{
-+	unsigned long regval;
-+
-+	regval = icu_read(reg);
-+	regval &= ~mask;
-+	regval |= val;
-+	icu_write(reg, regval);
-+}
-+
-+static inline void icu_set_msgid_reg(unsigned int msgid, unsigned int int_pri)
-+{
-+	if (msgid <= SX_3000B_MAX_LP_REG)
-+		icu_write(SX_3000B_LP_MSGID_OFF + ((msgid) << 2),
-+				SX_3000B_HOST_TARGET | (int_pri & 0x3F));
-+}
-+
-+static inline void icu_ack_int(unsigned int msgid)
-+{
-+	unsigned int lp_reg_off = (msgid < 32) ? 0 : 4;
-+	/* Find the bit offset in the right register */
-+	unsigned int msg_id_bit_offset = msgid % 32;
-+	/* Write zero to the interrupt bit in the clear register all
-+	 * the other bits are 1
-+	 */
-+	icu_write(SX_3000B_LP_IRQ_CLEAR_OFF + lp_reg_off,
-+			~(1 << msg_id_bit_offset));
-+}
-+
-+static inline void icu_enable_int(unsigned int msgid, unsigned int int_pri)
-+{
-+	unsigned int lp_reg_off = (msgid < 32) ? 0 : 4;
-+	/* Find the bit offset in the right register */
-+	unsigned int msg_id_bit_offset = msgid % 32;
-+
-+	if (msgid <= SX_3000B_MAX_LP_REG) {
-+		/* Set the msgid bit in the interrupt mask register */
-+		icu_rmw(SX_3000B_LP_IRQ_MSK_OFF + lp_reg_off,
-+				1 << msg_id_bit_offset, 1 << msg_id_bit_offset);
-+		/* Set the msgid bit in the interrupt mask register */
-+		icu_set_msgid_reg(msgid, int_pri);
-+		/* ACK the interrupt */
-+		icu_ack_int(msgid);
-+		icu_enabled_ints[(msgid < 32) ? 0 : 1] |=
-+				1 << msg_id_bit_offset;
-+	}
-+	pr_debug("reg 1 0x%x reg 2 0x%x\n",
-+			icu_read(SX_3000B_LP_IRQ_MSK_OFF),
-+			icu_read(SX_3000B_LP_MSGID_OFF + (3 << 2)));
-+}
-+
-+static inline void icu_disable_int(unsigned int msgid)
-+{
-+	unsigned int lp_msk_reg = SX_3000B_LP_IRQ_MSK_OFF +
-+				((msgid < 32) ? 0 : 4);
-+	/* Find the bit offset in the right register */
-+	unsigned int msg_id_bit_offset = msgid % 32;
-+
-+	icu_rmw(lp_msk_reg, 1 << msg_id_bit_offset, 0);
-+	icu_enabled_ints[(msgid < 32) ? 0 : 1] &= ~(1 << msg_id_bit_offset);
-+}
-+
-+static void icu_unmask_irq(struct irq_data *d)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&icu_lock, flags);
-+	icu_enable_int(d->hwirq, icu_gic_hwirq);
-+	spin_unlock_irqrestore(&icu_lock, flags);
-+	pr_debug("icu_unmask_irq hw irq: %lX GIC IRQ: %X\n",
-+			d->hwirq, icu_gic_hwirq);
-+}
-+
-+static void icu_mask_irq(struct irq_data *d)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&icu_lock, flags);
-+	icu_disable_int(d->hwirq);
-+	spin_unlock_irqrestore(&icu_lock, flags);
-+	pr_debug("icu_mask_irq hw irq: %lX GIC IRQ: %X\n",
-+			d->hwirq, icu_gic_hwirq);
-+}
-+
-+static void icu_ack_irq(struct irq_data *d)
-+{
-+	icu_ack_int(d->hwirq);
-+}
-+
-+static struct irq_chip icu_irq_controller = {
-+	.name			=	"SX3000B ICU",
-+	.irq_ack		=	icu_ack_irq,
-+	.irq_mask		=	icu_mask_irq,
-+	.irq_unmask		=	icu_unmask_irq,
-+};
-+
-+
-+static irqreturn_t icu_cascade(int irq, void *data)
-+{
-+	unsigned int virq, i;
-+	unsigned int cause_reg;
-+	unsigned int triggered_and_enabled;
-+	unsigned int bit = 0;
-+
-+	for (i = 0; i < SX_3000B_LP_IRQ_CAUSE_WIDTH; i++) {
-+		if (icu_enabled_ints[i] == 0)
-+			continue;
-+
-+		cause_reg = icu_read(SX_3000B_LP_IRQ_CAUSE_OFF + 4*i);
-+		triggered_and_enabled = (icu_enabled_ints[i] & cause_reg);
-+		bit = 0;
-+		while (triggered_and_enabled) {
-+			if (triggered_and_enabled & (1 << bit)) {
-+				virq = irq_find_mapping(icu_irq_domain,
-+						(i*32) + bit);
-+				generic_handle_irq(virq);
-+				triggered_and_enabled &= ~(1 << bit);
-+			}
-+			bit++;
-+		}
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static struct irqaction icu_action = {
-+	.handler = icu_cascade,
-+	.name = "SX3000 slow IO interrupt",
-+};
-+
-+
-+
-+static int icu_irq_domain_map(struct irq_domain *d, unsigned int virq,
-+				     irq_hw_number_t hw)
-+{
-+#if 0
-+	if (hw != icu_gic_hwirq) {
-+		/* tried registering a client with a HW IRQ different than the
-+		 * controller
-+		 */
-+		return -EINVAL;
-+	}
-+#endif
-+	irq_set_chip_and_handler(virq, &icu_irq_controller, handle_edge_irq);
-+	pr_debug("icu_irq_domain_map: hw: %lX  virq: %X\n",
-+			(unsigned long)hw, virq);
-+	return 0;
-+}
-+
-+static int icu_irq_domain_xlate(struct irq_domain *d,
-+				struct device_node *ctrlr,
-+				const u32 *intspec, unsigned int intsize,
-+				irq_hw_number_t *out_hwirq,
-+				unsigned int *out_type)
-+{
-+		if (intsize != 1)
-+			return -EINVAL;
-+		*out_hwirq = intspec[0];
-+		*out_type = IRQ_TYPE_EDGE_RISING;
-+		pr_debug("icu_irq_domain_xlate: intspec[0]: %x\n", intspec[0]);
-+		return 0;
-+}
-+
-+static const struct irq_domain_ops icu_irq_domain_ops = {
-+	.xlate = icu_irq_domain_xlate,
-+	.map =  icu_irq_domain_map,
-+	.free = irq_domain_free_irqs_common,
-+};
-+
-+
-+static void  __init __icu_init(u32 icu_base_addr,
-+		unsigned long icu_addrspace_size)
-+{
-+	icu_base = ioremap_nocache(icu_base_addr, icu_addrspace_size);
-+}
-+
-+static int __init icu_of_init(struct device_node *node,
-+		struct device_node *parent)
-+{
-+	/*
-+	 * Set ICU base address and length default values in case
-+	 * the device tree doesn't hold them
-+	 */
-+	phys_addr_t icu_phy_base = SX_3000B_ICU_PHYS_BASE;
-+	unsigned long icu_len = SX_3000B_ICU_SIZE;
-+	int intr_len, parent_irq, err = 0;
-+	struct resource res;
-+	const unsigned int *intr;
-+
-+	parent_irq = irq_of_parse_and_map(node, 0);
-+	if (!parent_irq) {
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+	intr = of_get_property(node, "interrupts", &intr_len);
-+	if ((intr == NULL) || (intr_len < 3)) {
-+		/* Wrong interrupts property in the device tree */
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+	icu_gic_hwirq = irqd_to_hwirq(irq_get_irq_data(parent_irq)) - 7;
-+	err = irq_set_handler_data(parent_irq, icu_base);
-+	if (err)
-+		goto out_unmap_irq;
-+	icu_irq_domain = irq_domain_add_linear(node,
-+			SX_3000B_ICU_NUM_INTR,
-+			&icu_irq_domain_ops, 0);
-+	if (!icu_irq_domain)
-+		pr_warn("unable to register IRQ domain\n");
-+
-+	if (of_address_to_resource(node, 0, &res) == 0) {
-+		/*
-+		 * Successfully read the base address from the DT
-+		 */
-+		icu_phy_base = res.start;
-+		icu_len = resource_size(&res);
-+	}
-+	__icu_init(icu_phy_base, icu_len);
-+	setup_irq(parent_irq, &icu_action);
-+	return 0;
-+
-+out_unmap_irq:
-+	irq_dispose_mapping(parent_irq);
-+	pr_warn("icu_of_init - out_unmap_irq\n");
-+out_err:
-+	pr_warn("icu_of_init - out_err\n");
-+	return err;
-+}
-+
-+IRQCHIP_DECLARE(sx3000b_icu, "satixfy,icu", icu_of_init);

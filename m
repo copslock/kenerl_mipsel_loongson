@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2017 17:14:42 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:43061 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2017 17:15:09 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:36851 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992227AbdCXQNlwu77A (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23992213AbdCXQNlo24PA (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 24 Mar 2017 17:13:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
-        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
+        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=hIaD524xs3Qn/3Ay5JbEDOGIIDvUrEHXnjPPpXfuEk4=; b=Qg7GSAMp2m8G2uhmZQuXAUrbH
-        gDWARADqKzDYia+LS3+2l8wIojVoqVFaSf69zWrIeE9tYgGHTQ8ETuqnZvg7ofs249WzBXUyIELlf
-        /xGVuk/l8j08fxPyNWMkvo6tFuWrFLpo9jkf/+Kr0zPUlSPHRegXOHhSi1sti/95bhE7DHN1qO/P4
-        9nfhQXLdDoQ8Zf3ahnWH6SW4FuQwRt5Xqhpr8o0hhJD/jUQQ9ksJQYUUSm3VXwQFfxlK6gV6eiSAT
-        qs5e0ae5yIZ5Y+lWvvDvt3nDG8ldhZ5bnHuS9/7t1p+G75QQ2zX+VjIA/8spy4LGTKigiuKvxwWea
-        ai6v36dew==;
+         bh=1vk9dMeoOsoMI1QJG6IZ6+5jzXQAd/2iUTjP2u+2A9k=; b=J1akfdeO+bto+NIZJM4PrY4nv
+        /VmMURUmgKwF674mm0gKXzVJmB6StxKuvLHpDpzuqwrjvQeIA9HisyEIms9RPX59tCSdRy/vkMVKu
+        pvkSKOlcXqqiQIi95FEZ69EU99qs31nRDpQBn3MF/U6c8KFiR/4lNtdEW4ODKByy/2ua/4bZjmVbH
+        hEHlc5Wzti2OdTtVDbcPo8JHfk9x32WMTvBYdZ6tZMgUw9rI1ert+BLiBp3ZCFwYPPlZA6NEvFdO9
+        sWwgq5dqnLxGCvnQ3B3vJN0id6R40EEwpEcKmqI4NmW5oubw8pWbMfZWwAVYHclMmV/MexKtt+45o
+        IJdGFa27g==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.87 #1 (Red Hat Linux))
-        id 1crRqK-0004uq-BV; Fri, 24 Mar 2017 16:13:36 +0000
+        id 1crRqK-0004v1-Gj; Fri, 24 Mar 2017 16:13:36 +0000
 From:   Matthew Wilcox <willy@infradead.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
@@ -25,15 +25,17 @@ Cc:     linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         Minchan Kim <minchan@kernel.org>,
         Matthew Wilcox <mawilcox@microsoft.com>
-Subject: [PATCH v3 0/7] Add memsetN functions
-Date:   Fri, 24 Mar 2017 09:13:11 -0700
-Message-Id: <20170324161318.18718-1-willy@infradead.org>
+Subject: [PATCH v3 3/7] x86: Implement memset16, memset32 & memset64
+Date:   Fri, 24 Mar 2017 09:13:14 -0700
+Message-Id: <20170324161318.18718-4-willy@infradead.org>
 X-Mailer: git-send-email 2.9.3
+In-Reply-To: <20170324161318.18718-1-willy@infradead.org>
+References: <20170324161318.18718-1-willy@infradead.org>
 Return-Path: <willy@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57437
+X-archive-position: 57438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,63 +54,97 @@ X-list: linux-mips
 
 From: Matthew Wilcox <mawilcox@microsoft.com>
 
-zram was recently enhanced to support compressing pages with a repeating
-pattern up to the size of an unsigned long.  As part of the discussion,
-we noted it would be nice if architectures had optimised routines
-to fill regions of memory with patterns larger than those contained
-in a single byte.  Our suspicions were right; the x86 version offers
-approximately a 7% performance improvement over the C implementation.
+These are single instructions on x86.  There's no 64-bit instruction
+for x86-32, but we don't yet have any user for memset64() on 32-bit
+architectures, so don't bother to implement it.
 
-The generic memfill() function is part of Lars Wirzenius' publib,
-but it doesn't offer the most convenient interface.  I chose to add
-five more-specific functions as part of this patchset -- memset16(),
-memset32(), memset64(), memset_l() (long) and memset_p() (pointer).
+Signed-off-by: Matthew Wilcox <mawilcox@microsoft.com>
+---
+ arch/x86/include/asm/string_32.h | 24 ++++++++++++++++++++++++
+ arch/x86/include/asm/string_64.h | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+)
 
-It would be nice to have some more architectures implement optimised
-memsetN calls.  It would also be nice to find more places in the kernel
-which could benefit from calling these functions.  Maybe a coccinelle
-script could be written to find such places?  We're looking for loops
-over an array where the value being stored into the array does not depend
-on the iteration variable.
-
-Since v1 of the patchset, I stumbled on Alpha's memsetw() which
-caused me to add memset16() to complete the set.  I removed the
-'__HAVE_ARCH_MEMSET_PLUS' preprocessor symbol in favour of separate
-MEMSET16 MEMSET32 and MEMSET64 symbols.  I also reviewed the scr_mem*w()
-usages across the different architectures and implemented some obvious
-missing optimisations.  Alpha is still missing scr_memmovew() as it
-would be non-trivial to write.
-
-Russell's review on patch 2 only applies to the memset32/memset64
-implementation.  The memset16 is unreviewed (and, indeed, untested)
-to date.
-
-Matthew Wilcox (7):
-  Add multibyte memset functions
-  ARM: Implement memset16, memset32 & memset64
-  x86: Implement memset16, memset32 & memset64
-  alpha: Add support for memset16
-  zram: Convert to using memset_l
-  sym53c8xx_2: Convert to use memset32
-  vga: Optimise console scrolling
-
- arch/alpha/include/asm/string.h     | 15 ++++----
- arch/alpha/include/asm/vga.h        |  2 +-
- arch/alpha/lib/memset.S             | 10 +++---
- arch/arm/include/asm/string.h       | 21 ++++++++++++
- arch/arm/kernel/armksyms.c          |  3 ++
- arch/arm/lib/memset.S               | 44 +++++++++++++++++++-----
- arch/mips/include/asm/vga.h         |  6 ++++
- arch/powerpc/include/asm/vga.h      |  8 +++++
- arch/sparc/include/asm/vga.h        | 24 +++++++++++++
- arch/x86/include/asm/string_32.h    | 24 +++++++++++++
- arch/x86/include/asm/string_64.h    | 36 ++++++++++++++++++++
- drivers/block/zram/zram_drv.c       | 15 ++------
- drivers/scsi/sym53c8xx_2/sym_hipd.c | 11 ++----
- include/linux/string.h              | 30 ++++++++++++++++
- include/linux/vt_buffer.h           | 12 +++++++
- lib/string.c                        | 68 +++++++++++++++++++++++++++++++++++++
- 16 files changed, 287 insertions(+), 42 deletions(-)
-
+diff --git a/arch/x86/include/asm/string_32.h b/arch/x86/include/asm/string_32.h
+index 3d3e8353ee5c..84da91fe13ac 100644
+--- a/arch/x86/include/asm/string_32.h
++++ b/arch/x86/include/asm/string_32.h
+@@ -331,6 +331,30 @@ void *__constant_c_and_count_memset(void *s, unsigned long pattern,
+ 	 : __memset((s), (c), (count)))
+ #endif
+ 
++#define __HAVE_ARCH_MEMSET16
++static inline void *memset16(uint16_t *s, uint16_t v, size_t n)
++{
++	int d0, d1;
++	asm volatile("rep\n\t"
++		     "stosw"
++		     : "=&c" (d0), "=&D" (d1)
++		     : "a" (v), "1" (s), "0" (n)
++		     : "memory");
++	return s;
++}
++
++#define __HAVE_ARCH_MEMSET_32
++static inline void *memset32(uint32_t *s, uint32_t v, size_t n)
++{
++	int d0, d1;
++	asm volatile("rep\n\t"
++		     "stosl"
++		     : "=&c" (d0), "=&D" (d1)
++		     : "a" (v), "1" (s), "0" (n)
++		     : "memory");
++	return s;
++}
++
+ /*
+  * find the first occurrence of byte 'c', or 1 past the area if none
+  */
+diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
+index a164862d77e3..71c5e860c7da 100644
+--- a/arch/x86/include/asm/string_64.h
++++ b/arch/x86/include/asm/string_64.h
+@@ -56,6 +56,42 @@ extern void *__memcpy(void *to, const void *from, size_t len);
+ void *memset(void *s, int c, size_t n);
+ void *__memset(void *s, int c, size_t n);
+ 
++#define __HAVE_ARCH_MEMSET16
++static inline void *memset16(uint16_t *s, uint16_t v, size_t n)
++{
++	long d0, d1;
++	asm volatile("rep\n\t"
++		     "stosw"
++		     : "=&c" (d0), "=&D" (d1)
++		     : "a" (v), "1" (s), "0" (n)
++		     : "memory");
++	return s;
++}
++
++#define __HAVE_ARCH_MEMSET32
++static inline void *memset32(uint32_t *s, uint32_t v, size_t n)
++{
++	long d0, d1;
++	asm volatile("rep\n\t"
++		     "stosl"
++		     : "=&c" (d0), "=&D" (d1)
++		     : "a" (v), "1" (s), "0" (n)
++		     : "memory");
++	return s;
++}
++
++#define __HAVE_ARCH_MEMSET64
++static inline void *memset64(uint64_t *s, uint64_t v, size_t n)
++{
++	long d0, d1;
++	asm volatile("rep\n\t"
++		     "stosq"
++		     : "=&c" (d0), "=&D" (d1)
++		     : "a" (v), "1" (s), "0" (n)
++		     : "memory");
++	return s;
++}
++
+ #define __HAVE_ARCH_MEMMOVE
+ void *memmove(void *dest, const void *src, size_t count);
+ void *__memmove(void *dest, const void *src, size_t count);
 -- 
 2.11.0

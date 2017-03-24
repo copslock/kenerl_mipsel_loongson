@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2017 17:15:59 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:56161 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2017 17:16:26 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:59727 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992214AbdCXQNlrIegA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Mar 2017 17:13:41 +0100
+        by eddie.linux-mips.org with ESMTP id S23993918AbdCXQNnvx5nA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Mar 2017 17:13:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=5+cOn2Gn8Nibze/5+ECwo8+tt6nu6qJcl04imTfRJuQ=; b=nDdeMUvXEeZp9tMPxLoJsgGGf
-        SwKofnogaaUaVp17VpwAKVQvOEB/KD9cgnrgj7Kkm/vdJ9CZta7MujCSv9ZH8z7w+xmimxgIB2rDZ
-        3WGElRjYXhQRAuZQdeQhRV+3wVOu6dJDkd8Cs4hX+zfZjcHkpOm2hZvupFltcHCpmSJGLqgyuzbcR
-        pD6H7FPjrAFnwie5AlO4+362uUBrsegmKMSJheLxGLzCJFCrd9HPZPkFWy494GvJHcuO1n4keReIE
-        bvCLVKVM9taTb81DBPGrsQEQ6EW4f7UMEHi9zHLgXItu5cBRVa8MxjEYzZZSAqopzfQT3GJzHXpvq
-        /eRyp6n0Q==;
+         bh=iwCTDw1gKmaip942Vra7u7vH5dYa0pxQj9ZXMAP62io=; b=aCW+iwBWqWs7jo2FYtWqb4x8J
+        yQLTZPTjK8V/Zs4qPXEZIgwj7Hocrp05wbd2v3Pg2fGwrPWr2fzg5ApbPiTMTD2AMQt72MGCE/Dcg
+        gFMr9XluEYM3P9lwF+lm6k0kdEBVjFisF9hbXMsd+gGA8uiEpD8enqf8ftiwzUVw7WwZQ4XwdwGg6
+        bBFQp12+0UcBkfWD0pLZAw4R2ajZiRz7cVw4GV/JeGwY1HEOM4BXuYi/lf0zo72goc40NgAuO+kA1
+        Mm9zK/lCJDIMjErWTJcUamQSpppiIxT1rddyVABmPyuGXaidurHLVRch/tVfeQVkL82mVrNFKyXXe
+        gpmnEtBEg==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.87 #1 (Red Hat Linux))
-        id 1crRqK-0004v5-IK; Fri, 24 Mar 2017 16:13:36 +0000
+        id 1crRqK-0004v9-Ju; Fri, 24 Mar 2017 16:13:36 +0000
 From:   Matthew Wilcox <willy@infradead.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
@@ -25,9 +25,9 @@ Cc:     linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         Minchan Kim <minchan@kernel.org>,
         Matthew Wilcox <mawilcox@microsoft.com>
-Subject: [PATCH v3 4/7] alpha: Add support for memset16
-Date:   Fri, 24 Mar 2017 09:13:15 -0700
-Message-Id: <20170324161318.18718-5-willy@infradead.org>
+Subject: [PATCH v3 5/7] zram: Convert to using memset_l
+Date:   Fri, 24 Mar 2017 09:13:16 -0700
+Message-Id: <20170324161318.18718-6-willy@infradead.org>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20170324161318.18718-1-willy@infradead.org>
 References: <20170324161318.18718-1-willy@infradead.org>
@@ -35,7 +35,7 @@ Return-Path: <willy@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57440
+X-archive-position: 57441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,93 +54,56 @@ X-list: linux-mips
 
 From: Matthew Wilcox <mawilcox@microsoft.com>
 
-Alpha already had an optimised memset-16-bit-quantity assembler routine
-called memsetw().  It has a slightly different calling convention
-from memset16() in that it takes a byte count, not a count of words.
-That's the same convention used by ARM's __memset16(), so rename Alpha's
-routine to match and add a memset16() wrapper around it.  Then convert
-Alpha's scr_memsetw() to call memset16() instead of memsetw().
+zram was the motivation for creating memset_l().  Minchan Kim sees a 7%
+performance improvement on x86 with 100MB of non-zero deduplicatable
+data:
+
+        perf stat -r 10 dd if=/dev/zram0 of=/dev/null
+
+vanilla:        0.232050465 seconds time elapsed ( +-  0.51% )
+memset_l:	0.217219387 seconds time elapsed ( +-  0.07% )
 
 Signed-off-by: Matthew Wilcox <mawilcox@microsoft.com>
+Tested-by: Minchan Kim <minchan@kernel.org>
 ---
- arch/alpha/include/asm/string.h | 15 ++++++++-------
- arch/alpha/include/asm/vga.h    |  2 +-
- arch/alpha/lib/memset.S         | 10 +++++-----
- 3 files changed, 14 insertions(+), 13 deletions(-)
+ drivers/block/zram/zram_drv.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/arch/alpha/include/asm/string.h b/arch/alpha/include/asm/string.h
-index c2911f591704..74c0a693b76b 100644
---- a/arch/alpha/include/asm/string.h
-+++ b/arch/alpha/include/asm/string.h
-@@ -65,13 +65,14 @@ extern void * memchr(const void *, int, size_t);
-    aligned values.  The DEST and COUNT parameters must be even for 
-    correct operation.  */
- 
--#define __HAVE_ARCH_MEMSETW
--extern void * __memsetw(void *dest, unsigned short, size_t count);
--
--#define memsetw(s, c, n)						 \
--(__builtin_constant_p(c)						 \
-- ? __constant_c_memset((s),0x0001000100010001UL*(unsigned short)(c),(n)) \
-- : __memsetw((s),(c),(n)))
-+#define __HAVE_ARCH_MEMSET16
-+extern void * __memset16(void *dest, unsigned short, size_t count);
-+static inline void *memset16(uint16_t *p, uint16_t v, size_t n)
-+{
-+	if (__builtin_constant_p(v))
-+		return __constant_c_memset(p, 0x0001000100010001UL * v, n * 2)
-+	return __memset16(p, v, n * 2);
-+}
- 
- #endif /* __KERNEL__ */
- 
-diff --git a/arch/alpha/include/asm/vga.h b/arch/alpha/include/asm/vga.h
-index c00106bac521..3c1c2b6128e7 100644
---- a/arch/alpha/include/asm/vga.h
-+++ b/arch/alpha/include/asm/vga.h
-@@ -34,7 +34,7 @@ static inline void scr_memsetw(u16 *s, u16 c, unsigned int count)
- 	if (__is_ioaddr(s))
- 		memsetw_io((u16 __iomem *) s, c, count);
- 	else
--		memsetw(s, c, count);
-+		memset16(s, c, count / 2);
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index e27d89a36c34..25dcad309695 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -157,20 +157,11 @@ static inline void update_used_max(struct zram *zram,
+ 	} while (old_max != cur_max);
  }
  
- /* Do not trust that the usage will be correct; analyze the arguments.  */
-diff --git a/arch/alpha/lib/memset.S b/arch/alpha/lib/memset.S
-index 89a26f5e89de..f824969e9e77 100644
---- a/arch/alpha/lib/memset.S
-+++ b/arch/alpha/lib/memset.S
-@@ -20,7 +20,7 @@
- 	.globl memset
- 	.globl __memset
- 	.globl ___memset
--	.globl __memsetw
-+	.globl __memset16
- 	.globl __constant_c_memset
+-static inline void zram_fill_page(char *ptr, unsigned long len,
++static inline void zram_fill_page(void *ptr, unsigned long len,
+ 					unsigned long value)
+ {
+-	int i;
+-	unsigned long *page = (unsigned long *)ptr;
+-
+ 	WARN_ON_ONCE(!IS_ALIGNED(len, sizeof(unsigned long)));
+-
+-	if (likely(value == 0)) {
+-		memset(ptr, 0, len);
+-	} else {
+-		for (i = 0; i < len / sizeof(*page); i++)
+-			page[i] = value;
+-	}
++	memset_l(ptr, value, len / sizeof(unsigned long));
+ }
  
- 	.ent ___memset
-@@ -110,8 +110,8 @@ EXPORT_SYMBOL(___memset)
- EXPORT_SYMBOL(__constant_c_memset)
+ static bool page_same_filled(void *ptr, unsigned long *element)
+@@ -193,7 +184,7 @@ static bool page_same_filled(void *ptr, unsigned long *element)
+ static void handle_same_page(struct bio_vec *bvec, unsigned long element)
+ {
+ 	struct page *page = bvec->bv_page;
+-	void *user_mem;
++	char *user_mem;
  
- 	.align 5
--	.ent __memsetw
--__memsetw:
-+	.ent __memset16
-+__memset16:
- 	.prologue 0
- 
- 	inswl $17,0,$1		/* E0 */
-@@ -123,8 +123,8 @@ __memsetw:
- 	or $1,$4,$17		/* E0 */
- 	br __constant_c_memset	/* .. E1 */
- 
--	.end __memsetw
--EXPORT_SYMBOL(__memsetw)
-+	.end __memset16
-+EXPORT_SYMBOL(__memset16)
- 
- memset = ___memset
- __memset = ___memset
+ 	user_mem = kmap_atomic(page);
+ 	zram_fill_page(user_mem + bvec->bv_offset, bvec->bv_len, element);
 -- 
 2.11.0

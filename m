@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2017 17:13:51 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:55974 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2017 17:14:18 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:47304 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993302AbdCXQNmld9WA (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23993457AbdCXQNmzxbGA (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 24 Mar 2017 17:13:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
@@ -9,14 +9,14 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=vLhH+tTt5d0g3g5K6NIF1+bSl0M6+PAcN7VtcL+BWzE=; b=rSnG0xJON8a/6MLJbyGShgKoA
-        mZxSlt5M5MCaKkPMbGM/N+6xEp2v4H5a6ZG+vzDMbVgHPJxhyyXKe5hqebsVVJdctR4GlVKVxrzBf
-        a5F0I0Jv3EpaiGYdoGVgQ0TXDqSq5lOzrPRHsozyhNvAx6RSuX1gyQR8WIfTVhCrzaC4rb4Xb+ZQz
-        8LInhW+lYKMzz2REVXWJlwshxebzOq0uEg7vuGkl0c5LIDmepb2cvU4xesTUCKxGJtMBQfAnwpOj2
-        f+LR+8yupX+Xmp77lFEVcf0M+A5JxVS6hQ06NFThJ/ByBrCN2xnEMJSlEv8d2sIphG9eVCGYKsKVR
-        zRpv2RBLA==;
+         bh=4PABV1MqcSsOm2Nv3z32v5KKzexZdPkcccPIjbAFZzQ=; b=eXEPm9CueKvrnH+4AyRhKDQVs
+        0QbTu6ZIyT0CJ7W4c2/S/RkOakQq8d2qYKce3tlqf+cV2wZJWvkN8JMwKLLSOwSbTZ5DQsZ4Wad+C
+        7VApnlC35+f2uBQH1RP4mOqCjMlq+MytlfRZ0Rgw8OFmSlKCbwuK1f9a+UyBRPdwzMhmmInAIL/NQ
+        fp06tHYjIojEsD2MatRYBVLm7+lWZksXDoD/f4YLgsOjjZyRUPeiLGLy2XjyX+DtnAwh9Mg3fDq7l
+        aNsTV7r4SZZmvpalF2ZfLPR/K4bQhg6Vqa8Uhomlkvt3+DU/gKOb7vhXIZJHragUl98q66bAoipIf
+        tVm1kSfKA==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.87 #1 (Red Hat Linux))
-        id 1crRqK-0004ux-F4; Fri, 24 Mar 2017 16:13:36 +0000
+        id 1crRqK-0004vZ-Qg; Fri, 24 Mar 2017 16:13:36 +0000
 From:   Matthew Wilcox <willy@infradead.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
@@ -25,9 +25,9 @@ Cc:     linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         Minchan Kim <minchan@kernel.org>,
         Matthew Wilcox <mawilcox@microsoft.com>
-Subject: [PATCH v3 2/7] ARM: Implement memset16, memset32 & memset64
-Date:   Fri, 24 Mar 2017 09:13:13 -0700
-Message-Id: <20170324161318.18718-3-willy@infradead.org>
+Subject: [PATCH v3 7/7] vga: Optimise console scrolling
+Date:   Fri, 24 Mar 2017 09:13:18 -0700
+Message-Id: <20170324161318.18718-8-willy@infradead.org>
 X-Mailer: git-send-email 2.9.3
 In-Reply-To: <20170324161318.18718-1-willy@infradead.org>
 References: <20170324161318.18718-1-willy@infradead.org>
@@ -35,7 +35,7 @@ Return-Path: <willy@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57435
+X-archive-position: 57436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,153 +54,156 @@ X-list: linux-mips
 
 From: Matthew Wilcox <mawilcox@microsoft.com>
 
-ARM is only 32-bit, so it doesn't really need a memset64, but it was
-essentially free to add it to the existing implementation.
+Where possible, call memset16(), memmove() or memcpy() instead of using
+open-coded loops.  If an architecture doesn't define VT_BUF_HAVE_RW,
+we can do that from the generic code.  For the architectures which do
+have special RW routines, usually we can do the special thing (pointer
+test or byteswap) once (and then use a mem* call) instead of each time
+around a loop.  Alpha is the only architecture missing a scr_memmovew()
+definition (because it's non-trivial to write).
+
+I don't like the calling convention that uses a byte count instead of
+a count of u16s, but it's a little late to change that.  Reduces code
+size of fbcon.o by almost 400 bytes on my laptop build.
 
 Signed-off-by: Matthew Wilcox <mawilcox@microsoft.com>
-Reviewed-by: Russell King <rmk+kernel@armlinux.org.uk>
 ---
- arch/arm/include/asm/string.h | 21 +++++++++++++++++++++
- arch/arm/kernel/armksyms.c    |  3 +++
- arch/arm/lib/memset.S         | 44 ++++++++++++++++++++++++++++++++++---------
- 3 files changed, 59 insertions(+), 9 deletions(-)
+ arch/mips/include/asm/vga.h    |  6 ++++++
+ arch/powerpc/include/asm/vga.h |  8 ++++++++
+ arch/sparc/include/asm/vga.h   | 24 ++++++++++++++++++++++++
+ include/linux/vt_buffer.h      | 12 ++++++++++++
+ 4 files changed, 50 insertions(+)
 
-diff --git a/arch/arm/include/asm/string.h b/arch/arm/include/asm/string.h
-index cf4f3aad0fc1..bc7a1be7a76a 100644
---- a/arch/arm/include/asm/string.h
-+++ b/arch/arm/include/asm/string.h
-@@ -24,6 +24,27 @@ extern void * memchr(const void *, int, __kernel_size_t);
- #define __HAVE_ARCH_MEMSET
- extern void * memset(void *, int, __kernel_size_t);
+diff --git a/arch/mips/include/asm/vga.h b/arch/mips/include/asm/vga.h
+index f82c83749a08..7510f406e1e1 100644
+--- a/arch/mips/include/asm/vga.h
++++ b/arch/mips/include/asm/vga.h
+@@ -40,9 +40,15 @@ static inline u16 scr_readw(volatile const u16 *addr)
+ 	return le16_to_cpu(*addr);
+ }
  
-+#define __HAVE_ARCH_MEMSET16
-+extern void *__memset16(uint16_t *, uint16_t v, __kernel_size_t);
-+static inline void *memset16(uint16_t *p, uint16_t v, __kernel_size_t n)
++static inline void scr_memsetw(u16 *s, u16 v, unsigned int count)
 +{
-+	return __memset16(p, v, n * 2);
++	memset16(s, cpu_to_le16(v), count / 2);
 +}
 +
-+#define __HAVE_ARCH_MEMSET32
-+extern void *__memset32(uint32_t *, uint32_t v, __kernel_size_t);
-+static inline void *memset32(uint32_t *p, uint32_t v, __kernel_size_t n)
+ #define scr_memcpyw(d, s, c) memcpy(d, s, c)
+ #define scr_memmovew(d, s, c) memmove(d, s, c)
+ #define VT_BUF_HAVE_MEMCPYW
+ #define VT_BUF_HAVE_MEMMOVEW
++#define VT_BUF_HAVE_MEMSETW
+ 
+ #endif /* _ASM_VGA_H */
+diff --git a/arch/powerpc/include/asm/vga.h b/arch/powerpc/include/asm/vga.h
+index ab3acd2f2786..7a7b541b7493 100644
+--- a/arch/powerpc/include/asm/vga.h
++++ b/arch/powerpc/include/asm/vga.h
+@@ -33,8 +33,16 @@ static inline u16 scr_readw(volatile const u16 *addr)
+ 	return le16_to_cpu(*addr);
+ }
+ 
++#define VT_BUF_HAVE_MEMSETW
++static inline void scr_memsetw(u16 *s, u16 v, unsigned int n)
 +{
-+	return __memset32(p, v, n * 4);
++	memset16(s, cpu_to_le16(v), n / 2);
 +}
 +
-+#define __HAVE_ARCH_MEMSET64
-+extern void *__memset64(uint64_t *, uint32_t low, __kernel_size_t, uint32_t hi);
-+static inline void *memset64(uint64_t *p, uint64_t v, __kernel_size_t n)
+ #define VT_BUF_HAVE_MEMCPYW
++#define VT_BUF_HAVE_MEMMOVEW
+ #define scr_memcpyw	memcpy
++#define scr_memmovew	memmove
+ 
+ #endif /* !CONFIG_VGA_CONSOLE && !CONFIG_MDA_CONSOLE */
+ 
+diff --git a/arch/sparc/include/asm/vga.h b/arch/sparc/include/asm/vga.h
+index ec0e9967d93d..1fab92b110d9 100644
+--- a/arch/sparc/include/asm/vga.h
++++ b/arch/sparc/include/asm/vga.h
+@@ -11,6 +11,9 @@
+ #include <asm/types.h>
+ 
+ #define VT_BUF_HAVE_RW
++#define VT_BUF_HAVE_MEMSETW
++#define VT_BUF_HAVE_MEMCPYW
++#define VT_BUF_HAVE_MEMMOVEW
+ 
+ #undef scr_writew
+ #undef scr_readw
+@@ -29,6 +32,27 @@ static inline u16 scr_readw(const u16 *addr)
+ 	return *addr;
+ }
+ 
++static inline void scr_memsetw(u16 *p, u16 v, unsigned int n)
 +{
-+	return __memset64(p, v, n * 8, v >> 32);
++	BUG_ON((long) p >= 0);
++
++	memset16(s, cpu_to_le16(v), n / 2);
 +}
 +
- extern void __memzero(void *ptr, __kernel_size_t n);
- 
- #define memset(p,v,n)							\
-diff --git a/arch/arm/kernel/armksyms.c b/arch/arm/kernel/armksyms.c
-index 8e8d20cdbce7..633341ed0713 100644
---- a/arch/arm/kernel/armksyms.c
-+++ b/arch/arm/kernel/armksyms.c
-@@ -87,6 +87,9 @@ EXPORT_SYMBOL(__raw_writesl);
- EXPORT_SYMBOL(strchr);
- EXPORT_SYMBOL(strrchr);
- EXPORT_SYMBOL(memset);
-+EXPORT_SYMBOL(__memset16);
-+EXPORT_SYMBOL(__memset32);
-+EXPORT_SYMBOL(__memset64);
- EXPORT_SYMBOL(memcpy);
- EXPORT_SYMBOL(memmove);
- EXPORT_SYMBOL(memchr);
-diff --git a/arch/arm/lib/memset.S b/arch/arm/lib/memset.S
-index 3c65e3bd790f..9adc9bdf3ffb 100644
---- a/arch/arm/lib/memset.S
-+++ b/arch/arm/lib/memset.S
-@@ -21,14 +21,14 @@ ENTRY(memset)
- UNWIND( .fnstart         )
- 	ands	r3, r0, #3		@ 1 unaligned?
- 	mov	ip, r0			@ preserve r0 as return value
-+	orr	r1, r1, r1, lsl #8
- 	bne	6f			@ 1
- /*
-  * we know that the pointer in ip is aligned to a word boundary.
-  */
--1:	orr	r1, r1, r1, lsl #8
--	orr	r1, r1, r1, lsl #16
-+1:	orr	r1, r1, r1, lsl #16
- 	mov	r3, r1
--	cmp	r2, #16
-+7:	cmp	r2, #16
- 	blt	4f
- 
- #if ! CALGN(1)+0
-@@ -41,7 +41,7 @@ UNWIND( .fnend              )
- UNWIND( .fnstart            )
- UNWIND( .save {r8, lr}      )
- 	mov	r8, r1
--	mov	lr, r1
-+	mov	lr, r3
- 
- 2:	subs	r2, r2, #64
- 	stmgeia	ip!, {r1, r3, r8, lr}	@ 64 bytes at a time.
-@@ -73,11 +73,11 @@ UNWIND( .fnend                 )
- UNWIND( .fnstart               )
- UNWIND( .save {r4-r8, lr}      )
- 	mov	r4, r1
--	mov	r5, r1
-+	mov	r5, r3
- 	mov	r6, r1
--	mov	r7, r1
-+	mov	r7, r3
- 	mov	r8, r1
--	mov	lr, r1
-+	mov	lr, r3
- 
- 	cmp	r2, #96
- 	tstgt	ip, #31
-@@ -114,12 +114,13 @@ UNWIND( .fnstart            )
- 	tst	r2, #4
- 	strne	r1, [ip], #4
- /*
-- * When we get here, we've got less than 4 bytes to zero.  We
-+ * When we get here, we've got less than 4 bytes to set.  We
-  * may have an unaligned pointer as well.
-  */
- 5:	tst	r2, #2
-+	movne	r3, r1, lsr #8		@ the top half of a 16-bit pattern
- 	strneb	r1, [ip], #1
--	strneb	r1, [ip], #1
-+	strneb	r3, [ip], #1
- 	tst	r2, #1
- 	strneb	r1, [ip], #1
- 	ret	lr
-@@ -135,3 +136,28 @@ UNWIND( .fnstart            )
- UNWIND( .fnend   )
- ENDPROC(memset)
- ENDPROC(mmioset)
++static inline void scr_memcpyw(u16 *d, u16 *s, unsigned int n)
++{
++	BUG_ON((long) d >= 0);
 +
-+ENTRY(__memset16)
-+UNWIND( .fnstart         )
-+	tst	r0, #2			@ pointer unaligned?
-+	mov	ip, r0			@ preserve r0 as return value
-+	beq	1b			@ jump into the middle of memset
-+	subs	r2, r2, #2		@ cope with n == 0
-+	movge	r3, r1, lsr #8		@ r3 = r1 >> 8
-+	strgeb	r1, [ip], #1		@ *ip = r1
-+	strgeb	r3, [ip], #1		@ *ip = r3
-+	bgt	1b			@ back into memset if n > 0
-+	ret	lr			@ otherwise return
-+UNWIND( .fnend   )
-+ENDPROC(__memset16)
-+ENTRY(__memset32)
-+UNWIND( .fnstart         )
-+	mov	r3, r1			@ copy r1 to r3 and fall into memset64
-+UNWIND( .fnend   )
-+ENDPROC(__memset32)
-+ENTRY(__memset64)
-+UNWIND( .fnstart         )
-+	mov	ip, r0			@ preserve r0 as return value
-+	b	7b			@ jump into the middle of memset
-+UNWIND( .fnend   )
-+ENDPROC(__memset64)
++	memcpy(d, s, n);
++}
++
++static inline void scr_memmovew(u16 *d, u16 *s, unsigned int n)
++{
++	BUG_ON((long) d >= 0);
++
++	memmove(d, s, n);
++}
++
+ #define VGA_MAP_MEM(x,s) (x)
+ 
+ #endif
+diff --git a/include/linux/vt_buffer.h b/include/linux/vt_buffer.h
+index f38c10ba3ff5..31b92fcd8f03 100644
+--- a/include/linux/vt_buffer.h
++++ b/include/linux/vt_buffer.h
+@@ -26,24 +26,33 @@
+ #ifndef VT_BUF_HAVE_MEMSETW
+ static inline void scr_memsetw(u16 *s, u16 c, unsigned int count)
+ {
++#ifdef VT_BUF_HAVE_RW
+ 	count /= 2;
+ 	while (count--)
+ 		scr_writew(c, s++);
++#else
++	memset16(s, c, count / 2);
++#endif
+ }
+ #endif
+ 
+ #ifndef VT_BUF_HAVE_MEMCPYW
+ static inline void scr_memcpyw(u16 *d, const u16 *s, unsigned int count)
+ {
++#ifdef VT_BUF_HAVE_RW
+ 	count /= 2;
+ 	while (count--)
+ 		scr_writew(scr_readw(s++), d++);
++#else
++	memcpy(d, s, count);
++#endif
+ }
+ #endif
+ 
+ #ifndef VT_BUF_HAVE_MEMMOVEW
+ static inline void scr_memmovew(u16 *d, const u16 *s, unsigned int count)
+ {
++#ifdef VT_BUF_HAVE_RW
+ 	if (d < s)
+ 		scr_memcpyw(d, s, count);
+ 	else {
+@@ -53,6 +62,9 @@ static inline void scr_memmovew(u16 *d, const u16 *s, unsigned int count)
+ 		while (count--)
+ 			scr_writew(scr_readw(--s), --d);
+ 	}
++#else
++	memmove(d, s, count);
++#endif
+ }
+ #endif
+ 
 -- 
 2.11.0

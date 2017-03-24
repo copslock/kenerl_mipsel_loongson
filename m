@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2017 17:14:18 +0100 (CET)
-Received: from bombadil.infradead.org ([65.50.211.133]:47304 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2017 17:14:42 +0100 (CET)
+Received: from bombadil.infradead.org ([65.50.211.133]:43061 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993457AbdCXQNmzxbGA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Mar 2017 17:13:42 +0100
+        by eddie.linux-mips.org with ESMTP id S23992227AbdCXQNlwu77A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Mar 2017 17:13:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=4PABV1MqcSsOm2Nv3z32v5KKzexZdPkcccPIjbAFZzQ=; b=eXEPm9CueKvrnH+4AyRhKDQVs
-        0QbTu6ZIyT0CJ7W4c2/S/RkOakQq8d2qYKce3tlqf+cV2wZJWvkN8JMwKLLSOwSbTZ5DQsZ4Wad+C
-        7VApnlC35+f2uBQH1RP4mOqCjMlq+MytlfRZ0Rgw8OFmSlKCbwuK1f9a+UyBRPdwzMhmmInAIL/NQ
-        fp06tHYjIojEsD2MatRYBVLm7+lWZksXDoD/f4YLgsOjjZyRUPeiLGLy2XjyX+DtnAwh9Mg3fDq7l
-        aNsTV7r4SZZmvpalF2ZfLPR/K4bQhg6Vqa8Uhomlkvt3+DU/gKOb7vhXIZJHragUl98q66bAoipIf
-        tVm1kSfKA==;
+         bh=hIaD524xs3Qn/3Ay5JbEDOGIIDvUrEHXnjPPpXfuEk4=; b=Qg7GSAMp2m8G2uhmZQuXAUrbH
+        gDWARADqKzDYia+LS3+2l8wIojVoqVFaSf69zWrIeE9tYgGHTQ8ETuqnZvg7ofs249WzBXUyIELlf
+        /xGVuk/l8j08fxPyNWMkvo6tFuWrFLpo9jkf/+Kr0zPUlSPHRegXOHhSi1sti/95bhE7DHN1qO/P4
+        9nfhQXLdDoQ8Zf3ahnWH6SW4FuQwRt5Xqhpr8o0hhJD/jUQQ9ksJQYUUSm3VXwQFfxlK6gV6eiSAT
+        qs5e0ae5yIZ5Y+lWvvDvt3nDG8ldhZ5bnHuS9/7t1p+G75QQ2zX+VjIA/8spy4LGTKigiuKvxwWea
+        ai6v36dew==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.87 #1 (Red Hat Linux))
-        id 1crRqK-0004vZ-Qg; Fri, 24 Mar 2017 16:13:36 +0000
+        id 1crRqK-0004uq-BV; Fri, 24 Mar 2017 16:13:36 +0000
 From:   Matthew Wilcox <willy@infradead.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
@@ -25,17 +25,15 @@ Cc:     linux-fbdev@vger.kernel.org, linux-arch@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
         Minchan Kim <minchan@kernel.org>,
         Matthew Wilcox <mawilcox@microsoft.com>
-Subject: [PATCH v3 7/7] vga: Optimise console scrolling
-Date:   Fri, 24 Mar 2017 09:13:18 -0700
-Message-Id: <20170324161318.18718-8-willy@infradead.org>
+Subject: [PATCH v3 0/7] Add memsetN functions
+Date:   Fri, 24 Mar 2017 09:13:11 -0700
+Message-Id: <20170324161318.18718-1-willy@infradead.org>
 X-Mailer: git-send-email 2.9.3
-In-Reply-To: <20170324161318.18718-1-willy@infradead.org>
-References: <20170324161318.18718-1-willy@infradead.org>
 Return-Path: <willy@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57436
+X-archive-position: 57437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,156 +52,63 @@ X-list: linux-mips
 
 From: Matthew Wilcox <mawilcox@microsoft.com>
 
-Where possible, call memset16(), memmove() or memcpy() instead of using
-open-coded loops.  If an architecture doesn't define VT_BUF_HAVE_RW,
-we can do that from the generic code.  For the architectures which do
-have special RW routines, usually we can do the special thing (pointer
-test or byteswap) once (and then use a mem* call) instead of each time
-around a loop.  Alpha is the only architecture missing a scr_memmovew()
-definition (because it's non-trivial to write).
+zram was recently enhanced to support compressing pages with a repeating
+pattern up to the size of an unsigned long.  As part of the discussion,
+we noted it would be nice if architectures had optimised routines
+to fill regions of memory with patterns larger than those contained
+in a single byte.  Our suspicions were right; the x86 version offers
+approximately a 7% performance improvement over the C implementation.
 
-I don't like the calling convention that uses a byte count instead of
-a count of u16s, but it's a little late to change that.  Reduces code
-size of fbcon.o by almost 400 bytes on my laptop build.
+The generic memfill() function is part of Lars Wirzenius' publib,
+but it doesn't offer the most convenient interface.  I chose to add
+five more-specific functions as part of this patchset -- memset16(),
+memset32(), memset64(), memset_l() (long) and memset_p() (pointer).
 
-Signed-off-by: Matthew Wilcox <mawilcox@microsoft.com>
----
- arch/mips/include/asm/vga.h    |  6 ++++++
- arch/powerpc/include/asm/vga.h |  8 ++++++++
- arch/sparc/include/asm/vga.h   | 24 ++++++++++++++++++++++++
- include/linux/vt_buffer.h      | 12 ++++++++++++
- 4 files changed, 50 insertions(+)
+It would be nice to have some more architectures implement optimised
+memsetN calls.  It would also be nice to find more places in the kernel
+which could benefit from calling these functions.  Maybe a coccinelle
+script could be written to find such places?  We're looking for loops
+over an array where the value being stored into the array does not depend
+on the iteration variable.
 
-diff --git a/arch/mips/include/asm/vga.h b/arch/mips/include/asm/vga.h
-index f82c83749a08..7510f406e1e1 100644
---- a/arch/mips/include/asm/vga.h
-+++ b/arch/mips/include/asm/vga.h
-@@ -40,9 +40,15 @@ static inline u16 scr_readw(volatile const u16 *addr)
- 	return le16_to_cpu(*addr);
- }
- 
-+static inline void scr_memsetw(u16 *s, u16 v, unsigned int count)
-+{
-+	memset16(s, cpu_to_le16(v), count / 2);
-+}
-+
- #define scr_memcpyw(d, s, c) memcpy(d, s, c)
- #define scr_memmovew(d, s, c) memmove(d, s, c)
- #define VT_BUF_HAVE_MEMCPYW
- #define VT_BUF_HAVE_MEMMOVEW
-+#define VT_BUF_HAVE_MEMSETW
- 
- #endif /* _ASM_VGA_H */
-diff --git a/arch/powerpc/include/asm/vga.h b/arch/powerpc/include/asm/vga.h
-index ab3acd2f2786..7a7b541b7493 100644
---- a/arch/powerpc/include/asm/vga.h
-+++ b/arch/powerpc/include/asm/vga.h
-@@ -33,8 +33,16 @@ static inline u16 scr_readw(volatile const u16 *addr)
- 	return le16_to_cpu(*addr);
- }
- 
-+#define VT_BUF_HAVE_MEMSETW
-+static inline void scr_memsetw(u16 *s, u16 v, unsigned int n)
-+{
-+	memset16(s, cpu_to_le16(v), n / 2);
-+}
-+
- #define VT_BUF_HAVE_MEMCPYW
-+#define VT_BUF_HAVE_MEMMOVEW
- #define scr_memcpyw	memcpy
-+#define scr_memmovew	memmove
- 
- #endif /* !CONFIG_VGA_CONSOLE && !CONFIG_MDA_CONSOLE */
- 
-diff --git a/arch/sparc/include/asm/vga.h b/arch/sparc/include/asm/vga.h
-index ec0e9967d93d..1fab92b110d9 100644
---- a/arch/sparc/include/asm/vga.h
-+++ b/arch/sparc/include/asm/vga.h
-@@ -11,6 +11,9 @@
- #include <asm/types.h>
- 
- #define VT_BUF_HAVE_RW
-+#define VT_BUF_HAVE_MEMSETW
-+#define VT_BUF_HAVE_MEMCPYW
-+#define VT_BUF_HAVE_MEMMOVEW
- 
- #undef scr_writew
- #undef scr_readw
-@@ -29,6 +32,27 @@ static inline u16 scr_readw(const u16 *addr)
- 	return *addr;
- }
- 
-+static inline void scr_memsetw(u16 *p, u16 v, unsigned int n)
-+{
-+	BUG_ON((long) p >= 0);
-+
-+	memset16(s, cpu_to_le16(v), n / 2);
-+}
-+
-+static inline void scr_memcpyw(u16 *d, u16 *s, unsigned int n)
-+{
-+	BUG_ON((long) d >= 0);
-+
-+	memcpy(d, s, n);
-+}
-+
-+static inline void scr_memmovew(u16 *d, u16 *s, unsigned int n)
-+{
-+	BUG_ON((long) d >= 0);
-+
-+	memmove(d, s, n);
-+}
-+
- #define VGA_MAP_MEM(x,s) (x)
- 
- #endif
-diff --git a/include/linux/vt_buffer.h b/include/linux/vt_buffer.h
-index f38c10ba3ff5..31b92fcd8f03 100644
---- a/include/linux/vt_buffer.h
-+++ b/include/linux/vt_buffer.h
-@@ -26,24 +26,33 @@
- #ifndef VT_BUF_HAVE_MEMSETW
- static inline void scr_memsetw(u16 *s, u16 c, unsigned int count)
- {
-+#ifdef VT_BUF_HAVE_RW
- 	count /= 2;
- 	while (count--)
- 		scr_writew(c, s++);
-+#else
-+	memset16(s, c, count / 2);
-+#endif
- }
- #endif
- 
- #ifndef VT_BUF_HAVE_MEMCPYW
- static inline void scr_memcpyw(u16 *d, const u16 *s, unsigned int count)
- {
-+#ifdef VT_BUF_HAVE_RW
- 	count /= 2;
- 	while (count--)
- 		scr_writew(scr_readw(s++), d++);
-+#else
-+	memcpy(d, s, count);
-+#endif
- }
- #endif
- 
- #ifndef VT_BUF_HAVE_MEMMOVEW
- static inline void scr_memmovew(u16 *d, const u16 *s, unsigned int count)
- {
-+#ifdef VT_BUF_HAVE_RW
- 	if (d < s)
- 		scr_memcpyw(d, s, count);
- 	else {
-@@ -53,6 +62,9 @@ static inline void scr_memmovew(u16 *d, const u16 *s, unsigned int count)
- 		while (count--)
- 			scr_writew(scr_readw(--s), --d);
- 	}
-+#else
-+	memmove(d, s, count);
-+#endif
- }
- #endif
- 
+Since v1 of the patchset, I stumbled on Alpha's memsetw() which
+caused me to add memset16() to complete the set.  I removed the
+'__HAVE_ARCH_MEMSET_PLUS' preprocessor symbol in favour of separate
+MEMSET16 MEMSET32 and MEMSET64 symbols.  I also reviewed the scr_mem*w()
+usages across the different architectures and implemented some obvious
+missing optimisations.  Alpha is still missing scr_memmovew() as it
+would be non-trivial to write.
+
+Russell's review on patch 2 only applies to the memset32/memset64
+implementation.  The memset16 is unreviewed (and, indeed, untested)
+to date.
+
+Matthew Wilcox (7):
+  Add multibyte memset functions
+  ARM: Implement memset16, memset32 & memset64
+  x86: Implement memset16, memset32 & memset64
+  alpha: Add support for memset16
+  zram: Convert to using memset_l
+  sym53c8xx_2: Convert to use memset32
+  vga: Optimise console scrolling
+
+ arch/alpha/include/asm/string.h     | 15 ++++----
+ arch/alpha/include/asm/vga.h        |  2 +-
+ arch/alpha/lib/memset.S             | 10 +++---
+ arch/arm/include/asm/string.h       | 21 ++++++++++++
+ arch/arm/kernel/armksyms.c          |  3 ++
+ arch/arm/lib/memset.S               | 44 +++++++++++++++++++-----
+ arch/mips/include/asm/vga.h         |  6 ++++
+ arch/powerpc/include/asm/vga.h      |  8 +++++
+ arch/sparc/include/asm/vga.h        | 24 +++++++++++++
+ arch/x86/include/asm/string_32.h    | 24 +++++++++++++
+ arch/x86/include/asm/string_64.h    | 36 ++++++++++++++++++++
+ drivers/block/zram/zram_drv.c       | 15 ++------
+ drivers/scsi/sym53c8xx_2/sym_hipd.c | 11 ++----
+ include/linux/string.h              | 30 ++++++++++++++++
+ include/linux/vt_buffer.h           | 12 +++++++
+ lib/string.c                        | 68 +++++++++++++++++++++++++++++++++++++
+ 16 files changed, 287 insertions(+), 42 deletions(-)
+
 -- 
 2.11.0

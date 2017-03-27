@@ -1,53 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Mar 2017 19:05:57 +0200 (CEST)
-Received: from mail-wr0-x243.google.com ([IPv6:2a00:1450:400c:c0c::243]:36087
-        "EHLO mail-wr0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990509AbdCZRFrDPcqj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 26 Mar 2017 19:05:47 +0200
-Received: by mail-wr0-x243.google.com with SMTP id u1so6321975wra.3
-        for <linux-mips@linux-mips.org>; Sun, 26 Mar 2017 10:05:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kresin-me.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id;
-        bh=SsB5eW5y/gM3F2/e/rgOL/Szj5d2e5KZHXbuLpyiDG8=;
-        b=Ps29ErXw7CWbWtkTnjrtt5Ux8aVh3yKfk8IKQu7j1D1aLRB8pY5zabHweYzfyVxw70
-         Eb+QcidQY2QaWkPzV1KhN+oACESSbIYEXqpi2RlwHAPZOUAhABbmoJngHTT7es1BW/qb
-         ua/C3VbGxEgmYHHaFvO7QU8Je5EghhGhYf2ccM6ThiFR6Zbkf9GZuO/K/LU2xkoOBDdn
-         a2msG/hDbNq9hD1sVATDxW3J29MjTxCCytGKWeP5oyL8tLatm785kho/PLkEmn4ZTJEO
-         HtS9jajWCpeJDFD/JxlDjYKyppOsrUlmegZWHC8tGLvGrDBku7Zv/MWpjffiudmmp6IZ
-         gKNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=SsB5eW5y/gM3F2/e/rgOL/Szj5d2e5KZHXbuLpyiDG8=;
-        b=EFihBlJfZBvlaQkbwsF8WkjRfx5uHV35nw9IBapz5pLj0zK8/cm8ULDmthalNCXIgd
-         JSMSAcm8APgkFUgcIxNq4OzTqp5vzx+vQ7t8N2MJWTQV+jZK0HfcNEdbXVuUGmDlkE+0
-         5R1mt4ErdxYPV9ogwKoGAJN97WpxY4CWKkNj847u6W5FAr5hUrqaajtNoA4Tyi+MzLAN
-         ljn8qb4DXjnfPmZ94PdUrybbsGDv7Iyke8KhzmjZ5WsoqiK4nxaJEg8wghdf6sL2NkEG
-         +IwY/xvQ1ozM+glsc6OecwpX5xZEYrCmcbMOCxJk51r+hXq+iSBuFKPruJU0kwqX2zO+
-         cJAw==
-X-Gm-Message-State: AFeK/H1JYXNIrdXfmLC1H6+sP7dIafftSDpOqVyMeq1HeIytOzf0Q7G/OWRYKkRPzpezpQ==
-X-Received: by 10.28.55.138 with SMTP id e132mr5984297wma.6.1490547941520;
-        Sun, 26 Mar 2017 10:05:41 -0700 (PDT)
-Received: from desktop.wvd.kresin.me (pD9F6A192.dip0.t-ipconnect.de. [217.246.161.146])
-        by smtp.gmail.com with ESMTPSA id c17sm11422713wre.30.2017.03.26.10.05.40
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 26 Mar 2017 10:05:41 -0700 (PDT)
-From:   Mathias Kresin <dev@kresin.me>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH v3] MIPS: PCI: add controllers before the specified head
-Date:   Sun, 26 Mar 2017 19:05:36 +0200
-Message-Id: <1490547936-21871-1-git-send-email-dev@kresin.me>
-X-Mailer: git-send-email 2.7.4
-Return-Path: <dev@kresin.me>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2017 03:50:21 +0200 (CEST)
+Received: from resqmta-ch2-06v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:38]:46076
+        "EHLO resqmta-ch2-06v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992160AbdC0BuPOyWMa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Mar 2017 03:50:15 +0200
+Received: from resomta-ch2-04v.sys.comcast.net ([69.252.207.100])
+        by resqmta-ch2-06v.sys.comcast.net with SMTP
+        id sJnCcU02Yl4eqsJnRcB8db; Mon, 27 Mar 2017 01:50:13 +0000
+Received: from [192.168.1.13] ([73.201.78.97])
+        by resomta-ch2-04v.sys.comcast.net with SMTP
+        id sJnQcaOmMFcZ2sJnQcsSJF; Mon, 27 Mar 2017 01:50:13 +0000
+From:   Joshua Kinard <kumba@gentoo.org>
+Subject: Does the R10K family support the "wait" instruction?
+To:     Linux/MIPS <linux-mips@linux-mips.org>
+Message-ID: <88c3cc1d-fd80-bb9a-d1ec-ed3c44dea71b@gentoo.org>
+Date:   Sun, 26 Mar 2017 21:50:08 -0400
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4wfH69CZOFcS7GQLPkvZtWPBdG1LlCKrpbnAopqL4a2zTg9t3utqoWQhmXMMg7ueZUqbViyinSGPGyI1XUDXAb2fPw8WByS5br0TDL1yqekYR54BPxyE3f
+ Wv/FPkfIMgLKJsIXvCNZ+a6rLhzR7QK7MHWNG2sxesLXVNE+44UfykLp
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57447
+X-archive-position: 57448
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dev@kresin.me
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -60,43 +42,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-With commit 23dac14d058f ("MIPS: PCI: Use struct list_head lists") new
-controllers are added after the specified head where they where added
-before the specified head previously.
+Does anyone know if the R1x000 family of CPUs support the "wait" instruction?
+The 'check_wait' function in arch/mips/kernel/idle.c doesn't have a case for
+any of the R10K CPUs, and I can't find any specific guidance in the final R10K
+manual produced by Renesas, nor in the MIPS-IV instruction set.  It appears
+this was added in MIPS-II, and the R4K CPUs use it, with one version for when
+interrupts are enabled, and one where they're disabled.  Since a lot of CPUs
+tend to reuse R4K-compatible code, I wasn't sure.
 
-Use list_add_tail to restore the former order.
+Kinda-assuming it doesn't, since the R10K lacks any notion of reduced power
+operation.
 
-This patches fixes the following PCI error on lantiq:
-
-  pci 0000:01:00.0: BAR 0: error updating (0x1c000004 != 0x000000)
-
-Fixes: 23dac14d058f ("MIPS: PCI: Use struct list_head lists")
-Signed-off-by: Mathias Kresin <dev@kresin.me>
-
----
-
-Changes in v3:
-- fix the list order instead of adjusting the controller scan order
-- update commit message accordingly
-
-Changes in v2:
-- fix formal issues in commit message (Sergei Shtylyov)
-
- arch/mips/pci/pci-legacy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
-index 014649b..3a84f6c 100644
---- a/arch/mips/pci/pci-legacy.c
-+++ b/arch/mips/pci/pci-legacy.c
-@@ -190,7 +190,7 @@ void register_pci_controller(struct pci_controller *hose)
- 	}
- 
- 	INIT_LIST_HEAD(&hose->list);
--	list_add(&hose->list, &controllers);
-+	list_add_tail(&hose->list, &controllers);
- 
- 	/*
- 	 * Do not panic here but later - this might happen before console init.
 -- 
-2.7.4
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+6144R/F5C6C943 2015-04-27
+177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+
+"The past tempts us, the present confuses us, the future frightens us.  And our
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

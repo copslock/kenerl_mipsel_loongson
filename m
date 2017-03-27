@@ -1,61 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2017 11:21:36 +0200 (CEST)
-Received: from mail-lf0-x232.google.com ([IPv6:2a00:1450:4010:c07::232]:36828
-        "EHLO mail-lf0-x232.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992160AbdC0JV2Y7hWX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Mar 2017 11:21:28 +0200
-Received: by mail-lf0-x232.google.com with SMTP id x137so17160974lff.3
-        for <linux-mips@linux-mips.org>; Mon, 27 Mar 2017 02:21:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=FSz14took+oBPp8vuei1Ai85yLCLgkHk2dC1YPPmq+I=;
-        b=ygLSqLydJ0o3cHZe32estcpjzk56ymo2pBibHdqQoupalXglC1i+Tvj4xlEmpe83Mz
-         R+eaClMczZrz0HDbtmAmyvxkTHfqhJqjejt8QwpaTXrbGC4rA7HUD1+b/XORkTYHRzcB
-         MxK21/BkullR2Gk4T6YLyz3O1eQFDlgfkH9DeXW/macXQABCzPTlPtsmcEXB4Xys4unl
-         iRAygaEWGbXb2bumxoLiMfqmonXIfgjA00XvbYBce+Ud5kMxyNOsMnqn8bH79Kvwiqbk
-         39LINXQQxbMpV3OAd+4U8vpXHTv0mXGU6d39QVRZp2G/aYNohYnu+HnCZDCCFuz5/eXK
-         lk7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=FSz14took+oBPp8vuei1Ai85yLCLgkHk2dC1YPPmq+I=;
-        b=cyG2wvx4NdsvAHUqMWSFURsZpaqbdxkvd1amcRbTyCrjueCfc+sNc5smKE+JDTPscB
-         NmixiyhYpeT/JW+vT2Vgt4L0nMLopktmk45yXi5gio+6M6YXPLUt4U3Zkm7BnXE4vfG4
-         agHMqh101cd0k3j79x4ZKn6y43M77fWcaTzcS4Kfv0C8a6W+8D4m2acaclIBz2x8cSCu
-         3km0I6sBELCo4rdbXzi2nlyK96jo+xvMvdojJdlmwQ559YQJLWHPxemAta2kY2vddHp9
-         lp3a9CMef3goPHt/BtS8Dw86pfz8v4fvqXXHhUROeT6Z6YB43YiI43dco82ZWD5GwR1+
-         SbCw==
-X-Gm-Message-State: AFeK/H0qqiEG6RHU7W0QDf4wPTzlp/A+Gz4KS03Ne4fBa96VZwFtf3xWzXoMslfphYj+lQ==
-X-Received: by 10.25.39.14 with SMTP id n14mr9909769lfn.0.1490606482783;
-        Mon, 27 Mar 2017 02:21:22 -0700 (PDT)
-Received: from [192.168.4.126] ([31.173.86.91])
-        by smtp.gmail.com with ESMTPSA id d72sm1854715lfe.58.2017.03.27.02.21.21
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Mar 2017 02:21:22 -0700 (PDT)
-Subject: Re: [PATCH v3] MIPS: PCI: add controllers before the specified head
-To:     Mathias Kresin <dev@kresin.me>, ralf@linux-mips.org
-References: <1490547936-21871-1-git-send-email-dev@kresin.me>
-Cc:     linux-mips@linux-mips.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <5afd93ac-94c8-6ede-9b6f-f004fc462908@cogentembedded.com>
-Date:   Mon, 27 Mar 2017 12:21:22 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2017 15:06:03 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:33534 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993865AbdC0NFz2bPPp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Mar 2017 15:05:55 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2RD5hx9023090;
+        Mon, 27 Mar 2017 15:05:43 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2RD5dal023086;
+        Mon, 27 Mar 2017 15:05:39 +0200
+Date:   Mon, 27 Mar 2017 15:05:39 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Joshua Kinard <kumba@gentoo.org>
+Cc:     Linux/MIPS <linux-mips@linux-mips.org>
+Subject: Re: Does the R10K family support the "wait" instruction?
+Message-ID: <20170327130539.GA5734@linux-mips.org>
+References: <88c3cc1d-fd80-bb9a-d1ec-ed3c44dea71b@gentoo.org>
 MIME-Version: 1.0
-In-Reply-To: <1490547936-21871-1-git-send-email-dev@kresin.me>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <88c3cc1d-fd80-bb9a-d1ec-ed3c44dea71b@gentoo.org>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57450
+X-archive-position: 57451
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -68,26 +42,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
+On Sun, Mar 26, 2017 at 09:50:08PM -0400, Joshua Kinard wrote:
 
-On 3/26/2017 8:05 PM, Mathias Kresin wrote:
+> Does anyone know if the R1x000 family of CPUs support the "wait" instruction?
+> The 'check_wait' function in arch/mips/kernel/idle.c doesn't have a case for
+> any of the R10K CPUs, and I can't find any specific guidance in the final R10K
+> manual produced by Renesas, nor in the MIPS-IV instruction set.  It appears
+> this was added in MIPS-II, and the R4K CPUs use it, with one version for when
+> interrupts are enabled, and one where they're disabled.  Since a lot of CPUs
+> tend to reuse R4K-compatible code, I wasn't sure.
 
-> With commit 23dac14d058f ("MIPS: PCI: Use struct list_head lists") new
-> controllers are added after the specified head where they where added
+Interesting, didn't know Renesas did another R10000 manual.  Presumably
+they only rebranded NEC's manual?
 
-    s/where/were//
+If you have any documentation to indicate a MIPS II CPU to support WAIT,
+I'm interested.  From all that I know the feature was introduced by the
+R4600.
 
-> before the specified head previously.
->
-> Use list_add_tail to restore the former order.
->
-> This patches fixes the following PCI error on lantiq:
->
->   pci 0000:01:00.0: BAR 0: error updating (0x1c000004 != 0x000000)
->
-> Fixes: 23dac14d058f ("MIPS: PCI: Use struct list_head lists")
-> Signed-off-by: Mathias Kresin <dev@kresin.me>
+> Kinda-assuming it doesn't, since the R10K lacks any notion of reduced power
+> operation.
 
-[...]
+The R10000 like many of the older MIPS CPU took a hardware-only approach
+to low-power operation, that is there are no knobs, no instructions for
+software to optimize the power consumption.  That also means, no WAIT
+instruction.  Other bits of low-power support in R4x00-processors are
+fake also, for example the c0_status.rp "reduced power" bit is documented
+but fairly hidden erratas say it's not implemneted.  So just throw in another
+plutonium slab and all will be good ;-)
 
-MBR, Sergei
+But back to the WAIT instruction.  WAIT uses major opcode COP0 which has
+bits 31..27 = 010000.  Traditionally MIPS doesn't fully decode the minor
+opcodes, so an unsupported WAIT instruction will not cause an Reserved
+Instruction exception anyway because the COP0 opcode does exist.
+
+So one could basically pretend WAIT did exist on all MIPS CPUs, even
+R2000 even though it doesn't - but check_wait is paranoid and really
+avoids WAIT unless it's officially supported and useful.
+
+Another complexity is that WAIT instruction was defined for many years
+to leave it to an implementation if the pipeline would ever restart
+after a WAIT instruction was executed with interrupts disabled.  This
+is fairly braindead because in a typical idle loop of an OS such as Linux
+
+        for (;;) {
+                if (wait_available && !need_resched())
+                        asm("wait");
+                schedule();
+        }
+
+there is the race condition between checking need_resched() and
+actually executing WAIT that need_resched() might change, so WAIT-mode
+might be entered falsely causing a scheduling delay of up to one tick.
+The solution is to disable interrupts like:
+
+        for (;;) {
+		disable_irq();
+                if (wait_available && !need_resched())
+                        asm("wait");
+		enable_irq();
+                schedule();
+        }
+
+But some MIPS CPUs might lockup for good if this is attempted ...
+
+This turned out to be a longer writeup than I meant to because I
+recognized much of this is not documented anywhere so I did elaborate
+a bit and add it as a new wiki page:
+
+https://www.linux-mips.org/wiki/WAIT_instruction
+
+  Ralf

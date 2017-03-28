@@ -1,37 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2017 16:25:21 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:35194 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993552AbdC1OZNjSikl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Mar 2017 16:25:13 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2SEP66V030621;
-        Tue, 28 Mar 2017 16:25:06 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2SEP2BN030620;
-        Tue, 28 Mar 2017 16:25:02 +0200
-Date:   Tue, 28 Mar 2017 16:25:02 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Joshua Kinard <kumba@gentoo.org>
-Cc:     Linux/MIPS <linux-mips@linux-mips.org>
-Subject: Re: Does the R10K family support the "wait" instruction?
-Message-ID: <20170328142502.GC5734@linux-mips.org>
-References: <88c3cc1d-fd80-bb9a-d1ec-ed3c44dea71b@gentoo.org>
- <20170327130539.GA5734@linux-mips.org>
- <0c62c4a7-b44c-45f6-2428-5b9b9e6a6204@gentoo.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0c62c4a7-b44c-45f6-2428-5b9b9e6a6204@gentoo.org>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2017 19:57:43 +0200 (CEST)
+Received: from mail-qk0-x241.google.com ([IPv6:2607:f8b0:400d:c09::241]:33493
+        "EHLO mail-qk0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993868AbdC1R5grkSZc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Mar 2017 19:57:36 +0200
+Received: by mail-qk0-x241.google.com with SMTP id p22so13453578qka.0;
+        Tue, 28 Mar 2017 10:57:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=RE2oqDhbmG4XCFJzeYAU2dqDHqe8DhE4j0VgDuNDh20=;
+        b=sThLNyhOmWRH4l/GACC8bb1Cxj5344DH3Ar9dQcHuTOi82xZj4jtCT04Fm7rMJXhoI
+         bohCHFAHXvStNDUrvvEVN9iPl1xmjvcfweMGF6XsxuPLEVtHbsmmbYtdrDYJJLRMN/Iv
+         3vQBAfQp1dCeJizrh3mJbcDzbYp78Owh/l9c34rnNr5J0UuxhtN32iz3I+fYWNWTrgkF
+         b54mUDdinauEg4QDH+8IdaDMSbIta23e1taH0ywJZStq+DntYVolGTs85Ibc6Oa+kCWO
+         gjUTVtU4Jp0Ms61sJcxdT7oYyp4blDV9iB5pajniGv7X6q6LthVqMmnM9lgye6mJUS4E
+         UHAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=RE2oqDhbmG4XCFJzeYAU2dqDHqe8DhE4j0VgDuNDh20=;
+        b=sqomc/7e09KnJjSugD1B3Cix5rwXOs0wfot7zJ5DEX6+cE0QuD2TihmKZ8TT7SnXuW
+         J+xLzJbITUQj9c/jGi+v5+EGSH+yBwUDEfMamMS5Kjgw0JLBzxaq3/obiZaD+vRD5wN0
+         73ujC5ke5qyP0KMvNcDd5TTV0GRMq5tTgpn0ZMLjqBZR3aPkSOwdo9pNCTo/dZiSGep4
+         vxo/FNSGpnnoKQaVfU0W+zFFKoBmaLjfcILCDRX2jFYU7NBSUwesHN8Duoo1yCTjcaAb
+         qM6LE11wWho601yvFN+htUVPyL+57TnADRk9VJIBJ7NRHHtWzgr2PVB6UVdT7fbGcqcF
+         n8LQ==
+X-Gm-Message-State: AFeK/H3kalFy3XUV430jeQodPDR2kQbFCWqwqOHqz9XgT9CgA3HSwI6cX3S9wjTlP8YM0Q==
+X-Received: by 10.55.200.68 with SMTP id c65mr23877409qkj.179.1490723850237;
+        Tue, 28 Mar 2017 10:57:30 -0700 (PDT)
+Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
+        by smtp.gmail.com with ESMTPSA id q188sm3125377qkf.20.2017.03.28.10.57.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 Mar 2017 10:57:29 -0700 (PDT)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, david.daney@cavium.com,
+        paul.burton@imgtec.com, james.hogan@imgtec.com,
+        Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] MIPS: Add support for CONFIG_DEBUG_VIRTUAL
+Date:   Tue, 28 Mar 2017 10:57:18 -0700
+Message-Id: <20170328175718.28629-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.9.3
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57456
+X-archive-position: 57457
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: f.fainelli@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,70 +62,144 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Mar 27, 2017 at 05:04:27PM -0400, Joshua Kinard wrote:
+Provide hooks to intercept bad usages of virt_to_phys() and
+__pa_symbol() throughout the kernel. To make this possible, we need to
+rename the current implement of virt_to_phys() into
+__virt_to_phys_nodebug() and wrap it around depending on
+CONFIG_DEBUG_VIRTUAL.
 
-> On 03/27/2017 09:05, Ralf Baechle wrote:
-> > On Sun, Mar 26, 2017 at 09:50:08PM -0400, Joshua Kinard wrote:
-> > 
-> >> Does anyone know if the R1x000 family of CPUs support the "wait" instruction?
-> >> The 'check_wait' function in arch/mips/kernel/idle.c doesn't have a case for
-> >> any of the R10K CPUs, and I can't find any specific guidance in the final R10K
-> >> manual produced by Renesas, nor in the MIPS-IV instruction set.  It appears
-> >> this was added in MIPS-II, and the R4K CPUs use it, with one version for when
-> >> interrupts are enabled, and one where they're disabled.  Since a lot of CPUs
-> >> tend to reuse R4K-compatible code, I wasn't sure.
-> > 
-> > Interesting, didn't know Renesas did another R10000 manual.  Presumably
-> > they only rebranded NEC's manual?
-> 
-> Yup, mostly.  It's document U10278EJ4V0UM00, 4th edition, though I can't get
-> the search engine on their site to cough a link up, so I've attached the copy I
-> found.  The manual looks like it was dated from March 2001, which covers at
-> least up to R12000, but has a "phased-out/discontinued" stamp and a notice to
-> customers dated April 2010.
-> 
-> I still, to this date, have never come across any documentation on the R14000
-> or R16000.  That must be internal to SGI and HP (used in their NonStop servers)
-> and never saw the light of day.  Technically HP now, since they recently
-> scooped up what was left of SGI.
-> 
-> 
-> > If you have any documentation to indicate a MIPS II CPU to support WAIT,
-> > I'm interested.  From all that I know the feature was introduced by the
-> > R4600.
-> 
-> One of my Google searches, using the keywords "mips wait instruction", has been
-> returning search results from a Harvard computer sciences course detailing the
-> "instructional operating system OS/161", which uses an instructional CPU that
-> borrows heavily from the R3000 (which they dub MIPS-161):
-> 
-> http://os161.eecs.harvard.edu/documentation/sys161-1.99.07/mips.html
-> 
-> In there, they state:
-> "The WAIT instruction has been borrowed from MIPS-II. This operation puts the
-> processor into a low-power state and suspends execution until some external
-> event occurs, such as an interrupt. Since the exact behavior of WAIT is not
-> clearly specified anywhere I could find, the MIPS-161 behavior is as follows"
-> 
-> So it could be that the instructor for that course simply got some wrong
-> information, but good luck teaching Google that.  I figure once its spider
-> crawls this e-mail in the archives, it'll further strengthen hits like the above.
+A similar thing is needed for __pa_symbol() which is now aliased to
+__phys_addr_symbol() whose implementation is either the direct return of
+RELOC_HIDE or goes through the debug version.
 
-Hint, MIPS II was defined by the '89 R6000, a CPU implemented in ECL.  That's
-a technology that sucks the wiring from the wall (3 CPU 90MHz R6000 = 6kW!).
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ arch/mips/Kconfig            |  1 +
+ arch/mips/include/asm/io.h   | 14 +++++++++++++-
+ arch/mips/include/asm/page.h |  9 ++++++++-
+ arch/mips/mm/Makefile        |  2 ++
+ arch/mips/mm/physaddr.c      | 40 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 64 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/mm/physaddr.c
 
-Best I can say the R4600 was the first CPU to support the WAIT instruction.
-
-There were a number of not quite proper MIPS II CPUs which appeared to be
-like MIPS I pimped with a bit of MIPS III.  IDT called theirs "enhanced
-MIPS II".
-
-> It might make sense to add the R10K cases to the switch in cpu_wait, right
-> above the "default" block, with a comment stating that R10K doesn't support
-> wait.  That way it's documented in the right spot in case this question ever
-> comes up in the future.  I can send a patch for this later on if interested.
-
-Yeah, one might do that for documentation purposes.  It won't result in
-kernel bloat after all.
-
-  Ralf
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2afb41c52ba0..724457b5a7eb 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -70,6 +70,7 @@ config MIPS
+ 	select HAVE_EXIT_THREAD
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_ARCH_HARDENED_USERCOPY
++	select ARCH_HAS_DEBUG_VIRTUAL
+ 
+ menu "Machine selection"
+ 
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index ecabc00c1e66..016e12161c9d 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -116,11 +116,23 @@ static inline void set_io_port_base(unsigned long base)
+  *     almost all conceivable cases a device driver should not be using
+  *     this function
+  */
+-static inline unsigned long virt_to_phys(volatile const void *address)
++static inline unsigned long __virt_to_phys_nodebug(volatile const void *address)
+ {
+ 	return __pa(address);
+ }
+ 
++#ifdef CONFIG_DEBUG_VIRTUAL
++extern phys_addr_t __virt_to_phys(volatile const void *x);
++#else
++#define __virt_to_phys(x)	__virt_to_phys_nodebug(x)
++#endif
++
++#define virt_to_phys virt_to_phys
++static inline phys_addr_t virt_to_phys(const volatile void *x)
++{
++	return __virt_to_phys(x);
++}
++
+ /*
+  *     phys_to_virt    -       map physical address to virtual
+  *     @address: address to remap
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index 5f987598054f..bf8bd7d77fce 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -205,9 +205,16 @@ static inline unsigned long ___pa(unsigned long x)
+  * until GCC 3.x has been retired before we can apply
+  * https://patchwork.linux-mips.org/patch/1541/
+  */
++#define __pa_symbol_nodebug(x)	__pa(RELOC_HIDE((unsigned long)(x), 0))
++
++#ifdef CONFIG_DEBUG_VIRTUAL
++extern phys_addr_t __phys_addr_symbol(unsigned long x);
++#else
++#define __phys_addr_symbol(x)	__pa_symbol_nodebug(x)
++#endif
+ 
+ #ifndef __pa_symbol
+-#define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x), 0))
++#define __pa_symbol(x)		__phys_addr_symbol((unsigned long)(x))
+ #endif
+ 
+ #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index b4cc8811a664..0a1d241c50fb 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -29,3 +29,5 @@ obj-$(CONFIG_R5000_CPU_SCACHE)	+= sc-r5k.o
+ obj-$(CONFIG_RM7000_CPU_SCACHE) += sc-rm7k.o
+ obj-$(CONFIG_MIPS_CPU_SCACHE)	+= sc-mips.o
+ obj-$(CONFIG_SCACHE_DEBUGFS)	+= sc-debugfs.o
++
++obj-$(CONFIG_DEBUG_VIRTUAL)	+= physaddr.o
+diff --git a/arch/mips/mm/physaddr.c b/arch/mips/mm/physaddr.c
+new file mode 100644
+index 000000000000..6123a9b3b3c0
+--- /dev/null
++++ b/arch/mips/mm/physaddr.c
+@@ -0,0 +1,40 @@
++#include <linux/bug.h>
++#include <linux/export.h>
++#include <linux/types.h>
++#include <linux/mmdebug.h>
++#include <linux/mm.h>
++
++#include <asm/sections.h>
++#include <asm/io.h>
++#include <asm/page.h>
++#include <asm/dma.h>
++
++static inline bool __debug_virt_addr_valid(unsigned long x)
++{
++	if (x >= PAGE_OFFSET && x < (unsigned long)high_memory)
++		return true;
++
++	return false;
++}
++
++phys_addr_t __virt_to_phys(volatile const void *x)
++{
++	WARN(!__debug_virt_addr_valid((unsigned long)x),
++	     "virt_to_phys used for non-linear address: %pK (%pS)\n",
++	     x, x);
++
++	return __virt_to_phys_nodebug(x);
++}
++EXPORT_SYMBOL(__virt_to_phys);
++
++phys_addr_t __phys_addr_symbol(unsigned long x)
++{
++	/* This is bounds checking against the kernel image only.
++	 * __pa_symbol should only be used on kernel symbol addresses.
++	 */
++	VIRTUAL_BUG_ON(x < (unsigned long)_text ||
++		       x > (unsigned long)_end);
++
++	return __pa_symbol_nodebug(x);
++}
++EXPORT_SYMBOL(__phys_addr_symbol);
+-- 
+2.9.3

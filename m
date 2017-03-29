@@ -1,55 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2017 19:57:43 +0200 (CEST)
-Received: from mail-qk0-x241.google.com ([IPv6:2607:f8b0:400d:c09::241]:33493
-        "EHLO mail-qk0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993868AbdC1R5grkSZc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Mar 2017 19:57:36 +0200
-Received: by mail-qk0-x241.google.com with SMTP id p22so13453578qka.0;
-        Tue, 28 Mar 2017 10:57:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=RE2oqDhbmG4XCFJzeYAU2dqDHqe8DhE4j0VgDuNDh20=;
-        b=sThLNyhOmWRH4l/GACC8bb1Cxj5344DH3Ar9dQcHuTOi82xZj4jtCT04Fm7rMJXhoI
-         bohCHFAHXvStNDUrvvEVN9iPl1xmjvcfweMGF6XsxuPLEVtHbsmmbYtdrDYJJLRMN/Iv
-         3vQBAfQp1dCeJizrh3mJbcDzbYp78Owh/l9c34rnNr5J0UuxhtN32iz3I+fYWNWTrgkF
-         b54mUDdinauEg4QDH+8IdaDMSbIta23e1taH0ywJZStq+DntYVolGTs85Ibc6Oa+kCWO
-         gjUTVtU4Jp0Ms61sJcxdT7oYyp4blDV9iB5pajniGv7X6q6LthVqMmnM9lgye6mJUS4E
-         UHAQ==
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2017 02:55:24 +0200 (CEST)
+Received: from mail-ot0-f194.google.com ([74.125.82.194]:34188 "EHLO
+        mail-ot0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993887AbdC2AzQKTSJw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Mar 2017 02:55:16 +0200
+Received: by mail-ot0-f194.google.com with SMTP id y88so126999ota.1;
+        Tue, 28 Mar 2017 17:55:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=RE2oqDhbmG4XCFJzeYAU2dqDHqe8DhE4j0VgDuNDh20=;
-        b=sqomc/7e09KnJjSugD1B3Cix5rwXOs0wfot7zJ5DEX6+cE0QuD2TihmKZ8TT7SnXuW
-         J+xLzJbITUQj9c/jGi+v5+EGSH+yBwUDEfMamMS5Kjgw0JLBzxaq3/obiZaD+vRD5wN0
-         73ujC5ke5qyP0KMvNcDd5TTV0GRMq5tTgpn0ZMLjqBZR3aPkSOwdo9pNCTo/dZiSGep4
-         vxo/FNSGpnnoKQaVfU0W+zFFKoBmaLjfcILCDRX2jFYU7NBSUwesHN8Duoo1yCTjcaAb
-         qM6LE11wWho601yvFN+htUVPyL+57TnADRk9VJIBJ7NRHHtWzgr2PVB6UVdT7fbGcqcF
-         n8LQ==
-X-Gm-Message-State: AFeK/H3kalFy3XUV430jeQodPDR2kQbFCWqwqOHqz9XgT9CgA3HSwI6cX3S9wjTlP8YM0Q==
-X-Received: by 10.55.200.68 with SMTP id c65mr23877409qkj.179.1490723850237;
-        Tue, 28 Mar 2017 10:57:30 -0700 (PDT)
-Received: from fainelli-desktop.irv.broadcom.com ([192.19.255.250])
-        by smtp.gmail.com with ESMTPSA id q188sm3125377qkf.20.2017.03.28.10.57.29
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 Mar 2017 10:57:29 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, david.daney@cavium.com,
-        paul.burton@imgtec.com, james.hogan@imgtec.com,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH] MIPS: Add support for CONFIG_DEBUG_VIRTUAL
-Date:   Tue, 28 Mar 2017 10:57:18 -0700
-Message-Id: <20170328175718.28629-1-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.9.3
-Return-Path: <f.fainelli@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=NKCB99U4dLL1u3oUms/SnQOc2KLCpfFUHwXxYryOECI=;
+        b=r/8nBxQvYK7jstv13tO1Fvae4Xautb+s7LUoO6RkxDu40GIK07Fjy4XIao8NzkMNtS
+         F7gwOklyXnbxfLgNDZMyBZ2sux75p43h1Mh8byUsaQovTv05aIxxxm5bkeUK3G3+AI3n
+         +V3nuFKxFJVuD2bS/0ZeLL455uAdS0BWWXgOy4UDA7YoyuhCprUBGfS6XvSx37wj9V/t
+         CjsZWDLUIVB3mwDOMmuu8RAY95CPVfVa6Szr2WekzLpLgIK9gYb2hjpe46kfGboknGzA
+         tYxjQCaSWABS3yq3LEqKJB4OsH3sXpIhO6FOfR/W9UDKd4dBGDgq2fFlZmPgB3XDblA+
+         4+PQ==
+X-Gm-Message-State: AFeK/H0s8sRbzGrdK09DzQXLL1EjdkqagkPdthXE3OGWZrIuzZ9TBnr6HQ8+gQ51U0jXtA==
+X-Received: by 10.157.35.21 with SMTP id j21mr12939635otb.144.1490748910181;
+        Tue, 28 Mar 2017 17:55:10 -0700 (PDT)
+Received: from localhost (66-90-148-125.dyn.grandenetworks.net. [66.90.148.125])
+        by smtp.gmail.com with ESMTPSA id k63sm2552662oia.35.2017.03.28.17.55.09
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 28 Mar 2017 17:55:09 -0700 (PDT)
+Date:   Tue, 28 Mar 2017 19:55:09 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Amit Kama IL <Amit.Kama@satixfy.com>
+Cc:     "corbet@lwn.net" <corbet@lwn.net>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "jason@lakedaemon.net" <jason@lakedaemon.net>,
+        "marc.zyngier@arm.com" <marc.zyngier@arm.com>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: Re: [PATCH] Add initial SX3000b platform related documentation to
+ document tree
+Message-ID: <20170329005509.z7pa6rp5kt5xftg4@rob-hp-laptop>
+References: <AM4PR0201MB21799759E18C64A7032A2C3EE43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM4PR0201MB21799759E18C64A7032A2C3EE43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
+User-Agent: Mutt/1.6.2-neo (2016-08-21)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57457
+X-archive-position: 57458
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: f.fainelli@gmail.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,144 +65,144 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Provide hooks to intercept bad usages of virt_to_phys() and
-__pa_symbol() throughout the kernel. To make this possible, we need to
-rename the current implement of virt_to_phys() into
-__virt_to_phys_nodebug() and wrap it around depending on
-CONFIG_DEBUG_VIRTUAL.
+On Wed, Mar 22, 2017 at 05:59:49AM +0000, Amit Kama IL wrote:
+> Add initial SX3000b platform related documentation to document tree:
+>  - Vendor prefix
+>  - Platform binding documentation
+>  - Interrupt Controller Unit binding documentation.
 
-A similar thing is needed for __pa_symbol() which is now aliased to
-__phys_addr_symbol() whose implementation is either the direct return of
-RELOC_HIDE or goes through the debug version.
+Probably should be 3 patches. Preferred subject prefix is "dt-bindings: 
+..."
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/mips/Kconfig            |  1 +
- arch/mips/include/asm/io.h   | 14 +++++++++++++-
- arch/mips/include/asm/page.h |  9 ++++++++-
- arch/mips/mm/Makefile        |  2 ++
- arch/mips/mm/physaddr.c      | 40 ++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 64 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/mm/physaddr.c
+> 
+> Signed-off-by: Amit Kama <amit.kama@staixfy.com>
+> 
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/satixfy-icu.txt b/Documentation/devicetree/bindings/interrupt-controller/satixfy-icu.txt
+> index 0000000..1893393
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/satixfy-icu.txt
+> @@ -0,0 +1,47 @@
+> +Satixfy SX3000B Interrupt Controller Unit (ICU)
+> +
+> +The ICU routes HW interrupts from the inter-module fabric to the
+> +processor. For the MIPS interaptive, all interrupts are then routed
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 2afb41c52ba0..724457b5a7eb 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -70,6 +70,7 @@ config MIPS
- 	select HAVE_EXIT_THREAD
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_ARCH_HARDENED_USERCOPY
-+	select ARCH_HAS_DEBUG_VIRTUAL
- 
- menu "Machine selection"
- 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index ecabc00c1e66..016e12161c9d 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -116,11 +116,23 @@ static inline void set_io_port_base(unsigned long base)
-  *     almost all conceivable cases a device driver should not be using
-  *     this function
-  */
--static inline unsigned long virt_to_phys(volatile const void *address)
-+static inline unsigned long __virt_to_phys_nodebug(volatile const void *address)
- {
- 	return __pa(address);
- }
- 
-+#ifdef CONFIG_DEBUG_VIRTUAL
-+extern phys_addr_t __virt_to_phys(volatile const void *x);
-+#else
-+#define __virt_to_phys(x)	__virt_to_phys_nodebug(x)
-+#endif
-+
-+#define virt_to_phys virt_to_phys
-+static inline phys_addr_t virt_to_phys(const volatile void *x)
-+{
-+	return __virt_to_phys(x);
-+}
-+
- /*
-  *     phys_to_virt    -       map physical address to virtual
-  *     @address: address to remap
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 5f987598054f..bf8bd7d77fce 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -205,9 +205,16 @@ static inline unsigned long ___pa(unsigned long x)
-  * until GCC 3.x has been retired before we can apply
-  * https://patchwork.linux-mips.org/patch/1541/
-  */
-+#define __pa_symbol_nodebug(x)	__pa(RELOC_HIDE((unsigned long)(x), 0))
-+
-+#ifdef CONFIG_DEBUG_VIRTUAL
-+extern phys_addr_t __phys_addr_symbol(unsigned long x);
-+#else
-+#define __phys_addr_symbol(x)	__pa_symbol_nodebug(x)
-+#endif
- 
- #ifndef __pa_symbol
--#define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x), 0))
-+#define __pa_symbol(x)		__phys_addr_symbol((unsigned long)(x))
- #endif
- 
- #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
-diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
-index b4cc8811a664..0a1d241c50fb 100644
---- a/arch/mips/mm/Makefile
-+++ b/arch/mips/mm/Makefile
-@@ -29,3 +29,5 @@ obj-$(CONFIG_R5000_CPU_SCACHE)	+= sc-r5k.o
- obj-$(CONFIG_RM7000_CPU_SCACHE) += sc-rm7k.o
- obj-$(CONFIG_MIPS_CPU_SCACHE)	+= sc-mips.o
- obj-$(CONFIG_SCACHE_DEBUGFS)	+= sc-debugfs.o
-+
-+obj-$(CONFIG_DEBUG_VIRTUAL)	+= physaddr.o
-diff --git a/arch/mips/mm/physaddr.c b/arch/mips/mm/physaddr.c
-new file mode 100644
-index 000000000000..6123a9b3b3c0
---- /dev/null
-+++ b/arch/mips/mm/physaddr.c
-@@ -0,0 +1,40 @@
-+#include <linux/bug.h>
-+#include <linux/export.h>
-+#include <linux/types.h>
-+#include <linux/mmdebug.h>
-+#include <linux/mm.h>
-+
-+#include <asm/sections.h>
-+#include <asm/io.h>
-+#include <asm/page.h>
-+#include <asm/dma.h>
-+
-+static inline bool __debug_virt_addr_valid(unsigned long x)
-+{
-+	if (x >= PAGE_OFFSET && x < (unsigned long)high_memory)
-+		return true;
-+
-+	return false;
-+}
-+
-+phys_addr_t __virt_to_phys(volatile const void *x)
-+{
-+	WARN(!__debug_virt_addr_valid((unsigned long)x),
-+	     "virt_to_phys used for non-linear address: %pK (%pS)\n",
-+	     x, x);
-+
-+	return __virt_to_phys_nodebug(x);
-+}
-+EXPORT_SYMBOL(__virt_to_phys);
-+
-+phys_addr_t __phys_addr_symbol(unsigned long x)
-+{
-+	/* This is bounds checking against the kernel image only.
-+	 * __pa_symbol should only be used on kernel symbol addresses.
-+	 */
-+	VIRTUAL_BUG_ON(x < (unsigned long)_text ||
-+		       x > (unsigned long)_end);
-+
-+	return __pa_symbol_nodebug(x);
-+}
-+EXPORT_SYMBOL(__phys_addr_symbol);
--- 
-2.9.3
+interaptive or interaptiv? I see both in the doc.
+
+
+> +to the GIC.
+> +
+> +Required properties:
+> +- compatible : Should be "satixfy,icu".
+
+icu is fairly generic sounding. Should be satixfy,sx3000b-icu.
+
+> +- reg - must be present and equal <0x1D4D0000 0x1C0>
+> +- interrupt-controller : Identifies the node as an interrupt controller
+> +- #interrupt-cells : Specifies the number of cells needed to encode an
+> +  interrupt specifier.  Should be 1 - the GIC interrupt number
+> +- interrupt-parent - Currently only the MIPS GIC is supported, so
+> +<&gic> must be specified as parent
+> +- interrupts : in interrupt parent form. For GIC it's
+> +<GIC_SHARED x IRQ_TYPE_EDGE_RISING> where x is the interrupt number
+> +allocated for ICU in GIC.
+> +
+> +
+> +
+> +
+> +
+> +Example:
+> +
+> +	icu: interrupt-controller@1d4d0000 {
+> +		compatible = "sx,icu";
+> +		reg = <0x1D4D0000 0x1C0>;
+
+lowercase
+
+> +
+> +		interrupt-controller;
+> +		#interrupt-cells = <1>;
+> +
+> +		interrupt-parent = <&gic>;
+> +		interrupts = <GIC_SHARED 25 IRQ_TYPE_EDGE_RISING>;
+> +	};
+> +
+> +	uart0: uart@1D4D09C0 {
+
+serial@1d4d09c0
+
+> +		compatible = "ns16550a";
+> +		reg = <0x1D4D09C0 0x100>;
+
+lowercase
+
+> +
+> +		interrupt-parent = <&icu>;
+> +		interrupts = <3>;
+> +
+> +		clock-frequency = <270000000>;
+> +
+> +		reg-shift = <2>;
+> +		reg-io-width = <4>;
+> +	};
+> diff --git a/Documentation/devicetree/bindings/mips/satixfy/sx3000b.txt b/Documentation/devicetree/bindings/mips/satixfy/sx3000b.txt
+> index 0000000..7cae67b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mips/satixfy/sx3000b.txt
+> @@ -0,0 +1,37 @@
+> +Satixfy SX3000b SoC
+> +=========================
+> +
+> +Required properties:
+> +--------------------
+> + - compatible: Must include "satixfy,sx3000".
+
+The "b" in SX3000b is not significant?
+
+> +
+> +CPU nodes:
+> +----------
+> +A "cpus" node is required.  Required properties:
+> + - #address-cells: Must be 1.
+> + - #size-cells: Must be 0.
+> +A CPU sub-node is also required for at least CPU 0.  Since the topology may
+> +be probed via CPS, it is not necessary to specify secondary CPUs.  Required
+> +properties:
+> + - device_type: Must be "cpu".
+> + - compatible: Must be "mti,interaptiv".
+> + - reg: CPU number.
+> + - clocks: Must include the CPU clock.  See ../../clock/clock-bindings.txt for
+> +   details on clock bindings.
+> +Example:
+> +	cpus {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		cpu@0 {
+> +			device_type = "cpu";
+> +			compatible = "mti,interaptiv";
+> +			clocks	= <&ext>;
+> +			reg = <0>;
+> +		};
+> +	};
+> +
+> +Interrupt controllers:
+> +----------------------
+> +Two nodes are required:
+> + - mips,gic - MIPS Global Interrupt Controller - see Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
+> + - satixfy,icu - SX3000b SoC Interrupt Controller Unit - see Documentation/devicetree/bindings/interrupt-controller/satixfy-icu.txt
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> index ec0bfb9..76819dd
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> @@ -261,6 +261,7 @@ rockchip	Fuzhou Rockchip Electronics Co., Ltd
+>  samsung	Samsung Semiconductor
+>  samtec	Samtec/Softing company
+>  sandisk	Sandisk Corporation
+> +satixfy Satixfy Technologies Ltd
+>  sbs	Smart Battery System
+>  schindler	Schindler
+>  seagate	Seagate Technology PLC
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

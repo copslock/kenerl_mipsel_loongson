@@ -1,58 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2017 02:55:24 +0200 (CEST)
-Received: from mail-ot0-f194.google.com ([74.125.82.194]:34188 "EHLO
-        mail-ot0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993887AbdC2AzQKTSJw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Mar 2017 02:55:16 +0200
-Received: by mail-ot0-f194.google.com with SMTP id y88so126999ota.1;
-        Tue, 28 Mar 2017 17:55:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=NKCB99U4dLL1u3oUms/SnQOc2KLCpfFUHwXxYryOECI=;
-        b=r/8nBxQvYK7jstv13tO1Fvae4Xautb+s7LUoO6RkxDu40GIK07Fjy4XIao8NzkMNtS
-         F7gwOklyXnbxfLgNDZMyBZ2sux75p43h1Mh8byUsaQovTv05aIxxxm5bkeUK3G3+AI3n
-         +V3nuFKxFJVuD2bS/0ZeLL455uAdS0BWWXgOy4UDA7YoyuhCprUBGfS6XvSx37wj9V/t
-         CjsZWDLUIVB3mwDOMmuu8RAY95CPVfVa6Szr2WekzLpLgIK9gYb2hjpe46kfGboknGzA
-         tYxjQCaSWABS3yq3LEqKJB4OsH3sXpIhO6FOfR/W9UDKd4dBGDgq2fFlZmPgB3XDblA+
-         4+PQ==
-X-Gm-Message-State: AFeK/H0s8sRbzGrdK09DzQXLL1EjdkqagkPdthXE3OGWZrIuzZ9TBnr6HQ8+gQ51U0jXtA==
-X-Received: by 10.157.35.21 with SMTP id j21mr12939635otb.144.1490748910181;
-        Tue, 28 Mar 2017 17:55:10 -0700 (PDT)
-Received: from localhost (66-90-148-125.dyn.grandenetworks.net. [66.90.148.125])
-        by smtp.gmail.com with ESMTPSA id k63sm2552662oia.35.2017.03.28.17.55.09
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 28 Mar 2017 17:55:09 -0700 (PDT)
-Date:   Tue, 28 Mar 2017 19:55:09 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Amit Kama IL <Amit.Kama@satixfy.com>
-Cc:     "corbet@lwn.net" <corbet@lwn.net>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "jason@lakedaemon.net" <jason@lakedaemon.net>,
-        "marc.zyngier@arm.com" <marc.zyngier@arm.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH] Add initial SX3000b platform related documentation to
- document tree
-Message-ID: <20170329005509.z7pa6rp5kt5xftg4@rob-hp-laptop>
-References: <AM4PR0201MB21799759E18C64A7032A2C3EE43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AM4PR0201MB21799759E18C64A7032A2C3EE43C0@AM4PR0201MB2179.eurprd02.prod.outlook.com>
-User-Agent: Mutt/1.6.2-neo (2016-08-21)
-Return-Path: <robherring2@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2017 10:23:58 +0200 (CEST)
+Received: from smtpbg202.qq.com ([184.105.206.29]:38519 "EHLO smtpbg202.qq.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993612AbdC2IXuVZf4M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 Mar 2017 10:23:50 +0200
+X-QQ-mid: bizesmtp1t1490775806t2mx1o7fs
+Received: from software.domain.org (unknown [222.92.8.142])
+        by esmtp4.qq.com (ESMTP) with 
+        id ; Wed, 29 Mar 2017 16:23:10 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FK82000A0000000
+X-QQ-FEAT: jLTfbrzLdoOJ4Ad1Xh6pD7l8BFqYglOi/MGRcz3v0BAe0EFoeh8SNAs8+wd3V
+        Uxhx9xe2HAoC5u0QCkeST/pHZHKIuX/SNL7XMW2mLiCbUIDNKIq3oZB7f0NIM0zwGcvCY2x
+        ygfh61K6NW0h1PdhNA0Ugok9dRE8k/tkxbPrioEMqgKED0vy0Z1aMQkkGNjFId66lR/wA6w
+        7yxtTyiMsspvXZJiOFzAMo0DOb0tDuZoTQeWDvzv7NJrnPMh1aSdRyOSV/qnx8oJgQXQvX7
+        Vt/cNtbKMrnvoUDy9yFUgvPlbkxtSYaaa5ZA==
+X-QQ-GoodBg: 0
+From:   Huacai Chen <chenhc@lemote.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@imgtec.com>,
+        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>,
+        Huacai Chen <chenhc@lemote.com>
+Subject: [PATCH V3 1/8] MIPS: Loongson: Add Loongson-3A R3 basic support
+Date:   Wed, 29 Mar 2017 16:24:29 +0800
+Message-Id: <1490775876-29918-2-git-send-email-chenhc@lemote.com>
+X-Mailer: git-send-email 2.7.0
+In-Reply-To: <1490775876-29918-1-git-send-email-chenhc@lemote.com>
+References: <1490775876-29918-1-git-send-email-chenhc@lemote.com>
+X-QQ-SENDSIZE: 520
+X-QQ-Bgrelay: 1
+Return-Path: <chenhc@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57458
+X-archive-position: 57459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robh@kernel.org
+X-original-sender: chenhc@lemote.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -65,144 +50,122 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Mar 22, 2017 at 05:59:49AM +0000, Amit Kama IL wrote:
-> Add initial SX3000b platform related documentation to document tree:
->  - Vendor prefix
->  - Platform binding documentation
->  - Interrupt Controller Unit binding documentation.
+Loongson-3A R3 is very similar to Loongson-3A R2.
 
-Probably should be 3 patches. Preferred subject prefix is "dt-bindings: 
-..."
+All Loongson-3 CPU family:
 
-> 
-> Signed-off-by: Amit Kama <amit.kama@staixfy.com>
-> 
-> diff --git a/Documentation/devicetree/bindings/interrupt-controller/satixfy-icu.txt b/Documentation/devicetree/bindings/interrupt-controller/satixfy-icu.txt
-> index 0000000..1893393
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/interrupt-controller/satixfy-icu.txt
-> @@ -0,0 +1,47 @@
-> +Satixfy SX3000B Interrupt Controller Unit (ICU)
-> +
-> +The ICU routes HW interrupts from the inter-module fabric to the
-> +processor. For the MIPS interaptive, all interrupts are then routed
+Code-name       Brand-name       PRId
+Loongson-3A R1  Loongson-3A1000  0x6305
+Loongson-3A R2  Loongson-3A2000  0x6308
+Loongson-3A R3  Loongson-3A3000  0x6309
+Loongson-3B R1  Loongson-3B1000  0x6306
+Loongson-3B R2  Loongson-3B1500  0x6307
 
-interaptive or interaptiv? I see both in the doc.
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+---
+ arch/mips/include/asm/cpu.h           |  1 +
+ arch/mips/kernel/cpu-probe.c          |  6 ++++++
+ arch/mips/loongson64/common/env.c     |  1 +
+ arch/mips/loongson64/loongson-3/smp.c |  5 +++--
+ drivers/platform/mips/cpu_hwmon.c     | 17 +++++++++++++----
+ 5 files changed, 24 insertions(+), 6 deletions(-)
 
-
-> +to the GIC.
-> +
-> +Required properties:
-> +- compatible : Should be "satixfy,icu".
-
-icu is fairly generic sounding. Should be satixfy,sx3000b-icu.
-
-> +- reg - must be present and equal <0x1D4D0000 0x1C0>
-> +- interrupt-controller : Identifies the node as an interrupt controller
-> +- #interrupt-cells : Specifies the number of cells needed to encode an
-> +  interrupt specifier.  Should be 1 - the GIC interrupt number
-> +- interrupt-parent - Currently only the MIPS GIC is supported, so
-> +<&gic> must be specified as parent
-> +- interrupts : in interrupt parent form. For GIC it's
-> +<GIC_SHARED x IRQ_TYPE_EDGE_RISING> where x is the interrupt number
-> +allocated for ICU in GIC.
-> +
-> +
-> +
-> +
-> +
-> +Example:
-> +
-> +	icu: interrupt-controller@1d4d0000 {
-> +		compatible = "sx,icu";
-> +		reg = <0x1D4D0000 0x1C0>;
-
-lowercase
-
-> +
-> +		interrupt-controller;
-> +		#interrupt-cells = <1>;
-> +
-> +		interrupt-parent = <&gic>;
-> +		interrupts = <GIC_SHARED 25 IRQ_TYPE_EDGE_RISING>;
-> +	};
-> +
-> +	uart0: uart@1D4D09C0 {
-
-serial@1d4d09c0
-
-> +		compatible = "ns16550a";
-> +		reg = <0x1D4D09C0 0x100>;
-
-lowercase
-
-> +
-> +		interrupt-parent = <&icu>;
-> +		interrupts = <3>;
-> +
-> +		clock-frequency = <270000000>;
-> +
-> +		reg-shift = <2>;
-> +		reg-io-width = <4>;
-> +	};
-> diff --git a/Documentation/devicetree/bindings/mips/satixfy/sx3000b.txt b/Documentation/devicetree/bindings/mips/satixfy/sx3000b.txt
-> index 0000000..7cae67b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/satixfy/sx3000b.txt
-> @@ -0,0 +1,37 @@
-> +Satixfy SX3000b SoC
-> +=========================
-> +
-> +Required properties:
-> +--------------------
-> + - compatible: Must include "satixfy,sx3000".
-
-The "b" in SX3000b is not significant?
-
-> +
-> +CPU nodes:
-> +----------
-> +A "cpus" node is required.  Required properties:
-> + - #address-cells: Must be 1.
-> + - #size-cells: Must be 0.
-> +A CPU sub-node is also required for at least CPU 0.  Since the topology may
-> +be probed via CPS, it is not necessary to specify secondary CPUs.  Required
-> +properties:
-> + - device_type: Must be "cpu".
-> + - compatible: Must be "mti,interaptiv".
-> + - reg: CPU number.
-> + - clocks: Must include the CPU clock.  See ../../clock/clock-bindings.txt for
-> +   details on clock bindings.
-> +Example:
-> +	cpus {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		cpu@0 {
-> +			device_type = "cpu";
-> +			compatible = "mti,interaptiv";
-> +			clocks	= <&ext>;
-> +			reg = <0>;
-> +		};
-> +	};
-> +
-> +Interrupt controllers:
-> +----------------------
-> +Two nodes are required:
-> + - mips,gic - MIPS Global Interrupt Controller - see Documentation/devicetree/bindings/interrupt-controller/mips-gic.txt
-> + - satixfy,icu - SX3000b SoC Interrupt Controller Unit - see Documentation/devicetree/bindings/interrupt-controller/satixfy-icu.txt
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
-> index ec0bfb9..76819dd
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
-> @@ -261,6 +261,7 @@ rockchip	Fuzhou Rockchip Electronics Co., Ltd
->  samsung	Samsung Semiconductor
->  samtec	Samtec/Softing company
->  sandisk	Sandisk Corporation
-> +satixfy Satixfy Technologies Ltd
->  sbs	Smart Battery System
->  schindler	Schindler
->  seagate	Seagate Technology PLC
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 9a83724..255ead7 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -247,6 +247,7 @@
+ #define PRID_REV_LOONGSON3B_R1	0x0006
+ #define PRID_REV_LOONGSON3B_R2	0x0007
+ #define PRID_REV_LOONGSON3A_R2	0x0008
++#define PRID_REV_LOONGSON3A_R3	0x0009
+ 
+ /*
+  * Older processors used to encode processor version and revision in two
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index e57e685..1c94d4d 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1822,6 +1822,12 @@ static inline void cpu_probe_loongson(struct cpuinfo_mips *c, unsigned int cpu)
+ 			set_elf_platform(cpu, "loongson3a");
+ 			set_isa(c, MIPS_CPU_ISA_M64R2);
+ 			break;
++		case PRID_REV_LOONGSON3A_R3:
++			c->cputype = CPU_LOONGSON3;
++			__cpu_name[cpu] = "ICT Loongson-3";
++			set_elf_platform(cpu, "loongson3a");
++			set_isa(c, MIPS_CPU_ISA_M64R2);
++			break;
+ 		}
+ 
+ 		decode_configs(c);
+diff --git a/arch/mips/loongson64/common/env.c b/arch/mips/loongson64/common/env.c
+index 6afa218..4707abf 100644
+--- a/arch/mips/loongson64/common/env.c
++++ b/arch/mips/loongson64/common/env.c
+@@ -193,6 +193,7 @@ void __init prom_init_env(void)
+ 			break;
+ 		case PRID_REV_LOONGSON3A_R1:
+ 		case PRID_REV_LOONGSON3A_R2:
++		case PRID_REV_LOONGSON3A_R3:
+ 			cpu_clock_freq = 900000000;
+ 			break;
+ 		case PRID_REV_LOONGSON3B_R1:
+diff --git a/arch/mips/loongson64/loongson-3/smp.c b/arch/mips/loongson64/loongson-3/smp.c
+index 64659fc..1629743 100644
+--- a/arch/mips/loongson64/loongson-3/smp.c
++++ b/arch/mips/loongson64/loongson-3/smp.c
+@@ -503,7 +503,7 @@ static void loongson3a_r1_play_dead(int *state_addr)
+ 		: "a1");
+ }
+ 
+-static void loongson3a_r2_play_dead(int *state_addr)
++static void loongson3a_r2r3_play_dead(int *state_addr)
+ {
+ 	register int val;
+ 	register long cpuid, core, node, count;
+@@ -664,8 +664,9 @@ void play_dead(void)
+ 			(void *)CKSEG1ADDR((unsigned long)loongson3a_r1_play_dead);
+ 		break;
+ 	case PRID_REV_LOONGSON3A_R2:
++	case PRID_REV_LOONGSON3A_R3:
+ 		play_dead_at_ckseg1 =
+-			(void *)CKSEG1ADDR((unsigned long)loongson3a_r2_play_dead);
++			(void *)CKSEG1ADDR((unsigned long)loongson3a_r2r3_play_dead);
+ 		break;
+ 	case PRID_REV_LOONGSON3B_R1:
+ 	case PRID_REV_LOONGSON3B_R2:
+diff --git a/drivers/platform/mips/cpu_hwmon.c b/drivers/platform/mips/cpu_hwmon.c
+index 4300a55..46ab7d86 100644
+--- a/drivers/platform/mips/cpu_hwmon.c
++++ b/drivers/platform/mips/cpu_hwmon.c
+@@ -17,14 +17,23 @@
+  */
+ int loongson3_cpu_temp(int cpu)
+ {
+-	u32 reg;
++	u32 reg, prid_rev;
+ 
+ 	reg = LOONGSON_CHIPTEMP(cpu);
+-	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1)
++	prid_rev = read_c0_prid() & PRID_REV_MASK;
++	switch (prid_rev) {
++	case PRID_REV_LOONGSON3A_R1:
+ 		reg = (reg >> 8) & 0xff;
+-	else
++		break;
++	case PRID_REV_LOONGSON3A_R2:
++	case PRID_REV_LOONGSON3B_R1:
++	case PRID_REV_LOONGSON3B_R2:
+ 		reg = ((reg >> 8) & 0xff) - 100;
+-
++		break;
++	case PRID_REV_LOONGSON3A_R3:
++		reg = (reg & 0xffff)*731/0x4000 - 273;
++		break;
++	}
+ 	return (int)reg * 1000;
+ }
+ 
+-- 
+2.7.0

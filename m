@@ -1,65 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2017 17:42:25 +0200 (CEST)
-Received: from mail-lf0-x22f.google.com ([IPv6:2a00:1450:4010:c07::22f]:35730
-        "EHLO mail-lf0-x22f.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992881AbdC3PmRJcxu0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Mar 2017 17:42:17 +0200
-Received: by mail-lf0-x22f.google.com with SMTP id j90so30082345lfk.2
-        for <linux-mips@linux-mips.org>; Thu, 30 Mar 2017 08:42:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=w/1+E1zaqrlEIilD9mZ+mMLzn8/xKqp3yTw0Gt/ZS9w=;
-        b=koGyZzCuomrJ8AgULsaHKK/IMOs4pMgG8BnIOefBJE3ahU2pqLavSaR6avTno2FOHn
-         Pq0QaGKWqxSnXFUaH/OtDI9VfPa5zHvM2TZpihk+7HjPxmK7Ah2x05gdmarzPQ3mWVP/
-         BtbwwkBpTfpbCgMZ01qUwDGU1aUm3kYHWa1Yb6Pje3ctXClpyq1o3a0rl9Ext7ybdTVo
-         Gsu3hg2pTnR3wvvvUqLlzFQZ0TEe48ZQsCmC46Jnb6bwaFCJYh/EODIBKyeDhWKmTKvQ
-         0gesegkbg+NRg2QAZjAeXev57fjDiAqtrfI94c1hcV/P2mu4Uo2HZAxtYyKq4TBcNwQB
-         +ZBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-transfer-encoding;
-        bh=w/1+E1zaqrlEIilD9mZ+mMLzn8/xKqp3yTw0Gt/ZS9w=;
-        b=ZwDBIa5cqKGofULwXmOJYJ08RcFzvKCcBVo9hfot0SYKjoUyrn1t7LwIkedqSGeo8A
-         OBxhPFSBsf81W58VElJ0MNfoSffHv3+MNuiv5jeuIT9Euv0Hp5bsfUeKVyCFDj95qtPl
-         NlpfFfvNYAkIARUx9cVNfEfYKxwjumacOnOGt254EYcFgNPQF4hDI3fPm0UoXUHyjmzp
-         UFWPL89SpT73mJ+5TSIsXiTg99ZjrzJIArzUv1KvCHR/Syus553/Ij3SPXAdLHwBeTLz
-         4VaeBv2wIyZCuRQpXF7ru5v7QsurJy/tyIFEIKjP7M0RpDxLR++yMuCXL+AuGi1OEUxJ
-         /qew==
-X-Gm-Message-State: AFeK/H3JPUyq52C8B76nnqGxXEERmewGOIHWZXHr/krZQbo49ajnlEHPO48YN5GQskrgOA==
-X-Received: by 10.46.21.13 with SMTP id s13mr135200ljd.112.1490888531745;
-        Thu, 30 Mar 2017 08:42:11 -0700 (PDT)
-Received: from wasted.cogentembedded.com ([31.173.81.138])
-        by smtp.gmail.com with ESMTPSA id 11sm412389ljv.67.2017.03.30.08.42.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 30 Mar 2017 08:42:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2017 17:55:39 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:47225 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23992366AbdC3PzcrxoN0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Mar 2017 17:55:32 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 5F53141F8E76;
+        Thu, 30 Mar 2017 18:01:24 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Thu, 30 Mar 2017 18:01:24 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Thu, 30 Mar 2017 18:01:24 +0100
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 83606BBF0B18D;
+        Thu, 30 Mar 2017 16:55:23 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 30 Mar
+ 2017 16:55:26 +0100
+Date:   Thu, 30 Mar 2017 16:55:26 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
 Subject: Re: [PATCH] MIPS: KGDB: Use kernel context for sleeping threads
-To:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
+Message-ID: <20170330155526.GA21492@jhogan-linux.le.imgtec.org>
 References: <c34c16db9efabb09ca200d5b2b14ad0e870a0b1c.1490876180.git-series.james.hogan@imgtec.com>
-Cc:     Jason Wessel <jason.wessel@windriver.com>,
-        linux-mips@linux-mips.org, stable@vger.kernel.org
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <b8d4921a-2a88-c69d-1272-5589a0bfbbe9@cogentembedded.com>
-Date:   Thu, 30 Mar 2017 18:42:08 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+ <b8d4921a-2a88-c69d-1272-5589a0bfbbe9@cogentembedded.com>
 MIME-Version: 1.0
-In-Reply-To: <c34c16db9efabb09ca200d5b2b14ad0e870a0b1c.1490876180.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
+Content-Disposition: inline
+In-Reply-To: <b8d4921a-2a88-c69d-1272-5589a0bfbbe9@cogentembedded.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57481
+X-archive-position: 57482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,67 +56,52 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
+--mP3DRpeJDSE+ciuQ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 03/30/2017 06:06 PM, James Hogan wrote:
+Hi Sergei,
 
-> KGDB is a kernel debug stub and it can't be used to debug userland as it
-> can only safely access kernel memory.
->
-> On MIPS however KGDB has always got the register state of sleeping
-> processes from the userland register context at the beginning of the
-> kernel stack. This is meaningless for kernel threads (which never enter
-> userland), and for user threads it prevents the user seeing what it is
-> doing while in the kernel:
->
-> (gdb) info threads
->   Id   Target Id         Frame
->   ...
->   3    Thread 2 (kthreadd) 0x0000000000000000 in ?? ()
->   2    Thread 1 (init)   0x000000007705c4b4 in ?? ()
->   1    Thread -2 (shadowCPU0) 0xffffffff8012524c in arch_kgdb_breakpoint () at arch/mips/kernel/kgdb.c:201
->
-> Get the register state instead from the (partial) kernel register
-> context stored in the task's thread_struct for resume() to restore. All
-> threads now correctly appear to be in context_switch():
->
-> (gdb) info threads
->   Id   Target Id         Frame
->   ...
->   3    Thread 2 (kthreadd) context_switch (rq=<optimized out>, cookie=..., next=<optimized out>, prev=0x0) at kernel/sched/core.c:2903
->   2    Thread 1 (init)   context_switch (rq=<optimized out>, cookie=..., next=<optimized out>, prev=0x0) at kernel/sched/core.c:2903
->   1    Thread -2 (shadowCPU0) 0xffffffff8012524c in arch_kgdb_breakpoint () at arch/mips/kernel/kgdb.c:201
->
-> Call clobbered registers which aren't saved and exception registers
-> (BadVAddr & Cause) which can't be easily determined without stack
-> unwinding are reported as 0. The PC is taken from the return address,
-> such that the state presented matches that found immediately after
-> returning from resume().
->
-> Fixes: 8854700115ec ("[MIPS] kgdb: add arch support for the kernel's kgdb core")
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Jason Wessel <jason.wessel@windriver.com>
-> Cc: linux-mips@linux-mips.org
-> Cc: stable@vger.kernel.org
-> ---
->  arch/mips/kernel/kgdb.c | 48 ++++++++++++++++++++++++++++--------------
->  1 file changed, 33 insertions(+), 15 deletions(-)
->
-> diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
-> index 1f4bd222ba76..eb6c0d582626 100644
-> --- a/arch/mips/kernel/kgdb.c
-> +++ b/arch/mips/kernel/kgdb.c
-[...]
-> @@ -254,25 +251,46 @@ void sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *p)
->  #endif
->
->  	for (reg = 0; reg < 16; reg++)
-> -		*(ptr++) = regs->regs[reg];
-> +		*(ptr++) = 0;
+On Thu, Mar 30, 2017 at 06:42:08PM +0300, Sergei Shtylyov wrote:
+> On 03/30/2017 06:06 PM, James Hogan wrote:
+> > @@ -254,25 +251,46 @@ void sleeping_thread_to_gdb_regs(unsigned long *g=
+db_regs, struct task_struct *p)
+> >  #endif
+> >
+> >  	for (reg =3D 0; reg < 16; reg++)
+> > -		*(ptr++) =3D regs->regs[reg];
+> > +		*(ptr++) =3D 0;
+>=20
+>     Parens are not really necessary, you can get rid of them, while at it.
 
-    Parens are not really necessary, you can get rid of them, while at it.
+While not technically required, I disagree that we should get rid of
+them, simply because after coding in C for almost 20 years I still had
+to look at an operator precedence table to check which of post++ and
+dereference operators take precedence.
 
-[...]
+Cheers
+James
 
-MBR, Sergei
+--mP3DRpeJDSE+ciuQ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJY3SpuAAoJEGwLaZPeOHZ6OXgP/3Ez7yXtEuk9Q5jzVbps096S
+nqdc14AX2gI8GJgK4HezcBnrU9aoycOCAT02Co7+xVpMil2ZyMP7IrwE36AsgbBT
+l/ZoorvMEN6trDM08mrbIigX/xKiaJurjihGcn+StWc+O4gDCE647DTKqRA4rZKZ
+BP2U2HvBD3AhLAtJEQfb3X88n5OFxIYzhMhB3/oAZai1+oKvjiOdtZYY2lU6u+sx
+z6S/EUmGZSAxXgAoQS9y0AVIA5nhvvaX9jqO7Lo3kkbJRkGj+30JIfKtXHgc2wok
+nVtY85oBrMlKLZO33Kzcnng7o4B/hlRU/d104mCHgAk6X82z2HOFTZSdp+5YKt6/
+Q61P59Gm3CiDiCxpy3fVWHYKAvRpfTG4op/p5NWqUU37fQLWmLz2qtx1+UC8A3u7
+mVP2kr1di+VY/QL/QieRghWiGRtlc88kurbpp9PRYwxiv1YEQcGLbjZ3GMyZ/yWX
+lnFlXE63+Hy8yffFBkP1a+1Vz6pM3RV+YoBsoB6YqILsFTGmUhyHmVZA+GeEbIc/
+GRNiOsdHG7ZyHr8kIHg8t2StQ7AE+GrMhdDtkCMysKH9MzedvB6o5tbz4bs2Ca5R
+q1w+c451NWk21dakBi0SjAOFiRVrKET8WjsiqUcIpkwAeU5f1ZoRC1C4CTetVJ11
+zCBJ7xDfc88RFkZjl0L6
+=pGZD
+-----END PGP SIGNATURE-----
+
+--mP3DRpeJDSE+ciuQ--

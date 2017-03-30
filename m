@@ -1,73 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2017 11:51:16 +0200 (CEST)
-Received: from mail-lf0-x236.google.com ([IPv6:2a00:1450:4010:c07::236]:32919
-        "EHLO mail-lf0-x236.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993875AbdC3JvDi8jZT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Mar 2017 11:51:03 +0200
-Received: by mail-lf0-x236.google.com with SMTP id h125so22594186lfe.0
-        for <linux-mips@linux-mips.org>; Thu, 30 Mar 2017 02:51:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=E5lMb0nH/Vdj6bfCrA38S3yLwNqg44V71OEGQkc2+sw=;
-        b=bDY1XjECaH4uRQWfrfB32l9prxhmItDZ9hLFcqcFFEhcVkcsV5T9EYPwu3S0vTLOVl
-         hSXi2FlJYBnmoqhZARqzKXmHQqQ3hodOjpnGl+eYJaMh+4ufOe1Ru0Un3720NgNDx5Mv
-         th+Dg1AyhigFRxF5Wlm8yc57/QG40Upm0Oi4AnEly432kf9pMkzuiwmL4OljOonRAldf
-         3V4oEdr6OTxQywFyUdHkIW1gINt9ErRZLw+LQnJRZZCZ7WA3L44RNx0WROp20g/kh8Pm
-         lAdek8VOoPqjp3rQhCXTtoMZ2s+NOaT8oPIDUWJFXspn+jMZx4TDxI2aOX8LoD9dukeT
-         6PlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=E5lMb0nH/Vdj6bfCrA38S3yLwNqg44V71OEGQkc2+sw=;
-        b=aSo+goZm0QGcQyTTHy1Sro7OM8NwHE9Jm5GAXrWu7wbrMmBECrb2opTpC86LH0Wn9j
-         v/PJ8mxaZ4jNSVmZpFk9aBspJg93BwBcQf6+qoqlkmytJAC9u7G0Kb1K1WeDa2P7ZoNV
-         jgHoO725GPqSZRiVIBoF0OlKJPZMf7scKcuXF/YtY7F1pIDxkRKlnCtq5FsmUdUcVWKh
-         WSbn+EjXjKhSStqsuxwnlpccdYfg7MiIEXQLH+8qtcqfiaddllVqx1jLFtQGNtwMjmDj
-         Cdt02wEP4wxTFw1ZamdHhkmd4MlIIiCJOM8AgdRY0Kqfn417o8J2BCeWkYcaG0i9DbLV
-         FGfA==
-X-Gm-Message-State: AFeK/H1m5Z2Y0bqHARMV069jF0pNS6+ChpmgDHXX7B4W5Z8Lo0k+yW4KWtJNT2WIvmr2yg==
-X-Received: by 10.25.193.8 with SMTP id r8mr1289480lff.127.1490867458144;
-        Thu, 30 Mar 2017 02:50:58 -0700 (PDT)
-Received: from [192.168.4.126] ([31.173.87.108])
-        by smtp.gmail.com with ESMTPSA id f2sm288681ljb.20.2017.03.30.02.50.56
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 30 Mar 2017 02:50:57 -0700 (PDT)
-Subject: Re: [PATCH v6 1/8] MIPS: Loongson: Merge PRID macro for
- Loongson-1A/1B/1C
-To:     Binbin Zhou <zhoubb@lemote.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>
-References: <1490841889-13450-1-git-send-email-zhoubb@lemote.com>
- <1490841889-13450-2-git-send-email-zhoubb@lemote.com>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Kelvin Cheung <keguang.zhang@gmail.com>,
-        Yang Ling <gnaygnil@gmail.com>,
-        =?UTF-8?B?6LCi6Ie06YKm?= <Yeking@Red54.com>,
-        linux-mips@linux-mips.org, HuaCai Chen <chenhc@lemote.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <273c2b54-05df-687b-1633-36ee40a83a5d@cogentembedded.com>
-Date:   Thu, 30 Mar 2017 12:50:55 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2017 17:06:22 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:13310 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992155AbdC3PGQRRqO8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Mar 2017 17:06:16 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 57425E3A04962;
+        Thu, 30 Mar 2017 16:06:06 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 30 Mar 2017 16:06:09 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        <linux-mips@linux-mips.org>, <stable@vger.kernel.org>
+Subject: [PATCH] MIPS: KGDB: Use kernel context for sleeping threads
+Date:   Thu, 30 Mar 2017 16:06:02 +0100
+Message-ID: <c34c16db9efabb09ca200d5b2b14ad0e870a0b1c.1490876180.git-series.james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.11.1
 MIME-Version: 1.0
-In-Reply-To: <1490841889-13450-2-git-send-email-zhoubb@lemote.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57479
+X-archive-position: 57480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergei.shtylyov@cogentembedded.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -80,17 +42,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hello!
+KGDB is a kernel debug stub and it can't be used to debug userland as it
+can only safely access kernel memory.
 
-On 3/30/2017 5:44 AM, Binbin Zhou wrote:
+On MIPS however KGDB has always got the register state of sleeping
+processes from the userland register context at the beginning of the
+kernel stack. This is meaningless for kernel threads (which never enter
+userland), and for user threads it prevents the user seeing what it is
+doing while in the kernel:
 
-> As we all know, the Loongson-1 series CPUs(1A/1B/1C) share the same PRID macro.
-> so I rename them for more readable.
+(gdb) info threads
+  Id   Target Id         Frame
+  ...
+  3    Thread 2 (kthreadd) 0x0000000000000000 in ?? ()
+  2    Thread 1 (init)   0x000000007705c4b4 in ?? ()
+  1    Thread -2 (shadowCPU0) 0xffffffff8012524c in arch_kgdb_breakpoint () at arch/mips/kernel/kgdb.c:201
 
-    "Better readability", perhaps?
+Get the register state instead from the (partial) kernel register
+context stored in the task's thread_struct for resume() to restore. All
+threads now correctly appear to be in context_switch():
 
-> Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
-> Signed-off-by: HuaCai Chen <chenhc@lemote.com>
-[...]
+(gdb) info threads
+  Id   Target Id         Frame
+  ...
+  3    Thread 2 (kthreadd) context_switch (rq=<optimized out>, cookie=..., next=<optimized out>, prev=0x0) at kernel/sched/core.c:2903
+  2    Thread 1 (init)   context_switch (rq=<optimized out>, cookie=..., next=<optimized out>, prev=0x0) at kernel/sched/core.c:2903
+  1    Thread -2 (shadowCPU0) 0xffffffff8012524c in arch_kgdb_breakpoint () at arch/mips/kernel/kgdb.c:201
 
-MBR, Sergei
+Call clobbered registers which aren't saved and exception registers
+(BadVAddr & Cause) which can't be easily determined without stack
+unwinding are reported as 0. The PC is taken from the return address,
+such that the state presented matches that found immediately after
+returning from resume().
+
+Fixes: 8854700115ec ("[MIPS] kgdb: add arch support for the kernel's kgdb core")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Jason Wessel <jason.wessel@windriver.com>
+Cc: linux-mips@linux-mips.org
+Cc: stable@vger.kernel.org
+---
+ arch/mips/kernel/kgdb.c | 48 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 15 deletions(-)
+
+diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
+index 1f4bd222ba76..eb6c0d582626 100644
+--- a/arch/mips/kernel/kgdb.c
++++ b/arch/mips/kernel/kgdb.c
+@@ -244,9 +244,6 @@ static int compute_signal(int tt)
+ void sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *p)
+ {
+ 	int reg;
+-	struct thread_info *ti = task_thread_info(p);
+-	unsigned long ksp = (unsigned long)ti + THREAD_SIZE - 32;
+-	struct pt_regs *regs = (struct pt_regs *)ksp - 1;
+ #if (KGDB_GDB_REG_SIZE == 32)
+ 	u32 *ptr = (u32 *)gdb_regs;
+ #else
+@@ -254,25 +251,46 @@ void sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *p)
+ #endif
+ 
+ 	for (reg = 0; reg < 16; reg++)
+-		*(ptr++) = regs->regs[reg];
++		*(ptr++) = 0;
+ 
+ 	/* S0 - S7 */
+-	for (reg = 16; reg < 24; reg++)
+-		*(ptr++) = regs->regs[reg];
++	*(ptr++) = p->thread.reg16;
++	*(ptr++) = p->thread.reg17;
++	*(ptr++) = p->thread.reg18;
++	*(ptr++) = p->thread.reg19;
++	*(ptr++) = p->thread.reg20;
++	*(ptr++) = p->thread.reg21;
++	*(ptr++) = p->thread.reg22;
++	*(ptr++) = p->thread.reg23;
+ 
+ 	for (reg = 24; reg < 28; reg++)
+ 		*(ptr++) = 0;
+ 
+ 	/* GP, SP, FP, RA */
+-	for (reg = 28; reg < 32; reg++)
+-		*(ptr++) = regs->regs[reg];
+-
+-	*(ptr++) = regs->cp0_status;
+-	*(ptr++) = regs->lo;
+-	*(ptr++) = regs->hi;
+-	*(ptr++) = regs->cp0_badvaddr;
+-	*(ptr++) = regs->cp0_cause;
+-	*(ptr++) = regs->cp0_epc;
++	*(ptr++) = (long)p;
++	*(ptr++) = p->thread.reg29;
++	*(ptr++) = p->thread.reg30;
++	*(ptr++) = p->thread.reg31;
++
++	*(ptr++) = p->thread.cp0_status;
++
++	/* lo, hi */
++	*(ptr++) = 0;
++	*(ptr++) = 0;
++
++	/*
++	 * BadVAddr, Cause
++	 * Ideally these would come from the last exception frame up the stack
++	 * but that requires unwinding, otherwise we can't know much for sure.
++	 */
++	*(ptr++) = 0;
++	*(ptr++) = 0;
++
++	/*
++	 * PC
++	 * use return address (RA), i.e. the moment after return from resume()
++	 */
++	*(ptr++) = p->thread.reg31;
+ }
+ 
+ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+-- 
+git-series 0.8.10

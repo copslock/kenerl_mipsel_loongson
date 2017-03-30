@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2017 04:46:14 +0200 (CEST)
-Received: from SMTPBG181.QQ.COM ([119.147.193.88]:42344 "EHLO smtpbg181.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993867AbdC3CooypqrR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Mar 2017 04:44:44 +0200
-X-QQ-mid: bizesmtp14t1490841830thsbf7x6
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2017 04:46:38 +0200 (CEST)
+Received: from SMTPBG179.QQ.COM ([119.147.194.222]:53521 "EHLO
+        smtpbg179.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993870AbdC3CouhIZQR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Mar 2017 04:44:50 +0200
+X-QQ-mid: bizesmtp14t1490841844tnblgb5o
 Received: from software.domain.org (unknown [222.92.8.142])
         by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 30 Mar 2017 10:43:49 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FH71B00A0000000
-X-QQ-FEAT: OthLD3hRvFFnt6a8rHIC9Slt270ZHz7HOp1tUs5WdhCIcz1Ww0kLrvO8jlEal
-        4bzO5QTsmertumPjr8Ko9EnZA741ZZ7qF29xyY7GcfFTQDS+5RchUJ3U/AwH4Hfz8vow/Ai
-        GA2NGAVzhryjvoFgpZ9ogInJeGbtLz7mXqFrksNV/W7gyEQoYhdiGnOLYKMfLMG4TcF9UMv
-        OSUKP5wTX0lL5VUJo8XoNtQFABnA78Nb7duUfR2NhzbmHB6eoXbQHX+3lMQ5Y+KRZ0hPViW
-        ovS67zmSCwjiw9LS+VfwrW86HpjSWn2z2eVrE4X5kmX834wdvTvscnsnc=
+        id ; Thu, 30 Mar 2017 10:44:03 +0800 (CST)
+X-QQ-SSF: 01100000002000F0FH71B00C0000000
+X-QQ-FEAT: y3iK4Lsvf4Dwgc9iC5i8alPE63cmox4ILNQKRdOxFW22jfrSxfjO6PGsAajSz
+        jHr9T38pKC6dTWsD/Xc+lxiTleoYIwXkls5BVfgyHq/9mj9DnLLtsElT/aCItCyvf2nSV9z
+        bv1tot7FWYs2T8kYdCOYfI+7yLMx50NvH3CoKpfO+NkDZ92vzv430y3a98YUnrXfwr3LUHT
+        ckuph5QZfd8CU9lBWDMBStDglHDtTudPSVnmm7MbfXbCohi8JsKmjGVWGuY4NxBGkp4kX2e
+        uxnI+A7FF7JNfoOf/8koOV8ZTUVVvd/4hs40JUthJ5e6xboQK/3vq4nX4=
 X-QQ-GoodBg: 0
 From:   Binbin Zhou <zhoubb@lemote.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -26,10 +26,12 @@ Cc:     John Crispin <john@phrozen.org>,
         Yang Ling <gnaygnil@gmail.com>,
         =?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6?= <Yeking@Red54.com>,
         linux-mips@linux-mips.org, Binbin Zhou <zhoubb@lemote.com>,
-        HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH RESEND v6 2/8] MIPS: Loongson: Expand Loongson-1's register definition
-Date:   Thu, 30 Mar 2017 10:44:43 +0800
-Message-Id: <1490841889-13450-3-git-send-email-zhoubb@lemote.com>
+        HuaCai Chen <chenhc@lemote.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>, linux-clk@vger.kernel.org
+Subject: [PATCH v6 7/8] clk: Loongson: Add Loongson-1A clock support
+Date:   Thu, 30 Mar 2017 10:44:48 +0800
+Message-Id: <1490841889-13450-8-git-send-email-zhoubb@lemote.com>
 X-Mailer: git-send-email 2.7.0
 In-Reply-To: <1490841889-13450-1-git-send-email-zhoubb@lemote.com>
 References: <1490841889-13450-1-git-send-email-zhoubb@lemote.com>
@@ -38,7 +40,7 @@ Return-Path: <zhoubb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57473
+X-archive-position: 57474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,243 +57,153 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Rewrite their names for more readable.
+This patch adds clock support to Loongson-1A SoC.
+
+Unfortunately, The Loongson-1A's PLL register is written only,
+so we just set it with a fixed value.
 
 Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
 Signed-off-by: HuaCai Chen <chenhc@lemote.com>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@codeaurora.org>
+Cc: linux-clk@vger.kernel.org
 ---
- arch/mips/include/asm/mach-loongson32/loongson1.h | 170 ++++++++++++++++++----
- arch/mips/loongson32/common/platform.c            |  16 +-
- 2 files changed, 149 insertions(+), 37 deletions(-)
+ arch/mips/include/asm/mach-loongson32/regs-clk.h | 30 +++++++++-
+ drivers/clk/loongson1/Makefile                   |  1 +
+ drivers/clk/loongson1/clk-loongson1a.c           | 75 ++++++++++++++++++++++++
+ 3 files changed, 105 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/clk/loongson1/clk-loongson1a.c
 
-diff --git a/arch/mips/include/asm/mach-loongson32/loongson1.h b/arch/mips/include/asm/mach-loongson32/loongson1.h
-index 84c28a8..8cfd4ba 100644
---- a/arch/mips/include/asm/mach-loongson32/loongson1.h
-+++ b/arch/mips/include/asm/mach-loongson32/loongson1.h
-@@ -19,35 +19,147 @@
- #endif
+diff --git a/arch/mips/include/asm/mach-loongson32/regs-clk.h b/arch/mips/include/asm/mach-loongson32/regs-clk.h
+index e5e8f11..d8278a4 100644
+--- a/arch/mips/include/asm/mach-loongson32/regs-clk.h
++++ b/arch/mips/include/asm/mach-loongson32/regs-clk.h
+@@ -18,7 +18,35 @@
+ #define LS1X_CLK_PLL_FREQ		LS1X_CLK_REG(0x0)
+ #define LS1X_CLK_PLL_DIV		LS1X_CLK_REG(0x4)
  
- /* Loongson 1 Register Bases */
--#define LS1X_MUX_BASE			0x1fd00420
--#define LS1X_INTC_BASE			0x1fd01040
--#define LS1X_GPIO0_BASE			0x1fd010c0
--#define LS1X_GPIO1_BASE			0x1fd010c4
--#define LS1X_DMAC_BASE			0x1fd01160
--#define LS1X_CBUS_BASE			0x1fd011c0
--#define LS1X_EHCI_BASE			0x1fe00000
--#define LS1X_OHCI_BASE			0x1fe08000
--#define LS1X_GMAC0_BASE			0x1fe10000
--#define LS1X_GMAC1_BASE			0x1fe20000
--
--#define LS1X_UART0_BASE			0x1fe40000
--#define LS1X_UART1_BASE			0x1fe44000
--#define LS1X_UART2_BASE			0x1fe48000
--#define LS1X_UART3_BASE			0x1fe4c000
--#define LS1X_CAN0_BASE			0x1fe50000
--#define LS1X_CAN1_BASE			0x1fe54000
--#define LS1X_I2C0_BASE			0x1fe58000
--#define LS1X_I2C1_BASE			0x1fe68000
--#define LS1X_I2C2_BASE			0x1fe70000
--#define LS1X_PWM0_BASE			0x1fe5c000
--#define LS1X_PWM1_BASE			0x1fe5c010
--#define LS1X_PWM2_BASE			0x1fe5c020
--#define LS1X_PWM3_BASE			0x1fe5c030
--#define LS1X_WDT_BASE			0x1fe5c060
--#define LS1X_RTC_BASE			0x1fe64000
--#define LS1X_AC97_BASE			0x1fe74000
--#define LS1X_NAND_BASE			0x1fe78000
--#define LS1X_CLK_BASE			0x1fe78030
-+#define LS1X_DC_REG_BASE		0x1c200000
-+#define LS1X_MUX_REG_BASE		0x1f000000
+-#if defined(CONFIG_LOONGSON1_LS1B)
++#if defined(CONFIG_LOONGSON1_LS1A)
++/* write only */
++#define CORE_PLL_CFG		0x1fe78030
++#define CPU_MUL			GENMASK(2, 0)
++#define CPU_CFG_EN		BIT(3)
++#define DDR_MUL			GENMASK(6, 4)
++#define DDR_CFG_EN		BIT(7)
++#define CPU_CFG_W_EN		BIT(11)
++#define DDR_CFG_W_EN		BIT(15)
 +
-+#define LS1X_CFG_REG_BASE		(LS1X_MUX_REG_BASE + 0x00d00000)
++#define VGA_PLL_CFG		0x1fd00410
++#define VGA_M			GENMASK(7, 0)
++#define VGA_N			GENMASK(11, 8)
++#define VGA_OD			GENMASK(13, 12)
++#define VGA_FRAC		GENMASK(31, 14)
 +
-+#define LS1X_INTC_BASE			(LS1X_CFG_REG_BASE + 0x1040)
++#define LCD_PLL_CFG		0x1fd00410
++#define LCD_M			GENMASK(7, 0)
++#define LCD_N			GENMASK(11, 8)
++#define LCD_OD			GENMASK(13, 12)
++#define LCD_FRAC		GENMASK(31, 14)
 +
-+/* GPIO regs */
-+#define LS1X_GPIO_REG_BASE		(LS1X_CFG_REG_BASE + 0x1000)
-+#define LS1X_GPIO_CFG0_REG		(LS1X_GPIO_REG_BASE + 0xc0)
-+#define LS1X_GPIO_CFG1_REG		(LS1X_GPIO_REG_BASE + 0xc4)
-+#define LS1X_GPIO_CFG2_REG		(LS1X_GPIO_REG_BASE + 0xc8)
-+#define LS1X_GPIO_OE0_REG		(LS1X_GPIO_REG_BASE + 0xd0)
-+#define LS1X_GPIO_OE1_REG		(LS1X_GPIO_REG_BASE + 0xd4)
-+#define LS1X_GPIO_OE2_REG		(LS1X_GPIO_REG_BASE + 0xd8)
-+#define LS1X_GPIO_IN0_REG		(LS1X_GPIO_REG_BASE + 0xe0)
-+#define LS1X_GPIO_IN1_REG		(LS1X_GPIO_REG_BASE + 0xe4)
-+#define LS1X_GPIO_IN2_REG		(LS1X_GPIO_REG_BASE + 0xe8)
-+#define LS1X_GPIO_OUT0_REG		(LS1X_GPIO_REG_BASE + 0xf0)
-+#define LS1X_GPIO_OUT1_REG		(LS1X_GPIO_REG_BASE + 0xf4)
-+#define LS1X_GPIO_OUT2_REG		(LS1X_GPIO_REG_BASE + 0xf8)
++#define GPU_PLL_CFG		0x1fd00414
++#define GPU_M			GENMASK(7, 0)
++#define GPU_N			GENMASK(11, 8)
++#define GPU_OD			GENMASK(13, 12)
++#define GPU_FRAC		GENMASK(31, 14)
 +
-+#define LS1X_DMA_ORDER_REG		(LS1X_CFG_REG_BASE + 0x1160)
++#elif defined(CONFIG_LOONGSON1_LS1B)
+ /* Clock PLL Divisor Register Bits */
+ #define DIV_DC_EN			BIT(31)
+ #define DIV_DC_RST			BIT(30)
+diff --git a/drivers/clk/loongson1/Makefile b/drivers/clk/loongson1/Makefile
+index b7f6a16..da7b2dd 100644
+--- a/drivers/clk/loongson1/Makefile
++++ b/drivers/clk/loongson1/Makefile
+@@ -1,3 +1,4 @@
+ obj-y				+= clk.o
++obj-$(CONFIG_LOONGSON1_LS1A)	+= clk-loongson1a.o
+ obj-$(CONFIG_LOONGSON1_LS1B)	+= clk-loongson1b.o
+ obj-$(CONFIG_LOONGSON1_LS1C)	+= clk-loongson1c.o
+diff --git a/drivers/clk/loongson1/clk-loongson1a.c b/drivers/clk/loongson1/clk-loongson1a.c
+new file mode 100644
+index 0000000..263a82c
+--- /dev/null
++++ b/drivers/clk/loongson1/clk-loongson1a.c
+@@ -0,0 +1,75 @@
++/*
++ * Copyright (c) 2012-2016 Binbin Zhou <zhoubb@lemote.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
 +
-+#define LS1X_MUX_BASE			(LS1X_CFG_REG_BASE + 0x0420)
++#include <linux/clkdev.h>
++#include <linux/clk-provider.h>
++#include <linux/io.h>
++#include <linux/err.h>
 +
-+/* USB regs */
-+#define LS1X_EHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e00000)
-+#define LS1X_OHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e08000)
++#include <loongson1.h>
++#include "clk.h"
 +
-+/* GMAC regs */
-+#define LS1X_GMAC0_BASE			(LS1X_MUX_REG_BASE + 0x00e10000)
-+#define LS1X_GMAC0_DMA_REG		(LS1X_GMAC0_BASE + 0x1000)
-+#define LS1X_GMAC1_BASE			(LS1X_MUX_REG_BASE + 0x00e20000)
-+#define LS1X_GMAC1_DMA_REG		(LS1X_GMAC1_BASE + 0x1000)
++#define OSC		(33 * 1000000)
++#define DIV_APB		2
 +
-+/* SATA regs */
-+#define LS1X_AHCI_BASE			(LS1X_MUX_REG_BASE + 0x00e30000)
++static DEFINE_SPINLOCK(_lock);
 +
-+/* APB regs */
-+#define LS1X_APB_REG_BASE		(LS1X_MUX_REG_BASE + 0x00e40000)
++static unsigned long ls1x_pll_recalc_rate(struct clk_hw *hw,
++					  unsigned long parent_rate)
++{
++	/* Workaround, loongson-1A pll register is written only */
++	return OSC * 8;
++}
 +
-+/* UART regs */
-+#define LS1X_UART0_BASE			(LS1X_APB_REG_BASE + 0x0000)
-+#define LS1X_UART1_BASE			(LS1X_APB_REG_BASE + 0x4000)
-+#define LS1X_UART2_BASE			(LS1X_APB_REG_BASE + 0x8000)
-+#define LS1X_UART3_BASE			(LS1X_APB_REG_BASE + 0xc000)
++static const struct clk_ops ls1x_pll_clk_ops = {
++	.recalc_rate = ls1x_pll_recalc_rate,
++};
 +
-+/* CAN regs */
-+#define LS1X_CAN0_BASE			(LS1X_APB_REG_BASE + 0x10000)
-+#define LS1X_CAN1_BASE			(LS1X_APB_REG_BASE + 0x14000)
++void __init ls1x_clk_init(void)
++{
++	struct clk_hw *hw;
 +
-+#define LS1X_I2C0_BASE			(LS1X_APB_REG_BASE + 0x18000)
-+#define LS1X_I2C0_PRER_LO_REG		(LS1X_I2C0_BASE + 0x0)
-+#define LS1X_I2C0_PRER_HI_REG		(LS1X_I2C0_BASE + 0x1)
-+#define LS1X_I2C0_CTR_REG		(LS1X_I2C0_BASE + 0x2)
-+#define LS1X_I2C0_TXR_REG		(LS1X_I2C0_BASE + 0x3)
-+#define LS1X_I2C0_RXR_REG		(LS1X_I2C0_BASE + 0x3)
-+#define LS1X_I2C0_CR_REG		(LS1X_I2C0_BASE + 0x4)
-+#define LS1X_I2C0_SR_REG		(LS1X_I2C0_BASE + 0x4)
++	hw = clk_hw_register_fixed_rate(NULL, "osc_clk", NULL, 0, OSC);
++	clk_hw_register_clkdev(hw, "osc_clk", NULL);
 +
-+#define LS1X_I2C1_BASE			(LS1X_APB_REG_BASE + 0x28000)
-+#define LS1X_I2C1_PRER_LO_REG		(LS1X_I2C1_BASE + 0x0)
-+#define LS1X_I2C1_PRER_HI_REG		(LS1X_I2C1_BASE + 0x1)
-+#define LS1X_I2C1_CTR_REG		(LS1X_I2C1_BASE + 0x2)
-+#define LS1X_I2C1_TXR_REG		(LS1X_I2C1_BASE + 0x3)
-+#define LS1X_I2C1_RXR_REG		(LS1X_I2C1_BASE + 0x3)
-+#define LS1X_I2C1_CR_REG		(LS1X_I2C1_BASE + 0x4)
-+#define LS1X_I2C1_SR_REG		(LS1X_I2C1_BASE + 0x4)
++	/* clock from 33 MHz OSC clk */
++	hw = clk_hw_register_pll(NULL, "pll_clk", "osc_clk",
++				&ls1x_pll_clk_ops, 0);
++	clk_hw_register_clkdev(hw, "pll_clk", NULL);
 +
-+#define LS1X_I2C2_BASE			(LS1X_APB_REG_BASE + 0x30000)
-+#define LS1X_I2C2_PRER_LO_REG		(LS1X_I2C2_BASE + 0x0)
-+#define LS1X_I2C2_PRER_HI_REG		(LS1X_I2C2_BASE + 0x1)
-+#define LS1X_I2C2_CTR_REG		(LS1X_I2C2_BASE + 0x2)
-+#define LS1X_I2C2_TXR_REG		(LS1X_I2C2_BASE + 0x3)
-+#define LS1X_I2C2_RXR_REG		(LS1X_I2C2_BASE + 0x3)
-+#define LS1X_I2C2_CR_REG		(LS1X_I2C2_BASE + 0x4)
-+#define LS1X_I2C2_SR_REG		(LS1X_I2C2_BASE + 0x4)
++	/* cpu clk */
++	hw = clk_hw_register_fixed_factor(NULL, "cpu_clk", "pll_clk",
++					0, 1, 1);
++	clk_hw_register_clkdev(hw, "cpu_clk", NULL);
 +
-+#define LS1X_PWM_REG_BASE		(LS1X_APB_REG_BASE + 0x1c000)
-+#define LS1X_PWM0_BASE			(LS1X_PWM_REG_BASE + 0x00)
-+#define LS1X_PWM1_BASE			(LS1X_PWM_REG_BASE + 0x10)
-+#define LS1X_PWM2_BASE			(LS1X_PWM_REG_BASE + 0x20)
-+#define LS1X_PWM3_BASE			(LS1X_PWM_REG_BASE + 0x30)
++	/* dc clk */
++	hw = clk_hw_register_fixed_factor(NULL, "ddr_clk", "pll_clk",
++					0, 1, 1);
++	clk_hw_register_clkdev(hw, "ddr_clk", NULL);
 +
-+/* RTC regs */
-+#define LS1X_RTC_BASE			(LS1X_APB_REG_BASE + 0x24000)
++	/* ahb clk */
++	hw = clk_hw_register_fixed_factor(NULL, "ahb_clk", "pll_clk",
++					0, 1, 2);
++	clk_hw_register_clkdev(hw, "ahb_clk", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-dma", NULL);
++	clk_hw_register_clkdev(hw, "stmmaceth", NULL);
 +
-+/* AC97 regs */
-+#define LS1X_AC97_BASE			(LS1X_APB_REG_BASE + 0x34000)
-+
-+/* Watchdog regs */
-+#ifdef CONFIG_CPU_LOONGSON1A
-+#define LS1X_WDT_BASE			(LS1X_MUX_REG_BASE + 0x00e7c060)
-+#else
-+#define LS1X_WDT_BASE			(LS1X_MUX_REG_BASE + 0x00e5c060)
-+#endif
-+
-+/* CLK regs */
-+#define LS1X_CLK_BASE			(LS1X_MUX_REG_BASE + 0x00e78030)
-+
-+/* NAND regs */
-+#define LS1X_NAND_REG_BASE		(LS1X_APB_REG_BASE + 0x38000)
-+#define LS1X_NAND_CMD_REG		(LS1X_NAND_REG_BASE + 0x0000)
-+#define LS1X_NAND_ADDR_C_REG		(LS1X_NAND_REG_BASE + 0x0004)
-+#define LS1X_NAND_ADDR_R_REG		(LS1X_NAND_REG_BASE + 0x0008)
-+#define LS1X_NAND_TIMING_REG		(LS1X_NAND_REG_BASE + 0x000c)
-+#define LS1X_NAND_IDL_REG		(LS1X_NAND_REG_BASE + 0x0010)
-+#define LS1X_NAND_STA_IDH_REG		(LS1X_NAND_REG_BASE + 0x0014)
-+#define LS1X_NAND_PARAM_REG		(LS1X_NAND_REG_BASE + 0x0018)
-+#define LS1X_NAND_OP_NUM_REG		(LS1X_NAND_REG_BASE + 0x001c)
-+#define LS1X_NAND_CSRDY_MAP_REG		(LS1X_NAND_REG_BASE + 0x0020)
-+#define LS1X_NAND_DMA_ACC_REG		(LS1X_NAND_REG_BASE + 0x0040)
-+
-+/* ACPI regs for ls1a */
-+#define LS1X_ACPI_REG_BASE		(LS1X_APB_REG_BASE + 0x3c000)
-+#define LS1X_PM1_STS_REG		(LS1X_ACPI_REG_BASE + 0x0000)
-+#define LS1X_PM1_EN_REG			(LS1X_ACPI_REG_BASE + 0x0004)
-+#define LS1X_PM1_CNT_REG		(LS1X_ACPI_REG_BASE + 0x0008)
-+#define LS1X_PM1_TMR_REG		(LS1X_ACPI_REG_BASE + 0x000c)
-+#define LS1X_P_CNT_REG			(LS1X_ACPI_REG_BASE + 0x0010)
-+#define LS1X_P_LVL2_REG			(LS1X_ACPI_REG_BASE + 0x0014)
-+#define LS1X_P_LVL3_REG			(LS1X_ACPI_REG_BASE + 0x0018)
-+#define LS1X_GPE0_STS_REG		(LS1X_ACPI_REG_BASE + 0x0020)
-+#define LS1X_GPE0_EN_REG		(LS1X_ACPI_REG_BASE + 0x0024)
-+#define LS1X_PM_CONF1_REG		(LS1X_ACPI_REG_BASE + 0x0030)
-+#define LS1X_PM_CONF2_REG		(LS1X_ACPI_REG_BASE + 0x0034)
-+#define LS1X_PM_CONF3_REG		(LS1X_ACPI_REG_BASE + 0x0038)
-+#define LS1X_RST_CNT_REG		(LS1X_ACPI_REG_BASE + 0x0044)
-+#define LS1X_CPU_INIT_REG		(LS1X_ACPI_REG_BASE + 0x0050)
-+
-+#define LS1X_SPI0_REG_BASE		(LS1X_MUX_REG_BASE + 0x00e80000)
-+#define LS1X_SPI1_REG_BASE		(LS1X_MUX_REG_BASE + 0x00ec0000)
-+
-+/* LPC regs */
-+#define LS1X_LPC_IO_BASE		(LS1X_MUX_REG_BASE + 0x00f00000)
-+#define LS1X_LPC_REG_BASE		(LS1X_MUX_REG_BASE + 0x00f10200)
-+#define LS1X_LPC_CFG0_REG		(LS1X_LPC_REG_BASE + 0x0)
-+#define LS1X_LPC_CFG1_REG		(LS1X_LPC_REG_BASE + 0x4)
-+#define LS1X_LPC_CFG2_REG		(LS1X_LPC_REG_BASE + 0x8)
-+#define LS1X_LPC_CFG3_REG		(LS1X_LPC_REG_BASE + 0xc)
- 
- #include <regs-clk.h>
- #include <regs-mux.h>
-diff --git a/arch/mips/loongson32/common/platform.c b/arch/mips/loongson32/common/platform.c
-index 100f23d..f71392f 100644
---- a/arch/mips/loongson32/common/platform.c
-+++ b/arch/mips/loongson32/common/platform.c
-@@ -84,8 +84,8 @@ struct platform_device ls1x_cpufreq_pdev = {
- /* DMA */
- static struct resource ls1x_dma_resources[] = {
- 	[0] = {
--		.start = LS1X_DMAC_BASE,
--		.end = LS1X_DMAC_BASE + SZ_4 - 1,
-+		.start = LS1X_DMA_ORDER_REG,
-+		.end = LS1X_DMA_ORDER_REG + SZ_4 - 1,
- 		.flags = IORESOURCE_MEM,
- 	},
- 	[1] = {
-@@ -259,8 +259,8 @@ struct platform_device ls1x_eth1_pdev = {
- /* GPIO */
- static struct resource ls1x_gpio0_resources[] = {
- 	[0] = {
--		.start	= LS1X_GPIO0_BASE,
--		.end	= LS1X_GPIO0_BASE + SZ_4 - 1,
-+		.start	= LS1X_GPIO_CFG0_REG,
-+		.end	= LS1X_GPIO_CFG0_REG + SZ_4 - 1,
- 		.flags	= IORESOURCE_MEM,
- 	},
- };
-@@ -274,8 +274,8 @@ struct platform_device ls1x_gpio0_pdev = {
- 
- static struct resource ls1x_gpio1_resources[] = {
- 	[0] = {
--		.start	= LS1X_GPIO1_BASE,
--		.end	= LS1X_GPIO1_BASE + SZ_4 - 1,
-+		.start	= LS1X_GPIO_CFG1_REG,
-+		.end	= LS1X_GPIO_CFG1_REG + SZ_4 - 1,
- 		.flags	= IORESOURCE_MEM,
- 	},
- };
-@@ -290,8 +290,8 @@ struct platform_device ls1x_gpio1_pdev = {
- /* NAND Flash */
- static struct resource ls1x_nand_resources[] = {
- 	[0] = {
--		.start	= LS1X_NAND_BASE,
--		.end	= LS1X_NAND_BASE + SZ_32 - 1,
-+		.start	= LS1X_NAND_REG_BASE,
-+		.end	= LS1X_NAND_REG_BASE + SZ_32 - 1,
- 		.flags	= IORESOURCE_MEM,
- 	},
- 	[1] = {
++	/* clock derived from AHB clk */
++	/* APB clk is always half of the AHB clk */
++	hw = clk_hw_register_fixed_factor(NULL, "apb_clk", "ahb_clk",
++					0, 1, DIV_APB);
++	clk_hw_register_clkdev(hw, "apb_clk", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-ac97", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-i2c", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-nand", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-pwmtimer", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-spi", NULL);
++	clk_hw_register_clkdev(hw, "ls1x-wdt", NULL);
++	clk_hw_register_clkdev(hw, "serial8250", NULL);
++}
 -- 
 2.9.3

@@ -1,22 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2017 04:47:49 +0200 (CEST)
-Received: from smtpbg340.qq.com ([14.17.44.35]:41751 "EHLO smtpbg340.qq.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992028AbdC3CpCApjVR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Mar 2017 04:45:02 +0200
-X-QQ-mid: bizesmtp14t1490841835t3psfgcw
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Thu, 30 Mar 2017 10:43:54 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FH71B00A0000000
-X-QQ-FEAT: Tp2hW+Mew+dOEwHqzhfmb9q0Z5XHTxdET6Nxa+ABjpFrXxnnU1SlhXM2Cr4Dt
-        qfT5znsJ/h0F5yHToGktczKSztSicwagzugue4Sqymggfv3mvD9Z7XQAi2OwWaq0ZwX7c4P
-        C8XyM9/dCx9eoAf25qWZHpxnwYmoFSz6WEXno+Lz/GgEUvi6nlhYXRLIM7/hFkthgQ4cVpA
-        kwxTYq6MzSV/8O9PTWnKB95o2I0Qdol8hsix8mxDVS4TS/LJ+E549MTuhYlk+fpuloEYEPF
-        etdHz2B3tWxDWCoWVSTgA4diJXpldT0q5MJOpkoLtG/yb1
-X-QQ-GoodBg: 0
-From:   Binbin Zhou <zhoubb@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2017 11:51:16 +0200 (CEST)
+Received: from mail-lf0-x236.google.com ([IPv6:2a00:1450:4010:c07::236]:32919
+        "EHLO mail-lf0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993875AbdC3JvDi8jZT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Mar 2017 11:51:03 +0200
+Received: by mail-lf0-x236.google.com with SMTP id h125so22594186lfe.0
+        for <linux-mips@linux-mips.org>; Thu, 30 Mar 2017 02:51:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=E5lMb0nH/Vdj6bfCrA38S3yLwNqg44V71OEGQkc2+sw=;
+        b=bDY1XjECaH4uRQWfrfB32l9prxhmItDZ9hLFcqcFFEhcVkcsV5T9EYPwu3S0vTLOVl
+         hSXi2FlJYBnmoqhZARqzKXmHQqQ3hodOjpnGl+eYJaMh+4ufOe1Ru0Un3720NgNDx5Mv
+         th+Dg1AyhigFRxF5Wlm8yc57/QG40Upm0Oi4AnEly432kf9pMkzuiwmL4OljOonRAldf
+         3V4oEdr6OTxQywFyUdHkIW1gINt9ErRZLw+LQnJRZZCZ7WA3L44RNx0WROp20g/kh8Pm
+         lAdek8VOoPqjp3rQhCXTtoMZ2s+NOaT8oPIDUWJFXspn+jMZx4TDxI2aOX8LoD9dukeT
+         6PlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=E5lMb0nH/Vdj6bfCrA38S3yLwNqg44V71OEGQkc2+sw=;
+        b=aSo+goZm0QGcQyTTHy1Sro7OM8NwHE9Jm5GAXrWu7wbrMmBECrb2opTpC86LH0Wn9j
+         v/PJ8mxaZ4jNSVmZpFk9aBspJg93BwBcQf6+qoqlkmytJAC9u7G0Kb1K1WeDa2P7ZoNV
+         jgHoO725GPqSZRiVIBoF0OlKJPZMf7scKcuXF/YtY7F1pIDxkRKlnCtq5FsmUdUcVWKh
+         WSbn+EjXjKhSStqsuxwnlpccdYfg7MiIEXQLH+8qtcqfiaddllVqx1jLFtQGNtwMjmDj
+         Cdt02wEP4wxTFw1ZamdHhkmd4MlIIiCJOM8AgdRY0Kqfn417o8J2BCeWkYcaG0i9DbLV
+         FGfA==
+X-Gm-Message-State: AFeK/H1m5Z2Y0bqHARMV069jF0pNS6+ChpmgDHXX7B4W5Z8Lo0k+yW4KWtJNT2WIvmr2yg==
+X-Received: by 10.25.193.8 with SMTP id r8mr1289480lff.127.1490867458144;
+        Thu, 30 Mar 2017 02:50:58 -0700 (PDT)
+Received: from [192.168.4.126] ([31.173.87.108])
+        by smtp.gmail.com with ESMTPSA id f2sm288681ljb.20.2017.03.30.02.50.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 30 Mar 2017 02:50:57 -0700 (PDT)
+Subject: Re: [PATCH v6 1/8] MIPS: Loongson: Merge PRID macro for
+ Loongson-1A/1B/1C
+To:     Binbin Zhou <zhoubb@lemote.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <james.hogan@imgtec.com>
+References: <1490841889-13450-1-git-send-email-zhoubb@lemote.com>
+ <1490841889-13450-2-git-send-email-zhoubb@lemote.com>
 Cc:     John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@imgtec.com>,
         Aurelien Jarno <aurelien@aurel32.net>,
@@ -24,25 +48,26 @@ Cc:     John Crispin <john@phrozen.org>,
         Zhangjin Wu <wuzhangjin@gmail.com>,
         Kelvin Cheung <keguang.zhang@gmail.com>,
         Yang Ling <gnaygnil@gmail.com>,
-        =?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6?= <Yeking@Red54.com>,
-        linux-mips@linux-mips.org, Binbin Zhou <zhoubb@lemote.com>,
-        HuaCai Chen <chenhc@lemote.com>
-Subject: [PATCH v6 3/8] MIPS: Loongson: Add basic Loongson-1A CPU support
-Date:   Thu, 30 Mar 2017 10:44:44 +0800
-Message-Id: <1490841889-13450-4-git-send-email-zhoubb@lemote.com>
-X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1490841889-13450-1-git-send-email-zhoubb@lemote.com>
-References: <1490841889-13450-1-git-send-email-zhoubb@lemote.com>
-X-QQ-SENDSIZE: 520
-Return-Path: <zhoubb@lemote.com>
+        =?UTF-8?B?6LCi6Ie06YKm?= <Yeking@Red54.com>,
+        linux-mips@linux-mips.org, HuaCai Chen <chenhc@lemote.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <273c2b54-05df-687b-1633-36ee40a83a5d@cogentembedded.com>
+Date:   Thu, 30 Mar 2017 12:50:55 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
+MIME-Version: 1.0
+In-Reply-To: <1490841889-13450-2-git-send-email-zhoubb@lemote.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57477
+X-archive-position: 57479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhoubb@lemote.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -55,97 +80,17 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The Loongson-1A CPU is similar with Loongson-1B/1C, which is a 32-bit SoC.
-It implements the MIPS32 release 2 instruction set.
+Hello!
 
-It's a cost-effective single chip system based on LS232 processor core, and
-is applicable to fields such as industrial control.
+On 3/30/2017 5:44 AM, Binbin Zhou wrote:
 
-Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
-Signed-off-by: HuaCai Chen <chenhc@lemote.com>
----
- arch/mips/include/asm/cpu-type.h    |  3 ++-
- arch/mips/kernel/cpu-probe.c        |  4 +++-
- arch/mips/loongson32/Platform       |  1 +
- arch/mips/loongson32/common/setup.c |  4 +++-
- arch/mips/mm/c-r4k.c                | 10 ++++++++++
- 5 files changed, 19 insertions(+), 3 deletions(-)
+> As we all know, the Loongson-1 series CPUs(1A/1B/1C) share the same PRID macro.
+> so I rename them for more readable.
 
-diff --git a/arch/mips/include/asm/cpu-type.h b/arch/mips/include/asm/cpu-type.h
-index bdd6dc1..13ea1ea5 100644
---- a/arch/mips/include/asm/cpu-type.h
-+++ b/arch/mips/include/asm/cpu-type.h
-@@ -24,7 +24,8 @@ static inline int __pure __get_cpu_type(const int cpu_type)
- 	case CPU_LOONGSON3:
- #endif
- 
--#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1B) || \
-+#if defined(CONFIG_SYS_HAS_CPU_LOONGSON1A) || \
-+    defined(CONFIG_SYS_HAS_CPU_LOONGSON1B) || \
-     defined(CONFIG_SYS_HAS_CPU_LOONGSON1C)
- 	case CPU_LOONGSON1:
- #endif
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 657d65d..59ad3b7 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1503,7 +1503,9 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 
- 		switch (c->processor_id & PRID_REV_MASK) {
- 		case PRID_REV_LOONGSON1ABC:
--#ifdef CONFIG_CPU_LOONGSON1B
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+			__cpu_name[cpu] = "Loongson 1A";
-+#elif defined(CONFIG_CPU_LOONGSON1B)
- 			__cpu_name[cpu] = "Loongson 1B";
- #endif
- 			break;
-diff --git a/arch/mips/loongson32/Platform b/arch/mips/loongson32/Platform
-index ffe01c6..a9e0fa7 100644
---- a/arch/mips/loongson32/Platform
-+++ b/arch/mips/loongson32/Platform
-@@ -4,5 +4,6 @@ cflags-$(CONFIG_CPU_LOONGSON1)	+= \
- 
- platform-$(CONFIG_MACH_LOONGSON32)	+= loongson32/
- cflags-$(CONFIG_MACH_LOONGSON32)	+= -I$(srctree)/arch/mips/include/asm/mach-loongson32
-+load-$(CONFIG_LOONGSON1_LS1A)		+= 0xffffffff80200000
- load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80100000
- load-$(CONFIG_LOONGSON1_LS1C)		+= 0xffffffff80100000
-diff --git a/arch/mips/loongson32/common/setup.c b/arch/mips/loongson32/common/setup.c
-index c8e8b3e..1c3324a 100644
---- a/arch/mips/loongson32/common/setup.c
-+++ b/arch/mips/loongson32/common/setup.c
-@@ -22,7 +22,9 @@ const char *get_system_type(void)
- 
- 	switch (processor_id & PRID_REV_MASK) {
- 	case PRID_REV_LOONGSON1ABC:
--#if defined(CONFIG_LOONGSON1_LS1B)
-+#if defined(CONFIG_LOONGSON1_LS1A)
-+		return "LOONGSON LS1A";
-+#elif defined(CONFIG_LOONGSON1_LS1B)
- 		return "LOONGSON LS1B";
- #elif defined(CONFIG_LOONGSON1_LS1C)
- 		return "LOONGSON LS1C";
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index e7f798d..44c4088 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1366,6 +1366,16 @@ static void probe_pcache(void)
- 		c->options |= MIPS_CPU_PREFETCH;
- 		break;
- 
-+	case CPU_LOONGSON1:
-+		if (read_c0_config7() & MIPS_CONF7_AR) {
-+			/*
-+			 * effectively physically indexed dcache,
-+			 * thus no virtual aliases.
-+			 */
-+			c->dcache.flags |= MIPS_CACHE_PINDEX;
-+			break;
-+		}
-+
- 	default:
- 		if (!(config & MIPS_CONF_M))
- 			panic("Don't know how to probe P-caches on this cpu.");
--- 
-2.9.3
+    "Better readability", perhaps?
+
+> Signed-off-by: Binbin Zhou <zhoubb@lemote.com>
+> Signed-off-by: HuaCai Chen <chenhc@lemote.com>
+[...]
+
+MBR, Sergei

@@ -1,37 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Mar 2017 17:21:41 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39221 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Mar 2017 18:10:34 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:53329 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992155AbdCaPVeph65g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Mar 2017 17:21:34 +0200
+        with ESMTP id S23992126AbdCaQK1h45zo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Mar 2017 18:10:27 +0200
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id C712233DD8896;
-        Fri, 31 Mar 2017 16:21:24 +0100 (IST)
-Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+        by Forcepoint Email with ESMTPS id DEDA2A53839EC;
+        Fri, 31 Mar 2017 17:10:17 +0100 (IST)
+Received: from LDT-J-COWGILL.le.imgtec.org (10.150.130.85) by
  HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 31 Mar 2017 16:21:28 +0100
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>
-CC:     <linux-mips@linux-mips.org>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        <linux-kernel@vger.kernel.org>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH] MIPS: generic: Enable Root FS on NFS in generic_defconfig
-Date:   Fri, 31 Mar 2017 16:21:24 +0100
-Message-ID: <1490973684-14267-1-git-send-email-matt.redfearn@imgtec.com>
-X-Mailer: git-send-email 2.7.4
+ 14.3.294.0; Fri, 31 Mar 2017 17:10:21 +0100
+From:   James Cowgill <James.Cowgill@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+CC:     <James.Cowgill@imgtec.com>
+Subject: [PATCH 0/2] Fix indirect syscall handler for syscalls with > 4 args
+Date:   Fri, 31 Mar 2017 17:09:57 +0100
+Message-ID: <20170331160959.3192-1-James.Cowgill@imgtec.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+X-Originating-IP: [10.150.130.85]
+Return-Path: <James.Cowgill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57514
+X-archive-position: 57515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: James.Cowgill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,43 +40,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The generic_defconfig is used for platforms like SEAD3 which do not
-usually have fixed storage available, therefore NFS is the preferred
-location of the RFS.
-When the upstream kernel defconfig is built & tested on platforms such
-as SEAD3 this leads to essentially false failures when the RFS fails to
-mount.
+These two patches fix a corner case in the o32 indirect syscall handler where
+incorrect arguments might get passed to the underlying syscall function if more
+than 4 arguments are passed to a restartable syscall.
 
-There is little harm in having this feature enabled by default, so
-enable it in the defconfig. Kernel autoconfiguration & DHCP must also be
-selected to allow RFS on NFS.
+The first patch hopefully removes the last use of pt_regs for reading syscall
+arguments and the second patch removes the special pt_regs handling in the
+indrect syscall handler which is no longer needed.
 
-Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
----
 
- arch/mips/configs/generic_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+James Cowgill (2):
+  MIPS: opt into HAVE_COPY_THREAD_TLS
+  MIPS: Remove pt_regs adjustments in indirect syscall handler
 
-diff --git a/arch/mips/configs/generic_defconfig b/arch/mips/configs/generic_defconfig
-index c95d94c7838b..91aacf2ef26d 100644
---- a/arch/mips/configs/generic_defconfig
-+++ b/arch/mips/configs/generic_defconfig
-@@ -36,6 +36,8 @@ CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
- CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
- CONFIG_NETFILTER=y
- # CONFIG_WIRELESS is not set
- CONFIG_DEVTMPFS=y
-@@ -80,6 +82,7 @@ CONFIG_NFS_V3_ACL=y
- CONFIG_NFS_V4=y
- CONFIG_NFS_V4_1=y
- CONFIG_NFS_V4_2=y
-+CONFIG_ROOT_NFS=y
- CONFIG_PRINTK_TIME=y
- CONFIG_DEBUG_INFO=y
- CONFIG_DEBUG_INFO_REDUCED=y
+ arch/mips/Kconfig              |  1 +
+ arch/mips/kernel/process.c     |  6 +++---
+ arch/mips/kernel/scall32-o32.S | 11 -----------
+ arch/mips/kernel/scall64-o32.S |  6 ------
+ 4 files changed, 4 insertions(+), 20 deletions(-)
+
 -- 
-2.7.4
+2.11.0

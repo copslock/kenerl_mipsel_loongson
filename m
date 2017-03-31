@@ -1,42 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Mar 2017 14:04:30 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:35324 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992126AbdCaMEXTx2GY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 31 Mar 2017 14:04:23 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6517D28;
-        Fri, 31 Mar 2017 05:04:16 -0700 (PDT)
-Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B0CB83F59A;
-        Fri, 31 Mar 2017 05:04:14 -0700 (PDT)
-Subject: Re: [PATCH 0/2] Fix v4.11 malta_defconfig regressions
-To:     Matt Redfearn <matt.redfearn@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>
-References: <1490958332-31094-1-git-send-email-matt.redfearn@imgtec.com>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Mar 2017 14:46:35 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36736 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23993423AbdCaMq2Jk5SQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 31 Mar 2017 14:46:28 +0200
+Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v2VCkPWb031448;
+        Fri, 31 Mar 2017 14:46:25 +0200
+Received: (from ralf@localhost)
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v2VCkO0T031447;
+        Fri, 31 Mar 2017 14:46:24 +0200
+Date:   Fri, 31 Mar 2017 14:46:24 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+Cc:     James Hogan <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        Marc Zyngier <marc.zyngier@arm.com>,
         Jason Cooper <jason@lakedaemon.net>,
-        Paul Burton <paul.burton@imgtec.com>
-From:   Marc Zyngier <marc.zyngier@arm.com>
-Organization: ARM Ltd
-Message-ID: <d6508e12-07c0-1cf1-97cf-d88b77b3dde4@arm.com>
-Date:   Fri, 31 Mar 2017 13:04:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Icedove/45.6.0
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] irqchip/mips-gic: Fix Local compare interrupt
+Message-ID: <20170331124624.GA26330@linux-mips.org>
+References: <1490958332-31094-1-git-send-email-matt.redfearn@imgtec.com>
+ <1490958332-31094-3-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <1490958332-31094-1-git-send-email-matt.redfearn@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <marc.zyngier@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1490958332-31094-3-git-send-email-matt.redfearn@imgtec.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57508
+X-archive-position: 57509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marc.zyngier@arm.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -49,58 +47,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Matt,
+On Fri, Mar 31, 2017 at 12:05:32PM +0100, Matt Redfearn wrote:
 
-On 31/03/17 12:05, Matt Redfearn wrote:
+> Commit 4cfffcfa5106 ("irqchip/mips-gic: Fix local interrupts") added
+> mapping of several local interrupts during initialisation of the gic
+> driver. This associates virq numbers with these interrupts.
+> Unfortunately, as not all of the interrupts are mapped in hardware
+> order, when drivers subsequently request these interrupts they conflict
+> with the mappings that have already been set up. For example, this
+> manifests itself in the gic clocksource driver, which fails to probe
+> with the message:
 > 
-> Since v4.11-rc1, 3 regressions have been observed on the Malta platform,
-> using malta_defconfig. which prevent it booting. These patches fix 2 of
-> them. The third one is that malta_defconfig, which uses SMP-MT, no
-> longer sets up its IPIs correctly resulting is a string of messages
-> like:
+> clocksource: GIC: mask: 0xffffffffffffffff max_cycles: 0x7350c9738,
+> max_idle_ns: 440795203769 ns
+> GIC timer IRQ 25 setup failed: -22
 > 
-> irq 23: nobody cared (try booting with the "irqpoll" option)
-> CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W       4.11.0-rc4 #421
-> Stack : 00000000 00000000 00000000 00000000 807cdff2 00000047 00000000 0000003d
->         80741327 8f093194 806c191c 00000000 00000001 807c9acc 80756078 807d0000
->         807cdbe4 80177c78 00000003 0000003c 00000006 80177a04 806c70a8 8f02be8c
->         00000006 801b4c8c 00000000 00000000 ffffffff 00000000 8f02be8c 80740000
->         00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
->         ...
-> Call Trace:
-> [<8010c6c0>] show_stack+0x88/0xa4
-> [<80380fb8>] dump_stack+0x88/0xd0
-> [<8017cf64>] __report_bad_irq+0x48/0x108
-> [<8017d2d4>] note_interrupt+0x1c0/0x2fc
-> [<80179ed4>] handle_irq_event_percpu+0x4c/0x64
-> [<8017eafc>] handle_percpu_irq+0x88/0xb8
-> [<801791c0>] generic_handle_irq+0x40/0x58
-> [<80108664>] do_IRQ+0x18/0x24
-> [<803b83fc>] plat_irq_dispatch+0x54/0xa8
-> handlers:
-> Disabling IRQ #23
+> This is because virq 25 (the correct IRQ number specified via device
+> tree) was allocated to the PERFCTR interrupt (and 24 to the timer, 26 to
+> the FDC). To fix this, map all of these local interrupts in the hardware
+> order so as to associate their virq numbers with the correct hw
+> interrupts.
 > 
-> This regression is fixed by Paul Burtons series "MIPS/irqchip: Use IPI
-> IRQ domains for CPU interrupt controller IPIs", but it is a large change
-> for this stage in the cycle so I don't know how best to proceed with
-> that one.
-> 
-> 
-> 
-> Matt Redfearn (2):
->   MIPS: Malta: Fix i8259 irqchip setup
->   irqchip/mips-gic: Fix Local compare interrupt
-> 
->  arch/mips/mti-malta/malta-int.c | 13 +++++++++++++
->  drivers/irqchip/irq-mips-gic.c  |  4 ++++
->  2 files changed, 17 insertions(+)
-> 
+> Fixes: 4cfffcfa5106 ("irqchip/mips-gic: Fix local interrupts")
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
-I can take the GIC patch through the irq tree if that's convenient (I
-was about to send a PR anyway). Just let me know.
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Thanks,
-
-	M.
--- 
-Jazz is not dead. It just smells funny...
+  Ralf

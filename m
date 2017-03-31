@@ -1,36 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Mar 2017 13:19:08 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:65343 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991786AbdCaLTBlwH5d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Mar 2017 13:19:01 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 9D4ACB11C86EC;
-        Fri, 31 Mar 2017 12:18:52 +0100 (IST)
-Received: from [10.20.78.20] (10.20.78.20) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Fri, 31 Mar 2017
- 12:18:54 +0100
-Date:   Fri, 31 Mar 2017 12:18:40 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v3] MIPS: Avoid warnings from use of dla in 32 bit
- kernels
-In-Reply-To: <20170330214838.5828-1-paul.burton@imgtec.com>
-Message-ID: <alpine.DEB.2.00.1703310441420.5644@tp.orcam.me.uk>
-References: <20170330214838.5828-1-paul.burton@imgtec.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Mar 2017 14:04:30 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:35324 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23992126AbdCaMEXTx2GY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 31 Mar 2017 14:04:23 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6517D28;
+        Fri, 31 Mar 2017 05:04:16 -0700 (PDT)
+Received: from [10.1.207.16] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B0CB83F59A;
+        Fri, 31 Mar 2017 05:04:14 -0700 (PDT)
+Subject: Re: [PATCH 0/2] Fix v4.11 malta_defconfig regressions
+To:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>
+References: <1490958332-31094-1-git-send-email-matt.redfearn@imgtec.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Paul Burton <paul.burton@imgtec.com>
+From:   Marc Zyngier <marc.zyngier@arm.com>
+Organization: ARM Ltd
+Message-ID: <d6508e12-07c0-1cf1-97cf-d88b77b3dde4@arm.com>
+Date:   Fri, 31 Mar 2017 13:04:13 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Icedove/45.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.20]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+In-Reply-To: <1490958332-31094-1-git-send-email-matt.redfearn@imgtec.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <marc.zyngier@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57507
+X-archive-position: 57508
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: marc.zyngier@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,28 +49,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 30 Mar 2017, Paul Burton wrote:
+Hi Matt,
 
-> One seemingly straightforward fix would be to make use of the PTR_LA
-> macro to emit the appropriate pseudo-instruction, however this would
-> involve including asm.h which is intended solely for inclusion in
-> assembly code. When included by C code its definition of various generic
-> & non-namespaced macros such as LONG, PTR, CAT etc cause numerous build
-> failures.
+On 31/03/17 12:05, Matt Redfearn wrote:
+> 
+> Since v4.11-rc1, 3 regressions have been observed on the Malta platform,
+> using malta_defconfig. which prevent it booting. These patches fix 2 of
+> them. The third one is that malta_defconfig, which uses SMP-MT, no
+> longer sets up its IPIs correctly resulting is a string of messages
+> like:
+> 
+> irq 23: nobody cared (try booting with the "irqpoll" option)
+> CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W       4.11.0-rc4 #421
+> Stack : 00000000 00000000 00000000 00000000 807cdff2 00000047 00000000 0000003d
+>         80741327 8f093194 806c191c 00000000 00000001 807c9acc 80756078 807d0000
+>         807cdbe4 80177c78 00000003 0000003c 00000006 80177a04 806c70a8 8f02be8c
+>         00000006 801b4c8c 00000000 00000000 ffffffff 00000000 8f02be8c 80740000
+>         00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+>         ...
+> Call Trace:
+> [<8010c6c0>] show_stack+0x88/0xa4
+> [<80380fb8>] dump_stack+0x88/0xd0
+> [<8017cf64>] __report_bad_irq+0x48/0x108
+> [<8017d2d4>] note_interrupt+0x1c0/0x2fc
+> [<80179ed4>] handle_irq_event_percpu+0x4c/0x64
+> [<8017eafc>] handle_percpu_irq+0x88/0xb8
+> [<801791c0>] generic_handle_irq+0x40/0x58
+> [<80108664>] do_IRQ+0x18/0x24
+> [<803b83fc>] plat_irq_dispatch+0x54/0xa8
+> handlers:
+> Disabling IRQ #23
+> 
+> This regression is fixed by Paul Burtons series "MIPS/irqchip: Use IPI
+> IRQ domains for CPU interrupt controller IPIs", but it is a large change
+> for this stage in the cycle so I don't know how best to proceed with
+> that one.
+> 
+> 
+> 
+> Matt Redfearn (2):
+>   MIPS: Malta: Fix i8259 irqchip setup
+>   irqchip/mips-gic: Fix Local compare interrupt
+> 
+>  arch/mips/mti-malta/malta-int.c | 13 +++++++++++++
+>  drivers/irqchip/irq-mips-gic.c  |  4 ++++
+>  2 files changed, 17 insertions(+)
+> 
 
- This is however exactly what we do in several places, and I would 
-recommend here as well.  Can you point me at the earlier review of your 
-proposal?
+I can take the GIC patch through the irq tree if that's convenient (I
+was about to send a PR anyway). Just let me know.
 
-> Instead fix this by adding a ".set gp=64" directive to inform the
-> assembler that general purpose registers are 64 bit for the dla
-> instruction. This is a lie, but no more so than using the dla
-> instruction to begin with.
+Thanks,
 
- I agree using DLA unconditionally is wrong, so if using <asm/asm.h> and 
-its PTR_LA turns out infeasible indeed, then please define a local macro 
-that expands to LA or DLA as appropriate and does not cause a namespace 
-issue, and use it in `instruction_hazard' (all instances) rather than this 
-horrible hack.
-
-  Maciej
+	M.
+-- 
+Jazz is not dead. It just smells funny...

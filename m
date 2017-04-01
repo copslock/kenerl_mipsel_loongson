@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Apr 2017 15:22:48 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:45976 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Apr 2017 15:23:15 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:45972 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990644AbdDANWidqzS- (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23990686AbdDANWieFsI- (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sat, 1 Apr 2017 15:22:38 +0200
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1cuIzE-00042J-R1; Sat, 01 Apr 2017 14:22:36 +0100
+        id 1cuIzE-00042I-Q0; Sat, 01 Apr 2017 14:22:36 +0100
 Received: from ben by deadeye with local (Exim 4.89)
         (envelope-from <ben@decadent.org.uk>)
-        id 1cuIzD-0004eG-TQ; Sat, 01 Apr 2017 14:22:35 +0100
+        id 1cuIzD-0004eB-Sg; Sat, 01 Apr 2017 14:22:35 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
@@ -21,9 +21,10 @@ CC:     akpm@linux-foundation.org, "Arnd Bergmann" <arnd@arndb.de>,
         linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>,
         "Paul Burton" <paul.burton@imgtec.com>
 Date:   Sat, 01 Apr 2017 14:17:50 +0100
-Message-ID: <lsq.1491052670.178507888@decadent.org.uk>
+Message-ID: <lsq.1491052670.80726452@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 05/19] MIPS: save/disable MSA in lose_fpu
+Subject: [PATCH 3.16 04/19] MIPS: preserve scalar FP CSR when switching
+ vector context
 In-Reply-To: <lsq.1491052670.319419763@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -32,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57519
+X-archive-position: 57520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,55 +56,51 @@ X-list: linux-mips
 
 From: Paul Burton <paul.burton@imgtec.com>
 
-commit 33c771ba5c5d067f85a5a6c4b11047219b5b8f4e upstream.
+commit b83406735a4ae0aff4b614664d6a64a0fd6b9917 upstream.
 
-The kernel depends upon MSA never being enabled when the FPU is not, a
-condition which is currently violated in a few places (whilst saving
-sigcontext, following mips_cpu_save). Catch all the problem cases by
-disabling MSA in lose_fpu, after saving context if necessary.
+Switching the vector context implicitly saves & restores the state of
+the aliased scalar FP data registers, however the scalar FP control
+& status register is distinct from the MSA control & status register.
+In order to allow scalar FP to function correctly in programs using
+MSA, the scalar CSR needs to be saved & restored along with the MSA
+vector context.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7302/
+Patchwork: https://patchwork.linux-mips.org/patch/7301/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 Cc: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/include/asm/fpu.h | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/mips/kernel/r4k_switch.S | 4 +++-
+ arch/mips/kernel/traps.c      | 5 +++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/fpu.h
-+++ b/arch/mips/include/asm/fpu.h
-@@ -21,6 +21,7 @@
- #include <asm/hazards.h>
- #include <asm/processor.h>
- #include <asm/current.h>
-+#include <asm/msa.h>
+--- a/arch/mips/kernel/r4k_switch.S
++++ b/arch/mips/kernel/r4k_switch.S
+@@ -64,8 +64,10 @@
+ 	/* Check whether we're saving scalar or vector context. */
+ 	bgtz	a3, 1f
  
- #ifdef CONFIG_MIPS_MT_FPAFF
- #include <asm/mips_mt.h>
-@@ -141,13 +142,21 @@ static inline int own_fpu(int restore)
- static inline void lose_fpu(int save)
- {
- 	preempt_disable();
--	if (is_fpu_owner()) {
-+	if (is_msa_enabled()) {
-+		if (save) {
-+			save_msa(current);
-+			asm volatile("cfc1 %0, $31"
-+				: "=r"(current->thread.fpu.fcr31));
-+		}
-+		disable_msa();
-+		clear_thread_flag(TIF_USEDMSA);
-+	} else if (is_fpu_owner()) {
- 		if (save)
- 			_save_fp(current);
--		KSTK_STATUS(current) &= ~ST0_CU1;
--		clear_thread_flag(TIF_USEDFPU);
- 		__disable_fpu();
- 	}
-+	KSTK_STATUS(current) &= ~ST0_CU1;
-+	clear_thread_flag(TIF_USEDFPU);
- 	preempt_enable();
+-	/* Save 128b MSA vector context. */
++	/* Save 128b MSA vector context + scalar FP control & status. */
++	cfc1	t1, fcr31
+ 	msa_save_all	a0
++	sw	t1, THREAD_FCR31(a0)
+ 	b	2f
+ 
+ 1:	/* Save 32b/64b scalar FP context. */
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1159,6 +1159,11 @@ static int enable_restore_fp_context(int
+ 
+ 	/* We need to restore the vector context. */
+ 	restore_msa(current);
++
++	/* Restore the scalar FP control & status register */
++	if (!was_fpu_owner)
++		asm volatile("ctc1 %0, $31" : : "r"(current->thread.fpu.fcr31));
++
+ 	return 0;
  }
  

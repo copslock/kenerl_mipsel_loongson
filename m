@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Mar 2017 23:32:19 +0200 (CEST)
-Received: from resqmta-ch2-08v.sys.comcast.net ([IPv6:2001:558:fe21:29:69:252:207:40]:51322
-        "EHLO resqmta-ch2-08v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993423AbdCaVcLgh-jo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 31 Mar 2017 23:32:11 +0200
-Received: from resomta-ch2-08v.sys.comcast.net ([69.252.207.104])
-        by resqmta-ch2-08v.sys.comcast.net with SMTP
-        id u48mcHasrAfZsu49Rcrq0Y; Fri, 31 Mar 2017 21:32:09 +0000
-Received: from [192.168.1.13] ([69.251.157.57])
-        by resomta-ch2-08v.sys.comcast.net with SMTP
-        id u49PcJxqltZO6u49PcpR4Q; Fri, 31 Mar 2017 21:32:09 +0000
-Subject: Re: [PATCH 0/5] MIPS/irqchip: Use IPI IRQ domains for CPU interrupt
- controller IPIs
-To:     Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <20170330190614.14844-1-paul.burton@imgtec.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Jason Cooper <jason@lakedaemon.net>
-From:   Joshua Kinard <kumba@gentoo.org>
-Message-ID: <24092d33-ae11-f0f4-a390-0add8e3650da@gentoo.org>
-Date:   Fri, 31 Mar 2017 17:31:44 -0400
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Apr 2017 15:22:48 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:45976 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990644AbdDANWidqzS- (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Apr 2017 15:22:38 +0200
+Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1cuIzE-00042J-R1; Sat, 01 Apr 2017 14:22:36 +0100
+Received: from ben by deadeye with local (Exim 4.89)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1cuIzD-0004eG-TQ; Sat, 01 Apr 2017 14:22:35 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-In-Reply-To: <20170330190614.14844-1-paul.burton@imgtec.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfHIRxnFB/hfmn1cUxLDo5i7CHUTdLBxKsRE7j5a7NWuoNGDXBLdunQQTbaM+zCG8yUyj4pnhdB04Nnq+T5N+GXborWIiG7eoywsUh5B0tgpKDPoHtus7
- fh/p2iENu9z+igRQg+/jJP14tGvn1tNAsco9Veqbqn7sD8fIco1lP6I/HJTqq1H+ZNGOKZIFyvH4u25uqZKHveAhnKFX5dV0Gav13gMWlsdsAEddKTGXPNF9
- laycQ83PMKENK+wj0IPV/4AAxJPQ1ebEeio5/x+1a/Dh1s3T66uytiuZYuqxKn77rW3rDcL5TGO/jsEIUYimet4osHLGBSPIx3duj5yo/is=
-Return-Path: <kumba@gentoo.org>
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+CC:     akpm@linux-foundation.org, "Arnd Bergmann" <arnd@arndb.de>,
+        linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>,
+        "Paul Burton" <paul.burton@imgtec.com>
+Date:   Sat, 01 Apr 2017 14:17:50 +0100
+Message-ID: <lsq.1491052670.178507888@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+Subject: [PATCH 3.16 05/19] MIPS: save/disable MSA in lose_fpu
+In-Reply-To: <lsq.1491052670.319419763@decadent.org.uk>
+X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57518
+X-archive-position: 57519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,52 +49,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 03/30/2017 15:06, Paul Burton wrote:
-> This series introduces support for IPI IRQ domains to the CPU interrupt
-> controller driver, allowing IPIs to function in the same way as those
-> provided by the MIPS GIC as far as platform/board code is concerned.
-> 
-> Doing this allows us to avoid duplicating code across platforms, avoid
-> having to handle cases where IPI domains are or aren't in use depending
-> upon the interrupt controller, and strengthen a sanity check for cases
-> where IPI IRQ domains are supported.
-> 
-> Applies atop v4.11-rc4.
-> 
-> 
-> Paul Burton (5):
->   irqchip: mips-cpu: Replace magic 0x100 with IE_SW0
->   irqchip: mips-cpu: Prepare for non-legacy IRQ domains
->   irqchip: mips-cpu: Introduce IPI IRQ domain support
->   MIPS: smp-mt: Use CPU interrupt controller IPI IRQ domain support
->   MIPS: Stengthen IPI IRQ domain sanity check
-> 
->  arch/mips/kernel/smp-mt.c       |  49 ++------------
->  arch/mips/kernel/smp.c          |  20 +++---
->  arch/mips/lantiq/irq.c          |  52 --------------
->  arch/mips/mti-malta/malta-int.c |  83 ++---------------------
->  drivers/irqchip/Kconfig         |   2 +
->  drivers/irqchip/irq-mips-cpu.c  | 146 +++++++++++++++++++++++++++++++++++-----
->  6 files changed, 151 insertions(+), 201 deletions(-)
+3.16.43-rc1 review patch.  If anyone has any objections, please let me know.
 
-Out of curiosity, "legacy" systems like SGI IP27 (in-tree) and IP30 (external)
-support SMP and the IRQ handling is fairly old for IP27 (IP30 borrows IP27's
-logic).  Could these systems benefit from using IPI domains?  If so, is there
-any kind of crash-course or dummies guide to switching from plain irq_chip to
-IPI domains?  Note, both systems have somewhat unique interrupt controllers
-built into their system ASICs, but actual IRQ dispatch happens from the CPU
-interrupt pins.
+------------------
 
-Thanks!,
+From: Paul Burton <paul.burton@imgtec.com>
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-6144R/F5C6C943 2015-04-27
-177C 1972 1FB8 F254 BAD0 3E72 5C63 F4E3 F5C6 C943
+commit 33c771ba5c5d067f85a5a6c4b11047219b5b8f4e upstream.
 
-"The past tempts us, the present confuses us, the future frightens us.  And our
-lives slip away, moment by moment, lost in that vast, terrible in-between."
+The kernel depends upon MSA never being enabled when the FPU is not, a
+condition which is currently violated in a few places (whilst saving
+sigcontext, following mips_cpu_save). Catch all the problem cases by
+disabling MSA in lose_fpu, after saving context if necessary.
 
---Emperor Turhan, Centauri Republic
+Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/7302/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/mips/include/asm/fpu.h | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+--- a/arch/mips/include/asm/fpu.h
++++ b/arch/mips/include/asm/fpu.h
+@@ -21,6 +21,7 @@
+ #include <asm/hazards.h>
+ #include <asm/processor.h>
+ #include <asm/current.h>
++#include <asm/msa.h>
+ 
+ #ifdef CONFIG_MIPS_MT_FPAFF
+ #include <asm/mips_mt.h>
+@@ -141,13 +142,21 @@ static inline int own_fpu(int restore)
+ static inline void lose_fpu(int save)
+ {
+ 	preempt_disable();
+-	if (is_fpu_owner()) {
++	if (is_msa_enabled()) {
++		if (save) {
++			save_msa(current);
++			asm volatile("cfc1 %0, $31"
++				: "=r"(current->thread.fpu.fcr31));
++		}
++		disable_msa();
++		clear_thread_flag(TIF_USEDMSA);
++	} else if (is_fpu_owner()) {
+ 		if (save)
+ 			_save_fp(current);
+-		KSTK_STATUS(current) &= ~ST0_CU1;
+-		clear_thread_flag(TIF_USEDFPU);
+ 		__disable_fpu();
+ 	}
++	KSTK_STATUS(current) &= ~ST0_CU1;
++	clear_thread_flag(TIF_USEDFPU);
+ 	preempt_enable();
+ }
+ 

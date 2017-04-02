@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 22:46:41 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:44232 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 22:47:03 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:44258 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993201AbdDBUnj2KBij (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 22:43:39 +0200
+        by eddie.linux-mips.org with ESMTP id S23991232AbdDBUnoNunpj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 22:43:44 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Alexandre Courbot <gnurou@gmail.com>,
@@ -20,9 +20,9 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v4 09/14] MIPS: JZ4780: CI20: Add pinctrl configuration for several drivers
-Date:   Sun,  2 Apr 2017 22:42:39 +0200
-Message-Id: <20170402204244.14216-10-paul@crapouillou.net>
+Subject: [PATCH v4 11/14] mtd: nand: jz4740: Let the pinctrl driver configure the pins
+Date:   Sun,  2 Apr 2017 22:42:41 +0200
+Message-Id: <20170402204244.14216-12-paul@crapouillou.net>
 In-Reply-To: <20170402204244.14216-1-paul@crapouillou.net>
 References: <20170125185207.23902-2-paul@crapouillou.net>
  <20170402204244.14216-1-paul@crapouillou.net>
@@ -30,7 +30,7 @@ Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57540
+X-archive-position: 57541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,118 +47,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-We set the pin configuration for the jz4780-nand and jz4780-uart
-drivers.
+Before, this NAND driver would set itself the configuration of the
+chip-select pins for the various NAND banks.
+
+Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
+the pins being properly configured before the driver probes.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- arch/mips/boot/dts/ingenic/ci20.dts | 60 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ drivers/mtd/nand/jz4740_nand.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
- v2: Changed the devicetree bindings to match the new driver
+ v2: No changes
  v3: No changes
  v4: No changes
 
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index 1652d8d60b1e..fd138d9978c1 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -29,18 +29,30 @@
+diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
+index 5551c36adbdf..0d06a1f07d82 100644
+--- a/drivers/mtd/nand/jz4740_nand.c
++++ b/drivers/mtd/nand/jz4740_nand.c
+@@ -25,7 +25,6 @@
  
- &uart0 {
- 	status = "okay";
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pins_uart0>;
- };
+ #include <linux/gpio.h>
  
- &uart1 {
- 	status = "okay";
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pins_uart1>;
- };
+-#include <asm/mach-jz4740/gpio.h>
+ #include <asm/mach-jz4740/jz4740_nand.h>
  
- &uart3 {
- 	status = "okay";
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pins_uart2>;
- };
+ #define JZ_REG_NAND_CTRL	0x50
+@@ -310,34 +309,20 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
+ 			       uint8_t *nand_dev_id)
+ {
+ 	int ret;
+-	int gpio;
+-	char gpio_name[9];
+ 	char res_name[6];
+ 	uint32_t ctrl;
+ 	struct nand_chip *chip = &nand->chip;
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
  
- &uart4 {
- 	status = "okay";
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pins_uart4>;
- };
+-	/* Request GPIO port. */
+-	gpio = JZ_GPIO_MEM_CS0 + bank - 1;
+-	sprintf(gpio_name, "NAND CS%d", bank);
+-	ret = gpio_request(gpio, gpio_name);
+-	if (ret) {
+-		dev_warn(&pdev->dev,
+-			"Failed to request %s gpio %d: %d\n",
+-			gpio_name, gpio, ret);
+-		goto notfound_gpio;
+-	}
+-
+ 	/* Request I/O resource. */
+ 	sprintf(res_name, "bank%d", bank);
+ 	ret = jz_nand_ioremap_resource(pdev, res_name,
+ 					&nand->bank_mem[bank - 1],
+ 					&nand->bank_base[bank - 1]);
+ 	if (ret)
+-		goto notfound_resource;
++		return ret;
  
- &nemc {
-@@ -61,6 +73,13 @@
- 		ingenic,nemc-tAW = <15>;
- 		ingenic,nemc-tSTRV = <100>;
+ 	/* Enable chip in bank. */
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_MEM_CS0);
+ 	ctrl = readl(nand->base + JZ_REG_NAND_CTRL);
+ 	ctrl |= JZ_NAND_CTRL_ENABLE_CHIP(bank - 1);
+ 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
+@@ -377,12 +362,8 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
+ 	dev_info(&pdev->dev, "No chip found on bank %i\n", bank);
+ 	ctrl &= ~(JZ_NAND_CTRL_ENABLE_CHIP(bank - 1));
+ 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
+ 	jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+ 				 nand->bank_base[bank - 1]);
+-notfound_resource:
+-	gpio_free(gpio);
+-notfound_gpio:
+ 	return ret;
+ }
  
-+		/*
-+		 * Only CLE/ALE are needed for the devices that are connected, rather
-+		 * than the full address line set.
-+		 */
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pins_nemc>;
-+
- 		nand@1 {
- 			reg = <1>;
+@@ -503,7 +484,6 @@ static int jz_nand_probe(struct platform_device *pdev)
+ err_unclaim_banks:
+ 	while (chipnr--) {
+ 		unsigned char bank = nand->banks[chipnr];
+-		gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
+ 		jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+ 					 nand->bank_base[bank - 1]);
+ 	}
+@@ -530,7 +510,6 @@ static int jz_nand_remove(struct platform_device *pdev)
+ 		if (bank != 0) {
+ 			jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
+ 						 nand->bank_base[bank - 1]);
+-			gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
+ 		}
+ 	}
  
-@@ -69,6 +88,9 @@
- 			nand-ecc-mode = "hw";
- 			nand-on-flash-bbt;
- 
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&pins_nemc_cs1>;
-+
- 			partitions {
- 				compatible = "fixed-partitions";
- 				#address-cells = <2>;
-@@ -106,3 +128,41 @@
- &bch {
- 	status = "okay";
- };
-+
-+&pinctrl {
-+	pins_uart0: uart0 {
-+		function = "uart0";
-+		groups = "uart0-data";
-+		bias-disable;
-+	};
-+
-+	pins_uart1: uart1 {
-+		function = "uart1";
-+		groups = "uart1-data";
-+		bias-disable;
-+	};
-+
-+	pins_uart2: uart2 {
-+		function = "uart2";
-+		groups = "uart2-data", "uart2-hwflow";
-+		bias-disable;
-+	};
-+
-+	pins_uart4: uart4 {
-+		function = "uart4";
-+		groups = "uart4-data";
-+		bias-disable;
-+	};
-+
-+	pins_nemc: nemc {
-+		function = "nemc";
-+		groups = "nemc-data", "nemc-cle-ale", "nemc-rd-we", "nemc-frd-fwe";
-+		bias-disable;
-+	};
-+
-+	pins_nemc_cs1: nemc-cs1 {
-+		function = "nemc-cs1";
-+		groups = "nemc-cs1";
-+		bias-disable;
-+	};
-+};
 -- 
 2.11.0

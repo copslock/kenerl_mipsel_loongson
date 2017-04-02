@@ -1,43 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 05:12:26 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:49800 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991726AbdDBDKCMv1dH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 05:10:02 +0200
-Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1cuVtv-0003GP-RV; Sun, 02 Apr 2017 04:09:59 +0100
-Received: from ben by deadeye with local (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1cuVtu-0004R1-Uo; Sun, 02 Apr 2017 04:09:58 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, "Paul Burton" <paul.burton@imgtec.com>,
-        "James Hogan" <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "David Daney" <david.daney@cavium.com>
-Date:   Sun, 02 Apr 2017 04:04:24 +0100
-Message-ID: <lsq.1491102264.162199421@decadent.org.uk>
-X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 21/26] MIPS: mipsregs.h: Add write_32bit_cp1_register()
-In-Reply-To: <lsq.1491102264.9835075@decadent.org.uk>
-X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 22:43:29 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:44038 "EHLO
+        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991232AbdDBUnTImjjj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 22:43:19 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>, james.hogan@imgtec.com,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v4 00/14] Ingenic JZ4740 / JZ4780 pinctrl driver
+Date:   Sun,  2 Apr 2017 22:42:30 +0200
+Message-Id: <20170402204244.14216-1-paul@crapouillou.net>
+In-Reply-To: <20170125185207.23902-2-paul@crapouillou.net>
+References: <20170125185207.23902-2-paul@crapouillou.net>
+Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57531
+X-archive-position: 57532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,66 +45,13 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-3.16.43-rc2 review patch.  If anyone has any objections, please let me know.
+This is the v4 of my patchset that introduces the pinctrl-ingenic and
+gpio-ingenic drivers. The drivers were rewritten based on the feedback
+received on the v3 version.
 
-------------------
+The pinctrl-ingenic driver now contains the pinmux/pinconf information of
+each compatible SoC, so the devicetree bindings have been simplified greatly.
 
-From: James Hogan <james.hogan@imgtec.com>
-
-commit 5e32033e14ca9c7f7341cb383f5a05699b0b5382 upstream.
-
-Add a write_32bit_cp1_register() macro to compliment the
-read_32bit_cp1_register() macro. This is to abstract whether .set
-hardfloat needs to be used based on GAS_HAS_SET_HARDFLOAT.
-
-The implementation of _read_32bit_cp1_register() .sets mips1 due to
-failure of gas v2.19 to assemble cfc1 for Octeon (see commit
-25c300030016 ("MIPS: Override assembler target architecture for
-octeon.")). I haven't copied this over to _write_32bit_cp1_register() as
-I'm uncertain whether it applies to ctc1 too, or whether anybody cares
-about that version of binutils any longer.
-
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: David Daney <david.daney@cavium.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9172/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
----
- arch/mips/include/asm/mipsregs.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 5e4aef304b02..5b720d8c2745 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -1386,12 +1386,27 @@ do {									\
- 	__res;								\
- })
- 
-+#define _write_32bit_cp1_register(dest, val, gas_hardfloat)		\
-+do {									\
-+	__asm__ __volatile__(						\
-+	"	.set	push					\n"	\
-+	"	.set	reorder					\n"	\
-+	"	"STR(gas_hardfloat)"				\n"	\
-+	"	ctc1	%0,"STR(dest)"				\n"	\
-+	"	.set	pop					\n"	\
-+	: : "r" (val));							\
-+} while (0)
-+
- #ifdef GAS_HAS_SET_HARDFLOAT
- #define read_32bit_cp1_register(source)					\
- 	_read_32bit_cp1_register(source, .set hardfloat)
-+#define write_32bit_cp1_register(dest, val)				\
-+	_write_32bit_cp1_register(dest, val, .set hardfloat)
- #else
- #define read_32bit_cp1_register(source)					\
- 	_read_32bit_cp1_register(source, )
-+#define write_32bit_cp1_register(dest, val)				\
-+	_write_32bit_cp1_register(dest, val, )
- #endif
- 
- #ifdef HAVE_AS_DSP
+The driver now uses regmap for accessing the registers. This regmap is shared
+to optional instances of the gpio-ingenic driver, that are instanciated as
+MFD cells of the pinctrl-ingenic driver.

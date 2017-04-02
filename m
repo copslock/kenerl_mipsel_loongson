@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 05:12:03 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:49795 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 05:12:26 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:49800 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991232AbdDBDKBjny8H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 05:10:01 +0200
+        by eddie.linux-mips.org with ESMTP id S23991726AbdDBDKCMv1dH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 05:10:02 +0200
 Received: from [2a02:8011:400e:2:6f00:88c8:c921:d332] (helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1cuVtv-0003GS-V4; Sun, 02 Apr 2017 04:10:00 +0100
+        id 1cuVtv-0003GP-RV; Sun, 02 Apr 2017 04:09:59 +0100
 Received: from ben by deadeye with local (Exim 4.89)
         (envelope-from <ben@decadent.org.uk>)
-        id 1cuVtv-0004RG-1T; Sun, 02 Apr 2017 04:09:59 +0100
+        id 1cuVtu-0004R1-Uo; Sun, 02 Apr 2017 04:09:58 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
@@ -18,12 +18,13 @@ MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 CC:     akpm@linux-foundation.org, "Paul Burton" <paul.burton@imgtec.com>,
-        "Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+        "James Hogan" <james.hogan@imgtec.com>, linux-mips@linux-mips.org,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "David Daney" <david.daney@cavium.com>
 Date:   Sun, 02 Apr 2017 04:04:24 +0100
-Message-ID: <lsq.1491102264.144601008@decadent.org.uk>
+Message-ID: <lsq.1491102264.162199421@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 24/26] MIPS: assume at as source/dest of MSA
- copy/insert instructions
+Subject: [PATCH 3.16 21/26] MIPS: mipsregs.h: Add write_32bit_cp1_register()
 In-Reply-To: <lsq.1491102264.9835075@decadent.org.uk>
 X-SA-Exim-Connect-IP: 2a02:8011:400e:2:6f00:88c8:c921:d332
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -32,7 +33,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57530
+X-archive-position: 57531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,125 +54,62 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit f23ce3883a30743a5b779dc6fb90ca8620688a23 upstream.
+commit 5e32033e14ca9c7f7341cb383f5a05699b0b5382 upstream.
 
-Assuming at ($1) as the source or destination register of copy or
-insert instructions:
+Add a write_32bit_cp1_register() macro to compliment the
+read_32bit_cp1_register() macro. This is to abstract whether .set
+hardfloat needs to be used based on GAS_HAS_SET_HARDFLOAT.
 
-  - Simplifies the macros providing those instructions for toolchains
-    without MSA support.
+The implementation of _read_32bit_cp1_register() .sets mips1 due to
+failure of gas v2.19 to assemble cfc1 for Octeon (see commit
+25c300030016 ("MIPS: Override assembler target architecture for
+octeon.")). I haven't copied this over to _write_32bit_cp1_register() as
+I'm uncertain whether it applies to ctc1 too, or whether anybody cares
+about that version of binutils any longer.
 
-  - Avoids an unnecessary move instruction when at is used as the source
-    or destination register anyway.
-
-  - Is sufficient for the uses to be introduced in the kernel by a
-    subsequent patch.
-
-Note that due to a patch ordering snafu on my part this also fixes the
-currently broken build with MSA support enabled. The build has been
-broken since commit c9017757c532 "MIPS: init upper 64b of vector
-registers when MSA is first used", which this patch should have
-preceeded.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: David Daney <david.daney@cavium.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/9161/
+Patchwork: https://patchwork.linux-mips.org/patch/9172/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/include/asm/asmmacro.h | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ arch/mips/include/asm/mipsregs.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/arch/mips/include/asm/asmmacro.h
-+++ b/arch/mips/include/asm/asmmacro.h
-@@ -225,35 +225,35 @@
- 	.set	pop
- 	.endm
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 5e4aef304b02..5b720d8c2745 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -1386,12 +1386,27 @@ do {									\
+ 	__res;								\
+ })
  
--	.macro	copy_u_w	rd, ws, n
-+	.macro	copy_u_w	ws, n
- 	.set	push
- 	.set	mips32r2
- 	.set	msa
--	copy_u.w \rd, $w\ws[\n]
-+	copy_u.w $1, $w\ws[\n]
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_d	rd, ws, n
-+	.macro	copy_u_d	ws, n
- 	.set	push
- 	.set	mips64r2
- 	.set	msa
--	copy_u.d \rd, $w\ws[\n]
-+	copy_u.d $1, $w\ws[\n]
- 	.set	pop
- 	.endm
- 
--	.macro	insert_w	wd, n, rs
-+	.macro	insert_w	wd, n
- 	.set	push
- 	.set	mips32r2
- 	.set	msa
--	insert.w $w\wd[\n], \rs
-+	insert.w $w\wd[\n], $1
- 	.set	pop
- 	.endm
- 
--	.macro	insert_d	wd, n, rs
-+	.macro	insert_d	wd, n
- 	.set	push
- 	.set	mips64r2
- 	.set	msa
--	insert.d $w\wd[\n], \rs
-+	insert.d $w\wd[\n], $1
- 	.set	pop
- 	.endm
++#define _write_32bit_cp1_register(dest, val, gas_hardfloat)		\
++do {									\
++	__asm__ __volatile__(						\
++	"	.set	push					\n"	\
++	"	.set	reorder					\n"	\
++	"	"STR(gas_hardfloat)"				\n"	\
++	"	ctc1	%0,"STR(dest)"				\n"	\
++	"	.set	pop					\n"	\
++	: : "r" (val));							\
++} while (0)
++
+ #ifdef GAS_HAS_SET_HARDFLOAT
+ #define read_32bit_cp1_register(source)					\
+ 	_read_32bit_cp1_register(source, .set hardfloat)
++#define write_32bit_cp1_register(dest, val)				\
++	_write_32bit_cp1_register(dest, val, .set hardfloat)
  #else
-@@ -318,40 +318,36 @@
- 	.set	pop
- 	.endm
+ #define read_32bit_cp1_register(source)					\
+ 	_read_32bit_cp1_register(source, )
++#define write_32bit_cp1_register(dest, val)				\
++	_write_32bit_cp1_register(dest, val, )
+ #endif
  
--	.macro	copy_u_w	rd, ws, n
-+	.macro	copy_u_w	ws, n
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
- 	.insn
- 	.word	COPY_UW_MSA_INSN | (\n << 16) | (\ws << 11)
--	move	\rd, $1
- 	.set	pop
- 	.endm
- 
--	.macro	copy_u_d	rd, ws, n
-+	.macro	copy_u_d	ws, n
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
- 	.insn
- 	.word	COPY_UD_MSA_INSN | (\n << 16) | (\ws << 11)
--	move	\rd, $1
- 	.set	pop
- 	.endm
- 
--	.macro	insert_w	wd, n, rs
-+	.macro	insert_w	wd, n
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	move	$1, \rs
- 	.word	INSERT_W_MSA_INSN | (\n << 16) | (\wd << 6)
- 	.set	pop
- 	.endm
- 
--	.macro	insert_d	wd, n, rs
-+	.macro	insert_d	wd, n
- 	.set	push
- 	.set	noat
- 	SET_HARDFLOAT
--	move	$1, \rs
- 	.word	INSERT_D_MSA_INSN | (\n << 16) | (\wd << 6)
- 	.set	pop
- 	.endm
+ #ifdef HAVE_AS_DSP

@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 22:47:03 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 22:47:27 +0200 (CEST)
 Received: from outils.crapouillou.net ([89.234.176.41]:44258 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991232AbdDBUnoNunpj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 22:43:44 +0200
+        by eddie.linux-mips.org with ESMTP id S23993866AbdDBUnuBgm4j (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 22:43:50 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Alexandre Courbot <gnurou@gmail.com>,
@@ -20,9 +20,9 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v4 11/14] mtd: nand: jz4740: Let the pinctrl driver configure the pins
-Date:   Sun,  2 Apr 2017 22:42:41 +0200
-Message-Id: <20170402204244.14216-12-paul@crapouillou.net>
+Subject: [PATCH v4 13/14] pwm: jz4740: Let the pinctrl driver configure the pins
+Date:   Sun,  2 Apr 2017 22:42:43 +0200
+Message-Id: <20170402204244.14216-14-paul@crapouillou.net>
 In-Reply-To: <20170402204244.14216-1-paul@crapouillou.net>
 References: <20170125185207.23902-2-paul@crapouillou.net>
  <20170402204244.14216-1-paul@crapouillou.net>
@@ -30,7 +30,7 @@ Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57541
+X-archive-position: 57542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,98 +47,101 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Before, this NAND driver would set itself the configuration of the
-chip-select pins for the various NAND banks.
-
 Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
 the pins being properly configured before the driver probes.
 
+One inherent problem of this new approach is that the pinctrl framework
+does not allow us to configure each pin on demand, when the various PWM
+channels are requested or released. For instance, the PWM channels can
+be configured from sysfs, which would require all PWM pins to be configured
+properly beforehand for the PWM function, eventually causing conflicts
+with other platform or board drivers.
+
+The proper solution here would be to modify the pwm-jz4740 driver to
+handle only one PWM channel, and create an instance of this driver
+for each one of the 8 PWM channels. Then, it could use the pinctrl
+framework to dynamically configure the PWM pin it controls.
+
+Until this can be done, the only jz4740 board supported upstream
+(Qi lb60) can configure all of its connected PWM pins in PWM function
+mode, since those are not used by other drivers nor by GPIOs on the
+board.
+
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
 ---
- drivers/mtd/nand/jz4740_nand.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+ drivers/pwm/pwm-jz4740.c | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
  v2: No changes
  v3: No changes
  v4: No changes
 
-diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
-index 5551c36adbdf..0d06a1f07d82 100644
---- a/drivers/mtd/nand/jz4740_nand.c
-+++ b/drivers/mtd/nand/jz4740_nand.c
-@@ -25,7 +25,6 @@
- 
- #include <linux/gpio.h>
+diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
+index 76d13150283f..a75ff3622450 100644
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -21,22 +21,10 @@
+ #include <linux/platform_device.h>
+ #include <linux/pwm.h>
  
 -#include <asm/mach-jz4740/gpio.h>
- #include <asm/mach-jz4740/jz4740_nand.h>
+ #include <asm/mach-jz4740/timer.h>
  
- #define JZ_REG_NAND_CTRL	0x50
-@@ -310,34 +309,20 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
- 			       uint8_t *nand_dev_id)
+ #define NUM_PWM 8
+ 
+-static const unsigned int jz4740_pwm_gpio_list[NUM_PWM] = {
+-	JZ_GPIO_PWM0,
+-	JZ_GPIO_PWM1,
+-	JZ_GPIO_PWM2,
+-	JZ_GPIO_PWM3,
+-	JZ_GPIO_PWM4,
+-	JZ_GPIO_PWM5,
+-	JZ_GPIO_PWM6,
+-	JZ_GPIO_PWM7,
+-};
+-
+ struct jz4740_pwm_chip {
+ 	struct pwm_chip chip;
+ 	struct clk *clk;
+@@ -49,9 +37,6 @@ static inline struct jz4740_pwm_chip *to_jz4740(struct pwm_chip *chip)
+ 
+ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
  {
- 	int ret;
--	int gpio;
--	char gpio_name[9];
- 	char res_name[6];
- 	uint32_t ctrl;
- 	struct nand_chip *chip = &nand->chip;
- 	struct mtd_info *mtd = nand_to_mtd(chip);
+-	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
+-	int ret;
+-
+ 	/*
+ 	 * Timers 0 and 1 are used for system tasks, so they are unavailable
+ 	 * for use as PWMs.
+@@ -59,15 +44,6 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	if (pwm->hwpwm < 2)
+ 		return -EBUSY;
  
--	/* Request GPIO port. */
--	gpio = JZ_GPIO_MEM_CS0 + bank - 1;
--	sprintf(gpio_name, "NAND CS%d", bank);
--	ret = gpio_request(gpio, gpio_name);
+-	ret = gpio_request(gpio, pwm->label);
 -	if (ret) {
--		dev_warn(&pdev->dev,
--			"Failed to request %s gpio %d: %d\n",
--			gpio_name, gpio, ret);
--		goto notfound_gpio;
+-		dev_err(chip->dev, "Failed to request GPIO#%u for PWM: %d\n",
+-			gpio, ret);
+-		return ret;
 -	}
 -
- 	/* Request I/O resource. */
- 	sprintf(res_name, "bank%d", bank);
- 	ret = jz_nand_ioremap_resource(pdev, res_name,
- 					&nand->bank_mem[bank - 1],
- 					&nand->bank_base[bank - 1]);
- 	if (ret)
--		goto notfound_resource;
-+		return ret;
+-	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_PWM);
+-
+ 	jz4740_timer_start(pwm->hwpwm);
  
- 	/* Enable chip in bank. */
--	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_MEM_CS0);
- 	ctrl = readl(nand->base + JZ_REG_NAND_CTRL);
- 	ctrl |= JZ_NAND_CTRL_ENABLE_CHIP(bank - 1);
- 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
-@@ -377,12 +362,8 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
- 	dev_info(&pdev->dev, "No chip found on bank %i\n", bank);
- 	ctrl &= ~(JZ_NAND_CTRL_ENABLE_CHIP(bank - 1));
- 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
+ 	return 0;
+@@ -75,13 +51,8 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+ 
+ static void jz4740_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+ {
+-	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
+-
+ 	jz4740_timer_set_ctrl(pwm->hwpwm, 0);
+ 
 -	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
- 	jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 				 nand->bank_base[bank - 1]);
--notfound_resource:
 -	gpio_free(gpio);
--notfound_gpio:
- 	return ret;
+-
+ 	jz4740_timer_stop(pwm->hwpwm);
  }
- 
-@@ -503,7 +484,6 @@ static int jz_nand_probe(struct platform_device *pdev)
- err_unclaim_banks:
- 	while (chipnr--) {
- 		unsigned char bank = nand->banks[chipnr];
--		gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
- 		jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 					 nand->bank_base[bank - 1]);
- 	}
-@@ -530,7 +510,6 @@ static int jz_nand_remove(struct platform_device *pdev)
- 		if (bank != 0) {
- 			jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 						 nand->bank_base[bank - 1]);
--			gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
- 		}
- 	}
  
 -- 
 2.11.0

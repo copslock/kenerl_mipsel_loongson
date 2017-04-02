@@ -1,7 +1,7 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 22:47:27 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:44258 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 22:47:53 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:44344 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993866AbdDBUnuBgm4j (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23993875AbdDBUnu4tFGj (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 22:43:50 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
@@ -20,9 +20,9 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v4 13/14] pwm: jz4740: Let the pinctrl driver configure the pins
-Date:   Sun,  2 Apr 2017 22:42:43 +0200
-Message-Id: <20170402204244.14216-14-paul@crapouillou.net>
+Subject: [PATCH v4 01/14] dt/bindings: Document pinctrl-ingenic
+Date:   Sun,  2 Apr 2017 22:42:31 +0200
+Message-Id: <20170402204244.14216-2-paul@crapouillou.net>
 In-Reply-To: <20170402204244.14216-1-paul@crapouillou.net>
 References: <20170125185207.23902-2-paul@crapouillou.net>
  <20170402204244.14216-1-paul@crapouillou.net>
@@ -30,7 +30,7 @@ Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57542
+X-archive-position: 57543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,101 +47,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
-the pins being properly configured before the driver probes.
-
-One inherent problem of this new approach is that the pinctrl framework
-does not allow us to configure each pin on demand, when the various PWM
-channels are requested or released. For instance, the PWM channels can
-be configured from sysfs, which would require all PWM pins to be configured
-properly beforehand for the PWM function, eventually causing conflicts
-with other platform or board drivers.
-
-The proper solution here would be to modify the pwm-jz4740 driver to
-handle only one PWM channel, and create an instance of this driver
-for each one of the 8 PWM channels. Then, it could use the pinctrl
-framework to dynamically configure the PWM pin it controls.
-
-Until this can be done, the only jz4740 board supported upstream
-(Qi lb60) can configure all of its connected PWM pins in PWM function
-mode, since those are not used by other drivers nor by GPIOs on the
-board.
+This commit adds documentation for the devicetree bindings of the
+pinctrl-ingenic driver, which handles pin configuration and pin
+muxing of the Ingenic SoCs currently supported by the Linux kernel.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- drivers/pwm/pwm-jz4740.c | 29 -----------------------------
- 1 file changed, 29 deletions(-)
+ .../bindings/pinctrl/ingenic,pinctrl.txt           | 41 ++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
 
- v2: No changes
+ v2: Rewrote the documentation for the new pinctrl-ingenic driver
  v3: No changes
- v4: No changes
+ v4: Update for the v4 version of the pinctrl-ingenic driver
 
-diff --git a/drivers/pwm/pwm-jz4740.c b/drivers/pwm/pwm-jz4740.c
-index 76d13150283f..a75ff3622450 100644
---- a/drivers/pwm/pwm-jz4740.c
-+++ b/drivers/pwm/pwm-jz4740.c
-@@ -21,22 +21,10 @@
- #include <linux/platform_device.h>
- #include <linux/pwm.h>
- 
--#include <asm/mach-jz4740/gpio.h>
- #include <asm/mach-jz4740/timer.h>
- 
- #define NUM_PWM 8
- 
--static const unsigned int jz4740_pwm_gpio_list[NUM_PWM] = {
--	JZ_GPIO_PWM0,
--	JZ_GPIO_PWM1,
--	JZ_GPIO_PWM2,
--	JZ_GPIO_PWM3,
--	JZ_GPIO_PWM4,
--	JZ_GPIO_PWM5,
--	JZ_GPIO_PWM6,
--	JZ_GPIO_PWM7,
--};
--
- struct jz4740_pwm_chip {
- 	struct pwm_chip chip;
- 	struct clk *clk;
-@@ -49,9 +37,6 @@ static inline struct jz4740_pwm_chip *to_jz4740(struct pwm_chip *chip)
- 
- static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
- {
--	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
--	int ret;
--
- 	/*
- 	 * Timers 0 and 1 are used for system tasks, so they are unavailable
- 	 * for use as PWMs.
-@@ -59,15 +44,6 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
- 	if (pwm->hwpwm < 2)
- 		return -EBUSY;
- 
--	ret = gpio_request(gpio, pwm->label);
--	if (ret) {
--		dev_err(chip->dev, "Failed to request GPIO#%u for PWM: %d\n",
--			gpio, ret);
--		return ret;
--	}
--
--	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_PWM);
--
- 	jz4740_timer_start(pwm->hwpwm);
- 
- 	return 0;
-@@ -75,13 +51,8 @@ static int jz4740_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
- 
- static void jz4740_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
- {
--	unsigned int gpio = jz4740_pwm_gpio_list[pwm->hwpwm];
--
- 	jz4740_timer_set_ctrl(pwm->hwpwm, 0);
- 
--	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
--	gpio_free(gpio);
--
- 	jz4740_timer_stop(pwm->hwpwm);
- }
- 
+diff --git a/Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
+new file mode 100644
+index 000000000000..0e43b527b681
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
+@@ -0,0 +1,41 @@
++Ingenic jz47xx pin controller
++
++Please refer to pinctrl-bindings.txt in this directory for details of the
++common pinctrl bindings used by client devices, including the meaning of the
++phrase "pin configuration node".
++
++For the jz47xx SoCs, pin control is tightly bound with GPIO ports. All pins may
++be used as GPIOs, multiplexed device functions are configured within the
++GPIO port configuration registers and it is typical to refer to pins using the
++naming scheme "PxN" where x is a character identifying the GPIO port with
++which the pin is associated and N is an integer from 0 to 31 identifying the
++pin within that GPIO port. For example PA0 is the first pin in GPIO port A, and
++PB31 is the last pin in GPIO port B. The jz4740 contains 4 GPIO ports, PA to
++PD, for a total of 128 pins. The jz4780 contains 6 GPIO ports, PA to PF, for a
++total of 192 pins.
++
++
++Required properties:
++--------------------
++
++ - compatible: One of:
++    - "ingenic,jz4740-pinctrl"
++    - "ingenic,jz4770-pinctrl"
++    - "ingenic,jz4780-pinctrl"
++ - reg: Address range of the pinctrl registers.
++
++
++GPIO sub-nodes
++--------------
++
++The pinctrl node can have optional sub-nodes for the Ingenic GPIO driver;
++please refer to ../gpio/ingenic,gpio.txt.
++
++
++Example:
++--------
++
++pinctrl: ingenic-pinctrl@10010000 {
++	compatible = "ingenic,jz4740-pinctrl";
++	reg = <0x10010000 0x400>;
++};
 -- 
 2.11.0

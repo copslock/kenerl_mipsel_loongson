@@ -1,14 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2017 22:49:19 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:44416 "EHLO
-        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993890AbdDBUoQ6UQsj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2017 22:44:16 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Linus Walleij <linus.walleij@linaro.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Apr 2017 11:57:40 +0200 (CEST)
+Received: from mail-lf0-x22f.google.com ([IPv6:2a00:1450:4010:c07::22f]:35896
+        "EHLO mail-lf0-x22f.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992078AbdDCJ5cZEXvr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Apr 2017 11:57:32 +0200
+Received: by mail-lf0-x22f.google.com with SMTP id x137so69665127lff.3
+        for <linux-mips@linux-mips.org>; Mon, 03 Apr 2017 02:57:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=eDUBV6FQ0gl9GhIj7MuXF72CMwBo/5s1CkZce5qs6bg=;
+        b=tGV8sss7/IGdm2B+RxTGsqK7PVXDxKx/etrECLL4BUzesmCzr3fNgpI8MrnEv/B3Ib
+         QBGRc0xLUHwTJLLY+XFBVMAe0M+uBM2kUJYDgOowfd85CBrAg7EReSPP0g5PWRjlc/Ms
+         TDI/9ItIjWCrwiKyo7t72i354+F/dlyDDpW9LXTZNhSwalCL+t5C3uNf2GyTGuilwXwC
+         X531xBSUmHFI5dTIFaC7beW3t9ZuoAmfgLE3Qh+USkisgRNaNL4iF4Vx7z87Jy+GGLjX
+         FWjNB3wZgj0w8MmMn9uUx13pR4dmuWblLhsrGagR0dq0wmlKYibZjUaPbybd6+4zM4gT
+         SGbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=eDUBV6FQ0gl9GhIj7MuXF72CMwBo/5s1CkZce5qs6bg=;
+        b=EYTZfJX8EPMM2k5DaB2oYBPZoGpJX2U5FpqCCtzyLe3LLEnNbEzaDipt3mXLsc4siQ
+         sXL8c1Oar57hyqaOiwh7xf55cypOJvvIlxeAIyDDu911mS4gwzl9zAAn3U8q9wCH9tRC
+         glpdFaryKXPLM1LoODNFiED5xSsgV6rV7xtVooICZBnqSWPGf6G2on7XtTI1IERXbzH5
+         7QZaHyQSL6Z1PhNRsGlUhFLvbDjOFXkFukgGCXpiqB/SfZZk5TY3A+fBNoiVgOEac5bV
+         9CNujvd9lmAqgjMKqwnoLgjYv3oW8mAxH189J7rFIZ7Kc4AUttS/gRVCoxGObmbTb33R
+         Pbtw==
+X-Gm-Message-State: AFeK/H0+UCx8Y/XUK8SsNK7wiGgJFxrelS2fJDXjXH8vUrZQFBKJd3xJEOWwSAjn2+qc6g==
+X-Received: by 10.46.21.76 with SMTP id 12mr4871751ljv.98.1491213446999;
+        Mon, 03 Apr 2017 02:57:26 -0700 (PDT)
+Received: from [192.168.4.126] ([31.173.87.23])
+        by smtp.gmail.com with ESMTPSA id l11sm2375335ljb.45.2017.04.03.02.57.24
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 03 Apr 2017 02:57:26 -0700 (PDT)
+Subject: Re: [PATCH v4 06/14] MIPS: jz4740: DTS: Add nodes for ingenic pinctrl
+ and gpio drivers
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Alexandre Courbot <gnurou@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>
+References: <20170125185207.23902-2-paul@crapouillou.net>
+ <20170402204244.14216-1-paul@crapouillou.net>
+ <20170402204244.14216-7-paul@crapouillou.net>
 Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
@@ -18,23 +54,25 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v4 10/14] mmc: jz4740: Let the pinctrl driver configure the pins
-Date:   Sun,  2 Apr 2017 22:42:40 +0200
-Message-Id: <20170402204244.14216-11-paul@crapouillou.net>
-In-Reply-To: <20170402204244.14216-1-paul@crapouillou.net>
-References: <20170125185207.23902-2-paul@crapouillou.net>
- <20170402204244.14216-1-paul@crapouillou.net>
-Return-Path: <paul@outils.crapouillou.net>
+        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <48f7f4ee-b8e3-0096-ddea-2fbe0b399b40@cogentembedded.com>
+Date:   Mon, 3 Apr 2017 12:57:25 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
+MIME-Version: 1.0
+In-Reply-To: <20170402204244.14216-7-paul@crapouillou.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57546
+X-archive-position: 57547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,130 +85,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
-the pins being properly configured before the driver probes.
+Hello!
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/mmc/host/jz4740_mmc.c | 44 +++++--------------------------------------
- 1 file changed, 5 insertions(+), 39 deletions(-)
+On 4/2/2017 11:42 PM, Paul Cercueil wrote:
 
- v2: Set pin sleep/default state in suspend/resume callbacks
- v3: No changes
- v4: Re-insert accidentally removed <linux/gpio.h> include
+> For a description of the pinctrl devicetree node, please read
+> Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
+>
+> For a description of the gpio devicetree nodes, please read
+> Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+>
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+[...]
 
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index 819ad32964fc..42b3ee566dc7 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -20,6 +20,7 @@
- #include <linux/irq.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/delay.h>
- #include <linux/scatterlist.h>
-@@ -27,7 +28,6 @@
- 
- #include <linux/bitops.h>
- #include <linux/gpio.h>
--#include <asm/mach-jz4740/gpio.h>
- #include <asm/cacheflush.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
-@@ -906,15 +906,6 @@ static const struct mmc_host_ops jz4740_mmc_ops = {
- 	.enable_sdio_irq = jz4740_mmc_enable_sdio_irq,
- };
- 
--static const struct jz_gpio_bulk_request jz4740_mmc_pins[] = {
--	JZ_GPIO_BULK_PIN(MSC_CMD),
--	JZ_GPIO_BULK_PIN(MSC_CLK),
--	JZ_GPIO_BULK_PIN(MSC_DATA0),
--	JZ_GPIO_BULK_PIN(MSC_DATA1),
--	JZ_GPIO_BULK_PIN(MSC_DATA2),
--	JZ_GPIO_BULK_PIN(MSC_DATA3),
--};
--
- static int jz4740_mmc_request_gpio(struct device *dev, int gpio,
- 	const char *name, bool output, int value)
- {
-@@ -978,15 +969,6 @@ static void jz4740_mmc_free_gpios(struct platform_device *pdev)
- 		gpio_free(pdata->gpio_power);
- }
- 
--static inline size_t jz4740_mmc_num_pins(struct jz4740_mmc_host *host)
--{
--	size_t num_pins = ARRAY_SIZE(jz4740_mmc_pins);
--	if (host->pdata && host->pdata->data_1bit)
--		num_pins -= 3;
--
--	return num_pins;
--}
--
- static int jz4740_mmc_probe(struct platform_device* pdev)
- {
- 	int ret;
-@@ -1027,15 +1009,9 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 		goto err_free_host;
- 	}
- 
--	ret = jz_gpio_bulk_request(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to request mmc pins: %d\n", ret);
--		goto err_free_host;
--	}
--
- 	ret = jz4740_mmc_request_gpios(mmc, pdev);
- 	if (ret)
--		goto err_gpio_bulk_free;
-+		goto err_release_dma;
- 
- 	mmc->ops = &jz4740_mmc_ops;
- 	mmc->f_min = JZ_MMC_CLK_RATE / 128;
-@@ -1091,10 +1067,9 @@ static int jz4740_mmc_probe(struct platform_device* pdev)
- 	free_irq(host->irq, host);
- err_free_gpios:
- 	jz4740_mmc_free_gpios(pdev);
--err_gpio_bulk_free:
-+err_release_dma:
- 	if (host->use_dma)
- 		jz4740_mmc_release_dma_channels(host);
--	jz_gpio_bulk_free(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
- err_free_host:
- 	mmc_free_host(mmc);
- 
-@@ -1114,7 +1089,6 @@ static int jz4740_mmc_remove(struct platform_device *pdev)
- 	free_irq(host->irq, host);
- 
- 	jz4740_mmc_free_gpios(pdev);
--	jz_gpio_bulk_free(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
- 
- 	if (host->use_dma)
- 		jz4740_mmc_release_dma_channels(host);
-@@ -1128,20 +1102,12 @@ static int jz4740_mmc_remove(struct platform_device *pdev)
- 
- static int jz4740_mmc_suspend(struct device *dev)
- {
--	struct jz4740_mmc_host *host = dev_get_drvdata(dev);
--
--	jz_gpio_bulk_suspend(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
--
--	return 0;
-+	return pinctrl_pm_select_sleep_state(dev);
- }
- 
- static int jz4740_mmc_resume(struct device *dev)
- {
--	struct jz4740_mmc_host *host = dev_get_drvdata(dev);
--
--	jz_gpio_bulk_resume(jz4740_mmc_pins, jz4740_mmc_num_pins(host));
--
--	return 0;
-+	return pinctrl_pm_select_default_state(dev);
- }
- 
- static SIMPLE_DEV_PM_OPS(jz4740_mmc_pm_ops, jz4740_mmc_suspend,
--- 
-2.11.0
+> diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> index 3e1587f1f77a..9c23c877fc34 100644
+> --- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> +++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
+> @@ -55,6 +55,67 @@
+>  		clock-names = "rtc";
+>  	};
+>
+> +	pinctrl: ingenic-pinctrl@10010000 {
+
+    The node name should be generic, so please rename it to something like 
+"pin-controller@..."
+
+> +		compatible = "ingenic,jz4740-pinctrl";
+> +		reg = <0x10010000 0x400>;
+> +
+> +		gpa: gpio-controller@0 {
+
+    The name should be just "gpio@0", according to ePAPR and its successor 
+spec. Although, using the <unit-address> without the "reg" prop isn't allowed 
+either...
+
+[...]
+
+MBR, Sergei

@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Apr 2017 08:17:18 +0200 (CEST)
-Received: from mail-pg0-x233.google.com ([IPv6:2607:f8b0:400e:c05::233]:36600
-        "EHLO mail-pg0-x233.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990509AbdDDGRJLryeU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Apr 2017 08:17:09 +0200
-Received: by mail-pg0-x233.google.com with SMTP id g2so140783858pge.3
-        for <linux-mips@linux-mips.org>; Mon, 03 Apr 2017 23:17:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Apr 2017 08:18:29 +0200 (CEST)
+Received: from mail-pg0-x236.google.com ([IPv6:2607:f8b0:400e:c05::236]:33501
+        "EHLO mail-pg0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990509AbdDDGSXIOuPU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Apr 2017 08:18:23 +0200
+Received: by mail-pg0-x236.google.com with SMTP id x125so142560297pgb.0
+        for <linux-mips@linux-mips.org>; Mon, 03 Apr 2017 23:18:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=bty6R6DYul67AKn+issoCh5QE2qoeZmvASm1stWPxWQ=;
-        b=d01WXXFal1MfKSYlfe1VQzteZiKn9NAaIchn2t3AfRXDNcgZAzESaMwgT1yqlC1mUW
-         AzYklgMnA/5/bhuDsx6WjWUMPRhHdn2/nYG941bM9/AGPTy1YroyisxBQUg9ux0KneeH
-         e0v6b/pGnw1IulDjmXA28bL6ES/ewMD6frDUg=
+        bh=wPWiBRR2YfGVDa/mBMprL/d2J77eMvXTr5UMN/e2Iro=;
+        b=iFMDZRA+Z6za6S0L0YkQ1vndkiKjdvR5/6N7L0QJQpnWQ2M8wAnfUzMgOhiK3ai2Ap
+         Gvyncxbyfgjnp7c3GQnB/v6pwl8iPLVyi7gE2xCeNVCnqeUuD8hx9TRJKXLBcpUmul+q
+         7bKF8HLNdWOHwMOOQ9fZcYWGLaxLMzgU1fCLo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=bty6R6DYul67AKn+issoCh5QE2qoeZmvASm1stWPxWQ=;
-        b=b9Dx1Jf/NAG6yzCx5uU8OicWpP09BrfzPYslbRAhiC/jnhD2CoNNfF0pRhwMe/WYeR
-         sk2azvLMP12RiGlgEBwixeZQerzfj3pqipgAD8S+cdl01XBW5bR15Zhmyx/pWeP5D16c
-         QAzJ1FHnFwWSf7FGmWRJrmjmSN8Djl1qYs4MQNPXePtIIeO+n1oaAmLxamyFH/PuKuGH
-         BjJKkRmPdffOTsh08et36ZZZaVy7J3ZN7RtEZpM/liWfyLx7qRw5kFUp00QsHmbIJj2M
-         fLRIs7bRTsCLtjtbUljSxJweQutoq7vxm2E8k6RAs6lBiNLH7jTIJV4MAEyJBJL9xva5
-         E0UQ==
-X-Gm-Message-State: AFeK/H0D0xpYqAwcpvi2MIIK6ICh8mvSG44qjIAmqi8XDicLT+rw3o/+zB/rNG9fcG5v5/Fm
-X-Received: by 10.98.138.80 with SMTP id y77mr292303pfd.183.1491286623035;
-        Mon, 03 Apr 2017 23:17:03 -0700 (PDT)
+        bh=wPWiBRR2YfGVDa/mBMprL/d2J77eMvXTr5UMN/e2Iro=;
+        b=qm1j8hYza9ajPYY9tYycxFpdoRfuBH89AaCIl9B43fbwsrB/eoEgA0rIrJEKLe/ITh
+         EC4jmoX0ibb3gwtDbrGqvXWt8uM/D2EoXjJoD41rVRzuWkgFwhBgzGkX0VJRaA6ItMmW
+         KZXo+4bZ5B0J/QKEoE2vuJ/AsgUInsXXl/5pq3pwiT7o84gTvPSo1LtgkE3Nc0zefL1M
+         ft7Hfwki2S5ygBCvCPPWz1NQT6Pk049kUEtbZ+nSO3Kz22BN7yJLW4nI0/dpZDryDjEf
+         UJMQFhX2DZ9abXRBUJfr4qoYI2o5cx8oZerAqHesfL25F1wQUxnuetWeWUnUFyvaa8jH
+         kkjg==
+X-Gm-Message-State: AFeK/H3qIeY/4zKLecQmso8eXoBmS1g3PshrCd33Ob1lMNZaOf82Yrh4UzgOkHS1XZZUrtnC
+X-Received: by 10.84.238.132 with SMTP id v4mr26818028plk.101.1491286697316;
+        Mon, 03 Apr 2017 23:18:17 -0700 (PDT)
 Received: from localhost.localdomain ([106.51.240.246])
-        by smtp.gmail.com with ESMTPSA id f81sm29247068pfe.61.2017.04.03.23.17.01
+        by smtp.gmail.com with ESMTPSA id m20sm29331500pgd.32.2017.04.03.23.18.15
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 03 Apr 2017 23:17:02 -0700 (PDT)
+        Mon, 03 Apr 2017 23:18:16 -0700 (PDT)
 From:   Amit Pundir <amit.pundir@linaro.org>
 To:     gregkh@linuxfoundation.org
-Cc:     stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>
-Subject: [PATCH 05/33] MIPS: Lantiq: Fix cascaded IRQ setup
-Date:   Tue,  4 Apr 2017 11:46:53 +0530
-Message-Id: <1491286617-31131-2-git-send-email-amit.pundir@linaro.org>
+Cc:     stable@vger.kernel.org, Tobias Wolf <dev-NTEO@vplace.de>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 22/33] of: Add check to of_scan_flat_dt() before accessing initial_boot_params
+Date:   Tue,  4 Apr 2017 11:48:01 +0530
+Message-Id: <1491286688-31314-3-git-send-email-amit.pundir@linaro.org>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1491286617-31131-1-git-send-email-amit.pundir@linaro.org>
-References: <1491286617-31131-1-git-send-email-amit.pundir@linaro.org>
+In-Reply-To: <1491286688-31314-1-git-send-email-amit.pundir@linaro.org>
+References: <1491286688-31314-1-git-send-email-amit.pundir@linaro.org>
 Return-Path: <amit.pundir@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57552
+X-archive-position: 57553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -61,105 +62,42 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Tobias Wolf <dev-NTEO@vplace.de>
 
-With the IRQ stack changes integrated, the XRX200 devices started
-emitting a constant stream of kernel messages like this:
+An empty __dtb_start to __dtb_end section might result in
+initial_boot_params being null for arch/mips/ralink. This showed that the
+boot process hangs indefinitely in of_scan_flat_dt().
 
-[  565.415310] Spurious IRQ: CAUSE=0x1100c300
-
-This is caused by IP0 getting handled by plat_irq_dispatch() rather than
-its vectored interrupt handler, which is fixed by commit de856416e714
-("MIPS: IRQ Stack: Fix erroneous jal to plat_irq_dispatch").
-
-Fix plat_irq_dispatch() to handle non-vectored IPI interrupts correctly
-by setting up IP2-6 as proper chained IRQ handlers and calling do_IRQ
-for all MIPS CPU interrupts.
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: John Crispin <john@phrozen.org>
+Signed-off-by: Tobias Wolf <dev-NTEO@vplace.de>
+Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15077/
-[james.hogan@imgtec.com: tweaked commit message]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-
-(cherry picked from commit 6c356eda225e3ee134ed4176b9ae3a76f793f4dd)
+Patchwork: https://patchwork.linux-mips.org/patch/14605/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+(cherry picked from commit 3ec754410cb3e931a6c4920b1a150f21a94a2bf4)
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 ---
- arch/mips/lantiq/irq.c | 38 +++++++++++++++++---------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ drivers/of/fdt.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-index 8ac0e59..0ddf369 100644
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -269,6 +269,11 @@ static void ltq_hw5_irqdispatch(void)
- DEFINE_HWx_IRQDISPATCH(5)
- #endif
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index c89d5d2..6c07f2c 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -738,9 +738,12 @@ int __init of_scan_flat_dt(int (*it)(unsigned long node,
+ 	const char *pathp;
+ 	int offset, rc = 0, depth = -1;
  
-+static void ltq_hw_irq_handler(struct irq_desc *desc)
-+{
-+	ltq_hw_irqdispatch(irq_desc_get_irq(desc) - 2);
-+}
+-        for (offset = fdt_next_node(blob, -1, &depth);
+-             offset >= 0 && depth >= 0 && !rc;
+-             offset = fdt_next_node(blob, offset, &depth)) {
++	if (!blob)
++		return 0;
 +
- #ifdef CONFIG_MIPS_MT_SMP
- void __init arch_init_ipiirq(int irq, struct irqaction *action)
- {
-@@ -313,23 +318,19 @@ static struct irqaction irq_call = {
- asmlinkage void plat_irq_dispatch(void)
- {
- 	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
--	unsigned int i;
--
--	if ((MIPS_CPU_TIMER_IRQ == 7) && (pending & CAUSEF_IP7)) {
--		do_IRQ(MIPS_CPU_TIMER_IRQ);
--		goto out;
--	} else {
--		for (i = 0; i < MAX_IM; i++) {
--			if (pending & (CAUSEF_IP2 << i)) {
--				ltq_hw_irqdispatch(i);
--				goto out;
--			}
--		}
-+	int irq;
-+
-+	if (!pending) {
-+		spurious_interrupt();
-+		return;
- 	}
--	pr_alert("Spurious IRQ: CAUSE=0x%08x\n", read_c0_status());
++	for (offset = fdt_next_node(blob, -1, &depth);
++	     offset >= 0 && depth >= 0 && !rc;
++	     offset = fdt_next_node(blob, offset, &depth)) {
  
--out:
--	return;
-+	pending >>= CAUSEB_IP;
-+	while (pending) {
-+		irq = fls(pending) - 1;
-+		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
-+		pending &= ~BIT(irq);
-+	}
- }
- 
- static int icu_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
-@@ -354,11 +355,6 @@ static const struct irq_domain_ops irq_domain_ops = {
- 	.map = icu_map,
- };
- 
--static struct irqaction cascade = {
--	.handler = no_action,
--	.name = "cascade",
--};
--
- int __init icu_of_init(struct device_node *node, struct device_node *parent)
- {
- 	struct device_node *eiu_node;
-@@ -390,7 +386,7 @@ int __init icu_of_init(struct device_node *node, struct device_node *parent)
- 	mips_cpu_irq_init();
- 
- 	for (i = 0; i < MAX_IM; i++)
--		setup_irq(i + 2, &cascade);
-+		irq_set_chained_handler(i + 2, ltq_hw_irq_handler);
- 
- 	if (cpu_has_vint) {
- 		pr_info("Setting up vectored interrupts\n");
+ 		pathp = fdt_get_name(blob, offset, NULL);
+ 		if (*pathp == '/')
 -- 
 2.7.4

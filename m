@@ -1,37 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Apr 2017 22:10:12 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:7651 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993009AbdDDUKDOP6JP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Apr 2017 22:10:03 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Apr 2017 22:32:32 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:18554 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993009AbdDDUcZ2L9G0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Apr 2017 22:32:25 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 43BD041F8DA6;
+        Tue,  4 Apr 2017 22:38:31 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 04 Apr 2017 22:38:31 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 04 Apr 2017 22:38:31 +0100
 Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 7BF903025F132;
-        Tue,  4 Apr 2017 21:09:17 +0100 (IST)
-Received: from [10.20.78.40] (10.20.78.40) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 4 Apr 2017
- 21:09:20 +0100
-Date:   Tue, 4 Apr 2017 21:09:05 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Paul Burton <paul.burton@imgtec.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v3] MIPS: Avoid warnings from use of dla in 32 bit
- kernels
-In-Reply-To: <9459713.IbS6oA1Njj@np-p-burton>
-Message-ID: <alpine.DEB.2.00.1704042009530.25796@tp.orcam.me.uk>
-References: <20170330214838.5828-1-paul.burton@imgtec.com> <alpine.DEB.2.00.1703310441420.5644@tp.orcam.me.uk> <9459713.IbS6oA1Njj@np-p-burton>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+        by Forcepoint Email with ESMTPS id 9443625F0FA4E;
+        Tue,  4 Apr 2017 21:32:15 +0100 (IST)
+Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 4 Apr
+ 2017 21:32:19 +0100
+Date:   Tue, 4 Apr 2017 21:32:19 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Rabin Vincent <rabin.vincent@axis.com>
+CC:     <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        Rabin Vincent <rabinv@axis.com>
+Subject: Re: [PATCH] MIPS: cevt-r4k: fix array out-of-bounds access
+Message-ID: <20170404203219.GK31606@jhogan-linux.le.imgtec.org>
+References: <1491291731-5797-1-git-send-email-rabin.vincent@axis.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.20.78.40]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="LuMRVxdB65zydaDL"
+Content-Disposition: inline
+In-Reply-To: <1491291731-5797-1-git-send-email-rabin.vincent@axis.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [192.168.154.110]
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57563
+X-archive-position: 57564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,154 +54,150 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 4 Apr 2017, Paul Burton wrote:
+--LuMRVxdB65zydaDL
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> >  This is however exactly what we do in several places, and I would
-> > recommend here as well.  Can you point me at the earlier review of your
-> > proposal?
-> 
-> The first 2 revisions of the patch, which did include asm/asm.h & use PTR_LA, 
-> can be found in patchwork:
+Hi Rabin,
 
- Thanks for the pointers!
+On Tue, Apr 04, 2017 at 09:42:11AM +0200, Rabin Vincent wrote:
+> From: Rabin Vincent <rabinv@axis.com>
+>=20
+> calculate_min_delta() tries to access a fourth element of buf2 but the
+> array has only three elements.  This triggers undefined behaviour and
+> causes strange crashes in start_kernel() sometime after timer
+> initialization, when built with GCC 5.3, probably due to register/stack
+> corruption:
+>=20
+>  sched_clock: 32 bits at 200MHz, resolution 5ns, wraps every 10737418237ns
+>  CPU 0 Unable to handle kernel paging request at virtual address ffffb0aa,
+>        epc =3D=3D 8067daa8, ra =3D=3D 8067da84
+>  Oops[#1]:
+>  CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.9.18 #51
+>  task: 8065e3e0 task.stack: 80644000
+>  $ 0   : 00000000 00000001 00000000 00000000
+>  $ 4   : 8065b4d0 00000000 805d0000 00000010
+>  $ 8   : 00000010 80321400 fffff000 812de408
+>  $12   : 00000000 00000000 00000000 ffffffff
+>  $16   : 00000002 ffffffff 80660000 806a666c
+>  $20   : 806c0000 00000000 00000000 00000000
+>  $24   : 00000000 00000010
+>  $28   : 80644000 80645ed0 00000000 8067da84
+>  Hi    : 00000000
+>  Lo    : 00000000
+>  epc   : 8067daa8 start_kernel+0x33c/0x500
+>  ra    : 8067da84 start_kernel+0x318/0x500
+>  Status: 11000402 KERNEL EXL
+>  Cause : 4080040c (ExcCode 03)
+>  BadVA : ffffb0aa
+>  PrId  : 0501992c (MIPS 1004Kc)
+>  Modules linked in:
+>  Process swapper/0 (pid: 0, threadinfo=3D80644000, task=3D8065e3e0, tls=
+=3D00000000)
+>  Call Trace:
+>  [<8067daa8>] start_kernel+0x33c/0x500
+>  Code: 24050240  0c0131f9  24849c64 <a200b0a8> 41606020  000000c0  0c1a45=
+e6
+>        00000000  0c1a5f44
+>=20
+> UBSAN also detects it:
+>=20
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>  UBSAN: Undefined behaviour in arch/mips/kernel/cevt-r4k.c:85:41
+>  load of address 80647e4c with insufficient space
+>  for an object of type 'unsigned int'
+>  CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.9.18 #47
+>  Call Trace:
+>  [<80028f70>] show_stack+0x88/0xa4
+>  [<80312654>] dump_stack+0x84/0xc0
+>  [<8034163c>] ubsan_epilogue+0x14/0x50
+>  [<803417d8>] __ubsan_handle_type_mismatch+0x160/0x168
+>  [<8002dab0>] r4k_clockevent_init+0x544/0x764
+>  [<80684d34>] time_init+0x18/0x90
+>  [<8067fa5c>] start_kernel+0x2f0/0x500
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 
->   https://patchwork.linux-mips.org/patch/12436/
+Hmm, good catch, thanks! Curious that a stray read would wreck such
+havoc, but I suppose the compiler can do whatever weirdness it likes
+after that. Clearly it shouldn't be doing that read in the first place.=20
 
- NB contrary to what Ralf says this `.set' can go as this definition is 
-conditional on (defined(CONFIG_CPU_MIPSR2) || defined(CONFIG_CPU_MIPSR6)), 
-so we must have the ISA level already set here to one supporting JR.HB.
+>=20
+> Fixes: 1fa405552e33f2 ("MIPS: cevt-r4k: Dynamically calculate min_delta_n=
+s")
+> Signed-off-by: Rabin Vincent <rabinv@axis.com>
+> ---
+>  arch/mips/kernel/cevt-r4k.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+> index 804d2a2..723a1f1 100644
+> --- a/arch/mips/kernel/cevt-r4k.c
+> +++ b/arch/mips/kernel/cevt-r4k.c
+> @@ -48,7 +48,7 @@ static int mips_next_event(unsigned long delta,
+>  static unsigned int calculate_min_delta(void)
+>  {
+>  	unsigned int cnt, i, j, k, l;
+> -	unsigned int buf1[4], buf2[3];
+> +	unsigned int buf1[4], buf2[4];
 
-> > > Instead fix this by adding a ".set gp=64" directive to inform the
-> > > assembler that general purpose registers are 64 bit for the dla
-> > > instruction. This is a lie, but no more so than using the dla
-> > > instruction to begin with.
-> > 
-> >  I agree using DLA unconditionally is wrong, so if using <asm/asm.h> and
-> > its PTR_LA turns out infeasible indeed, then please define a local macro
-> > that expands to LA or DLA as appropriate and does not cause a namespace
-> > issue, and use it in `instruction_hazard' (all instances) rather than this
-> > horrible hack.
-> 
-> Horrible though the use of dla may be at first glance, I do wonder if it 
-> actually makes sense to just keep it. Presumably Ralf thought it made sense 
-> when he added it in 7043ad4f4c81 ("MIPS: R2: Try to bulletproof 
-> instruction_hazard against miss-compilation."). The presumption is simply that 
-> the dla pseudo-instruction won't result in any MIPS64 instructions being 
-> emitted when used on a 32 bit canonical address, which might not be "nice" but 
-> then neither is the #ifdef solution.
+I think the correct fix is to prevent the read rather than change the
+size of the array. buf2[] is intentionally 3 so that out of 5 sorted
+samples the last element is the median, whereas buf1 is 4 elements so as
+to work out the 75th percentile.
 
- These days it qualifies for `asm goto' (and Ralf was correct with his 
-commit in that regular `asm' does not support such constructs), however we 
-surely still want to support GCC versions that do not have it.
+When inserting the 5th sample into buf1 (i.e. j =3D 4), there are already
+4 entries, so the highest element it needs to compare against is the 4th
+one (buf1[k=3D3]), so thats fine.
 
- Your proposed change actually reveals a bug in GAS in that LA and DLA are 
-supposed to warn on the address size mismatch.  And the address size is 
-set by the ABI selected.  That means DLA is supposed to warn (effectively) 
-with `-mabi=32' and `-mabi=n32' and likewise LA with `-mabi=64' (there are 
-some complications around `-mabi=64 -msym32' I do not want to dive into 
-here).  Using `.set gp=64' should not make a difference, because it does 
-not affect the ABI selected and consequently the address size (of course 
-some `.set gp=' settings will be invalid depending on other settings).
+For buf2 however its still trying to insert 5 elements, so by the 5th
+one (i.e. i =3D 4) it may try to compare against the 4th element to know
+whether to insert before it, at which point we simply don't care about
+the ordering as its past the median.
 
- So as soon as this corner case has been fixed in GAS, you'll get assembly 
-warnings again -- which is why I advise against your hack.
+So I think something like this would be more correct. Does that fix your
+problem?
 
- And whether you like the #ifdef solution or not it has the advantage of 
-letting you do this correctly rather than by chance.
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 804d2a2a19fe..dd6a18bc10ab 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -80,7 +80,7 @@ static unsigned int calculate_min_delta(void)
+ 		}
+=20
+ 		/* Sorted insert of 75th percentile into buf2 */
+-		for (k =3D 0; k < i; ++k) {
++		for (k =3D 0; k < i && k < ARRAY_SIZE(buf2); ++k) {
+ 			if (buf1[ARRAY_SIZE(buf1) - 1] < buf2[k]) {
+ 				l =3D min_t(unsigned int,
+ 					  i, ARRAY_SIZE(buf2) - 1);
 
-> I had lost track of what the build failures were when including asm/asm.h, but 
-> reverting to v2 of my patch & building all defconfigs shows a number of 
-> issues.
-> 
-> For example, from mtx1_defconfig:
-> 
->   CC [M]  drivers/net/ethernet/fealnx.o
-> In file included from ./arch/mips/include/asm/hazards.h:15:0,
->                  from ./arch/mips/include/asm/mipsregs.h:18,
->                  from ./arch/mips/include/asm/mach-generic/spaces.h:15,
->                  from ./arch/mips/include/asm/addrspace.h:13,
->                  from ./arch/mips/include/asm/barrier.h:11,
->                  from ./arch/mips/include/asm/bitops.h:18,
->                  from ./include/linux/bitops.h:36,
->                  from ./include/linux/kernel.h:10,
->                  from ./include/linux/list.h:8,
->                  from ./include/linux/module.h:9,
->                  from drivers/net/ethernet/fealnx.c:71:
-> ./arch/mips/include/asm/asm.h:318:15: error: expected identifier before ‘.’ 
-> token
->  #define LONG  .word
->                ^
-> drivers/net/ethernet/fealnx.c:261:2: note: in expansion of macro ‘LONG’
->   LONG = 0x20,  /* long packet received */
->   ^
-> 
-> Or from rm200_defconfig:
-> 
->   CC      arch/mips/sni/setup.o
-> In file included from ./arch/mips/include/asm/hazards.h:15:0,
->                  from ./arch/mips/include/asm/mipsregs.h:18,
->                  from ./arch/mips/include/asm/mach-generic/spaces.h:15,
->                  from ./arch/mips/include/asm/addrspace.h:13,
->                  from ./arch/mips/include/asm/barrier.h:11,
->                  from ./arch/mips/include/asm/bitops.h:18,
->                  from ./include/linux/bitops.h:36,
->                  from ./include/linux/kernel.h:10,
->                  from ./include/linux/list.h:8,
->                  from ./include/linux/kobject.h:20,
->                  from ./include/linux/device.h:17,
->                  from ./include/linux/eisa.h:5,
->                  from arch/mips/sni/setup.c:11:
-> ./arch/mips/include/asm/asm.h:318:15: error: expected identifier or ‘(’ before 
-> ‘.’ token
->  #define LONG  .word
->                ^
-> ./arch/mips/include/asm/fw/arc/types.h:18:15: note: in expansion of macro 
-> ‘LONG’
->  typedef long  LONG __attribute__ ((__mode__ (__SI__)));
-> 
-> Other builds that include asm/fw/arc/types.h of course fail similarly, for 
-> example ip22_defconfig, ip27_defconfig, ip28_defconfig, ip32_defconfig & 
-> jazz_defconfig all fail to build when asm/hazards.h includes asm/asm.h.
+Thanks
+James
 
- Thanks for these results.  Arguably it's drivers/net/ethernet/fealnx.c 
-and asm/fw/arc/types.h that chose a name that is too generic, which should 
-be reserved for core (which asm/asm.h certainly is close to) rather than 
-driver or platform support.  IOW I'd expect names like FEALNX_LONG and 
-ARC_LONG or suchlike.
+--LuMRVxdB65zydaDL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
- However for the sake of namespace collision avoidance I think we may well 
-poke at asm/asm.h instead; after all it's not core support either -- it's 
-architecture support.  I think this is about the only macro that can cause 
-issues, and we can deal with it by excluding it (and maybe PTR as well, 
-for consistency) if !__ASSEMBLY__, and then defining say LONGDATA and 
-PTRDATA aliases, e.g:
+-----BEGIN PGP SIGNATURE-----
 
-#define LONGDATA	.word
-#define LONGSIZE	4
-#define LONGMASK	3
-#define LONGLOG		2
-#endif
+iQIcBAEBCAAGBQJY5ALMAAoJEGwLaZPeOHZ6WvwP+wcBD0vhO63tFPosPCinf4CJ
+WeWbOlVSBkExh/LheUpxnhsKgPcfpoECSK2SmZ6NyncVtRBPfSDk7qAa3kJGEFxC
+xCGVu3eJjVI158P3eNz0dK04tislpnYWXzFM7565mHh33Qcod60XJ+JuaQqGFMCI
+juasXNSUGbwHZfLefVI5D+ux85o9Xf8617W/P1HMt7ULSZU+qdojgztBVgToqz+3
+B6qYPAGm2SJketfFUiz44zNlqOd/LrPsFD6bZZdbdllLfI7z9afob6U1yh1BZlNr
+9Z9I9hgaf/3nzfaDW4k736XbHoGfpENSwNHebUuGaGP4gqE9VeC+R1zUXUv0zSgT
+4viQ7BKENtogQpQwt4NfdK+Ajd6giU6dwp3A1wrmbaVIBpuWva0sjJl+uPQHEDK0
+PQ0J18Xbep8hdGVbQJ+uE04qWvq/ecvM38PkL6rrs3SAC9YjFWuqWE8lyxELKXqR
+7yX90XhGvHjErjMv6cqx7uEmAefR0NethSJJVkXpqc2IFSDD71wXqm8wRt7SZQIS
+/JrNF7++Rknop2KWmvEyL/qGo4vCi2ba5HC+GomXzJiZCGdqh/aEln75OcqailsT
+ObT3fTP6YQS8yJkqt0/s4k+Vv2fvTngc/kSYZ4yzGlpMlNxGTNVARsZ9AWK4YiA1
+70ND0x8cnm/QCsQAeBw3
+=KWBp
+-----END PGP SIGNATURE-----
 
-[...]
-
-#ifdef __ASSEMBLY__
-#define LONG		LONGDATA
-#define PTR		PTRDATA
-#endif
-
-/*
- * Some cp0 registers were extended to 64bit for MIPS III.
- */
-
-so that C code has a way to handle this in inline assembly (which it 
-already does).  Of course C sources already using STR(PTR) will have to be 
-updated accordingly; there are no STR(LONG) cases AFAICT.
-
-> Your point above that we already include asm/asm.h in various C files is a 
-> good one, though given how generic some of the names of its preprocessor 
-> definitions are it wouldn't surprise me to see that cause other build breakage 
-> in the future.
-
- Let's handle it on a case by case basis if this actually ever triggers.
-
-  Maciej
+--LuMRVxdB65zydaDL--

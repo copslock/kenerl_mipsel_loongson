@@ -1,55 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Apr 2017 08:18:29 +0200 (CEST)
-Received: from mail-pg0-x236.google.com ([IPv6:2607:f8b0:400e:c05::236]:33501
-        "EHLO mail-pg0-x236.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990509AbdDDGSXIOuPU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Apr 2017 08:18:23 +0200
-Received: by mail-pg0-x236.google.com with SMTP id x125so142560297pgb.0
-        for <linux-mips@linux-mips.org>; Mon, 03 Apr 2017 23:18:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=wPWiBRR2YfGVDa/mBMprL/d2J77eMvXTr5UMN/e2Iro=;
-        b=iFMDZRA+Z6za6S0L0YkQ1vndkiKjdvR5/6N7L0QJQpnWQ2M8wAnfUzMgOhiK3ai2Ap
-         Gvyncxbyfgjnp7c3GQnB/v6pwl8iPLVyi7gE2xCeNVCnqeUuD8hx9TRJKXLBcpUmul+q
-         7bKF8HLNdWOHwMOOQ9fZcYWGLaxLMzgU1fCLo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=wPWiBRR2YfGVDa/mBMprL/d2J77eMvXTr5UMN/e2Iro=;
-        b=qm1j8hYza9ajPYY9tYycxFpdoRfuBH89AaCIl9B43fbwsrB/eoEgA0rIrJEKLe/ITh
-         EC4jmoX0ibb3gwtDbrGqvXWt8uM/D2EoXjJoD41rVRzuWkgFwhBgzGkX0VJRaA6ItMmW
-         KZXo+4bZ5B0J/QKEoE2vuJ/AsgUInsXXl/5pq3pwiT7o84gTvPSo1LtgkE3Nc0zefL1M
-         ft7Hfwki2S5ygBCvCPPWz1NQT6Pk049kUEtbZ+nSO3Kz22BN7yJLW4nI0/dpZDryDjEf
-         UJMQFhX2DZ9abXRBUJfr4qoYI2o5cx8oZerAqHesfL25F1wQUxnuetWeWUnUFyvaa8jH
-         kkjg==
-X-Gm-Message-State: AFeK/H3qIeY/4zKLecQmso8eXoBmS1g3PshrCd33Ob1lMNZaOf82Yrh4UzgOkHS1XZZUrtnC
-X-Received: by 10.84.238.132 with SMTP id v4mr26818028plk.101.1491286697316;
-        Mon, 03 Apr 2017 23:18:17 -0700 (PDT)
-Received: from localhost.localdomain ([106.51.240.246])
-        by smtp.gmail.com with ESMTPSA id m20sm29331500pgd.32.2017.04.03.23.18.15
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 03 Apr 2017 23:18:16 -0700 (PDT)
-From:   Amit Pundir <amit.pundir@linaro.org>
-To:     gregkh@linuxfoundation.org
-Cc:     stable@vger.kernel.org, Tobias Wolf <dev-NTEO@vplace.de>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 22/33] of: Add check to of_scan_flat_dt() before accessing initial_boot_params
-Date:   Tue,  4 Apr 2017 11:48:01 +0530
-Message-Id: <1491286688-31314-3-git-send-email-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1491286688-31314-1-git-send-email-amit.pundir@linaro.org>
-References: <1491286688-31314-1-git-send-email-amit.pundir@linaro.org>
-Return-Path: <amit.pundir@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Apr 2017 09:42:26 +0200 (CEST)
+Received: from bastet.se.axis.com ([195.60.68.11]:33668 "EHLO
+        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990509AbdDDHmTWQoXa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Apr 2017 09:42:19 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bastet.se.axis.com (Postfix) with ESMTP id F2BFC1811E;
+        Tue,  4 Apr 2017 09:42:13 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
+Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id GVG8mp4ql2HS; Tue,  4 Apr 2017 09:42:13 +0200 (CEST)
+Received: from boulder03.se.axis.com (boulder03.se.axis.com [10.0.8.17])
+        by bastet.se.axis.com (Postfix) with ESMTPS id F175E180FF;
+        Tue,  4 Apr 2017 09:42:12 +0200 (CEST)
+Received: from boulder03.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D94871E0A3;
+        Tue,  4 Apr 2017 09:42:12 +0200 (CEST)
+Received: from boulder03.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CB6671E057;
+        Tue,  4 Apr 2017 09:42:12 +0200 (CEST)
+Received: from seth.se.axis.com (unknown [10.0.2.172])
+        by boulder03.se.axis.com (Postfix) with ESMTP;
+        Tue,  4 Apr 2017 09:42:12 +0200 (CEST)
+Received: from lnxrabinv.se.axis.com (lnxrabinv.se.axis.com [10.88.144.1])
+        by seth.se.axis.com (Postfix) with ESMTP id BEF13277E;
+        Tue,  4 Apr 2017 09:42:12 +0200 (CEST)
+Received: by lnxrabinv.se.axis.com (Postfix, from userid 10564)
+        id A8E222034A; Tue,  4 Apr 2017 09:42:12 +0200 (CEST)
+From:   Rabin Vincent <rabin.vincent@axis.com>
+To:     ralf@linux-mips.org
+Cc:     james.hogan@imgtec.com, linux-mips@linux-mips.org,
+        Rabin Vincent <rabinv@axis.com>
+Subject: [PATCH] MIPS: cevt-r4k: fix array out-of-bounds access
+Date:   Tue,  4 Apr 2017 09:42:11 +0200
+Message-Id: <1491291731-5797-1-git-send-email-rabin.vincent@axis.com>
+X-Mailer: git-send-email 2.7.0
+X-TM-AS-GCONF: 00
+Return-Path: <rabin.vincent@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57553
+X-archive-position: 57554
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: amit.pundir@linaro.org
+X-original-sender: rabin.vincent@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,42 +57,78 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Tobias Wolf <dev-NTEO@vplace.de>
+From: Rabin Vincent <rabinv@axis.com>
 
-An empty __dtb_start to __dtb_end section might result in
-initial_boot_params being null for arch/mips/ralink. This showed that the
-boot process hangs indefinitely in of_scan_flat_dt().
+calculate_min_delta() tries to access a fourth element of buf2 but the
+array has only three elements.  This triggers undefined behaviour and
+causes strange crashes in start_kernel() sometime after timer
+initialization, when built with GCC 5.3, probably due to register/stack
+corruption:
 
-Signed-off-by: Tobias Wolf <dev-NTEO@vplace.de>
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14605/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-(cherry picked from commit 3ec754410cb3e931a6c4920b1a150f21a94a2bf4)
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+ sched_clock: 32 bits at 200MHz, resolution 5ns, wraps every 10737418237ns
+ CPU 0 Unable to handle kernel paging request at virtual address ffffb0aa,
+       epc == 8067daa8, ra == 8067da84
+ Oops[#1]:
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.9.18 #51
+ task: 8065e3e0 task.stack: 80644000
+ $ 0   : 00000000 00000001 00000000 00000000
+ $ 4   : 8065b4d0 00000000 805d0000 00000010
+ $ 8   : 00000010 80321400 fffff000 812de408
+ $12   : 00000000 00000000 00000000 ffffffff
+ $16   : 00000002 ffffffff 80660000 806a666c
+ $20   : 806c0000 00000000 00000000 00000000
+ $24   : 00000000 00000010
+ $28   : 80644000 80645ed0 00000000 8067da84
+ Hi    : 00000000
+ Lo    : 00000000
+ epc   : 8067daa8 start_kernel+0x33c/0x500
+ ra    : 8067da84 start_kernel+0x318/0x500
+ Status: 11000402 KERNEL EXL
+ Cause : 4080040c (ExcCode 03)
+ BadVA : ffffb0aa
+ PrId  : 0501992c (MIPS 1004Kc)
+ Modules linked in:
+ Process swapper/0 (pid: 0, threadinfo=80644000, task=8065e3e0, tls=00000000)
+ Call Trace:
+ [<8067daa8>] start_kernel+0x33c/0x500
+ Code: 24050240  0c0131f9  24849c64 <a200b0a8> 41606020  000000c0  0c1a45e6
+       00000000  0c1a5f44
+
+UBSAN also detects it:
+
+ ================================================================
+ UBSAN: Undefined behaviour in arch/mips/kernel/cevt-r4k.c:85:41
+ load of address 80647e4c with insufficient space
+ for an object of type 'unsigned int'
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.9.18 #47
+ Call Trace:
+ [<80028f70>] show_stack+0x88/0xa4
+ [<80312654>] dump_stack+0x84/0xc0
+ [<8034163c>] ubsan_epilogue+0x14/0x50
+ [<803417d8>] __ubsan_handle_type_mismatch+0x160/0x168
+ [<8002dab0>] r4k_clockevent_init+0x544/0x764
+ [<80684d34>] time_init+0x18/0x90
+ [<8067fa5c>] start_kernel+0x2f0/0x500
+ =================================================================
+
+Fixes: 1fa405552e33f2 ("MIPS: cevt-r4k: Dynamically calculate min_delta_ns")
+Signed-off-by: Rabin Vincent <rabinv@axis.com>
 ---
- drivers/of/fdt.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/mips/kernel/cevt-r4k.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index c89d5d2..6c07f2c 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -738,9 +738,12 @@ int __init of_scan_flat_dt(int (*it)(unsigned long node,
- 	const char *pathp;
- 	int offset, rc = 0, depth = -1;
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 804d2a2..723a1f1 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -48,7 +48,7 @@ static int mips_next_event(unsigned long delta,
+ static unsigned int calculate_min_delta(void)
+ {
+ 	unsigned int cnt, i, j, k, l;
+-	unsigned int buf1[4], buf2[3];
++	unsigned int buf1[4], buf2[4];
+ 	unsigned int min_delta;
  
--        for (offset = fdt_next_node(blob, -1, &depth);
--             offset >= 0 && depth >= 0 && !rc;
--             offset = fdt_next_node(blob, offset, &depth)) {
-+	if (!blob)
-+		return 0;
-+
-+	for (offset = fdt_next_node(blob, -1, &depth);
-+	     offset >= 0 && depth >= 0 && !rc;
-+	     offset = fdt_next_node(blob, offset, &depth)) {
- 
- 		pathp = fdt_get_name(blob, offset, NULL);
- 		if (*pathp == '/')
+ 	/*
 -- 
-2.7.4
+2.7.0

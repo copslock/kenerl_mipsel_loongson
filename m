@@ -1,55 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Apr 2017 12:33:34 +0200 (CEST)
-Received: from mail-pf0-x22a.google.com ([IPv6:2607:f8b0:400e:c00::22a]:33888
-        "EHLO mail-pf0-x22a.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993457AbdDEKdSx4tJL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Apr 2017 12:33:18 +0200
-Received: by mail-pf0-x22a.google.com with SMTP id 197so5599078pfv.1
-        for <linux-mips@linux-mips.org>; Wed, 05 Apr 2017 03:33:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=wPWiBRR2YfGVDa/mBMprL/d2J77eMvXTr5UMN/e2Iro=;
-        b=TmmbxGzcrsJoYWmRPvJk6BSAqRlNMPllF3K3mwxtDK2HtRqw/VOmHqRHj7sIhu/QDU
-         XqlDTYIbSj0D8AUtjX5GTLQak5aqcRndPGY7802KqSeRrMHdbGl/v0p4meR8MO489Pr6
-         a7aqx8O5CpTapoc+NPrFA67XgOUu9JHRLuiVw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=wPWiBRR2YfGVDa/mBMprL/d2J77eMvXTr5UMN/e2Iro=;
-        b=Uj7xk/lEJO5exBmk/dFBFKxc3eW+kdno+QkWvJ17ZJ1wVGC6CRh8mP1M1aFGdaD270
-         PmPl+o+9uQDMyrGA8L3GLS6Hkiv+3F1Tj3rF6TlozRZOGf67O5ja7rDxkum4ifzOZUEa
-         TKosVN/4zpDbzz7yo3ijCY/oCX85WzBqJlWPh60khtqa2PkfLAKtWJBGzNWQ5esPpZMF
-         poSoFqju1G6XCx29ERU/wpPo1Hy5t02u4ca6RcXe58Pzi61byEtB8hSvs+E46CcFNRrr
-         F1fyxrDbInVLqNiuApOdWQintvbdNHXVSbpAwWVqDXvsVIbXXmWxFN2pCxqF/MDyL6U9
-         4IEQ==
-X-Gm-Message-State: AFeK/H18bWQZY5V5RFBuNiLxD9Br/ogYAyC+8i3YvRmH+/vL3iQnBbCAmdwMqJ7Acclilqe7
-X-Received: by 10.84.224.198 with SMTP id k6mr34713026pln.15.1491388393080;
-        Wed, 05 Apr 2017 03:33:13 -0700 (PDT)
-Received: from localhost.localdomain ([106.51.240.246])
-        by smtp.gmail.com with ESMTPSA id a62sm36732075pgc.60.2017.04.05.03.33.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 05 Apr 2017 03:33:12 -0700 (PDT)
-From:   Amit Pundir <amit.pundir@linaro.org>
-To:     stable@vger.kernel.org
-Cc:     gregkh@linuxfoundation.org, Tobias Wolf <dev-NTEO@vplace.de>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH v2 for-4.9 21/32] of: Add check to of_scan_flat_dt() before accessing initial_boot_params
-Date:   Wed,  5 Apr 2017 16:02:13 +0530
-Message-Id: <1491388344-13521-22-git-send-email-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1491388344-13521-1-git-send-email-amit.pundir@linaro.org>
-References: <1491388344-13521-1-git-send-email-amit.pundir@linaro.org>
-Return-Path: <amit.pundir@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Apr 2017 15:08:59 +0200 (CEST)
+Received: from bastet.se.axis.com ([195.60.68.11]:57141 "EHLO
+        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993865AbdDENIw7hGYK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Apr 2017 15:08:52 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bastet.se.axis.com (Postfix) with ESMTP id 3B386181A5;
+        Wed,  5 Apr 2017 15:08:46 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
+Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
+        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id X-Sd0E9Nyivp; Wed,  5 Apr 2017 15:08:45 +0200 (CEST)
+Received: from boulder02.se.axis.com (boulder02.se.axis.com [10.0.8.16])
+        by bastet.se.axis.com (Postfix) with ESMTPS id 7DA6D180E5;
+        Wed,  5 Apr 2017 15:08:45 +0200 (CEST)
+Received: from boulder02.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 64DC81A064;
+        Wed,  5 Apr 2017 15:08:45 +0200 (CEST)
+Received: from boulder02.se.axis.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 59A301A084;
+        Wed,  5 Apr 2017 15:08:45 +0200 (CEST)
+Received: from thoth.se.axis.com (unknown [10.0.2.173])
+        by boulder02.se.axis.com (Postfix) with ESMTP;
+        Wed,  5 Apr 2017 15:08:45 +0200 (CEST)
+Received: from lnxrabinv.se.axis.com (lnxrabinv.se.axis.com [10.88.144.1])
+        by thoth.se.axis.com (Postfix) with ESMTP id 4DDA22973;
+        Wed,  5 Apr 2017 15:08:45 +0200 (CEST)
+Received: by lnxrabinv.se.axis.com (Postfix, from userid 10564)
+        id 465CB20353; Wed,  5 Apr 2017 15:08:45 +0200 (CEST)
+Date:   Wed, 5 Apr 2017 15:08:45 +0200
+From:   Rabin Vincent <rabin.vincent@axis.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: cevt-r4k: fix array out-of-bounds access
+Message-ID: <20170405130845.GA16092@axis.com>
+References: <1491291731-5797-1-git-send-email-rabin.vincent@axis.com>
+ <20170404203219.GK31606@jhogan-linux.le.imgtec.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170404203219.GK31606@jhogan-linux.le.imgtec.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+Return-Path: <rabin.vincent@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57566
+X-archive-position: 57567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: amit.pundir@linaro.org
+X-original-sender: rabin.vincent@axis.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,42 +62,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Tobias Wolf <dev-NTEO@vplace.de>
+On Tue, Apr 04, 2017 at 09:32:19PM +0100, James Hogan wrote:
+> I think the correct fix is to prevent the read rather than change the
+> size of the array. buf2[] is intentionally 3 so that out of 5 sorted
+> samples the last element is the median, whereas buf1 is 4 elements so as
+> to work out the 75th percentile.
+> 
+> When inserting the 5th sample into buf1 (i.e. j = 4), there are already
+> 4 entries, so the highest element it needs to compare against is the 4th
+> one (buf1[k=3]), so thats fine.
+> 
+> For buf2 however its still trying to insert 5 elements, so by the 5th
+> one (i.e. i = 4) it may try to compare against the 4th element to know
+> whether to insert before it, at which point we simply don't care about
+> the ordering as its past the median.
+> 
+> So I think something like this would be more correct. Does that fix your
+> problem?
 
-An empty __dtb_start to __dtb_end section might result in
-initial_boot_params being null for arch/mips/ralink. This showed that the
-boot process hangs indefinitely in of_scan_flat_dt().
+Yes, this fixes it too.  Please feel free to submit it yourself with
+your explanation.  You can add my Tested-by if you like.
 
-Signed-off-by: Tobias Wolf <dev-NTEO@vplace.de>
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14605/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-(cherry picked from commit 3ec754410cb3e931a6c4920b1a150f21a94a2bf4)
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
----
- drivers/of/fdt.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index c89d5d2..6c07f2c 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -738,9 +738,12 @@ int __init of_scan_flat_dt(int (*it)(unsigned long node,
- 	const char *pathp;
- 	int offset, rc = 0, depth = -1;
- 
--        for (offset = fdt_next_node(blob, -1, &depth);
--             offset >= 0 && depth >= 0 && !rc;
--             offset = fdt_next_node(blob, offset, &depth)) {
-+	if (!blob)
-+		return 0;
-+
-+	for (offset = fdt_next_node(blob, -1, &depth);
-+	     offset >= 0 && depth >= 0 && !rc;
-+	     offset = fdt_next_node(blob, offset, &depth)) {
- 
- 		pathp = fdt_get_name(blob, offset, NULL);
- 		if (*pathp == '/')
--- 
-2.7.4
+Thanks.

@@ -1,51 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Apr 2017 15:14:27 +0200 (CEST)
-Received: from bastet.se.axis.com ([195.60.68.11]:57882 "EHLO
-        bastet.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993875AbdDENOU4067K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Apr 2017 15:14:20 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by bastet.se.axis.com (Postfix) with ESMTP id 5C4D21831D;
-        Wed,  5 Apr 2017 15:14:15 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bastet.se.axis.com
-Received: from bastet.se.axis.com ([IPv6:::ffff:127.0.0.1])
-        by localhost (bastet.se.axis.com [::ffff:127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id Vi75xeQj15O2; Wed,  5 Apr 2017 15:14:14 +0200 (CEST)
-Received: from boulder02.se.axis.com (boulder02.se.axis.com [10.0.8.16])
-        by bastet.se.axis.com (Postfix) with ESMTPS id 0ADD5180B3;
-        Wed,  5 Apr 2017 15:14:14 +0200 (CEST)
-Received: from boulder02.se.axis.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D715C1A06F;
-        Wed,  5 Apr 2017 15:14:13 +0200 (CEST)
-Received: from boulder02.se.axis.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CBA561A064;
-        Wed,  5 Apr 2017 15:14:13 +0200 (CEST)
-Received: from thoth.se.axis.com (unknown [10.0.2.173])
-        by boulder02.se.axis.com (Postfix) with ESMTP;
-        Wed,  5 Apr 2017 15:14:13 +0200 (CEST)
-Received: from lnxrabinv.se.axis.com (lnxrabinv.se.axis.com [10.88.144.1])
-        by thoth.se.axis.com (Postfix) with ESMTP id BE9F829FE;
-        Wed,  5 Apr 2017 15:14:13 +0200 (CEST)
-Received: by lnxrabinv.se.axis.com (Postfix, from userid 10564)
-        id B742620353; Wed,  5 Apr 2017 15:14:13 +0200 (CEST)
-From:   Rabin Vincent <rabin.vincent@axis.com>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-        alexander.shishkin@linux.intel.com, Rabin Vincent <rabinv@axis.com>
-Subject: [PATCH] MIPS: perf: fix deadlock
-Date:   Wed,  5 Apr 2017 15:14:08 +0200
-Message-Id: <1491398048-20083-1-git-send-email-rabin.vincent@axis.com>
-X-Mailer: git-send-email 2.7.0
-X-TM-AS-GCONF: 00
-Return-Path: <rabin.vincent@axis.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Apr 2017 17:33:12 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:45401 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993865AbdDEPdFZfI35 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Apr 2017 17:33:05 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id A69AC406CEC5B;
+        Wed,  5 Apr 2017 16:32:55 +0100 (IST)
+Received: from jhogan-linux.le.imgtec.org (192.168.154.110) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Wed, 5 Apr 2017 16:32:58 +0100
+From:   James Hogan <james.hogan@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Rabin Vincent <rabinv@axis.com>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>, James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH] MIPS: cevt-r4k: Fix out-of-bounds array access
+Date:   Wed, 5 Apr 2017 16:32:45 +0100
+Message-ID: <dda2852408884df379eb1fc8ae40aceaf094be61.1491406275.git-series.james.hogan@imgtec.com>
+X-Mailer: git-send-email 2.11.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [192.168.154.110]
+Return-Path: <James.Hogan@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57568
+X-archive-position: 57569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rabin.vincent@axis.com
+X-original-sender: james.hogan@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,79 +41,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Rabin Vincent <rabinv@axis.com>
+calculate_min_delta() may incorrectly access a 4th element of buf2[]
+which only has 3 elements. This may trigger undefined behaviour and has
+been reported to cause strange crashes in start_kernel() sometime after
+timer initialization when built with GCC 5.3, possibly due to
+register/stack corruption:
 
-mipsxx_pmu_handle_shared_irq() calls irq_work_run() while holding the
-pmuint_rwlock for read.  irq_work_run() can, via perf_pending_event(),
-call try_to_wake_up() which can try to take rq->lock.
+sched_clock: 32 bits at 200MHz, resolution 5ns, wraps every 10737418237ns
+CPU 0 Unable to handle kernel paging request at virtual address ffffb0aa, epc == 8067daa8, ra == 8067da84
+Oops[#1]:
+CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.9.18 #51
+task: 8065e3e0 task.stack: 80644000
+$ 0   : 00000000 00000001 00000000 00000000
+$ 4   : 8065b4d0 00000000 805d0000 00000010
+$ 8   : 00000010 80321400 fffff000 812de408
+$12   : 00000000 00000000 00000000 ffffffff
+$16   : 00000002 ffffffff 80660000 806a666c
+$20   : 806c0000 00000000 00000000 00000000
+$24   : 00000000 00000010
+$28   : 80644000 80645ed0 00000000 8067da84
+Hi    : 00000000
+Lo    : 00000000
+epc   : 8067daa8 start_kernel+0x33c/0x500
+ra    : 8067da84 start_kernel+0x318/0x500
+Status: 11000402 KERNEL EXL
+Cause : 4080040c (ExcCode 03)
+BadVA : ffffb0aa
+PrId  : 0501992c (MIPS 1004Kc)
+Modules linked in:
+Process swapper/0 (pid: 0, threadinfo=80644000, task=8065e3e0, tls=00000000)
+Call Trace:
+[<8067daa8>] start_kernel+0x33c/0x500
+Code: 24050240  0c0131f9  24849c64 <a200b0a8> 41606020  000000c0  0c1a45e6 00000000  0c1a5f44
 
-However, perf can also call perf_pmu_enable() (and thus take the
-pmuint_rwlock for write) while holding the rq->lock, from
-finish_task_switch() via perf_event_context_sched_in().
+UBSAN also detects the same issue:
 
-This leads to an ABBA deadlock:
+================================================================
+UBSAN: Undefined behaviour in arch/mips/kernel/cevt-r4k.c:85:41
+load of address 80647e4c with insufficient space
+for an object of type 'unsigned int'
+CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.9.18 #47
+Call Trace:
+[<80028f70>] show_stack+0x88/0xa4
+[<80312654>] dump_stack+0x84/0xc0
+[<8034163c>] ubsan_epilogue+0x14/0x50
+[<803417d8>] __ubsan_handle_type_mismatch+0x160/0x168
+[<8002dab0>] r4k_clockevent_init+0x544/0x764
+[<80684d34>] time_init+0x18/0x90
+[<8067fa5c>] start_kernel+0x2f0/0x500
+=================================================================
 
- PID: 3855   TASK: 8f7ce288  CPU: 2   COMMAND: "process"
-  #0 [89c39ac8] __delay at 803b5be4
-  #1 [89c39ac8] do_raw_spin_lock at 8008fdcc
-  #2 [89c39af8] try_to_wake_up at 8006e47c
-  #3 [89c39b38] pollwake at 8018eab0
-  #4 [89c39b68] __wake_up_common at 800879f4
-  #5 [89c39b98] __wake_up at 800880e4
-  #6 [89c39bc8] perf_event_wakeup at 8012109c
-  #7 [89c39be8] perf_pending_event at 80121184
-  #8 [89c39c08] irq_work_run_list at 801151f0
-  #9 [89c39c38] irq_work_run at 80115274
- #10 [89c39c50] mipsxx_pmu_handle_shared_irq at 8002cc7c
+buf2[] is intentionally only 3 elements so that the last element is the
+median once 5 samples have been inserted, so explicitly prevent the
+possibility of comparing against the 4th element rather than extending
+the array.
 
- PID: 1481   TASK: 8eaac6a8  CPU: 3   COMMAND: "process"
-  #0 [8de7f900] do_raw_write_lock at 800900e0
-  #1 [8de7f918] perf_event_context_sched_in at 80122310
-  #2 [8de7f938] __perf_event_task_sched_in at 80122608
-  #3 [8de7f958] finish_task_switch at 8006b8a4
-  #4 [8de7f998] __schedule at 805e4dc4
-  #5 [8de7f9f8] schedule at 805e5558
-  #6 [8de7fa10] schedule_hrtimeout_range_clock at 805e9984
-  #7 [8de7fa70] poll_schedule_timeout at 8018e8f8
-  #8 [8de7fa88] do_select at 8018f338
-  #9 [8de7fd88] core_sys_select at 8018f5cc
- #10 [8de7fee0] sys_select at 8018f854
- #11 [8de7ff28] syscall_common at 80028fc8
-
-The lock seems to be there to protect the hardware counters so there is
-no need to hold it across irq_work_run().
-
-Signed-off-by: Rabin Vincent <rabinv@axis.com>
+Fixes: 1fa405552e33f2 ("MIPS: cevt-r4k: Dynamically calculate min_delta_ns")
+Reported-by: Rabin Vincent <rabinv@axis.com>
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Tested-by: Rabin Vincent <rabinv@axis.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+Cc: <stable@vger.kernel.org> # 4.7.x-
 ---
- arch/mips/kernel/perf_event_mipsxx.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/mips/kernel/cevt-r4k.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index 8c35b31..9452b02 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -1446,6 +1446,11 @@ static int mipsxx_pmu_handle_shared_irq(void)
- 	HANDLE_COUNTER(0)
- 	}
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 804d2a2a19fe..dd6a18bc10ab 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -80,7 +80,7 @@ static unsigned int calculate_min_delta(void)
+ 		}
  
-+#ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
-+	read_unlock(&pmuint_rwlock);
-+#endif
-+	resume_local_counters();
-+
- 	/*
- 	 * Do all the work for the pending perf events. We can do this
- 	 * in here because the performance counter interrupt is a regular
-@@ -1454,10 +1459,6 @@ static int mipsxx_pmu_handle_shared_irq(void)
- 	if (handled == IRQ_HANDLED)
- 		irq_work_run();
- 
--#ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
--	read_unlock(&pmuint_rwlock);
--#endif
--	resume_local_counters();
- 	return handled;
- }
- 
+ 		/* Sorted insert of 75th percentile into buf2 */
+-		for (k = 0; k < i; ++k) {
++		for (k = 0; k < i && k < ARRAY_SIZE(buf2); ++k) {
+ 			if (buf1[ARRAY_SIZE(buf1) - 1] < buf2[k]) {
+ 				l = min_t(unsigned int,
+ 					  i, ARRAY_SIZE(buf2) - 1);
 -- 
-2.7.0
+git-series 0.8.10

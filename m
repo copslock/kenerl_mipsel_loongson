@@ -1,54 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 13:44:57 +0200 (CEST)
-Received: from mail-it0-x22c.google.com ([IPv6:2607:f8b0:4001:c0b::22c]:35656
-        "EHLO mail-it0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991976AbdDFLouu74hc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 13:44:50 +0200
-Received: by mail-it0-x22c.google.com with SMTP id y18so99204119itc.0
-        for <linux-mips@linux-mips.org>; Thu, 06 Apr 2017 04:44:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 14:49:27 +0200 (CEST)
+Received: from mail-pg0-x232.google.com ([IPv6:2607:f8b0:400e:c05::232]:34862
+        "EHLO mail-pg0-x232.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990600AbdDFMtTDwpmi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 14:49:19 +0200
+Received: by mail-pg0-x232.google.com with SMTP id 81so35566580pgh.2
+        for <linux-mips@linux-mips.org>; Thu, 06 Apr 2017 05:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=h4t5D9FZ/fTmyXB1GhhWmHOfMAU8KDufoo2MeCAkzvw=;
-        b=Oa9UJpTiWZGTrhLZVSIY8NAvFYicrN8eq1xfEltMU1ldNYx7uCKeP1QdAFkwRldH6b
-         vmvfEn/kk/4omvkNP5GGefCL93OGeRIw383d0WrXfkJwkIG1/k9kxfHzNVscwf2xst83
-         rlZvGgaytBKY+3brBJIEs7G+4p7UAbMYT6rz0=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=4rJBob+GPYFpJvmGHphbfLug5L8LzlwWwaFBFgk5NRI=;
+        b=eFT631Z3vhkNm6NcSlb7GTp//lcfuN41Fd2kjm1331Y2W8nCJWtZJeD3bojWN7jx+d
+         d94zDWFA6r43URLLgUixakXPDLpJ8vulTFof+nBeXfJ9iVCgM48BeQgWfTtmmxPBY2fr
+         zCKAN5YV4p+20/Af8uWt7Jqv130IFnR2aIjZQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=h4t5D9FZ/fTmyXB1GhhWmHOfMAU8KDufoo2MeCAkzvw=;
-        b=ntz7gGa2FfSik84BGftTu1T74K+BfqVYGDOyDqBaOr4Gh62+NqPlSaXh56gpIk03hg
-         Ony1wCqk2/2G7b3Ehr1ro1ru3+Bw0rS72gyONNn6yZWmNd1q3oMYqmBZCmqbijhYjyFX
-         LFa5zM+UUxEUz1AjI+cwcIcZhtOQJyppcePveGvvDfmfN+iWnNMhyARJW/BiyFBqoF3v
-         SdsSeml+6aoMnshs/DUkjRnpTzn/+ZvpYPszWwp16WpmIT9k43tk8z4y58fHYjfW2cXr
-         d06rbvwPaJZaBrwCmqmxLLSpPLVqOq2/R8aFPZN1xEmWuGjDk2jWjH7lNYqPW7bTjfJD
-         Jb/Q==
-X-Gm-Message-State: AFeK/H1uL7y2HGoIfntjrkHuieioqkbqnr+lykQQf25qi2OoQxlu+Iyp
-        IOtf8L4k10WYW6A6NzOT4g1TFsW/U/lO
-X-Received: by 10.36.60.82 with SMTP id m79mr26294068ita.107.1491479084952;
- Thu, 06 Apr 2017 04:44:44 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.36.33.200 with HTTP; Thu, 6 Apr 2017 04:44:04 -0700 (PDT)
-In-Reply-To: <20170406112517.GR31606@jhogan-linux.le.imgtec.org>
-References: <1491388344-13521-1-git-send-email-amit.pundir@linaro.org>
- <1491388344-13521-5-git-send-email-amit.pundir@linaro.org>
- <20170406092947.GQ31606@jhogan-linux.le.imgtec.org> <CAMi1Hd1c=yA=mmEwpUechAvquv9intSGePtyQkbSH1L-4N_UUA@mail.gmail.com>
- <20170406112517.GR31606@jhogan-linux.le.imgtec.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=4rJBob+GPYFpJvmGHphbfLug5L8LzlwWwaFBFgk5NRI=;
+        b=Zy4tYIbMQm1jOYLZmWjc20F36BIPNsv9i3M6Vxwe3DYZlsyDb2C7B26jrbCKyXfKzz
+         tsAHLsfpy6x4kMG7H+30F7IV045dPeFURgJl0CvgejK2JMOcnXMqNMyI5eQ4rWgOHDM+
+         YMvZaSJSfHRPcRY/v7UKapRd+c4tQQmhQDQN+AARaEC8pij7vkwPFsyzLyLlTEvkFkfb
+         6li/lO+q90C0ha3g/B+jHFdLg11onnGe9NCIqUaU7cn1lxhyfH86WHpLRdUvTg4v5Scz
+         UsyCkGhiRsL7efzcTABt8UDGBPP1S6cwTheEDDwBuuaLF0PdGwaObu74hU+awxgRkziA
+         AmCQ==
+X-Gm-Message-State: AFeK/H1uYNY5XZk4yTH52b0EaTrsPynKskAPKGVqCIkJOZw2EUCqFOZex5DktmLGTlg9cxn4
+X-Received: by 10.98.102.88 with SMTP id a85mr36390080pfc.33.1491482950163;
+        Thu, 06 Apr 2017 05:49:10 -0700 (PDT)
+Received: from localhost.localdomain ([106.51.240.246])
+        by smtp.gmail.com with ESMTPSA id n7sm3892564pfn.0.2017.04.06.05.49.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 06 Apr 2017 05:49:09 -0700 (PDT)
 From:   Amit Pundir <amit.pundir@linaro.org>
-Date:   Thu, 6 Apr 2017 17:14:04 +0530
-Message-ID: <CAMi1Hd1vYOb33TQV0D99r+dUgs2Gz0V0L74Y-6bHDKj6s60c9A@mail.gmail.com>
-Subject: Re: [PATCH v2 for-4.9 04/32] MIPS: Lantiq: Fix cascaded IRQ setup
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Felix Fietkau <nbd@nbd.name>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
+To:     gregkh@linuxfoundation.org
+Cc:     stable@vger.kernel.org, james.hogan@imgtec.com,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Aaron Tomlin <atomlin@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH for-4.4 1/7] MIPS: Introduce irq_stack
+Date:   Thu,  6 Apr 2017 18:18:54 +0530
+Message-Id: <1491482940-1163-2-git-send-email-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1491482940-1163-1-git-send-email-amit.pundir@linaro.org>
+References: <1491482940-1163-1-git-send-email-amit.pundir@linaro.org>
 Return-Path: <amit.pundir@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57584
+X-archive-position: 57585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -65,51 +70,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 6 April 2017 at 16:55, James Hogan <james.hogan@imgtec.com> wrote:
-> On Thu, Apr 06, 2017 at 04:23:24PM +0530, Amit Pundir wrote:
->> On 6 April 2017 at 14:59, James Hogan <james.hogan@imgtec.com> wrote:
->> > Is there a particular reason this is desired in stable? I was under the
->> > impression it was only helpful in the presence of a bug in the separate
->> > IRQ stack stuff in 4.11, which was fixed in the above mentioned commit
->> > de856416e714 ("MIPS: IRQ Stack: Fix erroneous jal to
->> > plat_irq_dispatch"), and otherwise just a nice to have cleanup.
->>
->> I picked up this patch from Lede source tree
->> https://github.com/lede-project/source/ for stable 4.9.
->>
->> >
->> > If you've cherry picked the IRQ stack work, have you also cherry-picked
->> > de856416e714?
->>
->> Thanks for pointing it out. I indeed missed out on picking
->> de856416e714 ("MIPS: IRQ Stack: Fix erroneous jal to
->> plat_irq_dispatch") and dda45f701c9d ("MIPS: Switch to the irq_stack
->> in interrupts"). Should I pick them too for 4.9/4.10 stable or drop
->> these 3 IRQ stack patches altogether if they are not stable material?
->
-> I'd definitely drop this one.
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-Yes I'd drop this lone survivor too. I'll send the complete batch separately.
+Allocate a per-cpu irq stack for use within interrupt handlers.
 
->
-> Greg said he doesn't object to accepting the IRQ stack work once its
-> been shaken out in mainline, at which point the fixes will be needed
-> too:
->
-> https://marc.info/?l=linux-mips&m=148449064421154&w=2
->
-> Though note that its more than just the one patch:
->
-> https://patchwork.linux-mips.org/project/linux-mips/list/?series=23&state=*
->
-> (I seem to remember somebody saying LEDE had applied these patches).
+Also add a utility function on_irq_stack to determine if a given stack
+pointer is within the irq stack for that cpu.
 
-I see all these patches in LEDE source too. Sorted out for both 4.4
-and 4.9 already. I'll send them on stable shortly.
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Acked-by: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Chris Metcalf <cmetcalf@mellanox.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: James Hogan <james.hogan@imgtec.com>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Aaron Tomlin <atomlin@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/14740/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+(cherry picked from commit fe8bd18ffea5327344d4ec2bf11f47951212abd0)
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+---
+ arch/mips/include/asm/irq.h    | 12 ++++++++++++
+ arch/mips/kernel/asm-offsets.c |  1 +
+ arch/mips/kernel/irq.c         | 11 +++++++++++
+ 3 files changed, 24 insertions(+)
 
-Regards,
-Amit Pundir
-
->
-> Cheers
-> James
+diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
+index 15e0fec..ebb9efb 100644
+--- a/arch/mips/include/asm/irq.h
++++ b/arch/mips/include/asm/irq.h
+@@ -17,6 +17,18 @@
+ 
+ #include <irq.h>
+ 
++#define IRQ_STACK_SIZE			THREAD_SIZE
++
++extern void *irq_stack[NR_CPUS];
++
++static inline bool on_irq_stack(int cpu, unsigned long sp)
++{
++	unsigned long low = (unsigned long)irq_stack[cpu];
++	unsigned long high = low + IRQ_STACK_SIZE;
++
++	return (low <= sp && sp <= high);
++}
++
+ #ifdef CONFIG_I8259
+ static inline int irq_canonicalize(int irq)
+ {
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+index 154e203..ec053ce 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -101,6 +101,7 @@ void output_thread_info_defines(void)
+ 	OFFSET(TI_REGS, thread_info, regs);
+ 	DEFINE(_THREAD_SIZE, THREAD_SIZE);
+ 	DEFINE(_THREAD_MASK, THREAD_MASK);
++	DEFINE(_IRQ_STACK_SIZE, IRQ_STACK_SIZE);
+ 	BLANK();
+ }
+ 
+diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
+index 8eb5af8..dc1180a 100644
+--- a/arch/mips/kernel/irq.c
++++ b/arch/mips/kernel/irq.c
+@@ -25,6 +25,8 @@
+ #include <linux/atomic.h>
+ #include <asm/uaccess.h>
+ 
++void *irq_stack[NR_CPUS];
++
+ /*
+  * 'what should we do if we get a hw irq event on an illegal vector'.
+  * each architecture has to answer this themselves.
+@@ -55,6 +57,15 @@ void __init init_IRQ(void)
+ 		irq_set_noprobe(i);
+ 
+ 	arch_init_irq();
++
++	for_each_possible_cpu(i) {
++		int irq_pages = IRQ_STACK_SIZE / PAGE_SIZE;
++		void *s = (void *)__get_free_pages(GFP_KERNEL, irq_pages);
++
++		irq_stack[i] = s;
++		pr_debug("CPU%d IRQ stack at 0x%p - 0x%p\n", i,
++			irq_stack[i], irq_stack[i] + IRQ_STACK_SIZE);
++	}
+ }
+ 
+ #ifdef CONFIG_DEBUG_STACKOVERFLOW
+-- 
+2.7.4

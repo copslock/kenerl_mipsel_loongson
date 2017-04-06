@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 10:43:23 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:53594 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 10:47:36 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:55774 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990519AbdDFInP7JPjK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 10:43:15 +0200
+        by eddie.linux-mips.org with ESMTP id S23990519AbdDFIr0zn-3K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 10:47:26 +0200
 Received: from localhost (unknown [46.44.180.42])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id A78DC958;
-        Thu,  6 Apr 2017 08:43:09 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 26BF9A67;
+        Thu,  6 Apr 2017 08:47:19 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -13,12 +13,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
         James Hogan <james.hogan@imgtec.com>,
         Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.9 66/72] MIPS: Lantiq: Fix cascaded IRQ setup
-Date:   Thu,  6 Apr 2017 10:38:53 +0200
-Message-Id: <20170406083622.858979592@linuxfoundation.org>
+Subject: [PATCH 4.10 73/81] MIPS: Lantiq: Fix cascaded IRQ setup
+Date:   Thu,  6 Apr 2017 10:39:05 +0200
+Message-Id: <20170406083627.254286815@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
-In-Reply-To: <20170406083619.775985942@linuxfoundation.org>
-References: <20170406083619.775985942@linuxfoundation.org>
+In-Reply-To: <20170406083624.322941631@linuxfoundation.org>
+References: <20170406083624.322941631@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -26,7 +26,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57576
+X-archive-position: 57577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,7 +43,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

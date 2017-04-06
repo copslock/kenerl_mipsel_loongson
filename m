@@ -1,51 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 13:25:29 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:60605 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23990600AbdDFLZXSvsuc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 13:25:23 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 88DAF41F8D68;
-        Thu,  6 Apr 2017 13:31:33 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Thu, 06 Apr 2017 13:31:33 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Thu, 06 Apr 2017 13:31:33 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 40D728B9C15C6;
-        Thu,  6 Apr 2017 12:25:14 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 6 Apr
- 2017 12:25:17 +0100
-Date:   Thu, 6 Apr 2017 12:25:17 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Amit Pundir <amit.pundir@linaro.org>
-CC:     <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Felix Fietkau <nbd@nbd.name>, <linux-mips@linux-mips.org>
-Subject: Re: [PATCH v2 for-4.9 04/32] MIPS: Lantiq: Fix cascaded IRQ setup
-Message-ID: <20170406112517.GR31606@jhogan-linux.le.imgtec.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 13:44:57 +0200 (CEST)
+Received: from mail-it0-x22c.google.com ([IPv6:2607:f8b0:4001:c0b::22c]:35656
+        "EHLO mail-it0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991976AbdDFLouu74hc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 13:44:50 +0200
+Received: by mail-it0-x22c.google.com with SMTP id y18so99204119itc.0
+        for <linux-mips@linux-mips.org>; Thu, 06 Apr 2017 04:44:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=h4t5D9FZ/fTmyXB1GhhWmHOfMAU8KDufoo2MeCAkzvw=;
+        b=Oa9UJpTiWZGTrhLZVSIY8NAvFYicrN8eq1xfEltMU1ldNYx7uCKeP1QdAFkwRldH6b
+         vmvfEn/kk/4omvkNP5GGefCL93OGeRIw383d0WrXfkJwkIG1/k9kxfHzNVscwf2xst83
+         rlZvGgaytBKY+3brBJIEs7G+4p7UAbMYT6rz0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=h4t5D9FZ/fTmyXB1GhhWmHOfMAU8KDufoo2MeCAkzvw=;
+        b=ntz7gGa2FfSik84BGftTu1T74K+BfqVYGDOyDqBaOr4Gh62+NqPlSaXh56gpIk03hg
+         Ony1wCqk2/2G7b3Ehr1ro1ru3+Bw0rS72gyONNn6yZWmNd1q3oMYqmBZCmqbijhYjyFX
+         LFa5zM+UUxEUz1AjI+cwcIcZhtOQJyppcePveGvvDfmfN+iWnNMhyARJW/BiyFBqoF3v
+         SdsSeml+6aoMnshs/DUkjRnpTzn/+ZvpYPszWwp16WpmIT9k43tk8z4y58fHYjfW2cXr
+         d06rbvwPaJZaBrwCmqmxLLSpPLVqOq2/R8aFPZN1xEmWuGjDk2jWjH7lNYqPW7bTjfJD
+         Jb/Q==
+X-Gm-Message-State: AFeK/H1uL7y2HGoIfntjrkHuieioqkbqnr+lykQQf25qi2OoQxlu+Iyp
+        IOtf8L4k10WYW6A6NzOT4g1TFsW/U/lO
+X-Received: by 10.36.60.82 with SMTP id m79mr26294068ita.107.1491479084952;
+ Thu, 06 Apr 2017 04:44:44 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.36.33.200 with HTTP; Thu, 6 Apr 2017 04:44:04 -0700 (PDT)
+In-Reply-To: <20170406112517.GR31606@jhogan-linux.le.imgtec.org>
 References: <1491388344-13521-1-git-send-email-amit.pundir@linaro.org>
  <1491388344-13521-5-git-send-email-amit.pundir@linaro.org>
- <20170406092947.GQ31606@jhogan-linux.le.imgtec.org>
- <CAMi1Hd1c=yA=mmEwpUechAvquv9intSGePtyQkbSH1L-4N_UUA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="NphB68aIrRU2wdue"
-Content-Disposition: inline
-In-Reply-To: <CAMi1Hd1c=yA=mmEwpUechAvquv9intSGePtyQkbSH1L-4N_UUA@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+ <20170406092947.GQ31606@jhogan-linux.le.imgtec.org> <CAMi1Hd1c=yA=mmEwpUechAvquv9intSGePtyQkbSH1L-4N_UUA@mail.gmail.com>
+ <20170406112517.GR31606@jhogan-linux.le.imgtec.org>
+From:   Amit Pundir <amit.pundir@linaro.org>
+Date:   Thu, 6 Apr 2017 17:14:04 +0530
+Message-ID: <CAMi1Hd1vYOb33TQV0D99r+dUgs2Gz0V0L74Y-6bHDKj6s60c9A@mail.gmail.com>
+Subject: Re: [PATCH v2 for-4.9 04/32] MIPS: Lantiq: Fix cascaded IRQ setup
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felix Fietkau <nbd@nbd.name>, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <amit.pundir@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57583
+X-archive-position: 57584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: amit.pundir@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,69 +65,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---NphB68aIrRU2wdue
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 6 April 2017 at 16:55, James Hogan <james.hogan@imgtec.com> wrote:
+> On Thu, Apr 06, 2017 at 04:23:24PM +0530, Amit Pundir wrote:
+>> On 6 April 2017 at 14:59, James Hogan <james.hogan@imgtec.com> wrote:
+>> > Is there a particular reason this is desired in stable? I was under the
+>> > impression it was only helpful in the presence of a bug in the separate
+>> > IRQ stack stuff in 4.11, which was fixed in the above mentioned commit
+>> > de856416e714 ("MIPS: IRQ Stack: Fix erroneous jal to
+>> > plat_irq_dispatch"), and otherwise just a nice to have cleanup.
+>>
+>> I picked up this patch from Lede source tree
+>> https://github.com/lede-project/source/ for stable 4.9.
+>>
+>> >
+>> > If you've cherry picked the IRQ stack work, have you also cherry-picked
+>> > de856416e714?
+>>
+>> Thanks for pointing it out. I indeed missed out on picking
+>> de856416e714 ("MIPS: IRQ Stack: Fix erroneous jal to
+>> plat_irq_dispatch") and dda45f701c9d ("MIPS: Switch to the irq_stack
+>> in interrupts"). Should I pick them too for 4.9/4.10 stable or drop
+>> these 3 IRQ stack patches altogether if they are not stable material?
+>
+> I'd definitely drop this one.
 
-On Thu, Apr 06, 2017 at 04:23:24PM +0530, Amit Pundir wrote:
-> On 6 April 2017 at 14:59, James Hogan <james.hogan@imgtec.com> wrote:
-> > Is there a particular reason this is desired in stable? I was under the
-> > impression it was only helpful in the presence of a bug in the separate
-> > IRQ stack stuff in 4.11, which was fixed in the above mentioned commit
-> > de856416e714 ("MIPS: IRQ Stack: Fix erroneous jal to
-> > plat_irq_dispatch"), and otherwise just a nice to have cleanup.
->=20
-> I picked up this patch from Lede source tree
-> https://github.com/lede-project/source/ for stable 4.9.
->=20
-> >
-> > If you've cherry picked the IRQ stack work, have you also cherry-picked
-> > de856416e714?
->=20
-> Thanks for pointing it out. I indeed missed out on picking
-> de856416e714 ("MIPS: IRQ Stack: Fix erroneous jal to
-> plat_irq_dispatch") and dda45f701c9d ("MIPS: Switch to the irq_stack
-> in interrupts"). Should I pick them too for 4.9/4.10 stable or drop
-> these 3 IRQ stack patches altogether if they are not stable material?
+Yes I'd drop this lone survivor too. I'll send the complete batch separately.
 
-I'd definitely drop this one.
+>
+> Greg said he doesn't object to accepting the IRQ stack work once its
+> been shaken out in mainline, at which point the fixes will be needed
+> too:
+>
+> https://marc.info/?l=linux-mips&m=148449064421154&w=2
+>
+> Though note that its more than just the one patch:
+>
+> https://patchwork.linux-mips.org/project/linux-mips/list/?series=23&state=*
+>
+> (I seem to remember somebody saying LEDE had applied these patches).
 
-Greg said he doesn't object to accepting the IRQ stack work once its
-been shaken out in mainline, at which point the fixes will be needed
-too:
+I see all these patches in LEDE source too. Sorted out for both 4.4
+and 4.9 already. I'll send them on stable shortly.
 
-https://marc.info/?l=3Dlinux-mips&m=3D148449064421154&w=3D2
+Regards,
+Amit Pundir
 
-Though note that its more than just the one patch:
-
-https://patchwork.linux-mips.org/project/linux-mips/list/?series=3D23&state=
-=3D*
-
-(I seem to remember somebody saying LEDE had applied these patches).
-
-Cheers
-James
-
---NphB68aIrRU2wdue
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBCAAGBQJY5iWWAAoJEGwLaZPeOHZ69FAP/3BABcT9SgnjnaToUUtFIKmJ
-qdGOuZwpMx3uh2VKIWnZPwpRRNZVgbY8u2EYHn9FsMd+BbLwuTno4IoGscimHxJz
-GIuj/ZDi2fMyZVA5Dlf9vqdCCY9tFBQSF8+hOjt2ODdNwCGMCalnfOCEnAp2Qngn
-rvjM/KSpn1YaIP8Cx8JbSJgONcN/nuTD1hpmdh2ZSxyW/Bk2+1jIA4wXN4HGdzvO
-WuqdYydrZzPuf1s2kgTot2qR/gPlkC0sPH6MP4dLFvpKcNUEO6PC6Di2+9qid8AB
-I4HTQLAMyNTC/JwNPBqa5L8eVV1tMtiKjlLWmSdoTmjAXJRZ5wrc6MfOYGirrUwr
-OLutshLD8+u0NJ6A9CtuaNTmCYMxjYqHm+Oru6q9jLk8SwvQyYuSG53EGXnbCUnw
-cYJTyPr1O0/iyiUmbuMW+2frhq0suNLX2PAGvTIcoEhBZWT4Llth6NXXqTgzDl6u
-VVZyuaK/Xkrrrxj4a1fJcp1MYUVhb+INQmL1aJjiZ1cbkRzjOXsvCjsqDn42Z27Y
-zfBU+i4g0UGeNUgptUc6wZHSA2t4zXgDdcLLvUYsuRTh02bssxu+/0Eud129vFc8
-jkf10AMPaHTC96+c36cNvRCfm1Ix+Uq9TeVUyrqmjOtbLk9E9kEEnPpoKMruCenZ
-lB/7Em7ek9cqAvBTc39i
-=H5Uq
------END PGP SIGNATURE-----
-
---NphB68aIrRU2wdue--
+>
+> Cheers
+> James

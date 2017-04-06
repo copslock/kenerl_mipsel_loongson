@@ -1,77 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 16:40:49 +0200 (CEST)
-Received: from mail-wr0-x242.google.com ([IPv6:2a00:1450:400c:c0c::242]:36606
-        "EHLO mail-wr0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992974AbdDFOklOUqeN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 16:40:41 +0200
-Received: by mail-wr0-x242.google.com with SMTP id o21so6901535wrb.3;
-        Thu, 06 Apr 2017 07:40:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=jEfUxBvPVzgdnApcGivuC30FSWnxsC3QjMWlZLvy7Uo=;
-        b=ISGP/bgojgR2Oa5c18avz0yRLBzS+KcUzeiM3pA16dhbZ9fK4BQB0+RNXI8hmOHNhs
-         +jBq+xzz5L4m95K0ZgpeWo0fYSYZ7YoI3+8ZF5xA2t17GPS8LzyvF/wUq8QihcWrFHzc
-         rfToy4EpH9a7KbvN/2DJC8917SEvtCfnrgVBVuYX3AWaEaWg0ttlTgpA3yMd/l0jSuOH
-         Y67/uhA4qwXAjVKgbYvwuL3TKf6fSL1LDLj5TyooOuWaCbz2TIAW0CfFianSqqYD/xBN
-         1mY8Kj0qa+XMtEMGAj8LrWtcH7V5k/hWejkbbnqmNI3LXUfoHpEBacwXedu7ATuVFdQq
-         9LOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jEfUxBvPVzgdnApcGivuC30FSWnxsC3QjMWlZLvy7Uo=;
-        b=D40a7gngFdRnwEDXE63g5rfYGXwKJMdjq2d2oJpfoAKHNV4v8zt1uBGAGxLuTZdn7H
-         xh04NU5JC8H3sKglWirLmLKcOhfS7UEHX2tuf3ORB0tJIFpqGi/eRlUBgL6C+eT2zwak
-         sXrcwzT9UPPyQQ70zwKVBovLBkgT6bn3QQ9Up6BkLa4O0eE/fQXwk1H4b10eTG6wepr4
-         tiqVBknIQHQaNoyIAlXT5YutmllctJe70Vl4oS8luGNhg+v/437GXqsnP6WGdvXY3Z+G
-         9JbuNqWFnTuWxgtaWeeSUqgRlnqPeXEOv9E+IYBFUjU6odJHQlUpRhVewi0NNOScAo1/
-         geBg==
-X-Gm-Message-State: AFeK/H3XiiSoPRuSaU+/7kKCiWp5UabeCqIC9qQ5wsPHO2bBza1hsTxdcfa1Tlu/z5yx+Q==
-X-Received: by 10.223.170.66 with SMTP id q2mr29653038wrd.179.1491489635583;
-        Thu, 06 Apr 2017 07:40:35 -0700 (PDT)
-Received: from localhost (port-21936.pppoe.wtnet.de. [46.59.147.92])
-        by smtp.gmail.com with ESMTPSA id m14sm2397427wrb.13.2017.04.06.07.40.34
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 06 Apr 2017 07:40:34 -0700 (PDT)
-Date:   Thu, 6 Apr 2017 16:40:34 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>, james.hogan@imgtec.com,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v4 13/14] pwm: jz4740: Let the pinctrl driver configure
- the pins
-Message-ID: <20170406144034.GE8438@ulmo.ba.sec>
-References: <20170125185207.23902-2-paul@crapouillou.net>
- <20170402204244.14216-1-paul@crapouillou.net>
- <20170402204244.14216-14-paul@crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 17:59:10 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39216 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992974AbdDFP67zRexZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 17:58:59 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 4F237BD34AD5E;
+        Thu,  6 Apr 2017 16:58:49 +0100 (IST)
+Received: from mredfearn-linux.le.imgtec.org (10.150.130.83) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Thu, 6 Apr 2017 16:58:53 +0100
+From:   Matt Redfearn <matt.redfearn@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>
+CC:     <linux-mips@linux-mips.org>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        <linux-kernel@vger.kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v2] MIPS: Malta: Fix i8259 irqchip setup
+Date:   Thu, 6 Apr 2017 16:58:09 +0100
+Message-ID: <1491494289-22441-1-git-send-email-matt.redfearn@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="brEuL7wsLY8+TuWz"
-Content-Disposition: inline
-In-Reply-To: <20170402204244.14216-14-paul@crapouillou.net>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <thierry.reding@gmail.com>
+Content-Type: text/plain
+X-Originating-IP: [10.150.130.83]
+Return-Path: <Matt.Redfearn@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57607
+X-archive-position: 57608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thierry.reding@gmail.com
+X-original-sender: matt.redfearn@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -84,62 +44,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+Since commit 4cfffcfa5106 ("irqchip/mips-gic: Fix local interrupts"),
+the gic driver has been allocating virq's for local interrupts during
+its initialisation. Unfortunately on Malta platforms, these are the
+first IRQs to be allocated and so are allocated virqs 1-3. The i8259
+driver uses a legacy irq domain which expects to map virqs 0-15. Probing
+of that driver therefore fails because some of those virqs are already
+taken, with the warning:
 
---brEuL7wsLY8+TuWz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+WARNING: CPU: 0 PID: 0 at kernel/irq/irqdomain.c:344
+irq_domain_associate+0x1e8/0x228
+error: virq1 is already associated
+Modules linked in:
+CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.10.0-rc6-00011-g4cfffcfa5106 #368
+Stack : 00000000 00000000 807ae03a 0000004d 00000000 806c1010 0000000b ffff0a01
+        80725467 807258f4 806a64a4 00000000 00000000 807a9acc 00000100 80713e68
+        806d5598 8017593c 8072bf90 8072bf94 806ac358 00000000 806abb60 80713ce4
+        00000100 801b22d4 806d5598 8017593c 807ae03a 00000000 80713ce4 80720000
+        00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+        ...
+Call Trace:
+[<8010c480>] show_stack+0x88/0xa4
+[<80376758>] dump_stack+0x88/0xd0
+[<8012c4a8>] __warn+0x104/0x118
+[<8012c4ec>] warn_slowpath_fmt+0x30/0x3c
+[<8017edfc>] irq_domain_associate+0x1e8/0x228
+[<8017efd0>] irq_domain_add_legacy+0x7c/0xb0
+[<80764c50>] __init_i8259_irqs+0x64/0xa0
+[<80764ca4>] i8259_of_init+0x18/0x74
+[<8076ddc0>] of_irq_init+0x19c/0x310
+[<80752dd8>] arch_init_irq+0x28/0x19c
+[<80750a08>] start_kernel+0x2a8/0x434
 
-On Sun, Apr 02, 2017 at 10:42:43PM +0200, Paul Cercueil wrote:
-> Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
-> the pins being properly configured before the driver probes.
->=20
-> One inherent problem of this new approach is that the pinctrl framework
-> does not allow us to configure each pin on demand, when the various PWM
-> channels are requested or released. For instance, the PWM channels can
-> be configured from sysfs, which would require all PWM pins to be configur=
-ed
-> properly beforehand for the PWM function, eventually causing conflicts
-> with other platform or board drivers.
->=20
-> The proper solution here would be to modify the pwm-jz4740 driver to
-> handle only one PWM channel, and create an instance of this driver
-> for each one of the 8 PWM channels. Then, it could use the pinctrl
-> framework to dynamically configure the PWM pin it controls.
->=20
-> Until this can be done, the only jz4740 board supported upstream
-> (Qi lb60) can configure all of its connected PWM pins in PWM function
-> mode, since those are not used by other drivers nor by GPIOs on the
-> board.
->=20
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  drivers/pwm/pwm-jz4740.c | 29 -----------------------------
->  1 file changed, 29 deletions(-)
+Fix this by reserving the required i8259 virqs in malta platform code
+before probing any irq chips.
 
-Assuming that you want to take this through the pinctrl tree along with
-the remainder of the series:
+Fixes: 4cfffcfa5106 ("irqchip/mips-gic: Fix local interrupts")
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
+---
 
---brEuL7wsLY8+TuWz
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes in v2:
+Drop redundant CONFIG_I8259
 
------BEGIN PGP SIGNATURE-----
+ arch/mips/mti-malta/malta-int.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAljmU2EACgkQ3SOs138+
-s6HGABAApLsMiPuePBh0cJc9OAijswAsVlj72HCTmH1JA3qrEfhOVWZxltlReNwi
-z9upRVFfXOAux8PGiJT+0N/z5Zrkwu/haho/al14XxloMx4DSW4UWkeBAVyqBkba
-N6btN6WY2TLAMi7gav0GWbXFhspUJCncB+HqK2wmXyAhQJfBjMQ2Et1OpniwQ5fe
-v60TCWUjBY7dZtgtZ5I80tQKjYnZC6hLQoXZcBwTNvQbeIM3sl9cymdPbMXVIJH4
-dzxud0NQLfx1flI0KlEI35gpRAAfinGr5XqUYipP1JtsegR51uvpQdQ6l2WdGcBV
-9mICw0SZnFuELmPzAYXFjKEYvmOFLB9kMgVHISOgCCwFtJfIH4slY27lZLLvmUkg
-y/erHU6r8KQfjkVdxNiMcktqMOoAoHaUpWfgsBL/kE3Am0aoXXL3AFEsKY8WXbDg
-qjN3dsSIdafpEngfpz6tyxbZfPeUkpYubI4+D9T4ov5SC9JeKuPLd6TTXnGtAntx
-FNhSfWilbcbkYG1r37LpNkW8xWo904JQ7G0pn7opGScBH92xGhV3+g0MBTlTfs/8
-t1fqhL3r7+z576vncJwup/hFZq2XrjqCWjizIHKwp2q7vj8JFyN1NXrwRp0CwfJt
-IwPgbk9MEqstyCKhNIpM4qoJvvmSTQS/SC3k2JvQVGkwjWiytNM=
-=QxS9
------END PGP SIGNATURE-----
-
---brEuL7wsLY8+TuWz--
+diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
+index cb675ec6f283..54f56d5a96c4 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -232,6 +232,17 @@ void __init arch_init_irq(void)
+ {
+ 	int corehi_irq;
+ 
++	/*
++	 * Preallocate the i8259's expected virq's here. Since irqchip_init()
++	 * will probe the irqchips in hierarchial order, i8259 is probed last.
++	 * If anything allocates a virq before the i8259 is probed, it will
++	 * be given one of the i8259's expected range and consequently setup
++	 * of the i8259 will fail.
++	 */
++	WARN(irq_alloc_descs(I8259A_IRQ_BASE, I8259A_IRQ_BASE,
++			    16, numa_node_id()) < 0,
++		"Cannot reserve i8259 virqs at IRQ%d\n", I8259A_IRQ_BASE);
++
+ 	i8259_set_poll(mips_pcibios_iack);
+ 	irqchip_init();
+ 
+-- 
+2.7.4

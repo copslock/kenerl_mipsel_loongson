@@ -1,52 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 15:17:00 +0200 (CEST)
-Received: from mail-pg0-x229.google.com ([IPv6:2607:f8b0:400e:c05::229]:35763
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 15:17:24 +0200 (CEST)
+Received: from mail-pg0-x229.google.com ([IPv6:2607:f8b0:400e:c05::229]:36421
         "EHLO mail-pg0-x229.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992183AbdDFNQc4oWZi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 15:16:32 +0200
-Received: by mail-pg0-x229.google.com with SMTP id 81so36231937pgh.2
-        for <linux-mips@linux-mips.org>; Thu, 06 Apr 2017 06:16:32 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S23993419AbdDFNQgA1Rli (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 15:16:36 +0200
+Received: by mail-pg0-x229.google.com with SMTP id g2so35552703pge.3
+        for <linux-mips@linux-mips.org>; Thu, 06 Apr 2017 06:16:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=QpTm2mstFzN49P7nRdltjahGOnEa2B/xZtj+f3QSx/o=;
-        b=Ly/tn45M0o8Pik9a+w+9BjkjP9iOScMSkpBHBY40Sci3ZzNkGgOT7+oi/k/IO7d2GF
-         gIeEDeV49ocRbojvPyXhrKHmfQLPhtmkAf4+6l7AeYPiywhlqJms7SiXYRkYcAM3GAzJ
-         Kv/seSI/yw2jur2PHsnGgZxoCxXDJVrUTEVWI=
+        bh=oNyvOih6c9AGh/s+I5OZj3Lb0Vucmuh8RcDftbFA2Bo=;
+        b=hySPdRWlTIW3uVuJSd//rIplcPUChjNOWvw/K9MbdDdVDvtd1Ujn6jVF5KgDSFY8Ah
+         GiVgocdHP+X8M24NUeGuTd30zokv5JNK+82BP7m8HlwczQO1ys+2iycXx1ufSNpHckMR
+         g6Hqz3gIVWnz3z/kdOSPj7pl9Z3ARGGeFk0Kg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=QpTm2mstFzN49P7nRdltjahGOnEa2B/xZtj+f3QSx/o=;
-        b=fY0o9M3h7lVHoAFXhk89AS++EPtT/Qz5iakMqxg8TXq/86Lg21/70XTYjeBPopmm1C
-         EzDuf7GT5sNRjC/XXRmFMF/WzggBKqc0dF8UlbNnaFzcr/o3BEoj1PZOMJJwr22Cqsq8
-         gd1iztj75n3TCPip79GOqhV5jon/pR8C6o0jKxA+QWn02U1jdNWdn1i14WLExLTGQSMT
-         c2nneMOJcYr67zsUfsK34bJuQDHRVLa6OtmxFWkVIyVPsBAO/yArW/jHnF61BfVArUUi
-         bWQ2Iw7644BdsfwfsDgxY9tHHodRgjkfD6WAw3Iw38vA/0UMuvpdQLnQ02LLqqdD2kDJ
-         29Pw==
-X-Gm-Message-State: AFeK/H17BC6LSY2a4QDg8K+eyUfUXebQ/SZbn1w5s1F73ijDHOcveqQbCB1yjCrjVKVXJbLu
-X-Received: by 10.98.192.151 with SMTP id g23mr35345892pfk.254.1491484587051;
-        Thu, 06 Apr 2017 06:16:27 -0700 (PDT)
+        bh=oNyvOih6c9AGh/s+I5OZj3Lb0Vucmuh8RcDftbFA2Bo=;
+        b=oXdyHcRg+ZG53WlIAtqasnI8QQ+tg696COX4cxOGyqFUaNwZjtuA1OPqQZ2sjM2AHX
+         tqWBdZKPvf/UtLjFZCP3kx8rsAGckkssf1kx7Y1ZqUgCeWqyNZafAgesxFkkQmacMMfo
+         wy0VcUDRBfxW3I1PBdmkdEmY9jTG4wkfXwD5L3IIjIKIKJ3FZgXTF2k/TgbPMyas++gR
+         N2T0T8c0/+oVkeECZUHuk1de7d7OGEjXkcjzGeGgknjHbzJW6e6u5m+O4+VPzkP0pkMR
+         DVB46uLSIhExKLtnFabK+wAWFHOOL6deZ5VCdk9TimDMybWk714I+KFT96jXJG37EnYe
+         rYpQ==
+X-Gm-Message-State: AFeK/H0IVb3kw3DG2CzMs3YRH2l26/P/MsQnJKTHVp2HFO28RhLTL0MaLxnKfJ1QrPtbdJhF
+X-Received: by 10.99.231.17 with SMTP id b17mr35926852pgi.55.1491484590115;
+        Thu, 06 Apr 2017 06:16:30 -0700 (PDT)
 Received: from localhost.localdomain ([106.51.240.246])
-        by smtp.gmail.com with ESMTPSA id y6sm4018940pgc.40.2017.04.06.06.16.22
+        by smtp.gmail.com with ESMTPSA id y6sm4018940pgc.40.2017.04.06.06.16.27
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Thu, 06 Apr 2017 06:16:26 -0700 (PDT)
+        Thu, 06 Apr 2017 06:16:29 -0700 (PDT)
 From:   Amit Pundir <amit.pundir@linaro.org>
 To:     gregkh@linuxfoundation.org
 Cc:     stable@vger.kernel.org, james.hogan@imgtec.com,
         Matt Redfearn <matt.redfearn@imgtec.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Adam Buchbinder <adam.buchbinder@gmail.com>,
-        "Maciej W . Rozycki" <macro@imgtec.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Chris Metcalf <cmetcalf@mellanox.com>,
         Paul Burton <paul.burton@imgtec.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH for-4.9 2/7] MIPS: Stack unwinding while on IRQ stack
-Date:   Thu,  6 Apr 2017 18:46:08 +0530
-Message-Id: <1491484573-6228-3-git-send-email-amit.pundir@linaro.org>
+Subject: [PATCH for-4.9 3/7] MIPS: Only change $28 to thread_info if coming from user mode
+Date:   Thu,  6 Apr 2017 18:46:09 +0530
+Message-Id: <1491484573-6228-4-git-send-email-amit.pundir@linaro.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1491484573-6228-1-git-send-email-amit.pundir@linaro.org>
 References: <1491484573-6228-1-git-send-email-amit.pundir@linaro.org>
@@ -54,7 +48,7 @@ Return-Path: <amit.pundir@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57593
+X-archive-position: 57594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -73,63 +67,61 @@ X-list: linux-mips
 
 From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-Within unwind stack, check if the stack pointer being unwound is within
-the CPU's irq_stack and if so use that page rather than the task's stack
-page.
+The SAVE_SOME macro is used to save the execution context on all
+exceptions.
+If an exception occurs while executing user code, the stack is switched
+to the kernel's stack for the current task, and register $28 is switched
+to point to the current_thread_info, which is at the bottom of the stack
+region.
+If the exception occurs while executing kernel code, the stack is left,
+and this change ensures that register $28 is not updated. This is the
+correct behaviour when the kernel can be executing on the separate irq
+stack, because the thread_info will not be at the base of it.
+
+With this change, register $28 is only switched to it's kernel
+conventional usage of the currrent thread info pointer at the point at
+which execution enters kernel space. Doing it on every exception was
+redundant, but OK without an IRQ stack, but will be erroneous once that
+is introduced.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 Acked-by: Jason A. Donenfeld <jason@zx2c4.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Adam Buchbinder <adam.buchbinder@gmail.com>
-Cc: Maciej W. Rozycki <macro@imgtec.com>
-Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc: Chris Metcalf <cmetcalf@mellanox.com>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Jiri Slaby <jslaby@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14741/
+Patchwork: https://patchwork.linux-mips.org/patch/14742/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-(cherry picked from commit d42d8d106b0275b027c1e8992c42aecf933436ea)
+(cherry picked from commit 510d86362a27577f5ee23f46cfb354ad49731e61)
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 ---
- arch/mips/kernel/process.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/stackframe.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 1652f36..fbbf5fc 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -33,6 +33,7 @@
- #include <asm/dsemul.h>
- #include <asm/dsp.h>
- #include <asm/fpu.h>
-+#include <asm/irq.h>
- #include <asm/msa.h>
- #include <asm/pgtable.h>
- #include <asm/mipsregs.h>
-@@ -556,7 +557,19 @@ EXPORT_SYMBOL(unwind_stack_by_address);
- unsigned long unwind_stack(struct task_struct *task, unsigned long *sp,
- 			   unsigned long pc, unsigned long *ra)
- {
--	unsigned long stack_page = (unsigned long)task_stack_page(task);
-+	unsigned long stack_page = 0;
-+	int cpu;
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index eebf395..2f182bd 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -216,12 +216,19 @@
+ 		LONG_S	$25, PT_R25(sp)
+ 		LONG_S	$28, PT_R28(sp)
+ 		LONG_S	$31, PT_R31(sp)
 +
-+	for_each_possible_cpu(cpu) {
-+		if (on_irq_stack(cpu, *sp)) {
-+			stack_page = (unsigned long)irq_stack[cpu];
-+			break;
-+		}
-+	}
++		/* Set thread_info if we're coming from user mode */
++		mfc0	k0, CP0_STATUS
++		sll	k0, 3		/* extract cu0 bit */
++		bltz	k0, 9f
 +
-+	if (!stack_page)
-+		stack_page = (unsigned long)task_stack_page(task);
-+
- 	return unwind_stack_by_address(stack_page, sp, pc, ra);
- }
+ 		ori	$28, sp, _THREAD_MASK
+ 		xori	$28, _THREAD_MASK
+ #ifdef CONFIG_CPU_CAVIUM_OCTEON
+ 		.set    mips64
+ 		pref    0, 0($28)       /* Prefetch the current pointer */
  #endif
++9:
+ 		.set	pop
+ 		.endm
+ 
 -- 
 2.7.4

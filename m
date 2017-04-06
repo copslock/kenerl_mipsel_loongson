@@ -1,36 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 10:47:36 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:55774 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990519AbdDFIr0zn-3K (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2017 10:47:26 +0200
-Received: from localhost (unknown [46.44.180.42])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 26BF9A67;
-        Thu,  6 Apr 2017 08:47:19 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        John Crispin <john@phrozen.org>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2017 10:49:12 +0200 (CEST)
+Received: from mga06.intel.com ([134.134.136.31]:32360 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990519AbdDFItEL3bHK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Apr 2017 10:49:04 +0200
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP; 06 Apr 2017 01:49:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.37,283,1488873600"; 
+   d="scan'208";a="842574461"
+Received: from jnikula-mobl.fi.intel.com (HELO localhost) ([10.237.72.162])
+  by FMSMGA003.fm.intel.com with ESMTP; 06 Apr 2017 01:48:49 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Sean Paul <seanpaul@chromium.org>,
+        David Airlie <airlied@linux.ie>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Jes Sorensen <jes@trained-monkey.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        "David S. Miller" <davem@davemloft.net>,
         James Hogan <james.hogan@imgtec.com>,
-        Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.10 73/81] MIPS: Lantiq: Fix cascaded IRQ setup
-Date:   Thu,  6 Apr 2017 10:39:05 +0200
-Message-Id: <20170406083627.254286815@linuxfoundation.org>
-X-Mailer: git-send-email 2.12.2
-In-Reply-To: <20170406083624.322941631@linuxfoundation.org>
-References: <20170406083624.322941631@linuxfoundation.org>
-User-Agent: quilt/0.65
+        Paul Burton <paul.burton@imgtec.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Mugunthan V N <mugunthanvnm@ti.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Jarod Wilson <jarod@redhat.com>,
+        Florian Westphal <fw@strlen.de>,
+        Antonio Quartulli <a@unstable.cc>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Kejian Yan <yankejian@huawei.com>,
+        Daode Huang <huangdaode@hisilicon.com>,
+        Qianqian Xie <xieqianqian@huawei.com>,
+        Philippe Reynes <tremyfr@gmail.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Christian Gromm <christian.gromm@microchip.com>,
+        Andrey Shvetsov <andrey.shvetsov@k2l.de>,
+        Jason Litzinger <jlitzingerdev@gmail.com>,
+        WANG Cong <xiyou.wangcong@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-pm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
+        linux-hippi@sunsite.dk, devel@driverdev.osuosl.org,
+        kernel@stlinux.com, linux-serial@vger.kernel.org,
+        linux-decnet-user@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] format-security: move static strings to const
+In-Reply-To: <20170405214711.GA5711@beast>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20170405214711.GA5711@beast>
+Date:   Thu, 06 Apr 2017 11:48:48 +0300
+Message-ID: <87mvbtzztb.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain
+Return-Path: <jani.nikula@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57577
+X-archive-position: 57578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: jani.nikula@linux.intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,106 +89,40 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.10-stable review patch.  If anyone has any objections, please let me know.
+On Thu, 06 Apr 2017, Kees Cook <keescook@chromium.org> wrote:
+> While examining output from trial builds with -Wformat-security enabled,
+> many strings were found that should be defined as "const", or as a char
+> array instead of char pointer. This makes some static analysis easier,
+> by producing fewer false positives.
+>
+> As these are all trivial changes, it seemed best to put them all in
+> a single patch rather than chopping them up per maintainer.
 
-------------------
+> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+> index f6d4d9700734..1ff9d5912b83 100644
+> --- a/drivers/gpu/drm/drm_fb_helper.c
+> +++ b/drivers/gpu/drm/drm_fb_helper.c
+> @@ -2331,7 +2331,7 @@ EXPORT_SYMBOL(drm_fb_helper_hotplug_event);
+>  int __init drm_fb_helper_modinit(void)
+>  {
+>  #if defined(CONFIG_FRAMEBUFFER_CONSOLE_MODULE) && !defined(CONFIG_EXPERT)
+> -	const char *name = "fbcon";
+> +	const char name[] = "fbcon";
 
-From: Felix Fietkau <nbd@nbd.name>
+I'd always write the former out of habit. Why should I start using the
+latter? What makes it better?
 
-commit 6c356eda225e3ee134ed4176b9ae3a76f793f4dd upstream.
+What keeps the kernel from accumulating tons more of the former?
 
-With the IRQ stack changes integrated, the XRX200 devices started
-emitting a constant stream of kernel messages like this:
+Here's an interesting comparison of the generated code. I'm a bit
+surprised by what gcc does, I would have expected no difference, like
+clang. https://godbolt.org/g/OdqUvN
 
-[  565.415310] Spurious IRQ: CAUSE=0x1100c300
+The other changes adding const in this patch are, of course, good.
 
-This is caused by IP0 getting handled by plat_irq_dispatch() rather than
-its vectored interrupt handler, which is fixed by commit de856416e714
-("MIPS: IRQ Stack: Fix erroneous jal to plat_irq_dispatch").
 
-Fix plat_irq_dispatch() to handle non-vectored IPI interrupts correctly
-by setting up IP2-6 as proper chained IRQ handlers and calling do_IRQ
-for all MIPS CPU interrupts.
+BR,
+Jani.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: John Crispin <john@phrozen.org>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15077/
-[james.hogan@imgtec.com: tweaked commit message]
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- arch/mips/lantiq/irq.c |   36 ++++++++++++++++--------------------
- 1 file changed, 16 insertions(+), 20 deletions(-)
-
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -269,6 +269,11 @@ static void ltq_hw5_irqdispatch(void)
- DEFINE_HWx_IRQDISPATCH(5)
- #endif
- 
-+static void ltq_hw_irq_handler(struct irq_desc *desc)
-+{
-+	ltq_hw_irqdispatch(irq_desc_get_irq(desc) - 2);
-+}
-+
- #ifdef CONFIG_MIPS_MT_SMP
- void __init arch_init_ipiirq(int irq, struct irqaction *action)
- {
-@@ -313,23 +318,19 @@ static struct irqaction irq_call = {
- asmlinkage void plat_irq_dispatch(void)
- {
- 	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
--	unsigned int i;
-+	int irq;
- 
--	if ((MIPS_CPU_TIMER_IRQ == 7) && (pending & CAUSEF_IP7)) {
--		do_IRQ(MIPS_CPU_TIMER_IRQ);
--		goto out;
--	} else {
--		for (i = 0; i < MAX_IM; i++) {
--			if (pending & (CAUSEF_IP2 << i)) {
--				ltq_hw_irqdispatch(i);
--				goto out;
--			}
--		}
-+	if (!pending) {
-+		spurious_interrupt();
-+		return;
- 	}
--	pr_alert("Spurious IRQ: CAUSE=0x%08x\n", read_c0_status());
- 
--out:
--	return;
-+	pending >>= CAUSEB_IP;
-+	while (pending) {
-+		irq = fls(pending) - 1;
-+		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
-+		pending &= ~BIT(irq);
-+	}
- }
- 
- static int icu_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
-@@ -354,11 +355,6 @@ static const struct irq_domain_ops irq_d
- 	.map = icu_map,
- };
- 
--static struct irqaction cascade = {
--	.handler = no_action,
--	.name = "cascade",
--};
--
- int __init icu_of_init(struct device_node *node, struct device_node *parent)
- {
- 	struct device_node *eiu_node;
-@@ -390,7 +386,7 @@ int __init icu_of_init(struct device_nod
- 	mips_cpu_irq_init();
- 
- 	for (i = 0; i < MAX_IM; i++)
--		setup_irq(i + 2, &cascade);
-+		irq_set_chained_handler(i + 2, ltq_hw_irq_handler);
- 
- 	if (cpu_has_vint) {
- 		pr_info("Setting up vectored interrupts\n");
+-- 
+Jani Nikula, Intel Open Source Technology Center

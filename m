@@ -1,34 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Apr 2017 13:40:45 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:22485 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23990557AbdDGLki7e9gW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Apr 2017 13:40:38 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 8C443B5C82113;
-        Fri,  7 Apr 2017 12:40:30 +0100 (IST)
-Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
- HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
- 14.3.294.0; Fri, 7 Apr 2017 12:40:32 +0100
-From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Subject: [PATCH v2] MIPS: Use common outgoing-CPU-notification code
-Date:   Fri, 7 Apr 2017 13:40:28 +0200
-Message-ID: <1491565228-24218-1-git-send-email-marcin.nowakowski@imgtec.com>
-X-Mailer: git-send-email 2.7.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Apr 2017 15:57:50 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:58028 "EHLO
+        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993612AbdDGN5mtNYfJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Apr 2017 15:57:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.2.5]
-Return-Path: <Marcin.Nowakowski@imgtec.com>
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Fri, 07 Apr 2017 15:57:11 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Alexandre Courbot <gnurou@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v4 06/14] MIPS: jz4740: DTS: Add nodes for ingenic pinctrl
+ and gpio drivers
+In-Reply-To: <CACRpkdbXe1Xxk93jqLXBdEDwWOnWD+CkZrqvok-PcmWxzBbSZA@mail.gmail.com>
+References: <20170125185207.23902-2-paul@crapouillou.net>
+ <20170402204244.14216-1-paul@crapouillou.net>
+ <20170402204244.14216-7-paul@crapouillou.net>
+ <CACRpkdbXe1Xxk93jqLXBdEDwWOnWD+CkZrqvok-PcmWxzBbSZA@mail.gmail.com>
+Message-ID: <e4aaf8c3e8a54df2c5878f8e873e290f@crapouillou.net>
+X-Sender: paul@crapouillou.net
+Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57619
+X-archive-position: 57620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.nowakowski@imgtec.com
+X-original-sender: paul@crapouillou.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,48 +56,47 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Replace the open-coded CPU-offline notification with common code.
-In particular avoid calling scheduler code using RCU from an offline CPU
-that RCU is ignoring.
+Le 2017-04-07 11:44, Linus Walleij a écrit :
+> On Sun, Apr 2, 2017 at 10:42 PM, Paul Cercueil <paul@crapouillou.net> 
+> wrote:
+> 
+>> For a description of the pinctrl devicetree node, please read
+>> Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
+>> 
+>> For a description of the gpio devicetree nodes, please read
+>> Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+>> 
+>> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>> ---
+>>  arch/mips/boot/dts/ingenic/jz4740.dtsi | 61 
+>> ++++++++++++++++++++++++++++++++++
+>>  1 file changed, 61 insertions(+)
+>> 
+>>  v2: Changed the devicetree bindings to match the new driver
+>>  v3: No changes
+>>  v4: Update the bindings for the v4 version of the drivers
+> (...)
+> 
+>> +       pinctrl: ingenic-pinctrl@10010000 {
+>> +               compatible = "ingenic,jz4740-pinctrl";
+>> +               reg = <0x10010000 0x400>;
+>> +
+>> +               gpa: gpio-controller@0 {
+>> +                       compatible = "ingenic,gpio-bank-a", 
+>> "ingenic,jz4740-gpio";
+> 
+> As Sergei and Rob notes, the bank compatible properties look
+> a bit strange. Especially if they are all the same essentially.
+> 
+> I like Sergei's idea to simply use the reg property if what you want
+> is really a unique ID number. What do you think about this?
+> 
+> Yours,
+> Linus Walleij
 
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+I think the 'reg' property makes more sense, yes. I'll fix this in the 
+v5, this
+week-end. Do you think it can go in 4.12?
 
----
-v2: improved commit message
----
- arch/mips/kernel/smp-cps.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index 6d45f05..0aee71b 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -408,7 +408,6 @@ static int cps_cpu_disable(void)
- 	return 0;
- }
- 
--static DECLARE_COMPLETION(cpu_death_chosen);
- static unsigned cpu_death_sibling;
- static enum {
- 	CPU_DEATH_HALT,
-@@ -444,7 +443,7 @@ void play_dead(void)
- 	}
- 
- 	/* This CPU has chosen its way out */
--	complete(&cpu_death_chosen);
-+	(void)cpu_report_death();
- 
- 	if (cpu_death == CPU_DEATH_HALT) {
- 		vpe_id = cpu_vpe_id(&cpu_data[cpu]);
-@@ -493,8 +492,7 @@ static void cps_cpu_die(unsigned int cpu)
- 	int err;
- 
- 	/* Wait for the cpu to choose its way out */
--	if (!wait_for_completion_timeout(&cpu_death_chosen,
--					 msecs_to_jiffies(5000))) {
-+	if (!cpu_wait_death(cpu, 5)) {
- 		pr_err("CPU%u: didn't offline\n", cpu);
- 		return;
- 	}
--- 
-2.7.4
+Thanks,
+-Paul

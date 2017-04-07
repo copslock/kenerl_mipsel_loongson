@@ -1,72 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Apr 2017 11:44:45 +0200 (CEST)
-Received: from mail-io0-x230.google.com ([IPv6:2607:f8b0:4001:c06::230]:33309
-        "EHLO mail-io0-x230.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992517AbdDGJoiCoNlG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Apr 2017 11:44:38 +0200
-Received: by mail-io0-x230.google.com with SMTP id t68so12482547iof.0
-        for <linux-mips@linux-mips.org>; Fri, 07 Apr 2017 02:44:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=6+Jj3EAoP6gZP9L/9au7W3bkdlbiS2/OflhfyBzhyFk=;
-        b=U+GrBGNTQoKyqMylcFJ/yL4lUAD+2VypKar/asJqfnmiswbdxUCu11swu3PXTgcd/T
-         Mm3SPDwtemWtSp+lzIoAaONugJb2m+Qb4xUVkAuFNBgpYZvF0wIrJOli8+1bjg8AD8DB
-         +LD9xA6LUxg7HaXJNBuKlqnjZfUtAUwKjp1dk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=6+Jj3EAoP6gZP9L/9au7W3bkdlbiS2/OflhfyBzhyFk=;
-        b=i4b18ocKzyYP9EzkJfAtBVpggt8tynO3/545N3A6m9dH/4Aj8dnuK0Nu63NkOIjkRp
-         wS4pCEjveWOD/qyg5KQN53y6pTxkQ4/P1gN7szqQvzcshpJV80nuHYNnyyEiJ3AvmndM
-         iTcpi8DOwu+SSidvUdnF/2lL9T8Ru4RGIhpk7bMkKO8tRQJjVZgNps5bOoGmVrcQVsrI
-         piJJcvFiT6yc1dK4kAnF/q3pT7BkkHGkKDT7rgZE90xk5tnU16v4tYsFwnseyaoxBCC/
-         ivONiJe+S24nGtrx7kptrduRF5PYrqn/+7ZrJXa2AJk//VsmlDk8pTxmneI4PYKUUh8c
-         v9gg==
-X-Gm-Message-State: AFeK/H0a9c5JODSu67MQ36BYVvJxcHiHMbsMttBXNRYugo1bcvMQ12yy5bSAoCE86FvfnybUFCmPPfngjh/dR4yR
-X-Received: by 10.107.59.74 with SMTP id i71mr41917857ioa.151.1491558272217;
- Fri, 07 Apr 2017 02:44:32 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Apr 2017 12:13:15 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:17934 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23990557AbdDGKNIlMcbG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Apr 2017 12:13:08 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 5C737D7CBDEA7;
+        Fri,  7 Apr 2017 11:12:59 +0100 (IST)
+Received: from WR-NOWAKOWSKI.kl.imgtec.org (10.80.2.5) by
+ HHMAIL01.hh.imgtec.org (10.100.10.21) with Microsoft SMTP Server (TLS) id
+ 14.3.294.0; Fri, 7 Apr 2017 11:13:01 +0100
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Subject: [PATCH] MIPS: Use common outgoing-CPU-notification code
+Date:   Fri, 7 Apr 2017 12:12:54 +0200
+Message-ID: <1491559974-20197-1-git-send-email-marcin.nowakowski@imgtec.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Received: by 10.79.134.193 with HTTP; Fri, 7 Apr 2017 02:44:31 -0700 (PDT)
-In-Reply-To: <20170402204244.14216-7-paul@crapouillou.net>
-References: <20170125185207.23902-2-paul@crapouillou.net> <20170402204244.14216-1-paul@crapouillou.net>
- <20170402204244.14216-7-paul@crapouillou.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 7 Apr 2017 11:44:31 +0200
-Message-ID: <CACRpkdbXe1Xxk93jqLXBdEDwWOnWD+CkZrqvok-PcmWxzBbSZA@mail.gmail.com>
-Subject: Re: [PATCH v4 06/14] MIPS: jz4740: DTS: Add nodes for ingenic pinctrl
- and gpio drivers
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Alexandre Courbot <gnurou@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: text/plain
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57614
+X-archive-position: 57615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,36 +41,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Apr 2, 2017 at 10:42 PM, Paul Cercueil <paul@crapouillou.net> wrote:
+This commit removes the open-coded CPU-offline notification with new
+common code.  In particular, this change avoids calling scheduler code
+using RCU from an offline CPU that RCU is ignoring.
 
-> For a description of the pinctrl devicetree node, please read
-> Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
->
-> For a description of the gpio devicetree nodes, please read
-> Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  arch/mips/boot/dts/ingenic/jz4740.dtsi | 61 ++++++++++++++++++++++++++++++++++
->  1 file changed, 61 insertions(+)
->
->  v2: Changed the devicetree bindings to match the new driver
->  v3: No changes
->  v4: Update the bindings for the v4 version of the drivers
-(...)
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+---
+ arch/mips/kernel/smp-cps.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-> +       pinctrl: ingenic-pinctrl@10010000 {
-> +               compatible = "ingenic,jz4740-pinctrl";
-> +               reg = <0x10010000 0x400>;
-> +
-> +               gpa: gpio-controller@0 {
-> +                       compatible = "ingenic,gpio-bank-a", "ingenic,jz4740-gpio";
-
-As Sergei and Rob notes, the bank compatible properties look
-a bit strange. Especially if they are all the same essentially.
-
-I like Sergei's idea to simply use the reg property if what you want
-is really a unique ID number. What do you think about this?
-
-Yours,
-Linus Walleij
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index 6183ad8..51a18e9 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -404,7 +404,6 @@ static int cps_cpu_disable(void)
+ 	return 0;
+ }
+ 
+-static DECLARE_COMPLETION(cpu_death_chosen);
+ static unsigned cpu_death_sibling;
+ static enum {
+ 	CPU_DEATH_HALT,
+@@ -440,7 +439,7 @@ void play_dead(void)
+ 	}
+ 
+ 	/* This CPU has chosen its way out */
+-	complete(&cpu_death_chosen);
++	(void)cpu_report_death();
+ 
+ 	if (cpu_death == CPU_DEATH_HALT) {
+ 		vpe_id = cpu_vpe_id(&cpu_data[cpu]);
+@@ -489,8 +488,7 @@ static void cps_cpu_die(unsigned int cpu)
+ 	int err;
+ 
+ 	/* Wait for the cpu to choose its way out */
+-	if (!wait_for_completion_timeout(&cpu_death_chosen,
+-					 msecs_to_jiffies(5000))) {
++	if (!cpu_wait_death(cpu, 5)) {
+ 		pr_err("CPU%u: didn't offline\n", cpu);
+ 		return;
+ 	}
+-- 
+2.7.4

@@ -1,49 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Apr 2017 15:57:50 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:58028 "EHLO
-        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993612AbdDGN5mtNYfJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 Apr 2017 15:57:42 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Fri, 07 Apr 2017 15:57:11 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Alexandre Courbot <gnurou@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Apr 2017 02:13:44 +0200 (CEST)
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:56805 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993907AbdDHANhGzlno (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Apr 2017 02:13:37 +0200
+Received: from raspberrypi-3.musicnaut.iki.fi (85-76-102-201-nat.elisa-mobile.fi [85.76.102.201])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 8198F1A25F9;
+        Sat,  8 Apr 2017 03:13:35 +0300 (EEST)
+Date:   Sat, 8 Apr 2017 03:13:35 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     "Steven J. Hill" <Steven.Hill@cavium.com>
+Cc:     linux-mips@linux-mips.org, linux-mmc@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v4 06/14] MIPS: jz4740: DTS: Add nodes for ingenic pinctrl
- and gpio drivers
-In-Reply-To: <CACRpkdbXe1Xxk93jqLXBdEDwWOnWD+CkZrqvok-PcmWxzBbSZA@mail.gmail.com>
-References: <20170125185207.23902-2-paul@crapouillou.net>
- <20170402204244.14216-1-paul@crapouillou.net>
- <20170402204244.14216-7-paul@crapouillou.net>
- <CACRpkdbXe1Xxk93jqLXBdEDwWOnWD+CkZrqvok-PcmWxzBbSZA@mail.gmail.com>
-Message-ID: <e4aaf8c3e8a54df2c5878f8e873e290f@crapouillou.net>
-X-Sender: paul@crapouillou.net
-Return-Path: <paul@outils.crapouillou.net>
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH v9] mmc: OCTEON: Add host driver for OCTEON MMC
+ controller.
+Message-ID: <20170408001335.2eyajki3ujgomcz4@raspberrypi-3.musicnaut.iki.fi>
+References: <836c0ca9-18f0-f6b5-bb79-8d0301d54154@cavium.com>
+ <c1d0ccad-10e2-9d5d-8192-2bbd7d7357b3@cavium.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c1d0ccad-10e2-9d5d-8192-2bbd7d7357b3@cavium.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <aaro.koskinen@iki.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57620
+X-archive-position: 57621
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -56,47 +44,22 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Le 2017-04-07 11:44, Linus Walleij a écrit :
-> On Sun, Apr 2, 2017 at 10:42 PM, Paul Cercueil <paul@crapouillou.net> 
-> wrote:
-> 
->> For a description of the pinctrl devicetree node, please read
->> Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
->> 
->> For a description of the gpio devicetree nodes, please read
->> Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
->> 
->> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->> ---
->>  arch/mips/boot/dts/ingenic/jz4740.dtsi | 61 
->> ++++++++++++++++++++++++++++++++++
->>  1 file changed, 61 insertions(+)
->> 
->>  v2: Changed the devicetree bindings to match the new driver
->>  v3: No changes
->>  v4: Update the bindings for the v4 version of the drivers
-> (...)
-> 
->> +       pinctrl: ingenic-pinctrl@10010000 {
->> +               compatible = "ingenic,jz4740-pinctrl";
->> +               reg = <0x10010000 0x400>;
->> +
->> +               gpa: gpio-controller@0 {
->> +                       compatible = "ingenic,gpio-bank-a", 
->> "ingenic,jz4740-gpio";
-> 
-> As Sergei and Rob notes, the bank compatible properties look
-> a bit strange. Especially if they are all the same essentially.
-> 
-> I like Sergei's idea to simply use the reg property if what you want
-> is really a unique ID number. What do you think about this?
-> 
-> Yours,
-> Linus Walleij
+Hi,
 
-I think the 'reg' property makes more sense, yes. I'll fix this in the 
-v5, this
-week-end. Do you think it can go in 4.12?
+On Mon, Oct 03, 2016 at 08:18:59PM -0500, Steven J. Hill wrote:
+> On 09/19/2016 03:24 PM, Steven J. Hill wrote:
+> > The OCTEON MMC controller is currently found on cn61XX and cn71XX
+> > devices. Device parameters are configured from device tree data.
+> > eMMC, MMC and SD devices are supported. Tested on Cavium CN7130.
+> > 
+> > Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
+> > Acked-by: David Daney <david.daney@cavium.com>
+> 
+> Have any MMC maintainers gotten a chance to review our driver now
+> that v4.8 is out? Thanks.
 
-Thanks,
--Paul
+Also v4.9, v4.10 and v4.11 went by.
+
+I think you should resend the patch, to get this driver finally merged.
+
+A.

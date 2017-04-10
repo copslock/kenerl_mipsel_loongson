@@ -1,26 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:49:09 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36320 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:51:57 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37776 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993938AbdDJQprQHPFJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:45:47 +0200
+        by eddie.linux-mips.org with ESMTP id S23993949AbdDJQvtDptxJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:51:49 +0200
 Received: from localhost (084035110146.static.ipv4.infopact.nl [84.35.110.146])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 17C91B90;
-        Mon, 10 Apr 2017 16:45:40 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8E6E4B79;
+        Mon, 10 Apr 2017 16:51:42 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 053/152] MIPS: c-r4k: Fix Loongson-3s vcache/scache waysize calculation
-Date:   Mon, 10 Apr 2017 18:41:45 +0200
-Message-Id: <20170410164202.813467311@linuxfoundation.org>
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.10 053/110] MIPS: Force o32 fp64 support on 32bit MIPS64r6 kernels
+Date:   Mon, 10 Apr 2017 18:42:44 +0200
+Message-Id: <20170410164204.199974825@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
-In-Reply-To: <20170410164159.934755016@linuxfoundation.org>
-References: <20170410164159.934755016@linuxfoundation.org>
+In-Reply-To: <20170410164201.247583164@linuxfoundation.org>
+References: <20170410164201.247583164@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -28,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57650
+X-archive-position: 57651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,47 +42,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.9-stable review patch.  If anyone has any objections, please let me know.
+4.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhc@lemote.com>
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 0be032c190abcdcfa948082b6a1e0d461184ba4d upstream.
+commit 2e6c7747730296a6d4fd700894286db1132598c4 upstream.
 
-If scache.waysize is 0, r4k___flush_cache_all() will do nothing and
-then cause bugs. BTW, though vcache.waysize isn't being used by now,
-we also fix its calculation.
+When a 32-bit kernel is configured to support MIPS64r6 (CPU_MIPS64_R6),
+MIPS_O32_FP64_SUPPORT won't be selected as it should be because
+MIPS32_O32 is disabled (o32 is already the default ABI available on
+32-bit kernels).
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+This results in userland FP breakage as CP0_Status.FR is read-only 1
+since r6 (when an FPU is present) so __enable_fpu() will fail to clear
+FR. This causes the FPU emulator to get used which will incorrectly
+emulate 32-bit FPU registers.
+
+Force o32 fp64 support in this case by also selecting
+MIPS_O32_FP64_SUPPORT from CPU_MIPS64_R6 if 32BIT.
+
+Fixes: 4e9d324d4288 ("MIPS: Require O32 FP64 support for MIPS64 with O32 compat")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15756/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/15310/
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/mm/c-r4k.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1558,6 +1558,7 @@ static void probe_vcache(void)
- 	vcache_size = c->vcache.sets * c->vcache.ways * c->vcache.linesz;
- 
- 	c->vcache.waybit = 0;
-+	c->vcache.waysize = vcache_size / c->vcache.ways;
- 
- 	pr_info("Unified victim cache %ldkB %s, linesize %d bytes.\n",
- 		vcache_size >> 10, way_string[c->vcache.ways], c->vcache.linesz);
-@@ -1660,6 +1661,7 @@ static void __init loongson3_sc_init(voi
- 	/* Loongson-3 has 4 cores, 1MB scache for each. scaches are shared */
- 	scache_size *= 4;
- 	c->scache.waybit = 0;
-+	c->scache.waysize = scache_size / c->scache.ways;
- 	pr_info("Unified secondary cache %ldkB %s, linesize %d bytes.\n",
- 	       scache_size >> 10, way_string[c->scache.ways], c->scache.linesz);
- 	if (scache_size)
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1526,7 +1526,7 @@ config CPU_MIPS64_R6
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_MSA
+ 	select GENERIC_CSUM
+-	select MIPS_O32_FP64_SUPPORT if MIPS32_O32
++	select MIPS_O32_FP64_SUPPORT if 32BIT || MIPS32_O32
+ 	select HAVE_KVM
+ 	help
+ 	  Choose this option to build a kernel for release 6 or later of the

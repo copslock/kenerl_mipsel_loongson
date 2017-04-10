@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:51:57 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37776 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:52:24 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37782 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993949AbdDJQvtDptxJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:51:49 +0200
+        by eddie.linux-mips.org with ESMTP id S23993975AbdDJQvvCGuCJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:51:51 +0200
 Received: from localhost (084035110146.static.ipv4.infopact.nl [84.35.110.146])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 8E6E4B79;
-        Mon, 10 Apr 2017 16:51:42 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D23C0B7C;
+        Mon, 10 Apr 2017 16:51:44 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 4.10 053/110] MIPS: Force o32 fp64 support on 32bit MIPS64r6 kernels
-Date:   Mon, 10 Apr 2017 18:42:44 +0200
-Message-Id: <20170410164204.199974825@linuxfoundation.org>
+        stable@vger.kernel.org, John Crispin <john@phrozen.org>,
+        Daniel Golle <daniel@makrotopia.org>,
+        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>
+Subject: [PATCH 4.10 054/110] MIPS: ralink: Fix typos in rt3883 pinctrl
+Date:   Mon, 10 Apr 2017 18:42:45 +0200
+Message-Id: <20170410164204.253144928@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <20170410164201.247583164@linuxfoundation.org>
 References: <20170410164201.247583164@linuxfoundation.org>
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57651
+X-archive-position: 57652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,44 +46,42 @@ X-list: linux-mips
 
 ------------------
 
-From: James Hogan <james.hogan@imgtec.com>
+From: John Crispin <john@phrozen.org>
 
-commit 2e6c7747730296a6d4fd700894286db1132598c4 upstream.
+commit 7c5a3d813050ee235817b0220dd8c42359a9efd8 upstream.
 
-When a 32-bit kernel is configured to support MIPS64r6 (CPU_MIPS64_R6),
-MIPS_O32_FP64_SUPPORT won't be selected as it should be because
-MIPS32_O32 is disabled (o32 is already the default ABI available on
-32-bit kernels).
+There are two copy & paste errors in the definition of the 5GHz LNA and
+second ethernet pinmux.
 
-This results in userland FP breakage as CP0_Status.FR is read-only 1
-since r6 (when an FPU is present) so __enable_fpu() will fail to clear
-FR. This causes the FPU emulator to get used which will incorrectly
-emulate 32-bit FPU registers.
-
-Force o32 fp64 support in this case by also selecting
-MIPS_O32_FP64_SUPPORT from CPU_MIPS64_R6 if 32BIT.
-
-Fixes: 4e9d324d4288 ("MIPS: Require O32 FP64 support for MIPS64 with O32 compat")
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Paul Burton <paul.burton@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Fixes: f576fb6a0700 ("MIPS: ralink: cleanup the soc specific pinmux data")
+Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15310/
+Patchwork: https://patchwork.linux-mips.org/patch/15328/
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/ralink/rt3883.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1526,7 +1526,7 @@ config CPU_MIPS64_R6
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_MSA
- 	select GENERIC_CSUM
--	select MIPS_O32_FP64_SUPPORT if MIPS32_O32
-+	select MIPS_O32_FP64_SUPPORT if 32BIT || MIPS32_O32
- 	select HAVE_KVM
- 	help
- 	  Choose this option to build a kernel for release 6 or later of the
+--- a/arch/mips/ralink/rt3883.c
++++ b/arch/mips/ralink/rt3883.c
+@@ -36,7 +36,7 @@ static struct rt2880_pmx_func uartlite_f
+ static struct rt2880_pmx_func jtag_func[] = { FUNC("jtag", 0, 17, 5) };
+ static struct rt2880_pmx_func mdio_func[] = { FUNC("mdio", 0, 22, 2) };
+ static struct rt2880_pmx_func lna_a_func[] = { FUNC("lna a", 0, 32, 3) };
+-static struct rt2880_pmx_func lna_g_func[] = { FUNC("lna a", 0, 35, 3) };
++static struct rt2880_pmx_func lna_g_func[] = { FUNC("lna g", 0, 35, 3) };
+ static struct rt2880_pmx_func pci_func[] = {
+ 	FUNC("pci-dev", 0, 40, 32),
+ 	FUNC("pci-host2", 1, 40, 32),
+@@ -44,7 +44,7 @@ static struct rt2880_pmx_func pci_func[]
+ 	FUNC("pci-fnc", 3, 40, 32)
+ };
+ static struct rt2880_pmx_func ge1_func[] = { FUNC("ge1", 0, 72, 12) };
+-static struct rt2880_pmx_func ge2_func[] = { FUNC("ge1", 0, 84, 12) };
++static struct rt2880_pmx_func ge2_func[] = { FUNC("ge2", 0, 84, 12) };
+ 
+ static struct rt2880_pmx_group rt3883_pinmux_data[] = {
+ 	GRP("i2c", i2c_func, 1, RT3883_GPIO_MODE_I2C),

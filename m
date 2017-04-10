@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 17:34:49 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:45930 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993909AbdDJPdwj84aY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Apr 2017 17:33:52 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 77827AAB1;
-        Mon, 10 Apr 2017 15:33:52 +0000 (UTC)
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, John Crispin <john@phrozen.org>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 011/142] MIPS: ralink: Cosmetic change to prom_init().
-Date:   Mon, 10 Apr 2017 17:31:32 +0200
-Message-Id: <8c585d84626e76930725689a5e198c4d19220c4e.1491838390.git.jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:40:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:35806 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993911AbdDJQkkRiiiJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:40:40 +0200
+Received: from localhost (084035110146.static.ipv4.infopact.nl [84.35.110.146])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 70F20B80;
+        Mon, 10 Apr 2017 16:40:33 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 4.4 27/32] MIPS: Force o32 fp64 support on 32bit MIPS64r6 kernels
+Date:   Mon, 10 Apr 2017 18:39:17 +0200
+Message-Id: <20170410163843.079809660@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
-In-Reply-To: <d4b83d12d815bafc24064e91de353edb2478d8f7.1491838390.git.jslaby@suse.cz>
-References: <d4b83d12d815bafc24064e91de353edb2478d8f7.1491838390.git.jslaby@suse.cz>
-In-Reply-To: <cover.1491838390.git.jslaby@suse.cz>
-References: <cover.1491838390.git.jslaby@suse.cz>
-Return-Path: <jslaby@suse.cz>
+In-Reply-To: <20170410163839.055472822@linuxfoundation.org>
+References: <20170410163839.055472822@linuxfoundation.org>
+User-Agent: quilt/0.65
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57637
+X-archive-position: 57638
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jslaby@suse.cz
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,58 +42,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: John Crispin <john@phrozen.org>
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-3.12-stable review patch.  If anyone has any objections, please let me know.
+------------------
 
-===============
+From: James Hogan <james.hogan@imgtec.com>
 
-commit 9c48568b3692f1a56cbf1935e4eea835e6b185b1 upstream.
+commit 2e6c7747730296a6d4fd700894286db1132598c4 upstream.
 
-Over the years the code has been changed various times leading to
-argc/argv being defined in a different function to where we actually
-use the variables. Clean this up by moving them to prom_init_cmdline().
+When a 32-bit kernel is configured to support MIPS64r6 (CPU_MIPS64_R6),
+MIPS_O32_FP64_SUPPORT won't be selected as it should be because
+MIPS32_O32 is disabled (o32 is already the default ABI available on
+32-bit kernels).
 
-Signed-off-by: John Crispin <john@phrozen.org>
+This results in userland FP breakage as CP0_Status.FR is read-only 1
+since r6 (when an FPU is present) so __enable_fpu() will fail to clear
+FR. This causes the FPU emulator to get used which will incorrectly
+emulate 32-bit FPU registers.
+
+Force o32 fp64 support in this case by also selecting
+MIPS_O32_FP64_SUPPORT from CPU_MIPS64_R6 if 32BIT.
+
+Fixes: 4e9d324d4288 ("MIPS: Require O32 FP64 support for MIPS64 with O32 compat")
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Reviewed-by: Paul Burton <paul.burton@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14902/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
----
- arch/mips/ralink/prom.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Patchwork: https://patchwork.linux-mips.org/patch/15310/
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/arch/mips/ralink/prom.c b/arch/mips/ralink/prom.c
-index 9c64f029d047..87312dfcee38 100644
---- a/arch/mips/ralink/prom.c
-+++ b/arch/mips/ralink/prom.c
-@@ -24,8 +24,10 @@ const char *get_system_type(void)
- 	return soc_info.sys_type;
- }
- 
--static __init void prom_init_cmdline(int argc, char **argv)
-+static __init void prom_init_cmdline(void)
- {
-+	int argc;
-+	char **argv;
- 	int i;
- 
- 	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
-@@ -54,14 +56,11 @@ static __init void prom_init_cmdline(int argc, char **argv)
- 
- void __init prom_init(void)
- {
--	int argc;
--	char **argv;
--
- 	prom_soc_init(&soc_info);
- 
- 	pr_info("SoC Type: %s\n", get_system_type());
- 
--	prom_init_cmdline(argc, argv);
-+	prom_init_cmdline();
- }
- 
- void __init prom_free_prom_memory(void)
--- 
-2.12.2
+---
+ arch/mips/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1412,7 +1412,7 @@ config CPU_MIPS32_R6
+ 	select CPU_SUPPORTS_MSA
+ 	select GENERIC_CSUM
+ 	select HAVE_KVM
+-	select MIPS_O32_FP64_SUPPORT
++	select MIPS_O32_FP64_SUPPORT if 32BIT
+ 	help
+ 	  Choose this option to build a kernel for release 6 or later of the
+ 	  MIPS32 architecture.  New MIPS processors, starting with the Warrior

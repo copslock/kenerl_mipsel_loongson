@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 17:34:22 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:45921 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 17:34:49 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:45930 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993877AbdDJPdvHG0-Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 10 Apr 2017 17:33:51 +0200
+        id S23993909AbdDJPdwj84aY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 10 Apr 2017 17:33:52 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
 Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 060E7AAB1;
-        Mon, 10 Apr 2017 15:33:50 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 77827AAB1;
+        Mon, 10 Apr 2017 15:33:52 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        James Hogan <james.hogan@imgtec.com>,
+Cc:     linux-kernel@vger.kernel.org, John Crispin <john@phrozen.org>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 008/142] MIPS: ip27: Disable qlge driver in defconfig
-Date:   Mon, 10 Apr 2017 17:31:29 +0200
-Message-Id: <ef3f3ada78e973745352c9e765028e41397a44f0.1491838390.git.jslaby@suse.cz>
+Subject: [PATCH 3.12 011/142] MIPS: ralink: Cosmetic change to prom_init().
+Date:   Mon, 10 Apr 2017 17:31:32 +0200
+Message-Id: <8c585d84626e76930725689a5e198c4d19220c4e.1491838390.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <d4b83d12d815bafc24064e91de353edb2478d8f7.1491838390.git.jslaby@suse.cz>
 References: <d4b83d12d815bafc24064e91de353edb2478d8f7.1491838390.git.jslaby@suse.cz>
@@ -26,7 +25,7 @@ Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57636
+X-archive-position: 57637
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,50 +42,58 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: John Crispin <john@phrozen.org>
 
 3.12-stable review patch.  If anyone has any objections, please let me know.
 
 ===============
 
-commit b617649468390713db1515ea79fc772d2eb897a8 upstream.
+commit 9c48568b3692f1a56cbf1935e4eea835e6b185b1 upstream.
 
-One of the last remaining failures in kernelci.org is for a gcc bug:
+Over the years the code has been changed various times leading to
+argc/argv being defined in a different function to where we actually
+use the variables. Clean this up by moving them to prom_init_cmdline().
 
-drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
-drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
-
-This is apparently broken in gcc-6 but fixed in gcc-7, and I cannot
-reproduce the problem here. However, it is clear that ip27_defconfig
-does not actually need this driver as the platform has only PCI-X but
-not PCIe, and the qlge adapter in turn is PCIe-only.
-
-The driver was originally enabled in 2010 along with lots of other
-drivers.
-
-Fixes: 59d302b342e5 ("MIPS: IP27: Make defconfig useful again.")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: John Crispin <john@phrozen.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15197/
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/14902/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/configs/ip27_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/ralink/prom.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-index 0e36abcd39cc..7446284dd7b3 100644
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -206,7 +206,6 @@ CONFIG_MLX4_EN=m
- # CONFIG_MLX4_DEBUG is not set
- CONFIG_TEHUTI=m
- CONFIG_BNX2X=m
--CONFIG_QLGE=m
- CONFIG_SFC=m
- CONFIG_BE2NET=m
- CONFIG_LIBERTAS_THINFIRM=m
+diff --git a/arch/mips/ralink/prom.c b/arch/mips/ralink/prom.c
+index 9c64f029d047..87312dfcee38 100644
+--- a/arch/mips/ralink/prom.c
++++ b/arch/mips/ralink/prom.c
+@@ -24,8 +24,10 @@ const char *get_system_type(void)
+ 	return soc_info.sys_type;
+ }
+ 
+-static __init void prom_init_cmdline(int argc, char **argv)
++static __init void prom_init_cmdline(void)
+ {
++	int argc;
++	char **argv;
+ 	int i;
+ 
+ 	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
+@@ -54,14 +56,11 @@ static __init void prom_init_cmdline(int argc, char **argv)
+ 
+ void __init prom_init(void)
+ {
+-	int argc;
+-	char **argv;
+-
+ 	prom_soc_init(&soc_info);
+ 
+ 	pr_info("SoC Type: %s\n", get_system_type());
+ 
+-	prom_init_cmdline(argc, argv);
++	prom_init_cmdline();
+ }
+ 
+ void __init prom_free_prom_memory(void)
 -- 
 2.12.2

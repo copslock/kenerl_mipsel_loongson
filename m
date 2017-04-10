@@ -1,38 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:55:17 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37868 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993951AbdDJQwGpjcoJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:52:06 +0200
-Received: from localhost (084035110146.static.ipv4.infopact.nl [84.35.110.146])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 92E2CB8F;
-        Mon, 10 Apr 2017 16:52:00 +0000 (UTC)
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
-        Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.10 060/110] MIPS: c-r4k: Fix Loongson-3s vcache/scache waysize calculation
-Date:   Mon, 10 Apr 2017 18:42:51 +0200
-Message-Id: <20170410164204.571726081@linuxfoundation.org>
-X-Mailer: git-send-email 2.12.2
-In-Reply-To: <20170410164201.247583164@linuxfoundation.org>
-References: <20170410164201.247583164@linuxfoundation.org>
-User-Agent: quilt/0.65
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Apr 2017 00:06:21 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:6618 "EHLO
+        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993910AbdDJWGOJkOmK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Apr 2017 00:06:14 +0200
+Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
+        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id 436E741F8D55;
+        Tue, 11 Apr 2017 00:12:36 +0100 (BST)
+Received: from mailapp01.imgtec.com ([10.100.180.241])
+  by imgpgp01.kl.imgtec.org (PGP Universal service);
+  Tue, 11 Apr 2017 00:12:36 +0100
+X-PGP-Universal: processed;
+        by imgpgp01.kl.imgtec.org on Tue, 11 Apr 2017 00:12:36 +0100
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id BDA54331FB054;
+        Mon, 10 Apr 2017 23:06:03 +0100 (IST)
+Received: from BAMAIL02.ba.imgtec.org (10.20.40.28) by hhmail02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 10 Apr
+ 2017 23:06:07 +0100
+Received: from np-p-burton.localnet (10.20.1.33) by bamail02.ba.imgtec.org
+ (10.20.40.28) with Microsoft SMTP Server (TLS) id 14.3.266.1; Mon, 10 Apr
+ 2017 15:06:05 -0700
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     Matt Redfearn <matt.redfearn@imgtec.com>
+CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
+        "James Hogan" <james.hogan@imgtec.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        "Jason Cooper" <jason@lakedaemon.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] irqchip/mips-gic: Fix Local compare interrupt
+Date:   Mon, 10 Apr 2017 15:06:00 -0700
+Message-ID: <9298882.YeGiCV4jUY@np-p-burton>
+Organization: Imagination Technologies
+In-Reply-To: <1490958332-31094-3-git-send-email-matt.redfearn@imgtec.com>
+References: <1490958332-31094-1-git-send-email-matt.redfearn@imgtec.com> <1490958332-31094-3-git-send-email-matt.redfearn@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: multipart/signed; boundary="nextPart1982805.bh7FSdFrlm";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
+X-ESG-ENCRYPT-TAG: 1b7d744b
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57658
+X-archive-position: 57659
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,47 +59,92 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.10-stable review patch.  If anyone has any objections, please let me know.
+--nextPart1982805.bh7FSdFrlm
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-------------------
+Hi Matt,
 
-From: Huacai Chen <chenhc@lemote.com>
+On Friday, 31 March 2017 04:05:32 PDT Matt Redfearn wrote:
+> Commit 4cfffcfa5106 ("irqchip/mips-gic: Fix local interrupts") added
+> mapping of several local interrupts during initialisation of the gic
+> driver. This associates virq numbers with these interrupts.
+> Unfortunately, as not all of the interrupts are mapped in hardware
+> order, when drivers subsequently request these interrupts they conflict
+> with the mappings that have already been set up. For example, this
+> manifests itself in the gic clocksource driver, which fails to probe
+> with the message:
+> 
+> clocksource: GIC: mask: 0xffffffffffffffff max_cycles: 0x7350c9738,
+> max_idle_ns: 440795203769 ns
+> GIC timer IRQ 25 setup failed: -22
+> 
+> This is because virq 25 (the correct IRQ number specified via device
+> tree) was allocated to the PERFCTR interrupt (and 24 to the timer, 26 to
+> the FDC).
 
-commit 0be032c190abcdcfa948082b6a1e0d461184ba4d upstream.
+I'm confused by this - the DT doesn't specify VIRQs, it specifies hardware IRQ 
+numbers. Which VIRQ is used should be irrelevant. Is this on a system using 
+gic_clocksource_init() from platform code? (Malta?) and therefore relying on  
+MIPS_GIC_IRQ_BASE?
 
-If scache.waysize is 0, r4k___flush_cache_all() will do nothing and
-then cause bugs. BTW, though vcache.waysize isn't being used by now,
-we also fix its calculation.
+If so I think this would be much more cleanly fixed by moving to probe the 
+clocksource using DT than by adding more fragile order-dependent mappings in 
+the GIC driver. Perhaps we have to live with it for this cycle though...
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
-Cc: John Crispin <john@phrozen.org>
-Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
-Cc: Fuxin Zhang <zhangfx@lemote.com>
-Cc: Zhangjin Wu <wuzhangjin@gmail.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15756/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thanks,
+    Paul
 
----
- arch/mips/mm/c-r4k.c |    2 ++
- 1 file changed, 2 insertions(+)
+> To fix this, map all of these local interrupts in the hardware
+> order so as to associate their virq numbers with the correct hw
+> interrupts.
+> 
+> Fixes: 4cfffcfa5106 ("irqchip/mips-gic: Fix local interrupts")
+> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+> ---
+> 
+>  drivers/irqchip/irq-mips-gic.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+> index 11d12bccc4e7..cd20df12d63d 100644
+> --- a/drivers/irqchip/irq-mips-gic.c
+> +++ b/drivers/irqchip/irq-mips-gic.c
+> @@ -991,8 +991,12 @@ static void __init gic_map_single_int(struct
+> device_node *node,
+> 
+>  static void __init gic_map_interrupts(struct device_node *node)
+>  {
+> +	gic_map_single_int(node, GIC_LOCAL_INT_WD);
+> +	gic_map_single_int(node, GIC_LOCAL_INT_COMPARE);
+>  	gic_map_single_int(node, GIC_LOCAL_INT_TIMER);
+>  	gic_map_single_int(node, GIC_LOCAL_INT_PERFCTR);
+> +	gic_map_single_int(node, GIC_LOCAL_INT_SWINT0);
+> +	gic_map_single_int(node, GIC_LOCAL_INT_SWINT1);
+>  	gic_map_single_int(node, GIC_LOCAL_INT_FDC);
+>  }
 
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1558,6 +1558,7 @@ static void probe_vcache(void)
- 	vcache_size = c->vcache.sets * c->vcache.ways * c->vcache.linesz;
- 
- 	c->vcache.waybit = 0;
-+	c->vcache.waysize = vcache_size / c->vcache.ways;
- 
- 	pr_info("Unified victim cache %ldkB %s, linesize %d bytes.\n",
- 		vcache_size >> 10, way_string[c->vcache.ways], c->vcache.linesz);
-@@ -1660,6 +1661,7 @@ static void __init loongson3_sc_init(voi
- 	/* Loongson-3 has 4 cores, 1MB scache for each. scaches are shared */
- 	scache_size *= 4;
- 	c->scache.waybit = 0;
-+	c->scache.waysize = scache_size / c->scache.ways;
- 	pr_info("Unified secondary cache %ldkB %s, linesize %d bytes.\n",
- 	       scache_size >> 10, way_string[c->scache.ways], c->scache.linesz);
- 	if (scache_size)
+
+--nextPart1982805.bh7FSdFrlm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEELIGR03D5+Fg+69wPgiDZ+mk8HGUFAljsAcgACgkQgiDZ+mk8
+HGVlIRAAqduRkFEEnTH3I6vpQwkwoFtz8v6um0LA4MWhkZddicE01LOLgSvv5hzC
+uctCVf4wZkVRAE2JUcPTrp4LKzLV2Ekk0egBkLiW/y3FBRcKOaeh94VvtmWBgWWQ
+Psec+aKmnsVWBKINbEWSCnIp37+aLyZaN0C/fjGJx+mKVk1p1X6Cgjjj/VeUnuqw
+n5DEVwXh9nTeiHQNKzs1sDHczBRdhS8zEPmjZifnrbru/UWquqWjeMK+dobPk8+C
+sJzhhoM+7EzXjnaWJYUJHIRnTkitnJtc8zXA7GR1q4JwIGl2j/pyVOFA4n9swRPq
+z/WLPF/MDuBM316eQQa/QDwamA+qp7oYE1O1/mC7yBIZRypdZQrO/pfFHb94qr6C
+yv/iw+5Izby8Ze7wKpIibqxvF0OgyE2afYibO34S1haW+JTHRpScHje3NEAgqV3s
+Ym0cqRNch6KOrkAYaMPqNp5shylKfTsglJ8U+A3Q4Bnx5uUa2399ULhbxGwm9zsT
+XoKGXai6rlZvhQkOCYFLekoKlbsW6zmn4BxJ87Ck/ujiOiHqdLxUMHraw7PF4KID
+4CVMcR0aW2Uxi1HNGnvPsBG2+uXVlfnud1HL6/M2jbXUwDipBbcmyBdoUysbbDRg
+RDWZV0+5TAq4j0m8x+Fm1RRqP4fkcxt6sT6wFojQgAZCr4mSH9Y=
+=uJjj
+-----END PGP SIGNATURE-----
+
+--nextPart1982805.bh7FSdFrlm--

@@ -1,21 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 17:33:59 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:45922 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 17:34:22 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:45921 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992227AbdDJPdvGzq1Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S23993877AbdDJPdvHG0-Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 10 Apr 2017 17:33:51 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 X-Amavis-Alert: BAD HEADER SECTION, Duplicate header field: "References"
 Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 72F17AC21;
+        by mx2.suse.de (Postfix) with ESMTP id 060E7AAB1;
         Mon, 10 Apr 2017 15:33:50 +0000 (UTC)
 From:   Jiri Slaby <jslaby@suse.cz>
 To:     stable@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <james.hogan@imgtec.com>,
         Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 3.12 009/142] MIPS: ip22: Fix ip28 build for modern gcc
-Date:   Mon, 10 Apr 2017 17:31:30 +0200
-Message-Id: <90a5fa3ef7b3c7e0c1a196bff0fc8f0630afef5e.1491838390.git.jslaby@suse.cz>
+Subject: [PATCH 3.12 008/142] MIPS: ip27: Disable qlge driver in defconfig
+Date:   Mon, 10 Apr 2017 17:31:29 +0200
+Message-Id: <ef3f3ada78e973745352c9e765028e41397a44f0.1491838390.git.jslaby@suse.cz>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <d4b83d12d815bafc24064e91de353edb2478d8f7.1491838390.git.jslaby@suse.cz>
 References: <d4b83d12d815bafc24064e91de353edb2478d8f7.1491838390.git.jslaby@suse.cz>
@@ -25,7 +26,7 @@ Return-Path: <jslaby@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57635
+X-archive-position: 57636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,40 +49,44 @@ From: Arnd Bergmann <arnd@arndb.de>
 
 ===============
 
-commit 23ca9b522383d3b9b7991d8586db30118992af4a upstream.
+commit b617649468390713db1515ea79fc772d2eb897a8 upstream.
 
-kernelci reports a failure of the ip28_defconfig build after upgrading its
-gcc version:
+One of the last remaining failures in kernelci.org is for a gcc bug:
 
-arch/mips/sgi-ip22/Platform:29: *** gcc doesn't support needed option -mr10k-cache-barrier=store.  Stop.
+drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
+drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
 
-The problem apparently is that the -mr10k-cache-barrier=store option is now
-rejected for CPUs other than r10k. Explicitly including the CPU in the
-check fixes this and is safe because both options were introduced in
-gcc-4.4.
+This is apparently broken in gcc-6 but fixed in gcc-7, and I cannot
+reproduce the problem here. However, it is clear that ip27_defconfig
+does not actually need this driver as the platform has only PCI-X but
+not PCIe, and the qlge adapter in turn is PCIe-only.
 
+The driver was originally enabled in 2010 along with lots of other
+drivers.
+
+Fixes: 59d302b342e5 ("MIPS: IP27: Make defconfig useful again.")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15049/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/15197/
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
- arch/mips/sgi-ip22/Platform | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/configs/ip27_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/sgi-ip22/Platform b/arch/mips/sgi-ip22/Platform
-index b7a4b7e04c38..e8f6b3a42a48 100644
---- a/arch/mips/sgi-ip22/Platform
-+++ b/arch/mips/sgi-ip22/Platform
-@@ -25,7 +25,7 @@ endif
- # Simplified: what IP22 does at 128MB+ in ksegN, IP28 does at 512MB+ in xkphys
- #
- ifdef CONFIG_SGI_IP28
--  ifeq ($(call cc-option-yn,-mr10k-cache-barrier=store), n)
-+  ifeq ($(call cc-option-yn,-march=r10000 -mr10k-cache-barrier=store), n)
-       $(error gcc doesn't support needed option -mr10k-cache-barrier=store)
-   endif
- endif
+diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
+index 0e36abcd39cc..7446284dd7b3 100644
+--- a/arch/mips/configs/ip27_defconfig
++++ b/arch/mips/configs/ip27_defconfig
+@@ -206,7 +206,6 @@ CONFIG_MLX4_EN=m
+ # CONFIG_MLX4_DEBUG is not set
+ CONFIG_TEHUTI=m
+ CONFIG_BNX2X=m
+-CONFIG_QLGE=m
+ CONFIG_SFC=m
+ CONFIG_BE2NET=m
+ CONFIG_LIBERTAS_THINFIRM=m
 -- 
 2.12.2

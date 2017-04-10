@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:53:21 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:37792 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:53:45 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:37834 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993977AbdDJQv4Ia9FJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:51:56 +0200
+        by eddie.linux-mips.org with ESMTP id S23993981AbdDJQwBZWc4J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:52:01 +0200
 Received: from localhost (084035110146.static.ipv4.infopact.nl [84.35.110.146])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 2009DB7F;
-        Mon, 10 Apr 2017 16:51:46 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id CF9C5B8E;
+        Mon, 10 Apr 2017 16:51:53 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        "Maciej W. Rozycki" <macro@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-mips@linux-mips.org
-Subject: [PATCH 4.10 055/110] MIPS: End spinlocks with .insn
-Date:   Mon, 10 Apr 2017 18:42:46 +0200
-Message-Id: <20170410164204.308210644@linuxfoundation.org>
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.10 058/110] MIPS: Add MIPS_CPU_FTLB for Loongson-3A R2
+Date:   Mon, 10 Apr 2017 18:42:49 +0200
+Message-Id: <20170410164204.475131289@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <20170410164201.247583164@linuxfoundation.org>
 References: <20170410164201.247583164@linuxfoundation.org>
@@ -28,7 +28,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57654
+X-archive-position: 57655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,75 +49,35 @@ X-list: linux-mips
 
 ------------------
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: Huacai Chen <chenhc@lemote.com>
 
-commit 4b5347a24a0f2d3272032c120664b484478455de upstream.
+commit 033cffeedbd11c140952b98e8639bf652091a17d upstream.
 
-When building for microMIPS we need to ensure that the assembler always
-knows that there is code at the target of a branch or jump. Recent
-toolchains will fail to link a microMIPS kernel when this isn't the case
-due to what it thinks is a branch to non-microMIPS code.
+Loongson-3A R2 and newer CPU have FTLB, but Config0.MT is 1, so add
+MIPS_CPU_FTLB to the CPU options.
 
-mips-mti-linux-gnu-ld kernel/built-in.o: .spinlock.text+0x2fc: Unsupported branch between ISA modes.
-mips-mti-linux-gnu-ld final link failed: Bad value
-
-This is due to inline assembly labels in spinlock.h not being followed
-by an instruction mnemonic, either due to a .subsection pseudo-op or the
-end of the inline asm block.
-
-Fix this with a .insn direction after such labels.
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: John Crispin <john@phrozen.org>
+Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/15325/
-Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Patchwork: https://patchwork.linux-mips.org/patch/15752/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/spinlock.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/kernel/cpu-probe.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/spinlock.h
-+++ b/arch/mips/include/asm/spinlock.h
-@@ -127,7 +127,7 @@ static inline void arch_spin_lock(arch_s
- 		"	andi	%[ticket], %[ticket], 0xffff		\n"
- 		"	bne	%[ticket], %[my_ticket], 4f		\n"
- 		"	 subu	%[ticket], %[my_ticket], %[ticket]	\n"
--		"2:							\n"
-+		"2:	.insn						\n"
- 		"	.subsection 2					\n"
- 		"4:	andi	%[ticket], %[ticket], 0xffff		\n"
- 		"	sll	%[ticket], 5				\n"
-@@ -202,7 +202,7 @@ static inline unsigned int arch_spin_try
- 		"	sc	%[ticket], %[ticket_ptr]		\n"
- 		"	beqz	%[ticket], 1b				\n"
- 		"	 li	%[ticket], 1				\n"
--		"2:							\n"
-+		"2:	.insn						\n"
- 		"	.subsection 2					\n"
- 		"3:	b	2b					\n"
- 		"	 li	%[ticket], 0				\n"
-@@ -382,7 +382,7 @@ static inline int arch_read_trylock(arch
- 		"	.set	reorder					\n"
- 		__WEAK_LLSC_MB
- 		"	li	%2, 1					\n"
--		"2:							\n"
-+		"2:	.insn						\n"
- 		: "=" GCC_OFF_SMALL_ASM() (rw->lock), "=&r" (tmp), "=&r" (ret)
- 		: GCC_OFF_SMALL_ASM() (rw->lock)
- 		: "memory");
-@@ -422,7 +422,7 @@ static inline int arch_write_trylock(arc
- 			"	lui	%1, 0x8000			\n"
- 			"	sc	%1, %0				\n"
- 			"	li	%2, 1				\n"
--			"2:						\n"
-+			"2:	.insn					\n"
- 			: "=" GCC_OFF_SMALL_ASM() (rw->lock), "=&r" (tmp),
- 			  "=&r" (ret)
- 			: GCC_OFF_SMALL_ASM() (rw->lock)
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1824,7 +1824,7 @@ static inline void cpu_probe_loongson(st
+ 		}
+ 
+ 		decode_configs(c);
+-		c->options |= MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
++		c->options |= MIPS_CPU_FTLB | MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
+ 		c->writecombine = _CACHE_UNCACHED_ACCELERATED;
+ 		break;
+ 	default:

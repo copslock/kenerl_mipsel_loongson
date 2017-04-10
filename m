@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:48:07 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36276 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2017 18:48:35 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36300 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993933AbdDJQpkqzjlJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:45:40 +0200
+        by eddie.linux-mips.org with ESMTP id S23993937AbdDJQppetPGJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2017 18:45:45 +0200
 Received: from localhost (084035110146.static.ipv4.infopact.nl [84.35.110.146])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 62931B7B;
-        Mon, 10 Apr 2017 16:45:34 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AB821B8F;
+        Mon, 10 Apr 2017 16:45:38 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        stable@vger.kernel.org, Rui Wang <wangr@lemote.com>,
+        Huacai Chen <chenhc@lemote.com>,
         John Crispin <john@phrozen.org>,
         "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
         Fuxin Zhang <zhangfx@lemote.com>,
         Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.9 051/152] MIPS: Add MIPS_CPU_FTLB for Loongson-3A R2
-Date:   Mon, 10 Apr 2017 18:41:43 +0200
-Message-Id: <20170410164202.710367670@linuxfoundation.org>
+Subject: [PATCH 4.9 052/152] MIPS: Flush wrong invalid FTLB entry for huge page
+Date:   Mon, 10 Apr 2017 18:41:44 +0200
+Message-Id: <20170410164202.749858091@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <20170410164159.934755016@linuxfoundation.org>
 References: <20170410164159.934755016@linuxfoundation.org>
@@ -28,7 +29,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57648
+X-archive-position: 57649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,33 +52,98 @@ X-list: linux-mips
 
 From: Huacai Chen <chenhc@lemote.com>
 
-commit 033cffeedbd11c140952b98e8639bf652091a17d upstream.
+commit 0115f6cbf26663c86496bc56eeea293f85b77897 upstream.
 
-Loongson-3A R2 and newer CPU have FTLB, but Config0.MT is 1, so add
-MIPS_CPU_FTLB to the CPU options.
+On VTLB+FTLB platforms (such as Loongson-3A R2), FTLB's pagesize is
+usually configured the same as PAGE_SIZE. In such a case, Huge page
+entry is not suitable to write in FTLB.
 
+Unfortunately, when a huge page is created, its page table entries
+haven't created immediately. Then the TLB refill handler will fetch an
+invalid page table entry which has no "HUGE" bit, and this entry may be
+written to FTLB. Since it is invalid, TLB load/store handler will then
+use tlbwi to write the valid entry at the same place. However, the
+valid entry is a huge page entry which isn't suitable for FTLB.
+
+Our solution is to modify build_huge_handler_tail. Flush the invalid
+old entry (whether it is in FTLB or VTLB, this is in order to reduce
+branches) and use tlbwr to write the valid new entry.
+
+Signed-off-by: Rui Wang <wangr@lemote.com>
 Signed-off-by: Huacai Chen <chenhc@lemote.com>
 Cc: John Crispin <john@phrozen.org>
 Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
 Cc: Fuxin Zhang <zhangfx@lemote.com>
 Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: Huacai Chen <chenhc@lemote.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15752/
+Patchwork: https://patchwork.linux-mips.org/patch/15754/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/cpu-probe.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/mm/tlbex.c |   25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1824,7 +1824,7 @@ static inline void cpu_probe_loongson(st
- 		}
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -762,7 +762,8 @@ static void build_huge_update_entries(u3
+ static void build_huge_handler_tail(u32 **p, struct uasm_reloc **r,
+ 				    struct uasm_label **l,
+ 				    unsigned int pte,
+-				    unsigned int ptr)
++				    unsigned int ptr,
++				    unsigned int flush)
+ {
+ #ifdef CONFIG_SMP
+ 	UASM_i_SC(p, pte, 0, ptr);
+@@ -771,6 +772,22 @@ static void build_huge_handler_tail(u32
+ #else
+ 	UASM_i_SW(p, pte, 0, ptr);
+ #endif
++	if (cpu_has_ftlb && flush) {
++		BUG_ON(!cpu_has_tlbinv);
++
++		UASM_i_MFC0(p, ptr, C0_ENTRYHI);
++		uasm_i_ori(p, ptr, ptr, MIPS_ENTRYHI_EHINV);
++		UASM_i_MTC0(p, ptr, C0_ENTRYHI);
++		build_tlb_write_entry(p, l, r, tlb_indexed);
++
++		uasm_i_xori(p, ptr, ptr, MIPS_ENTRYHI_EHINV);
++		UASM_i_MTC0(p, ptr, C0_ENTRYHI);
++		build_huge_update_entries(p, pte, ptr);
++		build_huge_tlb_write_entry(p, l, r, pte, tlb_random, 0);
++
++		return;
++	}
++
+ 	build_huge_update_entries(p, pte, ptr);
+ 	build_huge_tlb_write_entry(p, l, r, pte, tlb_indexed, 0);
+ }
+@@ -2197,7 +2214,7 @@ static void build_r4000_tlb_load_handler
+ 		uasm_l_tlbl_goaround2(&l, p);
+ 	}
+ 	uasm_i_ori(&p, wr.r1, wr.r1, (_PAGE_ACCESSED | _PAGE_VALID));
+-	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
++	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 1);
+ #endif
  
- 		decode_configs(c);
--		c->options |= MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
-+		c->options |= MIPS_CPU_FTLB | MIPS_CPU_TLBINV | MIPS_CPU_LDPTE;
- 		c->writecombine = _CACHE_UNCACHED_ACCELERATED;
- 		break;
- 	default:
+ 	uasm_l_nopage_tlbl(&l, p);
+@@ -2252,7 +2269,7 @@ static void build_r4000_tlb_store_handle
+ 	build_tlb_probe_entry(&p);
+ 	uasm_i_ori(&p, wr.r1, wr.r1,
+ 		   _PAGE_ACCESSED | _PAGE_MODIFIED | _PAGE_VALID | _PAGE_DIRTY);
+-	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
++	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 1);
+ #endif
+ 
+ 	uasm_l_nopage_tlbs(&l, p);
+@@ -2308,7 +2325,7 @@ static void build_r4000_tlb_modify_handl
+ 	build_tlb_probe_entry(&p);
+ 	uasm_i_ori(&p, wr.r1, wr.r1,
+ 		   _PAGE_ACCESSED | _PAGE_MODIFIED | _PAGE_VALID | _PAGE_DIRTY);
+-	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2);
++	build_huge_handler_tail(&p, &r, &l, wr.r1, wr.r2, 0);
+ #endif
+ 
+ 	uasm_l_nopage_tlbm(&l, p);

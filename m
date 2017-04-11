@@ -1,44 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Apr 2017 10:20:50 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:36214 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992366AbdDKIUmy7NLx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Apr 2017 10:20:42 +0200
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id 2809C28525931;
-        Tue, 11 Apr 2017 09:20:33 +0100 (IST)
-Received: from [10.150.130.83] (10.150.130.83) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 11 Apr
- 2017 09:20:35 +0100
-Subject: Re: [PATCH 2/2] irqchip/mips-gic: Fix Local compare interrupt
-To:     Paul Burton <paul.burton@imgtec.com>
-References: <1490958332-31094-1-git-send-email-matt.redfearn@imgtec.com>
- <1490958332-31094-3-git-send-email-matt.redfearn@imgtec.com>
- <9298882.YeGiCV4jUY@np-p-burton>
-CC:     <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        <linux-kernel@vger.kernel.org>
-From:   Matt Redfearn <matt.redfearn@imgtec.com>
-Message-ID: <a71e58d4-b223-7bc7-803a-937e3b6837bb@imgtec.com>
-Date:   Tue, 11 Apr 2017 09:20:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Apr 2017 11:49:20 +0200 (CEST)
+Received: from mail-lf0-x236.google.com ([IPv6:2a00:1450:4010:c07::236]:36838
+        "EHLO mail-lf0-x236.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993917AbdDKJtMHAN1p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Apr 2017 11:49:12 +0200
+Received: by mail-lf0-x236.google.com with SMTP id s141so48387525lfe.3
+        for <linux-mips@linux-mips.org>; Tue, 11 Apr 2017 02:49:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=0zKdR/K5mDlvhRnUCtebiSrW3K/EUuv2xQ2lneXWBG0=;
+        b=MsjT4iMbViwAP4zE75EELFdFDFjde3jKNUyTSBURu5ejEeH/HAmBFuP/auiX7/Afel
+         Y1G0P4NpqM6AxwpLocHGl70ldyOIwX32rq2k/EGH6rb+SEWSt1aGMmOsB3OXpmAiWmfH
+         vLzitD6gHZrA3F9b8+0JAIvuNEMLbqrxOuPlXeW9Pfk4/COWJu4rl6tOVm2ZAFikuJh9
+         O0kW4cNXuf/HCPw4NvmCQRo3Za76Us7GHvSdZFI7RiWYZvD6i9/jWPMfcnkY8PlAq0Q9
+         LnoB9+Js8j6415ZPN7t+M6TPt8m3nPBe8IFrKH2ETFPdj4G/l9Dl1QmIdqIVd/c3IwjT
+         8LDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=0zKdR/K5mDlvhRnUCtebiSrW3K/EUuv2xQ2lneXWBG0=;
+        b=XJmqUivxCqJmGep7XGE38/wexoUUKcpFGqKOlebTe6ATXPrpC5OSMgXEs5dGK2Tjz0
+         GlUxc3494se/BxgA952lh4cs2AumaIjsltNGypX/Yd1fqjoDwB6ANyj/xtIrNjF+PMAm
+         4mRG533WAm8Ab4pniyXA4HGrN14q1vo4tAtQDi+460YEKg4nCLwSBbgvynRw9EeRL2at
+         sGJeJoKCZBT4VFdl6P97C8LyZQtoOA/wRjXlFNh8KMtbY8+1F+823D6pJOQiCGCbTlOK
+         pjac+AYzGtj8gT5rS0+VpMMgi2d4/i/0RRej1O6s7Wzbk9hOm4ufIuAqR+X3u3D+aYRK
+         oG4g==
+X-Gm-Message-State: AN3rC/7CqWXFXVfoNcXTPfHlniP1N7yt4avBA686DHTFqJaEKgB13CLx7WiwqbLY0djEWQ==
+X-Received: by 10.25.56.65 with SMTP id d1mr202440lfj.30.1491904146507;
+        Tue, 11 Apr 2017 02:49:06 -0700 (PDT)
+Received: from [192.168.4.126] ([31.173.85.170])
+        by smtp.gmail.com with ESMTPSA id i18sm3277402ljb.55.2017.04.11.02.49.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Apr 2017 02:49:05 -0700 (PDT)
+Subject: Re: [PATCH 3/3] MIPS: mm: adjust PKMAP location
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+References: <1491894036-5440-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <1491894036-5440-4-git-send-email-marcin.nowakowski@imgtec.com>
+Cc:     linux-mips@linux-mips.org
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <0e5c3c4d-abfb-25bb-cb2d-c27448283353@cogentembedded.com>
+Date:   Tue, 11 Apr 2017 12:49:05 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
  Thunderbird/45.8.0
 MIME-Version: 1.0
-In-Reply-To: <9298882.YeGiCV4jUY@np-p-burton>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
+In-Reply-To: <1491894036-5440-4-git-send-email-marcin.nowakowski@imgtec.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.150.130.83]
-Return-Path: <Matt.Redfearn@imgtec.com>
+Return-Path: <sergei.shtylyov@cogentembedded.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57664
+X-archive-position: 57665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt.redfearn@imgtec.com
+X-original-sender: sergei.shtylyov@cogentembedded.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -51,83 +70,57 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Paul,
+Hello!
 
+On 4/11/2017 10:00 AM, Marcin Nowakowski wrote:
 
-On 10/04/17 23:06, Paul Burton wrote:
-> Hi Matt,
+> Space reserved for PKMap should span from PKMAP_BASE to FIXADDR_START.
+> For large page sizes this is not the case as eg. for 64k pages the range
+> currently defined is from 0xfe000000 to 0x102000000(!!) which obviously
+> isn't right.
+> Remove the hardcoded location and set the BASE address as an offset from
+> FIXADDR_START.
 >
-> On Friday, 31 March 2017 04:05:32 PDT Matt Redfearn wrote:
->> Commit 4cfffcfa5106 ("irqchip/mips-gic: Fix local interrupts") added
->> mapping of several local interrupts during initialisation of the gic
->> driver. This associates virq numbers with these interrupts.
->> Unfortunately, as not all of the interrupts are mapped in hardware
->> order, when drivers subsequently request these interrupts they conflict
->> with the mappings that have already been set up. For example, this
->> manifests itself in the gic clocksource driver, which fails to probe
->> with the message:
->>
->> clocksource: GIC: mask: 0xffffffffffffffff max_cycles: 0x7350c9738,
->> max_idle_ns: 440795203769 ns
->> GIC timer IRQ 25 setup failed: -22
->>
->> This is because virq 25 (the correct IRQ number specified via device
->> tree) was allocated to the PERFCTR interrupt (and 24 to the timer, 26 to
->> the FDC).
-> I'm confused by this - the DT doesn't specify VIRQs, it specifies hardware IRQ
-> numbers. Which VIRQ is used should be irrelevant. Is this on a system using
-> gic_clocksource_init() from platform code? (Malta?) and therefore relying on
-> MIPS_GIC_IRQ_BASE?
+> Since all PKMAP ptes have to be placed in a contiguous memory, ensure
 
-Yes, this is on Malta, which as you say, uses MIPS_GIC_IRQ_BASE. On 
-Malta that ends up, through the definition of I8259A_IRQ_BASE and 
-MIPS_CPU_IRQ_BASE, to be 24. Therefore hardware interrupt 1 of the GIC 
-ends up expecting to be allocated at virq 25. But since 4cfffcfa5106, 
-that virq number was allocated to the PERFCTR interrupt. Everything 
-about the order-dependent and hardcoded bases of Maltas IRQs seems bad 
-and needs looking at but this was the easiest fix for this cycle.
+    PTEs?
 
+> that this is the case by placing them all in a single page. This is
+> achieved by aligning the end address to pkmap pages count pages.
 >
-> If so I think this would be much more cleanly fixed by moving to probe the
-> clocksource using DT
-
-Not sure that would help if Maltas expected virq for this source had 
-already been allocated?
-
-Thanks,
-Matt
-
-> than by adding more fragile order-dependent mappings in
-> the GIC driver. Perhaps we have to live with it for this cycle though...
+> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+> ---
+>  arch/mips/include/asm/pgtable-32.h | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 >
-> Thanks,
->      Paul
+> diff --git a/arch/mips/include/asm/pgtable-32.h b/arch/mips/include/asm/pgtable-32.h
+> index 6f94bed..74afe8c 100644
+> --- a/arch/mips/include/asm/pgtable-32.h
+> +++ b/arch/mips/include/asm/pgtable-32.h
+> @@ -19,6 +19,10 @@
+>  #define __ARCH_USE_5LEVEL_HACK
+>  #include <asm-generic/pgtable-nopmd.h>
 >
->> To fix this, map all of these local interrupts in the hardware
->> order so as to associate their virq numbers with the correct hw
->> interrupts.
->>
->> Fixes: 4cfffcfa5106 ("irqchip/mips-gic: Fix local interrupts")
->> Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
->> ---
->>
->>   drivers/irqchip/irq-mips-gic.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
->> index 11d12bccc4e7..cd20df12d63d 100644
->> --- a/drivers/irqchip/irq-mips-gic.c
->> +++ b/drivers/irqchip/irq-mips-gic.c
->> @@ -991,8 +991,12 @@ static void __init gic_map_single_int(struct
->> device_node *node,
->>
->>   static void __init gic_map_interrupts(struct device_node *node)
->>   {
->> +	gic_map_single_int(node, GIC_LOCAL_INT_WD);
->> +	gic_map_single_int(node, GIC_LOCAL_INT_COMPARE);
->>   	gic_map_single_int(node, GIC_LOCAL_INT_TIMER);
->>   	gic_map_single_int(node, GIC_LOCAL_INT_PERFCTR);
->> +	gic_map_single_int(node, GIC_LOCAL_INT_SWINT0);
->> +	gic_map_single_int(node, GIC_LOCAL_INT_SWINT1);
->>   	gic_map_single_int(node, GIC_LOCAL_INT_FDC);
->>   }
+> +#ifdef CONFIG_HIGHMEM
+> +#include <asm/highmem.h>
+> +#endif
+> +
+>  extern int temp_tlb_entry;
+>
+>  /*
+> @@ -62,7 +66,8 @@ extern int add_temporary_entry(unsigned long entrylo0, unsigned long entrylo1,
+>
+>  #define VMALLOC_START	  MAP_BASE
+>
+> -#define PKMAP_BASE		(0xfe000000UL)
+> +#define PKMAP_END	((FIXADDR_START) & ~((LAST_PKMAP << PAGE_SHIFT)-1))
+
+    Why parens around FIXADDR_START?
+    Also could you be consistent and add spaces around - too?
+
+> +#define PKMAP_BASE	(PKMAP_END - PAGE_SIZE * LAST_PKMAP)
+>
+>  #ifdef CONFIG_HIGHMEM
+>  # define VMALLOC_END	(PKMAP_BASE-2*PAGE_SIZE)
+
+MBR, Sergei

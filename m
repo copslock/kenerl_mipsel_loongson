@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Apr 2017 22:33:15 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59020 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Apr 2017 23:14:42 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:59954 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993929AbdDLUdIGuDrF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 Apr 2017 22:33:08 +0200
+        id S23993930AbdDLVOfU99NF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Apr 2017 23:14:35 +0200
 Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v3CKX4Zm004023;
-        Wed, 12 Apr 2017 22:33:04 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v3CLEWH4005826;
+        Wed, 12 Apr 2017 23:14:33 +0200
 Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v3CKX4iX004022;
-        Wed, 12 Apr 2017 22:33:04 +0200
-Date:   Wed, 12 Apr 2017 22:33:04 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v3CLEV4U005825;
+        Wed, 12 Apr 2017 23:14:32 +0200
+Date:   Wed, 12 Apr 2017 23:14:31 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     James Hogan <james.hogan@imgtec.com>
-Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        linux-mips@linux-mips.org, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: KGDB: Use kernel context for sleeping threads
-Message-ID: <20170412203304.GA3990@linux-mips.org>
-References: <c34c16db9efabb09ca200d5b2b14ad0e870a0b1c.1490876180.git-series.james.hogan@imgtec.com>
- <b8d4921a-2a88-c69d-1272-5589a0bfbbe9@cogentembedded.com>
- <20170330155526.GA21492@jhogan-linux.le.imgtec.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Paul Burton <paul.burton@imgtec.com>, linux-mips@linux-mips.org,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH 0/5] MIPS/irqchip: Use IPI IRQ domains for CPU interrupt
+ controller IPIs
+Message-ID: <20170412211431.GB31446@linux-mips.org>
+References: <20170330190614.14844-1-paul.burton@imgtec.com>
+ <alpine.DEB.2.20.1703311101340.1780@nanos>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170330155526.GA21492@jhogan-linux.le.imgtec.org>
+In-Reply-To: <alpine.DEB.2.20.1703311101340.1780@nanos>
 User-Agent: Mutt/1.8.0 (2017-02-23)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57681
+X-archive-position: 57682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,26 +46,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 30, 2017 at 04:55:26PM +0100, James Hogan wrote:
+On Fri, Mar 31, 2017 at 11:02:33AM +0200, Thomas Gleixner wrote:
 
-> Hi Sergei,
+> On Thu, 30 Mar 2017, Paul Burton wrote:
 > 
-> On Thu, Mar 30, 2017 at 06:42:08PM +0300, Sergei Shtylyov wrote:
-> > On 03/30/2017 06:06 PM, James Hogan wrote:
-> > > @@ -254,25 +251,46 @@ void sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *p)
-> > >  #endif
-> > >
-> > >  	for (reg = 0; reg < 16; reg++)
-> > > -		*(ptr++) = regs->regs[reg];
-> > > +		*(ptr++) = 0;
+> > This series introduces support for IPI IRQ domains to the CPU interrupt
+> > controller driver, allowing IPIs to function in the same way as those
+> > provided by the MIPS GIC as far as platform/board code is concerned.
 > > 
-> >     Parens are not really necessary, you can get rid of them, while at it.
+> > Doing this allows us to avoid duplicating code across platforms, avoid
+> > having to handle cases where IPI domains are or aren't in use depending
+> > upon the interrupt controller, and strengthen a sanity check for cases
+> > where IPI IRQ domains are supported.
 > 
-> While not technically required, I disagree that we should get rid of
-> them, simply because after coding in C for almost 20 years I still had
-> to look at an operator precedence table to check which of post++ and
-> dereference operators take precedence.
+> For the irqchip parts:
+> 
+> Acked-by: Thomas Gleixner <tglx@linutronix.de>
+> 
+> Ralf, feel free to route the whole lot through your MIPS tree.
 
-I strongly side with James on this one so I applied the patch as-is.
+Done.
+
+Nice cleanup, Paul.
 
   Ralf

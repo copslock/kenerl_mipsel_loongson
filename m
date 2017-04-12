@@ -1,40 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Apr 2017 22:10:47 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:58142 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Apr 2017 22:33:15 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:59020 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993928AbdDLUKjjCiTg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 Apr 2017 22:10:39 +0200
+        id S23993929AbdDLUdIGuDrF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Apr 2017 22:33:08 +0200
 Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v3CKAakK031931;
-        Wed, 12 Apr 2017 22:10:36 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v3CKX4Zm004023;
+        Wed, 12 Apr 2017 22:33:04 +0200
 Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v3CKASOf031929;
-        Wed, 12 Apr 2017 22:10:28 +0200
-Date:   Wed, 12 Apr 2017 22:10:28 +0200
+        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v3CKX4iX004022;
+        Wed, 12 Apr 2017 22:33:04 +0200
+Date:   Wed, 12 Apr 2017 22:33:04 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Nicolai Stange <nicstange@gmail.com>
-Cc:     Keguang Zhang <keguang.zhang@gmail.com>,
-        John Crispin <john@phrozen.org>,
-        John Stultz <john.stultz@linaro.org>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        Andrea Gelmini <andrea.gelmini@gelma.net>,
-        Huacai Chen <chenhc@lemote.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: clockevent drivers: set ->min_delta_ticks and
- ->max_delta_ticks
-Message-ID: <20170412201028.GA31873@linux-mips.org>
-References: <20170326134403.16226-1-nicstange@gmail.com>
- <20170330194732.7126-1-nicstange@gmail.com>
+To:     James Hogan <james.hogan@imgtec.com>
+Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        linux-mips@linux-mips.org, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: KGDB: Use kernel context for sleeping threads
+Message-ID: <20170412203304.GA3990@linux-mips.org>
+References: <c34c16db9efabb09ca200d5b2b14ad0e870a0b1c.1490876180.git-series.james.hogan@imgtec.com>
+ <b8d4921a-2a88-c69d-1272-5589a0bfbbe9@cogentembedded.com>
+ <20170330155526.GA21492@jhogan-linux.le.imgtec.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170330194732.7126-1-nicstange@gmail.com>
+In-Reply-To: <20170330155526.GA21492@jhogan-linux.le.imgtec.org>
 User-Agent: Mutt/1.8.0 (2017-02-23)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57680
+X-archive-position: 57681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,26 +46,26 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Mar 30, 2017 at 09:47:32PM +0200, Nicolai Stange wrote:
+On Thu, Mar 30, 2017 at 04:55:26PM +0100, James Hogan wrote:
 
-> In preparation for making the clockevents core NTP correction aware,
-> all clockevent device drivers must set ->min_delta_ticks and
-> ->max_delta_ticks rather than ->min_delta_ns and ->max_delta_ns: a
-> clockevent device's rate is going to change dynamically and thus, the
-> ratio of ns to ticks ceases to stay invariant.
+> Hi Sergei,
 > 
-> Make the MIPS arch's clockevent drivers initialize these fields properly.
+> On Thu, Mar 30, 2017 at 06:42:08PM +0300, Sergei Shtylyov wrote:
+> > On 03/30/2017 06:06 PM, James Hogan wrote:
+> > > @@ -254,25 +251,46 @@ void sleeping_thread_to_gdb_regs(unsigned long *gdb_regs, struct task_struct *p)
+> > >  #endif
+> > >
+> > >  	for (reg = 0; reg < 16; reg++)
+> > > -		*(ptr++) = regs->regs[reg];
+> > > +		*(ptr++) = 0;
+> > 
+> >     Parens are not really necessary, you can get rid of them, while at it.
 > 
-> This patch alone doesn't introduce any change in functionality as the
-> clockevents core still looks exclusively at the (untouched) ->min_delta_ns
-> and ->max_delta_ns. As soon as this has changed, a followup patch will
-> purge the initialization of ->min_delta_ns and ->max_delta_ns from these
-> drivers.
-> 
-> Signed-off-by: Nicolai Stange <nicstange@gmail.com>
+> While not technically required, I disagree that we should get rid of
+> them, simply because after coding in C for almost 20 years I still had
+> to look at an operator precedence table to check which of post++ and
+> dereference operators take precedence.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-
-Feel free to push this to Linus.
+I strongly side with James on this one so I applied the patch as-is.
 
   Ralf

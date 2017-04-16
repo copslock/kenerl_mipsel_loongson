@@ -1,29 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Apr 2017 10:06:06 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:58272 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Apr 2017 10:06:35 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:58286 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993886AbdDPIFIEmB2O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Apr 2017 10:05:08 +0200
+        by eddie.linux-mips.org with ESMTP id S23993926AbdDPIFLQVpAO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Apr 2017 10:05:11 +0200
 Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1F6AD480;
-        Sun, 16 Apr 2017 08:05:01 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id AA1DE721;
+        Sun, 16 Apr 2017 08:05:04 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
         "Jason A. Donenfeld" <jason@zx2c4.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        Adam Buchbinder <adam.buchbinder@gmail.com>,
+        "Maciej W. Rozycki" <macro@imgtec.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
         Chris Metcalf <cmetcalf@mellanox.com>,
-        Petr Mladek <pmladek@suse.com>,
         James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
-        Aaron Tomlin <atomlin@redhat.com>,
+        Jiri Slaby <jslaby@suse.cz>,
         Andrew Morton <akpm@linux-foundation.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.9 16/31] MIPS: Introduce irq_stack
-Date:   Sun, 16 Apr 2017 10:04:07 +0200
-Message-Id: <20170416080222.615868993@linuxfoundation.org>
+Subject: [PATCH 4.9 17/31] MIPS: Stack unwinding while on IRQ stack
+Date:   Sun, 16 Apr 2017 10:04:08 +0200
+Message-Id: <20170416080222.718658379@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <20170416080221.808058771@linuxfoundation.org>
 References: <20170416080221.808058771@linuxfoundation.org>
@@ -34,7 +35,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57693
+X-archive-position: 57694
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,91 +58,62 @@ X-list: linux-mips
 
 From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-commit fe8bd18ffea5327344d4ec2bf11f47951212abd0 upstream.
+commit d42d8d106b0275b027c1e8992c42aecf933436ea upstream.
 
-Allocate a per-cpu irq stack for use within interrupt handlers.
-
-Also add a utility function on_irq_stack to determine if a given stack
-pointer is within the irq stack for that cpu.
+Within unwind stack, check if the stack pointer being unwound is within
+the CPU's irq_stack and if so use that page rather than the task's stack
+page.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 Acked-by: Jason A. Donenfeld <jason@zx2c4.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Adam Buchbinder <adam.buchbinder@gmail.com>
+Cc: Maciej W. Rozycki <macro@imgtec.com>
+Cc: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc: Chris Metcalf <cmetcalf@mellanox.com>
-Cc: Petr Mladek <pmladek@suse.com>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Aaron Tomlin <atomlin@redhat.com>
+Cc: Jiri Slaby <jslaby@suse.cz>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14740/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/14741/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/include/asm/irq.h    |   12 ++++++++++++
- arch/mips/kernel/asm-offsets.c |    1 +
- arch/mips/kernel/irq.c         |   11 +++++++++++
- 3 files changed, 24 insertions(+)
+ arch/mips/kernel/process.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/arch/mips/include/asm/irq.h
-+++ b/arch/mips/include/asm/irq.h
-@@ -17,6 +17,18 @@
- 
- #include <irq.h>
- 
-+#define IRQ_STACK_SIZE			THREAD_SIZE
-+
-+extern void *irq_stack[NR_CPUS];
-+
-+static inline bool on_irq_stack(int cpu, unsigned long sp)
-+{
-+	unsigned long low = (unsigned long)irq_stack[cpu];
-+	unsigned long high = low + IRQ_STACK_SIZE;
-+
-+	return (low <= sp && sp <= high);
-+}
-+
- #ifdef CONFIG_I8259
- static inline int irq_canonicalize(int irq)
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -33,6 +33,7 @@
+ #include <asm/dsemul.h>
+ #include <asm/dsp.h>
+ #include <asm/fpu.h>
++#include <asm/irq.h>
+ #include <asm/msa.h>
+ #include <asm/pgtable.h>
+ #include <asm/mipsregs.h>
+@@ -556,7 +557,19 @@ EXPORT_SYMBOL(unwind_stack_by_address);
+ unsigned long unwind_stack(struct task_struct *task, unsigned long *sp,
+ 			   unsigned long pc, unsigned long *ra)
  {
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -102,6 +102,7 @@ void output_thread_info_defines(void)
- 	OFFSET(TI_REGS, thread_info, regs);
- 	DEFINE(_THREAD_SIZE, THREAD_SIZE);
- 	DEFINE(_THREAD_MASK, THREAD_MASK);
-+	DEFINE(_IRQ_STACK_SIZE, IRQ_STACK_SIZE);
- 	BLANK();
- }
- 
---- a/arch/mips/kernel/irq.c
-+++ b/arch/mips/kernel/irq.c
-@@ -25,6 +25,8 @@
- #include <linux/atomic.h>
- #include <asm/uaccess.h>
- 
-+void *irq_stack[NR_CPUS];
+-	unsigned long stack_page = (unsigned long)task_stack_page(task);
++	unsigned long stack_page = 0;
++	int cpu;
 +
- /*
-  * 'what should we do if we get a hw irq event on an illegal vector'.
-  * each architecture has to answer this themselves.
-@@ -58,6 +60,15 @@ void __init init_IRQ(void)
- 		clear_c0_status(ST0_IM);
- 
- 	arch_init_irq();
-+
-+	for_each_possible_cpu(i) {
-+		int irq_pages = IRQ_STACK_SIZE / PAGE_SIZE;
-+		void *s = (void *)__get_free_pages(GFP_KERNEL, irq_pages);
-+
-+		irq_stack[i] = s;
-+		pr_debug("CPU%d IRQ stack at 0x%p - 0x%p\n", i,
-+			irq_stack[i], irq_stack[i] + IRQ_STACK_SIZE);
++	for_each_possible_cpu(cpu) {
++		if (on_irq_stack(cpu, *sp)) {
++			stack_page = (unsigned long)irq_stack[cpu];
++			break;
++		}
 +	}
++
++	if (!stack_page)
++		stack_page = (unsigned long)task_stack_page(task);
++
+ 	return unwind_stack_by_address(stack_page, sp, pc, ra);
  }
- 
- #ifdef CONFIG_DEBUG_STACKOVERFLOW
+ #endif

@@ -1,27 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Apr 2017 10:05:42 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:58140 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Apr 2017 10:06:06 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:58272 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993875AbdDPID53JzPO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Apr 2017 10:03:57 +0200
+        by eddie.linux-mips.org with ESMTP id S23993886AbdDPIFIEmB2O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Apr 2017 10:05:08 +0200
 Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 0779F258;
-        Sun, 16 Apr 2017 08:03:51 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1F6AD480;
+        Sun, 16 Apr 2017 08:05:01 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
         "Jason A. Donenfeld" <jason@zx2c4.com>,
         Thomas Gleixner <tglx@linutronix.de>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Chris Metcalf <cmetcalf@mellanox.com>,
+        Petr Mladek <pmladek@suse.com>,
         James Hogan <james.hogan@imgtec.com>,
         Paul Burton <paul.burton@imgtec.com>,
+        Aaron Tomlin <atomlin@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.4 08/18] MIPS: Switch to the irq_stack in interrupts
-Date:   Sun, 16 Apr 2017 10:02:31 +0200
-Message-Id: <20170416080213.145619218@linuxfoundation.org>
+Subject: [PATCH 4.9 16/31] MIPS: Introduce irq_stack
+Date:   Sun, 16 Apr 2017 10:04:07 +0200
+Message-Id: <20170416080222.615868993@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
-In-Reply-To: <20170416080212.713469777@linuxfoundation.org>
-References: <20170416080212.713469777@linuxfoundation.org>
+In-Reply-To: <20170416080221.808058771@linuxfoundation.org>
+References: <20170416080221.808058771@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -29,7 +34,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57692
+X-archive-position: 57693
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,135 +51,97 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-commit dda45f701c9d7ad4ac0bb446e3a96f6df9a468d9 upstream.
+commit fe8bd18ffea5327344d4ec2bf11f47951212abd0 upstream.
 
-When enterring interrupt context via handle_int or except_vec_vi, switch
-to the irq_stack of the current CPU if it is not already in use.
+Allocate a per-cpu irq stack for use within interrupt handlers.
 
-The current stack pointer is masked with the thread size and compared to
-the base or the irq stack. If it does not match then the stack pointer
-is set to the top of that stack, otherwise this is a nested irq being
-handled on the irq stack so the stack pointer should be left as it was.
-
-The in-use stack pointer is placed in the callee saved register s1. It
-will be saved to the stack when plat_irq_dispatch is invoked and can be
-restored once control returns here.
+Also add a utility function on_irq_stack to determine if a given stack
+pointer is within the irq stack for that cpu.
 
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
 Acked-by: Jason A. Donenfeld <jason@zx2c4.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Chris Metcalf <cmetcalf@mellanox.com>
+Cc: Petr Mladek <pmladek@suse.com>
 Cc: James Hogan <james.hogan@imgtec.com>
 Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: linux-mips@linux-mips.org
+Cc: Aaron Tomlin <atomlin@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14743/
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/14740/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/mips/kernel/genex.S |   81 ++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 76 insertions(+), 5 deletions(-)
 
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -188,9 +188,44 @@ NESTED(handle_int, PT_SIZE, sp)
+---
+ arch/mips/include/asm/irq.h    |   12 ++++++++++++
+ arch/mips/kernel/asm-offsets.c |    1 +
+ arch/mips/kernel/irq.c         |   11 +++++++++++
+ 3 files changed, 24 insertions(+)
+
+--- a/arch/mips/include/asm/irq.h
++++ b/arch/mips/include/asm/irq.h
+@@ -17,6 +17,18 @@
  
- 	LONG_L	s0, TI_REGS($28)
- 	LONG_S	sp, TI_REGS($28)
--	PTR_LA	ra, ret_from_irq
--	PTR_LA  v0, plat_irq_dispatch
--	jr	v0
-+
-+	/*
-+	 * SAVE_ALL ensures we are using a valid kernel stack for the thread.
-+	 * Check if we are already using the IRQ stack.
-+	 */
-+	move	s1, sp # Preserve the sp
-+
-+	/* Get IRQ stack for this CPU */
-+	ASM_CPUID_MFC0	k0, ASM_SMP_CPUID_REG
-+#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
-+	lui	k1, %hi(irq_stack)
-+#else
-+	lui	k1, %highest(irq_stack)
-+	daddiu	k1, %higher(irq_stack)
-+	dsll	k1, 16
-+	daddiu	k1, %hi(irq_stack)
-+	dsll	k1, 16
-+#endif
-+	LONG_SRL	k0, SMP_CPUID_PTRSHIFT
-+	LONG_ADDU	k1, k0
-+	LONG_L	t0, %lo(irq_stack)(k1)
-+
-+	# Check if already on IRQ stack
-+	PTR_LI	t1, ~(_THREAD_SIZE-1)
-+	and	t1, t1, sp
-+	beq	t0, t1, 2f
-+
-+	/* Switch to IRQ stack */
-+	li	t1, _IRQ_STACK_SIZE
-+	PTR_ADD sp, t0, t1
-+
-+2:
-+	jal	plat_irq_dispatch
-+
-+	/* Restore sp */
-+	move	sp, s1
-+
-+	j	ret_from_irq
- #ifdef CONFIG_CPU_MICROMIPS
- 	nop
- #endif
-@@ -263,8 +298,44 @@ NESTED(except_vec_vi_handler, 0, sp)
+ #include <irq.h>
  
- 	LONG_L	s0, TI_REGS($28)
- 	LONG_S	sp, TI_REGS($28)
--	PTR_LA	ra, ret_from_irq
--	jr	v0
++#define IRQ_STACK_SIZE			THREAD_SIZE
 +
-+	/*
-+	 * SAVE_ALL ensures we are using a valid kernel stack for the thread.
-+	 * Check if we are already using the IRQ stack.
-+	 */
-+	move	s1, sp # Preserve the sp
++extern void *irq_stack[NR_CPUS];
 +
-+	/* Get IRQ stack for this CPU */
-+	ASM_CPUID_MFC0	k0, ASM_SMP_CPUID_REG
-+#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
-+	lui	k1, %hi(irq_stack)
-+#else
-+	lui	k1, %highest(irq_stack)
-+	daddiu	k1, %higher(irq_stack)
-+	dsll	k1, 16
-+	daddiu	k1, %hi(irq_stack)
-+	dsll	k1, 16
-+#endif
-+	LONG_SRL	k0, SMP_CPUID_PTRSHIFT
-+	LONG_ADDU	k1, k0
-+	LONG_L	t0, %lo(irq_stack)(k1)
++static inline bool on_irq_stack(int cpu, unsigned long sp)
++{
++	unsigned long low = (unsigned long)irq_stack[cpu];
++	unsigned long high = low + IRQ_STACK_SIZE;
 +
-+	# Check if already on IRQ stack
-+	PTR_LI	t1, ~(_THREAD_SIZE-1)
-+	and	t1, t1, sp
-+	beq	t0, t1, 2f
++	return (low <= sp && sp <= high);
++}
 +
-+	/* Switch to IRQ stack */
-+	li	t1, _IRQ_STACK_SIZE
-+	PTR_ADD sp, t0, t1
-+
-+2:
-+	jal	plat_irq_dispatch
-+
-+	/* Restore sp */
-+	move	sp, s1
-+
-+	j	ret_from_irq
- 	END(except_vec_vi_handler)
+ #ifdef CONFIG_I8259
+ static inline int irq_canonicalize(int irq)
+ {
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -102,6 +102,7 @@ void output_thread_info_defines(void)
+ 	OFFSET(TI_REGS, thread_info, regs);
+ 	DEFINE(_THREAD_SIZE, THREAD_SIZE);
+ 	DEFINE(_THREAD_MASK, THREAD_MASK);
++	DEFINE(_IRQ_STACK_SIZE, IRQ_STACK_SIZE);
+ 	BLANK();
+ }
  
+--- a/arch/mips/kernel/irq.c
++++ b/arch/mips/kernel/irq.c
+@@ -25,6 +25,8 @@
+ #include <linux/atomic.h>
+ #include <asm/uaccess.h>
+ 
++void *irq_stack[NR_CPUS];
++
  /*
+  * 'what should we do if we get a hw irq event on an illegal vector'.
+  * each architecture has to answer this themselves.
+@@ -58,6 +60,15 @@ void __init init_IRQ(void)
+ 		clear_c0_status(ST0_IM);
+ 
+ 	arch_init_irq();
++
++	for_each_possible_cpu(i) {
++		int irq_pages = IRQ_STACK_SIZE / PAGE_SIZE;
++		void *s = (void *)__get_free_pages(GFP_KERNEL, irq_pages);
++
++		irq_stack[i] = s;
++		pr_debug("CPU%d IRQ stack at 0x%p - 0x%p\n", i,
++			irq_stack[i], irq_stack[i] + IRQ_STACK_SIZE);
++	}
+ }
+ 
+ #ifdef CONFIG_DEBUG_STACKOVERFLOW

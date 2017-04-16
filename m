@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Apr 2017 10:07:58 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:58340 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Apr 2017 10:08:25 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:58352 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993933AbdDPIFV0Db7O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Apr 2017 10:05:21 +0200
+        by eddie.linux-mips.org with ESMTP id S23993887AbdDPIFX6mIyO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Apr 2017 10:05:23 +0200
 Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3E2D6258;
-        Sun, 16 Apr 2017 08:05:15 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 7882E480;
+        Sun, 16 Apr 2017 08:05:17 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
-        "Jason A. Donenfeld" <jason@zx2c4.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
         Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 4.9 20/31] MIPS: Select HAVE_IRQ_EXIT_ON_IRQ_STACK
-Date:   Sun, 16 Apr 2017 10:04:11 +0200
-Message-Id: <20170416080222.862805812@linuxfoundation.org>
+Subject: [PATCH 4.9 21/31] MIPS: IRQ Stack: Fix erroneous jal to plat_irq_dispatch
+Date:   Sun, 16 Apr 2017 10:04:12 +0200
+Message-Id: <20170416080222.913731562@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <20170416080221.808058771@linuxfoundation.org>
 References: <20170416080221.808058771@linuxfoundation.org>
@@ -27,7 +27,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57697
+X-archive-position: 57698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,33 +50,38 @@ X-list: linux-mips
 
 From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-commit 3cc3434fd6307d06b53b98ce83e76bf9807689b9 upstream.
+commit c25f8064c1d5731a2ce5664def890140dcdd3e5c upstream.
 
-Since do_IRQ is now invoked on a separate IRQ stack, we select
-HAVE_IRQ_EXIT_ON_IRQ_STACK so that softirq's may be invoked directly
-from irq_exit(), rather than requiring do_softirq_own_stack.
+Commit dda45f701c9d ("MIPS: Switch to the irq_stack in interrupts")
+changed both the normal and vectored interrupt handlers. Unfortunately
+the vectored version, "except_vec_vi_handler", was incorrectly modified
+to unconditionally jal to plat_irq_dispatch, rather than doing a jalr to
+the vectored handler that has been set up. This is ok for many platforms
+which set the vectored handler to plat_irq_dispatch anyway, but will
+cause problems with platforms that use other handlers.
 
+Fixes: dda45f701c9d ("MIPS: Switch to the irq_stack in interrupts")
 Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
-Acked-by: Jason A. Donenfeld <jason@zx2c4.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/14744/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/15110/
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/kernel/genex.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -9,6 +9,7 @@ config MIPS
- 	select HAVE_CONTEXT_TRACKING
- 	select HAVE_GENERIC_DMA_COHERENT
- 	select HAVE_IDE
-+	select HAVE_IRQ_EXIT_ON_IRQ_STACK
- 	select HAVE_OPROFILE
- 	select HAVE_PERF_EVENTS
- 	select PERF_USE_VMALLOC
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -329,7 +329,7 @@ NESTED(except_vec_vi_handler, 0, sp)
+ 	PTR_ADD sp, t0, t1
+ 
+ 2:
+-	jal	plat_irq_dispatch
++	jalr	v0
+ 
+ 	/* Restore sp */
+ 	move	sp, s1

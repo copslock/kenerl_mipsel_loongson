@@ -1,32 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Apr 2017 01:45:51 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:47186 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993543AbdDNXpms8p0O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 15 Apr 2017 01:45:42 +0200
-Date:   Sat, 15 Apr 2017 00:45:42 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        James Hogan <james.hogan@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Apr 2017 10:03:18 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57954 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991932AbdDPIDKiRcsO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 Apr 2017 10:03:10 +0200
+Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 3A3AB5A9;
+        Sun, 16 Apr 2017 08:03:02 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Matt Redfearn <matt.redfearn@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paul.burton@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 4.4 27/32] MIPS: Force o32 fp64 support on 32bit MIPS64r6
- kernels
-In-Reply-To: <20170410163843.079809660@linuxfoundation.org>
-Message-ID: <alpine.LFD.2.20.1704150040420.29296@eddie.linux-mips.org>
-References: <20170410163839.055472822@linuxfoundation.org> <20170410163843.079809660@linuxfoundation.org>
-User-Agent: Alpine 2.20 (LFD 67 2015-01-07)
+        linux-mips@linux-mips.org, James Hogan <james.hogan@imgtec.com>,
+        Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 4.4 10/18] MIPS: IRQ Stack: Fix erroneous jal to plat_irq_dispatch
+Date:   Sun, 16 Apr 2017 10:02:33 +0200
+Message-Id: <20170416080213.237548580@linuxfoundation.org>
+X-Mailer: git-send-email 2.12.2
+In-Reply-To: <20170416080212.713469777@linuxfoundation.org>
+References: <20170416080212.713469777@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57686
+X-archive-position: 57687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,24 +44,44 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 10 Apr 2017, Greg Kroah-Hartman wrote:
+4.4-stable review patch.  If anyone has any objections, please let me know.
 
-> Force o32 fp64 support in this case by also selecting
-> MIPS_O32_FP64_SUPPORT from CPU_MIPS64_R6 if 32BIT.
-[...]
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -1412,7 +1412,7 @@ config CPU_MIPS32_R6
->  	select CPU_SUPPORTS_MSA
->  	select GENERIC_CSUM
->  	select HAVE_KVM
-> -	select MIPS_O32_FP64_SUPPORT
-> +	select MIPS_O32_FP64_SUPPORT if 32BIT
->  	help
->  	  Choose this option to build a kernel for release 6 or later of the
->  	  MIPS32 architecture.  New MIPS processors, starting with the Warrior
+------------------
 
- Has the patch been misapplied?  Its description refers to CPU_MIPS64_R6, 
-however the hunk heading in the diff itself indicates CPU_MIPS32_R6.
+From: Matt Redfearn <matt.redfearn@imgtec.com>
 
-  Maciej
+commit c25f8064c1d5731a2ce5664def890140dcdd3e5c upstream.
+
+Commit dda45f701c9d ("MIPS: Switch to the irq_stack in interrupts")
+changed both the normal and vectored interrupt handlers. Unfortunately
+the vectored version, "except_vec_vi_handler", was incorrectly modified
+to unconditionally jal to plat_irq_dispatch, rather than doing a jalr to
+the vectored handler that has been set up. This is ok for many platforms
+which set the vectored handler to plat_irq_dispatch anyway, but will
+cause problems with platforms that use other handlers.
+
+Fixes: dda45f701c9d ("MIPS: Switch to the irq_stack in interrupts")
+Signed-off-by: Matt Redfearn <matt.redfearn@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/15110/
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/genex.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -330,7 +330,7 @@ NESTED(except_vec_vi_handler, 0, sp)
+ 	PTR_ADD sp, t0, t1
+ 
+ 2:
+-	jal	plat_irq_dispatch
++	jalr	v0
+ 
+ 	/* Restore sp */
+ 	move	sp, s1

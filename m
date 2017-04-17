@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2017 21:31:02 +0200 (CEST)
-Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:55283 "EHLO
-        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993853AbdDQT3yCGgZ8 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Apr 2017 21:29:54 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2017 21:31:23 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:55868 "EHLO mail.hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993859AbdDQT3zWfAk8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Apr 2017 21:29:55 +0200
 Received: from hauke-desktop.lan (p200300862804440050AB64DAC865B1E7.dip0.t-ipconnect.de [IPv6:2003:86:2804:4400:50ab:64da:c865:b1e7])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 98ED210031B;
-        Mon, 17 Apr 2017 21:29:52 +0200 (CEST)
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 8EDA610031D;
+        Mon, 17 Apr 2017 21:29:54 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -13,9 +13,9 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         martin.blumenstingl@googlemail.com, john@phrozen.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 03/13] mtd: spi-falcon: drop check of boot select
-Date:   Mon, 17 Apr 2017 21:29:32 +0200
-Message-Id: <20170417192942.32219-4-hauke@hauke-m.de>
+Subject: [PATCH 05/13] MIPS: lantiq: Enable MFD_SYSCON to be able to use it for the RCU MFD
+Date:   Mon, 17 Apr 2017 21:29:34 +0200
+Message-Id: <20170417192942.32219-6-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170417192942.32219-1-hauke@hauke-m.de>
 References: <20170417192942.32219-1-hauke@hauke-m.de>
@@ -23,7 +23,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57710
+X-archive-position: 57711
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,31 +40,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Do not check which flash type the SoC was booted from before
-using this driver. Assume that the device tree is correct and use this
-driver when it was added to device tree. This also removes a build
-dependency to the SoC code.
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/spi/spi-falcon.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/mips/lantiq/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
-index 286b2c81fc6b..f8638e82e5db 100644
---- a/drivers/spi/spi-falcon.c
-+++ b/drivers/spi/spi-falcon.c
-@@ -395,11 +395,6 @@ static int falcon_sflash_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	int ret;
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index 177769dbb0e8..f5db4a426568 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -17,6 +17,7 @@ config SOC_XWAY
+ 	bool "XWAY"
+ 	select SOC_TYPE_XWAY
+ 	select HW_HAS_PCI
++	select MFD_SYSCON
  
--	if (ltq_boot_select() != BS_SPI) {
--		dev_err(&pdev->dev, "invalid bootstrap options\n");
--		return -ENODEV;
--	}
--
- 	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
- 	if (!master)
- 		return -ENOMEM;
+ config SOC_FALCON
+ 	bool "FALCON"
 -- 
 2.11.0

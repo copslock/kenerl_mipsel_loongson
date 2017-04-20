@@ -1,30 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Apr 2017 19:22:08 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:35291 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990845AbdDSRWCWbgB7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Apr 2017 19:22:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=97NWYIPReoQCVcT3gMxrSOmh/ZlaX/CoR+caZucPlE8=; b=C0su7zdyuqRlFXg21n/psCdvv
-        I7O2CMTb9HILoTYQSXCOK61cVk7F5B+g6cGVC/qnUNsSPOKjM+z6kYsWjEeLq3tJXrrhF0OQ7OhZx
-        Z3oqodmBzLz4e4sNP//BSIl1McjBhzgsJEujgK7rX88AQjQ5RkCncC0fFcSSCfjqKsPX4dMWmmOcm
-        hSpimYk1iL9HspIg7dywfnOSK4cfSlGtCwC8HqxnkCv7KR/zuGh5KHnofv8PgbPXcf7rVgVe7Ufln
-        IiNu8pJifstuTsddsu/lXMpISCVv0cz+kadhoSau7goz392Wtk/MOJVx1bjNE/eKgFPch4NcCHH0P
-        OyE2X3B3w==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1d0tIT-0007P3-F5; Wed, 19 Apr 2017 17:21:41 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 858D7203AA6C7; Wed, 19 Apr 2017 19:21:39 +0200 (CEST)
-Date:   Wed, 19 Apr 2017 19:21:39 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Apr 2017 05:31:23 +0200 (CEST)
+Received: from mail-io0-x243.google.com ([IPv6:2607:f8b0:4001:c06::243]:33080
+        "EHLO mail-io0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990686AbdDTDbPOJ8fG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Apr 2017 05:31:15 +0200
+Received: by mail-io0-x243.google.com with SMTP id k87so11114277ioi.0;
+        Wed, 19 Apr 2017 20:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=NJqQV0LcGDcEsCyJBhbKZ0WmO5np3Rzoh+FFfAyma2c=;
+        b=IYGykPtqWwPau8p7V29c+Zj1NXP4bpPoa21ylv1m7aXwMPyPbLSBfBRfDlrhFyXynx
+         1l1AUKAB0mpdIWzgiEZrF/wro6mBdRKJmvdYxDh3pcrnXpYM2amIP9iseyAv7t2P46v8
+         aeVUEAF368gpzEQqcoBxyyxdXpFPnDCUJZZY2WVIhaN7juyDFU131v4ArqBM73bhbnjh
+         5mWmmASasUQWbfWEyzPB3loJLc8lZWz3+Zr6wbTeb17gGB9bwt7F+F+nqSRDhgdLal6D
+         zs1jgkbtmN+jg5yIYpGRvRcUbZWz/jouHedJxYRMbMrMujr1nAP21ASP2qSpaJ3WPNPG
+         e+Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=NJqQV0LcGDcEsCyJBhbKZ0WmO5np3Rzoh+FFfAyma2c=;
+        b=QNCloRwMmBE6e7BB4DiGdSh62uJYCpkSJmy54bfcV9HPM22uaxVTtf32JmMQQntWBT
+         r1gjRzlf3BTCCa/h1+ewfajImsdPYsCVL9rFL5Y+VDDCuS6JUo/LL5a3bobQG4JXNZ1p
+         wK/5IM34sXWUfgND2C8JWnkX6MjWxAUh3aUaeRrvEYrf9NhpYno5pSuU1xqr1YmLwepf
+         39m3mT75ULR0hJWDVpltAGsiIFcAP7qzF0u0nkOZ8GKocWEsBxWKEBKKboDTLn/ATkp8
+         g8T/0Fq0Fb2cOR/D5x8EC9K6G6KIBJ4ezR0VGGUvZFoE6amPFBA6pm6amJMbshmsZD9j
+         leyw==
+X-Gm-Message-State: AN3rC/7fURatglz7yiWr5wshYNQJOSfGqBFK+aIaV2+mrtHhAcKdZfSU
+        94ZeGcWY0kUkRQ==
+X-Received: by 10.84.222.129 with SMTP id x1mr7823486pls.44.1492659069384;
+        Wed, 19 Apr 2017 20:31:09 -0700 (PDT)
+Received: from localhost ([175.223.2.161])
+        by smtp.gmail.com with ESMTPSA id g75sm6952933pfg.82.2017.04.19.20.31.07
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 19 Apr 2017 20:31:08 -0700 (PDT)
+Date:   Thu, 20 Apr 2017 12:31:12 +0900
+From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
 To:     Steven Rostedt <rostedt@goodmis.org>
 Cc:     Petr Mladek <pmladek@suse.com>,
         Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Russell King <rmk+kernel@arm.linux.org.uk>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
@@ -43,7 +59,7 @@ Cc:     Petr Mladek <pmladek@suse.com>,
         David Miller <davem@davemloft.net>
 Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
  NMI
-Message-ID: <20170419172139.hipylcdsarhvnsby@hirez.programming.kicks-ass.net>
+Message-ID: <20170420033112.GB542@jagdpanzerIV.localdomain>
 References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
  <1461239325-22779-2-git-send-email-pmladek@suse.com>
  <20170419131341.76bc7634@gandalf.local.home>
@@ -51,16 +67,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20170419131341.76bc7634@gandalf.local.home>
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <peterz@infradead.org>
+User-Agent: Mutt/1.8.2 (2017-04-18)
+Return-Path: <sergey.senozhatsky.work@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57733
+X-archive-position: 57734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: sergey.senozhatsky.work@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,10 +89,9 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, Apr 19, 2017 at 01:13:41PM -0400, Steven Rostedt wrote:
-> On Thu, 21 Apr 2016 13:48:42 +0200
-> Petr Mladek <pmladek@suse.com> wrote:
-> 
+Hello Steven,
+
+On (04/19/17 13:13), Steven Rostedt wrote:
 > > printk() takes some locks and could not be used a safe way in NMI context.
 > 
 > I just found a problem with this solution. It kills ftrace dumps from
@@ -99,4 +114,52 @@ On Wed, Apr 19, 2017 at 01:13:41PM -0400, Steven Rostedt wrote:
 > 
 > Thoughts?
 
-early_printk ;-)
+hmmm... a really tough one.
+
+well, someone has to say this:
+ the simplest thing is to have a bigger PRINTK_SAFE_LOG_BUF_SHIFT value :)
+
+
+just thinking (well, sort of) out loud. the problem is that we can't tell if
+we already hold any printk related locks ("printk related locks" is not even
+well defined term). so printk from NMI can deadlock or it can be OK, we
+never know. but looking and vprintk_emit() and console_unlock() it seems that
+we have some sort of a hint now, which is this_cpu_read(printk_context) - if
+we are not in printk_safe context then we can say that _probably_ (and that's
+a Russian roulette) doing "normal" printk() will work. that is a *very-very*
+risky (and admittedly dumb) thing to assume, so we will move in a slightly
+different direction. checking this_cpu_read(printk_context) only assures us
+that we don't hold `logbuf_lock' on this CPU. and that is sort of something,
+at least we can be sure that doing printk_deferred() from this CPU is safe.
+printk_deferred() means that your NMI messages will end up in the logbuf,
+which is a) bigger in size than per-CPU buffer and b) some other CPU can
+immediately print those messages (hopefully).
+
+we also switch to printk_safe mode for call_console_drivers() in
+console_unlock(). but we can't make any solid assumptions there - serial
+console lock can already be acquired, we don't have any markers for that.
+it may be reasonable to assume that if we are not in printk_safe mode on
+this CPU then serial console is not locked from this CPU, but there is
+nothing that can assure us.
+
+so at the moment what I can think of is something like
+
+  -- check this_cpu_read(printk_context) in NMI prink
+
+	-- if we are NOT in printk_safe on this CPU, then do printk_deferred()
+	   and bypass `nmi_print_seq' buffer
+
+	-- if we are in printk_safe
+	  -- well... bad luck... have a bigger buffer.
+
+		.... or there are some other options here, but I'd prefer
+		not to list them, because people will hate me :)
+
+
+so this shifts the purpose of `nmi_print_seq' buffer: use it only when
+you can't use logbuf. otherwise, do printk_deferred().
+
+
+need to think more.
+
+	-ss

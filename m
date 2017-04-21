@@ -1,60 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Apr 2017 20:42:14 +0200 (CEST)
-Received: from mail-wm0-x243.google.com ([IPv6:2a00:1450:400c:c09::243]:36814
-        "EHLO mail-wm0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993908AbdDUSmF7BQqu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Apr 2017 20:42:05 +0200
-Received: by mail-wm0-x243.google.com with SMTP id u65so6412534wmu.3;
-        Fri, 21 Apr 2017 11:42:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=DTCmfPTcVyKI2DqL4pt9IlGhWAYJEQQoHiDngICSpGo=;
-        b=MsejAUghQvfS2Er4a1ePQ3MPcjEgOlLdTlDpyKIXKMg1VJN2c9nGdKBon/zOOhCo7P
-         oOJFR2M2XAKohSIskS44q5bdkA5xhfJlWeYGZgE1w+P4wXGHnkSK4YwDtBhk7yBD5jTY
-         K2rFMM6Qu1OaxUXn+wTIRG5GNk7oOZUXRejoG4Onv35fU/WRYg3Ql+ySwOiwhHZVPubj
-         cYIMn2SyL3dTAlQRapz7WV858lH0vQxL6eQS+QXNuhVepm4bfmpX17FqgfAn6IflCLC1
-         1nHj0+Opr/loUq5nAgafUX9P3lxnxd53aSDCUFRfkFWsvx1H29EmjJCaS64FOPKnoAou
-         vL9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=DTCmfPTcVyKI2DqL4pt9IlGhWAYJEQQoHiDngICSpGo=;
-        b=cG3okRl/B0VpvxQ/Xgr7YOuoKbQmaWz1ncTLq2AtaauH4WdjzG4zHd+54pezBK2iIz
-         qypSQXcnkHJGksoVACGtPNSG9M/WDJ+R7GyHgA3hiloHj8UCOacGP+QdPcuggf0hOrYh
-         bx0dzLMZd6IkCSvM0kBv3YehmoOsInlsoqcTav6XPhgY6We6JXoyVjM2buVc/0WcpcPR
-         HK00m3fEt/FdVilmxSSfTvorb+d3BITFQd+7msp5P4Z8TnMzWVMgyU4igLfQxma3dat1
-         aEWa3Z+zjipEszGebq2fwwfXf+PcNffDBumqNJoeHsKEcq2PAbqq7LDl6XzPDyHlInOq
-         4j0w==
-X-Gm-Message-State: AN3rC/5TcKf7DC1N1Zi0bFwIGaK+Fdk5EjBRpbrgLMbzhPT3kyt3uE0y
-        7y5QffQC/2zn6p8WenEwJHr6Tu6tOg==
-X-Received: by 10.28.232.72 with SMTP id f69mr83122wmh.6.1492800120425; Fri,
- 21 Apr 2017 11:42:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Apr 2017 01:14:10 +0200 (CEST)
+Received: from hall.aurel32.net ([IPv6:2001:bc8:30d7:100::1]:35666 "EHLO
+        hall.aurel32.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993859AbdDUXODhY0SZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Apr 2017 01:14:03 +0200
+Received: from ohm.aurel32.net ([2001:bc8:30d7:111::1000])
+        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1d1hkY-0004OW-2k
+        for linux-mips@linux-mips.org; Sat, 22 Apr 2017 01:14:02 +0200
+Received: from aurel32 by ohm.aurel32.net with local (Exim 4.89)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1d1hkU-0006DC-PO
+        for linux-mips@linux-mips.org; Sat, 22 Apr 2017 01:13:58 +0200
+Date:   Sat, 22 Apr 2017 01:13:58 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     linux-mips@linux-mips.org
+Subject: Loongson 3 kernel crashes with PAGE_EXTENSION and PAGE_POISONING
+Message-ID: <20170421231358.yszzvk3qzvbpxcrs@aurel32.net>
+Mail-Followup-To: linux-mips@linux-mips.org
 MIME-Version: 1.0
-Received: by 10.223.166.80 with HTTP; Fri, 21 Apr 2017 11:41:40 -0700 (PDT)
-In-Reply-To: <20170417192942.32219-12-hauke@hauke-m.de>
-References: <20170417192942.32219-1-hauke@hauke-m.de> <20170417192942.32219-12-hauke@hauke-m.de>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Fri, 21 Apr 2017 20:41:40 +0200
-Message-ID: <CAFBinCCK6Kb44TjLW=41w+kZFt_zk978mkKXPrsKPs5tLG8mLw@mail.gmail.com>
-Subject: Re: [PATCH 11/13] phy: Add an USB PHY driver for the Lantiq SoCs
- using the RCU module
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, john@phrozen.org,
-        linux-spi@vger.kernel.org, hauke.mehrtens@intel.com
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <martin.blumenstingl@googlemail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57763
+X-archive-position: 57764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: martin.blumenstingl@googlemail.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,589 +44,121 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Apr 17, 2017 at 9:29 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->
-> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
-> the PHY interfaces for each core. The phy instances can be passed to the
-> dwc2 driver, which already supports the generic phy interface.
->
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  59 ++++
->  arch/mips/lantiq/xway/reset.c                      |  43 ---
->  arch/mips/lantiq/xway/sysctrl.c                    |  24 +-
->  drivers/phy/Kconfig                                |   8 +
->  drivers/phy/Makefile                               |   1 +
->  drivers/phy/phy-lantiq-rcu-usb2.c                  | 325 +++++++++++++++++++++
->  6 files changed, 405 insertions(+), 55 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->  create mode 100644 drivers/phy/phy-lantiq-rcu-usb2.c
->
-> diff --git a/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
-> new file mode 100644
-> index 000000000000..0ec9f790b6e0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
-> @@ -0,0 +1,59 @@
-> +Lantiq XWAY SoC RCU USB 1.1/2.0 PHY binding
-> +===========================================
-> +
-> +This binding describes the USB PHY hardware provided by the RCU module on the
-> +Lantiq XWAY SoCs.
-> +
-> +
-> +-------------------------------------------------------------------------------
-> +Required properties (controller (parent) node):
-> +- compatible           : Should be one of
-> +                               "lantiq,ase-rcu-usb2-phy"
-> +                               "lantiq,danube-rcu-usb2-phy"
-> +                               "lantiq,xrx100-rcu-usb2-phy"
-> +                               "lantiq,xrx200-rcu-usb2-phy"
-> +                               "lantiq,xrx300-rcu-usb2-phy"
-> +- lantiq,rcu-syscon    : A phandle to the RCU module and the offsets to the
-> +                         USB PHY configuration and USB MAC registers.
-> +- address-cells                : should be 1
-> +- size-cells           : should be 0
-> +- phy-cells            : from the generic PHY bindings, must be 1
-> +
-> +Optional properties (controller (parent) node):
-> +- vbus-gpio            : References a GPIO which enables VBUS all given USB
-> +                         ports.
-> +
-> +Required nodes         :  A sub-node is required for each USB PHY port.
-> +
-> +
-> +-------------------------------------------------------------------------------
-> +Required properties (port (child) node):
-> +- reg          : The ID of the USB port, usually 0 or 1.
-> +- clocks       : References to the (PMU) "ctrl" and "phy" clk gates.
-> +- clock-names  : Must be one of the following:
-> +                       "ctrl"
-> +                       "phy"
-> +- resets       : References to the RCU USB configuration reset bits.
-> +- reset-names  : Must be one of the following:
-> +                       "analog-config" (optional)
-> +                       "statemachine-soft" (optional)
-> +
-> +Optional properties (port (child) node):
-> +- vbus-gpio    : References a GPIO which enables VBUS for the USB port.
-> +
-> +
-> +-------------------------------------------------------------------------------
-> +Example for the USB PHYs on an xRX200 SoC:
-> +       usb_phys0: rcu-usb2-phy@0 {
-> +               compatible      = "lantiq,xrx200-rcu-usb2-phy";
-> +               reg = <0>;
-> +
-> +               lantiq,rcu-syscon = <&rcu0 0x18 0x38>;
-> +               clocks = <&pmu PMU_GATE_USB0_CTRL>,
-> +                        <&pmu PMU_GATE_USB0_PHY>;
-> +               clock-names = "ctrl", "phy";
-> +               vbus-gpios = <&gpio 32 GPIO_ACTIVE_HIGH>;
-> +               resets = <&rcu_reset1 4>, <&rcu_reset0 4>;
-> +               reset-names = "phy", "ctrl";
-> +               #phy-cells = <0>;
-> +       };
-> diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-> index 3f30fb81a50f..5aec1f54275b 100644
-> --- a/arch/mips/lantiq/xway/reset.c
-> +++ b/arch/mips/lantiq/xway/reset.c
-> @@ -124,45 +124,6 @@ static void ltq_machine_power_off(void)
->         unreachable();
->  }
->
-> -static void ltq_usb_init(void)
-> -{
-> -       /* Power for USB cores 1 & 2 */
-> -       ltq_pmu_enable(PMU_AHBM);
-> -       ltq_pmu_enable(PMU_USB0);
-> -       ltq_pmu_enable(PMU_USB1);
-> -
-> -       ltq_rcu_w32(ltq_rcu_r32(RCU_CFG1A) | BIT(0), RCU_CFG1A);
-> -       ltq_rcu_w32(ltq_rcu_r32(RCU_CFG1B) | BIT(0), RCU_CFG1B);
-> -
-> -       /* Enable USB PHY power for cores 1 & 2 */
-> -       ltq_pmu_enable(PMU_USB0_P);
-> -       ltq_pmu_enable(PMU_USB1_P);
-> -
-> -       /* Configure cores to host mode */
-> -       ltq_rcu_w32(ltq_rcu_r32(RCU_USB1CFG) & ~RCU_USBCFG_HDSEL_BIT,
-> -               RCU_USB1CFG);
-> -       ltq_rcu_w32(ltq_rcu_r32(RCU_USB2CFG) & ~RCU_USBCFG_HDSEL_BIT,
-> -               RCU_USB2CFG);
-> -
-> -       /* Select DMA endianness (Host-endian: big-endian) */
-> -       ltq_rcu_w32((ltq_rcu_r32(RCU_USB1CFG) & ~RCU_USBCFG_SLV_END_BIT)
-> -               | RCU_USBCFG_HOST_END_BIT, RCU_USB1CFG);
-> -       ltq_rcu_w32(ltq_rcu_r32((RCU_USB2CFG) & ~RCU_USBCFG_SLV_END_BIT)
-> -               | RCU_USBCFG_HOST_END_BIT, RCU_USB2CFG);
-> -
-> -       /* Hard reset USB state machines */
-> -       ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET) | USBRESET_BIT, RCU_USBRESET);
-> -       udelay(50 * 1000);
-> -       ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET) & ~USBRESET_BIT, RCU_USBRESET);
-> -
-> -       /* Soft reset USB state machines */
-> -       ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET2)
-> -               | USB1RESET_BIT | USB2RESET_BIT, RCU_USBRESET2);
-> -       udelay(50 * 1000);
-> -       ltq_rcu_w32(ltq_rcu_r32(RCU_USBRESET2)
-> -               & ~(USB1RESET_BIT | USB2RESET_BIT), RCU_USBRESET2);
-> -}
-> -
->  static int __init mips_reboot_setup(void)
->  {
->         struct resource res;
-> @@ -186,10 +147,6 @@ static int __init mips_reboot_setup(void)
->         if (!ltq_rcu_membase)
->                 panic("Failed to remap core memory");
->
-> -       if (of_machine_is_compatible("lantiq,ar9") ||
-> -           of_machine_is_compatible("lantiq,vr9"))
-> -               ltq_usb_init();
-> -
->         _machine_restart = ltq_machine_restart;
->         _machine_halt = ltq_machine_halt;
->         pm_power_off = ltq_machine_power_off;
-> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-> index 5764d3ddce69..18725f2d5b67 100644
-> --- a/arch/mips/lantiq/xway/sysctrl.c
-> +++ b/arch/mips/lantiq/xway/sysctrl.c
-> @@ -469,8 +469,8 @@ void __init ltq_soc_init(void)
->
->         if (of_machine_is_compatible("lantiq,grx390") ||
->             of_machine_is_compatible("lantiq,ar10")) {
-> -               clkdev_add_pmu("1e101000.usb", "phy", 1, 2, PMU_ANALOG_USB0_P);
-> -               clkdev_add_pmu("1e106000.usb", "phy", 1, 2, PMU_ANALOG_USB1_P);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "phy", 1, 2, PMU_ANALOG_USB0_P);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@1", "phy", 1, 2, PMU_ANALOG_USB1_P);
->                 /* rc 0 */
->                 clkdev_add_pmu("1d900000.pcie", "phy", 1, 2, PMU_ANALOG_PCIE0_P);
->                 clkdev_add_pmu("1d900000.pcie", "msi", 1, 1, PMU1_PCIE_MSI);
-> @@ -490,8 +490,8 @@ void __init ltq_soc_init(void)
->                 else
->                         clkdev_add_static(CLOCK_133M, CLOCK_133M,
->                                                 CLOCK_133M, CLOCK_133M);
-> -               clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
-> -               clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "ctrl", 1, 0, PMU_USB0);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "phy", 1, 0, PMU_USB0_P);
->                 clkdev_add_pmu("1e180000.etop", "ppe", 1, 0, PMU_PPE);
->                 clkdev_add_cgu("1e180000.etop", "ephycgu", CGU_EPHY);
->                 clkdev_add_pmu("1e180000.etop", "ephy", 1, 0, PMU_EPHY);
-> @@ -525,10 +525,10 @@ void __init ltq_soc_init(void)
->         } else if (of_machine_is_compatible("lantiq,vr9")) {
->                 clkdev_add_static(ltq_vr9_cpu_hz(), ltq_vr9_fpi_hz(),
->                                 ltq_vr9_fpi_hz(), ltq_vr9_pp32_hz());
-> -               clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
-> -               clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0 | PMU_AHBM);
-> -               clkdev_add_pmu("1e106000.usb", "phy", 1, 0, PMU_USB1_P);
-> -               clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1 | PMU_AHBM);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "phy", 1, 0, PMU_USB0_P);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "ctrl", 1, 0, PMU_USB0 | PMU_AHBM);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@1", "phy", 1, 0, PMU_USB1_P);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@1", "ctrl", 1, 0, PMU_USB1 | PMU_AHBM);
->                 clkdev_add_pmu("1d900000.pcie", "phy", 1, 1, PMU1_PCIE_PHY);
->                 clkdev_add_pmu("1d900000.pcie", "bus", 1, 0, PMU_PCIE_CLK);
->                 clkdev_add_pmu("1d900000.pcie", "msi", 1, 1, PMU1_PCIE_MSI);
-> @@ -548,8 +548,8 @@ void __init ltq_soc_init(void)
->         } else if (of_machine_is_compatible("lantiq,ar9")) {
->                 clkdev_add_static(ltq_ar9_cpu_hz(), ltq_ar9_fpi_hz(),
->                                 ltq_ar9_fpi_hz(), CLOCK_250M);
-> -               clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
-> -               clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "ctrl", 1, 0, PMU_USB0);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "phy", 1, 0, PMU_USB0_P);
->                 clkdev_add_pmu("1e106000.usb", "ctl", 1, 0, PMU_USB1);
->                 clkdev_add_pmu("1e106000.usb", "phy", 1, 0, PMU_USB1_P);
->                 clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
-> @@ -560,8 +560,8 @@ void __init ltq_soc_init(void)
->         } else {
->                 clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
->                                 ltq_danube_fpi_hz(), ltq_danube_pp32_hz());
-> -               clkdev_add_pmu("1e101000.usb", "ctl", 1, 0, PMU_USB0);
-> -               clkdev_add_pmu("1e101000.usb", "phy", 1, 0, PMU_USB0_P);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "ctrl", 1, 0, PMU_USB0);
-> +               clkdev_add_pmu("1f203000.rcu:rcu-usb2-phy@0", "phy", 1, 0, PMU_USB0_P);
->                 clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
->                 clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
->                 clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
-> diff --git a/drivers/phy/Kconfig b/drivers/phy/Kconfig
-> index 005cadb7a3f8..dbb450e3ba04 100644
-> --- a/drivers/phy/Kconfig
-> +++ b/drivers/phy/Kconfig
-> @@ -488,6 +488,14 @@ config PHY_CYGNUS_PCIE
->           Enable this to support the Broadcom Cygnus PCIe PHY.
->           If unsure, say N.
->
-> +config PHY_LANTIQ_RCU_USB2
-> +       tristate "Lantiq XWAY SoC RCU based USB PHY"
-> +       depends on SOC_TYPE_XWAY
-> +       depends on OF
-> +       select GENERIC_PHY
-> +       help
-> +         Support for the USB PHY(s) on the Lantiq XWAY family SoCs.
-> +
->  source "drivers/phy/tegra/Kconfig"
->
->  config PHY_NS2_PCIE
-> diff --git a/drivers/phy/Makefile b/drivers/phy/Makefile
-> index dd8f3b5d2918..52631f5ac470 100644
-> --- a/drivers/phy/Makefile
-> +++ b/drivers/phy/Makefile
-> @@ -59,6 +59,7 @@ obj-$(CONFIG_PHY_TUSB1210)            += phy-tusb1210.o
->  obj-$(CONFIG_PHY_BRCM_SATA)            += phy-brcm-sata.o
->  obj-$(CONFIG_PHY_PISTACHIO_USB)                += phy-pistachio-usb.o
->  obj-$(CONFIG_PHY_CYGNUS_PCIE)          += phy-bcm-cygnus-pcie.o
-> +obj-$(CONFIG_PHY_LANTIQ_RCU_USB2)      += phy-lantiq-rcu-usb2.o
->  obj-$(CONFIG_ARCH_TEGRA) += tegra/
->  obj-$(CONFIG_PHY_NS2_PCIE)             += phy-bcm-ns2-pcie.o
->  obj-$(CONFIG_PHY_MESON8B_USB2)         += phy-meson8b-usb2.o
-> diff --git a/drivers/phy/phy-lantiq-rcu-usb2.c b/drivers/phy/phy-lantiq-rcu-usb2.c
-> new file mode 100644
-> index 000000000000..9bff42afd256
-> --- /dev/null
-> +++ b/drivers/phy/phy-lantiq-rcu-usb2.c
-> @@ -0,0 +1,325 @@
-> +/*
-> + * Lantiq XWAY SoC RCU module based USB 1.1/2.0 PHY driver
-> + *
-> + * Copyright (C) 2016 Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> + * Copyright (C) 2017 Hauke Mehrtens <hauke@hauke-m.de>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/delay.h>
-> +#include <linux/gpio.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/mfd/syscon.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_gpio.h>
-> +#include <linux/phy/phy.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +#include <linux/reset.h>
-> +
-> +#define MAX_VBUS_GPIO          2
-> +
-> +/* Transmitter HS Pre-Emphasis Enable */
-> +#define RCU_CFG1_TX_PEE                BIT(0)
-> +/* Disconnect Threshold */
-> +#define RCU_CFG1_DIS_THR_MASK  0x00038000
-> +#define RCU_CFG1_DIS_THR_SHIFT 15
-> +
-> +struct ltq_rcu_usb2_bits {
-> +       u8 hostmode;
-> +       u8 slave_endianness;
-> +       u8 host_endianness;
-> +       bool have_ana_cfg;
-> +};
-> +
-> +struct ltq_rcu_usb2_priv {
-> +       struct regmap                   *regmap;
-> +       u32                             phy_reg_offset;
-> +       u32                             ana_cfg1_reg_offset;
-> +       const struct ltq_rcu_usb2_bits  *reg_bits;
-> +       struct device                   *dev;
-> +       struct gpio_desc                *gpiod_vbus[MAX_VBUS_GPIO];
-> +       struct phy                      *phy;
-> +       struct clk                      *ctrl_gate_clk;
-> +       struct clk                      *phy_gate_clk;
-> +       struct reset_control            *ctrl_reset;
-> +       struct reset_control            *phy_reset;
-> +};
-> +
-> +static const struct ltq_rcu_usb2_bits xway_rcu_usb2_reg_bits = {
-> +       .hostmode = 11,
-> +       .slave_endianness = 9,
-> +       .host_endianness = 10,
-> +       .have_ana_cfg = false,
-> +};
-> +
-> +static const struct ltq_rcu_usb2_bits xrx100_rcu_usb2_reg_bits = {
-> +       .hostmode = 11,
-> +       .slave_endianness = 17,
-> +       .host_endianness = 10,
-> +       .have_ana_cfg = false,
-> +};
-> +
-> +static const struct ltq_rcu_usb2_bits xrx200_rcu_usb2_reg_bits = {
-> +       .hostmode = 11,
-> +       .slave_endianness = 9,
-> +       .host_endianness = 10,
-> +       .have_ana_cfg = true,
-> +};
-> +
-> +static const struct of_device_id ltq_rcu_usb2_phy_of_match[] = {
-> +       {
-> +               .compatible = "lantiq,ase-rcu-usb2-phy",
-> +               .data = &xway_rcu_usb2_reg_bits,
-> +       },
-> +       {
-> +               .compatible = "lantiq,danube-rcu-usb2-phy",
-> +               .data = &xway_rcu_usb2_reg_bits,
-> +       },
-> +       {
-> +               .compatible = "lantiq,xrx100-rcu-usb2-phy",
-> +               .data = &xrx100_rcu_usb2_reg_bits,
-> +       },
-> +       {
-> +               .compatible = "lantiq,xrx200-rcu-usb2-phy",
-> +               .data = &xrx200_rcu_usb2_reg_bits,
-> +       },
-> +       {
-> +               .compatible = "lantiq,xrx300-rcu-usb2-phy",
-> +               .data = &xrx200_rcu_usb2_reg_bits,
-> +       },
-> +       { },
-> +};
-> +MODULE_DEVICE_TABLE(of, ltq_rcu_usb2_phy_of_match);
-> +
-> +static void ltq_rcu_usb2_set_vbus_gpio_value(struct gpio_desc **gpiods,
-> +                                               int value)
-> +{
-> +       int i;
-> +
-> +       for (i = 0; i < MAX_VBUS_GPIO; i++)
-> +               if (!IS_ERR_OR_NULL(gpiods[i]))
-> +                       gpiod_set_value(gpiods[i], value);
-> +}
-> +
-> +static int ltq_rcu_usb2_phy_power_on(struct phy *phy)
-> +{
-> +       struct ltq_rcu_usb2_priv *priv = phy_get_drvdata(phy);
-> +
-> +       if (priv->phy_reset)
-> +               reset_control_deassert(priv->phy_reset);
-> +
-> +       /* enable the port-specific VBUS GPIOs if available */
-> +       ltq_rcu_usb2_set_vbus_gpio_value(priv->gpiod_vbus, 1);
-as I mentioned in my previous mail, if you pass a fixed regulator then
-the PHY framework handles this, see [1] (regulator_enable is called
-right before .phy_power_on and regulator_disable is called right after
-.phy_power_off)
+Hi all,
 
-> +       return 0;
-> +}
-> +
-> +static int ltq_rcu_usb2_phy_power_off(struct phy *phy)
-> +{
-> +       struct ltq_rcu_usb2_priv *priv = phy_get_drvdata(phy);
-> +
-> +       /*
-> +        * only disable the port-specific VBUS GPIO here (if available), the
-> +        * shared VBUS GPIO might still be used by another port
-> +        */
-> +       ltq_rcu_usb2_set_vbus_gpio_value(priv->gpiod_vbus, 0);
-> +
-> +       if (priv->phy_reset)
-> +               reset_control_assert(priv->phy_reset);
-> +
-> +       return 0;
-> +}
-> +
-> +static struct phy_ops ltq_rcu_usb2_phy_ops = {
-> +       .power_on       = ltq_rcu_usb2_phy_power_on,
-> +       .power_off      = ltq_rcu_usb2_phy_power_off,
-> +       .owner          = THIS_MODULE,
-> +};
-> +
-> +static void ltq_rcu_usb2_start_cores(struct platform_device *pdev)
-> +{
-> +       struct device *dev = &pdev->dev;
-> +       struct ltq_rcu_usb2_priv *priv = dev_get_drvdata(dev);
-> +
-> +       /* Power on the USB core. */
-> +       if (clk_prepare_enable(priv->ctrl_gate_clk)) {
-> +               dev_err(dev, "failed to enable CTRL gate\n");
-> +               return;
-> +       }
-> +
-> +       /*
-> +        * Power on the USB PHY. We have to do it early because
-> +        * otherwise the second core won't turn on properly.
-> +        */
-> +       if (clk_prepare_enable(priv->phy_gate_clk)) {
-> +               dev_err(dev, "failed to enable PHY gate\n");
-> +               return;
-> +       }
-> +
-> +       if (priv->reg_bits->have_ana_cfg) {
-> +               regmap_update_bits(priv->regmap, priv->ana_cfg1_reg_offset,
-> +                       RCU_CFG1_TX_PEE, RCU_CFG1_TX_PEE);
-> +               regmap_update_bits(priv->regmap, priv->ana_cfg1_reg_offset,
-> +                       RCU_CFG1_DIS_THR_MASK, 7 << RCU_CFG1_DIS_THR_SHIFT);
-> +       }
-> +
-> +       /* Configure core to host mode */
-> +       regmap_update_bits(priv->regmap, priv->phy_reg_offset,
-> +                          BIT(priv->reg_bits->hostmode), 0);
-> +
-> +       /* Select DMA endianness (Host-endian: big-endian) */
-> +       regmap_update_bits(priv->regmap, priv->phy_reg_offset,
-> +               BIT(priv->reg_bits->slave_endianness), 0);
-> +       regmap_update_bits(priv->regmap, priv->phy_reg_offset,
-> +               BIT(priv->reg_bits->host_endianness),
-> +               BIT(priv->reg_bits->host_endianness));
-> +
-> +       /* Reset USB core throgh reset controller */
-> +       reset_control_deassert(priv->ctrl_reset);
-> +
-> +       if (priv->phy_reset)
-> +               reset_control_assert(priv->phy_reset);
-> +}
-> +
-> +static int ltq_rcu_usb2_get_vbus_gpios(struct device *dev,
-> +                                         struct gpio_desc **gpios)
-> +{
-> +       int i;
-> +
-> +       for (i = 0; i < MAX_VBUS_GPIO; i++) {
-> +               gpios[i] = devm_gpiod_get_index_optional(dev, "vbus", i,
-> +                                                        GPIOD_OUT_LOW);
-> +               if (IS_ERR(gpios[i]))
-> +                       return PTR_ERR(gpios[i]);
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int ltq_rcu_usb2_of_probe(struct device_node *phynode,
-> +                                   struct ltq_rcu_usb2_priv *priv)
-> +{
-> +       struct device *dev = priv->dev;
-> +       const struct of_device_id *match =
-> +               of_match_node(ltq_rcu_usb2_phy_of_match, phynode);
-> +       int ret;
-> +
-> +       if (!match) {
-> +               dev_err(dev, "Not a compatible Lantiq RCU USB PHY\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       priv->reg_bits = match->data;
-> +
-> +       priv->regmap = syscon_regmap_lookup_by_phandle(phynode,
-> +                                                      "lantiq,rcu-syscon");
-> +       if (IS_ERR(priv->regmap)) {
-> +               dev_err(dev, "Failed to lookup RCU regmap\n");
-> +               return PTR_ERR(priv->regmap);
-> +       }
-> +
-> +       ret = ltq_rcu_usb2_get_vbus_gpios(dev, priv->gpiod_vbus);
-> +       if (ret) {
-> +               dev_err(dev, "failed to request shared USB VBUS GPIO\n");
-> +               return ret;
-> +       }
-> +
-> +       priv->ctrl_gate_clk = devm_clk_get(dev, "ctrl");
-> +       if (IS_ERR(priv->ctrl_gate_clk)) {
-> +               dev_err(dev, "Unable to get USB ctrl gate clk\n");
-> +               return PTR_ERR(priv->ctrl_gate_clk);
-> +       }
-> +
-> +       priv->phy_gate_clk = devm_clk_get(dev, "phy");
-> +       if (IS_ERR(priv->phy_gate_clk)) {
-> +               dev_err(dev, "Unable to get USB phy gate clk\n");
-> +               return PTR_ERR(priv->phy_gate_clk);
-> +       }
-> +
-> +       priv->ctrl_reset = devm_reset_control_get_shared(dev, "ctrl");
-> +       if (IS_ERR(priv->ctrl_reset)) {
-> +               dev_err(dev, "failed to get 'ctrl' reset\n");
-> +               return PTR_ERR(priv->ctrl_reset);
-> +       }
-> +
-> +       priv->phy_reset = devm_reset_control_get_optional(dev, "phy");
-> +       if (IS_ERR(priv->phy_reset)) {
-> +               if (PTR_ERR(priv->phy_reset) == -EPROBE_DEFER)
-> +                       return PTR_ERR(priv->phy_reset);
-> +               priv->phy_reset = NULL;
-> +       }
-a recent reset controller framework improvement allows us to make this
-much easier as:
-"As of commit bb475230b8e5 ("reset: make optional functions really
-optional"), the reset framework API calls use NULL pointers to describe
-optional, non-present reset controls." (see [0])
-so we can basically turn this into IS_ERR() then return PTR_ERR()
+The Debian kernel recently enabled the PAGE_EXTENSION and PAGE_POISONING
+options. Unfortunately this causes a kernel crash very early during the
+boot on Loongson 3 machines:
 
-> +       ret = of_property_read_u32_index(phynode, "lantiq,rcu-syscon", 1,
-> +                                        &priv->phy_reg_offset);
-> +       if (ret) {
-> +               dev_err(dev, "Failed to get RCU PHY reg offset\n");
-> +               return ret;
-> +       }
-> +
-> +       if (priv->reg_bits->have_ana_cfg) {
-> +               ret = of_property_read_u32_index(phynode, "lantiq,rcu-syscon",
-> +                                                2, &priv->ana_cfg1_reg_offset);
-> +               if (ret) {
-> +                       dev_dbg(dev, "Failed to get RCU ANA CFG1 reg offset\n");
-> +                       return ret;
-> +               }
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int ltq_rcu_usb2_phy_probe(struct platform_device *pdev)
-> +{
-> +       struct device_node *child, *np = pdev->dev.of_node;
-> +       struct ltq_rcu_usb2_priv *priv;
-> +       struct phy_provider *provider;
-> +       int ret;
-> +
-> +       priv = devm_kzalloc(&pdev->dev, sizeof(*priv),
-> +                                      GFP_KERNEL);
-> +       if (!priv)
-> +               return -ENOMEM;
-> +
-> +       priv->dev = &pdev->dev;
-> +       dev_set_drvdata(priv->dev, priv);
-> +
-> +       ret = ltq_rcu_usb2_of_probe(np, priv);
-> +       if (ret)
-> +               return ret;
-> +
-> +       priv->phy = devm_phy_create(&pdev->dev, child,
-> +                                        &ltq_rcu_usb2_phy_ops);
-> +       if (IS_ERR(priv->phy)) {
-> +               dev_err(&pdev->dev, "failed to create PHY\n");
-> +               return PTR_ERR(priv->phy);
-> +       }
-> +
-> +       phy_set_drvdata(priv->phy, priv);
-> +
-> +       ltq_rcu_usb2_start_cores(pdev);
-> +
-> +       provider = devm_of_phy_provider_register(&pdev->dev,
-> +                                                of_phy_simple_xlate);
-> +
-> +       return PTR_ERR_OR_ZERO(provider);
-> +}
-> +
-> +static struct platform_driver ltq_rcu_usb2_phy_driver = {
-> +       .probe  = ltq_rcu_usb2_phy_probe,
-> +       .driver = {
-> +               .name   = "lantiq-rcu-usb2-phy",
-> +               .of_match_table = ltq_rcu_usb2_phy_of_match,
-> +       }
-> +};
-> +module_platform_driver(ltq_rcu_usb2_phy_driver);
-> +
-> +MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com>");
-> +MODULE_DESCRIPTION("Lantiq XWAY USB2 PHY driver");
-> +MODULE_LICENSE("GPL v2");
-> --
-> 2.11.0
->
+  [    0.941596] pci 0000:00:13.2: Device 1002:4396, irq 6
+  [    0.946664] pci 0000:00:14.1: Device 1002:439c, irq 0
+  [    0.951730] pci 0000:00:14.2: Device 1002:4383, irq 5
+  [    0.956796] pci 0000:00:14.5: Device 1002:4399, irq 6
+  [    0.961843] pci 0000:01:05.0: Device 1002:9615, irq 6
+  [    0.966907] pci 0000:07:00.0: Device 10ec:8168, irq 5
+  [    0.973196] clocksource: Switched to clocksource MIPS
+  [    0.997909] Unhandled kernel unaligned access[#1]:
+  [    1.002567] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.9.0-0.bpo.2-loongson-3 #1 Debian 4.9.18-1~bpo8+1
+  [    1.012074] task: 980000027e1c2ba0 task.stack: 980000027e154000
+  [    1.018005] $ 0   : 0000000000000000 ffffffff802082e4 0000000000000000 0000000000000000
+  [    1.026032] $ 4   : 0000000000000002 ffffffff80431288 0000000000000000 8e75000000000016
+  [    1.034061] $ 8   : ffffffffffffffff ffffffff809837fe 0000000000000001 78616d5f79746972
+  [    1.042090] $12   : 980000027e157a28 000000001000001e 0000000000000000 0000000000000000
+  [    1.050119] $16   : 980000027e157a30 ffffffff80431284 ffffffff80a20000 0000000000000000
+  [    1.058148] $20   : ffffffff8e020018 8e75000000000016 ffffffff80431258 ffffffff80b56ee8
+  [    1.066177] $24   : 0000000000000020 0000000000000000                                  
+  [    1.074206] $28   : 980000027e154000 980000027e1579d0 ffffffff80a80000 ffffffff802082e4
+  [    1.082236] Hi    : 0000000000000004
+  [    1.085814] Lo    : ccccccccccccccd1
+  [    1.089406] epc   : ffffffff80212300 do_ade+0x220/0x900
+  [    1.094637] ra    : ffffffff802082e4 resume_userspace_check+0x0/0x10
+  [    1.100999] Status: 9400cce3 KX SX UX KERNEL EXL IE 
+  [    1.105975] Cause : 00000010 (ExcCode 04)
+  [    1.109988] BadVA : 8e75000000000019
+  [    1.113568] PrId  : 00006305 (ICT Loongson-3)
+  [    1.117930] Modules linked in:
+  [    1.120988] Process swapper/0 (pid: 1, threadinfo=980000027e154000, task=980000027e1c2ba0, tls=0000000000000000)
+  [    1.131196] Stack : 0000000000000000 0000000000040912 00000000024040d0 8e74fffffffffffe
+  [    1.139224]         ffffffffd6eb8e8c 980000027e157c18 980000027c0f9440 980000027c0f9440
+  [    1.147253]         0000000000000000 ffffffff80a5ec30 ffffffff80b56ee8 ffffffff802082e4
+  [    1.155282]         0000000000000000 ffffffff80431258 fffffffffffffffe 980000027e1c2ba0
+  [    1.163311]         980000027c0f9440 980000027e157c18 0000000000000000 0000000000000000
+  [    1.171340]         ffffffffffffffff ffffffff809837fe 0000000000000001 78616d5f79746972
+  [    1.179369]         0000000000000000 ffffffff80581584 0000000000000000 0000000000000000
+  [    1.187398]         8e74fffffffffffe ffffffffd6eb8e8c 980000027e157c18 980000027c0f9440
+  [    1.195427]         980000027c0f9440 0000000000000000 ffffffff80a5ec30 ffffffff80b56ee8
+  [    1.203457]         0000000000000020 0000000000000000 000000000000001d 0000000000400000
+  [    1.211486]         ...
+  [    1.213931] Call Trace:
+  [    1.216378] [<ffffffff80212300>] do_ade+0x220/0x900
+  [    1.221272] [<ffffffff802082e4>] resume_userspace_check+0x0/0x10
+  [    1.227290] [<ffffffff80431284>] __d_lookup+0x8c/0x190
+  [    1.232436] [<ffffffff804313d8>] d_lookup+0x50/0x88
+  [    1.237326] [<ffffffff8041e418>] lookup_dcache+0x30/0xb8
+  [    1.242649] [<ffffffff80421e38>] __lookup_hash+0x30/0xb8
+  [    1.247971] [<ffffffff80422010>] lookup_one_len+0x150/0x1d0
+  [    1.253559] [<ffffffff804b615c>] start_creating+0x84/0x110
+  [    1.259055] [<ffffffff804b6760>] tracefs_create_file+0x48/0x130
+  [    1.264998] [<ffffffff8032ae7c>] trace_create_file+0x1c/0x58
+  [    1.270672] [<ffffffff8033a8b0>] event_create_dir+0x118/0x568
+  [    1.276435] [<ffffffff80b2dc1c>] event_trace_init+0x298/0x348
+  [    1.282182] [<ffffffff80200600>] do_one_initcall+0x60/0x190
+  [    1.287770] [<ffffffff80b1cefc>] kernel_init_freeable+0x200/0x2d8
+  [    1.293884] [<ffffffff808664a0>] kernel_init+0x20/0x130
+  [    1.299114] [<ffffffff802083c4>] ret_from_kernel_thread+0x14/0x1c
+  [    1.305225] Code: 00431024  1440ffeb  00200825 <8ab70003> 9ab70000  24150000  16a00022  0200202d  8e020120 
+  [    1.314991] 
+  [    1.316540] ---[ end trace c4de331138101c00 ]---
+  [    1.321224] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+  [    1.321224] 
+  [    1.330294] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+  [    1.330294] 
 
-[0] https://patchwork.kernel.org/patch/9545031/
-[1] http://lxr.free-electrons.com/source/drivers/phy/phy-core.c#L276
+Adding page_poison=0 to the command line improves the things a bit, the
+kernel is able to boot, but crashes a bit later in different ways:
+
+  [  214.317350] Call Trace:
+  [  214.319810] [<ffffffff802122e8>] do_ade+0x718/0x900
+  [  214.324721] [<ffffffff80207de4>] resume_userspace_check+0x0/0x10
+  [  214.330777] [<ffffffff804317bc>] __d_lookup+0x8c/0x198
+  [  214.335944] [<ffffffff80431918>] d_lookup+0x50/0x88
+  [  214.340865] [<ffffffff8049b8e0>] proc_flush_task+0xb0/0x1d0
+  [  214.346470] [<ffffffff802415b0>] release_task+0xb0/0x4d0
+  [  214.351810] [<ffffffff80242054>] wait_consider_task+0x684/0xc80
+  [  214.357761] [<ffffffff8024276c>] do_wait+0x11c/0x328
+  [  214.362753] [<ffffffff80243cec>] SyS_wait4+0xac/0x130
+  [  214.367849] [<ffffffff802ee110>] compat_SyS_wait4+0xf8/0x108
+  [  214.373551] [<ffffffff8021e244>] syscall_common+0x18/0x3c
+  
+  [  327.510496] Call Trace:
+  [  327.512969] [<ffffffff802122e8>] do_ade+0x718/0x900
+  [  327.517887] [<ffffffff80207de4>] resume_userspace_check+0x0/0x10
+  [  327.523945] [<ffffffff80430f84>] __d_lookup_rcu+0xac/0x230
+  [  327.529462] [<ffffffff80421d10>] lookup_fast+0x78/0x380
+  [  327.534715] [<ffffffff804223cc>] walk_component+0x54/0x3b0
+  [  327.540230] [<ffffffff80422dd4>] path_lookupat+0x9c/0x1a0
+  [  327.545663] [<ffffffff80424e1c>] filename_lookup+0x94/0x140
+  [  327.551276] [<ffffffff80418238>] vfs_fstatat+0x88/0xf8
+  [  327.556445] [<ffffffff804184bc>] SyS_newstat+0x44/0x80
+  [  327.561625] [<ffffffff8021e244>] syscall_common+0x18/0x3c
+  
+  [  136.167237] Call Trace:
+  [  136.167244] [<ffffffff802122e8>] do_ade+0x718/0x900
+  [  136.167258] [<ffffffff80207de4>] resume_userspace_check+0x0/0x10
+  [  136.167281] [<ffffffff804316cc>] __d_lookup+0x8c/0x198
+  [  136.167289] [<ffffffff80421d80>] lookup_fast+0x1d8/0x380
+  [  136.167296] [<ffffffff804237d4>] path_openat+0x1cc/0x1140
+  [  136.167305] [<ffffffff80425c24>] do_filp_open+0xe4/0x130
+  [  136.167328] [<ffffffff8040fb34>] do_sys_open+0x194/0x268
+  [  136.167348] [<ffffffff8021e244>] syscall_common+0x18/0x3c
+
+Note that the malta and octeon flavours are not affected by this bug, so
+it looks like Loongson 3 specific. Any help to find the root cause would
+be appreciated.
+
+Thanks,
+Aurelien
+
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net

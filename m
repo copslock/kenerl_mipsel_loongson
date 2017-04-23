@@ -1,37 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Apr 2017 01:14:10 +0200 (CEST)
-Received: from hall.aurel32.net ([IPv6:2001:bc8:30d7:100::1]:35666 "EHLO
-        hall.aurel32.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993859AbdDUXODhY0SZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Apr 2017 01:14:03 +0200
-Received: from ohm.aurel32.net ([2001:bc8:30d7:111::1000])
-        by hall.aurel32.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1d1hkY-0004OW-2k
-        for linux-mips@linux-mips.org; Sat, 22 Apr 2017 01:14:02 +0200
-Received: from aurel32 by ohm.aurel32.net with local (Exim 4.89)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1d1hkU-0006DC-PO
-        for linux-mips@linux-mips.org; Sat, 22 Apr 2017 01:13:58 +0200
-Date:   Sat, 22 Apr 2017 01:13:58 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     linux-mips@linux-mips.org
-Subject: Loongson 3 kernel crashes with PAGE_EXTENSION and PAGE_POISONING
-Message-ID: <20170421231358.yszzvk3qzvbpxcrs@aurel32.net>
-Mail-Followup-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Apr 2017 17:48:30 +0200 (CEST)
+Received: from bh-25.webhostbox.net ([208.91.199.152]:53722 "EHLO
+        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993459AbdDWPsXpSoGW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Apr 2017 17:48:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
+        :Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
+        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=eKtxE1bdV2xT7ALYNiXdelE/NBAyraJcArCktmojH9Q=; b=qAyCf0I7+IR/QVbez6+GId8mHZ
+        IAmsehkK3t0/xxwLJjdzUs19yqYxvGaQpKiIKbyRufxn2KNu3Gwd3sTdctangV3viIVXREA6AsGGF
+        gIzDZI1lHCfRAEgIN4AVEPcCvKVyUKyFrlrso4o17Por8HvjnYyIp0AhQmxE0zkb9Ub1y2RUjEjBw
+        pE3JYotd+wHqDBoAWpyFQhoP2ocBY+0ImwAnzN1AaIEbCQf5YX+gxejhjPK/vaO/TMYBzT8V8YfSP
+        MkMo/QcB4iIE8J1EbwsQirbK9Y8zpZbKgtBl58dTS2f9jftX+I6BahGp8avLu4ftFzt5UB3HdbXz+
+        3xfMrDsQ==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:58508 helo=localhost)
+        by bh-25.webhostbox.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.87)
+        (envelope-from <linux@roeck-us.net>)
+        id 1d2JkE-0003TT-EC; Sun, 23 Apr 2017 15:48:15 +0000
+Date:   Sun, 23 Apr 2017 08:48:12 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
+        john@phrozen.org, linux-spi@vger.kernel.org,
+        hauke.mehrtens@intel.com
+Subject: Re: [04/13] watchdog: lantiq: access boot cause register through
+ regmap
+Message-ID: <20170423154812.GA20428@roeck-us.net>
+References: <20170417192942.32219-5-hauke@hauke-m.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: NeoMutt/20170113 (1.7.2)
-Return-Path: <aurelien@aurel32.net>
+In-Reply-To: <20170417192942.32219-5-hauke@hauke-m.de>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Authenticated_sender: guenter@roeck-us.net
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
+X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <linux@roeck-us.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57764
+X-archive-position: 57765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: linux@roeck-us.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -44,121 +70,99 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi all,
+On Mon, Apr 17, 2017 at 09:29:33PM +0200, Hauke Mehrtens wrote:
+> This patch avoids accessing the function ltq_reset_cause() and directly
+> accesses the register given over the syscon interface. The syscon
+> interface will be implemented for the xway SoCs for the falcon SoCs the
+> ltq_reset_cause() function never worked, because a wrong offset was used.
+> 
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 
-The Debian kernel recently enabled the PAGE_EXTENSION and PAGE_POISONING
-options. Unfortunately this causes a kernel crash very early during the
-boot on Loongson 3 machines:
+Acked-by: Guenter Roeck <linux@reck-us.net>
 
-  [    0.941596] pci 0000:00:13.2: Device 1002:4396, irq 6
-  [    0.946664] pci 0000:00:14.1: Device 1002:439c, irq 0
-  [    0.951730] pci 0000:00:14.2: Device 1002:4383, irq 5
-  [    0.956796] pci 0000:00:14.5: Device 1002:4399, irq 6
-  [    0.961843] pci 0000:01:05.0: Device 1002:9615, irq 6
-  [    0.966907] pci 0000:07:00.0: Device 10ec:8168, irq 5
-  [    0.973196] clocksource: Switched to clocksource MIPS
-  [    0.997909] Unhandled kernel unaligned access[#1]:
-  [    1.002567] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.9.0-0.bpo.2-loongson-3 #1 Debian 4.9.18-1~bpo8+1
-  [    1.012074] task: 980000027e1c2ba0 task.stack: 980000027e154000
-  [    1.018005] $ 0   : 0000000000000000 ffffffff802082e4 0000000000000000 0000000000000000
-  [    1.026032] $ 4   : 0000000000000002 ffffffff80431288 0000000000000000 8e75000000000016
-  [    1.034061] $ 8   : ffffffffffffffff ffffffff809837fe 0000000000000001 78616d5f79746972
-  [    1.042090] $12   : 980000027e157a28 000000001000001e 0000000000000000 0000000000000000
-  [    1.050119] $16   : 980000027e157a30 ffffffff80431284 ffffffff80a20000 0000000000000000
-  [    1.058148] $20   : ffffffff8e020018 8e75000000000016 ffffffff80431258 ffffffff80b56ee8
-  [    1.066177] $24   : 0000000000000020 0000000000000000                                  
-  [    1.074206] $28   : 980000027e154000 980000027e1579d0 ffffffff80a80000 ffffffff802082e4
-  [    1.082236] Hi    : 0000000000000004
-  [    1.085814] Lo    : ccccccccccccccd1
-  [    1.089406] epc   : ffffffff80212300 do_ade+0x220/0x900
-  [    1.094637] ra    : ffffffff802082e4 resume_userspace_check+0x0/0x10
-  [    1.100999] Status: 9400cce3 KX SX UX KERNEL EXL IE 
-  [    1.105975] Cause : 00000010 (ExcCode 04)
-  [    1.109988] BadVA : 8e75000000000019
-  [    1.113568] PrId  : 00006305 (ICT Loongson-3)
-  [    1.117930] Modules linked in:
-  [    1.120988] Process swapper/0 (pid: 1, threadinfo=980000027e154000, task=980000027e1c2ba0, tls=0000000000000000)
-  [    1.131196] Stack : 0000000000000000 0000000000040912 00000000024040d0 8e74fffffffffffe
-  [    1.139224]         ffffffffd6eb8e8c 980000027e157c18 980000027c0f9440 980000027c0f9440
-  [    1.147253]         0000000000000000 ffffffff80a5ec30 ffffffff80b56ee8 ffffffff802082e4
-  [    1.155282]         0000000000000000 ffffffff80431258 fffffffffffffffe 980000027e1c2ba0
-  [    1.163311]         980000027c0f9440 980000027e157c18 0000000000000000 0000000000000000
-  [    1.171340]         ffffffffffffffff ffffffff809837fe 0000000000000001 78616d5f79746972
-  [    1.179369]         0000000000000000 ffffffff80581584 0000000000000000 0000000000000000
-  [    1.187398]         8e74fffffffffffe ffffffffd6eb8e8c 980000027e157c18 980000027c0f9440
-  [    1.195427]         980000027c0f9440 0000000000000000 ffffffff80a5ec30 ffffffff80b56ee8
-  [    1.203457]         0000000000000020 0000000000000000 000000000000001d 0000000000400000
-  [    1.211486]         ...
-  [    1.213931] Call Trace:
-  [    1.216378] [<ffffffff80212300>] do_ade+0x220/0x900
-  [    1.221272] [<ffffffff802082e4>] resume_userspace_check+0x0/0x10
-  [    1.227290] [<ffffffff80431284>] __d_lookup+0x8c/0x190
-  [    1.232436] [<ffffffff804313d8>] d_lookup+0x50/0x88
-  [    1.237326] [<ffffffff8041e418>] lookup_dcache+0x30/0xb8
-  [    1.242649] [<ffffffff80421e38>] __lookup_hash+0x30/0xb8
-  [    1.247971] [<ffffffff80422010>] lookup_one_len+0x150/0x1d0
-  [    1.253559] [<ffffffff804b615c>] start_creating+0x84/0x110
-  [    1.259055] [<ffffffff804b6760>] tracefs_create_file+0x48/0x130
-  [    1.264998] [<ffffffff8032ae7c>] trace_create_file+0x1c/0x58
-  [    1.270672] [<ffffffff8033a8b0>] event_create_dir+0x118/0x568
-  [    1.276435] [<ffffffff80b2dc1c>] event_trace_init+0x298/0x348
-  [    1.282182] [<ffffffff80200600>] do_one_initcall+0x60/0x190
-  [    1.287770] [<ffffffff80b1cefc>] kernel_init_freeable+0x200/0x2d8
-  [    1.293884] [<ffffffff808664a0>] kernel_init+0x20/0x130
-  [    1.299114] [<ffffffff802083c4>] ret_from_kernel_thread+0x14/0x1c
-  [    1.305225] Code: 00431024  1440ffeb  00200825 <8ab70003> 9ab70000  24150000  16a00022  0200202d  8e020120 
-  [    1.314991] 
-  [    1.316540] ---[ end trace c4de331138101c00 ]---
-  [    1.321224] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
-  [    1.321224] 
-  [    1.330294] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
-  [    1.330294] 
-
-Adding page_poison=0 to the command line improves the things a bit, the
-kernel is able to boot, but crashes a bit later in different ways:
-
-  [  214.317350] Call Trace:
-  [  214.319810] [<ffffffff802122e8>] do_ade+0x718/0x900
-  [  214.324721] [<ffffffff80207de4>] resume_userspace_check+0x0/0x10
-  [  214.330777] [<ffffffff804317bc>] __d_lookup+0x8c/0x198
-  [  214.335944] [<ffffffff80431918>] d_lookup+0x50/0x88
-  [  214.340865] [<ffffffff8049b8e0>] proc_flush_task+0xb0/0x1d0
-  [  214.346470] [<ffffffff802415b0>] release_task+0xb0/0x4d0
-  [  214.351810] [<ffffffff80242054>] wait_consider_task+0x684/0xc80
-  [  214.357761] [<ffffffff8024276c>] do_wait+0x11c/0x328
-  [  214.362753] [<ffffffff80243cec>] SyS_wait4+0xac/0x130
-  [  214.367849] [<ffffffff802ee110>] compat_SyS_wait4+0xf8/0x108
-  [  214.373551] [<ffffffff8021e244>] syscall_common+0x18/0x3c
-  
-  [  327.510496] Call Trace:
-  [  327.512969] [<ffffffff802122e8>] do_ade+0x718/0x900
-  [  327.517887] [<ffffffff80207de4>] resume_userspace_check+0x0/0x10
-  [  327.523945] [<ffffffff80430f84>] __d_lookup_rcu+0xac/0x230
-  [  327.529462] [<ffffffff80421d10>] lookup_fast+0x78/0x380
-  [  327.534715] [<ffffffff804223cc>] walk_component+0x54/0x3b0
-  [  327.540230] [<ffffffff80422dd4>] path_lookupat+0x9c/0x1a0
-  [  327.545663] [<ffffffff80424e1c>] filename_lookup+0x94/0x140
-  [  327.551276] [<ffffffff80418238>] vfs_fstatat+0x88/0xf8
-  [  327.556445] [<ffffffff804184bc>] SyS_newstat+0x44/0x80
-  [  327.561625] [<ffffffff8021e244>] syscall_common+0x18/0x3c
-  
-  [  136.167237] Call Trace:
-  [  136.167244] [<ffffffff802122e8>] do_ade+0x718/0x900
-  [  136.167258] [<ffffffff80207de4>] resume_userspace_check+0x0/0x10
-  [  136.167281] [<ffffffff804316cc>] __d_lookup+0x8c/0x198
-  [  136.167289] [<ffffffff80421d80>] lookup_fast+0x1d8/0x380
-  [  136.167296] [<ffffffff804237d4>] path_openat+0x1cc/0x1140
-  [  136.167305] [<ffffffff80425c24>] do_filp_open+0xe4/0x130
-  [  136.167328] [<ffffffff8040fb34>] do_sys_open+0x194/0x268
-  [  136.167348] [<ffffffff8021e244>] syscall_common+0x18/0x3c
-
-Note that the malta and octeon flavours are not affected by this bug, so
-it looks like Loongson 3 specific. Any help to find the root cause would
-be appreciated.
-
-Thanks,
-Aurelien
-
--- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                 http://www.aurel32.net
+> ---
+>  drivers/watchdog/lantiq_wdt.c | 47 +++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 43 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+> index e0823677d8c1..0e349ad03fdf 100644
+> --- a/drivers/watchdog/lantiq_wdt.c
+> +++ b/drivers/watchdog/lantiq_wdt.c
+> @@ -17,9 +17,14 @@
+>  #include <linux/uaccess.h>
+>  #include <linux/clk.h>
+>  #include <linux/io.h>
+> +#include <linux/regmap.h>
+> +#include <linux/mfd/syscon.h>
+>  
+>  #include <lantiq_soc.h>
+>  
+> +#define LTQ_RST_CAUSE_WDT_XRX		BIT(31)
+> +#define LTQ_RST_CAUSE_WDT_FALCON	0x02
+> +
+>  /*
+>   * Section 3.4 of the datasheet
+>   * The password sequence protects the WDT control register from unintended
+> @@ -186,6 +191,40 @@ static struct miscdevice ltq_wdt_miscdev = {
+>  	.fops	= &ltq_wdt_fops,
+>  };
+>  
+> +static void ltq_set_wdt_bootstatus(struct platform_device *pdev)
+> +{
+> +	struct device_node *np = pdev->dev.of_node;
+> +	struct regmap *rcu_regmap;
+> +	u32 status_reg_offset;
+> +	u32 val;
+> +	int err;
+> +
+> +	rcu_regmap = syscon_regmap_lookup_by_phandle(np,
+> +						     "lantiq,rcu-syscon");
+> +	if (IS_ERR_OR_NULL(rcu_regmap))
+> +		return;
+> +
+> +	err = of_property_read_u32_index(np, "lantiq,rcu-syscon", 1,
+> +					 &status_reg_offset);
+> +	if (err) {
+> +		dev_err(&pdev->dev, "Failed to get RCU reg offset\n");
+> +		return;
+> +	}
+> +
+> +	err = regmap_read(rcu_regmap, status_reg_offset, &val);
+> +	if (err)
+> +		return;
+> +
+> +	/* find out if the watchdog caused the last reboot */
+> +	if (of_device_is_compatible(np, "lantiq,wdt-xrx100")) {
+> +		if (val & LTQ_RST_CAUSE_WDT_XRX)
+> +			ltq_wdt_bootstatus = WDIOF_CARDRESET;
+> +	} else if  (of_device_is_compatible(np, "lantiq,wdt-falcon")) {
+> +		if ((val & 0x7) == LTQ_RST_CAUSE_WDT_FALCON)
+> +			ltq_wdt_bootstatus = WDIOF_CARDRESET;
+> +	}
+> +}
+> +
+>  static int
+>  ltq_wdt_probe(struct platform_device *pdev)
+>  {
+> @@ -205,9 +244,7 @@ ltq_wdt_probe(struct platform_device *pdev)
+>  	ltq_io_region_clk_rate = clk_get_rate(clk);
+>  	clk_put(clk);
+>  
+> -	/* find out if the watchdog caused the last reboot */
+> -	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
+> -		ltq_wdt_bootstatus = WDIOF_CARDRESET;
+> +	ltq_set_wdt_bootstatus(pdev);
+>  
+>  	dev_info(&pdev->dev, "Init done\n");
+>  	return misc_register(&ltq_wdt_miscdev);
+> @@ -222,7 +259,9 @@ ltq_wdt_remove(struct platform_device *pdev)
+>  }
+>  
+>  static const struct of_device_id ltq_wdt_match[] = {
+> -	{ .compatible = "lantiq,wdt" },
+> +	{ .compatible = "lantiq,wdt"},
+> +	{ .compatible = "lantiq,wdt-xrx100"},
+> +	{ .compatible = "lantiq,wdt-falcon"},
+>  	{},
+>  };
+>  MODULE_DEVICE_TABLE(of, ltq_wdt_match);

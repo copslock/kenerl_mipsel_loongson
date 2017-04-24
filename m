@@ -1,74 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Apr 2017 14:58:16 +0200 (CEST)
-Received: from mail-it0-x22c.google.com ([IPv6:2607:f8b0:4001:c0b::22c]:32964
-        "EHLO mail-it0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993552AbdDXM6Hna0Fm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Apr 2017 14:58:07 +0200
-Received: by mail-it0-x22c.google.com with SMTP id 70so14218075ita.0
-        for <linux-mips@linux-mips.org>; Mon, 24 Apr 2017 05:58:07 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Apr 2017 15:08:32 +0200 (CEST)
+Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:35454
+        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993543AbdDXNIXLs-Rm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Apr 2017 15:08:23 +0200
+Received: by mail-pf0-x242.google.com with SMTP id a188so3793816pfa.2
+        for <linux-mips@linux-mips.org>; Mon, 24 Apr 2017 06:08:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=kLOj/5daszZyY+HocUR8I6nMOeJzHA5NPOqC8zImezc=;
-        b=L0Mu3kLcPFi3QO0xGxMu+AKD4gODtAxwqBZi0u+HpLJCnNDYCz7VmZSC/x+8n8X6JX
-         nhwC2rnzmDCRVNtF0VO0FpPzKfiykPGrcPFj+6kbb5U6Js2awSwocIahKVU+s9tbp7gV
-         3vq376vUL16gaJdjzeaE6E0/yjrlzlIVoO1ZA=
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=+iNST1/QWpzWac09rL44mJ/SBqS6eCGENNJeEFEX/eU=;
+        b=sxOUpGPGogUvkJi+xJF6dUA5R4OvxjtxhPkibq/j6iuGixM5WllhRsKgy3P3GlJ+mc
+         39FQcYgynPXUUXNm09E9SVaLDhNeOXl6cDV3mtMibbEUzhkSwnHHnokoV3+3KCjGVny6
+         /yyLDhN/FNsk1kpwZt3ZMOhfprhX6nFUrguBPte9sRLqjBYbpu4jumSYAVRNv87YnWUU
+         7fk0abHkR8oi3XWhOsH+w77MIIEI1kYSqqVhR3TcckUrLuxDv/aP6HP/+B+Rm7mo26LE
+         8EuV9QLysBZbvdKTWXEF1M3HWTF24gxCrD6FsRXhxF0zbBBN5x8uWtgQUZEJWSGoTPdt
+         XRvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=kLOj/5daszZyY+HocUR8I6nMOeJzHA5NPOqC8zImezc=;
-        b=E5Bexx4q8+cPUnkre4Jh39L7Tjj8HlBQfjK0tHGNE68e19ZW/XKtaOzUhY03Y/roJV
-         Nmf2RtezfolCzkKrQksRl2oGxHEs6wAXsLh5Sjwjmw6fBIHrBJFRbSSG60PtkA+h9J9J
-         Z2nEq66osBhJv0BumTgJD17+PaXjNR3Gg/l2VWRWUWpExCIUnit22/kBmc4PlmEP67Mq
-         Lqh7NTNTSxBCT20eJtN5Kgip8s7y7xR6SI6GuuN1kZf2cwrl5jDrXtP+nAYnvOQW9kwD
-         n0TTctnNKlEdB457dPWs/m4FjqEn3PDEHVbAHfqmCJeSzJJAjyz3eGxQsv2IzD94XMYZ
-         233g==
-X-Gm-Message-State: AN3rC/5JjGrFLIZK7xiQ1Y4mQHWXetmBsG+8XUvrNE2nmcI7RJ9evsSN
-        Pudn6/B/YHyOUESscOH62F1JCQk9oNKPguY=
-X-Received: by 10.36.33.73 with SMTP id e70mr12750589ita.9.1493038681977; Mon,
- 24 Apr 2017 05:58:01 -0700 (PDT)
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=+iNST1/QWpzWac09rL44mJ/SBqS6eCGENNJeEFEX/eU=;
+        b=hbMHNZUKY3ukIBZcr5TkR+8bR8YK0EQ+YbItynKx9lzB8B89GaIEADNcIwCs6ETSKm
+         OW1Ku+rKfWJHIWbxP+OfCTWWZpNojZwdXn5uAwxNre2Mo/WatDFfsdklLH1oNL5HzF0u
+         BfzAqbEdvv+0sFIkcHYspEMGkcuqGeBii3mF6w0RqvTsIi3VbFE41aVNMzinmJlvMpMG
+         HipfHNnXoLGHHQiKodwJeLkhkT1Ba0BNtPv4LLxY7Hxo7F5qt56nfXQ2P3n/Y9JUUlge
+         xQGTnHNgjNBDNDZRKmrblOlpLek1OfrTln5Ybjdm9jPZgHDCymcXCsS/y0Gj2SD60D05
+         0/Fw==
+X-Gm-Message-State: AN3rC/6RmTCUedS1ARwZjgGFwnwjDgzZpCJuC2E63O0JmiBdvI5BxZ7G
+        tHAjzZ13JHPRPg==
+X-Received: by 10.99.104.6 with SMTP id d6mr15394869pgc.185.1493039297309;
+        Mon, 24 Apr 2017 06:08:17 -0700 (PDT)
+Received: from mint-host ([180.102.125.8])
+        by smtp.gmail.com with ESMTPSA id q85sm31040656pfj.112.2017.04.24.06.08.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Apr 2017 06:08:16 -0700 (PDT)
+From:   Yang Ling <gnaygnil@gmail.com>
+X-Google-Original-From: Yang Ling <gnaygnail@gmail.com>
+Date:   Mon, 24 Apr 2017 21:08:09 +0800
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Cc:     Yang Ling <gnaygnil@gmail.com>, thierry.reding@gmail.com,
+        keguang.zhang@gmail.com, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] pwm: loongson1: Add PWM driver for Loongson1 SoC
+Message-ID: <20170424130809.GA3998@mint-host>
+References: <20170213152801.GA32019@ubuntu>
+ <f27d34d4-b0ac-2fd6-bc75-89a6c913ba3c@imgtec.com>
+ <20170215130902.GA32795@ubuntu>
+ <0d0c43f5-1016-4cb5-01f8-9ca82860b8ad@imgtec.com>
 MIME-Version: 1.0
-Received: by 10.79.76.210 with HTTP; Mon, 24 Apr 2017 05:58:00 -0700 (PDT)
-In-Reply-To: <e4aaf8c3e8a54df2c5878f8e873e290f@crapouillou.net>
-References: <20170125185207.23902-2-paul@crapouillou.net> <20170402204244.14216-1-paul@crapouillou.net>
- <20170402204244.14216-7-paul@crapouillou.net> <CACRpkdbXe1Xxk93jqLXBdEDwWOnWD+CkZrqvok-PcmWxzBbSZA@mail.gmail.com>
- <e4aaf8c3e8a54df2c5878f8e873e290f@crapouillou.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 24 Apr 2017 14:58:00 +0200
-Message-ID: <CACRpkdZ8o1OFC0HGaVuLWy5JbnHjeXmAYorii7eX=XvJNkSSvA@mail.gmail.com>
-Subject: Re: [PATCH v4 06/14] MIPS: jz4740: DTS: Add nodes for ingenic pinctrl
- and gpio drivers
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Alexandre Courbot <gnurou@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d0c43f5-1016-4cb5-01f8-9ca82860b8ad@imgtec.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Return-Path: <gnaygnil@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57768
+X-archive-position: 57769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: gnaygnil@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -81,14 +74,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 7, 2017 at 3:57 PM, Paul Cercueil <paul@crapouillou.net> wrote:
+Hi, Marcin,
 
-> I think the 'reg' property makes more sense, yes. I'll fix this in the v5,
-> this
-> week-end. Do you think it can go in 4.12?
+I am sorry for the late reply.
 
-Surely, Torvalds just cut an -rc8 giving me more time to queue more
-material, and I really like this series.
+On Thu, Feb 16, 2017 at 10:27:15AM +0100, Marcin Nowakowski wrote:
+> Hi Yang,
+> 
+> On 15.02.2017 14:09, Yang Ling wrote:
+> 
+> >>>+	tmp = (unsigned long long)clk_get_rate(pc->clk) * period_ns;
+> >>>+	do_div(tmp, 1000000000);
+> 
+> NSEC_PER_SEC ?
+> 
+Indeed, NSEC_PER_SEC should be used.
 
-Yours,
-Linus Walleij
+> >>>+	period = tmp;
+> >>>+
+> >>>+	tmp = (unsigned long long)period * duty_ns;
+> >>>+	do_div(tmp, period_ns);
+> >>>+	duty = period - tmp;
+> >>>+
+> >>>+	if (duty >= period)
+> >>>+		duty = period - 1;
+> >>>+
+> >>>+	if (duty >> 24 || period >> 24)
+> >>>+		return -EINVAL;
+> >>>+
+> >>>+	chan->period_ns = period_ns;
+> >>>+	chan->duty_ns = duty_ns;
+> >>>+
+> >>>+	writel(duty, pc->base + PWM_HRC(pwm->hwpwm));
+> >>>+	writel(period, pc->base + PWM_LRC(pwm->hwpwm));
+> >>>+	writel(0x00, pc->base + PWM_CNT(pwm->hwpwm));
+> >>>+
+> >>
+> >>PWM_HRC and PWM_LRC names suggest that you're using high/low state
+> >>counters here rather than duty/period - but with no documentation
+> >>I'm just guessing here.
+> >
+> >Indeed, the high/low state counters is used here.
+> >Change the name to duty_cnt/period_cnt.
+> >
+> >
+> 
+> What I was referring to here is that if you have a high/low value counters
+> that you enter then these are not the same as duty/period, in simple terms:
+> high_cnt = duty_cnt
+> low_cnt = period_cnt - duty_cnt
+> 
+> so please double check that this is what you want to be doing? As the names
+> used suggest that this code may be wrong. Or maybe what you're doing is
+> correct but the register access macros have misleading names?
+>
+The macro definition of the register here is misleading.
+I will fix these problems afterwards.
+
+Thanks for your friendly reminder.
+
+Yang

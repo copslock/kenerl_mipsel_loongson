@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Apr 2017 20:44:55 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Apr 2017 20:45:20 +0200 (CEST)
 Received: from mail-by2nam03on0086.outbound.protection.outlook.com ([104.47.42.86]:64592
         "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993904AbdDXSo2d0Ctm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Apr 2017 20:44:28 +0200
+        id S23993907AbdDXSo3iB2Vm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 24 Apr 2017 20:44:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=CAVIUMNETWORKS.onmicrosoft.com; s=selector1-cavium-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=TBnd5SuB818tJvLH52H/ufPUwOf5GQJ12VCFGT4VWlI=;
- b=R2WyXsaWm3LWAVIj0HSBTL7g9dNpFQ6skjuV8/m27QfqlokT20HaOz3TzLCDuv/T4bGzXCkTv9k6y2FrTh8VO556YdqmQUHkOmF9fsCynEGz4fb2a/BgQvUyhE+tqwfJaLw0R1vYUfr9iIb3sliZnvI29vX8+CQBcnkh2JHLQ/Y=
+ bh=Mfua8lLlEZucrhx7JmpXg2HO1ZM8DAM8Wb/H0liMCN8=;
+ b=nE3qHYwWw4CRUirzg8I3qQeMiMliQawc1dNmASRff6znmF0Yb0xiJYQ2s39IRuflazQg5pqHj6m5QzvmEO7hAErmFyphRLpDp6TWmLxvlvdmZ68OghbOX+iMCG/d9AVj0SEemLcc+2CFCceyghSnsZSU+gpqm/FPbUwgC4dBJYM=
 Authentication-Results: linaro.org; dkim=none (message not signed)
  header.d=none;linaro.org; dmarc=none action=none header.from=cavium.com;
 Received: from black.inter.net (50.82.184.123) by
  CY4PR07MB3206.namprd07.prod.outlook.com (10.172.115.148) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1047.13; Mon, 24 Apr 2017 18:44:17 +0000
+ 15.1.1047.13; Mon, 24 Apr 2017 18:44:15 +0000
 From:   "Steven J. Hill" <steven.hill@cavium.com>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     David Daney <david.daney@cavium.com>,
         Jan Glauber <jglauber@cavium.com>, linux-mmc@vger.kernel.org,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] mmc: cavium: Fix detection of block or byte addressing.
-Date:   Mon, 24 Apr 2017 13:41:56 -0500
-Message-Id: <1493059318-767-3-git-send-email-steven.hill@cavium.com>
+Subject: [PATCH 1/4] mmc: core: Export API to allow hosts to get the card address
+Date:   Mon, 24 Apr 2017 13:41:55 -0500
+Message-Id: <1493059318-767-2-git-send-email-steven.hill@cavium.com>
 X-Mailer: git-send-email 2.1.4
 In-Reply-To: <1493059318-767-1-git-send-email-steven.hill@cavium.com>
 References: <1493059318-767-1-git-send-email-steven.hill@cavium.com>
@@ -32,48 +32,48 @@ X-Originating-IP: [50.82.184.123]
 X-ClientProxiedBy: BY2PR07CA044.namprd07.prod.outlook.com (10.141.251.19) To
  CY4PR07MB3206.namprd07.prod.outlook.com (10.172.115.148)
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 386bf3d8-3495-4353-2ff8-08d48b41e9d5
+X-MS-Office365-Filtering-Correlation-Id: 72acd3e7-104c-4dfe-6591-08d48b41e927
 X-Microsoft-Antispam: UriScan:;BCL:0;PCL:0;RULEID:(22001)(201703131423075)(201703031133081);SRVR:CY4PR07MB3206;
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;3:66PeOSNweyjYOinuSwTqZ7TFCZP+4DxxtSL77il8w55OjOR6K0NhrROxIOUoKii+iIMj85DmuovNli1Lb/uIDNMXu1NPY/j4xUkT0dCGyHJv7zbBSau0l5wXq7BOWmWfAqhyPOeWjCSnfdJRw95++wTMNX7TqX9s+if/qCP3GZrzUpH47ub9ty9Rt8ckFJfvsI08HehyW76ERPYGI4t6ln5F1FP/5w2kl2twrFXwhRrkDwW8jh4cBTJGMo3f4HZovZfeFYE+z7PTA4UO9yp2xi//AuHogcH9x8pn/W2W+1Bx/h+o50HQ+jCuBSoX79bJj/RmOyqwvgNH80xVSHLxuA==;25:4yhuD5emTEsBGUBopukpLP5vSSpMuRODv17+2LgHgHx2vl2+IMv5BtvOeEFJtwVyux6CDHubsNZIFJ1OZvI741xFmBEBx+q4LJezAU3BAzwoPAYoxeKtR5NGsSIF8n1f11o53MKnbUedMIz+ufz5GMAYXn+ewpZpHjMuMjWMFNGBagTPcg3zUALi109m/OT750gYfggxdErLawWihe5EW5zdLqSH0ni/7D5Mpyf4j5bD2AI95JW538Xfx5/KuAXjgnlrzNzYMbpnZqjQFatjB8w1fEONHgBRyUnXEKTMcIa631vRchBIXQ+A7Zxn3DeuL/S3sRolXNiGcEMXxqphxZLEOlMJ7epNznC1g1mKH9+CEkcacLhGkqS+a3gJGFLpB/aiWyj4vN50cTGoKK+pB0bAGE0yz9djlFrZbp5S64W1llthcBJWQU2G5ecBMHzYiAcqTpC9rB+C1p+CBLXZOQ==
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;31:yolL1bLR28/p2cuLx3PjsFZOOU/oOhCLgiAr30uo6zUVVMCXwIXa+LLJyUA8BDX3OFKIWlQhAJ0emABrU7n7GluYCF4X3u9uM9t1N1YQJl+m9ZbTQmchxFHU3wpCzuPaciS8YFfhLAKIJr+VAQF1O3AR3wg9PChAnOpukWmBbTq2ID6dUGCt6r0a5l+FzF9bmPR+6Pl1bix1iD5LYvAGaWVA9cx5pM5mTEsL1fqXrAw=;20:QzZnHReT7TvuwnT/L0MGYqLOUfi8R88S6KVV8u/y4gemd4Pqr0qQ4wgSmyqLbbQT9AKxSY/ty1+56u2mptzCHDEbxVbiA/mYzBmvcz2y8QeGiXgfHoG9q/byRO4MkSMV7X1OuP/d3/Okb6QD64GP6QHw0EDy6WNN9BFJmVDPuDS2OCaRoOMIWrjkRiK7CRUiQQPH6pKGPKYme8rJ6SnYBdhZUhyWFLpztuZU3a9m4FlLGtpLIoRZgrfscnF2IOaROH4P0eH5e1k4VT1kW9i/mvP+1Yl58kS0rg1/rG71eCDe6Obrazvv+UmV6WBJkRU0iyV0tUovCCw3t6i7Lf0HY6vZ4/qQILa6yUFrksvxHB3xAnIoPMzmFeoLgeqDlIR/zWnuzjbSU6GSYWVK1LTfx85LSdQXYPCCsCIGfEmDiSrafOax0/NzoGBN5q810amv8ALMaJrNadnRpC0a4cD3xDktaMoooBd1TlIZIDWgyiGDGMX6e85J7BUieRYN+47X
-X-Microsoft-Antispam-PRVS: <CY4PR07MB3206EBFFB3994349E7BF0D9A801F0@CY4PR07MB3206.namprd07.prod.outlook.com>
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;3:BPTlSIM7MmyBDcWA0jWHsAtGW3Mckp5v7lfeN/1aLoTDtvuAW/Lr2FzsgyxTdwx5S2Vgpd+nPOriUk+UK2rxUfsu8yvghrrlWZqhhPFrJZ0lngE9NYv4DErn9c0Yr2CrqHiBCvJKry2oIpt3kFOOJHPF8WMxgY/VDHitqDAjoQPyzoi8YplvZ6wYEQZgD/PgJ38rDEKZXZESNFeh4JO/MUWdjW7ijMd9dYUaqFKVrR6oVVY2tklf2dBluokC1jTQKrHQKz2mb8MIqOBEl/InnoxQ0JklKHZcZfTMygYFRO2Z/1/hhnoay6giNCAT9jkc8qyvP6Kvaifuk1+Ygae6JA==;25:q4O84DUmR2qGt9ccfxw3j13ZV0x2m04RTaRlYwJXJWvDdIjf8X/94tU6bQ5/Pv4TCJEf9VFV1IDCIC1QmubE8Q7aAnEK5S7bsbzY535Rt9OfmBv6lRM0VMoRCrJoux+lmZXFMYHZv0RqrJQhNx5djJPTn/UJPMFAv69WsQErkLxgZx+7FlosuCcpeMvvRJ3dq83EQSroIeV5Im08ZY4qYzYK4LX1s2zR9cO845PRqARSSy6GZPgqiJaqnxapYvidodJCPJiQQMwfqXUqR27OFGNQIH23CZ2of7bDmaWdy3M0dIod0l0tu/FceOPB1XtdhbdNrudvb/t6u+rSEj2mTVbHl2591ZbTCbGo6cAroEEeI5iSnb6VCgifN1hmkdQ462+U+8K81ng6DpgMEbe0HNWlhwb6rcHRky4JMV7a2n0DLfQZzQR9xVXmkqONUPs9tX5vmeS1KQWo61a6Jv7cKQ==
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;31:ymu6cOPqVrxu7C+6bZ89Uhs9Ls1h5dHE+97LlyOrkC6oK5kJPttV5NLtlo9I9PuVv5CCW+X4+nTMKHLwHEx9I9CWCjzHhWNwzkmoMIH5DNQME8hvszBQcfo5H307PP6N5fk9yzJ9f+8wWwsgu9plKnxKHM/SrA3Qg/UNyHROrsxWfEYEeHJjLcoZ3IYa4WPuwomxnwkJVck230F5i68D8ZscolhcQvNM5Sb4aqEyze3pEROo++wFcHiD8Bm5KC9J;20:fb26m+e0123daQFlV1BQzvbkbAiP3lwzZar4Cc5S4zHV80Y7k0Bf5TtZAq+y8MmHScuA9EFQcBU0XYwhC6Ti9NPiN0CIjauK/EKHiC90Abb9piaF54MYzgyGcF0qSbtZ4MjLH/tFsa+G05aCD2kSfXVX/mYRHMpYU7+eKN2nQp91x4nbKzL5g4KWKj+hs5F6r+NCSO61SqXklrctk6SSI6Qa79ItSL/THi8lJccD9UfAnVnRwbHOuh+0E2tFnNZuWAPW7cgfHHCh73YbKxqJ7AnJaEhz2nXWopCbaM7ZppHPy2zfl41Ha/Qjpx4xAFLVEZPNUI+6bnucEfK5gx66bBY7Tn+7Ewb8GG76YkeD5TelgCR6Bfheh5wYjPjH7Q5LBQVVnk6ZaPXlG7cX2eA9ylQMBJhD2FeHuCrEzdUhKqzcCm7XdF+00EWZ/bIw14S/zjfZNaBNhaH23bL6bNGTNJGjdZUL45pMZG5uacFNv/osxMfKgkn6UbzuPLKoOq2y
+X-Microsoft-Antispam-PRVS: <CY4PR07MB3206650B381609DD19CB40F4801F0@CY4PR07MB3206.namprd07.prod.outlook.com>
 X-Exchange-Antispam-Report-Test: UriScan:;
 X-Exchange-Antispam-Report-CFA-Test: BCL:0;PCL:0;RULEID:(6040450)(601004)(2401047)(8121501046)(5005006)(10201501046)(93006095)(93001095)(3002001)(6041248)(20161123562025)(201703131423075)(201702281528075)(201703061421075)(20161123560025)(20161123555025)(20161123564025)(6072148);SRVR:CY4PR07MB3206;BCL:0;PCL:0;RULEID:;SRVR:CY4PR07MB3206;
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;4:5ryrVC67WsQFez4trAntI7JDaCflEAxlr7mn6BinMPI6IdQ7z9TIdEvneB/9pUdMGBzbpO/N/qNNb+J4Yqr7MaekqsxWbhjhDCAANpBSDFEAuh/J2rmcyVYa3HnVR+ZQhF1+tUQahYyyusQoRYayuKhdtEZNrF2IazlQY06S3jl9zgnqWd1VD56YMhv+dXQmnnyelsZfPoh0/jv0+y10Y1tel74NsiNQXmKYRhazWey3QIIGUM69TLAOI/akfwZ9tpgsQKTC7V7XgSEorZ39LeLgFJfDFEeJ6GmCCnlJ6l5pUMpL3pUDG7CMaS2JJimS7Iw6h782fkBdzxBSPvtNf64wQYvNATOeBzje8+7KzfZ9qVHaF2jOIwX7nsw4DQ4lyqY5jLY37ehejHEbnmJ0R6R3NbUWBwf0JGoDUwE4cOV3HOUKBw4cANK/Fd+Db6ymCdk/5deD7ux/+LsdVG6jTO3gjjWpjA9YzG2Ok6lclUWrDRVwTCokN/cuWNywjHpxHkx2hzHBQk7v0XwELIhcz/DtBwEfNOwZ42wZpv6wbKhniNpbjfvRBpKUWb5z+EE33Q10TAkxYBaH0E5kYX+9uf52rbwuDINDdqPTdNF2bGUS7MEQu0qR9TOhsDq0tf6EcMnF4Gm2Mjkw7+E60eX+r2L4hPNWqRIcHI0RxhMgmMs0QQdOs25n9XJT7Xnag7d5iV+HBU4Z+Of7EdYHiek3EajAgLgdW91HR4JOdGYOnbw=
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;4:R+UkimknPb0xWpndt+aWnuTouYL9dGV1pyZA84xCNm5g7JFTj8wHBodMniBeNobxEUzs/y3UbWzvdkCeOy0lUADj3SsSKck2XAfI2M6C6zoC4MdLdaNl+eh/Td1gMqLNYncMOnqUZPu/bMt9m1gd00KKTiNzgp1uxNbcJAqChULLy+h651sXuGx2KC5lp7hWl5x3r7c/W92PpTnGly2irbNUFNNEpqrWpFUf2Cp/an5jJgtPWZCiabrVn9V/6O6YGkTrPMezFV6Azn+NTVfNPO4Z4DjTRKawKlDk0ZfizbOKoO4Q0cjDxmrnhC+IbLSVGTLh2MWbXo/Hn74VNmHwt69rjtDoZlMSgIyOQ4blC3CKy3DOpiYaq19PAPfm5ZXSH/s8B6rc+KkgVfctnGPaf4CbGx7JH05PW8lUI+YQe749Ttcsh9AmXSk1mLpdkT8X6FsUAY4c5QU8HCHr83Z9+7f17K8nm9O7INGU2GHVS9Bg0v1QJUcBe2RZTdW8oSnRdsxbVGbBoJcbbP1OavCcpCC+sZjIhfwSp9IzaCHsgWPLCm0s4wWATCNOsGwicOVfSt+bw/81kExU2U/hV8ddamopTfhWcpb/Cg7qmIotyZdG+5aDy0SP7vWvaKLuas1bY/yxxyPVdk3PE5C6UuNZt6mLpNBeBaLiUH6nTtLJzEYZgAo0kJLRUIUx+12F3Of+ps8w4vGDkRmuuU9kh6lxFRMnJ66NshftYoRlVSwUpBU=
 X-Forefront-PRVS: 0287BBA78D
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(39850400002)(39410400002)(39450400003)(39840400002)(39400400002)(4326008)(110136004)(6116002)(54906002)(2906002)(50986999)(3846002)(6486002)(6506006)(76176999)(189998001)(53416004)(50466002)(66066001)(47776003)(38730400002)(48376002)(42186005)(25786009)(305945005)(5003940100001)(50226002)(7736002)(81166006)(8676002)(5660300001)(6916009)(86362001)(36756003)(53936002)(6512007)(6666003)(33646002)(2950100002);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3206;H:black.inter.net;FPR:;SPF:None;MLV:sfv;LANG:en;
-X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY4PR07MB3206;23:dNFJwmv8ZMUb2lX6s5YoqTtI3Z2l3rYzbk6JIW5jx?=
- =?us-ascii?Q?f4/jPwfQ1/evHPYVQjF0byyg38JEYlS4CN0cL2LgsJtBpgIXTkHHAVoWBG++?=
- =?us-ascii?Q?fY+IwdC+qCyZWBiOvdr7TyC7X8Ds25MJ9pb89oawK/48TqA32AjDUTon0CVx?=
- =?us-ascii?Q?DDEqkNVr+k8nZ39kDPJSKWctEJWPWy7f/Htghr2smSa6p9+ZAJsT3ByC/hT6?=
- =?us-ascii?Q?CsLKYOZWlCXss/5VTS3r/E0CjArAd0DqHxIvvIVtC8C3r4Nnli0DR9O/HyTJ?=
- =?us-ascii?Q?ep/8TAQuMf/XpmLjcvtrIoOAwvDSEva5/bpG7hsLXizg/HjtBfIRyryBLn9b?=
- =?us-ascii?Q?r3vBeQJOai9myh5jzJ/9VKe43YOCPVXxzkRJMcI+oYtQqcn0x1xwlne6sTp3?=
- =?us-ascii?Q?0EguG2Lr5AsUDLTD1gDerh5uyhnxvoNrw1w6NVlhB6eHu70lKTwb5ZBYloSe?=
- =?us-ascii?Q?CPVTRKF1cmrLEHMPF9DvMMATSyT9VZ3ce5xHY7BagU9SNKUv6L2W5M5vluMb?=
- =?us-ascii?Q?bAmmF7oYstHZXQSMzZT8C5zOn7vM0axk5okExXO8NcqxZeCalFWdJPCeQD8N?=
- =?us-ascii?Q?z23yXnUOCyuMdR9ci1sAmMGHmCeTqwud8/C8lKCrYbxGdCoVLKHwRF/rNEL7?=
- =?us-ascii?Q?gnGtjmc7XKUgEhYIRq378EL1POlEI0YbFoIdLKeiRjLZAsy9oslRecUXSXfr?=
- =?us-ascii?Q?1v4tDt846/453iWaRk/LZzGs6+TLh5GPHZoqOGmYetMYtRuikFwip7t2Himl?=
- =?us-ascii?Q?DQlFY6/75ld/pPsyTs9v/qCy9VcN2IDMHIcxwqtY+TL1M4UKcRbPEDRPHMUh?=
- =?us-ascii?Q?AZSFRav+HLkFtDqubkHubU1cDBaP4HwgsdEayArcK35/wNTfNRMmlshXKb3L?=
- =?us-ascii?Q?sxgwUkD0CNAxI4rfFREypPBwUfSMqBhA20ZD1c11cUMEVMNjtYLaP5aW/awp?=
- =?us-ascii?Q?F0W7QI7b8T75AbDi0XjdgLe7RuKTjz4wrCZ/LAUFwRyg8U3caGC70LDD7c9Z?=
- =?us-ascii?Q?hXozwORElZJZtuZF5KqXQ6YoUG+fukbd19qMIyr0SmcUIGVEpPSryZC/2YMZ?=
- =?us-ascii?Q?IbRJ0c=3D?=
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;6:Wy4AP1I0hdhopCUX+hmVucQDmFhxEcyAt383bfLWCu8+f/g0IVYPB0GJnxDBhWk5aCR+ATgr9xtOH8mfXJNkrZenMXIW+RIVCovQ8RXw5iyzjCGdc8r0S5vclWr2NYAVMuqtTsJu6aDKB7V0O/gp5zPb2+05LVU8nxYQl/2rIS/FA8v28sEw20fRh+2XSM6Ts7gvvbsOCgXASUQF5XTm+WtfKzuvhMSEZ2KngqiE6RP/+/kW70hj1NBKTXLCc6v7BmOtAgD3M720wxFCwVgjHbajv3ez1rgJdvc4N4bifhI7ODPVl70y/Eju+ucho1u3/3eTsRBqV8u3zhbcCfkXRSawm+wz1xZoP4BEdTavHzVEaO0R8U1AbyQwlZnVF1YsH/kS3ap3ALRTAdPu1UeUq+U/2z3rLwWL9zqMOTRyee3g6GSed4v36pgTgHwiQtNQSz+/Cr222S/7vn74pYTdYJHrX+8OYL3VZaJ9ivZG0ERJw+6KNuDQ1fFqoK4ujzWTa3s8VQF135d9gPVnWdx1MQ==;5:bDPK8w5tVd7x2A7tTendPtZ7sP2Pd47dCPp7yl9tlo4kKCiN7ewW9AhyGjWuDiDFv7Lphi9poKeEVor34L+DuE+tYqjAWkAAPr7AEOO+OYwg9oYdyutvhYKS9VhKLKp2y8Man4+4iOXSEAOI0Tj19ttj8Vv0m/1VDZzbbjqKG/0=;24:iO/fnhDCWuCvJZ6z7/h/R8JGQAo3fNXoRR1A5sCcP0X0vaHNATRkU+nZFAvEmgiIsO0TuEyB6S60d52M8EQKDUIpzj14F0QpxCA5A7l+2r8=
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4630300001)(6009001)(39850400002)(39410400002)(39450400003)(39840400002)(39400400002)(4326008)(110136004)(6116002)(54906002)(2906002)(50986999)(3846002)(6486002)(6506006)(76176999)(189998001)(53416004)(50466002)(66066001)(47776003)(38730400002)(48376002)(42186005)(25786009)(305945005)(575784001)(5003940100001)(50226002)(7736002)(81166006)(8676002)(5660300001)(6916009)(86362001)(36756003)(53936002)(6512007)(6666003)(33646002)(2950100002)(15583001);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR07MB3206;H:black.inter.net;FPR:;SPF:None;MLV:sfv;LANG:en;
+X-Microsoft-Exchange-Diagnostics: =?us-ascii?Q?1;CY4PR07MB3206;23:C5GXkpnctA2dr4+drsd3rI+cbB29IIl0a0rbR2Dwo?=
+ =?us-ascii?Q?i2KdYYhbGwKqB/r9vFzzrlkLuAtFK2oTWv9/igQlg/mwYH6pYVZADVoEtW4F?=
+ =?us-ascii?Q?dDSq/yvmPyTyKKn4LZFyCBiGQZE+2cKDOmio5LocxWVOVhZgugOrobVaXbRP?=
+ =?us-ascii?Q?nuFglf+wKYMNrM066LC65bM5qHnlCrNha3BD4VXWl5iYr7gERZbHHdAe34fh?=
+ =?us-ascii?Q?AdkM3p0vjsTntMT/5faKeY/HWwe+RDx2A4VDy3Evuow3vx3DgatxpVj7zty+?=
+ =?us-ascii?Q?uzImwJuz/+LmHjEnY0Q2XwTsuqZOvAKbWs4r88pPHWW/eVsgPkcwCmBeUbMJ?=
+ =?us-ascii?Q?33DFlTOHluNI8U5W12uV6EFhlO9NgjItRrw215CQGM/V8IooC9tzr7nkNtyy?=
+ =?us-ascii?Q?ZWFsH55lSP1f0d1GPg2LjhaYpMFFg/7NWLzwZxqY4/GN8k1Cz9JZDcX0sQmq?=
+ =?us-ascii?Q?dszvqwGqXoMgxkGoBGQV5kjYGj6X9CuyqqYv0Lv4lDCrRqPvgZOmAKRFursL?=
+ =?us-ascii?Q?se+7dHutXW0ZL9LIGRGCGMwmbuZdI7nMWC21V/vQ0hYSmZ8UFx3PBhFkiqu9?=
+ =?us-ascii?Q?bvGvGtYTMvPbhzpqlM4vy2vZ3TpYZj6iBb53Mgu6FZvB7arX4/3xE8GYPdxb?=
+ =?us-ascii?Q?Voa8HsHl1DGAhGwX8DbhDXmV37zBf00+jgeUUMqH5MP44jTwWZjNoFxUGtWu?=
+ =?us-ascii?Q?MrVwUg9vAwtx/qIOfTaH9DpmZ472DtTu7abnJn5GYmgTxiqVtyZ8DzVMf+Fl?=
+ =?us-ascii?Q?gP5/OnxmT/bj1ntXjCeZ2OB7VBJ0HX+OMqI3bFoOb2se/Xjxit11BWi/ViRo?=
+ =?us-ascii?Q?zfRCNEEojl3Jz6ovPQkOYh1clOxnzZqiO/d5FF3cR3OgiiMExw1CxU0P27oE?=
+ =?us-ascii?Q?jffzREehUX7wy+Ggf32FF2m7W6j4vhG3cb4uKuq3QxIkUq6XBJRMpfr+5xMv?=
+ =?us-ascii?Q?hAL25NpuOWY39LcMCyjiAdwqerAuN4SzEADAoH/cmVfoJLa2KHmxtdb1qQNB?=
+ =?us-ascii?Q?ltHXK5OpnUvZFgNUYh9EdByEHLiCttK+oZZ1EFmoc/4F1UynUBeHPBSN+Dzu?=
+ =?us-ascii?Q?2XprgBPH6bDay1I7woJRjwueHEbtyQPO94LBZ8ADLMsoRF5Yg=3D=3D?=
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;6:Uxlz7AXSB+RLnFzRwi4qrCF7hSf88Ge5y7Zvrk6pXm+ZGbJz7VKlic6LU2/h4IW6Y8KkVTn1MaZ164bY8fkPGiG7ewAxHyx8vkUs9UKXkAbXIQBsoYrMFAgIT2f7e+Omnt6pkQQR1F7JZxrLRtyxWZS1+DaQc5r33sOeO9mABIjAWLLUiCACmTK7eVQ7N3/xRUMo69mLYsiFFXQotrzxycvCp7Nqatmy3TaX9EfulGElNfSlM/A7JfO/of8L0IYC0Unod9QfWeQc4cGSWGp9Zj6OoTdyYcKHpKmMacSNnznhEAIJgW5+wN5fze9bFHa2DVDx0ou9bd1BnuEtXfI1LSqpWPKkxldMFSn7OA2RAsY03idZsi/a63Bwjtm3hjoU7N6FevLXOLowViKRx62av2YEo+wV2BWzLN38TtKWCVkciL5QrslkYpVyZdFlGG4Pw4C4VmV4B8zNb0NR75B8s+WpO6NeMLhurkXwL/EqhE6mMaNgzEVXde4ZwTN8T/l9FA5r7QtTunc2qul1bDn6IQ==;5:nc4p1wMaok57+h0+jwL6kMDMXpiT4+WdN8VXqSvymDyNKBoFaZjN5RjDMCBkzCgwfavcokq5F9rBg/4rkpKz5kT7gwB+/EmI8ELPmIPTbcJQ7YZTHzB0EPRL2KpsTYfmlE8c5RWQTjadSzN8LbC0p9bhYSnh3WLGOLE1OFJeTGk=;24:3w1ZCcxUlTcFqwl3NAbRkGSUF0pMzXv0s7Yp1DYVH1XEL1eI6kNsqn9tQT7e5CIy02HMN3NH+RH6puFdjvYONce47iLi/9GmfQqnPq4Vv/o=
 SpamDiagnosticOutput: 1:99
 SpamDiagnosticMetadata: NSPM
-X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;7:QUVfdEyztctdpvcfA2O9asOxH65g24ONa6gOlkBxd/kmTVfWtd2EChIPlbYNuTMTlm2qBY4VoQ2B3zQmp0Kta0eGiF6vFskDVJrlGK4rpxgxCq9n94aoCypmTjevaSCOK0k3Yu/AZZU15u7yr9G43JchKFvYUDf3c7m7HkATNPG/jqXkC04veKgcLdkNqNAL6aVP2o2xGuOjWyyeGT7TfnFqI1h8PwuzW5a1uB3TYD0l5oB/qJbY9JS5BQCla8alwTcR5p8iXhUUaoP2KQ0O4eqgFkKVWlGNICbURMrrwh85dP3e+oxXJ3OJ+kFGlLJ/5MFBsq+yDgF8OH++sMrTAw==
+X-Microsoft-Exchange-Diagnostics: 1;CY4PR07MB3206;7:octj7cppIwX6R1EJJC10yuFjtH1Bv36AhHG8s3O3RJslJYybykXvFqNfyjMM+XYAYM8Q4zj3Lhw2toyiGZo8cTnFqymjHvXHMC7tf8bQPeEOzks+EzCUbIVHx5GBoX9WJ6zqqqfvSpqPu5E2DvfF0tKJkr8ilZ6niFNsY6MYNHRKGxWi6InK9caEFzGgtDfzQ81jEWb36AwJ5wKIES8X/gdKhqVK3YuiaqQhwNiBsaqFNPEF1qlrVwuTGyheDoUvjvgrGDxXJZtxaSJPxqbvPfA4QjJWclKbGok782zKRM8qlp/B92hx6cy134hMUG+krwCP3gtSy8Jey81Qe57a8g==
 X-OriginatorOrg: cavium.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2017 18:44:17.0063 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2017 18:44:15.8593 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3206
 Return-Path: <Steven.Hill@cavium.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57772
+X-archive-position: 57773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -90,29 +90,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: "Steven J. Hill" <Steven.Hill@cavium.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-Use the mmc_card_is_blockaddr() function to properly detect if the
-card uses byte or block addressing.
+Some hosts controllers, like Cavium, needs to know whether the card
+operates in byte- or block-address mode. Therefore export a new API,
+mmc_card_is_blockaddr(), which provides this information.
 
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Steven J. Hill <Steven.Hill@cavium.com>
 Acked-by: David Daney <david.daney@cavium.com>
 ---
- drivers/mmc/host/cavium.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/core/core.c  | 6 ++++++
+ include/linux/mmc/card.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/mmc/host/cavium.c b/drivers/mmc/host/cavium.c
-index d842b69..36b25e4 100644
---- a/drivers/mmc/host/cavium.c
-+++ b/drivers/mmc/host/cavium.c
-@@ -629,7 +629,7 @@ static u64 prepare_ext_dma(struct mmc_host *mmc, struct mmc_request *mrq)
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 926e0fd..f9fae34 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -2555,6 +2555,12 @@ unsigned int mmc_calc_max_discard(struct mmc_card *card)
+ }
+ EXPORT_SYMBOL(mmc_calc_max_discard);
  
- 	emm_dma = FIELD_PREP(MIO_EMM_DMA_VAL, 1) |
- 		  FIELD_PREP(MIO_EMM_DMA_SECTOR,
--			     (mrq->data->blksz == 512) ? 1 : 0) |
-+			     mmc_card_is_blockaddr(mmc->card) ? 1 : 0) |
- 		  FIELD_PREP(MIO_EMM_DMA_RW,
- 			     (mrq->data->flags & MMC_DATA_WRITE) ? 1 : 0) |
- 		  FIELD_PREP(MIO_EMM_DMA_BLOCK_CNT, mrq->data->blocks) |
++bool mmc_card_is_blockaddr(struct mmc_card *card)
++{
++       return card ? mmc_card_blockaddr(card) : false;
++}
++EXPORT_SYMBOL(mmc_card_is_blockaddr);
++
+ int mmc_set_blocklen(struct mmc_card *card, unsigned int blocklen)
+ {
+ 	struct mmc_command cmd = {};
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 77e61e0..4cd9450 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -307,6 +307,8 @@ static inline bool mmc_large_sector(struct mmc_card *card)
+ 	return card->ext_csd.data_sector_size == 4096;
+ }
+ 
++bool mmc_card_is_blockaddr(struct mmc_card *card);
++
+ #define mmc_card_mmc(c)		((c)->type == MMC_TYPE_MMC)
+ #define mmc_card_sd(c)		((c)->type == MMC_TYPE_SD)
+ #define mmc_card_sdio(c)	((c)->type == MMC_TYPE_SDIO)
 -- 
 2.1.4

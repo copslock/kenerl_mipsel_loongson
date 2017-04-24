@@ -1,67 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Apr 2017 14:55:47 +0200 (CEST)
-Received: from mail-pg0-x242.google.com ([IPv6:2607:f8b0:400e:c05::242]:34789
-        "EHLO mail-pg0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993543AbdDXMzk5xr0m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Apr 2017 14:55:40 +0200
-Received: by mail-pg0-x242.google.com with SMTP id t7so473125pgt.1
-        for <linux-mips@linux-mips.org>; Mon, 24 Apr 2017 05:55:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Apr 2017 14:58:16 +0200 (CEST)
+Received: from mail-it0-x22c.google.com ([IPv6:2607:f8b0:4001:c0b::22c]:32964
+        "EHLO mail-it0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993552AbdDXM6Hna0Fm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Apr 2017 14:58:07 +0200
+Received: by mail-it0-x22c.google.com with SMTP id 70so14218075ita.0
+        for <linux-mips@linux-mips.org>; Mon, 24 Apr 2017 05:58:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=7I08Yqr367W9gc66oZ09XBywlQfUzWHfvA4dBjZAQEk=;
-        b=AN2a3X5zzgwu1zXHzDxSbsyw3riVXWQLvRuxq6bubqTJMFKI+h7kMHplVagTNraVS/
-         DEeHGiN1Xq3rLj9WAbMCMOB+4VCSlHdMyLgWkb+zChGfkqZXX/Nj13AgIYwLlZK3Alx3
-         OgqTv03A3AQAwlpet1KD3tarPt/H0+O2oZeKZoE9jhCP3cuern+IpB63V0axg4Rzwziq
-         07Ot+Kf3yLTCwC23qGj5Mj0EGpuJeVVhtroWHmLuGyFH1XT3Gn5WlJILtY7uDDM886vQ
-         diy+vyATgjztKwxoRTXQ6bwbsWUpsPRKfPuzzAdLhLdqaQUYrhHyQxBk9uy0i9y8yLy8
-         f7EA==
+        d=linaro.org; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=kLOj/5daszZyY+HocUR8I6nMOeJzHA5NPOqC8zImezc=;
+        b=L0Mu3kLcPFi3QO0xGxMu+AKD4gODtAxwqBZi0u+HpLJCnNDYCz7VmZSC/x+8n8X6JX
+         nhwC2rnzmDCRVNtF0VO0FpPzKfiykPGrcPFj+6kbb5U6Js2awSwocIahKVU+s9tbp7gV
+         3vq376vUL16gaJdjzeaE6E0/yjrlzlIVoO1ZA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7I08Yqr367W9gc66oZ09XBywlQfUzWHfvA4dBjZAQEk=;
-        b=trGtA3VSDg8xtftTlsD1LAJY2YiUUFjij8uMmKIvt+mCpgdQfMraFahD5tsjby1UqU
-         kxtqtXjllefnWDVsmzVj/REmbsJMMD95QxODjBWoPMupyrWZViSvB0OBF9iC3jblMYO4
-         SK4MhF5fdvg2nGBGxWRC/IyW4Y4HuBRsognsnPERPZSjJKww90STTPf7Excmg6I3/EU1
-         78qQ4Cp8T6ZLnhUda783z9JK5QzKfFQTp46QfoboorWVj1ZtQ6sSjIsSHYaj8KARxarP
-         6HDQlRyHlxbDOJfCLazc6Ff/W4cKMzACAS4eApBSr/TQr4CAxUkFxfVtsXFliZOpBpNC
-         pQSA==
-X-Gm-Message-State: AN3rC/5LAsAAzuQkG0QKTzRvQHEb5X0K9WmrzBhmkZ36L7/YNpPKGzKt
-        gQ5cqLKlg9uVtw==
-X-Received: by 10.99.122.81 with SMTP id j17mr5531361pgn.111.1493038535051;
-        Mon, 24 Apr 2017 05:55:35 -0700 (PDT)
-Received: from mint-host ([180.102.125.8])
-        by smtp.gmail.com with ESMTPSA id n65sm30936406pga.8.2017.04.24.05.55.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 24 Apr 2017 05:55:33 -0700 (PDT)
-From:   Yang Ling <gnaygnil@gmail.com>
-X-Google-Original-From: Yang Ling <gnaygnail@gmail.com>
-Date:   Mon, 24 Apr 2017 20:55:26 +0800
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Yang Ling <gnaygnil@gmail.com>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Keguang Zhang <keguang.zhang@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 1/2] pwm: loongson1: Add PWM driver for Loongson1 SoC
-Message-ID: <20170424125436.GA3949@mint-host>
-References: <20170215144531.GA39000@ubuntu>
- <20170406161835.GA19312@ulmo.ba.sec>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=kLOj/5daszZyY+HocUR8I6nMOeJzHA5NPOqC8zImezc=;
+        b=E5Bexx4q8+cPUnkre4Jh39L7Tjj8HlBQfjK0tHGNE68e19ZW/XKtaOzUhY03Y/roJV
+         Nmf2RtezfolCzkKrQksRl2oGxHEs6wAXsLh5Sjwjmw6fBIHrBJFRbSSG60PtkA+h9J9J
+         Z2nEq66osBhJv0BumTgJD17+PaXjNR3Gg/l2VWRWUWpExCIUnit22/kBmc4PlmEP67Mq
+         Lqh7NTNTSxBCT20eJtN5Kgip8s7y7xR6SI6GuuN1kZf2cwrl5jDrXtP+nAYnvOQW9kwD
+         n0TTctnNKlEdB457dPWs/m4FjqEn3PDEHVbAHfqmCJeSzJJAjyz3eGxQsv2IzD94XMYZ
+         233g==
+X-Gm-Message-State: AN3rC/5JjGrFLIZK7xiQ1Y4mQHWXetmBsG+8XUvrNE2nmcI7RJ9evsSN
+        Pudn6/B/YHyOUESscOH62F1JCQk9oNKPguY=
+X-Received: by 10.36.33.73 with SMTP id e70mr12750589ita.9.1493038681977; Mon,
+ 24 Apr 2017 05:58:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170406161835.GA19312@ulmo.ba.sec>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <gnaygnil@gmail.com>
+Received: by 10.79.76.210 with HTTP; Mon, 24 Apr 2017 05:58:00 -0700 (PDT)
+In-Reply-To: <e4aaf8c3e8a54df2c5878f8e873e290f@crapouillou.net>
+References: <20170125185207.23902-2-paul@crapouillou.net> <20170402204244.14216-1-paul@crapouillou.net>
+ <20170402204244.14216-7-paul@crapouillou.net> <CACRpkdbXe1Xxk93jqLXBdEDwWOnWD+CkZrqvok-PcmWxzBbSZA@mail.gmail.com>
+ <e4aaf8c3e8a54df2c5878f8e873e290f@crapouillou.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 24 Apr 2017 14:58:00 +0200
+Message-ID: <CACRpkdZ8o1OFC0HGaVuLWy5JbnHjeXmAYorii7eX=XvJNkSSvA@mail.gmail.com>
+Subject: Re: [PATCH v4 06/14] MIPS: jz4740: DTS: Add nodes for ingenic pinctrl
+ and gpio drivers
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Alexandre Courbot <gnurou@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>,
+        James Hogan <james.hogan@imgtec.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57767
+X-archive-position: 57768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gnaygnil@gmail.com
+X-original-sender: linus.walleij@linaro.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,42 +81,14 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi, Thierry,
+On Fri, Apr 7, 2017 at 3:57 PM, Paul Cercueil <paul@crapouillou.net> wrote:
 
-I am sorry for the late reply.
+> I think the 'reg' property makes more sense, yes. I'll fix this in the v5,
+> this
+> week-end. Do you think it can go in 4.12?
 
-For some historical reasons, Loongson1x series SoCs is still unable to support the device tree.
-So drivers need to rely on some register-related macro definitions in loongson1.h(arch/mips/include/asm/mach-loongson32/loongson1.h).
-The driver is currently tested on the Loongson1C development board.
-We plan to solve the problem together after the SoCs bootloader supports the device tree.
+Surely, Torvalds just cut an -rc8 giving me more time to queue more
+material, and I really like this series.
 
-Thanks for your friendly reminder.
-
-Yang
-
-On Thu, Apr 06, 2017 at 06:18:35PM +0200, Thierry Reding wrote:
-> On Wed, Feb 15, 2017 at 10:45:31PM +0800, Yang Ling wrote:
-> > Add support for the PWM controller present in Loongson1 family of SoCs.
-> > 
-> > Signed-off-by: Yang Ling <gnaygnil@gmail.com>
-> > 
-> > ---
-> > V2:
-> >   Remove ls1x_pwm_channel.
-> >   Remove period_ns/duty_ns check.
-> >   Add return values check.
-> > ---
-> >  drivers/pwm/Kconfig         |   9 +++
-> >  drivers/pwm/Makefile        |   1 +
-> >  drivers/pwm/pwm-loongson1.c | 148 ++++++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 158 insertions(+)
-> >  create mode 100644 drivers/pwm/pwm-loongson1.c
-> 
-> Looks like this doesn't compile because it uses register definitions
-> from loongson1.h that aren't what the driver expects. Looks like the
-> driver wants parameterized ones, but those present in the kernel are
-> not.
-> 
-> Any plans on fixing that? How did you build-test this?
-> 
-> Thierry
+Yours,
+Linus Walleij

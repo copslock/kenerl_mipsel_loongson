@@ -1,63 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Apr 2017 17:48:30 +0200 (CEST)
-Received: from bh-25.webhostbox.net ([208.91.199.152]:53722 "EHLO
-        bh-25.webhostbox.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993459AbdDWPsXpSoGW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 23 Apr 2017 17:48:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=eKtxE1bdV2xT7ALYNiXdelE/NBAyraJcArCktmojH9Q=; b=qAyCf0I7+IR/QVbez6+GId8mHZ
-        IAmsehkK3t0/xxwLJjdzUs19yqYxvGaQpKiIKbyRufxn2KNu3Gwd3sTdctangV3viIVXREA6AsGGF
-        gIzDZI1lHCfRAEgIN4AVEPcCvKVyUKyFrlrso4o17Por8HvjnYyIp0AhQmxE0zkb9Ub1y2RUjEjBw
-        pE3JYotd+wHqDBoAWpyFQhoP2ocBY+0ImwAnzN1AaIEbCQf5YX+gxejhjPK/vaO/TMYBzT8V8YfSP
-        MkMo/QcB4iIE8J1EbwsQirbK9Y8zpZbKgtBl58dTS2f9jftX+I6BahGp8avLu4ftFzt5UB3HdbXz+
-        3xfMrDsQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:58508 helo=localhost)
-        by bh-25.webhostbox.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.87)
-        (envelope-from <linux@roeck-us.net>)
-        id 1d2JkE-0003TT-EC; Sun, 23 Apr 2017 15:48:15 +0000
-Date:   Sun, 23 Apr 2017 08:48:12 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        john@phrozen.org, linux-spi@vger.kernel.org,
-        hauke.mehrtens@intel.com
-Subject: Re: [04/13] watchdog: lantiq: access boot cause register through
- regmap
-Message-ID: <20170423154812.GA20428@roeck-us.net>
-References: <20170417192942.32219-5-hauke@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Apr 2017 04:18:12 +0200 (CEST)
+Received: from mail-io0-x241.google.com ([IPv6:2607:f8b0:4001:c06::241]:35764
+        "EHLO mail-io0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990519AbdDXCSCnKBKb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Apr 2017 04:18:02 +0200
+Received: by mail-io0-x241.google.com with SMTP id d203so44619259iof.2;
+        Sun, 23 Apr 2017 19:18:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=OTz5cR31+wP9iPzNwlc2CMVeJ6BzJyo3WZnJ4SqMILQ=;
+        b=m6yylP/071lJb4bMv+tOueTVdqbauqkk3ZRsl0vrpWiEFx3Wzz3X1iarYwEKEF72Xg
+         0XsCjUB1uvaTO8KBb1/n/niSB5VPcxzrjiPYks1scRCQUB9wejh9ddELL6KBZQcCSsLV
+         uXB+tGWWUCTajP97j+M3S1cVJ3YwnVY1ph93y5cLCQ317VdVfYXQ/EDirszVd8+i5vw5
+         9s/kRNDyhiHD360llcZomw5wgok3QItokZjYZQxD/y/GpfzCBFJ1CCCnTtyHR9c5E8Pk
+         3lgcxQ+5UMth572IiAbICrOv0PkMcGwVgBhngcuu5R4Uw+GYklK6sSNvThJ1jWP5lzqn
+         PVQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=OTz5cR31+wP9iPzNwlc2CMVeJ6BzJyo3WZnJ4SqMILQ=;
+        b=pK5xMqZgrB0GCudki2Pj6oDmkyTCqTNxEcEiWFb1IAGsq1QrAgySej8BfkLcjB01x8
+         piVEfG85G5w2R7Sn7qYlH6eVxuyBuyoyhTFr4YK8/8IdiaZcLuiJbQ5tubpx5tuQ/002
+         uijA4WwMgy3U6O1ea36d5JmSp6k/mCPxE67nfPqqKl/6rBnU1joQyWD86EvQPQoQgGqA
+         yRweYgSyHNcVVyyGlizRkOOSSBR6ut4mLIi5ZNf6/MAQL1wJROz4SMay954nIbB4TfZg
+         c/kmq4RecO9HT03H/ibIG45aeq9XGqYGwwDvpOQL6pVnm1MzwOdC90IcxNmF0RD5eUF8
+         7jFg==
+X-Gm-Message-State: AN3rC/7GDNXnVDetjQgdQyiO+XT8aNNfRJl/By+9o6RZKQ87ZRRrq3pe
+        SgG7APJl7oQCSw==
+X-Received: by 10.98.163.75 with SMTP id s72mr22537512pfe.227.1493000276760;
+        Sun, 23 Apr 2017 19:17:56 -0700 (PDT)
+Received: from localhost ([175.223.33.224])
+        by smtp.gmail.com with ESMTPSA id k190sm4474074pge.2.2017.04.23.19.17.55
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 23 Apr 2017 19:17:56 -0700 (PDT)
+Date:   Mon, 24 Apr 2017 11:17:47 +0900
+From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Jan Kara <jack@suse.cz>, Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        David Miller <davem@davemloft.net>
+Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
+ NMI
+Message-ID: <20170424021747.GA630@jagdpanzerIV.localdomain>
+References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
+ <1461239325-22779-2-git-send-email-pmladek@suse.com>
+ <20170419131341.76bc7634@gandalf.local.home>
+ <20170420033112.GB542@jagdpanzerIV.localdomain>
+ <20170420131154.GL3452@pathway.suse.cz>
+ <20170421015724.GA586@jagdpanzerIV.localdomain>
+ <20170421120627.GO3452@pathway.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170417192942.32219-5-hauke@hauke-m.de>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Authenticated_sender: guenter@roeck-us.net
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-Get-Message-Sender-Via: bh-25.webhostbox.net: authenticated_id: guenter@roeck-us.net
-X-Authenticated-Sender: bh-25.webhostbox.net: guenter@roeck-us.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <linux@roeck-us.net>
+In-Reply-To: <20170421120627.GO3452@pathway.suse.cz>
+User-Agent: Mutt/1.8.2 (2017-04-18)
+Return-Path: <sergey.senozhatsky.work@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57765
+X-archive-position: 57766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@roeck-us.net
+X-original-sender: sergey.senozhatsky.work@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -70,99 +93,71 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Apr 17, 2017 at 09:29:33PM +0200, Hauke Mehrtens wrote:
-> This patch avoids accessing the function ltq_reset_cause() and directly
-> accesses the register given over the syscon interface. The syscon
-> interface will be implemented for the xway SoCs for the falcon SoCs the
-> ltq_reset_cause() function never worked, because a wrong offset was used.
+On (04/21/17 14:06), Petr Mladek wrote:
+[..]
+> > I agree that this_cpu_read(printk_context) covers slightly more than
+> > logbuf_lock scope, so we may get positive this_cpu_read(printk_context)
+> > with unlocked logbuf_lock, but I don't tend to think that it's a big
+> > problem.
 > 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> PRINTK_SAFE_CONTEXT is set also in call_console_drivers().
+> It might take rather long and logbuf_lock is availe. So, it is
+> noticeable source of false positives.
 
-Acked-by: Guenter Roeck <linux@reck-us.net>
+yes, agree.
 
-> ---
->  drivers/watchdog/lantiq_wdt.c | 47 +++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 43 insertions(+), 4 deletions(-)
+probably we need additional printk_safe annotations for
+		"logbuf_lock is locked from _this_ CPU"
+
+false positives there can be very painful.
+
+[..]
+> 	if (raw_spin_is_locked(&logbuf_lock))
+> 		this_cpu_or(printk_context, PRINTK_NMI_CONTEXT_MASK);
+> 	else
+> 		this_cpu_or(printk_context, PRINTK_NMI_DEFERRED_CONTEXT_MASK);
+
+well, if everyone is fine with logbuf_lock access from every CPU from every
+NMI then I won't object either. but may be it makes sense to reduce the
+possibility of false positives. Steven is loosing critically important logs,
+after all.
+
+
+by the way,
+does this `nmi_print_seq' bypass even fix anything for Steven? it sort of
+can, in theory, but just in theory. so may be we need direct message flush
+from NMI handler (printk->console_unlock), which will be a really big problem.
+
+logbuf might not be big enough for 4890096 messages (Steven's report
+mentions "Lost 4890096 message(s)!"). we are counting on the fact that
+in case of `nmi_print_seq' bypass some other CPU will call console_unlock()
+and print pending logbuf messages, but this is not guaranteed and the
+messages can be dropped even from logbuf.
+
+I don't know,
+should we try to queue printk_deferred irq_work for all online CPUs from
+vprintk_nmi() when it bypasses printk_safe_log_store()? in order to minimize
+possibilities of logbuf overflow. printk_deferred() will queue work on
+vprintk_nmi() CPU, sure, but we don't know how many messages we are going
+to add to logbuf from NMI.
+
+
+> > @@ -303,7 +303,10 @@ static int vprintk_nmi(const char *fmt, va_list args)
+> >  {
+> >         struct printk_safe_seq_buf *s = this_cpu_ptr(&nmi_print_seq);
+> >  
+> > -       return printk_safe_log_store(s, fmt, args);
+> > +       if (this_cpu_read(printk_context) & PRINTK_SAFE_CONTEXT_MASK)
+> > +               return printk_safe_log_store(s, fmt, args);
+> > +
+> > +       return vprintk_emit(0, LOGLEVEL_SCHED, NULL, 0, fmt, args);
+> >  }
 > 
-> diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-> index e0823677d8c1..0e349ad03fdf 100644
-> --- a/drivers/watchdog/lantiq_wdt.c
-> +++ b/drivers/watchdog/lantiq_wdt.c
-> @@ -17,9 +17,14 @@
->  #include <linux/uaccess.h>
->  #include <linux/clk.h>
->  #include <linux/io.h>
-> +#include <linux/regmap.h>
-> +#include <linux/mfd/syscon.h>
->  
->  #include <lantiq_soc.h>
->  
-> +#define LTQ_RST_CAUSE_WDT_XRX		BIT(31)
-> +#define LTQ_RST_CAUSE_WDT_FALCON	0x02
-> +
->  /*
->   * Section 3.4 of the datasheet
->   * The password sequence protects the WDT control register from unintended
-> @@ -186,6 +191,40 @@ static struct miscdevice ltq_wdt_miscdev = {
->  	.fops	= &ltq_wdt_fops,
->  };
->  
-> +static void ltq_set_wdt_bootstatus(struct platform_device *pdev)
-> +{
-> +	struct device_node *np = pdev->dev.of_node;
-> +	struct regmap *rcu_regmap;
-> +	u32 status_reg_offset;
-> +	u32 val;
-> +	int err;
-> +
-> +	rcu_regmap = syscon_regmap_lookup_by_phandle(np,
-> +						     "lantiq,rcu-syscon");
-> +	if (IS_ERR_OR_NULL(rcu_regmap))
-> +		return;
-> +
-> +	err = of_property_read_u32_index(np, "lantiq,rcu-syscon", 1,
-> +					 &status_reg_offset);
-> +	if (err) {
-> +		dev_err(&pdev->dev, "Failed to get RCU reg offset\n");
-> +		return;
-> +	}
-> +
-> +	err = regmap_read(rcu_regmap, status_reg_offset, &val);
-> +	if (err)
-> +		return;
-> +
-> +	/* find out if the watchdog caused the last reboot */
-> +	if (of_device_is_compatible(np, "lantiq,wdt-xrx100")) {
-> +		if (val & LTQ_RST_CAUSE_WDT_XRX)
-> +			ltq_wdt_bootstatus = WDIOF_CARDRESET;
-> +	} else if  (of_device_is_compatible(np, "lantiq,wdt-falcon")) {
-> +		if ((val & 0x7) == LTQ_RST_CAUSE_WDT_FALCON)
-> +			ltq_wdt_bootstatus = WDIOF_CARDRESET;
-> +	}
-> +}
-> +
->  static int
->  ltq_wdt_probe(struct platform_device *pdev)
->  {
-> @@ -205,9 +244,7 @@ ltq_wdt_probe(struct platform_device *pdev)
->  	ltq_io_region_clk_rate = clk_get_rate(clk);
->  	clk_put(clk);
->  
-> -	/* find out if the watchdog caused the last reboot */
-> -	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
-> -		ltq_wdt_bootstatus = WDIOF_CARDRESET;
-> +	ltq_set_wdt_bootstatus(pdev);
->  
->  	dev_info(&pdev->dev, "Init done\n");
->  	return misc_register(&ltq_wdt_miscdev);
-> @@ -222,7 +259,9 @@ ltq_wdt_remove(struct platform_device *pdev)
->  }
->  
->  static const struct of_device_id ltq_wdt_match[] = {
-> -	{ .compatible = "lantiq,wdt" },
-> +	{ .compatible = "lantiq,wdt"},
-> +	{ .compatible = "lantiq,wdt-xrx100"},
-> +	{ .compatible = "lantiq,wdt-falcon"},
->  	{},
->  };
->  MODULE_DEVICE_TABLE(of, ltq_wdt_match);
+> It looks simple but some things are missing. It will be used also
+> outside panic/oops, so it should queue the irq_work to flush the console.
+
+you are right. I thought about moving irq_work to vprintk_emit(), but
+completely forgot about it. without that missing bit the proposed two-liner
+is not complete.
+
+	-ss

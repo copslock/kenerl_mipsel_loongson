@@ -1,40 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2017 09:07:10 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:45021 "EHLO mail.hauke-m.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2017 14:56:19 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:55090 "EHLO elvis.franken.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993868AbdDYHHDQEJtv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 25 Apr 2017 09:07:03 +0200
-Received: from [192.168.0.100] (ip-109-45-3-139.web.vodafone.de [109.45.3.139])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 0BB2010016A;
-        Tue, 25 Apr 2017 09:06:59 +0200 (CEST)
-Subject: Re: [PATCH 11/13] phy: Add an USB PHY driver for the Lantiq SoCs
- using the RCU module
-To:     Rob Herring <robh@kernel.org>
-References: <20170417192942.32219-1-hauke@hauke-m.de>
- <20170417192942.32219-12-hauke@hauke-m.de>
- <20170420153606.fdhedc7ovvhc66qd@rob-hp-laptop>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        john@phrozen.org, linux-spi@vger.kernel.org,
-        hauke.mehrtens@intel.com
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <f15b576e-36bf-657d-97ff-99ea174c1d00@hauke-m.de>
-Date:   Tue, 25 Apr 2017 09:06:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
-MIME-Version: 1.0
-In-Reply-To: <20170420153606.fdhedc7ovvhc66qd@rob-hp-laptop>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+        id S23990557AbdDYM4MW75pd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 25 Apr 2017 14:56:12 +0200
+Received: from uucp (helo=solo.franken.de)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1d300s-0007QO-00; Tue, 25 Apr 2017 14:56:14 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+        id 865FB508DA7; Tue, 25 Apr 2017 14:55:47 +0200 (CEST)
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Date:   Tue, 25 Apr 2017 14:30:07 +0200
+Subject: [PATCH] Fix returns of some CLK API calls, if !CONFIG_HAVE_CLOCK
+To:     linux@armlinux.org.uk, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     linux-mips@linux-mips.org
+Message-Id: <20170425125547.865FB508DA7@solo.franken.de>
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57783
+X-archive-position: 57784
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,119 +36,61 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
+If CONFIG_HAVE_CLOCK is not set, return values of clk_get(),
+devm_clk_get(), devm_get_clk_from_child(), clk_get_parent()
+and clk_get_sys() are wrong. According to spec these functions
+should either return a pointer to a struct clk or a valid IS_ERR
+condition. NULL is neither, so returning ERR_PTR(-ENODEV) makes
+more sense.
 
+Without this change serial console on SNI RM400 machines (MIPS arch)
+is broken, because sccnxp driver doesn't get a valid clock rate.
 
-On 04/20/2017 05:36 PM, Rob Herring wrote:
-> On Mon, Apr 17, 2017 at 09:29:40PM +0200, Hauke Mehrtens wrote:
->> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->>
->> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
->> the PHY interfaces for each core. The phy instances can be passed to the
->> dwc2 driver, which already supports the generic phy interface.
->>
->> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->> ---
->>  .../bindings/phy/phy-lantiq-rcu-usb2.txt           |  59 ++++
->>  arch/mips/lantiq/xway/reset.c                      |  43 ---
->>  arch/mips/lantiq/xway/sysctrl.c                    |  24 +-
->>  drivers/phy/Kconfig                                |   8 +
->>  drivers/phy/Makefile                               |   1 +
->>  drivers/phy/phy-lantiq-rcu-usb2.c                  | 325 +++++++++++++++++++++
->>  6 files changed, 405 insertions(+), 55 deletions(-)
->>  create mode 100644 Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->>  create mode 100644 drivers/phy/phy-lantiq-rcu-usb2.c
->>
->> diff --git a/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->> new file mode 100644
->> index 000000000000..0ec9f790b6e0
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/phy/phy-lantiq-rcu-usb2.txt
->> @@ -0,0 +1,59 @@
->> +Lantiq XWAY SoC RCU USB 1.1/2.0 PHY binding
->> +===========================================
->> +
->> +This binding describes the USB PHY hardware provided by the RCU module on the
->> +Lantiq XWAY SoCs.
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Required properties (controller (parent) node):
->> +- compatible		: Should be one of
->> +				"lantiq,ase-rcu-usb2-phy"
->> +				"lantiq,danube-rcu-usb2-phy"
->> +				"lantiq,xrx100-rcu-usb2-phy"
->> +				"lantiq,xrx200-rcu-usb2-phy"
->> +				"lantiq,xrx300-rcu-usb2-phy"
-> 
-> The first x in xrx seems to be a wildcard. Don't use wildcards in 
-> compatible strings.
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
+ include/linux/clk.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Yes that is correct, I will replace it in the newly introduced
-compatible strings with the full names without wild cards.
-
-> 
->> +- lantiq,rcu-syscon	: A phandle to the RCU module and the offsets to the
->> +			  USB PHY configuration and USB MAC registers.
-> 
-> Same comment as gphy.
-> 
->> +- address-cells		: should be 1
->> +- size-cells		: should be 0
->> +- phy-cells		: from the generic PHY bindings, must be 1
-> 
-> Missing the '#'
-> 
->> +
->> +Optional properties (controller (parent) node):
->> +- vbus-gpio		: References a GPIO which enables VBUS all given USB
->> +			  ports.
-> 
-> -gpios is preferred form.
-> 
->> +
->> +Required nodes		:  A sub-node is required for each USB PHY port.
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Required properties (port (child) node):
-> 
-> Where's the sub nodes in the example?
-
-Sorry, this was from an older version, I will update this.
-
-> 
->> +- reg        	: The ID of the USB port, usually 0 or 1.
->> +- clocks	: References to the (PMU) "ctrl" and "phy" clk gates.
->> +- clock-names	: Must be one of the following:
->> +			"ctrl"
->> +			"phy"
->> +- resets	: References to the RCU USB configuration reset bits.
->> +- reset-names	: Must be one of the following:
->> +			"analog-config" (optional)
->> +			"statemachine-soft" (optional)
->> +
->> +Optional properties (port (child) node):
->> +- vbus-gpio	: References a GPIO which enables VBUS for the USB port.
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Example for the USB PHYs on an xRX200 SoC:
->> +	usb_phys0: rcu-usb2-phy@0 {
-> 
-> usb-phy@...
-> 
->> +		compatible      = "lantiq,xrx200-rcu-usb2-phy";
-> 
-> Extra spaces.
-> 
->> +		reg = <0>;
->> +
->> +		lantiq,rcu-syscon = <&rcu0 0x18 0x38>;
->> +		clocks = <&pmu PMU_GATE_USB0_CTRL>,
->> +			 <&pmu PMU_GATE_USB0_PHY>;
->> +		clock-names = "ctrl", "phy";
->> +		vbus-gpios = <&gpio 32 GPIO_ACTIVE_HIGH>;
->> +		resets = <&rcu_reset1 4>, <&rcu_reset0 4>;
->> +		reset-names = "phy", "ctrl";
->> +		#phy-cells = <0>;
->> +	};
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index e9d36b3..b844a65 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -442,18 +442,18 @@ struct clk *clk_get_sys(const char *dev_id, const char *con_id);
+ 
+ static inline struct clk *clk_get(struct device *dev, const char *id)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODEV);
+ }
+ 
+ static inline struct clk *devm_clk_get(struct device *dev, const char *id)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODEV);
+ }
+ 
+ static inline struct clk *devm_get_clk_from_child(struct device *dev,
+ 				struct device_node *np, const char *con_id)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODEV);
+ }
+ 
+ static inline void clk_put(struct clk *clk) {}
+@@ -494,12 +494,12 @@ static inline int clk_set_parent(struct clk *clk, struct clk *parent)
+ 
+ static inline struct clk *clk_get_parent(struct clk *clk)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODEV);
+ }
+ 
+ static inline struct clk *clk_get_sys(const char *dev_id, const char *con_id)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODEV);
+ }
+ #endif
+ 
+-- 
+2.1.4

@@ -1,41 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2017 18:31:56 +0200 (CEST)
-Received: from pandora.armlinux.org.uk ([IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6]:36066
-        "EHLO pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993930AbdDYQbtN0Jid (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Apr 2017 18:31:49 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=armlinux.org.uk; s=pandora-2014;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=Cx+hS6VeVgL7pwLKecCfAhzgGQls/lXlqWKpXcBAHX8=;
-        b=XQEi0GQ8Xf6ghDIYaESLy+cuRb5vl6RwM605IbBlHunWi+vC4KXEed4Tg0TVUcFYQ7JdB4O+HFoHlxlyPs/a0CGnk/PTgshyz05sc0gKMJKLuILLNuZOqE9uGdYh/z8AOKRXvcRmr70sChz9Wlc4+mE5m+Wpvx55q8WTpLec7TM=;
-Received: from n2100.armlinux.org.uk ([2001:4d48:ad52:3201:214:fdff:fe10:4f86]:57289)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1d33NP-0000yW-Gg; Tue, 25 Apr 2017 17:31:43 +0100
-Received: from linux by n2100.armlinux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.armlinux.org.uk>)
-        id 1d33NK-0004Ks-QI; Tue, 25 Apr 2017 17:31:38 +0100
-Date:   Tue, 25 Apr 2017 17:31:37 +0100
-From:   Russell King - ARM Linux <linux@armlinux.org.uk>
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix returns of some CLK API calls, if !CONFIG_HAVE_CLOCK
-Message-ID: <20170425163137.GR17774@n2100.armlinux.org.uk>
-References: <20170425125547.865FB508DA7@solo.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2017 18:58:34 +0200 (CEST)
+Received: from mail.kernel.org ([198.145.29.136]:34058 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993927AbdDYQ6Yi0l7d (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 25 Apr 2017 18:58:24 +0200
+Received: from mail.kernel.org (localhost [127.0.0.1])
+        by mail.kernel.org (Postfix) with ESMTP id 4C5D9201B4;
+        Tue, 25 Apr 2017 16:58:22 +0000 (UTC)
+Received: from mail-yw0-f171.google.com (mail-yw0-f171.google.com [209.85.161.171])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C8B6E201C8;
+        Tue, 25 Apr 2017 16:58:19 +0000 (UTC)
+Received: by mail-yw0-f171.google.com with SMTP id u70so98793527ywe.2;
+        Tue, 25 Apr 2017 09:58:19 -0700 (PDT)
+X-Gm-Message-State: AN3rC/4DdbJ8f3+Pi26wEocGdc6d4Sl0VjqaKoBNBpjW2qqdhkGLxrw+
+        h7WrFV+phOuj8BXx3VNN+bf5C5f8CQ==
+X-Received: by 10.129.104.67 with SMTP id d64mr10841872ywc.97.1493139499052;
+ Tue, 25 Apr 2017 09:58:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170425125547.865FB508DA7@solo.franken.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linux+linux-mips=linux-mips.org@armlinux.org.uk>
+Received: by 10.129.52.82 with HTTP; Tue, 25 Apr 2017 09:57:58 -0700 (PDT)
+In-Reply-To: <8742e3b3-4dc2-bc74-f607-00d96f74512c@hauke-m.de>
+References: <20170417192942.32219-1-hauke@hauke-m.de> <20170417192942.32219-7-hauke@hauke-m.de>
+ <20170420144848.hwvtrhnwxcsxyv7x@rob-hp-laptop> <8742e3b3-4dc2-bc74-f607-00d96f74512c@hauke-m.de>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 25 Apr 2017 11:57:58 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLdtyc_w5CWW9YTN6+xnYVQemSbVEmjJbhH8kP_8a-wkA@mail.gmail.com>
+Message-ID: <CAL_JsqLdtyc_w5CWW9YTN6+xnYVQemSbVEmjJbhH8kP_8a-wkA@mail.gmail.com>
+Subject: Re: [PATCH 06/13] MIPS: lantiq: Convert the xbar driver to a platform_driver
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        LINUX-WATCHDOG <linux-watchdog@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        John Crispin <john@phrozen.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        hauke.mehrtens@intel.com
+Content-Type: text/plain; charset=UTF-8
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <robh@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57785
+X-archive-position: 57786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@armlinux.org.uk
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,26 +60,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 25, 2017 at 02:30:07PM +0200, Thomas Bogendoerfer wrote:
-> If CONFIG_HAVE_CLOCK is not set, return values of clk_get(),
-> devm_clk_get(), devm_get_clk_from_child(), clk_get_parent()
-> and clk_get_sys() are wrong. According to spec these functions
-> should either return a pointer to a struct clk or a valid IS_ERR
-> condition. NULL is neither, so returning ERR_PTR(-ENODEV) makes
-> more sense.
+On Tue, Apr 25, 2017 at 1:56 AM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+>
+>
+> On 04/20/2017 04:48 PM, Rob Herring wrote:
+>> On Mon, Apr 17, 2017 at 09:29:35PM +0200, Hauke Mehrtens wrote:
+>>> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+>>>
+>>> This allows using the xbar driver on ARX300 based SoCs which require the
+>>> same xbar setup as the xRX200 chipsets because the xbar driver
+>>> initialization is not guarded by an xRX200 specific
+>>> of_machine_is_compatible condition anymore. Additionally the new driver
+>>> takes a syscon phandle to configure the XBAR endianness bits in RCU
+>>> (before this was done in arch/mips/lantiq/xway/reset.c and also
+>>> guarded by an xRX200 specific if-statement).
+>>>
+>>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>>> ---
+>>>  .../devicetree/bindings/mips/lantiq/xbar.txt       |  22 +++++
+>>>  MAINTAINERS                                        |   1 +
+>>>  arch/mips/lantiq/xway/reset.c                      |   4 -
+>>>  arch/mips/lantiq/xway/sysctrl.c                    |  41 ---------
+>>>  drivers/soc/Makefile                               |   1 +
+>>>  drivers/soc/lantiq/Makefile                        |   1 +
+>>>  drivers/soc/lantiq/xbar.c                          | 100 +++++++++++++++++++++
+>>>  7 files changed, 125 insertions(+), 45 deletions(-)
+>>>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>>>  create mode 100644 drivers/soc/lantiq/Makefile
+>>>  create mode 100644 drivers/soc/lantiq/xbar.c
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/mips/lantiq/xbar.txt b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>>> new file mode 100644
+>>> index 000000000000..86e53ff3b0d5
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>>> @@ -0,0 +1,22 @@
+>>> +Lantiq XWAY SoC XBAR binding
+>>> +============================
+>>> +
+>>> +
+>>> +-------------------------------------------------------------------------------
+>>> +Required properties:
+>>> +- compatible        : Should be "lantiq,xbar-xway"
+>>
+>> This compatible is already in use so it is fine, but you should also
+>> have per SoC compatible strings.
+>
+> I will add a new SoC specific one.
+> What does per SoC device tree mean? Does it mean for the same silicon,
+> for the same silicon revision, for the same fusing of a silicon or for
+> the same marketing name?
 
-That's wrong.  When the clk API is disabled, the expected behaviour is
-that drivers will not fail.  Returning ERR_PTR(-ENODEV) will cause them
-to fail, so will break platforms.
+Depends how specific you need to some extent. For fusing, packaging,
+metal fixes, speed grading, etc. probably use the same compatible.
+Different design and dies from the start, then they should have
+different compatibles.
 
-NAK.
+> I would like to make it per silicon or per silicon revision for the IP
+> cores which I know are different.
 
-> Without this change serial console on SNI RM400 machines (MIPS arch)
-> is broken, because sccnxp driver doesn't get a valid clock rate.
+Being "the same IP" doesn't really matter. The errata can be different
+and often there is no visibility into what h/w designers may have
+changed. On some IP you can rely on revision/feature registers though
+forgetting to rev revision registers is not uncommon. You need to have
+sufficient information that you can work-around a problem in the
+future without requiring a new dtb.
 
-So the driver needs to depend on HAVE_CLOCK.
-
--- 
-RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
-according to speedtest.net.
+Rob

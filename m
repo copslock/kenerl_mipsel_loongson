@@ -1,43 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2017 23:33:24 +0200 (CEST)
-Received: from pandora.armlinux.org.uk ([IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6]:39560
-        "EHLO pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993928AbdDYVdPRMmyF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Apr 2017 23:33:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=armlinux.org.uk; s=pandora-2014;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=lGj+AGrYnrUwKPOP3UToRYz6h5LJje102CzEqC8i/Ck=;
-        b=V2wHb5v5EDYX58xa10Jm2URdyYgjAmwA/d8INH4Qy5SvOYohiLS8+RSI0Fu1pnF4kdrpHFqxQ+qX3apQl3inqa8U8bKu2Clxojf/6M806x1DjgzlW2nqd6EwKKAUFaH3tmlcKEFIaD4/bnzkknVHPZieAfB2o7AVMk49FOkA1WM=;
-Received: from n2100.armlinux.org.uk ([2001:4d48:ad52:3201:214:fdff:fe10:4f86]:57909)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1d385A-0002PT-Dn; Tue, 25 Apr 2017 22:33:12 +0100
-Received: from linux by n2100.armlinux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.armlinux.org.uk>)
-        id 1d3853-00071V-8q; Tue, 25 Apr 2017 22:33:05 +0100
-Date:   Tue, 25 Apr 2017 22:33:03 +0100
-From:   Russell King - ARM Linux <linux@armlinux.org.uk>
-To:     Tom Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:     linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2017 12:34:12 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:36214 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990720AbdD0KeFDR0nw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Apr 2017 12:34:05 +0200
+Received: from localhost (unknown [195.77.54.9])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F27EE958;
+        Thu, 27 Apr 2017 10:33:57 +0000 (UTC)
+Date:   Thu, 27 Apr 2017 12:33:48 +0200
+From:   gregkh <gregkh@linuxfoundation.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "kernelci.org bot" <bot@kernelci.org>,
+        kernel-build-reports@lists.linaro.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix returns of some CLK API calls, if !CONFIG_HAVE_CLOCK
-Message-ID: <20170425213303.GU17774@n2100.armlinux.org.uk>
-References: <20170425125547.865FB508DA7@solo.franken.de>
- <20170425163137.GR17774@n2100.armlinux.org.uk>
- <20170425205435.GA13744@alpha.franken.de>
+Subject: Re: stable/linux-3.18.y build: 204 builds: 5 failed, 199 passed, 35
+ errors, 212 warnings (v3.18.49)
+Message-ID: <20170427103348.GA9881@kroah.com>
+References: <58f8ea00.84621c0a.da7d6.1c19@mx.google.com>
+ <CAK8P3a3QsSMtc7AWjVjtM+tW8ARt1Ygw53=CSjgbG6Pvpq0QvQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20170425205435.GA13744@alpha.franken.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linux+linux-mips=linux-mips.org@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK8P3a3QsSMtc7AWjVjtM+tW8ARt1Ygw53=CSjgbG6Pvpq0QvQ@mail.gmail.com>
+User-Agent: Mutt/1.8.2 (2017-04-18)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57792
+X-archive-position: 57793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@armlinux.org.uk
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,106 +45,254 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Apr 25, 2017 at 10:54:35PM +0200, Tom Bogendoerfer wrote:
-> On Tue, Apr 25, 2017 at 05:31:37PM +0100, Russell King - ARM Linux wrote:
-> > On Tue, Apr 25, 2017 at 02:30:07PM +0200, Thomas Bogendoerfer wrote:
-> > > If CONFIG_HAVE_CLOCK is not set, return values of clk_get(),
-> > > devm_clk_get(), devm_get_clk_from_child(), clk_get_parent()
-> > > and clk_get_sys() are wrong. According to spec these functions
-> > > should either return a pointer to a struct clk or a valid IS_ERR
-> > > condition. NULL is neither, so returning ERR_PTR(-ENODEV) makes
-> > > more sense.
-> > 
-> > That's wrong.  When the clk API is disabled, the expected behaviour is
-> > that drivers will not fail.  Returning ERR_PTR(-ENODEV) will cause them
-> > to fail, so will break platforms.
+On Fri, Apr 21, 2017 at 04:27:14PM +0200, Arnd Bergmann wrote:
+> On Thu, Apr 20, 2017 at 7:04 PM, kernelci.org bot <bot@kernelci.org> wrote:
+> > stable/linux-3.18.y build: 204 builds: 5 failed, 199 passed, 35 errors, 212 warnings (v3.18.49)
+> 
+> I've gone through all these now and found a fix. In three cases, there is no
+> fix yet since the respective drivers got removed before the warning was
+> noticed. Do we have a policy for how to deal with those? Should I just
+> send patches to address the warnings for 3.18?
+
+I've wondered about this, and yeah, I would like to see the number drop
+to 0 if at all possible (the scsi driver will not change), so i'll be
+glad to take patches for the code that is no longer in upstream.
+
+> > Errors summary:
+> > 7 arch/mips/jz4740/irq.h:21:38: error: 'struct irq_data' declared inside
+> > parameter list will not be visible outside of this definition or declaration
+> > [-Werror]
+> > 7 arch/mips/jz4740/irq.h:20:39: error: 'struct irq_data' declared inside
+> > parameter list will not be visible outside of this definition or declaration
+> > [-Werror]
+> 
+> 
+> 5b235dc2647e4 MIPS: Fix the build on jz4740 after removing the custom gpio.h
+
+now applied.
+
+> > 2 arch/mips/mm/fault.c:321:1: error: the frame size of 1104 bytes is larger
+> > than 1024 bytes [-Werror=frame-larger-than=]
+> 
+> This is a result of a newer compiler version, combined with the -Werror
+> flag that is applied to arch/mips/, and two of the mips defconfigs overriding
+> CONFIG_FRAME_WARN to 1024 on a 64-bit architecture (probably by
+> accident).
+> 
+> I saw this also when I looked at the 3.16 warnings, but only now actually
+> bisected it. The fix is
+> 
+> 86038c5ea81b ("perf: Avoid horrible stack usage")
+
+Now applied.
+
+> > Detailed per-defconfig build reports:
 > >
-> > NAK.
-> > 
+> > allmodconfig+CONFIG_OF=n (x86) — PASS, 0 errors, 8 warnings, 0 section
+> > mismatches
+> >
+> > Warnings:
+> > fs/nfs/nfs4proc.c:3062:10: warning: switch condition has boolean value
+> > [-Wswitch-bool]
 > 
-> then we have to go through all drivers, which could work with and
-> without HAVE_CLK and replace the IS_ERR() checks with something
-> like IS_ERR_OR_NULL().  Easy for the part I'm interested in the
-> first place.
+> c7757074839f ("fs/nfs: fix new compiler warning about boolean in switch")
 
-What you describe is exactly what you're proposing to happen if your
-patch gets merged - we go from a situation where drivers that do this
-today:
+applied.
 
-	clk = devm_clk_get();
-	if (IS_ERR(clk))
-		return PTR_ERR(clk);
-
-start failing to probe, whereas the current situation is that they
-work.
-
-It's well established that the NULL clk means that there is no clock
-available (eg, because the architecture doesn't support the clk API)
-and this allows drivers to work across different architectures today.
-provided they aren't reliant on obtaining the current clock rate.
-
-> > > Without this change serial console on SNI RM400 machines (MIPS arch)
-> > > is broken, because sccnxp driver doesn't get a valid clock rate.
-> > 
-> > So the driver needs to depeond on HAVE_CLOCK.
+> > drivers/iommu/intel-iommu.c:1762:25: warning: unused variable 'drhd'
+> > [-Wunused-variable]
 > 
-> the driver worked without HAVE_CLOCK before just fine, and while it
-> got invaded by CLK API it got broken.
+> 509fca899d56 ("iommu/vt-d: Remove unused variable")
+
+Ugh, I thought I had found this one in the past, sorry about that, now
+applied.
+
+> > drivers/message/i2o/i2o_config.c:893:19: warning: cast to pointer from
+> > integer of different size [-Wint-to-pointer-cast]
+> > drivers/message/i2o/i2o_config.c:953:10: warning: cast to pointer from
+> > integer of different size [-Wint-to-pointer-cast]
 > 
-> No problem to fix that, but just looking at include/linux/clk.h:
+> The driver is obsolete and was removed in v4.2. It looks like the warning
+> should still be there in v4.1.y, but I don't remember having seen it. It
+> would be trivial to fix this with an obvious patch adding a cast.
+
+I'll take a fix :)
+
+> > drivers/staging/bcm/CmHost.c:1503:3: warning: cast to pointer from integer
+> > of different size [-Wint-to-pointer-cast]
+> > drivers/staging/bcm/CmHost.c:1546:3: warning: cast to pointer from integer
+> > of different size [-Wint-to-pointer-cast]
+> > drivers/staging/bcm/CmHost.c:1564:3: warning: cast to pointer from integer
+> > of different size [-Wint-to-pointer-cast]
 > 
-> /**
->  * devm_clk_get - lookup and obtain a managed reference to a clock producer.
->  * @dev: device for clock "consumer"
->  * @id: clock consumer ID
->  *
->  * Returns a struct clk corresponding to the clock producer, or
->  * valid IS_ERR() condition containing errno.  The implementation
+> Similarly, the driver was removed in v3.19, but I could create a patch for
+> the warning.
+
+I'll take it! :)
+
+> > drivers/scsi/advansys.c:71:2: warning: #warning this driver is still not
+> > properly converted to the DMA API [-Wcpp]
 > 
-> I would expect either no replacement for that, if !HAVE_CLOCK
-> or simple a sane result code... and NULL isn't sane at least
-> with the description above...
+> The driver was properly converted in v4.2 and the warning removed, but the
+> conversion would be outside of stable-kernel-rules.
 
-As far as drivers are concerned, any value returned that IS_ERR()
-tests false must not be assumed to be a failure.
+Yeah, this one is going to have to stay as-is :(
 
-However, looking at commit 90efa75f7ab0, there's one point that's
-definitely wrong, and another that can be improved to avoid your
-problem.
+> > Section mismatches:
+> > WARNING: arch/x86/kernel/built-in.o(.text.unlikely+0x157f): Section mismatch
+> > in reference from the function cpumask_empty.constprop.3() to the variable
+> > .init.data:nmi_ipi_mask
+> > WARNING: arch/x86/built-in.o(.text.unlikely+0x189b): Section mismatch in
+> > reference from the function cpumask_empty.constprop.3() to the variable
+> > .init.data:nmi_ipi_mask
+> > WARNING: vmlinux.o(.text.unlikely+0x1962): Section mismatch in reference
+> > from the function cpumask_empty.constprop.3() to the variable
+> > .init.data:nmi_ipi_mask
+> 
+> f0ba662a6e06f2 x86: Properly _init-annotate NMI selftest code
 
-1. clk_get_rate() on a disabled clock:
+That commit is from 3.4, so how can I add it to 3.18? :)
 
- * clk_get_rate - obtain the current clock rate (in Hz) for a clock source.
- *                This is only valid once the clock source has been enabled.
+> > allnoconfig (mips) — PASS, 0 errors, 1 warning, 0 section mismatches
+> >
+> > Warnings:
+> > mm/page_alloc.c:5346:34: warning: array subscript is below array bounds
+> > [-Warray-bounds]
+> 
+> Also bisected this one now, this is also missing on 3.16:
+> 
+> 90cae1fe1c35 ("mm/init: fix zone boundary creation")
 
-   The clock is expected to be enabled before clk_get_rate() is called,
-   and the driver is not doing that.
+Now applied to 3.1_8_ :)
 
-2. if uartclk is zero after enabling, then there's clearly no clock
-   rate available, and the driver really ought to fallback to using
-   the old method.
+> > ar7_defconfig (mips) — PASS, 0 errors, 2 warnings, 0 section mismatches
+> >
+> > Warnings:
+> > include/linux/kernel.h:713:17: warning: comparison of distinct pointer types
+> > lacks a cast
+> 
+> 2f5281ba2a8f ("net: ti: cpmac: Fix compiler warning due to type confusion")
 
-So, I'd suggest that the driver should be coded:
+Ugh, I don't know why this one wasn't in 3.18, that makes me wonder what
+I missed that went into 4.4 that didn't make it to 3.18...
 
-	clk = devm_clk_get(&pdev->dev, NULL);
-	if (IS_ERR(clk)) {
-		ret = PTR_ERR(clk);
-		if (ret == -EPROBE_DEFER)
-			goto err_out;
-		uartclk = 0;
-	} else {
-		uartclk = clk_get_rate(clk);
-	}
+> > at91_dt_defconfig (arm) — PASS, 0 errors, 2 warnings, 0 section mismatches
+> >
+> > Warnings:
+> > drivers/clk/at91/clk-usb.c:155:20: warning: initialization from incompatible
+> > pointer type [-Wincompatible-pointer-types]
+> > drivers/clk/at91/clk-usb.c:193:20: warning: initialization from incompatible
+> > pointer type [-Wincompatible-pointer-types]
+> 
+> I've send this fix:
+> 
+> 8<------
+> clk: at91: usb: fix determine_rate prototype again
+> 
+> We had an incorrect backport of
+> 4591243102fa ("clk: at91: usb: propagate rate modification to the parent clk")
+> that was fixed incorrectly in linux-3.18.y by
+> 76723e7ed589 ("clk: at91: usb: fix determine_rate prototype")
+> 
+> This should fix it properly.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> diff --git a/drivers/clk/at91/clk-usb.c b/drivers/clk/at91/clk-usb.c
+> index 0283a5713d6c..930a424cc4a0 100644
+> --- a/drivers/clk/at91/clk-usb.c
+> +++ b/drivers/clk/at91/clk-usb.c
+> @@ -59,7 +59,7 @@ static unsigned long
+> at91sam9x5_clk_usb_recalc_rate(struct clk_hw *hw,
+>  static long at91sam9x5_clk_usb_determine_rate(struct clk_hw *hw,
+>        unsigned long rate,
+>        unsigned long *best_parent_rate,
+> -      struct clk_hw **best_parent_hw)
+> +      struct clk **best_parent_hw)
+>  {
+>   struct clk *parent = NULL;
+>   long best_rate = -EINVAL;
+> @@ -91,7 +91,7 @@ static long at91sam9x5_clk_usb_determine_rate(struct
+> clk_hw *hw,
+>   best_rate = tmp_rate;
+>   best_diff = tmp_diff;
+>   *best_parent_rate = tmp_parent_rate;
+> - *best_parent_hw = __clk_get_hw(parent);
+> + *best_parent_hw = parent;
+>   }
+> 
+>   if (!best_diff || tmp_rate < rate)
+> ---------->8
 
-	if (!uartclk) {
-		dev_notice(&pdev->dev, "Using default clock frequency\n");
-		uartclk = s->freq_std;
-	}
+Applied.
 
-	/* Check input frequency */
-	...
+> > ath79_defconfig (mips) — PASS, 0 errors, 2 warnings, 0 section mismatches
+> >
+> > Warnings:
+> > arch/mips/kernel/entry.S:170: Warning: tried to set unrecognized symbol:
+> > MIPS_ISA_LEVEL_RAW
+> 
+> aebac99384f7 ("MIPS: kernel: entry.S: Set correct ISA level for mips_ihb")
 
--- 
-RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
-according to speedtest.net.
+That was in 3.18.14, what kernel are you looking at here???
+
+> > cerfcube_defconfig (arm) — PASS, 0 errors, 2 warnings, 0 section mismatches
+> >
+> > Warnings:
+> > fs/nfsd/nfs4state.c:3781:3: warning: 'old_deny_bmap' may be used
+> > uninitialized in this function [-Wmaybe-uninitialized]
+> 
+> 5368e1a6 ("nfsd: work around a gcc-5.1 warning")
+
+That commit id isn't in Linus's tree, where did you get it from?
+
+> > corgi_defconfig (arm) — PASS, 0 errors, 2 warnings, 0 section mismatches
+> >
+> > Warnings:
+> > drivers/usb/gadget/legacy/inode.c:648:10: warning: 'value' may be used
+> > uninitialized in this function [-Wmaybe-uninitialized]
+> 
+> This is caused by the backport of f01d35a15fa0416 from 4.0 to 3.18:
+> c81fc59be42c6e0 gadgetfs: use-after-free in ->aio_read()
+> 
+> The backported patch was buggy, but the mainline code was
+> rewritten in a larger patch directly following this one in a way that
+> fixed the bug.
+> 
+> For stable, we should need only a one-line change, which I sent now:
+> 
+> diff --git a/drivers/usb/gadget/legacy/inode.c
+> b/drivers/usb/gadget/legacy/inode.c
+> index 54f964bbc79a..fe45311f243e 100644
+> --- a/drivers/usb/gadget/legacy/inode.c
+> +++ b/drivers/usb/gadget/legacy/inode.c
+> @@ -654,6 +654,7 @@ fail:
+>     GFP_KERNEL);
+>   if (!priv->iv) {
+>   kfree(priv);
+> + value = -ENOMEM;
+>   goto fail;
+>   }
+>   }
+
+Now applied.
+
+> > defconfig+CONFIG_LKDTM=y (mips) — PASS, 0 errors, 3 warnings, 0 section
+> > mismatches
+> >
+> > Warnings:
+> > include/asm-generic/div64.h:43:28: warning: comparison of distinct pointer
+> > types lacks a cast
+> > include/asm-generic/div64.h:43:28: warning: comparison of distinct pointer
+> > types lacks a cast
+> 
+> 2ae83bf93882 ("[CIFS] Fix setting time before epoch (negative time values)")
+
+That was in 3.17, are you sure you are looking at 3.18 like the subject
+says???
+
+I'll do the rest after lunch...
+
+thanks,
+
+greg k-h

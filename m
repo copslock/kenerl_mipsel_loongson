@@ -1,64 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2017 13:40:36 +0200 (CEST)
-Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:35891
-        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991965AbdD0Lk3T41KA convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Apr 2017 13:40:29 +0200
-Received: by mail-oi0-x243.google.com with SMTP id a3so6500850oii.3
-        for <linux-mips@linux-mips.org>; Thu, 27 Apr 2017 04:40:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=1dhYe05HxJgq9/da6avkylIIcOHARlBtMhon14LYkaA=;
-        b=e8VG+mOaUJzIA6D3my23D6dupRPs9N+uAQK1Iaaqz5oOqPnbOHLcka37OyBxnOET2n
-         N1mewuDYga/VS3uZn77Oj5A0XJPKWC/tQkd8AhH2HMB7FyznEvArbIZZNZu0VT2m59bf
-         1J6K11K/Kue1VvrTNkBEW+3UDBJDx5q1TJyNNAB/BJHu9xXEi1wLXHuQteF+HgU1P8Bd
-         0iV05pp5821HyV2s2QVhENCdH+PN8Ba/CNKuI1FGp5ftyJWrya9fmAalok1WV0iofumr
-         EOWYRJyqnbjoHDkv63r+46pwoSmD13TZUbYMebFMblsPNJ3j/GiYnKetZ/qMRXXrnVTg
-         6kYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=1dhYe05HxJgq9/da6avkylIIcOHARlBtMhon14LYkaA=;
-        b=O5+1kMm22bGp8CWFk0iSbYHLahdLgIcqL2G9LeeuK0m/YNHpMVQiE0u75O6gjMbtn3
-         QB5Jt2kZ7Oa5dieVDx6WU2Z66dGzJCiajkug4ETlq+EnMlBh1gZUruSDLifQPIC/6msn
-         d8gh3h7SJMGIDS0B5/SlhttTzzTnjWzocc0b8Et5OQzUaKDUSHZpgou6uywJO5i08Qr8
-         2EVYgqjBneHFKxze6R36UAd+LNJFtcczBCqJAm3JOuJoUgIwYZowccAi5Yln6PJT8tte
-         6d9OUrAIT4wUaTaCMGNGyjRMEbVivzLN2cOK/9iWVTb2ntp7ujo2crBajY7tgCBPJ+JF
-         lhxQ==
-X-Gm-Message-State: AN3rC/5w7u+5sNDHBi1Vf4C7J/6vE1eBhfGtjUvOohL/WVDYILxRmhhH
-        lzHQt8HSzeppyI37Elljgd6YdYWxkw==
-X-Received: by 10.157.37.194 with SMTP id q60mr2252292ota.44.1493293223267;
- Thu, 27 Apr 2017 04:40:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2017 15:38:32 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:43227 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991965AbdD0NiYRgt5d (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Apr 2017 15:38:24 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 44B2CAB43;
+        Thu, 27 Apr 2017 13:38:23 +0000 (UTC)
+Date:   Thu, 27 Apr 2017 15:38:19 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Jan Kara <jack@suse.cz>, Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        David Miller <davem@davemloft.net>
+Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
+ NMI
+Message-ID: <20170427133819.GW3452@pathway.suse.cz>
+References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
+ <1461239325-22779-2-git-send-email-pmladek@suse.com>
+ <20170419131341.76bc7634@gandalf.local.home>
+ <20170420033112.GB542@jagdpanzerIV.localdomain>
+ <20170420131154.GL3452@pathway.suse.cz>
+ <20170421015724.GA586@jagdpanzerIV.localdomain>
+ <20170421120627.GO3452@pathway.suse.cz>
+ <20170424021747.GA630@jagdpanzerIV.localdomain>
 MIME-Version: 1.0
-Received: by 10.157.66.2 with HTTP; Thu, 27 Apr 2017 04:40:22 -0700 (PDT)
-In-Reply-To: <20170427103348.GA9881@kroah.com>
-References: <58f8ea00.84621c0a.da7d6.1c19@mx.google.com> <CAK8P3a3QsSMtc7AWjVjtM+tW8ARt1Ygw53=CSjgbG6Pvpq0QvQ@mail.gmail.com>
- <20170427103348.GA9881@kroah.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 27 Apr 2017 13:40:22 +0200
-X-Google-Sender-Auth: ogS_Z-YEjMgjE0pVmKpW-vbPAUs
-Message-ID: <CAK8P3a0QN_8PPGaMYA8GZG6axseRLcJq=--1NgfOAPaEGgiAjg@mail.gmail.com>
-Subject: Re: stable/linux-3.18.y build: 204 builds: 5 failed, 199 passed, 35
- errors, 212 warnings (v3.18.49)
-To:     gregkh <gregkh@linuxfoundation.org>
-Cc:     "kernelci.org bot" <bot@kernelci.org>,
-        kernel-build-reports@lists.linaro.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170424021747.GA630@jagdpanzerIV.localdomain>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57794
+X-archive-position: 57795
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: pmladek@suse.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,128 +65,86 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Apr 27, 2017 at 12:33 PM, gregkh <gregkh@linuxfoundation.org> wrote:
-> On Fri, Apr 21, 2017 at 04:27:14PM +0200, Arnd Bergmann wrote:
->> On Thu, Apr 20, 2017 at 7:04 PM, kernelci.org bot <bot@kernelci.org> wrote:
->> > stable/linux-3.18.y build: 204 builds: 5 failed, 199 passed, 35 errors, 212 warnings (v3.18.49)
->>
->> I've gone through all these now and found a fix. In three cases, there is no
->> fix yet since the respective drivers got removed before the warning was
->> noticed. Do we have a policy for how to deal with those? Should I just
->> send patches to address the warnings for 3.18?
->
-> I've wondered about this, and yeah, I would like to see the number drop
-> to 0 if at all possible (the scsi driver will not change), so i'll be
-> glad to take patches for the code that is no longer in upstream.
+On Mon 2017-04-24 11:17:47, Sergey Senozhatsky wrote:
+> On (04/21/17 14:06), Petr Mladek wrote:
+> [..]
+> > > I agree that this_cpu_read(printk_context) covers slightly more than
+> > > logbuf_lock scope, so we may get positive this_cpu_read(printk_context)
+> > > with unlocked logbuf_lock, but I don't tend to think that it's a big
+> > > problem.
+> > 
+> > PRINTK_SAFE_CONTEXT is set also in call_console_drivers().
+> > It might take rather long and logbuf_lock is availe. So, it is
+> > noticeable source of false positives.
+> 
+> yes, agree.
+> 
+> probably we need additional printk_safe annotations for
+> 		"logbuf_lock is locked from _this_ CPU"
+> 
+> false positives there can be very painful.
+> 
+> [..]
+> > 	if (raw_spin_is_locked(&logbuf_lock))
+> > 		this_cpu_or(printk_context, PRINTK_NMI_CONTEXT_MASK);
+> > 	else
+> > 		this_cpu_or(printk_context, PRINTK_NMI_DEFERRED_CONTEXT_MASK);
+> 
+> well, if everyone is fine with logbuf_lock access from every CPU from every
+> NMI then I won't object either. but may be it makes sense to reduce the
+> possibility of false positives. Steven is loosing critically important logs,
+> after all.
+> 
+> 
+> by the way,
+> does this `nmi_print_seq' bypass even fix anything for Steven?
 
-Ok, I'll have a go at this after the build report.
+I think that this is the most important question.
 
->> > drivers/scsi/advansys.c:71:2: warning: #warning this driver is still not
->> > properly converted to the DMA API [-Wcpp]
->>
->> The driver was properly converted in v4.2 and the warning removed, but the
->> conversion would be outside of stable-kernel-rules.
->
-> Yeah, this one is going to have to stay as-is :(
+Steven, does the patch from
+https://lkml.kernel.org/r/20170420131154.GL3452@pathway.suse.cz
+help you to see the debug messages, please?
 
-How about just shutting up the #warning then, based on the argument that
-the warning isn't helping anyone fix it, and all the other drivers that had not
-been converted at the time don't come with a #warning?
 
->> > Section mismatches:
->> > WARNING: arch/x86/kernel/built-in.o(.text.unlikely+0x157f): Section mismatch
->> > in reference from the function cpumask_empty.constprop.3() to the variable
->> > .init.data:nmi_ipi_mask
->> > WARNING: arch/x86/built-in.o(.text.unlikely+0x189b): Section mismatch in
->> > reference from the function cpumask_empty.constprop.3() to the variable
->> > .init.data:nmi_ipi_mask
->> > WARNING: vmlinux.o(.text.unlikely+0x1962): Section mismatch in reference
->> > from the function cpumask_empty.constprop.3() to the variable
->> > .init.data:nmi_ipi_mask
->>
->> f0ba662a6e06f2 x86: Properly _init-annotate NMI selftest code
->
-> That commit is from 3.4, so how can I add it to 3.18? :)
+> it sort of
+> can, in theory, but just in theory. so may be we need direct message flush
+> from NMI handler (printk->console_unlock), which will be a really big problem.
 
-Very odd, my search was definitely going wrong there. The file that
-we get the warning for was last changed in 3.6, so I accidentally looked
-at ancient changes.
+I thought about it a lot and got scared where this might go.
+We need to balance the usefulness and the complexity of the solution.
 
-Upon a closer look it looks like the problem is the 'cpumask_empty()'
-helper function getting uninlined with CONFIG_OPTIMIZE_INLINING,
-but I cannot see why the warning is gone in later kernels. I'll probably
-have to bisect it.
+It took one year to discover this regression. Before it was
+suggested to avoid calling printk() in NMI context at all.
+Now, we are trying to fix printk() to handle MBs of messages
+in NMI context.
 
->> > allnoconfig (mips) — PASS, 0 errors, 1 warning, 0 section mismatches
->> >
->> > Warnings:
->> > mm/page_alloc.c:5346:34: warning: array subscript is below array bounds
->> > [-Warray-bounds]
->>
->> Also bisected this one now, this is also missing on 3.16:
->>
->> 90cae1fe1c35 ("mm/init: fix zone boundary creation")
->
-> Now applied to 3.1_8_ :)
+If my proposed patch solves the problem for Steven, I would still
+like to get similar solution in. It is not that complex and helps
+to bypass the limited per-CPU buffer in most cases. I always thought
+that 8kB might be not enough in some cases.
 
-Ok. To clarify, I was taking note of the fact this 3.16 needs it since this
-is the most frequent warning I still see on Ben's 3.16.y tree, and the
-last time I went through the 3.16 build report, I did not succeed in finding
-this (without bisecting).
+Note that my patch is very defensive. It uses the main log buffer
+only when it is really safe. It has higher potential for unneeded
+fallback but if it works for Steven (really existing usecase), ...
 
->> > ath79_defconfig (mips) — PASS, 0 errors, 2 warnings, 0 section mismatches
->> >
->> > Warnings:
->> > arch/mips/kernel/entry.S:170: Warning: tried to set unrecognized symbol:
->> > MIPS_ISA_LEVEL_RAW
->>
->> aebac99384f7 ("MIPS: kernel: entry.S: Set correct ISA level for mips_ihb")
->
-> That was in 3.18.14, what kernel are you looking at here???
+On the other hand, I would prefer to avoid any much more complex
+solution until we have a real reports that they are needed.
 
-For most of the changes, I tried looking at 'git log v3.18..stable/linux-4.4.y'
-and immediately found the obvious fix. If that didn't help, I tried a few other
-things, but I usually did not look in 3.18.y to see if it was already there
-if I found something at first that looked obviously right.
+Also we need to look for alternatives. There is a chance
+to create crashdump and get the ftrace messages from it.
+Also this might be scenario when we might need to suggest
+the early_printk() patchset from Peter Zijlstra.
 
-This is another case where I confused the patch that introduced the
-warning with the one that fixed it. This one requires a another patch that
-got merged into 3.20:
 
-be5136988e25 ("MIPS: asm: compiler: Add new macros to set ISA and arch
-asm annotations")
+> logbuf might not be big enough for 4890096 messages (Steven's report
+> mentions "Lost 4890096 message(s)!"). we are counting on the fact that
+> in case of `nmi_print_seq' bypass some other CPU will call console_unlock()
+> and print pending logbuf messages, but this is not guaranteed and the
+> messages can be dropped even from logbuf.
 
->> > cerfcube_defconfig (arm) — PASS, 0 errors, 2 warnings, 0 section mismatches
->> >
->> > Warnings:
->> > fs/nfsd/nfs4state.c:3781:3: warning: 'old_deny_bmap' may be used
->> > uninitialized in this function [-Wmaybe-uninitialized]
->>
->> 5368e1a6 ("nfsd: work around a gcc-5.1 warning")
+Yup. I tested the patch here and I needed to increase the main log buffer
+size to see all ftrace messages. Fortunately, it was possible to use a really
+huge global buffer. But it is not realistic to use huge per-CPU ones.
 
-It's a copy-paste mistake, missing the first digits of the commit ID,
-I found the correct one now:
-
-6ac75368e1a6 nfsd: work around a gcc-5.1 warning
-
-> That commit id isn't in Linus's tree, where did you get it from?
->> > defconfig+CONFIG_LKDTM=y (mips) — PASS, 0 errors, 3 warnings, 0 section
->> > mismatches
->> >
->> > Warnings:
->> > include/asm-generic/div64.h:43:28: warning: comparison of distinct pointer
->> > types lacks a cast
->> > include/asm-generic/div64.h:43:28: warning: comparison of distinct pointer
->> > types lacks a cast
->>
->> 2ae83bf93882 ("[CIFS] Fix setting time before epoch (negative time values)")
->
-> That was in 3.17, are you sure you are looking at 3.18 like the subject
-> says???
-
-Another similar mistake on my end, 2ae83bf93882 introduced the problem,
-the fix we need was
-
-97c7134ae22f ("Fix signed/unsigned pointer warning")
-
-        Arnd
+Best Regards,
+Petr

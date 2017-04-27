@@ -1,38 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2017 12:34:12 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:36214 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990720AbdD0KeFDR0nw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Apr 2017 12:34:05 +0200
-Received: from localhost (unknown [195.77.54.9])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id F27EE958;
-        Thu, 27 Apr 2017 10:33:57 +0000 (UTC)
-Date:   Thu, 27 Apr 2017 12:33:48 +0200
-From:   gregkh <gregkh@linuxfoundation.org>
-To:     Arnd Bergmann <arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2017 13:40:36 +0200 (CEST)
+Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:35891
+        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991965AbdD0Lk3T41KA convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 Apr 2017 13:40:29 +0200
+Received: by mail-oi0-x243.google.com with SMTP id a3so6500850oii.3
+        for <linux-mips@linux-mips.org>; Thu, 27 Apr 2017 04:40:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-transfer-encoding;
+        bh=1dhYe05HxJgq9/da6avkylIIcOHARlBtMhon14LYkaA=;
+        b=e8VG+mOaUJzIA6D3my23D6dupRPs9N+uAQK1Iaaqz5oOqPnbOHLcka37OyBxnOET2n
+         N1mewuDYga/VS3uZn77Oj5A0XJPKWC/tQkd8AhH2HMB7FyznEvArbIZZNZu0VT2m59bf
+         1J6K11K/Kue1VvrTNkBEW+3UDBJDx5q1TJyNNAB/BJHu9xXEi1wLXHuQteF+HgU1P8Bd
+         0iV05pp5821HyV2s2QVhENCdH+PN8Ba/CNKuI1FGp5ftyJWrya9fmAalok1WV0iofumr
+         EOWYRJyqnbjoHDkv63r+46pwoSmD13TZUbYMebFMblsPNJ3j/GiYnKetZ/qMRXXrnVTg
+         6kYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc:content-transfer-encoding;
+        bh=1dhYe05HxJgq9/da6avkylIIcOHARlBtMhon14LYkaA=;
+        b=O5+1kMm22bGp8CWFk0iSbYHLahdLgIcqL2G9LeeuK0m/YNHpMVQiE0u75O6gjMbtn3
+         QB5Jt2kZ7Oa5dieVDx6WU2Z66dGzJCiajkug4ETlq+EnMlBh1gZUruSDLifQPIC/6msn
+         d8gh3h7SJMGIDS0B5/SlhttTzzTnjWzocc0b8Et5OQzUaKDUSHZpgou6uywJO5i08Qr8
+         2EVYgqjBneHFKxze6R36UAd+LNJFtcczBCqJAm3JOuJoUgIwYZowccAi5Yln6PJT8tte
+         6d9OUrAIT4wUaTaCMGNGyjRMEbVivzLN2cOK/9iWVTb2ntp7ujo2crBajY7tgCBPJ+JF
+         lhxQ==
+X-Gm-Message-State: AN3rC/5w7u+5sNDHBi1Vf4C7J/6vE1eBhfGtjUvOohL/WVDYILxRmhhH
+        lzHQt8HSzeppyI37Elljgd6YdYWxkw==
+X-Received: by 10.157.37.194 with SMTP id q60mr2252292ota.44.1493293223267;
+ Thu, 27 Apr 2017 04:40:23 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.157.66.2 with HTTP; Thu, 27 Apr 2017 04:40:22 -0700 (PDT)
+In-Reply-To: <20170427103348.GA9881@kroah.com>
+References: <58f8ea00.84621c0a.da7d6.1c19@mx.google.com> <CAK8P3a3QsSMtc7AWjVjtM+tW8ARt1Ygw53=CSjgbG6Pvpq0QvQ@mail.gmail.com>
+ <20170427103348.GA9881@kroah.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 27 Apr 2017 13:40:22 +0200
+X-Google-Sender-Auth: ogS_Z-YEjMgjE0pVmKpW-vbPAUs
+Message-ID: <CAK8P3a0QN_8PPGaMYA8GZG6axseRLcJq=--1NgfOAPaEGgiAjg@mail.gmail.com>
+Subject: Re: stable/linux-3.18.y build: 204 builds: 5 failed, 199 passed, 35
+ errors, 212 warnings (v3.18.49)
+To:     gregkh <gregkh@linuxfoundation.org>
 Cc:     "kernelci.org bot" <bot@kernelci.org>,
         kernel-build-reports@lists.linaro.org,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-mips@linux-mips.org
-Subject: Re: stable/linux-3.18.y build: 204 builds: 5 failed, 199 passed, 35
- errors, 212 warnings (v3.18.49)
-Message-ID: <20170427103348.GA9881@kroah.com>
-References: <58f8ea00.84621c0a.da7d6.1c19@mx.google.com>
- <CAK8P3a3QsSMtc7AWjVjtM+tW8ARt1Ygw53=CSjgbG6Pvpq0QvQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a3QsSMtc7AWjVjtM+tW8ARt1Ygw53=CSjgbG6Pvpq0QvQ@mail.gmail.com>
-User-Agent: Mutt/1.8.2 (2017-04-18)
-Return-Path: <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57793
+X-archive-position: 57794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,254 +71,128 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 21, 2017 at 04:27:14PM +0200, Arnd Bergmann wrote:
-> On Thu, Apr 20, 2017 at 7:04 PM, kernelci.org bot <bot@kernelci.org> wrote:
-> > stable/linux-3.18.y build: 204 builds: 5 failed, 199 passed, 35 errors, 212 warnings (v3.18.49)
-> 
-> I've gone through all these now and found a fix. In three cases, there is no
-> fix yet since the respective drivers got removed before the warning was
-> noticed. Do we have a policy for how to deal with those? Should I just
-> send patches to address the warnings for 3.18?
+On Thu, Apr 27, 2017 at 12:33 PM, gregkh <gregkh@linuxfoundation.org> wrote:
+> On Fri, Apr 21, 2017 at 04:27:14PM +0200, Arnd Bergmann wrote:
+>> On Thu, Apr 20, 2017 at 7:04 PM, kernelci.org bot <bot@kernelci.org> wrote:
+>> > stable/linux-3.18.y build: 204 builds: 5 failed, 199 passed, 35 errors, 212 warnings (v3.18.49)
+>>
+>> I've gone through all these now and found a fix. In three cases, there is no
+>> fix yet since the respective drivers got removed before the warning was
+>> noticed. Do we have a policy for how to deal with those? Should I just
+>> send patches to address the warnings for 3.18?
+>
+> I've wondered about this, and yeah, I would like to see the number drop
+> to 0 if at all possible (the scsi driver will not change), so i'll be
+> glad to take patches for the code that is no longer in upstream.
 
-I've wondered about this, and yeah, I would like to see the number drop
-to 0 if at all possible (the scsi driver will not change), so i'll be
-glad to take patches for the code that is no longer in upstream.
+Ok, I'll have a go at this after the build report.
 
-> > Errors summary:
-> > 7 arch/mips/jz4740/irq.h:21:38: error: 'struct irq_data' declared inside
-> > parameter list will not be visible outside of this definition or declaration
-> > [-Werror]
-> > 7 arch/mips/jz4740/irq.h:20:39: error: 'struct irq_data' declared inside
-> > parameter list will not be visible outside of this definition or declaration
-> > [-Werror]
-> 
-> 
-> 5b235dc2647e4 MIPS: Fix the build on jz4740 after removing the custom gpio.h
+>> > drivers/scsi/advansys.c:71:2: warning: #warning this driver is still not
+>> > properly converted to the DMA API [-Wcpp]
+>>
+>> The driver was properly converted in v4.2 and the warning removed, but the
+>> conversion would be outside of stable-kernel-rules.
+>
+> Yeah, this one is going to have to stay as-is :(
 
-now applied.
+How about just shutting up the #warning then, based on the argument that
+the warning isn't helping anyone fix it, and all the other drivers that had not
+been converted at the time don't come with a #warning?
 
-> > 2 arch/mips/mm/fault.c:321:1: error: the frame size of 1104 bytes is larger
-> > than 1024 bytes [-Werror=frame-larger-than=]
-> 
-> This is a result of a newer compiler version, combined with the -Werror
-> flag that is applied to arch/mips/, and two of the mips defconfigs overriding
-> CONFIG_FRAME_WARN to 1024 on a 64-bit architecture (probably by
-> accident).
-> 
-> I saw this also when I looked at the 3.16 warnings, but only now actually
-> bisected it. The fix is
-> 
-> 86038c5ea81b ("perf: Avoid horrible stack usage")
+>> > Section mismatches:
+>> > WARNING: arch/x86/kernel/built-in.o(.text.unlikely+0x157f): Section mismatch
+>> > in reference from the function cpumask_empty.constprop.3() to the variable
+>> > .init.data:nmi_ipi_mask
+>> > WARNING: arch/x86/built-in.o(.text.unlikely+0x189b): Section mismatch in
+>> > reference from the function cpumask_empty.constprop.3() to the variable
+>> > .init.data:nmi_ipi_mask
+>> > WARNING: vmlinux.o(.text.unlikely+0x1962): Section mismatch in reference
+>> > from the function cpumask_empty.constprop.3() to the variable
+>> > .init.data:nmi_ipi_mask
+>>
+>> f0ba662a6e06f2 x86: Properly _init-annotate NMI selftest code
+>
+> That commit is from 3.4, so how can I add it to 3.18? :)
 
-Now applied.
+Very odd, my search was definitely going wrong there. The file that
+we get the warning for was last changed in 3.6, so I accidentally looked
+at ancient changes.
 
-> > Detailed per-defconfig build reports:
-> >
-> > allmodconfig+CONFIG_OF=n (x86) — PASS, 0 errors, 8 warnings, 0 section
-> > mismatches
-> >
-> > Warnings:
-> > fs/nfs/nfs4proc.c:3062:10: warning: switch condition has boolean value
-> > [-Wswitch-bool]
-> 
-> c7757074839f ("fs/nfs: fix new compiler warning about boolean in switch")
+Upon a closer look it looks like the problem is the 'cpumask_empty()'
+helper function getting uninlined with CONFIG_OPTIMIZE_INLINING,
+but I cannot see why the warning is gone in later kernels. I'll probably
+have to bisect it.
 
-applied.
+>> > allnoconfig (mips) — PASS, 0 errors, 1 warning, 0 section mismatches
+>> >
+>> > Warnings:
+>> > mm/page_alloc.c:5346:34: warning: array subscript is below array bounds
+>> > [-Warray-bounds]
+>>
+>> Also bisected this one now, this is also missing on 3.16:
+>>
+>> 90cae1fe1c35 ("mm/init: fix zone boundary creation")
+>
+> Now applied to 3.1_8_ :)
 
-> > drivers/iommu/intel-iommu.c:1762:25: warning: unused variable 'drhd'
-> > [-Wunused-variable]
-> 
-> 509fca899d56 ("iommu/vt-d: Remove unused variable")
+Ok. To clarify, I was taking note of the fact this 3.16 needs it since this
+is the most frequent warning I still see on Ben's 3.16.y tree, and the
+last time I went through the 3.16 build report, I did not succeed in finding
+this (without bisecting).
 
-Ugh, I thought I had found this one in the past, sorry about that, now
-applied.
+>> > ath79_defconfig (mips) — PASS, 0 errors, 2 warnings, 0 section mismatches
+>> >
+>> > Warnings:
+>> > arch/mips/kernel/entry.S:170: Warning: tried to set unrecognized symbol:
+>> > MIPS_ISA_LEVEL_RAW
+>>
+>> aebac99384f7 ("MIPS: kernel: entry.S: Set correct ISA level for mips_ihb")
+>
+> That was in 3.18.14, what kernel are you looking at here???
 
-> > drivers/message/i2o/i2o_config.c:893:19: warning: cast to pointer from
-> > integer of different size [-Wint-to-pointer-cast]
-> > drivers/message/i2o/i2o_config.c:953:10: warning: cast to pointer from
-> > integer of different size [-Wint-to-pointer-cast]
-> 
-> The driver is obsolete and was removed in v4.2. It looks like the warning
-> should still be there in v4.1.y, but I don't remember having seen it. It
-> would be trivial to fix this with an obvious patch adding a cast.
+For most of the changes, I tried looking at 'git log v3.18..stable/linux-4.4.y'
+and immediately found the obvious fix. If that didn't help, I tried a few other
+things, but I usually did not look in 3.18.y to see if it was already there
+if I found something at first that looked obviously right.
 
-I'll take a fix :)
+This is another case where I confused the patch that introduced the
+warning with the one that fixed it. This one requires a another patch that
+got merged into 3.20:
 
-> > drivers/staging/bcm/CmHost.c:1503:3: warning: cast to pointer from integer
-> > of different size [-Wint-to-pointer-cast]
-> > drivers/staging/bcm/CmHost.c:1546:3: warning: cast to pointer from integer
-> > of different size [-Wint-to-pointer-cast]
-> > drivers/staging/bcm/CmHost.c:1564:3: warning: cast to pointer from integer
-> > of different size [-Wint-to-pointer-cast]
-> 
-> Similarly, the driver was removed in v3.19, but I could create a patch for
-> the warning.
+be5136988e25 ("MIPS: asm: compiler: Add new macros to set ISA and arch
+asm annotations")
 
-I'll take it! :)
+>> > cerfcube_defconfig (arm) — PASS, 0 errors, 2 warnings, 0 section mismatches
+>> >
+>> > Warnings:
+>> > fs/nfsd/nfs4state.c:3781:3: warning: 'old_deny_bmap' may be used
+>> > uninitialized in this function [-Wmaybe-uninitialized]
+>>
+>> 5368e1a6 ("nfsd: work around a gcc-5.1 warning")
 
-> > drivers/scsi/advansys.c:71:2: warning: #warning this driver is still not
-> > properly converted to the DMA API [-Wcpp]
-> 
-> The driver was properly converted in v4.2 and the warning removed, but the
-> conversion would be outside of stable-kernel-rules.
+It's a copy-paste mistake, missing the first digits of the commit ID,
+I found the correct one now:
 
-Yeah, this one is going to have to stay as-is :(
+6ac75368e1a6 nfsd: work around a gcc-5.1 warning
 
-> > Section mismatches:
-> > WARNING: arch/x86/kernel/built-in.o(.text.unlikely+0x157f): Section mismatch
-> > in reference from the function cpumask_empty.constprop.3() to the variable
-> > .init.data:nmi_ipi_mask
-> > WARNING: arch/x86/built-in.o(.text.unlikely+0x189b): Section mismatch in
-> > reference from the function cpumask_empty.constprop.3() to the variable
-> > .init.data:nmi_ipi_mask
-> > WARNING: vmlinux.o(.text.unlikely+0x1962): Section mismatch in reference
-> > from the function cpumask_empty.constprop.3() to the variable
-> > .init.data:nmi_ipi_mask
-> 
-> f0ba662a6e06f2 x86: Properly _init-annotate NMI selftest code
+> That commit id isn't in Linus's tree, where did you get it from?
+>> > defconfig+CONFIG_LKDTM=y (mips) — PASS, 0 errors, 3 warnings, 0 section
+>> > mismatches
+>> >
+>> > Warnings:
+>> > include/asm-generic/div64.h:43:28: warning: comparison of distinct pointer
+>> > types lacks a cast
+>> > include/asm-generic/div64.h:43:28: warning: comparison of distinct pointer
+>> > types lacks a cast
+>>
+>> 2ae83bf93882 ("[CIFS] Fix setting time before epoch (negative time values)")
+>
+> That was in 3.17, are you sure you are looking at 3.18 like the subject
+> says???
 
-That commit is from 3.4, so how can I add it to 3.18? :)
+Another similar mistake on my end, 2ae83bf93882 introduced the problem,
+the fix we need was
 
-> > allnoconfig (mips) — PASS, 0 errors, 1 warning, 0 section mismatches
-> >
-> > Warnings:
-> > mm/page_alloc.c:5346:34: warning: array subscript is below array bounds
-> > [-Warray-bounds]
-> 
-> Also bisected this one now, this is also missing on 3.16:
-> 
-> 90cae1fe1c35 ("mm/init: fix zone boundary creation")
+97c7134ae22f ("Fix signed/unsigned pointer warning")
 
-Now applied to 3.1_8_ :)
-
-> > ar7_defconfig (mips) — PASS, 0 errors, 2 warnings, 0 section mismatches
-> >
-> > Warnings:
-> > include/linux/kernel.h:713:17: warning: comparison of distinct pointer types
-> > lacks a cast
-> 
-> 2f5281ba2a8f ("net: ti: cpmac: Fix compiler warning due to type confusion")
-
-Ugh, I don't know why this one wasn't in 3.18, that makes me wonder what
-I missed that went into 4.4 that didn't make it to 3.18...
-
-> > at91_dt_defconfig (arm) — PASS, 0 errors, 2 warnings, 0 section mismatches
-> >
-> > Warnings:
-> > drivers/clk/at91/clk-usb.c:155:20: warning: initialization from incompatible
-> > pointer type [-Wincompatible-pointer-types]
-> > drivers/clk/at91/clk-usb.c:193:20: warning: initialization from incompatible
-> > pointer type [-Wincompatible-pointer-types]
-> 
-> I've send this fix:
-> 
-> 8<------
-> clk: at91: usb: fix determine_rate prototype again
-> 
-> We had an incorrect backport of
-> 4591243102fa ("clk: at91: usb: propagate rate modification to the parent clk")
-> that was fixed incorrectly in linux-3.18.y by
-> 76723e7ed589 ("clk: at91: usb: fix determine_rate prototype")
-> 
-> This should fix it properly.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> diff --git a/drivers/clk/at91/clk-usb.c b/drivers/clk/at91/clk-usb.c
-> index 0283a5713d6c..930a424cc4a0 100644
-> --- a/drivers/clk/at91/clk-usb.c
-> +++ b/drivers/clk/at91/clk-usb.c
-> @@ -59,7 +59,7 @@ static unsigned long
-> at91sam9x5_clk_usb_recalc_rate(struct clk_hw *hw,
->  static long at91sam9x5_clk_usb_determine_rate(struct clk_hw *hw,
->        unsigned long rate,
->        unsigned long *best_parent_rate,
-> -      struct clk_hw **best_parent_hw)
-> +      struct clk **best_parent_hw)
->  {
->   struct clk *parent = NULL;
->   long best_rate = -EINVAL;
-> @@ -91,7 +91,7 @@ static long at91sam9x5_clk_usb_determine_rate(struct
-> clk_hw *hw,
->   best_rate = tmp_rate;
->   best_diff = tmp_diff;
->   *best_parent_rate = tmp_parent_rate;
-> - *best_parent_hw = __clk_get_hw(parent);
-> + *best_parent_hw = parent;
->   }
-> 
->   if (!best_diff || tmp_rate < rate)
-> ---------->8
-
-Applied.
-
-> > ath79_defconfig (mips) — PASS, 0 errors, 2 warnings, 0 section mismatches
-> >
-> > Warnings:
-> > arch/mips/kernel/entry.S:170: Warning: tried to set unrecognized symbol:
-> > MIPS_ISA_LEVEL_RAW
-> 
-> aebac99384f7 ("MIPS: kernel: entry.S: Set correct ISA level for mips_ihb")
-
-That was in 3.18.14, what kernel are you looking at here???
-
-> > cerfcube_defconfig (arm) — PASS, 0 errors, 2 warnings, 0 section mismatches
-> >
-> > Warnings:
-> > fs/nfsd/nfs4state.c:3781:3: warning: 'old_deny_bmap' may be used
-> > uninitialized in this function [-Wmaybe-uninitialized]
-> 
-> 5368e1a6 ("nfsd: work around a gcc-5.1 warning")
-
-That commit id isn't in Linus's tree, where did you get it from?
-
-> > corgi_defconfig (arm) — PASS, 0 errors, 2 warnings, 0 section mismatches
-> >
-> > Warnings:
-> > drivers/usb/gadget/legacy/inode.c:648:10: warning: 'value' may be used
-> > uninitialized in this function [-Wmaybe-uninitialized]
-> 
-> This is caused by the backport of f01d35a15fa0416 from 4.0 to 3.18:
-> c81fc59be42c6e0 gadgetfs: use-after-free in ->aio_read()
-> 
-> The backported patch was buggy, but the mainline code was
-> rewritten in a larger patch directly following this one in a way that
-> fixed the bug.
-> 
-> For stable, we should need only a one-line change, which I sent now:
-> 
-> diff --git a/drivers/usb/gadget/legacy/inode.c
-> b/drivers/usb/gadget/legacy/inode.c
-> index 54f964bbc79a..fe45311f243e 100644
-> --- a/drivers/usb/gadget/legacy/inode.c
-> +++ b/drivers/usb/gadget/legacy/inode.c
-> @@ -654,6 +654,7 @@ fail:
->     GFP_KERNEL);
->   if (!priv->iv) {
->   kfree(priv);
-> + value = -ENOMEM;
->   goto fail;
->   }
->   }
-
-Now applied.
-
-> > defconfig+CONFIG_LKDTM=y (mips) — PASS, 0 errors, 3 warnings, 0 section
-> > mismatches
-> >
-> > Warnings:
-> > include/asm-generic/div64.h:43:28: warning: comparison of distinct pointer
-> > types lacks a cast
-> > include/asm-generic/div64.h:43:28: warning: comparison of distinct pointer
-> > types lacks a cast
-> 
-> 2ae83bf93882 ("[CIFS] Fix setting time before epoch (negative time values)")
-
-That was in 3.17, are you sure you are looking at 3.18 like the subject
-says???
-
-I'll do the rest after lunch...
-
-thanks,
-
-greg k-h
+        Arnd

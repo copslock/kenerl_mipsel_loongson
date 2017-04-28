@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 22:09:37 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:42822 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 22:10:03 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:43032 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993949AbdD1UI6s0RlE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 22:08:58 +0200
+        by eddie.linux-mips.org with ESMTP id S23993956AbdD1UJS6ihoE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 22:09:18 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Alexandre Courbot <gnurou@gmail.com>,
@@ -20,9 +20,9 @@ Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
         linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v5 06/14] MIPS: jz4740: DTS: Add nodes for ingenic pinctrl and gpio drivers
-Date:   Fri, 28 Apr 2017 22:08:16 +0200
-Message-Id: <20170428200824.10906-7-paul@crapouillou.net>
+Subject: [PATCH v5 02/14] dt/bindings: Document gpio-ingenic
+Date:   Fri, 28 Apr 2017 22:08:12 +0200
+Message-Id: <20170428200824.10906-3-paul@crapouillou.net>
 In-Reply-To: <20170428200824.10906-1-paul@crapouillou.net>
 References: <20170402204244.14216-2-paul@crapouillou.net>
  <20170428200824.10906-1-paul@crapouillou.net>
@@ -30,7 +30,7 @@ Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57822
+X-archive-position: 57823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,100 +47,72 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-For a description of the pinctrl devicetree node, please read
-Documentation/devicetree/bindings/pinctrl/ingenic,pinctrl.txt
-
-For a description of the gpio devicetree nodes, please read
-Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+This commit adds documentation for the devicetree bindings of the
+gpio-ingenic driver, which handles GPIOs of the Ingenic SoCs
+currently supported by the Linux kernel.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/boot/dts/ingenic/jz4740.dtsi | 68 ++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ .../devicetree/bindings/gpio/ingenic,gpio.txt      | 46 ++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
 
- v2: Changed the devicetree bindings to match the new driver
+ v2: New patch
  v3: No changes
- v4: Update the bindings for the v4 version of the drivers
- v5: Add 'reg' properties and rename pinctrl/gpio nodes
+ v4: Update for the v4 version of the gpio-ingenic driver
+ v5: Remove gpio-bank-... compatible strings, and add 'reg' property
 
-diff --git a/arch/mips/boot/dts/ingenic/jz4740.dtsi b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-index 3e1587f1f77a..2ca7ce7481f1 100644
---- a/arch/mips/boot/dts/ingenic/jz4740.dtsi
-+++ b/arch/mips/boot/dts/ingenic/jz4740.dtsi
-@@ -55,6 +55,74 @@
- 		clock-names = "rtc";
- 	};
- 
-+	pinctrl: pin-controller@10010000 {
-+		compatible = "ingenic,jz4740-pinctrl";
-+		reg = <0x10010000 0x400>;
+diff --git a/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt b/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+new file mode 100644
+index 000000000000..7988aeb725f4
+--- /dev/null
++++ b/Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+@@ -0,0 +1,46 @@
++Ingenic jz47xx GPIO controller
 +
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++That the Ingenic GPIO driver node must be a sub-node of the Ingenic pinctrl
++driver node.
 +
-+		gpa: gpio@0 {
-+			compatible = "ingenic,jz4740-gpio";
-+			reg = <0>;
++Required properties:
++--------------------
 +
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 0 32>;
-+			#gpio-cells = <2>;
++ - compatible: Must contain one of:
++    - "ingenic,jz4740-gpio"
++    - "ingenic,jz4770-gpio"
++    - "ingenic,jz4780-gpio"
++ - reg: The GPIO bank number.
++ - interrupt-controller: Marks the device node as an interrupt controller.
++ - interrupts: Interrupt specifier for the controllers interrupt.
++ - #interrupt-cells: Should be 2. Refer to
++   ../interrupt-controller/interrupts.txt for more details.
++ - gpio-controller: Marks the device node as a GPIO controller.
++ - #gpio-cells: Should be 2. The first cell is the GPIO number and the second
++    cell specifies GPIO flags, as defined in <dt-bindings/gpio/gpio.h>. Only the
++    GPIO_ACTIVE_HIGH and GPIO_ACTIVE_LOW flags are supported.
++ - gpio-ranges: Range of pins managed by the GPIO controller. Refer to
++   'gpio.txt' in this directory for more details.
 +
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
++Example:
++--------
 +
-+			interrupt-parent = <&intc>;
-+			interrupts = <28>;
-+		};
++&pinctrl {
++	#address-cells = <1>;
++	#size-cells = <0>;
 +
-+		gpb: gpio@1 {
-+			compatible = "ingenic,jz4740-gpio";
-+			reg = <1>;
++	gpa: gpio@0 {
++		compatible = "ingenic,jz4740-gpio";
++		reg = <0>;
 +
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 32 32>;
-+			#gpio-cells = <2>;
++		gpio-controller;
++		gpio-ranges = <&pinctrl 0 0 32>;
++		#gpio-cells = <2>;
 +
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
++		interrupt-controller;
++		#interrupt-cells = <2>;
 +
-+			interrupt-parent = <&intc>;
-+			interrupts = <27>;
-+		};
-+
-+		gpc: gpio@2 {
-+			compatible = "ingenic,jz4740-gpio";
-+			reg = <2>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 64 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <26>;
-+		};
-+
-+		gpd: gpio@3 {
-+			compatible = "ingenic,jz4740-gpio";
-+			reg = <3>;
-+
-+			gpio-controller;
-+			gpio-ranges = <&pinctrl 0 96 32>;
-+			#gpio-cells = <2>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+
-+			interrupt-parent = <&intc>;
-+			interrupts = <25>;
-+		};
++		interrupt-parent = <&intc>;
++		interrupts = <28>;
 +	};
-+
- 	uart0: serial@10030000 {
- 		compatible = "ingenic,jz4740-uart";
- 		reg = <0x10030000 0x100>;
++};
 -- 
 2.11.0

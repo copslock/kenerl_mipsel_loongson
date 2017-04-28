@@ -1,66 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 16:47:44 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:40966 "EHLO mail.kernel.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 16:57:40 +0200 (CEST)
+Received: from mga07.intel.com ([134.134.136.100]:6474 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23991672AbdD1OrgOplus (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Apr 2017 16:47:36 +0200
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id A5EAD20274;
-        Fri, 28 Apr 2017 14:47:33 +0000 (UTC)
-Received: from gandalf.local.home (cpe-67-246-153-56.stny.res.rr.com [67.246.153.56])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8C4962026C;
-        Fri, 28 Apr 2017 14:47:29 +0000 (UTC)
-Date:   Fri, 28 Apr 2017 10:47:28 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Jan Kara <jack@suse.cz>, Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        David Miller <davem@davemloft.net>
-Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
- NMI
-Message-ID: <20170428104728.07ac38e0@gandalf.local.home>
-In-Reply-To: <20170428135810.gljrbuwgrypu5jkn@hirez.programming.kicks-ass.net>
-References: <1461239325-22779-2-git-send-email-pmladek@suse.com>
-        <20170419131341.76bc7634@gandalf.local.home>
-        <20170420033112.GB542@jagdpanzerIV.localdomain>
-        <20170420131154.GL3452@pathway.suse.cz>
-        <20170421015724.GA586@jagdpanzerIV.localdomain>
-        <20170421120627.GO3452@pathway.suse.cz>
-        <20170424021747.GA630@jagdpanzerIV.localdomain>
-        <20170427133819.GW3452@pathway.suse.cz>
-        <20170428090226.qqoe6qbewjeo57kd@hirez.programming.kicks-ass.net>
-        <20170428134423.GB3452@pathway.suse.cz>
-        <20170428135810.gljrbuwgrypu5jkn@hirez.programming.kicks-ass.net>
-X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+        id S23991672AbdD1O5bevNLs convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 16:57:31 +0200
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP; 28 Apr 2017 07:57:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.37,388,1488873600"; 
+   d="scan'208";a="1141375960"
+Received: from irsmsx110.ger.corp.intel.com ([163.33.3.25])
+  by fmsmga001.fm.intel.com with ESMTP; 28 Apr 2017 07:57:26 -0700
+Received: from irsmsx156.ger.corp.intel.com (10.108.20.68) by
+ irsmsx110.ger.corp.intel.com (163.33.3.25) with Microsoft SMTP Server (TLS)
+ id 14.3.319.2; Fri, 28 Apr 2017 15:55:49 +0100
+Received: from irsmsx101.ger.corp.intel.com ([169.254.1.187]) by
+ IRSMSX156.ger.corp.intel.com ([169.254.3.246]) with mapi id 14.03.0319.002;
+ Fri, 28 Apr 2017 15:55:49 +0100
+From:   "Langer, Thomas" <thomas.langer@intel.com>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2] clk: Provide dummy of_clk_get_from_provider() for
+ compile-testing
+Thread-Topic: [PATCH v2] clk: Provide dummy of_clk_get_from_provider() for
+ compile-testing
+Thread-Index: AQHSwCC7E2nVSiHxc0qAEADJdZB76KHa3kHQ
+Date:   Fri, 28 Apr 2017 14:55:48 +0000
+Message-ID: <0DAF21CFE1B20740AE23D6AF6E54843F1E8AF019@IRSMSX101.ger.corp.intel.com>
+References: <1493384933-31297-1-git-send-email-geert+renesas@glider.be>
+In-Reply-To: <1493384933-31297-1-git-send-email-geert+renesas@glider.be>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 10.0.102.7
+dlp-reaction: no-action
+x-originating-ip: [163.33.239.182]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <SRS0=N7JN=4E=goodmis.org=rostedt@kernel.org>
+Return-Path: <thomas.langer@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57817
+X-archive-position: 57818
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: thomas.langer@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,35 +70,80 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, 28 Apr 2017 15:58:10 +0200
-Peter Zijlstra <peterz@infradead.org> wrote:
 
-> On Fri, Apr 28, 2017 at 03:44:23PM +0200, Petr Mladek wrote:
-> > On Fri 2017-04-28 11:02:26, Peter Zijlstra wrote:  
-> > > On Thu, Apr 27, 2017 at 03:38:19PM +0200, Petr Mladek wrote:  
-> > > > Also we need to look for alternatives. There is a chance
-> > > > to create crashdump and get the ftrace messages from it.
-> > > > Also this might be scenario when we might need to suggest
-> > > > the early_printk() patchset from Peter Zijlstra.  
-> > > 
-> > > I'd be happy to repost those. I still carry them in my tree.  
-> > 
-> > You do not need to if they are still the same as
-> > https://lkml.kernel.org/r/20161018170830.405990950@infradead.org  
-> 
-> More or less, I think I fixed an intermediate compile fail reported by
-> you and the 0-day thing and I wrote a few comments in the last patch.
-> 
-> They live here fwiw:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git debug/tmp
-> 
-> > I rather do not promise anything but I would like to look at them
-> > within next few weeks (after the merge window).  
-> 
-> Sure, I'll post them again during/after the merge window.
 
-BTW, this is what I ended up using to get the debug information I
-needed.
+> -----Original Message-----
+> From: devicetree-owner@vger.kernel.org [mailto:devicetree-
+> owner@vger.kernel.org] On Behalf Of Geert Uytterhoeven
+> Sent: Friday, April 28, 2017 3:09 PM
+> To: Michael Turquette <mturquette@baylibre.com>; Stephen Boyd
+> <sboyd@codeaurora.org>; Russell King <linux@armlinux.org.uk>; Rob Herring
+> <robh+dt@kernel.org>; Mark Rutland <mark.rutland@arm.com>; John Crispin
+> <john@phrozen.org>; Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-clk@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> mips@linux-mips.org; linux-kernel@vger.kernel.org; Geert Uytterhoeven
+> <geert+renesas@glider.be>
+> Subject: [PATCH v2] clk: Provide dummy of_clk_get_from_provider() for
+> compile-testing
+> 
+> When CONFIG_ON=n, dummies are provided for of_clk_get() and
+> of_clk_get_by_name(), but not for of_clk_get_from_provider().
+> 
+> Provide a dummy for the latter, to improve the ability to do
+> compile-testing.  This requires removing the existing dummy in the
+> Lantiq clock code.
+> 
+> Fixes: 766e6a4ec602d0c1 ("clk: add DT clock binding support")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
--- Steve
+Regarding the Lantiq part:
+Acked-by: Thomas Langer <thomas.langer@intel.com>
+
+> ---
+> v2:
+>   - Remove conflicting dummy in Lantiq clock code (reported by 0day).
+> ---
+>  arch/mips/lantiq/clk.c | 5 -----
+>  include/linux/clk.h    | 4 ++++
+>  2 files changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
+> index 149f0513c4f5d0d4..a263d1b751ffe48d 100644
+> --- a/arch/mips/lantiq/clk.c
+> +++ b/arch/mips/lantiq/clk.c
+> @@ -160,11 +160,6 @@ void clk_deactivate(struct clk *clk)
+>  }
+>  EXPORT_SYMBOL(clk_deactivate);
+> 
+> -struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
+> -{
+> -	return NULL;
+> -}
+> -
+>  static inline u32 get_counter_resolution(void)
+>  {
+>  	u32 res;
+> diff --git a/include/linux/clk.h b/include/linux/clk.h
+> index e9d36b3e49de5b1b..3ed97abb5cbb7f94 100644
+> --- a/include/linux/clk.h
+> +++ b/include/linux/clk.h
+> @@ -539,6 +539,10 @@ static inline struct clk *of_clk_get_by_name(struct
+> device_node *np,
+>  {
+>  	return ERR_PTR(-ENOENT);
+>  }
+> +static inline struct clk *of_clk_get_from_provider(struct of_phandle_args
+> *clkspec)
+> +{
+> +	return ERR_PTR(-ENOENT);
+> +}
+>  #endif
+> 
+>  #endif
+> --
+> 2.7.4
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

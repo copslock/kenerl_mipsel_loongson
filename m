@@ -1,20 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2017 18:15:17 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.136]:57224 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992121AbdD0QPJCHRti (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Apr 2017 18:15:09 +0200
-Received: from mail.kernel.org (localhost [127.0.0.1])
-        by mail.kernel.org (Postfix) with ESMTP id 878B420160;
-        Thu, 27 Apr 2017 16:15:06 +0000 (UTC)
-Received: from gandalf.local.home (cpe-67-246-153-56.stny.res.rr.com [67.246.153.56])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E3F042011B;
-        Thu, 27 Apr 2017 16:15:01 +0000 (UTC)
-Date:   Thu, 27 Apr 2017 12:14:58 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 03:25:49 +0200 (CEST)
+Received: from mail-pf0-x244.google.com ([IPv6:2607:f8b0:400e:c00::244]:32811
+        "EHLO mail-pf0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993879AbdD1BZmY1wOn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 03:25:42 +0200
+Received: by mail-pf0-x244.google.com with SMTP id 194so1285256pfv.0;
+        Thu, 27 Apr 2017 18:25:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=yXPECBBxQ4GRtweBqNZY/QIPLe6w6JBT46LQAXoSxGc=;
+        b=F5Mq/ryf8GXYyQPJUXbcFTA4WDkNYGRPvvQ5vc/YzPLU+OqdQjnbOBva5hl+phneqi
+         h2JW+7VXxc13sD20uOe24fa4JOPtEAyu8MZIwy6oikIRMt1kqM8cH1xDuh0ww5SAocD0
+         tCH6MUXD04NuUFrIJUPupmkeVnCVx7Ijg++LA4+0ll0SxBfVv8rmqaaBqgXgN4HCBgUG
+         7Xgw5kWtvzZIDweEkJDVz1AUVtED9b7sHjGK7v+Xlg9jyM8QOSJ2Iy/taod7f8NPI7Bj
+         zDo070VNw17wPZWlrgjT2y41Oame7RLEeIA4uK97+xBm1GW3zESydvE0Yz+zR69ez//G
+         5qTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=yXPECBBxQ4GRtweBqNZY/QIPLe6w6JBT46LQAXoSxGc=;
+        b=b317SrTTkFj4M2pmKlPBaDjqpMRn4BWv6SjBM0sicc9V9srLMU8G8rdqCJI+yeGyO4
+         P35SU8yuO4Cc7TUq+TRZVISnF7NOwe5Vs/TDXSbAP0tgnMD6GNWWLhImWfdgfve5zBv2
+         RW2wfwB3pRHqe1bVN4i8tCuoncWGON9pq7I9PVhY435wL0Exw0Yr1ez+bWhEqFY27Mmi
+         gFKxcv00f/C/esdaS9hstrrE0ZJpUy8yiIBIAJKgH4mK+jeFdlRBIFW0DC7Y0y63X5gg
+         pQjdYTAf0BpYSf5Z+cLWK4yutZR2kLL0yVPUw357KVVATjrqejDSuhQ1JFi1aIMPNcvE
+         6g5A==
+X-Gm-Message-State: AN3rC/4kZpohFm+pqkJhAhB39blgLQt/gPDxdSxYBQxi8Z7UmoE5lQBW
+        F4x5Qi7PAFsqTA==
+X-Received: by 10.99.119.4 with SMTP id s4mr8890437pgc.71.1493342734415;
+        Thu, 27 Apr 2017 18:25:34 -0700 (PDT)
+Received: from localhost ([110.70.54.84])
+        by smtp.gmail.com with ESMTPSA id d3sm9052076pgc.37.2017.04.27.18.25.33
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 27 Apr 2017 18:25:33 -0700 (PDT)
+Date:   Fri, 28 Apr 2017 10:25:30 +0900
+From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
 To:     Petr Mladek <pmladek@suse.com>
 Cc:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Russell King <rmk+kernel@arm.linux.org.uk>,
@@ -34,27 +59,26 @@ Cc:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
         David Miller <davem@davemloft.net>
 Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
  NMI
-Message-ID: <20170427121458.2be577cc@gandalf.local.home>
-In-Reply-To: <20170420131154.GL3452@pathway.suse.cz>
+Message-ID: <20170428012530.GA383@jagdpanzerIV.localdomain>
 References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
-        <1461239325-22779-2-git-send-email-pmladek@suse.com>
-        <20170419131341.76bc7634@gandalf.local.home>
-        <20170420033112.GB542@jagdpanzerIV.localdomain>
-        <20170420131154.GL3452@pathway.suse.cz>
-X-Mailer: Claws Mail 3.14.0 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+ <1461239325-22779-2-git-send-email-pmladek@suse.com>
+ <20170419131341.76bc7634@gandalf.local.home>
+ <20170420033112.GB542@jagdpanzerIV.localdomain>
+ <20170420131154.GL3452@pathway.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <SRS0=kAy7=4D=goodmis.org=rostedt@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170420131154.GL3452@pathway.suse.cz>
+User-Agent: Mutt/1.8.2 (2017-04-18)
+Return-Path: <sergey.senozhatsky.work@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57802
+X-archive-position: 57803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: sergey.senozhatsky.work@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,52 +91,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, 20 Apr 2017 15:11:54 +0200
-Petr Mladek <pmladek@suse.com> wrote:
+
+On (04/20/17 15:11), Petr Mladek wrote:
+[..]
+>  void printk_nmi_enter(void)
+>  {
+> -	this_cpu_or(printk_context, PRINTK_NMI_CONTEXT_MASK);
+> +	/*
+> +	 * The size of the extra per-CPU buffer is limited. Use it
+> +	 * only when really needed.
+> +	 */
+> +	if (this_cpu_read(printk_context) & PRINTK_SAFE_CONTEXT_MASK ||
+> +	    raw_spin_is_locked(&logbuf_lock)) {
+
+can we please have && here?
 
 
+[..]
+> diff --git a/lib/nmi_backtrace.c b/lib/nmi_backtrace.c
+> index 4e8a30d1c22f..0bc0a3535a8a 100644
+> --- a/lib/nmi_backtrace.c
+> +++ b/lib/nmi_backtrace.c
+> @@ -86,9 +86,11 @@ void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
+>  
+>  bool nmi_cpu_backtrace(struct pt_regs *regs)
+>  {
+> +	static arch_spinlock_t lock = __ARCH_SPIN_LOCK_UNLOCKED;
+>  	int cpu = smp_processor_id();
+>  
+>  	if (cpumask_test_cpu(cpu, to_cpumask(backtrace_mask))) {
+> +		arch_spin_lock(&lock);
+>  		if (regs && cpu_in_idle(instruction_pointer(regs))) {
+>  			pr_warn("NMI backtrace for cpu %d skipped: idling at pc %#lx\n",
+>  				cpu, instruction_pointer(regs));
+> @@ -99,6 +101,7 @@ bool nmi_cpu_backtrace(struct pt_regs *regs)
+>  			else
+>  				dump_stack();
+>  		}
+> +		arch_spin_unlock(&lock);
+>  		cpumask_clear_cpu(cpu, to_cpumask(backtrace_mask));
+>  		return true;
+>  	}
 
-> 
-> >From c530d9dee91c74db5e6a198479e2e63b24cb84a2 Mon Sep 17 00:00:00 2001  
-> From: Petr Mladek <pmladek@suse.com>
-> Date: Thu, 20 Apr 2017 10:52:31 +0200
-> Subject: [PATCH] printk: Use the main logbuf in NMI when logbuf_lock is
->  available
+can the nmi_backtrace part be a patch on its own?
 
-I tried this patch. It's better because I get the end of the trace, but
-I do lose the beginning of it:
-
-** 196358 printk messages dropped ** [  102.321182]     perf-5981    0.... 12983650us : d_path <-seq_path
-
-The way I tested it was by adding this:
-
-Index: linux-trace.git/kernel/trace/trace_functions.c
-===================================================================
---- linux-trace.git.orig/kernel/trace/trace_functions.c
-+++ linux-trace.git/kernel/trace/trace_functions.c
-@@ -469,8 +469,11 @@ ftrace_cpudump_probe(unsigned long ip, u
- 		     struct trace_array *tr, struct ftrace_probe_ops *ops,
- 		     void *data)
- {
--	if (update_count(ops, ip, data))
--		ftrace_dump(DUMP_ORIG);
-+	char *killer = NULL;
-+
-+	panic_on_oops = 1;	/* force panic */
-+	wmb();
-+	*killer = 1;
- }
- 
- static int
-
-
-Then doing the following:
-
-# echo 1 > /proc/sys/kernel/ftrace_dump_on_oops 
-# trace-cmd start -p function
-# echo nmi_handle:cpudump > /debug/tracing/set_ftrace_filter
-# perf record -c 100 -a sleep 1
-
-And that triggers the crash.
-
--- Steve
+	-ss

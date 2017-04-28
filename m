@@ -1,47 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 10:36:48 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:64093 "EHLO
-        imgpgp01.kl.imgtec.org" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993417AbdD1IgkKj0el (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 10:36:40 +0200
-Received: from imgpgp01.kl.imgtec.org (imgpgp01.kl.imgtec.org [127.0.0.1])
-        by imgpgp01.kl.imgtec.org (PGP Universal) with ESMTP id CC62641F8DF6;
-        Fri, 28 Apr 2017 10:43:49 +0100 (BST)
-Received: from mailapp01.imgtec.com ([10.100.180.241])
-  by imgpgp01.kl.imgtec.org (PGP Universal service);
-  Fri, 28 Apr 2017 10:43:49 +0100
-X-PGP-Universal: processed;
-        by imgpgp01.kl.imgtec.org on Fri, 28 Apr 2017 10:43:49 +0100
-Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
-        by Forcepoint Email with ESMTPS id DD9264C0830FF;
-        Fri, 28 Apr 2017 09:36:31 +0100 (IST)
-Received: from localhost (192.168.154.110) by HHMAIL01.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 28 Apr
- 2017 09:36:33 +0100
-Date:   Fri, 28 Apr 2017 09:36:33 +0100
-From:   James Hogan <james.hogan@imgtec.com>
-To:     Rob Landley <rob@landley.net>
-CC:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-        <paul.burton@imgtec.com>
-Subject: Re: Commit 10b6ea0959de broke qemu reboot/exit.
-Message-ID: <20170428083633.GL1105@jhogan-linux.le.imgtec.org>
-References: <bb1f5b37-26ca-10ff-c514-33899f21ea24@landley.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 11:03:09 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:37418 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990522AbdD1JDCop00l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 11:03:02 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=PleFTMafBju5UyHVuluvtD1Xjc8b6718A9cW7O8vw/0=; b=pGD038g8s7zMhu53l07P/sLwn
+        hLn5e1kWlqDTlj1Izs9SNQ78+tvla0ER71PsqBZLBqbT1KfjF6Oh6IwFdp2KtrhKcaO34Q8/z/2qV
+        GDIQFxrwJdkTmd+ie46C0CCklLlFHFfdioaBSSogGcW1nQZUf5myCBe5bWEvU/T9ta2omLukFis1z
+        bwosXya8odb22trMqEbsgZpwvpbad7IbpdnzWlaV10i30c9/kDpF7kLs28SGYO4pt/iZdH6TU8L4Y
+        3UN4rqyMi+B+1DDlc0S2d5gxTqdivyTwlJk2LykjPb4fOzGR8OhgsUsYBempZGyayg4MPJ2DgvjQS
+        KbBewpXwg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
+        id 1d41nH-0004yS-Tn; Fri, 28 Apr 2017 09:02:28 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 2873B20298380; Fri, 28 Apr 2017 11:02:26 +0200 (CEST)
+Date:   Fri, 28 Apr 2017 11:02:26 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Chris Metcalf <cmetcalf@ezchip.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        adi-buildroot-devel@lists.sourceforge.net,
+        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Jan Kara <jack@suse.cz>, Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        David Miller <davem@davemloft.net>
+Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
+ NMI
+Message-ID: <20170428090226.qqoe6qbewjeo57kd@hirez.programming.kicks-ass.net>
+References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
+ <1461239325-22779-2-git-send-email-pmladek@suse.com>
+ <20170419131341.76bc7634@gandalf.local.home>
+ <20170420033112.GB542@jagdpanzerIV.localdomain>
+ <20170420131154.GL3452@pathway.suse.cz>
+ <20170421015724.GA586@jagdpanzerIV.localdomain>
+ <20170421120627.GO3452@pathway.suse.cz>
+ <20170424021747.GA630@jagdpanzerIV.localdomain>
+ <20170427133819.GW3452@pathway.suse.cz>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="M9kwpIYUMbI/2cCx"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bb1f5b37-26ca-10ff-c514-33899f21ea24@landley.net>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Originating-IP: [192.168.154.110]
-X-ESG-ENCRYPT-TAG: 1b7d744b
-Return-Path: <James.Hogan@imgtec.com>
+In-Reply-To: <20170427133819.GW3452@pathway.suse.cz>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57809
+X-archive-position: 57810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: james.hogan@imgtec.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,86 +79,10 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
---M9kwpIYUMbI/2cCx
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Apr 27, 2017 at 03:38:19PM +0200, Petr Mladek wrote:
+> Also we need to look for alternatives. There is a chance
+> to create crashdump and get the ftrace messages from it.
+> Also this might be scenario when we might need to suggest
+> the early_printk() patchset from Peter Zijlstra.
 
-Hi Rob,
-
-On Fri, Apr 28, 2017 at 02:39:39AM -0500, Rob Landley wrote:
-> QEMU fails to reboot with current kernels, instead it hangs eating CPU:
->=20
->   # exit
->   reboot: Restarting system
->   Reboot failed -- System halted
->=20
-> I bisected it to "MIPS: Malta: Use syscon-reboot driver to reboot"
-> commit 10b6ea0959de back in September. To reproduce, build a kernel with:
->=20
-> cat > mini.conf << EOF
-> # CONFIG_EMBEDDED is not set
-> CONFIG_EARLY_PRINTK=3Dy
-> CONFIG_BLK_DEV_INITRD=3Dy
-> CONFIG_RD_GZIP=3Dy
-> CONFIG_BINFMT_ELF=3Dy
-> CONFIG_BINFMT_SCRIPT=3Dy
-> CONFIG_MISC_FILESYSTEMS=3Dy
-> CONFIG_DEVTMPFS=3Dy
->=20
-> CONFIG_MIPS_MALTA=3Dy
-> CONFIG_CPU_MIPS32_R2=3Dy
-> CONFIG_SERIAL_8250=3Dy
-> CONFIG_SERIAL_8250_CONSOLE=3Dy
-> CONFIG_PM=3Dy
-> CONFIG_PCNET32=3Dy
-> CONFIG_BLK_DEV_PIIX=3Dy
-> EOF
->=20
-> make ARCH=3Dmips allnoconfig KCONFIG_ALLCONFIG=3Dmini.conf
-> make ARCH=3Dmips CROSS_COMPILE=3Dblah-
->=20
-> And then boot qemu with a simple initramfs:
->=20
-> qemu-system-mips -M malta -nographic -no-reboot -kernel vmlinux \
->   -append "console=3DttyS0 panic=3D1" -initrd root.cpio.gz
->=20
-> And then try to shut it down. Before that commit it did, after it
-> doesn't. (I rebuilt qemu from git this morning and that didn't help,
-> same behavior as last year's build. New kernel doesn't know how to tell
-> it to shut down, old one did.)
-
-I presume this is due to the following missing from your config:
-CONFIG_POWER_RESET=3Dy
-CONFIG_POWER_RESET_SYSCON=3Dy
-
-The commit added these to the Malta defconfigs, but perhaps should have
-selected them from CONFIG_MIPS_MALTA instead, as CONFIG_ARCH_EXYNOS
-does, since its pretty core functionality that didn't used to be
-optional?
-
-Cheers
-James
-
---M9kwpIYUMbI/2cCx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEd80NauSabkiESfLYbAtpk944dnoFAlkC/vMACgkQbAtpk944
-dnpvkw//c3F9tS3JYooS9JxzP82fFnzVqdXMb2cgEeafQkayMLZ/SEUc6nkmRN0Q
-2vRtezbhx3PVAmSkTSG5yEXdKREA/HYgfufBdWi8I5iceNOHS4vdh06tSE2iNG/v
-JYyO78NeL+Yz3cF5fij8EEkBdsOJ2aZ4zdM3+66utHH/iBBbsfH6iAGVrrDTGw3O
-/3fqoK1bZembbrt05BJDlWMzHwRXsc/oEaZcp0EuhWq3kI2C3aHIN842VjQAMgmF
-GnW8Op6+7Agi5uWQJqEV7I+szJaHhZ3j/m4sWPLBqi/F1mPgE9J+nPIAw3ExDt2Q
-9UtmScpCOurX/LfDFMa+3+hGFfXjKQusNv1vpyyAfmKOZwbOKAFm19eqx3i+lN3J
-aPxsSPi4SPXYFzGKuF2/aCwEyoNzfTINubyhjoToQTTNas95C9nxHIZ6enZlQEuG
-BJFJUt4ETnJb3vVwmQfxoxHIpzfAO3tiVHqclF5Qp6VFL9nAMfhCH0Npt7YYAP0K
-Zr/DVqkvPvCLEI6zWJsuq5LJ28g/xhcCvit14stv2lp0SkaV6A2JGT6cKUogvj4H
-G2N0Gc4jX1I/KVLtqZvmSyr/TDJnKRDP2oo05JqF0sUNmx/Jluqt5UNAjS8JGX1x
-CULpE2Oy8wpB4llIO9CneCMHPwLx4DCWKdOX3sYWE50a0mpkfyU=
-=cXKX
------END PGP SIGNATURE-----
-
---M9kwpIYUMbI/2cCx--
+I'd be happy to repost those. I still carry them in my tree.

@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 14:38:50 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:51659 "EHLO mx1.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 14:57:40 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:53612 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23991672AbdD1MimQrJ0b (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 28 Apr 2017 14:38:42 +0200
+        id S23991672AbdD1M531Z0hb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 28 Apr 2017 14:57:29 +0200
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 89F17AC8A;
-        Fri, 28 Apr 2017 12:38:41 +0000 (UTC)
-Date:   Fri, 28 Apr 2017 14:38:38 +0200
+        by mx1.suse.de (Postfix) with ESMTP id B4A08ACB7;
+        Fri, 28 Apr 2017 12:57:28 +0000 (UTC)
+Date:   Fri, 28 Apr 2017 14:57:25 +0200
 From:   Petr Mladek <pmladek@suse.com>
 To:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
 Cc:     Steven Rostedt <rostedt@goodmis.org>,
@@ -30,23 +30,24 @@ Cc:     Steven Rostedt <rostedt@goodmis.org>,
         David Miller <davem@davemloft.net>
 Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
  NMI
-Message-ID: <20170428123838.GZ3452@pathway.suse.cz>
+Message-ID: <20170428125725.GA3452@pathway.suse.cz>
 References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
  <1461239325-22779-2-git-send-email-pmladek@suse.com>
  <20170419131341.76bc7634@gandalf.local.home>
  <20170420033112.GB542@jagdpanzerIV.localdomain>
  <20170420131154.GL3452@pathway.suse.cz>
- <20170428012530.GA383@jagdpanzerIV.localdomain>
+ <20170427121458.2be577cc@gandalf.local.home>
+ <20170428013532.GB383@jagdpanzerIV.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170428012530.GA383@jagdpanzerIV.localdomain>
+In-Reply-To: <20170428013532.GB383@jagdpanzerIV.localdomain>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <pmladek@suse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57811
+X-archive-position: 57812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,56 +64,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri 2017-04-28 10:25:30, Sergey Senozhatsky wrote:
-> 
-> On (04/20/17 15:11), Petr Mladek wrote:
+On Fri 2017-04-28 10:35:32, Sergey Senozhatsky wrote:
+> On (04/27/17 12:14), Steven Rostedt wrote:
 > [..]
-> >  void printk_nmi_enter(void)
-> >  {
-> > -	this_cpu_or(printk_context, PRINTK_NMI_CONTEXT_MASK);
-> > +	/*
-> > +	 * The size of the extra per-CPU buffer is limited. Use it
-> > +	 * only when really needed.
-> > +	 */
-> > +	if (this_cpu_read(printk_context) & PRINTK_SAFE_CONTEXT_MASK ||
-> > +	    raw_spin_is_locked(&logbuf_lock)) {
+> > I tried this patch. It's better because I get the end of the trace, but
+> > I do lose the beginning of it:
+> > 
+> > ** 196358 printk messages dropped ** [  102.321182]     perf-5981    0.... 12983650us : d_path <-seq_path
+>
+> many thanks!
 > 
-> can we please have && here?
+> so we now drop messages from logbuf, not from per-CPU buffers. that
+> "queue printk_deferred irq_work on every online CPU when we bypass per-CPU
+> buffers from NMI" idea *probably* might help here - we need someone to emit
+> messages from the logbuf while we printk from NMI. there is still a
+> possibility that we can drop messages, though, since log_store() from NMI
+> CPU can be much-much faster than call_console_drivers() on other CPU.
 
-OK, it sounds reasonable after all.
+ftrace log is dumped via trace_panic_notifier. It is done after
+smp_send_stop(). It means that only a single CPU is available and
+it is NMI context at the moment.
 
-> [..]
-> > diff --git a/lib/nmi_backtrace.c b/lib/nmi_backtrace.c
-> > index 4e8a30d1c22f..0bc0a3535a8a 100644
-> > --- a/lib/nmi_backtrace.c
-> > +++ b/lib/nmi_backtrace.c
-> > @@ -86,9 +86,11 @@ void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
-> >  
-> >  bool nmi_cpu_backtrace(struct pt_regs *regs)
-> >  {
-> > +	static arch_spinlock_t lock = __ARCH_SPIN_LOCK_UNLOCKED;
-> >  	int cpu = smp_processor_id();
-> >  
-> >  	if (cpumask_test_cpu(cpu, to_cpumask(backtrace_mask))) {
-> > +		arch_spin_lock(&lock);
-> >  		if (regs && cpu_in_idle(instruction_pointer(regs))) {
-> >  			pr_warn("NMI backtrace for cpu %d skipped: idling at pc %#lx\n",
-> >  				cpu, instruction_pointer(regs));
-> > @@ -99,6 +101,7 @@ bool nmi_cpu_backtrace(struct pt_regs *regs)
-> >  			else
-> >  				dump_stack();
-> >  		}
-> > +		arch_spin_unlock(&lock);
-> >  		cpumask_clear_cpu(cpu, to_cpumask(backtrace_mask));
-> >  		return true;
-> >  	}
-> 
-> can the nmi_backtrace part be a patch on its own?
+One possibility might be to put printk into a special mode and
+drop the last messages instead of the first ones. But this would
+need to be configurable.
 
-I would prefer to keep it in the same patch. The backtrace from
-all CPUs is completely unusable when all CPUs push to the global
-log buffer in parallel. Single patch might safe hair of some
-poor bisectors.
+Of course, if the problem is reproducible, the easiest solution
+is to use bigger main log buffer, for example boot with
+log_buf_len=32M.
 
 Best Regards,
 Petr

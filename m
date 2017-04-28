@@ -1,85 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 03:35:50 +0200 (CEST)
-Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:35909
-        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993879AbdD1BfnRwYjn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 03:35:43 +0200
-Received: by mail-pf0-x241.google.com with SMTP id v14so14994595pfd.3;
-        Thu, 27 Apr 2017 18:35:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 09:39:53 +0200 (CEST)
+Received: from mail-it0-x231.google.com ([IPv6:2607:f8b0:4001:c0b::231]:34465
+        "EHLO mail-it0-x231.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990522AbdD1HjrUp1fb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 09:39:47 +0200
+Received: by mail-it0-x231.google.com with SMTP id c123so7547232ith.1
+        for <linux-mips@linux-mips.org>; Fri, 28 Apr 2017 00:39:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Ax2RoY4lW4ift84HKOfRqhKdcL7PCtsI+nkzslElg4A=;
-        b=TohMlFLoG9KPUuHybRzIB7luE//lswJe+vA5SBFT+5dcuaqTes82kvkynTPS4s5p11
-         lbcfu8O6WXwuNms8SJTsZ61tPgyFz5LWHVQfnkGN/tyG9rFRuCV2ns/PIZHsYNmvuq5y
-         JoM6V/YPPywalZgY3AAlRJ6yKe1kfpg81p0BR+GNRDJAl/Hnjdgj5vo9kNk0QW4fsI03
-         IpcRJIhYoj9lKDzOCkIsdzyvXNivNFFHafzPZ6UJDIc5VI8S1C+QM+Ge9a/0zdZXWYdS
-         UqVbJXoaiILMR6CanWEySFYWQ7u7pLTumeKZyj84lAaIVkKTIihKCZOc/JC4wAWvFe+z
-         WfUQ==
+        d=landley-net.20150623.gappssmtp.com; s=20150623;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=DxsWmKesYJOGRi5MFKGds9FnwxKaq8LAZ+82lr3fSH8=;
+        b=z9CxBic47VVv05FZjXGpxQtW39R7cWzy87Ob40kceQK/PafrwUISHohaplTD792MKD
+         sGQyDXTdqnCVqPMeSgLm0ZIWxuRz3yzN6LuZ2qp3CQt+b9kWS30/qB4w1zVY8AAh4A3v
+         zs+NCE++bmmwds0avdQEzduXm903cZPGg9CVcJbM133OyeeqbRH1K6PIE4HqyardSN/s
+         PzB+c9V54z0qu3orjeFPTBpAnXQK0ao6bCBBBPdRjyRRWYiWoO6Xc63GwBwWGmj+t3sg
+         xa4APpfPOL7JSt3b9Di3ktyKUal7HZ3NTwgCr1uor2rfKV+e6tQbuc+k8jttsfr9o8vE
+         /a9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Ax2RoY4lW4ift84HKOfRqhKdcL7PCtsI+nkzslElg4A=;
-        b=NgP5gyCdm3srEwq43Ed2EiySzBbBFhNoOvYLxo0ccXonQ9Qrk15ypLK4arbkWknxJD
-         CKRgWu+ilY7I/DZ+1MO0TYxcpfAwknKeMf+K/kMG7xDJgcXpUvS3PDTbmqAgHCzx5FxC
-         J0PSDkSiu+lIKlMJ35W63XssLMGQTacg8hLud8izZA7ffXn2aud0HGx93P2g081ure1V
-         5k23a+Nm3vSuSWq42F/yyuoqOOk3tMTq9CIztWSSmNAXQ4v4CTmtsoHilihhPj1Oszxv
-         20PC7JJpEB/liwmP8gTj5j5Gm4D9SWsw6C0tLVHCJYGKDuJQIlTCI2aTFOZfbfYkiNZQ
-         q/6Q==
-X-Gm-Message-State: AN3rC/4o3g11PkBuy2u4oVJT/puwGldadAlquRV7j/Pde9SEXOAN51Qk
-        UshcS2gClFWKug==
-X-Received: by 10.99.104.9 with SMTP id d9mr9202945pgc.27.1493343336469;
-        Thu, 27 Apr 2017 18:35:36 -0700 (PDT)
-Received: from localhost ([110.70.54.84])
-        by smtp.gmail.com with ESMTPSA id m187sm597064pfm.132.2017.04.27.18.35.35
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 27 Apr 2017 18:35:35 -0700 (PDT)
-Date:   Fri, 28 Apr 2017 10:35:32 +0900
-From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jiri Kosina <jkosina@suse.com>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Chris Metcalf <cmetcalf@ezchip.com>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        adi-buildroot-devel@lists.sourceforge.net,
-        linux-cris-kernel@axis.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Jan Kara <jack@suse.cz>, Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        David Miller <davem@davemloft.net>
-Subject: Re: [PATCH v5 1/4] printk/nmi: generic solution for safe printk in
- NMI
-Message-ID: <20170428013532.GB383@jagdpanzerIV.localdomain>
-References: <1461239325-22779-1-git-send-email-pmladek@suse.com>
- <1461239325-22779-2-git-send-email-pmladek@suse.com>
- <20170419131341.76bc7634@gandalf.local.home>
- <20170420033112.GB542@jagdpanzerIV.localdomain>
- <20170420131154.GL3452@pathway.suse.cz>
- <20170427121458.2be577cc@gandalf.local.home>
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=DxsWmKesYJOGRi5MFKGds9FnwxKaq8LAZ+82lr3fSH8=;
+        b=IyyYBpbN2aqD2YGmSQ6/IjUSfNk/ZKl2Onu8/V7mj5GmgPam9d9Ka+E2kKPixt4QCZ
+         GN9yQKRUCgovJ7IiOFfZnMliq6ZZVdRL/L21aXJ6FNq2BDEWV4QWZlJBtEw3KagNAzX2
+         RgJ1sLF4JHD9BJMv4RSpipI0N/jNtkT7LUQ9Pjy+rINWXJFmfjcKOxCouvhVGtjfhYMe
+         GsY5YXNO48eiNxJVbX8T/vRKCtj5i5P+YkaMXMEQ4DGR2IE5CcUAq7wTLxopXIZjitO0
+         jsKGsa1o0XabFKZUhV7A6PjA//E9+LTEnpKjQ+5RyIgzUVaGC+IX0/+CnlyHznd3S+sP
+         Dlvg==
+X-Gm-Message-State: AN3rC/5De7JfHR4rOYH4dtGOMs/R6jNm3VIpjE6FTwutDLpnZiUZqRoi
+        4UXHu0HUk3+rVQ==
+X-Received: by 10.36.77.211 with SMTP id l202mr8171129itb.74.1493365181294;
+        Fri, 28 Apr 2017 00:39:41 -0700 (PDT)
+Received: from [192.168.43.158] ([172.56.7.83])
+        by smtp.googlemail.com with ESMTPSA id k22sm871168iti.5.2017.04.28.00.39.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 28 Apr 2017 00:39:40 -0700 (PDT)
+To:     linux-mips@linux-mips.org, james.hogan@imgtec.com,
+        ralf@linux-mips.org, paul.burton@imgtec.com
+From:   Rob Landley <rob@landley.net>
+Subject: Commit 10b6ea0959de broke qemu reboot/exit.
+Message-ID: <bb1f5b37-26ca-10ff-c514-33899f21ea24@landley.net>
+Date:   Fri, 28 Apr 2017 02:39:39 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170427121458.2be577cc@gandalf.local.home>
-User-Agent: Mutt/1.8.2 (2017-04-18)
-Return-Path: <sergey.senozhatsky.work@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <rob@landley.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57804
+X-archive-position: 57805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergey.senozhatsky.work@gmail.com
+X-original-sender: rob@landley.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -92,20 +67,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On (04/27/17 12:14), Steven Rostedt wrote:
-[..]
-> I tried this patch. It's better because I get the end of the trace, but
-> I do lose the beginning of it:
-> 
-> ** 196358 printk messages dropped ** [  102.321182]     perf-5981    0.... 12983650us : d_path <-seq_path
+QEMU fails to reboot with current kernels, instead it hangs eating CPU:
 
-many thanks!
+  # exit
+  reboot: Restarting system
+  Reboot failed -- System halted
 
-so we now drop messages from logbuf, not from per-CPU buffers. that
-"queue printk_deferred irq_work on every online CPU when we bypass per-CPU
-buffers from NMI" idea *probably* might help here - we need someone to emit
-messages from the logbuf while we printk from NMI. there is still a
-possibility that we can drop messages, though, since log_store() from NMI
-CPU can be much-much faster than call_console_drivers() on other CPU.
+I bisected it to "MIPS: Malta: Use syscon-reboot driver to reboot"
+commit 10b6ea0959de back in September. To reproduce, build a kernel with:
 
-	-ss
+cat > mini.conf << EOF
+# CONFIG_EMBEDDED is not set
+CONFIG_EARLY_PRINTK=y
+CONFIG_BLK_DEV_INITRD=y
+CONFIG_RD_GZIP=y
+CONFIG_BINFMT_ELF=y
+CONFIG_BINFMT_SCRIPT=y
+CONFIG_MISC_FILESYSTEMS=y
+CONFIG_DEVTMPFS=y
+
+CONFIG_MIPS_MALTA=y
+CONFIG_CPU_MIPS32_R2=y
+CONFIG_SERIAL_8250=y
+CONFIG_SERIAL_8250_CONSOLE=y
+CONFIG_PM=y
+CONFIG_PCNET32=y
+CONFIG_BLK_DEV_PIIX=y
+EOF
+
+make ARCH=mips allnoconfig KCONFIG_ALLCONFIG=mini.conf
+make ARCH=mips CROSS_COMPILE=blah-
+
+And then boot qemu with a simple initramfs:
+
+qemu-system-mips -M malta -nographic -no-reboot -kernel vmlinux \
+  -append "console=ttyS0 panic=1" -initrd root.cpio.gz
+
+And then try to shut it down. Before that commit it did, after it
+doesn't. (I rebuilt qemu from git this morning and that didn't help,
+same behavior as last year's build. New kernel doesn't know how to tell
+it to shut down, old one did.)
+
+Rob

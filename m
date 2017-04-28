@@ -1,20 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 10:35:22 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57538 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 10:36:02 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57640 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991960AbdD1IfMZ8Wnl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 10:35:12 +0200
+        by eddie.linux-mips.org with ESMTP id S23991672AbdD1IfslUe9l (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 10:35:48 +0200
 Received: from localhost (unknown [195.77.54.9])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 1C88A9C;
-        Fri, 28 Apr 2017 08:35:05 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D79CD9C;
+        Fri, 28 Apr 2017 08:35:40 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, John Crispin <john@phrozen.org>,
+        stable@vger.kernel.org, Alban Bedel <albeu@free.fr>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
         Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 3.18 41/47] MIPS: ralink: Cosmetic change to prom_init().
-Date:   Fri, 28 Apr 2017 10:32:54 +0200
-Message-Id: <20170428083039.996812102@linuxfoundation.org>
+Subject: [PATCH 3.18 20/47] MIPS: Fix the build on jz4740 after removing the custom gpio.h
+Date:   Fri, 28 Apr 2017 10:32:33 +0200
+Message-Id: <20170428083039.189477537@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <20170428083038.327543269@linuxfoundation.org>
 References: <20170428083038.327543269@linuxfoundation.org>
@@ -25,7 +30,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57807
+X-archive-position: 57808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,52 +51,50 @@ X-list: linux-mips
 
 ------------------
 
-From: John Crispin <john@phrozen.org>
+From: Alban Bedel <albeu@free.fr>
 
-commit 9c48568b3692f1a56cbf1935e4eea835e6b185b1 upstream.
+commit 5b235dc2647e4977b17b5c41d959d0f455831c3f upstream.
 
-Over the years the code has been changed various times leading to
-argc/argv being defined in a different function to where we actually
-use the variables. Clean this up by moving them to prom_init_cmdline().
+Somehow the wrong version of the patch to remove the use of custom
+gpio.h on mips has been merged. This patch add the missing fixes for a
+build error on jz4740 because linux/gpio.h doesn't provide any machine
+specfics definitions anymore.
 
-Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Alban Bedel <albeu@free.fr>
+Cc: Paul Burton <paul.burton@imgtec.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Brian Norris <computersforpeace@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Linus Walleij <linus.walleij@linaro.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14902/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/11089/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Cc: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/ralink/prom.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/mips/jz4740/board-qi_lb60.c |    1 +
+ arch/mips/jz4740/gpio.c          |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/arch/mips/ralink/prom.c
-+++ b/arch/mips/ralink/prom.c
-@@ -24,8 +24,10 @@ const char *get_system_type(void)
- 	return soc_info.sys_type;
- }
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -26,6 +26,7 @@
+ #include <linux/power/jz4740-battery.h>
+ #include <linux/power/gpio-charger.h>
  
--static __init void prom_init_cmdline(int argc, char **argv)
-+static __init void prom_init_cmdline(void)
- {
-+	int argc;
-+	char **argv;
- 	int i;
++#include <asm/mach-jz4740/gpio.h>
+ #include <asm/mach-jz4740/jz4740_fb.h>
+ #include <asm/mach-jz4740/jz4740_mmc.h>
+ #include <asm/mach-jz4740/jz4740_nand.h>
+--- a/arch/mips/jz4740/gpio.c
++++ b/arch/mips/jz4740/gpio.c
+@@ -27,6 +27,7 @@
+ #include <linux/seq_file.h>
  
- 	pr_debug("prom: fw_arg0=%08x fw_arg1=%08x fw_arg2=%08x fw_arg3=%08x\n",
-@@ -54,14 +56,11 @@ static __init void prom_init_cmdline(int
+ #include <asm/mach-jz4740/base.h>
++#include <asm/mach-jz4740/gpio.h>
  
- void __init prom_init(void)
- {
--	int argc;
--	char **argv;
--
- 	prom_soc_init(&soc_info);
+ #include "irq.h"
  
- 	pr_info("SoC Type: %s\n", get_system_type());
- 
--	prom_init_cmdline(argc, argv);
-+	prom_init_cmdline();
- }
- 
- void __init prom_free_prom_memory(void)

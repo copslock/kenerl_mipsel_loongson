@@ -1,40 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2017 22:14:40 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:43166 "EHLO
-        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993955AbdD1UJu5tLqE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2017 22:09:50 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>, james.hogan@imgtec.com,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v5 11/14] mtd: nand: jz4740: Let the pinctrl driver configure the pins
-Date:   Fri, 28 Apr 2017 22:08:21 +0200
-Message-Id: <20170428200824.10906-12-paul@crapouillou.net>
-In-Reply-To: <20170428200824.10906-1-paul@crapouillou.net>
-References: <20170402204244.14216-2-paul@crapouillou.net>
- <20170428200824.10906-1-paul@crapouillou.net>
-Return-Path: <paul@outils.crapouillou.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Apr 2017 16:21:28 +0200 (CEST)
+Received: from mout.web.de ([212.227.15.3]:52702 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23991948AbdD3OVUXHApj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 30 Apr 2017 16:21:20 +0200
+Received: from [192.168.1.2] ([78.49.149.53]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MEqOg-1dKjk72iuA-00G0IX; Sun, 30
+ Apr 2017 16:20:37 +0200
+From:   SF Markus Elfring <elfring@users.sourceforge.net>
+Subject: MIPS: Lantiq: Completion of error handling around clkdev_add_clkout()
+To:     linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
+        Felix Fietkau <nbd@nbd.name>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        James Hogan <james.hogan@imgtec.com>,
+        John Crispin <john@phrozen.org>,
+        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Pan Bian <bianpan2016@163.com>
+Message-ID: <b27c5b95-747b-e83a-84e8-01fd7a1ae04e@users.sourceforge.net>
+Date:   Sun, 30 Apr 2017 16:20:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.0.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K0:coauluGJ0mXN8VZ1Iez2SeTV/jLCfXNV/HjR9BzrDc8NEQReKq4
+ LwwJkOT2HzVYkYPCPzYHeXF4tUqesuPLJvCCNn2E9Awx9GaZJXh79qcrUWrwxI2tHyfbqxn
+ 8qeveLfeSXVfWmh2ogBcu5uoTAHu00yxD6PcKnTeMxogv7+rL48AYnQ42xZrYs8VJu1vz5O
+ 7m53surKJnb9Ko87vJJqw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:sx6S7ypNQl0=:s491AXe6pIKVfNRewRM3I3
+ vleCFjFIMqdffnv69k+6dDledCuxYvxNVPz7hqAXinF0lPFLeUHiIydEKk/Dp/oyLk3k4soCd
+ op9K+0nhZZDXIOPphCfK8+scUThSEPZFhrlQRPeqv/EUiIMYbDL1ACm5etYApza1hficuyZZu
+ W/CEJD9MhazaNOsGsNXAQ2punvdCzYuEFQfIZ6R34LPPve4cVek9Kg42+5rEbHjMuPqhIU3ux
+ KuEqhhr+LyuVj054B693Pc4H3ZneOpSNqvcVkENfj+ipKXcJMK6M740aEFUrVY8iAcyFwNQuH
+ 8DRJ57UUw0opZu18FQNXdl/MRw211rjXpgGDNkEL06Vu01a57LK3JWqvWVPkpFcHvK8xLK5S9
+ Rxm1A7cja7coZ1VmeTxIMXHGdY/J14Pd+ztXR9uycpV0sJudRPhBVmx6V+NaPo7s+FmIe9VMv
+ oERGtbOF6LB83CMQLJ9HUHrmCsxK4FEvGuveFvCcSxpnjlWitPBCMjvRBJH5jU5Kmx3mTqHG/
+ pNqqaESdUtd8OSt0/ta/vJ9Zh2WYUiWGdcRaZrfBh10VjGg/s4VgyCl4h9Vy7MYzqwTYVPXqe
+ pXM2ZF2/EuvNRS10+Nhp8ym7DIptW7AN0VtNB5RRAjQFIGE0fh3zNWHnqc8xKBHw6LwtHN8y6
+ r0Z/9k4VO5rt60tMLxS8/D+L4uIabl7tRUz8bjLnwVQiHp03S2tCTSs/aB2idUlYeOZ2TM0q4
+ mMF/P5IlbzCnyEHU8E07zWszy61uw49QeWm9OK86Ig1UwyKHG/GMIQKdtXr6yYJDyhHu6cpFe
+ Z8Wce78
+Return-Path: <elfring@users.sourceforge.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57834
+X-archive-position: 57835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: elfring@users.sourceforge.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,99 +62,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Before, this NAND driver would set itself the configuration of the
-chip-select pins for the various NAND banks.
+Hello,
 
-Now that the JZ4740 and similar SoCs have a pinctrl driver, we rely on
-the pins being properly configured before the driver probes.
+I have noticed by execution of another script for the semantic patch language
+(Coccinelle software) that the function “clkdev_add_clkout” does not contain
+null pointer checks after calls of the function “kzalloc”.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/mips/lantiq/xway/sysctrl.c?h=v4.10#n403
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
----
- drivers/mtd/nand/jz4740_nand.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+How do you think about to add corresponding checks and adjust the function
+return type there?
 
- v2: No changes
- v3: No changes
- v4: No changes
- v5: No changes
-
-diff --git a/drivers/mtd/nand/jz4740_nand.c b/drivers/mtd/nand/jz4740_nand.c
-index 5551c36adbdf..0d06a1f07d82 100644
---- a/drivers/mtd/nand/jz4740_nand.c
-+++ b/drivers/mtd/nand/jz4740_nand.c
-@@ -25,7 +25,6 @@
- 
- #include <linux/gpio.h>
- 
--#include <asm/mach-jz4740/gpio.h>
- #include <asm/mach-jz4740/jz4740_nand.h>
- 
- #define JZ_REG_NAND_CTRL	0x50
-@@ -310,34 +309,20 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
- 			       uint8_t *nand_dev_id)
- {
- 	int ret;
--	int gpio;
--	char gpio_name[9];
- 	char res_name[6];
- 	uint32_t ctrl;
- 	struct nand_chip *chip = &nand->chip;
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 
--	/* Request GPIO port. */
--	gpio = JZ_GPIO_MEM_CS0 + bank - 1;
--	sprintf(gpio_name, "NAND CS%d", bank);
--	ret = gpio_request(gpio, gpio_name);
--	if (ret) {
--		dev_warn(&pdev->dev,
--			"Failed to request %s gpio %d: %d\n",
--			gpio_name, gpio, ret);
--		goto notfound_gpio;
--	}
--
- 	/* Request I/O resource. */
- 	sprintf(res_name, "bank%d", bank);
- 	ret = jz_nand_ioremap_resource(pdev, res_name,
- 					&nand->bank_mem[bank - 1],
- 					&nand->bank_base[bank - 1]);
- 	if (ret)
--		goto notfound_resource;
-+		return ret;
- 
- 	/* Enable chip in bank. */
--	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_MEM_CS0);
- 	ctrl = readl(nand->base + JZ_REG_NAND_CTRL);
- 	ctrl |= JZ_NAND_CTRL_ENABLE_CHIP(bank - 1);
- 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
-@@ -377,12 +362,8 @@ static int jz_nand_detect_bank(struct platform_device *pdev,
- 	dev_info(&pdev->dev, "No chip found on bank %i\n", bank);
- 	ctrl &= ~(JZ_NAND_CTRL_ENABLE_CHIP(bank - 1));
- 	writel(ctrl, nand->base + JZ_REG_NAND_CTRL);
--	jz_gpio_set_function(gpio, JZ_GPIO_FUNC_NONE);
- 	jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 				 nand->bank_base[bank - 1]);
--notfound_resource:
--	gpio_free(gpio);
--notfound_gpio:
- 	return ret;
- }
- 
-@@ -503,7 +484,6 @@ static int jz_nand_probe(struct platform_device *pdev)
- err_unclaim_banks:
- 	while (chipnr--) {
- 		unsigned char bank = nand->banks[chipnr];
--		gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
- 		jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 					 nand->bank_base[bank - 1]);
- 	}
-@@ -530,7 +510,6 @@ static int jz_nand_remove(struct platform_device *pdev)
- 		if (bank != 0) {
- 			jz_nand_iounmap_resource(nand->bank_mem[bank - 1],
- 						 nand->bank_base[bank - 1]);
--			gpio_free(JZ_GPIO_MEM_CS0 + bank - 1);
- 		}
- 	}
- 
--- 
-2.11.0
+Regards,
+Markus

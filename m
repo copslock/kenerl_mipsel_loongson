@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 May 2017 23:29:38 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57370 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 May 2017 23:33:07 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:59684 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993959AbdEAV2b31OeG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 May 2017 23:28:31 +0200
+        by eddie.linux-mips.org with ESMTP id S23993968AbdEAVc5XWIMG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 May 2017 23:32:57 +0200
 Received: from localhost (unknown [107.14.56.132])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id D70C4B7A;
-        Mon,  1 May 2017 21:28:23 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 18B78B9B;
+        Mon,  1 May 2017 21:32:51 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, James Hogan <james.hogan@imgtec.com>,
         Jason Wessel <jason.wessel@windriver.com>,
         linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 4.4 37/43] MIPS: KGDB: Use kernel context for sleeping threads
-Date:   Mon,  1 May 2017 14:27:37 -0700
-Message-Id: <20170501212601.019961035@linuxfoundation.org>
+Subject: [PATCH 4.9 41/54] MIPS: KGDB: Use kernel context for sleeping threads
+Date:   Mon,  1 May 2017 14:31:48 -0700
+Message-Id: <20170501212633.451885964@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
-In-Reply-To: <20170501212559.546911128@linuxfoundation.org>
-References: <20170501212559.546911128@linuxfoundation.org>
+In-Reply-To: <20170501212631.798128131@linuxfoundation.org>
+References: <20170501212631.798128131@linuxfoundation.org>
 User-Agent: quilt/0.65
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -25,7 +25,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57838
+X-archive-position: 57839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,7 +42,7 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-4.4-stable review patch.  If anyone has any objections, please let me know.
+4.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

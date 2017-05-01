@@ -1,21 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 May 2017 23:28:34 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:57344 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 May 2017 23:29:05 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:57378 "EHLO
         mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993957AbdEAV20HXucG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 May 2017 23:28:26 +0200
+        by eddie.linux-mips.org with ESMTP id S23993958AbdEAV2bQ99JG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 May 2017 23:28:31 +0200
 Received: from localhost (unknown [107.14.56.132])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 96564B6B;
-        Mon,  1 May 2017 21:28:19 +0000 (UTC)
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B87BABA9;
+        Mon,  1 May 2017 21:28:24 +0000 (UTC)
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Corey Minyard <cminyard@mvista.com>,
-        David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Julia Lawall <julia.lawall@lip6.fr>
-Subject: [PATCH 4.4 09/43] MIPS: Fix crash registers on non-crashing CPUs
-Date:   Mon,  1 May 2017 14:27:09 -0700
-Message-Id: <20170501212559.916770336@linuxfoundation.org>
+        stable@vger.kernel.org, James Cowgill <James.Cowgill@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.4 38/43] MIPS: Avoid BUG warning in arch_check_elf
+Date:   Mon,  1 May 2017 14:27:38 -0700
+Message-Id: <20170501212601.059903064@linuxfoundation.org>
 X-Mailer: git-send-email 2.12.2
 In-Reply-To: <20170501212559.546911128@linuxfoundation.org>
 References: <20170501212559.546911128@linuxfoundation.org>
@@ -26,7 +24,7 @@ Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57836
+X-archive-position: 57837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,56 +45,44 @@ X-list: linux-mips
 
 ------------------
 
-From: Corey Minyard <cminyard@mvista.com>
+From: James Cowgill <James.Cowgill@imgtec.com>
 
-commit c80e1b62ffca52e2d1d865ee58bc79c4c0c55005 upstream.
+commit c46f59e90226fa5bfcc83650edebe84ae47d454b upstream.
 
-As part of handling a crash on an SMP system, an IPI is send to
-all other CPUs to save their current registers and stop.  It was
-using task_pt_regs(current) to get the registers, but that will
-only be accurate if the CPU was interrupted running in userland.
-Instead allow the architecture to pass in the registers (all
-pass NULL now, but allow for the future) and then use get_irq_regs()
-which should be accurate as we are in an interrupt.  Fall back to
-task_pt_regs(current) if nothing else is available.
+arch_check_elf contains a usage of current_cpu_data that will call
+smp_processor_id() with preemption enabled and therefore triggers a
+"BUG: using smp_processor_id() in preemptible" warning when an fpxx
+executable is loaded.
 
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
-Cc: David Daney <ddaney@caviumnetworks.com>
+As a follow-up to commit b244614a60ab ("MIPS: Avoid a BUG warning during
+prctl(PR_SET_FP_MODE, ...)"), apply the same fix to arch_check_elf by
+using raw_current_cpu_data instead. The rationale quoted from the previous
+commit:
+
+"It is assumed throughout the kernel that if any CPU has an FPU, then
+all CPUs would have an FPU as well, so it is safe to perform the check
+with preemption enabled - change the code to use raw_ variant of the
+check to avoid the warning."
+
+Fixes: 46490b572544 ("MIPS: kernel: elf: Improve the overall ABI and FPU mode checks")
+Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/13050/
+Patchwork: https://patchwork.linux-mips.org/patch/15951/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Cc: Julia Lawall <julia.lawall@lip6.fr>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
- arch/mips/kernel/crash.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/mips/kernel/elf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/crash.c
-+++ b/arch/mips/kernel/crash.c
-@@ -14,12 +14,22 @@ static int crashing_cpu = -1;
- static cpumask_t cpus_in_crash = CPU_MASK_NONE;
- 
- #ifdef CONFIG_SMP
--static void crash_shutdown_secondary(void *ignore)
-+static void crash_shutdown_secondary(void *passed_regs)
- {
--	struct pt_regs *regs;
-+	struct pt_regs *regs = passed_regs;
- 	int cpu = smp_processor_id();
- 
--	regs = task_pt_regs(current);
-+	/*
-+	 * If we are passed registers, use those.  Otherwise get the
-+	 * regs from the last interrupt, which should be correct, as
-+	 * we are in an interrupt.  But if the regs are not there,
-+	 * pull them from the top of the stack.  They are probably
-+	 * wrong, but we need something to keep from crashing again.
-+	 */
-+	if (!regs)
-+		regs = get_irq_regs();
-+	if (!regs)
-+		regs = task_pt_regs(current);
- 
- 	if (!cpu_online(cpu))
- 		return;
+--- a/arch/mips/kernel/elf.c
++++ b/arch/mips/kernel/elf.c
+@@ -206,7 +206,7 @@ int arch_check_elf(void *_ehdr, bool has
+ 	else if ((prog_req.fr1 && prog_req.frdefault) ||
+ 		 (prog_req.single && !prog_req.frdefault))
+ 		/* Make sure 64-bit MIPS III/IV/64R1 will not pick FR1 */
+-		state->overall_fp_mode = ((current_cpu_data.fpu_id & MIPS_FPIR_F64) &&
++		state->overall_fp_mode = ((raw_current_cpu_data.fpu_id & MIPS_FPIR_F64) &&
+ 					  cpu_has_mips_r2_r6) ?
+ 					  FP_FR1 : FP_FR0;
+ 	else if (prog_req.fr1)

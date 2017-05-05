@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2017 21:50:01 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.133]:49749 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2017 21:50:32 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.126.187]:59931 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993940AbdEETs7OwqRp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2017 21:48:59 +0200
+        with ESMTP id S23993938AbdEETs6Cip2p (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2017 21:48:58 +0200
 Received: from wuerfel.lan ([78.42.17.5]) by mrelayeu.kundenserver.de
  (mreue002 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0LjRBA-1ddb802fSi-00bdMT; Fri, 05 May 2017 21:48:36 +0200
+ 0MXi7y-1dav1E0O8c-00WU2d; Fri, 05 May 2017 21:48:38 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Ben Hutchings <ben@decadent.org.uk>
-Cc:     stable@vger.kernel.org, Kevin Cernekee <cernekee@gmail.com>,
-        f.fainelli@gmail.com, mbizon@freebox.fr, jogo@openwrt.org,
-        jfraser@broadcom.com, linux-mips@linux-mips.org,
-        devicetree@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+Cc:     stable@vger.kernel.org, Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Linux MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 3.16-stable 80/87] MIPS: BMIPS: Fix ".previous without corresponding .section" warnings
-Date:   Fri,  5 May 2017 21:47:38 +0200
-Message-Id: <20170505194745.3627137-81-arnd@arndb.de>
+Subject: [PATCH 3.16-stable 84/87] MIPS: MSP71xx: remove odd locking in PCI config space access code
+Date:   Fri,  5 May 2017 21:47:42 +0200
+Message-Id: <20170505194745.3627137-85-arnd@arndb.de>
 X-Mailer: git-send-email 2.9.0
 In-Reply-To: <20170505194745.3627137-1-arnd@arndb.de>
 References: <20170505194745.3627137-1-arnd@arndb.de>
-X-Provags-ID: V03:K0:VsRBo37U/oOBTBW0jRmChixgFspWYwCxjtDWzpycxB52OI7PQY9
- dsXZg3t3Eopd1anWbfsIcdnQTqsoI0nSyaHqtDjv53pjglup5lD/Hbp+bLn3aHyJ7y4tolo
- ztXSfmlP13TvnHlgPpIGO+HulohnVDKRS0uwJQtVyZP68Q1X370ycjryHd7VnVxtHFhx2cP
- DoZzmOMhUIuJIO8pqcpEw==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:zMuUmplpWWA=:qZliwT+QJQcIzLgYhfk1tu
- faf9VcWagaDWq9kSsWHg3JHpWfmInD8+DtnJYzo/cmakdvta7CAVCIqeHsuVMxI0jvTLeYPWN
- W4OU9FiIefiTO5VssavbOb94klykbs/k2U22eM0cXGRWFZZknItpXFPlPtAOk2ULJ23J0/TXb
- TYF7HFvKUB6ekiXUF6DhuUtJJKONaamBo6+cB69/CUAAmLsW0YzE/4v0WKtRj1t+Ovra/INm/
- F7Y4hi0UFWJjDZzpIqql4jJComYz7hvj4XjusKpbnWVpRSJ8Vji3Ns2ZmszYuwsH/Te3AsB2X
- 1JFvzJ+s1++8Y0PmSOQq+3Tg9YyrIttPWmhQTgPWfkz10RD4j78djkaNVw7Vh+f1Yn4PykJAX
- Sc4jLeZ5mSMyT2B3PBfYWnkH2ugOT/r936o0I5RCQ/RCbRhtkGU5PucAmX7CoBONI3R1zSvcy
- PHsthCwehMNOmDWtSHb/PjZvFm7yRc8HIrZu52/Kj1u11XzE2rsnQoKSJxe2Z/XGxR058Gs1G
- yrw+yfUjp149vu7RPOYhWex2y4mEj/ISeb6i7qvDAz/45M6NKysmIiSI5+30c1SBvT5t/z8XG
- JGyiTNIlpOXCBKq1+rYkWSpFilrMXbZCGUkVObE8nztE0TtXiFbUETJejiBUntj/+XkHOUkja
- VvW+sAg4/qtwOgt5mEC75FPaELVbWx/4JuANjWmQ1oSx4JqjRfAnf2wDvZWM+iwg5PS4=
+X-Provags-ID: V03:K0:vepfLDJGfJeS3SkmxoExcga3zrrnB6J74u5Ef3PvPQHXTsaymxE
+ PrnsbUsrDTz3FtF5PT4+hjjyoZjGcJDtnSm71C0dGiJGmZsw1k9UTQ4FWIQkE6z8ml/ojVi
+ +JxGwR91Eu6/1VyUn9of56vIEyOCruA+5cOZNYgbbSOdFOpMV9wtNrwhkP7wsAAGdgWQGTz
+ KLl2VIrE8pheE60B3/Euw==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:dK0gL/aRSLM=:faLg2k/HGXr9rVbbSIV0t5
+ 20bx/CRVDXDIVSQJFIw7eJO8ttf6QZZCPLQM4LmBVIeoExykQQ23c+Zaw4GHwPIzAXoJ/fFtN
+ /d+bXBWKiCHHRiok1Hard2Bcs++hooVVL6oMLB9tCco/w1Wsef2dChkvd2uFsc2ptJerIodAc
+ /sMaZf011WAeiKMkSwoylZB0djrFNkgqRmPeCq5T05vQRHh+8IZ5Pbnw8bgUUX8eOx59yLwkW
+ 4boDt/uK3iuhazzYUh6ASPSXIsuBz+LFmjzAsIG3qM1nzzZC1FVzF7i8pakv3KMTuxF4MLWG0
+ jDlpmwtyAJv4n650WgmkxdOVdAxNFYTH7oGAg/z8yIZbtSXG2DOGSVASZvxzmMU4psJuU4gqQ
+ Eo6UTVEQUBgCeN5ep3bve1kVwWHut4zyiaKdNsBnbonghrNeazSuaNg7xLSYK8Y/Tf1XDRd6y
+ 0XeZVrEVuqqyWRwIEUMnHribtJGCXcVGTPUK8KJQVt1WLc/4jcXSRBTF6fgY6i1n9RVIO1/MU
+ SvVyxd4yI6QLMysnbPpXIDJVnEjSOC8EsJf4dtvc/Nc3MLvZd3eUGl02AAPE3ee25jpE5EC93
+ 1s5JB5ybAxQcaoXeuAml/28zzPGBRGpfWPwyxUpNPl0IQVfIhSjiWaYXhI2L4M1FYQcMg9CRB
+ GuDtT0JHglQeE3Y8BJ9CQb/fiPL+x+vFzd4I5IJ99ucF7f591bR6QlZD7h7/e73+nKYo=
 Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57855
+X-archive-position: 57856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,45 +54,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Kevin Cernekee <cernekee@gmail.com>
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
-Commit dd9e0165f1edf9c5af0ceeabae592f9911a1569d upstream.
+Commit 7b2cae08b63e2acc94139c3dda557ac84165b327 upstream.
 
-Commit 078a55fc824c1 ("Delete __cpuinit/__CPUINIT usage from MIPS code")
-removed our __CPUINIT directives, so now the ".previous" directives
-are superfluous.  Remove them.
+Caller (generic PCI code) already do proper locking so no need to add
+another one here.
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-Cc: f.fainelli@gmail.com
-Cc: mbizon@freebox.fr
-Cc: jogo@openwrt.org
-Cc: jfraser@broadcom.com
-Cc: linux-mips@linux-mips.org
-Cc: devicetree@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/8156/
+Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc: Linux MIPS <linux-mips@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/7601/
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/kernel/bmips_vec.S | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/mips/pci/ops-pmcmsp.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/arch/mips/kernel/bmips_vec.S b/arch/mips/kernel/bmips_vec.S
-index d4614d31d828..d9495f3f3fad 100644
---- a/arch/mips/kernel/bmips_vec.S
-+++ b/arch/mips/kernel/bmips_vec.S
-@@ -211,7 +211,6 @@ bmips_reset_nmi_vec_end:
- END(bmips_reset_nmi_vec)
+diff --git a/arch/mips/pci/ops-pmcmsp.c b/arch/mips/pci/ops-pmcmsp.c
+index 50034f985be1..dd2d9f7e9412 100644
+--- a/arch/mips/pci/ops-pmcmsp.c
++++ b/arch/mips/pci/ops-pmcmsp.c
+@@ -193,8 +193,6 @@ static void pci_proc_init(void)
+ }
+ #endif /* CONFIG_PROC_FS && PCI_COUNTERS */
  
- 	.set	pop
--	.previous
- 
- /***********************************************************************
-  * CPU1 warm restart vector (used for second and subsequent boots).
-@@ -286,5 +285,3 @@ LEAF(bmips_enable_xks01)
- 	jr	ra
- 
- END(bmips_enable_xks01)
+-static DEFINE_SPINLOCK(bpci_lock);
 -
--	.previous
+ /*****************************************************************************
+  *
+  *  STRUCT: pci_io_resource
+@@ -368,7 +366,6 @@ int msp_pcibios_config_access(unsigned char access_type,
+ 	struct msp_pci_regs *preg = (void *)PCI_BASE_REG;
+ 	unsigned char bus_num = bus->number;
+ 	unsigned char dev_fn = (unsigned char)devfn;
+-	unsigned long flags;
+ 	unsigned long intr;
+ 	unsigned long value;
+ 	static char pciirqflag;
+@@ -401,10 +398,7 @@ int msp_pcibios_config_access(unsigned char access_type,
+ 	}
+ 
+ #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
+-	local_irq_save(flags);
+ 	vpe_status = dvpe();
+-#else
+-	spin_lock_irqsave(&bpci_lock, flags);
+ #endif
+ 
+ 	/*
+@@ -457,9 +451,6 @@ int msp_pcibios_config_access(unsigned char access_type,
+ 
+ #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
+ 		evpe(vpe_status);
+-		local_irq_restore(flags);
+-#else
+-		spin_unlock_irqrestore(&bpci_lock, flags);
+ #endif
+ 
+ 		return -1;
+@@ -467,9 +458,6 @@ int msp_pcibios_config_access(unsigned char access_type,
+ 
+ #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
+ 	evpe(vpe_status);
+-	local_irq_restore(flags);
+-#else
+-	spin_unlock_irqrestore(&bpci_lock, flags);
+ #endif
+ 
+ 	return PCIBIOS_SUCCESSFUL;
 -- 
 2.9.0

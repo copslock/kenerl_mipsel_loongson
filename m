@@ -1,52 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2017 21:51:24 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.134]:65470 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993937AbdEETtM24-3p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2017 21:49:12 +0200
-Received: from wuerfel.lan ([78.42.17.5]) by mrelayeu.kundenserver.de
- (mreue002 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0MZKwe-1dKxmU2R3s-00KvK5; Fri, 05 May 2017 21:48:38 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Ben Hutchings <ben@decadent.org.uk>
-Cc:     stable@vger.kernel.org, Alban Bedel <albeu@free.fr>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2017 21:57:45 +0200 (CEST)
+Received: from mail-io0-f194.google.com ([209.85.223.194]:34871 "EHLO
+        mail-io0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993935AbdEET5bcWPjp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2017 21:57:31 +0200
+Received: by mail-io0-f194.google.com with SMTP id v34so3739119iov.2;
+        Fri, 05 May 2017 12:57:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=8HQgoRiQqnSDBqglJmOzCwTysv2cmJncsjQeVhbyc6Q=;
+        b=GpcqSdOIXy6TiEVjEVAQuGzk3SCD3YQ3tAIag6rXUKJ58hh2P+6CFbEuk+ROe50PYP
+         1IMoMPOQeXVY3AJHcGhjtVs3rpb/19agh/26o8zw8XUV0Y7JkY4bNm3GSqXoGKnCahmx
+         HQ4S7XgHDZnDRRuYdmDd3mVXxzSc+ys5eBxWRvDp7TfQl/is5hi0rgt9Ib5Wor0+w4dl
+         j0vNoyCx1u67qlJ3AqDMjv93dkTcijluLo/dJo/szIh8PMUyxuoCJTAvG6hU7HoMerpc
+         LkD5xvZsJ6HCssiYJVI7aZ4rrZQ9rvPR0wM6fsO354Vb3ReyVteFeVN4S50aJX46Wf/F
+         ubeg==
+X-Gm-Message-State: AODbwcBVZIJkrDT/rYHc1kJS2y98J5sw9+BJaDxt5sQTS4LntFJNIaJ7
+        Ltv+EOzOsSh2rw==
+X-Received: by 10.202.173.65 with SMTP id w62mr1687798oie.136.1494014245855;
+        Fri, 05 May 2017 12:57:25 -0700 (PDT)
+Received: from localhost (66-90-148-125.dyn.grandenetworks.net. [66.90.148.125])
+        by smtp.gmail.com with ESMTPSA id j34sm3007869ote.8.2017.05.05.12.57.25
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 05 May 2017 12:57:25 -0700 (PDT)
+Date:   Fri, 5 May 2017 14:57:24 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 3.16-stable 85/87] MIPS: Fix the build on jz4740 after removing the custom gpio.h
-Date:   Fri,  5 May 2017 21:47:43 +0200
-Message-Id: <20170505194745.3627137-86-arnd@arndb.de>
-X-Mailer: git-send-email 2.9.0
-In-Reply-To: <20170505194745.3627137-1-arnd@arndb.de>
-References: <20170505194745.3627137-1-arnd@arndb.de>
-X-Provags-ID: V03:K0:J6mrv7o+7gW9TbulpeDYFh+TvZKTE+3NT9/j4UKAC/eCkpRuQlN
- RQ1ReEhVO0qkA4NIt9TKvCZ7ECb5mlfIhBGQlqw1WVPSyMU9m8xYEVligF8r8TuYiKLyW7f
- 66M75T1mwNDCLaCiibvPNy4zMr3WbcRqFAZfxIYlnx873aBfVhpwWVcsx6lUJNAP/+7jmGO
- coK3RrsNt6hFpWS7FMmIQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:b31yLW2N8aU=:cqJYHTu4Eo8x50KNsPXkLg
- fMaJgFGUHRmTIS8oYrBxwvmFg44gjfyigUdgm60l0ThEM529xYN7iNGXtK5pmsUetLYZxsYI1
- Qa1VIhChrKo3xAbdC+oQjUEQwy+PV4xedjQCuwckyKbTyeY+BRbnpwV5ikFx38zH10le8T1Rj
- rIioqb8OWVUbedEvdyUo+uaKqiRrR7w4FPts4mb8NtBTTGuJ5eabJHOliXFnEiP7lWOY6r4nf
- Z1GwWPDndEt3goSBOrjYLyFch7z4ucPsrlgYEUlEAR8gQf9welaqF+xe+Q+pn8hjZ8V08oCQi
- Zrc613vSz2zMOWWdJhclBHQe+z9dzl+gGLYg7gfGOLH1jqDny66GMKlrm3mujb75RMt975jJ+
- jLEUrNUnKjfxxj8AEFMiLgOv+grf3Sj9K6BWbTLth1LDkkW36tMUR6W3LTs9YZnHNV5hWskIC
- 9mySlV9DEypVHVs7L2w2CsMcHF9FPcPTlVRD5m17iaxWCsYCV/XWItRHb4lsl2rDLNITCIOCE
- UnIYjidkwf5iUHjs2IpNsh6uzRWdBKl+cI+ckAhti+pSx5gDTkKr98DzYnP+/8du8X2RIjcPO
- dI1UYkx2ifjSnwSYL3bm4H+RefpMYQgzbCFAL4uMAGNFxOpGV0ZQZziBzyZjb1TfayMCeIWu8
- taeVpK4ZR+ix0zM02dKzbPdPlEkwT9lQfqIvLAnYWFzWIdM8gNw3fCgfh3xHlru+smYI=
-Return-Path: <arnd@arndb.de>
+        Boris Brezillon <boris.brezillon@free-electrons.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten ter Huurne <maarten@treewalker.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Burton <paul.burton@imgtec.com>, james.hogan@imgtec.com,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v5 02/14] dt/bindings: Document gpio-ingenic
+Message-ID: <20170505195724.mph4uov3vd52hscm@rob-hp-laptop>
+References: <20170402204244.14216-2-paul@crapouillou.net>
+ <20170428200824.10906-1-paul@crapouillou.net>
+ <20170428200824.10906-3-paul@crapouillou.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170428200824.10906-3-paul@crapouillou.net>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57858
+X-archive-position: 57859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,54 +72,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Alban Bedel <albeu@free.fr>
+On Fri, Apr 28, 2017 at 10:08:12PM +0200, Paul Cercueil wrote:
+> This commit adds documentation for the devicetree bindings of the
+> gpio-ingenic driver, which handles GPIOs of the Ingenic SoCs
+> currently supported by the Linux kernel.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
+>  .../devicetree/bindings/gpio/ingenic,gpio.txt      | 46 ++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/ingenic,gpio.txt
+> 
+>  v2: New patch
+>  v3: No changes
+>  v4: Update for the v4 version of the gpio-ingenic driver
+>  v5: Remove gpio-bank-... compatible strings, and add 'reg' property
 
-Commit 8293821972679f185562c9d2bfadd897fac40243 upstream.
-
-Somehow the wrong version of the patch to remove the use of custom
-gpio.h on mips has been merged. This patch add the missing fixes for a
-build error on jz4740 because linux/gpio.h doesn't provide any machine
-specfics definitions anymore.
-
-Signed-off-by: Alban Bedel <albeu@free.fr>
-Cc: Paul Burton <paul.burton@imgtec.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Brian Norris <computersforpeace@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-mips@linux-mips.org
-Cc: linux-kernel@vger.kernel.org
-Patchwork: https://patchwork.linux-mips.org/patch/11089/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/jz4740/board-qi_lb60.c | 1 +
- arch/mips/jz4740/gpio.c          | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
-index 088e92a79ae6..7da9ff143499 100644
---- a/arch/mips/jz4740/board-qi_lb60.c
-+++ b/arch/mips/jz4740/board-qi_lb60.c
-@@ -25,6 +25,7 @@
- #include <linux/power/jz4740-battery.h>
- #include <linux/power/gpio-charger.h>
- 
-+#include <asm/mach-jz4740/gpio.h>
- #include <asm/mach-jz4740/jz4740_fb.h>
- #include <asm/mach-jz4740/jz4740_mmc.h>
- #include <asm/mach-jz4740/jz4740_nand.h>
-diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
-index 00b798d2fb7c..000d2d91b704 100644
---- a/arch/mips/jz4740/gpio.c
-+++ b/arch/mips/jz4740/gpio.c
-@@ -27,6 +27,7 @@
- #include <linux/seq_file.h>
- 
- #include <asm/mach-jz4740/base.h>
-+#include <asm/mach-jz4740/gpio.h>
- 
- #include "irq.h"
- 
--- 
-2.9.0
+Acked-by: Rob Herring <robh@kernel.org>

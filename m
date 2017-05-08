@@ -1,43 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 May 2017 00:05:21 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:36112 "EHLO
-        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993875AbdEGWFOMJsG7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 May 2017 00:05:14 +0200
-Subject: Re: [PATCH v5 04/14] GPIO: Add gpio-ingenic driver
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-References: <20170402204244.14216-2-paul@crapouillou.net>
- <20170428200824.10906-1-paul@crapouillou.net>
- <20170428200824.10906-5-paul@crapouillou.net>
-Cc:     Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>, james.hogan@imgtec.com,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org
-From:   Paul Cercueil <paul@crapouillou.net>
-Message-ID: <3a779fca-5a56-44e5-2acf-12b8abdaf906@crapouillou.net>
-Date:   Mon, 8 May 2017 00:05:10 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 May 2017 17:25:41 +0200 (CEST)
+Received: from mx2.rt-rk.com ([89.216.37.149]:44011 "EHLO mail.rt-rk.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993911AbdEHPZebMGqC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 8 May 2017 17:25:34 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rt-rk.com (Postfix) with ESMTP id AB4C21A495B;
+        Mon,  8 May 2017 17:25:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at rt-rk.com
+Received: from rtrkn153 (rtrkn153.domain.local [192.168.236.145])
+        by mail.rt-rk.com (Postfix) with ESMTPSA id 94C871A4958;
+        Mon,  8 May 2017 17:25:28 +0200 (CEST)
+From:   "Petar Jovanovic" <petar.jovanovic@rt-rk.com>
+To:     "'Petar Jovanovic'" <Petar.Jovanovic@imgtec.com>,
+        <linux-mips@linux-mips.org>
+Cc:     <ralf@linux-mips.org>, <david.daney@cavium.com>
+References: <1489600751-82884-1-git-send-email-petar.jovanovic@rt-rk.com>,<001b01d2ae25$d7554b80$85ffe280$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org>
+In-Reply-To: <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org>
+Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and mips64r1
+Date:   Mon, 8 May 2017 17:25:28 +0200
+Message-ID: <002c01d2c80f$52e66060$f8b32120$@rt-rk.com>
 MIME-Version: 1.0
-In-Reply-To: <20170428200824.10906-5-paul@crapouillou.net>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Type: text/plain;
+        charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <paul@outils.crapouillou.net>
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: AQFk0u1L5Xxe++MwOaWf1NpDgdbVAQD+Q8JBAi8P7/eirQ4FEA==
+Content-Language: en-us
+Return-Path: <petar.jovanovic@rt-rk.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57860
+X-archive-position: 57861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: petar.jovanovic@rt-rk.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,466 +47,65 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-It looks like the gpio_get_value() is broken on jz4740.
+Can anyone take a look at this? Thank you.
 
-I'll send a v6.
+-----Original Message-----
+From: Petar Jovanovic [mailto:Petar.Jovanovic@imgtec.com] 
+Sent: Tuesday, April 25, 2017 7:25 PM
+To: Petar Jovanovic <petar.jovanovic@rt-rk.com>; linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org; david.daney@cavium.com
+Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
+mips64r1
 
-- Paul
+ping
+________________________________________
+From: Petar Jovanovic [petar.jovanovic@rt-rk.com]
+Sent: Wednesday, April 05, 2017 6:01 PM
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org; david.daney@cavium.com; Petar Jovanovic
+Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
+mips64r1
 
-On 28/04/2017 22:08, Paul Cercueil wrote:
-> This driver handles the GPIOs of all the Ingenic JZ47xx SoCs
-> currently supported by the upsteam Linux kernel.
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->   drivers/gpio/Kconfig        |  10 ++
->   drivers/gpio/Makefile       |   1 +
->   drivers/gpio/gpio-ingenic.c | 399 ++++++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 410 insertions(+)
->   create mode 100644 drivers/gpio/gpio-ingenic.c
->
->   v2: Consider it's a new patch. Completely rewritten from v1.
->   v3: Add missing include <linux/pinctrl/consumer.h> and drop semicolon after }
->   v4: Completely rewritten from v3.
->   v5: Get bank number from 'reg' property; drop dependency on PINCTRL_INGENIC
->       (note: selecting PINCTRL would cause cyclic Kconfig dependencies, that's
->        why I just dropped the dependency on PINCTRL_INGENIC)
->
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index 05043071fc98..7a5f9cf123c1 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -241,6 +241,16 @@ config GPIO_ICH
->   
->   	  If unsure, say N.
->   
-> +config GPIO_INGENIC
-> +	tristate "Ingenic JZ47xx SoCs GPIO support"
-> +	depends on MACH_INGENIC || COMPILE_TEST
-> +	select GPIOLIB_IRQCHIP
-> +	help
-> +	  Say yes here to support the GPIO functionality present on the
-> +	  JZ4740 and JZ4780 SoCs from Ingenic.
-> +
-> +	  If unsure, say N.
-> +
->   config GPIO_IOP
->   	tristate "Intel IOP GPIO"
->   	depends on ARCH_IOP32X || ARCH_IOP33X || COMPILE_TEST
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index becb96c724fe..3fceb4ab3ca7 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -54,6 +54,7 @@ obj-$(CONFIG_GPIO_GPIO_MM)	+= gpio-gpio-mm.o
->   obj-$(CONFIG_GPIO_GRGPIO)	+= gpio-grgpio.o
->   obj-$(CONFIG_HTC_EGPIO)		+= gpio-htc-egpio.o
->   obj-$(CONFIG_GPIO_ICH)		+= gpio-ich.o
-> +obj-$(CONFIG_GPIO_INGENIC)	+= gpio-ingenic.o
->   obj-$(CONFIG_GPIO_IOP)		+= gpio-iop.o
->   obj-$(CONFIG_GPIO_IT87)		+= gpio-it87.o
->   obj-$(CONFIG_GPIO_JANZ_TTL)	+= gpio-janz-ttl.o
-> diff --git a/drivers/gpio/gpio-ingenic.c b/drivers/gpio/gpio-ingenic.c
-> new file mode 100644
-> index 000000000000..34e9339bd815
-> --- /dev/null
-> +++ b/drivers/gpio/gpio-ingenic.c
-> @@ -0,0 +1,399 @@
-> +/*
-> + * Ingenic JZ47xx GPIO driver
-> + *
-> + * Copyright (c) 2017 Paul Cercueil <paul@crapouillou.net>
-> + *
-> + * License terms: GNU General Public License (GPL) version 2
-> + */
-> +
-> +#include <linux/gpio/driver.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/module.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_device.h>
-> +#include <linux/of_irq.h>
-> +#include <linux/pinctrl/consumer.h>
-> +#include <linux/regmap.h>
-> +
-> +#define GPIO_PIN	0x00
-> +#define GPIO_MSK	0x20
-> +
-> +#define JZ4740_GPIO_DATA	0x10
-> +#define JZ4740_GPIO_SELECT	0x50
-> +#define JZ4740_GPIO_DIR		0x60
-> +#define JZ4740_GPIO_TRIG	0x70
-> +#define JZ4740_GPIO_FLAG	0x80
-> +
-> +#define JZ4770_GPIO_INT		0x10
-> +#define JZ4770_GPIO_PAT1	0x30
-> +#define JZ4770_GPIO_PAT0	0x40
-> +#define JZ4770_GPIO_FLAG	0x50
-> +
-> +#define REG_SET(x) ((x) + 0x4)
-> +#define REG_CLEAR(x) ((x) + 0x8)
-> +
-> +enum jz_version {
-> +	ID_JZ4740,
-> +	ID_JZ4770,
-> +	ID_JZ4780,
-> +};
-> +
-> +struct ingenic_gpio_chip {
-> +	struct regmap *map;
-> +	struct gpio_chip gc;
-> +	struct irq_chip irq_chip;
-> +	unsigned int irq, reg_base;
-> +	enum jz_version version;
-> +};
-> +
-> +static u32 gpio_ingenic_read_reg(struct ingenic_gpio_chip *jzgc, u8 reg)
-> +{
-> +	unsigned int val;
-> +
-> +	regmap_read(jzgc->map, jzgc->reg_base + reg, &val);
-> +
-> +	return (u32) val;
-> +}
-> +
-> +static void gpio_ingenic_set_bit(struct ingenic_gpio_chip *jzgc,
-> +		u8 reg, u8 offset, bool set)
-> +{
-> +	if (set)
-> +		reg = REG_SET(reg);
-> +	else
-> +		reg = REG_CLEAR(reg);
-> +
-> +	regmap_write(jzgc->map, jzgc->reg_base + reg, BIT(offset));
-> +}
-> +
-> +static inline bool gpio_get_value(struct ingenic_gpio_chip *jzgc, u8 offset)
-> +{
-> +	unsigned int val;
-> +
-> +	if (jzgc->version >= ID_JZ4770)
-> +		val = gpio_ingenic_read_reg(jzgc, GPIO_PIN);
-> +	else
-> +		val = gpio_ingenic_read_reg(jzgc, JZ4740_GPIO_DATA);
-> +
-> +	return !!(val & BIT(offset));
-> +}
-> +
-> +static void gpio_set_value(struct ingenic_gpio_chip *jzgc, u8 offset, int value)
-> +{
-> +	if (jzgc->version >= ID_JZ4770)
-> +		gpio_ingenic_set_bit(jzgc, JZ4770_GPIO_PAT0, offset, !!value);
-> +	else
-> +		gpio_ingenic_set_bit(jzgc, JZ4740_GPIO_DATA, offset, !!value);
-> +}
-> +
-> +static void irq_set_type(struct ingenic_gpio_chip *jzgc,
-> +		u8 offset, unsigned int type)
-> +{
-> +	u8 reg1, reg2;
-> +
-> +	if (jzgc->version >= ID_JZ4770) {
-> +		reg1 = JZ4770_GPIO_PAT1;
-> +		reg2 = JZ4770_GPIO_PAT0;
-> +	} else {
-> +		reg1 = JZ4740_GPIO_TRIG;
-> +		reg2 = JZ4740_GPIO_DIR;
-> +	}
-> +
-> +	switch (type) {
-> +	case IRQ_TYPE_EDGE_RISING:
-> +		gpio_ingenic_set_bit(jzgc, reg2, offset, true);
-> +		gpio_ingenic_set_bit(jzgc, reg1, offset, true);
-> +		break;
-> +	case IRQ_TYPE_EDGE_FALLING:
-> +		gpio_ingenic_set_bit(jzgc, reg2, offset, false);
-> +		gpio_ingenic_set_bit(jzgc, reg1, offset, true);
-> +		break;
-> +	case IRQ_TYPE_LEVEL_HIGH:
-> +		gpio_ingenic_set_bit(jzgc, reg2, offset, true);
-> +		gpio_ingenic_set_bit(jzgc, reg1, offset, false);
-> +		break;
-> +	case IRQ_TYPE_LEVEL_LOW:
-> +	default:
-> +		gpio_ingenic_set_bit(jzgc, reg2, offset, false);
-> +		gpio_ingenic_set_bit(jzgc, reg1, offset, false);
-> +		break;
-> +	}
-> +}
-> +
-> +static void ingenic_gpio_irq_mask(struct irq_data *irqd)
-> +{
-> +	struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +
-> +	gpio_ingenic_set_bit(jzgc, GPIO_MSK, irqd->hwirq, true);
-> +}
-> +
-> +static void ingenic_gpio_irq_unmask(struct irq_data *irqd)
-> +{
-> +	struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +
-> +	gpio_ingenic_set_bit(jzgc, GPIO_MSK, irqd->hwirq, false);
-> +}
-> +
-> +static void ingenic_gpio_irq_enable(struct irq_data *irqd)
-> +{
-> +	struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +	int irq = irqd->hwirq;
-> +
-> +	if (jzgc->version >= ID_JZ4770)
-> +		gpio_ingenic_set_bit(jzgc, JZ4770_GPIO_INT, irq, true);
-> +	else
-> +		gpio_ingenic_set_bit(jzgc, JZ4740_GPIO_SELECT, irq, true);
-> +
-> +	ingenic_gpio_irq_unmask(irqd);
-> +}
-> +
-> +static void ingenic_gpio_irq_disable(struct irq_data *irqd)
-> +{
-> +	struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +	int irq = irqd->hwirq;
-> +
-> +	ingenic_gpio_irq_mask(irqd);
-> +
-> +	if (jzgc->version >= ID_JZ4770)
-> +		gpio_ingenic_set_bit(jzgc, JZ4770_GPIO_INT, irq, false);
-> +	else
-> +		gpio_ingenic_set_bit(jzgc, JZ4740_GPIO_SELECT, irq, false);
-> +}
-> +
-> +static void ingenic_gpio_irq_ack(struct irq_data *irqd)
-> +{
-> +	struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +	int irq = irqd->hwirq;
-> +	bool high;
-> +
-> +	if (irqd_get_trigger_type(irqd) == IRQ_TYPE_EDGE_BOTH) {
-> +		/*
-> +		 * Switch to an interrupt for the opposite edge to the one that
-> +		 * triggered the interrupt being ACKed.
-> +		 */
-> +		high = gpio_get_value(jzgc, irq);
-> +		if (high)
-> +			irq_set_type(jzgc, irq, IRQ_TYPE_EDGE_FALLING);
-> +		else
-> +			irq_set_type(jzgc, irq, IRQ_TYPE_EDGE_RISING);
-> +	}
-> +
-> +	if (jzgc->version >= ID_JZ4770)
-> +		gpio_ingenic_set_bit(jzgc, JZ4770_GPIO_FLAG, irq, false);
-> +	else
-> +		gpio_ingenic_set_bit(jzgc, JZ4740_GPIO_DATA, irq, true);
-> +}
-> +
-> +static int ingenic_gpio_irq_set_type(struct irq_data *irqd, unsigned int type)
-> +{
-> +	struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +
-> +	switch (type) {
-> +	case IRQ_TYPE_EDGE_BOTH:
-> +	case IRQ_TYPE_EDGE_RISING:
-> +	case IRQ_TYPE_EDGE_FALLING:
-> +		irq_set_handler_locked(irqd, handle_edge_irq);
-> +		break;
-> +	case IRQ_TYPE_LEVEL_HIGH:
-> +	case IRQ_TYPE_LEVEL_LOW:
-> +		irq_set_handler_locked(irqd, handle_level_irq);
-> +		break;
-> +	default:
-> +		irq_set_handler_locked(irqd, handle_bad_irq);
-> +	}
-> +
-> +	if (type == IRQ_TYPE_EDGE_BOTH) {
-> +		/*
-> +		 * The hardware does not support interrupts on both edges. The
-> +		 * best we can do is to set up a single-edge interrupt and then
-> +		 * switch to the opposing edge when ACKing the interrupt.
-> +		 */
-> +		bool high = gpio_get_value(jzgc, irqd->hwirq);
-> +
-> +		type = high ? IRQ_TYPE_EDGE_FALLING : IRQ_TYPE_EDGE_RISING;
-> +	}
-> +
-> +	irq_set_type(jzgc, irqd->hwirq, type);
-> +	return 0;
-> +}
-> +
-> +static int ingenic_gpio_irq_set_wake(struct irq_data *irqd, unsigned int on)
-> +{
-> +	struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +
-> +	return irq_set_irq_wake(jzgc->irq, on);
-> +}
-> +
-> +static void ingenic_gpio_irq_handler(struct irq_desc *desc)
-> +{
-> +	struct gpio_chip *gc = irq_desc_get_handler_data(desc);
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +	struct irq_chip *irq_chip = irq_data_get_irq_chip(&desc->irq_data);
-> +	unsigned long flag, i;
-> +
-> +	chained_irq_enter(irq_chip, desc);
-> +
-> +	if (jzgc->version >= ID_JZ4770)
-> +		flag = gpio_ingenic_read_reg(jzgc, JZ4770_GPIO_FLAG);
-> +	else
-> +		flag = gpio_ingenic_read_reg(jzgc, JZ4740_GPIO_FLAG);
-> +
-> +	for_each_set_bit(i, &flag, 32)
-> +		generic_handle_irq(irq_linear_revmap(gc->irqdomain, i));
-> +	chained_irq_exit(irq_chip, desc);
-> +}
-> +
-> +static void ingenic_gpio_set(struct gpio_chip *gc,
-> +		unsigned int offset, int value)
-> +{
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +
-> +	gpio_set_value(jzgc, offset, value);
-> +}
-> +
-> +static int ingenic_gpio_get(struct gpio_chip *gc, unsigned int offset)
-> +{
-> +	struct ingenic_gpio_chip *jzgc = gpiochip_get_data(gc);
-> +
-> +	return (int) gpio_get_value(jzgc, offset);
-> +}
-> +
-> +static int ingenic_gpio_direction_input(struct gpio_chip *gc,
-> +		unsigned int offset)
-> +{
-> +	return pinctrl_gpio_direction_input(gc->base + offset);
-> +}
-> +
-> +static int ingenic_gpio_direction_output(struct gpio_chip *gc,
-> +		unsigned int offset, int value)
-> +{
-> +	ingenic_gpio_set(gc, offset, value);
-> +	return pinctrl_gpio_direction_output(gc->base + offset);
-> +}
-> +
-> +static const struct of_device_id ingenic_gpio_of_match[] = {
-> +	{ .compatible = "ingenic,jz4740-gpio", .data = (void *)ID_JZ4740 },
-> +	{ .compatible = "ingenic,jz4770-gpio", .data = (void *)ID_JZ4770 },
-> +	{ .compatible = "ingenic,jz4780-gpio", .data = (void *)ID_JZ4780 },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, ingenic_gpio_of_match);
-> +
-> +static int ingenic_gpio_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	const struct of_device_id *of_id = of_match_device(
-> +			ingenic_gpio_of_match, dev);
-> +	struct ingenic_gpio_chip *jzgc;
-> +	u32 bank;
-> +	int err;
-> +
-> +	jzgc = devm_kzalloc(dev, sizeof(*jzgc), GFP_KERNEL);
-> +	if (!jzgc)
-> +		return -ENOMEM;
-> +
-> +	jzgc->map = dev_get_drvdata(dev->parent);
-> +	if (!jzgc->map) {
-> +		dev_err(dev, "Cannot get parent regmap\n");
-> +		return -ENXIO;
-> +	}
-> +
-> +	err = of_property_read_u32(dev->of_node, "reg", &bank);
-> +	if (err) {
-> +		dev_err(dev, "Cannot read \"reg\" property: %i\n", err);
-> +		return err;
-> +	}
-> +
-> +	jzgc->reg_base = bank * 0x100;
-> +
-> +	jzgc->gc.label = devm_kasprintf(dev, GFP_KERNEL, "GPIO%c", 'A' + bank);
-> +	if (!jzgc->gc.label)
-> +		return -ENOMEM;
-> +
-> +	/* DO NOT EXPAND THIS: FOR BACKWARD GPIO NUMBERSPACE COMPATIBIBILITY
-> +	 * ONLY: WORK TO TRANSITION CONSUMERS TO USE THE GPIO DESCRIPTOR API IN
-> +	 * <linux/gpio/consumer.h> INSTEAD.
-> +	 */
-> +	jzgc->gc.base = bank * 32;
-> +
-> +	jzgc->gc.ngpio = 32;
-> +	jzgc->gc.parent = dev;
-> +	jzgc->gc.of_node = dev->of_node;
-> +	jzgc->gc.owner = THIS_MODULE;
-> +	jzgc->version = (enum jz_version)of_id->data;
-> +
-> +	jzgc->gc.set = ingenic_gpio_set;
-> +	jzgc->gc.get = ingenic_gpio_get;
-> +	jzgc->gc.direction_input = ingenic_gpio_direction_input;
-> +	jzgc->gc.direction_output = ingenic_gpio_direction_output;
-> +
-> +	if (of_property_read_bool(dev->of_node, "gpio-ranges")) {
-> +		jzgc->gc.request = gpiochip_generic_request;
-> +		jzgc->gc.free = gpiochip_generic_free;
-> +	}
-> +
-> +	err = devm_gpiochip_add_data(dev, &jzgc->gc, jzgc);
-> +	if (err)
-> +		return err;
-> +
-> +	jzgc->irq = irq_of_parse_and_map(dev->of_node, 0);
-> +	if (!jzgc->irq)
-> +		return -EINVAL;
-> +
-> +	jzgc->irq_chip.name = jzgc->gc.label;
-> +	jzgc->irq_chip.irq_enable = ingenic_gpio_irq_enable;
-> +	jzgc->irq_chip.irq_disable = ingenic_gpio_irq_disable;
-> +	jzgc->irq_chip.irq_unmask = ingenic_gpio_irq_unmask;
-> +	jzgc->irq_chip.irq_mask = ingenic_gpio_irq_mask;
-> +	jzgc->irq_chip.irq_ack = ingenic_gpio_irq_ack;
-> +	jzgc->irq_chip.irq_set_type = ingenic_gpio_irq_set_type;
-> +	jzgc->irq_chip.irq_set_wake = ingenic_gpio_irq_set_wake;
-> +	jzgc->irq_chip.flags = IRQCHIP_MASK_ON_SUSPEND;
-> +
-> +	err = gpiochip_irqchip_add(&jzgc->gc, &jzgc->irq_chip, 0,
-> +			handle_level_irq, IRQ_TYPE_NONE);
-> +	if (err)
-> +		return err;
-> +
-> +	gpiochip_set_chained_irqchip(&jzgc->gc, &jzgc->irq_chip,
-> +			jzgc->irq, ingenic_gpio_irq_handler);
-> +	return 0;
-> +}
-> +
-> +static int ingenic_gpio_remove(struct platform_device *pdev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver ingenic_gpio_driver = {
-> +	.driver = {
-> +		.name = "gpio-ingenic",
-> +		.of_match_table = of_match_ptr(ingenic_gpio_of_match),
-> +	},
-> +	.probe = ingenic_gpio_probe,
-> +	.remove = ingenic_gpio_remove,
-> +};
-> +
-> +static int __init ingenic_gpio_drv_register(void)
-> +{
-> +	return platform_driver_register(&ingenic_gpio_driver);
-> +}
-> +subsys_initcall(ingenic_gpio_drv_register);
-> +
-> +static void __exit ingenic_gpio_drv_unregister(void)
-> +{
-> +	platform_driver_unregister(&ingenic_gpio_driver);
-> +}
-> +module_exit(ingenic_gpio_drv_unregister);
-> +
-> +MODULE_AUTHOR("Paul Cercueil <paul@crapouillou.net>");
-> +MODULE_DESCRIPTION("Ingenic JZ47xx GPIO driver");
-> +MODULE_LICENSE("GPL");
+ping.
+
+-----Original Message-----
+From: Petar Jovanovic [mailto:petar.jovanovic@rt-rk.com]
+Sent: Wednesday, March 15, 2017 6:59 PM
+To: linux-mips@linux-mips.org
+Cc: ralf@linux-mips.org; david.daney@cavium.com; petar.jovanovic@imgtec.com;
+Petar Jovanovic <petar.jovanovic@rt-rk.com>
+Subject: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
+mips64r1
+
+Define Cavium Octeon as a CPU that has support for mips32r1, mips32r2 and
+mips64r1. This will affect show_cpuinfo() that will now correctly expose
+mips32r1, mips32r2 and mips64r1 as supported ISAs.
+
+Signed-off-by: Petar Jovanovic <petar.jovanovic@rt-rk.com>
+---
+ arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git
+a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+index bd8b9bb..a4f7986 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+@@ -46,9 +46,9 @@
+ #define cpu_has_64bits         1
+ #define cpu_has_octeon_cache   1
+ #define cpu_has_saa            octeon_has_saa()
+-#define cpu_has_mips32r1       0
+-#define cpu_has_mips32r2       0
+-#define cpu_has_mips64r1       0
++#define cpu_has_mips32r1       1
++#define cpu_has_mips32r2       1
++#define cpu_has_mips64r1       1
+ #define cpu_has_mips64r2       1
+ #define cpu_has_dsp            0
+ #define cpu_has_dsp2           0
+--
+1.9.1
+
+=

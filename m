@@ -1,47 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 May 2017 12:05:35 +0200 (CEST)
-Received: from mout.kundenserver.de ([212.227.126.135]:59063 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993948AbdEIKF1AOPKq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 May 2017 12:05:27 +0200
-Received: from wuerfel.lan ([78.42.17.5]) by mrelayeu.kundenserver.de
- (mreue004 [212.227.15.129]) with ESMTPA (Nemesis) id
- 0LqY9V-1dcOx23knJ-00e7Zh; Tue, 09 May 2017 12:05:18 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Ben Hutchings <ben@decadent.org.uk>
-Cc:     stable@vger.kernel.org,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 3.16-stable 11/14] MIPS: Fix a warning for virt_to_page
-Date:   Tue,  9 May 2017 12:04:59 +0200
-Message-Id: <20170509100502.1358298-12-arnd@arndb.de>
-X-Mailer: git-send-email 2.9.0
-In-Reply-To: <20170509100502.1358298-1-arnd@arndb.de>
-References: <20170509100502.1358298-1-arnd@arndb.de>
-X-Provags-ID: V03:K0:Kujrc62gdGYyW+7JwWFYLMRM5RXZuDYDrsFN8VktU6v/pTJfGTu
- WCYRNYBU5EQ2T7FEiHzun/RPmHt0zrUdutrehwOmIT5ZZ7mwt/qxiJQj41wNfZ28UxZTdWv
- O8FTp/6LiIKbufdU4DhxYyof8bvRatQ0QebvxmG2blB/ryNz1Z40SrjeRqViUcrnkWn6oYN
- TeS3doN60kLiqFYHV4NVQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:YeXBJDQ8A4Q=:PIwFHhR0wP3RiOcQ9g1Fl8
- v8/YqmwyoS2ObZKNDBHzHMJQTxBIEIZvYa4Ux6tK5kqrY0gI5TjWCsgJ22ICllEuZKzrmm69c
- EVobHvm5sRrZQfgn0TsGqedhY542ExPzLtm8nSouj2G12pOoUx/TM7c9JuMx9z2EdhjzkOOhN
- icRVhpnHDgrsace1DT8QifsZ7tIhcvMQhrX5Q/IB7uHA09FpOXLpaRCNVZF0PmtfixvQbBooT
- sKmFgaCWgUhmO7WgU7449Qvo+BiMFMX5Q6CpWq/0FjS/4dygGS9CnDQwiMtrbfp3mIYLgdRfs
- Yazx6A5qbBEDh16jAMuA898gdfqmo1m+ml13/oerpbgX35otCMmYYo+8NUXSdc/2egFFZY20M
- r7QACG5vDJktHatyTS7ebTMWOrS92lVB0xVN1fZ1en3pMkj7Vxv9AQpDUvu2QqRzlwel9UBl1
- IdnnYSpYMrNnVeKIZ1mHAvlRQUibJmLBcu7+kSO3BcXzFy0StS1Wk7R4k3B84+FzuvCZQyfuM
- EGPhRlDIRP3jpeKyXLQmvwy2uNUmQOx2dgFQIXBIGQrVHNZO5kjzNJhUA+8lpC66rnl9nNDKS
- fjOP+8d6YZz/AVbhcvoLNxqU+dPhMUFbsqiDiBVgnt/MhGB5O0dUeWyxUqWwwBKMyqRrwaLZP
- JpdrNF/EyDsSmp7H2JxZD7QwMM2pyo+qHrpUgW/Lu859Jb7NaDwOhsN/ZNiLbiydj0FI=
-Return-Path: <arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 May 2017 15:31:47 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:12576 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992126AbdEINblNPToX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 May 2017 15:31:41 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 53B254737A3A6
+        for <linux-mips@linux-mips.org>; Tue,  9 May 2017 14:31:31 +0100 (IST)
+Received: from [10.150.130.85] (10.150.130.85) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Tue, 9 May
+ 2017 14:31:34 +0100
+Subject: Re: Loongson 3 kernel crashes with PAGE_EXTENSION and PAGE_POISONING
+To:     <linux-mips@linux-mips.org>
+References: <20170421231358.yszzvk3qzvbpxcrs@aurel32.net>
+From:   James Cowgill <James.Cowgill@imgtec.com>
+Message-ID: <e8c309b2-a24f-bf08-504d-185f2408f663@imgtec.com>
+Date:   Tue, 9 May 2017 14:31:34 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
+MIME-Version: 1.0
+In-Reply-To: <20170421231358.yszzvk3qzvbpxcrs@aurel32.net>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.150.130.85]
+Return-Path: <James.Cowgill@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57862
+X-archive-position: 57863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: James.Cowgill@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -54,37 +43,55 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Hi,
 
-commit 4d5b3bdc0ecb0cf5b1e1598eeaaac4b5cb33868d upstream.
+On 22/04/17 00:13, Aurelien Jarno wrote:
+> Hi all,
+> 
+> The Debian kernel recently enabled the PAGE_EXTENSION and PAGE_POISONING
+> options. Unfortunately this causes a kernel crash very early during the
+> boot on Loongson 3 machines:
+[...]
+> Adding page_poison=0 to the command line improves the things a bit, the
+> kernel is able to boot, but crashes a bit later in different ways:
+[...]
+> Note that the malta and octeon flavours are not affected by this bug, so
+> it looks like Loongson 3 specific. Any help to find the root cause would
+> be appreciated.
 
-Compiling mm/highmem.c gives a warning: passing argument 1 of
-'virt_to_phys' makes pointer from integer without a cast
+I have investigated this a bit, although I haven't been able to get to
+the very bottom of it.
 
-Fixed by casting to void*
+The PAGE_EXTENSION option is a red herring. The bug actually occurs
+whenever a very large amount of .bss is used by the kernel. The loongson
+kernel allocates this .bss because it enables SPARSEMEM and
+SPARSEMEM_STATIC which has this documented side effect:
 
-Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
-Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/7337/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/include/asm/page.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+(From mm/Kconfig SPARSEMEM_STATIC)
+> # SPARSEMEM_EXTREME (which is the default) does some bootmem
+> # allocations when memory_present() is called.  If this cannot
+> # be done on your architecture, select this option.  However,
+> # statically allocating the mem_section[] array can potentially
+> # consume vast quantities of .bss, so be careful.
 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 5699ec3a71af..fd0347da36df 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -223,7 +223,8 @@ static inline int pfn_valid(unsigned long pfn)
- 
- #endif
- 
--#define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(kaddr)))
-+#define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys((void *)     \
-+								  (kaddr))))
- 
- extern int __virt_addr_valid(const volatile void *kaddr);
- #define virt_addr_valid(kaddr)						\
--- 
-2.9.0
+On Loongson about 16M of .bss is allocated for the mem_section array.
+When PAGE_EXTENSION is enabled, this doubles to 32M.
+
+Having a large .bss shifts the location where the dentry cache is
+allocated from to a region containing 0x0B020000. When the Loongson
+boots, something early on in the boot process writes to this physical
+address and places some garbage there which later crashes the kernel
+(since it's in the middle of the dentry cache). Unfortunately I have no
+idea what might be causing this, but if I hack arch/mips/kernel/setup.c
+to reserve 0x0B020000 - 0x0B040000 then the crashes disappear.
+
+The second workaround I have is to enable NUMA and disable
+SPARSEMEM_STATIC. This prevents the large .bss and I think it's safe
+because loongson64 uses some alternative memory initialization code when
+NUMA is enabled and only calls memory_present at the end. However, I'm
+not sure if it works on multi-node Loongsons (like the 3B) since I don't
+have any to test it on.
+
+Hopefully that helps a little.
+
+James

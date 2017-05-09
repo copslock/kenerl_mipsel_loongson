@@ -1,40 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 May 2017 17:25:41 +0200 (CEST)
-Received: from mx2.rt-rk.com ([89.216.37.149]:44011 "EHLO mail.rt-rk.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993911AbdEHPZebMGqC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 8 May 2017 17:25:34 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rt-rk.com (Postfix) with ESMTP id AB4C21A495B;
-        Mon,  8 May 2017 17:25:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at rt-rk.com
-Received: from rtrkn153 (rtrkn153.domain.local [192.168.236.145])
-        by mail.rt-rk.com (Postfix) with ESMTPSA id 94C871A4958;
-        Mon,  8 May 2017 17:25:28 +0200 (CEST)
-From:   "Petar Jovanovic" <petar.jovanovic@rt-rk.com>
-To:     "'Petar Jovanovic'" <Petar.Jovanovic@imgtec.com>,
-        <linux-mips@linux-mips.org>
-Cc:     <ralf@linux-mips.org>, <david.daney@cavium.com>
-References: <1489600751-82884-1-git-send-email-petar.jovanovic@rt-rk.com>,<001b01d2ae25$d7554b80$85ffe280$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org>
-In-Reply-To: <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org>
-Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and mips64r1
-Date:   Mon, 8 May 2017 17:25:28 +0200
-Message-ID: <002c01d2c80f$52e66060$f8b32120$@rt-rk.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 15.0
-Thread-Index: AQFk0u1L5Xxe++MwOaWf1NpDgdbVAQD+Q8JBAi8P7/eirQ4FEA==
-Content-Language: en-us
-Return-Path: <petar.jovanovic@rt-rk.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 May 2017 12:05:35 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.126.135]:59063 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993948AbdEIKF1AOPKq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 May 2017 12:05:27 +0200
+Received: from wuerfel.lan ([78.42.17.5]) by mrelayeu.kundenserver.de
+ (mreue004 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 0LqY9V-1dcOx23knJ-00e7Zh; Tue, 09 May 2017 12:05:18 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     stable@vger.kernel.org,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 3.16-stable 11/14] MIPS: Fix a warning for virt_to_page
+Date:   Tue,  9 May 2017 12:04:59 +0200
+Message-Id: <20170509100502.1358298-12-arnd@arndb.de>
+X-Mailer: git-send-email 2.9.0
+In-Reply-To: <20170509100502.1358298-1-arnd@arndb.de>
+References: <20170509100502.1358298-1-arnd@arndb.de>
+X-Provags-ID: V03:K0:Kujrc62gdGYyW+7JwWFYLMRM5RXZuDYDrsFN8VktU6v/pTJfGTu
+ WCYRNYBU5EQ2T7FEiHzun/RPmHt0zrUdutrehwOmIT5ZZ7mwt/qxiJQj41wNfZ28UxZTdWv
+ O8FTp/6LiIKbufdU4DhxYyof8bvRatQ0QebvxmG2blB/ryNz1Z40SrjeRqViUcrnkWn6oYN
+ TeS3doN60kLiqFYHV4NVQ==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:YeXBJDQ8A4Q=:PIwFHhR0wP3RiOcQ9g1Fl8
+ v8/YqmwyoS2ObZKNDBHzHMJQTxBIEIZvYa4Ux6tK5kqrY0gI5TjWCsgJ22ICllEuZKzrmm69c
+ EVobHvm5sRrZQfgn0TsGqedhY542ExPzLtm8nSouj2G12pOoUx/TM7c9JuMx9z2EdhjzkOOhN
+ icRVhpnHDgrsace1DT8QifsZ7tIhcvMQhrX5Q/IB7uHA09FpOXLpaRCNVZF0PmtfixvQbBooT
+ sKmFgaCWgUhmO7WgU7449Qvo+BiMFMX5Q6CpWq/0FjS/4dygGS9CnDQwiMtrbfp3mIYLgdRfs
+ Yazx6A5qbBEDh16jAMuA898gdfqmo1m+ml13/oerpbgX35otCMmYYo+8NUXSdc/2egFFZY20M
+ r7QACG5vDJktHatyTS7ebTMWOrS92lVB0xVN1fZ1en3pMkj7Vxv9AQpDUvu2QqRzlwel9UBl1
+ IdnnYSpYMrNnVeKIZ1mHAvlRQUibJmLBcu7+kSO3BcXzFy0StS1Wk7R4k3B84+FzuvCZQyfuM
+ EGPhRlDIRP3jpeKyXLQmvwy2uNUmQOx2dgFQIXBIGQrVHNZO5kjzNJhUA+8lpC66rnl9nNDKS
+ fjOP+8d6YZz/AVbhcvoLNxqU+dPhMUFbsqiDiBVgnt/MhGB5O0dUeWyxUqWwwBKMyqRrwaLZP
+ JpdrNF/EyDsSmp7H2JxZD7QwMM2pyo+qHrpUgW/Lu859Jb7NaDwOhsN/ZNiLbiydj0FI=
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57861
+X-archive-position: 57862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: petar.jovanovic@rt-rk.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,65 +54,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Can anyone take a look at this? Thank you.
+From: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
 
------Original Message-----
-From: Petar Jovanovic [mailto:Petar.Jovanovic@imgtec.com] 
-Sent: Tuesday, April 25, 2017 7:25 PM
-To: Petar Jovanovic <petar.jovanovic@rt-rk.com>; linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org; david.daney@cavium.com
-Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
-mips64r1
+commit 4d5b3bdc0ecb0cf5b1e1598eeaaac4b5cb33868d upstream.
 
-ping
-________________________________________
-From: Petar Jovanovic [petar.jovanovic@rt-rk.com]
-Sent: Wednesday, April 05, 2017 6:01 PM
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org; david.daney@cavium.com; Petar Jovanovic
-Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
-mips64r1
+Compiling mm/highmem.c gives a warning: passing argument 1 of
+'virt_to_phys' makes pointer from integer without a cast
 
-ping.
+Fixed by casting to void*
 
------Original Message-----
-From: Petar Jovanovic [mailto:petar.jovanovic@rt-rk.com]
-Sent: Wednesday, March 15, 2017 6:59 PM
-To: linux-mips@linux-mips.org
-Cc: ralf@linux-mips.org; david.daney@cavium.com; petar.jovanovic@imgtec.com;
-Petar Jovanovic <petar.jovanovic@rt-rk.com>
-Subject: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
-mips64r1
-
-Define Cavium Octeon as a CPU that has support for mips32r1, mips32r2 and
-mips64r1. This will affect show_cpuinfo() that will now correctly expose
-mips32r1, mips32r2 and mips64r1 as supported ISAs.
-
-Signed-off-by: Petar Jovanovic <petar.jovanovic@rt-rk.com>
+Signed-off-by: Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/7337/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/page.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git
-a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-index bd8b9bb..a4f7986 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-@@ -46,9 +46,9 @@
- #define cpu_has_64bits         1
- #define cpu_has_octeon_cache   1
- #define cpu_has_saa            octeon_has_saa()
--#define cpu_has_mips32r1       0
--#define cpu_has_mips32r2       0
--#define cpu_has_mips64r1       0
-+#define cpu_has_mips32r1       1
-+#define cpu_has_mips32r2       1
-+#define cpu_has_mips64r1       1
- #define cpu_has_mips64r2       1
- #define cpu_has_dsp            0
- #define cpu_has_dsp2           0
---
-1.9.1
-
-=
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index 5699ec3a71af..fd0347da36df 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -223,7 +223,8 @@ static inline int pfn_valid(unsigned long pfn)
+ 
+ #endif
+ 
+-#define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(kaddr)))
++#define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys((void *)     \
++								  (kaddr))))
+ 
+ extern int __virt_addr_valid(const volatile void *kaddr);
+ #define virt_addr_valid(kaddr)						\
+-- 
+2.9.0

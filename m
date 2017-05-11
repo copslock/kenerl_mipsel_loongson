@@ -1,72 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 May 2017 13:09:10 +0200 (CEST)
-Received: from mail-io0-x22e.google.com ([IPv6:2607:f8b0:4001:c06::22e]:35797
-        "EHLO mail-io0-x22e.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993945AbdEKLJB5aoDZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 May 2017 13:09:01 +0200
-Received: by mail-io0-x22e.google.com with SMTP id f102so18871385ioi.2
-        for <linux-mips@linux-mips.org>; Thu, 11 May 2017 04:09:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=xemqL2WULGlGrRGHVgzS2ofGSy3wae2cDIH0pwwEoDc=;
-        b=kVcG9envHQCXgHCJ1KWieFxBhZj1E3y4mQrhKl6ih1BnTFumzV1L/0VGxbmXwIgvhO
-         3khEIUSHHxPGUbDt0dbVJtce4kuXValREDZofoLeQHt7mGOdxupi9sSFCupome/X/2/J
-         rBNshGEe/5B/f7SdeZWpMUGvpKgWZHFtAP51o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=xemqL2WULGlGrRGHVgzS2ofGSy3wae2cDIH0pwwEoDc=;
-        b=cjnBuZ8ZitLon7RUwg6RSztWj93yGLWlXo0Rtl/K2ZoaX3/YuCbEvs5NN1bZUAjwiA
-         YaR12u3ih6EzoeDnALbVDXReuRfq6K05SB0iKQBXLQMollVTi6Qyb2ZeU1I++Ya28J6S
-         00C7OQejeO5pAGU0BVn48eAUg9NFcPxmWN0/MOL/R3QTsDtosnlE9juM1gtuultGbIp4
-         h5xnoD/ZUgZi0e3gU/u9JlXSA4ZO+nJHgKJqOv39V6M2QGbpo9tFd7/QlaCJ0Nn+hBtG
-         +bi0NHsyRR+HCb2HG/qkoHOPCe9C7kPXvDb4kASyClFpaX+j3+BfLaZ8wfqo3yVkOA9E
-         MhsA==
-X-Gm-Message-State: AODbwcCYVpXQvw8UVCJhYtf7H83Va/cA79ssRcls1JAaXvNVLFEc8M3v
-        h1Kj1Slbq/rpZB6x5/6uEeNy0/RurytN
-X-Received: by 10.107.29.143 with SMTP id d137mr7404585iod.8.1494500936165;
- Thu, 11 May 2017 04:08:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 May 2017 16:18:36 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:45906 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993958AbdEKOS2XvVR2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 May 2017 16:18:28 +0200
+Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 74D4AB59;
+        Thu, 11 May 2017 14:18:21 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org,
+        Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>,
+        Nikola.Veljkovic@imgtec.com, paul.burton@imgtec.com,
+        yamada.masahiro@socionext.com, akpm@linux-foundation.org,
+        andrea.gelmini@gelma.net, macro@imgtec.com,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.10 096/129] MIPS: R2-on-R6 MULTU/MADDU/MSUBU emulation bugfix
+Date:   Thu, 11 May 2017 16:12:24 +0200
+Message-Id: <20170511141226.329155664@linuxfoundation.org>
+X-Mailer: git-send-email 2.12.2
+In-Reply-To: <20170511141220.039886885@linuxfoundation.org>
+References: <20170511141220.039886885@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Received: by 10.79.134.66 with HTTP; Thu, 11 May 2017 04:08:55 -0700 (PDT)
-In-Reply-To: <20170428200824.10906-6-paul@crapouillou.net>
-References: <20170402204244.14216-2-paul@crapouillou.net> <20170428200824.10906-1-paul@crapouillou.net>
- <20170428200824.10906-6-paul@crapouillou.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 11 May 2017 13:08:55 +0200
-Message-ID: <CACRpkdaYRmB=i-=k4vfFYL6wHVrpNo1w11xnLGbu+6YPPmT8vA@mail.gmail.com>
-Subject: Re: [PATCH v5 05/14] MIPS: ingenic: Enable pinctrl for all ingenic SoCs
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Alexandre Courbot <gnurou@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Boris Brezillon <boris.brezillon@free-electrons.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Burton <paul.burton@imgtec.com>,
-        James Hogan <james.hogan@imgtec.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux MIPS <linux-mips@linux-mips.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Return-Path: <linus.walleij@linaro.org>
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57870
+X-archive-position: 57871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,26 +45,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Apr 28, 2017 at 10:08 PM, Paul Cercueil <paul@crapouillou.net> wrote:
+4.10-stable review patch.  If anyone has any objections, please let me know.
 
-> There is a pinctrl driver for each of the Ingenic SoCs supported by the
-> upstream Linux kernel. In order to switch away from the old GPIO
-> platform code, we now enable the pinctrl drivers by default for the
-> Ingenic SoCs.
->
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  arch/mips/Kconfig | 1 +
+------------------
 
-So please tell me your desired merge strategy for these bits. I can
-provide an immutable branch for pinctrl if you want to pull the deps in
-or we can just merge this orthogonally in the MIPS tree and let things
-smoothen together in the merge window.
+From: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
 
-This goes for everything outside of pinctrl/gpio.
+commit d65e5677ad5b3a49c43f60ec07644dc1f87bbd2e upstream.
 
-If I should merge patches for other subsystems I need ACKs from
-the maintainers of MIPS etc.
+MIPS instructions MULTU, MADDU and MSUBU emulation requires registers HI/LO
+to be converted to signed 32bits before 64bit sign extension on MIPS64.
 
-Yours,
-Linus Walleij
+Bug was found on running MIPS32 R2 test application on MIPS64 R6 kernel.
+
+Fixes: b0a668fb2038 ("MIPS: kernel: mips-r2-to-r6-emul: Add R2 emulator for MIPS R6")
+Signed-off-by: Leonid Yegoshin <Leonid.Yegoshin@imgtec.com>
+Reported-by: Nikola.Veljkovic@imgtec.com
+Cc: paul.burton@imgtec.com
+Cc: yamada.masahiro@socionext.com
+Cc: akpm@linux-foundation.org
+Cc: andrea.gelmini@gelma.net
+Cc: macro@imgtec.com
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/14043/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/kernel/mips-r2-to-r6-emul.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+--- a/arch/mips/kernel/mips-r2-to-r6-emul.c
++++ b/arch/mips/kernel/mips-r2-to-r6-emul.c
+@@ -433,8 +433,8 @@ static int multu_func(struct pt_regs *re
+ 	rs = regs->regs[MIPSInst_RS(ir)];
+ 	res = (u64)rt * (u64)rs;
+ 	rt = res;
+-	regs->lo = (s64)rt;
+-	regs->hi = (s64)(res >> 32);
++	regs->lo = (s64)(s32)rt;
++	regs->hi = (s64)(s32)(res >> 32);
+ 
+ 	MIPS_R2_STATS(muls);
+ 
+@@ -670,9 +670,9 @@ static int maddu_func(struct pt_regs *re
+ 	res += ((((s64)rt) << 32) | (u32)rs);
+ 
+ 	rt = res;
+-	regs->lo = (s64)rt;
++	regs->lo = (s64)(s32)rt;
+ 	rs = res >> 32;
+-	regs->hi = (s64)rs;
++	regs->hi = (s64)(s32)rs;
+ 
+ 	MIPS_R2_STATS(dsps);
+ 
+@@ -728,9 +728,9 @@ static int msubu_func(struct pt_regs *re
+ 	res = ((((s64)rt) << 32) | (u32)rs) - res;
+ 
+ 	rt = res;
+-	regs->lo = (s64)rt;
++	regs->lo = (s64)(s32)rt;
+ 	rs = res >> 32;
+-	regs->hi = (s64)rs;
++	regs->hi = (s64)(s32)rs;
+ 
+ 	MIPS_R2_STATS(dsps);
+ 

@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 May 2017 13:01:44 +0200 (CEST)
-Received: from mail-it0-x233.google.com ([IPv6:2607:f8b0:4001:c0b::233]:38449
-        "EHLO mail-it0-x233.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993009AbdEKLBh1fp3Z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 May 2017 13:01:37 +0200
-Received: by mail-it0-x233.google.com with SMTP id e65so17416371ita.1
-        for <linux-mips@linux-mips.org>; Thu, 11 May 2017 04:01:37 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 May 2017 13:07:00 +0200 (CEST)
+Received: from mail-io0-x231.google.com ([IPv6:2607:f8b0:4001:c06::231]:34787
+        "EHLO mail-io0-x231.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993009AbdEKLGyDx3bZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 May 2017 13:06:54 +0200
+Received: by mail-io0-x231.google.com with SMTP id k91so18899904ioi.1
+        for <linux-mips@linux-mips.org>; Thu, 11 May 2017 04:06:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=CDPX8KAQNaorGUg1AiHQglS/io4UT6KwE10c1xm6Uf0=;
-        b=OZS36eElCFtSRUKlFSJFF9mpPhDbuavvfEItW4ucS3R29KFgWfFT7OyyAavTB+JVHD
-         wStdRMHNOPbv2giStE3fxwKYqfXxeAgl8LUR4ML6ra4reOapebR+APrueZfG+Q7O3c6Z
-         KqekHqvt+eLGxx8HGAnCsp0lHQSuINCOls/r8=
+        bh=gfYnmZAXqJT4IPFl2Y8UxfxTGkIabz8bb0TZDcj0kG4=;
+        b=KOcX6ttp+6SSIw89VJ5Wv9X7uGnszA6jQ1r3qOb891Sm3Hjn74TP11xpq+IspcdvIJ
+         wIsj6Hii1lf8MLo22EwI4VkQV93BPgepRBcgEQTkekwJ6zkO7qh2FOhQXGQfmA4+d0Ej
+         fsJcALywzhDmGeQ/PtJJoW8j9S1jI0Vk1Rs8k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=CDPX8KAQNaorGUg1AiHQglS/io4UT6KwE10c1xm6Uf0=;
-        b=hzdCKeOTRX71+hNJhYazeyTjwe83n5QDH/hEzFwSI5M82zACOPMSILkygqf5izfhsf
-         PTc6BbzmxPGR7A3JLc0R7T7kw41S7MYC/yLq0pkzAC/nV8qTgAWVMNRV5s+amYTZgQZZ
-         2N0yyzLZt7Sly4XqQ2SUeUpXTAY/2nlBqdWI7LHQSg0zR3ZrZb8FU9w+BAIdjfO7E3jN
-         CmDGL+ixlghLtFyAo1x7CDzyyXyi8LzMwp/uKbqvN16EjAg9aH7Y6HykQNKwSBi+NeGW
-         o0ODkoaOGpo+KHsumywTI12ZZe2yi2IQff3NtnV2o8YCCCeRz38OjhCFKFOyWZYEBIX5
-         TVbw==
-X-Gm-Message-State: AODbwcBNt8mEJrMnsWmPwjHNzdQuRnysD0actq54Pxru0hrF2UeG3Wnk
-        XL/uQG80Y/DYaf7G9j7UTM/WTt+r6XjP
-X-Received: by 10.36.104.72 with SMTP id v69mr5565079itb.27.1494500491648;
- Thu, 11 May 2017 04:01:31 -0700 (PDT)
+        bh=gfYnmZAXqJT4IPFl2Y8UxfxTGkIabz8bb0TZDcj0kG4=;
+        b=CN+KKJITQd9oHirlq48NmHGm8u0ft2apH5HWF1XhhxduYhFn3UhxJNHQ9rh+rCFfpz
+         yguhwaDaKsSyR2CjNC0IiArzpBhrfBzNhfTvufbnG/l4L/Cyaq4RZsvLYwjiixrg7RsX
+         ZvYH+iptNVrCNoylZPHgs02hPX25ndzTRdoYSzyY7kjsqSWZIe4nuqFia0nXN9f/Ckjn
+         OoMphbq8UgHVQBCXFYSq0yRmQKYr6wD01ALwKrwk9YvfxSsswZBLQ8gZyjlOUizqIasG
+         hb9gvzOuicauOu+z4pqzvgAZCP9S7e4wVu9UIkvSMhqBS4C4mNor++v3/sSTAZv0Teex
+         ek3w==
+X-Gm-Message-State: AODbwcBYJnYUZIs+P4VE8J1VjCPqn4pU2zbHes8vtTcUnY35lR4lFksf
+        0DaPsN/ktPpugw5w9rOECCOzXorjbZek
+X-Received: by 10.107.155.76 with SMTP id d73mr8840215ioe.122.1494500808451;
+ Thu, 11 May 2017 04:06:48 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.79.134.66 with HTTP; Thu, 11 May 2017 04:01:30 -0700 (PDT)
-In-Reply-To: <7941dbfbaeaf5c23bb177e66165060d3@crapouillou.net>
+Received: by 10.79.134.66 with HTTP; Thu, 11 May 2017 04:06:47 -0700 (PDT)
+In-Reply-To: <3a779fca-5a56-44e5-2acf-12b8abdaf906@crapouillou.net>
 References: <20170402204244.14216-2-paul@crapouillou.net> <20170428200824.10906-1-paul@crapouillou.net>
- <20170428200824.10906-4-paul@crapouillou.net> <7941dbfbaeaf5c23bb177e66165060d3@crapouillou.net>
+ <20170428200824.10906-5-paul@crapouillou.net> <3a779fca-5a56-44e5-2acf-12b8abdaf906@crapouillou.net>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 11 May 2017 13:01:30 +0200
-Message-ID: <CACRpkdYR8Y77VXrNz=NwczgxZvitkO72bAYcDuhneZbVVsT6=g@mail.gmail.com>
-Subject: Re: [PATCH v5 03/14] pinctrl: add a pinctrl driver for the Ingenic
- jz47xx SoCs
+Date:   Thu, 11 May 2017 13:06:47 +0200
+Message-ID: <CACRpkdb+uQpdOfCFTKaMvp=nUxksA0=FWCDbY+JbB_=jDDcXfA@mail.gmail.com>
+Subject: Re: [PATCH v5 04/14] GPIO: Add gpio-ingenic driver
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Alexandre Courbot <gnurou@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -58,12 +57,12 @@ Cc:     Alexandre Courbot <gnurou@gmail.com>,
         "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
         "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
         "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Return-Path: <linus.walleij@linaro.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57868
+X-archive-position: 57869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -80,15 +79,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 3, 2017 at 11:12 AM, Paul Cercueil <paul@crapouillou.net> wrote:
+On Mon, May 8, 2017 at 12:05 AM, Paul Cercueil <paul@crapouillou.net> wrote:
 
-> The dependency on MFD is gone but now I notice I forgot to remove the
-> 'select MFD_CORE'
-> in the Kconfig. It'd be great if you can make a quick edit when merging
-> this,
-> otherwise I'll send a v6.
+> It looks like the gpio_get_value() is broken on jz4740.
+>
+> I'll send a v6.
 
-No problem I can fix it up.
+OK I don't apply this series then, waiting for v6.
+
+The series looks good so as soon you think it is finished
+I can apply it I think.
 
 Yours,
 Linus Walleij

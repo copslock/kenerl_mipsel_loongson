@@ -1,19 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2017 15:17:06 +0200 (CEST)
-Received: from foss.arm.com ([217.140.101.70]:56664 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994789AbdEONQzzfo7T (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 May 2017 15:16:55 +0200
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 16A812B;
-        Mon, 15 May 2017 06:16:47 -0700 (PDT)
-Received: from edgewater-inn.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D78653F23B;
-        Mon, 15 May 2017 06:16:46 -0700 (PDT)
-Received: by edgewater-inn.cambridge.arm.com (Postfix, from userid 1000)
-        id 1864E1AE339C; Mon, 15 May 2017 14:16:46 +0100 (BST)
-Date:   Mon, 15 May 2017 14:16:45 +0100
-From:   Will Deacon <will.deacon@arm.com>
-To:     Jiri Slaby <jslaby@suse.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2017 10:01:46 +0200 (CEST)
+Received: from mail-wm0-f65.google.com ([74.125.82.65]:34830 "EHLO
+        mail-wm0-f65.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991232AbdEQIBiKw0kA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 May 2017 10:01:38 +0200
+Received: by mail-wm0-f65.google.com with SMTP id v4so1536533wmb.2;
+        Wed, 17 May 2017 01:01:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=v47gPsja80Gzc8LoofWVSouSiN0IcGQQ6vS4DVEatvs=;
+        b=IK/OajSm0urrFvnAVLHDaX2rZ2o/CueVWINpawjzPnbx3Oy8PHC0MpH+ZSEooh2LHa
+         1n/+HOnLWstow6QmosPqkL3ZbZj4XkzDlo13bB75lWynP9sDtCYd6L72PSZsQTdvS7bN
+         j5/fv/SXnyDXg19mZ33wwrJYnPeW0Xtwa/yDYaMgNIos6f1i4iqyGd3/DgRt1CjBAvU1
+         26OoneqJLYx3HDwQ7Dojx1f6iZrkb096M2Uz2CxRuEQ4HqXyJ5AVmwlIrW/94vpDZ4oD
+         AtPT+74JCagF2aAOGTISIcElGL5/b9sHn5VGZuwIScarjooDuUnJvN/YV2YsaKgJtZQg
+         V6yA==
+X-Gm-Message-State: AODbwcDqD1rn0Zj+8uUHDOThpHO1hYi5e8B4uoGShqgHCYms2IuW0iV8
+        UVQTzeOIIS7SqA==
+X-Received: by 10.28.68.195 with SMTP id r186mr1429209wma.22.1495008092883;
+        Wed, 17 May 2017 01:01:32 -0700 (PDT)
+Received: from ?IPv6:2a01:4240:2e27:ad85:aaaa::19f? (f.9.1.0.0.0.0.0.0.0.0.0.a.a.a.a.5.8.d.a.7.2.e.2.0.4.2.4.1.0.a.2.v6.cust.nbox.cz. [2a01:4240:2e27:ad85:aaaa::19f])
+        by smtp.gmail.com with ESMTPSA id x9sm1621493wmb.21.2017.05.17.01.01.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 17 May 2017 01:01:31 -0700 (PDT)
+Subject: Re: [PATCH 1/1] futex: remove duplicated code
+To:     Will Deacon <will.deacon@arm.com>
 Cc:     tglx@linutronix.de, linux-kernel@vger.kernel.org,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -48,23 +61,27 @@ Cc:     tglx@linutronix.de, linux-kernel@vger.kernel.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-arch@vger.kernel.org
-Subject: Re: [PATCH 1/1] futex: remove duplicated code
-Message-ID: <20170515131644.GA3605@arm.com>
 References: <20170515130742.18357-1-jslaby@suse.cz>
+ <20170515131644.GA3605@arm.com>
+From:   Jiri Slaby <jslaby@suse.cz>
+Message-ID: <14580dfc-9721-38ab-a1e0-6b4aba13b406@suse.cz>
+Date:   Wed, 17 May 2017 10:01:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170515130742.18357-1-jslaby@suse.cz>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <will.deacon@arm.com>
+In-Reply-To: <20170515131644.GA3605@arm.com>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Return-Path: <jirislaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57894
+X-archive-position: 57895
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: will.deacon@arm.com
+X-original-sender: jslaby@suse.cz
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -77,31 +94,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Jiri,
+On 05/15/2017, 03:16 PM, Will Deacon wrote:
+> Whilst I think this is a good idea, the code in question actually results
+> in undefined behaviour per the C spec and is reported by UBSAN.
 
-On Mon, May 15, 2017 at 03:07:42PM +0200, Jiri Slaby wrote:
-> There is code duplicated over all architecture's headers for
-> futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
-> and comparison of the result.
+Hi, yes, I know -- this patch was the 1st from the series of 3 which I
+sent a long time ago to fix that up too. But I remember your patch, so I
+sent only this one this time.
+
+> See my
+> patch fixing arm64 here (which I'd forgotten about):
 > 
-> Remove this duplication and leave up to the arches only the needed
-> assembly which is now in arch_futex_atomic_op_inuser.
+> https://www.spinics.net/lists/linux-arch/msg38564.html
 > 
-> Note that s390 removed access_ok check in d12a29703 ("s390/uaccess:
-> remove pointless access_ok() checks") as access_ok there returns true.
-> We introduce it back to the helper for the sake of simplicity (it gets
-> optimized away anyway).
+> But, as stated in the thread above, I think we should go a step further
+> and remove FUTEX_OP_{OR,ANDN,XOR,OPARG_SHIFT} altogether. They don't
+> appear to be used by userspace, and this whole thing is a total mess.
+> 
+> Any thoughts?
 
-Whilst I think this is a good idea, the code in question actually results
-in undefined behaviour per the C spec and is reported by UBSAN. See my
-patch fixing arm64 here (which I'd forgotten about):
+Ok, I am all for that. I think the only question is who is going to do
+the work and submit it :)? Do I understand correctly to eliminate all
+these functions and the path into the kernel? But won't this break API
+-- are there really no users of this interface?
 
-https://www.spinics.net/lists/linux-arch/msg38564.html
-
-But, as stated in the thread above, I think we should go a step further
-and remove FUTEX_OP_{OR,ANDN,XOR,OPARG_SHIFT} altogether. They don't
-appear to be used by userspace, and this whole thing is a total mess.
-
-Any thoughts?
-
-Will
+thanks,
+-- 
+js
+suse labs

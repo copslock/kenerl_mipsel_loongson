@@ -1,39 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 May 2017 21:56:34 +0200 (CEST)
-Received: from mail.kernel.org ([198.145.29.99]:38830 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994892AbdEST4Ij8AiZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 19 May 2017 21:56:08 +0200
-Received: from localhost (unknown [69.55.156.165])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 842A323990;
-        Fri, 19 May 2017 19:56:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 842A323990
-Authentication-Results: mail.kernel.org; dmarc=fail (p=reject dis=none) header.from=google.com
-Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=helgaas@kernel.org
-Subject: [PATCH v1 2/2] MIPS: PCI: Remove unused busn_offset
-From:   Bjorn Helgaas <bhelgaas@google.com>
-To:     linux-pci@vger.kernel.org
-Cc:     linux-mips@linux-mips.org, Joshua Kinard <kumba@gentoo.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 19 May 2017 14:56:06 -0500
-Message-ID: <20170519195606.25338.73798.stgit@bhelgaas-glaptop.roam.corp.google.com>
-In-Reply-To: <20170519195559.25338.30891.stgit@bhelgaas-glaptop.roam.corp.google.com>
-References: <20170519195559.25338.30891.stgit@bhelgaas-glaptop.roam.corp.google.com>
-User-Agent: StGit/0.17.1-dirty
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 May 2017 00:00:50 +0200 (CEST)
+Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:53412 "EHLO
+        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994890AbdESWAnfODB1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 May 2017 00:00:43 +0200
+Received: from [IPv6:2003:86:281c:1400:5108:40ff:ace0:afe] (p20030086281C1400510840FFACE00AFE.dip0.t-ipconnect.de [IPv6:2003:86:281c:1400:5108:40ff:ace0:afe])
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 26526100036;
+        Sat, 20 May 2017 00:00:36 +0200 (CEST)
+Subject: Re: kernel 4.12-rc1 does not boot with CONFIG_MIPS_MT_SMP enabled on
+ lantiq xway xrx200
+To:     Matt Redfearn <matt.redfearn@imgtec.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>
+References: <26d0c2c6-e7a6-f39a-974f-5809b94d9845@hauke-m.de>
+ <39a5c44b-ea5f-5ae7-5626-a7be364be0ab@imgtec.com>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <1c8c287d-537e-669c-c615-fa4810c1a873@hauke-m.de>
+Date:   Sat, 20 May 2017 00:00:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Return-Path: <helgaas@kernel.org>
+In-Reply-To: <39a5c44b-ea5f-5ae7-5626-a7be364be0ab@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57903
+X-archive-position: 57904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -46,47 +43,70 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-pci_add_resource_offset() is for host bridge windows where the bridge
-translates CPU addresses to PCI bus addresses by adding an offset.  To my
-knowledge, no host bridge translates bus numbers, so this is only useful
-for MEM and IO windows.  In any event, host->busn_offset is never set to
-anything other than zero, so pci_add_resource() is sufficient.
+On 05/18/2017 10:19 AM, Matt Redfearn wrote:
+> Hi Hauke,
+> 
+> I would guess something to do with the conversion of the CPU interrupt
+> controller to IPI domains by patchset
+> https://patchwork.linux-mips.org/project/linux-mips/list/?series=255&state=*,
+> new in 4.12, has broken your IPIs and a CPU is getting stuck waiting for
+> the other to respond.
+> 
+> Note that Paul says the Lantiq part of patch
+> https://patchwork.linux-mips.org/patch/15837/
+> (1eed40043579608e16509c43eeeb3a53a8a42378) has only been compile tested.
+> 
+> Thanks,
+> 
+> Matt
+> 
+> 
+> On 17/05/17 23:12, Hauke Mehrtens wrote:
+>> Hi,
+>>
+>> I just tried to boot Linux 4.12-rc1 on a Lantiq Xway xrx200 board and
+>> boot failed when I had CONFIG_MIPS_MT_SMP enabled.
+>>
+>> It works with SMP on 4.9 and I think I also tried 4.11-rcX, but I am not
+>> 100% sure. I will investigate this problem further on Friday.
+>>
+>> If someone has an idea what I should test, I will do it on Friday.
+>>
+>> Both boot logs are attached to this mail.
 
-a2e50f53d535 ("MIPS: PCI: Add a hook for IORESOURCE_BUS in
-pci_controller/bridge_controller") also added busn_resource itself.  This
-is currently unused but may be used by future SGI IP27 fixes, so I left it
-there.
+Hi Matt and Paul,
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-CC: Joshua Kinard <kumba@gentoo.org>
----
- arch/mips/include/asm/pci.h |    1 -
- arch/mips/pci/pci-legacy.c  |    3 +--
- 2 files changed, 1 insertion(+), 3 deletions(-)
+you are correct, this commit breaks booting of Lantiq boards when SMP is
+enabled on 4.12-rc1: https://patchwork.linux-mips.org/patch/15837/
+When I revert this commit or when I add the boot option nosmp the system
+boots again.
 
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index 1000c1b4c875..52f551ee492d 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -39,7 +39,6 @@ struct pci_controller {
- 	unsigned long io_offset;
- 	unsigned long io_map_base;
- 	struct resource *busn_resource;
--	unsigned long busn_offset;
- 
- #ifndef CONFIG_PCI_DOMAINS_GENERIC
- 	unsigned int index;
-diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
-index 3a84f6c0c840..174575a9a112 100644
---- a/arch/mips/pci/pci-legacy.c
-+++ b/arch/mips/pci/pci-legacy.c
-@@ -86,8 +86,7 @@ static void pcibios_scanbus(struct pci_controller *hose)
- 				hose->mem_resource, hose->mem_offset);
- 	pci_add_resource_offset(&resources,
- 				hose->io_resource, hose->io_offset);
--	pci_add_resource_offset(&resources,
--				hose->busn_resource, hose->busn_offset);
-+	pci_add_resource(&resources, hose->busn_resource);
- 	bus = pci_scan_root_bus(NULL, next_busno, hose->pci_ops, hose,
- 				&resources);
- 	hose->bus = bus;
+The problem is that the Lantiq IRQ controller gets registered first and
+it directly handles the MIPS native SW1/2 and HW0 - HW5 IRQs. It looks
+like this controller already registers IRQ 0 - 7 and the generic driver
+only gets the following IRQs starting later.
+
+root@LEDE:/# cat /proc/interrupts
+           CPU0
+  7:      26253      MIPS   7  timer
+  8:          0      MIPS   0  IPI call
+  9:          0      MIPS   1  IPI resched
+ 22:        130       icu  22  spi_rx
+ 23:         10       icu  23  spi_tx
+ 24:          0       icu  24  spi_err
+112:        142       icu 112  asc_tx
+113:         27       icu 113  asc_rx
+114:          0       icu 114  asc_err
+ERR:          0
+root@LEDE:/#
+
+I see two options to fix this problem.
+1. Revert the removing of the SMP IRQ code from arch/mips/lantiq/irq.c
+and make the generic code "register" IRQ 8 and 9 for SMP.
+2. Make the Lantiq IRQ code use the generic MIPS IRQ code and only
+handle the Lantiq IRQ controller ICU and not the MIPS IRQs.
+
+Which option should I choose, or is there something else?
+
+
+Hauke

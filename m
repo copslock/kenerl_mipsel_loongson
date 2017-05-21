@@ -1,36 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 May 2017 00:00:50 +0200 (CEST)
-Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:53412 "EHLO
-        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994890AbdESWAnfODB1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 20 May 2017 00:00:43 +0200
-Received: from [IPv6:2003:86:281c:1400:5108:40ff:ace0:afe] (p20030086281C1400510840FFACE00AFE.dip0.t-ipconnect.de [IPv6:2003:86:281c:1400:5108:40ff:ace0:afe])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 26526100036;
-        Sat, 20 May 2017 00:00:36 +0200 (CEST)
-Subject: Re: kernel 4.12-rc1 does not boot with CONFIG_MIPS_MT_SMP enabled on
- lantiq xway xrx200
-To:     Matt Redfearn <matt.redfearn@imgtec.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 May 2017 03:38:00 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58817 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994896AbdEUBhxZeph4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 May 2017 03:37:53 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 99DAD308F1D27;
+        Sun, 21 May 2017 02:37:45 +0100 (IST)
+Received: from [10.20.78.45] (10.20.78.45) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Sun, 21 May 2017
+ 02:37:46 +0100
+Date:   Sun, 21 May 2017 02:37:09 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Petar Jovanovic <Petar.Jovanovic@imgtec.com>
+CC:     Petar Jovanovic <petar.jovanovic@rt-rk.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Paul Burton <paul.burton@imgtec.com>
-References: <26d0c2c6-e7a6-f39a-974f-5809b94d9845@hauke-m.de>
- <39a5c44b-ea5f-5ae7-5626-a7be364be0ab@imgtec.com>
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <1c8c287d-537e-669c-c615-fa4810c1a873@hauke-m.de>
-Date:   Sat, 20 May 2017 00:00:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "david.daney@cavium.com" <david.daney@cavium.com>
+Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
+ mips64r1
+In-Reply-To: <56EA75BA695AE044ACFB41322F6D2BF4013D048E49@BADAG02.ba.imgtec.org>
+Message-ID: <alpine.DEB.2.00.1705210223180.2590@tp.orcam.me.uk>
+References: <1489600751-82884-1-git-send-email-petar.jovanovic@rt-rk.com>,<001b01d2ae25$d7554b80$85ffe280$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org>,<002c01d2c80f$52e66060$f8b32120$@rt-rk.com>
+ <56EA75BA695AE044ACFB41322F6D2BF4013D048E49@BADAG02.ba.imgtec.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-In-Reply-To: <39a5c44b-ea5f-5ae7-5626-a7be364be0ab@imgtec.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.45]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57904
+X-archive-position: 57905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,70 +47,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/18/2017 10:19 AM, Matt Redfearn wrote:
-> Hi Hauke,
-> 
-> I would guess something to do with the conversion of the CPU interrupt
-> controller to IPI domains by patchset
-> https://patchwork.linux-mips.org/project/linux-mips/list/?series=255&state=*,
-> new in 4.12, has broken your IPIs and a CPU is getting stuck waiting for
-> the other to respond.
-> 
-> Note that Paul says the Lantiq part of patch
-> https://patchwork.linux-mips.org/patch/15837/
-> (1eed40043579608e16509c43eeeb3a53a8a42378) has only been compile tested.
-> 
-> Thanks,
-> 
-> Matt
-> 
-> 
-> On 17/05/17 23:12, Hauke Mehrtens wrote:
->> Hi,
->>
->> I just tried to boot Linux 4.12-rc1 on a Lantiq Xway xrx200 board and
->> boot failed when I had CONFIG_MIPS_MT_SMP enabled.
->>
->> It works with SMP on 4.9 and I think I also tried 4.11-rcX, but I am not
->> 100% sure. I will investigate this problem further on Friday.
->>
->> If someone has an idea what I should test, I will do it on Friday.
->>
->> Both boot logs are attached to this mail.
+On Mon, 15 May 2017, Petar Jovanovic wrote:
 
-Hi Matt and Paul,
+> Define Cavium Octeon as a CPU that has support for mips32r1, mips32r2 and
+> mips64r1. This will affect show_cpuinfo() that will now correctly expose
+> mips32r1, mips32r2 and mips64r1 as supported ISAs.
 
-you are correct, this commit breaks booting of Lantiq boards when SMP is
-enabled on 4.12-rc1: https://patchwork.linux-mips.org/patch/15837/
-When I revert this commit or when I add the boot option nosmp the system
-boots again.
+ I suspect it will affect more than just `show_cpuinfo', e.g. some inline 
+asm, and you could have included a justification as to why this patch is 
+correct, such as by referring to how `set_isa' sets flags in `isa_level'.  
+Anyway it LGTM, so:
 
-The problem is that the Lantiq IRQ controller gets registered first and
-it directly handles the MIPS native SW1/2 and HW0 - HW5 IRQs. It looks
-like this controller already registers IRQ 0 - 7 and the generic driver
-only gets the following IRQs starting later.
+Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
 
-root@LEDE:/# cat /proc/interrupts
-           CPU0
-  7:      26253      MIPS   7  timer
-  8:          0      MIPS   0  IPI call
-  9:          0      MIPS   1  IPI resched
- 22:        130       icu  22  spi_rx
- 23:         10       icu  23  spi_tx
- 24:          0       icu  24  spi_err
-112:        142       icu 112  asc_tx
-113:         27       icu 113  asc_rx
-114:          0       icu 114  asc_err
-ERR:          0
-root@LEDE:/#
+ Such problems pop up from time to time, so overall we probably want to 
+have a consistency check with a BUG_ON or suchlike implemented somewhere, 
+preferably once the console is running so that the kernel does not just 
+silently hang without output, iterating over these macros and verifying 
+against actual CPU info.
 
-I see two options to fix this problem.
-1. Revert the removing of the SMP IRQ code from arch/mips/lantiq/irq.c
-and make the generic code "register" IRQ 8 and 9 for SMP.
-2. Make the Lantiq IRQ code use the generic MIPS IRQ code and only
-handle the Lantiq IRQ controller ICU and not the MIPS IRQs.
+ HTH,
 
-Which option should I choose, or is there something else?
-
-
-Hauke
+  Maciej

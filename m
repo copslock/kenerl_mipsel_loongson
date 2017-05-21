@@ -1,40 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 May 2017 03:38:00 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:58817 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23994896AbdEUBhxZeph4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 May 2017 03:37:53 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 99DAD308F1D27;
-        Sun, 21 May 2017 02:37:45 +0100 (IST)
-Received: from [10.20.78.45] (10.20.78.45) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Sun, 21 May 2017
- 02:37:46 +0100
-Date:   Sun, 21 May 2017 02:37:09 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Petar Jovanovic <Petar.Jovanovic@imgtec.com>
-CC:     Petar Jovanovic <petar.jovanovic@rt-rk.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "david.daney@cavium.com" <david.daney@cavium.com>
-Subject: RE: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
- mips64r1
-In-Reply-To: <56EA75BA695AE044ACFB41322F6D2BF4013D048E49@BADAG02.ba.imgtec.org>
-Message-ID: <alpine.DEB.2.00.1705210223180.2590@tp.orcam.me.uk>
-References: <1489600751-82884-1-git-send-email-petar.jovanovic@rt-rk.com>,<001b01d2ae25$d7554b80$85ffe280$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org>,<002c01d2c80f$52e66060$f8b32120$@rt-rk.com>
- <56EA75BA695AE044ACFB41322F6D2BF4013D048E49@BADAG02.ba.imgtec.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.45]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 May 2017 15:09:49 +0200 (CEST)
+Received: from hauke-m.de ([5.39.93.123]:45969 "EHLO mail.hauke-m.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990509AbdEUNJnPrF6B (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 21 May 2017 15:09:43 +0200
+Received: from hauke-desktop.lan (p2003008628380100610A1109F04F7762.dip0.t-ipconnect.de [IPv6:2003:86:2838:100:610a:1109:f04f:7762])
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 33BA7100037;
+        Sun, 21 May 2017 15:09:42 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+        martin.blumenstingl@googlemail.com, john@phrozen.org,
+        linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
+        robh@kernel.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v2 01/15] MIPS: lantiq: Use of_platform_populate instead of __dt_register_buses
+Date:   Sun, 21 May 2017 15:09:04 +0200
+Message-Id: <20170521130918.27446-2-hauke@hauke-m.de>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20170521130918.27446-1-hauke@hauke-m.de>
+References: <20170521130918.27446-1-hauke@hauke-m.de>
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57905
+X-archive-position: 57906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,25 +40,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 15 May 2017, Petar Jovanovic wrote:
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-> Define Cavium Octeon as a CPU that has support for mips32r1, mips32r2 and
-> mips64r1. This will affect show_cpuinfo() that will now correctly expose
-> mips32r1, mips32r2 and mips64r1 as supported ISAs.
+This allows populating syscon devices which are using "simple-mfd"
+instead of "simple-bus".
 
- I suspect it will affect more than just `show_cpuinfo', e.g. some inline 
-asm, and you could have included a justification as to why this patch is 
-correct, such as by referring to how `set_isa' sets flags in `isa_level'.  
-Anyway it LGTM, so:
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+---
+ arch/mips/lantiq/prom.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Reviewed-by: Maciej W. Rozycki <macro@imgtec.com>
-
- Such problems pop up from time to time, so overall we probably want to 
-have a consistency check with a BUG_ON or suchlike implemented somewhere, 
-preferably once the console is running so that the kernel does not just 
-silently hang without output, iterating over these macros and verifying 
-against actual CPU info.
-
- HTH,
-
-  Maciej
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 96773bed8a8a..72cc12f1b6a5 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -117,7 +117,8 @@ void __init prom_init(void)
+ 
+ int __init plat_of_setup(void)
+ {
+-	return __dt_register_buses(soc_info.compatible, "simple-bus");
++	return of_platform_populate(NULL, of_default_bus_match_table, NULL,
++				    NULL);
+ }
+ 
+ arch_initcall(plat_of_setup);
+-- 
+2.11.0

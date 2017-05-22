@@ -1,41 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 May 2017 19:53:02 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:27735 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993648AbdEVRwzTeO80 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 May 2017 19:52:55 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 1A96D896CF7BA;
-        Mon, 22 May 2017 18:52:45 +0100 (IST)
-Received: from [10.20.78.50] (10.20.78.50) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Mon, 22 May 2017
- 18:52:47 +0100
-Date:   Mon, 22 May 2017 18:52:10 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     Petar Jovanovic <Petar.Jovanovic@imgtec.com>,
-        Petar Jovanovic <petar.jovanovic@rt-rk.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "david.daney@cavium.com" <david.daney@cavium.com>
-Subject: Re: [PATCH] MIPS: Octeon: Expose support for mips32r1, mips32r2 and
- mips64r1
-In-Reply-To: <22c5e59d-fb87-9dbf-1285-2a5ff3b62497@caviumnetworks.com>
-Message-ID: <alpine.DEB.2.00.1705221846340.2590@tp.orcam.me.uk>
-References: <1489600751-82884-1-git-send-email-petar.jovanovic@rt-rk.com> <001b01d2ae25$d7554b80$85ffe280$@rt-rk.com> <56EA75BA695AE044ACFB41322F6D2BF4013D036343@BADAG02.ba.imgtec.org> <002c01d2c80f$52e66060$f8b32120$@rt-rk.com>
- <56EA75BA695AE044ACFB41322F6D2BF4013D048E49@BADAG02.ba.imgtec.org> <alpine.DEB.2.00.1705210223180.2590@tp.orcam.me.uk> <22c5e59d-fb87-9dbf-1285-2a5ff3b62497@caviumnetworks.com>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 May 2017 23:13:04 +0200 (CEST)
+Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:43481 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993982AbdEVVM4HtLkr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 May 2017 23:12:56 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1dCuc1-00015I-TW; Mon, 22 May 2017 23:11:34 +0200
+Date:   Mon, 22 May 2017 23:11:33 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Will Deacon <will.deacon@arm.com>
+cc:     Jiri Slaby <jslaby@suse.cz>, linux-kernel@vger.kernel.org,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/1] futex: remove duplicated code
+In-Reply-To: <20170515131644.GA3605@arm.com>
+Message-ID: <alpine.DEB.2.20.1705222259580.2407@nanos>
+References: <20170515130742.18357-1-jslaby@suse.cz> <20170515131644.GA3605@arm.com>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.50]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57940
+X-archive-position: 57941
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,31 +73,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 22 May 2017, David Daney wrote:
-
-> >   I suspect it will affect more than just `show_cpuinfo', e.g. some inline
-> > asm, and you could have included a justification as to why this patch is
-> > correct, such as by referring to how `set_isa' sets flags in `isa_level'.
+On Mon, 15 May 2017, Will Deacon wrote:
+> Hi Jiri,
 > 
-> That is correct, and exactly what I said in my reply to the patch when it was
-> posted.  When the OCTEON code was merged, different code paths were taken in
-> the kernel, and there was a deliberate decision to structure
-> mach-cavium-octeon/cpu-feature-overrides.h the way we did it.
+> On Mon, May 15, 2017 at 03:07:42PM +0200, Jiri Slaby wrote:
+> > There is code duplicated over all architecture's headers for
+> > futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
+> > and comparison of the result.
+> > 
+> > Remove this duplication and leave up to the arches only the needed
+> > assembly which is now in arch_futex_atomic_op_inuser.
+> > 
+> > Note that s390 removed access_ok check in d12a29703 ("s390/uaccess:
+> > remove pointless access_ok() checks") as access_ok there returns true.
+> > We introduce it back to the helper for the sake of simplicity (it gets
+> > optimized away anyway).
 > 
-> I also noted that the information exposed to userspace via /proc/cpuinfo
-> should be represented in the kernel by a distinct mechanism from how the
-> kernel makes internal decisions about CPU features.
+> Whilst I think this is a good idea, the code in question actually results
+> in undefined behaviour per the C spec and is reported by UBSAN. See my
+> patch fixing arm64 here (which I'd forgotten about):
+> 
+> https://www.spinics.net/lists/linux-arch/msg38564.html
+> 
+> But, as stated in the thread above, I think we should go a step further
+> and remove FUTEX_OP_{OR,ANDN,XOR,OPARG_SHIFT} altogether. They don't
+> appear to be used by userspace, and this whole thing is a total mess.
 
- Explicit checks for Octeon should then be used instead in the individual 
-pieces of code affected, e.g.:
+You wish. The constants are not used, but FUTEX_WAKE_OP _IS_ used by
+glibc. They only have one argument it seems:
 
-	if (cpu_has_mips32r1 && !cpu_mach_octeon)
+   #define FUTEX_OP_CLEAR_WAKE_IF_GT_ONE      ((4 << 24) | 1)
 
-or suchlike, possibly with an explanatory comment as to why such an 
-exclusion has been made.  The `cpu_has_mips32r1', etc. macros are supposed 
-to be generic architectural checks.
+but I'm pretty sure that there is enough (probably horrible) code (think
+java) out there using FUTEX_WAKE_OP for whatever (non)sensical reasons in
+any available combination.
 
- Also any design decisions should have been noted in the description of 
-the original commit.
+Thanks,
 
-  Maciej
+	tglx

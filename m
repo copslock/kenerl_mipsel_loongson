@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 22:55:15 +0200 (CEST)
-Received: from mout.web.de ([212.227.15.3]:49602 "EHLO mout.web.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 22:55:53 +0200 (CEST)
+Received: from mout.web.de ([212.227.15.4]:62083 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23995044AbdEWUyz5m2Av (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 May 2017 22:54:55 +0200
-Received: from [192.168.1.2] ([78.49.50.198]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LZvw5-1desrJ0d8X-00lorh; Tue, 23
- May 2017 22:54:20 +0200
-Subject: [PATCH 4/5] MIPS: VPE: Improve a size determination in two functions
+        id S23995043AbdEWUz0b0TZv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 May 2017 22:55:26 +0200
+Received: from [192.168.1.2] ([78.49.50.198]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MN4K8-1dJtbe3kQi-006gsY; Tue, 23
+ May 2017 22:55:07 +0200
+Subject: [PATCH 5/5] MIPS: VPE: Adjust 13 checks for null pointers
 From:   SF Markus Elfring <elfring@users.sourceforge.net>
 To:     linux-mips@linux-mips.org, Ingo Molnar <mingo@kernel.org>,
         James Hogan <james.hogan@imgtec.com>,
@@ -20,37 +20,37 @@ To:     linux-mips@linux-mips.org, Ingo Molnar <mingo@kernel.org>,
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 References: <e866716c-5ce4-3658-f944-e310007db127@users.sourceforge.net>
-Message-ID: <cf85a732-6901-4eca-2848-71e35e7ce95d@users.sourceforge.net>
-Date:   Tue, 23 May 2017 22:54:18 +0200
+Message-ID: <44ff74fa-07c9-3f9c-6cda-050296400c72@users.sourceforge.net>
+Date:   Tue, 23 May 2017 22:55:04 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.1.1
 MIME-Version: 1.0
 In-Reply-To: <e866716c-5ce4-3658-f944-e310007db127@users.sourceforge.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:du0VG0Czw9aq+6FvXs7FtFcsyfnVG8uGC5wdJDWRn8QmDh/XlUW
- VtNs6H/1SYMx3NNin2RnQZfgjvXqaMOakpcGNVwjMS1o7D2JHxMizWSAeDesDZEjydXR7AH
- SZCBTEoa2SjiLlMVTWd0HuNpaAi6Sc86f28lyxf3qQT/Z9rjtsgSg8fzE36B/VC6B+lkiNR
- n4iP0qTd2AnCf1mX0aLLA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:O04vx4fOC1k=:dxLV0msjBnF7Y1Ea6P2Goz
- 4apJDZFALpEh5UzbHCB4kX6Mev43kvTSe78SQkIItQVTNrhdf45v6Ghv+OcZnQK08tQrVladh
- dqa9SgKo5+wIlpnPxmtIAvM+PgkwMIRIsKDmPckahO29eakoj98aSpzJcNVfOUY+7yzn44oeZ
- NJdjLK9xgRgU6CR4g3HWxwBcpI0esONRyOjrM6WyHWTV0+7dOiPuEX/6nY+pW3cDsxDRXw2Ox
- fEzOG3j2ovP6NBVienTDLqAestx4p5+4+EuoWvvMKq2CdmLX2fBYeXmxPjliRkKWSStE8ap+J
- 20h3rWrLJecrvi16somLnuKlxDyKR2eXY7p8w8VkWDf41znY3ub3dJK//b2ecS9qY41sG53JW
- vLlG3l+tObcnTQLpPyTl5tRYDrl13MO/Kpl88LwNS0dPO6ykmtHkWGb6qKvarwso0/M2ak2EB
- oUAH7j7suHvv/SJDwGXIy8WXj5h19HM3U7SCCAHqt0oXsCGU+Onegwqop7zxaHy4J6xiwX6AI
- CGTQmXQTw1ZPczJ/E2S4742znWVoiUVgfmMONSb20Sja3dxfpBA0F9lW6rcYnz/o6Pl4wMI9I
- Dc/d8kEKwJ4YsQP+eo//CMABqzymk3wWQUkpe2m+634emADvs1fK8ahb8emJMafLrghRiCGIY
- GfFTNAatOFjVj0acXAuNC78HQPridqdOFWHY8Kke0t8bCugGMXsaVOBwbAF+yUo8bNPx9x3eg
- lgi3d9kRzdud2kDq6oCKTIOvf4RpRx1EIaX8FXhZbSovaZk/hbtz+K1IKIJ0zaLpsrDj2WUdx
- lz9mKAH
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K0:yPvDQl6pjUolNxu/dhY1DvynVgKAzWspOWQrYHe38U6No4p6hu2
+ WTHgMYxbcAJjycGCGKacyAlhtOqC5pazZSbGNARRHXtzOYTYke6pyaVT6AZr1HaiRGy/GS6
+ pVX4p/ulOpgtH2r0ylRLQLGgOM8LN19qwJxiU1/zZBmZWr9T2VXRdBlk15QVzpfMBwv+7eX
+ o7XCD9aeDg6XL3eSbt1Cg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:ZDM7CKNoh8E=:X8rpTJDrStXmpafA5+SFOA
+ tkJrJChoNgUWH5gGqCloWe+nethcCqmZiXOQMWlk1e6ptAOkqcRO451aygR3fkMZRfNuodZlp
+ 1iY5y7t8gOcJu4jDlRuPi6x2pAbhSEhqIoL4Inbdkdi8L9KvkhY1YkyPgi16swSZD+xcNMG4l
+ OE89G5O75ntFdZiqpE0Yns5Z8vprBAsMWyW1jpFKBNvVGq6Ne++npt/FyfEE61YVOlgVcHeZA
+ BMiZIgWU+BLMxie+Nf48kn496VjZBugQzGPAHVzt6m3fCMPOP2zEDX+Dbq2IlRG8jFkIz1BQD
+ busnHm1bU8A8zr3NKvxMvMBCSjVJPDrGWVG0jkvn14/19emItQta/0c2j7IaUDSpGnCqyraxu
+ CgIFPyKtr5tAjA9yZK3fCil/kFRNVGpEkcBH9SGto0WvQmMMotXiGGg3CIpBbHe5fnPykMa8H
+ 8gEPq0Jb8OzvU+1L1ElkyaECW/6VHrXU/hvQWQ3K+sv/w0i3Vvgv1EpTl/bM2fuFglPcAljNR
+ T8wpOpV1KZN07ziKO1ufdoPooWeDoxGnaRG+nrTO3i/PejUGYZ68bR61IoiqU7dchNI/cY4c9
+ rVvtEkrwgTbiGQml8neXmnCjIUJ/ZtwJIs+W6s7G5huPCsSJMM2rYveZGqKCvrJOWDFW2oOcr
+ vcak6DyYvfeugfpaakvaANd2UC+QF+h0juf7HIBUugr69P9/5jmNturJ0eO7RDBxc8qqf70GW
+ tQZ/AXj/uV2c6dNtKZ8o2Kkg4a6wZ4NYlo/q4abo9aHJC8xBuwIi3J8GD3qaZLGdNnrvfk2uw
+ 6YQeBEf
 Return-Path: <elfring@users.sourceforge.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57962
+X-archive-position: 57963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -68,38 +68,132 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 23 May 2017 22:04:17 +0200
+Date: Tue, 23 May 2017 22:16:24 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Replace the specification of two data structures by pointer dereferences
-as the parameter for the operator "sizeof" to make the corresponding size
-determination a bit safer according to the Linux coding style convention.
+The script “checkpatch.pl” pointed information out like the following.
+
+Comparison to NULL could be written …
+
+Thus fix the affected source code places.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 ---
- arch/mips/kernel/vpe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/kernel/vpe.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
 diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index 721b1523b740..ed019218496b 100644
+index ed019218496b..0ef7654e67e4 100644
 --- a/arch/mips/kernel/vpe.c
 +++ b/arch/mips/kernel/vpe.c
-@@ -93,7 +93,7 @@ struct vpe *alloc_vpe(int minor)
- {
- 	struct vpe *v;
- 
--	v = kzalloc(sizeof(struct vpe), GFP_KERNEL);
-+	v = kzalloc(sizeof(*v), GFP_KERNEL);
- 	if (v == NULL)
+@@ -97,4 +97,4 @@ struct vpe *alloc_vpe(int minor)
+-	if (v == NULL)
++	if (!v)
  		goto out;
  
-@@ -114,7 +114,7 @@ struct tc *alloc_tc(int index)
- {
- 	struct tc *tc;
- 
--	tc = kzalloc(sizeof(struct tc), GFP_KERNEL);
-+	tc = kzalloc(sizeof(*tc), GFP_KERNEL);
- 	if (tc == NULL)
+ 	INIT_LIST_HEAD(&v->tc);
+@@ -118,4 +118,4 @@ struct tc *alloc_tc(int index)
+-	if (tc == NULL)
++	if (!tc)
  		goto out;
  
+ 	INIT_LIST_HEAD(&tc->tc);
+@@ -340,10 +340,9 @@ static int apply_r_mips_lo16(struct module *me, uint32_t *location,
+ 	/* Sign extend the addend we extract from the lo insn.	*/
+ 	vallo = ((insnlo & 0xffff) ^ 0x8000) - 0x8000;
+ 
+-	if (mips_hi16_list != NULL) {
+-
++	if (mips_hi16_list) {
+ 		l = mips_hi16_list;
+-		while (l != NULL) {
++		while (l) {
+ 			unsigned long insn;
+ 
+ 			/*
+@@ -391,7 +390,7 @@ static int apply_r_mips_lo16(struct module *me, uint32_t *location,
+ 	return 0;
+ 
+ out_free:
+-	while (l != NULL) {
++	while (l) {
+ 		next = l->next;
+ 		kfree(l);
+ 		l = next;
+@@ -562,7 +561,7 @@ static int find_vpe_symbols(struct vpe *v, Elf_Shdr *sechdrs,
+ 			v->shared_ptr = (void *)sym[i].st_value;
+ 	}
+ 
+-	if ((v->__start == 0) || (v->shared_ptr == NULL))
++	if ((v->__start == 0) || !v->shared_ptr)
+ 		return -1;
+ 
+ 	return 0;
+@@ -737,7 +736,7 @@ static int vpe_elfload(struct vpe *v)
+ 			return -ENOEXEC;
+ 		}
+ 
+-		if (v->shared_ptr == NULL)
++		if (!v->shared_ptr)
+ 			pr_warn("VPE loader: program does not contain vpe_shared symbol.\n"
+ 				" Unable to use AMVP (AP/SP) facilities.\n");
+ 	}
+@@ -777,7 +776,7 @@ static int vpe_open(struct inode *inode, struct file *filp)
+ 	}
+ 
+ 	v = get_vpe(aprp_cpu_index());
+-	if (v == NULL) {
++	if (!v) {
+ 		pr_warn("VPE loader: unable to get vpe\n");
+ 
+ 		return -ENODEV;
+@@ -822,7 +821,7 @@ static int vpe_release(struct inode *inode, struct file *filp)
+ 	int ret = 0;
+ 
+ 	v = get_vpe(aprp_cpu_index());
+-	if (v == NULL)
++	if (!v)
+ 		return -ENODEV;
+ 
+ 	hdr = (Elf_Ehdr *) v->pbuffer;
+@@ -866,8 +865,7 @@ static ssize_t vpe_write(struct file *file, const char __user *buffer,
+ 		return -ENODEV;
+ 
+ 	v = get_vpe(aprp_cpu_index());
+-
+-	if (v == NULL)
++	if (!v)
+ 		return -ENODEV;
+ 
+ 	if ((count + v->len) > v->plen) {
+@@ -895,7 +893,7 @@ void *vpe_get_shared(int index)
+ {
+ 	struct vpe *v = get_vpe(index);
+ 
+-	if (v == NULL)
++	if (!v)
+ 		return NULL;
+ 
+ 	return v->shared_ptr;
+@@ -906,7 +904,7 @@ int vpe_notify(int index, struct vpe_notifications *notify)
+ {
+ 	struct vpe *v = get_vpe(index);
+ 
+-	if (v == NULL)
++	if (!v)
+ 		return -1;
+ 
+ 	list_add(&notify->list, &v->notify);
+@@ -918,7 +916,7 @@ char *vpe_getcwd(int index)
+ {
+ 	struct vpe *v = get_vpe(index);
+ 
+-	if (v == NULL)
++	if (!v)
+ 		return NULL;
+ 
+ 	return v->cwd;
 -- 
 2.13.0

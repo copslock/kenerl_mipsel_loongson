@@ -1,66 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 May 2017 23:13:04 +0200 (CEST)
-Received: from Galois.linutronix.de ([IPv6:2a01:7a0:2:106d:700::1]:43481 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993982AbdEVVM4HtLkr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 May 2017 23:12:56 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1dCuc1-00015I-TW; Mon, 22 May 2017 23:11:34 +0200
-Date:   Mon, 22 May 2017 23:11:33 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Will Deacon <will.deacon@arm.com>
-cc:     Jiri Slaby <jslaby@suse.cz>, linux-kernel@vger.kernel.org,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH 1/1] futex: remove duplicated code
-In-Reply-To: <20170515131644.GA3605@arm.com>
-Message-ID: <alpine.DEB.2.20.1705222259580.2407@nanos>
-References: <20170515130742.18357-1-jslaby@suse.cz> <20170515131644.GA3605@arm.com>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 09:52:28 +0200 (CEST)
+Received: from mail-qt0-x244.google.com ([IPv6:2607:f8b0:400d:c0d::244]:35946
+        "EHLO mail-qt0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990513AbdEWHwScoL2a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 May 2017 09:52:18 +0200
+Received: by mail-qt0-x244.google.com with SMTP id j13so21246952qta.3;
+        Tue, 23 May 2017 00:52:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=JM42Co6C8ylzZj+uWO6/agg0CV3GNRSXO+6Oc4Nsi+E=;
+        b=JYNG0nv+NWqofY6PAuzhConkxfGL6FrjUvokiRAnTUnDot7KSwMoBFoBU+OgKubAIW
+         oWc4bR4Q+9bHOZ8q+8ux5VQ6TfrE31thXf580Hi+hunUh41zfLS51QKVaJ4124KqJ2NV
+         AKDZSDFY52yHP1ohZ6F1NP7UcNgruNE2d6wDflSppxrRniFQvxqkWCJ2GEiP86IKKcfP
+         rmZi2SRM69wB1eVZHH9BcgH+wPHzAt0TpqkfLzf7M762Oq6Grjs1yMvQ+qfWA5LDAzlO
+         cWT7uj9u23mR7KRQA+76LcLLuWXfDQz/sSTFB67VxSnFtyRrGGvjA84TxzalbK62EHj9
+         mLjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=JM42Co6C8ylzZj+uWO6/agg0CV3GNRSXO+6Oc4Nsi+E=;
+        b=PCoh7eryEQE9nDyf1d1nQYBhwMadhfxObCTrfMxdwmLpbtAznczPSlWLGBcu8YqC1V
+         6v5FnoRrLzB2OYxE44pbaGY2sp+H7unJbKQvYAgyx1k9ghHY4NzNUeGl8MGEbJvW/67l
+         fXC/aRumbVtcjI9Shusu9beepMPm2xAlqehpxVxQoFYQkXbPzs2wbATCA5kb+vnXxG1W
+         V4m5NPP0va7AdcdK/hdYJepgLfu8/Tv0Uky/AjZX/Z9wDPxVbNcMZkBbu2UxoLznGR5h
+         wQkRIEZMiJtV1FnmjRk72nIh5TGkRR6k1bmO/ehritZxCCHc9bqHYmzZ2NrgagQeIKti
+         TY+g==
+X-Gm-Message-State: AODbwcBQeeuE7Dy2gm+4QQcy92WuGpaJAfjJzjyV5RcWqwRzzBbZmoNx
+        rXvM6EfkGfP1QpxugbYuSdCluMERaQ==
+X-Received: by 10.237.62.52 with SMTP id l49mr27834810qtf.261.1495525932824;
+ Tue, 23 May 2017 00:52:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Return-Path: <tglx@linutronix.de>
+Received: by 10.12.152.71 with HTTP; Tue, 23 May 2017 00:52:12 -0700 (PDT)
+In-Reply-To: <20170521130918.27446-12-hauke@hauke-m.de>
+References: <20170521130918.27446-1-hauke@hauke-m.de> <20170521130918.27446-12-hauke@hauke-m.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 23 May 2017 10:52:12 +0300
+Message-ID: <CAHp75VdSAGv0md8YsvwdZJX4Eo-K6Tv3TcyAVKfOmdk6De1iGQ@mail.gmail.com>
+Subject: Re: [PATCH v2 11/15] MIPS: lantiq: Add a GPHY driver which uses the
+ RCU syscon-mfd
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
+        linux-watchdog@vger.kernel.org,
+        devicetree <devicetree@vger.kernel.org>,
+        "martin.blumenstingl" <martin.blumenstingl@googlemail.com>,
+        john <john@phrozen.org>, linux-spi <linux-spi@vger.kernel.org>,
+        "hauke.mehrtens" <hauke.mehrtens@intel.com>,
+        Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <andy.shevchenko@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57941
+X-archive-position: 57942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: andy.shevchenko@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,41 +72,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, 15 May 2017, Will Deacon wrote:
-> Hi Jiri,
-> 
-> On Mon, May 15, 2017 at 03:07:42PM +0200, Jiri Slaby wrote:
-> > There is code duplicated over all architecture's headers for
-> > futex_atomic_op_inuser. Namely op decoding, access_ok check for uaddr,
-> > and comparison of the result.
-> > 
-> > Remove this duplication and leave up to the arches only the needed
-> > assembly which is now in arch_futex_atomic_op_inuser.
-> > 
-> > Note that s390 removed access_ok check in d12a29703 ("s390/uaccess:
-> > remove pointless access_ok() checks") as access_ok there returns true.
-> > We introduce it back to the helper for the sake of simplicity (it gets
-> > optimized away anyway).
-> 
-> Whilst I think this is a good idea, the code in question actually results
-> in undefined behaviour per the C spec and is reported by UBSAN. See my
-> patch fixing arm64 here (which I'd forgotten about):
-> 
-> https://www.spinics.net/lists/linux-arch/msg38564.html
-> 
-> But, as stated in the thread above, I think we should go a step further
-> and remove FUTEX_OP_{OR,ANDN,XOR,OPARG_SHIFT} altogether. They don't
-> appear to be used by userspace, and this whole thing is a total mess.
+On Sun, May 21, 2017 at 4:09 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
 
-You wish. The constants are not used, but FUTEX_WAKE_OP _IS_ used by
-glibc. They only have one argument it seems:
+> Compared to the old xrx200_phy_fw driver the new version has multiple
+> enhancements. The name of the firmware files does not have to be added
+> to all .dts files anymore - one now configures the GPHY mode (FE or GE)
+> instead. Each GPHY can now also boot separate firmware (thus mixing of
+> GE and FE GPHYs is now possible).
+> The new implementation is based on the RCU syscon-mfd and uses the
+> reeset_controller framework instead of raw RCU register reads/writes.
 
-   #define FUTEX_OP_CLEAR_WAKE_IF_GT_ONE      ((4 << 24) | 1)
+> +static int xway_gphy_load(struct platform_device *pdev,
+> +                         const char *fw_name, dma_addr_t *dev_addr)
+> +{
+> +       const struct firmware *fw;
+> +       void *fw_addr;
+> +       size_t size;
+> +       int ret;
+> +
 
-but I'm pretty sure that there is enough (probably horrible) code (think
-java) out there using FUTEX_WAKE_OP for whatever (non)sensical reasons in
-any available combination.
+> +       dev_info(&pdev->dev, "requesting %s\n", fw_name);
 
-Thanks,
+Noise.
 
-	tglx
+> +       ret = request_firmware(&fw, fw_name, &pdev->dev);
+> +       if (ret) {
+> +               dev_err(&pdev->dev, "failed to load firmware: %s, error: %i\n",
+> +                       fw_name, ret);
+> +               return ret;
+> +       }
+> +
+
+> +       /*
+> +        * GPHY cores need the firmware code in a persistent and contiguous
+> +        * memory area with a 16 kB boundary aligned start address
+
+Add period to the end.
+
+> +        */
+
+> +static int xway_gphy_of_probe(struct platform_device *pdev,
+> +                               struct xway_gphy_priv *priv)
+> +{
+
+> +       priv->gphy_reset = devm_reset_control_get(&pdev->dev, "gphy");
+> +       if (IS_ERR_OR_NULL(priv->gphy_reset)) {
+
+_OR_NULL part looks suspicious.
+There is _optional() variant of reset API, AFAIR.
+
+> +               if (PTR_ERR(priv->gphy_reset) != -EPROBE_DEFER)
+> +                       dev_err(&pdev->dev, "Failed to lookup gphy reset\n");
+> +               return PTR_ERR(priv->gphy_reset);
+> +       }
+
+> +       priv->gphy_reset2 = devm_reset_control_get_optional(&pdev->dev, "gphy2");
+> +       if (IS_ERR(priv->gphy_reset2)) {
+> +               if (PTR_ERR(priv->gphy_reset2) == -EPROBE_DEFER)
+> +                       return PTR_ERR(priv->gphy_reset2);
+
+> +               priv->gphy_reset2 = NULL;
+
+Why?
+
+If there is a problem in reset framework it should be fixed there, not here.
+
+> +       }
+> +
+> +       if (of_property_read_u32(np, "lantiq,gphy-mode", &gphy_mode))
+
+> +               /* Default to GE mode */
+
+If you put more lines in the branch you perhaps need {}.
+
+> +               gphy_mode = GPHY_MODE_GE;
+
+> +static int xway_gphy_probe(struct platform_device *pdev)
+> +{
+> +       struct xway_gphy_priv *priv;
+> +       dma_addr_t fw_addr = 0;
+> +       int ret;
+
+> +       if (!IS_ERR_OR_NULL(priv->gphy_clk_gate))
+
+_OR_NULL is redundant.
+IS_ERR should not happen here if clock is mandatory.
+
+Thus, complete line is redundant.
+
+> +               clk_prepare_enable(priv->gphy_clk_gate);
+
+You need to check return value.
+
+-- 
+With Best Regards,
+Andy Shevchenko

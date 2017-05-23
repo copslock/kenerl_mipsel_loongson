@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 21:32:55 +0200 (CEST)
-Received: from smtprelay0103.hostedemail.com ([216.40.44.103]:37361 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23994768AbdEWTcszl-mC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 May 2017 21:32:48 +0200
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id CF9FE12BCEF;
-        Tue, 23 May 2017 19:32:45 +0000 (UTC)
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-HE-Tag: chess62_8c6a8b638b85b
-X-Filterd-Recvd-Size: 1846
-Received: from vmware.local.home (50-204-120-238-static.hfc.comcastbusiness.net [50.204.120.238])
-        (Authenticated sender: rostedt@goodmis.org)
-        by omf02.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 23 May 2017 19:32:44 +0000 (UTC)
-Date:   Tue, 23 May 2017 15:32:40 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc:     Ingo Molnar <mingo@redhat.com>, Ralf Baechle <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: ftrace: fix init functions tracing
-Message-ID: <20170523153240.72a8ecd5@vmware.local.home>
-In-Reply-To: <1495537003-1013-1-git-send-email-marcin.nowakowski@imgtec.com>
-References: <1495537003-1013-1-git-send-email-marcin.nowakowski@imgtec.com>
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 22:23:50 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:48062 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994912AbdEWUXT0174F (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 May 2017 22:23:19 +0200
+Received: from localhost (LStLambert-658-1-235-21.w80-13.abo.wanadoo.fr [80.13.254.21])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 85E9A892;
+        Tue, 23 May 2017 20:23:12 +0000 (UTC)
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        John Crispin <john@phrozen.org>,
+        "Steven J . Hill" <Steven.Hill@caviumnetworks.com>,
+        Fuxin Zhang <zhangfx@lemote.com>,
+        Zhangjin Wu <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4.11 165/197] MIPS: Loongson-3: Select MIPS_L1_CACHE_SHIFT_6
+Date:   Tue, 23 May 2017 22:08:46 +0200
+Message-Id: <20170523200838.095093119@linuxfoundation.org>
+X-Mailer: git-send-email 2.13.0
+In-Reply-To: <20170523200821.666872592@linuxfoundation.org>
+References: <20170523200821.666872592@linuxfoundation.org>
+User-Agent: quilt/0.65
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <rostedt@goodmis.org>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57955
+X-archive-position: 57956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -47,27 +45,38 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, 23 May 2017 12:56:43 +0200
-Marcin Nowakowski <marcin.nowakowski@imgtec.com> wrote:
+4.11-stable review patch.  If anyone has any objections, please let me know.
 
-> Since introduction of tracing for init functions the in_kernel_space()
-> check is no longer correct, as it ignores the init sections. As a
-> result, when probes are inserted (and disabled) in the init functions,
-> a branch instruction is inserted instead of a nop, which is likely to
-> result in random crashes during boot.
-> 
-> Remove the MIPS-specific in_kernel_space() method and replace it with
-> a generic core_kernel_text() that also checks for init sections during
-> system boot stage.
-> 
-> Fixes: 42c269c88dc1 ("ftrace: Allow for function tracing to record
-> init functions on boot up") Signed-off-by: Marcin Nowakowski
-> <marcin.nowakowski@imgtec.com> ---
->  arch/mips/kernel/ftrace.c | 24 +++++-------------------
->  1 file changed, 5 insertions(+), 19 deletions(-)
-> 
->
+------------------
 
-Thanks for doing this.
+From: Huacai Chen <chenhc@lemote.com>
 
--- Steve
+commit 17c99d9421695a0e0de18bf1e7091d859e20ec1d upstream.
+
+Some newer Loongson-3 have 64 bytes cache lines, so select
+MIPS_L1_CACHE_SHIFT_6.
+
+Signed-off-by: Huacai Chen <chenhc@lemote.com>
+Cc: John Crispin <john@phrozen.org>
+Cc: Steven J . Hill <Steven.Hill@caviumnetworks.com>
+Cc: Fuxin Zhang <zhangfx@lemote.com>
+Cc: Zhangjin Wu <wuzhangjin@gmail.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/15755/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ arch/mips/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1373,6 +1373,7 @@ config CPU_LOONGSON3
+ 	select WEAK_ORDERING
+ 	select WEAK_REORDERING_BEYOND_LLSC
+ 	select MIPS_PGD_C0_CONTEXT
++	select MIPS_L1_CACHE_SHIFT_6
+ 	select GPIOLIB
+ 	help
+ 		The Loongson 3 processor implements the MIPS64R2 instruction

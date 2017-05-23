@@ -1,13 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 22:53:56 +0200 (CEST)
-Received: from mout.web.de ([212.227.15.3]:56312 "EHLO mout.web.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 22:55:15 +0200 (CEST)
+Received: from mout.web.de ([212.227.15.3]:49602 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994941AbdEWUxtBKGov (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 May 2017 22:53:49 +0200
-Received: from [192.168.1.2] ([78.49.50.198]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LzmLr-1e0PKM1VAJ-0155U4; Tue, 23
- May 2017 22:53:21 +0200
-Subject: [PATCH 3/5] MIPS: VPE: Delete an error message for a failed memory
- allocation in vpe_open()
+        id S23995044AbdEWUyz5m2Av (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 May 2017 22:54:55 +0200
+Received: from [192.168.1.2] ([78.49.50.198]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LZvw5-1desrJ0d8X-00lorh; Tue, 23
+ May 2017 22:54:20 +0200
+Subject: [PATCH 4/5] MIPS: VPE: Improve a size determination in two functions
 From:   SF Markus Elfring <elfring@users.sourceforge.net>
 To:     linux-mips@linux-mips.org, Ingo Molnar <mingo@kernel.org>,
         James Hogan <james.hogan@imgtec.com>,
@@ -21,8 +20,8 @@ To:     linux-mips@linux-mips.org, Ingo Molnar <mingo@kernel.org>,
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 References: <e866716c-5ce4-3658-f944-e310007db127@users.sourceforge.net>
-Message-ID: <94b1e14f-47c0-7f13-6158-700488d63c66@users.sourceforge.net>
-Date:   Tue, 23 May 2017 22:53:19 +0200
+Message-ID: <cf85a732-6901-4eca-2848-71e35e7ce95d@users.sourceforge.net>
+Date:   Tue, 23 May 2017 22:54:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.1.1
 MIME-Version: 1.0
@@ -30,28 +29,28 @@ In-Reply-To: <e866716c-5ce4-3658-f944-e310007db127@users.sourceforge.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:B8o2fVhWeT8bDCkbIq+6baGM5VrByM++1yE61DH42MHHiJ8XcZd
- DhxZ/Htb96O+jNhOiRAm7FAjP87NIkTn6hzKP4iPnF6XKxkgNuJc+pG2xI4X8caAL6lAb2e
- peuL6TQjHus3ANttoSZ1PTOMmuyQMjJle3usO87+dn8/ijChRX6HHbzCpISO2+G+LQTYfs6
- 58lMMCFQVoHvuPNqbakeQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:T0LR6qkqS0o=:7qHSDHojIlJiblebicEuDm
- RtiDb589wRk1qper1FL1DFBweNfBCRZxErIeYUJJRPDdtFLQIXVtKxst7GkslA95hu8u80maU
- M+/j6GVC4qNfseGetP02fZdKOaMld98EJWm1yF2KVchHVs/VjZmJ8WQgxsIpPUNeaoJO0Gjvl
- UVsDK8c4klXA9yS0NMijvbI+xzqbmJx47CkX+Gspgg6ER7Ha541EdWZ/95rdfAHtayqgYkFIU
- 9qVNi184EuECWQn79xRrxfuvcYycWwalLOlKEm+1qESDYm442CJlVN1XStCivJ7gXHw6gfu5X
- 1KwEucofYQ1QyZ8xX/eBjgY3y6fUZGHX611GSFNLT7rAvwW8b9VFKVFuH+01bJALiaZmXVXRt
- +5W3dpNFygu6ADpFaRPh/hGvbP2oDPXWzxHYHx73iKv16uIgizpimOJxa7sdXux6WP0kV2mcu
- MrPYYPXqmv4tqSkgNsJrETecC36yoRTyIRtbFkTt0wXavr/mQfPVyiD5LFoh0luy6hpOBCvCB
- mBP2kXVrTnBOsP3xjR0DhxWgRzxE8Drqsno0Brm+QcLnIoC3zYEtvC81RteNTkeJIj7vGiGJm
- 1Jr9sml6YV9lr1lbNzr8yVoVtgEgCGW2tQ0FmxkWLGE++GcjrcZ6N/LQ8zroW8ZVb8wtGVYah
- y1V+zwsNiymYyC4dIyafwieTKH8OZf8DRLadXQEjBD47eJsVvOl6YhaZ9T3n/7mLyAnN8lKOR
- It8ydPOfm9kAJoVXkiCEalLM/RmIMHvrg9hg4aQLep17r3DbcKMdB3scrP6DWDr1XW1xNLJLU
- sHIcOMc
+X-Provags-ID: V03:K0:du0VG0Czw9aq+6FvXs7FtFcsyfnVG8uGC5wdJDWRn8QmDh/XlUW
+ VtNs6H/1SYMx3NNin2RnQZfgjvXqaMOakpcGNVwjMS1o7D2JHxMizWSAeDesDZEjydXR7AH
+ SZCBTEoa2SjiLlMVTWd0HuNpaAi6Sc86f28lyxf3qQT/Z9rjtsgSg8fzE36B/VC6B+lkiNR
+ n4iP0qTd2AnCf1mX0aLLA==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:O04vx4fOC1k=:dxLV0msjBnF7Y1Ea6P2Goz
+ 4apJDZFALpEh5UzbHCB4kX6Mev43kvTSe78SQkIItQVTNrhdf45v6Ghv+OcZnQK08tQrVladh
+ dqa9SgKo5+wIlpnPxmtIAvM+PgkwMIRIsKDmPckahO29eakoj98aSpzJcNVfOUY+7yzn44oeZ
+ NJdjLK9xgRgU6CR4g3HWxwBcpI0esONRyOjrM6WyHWTV0+7dOiPuEX/6nY+pW3cDsxDRXw2Ox
+ fEzOG3j2ovP6NBVienTDLqAestx4p5+4+EuoWvvMKq2CdmLX2fBYeXmxPjliRkKWSStE8ap+J
+ 20h3rWrLJecrvi16somLnuKlxDyKR2eXY7p8w8VkWDf41znY3ub3dJK//b2ecS9qY41sG53JW
+ vLlG3l+tObcnTQLpPyTl5tRYDrl13MO/Kpl88LwNS0dPO6ykmtHkWGb6qKvarwso0/M2ak2EB
+ oUAH7j7suHvv/SJDwGXIy8WXj5h19HM3U7SCCAHqt0oXsCGU+Onegwqop7zxaHy4J6xiwX6AI
+ CGTQmXQTw1ZPczJ/E2S4742znWVoiUVgfmMONSb20Sja3dxfpBA0F9lW6rcYnz/o6Pl4wMI9I
+ Dc/d8kEKwJ4YsQP+eo//CMABqzymk3wWQUkpe2m+634emADvs1fK8ahb8emJMafLrghRiCGIY
+ GfFTNAatOFjVj0acXAuNC78HQPridqdOFWHY8Kke0t8bCugGMXsaVOBwbAF+yUo8bNPx9x3eg
+ lgi3d9kRzdud2kDq6oCKTIOvf4RpRx1EIaX8FXhZbSovaZk/hbtz+K1IKIJ0zaLpsrDj2WUdx
+ lz9mKAH
 Return-Path: <elfring@users.sourceforge.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57961
+X-archive-position: 57962
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -69,31 +68,38 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 23 May 2017 21:54:42 +0200
+Date: Tue, 23 May 2017 22:04:17 +0200
 
-Omit an extra message for a memory allocation failure in this function.
+Replace the specification of two data structures by pointer dereferences
+as the parameter for the operator "sizeof" to make the corresponding size
+determination a bit safer according to the Linux coding style convention.
 
-This issue was detected by using the Coccinelle software.
-
-Link: http://events.linuxfoundation.org/sites/events/files/slides/LCJ16-Refactor_Strings-WSang_0.pdf
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 ---
- arch/mips/kernel/vpe.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/mips/kernel/vpe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index 544ea21bfef9..721b1523b740 100644
+index 721b1523b740..ed019218496b 100644
 --- a/arch/mips/kernel/vpe.c
 +++ b/arch/mips/kernel/vpe.c
-@@ -799,7 +799,6 @@ static int vpe_open(struct inode *inode, struct file *filp)
--	if (!v->pbuffer) {
--		pr_warn("VPE loader: unable to allocate memory\n");
-+	if (!v->pbuffer)
- 		return -ENOMEM;
--	}
-+
- 	v->plen = P_SIZE;
- 	v->load_addr = NULL;
- 	v->len = 0;
+@@ -93,7 +93,7 @@ struct vpe *alloc_vpe(int minor)
+ {
+ 	struct vpe *v;
+ 
+-	v = kzalloc(sizeof(struct vpe), GFP_KERNEL);
++	v = kzalloc(sizeof(*v), GFP_KERNEL);
+ 	if (v == NULL)
+ 		goto out;
+ 
+@@ -114,7 +114,7 @@ struct tc *alloc_tc(int index)
+ {
+ 	struct tc *tc;
+ 
+-	tc = kzalloc(sizeof(struct tc), GFP_KERNEL);
++	tc = kzalloc(sizeof(*tc), GFP_KERNEL);
+ 	if (tc == NULL)
+ 		goto out;
+ 
 -- 
 2.13.0

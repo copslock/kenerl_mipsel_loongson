@@ -1,60 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 22:55:53 +0200 (CEST)
-Received: from mout.web.de ([212.227.15.4]:62083 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23995043AbdEWUz0b0TZv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 May 2017 22:55:26 +0200
-Received: from [192.168.1.2] ([78.49.50.198]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MN4K8-1dJtbe3kQi-006gsY; Tue, 23
- May 2017 22:55:07 +0200
-Subject: [PATCH 5/5] MIPS: VPE: Adjust 13 checks for null pointers
-From:   SF Markus Elfring <elfring@users.sourceforge.net>
-To:     linux-mips@linux-mips.org, Ingo Molnar <mingo@kernel.org>,
-        James Hogan <james.hogan@imgtec.com>,
-        Kees Cook <keescook@chromium.org>,
-        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Matt Redfearn <matt.redfearn@imgtec.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <e866716c-5ce4-3658-f944-e310007db127@users.sourceforge.net>
-Message-ID: <44ff74fa-07c9-3f9c-6cda-050296400c72@users.sourceforge.net>
-Date:   Tue, 23 May 2017 22:55:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 22:56:59 +0200 (CEST)
+Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:60401 "EHLO
+        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994812AbdEWU4vmGvTv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 May 2017 22:56:51 +0200
+Received: from [IPv6:2003:86:280e:4e00:c7b7:b1f5:57cb:bdf5] (p20030086280E4E00C7B7B1F557CBBDF5.dip0.t-ipconnect.de [IPv6:2003:86:280e:4e00:c7b7:b1f5:57cb:bdf5])
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 99893100247;
+        Tue, 23 May 2017 22:56:43 +0200 (CEST)
+Subject: Re: [PATCH v2 07/15] MIPS: lantiq: Convert the xbar driver to a
+ platform_driver
+To:     John Crispin <john@phrozen.org>, ralf@linux-mips.org
+References: <20170521130918.27446-1-hauke@hauke-m.de>
+ <20170521130918.27446-8-hauke@hauke-m.de>
+ <71c88b1c-3ed1-8f30-1dbd-dbd4c7bb5cdc@phrozen.org>
+Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+        martin.blumenstingl@googlemail.com, linux-spi@vger.kernel.org,
+        hauke.mehrtens@intel.com, robh@kernel.org
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <181f21fa-14ac-5d3c-d9b1-543c43869fb5@hauke-m.de>
+Date:   Tue, 23 May 2017 22:56:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-In-Reply-To: <e866716c-5ce4-3658-f944-e310007db127@users.sourceforge.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K0:yPvDQl6pjUolNxu/dhY1DvynVgKAzWspOWQrYHe38U6No4p6hu2
- WTHgMYxbcAJjycGCGKacyAlhtOqC5pazZSbGNARRHXtzOYTYke6pyaVT6AZr1HaiRGy/GS6
- pVX4p/ulOpgtH2r0ylRLQLGgOM8LN19qwJxiU1/zZBmZWr9T2VXRdBlk15QVzpfMBwv+7eX
- o7XCD9aeDg6XL3eSbt1Cg==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:ZDM7CKNoh8E=:X8rpTJDrStXmpafA5+SFOA
- tkJrJChoNgUWH5gGqCloWe+nethcCqmZiXOQMWlk1e6ptAOkqcRO451aygR3fkMZRfNuodZlp
- 1iY5y7t8gOcJu4jDlRuPi6x2pAbhSEhqIoL4Inbdkdi8L9KvkhY1YkyPgi16swSZD+xcNMG4l
- OE89G5O75ntFdZiqpE0Yns5Z8vprBAsMWyW1jpFKBNvVGq6Ne++npt/FyfEE61YVOlgVcHeZA
- BMiZIgWU+BLMxie+Nf48kn496VjZBugQzGPAHVzt6m3fCMPOP2zEDX+Dbq2IlRG8jFkIz1BQD
- busnHm1bU8A8zr3NKvxMvMBCSjVJPDrGWVG0jkvn14/19emItQta/0c2j7IaUDSpGnCqyraxu
- CgIFPyKtr5tAjA9yZK3fCil/kFRNVGpEkcBH9SGto0WvQmMMotXiGGg3CIpBbHe5fnPykMa8H
- 8gEPq0Jb8OzvU+1L1ElkyaECW/6VHrXU/hvQWQ3K+sv/w0i3Vvgv1EpTl/bM2fuFglPcAljNR
- T8wpOpV1KZN07ziKO1ufdoPooWeDoxGnaRG+nrTO3i/PejUGYZ68bR61IoiqU7dchNI/cY4c9
- rVvtEkrwgTbiGQml8neXmnCjIUJ/ZtwJIs+W6s7G5huPCsSJMM2rYveZGqKCvrJOWDFW2oOcr
- vcak6DyYvfeugfpaakvaANd2UC+QF+h0juf7HIBUugr69P9/5jmNturJ0eO7RDBxc8qqf70GW
- tQZ/AXj/uV2c6dNtKZ8o2Kkg4a6wZ4NYlo/q4abo9aHJC8xBuwIi3J8GD3qaZLGdNnrvfk2uw
- 6YQeBEf
-Return-Path: <elfring@users.sourceforge.net>
+In-Reply-To: <71c88b1c-3ed1-8f30-1dbd-dbd4c7bb5cdc@phrozen.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57963
+X-archive-position: 57964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: elfring@users.sourceforge.net
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -67,133 +46,208 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 23 May 2017 22:16:24 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+On 05/22/2017 07:30 AM, John Crispin wrote:
+> 
+> 
+> On 21/05/17 15:09, Hauke Mehrtens wrote:
+>> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+>>
+>> This allows using the xbar driver on ARX300 based SoCs which require the
+>> same xbar setup as the xRX200 chipsets because the xbar driver
+>> initialization is not guarded by an xRX200 specific
+>> of_machine_is_compatible condition anymore. Additionally the new driver
+>> takes a syscon phandle to configure the XBAR endianness bits in RCU
+>> (before this was done in arch/mips/lantiq/xway/reset.c and also
+>> guarded by an VRX200 specific if-statement).
+>>
+>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+>> ---
+>>   .../devicetree/bindings/mips/lantiq/xbar.txt       |  24 +++++
+>>   MAINTAINERS                                        |   1 +
+>>   arch/mips/lantiq/xway/reset.c                      |   4 -
+>>   arch/mips/lantiq/xway/sysctrl.c                    |  41 ---------
+>>   drivers/soc/Makefile                               |   1 +
+>>   drivers/soc/lantiq/Makefile                        |   1 +
+>>   drivers/soc/lantiq/xbar.c                          | 101
+>> +++++++++++++++++++++
+>>   7 files changed, 128 insertions(+), 45 deletions(-)
+>>   create mode 100644
+>> Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>>   create mode 100644 drivers/soc/lantiq/Makefile
+>>   create mode 100644 drivers/soc/lantiq/xbar.c
+>>
+>> diff --git a/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>> b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>> new file mode 100644
+>> index 000000000000..7e1ea5299744
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mips/lantiq/xbar.txt
+>> @@ -0,0 +1,24 @@
+>> +Lantiq XWAY SoC XBAR binding
+>> +============================
+>> +
+>> +
+>> +-------------------------------------------------------------------------------
+>>
+>> +Required properties:
+>> +- compatible    : Should be one of
+>> +                "lantiq,xbar-xway"
+>> +                "lantiq,xbar-xrx200"
+>> +- reg        : The address and length of the XBAR registers
+>> +
+>> +Optional properties:
+>> +- lantiq,rcu-syscon    : A phandle and offset to the endianness
+>> configuration
+>> +              registers in the RCU module
+>> +
+>> +
+>> +-------------------------------------------------------------------------------
+>>
+>> +Example for the XBAR on the xRX200 SoCs:
+>> +    xbar0: xbar@400000 {
+>> +        compatible = "lantiq,xbar-xway";
+>> +        reg = <0x400000 0x1000>;
+>> +        big-endian;
+>> +        lantiq,rcu-syscon = <&rcu0 0x4c>;
+>> +    };
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index f7d568b8f133..11c33f7d63ba 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -7434,6 +7434,7 @@ M:    John Crispin <john@phrozen.org>
+>>   L:    linux-mips@linux-mips.org
+>>   S:    Maintained
+>>   F:    arch/mips/lantiq
+>> +F:    drivers/soc/lantiq
+>>     LAPB module
+>>   L:    linux-x25@vger.kernel.org
+>> diff --git a/arch/mips/lantiq/xway/reset.c
+>> b/arch/mips/lantiq/xway/reset.c
+>> index 83fd65d76e81..b6752c95a600 100644
+>> --- a/arch/mips/lantiq/xway/reset.c
+>> +++ b/arch/mips/lantiq/xway/reset.c
+>> @@ -373,10 +373,6 @@ static int __init mips_reboot_setup(void)
+>>           of_machine_is_compatible("lantiq,vr9"))
+>>           ltq_usb_init();
+>>   -    if (of_machine_is_compatible("lantiq,vr9"))
+>> -        ltq_rcu_w32(ltq_rcu_r32(RCU_AHB_ENDIAN) | RCU_VR9_BE_AHB1S,
+>> -                RCU_AHB_ENDIAN);
+>> -
+>>       _machine_restart = ltq_machine_restart;
+>>       _machine_halt = ltq_machine_halt;
+>>       pm_power_off = ltq_machine_power_off;
+>> diff --git a/arch/mips/lantiq/xway/sysctrl.c
+>> b/arch/mips/lantiq/xway/sysctrl.c
+>> index 95bec460b651..706639a343bc 100644
+>> --- a/arch/mips/lantiq/xway/sysctrl.c
+>> +++ b/arch/mips/lantiq/xway/sysctrl.c
+>> @@ -145,15 +145,7 @@ static u32 pmu_clk_cr_b[] = {
+>>   #define pmu_w32(x, y)    ltq_w32((x), pmu_membase + (y))
+>>   #define pmu_r32(x)    ltq_r32(pmu_membase + (x))
+>>   -#define XBAR_ALWAYS_LAST    0x430
+>> -#define XBAR_FPI_BURST_EN    BIT(1)
+>> -#define XBAR_AHB_BURST_EN    BIT(2)
+>> -
+>> -#define xbar_w32(x, y)    ltq_w32((x), ltq_xbar_membase + (y))
+>> -#define xbar_r32(x)    ltq_r32(ltq_xbar_membase + (x))
+>> -
+>>   static void __iomem *pmu_membase;
+>> -static void __iomem *ltq_xbar_membase;
+>>   void __iomem *ltq_cgu_membase;
+>>   void __iomem *ltq_ebu_membase;
+>>   @@ -293,16 +285,6 @@ static void pci_ext_disable(struct clk *clk)
+>>       ltq_cgu_w32((1 << 31) | (1 << 30), pcicr);
+>>   }
+>>   -static void xbar_fpi_burst_disable(void)
+>> -{
+>> -    u32 reg;
+>> -
+>> -    /* bit 1 as 1 --burst; bit 1 as 0 -- single */
+>> -    reg = xbar_r32(XBAR_ALWAYS_LAST);
+>> -    reg &= ~XBAR_FPI_BURST_EN;
+>> -    xbar_w32(reg, XBAR_ALWAYS_LAST);
+>> -}
+>> -
+>>   /* enable a clockout source */
+>>   static int clkout_enable(struct clk *clk)
+>>   {
+>> @@ -459,26 +441,6 @@ void __init ltq_soc_init(void)
+>>       if (!pmu_membase || !ltq_cgu_membase || !ltq_ebu_membase)
+>>           panic("Failed to remap core resources");
+>>   -    if (of_machine_is_compatible("lantiq,vr9")) {
+>> -        struct resource res_xbar;
+>> -        struct device_node *np_xbar =
+>> -                of_find_compatible_node(NULL, NULL,
+>> -                            "lantiq,xbar-xway");
+>> -
+>> -        if (!np_xbar)
+>> -            panic("Failed to load xbar nodes from devicetree");
+>> -        if (of_address_to_resource(np_xbar, 0, &res_xbar))
+>> -            panic("Failed to get xbar resources");
+>> -        if (!request_mem_region(res_xbar.start,
+>> resource_size(&res_xbar),
+>> -            res_xbar.name))
+>> -            panic("Failed to get xbar resources");
+>> -
+>> -        ltq_xbar_membase = ioremap_nocache(res_xbar.start,
+>> -                           resource_size(&res_xbar));
+>> -        if (!ltq_xbar_membase)
+>> -            panic("Failed to remap xbar resources");
+>> -    }
+>> -
+>>       /* make sure to unprotect the memory region where flash is
+>> located */
+>>       ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS,
+>> LTQ_EBU_BUSCON0);
+>>   @@ -605,7 +567,4 @@ void __init ltq_soc_init(void)
+>>           clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+>>           clkdev_add_pmu("1e100400.serial", NULL, 1, 0, PMU_ASC0);
+>>       }
+>> -
+>> -    if (of_machine_is_compatible("lantiq,vr9"))
+>> -        xbar_fpi_burst_disable();
+>>   }
+>> diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
+>> index 824b44281efa..009b5de74a24 100644
+>> --- a/drivers/soc/Makefile
+>> +++ b/drivers/soc/Makefile
+>> @@ -8,6 +8,7 @@ obj-$(CONFIG_ARCH_DOVE)        += dove/
+>>   obj-$(CONFIG_MACH_DOVE)        += dove/
+>>   obj-y                += fsl/
+>>   obj-$(CONFIG_ARCH_MXC)        += imx/
+>> +obj-$(CONFIG_SOC_XWAY)        += lantiq/
+>>   obj-$(CONFIG_ARCH_MEDIATEK)    += mediatek/
+>>   obj-$(CONFIG_ARCH_QCOM)        += qcom/
+>>   obj-$(CONFIG_ARCH_RENESAS)    += renesas/
+>> diff --git a/drivers/soc/lantiq/Makefile b/drivers/soc/lantiq/Makefile
+>> new file mode 100644
+>> index 000000000000..7411bd23d58e
+>> --- /dev/null
+>> +++ b/drivers/soc/lantiq/Makefile
+>> @@ -0,0 +1 @@
+>> +obj-y                += xbar.o
+>> diff --git a/drivers/soc/lantiq/xbar.c b/drivers/soc/lantiq/xbar.c
+>> new file mode 100644
+>> index 000000000000..89590e189efc
+>> --- /dev/null
+>> +++ b/drivers/soc/lantiq/xbar.c
+>> @@ -0,0 +1,101 @@
+>> +/*
+>> + *  This program is free software; you can redistribute it and/or
+>> modify it
+>> + *  under the terms of the GNU General Public License version 2 as
+>> published
+>> + *  by the Free Software Foundation.
+>> + *
+>> + *  Copyright (C) 2011-2015 John Crispin <blogic@openwrt.org>
+> 
+> Hi Hauke,
+> 
+> my openwrt email addr is no longer valid. please use my phrozen.org one.
+> 
+>     John
 
-The script “checkpatch.pl” pointed information out like the following.
+Sorry, I fixed that in all patches.
 
-Comparison to NULL could be written …
-
-Thus fix the affected source code places.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
----
- arch/mips/kernel/vpe.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
-
-diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index ed019218496b..0ef7654e67e4 100644
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -97,4 +97,4 @@ struct vpe *alloc_vpe(int minor)
--	if (v == NULL)
-+	if (!v)
- 		goto out;
- 
- 	INIT_LIST_HEAD(&v->tc);
-@@ -118,4 +118,4 @@ struct tc *alloc_tc(int index)
--	if (tc == NULL)
-+	if (!tc)
- 		goto out;
- 
- 	INIT_LIST_HEAD(&tc->tc);
-@@ -340,10 +340,9 @@ static int apply_r_mips_lo16(struct module *me, uint32_t *location,
- 	/* Sign extend the addend we extract from the lo insn.	*/
- 	vallo = ((insnlo & 0xffff) ^ 0x8000) - 0x8000;
- 
--	if (mips_hi16_list != NULL) {
--
-+	if (mips_hi16_list) {
- 		l = mips_hi16_list;
--		while (l != NULL) {
-+		while (l) {
- 			unsigned long insn;
- 
- 			/*
-@@ -391,7 +390,7 @@ static int apply_r_mips_lo16(struct module *me, uint32_t *location,
- 	return 0;
- 
- out_free:
--	while (l != NULL) {
-+	while (l) {
- 		next = l->next;
- 		kfree(l);
- 		l = next;
-@@ -562,7 +561,7 @@ static int find_vpe_symbols(struct vpe *v, Elf_Shdr *sechdrs,
- 			v->shared_ptr = (void *)sym[i].st_value;
- 	}
- 
--	if ((v->__start == 0) || (v->shared_ptr == NULL))
-+	if ((v->__start == 0) || !v->shared_ptr)
- 		return -1;
- 
- 	return 0;
-@@ -737,7 +736,7 @@ static int vpe_elfload(struct vpe *v)
- 			return -ENOEXEC;
- 		}
- 
--		if (v->shared_ptr == NULL)
-+		if (!v->shared_ptr)
- 			pr_warn("VPE loader: program does not contain vpe_shared symbol.\n"
- 				" Unable to use AMVP (AP/SP) facilities.\n");
- 	}
-@@ -777,7 +776,7 @@ static int vpe_open(struct inode *inode, struct file *filp)
- 	}
- 
- 	v = get_vpe(aprp_cpu_index());
--	if (v == NULL) {
-+	if (!v) {
- 		pr_warn("VPE loader: unable to get vpe\n");
- 
- 		return -ENODEV;
-@@ -822,7 +821,7 @@ static int vpe_release(struct inode *inode, struct file *filp)
- 	int ret = 0;
- 
- 	v = get_vpe(aprp_cpu_index());
--	if (v == NULL)
-+	if (!v)
- 		return -ENODEV;
- 
- 	hdr = (Elf_Ehdr *) v->pbuffer;
-@@ -866,8 +865,7 @@ static ssize_t vpe_write(struct file *file, const char __user *buffer,
- 		return -ENODEV;
- 
- 	v = get_vpe(aprp_cpu_index());
--
--	if (v == NULL)
-+	if (!v)
- 		return -ENODEV;
- 
- 	if ((count + v->len) > v->plen) {
-@@ -895,7 +893,7 @@ void *vpe_get_shared(int index)
- {
- 	struct vpe *v = get_vpe(index);
- 
--	if (v == NULL)
-+	if (!v)
- 		return NULL;
- 
- 	return v->shared_ptr;
-@@ -906,7 +904,7 @@ int vpe_notify(int index, struct vpe_notifications *notify)
- {
- 	struct vpe *v = get_vpe(index);
- 
--	if (v == NULL)
-+	if (!v)
- 		return -1;
- 
- 	list_add(&notify->list, &v->notify);
-@@ -918,7 +916,7 @@ char *vpe_getcwd(int index)
- {
- 	struct vpe *v = get_vpe(index);
- 
--	if (v == NULL)
-+	if (!v)
- 		return NULL;
- 
- 	return v->cwd;
--- 
-2.13.0
+Hauke

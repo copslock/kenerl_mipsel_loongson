@@ -1,36 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 14:41:15 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:14781 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993905AbdEWMlH6zL-F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 May 2017 14:41:07 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 5BAE031757502;
-        Tue, 23 May 2017 13:40:58 +0100 (IST)
-Received: from [10.20.78.51] (10.20.78.51) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 23 May 2017
- 13:40:59 +0100
-Date:   Tue, 23 May 2017 13:40:23 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
-Subject: [PATCH 4/4] MIPS16e2: Provide feature overrides for non-MIPS16
- systems
-In-Reply-To: <alpine.DEB.2.00.1705180145220.2590@tp.orcam.me.uk>
-Message-ID: <alpine.DEB.2.00.1705230345530.2590@tp.orcam.me.uk>
-References: <alpine.DEB.2.00.1705180145220.2590@tp.orcam.me.uk>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2017 20:10:51 +0200 (CEST)
+Received: from mout.web.de ([212.227.15.4]:52305 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23994768AbdEWSKnNkJQ2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 May 2017 20:10:43 +0200
+Received: from [192.168.1.2] ([78.49.50.198]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LwHmQ-1e1Hsz2ZhO-018293; Tue, 23
+ May 2017 20:10:27 +0200
+To:     linux-mips@linux-mips.org,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        David Daney <david.daney@cavium.com>,
+        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>,
+        "Steven J. Hill" <steven.hill@cavium.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+From:   SF Markus Elfring <elfring@users.sourceforge.net>
+Subject: [PATCH] MIPS: Octeon: Delete an error message for a failed memory
+ allocation in octeon_irq_init_gpio()
+Message-ID: <7995eb17-f2ec-54ad-f4d4-7b3dd8337d33@users.sourceforge.net>
+Date:   Tue, 23 May 2017 20:10:26 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.51]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K0:j39+XGXSuomo5uwpI7Qvb7MpsauPrlwNtBj+HM+8pKmLKnb/Bnl
+ O81nqmQ1UH2NYY1hsctJiVwJuTFchbRU3kCAze46/vN6zOvN0eP0G/ROO60OS+9tgNRZvVT
+ iq30sJJajYDzmoFR7bcxH+P/ZuEL/NL3v1welbTPAtmbxHuhaJqLeSGSHTlWMD07Ey+A4X2
+ GsCjZAtlXxy7CbTDBx6jA==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:pYMLSqaE4HI=:K+Xcmc2rxteF6DH9JwGnS8
+ SNYsgghFnnGFA5nefY5HSfoYkzVmfYippCKm11NIvEWv/+pGapp9LbDfeAkfA7vEc7fvM9yj5
+ WvINE5ok3Shwcf5ldJzzSmLSvrfka6jvn1IK03ido7nfOJL+iKlt8ohx260JlEJglEOwKgWUL
+ qYp9F7+BpZdFZspGuJCzKDemfRoPRkKrZIuy9dRhkAD28VdE8KdE0QqBSUWadf5Vilbzbelec
+ KqAn0BDvdokoBLB5gr38/WEQgxUwmaBi7+LW50C+40A5bYkykV3siI0Vu01sh+cEBazn3+4UA
+ 39kUS/SALdy/6tXScUz/J9d8tHt95REXIrIQJXuy21PImu/FYGNwLQN5XTVmYljetS8rkTjpC
+ dPMyTcK094LHPD+hCdrDfDFHSPidH1PfPvGBwQBd5F7J1X4ulwneMu0hKLfvloObt4i+zGJl5
+ erzPkuT1LZCxq3scOxHVfx/SPVp+erU2L6CSYQdM/f61tdMbwtVlcn5GFoRT/EvQnq6cGmMXO
+ nSKsgLEIMaUBplWArNbz4CdSgSJJb3Gp2PzOqHBWJXN/UpAupIW6Qx+9oAf6Cy98nu3SqajHY
+ yeC6o+LgO+/Z6TIus3DcgLQ1W+X7+VEUkOSDRGZw8kbg/ulXvQF2mVBTGfX3HYdRurdXuTKsW
+ pRIfa0xEWuwcuRYtsOTWdBXOXvQzDu0ZpzY6gGX3BI3emsCiZF2tlWOnKMFK4RHIzuBFYtoLv
+ hBDg3GHQ3wLekqn9JYgtTI68xh1chBn56iagK2osNp4YIWYvbQ68iDsOPqCDQ4GjKflAKQPCn
+ 35IMY7y
+Return-Path: <elfring@users.sourceforge.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57950
+X-archive-position: 57951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: elfring@users.sourceforge.net
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,201 +62,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hardcode the absence of the MIPS16e2 ASE for all the systems that do so 
-for the MIPS16 ASE already, providing for code to be optimized away.
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Tue, 23 May 2017 20:00:06 +0200
 
-Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+Omit an extra message for a memory allocation failure in this function.
+
+This issue was detected by using the Coccinelle software.
+
+Link: http://events.linuxfoundation.org/sites/events/files/slides/LCJ16-Refactor_Strings-WSang_0.pdf
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 ---
-linux-mips16e2-ase-optim.diff
-Index: linux-sfr-test/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-ath25/cpu-feature-overrides.h	2017-05-22 22:57:28.987400000 +0100
-@@ -40,6 +40,7 @@
- #endif
+ arch/mips/cavium-octeon/octeon-irq.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index c1eb1ff7c800..050c08ece5b6 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -1615,7 +1615,6 @@ static int __init octeon_irq_init_gpio(
+ 		irq_domain_add_linear(
+ 			gpio_node, 16, &octeon_irq_domain_gpio_ops, gpiod);
+ 	} else {
+-		pr_warn("Cannot allocate memory for GPIO irq_domain.\n");
+ 		return -ENOMEM;
+ 	}
  
- #define cpu_has_mips16			0
-+#define cpu_has_mips16e2		0
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-Index: linux-sfr-test/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h	2017-05-22 22:57:28.991406000 +0100
-@@ -31,6 +31,7 @@
- #define cpu_has_ejtag			1
- #define cpu_has_llsc			1
- #define cpu_has_mips16			0
-+#define cpu_has_mips16e2		0
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-Index: linux-sfr-test/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-bcm63xx/cpu-feature-overrides.h	2017-05-22 22:57:28.995412000 +0100
-@@ -19,6 +19,7 @@
- #define cpu_has_ejtag			1
- #define cpu_has_llsc			1
- #define cpu_has_mips16			0
-+#define cpu_has_mips16e2		0
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-Index: linux-sfr-test/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-cobalt/cpu-feature-overrides.h	2017-05-22 22:57:29.001406000 +0100
-@@ -37,6 +37,7 @@
- #endif
- 
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
-Index: linux-sfr-test/arch/mips/include/asm/mach-dec/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-dec/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-dec/cpu-feature-overrides.h	2017-05-22 22:57:29.006398000 +0100
-@@ -27,6 +27,7 @@
- #define cpu_has_mcheck			0
- #define cpu_has_ejtag			0
- #define cpu_has_mips16			0
-+#define cpu_has_mips16e2		0
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-Index: linux-sfr-test/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-ip22/cpu-feature-overrides.h	2017-05-22 22:57:29.010397000 +0100
-@@ -19,6 +19,7 @@
- #define cpu_has_32fpr		1
- #define cpu_has_counter		1
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_divec		0
- #define cpu_has_cache_cdex_p	1
- #define cpu_has_prefetch	0
-Index: linux-sfr-test/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-ip27/cpu-feature-overrides.h	2017-05-22 22:57:29.020398000 +0100
-@@ -43,6 +43,7 @@
- #define cpu_has_ejtag			0
- #define cpu_has_llsc			1
- #define cpu_has_mips16			0
-+#define cpu_has_mips16e2		0
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-Index: linux-sfr-test/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-ip28/cpu-feature-overrides.h	2017-05-22 22:57:29.024398000 +0100
-@@ -16,6 +16,7 @@
-  */
- #define cpu_has_watch		1
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_divec		0
- #define cpu_has_vce		0
- #define cpu_has_cache_cdex_p	0
-Index: linux-sfr-test/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-ip32/cpu-feature-overrides.h	2017-05-22 22:57:29.028408000 +0100
-@@ -29,6 +29,7 @@
- #define cpu_has_32fpr		1
- #define cpu_has_counter		1
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_vce		0
- #define cpu_has_cache_cdex_s	0
- #define cpu_has_mcheck		0
-Index: linux-sfr-test/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h	2017-05-22 22:42:15.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-jz4740/cpu-feature-overrides.h	2017-05-22 22:57:29.032407000 +0100
-@@ -23,6 +23,7 @@
- #define cpu_has_ejtag 1
- #define cpu_has_llsc		1
- #define cpu_has_mips16 0
-+#define cpu_has_mips16e2	0
- #define cpu_has_mdmx 0
- #define cpu_has_mips3d 0
- #define cpu_has_smartmips 0
-Index: linux-sfr-test/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h	2017-05-22 22:42:16.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-loongson64/cpu-feature-overrides.h	2017-05-22 22:57:29.043398000 +0100
-@@ -32,6 +32,7 @@
- #define cpu_has_mcheck		0
- #define cpu_has_mdmx		0
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_mips3d		0
- #define cpu_has_mipsmt		0
- #define cpu_has_smartmips	0
-Index: linux-sfr-test/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h	2017-05-22 22:42:16.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h	2017-05-22 22:57:29.047397000 +0100
-@@ -13,6 +13,7 @@
- #define cpu_has_4k_cache	1
- #define cpu_has_watch		1
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_counter		1
- #define cpu_has_divec		1
- #define cpu_has_vce		0
-Index: linux-sfr-test/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h	2017-05-22 22:42:16.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-rc32434/cpu-feature-overrides.h	2017-05-22 22:57:29.051411000 +0100
-@@ -48,6 +48,7 @@
- #define cpu_has_llsc			1
- 
- #define cpu_has_mips16			0
-+#define cpu_has_mips16e2		0
- #define cpu_has_mdmx			0
- #define cpu_has_mips3d			0
- #define cpu_has_smartmips		0
-Index: linux-sfr-test/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h	2017-05-22 22:42:16.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-rm/cpu-feature-overrides.h	2017-05-22 22:57:29.066402000 +0100
-@@ -17,6 +17,7 @@
- #define cpu_has_counter		1
- #define cpu_has_watch		0
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_divec		0
- #define cpu_has_cache_cdex_p	1
- #define cpu_has_prefetch	0
-Index: linux-sfr-test/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h	2017-05-22 22:42:16.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-sibyte/cpu-feature-overrides.h	2017-05-22 22:57:29.070404000 +0100
-@@ -13,6 +13,7 @@
-  */
- #define cpu_has_watch		1
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_divec		1
- #define cpu_has_vce		0
- #define cpu_has_cache_cdex_p	0
-Index: linux-sfr-test/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h
-===================================================================
---- linux-sfr-test.orig/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h	2017-05-22 22:42:16.000000000 +0100
-+++ linux-sfr-test/arch/mips/include/asm/mach-tx49xx/cpu-feature-overrides.h	2017-05-22 22:57:29.074404000 +0100
-@@ -6,6 +6,7 @@
- #define cpu_has_inclusive_pcaches	0
- 
- #define cpu_has_mips16		0
-+#define cpu_has_mips16e2	0
- #define cpu_has_mdmx		0
- #define cpu_has_mips3d		0
- #define cpu_has_smartmips	0
+-- 
+2.13.0

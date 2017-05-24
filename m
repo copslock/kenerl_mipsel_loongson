@@ -1,48 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 May 2017 18:43:21 +0200 (CEST)
-Received: from mout.web.de ([212.227.15.3]:55687 "EHLO mout.web.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 May 2017 19:01:38 +0200 (CEST)
+Received: from mout.web.de ([212.227.15.4]:59107 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993953AbdEXQnNxOhAg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 May 2017 18:43:13 +0200
-Received: from [192.168.1.2] ([92.228.187.15]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MSazE-1dLJAN0b3M-00RYfM; Wed, 24
- May 2017 18:42:59 +0200
-To:     linux-mips@linux-mips.org, Paul Burton <paul.burton@imgtec.com>,
+        id S23994067AbdEXRB23REag (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 May 2017 19:01:28 +0200
+Received: from [192.168.1.2] ([92.228.187.15]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MXSg2-1dQEpN13d0-00WaFS; Wed, 24
+ May 2017 19:01:19 +0200
+To:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>,
         =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 From:   SF Markus Elfring <elfring@users.sourceforge.net>
-Subject: [PATCH] MIPS: Alchemy: Delete an error message for a failed memory
- allocation in alchemy_pci_probe()
-Message-ID: <6ebb5193-239f-5c34-c5f6-2be8a2fa79a5@users.sourceforge.net>
-Date:   Wed, 24 May 2017 18:42:58 +0200
+Subject: [PATCH] MIPS: ralink: Delete an error message for a failed memory
+ allocation in rt_timer_probe()
+Message-ID: <0e1ec180-eb78-144f-03fa-2843efe57670@users.sourceforge.net>
+Date:   Wed, 24 May 2017 19:01:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.1.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:Z4nSJyuirF5AvyZyWNTcYsleLikH/pfRylIban42vJEBOzISO7M
- 793x7+bYdpheiVjGpsLkPL2VKaeWEheTttf4z7COhnA3VPwnIWhF/VoEDlyAP3hgekF4ct9
- tHWMis2Hf0A6/Amm3dTIKqTPcgXnAlUTR6mOo+ldnBE/jDoKNOIz3HiuXOyhyDg69hrvV4w
- QbMnV2VtIPSoumsiFKaQQ==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:x/gbEUgqO7A=:uc2CF+7LNkBWHkPerhgDFs
- yD3PvMP4sUSV9rfYGO7ZrWfuiPg0s7HEH4U36Fh2Z8SNCb5W6mg3urvyXZ405JBi2AvvQ/MQU
- oXLczCs0xJs6K/3takf3pAziSa2M39tg8dGSnZOBb8CNPgnxklz0VSbBgd/sNCR3d2Sv381kh
- YrSeUd0YpcByqdMjOHZr8LSm2yGp5lA3kUr1NVQlITP8xPuJ4gvSNcmFRgr7d3I+nEA0CnvZx
- zDTeCElG+XhRS8uHX/D9ThVh8NTojxo38G2AEMOQpmCEZ7UNVoer+2u1drP7twSZLxSTiYPk6
- AX5TwETE5q2qWungdjesQliiBTOSVDO3LyU6Y+0nVsIJeX/ur5SH/wIFGAScqru4OYCwoglrA
- av4uTnON8FWaJyDzyjGXzGSx/HKmqOoYAaeTNqgta1FSpjFIAN2pqiIWTFvzhA3q+NmU9fAdo
- AB1eCC2ZhJbKXYVizhIZxN5mMUrspb5q+oLMIk4EqTKp2hYbb/oHhz3I6h6Jo23UAiZ8FfDV5
- 2rfVz8JRqUL8+hB9fW7rGqHRgLdEjPHgkWqdrVVcPlvOMmBDBoaCo+Xk/aa6Eb2bI38W5FxLK
- R89ZsdrF6IVVp+6hnPbYtzed0MM1UVPtgKSkD8rVo8763Zm62DRkrvgnF1HWmv93lIlpSrbcu
- qBEcGoZ6AaJ1T7r6GKQ94ABHw6Ks3ECctTjWspd7gSHpAPnelQrWfID5n4VfNea3QYaW7C+NW
- MXgYRgfoq5/eR4OkyTDi2U3AImA9D1qLcHBXfMXT3Bzht/6rp2p7yL6rzM44677oC2Uz5I+pv
- +gLIFAa
+X-Provags-ID: V03:K0:WW5YcbjdBqny5XfQYzBpmIOgrkJj+YUPQkBEXn0G+zIq5LCSE6f
+ KiZueR11Q7/JN9yP4xII4PDXhGrRK5+pq4GkHSjddf0/We3uI8zkxKQd5MMRGiQ4PPPY4RU
+ 4e2+my89y5haris3/YbHxEXXMMlzNOxSN5G2oyZhAB3z/ajUhd7qExnfy/QvpKwRVoD+uBP
+ HFYIXR4ZlQ4Vw7FHtTaHA==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:h6siouhF2r0=:Zgm7bOcJzNlerF24DUEh9y
+ HOVgB46EgTtmlyMREByYdcsQqeezFQMTZTVEkBJirETabPo8pWBK5mjswtGOQvqqO2Vv3wzi+
+ L9TaRG6e1vdw1sHSOEekunfJrEHs7v+FJ7RQl3NnccegpDmDX91UTRmOB8tfOHpYWk+SDU2nM
+ qEThuCr4G5OhRf5wEYtb4ugYQYGpqDaQ4sai8FGN/sJJQmFAFKOEwHex0mSJQ23J2Um6IxZWh
+ XmUVLd1gcsEgqQk4v1/Hu+unWlhZeP/BzQq4AyMRmJwz3iWUL391UjFjZMj9g2Py6WmJaiVjz
+ XD+ZisJmj5kplxjdnsohxzibsx+hLsejbjjd7ZgCnQX8j7cNLLf+L1BEECfFFjeJAEDrB7mnp
+ GNbDazN+tEnCV1OldtQk7v94jrvnYdneJDbQwRPLIpIUcSs7MtqGlJsy7FR4hGJIctztcIiTC
+ yAI47DoeJWEet8yYxgU8I7KiJAIJIzIlnDMcLqd0DOJj616tpF4mwRMvwgRfHf4SeqfUm8+LM
+ r3en97rXPrE6W1hBeFZDmbIVB3AQKD71sABAm32ssPLEUVO8pcWX5OcmWWy1ss71Wv1ytZO0Z
+ glRxDBczPoWGKD0IsScII00wA72AT0vpFfqrXhrXrOhbuBtBl0q5UblcCj4hb9cXWA9KCFhhu
+ Id2dJ8e0GgP1tgRntcaE/qD1BFbMbpyKWD0VQXXAVdrbQWy4VpwQ/62OgkpBbM5j5Zh3+/VJ5
+ MY5Z8gbp5fTssAUZW73RVvIJ6YN0/XhUp10WO+nGn+j49UnIhpdmPfOgfRKHloSJI7RrUJSCU
+ nUkBUcm
 Return-Path: <elfring@users.sourceforge.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57989
+X-archive-position: 57990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,7 +60,7 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 24 May 2017 18:32:21 +0200
+Date: Wed, 24 May 2017 18:56:35 +0200
 
 Omit an extra message for a memory allocation failure in this function.
 
@@ -69,20 +69,24 @@ This issue was detected by using the Coccinelle software.
 Link: http://events.linuxfoundation.org/sites/events/files/slides/LCJ16-Refactor_Strings-WSang_0.pdf
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 ---
- arch/mips/pci/pci-alchemy.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/ralink/timer.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
-index e99ca7702d8a..a58c3290bd4e 100644
---- a/arch/mips/pci/pci-alchemy.c
-+++ b/arch/mips/pci/pci-alchemy.c
-@@ -377,7 +377,6 @@ static int alchemy_pci_probe(struct platform_device *pdev)
+diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
+index d4469b20d176..efccb444d6bc 100644
+--- a/arch/mips/ralink/timer.c
++++ b/arch/mips/ralink/timer.c
+@@ -103,10 +103,8 @@ static int rt_timer_probe(struct platform_device *pdev)
+ 	struct clk *clk;
  
- 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
- 	if (!ctx) {
--		dev_err(&pdev->dev, "no memory for pcictl context\n");
- 		ret = -ENOMEM;
- 		goto out;
- 	}
+ 	rt = devm_kzalloc(&pdev->dev, sizeof(*rt), GFP_KERNEL);
+-	if (!rt) {
+-		dev_err(&pdev->dev, "failed to allocate memory\n");
++	if (!rt)
+ 		return -ENOMEM;
+-	}
+ 
+ 	rt->irq = platform_get_irq(pdev, 0);
+ 	if (!rt->irq) {
 -- 
 2.13.0

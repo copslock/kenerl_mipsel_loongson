@@ -1,52 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 May 2017 19:01:38 +0200 (CEST)
-Received: from mout.web.de ([212.227.15.4]:59107 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23994067AbdEXRB23REag (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 May 2017 19:01:28 +0200
-Received: from [192.168.1.2] ([92.228.187.15]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MXSg2-1dQEpN13d0-00WaFS; Wed, 24
- May 2017 19:01:19 +0200
-To:     linux-mips@linux-mips.org, John Crispin <john@phrozen.org>,
-        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-From:   SF Markus Elfring <elfring@users.sourceforge.net>
-Subject: [PATCH] MIPS: ralink: Delete an error message for a failed memory
- allocation in rt_timer_probe()
-Message-ID: <0e1ec180-eb78-144f-03fa-2843efe57670@users.sourceforge.net>
-Date:   Wed, 24 May 2017 19:01:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 May 2017 19:43:34 +0200 (CEST)
+Received: from mail-ua0-x241.google.com ([IPv6:2607:f8b0:400c:c08::241]:35952
+        "EHLO mail-ua0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994781AbdEXRn1qtiYg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 May 2017 19:43:27 +0200
+Received: by mail-ua0-x241.google.com with SMTP id i46so12470482uaa.3;
+        Wed, 24 May 2017 10:43:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=SljAe+r5u1zu3WR9SxxiyOCJCd57ySXUsihmh01l8/4=;
+        b=KmcoUUEGeYBCtNgJMQMmfntxVPTg6FcjBIdrPQJDc35vjHDK/2CguYS0IpF09KasMf
+         /Z90ZBVmSuFBmSxuZgUBHR5ITFXZXdSPXgBqZrevUzqmGyyjuD3sEy9WbONTBSWcx/ud
+         4iue1AZFd+L/qK5DWw50c+pw8H7kj8Kku1vfyRhnjx0G/zdegTpForsQwZl3S4RiMc3d
+         DYakMAfX8yzAPwzqZGLM9h87vZykoa7fXwltJPE/EZaofnjuzJc0SS0OuK1uvKxynQOx
+         Vtg9DpGOgoa5gWs5f5HDwgjHSzuI8kDqzuxLCHcKzjPqc8q6+Dqdo36NX5pDz7aA0QPG
+         0QSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=SljAe+r5u1zu3WR9SxxiyOCJCd57ySXUsihmh01l8/4=;
+        b=hHclN327GJsFcDKAyIayqoCknEzRZgZmI2uttOYhHuMd8QAkn/d457V7c1ykdDJWxi
+         Ppeb/9/Afny+CRXVj/OoP3vDPXHJqInDK/83gKIDqdwOg5J9nnPBAq+Rd+Omu2ZoNUKE
+         eah256F3BgGSgDhKexTKNN37B/36eTIDoaFgSXs7FGqHuy+E2I9v6d9qOLlpPTUTl3QB
+         vGeUCYUd01bpM8WIBBSEMHZuj9L8g0NNnSWlss4tPRI8SmGIgEYlNnY4zHECgl/DDuwD
+         7S6+SlXVIfOlIrD6IBo2sHM+VU1URPy3RFRjZDrYMA+p/reloIDjB2hF2fG0Xr0TWurC
+         aQ5Q==
+X-Gm-Message-State: AODbwcDBuNIUhqpOWKsk0Uc8SH/YAN2d1ikYZGy83MY7/g+xUAI6P7QS
+        JDR3uJeQ0vjCX9n20KIwOgyQN5PNbw==
+X-Received: by 10.176.4.117 with SMTP id 108mr18500716uav.34.1495647802105;
+ Wed, 24 May 2017 10:43:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K0:WW5YcbjdBqny5XfQYzBpmIOgrkJj+YUPQkBEXn0G+zIq5LCSE6f
- KiZueR11Q7/JN9yP4xII4PDXhGrRK5+pq4GkHSjddf0/We3uI8zkxKQd5MMRGiQ4PPPY4RU
- 4e2+my89y5haris3/YbHxEXXMMlzNOxSN5G2oyZhAB3z/ajUhd7qExnfy/QvpKwRVoD+uBP
- HFYIXR4ZlQ4Vw7FHtTaHA==
-X-UI-Out-Filterresults: notjunk:1;V01:K0:h6siouhF2r0=:Zgm7bOcJzNlerF24DUEh9y
- HOVgB46EgTtmlyMREByYdcsQqeezFQMTZTVEkBJirETabPo8pWBK5mjswtGOQvqqO2Vv3wzi+
- L9TaRG6e1vdw1sHSOEekunfJrEHs7v+FJ7RQl3NnccegpDmDX91UTRmOB8tfOHpYWk+SDU2nM
- qEThuCr4G5OhRf5wEYtb4ugYQYGpqDaQ4sai8FGN/sJJQmFAFKOEwHex0mSJQ23J2Um6IxZWh
- XmUVLd1gcsEgqQk4v1/Hu+unWlhZeP/BzQq4AyMRmJwz3iWUL391UjFjZMj9g2Py6WmJaiVjz
- XD+ZisJmj5kplxjdnsohxzibsx+hLsejbjjd7ZgCnQX8j7cNLLf+L1BEECfFFjeJAEDrB7mnp
- GNbDazN+tEnCV1OldtQk7v94jrvnYdneJDbQwRPLIpIUcSs7MtqGlJsy7FR4hGJIctztcIiTC
- yAI47DoeJWEet8yYxgU8I7KiJAIJIzIlnDMcLqd0DOJj616tpF4mwRMvwgRfHf4SeqfUm8+LM
- r3en97rXPrE6W1hBeFZDmbIVB3AQKD71sABAm32ssPLEUVO8pcWX5OcmWWy1ss71Wv1ytZO0Z
- glRxDBczPoWGKD0IsScII00wA72AT0vpFfqrXhrXrOhbuBtBl0q5UblcCj4hb9cXWA9KCFhhu
- Id2dJ8e0GgP1tgRntcaE/qD1BFbMbpyKWD0VQXXAVdrbQWy4VpwQ/62OgkpBbM5j5Zh3+/VJ5
- MY5Z8gbp5fTssAUZW73RVvIJ6YN0/XhUp10WO+nGn+j49UnIhpdmPfOgfRKHloSJI7RrUJSCU
- nUkBUcm
-Return-Path: <elfring@users.sourceforge.net>
+Received: by 10.31.68.135 with HTTP; Wed, 24 May 2017 10:42:41 -0700 (PDT)
+In-Reply-To: <6ebb5193-239f-5c34-c5f6-2be8a2fa79a5@users.sourceforge.net>
+References: <6ebb5193-239f-5c34-c5f6-2be8a2fa79a5@users.sourceforge.net>
+From:   Manuel Lauss <manuel.lauss@gmail.com>
+Date:   Wed, 24 May 2017 19:42:41 +0200
+Message-ID: <CAOLZvyHq-7q0XxiBsyX3q0g0J3kjfFv4SU7amX1hpjRDyK+feQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Alchemy: Delete an error message for a failed
+ memory allocation in alchemy_pci_probe()
+To:     SF Markus Elfring <elfring@users.sourceforge.net>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>,
+        =?UTF-8?B?UmFsZiBCw6RjaGxl?= <ralf@linux-mips.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <manuel.lauss@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 57990
+X-archive-position: 57991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: elfring@users.sourceforge.net
+X-original-sender: manuel.lauss@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -59,34 +68,37 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 24 May 2017 18:56:35 +0200
+On Wed, May 24, 2017 at 6:42 PM, SF Markus Elfring
+<elfring@users.sourceforge.net> wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Wed, 24 May 2017 18:32:21 +0200
+>
+> Omit an extra message for a memory allocation failure in this function.
+>
+> This issue was detected by using the Coccinelle software.
+>
+> Link: http://events.linuxfoundation.org/sites/events/files/slides/LCJ16-Refactor_Strings-WSang_0.pdf
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  arch/mips/pci/pci-alchemy.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
+> index e99ca7702d8a..a58c3290bd4e 100644
+> --- a/arch/mips/pci/pci-alchemy.c
+> +++ b/arch/mips/pci/pci-alchemy.c
+> @@ -377,7 +377,6 @@ static int alchemy_pci_probe(struct platform_device *pdev)
+>
+>         ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+>         if (!ctx) {
+> -               dev_err(&pdev->dev, "no memory for pcictl context\n");
+>                 ret = -ENOMEM;
+>                 goto out;
+>         }
+> --
+> 2.13.0
 
-Omit an extra message for a memory allocation failure in this function.
+Why are you removing just this one dev_err()?  What issue are you
+trying to address?
 
-This issue was detected by using the Coccinelle software.
-
-Link: http://events.linuxfoundation.org/sites/events/files/slides/LCJ16-Refactor_Strings-WSang_0.pdf
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
----
- arch/mips/ralink/timer.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/arch/mips/ralink/timer.c b/arch/mips/ralink/timer.c
-index d4469b20d176..efccb444d6bc 100644
---- a/arch/mips/ralink/timer.c
-+++ b/arch/mips/ralink/timer.c
-@@ -103,10 +103,8 @@ static int rt_timer_probe(struct platform_device *pdev)
- 	struct clk *clk;
- 
- 	rt = devm_kzalloc(&pdev->dev, sizeof(*rt), GFP_KERNEL);
--	if (!rt) {
--		dev_err(&pdev->dev, "failed to allocate memory\n");
-+	if (!rt)
- 		return -ENOMEM;
--	}
- 
- 	rt->irq = platform_get_irq(pdev, 0);
- 	if (!rt->irq) {
--- 
-2.13.0
+Manuel

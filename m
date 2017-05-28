@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 May 2017 20:43:57 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:60161 "EHLO mail.hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993956AbdE1SkdgwHE8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 28 May 2017 20:40:33 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 May 2017 20:44:32 +0200 (CEST)
+Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:40221 "EHLO
+        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993967AbdE1SkeVUSc8 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 28 May 2017 20:40:34 +0200
 Received: from hauke-desktop.lan (p2003008628351B0030562F5E961CEEA9.dip0.t-ipconnect.de [IPv6:2003:86:2835:1b00:3056:2f5e:961c:eea9])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id D0384100255;
-        Sun, 28 May 2017 20:40:32 +0200 (CEST)
+        by mail.hauke-m.de (Postfix) with ESMTPSA id 5D100100248;
+        Sun, 28 May 2017 20:40:27 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
@@ -14,9 +14,9 @@ Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
         linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
         robh@kernel.org, andy.shevchenko@gmail.com, p.zabel@pengutronix.de,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v3 09/16] MIPS: lantiq: remove ltq_reset_cause() and ltq_boot_select()
-Date:   Sun, 28 May 2017 20:39:59 +0200
-Message-Id: <20170528184006.31668-10-hauke@hauke-m.de>
+Subject: [PATCH v3 04/16] watchdog: lantiq: access boot cause register through regmap
+Date:   Sun, 28 May 2017 20:39:54 +0200
+Message-Id: <20170528184006.31668-5-hauke@hauke-m.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170528184006.31668-1-hauke@hauke-m.de>
 References: <20170528184006.31668-1-hauke@hauke-m.de>
@@ -24,7 +24,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58047
+X-archive-position: 58048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,100 +41,100 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Do not export the ltq_reset_cause() and ltq_boot_select() function any
-more. ltq_reset_cause() was accessed by the watchdog driver before to
-see why the last reset happened, this is now done through direct access
-of the register over regmap. The bits in this register are anyway
-different between the xrx200 and the falcon SoC.
-ltq_boot_select() is not used any more and was used by the flash
-drivers to check if the system was booted from this flash type, now the
-drivers should depend on the device tree only.
+This patch avoids accessing the function ltq_reset_cause() and directly
+accesses the register given over the syscon interface. The syscon
+interface will be implemented for the xway SoCs for the falcon SoCs the
+ltq_reset_cause() function never worked, because a wrong offset was used.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Acked-by: Guenter Roeck <linux@reck-us.net>
 ---
- arch/mips/include/asm/mach-lantiq/lantiq.h |  4 ----
- arch/mips/lantiq/falcon/reset.c            | 22 ----------------------
- arch/mips/lantiq/xway/reset.c              | 19 -------------------
- 3 files changed, 45 deletions(-)
+ drivers/watchdog/lantiq_wdt.c | 45 +++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 41 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
-index 8064d7a4b33d..fa045b4c0cdd 100644
---- a/arch/mips/include/asm/mach-lantiq/lantiq.h
-+++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
-@@ -44,10 +44,6 @@ extern struct clk *clk_get_fpi(void);
- extern struct clk *clk_get_io(void);
- extern struct clk *clk_get_ppe(void);
+diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+index e0823677d8c1..c9ad8100ec3c 100644
+--- a/drivers/watchdog/lantiq_wdt.c
++++ b/drivers/watchdog/lantiq_wdt.c
+@@ -4,6 +4,7 @@
+  *  by the Free Software Foundation.
+  *
+  *  Copyright (C) 2010 John Crispin <john@phrozen.org>
++ *  Copyright (C) 2017 Hauke Mehrtens <hauke@hauke-m.de>
+  *  Based on EP93xx wdt driver
+  */
  
--/* find out what bootsource we have */
--extern unsigned char ltq_boot_select(void);
--/* find out what caused the last cpu reset */
--extern int ltq_reset_cause(void);
- /* find out the soc type */
- extern int ltq_soc_type(void);
- 
-diff --git a/arch/mips/lantiq/falcon/reset.c b/arch/mips/lantiq/falcon/reset.c
-index 7a535d72f541..722114d7409d 100644
---- a/arch/mips/lantiq/falcon/reset.c
-+++ b/arch/mips/lantiq/falcon/reset.c
-@@ -15,28 +15,6 @@
+@@ -17,6 +18,8 @@
+ #include <linux/uaccess.h>
+ #include <linux/clk.h>
+ #include <linux/io.h>
++#include <linux/regmap.h>
++#include <linux/mfd/syscon.h>
  
  #include <lantiq_soc.h>
  
--/* CPU0 Reset Source Register */
--#define SYS1_CPU0RS		0x0040
--/* reset cause mask */
--#define CPU0RS_MASK		0x0003
--/* CPU0 Boot Mode Register */
--#define SYS1_BM			0x00a0
--/* boot mode mask */
--#define BM_MASK			0x0005
--
--/* allow platform code to find out what surce we booted from */
--unsigned char ltq_boot_select(void)
--{
--	return ltq_sys1_r32(SYS1_BM) & BM_MASK;
--}
--
--/* allow the watchdog driver to find out what the boot reason was */
--int ltq_reset_cause(void)
--{
--	return ltq_sys1_r32(SYS1_CPU0RS) & CPU0RS_MASK;
--}
--EXPORT_SYMBOL_GPL(ltq_reset_cause);
--
- #define BOOT_REG_BASE	(KSEG1 | 0x1F200000)
- #define BOOT_PW1_REG	(BOOT_REG_BASE | 0x20)
- #define BOOT_PW2_REG	(BOOT_REG_BASE | 0x24)
-diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-index b6752c95a600..2dedcf939901 100644
---- a/arch/mips/lantiq/xway/reset.c
-+++ b/arch/mips/lantiq/xway/reset.c
-@@ -119,25 +119,6 @@ static void ltq_rcu_w32_mask(uint32_t clr, uint32_t set, uint32_t reg_off)
- 	spin_unlock_irqrestore(&ltq_rcu_lock, flags);
+@@ -186,6 +189,40 @@ static struct miscdevice ltq_wdt_miscdev = {
+ 	.fops	= &ltq_wdt_fops,
+ };
+ 
++static void ltq_set_wdt_bootstatus(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct regmap *rcu_regmap;
++	u32 status_reg_offset;
++	u32 status_reg_mask;
++	u32 val;
++	int err;
++
++	rcu_regmap = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
++	if (IS_ERR_OR_NULL(rcu_regmap))
++		return;
++
++	err = device_property_read_u32(dev, "offset-status",
++				       &status_reg_offset);
++	if (err) {
++		dev_err(&pdev->dev, "Failed to get RCU reg offset\n");
++		return;
++	}
++
++	err = device_property_read_u32(dev, "mask-status", &status_reg_mask);
++	if (err) {
++		dev_err(&pdev->dev, "Failed to get RCU reg offset\n");
++		return;
++	}
++
++	err = regmap_read(rcu_regmap, status_reg_offset, &val);
++	if (err)
++		return;
++
++	if (val & status_reg_mask)
++		ltq_wdt_bootstatus = WDIOF_CARDRESET;
++}
++
+ static int
+ ltq_wdt_probe(struct platform_device *pdev)
+ {
+@@ -205,9 +242,7 @@ ltq_wdt_probe(struct platform_device *pdev)
+ 	ltq_io_region_clk_rate = clk_get_rate(clk);
+ 	clk_put(clk);
+ 
+-	/* find out if the watchdog caused the last reboot */
+-	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
+-		ltq_wdt_bootstatus = WDIOF_CARDRESET;
++	ltq_set_wdt_bootstatus(pdev);
+ 
+ 	dev_info(&pdev->dev, "Init done\n");
+ 	return misc_register(&ltq_wdt_miscdev);
+@@ -222,7 +257,9 @@ ltq_wdt_remove(struct platform_device *pdev)
  }
  
--/* This function is used by the watchdog driver */
--int ltq_reset_cause(void)
--{
--	u32 val = ltq_rcu_r32(RCU_RST_STAT);
--	return val >> RCU_STAT_SHIFT;
--}
--EXPORT_SYMBOL_GPL(ltq_reset_cause);
--
--/* allow platform code to find out what source we booted from */
--unsigned char ltq_boot_select(void)
--{
--	u32 val = ltq_rcu_r32(RCU_RST_STAT);
--
--	if (of_device_is_compatible(ltq_rcu_np, "lantiq,rcu-xrx200"))
--		return RCU_BOOT_SEL_XRX200(val);
--
--	return RCU_BOOT_SEL(val);
--}
--
- struct ltq_gphy_reset {
- 	u32 rd;
- 	u32 addr;
+ static const struct of_device_id ltq_wdt_match[] = {
+-	{ .compatible = "lantiq,wdt" },
++	{ .compatible = "lantiq,wdt"},
++	{ .compatible = "lantiq,wdt-xrx100"},
++	{ .compatible = "lantiq,wdt-falcon"},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, ltq_wdt_match);
 -- 
 2.11.0

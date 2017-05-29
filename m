@@ -1,65 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 18:40:31 +0200 (CEST)
-Received: from mail-it0-x22a.google.com ([IPv6:2607:f8b0:4001:c0b::22a]:35524
-        "EHLO mail-it0-x22a.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993950AbdE2QkX0e1bn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 18:40:23 +0200
-Received: by mail-it0-x22a.google.com with SMTP id c15so29359154ith.0;
-        Mon, 29 May 2017 09:40:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 21:39:10 +0200 (CEST)
+Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:36185
+        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993959AbdE2Ti7BbDrf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 21:38:59 +0200
+Received: by mail-io0-x244.google.com with SMTP id f102so7494269ioi.3;
+        Mon, 29 May 2017 12:38:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=KRNe3UjYyEylHEADpYPhBOlUBRcnrhdTCUxdwdiPcoY=;
-        b=ahGIRpmhjlqRgxXR0t0MMfPboHW9gmyCoOu3KNsZmykrUbckcLbBHxwVhFYSQp8atM
-         PMAagNOkraGkKUaxAq00E0VXrsfG5vvq7xdYYxU1xIriUzL7Oi9ZMfG9OGATs6qy4IA7
-         BbeNnzCGvAaKPAb5wBEqd1K+mSGJqkTJpmCAJlSEDmHc80TbIYAi6w2rToyG96kcbC2L
-         pMFDe+gJLMLzfIwNSCL/6PRsixm4+2Ic5Xwn5tbWsQqzJgfsZ3ma7URTYNe2XOz0L9pi
-         T0C0RpyhKc0JXlxNYDad/C0qwPsH3+4qhJ7SGbranZqdS95VLcJdR0Hvi3xXFloVgH7e
-         AYzQ==
+        bh=GPXo60hQPXst7u7ZNAO6k2UQnifs5m6Cj6GRzB/uLO0=;
+        b=Cjh7D5r0iNMHQUdw/4+v22m6a7qOp60HV7ZQ7Gda5GVpqJ1aT49CkOiYQdB1W1b8cg
+         XdDbdbD8Sse+Cv0K4+KFl40ISAOuWAVhaAMYGIE4tApkzqES24k+0uAma15FDGYMPKuF
+         BKXtio0bighYZjWY91Atn4H+MAvHnYlXaUdWvN0c28W3h4WRUGAm+n/6QX+2rnri7ibD
+         WJFpe8QNXEzeDzUYbIGOuwRPg6urjL+7Wh1i+81DUjJ2We3upykwUnXIWSGUicVGnZmz
+         U6Ar/i53i4caFYFTqCBz6hUqoi96F849bOcq6yytE3p6VnjZUoo1+OBj4cOHzx4wwM1E
+         F6ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=KRNe3UjYyEylHEADpYPhBOlUBRcnrhdTCUxdwdiPcoY=;
-        b=WDquuLVFeAbXunho83J7xDpIHbmYdpg6DzVAIKyhZKdnuT7E5MAAtC/ZGhDZfvi6fm
-         9WAIsTIZcA38QzaO06JtOnv7QDU5FJ8pPnrMKp3h7y9gna+N9Xmk20UBU9JQWDlPqx0k
-         nhavQsI2eK4icss4LrHI9g1OMtETZVGAQ54xIKupD7Hk0VZ5ZTOuywcqSHYgVzZE65r+
-         o+66o+BerzRvvQmskZhx2yXyWO6rKkl/ps+KedSpAJ2YSf0y1Yd+Q47Nm6m1+bU6C//e
-         LvIH/5YdsDUj8jSASEOL6tQQI0NC4aemEsc2BgBx8+U0jf66djmPm1aD8lx0cIyJRXuY
-         zXgg==
-X-Gm-Message-State: AODbwcCG4D3g7xcAqiH8apZ4YLjwTY/M2Ri4EAPJI23cGbPnP8Ph+yJO
-        SeyGRkQ7p+grLzlu6BnOIq/ypAHd8Q==
-X-Received: by 10.36.26.18 with SMTP id 18mr14115647iti.103.1496076017641;
- Mon, 29 May 2017 09:40:17 -0700 (PDT)
+        bh=GPXo60hQPXst7u7ZNAO6k2UQnifs5m6Cj6GRzB/uLO0=;
+        b=da6tX7osk7CHXC6QekIMrQ2+iMAKJ5y39eKuIOa6C4dkuXPlH8hCwuBZi+H3o8neoZ
+         OyxynbLMec5NlAdWW/tj1EXtvCs59PU4Bls2cPdfZxCVeD6pGA3RJ73o0C5iXIaZgmhm
+         ixwHSoLX5cCDGQcWFfZQkd/s6pc627TuNE1JSytWcUo4AR/MeFt7pbTx8dub0QgTtwdU
+         TcqhJDSGb1v6iPuPAeNTe7zw63yz3LwNZK2LnJ13Q8P3VvWgAo8fHHXUS/deOvlHqpTY
+         1av97FfhqCCLd7Bc57FMGEkLdGf7AL6ls5nDDJuQfjiZM8MJU++jU/wF/1+SF4NTZqMw
+         u++w==
+X-Gm-Message-State: AODbwcDCFaRdyWg+kyLFxgzq6tDV/EE57Jhq11ZeQULfbNYITANnOLm8
+        SCsRAH1zSo30l14XUbNbiCFaz6sOvO7t
+X-Received: by 10.107.201.135 with SMTP id z129mr13543762iof.51.1496086733283;
+ Mon, 29 May 2017 12:38:53 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.107.168.65 with HTTP; Mon, 29 May 2017 09:40:16 -0700 (PDT)
-In-Reply-To: <20170529072207.16130-1-vegard.nossum@oracle.com>
-References: <20170529072207.16130-1-vegard.nossum@oracle.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 29 May 2017 09:40:16 -0700
-X-Google-Sender-Auth: O6Z-HNBUNJntF1oKFElVzN3TPz4
-Message-ID: <CA+55aFw4AmyMDbquM9Lm2yGT0pM07386ykLzdaO2X5zyMSSb3Q@mail.gmail.com>
-Subject: Re: [PATCH] kthread: fix boot hang (regression) on MIPS/OpenRISC
-To:     Vegard Nossum <vegard.nossum@oracle.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        openrisc@lists.librecores.org, Oleg Nesterov <oleg@redhat.com>,
-        Jamie Iles <jamie.iles@oracle.com>
+Received: by 10.107.15.148 with HTTP; Mon, 29 May 2017 12:38:52 -0700 (PDT)
+In-Reply-To: <1495655035.2093.86.camel@perches.com>
+References: <7995eb17-f2ec-54ad-f4d4-7b3dd8337d33@users.sourceforge.net>
+ <1495565752.2093.69.camel@perches.com> <71a2ce6a-968c-b13c-95b0-610f0c1bab03@users.sourceforge.net>
+ <1495655035.2093.86.camel@perches.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 29 May 2017 21:38:52 +0200
+X-Google-Sender-Auth: dHa1RW9n1c-MUkEZBV3UqL0uv5I
+Message-ID: <CAMuHMdXHuiaQ02Bmv_ig=kTTSHnhK=-64t9yv-rn5tFo=cn1hg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Octeon: Delete an error message for a failed memory
+ allocation in octeon_irq_init_gpio()
+To:     Joe Perches <joe@perches.com>
+Cc:     SF Markus Elfring <elfring@users.sourceforge.net>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        David Daney <david.daney@cavium.com>,
+        =?UTF-8?B?UmFsZiBCw6RjaGxl?= <ralf@linux-mips.org>,
+        "Steven J. Hill" <steven.hill@cavium.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Return-Path: <linus971@gmail.com>
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58070
+X-archive-position: 58071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -72,16 +74,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 29, 2017 at 12:22 AM, Vegard Nossum
-<vegard.nossum@oracle.com> wrote:
-> This fixes a regression in commit 4d6501dce079 where I didn't notice
-> that MIPS and OpenRISC were reinitialising p->{set,clear}_child_tid to
-> NULL after our initialisation in copy_process().
+On Wed, May 24, 2017 at 9:43 PM, Joe Perches <joe@perches.com> wrote:
+> On Wed, 2017-05-24 at 18:01 +0200, SF Markus Elfring wrote:
+>> I am curious if I will stumble on a similar change possibility once more
+>> for remaining update candidates in other software areas.
+>
+> Only if you keep your eyes open to the possibilities.
 
-Ok, I'll just take this directly, since it's such an odd set of architectures.
+It's like a puzzle: how to fold the if/else trees and forests to achieve
+the longest linear path and the smallest indentation ;-)
 
-I guess it could come in through the next "misc fixes" pull request
-from the -tip tree (which is where the change that broke this came
-from), but ..
+And... goto (to the end/cleanup phase!) is your friend...
 
-             Linus
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

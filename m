@@ -1,68 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 14:55:50 +0200 (CEST)
-Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:34257
-        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993009AbdE2MzmXIVZD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 14:55:42 +0200
-Received: by mail-pg0-x244.google.com with SMTP id u187so6473144pgb.1;
-        Mon, 29 May 2017 05:55:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 15:25:31 +0200 (CEST)
+Received: from mail-lf0-x241.google.com ([IPv6:2a00:1450:4010:c07::241]:35147
+        "EHLO mail-lf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993916AbdE2NZWuBIUo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 15:25:22 +0200
+Received: by mail-lf0-x241.google.com with SMTP id 99so6290510lfu.2;
+        Mon, 29 May 2017 06:25:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=h6IZRZo1LMD1ilMNUq4G+4lg/+tmByxuAy77UoRAhwE=;
-        b=IFm4ImD8PNQgfPRKodHaS3j3LJPuxfb2mi4RhatxH7wYnH/2A/aeh7Fkfg/H+/WoPP
-         MPZ776cDbzCsjD9bsyypNl6BqAWinl/gVQgi60ikbPAE77//SNK+hWmgq4FOBIGU7ABP
-         JI3cxbb84Litc1P18nwWiSLiHMgMV5yZC5e0EnSbHG2YnGhGQ7LsmKXI6lEa+nIRIyKl
-         kaC2jfw/xYN+P9DjjMs/noKDFpkoKFzfO4J2undMnU/0pRAOzFPhjec7o9ReeAMvl4Fa
-         NY2nqmq9AfqFK4qVX6wTrQzsoiO88Fh0wZ6/GpLF+5e81BrPOCs48plftvUz9XkK44ah
-         gsmA==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=753M7USPgvxF9qJzQrPxXDfeeyN3ASFDO7OrLDnWGss=;
+        b=iOKeK1lGvlxKHyXmL9/xPPQQT3WL9msZ0UotgYmIOcSJ2oLXxBw34o6XNNKcUwtC4F
+         hxnFv2JofM+cDTQbyK8jVqC5BycUakmf7GZTUT1gMtm0gG9SF35eo0xNVBI4kTNvRJvE
+         K9QPjXeIPJyR4+CMDLQ7tNYBOl2e+oOH4QNDXFmFGvC5QrbDED2LL1e7tmwErjHgMe4D
+         Ee4GdQ0znswLrGvGUUrqoqwY+Atxep6td5/0BNFr+xfsas3VOB6S0CAtfd3dQYzcWH1C
+         xFbvlPKzrHR4JE/sWH/i1hY6dnmocXI7pkOyNjnQSNayC/DlecAqItTTfqGtNY+NiGxp
+         5Y1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=h6IZRZo1LMD1ilMNUq4G+4lg/+tmByxuAy77UoRAhwE=;
-        b=qjei1+J4qRl5e7AtQ5W3bTgPBDjgDQb+h/pqoEskhm6sMmBlZwTmPHBsfKcnsNjxfA
-         BUvCdJJ5JQ20ottequmG6heP4K8RmbGF/KhncercVDVP5w0IwjQFRchLMbp+rOrrmCXi
-         KeESqw1g6LVKmompUguSa8tPEpg/XSBX+CNyOpHKIZTc0AEUEV/6Sj/7cSD01ebgRlbZ
-         Nd6/vs+F29+J3hJUFMYl1Pv4cxA87LxwLCyYpIxQDFXlx+UW8Pt7ey/ml/Up4yLSvcDw
-         GrepW3CxODGrrGsPQQ8bPvLQltx3rrG7GM2zItWGJE/xBzUj3vnLk/rrKv5NmXlV6zDk
-         y+TA==
-X-Gm-Message-State: AODbwcAaWcS+jSI5Jt8Wjl3CFQyy/55UKWPa+8S10bKRrsgSS8TVGU+S
-        7hHo/ObX3ydPsA==
-X-Received: by 10.99.116.28 with SMTP id p28mr18776696pgc.8.1496062536485;
-        Mon, 29 May 2017 05:55:36 -0700 (PDT)
-Received: from localhost (g139.211-19-81.ppp.wakwak.ne.jp. [211.19.81.139])
-        by smtp.gmail.com with ESMTPSA id x18sm18432312pfe.13.2017.05.29.05.55.35
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 29 May 2017 05:55:35 -0700 (PDT)
-Date:   Mon, 29 May 2017 21:55:33 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     Vegard Nossum <vegard.nossum@oracle.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=753M7USPgvxF9qJzQrPxXDfeeyN3ASFDO7OrLDnWGss=;
+        b=PJbsahlSmtR70kMI0pfT/woYIfxOr01iCHjjrxmhVCfBEX7Za1d9vRI6L3NPK+k/Pp
+         pmbXU/z0MDBZTVtcwIdJtijEHW1y8mk/7YnVigpaPLophE7mgMF482FPQtIi21spszJ4
+         9Xt0nfqV9UVtFkOzXYzbMxL1VKtP0f3300aNx2hkkjgi66g6hogFNRo62wzj+gcUndo7
+         MQ7ToKVAaM7W317HiYLCDf9UXBF2FDxNX102QZmrTcSvdakjoc6xKqUY0vsV1i/8fwsm
+         85oVkTYNii1ETJLj28JOGwEt6uyYxFulap36cdfOgd1bZ0/hPcqIYQlUoVnCAPCE9Jw5
+         sWKQ==
+X-Gm-Message-State: AODbwcBPyOPqkjl2QAPLN7D1kFCRQx+kKJlX5nJc8HD9kt1W9h1dr2Le
+        gEFpqx2gRtESCg==
+X-Received: by 10.80.151.29 with SMTP id c29mr481891edb.30.1496064315841;
+        Mon, 29 May 2017 06:25:15 -0700 (PDT)
+Received: from linux-gy6r.site (nat.nue.novell.com. [2620:113:80c0:5::2222])
+        by smtp.gmail.com with ESMTPSA id b25sm7563857edc.58.2017.05.29.06.25.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 May 2017 06:25:15 -0700 (PDT)
+Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, tglx@linutronix.de
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        openrisc@lists.librecores.org, Oleg Nesterov <oleg@redhat.com>,
-        Jamie Iles <jamie.iles@oracle.com>
-Subject: Re: [PATCH] kthread: fix boot hang (regression) on MIPS/OpenRISC
-Message-ID: <20170529125533.GB2940@lianli.shorne-pla.net>
-References: <20170529072207.16130-1-vegard.nossum@oracle.com>
+        Ley Foon Tan <lftan@altera.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        "maintainer:BROADCOM BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE..." 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Stephen Warren <swarren@wwwdotorg.org>,
+        Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
+        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Javier Martinez Canillas <javier@osg.samsung.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Carlo Caione <carlo@caione.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Alexandre Courbot <gnurou@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <kernel@pengutronix.de>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Barry Song <baohua@kernel.org>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Tony Prisk <linux@prisktech.co.nz>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Anna-Maria Gleixner <anna-maria@linutronix.de>,
+        Richard Cochran <rcochran@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Noam Camus <noamca@mellanox.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        "moderated list:NIOS2 ARCHITECTURE" 
+        <nios2-dev@lists.rocketboards.org>,
+        "open list:SYNOPSYS ARC ARCHITECTURE" 
+        <linux-snps-arc@lists.infradead.org>,
+        "open list:ARM/STI ARCHITECTURE" <kernel@stlinux.com>,
+        "moderated list:BROADCOM BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        "open list:ARM/Amlogic Meson SoC support" 
+        <linux-amlogic@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        "open list:ARM/Rockchip SoC support" 
+        <linux-rockchip@lists.infradead.org>,
+        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+        "moderated list:ARM/OXNAS platform support" 
+        <linux-oxnas@lists.tuxfamily.org>
+References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
+ <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+Message-ID: <5d5d1f1b-0948-f28d-0c52-adcdbdf89244@gmail.com>
+Date:   Mon, 29 May 2017 15:25:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170529072207.16130-1-vegard.nossum@oracle.com>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <shorne@gmail.com>
+In-Reply-To: <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <matthias.bgg@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58067
+X-archive-position: 58068
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shorne@gmail.com
+X-original-sender: matthias.bgg@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,83 +145,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 29, 2017 at 09:22:07AM +0200, Vegard Nossum wrote:
-> This fixes a regression in commit 4d6501dce079 where I didn't notice
-> that MIPS and OpenRISC were reinitialising p->{set,clear}_child_tid to
-> NULL after our initialisation in copy_process().
+
+
+On 27/05/17 11:58, Daniel Lezcano wrote:
+> The CLOCKSOUCE_OF_DECLARE macro is used widely for the timers to declare the
+> clocksource at early stage. However, this macro is also used to initialize
+> the clockevent if any, or the clockevent only.
 > 
-> We can simply get rid of the arch-specific initialisation here since it
-> is now always done in copy_process() before hitting copy_thread{,_tls}().
+> It was originally suggested to declare another macro to initialize a
+> clockevent, so in order to separate the two entities even they belong to the
+> same IP. This was not accepted because of the impact on the DT where splitting
+> a clocksource/clockevent definition does not make sense as it is a Linux
+> concept not a hardware description.
 > 
-> Review notes:
+> On the other side, the clocksource has not interrupt declared while the
+> clockevent has, so it is easy from the driver to know if the description is
+> for a clockevent or a clocksource, IOW it could be implemented at the driver
+> level.
 > 
->  - As far as I can tell, copy_process() is the only user of
->    copy_thread_tls(), which is the only caller of copy_thread() for
->    architectures that don't implement copy_thread_tls().
+> So instead of dealing with a named clocksource macro, let's use a more generic
+> one: TIMER_OF_DECLARE.
 > 
->  - After this patch, there is no arch-specific code touching
->    p->set_child_tid or p->clear_child_tid whatsoever.
+> The patch has not functional changes.
 > 
->  - It may look like MIPS/OpenRISC wanted to always have these fields be
->    NULL, but that's not true, as copy_process() would unconditionally
->    set them again _after_ calling copy_thread_tls() before commit
->    4d6501dce079.
-> 
-> Fixes: 4d6501dce079c1eb6bf0b1d8f528a5e81770109e ("kthread: Fix use-after-free if kthread fork fails")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Tested-by: Guenter Roeck <linux@roeck-us.net> # MIPS only
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-> Cc: Stafford Horne <shorne@gmail.com>
-> Cc: openrisc@lists.librecores.org
-> Cc: Oleg Nesterov <oleg@redhat.com>
-> Cc: Jamie Iles <jamie.iles@oracle.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 > ---
-> Not sure who this should go through, the last patch went through tglx/the
-> core-urgent-for-linus tree, but it does touch arch code + fix a mainline
-> boot hang regression on at least MIPS (Guenter said OpenRISC didn't seem
-> affected in his boot tests, but the code looks wrong in any case). Maybe
-> we could get acks/reviews by MIPS and OpenRISC maintainers?
 
-This looks ok with me, I am pretty sure a lot of the OpenRISC initial port
-was based on mips so this could have been copied from the beginning.
+[...]
 
-Acked-by: Stafford Horne <shorne@gmail.com>
+> diff --git a/drivers/clocksource/mtk_timer.c b/drivers/clocksource/mtk_timer.c
+> index 9065949..f9b724f 100644
+> --- a/drivers/clocksource/mtk_timer.c
+> +++ b/drivers/clocksource/mtk_timer.c
+> @@ -265,4 +265,4 @@ static int __init mtk_timer_init(struct device_node *node)
+>   
+>   	return -EINVAL;
+>   }
+> -CLOCKSOURCE_OF_DECLARE(mtk_mt6577, "mediatek,mt6577-timer", mtk_timer_init);
+> +TIMER_OF_DECLARE(mtk_mt6577, "mediatek,mt6577-timer", mtk_timer_init);
 
-> ---
->  arch/mips/kernel/process.c     | 1 -
->  arch/openrisc/kernel/process.c | 2 --
->  2 files changed, 3 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-> index 918d4c73e951..5351e1f3950d 100644
-> --- a/arch/mips/kernel/process.c
-> +++ b/arch/mips/kernel/process.c
-> @@ -120,7 +120,6 @@ int copy_thread_tls(unsigned long clone_flags, unsigned long usp,
->  	struct thread_info *ti = task_thread_info(p);
->  	struct pt_regs *childregs, *regs = current_pt_regs();
->  	unsigned long childksp;
-> -	p->set_child_tid = p->clear_child_tid = NULL;
->  
->  	childksp = (unsigned long)task_stack_page(p) + THREAD_SIZE - 32;
->  
-> diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
-> index f8da545854f9..106859ae27ff 100644
-> --- a/arch/openrisc/kernel/process.c
-> +++ b/arch/openrisc/kernel/process.c
-> @@ -167,8 +167,6 @@ copy_thread(unsigned long clone_flags, unsigned long usp,
->  
->  	top_of_kernel_stack = sp;
->  
-> -	p->set_child_tid = p->clear_child_tid = NULL;
-> -
->  	/* Locate userspace context on stack... */
->  	sp -= STACK_FRAME_OVERHEAD;	/* redzone */
->  	sp -= sizeof(struct pt_regs);
-> -- 
-> 2.12.0.rc0
-> 
+For the mediatek driver:
+
+Acked-by: Matthias Brugger <matthias.bgg@gmail.com>

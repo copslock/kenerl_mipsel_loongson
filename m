@@ -1,17 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 09:40:20 +0200 (CEST)
-Received: from gloria.sntech.de ([95.129.55.99]:44640 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992036AbdE2HkMPNd0g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 29 May 2017 09:40:12 +0200
-Received: from ip9234b3c2.dynamic.kabel-deutschland.de ([146.52.179.194] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.1:DHE_RSA_AES_256_CBC_SHA1:256)
-        (Exim 4.80)
-        (envelope-from <heiko@sntech.de>)
-        id 1dFFGf-0000e3-Sm; Mon, 29 May 2017 09:39:09 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     tglx@linutronix.de, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 10:01:12 +0200 (CEST)
+Received: from mail-wm0-x233.google.com ([IPv6:2a00:1450:400c:c09::233]:37238
+        "EHLO mail-wm0-x233.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990601AbdE2IA71fLFg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 10:00:59 +0200
+Received: by mail-wm0-x233.google.com with SMTP id d127so48050071wmf.0
+        for <linux-mips@linux-mips.org>; Mon, 29 May 2017 01:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=viWXfdu6tF+tnlL6vz+rKhQ0nXZPouD8mMO6dpttZoo=;
+        b=TDHnfPSSE8i/gj60LbU6FPudtSaBbUaWkcKo07UIau4q2ywoCNN5PxI3Zg8nABYkQ/
+         8nhM2hURllVKUQAI7TRfKsFTjognJaMj0dMR5gfKe1o/aTdP/P42hm3qE5glUvEVVhUy
+         Nlmf/u4w7qI0CkDjYjWm4g+FsMyI6b8duOwYPLD36sL77PACEzo6hnizkFUjd0DQG1ze
+         DDY5fWQ2hzkj7ay6ejORlp9hQdiOuGcfe0sJqWWehcA4iNzxYBbDRXPjCVXu1IauOanu
+         DXKYqnqbDXSi6/GxA1DZZo9MUyvpvb3OvsnbiNF8pg6mJnFDSz1b+ciiEd1Nc1EauR59
+         AyrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:cc:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding;
+        bh=viWXfdu6tF+tnlL6vz+rKhQ0nXZPouD8mMO6dpttZoo=;
+        b=q4BaYXg2vdnT/HH4YGqSk1XqH+sCV0V9DRxBwHPIBq4QylWcRS6Mu6Kn/R94YuWPWD
+         spmtUAvP2IJeB58mAI3YVuWFoAtBw9JRA3rSzTdT2iwu3sD+NYmEMeg928vbaitDUQV8
+         XcgIexb59SziGXidVJxB10UDFdqpv5kSxqiQcO77L7u6QOIktMs5iD1U2xOU7JlwGA43
+         Lbg8aTUCsZepC7mp3rQQjI1z3xsfD2zuLc/WVQK8H4v6TRTR8+diimpX9WWZRcTSN+ri
+         Cs4EPelKPtIYlgKcvxCoG9kmhTaoUca/F2yNH/hSQBJVmDzR1XEdx23RdngzHeuhwGSb
+         U0qA==
+X-Gm-Message-State: AODbwcALN/Z3RrMAYW2buYfIkdTnqiTLzO1xJPXcsTGzGzXx9foQAePX
+        PtmzVvhfpdOt7Hy6
+X-Received: by 10.223.169.78 with SMTP id u72mr9200363wrc.193.1496044852903;
+        Mon, 29 May 2017 01:00:52 -0700 (PDT)
+Received: from [192.168.1.21] ([90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id r130sm4826125wmg.4.2017.05.29.01.00.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 May 2017 01:00:52 -0700 (PDT)
+Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, tglx@linutronix.de
+References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
+ <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
         Michal Simek <monstr@monstr.eu>,
         John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -29,7 +59,7 @@ Cc:     tglx@linutronix.de, linux-arm-kernel@lists.infradead.org,
         <bcm-kernel-feedback-list@broadcom.com>,
         Stephen Warren <swarren@wwwdotorg.org>,
         Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
-        =?ISO-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Alexander Shiyan <shc_work@mail.ru>,
         Kukjin Kim <kgene@kernel.org>,
@@ -42,19 +72,19 @@ Cc:     tglx@linutronix.de, linux-arm-kernel@lists.infradead.org,
         Sudeep Holla <sudeep.holla@arm.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
         Maxime Ripard <maxime.ripard@free-electrons.com>,
         Chen-Yu Tsai <wens@csie.org>,
         Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Alexandre Courbot <gnurou@gmail.com>,
-        Uwe =?ISO-8859-1?Q?Kleine=2DK=F6nig?= <kernel@pengutronix.de>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <kernel@pengutronix.de>,
         Joachim Eastwood <manabian@gmail.com>,
         Vladimir Zapolskiy <vz@mleia.com>,
         Sylvain Lemieux <slemieux.tyco@gmail.com>,
         Barry Song <baohua@kernel.org>,
         Baruch Siach <baruch@tkos.co.il>,
         Santosh Shilimkar <ssantosh@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
         Tony Prisk <linux@prisktech.co.nz>,
         John Stultz <john.stultz@linaro.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
@@ -84,24 +114,25 @@ Cc:     tglx@linutronix.de, linux-arm-kernel@lists.infradead.org,
         "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
         "moderated list:ARM/OXNAS platform support" 
         <linux-oxnas@lists.tuxfamily.org>
-Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
-Date:   Mon, 29 May 2017 09:39:09 +0200
-Message-ID: <1710049.UcE0hxO5ny@diego>
-User-Agent: KMail/5.2.3 (Linux/4.8.0-2-amd64; KDE/5.27.0; x86_64; ; )
-In-Reply-To: <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
-References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org> <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
+From:   Neil Armstrong <narmstrong@baylibre.com>
+Organization: Baylibre
+Message-ID: <4ccb7cac-1663-792a-7912-d9ee803c7e2b@baylibre.com>
+Date:   Mon, 29 May 2017 10:00:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Return-Path: <heiko@sntech.de>
+In-Reply-To: <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Return-Path: <narmstrong@baylibre.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58059
+X-archive-position: 58060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: heiko@sntech.de
+X-original-sender: narmstrong@baylibre.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -114,44 +145,113 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Am Samstag, 27. Mai 2017, 11:58:43 CEST schrieb Daniel Lezcano:
+On 05/27/2017 11:58 AM, Daniel Lezcano wrote:
 > The CLOCKSOUCE_OF_DECLARE macro is used widely for the timers to declare the
 > clocksource at early stage. However, this macro is also used to initialize
 > the clockevent if any, or the clockevent only.
 > 
 > It was originally suggested to declare another macro to initialize a
 > clockevent, so in order to separate the two entities even they belong to the
-> same IP. This was not accepted because of the impact on the DT where
-> splitting a clocksource/clockevent definition does not make sense as it is
-> a Linux concept not a hardware description.
+> same IP. This was not accepted because of the impact on the DT where splitting
+> a clocksource/clockevent definition does not make sense as it is a Linux
+> concept not a hardware description.
 > 
 > On the other side, the clocksource has not interrupt declared while the
 > clockevent has, so it is easy from the driver to know if the description is
 > for a clockevent or a clocksource, IOW it could be implemented at the driver
 > level.
 > 
-> So instead of dealing with a named clocksource macro, let's use a more
-> generic one: TIMER_OF_DECLARE.
+> So instead of dealing with a named clocksource macro, let's use a more generic
+> one: TIMER_OF_DECLARE.
 > 
 > The patch has not functional changes.
 > 
 > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 > ---
-[...]
-> diff --git a/drivers/clocksource/rockchip_timer.c
-> b/drivers/clocksource/rockchip_timer.c index 49c02be..c27f4c8 100644
-> --- a/drivers/clocksource/rockchip_timer.c
-> +++ b/drivers/clocksource/rockchip_timer.c
-> @@ -303,5 +303,5 @@ static int __init rk_timer_init(struct device_node *np)
->  	return -EINVAL;
->  }
+>  arch/arm/kernel/smp_twd.c                 |  6 +++---
+>  arch/microblaze/kernel/timer.c            |  2 +-
+>  arch/mips/ralink/cevt-rt3352.c            |  2 +-
+>  arch/nios2/kernel/time.c                  |  2 +-
+>  drivers/clocksource/arc_timer.c           |  6 +++---
+>  drivers/clocksource/arm_arch_timer.c      |  6 +++---
+>  drivers/clocksource/arm_global_timer.c    |  2 +-
+>  drivers/clocksource/armv7m_systick.c      |  2 +-
+>  drivers/clocksource/asm9260_timer.c       |  2 +-
+>  drivers/clocksource/bcm2835_timer.c       |  2 +-
+>  drivers/clocksource/bcm_kona_timer.c      |  4 ++--
+>  drivers/clocksource/cadence_ttc_timer.c   |  2 +-
+>  drivers/clocksource/clksrc-dbx500-prcmu.c |  2 +-
+>  drivers/clocksource/clksrc_st_lpc.c       |  2 +-
+>  drivers/clocksource/clps711x-timer.c      |  2 +-
+>  drivers/clocksource/dw_apb_timer_of.c     |  8 ++++----
+>  drivers/clocksource/exynos_mct.c          |  4 ++--
+>  drivers/clocksource/fsl_ftm_timer.c       |  2 +-
+>  drivers/clocksource/h8300_timer16.c       |  2 +-
+>  drivers/clocksource/h8300_timer8.c        |  2 +-
+>  drivers/clocksource/h8300_tpu.c           |  2 +-
+>  drivers/clocksource/jcore-pit.c           |  2 +-
+>  drivers/clocksource/meson6_timer.c        |  2 +-
+>  drivers/clocksource/mips-gic-timer.c      |  2 +-
+>  drivers/clocksource/mps2-timer.c          |  2 +-
+>  drivers/clocksource/mtk_timer.c           |  2 +-
+>  drivers/clocksource/mxs_timer.c           |  2 +-
+>  drivers/clocksource/nomadik-mtu.c         |  2 +-
+>  drivers/clocksource/pxa_timer.c           |  2 +-
+>  drivers/clocksource/qcom-timer.c          |  4 ++--
+>  drivers/clocksource/renesas-ostm.c        |  2 +-
+>  drivers/clocksource/rockchip_timer.c      |  4 ++--
+>  drivers/clocksource/samsung_pwm_timer.c   |  8 ++++----
+>  drivers/clocksource/sun4i_timer.c         |  2 +-
+>  drivers/clocksource/tango_xtal.c          |  2 +-
+>  drivers/clocksource/tegra20_timer.c       |  4 ++--
+>  drivers/clocksource/time-armada-370-xp.c  |  6 +++---
+>  drivers/clocksource/time-efm32.c          |  4 ++--
+>  drivers/clocksource/time-lpc32xx.c        |  2 +-
+>  drivers/clocksource/time-orion.c          |  2 +-
+>  drivers/clocksource/time-pistachio.c      |  2 +-
+>  drivers/clocksource/timer-atlas7.c        |  2 +-
+>  drivers/clocksource/timer-atmel-pit.c     |  2 +-
+>  drivers/clocksource/timer-atmel-st.c      |  2 +-
+>  drivers/clocksource/timer-digicolor.c     |  2 +-
+>  drivers/clocksource/timer-fttmr010.c      | 10 +++++-----
+>  drivers/clocksource/timer-imx-gpt.c       | 24 ++++++++++++------------
+>  drivers/clocksource/timer-integrator-ap.c |  2 +-
+>  drivers/clocksource/timer-keystone.c      |  2 +-
+>  drivers/clocksource/timer-nps.c           |  6 +++---
+>  drivers/clocksource/timer-oxnas-rps.c     |  4 ++--
+>  drivers/clocksource/timer-prima2.c        |  2 +-
+>  drivers/clocksource/timer-sp804.c         |  4 ++--
+>  drivers/clocksource/timer-stm32.c         |  2 +-
+>  drivers/clocksource/timer-sun5i.c         |  4 ++--
+>  drivers/clocksource/timer-ti-32k.c        |  2 +-
+>  drivers/clocksource/timer-u300.c          |  2 +-
+>  drivers/clocksource/versatile.c           |  4 ++--
+>  drivers/clocksource/vf_pit_timer.c        |  2 +-
+>  drivers/clocksource/vt8500_timer.c        |  2 +-
+>  drivers/clocksource/zevio-timer.c         |  2 +-
+>  include/linux/clocksource.h               |  2 +-
+>  62 files changed, 103 insertions(+), 103 deletions(-)
 > 
-> -CLOCKSOURCE_OF_DECLARE(rk3288_timer, "rockchip,rk3288-timer",
-> rk_timer_init); -CLOCKSOURCE_OF_DECLARE(rk3399_timer,
-> "rockchip,rk3399-timer", rk_timer_init); +TIMER_OF_DECLARE(rk3288_timer,
-> "rockchip,rk3288-timer", rk_timer_init); +TIMER_OF_DECLARE(rk3399_timer,
-> "rockchip,rk3399-timer", rk_timer_init); diff --git
-> a/drivers/clocksource/samsung_pwm_timer.c
-> b/drivers/clocksource/samsung_pwm_timer.c index a68e653..21cd72c 100644
+[...]
+> diff --git a/drivers/clocksource/timer-oxnas-rps.c b/drivers/clocksource/timer-oxnas-rps.c
+> index d630bf4..eed6fef 100644
+> --- a/drivers/clocksource/timer-oxnas-rps.c
+> +++ b/drivers/clocksource/timer-oxnas-rps.c
+> @@ -293,7 +293,7 @@ static int __init oxnas_rps_timer_init(struct device_node *np)
+>  	return ret;
+>  }
+>  
+> -CLOCKSOURCE_OF_DECLARE(ox810se_rps,
+> +TIMER_OF_DECLARE(ox810se_rps,
+>  		       "oxsemi,ox810se-rps-timer", oxnas_rps_timer_init);
+> -CLOCKSOURCE_OF_DECLARE(ox820_rps,
+> +TIMER_OF_DECLARE(ox820_rps,
+>  		       "oxsemi,ox820se-rps-timer", oxnas_rps_timer_init);
+[...]
 
-Acked-by: Heiko Stuebner <heiko@sntech.de>
+For the timer-oxnas-rps driver,
+
+Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+
+Thanks for the rework,
+Neil

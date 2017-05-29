@@ -1,42 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 10:48:29 +0200 (CEST)
-Received: from mail-wm0-x236.google.com ([IPv6:2a00:1450:400c:c09::236]:37301
-        "EHLO mail-wm0-x236.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993009AbdE2IsVEDAQH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 10:48:21 +0200
-Received: by mail-wm0-x236.google.com with SMTP id d127so49751666wmf.0
-        for <linux-mips@linux-mips.org>; Mon, 29 May 2017 01:48:21 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 11:57:40 +0200 (CEST)
+Received: from mail-oi0-x242.google.com ([IPv6:2607:f8b0:4003:c06::242]:33115
+        "EHLO mail-oi0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990601AbdE2J5cIweHw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 11:57:32 +0200
+Received: by mail-oi0-x242.google.com with SMTP id h4so10751040oib.0;
+        Mon, 29 May 2017 02:57:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=7tqql2MnZiI9NmTGLxNtZ74cnoEXNq+3EvJRDXfkhYk=;
-        b=QmYa2J0BIhlpyLwLwD7gajUdWsjN8orglmu0PwXjfzu8tcBDjUWeEYqsgG7viFWLrI
-         QXSgDbGSn+kI5udt5x27j6xArxWiyhBikPVmdd8zW2/UePj1hhsWrLrFmRWdh4lJXXrJ
-         KQ9RzksccKWAmIM4Vg+P09PinRpd/lBIO+7jc=
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=Myq9VL35BzkDgs9QDZ1D0nHai8PhbjB4jHqw9q6ozzI=;
+        b=QylriQ1pnnzKfhhB51LBvHuWFZlPcxKe/F97D7kbOepTBQm6w4RpR015VApmheX7zZ
+         Kkv7nABFEARpmtvfL7yHenzI/pCcsCQI+KXHMIMinkwt80EK4NOcYssDfQMM5a+E4fJM
+         9HcUq4fKEU+vyN7umTOWpjQKIA0N/yUv6K4wxxrTW8AvOJp1TmcNWZZNrLvG1vwfN9v9
+         1bl+jSLI9KPfiGExwcxDfmoPQo75dFaesEnhuKkGehwxDW6EcMbt5CfFGvzD3uEdQTn9
+         tu7OeGDIXg9USr6RemL6i2mbB/4/pKXWUkyE/GNMkTmDGbN93eGoHdzJlY0rV6aOedGr
+         X7aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=7tqql2MnZiI9NmTGLxNtZ74cnoEXNq+3EvJRDXfkhYk=;
-        b=ZHq0/hxjAzPSF7+b39772aP/sNraYqnY1q7fW7Qwur2JEeuJb2BQseekMcGn3c9wKg
-         OG4rjgpVsa7WMC189c5LM+h2kn1n0WH/F2QuEj3Tcq3tdayEuwRQ2zeTz6DpVz26tU3N
-         d1ma0eXBTiEUsUrgMI/5dbR+BcBVKA7G3Lf6KtF1hBk3eQw61Tuqb3lnLqp3dpGr0sdO
-         f65WsaYNhlnI+/q1EnFYY2n+bMGe+eI4h9KlVy9M91B6IFSKZCySGfvfwjGGzghwfeU0
-         1khPbLLkliAVZxB7Pn5mZe22hWcra3Ju9cIVMZ6/O/4sf/bzl2tgT5sehviDmwCc1+x0
-         VNTA==
-X-Gm-Message-State: AODbwcBDZLkLHCC69u5QEfZJvMVblpgmoEHkvG8aDzdz2gI8ooYgVQww
-        utUQxVedoOsw35zz
-X-Received: by 10.28.111.7 with SMTP id k7mr10184919wmc.50.1496047695121;
-        Mon, 29 May 2017 01:48:15 -0700 (PDT)
-Received: from mai ([2a01:e35:879a:6cd0:3e97:eff:fe5b:1402])
-        by smtp.gmail.com with ESMTPSA id x17sm5351302wrd.63.2017.05.29.01.48.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 May 2017 01:48:14 -0700 (PDT)
-Date:   Mon, 29 May 2017 10:48:09 +0200
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     Arnd Bergmann <arnd@arndb.de>
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=Myq9VL35BzkDgs9QDZ1D0nHai8PhbjB4jHqw9q6ozzI=;
+        b=B2CfkFx8IMxOrdOkJOTAQWmornR7enNXdrSNBuAe1/3V0ghzKTAJuSjVPRjWZ54ZO1
+         ehYhFRMRSBseL0/eVJ+vUSlo2tzTCTrNegJolSo9rfdjyu8nRJ6OXgpFidzA2zAo/XiH
+         GC9uwZ181EtculxjYor6JQtoeM/s1/d6CqZARSnlHECs+1uI+fHyesm4w06EyRecH3ub
+         5uk06yVG85VbcwikY9ysloDMtXDmrUbnBeNPk/tGWqseUWOxIGcaXX8QDpGKScHfm55v
+         Qk27fQnHnpnLACcBbd1UN7Jtq5Syw3xuOYdaTLHtYwgKxdhzbhS8yyDhuJ7r5E0vaP6Z
+         P1Tg==
+X-Gm-Message-State: AODbwcD61GdSffQkCCmpsrniqv082ilvEYCn6GXbVJiWfs00+QVJiITy
+        eKFjqtyL4Npc4+Y96S/xD8UQVMOpvg==
+X-Received: by 10.157.31.71 with SMTP id x7mr7723041otx.217.1496051845972;
+ Mon, 29 May 2017 02:57:25 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.157.66.2 with HTTP; Mon, 29 May 2017 02:57:25 -0700 (PDT)
+In-Reply-To: <20170529084809.GA2192@mai>
+References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
+ <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
+ <CAK8P3a3QACHYqtCO1z_FpW0nXEtx356wCDha_=SNXU872=q1UQ@mail.gmail.com> <20170529084809.GA2192@mai>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 29 May 2017 11:57:25 +0200
+X-Google-Sender-Auth: b4CD2GvFbP4jn4afZvvOvI9A0PI
+Message-ID: <CAK8P3a1Kv_RhKL43ie6co_N5pDXvRHd7Uq8g70qt80WkxuhzLw@mail.gmail.com>
+Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -58,7 +64,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         <bcm-kernel-feedback-list@broadcom.com>,
         Stephen Warren <swarren@wwwdotorg.org>,
         Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
-        =?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+        =?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Alexander Shiyan <shc_work@mail.ru>,
         Kukjin Kim <kgene@kernel.org>,
@@ -77,7 +83,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Alexandre Courbot <gnurou@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <kernel@pengutronix.de>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <kernel@pengutronix.de>,
         Joachim Eastwood <manabian@gmail.com>,
         Vladimir Zapolskiy <vz@mleia.com>,
         Sylvain Lemieux <slemieux.tyco@gmail.com>,
@@ -113,26 +119,16 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
         "moderated list:ARM/OXNAS platform support" 
         <linux-oxnas@lists.tuxfamily.org>
-Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
-Message-ID: <20170529084809.GA2192@mai>
-References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
- <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
- <CAK8P3a3QACHYqtCO1z_FpW0nXEtx356wCDha_=SNXU872=q1UQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a3QACHYqtCO1z_FpW0nXEtx356wCDha_=SNXU872=q1UQ@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58062
+X-archive-position: 58063
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -145,49 +141,66 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 29, 2017 at 10:41:52AM +0200, Arnd Bergmann wrote:
-> On Sat, May 27, 2017 at 11:58 AM, Daniel Lezcano
-> <daniel.lezcano@linaro.org> wrote:
-> > The CLOCKSOUCE_OF_DECLARE macro is used widely for the timers to declare the
-> > clocksource at early stage. However, this macro is also used to initialize
-> > the clockevent if any, or the clockevent only.
-> >
-> > It was originally suggested to declare another macro to initialize a
-> > clockevent, so in order to separate the two entities even they belong to the
-> > same IP. This was not accepted because of the impact on the DT where splitting
-> > a clocksource/clockevent definition does not make sense as it is a Linux
-> > concept not a hardware description.
-> >
-> > On the other side, the clocksource has not interrupt declared while the
-> > clockevent has, so it is easy from the driver to know if the description is
-> > for a clockevent or a clocksource, IOW it could be implemented at the driver
-> > level.
-> >
-> > So instead of dealing with a named clocksource macro, let's use a more generic
-> > one: TIMER_OF_DECLARE.
-> >
-> > The patch has not functional changes.
-> >
-> > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> 
-> Could you either leave the old name as an alias for one release, or introduce
-> the new name as an alias now for 4.13?
-> 
-> I think that that would make it easier to merge new drivers. Otherwise this
-> looks good to me,
+On Mon, May 29, 2017 at 10:48 AM, Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+> On Mon, May 29, 2017 at 10:41:52AM +0200, Arnd Bergmann wrote:
+>> On Sat, May 27, 2017 at 11:58 AM, Daniel Lezcano
+>> <daniel.lezcano@linaro.org> wrote:
+>> > The CLOCKSOUCE_OF_DECLARE macro is used widely for the timers to declare the
+>> > clocksource at early stage. However, this macro is also used to initialize
+>> > the clockevent if any, or the clockevent only.
+>> >
+>> > It was originally suggested to declare another macro to initialize a
+>> > clockevent, so in order to separate the two entities even they belong to the
+>> > same IP. This was not accepted because of the impact on the DT where splitting
+>> > a clocksource/clockevent definition does not make sense as it is a Linux
+>> > concept not a hardware description.
+>> >
+>> > On the other side, the clocksource has not interrupt declared while the
+>> > clockevent has, so it is easy from the driver to know if the description is
+>> > for a clockevent or a clocksource, IOW it could be implemented at the driver
+>> > level.
+>> >
+>> > So instead of dealing with a named clocksource macro, let's use a more generic
+>> > one: TIMER_OF_DECLARE.
+>> >
+>> > The patch has not functional changes.
+>> >
+>> > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>>
+>> Could you either leave the old name as an alias for one release, or introduce
+>> the new name as an alias now for 4.13?
+>>
+>> I think that that would make it easier to merge new drivers. Otherwise this
+>> looks good to me,
+>
+>
+> New drivers should go through my tree, so I can catch them with the old macro
+> name and do the change.
 
+Sure, they should, and it's quite likely that you won't even need the fallback,
+I've just seen too many cases where a similar assumption turned out wrong,
+that I'd just pick the safer option just in case whenever I do an API change.
 
-New drivers should go through my tree, so I can catch them with the old macro
-name and do the change.
+Things that could go wrong include:
 
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+- A platform maintainer wants to add a new platform and has a for-next
+  branch that gets merged into linux-next, with parts of it going through
+  different maintainers, and now they have to choose between a branch
+  that doesn't build without the timer branch, or one that break for-next
+  unless Stephen applies a fixup
 
-Thanks for the review.
+- Some architecture maintainer didn't get the memo and adds an instance of
+  CLOCKSOUCE_OF_DECLARE in architecture specific code without asking
+  having the patch reviewed first
 
--- 
+- A platform has a branch with complex cross-tree dependencies and
+  it need to get merged in an unconventional way.
 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+- You make a mistake and accidentally merge one driver for an unusual
+  architecture that escapes your test matrix.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+While those all are unlikely to happen in a particular merge window, they do
+happen occasionally and tend to cause a lot of pain.
+
+       Arnd

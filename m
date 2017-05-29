@@ -1,136 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 13:22:07 +0200 (CEST)
-Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:33294
-        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992127AbdE2LWAx8cuO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 13:22:00 +0200
-Received: by mail-oi0-x243.google.com with SMTP id h4so11003432oib.0;
-        Mon, 29 May 2017 04:22:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 14:55:50 +0200 (CEST)
+Received: from mail-pg0-x244.google.com ([IPv6:2607:f8b0:400e:c05::244]:34257
+        "EHLO mail-pg0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993009AbdE2MzmXIVZD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 14:55:42 +0200
+Received: by mail-pg0-x244.google.com with SMTP id u187so6473144pgb.1;
+        Mon, 29 May 2017 05:55:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=wZwMPX4pXOPKNdf92AFbdGQernWolb1LqEy5OSCnDXM=;
-        b=A27j3a3MxG0xNoihFdNB1Jn9AHc+zseQLw30C+h33d2Q9vh11TwYgqU6q9b4lpuNRn
-         vXS/Ubu18luEMnG9/QjxwTBZdZIiyH6AGwFt59zgXp148ulVEoPWxBT1huH9ekGw/gKv
-         Tvc/tmqqSaiRjONCsbEuJO2mZ4fMRJBxDVBqu2JYulgK+ysc1HxzLCsAUR4ulziG0ocT
-         tvN7mUkujg+eqNOJGGoVhY4o3Yw9MPZxLvoZyqXw0z0ltNG8LmM2eiZP17zyNALdDneG
-         LzaCoAx2VQSoackt1JbXnEC8PGRo3L/Z5F3qV7nJGXxA5FzZo+xpNZ7iuHihGXiwYGkX
-         e+Bg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=h6IZRZo1LMD1ilMNUq4G+4lg/+tmByxuAy77UoRAhwE=;
+        b=IFm4ImD8PNQgfPRKodHaS3j3LJPuxfb2mi4RhatxH7wYnH/2A/aeh7Fkfg/H+/WoPP
+         MPZ776cDbzCsjD9bsyypNl6BqAWinl/gVQgi60ikbPAE77//SNK+hWmgq4FOBIGU7ABP
+         JI3cxbb84Litc1P18nwWiSLiHMgMV5yZC5e0EnSbHG2YnGhGQ7LsmKXI6lEa+nIRIyKl
+         kaC2jfw/xYN+P9DjjMs/noKDFpkoKFzfO4J2undMnU/0pRAOzFPhjec7o9ReeAMvl4Fa
+         NY2nqmq9AfqFK4qVX6wTrQzsoiO88Fh0wZ6/GpLF+5e81BrPOCs48plftvUz9XkK44ah
+         gsmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=wZwMPX4pXOPKNdf92AFbdGQernWolb1LqEy5OSCnDXM=;
-        b=qi5HeJ6bknUIEeyZrv989r1iJ9809AZqUX2BkR8DG4bTJ0s3NdfmoEIuoejFW79tWY
-         tPNk8b1a2cNloh3czkyQioQWSW51rworB4uKCrh2KGTH9ufqiGlQT/D5dwx2IL1lvk3l
-         1GO5xVVLXHofWiLohKaGxMwVCdPOwgvjAQjvddUe2q47xfA1/4Kb1yMty5+OwcXto43r
-         pvbAAbEMBAqFnmSZ0pD3iPy2Z3mmOJjlodnmbAqRFTuHX5eZKrnf727Gj7sj3l3jJiEI
-         Kvk4ytNVl+B/djd25Zc72WAwN4tyfRkNbZLv5elt5T18WpuR2D7W6BVvK6EpBbM0Bsge
-         dAzg==
-X-Gm-Message-State: AODbwcD6YhfO0zKDfQR4v1ALSGgQoTtVzc2LpcaH6zryjsjhse1qNVAd
-        5PiEIF88/l9HArosaWKVHGvivIqPUg==
-X-Received: by 10.202.97.86 with SMTP id v83mr5874396oib.113.1496056915001;
- Mon, 29 May 2017 04:21:55 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.157.66.2 with HTTP; Mon, 29 May 2017 04:21:54 -0700 (PDT)
-In-Reply-To: <20170529105509.GC2192@mai>
-References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
- <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
- <CAK8P3a3QACHYqtCO1z_FpW0nXEtx356wCDha_=SNXU872=q1UQ@mail.gmail.com>
- <20170529084809.GA2192@mai> <CAK8P3a1Kv_RhKL43ie6co_N5pDXvRHd7Uq8g70qt80WkxuhzLw@mail.gmail.com>
- <20170529105509.GC2192@mai>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 29 May 2017 13:21:54 +0200
-X-Google-Sender-Auth: sxhqAzksCpXXrJOJhU4rLaWH1Fs
-Message-ID: <CAK8P3a3MdvWMJyVqE63Ur330mC2wPZO7nFXjd_LukbTjiZtGdg@mail.gmail.com>
-Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=h6IZRZo1LMD1ilMNUq4G+4lg/+tmByxuAy77UoRAhwE=;
+        b=qjei1+J4qRl5e7AtQ5W3bTgPBDjgDQb+h/pqoEskhm6sMmBlZwTmPHBsfKcnsNjxfA
+         BUvCdJJ5JQ20ottequmG6heP4K8RmbGF/KhncercVDVP5w0IwjQFRchLMbp+rOrrmCXi
+         KeESqw1g6LVKmompUguSa8tPEpg/XSBX+CNyOpHKIZTc0AEUEV/6Sj/7cSD01ebgRlbZ
+         Nd6/vs+F29+J3hJUFMYl1Pv4cxA87LxwLCyYpIxQDFXlx+UW8Pt7ey/ml/Up4yLSvcDw
+         GrepW3CxODGrrGsPQQ8bPvLQltx3rrG7GM2zItWGJE/xBzUj3vnLk/rrKv5NmXlV6zDk
+         y+TA==
+X-Gm-Message-State: AODbwcAaWcS+jSI5Jt8Wjl3CFQyy/55UKWPa+8S10bKRrsgSS8TVGU+S
+        7hHo/ObX3ydPsA==
+X-Received: by 10.99.116.28 with SMTP id p28mr18776696pgc.8.1496062536485;
+        Mon, 29 May 2017 05:55:36 -0700 (PDT)
+Received: from localhost (g139.211-19-81.ppp.wakwak.ne.jp. [211.19.81.139])
+        by smtp.gmail.com with ESMTPSA id x18sm18432312pfe.13.2017.05.29.05.55.35
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 29 May 2017 05:55:35 -0700 (PDT)
+Date:   Mon, 29 May 2017 21:55:33 +0900
+From:   Stafford Horne <shorne@gmail.com>
+To:     Vegard Nossum <vegard.nossum@oracle.com>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        John Crispin <john@phrozen.org>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        "maintainer:BROADCOM BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE..." 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Stephen Warren <swarren@wwwdotorg.org>,
-        Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
-        =?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Carlo Caione <carlo@caione.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <kernel@pengutronix.de>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Barry Song <baohua@kernel.org>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Tony Prisk <linux@prisktech.co.nz>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Anna-Maria Gleixner <anna-maria@linutronix.de>,
-        Richard Cochran <rcochran@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Noam Camus <noamca@mellanox.com>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        "moderated list:NIOS2 ARCHITECTURE" 
-        <nios2-dev@lists.rocketboards.org>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>,
-        "open list:ARM/STI ARCHITECTURE" <kernel@stlinux.com>,
-        "moderated list:BROADCOM BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        "open list:ARM/Amlogic Meson SoC support" 
-        <linux-amlogic@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        "open list:ARM/Rockchip SoC support" 
-        <linux-rockchip@lists.infradead.org>,
-        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-        "moderated list:ARM/OXNAS platform support" 
-        <linux-oxnas@lists.tuxfamily.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        openrisc@lists.librecores.org, Oleg Nesterov <oleg@redhat.com>,
+        Jamie Iles <jamie.iles@oracle.com>
+Subject: Re: [PATCH] kthread: fix boot hang (regression) on MIPS/OpenRISC
+Message-ID: <20170529125533.GB2940@lianli.shorne-pla.net>
+References: <20170529072207.16130-1-vegard.nossum@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170529072207.16130-1-vegard.nossum@oracle.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
+Return-Path: <shorne@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58066
+X-archive-position: 58067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: shorne@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -143,43 +75,83 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 29, 2017 at 12:55 PM, Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
-> On Mon, May 29, 2017 at 11:57:25AM +0200, Arnd Bergmann wrote:
->> On Mon, May 29, 2017 at 10:48 AM, Daniel Lezcano
->> <daniel.lezcano@linaro.org> wrote:
->> Things that could go wrong include:
->>
->> - A platform maintainer wants to add a new platform and has a for-next
->>   branch that gets merged into linux-next, with parts of it going through
->>   different maintainers, and now they have to choose between a branch
->>   that doesn't build without the timer branch, or one that break for-next
->>   unless Stephen applies a fixup
->>
->> - Some architecture maintainer didn't get the memo and adds an instance of
->>   CLOCKSOUCE_OF_DECLARE in architecture specific code without asking
->>   having the patch reviewed first
->>
->> - A platform has a branch with complex cross-tree dependencies and
->>   it need to get merged in an unconventional way.
->>
->> - You make a mistake and accidentally merge one driver for an unusual
->>   architecture that escapes your test matrix.
->>
->> While those all are unlikely to happen in a particular merge window, they do
->> happen occasionally and tend to cause a lot of pain.
->
-> Hmm, that sounds scary :)
->
-> There is no guarantee, when removing the alias, none of the above happens,
-> right?
+On Mon, May 29, 2017 at 09:22:07AM +0200, Vegard Nossum wrote:
+> This fixes a regression in commit 4d6501dce079 where I didn't notice
+> that MIPS and OpenRISC were reinitialising p->{set,clear}_child_tid to
+> NULL after our initialisation in copy_process().
+> 
+> We can simply get rid of the arch-specific initialisation here since it
+> is now always done in copy_process() before hitting copy_thread{,_tls}().
+> 
+> Review notes:
+> 
+>  - As far as I can tell, copy_process() is the only user of
+>    copy_thread_tls(), which is the only caller of copy_thread() for
+>    architectures that don't implement copy_thread_tls().
+> 
+>  - After this patch, there is no arch-specific code touching
+>    p->set_child_tid or p->clear_child_tid whatsoever.
+> 
+>  - It may look like MIPS/OpenRISC wanted to always have these fields be
+>    NULL, but that's not true, as copy_process() would unconditionally
+>    set them again _after_ calling copy_thread_tls() before commit
+>    4d6501dce079.
+> 
+> Fixes: 4d6501dce079c1eb6bf0b1d8f528a5e81770109e ("kthread: Fix use-after-free if kthread fork fails")
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Tested-by: Guenter Roeck <linux@roeck-us.net> # MIPS only
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
+> Cc: Jonas Bonn <jonas@southpole.se>
+> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+> Cc: Stafford Horne <shorne@gmail.com>
+> Cc: openrisc@lists.librecores.org
+> Cc: Oleg Nesterov <oleg@redhat.com>
+> Cc: Jamie Iles <jamie.iles@oracle.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+> ---
+> Not sure who this should go through, the last patch went through tglx/the
+> core-urgent-for-linus tree, but it does touch arch code + fix a mainline
+> boot hang regression on at least MIPS (Guenter said OpenRISC didn't seem
+> affected in his boot tests, but the code looks wrong in any case). Maybe
+> we could get acks/reviews by MIPS and OpenRISC maintainers?
 
-No, it's just both less likely and easier to work around.
+This looks ok with me, I am pretty sure a lot of the OpenRISC initial port
+was based on mips so this could have been copied from the beginning.
 
-> If the timer branch is in linux-next, that could be caugth before any of the
-> above happens, no?
+Acked-by: Stafford Horne <shorne@gmail.com>
 
-linux-next will find most of these problems, but it will still be more work
-for the people that run into build failures when testing linux-next.
-
-     Arnd
+> ---
+>  arch/mips/kernel/process.c     | 1 -
+>  arch/openrisc/kernel/process.c | 2 --
+>  2 files changed, 3 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+> index 918d4c73e951..5351e1f3950d 100644
+> --- a/arch/mips/kernel/process.c
+> +++ b/arch/mips/kernel/process.c
+> @@ -120,7 +120,6 @@ int copy_thread_tls(unsigned long clone_flags, unsigned long usp,
+>  	struct thread_info *ti = task_thread_info(p);
+>  	struct pt_regs *childregs, *regs = current_pt_regs();
+>  	unsigned long childksp;
+> -	p->set_child_tid = p->clear_child_tid = NULL;
+>  
+>  	childksp = (unsigned long)task_stack_page(p) + THREAD_SIZE - 32;
+>  
+> diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
+> index f8da545854f9..106859ae27ff 100644
+> --- a/arch/openrisc/kernel/process.c
+> +++ b/arch/openrisc/kernel/process.c
+> @@ -167,8 +167,6 @@ copy_thread(unsigned long clone_flags, unsigned long usp,
+>  
+>  	top_of_kernel_stack = sp;
+>  
+> -	p->set_child_tid = p->clear_child_tid = NULL;
+> -
+>  	/* Locate userspace context on stack... */
+>  	sp -= STACK_FRAME_OVERHEAD;	/* redzone */
+>  	sp -= sizeof(struct pt_regs);
+> -- 
+> 2.12.0.rc0
+> 

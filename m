@@ -1,42 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 12:55:33 +0200 (CEST)
-Received: from mail-wm0-x233.google.com ([IPv6:2a00:1450:400c:c09::233]:37971
-        "EHLO mail-wm0-x233.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992127AbdE2KzUrz02O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 12:55:20 +0200
-Received: by mail-wm0-x233.google.com with SMTP id e127so55053192wmg.1
-        for <linux-mips@linux-mips.org>; Mon, 29 May 2017 03:55:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 13:22:07 +0200 (CEST)
+Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:33294
+        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992127AbdE2LWAx8cuO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 13:22:00 +0200
+Received: by mail-oi0-x243.google.com with SMTP id h4so11003432oib.0;
+        Mon, 29 May 2017 04:22:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=m9XVm+COXROdP9Ihxwg8bv8eA2bFTUaT8sLKK0Xq8go=;
-        b=D2QjEgPrrNpSECAYbCxBP78UjoLM9WdHReKNQj+KiDmekZtZmEvoVLStPTlNeBHFP7
-         rzsXs7gSyU24FSRzpXzrCCf4XNpn7KI4RMcrlbrhsECWF5MXAerfd+1Z09qBz4OXnBWa
-         55mwYUlAbCYXLEOAvxvhiMuHwlW5FxwDTwVxY=
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=wZwMPX4pXOPKNdf92AFbdGQernWolb1LqEy5OSCnDXM=;
+        b=A27j3a3MxG0xNoihFdNB1Jn9AHc+zseQLw30C+h33d2Q9vh11TwYgqU6q9b4lpuNRn
+         vXS/Ubu18luEMnG9/QjxwTBZdZIiyH6AGwFt59zgXp148ulVEoPWxBT1huH9ekGw/gKv
+         Tvc/tmqqSaiRjONCsbEuJO2mZ4fMRJBxDVBqu2JYulgK+ysc1HxzLCsAUR4ulziG0ocT
+         tvN7mUkujg+eqNOJGGoVhY4o3Yw9MPZxLvoZyqXw0z0ltNG8LmM2eiZP17zyNALdDneG
+         LzaCoAx2VQSoackt1JbXnEC8PGRo3L/Z5F3qV7nJGXxA5FzZo+xpNZ7iuHihGXiwYGkX
+         e+Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=m9XVm+COXROdP9Ihxwg8bv8eA2bFTUaT8sLKK0Xq8go=;
-        b=Xca+vcL9/p6Rxle9Ne6FOSS+To5wJr54GC02GGOFnO0zQnwl1EswkzxlyO7Ic1zGKE
-         4eB5AM7JMDoG4td7FX7J8alqz6gARiqelFa3lYFrJiUN+8jmUf1mujeUGqJxRJIrmkYp
-         9WYpvJS5w6gHMncE1E7dfgcHp5BIzRJLATPNip80EwYFziLFtBPPxON2DN+LfdQn0OkL
-         yPqVw1yN1I+mcAU2Ohp98VoYQ11hHWnvI1KcrD5dvQN7enn7y0X4CSfJmBfiDRd774km
-         gi1HVCMlFeqM+Q6KixLiSAJ6sHbeFKlsTTSjuNP5FHmHGR29r2CoejD+VE5YLVUEDox5
-         B7tA==
-X-Gm-Message-State: AODbwcBxO3BPYiLFsFcYirPRgRJ90mBRSB/rO6ezabF4sMXCQ9c1742x
-        FT4N5jxXz9NJ+7mZ
-X-Received: by 10.28.128.202 with SMTP id b193mr10536955wmd.53.1496055315269;
-        Mon, 29 May 2017 03:55:15 -0700 (PDT)
-Received: from mai ([2a01:e35:879a:6cd0:3e97:eff:fe5b:1402])
-        by smtp.gmail.com with ESMTPSA id z32sm9626169wrc.12.2017.05.29.03.55.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 May 2017 03:55:14 -0700 (PDT)
-Date:   Mon, 29 May 2017 12:55:09 +0200
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     Arnd Bergmann <arnd@arndb.de>
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=wZwMPX4pXOPKNdf92AFbdGQernWolb1LqEy5OSCnDXM=;
+        b=qi5HeJ6bknUIEeyZrv989r1iJ9809AZqUX2BkR8DG4bTJ0s3NdfmoEIuoejFW79tWY
+         tPNk8b1a2cNloh3czkyQioQWSW51rworB4uKCrh2KGTH9ufqiGlQT/D5dwx2IL1lvk3l
+         1GO5xVVLXHofWiLohKaGxMwVCdPOwgvjAQjvddUe2q47xfA1/4Kb1yMty5+OwcXto43r
+         pvbAAbEMBAqFnmSZ0pD3iPy2Z3mmOJjlodnmbAqRFTuHX5eZKrnf727Gj7sj3l3jJiEI
+         Kvk4ytNVl+B/djd25Zc72WAwN4tyfRkNbZLv5elt5T18WpuR2D7W6BVvK6EpBbM0Bsge
+         dAzg==
+X-Gm-Message-State: AODbwcD6YhfO0zKDfQR4v1ALSGgQoTtVzc2LpcaH6zryjsjhse1qNVAd
+        5PiEIF88/l9HArosaWKVHGvivIqPUg==
+X-Received: by 10.202.97.86 with SMTP id v83mr5874396oib.113.1496056915001;
+ Mon, 29 May 2017 04:21:55 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.157.66.2 with HTTP; Mon, 29 May 2017 04:21:54 -0700 (PDT)
+In-Reply-To: <20170529105509.GC2192@mai>
+References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
+ <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
+ <CAK8P3a3QACHYqtCO1z_FpW0nXEtx356wCDha_=SNXU872=q1UQ@mail.gmail.com>
+ <20170529084809.GA2192@mai> <CAK8P3a1Kv_RhKL43ie6co_N5pDXvRHd7Uq8g70qt80WkxuhzLw@mail.gmail.com>
+ <20170529105509.GC2192@mai>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 29 May 2017 13:21:54 +0200
+X-Google-Sender-Auth: sxhqAzksCpXXrJOJhU4rLaWH1Fs
+Message-ID: <CAK8P3a3MdvWMJyVqE63Ur330mC2wPZO7nFXjd_LukbTjiZtGdg@mail.gmail.com>
+Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -58,7 +66,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         <bcm-kernel-feedback-list@broadcom.com>,
         Stephen Warren <swarren@wwwdotorg.org>,
         Lee Jones <lee@kernel.org>, Eric Anholt <eric@anholt.net>,
-        =?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+        =?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Alexander Shiyan <shc_work@mail.ru>,
         Kukjin Kim <kgene@kernel.org>,
@@ -77,7 +85,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Marc Gonzalez <marc_gonzalez@sigmadesigns.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Alexandre Courbot <gnurou@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <kernel@pengutronix.de>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <kernel@pengutronix.de>,
         Joachim Eastwood <manabian@gmail.com>,
         Vladimir Zapolskiy <vz@mleia.com>,
         Sylvain Lemieux <slemieux.tyco@gmail.com>,
@@ -113,28 +121,16 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
         "moderated list:ARM/OXNAS platform support" 
         <linux-oxnas@lists.tuxfamily.org>
-Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
-Message-ID: <20170529105509.GC2192@mai>
-References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
- <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
- <CAK8P3a3QACHYqtCO1z_FpW0nXEtx356wCDha_=SNXU872=q1UQ@mail.gmail.com>
- <20170529084809.GA2192@mai>
- <CAK8P3a1Kv_RhKL43ie6co_N5pDXvRHd7Uq8g70qt80WkxuhzLw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a1Kv_RhKL43ie6co_N5pDXvRHd7Uq8g70qt80WkxuhzLw@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-Return-Path: <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58065
+X-archive-position: 58066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.lezcano@linaro.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -147,83 +143,43 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, May 29, 2017 at 11:57:25AM +0200, Arnd Bergmann wrote:
-> On Mon, May 29, 2017 at 10:48 AM, Daniel Lezcano
-> <daniel.lezcano@linaro.org> wrote:
-> > On Mon, May 29, 2017 at 10:41:52AM +0200, Arnd Bergmann wrote:
-> >> On Sat, May 27, 2017 at 11:58 AM, Daniel Lezcano
-> >> <daniel.lezcano@linaro.org> wrote:
-> >> > The CLOCKSOUCE_OF_DECLARE macro is used widely for the timers to declare the
-> >> > clocksource at early stage. However, this macro is also used to initialize
-> >> > the clockevent if any, or the clockevent only.
-> >> >
-> >> > It was originally suggested to declare another macro to initialize a
-> >> > clockevent, so in order to separate the two entities even they belong to the
-> >> > same IP. This was not accepted because of the impact on the DT where splitting
-> >> > a clocksource/clockevent definition does not make sense as it is a Linux
-> >> > concept not a hardware description.
-> >> >
-> >> > On the other side, the clocksource has not interrupt declared while the
-> >> > clockevent has, so it is easy from the driver to know if the description is
-> >> > for a clockevent or a clocksource, IOW it could be implemented at the driver
-> >> > level.
-> >> >
-> >> > So instead of dealing with a named clocksource macro, let's use a more generic
-> >> > one: TIMER_OF_DECLARE.
-> >> >
-> >> > The patch has not functional changes.
-> >> >
-> >> > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> >>
-> >> Could you either leave the old name as an alias for one release, or introduce
-> >> the new name as an alias now for 4.13?
-> >>
-> >> I think that that would make it easier to merge new drivers. Otherwise this
-> >> looks good to me,
-> >
-> >
-> > New drivers should go through my tree, so I can catch them with the old macro
-> > name and do the change.
-> 
-> Sure, they should, and it's quite likely that you won't even need the fallback,
-> I've just seen too many cases where a similar assumption turned out wrong,
-> that I'd just pick the safer option just in case whenever I do an API change.
-> 
-> Things that could go wrong include:
-> 
-> - A platform maintainer wants to add a new platform and has a for-next
->   branch that gets merged into linux-next, with parts of it going through
->   different maintainers, and now they have to choose between a branch
->   that doesn't build without the timer branch, or one that break for-next
->   unless Stephen applies a fixup
-> 
-> - Some architecture maintainer didn't get the memo and adds an instance of
->   CLOCKSOUCE_OF_DECLARE in architecture specific code without asking
->   having the patch reviewed first
-> 
-> - A platform has a branch with complex cross-tree dependencies and
->   it need to get merged in an unconventional way.
-> 
-> - You make a mistake and accidentally merge one driver for an unusual
->   architecture that escapes your test matrix.
-> 
-> While those all are unlikely to happen in a particular merge window, they do
-> happen occasionally and tend to cause a lot of pain.
+On Mon, May 29, 2017 at 12:55 PM, Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+> On Mon, May 29, 2017 at 11:57:25AM +0200, Arnd Bergmann wrote:
+>> On Mon, May 29, 2017 at 10:48 AM, Daniel Lezcano
+>> <daniel.lezcano@linaro.org> wrote:
+>> Things that could go wrong include:
+>>
+>> - A platform maintainer wants to add a new platform and has a for-next
+>>   branch that gets merged into linux-next, with parts of it going through
+>>   different maintainers, and now they have to choose between a branch
+>>   that doesn't build without the timer branch, or one that break for-next
+>>   unless Stephen applies a fixup
+>>
+>> - Some architecture maintainer didn't get the memo and adds an instance of
+>>   CLOCKSOUCE_OF_DECLARE in architecture specific code without asking
+>>   having the patch reviewed first
+>>
+>> - A platform has a branch with complex cross-tree dependencies and
+>>   it need to get merged in an unconventional way.
+>>
+>> - You make a mistake and accidentally merge one driver for an unusual
+>>   architecture that escapes your test matrix.
+>>
+>> While those all are unlikely to happen in a particular merge window, they do
+>> happen occasionally and tend to cause a lot of pain.
+>
+> Hmm, that sounds scary :)
+>
+> There is no guarantee, when removing the alias, none of the above happens,
+> right?
 
-Hmm, that sounds scary :)
+No, it's just both less likely and easier to work around.
 
-There is no guarantee, when removing the alias, none of the above happens,
-right?
+> If the timer branch is in linux-next, that could be caugth before any of the
+> above happens, no?
 
-If the timer branch is in linux-next, that could be caugth before any of the
-above happens, no?
+linux-next will find most of these problems, but it will still be more work
+for the people that run into build failures when testing linux-next.
 
-I'm not against adding an alias, just checking out if it is worth to.
-
--- 
-
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+     Arnd

@@ -1,28 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2017 06:35:02 +0200 (CEST)
-Received: from ms.tdt.de ([195.243.126.94]:55478 "EHLO mail.dev.tdt.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993302AbdE3EezqQ6u8 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 30 May 2017 06:34:55 +0200
-Received: from mschiller01.tdtnet.local (unknown [10.1.3.20])
-        by mail.dev.tdt.de (Postfix) with ESMTPSA id 98F1220835;
-        Tue, 30 May 2017 04:34:48 +0000 (UTC)
-From:   Martin Schiller <ms@dev.tdt.de>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     john@phrozen.org, ralf@linux-mips.org, hauke@hauke-m.de,
-        arnd@arndb.de, nbd@nbd.name, Martin Schiller <ms@dev.tdt.de>
-Subject: [PATCH] MIPS: Lantiq: Fix ASC0/ASC1 clocks
-Date:   Tue, 30 May 2017 06:34:34 +0200
-Message-Id: <1496118874-4251-1-git-send-email-ms@dev.tdt.de>
-X-Mailer: git-send-email 2.1.4
-Return-Path: <ms@dev.tdt.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2017 13:21:16 +0200 (CEST)
+Received: from mout.kundenserver.de ([212.227.17.24]:54200 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993960AbdE3LVFU0xBj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 May 2017 13:21:05 +0200
+Received: from wuerfel.lan ([78.42.17.5]) by mrelayeu.kundenserver.de
+ (mreue103 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 0M4kN3-1e7L8s3Opx-00yuOt; Tue, 30 May 2017 13:20:31 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Cc:     Brian Norris <computersforpeace@gmail.com>,
+        linux-mtd@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] bcm47xx: fix build regression
+Date:   Tue, 30 May 2017 13:20:12 +0200
+Message-Id: <20170530112027.3983554-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.9.0
+X-Provags-ID: V03:K0:X8Zzmi2Mh9KiCQEdMT8nwsleVnypOlefbFDQmQTcp1xw44sAQpZ
+ Lwlpu87QW3ZOCtJJf0zZAgZk90IH5yUCTtMHXPxpOEh27eYStHRIG4Mg9FsWzAusrA2/HN3
+ q1CeHTLa7rFxsBF0XTEpIDa+NCT0P6+Ic4mZx57kFDfsS0QCjSgw9q5yK9ypoEgAw/HA36J
+ mhhTJubf/5AFdFpr9dtRg==
+X-UI-Out-Filterresults: notjunk:1;V01:K0:r5leIAc1lsM=:7vIXZwrE0D0iBYlqS9jtjM
+ CPfngkctZKMJJeQaH0T1wGteIMbiyw2UCjcjNX8AEjogCUP7vvCxH1xo5mEvE9fVWei7vIaLm
+ Qu843QTE0cwYep5wch7oWQOnJfXRiZ8B6yKdOa1gxIocRMDEyM+i6LpTQIkUZSwA5CAzRyFFa
+ BdatfXjgDxIpTZsCIl2RZrr3Fp5PwoAgJEnSPkLWSEzjw5Cdt1Xu+fIly+iwPcvUcHz+nuElM
+ vW5KfmEb1g6qU+/HgPfV0AmYNOqCLT5f1hfoeUFHWoOBo3xpezyOlBijVVtWwRad67dcjdz9a
+ RLN4RI19cNPjnhPLLzmFg85SMj6qj/3oi/46R2d4mA5rzv4ZFE+wPEQib7JpzefPLcBozSyAa
+ pBRk4LUPXJ2+ohri52awUeypFih2cknbPON9XSsX4iB+opCBUuWsBMrTdHag+k42uCNSYsGgn
+ DMa4lb0A144wbxzOZYuSSKsxYm2E2MAisTI9rGAqHdmnhh8dIFbPQeZ2jiGdTaYLKU67wQ7HT
+ OmCJmyH6886gC/p1Bjy8jIoYgcecOA2qjJuu2E4z1SWf229FPF4vOKYfDHqAxsPMBTfN7poqr
+ 7C8C22k/0Sd2mn31ocNbxKBo/z0GKn3mqbzLH6jyrFdDzgpUNWwUmoY65BhYFQ3mAggkNjW06
+ f9gZpx0GJtM/syA9VO0hpz7+2liwdnOH0HtiKXlHgrv3PNzrU8qAeBzfj+MNd0A+dC7Q=
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58073
+X-archive-position: 58074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ms@dev.tdt.de
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -35,37 +52,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-ASC1 is available on every Lantiq SoC (also AmazonSE) and should be
-enabled like the other generic xway clocks instead of ASC0, which is
-only available for AR9 and Danube.
+An unknown change in the kernel headers caused a build regression
+in an MTD partition driver:
 
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+In file included from drivers/mtd/bcm47xxpart.c:12:0:
+include/linux/bcm47xx_nvram.h: In function 'bcm47xx_nvram_init_from_mem':
+include/linux/bcm47xx_nvram.h:27:10: error: 'ENOTSUPP' undeclared (first use in this function)
+
+Clearly we want to include linux/errno.h here.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/lantiq/xway/sysctrl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/bcm47xx_nvram.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index 95bec46..cd6dbea 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -484,9 +484,9 @@ void __init ltq_soc_init(void)
+diff --git a/include/linux/bcm47xx_nvram.h b/include/linux/bcm47xx_nvram.h
+index 2793652fbf66..a414a2b53e41 100644
+--- a/include/linux/bcm47xx_nvram.h
++++ b/include/linux/bcm47xx_nvram.h
+@@ -8,6 +8,7 @@
+ #ifndef __BCM47XX_NVRAM_H
+ #define __BCM47XX_NVRAM_H
  
- 	/* add our generic xway clocks */
- 	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
--	clkdev_add_pmu("1e100400.serial", NULL, 0, 0, PMU_ASC0);
- 	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
- 	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
-+	clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
- 	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
- 	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
- 	clkdev_add_pmu("1e105300.ebu", NULL, 0, 0, PMU_EBU);
-@@ -501,7 +501,6 @@ void __init ltq_soc_init(void)
- 	}
- 
- 	if (!of_machine_is_compatible("lantiq,ase")) {
--		clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
- 		clkdev_add_pci();
- 	}
- 
++#include <linux/errno.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/vmalloc.h>
 -- 
-2.1.4
+2.9.0

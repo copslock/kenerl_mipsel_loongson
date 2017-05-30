@@ -1,67 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 May 2017 21:39:10 +0200 (CEST)
-Received: from mail-io0-x244.google.com ([IPv6:2607:f8b0:4001:c06::244]:36185
-        "EHLO mail-io0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993959AbdE2Ti7BbDrf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 May 2017 21:38:59 +0200
-Received: by mail-io0-x244.google.com with SMTP id f102so7494269ioi.3;
-        Mon, 29 May 2017 12:38:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2017 02:35:32 +0200 (CEST)
+Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:33006
+        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992127AbdE3AfZNBSQ1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 May 2017 02:35:25 +0200
+Received: by mail-pf0-x242.google.com with SMTP id f27so14090344pfe.0;
+        Mon, 29 May 2017 17:35:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=GPXo60hQPXst7u7ZNAO6k2UQnifs5m6Cj6GRzB/uLO0=;
-        b=Cjh7D5r0iNMHQUdw/4+v22m6a7qOp60HV7ZQ7Gda5GVpqJ1aT49CkOiYQdB1W1b8cg
-         XdDbdbD8Sse+Cv0K4+KFl40ISAOuWAVhaAMYGIE4tApkzqES24k+0uAma15FDGYMPKuF
-         BKXtio0bighYZjWY91Atn4H+MAvHnYlXaUdWvN0c28W3h4WRUGAm+n/6QX+2rnri7ibD
-         WJFpe8QNXEzeDzUYbIGOuwRPg6urjL+7Wh1i+81DUjJ2We3upykwUnXIWSGUicVGnZmz
-         U6Ar/i53i4caFYFTqCBz6hUqoi96F849bOcq6yytE3p6VnjZUoo1+OBj4cOHzx4wwM1E
-         F6ww==
+        h=sender:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=0UPnb+Q9JHKz3siK/d7krCagnzifot2HLtvVY9EB01I=;
+        b=vLSoqEXziShqj7Iy7APNDY4k49bn7TTTK8txNpGuO+54jbsIQaqeUbmdzKEt8pohrU
+         IkNiyhwQ29UPF3oxmjo7wtXTcoI6bS6DdeuMM4OYSU85qSjNffM1QgjQQ/xu/OVFojV5
+         KD3h2wyVu+WVZ3iF5+1RK048TPE0DQ4AxSc30gV8yk+bRTNJJ59SRdRQ0p4IoceuvwpE
+         OtsOBGUUHg2Hg9BMFitJcDe5sdRs3RykirpYH5KOg6A4IjVH30mbde6hmgcz9w/BNzdt
+         feKXsUgelMqdPjSaVDeQt4e0UEMHG/J771YAOjdkS25b2pH3P0iAaQt4xiWEqZIrdu9i
+         uz0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=GPXo60hQPXst7u7ZNAO6k2UQnifs5m6Cj6GRzB/uLO0=;
-        b=da6tX7osk7CHXC6QekIMrQ2+iMAKJ5y39eKuIOa6C4dkuXPlH8hCwuBZi+H3o8neoZ
-         OyxynbLMec5NlAdWW/tj1EXtvCs59PU4Bls2cPdfZxCVeD6pGA3RJ73o0C5iXIaZgmhm
-         ixwHSoLX5cCDGQcWFfZQkd/s6pc627TuNE1JSytWcUo4AR/MeFt7pbTx8dub0QgTtwdU
-         TcqhJDSGb1v6iPuPAeNTe7zw63yz3LwNZK2LnJ13Q8P3VvWgAo8fHHXUS/deOvlHqpTY
-         1av97FfhqCCLd7Bc57FMGEkLdGf7AL6ls5nDDJuQfjiZM8MJU++jU/wF/1+SF4NTZqMw
-         u++w==
-X-Gm-Message-State: AODbwcDCFaRdyWg+kyLFxgzq6tDV/EE57Jhq11ZeQULfbNYITANnOLm8
-        SCsRAH1zSo30l14XUbNbiCFaz6sOvO7t
-X-Received: by 10.107.201.135 with SMTP id z129mr13543762iof.51.1496086733283;
- Mon, 29 May 2017 12:38:53 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mime-version:content-disposition:user-agent;
+        bh=0UPnb+Q9JHKz3siK/d7krCagnzifot2HLtvVY9EB01I=;
+        b=UM5+xNTT/uZEeBgVv8cJp5NcBi3SdZzqVsY/8pj+TIQgR+xPCQsjp6yJAF6SrN6y1S
+         spbQsu8Ocz0ycTIEtNeFfRhD9FDAUId/Brd/7qtTAOMqdujqvg54/BiNMpC+o9Lc/qoU
+         0OEvxttOeYucfHZVO6PAdueBOipoiOMZOoysvtpTtvXom0mOvDIZIAb1RaauY0JeoDI2
+         qly0lCslYjcwgmZ3Y2Ej4HAC4TnJdbVUyCKZ90PtYdwlU/ta3EdFpJVTX8pQs/Kt3cjR
+         ZjagDPCniE+9Cq51xOog0CtF34fEuSV8oklxlgFalDKEnZj6S4UhVsagQpJST+d3Ge0Z
+         qGBg==
+X-Gm-Message-State: AODbwcASEBIGSUO0RH3ojeTUEigKYWgE+L9iD7JIaiqFypNp+2Ao3/LX
+        lt1o81iTDnK6t+ezk54=
+X-Received: by 10.98.34.22 with SMTP id i22mr20944982pfi.103.1496104519216;
+        Mon, 29 May 2017 17:35:19 -0700 (PDT)
+Received: from vostro (173-228-88-110.dsl.dynamic.fusionbroadband.com. [173.228.88.110])
+        by smtp.gmail.com with ESMTPSA id m5sm21424612pgd.28.2017.05.29.17.35.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 May 2017 17:35:18 -0700 (PDT)
+Date:   Mon, 29 May 2017 17:34:35 -0700
+From:   Nikitas Angelinas <nikitas.angelinas@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>
+Cc:     Patrick McHardy <kaber@trash.net>, Florian Westphal <fw@strlen.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Jiri Kosina <trivial@kernel.org>
+Subject: [PATCH] MIPS: Alchemy: Remove reverted CONFIG_NETLINK_MMAP from
+ db1xxx_defconfig
+Message-ID: <20170530003435.GA2740@vostro>
 MIME-Version: 1.0
-Received: by 10.107.15.148 with HTTP; Mon, 29 May 2017 12:38:52 -0700 (PDT)
-In-Reply-To: <1495655035.2093.86.camel@perches.com>
-References: <7995eb17-f2ec-54ad-f4d4-7b3dd8337d33@users.sourceforge.net>
- <1495565752.2093.69.camel@perches.com> <71a2ce6a-968c-b13c-95b0-610f0c1bab03@users.sourceforge.net>
- <1495655035.2093.86.camel@perches.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 29 May 2017 21:38:52 +0200
-X-Google-Sender-Auth: dHa1RW9n1c-MUkEZBV3UqL0uv5I
-Message-ID: <CAMuHMdXHuiaQ02Bmv_ig=kTTSHnhK=-64t9yv-rn5tFo=cn1hg@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Octeon: Delete an error message for a failed memory
- allocation in octeon_irq_init_gpio()
-To:     Joe Perches <joe@perches.com>
-Cc:     SF Markus Elfring <elfring@users.sourceforge.net>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        David Daney <david.daney@cavium.com>,
-        =?UTF-8?B?UmFsZiBCw6RjaGxl?= <ralf@linux-mips.org>,
-        "Steven J. Hill" <steven.hill@cavium.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.6.2 (2016-07-01)
+Return-Path: <nikitas.angelinas@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58071
+X-archive-position: 58072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: nikitas.angelinas@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -74,25 +70,33 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 24, 2017 at 9:43 PM, Joe Perches <joe@perches.com> wrote:
-> On Wed, 2017-05-24 at 18:01 +0200, SF Markus Elfring wrote:
->> I am curious if I will stumble on a similar change possibility once more
->> for remaining update candidates in other software areas.
->
-> Only if you keep your eyes open to the possibilities.
+Netlink mmap support and the relevant CONFIG_NETLINK_MMAP option have been
+reverted by commit d1b4c689d4130bcfd3532680b64db562300716b6 ("netlink:
+remove mmapped netlink support").
 
-It's like a puzzle: how to fold the if/else trees and forests to achieve
-the longest linear path and the smallest indentation ;-)
+Remove the occurrence of CONFIG_NETLINK_MMAP from db1xxx_defconfig.
 
-And... goto (to the end/cleanup phase!) is your friend...
+Signed-off-by: Nikitas Angelinas <nikitas.angelinas@gmail.com>
+Cc: Patrick McHardy <kaber@trash.net>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Jiri Kosina <trivial@kernel.org>
+---
+ arch/mips/configs/db1xxx_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
+index f0c8971030c4..0108bb9f1e37 100644
+--- a/arch/mips/configs/db1xxx_defconfig
++++ b/arch/mips/configs/db1xxx_defconfig
+@@ -77,7 +77,6 @@ CONFIG_IPV6_MROUTE=y
+ CONFIG_IPV6_MROUTE_MULTIPLE_TABLES=y
+ CONFIG_IPV6_PIMSM_V2=y
+ CONFIG_BRIDGE=y
+-CONFIG_NETLINK_MMAP=y
+ CONFIG_NETLINK_DIAG=y
+ CONFIG_IRDA=y
+ CONFIG_IRLAN=y
+-- 
+2.11.1

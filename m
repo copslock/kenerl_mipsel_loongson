@@ -1,72 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2017 18:36:35 +0200 (CEST)
-Received: from smtprelay.synopsys.com ([198.182.47.9]:48516 "EHLO
-        smtprelay.synopsys.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993996AbdE3QgXz6pN3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 May 2017 18:36:23 +0200
-Received: from mailhost.synopsys.com (mailhost2.synopsys.com [10.13.184.66])
-        by smtprelay.synopsys.com (Postfix) with ESMTP id 71CB224E0331;
-        Tue, 30 May 2017 09:36:14 -0700 (PDT)
-Received: from mailhost.synopsys.com (localhost [127.0.0.1])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 3C36E5E6;
-        Tue, 30 May 2017 09:36:14 -0700 (PDT)
-Received: from US01WXQAHTC1.internal.synopsys.com (us01wxqahtc1.internal.synopsys.com [10.12.238.230])
-        by mailhost.synopsys.com (Postfix) with ESMTP id 6DA425C2;
-        Tue, 30 May 2017 09:36:12 -0700 (PDT)
-Received: from IN01WEHTCB.internal.synopsys.com (10.144.199.106) by
- US01WXQAHTC1.internal.synopsys.com (10.12.238.230) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Tue, 30 May 2017 09:36:12 -0700
-Received: from IN01WEHTCA.internal.synopsys.com (10.144.199.104) by
- IN01WEHTCB.internal.synopsys.com (10.144.199.105) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Tue, 30 May 2017 22:06:09 +0530
-Received: from [10.10.161.108] (10.10.161.108) by
- IN01WEHTCA.internal.synopsys.com (10.144.199.243) with Microsoft SMTP Server
- (TLS) id 14.3.266.1; Tue, 30 May 2017 22:06:09 +0530
-Subject: Re: [PATCH 2/7] clocksource: Rename CLOCKSOURCE_OF_DECLARE
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, <tglx@linutronix.de>
-CC:     Mark Rutland <mark.rutland@arm.com>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        "Liviu Dudau" <liviu.dudau@arm.com>,
-        "moderated list:ARM/OXNAS platform support" 
-        <linux-oxnas@lists.tuxfamily.org>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Eric Anholt <eric@anholt.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "open list:ARM/STI ARCHITECTURE" <kernel@stlinux.com>,
-        Alexandre Courbot <gnurou@gmail.com>,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>
-Newsgroups: gmane.linux.kernel.arc,gmane.linux.ports.mips.general,gmane.linux.kernel.samsung-soc,gmane.linux.ports.arm.rockchip,gmane.linux.ports.arm.mediatek,gmane.linux.ports.arm.kernel,gmane.linux.ports.tegra,gmane.linux.kernel.rpi,gmane.linux.kernel
-References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
- <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
-From:   Vineet Gupta <Vineet.Gupta1@synopsys.com>
-Message-ID: <1cc18f5a-2181-7be9-183d-270ae093b844@synopsys.com>
-Date:   Tue, 30 May 2017 09:36:00 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2017 20:23:44 +0200 (CEST)
+Received: from mail-qt0-x22c.google.com ([IPv6:2607:f8b0:400d:c0d::22c]:36199
+        "EHLO mail-qt0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993457AbdE3SXhlLgAI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 May 2017 20:23:37 +0200
+Received: by mail-qt0-x22c.google.com with SMTP id f55so76979385qta.3;
+        Tue, 30 May 2017 11:23:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=h7WQVNTOSy2lSLZRiK6CwCjoDXxtiXf6eADqMJXqb1w=;
+        b=N8mxJKvWK7oR0pKS98wzOdPDE4uhyJMeqJwKD0NvvYq27IbPnr3zVqeMekVN0bgVmW
+         y5+XZoHZd31NcKl6/FRC9MR84lE07FsUHgG9j6q0Nhq+HuXLnueuWY/3hUqkl9iEaeOX
+         bMokv4lqVROFp+uxvTVvrfdsaR9GI3ATjWNrYr5RYBzIYPLnYiG4sF1wm22qgwhmtGZA
+         bGMhhQBfm3oSb6mUwNrt9GwTNdVKYorsBr6llMwkP4RuWPIx8D6NwmDaqitLuyz6YoVM
+         yG0t9RIkUBYP0K4+J9uJXFYDPghirOAFbjNpMqrWbNO90ZfFr3a29wu0eCs42n+dcpZH
+         QrlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=h7WQVNTOSy2lSLZRiK6CwCjoDXxtiXf6eADqMJXqb1w=;
+        b=P6n21L+Hkb/8+9t1g20ELH21/4LKbx5/ZUFUb9YEvk/g/gFAEC+GD+LnbvIlyyWrBt
+         5X/LRkhHlFMcVP0Tfe3tzfHzpsPcDoUZv7xgbEULF1c7K3WDppk1/mF2pQe3LbyeFOGe
+         DNoC8pSuvm6X7jbPBi0o2xUK3n+yXOQNUGf134YG00t+7LEE/LSs2H6q3XAz5iGHGIvc
+         D6iRvG8Nih6ZzBzdX7sVbG201eQyGP7mWD751tAONixXXf4/z4kOB0JEVc+7H2e7/rNw
+         Ul0E5p3vhKLFfGCbZfivUEF530RcKRj8EBB5k3vALtEFJF5zU4jqcJPLKZtTqBt/Vo57
+         kCiQ==
+X-Gm-Message-State: AODbwcAAdC+i0QAHSVSZZNGCZ1dBB3/5eG0SjM+JWYAU4KDqA5Lq/+mj
+        rY8xnPNrfLrK7HJu5pV5xUKF9GtzSQ==
+X-Received: by 10.237.62.12 with SMTP id l12mr25096662qtf.20.1496168607010;
+ Tue, 30 May 2017 11:23:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1495879129-28109-2-git-send-email-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.10.161.108]
-Return-Path: <Vineet.Gupta1@synopsys.com>
+Received: by 10.12.152.71 with HTTP; Tue, 30 May 2017 11:23:26 -0700 (PDT)
+In-Reply-To: <20170528184006.31668-9-hauke@hauke-m.de>
+References: <20170528184006.31668-1-hauke@hauke-m.de> <20170528184006.31668-9-hauke@hauke-m.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 30 May 2017 21:23:26 +0300
+Message-ID: <CAHp75VcU3cF07GQG5vPV9uhmpOzO2aGD8Fj9-Do4yN3BXNN1Rg@mail.gmail.com>
+Subject: Re: [PATCH v3 08/16] MIPS: lantiq: Convert the fpi bus driver to a platform_driver
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
+        linux-watchdog@vger.kernel.org,
+        devicetree <devicetree@vger.kernel.org>,
+        "martin.blumenstingl" <martin.blumenstingl@googlemail.com>,
+        john <john@phrozen.org>, linux-spi <linux-spi@vger.kernel.org>,
+        "hauke.mehrtens" <hauke.mehrtens@intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <andy.shevchenko@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58075
+X-archive-position: 58076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Vineet.Gupta1@synopsys.com
+X-original-sender: andy.shevchenko@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,51 +72,41 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/27/2017 02:58 AM, Daniel Lezcano wrote:
+On Sun, May 28, 2017 at 9:39 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+>
+> Instead of hacking the configuration of the FPI bus into the arch code
+> add an own bus driver for this internal bus. The FPI bus is the main
+> bus of the SoC. This bus driver makes sure the bus is configured
+> correctly before the child drivers are getting initialized. This driver
+> will probably also be used on different SoC later.
 
-...
+> +Optional properties:
+> +- regmap               : A phandle to the RCU syscon
 
-> So instead of dealing with a named clocksource macro, let's use a more generic
-> one: TIMER_OF_DECLARE.
-> 
-> The patch has not functional changes.
-> 
-...
+> +- offset-endianness    : Offset of the endianness configuration register
 
->   drivers/clocksource/arc_timer.c           |  6 +++---
+Shouldn't be one of
 
-...
+big-endian;
+little-endian;
+native-endian;
 
-> diff --git a/drivers/clocksource/arc_timer.c b/drivers/clocksource/arc_timer.c
-> index 2164973..4927355 100644
-> --- a/drivers/clocksource/arc_timer.c
-> +++ b/drivers/clocksource/arc_timer.c
-> @@ -99,7 +99,7 @@ static int __init arc_cs_setup_gfrc(struct device_node *node)
->   
->   	return clocksource_register_hz(&arc_counter_gfrc, arc_timer_freq);
->   }
-> -CLOCKSOURCE_OF_DECLARE(arc_gfrc, "snps,archs-timer-gfrc", arc_cs_setup_gfrc);
-> +TIMER_OF_DECLARE(arc_gfrc, "snps,archs-timer-gfrc", arc_cs_setup_gfrc);
->   
->   #define AUX_RTC_CTRL	0x103
->   #define AUX_RTC_LOW	0x104
-> @@ -158,7 +158,7 @@ static int __init arc_cs_setup_rtc(struct device_node *node)
->   
->   	return clocksource_register_hz(&arc_counter_rtc, arc_timer_freq);
->   }
-> -CLOCKSOURCE_OF_DECLARE(arc_rtc, "snps,archs-timer-rtc", arc_cs_setup_rtc);
-> +TIMER_OF_DECLARE(arc_rtc, "snps,archs-timer-rtc", arc_cs_setup_rtc);
->   
->   #endif
->   
-> @@ -333,4 +333,4 @@ static int __init arc_of_timer_init(struct device_node *np)
->   
->   	return ret;
->   }
-> -CLOCKSOURCE_OF_DECLARE(arc_clkevt, "snps,arc-timer", arc_of_timer_init);
-> +TIMER_OF_DECLARE(arc_clkevt, "snps,arc-timer", arc_of_timer_init);
+?
 
-Acked-by: Vineet Gupta vgupta@snyopsys.com
+For what purpose that register is used?
+Is it configurable in RTL? IOW why you need to have it in DT?
 
-Thx,
--Vineet
+> +               offset-endianness = <0x4c>;
+> +               big-endian;
+
+> +       /* RCU configuration is optional */
+> +       rcu_regmap = syscon_regmap_lookup_by_phandle(np, "regmap");
+
+> +       if (!IS_ERR_OR_NULL(rcu_regmap)) {
+
+_OR_NULL is suspicious. You are doing something wrong.
+
+-- 
+With Best Regards,
+Andy Shevchenko

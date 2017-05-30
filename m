@@ -1,44 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2017 20:23:44 +0200 (CEST)
-Received: from mail-qt0-x22c.google.com ([IPv6:2607:f8b0:400d:c0d::22c]:36199
-        "EHLO mail-qt0-x22c.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993457AbdE3SXhlLgAI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 May 2017 20:23:37 +0200
-Received: by mail-qt0-x22c.google.com with SMTP id f55so76979385qta.3;
-        Tue, 30 May 2017 11:23:37 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2017 20:31:43 +0200 (CEST)
+Received: from mail-qk0-x244.google.com ([IPv6:2607:f8b0:400d:c09::244]:36637
+        "EHLO mail-qk0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23994231AbdE3Sbg6LOth (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 May 2017 20:31:36 +0200
+Received: by mail-qk0-x244.google.com with SMTP id y128so13044582qka.3;
+        Tue, 30 May 2017 11:31:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=h7WQVNTOSy2lSLZRiK6CwCjoDXxtiXf6eADqMJXqb1w=;
-        b=N8mxJKvWK7oR0pKS98wzOdPDE4uhyJMeqJwKD0NvvYq27IbPnr3zVqeMekVN0bgVmW
-         y5+XZoHZd31NcKl6/FRC9MR84lE07FsUHgG9j6q0Nhq+HuXLnueuWY/3hUqkl9iEaeOX
-         bMokv4lqVROFp+uxvTVvrfdsaR9GI3ATjWNrYr5RYBzIYPLnYiG4sF1wm22qgwhmtGZA
-         bGMhhQBfm3oSb6mUwNrt9GwTNdVKYorsBr6llMwkP4RuWPIx8D6NwmDaqitLuyz6YoVM
-         yG0t9RIkUBYP0K4+J9uJXFYDPghirOAFbjNpMqrWbNO90ZfFr3a29wu0eCs42n+dcpZH
-         QrlA==
+        bh=15XoyYQOurkG23qHjxWc7bLcbjHKcMYM++vP3j4/n+Y=;
+        b=ahF6t2237jOQX5Hots5OwjqcUmeVNmNHPTPKobTq+fcdxj47h0hflqVNgHkK0aSCKn
+         Xq4vNc4S/Ab7WujJuA/tnCfr0D+7Zey5uVZbBJvplIg2Qd6OErm7UEEmtiOQYmmaG21y
+         Al+y/crhWFDfp2NSTlnPysmDpKN0H/Dg8K9PGoWPdP4VZhxmL2RvyRR5yguZtjYifm5Q
+         CRAAnOenhTKgUEmPmvr/NceNRZEP1G90Rj2fJv/Pl+6AijFbR+U/l94GRdbpIl4u/CQV
+         dH3q5BbD2HmVXAkg1nGOsodJtskGtCm0XC2K8uZRiZ3cV6dHUS7yJCw0Rup2rschx3gp
+         qJ+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=h7WQVNTOSy2lSLZRiK6CwCjoDXxtiXf6eADqMJXqb1w=;
-        b=P6n21L+Hkb/8+9t1g20ELH21/4LKbx5/ZUFUb9YEvk/g/gFAEC+GD+LnbvIlyyWrBt
-         5X/LRkhHlFMcVP0Tfe3tzfHzpsPcDoUZv7xgbEULF1c7K3WDppk1/mF2pQe3LbyeFOGe
-         DNoC8pSuvm6X7jbPBi0o2xUK3n+yXOQNUGf134YG00t+7LEE/LSs2H6q3XAz5iGHGIvc
-         D6iRvG8Nih6ZzBzdX7sVbG201eQyGP7mWD751tAONixXXf4/z4kOB0JEVc+7H2e7/rNw
-         Ul0E5p3vhKLFfGCbZfivUEF530RcKRj8EBB5k3vALtEFJF5zU4jqcJPLKZtTqBt/Vo57
-         kCiQ==
-X-Gm-Message-State: AODbwcAAdC+i0QAHSVSZZNGCZ1dBB3/5eG0SjM+JWYAU4KDqA5Lq/+mj
-        rY8xnPNrfLrK7HJu5pV5xUKF9GtzSQ==
-X-Received: by 10.237.62.12 with SMTP id l12mr25096662qtf.20.1496168607010;
- Tue, 30 May 2017 11:23:27 -0700 (PDT)
+        bh=15XoyYQOurkG23qHjxWc7bLcbjHKcMYM++vP3j4/n+Y=;
+        b=IOL1NnIgWXufuW4vrdrrm2QyFEkO6kUTmPfUSLglkCjpS9l7ogT/KpOgMbQ1caljx5
+         yrWg4L9KTR5zOEBIDtw7NIP508LCahl0GA5RXu/Lk/dEEReiZpgy+gbLk/RvzfpofXwK
+         sTvoaaKRHUshQ3OicvjjRxxkpGrWo7ArvYvm39GwgkOgQwLS6NaMLWXG2TtLB5SxAY5S
+         7Q7HkpcB0Ur4j3n+x67mmCkrhy+C+KGz9XMdgmxfBNam/YbKVyDUYy9nBcGnYdBW4BhT
+         IOffaBG6a1t0n0GKHgiTMuxlJZSgQKadFuU8OzcSOm0A2kTRhJWnOJiAZIx9hQkXEwuA
+         Un4Q==
+X-Gm-Message-State: AODbwcB6BDk+v+OKH/FSPwU42fRqfIc/g+AIdNp6Q/w1Af6RhaJNgjca
+        JBWu6zwed8xRr3hQMLdnbHn/oqwxLw==
+X-Received: by 10.55.40.151 with SMTP id o23mr17626917qko.210.1496169088226;
+ Tue, 30 May 2017 11:31:28 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.12.152.71 with HTTP; Tue, 30 May 2017 11:23:26 -0700 (PDT)
-In-Reply-To: <20170528184006.31668-9-hauke@hauke-m.de>
-References: <20170528184006.31668-1-hauke@hauke-m.de> <20170528184006.31668-9-hauke@hauke-m.de>
+Received: by 10.12.152.71 with HTTP; Tue, 30 May 2017 11:31:27 -0700 (PDT)
+In-Reply-To: <20170528184006.31668-15-hauke@hauke-m.de>
+References: <20170528184006.31668-1-hauke@hauke-m.de> <20170528184006.31668-15-hauke@hauke-m.de>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 30 May 2017 21:23:26 +0300
-Message-ID: <CAHp75VcU3cF07GQG5vPV9uhmpOzO2aGD8Fj9-Do4yN3BXNN1Rg@mail.gmail.com>
-Subject: Re: [PATCH v3 08/16] MIPS: lantiq: Convert the fpi bus driver to a platform_driver
+Date:   Tue, 30 May 2017 21:31:27 +0300
+Message-ID: <CAHp75Ve9bV99=WCzmXU-Rth-gar5gqvy4taZ7NMQQHGKcVbHHw@mail.gmail.com>
+Subject: Re: [PATCH v3 14/16] phy: Add an USB PHY driver for the Lantiq SoCs
+ using the RCU module
 To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>,
@@ -49,13 +50,14 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         john <john@phrozen.org>, linux-spi <linux-spi@vger.kernel.org>,
         "hauke.mehrtens" <hauke.mehrtens@intel.com>,
         Rob Herring <robh@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Kishon Vijay Abraham I <kishon@ti.com>
 Content-Type: text/plain; charset="UTF-8"
 Return-Path: <andy.shevchenko@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58076
+X-archive-position: 58077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,40 +74,90 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, May 28, 2017 at 9:39 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->
-> Instead of hacking the configuration of the FPI bus into the arch code
-> add an own bus driver for this internal bus. The FPI bus is the main
-> bus of the SoC. This bus driver makes sure the bus is configured
-> correctly before the child drivers are getting initialized. This driver
-> will probably also be used on different SoC later.
+On Sun, May 28, 2017 at 9:40 PM, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> This driver starts the DWC2 core(s) built into the XWAY SoCs and provides
+> the PHY interfaces for each core. The phy instances can be passed to the
+> dwc2 driver, which already supports the generic phy interface.
 
-> +Optional properties:
-> +- regmap               : A phandle to the RCU syscon
+> +static void ltq_rcu_usb2_start_cores(struct platform_device *pdev)
 
-> +- offset-endianness    : Offset of the endianness configuration register
+It should return int. See below.
 
-Shouldn't be one of
+> +{
 
-big-endian;
-little-endian;
-native-endian;
+> +       /* Power on the USB core. */
+> +       if (clk_prepare_enable(priv->ctrl_gate_clk)) {
+
+You basically shadow the error, why?
+
+> +               dev_err(dev, "failed to enable CTRL gate\n");
+> +               return;
+> +       }
+
+> +       if (clk_prepare_enable(priv->phy_gate_clk)) {
+> +               dev_err(dev, "failed to enable PHY gate\n");
+> +               return;
+> +       }
+
+Ditto.
+
+> +static int ltq_rcu_usb2_of_probe(struct device_node *phynode,
+> +                                   struct ltq_rcu_usb2_priv *priv)
+> +{
+> +       struct device *dev = priv->dev;
+> +       const struct of_device_id *match =
+> +               of_match_node(ltq_rcu_usb2_phy_of_match, phynode);
+> +       int ret;
+> +
+
+> +       if (!match) {
+> +               dev_err(dev, "Not a compatible Lantiq RCU USB PHY\n");
+> +               return -EINVAL;
+> +       }
+
+Can it ever happen?
+
+> +
+> +       priv->reg_bits = match->data;
+
+I think there is a helper to get driver data directly from node.
+
+> +       if (priv->reg_bits->have_ana_cfg) {
+> +               ret = device_property_read_u32(dev, "offset-ana",
+> +                                              &priv->ana_cfg1_reg_offset);
+> +               if (ret) {
+> +                       dev_dbg(dev, "Failed to get RCU ANA CFG1 reg offset\n");
+> +                       return ret;
+> +               }
+> +       }
+
+ret = device_property_...(...);
+if (ret && priv->reg_bits->have_ana_cfg) {
+ ...
+ return ret;
+}
 
 ?
 
-For what purpose that register is used?
-Is it configurable in RTL? IOW why you need to have it in DT?
 
-> +               offset-endianness = <0x4c>;
-> +               big-endian;
+> +       priv->dev = &pdev->dev;
 
-> +       /* RCU configuration is optional */
-> +       rcu_regmap = syscon_regmap_lookup_by_phandle(np, "regmap");
+> +       dev_set_drvdata(priv->dev, priv);
 
-> +       if (!IS_ERR_OR_NULL(rcu_regmap)) {
+Move this to the end of function. Ideally it should be run if and only
+if the function returns 0.
 
-_OR_NULL is suspicious. You are doing something wrong.
+> +       provider = devm_of_phy_provider_register(&pdev->dev,
+> +                                                of_phy_simple_xlate);
+> +
+> +       return PTR_ERR_OR_ZERO(provider);
+
+I would do explicitly, though it's up to you and maintainer.
+
+if (IS_ERR(provider))
+ return PTR_ERR();
+
+return 0;
 
 -- 
 With Best Regards,

@@ -1,41 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 22:13:34 +0200 (CEST)
-Received: from hauke-m.de ([5.39.93.123]:34520 "EHLO mail.hauke-m.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993179AbdEaUN1Be-y3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 31 May 2017 22:13:27 +0200
-Received: from [192.168.10.172] (p57978D77.dip0.t-ipconnect.de [87.151.141.119])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 833F91001D5;
-        Wed, 31 May 2017 22:13:25 +0200 (CEST)
-Subject: Re: [PATCH v3 07/16] Documentation: DT: MIPS: lantiq: Add docs for
- the RCU bindings
-To:     Rob Herring <robh@kernel.org>
-References: <20170528184006.31668-1-hauke@hauke-m.de>
- <20170528184006.31668-8-hauke@hauke-m.de>
- <20170531200540.joludfqpy35yc5yy@rob-hp-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 22:54:52 +0200 (CEST)
+Received: from mail-oi0-f67.google.com ([209.85.218.67]:32853 "EHLO
+        mail-oi0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992213AbdEaUypxRqnO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 22:54:45 +0200
+Received: by mail-oi0-f67.google.com with SMTP id h4so3790260oib.0;
+        Wed, 31 May 2017 13:54:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=HpWh8FwpRUf5peOaXMHkKYOaCR+Jh04Qv8USZTp1D9Q=;
+        b=jRMILaJamcgl1w3z60I7LkhQCrZHvu/HnVYqrJV3jcYXY0VahrE7YynM7Y6VFWrmKO
+         1xipQf5nUNdoo0kG2jAF2uKO9Lo5xSyKAe/MJYHiAkQXptDjuB4uAMoFFasvuk4x7wg6
+         1WKzZYWnTKiyTKGNfn0SPkQMEWfeMfK5HwjUqrnwdfcq0B0inyunVlaOMB2Ly9927sd5
+         8lOcQbsUVkWgq7wMx1MT8ub83oik0S6XSSNVEm6niFMlZUFa2r0U4+nKioXcJS2/020O
+         Wzpklewi0q0AGeSCnKq+PeXEOi9QiObhvaxP5y6f0EFYP6MQ/ZHnssoptHVoMbv+A91X
+         l4nw==
+X-Gm-Message-State: AODbwcD5uILu/j2ZBcpq2c+fKpPIz5/f3dwZxpigrtkS0Cqjat6Ha02j
+        9cUC6gr7pqHYrg==
+X-Received: by 10.202.205.196 with SMTP id d187mr13206171oig.6.1496264080117;
+        Wed, 31 May 2017 13:54:40 -0700 (PDT)
+Received: from localhost (66-90-148-125.dyn.grandenetworks.net. [66.90.148.125])
+        by smtp.gmail.com with ESMTPSA id f68sm1887624otb.32.2017.05.31.13.54.39
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 31 May 2017 13:54:39 -0700 (PDT)
+Date:   Wed, 31 May 2017 15:54:39 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
         linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
         devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
         john@phrozen.org, linux-spi@vger.kernel.org,
         hauke.mehrtens@intel.com, andy.shevchenko@gmail.com,
         p.zabel@pengutronix.de
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <6b8bb1cd-c090-435d-d150-d53edf04d2df@hauke-m.de>
-Date:   Wed, 31 May 2017 22:13:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Subject: Re: [PATCH v3 08/16] MIPS: lantiq: Convert the fpi bus driver to a
+ platform_driver
+Message-ID: <20170531205439.l5fiatf4v3kp43yq@rob-hp-laptop>
+References: <20170528184006.31668-1-hauke@hauke-m.de>
+ <20170528184006.31668-9-hauke@hauke-m.de>
 MIME-Version: 1.0
-In-Reply-To: <20170531200540.joludfqpy35yc5yy@rob-hp-laptop>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170528184006.31668-9-hauke@hauke-m.de>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58108
+X-archive-position: 58109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -48,139 +64,77 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/31/2017 10:05 PM, Rob Herring wrote:
-> On Sun, May 28, 2017 at 08:39:57PM +0200, Hauke Mehrtens wrote:
->> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->>
->> This adds the initial documentation for the RCU module (a MFD device
->> which provides USB PHYs, reset controllers and more).
->>
->> The RCU register range is used for multiple purposes. Mostly one device
->> uses one or multiple register exclusively, but for some registers some
->> bits are for one driver and some other bits are for a different driver.
->> With this patch all accesses to the RCU registers will go through
->> syscon.
->>
->> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->> ---
->>  .../devicetree/bindings/mips/lantiq/rcu.txt        | 97 ++++++++++++++++++++++
->>  1 file changed, 97 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/rcu.txt
->>
->> diff --git a/Documentation/devicetree/bindings/mips/lantiq/rcu.txt b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
->> new file mode 100644
->> index 000000000000..3e2461262218
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/mips/lantiq/rcu.txt
->> @@ -0,0 +1,97 @@
->> +Lantiq XWAY SoC RCU binding
->> +===========================
->> +
->> +This binding describes the RCU (reset controller unit) multifunction device,
->> +where each sub-device has it's own set of registers.
->> +
->> +The RCU register range is used for multiple purposes. Mostly one device
->> +uses one or multiple register exclusively, but for some registers some
->> +bits are for one driver and some other bits are for a different driver.
->> +With this patch all accesses to the RCU registers will go through
->> +syscon.
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Required properties:
->> +- compatible	: The first and second values must be: "simple-mfd", "syscon"
->> +- reg		: The address and length of the system control registers
->> +
->> +
->> +-------------------------------------------------------------------------------
->> +Example of the RCU bindings on a xRX200 SoC:
->> +	rcu0: rcu@203000 {
->> +		compatible = "lantiq,rcu-xrx200", "simple-mfd", "syscon";
->> +		reg = <0x203000 0x100>;
->> +		big-endian;
->> +
->> +		gphy0: gphy@0 {
+On Sun, May 28, 2017 at 08:39:58PM +0200, Hauke Mehrtens wrote:
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 > 
-> Unit address without reg address is not valid.
+> Instead of hacking the configuration of the FPI bus into the arch code
+> add an own bus driver for this internal bus. The FPI bus is the main
+> bus of the SoC. This bus driver makes sure the bus is configured
+> correctly before the child drivers are getting initialized. This driver
+> will probably also be used on different SoC later.
 > 
->> +			compatible = "lantiq,xrx200a2x-rcu-gphy";
->> +
->> +			regmap = <&rcu0>;
->> +			offset = <0x20>;
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> ---
+>  .../devicetree/bindings/mips/lantiq/fpi-bus.txt    | 33 ++++++++
+>  MAINTAINERS                                        |  1 +
+>  arch/mips/lantiq/xway/reset.c                      |  4 -
+>  arch/mips/lantiq/xway/sysctrl.c                    | 41 ----------
+>  drivers/soc/Makefile                               |  1 +
+>  drivers/soc/lantiq/Makefile                        |  1 +
+>  drivers/soc/lantiq/fpi-bus.c                       | 91 ++++++++++++++++++++++
+>  7 files changed, 127 insertions(+), 45 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
+>  create mode 100644 drivers/soc/lantiq/Makefile
+>  create mode 100644 drivers/soc/lantiq/fpi-bus.c
 > 
-> Does reg not work instead?
+> diff --git a/Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt b/Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
+> new file mode 100644
+> index 000000000000..52d4bb9d2ffa
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
+> @@ -0,0 +1,33 @@
+> +Lantiq XWAY SoC FPI BUS binding
+> +============================
+> +
+> +
+> +-------------------------------------------------------------------------------
+> +Required properties:
+> +- compatible	: Should be one of
+> +				"lantiq,fpi-xrx200"
+> +- reg		: The address and length of the XBAR configuration register.
+> +		  Address and length of the FPI bus itself
+> +
+> +Optional properties:
+> +- regmap		: A phandle to the RCU syscon
+> +- offset-endianness	: Offset of the endianness configuration register
+> +
+> +
+> +-------------------------------------------------------------------------------
+> +Example for the FPI on the xrx200 SoCs:
+> +	fpi@10000000 {
+> +		compatible = "lantiq,fpi-xrx200", "simple-bus";
+> +		ranges = <0x0 0x10000000 0xF000000>;
 
-Is it ok to access some registers in this range with a reg = <0x20 0x04>
-setting and some others through syscon? This specific register is only
-used by this gphy, but the reset controller shares the register with
-some other drivers like the watchdog driver.
+lowercase hex please.
 
->> +			resets = <&reset0 31 30>, <&reset1 7 7>;
->> +			reset-names = "gphy", "gphy2";
->> +			lantiq,gphy-mode = <GPHY_MODE_GE>;
->> +		};
->> +
->> +		gphy1: gphy@1 {
->> +			compatible = "lantiq,xrx200a2x-rcu-gphy";
->> +
->> +			regmap = <&rcu0>;
->> +			offset = <0x68>;
->> +			resets = <&reset0 29 28>, <&reset1 6 6>;
->> +			reset-names = "gphy", "gphy2";
->> +			lantiq,gphy-mode = <GPHY_MODE_GE>;
->> +		};
->> +
->> +		reset0: reset-controller@0 {
->> +			compatible = "lantiq,rcu-reset";
->> +
->> +			regmap = <&rcu0>;
->> +			offset-set = <0x10>;
->> +			offset-status = <0x14>;
->> +			#reset-cells = <2>;
->> +		};
->> +
->> +		reset1: reset-controller@1 {
->> +			compatible = "lantiq,rcu-reset";
->> +
->> +			regmap = <&rcu0>;
->> +			offset-set = <0x48>;
->> +			offset-status = <0x24>;
->> +			#reset-cells = <2>;
->> +		};
->> +
->> +		usb_phy0: usb2-phy@0 {
->> +			compatible = "lantiq,xrx200-rcu-usb2-phy";
->> +			status = "disabled";
->> +
->> +			regmap = <&rcu0>;
->> +			offset-phy = <0x18>;
->> +			offset-ana = <0x38>;
->> +			resets = <&reset1 4 4>, <&reset0 4 4>;
->> +			reset-names = "phy", "ctrl";
->> +			#phy-cells = <0>;
->> +		};
->> +
->> +		usb_phy1: usb2-phy@1 {
->> +			compatible = "lantiq,xrx200-rcu-usb2-phy";
->> +			status = "disabled";
->> +
->> +			regmap = <&rcu0>;
->> +			offset-phy = <0x34>;
->> +			offset-ana = <0x3C>;
->> +			resets = <&reset1 5 4>, <&reset0 4 4>;
->> +			reset-names = "phy", "ctrl";
->> +			#phy-cells = <0>;
->> +		};
->> +
->> +		reboot {
->> +			compatible = "syscon-reboot";
->> +
->> +			regmap = <&rcu0>;
->> +			offset = <0x10>;
->> +			mask = <0x40000000>;
->> +		};
->> +	};
->> +
->> -- 
->> 2.11.0
->>
+> +		reg =	<0x1F400000 0x1000>,
+> +			<0x10000000 0xF000000>;
+> +		regmap = <&rcu0>;
+> +		offset-endianness = <0x4c>;
+
+Presumably, this is for endianness of the children. So this needs to be 
+configured before probing the children. If so, then you should not call 
+this a "simple-bus".
+
+> +		big-endian;
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +
+> +		gptu@E100A00 {
+
+lowercase hex.
+
+> +			......
+> +		};
+> +	};

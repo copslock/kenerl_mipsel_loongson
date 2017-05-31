@@ -1,55 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 21:34:18 +0200 (CEST)
-Received: from mx0a-00010702.pphosted.com ([148.163.156.75]:54124 "EHLO
-        mx0b-00010702.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S23993179AbdEaTeMAWpC3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 21:34:12 +0200
-Received: from pps.filterd (m0098781.ppops.net [127.0.0.1])
-        by mx0a-00010702.pphosted.com (8.16.0.20/8.16.0.20) with SMTP id v4VJVhJq022388;
-        Wed, 31 May 2017 14:34:09 -0500
-Received: from ni.com (skprod3.natinst.com [130.164.80.24])
-        by mx0a-00010702.pphosted.com with ESMTP id 2at2yc886j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 31 May 2017 14:34:09 -0500
-Received: from us-aus-exhub1.ni.corp.natinst.com (us-aus-exhub1.ni.corp.natinst.com [130.164.68.41])
-        by us-aus-skprod3.natinst.com (8.16.0.17/8.16.0.17) with ESMTPS id v4VJY8T8000648
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Wed, 31 May 2017 14:34:08 -0500
-Received: from us-aus-exch7.ni.corp.natinst.com (130.164.68.17) by
- us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) with Microsoft SMTP Server
- (TLS) id 15.0.1156.6; Wed, 31 May 2017 14:34:08 -0500
-Received: from us-aus-exhub2.ni.corp.natinst.com (130.164.68.32) by
- us-aus-exch7.ni.corp.natinst.com (130.164.68.17) with Microsoft SMTP Server
- (TLS) id 15.0.1156.6; Wed, 31 May 2017 14:34:07 -0500
-Received: from nathan3500-linux-VM.amer.corp.natinst.com (130.164.49.7) by
- us-aus-exhub2.ni.corp.natinst.com (130.164.68.32) with Microsoft SMTP Server
- id 15.0.1156.6 via Frontend Transport; Wed, 31 May 2017 14:34:07 -0500
-From:   Nathan Sullivan <nathan.sullivan@ni.com>
-To:     <ralf@linux-mips.org>, <robh+dt@kernel.org>
-CC:     <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>,
-        Nathan Sullivan <nathan.sullivan@ni.com>
-Subject: [PATCH v5] MIPS: NI 169445 board support
-Date:   Wed, 31 May 2017 14:33:57 -0500
-Message-ID: <1496259237-9524-1-git-send-email-nathan.sullivan@ni.com>
-X-Mailer: git-send-email 2.1.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 22:00:38 +0200 (CEST)
+Received: from mail-oi0-f67.google.com ([209.85.218.67]:34951 "EHLO
+        mail-oi0-f67.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993179AbdEaUA31DoC3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 22:00:29 +0200
+Received: by mail-oi0-f67.google.com with SMTP id j66so737543oib.2;
+        Wed, 31 May 2017 13:00:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=yd3yvM3MeilGn6tZV5WJoZFW/utwCnCs4QMqtR6sETU=;
+        b=MGR1N28jZ5bPZpMaplZUVm31UKrlwJ6lwmfdPcLMafMzCdng5nnilUnXGRg9qFgslo
+         L/uWqFw/HPZQJXiHtJ/JGCap8lU02c1jZW+X7t7Fj8fMg6a4y0Epi9VfD8v9ZKEAFl/n
+         tqGcYc21kL7f7Golq7Dvx7Oqf7vuUwK3NW8LBtJ+Zd04tiEIT07ZILH0NY49M6WAW3CT
+         Pk10ArD5/Vv/0Py6QcmnaGa/itnKMip1IeZd8EZAnEZIsrtnmZQBaKVLdcSLDnZdxZ/m
+         d3xvs0+rbJjYCVnwWNlICktIsphI3UDg+rkdUtE1iTNobwiAU8Mt3FeK4Vjq4z4ADHQx
+         pnFQ==
+X-Gm-Message-State: AODbwcA+ouA13y+7et+HJO0euXIGSSgSRxswU9UK48RVjMU7Oeyk0Kfg
+        IHllqy7HcDdBQg==
+X-Received: by 10.202.117.23 with SMTP id q23mr13863196oic.163.1496260823538;
+        Wed, 31 May 2017 13:00:23 -0700 (PDT)
+Received: from localhost (66-90-148-125.dyn.grandenetworks.net. [66.90.148.125])
+        by smtp.gmail.com with ESMTPSA id 42sm7755334otj.30.2017.05.31.13.00.22
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 31 May 2017 13:00:22 -0700 (PDT)
+Date:   Wed, 31 May 2017 15:00:21 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
+        john@phrozen.org, linux-spi@vger.kernel.org,
+        hauke.mehrtens@intel.com, andy.shevchenko@gmail.com,
+        p.zabel@pengutronix.de
+Subject: Re: [PATCH v3 05/16] watchdog: lantiq: add device tree binding
+ documentation
+Message-ID: <20170531200021.ld54cecme4ekak4i@rob-hp-laptop>
+References: <20170528184006.31668-1-hauke@hauke-m.de>
+ <20170528184006.31668-6-hauke@hauke-m.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-05-31_09:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_policy_notspam policy=outbound_policy score=30
- priorityscore=1501 malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0
- spamscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=30 reason=mlx scancount=1 engine=8.0.1-1703280000
- definitions=main-1705310352
-Return-Path: <nathan.sullivan@ni.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170528184006.31668-6-hauke@hauke-m.de>
+User-Agent: NeoMutt/20170113 (1.7.2)
+Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58104
+X-archive-position: 58105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nathan.sullivan@ni.com
+X-original-sender: robh@kernel.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -62,279 +64,62 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Support the National Instruments 169445 board.
+On Sun, May 28, 2017 at 08:39:55PM +0200, Hauke Mehrtens wrote:
+> The binding was not documented before, add the documentation now.
+> 
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> ---
+>  .../devicetree/bindings/watchdog/lantiq-wdt.txt    | 28 ++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> new file mode 100644
+> index 000000000000..675c30e23b65
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/watchdog/lantiq-wdt.txt
+> @@ -0,0 +1,28 @@
+> +Lantiq WTD watchdog binding
+> +============================
+> +
+> +This describes the binding of the Lantiq watchdog driver.
+> +
+> +-------------------------------------------------------------------------------
+> +Required properties:
+> +- compatible		: Should be one of
+> +				"lantiq,wdt"
+> +				"lantiq,wdt-xrx100"
+> +				"lantiq,wdt-falcon"
+> +
+> +Optional properties:
+> +- regmap		: A phandle to the RCU syscon
+> +- offset-status		: Offset of the reset cause register
+> +- mask-status		: Mask of the reset cause register value
 
-Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
----
+These 2 should be implied by the compatible. But if already used in 
+upstream dts files, then it's okay.
 
-Changes from v4:
+> +
+> +
+> +-------------------------------------------------------------------------------
+> +Example for the watchdog on the xRX200 SoCs:
+> +		watchdog@803F0 {
 
-- Address Rob Herring's device tree feedback
+Lowercase hex please.
 
-I'm still unclear on the vmlinux.its.S changes.  The linux-mti tree has a
-config in the image tree for each board it supports, and I followed that
-pattern here.  Rob was concerned about how the configs would scale wrt
-the number of bootloaders around, but it's really just one per board/dt,
-right?
+> +			compatible = "lantiq,wdt-xrx200", "lantiq,wdt-xrx100";
 
----
- Documentation/devicetree/bindings/mips/ni.txt   |   7 ++
- MAINTAINERS                                     |   8 ++
- arch/mips/boot/dts/Makefile                     |   1 +
- arch/mips/boot/dts/ni/169445.dts                | 100 ++++++++++++++++++++++++
- arch/mips/boot/dts/ni/Makefile                  |   7 ++
- arch/mips/configs/generic/board-ni169445.config |  27 +++++++
- arch/mips/generic/Kconfig                       |   6 ++
- arch/mips/generic/vmlinux.its.S                 |  25 ++++++
- 8 files changed, 181 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mips/ni.txt
- create mode 100644 arch/mips/boot/dts/ni/169445.dts
- create mode 100644 arch/mips/boot/dts/ni/Makefile
- create mode 100644 arch/mips/configs/generic/board-ni169445.config
+Doesn't match the documentation.
 
-diff --git a/Documentation/devicetree/bindings/mips/ni.txt b/Documentation/devicetree/bindings/mips/ni.txt
-new file mode 100644
-index 0000000..722bf2d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mips/ni.txt
-@@ -0,0 +1,7 @@
-+National Instruments MIPS platforms
-+
-+required root node properties:
-+	- compatible: must be "ni,169445"
-+
-+CPU Nodes
-+	- compatible: must be "mti,mips14KEc"
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 053c3bd..e6662d0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9047,6 +9047,14 @@ F:	include/linux/sunrpc/
- F:	include/uapi/linux/nfs*
- F:	include/uapi/linux/sunrpc/
- 
-+NI169445 MIPS ARCHITECTURE
-+M:	Nathan Sullivan <nathan.sullivan@ni.com>
-+L:	linux-mips@linux-mips.org
-+S:	Maintained
-+F:	arch/mips/boot/dts/ni/
-+F:	arch/mips/configs/generic/board-ni169445.config
-+F:	Documentation/devicetree/bindings/mips/ni.txt
-+
- NILFS2 FILESYSTEM
- M:	Ryusuke Konishi <konishi.ryusuke@lab.ntt.co.jp>
- L:	linux-nilfs@vger.kernel.org
-diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
-index b9db492..27b0f37 100644
---- a/arch/mips/boot/dts/Makefile
-+++ b/arch/mips/boot/dts/Makefile
-@@ -4,6 +4,7 @@ dts-dirs	+= img
- dts-dirs	+= ingenic
- dts-dirs	+= lantiq
- dts-dirs	+= mti
-+dts-dirs	+= ni
- dts-dirs	+= netlogic
- dts-dirs	+= pic32
- dts-dirs	+= qca
-diff --git a/arch/mips/boot/dts/ni/169445.dts b/arch/mips/boot/dts/ni/169445.dts
-new file mode 100644
-index 0000000..6a20036
---- /dev/null
-+++ b/arch/mips/boot/dts/ni/169445.dts
-@@ -0,0 +1,100 @@
-+/dts-v1/;
-+
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	compatible = "ni,169445";
-+
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		cpu@0 {
-+			device_type = "cpu";
-+			compatible = "mti,mips14KEc";
-+			clocks = <&baseclk>;
-+			reg = <0>;
-+		};
-+	};
-+
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x0 0x10000000>;
-+	};
-+
-+	baseclk: baseclock {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <50000000>;
-+	};
-+
-+	cpu_intc: interrupt-controller {
-+		#address-cells = <0>;
-+		compatible = "mti,cpu-interrupt-controller";
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+	};
-+
-+	ahb@1f300000 {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges = <0x0 0x1f300000 0x80FFF>;
-+
-+		gpio1: gpio@1f300010 {
-+			compatible = "ni,169445-nand-gpio";
-+			reg = <0x10 0x4>;
-+			reg-names = "dat";
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+		};
-+
-+		gpio2: gpio@1f300014 {
-+			compatible = "ni,169445-nand-gpio";
-+			reg = <0x14 0x4>;
-+			reg-names = "dat";
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			no-output;
-+		};
-+
-+		nand@1f300000 {
-+			compatible = "gpio-control-nand";
-+			nand-on-flash-bbt;
-+			nand-ecc-mode = "soft_bch";
-+			nand-ecc-step-size = <512>;
-+			nand-ecc-strength = <4>;
-+			reg = <0x0 4>;
-+			gpios = <&gpio2 0 0>, /* rdy */
-+				<&gpio1 1 0>, /* nce */
-+				<&gpio1 2 0>, /* ale */
-+				<&gpio1 3 0>, /* cle */
-+				<&gpio1 4 0>; /* nwp */
-+		};
-+
-+		serial@1f380000 {
-+			compatible = "ns16550a";
-+			reg = <0x80000 0x1000>;
-+			interrupt-parent = <&cpu_intc>;
-+			interrupts = <6>;
-+			clocks = <&baseclk>;
-+			reg-shift = <0>;
-+		};
-+
-+		ethernet@1f340000 {
-+			compatible = "snps,dwmac-4.10a";
-+			interrupt-parent = <&cpu_intc>;
-+			interrupts = <5>;
-+			interrupt-names = "macirq";
-+			reg = <0x40000 0x2000>;
-+			clock-names = "stmmaceth", "pclk";
-+			clocks = <&baseclk>, <&baseclk>;
-+
-+			phy-mode = "rgmii";
-+
-+			fixed-link {
-+				speed = <1000>;
-+				full-duplex;
-+			};
-+		};
-+	};
-+};
-diff --git a/arch/mips/boot/dts/ni/Makefile b/arch/mips/boot/dts/ni/Makefile
-new file mode 100644
-index 0000000..66cfdff
---- /dev/null
-+++ b/arch/mips/boot/dts/ni/Makefile
-@@ -0,0 +1,7 @@
-+dtb-$(CONFIG_FIT_IMAGE_FDT_NI169445)	+= 169445.dtb
-+
-+# Force kbuild to make empty built-in.o if necessary
-+obj-					+= dummy.o
-+
-+always					:= $(dtb-y)
-+clean-files				:= *.dtb *.dtb.S
-diff --git a/arch/mips/configs/generic/board-ni169445.config b/arch/mips/configs/generic/board-ni169445.config
-new file mode 100644
-index 0000000..0bae1f8
---- /dev/null
-+++ b/arch/mips/configs/generic/board-ni169445.config
-@@ -0,0 +1,27 @@
-+CONFIG_FIT_IMAGE_FDT_NI169445=y
-+
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_OF_PLATFORM=y
-+
-+CONFIG_GPIOLIB=y
-+CONFIG_GPIO_SYSFS=y
-+CONFIG_GPIO_GENERIC_PLATFORM=y
-+
-+CONFIG_MTD=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+
-+CONFIG_MTD_NAND_ECC=y
-+CONFIG_MTD_NAND_ECC_BCH=y
-+CONFIG_MTD_NAND=y
-+CONFIG_MTD_NAND_GPIO=y
-+CONFIG_MTD_NAND_IDS=y
-+
-+CONFIG_MTD_UBI=y
-+CONFIG_MTD_UBI_BLOCK=y
-+
-+CONFIG_NETDEVICES=y
-+CONFIG_STMMAC_ETH=y
-+CONFIG_STMMAC_PLATFORM=y
-+CONFIG_DWMAC_GENERIC=y
-diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
-index a606b3f..fbf0813 100644
---- a/arch/mips/generic/Kconfig
-+++ b/arch/mips/generic/Kconfig
-@@ -16,4 +16,10 @@ config LEGACY_BOARD_SEAD3
- 	  Enable this to include support for booting on MIPS SEAD-3 FPGA-based
- 	  development boards, which boot using a legacy boot protocol.
- 
-+config FIT_IMAGE_FDT_NI169445
-+	bool "Include FDT for NI 169445"
-+	help
-+	  Enable this to include the FDT for the 169445 platform from
-+	  National Instruments in the FIT kernel image.
-+
- endif
-diff --git a/arch/mips/generic/vmlinux.its.S b/arch/mips/generic/vmlinux.its.S
-index f67fbf1..de851f7 100644
---- a/arch/mips/generic/vmlinux.its.S
-+++ b/arch/mips/generic/vmlinux.its.S
-@@ -29,3 +29,28 @@
- 		};
- 	};
- };
-+
-+#ifdef CONFIG_FIT_IMAGE_FDT_NI169445
-+/ {
-+	images {
-+		fdt@ni169445 {
-+			description = "NI 169445 device tree";
-+			data = /incbin/("boot/dts/ni/169445.dtb");
-+			type = "flat_dt";
-+			arch = "mips";
-+			compression = "none";
-+			hash@0 {
-+				algo = "sha1";
-+			};
-+		};
-+	};
-+
-+	configurations {
-+		conf@ni169445 {
-+			description = "NI 169445 Linux Kernel";
-+			kernel = "kernel@0";
-+			fdt = "fdt@ni169445";
-+		};
-+	};
-+};
-+#endif
--- 
-2.1.4
+> +			reg = <0x803F0 0x10>;
+
+Lowercase hex please.
+
+> +
+> +			regmap = <&rcu0>;
+> +			offset-status = <0x14>;
+> +			mask-status = <0x80000000>;
+> +		};
+> -- 
+> 2.11.0
+> 

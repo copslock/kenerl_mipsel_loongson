@@ -1,72 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 21:30:37 +0200 (CEST)
-Received: from mail-wm0-x234.google.com ([IPv6:2a00:1450:400c:c09::234]:35856
-        "EHLO mail-wm0-x234.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993179AbdEaTa0RdVe3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 21:30:26 +0200
-Received: by mail-wm0-x234.google.com with SMTP id 7so130862241wmo.1
-        for <linux-mips@linux-mips.org>; Wed, 31 May 2017 12:30:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=WsDigyBqzGXyCvazaUOs/PVfegYSyqlSxX7AhxIrlqc=;
-        b=M4wDQO5L+rVdzL+uY3VVLVNXZfAgjTELTKT9kwV+Ch2DAD4gFhM6T6vnvwCzyc1c7C
-         V5uY/MjYj8qx8LDzRrZMHbvL0MyqlpC9k5C1EDfZdqtrE44ey2ToBP9J8ae0boDXqx81
-         iZOHqS6enwqX5o2JU3m4sF4gwnMx13snwlxxQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=WsDigyBqzGXyCvazaUOs/PVfegYSyqlSxX7AhxIrlqc=;
-        b=TJiMwKa0JUffX/E5PQAz6str8NmOV6ELpwC+m6cz9O8KIhQRlL/qqrTz8c9NwVp7lZ
-         z8M23P5TIVB1m5tMZNvMdAbwJ/2/qfDV9dyO3Qk1mSOGSg/U/jNak5+8pL0WdcMK8nDu
-         6fow2ShVeeVZhei6TIrmHXqRRBwskchrU0bW+zRnHmi2p6rQNqxDHUPVJSML2FiOJsjK
-         2OeyeRbB5ofK8cBH9ZzKWk0X46v9Zevi0lcArMy40supQv/LQM9zyx0OGVUFBGcKh4ql
-         SF6pGH8GXMNK82b9ge4WKcZC3Kem6320KYTU+YCkwlbMWO1SHGNnGsJozjxBHN0iSrDB
-         /7Bw==
-X-Gm-Message-State: AODbwcD0koA9qLPI5MNHglkz9XQOnODUHNwmNRbDiS9wgwZvN7g4j6EH
-        6mNtIAOZ5gQy8NZi
-X-Received: by 10.80.137.155 with SMTP id g27mr22660693edg.125.1496259020814;
-        Wed, 31 May 2017 12:30:20 -0700 (PDT)
-Received: from [192.168.178.39] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id k44sm6673059ede.16.2017.05.31.12.30.19
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 May 2017 12:30:20 -0700 (PDT)
-Subject: Re: [PATCH] bcm47xx: fix build regression
-To:     paulmck@linux.vnet.ibm.com, Arnd Bergmann <arnd@arndb.de>
-Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Ingo Molnar <mingo@kernel.org>
-References: <20170530112027.3983554-1-arnd@arndb.de>
- <7b6903a2-ce54-44f9-18ed-a14bd32069ce@broadcom.com>
- <CAK8P3a2-kO==gMDm3E6U8CR-zhwmZGztRy7Trcezf8oZxgn01g@mail.gmail.com>
- <20170531131216.GJ3956@linux.vnet.ibm.com>
- <CAK8P3a1wcVC1+dPbtAgn=2RbToV_ai+dGc2tJxdQ4r1s+nxAFg@mail.gmail.com>
- <20170531163110.GL3956@linux.vnet.ibm.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <51fbd3af-853e-f055-bef5-58d7438ba1ae@broadcom.com>
-Date:   Wed, 31 May 2017 21:30:19 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 21:34:18 +0200 (CEST)
+Received: from mx0a-00010702.pphosted.com ([148.163.156.75]:54124 "EHLO
+        mx0b-00010702.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S23993179AbdEaTeMAWpC3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 21:34:12 +0200
+Received: from pps.filterd (m0098781.ppops.net [127.0.0.1])
+        by mx0a-00010702.pphosted.com (8.16.0.20/8.16.0.20) with SMTP id v4VJVhJq022388;
+        Wed, 31 May 2017 14:34:09 -0500
+Received: from ni.com (skprod3.natinst.com [130.164.80.24])
+        by mx0a-00010702.pphosted.com with ESMTP id 2at2yc886j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 31 May 2017 14:34:09 -0500
+Received: from us-aus-exhub1.ni.corp.natinst.com (us-aus-exhub1.ni.corp.natinst.com [130.164.68.41])
+        by us-aus-skprod3.natinst.com (8.16.0.17/8.16.0.17) with ESMTPS id v4VJY8T8000648
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Wed, 31 May 2017 14:34:08 -0500
+Received: from us-aus-exch7.ni.corp.natinst.com (130.164.68.17) by
+ us-aus-exhub1.ni.corp.natinst.com (130.164.68.41) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Wed, 31 May 2017 14:34:08 -0500
+Received: from us-aus-exhub2.ni.corp.natinst.com (130.164.68.32) by
+ us-aus-exch7.ni.corp.natinst.com (130.164.68.17) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Wed, 31 May 2017 14:34:07 -0500
+Received: from nathan3500-linux-VM.amer.corp.natinst.com (130.164.49.7) by
+ us-aus-exhub2.ni.corp.natinst.com (130.164.68.32) with Microsoft SMTP Server
+ id 15.0.1156.6 via Frontend Transport; Wed, 31 May 2017 14:34:07 -0500
+From:   Nathan Sullivan <nathan.sullivan@ni.com>
+To:     <ralf@linux-mips.org>, <robh+dt@kernel.org>
+CC:     <devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>,
+        Nathan Sullivan <nathan.sullivan@ni.com>
+Subject: [PATCH v5] MIPS: NI 169445 board support
+Date:   Wed, 31 May 2017 14:33:57 -0500
+Message-ID: <1496259237-9524-1-git-send-email-nathan.sullivan@ni.com>
+X-Mailer: git-send-email 2.1.4
 MIME-Version: 1.0
-In-Reply-To: <20170531163110.GL3956@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <arend.vanspriel@broadcom.com>
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-05-31_09:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_policy_notspam policy=outbound_policy score=30
+ priorityscore=1501 malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0
+ spamscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0 adultscore=0
+ classifier=spam adjust=30 reason=mlx scancount=1 engine=8.0.1-1703280000
+ definitions=main-1705310352
+Return-Path: <nathan.sullivan@ni.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58103
+X-archive-position: 58104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend.vanspriel@broadcom.com
+X-original-sender: nathan.sullivan@ni.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -79,103 +62,279 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 31-05-17 18:31, Paul E. McKenney wrote:
-> On Wed, May 31, 2017 at 03:34:57PM +0200, Arnd Bergmann wrote:
->> On Wed, May 31, 2017 at 3:12 PM, Paul E. McKenney
->> <paulmck@linux.vnet.ibm.com> wrote:
->>> On Wed, May 31, 2017 at 12:21:10PM +0200, Arnd Bergmann wrote:
->>>> On Wed, May 31, 2017 at 11:43 AM, Arend van Spriel
->>>> <arend.vanspriel@broadcom.com> wrote:
->>>>> On 5/30/2017 1:20 PM, Arnd Bergmann wrote:
->>>>>>
->>>>>> An unknown change in the kernel headers caused a build regression
->>>>>> in an MTD partition driver:
->>>>>>
->>>>>> In file included from drivers/mtd/bcm47xxpart.c:12:0:
->>>>>> include/linux/bcm47xx_nvram.h: In function 'bcm47xx_nvram_init_from_mem':
->>>>>> include/linux/bcm47xx_nvram.h:27:10: error: 'ENOTSUPP' undeclared (first
->>>>>> use in this function)
->>>>>>
->>>>>> Clearly we want to include linux/errno.h here.
->>>>>
->>>>>
->>>>> unfortunate that you did not find the commit that caused this build
->>>>> regression. You could produce preprocessor output when it was working to see
->>>>> where errno.h got implicitly included and start looking there for git
->>>>> history.
->>>>
->>>> I did a 'git bisect run make drivers/mtd/bcm47xxpart.o' now, which pointed to
->>>> 0bc2d534708b ("rcu: Refactor #includes from include/linux/rcupdate.h").
->>>>
->>>> That commit seems reasonable, it was just bad luck that it caused this
->>>> regression. The commit is currently in the rcu/rcu/next branch of tip.git,
->>>> so Paul could merge the patch there.
+Support the National Instruments 169445 board.
 
-Arnd,
+Signed-off-by: Nathan Sullivan <nathan.sullivan@ni.com>
+---
 
-Thanks for digging a bit further. I am a sucker for telling the whole story.
+Changes from v4:
 
->>>
->>> Apologies for the inconvenience, not sure why 0day test robot didn't
->>> find this.  Probably because it cannot test each and every driver.  ;-)
->>
->> No worries.
->>
->>> This patch, correct?
->>>
->>>         https://lkml.org/lkml/2017/5/30/348
->>
->> Right, I should have included the link.
-> 
-> And my turn to say "no worries".  ;-)
-> 
-> I reworked the commit log to tell the full story as shown below.
-> Anything I misstated or otherwise missed?
+- Address Rob Herring's device tree feedback
 
-Maybe add the 'Fixes:' tag, ie.:
+I'm still unclear on the vmlinux.its.S changes.  The linux-mti tree has a
+config in the image tree for each board it supports, and I followed that
+pattern here.  Rob was concerned about how the configs would scale wrt
+the number of bootloaders around, but it's really just one per board/dt,
+right?
 
-Fixes: 0bc2d534708b ("rcu: Refactor #includes from
-include/linux/rcupdate.h")
+---
+ Documentation/devicetree/bindings/mips/ni.txt   |   7 ++
+ MAINTAINERS                                     |   8 ++
+ arch/mips/boot/dts/Makefile                     |   1 +
+ arch/mips/boot/dts/ni/169445.dts                | 100 ++++++++++++++++++++++++
+ arch/mips/boot/dts/ni/Makefile                  |   7 ++
+ arch/mips/configs/generic/board-ni169445.config |  27 +++++++
+ arch/mips/generic/Kconfig                       |   6 ++
+ arch/mips/generic/vmlinux.its.S                 |  25 ++++++
+ 8 files changed, 181 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mips/ni.txt
+ create mode 100644 arch/mips/boot/dts/ni/169445.dts
+ create mode 100644 arch/mips/boot/dts/ni/Makefile
+ create mode 100644 arch/mips/configs/generic/board-ni169445.config
 
-Seems a bit redundant given that you mentioned it in the commit message,
-but it might be looked for in kernel-stats scripts.
-
-Regards,
-Arend
-
-> 							Thanx, Paul
-> 
-> ------------------------------------------------------------------------
-> 
-> commit ff278071dce9af9da2b5e2b33f682710a855d266
-> Author: Arnd Bergmann <arnd@arndb.de>
-> Date:   Wed May 31 09:26:07 2017 -0700
-> 
->     bcm47xx: fix build regression
->     
->     Commit 0bc2d534708b ("rcu: Refactor #includes from include/linux/rcupdate.h")
->     caused a build regression in an MTD partition driver:
->     
->     In file included from drivers/mtd/bcm47xxpart.c:12:0:
->     include/linux/bcm47xx_nvram.h: In function 'bcm47xx_nvram_init_from_mem':
->     include/linux/bcm47xx_nvram.h:27:10: error: 'ENOTSUPP' undeclared (first use in this function)
->     
->     The rcupdate.h file has no particular need for linux/errno.h, so this
->     commit includes linux/errno.h into bcm47xx_nvram.h.
->     
->     Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->     Signed-off-by: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
-> 
-> diff --git a/include/linux/bcm47xx_nvram.h b/include/linux/bcm47xx_nvram.h
-> index 2793652fbf66..a414a2b53e41 100644
-> --- a/include/linux/bcm47xx_nvram.h
-> +++ b/include/linux/bcm47xx_nvram.h
-> @@ -8,6 +8,7 @@
->  #ifndef __BCM47XX_NVRAM_H
->  #define __BCM47XX_NVRAM_H
->  
-> +#include <linux/errno.h>
->  #include <linux/types.h>
->  #include <linux/kernel.h>
->  #include <linux/vmalloc.h>
-> 
+diff --git a/Documentation/devicetree/bindings/mips/ni.txt b/Documentation/devicetree/bindings/mips/ni.txt
+new file mode 100644
+index 0000000..722bf2d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mips/ni.txt
+@@ -0,0 +1,7 @@
++National Instruments MIPS platforms
++
++required root node properties:
++	- compatible: must be "ni,169445"
++
++CPU Nodes
++	- compatible: must be "mti,mips14KEc"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 053c3bd..e6662d0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9047,6 +9047,14 @@ F:	include/linux/sunrpc/
+ F:	include/uapi/linux/nfs*
+ F:	include/uapi/linux/sunrpc/
+ 
++NI169445 MIPS ARCHITECTURE
++M:	Nathan Sullivan <nathan.sullivan@ni.com>
++L:	linux-mips@linux-mips.org
++S:	Maintained
++F:	arch/mips/boot/dts/ni/
++F:	arch/mips/configs/generic/board-ni169445.config
++F:	Documentation/devicetree/bindings/mips/ni.txt
++
+ NILFS2 FILESYSTEM
+ M:	Ryusuke Konishi <konishi.ryusuke@lab.ntt.co.jp>
+ L:	linux-nilfs@vger.kernel.org
+diff --git a/arch/mips/boot/dts/Makefile b/arch/mips/boot/dts/Makefile
+index b9db492..27b0f37 100644
+--- a/arch/mips/boot/dts/Makefile
++++ b/arch/mips/boot/dts/Makefile
+@@ -4,6 +4,7 @@ dts-dirs	+= img
+ dts-dirs	+= ingenic
+ dts-dirs	+= lantiq
+ dts-dirs	+= mti
++dts-dirs	+= ni
+ dts-dirs	+= netlogic
+ dts-dirs	+= pic32
+ dts-dirs	+= qca
+diff --git a/arch/mips/boot/dts/ni/169445.dts b/arch/mips/boot/dts/ni/169445.dts
+new file mode 100644
+index 0000000..6a20036
+--- /dev/null
++++ b/arch/mips/boot/dts/ni/169445.dts
+@@ -0,0 +1,100 @@
++/dts-v1/;
++
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ni,169445";
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "mti,mips14KEc";
++			clocks = <&baseclk>;
++			reg = <0>;
++		};
++	};
++
++	memory@0 {
++		device_type = "memory";
++		reg = <0x0 0x10000000>;
++	};
++
++	baseclk: baseclock {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <50000000>;
++	};
++
++	cpu_intc: interrupt-controller {
++		#address-cells = <0>;
++		compatible = "mti,cpu-interrupt-controller";
++		interrupt-controller;
++		#interrupt-cells = <1>;
++	};
++
++	ahb@1f300000 {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges = <0x0 0x1f300000 0x80FFF>;
++
++		gpio1: gpio@1f300010 {
++			compatible = "ni,169445-nand-gpio";
++			reg = <0x10 0x4>;
++			reg-names = "dat";
++			gpio-controller;
++			#gpio-cells = <2>;
++		};
++
++		gpio2: gpio@1f300014 {
++			compatible = "ni,169445-nand-gpio";
++			reg = <0x14 0x4>;
++			reg-names = "dat";
++			gpio-controller;
++			#gpio-cells = <2>;
++			no-output;
++		};
++
++		nand@1f300000 {
++			compatible = "gpio-control-nand";
++			nand-on-flash-bbt;
++			nand-ecc-mode = "soft_bch";
++			nand-ecc-step-size = <512>;
++			nand-ecc-strength = <4>;
++			reg = <0x0 4>;
++			gpios = <&gpio2 0 0>, /* rdy */
++				<&gpio1 1 0>, /* nce */
++				<&gpio1 2 0>, /* ale */
++				<&gpio1 3 0>, /* cle */
++				<&gpio1 4 0>; /* nwp */
++		};
++
++		serial@1f380000 {
++			compatible = "ns16550a";
++			reg = <0x80000 0x1000>;
++			interrupt-parent = <&cpu_intc>;
++			interrupts = <6>;
++			clocks = <&baseclk>;
++			reg-shift = <0>;
++		};
++
++		ethernet@1f340000 {
++			compatible = "snps,dwmac-4.10a";
++			interrupt-parent = <&cpu_intc>;
++			interrupts = <5>;
++			interrupt-names = "macirq";
++			reg = <0x40000 0x2000>;
++			clock-names = "stmmaceth", "pclk";
++			clocks = <&baseclk>, <&baseclk>;
++
++			phy-mode = "rgmii";
++
++			fixed-link {
++				speed = <1000>;
++				full-duplex;
++			};
++		};
++	};
++};
+diff --git a/arch/mips/boot/dts/ni/Makefile b/arch/mips/boot/dts/ni/Makefile
+new file mode 100644
+index 0000000..66cfdff
+--- /dev/null
++++ b/arch/mips/boot/dts/ni/Makefile
+@@ -0,0 +1,7 @@
++dtb-$(CONFIG_FIT_IMAGE_FDT_NI169445)	+= 169445.dtb
++
++# Force kbuild to make empty built-in.o if necessary
++obj-					+= dummy.o
++
++always					:= $(dtb-y)
++clean-files				:= *.dtb *.dtb.S
+diff --git a/arch/mips/configs/generic/board-ni169445.config b/arch/mips/configs/generic/board-ni169445.config
+new file mode 100644
+index 0000000..0bae1f8
+--- /dev/null
++++ b/arch/mips/configs/generic/board-ni169445.config
+@@ -0,0 +1,27 @@
++CONFIG_FIT_IMAGE_FDT_NI169445=y
++
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_OF_PLATFORM=y
++
++CONFIG_GPIOLIB=y
++CONFIG_GPIO_SYSFS=y
++CONFIG_GPIO_GENERIC_PLATFORM=y
++
++CONFIG_MTD=y
++CONFIG_MTD_BLOCK=y
++CONFIG_MTD_CMDLINE_PARTS=y
++
++CONFIG_MTD_NAND_ECC=y
++CONFIG_MTD_NAND_ECC_BCH=y
++CONFIG_MTD_NAND=y
++CONFIG_MTD_NAND_GPIO=y
++CONFIG_MTD_NAND_IDS=y
++
++CONFIG_MTD_UBI=y
++CONFIG_MTD_UBI_BLOCK=y
++
++CONFIG_NETDEVICES=y
++CONFIG_STMMAC_ETH=y
++CONFIG_STMMAC_PLATFORM=y
++CONFIG_DWMAC_GENERIC=y
+diff --git a/arch/mips/generic/Kconfig b/arch/mips/generic/Kconfig
+index a606b3f..fbf0813 100644
+--- a/arch/mips/generic/Kconfig
++++ b/arch/mips/generic/Kconfig
+@@ -16,4 +16,10 @@ config LEGACY_BOARD_SEAD3
+ 	  Enable this to include support for booting on MIPS SEAD-3 FPGA-based
+ 	  development boards, which boot using a legacy boot protocol.
+ 
++config FIT_IMAGE_FDT_NI169445
++	bool "Include FDT for NI 169445"
++	help
++	  Enable this to include the FDT for the 169445 platform from
++	  National Instruments in the FIT kernel image.
++
+ endif
+diff --git a/arch/mips/generic/vmlinux.its.S b/arch/mips/generic/vmlinux.its.S
+index f67fbf1..de851f7 100644
+--- a/arch/mips/generic/vmlinux.its.S
++++ b/arch/mips/generic/vmlinux.its.S
+@@ -29,3 +29,28 @@
+ 		};
+ 	};
+ };
++
++#ifdef CONFIG_FIT_IMAGE_FDT_NI169445
++/ {
++	images {
++		fdt@ni169445 {
++			description = "NI 169445 device tree";
++			data = /incbin/("boot/dts/ni/169445.dtb");
++			type = "flat_dt";
++			arch = "mips";
++			compression = "none";
++			hash@0 {
++				algo = "sha1";
++			};
++		};
++	};
++
++	configurations {
++		conf@ni169445 {
++			description = "NI 169445 Linux Kernel";
++			kernel = "kernel@0";
++			fdt = "fdt@ni169445";
++		};
++	};
++};
++#endif
+-- 
+2.1.4

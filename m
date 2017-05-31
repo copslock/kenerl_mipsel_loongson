@@ -1,66 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 18:28:52 +0200 (CEST)
-Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:35904
-        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993179AbdEaQ2okjz8F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 18:28:44 +0200
-Received: by mail-pf0-x242.google.com with SMTP id n23so3084538pfb.3;
-        Wed, 31 May 2017 09:28:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=2EiErcJvubJvvXIFVptJUrHhbdAm9EzYJABFJ+JK1sM=;
-        b=AC96V/nPM6ToWzfgVIQmTP+p1x6+rfzyyHEq+Uu+yfhns9ilAQ54lty9ZwbxSXB04j
-         Wgg1XqXoiRoByyspDKrGWzhAjaBD7Fos4lEEj0ebNSWN2dGbvN3rBe/aDpGN4lFzT2qK
-         yQJbASAMlowsBcl9fN6dmtKnia6nY0YDAZN7Qxw3oUyuUBKdxZDv3YXirfczPzFJf5ct
-         vlR++1rmJgTCZdmCPE6V/hr+QJZcZpO9tQ9/6nTWfmd/myByxnYr6RyVOCNBMQKwFD7x
-         1ccb6JBA06qjYhgack7ifbXCeP9eOEjhOs8pQ+247TY0FK1ODHPH2KR0lxlaPqJl8EeL
-         HRPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2EiErcJvubJvvXIFVptJUrHhbdAm9EzYJABFJ+JK1sM=;
-        b=r68aBgirS+oE6CPgwOzMDQbWnn9bGvQMTNHJ3Jz55Rtd/6DRFHAwbnAgklhgrCsR4q
-         YuGAz5PYgb4OPscOJgmFXRIVwzRBY4WZ0kqh8D3KmC0NJNO8bXpOgFxnl+um3Dn8JEHJ
-         dHeDhi9mVpJyKy2aem9JlaWgVsLKTEuc3gk1jiBtyeE2KedznT+bhToLeuMAJyVDZY0Q
-         VG5drydKfVs/ByZ5i9tzGmzamNQ3Kw/McaPF0CdeYsatDQCstc5IlbcmwvHEMrRQnN/h
-         V2INJ2MBWPEU2yhFNFTlcKCqw0GaTogYrKuXR1xlaKhrgONHRoqAhPHIH7ELmnTgrZMh
-         GYuw==
-X-Gm-Message-State: AODbwcDaF14fFptBv3U3JJVWFcRifgmslrMVBIylVYDMM9Gqilx+BPSo
-        b/XNo1/oZJ7D/A==
-X-Received: by 10.84.139.195 with SMTP id 61mr39405773plr.152.1496248118560;
-        Wed, 31 May 2017 09:28:38 -0700 (PDT)
-Received: from ddl.caveonetworks.com (50-233-148-156-static.hfc.comcastbusiness.net. [50.233.148.156])
-        by smtp.googlemail.com with ESMTPSA id t17sm27101903pfj.61.2017.05.31.09.28.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 May 2017 09:28:37 -0700 (PDT)
-Subject: Re: [PATCH 4/4] MIPS: Branch straight to ll in mips_atomic_set()
-To:     James Hogan <james.hogan@imgtec.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-References: <cover.5633df325dbcbc41dbf9cc60df22b38f7812e73a.1496240182.git-series.james.hogan@imgtec.com>
- <c17c30b035caec45c1de97f4d069ab31fec2067e.1496240182.git-series.james.hogan@imgtec.com>
-From:   David Daney <ddaney.cavm@gmail.com>
-Message-ID: <580e1148-aaf9-895c-09ec-8b38772a9154@gmail.com>
-Date:   Wed, 31 May 2017 09:28:36 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 18:31:24 +0200 (CEST)
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:41617 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992517AbdEaQbQgNheF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 18:31:16 +0200
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.20/8.16.0.20) with SMTP id v4VGTmcI142727
+        for <linux-mips@linux-mips.org>; Wed, 31 May 2017 12:31:14 -0400
+Received: from e11.ny.us.ibm.com (e11.ny.us.ibm.com [129.33.205.201])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2asy0efmjn-1
+        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NOT)
+        for <linux-mips@linux-mips.org>; Wed, 31 May 2017 12:31:14 -0400
+Received: from localhost
+        by e11.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
+        Wed, 31 May 2017 12:31:13 -0400
+Received: from b01cxnp22033.gho.pok.ibm.com (9.57.198.23)
+        by e11.ny.us.ibm.com (146.89.104.198) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Wed, 31 May 2017 12:31:10 -0400
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id v4VGVAiY26935522;
+        Wed, 31 May 2017 16:31:10 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 27FE3B204D;
+        Wed, 31 May 2017 12:28:46 -0400 (EDT)
+Received: from paulmck-ThinkPad-W541 (unknown [9.70.82.110])
+        by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP id D1BDBB2050;
+        Wed, 31 May 2017 12:28:45 -0400 (EDT)
+Received: by paulmck-ThinkPad-W541 (Postfix, from userid 1000)
+        id 4DF4416C61F2; Wed, 31 May 2017 09:31:10 -0700 (PDT)
+Date:   Wed, 31 May 2017 09:31:10 -0700
+From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        linux-mtd <linux-mtd@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH] bcm47xx: fix build regression
+Reply-To: paulmck@linux.vnet.ibm.com
+References: <20170530112027.3983554-1-arnd@arndb.de>
+ <7b6903a2-ce54-44f9-18ed-a14bd32069ce@broadcom.com>
+ <CAK8P3a2-kO==gMDm3E6U8CR-zhwmZGztRy7Trcezf8oZxgn01g@mail.gmail.com>
+ <20170531131216.GJ3956@linux.vnet.ibm.com>
+ <CAK8P3a1wcVC1+dPbtAgn=2RbToV_ai+dGc2tJxdQ4r1s+nxAFg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <c17c30b035caec45c1de97f4d069ab31fec2067e.1496240182.git-series.james.hogan@imgtec.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Return-Path: <ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a1wcVC1+dPbtAgn=2RbToV_ai+dGc2tJxdQ4r1s+nxAFg@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 17053116-2213-0000-0000-000001CAEDC5
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00007149; HX=3.00000241; KW=3.00000007;
+ PH=3.00000004; SC=3.00000212; SDB=6.00868271; UDB=6.00431481; IPR=6.00648150;
+ BA=6.00005388; NDR=6.00000001; ZLA=6.00000005; ZF=6.00000009; ZB=6.00000000;
+ ZP=6.00000000; ZH=6.00000000; ZU=6.00000002; MB=3.00015657; XFM=3.00000015;
+ UTC=2017-05-31 16:31:12
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 17053116-2214-0000-0000-00005651EB02
+Message-Id: <20170531163110.GL3956@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-05-31_07:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.0.1-1703280000
+ definitions=main-1705310299
+Return-Path: <paulmck@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58096
+X-archive-position: 58097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: paulmck@linux.vnet.ibm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,41 +89,85 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/31/2017 08:19 AM, James Hogan wrote:
-> Adjust the atomic loop in the MIPS_ATOMIC_SET operation of the sysmips
-> system call to branch straight back to the linked load rather than
-> jumping via a different subsection (whose purpose remains a mystery to
-> me).
-
-The subsection keeps the code for the (hopefully) cold path out of line 
-which should result in a smaller cache footprint in the hot path.
-
-
+On Wed, May 31, 2017 at 03:34:57PM +0200, Arnd Bergmann wrote:
+> On Wed, May 31, 2017 at 3:12 PM, Paul E. McKenney
+> <paulmck@linux.vnet.ibm.com> wrote:
+> > On Wed, May 31, 2017 at 12:21:10PM +0200, Arnd Bergmann wrote:
+> >> On Wed, May 31, 2017 at 11:43 AM, Arend van Spriel
+> >> <arend.vanspriel@broadcom.com> wrote:
+> >> > On 5/30/2017 1:20 PM, Arnd Bergmann wrote:
+> >> >>
+> >> >> An unknown change in the kernel headers caused a build regression
+> >> >> in an MTD partition driver:
+> >> >>
+> >> >> In file included from drivers/mtd/bcm47xxpart.c:12:0:
+> >> >> include/linux/bcm47xx_nvram.h: In function 'bcm47xx_nvram_init_from_mem':
+> >> >> include/linux/bcm47xx_nvram.h:27:10: error: 'ENOTSUPP' undeclared (first
+> >> >> use in this function)
+> >> >>
+> >> >> Clearly we want to include linux/errno.h here.
+> >> >
+> >> >
+> >> > unfortunate that you did not find the commit that caused this build
+> >> > regression. You could produce preprocessor output when it was working to see
+> >> > where errno.h got implicitly included and start looking there for git
+> >> > history.
+> >>
+> >> I did a 'git bisect run make drivers/mtd/bcm47xxpart.o' now, which pointed to
+> >> 0bc2d534708b ("rcu: Refactor #includes from include/linux/rcupdate.h").
+> >>
+> >> That commit seems reasonable, it was just bad luck that it caused this
+> >> regression. The commit is currently in the rcu/rcu/next branch of tip.git,
+> >> so Paul could merge the patch there.
+> >
+> > Apologies for the inconvenience, not sure why 0day test robot didn't
+> > find this.  Probably because it cannot test each and every driver.  ;-)
 > 
-> Signed-off-by: James Hogan <james.hogan@imgtec.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> ---
->   arch/mips/kernel/syscall.c | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
+> No worries.
 > 
-> diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-> index ca54ac40252b..6c6bf43d681b 100644
-> --- a/arch/mips/kernel/syscall.c
-> +++ b/arch/mips/kernel/syscall.c
-> @@ -137,13 +137,9 @@ static inline int mips_atomic_set(unsigned long addr, unsigned long new)
->   		"	move	%[tmp], %[new]				\n"
->   		"2:							\n"
->   		user_sc("%[tmp]", "(%[addr])")
-> -		"	beqz	%[tmp], 4f				\n"
-> +		"	beqz	%[tmp], 1b				\n"
->   		"3:							\n"
->   		"	.insn						\n"
-> -		"	.subsection 2					\n"
-> -		"4:	b	1b					\n"
-> -		"	.previous					\n"
-> -		"							\n"
->   		"	.section .fixup,\"ax\"				\n"
->   		"5:	li	%[err], %[efault]			\n"
->   		"	j	3b					\n"
+> > This patch, correct?
+> >
+> >         https://lkml.org/lkml/2017/5/30/348
 > 
+> Right, I should have included the link.
+
+And my turn to say "no worries".  ;-)
+
+I reworked the commit log to tell the full story as shown below.
+Anything I misstated or otherwise missed?
+
+							Thanx, Paul
+
+------------------------------------------------------------------------
+
+commit ff278071dce9af9da2b5e2b33f682710a855d266
+Author: Arnd Bergmann <arnd@arndb.de>
+Date:   Wed May 31 09:26:07 2017 -0700
+
+    bcm47xx: fix build regression
+    
+    Commit 0bc2d534708b ("rcu: Refactor #includes from include/linux/rcupdate.h")
+    caused a build regression in an MTD partition driver:
+    
+    In file included from drivers/mtd/bcm47xxpart.c:12:0:
+    include/linux/bcm47xx_nvram.h: In function 'bcm47xx_nvram_init_from_mem':
+    include/linux/bcm47xx_nvram.h:27:10: error: 'ENOTSUPP' undeclared (first use in this function)
+    
+    The rcupdate.h file has no particular need for linux/errno.h, so this
+    commit includes linux/errno.h into bcm47xx_nvram.h.
+    
+    Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+    Signed-off-by: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+
+diff --git a/include/linux/bcm47xx_nvram.h b/include/linux/bcm47xx_nvram.h
+index 2793652fbf66..a414a2b53e41 100644
+--- a/include/linux/bcm47xx_nvram.h
++++ b/include/linux/bcm47xx_nvram.h
+@@ -8,6 +8,7 @@
+ #ifndef __BCM47XX_NVRAM_H
+ #define __BCM47XX_NVRAM_H
+ 
++#include <linux/errno.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/vmalloc.h>

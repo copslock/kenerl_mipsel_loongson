@@ -1,64 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 11:43:53 +0200 (CEST)
-Received: from mail-qk0-x232.google.com ([IPv6:2607:f8b0:400d:c09::232]:36086
-        "EHLO mail-qk0-x232.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990778AbdEaJnptS6C3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 11:43:45 +0200
-Received: by mail-qk0-x232.google.com with SMTP id u75so7251660qka.3
-        for <linux-mips@linux-mips.org>; Wed, 31 May 2017 02:43:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 12:21:26 +0200 (CEST)
+Received: from mail-oi0-x242.google.com ([IPv6:2607:f8b0:4003:c06::242]:36854
+        "EHLO mail-oi0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990510AbdEaKVQpPca3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 12:21:16 +0200
+Received: by mail-oi0-x242.google.com with SMTP id w138so1200546oiw.3
+        for <linux-mips@linux-mips.org>; Wed, 31 May 2017 03:21:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=rnI8WGvNA/Wqu5ytCiEowZ+0eMVd+eExPL7NSW3PbyE=;
-        b=T3gJ13ScRSccdgX6MuRByUJ3sMEi70Mq5ow2CX1PxhF2Q6gbvbRwSUvHhPRjl5oRE6
-         Ik2ivom6MLlcpj8gLG8XhOZgOxwqBFFQTXUctFPAWn1spJVxtA3IZOEoBQe3j0JlgAHu
-         jLunKR9OB9bIS8h9qwIIWCaqpDwfYavEreamc=
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=Cfh+7u7ctSslmmVZ7/kmiYlq70t3UddpMfHwHvevTbQ=;
+        b=TqF0tbilQKBKM/3fw0eK+7mSRUJaiS+2cKXVlaEu/oIohijXUmtnWd4z5sUvpqlO0j
+         kzVzuVjalHJtlkzpkvr1KyfzNxamThkuoCcZVlrR5PFqgzqzXusqnUHUL6WlJaqe6U7c
+         VkXpSi/MVfWB88K3g9L1S56VU1br6Ft3bT/bTx4wJNNsZ0kRPS02OTgE+fAiB991Q/PF
+         GA356NRZBs1RQNG9amudzGXY6HMw86P5PUKOJY/S5u8pj+8Y5zxo6ocTSvejhZvB67SB
+         YoCUgEZQNux48EJNoXoKv8a5/YC5Tcj3Y1c++NuqML0gnRZUXiw0FbLUupNhmIcJ3uK4
+         LwPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=rnI8WGvNA/Wqu5ytCiEowZ+0eMVd+eExPL7NSW3PbyE=;
-        b=Gn50ZzoPrJ8ze4QhXXlzqyFAgZ/gVNAOMEeAc18hJ2sNB3n/XZRJlBA/xIJ2QNLJSA
-         Nz1yNhbS9b1gvCAtYz1eAalCfAUtXIB+1P1iLmndyCLprW7aWEuxBe5nPicRwyJkI37E
-         0XAp3FQazqkm+VIqUQ0nMwybtXiEUdHlpZZuhahuXoU2ar4yYxzI/lgCkWT3WI9CgIq4
-         oZuztpXfJystvI8bPGJNmxomMpbSmtlKJqCQDR1sB5FhgyYtdrL7WLK2WyfwzR1XO/8R
-         Ju7f9bpeHQwDv0VTFtZubiP58kusqoRtmmbRXbQm1LkNagbvyZISSYsGX6KfCuT6DU7P
-         Cj2Q==
-X-Gm-Message-State: AODbwcBKOx/l8F94CEmncGd5QjJFGdnIlI5HAd6SX5CnomhOUgR3IvUs
-        S4q6/uFSlyO4H7lAzf3haQ==
-X-Received: by 10.55.121.196 with SMTP id u187mr26713278qkc.91.1496223819917;
-        Wed, 31 May 2017 02:43:39 -0700 (PDT)
-Received: from [10.176.68.189] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id t198sm4225716qke.30.2017.05.31.02.43.38
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 May 2017 02:43:39 -0700 (PDT)
-Subject: Re: [PATCH] bcm47xx: fix build regression
-To:     Arnd Bergmann <arnd@arndb.de>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-References: <20170530112027.3983554-1-arnd@arndb.de>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <7b6903a2-ce54-44f9-18ed-a14bd32069ce@broadcom.com>
-Date:   Wed, 31 May 2017 11:43:36 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=Cfh+7u7ctSslmmVZ7/kmiYlq70t3UddpMfHwHvevTbQ=;
+        b=IAMvctnmoYXC8i2DxfjuustORR0OJBQEZ+jeiMJDImp1W+eVLuJ7fEFcJsct1Lg3ql
+         M4AnT56HbneuGD6UZV145fn+xg+EqUJssxV+DNEF9VVUoSIV8PfnODBcMGK0W+4dfWKT
+         Zk5NmqbRbpnt9uFTDy7mXcZ+iz/ALfD8p0iZ+DWGnAZI65aom29cWeogiuLn8Qx9xasc
+         3K8gMcDUBfjXftWIOiHg6VqfOGNdQcDUn92F8j55KuopXZglA2Ungod9VoJ0E96w+k5p
+         WLDEkPNdGUJAyB36wOta8XGI01l9BoU5S1Juxepn2gAqX6nsQg5jWgYpeT4B5TGCyobj
+         6hxg==
+X-Gm-Message-State: AODbwcAvkYpizyKQKduoqNA21HmC/mju5NNIyLz5JuVHBWVGb2LmDKdj
+        5UpQSBPJw/kY4oc8AS41lhufbUIVbA==
+X-Received: by 10.157.50.11 with SMTP id t11mr303350otc.217.1496226070404;
+ Wed, 31 May 2017 03:21:10 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20170530112027.3983554-1-arnd@arndb.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-Return-Path: <arend.vanspriel@broadcom.com>
+Received: by 10.157.51.139 with HTTP; Wed, 31 May 2017 03:21:10 -0700 (PDT)
+In-Reply-To: <7b6903a2-ce54-44f9-18ed-a14bd32069ce@broadcom.com>
+References: <20170530112027.3983554-1-arnd@arndb.de> <7b6903a2-ce54-44f9-18ed-a14bd32069ce@broadcom.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 31 May 2017 12:21:10 +0200
+X-Google-Sender-Auth: utYsm-w17C-JWafRkW-KxN9L1gM
+Message-ID: <CAK8P3a2-kO==gMDm3E6U8CR-zhwmZGztRy7Trcezf8oZxgn01g@mail.gmail.com>
+Subject: Re: [PATCH] bcm47xx: fix build regression
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        linux-mtd <linux-mtd@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58085
+X-archive-position: 58086
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend.vanspriel@broadcom.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,39 +71,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 5/30/2017 1:20 PM, Arnd Bergmann wrote:
-> An unknown change in the kernel headers caused a build regression
-> in an MTD partition driver:
-> 
-> In file included from drivers/mtd/bcm47xxpart.c:12:0:
-> include/linux/bcm47xx_nvram.h: In function 'bcm47xx_nvram_init_from_mem':
-> include/linux/bcm47xx_nvram.h:27:10: error: 'ENOTSUPP' undeclared (first use in this function)
-> 
-> Clearly we want to include linux/errno.h here.
+On Wed, May 31, 2017 at 11:43 AM, Arend van Spriel
+<arend.vanspriel@broadcom.com> wrote:
+> On 5/30/2017 1:20 PM, Arnd Bergmann wrote:
+>>
+>> An unknown change in the kernel headers caused a build regression
+>> in an MTD partition driver:
+>>
+>> In file included from drivers/mtd/bcm47xxpart.c:12:0:
+>> include/linux/bcm47xx_nvram.h: In function 'bcm47xx_nvram_init_from_mem':
+>> include/linux/bcm47xx_nvram.h:27:10: error: 'ENOTSUPP' undeclared (first
+>> use in this function)
+>>
+>> Clearly we want to include linux/errno.h here.
+>
+>
+> unfortunate that you did not find the commit that caused this build
+> regression. You could produce preprocessor output when it was working to see
+> where errno.h got implicitly included and start looking there for git
+> history.
 
-unfortunate that you did not find the commit that caused this build 
-regression. You could produce preprocessor output when it was working to 
-see where errno.h got implicitly included and start looking there for 
-git history.
+I did a 'git bisect run make drivers/mtd/bcm47xxpart.o' now, which pointed to
+0bc2d534708b ("rcu: Refactor #includes from include/linux/rcupdate.h").
 
-Regards,
-Arend
+That commit seems reasonable, it was just bad luck that it caused this
+regression. The commit is currently in the rcu/rcu/next branch of tip.git,
+so Paul could merge the patch there.
 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->   include/linux/bcm47xx_nvram.h | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/include/linux/bcm47xx_nvram.h b/include/linux/bcm47xx_nvram.h
-> index 2793652fbf66..a414a2b53e41 100644
-> --- a/include/linux/bcm47xx_nvram.h
-> +++ b/include/linux/bcm47xx_nvram.h
-> @@ -8,6 +8,7 @@
->   #ifndef __BCM47XX_NVRAM_H
->   #define __BCM47XX_NVRAM_H
->   
-> +#include <linux/errno.h>
->   #include <linux/types.h>
->   #include <linux/kernel.h>
->   #include <linux/vmalloc.h>
-> 
+       Arnd

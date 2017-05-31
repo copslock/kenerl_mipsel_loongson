@@ -1,53 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 22:54:52 +0200 (CEST)
-Received: from mail-oi0-f67.google.com ([209.85.218.67]:32853 "EHLO
-        mail-oi0-f67.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992213AbdEaUypxRqnO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 22:54:45 +0200
-Received: by mail-oi0-f67.google.com with SMTP id h4so3790260oib.0;
-        Wed, 31 May 2017 13:54:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 22:58:21 +0200 (CEST)
+Received: from mail-oi0-f66.google.com ([209.85.218.66]:33153 "EHLO
+        mail-oi0-f66.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23992213AbdEaU6O40PZO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 22:58:14 +0200
+Received: by mail-oi0-f66.google.com with SMTP id h4so3803256oib.0;
+        Wed, 31 May 2017 13:58:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=HpWh8FwpRUf5peOaXMHkKYOaCR+Jh04Qv8USZTp1D9Q=;
-        b=jRMILaJamcgl1w3z60I7LkhQCrZHvu/HnVYqrJV3jcYXY0VahrE7YynM7Y6VFWrmKO
-         1xipQf5nUNdoo0kG2jAF2uKO9Lo5xSyKAe/MJYHiAkQXptDjuB4uAMoFFasvuk4x7wg6
-         1WKzZYWnTKiyTKGNfn0SPkQMEWfeMfK5HwjUqrnwdfcq0B0inyunVlaOMB2Ly9927sd5
-         8lOcQbsUVkWgq7wMx1MT8ub83oik0S6XSSNVEm6niFMlZUFa2r0U4+nKioXcJS2/020O
-         Wzpklewi0q0AGeSCnKq+PeXEOi9QiObhvaxP5y6f0EFYP6MQ/ZHnssoptHVoMbv+A91X
-         l4nw==
-X-Gm-Message-State: AODbwcD5uILu/j2ZBcpq2c+fKpPIz5/f3dwZxpigrtkS0Cqjat6Ha02j
-        9cUC6gr7pqHYrg==
-X-Received: by 10.202.205.196 with SMTP id d187mr13206171oig.6.1496264080117;
-        Wed, 31 May 2017 13:54:40 -0700 (PDT)
+        bh=88AG4jd8vwL0xNhFjL28E47Bz6+Xp4R2Nrs9vKDLz70=;
+        b=Bl/KM/Pq553U4FUY9mxLZTZ0HlGHxGchDMepdcvyNDoeVWY0g5NoQp+RTmrF99o5Wl
+         66a+MtBTJRoremWxS/OZ68JyEzkubP6pbrngLdIzm3ShbC/RqNnqBr0PeUeB+CzG7qHZ
+         0++vE8V2tak3ZCWX6/x8XNdECXAy+ERSTAqR9wRKghXb2fYIPE8Y3Mu+D0TnWduwlY5e
+         8j8vLjU14829jWQQMiBOszQn+pbR8kpEL79W40fnMq27AJKubDinbmFQxWA2HqfDEiF6
+         yTlTXKPBfb8u89ujWQWFv+m8rYdg6RqdAiGVkyVq+mJSUIx/2MvE/5uxLUEjtoD6PU+A
+         NG4g==
+X-Gm-Message-State: AODbwcDuvtP5gf+yKgVjgTsU46TsVTGVI49Q+1ARMiXC2YIEZb7YCkCA
+        vwrdzBCdDFmwFQ==
+X-Received: by 10.202.231.83 with SMTP id e80mr10257053oih.132.1496264287928;
+        Wed, 31 May 2017 13:58:07 -0700 (PDT)
 Received: from localhost (66-90-148-125.dyn.grandenetworks.net. [66.90.148.125])
-        by smtp.gmail.com with ESMTPSA id f68sm1887624otb.32.2017.05.31.13.54.39
+        by smtp.gmail.com with ESMTPSA id w70sm7970254oia.9.2017.05.31.13.58.07
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 31 May 2017 13:54:39 -0700 (PDT)
-Date:   Wed, 31 May 2017 15:54:39 -0500
+        Wed, 31 May 2017 13:58:07 -0700 (PDT)
+Date:   Wed, 31 May 2017 15:58:06 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, martin.blumenstingl@googlemail.com,
-        john@phrozen.org, linux-spi@vger.kernel.org,
-        hauke.mehrtens@intel.com, andy.shevchenko@gmail.com,
-        p.zabel@pengutronix.de
-Subject: Re: [PATCH v3 08/16] MIPS: lantiq: Convert the fpi bus driver to a
- platform_driver
-Message-ID: <20170531205439.l5fiatf4v3kp43yq@rob-hp-laptop>
+To:     Philipp Zabel <p.zabel@pengutronix.de>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+        martin.blumenstingl@googlemail.com, john@phrozen.org,
+        linux-spi@vger.kernel.org, hauke.mehrtens@intel.com,
+        andy.shevchenko@gmail.com
+Subject: Re: [PATCH v3 10/16] reset: Add a reset controller driver for the
+ Lantiq XWAY based SoCs
+Message-ID: <20170531205806.uohn2tr6qtrocpl6@rob-hp-laptop>
 References: <20170528184006.31668-1-hauke@hauke-m.de>
- <20170528184006.31668-9-hauke@hauke-m.de>
+ <20170528184006.31668-11-hauke@hauke-m.de>
+ <1496053214.17695.49.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20170528184006.31668-9-hauke@hauke-m.de>
+In-Reply-To: <1496053214.17695.49.camel@pengutronix.de>
 User-Agent: NeoMutt/20170113 (1.7.2)
 Return-Path: <robherring2@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58109
+X-archive-position: 58110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,77 +65,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, May 28, 2017 at 08:39:58PM +0200, Hauke Mehrtens wrote:
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+On Mon, May 29, 2017 at 12:20:14PM +0200, Philipp Zabel wrote:
+> Hi Hauke,
 > 
-> Instead of hacking the configuration of the FPI bus into the arch code
-> add an own bus driver for this internal bus. The FPI bus is the main
-> bus of the SoC. This bus driver makes sure the bus is configured
-> correctly before the child drivers are getting initialized. This driver
-> will probably also be used on different SoC later.
+> On Sun, 2017-05-28 at 20:40 +0200, Hauke Mehrtens wrote:
+> [...]
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/reset/lantiq,reset.txt
+> > @@ -0,0 +1,30 @@
+> > +Lantiq XWAY SoC RCU reset controller binding
+> > +============================================
+> > +
+> > +This binding describes a reset-controller found on the RCU module on Lantiq
+> > +XWAY SoCs.
+> > +
+> > +
+> > +-------------------------------------------------------------------------------
+> > +Required properties:
+> > +- compatible		: Should be one of
+> > +				"lantiq,reset-danube"
+> > +				"lantiq,reset-xrx200"
+> > +- regmap		: A phandle to the RCU syscon
+> > +- offset-set		: Offset of the reset set register
+> > +- offset-status		: Offset of the reset status register
+> > +- #reset-cells		: Specifies the number of cells needed to encode the
+> > +			  reset line, should be 2.
+> > +			  The first cell takes the reset set bit and the
+> > +			  second cell takes the status bit.
+> > +
+> > +-------------------------------------------------------------------------------
+> > +Example for the reset-controllers on the xRX200 SoCs:
+> > +	reset0: reset-controller@0 {
+> > +		compatible = "lantiq,reset-xrx200";
+> > +
+> > +		regmap = <&rcu0>;
 > 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> ---
->  .../devicetree/bindings/mips/lantiq/fpi-bus.txt    | 33 ++++++++
->  MAINTAINERS                                        |  1 +
->  arch/mips/lantiq/xway/reset.c                      |  4 -
->  arch/mips/lantiq/xway/sysctrl.c                    | 41 ----------
->  drivers/soc/Makefile                               |  1 +
->  drivers/soc/lantiq/Makefile                        |  1 +
->  drivers/soc/lantiq/fpi-bus.c                       | 91 ++++++++++++++++++++++
->  7 files changed, 127 insertions(+), 45 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
->  create mode 100644 drivers/soc/lantiq/Makefile
->  create mode 100644 drivers/soc/lantiq/fpi-bus.c
-> 
-> diff --git a/Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt b/Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
-> new file mode 100644
-> index 000000000000..52d4bb9d2ffa
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mips/lantiq/fpi-bus.txt
-> @@ -0,0 +1,33 @@
-> +Lantiq XWAY SoC FPI BUS binding
-> +============================
-> +
-> +
-> +-------------------------------------------------------------------------------
-> +Required properties:
-> +- compatible	: Should be one of
-> +				"lantiq,fpi-xrx200"
-> +- reg		: The address and length of the XBAR configuration register.
-> +		  Address and length of the FPI bus itself
-> +
-> +Optional properties:
-> +- regmap		: A phandle to the RCU syscon
-> +- offset-endianness	: Offset of the endianness configuration register
-> +
-> +
-> +-------------------------------------------------------------------------------
-> +Example for the FPI on the xrx200 SoCs:
-> +	fpi@10000000 {
-> +		compatible = "lantiq,fpi-xrx200", "simple-bus";
-> +		ranges = <0x0 0x10000000 0xF000000>;
+> Why not place these nodes as children of &rcu0 ? This property would be
+> superfluous then.
 
-lowercase hex please.
+They are children. So it should be removed and made clear that these are 
+child nodes of rcu (here and in other patches in this series).
 
-> +		reg =	<0x1F400000 0x1000>,
-> +			<0x10000000 0xF000000>;
-> +		regmap = <&rcu0>;
-> +		offset-endianness = <0x4c>;
-
-Presumably, this is for endianness of the children. So this needs to be 
-configured before probing the children. If so, then you should not call 
-this a "simple-bus".
-
-> +		big-endian;
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +
-> +		gptu@E100A00 {
-
-lowercase hex.
-
-> +			......
-> +		};
-> +	};
+Rob

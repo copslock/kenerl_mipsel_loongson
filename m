@@ -1,64 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 12:21:26 +0200 (CEST)
-Received: from mail-oi0-x242.google.com ([IPv6:2607:f8b0:4003:c06::242]:36854
-        "EHLO mail-oi0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990510AbdEaKVQpPca3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 12:21:16 +0200
-Received: by mail-oi0-x242.google.com with SMTP id w138so1200546oiw.3
-        for <linux-mips@linux-mips.org>; Wed, 31 May 2017 03:21:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=Cfh+7u7ctSslmmVZ7/kmiYlq70t3UddpMfHwHvevTbQ=;
-        b=TqF0tbilQKBKM/3fw0eK+7mSRUJaiS+2cKXVlaEu/oIohijXUmtnWd4z5sUvpqlO0j
-         kzVzuVjalHJtlkzpkvr1KyfzNxamThkuoCcZVlrR5PFqgzqzXusqnUHUL6WlJaqe6U7c
-         VkXpSi/MVfWB88K3g9L1S56VU1br6Ft3bT/bTx4wJNNsZ0kRPS02OTgE+fAiB991Q/PF
-         GA356NRZBs1RQNG9amudzGXY6HMw86P5PUKOJY/S5u8pj+8Y5zxo6ocTSvejhZvB67SB
-         YoCUgEZQNux48EJNoXoKv8a5/YC5Tcj3Y1c++NuqML0gnRZUXiw0FbLUupNhmIcJ3uK4
-         LwPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=Cfh+7u7ctSslmmVZ7/kmiYlq70t3UddpMfHwHvevTbQ=;
-        b=IAMvctnmoYXC8i2DxfjuustORR0OJBQEZ+jeiMJDImp1W+eVLuJ7fEFcJsct1Lg3ql
-         M4AnT56HbneuGD6UZV145fn+xg+EqUJssxV+DNEF9VVUoSIV8PfnODBcMGK0W+4dfWKT
-         Zk5NmqbRbpnt9uFTDy7mXcZ+iz/ALfD8p0iZ+DWGnAZI65aom29cWeogiuLn8Qx9xasc
-         3K8gMcDUBfjXftWIOiHg6VqfOGNdQcDUn92F8j55KuopXZglA2Ungod9VoJ0E96w+k5p
-         WLDEkPNdGUJAyB36wOta8XGI01l9BoU5S1Juxepn2gAqX6nsQg5jWgYpeT4B5TGCyobj
-         6hxg==
-X-Gm-Message-State: AODbwcAvkYpizyKQKduoqNA21HmC/mju5NNIyLz5JuVHBWVGb2LmDKdj
-        5UpQSBPJw/kY4oc8AS41lhufbUIVbA==
-X-Received: by 10.157.50.11 with SMTP id t11mr303350otc.217.1496226070404;
- Wed, 31 May 2017 03:21:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2017 12:30:20 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:64373 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992196AbdEaKaKJd0hE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2017 12:30:10 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 932F3D2753DC8;
+        Wed, 31 May 2017 11:30:00 +0100 (IST)
+Received: from [10.40.8.58] (10.40.8.58) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Wed, 31 May
+ 2017 11:30:03 +0100
+Subject: Re: [PATCH 3/7] clocksource: Rename clocksource_probe
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>, <tglx@linutronix.de>
+References: <1495879129-28109-1-git-send-email-daniel.lezcano@linaro.org>
+ <1495879129-28109-3-git-send-email-daniel.lezcano@linaro.org>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Simon Horman <horms@verge.net.au>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        =?UTF-8?Q?S=c3=b6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Ionela Voinescu <ionela.voinescu@imgtec.com>,
+        John Crispin <john@phrozen.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Rich Felker <dalias@libc.org>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Noam Camus <noamc@ezchip.com>, Rob Herring <robh@kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Andrea Gelmini <andrea.gelmini@gelma.net>,
+        Icenowy Zheng <icenowy@aosc.xyz>,
+        Paul Burton <paul.burton@imgtec.com>,
+        Marcin Nowakowski <marcin.nowakowski@imgtec.com>,
+        Matt Redfearn <matt.redfearn@imgtec.com>,
+        Eric Anholt <eric@anholt.net>, Ray Jui <ray.jui@broadcom.com>,
+        Arnd Bergmann <arnd@arndb.de>, Joerg Roedel <jroedel@suse.de>,
+        "open list:SYNOPSYS ARC ARCHITECTURE" 
+        <linux-snps-arc@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        "open list:OMAP2+ SUPPORT" <linux-omap@vger.kernel.org>,
+        "open list:ARM/Rockchip SoC support" 
+        <linux-rockchip@lists.infradead.org>,
+        "open list:ARM/SHMOBILE ARM ARCHITECTURE" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "moderated list:H8/300 ARCHITECTURE" 
+        <uclinux-h8-devel@lists.sourceforge.jp>,
+        "open list:MIPS" <linux-mips@linux-mips.org>,
+        "moderated list:NIOS2 ARCHITECTURE" 
+        <nios2-dev@lists.rocketboards.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>
+From:   James Hartley <james.hartley@imgtec.com>
+Message-ID: <a974f62d-5a3c-629c-7e80-b45ba34f44dc@imgtec.com>
+Date:   Wed, 31 May 2017 11:29:45 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Received: by 10.157.51.139 with HTTP; Wed, 31 May 2017 03:21:10 -0700 (PDT)
-In-Reply-To: <7b6903a2-ce54-44f9-18ed-a14bd32069ce@broadcom.com>
-References: <20170530112027.3983554-1-arnd@arndb.de> <7b6903a2-ce54-44f9-18ed-a14bd32069ce@broadcom.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 31 May 2017 12:21:10 +0200
-X-Google-Sender-Auth: utYsm-w17C-JWafRkW-KxN9L1gM
-Message-ID: <CAK8P3a2-kO==gMDm3E6U8CR-zhwmZGztRy7Trcezf8oZxgn01g@mail.gmail.com>
-Subject: Re: [PATCH] bcm47xx: fix build regression
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        Ingo Molnar <mingo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+In-Reply-To: <1495879129-28109-3-git-send-email-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.40.8.58]
+Return-Path: <James.Hartley@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58086
+X-archive-position: 58087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: james.hartley@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -71,31 +96,45 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Wed, May 31, 2017 at 11:43 AM, Arend van Spriel
-<arend.vanspriel@broadcom.com> wrote:
-> On 5/30/2017 1:20 PM, Arnd Bergmann wrote:
->>
->> An unknown change in the kernel headers caused a build regression
->> in an MTD partition driver:
->>
->> In file included from drivers/mtd/bcm47xxpart.c:12:0:
->> include/linux/bcm47xx_nvram.h: In function 'bcm47xx_nvram_init_from_mem':
->> include/linux/bcm47xx_nvram.h:27:10: error: 'ENOTSUPP' undeclared (first
->> use in this function)
->>
->> Clearly we want to include linux/errno.h here.
+
+
+On 27/05/17 10:58, Daniel Lezcano wrote:
+> The function name is now renamed to 'timer_probe' for consistency with
+> the CLOCKSOURCE_OF_DECLARE => TIMER_OF_DECLARE change.
+>
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> ---
+>  arch/arc/kernel/setup.c                  |  2 +-
+>  arch/arm/kernel/time.c                   |  2 +-
+>  arch/arm/mach-mediatek/mediatek.c        |  2 +-
+>  arch/arm/mach-omap2/timer.c              | 10 +++++-----
+>  arch/arm/mach-rockchip/rockchip.c        |  2 +-
+>  arch/arm/mach-shmobile/setup-rcar-gen2.c |  2 +-
+>  arch/arm/mach-spear/spear13xx.c          |  2 +-
+>  arch/arm/mach-sunxi/sunxi.c              |  2 +-
+>  arch/arm/mach-u300/core.c                |  2 +-
+>  arch/arm/mach-zynq/common.c              |  2 +-
+>  arch/arm64/kernel/time.c                 |  2 +-
+>  arch/h8300/kernel/setup.c                |  2 +-
+>  arch/microblaze/kernel/setup.c           |  2 +-
+>  arch/mips/generic/init.c                 |  2 +-
+>  arch/mips/mti-malta/malta-time.c         |  2 +-
+>  arch/mips/pic32/pic32mzda/time.c         |  2 +-
+>  arch/mips/pistachio/time.c               |  2 +-
+>  arch/mips/ralink/clk.c                   |  2 +-
+>  arch/mips/ralink/timer-gic.c             |  2 +-
+>  arch/mips/xilfpga/time.c                 |  2 +-
+>  arch/nios2/kernel/time.c                 |  2 +-
+>  arch/sh/boards/of-generic.c              |  2 +-
+>  arch/xtensa/kernel/time.c                |  2 +-
+>  drivers/clocksource/clksrc-probe.c       |  2 +-
+>  include/linux/clocksource.h              |  4 ++--
+>  25 files changed, 30 insertions(+), 30 deletions(-)
 >
 >
-> unfortunate that you did not find the commit that caused this build
-> regression. You could produce preprocessor output when it was working to see
-> where errno.h got implicitly included and start looking there for git
-> history.
+For pistachio:
 
-I did a 'git bisect run make drivers/mtd/bcm47xxpart.o' now, which pointed to
-0bc2d534708b ("rcu: Refactor #includes from include/linux/rcupdate.h").
+Acked-by: James Hartley <james.hartley@imgtec.com>
 
-That commit seems reasonable, it was just bad luck that it caused this
-regression. The commit is currently in the rcu/rcu/next branch of tip.git,
-so Paul could merge the patch there.
-
-       Arnd
+Thanks,
+James.

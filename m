@@ -1,32 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jun 2017 17:49:45 +0200 (CEST)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37498 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jun 2017 17:50:25 +0200 (CEST)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:37526 "EHLO
         shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993997AbdFAPpFO0Ce- (ORCPT
+        by eddie.linux-mips.org with ESMTP id S23993999AbdFAPpFvRML- (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 1 Jun 2017 17:45:05 +0200
 Received: from 82-70-136-246.dsl.in-addr.zen.co.uk ([82.70.136.246] helo=deadeye)
         by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.84_2)
         (envelope-from <ben@decadent.org.uk>)
-        id 1dGSHX-00059Z-BZ; Thu, 01 Jun 2017 16:45:03 +0100
+        id 1dGSHX-00059G-0a; Thu, 01 Jun 2017 16:45:03 +0100
 Received: from ben by deadeye with local (Exim 4.89)
         (envelope-from <ben@decadent.org.uk>)
-        id 1dGSHV-0007rP-Q9; Thu, 01 Jun 2017 16:45:01 +0100
+        id 1dGSHV-0007rL-NK; Thu, 01 Jun 2017 16:45:01 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-CC:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        "=?UTF-8?Q?Rafa=C5=82=20?= =?UTF-8?Q?Mi=C5=82ecki?=" 
-        <rafal@milecki.pl>, "Mirko Parthey" <mirko.parthey@web.de>,
-        "Hauke Mehrtens" <hauke@hauke-m.de>,
-        "James Hogan" <james.hogan@imgtec.com>
+CC:     akpm@linux-foundation.org, "James Hogan" <james.hogan@imgtec.com>,
+        "Ralf Baechle" <ralf@linux-mips.org>,
+        "Arnd Bergmann" <arnd@arndb.de>, linux-mips@linux-mips.org
 Date:   Thu, 01 Jun 2017 16:43:16 +0100
-Message-ID: <lsq.1496331796.275771157@decadent.org.uk>
+Message-ID: <lsq.1496331796.883377040@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
-Subject: [PATCH 3.16 136/212] MIPS: BCM47XX: Fix button inversion for Asus
- WL-500W
+Subject: [PATCH 3.16 135/212] MIPS: ip27: Disable qlge driver in defconfig
 In-Reply-To: <lsq.1496331794.574686034@decadent.org.uk>
 X-SA-Exim-Connect-IP: 82.70.136.246
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -35,7 +32,7 @@ Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58125
+X-archive-position: 58126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,48 +53,42 @@ X-list: linux-mips
 
 ------------------
 
-From: Mirko Parthey <mirko.parthey@web.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit bdfdaf1a016ef09cb941f2edad485a713510b8d5 upstream.
+commit b617649468390713db1515ea79fc772d2eb897a8 upstream.
 
-The Asus WL-500W buttons are active high, but the software treats them
-as active low. Fix the inverted logic.
+One of the last remaining failures in kernelci.org is for a gcc bug:
 
-Fixes: 3be972556fa1 ("MIPS: BCM47XX: Import buttons database from OpenWrt")
-Signed-off-by: Mirko Parthey <mirko.parthey@web.de>
-Acked-by: Rafał Miłecki <rafal@milecki.pl>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
+drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: error: insn does not satisfy its constraints:
+drivers/net/ethernet/qlogic/qlge/qlge_main.c:4819:1: internal compiler error: in extract_constrain_insn, at recog.c:2190
+
+This is apparently broken in gcc-6 but fixed in gcc-7, and I cannot
+reproduce the problem here. However, it is clear that ip27_defconfig
+does not actually need this driver as the platform has only PCI-X but
+not PCIe, and the qlge adapter in turn is PCIe-only.
+
+The driver was originally enabled in 2010 along with lots of other
+drivers.
+
+Fixes: 59d302b342e5 ("MIPS: IP27: Make defconfig useful again.")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/15295/
+Cc: linux-kernel@vger.kernel.org
+Patchwork: https://patchwork.linux-mips.org/patch/15197/
 Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/mips/bcm47xx/buttons.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/mips/configs/ip27_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/mips/bcm47xx/buttons.c
-+++ b/arch/mips/bcm47xx/buttons.c
-@@ -17,6 +17,12 @@
- 		.active_low	= 1,					\
- 	}
- 
-+#define BCM47XX_GPIO_KEY_H(_gpio, _code)				\
-+	{								\
-+		.code		= _code,				\
-+		.gpio		= _gpio,				\
-+	}
-+
- /* Asus */
- 
- static const struct gpio_keys_button
-@@ -74,8 +80,8 @@ bcm47xx_buttons_asus_wl500gpv2[] __initc
- 
- static const struct gpio_keys_button
- bcm47xx_buttons_asus_wl500w[] __initconst = {
--	BCM47XX_GPIO_KEY(6, KEY_RESTART),
--	BCM47XX_GPIO_KEY(7, KEY_WPS_BUTTON),
-+	BCM47XX_GPIO_KEY_H(6, KEY_RESTART),
-+	BCM47XX_GPIO_KEY_H(7, KEY_WPS_BUTTON),
- };
- 
- static const struct gpio_keys_button
+--- a/arch/mips/configs/ip27_defconfig
++++ b/arch/mips/configs/ip27_defconfig
+@@ -206,7 +206,6 @@ CONFIG_MLX4_EN=m
+ # CONFIG_MLX4_DEBUG is not set
+ CONFIG_TEHUTI=m
+ CONFIG_BNX2X=m
+-CONFIG_QLGE=m
+ CONFIG_SFC=m
+ CONFIG_BE2NET=m
+ CONFIG_LIBERTAS_THINFIRM=m

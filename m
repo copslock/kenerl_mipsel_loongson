@@ -1,35 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jun 2017 19:38:21 +0200 (CEST)
-Received: from mx2.suse.de ([195.135.220.15]:51136 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23993915AbdFARiMcBNrd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Jun 2017 19:38:12 +0200
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id B53C3ABB1;
-        Thu,  1 Jun 2017 17:38:11 +0000 (UTC)
-From:   Aleksa Sarai <asarai@suse.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, Aleksa Sarai <asarai@suse.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jun 2017 20:46:44 +0200 (CEST)
+Received: from mail-it0-x22e.google.com ([IPv6:2607:f8b0:4001:c0b::22e]:35939
+        "EHLO mail-it0-x22e.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993970AbdFASqg3nHLF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Jun 2017 20:46:36 +0200
+Received: by mail-it0-x22e.google.com with SMTP id m47so45176080iti.1
+        for <linux-mips@linux-mips.org>; Thu, 01 Jun 2017 11:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:cc;
+        bh=e0IbSdFFJg3/qY3vrCdM+/pYSS+jZPja4VUnB/MF5CE=;
+        b=DVzvPeWFKyl0jblctG3bqwSCnXuUkXXRnThFVPqCxi+HAkeTcsa+WM15ZyphAAekJi
+         4ngr5hktBsx2ssUl1Ks5cRcChh+hy4IytLXD76d+k1jIKNuW01wR3xcN7PEM8tnQksF8
+         EX/p7o7KgdfWt0cmfVkNAeP+9yu54FZvBEz3cPXBSbOovgKDJiewTELSWEOhCSqypu/H
+         E696lyh4wnJLBnkaoToOb0R2OerYXIhPkM4yyIk1077qlOzh5/jBomJTrpE+hJDHzq09
+         2Gv0QxUAdQ321ycnJcwFE/4Ercw1O7AsyCURxlIpfhr/R0Jc2QFzLtfU/9H3D5/S96H/
+         /dwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:cc;
+        bh=e0IbSdFFJg3/qY3vrCdM+/pYSS+jZPja4VUnB/MF5CE=;
+        b=iaIhdI+Iz4cqLWG6lAUoX9K1k1lXML8YSBTJD1EC7yhcF9RTe6YvqaaQG92uSj/25+
+         YF0GqpUmAoyTLrOzVcXdQPnLQKeyUs03Z48hMAMeqKcpjdRwYOEBeY4HfXABnYPpqTnY
+         edSXPAHE5/Dqd9898yNlDHPNGCWeUfZEh+Rl7LRblwPXALhdKE7Gy1BYCTioXp2MsAsJ
+         6YWjPRRdnQZ7NkUH24rKDoiDBX+hegrsN8Gzajz2JIK0hkXyN+l3aLueb5DYHRO1jhkn
+         bj281ziaUfLxM64UlEMosLjVsqRlbpoCU5H7kz464pPzdF67vJ+fRNJBk3YHVPt/dmfw
+         DtyA==
+X-Gm-Message-State: AODbwcD/Vz2LmUCkEipUh/VERvVTgQLSpPzqaTjUdgtX6jtAAfXrDBUG
+        69DHAQAdej6psjPl+CIdNUm8NVUjow==
+X-Received: by 10.36.14.203 with SMTP id 194mr758306ite.56.1496342790727; Thu,
+ 01 Jun 2017 11:46:30 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.107.15.148 with HTTP; Thu, 1 Jun 2017 11:46:29 -0700 (PDT)
+In-Reply-To: <20170601173803.8698-1-asarai@suse.de>
+References: <20170601173803.8698-1-asarai@suse.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 1 Jun 2017 20:46:29 +0200
+X-Google-Sender-Auth: 8kvcKz9P4kq159sdmsHqBzCRmuA
+Message-ID: <CAMuHMdXkaWg70OidDi0_xALbzwZ+o0eEVEzT5U_6HdewBs4WwA@mail.gmail.com>
+Subject: Re: [PATCH] tty: add TIOCGPTPEER ioctl
+To:     Aleksa Sarai <asarai@suse.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, Arnd Bergmann <arnd@arndb.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
         Christian Brauner <christian.brauner@ubuntu.com>,
         Valentin Rothberg <vrothberg@suse.com>
-Subject: [PATCH] tty: add TIOCGPTPEER ioctl
-Date:   Fri,  2 Jun 2017 03:38:03 +1000
-Message-Id: <20170601173803.8698-1-asarai@suse.de>
-X-Mailer: git-send-email 2.13.0
-Return-Path: <asarai@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58127
+X-archive-position: 58128
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: asarai@suse.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -42,265 +76,31 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-When opening the slave end of a PTY, it is not possible for userspace to
-safely ensure that /dev/pts/$num is actually a slave (in cases where the
-mount namespace in which devpts was mounted is controlled by an
-untrusted process). In addition, there are several unresolvable
-race conditions if userspace were to attempt to detect attacks through
-stat(2) and other similar methods [in addition it is not clear how
-userspace could detect attacks involving FUSE].
+Hi Aleksa,
 
-Resolve this by providing an interface for userpace to safely open the
-"peer" end of a PTY file descriptor by using the dentry cached by
-devpts. Since it is not possible to have an open master PTY without
-having its slave exposed in /dev/pts this interface is safe. This
-interface currently does not provide a way to get the master pty (since
-it is not clear whether such an interface is safe or even useful).
+On Thu, Jun 1, 2017 at 7:38 PM, Aleksa Sarai <asarai@suse.de> wrote:
+> --- a/arch/alpha/include/uapi/asm/ioctls.h
+> +++ b/arch/alpha/include/uapi/asm/ioctls.h
+> @@ -94,6 +94,7 @@
+>  #define TIOCSRS485     _IOWR('T', 0x2F, struct serial_rs485)
+>  #define TIOCGPTN       _IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
+>  #define TIOCSPTLCK     _IOW('T',0x31, int)  /* Lock/unlock Pty */
+> +#define TIOCGPTPEER    _IOR('T', 0x41, int) /* Safely open the slave */
 
-Cc: Christian Brauner <christian.brauner@ubuntu.com>
-Cc: Valentin Rothberg <vrothberg@suse.com>
-Signed-off-by: Aleksa Sarai <asarai@suse.de>
----
- arch/alpha/include/uapi/asm/ioctls.h   |  1 +
- arch/mips/include/uapi/asm/ioctls.h    |  1 +
- arch/parisc/include/uapi/asm/ioctls.h  |  1 +
- arch/powerpc/include/uapi/asm/ioctls.h |  1 +
- arch/sh/include/uapi/asm/ioctls.h      |  1 +
- arch/sparc/include/uapi/asm/ioctls.h   |  3 +-
- arch/xtensa/include/uapi/asm/ioctls.h  |  1 +
- drivers/tty/pty.c                      | 71 ++++++++++++++++++++++++++++++++--
- include/uapi/asm-generic/ioctls.h      |  1 +
- 9 files changed, 76 insertions(+), 5 deletions(-)
+Shouldn't the list of definitions be kept sorted, by hex number?
+(everywhere)
 
-diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
-index f30c94ae1bdb..f6ec120fdccd 100644
---- a/arch/alpha/include/uapi/asm/ioctls.h
-+++ b/arch/alpha/include/uapi/asm/ioctls.h
-@@ -94,6 +94,7 @@
- #define TIOCSRS485	_IOWR('T', 0x2F, struct serial_rs485)
- #define TIOCGPTN	_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
- #define TIOCSPTLCK	_IOW('T',0x31, int)  /* Lock/unlock Pty */
-+#define TIOCGPTPEER	_IOR('T', 0x41, int) /* Safely open the slave */
- #define TIOCGDEV	_IOR('T',0x32, unsigned int) /* Get primary device node of /dev/console */
- #define TIOCSIG		_IOW('T',0x36, int)  /* Generate signal on Pty slave */
- #define TIOCVHANGUP	0x5437
-diff --git a/arch/mips/include/uapi/asm/ioctls.h b/arch/mips/include/uapi/asm/ioctls.h
-index 740219c2c894..6a44a4d82a6f 100644
---- a/arch/mips/include/uapi/asm/ioctls.h
-+++ b/arch/mips/include/uapi/asm/ioctls.h
-@@ -85,6 +85,7 @@
- #define TIOCSRS485	_IOWR('T', 0x2F, struct serial_rs485)
- #define TIOCGPTN	_IOR('T', 0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
- #define TIOCSPTLCK	_IOW('T', 0x31, int)  /* Lock/unlock Pty */
-+#define TIOCGPTPEER	_IOR('T', 0x41, int) /* Safely open the slave */
- #define TIOCGDEV	_IOR('T', 0x32, unsigned int) /* Get primary device node of /dev/console */
- #define TIOCSIG		_IOW('T', 0x36, int)  /* Generate signal on Pty slave */
- #define TIOCVHANGUP	0x5437
-diff --git a/arch/parisc/include/uapi/asm/ioctls.h b/arch/parisc/include/uapi/asm/ioctls.h
-index b6572f051b67..b89a7029a83f 100644
---- a/arch/parisc/include/uapi/asm/ioctls.h
-+++ b/arch/parisc/include/uapi/asm/ioctls.h
-@@ -54,6 +54,7 @@
- #define TIOCSRS485	_IOWR('T', 0x2F, struct serial_rs485)
- #define TIOCGPTN	_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
- #define TIOCSPTLCK	_IOW('T',0x31, int)  /* Lock/unlock Pty */
-+#define TIOCGPTPEER	_IOR('T', 0x41, int) /* Safely open the slave */
- #define TIOCGDEV	_IOR('T',0x32, int)  /* Get primary device node of /dev/console */
- #define TIOCSIG		_IOW('T',0x36, int)  /* Generate signal on Pty slave */
- #define TIOCVHANGUP	0x5437
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 49a25796a61a..28ccc176e403 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -94,6 +94,7 @@
- #define TIOCSRS485	0x542f
- #define TIOCGPTN	_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
- #define TIOCSPTLCK	_IOW('T',0x31, int)  /* Lock/unlock Pty */
-+#define TIOCGPTPEER	_IOR('T', 0x41, int) /* Safely open the slave */
- #define TIOCGDEV	_IOR('T',0x32, unsigned int) /* Get primary device node of /dev/console */
- #define TIOCSIG		_IOW('T',0x36, int)  /* Generate signal on Pty slave */
- #define TIOCVHANGUP	0x5437
-diff --git a/arch/sh/include/uapi/asm/ioctls.h b/arch/sh/include/uapi/asm/ioctls.h
-index c9903e56ccf4..c155812f75db 100644
---- a/arch/sh/include/uapi/asm/ioctls.h
-+++ b/arch/sh/include/uapi/asm/ioctls.h
-@@ -87,6 +87,7 @@
- #define TIOCSRS485	_IOWR('T', 47, struct serial_rs485)
- #define TIOCGPTN	_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
- #define TIOCSPTLCK	_IOW('T',0x31, int)  /* Lock/unlock Pty */
-+#define TIOCGPTPEER	_IOR('T', 0x41, int) /* Safely open the slave */
- #define TIOCGDEV	_IOR('T',0x32, unsigned int) /* Get primary device node of /dev/console */
- #define TIOCSIG		_IOW('T',0x36, int)  /* Generate signal on Pty slave */
- #define TIOCVHANGUP	_IO('T', 0x37)
-diff --git a/arch/sparc/include/uapi/asm/ioctls.h b/arch/sparc/include/uapi/asm/ioctls.h
-index 06b3f6c3bb9a..6d27398632ea 100644
---- a/arch/sparc/include/uapi/asm/ioctls.h
-+++ b/arch/sparc/include/uapi/asm/ioctls.h
-@@ -27,7 +27,7 @@
- #define TIOCGRS485	_IOR('T', 0x41, struct serial_rs485)
- #define TIOCSRS485	_IOWR('T', 0x42, struct serial_rs485)
- 
--/* Note that all the ioctls that are not available in Linux have a 
-+/* Note that all the ioctls that are not available in Linux have a
-  * double underscore on the front to: a) avoid some programs to
-  * think we support some ioctls under Linux (autoconfiguration stuff)
-  */
-@@ -88,6 +88,7 @@
- #define TIOCGPTN	_IOR('t', 134, unsigned int) /* Get Pty Number */
- #define TIOCSPTLCK	_IOW('t', 135, int) /* Lock/unlock PTY */
- #define TIOCSIG		_IOW('t', 136, int) /* Generate signal on Pty slave */
-+#define TIOCGPTPEER	_IOR('t', 137, int) /* Safely open the slave */
- 
- /* Little f */
- #define FIOCLEX		_IO('f', 1)
-diff --git a/arch/xtensa/include/uapi/asm/ioctls.h b/arch/xtensa/include/uapi/asm/ioctls.h
-index 518954e74e6d..71f0a979647e 100644
---- a/arch/xtensa/include/uapi/asm/ioctls.h
-+++ b/arch/xtensa/include/uapi/asm/ioctls.h
-@@ -99,6 +99,7 @@
- #define TIOCSRS485	_IOWR('T', 47, struct serial_rs485)
- #define TIOCGPTN	_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
- #define TIOCSPTLCK	_IOW('T',0x31, int)  /* Lock/unlock Pty */
-+#define TIOCGPTPEER	_IOR('T', 0x41, int) /* Safely open the slave */
- #define TIOCGDEV	_IOR('T',0x32, unsigned int) /* Get primary device node of /dev/console */
- #define TIOCSIG		_IOW('T',0x36, int)  /* Generate signal on Pty slave */
- #define TIOCVHANGUP	_IO('T', 0x37)
-diff --git a/drivers/tty/pty.c b/drivers/tty/pty.c
-index 65799575c666..19c134ca47bb 100644
---- a/drivers/tty/pty.c
-+++ b/drivers/tty/pty.c
-@@ -24,6 +24,9 @@
- #include <linux/slab.h>
- #include <linux/mutex.h>
- #include <linux/poll.h>
-+#include <linux/mount.h>
-+#include <linux/file.h>
-+#include <linux/ioctl.h>
- 
- #undef TTY_DEBUG_HANGUP
- #ifdef TTY_DEBUG_HANGUP
-@@ -66,8 +69,13 @@ static void pty_close(struct tty_struct *tty, struct file *filp)
- #ifdef CONFIG_UNIX98_PTYS
- 		if (tty->driver == ptm_driver) {
- 			mutex_lock(&devpts_mutex);
--			if (tty->link->driver_data)
--				devpts_pty_kill(tty->link->driver_data);
-+			if (tty->link->driver_data) {
-+				struct path *path = tty->link->driver_data;
-+
-+				devpts_pty_kill(path->dentry);
-+				path_put(path);
-+				kfree(path);
-+			}
- 			mutex_unlock(&devpts_mutex);
- 		}
- #endif
-@@ -440,6 +448,48 @@ static int pty_common_install(struct tty_driver *driver, struct tty_struct *tty,
- 	return retval;
- }
- 
-+/**
-+ *	pty_open_peer - open the peer of a pty
-+ *	@tty: the peer of the pty being opened
-+ *
-+ *	Open the cached dentry in tty->link, providing a safe way for userspace
-+ *	to get the slave end of a pty (where they have the master fd and cannot
-+ *	access or trust the mount namespace /dev/pts was mounted inside).
-+ */
-+static struct file *pty_open_peer(struct tty_struct *tty, int flags)
-+{
-+	if (tty->driver->subtype != PTY_TYPE_MASTER)
-+		return ERR_PTR(-EIO);
-+	return dentry_open(tty->link->driver_data, flags, current_cred());
-+}
-+
-+static int pty_get_peer(struct tty_struct *tty, int flags)
-+{
-+	int fd = -1;
-+	struct file *filp = NULL;
-+	int retval = -EINVAL;
-+
-+	fd = get_unused_fd_flags(0);
-+	if (fd < 0) {
-+		retval = fd;
-+		goto err;
-+	}
-+
-+	filp = pty_open_peer(tty, flags);
-+	if (IS_ERR(filp)) {
-+		retval = PTR_ERR(filp);
-+		goto err_put;
-+	}
-+
-+	fd_install(fd, filp);
-+	return fd;
-+
-+err_put:
-+	put_unused_fd(fd);
-+err:
-+	return retval;
-+}
-+
- static void pty_cleanup(struct tty_struct *tty)
- {
- 	tty_port_put(tty->port);
-@@ -602,6 +652,8 @@ static int pty_unix98_ioctl(struct tty_struct *tty,
- 		return pty_get_pktmode(tty, (int __user *)arg);
- 	case TIOCGPTN: /* Get PT Number */
- 		return put_user(tty->index, (unsigned int __user *)arg);
-+	case TIOCGPTPEER: /* Open the other end */
-+		return pty_get_peer(tty, (int) arg);
- 	case TIOCSIG:    /* Send signal to other side of pty */
- 		return pty_signal(tty, (int) arg);
- 	}
-@@ -718,6 +770,7 @@ static int ptmx_open(struct inode *inode, struct file *filp)
- {
- 	struct pts_fs_info *fsi;
- 	struct tty_struct *tty;
-+	struct path *pts_path;
- 	struct dentry *dentry;
- 	int retval;
- 	int index;
-@@ -771,16 +824,26 @@ static int ptmx_open(struct inode *inode, struct file *filp)
- 		retval = PTR_ERR(dentry);
- 		goto err_release;
- 	}
--	tty->link->driver_data = dentry;
-+	/* We need to cache a fake path for TIOCGPTPEER. */
-+	pts_path = kmalloc(sizeof(struct path), GFP_KERNEL);
-+	if (!pts_path)
-+		goto err_release;
-+	pts_path->mnt = filp->f_path.mnt;
-+	pts_path->dentry = dentry;
-+	path_get(pts_path);
-+	tty->link->driver_data = pts_path;
- 
- 	retval = ptm_driver->ops->open(tty, filp);
- 	if (retval)
--		goto err_release;
-+		goto err_path_put;
- 
- 	tty_debug_hangup(tty, "opening (count=%d)\n", tty->count);
- 
- 	tty_unlock(tty);
- 	return 0;
-+err_path_put:
-+	path_put(pts_path);
-+	kfree(pts_path);
- err_release:
- 	tty_unlock(tty);
- 	// This will also put-ref the fsi
-diff --git a/include/uapi/asm-generic/ioctls.h b/include/uapi/asm-generic/ioctls.h
-index 143dacbb7d9a..e836dc677612 100644
---- a/include/uapi/asm-generic/ioctls.h
-+++ b/include/uapi/asm-generic/ioctls.h
-@@ -67,6 +67,7 @@
- #endif
- #define TIOCGPTN	_IOR('T', 0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
- #define TIOCSPTLCK	_IOW('T', 0x31, int)  /* Lock/unlock Pty */
-+#define TIOCGPTPEER	_IOR('T', 0x41, int) /* Safely open the slave */
- #define TIOCGDEV	_IOR('T', 0x32, unsigned int) /* Get primary device node of /dev/console */
- #define TCGETX		0x5432 /* SYS5 TCGETX compatibility */
- #define TCSETX		0x5433
--- 
-2.13.0
+>  #define TIOCGDEV       _IOR('T',0x32, unsigned int) /* Get primary device node of /dev/console */
+>  #define TIOCSIG                _IOW('T',0x36, int)  /* Generate signal on Pty slave */
+>  #define TIOCVHANGUP    0x5437
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

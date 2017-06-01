@@ -1,46 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jun 2017 20:46:44 +0200 (CEST)
-Received: from mail-it0-x22e.google.com ([IPv6:2607:f8b0:4001:c0b::22e]:35939
-        "EHLO mail-it0-x22e.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993970AbdFASqg3nHLF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 1 Jun 2017 20:46:36 +0200
-Received: by mail-it0-x22e.google.com with SMTP id m47so45176080iti.1
-        for <linux-mips@linux-mips.org>; Thu, 01 Jun 2017 11:46:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=e0IbSdFFJg3/qY3vrCdM+/pYSS+jZPja4VUnB/MF5CE=;
-        b=DVzvPeWFKyl0jblctG3bqwSCnXuUkXXRnThFVPqCxi+HAkeTcsa+WM15ZyphAAekJi
-         4ngr5hktBsx2ssUl1Ks5cRcChh+hy4IytLXD76d+k1jIKNuW01wR3xcN7PEM8tnQksF8
-         EX/p7o7KgdfWt0cmfVkNAeP+9yu54FZvBEz3cPXBSbOovgKDJiewTELSWEOhCSqypu/H
-         E696lyh4wnJLBnkaoToOb0R2OerYXIhPkM4yyIk1077qlOzh5/jBomJTrpE+hJDHzq09
-         2Gv0QxUAdQ321ycnJcwFE/4Ercw1O7AsyCURxlIpfhr/R0Jc2QFzLtfU/9H3D5/S96H/
-         /dwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=e0IbSdFFJg3/qY3vrCdM+/pYSS+jZPja4VUnB/MF5CE=;
-        b=iaIhdI+Iz4cqLWG6lAUoX9K1k1lXML8YSBTJD1EC7yhcF9RTe6YvqaaQG92uSj/25+
-         YF0GqpUmAoyTLrOzVcXdQPnLQKeyUs03Z48hMAMeqKcpjdRwYOEBeY4HfXABnYPpqTnY
-         edSXPAHE5/Dqd9898yNlDHPNGCWeUfZEh+Rl7LRblwPXALhdKE7Gy1BYCTioXp2MsAsJ
-         6YWjPRRdnQZ7NkUH24rKDoiDBX+hegrsN8Gzajz2JIK0hkXyN+l3aLueb5DYHRO1jhkn
-         bj281ziaUfLxM64UlEMosLjVsqRlbpoCU5H7kz464pPzdF67vJ+fRNJBk3YHVPt/dmfw
-         DtyA==
-X-Gm-Message-State: AODbwcD/Vz2LmUCkEipUh/VERvVTgQLSpPzqaTjUdgtX6jtAAfXrDBUG
-        69DHAQAdej6psjPl+CIdNUm8NVUjow==
-X-Received: by 10.36.14.203 with SMTP id 194mr758306ite.56.1496342790727; Thu,
- 01 Jun 2017 11:46:30 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.107.15.148 with HTTP; Thu, 1 Jun 2017 11:46:29 -0700 (PDT)
-In-Reply-To: <20170601173803.8698-1-asarai@suse.de>
-References: <20170601173803.8698-1-asarai@suse.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 1 Jun 2017 20:46:29 +0200
-X-Google-Sender-Auth: 8kvcKz9P4kq159sdmsHqBzCRmuA
-Message-ID: <CAMuHMdXkaWg70OidDi0_xALbzwZ+o0eEVEzT5U_6HdewBs4WwA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jun 2017 22:00:38 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:60114 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23990557AbdFAUA3Rr67Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 1 Jun 2017 22:00:29 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 6BE93AAB4;
+        Thu,  1 Jun 2017 20:00:28 +0000 (UTC)
 Subject: Re: [PATCH] tty: add TIOCGPTPEER ioctl
-To:     Aleksa Sarai <asarai@suse.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jiri Slaby <jslaby@suse.com>, Arnd Bergmann <arnd@arndb.de>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -54,16 +22,27 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Linux-Arch <linux-arch@vger.kernel.org>,
         Christian Brauner <christian.brauner@ubuntu.com>,
         Valentin Rothberg <vrothberg@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <geert.uytterhoeven@gmail.com>
+References: <20170601173803.8698-1-asarai@suse.de>
+ <CAMuHMdXkaWg70OidDi0_xALbzwZ+o0eEVEzT5U_6HdewBs4WwA@mail.gmail.com>
+From:   Aleksa Sarai <asarai@suse.de>
+Message-ID: <a0671efc-4c4e-bbdc-c9d8-a7bdc22b872a@suse.de>
+Date:   Fri, 2 Jun 2017 06:00:17 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
+MIME-Version: 1.0
+In-Reply-To: <CAMuHMdXkaWg70OidDi0_xALbzwZ+o0eEVEzT5U_6HdewBs4WwA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <asarai@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58128
+X-archive-position: 58129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: asarai@suse.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -76,31 +55,23 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi Aleksa,
+>> --- a/arch/alpha/include/uapi/asm/ioctls.h
+>> +++ b/arch/alpha/include/uapi/asm/ioctls.h
+>> @@ -94,6 +94,7 @@
+>>   #define TIOCSRS485     _IOWR('T', 0x2F, struct serial_rs485)
+>>   #define TIOCGPTN       _IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
+>>   #define TIOCSPTLCK     _IOW('T',0x31, int)  /* Lock/unlock Pty */
+>> +#define TIOCGPTPEER    _IOR('T', 0x41, int) /* Safely open the slave */
+> 
+> Shouldn't the list of definitions be kept sorted, by hex number?
+> (everywhere)
 
-On Thu, Jun 1, 2017 at 7:38 PM, Aleksa Sarai <asarai@suse.de> wrote:
-> --- a/arch/alpha/include/uapi/asm/ioctls.h
-> +++ b/arch/alpha/include/uapi/asm/ioctls.h
-> @@ -94,6 +94,7 @@
->  #define TIOCSRS485     _IOWR('T', 0x2F, struct serial_rs485)
->  #define TIOCGPTN       _IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
->  #define TIOCSPTLCK     _IOW('T',0x31, int)  /* Lock/unlock Pty */
-> +#define TIOCGPTPEER    _IOR('T', 0x41, int) /* Safely open the slave */
+Probably. The reason I put it here is because it logically is very 
+similar to TIOCGPTN and TIOSPTLCK, but I can move it if the hex order is 
+more important for maintainence.
 
-Shouldn't the list of definitions be kept sorted, by hex number?
-(everywhere)
-
->  #define TIOCGDEV       _IOR('T',0x32, unsigned int) /* Get primary device node of /dev/console */
->  #define TIOCSIG                _IOW('T',0x36, int)  /* Generate signal on Pty slave */
->  #define TIOCVHANGUP    0x5437
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+Aleksa Sarai
+Software Engineer (Containers)
+SUSE Linux GmbH
+https://www.cyphar.com/

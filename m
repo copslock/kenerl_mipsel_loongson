@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 00:39:05 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:20455 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 00:39:29 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:61275 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993914AbdFBWi5lKvv3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Jun 2017 00:38:57 +0200
+        with ESMTP id S23993929AbdFBWjRQIkr3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Jun 2017 00:39:17 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 89C868E25227F;
-        Fri,  2 Jun 2017 23:38:45 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 66F5EFFC27172;
+        Fri,  2 Jun 2017 23:39:06 +0100 (IST)
 Received: from localhost (10.20.1.33) by hhmail02.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 2 Jun 2017 23:38:49
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 2 Jun 2017 23:39:10
  +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <linux-mips@linux-mips.org>
 CC:     Paul Burton <paul.burton@imgtec.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 1/6] MIPS: Add CPU shared FTLB feature detection
-Date:   Fri, 2 Jun 2017 15:38:01 -0700
-Message-ID: <20170602223806.5078-2-paul.burton@imgtec.com>
+Subject: [PATCH 2/6] MIPS: Handle tlbex-tlbp race condition
+Date:   Fri, 2 Jun 2017 15:38:02 -0700
+Message-ID: <20170602223806.5078-3-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.13.0
 In-Reply-To: <20170602223806.5078-1-paul.burton@imgtec.com>
 References: <20170602223806.5078-1-paul.burton@imgtec.com>
@@ -26,7 +26,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58165
+X-archive-position: 58166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,114 +43,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Some systems share FTLB RAMs or entries between sibling CPUs (ie.
-hardware threads, or VP(E)s, within a core). These properties require
-kernel handling in various places. As a start this patch introduces
-cpu_has_shared_ftlb_ram & cpu_has_shared_ftlb_entries feature macros
-which we set appropriately for I6400 & I6500 CPUs. Further patches will
-make use of these macros as appropriate.
+In systems where there are multiple actors updating the TLB, the
+potential exists for a race condition wherein a CPU hits a TLB exception
+but by the time it reaches a TLBP instruction the affected TLB entry may
+have been replaced. This can happen if, for example, a CPU shares the
+TLB between hardware threads (VPs) within a core and one of them
+replaces the entry that another has just taken a TLB exception for.
+
+We handle this race in the case of the Hardware Table Walker (HTW) being
+the other actor already, but didn't take into account the potential for
+multiple threads racing. Include the code for aborting TLB exception
+handling in affected multi-threaded systems, those being the I6400 &
+I6500 CPUs which share TLB entries between VPs.
+
+In the case of using RiXi without dedicated exceptions we have never
+handled this race even for HTW. This patch adds WARN()s to these cases
+which ought never to be hit because all CPUs with either HTW or shared
+FTLB RAMs also include dedicated RiXi exceptions, but the WARN()s will
+ensure this is always the case.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-
 ---
-This depends upon my "MIPS: Probe the I6500 CPU" patch being applied
-first in order to make use of CPU_I6500.
 
- arch/mips/include/asm/cpu-features.h | 41 ++++++++++++++++++++++++++++++++++++
- arch/mips/include/asm/cpu.h          |  4 ++++
- arch/mips/kernel/cpu-probe.c         | 11 ++++++++++
- 3 files changed, 56 insertions(+)
+ arch/mips/mm/tlbex.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 494d38274142..d6ea8e7c5107 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -487,6 +487,47 @@
- # define cpu_has_perf		(cpu_data[0].options & MIPS_CPU_PERF)
- #endif
- 
-+#if defined(CONFIG_SMP) && defined(__mips_isa_rev) && (__mips_isa_rev >= 6)
-+/*
-+ * Some systems share FTLB RAMs between threads within a core (siblings in
-+ * kernel parlance). This means that FTLB entries may become invalid at almost
-+ * any point when an entry is evicted due to a sibling thread writing an entry
-+ * to the shared FTLB RAM.
-+ *
-+ * This is only relevant to SMP systems, and the only systems that exhibit this
-+ * property implement MIPSr6 or higher so we constrain support for this to
-+ * kernels that will run on such systems.
-+ */
-+# ifndef cpu_has_shared_ftlb_ram
-+#  define cpu_has_shared_ftlb_ram \
-+	(current_cpu_data.options & MIPS_CPU_SHARED_FTLB_RAM)
-+# endif
-+
-+/*
-+ * Some systems take this a step further & share FTLB entries between siblings.
-+ * This is implemented as TLB writes happening as usual, but if an entry
-+ * written by a sibling exists in the shared FTLB for a translation which would
-+ * otherwise cause a TLB refill exception then the CPU will use the entry
-+ * written by its sibling rather than triggering a refill & writing a matching
-+ * TLB entry for itself.
-+ *
-+ * This is naturally only valid if a TLB entry is known to be suitable for use
-+ * on all siblings in a CPU, and so it only takes effect when MMIDs are in use
-+ * rather than ASIDs or when a TLB entry is marked global.
-+ */
-+# ifndef cpu_has_shared_ftlb_entries
-+#  define cpu_has_shared_ftlb_entries \
-+	(current_cpu_data.options & MIPS_CPU_SHARED_FTLB_ENTRIES)
-+# endif
-+#endif /* SMP && __mips_isa_rev >= 6 */
-+
-+#ifndef cpu_has_shared_ftlb_ram
-+# define cpu_has_shared_ftlb_ram 0
-+#endif
-+#ifndef cpu_has_shared_ftlb_entries
-+# define cpu_has_shared_ftlb_entries 0
-+#endif
-+
- /*
-  * Guest capabilities
-  */
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 3069359b0120..9bc820c4e1ed 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -417,6 +417,10 @@ enum cpu_type_enum {
- #define MIPS_CPU_GUESTID	MBIT_ULL(51)	/* CPU uses VZ ASE GuestID feature */
- #define MIPS_CPU_DRG		MBIT_ULL(52)	/* CPU has VZ Direct Root to Guest (DRG) */
- #define MIPS_CPU_UFR		MBIT_ULL(53)	/* CPU supports User mode FR switching */
-+#define MIPS_CPU_SHARED_FTLB_RAM \
-+				MBIT_ULL(54)	/* CPU shares FTLB RAM with another */
-+#define MIPS_CPU_SHARED_FTLB_ENTRIES \
-+				MBIT_ULL(55)	/* CPU shares FTLB entries with another */
- 
- /*
-  * CPU ASE encodings
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 353ade2c130a..8135002116df 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1653,6 +1653,17 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
- 	decode_configs(c);
- 
- 	spram_config();
-+
-+	switch (__get_cpu_type(c->cputype)) {
-+	case CPU_I6500:
-+		c->options |= MIPS_CPU_SHARED_FTLB_ENTRIES;
-+		/* fall-through */
-+	case CPU_I6400:
-+		c->options |= MIPS_CPU_SHARED_FTLB_RAM;
-+		/* fall-through */
-+	default:
-+		break;
-+	}
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index ed1c5297547a..e6499209b81c 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -2015,6 +2015,26 @@ static void build_r3000_tlb_modify_handler(void)
  }
+ #endif /* CONFIG_MIPS_PGD_C0_CONTEXT */
  
- static inline void cpu_probe_alchemy(struct cpuinfo_mips *c, unsigned int cpu)
++static bool cpu_has_tlbex_tlbp_race(void)
++{
++	/*
++	 * When a Hardware Table Walker is running it can replace TLB entries
++	 * at any time, leading to a race between it & the CPU.
++	 */
++	if (cpu_has_htw)
++		return true;
++
++	/*
++	 * If the CPU shares FTLB RAM with its siblings then our entry may be
++	 * replaced at any time by a sibling performing a write to the FTLB.
++	 */
++	if (cpu_has_shared_ftlb_ram)
++		return true;
++
++	/* In all other cases there ought to be no race condition to handle */
++	return false;
++}
++
+ /*
+  * R4000 style TLB load/store/modify handlers.
+  */
+@@ -2051,7 +2071,7 @@ build_r4000_tlbchange_handler_head(u32 **p, struct uasm_label **l,
+ 	iPTE_LW(p, wr.r1, wr.r2); /* get even pte */
+ 	if (!m4kc_tlbp_war()) {
+ 		build_tlb_probe_entry(p);
+-		if (cpu_has_htw) {
++		if (cpu_has_tlbex_tlbp_race()) {
+ 			/* race condition happens, leaving */
+ 			uasm_i_ehb(p);
+ 			uasm_i_mfc0(p, wr.r3, C0_INDEX);
+@@ -2125,6 +2145,14 @@ static void build_r4000_tlb_load_handler(void)
+ 		}
+ 		uasm_i_nop(&p);
+ 
++		/*
++		 * Warn if something may race with us & replace the TLB entry
++		 * before we read it here. Everything with such races should
++		 * also have dedicated RiXi exception handlers, so this
++		 * shouldn't be hit.
++		 */
++		WARN(cpu_has_tlbex_tlbp_race(), "Unhandled race in RiXi path");
++
+ 		uasm_i_tlbr(&p);
+ 
+ 		switch (current_cpu_type()) {
+@@ -2192,6 +2220,14 @@ static void build_r4000_tlb_load_handler(void)
+ 		}
+ 		uasm_i_nop(&p);
+ 
++		/*
++		 * Warn if something may race with us & replace the TLB entry
++		 * before we read it here. Everything with such races should
++		 * also have dedicated RiXi exception handlers, so this
++		 * shouldn't be hit.
++		 */
++		WARN(cpu_has_tlbex_tlbp_race(), "Unhandled race in RiXi path");
++
+ 		uasm_i_tlbr(&p);
+ 
+ 		switch (current_cpu_type()) {
 -- 
 2.13.0

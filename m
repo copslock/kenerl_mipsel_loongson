@@ -1,68 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2017 12:05:08 +0200 (CEST)
-Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:33385
-        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993921AbdFBKFCGxCmW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Jun 2017 12:05:02 +0200
-Received: by mail-oi0-x243.google.com with SMTP id h4so10985177oib.0
-        for <linux-mips@linux-mips.org>; Fri, 02 Jun 2017 03:05:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:cc;
-        bh=IWCJkxpcZdLEdtCOq4twVtZBuEXO4rbIIFD4I0IfQC4=;
-        b=haOkrB0/15pkSW9lj+T/2/nMOzlM4nreUI1uxKEmvVc8avlaMW476OJRjVhIq9194R
-         HgrWEqrW6Px7nmj7PupcfpzY1q5srWSnxE0c+u8EvUHcB+EUwL46np6SXBO3Bzv3wNks
-         bmaie7lomKfEFPxMxmTzpBhN+JW6KFbb+Zyr8KnQmtCSNgAr2AHnbxgvohMLrX9VV6Io
-         FH4ouZnmCzq5KX+/GtOlM/3MUGLDMVVI9LzKD7DpqbrughIj6MariBp2Tt/sPlOke7TS
-         twF4QA7B2HeXGuyPVOiljJjbGC5JmoyPlQK4+HVpyRe9baKIDVyf4Ie+ugtESDR39/m/
-         ZxIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:cc;
-        bh=IWCJkxpcZdLEdtCOq4twVtZBuEXO4rbIIFD4I0IfQC4=;
-        b=DeOUQ3bs3WTs/QhUObGBT2qRhA3qi4dty+cisI7jVALCbjymFo1MDrmCtCEuZCcuax
-         qg1Xh8Ug/V9iqKRMNVFzDGFg0NmostZAoKIfYkHjSUlW54ZsfaFjHkr/OZ0v1B+ypuLH
-         wCjDoCTCEsPYm0emRM7azw4htb4TyUq+Z3i8zldBcxTLoQntbdLqmLf4CN7uhtg2Hmra
-         9deJvIi3A310uLbTee7RUIV8nG4/sJUtwcnN4JS5o7q8l3361V1dkKqmXoGZIF0hXh63
-         qPb4SyFO5fKABXxn/5Y0wEgw6lrbu8yLnlIiUYl9tlAjsevvOv8AU6iDotrjn6td0N8J
-         J8gQ==
-X-Gm-Message-State: AODbwcCYIslAjT6aIlbP1RSbRPmCY9oI8/RCsoLQSo5i2ZWaYjEKdov0
-        pqkct4aFDY2EgpMS+48fSWiwR15iAg==
-X-Received: by 10.157.50.11 with SMTP id t11mr4278352otc.217.1496397896070;
- Fri, 02 Jun 2017 03:04:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2017 19:49:20 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:46964 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991955AbdFBRtOS0ieo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Jun 2017 19:49:14 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id A7A98608D4; Fri,  2 Jun 2017 17:49:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1496425752;
+        bh=kJrrJDg6dTbmLjvKp+ZmweZPpWlfEMc+4iM+5h0Y48Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=C0yMLUM3GKTFRtvGKBJ9rQZ/58Sbw+y2HR3CjV5fJYthns+I26ZD//JjnhXUDKP4S
+         lLj1as0uuSpU2pTmR+9ptrHVECMVKhDULsZSAKrNCd7NoXx7zoI1hPGIigJGAaQ4gn
+         TmgE/E8i0IoDVCnsBhIE77G/94TrWgsloKYbI3r8=
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CF32C608D4;
+        Fri,  2 Jun 2017 17:49:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1496425751;
+        bh=kJrrJDg6dTbmLjvKp+ZmweZPpWlfEMc+4iM+5h0Y48Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UUVaC4S6fbRT3Vcw2KWj0qWo55rb/UMfRb8yxHU5/dfsmz7Zt2B1JaVJWBClHf4Uf
+         Pg7MRYwm1OCEP4oU8anxdIS0tr6vCisBfGTVfE5rDw+1K1kCsf415W0tqcJcfDa/O3
+         uhrcLYiC6OuMRES9u0RuI4sqQlely7ilaJfTMRr8=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CF32C608D4
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
+Date:   Fri, 2 Jun 2017 10:49:11 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        John Crispin <john@phrozen.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] clk: Provide dummy of_clk_get_from_provider() for
+ compile-testing
+Message-ID: <20170602174911.GK20170@codeaurora.org>
+References: <1493384933-31297-1-git-send-email-geert+renesas@glider.be>
 MIME-Version: 1.0
-Received: by 10.157.51.139 with HTTP; Fri, 2 Jun 2017 03:04:55 -0700 (PDT)
-In-Reply-To: <20170602084858.4299-2-asarai@suse.de>
-References: <20170602084858.4299-1-asarai@suse.de> <20170602084858.4299-2-asarai@suse.de>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 2 Jun 2017 12:04:55 +0200
-X-Google-Sender-Auth: zGeAfGYRxSmSB5DQuCaPAauM95s
-Message-ID: <CAK8P3a2Q5CwofO96fXyjTVqmm23UKZjd+mOopnvKr_TusLxXpQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] tty: add TIOCGPTPEER ioctl
-To:     Aleksa Sarai <asarai@suse.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-alpha@vger.kernel.org,
-        "open list:RALINK MIPS ARCHITECTURE" <linux-mips@linux-mips.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-sh@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Valentin Rothberg <vrothberg@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Return-Path: <arndbergmann@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1493384933-31297-1-git-send-email-geert+renesas@glider.be>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58134
+X-archive-position: 58135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -75,38 +69,20 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Fri, Jun 2, 2017 at 10:48 AM, Aleksa Sarai <asarai@suse.de> wrote:
-> When opening the slave end of a PTY, it is not possible for userspace to
-> safely ensure that /dev/pts/$num is actually a slave (in cases where the
-> mount namespace in which devpts was mounted is controlled by an
-> untrusted process). In addition, there are several unresolvable
-> race conditions if userspace were to attempt to detect attacks through
-> stat(2) and other similar methods [in addition it is not clear how
-> userspace could detect attacks involving FUSE].
->
-> Resolve this by providing an interface for userpace to safely open the
-> "peer" end of a PTY file descriptor by using the dentry cached by
-> devpts. Since it is not possible to have an open master PTY without
-> having its slave exposed in /dev/pts this interface is safe. This
-> interface currently does not provide a way to get the master pty (since
-> it is not clear whether such an interface is safe or even useful).
+On 04/28, Geert Uytterhoeven wrote:
+> When CONFIG_ON=n, dummies are provided for of_clk_get() and
+> of_clk_get_by_name(), but not for of_clk_get_from_provider().
+> 
+> Provide a dummy for the latter, to improve the ability to do
+> compile-testing.  This requires removing the existing dummy in the
+> Lantiq clock code.
+> 
+> Fixes: 766e6a4ec602d0c1 ("clk: add DT clock binding support")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
 
-This should be added to the compat ioctls as well. There are two ways
-of doing this:
+Applied to clk-next
 
-a) like the other ioctls handled by pty_unix98_ioctl(), add it to the
-list in fs/compat_ioctl.c, and check that the list is still up-to-date with
-the current driver (someone else may have missed one)
-
-b) remove all compat handling for ioctls that are specific to
-pty_unix98_ioctl() and pty_bsd_ioctl() from fs/compat_ioctl.c
-and add compat_ioctl callback pointers to master_pty_ops_bsd
-and ptm_unix98_ops, pointing to the respective ioctl handlers.
-
-I would recommend b) as it avoids the problem in the future,
-but it is a little more upfront work, and should be done as a
-separate preparation patch.
-All the ioctls here are compatible between 32-bit and 64-bit
-user space, so no special translation is needed.
-
-      Arnd
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

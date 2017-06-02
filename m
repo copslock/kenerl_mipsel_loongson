@@ -1,62 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2017 19:49:20 +0200 (CEST)
-Received: from smtp.codeaurora.org ([198.145.29.96]:46964 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991955AbdFBRtOS0ieo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Jun 2017 19:49:14 +0200
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A7A98608D4; Fri,  2 Jun 2017 17:49:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1496425752;
-        bh=kJrrJDg6dTbmLjvKp+ZmweZPpWlfEMc+4iM+5h0Y48Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=C0yMLUM3GKTFRtvGKBJ9rQZ/58Sbw+y2HR3CjV5fJYthns+I26ZD//JjnhXUDKP4S
-         lLj1as0uuSpU2pTmR+9ptrHVECMVKhDULsZSAKrNCd7NoXx7zoI1hPGIigJGAaQ4gn
-         TmgE/E8i0IoDVCnsBhIE77G/94TrWgsloKYbI3r8=
-Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: sboyd@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CF32C608D4;
-        Fri,  2 Jun 2017 17:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1496425751;
-        bh=kJrrJDg6dTbmLjvKp+ZmweZPpWlfEMc+4iM+5h0Y48Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UUVaC4S6fbRT3Vcw2KWj0qWo55rb/UMfRb8yxHU5/dfsmz7Zt2B1JaVJWBClHf4Uf
-         Pg7MRYwm1OCEP4oU8anxdIS0tr6vCisBfGTVfE5rDw+1K1kCsf415W0tqcJcfDa/O3
-         uhrcLYiC6OuMRES9u0RuI4sqQlely7ilaJfTMRr8=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CF32C608D4
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
-Date:   Fri, 2 Jun 2017 10:49:11 -0700
-From:   Stephen Boyd <sboyd@codeaurora.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        John Crispin <john@phrozen.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] clk: Provide dummy of_clk_get_from_provider() for
- compile-testing
-Message-ID: <20170602174911.GK20170@codeaurora.org>
-References: <1493384933-31297-1-git-send-email-geert+renesas@glider.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2017 20:20:42 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:35584 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993359AbdFBSUeV7mxo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Jun 2017 20:20:34 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 29100F204DB7D;
+        Fri,  2 Jun 2017 19:20:23 +0100 (IST)
+Received: from localhost (10.20.1.33) by hhmail02.hh.imgtec.org (10.100.10.21)
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Fri, 2 Jun 2017 19:20:26
+ +0100
+From:   Paul Burton <paul.burton@imgtec.com>
+To:     <linux-mips@linux-mips.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v4 0/4] MIPS Boston support
+Date:   Fri, 2 Jun 2017 11:19:59 -0700
+Message-ID: <20170602182003.16269-1-paul.burton@imgtec.com>
+X-Mailer: git-send-email 2.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1493384933-31297-1-git-send-email-geert+renesas@glider.be>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <sboyd@codeaurora.org>
+Content-Type: text/plain
+X-Originating-IP: [10.20.1.33]
+Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58135
+X-archive-position: 58136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sboyd@codeaurora.org
+X-original-sender: paul.burton@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,20 +41,51 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 04/28, Geert Uytterhoeven wrote:
-> When CONFIG_ON=n, dummies are provided for of_clk_get() and
-> of_clk_get_by_name(), but not for of_clk_get_from_provider().
-> 
-> Provide a dummy for the latter, to improve the ability to do
-> compile-testing.  This requires removing the existing dummy in the
-> Lantiq clock code.
-> 
-> Fixes: 766e6a4ec602d0c1 ("clk: add DT clock binding support")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
+This series introduces support for the MIPS Boston development board,
+allowing generic kernels to run on it. Typically a Boston board will be
+running the U-Boot bootloader & we make use of the Flattened Image Tree
+(FIT) image format for the kernel.
 
-Applied to clk-next
+If physical Boston hardware is unavailable this series can be tested
+using QEMU built from the master branch (or v2.9 onwards). To do so,
+configure the kernel for the generic 64r6el_defconfig & run QEMU like
+so:
+
+  $ make ARCH=mips 64r6el_defconfig
+  $ make ARCH=mips CROSS_COMPILE=my-toolchain-
+  $ qemu-system-mips64el -M boston \
+      -kernel arch/mips/boot/vmlinux.gz.itb \
+      serial stdio
+
+Applies atop v4.12-rc3.
+
+Paul Burton (4):
+  dt-bindings: Document img,boston-clock binding
+  clk: boston: Add a driver for MIPS Boston board clocks
+  MIPS: DTS: img: Don't attempt to build-in all .dtb files
+  MIPS: generic: Support MIPS Boston development boards
+
+ .../devicetree/bindings/clock/img,boston-clock.txt |  31 +++
+ MAINTAINERS                                        |  10 +
+ arch/mips/boot/dts/img/Makefile                    |   5 +-
+ arch/mips/boot/dts/img/boston.dts                  | 224 +++++++++++++++++++++
+ arch/mips/configs/generic/board-boston.config      |  48 +++++
+ arch/mips/generic/Kconfig                          |  12 ++
+ arch/mips/generic/vmlinux.its.S                    |  25 +++
+ drivers/clk/Kconfig                                |   1 +
+ drivers/clk/Makefile                               |   1 +
+ drivers/clk/imgtec/Kconfig                         |  10 +
+ drivers/clk/imgtec/Makefile                        |   1 +
+ drivers/clk/imgtec/clk-boston.c                    | 101 ++++++++++
+ include/dt-bindings/clock/boston-clock.h           |  14 ++
+ 13 files changed, 481 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/img,boston-clock.txt
+ create mode 100644 arch/mips/boot/dts/img/boston.dts
+ create mode 100644 arch/mips/configs/generic/board-boston.config
+ create mode 100644 drivers/clk/imgtec/Kconfig
+ create mode 100644 drivers/clk/imgtec/Makefile
+ create mode 100644 drivers/clk/imgtec/clk-boston.c
+ create mode 100644 include/dt-bindings/clock/boston-clock.h
 
 -- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.13.0

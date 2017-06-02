@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 01:42:55 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:39205 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 01:43:25 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:61875 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993944AbdFBXmgVAx04 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Jun 2017 01:42:36 +0200
+        with ESMTP id S23993948AbdFBXmynqO-4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Jun 2017 01:42:54 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 894AFB33D749D;
-        Sat,  3 Jun 2017 00:42:25 +0100 (IST)
+        by Forcepoint Email with ESMTPS id C371B9071B84;
+        Sat,  3 Jun 2017 00:42:43 +0100 (IST)
 Received: from localhost (10.20.1.33) by hhmail02.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 3 Jun 2017 00:42:29
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 3 Jun 2017 00:42:48
  +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <netdev@vger.kernel.org>
@@ -15,12 +15,10 @@ CC:     Tobias Klauser <tklauser@distanz.ch>,
         "David S . Miller" <davem@davemloft.net>,
         Jarod Wilson <jarod@redhat.com>, <linux-mips@linux-mips.org>,
         Eric Dumazet <edumazet@google.com>,
-        Paul Burton <paul.burton@imgtec.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v3 3/7] dt-bindings: net: Document Intel pch_gbe binding
-Date:   Fri, 2 Jun 2017 16:40:38 -0700
-Message-ID: <20170602234042.22782-4-paul.burton@imgtec.com>
+        Paul Burton <paul.burton@imgtec.com>
+Subject: [PATCH v3 4/7] net: pch_gbe: Add device tree support
+Date:   Fri, 2 Jun 2017 16:40:39 -0700
+Message-ID: <20170602234042.22782-5-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.13.0
 In-Reply-To: <20170602234042.22782-1-paul.burton@imgtec.com>
 References: <20170602234042.22782-1-paul.burton@imgtec.com>
@@ -31,7 +29,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58174
+X-archive-position: 58175
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,63 +46,91 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Introduce documentation for a device tree binding for the Intel Platform
-Controller Hub (PCH) GigaBit Ethernet (GBE) device. Although this is a
-PCIe device & thus largely auto-detectable, this binding will be used to
-provide the driver with the PHY reset GPIO.
+Introduce support for retrieving the PHY reset GPIO from device tree,
+which will be used on the MIPS Boston development board. This requires
+support for probe deferral in order to work correctly, since the order
+of device probe is not guaranteed & typically the EG20T GPIO controller
+device will be probed after the ethernet MAC.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: David S. Miller <davem@davemloft.net>
 Cc: Eric Dumazet <edumazet@google.com>
 Cc: Jarod Wilson <jarod@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Rob Herring <robh+dt@kernel.org>
 Cc: Tobias Klauser <tklauser@distanz.ch>
-Cc: devicetree@vger.kernel.org
 Cc: linux-mips@linux-mips.org
 Cc: netdev@vger.kernel.org
-
 ---
 
-Changes in v3:
-- New patch.
+Changes in v3: None
 
-Changes in v2: None
+Changes in v2:
+- Tidy up handling of parsing private data, drop err_out.
 
- Documentation/devicetree/bindings/net/pch_gbe.txt | 25 +++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/pch_gbe.txt
+ .../net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c   | 31 +++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/pch_gbe.txt b/Documentation/devicetree/bindings/net/pch_gbe.txt
-new file mode 100644
-index 000000000000..5de479c26b04
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/pch_gbe.txt
-@@ -0,0 +1,25 @@
-+Intel Platform Controller Hub (PCH) GigaBit Ethernet (GBE)
+diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+index cb9b904786e4..59a42c20d433 100644
+--- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
++++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+@@ -23,6 +23,8 @@
+ #include <linux/net_tstamp.h>
+ #include <linux/ptp_classify.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
++#include <linux/of_gpio.h>
+ 
+ #define DRV_VERSION     "1.01"
+ const char pch_driver_version[] = DRV_VERSION;
+@@ -2565,13 +2567,40 @@ static void pch_gbe_remove(struct pci_dev *pdev)
+ 	free_netdev(netdev);
+ }
+ 
++static struct pch_gbe_privdata *
++pch_gbe_get_priv(struct pci_dev *pdev, const struct pci_device_id *pci_id)
++{
++	struct pch_gbe_privdata *pdata;
++	struct gpio_desc *gpio;
 +
-+Required properties:
-+- compatible:		Should be the PCI vendor & device ID, eg. "pci8086,8802".
-+- reg:			Should be a PCI device number as specified by the PCI bus
-+			binding to IEEE Std 1275-1994.
-+- phy-reset-gpios:	Should be a GPIO list containing a single GPIO that
-+			resets the attached PHY when active.
++	if (!IS_ENABLED(CONFIG_OF))
++		return (struct pch_gbe_privdata *)pci_id->driver_data;
 +
-+Example:
++	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
++	if (!pdata)
++		return ERR_PTR(-ENOMEM);
 +
-+	eg20t_mac@2,0,1 {
-+		compatible = "pci8086,8802";
-+		reg = <0x00020100 0 0 0 0>;
-+		phy-reset-gpios = <&eg20t_gpio 6
-+				   GPIO_ACTIVE_LOW>;
-+	};
++	gpio = devm_gpiod_get(&pdev->dev, "phy-reset", GPIOD_ASIS);
++	if (!IS_ERR(gpio))
++		pdata->phy_reset_gpio = gpio;
++	else if (PTR_ERR(gpio) != -ENOENT)
++		return ERR_PTR(PTR_ERR(gpio));
 +
-+	eg20t_gpio: eg20t_gpio@2,0,2 {
-+		compatible = "pci8086,8803";
-+		reg = <0x00020200 0 0 0 0>;
++	return pdata;
++}
 +
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+	};
+ static int pch_gbe_probe(struct pci_dev *pdev,
+ 			  const struct pci_device_id *pci_id)
+ {
+ 	struct net_device *netdev;
+ 	struct pch_gbe_adapter *adapter;
++	struct pch_gbe_privdata *pdata;
+ 	int ret;
+ 
++	pdata = pch_gbe_get_priv(pdev, pci_id);
++	if (IS_ERR(pdata))
++		return PTR_ERR(pdata);
++
+ 	ret = pcim_enable_device(pdev);
+ 	if (ret)
+ 		return ret;
+@@ -2609,7 +2638,7 @@ static int pch_gbe_probe(struct pci_dev *pdev,
+ 	adapter->pdev = pdev;
+ 	adapter->hw.back = adapter;
+ 	adapter->hw.reg = pcim_iomap_table(pdev)[PCH_GBE_PCI_BAR];
+-	adapter->pdata = (struct pch_gbe_privdata *)pci_id->driver_data;
++	adapter->pdata = pdata;
+ 	if (adapter->pdata && adapter->pdata->platform_init)
+ 		adapter->pdata->platform_init(pdev, adapter->pdata);
+ 
 -- 
 2.13.0

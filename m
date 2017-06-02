@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 01:42:31 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:8273 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 01:42:55 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:39205 "EHLO
         mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993941AbdFBXmSDI1O4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Jun 2017 01:42:18 +0200
+        with ESMTP id S23993944AbdFBXmgVAx04 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Jun 2017 01:42:36 +0200
 Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id F2BB2278AAA2A;
-        Sat,  3 Jun 2017 00:42:06 +0100 (IST)
+        by Forcepoint Email with ESMTPS id 894AFB33D749D;
+        Sat,  3 Jun 2017 00:42:25 +0100 (IST)
 Received: from localhost (10.20.1.33) by hhmail02.hh.imgtec.org (10.100.10.21)
- with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 3 Jun 2017 00:42:11
+ with Microsoft SMTP Server (TLS) id 14.3.294.0; Sat, 3 Jun 2017 00:42:29
  +0100
 From:   Paul Burton <paul.burton@imgtec.com>
 To:     <netdev@vger.kernel.org>
@@ -15,10 +15,12 @@ CC:     Tobias Klauser <tklauser@distanz.ch>,
         "David S . Miller" <davem@davemloft.net>,
         Jarod Wilson <jarod@redhat.com>, <linux-mips@linux-mips.org>,
         Eric Dumazet <edumazet@google.com>,
-        Paul Burton <paul.burton@imgtec.com>
-Subject: [PATCH v3 2/7] net: pch_gbe: Pull PHY GPIO handling out of Minnow code
-Date:   Fri, 2 Jun 2017 16:40:37 -0700
-Message-ID: <20170602234042.22782-3-paul.burton@imgtec.com>
+        Paul Burton <paul.burton@imgtec.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v3 3/7] dt-bindings: net: Document Intel pch_gbe binding
+Date:   Fri, 2 Jun 2017 16:40:38 -0700
+Message-ID: <20170602234042.22782-4-paul.burton@imgtec.com>
 X-Mailer: git-send-email 2.13.0
 In-Reply-To: <20170602234042.22782-1-paul.burton@imgtec.com>
 References: <20170602234042.22782-1-paul.burton@imgtec.com>
@@ -29,7 +31,7 @@ Return-Path: <Paul.Burton@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58173
+X-archive-position: 58174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,119 +48,63 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-The MIPS Boston development board uses the Intel EG20T Platform
-Controller Hub, including its gigabit ethernet controller, and requires
-that its RTL8211E PHY be reset much like the Minnow platform. Pull the
-PHY reset GPIO handling out of Minnow-specific code such that it can be
-shared by later patches.
+Introduce documentation for a device tree binding for the Intel Platform
+Controller Hub (PCH) GigaBit Ethernet (GBE) device. Although this is a
+PCIe device & thus largely auto-detectable, this binding will be used to
+provide the driver with the PHY reset GPIO.
 
 Signed-off-by: Paul Burton <paul.burton@imgtec.com>
 Cc: David S. Miller <davem@davemloft.net>
 Cc: Eric Dumazet <edumazet@google.com>
 Cc: Jarod Wilson <jarod@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Rob Herring <robh+dt@kernel.org>
 Cc: Tobias Klauser <tklauser@distanz.ch>
+Cc: devicetree@vger.kernel.org
 Cc: linux-mips@linux-mips.org
 Cc: netdev@vger.kernel.org
+
 ---
 
 Changes in v3:
-- Use adapter->pdata as arg to platform_init, to fix bisectability.
+- New patch.
 
 Changes in v2: None
 
- drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h    |  4 ++-
- .../net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c   | 33 +++++++++++++++-------
- 2 files changed, 26 insertions(+), 11 deletions(-)
+ Documentation/devicetree/bindings/net/pch_gbe.txt | 25 +++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/pch_gbe.txt
 
-diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h
-index 8d710a3b4db0..de1dd08050f4 100644
---- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h
-+++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h
-@@ -580,15 +580,17 @@ struct pch_gbe_hw_stats {
- 
- /**
-  * struct pch_gbe_privdata - PCI Device ID driver data
-+ * @phy_reset_gpio:		PHY reset GPIO descriptor.
-  * @phy_tx_clk_delay:		Bool, configure the PHY TX delay in software
-  * @phy_disable_hibernate:	Bool, disable PHY hibernation
-  * @platform_init:		Platform initialization callback, called from
-  *				probe, prior to PHY initialization.
-  */
- struct pch_gbe_privdata {
-+	struct gpio_desc *phy_reset_gpio;
- 	bool phy_tx_clk_delay;
- 	bool phy_disable_hibernate;
--	int (*platform_init)(struct pci_dev *pdev);
-+	int (*platform_init)(struct pci_dev *, struct pch_gbe_privdata *);
- };
- 
- /**
-diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-index d38198718005..cb9b904786e4 100644
---- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-+++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-@@ -360,6 +360,16 @@ static void pch_gbe_mac_mar_set(struct pch_gbe_hw *hw, u8 * addr, u32 index)
- 	pch_gbe_wait_clr_bit(&hw->reg->ADDR_MASK, PCH_GBE_BUSY);
- }
- 
-+static void pch_gbe_phy_set_reset(struct pch_gbe_hw *hw, int value)
-+{
-+	struct pch_gbe_adapter *adapter = pch_gbe_hw_to_adapter(hw);
+diff --git a/Documentation/devicetree/bindings/net/pch_gbe.txt b/Documentation/devicetree/bindings/net/pch_gbe.txt
+new file mode 100644
+index 000000000000..5de479c26b04
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/pch_gbe.txt
+@@ -0,0 +1,25 @@
++Intel Platform Controller Hub (PCH) GigaBit Ethernet (GBE)
 +
-+	if (!adapter->pdata || !adapter->pdata->phy_reset_gpio)
-+		return;
++Required properties:
++- compatible:		Should be the PCI vendor & device ID, eg. "pci8086,8802".
++- reg:			Should be a PCI device number as specified by the PCI bus
++			binding to IEEE Std 1275-1994.
++- phy-reset-gpios:	Should be a GPIO list containing a single GPIO that
++			resets the attached PHY when active.
 +
-+	gpiod_set_value(adapter->pdata->phy_reset_gpio, value);
-+}
++Example:
 +
- /**
-  * pch_gbe_mac_reset_hw - Reset hardware
-  * @hw:	Pointer to the HW structure
-@@ -2601,7 +2611,14 @@ static int pch_gbe_probe(struct pci_dev *pdev,
- 	adapter->hw.reg = pcim_iomap_table(pdev)[PCH_GBE_PCI_BAR];
- 	adapter->pdata = (struct pch_gbe_privdata *)pci_id->driver_data;
- 	if (adapter->pdata && adapter->pdata->platform_init)
--		adapter->pdata->platform_init(pdev);
-+		adapter->pdata->platform_init(pdev, adapter->pdata);
++	eg20t_mac@2,0,1 {
++		compatible = "pci8086,8802";
++		reg = <0x00020100 0 0 0 0>;
++		phy-reset-gpios = <&eg20t_gpio 6
++				   GPIO_ACTIVE_LOW>;
++	};
 +
-+	if (adapter->pdata && adapter->pdata->phy_reset_gpio) {
-+		pch_gbe_phy_set_reset(&adapter->hw, 1);
-+		usleep_range(1250, 1500);
-+		pch_gbe_phy_set_reset(&adapter->hw, 0);
-+		usleep_range(1250, 1500);
-+	}
- 
- 	adapter->ptp_pdev = pci_get_bus_and_slot(adapter->pdev->bus->number,
- 					       PCI_DEVFN(12, 4));
-@@ -2694,7 +2711,8 @@ static int pch_gbe_probe(struct pci_dev *pdev,
- /* The AR803X PHY on the MinnowBoard requires a physical pin to be toggled to
-  * ensure it is awake for probe and init. Request the line and reset the PHY.
-  */
--static int pch_gbe_minnow_platform_init(struct pci_dev *pdev)
-+static int pch_gbe_minnow_platform_init(struct pci_dev *pdev,
-+					struct pch_gbe_privdata *pdata)
- {
- 	unsigned long flags = GPIOF_DIR_OUT | GPIOF_INIT_LOW |
- 		GPIOF_EXPORT | GPIOF_ACTIVE_LOW;
-@@ -2703,16 +2721,11 @@ static int pch_gbe_minnow_platform_init(struct pci_dev *pdev)
- 
- 	ret = devm_gpio_request_one(&pdev->dev, gpio, flags,
- 				    "minnow_phy_reset");
--	if (ret) {
-+	if (!ret)
-+		pdata->phy_reset_gpio = gpio_to_desc(gpio);
-+	else
- 		dev_err(&pdev->dev,
- 			"ERR: Can't request PHY reset GPIO line '%d'\n", gpio);
--		return ret;
--	}
--
--	gpio_set_value(gpio, 1);
--	usleep_range(1250, 1500);
--	gpio_set_value(gpio, 0);
--	usleep_range(1250, 1500);
- 
- 	return ret;
- }
++	eg20t_gpio: eg20t_gpio@2,0,2 {
++		compatible = "pci8086,8803";
++		reg = <0x00020200 0 0 0 0>;
++
++		gpio-controller;
++		#gpio-cells = <2>;
++	};
 -- 
 2.13.0

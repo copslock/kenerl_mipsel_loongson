@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 14:44:28 +0200 (CEST)
-Received: from mailapp01.imgtec.com ([195.59.15.196]:11211 "EHLO
-        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23991672AbdFCMoVpnXVK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Jun 2017 14:44:21 +0200
-Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
-        by Forcepoint Email with ESMTPS id 7CDBF74BB612E;
-        Sat,  3 Jun 2017 13:44:12 +0100 (IST)
-Received: from [10.20.78.110] (10.20.78.110) by hhmail02.hh.imgtec.org
- (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Sat, 3 Jun 2017
- 13:44:14 +0100
-Date:   Sat, 3 Jun 2017 13:43:37 +0100
-From:   "Maciej W. Rozycki" <macro@imgtec.com>
-To:     Stuart Longland <stuartl@longlandclan.id.au>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: QEMU Malta emulation using I6400: runaway loop modprobe
- binfmt-464c
-In-Reply-To: <996c275d-d969-508e-6b4e-bef22d8e7385@longlandclan.id.au>
-Message-ID: <alpine.DEB.2.00.1706031310470.2590@tp.orcam.me.uk>
-References: <996c275d-d969-508e-6b4e-bef22d8e7385@longlandclan.id.au>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-X-Originating-IP: [10.20.78.110]
-Return-Path: <Maciej.Rozycki@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 15:51:38 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:46613 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S23991960AbdFCNvaiEEl1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 3 Jun 2017 15:51:30 +0200
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id CA5B2AB46;
+        Sat,  3 Jun 2017 13:51:29 +0000 (UTC)
+From:   Aleksa Sarai <asarai@suse.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Valentin Rothberg <vrothberg@suse.com>,
+        Aleksa Sarai <asarai@suse.de>
+Subject: [PATCH v3 0/2] tty: add TIOCGPTPEER ioctl
+Date:   Sat,  3 Jun 2017 23:51:09 +1000
+Message-Id: <20170603135111.5444-1-asarai@suse.de>
+X-Mailer: git-send-email 2.13.0
+Return-Path: <asarai@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58185
+X-archive-position: 58186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@imgtec.com
+X-original-sender: asarai@suse.de
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,48 +43,27 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sat, 3 Jun 2017, Stuart Longland wrote:
+Changes in v3:
+  * Defined a compat_ioctl callback for all pty ioctls, since they are
+    all 32-bit and 64-bit compatible.
+  * Made TIOCGPTPEER support 32-bit userspace.
 
-> Now, on a single-processor MIPS64r2 VM, this same root filesystem works.
->  It won't work though for a 8-core I6400 system.  If I try to run a SMP
-> MIPS64r2 VM, I get "unable to proceed without a CM", so clearly there is
-> a feature in the I6400 that doesn't exist in the MIPS64r2.
+Aleksa Sarai (2):
+  tty: add compat_ioctl callbacks
+  tty: add TIOCGPTPEER ioctl
 
- Your userland likely requires the legacy NaN encoding (as specified by 
-the IEEE 754-1985 floating point standard) whereas I6400 hardware only 
-supports the 2008 NaN encoding (as specified by the IEEE 754-2008 floating 
-point standard), as per the R6 architecture requirement.  These encodings 
-are incompatible with each other and all binaries are annotated in their 
-ELF header as to which is required; use `readelf -h' and check `Flags:' 
-for the presence of `nan2008' among the features reported.
+ Makefile                               |  1 +
+ arch/alpha/include/uapi/asm/ioctls.h   |  1 +
+ arch/mips/include/uapi/asm/ioctls.h    |  1 +
+ arch/parisc/include/uapi/asm/ioctls.h  |  1 +
+ arch/powerpc/include/uapi/asm/ioctls.h |  1 +
+ arch/sh/include/uapi/asm/ioctls.h      |  1 +
+ arch/sparc/include/uapi/asm/ioctls.h   |  3 +-
+ arch/xtensa/include/uapi/asm/ioctls.h  |  1 +
+ drivers/tty/pty.c                      | 93 ++++++++++++++++++++++++++++++++--
+ fs/compat_ioctl.c                      |  6 ---
+ include/uapi/asm-generic/ioctls.h      |  1 +
+ 11 files changed, 99 insertions(+), 11 deletions(-)
 
- There are a couple of ways to move forward.
-
- First is rebuilding your userland for the 2008 NaN encoding.  I'm sure 
-someone already did it, but I don't have a pointer at hand.  This might be 
-the best option however.
-
- Second, since you're running on a simulator anyway, disabling the use of 
-FPU hardware and using the Linux kernel FPU emulator should have little 
-performance impact, although there surely be some for the Coprocessor 
-Unusable exception handling overhead.  The Linux kernel FPU emulator 
-supports both NaN encodings at once, so any userland will work 
-irrespectively of which NaN encoding it requires and produce correct 
-results.  Use the "nofpu" kernel parameter to activate this option.
-
- Finally, you might also ask the kernel to ignore the binary 
-incompatibility and let binaries requiring the wrong NaN encoding run 
-anyway.  This will make IEEE 754 floating point produce incorrect results 
-in the uncommon case of software relying on NaN arithmetic; it may crash 
-for example.  The vast majority of software does not rely on NaN 
-arithmetic though.  Use the "ieee754=relaxed" kernel parameter to activate 
-this option.
-
- You can have a look at Documentation/admin-guide/kernel-parameters.txt in 
-the kernel sources for some further discussion about these kernel 
-parameters.  These will have to be added to the QEMU's `-append' command 
-line option.
-
- HTH,
-
-  Maciej
+-- 
+2.13.0

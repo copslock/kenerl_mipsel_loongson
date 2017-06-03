@@ -1,34 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 17:55:29 +0200 (CEST)
-Received: from hauke-m.de ([IPv6:2001:41d0:8:b27b::1]:55682 "EHLO
-        mail.hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992227AbdFCPzVzkTzW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Jun 2017 17:55:21 +0200
-Received: from [192.168.10.172] (p4FD97990.dip0.t-ipconnect.de [79.217.121.144])
-        by mail.hauke-m.de (Postfix) with ESMTPSA id 6C3DD100036;
-        Sat,  3 Jun 2017 17:55:15 +0200 (CEST)
-Subject: Re: [PATCH] MIPS: Lantiq: Fix ASC0/ASC1 clocks
-To:     Martin Schiller <ms@dev.tdt.de>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-References: <1496118874-4251-1-git-send-email-ms@dev.tdt.de>
-Cc:     john@phrozen.org, ralf@linux-mips.org, arnd@arndb.de, nbd@nbd.name
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Message-ID: <13a14a47-1609-4b44-1bb1-6f58c9cda914@hauke-m.de>
-Date:   Sat, 3 Jun 2017 17:55:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Jun 2017 19:52:22 +0200 (CEST)
+Received: from vps0.lunn.ch ([178.209.37.122]:54460 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993869AbdFCRwOB8jUZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 3 Jun 2017 19:52:14 +0200
+Received: from andrew by vps0.lunn.ch with local (Exim 4.80)
+        (envelope-from <andrew@lunn.ch>)
+        id 1dHDDU-0005eX-9M; Sat, 03 Jun 2017 19:52:00 +0200
+Date:   Sat, 3 Jun 2017 19:52:00 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Paul Burton <paul.burton@imgtec.com>
+Cc:     netdev@vger.kernel.org, Tobias Klauser <tklauser@distanz.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jarod Wilson <jarod@redhat.com>, linux-mips@linux-mips.org,
+        Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH v3 2/7] net: pch_gbe: Pull PHY GPIO handling out of
+ Minnow code
+Message-ID: <20170603175200.GC17099@lunn.ch>
+References: <20170602234042.22782-1-paul.burton@imgtec.com>
+ <20170602234042.22782-3-paul.burton@imgtec.com>
 MIME-Version: 1.0
-In-Reply-To: <1496118874-4251-1-git-send-email-ms@dev.tdt.de>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <hauke@hauke-m.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170602234042.22782-3-paul.burton@imgtec.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <andrew@lunn.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58195
+X-archive-position: 58196
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: andrew@lunn.ch
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -41,42 +44,102 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/30/2017 06:34 AM, Martin Schiller wrote:
-> ASC1 is available on every Lantiq SoC (also AmazonSE) and should be
-> enabled like the other generic xway clocks instead of ASC0, which is
-> only available for AR9 and Danube.
-
-This is correct.
-
-> Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-
-Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
-
+On Fri, Jun 02, 2017 at 04:40:37PM -0700, Paul Burton wrote:
+> The MIPS Boston development board uses the Intel EG20T Platform
+> Controller Hub, including its gigabit ethernet controller, and requires
+> that its RTL8211E PHY be reset much like the Minnow platform. Pull the
+> PHY reset GPIO handling out of Minnow-specific code such that it can be
+> shared by later patches.
+> 
+> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jarod Wilson <jarod@redhat.com>
+> Cc: Tobias Klauser <tklauser@distanz.ch>
+> Cc: linux-mips@linux-mips.org
+> Cc: netdev@vger.kernel.org
 > ---
->  arch/mips/lantiq/xway/sysctrl.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-> index 95bec46..cd6dbea 100644
-> --- a/arch/mips/lantiq/xway/sysctrl.c
-> +++ b/arch/mips/lantiq/xway/sysctrl.c
-> @@ -484,9 +484,9 @@ void __init ltq_soc_init(void)
->  
->  	/* add our generic xway clocks */
->  	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
-> -	clkdev_add_pmu("1e100400.serial", NULL, 0, 0, PMU_ASC0);
->  	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
->  	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
-> +	clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
->  	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
->  	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
->  	clkdev_add_pmu("1e105300.ebu", NULL, 0, 0, PMU_EBU);
-> @@ -501,7 +501,6 @@ void __init ltq_soc_init(void)
->  	}
->  
->  	if (!of_machine_is_compatible("lantiq,ase")) {
-> -		clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
->  		clkdev_add_pci();
->  	}
->  
+> Changes in v3:
+> - Use adapter->pdata as arg to platform_init, to fix bisectability.
 > 
+> Changes in v2: None
+> 
+>  drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h    |  4 ++-
+>  .../net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c   | 33 +++++++++++++++-------
+>  2 files changed, 26 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h
+> index 8d710a3b4db0..de1dd08050f4 100644
+> --- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h
+> +++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe.h
+> @@ -580,15 +580,17 @@ struct pch_gbe_hw_stats {
+>  
+>  /**
+>   * struct pch_gbe_privdata - PCI Device ID driver data
+> + * @phy_reset_gpio:		PHY reset GPIO descriptor.
+>   * @phy_tx_clk_delay:		Bool, configure the PHY TX delay in software
+>   * @phy_disable_hibernate:	Bool, disable PHY hibernation
+>   * @platform_init:		Platform initialization callback, called from
+>   *				probe, prior to PHY initialization.
+>   */
+>  struct pch_gbe_privdata {
+> +	struct gpio_desc *phy_reset_gpio;
+>  	bool phy_tx_clk_delay;
+>  	bool phy_disable_hibernate;
+> -	int (*platform_init)(struct pci_dev *pdev);
+> +	int (*platform_init)(struct pci_dev *, struct pch_gbe_privdata *);
+>  };
+>  
+>  /**
+> diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+> index d38198718005..cb9b904786e4 100644
+> --- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+> +++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+> @@ -360,6 +360,16 @@ static void pch_gbe_mac_mar_set(struct pch_gbe_hw *hw, u8 * addr, u32 index)
+>  	pch_gbe_wait_clr_bit(&hw->reg->ADDR_MASK, PCH_GBE_BUSY);
+>  }
+>  
+> +static void pch_gbe_phy_set_reset(struct pch_gbe_hw *hw, int value)
+> +{
+> +	struct pch_gbe_adapter *adapter = pch_gbe_hw_to_adapter(hw);
+> +
+> +	if (!adapter->pdata || !adapter->pdata->phy_reset_gpio)
+> +		return;
+> +
+> +	gpiod_set_value(adapter->pdata->phy_reset_gpio, value);
+
+Hi Paul
+
+Since you are using the gpiod_ API, the core will take notice of the
+active low/active high flag when performing this set.
+
+> +}
+> +
+>  /**
+>   * pch_gbe_mac_reset_hw - Reset hardware
+>   * @hw:	Pointer to the HW structure
+>  
+>  	ret = devm_gpio_request_one(&pdev->dev, gpio, flags,
+>  				    "minnow_phy_reset");
+> -	if (ret) {
+> +	if (!ret)
+> +		pdata->phy_reset_gpio = gpio_to_desc(gpio);
+
+Here however, you are using the gpio_ API, which ignores the active
+high/low flag in device tree. And in your binding patch, you give the
+example:
+
++               phy-reset-gpios = <&eg20t_gpio 6
++                                  GPIO_ACTIVE_LOW>;
+
+This active low is totally ignored.
+
+I personally would say this is all messed up, and going to result in
+problems for somebody with a board which actually needs an
+GPIO_ACTIVE_HIGH.
+
+Please use the gpiod_ API through out and respect the flags in the
+device tree binding.
+
+       Andrew

@@ -1,62 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Jun 2017 21:51:19 +0200 (CEST)
-Received: from aserp1040.oracle.com ([141.146.126.69]:27798 "EHLO
-        aserp1040.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23993943AbdFDTvKgWycq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Jun 2017 21:51:10 +0200
-Received: from userv0022.oracle.com (userv0022.oracle.com [156.151.31.74])
-        by aserp1040.oracle.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with ESMTP id v54JnY9P004701
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 4 Jun 2017 19:49:35 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userv0022.oracle.com (8.14.4/8.14.4) with ESMTP id v54JnQMe016033
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Sun, 4 Jun 2017 19:49:26 GMT
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.13.8/8.13.8) with ESMTP id v54JnJjL004998;
-        Sun, 4 Jun 2017 19:49:20 GMT
-Received: from yuvallap (/77.138.186.148)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 04 Jun 2017 12:49:19 -0700
-Date:   Sun, 4 Jun 2017 22:49:06 +0300
-From:   Yuval Shaia <yuval.shaia@oracle.com>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     klassert@mathematik.tu-chemnitz.de, pcnet32@frontier.com,
-        hsweeten@visionengravers.com, jeffrey.t.kirsher@intel.com,
-        cooldavid@cooldavid.org, mcuos.com@gmail.com, nic_swsd@realtek.com,
-        ralf@linux-mips.org, romieu@fr.zoreil.com, nico@fluxnic.net,
-        oneukum@suse.com, davem@davemloft.net, tremyfr@gmail.com,
-        paul.gortmaker@windriver.com, jarod@redhat.com, green.hu@gmail.com,
-        f.fainelli@gmail.com, edumazet@google.com, shchers@gmail.com,
-        stephen.boyd@linaro.org, fgao@48lvckh6395k16k5.yundunddos.com,
-        tklauser@distanz.ch, jay.vosburgh@canonical.com,
-        robert.jarzmik@free.fr, jeremy.linton@arm.com,
-        rmk+kernel@armlinux.org.uk, stephen@networkplumber.org,
-        arnd@arndb.de, gerg@linux-m68k.org, allan@asix.com.tw,
-        chris.roth@usask.ca, hayeswang@realtek.com,
-        mario_limonciello@dell.com, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH] net/{mii,smsc}: Make mii_ethtool_get_link_ksettings and
- smc_netdev_get_ecmd return void
-Message-ID: <20170604194905.GA7045@yuvallap>
-References: <20170604172200.4177-1-yuval.shaia@oracle.com>
- <20170604190133.GB10273@lunn.ch>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170604190133.GB10273@lunn.ch>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-X-Source-IP: userv0022.oracle.com [156.151.31.74]
-Return-Path: <yuval.shaia@oracle.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Jun 2017 23:44:32 +0200 (CEST)
+Received: from mail-wr0-x244.google.com ([IPv6:2a00:1450:400c:c0c::244]:36015
+        "EHLO mail-wr0-x244.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993944AbdFDVo0L-Gx5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Jun 2017 23:44:26 +0200
+Received: by mail-wr0-x244.google.com with SMTP id e23so4731918wre.3;
+        Sun, 04 Jun 2017 14:44:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=HDu6b1Rsx/DquwtmP4CbkKPNBTV4XyeAFNU7boV5mPs=;
+        b=U7RZfxA4PexjZsWv4LJ0NO2CPOepjiO8/wPSocW9uC4EOqJ/qRtWUHGauUoXxPxs1A
+         0UdmjXUR+dH5w8wql9jfzSKu2gsfkYq4an0M8L7BZ9H3MSBiLEPZ8ITw7kbLc5t0M7ba
+         iti5nOV7aAEfPZ75rHjRDvrn1d2MnyTqCpUzJldOcy/PWZMuIBMEMKI2rwumRwbiHe9c
+         4yaJUx3MJKcUe8hAM6HtfrKJ0J9MbIKSVxuHBtWHcyfYYAzFVlOwduuJgTRIgeTQtGZe
+         AcNY+WzZ9zchEQhqJmnaqSJxehakC/A/0GRPG4Az/2DTmdhGVelpZp/qnYxnAkGyFUyy
+         b85Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=HDu6b1Rsx/DquwtmP4CbkKPNBTV4XyeAFNU7boV5mPs=;
+        b=cpnXbkP4/wc6wUpW+k2tmYMm36BT80gTfiYpfoYUEMdNv1ziTqpnWuIvJ4Witgj8G+
+         Vx2FSo0X2UOz26bq9n6ZccJEeIAUaQpkoN991Ghq5d0Z7Rao7p+HepTx6gd/kOW5fpW4
+         pdUHB7Q7T7qDSbuAb17NkbTSmvJ6S+RpDB5CX6P/rWAzznnScgMAl6HD6nW3vA5lpN6r
+         DSR+j7FtY9BJlKyFzAP4eGb53JeG4MjMo3ioALZ/DHQsvLx5UUXf0CxnHYE18bLdkLoX
+         aZZQYLO77HQTqsIxlhYPjVLY6/aTojVMdJq5EuLTLuhCT5dLMHUSYpEVv4j+MGSVg+Ld
+         J6ww==
+X-Gm-Message-State: AODbwcAUn8e7U9AVBb6h8TpgZuBLkj0iY35K/xycjC1yUOvFiFBbiypU
+        NoEve5VYS8U/yQ==
+X-Received: by 10.223.135.227 with SMTP id c32mr13893523wrc.10.1496612660901;
+        Sun, 04 Jun 2017 14:44:20 -0700 (PDT)
+Received: from localhost.localdomain (cpc101300-bagu16-2-0-cust362.1-3.cable.virginm.net. [86.21.41.107])
+        by smtp.gmail.com with ESMTPSA id p76sm9459923wma.15.2017.06.04.14.44.19
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sun, 04 Jun 2017 14:44:20 -0700 (PDT)
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Jamal Hadi Salim <jhs@mojatatu.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mips@linux-mips.org,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH] net: sched: fix mips build failure
+Date:   Sun,  4 Jun 2017 22:44:13 +0100
+Message-Id: <1496612653-12419-1-git-send-email-sudipm.mukherjee@gmail.com>
+X-Mailer: git-send-email 1.9.1
+Return-Path: <sudipm.mukherjee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58205
+X-archive-position: 58206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuval.shaia@oracle.com
+X-original-sender: sudipm.mukherjee@gmail.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -69,39 +67,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Sun, Jun 04, 2017 at 09:01:33PM +0200, Andrew Lunn wrote:
-> > diff --git a/drivers/net/cris/eth_v10.c b/drivers/net/cris/eth_v10.c
-> > index da02041..017f48c 100644
-> > --- a/drivers/net/cris/eth_v10.c
-> > +++ b/drivers/net/cris/eth_v10.c
-> > @@ -1417,10 +1417,9 @@ static int e100_get_link_ksettings(struct net_device *dev,
-> >  {
-> >  	struct net_local *np = netdev_priv(dev);
-> >  	u32 supported;
-> > -	int err;
-> >  
-> >  	spin_lock_irq(&np->lock);
-> > -	err = mii_ethtool_get_link_ksettings(&np->mii_if, cmd);
-> > +	mii_ethtool_get_link_ksettings(&np->mii_if, cmd);
-> >  	spin_unlock_irq(&np->lock);
-> >  
-> >  	/* The PHY may support 1000baseT, but the Etrax100 does not.  */
-> > @@ -1432,7 +1431,7 @@ static int e100_get_link_ksettings(struct net_device *dev,
-> >  	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
-> >  						supported);
-> >  
-> > -	return err;
-> > +	return 0;
-> >  }
-> 
-> How far are going planning on going? It seems like
-> *_get_link_ksettings() now all return a useless 0. Do you plan to
-> change ethtool_ops and make if void all the way up?
+The build of mips ar7_defconfig was failing with the error:
+../net/sched/act_api.c: In function 'tcf_action_goto_chain_init':
+../net/sched/act_api.c:37:18: error:
+	implicit declaration of function 'tcf_chain_get'
+	[-Werror=implicit-function-declaration]
 
-It is not always correct, see for example how xgene_get_link_ksettings
-returns non-zero value so i assume that ethtool_ops should remain as it is.
-Also, looking at ethtool_get_settings it seems that returned value is
-checked.
+../net/sched/act_api.c: In function 'tcf_action_goto_chain_fini':
+../net/sched/act_api.c:45:2: error:
+	implicit declaration of function 'tcf_chain_put'
+	[-Werror=implicit-function-declaration]
 
-> 
->        Andrew
+Add two inline helpers for the case where CONFIG_NET_CLS is not enabled.
+
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+---
+
+The build log of the latest linux-next is at:
+https://travis-ci.org/sudipm-mukherjee/parport/jobs/238623031/
+
+ include/net/pkt_cls.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/include/net/pkt_cls.h b/include/net/pkt_cls.h
+index 537d0a0..c34ade5 100644
+--- a/include/net/pkt_cls.h
++++ b/include/net/pkt_cls.h
+@@ -29,6 +29,17 @@ int tcf_classify(struct sk_buff *skb, const struct tcf_proto *tp,
+ 
+ #else
+ static inline
++struct tcf_chain *tcf_chain_get(struct tcf_block *block,
++				u32 chain_index, bool create)
++{
++	return NULL;
++}
++
++static inline void tcf_chain_put(struct tcf_chain *chain)
++{
++}
++
++static inline
+ int tcf_block_get(struct tcf_block **p_block,
+ 		  struct tcf_proto __rcu **p_filter_chain)
+ {
+-- 
+2.7.4

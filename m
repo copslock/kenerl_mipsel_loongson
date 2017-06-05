@@ -1,38 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jun 2017 20:55:38 +0200 (CEST)
-Received: from vps0.lunn.ch ([178.209.37.122]:55956 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23992213AbdFESzYdvV07 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 5 Jun 2017 20:55:24 +0200
-Received: from andrew by vps0.lunn.ch with local (Exim 4.80)
-        (envelope-from <andrew@lunn.ch>)
-        id 1dHx9p-00025h-Nn; Mon, 05 Jun 2017 20:55:17 +0200
-Date:   Mon, 5 Jun 2017 20:55:17 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Paul Burton <paul.burton@imgtec.com>
-Cc:     netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
-        linux-mips@linux-mips.org, Eric Dumazet <edumazet@google.com>,
-        Jarod Wilson <jarod@redhat.com>,
-        Tobias Klauser <tklauser@distanz.ch>
-Subject: Re: [PATCH v4 2/7] net: pch_gbe: Pull PHY GPIO handling out of
- Minnow code
-Message-ID: <20170605185517.GF5235@lunn.ch>
-References: <20170602234042.22782-1-paul.burton@imgtec.com>
- <20170605173136.10795-1-paul.burton@imgtec.com>
- <20170605173136.10795-3-paul.burton@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 01:14:27 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:24276 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993870AbdFEXOT4GAtM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 01:14:19 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id 311C068EFB7E6;
+        Tue,  6 Jun 2017 00:14:08 +0100 (IST)
+Received: from [10.20.78.130] (10.20.78.130) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Tue, 6 Jun 2017
+ 00:14:12 +0100
+Date:   Tue, 6 Jun 2017 00:14:03 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>
+Subject: [PATCH 0/9] Instruction emulation fixes
+Message-ID: <alpine.DEB.2.00.1706040314270.10864@tp.orcam.me.uk>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170605173136.10795-3-paul.burton@imgtec.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <andrew@lunn.ch>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.130]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58231
+X-archive-position: 58232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrew@lunn.ch
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,15 +40,34 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Mon, Jun 05, 2017 at 10:31:31AM -0700, Paul Burton wrote:
-> The MIPS Boston development board uses the Intel EG20T Platform
-> Controller Hub, including its gigabit ethernet controller, and requires
-> that its RTL8211E PHY be reset much like the Minnow platform. Pull the
-> PHY reset GPIO handling out of Minnow-specific code such that it can be
-> shared by later patches.
-> 
-> Signed-off-by: Paul Burton <paul.burton@imgtec.com>
+Ralf,
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+ Here is a bunch of instruction emulation fixes and clean-ups, mostly 
+though not only affecting branches in the FPU emulator.  The severity of 
+failures addressed varies, see the individual patch descriptions for 
+details.  These patches have been verified to a varying extent, depending 
+on the nature of the individual change, by running the GCC and glibc test 
+suites for the MIPS16 o32 little-endian multilib.
 
-    Andrew
+ NB I don't know why `checkpatch.pl' complains about the correctly 
+line-wrapped commit references with some of these patches.
+
+ Please queue for the next release cycle and backport as noted with each 
+of the patches.
+
+ NB there is also an API mismatch between `init_fpu' returning SIGFPE and 
+its caller `__compute_return_epc_for_insn', however I can't figure out why 
+the incorrect return status is only passed up if NO_R6EMU, so I'm leaving 
+it to whoever understands the dependency here to fix up.  Offhand it looks 
+to me like the whole containing `!used_math()' conditional is bogus though 
+-- we've got an exception in a delay slot of a COP1 branch, so the FPU 
+clearly must have been used already or we wouldn't have reached the delay 
+slot to trap in in the first place.  For the same reason we do not need to 
+check `cpu_has_mips_r6' other than for telling overlapping R6 BC1EQZ and 
+MIPS-3D BC1ANY2 minor opcodes apart, which we don't do anyway.
+
+ So more fixes and clean-ups are due around here it would seem.  But this 
+is too much for the amount of time I can afford right now, so I'll be 
+leaving them for the next opportunity.
+
+  Maciej

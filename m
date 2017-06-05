@@ -1,66 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jun 2017 06:50:25 +0200 (CEST)
-Received: from mail-wm0-x244.google.com ([IPv6:2a00:1450:400c:c09::244]:36025
-        "EHLO mail-wm0-x244.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23992078AbdFEEuLynopk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Jun 2017 06:50:11 +0200
-Received: by mail-wm0-x244.google.com with SMTP id k15so27921915wmh.3
-        for <linux-mips@linux-mips.org>; Sun, 04 Jun 2017 21:50:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=q0iJLsNQb9loYmgO7gNjPRauVLI8nc5bSmUH0yFJuuo=;
-        b=n+vQNzxQOE7zlHffT3YyupTloyeYR7Y3B1a8axArkhRxh9FFx8tQk/X3ZR615GITIL
-         sGu7yQCO1QwuEafpw+mITwbWq4DDybPB2NLi0Muz38Y9H45DLxXxTm8Fx5UK5FCkJnR6
-         W/9UomeUXmCK3NiiZ+amXJaHWraYQ8kjDnOy9cbuy8QNDNshTrAtjLG8Rq/hgnRrJ3vw
-         Vm7i8W0iQ3hWw6o6TJTuRbU+4j+GDA6k6SINDazql+TGnfvK5rkMmP3NVPO9apwG44eH
-         YXhfQhlWhByUTU4l10/WUa4XTx0avRCd0ElmlNIVXrI4TMi45LxG5fK9VnkiATXGXqhf
-         BOgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=q0iJLsNQb9loYmgO7gNjPRauVLI8nc5bSmUH0yFJuuo=;
-        b=RviPDmUdd12enuHaq5AjCQuCis1YqJI+CCA9lr7Wfhst/2HguGmz2KSAJadA6Dp29o
-         RVQvsP5IAMVKpb6uqNvo2I12RsEsgRB7lfLO5i+D0ujsH7hzS4X76EQlfNuCJh0yAlyo
-         7CnGRcHT7+eaeZfsutCyzsN2OuDWmjEjfFjqYDBfeSquIFjkg4u3c9PmJArc0IipY/3c
-         altMrL5TlGfd5eLVZUa8BXxg/t0/m3sU6pUTy/Tdo9MlxuBUa6mwPAf2OKxlWFEZnKOW
-         IaTudRe2A5qjeRot42HpUB1keLsVCOg9K3dZNcmqZ4aW/wl2Dm4jxBKQWPLfjOLdPa2Q
-         I3ig==
-X-Gm-Message-State: AODbwcCkWyox2pJci+6kXIMYeUcPm8ontNG4EB6uL02+XTS+8V1rrgTO
-        bR1hGfk/QAn9L1nk
-X-Received: by 10.28.197.11 with SMTP id v11mr6159621wmf.84.1496638206644;
-        Sun, 04 Jun 2017 21:50:06 -0700 (PDT)
-Received: from localhost (jirka.pirko.cz. [84.16.102.26])
-        by smtp.gmail.com with ESMTPSA id l8sm11299796wmd.8.2017.06.04.21.50.05
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 04 Jun 2017 21:50:05 -0700 (PDT)
-Date:   Mon, 5 Jun 2017 06:50:04 +0200
-From:   Jiri Pirko <jiri@resnulli.us>
-To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] net: sched: fix mips build failure
-Message-ID: <20170605045004.GA1929@nanopsycho.orion>
-References: <1496612653-12419-1-git-send-email-sudipm.mukherjee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jun 2017 11:02:01 +0200 (CEST)
+Received: from atomos.longlandclan.id.au ([IPv6:2001:44b8:21ac:7000::1]:58005
+        "EHLO atomos.longlandclan.id.au" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23991512AbdFEJBxC3Dgc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Jun 2017 11:01:53 +0200
+Received: from [IPv6:2001:44b8:21ac:7053:65::fe] (unknown [IPv6:2001:44b8:21ac:7053:65::fe])
+        by atomos.longlandclan.id.au (Postfix) with ESMTPSA id 62CAE240FF72
+        for <linux-mips@linux-mips.org>; Mon,  5 Jun 2017 19:01:37 +1000 (EST)
+Subject: Re: QEMU Malta emulation using I6400: runaway loop modprobe
+ binfmt-464c
+To:     linux-mips@linux-mips.org
+References: <996c275d-d969-508e-6b4e-bef22d8e7385@longlandclan.id.au>
+ <alpine.DEB.2.00.1706031310470.2590@tp.orcam.me.uk>
+ <81bca3a5-88dc-d6af-9c6a-3e17d9a8bda5@longlandclan.id.au>
+ <alpine.DEB.2.00.1706041556050.10864@tp.orcam.me.uk>
+From:   Stuart Longland <stuartl@longlandclan.id.au>
+Openpgp: id=BCA11879F4F93BE3DB0DEE72F954BBBB7948D546;
+ url=https://stuartl.longlandclan.id.au/key.asc
+Message-ID: <174b9af5-5c53-af6a-8734-9ed9fe333b93@longlandclan.id.au>
+Date:   Mon, 5 Jun 2017 19:01:27 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1496612653-12419-1-git-send-email-sudipm.mukherjee@gmail.com>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <jiri@resnulli.us>
+In-Reply-To: <alpine.DEB.2.00.1706041556050.10864@tp.orcam.me.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <stuartl@longlandclan.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58207
+X-archive-position: 58208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiri@resnulli.us
+X-original-sender: stuartl@longlandclan.id.au
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -73,22 +45,32 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Sun, Jun 04, 2017 at 11:44:13PM CEST, sudipm.mukherjee@gmail.com wrote:
->The build of mips ar7_defconfig was failing with the error:
->../net/sched/act_api.c: In function 'tcf_action_goto_chain_init':
->../net/sched/act_api.c:37:18: error:
->	implicit declaration of function 'tcf_chain_get'
->	[-Werror=implicit-function-declaration]
->
->../net/sched/act_api.c: In function 'tcf_action_goto_chain_fini':
->../net/sched/act_api.c:45:2: error:
->	implicit declaration of function 'tcf_chain_put'
->	[-Werror=implicit-function-declaration]
->
->Add two inline helpers for the case where CONFIG_NET_CLS is not enabled.
->
->Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+On 05/06/17 01:12, Maciej W. Rozycki wrote:
+>>  What's the effect on pre-2008 CPUs?
+>  The same as with running legacy-NaN software on a 2008-NaN processor -- 
+> by default the kernel will refuse execution of such a binary, or you can 
+> use the kernel options I quoted to change that, and likewise with the 
+> `ieee754=relaxed' option you risk incorrect results, including a possible 
+> crash.  There is symmetry here.
 
-I already sent a fix for this:
+Ahh no worries… well, every *real* CPU I have, is pre-2008, the Yeeloong
+being the newest of the lot (the machine was bought brand-new in 2009).
 
-http://patchwork.ozlabs.org/project/netdev/list/
+Looks like the `nofpu` route will be the best option in my case, even if
+it means slower floating-point performance, the point of the exercise is
+for package builds for my existing hardware which is MIPS-IV ISA level
+at best.
+
+(…And this is not something that is likely to change either, sadly ARM
+has won the consumer development board market with devices like the
+Raspberry Pi and Beagle Bone.  Imagination Tech are doing good things,
+and 10 years ago I might've bought a board, but it's too late for me now.)
+
+Many thanks for the pointers there.  I have some ideas now what I can
+try next.
+Regards,
+-- 
+Stuart Longland (aka Redhatter, VK4MSL)
+
+I haven't lost my mind...
+  ...it's backed up on a tape somewhere.

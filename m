@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jun 2017 11:02:01 +0200 (CEST)
-Received: from atomos.longlandclan.id.au ([IPv6:2001:44b8:21ac:7000::1]:58005
-        "EHLO atomos.longlandclan.id.au" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991512AbdFEJBxC3Dgc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Jun 2017 11:01:53 +0200
-Received: from [IPv6:2001:44b8:21ac:7053:65::fe] (unknown [IPv6:2001:44b8:21ac:7053:65::fe])
-        by atomos.longlandclan.id.au (Postfix) with ESMTPSA id 62CAE240FF72
-        for <linux-mips@linux-mips.org>; Mon,  5 Jun 2017 19:01:37 +1000 (EST)
-Subject: Re: QEMU Malta emulation using I6400: runaway loop modprobe
- binfmt-464c
-To:     linux-mips@linux-mips.org
-References: <996c275d-d969-508e-6b4e-bef22d8e7385@longlandclan.id.au>
- <alpine.DEB.2.00.1706031310470.2590@tp.orcam.me.uk>
- <81bca3a5-88dc-d6af-9c6a-3e17d9a8bda5@longlandclan.id.au>
- <alpine.DEB.2.00.1706041556050.10864@tp.orcam.me.uk>
-From:   Stuart Longland <stuartl@longlandclan.id.au>
-Openpgp: id=BCA11879F4F93BE3DB0DEE72F954BBBB7948D546;
- url=https://stuartl.longlandclan.id.au/key.asc
-Message-ID: <174b9af5-5c53-af6a-8734-9ed9fe333b93@longlandclan.id.au>
-Date:   Mon, 5 Jun 2017 19:01:27 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jun 2017 13:16:32 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:19607 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23991061AbdFELQZcQOpd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Jun 2017 13:16:25 +0200
+Received: from hhmail02.hh.imgtec.org (unknown [10.100.10.20])
+        by Forcepoint Email with ESMTPS id BEDBEC0A3CADC;
+        Mon,  5 Jun 2017 12:16:15 +0100 (IST)
+Received: from [10.80.2.5] (10.80.2.5) by hhmail02.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Mon, 5 Jun
+ 2017 12:16:18 +0100
+Subject: Re: [PATCH] MIPS: ftrace: fix init functions tracing
+To:     Steven Rostedt <rostedt@goodmis.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+References: <1495537003-1013-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <20170523153240.72a8ecd5@vmware.local.home>
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Message-ID: <19a41533-d203-f87b-603a-fcb311c2060f@imgtec.com>
+Date:   Mon, 5 Jun 2017 13:16:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.00.1706041556050.10864@tp.orcam.me.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <stuartl@longlandclan.id.au>
+In-Reply-To: <20170523153240.72a8ecd5@vmware.local.home>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58208
+X-archive-position: 58209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stuartl@longlandclan.id.au
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -45,32 +46,82 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On 05/06/17 01:12, Maciej W. Rozycki wrote:
->>  What's the effect on pre-2008 CPUs?
->  The same as with running legacy-NaN software on a 2008-NaN processor -- 
-> by default the kernel will refuse execution of such a binary, or you can 
-> use the kernel options I quoted to change that, and likewise with the 
-> `ieee754=relaxed' option you risk incorrect results, including a possible 
-> crash.  There is symmetry here.
+Hi Steven,
 
-Ahh no worries… well, every *real* CPU I have, is pre-2008, the Yeeloong
-being the newest of the lot (the machine was bought brand-new in 2009).
+On 23.05.2017 21:32, Steven Rostedt wrote:
+> On Tue, 23 May 2017 12:56:43 +0200
+> Marcin Nowakowski <marcin.nowakowski@imgtec.com> wrote:
+> 
+>> Since introduction of tracing for init functions the in_kernel_space()
+>> check is no longer correct, as it ignores the init sections. As a
+>> result, when probes are inserted (and disabled) in the init functions,
+>> a branch instruction is inserted instead of a nop, which is likely to
+>> result in random crashes during boot.
+>>
+>> Remove the MIPS-specific in_kernel_space() method and replace it with
+>> a generic core_kernel_text() that also checks for init sections during
+>> system boot stage.
+>>
+>> Fixes: 42c269c88dc1 ("ftrace: Allow for function tracing to record
+>> init functions on boot up") Signed-off-by: Marcin Nowakowski
+>> <marcin.nowakowski@imgtec.com> ---
+>>   arch/mips/kernel/ftrace.c | 24 +++++-------------------
+>>   1 file changed, 5 insertions(+), 19 deletions(-)
+>>
+>>
+> 
+> Thanks for doing this.
 
-Looks like the `nofpu` route will be the best option in my case, even if
-it means slower floating-point performance, the point of the exercise is
-for package builds for my existing hardware which is MIPS-IV ISA level
-at best.
+There's one issue with this patch that I haven't noticed initially - 
+while this fixes the MIPS boot issue, it introduces a problem due to use 
+of core_kernel_text in the function graph trace path ... as the 
+core_kernel_text function is traced as well, we end up with a recursive 
+call to core_kernel_text from its function graph handler, something that 
+shows up in a backtrace as:
 
-(…And this is not something that is likely to change either, sadly ARM
-has won the consumer development board market with devices like the
-Raspberry Pi and Beagle Bone.  Imagination Tech are doing good things,
-and 10 years ago I might've bought a board, but it's too late for me now.)
+[    2.972075] Call Trace:
+[    2.972111]
+[    2.976731] [<80506584>] ftrace_return_to_handler+0x50/0x128
+[    2.983379] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    2.989146] [<804119b8>] prepare_ftrace_return+0x6c/0x114
+[    2.995402] [<80411b2c>] ftrace_graph_caller+0x20/0x44
+[    3.001362] [<80411b60>] return_to_handler+0x10/0x30
+[    3.007159] [<80411b50>] return_to_handler+0x0/0x30
+[    3.012827] [<80411b50>] return_to_handler+0x0/0x30
+[    3.018621] [<804e589c>] ftrace_ops_no_ops+0x114/0x1bc
+[    3.024602] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    3.030377] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    3.036140] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    3.041915] [<804e589c>] ftrace_ops_no_ops+0x114/0x1bc
+[    3.047923] [<8045478c>] core_kernel_text+0x10/0x1b8
+[    3.053682] [<804119b8>] prepare_ftrace_return+0x6c/0x114
+[    3.059938] [<80411b2c>] ftrace_graph_caller+0x20/0x44
+(and many many more repetitions before we run out of stack)
 
-Many thanks for the pointers there.  I have some ideas now what I can
-try next.
-Regards,
--- 
-Stuart Longland (aka Redhatter, VK4MSL)
+Would a simple patch like:
 
-I haven't lost my mind...
-  ...it's backed up on a tape somewhere.
+--- a/kernel/extable.c
++++ b/kernel/extable.c
+@@ -69,7 +69,7 @@ static inline int init_kernel_text(unsigned long addr)
+         return 0;
+  }
+
+-int core_kernel_text(unsigned long addr)
++int notrace core_kernel_text(unsigned long addr)
+  {
+         if (addr >= (unsigned long)_stext &&
+             addr < (unsigned long)_etext)
+
+
+be acceptable here to solve this problem? It needs to modify the generic 
+kernel code due to a dependency that is specific to MIPS only, so it 
+might not be the best solution, but an alternative is to add restore a 
+copy of that method in arch/mips - which doesn't seem very nice either.
+The core_kernel_text function is not something that is extremely 
+valuable to be traced IMO anyway, so it shouldn't be a big loss.
+
+What's your opinion?
+If this change is OK I'll send out a patch
+
+thanks
+Marcin

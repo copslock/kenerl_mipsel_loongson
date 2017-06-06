@@ -1,54 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jun 2017 11:01:34 +0200 (CEST)
-Received: from mail.linuxfoundation.org ([140.211.169.12]:44582 "EHLO
-        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23991948AbdFIJBTsWtak (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Jun 2017 11:01:19 +0200
-Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
-        by mail.linuxfoundation.org (Postfix) with ESMTPSA id B4EF9B77;
-        Fri,  9 Jun 2017 09:01:12 +0000 (UTC)
-Subject: patch "mips: sgi-ip22: ecard: use dev_groups and not dev_attrs for bus_type" added to driver-core-testing
-To:     gregkh@linuxfoundation.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 09 Jun 2017 11:01:01 +0200
-Message-ID: <14969988612179@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-Return-Path: <gregkh@linuxfoundation.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58376
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
-Precedence: bulk
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-Id: linux-mips <linux-mips.eddie.linux-mips.org>
-X-List-ID: linux-mips <linux-mips.eddie.linux-mips.org>
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-X-list: linux-mips
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Tue, 6 Jun 2017 14:16:30 +0200
+Subject: mips: sgi-ip22: ecard: use dev_groups and not dev_attrs for bus_type
+Message-ID: <20170606121630.em93OJTHpkk0wKxScx-0UGU77z5f9upRpCV69NU_Ti0@z>
 
+The dev_attrs field has long been "depreciated" and is finally being
+removed, so move the driver to use the "correct" dev_groups field
+instead for struct bus_type.
 
-This is a note to let you know that I've just added the patch titled
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/mips/sgi-ip22/ip22-gio.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-    mips: sgi-ip22: ecard: use dev_groups and not dev_attrs for bus_type
-
-to my driver-core git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
-in the driver-core-testing branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will be merged to the driver-core-next branch sometime soon,
-after it passes testing, and the merge window is open.
-
-If you have any questions about this process, please let me know.
+diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
+index cdf187600010..b225033aade6 100644
+--- a/arch/mips/sgi-ip22/ip22-gio.c
++++ b/arch/mips/sgi-ip22/ip22-gio.c
+@@ -169,6 +169,7 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
+ 
+ 	return (len >= PAGE_SIZE) ? (PAGE_SIZE - 1) : len;
+ }
++static DEVICE_ATTR_RO(modalias);
+ 
+ static ssize_t name_show(struct device *dev,
+ 			 struct device_attribute *attr, char *buf)
+@@ -178,6 +179,7 @@ static ssize_t name_show(struct device *dev,
+ 	giodev = to_gio_device(dev);
+ 	return sprintf(buf, "%s", giodev->name);
+ }
++static DEVICE_ATTR_RO(name);
+ 
+ static ssize_t id_show(struct device *dev,
+ 		       struct device_attribute *attr, char *buf)
+@@ -187,13 +189,15 @@ static ssize_t id_show(struct device *dev,
+ 	giodev = to_gio_device(dev);
+ 	return sprintf(buf, "%x", giodev->id.id);
+ }
++static DEVICE_ATTR_RO(id);
+ 
+-static struct device_attribute gio_dev_attrs[] = {
+-	__ATTR_RO(modalias),
+-	__ATTR_RO(name),
+-	__ATTR_RO(id),
+-	__ATTR_NULL,
++static struct attribute *gio_dev_attrs[] = {
++	&dev_attr_modalias.attr,
++	&dev_attr_name.attr,
++	&dev_attr_id.attr,
++	NULL,
+ };
++ATTRIBUTE_GROUPS(gio_dev);
+ 
+ static int gio_device_uevent(struct device *dev, struct kobj_uevent_env *env)
+ {
+@@ -374,7 +378,7 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
+ 
+ static struct bus_type gio_bus_type = {
+ 	.name	   = "gio",
+-	.dev_attrs = gio_dev_attrs,
++	.dev_groups = gio_dev_groups,
+ 	.match	   = gio_bus_match,
+ 	.probe	   = gio_device_probe,
+ 	.remove	   = gio_device_remove,
+-- 
+2.13.1

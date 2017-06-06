@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 21:13:32 +0200 (CEST)
-Received: from mail-pf0-x241.google.com ([IPv6:2607:f8b0:400e:c00::241]:36190
-        "EHLO mail-pf0-x241.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993910AbdFFTKlJflvB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 21:10:41 +0200
-Received: by mail-pf0-x241.google.com with SMTP id y7so6590990pfd.3
-        for <linux-mips@linux-mips.org>; Tue, 06 Jun 2017 12:10:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 21:14:12 +0200 (CEST)
+Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:33748
+        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993913AbdFFTKm2gemB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 21:10:42 +0200
+Received: by mail-pg0-x243.google.com with SMTP id a70so5499591pge.0
+        for <linux-mips@linux-mips.org>; Tue, 06 Jun 2017 12:10:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:to:to:to:to:to:to:to:to:to:to:to:to:cc:subject:date
          :message-id:in-reply-to:references;
-        bh=I+fr6Mm21zrgIPp4UTkPmjaP4fWEqHvdA+EeHaFptok=;
-        b=EU4egGBbMk/10/XqIOExtI8K3a3nJ8RiMOnbnxJliXWXjJEuntIx+PeMnFyk5b+YHT
-         AMz3DCDvArAcC5AATzBadCaBPsBwZAjMQD1Q525egGBcL2sCSWcqbSuhnFq5Pfu6sqgr
-         dZvx3pxM1i9hqZbBPHEYPgYtCCvhUL8+wNbVYmDdPtkjgxIgJqXz7erN9H4QRIdiwk22
-         zxXyX8XXsuZR5vN0mmq9fgP/yyyupOyvmpfZDjxOqnjGePP0pLVJQlKW15afCl260LGT
-         GlzVOeRGbpkFczVW3ZVXfc7xEeBStU5tnN8mbwmqiOwp5UvMAt/l2a0wgGu5yPMFBY7K
-         /Uyw==
+        bh=DU+j+hDs5dB2J42cyGzv7UJeslovCouMWa7zzHJo8Ms=;
+        b=DM+SvFZkYfCbLmoCAlRIPH2OkL7U/f9sVCHk95nspcpIK+LxUpW8lTSpIqc33048B9
+         eMm9oUGJ0zUYyNG7R0vYs2gyctPTeVS3eFcqttgJ5kZ/aL2Ln7hgF/Ivc80Xxrh1CSnD
+         Ij3gwte9PYgj5Kdsdw05U5gb8YGm2IYxTj8UOmQaChBVZWOkLqQTN9tNob7rfj0b5/LT
+         xn/P6KpA3/S0T0DoiQIM4R71YWIEf0H13PtdwZsdr2qNP0yn57Vvy1ssKLT5Bq7Lu1w3
+         Y8QH6nwTPHAN6xKdpU2P2ekgEQFgzfZvXBjZHhc4FSQzevEU+8ZpUpu4ZOppzuGa7n11
+         7SKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:to:to:to:to:to:to:to:to:to:to:to:to:cc
          :subject:date:message-id:in-reply-to:references;
-        bh=I+fr6Mm21zrgIPp4UTkPmjaP4fWEqHvdA+EeHaFptok=;
-        b=LG2y7RpgNo6oAijWS39FeaKD7rXpi4m1e3vWOA1pPMflm6yAysi6UtVgcP4jCQURYV
-         SYZXla5e+XfVnt8Amd6H5xNujJRMwV0VM8qN7x/2SkLoZWW6ZBzK4kycxgUARIGbnpBF
-         j/uEVYs5XRSdlTnriIzJm5ys8CvNTdNTGUwdolspc9t+p9FzKjkYCXQhpmDgY/IUXAVl
-         xpPw8ajwsUC9PKMOwVMbVaS1qm4qqu0auYw7I5wPD7b6yg7XDpp+cUsKI8ddg9ogregU
-         xHUZ+DUf8Pum9ilf7AqjsxLy23ErgCaOtpx0R1nZb2RWUPi6HBwLWs+SswBfqzwoLY8d
-         6lDw==
-X-Gm-Message-State: AODbwcCTXKL0i60EPsjDR2cpmHA+Bwj1cKJJm89xnz7mkjq297OSyPhV
-        3weJlpUGYN38q2uH
-X-Received: by 10.98.68.2 with SMTP id r2mr27079980pfa.45.1496776235242;
-        Tue, 06 Jun 2017 12:10:35 -0700 (PDT)
+        bh=DU+j+hDs5dB2J42cyGzv7UJeslovCouMWa7zzHJo8Ms=;
+        b=M7Oiw07QN/VgVcz/WcFIOw5S6OAp+rx5DRztC3Oqlml1LENEFsZc9aMuHpleaFJ8kE
+         4KcmzxMzCfMHUtz3uJlBYKVuxvZnVd220z+zrKbawkC7Pztq+aFkPb5Dn2yOXP5KKg4I
+         axu+E2PvlS4brwMAsJnTpUhTaLZEGT9qN7pCj38LjgI0cE1+LBa4f2xUHLr588h0XoqY
+         Zk/XzdcDS50wr8FD0SZVnJex1uw8JNTL9gNGwCljsZeIt63p0+DsnuNjwqTQGdDSHVE5
+         d8mUK9BxueKWS9ds79fPmTcaaPkzKdArlLaoMeVje2rc+61wW4hPRvYNT/eiYqGUGw6n
+         Q/xQ==
+X-Gm-Message-State: AODbwcAb0cKOOzil5wx+f36i4vZzOuNUZA7DfK7oqxpIqm3ZfIa+STXu
+        rMbYai/xfdoy+pul
+X-Received: by 10.98.196.86 with SMTP id y83mr22956509pff.97.1496776236687;
+        Tue, 06 Jun 2017 12:10:36 -0700 (PDT)
 Received: from localhost ([216.38.154.21])
-        by smtp.gmail.com with ESMTPSA id c23sm56892065pfh.131.2017.06.06.12.10.34
+        by smtp.gmail.com with ESMTPSA id g86sm1266292pfk.101.2017.06.06.12.10.35
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Jun 2017 12:10:34 -0700 (PDT)
+        Tue, 06 Jun 2017 12:10:35 -0700 (PDT)
 From:   Palmer Dabbelt <palmer@dabbelt.com>
 To:     monstr@monstr.eu
 To:     ralf@linux-mips.org
@@ -50,9 +50,9 @@ To:     geert@linux-m68k.org
 To:     linux-kernel@vger.kernel.org
 To:     linux-arch@vger.kernel.org
 Cc:     Palmer Dabbelt <palmer@dabbelt.com>
-Subject: [PATCH 5/7] sh: Use lib/ashldi3,ashrdi3,lshrdi3}.c
-Date:   Tue,  6 Jun 2017 12:10:21 -0700
-Message-Id: <20170606191023.24581-6-palmer@dabbelt.com>
+Subject: [PATCH 6/7] sparc: Use lib/{cmpdi2,ucmpdi2}.c
+Date:   Tue,  6 Jun 2017 12:10:22 -0700
+Message-Id: <20170606191023.24581-7-palmer@dabbelt.com>
 X-Mailer: git-send-email 2.13.0
 In-Reply-To: <20170606191023.24581-1-palmer@dabbelt.com>
 References: <20170523220546.16758-1-palmer@dabbelt.com>
@@ -61,7 +61,7 @@ Return-Path: <palmer@dabbelt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58266
+X-archive-position: 58267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,144 +84,88 @@ recently added.
 Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- arch/sh/Kconfig                  |  3 +++
- arch/sh/boot/compressed/Makefile |  6 +++---
- arch/sh/lib/Makefile             |  4 +---
- arch/sh/lib/ashldi3.c            | 29 -----------------------------
- arch/sh/lib/ashrdi3.c            | 31 -------------------------------
- arch/sh/lib/libgcc.h             | 25 -------------------------
- arch/sh/lib/lshrdi3.c            | 29 -----------------------------
- 7 files changed, 7 insertions(+), 120 deletions(-)
- delete mode 100644 arch/sh/lib/ashldi3.c
- delete mode 100644 arch/sh/lib/ashrdi3.c
- delete mode 100644 arch/sh/lib/libgcc.h
- delete mode 100644 arch/sh/lib/lshrdi3.c
+ arch/sparc/Kconfig       |  2 ++
+ arch/sparc/lib/Makefile  |  4 ++--
+ arch/sparc/lib/cmpdi2.c  | 27 ---------------------------
+ arch/sparc/lib/libgcc.h  | 18 ------------------
+ arch/sparc/lib/ucmpdi2.c | 19 -------------------
+ 5 files changed, 4 insertions(+), 66 deletions(-)
+ delete mode 100644 arch/sparc/lib/cmpdi2.c
+ delete mode 100644 arch/sparc/lib/libgcc.h
+ delete mode 100644 arch/sparc/lib/ucmpdi2.c
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index ee086958b2b2..49b98f74d7a0 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -48,6 +48,9 @@ config SUPERH
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_FUTEX_CMPXCHG if FUTEX
- 	select HAVE_NMI
-+	select GENERIC_ASHLDI3
-+	select GENERIC_ASHRDI3
-+	select GENERIC_LSHRDI3
- 	help
- 	  The SuperH is a RISC processor targeted for use in embedded systems
- 	  and consumer electronics; it was also used in the Sega Dreamcast
-diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
-index c4c47ea9fa94..45a8e1349103 100644
---- a/arch/sh/boot/compressed/Makefile
-+++ b/arch/sh/boot/compressed/Makefile
-@@ -38,10 +38,10 @@ LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(IMAGE_OFFSET) -e startup \
- #
- # Pull in the necessary libgcc bits from the in-kernel implementation.
- #
--lib1funcs-$(CONFIG_SUPERH32)	:= ashiftrt.S ashldi3.c ashrsi3.S ashlsi3.S \
--				   lshrsi3.S
-+lib1funcs-$(CONFIG_SUPERH32)	:= ashiftrt.S ashrsi3.S ashlsi3.S lshrsi3.S
- lib1funcs-obj			:= \
--	$(addsuffix .o, $(basename $(addprefix $(obj)/, $(lib1funcs-y))))
-+	$(addsuffix .o, $(basename $(addprefix $(obj)/, $(lib1funcs-y)))) \
-+	$(srctree)/lib/ashldi3.o
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 58243b0d21c0..cbb1aeb0d419 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -52,6 +52,8 @@ config SPARC32
+ 	select CLZ_TAB
+ 	select HAVE_UID16
+ 	select OLD_SIGACTION
++	select GENERIC_CMPDI2
++	select GENERIC_UCMPDI2
  
- lib1funcs-dir		:= $(srctree)/arch/$(SRCARCH)/lib
- ifeq ($(BITS),64)
-diff --git a/arch/sh/lib/Makefile b/arch/sh/lib/Makefile
-index 3baff31e58cf..971d9ac1e068 100644
---- a/arch/sh/lib/Makefile
-+++ b/arch/sh/lib/Makefile
-@@ -6,9 +6,7 @@ lib-y  = delay.o memmove.o memchr.o \
- 	 checksum.o strlen.o div64.o div64-generic.o
+ config SPARC64
+ 	def_bool 64BIT
+diff --git a/arch/sparc/lib/Makefile b/arch/sparc/lib/Makefile
+index 69912d2f8b54..815b4a336aa8 100644
+--- a/arch/sparc/lib/Makefile
++++ b/arch/sparc/lib/Makefile
+@@ -14,7 +14,7 @@ lib-$(CONFIG_SPARC32) += divdi3.o udivdi3.o
+ lib-$(CONFIG_SPARC32) += copy_user.o locks.o
+ lib-$(CONFIG_SPARC64) += atomic_64.o
+ lib-$(CONFIG_SPARC32) += lshrdi3.o ashldi3.o
+-lib-$(CONFIG_SPARC32) += muldi3.o bitext.o cmpdi2.o
++lib-$(CONFIG_SPARC32) += muldi3.o bitext.o
  
- # Extracted from libgcc
--obj-y += movmem.o ashldi3.o ashrdi3.o lshrdi3.o \
--	 ashlsi3.o ashrsi3.o ashiftrt.o lshrsi3.o \
--	 udiv_qrnnd.o
-+obj-y += movmem.o ashlsi3.o ashrsi3.o ashiftrt.o lshrsi3.o udiv_qrnnd.o
+ lib-$(CONFIG_SPARC64) += copy_page.o clear_page.o bzero.o
+ lib-$(CONFIG_SPARC64) += csum_copy.o csum_copy_from_user.o csum_copy_to_user.o
+@@ -42,5 +42,5 @@ lib-$(CONFIG_SPARC64) += copy_in_user.o memmove.o
+ lib-$(CONFIG_SPARC64) += mcount.o ipcsum.o xor.o hweight.o ffs.o
  
- udivsi3-y			:= udivsi3_i4i-Os.o
- 
-diff --git a/arch/sh/lib/ashldi3.c b/arch/sh/lib/ashldi3.c
+ obj-$(CONFIG_SPARC64) += iomap.o
+-obj-$(CONFIG_SPARC32) += atomic32.o ucmpdi2.o
++obj-$(CONFIG_SPARC32) += atomic32.o
+ obj-$(CONFIG_SPARC64) += PeeCeeI.o
+diff --git a/arch/sparc/lib/cmpdi2.c b/arch/sparc/lib/cmpdi2.c
 deleted file mode 100644
-index beb80f316095..000000000000
---- a/arch/sh/lib/ashldi3.c
+index 8c1306437ed1..000000000000
+--- a/arch/sparc/lib/cmpdi2.c
 +++ /dev/null
-@@ -1,29 +0,0 @@
+@@ -1,27 +0,0 @@
 -#include <linux/module.h>
 -
 -#include "libgcc.h"
 -
--long long __ashldi3(long long u, word_type b)
+-word_type __cmpdi2(long long a, long long b)
 -{
--	DWunion uu, w;
--	word_type bm;
+-	const DWunion au = {
+-		.ll = a
+-	};
+-	const DWunion bu = {
+-		.ll = b
+-	};
 -
--	if (b == 0)
--		return u;
+-	if (au.s.high < bu.s.high)
+-		return 0;
+-	else if (au.s.high > bu.s.high)
+-		return 2;
 -
--	uu.ll = u;
--	bm = 32 - b;
+-	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
+-		return 0;
+-	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
+-		return 2;
 -
--	if (bm <= 0) {
--		w.s.low = 0;
--		w.s.high = (unsigned int) uu.s.low << -bm;
--	} else {
--		const unsigned int carries = (unsigned int) uu.s.low >> bm;
--
--		w.s.low = (unsigned int) uu.s.low << b;
--		w.s.high = ((unsigned int) uu.s.high << b) | carries;
--	}
--
--	return w.ll;
+-	return 1;
 -}
 -
--EXPORT_SYMBOL(__ashldi3);
-diff --git a/arch/sh/lib/ashrdi3.c b/arch/sh/lib/ashrdi3.c
+-EXPORT_SYMBOL(__cmpdi2);
+diff --git a/arch/sparc/lib/libgcc.h b/arch/sparc/lib/libgcc.h
 deleted file mode 100644
-index c884a912b660..000000000000
---- a/arch/sh/lib/ashrdi3.c
+index b84fd797f3ea..000000000000
+--- a/arch/sparc/lib/libgcc.h
 +++ /dev/null
-@@ -1,31 +0,0 @@
--#include <linux/module.h>
--
--#include "libgcc.h"
--
--long long __ashrdi3(long long u, word_type b)
--{
--	DWunion uu, w;
--	word_type bm;
--
--	if (b == 0)
--		return u;
--
--	uu.ll = u;
--	bm = 32 - b;
--
--	if (bm <= 0) {
--		/* w.s.high = 1..1 or 0..0 */
--		w.s.high =
--		    uu.s.high >> 31;
--		w.s.low = uu.s.high >> -bm;
--	} else {
--		const unsigned int carries = (unsigned int) uu.s.high << bm;
--
--		w.s.high = uu.s.high >> b;
--		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
--	}
--
--	return w.ll;
--}
--
--EXPORT_SYMBOL(__ashrdi3);
-diff --git a/arch/sh/lib/libgcc.h b/arch/sh/lib/libgcc.h
-deleted file mode 100644
-index 05909d58e2fe..000000000000
---- a/arch/sh/lib/libgcc.h
-+++ /dev/null
-@@ -1,25 +0,0 @@
+@@ -1,18 +0,0 @@
 -#ifndef __ASM_LIBGCC_H
 -#define __ASM_LIBGCC_H
 -
@@ -229,58 +173,41 @@ index 05909d58e2fe..000000000000
 -
 -typedef int word_type __attribute__ ((mode (__word__)));
 -
--#ifdef __BIG_ENDIAN
 -struct DWstruct {
 -	int high, low;
 -};
--#elif defined(__LITTLE_ENDIAN)
--struct DWstruct {
--	int low, high;
--};
--#else
--#error I feel sick.
--#endif
 -
--typedef union {
+-typedef union
+-{
 -	struct DWstruct s;
 -	long long ll;
 -} DWunion;
 -
 -#endif /* __ASM_LIBGCC_H */
-diff --git a/arch/sh/lib/lshrdi3.c b/arch/sh/lib/lshrdi3.c
+diff --git a/arch/sparc/lib/ucmpdi2.c b/arch/sparc/lib/ucmpdi2.c
 deleted file mode 100644
-index dcf8d6810b7c..000000000000
---- a/arch/sh/lib/lshrdi3.c
+index 1e06ed500682..000000000000
+--- a/arch/sparc/lib/ucmpdi2.c
 +++ /dev/null
-@@ -1,29 +0,0 @@
+@@ -1,19 +0,0 @@
 -#include <linux/module.h>
--
 -#include "libgcc.h"
 -
--long long __lshrdi3(long long u, word_type b)
+-word_type __ucmpdi2(unsigned long long a, unsigned long long b)
 -{
--	DWunion uu, w;
--	word_type bm;
+-	const DWunion au = {.ll = a};
+-	const DWunion bu = {.ll = b};
 -
--	if (b == 0)
--		return u;
--
--	uu.ll = u;
--	bm = 32 - b;
--
--	if (bm <= 0) {
--		w.s.high = 0;
--		w.s.low = (unsigned int) uu.s.high >> -bm;
--	} else {
--		const unsigned int carries = (unsigned int) uu.s.high << bm;
--
--		w.s.high = (unsigned int) uu.s.high >> b;
--		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
--	}
--
--	return w.ll;
+-	if ((unsigned int) au.s.high < (unsigned int) bu.s.high)
+-		return 0;
+-	else if ((unsigned int) au.s.high > (unsigned int) bu.s.high)
+-		return 2;
+-	if ((unsigned int) au.s.low < (unsigned int) bu.s.low)
+-		return 0;
+-	else if ((unsigned int) au.s.low > (unsigned int) bu.s.low)
+-		return 2;
+-	return 1;
 -}
--
--EXPORT_SYMBOL(__lshrdi3);
+-EXPORT_SYMBOL(__ucmpdi2);
 -- 
 2.13.0

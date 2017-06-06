@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 14:47:47 +0200 (CEST)
-Received: from mail-oi0-x243.google.com ([IPv6:2607:f8b0:4003:c06::243]:33153
-        "EHLO mail-oi0-x243.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994231AbdFFMq2tYvbb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 14:46:28 +0200
-Received: by mail-oi0-x243.google.com with SMTP id h4so24425650oib.0
-        for <linux-mips@linux-mips.org>; Tue, 06 Jun 2017 05:46:28 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 14:51:19 +0200 (CEST)
+Received: from mail-ot0-x242.google.com ([IPv6:2607:f8b0:4003:c0f::242]:34080
+        "EHLO mail-ot0-x242.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993411AbdFFMtXZXawb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 14:49:23 +0200
+Received: by mail-ot0-x242.google.com with SMTP id a2so1968013oth.1
+        for <linux-mips@linux-mips.org>; Tue, 06 Jun 2017 05:49:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:in-reply-to:references:from:date:message-id
          :subject:to:cc;
-        bh=T7lYZQVgrqA2+m4wU/qywIxN+Ygu0d7zAsKu+uFHBrs=;
-        b=tfPGXbj3YOVA/R/EN+WvuPM9hOz4Bx/6i4xj/nkMxpVXWWVxuMFzi7XW7XjYxGUTuW
-         poSCInNI+HJpBka3lypO+WDBdZEyACm1bjJDMp2k72tHQUM2j0hsWI7BUIDS2NtEWZ68
-         pkZo+0+tMXEq42IDIucabVQ10qcINfbJtS3O2LV9zOE/OsVYvvU5gzti5SB8TC4LQTRh
-         iK4A/Re6QTEaA66BoadD0mNZ8x52xG+LA2ttDWqeb3iZID1VyFBxtYLtnudPlY2RYTGv
-         eXLJFtNUyHzSheFGCx/vS5uQOeoXK33LGmp/xYPLRdnG/97SO357PsUjTBPpTit5ga+5
-         +j/w==
+        bh=VVGCrzYPYNl9UnSdgl6LGh57Dw+RALCxW2eBYRlY1JU=;
+        b=FeGBj3GbM3i1R2sZYlf4dzWOD+GICdaqL4tjkq273zawHxchklogR6ffmhPYKGRTaW
+         Gi4qU0mFf8hYuwZbxQzcVOshlY4ZNYVB5yzMyJG2iaE9/lbl2be4nw/OioOftyezru2/
+         pUJAM7+9LQUXRMC7ttl1CQZkrFvgZnbOVRknzAShfBiPLSNQfpcNU4TVvEgs2T9DkxCV
+         Xi1m7TPgbqf6jRF8swLn7V17IrQ2z4LuWBbSuCi3JQYiy+tqhJiCPwZXWCSQgjX0b88X
+         wGUmK5kZ+OyERwyk8rCMXCXE20bFXKDU4wIdcV1Yucs1eKweO6SkZYcu2qvsxr3QDSBK
+         vgPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
          :date:message-id:subject:to:cc;
-        bh=T7lYZQVgrqA2+m4wU/qywIxN+Ygu0d7zAsKu+uFHBrs=;
-        b=Da+PynJiMtGxOVjr2Lj8n+sPPBF8jjtybAJHEfbDpDGSIQytkfzhbe5fPtv9vsr3rH
-         6pGINJRjJHFxIPGuWsA5U5oKmVBSLQ30G9bthMcojZgHBPTCuPdLxX72FOetc+CHSuyk
-         2m6Sbp8b54F2nqXGVYePADmxyMFPUFDD0qeW0CFUEFwCYulgyg3KIN4xELs31T/E0F3R
-         E1p3WlbkIwcNy9GsacnwSrhfPBJOpFKN47GI7r1powMzgPMO+IH9lPXea9xyRO5+M+fE
-         ttx48cYLOLypGzPOt5o3DbGA6TLsF1AQTVqEzMZ1F+ty+J768y5WeHNCHvYWc8UPAzxu
-         7eLg==
-X-Gm-Message-State: AODbwcDbqMj1I1nfLkj+gmeIaT7JDNqgc5evmCo+tzOYUFpj/UF1mXcq
-        i/aysVCwQzJ1K8fBS90PV3pE0PDTCw==
-X-Received: by 10.202.196.67 with SMTP id u64mr8107764oif.40.1496753181111;
- Tue, 06 Jun 2017 05:46:21 -0700 (PDT)
+        bh=VVGCrzYPYNl9UnSdgl6LGh57Dw+RALCxW2eBYRlY1JU=;
+        b=Ma38iYVZIV0LxCQfEbPvYhU3dFKNd4vJr2ur7sPsHKcz3k4a+hwXsEwmb2I1WDhgna
+         Mb2G0dptQyt5MrAqMuRK+g9CPeQOMU422qIuw+FwCT+GqAUgRlr1X/PVH7zQ5W+KYMD5
+         IV+CPjGh3mJtALC1gm596GY4SeHjLIorX4n4H0TMSYcHb/ASecOaqwmBrLtRyRlF5nc2
+         8gowpJ41ZqaPO/WkjOtNvk3pR4DdZa6XhIqKEuxJYoY6zhXuEBoq204DOA11sJh5U2Xl
+         loUCAurEAyle6JzEFTqK3hviybgFOn10LM39o7dxMnKIhtvFyinkCM86LrpmjPLcABj1
+         H0sg==
+X-Gm-Message-State: AODbwcAibwSXrVqg1IbOIy4kXzh+zcYGXe4Z1wXa6GhoJWtx5ylTHGI5
+        6Jokcl9wtllU2KWyr+xe7swNltp4TA==
+X-Received: by 10.157.50.11 with SMTP id t11mr15432476otc.217.1496753355924;
+ Tue, 06 Jun 2017 05:49:15 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.157.51.139 with HTTP; Tue, 6 Jun 2017 05:46:20 -0700 (PDT)
-In-Reply-To: <6faa7b93-a355-f7ba-e5e9-12f2414ac695@suse.de>
-References: <20170603135111.5444-1-asarai@suse.de> <20170603135111.5444-2-asarai@suse.de>
- <CAK8P3a3j4rB+iVX=a36csE6mX9iMRp14TS1UeePyFsjTKQyiZw@mail.gmail.com> <6faa7b93-a355-f7ba-e5e9-12f2414ac695@suse.de>
+Received: by 10.157.51.139 with HTTP; Tue, 6 Jun 2017 05:49:15 -0700 (PDT)
+In-Reply-To: <20170603141515.9529-2-asarai@suse.de>
+References: <20170603141515.9529-1-asarai@suse.de> <20170603141515.9529-2-asarai@suse.de>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 6 Jun 2017 14:46:20 +0200
-X-Google-Sender-Auth: R6Vewl9M6cNqc8Mmqc9xy7qmFGY
-Message-ID: <CAK8P3a1XsE9uCwn9N7oc4GycPERX3t1XhGyiixxRjhG8GXoEuA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] tty: add compat_ioctl callbacks
+Date:   Tue, 6 Jun 2017 14:49:15 +0200
+X-Google-Sender-Auth: AIGo9HK52MW2xusMwko77acbauY
+Message-ID: <CAK8P3a2Y2U58dfAxRYPKQL2-o8ufpkvxxF07c_LCr5DOuQ4=vw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] tty: add compat_ioctl callbacks
 To:     Aleksa Sarai <asarai@suse.de>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jiri Slaby <jslaby@suse.com>,
@@ -59,7 +58,7 @@ Return-Path: <arndbergmann@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58257
+X-archive-position: 58258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,44 +75,15 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Tue, Jun 6, 2017 at 1:05 PM, Aleksa Sarai <asarai@suse.de> wrote:
->>> diff --git a/drivers/tty/pty.c b/drivers/tty/pty.c
->>> index 65799575c666..2a6bd9ae3f8b 100644
->>> --- a/drivers/tty/pty.c
->>> +++ b/drivers/tty/pty.c
->>> @@ -481,6 +481,16 @@ static int pty_bsd_ioctl(struct tty_struct *tty,
->>>          return -ENOIOCTLCMD;
->>>   }
->>>
->>> +static long pty_bsd_compat_ioctl(struct tty_struct *tty,
->>> +                                unsigned int cmd, unsigned long arg)
->>> +{
->>> +       /*
->>> +        * PTY ioctls don't require any special translation between
->>> 32-bit and
->>> +        * 64-bit userspace, they are already compatible.
->>> +        */
->>> +       return pty_bsd_ioctl(tty, cmd, arg);
->>> +}
->>> +
->>
->>
->> This looks correct but unnecessary, you can simply point both
->> function pointers to the same function:
+On Sat, Jun 3, 2017 at 4:15 PM, Aleksa Sarai <asarai@suse.de> wrote:
+> In order to avoid future diversions between fs/compat_ioctl.c and
+> drivers/tty/pty.c, define .compat_ioctl callbacks for the relevant
+> tty_operations structs. Since both pty_unix98_ioctl() and
+> pty_bsd_ioctl() are compatible between 32-bit and 64-bit userspace no
+> special translation is required.
 >
->
-> They have different types, since they have different return types:
->
-> int  (*ioctl)(struct tty_struct *tty,
->             unsigned int cmd, unsigned long arg);
-> long (*compat_ioctl)(struct tty_struct *tty,
->                      unsigned int cmd, unsigned long arg);
->
-> If you like, I can change (*ioctl) to return longs as well, and then change
-> all of the call-sites (since unlocked_ioctl also returns long).
+> Signed-off-by: Aleksa Sarai <asarai@suse.de>
 
-Ah, my mistake. In most other data structures that have a compat_ioctl
-callback pointer, the prototypes are the same, and I had not realized
-that tty_operations is an exception.
+Looks good,
 
-        Arnd
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>

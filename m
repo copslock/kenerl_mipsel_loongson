@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 21:12:22 +0200 (CEST)
-Received: from mail-pf0-x242.google.com ([IPv6:2607:f8b0:400e:c00::242]:34521
-        "EHLO mail-pf0-x242.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993894AbdFFTKifinQB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 21:10:38 +0200
-Received: by mail-pf0-x242.google.com with SMTP id u1so297665pfg.1
-        for <linux-mips@linux-mips.org>; Tue, 06 Jun 2017 12:10:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 21:12:52 +0200 (CEST)
+Received: from mail-pg0-x243.google.com ([IPv6:2607:f8b0:400e:c05::243]:33745
+        "EHLO mail-pg0-x243.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23993901AbdFFTKjm4E0B (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 21:10:39 +0200
+Received: by mail-pg0-x243.google.com with SMTP id a70so5499520pge.0
+        for <linux-mips@linux-mips.org>; Tue, 06 Jun 2017 12:10:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:to:to:to:to:to:to:to:to:to:to:to:to:cc:subject:date
          :message-id:in-reply-to:references;
-        bh=0itul/GK7qRp9jnMy5gS0r+p/dFmiW771vnK3G3G24g=;
-        b=035A5fGVIWUd3ewnANjVLafKBevz1hNtOdm4Vhm6gm628XZpn+b6x7NftqWXkg1QnL
-         ePmo8iKZr9t3tfeVe0u/uMDE6tAHQJ5g/cMXvLxFIBpMuuyqjrUYISIZ5jVfJ8Oi5hQG
-         bY1DLJAtYr50f8zNaKGlT+yyZYlz/+y77HNyetyBq/KcZbM1mLjQJJFjHb5uZf5iPH+b
-         +wxWb1Z8mT+/b7hiyEkuQxJkBRXfzi42XDiqOBeyGjXMLOano6zQkN2jk7bLq0V/oyJF
-         NIYp22pVPaFFh5t+CihugQtFoDnku+G71FWypImbhyJ/+AIjlFD6quCiAq0cIXSwRTk+
-         6p1A==
+        bh=SxegilclmafEDrh8NB05FhxdVdtFhF7GIr3TgcmfKY0=;
+        b=TDXU6RNUNMfiXWFV1hvRR9o+FJWA0cWPVDJ2MR8fBk7UjuWZx9uFczYTmSKiaCrBY5
+         7+21sQOkY0oxP2LRCEs6+TaWAs5rAmFDjGGAp7tBc1J7ZT3CN/gi8erCJ3MaTRC9Z8wj
+         36QUYqfN5CoG7RfkmQ+Wrt3kHaXTZOGyJzdjEHx5cPr26D2DQHyfaCzzY5mr3dwztAf+
+         2QyZ3nU6w7MO82zozr0FZ5duLDkXXktHVAih3jQzq1yEY2K0tjpBhtzYk1I1oEwCPSVx
+         MExnISLuUV1YweusEBgDZ7B1xIviDZz4m/J2hTUhdNRXXc9FnD6K+LRSNDFzVsrqyqmy
+         v6zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:to:to:to:to:to:to:to:to:to:to:to:to:cc
          :subject:date:message-id:in-reply-to:references;
-        bh=0itul/GK7qRp9jnMy5gS0r+p/dFmiW771vnK3G3G24g=;
-        b=eaxl+c7OEpIxnWfp9J6VOoevhkWG4+sc0cJS7mBSCTs31ZszBwovuqc1+PibOFjxPy
-         SmTKgjS8ICaMSbxp3asLVHXZYCHn6hG9OuzVpBXTgweQYyo9aDSNlpPrfpVimb4rQJBq
-         dBOefr6qHUgTDJKrjSIv5jtEEvtLWNb+MkEIHwKsWp3Clj8VXHzcNj+9oe0Dfy6zDntT
-         HeVGX5djhkkd8tF8tOWERnUINdsXvhQx6FZxMteHaHQnrCWWmfwsUqACtyZllmGW7+5n
-         zeVxsz10UXsMj08fyvrKleepi35IRmI8dxT8fIDYuQ6H4Y8K1B1AkTV6cnxtGBVxuizi
-         /dFA==
-X-Gm-Message-State: AODbwcDFWJIdi/K1MDvSZ1H9O56rXndqIxKQ+FAN93gt+Q9y9f2e53d9
-        j05fLQWGJofaLvp3
-X-Received: by 10.98.63.218 with SMTP id z87mr18188912pfj.144.1496776232442;
-        Tue, 06 Jun 2017 12:10:32 -0700 (PDT)
+        bh=SxegilclmafEDrh8NB05FhxdVdtFhF7GIr3TgcmfKY0=;
+        b=rYODHRksOPcvzPehFqb4K5dRpL8Cq/m+YEwQlVqB4MY9lvbIIyZfkK8UiutpqJDnrW
+         NdIv9UdFoCrEYqNWEQP92hnxJgmzOh6aBRTtGFDayoH7x+htoSkcBy+AGQsc1Qd/cncG
+         cQnDPWLl9AnkTTj25r7n+YDwam4VJLLoRsQT5JsVSVdg9U2ofmbnSbUJR1Jlc90mXKpG
+         ATWOBdzNJX1FbhFlWsNW0l6zG2NWN5AA3NXjsfloXBXK3hnEy9QZyjzPnjS9LAKKpL10
+         2s5oG5n8oEZrSIUB3kyhrlyjBNTsO26xVjgbfmTqBw4ABBcCoMJBomPpPuJ2TMXGGcmE
+         /VFA==
+X-Gm-Message-State: AODbwcAmBJqeAC3LfZSs6NI5PwCKdS1R+qKZUA4yQmoARKLVR0i/ogxB
+        vkKFcwrDC2Q3lkwy
+X-Received: by 10.84.233.193 with SMTP id m1mr23005639pln.236.1496776233626;
+        Tue, 06 Jun 2017 12:10:33 -0700 (PDT)
 Received: from localhost ([216.38.154.21])
-        by smtp.gmail.com with ESMTPSA id c205sm13928399pfb.74.2017.06.06.12.10.31
+        by smtp.gmail.com with ESMTPSA id 71sm40410548pgd.57.2017.06.06.12.10.32
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Jun 2017 12:10:31 -0700 (PDT)
+        Tue, 06 Jun 2017 12:10:32 -0700 (PDT)
 From:   Palmer Dabbelt <palmer@dabbelt.com>
 To:     monstr@monstr.eu
 To:     ralf@linux-mips.org
@@ -50,9 +50,9 @@ To:     geert@linux-m68k.org
 To:     linux-kernel@vger.kernel.org
 To:     linux-arch@vger.kernel.org
 Cc:     Palmer Dabbelt <palmer@dabbelt.com>
-Subject: [PATCH 3/7] microblaze: Use libgcc files from lib/
-Date:   Tue,  6 Jun 2017 12:10:19 -0700
-Message-Id: <20170606191023.24581-4-palmer@dabbelt.com>
+Subject: [PATCH 4/7] score: Use lib/{ashldi3,ashrdi3,cmpdi2,lshrdi3,ucmpdi2}.c
+Date:   Tue,  6 Jun 2017 12:10:20 -0700
+Message-Id: <20170606191023.24581-5-palmer@dabbelt.com>
 X-Mailer: git-send-email 2.13.0
 In-Reply-To: <20170606191023.24581-1-palmer@dabbelt.com>
 References: <20170523220546.16758-1-palmer@dabbelt.com>
@@ -61,7 +61,7 @@ Return-Path: <palmer@dabbelt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58264
+X-archive-position: 58265
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -84,60 +84,75 @@ recently added.
 Signed-off-by: Palmer Dabbelt <palmer@dabbelt.com>
 Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- arch/microblaze/Kconfig       |  6 +++++
- arch/microblaze/lib/Makefile  |  3 +--
- arch/microblaze/lib/ashldi3.c | 28 ---------------------
- arch/microblaze/lib/ashrdi3.c | 30 -----------------------
- arch/microblaze/lib/cmpdi2.c  | 26 --------------------
- arch/microblaze/lib/libgcc.h  | 32 ------------------------
- arch/microblaze/lib/lshrdi3.c | 28 ---------------------
- arch/microblaze/lib/muldi3.c  | 57 -------------------------------------------
- arch/microblaze/lib/ucmpdi2.c | 20 ---------------
- 9 files changed, 7 insertions(+), 223 deletions(-)
- delete mode 100644 arch/microblaze/lib/ashldi3.c
- delete mode 100644 arch/microblaze/lib/ashrdi3.c
- delete mode 100644 arch/microblaze/lib/cmpdi2.c
- delete mode 100644 arch/microblaze/lib/libgcc.h
- delete mode 100644 arch/microblaze/lib/lshrdi3.c
- delete mode 100644 arch/microblaze/lib/muldi3.c
- delete mode 100644 arch/microblaze/lib/ucmpdi2.c
+ arch/score/Kconfig       |  5 +++++
+ arch/score/lib/Makefile  |  3 ---
+ arch/score/lib/ashldi3.c | 46 ----------------------------------------------
+ arch/score/lib/ashrdi3.c | 48 ------------------------------------------------
+ arch/score/lib/cmpdi2.c  | 44 --------------------------------------------
+ arch/score/lib/libgcc.h  | 37 -------------------------------------
+ arch/score/lib/lshrdi3.c | 47 -----------------------------------------------
+ arch/score/lib/ucmpdi2.c | 38 --------------------------------------
+ 8 files changed, 5 insertions(+), 263 deletions(-)
+ delete mode 100644 arch/score/lib/ashldi3.c
+ delete mode 100644 arch/score/lib/ashrdi3.c
+ delete mode 100644 arch/score/lib/cmpdi2.c
+ delete mode 100644 arch/score/lib/libgcc.h
+ delete mode 100644 arch/score/lib/lshrdi3.c
+ delete mode 100644 arch/score/lib/ucmpdi2.c
 
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index 85885a501dce..833487c17996 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -34,6 +34,12 @@ config MICROBLAZE
- 	select TRACING_SUPPORT
- 	select VIRT_TO_BUS
+diff --git a/arch/score/Kconfig b/arch/score/Kconfig
+index 507d63181389..151ec2296d53 100644
+--- a/arch/score/Kconfig
++++ b/arch/score/Kconfig
+@@ -15,6 +15,11 @@ config SCORE
+ 	select MODULES_USE_ELF_REL
+ 	select CLONE_BACKWARDS
  	select CPU_NO_EFFICIENT_FFS
 +	select GENERIC_ASHLDI3
 +	select GENERIC_ASHRDI3
 +	select GENERIC_CMPDI2
 +	select GENERIC_LSHRDI3
-+	select GENERIC_MULDI3
-+	select GENERIC_UCMPDI3
++	select GENERIC_UCMPDI2
  
- config SWAP
- 	def_bool n
-diff --git a/arch/microblaze/lib/Makefile b/arch/microblaze/lib/Makefile
-index 70c7ae6a3fb5..c9a4d537e2fd 100644
---- a/arch/microblaze/lib/Makefile
-+++ b/arch/microblaze/lib/Makefile
-@@ -19,5 +19,4 @@ endif
- lib-y += uaccess_old.o
+ choice
+ 	prompt "System type"
+diff --git a/arch/score/lib/Makefile b/arch/score/lib/Makefile
+index 553e30e81faf..ea3f3aba8c71 100644
+--- a/arch/score/lib/Makefile
++++ b/arch/score/lib/Makefile
+@@ -3,6 +3,3 @@
+ #
  
- # libgcc-style stuff needed in the kernel
--obj-y += ashldi3.o ashrdi3.o cmpdi2.o divsi3.o lshrdi3.o modsi3.o
--obj-y += muldi3.o mulsi3.o ucmpdi2.o udivsi3.o umodsi3.o
-+obj-y += divsi3.o modsi3.o mulsi3.o udivsi3.o umodsi3.o
-diff --git a/arch/microblaze/lib/ashldi3.c b/arch/microblaze/lib/ashldi3.c
-deleted file mode 100644
-index 1af904cd972d..000000000000
---- a/arch/microblaze/lib/ashldi3.c
-+++ /dev/null
-@@ -1,28 +0,0 @@
--#include <linux/export.h>
+ lib-y += string.o checksum.o checksum_copy.o
 -
+-# libgcc-style stuff needed in the kernel
+-obj-y += ashldi3.o ashrdi3.o cmpdi2.o lshrdi3.o ucmpdi2.o
+diff --git a/arch/score/lib/ashldi3.c b/arch/score/lib/ashldi3.c
+deleted file mode 100644
+index 15691a910431..000000000000
+--- a/arch/score/lib/ashldi3.c
++++ /dev/null
+@@ -1,46 +0,0 @@
+-/*
+- * arch/score/lib/ashldi3.c
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, see the file COPYING, or write
+- * to the Free Software Foundation, Inc.,
+- * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#include <linux/module.h>
 -#include "libgcc.h"
 -
 -long long __ashldi3(long long u, word_type b)
@@ -164,14 +179,32 @@ index 1af904cd972d..000000000000
 -	return w.ll;
 -}
 -EXPORT_SYMBOL(__ashldi3);
-diff --git a/arch/microblaze/lib/ashrdi3.c b/arch/microblaze/lib/ashrdi3.c
+diff --git a/arch/score/lib/ashrdi3.c b/arch/score/lib/ashrdi3.c
 deleted file mode 100644
-index 32c334c05d04..000000000000
---- a/arch/microblaze/lib/ashrdi3.c
+index d9814a5d8d30..000000000000
+--- a/arch/score/lib/ashrdi3.c
 +++ /dev/null
-@@ -1,30 +0,0 @@
--#include <linux/export.h>
+@@ -1,48 +0,0 @@
+-/*
+- * arch/score/lib/ashrdi3.c
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, see the file COPYING, or write
+- * to the Free Software Foundation, Inc.,
+- * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
 -
+-#include <linux/module.h>
 -#include "libgcc.h"
 -
 -long long __ashrdi3(long long u, word_type b)
@@ -200,14 +233,32 @@ index 32c334c05d04..000000000000
 -	return w.ll;
 -}
 -EXPORT_SYMBOL(__ashrdi3);
-diff --git a/arch/microblaze/lib/cmpdi2.c b/arch/microblaze/lib/cmpdi2.c
+diff --git a/arch/score/lib/cmpdi2.c b/arch/score/lib/cmpdi2.c
 deleted file mode 100644
-index 67abc9ac1bd4..000000000000
---- a/arch/microblaze/lib/cmpdi2.c
+index 1ed5290c66ed..000000000000
+--- a/arch/score/lib/cmpdi2.c
 +++ /dev/null
-@@ -1,26 +0,0 @@
--#include <linux/export.h>
+@@ -1,44 +0,0 @@
+-/*
+- * arch/score/lib/cmpdi2.c
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, see the file COPYING, or write
+- * to the Free Software Foundation, Inc.,
+- * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
 -
+-#include <linux/module.h>
 -#include "libgcc.h"
 -
 -word_type __cmpdi2(long long a, long long b)
@@ -232,52 +283,76 @@ index 67abc9ac1bd4..000000000000
 -	return 1;
 -}
 -EXPORT_SYMBOL(__cmpdi2);
-diff --git a/arch/microblaze/lib/libgcc.h b/arch/microblaze/lib/libgcc.h
+diff --git a/arch/score/lib/libgcc.h b/arch/score/lib/libgcc.h
 deleted file mode 100644
-index ab077ef7e14b..000000000000
---- a/arch/microblaze/lib/libgcc.h
+index 0f12543d9f31..000000000000
+--- a/arch/score/lib/libgcc.h
 +++ /dev/null
-@@ -1,32 +0,0 @@
+@@ -1,37 +0,0 @@
+-/*
+- * arch/score/lib/libgcc.h
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, see the file COPYING, or write
+- * to the Free Software Foundation, Inc.,
+- * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-
 -#ifndef __ASM_LIBGCC_H
 -#define __ASM_LIBGCC_H
 -
 -#include <asm/byteorder.h>
 -
--typedef int word_type __attribute__ ((mode (__word__)));
+-typedef int word_type __attribute__((mode(__word__)));
 -
--#ifdef __BIG_ENDIAN
--struct DWstruct {
--	int high, low;
--};
--#elif defined(__LITTLE_ENDIAN)
 -struct DWstruct {
 -	int low, high;
 -};
--#else
--#error I feel sick.
--#endif
 -
 -typedef union {
 -	struct DWstruct s;
 -	long long ll;
 -} DWunion;
 -
--extern long long __ashldi3(long long u, word_type b);
--extern long long __ashrdi3(long long u, word_type b);
--extern word_type __cmpdi2(long long a, long long b);
--extern long long __lshrdi3(long long u, word_type b);
--extern long long __muldi3(long long u, long long v);
--extern word_type __ucmpdi2(unsigned long long a, unsigned long long b);
--
 -#endif /* __ASM_LIBGCC_H */
-diff --git a/arch/microblaze/lib/lshrdi3.c b/arch/microblaze/lib/lshrdi3.c
+diff --git a/arch/score/lib/lshrdi3.c b/arch/score/lib/lshrdi3.c
 deleted file mode 100644
-index adcb253f11c8..000000000000
---- a/arch/microblaze/lib/lshrdi3.c
+index ce21175fd791..000000000000
+--- a/arch/score/lib/lshrdi3.c
 +++ /dev/null
-@@ -1,28 +0,0 @@
--#include <linux/export.h>
+@@ -1,47 +0,0 @@
+-/*
+- * arch/score/lib/lshrdi3.c
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, see the file COPYING, or write
+- * to the Free Software Foundation, Inc.,
+- * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
 -
+-
+-#include <linux/module.h>
 -#include "libgcc.h"
 -
 -long long __lshrdi3(long long u, word_type b)
@@ -304,77 +379,32 @@ index adcb253f11c8..000000000000
 -	return w.ll;
 -}
 -EXPORT_SYMBOL(__lshrdi3);
-diff --git a/arch/microblaze/lib/muldi3.c b/arch/microblaze/lib/muldi3.c
+diff --git a/arch/score/lib/ucmpdi2.c b/arch/score/lib/ucmpdi2.c
 deleted file mode 100644
-index a3f9a03acdcd..000000000000
---- a/arch/microblaze/lib/muldi3.c
+index b15241e0b079..000000000000
+--- a/arch/score/lib/ucmpdi2.c
 +++ /dev/null
-@@ -1,57 +0,0 @@
--#include <linux/export.h>
+@@ -1,38 +0,0 @@
+-/*
+- * arch/score/lib/ucmpdi2.c
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, see the file COPYING, or write
+- * to the Free Software Foundation, Inc.,
+- * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
 -
--#include "libgcc.h"
--
--#define W_TYPE_SIZE 32
--
--#define __ll_B ((unsigned long) 1 << (W_TYPE_SIZE / 2))
--#define __ll_lowpart(t) ((unsigned long) (t) & (__ll_B - 1))
--#define __ll_highpart(t) ((unsigned long) (t) >> (W_TYPE_SIZE / 2))
--
--/* If we still don't have umul_ppmm, define it using plain C.  */
--#if !defined(umul_ppmm)
--#define umul_ppmm(w1, w0, u, v)						\
--	do {								\
--		unsigned long __x0, __x1, __x2, __x3;			\
--		unsigned short __ul, __vl, __uh, __vh;			\
--									\
--		__ul = __ll_lowpart(u);					\
--		__uh = __ll_highpart(u);				\
--		__vl = __ll_lowpart(v);					\
--		__vh = __ll_highpart(v);				\
--									\
--		__x0 = (unsigned long) __ul * __vl;			\
--		__x1 = (unsigned long) __ul * __vh;			\
--		__x2 = (unsigned long) __uh * __vl;			\
--		__x3 = (unsigned long) __uh * __vh;			\
--									\
--		__x1 += __ll_highpart(__x0); /* this can't give carry */\
--		__x1 += __x2; /* but this indeed can */			\
--		if (__x1 < __x2) /* did we get it? */			\
--		__x3 += __ll_B; /* yes, add it in the proper pos */	\
--									\
--		(w1) = __x3 + __ll_highpart(__x1);			\
--		(w0) = __ll_lowpart(__x1) * __ll_B + __ll_lowpart(__x0);\
--	} while (0)
--#endif
--
--#if !defined(__umulsidi3)
--#define __umulsidi3(u, v) ({				\
--	DWunion __w;					\
--	umul_ppmm(__w.s.high, __w.s.low, u, v);		\
--	__w.ll;						\
--	})
--#endif
--
--long long __muldi3(long long u, long long v)
--{
--	const DWunion uu = {.ll = u};
--	const DWunion vv = {.ll = v};
--	DWunion w = {.ll = __umulsidi3(uu.s.low, vv.s.low)};
--
--	w.s.high += ((unsigned long) uu.s.low * (unsigned long) vv.s.high
--		+ (unsigned long) uu.s.high * (unsigned long) vv.s.low);
--
--	return w.ll;
--}
--EXPORT_SYMBOL(__muldi3);
-diff --git a/arch/microblaze/lib/ucmpdi2.c b/arch/microblaze/lib/ucmpdi2.c
-deleted file mode 100644
-index d05f1585121c..000000000000
---- a/arch/microblaze/lib/ucmpdi2.c
-+++ /dev/null
-@@ -1,20 +0,0 @@
--#include <linux/export.h>
--
+-#include <linux/module.h>
 -#include "libgcc.h"
 -
 -word_type __ucmpdi2(unsigned long long a, unsigned long long b)

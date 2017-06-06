@@ -1,43 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 05:48:37 +0200 (CEST)
-Received: from smtpbguseast2.qq.com ([54.204.34.130]:35053 "EHLO
-        smtpbguseast2.qq.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S23992110AbdFFDs3aG7gm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 05:48:29 +0200
-X-QQ-mid: bizesmtp14t1496720886tncskg56
-Received: from software.domain.org (unknown [222.92.8.142])
-        by esmtp4.qq.com (ESMTP) with 
-        id ; Tue, 06 Jun 2017 11:47:58 +0800 (CST)
-X-QQ-SSF: 01100000002000F0FL92000B0000000
-X-QQ-FEAT: nSUdqPGu3tvEzlZ5vWJj2TRxL7lV5i+d26dFjnsdsEn3j1Nb54rLE0+JBi/Ya
-        BE3ftV2j0vHRqhGylPyl+UvySRH+P1jQLFETf7AeB9/yVsDzAMi3Ct0xdi0Ovu9axcJHxGR
-        FqmdbuVdE7PSZJeHLKRFDjGupfmg8feyKP352KaF1K0GY+ZX47A7jcUXOZiuCdy6GG9A38x
-        pS912QQDA/lJwASVEp3xbUSFQEdZ7byCPTLfzFQE6kjmHq0EeBu6dBCilVIUudHLYNkuFz+
-        eI1nVmUKdJl2BkRK4Tno5yF5NCo0cIXahYxOYhvVFHxuuo
-X-QQ-GoodBg: 0
-From:   Huacai Chen <chenhc@lemote.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <john@phrozen.org>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>,
-        Zhangjin Wu <wuzhangjin@gmail.com>,
-        Huacai Chen <chenhc@lemote.com>
-Subject: [PATCH V4 3/9] MIPS: Loongson: Add NMI handler support
-Date:   Tue,  6 Jun 2017 11:48:10 +0800
-Message-Id: <1496720890-16322-1-git-send-email-chenhc@lemote.com>
-X-Mailer: git-send-email 2.7.0
-In-Reply-To: <1496718888-18324-1-git-send-email-chenhc@lemote.com>
-References: <1496718888-18324-1-git-send-email-chenhc@lemote.com>
-X-QQ-SENDSIZE: 520
-X-QQ-Bgrelay: 1
-Return-Path: <chenhc@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2017 08:07:04 +0200 (CEST)
+Received: from mail.linuxfoundation.org ([140.211.169.12]:46788 "EHLO
+        mail.linuxfoundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S23990513AbdFFGGzeoAdJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Jun 2017 08:06:55 +0200
+Received: from localhost (LFbn-1-12060-104.w90-92.abo.wanadoo.fr [90.92.122.104])
+        by mail.linuxfoundation.org (Postfix) with ESMTPSA id 862928EE;
+        Tue,  6 Jun 2017 06:06:48 +0000 (UTC)
+Date:   Tue, 6 Jun 2017 08:06:43 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     "Maciej W. Rozycki" <macro@imgtec.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <james.hogan@imgtec.com>,
+        linux-mips@linux-mips.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5/9] MIPS: Rename `sigill_r6' to `sigill_r2r6' in
+ `__compute_return_epc_for_insn'
+Message-ID: <20170606060643.GA25486@kroah.com>
+References: <alpine.DEB.2.00.1706040314270.10864@tp.orcam.me.uk>
+ <alpine.DEB.2.00.1706051739400.21750@tp.orcam.me.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.00.1706051739400.21750@tp.orcam.me.uk>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+Return-Path: <gregkh@linuxfoundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58252
+X-archive-position: 58253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chenhc@lemote.com
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -50,48 +43,16 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- arch/mips/loongson64/common/init.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+On Tue, Jun 06, 2017 at 12:17:53AM +0100, Maciej W. Rozycki wrote:
+> Cc: stable@vger.kernel.org # 3.19+
+> Signed-off-by: Maciej W. Rozycki <macro@imgtec.com>
+> ---
+>  Not a fix by itself, but needed for the next 2 changes.
 
-diff --git a/arch/mips/loongson64/common/init.c b/arch/mips/loongson64/common/init.c
-index 9b987fe..6ef1712 100644
---- a/arch/mips/loongson64/common/init.c
-+++ b/arch/mips/loongson64/common/init.c
-@@ -10,13 +10,25 @@
- 
- #include <linux/bootmem.h>
- #include <asm/bootinfo.h>
-+#include <asm/traps.h>
- #include <asm/smp-ops.h>
-+#include <asm/cacheflush.h>
- 
- #include <loongson.h>
- 
- /* Loongson CPU address windows config space base address */
- unsigned long __maybe_unused _loongson_addrwincfg_base;
- 
-+static void __init mips_nmi_setup(void)
-+{
-+	void *base;
-+	extern char except_vec_nmi;
-+
-+	base = (void *)(CAC_BASE + 0x380);
-+	memcpy(base, &except_vec_nmi, 0x80);
-+	flush_icache_range((unsigned long)base, (unsigned long)base + 0x80);
-+}
-+
- void __init prom_init(void)
- {
- #ifdef CONFIG_CPU_SUPPORTS_ADDRWINCFG
-@@ -40,6 +52,7 @@ void __init prom_init(void)
- 	/*init the uart base address */
- 	prom_init_uart_base();
- 	register_smp_ops(&loongson3_smp_ops);
-+	board_nmi_handler_setup = mips_nmi_setup;
- }
- 
- void __init prom_free_prom_memory(void)
--- 
-2.7.0
+And why isn't that info in the changelog text?  I know I will not take
+patches without any changelog text, I don't know of other maintainers
+are more "lax" about that :)
+
+thanks,
+
+greg k-h

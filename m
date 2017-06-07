@@ -1,21 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 01:02:24 +0200 (CEST)
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:50157 "EHLO 1wt.eu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 01:02:45 +0200 (CEST)
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:50217 "EHLO 1wt.eu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S23993916AbdFGXCPdK4vm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Jun 2017 01:02:15 +0200
+        id S23993912AbdFGXChyJmTm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Jun 2017 01:02:37 +0200
 Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id v57N1QMJ000378;
-        Thu, 8 Jun 2017 01:01:26 +0200
+        by pcw.home.local (8.15.2/8.15.2/Submit) id v57N1PXr000373;
+        Thu, 8 Jun 2017 01:01:25 +0200
 From:   Willy Tarreau <w@1wt.eu>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         linux@roeck-us.net
-Cc:     Paul Burton <paul.burton@imgtec.com>,
-        Leonid Yegoshin <leonid.yegoshin@imgtec.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        Willy Tarreau <w@1wt.eu>
-Subject: [PATCH 3.10 146/250] MIPS: Calculate microMIPS ra properly when unwinding the stack
-Date:   Thu,  8 Jun 2017 00:58:52 +0200
-Message-Id: <1496876436-32402-147-git-send-email-w@1wt.eu>
+Cc:     James Cowgill <James.Cowgill@imgtec.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        James Hogan <james.hogan@imgtec.com>, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 3.10 141/250] MIPS: OCTEON: Fix copy_from_user fault handling for large buffers
+Date:   Thu,  8 Jun 2017 00:58:47 +0200
+Message-Id: <1496876436-32402-142-git-send-email-w@1wt.eu>
 X-Mailer: git-send-email 2.8.0.rc2.1.gbe9624a
 In-Reply-To: <1496876436-32402-1-git-send-email-w@1wt.eu>
 References: <1496876436-32402-1-git-send-email-w@1wt.eu>
@@ -23,7 +22,7 @@ Return-Path: <w@1wt.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58294
+X-archive-position: 58295
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,169 +39,84 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-From: Paul Burton <paul.burton@imgtec.com>
+From: James Cowgill <James.Cowgill@imgtec.com>
 
-commit bb9bc4689b9c635714fbcd5d335bad9934a7ebfc upstream.
+commit 884b426917e4b3c85f33b382c792a94305dfdd62 upstream.
 
-get_frame_info() calculates the offset of the return address within a
-stack frame simply by dividing a the bottom 16 bits of the instruction,
-treated as a signed integer, by the size of a long. Whilst this works
-for MIPS32 & MIPS64 ISAs where the sw or sd instructions are used, it's
-incorrect for microMIPS where encodings differ. The result is that we
-typically completely fail to unwind the stack on microMIPS.
+If copy_from_user is called with a large buffer (>= 128 bytes) and the
+userspace buffer refers partially to unreadable memory, then it is
+possible for Octeon's copy_from_user to report the wrong number of bytes
+have been copied. In the case where the buffer size is an exact multiple
+of 128 and the fault occurs in the last 64 bytes, copy_from_user will
+report that all the bytes were copied successfully but leave some
+garbage in the destination buffer.
 
-Fix this by adjusting is_ra_save_ins() to calculate the return address
-offset, and take into account the various different encodings there in
-the same place as we consider whether an instruction is storing the
-ra/$31 register.
+The bug is in the main __copy_user_common loop in octeon-memcpy.S where
+in the middle of the loop, src and dst are incremented by 128 bytes. The
+l_exc_copy fault handler is used after this but that assumes that
+"src < THREAD_BUADDR($28)". This is not the case if src has already been
+incremented.
 
-With this we are now able to unwind the stack for kernels targetting the
-microMIPS ISA, for example we can produce:
+Fix by adding an extra fault handler which rewinds the src and dst
+pointers 128 bytes before falling though to l_exc_copy.
 
-    Call Trace:
-    [<80109e1f>] show_stack+0x63/0x7c
-    [<8011ea17>] __warn+0x9b/0xac
-    [<8011ea45>] warn_slowpath_fmt+0x1d/0x20
-    [<8013fe53>] register_console+0x43/0x314
-    [<8067c58d>] of_setup_earlycon+0x1dd/0x1ec
-    [<8067f63f>] early_init_dt_scan_chosen_stdout+0xe7/0xf8
-    [<8066c115>] do_early_param+0x75/0xac
-    [<801302f9>] parse_args+0x1dd/0x308
-    [<8066c459>] parse_early_options+0x25/0x28
-    [<8066c48b>] parse_early_param+0x2f/0x38
-    [<8066e8cf>] setup_arch+0x113/0x488
-    [<8066c4f3>] start_kernel+0x57/0x328
-    ---[ end trace 0000000000000000 ]---
+Thanks to the pwritev test from the strace test suite for originally
+highlighting this bug!
 
-Whereas previously we only produced:
-
-    Call Trace:
-    [<80109e1f>] show_stack+0x63/0x7c
-    ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Paul Burton <paul.burton@imgtec.com>
-Fixes: 34c2f668d0f6 ("MIPS: microMIPS: Add unaligned access support.")
-Cc: Leonid Yegoshin <leonid.yegoshin@imgtec.com>
+Fixes: 5b3b16880f40 ("MIPS: Add Cavium OCTEON processor support ...")
+Signed-off-by: James Cowgill <James.Cowgill@imgtec.com>
+Acked-by: David Daney <david.daney@cavium.com>
+Reviewed-by: James Hogan <james.hogan@imgtec.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/14532/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Patchwork: https://patchwork.linux-mips.org/patch/14978/
+Signed-off-by: James Hogan <james.hogan@imgtec.com>
 Signed-off-by: Willy Tarreau <w@1wt.eu>
 ---
- arch/mips/kernel/process.c | 83 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 63 insertions(+), 20 deletions(-)
+ arch/mips/cavium-octeon/octeon-memcpy.S | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 427187b1..5a93369 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -214,7 +214,7 @@ struct mips_frame_info {
- #define J_TARGET(pc,target)	\
- 		(((unsigned long)(pc) & 0xf0000000) | ((target) << 2))
+diff --git a/arch/mips/cavium-octeon/octeon-memcpy.S b/arch/mips/cavium-octeon/octeon-memcpy.S
+index 64e08df..8b70041 100644
+--- a/arch/mips/cavium-octeon/octeon-memcpy.S
++++ b/arch/mips/cavium-octeon/octeon-memcpy.S
+@@ -208,18 +208,18 @@ EXC(	STORE	t2, UNIT(6)(dst),	s_exc_p10u)
+ 	ADD	src, src, 16*NBYTES
+ EXC(	STORE	t3, UNIT(7)(dst),	s_exc_p9u)
+ 	ADD	dst, dst, 16*NBYTES
+-EXC(	LOAD	t0, UNIT(-8)(src),	l_exc_copy)
+-EXC(	LOAD	t1, UNIT(-7)(src),	l_exc_copy)
+-EXC(	LOAD	t2, UNIT(-6)(src),	l_exc_copy)
+-EXC(	LOAD	t3, UNIT(-5)(src),	l_exc_copy)
++EXC(	LOAD	t0, UNIT(-8)(src),	l_exc_copy_rewind16)
++EXC(	LOAD	t1, UNIT(-7)(src),	l_exc_copy_rewind16)
++EXC(	LOAD	t2, UNIT(-6)(src),	l_exc_copy_rewind16)
++EXC(	LOAD	t3, UNIT(-5)(src),	l_exc_copy_rewind16)
+ EXC(	STORE	t0, UNIT(-8)(dst),	s_exc_p8u)
+ EXC(	STORE	t1, UNIT(-7)(dst),	s_exc_p7u)
+ EXC(	STORE	t2, UNIT(-6)(dst),	s_exc_p6u)
+ EXC(	STORE	t3, UNIT(-5)(dst),	s_exc_p5u)
+-EXC(	LOAD	t0, UNIT(-4)(src),	l_exc_copy)
+-EXC(	LOAD	t1, UNIT(-3)(src),	l_exc_copy)
+-EXC(	LOAD	t2, UNIT(-2)(src),	l_exc_copy)
+-EXC(	LOAD	t3, UNIT(-1)(src),	l_exc_copy)
++EXC(	LOAD	t0, UNIT(-4)(src),	l_exc_copy_rewind16)
++EXC(	LOAD	t1, UNIT(-3)(src),	l_exc_copy_rewind16)
++EXC(	LOAD	t2, UNIT(-2)(src),	l_exc_copy_rewind16)
++EXC(	LOAD	t3, UNIT(-1)(src),	l_exc_copy_rewind16)
+ EXC(	STORE	t0, UNIT(-4)(dst),	s_exc_p4u)
+ EXC(	STORE	t1, UNIT(-3)(dst),	s_exc_p3u)
+ EXC(	STORE	t2, UNIT(-2)(dst),	s_exc_p2u)
+@@ -383,6 +383,10 @@ done:
+ 	 nop
+ 	END(memcpy)
  
--static inline int is_ra_save_ins(union mips_instruction *ip)
-+static inline int is_ra_save_ins(union mips_instruction *ip, int *poff)
- {
- #ifdef CONFIG_CPU_MICROMIPS
++l_exc_copy_rewind16:
++	/* Rewind src and dst by 16*NBYTES for l_exc_copy */
++	SUB	src, src, 16*NBYTES
++	SUB	dst, dst, 16*NBYTES
+ l_exc_copy:
  	/*
-@@ -227,25 +227,70 @@ static inline int is_ra_save_ins(union mips_instruction *ip)
- 	 * microMIPS is way more fun...
- 	 */
- 	if (mm_insn_16bit(ip->halfword[1])) {
--		return (ip->mm16_r5_format.opcode == mm_swsp16_op &&
--			ip->mm16_r5_format.rt == 31) ||
--		       (ip->mm16_m_format.opcode == mm_pool16c_op &&
--			ip->mm16_m_format.func == mm_swm16_op);
-+		switch (ip->mm16_r5_format.opcode) {
-+		case mm_swsp16_op:
-+			if (ip->mm16_r5_format.rt != 31)
-+				return 0;
-+
-+			*poff = ip->mm16_r5_format.simmediate;
-+			*poff = (*poff << 2) / sizeof(ulong);
-+			return 1;
-+
-+		case mm_pool16c_op:
-+			switch (ip->mm16_m_format.func) {
-+			case mm_swm16_op:
-+				*poff = ip->mm16_m_format.imm;
-+				*poff += 1 + ip->mm16_m_format.rlist;
-+				*poff = (*poff << 2) / sizeof(ulong);
-+				return 1;
-+
-+			default:
-+				return 0;
-+			}
-+
-+		default:
-+			return 0;
-+		}
- 	}
--	else {
--		return (ip->mm_m_format.opcode == mm_pool32b_op &&
--			ip->mm_m_format.rd > 9 &&
--			ip->mm_m_format.base == 29 &&
--			ip->mm_m_format.func == mm_swm32_func) ||
--		       (ip->i_format.opcode == mm_sw32_op &&
--			ip->i_format.rs == 29 &&
--			ip->i_format.rt == 31);
-+
-+	switch (ip->i_format.opcode) {
-+	case mm_sw32_op:
-+		if (ip->i_format.rs != 29)
-+			return 0;
-+		if (ip->i_format.rt != 31)
-+			return 0;
-+
-+		*poff = ip->i_format.simmediate / sizeof(ulong);
-+		return 1;
-+
-+	case mm_pool32b_op:
-+		switch (ip->mm_m_format.func) {
-+		case mm_swm32_func:
-+			if (ip->mm_m_format.rd < 0x10)
-+				return 0;
-+			if (ip->mm_m_format.base != 29)
-+				return 0;
-+
-+			*poff = ip->mm_m_format.simmediate;
-+			*poff += (ip->mm_m_format.rd & 0xf) * sizeof(u32);
-+			*poff /= sizeof(ulong);
-+			return 1;
-+		default:
-+			return 0;
-+		}
-+
-+	default:
-+		return 0;
- 	}
- #else
- 	/* sw / sd $ra, offset($sp) */
--	return (ip->i_format.opcode == sw_op || ip->i_format.opcode == sd_op) &&
--		ip->i_format.rs == 29 &&
--		ip->i_format.rt == 31;
-+	if ((ip->i_format.opcode == sw_op || ip->i_format.opcode == sd_op) &&
-+		ip->i_format.rs == 29 && ip->i_format.rt == 31) {
-+		*poff = ip->i_format.simmediate / sizeof(ulong);
-+		return 1;
-+	}
-+
-+	return 0;
- #endif
- }
- 
-@@ -368,11 +413,9 @@ static int get_frame_info(struct mips_frame_info *info)
- 			}
- 			continue;
- 		}
--		if (info->pc_offset == -1 && is_ra_save_ins(&insn)) {
--			info->pc_offset =
--				ip->i_format.simmediate / sizeof(long);
-+		if (info->pc_offset == -1 &&
-+		    is_ra_save_ins(&insn, &info->pc_offset))
- 			break;
--		}
- 	}
- 	if (info->frame_size && info->pc_offset >= 0) /* nested */
- 		return 0;
+ 	 * Copy bytes from src until faulting load address (or until a
 -- 
 2.8.0.rc2.1.gbe9624a

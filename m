@@ -1,32 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2017 22:11:38 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:60130 "EHLO
-        outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993950AbdFGUFX5pJOq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2017 22:05:23 +0200
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2017 22:59:56 +0200 (CEST)
+Received: from smtp.codeaurora.org ([198.145.29.96]:35544 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23992145AbdFGU7qqdzac (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2017 22:59:46 +0200
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1029D60DAA; Wed,  7 Jun 2017 20:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1496869185;
+        bh=3wyZFrZb0rh4Qdr0QdXQf9FDD3nXhg/T+HVyuWy577c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=N8bYvOkBZXEN2lTkv1As+RtbXvZPkF8Zkon5b9yTPZBFAcVfXp5AwiMbtrae7VPOe
+         o4vCKTSYYs+gLIvb1v+Ek6r00Octg2a1kezRvbblCoGbWAL5t/n2EDBjMi/IUGi4Rd
+         +pyyKniOSEXFt9lhC7Pnh8QLLfVbiDGLSdj48z98=
+Received: from localhost (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: sboyd@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0D3BB60D71;
+        Wed,  7 Jun 2017 20:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1496869184;
+        bh=3wyZFrZb0rh4Qdr0QdXQf9FDD3nXhg/T+HVyuWy577c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TJUqyzHOQSRaxPNcnhWttsBggj8v3EFcZB5QMlJ5XXjhbYkE5V45PdewGM4TuLznE
+         CcDGmsnhXbLOo2RypkkBDAz4xVWQ9pGSmJq6d2ICe061f+xWJEy7YDOODQxEazchYM
+         E50gKNzufaT8ucl4xRnFTLthbkpYgb7gxySdnIx0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0D3BB60D71
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=sboyd@codeaurora.org
+Date:   Wed, 7 Jun 2017 13:59:43 -0700
+From:   Stephen Boyd <sboyd@codeaurora.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Paul Burton <paul.burton@imgtec.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Paul Burton <paul.burton@imgtec.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH 06/15] serial: 8250_ingenic: Parse earlycon options
-Date:   Wed,  7 Jun 2017 22:04:30 +0200
-Message-Id: <20170607200439.24450-7-paul@crapouillou.net>
-In-Reply-To: <20170607200439.24450-1-paul@crapouillou.net>
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 04/15] clk: Add Ingenic jz4770 CGU driver
+Message-ID: <20170607205943.GO20170@codeaurora.org>
 References: <20170607200439.24450-1-paul@crapouillou.net>
-Return-Path: <paul@outils.crapouillou.net>
+ <20170607200439.24450-5-paul@crapouillou.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20170607200439.24450-5-paul@crapouillou.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <sboyd@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58288
+X-archive-position: 58289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul@crapouillou.net
+X-original-sender: sboyd@codeaurora.org
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -39,59 +68,98 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-In the devicetree, it is possible to specify the baudrate, parity,
-bits, flow of the early console, by passing a configuration string like
-this:
+On 06/07, Paul Cercueil wrote:
+> Add support for the clocks provided by the CGU in the Ingenic JZ4770
+> SoC.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
 
-aliases {
-	serial0 = &uart0;
-};
+Signed-off chain looks odd. Sender should be last in the chain
+and first is typically author.
 
-chosen {
-	stdout-path = "serial0:57600n8";
-};
+WARNING: struct clk_ops should normally be const
+#118: FILE: drivers/clk/ingenic/jz4770-cgu.c:84:
++struct clk_ops jz4770_uhc_phy_ops = {
 
-This, for instance, will configure the early console for a baudrate of
-57600 bps, no parity, and 8 bits per baud.
+WARNING: struct clk_ops should normally be const
+#149: FILE: drivers/clk/ingenic/jz4770-cgu.c:115:
++struct clk_ops jz4770_otg_phy_ops = {
 
-This patches implements parsing of this configuration string in the
-8250_ingenic driver, which previously just ignored it.
+drivers/clk/ingenic/jz4770-cgu.c:84:16:
+warning: symbol 'jz4770_uhc_phy_ops' was not declared. Should it
+be static?
+drivers/clk/ingenic/jz4770-cgu.c:115:16:
+warning: symbol 'jz4770_otg_phy_ops' was not declared. Should it
+be static?
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
- drivers/tty/serial/8250/8250_ingenic.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+> diff --git a/drivers/clk/ingenic/jz4770-cgu.c b/drivers/clk/ingenic/jz4770-cgu.c
+> new file mode 100644
+> index 000000000000..993db42df5fc
+> --- /dev/null
+> +++ b/drivers/clk/ingenic/jz4770-cgu.c
+> @@ -0,0 +1,485 @@
+> +/*
+> + * JZ4770 SoC CGU driver
+> + *
+> + * Copyright 2017, Paul Cercueil <paul@crapouillou.net>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 or later
+> + * as published by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/bitops.h>
+> +#include <linux/clk-provider.h>
+> +#include <linux/delay.h>
+> +#include <linux/of.h>
+> +#include <linux/syscore_ops.h>
+> +#include <dt-bindings/clock/jz4770-cgu.h>
+> +#include "cgu.h"
+> +
+[..]
+> +
+> +static struct syscore_ops jz4770_cgu_pm_ops = {
+> +	.suspend = jz4770_cgu_pm_suspend,
+> +	.resume = jz4770_cgu_pm_resume,
+> +};
+> +#endif /* CONFIG_PM_SLEEP */
+> +
+> +static void __init jz4770_cgu_init(struct device_node *np)
+> +{
+> +	int retval;
+> +
+> +	cgu = ingenic_cgu_new(jz4770_cgu_clocks,
+> +			      ARRAY_SIZE(jz4770_cgu_clocks), np);
+> +	if (!cgu)
+> +		pr_err("%s: failed to initialise CGU\n", __func__);
+> +
+> +	retval = ingenic_cgu_register_clocks(cgu);
+> +	if (retval)
+> +		pr_err("%s: failed to register CGU Clocks\n", __func__);
+> +
+> +#ifdef CONFIG_PM_SLEEP
 
-diff --git a/drivers/tty/serial/8250/8250_ingenic.c b/drivers/tty/serial/8250/8250_ingenic.c
-index b31b2ca552d1..59f3e632df49 100644
---- a/drivers/tty/serial/8250/8250_ingenic.c
-+++ b/drivers/tty/serial/8250/8250_ingenic.c
-@@ -99,14 +99,24 @@ static int __init ingenic_early_console_setup(struct earlycon_device *dev,
- 					      const char *opt)
- {
- 	struct uart_port *port = &dev->port;
--	unsigned int baud, divisor;
-+	unsigned int divisor;
-+	int baud = 115200;
- 
- 	if (!dev->port.membase)
- 		return -ENODEV;
- 
-+	if (opt) {
-+		char options[256];
-+		unsigned int parity, bits, flow; /* unused for now */
-+
-+		strlcpy(options, opt, sizeof(options));
-+		uart_parse_options(options, &baud, &parity, &bits, &flow);
-+	}
-+
- 	ingenic_early_console_setup_clock(dev);
- 
--	baud = dev->baud ?: 115200;
-+	if (dev->baud)
-+		baud = dev->baud;
- 	divisor = DIV_ROUND_CLOSEST(port->uartclk, 16 * baud);
- 
- 	early_out(port, UART_IER, 0);
+if (IS_ENABLED(CONFIG_PM_SLEEP) instead?
+
+> +	register_syscore_ops(&jz4770_cgu_pm_ops);
+> +#endif
+> +}
+> +CLK_OF_DECLARE(jz4770_cgu, "ingenic,jz4770-cgu", jz4770_cgu_init);
+
+Any reason this can't be a platform driver? Please add a comment
+above CLK_OF_DECLARE describing what is preventing that.
+
+> diff --git a/include/dt-bindings/clock/jz4770-cgu.h b/include/dt-bindings/clock/jz4770-cgu.h
+> new file mode 100644
+> index 000000000000..54b8b2ae4a73
+> --- /dev/null
+> +++ b/include/dt-bindings/clock/jz4770-cgu.h
+
+Can you split this file off into a different patch? That way clk
+tree can apply clk patches on top of a stable branch where this
+file lives by itself.
+
 -- 
-2.11.0
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

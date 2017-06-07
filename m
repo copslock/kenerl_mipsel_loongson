@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2017 22:08:29 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2017 22:08:56 +0200 (CEST)
 Received: from outils.crapouillou.net ([89.234.176.41]:59894 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993932AbdFGUE7AbCOq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2017 22:04:59 +0200
+        by eddie.linux-mips.org with ESMTP id S23993933AbdFGUFAVh2Aq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2017 22:05:00 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Michael Turquette <mturquette@baylibre.com>,
@@ -13,16 +13,16 @@ Cc:     Paul Burton <paul.burton@imgtec.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
         Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH 10/15] MIPS: ingenic: Add machine info for supported boards
-Date:   Wed,  7 Jun 2017 22:04:34 +0200
-Message-Id: <20170607200439.24450-11-paul@crapouillou.net>
+Subject: [PATCH 11/15] MIPS: ingenic: Initial JZ4770 support
+Date:   Wed,  7 Jun 2017 22:04:35 +0200
+Message-Id: <20170607200439.24450-12-paul@crapouillou.net>
 In-Reply-To: <20170607200439.24450-1-paul@crapouillou.net>
 References: <20170607200439.24450-1-paul@crapouillou.net>
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58281
+X-archive-position: 58282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,135 +39,262 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-This makes sure that 'mips_machtype' will be initialized to the SoC
-version used on the board.
+Provide just enough bits (clocks, clocksource, uart) to allow a kernel
+to boot on the JZ4770 SoC to a initramfs userspace.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 ---
- arch/mips/Kconfig         |  1 +
- arch/mips/jz4740/Makefile |  2 +-
- arch/mips/jz4740/boards.c | 16 ++++++++++++++++
- arch/mips/jz4740/setup.c  | 34 +++++++++++++++++++++++++++++-----
- 4 files changed, 47 insertions(+), 6 deletions(-)
- create mode 100644 arch/mips/jz4740/boards.c
+ arch/mips/boot/dts/ingenic/jz4770.dtsi | 210 +++++++++++++++++++++++++++++++++
+ arch/mips/jz4740/Kconfig               |   6 +
+ arch/mips/jz4740/time.c                |   2 +-
+ 3 files changed, 217 insertions(+), 1 deletion(-)
+ create mode 100644 arch/mips/boot/dts/ingenic/jz4770.dtsi
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 2828ecde133d..f36ffb93efd9 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -370,6 +370,7 @@ config MACH_INGENIC
- 	select BUILTIN_DTB
- 	select USE_OF
- 	select LIBFDT
-+	select MIPS_MACHINE
- 
- config LANTIQ
- 	bool "Lantiq based platforms"
-diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-index 39d70bde8cfe..87feb246fafe 100644
---- a/arch/mips/jz4740/Makefile
-+++ b/arch/mips/jz4740/Makefile
-@@ -5,7 +5,7 @@
- # Object file lists.
- 
- obj-y += prom.o time.o reset.o setup.o \
--	platform.o timer.o
-+	platform.o timer.o boards.o
- 
- obj-$(CONFIG_MACH_JZ4740) += gpio.o
- 
-diff --git a/arch/mips/jz4740/boards.c b/arch/mips/jz4740/boards.c
+diff --git a/arch/mips/boot/dts/ingenic/jz4770.dtsi b/arch/mips/boot/dts/ingenic/jz4770.dtsi
 new file mode 100644
-index 000000000000..a3cf64cf004a
+index 000000000000..d8d0a741ff5d
 --- /dev/null
-+++ b/arch/mips/jz4740/boards.c
-@@ -0,0 +1,16 @@
-+/*
-+ * Ingenic boards support
-+ *
-+ * Copyright 2017, Paul Cercueil <paul@crapouillou.net>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 or later
-+ * as published by the Free Software Foundation.
-+ */
++++ b/arch/mips/boot/dts/ingenic/jz4770.dtsi
+@@ -0,0 +1,210 @@
++#include <dt-bindings/clock/jz4770-cgu.h>
 +
-+#include <asm/bootinfo.h>
-+#include <asm/mips_machine.h>
++/ {
++	#address-cells = <1>;
++	#size-cells = <1>;
++	compatible = "ingenic,jz4770";
 +
-+MIPS_MACHINE(MACH_INGENIC_JZ4740, "qi,lb60", "Qi Hardware Ben Nanonote", NULL);
-+MIPS_MACHINE(MACH_INGENIC_JZ4780, "img,ci20",
-+			"Imagination Technologies CI20", NULL);
-diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-index 6d0152321819..afd84ee966e8 100644
---- a/arch/mips/jz4740/setup.c
-+++ b/arch/mips/jz4740/setup.c
-@@ -22,6 +22,7 @@
- #include <linux/of_fdt.h>
++	cpuintc: interrupt-controller {
++		#address-cells = <0>;
++		#interrupt-cells = <1>;
++		interrupt-controller;
++		compatible = "mti,cpu-interrupt-controller";
++	};
++
++	intc: interrupt-controller@10001000 {
++		compatible = "ingenic,jz4770-intc";
++		reg = <0x10001000 0x40>;
++
++		interrupt-controller;
++		#interrupt-cells = <1>;
++
++		interrupt-parent = <&cpuintc>;
++		interrupts = <2>;
++	};
++
++	ext: ext {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++	};
++
++	osc32k: osc32k {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <32768>;
++	};
++
++	cgu: jz4770-cgu@10000000 {
++		compatible = "ingenic,jz4770-cgu";
++		reg = <0x10000000 0x100>;
++
++		clocks = <&ext>, <&osc32k>;
++		clock-names = "ext", "osc32k";
++
++		#clock-cells = <1>;
++	};
++
++	pinctrl: pin-controller@10010000 {
++		compatible = "ingenic,jz4770-pinctrl";
++		reg = <0x10010000 0x600>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		gpa: gpio@0 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <0>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 0 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <17>;
++		};
++
++		gpb: gpio@1 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <1>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 32 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <16>;
++		};
++
++		gpc: gpio@2 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <2>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 64 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <15>;
++		};
++
++		gpd: gpio@3 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <3>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 96 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <14>;
++		};
++
++		gpe: gpio@4 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <4>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 128 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <13>;
++		};
++
++		gpf: gpio@5 {
++			compatible = "ingenic,jz4770-gpio";
++			reg = <5>;
++
++			gpio-controller;
++			gpio-ranges = <&pinctrl 0 160 32>;
++			#gpio-cells = <2>;
++
++			interrupt-controller;
++			#interrupt-cells = <2>;
++
++			interrupt-parent = <&intc>;
++			interrupts = <12>;
++		};
++	};
++
++	uart0: serial@10030000 {
++		compatible = "ingenic,jz4770-uart";
++		reg = <0x10030000 0x100>;
++
++		clocks = <&ext>, <&cgu JZ4770_CLK_UART0>;
++		clock-names = "baud", "module";
++
++		interrupt-parent = <&intc>;
++		interrupts = <5>;
++
++		status = "disabled";
++	};
++
++	uart1: serial@10031000 {
++		compatible = "ingenic,jz4770-uart";
++		reg = <0x10031000 0x100>;
++
++		clocks = <&ext>, <&cgu JZ4770_CLK_UART1>;
++		clock-names = "baud", "module";
++
++		interrupt-parent = <&intc>;
++		interrupts = <4>;
++
++		status = "disabled";
++	};
++
++	uart2: serial@10032000 {
++		compatible = "ingenic,jz4770-uart";
++		reg = <0x10032000 0x100>;
++
++		clocks = <&ext>, <&cgu JZ4770_CLK_UART2>;
++		clock-names = "baud", "module";
++
++		interrupt-parent = <&intc>;
++		interrupts = <3>;
++
++		status = "disabled";
++	};
++
++	uart3: serial@10033000 {
++		compatible = "ingenic,jz4770-uart";
++		reg = <0x10033000 0x100>;
++
++		clocks = <&ext>, <&cgu JZ4770_CLK_UART3>;
++		clock-names = "baud", "module";
++
++		interrupt-parent = <&intc>;
++		interrupts = <2>;
++
++		status = "disabled";
++	};
++
++	uhc: uhc@13430000 {
++		compatible = "generic-ohci";
++		reg = <0x13430000 0x1000>;
++
++		clocks = <&cgu JZ4770_CLK_UHC>, <&cgu JZ4770_CLK_UHC_PHY>;
++		assigned-clocks = <&cgu JZ4770_CLK_UHC>;
++		assigned-clock-rates = <48000000>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <20>;
++
++		status = "disabled";
++	};
++};
+diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
+index 36f82017695d..922850503271 100644
+--- a/arch/mips/jz4740/Kconfig
++++ b/arch/mips/jz4740/Kconfig
+@@ -17,6 +17,12 @@ config MACH_JZ4740
+ 	bool
+ 	select SYS_HAS_CPU_MIPS32_R1
  
- #include <asm/bootinfo.h>
-+#include <asm/mips_machine.h>
- #include <asm/prom.h>
- 
- #include <asm/mach-jz4740/base.h>
-@@ -53,16 +54,34 @@ static void __init jz4740_detect_mem(void)
- 	add_memory_region(0, size, BOOT_MEM_RAM);
- }
- 
-+static unsigned long __init get_board_mach_type(const void *fdt)
-+{
-+	const struct mips_machine *mach;
++config MACH_JZ4770
++	bool
++	select MIPS_CPU_SCACHE
++	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_SUPPORTS_HIGHMEM
 +
-+	for (mach = (struct mips_machine *)&__mips_machines_start;
-+			mach < (struct mips_machine *)&__mips_machines_end;
-+			mach++) {
-+		if (!fdt_node_check_compatible(fdt, 0, mach->mach_id))
-+			return mach->mach_type;
-+	}
-+
-+	return MACH_INGENIC_JZ4740;
-+}
-+
- void __init plat_mem_setup(void)
- {
- 	int offset;
- 
-+	if (!early_init_dt_scan(__dtb_start))
-+		return;
-+
- 	jz4740_reset_init();
--	__dt_setup_arch(__dtb_start);
- 
- 	offset = fdt_path_offset(__dtb_start, "/memory");
- 	if (offset < 0)
- 		jz4740_detect_mem();
-+
-+	mips_machtype = get_board_mach_type(__dtb_start);
- }
- 
- void __init device_tree_init(void)
-@@ -75,13 +94,18 @@ void __init device_tree_init(void)
- 
- const char *get_system_type(void)
- {
--	if (IS_ENABLED(CONFIG_MACH_JZ4780))
--		return "JZ4780";
--
--	return "JZ4740";
-+	return mips_get_machine_name();
- }
- 
- void __init arch_init_irq(void)
- {
- 	irqchip_init();
- }
-+
-+static int __init jz4740_machine_setup(void)
-+{
-+	mips_machine_setup();
-+
-+	return 0;
-+}
-+arch_initcall(jz4740_machine_setup);
+ config MACH_JZ4780
+ 	bool
+ 	select MIPS_CPU_SCACHE
+diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+index bb1ad5119da4..2ca9160f642a 100644
+--- a/arch/mips/jz4740/time.c
++++ b/arch/mips/jz4740/time.c
+@@ -113,7 +113,7 @@ static struct clock_event_device jz4740_clockevent = {
+ #ifdef CONFIG_MACH_JZ4740
+ 	.irq = JZ4740_IRQ_TCU0,
+ #endif
+-#ifdef CONFIG_MACH_JZ4780
++#if defined(CONFIG_MACH_JZ4770) || defined(CONFIG_MACH_JZ4780)
+ 	.irq = JZ4780_IRQ_TCU2,
+ #endif
+ };
 -- 
 2.11.0

@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2017 22:04:55 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:59848 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2017 22:05:19 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:59878 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993894AbdFGUEpkiUzq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2017 22:04:45 +0200
+        by eddie.linux-mips.org with ESMTP id S23993908AbdFGUEsSILyq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2017 22:04:48 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         Michael Turquette <mturquette@baylibre.com>,
@@ -11,15 +11,18 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     Paul Burton <paul.burton@imgtec.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: [PATCH 00/15] Ingenic JZ4770 and GCW Zero patchset
-Date:   Wed,  7 Jun 2017 22:04:24 +0200
-Message-Id: <20170607200439.24450-1-paul@crapouillou.net>
+        linux-mips@linux-mips.org, linux-clk@vger.kernel.org,
+        Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH 02/15] clk: ingenic: support PLLs with no bypass bit
+Date:   Wed,  7 Jun 2017 22:04:26 +0200
+Message-Id: <20170607200439.24450-3-paul@crapouillou.net>
+In-Reply-To: <20170607200439.24450-1-paul@crapouillou.net>
+References: <20170607200439.24450-1-paul@crapouillou.net>
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58273
+X-archive-position: 58274
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,16 +39,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Hi,
+The second PLL of the JZ4770 does not have a bypass bit.
+This commit makes it possible to support it with the current common CGU
+code.
 
-This set of 15 commits brings basic support of the JZ4770 SoC from
-Ingenic.
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+---
+ drivers/clk/ingenic/cgu.c | 3 ++-
+ drivers/clk/ingenic/cgu.h | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-The support is currently minimal, but enough to boot to a initramfs
-userspace from the serial console.
-
-The last patch introduces support for one JZ4770 based device, the
-open-source game console GCW Zero, successfully kickstarted in 2012.
-
-Regards,
--Paul
+diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
+index eb9002ccf3fc..75b083ba294c 100644
+--- a/drivers/clk/ingenic/cgu.c
++++ b/drivers/clk/ingenic/cgu.c
+@@ -100,7 +100,8 @@ ingenic_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	n += pll_info->n_offset;
+ 	od_enc = ctl >> pll_info->od_shift;
+ 	od_enc &= GENMASK(pll_info->od_bits - 1, 0);
+-	bypass = !!(ctl & BIT(pll_info->bypass_bit));
++	bypass = !pll_info->no_bypass_bit &&
++		 !!(ctl & BIT(pll_info->bypass_bit));
+ 	enable = !!(ctl & BIT(pll_info->enable_bit));
+ 
+ 	if (bypass)
+diff --git a/drivers/clk/ingenic/cgu.h b/drivers/clk/ingenic/cgu.h
+index 09700b2c555d..2e3d258c3ed2 100644
+--- a/drivers/clk/ingenic/cgu.h
++++ b/drivers/clk/ingenic/cgu.h
+@@ -48,6 +48,7 @@
+  * @bypass_bit: the index of the bypass bit in the PLL control register
+  * @enable_bit: the index of the enable bit in the PLL control register
+  * @stable_bit: the index of the stable bit in the PLL control register
++ * @no_bypass_bit: if set, the PLL has no bypass functionality
+  */
+ struct ingenic_cgu_pll_info {
+ 	unsigned reg;
+@@ -58,6 +59,7 @@ struct ingenic_cgu_pll_info {
+ 	u8 bypass_bit;
+ 	u8 enable_bit;
+ 	u8 stable_bit;
++	bool no_bypass_bit;
+ };
+ 
+ /**
+-- 
+2.11.0

@@ -1,36 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:52:21 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:49424 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S23994231AbdFHNlQG-ucT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 8 Jun 2017 15:41:16 +0200
-Received: from h7.dl5rb.org.uk (localhost [127.0.0.1])
-        by h7.dl5rb.org.uk (8.15.2/8.14.8) with ESMTP id v58Df7ox011853;
-        Thu, 8 Jun 2017 15:41:07 +0200
-Received: (from ralf@localhost)
-        by h7.dl5rb.org.uk (8.15.2/8.15.2/Submit) id v58Df7Br011852;
-        Thu, 8 Jun 2017 15:41:07 +0200
-Date:   Thu, 8 Jun 2017 15:41:07 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips/kprobes: flush_insn_slot should flush only if probe
- initialised
-Message-ID: <20170608134107.GA11304@linux-mips.org>
-References: <1496928032-561-1-git-send-email-marcin.nowakowski@imgtec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:59:25 +0200 (CEST)
+Received: from foss.arm.com ([217.140.101.70]:53490 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23993894AbdFHN7SWuntT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Jun 2017 15:59:18 +0200
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBFBA2B;
+        Thu,  8 Jun 2017 06:59:11 -0700 (PDT)
+Received: from [10.1.210.40] (e110467-lin.cambridge.arm.com [10.1.210.40])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 79A853F3E1;
+        Thu,  8 Jun 2017 06:59:08 -0700 (PDT)
+Subject: Re: [PATCH 06/44] iommu/dma: don't rely on DMA_ERROR_CODE
+To:     Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
+        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org,
+        iommu@lists.linux-foundation.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+References: <20170608132609.32662-1-hch@lst.de>
+ <20170608132609.32662-7-hch@lst.de>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <0bfb0841-f054-78de-628d-a0955336bcb4@arm.com>
+Date:   Thu, 8 Jun 2017 14:59:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1496928032-561-1-git-send-email-marcin.nowakowski@imgtec.com>
-User-Agent: Mutt/1.8.0 (2017-02-23)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20170608132609.32662-7-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Return-Path: <robin.murphy@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58356
+X-archive-position: 58357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: robin.murphy@arm.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -43,15 +55,101 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu, Jun 08, 2017 at 03:20:32PM +0200, Marcin Nowakowski wrote:
+Hi Christoph,
 
-> When ftrace is used with kprobes, it is possible for a kprobe to contain
-> an invalid location (ie. only initialised to 0 and not to a specific
-> location in the code). Trying to perform a cache flush on such location
-> leads to a crash r4k_flush_icache_range().
+On 08/06/17 14:25, Christoph Hellwig wrote:
+> DMA_ERROR_CODE is not a public API and will go away soon.  dma dma-iommu
+> driver already implements a proper ->mapping_error method, so it's only
+> using the value internally.  Add a new local define using the value
+> that arm64 which is the only current user of dma-iommu.
 
-Cute, 2.6.36+ ...
+It would be fine to just use 0, since dma-iommu already makes sure that
+that will never be allocated for a valid DMA address.
 
-Applied,
+Otherwise, looks good!
 
-  Ralf
+Robin.
+
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  drivers/iommu/dma-iommu.c | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 62618e77bedc..638aea814b94 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -31,6 +31,8 @@
+>  #include <linux/scatterlist.h>
+>  #include <linux/vmalloc.h>
+>  
+> +#define IOMMU_MAPPING_ERROR	(~(dma_addr_t)0)
+> +
+>  struct iommu_dma_msi_page {
+>  	struct list_head	list;
+>  	dma_addr_t		iova;
+> @@ -500,7 +502,7 @@ void iommu_dma_free(struct device *dev, struct page **pages, size_t size,
+>  {
+>  	__iommu_dma_unmap(iommu_get_domain_for_dev(dev), *handle, size);
+>  	__iommu_dma_free_pages(pages, PAGE_ALIGN(size) >> PAGE_SHIFT);
+> -	*handle = DMA_ERROR_CODE;
+> +	*handle = IOMMU_MAPPING_ERROR;
+>  }
+>  
+>  /**
+> @@ -533,7 +535,7 @@ struct page **iommu_dma_alloc(struct device *dev, size_t size, gfp_t gfp,
+>  	dma_addr_t iova;
+>  	unsigned int count, min_size, alloc_sizes = domain->pgsize_bitmap;
+>  
+> -	*handle = DMA_ERROR_CODE;
+> +	*handle = IOMMU_MAPPING_ERROR;
+>  
+>  	min_size = alloc_sizes & -alloc_sizes;
+>  	if (min_size < PAGE_SIZE) {
+> @@ -627,11 +629,11 @@ static dma_addr_t __iommu_dma_map(struct device *dev, phys_addr_t phys,
+>  
+>  	iova = iommu_dma_alloc_iova(domain, size, dma_get_mask(dev), dev);
+>  	if (!iova)
+> -		return DMA_ERROR_CODE;
+> +		return IOMMU_MAPPING_ERROR;
+>  
+>  	if (iommu_map(domain, iova, phys - iova_off, size, prot)) {
+>  		iommu_dma_free_iova(cookie, iova, size);
+> -		return DMA_ERROR_CODE;
+> +		return IOMMU_MAPPING_ERROR;
+>  	}
+>  	return iova + iova_off;
+>  }
+> @@ -671,7 +673,7 @@ static int __finalise_sg(struct device *dev, struct scatterlist *sg, int nents,
+>  
+>  		s->offset += s_iova_off;
+>  		s->length = s_length;
+> -		sg_dma_address(s) = DMA_ERROR_CODE;
+> +		sg_dma_address(s) = IOMMU_MAPPING_ERROR;
+>  		sg_dma_len(s) = 0;
+>  
+>  		/*
+> @@ -714,11 +716,11 @@ static void __invalidate_sg(struct scatterlist *sg, int nents)
+>  	int i;
+>  
+>  	for_each_sg(sg, s, nents, i) {
+> -		if (sg_dma_address(s) != DMA_ERROR_CODE)
+> +		if (sg_dma_address(s) != IOMMU_MAPPING_ERROR)
+>  			s->offset += sg_dma_address(s);
+>  		if (sg_dma_len(s))
+>  			s->length = sg_dma_len(s);
+> -		sg_dma_address(s) = DMA_ERROR_CODE;
+> +		sg_dma_address(s) = IOMMU_MAPPING_ERROR;
+>  		sg_dma_len(s) = 0;
+>  	}
+>  }
+> @@ -836,7 +838,7 @@ void iommu_dma_unmap_resource(struct device *dev, dma_addr_t handle,
+>  
+>  int iommu_dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+>  {
+> -	return dma_addr == DMA_ERROR_CODE;
+> +	return dma_addr == IOMMU_MAPPING_ERROR;
+>  }
+>  
+>  static struct iommu_dma_msi_page *iommu_dma_get_msi_page(struct device *dev,
+> 

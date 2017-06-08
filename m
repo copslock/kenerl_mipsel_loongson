@@ -1,51 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:51:10 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:56467 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23994030AbdFHN3MXveKT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:29:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=eZHE6yUSAfMLSefbu18rbdpTGXQMlt8s3PB24r4P6cc=; b=aJQadZcfi9maJfgN3Qgswnfgh
-        f3csN/DQJrNd/PMgOamZY7jhCH7zyI/K27fC02ckR7H/ArI4cyn6YVtP3lN45NlS57RNZaup8Ixka
-        PInxfM5hgOaUuMEuFE9o+iDu8SKaPFa6QOyqA2OYhHjUbvHYpB06GI9QncFVmdx8V/cgNu6cltxuV
-        9eGX2LWskbAFUSuhJyTOHNeaVpvYG4ULQHExCQjnoU0zLAsmcE0oobIcqU2cfArvF4SU8hKYb2CW2
-        0I9E+pNgzSQ4DSP0A4GgDrKzpWNjG1VcaI6yKgKw74d1BxhZ6GZIoNkTId3/rav/CPjLwEV8YJuSF
-        zURRo4oHA==;
-Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dIxUm-0008TZ-On; Thu, 08 Jun 2017 13:29:05 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 44/44] powerpc: merge __dma_set_mask into dma_set_mask
-Date:   Thu,  8 Jun 2017 15:26:09 +0200
-Message-Id: <20170608132609.32662-45-hch@lst.de>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20170608132609.32662-1-hch@lst.de>
-References: <20170608132609.32662-1-hch@lst.de>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Return-Path: <BATV+eb06f239ea6f59aeb59b+5037+infradead.org+hch@bombadil.srs.infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:51:45 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:58484 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23994787AbdFHNfFPGhkT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:35:05 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 34A02CB171951;
+        Thu,  8 Jun 2017 14:34:56 +0100 (IST)
+Received: from [10.80.2.5] (10.80.2.5) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server (TLS) id 14.3.294.0; Thu, 8 Jun
+ 2017 14:34:58 +0100
+Subject: Re: [PATCH] irqchip/mips-gic: mark count and compare accessors
+ notrace
+To:     Marc Zyngier <marc.zyngier@arm.com>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>
+References: <1496927183-31987-1-git-send-email-marcin.nowakowski@imgtec.com>
+ <87k24mipa1.fsf@arm.com>
+From:   Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Message-ID: <5928d606-d903-b096-a2cd-44df5f6cec4c@imgtec.com>
+Date:   Thu, 8 Jun 2017 15:34:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.1
+MIME-Version: 1.0
+In-Reply-To: <87k24mipa1.fsf@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.2.5]
+Return-Path: <Marcin.Nowakowski@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58354
+X-archive-position: 58355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: marcin.nowakowski@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,54 +49,74 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/powerpc/include/asm/dma-mapping.h |  1 -
- arch/powerpc/kernel/dma.c              | 13 ++++---------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+Hi Marc,
 
-diff --git a/arch/powerpc/include/asm/dma-mapping.h b/arch/powerpc/include/asm/dma-mapping.h
-index 73aedbe6c977..eaece3d3e225 100644
---- a/arch/powerpc/include/asm/dma-mapping.h
-+++ b/arch/powerpc/include/asm/dma-mapping.h
-@@ -112,7 +112,6 @@ static inline void set_dma_offset(struct device *dev, dma_addr_t off)
- #define HAVE_ARCH_DMA_SET_MASK 1
- extern int dma_set_mask(struct device *dev, u64 dma_mask);
- 
--extern int __dma_set_mask(struct device *dev, u64 dma_mask);
- extern u64 __dma_get_required_mask(struct device *dev);
- 
- static inline bool dma_capable(struct device *dev, dma_addr_t addr, size_t size)
-diff --git a/arch/powerpc/kernel/dma.c b/arch/powerpc/kernel/dma.c
-index 466c9f07b288..4194bbbbdb10 100644
---- a/arch/powerpc/kernel/dma.c
-+++ b/arch/powerpc/kernel/dma.c
-@@ -314,14 +314,6 @@ EXPORT_SYMBOL(dma_set_coherent_mask);
- 
- #define PREALLOC_DMA_DEBUG_ENTRIES (1 << 16)
- 
--int __dma_set_mask(struct device *dev, u64 dma_mask)
--{
--	if (!dev->dma_mask || !dma_supported(dev, dma_mask))
--		return -EIO;
--	*dev->dma_mask = dma_mask;
--	return 0;
--}
--
- int dma_set_mask(struct device *dev, u64 dma_mask)
- {
- 	if (ppc_md.dma_set_mask)
-@@ -334,7 +326,10 @@ int dma_set_mask(struct device *dev, u64 dma_mask)
- 			return phb->controller_ops.dma_set_mask(pdev, dma_mask);
- 	}
- 
--	return __dma_set_mask(dev, dma_mask);
-+	if (!dev->dma_mask || !dma_supported(dev, dma_mask))
-+		return -EIO;
-+	*dev->dma_mask = dma_mask;
-+	return 0;
- }
- EXPORT_SYMBOL(dma_set_mask);
- 
--- 
-2.11.0
+On 08.06.2017 15:26, Marc Zyngier wrote:
+> On Thu, Jun 08 2017 at  3:06:23 pm BST, Marcin Nowakowski <marcin.nowakowski@imgtec.com> wrote:
+>> gic_read_count(), gic_write_compare() and gic_write_cpu_compare() are
+>> often used in a sequence to update the compare register with a count
+>> value increased by a small offset.
+>> With small delta values used to update the compare register, the time to
+>> update function trace for these operations may be longer than the update
+>> timeout leading to update failure.
+>>
+>> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+>> ---
+>>   drivers/irqchip/irq-mips-gic.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+>> index eb7fbe1..ecee073 100644
+>> --- a/drivers/irqchip/irq-mips-gic.c
+>> +++ b/drivers/irqchip/irq-mips-gic.c
+>> @@ -140,7 +140,7 @@ static inline void gic_map_to_vpe(unsigned int intr, unsigned int vpe)
+>>   }
+>>   
+>>   #ifdef CONFIG_CLKSRC_MIPS_GIC
+>> -u64 gic_read_count(void)
+>> +notrace u64 gic_read_count(void)
+> 
+> The attributes are usually placed between the return type and the
+> function name.
+
+OK, I'll change this.
+
+>>   {
+>>   	unsigned int hi, hi2, lo;
+>>   
+>> @@ -167,7 +167,7 @@ unsigned int gic_get_count_width(void)
+>>   	return bits;
+>>   }
+>>   
+>> -void gic_write_compare(u64 cnt)
+>> +notrace void gic_write_compare(u64 cnt)
+>>   {
+>>   	if (mips_cm_is64) {
+>>   		gic_write(GIC_REG(VPE_LOCAL, GIC_VPE_COMPARE), cnt);
+>> @@ -179,7 +179,7 @@ void gic_write_compare(u64 cnt)
+>>   	}
+>>   }
+>>   
+>> -void gic_write_cpu_compare(u64 cnt, int cpu)
+>> +notrace void gic_write_cpu_compare(u64 cnt, int cpu)
+>>   {
+>>   	unsigned long flags;
+> 
+> What guarantees do you have that some event (interrupt? frequency
+> scaling?) won't delay these anyway, generating the same missed deadline?
+> Shouldn't the code deal with these case and acknowledge that the
+> deadline has already expired?
+
+Well - there is no guarantee for that at the moment. One solution that 
+kernel provides (and that works in this scenario) is to enable 
+GENERIC_CLOCKEVENTS_MIN_ADJUST. This ensures that any failures are 
+always retried with an increasing minimum adjustment step.
+That, however, suffers from a different issue as described and discussed 
+here: https://patchwork.kernel.org/patch/8909491/
+
+Various events can delay these operations and even with notrace they 
+might still fail, but as it stands now, even if the code using them does 
+a retry, the latency I've observed with tracing enabled is often too 
+long to ever succeed.
+
+Marcin

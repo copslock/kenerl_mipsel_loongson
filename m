@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:45:34 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:57881 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:46:16 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:33509 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993955AbdFHN2eBoR-T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:28:34 +0200
+        by eddie.linux-mips.org with ESMTP id S23993990AbdFHN2mEnBBT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:28:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=06v7ciM0NGGCDXqarxHX/zRJ1KdayxLItOHrTFlo9Do=; b=Hj0uSDUFr4hFjBDtPl/jzoWQQ
-        cMNpsB3dKWeSKmFc//I4gfv/ueWlDBm+ykPjyyudYQjR8g37QMIrc9XVL2b/xrtR/9AInJhSQ+3kv
-        8SzqFB/dPSoc4gD4DmjThYhQievrMN2ZxU5ITNxg1FQQQOGa7HJWMIw5FJPe18+JiCFY7jmjWdabq
-        GNS6DYvV5qE5H1t4riqN925i2cxQDZ7Htxq0OwEcGr/WooaTXr/WE67Fs6DV0INOw7ln3PCAaRqyh
-        WG8OLbS/6M3WPLEhIPTlbm4dGp7TZ6QmA3vh1uBGrxvmLPD0u5eRQj0PKSAVEDW2lbuFgTKRrZm+E
-        y0eeubjGg==;
+         bh=vSHdJ0fRN3QhYzmwkOg9MVJJCwgAKWOmRXXsBosPrLA=; b=cEedlU6MolR9mOFirC4RnLveh
+        sEAnIHtLA4t0rTpfXCOfRi2HfhKMJb+djtfysR9tnxi8A70UJQ8S9gLIRQQ4cllwmUyVT7CSDLyJ+
+        ezDdKqaiQvcKFTavpaZtX/nVg64nTI8uqSpBsuudzivcqdgbaeXSmtnkN4ANbaaImzu6/7t97iBMU
+        jZLdb7t4NdioU8a1sVCKN+wjXOFsRFQflfRVXObvANLwUOQ3NWxea7s66Q8qluDKSWjmpfT7qnmyI
+        wRREmUTaq33HqYPDZbIQpjlMCGovv42ziUD7JFYVCHNNTmoRtO2XL5Z0T7Tap0KW+NN7qPCkjCjAZ
+        Si+eT/Rew==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dIxUA-0007g4-Vi; Thu, 08 Jun 2017 13:28:27 +0000
+        id 1dIxUE-0007kn-SE; Thu, 08 Jun 2017 13:28:31 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 34/44] arm: remove arch specific dma_supported implementation
-Date:   Thu,  8 Jun 2017 15:25:59 +0200
-Message-Id: <20170608132609.32662-35-hch@lst.de>
+Subject: [PATCH 35/44] x86: remove arch specific dma_supported implementation
+Date:   Thu,  8 Jun 2017 15:26:00 +0200
+Message-Id: <20170608132609.32662-36-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170608132609.32662-1-hch@lst.de>
 References: <20170608132609.32662-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+eb06f239ea6f59aeb59b+5037+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58344
+X-archive-position: 58345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,103 +60,156 @@ X-list: linux-mips
 
 And instead wire it up as method for all the dma_map_ops instances.
 
-Note that the code seems a little fishy for dmabounce and iommu, but
-for now I'd like to preserve the existing behavior 1:1.
+Note that this also means the arch specific check will be fully instead
+of partially applied in the AMD iommu driver.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/arm/common/dmabounce.c        | 1 +
- arch/arm/include/asm/dma-iommu.h   | 2 ++
- arch/arm/include/asm/dma-mapping.h | 3 ---
- arch/arm/mm/dma-mapping.c          | 7 +++++--
- 4 files changed, 8 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/dma-mapping.h | 3 ---
+ arch/x86/include/asm/iommu.h       | 2 ++
+ arch/x86/kernel/amd_gart_64.c      | 1 +
+ arch/x86/kernel/pci-calgary_64.c   | 1 +
+ arch/x86/kernel/pci-dma.c          | 7 +------
+ arch/x86/kernel/pci-nommu.c        | 1 +
+ arch/x86/pci/sta2x11-fixup.c       | 3 ++-
+ drivers/iommu/amd_iommu.c          | 2 ++
+ drivers/iommu/intel-iommu.c        | 3 +++
+ 9 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/common/dmabounce.c b/arch/arm/common/dmabounce.c
-index bad457395ff1..4aabf117e136 100644
---- a/arch/arm/common/dmabounce.c
-+++ b/arch/arm/common/dmabounce.c
-@@ -476,6 +476,7 @@ static const struct dma_map_ops dmabounce_ops = {
- 	.sync_sg_for_device	= arm_dma_sync_sg_for_device,
- 	.set_dma_mask		= dmabounce_set_mask,
- 	.mapping_error		= dmabounce_mapping_error,
-+	.dma_supported		= arm_dma_supported,
- };
- 
- static int dmabounce_init_pool(struct dmabounce_pool *pool, struct device *dev,
-diff --git a/arch/arm/include/asm/dma-iommu.h b/arch/arm/include/asm/dma-iommu.h
-index 389a26a10ea3..c090ec675eac 100644
---- a/arch/arm/include/asm/dma-iommu.h
-+++ b/arch/arm/include/asm/dma-iommu.h
-@@ -35,5 +35,7 @@ int arm_iommu_attach_device(struct device *dev,
- 					struct dma_iommu_mapping *mapping);
- void arm_iommu_detach_device(struct device *dev);
- 
-+int arm_dma_supported(struct device *dev, u64 mask);
-+
- #endif /* __KERNEL__ */
- #endif
-diff --git a/arch/arm/include/asm/dma-mapping.h b/arch/arm/include/asm/dma-mapping.h
-index 52a8fd5a8edb..8dabcfdf4505 100644
---- a/arch/arm/include/asm/dma-mapping.h
-+++ b/arch/arm/include/asm/dma-mapping.h
-@@ -20,9 +20,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
- 	return &arm_dma_ops;
- }
+diff --git a/arch/x86/include/asm/dma-mapping.h b/arch/x86/include/asm/dma-mapping.h
+index c35d228aa381..398c79889f5c 100644
+--- a/arch/x86/include/asm/dma-mapping.h
++++ b/arch/x86/include/asm/dma-mapping.h
+@@ -33,9 +33,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ bool arch_dma_alloc_attrs(struct device **dev, gfp_t *gfp);
+ #define arch_dma_alloc_attrs arch_dma_alloc_attrs
  
 -#define HAVE_ARCH_DMA_SUPPORTED 1
--extern int dma_supported(struct device *dev, u64 mask);
+-extern int dma_supported(struct device *hwdev, u64 mask);
 -
- #ifdef __arch_page_to_dma
- #error Please update to __arch_pfn_to_dma
- #endif
-diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
-index 2dbc94b5fe5c..2938b724826e 100644
---- a/arch/arm/mm/dma-mapping.c
-+++ b/arch/arm/mm/dma-mapping.c
-@@ -199,6 +199,7 @@ const struct dma_map_ops arm_dma_ops = {
- 	.sync_sg_for_cpu	= arm_dma_sync_sg_for_cpu,
- 	.sync_sg_for_device	= arm_dma_sync_sg_for_device,
- 	.mapping_error		= arm_dma_mapping_error,
-+	.dma_supported		= arm_dma_supported,
- };
- EXPORT_SYMBOL(arm_dma_ops);
+ extern void *dma_generic_alloc_coherent(struct device *dev, size_t size,
+ 					dma_addr_t *dma_addr, gfp_t flag,
+ 					unsigned long attrs);
+diff --git a/arch/x86/include/asm/iommu.h b/arch/x86/include/asm/iommu.h
+index 793869879464..fca144a104e4 100644
+--- a/arch/x86/include/asm/iommu.h
++++ b/arch/x86/include/asm/iommu.h
+@@ -6,6 +6,8 @@ extern int force_iommu, no_iommu;
+ extern int iommu_detected;
+ extern int iommu_pass_through;
  
-@@ -218,6 +219,7 @@ const struct dma_map_ops arm_coherent_dma_ops = {
- 	.map_page		= arm_coherent_dma_map_page,
- 	.map_sg			= arm_dma_map_sg,
- 	.mapping_error		= arm_dma_mapping_error,
-+	.dma_supported		= arm_dma_supported,
- };
- EXPORT_SYMBOL(arm_coherent_dma_ops);
++int x86_dma_supported(struct device *dev, u64 mask);
++
+ /* 10 seconds */
+ #define DMAR_OPERATION_TIMEOUT ((cycles_t) tsc_khz*10*1000)
  
-@@ -1184,11 +1186,10 @@ void arm_dma_sync_sg_for_device(struct device *dev, struct scatterlist *sg,
-  * during bus mastering, then you would pass 0x00ffffff as the mask
-  * to this function.
-  */
--int dma_supported(struct device *dev, u64 mask)
-+int arm_dma_supported(struct device *dev, u64 mask)
- {
- 	return __dma_supported(dev, mask, false);
+diff --git a/arch/x86/kernel/amd_gart_64.c b/arch/x86/kernel/amd_gart_64.c
+index 815dd63f49d0..cc0e8bc0ea3f 100644
+--- a/arch/x86/kernel/amd_gart_64.c
++++ b/arch/x86/kernel/amd_gart_64.c
+@@ -704,6 +704,7 @@ static const struct dma_map_ops gart_dma_ops = {
+ 	.alloc				= gart_alloc_coherent,
+ 	.free				= gart_free_coherent,
+ 	.mapping_error			= gart_mapping_error,
++	.dma_supported			= x86_dma_supported,
+ };
+ 
+ static void gart_iommu_shutdown(void)
+diff --git a/arch/x86/kernel/pci-calgary_64.c b/arch/x86/kernel/pci-calgary_64.c
+index e75b490f2b0b..5286a4a92cf7 100644
+--- a/arch/x86/kernel/pci-calgary_64.c
++++ b/arch/x86/kernel/pci-calgary_64.c
+@@ -493,6 +493,7 @@ static const struct dma_map_ops calgary_dma_ops = {
+ 	.map_page = calgary_map_page,
+ 	.unmap_page = calgary_unmap_page,
+ 	.mapping_error = calgary_mapping_error,
++	.dma_supported = x86_dma_supported,
+ };
+ 
+ static inline void __iomem * busno_to_bbar(unsigned char num)
+diff --git a/arch/x86/kernel/pci-dma.c b/arch/x86/kernel/pci-dma.c
+index 3a216ec869cd..b6f5684be3b5 100644
+--- a/arch/x86/kernel/pci-dma.c
++++ b/arch/x86/kernel/pci-dma.c
+@@ -213,10 +213,8 @@ static __init int iommu_setup(char *p)
  }
--EXPORT_SYMBOL(dma_supported);
+ early_param("iommu", iommu_setup);
  
- #define PREALLOC_DMA_DEBUG_ENTRIES	4096
+-int dma_supported(struct device *dev, u64 mask)
++int x86_dma_supported(struct device *dev, u64 mask)
+ {
+-	const struct dma_map_ops *ops = get_dma_ops(dev);
+-
+ #ifdef CONFIG_PCI
+ 	if (mask > 0xffffffff && forbid_dac > 0) {
+ 		dev_info(dev, "PCI: Disallowing DAC for device\n");
+@@ -224,9 +222,6 @@ int dma_supported(struct device *dev, u64 mask)
+ 	}
+ #endif
  
-@@ -2149,6 +2150,7 @@ const struct dma_map_ops iommu_ops = {
- 	.unmap_resource		= arm_iommu_unmap_resource,
+-	if (ops->dma_supported)
+-		return ops->dma_supported(dev, mask);
+-
+ 	/* Copied from i386. Doesn't make much sense, because it will
+ 	   only work for pci_alloc_coherent.
+ 	   The caller just has to use GFP_DMA in this case. */
+diff --git a/arch/x86/kernel/pci-nommu.c b/arch/x86/kernel/pci-nommu.c
+index 085fe6ce4049..a6d404087fe3 100644
+--- a/arch/x86/kernel/pci-nommu.c
++++ b/arch/x86/kernel/pci-nommu.c
+@@ -104,4 +104,5 @@ const struct dma_map_ops nommu_dma_ops = {
+ 	.sync_sg_for_device	= nommu_sync_sg_for_device,
+ 	.is_phys		= 1,
+ 	.mapping_error		= nommu_mapping_error,
++	.dma_supported		= x86_dma_supported,
+ };
+diff --git a/arch/x86/pci/sta2x11-fixup.c b/arch/x86/pci/sta2x11-fixup.c
+index ec008e800b45..53d600217973 100644
+--- a/arch/x86/pci/sta2x11-fixup.c
++++ b/arch/x86/pci/sta2x11-fixup.c
+@@ -26,6 +26,7 @@
+ #include <linux/pci_ids.h>
+ #include <linux/export.h>
+ #include <linux/list.h>
++#include <asm/iommu.h>
  
- 	.mapping_error		= arm_dma_mapping_error,
-+	.dma_supported		= arm_dma_supported,
+ #define STA2X11_SWIOTLB_SIZE (4*1024*1024)
+ extern int swiotlb_late_init_with_default_size(size_t default_size);
+@@ -191,7 +192,7 @@ static const struct dma_map_ops sta2x11_dma_ops = {
+ 	.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
+ 	.sync_sg_for_device = swiotlb_sync_sg_for_device,
+ 	.mapping_error = swiotlb_dma_mapping_error,
+-	.dma_supported = NULL, /* FIXME: we should use this instead! */
++	.dma_supported = x86_dma_supported,
  };
  
- const struct dma_map_ops iommu_coherent_ops = {
-@@ -2167,6 +2169,7 @@ const struct dma_map_ops iommu_coherent_ops = {
- 	.unmap_resource	= arm_iommu_unmap_resource,
+ /* At setup time, we use our own ops if the device is a ConneXt one */
+diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
+index d41280e869de..521fdf2d41bc 100644
+--- a/drivers/iommu/amd_iommu.c
++++ b/drivers/iommu/amd_iommu.c
+@@ -2731,6 +2731,8 @@ static void free_coherent(struct device *dev, size_t size,
+  */
+ static int amd_iommu_dma_supported(struct device *dev, u64 mask)
+ {
++	if (!x86_dma_supported(dev, mask))
++		return 0;
+ 	return check_device(dev);
+ }
  
- 	.mapping_error		= arm_dma_mapping_error,
-+	.dma_supported		= arm_dma_supported,
+diff --git a/drivers/iommu/intel-iommu.c b/drivers/iommu/intel-iommu.c
+index fc2765ccdb57..53cc0a393f04 100644
+--- a/drivers/iommu/intel-iommu.c
++++ b/drivers/iommu/intel-iommu.c
+@@ -3981,6 +3981,9 @@ struct dma_map_ops intel_dma_ops = {
+ 	.map_page = intel_map_page,
+ 	.unmap_page = intel_unmap_page,
+ 	.mapping_error = intel_mapping_error,
++#ifdef CONFIG_X86
++	.dma_supported = x86_dma_supported,
++#endif
  };
  
- /**
+ static inline int iommu_domain_cache_init(void)
 -- 
 2.11.0

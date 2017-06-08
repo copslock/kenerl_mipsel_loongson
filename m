@@ -1,34 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 23:10:44 +0200 (CEST)
-Received: from outils.crapouillou.net ([89.234.176.41]:60068 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 23:12:22 +0200 (CEST)
+Received: from outils.crapouillou.net ([89.234.176.41]:60418 "EHLO
         outils.crapouillou.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993865AbdFHVKh51Cc0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 23:10:37 +0200
+        by eddie.linux-mips.org with ESMTP id S23993869AbdFHVMOjTXs0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 23:12:14 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Thu, 08 Jun 2017 23:10:06 +0200
+Date:   Thu, 08 Jun 2017 23:12:12 +0200
 From:   Paul Cercueil <paul@crapouillou.net>
-To:     Stephen Boyd <sboyd@codeaurora.org>
+To:     Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
         Rob Herring <robh+dt@kernel.org>,
         Paul Burton <paul.burton@imgtec.com>,
         Maarten ter Huurne <maarten@treewalker.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH 04/15] clk: Add Ingenic jz4770 CGU driver
-In-Reply-To: <20170607205943.GO20170@codeaurora.org>
+Subject: Re: [PATCH 06/15] serial: 8250_ingenic: Parse earlycon options
+In-Reply-To: <939febde-f962-6e2b-3657-a9b6c719dac1@imgtec.com>
 References: <20170607200439.24450-1-paul@crapouillou.net>
- <20170607200439.24450-5-paul@crapouillou.net>
- <20170607205943.GO20170@codeaurora.org>
-Message-ID: <f2ef2abdef9054e9916e10f588e8fec4@crapouillou.net>
+ <20170607200439.24450-7-paul@crapouillou.net>
+ <939febde-f962-6e2b-3657-a9b6c719dac1@imgtec.com>
+Message-ID: <1a2b9e1fcf0f9fbf76bd0d25e8904beb@crapouillou.net>
 X-Sender: paul@crapouillou.net
 Return-Path: <paul@outils.crapouillou.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58372
+X-archive-position: 58373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,31 +48,39 @@ X-list: linux-mips
 
 Hi,
 
->> +	register_syscore_ops(&jz4770_cgu_pm_ops);
->> +#endif
->> +}
->> +CLK_OF_DECLARE(jz4770_cgu, "ingenic,jz4770-cgu", jz4770_cgu_init);
+[...]
+>> diff --git a/drivers/tty/serial/8250/8250_ingenic.c 
+>> b/drivers/tty/serial/8250/8250_ingenic.c
+>> index b31b2ca552d1..59f3e632df49 100644
+>> --- a/drivers/tty/serial/8250/8250_ingenic.c
+>> +++ b/drivers/tty/serial/8250/8250_ingenic.c
+>> @@ -99,14 +99,24 @@ static int __init 
+>> ingenic_early_console_setup(struct earlycon_device *dev,
+>>   					      const char *opt)
+>>   {
+>>   	struct uart_port *port = &dev->port;
+>> -	unsigned int baud, divisor;
+>> +	unsigned int divisor;
+>> +	int baud = 115200;
+>>     	if (!dev->port.membase)
+>>   		return -ENODEV;
+>>   +	if (opt) {
+>> +		char options[256];
+>> +		unsigned int parity, bits, flow; /* unused for now */
+>> +
+>> +		strlcpy(options, opt, sizeof(options));
 > 
-> Any reason this can't be a platform driver? Please add a comment
-> above CLK_OF_DECLARE describing what is preventing that.
-
-It would probably be possible, if we cared about having a platform 
-driver.
-But we will only ever probe it from devicetree, just like with the
-already existing jz4740-cgu and jz4780-cgu drivers.
-
->> diff --git a/include/dt-bindings/clock/jz4770-cgu.h 
->> b/include/dt-bindings/clock/jz4770-cgu.h
->> new file mode 100644
->> index 000000000000..54b8b2ae4a73
->> --- /dev/null
->> +++ b/include/dt-bindings/clock/jz4770-cgu.h
+> Rather than adding this extra local copy maybe you could instead:
 > 
-> Can you split this file off into a different patch? That way clk
-> tree can apply clk patches on top of a stable branch where this
-> file lives by itself.
+> -void uart_parse_options(char *options, int *baud, int *parity, int 
+> *bits,
+> +void uart_parse_options(const char *options, int *baud, int *parity, 
+> int *bits,
+> 
+> I cannot see any reason why uart_parse_options shouldn't take 'const
+> char *options' as an argument.
 
-Sure.
+Sure, good remark. I'll send a patch to change the prototype.
 
 Thanks,
 - Paul

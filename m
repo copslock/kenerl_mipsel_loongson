@@ -1,80 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 18:23:59 +0200 (CEST)
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:39178 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23990509AbdFHQXZbA-g3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 18:23:25 +0200
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.20/8.16.0.20) with SMTP id v58GJTrl095832
-        for <linux-mips@linux-mips.org>; Thu, 8 Jun 2017 12:23:23 -0400
-Received: from e06smtp15.uk.ibm.com (e06smtp15.uk.ibm.com [195.75.94.111])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2axvmxvevg-1
-        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NOT)
-        for <linux-mips@linux-mips.org>; Thu, 08 Jun 2017 12:23:23 -0400
-Received: from localhost
-        by e06smtp15.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <gerald.schaefer@de.ibm.com>;
-        Thu, 8 Jun 2017 17:23:19 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp15.uk.ibm.com (192.168.101.145) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Thu, 8 Jun 2017 17:23:13 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id v58GNCSU16318798;
-        Thu, 8 Jun 2017 16:23:12 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BC2D6AE051;
-        Thu,  8 Jun 2017 17:20:40 +0100 (BST)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3C878AE045;
-        Thu,  8 Jun 2017 17:20:40 +0100 (BST)
-Received: from thinkpad (unknown [9.152.212.72])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  8 Jun 2017 17:20:40 +0100 (BST)
-Date:   Thu, 8 Jun 2017 18:23:11 +0200
-From:   Gerald Schaefer <gerald.schaefer@de.ibm.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 19/44] s390: implement ->mapping_error
-In-Reply-To: <20170608132609.32662-20-hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 18:32:30 +0200 (CEST)
+Received: from mga05.intel.com ([192.55.52.43]:19897 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S23990509AbdFHQcWAurkp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 8 Jun 2017 18:32:22 +0200
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga105.fm.intel.com with ESMTP; 08 Jun 2017 09:32:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.39,315,1493708400"; 
+   d="scan'208";a="112537781"
+Received: from djiang5-desk3.ch.intel.com ([143.182.137.38])
+  by fmsmga006.fm.intel.com with ESMTP; 08 Jun 2017 09:32:18 -0700
+Subject: Re: [PATCH 03/44] dmaengine: ioat: don't use DMA_ERROR_CODE
+To:     Christoph Hellwig <hch@lst.de>, "x86@kernel.org" <x86@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "linux-c6x-dev@linux-c6x.org" <linux-c6x-dev@linux-c6x.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 References: <20170608132609.32662-1-hch@lst.de>
-        <20170608132609.32662-20-hch@lst.de>
-Organization: IBM Deutschland Research & Development GmbH / Vorsitzende des
- Aufsichtsrats: Martina Koederitz / Geschaeftsfuehrung: Dirk Wittkopp / Sitz
- der Gesellschaft: Boeblingen / Registergericht: Amtsgericht Stuttgart, HRB
- 243294
-X-Mailer: Claws Mail 3.9.0 (GTK+ 2.24.23; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <20170608132609.32662-4-hch@lst.de>
+From:   Dave Jiang <dave.jiang@intel.com>
+Message-ID: <bf0a16a3-75d9-25c9-98d3-f1e7624dc5d7@intel.com>
+Date:   Thu, 8 Jun 2017 09:32:18 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.0
+MIME-Version: 1.0
+In-Reply-To: <20170608132609.32662-4-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 17060816-0020-0000-0000-000003836630
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 17060816-0021-0000-0000-000041FEF14B
-Message-Id: <20170608182311.05cced9e@thinkpad>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:,, definitions=2017-06-08_05:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- malwarescore=0 phishscore=0 adultscore=0 bulkscore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.0.1-1703280000
- definitions=main-1706080286
-Return-Path: <gerald.schaefer@de.ibm.com>
+Return-Path: <dave.jiang@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58370
+X-archive-position: 58371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gerald.schaefer@de.ibm.com
+X-original-sender: dave.jiang@intel.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -87,13 +66,73 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-On Thu,  8 Jun 2017 15:25:44 +0200
-Christoph Hellwig <hch@lst.de> wrote:
-
-> s390 can also use noop_dma_ops, and while that currently does not return
-> errors it will so in the future.  Implementing the mapping_error method
-> is the proper way to have per-ops error conditions.
+On 06/08/2017 06:25 AM, Christoph Hellwig wrote:
+> DMA_ERROR_CODE is not a public API and will go away.  Instead properly
+> unwind based on the loop counter.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Acked-by: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+
+> ---
+>  drivers/dma/ioat/init.c | 24 +++++++-----------------
+>  1 file changed, 7 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+> index 6ad4384b3fa8..ed8ed1192775 100644
+> --- a/drivers/dma/ioat/init.c
+> +++ b/drivers/dma/ioat/init.c
+> @@ -839,8 +839,6 @@ static int ioat_xor_val_self_test(struct ioatdma_device *ioat_dma)
+>  		goto free_resources;
+>  	}
+>  
+> -	for (i = 0; i < IOAT_NUM_SRC_TEST; i++)
+> -		dma_srcs[i] = DMA_ERROR_CODE;
+>  	for (i = 0; i < IOAT_NUM_SRC_TEST; i++) {
+>  		dma_srcs[i] = dma_map_page(dev, xor_srcs[i], 0, PAGE_SIZE,
+>  					   DMA_TO_DEVICE);
+> @@ -910,8 +908,6 @@ static int ioat_xor_val_self_test(struct ioatdma_device *ioat_dma)
+>  
+>  	xor_val_result = 1;
+>  
+> -	for (i = 0; i < IOAT_NUM_SRC_TEST + 1; i++)
+> -		dma_srcs[i] = DMA_ERROR_CODE;
+>  	for (i = 0; i < IOAT_NUM_SRC_TEST + 1; i++) {
+>  		dma_srcs[i] = dma_map_page(dev, xor_val_srcs[i], 0, PAGE_SIZE,
+>  					   DMA_TO_DEVICE);
+> @@ -965,8 +961,6 @@ static int ioat_xor_val_self_test(struct ioatdma_device *ioat_dma)
+>  	op = IOAT_OP_XOR_VAL;
+>  
+>  	xor_val_result = 0;
+> -	for (i = 0; i < IOAT_NUM_SRC_TEST + 1; i++)
+> -		dma_srcs[i] = DMA_ERROR_CODE;
+>  	for (i = 0; i < IOAT_NUM_SRC_TEST + 1; i++) {
+>  		dma_srcs[i] = dma_map_page(dev, xor_val_srcs[i], 0, PAGE_SIZE,
+>  					   DMA_TO_DEVICE);
+> @@ -1017,18 +1011,14 @@ static int ioat_xor_val_self_test(struct ioatdma_device *ioat_dma)
+>  	goto free_resources;
+>  dma_unmap:
+>  	if (op == IOAT_OP_XOR) {
+> -		if (dest_dma != DMA_ERROR_CODE)
+> -			dma_unmap_page(dev, dest_dma, PAGE_SIZE,
+> -				       DMA_FROM_DEVICE);
+> -		for (i = 0; i < IOAT_NUM_SRC_TEST; i++)
+> -			if (dma_srcs[i] != DMA_ERROR_CODE)
+> -				dma_unmap_page(dev, dma_srcs[i], PAGE_SIZE,
+> -					       DMA_TO_DEVICE);
+> +		while (--i >= 0)
+> +			dma_unmap_page(dev, dma_srcs[i], PAGE_SIZE,
+> +				       DMA_TO_DEVICE);
+> +		dma_unmap_page(dev, dest_dma, PAGE_SIZE, DMA_FROM_DEVICE);
+>  	} else if (op == IOAT_OP_XOR_VAL) {
+> -		for (i = 0; i < IOAT_NUM_SRC_TEST + 1; i++)
+> -			if (dma_srcs[i] != DMA_ERROR_CODE)
+> -				dma_unmap_page(dev, dma_srcs[i], PAGE_SIZE,
+> -					       DMA_TO_DEVICE);
+> +		while (--i >= 0)
+> +			dma_unmap_page(dev, dma_srcs[i], PAGE_SIZE,
+> +				       DMA_TO_DEVICE);
+>  	}
+>  free_resources:
+>  	dma->device_free_chan_resources(dma_chan);
+> 

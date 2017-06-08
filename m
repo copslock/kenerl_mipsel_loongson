@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 16:24:35 +0200 (CEST)
-Received: from shards.monkeyblade.net ([184.105.139.130]:57674 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 16:25:14 +0200 (CEST)
+Received: from shards.monkeyblade.net ([184.105.139.130]:57698 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993920AbdFHOYJ0cMlO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 16:24:09 +0200
+        by eddie.linux-mips.org with ESMTP id S23993949AbdFHOYc5GCtK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 16:24:32 +0200
 Received: from localhost (unknown [38.140.131.194])
         (using TLSv1 with cipher AES128-SHA (128/128 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 2A16F13648CBB;
-        Thu,  8 Jun 2017 06:42:27 -0700 (PDT)
-Date:   Thu, 08 Jun 2017 10:24:05 -0400 (EDT)
-Message-Id: <20170608.102405.746234218675861415.davem@davemloft.net>
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 3134413648CBD;
+        Thu,  8 Jun 2017 06:42:51 -0700 (PDT)
+Date:   Thu, 08 Jun 2017 10:24:29 -0400 (EDT)
+Message-Id: <20170608.102429.1779556729256854546.davem@davemloft.net>
 To:     hch@lst.de
 Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -23,22 +23,21 @@ Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 28/44] sparc: remove arch specific dma_supported
- implementations
+Subject: Re: [PATCH 20/44] sparc: implement ->mapping_error
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20170608132609.32662-29-hch@lst.de>
+In-Reply-To: <20170608132609.32662-21-hch@lst.de>
 References: <20170608132609.32662-1-hch@lst.de>
-        <20170608132609.32662-29-hch@lst.de>
+        <20170608132609.32662-21-hch@lst.de>
 X-Mailer: Mew version 6.7 on Emacs 24.5 / Mule 6.0 (HANACHIRUSATO)
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 08 Jun 2017 06:42:28 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 08 Jun 2017 06:42:52 -0700 (PDT)
 Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58363
+X-archive-position: 58364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,13 +55,9 @@ List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
 From: Christoph Hellwig <hch@lst.de>
-Date: Thu,  8 Jun 2017 15:25:53 +0200
+Date: Thu,  8 Jun 2017 15:25:45 +0200
 
-> Usually dma_supported decisions are done by the dma_map_ops instance.
-> Switch sparc to that model by providing a ->dma_supported instance for
-> sbus that always returns false, and implementations tailored to the sun4u
-> and sun4v cases for sparc64, and leave it unimplemented for PCI on
-> sparc32, which means always supported.
+> DMA_ERROR_CODE is going to go away, so don't rely on it.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 

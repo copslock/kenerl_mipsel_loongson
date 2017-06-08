@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:42:53 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:49238 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:43:31 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:40252 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993924AbdFHN2TeWrDT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:28:19 +0200
+        by eddie.linux-mips.org with ESMTP id S23993954AbdFHN2UePGtT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:28:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=pxy/uIMvbzQyNNMG1DfsDVw61eq9ByoiTaQKce46mwY=; b=qmcXXA3Se1jQ/3DvTVShpdCFK
-        zpY4wi5BOrw1JhQzcchDDqBkKzZFGmLnjTwqyfkj/Ewa/L3VXqDP/G7SK9jk1q6v+TlIrn7ycJw4h
-        S8CjYiHVkQ4jp0hYQrrKYRAVIPcjz1LCzoBbAOrkz9p8cL3fCjioJk8D8IpUzTQiikJCR01cRuEyp
-        jAs64BPONNPPWbxnnWidGjsoeY+0vNNnFjhgIjpUOXMdgEDWZ8zlIvLiIvzA7QAa4Buk49s/nCdLz
-        NYXNXNid1wbbCmhImk4SgXk6oJoQyFuoUDkQwXBXfoGGngCDSAMIMgN2eaVmkNRWCtlGk66sDVRgn
-        yRzLh0P9A==;
+         bh=ci2kPdKPPHqYb7U2ysN0uHByFLmh4pJ8fITGByEW8Do=; b=sHCB7muzqIfhZrfhfmrPh/1n5
+        1FPLpeJVQ1LTH/Uz5iSx4LPPLuuvhE7iCGCLszw3STfd+R9BdayERUHkUk7ygpehRvER68kqvC88+
+        BHRxQLPYdfIBAU3LsaMnOYoqp553LdRqFFKaWrAH2sVacARSuZnijGeTOAMOroXOqMrf/MI2bAajY
+        QBDtKfSIgVbcet/6A2MOgxBxH7uJjHdBczKlGwgVzVI3jSjw82K4aagik3v3viXhFWxQZMPYBXpkG
+        hw7FL/a3DD/Ru1Qwl/kdI+cMvKYXnSE0TuruspfR0Up+dN6l4zgaKIyCCAlqkpRiYXsBcduVLL3/7
+        CsyzAM+BQ==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dIxTu-0007Ke-Q8; Thu, 08 Jun 2017 13:28:11 +0000
+        id 1dIxTy-0007PK-J9; Thu, 08 Jun 2017 13:28:15 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 30/44] dma-virt: remove dma_supported and mapping_error methods
-Date:   Thu,  8 Jun 2017 15:25:55 +0200
-Message-Id: <20170608132609.32662-31-hch@lst.de>
+Subject: [PATCH 31/44] hexagon: remove arch-specific dma_supported implementation
+Date:   Thu,  8 Jun 2017 15:25:56 +0200
+Message-Id: <20170608132609.32662-32-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170608132609.32662-1-hch@lst.de>
 References: <20170608132609.32662-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+eb06f239ea6f59aeb59b+5037+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58340
+X-archive-position: 58341
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,39 +58,48 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-These just duplicate the default behavior if no method is provided.
+This implementation is simply bogus - hexagon only has a simple
+direct mapped DMA implementation and thus doesn't care about the
+address.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- lib/dma-virt.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/hexagon/include/asm/dma-mapping.h | 2 --
+ arch/hexagon/kernel/dma.c              | 9 ---------
+ 2 files changed, 11 deletions(-)
 
-diff --git a/lib/dma-virt.c b/lib/dma-virt.c
-index dcd4df1f7174..5c4f11329721 100644
---- a/lib/dma-virt.c
-+++ b/lib/dma-virt.c
-@@ -51,22 +51,10 @@ static int dma_virt_map_sg(struct device *dev, struct scatterlist *sgl,
- 	return nents;
+diff --git a/arch/hexagon/include/asm/dma-mapping.h b/arch/hexagon/include/asm/dma-mapping.h
+index 00e3f10113b0..9c15cb5271a6 100644
+--- a/arch/hexagon/include/asm/dma-mapping.h
++++ b/arch/hexagon/include/asm/dma-mapping.h
+@@ -37,8 +37,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ 	return dma_ops;
  }
  
--static int dma_virt_mapping_error(struct device *dev, dma_addr_t dma_addr)
+-#define HAVE_ARCH_DMA_SUPPORTED 1
+-extern int dma_supported(struct device *dev, u64 mask);
+ extern int dma_is_consistent(struct device *dev, dma_addr_t dma_handle);
+ extern void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+ 			   enum dma_data_direction direction);
+diff --git a/arch/hexagon/kernel/dma.c b/arch/hexagon/kernel/dma.c
+index 71269dc0f225..9ff1b2041f85 100644
+--- a/arch/hexagon/kernel/dma.c
++++ b/arch/hexagon/kernel/dma.c
+@@ -35,15 +35,6 @@ static inline void *dma_addr_to_virt(dma_addr_t dma_addr)
+ 	return phys_to_virt((unsigned long) dma_addr);
+ }
+ 
+-int dma_supported(struct device *dev, u64 mask)
 -{
--	return false;
+-	if (mask == DMA_BIT_MASK(32))
+-		return 1;
+-	else
+-		return 0;
 -}
+-EXPORT_SYMBOL(dma_supported);
 -
--static int dma_virt_supported(struct device *dev, u64 mask)
--{
--	return true;
--}
--
- const struct dma_map_ops dma_virt_ops = {
- 	.alloc			= dma_virt_alloc,
- 	.free			= dma_virt_free,
- 	.map_page		= dma_virt_map_page,
- 	.map_sg			= dma_virt_map_sg,
--	.mapping_error		= dma_virt_mapping_error,
--	.dma_supported		= dma_virt_supported,
- };
- EXPORT_SYMBOL(dma_virt_ops);
+ static struct gen_pool *coherent_pool;
+ 
+ 
 -- 
 2.11.0

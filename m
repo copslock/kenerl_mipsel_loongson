@@ -1,51 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 16:43:44 +0200 (CEST)
-Received: from pandora.armlinux.org.uk ([IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6]:38302
-        "EHLO pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993865AbdFHOnhLShA4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 16:43:37 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=armlinux.org.uk; s=pandora-2014;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=0W7TZGQP+bJYGgTUAQ51lY8PEpbyQfuBSdypiDV83TQ=;
-        b=D4CSK6wracUSbzKx0d4bkdbs9NsJmLe0ERk3kCzyinEEbr1uFDCT4wfteBzKrYRYkcduHxczWyI8hJwvTKG832HUyV32gjcOhnhXgA8BYKhHBR6AVHxqUASWeQh6FM4VH0TBah21gZmHkpD79ZOr8jAER1ukmFI0LuDKoB/H/7Q=;
-Received: from n2100.armlinux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:40253)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1dIyec-0001U4-6e; Thu, 08 Jun 2017 15:43:18 +0100
-Received: from linux by n2100.armlinux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.armlinux.org.uk>)
-        id 1dIyeY-00040X-Ff; Thu, 08 Jun 2017 15:43:14 +0100
-Date:   Thu, 8 Jun 2017 15:43:14 +0100
-From:   Russell King - ARM Linux <linux@armlinux.org.uk>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, openrisc@lists.librecores.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, dmaengine@vger.kernel.org,
-        linux-tegra@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org,
-        iommu@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 25/44] arm: implement ->mapping_error
-Message-ID: <20170608144313.GL4902@n2100.armlinux.org.uk>
-References: <20170608132609.32662-1-hch@lst.de>
- <20170608132609.32662-26-hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 17:03:45 +0200 (CEST)
+Received: from mailapp01.imgtec.com ([195.59.15.196]:57332 "EHLO
+        mailapp01.imgtec.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S23993865AbdFHPDa3Sja4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 17:03:30 +0200
+Received: from HHMAIL01.hh.imgtec.org (unknown [10.100.10.19])
+        by Forcepoint Email with ESMTPS id 63A2E488F9E9B;
+        Thu,  8 Jun 2017 16:03:21 +0100 (IST)
+Received: from [10.20.78.153] (10.20.78.153) by HHMAIL01.hh.imgtec.org
+ (10.100.10.21) with Microsoft SMTP Server id 14.3.294.0; Thu, 8 Jun 2017
+ 16:03:23 +0100
+Date:   Thu, 8 Jun 2017 16:03:14 +0100
+From:   "Maciej W. Rozycki" <macro@imgtec.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     James Hogan <james.hogan@imgtec.com>, <linux-mips@linux-mips.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH 4/9] MIPS: Send SIGILL for BPOSGE32 in
+ `__compute_return_epc_for_insn'
+In-Reply-To: <20170608131141.GB8108@linux-mips.org>
+Message-ID: <alpine.DEB.2.00.1706081548090.21750@tp.orcam.me.uk>
+References: <alpine.DEB.2.00.1706040314270.10864@tp.orcam.me.uk> <alpine.DEB.2.00.1706050258410.10864@tp.orcam.me.uk> <20170608131141.GB8108@linux-mips.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20170608132609.32662-26-hch@lst.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-Return-Path: <linux+linux-mips=linux-mips.org@armlinux.org.uk>
+Content-Type: text/plain; charset="US-ASCII"
+X-Originating-IP: [10.20.78.153]
+Return-Path: <Maciej.Rozycki@imgtec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58365
+X-archive-position: 58366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@armlinux.org.uk
+X-original-sender: macro@imgtec.com
 Precedence: bulk
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
 List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
@@ -58,22 +44,30 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-BOn Thu, Jun 08, 2017 at 03:25:50PM +0200, Christoph Hellwig wrote:
-> +static int dmabounce_mapping_error(struct device *dev, dma_addr_t dma_addr)
-> +{
-> +	if (dev->archdata.dmabounce)
-> +		return 0;
+On Thu, 8 Jun 2017, Ralf Baechle wrote:
 
-I'm not convinced that we need this check here:
+> >  sigill_dsp:
+> > -	printk("%s: DSP branch but not DSP ASE - sending SIGBUS.\n", current->comm);
+> > -	force_sig(SIGBUS, current);
+> > +	pr_info("%s: DSP branch but not DSP ASE - sending SIGILL.\n",
+> > +		current->comm);
+> 
+> Shouldn't this then maybe be a pr_debug then?  With pr_info the right
+> kind of program can produce lots of useless clutter.
 
-        dev->archdata.dmabounce = device_info;
-        set_dma_ops(dev, &dmabounce_ops);
+ Sure.  Since I'm going to repost anyway to address Greg's concern, I'll 
+append an extra patch to the series, to change these all en masse, for 
+consistency.
 
-There shouldn't be any chance of dev->archdata.dmabounce being NULL if
-the dmabounce_ops has been set as the current device DMA ops.  So I
-think that test can be killed.
+ Eventually I think they will all go as I suspect they cover an impossible 
+condition (so BUG_ON will be more appropriate), i.e. you can't get a 
+delay-slot exception for a branch that has not been implemented -- you'll 
+get a Reserved Instruction exception for the branch itself instead, and 
+then there's nothing to emulate.  But I'll have to investigate execution 
+paths carefully first, verify that `delay_slot' is called consistently and 
+surely split off R2-on-R6 emulation code, before we can consider such a 
+change a safe operation.
 
--- 
-RMK's Patch system: http://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line: currently at 9.6Mbps down 400kbps up
-according to speedtest.net.
+ Glad to see you back.
+
+  Maciej

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:32:32 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:54579 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:32:59 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:53832 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993950AbdFHN1JqNzCT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:27:09 +0200
+        by eddie.linux-mips.org with ESMTP id S23993947AbdFHN1H3KywT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:27:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=czzdYfIKlgw8CBoCZndnCbas2yY5kUsyMGT+aG2d85s=; b=ZfE8IPYEBbN0LAwNKihNpLsoT
-        F/+UknsbuNCidU6R/aIHSy0vuwra1s9ohyffxm8BaeJsS3QnmAV6wBuNFbWZA5XYaE7T+SvREXrlK
-        vmb65N9xWIaCACZFF7usRSjOkszc8NzygDryMeipBdo7vvLCY7vMCWCw62OxEiGF3IuMiJ1pj8/MP
-        8S/wr8/BO/kC4en+jpNuTgrGaUiLr5yrsroF5KldZA75zc4Kh6/dUHgwK8B1g0OlwPfR1yh9UDkOp
-        bwwJYfuztxsGCO5FxFTemx4aPXYpv1egH9JSy7fYZ6Hil7rkGKvN2TEj44aoPn+lLeMq9rPp9+SAb
-        Evyv4Bxqg==;
+         bh=Uy6H3+yx5EeAWQfHfPRvhVNeqQCPFpPHV5YVmwy+QSI=; b=p6J7BZPflHuXazqkjeKpVoF2B
+        84BkmhI+AW3f/pyO4cEMi/YaApNGd2tnjWtRzC2GgWhRR8760h3l2VwCdVE9jNMGMYuIEVRd7C2Ym
+        CKAzxkICZYsAUSqIoJVldThJniBYQXV9u7gsxQENYQh2wHdxd0gu0SIdH9HexslnbbXOlOTkh0X/4
+        uZ2Lfz43LW/fREBPzLmwvMECw0TBLMJxvxfrK+S5EPAmLs1kDaVHIfvuIuldez987Yyn8HdLnmI32
+        ztxzERzLteaBqCtQC+0Ntyi1Z/Qxgw75kFfx45MwEEMndavqC8t9atHF3e7NewWmwmGcZaoYTKzOR
+        0Jm0+kYSQ==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dIxSq-0005rc-Od; Thu, 08 Jun 2017 13:27:05 +0000
+        id 1dIxSi-0005e0-F2; Thu, 08 Jun 2017 13:26:57 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 12/44] microblaze: remove DMA_ERROR_CODE
-Date:   Thu,  8 Jun 2017 15:25:37 +0200
-Message-Id: <20170608132609.32662-13-hch@lst.de>
+Subject: [PATCH 10/44] ia64: remove DMA_ERROR_CODE
+Date:   Thu,  8 Jun 2017 15:25:35 +0200
+Message-Id: <20170608132609.32662-11-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170608132609.32662-1-hch@lst.de>
 References: <20170608132609.32662-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+eb06f239ea6f59aeb59b+5037+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58320
+X-archive-position: 58321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,25 +58,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-microblaze does not return errors for dma_map_page.
+All ia64 dma_mapping_ops instances already have a mapping_error member.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/microblaze/include/asm/dma-mapping.h | 2 --
+ arch/ia64/include/asm/dma-mapping.h | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/arch/microblaze/include/asm/dma-mapping.h b/arch/microblaze/include/asm/dma-mapping.h
-index 3fad5e722a66..e15cd2f76e23 100644
---- a/arch/microblaze/include/asm/dma-mapping.h
-+++ b/arch/microblaze/include/asm/dma-mapping.h
-@@ -28,8 +28,6 @@
- #include <asm/io.h>
- #include <asm/cacheflush.h>
+diff --git a/arch/ia64/include/asm/dma-mapping.h b/arch/ia64/include/asm/dma-mapping.h
+index 73ec3c6f4cfe..3ce5ab4339f3 100644
+--- a/arch/ia64/include/asm/dma-mapping.h
++++ b/arch/ia64/include/asm/dma-mapping.h
+@@ -12,8 +12,6 @@
  
--#define DMA_ERROR_CODE		(~(dma_addr_t)0x0)
+ #define ARCH_HAS_DMA_GET_REQUIRED_MASK
+ 
+-#define DMA_ERROR_CODE 0
 -
- #define __dma_alloc_coherent(dev, gfp, size, handle)	NULL
- #define __dma_free_coherent(size, addr)		((void)0)
- 
+ extern const struct dma_map_ops *dma_ops;
+ extern struct ia64_machine_vector ia64_mv;
+ extern void set_iommu_machvec(void);
 -- 
 2.11.0

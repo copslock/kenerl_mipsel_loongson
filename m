@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:34:03 +0200 (CEST)
-Received: from bombadil.infradead.org ([65.50.211.133]:54609 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2017 15:34:34 +0200 (CEST)
+Received: from bombadil.infradead.org ([65.50.211.133]:44629 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S23993952AbdFHN1Oa09tT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:27:14 +0200
+        by eddie.linux-mips.org with ESMTP id S23993958AbdFHN1QrduIT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2017 15:27:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=References:In-Reply-To:Message-Id:
         Date:Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=MsFyaXpUvV6AzYhfwwwPEWHu+YFmOLIbzw6/cpGbN90=; b=ArXgPUkAjNUlLwKqrJ2iZT6/w
-        k5XXtcwcQwF27pGInua2M1jXCjTjbBoyOfQ+zceBSPOxLjinVpFZJv4sbnh19PMgGEpZwyoAOt8Dz
-        jpd9OogZyk0DPiivoq8pbe2wsbKiIJrqP9FaQ5NAzHy/n13YVy5vaQis+H4THf3cpMN0WYrOP5SJJ
-        4htp43W0RuiqzXovQbyYE5ZUW9/q2+l9i7wRRCQ5Llmoc96aoVYg5nnG2t5iO2gswu3ojMtzAteZC
-        4tsNq2iH9iCcMxUEwpyQxnLIQ5KfCZSoF+k8/bm5jef8zdpgkDehchtxv3r2d2HMcW8ewpU5lbaDq
-        2IMr4MXjw==;
+         bh=1h0ibcoYqzLmPVN9+BcTJWhCNyzc4rK0h4UoGsJb4S8=; b=WszcsESz8tVXdwlMFuWVYDLuO
+        pheQDmpNnflarqIbfNAPfhcbV2+Xm0XEz/PfNF0pUmmqoXyWmLhFy0ewLkaGZxk30pKWboH6hhSu9
+        c9WFwUXponWMnffOcz0U7RtS9vWYwL8lGyKoyyClwbHyBVbbAPA+qk+RNzEt2UWZhf8yw47X95i1L
+        fpW17EPrLnOGLT0MhbRBV0mu7mwTjGLNlD/cO8E08WvfRSR8T1dZHCMC44LDAKwJqPBsgaqZQgbfO
+        UoC0Y86B8gk/HOBpo0MK6eF5Fl2U/fd1dp2Qm9uaVCIUTWgZPs2tyGjXX2ABFNygrQIgR/yOwri87
+        BvC7viRbg==;
 Received: from clnet-p099-196.ikbnet.co.at ([83.175.99.196] helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.87 #1 (Red Hat Linux))
-        id 1dIxSu-0005vV-Fj; Thu, 08 Jun 2017 13:27:09 +0000
+        id 1dIxSy-00060Y-B4; Thu, 08 Jun 2017 13:27:13 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         xen-devel@lists.xenproject.org, linux-c6x-dev@linux-c6x.org,
@@ -30,9 +30,9 @@ To:     x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         iommu@lists.linux-foundation.org, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH 13/44] openrisc: remove DMA_ERROR_CODE
-Date:   Thu,  8 Jun 2017 15:25:38 +0200
-Message-Id: <20170608132609.32662-14-hch@lst.de>
+Subject: [PATCH 14/44] sh: remove DMA_ERROR_CODE
+Date:   Thu,  8 Jun 2017 15:25:39 +0200
+Message-Id: <20170608132609.32662-15-hch@lst.de>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20170608132609.32662-1-hch@lst.de>
 References: <20170608132609.32662-1-hch@lst.de>
@@ -41,7 +41,7 @@ Return-Path: <BATV+eb06f239ea6f59aeb59b+5037+infradead.org+hch@bombadil.srs.infr
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 58323
+X-archive-position: 58324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,25 +58,25 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 X-list: linux-mips
 
-openrisc does not return errors for dma_map_page.
+sh does not return errors for dma_map_page.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/openrisc/include/asm/dma-mapping.h | 2 --
+ arch/sh/include/asm/dma-mapping.h | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/arch/openrisc/include/asm/dma-mapping.h b/arch/openrisc/include/asm/dma-mapping.h
-index 0c0075f17145..a4ea139c2ef9 100644
---- a/arch/openrisc/include/asm/dma-mapping.h
-+++ b/arch/openrisc/include/asm/dma-mapping.h
-@@ -26,8 +26,6 @@
- #include <linux/kmemcheck.h>
- #include <linux/dma-mapping.h>
+diff --git a/arch/sh/include/asm/dma-mapping.h b/arch/sh/include/asm/dma-mapping.h
+index d99008af5f73..9b06be07db4d 100644
+--- a/arch/sh/include/asm/dma-mapping.h
++++ b/arch/sh/include/asm/dma-mapping.h
+@@ -9,8 +9,6 @@ static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+ 	return dma_ops;
+ }
  
--#define DMA_ERROR_CODE		(~(dma_addr_t)0x0)
+-#define DMA_ERROR_CODE 0
 -
- extern const struct dma_map_ops or1k_dma_map_ops;
+ void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+ 		    enum dma_data_direction dir);
  
- static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
 -- 
 2.11.0
